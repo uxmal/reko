@@ -33,9 +33,11 @@ namespace Reko.Arch.Pdp11
     public partial class Pdp11Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private Pdp11Architecture arch;
-        private IEnumerator<Pdp11Instruction> instrs;
+        private IEnumerator<Pdp11Instruction> dasm;
+        private Pdp11Instruction instr;
         private Frame frame;
-        private RtlInstructionCluster rtlCluster;
+        private RtlClass rtlc;
+        private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
         private IRewriterHost host;
 
@@ -46,76 +48,79 @@ namespace Reko.Arch.Pdp11
             IRewriterHost host)
         {
             this.arch = arch;
-            this.instrs = instrs.GetEnumerator();
+            this.dasm = instrs.GetEnumerator();
             this.frame = frame;
             this.host = host;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            while (instrs.MoveNext())
+            while (dasm.MoveNext())
             {
-                var instr = instrs.Current;
-                this.rtlCluster = new RtlInstructionCluster(instr.Address, instr.Length);
-                this.rtlCluster.Class = RtlClass.Linear;
-                m = new RtlEmitter(rtlCluster.Instructions);
+                this.instr = dasm.Current;
+                this.rtlInstructions = new List<RtlInstruction>();
+                this.rtlc = RtlClass.Linear;
+                m = new RtlEmitter(this.rtlInstructions);
                 switch (instr.Opcode)
                 {
                 default: throw new AddressCorrelatedException(
                     instr.Address,
                     "Rewriting of PDP-11 instruction {0} not supported yet.", instr.Opcode);
-                case Opcode.adc: RewriteAdc(instr); break;
-                case Opcode.add: RewriteAdd(instr); break;
-                case Opcode.addb: RewriteAdd(instr); break;
-                case Opcode.ash: RewriteShift(instr); break;
-                case Opcode.asl: RewriteAsl(instr); break;
-                case Opcode.asr: RewriteAsr(instr); break;
-                case Opcode.bcc: RewriteBxx(instr, ConditionCode.UGE, FlagM.CF); break;
-                case Opcode.bcs: RewriteBxx(instr, ConditionCode.ULT, FlagM.CF); break;
-                case Opcode.beq: RewriteBxx(instr, ConditionCode.EQ, FlagM.ZF); break;
-                case Opcode.bge: RewriteBxx(instr, ConditionCode.GE, FlagM.VF|FlagM.NF); break;
-                case Opcode.bgt: RewriteBxx(instr, ConditionCode.GT, FlagM.ZF|FlagM.NF|FlagM.VF); break;
-                case Opcode.bhi: RewriteBxx(instr, ConditionCode.UGT, FlagM.ZF|FlagM.CF); break;
-                case Opcode.bic: RewriteBic(instr); break;
-                case Opcode.bis: RewriteBis(instr); break;
-                case Opcode.bisb: RewriteBis(instr); break;
-                case Opcode.bit: RewriteBit(instr); break;
-                case Opcode.bitb: RewriteBit(instr); break;
-                case Opcode.ble: RewriteBxx(instr, ConditionCode.LE, FlagM.ZF|FlagM.NF|FlagM.VF); break;
-                case Opcode.blos: RewriteBxx(instr, ConditionCode.ULE, FlagM.ZF | FlagM.CF); break;
-                case Opcode.blt: RewriteBxx(instr, ConditionCode.LT, FlagM.NF|FlagM.VF); break;
-                case Opcode.bmi: RewriteBxx(instr, ConditionCode.LT, FlagM.NF); break;
-                case Opcode.bne: RewriteBxx(instr, ConditionCode.NE, FlagM.ZF); break;
-                case Opcode.bpl: RewriteBxx(instr, ConditionCode.GT, FlagM.NF); break;
-                case Opcode.br: RewriteBr(instr); break;
+                case Opcode.adc: RewriteAdc(); break;
+                case Opcode.add: RewriteAdd(); break;
+                case Opcode.addb: RewriteAdd(); break;
+                case Opcode.ash: RewriteShift(); break;
+                case Opcode.asl: RewriteAsl(); break;
+                case Opcode.asr: RewriteAsr(); break;
+                case Opcode.bcc: RewriteBxx(ConditionCode.UGE, FlagM.CF); break;
+                case Opcode.bcs: RewriteBxx(ConditionCode.ULT, FlagM.CF); break;
+                case Opcode.beq: RewriteBxx(ConditionCode.EQ, FlagM.ZF); break;
+                case Opcode.bge: RewriteBxx(ConditionCode.GE, FlagM.VF|FlagM.NF); break;
+                case Opcode.bgt: RewriteBxx(ConditionCode.GT, FlagM.ZF|FlagM.NF|FlagM.VF); break;
+                case Opcode.bhi: RewriteBxx(ConditionCode.UGT, FlagM.ZF|FlagM.CF); break;
+                case Opcode.bic: RewriteBic(); break;
+                case Opcode.bis: RewriteBis(); break;
+                case Opcode.bisb: RewriteBis(); break;
+                case Opcode.bit: RewriteBit(); break;
+                case Opcode.bitb: RewriteBit(); break;
+                case Opcode.ble: RewriteBxx(ConditionCode.LE, FlagM.ZF|FlagM.NF|FlagM.VF); break;
+                case Opcode.blos: RewriteBxx(ConditionCode.ULE, FlagM.ZF | FlagM.CF); break;
+                case Opcode.blt: RewriteBxx(ConditionCode.LT, FlagM.NF|FlagM.VF); break;
+                case Opcode.bmi: RewriteBxx(ConditionCode.LT, FlagM.NF); break;
+                case Opcode.bne: RewriteBxx(ConditionCode.NE, FlagM.ZF); break;
+                case Opcode.bpl: RewriteBxx(ConditionCode.GT, FlagM.NF); break;
+                case Opcode.br: RewriteBr(); break;
                 case Opcode.clr: RewriteClr(instr, m.Word16(0)); break;
                 case Opcode.clrb: RewriteClr(instr, m.Byte(0)); break;
-                case Opcode.cmp: RewriteCmp(instr); break;
-                case Opcode.com: RewriteCom(instr); break;
-                case Opcode.dec: RewriteIncDec(instr, m.ISub); break;
-                case Opcode.div: RewriteDiv(instr); break;
-                case Opcode.emt: RewriteEmt(instr); break;
+                case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.com: RewriteCom(); break;
+                case Opcode.dec: RewriteIncDec(m.ISub); break;
+                case Opcode.div: RewriteDiv(); break;
+                case Opcode.emt: RewriteEmt(); break;
                 case Opcode.halt: RewriteHalt(); break;
-                case Opcode.inc: RewriteIncDec(instr, m.IAdd); break;
-                case Opcode.jmp: RewriteJmp(instr); break;
-                case Opcode.jsr: RewriteJsr(instr); break;
-                case Opcode.mov: RewriteMov(instr); break;
-                case Opcode.movb: RewriteMov(instr); break;
-                case Opcode.neg: RewriteNeg(instr); break;
+                case Opcode.inc: RewriteIncDec(m.IAdd); break;
+                case Opcode.jmp: RewriteJmp(); break;
+                case Opcode.jsr: RewriteJsr(); break;
+                case Opcode.mov: RewriteMov(); break;
+                case Opcode.movb: RewriteMov(); break;
+                case Opcode.neg: RewriteNeg(); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.reset: RewriteReset(); break;
-                case Opcode.rol: RewriteRol(instr); break;
-                case Opcode.rts: RewriteRts(instr); break;
-                case Opcode.stcdi: RewriteStcdi(instr); break;
-                case Opcode.sub: RewriteSub(instr); break;
-                case Opcode.sxt: RewriteSxt(instr); break;
-                case Opcode.trap: RewriteTrap(instr); break;
-                case Opcode.tst: RewriteTst(instr); break;
-                case Opcode.tstb: RewriteTst(instr); break;
+                case Opcode.rol: RewriteRol(); break;
+                case Opcode.rts: RewriteRts(); break;
+                case Opcode.stcdi: RewriteStcdi(); break;
+                case Opcode.sub: RewriteSub(); break;
+                case Opcode.sxt: RewriteSxt(); break;
+                case Opcode.trap: RewriteTrap(); break;
+                case Opcode.tst: RewriteTst(); break;
+                case Opcode.tstb: RewriteTst(); break;
                 case Opcode.wait: RewriteWait(); break;
-                case Opcode.xor: RewriteXor(instr); break;
+                case Opcode.xor: RewriteXor(); break;
                 }
-                yield return rtlCluster;
+                yield return new RtlInstructionCluster(instr.Address, instr.Length, this.rtlInstructions.ToArray())
+                {
+                    Class = rtlc
+                };
             }
         }
 
@@ -160,7 +165,7 @@ namespace Reko.Arch.Pdp11
             if (memOp == null)
             {
                 throw new AddressCorrelatedException(
-                      instrs.Current.Address,
+                      dasm.Current.Address,
                       "Invalid addressing mode for transfer functions.",
                       memOp.Mode);
             }
@@ -170,7 +175,7 @@ namespace Reko.Arch.Pdp11
             {
             default:
                 throw new AddressCorrelatedException(
-                    instrs.Current.Address,
+                    dasm.Current.Address,
                     "Not implemented: addressing mode {0}.",
                     memOp.Mode);
             case AddressMode.RegDef:
@@ -196,21 +201,21 @@ namespace Reko.Arch.Pdp11
                 if (memOp.Register == Registers.pc)
                 {
                     var offset = (short)memOp.EffectiveAddress;
-                    var addrBase = (long)rtlCluster.Address.ToLinear();
+                    var addrBase = (long)instr.Address.ToLinear();
                     var addr = Address.Ptr16((ushort)(2 + addrBase + offset));
                     return addr;
                 }
                 else
                 {
                     return m.Load(
-                        this.instrs.Current.DataWidth,
+                        this.dasm.Current.DataWidth,
                         m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
                 }
             case AddressMode.IndexedDef:
                 if (memOp.Register == Registers.pc)
                 {
                     var offset = (short)memOp.EffectiveAddress;
-                    var addrBase = (long)rtlCluster.Address.ToLinear() + rtlCluster.Length;
+                    var addrBase = (long)instr.Address.ToLinear() + instr.Length;
                     var addr = Constant.Word16((ushort) (addrBase + offset));
                     return m.Load(
                         PrimitiveType.Word16,
@@ -250,14 +255,14 @@ namespace Reko.Arch.Pdp11
                 {
                 default:
                     throw new AddressCorrelatedException(
-                        instrs.Current.Address,
+                        dasm.Current.Address,
                         "Not implemented: addressing mode {0}.", 
                         memOp.Mode);
                 case AddressMode.RegDef:
-                    return m.Load(this.instrs.Current.DataWidth, r);
+                    return m.Load(this.dasm.Current.DataWidth, r);
                 case AddressMode.Absolute:
                     return m.Load(
-                           instrs.Current.DataWidth,
+                           dasm.Current.DataWidth,
                            Address.Ptr16(memOp.EffectiveAddress));
                 case AddressMode.AutoIncr:
                     m.Assign(tmp, m.Load(op.Width, r));
@@ -278,19 +283,19 @@ namespace Reko.Arch.Pdp11
                     if (memOp.Register == Registers.pc)
                     {
                         var offset = (short)memOp.EffectiveAddress;
-                        var addrBase = (long) rtlCluster.Address.ToLinear();
+                        var addrBase = (long) instr.Address.ToLinear();
                         var addr = Address.Ptr16((ushort)(2 + addrBase + offset));
                         return m.Load(memOp.Width, addr);
                     }
                     else
                     {
                         return m.Load(
-                            this.instrs.Current.DataWidth,
+                            this.dasm.Current.DataWidth,
                             m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
                     }
                 case AddressMode.IndexedDef:
                     return m.Load(
-                        this.instrs.Current.DataWidth,
+                        this.dasm.Current.DataWidth,
                         m.Load(
                             PrimitiveType.Ptr16,
                             m.IAdd(r, Constant.Word16(memOp.EffectiveAddress))));
@@ -305,7 +310,7 @@ namespace Reko.Arch.Pdp11
             var immOp = op as ImmediateOperand;
             if (immOp != null)
             {
-                if (instrs.Current.DataWidth.Size == 1)
+                if (dasm.Current.DataWidth.Size == 1)
                 {
                     return Constant.Byte((byte)immOp.Value.ToInt32());
                 }
@@ -340,18 +345,18 @@ namespace Reko.Arch.Pdp11
             if (memOp != null)
             {
                 var r = frame.EnsureRegister(memOp.Register);
-                var tmp = frame.CreateTemporary(instrs.Current.DataWidth);
+                var tmp = frame.CreateTemporary(dasm.Current.DataWidth);
                 switch (memOp.Mode)
                 {
                 default:
                     throw new AddressCorrelatedException(
-                        instrs.Current.Address,
+                        dasm.Current.Address,
                         "Not implemented: addressing mode {0}.",
                         memOp.Mode);
                 case AddressMode.Absolute:
                     m.Assign(
                         m.Load(
-                            instrs.Current.DataWidth,
+                            dasm.Current.DataWidth,
                             Address.Ptr16(memOp.EffectiveAddress)),
                         gen(src));
                     break;
@@ -378,19 +383,19 @@ namespace Reko.Arch.Pdp11
                 case AddressMode.Indexed:
                     if (r.Storage == Registers.pc)
                     {
-                        var addr = instrs.Current.Address + instrs.Current.Length;
+                        var addr = dasm.Current.Address + dasm.Current.Length;
                         m.Assign(
                            tmp,
-                           gen(m.Load(instrs.Current.DataWidth, addr)));
+                           gen(m.Load(dasm.Current.DataWidth, addr)));
                         m.Assign(
-                            m.Load(instrs.Current.DataWidth, addr),
+                            m.Load(dasm.Current.DataWidth, addr),
                             tmp);
                     }
                     else
                     {
                         m.Assign(
                             m.Load(
-                                this.instrs.Current.DataWidth,
+                                this.dasm.Current.DataWidth,
                                 m.IAdd(
                                     r,
                                     Constant.Word16(memOp.EffectiveAddress))),
@@ -401,12 +406,12 @@ namespace Reko.Arch.Pdp11
                     if (r.Storage == Registers.pc)
                     {
                         //$REVIEW: what if there are two of these?
-                        var addr = instrs.Current.Address + instrs.Current.Length;
+                        var addr = dasm.Current.Address + dasm.Current.Length;
                         m.Assign(
                             tmp,
-                            gen(m.Load(instrs.Current.DataWidth, addr)));
+                            gen(m.Load(dasm.Current.DataWidth, addr)));
                         m.Assign(
-                            m.Load(instrs.Current.DataWidth, addr),
+                            m.Load(dasm.Current.DataWidth, addr),
                             tmp);
                     }
                     else
@@ -431,12 +436,12 @@ namespace Reko.Arch.Pdp11
             if (memOp != null)
             {
                 var r = frame.EnsureRegister(memOp.Register);
-                var tmp = frame.CreateTemporary(instrs.Current.DataWidth);
+                var tmp = frame.CreateTemporary(dasm.Current.DataWidth);
                 switch (memOp.Mode)
                 {
                 default:
                     throw new AddressCorrelatedException(
-                        instrs.Current.Address,
+                        dasm.Current.Address,
                         "Not implemented: addressing mode {0}.",
                         memOp.Mode);
                 case AddressMode.RegDef:
@@ -463,12 +468,12 @@ namespace Reko.Arch.Pdp11
                         tmp,
                         gen(
                             m.Load(
-                                instrs.Current.DataWidth,
+                                dasm.Current.DataWidth,
                                 Address.Ptr16(memOp.EffectiveAddress)),
                             src));
                     m.Assign(
                         m.Load(
-                           instrs.Current.DataWidth,
+                           dasm.Current.DataWidth,
                            Address.Ptr16(memOp.EffectiveAddress)),
                         tmp);
                     break;
@@ -477,13 +482,13 @@ namespace Reko.Arch.Pdp11
                         tmp,
                         gen(
                             m.Load(
-                                instrs.Current.DataWidth,
+                                dasm.Current.DataWidth,
                                 m.IAdd(
                                     r, memOp.EffectiveAddress)),
                             src));
                     m.Assign(
                         m.Load(
-                            instrs.Current.DataWidth,
+                            dasm.Current.DataWidth,
                             m.IAdd(
                                 r, memOp.EffectiveAddress)),
                         tmp);
@@ -492,14 +497,14 @@ namespace Reko.Arch.Pdp11
                     if (r.Storage == Registers.pc)
                     {
                         //$REVIEW: what if there are two of these?
-                        var addr = instrs.Current.Address + instrs.Current.Length;
+                        var addr = dasm.Current.Address + dasm.Current.Length;
                         m.Assign(
                             tmp,
                             gen(
-                                m.Load(instrs.Current.DataWidth, addr),
+                                m.Load(dasm.Current.DataWidth, addr),
                                 src));
                         m.Assign(
-                            m.Load(instrs.Current.DataWidth, addr),
+                            m.Load(dasm.Current.DataWidth, addr),
                             tmp);
                     }
                     else
@@ -508,7 +513,7 @@ namespace Reko.Arch.Pdp11
                            tmp,
                            gen(
                                m.Load(
-                                   instrs.Current.DataWidth,
+                                   dasm.Current.DataWidth,
                                    m.Load(
                                        PrimitiveType.Ptr16,
                                        m.IAdd(
@@ -516,7 +521,7 @@ namespace Reko.Arch.Pdp11
                                    src));
                         m.Assign(
                             m.Load(
-                                instrs.Current.DataWidth,
+                                dasm.Current.DataWidth,
                                 m.Load(
                                     PrimitiveType.Ptr16,
                                     m.IAdd(

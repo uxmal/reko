@@ -39,7 +39,8 @@ namespace Reko.Arch.Avr
         private IEnumerator<AvrInstruction> dasm;
         private ProcessorState state;
         private AvrInstruction instr;
-        private RtlInstructionCluster rtlc;
+        private RtlClass rtlc;
+        private List<RtlInstruction> rtlInstructions;
         private List<RtlInstructionCluster> clusters;
         private RtlEmitter m;
 
@@ -68,9 +69,9 @@ namespace Reko.Arch.Avr
         public void Rewrite(AvrInstruction instr)
         {
             this.instr = instr;
-            this.rtlc = new RtlInstructionCluster(instr.Address, instr.Length);
-            this.rtlc.Class = RtlClass.Linear;
-            this.m = new RtlEmitter(rtlc.Instructions);
+            this.rtlInstructions = new List<RtlInstruction>();
+            this.rtlc = RtlClass.Linear;
+            this.m = new RtlEmitter(rtlInstructions);
             switch (instr.opcode)
             {
             case Opcode.adc: RewriteAdcSbc(m.IAdd); break;
@@ -132,7 +133,13 @@ namespace Reko.Arch.Avr
                 m.Invalid();
                 break;
             }
-            clusters.Add(rtlc);
+            clusters.Add(new RtlInstructionCluster(
+                instr.Address,
+                instr.Length,
+                rtlInstructions.ToArray())
+            {
+                Class = rtlc
+            });
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -338,7 +345,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteBranch(ConditionCode cc, FlagM grfM)
         {
-            rtlc.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
             var grf = frame.EnsureFlagGroup(arch.GetFlagGroup((uint)grfM));
             var target = (Address)RewriteOp(0);
             m.Branch(m.Test(cc, grf), target, RtlClass.ConditionalTransfer);
@@ -346,7 +353,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteBranch(FlagM grfM, bool set)
         {
-            rtlc.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
             Expression test = frame.EnsureFlagGroup(arch.GetFlagGroup((uint)grfM));
             if (!set)
                 test = m.Not(test);
@@ -370,7 +377,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteCall()
         {
-            rtlc.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
             m.Call(RewriteOp(0), 2);    //$TODO: 3-byte mode in architecture.
         }
 
@@ -404,7 +411,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteIcall()
         {
-            rtlc.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
             var z = frame.EnsureRegister(arch.z);
             m.Call(z, 2);
         }
@@ -416,7 +423,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteIjmp()
         {
-            rtlc.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
             var z = frame.EnsureRegister(arch.z);
             m.Goto(z);
         }
@@ -469,7 +476,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteJmp()
         {
-            rtlc.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
             m.Goto(RewriteOp(0));
         }
 
@@ -494,7 +501,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteRet()
         {
-            rtlc.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
             m.Return(2, 0);
         }
 
@@ -517,8 +524,13 @@ namespace Reko.Arch.Avr
             }
             var addrSkip = dasm.Current.Address + dasm.Current.Length;
             var branch = m.BranchInMiddleOfInstruction(bis, addrSkip, RtlClass.ConditionalTransfer);
-            rtlc.Class = RtlClass.ConditionalTransfer;
-            clusters.Add(rtlc);
+            clusters.Add(new RtlInstructionCluster(
+                this.instr.Address,
+                this.instr.Length,
+                this.rtlInstructions.ToArray())
+            {
+                Class = RtlClass.ConditionalTransfer,
+            });
             Rewrite(dasm.Current);
         }
 

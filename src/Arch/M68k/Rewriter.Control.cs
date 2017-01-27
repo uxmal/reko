@@ -33,60 +33,60 @@ namespace Reko.Arch.M68k
     {
         private void RewriteBcc(ConditionCode cc, FlagM flags)
         {
-            ric.Class = RtlClass.ConditionalTransfer;
-            emitter.Branch(
-                emitter.Test(cc, orw.FlagGroup(flags)),
+            rtlc = RtlClass.ConditionalTransfer;
+            m.Branch(
+                m.Test(cc, orw.FlagGroup(flags)),
                 ((M68kAddressOperand)di.op1).Address,
                 RtlClass.ConditionalTransfer);
         }
 
         private void RewriteBra()
         {
-            ric.Class = RtlClass.Transfer;
-            emitter.Goto(orw.RewriteSrc(di.op1, di.Address, true));
+            rtlc = RtlClass.Transfer;
+            m.Goto(orw.RewriteSrc(di.op1, di.Address, true));
         }
 
         private void RewriteBsr()
         {
-            ric.Class = RtlClass.Transfer;
-            emitter.Call(orw.RewriteSrc(di.op1, di.Address, true), 4);
+            rtlc = RtlClass.Transfer;
+            m.Call(orw.RewriteSrc(di.op1, di.Address, true), 4);
         }
 
         private void RewriteJmp()
         {
-            ric.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
             var src = orw.RewriteSrc(di.op1, di.Address, true);
             var mem = src as MemoryAccess;
             if (mem != null)
                 src = mem.EffectiveAddress;
-            emitter.Goto(src);
+            m.Goto(src);
         }
 
         private void RewriteJsr()
         {
-            ric.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
             var src = orw.RewriteSrc(di.op1, di.Address, true);
             var mem = src as MemoryAccess;
             if (mem != null)
                 src = mem.EffectiveAddress;
-            emitter.Call(src, 4);
+            m.Call(src, 4);
         }
 
         private void RewriteDbcc(ConditionCode cc, FlagM flags)
         {
-            ric.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
             if (cc != ConditionCode.None)
             {
-                emitter.BranchInMiddleOfInstruction(
-                    emitter.Test(cc, orw.FlagGroup(flags)),
+                m.BranchInMiddleOfInstruction(
+                    m.Test(cc, orw.FlagGroup(flags)),
                     di.Address + 4,
                     RtlClass.ConditionalTransfer);
             }
             var src = orw.RewriteSrc(di.op1, di.Address);
 
-            emitter.Assign(src, emitter.ISub(src, 1));
-            emitter.Branch(
-                emitter.Ne(src, emitter.Int32(-1)),
+            m.Assign(src, m.ISub(src, 1));
+            m.Branch(
+                m.Ne(src, m.Int32(-1)),
                 (Address)orw.RewriteSrc(di.op2, di.Address, true),
                 RtlClass.ConditionalTransfer);
         }
@@ -95,14 +95,14 @@ namespace Reko.Arch.M68k
         {
             if (dasm.Current.op1 == null)
                 return false;
-            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, RewriteSrcOperand(dasm.Current.op1)));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, RewriteSrcOperand(dasm.Current.op1)));
             return true;
         }
 
         private void RewriteRts()
         {
-            ric.Class = RtlClass.Transfer;
-            emitter.Return(4, 0);
+            rtlc = RtlClass.Transfer;
+            m.Return(4, 0);
         }
     }
 }

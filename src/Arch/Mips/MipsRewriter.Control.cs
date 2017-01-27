@@ -41,17 +41,17 @@ namespace Reko.Arch.Mips
                 var reg2 = RewriteOperand(instr.op2);
                 var addr = (Address)RewriteOperand(instr.op3);
                 var cond = condOp(reg1, reg2);
-                if (condOp == emitter.Eq &&
+                if (condOp == m.Eq &&
                     ((RegisterOperand)instr.op1).Register ==
                     ((RegisterOperand)instr.op2).Register)
                 {
-                    cluster.Class = RtlClass.Transfer;
-                    emitter.GotoD(addr);
+                    rtlc = RtlClass.Transfer;
+                    m.GotoD(addr);
                 }
                 else
                 {
-                    cluster.Class = RtlClass.ConditionalTransfer;
-                    emitter.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+                    rtlc = RtlClass.ConditionalTransfer;
+                    m.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
                 }
             }
             else
@@ -62,7 +62,7 @@ namespace Reko.Arch.Mips
         {
             if (link)
             {
-                emitter.Assign(
+                m.Assign(
                     frame.EnsureRegister(Registers.ra),
                     instr.Address + 8);
             }
@@ -71,24 +71,24 @@ namespace Reko.Arch.Mips
             if (reg is Constant)
             {
                 // r0 has been replaced with '0'.
-                if (condOp == emitter.Lt)
+                if (condOp == m.Lt)
                 {
                     return; // Branch will never be taken
                 }
             }
             var cond = condOp(reg, Constant.Zero(reg.DataType));
-            cluster.Class = RtlClass.ConditionalTransfer;
-            emitter.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+            rtlc = RtlClass.ConditionalTransfer;
+            m.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
         }
 
         private void RewriteBc1f(MipsInstruction instr, bool opTrue)
         {
             var cond = RewriteOperand(instr.op1);
             if (!opTrue)
-                cond = emitter.Not(cond);
+                cond = m.Not(cond);
             var addr = (Address)RewriteOperand(instr.op2);
-            cluster.Class = RtlClass.ConditionalTransfer | RtlClass.Delay;
-            emitter.Branch(cond, addr, cluster.Class);
+            rtlc = RtlClass.ConditionalTransfer | RtlClass.Delay;
+            m.Branch(cond, addr, rtlc);
         }
     
         private void RewriteJal(MipsInstruction instr)
@@ -96,8 +96,8 @@ namespace Reko.Arch.Mips
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
-            cluster.Class = RtlClass.Transfer;
-            emitter.CallD(RewriteOperand(instr.op1), 0);
+            rtlc = RtlClass.Transfer;
+            m.CallD(RewriteOperand(instr.op1), 0);
         }
 
         private void RewriteJalr(MipsInstruction instr)
@@ -105,12 +105,12 @@ namespace Reko.Arch.Mips
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
-            cluster.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
             var dst = RewriteOperand(instr.op2);
             var lr = ((RegisterOperand)instr.op1).Register;
             if (lr == Registers.ra)
             {
-                emitter.CallD(dst, 0);
+                m.CallD(dst, 0);
                 return;
             }
             throw new NotImplementedException("jalr to register other than ra not implemented yet.");
@@ -119,24 +119,24 @@ namespace Reko.Arch.Mips
 
         private void RewriteJr(MipsInstruction instr)
         {
-            cluster.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
             var dst = RewriteOperand(instr.op1);
             var reg = (RegisterStorage)((Identifier)dst).Storage;
             if (reg == Registers.ra)
             {
-                emitter.ReturnD(0, 0);
+                m.ReturnD(0, 0);
             }
 			else
             {
-                emitter.GotoD(dst);
+                m.GotoD(dst);
             }
         }
 
         private void RewriteJump(MipsInstruction instr)
         {
             var dst = RewriteOperand(instr.op1);
-            cluster.Class = RtlClass.Transfer;
-            emitter.GotoD(dst);
+            rtlc = RtlClass.Transfer;
+            m.GotoD(dst);
         }
     }
 }

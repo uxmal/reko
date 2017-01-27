@@ -40,7 +40,7 @@ namespace Reko.Arch.Arm
             ConditionalAssign(opDst, op(opSrc1, opSrc2));
             if (setflags)
             {
-                ConditionalAssign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
+                ConditionalAssign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "SZCO", PrimitiveType.Byte), m.Cond(opDst));
             }
         }
 
@@ -52,7 +52,7 @@ namespace Reko.Arch.Arm
             ConditionalAssign(opDst, new BinaryExpression(op, PrimitiveType.Word32, opSrc1, opSrc2));
             if (setflags)
             {
-                ConditionalAssign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
+                ConditionalAssign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "SZCO", PrimitiveType.Byte), m.Cond(opDst));
             }
         }
 
@@ -63,7 +63,7 @@ namespace Reko.Arch.Arm
             ConditionalAssign(opDst, new UnaryExpression(op,  PrimitiveType.Word32, opSrc));
             if (instr.ArchitectureDetail.UpdateFlags)
             {
-                ConditionalAssign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
+                ConditionalAssign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "SZCO", PrimitiveType.Byte), m.Cond(opDst));
             }
         }
 
@@ -72,7 +72,7 @@ namespace Reko.Arch.Arm
             var opDst = this.Operand(Dst);
             var opSrc1 = this.Operand(Src1);
             var opSrc2 = this.Operand(Src2);
-            ConditionalAssign(opDst, emitter.And(opSrc1, emitter.Comp(opSrc2)));
+            ConditionalAssign(opDst, m.And(opSrc1, m.Comp(opSrc2)));
         }
 
         private void RewriteCmn()
@@ -81,8 +81,8 @@ namespace Reko.Arch.Arm
             var opSrc = this.Operand(Src1);
             ConditionalAssign(
                 frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte),
-                emitter.Cond(
-                    emitter.IAdd(opDst, opSrc)));
+                m.Cond(
+                    m.IAdd(opDst, opSrc)));
         }
 
         private void RewriteCmp()
@@ -91,26 +91,26 @@ namespace Reko.Arch.Arm
             var opSrc = this.Operand(Src1);
             ConditionalAssign(
                 frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte),
-                emitter.Cond(
-                    emitter.ISub(opDst, opSrc)));
+                m.Cond(
+                    m.ISub(opDst, opSrc)));
         }
 
         private void RewriteTeq()
         {
             var opDst = this.Operand(Dst);
             var opSrc = this.Operand(Src1);
-            emitter.Assign(
+            m.Assign(
                 frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte),
-                emitter.Cond(emitter.Xor(opDst, opSrc)));
+                m.Cond(m.Xor(opDst, opSrc)));
         }
 
         private void RewriteTst()
         {
             var opDst = this.Operand(Dst);
             var opSrc = this.Operand(Src1);
-            emitter.Assign(
+            m.Assign(
                 frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte),
-                emitter.Cond(emitter.And(opDst, opSrc)));
+                m.Cond(m.And(opDst, opSrc)));
         }
 
         private void RewriteLdr(DataType size)
@@ -122,11 +122,11 @@ namespace Reko.Arch.Arm
             if (rDst == A32Registers.pc)
             {
                 // Assignment to PC is the same as a jump
-                ric.Class = RtlClass.Transfer;
-                emitter.Goto(opSrc);
+                rtlc = RtlClass.Transfer;
+                m.Goto(opSrc);
                 return;
             }
-            emitter.Assign(opDst, opSrc);
+            m.Assign(opDst, opSrc);
             MaybePostOperand(Src1);
         }
 
@@ -134,7 +134,7 @@ namespace Reko.Arch.Arm
         {
             var opSrc = this.Operand(Dst);
             var opDst = this.Operand(Src1);
-            emitter.Assign(opDst, opSrc);
+            m.Assign(opDst, opSrc);
             MaybePostOperand(Src1);
         }
 
@@ -142,7 +142,7 @@ namespace Reko.Arch.Arm
         {
             if (Dst.Type == ArmInstructionOperandType.Register && Dst.RegisterValue.Value == ArmRegister.PC)
             {
-                ric.Class = RtlClass.Transfer;
+                rtlc = RtlClass.Transfer;
                 if (Src1.Type == ArmInstructionOperandType.Register && Src1.RegisterValue.Value == ArmRegister.LR)
                 {
                     AddConditional(new RtlReturn(0, 0, RtlClass.Transfer));
@@ -195,13 +195,13 @@ namespace Reko.Arch.Arm
             foreach (var op in instr.ArchitectureDetail.Operands)
             {
                 Expression ea = offset != 0
-                    ? emitter.ISub(dst, offset)
+                    ? m.ISub(dst, offset)
                     : (Expression)dst;
                 var reg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value]);
-                emitter.Assign(emitter.LoadDw(ea), reg);
+                m.Assign(m.LoadDw(ea), reg);
                 offset += reg.DataType.Size;
             }
-            emitter.Assign(dst, emitter.ISub(dst, offset));
+            m.Assign(dst, m.ISub(dst, offset));
         }
 
         private void RewriteStm()
@@ -212,15 +212,15 @@ namespace Reko.Arch.Arm
             foreach (var r in range)
             {
                 Expression ea = offset != 0
-                    ? emitter.ISub(dst, offset)
+                    ? m.ISub(dst, offset)
                     : (Expression) dst;
                 var srcReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.RegisterValue.Value]);
-                emitter.Assign(emitter.LoadDw(ea), srcReg);
+                m.Assign(m.LoadDw(ea), srcReg);
                 offset += srcReg.DataType.Size;
             }
             if (offset != 0 && instr.ArchitectureDetail.WriteBack)
             {
-                emitter.Assign(dst, emitter.ISub(dst, offset));
+                m.Assign(dst, m.ISub(dst, offset));
             }
         }
 

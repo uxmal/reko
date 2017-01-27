@@ -37,7 +37,8 @@ namespace Reko.Arch.RiscV
         private Frame frame;
         private IRewriterHost host;
         private RiscVInstruction instr;
-        private RtlInstructionCluster rtlc;
+        private List<RtlInstruction> rtlInstructions;
+        private RtlClass rtlc;
         private ProcessorState state;
 
         public RiscVRewriter(RiscVArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
@@ -54,10 +55,11 @@ namespace Reko.Arch.RiscV
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-
-                this.rtlc = new RtlInstructionCluster(dasm.Current.Address, dasm.Current.Length);
-                this.rtlc.Class = RtlClass.Linear;
-                this.m = new RtlEmitter(rtlc.Instructions);
+                var addr = dasm.Current.Address;
+                var len = dasm.Current.Length;
+                this.rtlInstructions = new List<RtlInstruction>();
+                this.rtlc = RtlClass.Linear;
+                this.m = new RtlEmitter(rtlInstructions);
 
                 switch (instr.opcode)
                 {
@@ -112,7 +114,13 @@ namespace Reko.Arch.RiscV
                 case Opcode.xor: RewriteXor(); break;
                 case Opcode.xori: RewriteXor(); break;
                 }
-                yield return rtlc;
+                yield return new RtlInstructionCluster(
+                    addr,
+                    len,
+                    rtlInstructions.ToArray())
+                {
+                    Class = rtlc,
+                };
             }
         }
 

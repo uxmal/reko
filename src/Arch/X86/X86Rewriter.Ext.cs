@@ -44,7 +44,7 @@ namespace Reko.Arch.X86
             var rsrc = instrCur.op2 as RegisterOperand;
             if (rdst != null && rsrc != null && rdst.Register.Number == rsrc.Register.Number)
             { // selfie!
-                emitter.Assign(orw.AluRegister(rdst), emitter.Cast(rdst.Width, Constant.Int32(0)));
+                m.Assign(orw.AluRegister(rdst), m.Cast(rdst.Width, Constant.Int32(0)));
                 return;
             }
             throw new NotImplementedException();

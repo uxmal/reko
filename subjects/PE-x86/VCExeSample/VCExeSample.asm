@@ -1,307 +1,49 @@
 ;;; Segment .text (00401000)
-
-;; main: 00401000
-main proc
-	push	ebp
-	mov	ebp,esp
-	push	ecx
-	fld1	
-	fstp	dword ptr [esp]
-	push	004020C0
-	mov	eax,[ebp+08]
-	push	eax
-	mov	ecx,[ebp+0C]
-	mov	edx,[ecx]
-	push	edx
-	call	00401030
-	add	esp,10
-	xor	eax,eax
-	pop	ebp
-	ret	
-00401024             CC CC CC CC CC CC CC CC CC CC CC CC     ............
-
-;; test1: 00401030
-test1 proc
-	push	ebp
-	mov	ebp,esp
-	fld	dword ptr [ebp+14]
-	sub	esp,08
-	fstp	double ptr [esp]
-	mov	eax,[ebp+10]
-	push	eax
-	mov	ecx,[ebp+0C]
-	push	ecx
-	mov	edx,[ebp+08]
-	push	edx
-	push	004020C8
-	call	dword ptr [0040209C]
-	add	esp,18
-	pop	ebp
-	ret	
-00401058                         CC CC CC CC CC CC CC CC         ........
-
-;; test2: 00401060
-test2 proc
-	push	ebp
-	mov	ebp,esp
-	push	ecx
-	fld	dword ptr [004020E8]
-	fstp	dword ptr [esp]
-	push	004020D4
-	push	02
-	push	004020D8
-	call	00401030
-	add	esp,10
-	cmp	dword ptr [ebp+08],00
-	jnz	004010A5
-
-l00401087:
-	push	ecx
-	fld	dword ptr [004020E4]
-	fstp	dword ptr [esp]
-	push	004020DC
-	push	06
-	push	004020E0
-	call	00401030
-	add	esp,10
-
-l004010A5:
-	pop	ebp
-	ret	
-004010A7                      CC CC CC CC CC CC CC CC CC        .........
-
-;; indirect_call_test3: 004010B0
-indirect_call_test3 proc
-	push	ebp
-	mov	ebp,esp
-	push	000003E8
-	mov	eax,[ebp+08]
-	push	eax
-	mov	ecx,[ebp+08]
-	mov	edx,[ecx]
-	mov	eax,[edx+04]
-	call	eax
-	add	esp,08
-	pop	ebp
-	ret	
-004010CB                                  CC CC CC CC CC            .....
-
-;; test4: 004010D0
-test4 proc
-	push	ebp
-	mov	ebp,esp
-	mov	eax,[00403018]
-	push	eax
-	mov	ecx,[00403018]
-	mov	edx,[ecx]
-	mov	eax,[edx]
-	call	eax
-	add	esp,04
-	pop	ebp
-	ret	
-004010EA                               CC CC CC CC CC CC           ......
-
-;; test5: 004010F0
-test5 proc
-	push	ebp
-	mov	ebp,esp
-	push	ecx
-	fld	dword ptr [004020EC]
-	fstp	dword ptr [esp]
-	push	000003E7
-	mov	eax,[00403018]
-	push	eax
-	mov	ecx,[00403018]
-	mov	edx,[ecx]
-	mov	eax,[edx+04]
-	call	eax
-	add	esp,0C
-	pop	ebp
-	ret	
-0040111A                               CC CC CC CC CC CC           ......
-
-;; test6: 00401120
-test6 proc
-	push	ebp
-	mov	ebp,esp
-	push	ecx
-	mov	eax,[ebp+10]
-	push	eax
-	mov	ecx,[ebp+0C]
-	push	ecx
-	mov	edx,[ebp+08]
-	push	edx
-	mov	eax,[ebp+08]
-	mov	ecx,[eax]
-	mov	edx,[ecx+08]
-	call	edx
-	add	esp,0C
-	mov	[ebp-04],eax
-	mov	eax,[ebp-04]
-	push	eax
-	mov	ecx,[ebp+08]
-	push	ecx
-	mov	edx,[ebp+08]
-	mov	eax,[edx]
-	mov	ecx,[eax+04]
-	call	ecx
-	add	esp,08
-	mov	esp,ebp
-	pop	ebp
-	ret	
-00401159                            CC CC CC CC CC CC CC          .......
-
-;; test7: 00401160
-test7 proc
-	push	ebp
-	mov	ebp,esp
-	fld1	
-	fcomp	double ptr [ebp+08]
-	fstsw	ax
-	test	ah,05
-	jpe	00401189
-
-l0040116F:
-	sub	esp,08
-	fld	double ptr [ebp+08]
-	fstp	double ptr [esp]
-	mov	eax,[00403024]
-	mov	edx,[eax]
-	mov	ecx,[00403024]
-	mov	eax,[edx]
-	call	eax
-
-l00401189:
-	sub	esp,08
-	fld	double ptr [ebp+08]
-	fstp	double ptr [esp]
-	push	0D
-	mov	ecx,[00403024]
-	mov	edx,[ecx]
-	mov	ecx,[00403024]
-	mov	eax,[edx+04]
-	call	eax
-	pop	ebp
-	ret	
-004011A9                            CC CC CC CC CC CC CC          .......
-
-;; nested_if_blocks_test8: 004011B0
-nested_if_blocks_test8 proc
-	push	ebp
-	mov	ebp,esp
-	sub	esp,08
-	fld	double ptr [ebp+08]
-	fstp	double ptr [esp]
-	push	FF
-	mov	eax,[00403024]
-	mov	edx,[eax]
-	mov	ecx,[00403024]
-	mov	eax,[edx+04]
-	call	eax
-	fstp	st(0)
-	fld	double ptr [004020F8]
-	fcomp	double ptr [ebp+08]
-	fstsw	ax
-	test	ah,44
-	jpo	0040120D
-
-l004011E2:
-	fld	double ptr [004020F0]
-	fcomp	double ptr [ebp+08]
-	fstsw	ax
-	test	ah,41
-	jnz	0040120D
-
-l004011F2:
-	sub	esp,08
-	fld	double ptr [ebp+08]
-	fstp	double ptr [esp]
-	mov	ecx,[00403024]
-	mov	edx,[ecx]
-	mov	ecx,[00403024]
-	mov	eax,[edx]
-	call	eax
-
-l0040120D:
-	push	07
-	push	06
-	mov	ecx,[00403018]
-	push	ecx
-	call	00401120
-	add	esp,0C
-	pop	ebp
-	ret	
-00401222       CC CC CC CC CC CC CC CC CC CC CC CC CC CC   ..............
-
-;; loop_test9: 00401230
-loop_test9 proc
-	push	ebp
-	mov	ebp,esp
-	sub	esp,0C
-	mov	dword ptr [ebp-04],00000000
-	jmp	00401248
-
-l0040123F:
-	mov	eax,[ebp-04]
-	add	eax,01
-	mov	[ebp-04],eax
-
-l00401248:
-	fild	dword ptr [ebp-04]
-	fld	dword ptr [ebp+08]
-	sub	esp,08
-	fstp	double ptr [esp]
-	mov	ecx,[ebp-04]
-	push	ecx
-	mov	edx,[00403024]
-	mov	eax,[edx]
-	mov	ecx,[00403024]
-	mov	edx,[eax+04]
-	fstp	double ptr [ebp-0C]
-	call	edx
-	fcomp	double ptr [ebp-0C]
-	fstsw	ax
-	test	ah,41
-	jnz	00401294
-
-l00401278:
-	fld	dword ptr [ebp+08]
-	sub	esp,08
-	fstp	double ptr [esp]
-	mov	eax,[00403024]
-	mov	edx,[eax]
-	mov	ecx,[00403024]
-	mov	eax,[edx]
-	call	eax
-	jmp	0040123F
-
-l00401294:
-	mov	esp,ebp
-	pop	ebp
-	ret	
-00401298                         CC CC CC CC CC CC CC CC         ........
-
-;; const_div_test10: 004012A0
-const_div_test10 proc
-	push	ebp
-	mov	ebp,esp
-	mov	eax,0000000A
-	mov	ecx,00000003
-	mov	edx,[ebp+08]
-	test	edx,edx
-	jz	004012BA
-
-l004012B4:
-	xor	edx,edx
-	div	ecx
-	mov	ecx,edx
-
-l004012BA:
-	mov	[0040301C],ecx
-	mov	[00403020],eax
-	pop	ebp
-	ret	
-004012C7                      CC CC CC CC CC CC CC CC CC        .........
+00401000 55 8B EC 51 D9 E8 D9 1C 24 68 C0 20 40 00 8B 45 U..Q....$h. @..E
+00401010 08 50 8B 4D 0C 8B 11 52 E8 13 00 00 00 83 C4 10 .P.M...R........
+00401020 33 C0 5D C3 CC CC CC CC CC CC CC CC CC CC CC CC 3.].............
+00401030 55 8B EC D9 45 14 83 EC 08 DD 1C 24 8B 45 10 50 U...E......$.E.P
+00401040 8B 4D 0C 51 8B 55 08 52 68 C8 20 40 00 FF 15 9C .M.Q.U.Rh. @....
+00401050 20 40 00 83 C4 18 5D C3 CC CC CC CC CC CC CC CC  @....].........
+00401060 55 8B EC 51 D9 05 E8 20 40 00 D9 1C 24 68 D4 20 U..Q... @...$h. 
+00401070 40 00 6A 02 68 D8 20 40 00 E8 B2 FF FF FF 83 C4 @.j.h. @........
+00401080 10 83 7D 08 00 75 1E 51 D9 05 E4 20 40 00 D9 1C ..}..u.Q... @...
+00401090 24 68 DC 20 40 00 6A 06 68 E0 20 40 00 E8 8E FF $h. @.j.h. @....
+004010A0 FF FF 83 C4 10 5D C3 CC CC CC CC CC CC CC CC CC .....]..........
+004010B0 55 8B EC 68 E8 03 00 00 8B 45 08 50 8B 4D 08 8B U..h.....E.P.M..
+004010C0 11 8B 42 04 FF D0 83 C4 08 5D C3 CC CC CC CC CC ..B......]......
+004010D0 55 8B EC A1 18 30 40 00 50 8B 0D 18 30 40 00 8B U....0@.P...0@..
+004010E0 11 8B 02 FF D0 83 C4 04 5D C3 CC CC CC CC CC CC ........].......
+004010F0 55 8B EC 51 D9 05 EC 20 40 00 D9 1C 24 68 E7 03 U..Q... @...$h..
+00401100 00 00 A1 18 30 40 00 50 8B 0D 18 30 40 00 8B 11 ....0@.P...0@...
+00401110 8B 42 04 FF D0 83 C4 0C 5D C3 CC CC CC CC CC CC .B......].......
+00401120 55 8B EC 51 8B 45 10 50 8B 4D 0C 51 8B 55 08 52 U..Q.E.P.M.Q.U.R
+00401130 8B 45 08 8B 08 8B 51 08 FF D2 83 C4 0C 89 45 FC .E....Q.......E.
+00401140 8B 45 FC 50 8B 4D 08 51 8B 55 08 8B 02 8B 48 04 .E.P.M.Q.U....H.
+00401150 FF D1 83 C4 08 8B E5 5D C3 CC CC CC CC CC CC CC .......]........
+00401160 55 8B EC D9 E8 DC 5D 08 DF E0 F6 C4 05 7A 1A 83 U.....]......z..
+00401170 EC 08 DD 45 08 DD 1C 24 A1 24 30 40 00 8B 10 8B ...E...$.$0@....
+00401180 0D 24 30 40 00 8B 02 FF D0 83 EC 08 DD 45 08 DD .$0@.........E..
+00401190 1C 24 6A 0D 8B 0D 24 30 40 00 8B 11 8B 0D 24 30 .$j...$0@.....$0
+004011A0 40 00 8B 42 04 FF D0 5D C3 CC CC CC CC CC CC CC @..B...]........
+004011B0 55 8B EC 83 EC 08 DD 45 08 DD 1C 24 6A FF A1 24 U......E...$j..$
+004011C0 30 40 00 8B 10 8B 0D 24 30 40 00 8B 42 04 FF D0 0@.....$0@..B...
+004011D0 DD D8 DD 05 F8 20 40 00 DC 5D 08 DF E0 F6 C4 44 ..... @..].....D
+004011E0 7B 2B DD 05 F0 20 40 00 DC 5D 08 DF E0 F6 C4 41 {+... @..].....A
+004011F0 75 1B 83 EC 08 DD 45 08 DD 1C 24 8B 0D 24 30 40 u.....E...$..$0@
+00401200 00 8B 11 8B 0D 24 30 40 00 8B 02 FF D0 6A 07 6A .....$0@.....j.j
+00401210 06 8B 0D 18 30 40 00 51 E8 03 FF FF FF 83 C4 0C ....0@.Q........
+00401220 5D C3 CC CC CC CC CC CC CC CC CC CC CC CC CC CC ]...............
+00401230 55 8B EC 83 EC 0C C7 45 FC 00 00 00 00 EB 09 8B U......E........
+00401240 45 FC 83 C0 01 89 45 FC DB 45 FC D9 45 08 83 EC E.....E..E..E...
+00401250 08 DD 1C 24 8B 4D FC 51 8B 15 24 30 40 00 8B 02 ...$.M.Q..$0@...
+00401260 8B 0D 24 30 40 00 8B 50 04 DD 5D F4 FF D2 DC 5D ..$0@..P..]....]
+00401270 F4 DF E0 F6 C4 41 75 1C D9 45 08 83 EC 08 DD 1C .....Au..E......
+00401280 24 A1 24 30 40 00 8B 10 8B 0D 24 30 40 00 8B 02 $.$0@.....$0@...
+00401290 FF D0 EB AB 8B E5 5D C3 CC CC CC CC CC CC CC CC ......].........
+004012A0 55 8B EC B8 0A 00 00 00 B9 03 00 00 00 8B 55 08 U.............U.
+004012B0 85 D2 74 06 33 D2 F7 F1 8B CA 89 0D 1C 30 40 00 ..t.3........0@.
+004012C0 A3 20 30 40 00 5D C3 CC CC CC CC CC CC CC CC CC . 0@.]..........
 004012D0 68 59 16 40 00 E8 49 03 00 00 A1 4C 30 40 00 C7 hY.@..I....L0@..
 004012E0 04 24 3C 30 40 00 FF 35 48 30 40 00 A3 3C 30 40 .$<0@..5H0@..<0@
 004012F0 00 68 2C 30 40 00 68 30 30 40 00 68 28 30 40 00 .h,0@.h00@.h(0@.
@@ -344,7 +86,8 @@ l004012BA:
 00401540 DD 02 00 00 83 3D 0C 30 40 00 00 75 0C 68 21 18 .....=.0@..u.h!.
 00401550 40 00 FF 15 6C 20 40 00 59 E8 9A 02 00 00 83 3D @...l @.Y......=
 00401560 08 30 40 00 FF 75 09 6A FF FF 15 70 20 40 00 59 .0@..u.j...p @.Y
-00401570 33 C0 C3 E8 AC 02 00 00 E9 9E FD FF FF CC FF 25 3..............%
+00401570 33 C0 C3                                        3..            
+00401573          E8 AC 02 00 00 E9 9E FD FF FF CC FF 25    ............%
 00401580 94 20 40 00 6A 14 68 88 21 40 00 E8 EC 01 00 00 . @.j.h.!@......
 00401590 FF 35 8C 33 40 00 8B 35 54 20 40 00 FF D6 59 89 .5.3@..5T @...Y.
 004015A0 45 E4 83 F8 FF 75 0C FF 75 08 FF 15 50 20 40 00 E....u..u...P @.

@@ -36,7 +36,7 @@ namespace Reko.Arch.Mips
     {
         private void RewriteBreak(MipsInstruction instr)
         {
-            emitter.SideEffect(
+            m.SideEffect(
                 host.PseudoProcedure(
                     "__break",
                     VoidType.Instance,
@@ -52,13 +52,13 @@ namespace Reko.Arch.Mips
             case 9: from = frame.CreateTemporary("__counter__", PrimitiveType.UInt32); break;
             default: from = frame.CreateTemporary("__cp" + cpregFrom.Number, PrimitiveType.UInt32); break;
             }
-            emitter.Assign(RewriteOperand(instr.op1), from);
+            m.Assign(RewriteOperand(instr.op1), from);
         }
 
         private void RewriteTrap(MipsInstruction instr, Func<Expression,Expression,Expression> op)
         {
             var trap = host.PseudoProcedure("__trap", VoidType.Instance, RewriteOperand(instr.op3));
-            emitter.If(op(
+            m.If(op(
                 RewriteOperand(instr.op1),
                 RewriteOperand(instr.op2)),
                 new RtlSideEffect(trap));
@@ -67,17 +67,17 @@ namespace Reko.Arch.Mips
         private void RewriteReadHardwareRegister(MipsInstruction instr)
         {
             var rdhwr = host.PseudoProcedure("__read_hardware_register", PrimitiveType.UInt32, this.RewriteOperand(instr.op2));
-            emitter.Assign(this.RewriteOperand(instr.op1), rdhwr);
+            m.Assign(this.RewriteOperand(instr.op1), rdhwr);
         }
 
         private void RewriteSyscall(MipsInstruction instr)
         {
-            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, this.RewriteOperand(instr.op1)));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, this.RewriteOperand(instr.op1)));
         }
 
         private void RewriteSync(MipsInstruction instr)
         {
-            emitter.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance, this.RewriteOperand(instr.op1)));
+            m.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance, this.RewriteOperand(instr.op1)));
         }
     }
 }

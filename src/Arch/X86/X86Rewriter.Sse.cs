@@ -35,12 +35,12 @@ namespace Reko.Arch.X86
         private void RewriteCvttsd2si()
         {
             instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
-            emitter.Assign(SrcOp(instrCur.op1), emitter.Cast(instrCur.op1.Width, SrcOp(instrCur.op2)));
+            m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, SrcOp(instrCur.op2)));
         }
         
         private void RewritePcmpeqb()
         {
-            emitter.Assign(
+            m.Assign(
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
                     "__pcmpeqb",
@@ -51,7 +51,7 @@ namespace Reko.Arch.X86
 
         private void RewritePshufd()
         {
-            emitter.Assign(
+            m.Assign(
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
                     "__pshufd",
@@ -63,7 +63,7 @@ namespace Reko.Arch.X86
 
         private void RewritePunpcklbw()
         {
-            emitter.Assign(
+            m.Assign(
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
                     "__punpcklbw",
@@ -74,7 +74,7 @@ namespace Reko.Arch.X86
 
         private void RewritePunpcklwd()
         {
-            emitter.Assign(
+            m.Assign(
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
                     "__punpcklwd",
@@ -85,7 +85,7 @@ namespace Reko.Arch.X86
 
         private void RewritePalignr()
         {
-            emitter.Assign(
+            m.Assign(
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
                     "__palignr",

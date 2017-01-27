@@ -30,17 +30,17 @@ namespace Reko.Arch.Vax
     {
         private void RewriteHalt()
         {
-            emitter.SideEffect(host.PseudoProcedure("__halt", VoidType.Instance));
+            m.SideEffect(host.PseudoProcedure("__halt", VoidType.Instance));
         }
 
         private void RewriteBpt()
         {
-            emitter.SideEffect(host.PseudoProcedure("vax_bpt", VoidType.Instance));
+            m.SideEffect(host.PseudoProcedure("vax_bpt", VoidType.Instance));
         }
 
         private void RewriteChme()
         {
-            emitter.SideEffect(host.PseudoProcedure("vax_chme", VoidType.Instance,
+            m.SideEffect(host.PseudoProcedure("vax_chme", VoidType.Instance,
                 RewriteSrcOp(1, PrimitiveType.Word16)));
         }
     }

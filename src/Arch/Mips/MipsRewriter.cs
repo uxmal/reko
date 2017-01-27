@@ -39,8 +39,9 @@ namespace Reko.Arch.Mips
     {
         private IEnumerator<MipsInstruction> dasm;
         private Frame frame;
-        private RtlEmitter emitter;
-        private RtlInstructionCluster cluster;
+        private RtlEmitter m;
+        private RtlClass rtlc;
+        private List<RtlInstruction> rtlInstructions;
         private MipsProcessorArchitecture arch;
         private IRewriterHost host;
 
@@ -57,9 +58,9 @@ namespace Reko.Arch.Mips
             while (dasm.MoveNext())
             {
                 var instr = dasm.Current;
-                this.cluster = new RtlInstructionCluster(instr.Address, 4);
-                cluster.Class = RtlClass.Linear;
-                this.emitter = new RtlEmitter(cluster.Instructions);
+                this.rtlInstructions = new List<RtlInstruction>();
+                this.rtlc = RtlClass.Linear;
+                this.m = new RtlEmitter(rtlInstructions);
                 switch (instr.opcode)
                 {
                 default: throw new AddressCorrelatedException(
@@ -77,37 +78,37 @@ namespace Reko.Arch.Mips
                     RewriteAnd(instr); break;
                 case Opcode.bc1f: RewriteBc1f(instr, false); break;
                 case Opcode.beq:
-                    RewriteBranch(instr, emitter.Eq, false); break;
+                    RewriteBranch(instr, m.Eq, false); break;
                 case Opcode.beql:
-                    RewriteBranch(instr, emitter.Eq, true); break;
+                    RewriteBranch(instr, m.Eq, true); break;
                 case Opcode.bgez:
-                    RewriteBranch0(instr, emitter.Ge, false); break;
+                    RewriteBranch0(instr, m.Ge, false); break;
                 case Opcode.bgezl:
-                    RewriteBranch0(instr, emitter.Ge, true); break;
+                    RewriteBranch0(instr, m.Ge, true); break;
                 case Opcode.bgezal:
-                    RewriteBranch0(instr, emitter.Ge, false); break;
+                    RewriteBranch0(instr, m.Ge, false); break;
                 case Opcode.bgezall:
-                    RewriteBranch0(instr, emitter.Ge, true); break;
+                    RewriteBranch0(instr, m.Ge, true); break;
                 case Opcode.bgtz:
-                    RewriteBranch0(instr, emitter.Gt, false); break;
+                    RewriteBranch0(instr, m.Gt, false); break;
                 case Opcode.bgtzl:
-                    RewriteBranch0(instr, emitter.Gt, true); break;
+                    RewriteBranch0(instr, m.Gt, true); break;
                 case Opcode.blez:
-                    RewriteBranch0(instr, emitter.Le, false); break;
+                    RewriteBranch0(instr, m.Le, false); break;
                 case Opcode.blezl:
-                    RewriteBranch0(instr, emitter.Le, true); break;
+                    RewriteBranch0(instr, m.Le, true); break;
                 case Opcode.bltz:
-                    RewriteBranch0(instr, emitter.Lt, false); break;
+                    RewriteBranch0(instr, m.Lt, false); break;
                 case Opcode.bltzl:
-                    RewriteBranch0(instr, emitter.Lt, true); break;
+                    RewriteBranch0(instr, m.Lt, true); break;
                 case Opcode.bltzal:
-                    RewriteBranch0(instr, emitter.Lt, true); break;
+                    RewriteBranch0(instr, m.Lt, true); break;
                 case Opcode.bltzall:
-                    RewriteBranch0(instr, emitter.Lt, true); break;
+                    RewriteBranch0(instr, m.Lt, true); break;
                 case Opcode.bne:
-                    RewriteBranch(instr, emitter.Ne, false); break;
+                    RewriteBranch(instr, m.Ne, false); break;
                 case Opcode.bnel:
-                    RewriteBranch(instr, emitter.Ne, true); break;
+                    RewriteBranch(instr, m.Ne, true); break;
                 case Opcode.@break: RewriteBreak(instr); break;
                 case Opcode.c_le_d: RewriteFpuCmpD(instr, Operator.Fle); break;
                 case Opcode.cfc1: RewriteCfc1(instr); break;
@@ -120,8 +121,8 @@ namespace Reko.Arch.Mips
                 case Opcode.daddu:
                 case Opcode.ddiv:
                 case Opcode.ddivu:
-                case Opcode.div: RewriteDiv(instr, emitter.SDiv); break;
-                case Opcode.divu: RewriteDiv(instr, emitter.UDiv); break;
+                case Opcode.div: RewriteDiv(instr, m.SDiv); break;
+                case Opcode.divu: RewriteDiv(instr, m.UDiv); break;
                 case Opcode.dmult:
                 case Opcode.dmultu:
                 case Opcode.dsll:
@@ -173,9 +174,9 @@ namespace Reko.Arch.Mips
                 case Opcode.movz:
                     goto default;
                 case Opcode.mtc1: RewriteMtc1(instr); break;
-                case Opcode.mult: RewriteMul(instr, emitter.SMul, PrimitiveType.Int64); break;
-                case Opcode.multu: RewriteMul(instr, emitter.UMul, PrimitiveType.UInt64); break;
-                case Opcode.nop: emitter.Nop(); break;
+                case Opcode.mult: RewriteMul(instr, m.SMul, PrimitiveType.Int64); break;
+                case Opcode.multu: RewriteMul(instr, m.UMul, PrimitiveType.UInt64); break;
+                case Opcode.nop: m.Nop(); break;
                 case Opcode.nor: RewriteNor(instr); break;
                 case Opcode.or:
                 case Opcode.ori:
@@ -193,10 +194,10 @@ namespace Reko.Arch.Mips
                 case Opcode.sll:
                 case Opcode.sllv:
                     RewriteSll(instr); break;
-                case Opcode.slt: RewriteSxx(instr, emitter.Lt); break;
-                case Opcode.slti: RewriteSxx(instr, emitter.Lt); break;
-                case Opcode.sltiu: RewriteSxx(instr, emitter.Ult); break;
-                case Opcode.sltu: RewriteSxx(instr, emitter.Ult); break;
+                case Opcode.slt: RewriteSxx(instr, m.Lt); break;
+                case Opcode.slti: RewriteSxx(instr, m.Lt); break;
+                case Opcode.sltiu: RewriteSxx(instr, m.Ult); break;
+                case Opcode.sltu: RewriteSxx(instr, m.Ult); break;
                 case Opcode.sra:
                 case Opcode.srav:
                     RewriteSra(instr); break;
@@ -215,13 +216,19 @@ namespace Reko.Arch.Mips
                     goto default;
                 case Opcode.sync: RewriteSync(instr); break;
                 case Opcode.syscall: RewriteSyscall(instr); break;
-                case Opcode.tge: RewriteTrap(instr, emitter.Ge); break;
+                case Opcode.tge: RewriteTrap(instr, m.Ge); break;
                 case Opcode.xor:
                 case Opcode.xori:
                     RewriteXor(instr); break;
                 case Opcode.rdhwr: RewriteReadHardwareRegister(instr); break;
                 }
-                yield return cluster;
+                yield return new RtlInstructionCluster(
+                    instr.Address,
+                    4,
+                    rtlInstructions.ToArray())
+                {
+                    Class = rtlc
+                };
             }
         }
 
@@ -252,10 +259,10 @@ namespace Reko.Arch.Mips
                 if (indOp.Offset == 0)
                     ea = baseReg;
                 else if (indOp.Offset > 0)
-                    ea = emitter.IAdd(baseReg, indOp.Offset);
+                    ea = m.IAdd(baseReg, indOp.Offset);
                 else
-                    ea = emitter.ISub(baseReg, -indOp.Offset);
-                return emitter.Load(indOp.Width, ea);
+                    ea = m.ISub(baseReg, -indOp.Offset);
+                return m.Load(indOp.Width, ea);
             }
             var addrOp = op as AddressOperand;
             if (addrOp != null)

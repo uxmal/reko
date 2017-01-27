@@ -43,7 +43,7 @@ namespace Reko.Arch.RiscV
         {
             var opLeft = RewriteOp(instr.op1);
             var opRight = RewriteOp(instr.op2);
-            rtlc.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
             m.Branch(
                 fn(opLeft, opRight),
                 ((AddressOperand)instr.op3).Address,
@@ -54,7 +54,7 @@ namespace Reko.Arch.RiscV
         {
             var continuation = ((RegisterOperand)instr.op1).Register;
             var dst = RewriteOp(instr.op2);
-            rtlc.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
             if (continuation.Number == 0)
             {
                 m.Goto(dst);
@@ -71,7 +71,7 @@ namespace Reko.Arch.RiscV
             var rDst = ((RegisterOperand)instr.op2).Register;
             var dst = RewriteOp(instr.op2);
             var off = RewriteOp(instr.op3);
-            rtlc.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
             if (!off.IsZero)
             {
                 dst = m.IAdd(dst, off);

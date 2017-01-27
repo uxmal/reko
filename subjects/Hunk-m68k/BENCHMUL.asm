@@ -1,2329 +1,310 @@
 ;;; Segment code (00001000)
-
-;; fn00001000: 00001000
-fn00001000 proc
-	bra	$0000100A
-00001002       56 42 43 43 20 30 2E 39                     VBCC 0.9     
-
-l0000100A:
-	move.l	d0,d2
-	movea.l	a0,a2
-	lea	$0000C0EE,a4
-	movea.l	$00000004,a6
-	cmpi.w	#$0024,$0014(a6)
-	bcc	$00001036
-
-l00001020:
-	lea	$000040F8,a0
-	move.l	#$00000030,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-
-l00001030:
-	clr.l	(a0)+
-	subq.l	#$01,d0
-	bne	$00001030
-
-l00001036:
-	move.l	a7,$-7FF6(a4)
-	move.l	a6,$-7FF2(a4)
-	suba.l	a1,a1
-	jsr.l	$-0126(a6)
-	movea.l	d0,a3
-	moveq	#$+00,d0
-	lea	$0274(pc),a1
-	jsr.l	$-0228(a6)
-	tst.l	d0
-	beq	$00001226
-
-l00001056:
-	move.l	d0,$-7FEE(a4)
-	move.l	$00AC(a3),d0
-	bne	$00001066
-
-l00001060:
-	moveq	#$+02,d4
-	moveq	#$+08,d2
-	bra	$00001076
-
-l00001066:
-	movea.l	a2,a0
-	moveq	#$+03,d4
-
-l0000106A:
-	cmpi.b	#$20,(a0)
-	bne	$00001072
-
-l00001070:
-	addq.w	#$01,d4
-
-l00001072:
-	tst.b	(a0)+
-	bne	$0000106A
-
-l00001076:
-	move.l	d4,d0
-	lsl.l	#$02,d0
-	move.l	d0,d5
-	add.l	d2,d0
-	add.l	#$00000011,d0
-	move.l	d0,d3
-	move.l	#$00010001,d1
-	jsr.l	$-00C6(a6)
-	tst.l	d0
-	beq	$0000123E
-
-l00001096:
-	move.l	d0,-(a7)
-	movea.l	d0,a5
-	move.l	d3,(a5)
-	subq.l	#$01,d4
-	move.l	d4,$000C(a5)
-	lea	$0010(a5),a0
-	adda.l	d5,a0
-	move.l	a0,$0008(a5)
-	clr.l	-(a7)
-	move.l	$00AC(a3),d0
-	beq	$00001190
-
-l000010B6:
-	lsl.l	#$02,d0
-	movea.l	d0,a0
-	move.l	$0010(a0),d0
-	lsl.l	#$02,d0
-	movea.l	$0008(a5),a1
-	lea	$0010(a5),a6
-	movea.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0)+,d0
-	clr.b	(a0,d0)
-	move.l	a0,(a6)+
-	moveq	#$+01,d3
-	lea	(a2,d2),a0
-
-l000010DA:
-	cmpi.b	#$20,-(a0)
-	dbhi	d2,$000010DA
-
-l000010E2:
-	clr.b	$0001(a0)
-
-l000010E6:
-	move.b	(a2)+,d1
-	beq	$00001148
-
-l000010EA:
-	cmp.b	#$20,d1
-	beq	$000010E6
-
-l000010F0:
-	cmp.b	#$09,d1
-	beq	$000010E6
-
-l000010F6:
-	cmp.l	$000C(a5),d3
-	beq	$00001148
-
-l000010FC:
-	move.l	a1,(a6)+
-	addq.w	#$01,d3
-	cmp.b	#$22,d1
-	beq	$0000111A
-
-l00001106:
-	move.b	d1,(a1)+
-
-l00001108:
-	move.b	(a2)+,d1
-	beq	$00001148
-
-l0000110C:
-	cmp.b	#$20,d1
-	beq	$00001116
-
-l00001112:
-	move.b	d1,(a1)+
-	bra	$00001108
-
-l00001116:
-	clr.b	(a1)+
-	bra	$000010E6
-
-l0000111A:
-	move.b	(a2)+,d1
-	beq	$00001148
-
-l0000111E:
-	cmp.b	#$22,d1
-	beq	$00001116
-
-l00001124:
-	cmp.b	#$2A,d1
-	bne	$00001144
-
-l0000112A:
-	move.b	(a2)+,d1
-	move.b	d1,d2
-	and.b	#$DF,d2
-	cmp.b	#$4E,d2
-	bne	$0000113C
-
-l00001138:
-	moveq	#$+0A,d1
-	bra	$00001144
-
-l0000113C:
-	cmp.b	#$45,d2
-	bne	$00001144
-
-l00001142:
-	moveq	#$+1B,d1
-
-l00001144:
-	move.b	d1,(a1)+
-	bra	$0000111A
-
-l00001148:
-	clr.b	(a1)
-	clr.l	(a6)
-	pea	$0010(a5)
-	move.l	d3,-(a7)
-	movea.l	$-7FEE(a4),a6
-	jsr.l	$-0036(a6)
-	move.l	d0,$-7FE2(a4)
-	jsr.l	$-003C(a6)
-	move.l	d0,$-7FDE(a4)
-	movea.l	$-7FF2(a4),a6
-	cmpi.w	#$0024,$0014(a6)
-	bcs	$0000117A
-
-l00001172:
-	move.l	$00E0(a3),$-7FDA(a4)
-	bne	$0000117E
-
-l0000117A:
-	move.l	d0,$-7FDA(a4)
-
-l0000117E:
-	cmpi.b	#$0D,$0008(a3)
-	bne	$000011F8
-
-l00001186:
-	movea.l	$00B0(a3),a0
-	move.l	(a0)+,d0
-	suba.l	d0,a0
-	bra	$00001202
-
-l00001190:
-	bsr	$00001214
-	move.l	d0,(a7)
-	move.l	d0,$-7FEA(a4)
-	move.l	d0,$-7FE6(a4)
-	move.l	d0,-(a7)
-	clr.l	-(a7)
-	movea.l	$-7FEE(a4),a6
-	movea.l	d0,a2
-	move.l	$0024(a2),d0
-	beq	$000011B6
-
-l000011AE:
-	movea.l	d0,a0
-	move.l	(a0),d1
-	jsr.l	$-007E(a6)
-
-l000011B6:
-	lea	$0112(pc),a0
-	move.l	a0,d1
-	move.l	#$000003ED,d2
-	jsr.l	$-001E(a6)
-	move.l	d0,$0004(a5)
-	bne	$000011D2
-
-l000011CC:
-	moveq	#$+14,d2
-	bra	$0000127C
-
-l000011D2:
-	move.l	d0,$-7FE2(a4)
-	move.l	d0,$-7FDE(a4)
-	move.l	d0,$-7FDA(a4)
-	move.l	d0,$009C(a3)
-	move.l	d0,$00A0(a3)
-	lsl.l	#$02,d0
-	movea.l	d0,a0
-	move.l	$0008(a0),d0
-	beq	$000011F4
-
-l000011F0:
-	move.l	d0,$00A4(a3)
-
-l000011F4:
-	movea.l	$-7FF2(a4),a6
-
-l000011F8:
-	move.l	$003E(a3),d0
-	movea.l	$003A(a3),a0
-	sub.l	a0,d0
-
-l00001202:
-	move.l	a0,$-7FCE(a4)
-	move.l	a7,$-7FCA(a4)
-	jsr.l	$00001354
-	moveq	#$+00,d2
-	bra	$0000127C
-
-;; fn00001214: 00001214
-fn00001214 proc
-	lea	$005C(a3),a0
-	jsr.l	$-0180(a6)
-	lea	$005C(a3),a0
-	jsr.l	$-0174(a6)
-	rts	
-
-l00001226:
-	movem.l	d7/a5-a6,-(a7)
-	move.l	#$00038007,d7
-	movea.l	$00000004,a6
-	jsr.l	$-006C(a6)
-	movem.l	(a7)+,d7/a5-a6
-	bra	$0000125C
-
-l0000123E:
-	movea.l	$-7FEE(a4),a1
-	jsr.l	$-019E(a6)
-	movem.l	d7/a5-a6,-(a7)
-	move.l	#$00010000,d7
-	movea.l	$00000004,a6
-	jsr.l	$-006C(a6)
-	movem.l	(a7)+,d7/a5-a6
-
-l0000125C:
-	tst.l	$00AC(a3)
-	bne	$00001268
-
-l00001262:
-	bsr	$00001214
-	movea.l	d0,a2
-	bsr	$0000126C
-
-l00001268:
-	moveq	#$+14,d0
-	rts	
-
-;; fn0000126C: 0000126C
-fn0000126C proc
-	jsr.l	$-0084(a6)
-	movea.l	a2,a1
-	jsr.l	$-017A(a6)
-	rts	
-
-;; fn00001278: 00001278
-fn00001278 proc
-	move.l	$0004(a7),d2
-
-;; fn0000127C: 0000127C
-fn0000127C proc
-	lea	$0000C0EE,a4
-	movea.l	$-7FF2(a4),a6
-	movea.l	$-7FF6(a4),a7
-	subq.l	#$08,a7
-	movea.l	(a7)+,a2
-	movea.l	(a7)+,a5
-	move.l	$0004(a5),d1
-	beq	$0000129E
-
-l00001296:
-	movea.l	$-7FEE(a4),a6
-	jsr.l	$-0024(a6)
-
-l0000129E:
-	movea.l	$-7FF2(a4),a6
-	movea.l	$-7FEE(a4),a1
-	jsr.l	$-019E(a6)
-	move.l	a2,d0
-	beq	$000012B0
-
-l000012AE:
-	bsr	$0000126C
-
-l000012B0:
-	movea.l	a5,a1
-	move.l	(a5),d0
-	jsr.l	$-00D2(a6)
-	move.l	d2,d0
-	rts	
-000012BC                                     64 6F 73 2E             dos.
+00001000 60 08 56 42 43 43 20 30 2E 39 24 00 24 48 49 F9 `.VBCC 0.9$.$HI.
+00001010 00 00 C0 EE 2C 78 00 04 0C 6E 00 24 00 14 64 16 ....,x...n.$..d.
+00001020 41 F9 00 00 40 F8 20 3C 00 00 00 30 56 80 E4 88 A...@. <...0V...
+00001030 42 98 53 80 66 FA 29 4F 80 0A 29 4E 80 0E 93 C9 B.S.f.)O..)N....
+00001040 4E AE FE DA 26 40 70 00 43 FA 02 72 4E AE FD D8 N...&@p.C..rN...
+00001050 4A 80 67 00 01 D2 29 40 80 12 20 2B 00 AC 66 06 J.g...)@.. +..f.
+00001060 78 02 74 08 60 10 20 4A 78 03 0C 10 00 20 66 02 x.t.`. Jx.... f.
+00001070 52 44 4A 18 66 F4 20 04 E5 88 2A 00 D0 82 D0 BC RDJ.f. ...*.....
+00001080 00 00 00 11 26 00 22 3C 00 01 00 01 4E AE FF 3A ....&."<....N..:
+00001090 4A 80 67 00 01 AA 2F 00 2A 40 2A 83 53 84 2B 44 J.g.../.*@*.S.+D
+000010A0 00 0C 41 ED 00 10 D1 C5 2B 48 00 08 42 A7 20 2B ..A.....+H..B. +
+000010B0 00 AC 67 00 00 DC E5 88 20 40 20 28 00 10 E5 88 ..g..... @ (....
+000010C0 22 6D 00 08 4D ED 00 10 20 40 70 00 10 18 42 30 "m..M... @p...B0
+000010D0 08 00 2C C8 76 01 41 F2 28 00 0C 20 00 20 52 CA ..,.v.A.(.. . R.
+000010E0 FF FA 42 28 00 01 12 1A 67 5E B2 3C 00 20 67 F6 ..B(....g^.<. g.
+000010F0 B2 3C 00 09 67 F0 B6 AD 00 0C 67 4C 2C C9 52 43 .<..g.....gL,.RC
+00001100 B2 3C 00 22 67 14 12 C1 12 1A 67 3C B2 3C 00 20 .<."g.....g<.<. 
+00001110 67 04 12 C1 60 F2 42 19 60 CC 12 1A 67 2A B2 3C g...`.B.`...g*.<
+00001120 00 22 67 F2 B2 3C 00 2A 66 1A 12 1A 14 01 C4 3C ."g..<.*f......<
+00001130 00 DF B4 3C 00 4E 66 04 72 0A 60 08 B4 3C 00 45 ...<.Nf.r.`..<.E
+00001140 66 02 72 1B 12 C1 60 D2 42 11 42 96 48 6D 00 10 f.r...`.B.B.Hm..
+00001150 2F 03 2C 6C 80 12 4E AE FF CA 29 40 80 1E 4E AE /.,l..N...)@..N.
+00001160 FF C4 29 40 80 22 2C 6C 80 0E 0C 6E 00 24 00 14 ..)@.",l...n.$..
+00001170 65 08 29 6B 00 E0 80 26 66 04 29 40 80 26 0C 2B e.)k...&f.)@.&.+
+00001180 00 0D 00 08 66 72 20 6B 00 B0 20 18 91 C0 60 72 ....fr k.. ...`r
+00001190 61 00 00 82 2E 80 29 40 80 16 29 40 80 1A 2F 00 a.....)@..)@../.
+000011A0 42 A7 2C 6C 80 12 24 40 20 2A 00 24 67 08 20 40 B.,l..$@ *.$g. @
+000011B0 22 10 4E AE FF 82 41 FA 01 10 22 08 24 3C 00 00 ".N...A...".$<..
+000011C0 03 ED 4E AE FF E2 2B 40 00 04 66 06 74 14 60 00 ..N...+@..f.t.`.
+000011D0 00 AC 29 40 80 1E 29 40 80 22 29 40 80 26 27 40 ..)@..)@.")@.&'@
+000011E0 00 9C 27 40 00 A0 E5 88 20 40 20 28 00 08 67 04 ..'@.... @ (..g.
+000011F0 27 40 00 A4 2C 6C 80 0E 20 2B 00 3E 20 6B 00 3A '@..,l.. +.> k.:
+00001200 90 88 29 48 80 32 29 4F 80 36 4E B9 00 00 13 54 ..)H.2)O.6N....T
+00001210 74 00 60 68 41 EB 00 5C 4E AE FE 80 41 EB 00 5C t.`hA..\N...A..\
+00001220 4E AE FE 8C 4E 75 48 E7 01 06 2E 3C 00 03 80 07 N...NuH....<....
+00001230 2C 78 00 04 4E AE FF 94 4C DF 60 80 60 1E 22 6C ,x..N...L.`.`."l
+00001240 80 12 4E AE FE 62 48 E7 01 06 2E 3C 00 01 00 00 ..N..bH....<....
+00001250 2C 78 00 04 4E AE FF 94 4C DF 60 80 4A AB 00 AC ,x..N...L.`.J...
+00001260 66 06 61 B0 24 40 61 04 70 14 4E 75 4E AE FF 7C f.a.$@a.p.NuN..|
+00001270 22 4A 4E AE FE 86 4E 75 24 2F 00 04 49 F9 00 00 "JN...Nu$/..I...
+00001280 C0 EE 2C 6C 80 0E 2E 6C 80 0A 51 8F 24 5F 2A 5F ..,l...l..Q.$_*_
+00001290 22 2D 00 04 67 08 2C 6C 80 12 4E AE FF DC 2C 6C "-..g.,l..N...,l
+000012A0 80 0E 22 6C 80 12 4E AE FE 62 20 0A 67 02 61 BC .."l..N..b .g.a.
+000012B0 22 4D 20 15 4E AE FF 2E 20 02 4E 75 64 6F 73 2E "M .N... .Nudos.
 000012C0 6C 69 62 72 61 72 79 00 4E 49 4C 3A 00 00 00 00 library.NIL:....
-
-;; fn000012D0: 000012D0
-fn000012D0 proc
-	movem.l	d2/a2-a3,-(a7)
-	lea	$00004240,a3
-	move.l	#$00004240,d0
-	beq	$00001308
-
-l000012E2:
-	moveq	#$+01,d2
-	tst.l	$0004(a3)
-	beq	$000012F6
-
-l000012EA:
-	addq.l	#$01,d2
-	move.l	d2,d0
-	lsl.l	#$02,d0
-	tst.l	(a3,d0)
-	bne	$000012EA
-
-l000012F6:
-	subq.l	#$01,d2
-	beq	$00001308
-
-l000012FA:
-	move.l	d2,d0
-	lsl.l	#$02,d0
-	movea.l	(a3,d0),a2
-	jsr.l	(a2)
-	subq.l	#$01,d2
-	bne	$000012FA
-
-l00001308:
-	move.l	$0010(a7),-(a7)
-	jsr.l	$00001278
-	addq.w	#$04,a7
-	movem.l	(a7)+,d2/a2-a3
-	rts	
-0000131A                               00 00                       ..   
-
-;; fn0000131C: 0000131C
-fn0000131C proc
-	movem.l	a2-a3,-(a7)
-	tst.l	$00004128
-	bne	$0000134E
-
-l00001328:
-	movea.l	$00004250,a3
-	moveq	#$+01,d0
-	move.l	d0,$00004128
-	move.l	a3,d0
-	beq	$00001346
-
-l0000133A:
-	movea.l	$0004(a3),a2
-	jsr.l	(a2)
-	movea.l	(a3),a3
-	move.l	a3,d0
-	bne	$0000133A
-
-l00001346:
-	move.l	$000C(a7),-(a7)
-	bsr	$000012D0
-	addq.w	#$04,a7
-
-l0000134E:
-	movem.l	(a7)+,a2-a3
-	rts	
-
-;; fn00001354: 00001354
-fn00001354 proc
-	movem.l	a2-a3,-(a7)
-	lea	$00004238,a3
-	move.l	#$00004234,d0
-	beq	$00001372
-
-l00001366:
-	tst.l	(a3)
-	beq	$00001372
-
-l0000136A:
-	movea.l	(a3)+,a2
-	jsr.l	(a2)
-	tst.l	(a3)
-	bne	$0000136A
-
-l00001372:
-	move.l	$0010(a7),-(a7)
-	move.l	$0010(a7),-(a7)
-	jsr.l	$00001390
-	move.l	d0,-(a7)
-	bsr	$0000131C
-	lea	$000C(a7),a7
-	movem.l	(a7)+,a2-a3
-	rts	
-0000138E                                           00 00               ..
-
-;; fn00001390: 00001390
-fn00001390 proc
-	lea	$-0014(a7),a7
-	movem.l	d2-d6,-(a7)
-	pea	$0318(pc)
-	jsr.l	$00004068
-	lea	$0028(a7),a0
-	move.l	a0,-(a7)
-	pea	$0324(pc)
-	jsr.l	$00002E40
-	move.l	$0030(a7),-(a7)
-	pea	$031A(pc)
-	jsr.l	$000016FC
-	lea	$0028(a7),a0
-	move.l	a0,-(a7)
-	pea	$0326(pc)
-	jsr.l	$00002E40
-	lea	$0034(a7),a0
-	move.l	a0,-(a7)
-	pea	$031A(pc)
-	jsr.l	$00002E40
-	moveq	#$+01,d3
-	lea	$0024(a7),a7
-	bra	$0000168E
-
-l000013EA:
-	moveq	#$+01,d2
-	bra	$00001684
-
-l000013F0:
-	moveq	#$+03,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	$0014(a7),d1
-	move.l	d0,d4
-	move.l	d1,d5
-	swap.l	d4
-	swap.l	d5
-	mulu.w	d1,d4
-	mulu.w	d0,d5
-	mulu.w	d1,d0
-	add.w	d5,d4
-	swap.l	d4
-	clr.w	d4
-	add.l	d4,d0
-	move.l	d0,d1
-	move.l	$0014(a7),d4
-	move.l	d1,d5
-	move.l	d4,d6
-	swap.l	d5
-	swap.l	d6
-	mulu.w	d4,d5
-	mulu.w	d1,d6
-	mulu.w	d4,d1
-	add.w	d6,d5
-	swap.l	d5
-	clr.w	d5
-	add.l	d5,d1
-	move.l	d1,$0014(a7)
-	addq.l	#$01,d2
-
-l00001684:
-	moveq	#$+28,d0
-	cmp.l	d2,d0
-	bge	$000013F0
-
-l0000168C:
-	addq.l	#$01,d3
-
-l0000168E:
-	cmp.l	$0024(a7),d3
-	ble	$000013EA
-
-l00001696:
-	move.l	$0014(a7),-(a7)
-	pea	$005A(pc)
-	jsr.l	$000016FC
-	addq.w	#$08,a7
-	movem.l	(a7)+,d2-d6
-	lea	$0014(a7),a7
-	rts	
+000012D0 48 E7 20 30 47 F9 00 00 42 40 20 3C 00 00 42 40 H. 0G...B@ <..B@
+000012E0 67 26 74 01 4A AB 00 04 67 0C 52 82 20 02 E5 88 g&t.J...g.R. ...
+000012F0 4A B3 08 00 66 F4 53 82 67 0E 20 02 E5 88 24 73 J...f.S.g. ...$s
+00001300 08 00 4E 92 53 82 66 F2 2F 2F 00 10 4E B9 00 00 ..N.S.f.//..N...
+00001310 12 78 58 4F 4C DF 0C 04 4E 75 00 00 48 E7 00 30 .xXOL...Nu..H..0
+00001320 4A B9 00 00 41 28 66 26 26 79 00 00 42 50 70 01 J...A(f&&y..BPp.
+00001330 23 C0 00 00 41 28 20 0B 67 0C 24 6B 00 04 4E 92 #...A( .g.$k..N.
+00001340 26 53 20 0B 66 F4 2F 2F 00 0C 61 84 58 4F 4C DF &S .f.//..a.XOL.
+00001350 0C 00 4E 75 48 E7 00 30 47 F9 00 00 42 38 20 3C ..NuH..0G...B8 <
+00001360 00 00 42 34 67 0C 4A 93 67 08 24 5B 4E 92 4A 93 ..B4g.J.g.$[N.J.
+00001370 66 F8 2F 2F 00 10 2F 2F 00 10 4E B9 00 00 13 90 f.//..//..N.....
+00001380 2F 00 61 98 4F EF 00 0C 4C DF 0C 00 4E 75 00 00 /.a.O...L...Nu..
+00001390 4F EF FF EC 48 E7 3E 00 48 7A 03 16 4E B9 00 00 O...H.>.Hz..N...
+000013A0 40 68 41 EF 00 28 2F 08 48 7A 03 22 4E B9 00 00 @hA..(/.Hz."N...
+000013B0 2E 40 2F 2F 00 30 48 7A 03 18 4E B9 00 00 16 FC .@//.0Hz..N.....
+000013C0 41 EF 00 28 2F 08 48 7A 03 24 4E B9 00 00 2E 40 A..(/.Hz.$N....@
+000013D0 41 EF 00 34 2F 08 48 7A 03 18 4E B9 00 00 2E 40 A..4/.Hz..N....@
+000013E0 76 01 4F EF 00 24 60 00 02 A6 74 01 60 00 02 96 v.O..$`...t.`...
+000013F0 70 03 22 2F 00 14 28 00 2A 01 48 44 48 45 C8 C1 p."/..(.*.HDHE..
+00001400 CA C0 C0 C1 D8 45 48 44 42 44 D0 84 22 2F 00 14 .....EHDBD.."/..
+00001410 28 00 2A 01 48 44 48 45 C8 C1 CA C0 C0 C1 D8 45 (.*.HDHE.......E
+00001420 48 44 42 44 D0 84 22 2F 00 14 28 00 2A 01 48 44 HDBD.."/..(.*.HD
+00001430 48 45 C8 C1 CA C0 C0 C1 D8 45 48 44 42 44 D0 84 HE.......EHDBD..
+00001440 22 2F 00 14 28 00 2A 01 48 44 48 45 C8 C1 CA C0 "/..(.*.HDHE....
+00001450 C0 C1 D8 45 48 44 42 44 D0 84 22 2F 00 14 28 00 ...EHDBD.."/..(.
+00001460 2A 01 48 44 48 45 C8 C1 CA C0 C0 C1 D8 45 48 44 *.HDHE.......EHD
+00001470 42 44 D0 84 22 2F 00 14 28 00 2A 01 48 44 48 45 BD.."/..(.*.HDHE
+00001480 C8 C1 CA C0 C0 C1 D8 45 48 44 42 44 D0 84 22 2F .......EHDBD.."/
+00001490 00 14 28 00 2A 01 48 44 48 45 C8 C1 CA C0 C0 C1 ..(.*.HDHE......
+000014A0 D8 45 48 44 42 44 D0 84 22 2F 00 14 28 00 2A 01 .EHDBD.."/..(.*.
+000014B0 48 44 48 45 C8 C1 CA C0 C0 C1 D8 45 48 44 42 44 HDHE.......EHDBD
+000014C0 D0 84 22 2F 00 14 28 00 2A 01 48 44 48 45 C8 C1 .."/..(.*.HDHE..
+000014D0 CA C0 C0 C1 D8 45 48 44 42 44 D0 84 22 2F 00 14 .....EHDBD.."/..
+000014E0 28 00 2A 01 48 44 48 45 C8 C1 CA C0 C0 C1 D8 45 (.*.HDHE.......E
+000014F0 48 44 42 44 D0 84 22 2F 00 14 28 00 2A 01 48 44 HDBD.."/..(.*.HD
+00001500 48 45 C8 C1 CA C0 C0 C1 D8 45 48 44 42 44 D0 84 HE.......EHDBD..
+00001510 22 2F 00 14 28 00 2A 01 48 44 48 45 C8 C1 CA C0 "/..(.*.HDHE....
+00001520 C0 C1 D8 45 48 44 42 44 D0 84 22 2F 00 14 28 00 ...EHDBD.."/..(.
+00001530 2A 01 48 44 48 45 C8 C1 CA C0 C0 C1 D8 45 48 44 *.HDHE.......EHD
+00001540 42 44 D0 84 22 2F 00 14 28 00 2A 01 48 44 48 45 BD.."/..(.*.HDHE
+00001550 C8 C1 CA C0 C0 C1 D8 45 48 44 42 44 D0 84 22 2F .......EHDBD.."/
+00001560 00 14 28 00 2A 01 48 44 48 45 C8 C1 CA C0 C0 C1 ..(.*.HDHE......
+00001570 D8 45 48 44 42 44 D0 84 22 2F 00 14 28 00 2A 01 .EHDBD.."/..(.*.
+00001580 48 44 48 45 C8 C1 CA C0 C0 C1 D8 45 48 44 42 44 HDHE.......EHDBD
+00001590 D0 84 22 2F 00 14 28 00 2A 01 48 44 48 45 C8 C1 .."/..(.*.HDHE..
+000015A0 CA C0 C0 C1 D8 45 48 44 42 44 D0 84 22 2F 00 14 .....EHDBD.."/..
+000015B0 28 00 2A 01 48 44 48 45 C8 C1 CA C0 C0 C1 D8 45 (.*.HDHE.......E
+000015C0 48 44 42 44 D0 84 22 2F 00 14 28 00 2A 01 48 44 HDBD.."/..(.*.HD
+000015D0 48 45 C8 C1 CA C0 C0 C1 D8 45 48 44 42 44 D0 84 HE.......EHDBD..
+000015E0 22 2F 00 14 28 00 2A 01 48 44 48 45 C8 C1 CA C0 "/..(.*.HDHE....
+000015F0 C0 C1 D8 45 48 44 42 44 D0 84 22 2F 00 14 28 00 ...EHDBD.."/..(.
+00001600 2A 01 48 44 48 45 C8 C1 CA C0 C0 C1 D8 45 48 44 *.HDHE.......EHD
+00001610 42 44 D0 84 22 2F 00 14 28 00 2A 01 48 44 48 45 BD.."/..(.*.HDHE
+00001620 C8 C1 CA C0 C0 C1 D8 45 48 44 42 44 D0 84 22 2F .......EHDBD.."/
+00001630 00 14 28 00 2A 01 48 44 48 45 C8 C1 CA C0 C0 C1 ..(.*.HDHE......
+00001640 D8 45 48 44 42 44 D0 84 22 2F 00 14 28 00 2A 01 .EHDBD.."/..(.*.
+00001650 48 44 48 45 C8 C1 CA C0 C0 C1 D8 45 48 44 42 44 HDHE.......EHDBD
+00001660 D0 84 22 00 28 2F 00 14 2A 01 2C 04 48 45 48 46 ..".(/..*.,.HEHF
+00001670 CA C4 CC C1 C2 C4 DA 46 48 45 42 45 D2 85 2F 41 .......FHEBE../A
+00001680 00 14 52 82 70 28 B0 82 6C 00 FD 66 52 83 B6 AF ..R.p(..l..fR...
+00001690 00 24 6F 00 FD 56 2F 2F 00 14 48 7A 00 58 4E B9 .$o..V//..Hz.XN.
+000016A0 00 00 16 FC 50 4F 4C DF 00 7C 4F EF 00 14 4E 75 ....POL..|O...Nu
 000016B0 65 6E 74 65 72 20 6E 75 6D 62 65 72 20 6F 66 20 enter number of 
 000016C0 69 74 65 72 61 74 69 6F 6E 73 0A 00 25 6C 64 00 iterations..%ld.
 000016D0 65 78 65 63 75 74 69 6E 67 20 25 6C 64 20 69 74 executing %ld it
 000016E0 65 72 61 74 69 6F 6E 73 0A 00 00 00 25 64 00 00 erations....%d..
-000016F0 25 64 00 00 61 3D 25 64 0A 00 00 00             %d..a=%d....   
-
-;; fn000016FC: 000016FC
-fn000016FC proc
-	lea	$0008(a7),a0
-	move.l	a0,-(a7)
-	move.l	$0008(a7),-(a7)
-	move.l	$00004258,-(a7)
-	jsr.l	$00001718
-	lea	$000C(a7),a7
-	rts	
-
-;; fn00001718: 00001718
-fn00001718 proc
-	lea	$-0044(a7),a7
-	movem.l	d2-d7/a2-a6,-(a7)
-	move.l	$007C(a7),d3
-	movea.l	$0074(a7),a5
-	movea.l	$0078(a7),a4
-	moveq	#$+00,d6
-	tst.b	(a4)
-	beq	$0000205E
-
-l00001734:
-	cmpi.b	#$25,(a4)
-	bne	$00002038
-
-l0000173C:
-	clr.l	$0040(a7)
-	moveq	#$-01,d5
-	clr.l	$0048(a7)
-	moveq	#$+69,d4
-	lea	$004C(a7),a3
-	moveq	#$+00,d7
-	clr.l	$0066(a7)
-	lea	$0001(a4),a2
-	move.l	$0048(a7),d2
-
-l0000175A:
-	moveq	#$+00,d1
-
-l0000175C:
-	lea	$0914(pc),a0
-	move.l	d0,-(a7)
-	move.b	(a0,d1),d0
-	cmp.b	(a2),d0
-	movem.l	(a7)+,d0
-	bne	$00001780
-
-l0000176E:
-	move.l	d1,d0
-	move.l	d1,-(a7)
-	moveq	#$+01,d1
-	lsl.l	d0,d1
-	move.l	d1,d0
-	move.l	(a7)+,d1
-	or.l	d0,d2
-	addq.l	#$01,a2
-	bra	$0000178A
-
-l00001780:
-	addq.l	#$01,d1
-	cmp.l	#$00000005,d1
-	bcs	$0000175C
-
-l0000178A:
-	cmp.l	#$00000005,d1
-	bcs	$0000175A
-
-l00001792:
-	move.l	d2,$0048(a7)
-	cmpi.b	#$2A,(a2)
-	bne	$000017D0
-
-l0000179C:
-	addq.l	#$01,a2
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	move.l	$-0004(a0),$002C(a7)
-	bge	$000017C8
-
-l000017B4:
-	ori.l	#$00000004,$0048(a7)
-	move.l	$002C(a7),d0
-	neg.l	d0
-	move.l	d0,$0040(a7)
-	bra	$0000183C
-
-l000017C8:
-	move.l	$002C(a7),$0040(a7)
-	bra	$0000183C
-
-l000017D0:
-	move.b	(a2),d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000004,d0
-	beq	$0000183C
-
-l000017EC:
-	move.l	$0040(a7),d2
-
-l000017F0:
-	moveq	#$+0A,d0
-	move.l	d3,-(a7)
-	move.l	d0,d1
-	move.l	d2,d3
-	swap.l	d1
-	swap.l	d3
-	mulu.w	d2,d1
-	mulu.w	d0,d3
-	mulu.w	d2,d0
-	add.w	d3,d1
-	swap.l	d1
-	clr.w	d1
-	add.l	d1,d0
-	move.l	(a7)+,d3
-	move.b	(a2)+,d1
-	ext.w	d1
-	ext.l	d1
-	sub.l	#$00000030,d1
-	move.l	d1,d2
-	add.l	d0,d2
-	move.b	(a2),d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000004,d0
-	bne	$000017F0
-
-l00001838:
-	move.l	d2,$0040(a7)
-
-l0000183C:
-	cmpi.b	#$2E,(a2)
-	bne	$000018D0
-
-l00001844:
-	addq.l	#$01,a2
-	cmpi.b	#$2A,(a2)
-	bne	$0000186A
-
-l0000184C:
-	addq.l	#$01,a2
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	move.l	$-0004(a0),$002C(a7)
-	blt	$000018D0
-
-l00001864:
-	move.l	$002C(a7),d5
-	bra	$000018D0
-
-l0000186A:
-	moveq	#$+00,d5
-	move.b	(a2),d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000004,d0
-	beq	$000018D0
-
-l00001888:
-	moveq	#$+0A,d0
-	move.l	d2,-(a7)
-	move.l	d0,d1
-	move.l	d5,d2
-	swap.l	d1
-	swap.l	d2
-	mulu.w	d5,d1
-	mulu.w	d0,d2
-	mulu.w	d5,d0
-	add.w	d2,d1
-	swap.l	d1
-	clr.w	d1
-	add.l	d1,d0
-	move.l	(a7)+,d2
-	move.b	(a2)+,d1
-	ext.w	d1
-	ext.l	d1
-	sub.l	#$00000030,d1
-	move.l	d1,d5
-	add.l	d0,d5
-	move.b	(a2),d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000004,d0
-	bne	$00001888
-
-l000018D0:
-	cmpi.b	#$68,(a2)
-	beq	$000018F4
-
-l000018D6:
-	cmpi.b	#$6C,(a2)
-	beq	$000018F4
-
-l000018DC:
-	cmpi.b	#$4C,(a2)
-	beq	$000018F4
-
-l000018E2:
-	cmpi.b	#$6A,(a2)
-	beq	$000018F4
-
-l000018E8:
-	cmpi.b	#$7A,(a2)
-	beq	$000018F4
-
-l000018EE:
-	cmpi.b	#$74,(a2)
-	bne	$000018FA
-
-l000018F4:
-	move.b	(a2)+,d4
-	ext.w	d4
-	ext.l	d4
-
-l000018FA:
-	cmp.l	#$00000068,d4
-	bne	$0000190C
-
-l00001902:
-	cmpi.b	#$68,(a2)
-	bne	$0000190C
-
-l00001908:
-	moveq	#$+02,d4
-	addq.l	#$01,a2
-
-l0000190C:
-	cmp.l	#$0000006C,d4
-	bne	$0000191E
-
-l00001914:
-	cmpi.b	#$6C,(a2)
-	bne	$0000191E
-
-l0000191A:
-	moveq	#$+01,d4
-	addq.l	#$01,a2
-
-l0000191E:
-	cmp.l	#$0000006A,d4
-	bne	$00001928
-
-l00001926:
-	moveq	#$+01,d4
-
-l00001928:
-	cmp.l	#$0000007A,d4
-	bne	$00001932
-
-l00001930:
-	moveq	#$+6C,d4
-
-l00001932:
-	cmp.l	#$00000074,d4
-	bne	$0000193C
-
-l0000193A:
-	moveq	#$+69,d4
-
-l0000193C:
-	move.b	(a2)+,d1
-	move.b	d1,d0
-	cmp.b	#$25,d1
-	beq	$00001DC4
-
-l00001948:
-	cmp.b	#$58,d0
-	beq	$00001996
-
-l0000194E:
-	cmp.b	#$63,d0
-	beq	$00001D44
-
-l00001956:
-	cmp.b	#$64,d0
-	beq	$00001996
-
-l0000195C:
-	cmp.b	#$69,d0
-	beq	$00001996
-
-l00001962:
-	move.b	d0,$002C(a7)
-	cmp.b	#$6E,d0
-	beq	$00001DD6
-
-l0000196E:
-	move.b	$002C(a7),d0
-	sub.b	#$6F,d0
-	cmp.b	#$01,d0
-	bls	$00001996
-
-l0000197C:
-	move.b	$002C(a7),d0
-	cmp.b	#$73,d0
-	beq	$00001D80
-
-l00001988:
-	cmp.b	#$75,d0
-	beq	$00001996
-
-l0000198E:
-	cmp.b	#$78,d0
-	bne	$00001E6E
-
-l00001996:
-	cmp.b	#$70,d1
-	bne	$000019A8
-
-l0000199C:
-	moveq	#$+6C,d4
-	moveq	#$+78,d1
-	ori.l	#$00000001,$0048(a7)
-
-l000019A8:
-	cmp.b	#$64,d1
-	beq	$000019B6
-
-l000019AE:
-	cmp.b	#$69,d1
-	bne	$00001B00
-
-l000019B6:
-	cmp.l	#$00000001,d4
-	bne	$000019DC
-
-l000019BE:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$08,d3
-	movea.l	d3,a0
-	move.l	$-0004(a0),$0034(a7)
-	move.l	$-0008(a0),$0030(a7)
-	bra	$00001A74
-
-l000019DC:
-	cmp.l	#$0000006C,d4
-	bne	$00001A08
-
-l000019E4:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	move.l	$-0004(a0),d0
-	move.l	d0,$0034(a7)
-	move.l	d1,-(a7)
-	moveq	#$+1F,d1
-	asr.l	d1,d0
-	move.l	d0,$0034(a7)
-	move.l	(a7)+,d1
-	bra	$00001A74
-
-l00001A08:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	move.l	$-0004(a0),d0
-	move.l	d0,$0034(a7)
-	move.l	d1,-(a7)
-	moveq	#$+1F,d1
-	asr.l	d1,d0
-	move.l	d0,$0034(a7)
-	move.l	(a7)+,d1
-	cmp.l	#$00000068,d4
-	bne	$00001A4E
-
-l00001A32:
-	move.w	$0036(a7),d0
-	move.l	d1,-(a7)
-	move.w	d0,d1
-	ext.l	d1
-	move.l	d1,$0038(a7)
-	move.l	d0,-(a7)
-	moveq	#$+1F,d0
-	asr.l	d0,d1
-	move.l	d1,$0038(a7)
-	move.l	(a7)+,d1
-	move.l	(a7)+,d0
-
-l00001A4E:
-	cmp.l	#$00000002,d4
-	bne	$00001A74
-
-l00001A56:
-	move.b	$0037(a7),d0
-	move.l	d1,-(a7)
-	move.b	d0,d1
-	ext.w	d1
-	ext.l	d1
-	move.l	d1,$0038(a7)
-	move.l	d0,-(a7)
-	moveq	#$+1F,d0
-	asr.l	d0,d1
-	move.l	d1,$0038(a7)
-	move.l	(a7)+,d1
-	move.l	(a7)+,d0
-
-l00001A74:
-	move.b	d1,$002C(a7)
-	move.l	d0,-(a7)
-	move.l	d1,-(a7)
-	move.l	$003C(a7),d0
-	move.l	$0038(a7),d1
-	move.l	d2,-(a7)
-	moveq	#$+00,d2
-	sub.l	#$00000000,d0
-	subx.l	d2,d1
-	movem.l	(a7)+,d2
-	movem.l	(a7)+,d1
-	movem.l	(a7)+,d0
-	bge	$00001ABE
-
-l00001A9E:
-	lea	$006A(a7),a0
-	adda.l	d7,a0
-	addq.l	#$01,d7
-	move.b	#$2D,(a0)
-	movem.l	$0030(a7),d0-d1
-	neg.l	d1
-	negx.l	d0
-	movem.l	a6-a7,$0038(a7)
-	bra	$00001C34
-
-l00001ABE:
-	move.b	$002C(a7),d1
-	moveq	#$+10,d0
-	and.l	$0048(a7),d0
-	beq	$00001AD8
-
-l00001ACA:
-	lea	$006A(a7),a0
-	adda.l	d7,a0
-	addq.l	#$01,d7
-	move.b	#$2B,(a0)
-	bra	$00001AEC
-
-l00001AD8:
-	moveq	#$+08,d0
-	and.l	$0048(a7),d0
-	beq	$00001AEC
-
-l00001AE0:
-	lea	$006A(a7),a0
-	adda.l	d7,a0
-	addq.l	#$01,d7
-	move.b	#$20,(a0)
-
-l00001AEC:
-	move.l	$0034(a7),$003C(a7)
-	move.l	$0030(a7),$0038(a7)
-	move.b	d1,$002C(a7)
-	bra	$00001C34
-
-l00001B00:
-	cmp.l	#$00000001,d4
-	bne	$00001B24
-
-l00001B08:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$08,d3
-	movea.l	d3,a0
-	move.l	$-0004(a0),$003C(a7)
-	move.l	$-0008(a0),$0038(a7)
-	bra	$00001B5E
-
-l00001B24:
-	cmp.l	#$0000006C,d4
-	bne	$00001B46
-
-l00001B2C:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	move.l	$-0004(a0),$003C(a7)
-	clr.l	$0038(a7)
-	bra	$00001B5E
-
-l00001B46:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	move.l	$-0004(a0),$003C(a7)
-	clr.l	$0038(a7)
-
-l00001B5E:
-	cmp.l	#$00000068,d4
-	bne	$00001B7A
-
-l00001B66:
-	move.w	$003E(a7),d0
-	move.l	d1,-(a7)
-	moveq	#$+00,d1
-	move.w	d0,d1
-	move.l	d1,$0040(a7)
-	clr.l	$003C(a7)
-	move.l	(a7)+,d1
-
-l00001B7A:
-	cmp.l	#$00000002,d4
-	bne	$00001B96
-
-l00001B82:
-	move.b	$003F(a7),d0
-	move.l	d1,-(a7)
-	moveq	#$+00,d1
-	move.b	d0,d1
-	move.l	d1,$0040(a7)
-	clr.l	$003C(a7)
-	move.l	(a7)+,d1
-
-l00001B96:
-	moveq	#$+01,d0
-	and.l	$0048(a7),d0
-	move.b	d1,$002C(a7)
-	tst.l	d0
-	beq	$00001C34
-
-l00001BA6:
-	cmp.b	#$6F,d1
-	bne	$00001BE2
-
-l00001BAC:
-	tst.l	d5
-	bne	$00001BD6
-
-l00001BB0:
-	move.l	d0,-(a7)
-	move.l	d1,-(a7)
-	move.l	$0044(a7),d0
-	move.l	$0040(a7),d1
-	move.l	d2,-(a7)
-	moveq	#$+00,d2
-	sub.l	#$00000000,d0
-	subx.l	d2,d1
-	movem.l	(a7)+,d2
-	movem.l	(a7)+,d1
-	movem.l	(a7)+,d0
-	beq	$00001BE2
-
-l00001BD6:
-	lea	$006A(a7),a0
-	adda.l	d7,a0
-	addq.l	#$01,d7
-	move.b	#$30,(a0)
-
-l00001BE2:
-	cmp.b	#$78,d1
-	beq	$00001BF2
-
-l00001BE8:
-	move.b	d1,$002C(a7)
-	cmp.b	#$58,d1
-	bne	$00001C34
-
-l00001BF2:
-	move.b	d1,$002C(a7)
-	move.l	d0,-(a7)
-	move.l	d1,-(a7)
-	move.l	$0044(a7),d0
-	move.l	$0040(a7),d1
-	move.l	d2,-(a7)
-	moveq	#$+00,d2
-	sub.l	#$00000000,d0
-	subx.l	d2,d1
-	movem.l	(a7)+,d2
-	movem.l	(a7)+,d1
-	movem.l	(a7)+,d0
-	beq	$00001C34
-
-l00001C1C:
-	lea	$006A(a7),a0
-	lea	(a0,d7),a1
-	addq.l	#$01,d7
-	move.b	#$30,(a1)
-	adda.l	d7,a0
-	addq.l	#$01,d7
-	move.b	d1,(a0)
-	move.b	d1,$002C(a7)
-
-l00001C34:
-	move.b	$002C(a7),d1
-	lea	$0062(a7),a3
-	cmp.b	#$78,d1
-	beq	$00001C48
-
-l00001C42:
-	cmp.b	#$58,d1
-	bne	$00001C52
-
-l00001C48:
-	move.l	#$00000010,$002C(a7)
-	bra	$00001C70
-
-l00001C52:
-	cmp.b	#$6F,d1
-	bne	$00001C62
-
-l00001C58:
-	move.l	#$00000008,$0030(a7)
-	bra	$00001C6A
-
-l00001C62:
-	move.l	#$0000000A,$0030(a7)
-
-l00001C6A:
-	move.l	$0030(a7),$002C(a7)
-
-l00001C70:
-	move.l	$002C(a7),$006C(a7)
-	cmp.b	#$58,d1
-	beq	$00001C82
-
-l00001C7C:
-	lea	$03FC(pc),a6
-	bra	$00001C86
-
-l00001C82:
-	lea	$0406(pc),a6
-
-l00001C86:
-	move.l	a6,$002C(a7)
-	move.l	d3,$007C(a7)
-	move.l	d5,$0044(a7)
-	move.l	d6,$0030(a7)
-	move.l	d7,$0062(a7)
-	movem.l	$0038(a7),d6-d7
-	move.l	$0066(a7),d3
-	movea.l	$002C(a7),a1
-
-l00001CA8:
-	move.l	$006C(a7),d1
-	move.l	d1,d0
-	moveq	#$+1F,d2
-	asr.l	d2,d0
-	move.l	d0,-(a7)
-	move.l	d1,-(a7)
-	move.l	a1,-(a7)
-	movem.l	d0-d1,-(a7)
-	movem.l	d6-d7,-(a7)
-	jsr.l	$00002A00
-	lea	$0010(a7),a7
-	movea.l	(a7)+,a1
-	move.l	d0,d4
-	move.l	d1,d5
-	movem.l	(a7)+,d1
-	movem.l	(a7)+,d0
-	move.l	d5,d2
-	move.b	(a1,d2),-(a3)
-	move.l	d0,-(a7)
-	move.l	d1,-(a7)
-	move.l	a1,-(a7)
-	movem.l	d0-d1,-(a7)
-	movem.l	d6-d7,-(a7)
-	jsr.l	$000026B8
-	lea	$0010(a7),a7
-	movea.l	(a7)+,a1
-	move.l	d0,d6
-	move.l	d1,d7
-	movem.l	(a7)+,d1
-	movem.l	(a7)+,d0
-	addq.l	#$01,d3
-	move.l	d7,d0
-	move.l	d6,d1
-	moveq	#$+00,d2
-	sub.l	#$00000000,d0
-	subx.l	d2,d1
-	bne	$00001CA8
-
-l00001D16:
-	move.l	d3,$0066(a7)
-	move.l	$0062(a7),d7
-	move.l	$0030(a7),d6
-	move.l	$0044(a7),d5
-	move.l	$007C(a7),d3
-	cmp.l	#$FFFFFFFF,d5
-	bne	$00001D38
-
-l00001D32:
-	moveq	#$+00,d5
-	bra	$00001E84
-
-l00001D38:
-	andi.l	#$FFFFFFFD,$0048(a7)
-	bra	$00001E84
-
-l00001D44:
-	cmp.l	#$0000006C,d4
-	bne	$00001D60
-
-l00001D4C:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	move.b	$-0001(a0),(a3)
-	bra	$00001D72
-
-l00001D60:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	move.b	$-0001(a0),(a3)
-
-l00001D72:
-	move.l	#$00000001,$0066(a7)
-	moveq	#$+00,d5
-	bra	$00001E84
-
-l00001D80:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	movea.l	$-0004(a0),a3
-	movea.l	a3,a1
-	clr.l	$0066(a7)
-	tst.l	d5
-	beq	$00001DA2
-
-l00001D9C:
-	cmp.l	$0066(a7),d5
-	bls	$00001DBE
-
-l00001DA2:
-	tst.b	(a1)
-	beq	$00001DBE
-
-l00001DA6:
-	move.l	$0066(a7),d0
-
-l00001DAA:
-	addq.l	#$01,d0
-	addq.l	#$01,a1
-	tst.l	d5
-	bls	$00001DB6
-
-l00001DB2:
-	cmp.l	d0,d5
-	bls	$00001DBA
-
-l00001DB6:
-	tst.b	(a1)
-	bne	$00001DAA
-
-l00001DBA:
-	move.l	d0,$0066(a7)
-
-l00001DBE:
-	moveq	#$+00,d5
-	bra	$00001E84
-
-l00001DC4:
-	lea	$02A8(pc),a3
-	move.l	#$00000001,$0066(a7)
-	moveq	#$+00,d5
-	bra	$00001E84
-
-l00001DD6:
-	cmp.l	#$00000001,d4
-	bne	$00001DF8
-
-l00001DDE:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	movea.l	$-0004(a0),a0
-	move.l	d6,$0004(a0)
-	clr.l	(a0)
-	bra	$00001E66
-
-l00001DF8:
-	cmp.l	#$0000006C,d4
-	bne	$00001E16
-
-l00001E00:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	movea.l	$-0004(a0),a0
-	move.l	d6,(a0)
-	bra	$00001E66
-
-l00001E16:
-	cmp.l	#$00000068,d4
-	bne	$00001E34
-
-l00001E1E:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	movea.l	$-0004(a0),a0
-	move.w	d6,(a0)
-	bra	$00001E66
-
-l00001E34:
-	cmp.l	#$00000002,d4
-	bne	$00001E52
-
-l00001E3C:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	movea.l	$-0004(a0),a0
-	move.b	d6,(a0)
-	bra	$00001E66
-
-l00001E52:
-	move.l	d3,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d3
-	addq.l	#$04,d3
-	movea.l	d3,a0
-	movea.l	$-0004(a0),a0
-	move.l	d6,(a0)
-
-l00001E66:
-	moveq	#$+00,d5
-	clr.l	$0040(a7)
-	bra	$00001E84
-
-l00001E6E:
-	tst.b	d1
-	bne	$00001E74
-
-l00001E72:
-	subq.l	#$01,a2
-
-l00001E74:
-	movea.l	a4,a3
-	move.l	a2,d0
-	sub.l	a4,d0
-	move.l	d0,$0066(a7)
-	moveq	#$+00,d5
-	clr.l	$0040(a7)
-
-l00001E84:
-	cmp.l	$0066(a7),d5
-	bhi	$00001E92
-
-l00001E8A:
-	move.l	$0066(a7),$002C(a7)
-	bra	$00001E96
-
-l00001E92:
-	move.l	d5,$002C(a7)
-
-l00001E96:
-	move.l	d0,-(a7)
-	move.l	$0030(a7),d0
-	add.l	d7,d0
-	move.l	d0,$0034(a7)
-	move.l	(a7)+,d0
-	move.l	d0,-(a7)
-	move.l	$0034(a7),d0
-	cmp.l	$0044(a7),d0
-	movem.l	(a7)+,d0
-	bcs	$00001EBA
-
-l00001EB4:
-	clr.l	$002C(a7)
-	bra	$00001ECA
-
-l00001EBA:
-	move.l	d0,-(a7)
-	move.l	$0044(a7),d0
-	sub.l	$0034(a7),d0
-	move.l	d0,$0030(a7)
-	move.l	(a7)+,d0
-
-l00001ECA:
-	move.l	$002C(a7),$0030(a7)
-	moveq	#$+02,d0
-	and.l	$0048(a7),d0
-	beq	$00001F0C
-
-l00001ED8:
-	moveq	#$+00,d2
-	tst.l	d7
-	beq	$00001F0C
-
-l00001EDE:
-	move.l	a5,-(a7)
-	lea	$006E(a7),a0
-	adda.l	d2,a0
-	move.b	(a0),d0
-	ext.w	d0
-	ext.l	d0
-	move.l	d0,-(a7)
-	jsr.l	$00002098
-	addq.w	#$08,a7
-	cmp.l	#$FFFFFFFF,d0
-	bne	$00001F04
-
-l00001EFE:
-	move.l	d6,d0
-	bra	$00002060
-
-l00001F04:
-	addq.l	#$01,d6
-	addq.l	#$01,d2
-	cmp.l	d2,d7
-	bhi	$00001EDE
-
-l00001F0C:
-	moveq	#$+04,d0
-	and.l	$0048(a7),d0
-	bne	$00001F5E
-
-l00001F14:
-	moveq	#$+00,d2
-	tst.l	$0030(a7)
-	beq	$00001F5E
-
-l00001F1C:
-	move.l	$0048(a7),d4
-	movea.l	$0030(a7),a4
-
-l00001F24:
-	move.l	a5,-(a7)
-	moveq	#$+02,d0
-	and.l	d4,d0
-	beq	$00001F32
-
-l00001F2C:
-	movea.w	#$0030,a0
-	bra	$00001F36
-
-l00001F32:
-	movea.w	#$0020,a0
-
-l00001F36:
-	move.l	a0,-(a7)
-	jsr.l	$00002098
-	addq.w	#$08,a7
-	cmp.l	#$FFFFFFFF,d0
-	bne	$00001F4E
-
-l00001F48:
-	move.l	d6,d0
-	bra	$00002060
-
-l00001F4E:
-	addq.l	#$01,d6
-	addq.l	#$01,d2
-	cmpa.l	d2,a4
-	bhi	$00001F24
-
-l00001F56:
-	move.l	a4,$0030(a7)
-	move.l	d4,$0048(a7)
-
-l00001F5E:
-	moveq	#$+02,d0
-	and.l	$0048(a7),d0
-	bne	$00001F9A
-
-l00001F66:
-	moveq	#$+00,d2
-	tst.l	d7
-	beq	$00001F9A
-
-l00001F6C:
-	move.l	a5,-(a7)
-	lea	$006E(a7),a0
-	adda.l	d2,a0
-	move.b	(a0),d0
-	ext.w	d0
-	ext.l	d0
-	move.l	d0,-(a7)
-	jsr.l	$00002098
-	addq.w	#$08,a7
-	cmp.l	#$FFFFFFFF,d0
-	bne	$00001F92
-
-l00001F8C:
-	move.l	d6,d0
-	bra	$00002060
-
-l00001F92:
-	addq.l	#$01,d6
-	addq.l	#$01,d2
-	cmp.l	d2,d7
-	bhi	$00001F6C
-
-l00001F9A:
-	move.l	$0066(a7),d2
-	cmp.l	$0066(a7),d5
-	bls	$00001FC8
-
-l00001FA4:
-	move.l	a5,-(a7)
-	pea	$00000030
-	jsr.l	$00002098
-	addq.w	#$08,a7
-	cmp.l	#$FFFFFFFF,d0
-	bne	$00001FC0
-
-l00001FBA:
-	move.l	d6,d0
-	bra	$00002060
-
-l00001FC0:
-	addq.l	#$01,d6
-	addq.l	#$01,d2
-	cmp.l	d2,d5
-	bhi	$00001FA4
-
-l00001FC8:
-	moveq	#$+00,d2
-	tst.l	$0066(a7)
-	beq	$00001FFE
-
-l00001FD0:
-	movea.l	$0066(a7),a4
-
-l00001FD4:
-	move.l	a5,-(a7)
-	lea	(a3,d2),a0
-	move.b	(a0),d0
-	ext.w	d0
-	ext.l	d0
-	move.l	d0,-(a7)
-	jsr.l	$00002098
-	addq.w	#$08,a7
-	cmp.l	#$FFFFFFFF,d0
-	bne	$00001FF6
-
-l00001FF2:
-	move.l	d6,d0
-	bra	$00002060
-
-l00001FF6:
-	addq.l	#$01,d6
-	addq.l	#$01,d2
-	cmpa.l	d2,a4
-	bhi	$00001FD4
-
-l00001FFE:
-	moveq	#$+04,d0
-	and.l	$0048(a7),d0
-	beq	$00002034
-
-l00002006:
-	moveq	#$+00,d2
-	tst.l	$0030(a7)
-	beq	$00002034
-
-l0000200E:
-	movea.l	$0030(a7),a3
-
-l00002012:
-	move.l	a5,-(a7)
-	pea	$00000020
-	jsr.l	$00002098
-	addq.w	#$08,a7
-	cmp.l	#$FFFFFFFF,d0
-	bne	$0000202C
-
-l00002028:
-	move.l	d6,d0
-	bra	$00002060
-
-l0000202C:
-	addq.l	#$01,d6
-	addq.l	#$01,d2
-	cmpa.l	d2,a3
-	bhi	$00002012
-
-l00002034:
-	movea.l	a2,a4
-	bra	$00002058
-
-l00002038:
-	move.l	a5,-(a7)
-	move.b	(a4)+,d0
-	ext.w	d0
-	ext.l	d0
-	move.l	d0,-(a7)
-	jsr.l	$00002098
-	addq.w	#$08,a7
-	cmp.l	#$FFFFFFFF,d0
-	bne	$00002056
-
-l00002052:
-	move.l	d6,d0
-	bra	$00002060
-
-l00002056:
-	addq.l	#$01,d6
-
-l00002058:
-	tst.b	(a4)
-	bne	$00001734
-
-l0000205E:
-	move.l	d6,d0
-
-l00002060:
-	movem.l	(a7)+,d2-d7/a2-a6
-	lea	$0044(a7),a7
-	rts	
-0000206A                               00 00 25 00 00 00           ..%...
+000016F0 25 64 00 00 61 3D 25 64 0A 00 00 00 41 EF 00 08 %d..a=%d....A...
+00001700 2F 08 2F 2F 00 08 2F 39 00 00 42 58 4E B9 00 00 /.//../9..BXN...
+00001710 17 18 4F EF 00 0C 4E 75 4F EF FF BC 48 E7 3F 3E ..O...NuO...H.?>
+00001720 26 2F 00 7C 2A 6F 00 74 28 6F 00 78 7C 00 4A 14 &/.|*o.t(o.x|.J.
+00001730 67 00 09 2C 0C 14 00 25 66 00 08 FE 42 AF 00 40 g..,...%f...B..@
+00001740 7A FF 42 AF 00 48 78 69 47 EF 00 4C 7E 00 42 AF z.B..HxiG..L~.B.
+00001750 00 66 45 EC 00 01 24 2F 00 48 72 00 41 FA 09 12 .fE...$/.Hr.A...
+00001760 2F 00 10 30 18 00 B0 12 4C DF 00 01 66 12 20 01 /..0....L...f. .
+00001770 2F 01 72 01 E1 A9 20 01 22 1F 84 80 52 8A 60 0A /.r... ."...R.`.
+00001780 52 81 B2 BC 00 00 00 05 65 D2 B2 BC 00 00 00 05 R.......e.......
+00001790 65 C8 2F 42 00 48 0C 12 00 2A 66 34 52 8A 20 03 e./B.H...*f4R. .
+000017A0 56 80 E4 88 E5 88 26 00 58 83 20 43 2F 68 FF FC V.....&.X. C/h..
+000017B0 00 2C 6C 14 00 AF 00 00 00 04 00 48 20 2F 00 2C .,l........H /.,
+000017C0 44 80 2F 40 00 40 60 74 2F 6F 00 2C 00 40 60 6C D./@.@`t/o.,.@`l
+000017D0 10 12 C0 BC 00 00 00 FF 41 F9 00 00 2B 15 D1 C0 ........A...+...
+000017E0 70 00 10 10 C0 BC 00 00 00 04 67 50 24 2F 00 40 p.........gP$/.@
+000017F0 70 0A 2F 03 22 00 26 02 48 41 48 43 C2 C2 C6 C0 p./.".&.HAHC....
+00001800 C0 C2 D2 43 48 41 42 41 D0 81 26 1F 12 1A 48 81 ...CHABA..&...H.
+00001810 48 C1 92 BC 00 00 00 30 24 01 D4 80 10 12 C0 BC H......0$.......
+00001820 00 00 00 FF 41 F9 00 00 2B 15 D1 C0 70 00 10 10 ....A...+...p...
+00001830 C0 BC 00 00 00 04 66 B8 2F 42 00 40 0C 12 00 2E ......f./B.@....
+00001840 66 00 00 8E 52 8A 0C 12 00 2A 66 1E 52 8A 20 03 f...R....*f.R. .
+00001850 56 80 E4 88 E5 88 26 00 58 83 20 43 2F 68 FF FC V.....&.X. C/h..
+00001860 00 2C 6D 6C 2A 2F 00 2C 60 66 7A 00 10 12 C0 BC .,ml*/.,`fz.....
+00001870 00 00 00 FF 41 F9 00 00 2B 15 D1 C0 70 00 10 10 ....A...+...p...
+00001880 C0 BC 00 00 00 04 67 48 70 0A 2F 02 22 00 24 05 ......gHp./.".$.
+00001890 48 41 48 42 C2 C5 C4 C0 C0 C5 D2 42 48 41 42 41 HAHB.......BHABA
+000018A0 D0 81 24 1F 12 1A 48 81 48 C1 92 BC 00 00 00 30 ..$...H.H......0
+000018B0 2A 01 DA 80 10 12 C0 BC 00 00 00 FF 41 F9 00 00 *...........A...
+000018C0 2B 15 D1 C0 70 00 10 10 C0 BC 00 00 00 04 66 B8 +...p.........f.
+000018D0 0C 12 00 68 67 1E 0C 12 00 6C 67 18 0C 12 00 4C ...hg....lg....L
+000018E0 67 12 0C 12 00 6A 67 0C 0C 12 00 7A 67 06 0C 12 g....jg....zg...
+000018F0 00 74 66 06 18 1A 48 84 48 C4 B8 BC 00 00 00 68 .tf...H.H......h
+00001900 66 0A 0C 12 00 68 66 04 78 02 52 8A B8 BC 00 00 f....hf.x.R.....
+00001910 00 6C 66 0A 0C 12 00 6C 66 04 78 01 52 8A B8 BC .lf....lf.x.R...
+00001920 00 00 00 6A 66 02 78 01 B8 BC 00 00 00 7A 66 02 ...jf.x......zf.
+00001930 78 6C B8 BC 00 00 00 74 66 02 78 69 12 1A 10 01 xl.....tf.xi....
+00001940 B2 3C 00 25 67 00 04 7E B0 3C 00 58 67 48 B0 3C .<.%g..~.<.XgH.<
+00001950 00 63 67 00 03 F0 B0 3C 00 64 67 3A B0 3C 00 69 .cg....<.dg:.<.i
+00001960 67 34 1F 40 00 2C B0 3C 00 6E 67 00 04 6A 10 2F g4.@.,.<.ng..j./
+00001970 00 2C 90 3C 00 6F B0 3C 00 01 63 1A 10 2F 00 2C .,.<.o.<..c../.,
+00001980 B0 3C 00 73 67 00 03 FA B0 3C 00 75 67 08 B0 3C .<.sg....<.ug..<
+00001990 00 78 66 00 04 DA B2 3C 00 70 66 0C 78 6C 72 78 .xf....<.pf.xlrx
+000019A0 00 AF 00 00 00 01 00 48 B2 3C 00 64 67 08 B2 3C .......H.<.dg..<
+000019B0 00 69 66 00 01 4C B8 BC 00 00 00 01 66 1E 20 03 .if..L......f. .
+000019C0 56 80 E4 88 E5 88 26 00 50 83 20 43 2F 68 FF FC V.....&.P. C/h..
+000019D0 00 34 2F 68 FF F8 00 30 60 00 00 9A B8 BC 00 00 .4/h...0`.......
+000019E0 00 6C 66 24 20 03 56 80 E4 88 E5 88 26 00 58 83 .lf$ .V.....&.X.
+000019F0 20 43 20 28 FF FC 2F 40 00 34 2F 01 72 1F E2 A0  C (../@.4/.r...
+00001A00 2F 40 00 34 22 1F 60 6C 20 03 56 80 E4 88 E5 88 /@.4".`l .V.....
+00001A10 26 00 58 83 20 43 20 28 FF FC 2F 40 00 34 2F 01 &.X. C (../@.4/.
+00001A20 72 1F E2 A0 2F 40 00 34 22 1F B8 BC 00 00 00 68 r.../@.4"......h
+00001A30 66 1C 30 2F 00 36 2F 01 32 00 48 C1 2F 41 00 38 f.0/.6/.2.H./A.8
+00001A40 2F 00 70 1F E0 A1 2F 41 00 38 22 1F 20 1F B8 BC /.p.../A.8". ...
+00001A50 00 00 00 02 66 1E 10 2F 00 37 2F 01 12 00 48 81 ....f../.7/...H.
+00001A60 48 C1 2F 41 00 38 2F 00 70 1F E0 A1 2F 41 00 38 H./A.8/.p.../A.8
+00001A70 22 1F 20 1F 1F 41 00 2C 2F 00 2F 01 20 2F 00 3C ". ..A.,/./. /.<
+00001A80 22 2F 00 38 2F 02 74 00 90 BC 00 00 00 00 93 82 "/.8/.t.........
+00001A90 4C DF 00 04 4C DF 00 02 4C DF 00 01 6C 20 41 EF L...L...L...l A.
+00001AA0 00 6A D1 C7 52 87 10 BC 00 2D 4C EF 00 03 00 30 .j..R....-L....0
+00001AB0 44 81 40 80 48 EF 00 03 00 38 60 00 01 78 12 2F D.@.H....8`..x./
+00001AC0 00 2C 70 10 C0 AF 00 48 67 0E 41 EF 00 6A D1 C7 .,p....Hg.A..j..
+00001AD0 52 87 10 BC 00 2B 60 14 70 08 C0 AF 00 48 67 0C R....+`.p....Hg.
+00001AE0 41 EF 00 6A D1 C7 52 87 10 BC 00 20 2F 6F 00 34 A..j..R.... /o.4
+00001AF0 00 3C 2F 6F 00 30 00 38 1F 41 00 2C 60 00 01 36 .</o.0.8.A.,`..6
+00001B00 B8 BC 00 00 00 01 66 1C 20 03 56 80 E4 88 E5 88 ......f. .V.....
+00001B10 26 00 50 83 20 43 2F 68 FF FC 00 3C 2F 68 FF F8 &.P. C/h...</h..
+00001B20 00 38 60 3A B8 BC 00 00 00 6C 66 1A 20 03 56 80 .8`:.....lf. .V.
+00001B30 E4 88 E5 88 26 00 58 83 20 43 2F 68 FF FC 00 3C ....&.X. C/h...<
+00001B40 42 AF 00 38 60 18 20 03 56 80 E4 88 E5 88 26 00 B..8`. .V.....&.
+00001B50 58 83 20 43 2F 68 FF FC 00 3C 42 AF 00 38 B8 BC X. C/h...<B..8..
+00001B60 00 00 00 68 66 14 30 2F 00 3E 2F 01 72 00 32 00 ...hf.0/.>/.r.2.
+00001B70 2F 41 00 40 42 AF 00 3C 22 1F B8 BC 00 00 00 02 /A.@B..<".......
+00001B80 66 14 10 2F 00 3F 2F 01 72 00 12 00 2F 41 00 40 f../.?/.r.../A.@
+00001B90 42 AF 00 3C 22 1F 70 01 C0 AF 00 48 1F 41 00 2C B..<".p....H.A.,
+00001BA0 4A 80 67 00 00 90 B2 3C 00 6F 66 36 4A 85 66 26 J.g....<.of6J.f&
+00001BB0 2F 00 2F 01 20 2F 00 44 22 2F 00 40 2F 02 74 00 /./. /.D"/.@/.t.
+00001BC0 90 BC 00 00 00 00 93 82 4C DF 00 04 4C DF 00 02 ........L...L...
+00001BD0 4C DF 00 01 67 0C 41 EF 00 6A D1 C7 52 87 10 BC L...g.A..j..R...
+00001BE0 00 30 B2 3C 00 78 67 0A 1F 41 00 2C B2 3C 00 58 .0.<.xg..A.,.<.X
+00001BF0 66 42 1F 41 00 2C 2F 00 2F 01 20 2F 00 44 22 2F fB.A.,/./. /.D"/
+00001C00 00 40 2F 02 74 00 90 BC 00 00 00 00 93 82 4C DF .@/.t.........L.
+00001C10 00 04 4C DF 00 02 4C DF 00 01 67 18 41 EF 00 6A ..L...L...g.A..j
+00001C20 43 F0 78 00 52 87 12 BC 00 30 D1 C7 52 87 10 81 C.x.R....0..R...
+00001C30 1F 41 00 2C 12 2F 00 2C 47 EF 00 62 B2 3C 00 78 .A.,./.,G..b.<.x
+00001C40 67 06 B2 3C 00 58 66 0A 2F 7C 00 00 00 10 00 2C g..<.Xf./|.....,
+00001C50 60 1E B2 3C 00 6F 66 0A 2F 7C 00 00 00 08 00 30 `..<.of./|.....0
+00001C60 60 08 2F 7C 00 00 00 0A 00 30 2F 6F 00 30 00 2C `./|.....0/o.0.,
+00001C70 2F 6F 00 2C 00 6C B2 3C 00 58 67 06 4D FA 03 FA /o.,.l.<.Xg.M...
+00001C80 60 04 4D FA 04 04 2F 4E 00 2C 2F 43 00 7C 2F 45 `.M.../N.,/C.|/E
+00001C90 00 44 2F 46 00 30 2F 47 00 62 4C EF 00 C0 00 38 .D/F.0/G.bL....8
+00001CA0 26 2F 00 66 22 6F 00 2C 22 2F 00 6C 20 01 74 1F &/.f"o.,"/.l .t.
+00001CB0 E4 A0 2F 00 2F 01 2F 09 48 E7 C0 00 48 E7 03 00 ../././.H...H...
+00001CC0 4E B9 00 00 2A 00 4F EF 00 10 22 5F 28 00 2A 01 N...*.O..."_(.*.
+00001CD0 4C DF 00 02 4C DF 00 01 24 05 17 31 28 00 2F 00 L...L...$..1(./.
+00001CE0 2F 01 2F 09 48 E7 C0 00 48 E7 03 00 4E B9 00 00 /./.H...H...N...
+00001CF0 26 B8 4F EF 00 10 22 5F 2C 00 2E 01 4C DF 00 02 &.O..."_,...L...
+00001D00 4C DF 00 01 52 83 20 07 22 06 74 00 90 BC 00 00 L...R. .".t.....
+00001D10 00 00 93 82 66 92 2F 43 00 66 2E 2F 00 62 2C 2F ....f./C.f./.b,/
+00001D20 00 30 2A 2F 00 44 26 2F 00 7C BA BC FF FF FF FF .0*/.D&/.|......
+00001D30 66 06 7A 00 60 00 01 4E 02 AF FF FF FF FD 00 48 f.z.`..N.......H
+00001D40 60 00 01 42 B8 BC 00 00 00 6C 66 14 20 03 56 80 `..B.....lf. .V.
+00001D50 E4 88 E5 88 26 00 58 83 20 43 16 A8 FF FF 60 12 ....&.X. C....`.
+00001D60 20 03 56 80 E4 88 E5 88 26 00 58 83 20 43 16 A8  .V.....&.X. C..
+00001D70 FF FF 2F 7C 00 00 00 01 00 66 7A 00 60 00 01 06 ../|.....fz.`...
+00001D80 20 03 56 80 E4 88 E5 88 26 00 58 83 20 43 26 68  .V.....&.X. C&h
+00001D90 FF FC 22 4B 42 AF 00 66 4A 85 67 06 BA AF 00 66 .."KB..fJ.g....f
+00001DA0 63 1C 4A 11 67 18 20 2F 00 66 52 80 52 89 4A 85 c.J.g. /.fR.R.J.
+00001DB0 63 04 BA 80 63 04 4A 11 66 F0 2F 40 00 66 7A 00 c...c.J.f./@.fz.
+00001DC0 60 00 00 C2 47 FA 02 A6 2F 7C 00 00 00 01 00 66 `...G.../|.....f
+00001DD0 7A 00 60 00 00 B0 B8 BC 00 00 00 01 66 1A 20 03 z.`.........f. .
+00001DE0 56 80 E4 88 E5 88 26 00 58 83 20 43 20 68 FF FC V.....&.X. C h..
+00001DF0 21 46 00 04 42 90 60 6E B8 BC 00 00 00 6C 66 16 !F..B.`n.....lf.
+00001E00 20 03 56 80 E4 88 E5 88 26 00 58 83 20 43 20 68  .V.....&.X. C h
+00001E10 FF FC 20 86 60 50 B8 BC 00 00 00 68 66 16 20 03 .. .`P.....hf. .
+00001E20 56 80 E4 88 E5 88 26 00 58 83 20 43 20 68 FF FC V.....&.X. C h..
+00001E30 30 86 60 32 B8 BC 00 00 00 02 66 16 20 03 56 80 0.`2......f. .V.
+00001E40 E4 88 E5 88 26 00 58 83 20 43 20 68 FF FC 10 86 ....&.X. C h....
+00001E50 60 14 20 03 56 80 E4 88 E5 88 26 00 58 83 20 43 `. .V.....&.X. C
+00001E60 20 68 FF FC 20 86 7A 00 42 AF 00 40 60 16 4A 01  h.. .z.B..@`.J.
+00001E70 66 02 53 8A 26 4C 20 0A 90 8C 2F 40 00 66 7A 00 f.S.&L .../@.fz.
+00001E80 42 AF 00 40 BA AF 00 66 62 08 2F 6F 00 66 00 2C B..@...fb./o.f.,
+00001E90 60 04 2F 45 00 2C 2F 00 20 2F 00 30 D0 87 2F 40 `./E.,/. /.0../@
+00001EA0 00 34 20 1F 2F 00 20 2F 00 34 B0 AF 00 44 4C DF .4 ./. /.4...DL.
+00001EB0 00 01 65 06 42 AF 00 2C 60 10 2F 00 20 2F 00 44 ..e.B..,`./. /.D
+00001EC0 90 AF 00 34 2F 40 00 30 20 1F 2F 6F 00 2C 00 30 ...4/@.0 ./o.,.0
+00001ED0 70 02 C0 AF 00 48 67 34 74 00 4A 87 67 2E 2F 0D p....Hg4t.J.g./.
+00001EE0 41 EF 00 6E D1 C2 10 10 48 80 48 C0 2F 00 4E B9 A..n....H.H./.N.
+00001EF0 00 00 20 98 50 4F B0 BC FF FF FF FF 66 06 20 06 .. .PO......f. .
+00001F00 60 00 01 5E 52 86 52 82 BE 82 62 D2 70 04 C0 AF `..^R.R...b.p...
+00001F10 00 48 66 4A 74 00 4A AF 00 30 67 42 28 2F 00 48 .HfJt.J..0gB(/.H
+00001F20 28 6F 00 30 2F 0D 70 02 C0 84 67 06 30 7C 00 30 (o.0/.p...g.0|.0
+00001F30 60 04 30 7C 00 20 2F 08 4E B9 00 00 20 98 50 4F `.0|. /.N... .PO
+00001F40 B0 BC FF FF FF FF 66 06 20 06 60 00 01 14 52 86 ......f. .`...R.
+00001F50 52 82 B9 C2 62 CE 2F 4C 00 30 2F 44 00 48 70 02 R...b./L.0/D.Hp.
+00001F60 C0 AF 00 48 66 34 74 00 4A 87 67 2E 2F 0D 41 EF ...Hf4t.J.g./.A.
+00001F70 00 6E D1 C2 10 10 48 80 48 C0 2F 00 4E B9 00 00 .n....H.H./.N...
+00001F80 20 98 50 4F B0 BC FF FF FF FF 66 06 20 06 60 00  .PO......f. .`.
+00001F90 00 D0 52 86 52 82 BE 82 62 D2 24 2F 00 66 BA AF ..R.R...b.$/.f..
+00001FA0 00 66 63 24 2F 0D 48 78 00 30 4E B9 00 00 20 98 .fc$/.Hx.0N... .
+00001FB0 50 4F B0 BC FF FF FF FF 66 06 20 06 60 00 00 A2 PO......f. .`...
+00001FC0 52 86 52 82 BA 82 62 DC 74 00 4A AF 00 66 67 2E R.R...b.t.J..fg.
+00001FD0 28 6F 00 66 2F 0D 41 F3 28 00 10 10 48 80 48 C0 (o.f/.A.(...H.H.
+00001FE0 2F 00 4E B9 00 00 20 98 50 4F B0 BC FF FF FF FF /.N... .PO......
+00001FF0 66 04 20 06 60 6A 52 86 52 82 B9 C2 62 D6 70 04 f. .`jR.R...b.p.
+00002000 C0 AF 00 48 67 2E 74 00 4A AF 00 30 67 26 26 6F ...Hg.t.J..0g&&o
+00002010 00 30 2F 0D 48 78 00 20 4E B9 00 00 20 98 50 4F .0/.Hx. N... .PO
+00002020 B0 BC FF FF FF FF 66 04 20 06 60 34 52 86 52 82 ......f. .`4R.R.
+00002030 B7 C2 62 DE 28 4A 60 20 2F 0D 10 1C 48 80 48 C0 ..b.(J` /...H.H.
+00002040 2F 00 4E B9 00 00 20 98 50 4F B0 BC FF FF FF FF /.N... .PO......
+00002050 66 04 20 06 60 0A 52 86 4A 14 66 00 F6 D8 20 06 f. .`.R.J.f... .
+00002060 4C DF 7C FC 4F EF 00 44 4E 75 00 00 25 00 00 00 L.|.O..DNu..%...
 00002070 23 30 2D 20 2B 00 00 00 30 31 32 33 34 35 36 37 #0- +...01234567
 00002080 38 39 61 62 63 64 65 66 30 31 32 33 34 35 36 37 89abcdef01234567
-00002090 38 39 41 42 43 44 45 46                         89ABCDEF       
-
-;; fn00002098: 00002098
-fn00002098 proc
-	movem.l	d2/a2-a3,-(a7)
-	move.l	$0010(a7),d2
-	movea.l	$0014(a7),a2
-	lea	$0018(a2),a0
-	moveq	#$+02,d0
-	or.l	d0,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$000020DC
-
-l000020B4:
-	moveq	#$+0A,d0
-	cmp.l	d2,d0
-	bne	$000020C6
-
-l000020BA:
-	move.l	#$00000080,d0
-	and.l	$0018(a2),d0
-	bne	$000020DC
-
-l000020C6:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	movea.l	a0,a3
-	addq.l	#$01,a3
-	move.l	a3,(a1)
-	move.b	d2,(a0)
-	move.b	(a0),d0
-	moveq	#$+00,d1
-	move.b	d0,d1
-	bra	$000020EA
-
-l000020DC:
-	move.l	a2,-(a7)
-	move.l	d2,-(a7)
-	jsr.l	$000020F4
-	move.l	d0,d1
-	addq.w	#$08,a7
-
-l000020EA:
-	move.l	d1,d0
-	movem.l	(a7)+,d2/a2-a3
-	rts	
-000020F2       00 00                                       ..           
-
-;; fn000020F4: 000020F4
-fn000020F4 proc
-	movem.l	d2-d6/a2-a4/a6,-(a7)
-	move.l	$0028(a7),d5
-	movea.l	$002C(a7),a2
-	jsr.l	$00002688
-	move.l	a2,d0
-	bne	$00002110
-
-l0000210A:
-	moveq	#$-01,d0
-	bra	$00002202
-
-l00002110:
-	moveq	#$+49,d0
-	and.l	$0018(a2),d0
-	moveq	#$+40,d6
-	cmp.l	d0,d6
-	beq	$00002122
-
-l0000211C:
-	moveq	#$-01,d0
-	bra	$00002202
-
-l00002122:
-	tst.l	$001C(a2)
-	bne	$00002140
-
-l00002128:
-	moveq	#$+04,d0
-	and.l	$0018(a2),d0
-	beq	$00002138
-
-l00002130:
-	moveq	#$+01,d0
-	move.l	d0,$001C(a2)
-	bra	$00002140
-
-l00002138:
-	move.l	#$00000400,$001C(a2)
-
-l00002140:
-	tst.l	$0008(a2)
-	bne	$00002180
-
-l00002146:
-	lea	$001C(a2),a1
-	move.l	#$00000080,d0
-	and.l	$0018(a2),d0
-	beq	$0000215A
-
-l00002156:
-	moveq	#$+02,d4
-	bra	$0000215C
-
-l0000215A:
-	moveq	#$+01,d4
-
-l0000215C:
-	move.l	d4,d0
-	add.l	(a1),d0
-	move.l	d0,-(a7)
-	jsr.l	$000022B4
-	movea.l	d0,a3
-	addq.w	#$04,a7
-	move.l	a3,d0
-	bne	$00002176
-
-l00002170:
-	moveq	#$-01,d0
-	bra	$00002202
-
-l00002176:
-	lea	$0001(a3),a1
-	move.l	a1,$0008(a2)
-	bra	$000021DE
-
-l00002180:
-	tst.l	(a2)
-	beq	$000021DA
-
-l00002184:
-	move.l	#$00000080,d0
-	and.l	$0018(a2),d0
-	beq	$000021B0
-
-l00002190:
-	moveq	#$+0A,d0
-	cmp.l	d5,d0
-	bne	$000021B0
-
-l00002196:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	movea.l	a0,a4
-	addq.l	#$01,a4
-	move.l	a4,(a1)
-	move.b	d5,(a0)
-	move.l	a2,-(a7)
-	jsr.l	$00002208
-	addq.w	#$04,a7
-	bra	$00002202
-
-l000021B0:
-	lea	$0008(a2),a0
-	move.l	$0004(a2),d4
-	sub.l	(a0),d4
-	move.l	(a0),d2
-	move.l	(a2),d1
-	movea.l	$00004100,a6
-	move.l	d4,d3
-	jsr.l	$-0030(a6)
-	cmp.l	d0,d4
-	beq	$000021DE
-
-l000021CE:
-	lea	$0018(a2),a0
-	moveq	#$+10,d0
-	or.l	d0,(a0)
-	moveq	#$-01,d0
-	bra	$00002202
-
-l000021DA:
-	moveq	#$+00,d0
-	bra	$00002202
-
-l000021DE:
-	lea	$0018(a2),a0
-	moveq	#$+02,d0
-	or.l	d0,(a0)
-	lea	$0008(a2),a1
-	movea.l	(a1),a0
-	move.b	d5,(a0)
-	movea.l	(a1),a1
-	addq.l	#$01,a1
-	move.l	a1,$0004(a2)
-	move.l	$001C(a2),d0
-	subq.l	#$01,d0
-	move.l	d0,$0014(a2)
-	moveq	#$+00,d0
-
-l00002202:
-	movem.l	(a7)+,d2-d6/a2-a4/a6
-	rts	
-
-;; fn00002208: 00002208
-fn00002208 proc
-	movem.l	d2-d4/a2/a6,-(a7)
-	movea.l	$0018(a7),a2
-	jsr.l	$00002688
-	move.l	a2,d0
-	bne	$0000221E
-
-l0000221A:
-	moveq	#$-01,d0
-	bra	$00002296
-
-l0000221E:
-	tst.l	$001C(a2)
-	bne	$0000223C
-
-l00002224:
-	moveq	#$+04,d0
-	and.l	$0018(a2),d0
-	beq	$00002234
-
-l0000222C:
-	moveq	#$+01,d0
-	move.l	d0,$001C(a2)
-	bra	$0000223C
-
-l00002234:
-	move.l	#$00000400,$001C(a2)
-
-l0000223C:
-	tst.l	$0008(a2)
-	bne	$00002246
-
-l00002242:
-	moveq	#$+00,d0
-	bra	$00002296
-
-l00002246:
-	moveq	#$+02,d0
-	and.l	$0018(a2),d0
-	beq	$0000228C
-
-l0000224E:
-	tst.l	(a2)
-	beq	$0000227C
-
-l00002252:
-	lea	$0008(a2),a0
-	move.l	$0004(a2),d4
-	sub.l	(a0),d4
-	move.l	(a0),d2
-	move.l	(a2),d1
-	movea.l	$00004100,a6
-	move.l	d4,d3
-	jsr.l	$-0030(a6)
-	cmp.l	d0,d4
-	beq	$00002280
-
-l00002270:
-	lea	$0018(a2),a0
-	moveq	#$+10,d0
-	or.l	d0,(a0)
-	moveq	#$-01,d0
-	bra	$00002296
-
-l0000227C:
-	moveq	#$+00,d0
-	bra	$00002296
-
-l00002280:
-	move.l	$0008(a2),$0004(a2)
-	move.l	$001C(a2),$0014(a2)
-
-l0000228C:
-	lea	$0018(a2),a0
-	moveq	#$-04,d0
-	and.l	d0,(a0)
-	moveq	#$+00,d0
-
-l00002296:
-	movem.l	(a7)+,d2-d4/a2/a6
-	rts	
-0000229C                                     4A B9 00 00             J...
+00002090 38 39 41 42 43 44 45 46 48 E7 20 30 24 2F 00 10 89ABCDEFH. 0$/..
+000020A0 24 6F 00 14 41 EA 00 18 70 02 81 90 41 EA 00 14 $o..A...p...A...
+000020B0 53 90 6D 28 70 0A B0 82 66 0C 20 3C 00 00 00 80 S.m(p...f. <....
+000020C0 C0 AA 00 18 66 16 43 EA 00 04 20 51 26 48 52 8B ....f.C... Q&HR.
+000020D0 22 8B 10 82 10 10 72 00 12 00 60 0E 2F 0A 2F 02 ".....r...`././.
+000020E0 4E B9 00 00 20 F4 22 00 50 4F 20 01 4C DF 0C 04 N... .".PO .L...
+000020F0 4E 75 00 00 48 E7 3E 3A 2A 2F 00 28 24 6F 00 2C Nu..H.>:*/.($o.,
+00002100 4E B9 00 00 26 88 20 0A 66 06 70 FF 60 00 00 F4 N...&. .f.p.`...
+00002110 70 49 C0 AA 00 18 7C 40 BC 80 67 06 70 FF 60 00 pI....|@..g.p.`.
+00002120 00 E2 4A AA 00 1C 66 18 70 04 C0 AA 00 18 67 08 ..J...f.p.....g.
+00002130 70 01 25 40 00 1C 60 08 25 7C 00 00 04 00 00 1C p.%@..`.%|......
+00002140 4A AA 00 08 66 3A 43 EA 00 1C 20 3C 00 00 00 80 J...f:C... <....
+00002150 C0 AA 00 18 67 04 78 02 60 02 78 01 20 04 D0 91 ....g.x.`.x. ...
+00002160 2F 00 4E B9 00 00 22 B4 26 40 58 4F 20 0B 66 06 /.N...".&@XO .f.
+00002170 70 FF 60 00 00 8E 43 EB 00 01 25 49 00 08 60 5E p.`...C...%I..`^
+00002180 4A 92 67 56 20 3C 00 00 00 80 C0 AA 00 18 67 20 J.gV <........g 
+00002190 70 0A B0 85 66 1A 43 EA 00 04 20 51 28 48 52 8C p...f.C... Q(HR.
+000021A0 22 8C 10 85 2F 0A 4E B9 00 00 22 08 58 4F 60 52 ".../.N...".XO`R
+000021B0 41 EA 00 08 28 2A 00 04 98 90 24 10 22 12 2C 79 A...(*....$.".,y
+000021C0 00 00 41 00 26 04 4E AE FF D0 B8 80 67 10 41 EA ..A.&.N.....g.A.
+000021D0 00 18 70 10 81 90 70 FF 60 28 70 00 60 24 41 EA ..p...p.`(p.`$A.
+000021E0 00 18 70 02 81 90 43 EA 00 08 20 51 10 85 22 51 ..p...C... Q.."Q
+000021F0 52 89 25 49 00 04 20 2A 00 1C 53 80 25 40 00 14 R.%I.. *..S.%@..
+00002200 70 00 4C DF 5C 7C 4E 75 48 E7 38 22 24 6F 00 18 p.L.\|NuH.8"$o..
+00002210 4E B9 00 00 26 88 20 0A 66 04 70 FF 60 78 4A AA N...&. .f.p.`xJ.
+00002220 00 1C 66 18 70 04 C0 AA 00 18 67 08 70 01 25 40 ..f.p.....g.p.%@
+00002230 00 1C 60 08 25 7C 00 00 04 00 00 1C 4A AA 00 08 ..`.%|......J...
+00002240 66 04 70 00 60 50 70 02 C0 AA 00 18 67 3E 4A 92 f.p.`Pp.....g>J.
+00002250 67 2A 41 EA 00 08 28 2A 00 04 98 90 24 10 22 12 g*A...(*....$.".
+00002260 2C 79 00 00 41 00 26 04 4E AE FF D0 B8 80 67 10 ,y..A.&.N.....g.
+00002270 41 EA 00 18 70 10 81 90 70 FF 60 1A 70 00 60 16 A...p...p.`.p.`.
+00002280 25 6A 00 08 00 04 25 6A 00 1C 00 14 41 EA 00 18 %j....%j....A...
+00002290 70 FC C1 90 70 00 4C DF 44 1C 4E 75 4A B9 00 00 p...p.L.D.NuJ...
 000022A0 41 30 67 0E 2F 39 00 00 41 30 4E B9 00 00 26 18 A0g./9..A0N...&.
-000022B0 58 4F 4E 75                                     XONu           
-
-;; fn000022B4: 000022B4
-fn000022B4 proc
-	movem.l	d2,-(a7)
-	move.l	$0008(a7),d2
-	bne	$000022C2
-
-l000022BE:
-	moveq	#$+00,d0
-	bra	$00002318
-
-l000022C2:
-	tst.l	$00004130
-	bne	$000022E6
-
-l000022CA:
-	movea.l	$0000412C,a0
-	move.l	a0,-(a7)
-	move.l	a0,-(a7)
-	clr.l	-(a7)
-	jsr.l	$000025A8
-	move.l	d0,$00004130
-	lea	$000C(a7),a7
-
-l000022E6:
-	tst.l	$00004130
-	bne	$000022F2
-
-l000022EE:
-	moveq	#$+00,d0
-	bra	$00002318
-
-l000022F2:
-	moveq	#$+04,d0
-	add.l	d2,d0
-	move.l	d0,-(a7)
-	move.l	$00004130,-(a7)
-	jsr.l	$00002484
-	movea.l	d0,a1
-	addq.w	#$08,a7
-	move.l	a1,d0
-	bne	$00002310
-
-l0000230C:
-	moveq	#$+00,d0
-	bra	$00002318
-
-l00002310:
-	move.l	d2,(a1)
-	lea	$0004(a1),a0
-	move.l	a0,d0
-
-l00002318:
-	movem.l	(a7)+,d2
-	rts	
-0000231E                                           00 00               ..
+000022B0 58 4F 4E 75 48 E7 20 00 24 2F 00 08 66 04 70 00 XONuH. .$/..f.p.
+000022C0 60 56 4A B9 00 00 41 30 66 1C 20 79 00 00 41 2C `VJ...A0f. y..A,
+000022D0 2F 08 2F 08 42 A7 4E B9 00 00 25 A8 23 C0 00 00 /./.B.N...%.#...
+000022E0 41 30 4F EF 00 0C 4A B9 00 00 41 30 66 04 70 00 A0O...J...A0f.p.
+000022F0 60 26 70 04 D0 82 2F 00 2F 39 00 00 41 30 4E B9 `&p..././9..A0N.
+00002300 00 00 24 84 22 40 50 4F 20 09 66 04 70 00 60 08 ..$."@PO .f.p.`.
+00002310 22 82 41 E9 00 04 20 08 4C DF 00 04 4E 75 00 00 ".A... .L...Nu..
 00002320 20 2F 00 04 20 40 4A 80 67 20 4A B9 00 00 41 30  /.. @J.g J...A0
 00002330 67 18 70 04 D0 A0 2F 00 2F 08 2F 39 00 00 41 30 g.p.../././9..A0
 00002340 4E B9 00 00 23 E8 4F EF 00 0C 4E 75 48 E7 30 38 N...#.O...NuH.08
@@ -2346,873 +327,112 @@ l00002318:
 00002450 20 0D 4E AE FF 40 20 2A 00 1C B0 AC 00 10 66 1C  .N..@ *......f.
 00002460 26 4A 2C 79 00 00 40 FC 22 4B 4E AE FF 04 20 23 &J,y..@."KN... #
 00002470 2C 79 00 00 40 FC 22 4B 4E AE FF 2E 4C DF 7C 04 ,y..@."KN...L.|.
-00002480 4E 75 00 00                                     Nu..           
-
-;; fn00002484: 00002484
-fn00002484 proc
-	movem.l	d2-d4/a2-a6,-(a7)
-	move.l	$0028(a7),d2
-	movea.l	$0024(a7),a4
-	movea.l	$000040FC,a0
-	cmpi.w	#$0027,$0014(a0)
-	bcs	$000024B0
-
-l0000249E:
-	movea.l	$000040FC,a6
-	movea.l	a4,a0
-	move.l	d2,d0
-	jsr.l	$-02C4(a6)
-	bra	$000025A2
-
-l000024B0:
-	suba.l	a3,a3
-	move.l	a4,d4
-	beq	$000025A0
-
-l000024B8:
-	tst.l	d2
-	beq	$000025A0
-
-l000024BE:
-	cmp.l	$0014(a4),d2
-	bcc	$00002572
-
-l000024C6:
-	movea.l	(a4),a5
-
-l000024C8:
-	tst.l	(a5)
-	beq	$000024EA
-
-l000024CC:
-	tst.b	$0008(a5)
-	beq	$000024E6
-
-l000024D2:
-	movea.l	$000040FC,a6
-	movea.l	a5,a0
-	move.l	d2,d0
-	jsr.l	$-00BA(a6)
-	movea.l	d0,a3
-	move.l	a3,d0
-	bne	$00002556
-
-l000024E6:
-	movea.l	(a5),a5
-	bra	$000024C8
-
-l000024EA:
-	moveq	#$+28,d3
-	add.l	$0010(a4),d3
-	move.l	$000C(a4),d1
-	movea.l	$000040FC,a6
-	move.l	d3,d0
-	jsr.l	$-00C6(a6)
-	movea.l	d0,a3
-	move.l	a3,d0
-	beq	$000025A0
-
-l00002508:
-	move.l	d3,(a3)+
-	move.b	#$0A,$0008(a3)
-	lea	$0024(a3),a2
-	lea	$0010(a3),a0
-	move.l	a2,(a0)
-	move.l	a2,$0014(a3)
-	movea.l	(a0),a1
-	clr.l	(a1)
-	movea.l	(a0),a2
-	addq.l	#$04,a2
-	move.l	$0010(a4),(a2)
-	lea	$001C(a3),a1
-	move.l	(a2),(a1)
-	movea.l	(a1),a1
-	adda.l	(a0),a1
-	move.l	a1,$0018(a3)
-	movea.l	$000040FC,a6
-	movea.l	a4,a0
-	movea.l	a3,a1
-	jsr.l	$-00F0(a6)
-	movea.l	$000040FC,a6
-	movea.l	a3,a0
-	move.l	d2,d0
-	jsr.l	$-00BA(a6)
-	movea.l	d0,a3
-
-l00002556:
-	move.l	#$00010000,d0
-	and.l	$000C(a4),d0
-	beq	$000025A0
-
-l00002562:
-	movea.l	a3,a2
-	addq.l	#$07,d2
-	lsr.l	#$03,d2
-
-l00002568:
-	clr.l	(a2)+
-	clr.l	(a2)+
-	subq.l	#$01,d2
-	bne	$00002568
-
-l00002570:
-	bra	$000025A0
-
-l00002572:
-	moveq	#$+10,d3
-	add.l	d2,d3
-	move.l	$000C(a4),d1
-	movea.l	$000040FC,a6
-	move.l	d3,d0
-	jsr.l	$-00C6(a6)
-	movea.l	d0,a3
-	move.l	a3,d0
-	beq	$000025A0
-
-l0000258C:
-	move.l	d3,(a3)+
-	movea.l	$000040FC,a6
-	movea.l	a4,a0
-	movea.l	a3,a1
-	jsr.l	$-00F6(a6)
-	addq.l	#$08,a3
-	clr.l	(a3)+
-
-l000025A0:
-	move.l	a3,d0
-
-l000025A2:
-	movem.l	(a7)+,d2-d4/a2-a6
-	rts	
-
-;; fn000025A8: 000025A8
-fn000025A8 proc
-	movem.l	d2-d3/a2/a6,-(a7)
-	move.l	$0018(a7),d3
-	movea.l	$001C(a7),a2
-	movea.l	$000040FC,a0
-	cmpi.w	#$0027,$0014(a0)
-	bcs	$000025D6
-
-l000025C2:
-	movea.l	$000040FC,a6
-	move.l	$0014(a7),d0
-	move.l	d3,d1
-	move.l	a2,d2
-	jsr.l	$-02B8(a6)
-	bra	$00002612
-
-l000025D6:
-	suba.l	a1,a1
-	cmp.l	a2,d3
-	bcs	$00002610
-
-l000025DC:
-	addq.l	#$07,d3
-	movea.l	$000040FC,a6
-	moveq	#$+18,d0
-	moveq	#$+00,d1
-	jsr.l	$-00C6(a6)
-	movea.l	d0,a1
-	move.l	a1,d0
-	beq	$00002610
-
-l000025F2:
-	lea	$0004(a1),a0
-	move.l	a0,(a1)
-	clr.l	(a0)
-	move.l	a1,$0008(a1)
-	move.l	$0014(a7),$000C(a1)
-	moveq	#$-08,d0
-	and.l	d3,d0
-	move.l	d0,$0010(a1)
-	move.l	a2,$0014(a1)
-
-l00002610:
-	move.l	a1,d0
-
-l00002612:
-	movem.l	(a7)+,d2-d3/a2/a6
-	rts	
-00002618                         48 E7 20 22 24 2F 00 10         H. "$/..
+00002480 4E 75 00 00 48 E7 38 3E 24 2F 00 28 28 6F 00 24 Nu..H.8>$/.((o.$
+00002490 20 79 00 00 40 FC 0C 68 00 27 00 14 65 12 2C 79  y..@..h.'..e.,y
+000024A0 00 00 40 FC 20 4C 20 02 4E AE FD 3C 60 00 00 F4 ..@. L .N..<`...
+000024B0 97 CB 28 0C 67 00 00 EA 4A 82 67 00 00 E4 B4 AC ..(.g...J.g.....
+000024C0 00 14 64 00 00 AE 2A 54 4A 95 67 1E 4A 2D 00 08 ..d...*TJ.g.J-..
+000024D0 67 14 2C 79 00 00 40 FC 20 4D 20 02 4E AE FF 46 g.,y..@. M .N..F
+000024E0 26 40 20 0B 66 70 2A 55 60 DE 76 28 D6 AC 00 10 &@ .fp*U`.v(....
+000024F0 22 2C 00 0C 2C 79 00 00 40 FC 20 03 4E AE FF 3A ",..,y..@. .N..:
+00002500 26 40 20 0B 67 00 00 9A 26 C3 17 7C 00 0A 00 08 &@ .g...&..|....
+00002510 45 EB 00 24 41 EB 00 10 20 8A 27 4A 00 14 22 50 E..$A... .'J.."P
+00002520 42 91 24 50 58 8A 24 AC 00 10 43 EB 00 1C 22 92 B.$PX.$...C...".
+00002530 22 51 D3 D0 27 49 00 18 2C 79 00 00 40 FC 20 4C "Q..'I..,y..@. L
+00002540 22 4B 4E AE FF 10 2C 79 00 00 40 FC 20 4B 20 02 "KN...,y..@. K .
+00002550 4E AE FF 46 26 40 20 3C 00 01 00 00 C0 AC 00 0C N..F&@ <........
+00002560 67 3E 24 4B 5E 82 E6 8A 42 9A 42 9A 53 82 66 F8 g>$K^...B.B.S.f.
+00002570 60 2E 76 10 D6 82 22 2C 00 0C 2C 79 00 00 40 FC `.v...",..,y..@.
+00002580 20 03 4E AE FF 3A 26 40 20 0B 67 14 26 C3 2C 79  .N..:&@ .g.&.,y
+00002590 00 00 40 FC 20 4C 22 4B 4E AE FF 0A 50 8B 42 9B ..@. L"KN...P.B.
+000025A0 20 0B 4C DF 7C 1C 4E 75 48 E7 30 22 26 2F 00 18  .L.|.NuH.0"&/..
+000025B0 24 6F 00 1C 20 79 00 00 40 FC 0C 68 00 27 00 14 $o.. y..@..h.'..
+000025C0 65 14 2C 79 00 00 40 FC 20 2F 00 14 22 03 24 0A e.,y..@. /..".$.
+000025D0 4E AE FD 48 60 3C 93 C9 B6 8A 65 34 5E 83 2C 79 N..H`<....e4^.,y
+000025E0 00 00 40 FC 70 18 72 00 4E AE FF 3A 22 40 20 09 ..@.p.r.N..:"@ .
+000025F0 67 1E 41 E9 00 04 22 88 42 90 23 49 00 08 23 6F g.A...".B.#I..#o
+00002600 00 14 00 0C 70 F8 C0 83 23 40 00 10 23 4A 00 14 ....p...#@..#J..
+00002610 20 09 4C DF 44 0C 4E 75 48 E7 20 22 24 2F 00 10  .L.D.NuH. "$/..
 00002620 20 79 00 00 40 FC 0C 68 00 27 00 14 65 0E 2C 79  y..@..h.'..e.,y
 00002630 00 00 40 FC 20 42 4E AE FD 42 60 44 4A 82 67 40 ..@. BN..B`DJ.g@
 00002640 2C 79 00 00 40 FC 20 42 4E AE FE FE 24 40 22 0A ,y..@. BN...$@".
 00002650 67 20 20 22 2C 79 00 00 40 FC 22 4A 4E AE FF 2E g  ",y..@."JN...
 00002660 2C 79 00 00 40 FC 20 42 4E AE FE FE 24 40 20 0A ,y..@. BN...$@ .
 00002670 66 E0 2C 79 00 00 40 FC 22 42 70 18 4E AE FF 2E f.,y..@."Bp.N...
-00002680 4C DF 44 04 4E 75 00 00                         L.D.Nu..       
-
-;; fn00002688: 00002688
-fn00002688 proc
-	movem.l	a6,-(a7)
-	movea.l	$000040FC,a6
-	moveq	#$+00,d0
-	move.l	#$00001000,d1
-	jsr.l	$-0132(a6)
-	and.l	#$00001000,d0
-	beq	$000026B2
-
-l000026A6:
-	pea	$00000014
-	jsr.l	$0000131C
-	addq.w	#$04,a7
-
-l000026B2:
-	movea.l	(a7)+,a6
-	rts	
-000026B6                   00 00                               ..       
-
-;; fn000026B8: 000026B8
-fn000026B8 proc
-	movem.l	d2-d6,-(a7)
-	move.l	$001C(a7),d1
-	move.l	$0018(a7),d0
-	movea.l	d1,a0
-	move.l	$0024(a7),d3
-	move.l	$0020(a7),d2
-	bne	$0000270E
-
-l000026D0:
-	cmp.l	d3,d0
-	bcc	$000026E2
-
-l000026D4:
-	move.l	d3,d2
-	jsr.l	$000027BC
-	move.l	d0,d1
-	bra	$000027B4
-
-l000026E2:
-	tst.l	d3
-	bne	$000026EE
-
-l000026E6:
-	moveq	#$+01,d4
-	divu.w	d3,d4
-	ext.l	d4
-	move.l	d4,d3
-
-l000026EE:
-	move.l	d0,d1
-	moveq	#$+00,d0
-	move.l	d3,d2
-	jsr.l	$000027BC
-	movea.l	d0,a1
-	move.l	d1,d0
-	move.l	a0,d1
-	jsr.l	$000027BC
-	move.l	d0,d1
-	move.l	a1,d0
-	bra	$000027B6
-
-l0000270E:
-	cmp.l	d2,d0
-	bcc	$00002718
-
-l00002712:
-	moveq	#$+00,d0
-	bra	$000027B4
-
-l00002718:
-	move.l	d2,d6
-	moveq	#$+18,d4
-	rol.l	#$08,d6
-	tst.b	d6
-	bne	$00002736
-
-l00002722:
-	moveq	#$+10,d4
-	rol.l	#$08,d6
-	tst.b	d6
-	bne	$00002736
-
-l0000272A:
-	moveq	#$+08,d4
-	rol.l	#$08,d6
-	tst.b	d6
-	bne	$00002736
-
-l00002732:
-	moveq	#$+00,d4
-	move.b	d2,d6
-
-l00002736:
-	lea	$00004134,a1
-	and.w	#$00FF,d6
-	add.b	(a1,d6),d4
-	moveq	#$+20,d5
-	sub.l	d4,d5
-	bne	$00002756
-
-l0000274A:
-	cmp.l	d0,d2
-	bcs	$00002752
-
-l0000274E:
-	cmp.l	a0,d3
-	bhi	$00002712
-
-l00002752:
-	moveq	#$+01,d0
-	bra	$000027B4
-
-l00002756:
-	lsl.l	d5,d2
-	move.l	d3,d6
-	lsr.l	d4,d6
-	or.l	d6,d2
-	lsl.l	d5,d3
-	move.l	d0,d1
-	lsr.l	d4,d0
-	lsl.l	d5,d1
-	move.l	a0,d6
-	lsr.l	d4,d6
-	or.l	d6,d1
-	move.l	a0,d6
-	lsl.l	d5,d6
-	movea.l	d6,a0
-	jsr.l	$000027BC
-	move.l	d0,d2
-	exg	d0,d1
-	move.l	d2,d4
-	move.l	d2,d5
-	move.l	d3,d6
-	mulu.w	d3,d2
-	swap.l	d5
-	mulu.w	d5,d3
-	swap.l	d6
-	mulu.w	d6,d4
-	mulu.w	d6,d5
-	moveq	#$+00,d6
-	swap.l	d2
-	add.w	d3,d2
-	addx.w	d6,d5
-	add.w	d4,d2
-	addx.w	d6,d5
-	swap.l	d2
-	clr.w	d3
-	clr.w	d4
-	swap.l	d3
-	swap.l	d4
-	add.l	d4,d3
-	add.l	d5,d3
-	cmp.l	d3,d0
-	bcs	$000027B2
-
-l000027AC:
-	bne	$000027B4
-
-l000027AE:
-	cmpa.l	d2,a0
-	bcc	$000027B4
-
-l000027B2:
-	subq.l	#$01,d1
-
-l000027B4:
-	moveq	#$+00,d0
-
-l000027B6:
-	movem.l	(a7)+,d2-d6
-	rts	
-
-;; fn000027BC: 000027BC
-fn000027BC proc
-	movem.l	d5-d7,-(a7)
-	move.l	d2,d7
-	beq	$000027D6
-
-l000027C4:
-	move.l	d1,d6
-	move.l	d0,d5
-	bne	$000027E4
-
-l000027CA:
-	tst.l	d1
-	beq	$00002902
-
-l000027D0:
-	cmp.l	d1,d2
-	bhi	$00002902
-
-l000027D6:
-	move.l	d1,d0
-	move.l	d2,d1
-	jsr.l	$0000297A
-	bra	$00002902
-
-l000027E4:
-	swap.l	d2
-	tst.w	d2
-	bne	$0000280C
-
-l000027EA:
-	moveq	#$+00,d2
-	swap.l	d0
-	swap.l	d1
-	move.w	d1,d0
-	divu.w	d7,d0
-	move.w	d0,d2
-	swap.l	d1
-	move.w	d1,d0
-	divu.w	d7,d0
-	swap.l	d2
-	move.w	d0,d2
-	clr.w	d0
-	swap.l	d0
-	move.l	d0,d1
-	move.l	d2,d0
-	bra	$00002902
-
-l0000280C:
-	movem.l	d2-d4/a0-a1,-(a7)
-	subq.l	#$08,a7
-	clr.b	$0002(a7)
-	moveq	#$+00,d1
-	moveq	#$+00,d0
-	tst.l	d7
-	bmi	$00002828
-
-l0000281E:
-	addq.w	#$01,d0
-	add.l	d6,d6
-	addx.l	d5,d5
-	add.l	d7,d7
-	bpl	$0000281E
-
-l00002828:
-	move.w	d0,(a7)
-
-l0000282A:
-	move.l	d7,d3
-	move.l	d5,d2
-	swap.l	d2
-	swap.l	d3
-	cmp.w	d3,d2
-	bne	$0000283C
-
-l00002836:
-	move.w	#$FFFF,d1
-	bra	$00002846
-
-l0000283C:
-	move.l	d5,d1
-	divu.w	d3,d1
-	swap.l	d1
-	clr.w	d1
-	swap.l	d1
-
-l00002846:
-	movea.l	d6,a1
-	clr.w	d6
-	swap.l	d6
-
-l0000284C:
-	move.l	d7,d3
-	move.l	d1,d2
-	mulu.w	d7,d2
-	swap.l	d3
-	mulu.w	d1,d3
-	move.l	d5,d4
-	sub.l	d3,d4
-	swap.l	d4
-	move.w	d4,d0
-	move.w	d6,d4
-	tst.w	d0
-	bne	$0000286C
-
-l00002864:
-	cmp.l	d4,d2
-	bls	$0000286C
-
-l00002868:
-	subq.l	#$01,d1
-	bra	$0000284C
-
-l0000286C:
-	movea.l	d5,a0
-	move.l	d1,d6
-	swap.l	d6
-	move.l	d7,d5
-	move.l	d6,d2
-	move.l	d6,d3
-	move.l	d5,d4
-	mulu.w	d5,d6
-	swap.l	d3
-	mulu.w	d3,d5
-	swap.l	d4
-	mulu.w	d4,d2
-	mulu.w	d4,d3
-	moveq	#$+00,d4
-	swap.l	d6
-	add.w	d5,d6
-	addx.w	d4,d3
-	add.w	d2,d6
-	addx.w	d4,d3
-	swap.l	d6
-	clr.w	d5
-	clr.w	d2
-	swap.l	d5
-	swap.l	d2
-	add.l	d2,d5
-	add.l	d3,d5
-	move.l	d5,d2
-	move.l	d6,d3
-	move.l	a0,d5
-	move.l	a1,d6
-	sub.l	d3,d6
-	subx.l	d2,d5
-	bcc	$000028C4
-
-l000028AE:
-	subq.l	#$01,d1
-	moveq	#$+00,d2
-	move.l	d7,d3
-	swap.l	d3
-	clr.w	d3
-	add.l	d3,d6
-	addx.l	d2,d5
-	move.l	d7,d3
-	clr.w	d3
-	swap.l	d3
-	add.l	d3,d5
-
-l000028C4:
-	tst.b	$0002(a7)
-	bne	$000028E0
-
-l000028CA:
-	move.w	d1,$0004(a7)
-	moveq	#$+00,d1
-	swap.l	d5
-	swap.l	d6
-	move.w	d6,d5
-	clr.w	d6
-	st	$0002(a7)
-	bra	$0000282A
-
-l000028E0:
-	move.l	$0004(a7),d0
-	move.w	d1,d0
-	move.w	d5,d6
-	swap.l	d6
-	swap.l	d5
-	move.w	(a7),d7
-	beq	$000028FA
-
-l000028F0:
-	subq.w	#$01,d7
-
-l000028F2:
-	lsr.l	#$01,d5
-	roxr.l	#$01,d6
-	dbra	d7,$000028F2
-
-l000028FA:
-	move.l	d6,d1
-	addq.l	#$08,a7
-	movem.l	(a7)+,d2-d4/a0-a1
-
-l00002902:
-	movem.l	(a7)+,d5-d7
-	rts	
-00002908                         4C EF 00 03 00 04 4A 81         L.....J.
+00002680 4C DF 44 04 4E 75 00 00 48 E7 00 02 2C 79 00 00 L.D.Nu..H...,y..
+00002690 40 FC 70 00 22 3C 00 00 10 00 4E AE FE CE C0 BC @.p."<....N.....
+000026A0 00 00 10 00 67 0C 48 78 00 14 4E B9 00 00 13 1C ....g.Hx..N.....
+000026B0 58 4F 2C 5F 4E 75 00 00 48 E7 3E 00 22 2F 00 1C XO,_Nu..H.>."/..
+000026C0 20 2F 00 18 20 41 26 2F 00 24 24 2F 00 20 66 3E  /.. A&/.$$/. f>
+000026D0 B0 83 64 0E 24 03 4E B9 00 00 27 BC 22 00 60 00 ..d.$.N...'.".`.
+000026E0 00 D4 4A 83 66 08 78 01 88 C3 48 C4 26 04 22 00 ..J.f.x...H.&.".
+000026F0 70 00 24 03 4E B9 00 00 27 BC 22 40 20 01 22 08 p.$.N...'."@ .".
+00002700 4E B9 00 00 27 BC 22 00 20 09 60 00 00 AA B0 82 N...'.". .`.....
+00002710 64 06 70 00 60 00 00 9E 2C 02 78 18 E1 9E 4A 06 d.p.`...,.x...J.
+00002720 66 14 78 10 E1 9E 4A 06 66 0C 78 08 E1 9E 4A 06 f.x...J.f.x...J.
+00002730 66 04 78 00 1C 02 43 F9 00 00 41 34 CC 7C 00 FF f.x...C...A4.|..
+00002740 D8 31 60 00 7A 20 9A 84 66 0C B4 80 65 04 B6 88 .1`.z ..f...e...
+00002750 62 C0 70 01 60 5E EB AA 2C 03 E8 AE 84 86 EB AB b.p.`^..,.......
+00002760 22 00 E8 A8 EB A9 2C 08 E8 AE 82 86 2C 08 EB AE ".....,.....,...
+00002770 20 46 4E B9 00 00 27 BC 24 00 C1 41 28 02 2A 02  FN...'.$..A(.*.
+00002780 2C 03 C4 C3 48 45 C6 C5 48 46 C8 C6 CA C6 7C 00 ,...HE..HF....|.
+00002790 48 42 D4 43 DB 46 D4 44 DB 46 48 42 42 43 42 44 HB.C.F.D.FHBBCBD
+000027A0 48 43 48 44 D6 84 D6 85 B0 83 65 06 66 06 B1 C2 HCHD......e.f...
+000027B0 64 02 53 81 70 00 4C DF 00 7C 4E 75 48 E7 07 00 d.S.p.L..|NuH...
+000027C0 2E 02 67 12 2C 01 2A 00 66 1A 4A 81 67 00 01 34 ..g.,.*.f.J.g..4
+000027D0 B4 81 62 00 01 2E 20 01 22 02 4E B9 00 00 29 7A ..b... .".N...)z
+000027E0 60 00 01 20 48 42 4A 42 66 22 74 00 48 40 48 41 `.. HBJBf"t.H@HA
+000027F0 30 01 80 C7 34 00 48 41 30 01 80 C7 48 42 34 00 0...4.HA0...HB4.
+00002800 42 40 48 40 22 00 20 02 60 00 00 F8 48 E7 38 C0 B@H@". .`...H.8.
+00002810 51 8F 42 2F 00 02 72 00 70 00 4A 87 6B 0A 52 40 Q.B/..r.p.J.k.R@
+00002820 DC 86 DB 85 DE 87 6A F6 3E 80 26 07 24 05 48 42 ......j.>.&.$.HB
+00002830 48 43 B4 43 66 06 32 3C FF FF 60 0A 22 05 82 C3 HC.Cf.2<..`."...
+00002840 48 41 42 41 48 41 22 46 42 46 48 46 26 07 24 01 HABAHA"FBFHF&.$.
+00002850 C4 C7 48 43 C6 C1 28 05 98 83 48 44 30 04 38 06 ..HC..(...HD0.8.
+00002860 4A 40 66 08 B4 84 63 04 53 81 60 E0 20 45 2C 01 J@f...c.S.`. E,.
+00002870 48 46 2A 07 24 06 26 06 28 05 CC C5 48 43 CA C3 HF*.$.&.(...HC..
+00002880 48 44 C4 C4 C6 C4 78 00 48 46 DC 45 D7 44 DC 42 HD....x.HF.E.D.B
+00002890 D7 44 48 46 42 45 42 42 48 45 48 42 DA 82 DA 83 .DHFBEBBHEHB....
+000028A0 24 05 26 06 2A 08 2C 09 9C 83 9B 82 64 16 53 81 $.&.*.,.....d.S.
+000028B0 74 00 26 07 48 43 42 43 DC 83 DB 82 26 07 42 43 t.&.HCBC....&.BC
+000028C0 48 43 DA 83 4A 2F 00 02 66 16 3F 41 00 04 72 00 HC..J/..f.?A..r.
+000028D0 48 45 48 46 3A 06 42 46 50 EF 00 02 60 00 FF 4C HEHF:.BFP...`..L
+000028E0 20 2F 00 04 30 01 3C 05 48 46 48 45 3E 17 67 0A  /..0.<.HFHE>.g.
+000028F0 53 47 E2 8D E2 96 51 CF FF FA 22 06 50 8F 4C DF SG....Q...".P.L.
+00002900 03 1C 4C DF 00 E0 4E 75 4C EF 00 03 00 04 4A 81 ..L...NuL.....J.
 00002910 6B 0A 4A 80 6B 12 61 62 20 01 4E 75 44 81 4A 80 k.J.k.ab .NuD.J.
 00002920 6B 10 61 56 20 01 4E 75 44 80 61 4E 44 81 20 01 k.aV .NuD.aND. .
 00002930 4E 75 44 80 61 44 44 81 20 01 4E 75 4C EF 00 03 NuD.aDD. .NuL...
-00002940 00 04 61 36 20 01 4E 75                         ..a6 .Nu       
-
-;; fn00002948: 00002948
-fn00002948 proc
-	movem.l	$0004(a7),d0-d1
-	tst.l	d0
-	bpl	$00002968
-
-l00002952:
-	neg.l	d0
-	tst.l	d1
-	bpl	$00002960
-
-l00002958:
-	neg.l	d1
-	bsr	$0000297A
-	neg.l	d1
-	rts	
-
-l00002960:
-	bsr	$0000297A
-	neg.l	d0
-	neg.l	d1
-	rts	
-
-l00002968:
-	tst.l	d1
-	bpl	$0000297A
-
-l0000296C:
-	neg.l	d1
-	bsr	$0000297A
-	neg.l	d0
-	rts	
-00002974             4C EF 00 03 00 04                       L.....     
-
-;; fn0000297A: 0000297A
-fn0000297A proc
-	move.l	d2,-(a7)
-	swap.l	d1
-	move.w	d1,d2
-	bne	$000029A0
-
-l00002982:
-	swap.l	d0
-	swap.l	d1
-	swap.l	d2
-	move.w	d0,d2
-	beq	$00002990
-
-l0000298C:
-	divu.w	d1,d2
-	move.w	d2,d0
-
-l00002990:
-	swap.l	d0
-	move.w	d0,d2
-	divu.w	d1,d2
-	move.w	d2,d0
-	swap.l	d2
-	move.w	d2,d1
-	move.l	(a7)+,d2
-	rts	
-
-l000029A0:
-	move.l	d3,-(a7)
-	moveq	#$+10,d3
-	cmp.w	#$0080,d1
-	bcc	$000029AE
-
-l000029AA:
-	rol.l	#$08,d1
-	subq.w	#$08,d3
-
-l000029AE:
-	cmp.w	#$0800,d1
-	bcc	$000029B8
-
-l000029B4:
-	rol.l	#$04,d1
-	subq.w	#$04,d3
-
-l000029B8:
-	cmp.w	#$2000,d1
-	bcc	$000029C2
-
-l000029BE:
-	rol.l	#$02,d1
-	subq.w	#$02,d3
-
-l000029C2:
-	tst.w	d1
-	bmi	$000029CA
-
-l000029C6:
-	rol.l	#$01,d1
-	subq.w	#$01,d3
-
-l000029CA:
-	move.w	d0,d2
-	lsr.l	d3,d0
-	swap.l	d2
-	clr.w	d2
-	lsr.l	d3,d2
-	swap.l	d3
-	divu.w	d1,d0
-	move.w	d0,d3
-	move.w	d2,d0
-	move.w	d3,d2
-	swap.l	d1
-	mulu.w	d1,d2
-	sub.l	d2,d0
-	bcc	$000029EC
-
-l000029E6:
-	subq.w	#$01,d3
-	add.l	d1,d0
-
-l000029EA:
-	bcc	$000029EA
-
-l000029EC:
-	moveq	#$+00,d1
-	move.w	d3,d1
-	swap.l	d3
-	rol.l	d3,d0
-	swap.l	d0
-	exg	d0,d1
-	move.l	(a7)+,d3
-	move.l	(a7)+,d2
-	rts	
-000029FE                                           00 00               ..
-
-;; fn00002A00: 00002A00
-fn00002A00 proc
-	movem.l	d2-d7,-(a7)
-	move.l	$0020(a7),d1
-	move.l	$001C(a7),d0
-	movea.l	d1,a0
-	move.l	$0028(a7),d3
-	move.l	$0024(a7),d2
-	bne	$00002A52
-
-l00002A18:
-	cmp.l	d3,d0
-	bcc	$00002A2A
-
-l00002A1C:
-	move.l	d3,d2
-	jsr.l	$000027BC
-	moveq	#$+00,d0
-	bra	$00002B0C
-
-l00002A2A:
-	tst.l	d3
-	bne	$00002A36
-
-l00002A2E:
-	moveq	#$+01,d4
-	divu.w	d3,d4
-	ext.l	d4
-	move.l	d4,d3
-
-l00002A36:
-	move.l	d0,d1
-	moveq	#$+00,d0
-	move.l	d3,d2
-	jsr.l	$000027BC
-	move.l	d1,d0
-	move.l	a0,d1
-	jsr.l	$000027BC
-	moveq	#$+00,d0
-	bra	$00002B0C
-
-l00002A52:
-	cmp.l	d2,d0
-	bcs	$00002B0C
-
-l00002A58:
-	move.l	d2,d6
-	moveq	#$+18,d4
-	rol.l	#$08,d6
-	tst.b	d6
-	bne	$00002A76
-
-l00002A62:
-	moveq	#$+10,d4
-	rol.l	#$08,d6
-	tst.b	d6
-	bne	$00002A76
-
-l00002A6A:
-	moveq	#$+08,d4
-	rol.l	#$08,d6
-	tst.b	d6
-	bne	$00002A76
-
-l00002A72:
-	moveq	#$+00,d4
-	move.b	d2,d6
-
-l00002A76:
-	lea	$00004134,a1
-	and.w	#$00FF,d6
-	add.b	(a1,d6),d4
-	moveq	#$+20,d5
-	sub.l	d4,d5
-	bne	$00002A98
-
-l00002A8A:
-	cmp.l	d0,d2
-	bcs	$00002A92
-
-l00002A8E:
-	cmp.l	d1,d3
-	bhi	$00002B0C
-
-l00002A92:
-	sub.l	d3,d1
-	subx.l	d2,d0
-	bra	$00002B0C
-
-l00002A98:
-	lsl.l	d5,d2
-	move.l	d3,d6
-	lsr.l	d4,d6
-	or.l	d6,d2
-	lsl.l	d5,d3
-	move.l	d0,d1
-	lsr.l	d4,d0
-	lsl.l	d5,d1
-	move.l	a0,d6
-	lsr.l	d4,d6
-	or.l	d6,d1
-	move.l	a0,d6
-	lsl.l	d5,d6
-	movea.l	d6,a0
-	jsr.l	$000027BC
-	exg	d2,d0
-	movea.l	d3,a1
-	move.l	d2,d4
-	move.l	d2,d7
-	move.l	d3,d6
-	mulu.w	d3,d2
-	swap.l	d7
-	mulu.w	d7,d3
-	swap.l	d6
-	mulu.w	d6,d4
-	mulu.w	d6,d7
-	moveq	#$+00,d6
-	swap.l	d2
-	add.w	d3,d2
-	addx.w	d6,d7
-	add.w	d4,d2
-	addx.w	d6,d7
-	swap.l	d2
-	clr.w	d3
-	clr.w	d4
-	swap.l	d3
-	swap.l	d4
-	add.l	d4,d3
-	add.l	d7,d3
-	cmp.l	d2,d1
-	bcs	$00002AF4
-
-l00002AEE:
-	bne	$00002AF8
-
-l00002AF0:
-	cmpa.l	d3,a0
-	bcc	$00002AF8
-
-l00002AF4:
-	sub.l	a1,d3
-	subx.l	d0,d2
-
-l00002AF8:
-	move.l	a0,d6
-	sub.l	d3,d6
-	subx.l	d2,d1
-	move.l	d1,d0
-	moveq	#$+20,d4
-	sub.l	d5,d4
-	lsl.l	d4,d1
-	lsr.l	d5,d6
-	or.l	d6,d1
-	lsr.l	d5,d0
-
-l00002B0C:
-	movem.l	(a7)+,d2-d7
-	rts	
-00002B12       00 00 00 20 20 20 20 20 20 20 20 20 28 28   ...         ((
+00002940 00 04 61 36 20 01 4E 75 4C EF 00 03 00 04 4A 80 ..a6 .NuL.....J.
+00002950 6A 16 44 80 4A 81 6A 08 44 81 61 1E 44 81 4E 75 j.D.J.j.D.a.D.Nu
+00002960 61 18 44 80 44 81 4E 75 4A 81 6A 0E 44 81 61 0A a.D.D.NuJ.j.D.a.
+00002970 44 80 4E 75 4C EF 00 03 00 04 2F 02 48 41 34 01 D.NuL...../.HA4.
+00002980 66 1E 48 40 48 41 48 42 34 00 67 04 84 C1 30 02 f.H@HAHB4.g...0.
+00002990 48 40 34 00 84 C1 30 02 48 42 32 02 24 1F 4E 75 H@4...0.HB2.$.Nu
+000029A0 2F 03 76 10 B2 7C 00 80 64 04 E1 99 51 43 B2 7C /.v..|..d...QC.|
+000029B0 08 00 64 04 E9 99 59 43 B2 7C 20 00 64 04 E5 99 ..d...YC.| .d...
+000029C0 55 43 4A 41 6B 04 E3 99 53 43 34 00 E6 A8 48 42 UCJAk...SC4...HB
+000029D0 42 42 E6 AA 48 43 80 C1 36 00 30 02 34 03 48 41 BB..HC..6.0.4.HA
+000029E0 C4 C1 90 82 64 06 53 43 D0 81 64 FE 72 00 32 03 ....d.SC..d.r.2.
+000029F0 48 43 E7 B8 48 40 C1 41 26 1F 24 1F 4E 75 00 00 HC..H@.A&.$.Nu..
+00002A00 48 E7 3F 00 22 2F 00 20 20 2F 00 1C 20 41 26 2F H.?."/.  /.. A&/
+00002A10 00 28 24 2F 00 24 66 3A B0 83 64 0E 24 03 4E B9 .($/.$f:..d.$.N.
+00002A20 00 00 27 BC 70 00 60 00 00 E4 4A 83 66 08 78 01 ..'.p.`...J.f.x.
+00002A30 88 C3 48 C4 26 04 22 00 70 00 24 03 4E B9 00 00 ..H.&.".p.$.N...
+00002A40 27 BC 20 01 22 08 4E B9 00 00 27 BC 70 00 60 00 '. .".N...'.p.`.
+00002A50 00 BC B0 82 65 00 00 B6 2C 02 78 18 E1 9E 4A 06 ....e...,.x...J.
+00002A60 66 14 78 10 E1 9E 4A 06 66 0C 78 08 E1 9E 4A 06 f.x...J.f.x...J.
+00002A70 66 04 78 00 1C 02 43 F9 00 00 41 34 CC 7C 00 FF f.x...C...A4.|..
+00002A80 D8 31 60 00 7A 20 9A 84 66 0E B4 80 65 04 B6 81 .1`.z ..f...e...
+00002A90 62 7A 92 83 91 82 60 74 EB AA 2C 03 E8 AE 84 86 bz....`t..,.....
+00002AA0 EB AB 22 00 E8 A8 EB A9 2C 08 E8 AE 82 86 2C 08 ..".....,.....,.
+00002AB0 EB AE 20 46 4E B9 00 00 27 BC C5 40 22 43 28 02 .. FN...'..@"C(.
+00002AC0 2E 02 2C 03 C4 C3 48 47 C6 C7 48 46 C8 C6 CE C6 ..,...HG..HF....
+00002AD0 7C 00 48 42 D4 43 DF 46 D4 44 DF 46 48 42 42 43 |.HB.C.F.D.FHBBC
+00002AE0 42 44 48 43 48 44 D6 84 D6 87 B2 82 65 06 66 08 BDHCHD......e.f.
+00002AF0 B1 C3 64 04 96 89 95 80 2C 08 9C 83 93 82 20 01 ..d.....,..... .
+00002B00 78 20 98 85 E9 A9 EA AE 82 86 EA A8 4C DF 00 FC x ..........L...
+00002B10 4E 75 00 00 00 20 20 20 20 20 20 20 20 20 28 28 Nu...         ((
 00002B20 28 28 28 20 20 20 20 20 20 20 20 20 20 20 20 20 (((             
 00002B30 20 20 20 20 20 88 10 10 10 10 10 10 10 10 10 10      ...........
 00002B40 10 10 10 10 10 04 04 04 04 04 04 04 04 04 04 10 ................
@@ -3258,2367 +478,305 @@ l00002B0C:
 00002E10 58 4F 60 26 24 79 00 00 42 60 20 0A 67 1C 70 02 XO`&$y..B` .g.p.
 00002E20 C0 AA 00 18 67 0A 2F 0A 4E B9 00 00 22 08 58 4F ....g./.N...".XO
 00002E30 41 EA 00 0C 24 50 20 0A 66 E4 70 00 24 5F 4E 75 A...$P .f.p.$_Nu
-
-;; fn00002E40: 00002E40
-fn00002E40 proc
-	lea	$0008(a7),a0
-	move.l	a0,-(a7)
-	move.l	$0008(a7),-(a7)
-	move.l	$00004254,-(a7)
-	jsr.l	$00002E8C
-	lea	$000C(a7),a7
-	rts	
-
-;; fn00002E5C: 00002E5C
-fn00002E5C proc
-	movem.l	a2,-(a7)
-	movea.l	$000C(a7),a2
-	move.l	a2,d0
-	beq	$00002E86
-
-l00002E68:
-	move.l	$0004(a2),d0
-	cmp.l	$0008(a2),d0
-	bcc	$00002E7A
-
-l00002E72:
-	movea.l	$0004(a2),a0
-	move.b	$000B(a7),(a0)
-
-l00002E7A:
-	lea	$0014(a2),a0
-	addq.l	#$01,(a0)
-	lea	$0004(a2),a0
-	subq.l	#$01,(a0)
-
-l00002E86:
-	movea.l	(a7)+,a2
-	rts	
-00002E8A                               00 00                       ..   
-
-;; fn00002E8C: 00002E8C
-fn00002E8C proc
-	lea	$-004C(a7),a7
-	movem.l	d2-d7/a2-a6,-(a7)
-	move.l	$0084(a7),d2
-	movea.l	$0080(a7),a4
-	movea.l	$007C(a7),a2
-	clr.l	$003C(a7)
-	moveq	#$+00,d4
-	moveq	#$+00,d5
-	tst.b	(a4)
-	beq	$00003E8E
-
-l00002EAE:
-	moveq	#$+00,d3
-	cmpi.b	#$25,(a4)
-	bne	$00003D8C
-
-l00002EB8:
-	moveq	#$-01,d6
-	move.b	#$69,$0048(a7)
-	clr.b	$0049(a7)
-	lea	$0001(a4),a3
-	moveq	#$+00,d0
-	move.b	(a3),d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000004,d0
-	beq	$00002F3C
-
-l00002EE0:
-	moveq	#$+00,d6
-	moveq	#$+00,d0
-	move.b	(a3),d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000004,d0
-	beq	$00002F3C
-
-l00002EFA:
-	moveq	#$+0A,d0
-	move.l	d2,-(a7)
-	move.l	d0,d1
-	move.l	d6,d2
-	swap.l	d1
-	swap.l	d2
-	mulu.w	d6,d1
-	mulu.w	d0,d2
-	mulu.w	d6,d0
-	add.w	d2,d1
-	swap.l	d1
-	clr.w	d1
-	add.l	d1,d0
-	move.l	(a7)+,d2
-	moveq	#$+00,d1
-	move.b	(a3)+,d1
-	sub.l	#$00000030,d1
-	move.l	d1,d6
-	add.l	d0,d6
-	moveq	#$+00,d0
-	move.b	(a3),d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000004,d0
-	bne	$00002EFA
-
-l00002F3C:
-	cmpi.b	#$68,(a3)
-	beq	$00002F66
-
-l00002F42:
-	cmpi.b	#$6C,(a3)
-	beq	$00002F66
-
-l00002F48:
-	cmpi.b	#$4C,(a3)
-	beq	$00002F66
-
-l00002F4E:
-	cmpi.b	#$7A,(a3)
-	beq	$00002F66
-
-l00002F54:
-	cmpi.b	#$6A,(a3)
-	beq	$00002F66
-
-l00002F5A:
-	cmpi.b	#$74,(a3)
-	beq	$00002F66
-
-l00002F60:
-	cmpi.b	#$2A,(a3)
-	bne	$00002FCE
-
-l00002F66:
-	move.b	$0049(a7),d7
-	move.b	$0048(a7),d1
-
-l00002F6E:
-	cmpi.b	#$2A,(a3)
-	bne	$00002F78
-
-l00002F74:
-	moveq	#$+01,d7
-	bra	$00002F9A
-
-l00002F78:
-	cmp.b	#$68,d1
-	bne	$00002F88
-
-l00002F7E:
-	cmpi.b	#$68,(a3)
-	bne	$00002F88
-
-l00002F84:
-	moveq	#$+02,d1
-	bra	$00002F9A
-
-l00002F88:
-	cmp.b	#$6C,d1
-	bne	$00002F98
-
-l00002F8E:
-	cmpi.b	#$6C,(a3)
-	bne	$00002F98
-
-l00002F94:
-	moveq	#$+01,d1
-	bra	$00002F9A
-
-l00002F98:
-	move.b	(a3),d1
-
-l00002F9A:
-	addq.l	#$01,a3
-	cmpi.b	#$68,(a3)
-	beq	$00002F6E
-
-l00002FA2:
-	cmpi.b	#$6C,(a3)
-	beq	$00002F6E
-
-l00002FA8:
-	cmpi.b	#$4C,(a3)
-	beq	$00002F6E
-
-l00002FAE:
-	cmpi.b	#$7A,(a3)
-	beq	$00002F6E
-
-l00002FB4:
-	cmpi.b	#$6A,(a3)
-	beq	$00002F6E
-
-l00002FBA:
-	cmpi.b	#$74,(a3)
-	beq	$00002F6E
-
-l00002FC0:
-	cmpi.b	#$2A,(a3)
-	beq	$00002F6E
-
-l00002FC6:
-	move.b	d1,$0048(a7)
-	move.b	d7,$0049(a7)
-
-l00002FCE:
-	cmpi.b	#$6A,$0048(a7)
-	bne	$00002FDC
-
-l00002FD6:
-	move.b	#$01,$0048(a7)
-
-l00002FDC:
-	cmpi.b	#$74,$0048(a7)
-	bne	$00002FEA
-
-l00002FE4:
-	move.b	#$69,$0048(a7)
-
-l00002FEA:
-	cmpi.b	#$7A,$0048(a7)
-	bne	$00002FF8
-
-l00002FF2:
-	move.b	#$6C,$0048(a7)
-
-l00002FF8:
-	move.b	(a3)+,d7
-	beq	$0000306E
-
-l00002FFC:
-	cmp.b	#$25,d7
-	beq	$0000306E
-
-l00003002:
-	cmp.b	#$63,d7
-	beq	$0000306E
-
-l00003008:
-	cmp.b	#$6E,d7
-	beq	$0000306E
-
-l0000300E:
-	cmp.b	#$5B,d7
-	beq	$0000306E
-
-l00003014:
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$0000303E
-
-l00003026:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	moveq	#$+00,d1
-	move.b	d0,d1
-	bra	$0000304A
-
-l0000303E:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,d1
-	addq.w	#$04,a7
-
-l0000304A:
-	move.l	d1,d5
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-	move.b	d1,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000008,d0
-	bne	$00003014
-
-l0000306C:
-	moveq	#$+01,d3
-
-l0000306E:
-	move.b	d7,d1
-	sub.b	#$25,d1
-	beq	$000034BA
-
-l00003078:
-	sub.b	#$36,d1
-	beq	$000031B6
-
-l00003080:
-	subq.b	#$08,d1
-	beq	$00003096
-
-l00003084:
-	sub.b	#$0B,d1
-	beq	$00003528
-
-l0000308C:
-	subq.b	#$05,d1
-	beq	$000033D4
-
-l00003092:
-	bra	$000035CA
-
-l00003096:
-	cmp.l	#$FFFFFFFF,d6
-	bne	$000030A0
-
-l0000309E:
-	moveq	#$+01,d6
-
-l000030A0:
-	tst.b	$0049(a7)
-	bne	$000030BA
-
-l000030A6:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a1
-	bra	$000030BC
-
-l000030BA:
-	suba.l	a1,a1
-
-l000030BC:
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	move.l	a1,$002C(a7)
-	tst.l	(a0)
-	blt	$000030F4
-
-l000030D4:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	move.l	d1,-(a7)
-	moveq	#$+00,d1
-	move.b	d0,d1
-	move.l	d1,$0038(a7)
-	move.l	(a7)+,d1
-	bra	$00003112
-
-l000030F4:
-	movea.l	$002C(a7),a1
-	move.l	a2,-(a7)
-	move.l	a1,$0030(a7)
-	jsr.l	$00003F30
-	move.l	d0,$0038(a7)
-	movea.l	$0030(a7),a1
-	move.l	a1,$0030(a7)
-	addq.w	#$04,a7
-
-l00003112:
-	movea.l	$002C(a7),a1
-	move.l	$0034(a7),d5
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-	cmpi.l	#$FFFFFFFF,$0034(a7)
-	beq	$0000318A
-
-l00003128:
-	move.l	a1,$002C(a7)
-	cmp.l	d3,d6
-	bcs	$0000318A
-
-l00003130:
-	move.b	$0049(a7),d7
-	movea.l	$002C(a7),a4
-
-l00003138:
-	tst.b	d7
-	bne	$0000313E
-
-l0000313C:
-	move.b	d5,(a4)+
-
-l0000313E:
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$00003168
-
-l00003150:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	moveq	#$+00,d1
-	move.b	d0,d1
-	bra	$00003174
-
-l00003168:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,d1
-	addq.w	#$04,a7
-
-l00003174:
-	move.l	d1,d5
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-	cmp.l	#$FFFFFFFF,d1
-	beq	$00003186
-
-l00003182:
-	cmp.l	d3,d6
-	bcc	$00003138
-
-l00003186:
-	move.b	d7,$0049(a7)
-
-l0000318A:
-	cmp.l	#$FFFFFFFF,d5
-	beq	$0000319C
-
-l00003192:
-	move.l	a2,-(a7)
-	move.l	d5,-(a7)
-	bsr	$00002E5C
-	addq.w	#$08,a7
-
-l0000319C:
-	subq.l	#$01,d3
-	subq.l	#$01,d4
-	tst.b	$0049(a7)
-	bne	$00003D86
-
-l000031A8:
-	tst.l	d3
-	beq	$00003D86
-
-l000031AE:
-	addq.l	#$01,$003C(a7)
-	bra	$00003D86
-
-l000031B6:
-	clr.b	$002C(a7)
-	cmpi.b	#$5E,(a3)
-	bne	$000031C8
-
-l000031C0:
-	move.b	#$01,$002C(a7)
-	addq.l	#$01,a3
-
-l000031C8:
-	clr.l	$0034(a7)
-	move.b	$002C(a7),d7
-	move.l	$0034(a7),d1
-
-l000031D4:
-	tst.b	d7
-	beq	$000031E0
-
-l000031D8:
-	move.l	#$000000FF,d5
-	bra	$000031E2
-
-l000031E0:
-	moveq	#$+00,d5
-
-l000031E2:
-	lea	$004E(a7),a0
-	move.b	d5,(a5,d1)
-	addq.l	#$01,d1
-	cmp.l	#$00000020,d1
-	bcs	$000031D4
-
-l000031F4:
-	move.l	d2,$0084(a7)
-	move.b	d7,$002C(a7)
-	move.b	$002C(a7),d2
-
-l00003200:
-	tst.b	(a3)
-	beq	$00003276
-
-l00003204:
-	move.b	(a3)+,d1
-	cmpi.b	#$2D,(a3)
-	bne	$00003218
-
-l0000320C:
-	cmp.b	$0001(a3),d1
-	bcc	$00003218
-
-l00003212:
-	addq.l	#$01,a3
-	move.b	(a3)+,d7
-	bra	$0000321A
-
-l00003218:
-	move.b	d1,d7
-
-l0000321A:
-	moveq	#$+00,d5
-	move.b	d1,d5
-	moveq	#$+00,d0
-	move.b	d7,d0
-	cmp.l	d5,d0
-	bcs	$00003270
-
-l00003226:
-	tst.b	d2
-	beq	$0000324A
-
-l0000322A:
-	lea	$004E(a7),a0
-	move.l	d5,d0
-	lsr.l	#$03,d0
-	adda.l	d0,a0
-	moveq	#$+07,d0
-	and.l	d5,d0
-	moveq	#$+01,d1
-	lsl.l	d0,d1
-	move.l	d1,d0
-	not.l	d0
-	moveq	#$+00,d1
-	move.b	(a0),d1
-	and.l	d1,d0
-	move.b	d0,(a0)
-	bra	$00003266
-
-l0000324A:
-	lea	$004E(a7),a0
-	move.l	d5,d0
-	lsr.l	#$03,d0
-	adda.l	d0,a0
-	moveq	#$+07,d0
-	and.l	d5,d0
-	moveq	#$+01,d1
-	lsl.l	d0,d1
-	move.l	d1,d0
-	moveq	#$+00,d1
-	move.b	(a0),d1
-	or.l	d1,d0
-	move.b	d0,(a0)
-
-l00003266:
-	addq.l	#$01,d5
-	moveq	#$+00,d0
-	move.b	d7,d0
-	cmp.l	d5,d0
-	bcc	$00003226
-
-l00003270:
-	cmpi.b	#$5D,(a3)
-	bne	$00003200
-
-l00003276:
-	move.l	$0084(a7),d2
-	addq.l	#$01,a3
-	tst.b	$0049(a7)
-	bne	$00003296
-
-l00003282:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a6
-	bra	$00003298
-
-l00003296:
-	suba.l	a6,a6
-
-l00003298:
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$000032CA
-
-l000032AA:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	move.l	d1,-(a7)
-	moveq	#$+00,d1
-	move.b	d0,d1
-	move.l	d1,$0030(a7)
-	move.l	(a7)+,d1
-	bra	$000032D8
-
-l000032CA:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,$0030(a7)
-	addq.w	#$04,a7
-
-l000032D8:
-	move.l	$002C(a7),d5
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-	cmpi.l	#$FFFFFFFF,$002C(a7)
-	beq	$000033A6
-
-l000032EC:
-	lea	$004E(a7),a0
-	move.l	a0,-(a7)
-	move.l	a1,-(a7)
-	pea	$00000008
-	move.l	d5,-(a7)
-	jsr.l	$00002948
-	addq.w	#$08,a7
-	movea.l	(a7)+,a1
-	movea.l	(a7)+,a0
-	adda.l	d0,a0
-	moveq	#$+07,d0
-	and.l	d5,d0
-	moveq	#$+01,d1
-	lsl.l	d0,d1
-	move.l	d1,d0
-	moveq	#$+00,d1
-	move.b	(a0),d1
-	and.l	d1,d0
-	beq	$000033A6
-
-l0000331C:
-	cmp.l	d3,d6
-	bcs	$000033A6
-
-l00003322:
-	move.b	$0049(a7),d7
-
-l00003326:
-	tst.b	d7
-	bne	$0000332C
-
-l0000332A:
-	move.b	d5,(a6)+
-
-l0000332C:
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$00003356
-
-l0000333E:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	moveq	#$+00,d1
-	move.b	d0,d1
-	bra	$00003362
-
-l00003356:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,d1
-	addq.w	#$04,a7
-
-l00003362:
-	move.l	d1,d5
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-	cmp.l	#$FFFFFFFF,d1
-	beq	$000033A2
-
-l00003370:
-	lea	$004E(a7),a0
-	move.l	a0,-(a7)
-	move.l	a1,-(a7)
-	pea	$00000008
-	move.l	d5,-(a7)
-	jsr.l	$00002948
-	addq.w	#$08,a7
-	movea.l	(a7)+,a1
-	movea.l	(a7)+,a0
-	adda.l	d0,a0
-	moveq	#$+07,d0
-	and.l	d5,d0
-	moveq	#$+01,d1
-	lsl.l	d0,d1
-	move.l	d1,d0
-	moveq	#$+00,d1
-	move.b	(a0),d1
-	and.l	d1,d0
-	beq	$000033A2
-
-l0000339E:
-	cmp.l	d3,d6
-	bcc	$00003326
-
-l000033A2:
-	move.b	d7,$0049(a7)
-
-l000033A6:
-	cmp.l	#$FFFFFFFF,d5
-	beq	$000033B8
-
-l000033AE:
-	move.l	a2,-(a7)
-	move.l	d5,-(a7)
-	bsr	$00002E5C
-	addq.w	#$08,a7
-
-l000033B8:
-	subq.l	#$01,d3
-	subq.l	#$01,d4
-	tst.b	$0049(a7)
-	bne	$00003D86
-
-l000033C4:
-	tst.l	d3
-	beq	$00003D86
-
-l000033CA:
-	clr.b	(a6)+
-	addq.l	#$01,$003C(a7)
-	bra	$00003D86
-
-l000033D4:
-	tst.b	$0049(a7)
-	bne	$000033EE
-
-l000033DA:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a5
-	bra	$000033F0
-
-l000033EE:
-	suba.l	a5,a5
-
-l000033F0:
-	cmp.l	#$FFFFFFFF,d5
-	beq	$0000348C
-
-l000033FA:
-	move.b	d5,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000008,d0
-	bne	$0000348C
-
-l00003416:
-	cmp.l	d3,d6
-	bcs	$0000348C
-
-l0000341A:
-	move.b	$0049(a7),d7
-
-l0000341E:
-	tst.b	d7
-	bne	$00003424
-
-l00003422:
-	move.b	d5,(a5)+
-
-l00003424:
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$0000344E
-
-l00003436:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	moveq	#$+00,d1
-	move.b	d0,d1
-	bra	$0000345A
-
-l0000344E:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,d1
-	addq.w	#$04,a7
-
-l0000345A:
-	move.l	d1,d5
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-	cmp.l	#$FFFFFFFF,d1
-	beq	$00003488
-
-l00003468:
-	move.b	d5,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000008,d0
-	bne	$00003488
-
-l00003484:
-	cmp.l	d3,d6
-	bcc	$0000341E
-
-l00003488:
-	move.b	d7,$0049(a7)
-
-l0000348C:
-	cmp.l	#$FFFFFFFF,d5
-	beq	$0000349E
-
-l00003494:
-	move.l	a2,-(a7)
-	move.l	d5,-(a7)
-	bsr	$00002E5C
-	addq.w	#$08,a7
-
-l0000349E:
-	subq.l	#$01,d3
-	subq.l	#$01,d4
-	tst.b	$0049(a7)
-	bne	$00003D86
-
-l000034AA:
-	tst.l	d3
-	beq	$00003D86
-
-l000034B0:
-	clr.b	(a5)+
-	addq.l	#$01,$003C(a7)
-	bra	$00003D86
-
-l000034BA:
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$000034EC
-
-l000034CC:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	move.l	d1,-(a7)
-	moveq	#$+00,d1
-	move.b	d0,d1
-	move.l	d1,$0030(a7)
-	move.l	(a7)+,d1
-	bra	$000034FA
-
-l000034EC:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,$0030(a7)
-	addq.w	#$04,a7
-
-l000034FA:
-	move.l	$002C(a7),d5
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-	cmpi.l	#$00000025,$002C(a7)
-	beq	$00003D86
-
-l0000350E:
-	cmp.l	#$FFFFFFFF,d5
-	beq	$00003520
-
-l00003516:
-	move.l	a2,-(a7)
-	move.l	d5,-(a7)
-	bsr	$00002E5C
-	addq.w	#$08,a7
-
-l00003520:
-	subq.l	#$01,d3
-	subq.l	#$01,d4
-	bra	$00003D86
-
-l00003528:
-	tst.b	$0049(a7)
-	bne	$000035C0
-
-l00003530:
-	cmpi.b	#$01,$0048(a7)
-	bne	$00003552
-
-l00003538:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.l	d4,$0004(a0)
-	clr.l	(a0)
-	bra	$000035C0
-
-l00003552:
-	cmpi.b	#$6C,$0048(a7)
-	bne	$00003570
-
-l0000355A:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.l	d4,(a0)
-	bra	$000035C0
-
-l00003570:
-	cmpi.b	#$68,$0048(a7)
-	bne	$0000358E
-
-l00003578:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.w	d4,(a0)
-	bra	$000035C0
-
-l0000358E:
-	cmpi.b	#$02,$0048(a7)
-	bne	$000035AC
-
-l00003596:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.b	d4,(a0)
-	bra	$000035C0
-
-l000035AC:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.l	d4,(a0)
-
-l000035C0:
-	moveq	#$+01,d3
-	addq.l	#$01,$003C(a7)
-	bra	$00003D86
-
-l000035CA:
-	clr.l	$0030(a7)
-	clr.l	$002C(a7)
-	clr.l	$006E(a7)
-	tst.b	d7
-	bne	$000035DC
-
-l000035DA:
-	subq.l	#$01,a3
-
-l000035DC:
-	cmp.b	#$70,d7
-	bne	$000035EA
-
-l000035E2:
-	move.b	#$6C,$0048(a7)
-	moveq	#$+78,d7
-
-l000035EA:
-	cmp.l	#$0000002D,d5
-	bne	$000035F8
-
-l000035F2:
-	cmp.b	#$75,d7
-	bne	$00003600
-
-l000035F8:
-	cmp.l	#$0000002B,d5
-	bne	$00003650
-
-l00003600:
-	cmp.l	d3,d6
-	bcs	$00003650
-
-l00003604:
-	move.l	d5,$006E(a7)
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$0000363A
-
-l0000361A:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	move.l	d1,-(a7)
-	moveq	#$+00,d1
-	move.b	d0,d1
-	move.l	d1,$0038(a7)
-	move.l	(a7)+,d1
-	bra	$00003648
-
-l0000363A:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,$0038(a7)
-	addq.w	#$04,a7
-
-l00003648:
-	move.l	$0034(a7),d5
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-
-l00003650:
-	cmp.b	#$69,d7
-	bne	$000037C2
-
-l00003658:
-	cmp.l	#$00000030,d5
-	bne	$00003784
-
-l00003662:
-	cmp.l	d3,d6
-	bcs	$00003784
-
-l00003668:
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$0000369A
-
-l0000367A:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	move.l	d1,-(a7)
-	moveq	#$+00,d1
-	move.b	d0,d1
-	move.l	d1,$0038(a7)
-	move.l	(a7)+,d1
-	bra	$000036A8
-
-l0000369A:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,$0038(a7)
-	addq.w	#$04,a7
-
-l000036A8:
-	move.l	$0034(a7),$0040(a7)
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-	move.b	$0037(a7),d0
-	and.l	#$000000FF,d0
-	lea	$00002B14,a0
-	btst	#$0000,(01,a0,d0)
-	beq	$000036CE
-
-l000036CA:
-	or.b	#$20,d0
-
-l000036CE:
-	cmp.l	#$00000078,d0
-	bne	$00003766
-
-l000036D8:
-	cmp.l	d3,d6
-	bcs	$00003766
-
-l000036DE:
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$00003710
-
-l000036F0:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	move.l	d1,-(a7)
-	moveq	#$+00,d1
-	move.b	d0,d1
-	move.l	d1,$0038(a7)
-	move.l	(a7)+,d1
-	bra	$0000371E
-
-l00003710:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,$0038(a7)
-	addq.w	#$04,a7
-
-l0000371E:
-	move.l	$0034(a7),$004A(a7)
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-	move.b	d5,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000044,d0
-	beq	$0000374A
-
-l00003744:
-	cmp.l	d3,d6
-	bcs	$0000374A
-
-l00003748:
-	moveq	#$+78,d7
-
-l0000374A:
-	cmpi.l	#$FFFFFFFF,$004A(a7)
-	beq	$00003760
-
-l00003754:
-	move.l	a2,-(a7)
-	move.l	$004E(a7),-(a7)
-	bsr	$00002E5C
-	addq.w	#$08,a7
-
-l00003760:
-	subq.l	#$01,d3
-	subq.l	#$01,d4
-	bra	$00003768
-
-l00003766:
-	moveq	#$+6F,d7
-
-l00003768:
-	cmpi.l	#$FFFFFFFF,$0040(a7)
-	beq	$0000377E
-
-l00003772:
-	move.l	a2,-(a7)
-	move.l	$0044(a7),-(a7)
-	bsr	$00002E5C
-	addq.w	#$08,a7
-
-l0000377E:
-	subq.l	#$01,d3
-	subq.l	#$01,d4
-	bra	$000037C2
-
-l00003784:
-	move.b	d5,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000004,d0
-	bne	$000037C2
-
-l000037A0:
-	move.b	d5,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000044,d0
-	beq	$000037C2
-
-l000037BC:
-	cmp.l	d3,d6
-	bcs	$000037C2
-
-l000037C0:
-	moveq	#$+78,d7
-
-l000037C2:
-	cmp.b	#$78,d7
-	bne	$000038F6
-
-l000037CA:
-	cmp.l	#$00000030,d5
-	bne	$000038F6
-
-l000037D4:
-	cmp.l	d3,d6
-	bcs	$000038F6
-
-l000037DA:
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$0000380C
-
-l000037EC:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	move.l	d1,-(a7)
-	moveq	#$+00,d1
-	move.b	d0,d1
-	move.l	d1,$0038(a7)
-	move.l	(a7)+,d1
-	bra	$0000381A
-
-l0000380C:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,$0038(a7)
-	addq.w	#$04,a7
-
-l0000381A:
-	move.l	$0034(a7),$0040(a7)
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-	move.b	$0037(a7),d0
-	and.l	#$000000FF,d0
-	lea	$00002B14,a0
-	btst	#$0000,(01,a0,d0)
-	beq	$00003840
-
-l0000383C:
-	or.b	#$20,d0
-
-l00003840:
-	cmp.l	#$00000078,d0
-	bne	$000038DC
-
-l0000384A:
-	cmp.l	d3,d6
-	bcs	$000038DC
-
-l00003850:
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$00003882
-
-l00003862:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	move.l	d1,-(a7)
-	moveq	#$+00,d1
-	move.b	d0,d1
-	move.l	d1,$0038(a7)
-	move.l	(a7)+,d1
-	bra	$00003890
-
-l00003882:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,$0038(a7)
-	addq.w	#$04,a7
-
-l00003890:
-	move.l	$0034(a7),$004A(a7)
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-	move.b	$0037(a7),d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000044,d0
-	beq	$000038C2
-
-l000038B8:
-	cmp.l	d3,d6
-	bcs	$000038C2
-
-l000038BC:
-	move.l	$004A(a7),d5
-	bra	$000038F6
-
-l000038C2:
-	cmpi.l	#$FFFFFFFF,$004A(a7)
-	beq	$000038D8
-
-l000038CC:
-	move.l	a2,-(a7)
-	move.l	$004E(a7),-(a7)
-	bsr	$00002E5C
-	addq.w	#$08,a7
-
-l000038D8:
-	subq.l	#$01,d3
-	subq.l	#$01,d4
-
-l000038DC:
-	cmpi.l	#$FFFFFFFF,$0040(a7)
-	beq	$000038F2
-
-l000038E6:
-	move.l	a2,-(a7)
-	move.l	$0044(a7),-(a7)
-	bsr	$00002E5C
-	addq.w	#$08,a7
-
-l000038F2:
-	subq.l	#$01,d3
-	subq.l	#$01,d4
-
-l000038F6:
-	cmp.b	#$78,d7
-	beq	$00003902
-
-l000038FC:
-	cmp.b	#$58,d7
-	bne	$0000390C
-
-l00003902:
-	move.l	#$00000010,$0040(a7)
-	bra	$0000392A
-
-l0000390C:
-	cmp.b	#$6F,d7
-	bne	$0000391C
-
-l00003912:
-	move.l	#$00000008,$0034(a7)
-	bra	$00003924
-
-l0000391C:
-	move.l	#$0000000A,$0034(a7)
-
-l00003924:
-	move.l	$0034(a7),$0040(a7)
-
-l0000392A:
-	move.l	$0040(a7),$0072(a7)
-	move.b	d5,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000044,d0
-	move.l	d2,$0084(a7)
-	move.l	d4,$0034(a7)
-	move.b	d7,$004A(a7)
-	tst.l	d0
-	beq	$00003B92
-
-l0000395C:
-	cmpi.l	#$0000000A,$0072(a7)
-	bne	$00003992
-
-l00003966:
-	move.b	d5,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000004,d0
-	move.l	d2,$0084(a7)
-	move.l	d4,$0034(a7)
-	move.b	d7,$004A(a7)
-	tst.l	d0
-	beq	$00003B92
-
-l00003992:
-	cmpi.l	#$00000008,$0072(a7)
-	bne	$000039B2
-
-l0000399C:
-	move.l	d2,$0084(a7)
-	move.l	d4,$0034(a7)
-	move.b	d7,$004A(a7)
-	cmp.l	#$00000037,d5
-	bgt	$00003B92
-
-l000039B2:
-	move.l	d2,$0084(a7)
-	move.l	d4,$0034(a7)
-	move.l	d6,$0040(a7)
-	move.b	d7,$004A(a7)
-	cmp.l	d3,d6
-	bcs	$00003B92
-
-l000039C8:
-	move.l	$0072(a7),d7
-	movea.l	$0040(a7),a4
-
-l000039D0:
-	move.l	d7,d1
-	move.l	d1,d0
-	move.l	d2,-(a7)
-	moveq	#$+1F,d2
-	asr.l	d2,d0
-	move.l	(a7)+,d2
-	move.l	d0,-(a7)
-	move.l	d1,-(a7)
-	move.l	a1,-(a7)
-	move.l	$003C(a7),-(a7)
-	move.l	$003C(a7),-(a7)
-	movem.l	d0-d1,-(a7)
-	jsr.l	$00003EB0
-	lea	$0010(a7),a7
-	movea.l	(a7)+,a1
-	move.l	d0,$0048(a7)
-	move.l	d1,$004C(a7)
-	movem.l	(a7)+,d1
-	movem.l	(a7)+,d0
-	move.b	d5,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000004,d0
-	beq	$00003A30
-
-l00003A26:
-	move.l	d5,d4
-	sub.l	#$00000030,d4
-	bra	$00003A32
-
-l00003A30:
-	moveq	#$+00,d4
-
-l00003A32:
-	move.l	d4,d1
-	move.l	d1,d0
-	move.l	d2,-(a7)
-	moveq	#$+1F,d2
-	asr.l	d2,d0
-	move.l	(a7)+,d2
-	move.l	d2,-(a7)
-	move.l	d1,d2
-	add.l	$0048(a7),d2
-	move.l	d2,$0034(a7)
-	move.l	d0,d2
-	move.l	d3,-(a7)
-	move.l	$0048(a7),d3
-	addx.l	d3,d2
-	move.l	d2,$0034(a7)
-	move.l	(a7)+,d3
-	move.l	(a7)+,d2
-	move.b	d5,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000001,d0
-	beq	$00003A82
-
-l00003A78:
-	move.l	d5,d6
-	sub.l	#$00000037,d6
-	bra	$00003A84
-
-l00003A82:
-	moveq	#$+00,d6
-
-l00003A84:
-	move.l	d6,d1
-	move.l	d1,d0
-	move.l	d2,-(a7)
-	moveq	#$+1F,d2
-	asr.l	d2,d0
-	move.l	(a7)+,d2
-	move.l	d2,-(a7)
-	move.l	d1,d2
-	add.l	$0034(a7),d2
-	move.l	d2,$0048(a7)
-	move.l	d0,d2
-	move.l	d3,-(a7)
-	move.l	$0034(a7),d3
-	addx.l	d3,d2
-	move.l	d2,$0048(a7)
-	move.l	(a7)+,d3
-	move.l	(a7)+,d2
-	move.b	d5,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000002,d0
-	beq	$00003AD4
-
-l00003ACA:
-	move.l	d5,d2
-	sub.l	#$00000057,d2
-	bra	$00003AD6
-
-l00003AD4:
-	moveq	#$+00,d2
-
-l00003AD6:
-	move.l	d2,d1
-	move.l	d1,d0
-	move.l	d2,-(a7)
-	moveq	#$+1F,d2
-	asr.l	d2,d0
-	move.l	(a7)+,d2
-	move.l	d2,-(a7)
-	move.l	d1,d2
-	add.l	$0048(a7),d2
-	move.l	d2,$0034(a7)
-	move.l	d0,d2
-	move.l	d3,-(a7)
-	move.l	$0048(a7),d3
-	addx.l	d3,d2
-	move.l	d2,$0034(a7)
-	move.l	(a7)+,d3
-	move.l	(a7)+,d2
-	lea	$0018(a2),a0
-	moveq	#$+01,d0
-	or.l	d0,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$00003B28
-
-l00003B10:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	moveq	#$+00,d1
-	move.b	d0,d1
-	bra	$00003B34
-
-l00003B28:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,d1
-	addq.w	#$04,a7
-
-l00003B34:
-	move.l	d1,d5
-	addq.l	#$01,d3
-	addq.l	#$01,$0034(a7)
-	move.b	d1,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000044,d0
-	beq	$00003B92
-
-l00003B58:
-	cmp.l	#$0000000A,d7
-	bne	$00003B7C
-
-l00003B60:
-	move.b	d5,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000004,d0
-	beq	$00003B92
-
-l00003B7C:
-	cmp.l	#$00000008,d7
-	bne	$00003B8C
-
-l00003B84:
-	cmp.l	#$00000037,d5
-	bgt	$00003B92
-
-l00003B8C:
-	cmpa.l	d3,a4
-	bcc	$000039D0
-
-l00003B92:
-	move.b	$004A(a7),d7
-	move.l	$0034(a7),d4
-	move.l	$0084(a7),d2
-	tst.l	$006E(a7)
-	beq	$00003BC6
-
-l00003BA4:
-	cmp.l	#$00000002,d3
-	bne	$00003BC6
-
-l00003BAC:
-	cmp.l	#$FFFFFFFF,d5
-	beq	$00003BBE
-
-l00003BB4:
-	move.l	a2,-(a7)
-	move.l	d5,-(a7)
-	bsr	$00002E5C
-	addq.w	#$08,a7
-
-l00003BBE:
-	subq.l	#$01,d3
-	subq.l	#$01,d4
-	move.l	$006E(a7),d5
-
-l00003BC6:
-	cmp.l	#$FFFFFFFF,d5
-	beq	$00003BD8
-
-l00003BCE:
-	move.l	a2,-(a7)
-	move.l	d5,-(a7)
-	bsr	$00002E5C
-	addq.w	#$08,a7
-
-l00003BD8:
-	subq.l	#$01,d3
-	subq.l	#$01,d4
-	tst.b	$0049(a7)
-	bne	$00003D86
-
-l00003BE4:
-	tst.l	d3
-	beq	$00003D86
-
-l00003BEA:
-	cmp.b	#$75,d7
-	bne	$00003CAC
-
-l00003BF2:
-	move.l	d0,-(a7)
-	move.b	$004C(a7),d0
-	subq.b	#$01,d0
-	move.b	d0,$0038(a7)
-	move.l	(a7)+,d0
-	tst.b	$0034(a7)
-	beq	$00003C1C
-
-l00003C06:
-	subq.b	#$01,$0034(a7)
-	beq	$00003C74
-
-l00003C0C:
-	subi.b	#$66,$0034(a7)
-	beq	$00003C58
-
-l00003C14:
-	subq.b	#$04,$0034(a7)
-	beq	$00003C3C
-
-l00003C1A:
-	bra	$00003C90
-
-l00003C1C:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.l	$0030(a7),$0004(a0)
-	move.l	$002C(a7),(a0)
-	bra	$00003D82
-
-l00003C3C:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.l	$0030(a7),d0
-	move.l	d0,(a0)
-	bra	$00003D82
-
-l00003C58:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.l	$0030(a7),d0
-	move.w	d0,(a0)
-	bra	$00003D82
-
-l00003C74:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.l	$0030(a7),d0
-	move.b	d0,(a0)
-	bra	$00003D82
-
-l00003C90:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.l	$0030(a7),d0
-	move.l	d0,(a0)
-	bra	$00003D82
-
-l00003CAC:
-	cmpi.l	#$0000002D,$006E(a7)
-	bne	$00003CC8
-
-l00003CB6:
-	movem.l	$002C(a7),d0-d1
-	neg.l	d1
-	negx.l	d0
-	movem.l	a6-a7,$0034(a7)
-	bra	$00003CD4
-
-l00003CC8:
-	move.l	$0030(a7),$0038(a7)
-	move.l	$002C(a7),$0034(a7)
-
-l00003CD4:
-	move.l	d0,-(a7)
-	move.b	$004C(a7),d0
-	subq.b	#$01,d0
-	move.b	d0,$0030(a7)
-	move.l	(a7)+,d0
-	tst.b	$002C(a7)
-	beq	$00003CFE
-
-l00003CE8:
-	subq.b	#$01,$002C(a7)
-	beq	$00003D50
-
-l00003CEE:
-	subi.b	#$66,$002C(a7)
-	beq	$00003D36
-
-l00003CF6:
-	subq.b	#$04,$002C(a7)
-	beq	$00003D1C
-
-l00003CFC:
-	bra	$00003D6A
-
-l00003CFE:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.l	$0038(a7),$0004(a0)
-	move.l	$0034(a7),(a0)
-	bra	$00003D82
-
-l00003D1C:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.l	$0038(a7),d0
-	move.l	d0,(a0)
-	bra	$00003D82
-
-l00003D36:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.l	$0038(a7),d0
-	move.w	d0,(a0)
-	bra	$00003D82
-
-l00003D50:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.l	$0038(a7),d0
-	move.b	d0,(a0)
-	bra	$00003D82
-
-l00003D6A:
-	move.l	d2,d0
-	addq.l	#$03,d0
-	lsr.l	#$02,d0
-	lsl.l	#$02,d0
-	move.l	d0,d2
-	addq.l	#$04,d2
-	movea.l	d2,a0
-	movea.l	$-0004(a0),a0
-	move.l	$0038(a7),d0
-	move.l	d0,(a0)
-
-l00003D82:
-	addq.l	#$01,$003C(a7)
-
-l00003D86:
-	movea.l	a3,a4
-	bra	$00003E84
-
-l00003D8C:
-	move.b	(a4),d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000008,d0
-	beq	$00003E18
-
-l00003DA8:
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$00003DD2
-
-l00003DBA:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	moveq	#$+00,d1
-	move.b	d0,d1
-	bra	$00003DDE
-
-l00003DD2:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,d1
-	addq.w	#$04,a7
-
-l00003DDE:
-	move.l	d1,d5
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-	move.b	d1,d0
-	and.l	#$000000FF,d0
-	lea	$00002B15,a0
-	adda.l	d0,a0
-	moveq	#$+00,d0
-	move.b	(a0),d0
-	and.l	#$00000008,d0
-	bne	$00003DA8
-
-l00003E00:
-	cmp.l	#$FFFFFFFF,d5
-	beq	$00003E12
-
-l00003E08:
-	move.l	a2,-(a7)
-	move.l	d5,-(a7)
-	bsr	$00002E5C
-	addq.w	#$08,a7
-
-l00003E12:
-	subq.l	#$01,d4
-	moveq	#$+01,d3
-	bra	$00003E82
-
-l00003E18:
-	lea	$0018(a2),a0
-	ori.l	#$00000001,(a0)
-	lea	$0014(a2),a0
-	subq.l	#$01,(a0)
-	blt	$00003E4A
-
-l00003E2A:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	move.l	a2,-(a7)
-	movea.l	a0,a2
-	addq.l	#$01,a2
-	move.l	a2,(a1)
-	movea.l	(a7)+,a2
-	move.b	(a0),d0
-	move.l	d1,-(a7)
-	moveq	#$+00,d1
-	move.b	d0,d1
-	move.l	d1,$0030(a7)
-	move.l	(a7)+,d1
-	bra	$00003E58
-
-l00003E4A:
-	move.l	a2,-(a7)
-	jsr.l	$00003F30
-	move.l	d0,$0030(a7)
-	addq.w	#$04,a7
-
-l00003E58:
-	move.l	$002C(a7),d5
-	addq.l	#$01,d3
-	addq.l	#$01,d4
-	move.b	(a4),d0
-	ext.w	d0
-	ext.l	d0
-	cmp.l	$002C(a7),d0
-	beq	$00003E82
-
-l00003E6C:
-	cmp.l	#$FFFFFFFF,d5
-	beq	$00003E7E
-
-l00003E74:
-	move.l	a2,-(a7)
-	move.l	d5,-(a7)
-	bsr	$00002E5C
-	addq.w	#$08,a7
-
-l00003E7E:
-	subq.l	#$01,d3
-	subq.l	#$01,d4
-
-l00003E82:
-	addq.l	#$01,a4
-
-l00003E84:
-	tst.l	d3
-	beq	$00003E8E
-
-l00003E88:
-	tst.b	(a4)
-	bne	$00002EAE
-
-l00003E8E:
-	cmp.l	#$FFFFFFFF,d5
-	bne	$00003EA0
-
-l00003E96:
-	tst.l	$003C(a7)
-	bne	$00003EA0
-
-l00003E9C:
-	move.l	d5,d0
-	bra	$00003EA4
-
-l00003EA0:
-	move.l	$003C(a7),d0
-
-l00003EA4:
-	movem.l	(a7)+,d2-d7/a2-a6
-	lea	$004C(a7),a7
-	rts	
-00003EAE                                           00 00               ..
-
-;; fn00003EB0: 00003EB0
-fn00003EB0 proc
-	movem.l	d2-d6,-(a7)
-	move.l	$001C(a7),d5
-	move.l	$0024(a7),d6
-	move.l	d5,d0
-	move.l	d6,d1
-	move.l	d0,d2
-	swap.l	d0
-	move.l	d1,d3
-	swap.l	d1
-	move.w	d2,d4
-	mulu.w	d3,d4
-	mulu.w	d1,d2
-	mulu.w	d0,d3
-	mulu.w	d0,d1
-	move.l	d4,d0
-	eor.w	d0,d0
-	swap.l	d0
-	add.l	d0,d2
-	add.l	d3,d2
-	bcc	$00003EE4
-
-l00003EDE:
-	add.l	#$00010000,d1
-
-l00003EE4:
-	swap.l	d2
-	moveq	#$+00,d0
-	move.w	d2,d0
-	move.w	d4,d2
-	add.l	d1,d0
-	move.l	d2,d1
-	move.l	$0020(a7),d2
-	move.l	d2,d3
-	move.l	d5,d4
-	swap.l	d3
-	swap.l	d4
-	mulu.w	d5,d3
-	mulu.w	d2,d4
-	mulu.w	d5,d2
-	add.w	d4,d3
-	swap.l	d3
-	eor.w	d3,d3
-	add.l	d3,d2
-	add.l	d2,d0
-	move.l	$0018(a7),d2
-	move.l	d2,d3
-	move.l	d6,d4
-	swap.l	d3
-	swap.l	d4
-	mulu.w	d6,d3
-	mulu.w	d2,d4
-	mulu.w	d6,d2
-	add.w	d4,d3
-	swap.l	d3
-	eor.w	d3,d3
-	add.l	d3,d2
-	add.l	d2,d0
-	movem.l	(a7)+,d2-d6
-	rts	
-00003F2E                                           00 00               ..
-
-;; fn00003F30: 00003F30
-fn00003F30 proc
-	movem.l	d2-d5/a2-a4/a6,-(a7)
-	movea.l	$0024(a7),a2
-	jsr.l	$00002688
-	move.l	a2,d0
-	bne	$00003F48
-
-l00003F42:
-	moveq	#$-01,d0
-	bra	$00004026
-
-l00003F48:
-	moveq	#$+2A,d0
-	and.l	$0018(a2),d0
-	moveq	#$+20,d5
-	cmp.l	d0,d5
-	beq	$00003F5A
-
-l00003F54:
-	moveq	#$-01,d0
-	bra	$00004026
-
-l00003F5A:
-	lea	$0018(a2),a0
-	moveq	#$+01,d0
-	or.l	d0,(a0)
-	move.l	#$00000200,d0
-	and.l	(a0),d0
-	beq	$00003F72
-
-l00003F6C:
-	jsr.l	$0000402C
-
-l00003F72:
-	tst.l	$001C(a2)
-	bne	$00003F90
-
-l00003F78:
-	moveq	#$+04,d0
-	and.l	$0018(a2),d0
-	beq	$00003F88
-
-l00003F80:
-	moveq	#$+01,d0
-	move.l	d0,$001C(a2)
-	bra	$00003F90
-
-l00003F88:
-	move.l	#$00000400,$001C(a2)
-
-l00003F90:
-	tst.l	$0008(a2)
-	bne	$00003FCC
-
-l00003F96:
-	lea	$001C(a2),a1
-	move.l	#$00000080,d0
-	and.l	$0018(a2),d0
-	beq	$00003FAA
-
-l00003FA6:
-	moveq	#$+02,d4
-	bra	$00003FAC
-
-l00003FAA:
-	moveq	#$+01,d4
-
-l00003FAC:
-	move.l	d4,d0
-	add.l	(a1),d0
-	move.l	d0,-(a7)
-	jsr.l	$000022B4
-	movea.l	d0,a3
-	addq.w	#$04,a7
-	move.l	a3,d0
-	bne	$00003FC4
-
-l00003FC0:
-	moveq	#$-01,d0
-	bra	$00004026
-
-l00003FC4:
-	lea	$0001(a3),a1
-	move.l	a1,$0008(a2)
-
-l00003FCC:
-	lea	$0004(a2),a0
-	move.l	$0008(a2),(a0)
-	move.l	$001C(a2),d3
-	move.l	(a0),d2
-	move.l	(a2),d1
-	movea.l	$00004100,a6
-	jsr.l	$-002A(a6)
-	lea	$0014(a2),a0
-	move.l	d0,(a0)
-	subq.l	#$01,(a0)
-	bge	$00004012
-
-l00003FF0:
-	moveq	#$-01,d0
-	cmp.l	$0014(a2),d0
-	bne	$00004002
-
-l00003FF8:
-	lea	$0018(a2),a0
-	moveq	#$+08,d0
-	or.l	d0,(a0)
-	bra	$0000400A
-
-l00004002:
-	lea	$0018(a2),a0
-	moveq	#$+10,d0
-	or.l	d0,(a0)
-
-l0000400A:
-	clr.l	$0014(a2)
-	moveq	#$-01,d0
-	bra	$00004026
-
-l00004012:
-	lea	$0004(a2),a1
-	movea.l	(a1),a0
-	movea.l	a0,a4
-	addq.l	#$01,a4
-	move.l	a4,(a1)
-	move.b	(a0),d0
-	and.l	#$000000FF,d0
-
-l00004026:
-	movem.l	(a7)+,d2-d5/a2-a4/a6
-	rts	
-
-;; fn0000402C: 0000402C
-fn0000402C proc
-	movem.l	a2,-(a7)
-	movea.l	$00004260,a2
-	move.l	a2,d0
-	beq	$00004064
-
-l0000403A:
-	move.l	#$00000202,d0
-	and.l	$0018(a2),d0
-	cmp.l	#$00000202,d0
-	bne	$0000405A
-
-l0000404C:
-	tst.l	(a2)
-	beq	$0000405A
-
-l00004050:
-	move.l	a2,-(a7)
-	jsr.l	$00002208
-	addq.w	#$04,a7
-
-l0000405A:
-	lea	$000C(a2),a0
-	movea.l	(a0),a2
-	move.l	a2,d0
-	bne	$0000403A
-
-l00004064:
-	movea.l	(a7)+,a2
-	rts	
-
-;; fn00004068: 00004068
-fn00004068 proc
-	movem.l	d2/a2-a3,-(a7)
-	movea.l	$0010(a7),a2
-	moveq	#$+00,d2
-	tst.b	(a2)
-	beq	$000040E8
-
-l00004076:
-	movea.l	$00004258,a0
-	lea	$0018(a0),a1
-	moveq	#$+02,d0
-	or.l	d0,(a1)
-	lea	$0014(a0),a0
-	subq.l	#$01,(a0)
-	blt	$000040BE
-
-l0000408C:
-	cmpi.b	#$0A,(a2)
-	bne	$000040A4
-
-l00004092:
-	movea.l	$00004258,a0
-	move.l	#$00000080,d0
-	and.l	$0018(a0),d0
-	bne	$000040BE
-
-l000040A4:
-	movea.l	$00004258,a1
-	addq.l	#$04,a1
-	movea.l	(a1),a0
-	movea.l	a0,a3
-	addq.l	#$01,a3
-	move.l	a3,(a1)
-	move.b	(a2),(a0)
-	move.b	(a0),d0
-	moveq	#$+00,d1
-	move.b	d0,d1
-	bra	$000040D6
-
-l000040BE:
-	move.l	$00004258,-(a7)
-	move.b	(a2),d0
-	ext.w	d0
-	ext.l	d0
-	move.l	d0,-(a7)
-	jsr.l	$000020F4
-	move.l	d0,d1
-	addq.w	#$08,a7
-
-l000040D6:
-	moveq	#$-01,d0
-	cmp.l	d1,d0
-	bne	$000040E0
-
-l000040DC:
-	moveq	#$-01,d0
-	bra	$000040EA
-
-l000040E0:
-	addq.l	#$01,a2
-	addq.l	#$01,d2
-	tst.b	(a2)
-	bne	$00004076
-
-l000040E8:
-	move.l	d2,d0
-
-l000040EA:
-	movem.l	(a7)+,d2/a2-a3
-	rts	
+00002E40 41 EF 00 08 2F 08 2F 2F 00 08 2F 39 00 00 42 54 A..././/../9..BT
+00002E50 4E B9 00 00 2E 8C 4F EF 00 0C 4E 75 48 E7 00 20 N.....O...NuH.. 
+00002E60 24 6F 00 0C 20 0A 67 1E 20 2A 00 04 B0 AA 00 08 $o.. .g. *......
+00002E70 64 08 20 6A 00 04 10 AF 00 0B 41 EA 00 14 52 90 d. j......A...R.
+00002E80 41 EA 00 04 53 90 24 5F 4E 75 00 00 4F EF FF B4 A...S.$_Nu..O...
+00002E90 48 E7 3F 3E 24 2F 00 84 28 6F 00 80 24 6F 00 7C H.?>$/..(o..$o.|
+00002EA0 42 AF 00 3C 78 00 7A 00 4A 14 67 00 0F E2 76 00 B..<x.z.J.g...v.
+00002EB0 0C 14 00 25 66 00 0E D6 7C FF 1F 7C 00 69 00 48 ...%f...|..|.i.H
+00002EC0 42 2F 00 49 47 EC 00 01 70 00 10 13 41 F9 00 00 B/.IG...p...A...
+00002ED0 2B 15 D1 C0 70 00 10 10 C0 BC 00 00 00 04 67 5C +...p.........g\
+00002EE0 7C 00 70 00 10 13 41 F9 00 00 2B 15 D1 C0 70 00 |.p...A...+...p.
+00002EF0 10 10 C0 BC 00 00 00 04 67 42 70 0A 2F 02 22 00 ........gBp./.".
+00002F00 24 06 48 41 48 42 C2 C6 C4 C0 C0 C6 D2 42 48 41 $.HAHB.......BHA
+00002F10 42 41 D0 81 24 1F 72 00 12 1B 92 BC 00 00 00 30 BA..$.r........0
+00002F20 2C 01 DC 80 70 00 10 13 41 F9 00 00 2B 15 D1 C0 ,...p...A...+...
+00002F30 70 00 10 10 C0 BC 00 00 00 04 66 BE 0C 13 00 68 p.........f....h
+00002F40 67 24 0C 13 00 6C 67 1E 0C 13 00 4C 67 18 0C 13 g$...lg....Lg...
+00002F50 00 7A 67 12 0C 13 00 6A 67 0C 0C 13 00 74 67 06 .zg....jg....tg.
+00002F60 0C 13 00 2A 66 68 1E 2F 00 49 12 2F 00 48 0C 13 ...*fh./.I./.H..
+00002F70 00 2A 66 04 7E 01 60 22 B2 3C 00 68 66 0A 0C 13 .*f.~.`".<.hf...
+00002F80 00 68 66 04 72 02 60 12 B2 3C 00 6C 66 0A 0C 13 .hf.r.`..<.lf...
+00002F90 00 6C 66 04 72 01 60 02 12 13 52 8B 0C 13 00 68 .lf.r.`...R....h
+00002FA0 67 CC 0C 13 00 6C 67 C6 0C 13 00 4C 67 C0 0C 13 g....lg....Lg...
+00002FB0 00 7A 67 BA 0C 13 00 6A 67 B4 0C 13 00 74 67 AE .zg....jg....tg.
+00002FC0 0C 13 00 2A 67 A8 1F 41 00 48 1F 47 00 49 0C 2F ...*g..A.H.G.I./
+00002FD0 00 6A 00 48 66 06 1F 7C 00 01 00 48 0C 2F 00 74 .j.Hf..|...H./.t
+00002FE0 00 48 66 06 1F 7C 00 69 00 48 0C 2F 00 7A 00 48 .Hf..|.i.H./.z.H
+00002FF0 66 06 1F 7C 00 6C 00 48 1E 1B 67 72 BE 3C 00 25 f..|.l.H..gr.<.%
+00003000 67 6C BE 3C 00 63 67 66 BE 3C 00 6E 67 60 BE 3C gl.<.cgf.<.ng`.<
+00003010 00 5B 67 5A 41 EA 00 18 00 90 00 00 00 01 41 EA .[gZA.........A.
+00003020 00 14 53 90 6D 18 43 EA 00 04 20 51 2F 0A 24 48 ..S.m.C... Q/.$H
+00003030 52 8A 22 8A 24 5F 10 10 72 00 12 00 60 0C 2F 0A R.".$_..r...`./.
+00003040 4E B9 00 00 3F 30 22 00 58 4F 2A 01 52 83 52 84 N...?0".XO*.R.R.
+00003050 10 01 C0 BC 00 00 00 FF 41 F9 00 00 2B 15 D1 C0 ........A...+...
+00003060 70 00 10 10 C0 BC 00 00 00 08 66 A8 76 01 12 07 p.........f.v...
+00003070 92 3C 00 25 67 00 04 44 92 3C 00 36 67 00 01 38 .<.%g..D.<.6g..8
+00003080 51 01 67 12 92 3C 00 0B 67 00 04 9E 5B 01 67 00 Q.g..<..g...[.g.
+00003090 03 44 60 00 05 36 BC BC FF FF FF FF 66 02 7C 01 .D`..6......f.|.
+000030A0 4A 2F 00 49 66 14 20 02 56 80 E4 88 E5 88 24 00 J/.If. .V.....$.
+000030B0 58 82 20 42 22 68 FF FC 60 02 93 C9 41 EA 00 18 X. B"h..`...A...
+000030C0 00 90 00 00 00 01 41 EA 00 14 53 90 2F 49 00 2C ......A...S./I.,
+000030D0 4A 90 6D 20 43 EA 00 04 20 51 2F 0A 24 48 52 8A J.m C... Q/.$HR.
+000030E0 22 8A 24 5F 10 10 2F 01 72 00 12 00 2F 41 00 38 ".$_../.r.../A.8
+000030F0 22 1F 60 1E 22 6F 00 2C 2F 0A 2F 49 00 30 4E B9 ".`."o.,/./I.0N.
+00003100 00 00 3F 30 2F 40 00 38 22 6F 00 30 2F 49 00 30 ..?0/@.8"o.0/I.0
+00003110 58 4F 22 6F 00 2C 2A 2F 00 34 52 83 52 84 0C AF XO"o.,*/.4R.R...
+00003120 FF FF FF FF 00 34 67 62 2F 49 00 2C BC 83 65 5A .....4gb/I.,..eZ
+00003130 1E 2F 00 49 28 6F 00 2C 4A 07 66 02 18 C5 41 EA ./.I(o.,J.f...A.
+00003140 00 18 00 90 00 00 00 01 41 EA 00 14 53 90 6D 18 ........A...S.m.
+00003150 43 EA 00 04 20 51 2F 0A 24 48 52 8A 22 8A 24 5F C... Q/.$HR.".$_
+00003160 10 10 72 00 12 00 60 0C 2F 0A 4E B9 00 00 3F 30 ..r...`./.N...?0
+00003170 22 00 58 4F 2A 01 52 83 52 84 B2 BC FF FF FF FF ".XO*.R.R.......
+00003180 67 04 BC 83 64 B2 1F 47 00 49 BA BC FF FF FF FF g...d..G.I......
+00003190 67 0A 2F 0A 2F 05 61 00 FC C4 50 4F 53 83 53 84 g././.a...POS.S.
+000031A0 4A 2F 00 49 66 00 0B E0 4A 83 67 00 0B DA 52 AF J/.If...J.g...R.
+000031B0 00 3C 60 00 0B D2 42 2F 00 2C 0C 13 00 5E 66 08 .<`...B/.,...^f.
+000031C0 1F 7C 00 01 00 2C 52 8B 42 AF 00 34 1E 2F 00 2C .|...,R.B..4./.,
+000031D0 22 2F 00 34 4A 07 67 08 2A 3C 00 00 00 FF 60 02 "/.4J.g.*<....`.
+000031E0 7A 00 41 EF 00 4E 11 85 18 00 52 81 B2 BC 00 00 z.A..N....R.....
+000031F0 00 20 65 E0 2F 42 00 84 1F 47 00 2C 14 2F 00 2C . e./B...G.,./.,
+00003200 4A 13 67 72 12 1B 0C 13 00 2D 66 0C B2 2B 00 01 J.gr.....-f..+..
+00003210 64 06 52 8B 1E 1B 60 02 1E 01 7A 00 1A 01 70 00 d.R...`...z...p.
+00003220 10 07 B0 85 65 4A 4A 02 67 20 41 EF 00 4E 20 05 ....eJJ.g A..N .
+00003230 E6 88 D1 C0 70 07 C0 85 72 01 E1 A9 20 01 46 80 ....p...r... .F.
+00003240 72 00 12 10 C0 81 10 80 60 1C 41 EF 00 4E 20 05 r.......`.A..N .
+00003250 E6 88 D1 C0 70 07 C0 85 72 01 E1 A9 20 01 72 00 ....p...r... .r.
+00003260 12 10 80 81 10 80 52 85 70 00 10 07 B0 85 64 B6 ......R.p.....d.
+00003270 0C 13 00 5D 66 8A 24 2F 00 84 52 8B 4A 2F 00 49 ...]f.$/..R.J/.I
+00003280 66 14 20 02 56 80 E4 88 E5 88 24 00 58 82 20 42 f. .V.....$.X. B
+00003290 2C 68 FF FC 60 02 9D CE 41 EA 00 18 00 90 00 00 ,h..`...A.......
+000032A0 00 01 41 EA 00 14 53 90 6D 20 43 EA 00 04 20 51 ..A...S.m C... Q
+000032B0 2F 0A 24 48 52 8A 22 8A 24 5F 10 10 2F 01 72 00 /.$HR.".$_../.r.
+000032C0 12 00 2F 41 00 30 22 1F 60 0E 2F 0A 4E B9 00 00 ../A.0".`./.N...
+000032D0 3F 30 2F 40 00 30 58 4F 2A 2F 00 2C 52 83 52 84 ?0/@.0XO*/.,R.R.
+000032E0 0C AF FF FF FF FF 00 2C 67 00 00 BC 41 EF 00 4E .......,g...A..N
+000032F0 2F 08 2F 09 48 78 00 08 2F 05 4E B9 00 00 29 48 /./.Hx../.N...)H
+00003300 50 4F 22 5F 20 5F D1 C0 70 07 C0 85 72 01 E1 A9 PO"_ _..p...r...
+00003310 20 01 72 00 12 10 C0 81 67 00 00 8C BC 83 65 00  .r.....g.....e.
+00003320 00 86 1E 2F 00 49 4A 07 66 02 1C C5 41 EA 00 18 .../.IJ.f...A...
+00003330 00 90 00 00 00 01 41 EA 00 14 53 90 6D 18 43 EA ......A...S.m.C.
+00003340 00 04 20 51 2F 0A 24 48 52 8A 22 8A 24 5F 10 10 .. Q/.$HR.".$_..
+00003350 72 00 12 00 60 0C 2F 0A 4E B9 00 00 3F 30 22 00 r...`./.N...?0".
+00003360 58 4F 2A 01 52 83 52 84 B2 BC FF FF FF FF 67 32 XO*.R.R.......g2
+00003370 41 EF 00 4E 2F 08 2F 09 48 78 00 08 2F 05 4E B9 A..N/./.Hx../.N.
+00003380 00 00 29 48 50 4F 22 5F 20 5F D1 C0 70 07 C0 85 ..)HPO"_ _..p...
+00003390 72 01 E1 A9 20 01 72 00 12 10 C0 81 67 04 BC 83 r... .r.....g...
+000033A0 64 84 1F 47 00 49 BA BC FF FF FF FF 67 0A 2F 0A d..G.I......g./.
+000033B0 2F 05 61 00 FA A8 50 4F 53 83 53 84 4A 2F 00 49 /.a...POS.S.J/.I
+000033C0 66 00 09 C4 4A 83 67 00 09 BE 42 1E 52 AF 00 3C f...J.g...B.R..<
+000033D0 60 00 09 B4 4A 2F 00 49 66 14 20 02 56 80 E4 88 `...J/.If. .V...
+000033E0 E5 88 24 00 58 82 20 42 2A 68 FF FC 60 02 9B CD ..$.X. B*h..`...
+000033F0 BA BC FF FF FF FF 67 00 00 94 10 05 C0 BC 00 00 ......g.........
+00003400 00 FF 41 F9 00 00 2B 15 D1 C0 70 00 10 10 C0 BC ..A...+...p.....
+00003410 00 00 00 08 66 76 BC 83 65 72 1E 2F 00 49 4A 07 ....fv..er./.IJ.
+00003420 66 02 1A C5 41 EA 00 18 00 90 00 00 00 01 41 EA f...A.........A.
+00003430 00 14 53 90 6D 18 43 EA 00 04 20 51 2F 0A 24 48 ..S.m.C... Q/.$H
+00003440 52 8A 22 8A 24 5F 10 10 72 00 12 00 60 0C 2F 0A R.".$_..r...`./.
+00003450 4E B9 00 00 3F 30 22 00 58 4F 2A 01 52 83 52 84 N...?0".XO*.R.R.
+00003460 B2 BC FF FF FF FF 67 20 10 05 C0 BC 00 00 00 FF ......g ........
+00003470 41 F9 00 00 2B 15 D1 C0 70 00 10 10 C0 BC 00 00 A...+...p.......
+00003480 00 08 66 04 BC 83 64 96 1F 47 00 49 BA BC FF FF ..f...d..G.I....
+00003490 FF FF 67 0A 2F 0A 2F 05 61 00 F9 C2 50 4F 53 83 ..g././.a...POS.
+000034A0 53 84 4A 2F 00 49 66 00 08 DE 4A 83 67 00 08 D8 S.J/.If...J.g...
+000034B0 42 1D 52 AF 00 3C 60 00 08 CE 41 EA 00 18 00 90 B.R..<`...A.....
+000034C0 00 00 00 01 41 EA 00 14 53 90 6D 20 43 EA 00 04 ....A...S.m C...
+000034D0 20 51 2F 0A 24 48 52 8A 22 8A 24 5F 10 10 2F 01  Q/.$HR.".$_../.
+000034E0 72 00 12 00 2F 41 00 30 22 1F 60 0E 2F 0A 4E B9 r.../A.0".`./.N.
+000034F0 00 00 3F 30 2F 40 00 30 58 4F 2A 2F 00 2C 52 83 ..?0/@.0XO*/.,R.
+00003500 52 84 0C AF 00 00 00 25 00 2C 67 00 08 7A BA BC R......%.,g..z..
+00003510 FF FF FF FF 67 0A 2F 0A 2F 05 61 00 F9 40 50 4F ....g././.a..@PO
+00003520 53 83 53 84 60 00 08 60 4A 2F 00 49 66 00 00 92 S.S.`..`J/.If...
+00003530 0C 2F 00 01 00 48 66 1A 20 02 56 80 E4 88 E5 88 ./...Hf. .V.....
+00003540 24 00 58 82 20 42 20 68 FF FC 21 44 00 04 42 90 $.X. B h..!D..B.
+00003550 60 6E 0C 2F 00 6C 00 48 66 16 20 02 56 80 E4 88 `n./.l.Hf. .V...
+00003560 E5 88 24 00 58 82 20 42 20 68 FF FC 20 84 60 50 ..$.X. B h.. .`P
+00003570 0C 2F 00 68 00 48 66 16 20 02 56 80 E4 88 E5 88 ./.h.Hf. .V.....
+00003580 24 00 58 82 20 42 20 68 FF FC 30 84 60 32 0C 2F $.X. B h..0.`2./
+00003590 00 02 00 48 66 16 20 02 56 80 E4 88 E5 88 24 00 ...Hf. .V.....$.
+000035A0 58 82 20 42 20 68 FF FC 10 84 60 14 20 02 56 80 X. B h....`. .V.
+000035B0 E4 88 E5 88 24 00 58 82 20 42 20 68 FF FC 20 84 ....$.X. B h.. .
+000035C0 76 01 52 AF 00 3C 60 00 07 BE 42 AF 00 30 42 AF v.R..<`...B..0B.
+000035D0 00 2C 42 AF 00 6E 4A 07 66 02 53 8B BE 3C 00 70 .,B..nJ.f.S..<.p
+000035E0 66 08 1F 7C 00 6C 00 48 7E 78 BA BC 00 00 00 2D f..|.l.H~x.....-
+000035F0 66 06 BE 3C 00 75 66 08 BA BC 00 00 00 2B 66 50 f..<.uf......+fP
+00003600 BC 83 65 4C 2F 45 00 6E 41 EA 00 18 00 90 00 00 ..eL/E.nA.......
+00003610 00 01 41 EA 00 14 53 90 6D 20 43 EA 00 04 20 51 ..A...S.m C... Q
+00003620 2F 0A 24 48 52 8A 22 8A 24 5F 10 10 2F 01 72 00 /.$HR.".$_../.r.
+00003630 12 00 2F 41 00 38 22 1F 60 0E 2F 0A 4E B9 00 00 ../A.8".`./.N...
+00003640 3F 30 2F 40 00 38 58 4F 2A 2F 00 34 52 83 52 84 ?0/@.8XO*/.4R.R.
+00003650 BE 3C 00 69 66 00 01 6C BA BC 00 00 00 30 66 00 .<.if..l.....0f.
+00003660 01 24 BC 83 65 00 01 1E 41 EA 00 18 00 90 00 00 .$..e...A.......
+00003670 00 01 41 EA 00 14 53 90 6D 20 43 EA 00 04 20 51 ..A...S.m C... Q
+00003680 2F 0A 24 48 52 8A 22 8A 24 5F 10 10 2F 01 72 00 /.$HR.".$_../.r.
+00003690 12 00 2F 41 00 38 22 1F 60 0E 2F 0A 4E B9 00 00 ../A.8".`./.N...
+000036A0 3F 30 2F 40 00 38 58 4F 2F 6F 00 34 00 40 52 83 ?0/@.8XO/o.4.@R.
+000036B0 52 84 10 2F 00 37 C0 BC 00 00 00 FF 41 F9 00 00 R../.7......A...
+000036C0 2B 14 08 30 00 00 00 01 67 04 80 3C 00 20 B0 BC +..0....g..<. ..
+000036D0 00 00 00 78 66 00 00 90 BC 83 65 00 00 8A 41 EA ...xf.....e...A.
+000036E0 00 18 00 90 00 00 00 01 41 EA 00 14 53 90 6D 20 ........A...S.m 
+000036F0 43 EA 00 04 20 51 2F 0A 24 48 52 8A 22 8A 24 5F C... Q/.$HR.".$_
+00003700 10 10 2F 01 72 00 12 00 2F 41 00 38 22 1F 60 0E ../.r.../A.8".`.
+00003710 2F 0A 4E B9 00 00 3F 30 2F 40 00 38 58 4F 2F 6F /.N...?0/@.8XO/o
+00003720 00 34 00 4A 52 83 52 84 10 05 C0 BC 00 00 00 FF .4.JR.R.........
+00003730 41 F9 00 00 2B 15 D1 C0 70 00 10 10 C0 BC 00 00 A...+...p.......
+00003740 00 44 67 06 BC 83 65 02 7E 78 0C AF FF FF FF FF .Dg...e.~x......
+00003750 00 4A 67 0C 2F 0A 2F 2F 00 4E 61 00 F7 00 50 4F .Jg././/.Na...PO
+00003760 53 83 53 84 60 02 7E 6F 0C AF FF FF FF FF 00 40 S.S.`.~o.......@
+00003770 67 0C 2F 0A 2F 2F 00 44 61 00 F6 E2 50 4F 53 83 g././/.Da...POS.
+00003780 53 84 60 3E 10 05 C0 BC 00 00 00 FF 41 F9 00 00 S.`>........A...
+00003790 2B 15 D1 C0 70 00 10 10 C0 BC 00 00 00 04 66 22 +...p.........f"
+000037A0 10 05 C0 BC 00 00 00 FF 41 F9 00 00 2B 15 D1 C0 ........A...+...
+000037B0 70 00 10 10 C0 BC 00 00 00 44 67 06 BC 83 65 02 p........Dg...e.
+000037C0 7E 78 BE 3C 00 78 66 00 01 2E BA BC 00 00 00 30 ~x.<.xf........0
+000037D0 66 00 01 24 BC 83 65 00 01 1E 41 EA 00 18 00 90 f..$..e...A.....
+000037E0 00 00 00 01 41 EA 00 14 53 90 6D 20 43 EA 00 04 ....A...S.m C...
+000037F0 20 51 2F 0A 24 48 52 8A 22 8A 24 5F 10 10 2F 01  Q/.$HR.".$_../.
+00003800 72 00 12 00 2F 41 00 38 22 1F 60 0E 2F 0A 4E B9 r.../A.8".`./.N.
+00003810 00 00 3F 30 2F 40 00 38 58 4F 2F 6F 00 34 00 40 ..?0/@.8XO/o.4.@
+00003820 52 83 52 84 10 2F 00 37 C0 BC 00 00 00 FF 41 F9 R.R../.7......A.
+00003830 00 00 2B 14 08 30 00 00 00 01 67 04 80 3C 00 20 ..+..0....g..<. 
+00003840 B0 BC 00 00 00 78 66 00 00 94 BC 83 65 00 00 8E .....xf.....e...
+00003850 41 EA 00 18 00 90 00 00 00 01 41 EA 00 14 53 90 A.........A...S.
+00003860 6D 20 43 EA 00 04 20 51 2F 0A 24 48 52 8A 22 8A m C... Q/.$HR.".
+00003870 24 5F 10 10 2F 01 72 00 12 00 2F 41 00 38 22 1F $_../.r.../A.8".
+00003880 60 0E 2F 0A 4E B9 00 00 3F 30 2F 40 00 38 58 4F `./.N...?0/@.8XO
+00003890 2F 6F 00 34 00 4A 52 83 52 84 10 2F 00 37 C0 BC /o.4.JR.R../.7..
+000038A0 00 00 00 FF 41 F9 00 00 2B 15 D1 C0 70 00 10 10 ....A...+...p...
+000038B0 C0 BC 00 00 00 44 67 0A BC 83 65 06 2A 2F 00 4A .....Dg...e.*/.J
+000038C0 60 34 0C AF FF FF FF FF 00 4A 67 0C 2F 0A 2F 2F `4.......Jg././/
+000038D0 00 4E 61 00 F5 88 50 4F 53 83 53 84 0C AF FF FF .Na...POS.S.....
+000038E0 FF FF 00 40 67 0C 2F 0A 2F 2F 00 44 61 00 F5 6E ...@g././/.Da..n
+000038F0 50 4F 53 83 53 84 BE 3C 00 78 67 06 BE 3C 00 58 POS.S..<.xg..<.X
+00003900 66 0A 2F 7C 00 00 00 10 00 40 60 1E BE 3C 00 6F f./|.....@`..<.o
+00003910 66 0A 2F 7C 00 00 00 08 00 34 60 08 2F 7C 00 00 f./|.....4`./|..
+00003920 00 0A 00 34 2F 6F 00 34 00 40 2F 6F 00 40 00 72 ...4/o.4.@/o.@.r
+00003930 10 05 C0 BC 00 00 00 FF 41 F9 00 00 2B 15 D1 C0 ........A...+...
+00003940 70 00 10 10 C0 BC 00 00 00 44 2F 42 00 84 2F 44 p........D/B../D
+00003950 00 34 1F 47 00 4A 4A 80 67 00 02 38 0C AF 00 00 .4.G.JJ.g..8....
+00003960 00 0A 00 72 66 2C 10 05 C0 BC 00 00 00 FF 41 F9 ...rf,........A.
+00003970 00 00 2B 15 D1 C0 70 00 10 10 C0 BC 00 00 00 04 ..+...p.........
+00003980 2F 42 00 84 2F 44 00 34 1F 47 00 4A 4A 80 67 00 /B../D.4.G.JJ.g.
+00003990 02 02 0C AF 00 00 00 08 00 72 66 16 2F 42 00 84 .........rf./B..
+000039A0 2F 44 00 34 1F 47 00 4A BA BC 00 00 00 37 6E 00 /D.4.G.J.....7n.
+000039B0 01 E2 2F 42 00 84 2F 44 00 34 2F 46 00 40 1F 47 ../B../D.4/F.@.G
+000039C0 00 4A BC 83 65 00 01 CC 2E 2F 00 72 28 6F 00 40 .J..e..../.r(o.@
+000039D0 22 07 20 01 2F 02 74 1F E4 A0 24 1F 2F 00 2F 01 ". ./.t...$././.
+000039E0 2F 09 2F 2F 00 3C 2F 2F 00 3C 48 E7 C0 00 4E B9 /.//.<//.<H...N.
+000039F0 00 00 3E B0 4F EF 00 10 22 5F 2F 40 00 48 2F 41 ..>.O..."_/@.H/A
+00003A00 00 4C 4C DF 00 02 4C DF 00 01 10 05 C0 BC 00 00 .LL...L.........
+00003A10 00 FF 41 F9 00 00 2B 15 D1 C0 70 00 10 10 C0 BC ..A...+...p.....
+00003A20 00 00 00 04 67 0A 28 05 98 BC 00 00 00 30 60 02 ....g.(......0`.
+00003A30 78 00 22 04 20 01 2F 02 74 1F E4 A0 24 1F 2F 02 x.". ./.t...$./.
+00003A40 24 01 D4 AF 00 48 2F 42 00 34 24 00 2F 03 26 2F $....H/B.4$./.&/
+00003A50 00 48 D5 83 2F 42 00 34 26 1F 24 1F 10 05 C0 BC .H../B.4&.$.....
+00003A60 00 00 00 FF 41 F9 00 00 2B 15 D1 C0 70 00 10 10 ....A...+...p...
+00003A70 C0 BC 00 00 00 01 67 0A 2C 05 9C BC 00 00 00 37 ......g.,......7
+00003A80 60 02 7C 00 22 06 20 01 2F 02 74 1F E4 A0 24 1F `.|.". ./.t...$.
+00003A90 2F 02 24 01 D4 AF 00 34 2F 42 00 48 24 00 2F 03 /.$....4/B.H$./.
+00003AA0 26 2F 00 34 D5 83 2F 42 00 48 26 1F 24 1F 10 05 &/.4../B.H&.$...
+00003AB0 C0 BC 00 00 00 FF 41 F9 00 00 2B 15 D1 C0 70 00 ......A...+...p.
+00003AC0 10 10 C0 BC 00 00 00 02 67 0A 24 05 94 BC 00 00 ........g.$.....
+00003AD0 00 57 60 02 74 00 22 02 20 01 2F 02 74 1F E4 A0 .W`.t.". ./.t...
+00003AE0 24 1F 2F 02 24 01 D4 AF 00 48 2F 42 00 34 24 00 $./.$....H/B.4$.
+00003AF0 2F 03 26 2F 00 48 D5 83 2F 42 00 34 26 1F 24 1F /.&/.H../B.4&.$.
+00003B00 41 EA 00 18 70 01 81 90 41 EA 00 14 53 90 6D 18 A...p...A...S.m.
+00003B10 43 EA 00 04 20 51 2F 0A 24 48 52 8A 22 8A 24 5F C... Q/.$HR.".$_
+00003B20 10 10 72 00 12 00 60 0C 2F 0A 4E B9 00 00 3F 30 ..r...`./.N...?0
+00003B30 22 00 58 4F 2A 01 52 83 52 AF 00 34 10 01 C0 BC ".XO*.R.R..4....
+00003B40 00 00 00 FF 41 F9 00 00 2B 15 D1 C0 70 00 10 10 ....A...+...p...
+00003B50 C0 BC 00 00 00 44 67 3A BE BC 00 00 00 0A 66 1C .....Dg:......f.
+00003B60 10 05 C0 BC 00 00 00 FF 41 F9 00 00 2B 15 D1 C0 ........A...+...
+00003B70 70 00 10 10 C0 BC 00 00 00 04 67 16 BE BC 00 00 p.........g.....
+00003B80 00 08 66 08 BA BC 00 00 00 37 6E 06 B9 C3 64 00 ..f......7n...d.
+00003B90 FE 40 1E 2F 00 4A 28 2F 00 34 24 2F 00 84 4A AF .@./.J(/.4$/..J.
+00003BA0 00 6E 67 22 B6 BC 00 00 00 02 66 1A BA BC FF FF .ng"......f.....
+00003BB0 FF FF 67 0A 2F 0A 2F 05 61 00 F2 A2 50 4F 53 83 ..g././.a...POS.
+00003BC0 53 84 2A 2F 00 6E BA BC FF FF FF FF 67 0A 2F 0A S.*/.n......g./.
+00003BD0 2F 05 61 00 F2 88 50 4F 53 83 53 84 4A 2F 00 49 /.a...POS.S.J/.I
+00003BE0 66 00 01 A4 4A 83 67 00 01 9E BE 3C 00 75 66 00 f...J.g....<.uf.
+00003BF0 00 BC 2F 00 10 2F 00 4C 53 00 1F 40 00 38 20 1F ../../.LS..@.8 .
+00003C00 4A 2F 00 34 67 16 53 2F 00 34 67 68 04 2F 00 66 J/.4g.S/.4gh./.f
+00003C10 00 34 67 44 59 2F 00 34 67 22 60 74 20 02 56 80 .4gDY/.4g"`t .V.
+00003C20 E4 88 E5 88 24 00 58 82 20 42 20 68 FF FC 21 6F ....$.X. B h..!o
+00003C30 00 30 00 04 20 AF 00 2C 60 00 01 48 20 02 56 80 .0.. ..,`..H .V.
+00003C40 E4 88 E5 88 24 00 58 82 20 42 20 68 FF FC 20 2F ....$.X. B h.. /
+00003C50 00 30 20 80 60 00 01 2C 20 02 56 80 E4 88 E5 88 .0 .`.., .V.....
+00003C60 24 00 58 82 20 42 20 68 FF FC 20 2F 00 30 30 80 $.X. B h.. /.00.
+00003C70 60 00 01 10 20 02 56 80 E4 88 E5 88 24 00 58 82 `... .V.....$.X.
+00003C80 20 42 20 68 FF FC 20 2F 00 30 10 80 60 00 00 F4  B h.. /.0..`...
+00003C90 20 02 56 80 E4 88 E5 88 24 00 58 82 20 42 20 68  .V.....$.X. B h
+00003CA0 FF FC 20 2F 00 30 20 80 60 00 00 D8 0C AF 00 00 .. /.0 .`.......
+00003CB0 00 2D 00 6E 66 12 4C EF 00 03 00 2C 44 81 40 80 .-.nf.L....,D.@.
+00003CC0 48 EF 00 03 00 34 60 0C 2F 6F 00 30 00 38 2F 6F H....4`./o.0.8/o
+00003CD0 00 2C 00 34 2F 00 10 2F 00 4C 53 00 1F 40 00 30 .,.4/../.LS..@.0
+00003CE0 20 1F 4A 2F 00 2C 67 16 53 2F 00 2C 67 62 04 2F  .J/.,g.S/.,gb./
+00003CF0 00 66 00 2C 67 40 59 2F 00 2C 67 20 60 6C 20 02 .f.,g@Y/.,g `l .
+00003D00 56 80 E4 88 E5 88 24 00 58 82 20 42 20 68 FF FC V.....$.X. B h..
+00003D10 21 6F 00 38 00 04 20 AF 00 34 60 66 20 02 56 80 !o.8.. ..4`f .V.
+00003D20 E4 88 E5 88 24 00 58 82 20 42 20 68 FF FC 20 2F ....$.X. B h.. /
+00003D30 00 38 20 80 60 4C 20 02 56 80 E4 88 E5 88 24 00 .8 .`L .V.....$.
+00003D40 58 82 20 42 20 68 FF FC 20 2F 00 38 30 80 60 32 X. B h.. /.80.`2
+00003D50 20 02 56 80 E4 88 E5 88 24 00 58 82 20 42 20 68  .V.....$.X. B h
+00003D60 FF FC 20 2F 00 38 10 80 60 18 20 02 56 80 E4 88 .. /.8..`. .V...
+00003D70 E5 88 24 00 58 82 20 42 20 68 FF FC 20 2F 00 38 ..$.X. B h.. /.8
+00003D80 20 80 52 AF 00 3C 28 4B 60 00 00 FA 10 14 C0 BC  .R..<(K`.......
+00003D90 00 00 00 FF 41 F9 00 00 2B 15 D1 C0 70 00 10 10 ....A...+...p...
+00003DA0 C0 BC 00 00 00 08 67 70 41 EA 00 18 00 90 00 00 ......gpA.......
+00003DB0 00 01 41 EA 00 14 53 90 6D 18 43 EA 00 04 20 51 ..A...S.m.C... Q
+00003DC0 2F 0A 24 48 52 8A 22 8A 24 5F 10 10 72 00 12 00 /.$HR.".$_..r...
+00003DD0 60 0C 2F 0A 4E B9 00 00 3F 30 22 00 58 4F 2A 01 `./.N...?0".XO*.
+00003DE0 52 83 52 84 10 01 C0 BC 00 00 00 FF 41 F9 00 00 R.R.........A...
+00003DF0 2B 15 D1 C0 70 00 10 10 C0 BC 00 00 00 08 66 A8 +...p.........f.
+00003E00 BA BC FF FF FF FF 67 0A 2F 0A 2F 05 61 00 F0 4E ......g././.a..N
+00003E10 50 4F 53 84 76 01 60 6A 41 EA 00 18 00 90 00 00 POS.v.`jA.......
+00003E20 00 01 41 EA 00 14 53 90 6D 20 43 EA 00 04 20 51 ..A...S.m C... Q
+00003E30 2F 0A 24 48 52 8A 22 8A 24 5F 10 10 2F 01 72 00 /.$HR.".$_../.r.
+00003E40 12 00 2F 41 00 30 22 1F 60 0E 2F 0A 4E B9 00 00 ../A.0".`./.N...
+00003E50 3F 30 2F 40 00 30 58 4F 2A 2F 00 2C 52 83 52 84 ?0/@.0XO*/.,R.R.
+00003E60 10 14 48 80 48 C0 B0 AF 00 2C 67 16 BA BC FF FF ..H.H....,g.....
+00003E70 FF FF 67 0A 2F 0A 2F 05 61 00 EF E2 50 4F 53 83 ..g././.a...POS.
+00003E80 53 84 52 8C 4A 83 67 06 4A 14 66 00 F0 22 BA BC S.R.J.g.J.f.."..
+00003E90 FF FF FF FF 66 0A 4A AF 00 3C 66 04 20 05 60 04 ....f.J..<f. .`.
+00003EA0 20 2F 00 3C 4C DF 7C FC 4F EF 00 4C 4E 75 00 00  /.<L.|.O..LNu..
+00003EB0 48 E7 3E 00 2A 2F 00 1C 2C 2F 00 24 20 05 22 06 H.>.*/..,/.$ .".
+00003EC0 24 00 48 40 26 01 48 41 38 02 C8 C3 C4 C1 C6 C0 $.H@&.HA8.......
+00003ED0 C2 C0 20 04 B1 40 48 40 D4 80 D4 83 64 06 D2 BC .. ..@H@....d...
+00003EE0 00 01 00 00 48 42 70 00 30 02 34 04 D0 81 22 02 ....HBp.0.4...".
+00003EF0 24 2F 00 20 26 02 28 05 48 43 48 44 C6 C5 C8 C2 $/. &.(.HCHD....
+00003F00 C4 C5 D6 44 48 43 B7 43 D4 83 D0 82 24 2F 00 18 ...DHC.C....$/..
+00003F10 26 02 28 06 48 43 48 44 C6 C6 C8 C2 C4 C6 D6 44 &.(.HCHD.......D
+00003F20 48 43 B7 43 D4 83 D0 82 4C DF 00 7C 4E 75 00 00 HC.C....L..|Nu..
+00003F30 48 E7 3C 3A 24 6F 00 24 4E B9 00 00 26 88 20 0A H.<:$o.$N...&. .
+00003F40 66 06 70 FF 60 00 00 E0 70 2A C0 AA 00 18 7A 20 f.p.`...p*....z 
+00003F50 BA 80 67 06 70 FF 60 00 00 CE 41 EA 00 18 70 01 ..g.p.`...A...p.
+00003F60 81 90 20 3C 00 00 02 00 C0 90 67 06 4E B9 00 00 .. <......g.N...
+00003F70 40 2C 4A AA 00 1C 66 18 70 04 C0 AA 00 18 67 08 @,J...f.p.....g.
+00003F80 70 01 25 40 00 1C 60 08 25 7C 00 00 04 00 00 1C p.%@..`.%|......
+00003F90 4A AA 00 08 66 36 43 EA 00 1C 20 3C 00 00 00 80 J...f6C... <....
+00003FA0 C0 AA 00 18 67 04 78 02 60 02 78 01 20 04 D0 91 ....g.x.`.x. ...
+00003FB0 2F 00 4E B9 00 00 22 B4 26 40 58 4F 20 0B 66 04 /.N...".&@XO .f.
+00003FC0 70 FF 60 62 43 EB 00 01 25 49 00 08 41 EA 00 04 p.`bC...%I..A...
+00003FD0 20 AA 00 08 26 2A 00 1C 24 10 22 12 2C 79 00 00  ...&*..$.".,y..
+00003FE0 41 00 4E AE FF D6 41 EA 00 14 20 80 53 90 6C 22 A.N...A... .S.l"
+00003FF0 70 FF B0 AA 00 14 66 0A 41 EA 00 18 70 08 81 90 p.....f.A...p...
+00004000 60 08 41 EA 00 18 70 10 81 90 42 AA 00 14 70 FF `.A...p...B...p.
+00004010 60 14 43 EA 00 04 20 51 28 48 52 8C 22 8C 10 10 `.C... Q(HR."...
+00004020 C0 BC 00 00 00 FF 4C DF 5C 3C 4E 75 48 E7 00 20 ......L.\<NuH.. 
+00004030 24 79 00 00 42 60 20 0A 67 2A 20 3C 00 00 02 02 $y..B` .g* <....
+00004040 C0 AA 00 18 B0 BC 00 00 02 02 66 0E 4A 92 67 0A ..........f.J.g.
+00004050 2F 0A 4E B9 00 00 22 08 58 4F 41 EA 00 0C 24 50 /.N...".XOA...$P
+00004060 20 0A 66 D6 24 5F 4E 75 48 E7 20 30 24 6F 00 10  .f.$_NuH. 0$o..
+00004070 74 00 4A 12 67 72 20 79 00 00 42 58 43 E8 00 18 t.J.gr y..BXC...
+00004080 70 02 81 91 41 E8 00 14 53 90 6D 32 0C 12 00 0A p...A...S.m2....
+00004090 66 12 20 79 00 00 42 58 20 3C 00 00 00 80 C0 A8 f. y..BX <......
+000040A0 00 18 66 1A 22 79 00 00 42 58 58 89 20 51 26 48 ..f."y..BXX. Q&H
+000040B0 52 8B 22 8B 10 92 10 10 72 00 12 00 60 18 2F 39 R.".....r...`./9
+000040C0 00 00 42 58 10 12 48 80 48 C0 2F 00 4E B9 00 00 ..BX..H.H./.N...
+000040D0 20 F4 22 00 50 4F 70 FF B0 81 66 04 70 FF 60 0A  .".POp...f.p.`.
+000040E0 52 8A 52 82 4A 12 66 8E 20 02 4C DF 0C 04 4E 75 R.R.J.f. .L...Nu
 000040F0 00 24 00 63 41 00 00 00 00 00 00 00 00 00 40 00 .$.cA.........@.
 00004100 00 00 00 00 00 01 02 02 03 03 03 03 04 04 04 04 ................
 00004110 04 04 04 04 05 05 05 05 05 05 05 05 05 05 05 05 ................

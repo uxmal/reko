@@ -19,66 +19,21 @@
 ; ...
 004001B0 00 00 00 00 00 00 00 00 00 00 00 00             ............   
 ;;; Segment .init (004001BC)
-
-;; _init: 004001BC
-_init proc
-	lui	r28,+0FC1
-	addiu	r28,r28,-0000795C
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000020
-	sw	r28,0010(sp)
-	sw	ra,001C(sp)
-	sw	r28,0018(sp)
-	lw	r25,-7FE4(r28)
-	nop
-	addiu	r25,r25,+0000072C
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(sp)
-	nop
-	lw	r25,-7FE0(r28)
-	nop
-	addiu	r25,r25,-000063F0
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(sp)
-	nop
-	lw	ra,001C(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000020
+004001BC                                     3C 1C 0F C1             <...
+004001C0 27 9C 86 A4 03 99 E0 21 27 BD FF E0 AF BC 00 10 '......!'.......
+004001D0 AF BF 00 1C AF BC 00 18 8F 99 80 1C 00 00 00 00 ................
+004001E0 27 39 07 2C 00 00 00 00 03 20 F8 09 00 00 00 00 '9.,..... ......
+004001F0 8F BC 00 10 00 00 00 00 8F 99 80 20 00 00 00 00 ........... ....
+00400200 27 39 9C 10 00 00 00 00 03 20 F8 09 00 00 00 00 '9....... ......
+00400210 8F BC 00 10 00 00 00 00 8F BF 00 1C 00 00 00 00 ................
+00400220 03 E0 00 08 27 BD 00 20                         ....'..        
 ;;; Segment .text (00400230)
-
-;; __start: 00400230
-__start proc
-	bltzal	r0,00400238
-	nop
-	lui	r28,+0FC1
-	addiu	r28,r28,-000079D8
-	addu	r28,r28,ra
-	or	ra,r0,r0
-	lw	r4,0000(sp)
-	addiu	r5,sp,+00000004
-	addiu	r6,r4,+00000001
-	sll	r6,r6,02
-	add	r6,r6,r5
-	lw	r7,-7E78(r28)
-	addiu	sp,sp,-00000018
-	lw	r2,-7F40(r28)
-	nop
-	sw	r2,0010(sp)
-	lw	r25,-7F98(r28)
-	nop
-	jalr	ra,r25
-	nop
-	addiu	sp,sp,+00000018
-
-l00400284:
-	beq	r0,r0,00400284
-	nop
-0040028C                                     00 00 00 00             ....
+00400230 04 10 00 01 00 00 00 00 3C 1C 0F C1 27 9C 86 28 ........<...'..(
+00400240 03 9F E0 21 00 00 F8 25 8F A4 00 00 27 A5 00 04 ...!...%....'...
+00400250 24 86 00 01 00 06 30 80 00 C5 30 20 8F 87 81 88 $.....0...0 ....
+00400260 27 BD FF E8 8F 82 80 C0 00 00 00 00 AF A2 00 10 '...............
+00400270 8F 99 80 68 00 00 00 00 03 20 F8 09 00 00 00 00 ...h..... ......
+00400280 27 BD 00 18 10 00 FF FF 00 00 00 00 00 00 00 00 '...............
 00400290 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 AC ......x!. ..$...
 004002A0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 A7 ......x!. ..$...
 004002B0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 A6 ......x!. ..$...
@@ -136,11681 +91,2466 @@ l00400284:
 004005F0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 27 ......x!. ..$..'
 00400600 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 26 ......x!. ..$..&
 00400610 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-
-;; __do_global_dtors_aux: 00400620
-__do_global_dtors_aux proc
-	lui	r28,+0FC1
-	addiu	r28,r28,-00007DC0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000020
-	sw	r28,0010(sp)
-	lw	r2,-7FE8(r28)
-	nop
-	addiu	r2,r2,+00000008
-	lw	r2,0000(r2)
-	nop
-	bne	r2,r0,004006F4
-	sw	ra,001C(sp)
-
-l00400650:
-	lw	r3,-7FE8(r28)
-	nop
-	addiu	r3,r3,+00000004
-	lw	r3,0000(r3)
-	nop
-	lw	r2,0000(r3)
-	nop
-	beq	r2,r0,004006B8
-	addiu	r2,r3,+00000004
-
-l00400674:
-	lw	r25,0000(r3)
-	lw	r1,-7FE8(r28)
-	nop
-	addiu	r1,r1,+00000004
-	jalr	ra,r25
-	sw	r2,0000(r1)
-	lw	r28,0010(sp)
-	nop
-	lw	r3,-7FE8(r28)
-	nop
-	addiu	r3,r3,+00000004
-	lw	r3,0000(r3)
-	nop
-	lw	r2,0000(r3)
-	nop
-	bne	r2,r0,00400674
-	addiu	r2,r3,+00000004
-
-l004006B8:
-	lw	r25,-7EAC(r28)
-	nop
-	beq	r25,r0,004006E4
-	addiu	r2,r0,+00000001
-
-l004006C8:
-	lw	r4,-7FE8(r28)
-	nop
-	addiu	r4,r4,+00000850
-	jalr	ra,r25
-	nop
-	lw	r28,0010(sp)
-	addiu	r2,r0,+00000001
-
-l004006E4:
-	lw	r1,-7FE8(r28)
-	nop
-	addiu	r1,r1,+00000008
-	sw	r2,0000(r1)
-
-l004006F4:
-	lw	ra,001C(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000020
-
-;; fini_dummy: 00400704
-fini_dummy proc
-	lui	r28,+0FC1
-	addiu	r28,r28,-00007EA4
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000020
-	sw	r28,0010(sp)
-	sw	ra,001C(sp)
-	lw	ra,001C(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000020
-
-;; frame_dummy: 0040072C
-frame_dummy proc
-	lui	r28,+0FC1
-	addiu	r28,r28,-00007ECC
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000020
-	sw	r28,0010(sp)
-	lw	r25,-7FBC(r28)
-	nop
-	beq	r25,r0,00400774
-	sw	ra,001C(sp)
-
-l00400750:
-	lw	r4,-7FE8(r28)
-	nop
-	addiu	r4,r4,+00000850
-	lw	r5,-7FE8(r28)
-	nop
-	addiu	r5,r5,+00000AB0
-	jalr	ra,r25
-	nop
-	lw	r28,0010(sp)
-
-l00400774:
-	lw	ra,001C(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000020
-
-;; init_dummy: 00400784
-init_dummy proc
-	lui	r28,+0FC1
-	addiu	r28,r28,-00007F24
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000020
-	sw	r28,0010(sp)
-	sw	ra,001C(sp)
-	lw	ra,001C(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000020
-004007AC                                     00 00 00 00             ....
-
-;; handle_stop: 004007B0
-handle_stop proc
-	lui	r28,+0FC1
-	addiu	r28,r28,-00007F50
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0018(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000003
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-0000622C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00006208
-	addiu	r7,r0,+00000050
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	addiu	r2,r0,+00000001
-	lw	r1,-7FA0(r28)
-	nop
-	sw	r2,0000(r1)
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; handle_log_rotate: 0040083C
-handle_log_rotate proc
-	lui	r28,+0FC1
-	addiu	r28,r28,-00007FDC
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0018(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000003
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000061FC
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-000061D0
-	addiu	r7,r0,+0000005A
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r25,-7DF0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; main: 004008D0
-main proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00007F90
-	addu	r28,r28,r25
-	addiu	sp,sp,-000001A0
-	sw	r28,0038(sp)
-	sw	ra,019C(sp)
-	sw	r30,0198(sp)
-	sw	r16,0194(sp)
-	or	r30,sp,r0
-	sw	r4,01A0(r30)
-	sw	r5,01A4(r30)
-	addiu	r2,r0,+00000002
-	sw	r2,0040(r30)
-	lw	r2,-7F4C(r28)
-	nop
-	lw	r2,0000(r2)
-	lw	r1,-7E40(r28)
-	nop
-	sw	r2,0000(r1)
-	addiu	r4,r0,+00000002
-	lw	r5,-7F18(r28)
-	lw	r25,-7EC0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	addiu	r4,r0,+00000001
-	lw	r5,-7E3C(r28)
-	lw	r25,-7EC0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r2,01A4(r30)
-	nop
-	lw	r4,0000(r2)
-	or	r5,r0,r0
-	lw	r25,-7EB8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r4,01A0(r30)
-	lw	r5,01A4(r30)
-	lw	r25,-7E04(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r2,-7E20(r28)
-	nop
-	lw	r2,04BC(r2)
-	nop
-	beq	r2,r0,00400A54
-	nop
-
-l004009BC:
-	lw	r25,-7F00(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	sw	r2,0174(r30)
-	lw	r2,0174(r30)
-	nop
-	beq	r2,r0,00400A00
-	nop
-
-l004009E4:
-	or	r4,r0,r0
-	lw	r25,-7F70(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-
-l00400A00:
-	or	r4,r0,r0
-	lw	r25,-7FC4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	addiu	r4,r0,+00000001
-	lw	r25,-7FC4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	addiu	r4,r0,+00000002
-	lw	r25,-7FC4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-
-l00400A54:
-	lw	r2,-7E20(r28)
-	nop
-	addiu	r2,r2,+00000695
-	sw	r2,0068(r30)
-	lw	r2,0068(r30)
-	nop
-	beq	r2,r0,00400B20
-	nop
-
-l00400A74:
-	lw	r2,0068(r30)
-	nop
-	lb	r2,0000(r2)
-	nop
-	beq	r2,r0,00400B20
-	nop
-
-l00400A8C:
-	lw	r4,0068(r30)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000061BC
-	lw	r25,-7F14(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	sw	r2,0174(r30)
-	lw	r2,0174(r30)
-	nop
-	beq	r2,r0,00400B20
-	nop
-
-l00400AC4:
-	lw	r25,-7E0C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	lw	r4,0174(r30)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000061B8
-	or	r6,r2,r0
-	lw	r25,-7E9C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r4,0174(r30)
-	lw	r25,-7F24(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-
-l00400B20:
-	lw	r2,-7E20(r28)
-	nop
-	lw	r2,038C(r2)
-	lw	r1,-7F6C(r28)
-	nop
-	sw	r2,0000(r1)
-	lw	r2,-7E20(r28)
-	nop
-	addiu	r2,r2,+0000039D
-	lw	r1,-7FC0(r28)
-	nop
-	sw	r2,0000(r1)
-	lw	r2,-7E20(r28)
-	nop
-	lw	r2,0684(r2)
-	nop
-	sll	r2,r2,0A
-	lw	r1,-7E38(r28)
-	nop
-	sw	r2,0000(r1)
-	lw	r2,-7E20(r28)
-	nop
-	lw	r2,05EC(r2)
-	lw	r1,-7F54(r28)
-	nop
-	sw	r2,0000(r1)
-	lw	r4,-7FE0(r28)
-	nop
-	addiu	r4,r4,-000061B4
-	lw	r25,-7F90(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r2,01A4(r30)
-	nop
-	lw	r4,0000(r2)
-	lw	r25,-7DE8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	sw	r2,017C(r30)
-	lw	r2,-7E20(r28)
-	nop
-	addiu	r2,r2,+0000000D
-	sw	r2,0010(sp)
-	lw	r2,-7E20(r28)
-	nop
-	lw	r2,012C(r2)
-	nop
-	sw	r2,0014(sp)
-	lw	r2,-7E20(r28)
-	nop
-	lw	r2,01C4(r2)
-	nop
-	sw	r2,0018(sp)
-	lw	r2,-7E20(r28)
-	nop
-	addiu	r2,r2,+000001D5
-	sw	r2,001C(sp)
-	lw	r2,-7E20(r28)
-	nop
-	lw	r2,02F4(r2)
-	nop
-	sw	r2,0020(sp)
-	lw	r2,-7FC0(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	sw	r2,0024(sp)
-	lw	r2,-7F6C(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	sw	r2,0028(sp)
-	lw	r2,-7E38(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	sw	r2,0180(r30)
-	lw	r2,0180(r30)
-	nop
-	bgez	r2,00400C88
-	nop
-
-l00400C78:
-	lw	r3,0180(r30)
-	nop
-	addiu	r3,r3,+000003FF
-	sw	r3,0180(r30)
-
-l00400C88:
-	lw	r25,0180(r30)
-	nop
-	sra	r2,r25,0A
-	sw	r2,002C(sp)
-	lw	r2,-7E20(r28)
-	nop
-	lw	r2,0554(r2)
-	nop
-	sw	r2,0030(sp)
-	addiu	r4,r0,+00000003
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000061B0
-	lw	r6,017C(r30)
-	lw	r7,-7E00(r28)
-	nop
-	lw	r7,0000(r7)
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r25,-7F58(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	sw	r2,004C(r30)
-	lw	r2,004C(r30)
-	nop
-	bne	r2,r0,00400D28
-	nop
-
-l00400D0C:
-	addiu	r4,r0,-00000001
-	lw	r25,-7F70(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-
-l00400D28:
-	lw	r25,-7E94(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	sw	r2,0054(r30)
-	lw	r2,0054(r30)
-	nop
-	bne	r2,r0,00400D6C
-	nop
-
-l00400D50:
-	addiu	r4,r0,-00000001
-	lw	r25,-7F70(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-
-l00400D6C:
-	lw	r4,-7E20(r28)
-	nop
-	addiu	r4,r4,+0000000D
-	lw	r5,-7E20(r28)
-	nop
-	lw	r5,012C(r5)
-	lw	r6,-7E20(r28)
-	nop
-	lw	r6,0554(r6)
-	or	r7,r0,r0
-	lw	r25,-7E58(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	sw	r2,0050(r30)
-	lw	r4,0054(r30)
-	lw	r5,0050(r30)
-	lw	r25,-7FB0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r4,-7E20(r28)
-	nop
-	addiu	r4,r4,+0000000D
-	lw	r5,-7E20(r28)
-	nop
-	lw	r5,01C4(r5)
-	lw	r6,-7E20(r28)
-	nop
-	lw	r6,0554(r6)
-	addiu	r7,r0,+00000001
-	lw	r25,-7E58(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	sw	r2,0050(r30)
-	lw	r4,0054(r30)
-	lw	r5,0050(r30)
-	lw	r25,-7FB0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	addiu	r2,r30,+00000058
-	or	r4,r2,r0
-	addiu	r5,r0,+00000010
-	lw	r25,-7E6C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	addiu	r2,r0,+00000002
-	sh	r2,0058(r30)
-	lw	r2,-7E20(r28)
-	nop
-	lhu	r2,02F6(r2)
-	nop
-	sh	r2,005A(r30)
-	lw	r4,-7E20(r28)
-	nop
-	addiu	r4,r4,+000001D5
-	lw	r25,-7EA8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	sw	r2,005C(r30)
-	lw	r2,0054(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0050(r30)
-
-l00400EA4:
-	lw	r2,0050(r30)
-	nop
-	bne	r2,r0,00400EBC
-	nop
-
-l00400EB4:
-	beq	r0,r0,00400F10
-	nop
-
-l00400EBC:
-	lw	r4,0050(r30)
-	lw	r25,-7DDC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	bne	r2,r0,00400EF8
-	nop
-
-l00400EDC:
-	addiu	r4,r0,-00000001
-	lw	r25,-7F70(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-
-l00400EF8:
-	lw	r2,0050(r30)
-	nop
-	lw	r2,0018(r2)
-	nop
-	beq	r0,r0,00400EA4
-	sw	r2,0050(r30)
-
-l00400F10:
-	lw	r2,-7FA0(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	beq	r2,r0,00400F30
-	nop
-
-l00400F28:
-	beq	r0,r0,00401AD4
-	nop
-
-l00400F30:
-	sw	r0,0040(r30)
-	or	r4,r0,r0
-	lw	r25,-7F30(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	sw	r2,0170(r30)
-	addiu	r2,r30,+00000070
-	sw	r2,0178(r30)
-	sw	r0,0174(r30)
-
-l00400F5C:
-	lw	r2,0174(r30)
-	nop
-	sltiu	r2,r2,+00000020
-	bne	r2,r0,00400F78
-	nop
-
-l00400F70:
-	beq	r0,r0,00400FA4
-	nop
-
-l00400F78:
-	lw	r3,0178(r30)
-	lw	r2,0174(r30)
-	nop
-	sll	r2,r2,02
-	addu	r2,r3,r2
-	sw	r0,0000(r2)
-	lw	r2,0174(r30)
-	nop
-	addiu	r2,r2,+00000001
-	beq	r0,r0,00400F5C
-	sw	r2,0174(r30)
-
-l00400FA4:
-	addiu	r2,r30,+000000F0
-	sw	r2,0174(r30)
-	sw	r0,0178(r30)
-
-l00400FB0:
-	lw	r2,0178(r30)
-	nop
-	sltiu	r2,r2,+00000020
-	bne	r2,r0,00400FCC
-	nop
-
-l00400FC4:
-	beq	r0,r0,00400FF8
-	nop
-
-l00400FCC:
-	lw	r3,0174(r30)
-	lw	r2,0178(r30)
-	nop
-	sll	r2,r2,02
-	addu	r2,r3,r2
-	sw	r0,0000(r2)
-	lw	r2,0178(r30)
-	nop
-	addiu	r2,r2,+00000001
-	beq	r0,r0,00400FB0
-	sw	r2,0178(r30)
-
-l00400FF8:
-	lw	r2,0054(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0050(r30)
-
-l0040100C:
-	lw	r2,0050(r30)
-	nop
-	bne	r2,r0,00401024
-	nop
-
-l0040101C:
-	beq	r0,r0,004010CC
-	nop
-
-l00401024:
-	lw	r2,0050(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	srl	r4,r2,05
-	or	r2,r4,r0
-	sll	r3,r2,02
-	addiu	r2,r30,+00000070
-	addu	r5,r2,r3
-	or	r2,r4,r0
-	sll	r3,r2,02
-	addiu	r2,r30,+00000070
-	addu	r4,r2,r3
-	lw	r2,0050(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	andi	r3,r2,0000001F
-	addiu	r2,r0,+00000001
-	sllv	r3,r2,r3
-	lw	r2,0000(r4)
-	nop
-	or	r2,r2,r3
-	sw	r2,0000(r5)
-	lw	r2,0050(r30)
-	lw	r3,0040(r30)
-	lw	r2,0000(r2)
-	nop
-	slt	r2,r3,r2
-	beq	r2,r0,004010B4
-	nop
-
-l004010A0:
-	lw	r2,0050(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	sw	r2,0040(r30)
-
-l004010B4:
-	lw	r2,0050(r30)
-	nop
-	lw	r2,0018(r2)
-	nop
-	beq	r0,r0,0040100C
-	sw	r2,0050(r30)
-
-l004010CC:
-	lw	r2,004C(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0048(r30)
-
-l004010E0:
-	lw	r2,0048(r30)
-	nop
-	bne	r2,r0,004010F8
-	nop
-
-l004010F0:
-	beq	r0,r0,00401358
-	nop
-
-l004010F8:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	bltz	r2,0040121C
-	nop
-
-l00401110:
-	lw	r2,0048(r30)
-	lw	r3,0040(r30)
-	lw	r2,0000(r2)
-	nop
-	slt	r2,r3,r2
-	beq	r2,r0,00401140
-	nop
-
-l0040112C:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	sw	r2,0040(r30)
-
-l00401140:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0FAC(r2)
-	nop
-	bne	r2,r0,004011BC
-	nop
-
-l00401158:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	srl	r4,r2,05
-	or	r2,r4,r0
-	sll	r3,r2,02
-	addiu	r2,r30,+00000070
-	addu	r5,r2,r3
-	or	r2,r4,r0
-	sll	r3,r2,02
-	addiu	r2,r30,+00000070
-	addu	r4,r2,r3
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	andi	r3,r2,0000001F
-	addiu	r2,r0,+00000001
-	sllv	r3,r2,r3
-	lw	r2,0000(r4)
-	nop
-	or	r2,r2,r3
-	beq	r0,r0,0040121C
-	sw	r2,0000(r5)
-
-l004011BC:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	srl	r4,r2,05
-	or	r2,r4,r0
-	sll	r3,r2,02
-	addiu	r2,r30,+000000F0
-	addu	r5,r2,r3
-	or	r2,r4,r0
-	sll	r3,r2,02
-	addiu	r2,r30,+000000F0
-	addu	r4,r2,r3
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	andi	r3,r2,0000001F
-	addiu	r2,r0,+00000001
-	sllv	r3,r2,r3
-	lw	r2,0000(r4)
-	nop
-	or	r2,r2,r3
-	sw	r2,0000(r5)
-
-l0040121C:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	bltz	r2,00401340
-	nop
-
-l00401234:
-	lw	r2,0048(r30)
-	lw	r3,0040(r30)
-	lw	r2,0004(r2)
-	nop
-	slt	r2,r3,r2
-	beq	r2,r0,00401264
-	nop
-
-l00401250:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	sw	r2,0040(r30)
-
-l00401264:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,178C(r2)
-	nop
-	bne	r2,r0,004012E0
-	nop
-
-l0040127C:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	srl	r4,r2,05
-	or	r2,r4,r0
-	sll	r3,r2,02
-	addiu	r2,r30,+00000070
-	addu	r5,r2,r3
-	or	r2,r4,r0
-	sll	r3,r2,02
-	addiu	r2,r30,+00000070
-	addu	r4,r2,r3
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	andi	r3,r2,0000001F
-	addiu	r2,r0,+00000001
-	sllv	r3,r2,r3
-	lw	r2,0000(r4)
-	nop
-	or	r2,r2,r3
-	beq	r0,r0,00401340
-	sw	r2,0000(r5)
-
-l004012E0:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	srl	r4,r2,05
-	or	r2,r4,r0
-	sll	r3,r2,02
-	addiu	r2,r30,+000000F0
-	addu	r5,r2,r3
-	or	r2,r4,r0
-	sll	r3,r2,02
-	addiu	r2,r30,+000000F0
-	addu	r4,r2,r3
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	andi	r3,r2,0000001F
-	addiu	r2,r0,+00000001
-	sllv	r3,r2,r3
-	lw	r2,0000(r4)
-	nop
-	or	r2,r2,r3
-	sw	r2,0000(r5)
-
-l00401340:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,17B8(r2)
-	nop
-	beq	r0,r0,004010E0
-	sw	r2,0048(r30)
-
-l00401358:
-	lw	r2,0040(r30)
-	nop
-	addiu	r2,r2,+00000001
-	addiu	r3,r30,+00000070
-	sw	r0,0010(sp)
-	or	r4,r2,r0
-	or	r5,r3,r0
-	or	r6,r0,r0
-	or	r7,r0,r0
-	lw	r25,-7E48(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	bgez	r2,00401454
-	nop
-
-l00401398:
-	lw	r25,-7F68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	lw	r3,0000(r2)
-	addiu	r2,r0,+00000004
-	bne	r3,r2,004013C4
-	nop
-
-l004013BC:
-	beq	r0,r0,00400F10
-	nop
-
-l004013C4:
-	lw	r25,-7F68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	or	r16,r2,r0
-	lw	r25,-7F68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	lw	r4,0000(r2)
-	lw	r25,-7DE4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	or	r4,r0,r0
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00006150
-	lw	r6,0000(r16)
-	or	r7,r2,r0
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	addiu	r4,r0,-00000001
-	lw	r25,-7F70(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-
-l00401454:
-	lw	r2,0054(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0050(r30)
-
-l00401468:
-	lw	r2,0050(r30)
-	nop
-	bne	r2,r0,00401480
-	nop
-
-l00401478:
-	beq	r0,r0,004015B4
-	nop
-
-l00401480:
-	lw	r2,0050(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	srl	r2,r2,05
-	sll	r3,r2,02
-	addiu	r2,r30,+00000070
-	addu	r4,r2,r3
-	lw	r2,0050(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	andi	r3,r2,0000001F
-	lw	r2,0000(r4)
-	nop
-	srav	r2,r2,r3
-	andi	r2,r2,00000001
-	beq	r2,r0,0040159C
-	nop
-
-l004014CC:
-	lw	r2,0050(r30)
-	nop
-	addiu	r2,r2,+00000008
-	addiu	r3,r30,+00000058
-	lw	r6,0050(r30)
-	lw	r7,0050(r30)
-	or	r4,r2,r0
-	or	r5,r3,r0
-	lw	r6,0000(r6)
-	lw	r7,0020(r7)
-	lw	r25,-7F28(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	sw	r2,0044(r30)
-	lw	r2,0044(r30)
-	nop
-	bne	r2,r0,00401524
-	nop
-
-l0040151C:
-	beq	r0,r0,0040159C
-	nop
-
-l00401524:
-	lw	r4,004C(r30)
-	lw	r5,0044(r30)
-	lw	r25,-7F48(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	bne	r2,r0,0040159C
-	nop
-
-l00401548:
-	addiu	r4,r0,+00000001
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00006134
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00006108
-	addiu	r7,r0,+000000E0
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r4,0044(r30)
-	lw	r25,-7F84(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-
-l0040159C:
-	lw	r2,0050(r30)
-	nop
-	lw	r2,0018(r2)
-	nop
-	beq	r0,r0,00401468
-	sw	r2,0050(r30)
-
-l004015B4:
-	lw	r2,004C(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0048(r30)
-
-l004015C8:
-	lw	r2,0048(r30)
-	nop
-	bne	r2,r0,004015E0
-	nop
-
-l004015D8:
-	beq	r0,r0,00400F10
-	nop
-
-l004015E0:
-	lw	r2,0048(r30)
-	nop
-	beq	r2,r0,00401724
-	nop
-
-l004015F0:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	bltz	r2,00401724
-	nop
-
-l00401608:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	srl	r2,r2,05
-	sll	r3,r2,02
-	addiu	r2,r30,+00000070
-	addu	r4,r2,r3
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	andi	r3,r2,0000001F
-	lw	r2,0000(r4)
-	nop
-	srav	r2,r2,r3
-	andi	r2,r2,00000001
-	beq	r2,r0,00401724
-	nop
-
-l00401654:
-	lw	r4,0048(r30)
-	lw	r25,-7EF8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r2,0048(r30)
-	nop
-	lw	r2,07D8(r2)
-	nop
-	bgtz	r2,004016D8
-	nop
-
-l00401688:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	bltz	r2,00401724
-	nop
-
-l004016A0:
-	lw	r2,0048(r30)
-	nop
-	lw	r4,0000(r2)
-	lw	r25,-7FC4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r3,0048(r30)
-	addiu	r2,r0,-00000001
-	sw	r2,0000(r3)
-	beq	r0,r0,00401724
-	nop
-
-l004016D8:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,17C0(r2)
-	nop
-	sw	r2,0184(r30)
-	lw	r4,0048(r30)
-	lw	r25,0184(r30)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r4,0048(r30)
-	lw	r25,-7EB0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-
-l00401724:
-	lw	r2,0048(r30)
-	nop
-	beq	r2,r0,0040184C
-	nop
-
-l00401734:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	bltz	r2,0040184C
-	nop
-
-l0040174C:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	srl	r2,r2,05
-	sll	r3,r2,02
-	addiu	r2,r30,+00000070
-	addu	r4,r2,r3
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	andi	r3,r2,0000001F
-	lw	r2,0000(r4)
-	nop
-	srav	r2,r2,r3
-	andi	r2,r2,00000001
-	beq	r2,r0,0040184C
-	nop
-
-l00401798:
-	lw	r4,0048(r30)
-	lw	r25,-7E10(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r2,0048(r30)
-	nop
-	lw	r2,178C(r2)
-	nop
-	bgtz	r2,0040181C
-	nop
-
-l004017CC:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	bltz	r2,0040184C
-	nop
-
-l004017E4:
-	lw	r2,0048(r30)
-	nop
-	lw	r4,0004(r2)
-	lw	r25,-7FC4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r3,0048(r30)
-	addiu	r2,r0,-00000001
-	sw	r2,0004(r3)
-	beq	r0,r0,0040184C
-	nop
-
-l0040181C:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,17C4(r2)
-	nop
-	sw	r2,0188(r30)
-	lw	r4,0048(r30)
-	lw	r25,0188(r30)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-
-l0040184C:
-	lw	r2,0048(r30)
-	nop
-	beq	r2,r0,004018F0
-	nop
-
-l0040185C:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	bltz	r2,004018F0
-	nop
-
-l00401874:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	srl	r2,r2,05
-	sll	r3,r2,02
-	addiu	r2,r30,+000000F0
-	addu	r4,r2,r3
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	andi	r3,r2,0000001F
-	lw	r2,0000(r4)
-	nop
-	srav	r2,r2,r3
-	andi	r2,r2,00000001
-	beq	r2,r0,004018F0
-	nop
-
-l004018C0:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,17C4(r2)
-	nop
-	sw	r2,018C(r30)
-	lw	r4,0048(r30)
-	lw	r25,018C(r30)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-
-l004018F0:
-	lw	r2,0048(r30)
-	nop
-	beq	r2,r0,00401980
-	nop
-
-l00401900:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	bltz	r2,00401980
-	nop
-
-l00401918:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	srl	r2,r2,05
-	sll	r3,r2,02
-	addiu	r2,r30,+000000F0
-	addu	r4,r2,r3
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	andi	r3,r2,0000001F
-	lw	r2,0000(r4)
-	nop
-	srav	r2,r2,r3
-	andi	r2,r2,00000001
-	beq	r2,r0,00401980
-	nop
-
-l00401964:
-	lw	r4,0048(r30)
-	lw	r25,-7EB0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-
-l00401980:
-	lw	r2,0048(r30)
-	nop
-	beq	r2,r0,00401AA4
-	nop
-
-l00401990:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	bgez	r2,004019C0
-	nop
-
-l004019A8:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	bltz	r2,00401A80
-	nop
-
-l004019C0:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	bgez	r2,00401A08
-	nop
-
-l004019D8:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	bltz	r2,00401A08
-	nop
-
-l004019F0:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,178C(r2)
-	nop
-	blez	r2,00401A80
-	nop
-
-l00401A08:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	bgez	r2,00401A50
-	nop
-
-l00401A20:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	bltz	r2,00401A50
-	nop
-
-l00401A38:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0FAC(r2)
-	nop
-	blez	r2,00401A80
-	nop
-
-l00401A50:
-	lw	r4,0048(r30)
-	lw	r5,0170(r30)
-	lw	r25,-7FC8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	slti	r2,r2,+00000003
-	beq	r2,r0,00401A80
-	nop
-
-l00401A78:
-	beq	r0,r0,00401AA4
-	nop
-
-l00401A80:
-	lw	r4,004C(r30)
-	lw	r5,0048(r30)
-	lw	r25,-7E4C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	sw	r0,0048(r30)
-
-l00401AA4:
-	lw	r2,0048(r30)
-	nop
-	bne	r2,r0,00401ABC
-	nop
-
-l00401AB4:
-	beq	r0,r0,00400F10
-	nop
-
-l00401ABC:
-	lw	r2,0048(r30)
-	nop
-	lw	r2,17B8(r2)
-	nop
-	beq	r0,r0,004015C8
-	sw	r2,0048(r30)
-
-l00401AD4:
-	lw	r4,004C(r30)
-	lw	r25,-7ED0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r4,0054(r30)
-	lw	r25,-7FB8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	lw	r2,0068(r30)
-	nop
-	beq	r2,r0,00401B50
-	nop
-
-l00401B1C:
-	lw	r2,0068(r30)
-	nop
-	lb	r2,0000(r2)
-	nop
-	beq	r2,r0,00401B50
-	nop
-
-l00401B34:
-	lw	r4,0068(r30)
-	lw	r25,-7ED8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-
-l00401B50:
-	or	r4,r0,r0
-	lw	r25,-7F70(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0038(r30)
-	nop
-	nop
-
-;; client_new: 00401B70
-client_new proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00006CF0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000048
-	sw	r28,0020(sp)
-	sw	ra,0040(sp)
-	sw	r30,003C(sp)
-	or	r30,sp,r0
-	sw	r4,0048(r30)
-	sw	r5,004C(r30)
-	sw	r6,0050(r30)
-	sw	r7,0054(r30)
-	addiu	r4,r0,+000017D4
-	lw	r25,-7E2C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	sw	r2,002C(r30)
-	lw	r2,002C(r30)
-	nop
-	bne	r2,r0,00401BFC
-	sw	r2,002C(r30)
-
-l00401BCC:
-	or	r4,r0,r0
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00006100
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-	beq	r0,r0,00402014
-	or	r2,r0,r0
-
-l00401BFC:
-	addiu	r2,r0,+00000010
-	sw	r2,0028(r30)
-	lw	r2,002C(r30)
-	nop
-	addiu	r2,r2,+00001798
-	or	r4,r2,r0
-	lw	r5,0028(r30)
-	lw	r25,-7E6C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-	lw	r3,002C(r30)
-	addiu	r2,r0,+00000002
-	sh	r2,1798(r3)
-	lw	r3,002C(r30)
-	lw	r2,0048(r30)
-	nop
-	lhu	r2,0002(r2)
-	nop
-	sh	r2,179A(r3)
-	lw	r3,002C(r30)
-	lw	r2,0048(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	sw	r2,179C(r3)
-	lw	r2,002C(r30)
-	nop
-	addiu	r2,r2,+00001798
-	lw	r4,0050(r30)
-	or	r5,r2,r0
-	addiu	r6,r30,+00000028
-	lw	r25,-7E7C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	or	r3,r2,r0
-	lw	r2,002C(r30)
-	nop
-	sw	r3,0000(r2)
-	addiu	r2,r0,+00000010
-	sw	r2,0028(r30)
-	lw	r3,002C(r30)
-	addiu	r2,r0,+00000002
-	sh	r2,17A8(r3)
-	lw	r3,002C(r30)
-	lw	r2,004C(r30)
-	nop
-	lhu	r2,0002(r2)
-	nop
-	sh	r2,17AA(r3)
-	lw	r3,002C(r30)
-	lw	r2,004C(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	sw	r2,17AC(r3)
-	lw	r3,002C(r30)
-	lw	r2,0054(r30)
-	nop
-	sw	r2,1790(r3)
-	lw	r2,002C(r30)
-	nop
-	addiu	r2,r2,+000017A8
-	or	r4,r2,r0
-	lw	r25,-7F7C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	or	r3,r2,r0
-	lw	r2,002C(r30)
-	nop
-	sw	r3,0004(r2)
-	lw	r2,002C(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	bgez	r2,00401DDC
-	nop
-
-l00401D48:
-	lw	r2,002C(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000001
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000060D8
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-000060AC
-	addiu	r7,r0,+00000037
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-	lw	r2,002C(r30)
-	nop
-	lw	r4,0000(r2)
-	lw	r25,-7FC4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-	lw	r4,002C(r30)
-	lw	r25,-7FD4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-	beq	r0,r0,00402014
-	or	r2,r0,r0
-
-l00401DDC:
-	lw	r2,002C(r30)
-	nop
-	lw	r4,179C(r2)
-	lw	r25,-7F2C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	sw	r2,0010(sp)
-	lw	r2,002C(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	sw	r2,0014(sp)
-	lw	r2,002C(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	sw	r2,0018(sp)
-	addiu	r4,r0,+00000003
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000060A0
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-000060AC
-	addiu	r7,r0,+0000003D
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-	lw	r2,002C(r30)
-	nop
-	sw	r0,07D8(r2)
-	lw	r2,002C(r30)
-	nop
-	sw	r0,0FAC(r2)
-	lw	r2,002C(r30)
-	nop
-	sw	r0,178C(r2)
-	lw	r3,002C(r30)
-	lw	r2,002C(r30)
-	nop
-	addiu	r2,r2,+000007DC
-	sw	r2,0FB0(r3)
-	lw	r3,002C(r30)
-	lw	r2,002C(r30)
-	nop
-	addiu	r2,r2,+00000FB8
-	sw	r2,1788(r3)
-	lw	r2,002C(r30)
-	nop
-	sw	r0,1794(r2)
-	lw	r2,002C(r30)
-	nop
-	sw	r0,0FB4(r2)
-	lw	r2,002C(r30)
-	nop
-	sw	r0,17BC(r2)
-	lw	r2,002C(r30)
-	nop
-	sw	r0,17B8(r2)
-	or	r4,r0,r0
-	lw	r25,-7F30(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	or	r3,r2,r0
-	lw	r2,002C(r30)
-	nop
-	sw	r3,17C8(r2)
-	or	r4,r0,r0
-	lw	r25,-7F30(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	or	r3,r2,r0
-	lw	r2,002C(r30)
-	nop
-	sw	r3,17CC(r2)
-	or	r4,r0,r0
-	lw	r25,-7F30(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	or	r3,r2,r0
-	lw	r2,002C(r30)
-	nop
-	sw	r3,17D0(r2)
-	lw	r2,0054(r30)
-	nop
-	sw	r2,0030(r30)
-	lw	r3,0030(r30)
-	nop
-	beq	r3,r0,00401F8C
-	nop
-
-l00401F70:
-	addiu	r2,r0,+00000001
-	lw	r3,0030(r30)
-	nop
-	beq	r3,r2,00401FB4
-	nop
-
-l00401F84:
-	beq	r0,r0,0040200C
-	nop
-
-l00401F8C:
-	lw	r3,002C(r30)
-	lw	r2,-7EFC(r28)
-	nop
-	sw	r2,17C0(r3)
-	lw	r3,002C(r30)
-	lw	r2,-7F08(r28)
-	nop
-	sw	r2,17C4(r3)
-	beq	r0,r0,0040200C
-	nop
-
-l00401FB4:
-	lw	r3,002C(r30)
-	lw	r2,-7E90(r28)
-	nop
-	sw	r2,17C0(r3)
-	lw	r3,002C(r30)
-	lw	r2,-7EBC(r28)
-	nop
-	sw	r2,17C4(r3)
-	lw	r4,002C(r30)
-	lw	r25,-7E08(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-	lw	r4,002C(r30)
-	lw	r25,-7EB0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-
-l0040200C:
-	lw	r2,002C(r30)
-	nop
-
-l00402014:
-	or	sp,r30,r0
-	lw	ra,0040(sp)
-	lw	r30,003C(sp)
-	jr	ra
-	addiu	sp,sp,+00000048
-
-;; client_prepare_connect: 00402028
-client_prepare_connect proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00006838
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000140
-	sw	r28,0020(sp)
-	sw	ra,013C(sp)
-	sw	r30,0138(sp)
-	sw	r16,0134(sp)
-	or	r30,sp,r0
-	sw	r4,0140(r30)
-	addiu	r2,r0,+00000010
-	sw	r2,0128(r30)
-	lw	r3,0140(r30)
-	lw	r2,0140(r30)
-	nop
-	addiu	r7,r2,+00001798
-	addiu	r2,r30,+00000128
-	sw	r2,0010(sp)
-	lw	r4,0000(r3)
-	or	r5,r0,r0
-	addiu	r6,r0,+00000050
-	lw	r25,-7F5C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-	lw	r2,0140(r30)
-	nop
-	lw	r4,179C(r2)
-	lw	r25,-7F2C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	or	r16,r2,r0
-	lw	r2,0140(r30)
-	nop
-	lw	r4,179C(r2)
-	lw	r25,-7F2C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	or	r3,r2,r0
-	lw	r2,0140(r30)
-	nop
-	lhu	r2,179A(r2)
-	nop
-	sw	r2,0010(sp)
-	sw	r3,0014(sp)
-	lw	r2,0140(r30)
-	nop
-	lhu	r2,179A(r2)
-	nop
-	sw	r2,0018(sp)
-	addiu	r4,r30,+00000028
-	addiu	r5,r0,+00000100
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-0000606C
-	or	r7,r16,r0
-	lw	r25,-7DEC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	sw	r2,0128(r30)
-	lw	r2,0128(r30)
-	nop
-	slti	r2,r2,+00000100
-	bne	r2,r0,00402158
-	nop
-
-l0040214C:
-	sb	r0,0127(r30)
-	addiu	r2,r0,+00000100
-	sw	r2,0128(r30)
-
-l00402158:
-	lw	r2,0140(r30)
-	lw	r4,0140(r30)
-	lw	r5,0FB0(r2)
-	addiu	r6,r30,+00000028
-	lw	r7,0128(r30)
-	lw	r25,-7E80(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-	or	r2,r0,r0
-	or	sp,r30,r0
-	lw	ra,013C(sp)
-	lw	r30,0138(sp)
-	lw	r16,0134(sp)
-	jr	ra
-	addiu	sp,sp,+00000140
-
-;; client_copy_request: 004021A0
-client_copy_request proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000066C0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	ra,0020(sp)
-	sw	r30,001C(sp)
-	or	r30,sp,r0
-	sw	r4,0028(r30)
-	lw	r2,0028(r30)
-	nop
-	addiu	r4,r2,+000007DC
-	lw	r2,0028(r30)
-	nop
-	addiu	r2,r2,+00000008
-	lw	r3,0028(r30)
-	or	r5,r2,r0
-	lw	r6,07D8(r3)
-	lw	r25,-7E18(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r3,0028(r30)
-	lw	r2,0028(r30)
-	nop
-	addiu	r2,r2,+000007DC
-	sw	r2,0FB0(r3)
-	lw	r3,0028(r30)
-	lw	r2,0028(r30)
-	nop
-	lw	r2,07D8(r2)
-	nop
-	sw	r2,0FAC(r3)
-	addiu	r2,r0,+00000001
-	or	sp,r30,r0
-	lw	ra,0020(sp)
-	lw	r30,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-
-;; client_parse_request: 00402244
-client_parse_request proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+0000661C
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000838
-	sw	r28,0018(sp)
-	sw	ra,0830(sp)
-	sw	r30,082C(sp)
-	or	r30,sp,r0
-	sw	r4,0838(r30)
-	sw	r0,0814(r30)
-	lw	r2,0838(r30)
-	nop
-	addiu	r2,r2,+00000008
-	sw	r2,07F8(r30)
-	lw	r2,0838(r30)
-	nop
-	lw	r2,07D8(r2)
-	nop
-	sw	r2,0020(r30)
-	lw	r2,0838(r30)
-	nop
-	addiu	r2,r2,+000007DC
-	sw	r2,0810(r30)
-	lw	r2,0838(r30)
-	nop
-	addiu	r2,r2,+00000008
-	sw	r2,0804(r30)
-	lw	r2,0838(r30)
-	nop
-	lw	r2,0FB4(r2)
-	nop
-	sw	r2,0818(r30)
-
-l004022C4:
-	lw	r2,0020(r30)
-	nop
-	bgtz	r2,004022DC
-	nop
-
-l004022D4:
-	beq	r0,r0,00402A48
-	nop
-
-l004022DC:
-	lw	r2,0020(r30)
-	nop
-	sw	r2,080C(r30)
-	addiu	r2,r30,+00000028
-	or	r4,r2,r0
-	lw	r5,07F8(r30)
-	addiu	r6,r30,+00000020
-	lw	r25,-7FB4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,07FC(r30)
-	lw	r3,080C(r30)
-	lw	r2,0020(r30)
-	nop
-	subu	r2,r3,r2
-	sw	r2,0808(r30)
-	addiu	r2,r30,+00000028
-	sw	r2,0800(r30)
-	sw	r0,081C(r30)
-	lw	r2,0800(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000A
-	beq	r3,r2,00402368
-	nop
-
-l00402348:
-	lw	r2,0800(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000D
-	beq	r3,r2,00402368
-	nop
-
-l00402360:
-	beq	r0,r0,00402370
-	nop
-
-l00402368:
-	addiu	r2,r0,+00000001
-	sw	r2,081C(r30)
-
-l00402370:
-	lw	r3,081C(r30)
-	nop
-	sw	r3,0814(r30)
-	lw	r2,0838(r30)
-	nop
-	lw	r2,1794(r2)
-	nop
-	sw	r2,0820(r30)
-	addiu	r2,r0,+00000001
-	lw	r3,0820(r30)
-	nop
-	beq	r3,r2,00402604
-	nop
-
-l004023A4:
-	lw	r3,0820(r30)
-	nop
-	slti	r2,r3,+00000002
-	beq	r2,r0,004023D0
-	nop
-
-l004023B8:
-	lw	r2,0820(r30)
-	nop
-	beq	r2,r0,00402400
-	nop
-
-l004023C8:
-	beq	r0,r0,00402A34
-	nop
-
-l004023D0:
-	addiu	r2,r0,+00000002
-	lw	r3,0820(r30)
-	nop
-	beq	r3,r2,004028C4
-	nop
-
-l004023E4:
-	addiu	r2,r0,+00000003
-	lw	r3,0820(r30)
-	nop
-	beq	r3,r2,004029C4
-	nop
-
-l004023F8:
-	beq	r0,r0,00402A34
-	nop
-
-l00402400:
-	lw	r2,0814(r30)
-	nop
-	bne	r2,r0,004025D0
-	nop
-
-l00402410:
-	lw	r2,0838(r30)
-	nop
-	lw	r2,0FB4(r2)
-	nop
-	beq	r2,r0,004024FC
-	nop
-
-l00402428:
-	addiu	r4,r0,+00000004
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005FF8
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005FDC
-	addiu	r7,r0,+000000A5
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r2,0838(r30)
-	nop
-	lw	r2,0FB4(r2)
-	nop
-	sw	r2,0818(r30)
-	addiu	r2,r30,+00000028
-	lw	r4,0818(r30)
-	or	r5,r2,r0
-	lw	r25,-7EE4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	bne	r2,r0,0040251C
-	nop
-
-l0040249C:
-	addiu	r4,r0,+00000004
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005FC4
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005FDC
-	addiu	r7,r0,+000000A9
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r4,0818(r30)
-	lw	r25,-7DE0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	sw	r0,0818(r30)
-	beq	r0,r0,0040251C
-	nop
-
-l004024FC:
-	addiu	r2,r30,+00000028
-	or	r4,r2,r0
-	lw	r25,-7DCC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0818(r30)
-
-l0040251C:
-	lw	r2,0838(r30)
-	lw	r3,0818(r30)
-	nop
-	sw	r3,0FB4(r2)
-	lw	r2,0818(r30)
-	nop
-	beq	r2,r0,00402550
-	nop
-
-l0040253C:
-	lw	r3,0838(r30)
-	addiu	r2,r0,+00000001
-	sw	r2,1794(r3)
-	beq	r0,r0,00402A34
-	nop
-
-l00402550:
-	addiu	r2,r30,+00000028
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000003
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005F8C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005FDC
-	addiu	r7,r0,+000000B5
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	addiu	r2,r30,+00000028
-	lw	r4,0838(r30)
-	lw	r5,0810(r30)
-	or	r6,r2,r0
-	lw	r7,0808(r30)
-	lw	r25,-7E80(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r3,0838(r30)
-	addiu	r2,r0,+00000002
-	sw	r2,1794(r3)
-	beq	r0,r0,00402A34
-	nop
-
-l004025D0:
-	addiu	r2,r30,+00000028
-	lw	r4,0838(r30)
-	lw	r5,0810(r30)
-	or	r6,r2,r0
-	lw	r7,0808(r30)
-	lw	r25,-7E80(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00402A34
-	nop
-
-l00402604:
-	lw	r2,0814(r30)
-	nop
-	beq	r2,r0,00402660
-	nop
-
-l00402614:
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005F4C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005FDC
-	addiu	r7,r0,+000000C3
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r2,0838(r30)
-	nop
-	sw	r0,1794(r2)
-	beq	r0,r0,00402A4C
-	or	r2,r0,r0
-
-l00402660:
-	lw	r2,0808(r30)
-	nop
-	slti	r2,r2,+00000007
-	bne	r2,r0,004027F8
-	nop
-
-l00402674:
-	addiu	r2,r30,+00000028
-	or	r4,r2,r0
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00006044
-	addiu	r6,r0,+00000006
-	lw	r25,-7E68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	bne	r2,r0,004027F8
-	nop
-
-l004026A8:
-	lw	r2,0818(r30)
-	nop
-	bne	r2,r0,004026F8
-	nop
-
-l004026B8:
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-0000603C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005FDC
-	addiu	r7,r0,+000000CC
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00402A34
-	nop
-
-l004026F8:
-	addiu	r2,r30,+00000028
-	lw	r4,0818(r30)
-	or	r5,r2,r0
-	lw	r25,-7FAC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r4,0818(r30)
-	lw	r25,-7E28(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r2,0818(r30)
-	nop
-	addiu	r2,r2,+00000214
-	or	r4,r2,r0
-	lw	r25,-7F94(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r3,r2,r0
-	lw	r2,0818(r30)
-	nop
-	addiu	r2,r2,+00000214
-	lw	r4,0838(r30)
-	lw	r5,0810(r30)
-	or	r6,r2,r0
-	or	r7,r3,r0
-	lw	r25,-7E80(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0810(r30)
-	lw	r4,0818(r30)
-	lw	r5,0838(r30)
-	lw	r6,0810(r30)
-	lw	r25,-7F74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0810(r30)
-	addiu	r2,r30,+00000028
-	lw	r4,0838(r30)
-	lw	r5,0810(r30)
-	or	r6,r2,r0
-	lw	r7,0808(r30)
-	lw	r25,-7E80(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0810(r30)
-	lw	r3,0838(r30)
-	addiu	r2,r0,+00000002
-	sw	r2,1794(r3)
-	beq	r0,r0,00402A34
-	nop
-
-l004027F8:
-	lw	r2,0808(r30)
-	nop
-	slti	r2,r2,+0000000B
-	bne	r2,r0,00402894
-	nop
-
-l0040280C:
-	addiu	r2,r30,+00000028
-	lw	r4,-7FE0(r28)
-	nop
-	addiu	r4,r4,-00006020
-	or	r5,r2,r0
-	addiu	r6,r0,+0000000A
-	lw	r25,-7E68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	bne	r2,r0,00402894
-	nop
-
-l00402840:
-	addiu	r2,r30,+00000028
-	lw	r4,0818(r30)
-	or	r5,r2,r0
-	lw	r25,-7E64(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	addiu	r2,r30,+00000028
-	lw	r4,0818(r30)
-	or	r5,r2,r0
-	lw	r6,0808(r30)
-	lw	r25,-7F0C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00402A34
-	nop
-
-l00402894:
-	addiu	r2,r30,+00000028
-	lw	r4,0818(r30)
-	or	r5,r2,r0
-	lw	r6,0808(r30)
-	lw	r25,-7F0C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00402A34
-	nop
-
-l004028C4:
-	addiu	r2,r30,+00000028
-	lw	r4,0838(r30)
-	lw	r5,0810(r30)
-	or	r6,r2,r0
-	lw	r7,0808(r30)
-	lw	r25,-7E80(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0810(r30)
-	lw	r2,0814(r30)
-	nop
-	beq	r2,r0,00402950
-	nop
-
-l00402900:
-	lw	r2,0818(r30)
-	nop
-	beq	r2,r0,0040293C
-	nop
-
-l00402910:
-	lw	r2,0818(r30)
-	nop
-	lw	r2,0554(r2)
-	nop
-	bne	r2,r0,0040293C
-	nop
-
-l00402928:
-	lw	r2,0838(r30)
-	nop
-	sw	r0,1794(r2)
-	beq	r0,r0,00402A34
-	nop
-
-l0040293C:
-	lw	r3,0838(r30)
-	addiu	r2,r0,+00000003
-	sw	r2,1794(r3)
-	beq	r0,r0,00402A34
-	nop
-
-l00402950:
-	lw	r2,0808(r30)
-	nop
-	slti	r2,r2,+0000000B
-	bne	r2,r0,00402A34
-	nop
-
-l00402964:
-	addiu	r2,r30,+00000028
-	lw	r4,-7FE0(r28)
-	nop
-	addiu	r4,r4,-0000600C
-	or	r5,r2,r0
-	addiu	r6,r0,+0000000A
-	lw	r25,-7E68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	bne	r2,r0,00402A34
-	nop
-
-l00402998:
-	addiu	r2,r30,+00000028
-	lw	r4,0818(r30)
-	or	r5,r2,r0
-	lw	r25,-7E64(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00402A34
-	nop
-
-l004029C4:
-	addiu	r2,r30,+00000028
-	lw	r4,0838(r30)
-	lw	r5,0810(r30)
-	or	r6,r2,r0
-	lw	r7,0808(r30)
-	lw	r25,-7E80(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0810(r30)
-	lw	r4,0818(r30)
-	lw	r2,0818(r30)
-	nop
-	lw	r3,0554(r2)
-	lw	r2,0808(r30)
-	nop
-	subu	r2,r3,r2
-	sw	r2,0554(r4)
-	lw	r2,0818(r30)
-	nop
-	lw	r2,0554(r2)
-	nop
-	bne	r2,r0,00402A34
-	nop
-
-l00402A28:
-	lw	r2,0838(r30)
-	nop
-	sw	r0,1794(r2)
-
-l00402A34:
-	lw	r2,07FC(r30)
-	nop
-	sw	r2,07F8(r30)
-	beq	r0,r0,004022C4
-	nop
-
-l00402A48:
-	addiu	r2,r0,+00000001
-
-l00402A4C:
-	or	sp,r30,r0
-	lw	ra,0830(sp)
-	lw	r30,082C(sp)
-	jr	ra
-	addiu	sp,sp,+00000838
-
-;; add_to_request: 00402A60
-add_to_request proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00005E00
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	ra,0020(sp)
-	sw	r30,001C(sp)
-	or	r30,sp,r0
-	sw	r4,0028(r30)
-	sw	r5,002C(r30)
-	sw	r6,0030(r30)
-	sw	r7,0034(r30)
-	lw	r2,002C(r30)
-	nop
-	bne	r2,r0,00402AE0
-	nop
-
-l00402AA0:
-	addiu	r4,r0,+00000001
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005F1C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005EEC
-	addiu	r7,r0,+00000100
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	beq	r0,r0,00402C08
-	or	r2,r0,r0
-
-l00402AE0:
-	lw	r2,0030(r30)
-	nop
-	beq	r2,r0,00402B08
-	nop
-
-l00402AF0:
-	lw	r2,0034(r30)
-	nop
-	blez	r2,00402B08
-	nop
-
-l00402B00:
-	beq	r0,r0,00402B4C
-	nop
-
-l00402B08:
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005EDC
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005EEC
-	addiu	r7,r0,+00000105
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r2,002C(r30)
-	beq	r0,r0,00402C08
-	nop
-
-l00402B4C:
-	lw	r4,0028(r30)
-	lw	r2,0028(r30)
-	nop
-	lw	r3,0FAC(r2)
-	lw	r2,0034(r30)
-	nop
-	addu	r2,r3,r2
-	sw	r2,0FAC(r4)
-	lw	r2,0028(r30)
-	nop
-	lw	r2,0FAC(r2)
-	nop
-	slti	r2,r2,+000007D0
-	beq	r2,r0,00402BC0
-	nop
-
-l00402B88:
-	lw	r4,002C(r30)
-	lw	r5,0030(r30)
-	lw	r6,0034(r30)
-	lw	r25,-7E18(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r2,002C(r30)
-	lw	r3,0034(r30)
-	nop
-	beq	r0,r0,00402C08
-	addu	r2,r2,r3
-
-l00402BC0:
-	addiu	r4,r0,+00000001
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005EB8
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005EEC
-	addiu	r7,r0,+0000010F
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r2,0028(r30)
-	nop
-	sw	r0,0FAC(r2)
-	or	r2,r0,r0
-
-l00402C08:
-	or	sp,r30,r0
-	lw	ra,0020(sp)
-	lw	r30,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-
-;; get_a_line: 00402C1C
-get_a_line proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00005C44
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000010
-	sw	r28,0000(sp)
-	sw	r30,000C(sp)
-	or	r30,sp,r0
-	sw	r4,0010(r30)
-	sw	r5,0014(r30)
-	sw	r6,0018(r30)
-
-l00402C44:
-	lw	r2,0018(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	blez	r2,00402CE8
-	nop
-
-l00402C5C:
-	lw	r2,0014(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000A
-	beq	r3,r2,00402CE8
-	nop
-
-l00402C74:
-	lw	r2,0014(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000D
-	bne	r3,r2,00402C94
-	nop
-
-l00402C8C:
-	beq	r0,r0,00402CE8
-	nop
-
-l00402C94:
-	lw	r4,0010(r30)
-	addiu	r5,r30,+00000014
-	lw	r2,0000(r5)
-	nop
-	lbu	r3,0000(r2)
-	nop
-	sb	r3,0000(r4)
-	addiu	r2,r2,+00000001
-	sw	r2,0000(r5)
-	addiu	r4,r4,+00000001
-	sw	r4,0010(r30)
-	lw	r2,0018(r30)
-	lw	r3,0018(r30)
-	lw	r2,0018(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	addiu	r2,r2,-00000001
-	sw	r2,0000(r3)
-	beq	r0,r0,00402C44
-	nop
-
-l00402CE8:
-	lw	r2,0018(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	blez	r2,00402D84
-	nop
-
-l00402D00:
-	lw	r2,0014(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000A
-	beq	r3,r2,00402D38
-	nop
-
-l00402D18:
-	lw	r2,0014(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000D
-	beq	r3,r2,00402D38
-	nop
-
-l00402D30:
-	beq	r0,r0,00402D84
-	nop
-
-l00402D38:
-	lw	r4,0010(r30)
-	addiu	r5,r30,+00000014
-	lw	r2,0000(r5)
-	nop
-	lbu	r3,0000(r2)
-	nop
-	sb	r3,0000(r4)
-	addiu	r2,r2,+00000001
-	sw	r2,0000(r5)
-	addiu	r4,r4,+00000001
-	sw	r4,0010(r30)
-	lw	r2,0018(r30)
-	lw	r3,0018(r30)
-	lw	r2,0018(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	addiu	r2,r2,-00000001
-	sw	r2,0000(r3)
-
-l00402D84:
-	lw	r2,0018(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	blez	r2,00402E20
-	nop
-
-l00402D9C:
-	lw	r2,0014(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000A
-	beq	r3,r2,00402DD4
-	nop
-
-l00402DB4:
-	lw	r2,0014(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000D
-	beq	r3,r2,00402DD4
-	nop
-
-l00402DCC:
-	beq	r0,r0,00402E20
-	nop
-
-l00402DD4:
-	lw	r4,0010(r30)
-	addiu	r5,r30,+00000014
-	lw	r2,0000(r5)
-	nop
-	lbu	r3,0000(r2)
-	nop
-	sb	r3,0000(r4)
-	addiu	r2,r2,+00000001
-	sw	r2,0000(r5)
-	addiu	r4,r4,+00000001
-	sw	r4,0010(r30)
-	lw	r2,0018(r30)
-	lw	r3,0018(r30)
-	lw	r2,0018(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	addiu	r2,r2,-00000001
-	sw	r2,0000(r3)
-
-l00402E20:
-	lw	r2,0010(r30)
-	nop
-	sb	r0,0000(r2)
-	lw	r2,0014(r30)
-	nop
-	or	sp,r30,r0
-	lw	r30,000C(sp)
-	jr	ra
-	addiu	sp,sp,+00000010
-
-;; client_read_request: 00402E44
-client_read_request proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00005A1C
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	ra,0020(sp)
-	sw	r30,001C(sp)
-	or	r30,sp,r0
-	sw	r4,0028(r30)
-	or	r4,r0,r0
-	lw	r25,-7F30(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	or	r3,r2,r0
-	lw	r2,0028(r30)
-	nop
-	sw	r3,17CC(r2)
-	lw	r3,0028(r30)
-	lw	r2,0028(r30)
-	nop
-	addiu	r2,r2,+00000008
-	lw	r4,0000(r3)
-	or	r5,r2,r0
-	addiu	r6,r0,+000006D0
-	addiu	r7,r0,+00004000
-	lw	r25,-7DD4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	or	r3,r2,r0
-	lw	r2,0028(r30)
-	nop
-	sw	r3,07D8(r2)
-	lw	r2,0028(r30)
-	nop
-	lw	r2,07D8(r2)
-	nop
-	or	sp,r30,r0
-	lw	ra,0020(sp)
-	lw	r30,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-
-;; client_send_request: 00402EF8
-client_send_request proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00005968
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000038
-	sw	r28,0018(sp)
-	sw	ra,0030(sp)
-	sw	r30,002C(sp)
-	or	r30,sp,r0
-	sw	r4,0038(r30)
-	sw	r0,0020(r30)
-	or	r4,r0,r0
-	lw	r25,-7F30(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r3,r2,r0
-	lw	r2,0038(r30)
-	nop
-	sw	r3,17CC(r2)
-	lw	r2,0038(r30)
-	nop
-	lw	r2,0FAC(r2)
-	nop
-	bgtz	r2,00402F68
-	nop
-
-l00402F60:
-	beq	r0,r0,00403068
-	or	r2,r0,r0
-
-l00402F68:
-	lw	r2,0038(r30)
-	lw	r3,0038(r30)
-	lw	r6,0038(r30)
-	lw	r4,0004(r2)
-	lw	r5,0FB0(r3)
-	lw	r6,0FAC(r6)
-	or	r7,r0,r0
-	lw	r25,-7E70(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0020(r30)
-	lw	r2,0038(r30)
-	lw	r3,0020(r30)
-	lw	r2,0FAC(r2)
-	nop
-	bne	r3,r2,00402FDC
-	nop
-
-l00402FB4:
-	lw	r2,0038(r30)
-	nop
-	sw	r0,0FAC(r2)
-	lw	r3,0038(r30)
-	lw	r2,0038(r30)
-	nop
-	addiu	r2,r2,+000007DC
-	sw	r2,0FB0(r3)
-	beq	r0,r0,00403060
-	nop
-
-l00402FDC:
-	lw	r4,0038(r30)
-	lw	r2,0038(r30)
-	nop
-	lw	r3,0FB0(r2)
-	lw	r2,0020(r30)
-	nop
-	addu	r2,r3,r2
-	sw	r2,0FB0(r4)
-	lw	r4,0038(r30)
-	lw	r2,0038(r30)
-	nop
-	lw	r3,0FAC(r2)
-	lw	r2,0020(r30)
-	nop
-	subu	r2,r3,r2
-	sw	r2,0FAC(r4)
-	lw	r2,0020(r30)
-	nop
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000004
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005E8C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005E6C
-	addiu	r7,r0,+0000014D
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-
-l00403060:
-	lw	r2,0020(r30)
-	nop
-
-l00403068:
-	or	sp,r30,r0
-	lw	ra,0030(sp)
-	lw	r30,002C(sp)
-	jr	ra
-	addiu	sp,sp,+00000038
-
-;; client_read_reply: 0040307C
-client_read_reply proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000057E4
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	ra,0020(sp)
-	sw	r30,001C(sp)
-	or	r30,sp,r0
-	sw	r4,0028(r30)
-	or	r4,r0,r0
-	lw	r25,-7F30(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	or	r3,r2,r0
-	lw	r2,0028(r30)
-	nop
-	sw	r3,17D0(r2)
-	lw	r3,0028(r30)
-	lw	r2,0028(r30)
-	nop
-	addiu	r2,r2,+00000FB8
-	lw	r4,0004(r3)
-	or	r5,r2,r0
-	addiu	r6,r0,+000007CF
-	lw	r25,-7EC4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	or	r3,r2,r0
-	lw	r2,0028(r30)
-	nop
-	sw	r3,178C(r2)
-	lw	r3,0028(r30)
-	lw	r2,0028(r30)
-	nop
-	addiu	r2,r2,+00000FB8
-	sw	r2,1788(r3)
-	lw	r2,0028(r30)
-	nop
-	lw	r2,178C(r2)
-	nop
-	or	sp,r30,r0
-	lw	ra,0020(sp)
-	lw	r30,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-
-;; client_parse_reply: 00403140
-client_parse_reply proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00005720
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	ra,0020(sp)
-	sw	r30,001C(sp)
-	or	r30,sp,r0
-	sw	r4,0028(r30)
-	lw	r2,0028(r30)
-	nop
-	lw	r2,178C(r2)
-	nop
-	bgtz	r2,00403184
-	nop
-
-l0040317C:
-	beq	r0,r0,004031C8
-	or	r2,r0,r0
-
-l00403184:
-	lw	r4,0028(r30)
-	lw	r25,-7DC8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	beq	r2,r0,004031AC
-	nop
-
-l004031A4:
-	beq	r0,r0,004031C8
-	or	r2,r0,r0
-
-l004031AC:
-	lw	r4,0028(r30)
-	lw	r25,-7F08(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-
-l004031C8:
-	or	sp,r30,r0
-	lw	ra,0020(sp)
-	lw	r30,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-
-;; client_copy_reply: 004031DC
-client_copy_reply proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00005684
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,178C(r2)
-	nop
-	bgtz	r2,00403220
-	nop
-
-l00403218:
-	beq	r0,r0,00403304
-	or	r2,r0,r0
-
-l00403220:
-	or	r4,r0,r0
-	lw	r25,-7F30(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	or	r3,r2,r0
-	lw	r2,0030(r30)
-	nop
-	sw	r3,17D0(r2)
-	lw	r2,0030(r30)
-	lw	r3,0030(r30)
-	lw	r6,0030(r30)
-	lw	r4,0000(r2)
-	lw	r5,1788(r3)
-	lw	r6,178C(r6)
-	or	r7,r0,r0
-	lw	r25,-7E70(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	sw	r2,0018(r30)
-	lw	r2,0030(r30)
-	lw	r3,0018(r30)
-	lw	r2,178C(r2)
-	nop
-	bne	r3,r2,004032BC
-	nop
-
-l00403294:
-	lw	r3,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	addiu	r2,r2,+00000FB8
-	sw	r2,1788(r3)
-	lw	r2,0030(r30)
-	nop
-	sw	r0,178C(r2)
-	beq	r0,r0,004032FC
-	nop
-
-l004032BC:
-	lw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r3,1788(r2)
-	lw	r2,0018(r30)
-	nop
-	addu	r2,r3,r2
-	sw	r2,1788(r4)
-	lw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r3,178C(r2)
-	lw	r2,0018(r30)
-	nop
-	subu	r2,r3,r2
-	sw	r2,178C(r4)
-
-l004032FC:
-	lw	r2,0018(r30)
-	nop
-
-l00403304:
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; client_check_reply_http: 00403318
-client_check_reply_http proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00005548
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,1788(r2)
-	nop
-	sw	r2,0018(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,178C(r2)
-	nop
-	sw	r2,001C(r30)
-
-l00403364:
-	lw	r2,001C(r30)
-	nop
-	blez	r2,004033D0
-	nop
-
-l00403374:
-	lw	r2,0018(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000A
-	beq	r3,r2,004033AC
-	nop
-
-l0040338C:
-	lw	r2,0018(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000D
-	beq	r3,r2,004033AC
-	nop
-
-l004033A4:
-	beq	r0,r0,004033D0
-	nop
-
-l004033AC:
-	lw	r2,0018(r30)
-	nop
-	addiu	r2,r2,+00000001
-	sw	r2,0018(r30)
-	lw	r2,001C(r30)
-	nop
-	addiu	r2,r2,-00000001
-	beq	r0,r0,00403364
-	sw	r2,001C(r30)
-
-l004033D0:
-	lw	r2,001C(r30)
-	nop
-	slti	r2,r2,+00000005
-	bne	r2,r0,004036A4
-	nop
-
-l004033E4:
-	lw	r4,0018(r30)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005E58
-	addiu	r6,r0,+00000004
-	lw	r25,-7E68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	bne	r2,r0,004036A4
-	nop
-
-l00403414:
-	lw	r3,0030(r30)
-	lw	r2,-7F08(r28)
-	nop
-	sw	r2,17C4(r3)
-
-l00403424:
-	lw	r2,001C(r30)
-	nop
-	bgtz	r2,0040345C
-	nop
-
-l00403434:
-	lw	r3,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	addiu	r2,r2,+00000FB8
-	sw	r2,1788(r3)
-	lw	r2,0030(r30)
-	nop
-	sw	r0,178C(r2)
-	beq	r0,r0,004036A8
-	addiu	r2,r0,+00000001
-
-l0040345C:
-	lw	r2,001C(r30)
-	nop
-	blez	r2,004034CC
-	nop
-
-l0040346C:
-	lw	r2,0018(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000A
-	beq	r3,r2,004034CC
-	nop
-
-l00403484:
-	lw	r2,0018(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000D
-	bne	r3,r2,004034A4
-	nop
-
-l0040349C:
-	beq	r0,r0,004034CC
-	nop
-
-l004034A4:
-	lw	r2,001C(r30)
-	nop
-	addiu	r2,r2,-00000001
-	sw	r2,001C(r30)
-	lw	r2,0018(r30)
-	nop
-	addiu	r2,r2,+00000001
-	sw	r2,0018(r30)
-	beq	r0,r0,0040345C
-	nop
-
-l004034CC:
-	lw	r2,001C(r30)
-	nop
-	slti	r2,r2,+00000002
-	bne	r2,r0,00403424
-	nop
-
-l004034E0:
-	lw	r2,0018(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000A
-	beq	r3,r2,00403518
-	nop
-
-l004034F8:
-	lw	r2,0018(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000D
-	beq	r3,r2,00403518
-	nop
-
-l00403510:
-	beq	r0,r0,00403424
-	nop
-
-l00403518:
-	lw	r2,0018(r30)
-	nop
-	addiu	r2,r2,+00000001
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000A
-	beq	r3,r2,00403558
-	nop
-
-l00403534:
-	lw	r2,0018(r30)
-	nop
-	addiu	r2,r2,+00000001
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000D
-	beq	r3,r2,00403558
-	nop
-
-l00403550:
-	beq	r0,r0,00403424
-	nop
-
-l00403558:
-	lw	r2,0018(r30)
-	nop
-	addiu	r2,r2,+00000001
-	sw	r2,0018(r30)
-	lw	r2,0018(r30)
-	nop
-	addiu	r2,r2,+00000001
-	sw	r2,0018(r30)
-	lw	r2,001C(r30)
-	nop
-	addiu	r2,r2,-00000002
-	sw	r2,001C(r30)
-	lw	r2,001C(r30)
-	nop
-	slti	r2,r2,+00000002
-	bne	r2,r0,00403424
-	nop
-
-l0040359C:
-	lw	r2,0018(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000A
-	beq	r3,r2,004035D4
-	nop
-
-l004035B4:
-	lw	r2,0018(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000D
-	beq	r3,r2,004035D4
-	nop
-
-l004035CC:
-	beq	r0,r0,00403424
-	nop
-
-l004035D4:
-	lw	r2,0018(r30)
-	nop
-	addiu	r2,r2,+00000001
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000A
-	beq	r3,r2,00403614
-	nop
-
-l004035F0:
-	lw	r2,0018(r30)
-	nop
-	addiu	r2,r2,+00000001
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000000D
-	beq	r3,r2,00403614
-	nop
-
-l0040360C:
-	beq	r0,r0,00403424
-	nop
-
-l00403614:
-	lw	r2,0018(r30)
-	nop
-	addiu	r2,r2,+00000001
-	sw	r2,0018(r30)
-	lw	r2,0018(r30)
-	nop
-	addiu	r2,r2,+00000001
-	sw	r2,0018(r30)
-	lw	r2,001C(r30)
-	nop
-	addiu	r2,r2,-00000002
-	sw	r2,001C(r30)
-	lw	r2,001C(r30)
-	nop
-	blez	r2,0040367C
-	nop
-
-l00403654:
-	lw	r3,0030(r30)
-	lw	r2,0018(r30)
-	nop
-	sw	r2,1788(r3)
-	lw	r3,0030(r30)
-	lw	r2,001C(r30)
-	nop
-	sw	r2,178C(r3)
-	beq	r0,r0,004036A8
-	or	r2,r0,r0
-
-l0040367C:
-	lw	r3,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	addiu	r2,r2,+00000FB8
-	sw	r2,1788(r3)
-	lw	r2,0030(r30)
-	nop
-	sw	r0,178C(r2)
-	beq	r0,r0,004036A8
-	addiu	r2,r0,+00000001
-
-l004036A4:
-	or	r2,r0,r0
-
-l004036A8:
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; client_close: 004036BC
-client_close proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000051A4
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	ra,0020(sp)
-	sw	r30,001C(sp)
-	or	r30,sp,r0
-	sw	r4,0028(r30)
-	lw	r2,0028(r30)
-	nop
-	beq	r2,r0,00403780
-	nop
-
-l004036F0:
-	lw	r2,0028(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	bltz	r2,00403738
-	nop
-
-l00403708:
-	lw	r2,0028(r30)
-	nop
-	lw	r4,0000(r2)
-	lw	r25,-7FC4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r3,0028(r30)
-	addiu	r2,r0,-00000001
-	sw	r2,0000(r3)
-
-l00403738:
-	lw	r2,0028(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	bltz	r2,00403780
-	nop
-
-l00403750:
-	lw	r2,0028(r30)
-	nop
-	lw	r4,0004(r2)
-	lw	r25,-7FC4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r3,0028(r30)
-	addiu	r2,r0,-00000001
-	sw	r2,0004(r3)
-
-l00403780:
-	or	sp,r30,r0
-	lw	ra,0020(sp)
-	lw	r30,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-
-;; client_destroy: 00403794
-client_destroy proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000050CC
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	ra,0020(sp)
-	sw	r30,001C(sp)
-	or	r30,sp,r0
-	sw	r4,0028(r30)
-	lw	r4,0028(r30)
-	lw	r25,-7FA4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r2,0028(r30)
-	nop
-	lw	r2,0FB4(r2)
-	nop
-	beq	r2,r0,00403810
-	nop
-
-l004037EC:
-	lw	r2,0028(r30)
-	nop
-	lw	r4,0FB4(r2)
-	lw	r25,-7DE0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-
-l00403810:
-	lw	r4,0028(r30)
-	lw	r25,-7FD4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0020(sp)
-	lw	r30,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-
-;; client_check_activ: 00403840
-client_check_activ proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00005020
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000040
-	sw	r28,0020(sp)
-	sw	ra,0038(sp)
-	sw	r30,0034(sp)
-	or	r30,sp,r0
-	sw	r4,0040(r30)
-	sw	r5,0044(r30)
-	sw	r0,0028(r30)
-	lw	r2,0044(r30)
-	nop
-	bgez	r2,00403898
-	nop
-
-l0040387C:
-	or	r4,r0,r0
-	lw	r25,-7F30(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	sw	r2,0044(r30)
-
-l00403898:
-	lw	r2,0040(r30)
-	lw	r3,0044(r30)
-	lw	r2,17CC(r2)
-	nop
-	subu	r3,r3,r2
-	lw	r2,-7F54(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	slt	r2,r2,r3
-	beq	r2,r0,00403948
-	nop
-
-l004038C8:
-	lw	r2,0040(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	sw	r2,0010(sp)
-	lw	r2,0040(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	sw	r2,0014(sp)
-	lw	r2,0040(r30)
-	lw	r3,0044(r30)
-	lw	r2,17CC(r2)
-	nop
-	subu	r2,r3,r2
-	sw	r2,0018(sp)
-	addiu	r4,r0,+00000003
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005E50
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005E20
-	addiu	r7,r0,+000001D3
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-	addiu	r2,r0,+00000001
-	sw	r2,0028(r30)
-
-l00403948:
-	lw	r2,0040(r30)
-	lw	r3,0044(r30)
-	lw	r2,17D0(r2)
-	nop
-	subu	r3,r3,r2
-	lw	r2,-7F54(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	slt	r2,r2,r3
-	beq	r2,r0,00403A00
-	nop
-
-l00403978:
-	lw	r2,0040(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	sw	r2,0010(sp)
-	lw	r2,0040(r30)
-	nop
-	lw	r2,0004(r2)
-	nop
-	sw	r2,0014(sp)
-	lw	r2,0040(r30)
-	lw	r3,0044(r30)
-	lw	r2,17D0(r2)
-	nop
-	subu	r2,r3,r2
-	sw	r2,0018(sp)
-	addiu	r4,r0,+00000003
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005E0C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005E20
-	addiu	r7,r0,+000001D9
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-	lw	r2,0028(r30)
-	nop
-	addiu	r2,r2,+00000002
-	sw	r2,0028(r30)
-
-l00403A00:
-	lw	r2,0028(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0038(sp)
-	lw	r30,0034(sp)
-	jr	ra
-	addiu	sp,sp,+00000040
-
-;; open_destination: 00403A1C
-open_destination proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00004E44
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000038
-	sw	r28,0018(sp)
-	sw	ra,0034(sp)
-	sw	r30,0030(sp)
-	sw	r16,002C(sp)
-	or	r30,sp,r0
-	sw	r4,0038(r30)
-	addiu	r4,r0,+00000002
-	addiu	r5,r0,+00000002
-	addiu	r6,r0,+00000006
-	lw	r25,-7E44(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0020(r30)
-	lw	r2,0020(r30)
-	nop
-	bgez	r2,00403B10
-	nop
-
-l00403A78:
-	lw	r25,-7F68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r16,r2,r0
-	lw	r25,-7F68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	lw	r4,0000(r2)
-	lw	r25,-7DE4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r3,r2,r0
-	lw	r2,0000(r16)
-	nop
-	sw	r2,0010(sp)
-	sw	r3,0014(sp)
-	addiu	r4,r0,+00000001
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005DDC
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005DAC
-	addiu	r7,r0,+000001E9
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00403BDC
-	addiu	r2,r0,-00000001
-
-l00403B10:
-	lw	r2,0038(r30)
-	lw	r4,0020(r30)
-	or	r5,r2,r0
-	addiu	r6,r0,+00000010
-	lw	r25,-7DD8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	bgez	r2,00403BD4
-	nop
-
-l00403B3C:
-	lw	r25,-7F68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r16,r2,r0
-	lw	r25,-7F68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	lw	r4,0000(r2)
-	lw	r25,-7DE4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r3,r2,r0
-	lw	r2,0000(r16)
-	nop
-	sw	r2,0010(sp)
-	sw	r3,0014(sp)
-	addiu	r4,r0,+00000001
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005D98
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005DAC
-	addiu	r7,r0,+000001F0
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00403BDC
-	addiu	r2,r0,-00000001
-
-l00403BD4:
-	lw	r2,0020(r30)
-	nop
-
-l00403BDC:
-	or	sp,r30,r0
-	lw	ra,0034(sp)
-	lw	r30,0030(sp)
-	lw	r16,002C(sp)
-	jr	ra
-	addiu	sp,sp,+00000038
-00403BF4             00 00 00 00 00 00 00 00 00 00 00 00     ............
-
-;; clist_new: 00403C00
-clist_new proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00004C60
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	addiu	r4,r0,+0000000C
-	lw	r25,-7E2C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	sw	r2,0018(r30)
-	lw	r2,0018(r30)
-	nop
-	bne	r2,r0,00403C7C
-	sw	r2,0018(r30)
-
-l00403C4C:
-	or	r4,r0,r0
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005D60
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	beq	r0,r0,00403CA8
-	or	r2,r0,r0
-
-l00403C7C:
-	lw	r2,0018(r30)
-	nop
-	sw	r0,0008(r2)
-	lw	r2,0018(r30)
-	nop
-	sw	r0,0000(r2)
-	lw	r2,0018(r30)
-	nop
-	sw	r0,0004(r2)
-	lw	r2,0018(r30)
-	nop
-
-l00403CA8:
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; clist_add: 00403CBC
-clist_add proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00004BA4
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000010
-	sw	r28,0000(sp)
-	sw	r30,000C(sp)
-	or	r30,sp,r0
-	sw	r4,0010(r30)
-	sw	r5,0014(r30)
-	lw	r2,0010(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	beq	r2,r0,00403D28
-	nop
-
-l00403CF8:
-	lw	r2,0010(r30)
-	nop
-	lw	r3,0008(r2)
-	lw	r2,0014(r30)
-	nop
-	sw	r2,17BC(r3)
-	lw	r3,0014(r30)
-	lw	r2,0010(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,17B8(r3)
-
-l00403D28:
-	lw	r2,0014(r30)
-	nop
-	sw	r0,17BC(r2)
-	lw	r3,0010(r30)
-	lw	r2,0014(r30)
-	nop
-	sw	r2,0008(r3)
-	lw	r2,0010(r30)
-	lw	r3,0010(r30)
-	lw	r2,0010(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	addiu	r2,r2,+00000001
-	sw	r2,0000(r3)
-	lw	r2,0010(r30)
-	lw	r3,0010(r30)
-	lw	r4,0000(r2)
-	lw	r2,0004(r3)
-	nop
-	slt	r2,r2,r4
-	beq	r2,r0,00403D9C
-	nop
-
-l00403D84:
-	lw	r2,0010(r30)
-	lw	r3,0010(r30)
-	nop
-	lw	r3,0000(r3)
-	nop
-	sw	r3,0004(r2)
-
-l00403D9C:
-	lw	r2,0010(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	or	sp,r30,r0
-	lw	r30,000C(sp)
-	jr	ra
-	addiu	sp,sp,+00000010
-
-;; clist_remove: 00403DBC
-clist_remove proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00004AA4
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000010
-	sw	r28,0000(sp)
-	sw	r30,000C(sp)
-	or	r30,sp,r0
-	sw	r4,0010(r30)
-	sw	r5,0014(r30)
-	lw	r2,0014(r30)
-	nop
-	beq	r2,r0,00403EA0
-	nop
-
-l00403DF0:
-	lw	r2,0010(r30)
-	lw	r3,0014(r30)
-	lw	r2,0008(r2)
-	nop
-	bne	r3,r2,00403E28
-	nop
-
-l00403E08:
-	lw	r2,0010(r30)
-	lw	r3,0014(r30)
-	nop
-	lw	r3,17B8(r3)
-	nop
-	sw	r3,0008(r2)
-	beq	r0,r0,00403E48
-	nop
-
-l00403E28:
-	lw	r2,0014(r30)
-	nop
-	lw	r3,17BC(r2)
-	lw	r2,0014(r30)
-	nop
-	lw	r2,17B8(r2)
-	nop
-	sw	r2,17B8(r3)
-
-l00403E48:
-	lw	r2,0014(r30)
-	nop
-	lw	r2,17B8(r2)
-	nop
-	beq	r2,r0,00403E80
-	nop
-
-l00403E60:
-	lw	r2,0014(r30)
-	nop
-	lw	r3,17B8(r2)
-	lw	r2,0014(r30)
-	nop
-	lw	r2,17BC(r2)
-	nop
-	sw	r2,17BC(r3)
-
-l00403E80:
-	lw	r2,0010(r30)
-	lw	r3,0010(r30)
-	lw	r2,0010(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	addiu	r2,r2,-00000001
-	sw	r2,0000(r3)
-
-l00403EA0:
-	lw	r2,0010(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	or	sp,r30,r0
-	lw	r30,000C(sp)
-	jr	ra
-	addiu	sp,sp,+00000010
-
-;; clist_find_fdin: 00403EC0
-clist_find_fdin proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000049A0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000018
-	sw	r28,0000(sp)
-	sw	r30,0014(sp)
-	or	r30,sp,r0
-	sw	r4,0018(r30)
-	sw	r5,001C(r30)
-	lw	r2,0018(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0008(r30)
-
-l00403EF8:
-	lw	r2,0008(r30)
-	nop
-	beq	r2,r0,00403F44
-	nop
-
-l00403F08:
-	lw	r2,0008(r30)
-	nop
-	lw	r3,0000(r2)
-	lw	r2,001C(r30)
-	nop
-	bne	r3,r2,00403F2C
-	nop
-
-l00403F24:
-	beq	r0,r0,00403F44
-	nop
-
-l00403F2C:
-	lw	r2,0008(r30)
-	nop
-	lw	r2,17B8(r2)
-	nop
-	beq	r0,r0,00403EF8
-	sw	r2,0008(r30)
-
-l00403F44:
-	lw	r2,0008(r30)
-	nop
-	or	sp,r30,r0
-	lw	r30,0014(sp)
-	jr	ra
-	addiu	sp,sp,+00000018
-
-;; clist_find_fdout: 00403F5C
-clist_find_fdout proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00004904
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000018
-	sw	r28,0000(sp)
-	sw	r30,0014(sp)
-	or	r30,sp,r0
-	sw	r4,0018(r30)
-	sw	r5,001C(r30)
-	lw	r2,0018(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0008(r30)
-
-l00403F94:
-	lw	r2,0008(r30)
-	nop
-	beq	r2,r0,00403FE0
-	nop
-
-l00403FA4:
-	lw	r2,0008(r30)
-	nop
-	lw	r3,0004(r2)
-	lw	r2,001C(r30)
-	nop
-	bne	r3,r2,00403FC8
-	nop
-
-l00403FC0:
-	beq	r0,r0,00403FE0
-	nop
-
-l00403FC8:
-	lw	r2,0008(r30)
-	nop
-	lw	r2,17B8(r2)
-	nop
-	beq	r0,r0,00403F94
-	sw	r2,0008(r30)
-
-l00403FE0:
-	lw	r2,0008(r30)
-	nop
-	or	sp,r30,r0
-	lw	r30,0014(sp)
-	jr	ra
-	addiu	sp,sp,+00000018
-
-;; clist_delete: 00403FF8
-clist_delete proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00004868
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	ra,0020(sp)
-	sw	r30,001C(sp)
-	or	r30,sp,r0
-	sw	r4,0028(r30)
-	sw	r5,002C(r30)
-	lw	r4,0028(r30)
-	lw	r5,002C(r30)
-	lw	r25,-7E1C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r4,002C(r30)
-	lw	r25,-7F84(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0020(sp)
-	lw	r30,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-
-;; clist_close_all: 00404070
-clist_close_all proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000047F0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0018(r30)
-
-l004040A8:
-	lw	r2,0018(r30)
-	nop
-	bne	r2,r0,004040C0
-	nop
-
-l004040B8:
-	beq	r0,r0,004040F4
-	nop
-
-l004040C0:
-	lw	r4,0018(r30)
-	lw	r25,-7FA4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r2,0018(r30)
-	nop
-	lw	r2,17B8(r2)
-	nop
-	beq	r0,r0,004040A8
-	sw	r2,0018(r30)
-
-l004040F4:
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; clist_destroy_all: 00404108
-clist_destroy_all proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00004758
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0018(r30)
-
-l00404140:
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	bne	r2,r0,00404160
-	nop
-
-l00404158:
-	beq	r0,r0,0040419C
-	nop
-
-l00404160:
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0018(r30)
-	lw	r4,0030(r30)
-	lw	r5,0018(r30)
-	lw	r25,-7E4C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	beq	r0,r0,00404140
-	nop
-
-l0040419C:
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; clist_destroy: 004041B0
-clist_destroy proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000046B0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	ra,0020(sp)
-	sw	r30,001C(sp)
-	or	r30,sp,r0
-	sw	r4,0028(r30)
-	lw	r4,0028(r30)
-	lw	r25,-7F38(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r4,0028(r30)
-	lw	r25,-7F34(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r4,0028(r30)
-	lw	r25,-7FD4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0020(sp)
-	lw	r30,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-0040423C                                     00 00 00 00             ....
-
-;; request_new: 00404240
-request_new proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00004620
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	addiu	r4,r0,+0000055C
-	lw	r25,-7E2C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	sw	r2,0018(r30)
-	lw	r2,0018(r30)
-	nop
-	bne	r2,r0,004042C0
-	sw	r2,0018(r30)
-
-l00404290:
-	or	r4,r0,r0
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005CF8
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	beq	r0,r0,00404364
-	or	r2,r0,r0
-
-l004042C0:
-	lw	r2,0018(r30)
-	nop
-	sb	r0,0000(r2)
-	lw	r2,0018(r30)
-	nop
-	sb	r0,0114(r2)
-	lw	r2,0018(r30)
-	nop
-	sb	r0,0314(r2)
-	lw	r2,0018(r30)
-	nop
-	sb	r0,0214(r2)
-	lw	r2,0018(r30)
-	nop
-	sb	r0,0014(r2)
-	lw	r2,0018(r30)
-	nop
-	sw	r0,0414(r2)
-	lw	r3,0018(r30)
-	addiu	r2,r0,-00000001
-	sw	r2,0558(r3)
-	lw	r2,0018(r30)
-	nop
-	sw	r0,0554(r2)
-	lw	r2,0030(r30)
-	nop
-	beq	r2,r0,0040435C
-	nop
-
-l00404330:
-	lw	r4,0018(r30)
-	lw	r5,0030(r30)
-	lw	r25,-7EE4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	bne	r2,r0,0040435C
-	nop
-
-l00404354:
-	beq	r0,r0,00404364
-	or	r2,r0,r0
-
-l0040435C:
-	lw	r2,0018(r30)
-	nop
-
-l00404364:
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; request_parse_line: 00404378
-request_parse_line proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000044E8
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	sw	r5,0034(r30)
-	lw	r4,0030(r30)
-	lw	r5,0034(r30)
-	lw	r25,-7EC8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	sw	r2,0018(r30)
-	lw	r4,0030(r30)
-	lw	r25,-7DC0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	bne	r2,r0,004043E8
-	nop
-
-l004043E0:
-	beq	r0,r0,00404444
-	or	r2,r0,r0
-
-l004043E8:
-	lw	r2,0030(r30)
-	nop
-	addiu	r2,r2,+00000114
-	or	r4,r2,r0
-	lw	r5,0018(r30)
-	lw	r25,-7F20(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	sw	r2,0018(r30)
-	lw	r2,0030(r30)
-	nop
-	addiu	r2,r2,+00000314
-	or	r4,r2,r0
-	lw	r5,0018(r30)
-	lw	r25,-7F78(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	sw	r2,0018(r30)
-	addiu	r2,r0,+00000001
-
-l00404444:
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; request_save_line: 00404458
-request_save_line proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00004408
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0018(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	sw	r5,0034(r30)
-	sw	r6,0038(r30)
-	lw	r2,0030(r30)
-	nop
-	bne	r2,r0,004044D4
-	nop
-
-l00404494:
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005C68
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005CD0
-	addiu	r7,r0,+0000004B
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,004046B0
-	nop
-
-l004044D4:
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0558(r2)
-	nop
-	slti	r2,r2,+0000003F
-	bne	r2,r0,00404544
-	nop
-
-l004044F0:
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0558(r2)
-	nop
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005CBC
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005CD0
-	addiu	r7,r0,+00000050
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,004046B0
-	nop
-
-l00404544:
-	lw	r2,0030(r30)
-	lw	r3,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0558(r2)
-	nop
-	addiu	r2,r2,+00000001
-	sw	r2,0558(r3)
-	lw	r4,0038(r30)
-	lw	r25,-7E2C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r5,r2,r0
-	lw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0558(r2)
-	nop
-	sll	r2,r2,02
-	addiu	r3,r2,+00000410
-	addiu	r2,r4,+00000004
-	addu	r2,r2,r3
-	sw	r5,0000(r2)
-	lw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0558(r2)
-	nop
-	sll	r2,r2,02
-	addiu	r3,r2,+00000410
-	addiu	r2,r4,+00000004
-	addu	r2,r2,r3
-	lw	r2,0000(r2)
-	nop
-	bne	r2,r0,0040463C
-	nop
-
-l004045DC:
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005C9C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005CD0
-	addiu	r7,r0,+00000057
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r2,0030(r30)
-	lw	r3,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0558(r2)
-	nop
-	addiu	r2,r2,-00000001
-	sw	r2,0558(r3)
-	beq	r0,r0,004046B0
-	nop
-
-l0040463C:
-	lw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0558(r2)
-	nop
-	addiu	r3,r2,+00000510
-	addiu	r2,r4,+00000004
-	addu	r3,r2,r3
-	lbu	r2,003B(r30)
-	nop
-	sb	r2,0000(r3)
-	lw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0558(r2)
-	nop
-	sll	r2,r2,02
-	addiu	r3,r2,+00000410
-	addiu	r2,r4,+00000004
-	addu	r2,r2,r3
-	lw	r4,0000(r2)
-	lw	r5,0034(r30)
-	lw	r6,0038(r30)
-	lw	r25,-7E18(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-
-l004046B0:
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; request_make_url: 004046C4
-request_make_url proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+0000419C
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000038
-	sw	r28,0020(sp)
-	sw	ra,0030(sp)
-	sw	r30,002C(sp)
-	or	r30,sp,r0
-	sw	r4,0038(r30)
-	lw	r2,0038(r30)
-	nop
-	bne	r2,r0,00404738
-	nop
-
-l004046F8:
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005C3C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005C18
-	addiu	r7,r0,+00000066
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-	beq	r0,r0,004048C8
-	nop
-
-l00404738:
-	lw	r2,0038(r30)
-	nop
-	addiu	r2,r2,+00000114
-	or	r4,r2,r0
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005C04
-	addiu	r6,r0,+00000007
-	lw	r25,-7E68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	bne	r2,r0,004047D4
-	nop
-
-l00404774:
-	lw	r2,0038(r30)
-	nop
-	addiu	r3,r2,+00000214
-	lw	r2,0038(r30)
-	nop
-	addiu	r2,r2,+00000114
-	sw	r2,0010(sp)
-	lw	r2,0038(r30)
-	nop
-	addiu	r2,r2,+00000314
-	sw	r2,0014(sp)
-	or	r4,r3,r0
-	addiu	r5,r0,+00000100
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005BFC
-	lw	r7,0038(r30)
-	lw	r25,-7DEC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	beq	r0,r0,004048C8
-	nop
-
-l004047D4:
-	lw	r2,0038(r30)
-	nop
-	lb	r3,0114(r2)
-	addiu	r2,r0,+0000002F
-	bne	r3,r2,0040485C
-	nop
-
-l004047EC:
-	lw	r2,0038(r30)
-	nop
-	addiu	r3,r2,+00000214
-	lw	r2,0038(r30)
-	nop
-	addiu	r2,r2,+00000014
-	sw	r2,0010(sp)
-	lw	r2,0038(r30)
-	nop
-	addiu	r2,r2,+00000114
-	sw	r2,0014(sp)
-	lw	r2,0038(r30)
-	nop
-	addiu	r2,r2,+00000314
-	sw	r2,0018(sp)
-	or	r4,r3,r0
-	addiu	r5,r0,+00000100
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005BF0
-	lw	r7,0038(r30)
-	lw	r25,-7DEC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	beq	r0,r0,004048C8
-	nop
-
-l0040485C:
-	lw	r2,0038(r30)
-	nop
-	addiu	r3,r2,+00000214
-	lw	r2,0038(r30)
-	nop
-	addiu	r2,r2,+00000014
-	sw	r2,0010(sp)
-	lw	r2,0038(r30)
-	nop
-	addiu	r2,r2,+00000114
-	sw	r2,0014(sp)
-	lw	r2,0038(r30)
-	nop
-	addiu	r2,r2,+00000314
-	sw	r2,0018(sp)
-	or	r4,r3,r0
-	addiu	r5,r0,+00000100
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005BDC
-	lw	r7,0038(r30)
-	lw	r25,-7DEC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0020(r30)
-	nop
-
-l004048C8:
-	or	sp,r30,r0
-	lw	ra,0030(sp)
-	lw	r30,002C(sp)
-	jr	ra
-	addiu	sp,sp,+00000038
-
-;; request_add_lines: 004048DC
-request_add_lines proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00003F84
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	sw	r5,0034(r30)
-	sw	r6,0038(r30)
-	sw	r0,0018(r30)
-
-l0040490C:
-	lw	r2,0030(r30)
-	lw	r3,0018(r30)
-	lw	r2,0558(r2)
-	nop
-	slt	r2,r2,r3
-	beq	r2,r0,00404930
-	nop
-
-l00404928:
-	beq	r0,r0,00404AA4
-	nop
-
-l00404930:
-	lw	r4,0030(r30)
-	lw	r2,0018(r30)
-	nop
-	sll	r2,r2,02
-	addiu	r3,r2,+00000410
-	addiu	r2,r4,+00000004
-	addu	r2,r2,r3
-	lw	r2,0000(r2)
-	nop
-	beq	r2,r0,00404A90
-	nop
-
-l0040495C:
-	lw	r5,0034(r30)
-	lw	r3,0030(r30)
-	lw	r2,0018(r30)
-	nop
-	addiu	r4,r2,+00000510
-	addiu	r2,r3,+00000004
-	addu	r2,r2,r4
-	lb	r3,0000(r2)
-	lw	r2,0FAC(r5)
-	nop
-	addu	r2,r3,r2
-	slti	r2,r2,+000007D0
-	beq	r2,r0,00404A58
-	nop
-
-l00404994:
-	lw	r6,0034(r30)
-	lw	r5,0034(r30)
-	lw	r3,0030(r30)
-	lw	r2,0018(r30)
-	nop
-	addiu	r4,r2,+00000510
-	addiu	r2,r3,+00000004
-	addu	r2,r2,r4
-	lb	r3,0000(r2)
-	lw	r2,0FAC(r5)
-	nop
-	addu	r2,r2,r3
-	sw	r2,0FAC(r6)
-	lw	r4,0030(r30)
-	lw	r2,0018(r30)
-	nop
-	sll	r2,r2,02
-	addiu	r3,r2,+00000410
-	addiu	r2,r4,+00000004
-	addu	r5,r2,r3
-	lw	r3,0030(r30)
-	lw	r2,0018(r30)
-	nop
-	addiu	r4,r2,+00000510
-	addiu	r2,r3,+00000004
-	addu	r2,r2,r4
-	lb	r2,0000(r2)
-	lw	r4,0038(r30)
-	lw	r5,0000(r5)
-	or	r6,r2,r0
-	lw	r25,-7E18(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r3,0030(r30)
-	lw	r2,0018(r30)
-	nop
-	addiu	r4,r2,+00000510
-	addiu	r2,r3,+00000004
-	addu	r2,r2,r4
-	lb	r3,0000(r2)
-	lw	r2,0038(r30)
-	nop
-	addu	r2,r2,r3
-	sw	r2,0038(r30)
-	beq	r0,r0,00404A90
-	nop
-
-l00404A58:
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005BC4
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005BB0
-	addiu	r7,r0,+00000084
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-
-l00404A90:
-	lw	r2,0018(r30)
-	nop
-	addiu	r2,r2,+00000001
-	beq	r0,r0,0040490C
-	sw	r2,0018(r30)
-
-l00404AA4:
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0558(r2)
-	nop
-	bgez	r2,00404AC4
-	nop
-
-l00404ABC:
-	beq	r0,r0,00404B18
-	nop
-
-l00404AC4:
-	lw	r6,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	addiu	r5,r2,+00000558
-	lw	r3,0000(r5)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addiu	r4,r2,+00000410
-	addiu	r2,r6,+00000004
-	addu	r2,r2,r4
-	addiu	r3,r3,-00000001
-	sw	r3,0000(r5)
-	lw	r4,0000(r2)
-	lw	r25,-7FD4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	beq	r0,r0,00404AA4
-	nop
-
-l00404B18:
-	lw	r2,0038(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; get_method: 00404B34
-get_method proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00003D2C
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	sw	r5,0034(r30)
-	addiu	r2,r30,+00000034
-	or	r4,r2,r0
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005B9C
-	lw	r25,-7F50(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	sw	r2,0018(r30)
-	lw	r4,0030(r30)
-	lw	r5,0018(r30)
-	addiu	r6,r0,+00000100
-	lw	r25,-7ED4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r2,0034(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; get_uri: 00404BC8
-get_uri proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00003C98
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	sw	r5,0034(r30)
-	addiu	r2,r30,+00000034
-	or	r4,r2,r0
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005B9C
-	lw	r25,-7F50(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	sw	r2,0018(r30)
-	lw	r4,0030(r30)
-	lw	r5,0018(r30)
-	addiu	r6,r0,+00000100
-	lw	r25,-7ED4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r2,0034(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; get_version: 00404C5C
-get_version proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00003C04
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	sw	r5,0034(r30)
-	addiu	r2,r30,+00000034
-	or	r4,r2,r0
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005B98
-	lw	r25,-7F50(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	sw	r2,0018(r30)
-	lw	r4,0030(r30)
-	lw	r5,0018(r30)
-	addiu	r6,r0,+00000100
-	lw	r25,-7ED4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r2,0034(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; request_get_host: 00404CF0
-request_get_host proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00003B70
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000038
-	sw	r28,0018(sp)
-	sw	ra,0030(sp)
-	sw	r30,002C(sp)
-	or	r30,sp,r0
-	sw	r4,0038(r30)
-	sw	r5,003C(r30)
-	lw	r2,0038(r30)
-	nop
-	beq	r2,r0,00404F6C
-	nop
-
-l00404D28:
-	lw	r3,0038(r30)
-	addiu	r2,r0,-00000014
-	beq	r3,r2,00404F6C
-	nop
-
-l00404D38:
-	lw	r4,003C(r30)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005B94
-	lw	r25,-7FD0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0020(r30)
-	lw	r2,0020(r30)
-	nop
-	bne	r2,r0,00404DB0
-	nop
-
-l00404D70:
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005B90
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005B68
-	addiu	r7,r0,+000000BF
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00404FAC
-	or	r2,r0,r0
-
-l00404DB0:
-	lw	r2,003C(r30)
-	nop
-	addiu	r3,r2,+00000100
-	lw	r2,0020(r30)
-	nop
-	sltu	r2,r2,r3
-	beq	r2,r0,00404E1C
-	nop
-
-l00404DD0:
-	lw	r2,0020(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+00000020
-	beq	r3,r2,00404E08
-	nop
-
-l00404DE8:
-	lw	r2,0020(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+00000009
-	beq	r3,r2,00404E08
-	nop
-
-l00404E00:
-	beq	r0,r0,00404E1C
-	nop
-
-l00404E08:
-	lw	r2,0020(r30)
-	nop
-	addiu	r2,r2,+00000001
-	beq	r0,r0,00404DB0
-	sw	r2,0020(r30)
-
-l00404E1C:
-	lw	r4,0020(r30)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005B98
-	lw	r25,-7FD0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0024(r30)
-	lw	r2,0024(r30)
-	nop
-	bne	r2,r0,00404E94
-	nop
-
-l00404E54:
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005B54
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005B68
-	addiu	r7,r0,+000000C6
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00404FAC
-	or	r2,r0,r0
-
-l00404E94:
-	lw	r3,0024(r30)
-	lw	r2,0020(r30)
-	nop
-	subu	r2,r3,r2
-	slti	r2,r2,+00000101
-	bne	r2,r0,00404F04
-	nop
-
-l00404EB0:
-	lw	r2,0024(r30)
-	lw	r3,0020(r30)
-	nop
-	subu	r2,r2,r3
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005B30
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005B68
-	addiu	r7,r0,+000000CA
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00404FAC
-	or	r2,r0,r0
-
-l00404F04:
-	lw	r2,0038(r30)
-	nop
-	addiu	r4,r2,+00000014
-	lw	r3,0024(r30)
-	lw	r2,0020(r30)
-	nop
-	subu	r2,r3,r2
-	lw	r5,0020(r30)
-	or	r6,r2,r0
-	lw	r25,-7ED4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r4,0038(r30)
-	lw	r3,0024(r30)
-	lw	r2,0020(r30)
-	nop
-	subu	r2,r3,r2
-	addiu	r3,r2,+00000010
-	addiu	r2,r4,+00000004
-	addu	r2,r2,r3
-	sb	r0,0000(r2)
-	beq	r0,r0,00404FA4
-	nop
-
-l00404F6C:
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005B10
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005B68
-	addiu	r7,r0,+000000D0
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-
-l00404FA4:
-	lw	r2,0024(r30)
-	nop
-
-l00404FAC:
-	or	sp,r30,r0
-	lw	ra,0030(sp)
-	lw	r30,002C(sp)
-	jr	ra
-	addiu	sp,sp,+00000038
-
-;; request_get_content_length: 00404FC0
-request_get_content_length proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000038A0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000038
-	sw	r28,0018(sp)
-	sw	ra,0030(sp)
-	sw	r30,002C(sp)
-	or	r30,sp,r0
-	sw	r4,0038(r30)
-	sw	r5,003C(r30)
-	lw	r2,0038(r30)
-	nop
-	beq	r2,r0,00405210
-	nop
-
-l00404FF8:
-	lw	r3,0038(r30)
-	addiu	r2,r0,-00000014
-	beq	r3,r2,00405210
-	nop
-
-l00405008:
-	lw	r4,003C(r30)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005B94
-	lw	r25,-7FD0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0020(r30)
-	lw	r2,0020(r30)
-	nop
-	bne	r2,r0,00405080
-	nop
-
-l00405040:
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005A9C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005AE4
-	addiu	r7,r0,+000000E2
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00405250
-	or	r2,r0,r0
-
-l00405080:
-	lw	r2,003C(r30)
-	nop
-	addiu	r3,r2,+00000100
-	lw	r2,0020(r30)
-	nop
-	sltu	r2,r2,r3
-	beq	r2,r0,004050EC
-	nop
-
-l004050A0:
-	lw	r2,0020(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+00000020
-	beq	r3,r2,004050D8
-	nop
-
-l004050B8:
-	lw	r2,0020(r30)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+00000009
-	beq	r3,r2,004050D8
-	nop
-
-l004050D0:
-	beq	r0,r0,004050EC
-	nop
-
-l004050D8:
-	lw	r2,0020(r30)
-	nop
-	addiu	r2,r2,+00000001
-	beq	r0,r0,00405080
-	sw	r2,0020(r30)
-
-l004050EC:
-	lw	r4,0020(r30)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005B98
-	lw	r25,-7FD0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0024(r30)
-	lw	r2,0024(r30)
-	nop
-	bne	r2,r0,00405164
-	nop
-
-l00405124:
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005B54
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005AE4
-	addiu	r7,r0,+000000EB
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00405250
-	or	r2,r0,r0
-
-l00405164:
-	lw	r3,0024(r30)
-	lw	r2,0020(r30)
-	nop
-	subu	r2,r3,r2
-	slti	r2,r2,+00000101
-	bne	r2,r0,004051D4
-	nop
-
-l00405180:
-	lw	r2,0024(r30)
-	lw	r3,0020(r30)
-	nop
-	subu	r2,r2,r3
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005B30
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005AE4
-	addiu	r7,r0,+000000F0
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00405250
-	or	r2,r0,r0
-
-l004051D4:
-	addiu	r2,r30,+00000024
-	lw	r4,0020(r30)
-	or	r5,r2,r0
-	addiu	r6,r0,+0000000A
-	lw	r25,-7E34(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r3,r2,r0
-	lw	r2,0038(r30)
-	nop
-	sw	r3,0554(r2)
-	beq	r0,r0,00405248
-	nop
-
-l00405210:
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005AC8
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005AE4
-	addiu	r7,r0,+000000F6
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-
-l00405248:
-	lw	r2,0024(r30)
-	nop
-
-l00405250:
-	or	sp,r30,r0
-	lw	ra,0030(sp)
-	lw	r30,002C(sp)
-	jr	ra
-	addiu	sp,sp,+00000038
-
-;; is_a_method: 00405264
-is_a_method proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000035FC
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	sw	r0,0018(r30)
-
-l0040528C:
-	lw	r2,0018(r30)
-	nop
-	sll	r3,r2,02
-	lw	r2,-7E98(r28)
-	nop
-	addu	r2,r2,r3
-	lw	r2,0000(r2)
-	nop
-	bne	r2,r0,004052BC
-	nop
-
-l004052B4:
-	beq	r0,r0,00405310
-	nop
-
-l004052BC:
-	lw	r3,0018(r30)
-	nop
-	or	r2,r3,r0
-	sll	r4,r2,02
-	lw	r2,-7E98(r28)
-	nop
-	addu	r2,r2,r4
-	addiu	r3,r3,+00000001
-	sw	r3,0018(r30)
-	lw	r4,0000(r2)
-	lw	r5,0030(r30)
-	addiu	r6,r0,+00000014
-	lw	r25,-7ECC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	bne	r2,r0,0040528C
-	nop
-
-l00405308:
-	beq	r0,r0,00405314
-	addiu	r2,r0,+00000001
-
-l00405310:
-	or	r2,r0,r0
-
-l00405314:
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; request_destroy: 00405328
-request_destroy proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00003538
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	ra,0020(sp)
-	sw	r30,001C(sp)
-	or	r30,sp,r0
-	sw	r4,0028(r30)
-
-l0040534C:
-	lw	r2,0028(r30)
-	nop
-	lw	r2,0558(r2)
-	nop
-	bgez	r2,0040536C
-	nop
-
-l00405364:
-	beq	r0,r0,004053C0
-	nop
-
-l0040536C:
-	lw	r6,0028(r30)
-	lw	r2,0028(r30)
-	nop
-	addiu	r5,r2,+00000558
-	lw	r3,0000(r5)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addiu	r4,r2,+00000410
-	addiu	r2,r6,+00000004
-	addu	r2,r2,r4
-	addiu	r3,r3,-00000001
-	sw	r3,0000(r5)
-	lw	r4,0000(r2)
-	lw	r25,-7FD4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	beq	r0,r0,0040534C
-	nop
-
-l004053C0:
-	lw	r4,0028(r30)
-	lw	r25,-7FD4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0020(sp)
-	lw	r30,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-
-;; properties_parse_int: 004053F0
-properties_parse_int proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00003470
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000038
-	sw	r28,0018(sp)
-	sw	ra,0030(sp)
-	sw	r30,002C(sp)
-	or	r30,sp,r0
-	sw	r4,0038(r30)
-	sw	r5,003C(r30)
-	lw	r4,0038(r30)
-	addiu	r5,r30,+00000020
-	or	r6,r0,r0
-	lw	r25,-7E34(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0024(r30)
-	lw	r2,0020(r30)
-	nop
-	lb	r2,0000(r2)
-	nop
-	beq	r2,r0,004054B4
-	nop
-
-l00405454:
-	lw	r3,0020(r30)
-	lw	r2,003C(r30)
-	nop
-	beq	r3,r2,004054B4
-	nop
-
-l00405468:
-	lw	r2,0038(r30)
-	nop
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005A70
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005A58
-	addiu	r7,r0,+0000001F
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,004054BC
-	or	r2,r0,r0
-
-l004054B4:
-	lw	r2,0024(r30)
-	nop
-
-l004054BC:
-	or	sp,r30,r0
-	lw	ra,0030(sp)
-	lw	r30,002C(sp)
-	jr	ra
-	addiu	sp,sp,+00000038
-
-;; properties_load: 004054D0
-properties_load proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00003390
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000170
-	sw	r28,0018(sp)
-	sw	ra,0168(sp)
-	sw	r30,0164(sp)
-	or	r30,sp,r0
-	sw	r4,0170(r30)
-	sw	r5,0174(r30)
-	addiu	r2,r30,+00000130
-	addiu	r3,r30,+00000130
-	lw	r2,-7FE0(r28)
-	nop
-	addiu	r2,r2,-00005A20
-	nop
-	lwl	r4,0000(r2)
-	lwr	r4,0003(r2)
-	lwl	r5,0004(r2)
-	lwr	r5,0007(r2)
-	lb	r6,0008(r2)
-	lb	r7,0009(r2)
-	swl	r4,0000(r3)
-	swr	r4,0003(r3)
-	swl	r5,0004(r3)
-	swr	r5,0007(r3)
-	sb	r6,0008(r3)
-	sb	r7,0009(r3)
-	sw	r0,0140(r30)
-	lw	r2,0170(r30)
-	nop
-	bne	r2,r0,0040555C
-	nop
-
-l00405554:
-	beq	r0,r0,00405CBC
-	or	r2,r0,r0
-
-l0040555C:
-	lw	r2,0174(r30)
-	nop
-	bne	r2,r0,00405698
-	nop
-
-l0040556C:
-	lw	r4,0170(r30)
-	lw	r25,-7F94(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	addiu	r2,r2,+0000000B
-	or	r4,r2,r0
-	lw	r25,-7E2C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0174(r30)
-	lw	r2,0174(r30)
-	nop
-	bne	r2,r0,004055F4
-	nop
-
-l004055B4:
-	addiu	r4,r0,+00000001
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005A14
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-000059FC
-	addiu	r7,r0,+00000039
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00405CBC
-	or	r2,r0,r0
-
-l004055F4:
-	addiu	r2,r0,+00000001
-	sw	r2,0140(r30)
-	lw	r4,0174(r30)
-	lw	r5,0170(r30)
-	lw	r25,-7DBC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r4,0174(r30)
-	addiu	r5,r0,+0000002F
-	lw	r25,-7E8C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0128(r30)
-	lw	r2,0128(r30)
-	nop
-	beq	r2,r0,00405668
-	nop
-
-l0040564C:
-	lw	r2,0128(r30)
-	nop
-	addiu	r2,r2,+00000001
-	sw	r2,0128(r30)
-	sb	r0,0000(r2)
-	beq	r0,r0,00405674
-	nop
-
-l00405668:
-	lw	r2,0174(r30)
-	nop
-	sw	r2,0128(r30)
-
-l00405674:
-	addiu	r2,r30,+00000130
-	lw	r4,0128(r30)
-	or	r5,r2,r0
-	lw	r25,-7DBC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-
-l00405698:
-	lw	r4,0174(r30)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000059EC
-	lw	r25,-7F14(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0020(r30)
-	lw	r2,0020(r30)
-	nop
-	bne	r2,r0,0040571C
-	nop
-
-l004056D0:
-	lw	r2,0174(r30)
-	nop
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000001
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000059E8
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-000059FC
-	addiu	r7,r0,+0000004B
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00405CBC
-	or	r2,r0,r0
-
-l0040571C:
-	lw	r2,0140(r30)
-	nop
-	beq	r2,r0,00405748
-	nop
-
-l0040572C:
-	lw	r4,0174(r30)
-	lw	r25,-7FD4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-
-l00405748:
-	addiu	r2,r30,+00000028
-	or	r4,r2,r0
-	addiu	r5,r0,+000000FF
-	lw	r6,0020(r30)
-	lw	r25,-7E14(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0128(r30)
-	lw	r2,0128(r30)
-	nop
-	bne	r2,r0,00405788
-	nop
-
-l00405780:
-	beq	r0,r0,00405C9C
-	nop
-
-l00405788:
-	lw	r4,0128(r30)
-	addiu	r5,r0,+0000000A
-	lw	r25,-7FA8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0148(r30)
-	lw	r2,0148(r30)
-	nop
-	beq	r2,r0,004057C4
-	nop
-
-l004057B8:
-	lw	r2,0148(r30)
-	nop
-	sb	r0,0000(r2)
-
-l004057C4:
-	lw	r4,0128(r30)
-	addiu	r5,r0,+00000023
-	lw	r25,-7FA8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0148(r30)
-	lw	r2,0148(r30)
-	nop
-	beq	r2,r0,00405800
-	nop
-
-l004057F4:
-	lw	r2,0148(r30)
-	nop
-	sb	r0,0000(r2)
-
-l00405800:
-	lw	r4,0128(r30)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000059C0
-	lw	r25,-7F8C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r3,r2,r0
-	lw	r2,0128(r30)
-	nop
-	addu	r2,r2,r3
-	sw	r2,0128(r30)
-	lw	r2,0128(r30)
-	nop
-	lb	r2,0000(r2)
-	nop
-	bne	r2,r0,00405858
-	nop
-
-l00405850:
-	beq	r0,r0,00405748
-	nop
-
-l00405858:
-	lw	r2,0128(r30)
-	nop
-	sw	r2,014C(r30)
-	lw	r4,0128(r30)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000059BC
-	lw	r25,-7F44(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r3,r2,r0
-	lw	r2,0128(r30)
-	nop
-	addu	r2,r2,r3
-	sw	r2,0128(r30)
-	lw	r2,0128(r30)
-	nop
-	sw	r2,0150(r30)
-	lw	r4,0128(r30)
-	addiu	r5,r0,+0000003D
-	lw	r25,-7FA8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0128(r30)
-	lw	r2,0128(r30)
-	nop
-	bne	r2,r0,00405920
-	nop
-
-l004058D8:
-	addiu	r2,r30,+00000028
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000059B8
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-000059FC
-	addiu	r7,r0,+0000006E
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00405748
-	nop
-
-l00405920:
-	lw	r2,0128(r30)
-	nop
-	addiu	r2,r2,+00000001
-	sw	r2,0128(r30)
-	lw	r4,0128(r30)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000059C0
-	lw	r25,-7F8C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r3,r2,r0
-	lw	r2,0128(r30)
-	nop
-	addu	r2,r2,r3
-	sw	r2,0128(r30)
-	lw	r2,0128(r30)
-	nop
-	sw	r2,0154(r30)
-	lw	r4,0128(r30)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000059C0
-	lw	r25,-7F44(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r3,r2,r0
-	lw	r2,0128(r30)
-	nop
-	addu	r2,r2,r3
-	sw	r2,0128(r30)
-	lw	r2,0128(r30)
-	nop
-	sb	r0,0000(r2)
-	lw	r2,0150(r30)
-	nop
-	sb	r0,0000(r2)
-	sw	r0,0144(r30)
-	sw	r0,0024(r30)
-
-l004059CC:
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r2,r2,+00000008
-	lw	r3,-7E20(r28)
-	nop
-	addu	r3,r3,r2
-	lb	r3,0004(r3)
-	addiu	r2,r0,+00000020
-	beq	r3,r2,00405C40
-	nop
-
-l00405A0C:
-	lw	r2,0144(r30)
-	nop
-	bne	r2,r0,00405C40
-	nop
-
-l00405A1C:
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r3,r2,03
-	lw	r2,-7E20(r28)
-	nop
-	addiu	r2,r2,+00000004
-	addu	r2,r2,r3
-	lw	r4,014C(r30)
-	lw	r5,0000(r2)
-	lw	r25,-7EE0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	bne	r2,r0,00405C2C
-	nop
-
-l00405A70:
-	addiu	r2,r0,+00000001
-	sw	r2,0144(r30)
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r3,r2,+00000008
-	lw	r2,-7E20(r28)
-	nop
-	addu	r2,r2,r3
-	lw	r2,0000(r2)
-	nop
-	sw	r2,0158(r30)
-	addiu	r2,r0,+00000001
-	lw	r3,0158(r30)
-	nop
-	beq	r3,r2,00405B54
-	nop
-
-l00405AC8:
-	lw	r4,0158(r30)
-	nop
-	sltiu	r2,r4,+00000001
-	bne	r2,r0,00405AF8
-	nop
-
-l00405ADC:
-	addiu	r2,r0,+00000002
-	lw	r5,0158(r30)
-	nop
-	beq	r5,r2,00405BBC
-	nop
-
-l00405AF0:
-	beq	r0,r0,00405C2C
-	nop
-
-l00405AF8:
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r3,r2,03
-	lw	r2,-7E20(r28)
-	nop
-	addiu	r2,r2,+0000000D
-	addu	r2,r3,r2
-	or	r4,r2,r0
-	lw	r5,0154(r30)
-	addiu	r6,r0,+00000014
-	lw	r25,-7ED4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00405C2C
-	nop
-
-l00405B54:
-	lw	r4,0154(r30)
-	or	r5,r0,r0
-	lw	r25,-7FE4(r28)
-	nop
-	addiu	r25,r25,+000053F0
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r4,r2,r0
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r3,r2,+00000090
-	lw	r2,-7E20(r28)
-	nop
-	addiu	r2,r2,+00000004
-	addu	r2,r2,r3
-	sw	r4,0000(r2)
-	beq	r0,r0,00405C2C
-	nop
-
-l00405BBC:
-	lw	r2,0154(r30)
-	nop
-	lb	r2,0000(r2)
-	lw	r4,-7FE0(r28)
-	nop
-	addiu	r4,r4,-00005A40
-	or	r5,r2,r0
-	lw	r25,-7FA8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r4,r2,r0
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r3,r2,+00000090
-	lw	r2,-7E20(r28)
-	nop
-	addiu	r2,r2,+00000004
-	addu	r3,r2,r3
-	sltu	r2,r0,r4
-	sw	r2,0000(r3)
-
-l00405C2C:
-	lw	r2,0024(r30)
-	nop
-	addiu	r2,r2,+00000001
-	beq	r0,r0,004059CC
-	sw	r2,0024(r30)
-
-l00405C40:
-	lw	r2,0144(r30)
-	nop
-	bne	r2,r0,00405748
-	nop
-
-l00405C50:
-	lw	r2,014C(r30)
-	nop
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000001
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005A3C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-000059FC
-	addiu	r7,r0,+0000008E
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00405748
-	nop
-
-l00405C9C:
-	lw	r4,0020(r30)
-	lw	r25,-7F24(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	addiu	r2,r0,+00000001
-
-l00405CBC:
-	or	sp,r30,r0
-	lw	ra,0168(sp)
-	lw	r30,0164(sp)
-	jr	ra
-	addiu	sp,sp,+00000170
-
-;; properties_parse_command_line: 00405CD0
-properties_parse_command_line proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00002B90
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000048
-	sw	r28,0018(sp)
-	sw	ra,0044(sp)
-	sw	r30,0040(sp)
-	sw	r16,003C(sp)
-	or	r30,sp,r0
-	sw	r4,0048(r30)
-	sw	r5,004C(r30)
-	sw	r0,0020(r30)
-
-l00405D00:
-	lw	r2,0020(r30)
-	lw	r3,0048(r30)
-	nop
-	slt	r2,r2,r3
-	bne	r2,r0,00405D20
-	nop
-
-l00405D18:
-	beq	r0,r0,00406270
-	nop
-
-l00405D20:
-	lw	r2,0020(r30)
-	nop
-	sll	r3,r2,02
-	lw	r2,004C(r30)
-	nop
-	addu	r2,r3,r2
-	lw	r2,0000(r2)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000002D
-	bne	r3,r2,0040625C
-	nop
-
-l00405D50:
-	lw	r2,0020(r30)
-	nop
-	sll	r3,r2,02
-	lw	r2,004C(r30)
-	nop
-	addu	r2,r3,r2
-	lw	r2,0000(r2)
-	nop
-	addiu	r2,r2,+00000001
-	lbu	r2,0000(r2)
-	nop
-	sb	r2,002C(r30)
-	lb	r2,002C(r30)
-	nop
-	beq	r2,r0,00405DF4
-	nop
-
-l00405D90:
-	lw	r2,0020(r30)
-	nop
-	sll	r3,r2,02
-	lw	r2,004C(r30)
-	nop
-	addu	r2,r3,r2
-	lw	r2,0000(r2)
-	nop
-	addiu	r2,r2,+00000002
-	lb	r2,0000(r2)
-	nop
-	beq	r2,r0,00405DF4
-	nop
-
-l00405DC4:
-	lw	r2,0020(r30)
-	nop
-	sll	r3,r2,02
-	lw	r2,004C(r30)
-	nop
-	addu	r2,r3,r2
-	lw	r2,0000(r2)
-	nop
-	addiu	r2,r2,+00000002
-	sw	r2,0030(r30)
-	beq	r0,r0,00405E54
-	nop
-
-l00405DF4:
-	lw	r2,0048(r30)
-	lw	r3,0020(r30)
-	nop
-	slt	r2,r3,r2
-	beq	r2,r0,00405E40
-	nop
-
-l00405E0C:
-	lw	r2,0020(r30)
-	nop
-	addiu	r2,r2,+00000001
-	sw	r2,0020(r30)
-	sll	r3,r2,02
-	lw	r2,004C(r30)
-	nop
-	addu	r2,r3,r2
-	lw	r2,0000(r2)
-	nop
-	sw	r2,0030(r30)
-	beq	r0,r0,00405E54
-	nop
-
-l00405E40:
-	lw	r2,-7FE0(r28)
-	nop
-	addiu	r2,r2,-00005990
-	nop
-	sw	r2,0030(r30)
-
-l00405E54:
-	lb	r3,002C(r30)
-	addiu	r2,r0,+00000068
-	bne	r3,r2,00405EA4
-	nop
-
-l00405E64:
-	lw	r2,004C(r30)
-	nop
-	lw	r4,0000(r2)
-	lw	r25,-7DC4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	or	r4,r0,r0
-	lw	r25,-7F70(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-
-l00405EA4:
-	sw	r0,0028(r30)
-	sw	r0,0024(r30)
-
-l00405EAC:
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r2,r2,+00000008
-	lw	r3,-7E20(r28)
-	nop
-	addu	r3,r3,r2
-	lb	r3,0004(r3)
-	addiu	r2,r0,+00000020
-	beq	r3,r2,004061DC
-	nop
-
-l00405EEC:
-	lw	r2,0028(r30)
-	nop
-	bne	r2,r0,004061DC
-	nop
-
-l00405EFC:
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r2,r2,+00000008
-	lb	r3,002C(r30)
-	lw	r1,-7E20(r28)
-	nop
-	addu	r1,r1,r2
-	lb	r2,0004(r1)
-	nop
-	beq	r3,r2,00406004
-	nop
-
-l00405F40:
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r3,r2,+00000008
-	lw	r2,-7E20(r28)
-	nop
-	addu	r2,r2,r3
-	lw	r3,0000(r2)
-	addiu	r2,r0,+00000002
-	bne	r3,r2,004061C8
-	nop
-
-l00405F80:
-	lb	r2,002C(r30)
-	nop
-	or	r4,r2,r0
-	lw	r25,-7F9C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r16,r2,r0
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r2,r2,+00000008
-	lw	r1,-7E20(r28)
-	nop
-	addu	r1,r1,r2
-	lb	r2,0004(r1)
-	nop
-	or	r4,r2,r0
-	lw	r25,-7F9C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	beq	r16,r2,00406004
-	nop
-
-l00405FFC:
-	beq	r0,r0,004061C8
-	nop
-
-l00406004:
-	addiu	r2,r0,+00000001
-	sw	r2,0028(r30)
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r3,r2,+00000008
-	lw	r2,-7E20(r28)
-	nop
-	addu	r2,r2,r3
-	lw	r2,0000(r2)
-	nop
-	sw	r2,0034(r30)
-	addiu	r2,r0,+00000001
-	lw	r3,0034(r30)
-	nop
-	beq	r3,r2,004060E8
-	nop
-
-l0040605C:
-	lw	r3,0034(r30)
-	nop
-	sltiu	r2,r3,+00000001
-	bne	r2,r0,0040608C
-	nop
-
-l00406070:
-	addiu	r2,r0,+00000002
-	lw	r3,0034(r30)
-	nop
-	beq	r3,r2,00406150
-	nop
-
-l00406084:
-	beq	r0,r0,004061C8
-	nop
-
-l0040608C:
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r3,r2,03
-	lw	r2,-7E20(r28)
-	nop
-	addiu	r2,r2,+0000000D
-	addu	r2,r3,r2
-	or	r4,r2,r0
-	lw	r5,0030(r30)
-	addiu	r6,r0,+00000014
-	lw	r25,-7ED4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,004061C8
-	nop
-
-l004060E8:
-	lw	r4,0030(r30)
-	or	r5,r0,r0
-	lw	r25,-7FE4(r28)
-	nop
-	addiu	r25,r25,+000053F0
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r4,r2,r0
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r3,r2,+00000090
-	lw	r2,-7E20(r28)
-	nop
-	addiu	r2,r2,+00000004
-	addu	r2,r2,r3
-	sw	r4,0000(r2)
-	beq	r0,r0,004061C8
-	nop
-
-l00406150:
-	lw	r3,0024(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r3,r2,+00000090
-	lw	r2,-7E20(r28)
-	nop
-	addiu	r2,r2,+00000004
-	addu	r4,r2,r3
-	lb	r2,002C(r30)
-	nop
-	sll	r3,r2,01
-	lw	r2,-7DF4(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	addu	r2,r3,r2
-	lhu	r2,0000(r2)
-	nop
-	andi	r2,r2,00000001
-	andi	r2,r2,0000FFFF
-	sw	r2,0000(r4)
-	lw	r2,0020(r30)
-	nop
-	addiu	r2,r2,-00000001
-	sw	r2,0020(r30)
-
-l004061C8:
-	lw	r2,0024(r30)
-	nop
-	addiu	r2,r2,+00000001
-	beq	r0,r0,00405EAC
-	sw	r2,0024(r30)
-
-l004061DC:
-	lw	r2,0028(r30)
-	nop
-	bne	r2,r0,0040625C
-	nop
-
-l004061EC:
-	lb	r2,002C(r30)
-	nop
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000001
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-0000598C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005974
-	addiu	r7,r0,+000000C8
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r2,004C(r30)
-	nop
-	lw	r4,0000(r2)
-	lw	r25,-7DC4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00406274
-	or	r2,r0,r0
-
-l0040625C:
-	lw	r2,0020(r30)
-	nop
-	addiu	r2,r2,+00000001
-	beq	r0,r0,00405D00
-	sw	r2,0020(r30)
-
-l00406270:
-	addiu	r2,r0,+00000001
-
-l00406274:
-	or	sp,r30,r0
-	lw	ra,0044(sp)
-	lw	r30,0040(sp)
-	lw	r16,003C(sp)
-	jr	ra
-	addiu	sp,sp,+00000048
-
-;; properties_print_usage: 0040628C
-properties_print_usage proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000025D4
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	beq	r2,r0,00406304
-	nop
-
-l004062C0:
-	lw	r2,0030(r30)
-	nop
-	lb	r2,0000(r2)
-	nop
-	beq	r2,r0,00406304
-	nop
-
-l004062D8:
-	lw	r4,-7FE0(r28)
-	nop
-	addiu	r4,r4,-00005954
-	lw	r5,0030(r30)
-	lw	r25,-7DD0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	beq	r0,r0,00406328
-	nop
-
-l00406304:
-	lw	r4,-7FE0(r28)
-	nop
-	addiu	r4,r4,-00005944
-	lw	r25,-7DD0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-
-l00406328:
-	sw	r0,0018(r30)
-
-l0040632C:
-	lw	r3,0018(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r2,r2,+00000008
-	lw	r3,-7E20(r28)
-	nop
-	addu	r3,r3,r2
-	lb	r3,0004(r3)
-	addiu	r2,r0,+00000020
-	bne	r3,r2,00406374
-	nop
-
-l0040636C:
-	beq	r0,r0,004065D0
-	nop
-
-l00406374:
-	lw	r3,0018(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r3,r2,+00000008
-	lw	r2,-7E20(r28)
-	nop
-	addu	r2,r2,r3
-	lw	r3,0000(r2)
-	addiu	r2,r0,+00000002
-	bne	r3,r2,00406530
-	nop
-
-l004063B4:
-	lw	r3,0018(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r2,r2,+00000008
-	lw	r1,-7E20(r28)
-	nop
-	addu	r1,r1,r2
-	lb	r2,0004(r1)
-	nop
-	sll	r3,r2,01
-	lw	r2,-7DF4(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	addu	r2,r3,r2
-	lhu	r2,0000(r2)
-	nop
-	andi	r2,r2,00000001
-	andi	r2,r2,0000FFFF
-	beq	r2,r0,00406474
-	nop
-
-l0040641C:
-	lw	r3,0018(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r2,r2,+00000008
-	lw	r1,-7E20(r28)
-	nop
-	addu	r1,r1,r2
-	lb	r2,0004(r1)
-	nop
-	or	r4,r2,r0
-	lw	r25,-7E24(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	beq	r0,r0,004064C8
-	sw	r2,001C(r30)
-
-l00406474:
-	lw	r3,0018(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r2,r2,+00000008
-	lw	r1,-7E20(r28)
-	nop
-	addu	r1,r1,r2
-	lb	r2,0004(r1)
-	nop
-	or	r4,r2,r0
-	lw	r25,-7F9C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	sw	r2,001C(r30)
-
-l004064C8:
-	lw	r3,0018(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r2,r2,+00000008
-	lw	r1,-7E20(r28)
-	nop
-	addu	r1,r1,r2
-	lb	r2,0004(r1)
-	lw	r4,-7FE0(r28)
-	nop
-	addiu	r4,r4,-00005930
-	or	r5,r2,r0
-	lw	r6,001C(r30)
-	lw	r25,-7DD0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	beq	r0,r0,004065BC
-	nop
-
-l00406530:
-	lw	r3,0018(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r2,r2,03
-	addiu	r2,r2,+00000008
-	lw	r5,-7E20(r28)
-	nop
-	addu	r5,r5,r2
-	lb	r5,0004(r5)
-	lw	r3,0018(r30)
-	nop
-	or	r2,r3,r0
-	sll	r2,r2,02
-	addu	r2,r2,r3
-	sll	r2,r2,02
-	subu	r2,r2,r3
-	sll	r3,r2,03
-	lw	r2,-7E20(r28)
-	nop
-	addiu	r2,r2,+00000004
-	addu	r2,r2,r3
-	lw	r4,-7FE0(r28)
-	nop
-	addiu	r4,r4,-00005928
-	lw	r6,0000(r2)
-	lw	r25,-7DD0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-
-l004065BC:
-	lw	r2,0018(r30)
-	nop
-	addiu	r2,r2,+00000001
-	beq	r0,r0,0040632C
-	sw	r2,0018(r30)
-
-l004065D0:
-	lw	r4,-7FE0(r28)
-	nop
-	addiu	r4,r4,-00005920
-	lw	r25,-7DD0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-00406608                         00 00 00 00 00 00 00 00         ........
-
-;; print_log: 00406610
-print_log proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00002250
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000438
-	sw	r28,0010(sp)
-	sw	r5,043C(sp)
-	sw	r6,0440(sp)
-	sw	r7,0444(sp)
-	sw	ra,0430(sp)
-	sw	r30,042C(sp)
-	or	r30,sp,r0
-	sw	r4,0438(r30)
-	sw	r5,043C(r30)
-	lw	r2,0438(r30)
-	lw	r3,-7F6C(r28)
-	nop
-	lw	r3,0000(r3)
-	nop
-	slt	r2,r3,r2
-	bne	r2,r0,004066D4
-	nop
-
-l00406664:
-	addiu	r2,r30,+00000440
-	sw	r2,0018(r30)
-	addiu	r2,r30,+00000020
-	or	r4,r2,r0
-	addiu	r5,r0,+000003FF
-	lw	r6,043C(r30)
-	lw	r7,0018(r30)
-	lw	r25,-7E30(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	sw	r2,0420(r30)
-	addiu	r2,r30,+00000020
-	lw	r4,-7E40(r28)
-	nop
-	lw	r4,0000(r4)
-	lw	r5,0438(r30)
-	lw	r6,0420(r30)
-	or	r7,r2,r0
-	lw	r25,-7FE4(r28)
-	nop
-	addiu	r25,r25,+0000697C
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-
-l004066D4:
-	or	sp,r30,r0
-	lw	ra,0430(sp)
-	lw	r30,042C(sp)
-	jr	ra
-	addiu	sp,sp,+00000438
-
-;; open_log: 004066E8
-open_log proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00002178
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	ra,0020(sp)
-	sw	r30,001C(sp)
-	or	r30,sp,r0
-	sw	r4,0028(r30)
-	lw	r2,-7FC0(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	lb	r2,0000(r2)
-	nop
-	beq	r2,r0,004067EC
-	nop
-
-l0040672C:
-	lw	r2,-7FC0(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000002D
-	beq	r3,r2,004067EC
-	nop
-
-l0040674C:
-	lw	r4,-7FC0(r28)
-	nop
-	lw	r4,0000(r4)
-	lw	r5,0028(r30)
-	lw	r25,-7F14(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r1,-7E40(r28)
-	nop
-	sw	r2,0000(r1)
-	lw	r2,-7E40(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	bne	r2,r0,00406834
-	nop
-
-l00406798:
-	lw	r2,-7F4C(r28)
-	nop
-	lw	r2,0000(r2)
-	lw	r1,-7E40(r28)
-	nop
-	sw	r2,0000(r1)
-	or	r4,r0,r0
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000058FC
-	lw	r6,-7FC0(r28)
-	nop
-	lw	r6,0000(r6)
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	beq	r0,r0,00406834
-	nop
-
-l004067EC:
-	lw	r2,-7F4C(r28)
-	nop
-	lw	r2,0000(r2)
-	lw	r1,-7E40(r28)
-	nop
-	sw	r2,0000(r1)
-	lw	r4,-7FC0(r28)
-	nop
-	lw	r4,0000(r4)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000058C4
-	lw	r25,-7DBC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-
-l00406834:
-	or	sp,r30,r0
-	lw	ra,0020(sp)
-	lw	r30,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-
-;; log_rotate: 00406848
-log_rotate proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00002018
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000128
-	sw	r28,0010(sp)
-	sw	ra,0120(sp)
-	sw	r30,011C(sp)
-	or	r30,sp,r0
-	lw	r4,-7E40(r28)
-	nop
-	lw	r4,0000(r4)
-	lw	r25,-7F24(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r2,-7FC0(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	lb	r2,0000(r2)
-	nop
-	beq	r2,r0,00406944
-	nop
-
-l004068AC:
-	lw	r2,-7FC0(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	lb	r3,0000(r2)
-	addiu	r2,r0,+0000002D
-	beq	r3,r2,00406944
-	nop
-
-l004068CC:
-	addiu	r4,r30,+00000018
-	lw	r5,-7FC0(r28)
-	nop
-	lw	r5,0000(r5)
-	lw	r25,-7DBC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	addiu	r4,r30,+00000018
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000058BC
-	lw	r25,-7EA0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r4,-7FC0(r28)
-	nop
-	lw	r4,0000(r4)
-	addiu	r5,r30,+00000018
-	lw	r25,-7E88(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-
-l00406944:
-	lw	r4,-7FE0(r28)
-	nop
-	addiu	r4,r4,-000058C0
-	lw	r25,-7F90(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0120(sp)
-	lw	r30,011C(sp)
-	jr	ra
-	addiu	sp,sp,+00000128
-
-;; log_string: 0040697C
-log_string proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00001EE4
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000068
-	sw	r28,0018(sp)
-	sw	ra,0060(sp)
-	sw	r30,005C(sp)
-	sw	r17,0058(sp)
-	sw	r16,0054(sp)
-	or	r30,sp,r0
-	sw	r4,0068(r30)
-	or	r16,r5,r0
-	or	r2,r6,r0
-	or	r17,r7,r0
-	addiu	r2,r30,+00000040
-	or	r4,r2,r0
-	or	r5,r0,r0
-	lw	r25,-7F10(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	addiu	r2,r30,+00000040
-	or	r4,r2,r0
-	lw	r25,-7F88(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	addiu	r4,r30,+00000020
-	addiu	r5,r0,+0000001C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-000058B4
-	or	r7,r2,r0
-	lw	r25,-7F60(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	or	r2,r16,r0
-	sll	r3,r2,02
-	lw	r2,-7F64(r28)
-	nop
-	addu	r6,r2,r3
-	lw	r4,0044(r30)
-	lui	r2,+1062
-	ori	r2,r2,00004DD3
-	mult	r4,r2
-	mfhi	r2
-	sra	r3,r2,06
-	sra	r2,r4,1F
-	subu	r2,r3,r2
-	sw	r2,0010(sp)
-	sw	r17,0014(sp)
-	lw	r4,0068(r30)
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000058A0
-	lw	r6,0000(r6)
-	addiu	r7,r30,+00000020
-	lw	r25,-7E9C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r4,0068(r30)
-	lw	r25,-7E54(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r2,-7FE8(r28)
-	nop
-	addiu	r2,r2,+00000824
-	lw	r2,0000(r2)
-	nop
-	addiu	r2,r2,+00000001
-	lw	r1,-7FE8(r28)
-	nop
-	addiu	r1,r1,+00000824
-	sw	r2,0000(r1)
-	lw	r2,-7E38(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	beq	r2,r0,00406BCC
-	nop
-
-l00406AEC:
-	lw	r2,-7E38(r28)
-	nop
-	lw	r2,0000(r2)
-	nop
-	sw	r2,0048(r30)
-	lw	r2,0048(r30)
-	nop
-	bgez	r2,00406B20
-	nop
-
-l00406B10:
-	lw	r3,0048(r30)
-	nop
-	addiu	r3,r3,+000003FF
-	sw	r3,0048(r30)
-
-l00406B20:
-	lw	r3,0048(r30)
-	nop
-	sra	r2,r3,0A
-	lw	r3,-7FE8(r28)
-	nop
-	addiu	r3,r3,+00000824
-	lw	r3,0000(r3)
-	nop
-	slt	r2,r2,r3
-	beq	r2,r0,00406BCC
-	nop
-
-l00406B4C:
-	lw	r4,0068(r30)
-	lw	r25,-7F1C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r3,-7E38(r28)
-	nop
-	lw	r3,0000(r3)
-	nop
-	slt	r2,r2,r3
-	bne	r2,r0,00406BA4
-	nop
-
-l00406B84:
-	lw	r4,0068(r30)
-	lw	r25,-7DF0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	beq	r0,r0,00406BCC
-	nop
-
-l00406BA4:
-	lw	r2,-7FE8(r28)
-	nop
-	addiu	r2,r2,+00000824
-	lw	r2,0000(r2)
-	nop
-	addiu	r2,r2,-0000000A
-	lw	r1,-7FE8(r28)
-	nop
-	addiu	r1,r1,+00000824
-	sw	r2,0000(r1)
-
-l00406BCC:
-	or	sp,r30,r0
-	lw	ra,0060(sp)
-	lw	r30,005C(sp)
-	lw	r17,0058(sp)
-	lw	r16,0054(sp)
-	jr	ra
-	addiu	sp,sp,+00000068
-00406BE8                         00 00 00 00 00 00 00 00         ........
-
-;; server_new: 00406BF0
-server_new proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00001C70
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	sw	r5,0034(r30)
-	sw	r6,0038(r30)
-	sw	r7,003C(r30)
-	addiu	r4,r0,+00000024
-	lw	r25,-7E2C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	sw	r2,0018(r30)
-	lw	r2,0018(r30)
-	nop
-	bne	r2,r0,00406C7C
-	sw	r2,0018(r30)
-
-l00406C4C:
-	or	r4,r0,r0
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005890
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	beq	r0,r0,00406D38
-	or	r2,r0,r0
-
-l00406C7C:
-	lw	r3,0018(r30)
-	addiu	r2,r0,-00000001
-	sw	r2,0000(r3)
-	lw	r3,0018(r30)
-	lw	r2,003C(r30)
-	nop
-	sw	r2,0020(r3)
-	lw	r2,0018(r30)
-	nop
-	sw	r0,0018(r2)
-	lw	r2,0018(r30)
-	nop
-	sw	r0,001C(r2)
-	lw	r3,0018(r30)
-	lw	r2,0038(r30)
-	nop
-	sw	r2,0004(r3)
-	lw	r2,0018(r30)
-	nop
-	addiu	r2,r2,+00000008
-	or	r4,r2,r0
-	addiu	r5,r0,+00000010
-	lw	r25,-7E6C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r3,0018(r30)
-	addiu	r2,r0,+00000002
-	sh	r2,0008(r3)
-	lw	r3,0018(r30)
-	lhu	r2,0036(r30)
-	nop
-	sh	r2,000A(r3)
-	lw	r4,0030(r30)
-	lw	r25,-7EA8(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	or	r3,r2,r0
-	lw	r2,0018(r30)
-	nop
-	sw	r3,000C(r2)
-	lw	r2,0018(r30)
-	nop
-
-l00406D38:
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; server_open: 00406D4C
-server_open proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00001B14
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000038
-	sw	r28,0018(sp)
-	sw	ra,0034(sp)
-	sw	r30,0030(sp)
-	sw	r16,002C(sp)
-	or	r30,sp,r0
-	sw	r4,0038(r30)
-	addiu	r4,r0,+00000002
-	addiu	r5,r0,+00000002
-	addiu	r6,r0,+00000006
-	lw	r25,-7E44(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	sw	r2,0020(r30)
-	lw	r2,0020(r30)
-	nop
-	bgez	r2,00406E40
-	nop
-
-l00406DA8:
-	lw	r25,-7F68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r16,r2,r0
-	lw	r25,-7F68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	lw	r4,0000(r2)
-	lw	r25,-7DE4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r3,r2,r0
-	lw	r2,0000(r16)
-	nop
-	sw	r2,0010(sp)
-	sw	r3,0014(sp)
-	addiu	r4,r0,+00000001
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005864
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005838
-	addiu	r7,r0,+00000031
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00406FE0
-	or	r2,r0,r0
-
-l00406E40:
-	lw	r2,0038(r30)
-	nop
-	addiu	r2,r2,+00000008
-	lw	r4,0020(r30)
-	or	r5,r2,r0
-	addiu	r6,r0,+00000010
-	lw	r25,-7EA4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	bgez	r2,00406F0C
-	nop
-
-l00406E74:
-	lw	r25,-7F68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r16,r2,r0
-	lw	r25,-7F68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	lw	r4,0000(r2)
-	lw	r25,-7DE4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r3,r2,r0
-	lw	r2,0000(r16)
-	nop
-	sw	r2,0010(sp)
-	sw	r3,0014(sp)
-	addiu	r4,r0,+00000001
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-0000582C
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005838
-	addiu	r7,r0,+00000037
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00406FE0
-	or	r2,r0,r0
-
-l00406F0C:
-	lw	r2,0038(r30)
-	lw	r4,0020(r30)
-	lw	r5,0004(r2)
-	lw	r25,-7EF4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	bgez	r2,00406FCC
-	nop
-
-l00406F34:
-	lw	r25,-7F68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r16,r2,r0
-	lw	r25,-7F68(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	lw	r4,0000(r2)
-	lw	r25,-7DE4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	or	r3,r2,r0
-	lw	r2,0000(r16)
-	nop
-	sw	r2,0010(sp)
-	sw	r3,0014(sp)
-	addiu	r4,r0,+00000001
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005804
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005838
-	addiu	r7,r0,+00000041
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	beq	r0,r0,00406FE0
-	or	r2,r0,r0
-
-l00406FCC:
-	lw	r3,0038(r30)
-	lw	r2,0020(r30)
-	nop
-	sw	r2,0000(r3)
-	addiu	r2,r0,+00000001
-
-l00406FE0:
-	or	sp,r30,r0
-	lw	ra,0034(sp)
-	lw	r30,0030(sp)
-	lw	r16,002C(sp)
-	jr	ra
-	addiu	sp,sp,+00000038
-
-;; server_close: 00406FF8
-server_close proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00001868
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	ra,0020(sp)
-	sw	r30,001C(sp)
-	or	r30,sp,r0
-	sw	r4,0028(r30)
-	lw	r2,0028(r30)
-	nop
-	beq	r2,r0,00407074
-	nop
-
-l0040702C:
-	lw	r2,0028(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	blez	r2,00407074
-	nop
-
-l00407044:
-	lw	r2,0028(r30)
-	nop
-	lw	r4,0000(r2)
-	lw	r25,-7FC4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r3,0028(r30)
-	addiu	r2,r0,-00000001
-	sw	r2,0000(r3)
-
-l00407074:
-	addiu	r2,r0,-00000001
-	or	sp,r30,r0
-	lw	ra,0020(sp)
-	lw	r30,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-
-;; server_destroy: 0040708C
-server_destroy proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000017D4
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0018(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0020(r2)
-	nop
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000004
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000057E4
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-000057C8
-	addiu	r7,r0,+0000005A
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r4,0030(r30)
-	lw	r25,-7EEC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r4,0030(r30)
-	lw	r25,-7FD4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-00407148                         00 00 00 00 00 00 00 00         ........
-
-;; slist_new: 00407150
-slist_new proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00001710
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	addiu	r4,r0,+0000000C
-	lw	r25,-7E2C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	sw	r2,0018(r30)
-	lw	r2,0018(r30)
-	nop
-	bne	r2,r0,004071CC
-	sw	r2,0018(r30)
-
-l0040719C:
-	or	r4,r0,r0
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-000057B0
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	beq	r0,r0,004071F8
-	or	r2,r0,r0
-
-l004071CC:
-	lw	r2,0018(r30)
-	nop
-	sw	r0,0008(r2)
-	lw	r2,0018(r30)
-	nop
-	sw	r0,0000(r2)
-	lw	r2,0018(r30)
-	nop
-	sw	r0,0004(r2)
-	lw	r2,0018(r30)
-	nop
-
-l004071F8:
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; slist_add: 0040720C
-slist_add proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00001654
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000010
-	sw	r28,0000(sp)
-	sw	r30,000C(sp)
-	or	r30,sp,r0
-	sw	r4,0010(r30)
-	sw	r5,0014(r30)
-	lw	r2,0010(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	beq	r2,r0,00407278
-	nop
-
-l00407248:
-	lw	r2,0010(r30)
-	nop
-	lw	r3,0008(r2)
-	lw	r2,0014(r30)
-	nop
-	sw	r2,001C(r3)
-	lw	r3,0014(r30)
-	lw	r2,0010(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0018(r3)
-
-l00407278:
-	lw	r2,0014(r30)
-	nop
-	sw	r0,001C(r2)
-	lw	r3,0010(r30)
-	lw	r2,0014(r30)
-	nop
-	sw	r2,0008(r3)
-	lw	r2,0010(r30)
-	lw	r3,0010(r30)
-	lw	r2,0010(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	addiu	r2,r2,+00000001
-	sw	r2,0000(r3)
-	lw	r2,0010(r30)
-	lw	r3,0010(r30)
-	lw	r4,0000(r2)
-	lw	r2,0004(r3)
-	nop
-	slt	r2,r2,r4
-	beq	r2,r0,004072EC
-	nop
-
-l004072D4:
-	lw	r2,0010(r30)
-	lw	r3,0010(r30)
-	nop
-	lw	r3,0000(r3)
-	nop
-	sw	r3,0004(r2)
-
-l004072EC:
-	lw	r2,0010(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	or	sp,r30,r0
-	lw	r30,000C(sp)
-	jr	ra
-	addiu	sp,sp,+00000010
-
-;; slist_remove: 0040730C
-slist_remove proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00001554
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000010
-	sw	r28,0000(sp)
-	sw	r30,000C(sp)
-	or	r30,sp,r0
-	sw	r4,0010(r30)
-	sw	r5,0014(r30)
-	lw	r2,0014(r30)
-	nop
-	beq	r2,r0,004073F0
-	nop
-
-l00407340:
-	lw	r2,0010(r30)
-	lw	r3,0014(r30)
-	lw	r2,0008(r2)
-	nop
-	bne	r3,r2,00407378
-	nop
-
-l00407358:
-	lw	r2,0010(r30)
-	lw	r3,0014(r30)
-	nop
-	lw	r3,0018(r3)
-	nop
-	sw	r3,0008(r2)
-	beq	r0,r0,00407398
-	nop
-
-l00407378:
-	lw	r2,0014(r30)
-	nop
-	lw	r3,001C(r2)
-	lw	r2,0014(r30)
-	nop
-	lw	r2,0018(r2)
-	nop
-	sw	r2,0018(r3)
-
-l00407398:
-	lw	r2,0014(r30)
-	nop
-	lw	r2,0018(r2)
-	nop
-	beq	r2,r0,004073D0
-	nop
-
-l004073B0:
-	lw	r2,0014(r30)
-	nop
-	lw	r3,0018(r2)
-	lw	r2,0014(r30)
-	nop
-	lw	r2,001C(r2)
-	nop
-	sw	r2,001C(r3)
-
-l004073D0:
-	lw	r2,0010(r30)
-	lw	r3,0010(r30)
-	lw	r2,0010(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	addiu	r2,r2,-00000001
-	sw	r2,0000(r3)
-
-l004073F0:
-	lw	r2,0010(r30)
-	nop
-	lw	r2,0000(r2)
-	nop
-	or	sp,r30,r0
-	lw	r30,000C(sp)
-	jr	ra
-	addiu	sp,sp,+00000010
-
-;; slist_find_fd: 00407410
-slist_find_fd proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00001450
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000018
-	sw	r28,0000(sp)
-	sw	r30,0014(sp)
-	or	r30,sp,r0
-	sw	r4,0018(r30)
-	sw	r5,001C(r30)
-	lw	r2,0018(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0008(r30)
-
-l00407448:
-	lw	r2,0008(r30)
-	nop
-	beq	r2,r0,00407494
-	nop
-
-l00407458:
-	lw	r2,0008(r30)
-	nop
-	lw	r3,0000(r2)
-	lw	r2,001C(r30)
-	nop
-	bne	r3,r2,0040747C
-	nop
-
-l00407474:
-	beq	r0,r0,00407494
-	nop
-
-l0040747C:
-	lw	r2,0008(r30)
-	nop
-	lw	r2,0018(r2)
-	nop
-	beq	r0,r0,00407448
-	sw	r2,0008(r30)
-
-l00407494:
-	lw	r2,0008(r30)
-	nop
-	or	sp,r30,r0
-	lw	r30,0014(sp)
-	jr	ra
-	addiu	sp,sp,+00000018
-
-;; slist_delete: 004074AC
-slist_delete proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000013B4
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0018(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	sw	r5,0034(r30)
-	lw	r4,0030(r30)
-	lw	r5,0034(r30)
-	lw	r25,-7EF0(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r2,0034(r30)
-	nop
-	sw	r2,0010(sp)
-	addiu	r4,r0,+00000002
-	lw	r5,-7FE0(r28)
-	nop
-	addiu	r5,r5,-00005784
-	lw	r6,-7FE0(r28)
-	nop
-	addiu	r6,r6,-00005768
-	addiu	r7,r0,+00000055
-	lw	r25,-7E74(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	lw	r4,0034(r30)
-	lw	r25,-7E60(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0018(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; slist_close_all: 00407568
-slist_close_all proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000012F8
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0018(r30)
-
-l004075A0:
-	lw	r2,0018(r30)
-	nop
-	bne	r2,r0,004075B8
-	nop
-
-l004075B0:
-	beq	r0,r0,004075EC
-	nop
-
-l004075B8:
-	lw	r4,0018(r30)
-	lw	r25,-7EEC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r2,0018(r30)
-	nop
-	lw	r2,0018(r2)
-	nop
-	beq	r0,r0,004075A0
-	sw	r2,0018(r30)
-
-l004075EC:
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; slist_destroy_all: 00407600
-slist_destroy_all proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00001260
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	ra,0028(sp)
-	sw	r30,0024(sp)
-	or	r30,sp,r0
-	sw	r4,0030(r30)
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0018(r30)
-
-l00407638:
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	bne	r2,r0,00407658
-	nop
-
-l00407650:
-	beq	r0,r0,00407694
-	nop
-
-l00407658:
-	lw	r2,0030(r30)
-	nop
-	lw	r2,0008(r2)
-	nop
-	sw	r2,0018(r30)
-	lw	r4,0030(r30)
-	lw	r5,0018(r30)
-	lw	r25,-7F80(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	beq	r0,r0,00407638
-	nop
-
-l00407694:
-	or	sp,r30,r0
-	lw	ra,0028(sp)
-	lw	r30,0024(sp)
-	jr	ra
-	addiu	sp,sp,+00000030
-
-;; slist_destroy: 004076A8
-slist_destroy proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000011B8
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	ra,0020(sp)
-	sw	r30,001C(sp)
-	or	r30,sp,r0
-	sw	r4,0028(r30)
-	lw	r4,0028(r30)
-	lw	r25,-7EDC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r4,0028(r30)
-	lw	r25,-7E5C(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	lw	r4,0028(r30)
-	lw	r25,-7FD4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(r30)
-	nop
-	or	sp,r30,r0
-	lw	ra,0020(sp)
-	lw	r30,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-00407734             00 00 00 00 00 00 00 00 00 00 00 00     ............
-
-;; __fixunsdfsi: 00407740
-__fixunsdfsi proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00001120
-	addu	r28,r28,r25
-	lui	r1,+41E0
-	mtc1	r1,f1
-	mtc1	r0,f0
-	nop
-	c.le.d	cc0,f0,f12
-	cfc1	r3,FCSR
-	nop
-	ori	r1,r3,00000003
-	xori	r1,r1,00000002
-	ctc1	r1,FCSR
-	nop
-	cvt.w.d	f0,f12
-	ctc1	r3,FCSR
-	nop
-	mfc1	r2,f0
-	bc1f	cc0,004077D4
-	nop
-
-l00407790:
-	lui	r1,-3E20
-	mtc1	r1,f1
-	mtc1	r0,f0
-	lui	r2,-8000
-	add.d	f0,f12,f0
-	cfc1	r3,FCSR
-	nop
-	ori	r1,r3,00000003
-	xori	r1,r1,00000002
-	ctc1	r1,FCSR
-	nop
-	cvt.w.d	f2,f0
-	ctc1	r3,FCSR
-	nop
-	mfc1	r3,f2
-	nop
-	addu	r2,r3,r2
-
-l004077D4:
-	jr	ra
-	nop
-004077DC                                     00 00 00 00             ....
-
-;; _fpadd_parts: 004077E0
-_fpadd_parts proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00001080
-	addu	r28,r28,r25
-	or	r11,r4,r0
-	lw	r7,0000(r11)
-	nop
-	sltiu	r3,r7,+00000002
-	bne	r3,r0,00407A30
-	or	r2,r11,r0
-
-l00407804:
-	lw	r4,0000(r5)
-	nop
-	sltiu	r3,r4,+00000002
-	bne	r3,r0,00407A30
-	or	r2,r5,r0
-
-l00407818:
-	xori	r2,r7,00000004
-	bne	r2,r0,0040784C
-	xori	r3,r4,00000004
-
-l00407824:
-	xori	r2,r4,00000004
-	bne	r2,r0,00407844
-	nop
-
-l00407830:
-	lw	r4,0004(r5)
-	lw	r3,0004(r11)
-	lw	r2,-7F04(r28)
-	bne	r3,r4,00407A30
-	nop
-
-l00407844:
-	jr	ra
-	or	r2,r11,r0
-
-l0040784C:
-	beq	r3,r0,00407A30
-	or	r2,r5,r0
-
-l00407854:
-	xori	r2,r4,00000002
-	bne	r2,r0,004078B4
-	xori	r3,r7,00000002
-
-l00407860:
-	xori	r2,r7,00000002
-	bne	r2,r0,004078AC
-	nop
-
-l0040786C:
-	sw	r7,0000(r6)
-	lw	r4,0004(r11)
-	or	r2,r6,r0
-	sw	r4,0004(r6)
-	lw	r3,0008(r11)
-	nop
-	sw	r3,0008(r6)
-	lw	r4,000C(r11)
-	nop
-	sw	r4,000C(r6)
-	lw	r3,0004(r11)
-	lw	r4,0004(r5)
-	nop
-	and	r3,r3,r4
-	jr	ra
-	sw	r3,0004(r6)
-
-l004078AC:
-	jr	ra
-	or	r2,r11,r0
-
-l004078B4:
-	beq	r3,r0,00407A30
-	or	r2,r5,r0
-
-l004078BC:
-	lw	r8,0008(r11)
-	lw	r7,0008(r5)
-	lw	r10,000C(r11)
-	subu	r2,r8,r7
-	lw	r9,000C(r5)
-	bgez	r2,004078DC
-	nop
-
-l004078D8:
-	subu	r2,r0,r2
-
-l004078DC:
-	slti	r2,r2,+00000020
-	beq	r2,r0,0040793C
-	slt	r2,r7,r8
-
-l004078E8:
-	beq	r2,r0,00407910
-	slt	r2,r8,r7
-
-l004078F0:
-	subu	r7,r8,r7
-
-l004078F4:
-	srl	r3,r9,01
-	andi	r2,r9,00000001
-	addiu	r7,r7,-00000001
-	bne	r7,r0,004078F4
-	or	r9,r2,r3
-
-l00407908:
-	or	r7,r8,r0
-	slt	r2,r8,r7
-
-l00407910:
-	nop
-	beq	r2,r0,00407958
-	nop
-
-l0040791C:
-	addiu	r8,r8,+00000001
-	srl	r2,r10,01
-	andi	r3,r10,00000001
-	slt	r4,r8,r7
-	bne	r4,r0,0040791C
-	or	r10,r3,r2
-
-l00407934:
-	beq	r0,r0,00407958
-	nop
-
-l0040793C:
-	nop
-	beq	r2,r0,00407950
-	nop
-
-l00407948:
-	beq	r0,r0,00407958
-	or	r9,r0,r0
-
-l00407950:
-	or	r8,r7,r0
-	or	r10,r0,r0
-
-l00407958:
-	lw	r4,0004(r11)
-	lw	r2,0004(r5)
-	nop
-	beq	r4,r2,004079F0
-	nop
-
-l0040796C:
-	bne	r4,r0,00407978
-	subu	r3,r9,r10
-
-l00407974:
-	subu	r3,r10,r9
-
-l00407978:
-	bltz	r3,00407990
-	addiu	r2,r0,+00000001
-
-l00407980:
-	sw	r8,0008(r6)
-	sw	r3,000C(r6)
-	beq	r0,r0,004079A0
-	sw	r0,0004(r6)
-
-l00407990:
-	subu	r3,r0,r3
-	sw	r2,0004(r6)
-	sw	r8,0008(r6)
-	sw	r3,000C(r6)
-
-l004079A0:
-	lw	r7,000C(r6)
-	lui	r2,+3FFF
-	addiu	r3,r7,-00000001
-	ori	r2,r2,0000FFFE
-	sltu	r2,r2,r3
-	bne	r2,r0,00407A08
-	addiu	r2,r0,+00000003
-
-l004079BC:
-	sll	r5,r7,01
-	lw	r2,0008(r6)
-	lui	r3,+3FFF
-	addiu	r4,r5,-00000001
-	ori	r3,r3,0000FFFE
-	addiu	r2,r2,-00000001
-	sltu	r3,r3,r4
-	sw	r2,0008(r6)
-	sw	r5,000C(r6)
-	beq	r3,r0,004079BC
-	or	r7,r5,r0
-
-l004079E8:
-	beq	r0,r0,00407A08
-	addiu	r2,r0,+00000003
-
-l004079F0:
-	addu	r2,r10,r9
-	sw	r4,0004(r6)
-	sw	r8,0008(r6)
-	sw	r2,000C(r6)
-	or	r7,r2,r0
-	addiu	r2,r0,+00000003
-
-l00407A08:
-	bgez	r7,00407A2C
-	sw	r2,0000(r6)
-
-l00407A10:
-	lw	r2,0008(r6)
-	srl	r4,r7,01
-	andi	r3,r7,00000001
-	or	r3,r3,r4
-	addiu	r2,r2,+00000001
-	sw	r3,000C(r6)
-	sw	r2,0008(r6)
-
-l00407A2C:
-	or	r2,r6,r0
-
-l00407A30:
-	jr	ra
-	nop
-
-;; __addsf3: 00407A38
-__addsf3 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00000E28
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000060
-	sw	r28,0010(sp)
-	sw	r17,0058(sp)
-	lw	r17,-7E84(r28)
-	sw	ra,005C(sp)
-	sw	r16,0054(sp)
-	addiu	r4,sp,+00000048
-	addiu	r5,sp,+00000018
-	swc1	f12,0048(sp)
-	or	r25,r17,r0
-	jalr	ra,r25
-	swc1	f14,004C(sp)
-	lw	r28,0010(sp)
-	addiu	r16,sp,+00000028
-	addiu	r4,sp,+0000004C
-	or	r25,r17,r0
-	jalr	ra,r25
-	or	r5,r16,r0
-	lw	r28,0010(sp)
-	nop
-	lw	r25,-7FE4(r28)
-	nop
-	addiu	r25,r25,+000077E0
-	or	r5,r16,r0
-	addiu	r4,sp,+00000018
-	jalr	ra,r25
-	addiu	r6,sp,+00000038
-	lw	r28,0010(sp)
-	nop
-	lw	r25,-7EB4(r28)
-	nop
-	jalr	ra,r25
-	or	r4,r2,r0
-	lw	r28,0010(sp)
-	lw	ra,005C(sp)
-	lw	r17,0058(sp)
-	lw	r16,0054(sp)
-	jr	ra
-	addiu	sp,sp,+00000060
-
-;; __subsf3: 00407AE0
-__subsf3 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00000D80
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000060
-	sw	r28,0010(sp)
-	sw	r17,0058(sp)
-	lw	r17,-7E84(r28)
-	sw	ra,005C(sp)
-	sw	r16,0054(sp)
-	addiu	r4,sp,+00000048
-	addiu	r5,sp,+00000018
-	swc1	f12,0048(sp)
-	or	r25,r17,r0
-	jalr	ra,r25
-	swc1	f14,004C(sp)
-	lw	r28,0010(sp)
-	addiu	r16,sp,+00000028
-	addiu	r4,sp,+0000004C
-	or	r25,r17,r0
-	jalr	ra,r25
-	or	r5,r16,r0
-	lw	r28,0010(sp)
-	nop
-	lw	r25,-7FE4(r28)
-	nop
-	addiu	r25,r25,+000077E0
-	lw	r2,002C(sp)
-	or	r5,r16,r0
-	xori	r2,r2,00000001
-	addiu	r4,sp,+00000018
-	addiu	r6,sp,+00000038
-	jalr	ra,r25
-	sw	r2,002C(sp)
-	lw	r28,0010(sp)
-	nop
-	lw	r25,-7EB4(r28)
-	nop
-	jalr	ra,r25
-	or	r4,r2,r0
-	lw	r28,0010(sp)
-	lw	ra,005C(sp)
-	lw	r17,0058(sp)
-	lw	r16,0054(sp)
-	jr	ra
-	addiu	sp,sp,+00000060
-00407B94             00 00 00 00 00 00 00 00 00 00 00 00     ............
-
-;; __mulsf3: 00407BA0
-__mulsf3 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00000CC0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000060
-	sw	r28,0010(sp)
-	sw	r17,0058(sp)
-	lw	r17,-7E84(r28)
-	sw	ra,005C(sp)
-	sw	r16,0054(sp)
-	addiu	r4,sp,+00000048
-	addiu	r5,sp,+00000018
-	swc1	f12,0048(sp)
-	or	r25,r17,r0
-	jalr	ra,r25
-	swc1	f14,004C(sp)
-	lw	r28,0010(sp)
-	addiu	r16,sp,+00000028
-	addiu	r4,sp,+0000004C
-	or	r25,r17,r0
-	jalr	ra,r25
-	or	r5,r16,r0
-	lw	r28,0010(sp)
-	lw	r4,0018(sp)
-	nop
-	sltiu	r2,r4,+00000002
-	bne	r2,r0,00407C64
-	addiu	r7,sp,+00000018
-
-l00407C0C:
-	lw	r3,0028(sp)
-	nop
-	sltiu	r2,r3,+00000002
-	bne	r2,r0,00407C8C
-	xori	r2,r4,00000004
-
-l00407C20:
-	bne	r2,r0,00407C40
-	xori	r2,r3,00000004
-
-l00407C28:
-	xori	r2,r3,00000002
-	lw	r4,-7F04(r28)
-	beq	r2,r0,00407DA4
-	nop
-
-l00407C38:
-	beq	r0,r0,00407C64
-	nop
-
-l00407C40:
-	bne	r2,r0,00407C5C
-	xori	r2,r4,00000002
-
-l00407C48:
-	lw	r4,-7F04(r28)
-	beq	r2,r0,00407DA4
-	nop
-
-l00407C54:
-	beq	r0,r0,00407C8C
-	nop
-
-l00407C5C:
-	bne	r2,r0,00407C80
-	xori	r2,r3,00000002
-
-l00407C64:
-	lw	r2,0004(r7)
-	lw	r3,002C(sp)
-	or	r4,r7,r0
-	xor	r2,r2,r3
-	sltu	r2,r0,r2
-	beq	r0,r0,00407DA4
-	sw	r2,0004(r7)
-
-l00407C80:
-	nop
-	bne	r2,r0,00407CA8
-	nop
-
-l00407C8C:
-	lw	r2,0004(r7)
-	lw	r3,002C(sp)
-	or	r4,r16,r0
-	xor	r2,r2,r3
-	sltu	r2,r0,r2
-	beq	r0,r0,00407DA4
-	sw	r2,002C(sp)
-
-l00407CA8:
-	lw	r4,000C(r7)
-	lw	r6,0034(sp)
-	lw	r2,0004(r7)
-	multu	r4,r6
-	lw	r3,0008(r7)
-	lw	r7,002C(sp)
-	lw	r6,0030(sp)
-	xor	r2,r2,r7
-	addu	r3,r3,r6
-	sltu	r2,r0,r2
-	addiu	r7,r3,+00000002
-	sw	r2,003C(sp)
-	sw	r7,0040(sp)
-	mfhi	r4
-	mflo	r5
-	sra	r3,r4,00
-	sra	r2,r4,1F
-	or	r6,r3,r0
-	bgez	r6,00407D24
-	or	r4,r5,r0
-
-l00407CF8:
-	or	r3,r7,r0
-	lui	r5,-8000
-	andi	r2,r6,00000001
-
-l00407D04:
-	addiu	r3,r3,+00000001
-	beq	r2,r0,00407D18
-	srl	r6,r6,01
-
-l00407D10:
-	srl	r4,r4,01
-	or	r4,r4,r5
-
-l00407D18:
-	bltz	r6,00407D04
-	andi	r2,r6,00000001
-
-l00407D20:
-	sw	r3,0040(sp)
-
-l00407D24:
-	lui	r2,+3FFF
-	ori	r2,r2,0000FFFF
-	sltu	r2,r2,r6
-	bne	r2,r0,00407D6C
-	nop
-
-l00407D38:
-	lui	r5,+3FFF
-	lw	r3,0040(sp)
-	lui	r7,-8000
-	ori	r5,r5,0000FFFF
-
-l00407D48:
-	and	r2,r4,r7
-	sll	r6,r6,01
-	beq	r2,r0,00407D5C
-	addiu	r3,r3,-00000001
-
-l00407D58:
-	ori	r6,r6,00000001
-
-l00407D5C:
-	sltu	r2,r5,r6
-	beq	r2,r0,00407D48
-	sll	r4,r4,01
-
-l00407D68:
-	sw	r3,0040(sp)
-
-l00407D6C:
-	andi	r3,r6,0000007F
-	addiu	r2,r0,+00000040
-	bne	r3,r2,00407D98
-	addiu	r2,r0,+00000003
-
-l00407D7C:
-	andi	r2,r6,00000080
-	bne	r2,r0,00407D90
-	nop
-
-l00407D88:
-	beq	r4,r0,00407D98
-	addiu	r2,r0,+00000003
-
-l00407D90:
-	addiu	r6,r6,+00000040
-	addiu	r2,r0,+00000003
-
-l00407D98:
-	sw	r6,0044(sp)
-	sw	r2,0038(sp)
-	addiu	r4,sp,+00000038
-
-l00407DA4:
-	lw	r25,-7EB4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(sp)
-	lw	ra,005C(sp)
-	lw	r17,0058(sp)
-	lw	r16,0054(sp)
-	jr	ra
-	addiu	sp,sp,+00000060
-00407DCC                                     00 00 00 00             ....
-
-;; __divsf3: 00407DD0
-__divsf3 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00000A90
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000050
-	sw	r28,0010(sp)
-	sw	r17,0048(sp)
-	lw	r17,-7E84(r28)
-	sw	ra,004C(sp)
-	sw	r16,0044(sp)
-	addiu	r4,sp,+00000038
-	addiu	r5,sp,+00000018
-	swc1	f12,0038(sp)
-	or	r25,r17,r0
-	jalr	ra,r25
-	swc1	f14,003C(sp)
-	lw	r28,0010(sp)
-	addiu	r16,sp,+00000028
-	addiu	r4,sp,+0000003C
-	or	r25,r17,r0
-	jalr	ra,r25
-	or	r5,r16,r0
-	lw	r28,0010(sp)
-	lw	r6,0018(sp)
-	addiu	r8,sp,+00000018
-	sltiu	r2,r6,+00000002
-	bne	r2,r0,00407F3C
-	or	r4,r8,r0
-
-l00407E3C:
-	lw	r5,0028(sp)
-	nop
-	sltiu	r2,r5,+00000002
-	bne	r2,r0,00407F3C
-	or	r4,r16,r0
-
-l00407E50:
-	lw	r2,0004(r8)
-	lw	r3,002C(sp)
-	xori	r4,r6,00000004
-	xor	r2,r2,r3
-	beq	r4,r0,00407E74
-	sw	r2,0004(r8)
-
-l00407E68:
-	xori	r2,r6,00000002
-	bne	r2,r0,00407E88
-	xori	r2,r5,00000004
-
-l00407E74:
-	lw	r4,-7F04(r28)
-	beq	r6,r5,00407F3C
-	nop
-
-l00407E80:
-	beq	r0,r0,00407F3C
-	or	r4,r8,r0
-
-l00407E88:
-	bne	r2,r0,00407EA0
-	xori	r2,r5,00000002
-
-l00407E90:
-	sw	r0,000C(r8)
-	sw	r0,0008(r8)
-	beq	r0,r0,00407F3C
-	or	r4,r8,r0
-
-l00407EA0:
-	bne	r2,r0,00407EB4
-	addiu	r2,r0,+00000004
-
-l00407EA8:
-	sw	r2,0018(sp)
-	beq	r0,r0,00407F3C
-	or	r4,r8,r0
-
-l00407EB4:
-	lw	r3,0008(r8)
-	lw	r2,0030(sp)
-	lw	r7,0034(sp)
-	lw	r4,000C(r8)
-	subu	r2,r3,r2
-	sltu	r5,r4,r7
-	beq	r5,r0,00407EE4
-	sw	r2,0008(r8)
-
-l00407ED4:
-	addiu	r2,r2,-00000001
-	sll	r4,r4,01
-	sw	r2,0008(r8)
-	sltu	r5,r4,r7
-
-l00407EE4:
-	lui	r2,+4000
-	or	r6,r0,r0
-
-l00407EEC:
-	nop
-	bne	r5,r0,00407F00
-	nop
-
-l00407EF8:
-	or	r6,r6,r2
-	subu	r4,r4,r7
-
-l00407F00:
-	sll	r4,r4,01
-	srl	r2,r2,01
-	bne	r2,r0,00407EEC
-	sltu	r5,r4,r7
-
-l00407F10:
-	andi	r3,r6,0000007F
-	addiu	r2,r0,+00000040
-	bne	r3,r2,00407F34
-	andi	r2,r6,00000080
-
-l00407F20:
-	bne	r2,r0,00407F30
-	nop
-
-l00407F28:
-	beq	r4,r0,00407F34
-	nop
-
-l00407F30:
-	addiu	r6,r6,+00000040
-
-l00407F34:
-	sw	r6,000C(r8)
-	or	r4,r8,r0
-
-l00407F3C:
-	lw	r25,-7EB4(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(sp)
-	lw	ra,004C(sp)
-	lw	r17,0048(sp)
-	lw	r16,0044(sp)
-	jr	ra
-	addiu	sp,sp,+00000050
-00407F64             00 00 00 00 00 00 00 00 00 00 00 00     ............
-
-;; __floatsisf: 00407F70
-__floatsisf proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000008F0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	addiu	r2,r0,+00000003
-	srl	r3,r4,1F
-	sw	ra,002C(sp)
-	sw	r2,0018(sp)
-	bne	r4,r0,00407FA8
-	sw	r3,001C(sp)
-
-l00407F9C:
-	addiu	r2,r0,+00000002
-	beq	r0,r0,00408014
-	sw	r2,0018(sp)
-
-l00407FA8:
-	addiu	r2,r0,+0000001E
-	beq	r3,r0,00407FD0
-	sw	r2,0020(sp)
-
-l00407FB4:
-	lui	r2,-8000
-	lui	r1,-3100
-	mtc1	r1,f0
-	beq	r4,r2,00408028
-	subu	r2,r0,r4
-
-l00407FC8:
-	beq	r0,r0,00407FD4
-	sw	r2,0024(sp)
-
-l00407FD0:
-	sw	r4,0024(sp)
-
-l00407FD4:
-	lw	r6,0024(sp)
-	lui	r2,+3FFF
-	ori	r2,r2,0000FFFF
-	sltu	r2,r2,r6
-	bne	r2,r0,00408014
-	nop
-
-l00407FEC:
-	lui	r5,+3FFF
-	lw	r4,0020(sp)
-	ori	r5,r5,0000FFFF
-
-l00407FF8:
-	sll	r3,r6,01
-	sltu	r2,r5,r3
-	addiu	r4,r4,-00000001
-	beq	r2,r0,00407FF8
-	or	r6,r3,r0
-
-l0040800C:
-	sw	r4,0020(sp)
-	sw	r3,0024(sp)
-
-l00408014:
-	lw	r25,-7EB4(r28)
-	nop
-	jalr	ra,r25
-	addiu	r4,sp,+00000018
-	lw	r28,0010(sp)
-
-l00408028:
-	lw	ra,002C(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000030
-00408038                         00 00 00 00 00 00 00 00         ........
-
-;; __fixsfsi: 00408040
-__fixsfsi proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00000820
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000038
-	sw	r28,0010(sp)
-	lw	r25,-7E84(r28)
-	addiu	r4,sp,+00000028
-	addiu	r5,sp,+00000018
-	sw	ra,0034(sp)
-	jalr	ra,r25
-	swc1	f12,0028(sp)
-	lw	r28,0010(sp)
-	lw	r4,0018(sp)
-	nop
-	xori	r3,r4,00000002
-	beq	r3,r0,004080E8
-	or	r2,r0,r0
-
-l00408084:
-	sltiu	r3,r4,+00000002
-	bne	r3,r0,004080E8
-	nop
-
-l00408090:
-	xori	r2,r4,00000004
-	beq	r2,r0,004080B8
-	nop
-
-l0040809C:
-	lw	r5,0020(sp)
-	nop
-	bltz	r5,004080E8
-	or	r2,r0,r0
-
-l004080AC:
-	slti	r2,r5,+0000001F
-	bne	r2,r0,004080CC
-	nop
-
-l004080B8:
-	lw	r2,001C(sp)
-	lui	r3,-8000
-	sltiu	r2,r2,+00000001
-	beq	r0,r0,004080E8
-	subu	r2,r3,r2
-
-l004080CC:
-	addiu	r2,r0,+0000001E
-	lw	r3,0024(sp)
-	lw	r4,001C(sp)
-	subu	r2,r2,r5
-	beq	r4,r0,004080E8
-	srlv	r2,r3,r2
-
-l004080E4:
-	subu	r2,r0,r2
-
-l004080E8:
-	lw	ra,0034(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000038
-004080F8                         00 00 00 00 00 00 00 00         ........
-
-;; __extendsfdf2: 00408100
-__extendsfdf2 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00000760
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000040
-	sw	r28,0018(sp)
-	sw	ra,003C(sp)
-	lw	r25,-7E84(r28)
-	addiu	r4,sp,+00000030
-	addiu	r5,sp,+00000020
-	jalr	ra,r25
-	swc1	f12,0030(sp)
-	lw	r28,0018(sp)
-	or	r2,r0,r0
-	lw	r3,002C(sp)
-	lw	r4,0020(sp)
-	sll	r2,r2,1E
-	srl	r7,r3,02
-	or	r2,r2,r7
-	sll	r3,r3,1E
-	lw	r5,0024(sp)
-	lw	r6,0028(sp)
-	lw	r25,-7DF8(r28)
-	sw	r2,0010(sp)
-	jalr	ra,r25
-	sw	r3,0014(sp)
-	lw	r28,0018(sp)
-	lw	ra,003C(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000040
-00408178                         00 00 00 00 00 00 00 00         ........
-
-;; _fpadd_parts: 00408180
-_fpadd_parts proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000006E0
-	addu	r28,r28,r25
-	or	r24,r4,r0
-	lw	r7,0000(r24)
-	or	r25,r5,r0
-	sltiu	r3,r7,+00000002
-	or	r13,r6,r0
-	bne	r3,r0,004084F4
-	or	r2,r24,r0
-
-l004081A8:
-	lw	r4,0000(r25)
-	nop
-	sltiu	r3,r4,+00000002
-	bne	r3,r0,004084F4
-	or	r2,r25,r0
-
-l004081BC:
-	xori	r2,r7,00000004
-	bne	r2,r0,004081F0
-	xori	r3,r4,00000004
-
-l004081C8:
-	xori	r2,r4,00000004
-	bne	r2,r0,004081E8
-	nop
-
-l004081D4:
-	lw	r4,0004(r25)
-	lw	r3,0004(r24)
-	lw	r2,-7F3C(r28)
-	bne	r3,r4,004084F4
-	nop
-
-l004081E8:
-	jr	ra
-	or	r2,r24,r0
-
-l004081F0:
-	beq	r3,r0,004084F4
-	or	r2,r25,r0
-
-l004081F8:
-	xori	r2,r4,00000002
-	bne	r2,r0,00408270
-	xori	r3,r7,00000002
-
-l00408204:
-	xori	r2,r7,00000002
-	bne	r2,r0,00408268
-	nop
-
-l00408210:
-	sw	r7,0000(r13)
-	lw	r4,0004(r24)
-	or	r2,r13,r0
-	sw	r4,0004(r13)
-	lw	r3,0008(r24)
-	nop
-	sw	r3,0008(r13)
-	lw	r4,000C(r24)
-	nop
-	sw	r4,000C(r13)
-	lw	r3,0010(r24)
-	nop
-	sw	r3,0010(r13)
-	lw	r4,0014(r24)
-	nop
-	sw	r4,0014(r13)
-	lw	r3,0004(r24)
-	lw	r4,0004(r25)
-	nop
-	and	r3,r3,r4
-	jr	ra
-	sw	r3,0004(r13)
-
-l00408268:
-	jr	ra
-	or	r2,r24,r0
-
-l00408270:
-	beq	r3,r0,004084F4
-	or	r2,r25,r0
-
-l00408278:
-	lw	r12,0008(r24)
-	lw	r7,0008(r25)
-	lw	r10,0010(r24)
-	lw	r11,0014(r24)
-	subu	r2,r12,r7
-	lw	r8,0010(r25)
-	lw	r9,0014(r25)
-	bgez	r2,004082A0
-	nop
-
-l0040829C:
-	subu	r2,r0,r2
-
-l004082A0:
-	slti	r2,r2,+00000040
-	beq	r2,r0,00408338
-	slt	r2,r7,r12
-
-l004082AC:
-	beq	r2,r0,004082F0
-	slt	r2,r12,r7
-
-l004082B4:
-	addiu	r14,r0,+00000000
-	addiu	r15,r0,+00000001
-	subu	r7,r12,r7
-
-l004082C0:
-	srl	r5,r9,01
-	sll	r6,r8,1F
-	and	r2,r8,r14
-	or	r5,r5,r6
-	and	r3,r9,r15
-	srl	r4,r8,01
-	addiu	r7,r7,-00000001
-	or	r8,r2,r4
-	bne	r7,r0,004082C0
-	or	r9,r3,r5
-
-l004082E8:
-	or	r7,r12,r0
-	slt	r2,r12,r7
-
-l004082F0:
-	nop
-	beq	r2,r0,0040835C
-	nop
-
-l004082FC:
-	addiu	r14,r0,+00000000
-	addiu	r15,r0,+00000001
-
-l00408304:
-	sll	r6,r10,1F
-	srl	r5,r11,01
-	addiu	r12,r12,+00000001
-	or	r5,r5,r6
-	and	r2,r10,r14
-	srl	r4,r10,01
-	and	r3,r11,r15
-	slt	r6,r12,r7
-	or	r10,r2,r4
-	bne	r6,r0,00408304
-	or	r11,r3,r5
-
-l00408330:
-	beq	r0,r0,0040835C
-	nop
-
-l00408338:
-	nop
-	beq	r2,r0,00408350
-	nop
-
-l00408344:
-	or	r8,r0,r0
-	beq	r0,r0,0040835C
-	or	r9,r0,r0
-
-l00408350:
-	or	r12,r7,r0
-	or	r10,r0,r0
-	or	r11,r0,r0
-
-l0040835C:
-	lw	r6,0004(r24)
-	lw	r2,0004(r25)
-	nop
-	beq	r6,r2,00408470
-	sltu	r2,r9,r11
-
-l00408370:
-	subu	r5,r9,r11
-	subu	r4,r8,r10
-	bne	r6,r0,00408390
-	subu	r4,r4,r2
-
-l00408380:
-	sltu	r2,r11,r9
-	subu	r5,r11,r9
-	subu	r4,r10,r8
-	subu	r4,r4,r2
-
-l00408390:
-	bltz	r4,004083AC
-	addiu	r2,r0,+00000001
-
-l00408398:
-	sw	r12,0008(r13)
-	sw	r4,0010(r13)
-	sw	r5,0014(r13)
-	beq	r0,r0,004083CC
-	sw	r0,0004(r13)
-
-l004083AC:
-	subu	r5,r0,r5
-	subu	r4,r0,r4
-	sltu	r3,r0,r5
-	subu	r4,r4,r3
-	sw	r2,0004(r13)
-	sw	r12,0008(r13)
-	sw	r4,0010(r13)
-	sw	r5,0014(r13)
-
-l004083CC:
-	lw	r8,0010(r13)
-	lw	r9,0014(r13)
-	lui	r3,+0FFF
-	addiu	r5,r9,-00000001
-	sltiu	r2,r5,-00000001
-	addiu	r4,r8,-00000001
-	addu	r4,r4,r2
-	ori	r3,r3,0000FFFF
-	sltu	r2,r3,r4
-	bne	r2,r0,00408490
-	nop
-
-l004083F8:
-	bne	r4,r3,00408410
-	srl	r2,r9,1F
-
-l00408400:
-	sltiu	r2,r5,-00000001
-	beq	r2,r0,00408490
-	nop
-
-l0040840C:
-	srl	r2,r9,1F
-
-l00408410:
-	sll	r6,r8,01
-
-l00408414:
-	or	r6,r6,r2
-	lw	r3,0008(r13)
-	sll	r7,r9,01
-	lui	r10,+0FFF
-	addiu	r5,r7,-00000001
-	sltiu	r2,r5,-00000001
-	addiu	r4,r6,-00000001
-	addu	r4,r4,r2
-	ori	r10,r10,0000FFFF
-	addiu	r3,r3,-00000001
-	sltu	r2,r10,r4
-	sw	r3,0008(r13)
-	sw	r6,0010(r13)
-	sw	r7,0014(r13)
-	bne	r2,r0,00408490
-	sltiu	r11,r5,-00000001
-
-l00408454:
-	or	r8,r6,r0
-	bne	r4,r10,0040840C
-	or	r9,r7,r0
-
-l00408460:
-	beq	r11,r0,00408490
-	srl	r2,r9,1F
-
-l00408468:
-	beq	r0,r0,00408414
-	sll	r6,r8,01
-
-l00408470:
-	addu	r3,r11,r9
-	sltu	r4,r3,r9
-	addu	r2,r10,r8
-	addu	r2,r2,r4
-	sw	r6,0004(r13)
-	sw	r12,0008(r13)
-	sw	r2,0010(r13)
-	sw	r3,0014(r13)
-
-l00408490:
-	lw	r2,0010(r13)
-	lui	r3,+1FFF
-	ori	r3,r3,0000FFFF
-	addiu	r4,r0,+00000003
-	sltu	r3,r3,r2
-	beq	r3,r0,004084F0
-	sw	r4,0000(r13)
-
-l004084AC:
-	lw	r4,0010(r13)
-	lw	r5,0014(r13)
-	addiu	r2,r0,+00000000
-	addiu	r3,r0,+00000001
-	and	r2,r4,r2
-	and	r3,r5,r3
-	srl	r5,r5,01
-	sll	r7,r4,1F
-	or	r5,r5,r7
-	lw	r6,0008(r13)
-	srl	r4,r4,01
-	or	r2,r2,r4
-	or	r3,r3,r5
-	addiu	r6,r6,+00000001
-	sw	r2,0010(r13)
-	sw	r3,0014(r13)
-	sw	r6,0008(r13)
-
-l004084F0:
-	or	r2,r13,r0
-
-l004084F4:
-	jr	ra
-	nop
-
-;; __adddf3: 004084FC
-__adddf3 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00000364
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000088
-	sw	r28,0010(sp)
-	mfc1	r3,f12
-	mfc1	r2,f13
-	mfc1	r7,f14
-	mfc1	r6,f15
-	addiu	r8,sp,+00000060
-	sw	r18,007C(sp)
-	sw	r17,0078(sp)
-	lw	r18,-7E50(r28)
-	addiu	r17,sp,+00000068
-	sw	r2,0060(sp)
-	sw	r6,0068(sp)
-	sw	ra,0080(sp)
-	sw	r3,0004(r8)
-	sw	r16,0074(sp)
-	or	r4,r8,r0
-	addiu	r5,sp,+00000018
-	or	r25,r18,r0
-	jalr	ra,r25
-	sw	r7,0004(r17)
-	lw	r28,0010(sp)
-	addiu	r16,sp,+00000030
-	or	r4,r17,r0
-	or	r25,r18,r0
-	jalr	ra,r25
-	or	r5,r16,r0
-	lw	r28,0010(sp)
-	nop
-	lw	r25,-7FE0(r28)
-	nop
-	addiu	r25,r25,-00007E80
-	or	r5,r16,r0
-	addiu	r4,sp,+00000018
-	jalr	ra,r25
-	addiu	r6,sp,+00000048
-	lw	r28,0010(sp)
-	nop
-	lw	r25,-7FCC(r28)
-	nop
-	jalr	ra,r25
-	or	r4,r2,r0
-	lw	r28,0010(sp)
-	lw	ra,0080(sp)
-	lw	r18,007C(sp)
-	lw	r17,0078(sp)
-	lw	r16,0074(sp)
-	jr	ra
-	addiu	sp,sp,+00000088
-
-;; __subdf3: 004085CC
-__subdf3 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+00000294
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000088
-	sw	r28,0010(sp)
-	mfc1	r3,f12
-	mfc1	r2,f13
-	mfc1	r7,f14
-	mfc1	r6,f15
-	addiu	r8,sp,+00000060
-	sw	r18,007C(sp)
-	sw	r17,0078(sp)
-	lw	r18,-7E50(r28)
-	addiu	r17,sp,+00000068
-	sw	r2,0060(sp)
-	sw	r6,0068(sp)
-	sw	ra,0080(sp)
-	sw	r3,0004(r8)
-	sw	r16,0074(sp)
-	or	r4,r8,r0
-	addiu	r5,sp,+00000018
-	or	r25,r18,r0
-	jalr	ra,r25
-	sw	r7,0004(r17)
-	lw	r28,0010(sp)
-	addiu	r16,sp,+00000030
-	or	r4,r17,r0
-	or	r25,r18,r0
-	jalr	ra,r25
-	or	r5,r16,r0
-	lw	r28,0010(sp)
-	nop
-	lw	r25,-7FE0(r28)
-	nop
-	addiu	r25,r25,-00007E80
-	lw	r2,0034(sp)
-	or	r5,r16,r0
-	xori	r2,r2,00000001
-	addiu	r4,sp,+00000018
-	addiu	r6,sp,+00000048
-	jalr	ra,r25
-	sw	r2,0034(sp)
-	lw	r28,0010(sp)
-	nop
-	lw	r25,-7FCC(r28)
-	nop
-	jalr	ra,r25
-	or	r4,r2,r0
-	lw	r28,0010(sp)
-	lw	ra,0080(sp)
-	lw	r18,007C(sp)
-	lw	r17,0078(sp)
-	lw	r16,0074(sp)
-	jr	ra
-	addiu	sp,sp,+00000088
-004086A8                         00 00 00 00 00 00 00 00         ........
-
-;; __muldf3: 004086B0
-__muldf3 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,+000001B0
-	addu	r28,r28,r25
-	addiu	sp,sp,-000000A0
-	sw	r28,0010(sp)
-	mfc1	r3,f12
-	mfc1	r2,f13
-	mfc1	r7,f14
-	mfc1	r6,f15
-	addiu	r8,sp,+00000060
-	sw	r18,0084(sp)
-	sw	r16,007C(sp)
-	lw	r18,-7E50(r28)
-	addiu	r16,sp,+00000068
-	sw	r2,0060(sp)
-	sw	r6,0068(sp)
-	sw	ra,0098(sp)
-	sw	r3,0004(r8)
-	sw	r22,0094(sp)
-	sw	r21,0090(sp)
-	sw	r20,008C(sp)
-	sw	r19,0088(sp)
-	sw	r17,0080(sp)
-	or	r4,r8,r0
-	addiu	r5,sp,+00000018
-	or	r25,r18,r0
-	jalr	ra,r25
-	sw	r7,0004(r16)
-	lw	r28,0010(sp)
-	addiu	r17,sp,+00000030
-	or	r4,r16,r0
-	or	r25,r18,r0
-	jalr	ra,r25
-	or	r5,r17,r0
-	lw	r28,0010(sp)
-	lw	r4,0018(sp)
-	nop
-	sltiu	r2,r4,+00000002
-	bne	r2,r0,004087A8
-	addiu	r22,sp,+00000018
-
-l00408750:
-	lw	r3,0030(sp)
-	nop
-	sltiu	r2,r3,+00000002
-	bne	r2,r0,004087D0
-	xori	r2,r4,00000004
-
-l00408764:
-	bne	r2,r0,00408784
-	xori	r2,r3,00000004
-
-l0040876C:
-	xori	r2,r3,00000002
-	lw	r4,-7F3C(r28)
-	beq	r2,r0,00408B58
-	nop
-
-l0040877C:
-	beq	r0,r0,004087A8
-	nop
-
-l00408784:
-	bne	r2,r0,004087A0
-	xori	r2,r4,00000002
-
-l0040878C:
-	lw	r4,-7F3C(r28)
-	beq	r2,r0,00408B58
-	nop
-
-l00408798:
-	beq	r0,r0,004087D0
-	nop
-
-l004087A0:
-	bne	r2,r0,004087C4
-	xori	r2,r3,00000002
-
-l004087A8:
-	lw	r2,0004(r22)
-	lw	r3,0034(sp)
-	or	r4,r22,r0
-	xor	r2,r2,r3
-	sltu	r2,r0,r2
-	beq	r0,r0,00408B58
-	sw	r2,0004(r22)
-
-l004087C4:
-	nop
-	bne	r2,r0,004087EC
-	nop
-
-l004087D0:
-	lw	r2,0004(r22)
-	lw	r3,0034(sp)
-	or	r4,r17,r0
-	xor	r2,r2,r3
-	sltu	r2,r0,r2
-	beq	r0,r0,00408B58
-	sw	r2,0034(sp)
-
-l004087EC:
-	lw	r6,0010(r22)
-	lw	r7,0014(r22)
-	addiu	r2,r0,+00000000
-	addiu	r3,r0,-00000001
-	lw	r4,0040(sp)
-	lw	r5,0044(sp)
-	srl	r11,r6,00
-	and	r6,r6,r2
-	and	r7,r7,r3
-	and	r8,r4,r2
-	and	r9,r5,r3
-	srl	r5,r4,00
-	or	r4,r0,r0
-	mult	r5,r6
-	or	r10,r0,r0
-	or	r2,r0,r0
-	or	r3,r0,r0
-	sw	r2,0070(sp)
-	sw	r3,0074(sp)
-	mflo	r13
-	nop
-	nop
-	mult	r9,r10
-	mflo	r14
-	nop
-	nop
-	multu	r5,r7
-	mfhi	r24
-	mflo	r25
-	addu	r24,r24,r13
-	nop
-	multu	r9,r11
-	mfhi	r2
-	mflo	r3
-	addu	r2,r2,r14
-	nop
-	mult	r7,r4
-	mflo	r12
-	addu	r24,r24,r12
-	nop
-	mult	r11,r8
-	mflo	r13
-	addu	r2,r2,r13
-	addu	r21,r25,r3
-	mult	r9,r6
-	sltu	r15,r21,r3
-	addu	r20,r24,r2
-	addu	r20,r20,r15
-	sltu	r12,r20,r24
-	mflo	r14
-	nop
-	nop
-	mult	r5,r10
-	mflo	r2
-	nop
-	nop
-	multu	r9,r7
-	mfhi	r16
-	mflo	r17
-	addu	r16,r16,r14
-	nop
-	multu	r5,r11
-	mfhi	r18
-	mflo	r19
-	addu	r18,r18,r2
-	nop
-	mult	r11,r4
-	mflo	r4
-	addu	r18,r18,r4
-	nop
-	mult	r7,r8
-	mflo	r8
-	bne	r12,r0,00408924
-	addu	r16,r16,r8
-
-l00408914:
-	bne	r24,r20,00408934
-	sltu	r2,r21,r25
-
-l0040891C:
-	beq	r2,r0,00408934
-	nop
-
-l00408924:
-	addiu	r2,r0,+00000001
-	addiu	r3,r0,+00000000
-	sw	r2,0070(sp)
-	sw	r3,0074(sp)
-
-l00408934:
-	addiu	r2,r0,-00000001
-	addiu	r3,r0,+00000000
-	nop
-	or	r5,r0,r0
-	and	r24,r4,r2
-	and	r25,r5,r3
-	addu	r11,r17,r25
-	sltu	r6,r11,r25
-	addu	r10,r16,r24
-	addu	r10,r10,r6
-	sltu	r2,r10,r16
-	bne	r2,r0,00408978
-	nop
-
-l00408968:
-	bne	r16,r10,00408998
-	sltu	r2,r11,r17
-
-l00408970:
-	beq	r2,r0,00408998
-	nop
-
-l00408978:
-	lw	r4,0070(sp)
-	lw	r5,0074(sp)
-	nop
-	addiu	r5,r5,+00000001
-	sltiu	r2,r5,+00000001
-	addu	r4,r4,r2
-	sw	r4,0070(sp)
-	sw	r5,0074(sp)
-
-l00408998:
-	addiu	r2,r0,+00000000
-	addiu	r3,r0,-00000001
-	srl	r5,r20,00
-	or	r4,r0,r0
-	and	r4,r4,r2
-	and	r5,r5,r3
-	addu	r5,r5,r19
-	sltu	r9,r5,r19
-	lw	r12,0070(sp)
-	lw	r13,0074(sp)
-	addu	r4,r4,r18
-	addu	r4,r4,r9
-	lw	r6,0004(r22)
-	lw	r3,0008(r22)
-	lw	r7,0038(sp)
-	addu	r13,r13,r5
-	lw	r8,0034(sp)
-	sltu	r9,r13,r5
-	lui	r2,+1FFF
-	addu	r12,r12,r4
-	addu	r3,r3,r7
-	addu	r12,r12,r9
-	xor	r6,r6,r8
-	ori	r2,r2,0000FFFF
-	sltu	r6,r0,r6
-	addiu	r3,r3,+00000004
-	sltu	r2,r2,r12
-	sw	r6,004C(sp)
-	sw	r3,0050(sp)
-	or	r6,r10,r0
-	beq	r2,r0,00408A7C
-	or	r7,r11,r0
-
-l00408A18:
-	lui	r8,+1FFF
-	or	r5,r3,r0
-	addiu	r14,r0,+00000000
-	addiu	r15,r0,+00000001
-	lui	r10,-8000
-	addiu	r11,r0,+00000000
-	ori	r8,r8,0000FFFF
-	and	r2,r12,r14
-
-l00408A38:
-	and	r3,r13,r15
-	srl	r13,r13,01
-	sll	r4,r12,1F
-	or	r13,r13,r4
-	srl	r12,r12,01
-	sltu	r4,r8,r12
-	beq	r3,r0,00408A70
-	addiu	r5,r5,+00000001
-
-l00408A58:
-	srl	r7,r7,01
-	sll	r2,r6,1F
-	or	r7,r7,r2
-	srl	r6,r6,01
-	or	r6,r6,r10
-	or	r7,r7,r11
-
-l00408A70:
-	bne	r4,r0,00408A38
-	and	r2,r12,r14
-
-l00408A78:
-	sw	r5,0050(sp)
-
-l00408A7C:
-	lui	r2,+0FFF
-	ori	r2,r2,0000FFFF
-	sltu	r2,r2,r12
-	bne	r2,r0,00408AF4
-	nop
-
-l00408A90:
-	lui	r8,+0FFF
-	lw	r5,0050(sp)
-	lui	r14,-8000
-	addiu	r15,r0,+00000000
-	addiu	r10,r0,+00000000
-	addiu	r11,r0,+00000001
-	ori	r8,r8,0000FFFF
-
-l00408AAC:
-	sll	r12,r12,01
-	and	r2,r6,r14
-	srl	r4,r13,1F
-	and	r3,r7,r15
-	or	r12,r12,r4
-	or	r2,r3,r2
-	sll	r13,r13,01
-	beq	r2,r0,00408AD8
-	addiu	r5,r5,-00000001
-
-l00408AD0:
-	or	r12,r12,r10
-	or	r13,r13,r11
-
-l00408AD8:
-	sll	r6,r6,01
-	srl	r3,r7,1F
-	or	r6,r6,r3
-	sltu	r2,r8,r12
-	beq	r2,r0,00408AAC
-	sll	r7,r7,01
-
-l00408AF0:
-	sw	r5,0050(sp)
-
-l00408AF4:
-	addiu	r2,r0,+00000000
-	addiu	r3,r0,+000000FF
-	and	r4,r12,r2
-	bne	r4,r0,00408B44
-	and	r5,r13,r3
-
-l00408B08:
-	addiu	r2,r0,+00000080
-	bne	r5,r2,00408B48
-	addiu	r2,r0,+00000003
-
-l00408B14:
-	addiu	r2,r0,+00000000
-	addiu	r3,r0,+00000100
-	and	r2,r12,r2
-	and	r3,r13,r3
-	or	r2,r3,r2
-	bne	r2,r0,00408B38
-	or	r2,r7,r6
-
-l00408B30:
-	beq	r2,r0,00408B48
-	addiu	r2,r0,+00000003
-
-l00408B38:
-	addiu	r13,r13,+00000080
-	sltiu	r2,r13,+00000080
-	addu	r12,r12,r2
-
-l00408B44:
-	addiu	r2,r0,+00000003
-
-l00408B48:
-	sw	r12,0058(sp)
-	sw	r13,005C(sp)
-	sw	r2,0048(sp)
-	addiu	r4,sp,+00000048
-
-l00408B58:
-	lw	r25,-7FCC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(sp)
-	lw	ra,0098(sp)
-	lw	r22,0094(sp)
-	lw	r21,0090(sp)
-	lw	r20,008C(sp)
-	lw	r19,0088(sp)
-	lw	r18,0084(sp)
-	lw	r17,0080(sp)
-	lw	r16,007C(sp)
-	jr	ra
-	addiu	sp,sp,+000000A0
-00408B94             00 00 00 00 00 00 00 00 00 00 00 00     ............
-
-;; __divdf3: 00408BA0
-__divdf3 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-00000340
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000070
-	sw	r28,0010(sp)
-	mfc1	r3,f12
-	mfc1	r2,f13
-	mfc1	r7,f14
-	mfc1	r6,f15
-	addiu	r8,sp,+00000048
-	sw	r18,0064(sp)
-	sw	r16,005C(sp)
-	lw	r18,-7E50(r28)
-	addiu	r16,sp,+00000050
-	sw	r2,0048(sp)
-	sw	r6,0050(sp)
-	sw	ra,0068(sp)
-	sw	r3,0004(r8)
-	sw	r17,0060(sp)
-	or	r4,r8,r0
-	addiu	r5,sp,+00000018
-	or	r25,r18,r0
-	jalr	ra,r25
-	sw	r7,0004(r16)
-	lw	r28,0010(sp)
-	addiu	r17,sp,+00000030
-	or	r4,r16,r0
-	or	r25,r18,r0
-	jalr	ra,r25
-	or	r5,r17,r0
-	lw	r28,0010(sp)
-	lw	r6,0018(sp)
-	addiu	r15,sp,+00000018
-	sltiu	r2,r6,+00000002
-	bne	r2,r0,00408DDC
-	or	r4,r15,r0
-
-l00408C30:
-	lw	r5,0030(sp)
-	nop
-	sltiu	r2,r5,+00000002
-	bne	r2,r0,00408DDC
-	or	r4,r17,r0
-
-l00408C44:
-	lw	r2,0004(r15)
-	lw	r3,0034(sp)
-	xori	r4,r6,00000004
-	xor	r2,r2,r3
-	beq	r4,r0,00408C68
-	sw	r2,0004(r15)
-
-l00408C5C:
-	xori	r2,r6,00000002
-	bne	r2,r0,00408C7C
-	xori	r2,r5,00000004
-
-l00408C68:
-	lw	r4,-7F3C(r28)
-	beq	r6,r5,00408DDC
-	nop
-
-l00408C74:
-	beq	r0,r0,00408DDC
-	or	r4,r15,r0
-
-l00408C7C:
-	bne	r2,r0,00408CA0
-	xori	r2,r5,00000002
-
-l00408C84:
-	or	r2,r0,r0
-	or	r3,r0,r0
-	sw	r2,0010(r15)
-	sw	r3,0014(r15)
-	sw	r0,0008(r15)
-	beq	r0,r0,00408DDC
-	or	r4,r15,r0
-
-l00408CA0:
-	bne	r2,r0,00408CB4
-	addiu	r2,r0,+00000004
-
-l00408CA8:
-	sw	r2,0018(sp)
-	beq	r0,r0,00408DDC
-	or	r4,r15,r0
-
-l00408CB4:
-	lw	r3,0008(r15)
-	lw	r2,0038(sp)
-	lw	r8,0040(sp)
-	lw	r9,0044(sp)
-	lw	r4,0010(r15)
-	lw	r5,0014(r15)
-	subu	r3,r3,r2
-	sltu	r14,r4,r8
-	bne	r14,r0,00408CEC
-	sw	r3,0008(r15)
-
-l00408CDC:
-	bne	r8,r4,00408D08
-	sltu	r2,r5,r9
-
-l00408CE4:
-	beq	r2,r0,00408D08
-	nop
-
-l00408CEC:
-	sll	r4,r4,01
-	addiu	r2,r3,-00000001
-	srl	r3,r5,1F
-	or	r4,r4,r3
-	sll	r5,r5,01
-	sw	r2,0008(r15)
-	sltu	r14,r4,r8
-
-l00408D08:
-	lui	r10,+1000
-	addiu	r11,r0,+00000000
-	or	r12,r0,r0
-	or	r13,r0,r0
-
-l00408D18:
-	nop
-	bne	r14,r0,00408D4C
-	nop
-
-l00408D24:
-	bne	r8,r4,00408D38
-	sltu	r2,r5,r9
-
-l00408D2C:
-	sltu	r2,r5,r9
-	bne	r2,r0,00408D4C
-	sltu	r2,r5,r9
-
-l00408D38:
-	subu	r5,r5,r9
-	subu	r4,r4,r8
-	or	r12,r12,r10
-	subu	r4,r4,r2
-	or	r13,r13,r11
-
-l00408D4C:
-	srl	r11,r11,01
-	sll	r2,r10,1F
-	or	r11,r11,r2
-	sll	r6,r4,01
-	srl	r3,r5,1F
-	srl	r10,r10,01
-	or	r6,r6,r3
-	or	r2,r11,r10
-	sll	r7,r5,01
-	or	r4,r6,r0
-	sltu	r14,r6,r8
-	bne	r2,r0,00408D18
-	or	r5,r7,r0
-
-l00408D80:
-	addiu	r2,r0,+00000000
-	addiu	r3,r0,+000000FF
-	and	r4,r12,r2
-	bne	r4,r0,00408DD0
-	and	r5,r13,r3
-
-l00408D94:
-	addiu	r2,r0,+00000080
-	bne	r5,r2,00408DD0
-	nop
-
-l00408DA0:
-	addiu	r2,r0,+00000000
-	addiu	r3,r0,+00000100
-	and	r2,r12,r2
-	and	r3,r13,r3
-	or	r2,r3,r2
-	bne	r2,r0,00408DC4
-	or	r2,r7,r6
-
-l00408DBC:
-	beq	r2,r0,00408DD0
-	nop
-
-l00408DC4:
-	addiu	r13,r13,+00000080
-	sltiu	r2,r13,+00000080
-	addu	r12,r12,r2
-
-l00408DD0:
-	sw	r12,0010(r15)
-	sw	r13,0014(r15)
-	or	r4,r15,r0
-
-l00408DDC:
-	lw	r25,-7FCC(r28)
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(sp)
-	lw	ra,0068(sp)
-	lw	r18,0064(sp)
-	lw	r17,0060(sp)
-	lw	r16,005C(sp)
-	jr	ra
-	addiu	sp,sp,+00000070
-00408E08                         00 00 00 00 00 00 00 00         ........
-
-;; __eqdf2: 00408E10
-__eqdf2 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-000005B0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000070
-	sw	r28,0010(sp)
-	mfc1	r3,f12
-	mfc1	r2,f13
-	mfc1	r7,f14
-	mfc1	r6,f15
-	addiu	r8,sp,+00000048
-	sw	r18,0064(sp)
-	sw	r16,005C(sp)
-	lw	r18,-7E50(r28)
-	addiu	r16,sp,+00000050
-	sw	r2,0048(sp)
-	sw	r6,0050(sp)
-	sw	ra,0068(sp)
-	sw	r3,0004(r8)
-	sw	r17,0060(sp)
-	or	r4,r8,r0
-	addiu	r5,sp,+00000018
-	or	r25,r18,r0
-	jalr	ra,r25
-	sw	r7,0004(r16)
-	lw	r28,0010(sp)
-	addiu	r17,sp,+00000030
-	or	r4,r16,r0
-	or	r25,r18,r0
-	jalr	ra,r25
-	or	r5,r17,r0
-	lw	r28,0010(sp)
-	lw	r3,0018(sp)
-	nop
-	sltiu	r3,r3,+00000002
-	bne	r3,r0,00408EC8
-	addiu	r2,r0,+00000001
-
-l00408EA0:
-	lw	r3,0030(sp)
-	nop
-	sltiu	r3,r3,+00000002
-	bne	r3,r0,00408EC8
-	addiu	r4,sp,+00000018
-
-l00408EB4:
-	lw	r25,-7EE8(r28)
-	nop
-	jalr	ra,r25
-	or	r5,r17,r0
-	lw	r28,0010(sp)
-
-l00408EC8:
-	lw	ra,0068(sp)
-	lw	r18,0064(sp)
-	lw	r17,0060(sp)
-	lw	r16,005C(sp)
-	jr	ra
-	addiu	sp,sp,+00000070
-
-;; __nedf2: 00408EE0
-__nedf2 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-00000680
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000070
-	sw	r28,0010(sp)
-	mfc1	r3,f12
-	mfc1	r2,f13
-	mfc1	r7,f14
-	mfc1	r6,f15
-	addiu	r8,sp,+00000048
-	sw	r18,0064(sp)
-	sw	r16,005C(sp)
-	lw	r18,-7E50(r28)
-	addiu	r16,sp,+00000050
-	sw	r2,0048(sp)
-	sw	r6,0050(sp)
-	sw	ra,0068(sp)
-	sw	r3,0004(r8)
-	sw	r17,0060(sp)
-	or	r4,r8,r0
-	addiu	r5,sp,+00000018
-	or	r25,r18,r0
-	jalr	ra,r25
-	sw	r7,0004(r16)
-	lw	r28,0010(sp)
-	addiu	r17,sp,+00000030
-	or	r4,r16,r0
-	or	r25,r18,r0
-	jalr	ra,r25
-	or	r5,r17,r0
-	lw	r28,0010(sp)
-	lw	r3,0018(sp)
-	nop
-	sltiu	r3,r3,+00000002
-	bne	r3,r0,00408F98
-	addiu	r2,r0,+00000001
-
-l00408F70:
-	lw	r3,0030(sp)
-	nop
-	sltiu	r3,r3,+00000002
-	bne	r3,r0,00408F98
-	addiu	r4,sp,+00000018
-
-l00408F84:
-	lw	r25,-7EE8(r28)
-	nop
-	jalr	ra,r25
-	or	r5,r17,r0
-	lw	r28,0010(sp)
-
-l00408F98:
-	lw	ra,0068(sp)
-	lw	r18,0064(sp)
-	lw	r17,0060(sp)
-	lw	r16,005C(sp)
-	jr	ra
-	addiu	sp,sp,+00000070
-
-;; __gedf2: 00408FB0
-__gedf2 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-00000750
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000070
-	sw	r28,0010(sp)
-	mfc1	r3,f12
-	mfc1	r2,f13
-	mfc1	r7,f14
-	mfc1	r6,f15
-	addiu	r8,sp,+00000048
-	sw	r18,0064(sp)
-	sw	r16,005C(sp)
-	lw	r18,-7E50(r28)
-	addiu	r16,sp,+00000050
-	sw	r2,0048(sp)
-	sw	r6,0050(sp)
-	sw	ra,0068(sp)
-	sw	r3,0004(r8)
-	sw	r17,0060(sp)
-	or	r4,r8,r0
-	addiu	r5,sp,+00000018
-	or	r25,r18,r0
-	jalr	ra,r25
-	sw	r7,0004(r16)
-	lw	r28,0010(sp)
-	addiu	r17,sp,+00000030
-	or	r4,r16,r0
-	or	r25,r18,r0
-	jalr	ra,r25
-	or	r5,r17,r0
-	lw	r28,0010(sp)
-	lw	r3,0018(sp)
-	nop
-	sltiu	r3,r3,+00000002
-	bne	r3,r0,00409068
-	addiu	r2,r0,-00000001
-
-l00409040:
-	lw	r3,0030(sp)
-	nop
-	sltiu	r3,r3,+00000002
-	bne	r3,r0,00409068
-	addiu	r4,sp,+00000018
-
-l00409054:
-	lw	r25,-7EE8(r28)
-	nop
-	jalr	ra,r25
-	or	r5,r17,r0
-	lw	r28,0010(sp)
-
-l00409068:
-	lw	ra,0068(sp)
-	lw	r18,0064(sp)
-	lw	r17,0060(sp)
-	lw	r16,005C(sp)
-	jr	ra
-	addiu	sp,sp,+00000070
-
-;; __ltdf2: 00409080
-__ltdf2 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-00000820
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000070
-	sw	r28,0010(sp)
-	mfc1	r3,f12
-	mfc1	r2,f13
-	mfc1	r7,f14
-	mfc1	r6,f15
-	addiu	r8,sp,+00000048
-	sw	r18,0064(sp)
-	sw	r16,005C(sp)
-	lw	r18,-7E50(r28)
-	addiu	r16,sp,+00000050
-	sw	r2,0048(sp)
-	sw	r6,0050(sp)
-	sw	ra,0068(sp)
-	sw	r3,0004(r8)
-	sw	r17,0060(sp)
-	or	r4,r8,r0
-	addiu	r5,sp,+00000018
-	or	r25,r18,r0
-	jalr	ra,r25
-	sw	r7,0004(r16)
-	lw	r28,0010(sp)
-	addiu	r17,sp,+00000030
-	or	r4,r16,r0
-	or	r25,r18,r0
-	jalr	ra,r25
-	or	r5,r17,r0
-	lw	r28,0010(sp)
-	lw	r3,0018(sp)
-	nop
-	sltiu	r3,r3,+00000002
-	bne	r3,r0,00409138
-	addiu	r2,r0,+00000001
-
-l00409110:
-	lw	r3,0030(sp)
-	nop
-	sltiu	r3,r3,+00000002
-	bne	r3,r0,00409138
-	addiu	r4,sp,+00000018
-
-l00409124:
-	lw	r25,-7EE8(r28)
-	nop
-	jalr	ra,r25
-	or	r5,r17,r0
-	lw	r28,0010(sp)
-
-l00409138:
-	lw	ra,0068(sp)
-	lw	r18,0064(sp)
-	lw	r17,0060(sp)
-	lw	r16,005C(sp)
-	jr	ra
-	addiu	sp,sp,+00000070
-
-;; __floatsidf: 00409150
-__floatsidf proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-000008F0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000038
-	sw	r28,0010(sp)
-	addiu	r2,r0,+00000003
-	srl	r3,r4,1F
-	sw	ra,0034(sp)
-	sw	r2,0018(sp)
-	bne	r4,r0,00409188
-	sw	r3,001C(sp)
-
-l0040917C:
-	addiu	r2,r0,+00000002
-	beq	r0,r0,0040922C
-	sw	r2,0018(sp)
-
-l00409188:
-	addiu	r2,r0,+0000003C
-	beq	r3,r0,004091C0
-	sw	r2,0020(sp)
-
-l00409194:
-	lui	r2,-8000
-	lui	r1,-3E20
-	mtc1	r1,f1
-	mtc1	r0,f0
-	beq	r4,r2,00409240
-	subu	r2,r0,r4
-
-l004091AC:
-	or	r3,r2,r0
-	sra	r2,r2,1F
-	sw	r2,0028(sp)
-	beq	r0,r0,004091D0
-	sw	r3,002C(sp)
-
-l004091C0:
-	or	r3,r4,r0
-	sra	r2,r4,1F
-	sw	r2,0028(sp)
-	sw	r3,002C(sp)
-
-l004091D0:
-	lw	r3,0028(sp)
-	lui	r2,+0FFF
-	ori	r2,r2,0000FFFF
-	sltu	r2,r2,r3
-	bne	r2,r0,0040922C
-	nop
-
-l004091E8:
-	lui	r6,+0FFF
-	lw	r5,0020(sp)
-	ori	r6,r6,0000FFFF
-
-l004091F4:
-	lw	r2,0028(sp)
-	lw	r3,002C(sp)
-	sll	r2,r2,01
-	srl	r4,r3,1F
-	or	r2,r2,r4
-	sll	r3,r3,01
-	sw	r2,0028(sp)
-	sw	r3,002C(sp)
-	lw	r4,0028(sp)
-	nop
-	sltu	r4,r6,r4
-	beq	r4,r0,004091F4
-	addiu	r5,r5,-00000001
-
-l00409228:
-	sw	r5,0020(sp)
-
-l0040922C:
-	lw	r25,-7FCC(r28)
-	nop
-	jalr	ra,r25
-	addiu	r4,sp,+00000018
-	lw	r28,0010(sp)
-
-l00409240:
-	lw	ra,0034(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000038
-
-;; __negdf2: 00409250
-__negdf2 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-000009F0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000040
-	sw	r28,0010(sp)
-	mfc1	r3,f12
-	mfc1	r2,f13
-	addiu	r6,sp,+00000030
-	sw	r2,0030(sp)
-	sw	ra,003C(sp)
-	or	r4,r6,r0
-	lw	r25,-7E50(r28)
-	addiu	r5,sp,+00000018
-	jalr	ra,r25
-	sw	r3,0004(r6)
-	lw	r28,0010(sp)
-	nop
-	lw	r25,-7FCC(r28)
-	addiu	r3,sp,+00000018
-	lw	r2,0004(r3)
-	or	r4,r3,r0
-	sltiu	r2,r2,+00000001
-	jalr	ra,r25
-	sw	r2,0004(r3)
-	lw	r28,0010(sp)
-	lw	ra,003C(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000040
-004092C4             00 00 00 00 00 00 00 00 00 00 00 00     ............
-
-;; __make_dp: 004092D0
-__make_dp proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-00000A70
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000038
-	sw	r28,0010(sp)
-	lw	r2,0048(sp)
-	lw	r3,004C(sp)
-	sw	r4,0018(sp)
-	lw	r25,-7FCC(r28)
-	sw	ra,0034(sp)
-	sw	r5,001C(sp)
-	sw	r6,0020(sp)
-	sw	r2,0028(sp)
-	sw	r3,002C(sp)
-	jalr	ra,r25
-	addiu	r4,sp,+00000018
-	lw	r28,0010(sp)
-	lw	ra,0034(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000038
-00409324             00 00 00 00 00 00 00 00 00 00 00 00     ............
-
-;; __truncdfsf2: 00409330
-__truncdfsf2 proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-00000AD0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000040
-	sw	r28,0010(sp)
-	mfc1	r3,f12
-	mfc1	r2,f13
-	addiu	r6,sp,+00000030
-	sw	r2,0030(sp)
-	sw	ra,003C(sp)
-	or	r4,r6,r0
-	lw	r25,-7E50(r28)
-	addiu	r5,sp,+00000018
-	jalr	ra,r25
-	sw	r3,0004(r6)
-	lw	r28,0010(sp)
-	addiu	r2,r0,+00000000
-	lui	r3,+3FFF
-	ori	r3,r3,0000FFFF
-	lw	r4,0028(sp)
-	lw	r5,002C(sp)
-	lw	r25,-7DFC(r28)
-	and	r2,r4,r2
-	and	r3,r5,r3
-	srl	r5,r5,1E
-	sll	r6,r4,02
-	or	r5,r5,r6
-	srl	r4,r4,1E
-	or	r2,r3,r2
-	beq	r2,r0,004093B0
-	or	r7,r5,r0
-
-l004093AC:
-	ori	r7,r7,00000001
-
-l004093B0:
-	lw	r4,0018(sp)
-	lw	r5,001C(sp)
-	lw	r6,0020(sp)
-	jalr	ra,r25
-	nop
-	lw	r28,0010(sp)
-	lw	ra,003C(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000040
-004093D8                         00 00 00 00 00 00 00 00         ........
-
-;; __pack_f: 004093E0
-__pack_f proc
-	or	r6,r4,r0
-	lw	r3,0000(r6)
-	lw	r4,000C(r6)
-	sltiu	r2,r3,+00000002
-	lw	r7,0004(r6)
-	beq	r2,r0,0040940C
-	or	r5,r0,r0
-
-l004093FC:
-	lui	r2,+0010
-	or	r4,r4,r2
-	beq	r0,r0,0040950C
-	addiu	r5,r0,+000000FF
-
-l0040940C:
-	xori	r2,r3,00000004
-	beq	r2,r0,004094C0
-	nop
-
-l00409418:
-	xori	r2,r3,00000002
-	bne	r2,r0,0040942C
-	nop
-
-l00409424:
-	beq	r0,r0,0040950C
-	or	r4,r0,r0
-
-l0040942C:
-	beq	r4,r0,00409510
-	lui	r2,+007F
-
-l00409434:
-	lw	r5,0008(r6)
-	nop
-	slti	r2,r5,-0000007E
-	beq	r2,r0,004094B4
-	slti	r2,r5,+00000080
-
-l00409448:
-	addiu	r2,r0,-0000007E
-	subu	r2,r2,r5
-	addiu	r3,r0,+00000001
-	sllv	r3,r3,r2
-	addiu	r3,r3,-00000001
-	and	r3,r4,r3
-	sltu	r3,r0,r3
-	srlv	r4,r4,r2
-	slti	r2,r2,+0000001A
-	bne	r2,r0,00409478
-	or	r4,r4,r3
-
-l00409474:
-	or	r4,r0,r0
-
-l00409478:
-	andi	r3,r4,0000007F
-	addiu	r2,r0,+00000040
-	bne	r3,r2,0040949C
-	nop
-
-l00409488:
-	andi	r2,r4,00000080
-	beq	r2,r0,004094A0
-	nop
-
-l00409494:
-	beq	r0,r0,004094A0
-	addiu	r4,r4,+00000040
-
-l0040949C:
-	addiu	r4,r4,+0000003F
-
-l004094A0:
-	lui	r2,+3FFF
-	ori	r2,r2,0000FFFF
-	sltu	r5,r2,r4
-	beq	r0,r0,0040950C
-	srl	r4,r4,07
-
-l004094B4:
-	nop
-	bne	r2,r0,004094CC
-	nop
-
-l004094C0:
-	addiu	r5,r0,+000000FF
-	beq	r0,r0,0040950C
-	or	r4,r0,r0
-
-l004094CC:
-	andi	r3,r4,0000007F
-	addiu	r2,r0,+00000040
-	bne	r3,r2,004094F0
-	addiu	r5,r5,+0000007F
-
-l004094DC:
-	andi	r2,r4,00000080
-	beq	r2,r0,004094F4
-	nop
-
-l004094E8:
-	beq	r0,r0,004094F4
-	addiu	r4,r4,+00000040
-
-l004094F0:
-	addiu	r4,r4,+0000003F
-
-l004094F4:
-	nop
-	bgez	r4,00409508
-	nop
-
-l00409500:
-	srl	r4,r4,01
-	addiu	r5,r5,+00000001
-
-l00409508:
-	srl	r4,r4,07
-
-l0040950C:
-	lui	r2,+007F
-
-l00409510:
-	andi	r3,r5,000000FF
-	ori	r2,r2,0000FFFF
-	and	r2,r4,r2
-	sll	r3,r3,17
-	or	r2,r2,r3
-	sll	r4,r7,1F
-	or	r2,r2,r4
-	mtc1	r2,f0
-	jr	ra
-	nop
-00409538                         00 00 00 00 00 00 00 00         ........
-
-;; __unpack_f: 00409540
-__unpack_f proc
-	lw	r3,0000(r4)
-	lui	r2,+007F
-	srl	r4,r3,17
-	or	r6,r5,r0
-	ori	r2,r2,0000FFFF
-	srl	r5,r3,1F
-	andi	r4,r4,000000FF
-	sw	r5,0004(r6)
-	bne	r4,r0,004095C4
-	and	r5,r3,r2
-
-l00409568:
-	bne	r5,r0,0040957C
-	lui	r2,+3FFF
-
-l00409570:
-	addiu	r2,r0,+00000002
-	jr	ra
-	sw	r2,0000(r6)
-
-l0040957C:
-	sll	r5,r5,07
-	ori	r2,r2,0000FFFF
-	addiu	r3,r0,-0000007E
-	addiu	r4,r0,+00000003
-	sltu	r2,r2,r5
-	sw	r3,0008(r6)
-	bne	r2,r0,004095BC
-	sw	r4,0000(r6)
-
-l0040959C:
-	lui	r3,+3FFF
-	ori	r3,r3,0000FFFF
-	addiu	r4,r0,-0000007E
-
-l004095A8:
-	sll	r5,r5,01
-	sltu	r2,r3,r5
-	beq	r2,r0,004095A8
-	addiu	r4,r4,-00000001
-
-l004095B8:
-	sw	r4,0008(r6)
-
-l004095BC:
-	jr	ra
-	sw	r5,000C(r6)
-
-l004095C4:
-	addiu	r2,r0,+000000FF
-	bne	r4,r2,00409604
-	lui	r2,+4000
-
-l004095D0:
-	bne	r5,r0,004095E4
-	lui	r2,+0010
-
-l004095D8:
-	addiu	r2,r0,+00000004
-	jr	ra
-	sw	r2,0000(r6)
-
-l004095E4:
-	and	r2,r5,r2
-	beq	r2,r0,004095F8
-	addiu	r2,r0,+00000001
-
-l004095F0:
-	beq	r0,r0,004095FC
-	sw	r2,0000(r6)
-
-l004095F8:
-	sw	r0,0000(r6)
-
-l004095FC:
-	jr	ra
-	sw	r5,000C(r6)
-
-l00409604:
-	sll	r3,r5,07
-	or	r3,r3,r2
-	addiu	r4,r4,-0000007F
-	addiu	r2,r0,+00000003
-	sw	r3,000C(r6)
-	sw	r4,0008(r6)
-	jr	ra
-	sw	r2,0000(r6)
-00409624             00 00 00 00 00 00 00 00 00 00 00 00     ............
-
-;; __make_fp: 00409630
-__make_fp proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-00000DD0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000030
-	sw	r28,0010(sp)
-	sw	r4,0018(sp)
-	lw	r25,-7EB4(r28)
-	addiu	r4,sp,+00000018
-	sw	ra,002C(sp)
-	sw	r5,001C(sp)
-	sw	r6,0020(sp)
-	jalr	ra,r25
-	sw	r7,0024(sp)
-	lw	r28,0010(sp)
-	lw	ra,002C(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000030
-00409678                         00 00 00 00 00 00 00 00         ........
-
-;; __pack_d: 00409680
-__pack_d proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-00000E20
-	addu	r28,r28,r25
-	lw	r3,0000(r4)
-	lw	r10,0010(r4)
-	lw	r11,0014(r4)
-	sltiu	r2,r3,+00000002
-	lw	r8,0004(r4)
-	beq	r2,r0,004096C0
-	or	r9,r0,r0
-
-l004096A8:
-	lui	r2,+0008
-	addiu	r3,r0,+00000000
-	or	r10,r10,r2
-	or	r11,r11,r3
-	beq	r0,r0,004098B8
-	addiu	r9,r0,+000007FF
-
-l004096C0:
-	xori	r2,r3,00000004
-	beq	r2,r0,00409814
-	nop
-
-l004096CC:
-	xori	r2,r3,00000002
-	bne	r2,r0,004096E4
-	nop
-
-l004096D8:
-	or	r10,r0,r0
-	beq	r0,r0,004098B8
-	or	r11,r0,r0
-
-l004096E4:
-	or	r2,r11,r10
-	beq	r2,r0,004098B8
-	nop
-
-l004096F0:
-	lw	r4,0008(r4)
-	nop
-	slti	r2,r4,-000003FE
-	beq	r2,r0,00409808
-	slti	r2,r4,+00000400
-
-l00409704:
-	addiu	r2,r0,-000003FE
-	subu	r4,r2,r4
-	slti	r3,r4,+00000039
-	bne	r3,r0,00409724
-	addiu	r2,r0,+00000001
-
-l00409718:
-	or	r10,r0,r0
-	beq	r0,r0,00409794
-	or	r11,r0,r0
-
-l00409724:
-	sllv	r2,r2,r4
-	addiu	r2,r2,-00000001
-	or	r3,r2,r0
-	sra	r2,r2,1F
-	and	r2,r10,r2
-	and	r3,r11,r3
-	or	r2,r3,r2
-	beq	r2,r0,0040974C
-	or	r5,r0,r0
-
-l00409748:
-	addiu	r5,r0,+00000001
-
-l0040974C:
-	sll	r6,r4,1A
-	bgez	r6,00409764
-	nop
-
-l00409758:
-	srlv	r15,r10,r4
-	beq	r0,r0,0040977C
-	or	r14,r0,r0
-
-l00409764:
-	beq	r6,r0,00409778
-	srlv	r15,r11,r4
-
-l0040976C:
-	subu	r6,r0,r4
-	sllv	r6,r10,r6
-	or	r15,r15,r6
-
-l00409778:
-	srlv	r14,r10,r4
-
-l0040977C:
-	or	r3,r5,r0
-	or	r2,r0,r0
-	or	r4,r14,r0
-	or	r5,r15,r0
-	or	r10,r4,r2
-	or	r11,r5,r3
-
-l00409794:
-	addiu	r2,r0,+00000000
-	addiu	r3,r0,+000000FF
-	and	r4,r10,r2
-	bne	r4,r0,004097E0
-	and	r5,r11,r3
-
-l004097A8:
-	addiu	r2,r0,+00000080
-	bne	r5,r2,004097E0
-	nop
-
-l004097B4:
-	addiu	r2,r0,+00000000
-	addiu	r3,r0,+00000100
-	and	r2,r10,r2
-	and	r3,r11,r3
-	or	r2,r3,r2
-	beq	r2,r0,004097F0
-	lui	r2,+0FFF
-
-l004097D0:
-	addiu	r11,r11,+00000080
-	sltiu	r2,r11,+00000080
-	beq	r0,r0,004097EC
-	addu	r10,r10,r2
-
-l004097E0:
-	addiu	r11,r11,+0000007F
-	sltiu	r2,r11,+0000007F
-	addu	r10,r10,r2
-
-l004097EC:
-	lui	r2,+0FFF
-
-l004097F0:
-	ori	r2,r2,0000FFFF
-	sltu	r2,r2,r10
-	beq	r2,r0,004098A8
-	nop
-
-l00409800:
-	beq	r0,r0,004098A8
-	addiu	r9,r0,+00000001
-
-l00409808:
-	nop
-	bne	r2,r0,00409824
-	nop
-
-l00409814:
-	or	r10,r0,r0
-	or	r11,r0,r0
-	beq	r0,r0,004098B8
-	addiu	r9,r0,+000007FF
-
-l00409824:
-	addiu	r2,r0,+00000000
-	addiu	r3,r0,+000000FF
-	and	r6,r10,r2
-	and	r7,r11,r3
-	bne	r6,r0,00409874
-	addiu	r9,r4,+000003FF
-
-l0040983C:
-	addiu	r2,r0,+00000080
-	bne	r7,r2,00409874
-	nop
-
-l00409848:
-	addiu	r2,r0,+00000000
-	addiu	r3,r0,+00000100
-	and	r2,r10,r2
-	and	r3,r11,r3
-	or	r2,r3,r2
-	beq	r2,r0,00409884
-	lui	r2,+1FFF
-
-l00409864:
-	addiu	r11,r11,+00000080
-	sltiu	r2,r11,+00000080
-	beq	r0,r0,00409880
-	addu	r10,r10,r2
-
-l00409874:
-	addiu	r11,r11,+0000007F
-	sltiu	r2,r11,+0000007F
-	addu	r10,r10,r2
-
-l00409880:
-	lui	r2,+1FFF
-
-l00409884:
-	ori	r2,r2,0000FFFF
-	sltu	r2,r2,r10
-	beq	r2,r0,004098A8
-	nop
-
-l00409894:
-	srl	r11,r11,01
-	sll	r2,r10,1F
-	or	r11,r11,r2
-	srl	r10,r10,01
-	addiu	r9,r9,+00000001
-
-l004098A8:
-	srl	r11,r11,08
-	sll	r2,r10,18
-	or	r11,r11,r2
-	srl	r10,r10,08
-
-l004098B8:
-	lui	r6,+000F
-	ori	r6,r6,0000FFFF
-	addiu	r7,r0,-00000001
-	andi	r2,r9,000007FF
-	and	r6,r10,r6
-	or	r5,r2,r0
-	and	r7,r11,r7
-	or	r4,r0,r0
-	or	r13,r7,r0
-	or	r12,r6,r0
-	sll	r4,r5,14
-	or	r5,r0,r0
-	or	r4,r12,r4
-	andi	r8,r8,00000001
-	or	r5,r13,r5
-	or	r3,r8,r0
-	or	r2,r0,r0
-	or	r13,r5,r0
-	or	r12,r4,r0
-	sll	r2,r3,1F
-	or	r3,r0,r0
-	or	r2,r12,r2
-	or	r3,r13,r3
-	or	r13,r3,r0
-	or	r12,r2,r0
-	mtc1	r13,f0
-	mtc1	r12,f1
-	jr	ra
-	nop
-0040992C                                     00 00 00 00             ....
-
-;; __unpack_d: 00409930
-__unpack_d proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-000010D0
-	addu	r28,r28,r25
-	lw	r2,0000(r4)
-	lw	r3,0004(r4)
-	or	r10,r5,r0
-	srl	r7,r2,14
-	srl	r5,r2,1F
-	or	r6,r0,r0
-	or	r4,r0,r0
-	andi	r8,r5,00000001
-	andi	r7,r7,000007FF
-	lui	r4,+000F
-	ori	r4,r4,0000FFFF
-	addiu	r5,r0,-00000001
-	sw	r8,0004(r10)
-	and	r8,r2,r4
-	bne	r7,r0,004099F8
-	and	r9,r3,r5
-
-l0040997C:
-	or	r2,r9,r8
-	bne	r2,r0,00409994
-	lui	r2,+0FFF
-
-l00409988:
-	addiu	r2,r0,+00000002
-	jr	ra
-	sw	r2,0000(r10)
-
-l00409994:
-	sll	r8,r8,08
-	srl	r3,r9,18
-	or	r8,r8,r3
-	sll	r9,r9,08
-	ori	r2,r2,0000FFFF
-	addiu	r3,r0,-000003FE
-	addiu	r4,r0,+00000003
-	sltu	r2,r2,r8
-	sw	r3,0008(r10)
-	bne	r2,r0,004099EC
-	sw	r4,0000(r10)
-
-l004099C0:
-	lui	r4,+0FFF
-	ori	r4,r4,0000FFFF
-
-l004099C8:
-	sll	r8,r8,01
-	srl	r3,r9,1F
-	lw	r2,0008(r10)
-	or	r8,r8,r3
-	sll	r9,r9,01
-	addiu	r2,r2,-00000001
-	sltu	r3,r4,r8
-	beq	r3,r0,004099C8
-	sw	r2,0008(r10)
-
-l004099EC:
-	sw	r8,0010(r10)
-	jr	ra
-	sw	r9,0014(r10)
-
-l004099F8:
-	addiu	r2,r0,+000007FF
-	bne	r7,r2,00409A4C
-	srl	r6,r9,18
-
-l00409A04:
-	or	r2,r9,r8
-	bne	r2,r0,00409A18
-	addiu	r2,r0,+00000004
-
-l00409A10:
-	jr	ra
-	sw	r2,0000(r10)
-
-l00409A18:
-	lui	r2,+0008
-	addiu	r3,r0,+00000000
-	and	r2,r8,r2
-	and	r3,r9,r3
-	or	r2,r3,r2
-	beq	r2,r0,00409A3C
-	addiu	r2,r0,+00000001
-
-l00409A34:
-	beq	r0,r0,00409A40
-	sw	r2,0000(r10)
-
-l00409A3C:
-	sw	r0,0000(r10)
-
-l00409A40:
-	sw	r8,0010(r10)
-	jr	ra
-	sw	r9,0014(r10)
-
-l00409A4C:
-	sll	r4,r8,08
-	lui	r2,+1000
-	addiu	r3,r0,+00000000
-	or	r4,r4,r6
-	sll	r5,r9,08
-	or	r4,r4,r2
-	or	r5,r5,r3
-	addiu	r6,r7,-000003FF
-	addiu	r2,r0,+00000003
-	sw	r4,0010(r10)
-	sw	r5,0014(r10)
-	sw	r6,0008(r10)
-	jr	ra
-	sw	r2,0000(r10)
-00409A84             00 00 00 00 00 00 00 00 00 00 00 00     ............
-
-;; __fpcmp_parts_d: 00409A90
-__fpcmp_parts_d proc
-	lw	r6,0000(r4)
-	nop
-	sltiu	r2,r6,+00000002
-	bne	r2,r0,00409AB8
-	nop
-
-l00409AA4:
-	lw	r3,0000(r5)
-	nop
-	sltiu	r2,r3,+00000002
-	beq	r2,r0,00409AC0
-	nop
-
-l00409AB8:
-	jr	ra
-	addiu	r2,r0,+00000001
-
-l00409AC0:
-	xori	r2,r6,00000004
-	bne	r2,r0,00409AE4
-	xori	r2,r3,00000004
-
-l00409ACC:
-	bne	r2,r0,00409B2C
-	nop
-
-l00409AD4:
-	lw	r3,0004(r5)
-	lw	r2,0004(r4)
-	jr	ra
-	subu	r2,r3,r2
-
-l00409AE4:
-	nop
-	beq	r2,r0,00409B08
-	nop
-
-l00409AF0:
-	xori	r2,r6,00000002
-	bne	r2,r0,00409B20
-	nop
-
-l00409AFC:
-	xori	r3,r3,00000002
-	beq	r3,r0,00409C00
-	or	r2,r0,r0
-
-l00409B08:
-	lw	r2,0004(r5)
-	nop
-	sltiu	r2,r2,+00000001
-	subu	r2,r0,r2
-	jr	ra
-	ori	r2,r2,00000001
-
-l00409B20:
-	xori	r2,r3,00000002
-	bne	r2,r0,00409B44
-	nop
-
-l00409B2C:
-	lw	r2,0004(r4)
-	nop
-	sltu	r2,r0,r2
-	subu	r2,r0,r2
-	jr	ra
-	ori	r2,r2,00000001
-
-l00409B44:
-	lw	r8,0004(r4)
-	lw	r2,0004(r5)
-	nop
-	bne	r8,r2,00409BB4
-	sltu	r2,r0,r8
-
-l00409B58:
-	lw	r6,0008(r4)
-	lw	r3,0008(r5)
-	nop
-	slt	r2,r3,r6
-	bne	r2,r0,00409BB4
-	sltu	r2,r0,r8
-
-l00409B70:
-	slt	r2,r6,r3
-	bne	r2,r0,00409BF0
-	sltiu	r2,r8,+00000001
-
-l00409B7C:
-	lw	r7,0010(r4)
-	lw	r6,0010(r5)
-	nop
-	sltu	r2,r6,r7
-	bne	r2,r0,00409BB4
-	sltu	r2,r0,r8
-
-l00409B94:
-	bne	r7,r6,00409BC4
-	sltu	r2,r7,r6
-
-l00409B9C:
-	lw	r3,0014(r4)
-	lw	r2,0014(r5)
-	nop
-	sltu	r2,r2,r3
-	beq	r2,r0,00409BC0
-	sltu	r2,r0,r8
-
-l00409BB4:
-	subu	r2,r0,r2
-	jr	ra
-	ori	r2,r2,00000001
-
-l00409BC0:
-	sltu	r2,r7,r6
-
-l00409BC4:
-	bne	r2,r0,00409BF0
-	sltiu	r2,r8,+00000001
-
-l00409BCC:
-	bne	r6,r7,00409C00
-	or	r2,r0,r0
-
-l00409BD4:
-	lw	r3,0014(r5)
-	lw	r2,0014(r4)
-	nop
-	sltu	r2,r2,r3
-	beq	r2,r0,00409BFC
-	nop
-
-l00409BEC:
-	sltiu	r2,r8,+00000001
-
-l00409BF0:
-	subu	r2,r0,r2
-	jr	ra
-	ori	r2,r2,00000001
-
-l00409BFC:
-	or	r2,r0,r0
-
-l00409C00:
-	jr	ra
-	nop
-00409C08                         00 00 00 00 00 00 00 00         ........
-
-;; __do_global_ctors_aux: 00409C10
-__do_global_ctors_aux proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-000013B0
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000028
-	sw	r28,0010(sp)
-	sw	r16,001C(sp)
-	lw	r2,-7FE8(r28)
-	nop
-	addiu	r2,r2,+00000858
-	sw	ra,0024(sp)
-	sw	r17,0020(sp)
-	lw	r25,-0004(r2)
-	addiu	r3,r0,-00000001
-	beq	r25,r3,00409C70
-	addiu	r16,r2,-00000004
-
-l00409C4C:
-	addiu	r17,r0,-00000001
-
-l00409C50:
-	jalr	ra,r25
-	nop
-	lw	r28,0010(sp)
-	addiu	r16,r16,-00000004
-	lw	r2,0000(r16)
-	nop
-	bne	r2,r17,00409C50
-	or	r25,r2,r0
-
-l00409C70:
-	lw	ra,0024(sp)
-	lw	r17,0020(sp)
-	lw	r16,001C(sp)
-	jr	ra
-	addiu	sp,sp,+00000028
-
-;; init_dummy: 00409C84
-init_dummy proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-00001424
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000020
-	sw	r28,0010(sp)
-	sw	ra,001C(sp)
-	lw	ra,001C(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000020
-00409CAC                                     00 00 00 00             ....
+00400620 3C 1C 0F C1 27 9C 82 40 03 99 E0 21 27 BD FF E0 <...'..@...!'...
+00400630 AF BC 00 10 8F 82 80 18 00 00 00 00 24 42 00 08 ............$B..
+00400640 8C 42 00 00 00 00 00 00 14 40 00 2A AF BF 00 1C .B.......@.*....
+00400650 8F 83 80 18 00 00 00 00 24 63 00 04 8C 63 00 00 ........$c...c..
+00400660 00 00 00 00 8C 62 00 00 00 00 00 00 10 40 00 12 .....b.......@..
+00400670 24 62 00 04 8C 79 00 00 8F 81 80 18 00 00 00 00 $b...y..........
+00400680 24 21 00 04 03 20 F8 09 AC 22 00 00 8F BC 00 10 $!... ..."......
+00400690 00 00 00 00 8F 83 80 18 00 00 00 00 24 63 00 04 ............$c..
+004006A0 8C 63 00 00 00 00 00 00 8C 62 00 00 00 00 00 00 .c.......b......
+004006B0 14 40 FF F0 24 62 00 04 8F 99 81 54 00 00 00 00 .@..$b.....T....
+004006C0 13 20 00 08 24 02 00 01 8F 84 80 18 00 00 00 00 . ..$...........
+004006D0 24 84 08 50 03 20 F8 09 00 00 00 00 8F BC 00 10 $..P. ..........
+004006E0 24 02 00 01 8F 81 80 18 00 00 00 00 24 21 00 08 $...........$!..
+004006F0 AC 22 00 00 8F BF 00 1C 00 00 00 00 03 E0 00 08 ."..............
+00400700 27 BD 00 20                                     '..            
+00400704             3C 1C 0F C1 27 9C 81 5C 03 99 E0 21     <...'..\...!
+00400710 27 BD FF E0 AF BC 00 10 AF BF 00 1C 8F BF 00 1C '...............
+00400720 00 00 00 00 03 E0 00 08 27 BD 00 20             ........'..    
+0040072C                                     3C 1C 0F C1             <...
+00400730 27 9C 81 34 03 99 E0 21 27 BD FF E0 AF BC 00 10 '..4...!'.......
+00400740 8F 99 80 44 00 00 00 00 13 20 00 0A AF BF 00 1C ...D..... ......
+00400750 8F 84 80 18 00 00 00 00 24 84 08 50 8F 85 80 18 ........$..P....
+00400760 00 00 00 00 24 A5 0A B0 03 20 F8 09 00 00 00 00 ....$.... ......
+00400770 8F BC 00 10 8F BF 00 1C 00 00 00 00 03 E0 00 08 ................
+00400780 27 BD 00 20                                     '..            
+00400784             3C 1C 0F C1 27 9C 80 DC 03 99 E0 21     <...'......!
+00400790 27 BD FF E0 AF BC 00 10 AF BF 00 1C 8F BF 00 1C '...............
+004007A0 00 00 00 00 03 E0 00 08 27 BD 00 20 00 00 00 00 ........'.. ....
+004007B0 3C 1C 0F C1 27 9C 80 B0 03 99 E0 21 27 BD FF D0 <...'......!'...
+004007C0 AF BC 00 18 AF BF 00 28 AF BE 00 24 03 A0 F0 25 .......(...$...%
+004007D0 AF C4 00 30 8F C2 00 30 00 00 00 00 AF A2 00 10 ...0...0........
+004007E0 24 04 00 03 8F 85 80 20 00 00 00 00 24 A5 9D D4 $...... ....$...
+004007F0 8F 86 80 20 00 00 00 00 24 C6 9D F8 24 07 00 50 ... ....$...$..P
+00400800 8F 99 81 8C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00400810 8F DC 00 18 00 00 00 00 24 02 00 01 8F 81 80 60 ........$......`
+00400820 00 00 00 00 AC 22 00 00 03 C0 E8 25 8F BF 00 28 .....".....%...(
+00400830 8F BE 00 24 03 E0 00 08 27 BD 00 30             ...$....'..0   
+0040083C                                     3C 1C 0F C1             <...
+00400840 27 9C 80 24 03 99 E0 21 27 BD FF D0 AF BC 00 18 '..$...!'.......
+00400850 AF BF 00 28 AF BE 00 24 03 A0 F0 25 AF C4 00 30 ...(...$...%...0
+00400860 8F C2 00 30 00 00 00 00 AF A2 00 10 24 04 00 03 ...0........$...
+00400870 8F 85 80 20 00 00 00 00 24 A5 9E 04 8F 86 80 20 ... ....$...... 
+00400880 00 00 00 00 24 C6 9E 30 24 07 00 5A 8F 99 81 8C ....$..0$..Z....
+00400890 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+004008A0 00 00 00 00 8F 99 82 10 00 00 00 00 03 20 F8 09 ............. ..
+004008B0 00 00 00 00 8F DC 00 18 00 00 00 00 03 C0 E8 25 ...............%
+004008C0 8F BF 00 28 8F BE 00 24 03 E0 00 08 27 BD 00 30 ...(...$....'..0
+004008D0 3C 1C 0F C0 27 9C 7F 90 03 99 E0 21 27 BD FE 60 <...'......!'..`
+004008E0 AF BC 00 38 AF BF 01 9C AF BE 01 98 AF B0 01 94 ...8............
+004008F0 03 A0 F0 25 AF C4 01 A0 AF C5 01 A4 24 02 00 02 ...%........$...
+00400900 AF C2 00 40 8F 82 80 B4 00 00 00 00 8C 42 00 00 ...@.........B..
+00400910 8F 81 81 C0 00 00 00 00 AC 22 00 00 24 04 00 02 ........."..$...
+00400920 8F 85 80 E8 8F 99 81 40 00 00 00 00 03 20 F8 09 .......@..... ..
+00400930 00 00 00 00 8F DC 00 38 00 00 00 00 24 04 00 01 .......8....$...
+00400940 8F 85 81 C4 8F 99 81 40 00 00 00 00 03 20 F8 09 .......@..... ..
+00400950 00 00 00 00 8F DC 00 38 00 00 00 00 8F C2 01 A4 .......8........
+00400960 00 00 00 00 8C 44 00 00 00 00 28 25 8F 99 81 48 .....D....(%...H
+00400970 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+00400980 00 00 00 00 8F C4 01 A0 8F C5 01 A4 8F 99 81 FC ................
+00400990 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+004009A0 00 00 00 00 8F 82 81 E0 00 00 00 00 8C 42 04 BC .............B..
+004009B0 00 00 00 00 10 40 00 27 00 00 00 00 8F 99 81 00 .....@.'........
+004009C0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+004009D0 AF C2 01 74 8F C2 01 74 00 00 00 00 10 40 00 08 ...t...t.....@..
+004009E0 00 00 00 00 00 00 20 25 8F 99 80 90 00 00 00 00 ...... %........
+004009F0 03 20 F8 09 00 00 00 00 8F DC 00 38 00 00 00 00 . .........8....
+00400A00 00 00 20 25 8F 99 80 3C 00 00 00 00 03 20 F8 09 .. %...<..... ..
+00400A10 00 00 00 00 8F DC 00 38 00 00 00 00 24 04 00 01 .......8....$...
+00400A20 8F 99 80 3C 00 00 00 00 03 20 F8 09 00 00 00 00 ...<..... ......
+00400A30 8F DC 00 38 00 00 00 00 24 04 00 02 8F 99 80 3C ...8....$......<
+00400A40 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+00400A50 00 00 00 00 8F 82 81 E0 00 00 00 00 24 42 06 95 ............$B..
+00400A60 AF C2 00 68 8F C2 00 68 00 00 00 00 10 40 00 2C ...h...h.....@.,
+00400A70 00 00 00 00 8F C2 00 68 00 00 00 00 80 42 00 00 .......h.....B..
+00400A80 00 00 00 00 10 40 00 26 00 00 00 00 8F C4 00 68 .....@.&.......h
+00400A90 8F 85 80 20 00 00 00 00 24 A5 9E 44 8F 99 80 EC ... ....$..D....
+00400AA0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+00400AB0 AF C2 01 74 8F C2 01 74 00 00 00 00 10 40 00 18 ...t...t.....@..
+00400AC0 00 00 00 00 8F 99 81 F4 00 00 00 00 03 20 F8 09 ............. ..
+00400AD0 00 00 00 00 8F DC 00 38 8F C4 01 74 8F 85 80 20 .......8...t... 
+00400AE0 00 00 00 00 24 A5 9E 48 00 40 30 25 8F 99 81 64 ....$..H.@0%...d
+00400AF0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+00400B00 00 00 00 00 8F C4 01 74 8F 99 80 DC 00 00 00 00 .......t........
+00400B10 03 20 F8 09 00 00 00 00 8F DC 00 38 00 00 00 00 . .........8....
+00400B20 8F 82 81 E0 00 00 00 00 8C 42 03 8C 8F 81 80 94 .........B......
+00400B30 00 00 00 00 AC 22 00 00 8F 82 81 E0 00 00 00 00 ....."..........
+00400B40 24 42 03 9D 8F 81 80 40 00 00 00 00 AC 22 00 00 $B.....@....."..
+00400B50 8F 82 81 E0 00 00 00 00 8C 42 06 84 00 00 00 00 .........B......
+00400B60 00 02 12 80 8F 81 81 C8 00 00 00 00 AC 22 00 00 ............."..
+00400B70 8F 82 81 E0 00 00 00 00 8C 42 05 EC 8F 81 80 AC .........B......
+00400B80 00 00 00 00 AC 22 00 00 8F 84 80 20 00 00 00 00 ....."..... ....
+00400B90 24 84 9E 4C 8F 99 80 70 00 00 00 00 03 20 F8 09 $..L...p..... ..
+00400BA0 00 00 00 00 8F DC 00 38 00 00 00 00 8F C2 01 A4 .......8........
+00400BB0 00 00 00 00 8C 44 00 00 8F 99 82 18 00 00 00 00 .....D..........
+00400BC0 03 20 F8 09 00 00 00 00 8F DC 00 38 AF C2 01 7C . .........8...|
+00400BD0 8F 82 81 E0 00 00 00 00 24 42 00 0D AF A2 00 10 ........$B......
+00400BE0 8F 82 81 E0 00 00 00 00 8C 42 01 2C 00 00 00 00 .........B.,....
+00400BF0 AF A2 00 14 8F 82 81 E0 00 00 00 00 8C 42 01 C4 .............B..
+00400C00 00 00 00 00 AF A2 00 18 8F 82 81 E0 00 00 00 00 ................
+00400C10 24 42 01 D5 AF A2 00 1C 8F 82 81 E0 00 00 00 00 $B..............
+00400C20 8C 42 02 F4 00 00 00 00 AF A2 00 20 8F 82 80 40 .B......... ...@
+00400C30 00 00 00 00 8C 42 00 00 00 00 00 00 AF A2 00 24 .....B.........$
+00400C40 8F 82 80 94 00 00 00 00 8C 42 00 00 00 00 00 00 .........B......
+00400C50 AF A2 00 28 8F 82 81 C8 00 00 00 00 8C 42 00 00 ...(.........B..
+00400C60 00 00 00 00 AF C2 01 80 8F C2 01 80 00 00 00 00 ................
+00400C70 04 41 00 05 00 00 00 00 8F C3 01 80 00 00 00 00 .A..............
+00400C80 24 63 03 FF AF C3 01 80 8F D9 01 80 00 00 00 00 $c..............
+00400C90 00 19 12 83 AF A2 00 2C 8F 82 81 E0 00 00 00 00 .......,........
+00400CA0 8C 42 05 54 00 00 00 00 AF A2 00 30 24 04 00 03 .B.T.......0$...
+00400CB0 8F 85 80 20 00 00 00 00 24 A5 9E 50 8F C6 01 7C ... ....$..P...|
+00400CC0 8F 87 82 00 00 00 00 00 8C E7 00 00 8F 99 81 8C ................
+00400CD0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+00400CE0 00 00 00 00 8F 99 80 A8 00 00 00 00 03 20 F8 09 ............. ..
+00400CF0 00 00 00 00 8F DC 00 38 AF C2 00 4C 8F C2 00 4C .......8...L...L
+00400D00 00 00 00 00 14 40 00 08 00 00 00 00 24 04 FF FF .....@......$...
+00400D10 8F 99 80 90 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00400D20 8F DC 00 38 00 00 00 00 8F 99 81 6C 00 00 00 00 ...8.......l....
+00400D30 03 20 F8 09 00 00 00 00 8F DC 00 38 AF C2 00 54 . .........8...T
+00400D40 8F C2 00 54 00 00 00 00 14 40 00 08 00 00 00 00 ...T.....@......
+00400D50 24 04 FF FF 8F 99 80 90 00 00 00 00 03 20 F8 09 $............ ..
+00400D60 00 00 00 00 8F DC 00 38 00 00 00 00 8F 84 81 E0 .......8........
+00400D70 00 00 00 00 24 84 00 0D 8F 85 81 E0 00 00 00 00 ....$...........
+00400D80 8C A5 01 2C 8F 86 81 E0 00 00 00 00 8C C6 05 54 ...,...........T
+00400D90 00 00 38 25 8F 99 81 A8 00 00 00 00 03 20 F8 09 ..8%......... ..
+00400DA0 00 00 00 00 8F DC 00 38 AF C2 00 50 8F C4 00 54 .......8...P...T
+00400DB0 8F C5 00 50 8F 99 80 50 00 00 00 00 03 20 F8 09 ...P...P..... ..
+00400DC0 00 00 00 00 8F DC 00 38 00 00 00 00 8F 84 81 E0 .......8........
+00400DD0 00 00 00 00 24 84 00 0D 8F 85 81 E0 00 00 00 00 ....$...........
+00400DE0 8C A5 01 C4 8F 86 81 E0 00 00 00 00 8C C6 05 54 ...............T
+00400DF0 24 07 00 01 8F 99 81 A8 00 00 00 00 03 20 F8 09 $............ ..
+00400E00 00 00 00 00 8F DC 00 38 AF C2 00 50 8F C4 00 54 .......8...P...T
+00400E10 8F C5 00 50 8F 99 80 50 00 00 00 00 03 20 F8 09 ...P...P..... ..
+00400E20 00 00 00 00 8F DC 00 38 00 00 00 00 27 C2 00 58 .......8....'..X
+00400E30 00 40 20 25 24 05 00 10 8F 99 81 94 00 00 00 00 .@ %$...........
+00400E40 03 20 F8 09 00 00 00 00 8F DC 00 38 00 00 00 00 . .........8....
+00400E50 24 02 00 02 A7 C2 00 58 8F 82 81 E0 00 00 00 00 $......X........
+00400E60 94 42 02 F6 00 00 00 00 A7 C2 00 5A 8F 84 81 E0 .B.........Z....
+00400E70 00 00 00 00 24 84 01 D5 8F 99 81 58 00 00 00 00 ....$......X....
+00400E80 03 20 F8 09 00 00 00 00 8F DC 00 38 AF C2 00 5C . .........8...\
+00400E90 8F C2 00 54 00 00 00 00 8C 42 00 08 00 00 00 00 ...T.....B......
+00400EA0 AF C2 00 50 8F C2 00 50 00 00 00 00 14 40 00 03 ...P...P.....@..
+00400EB0 00 00 00 00 10 00 00 16 00 00 00 00 8F C4 00 50 ...............P
+00400EC0 8F 99 82 24 00 00 00 00 03 20 F8 09 00 00 00 00 ...$..... ......
+00400ED0 8F DC 00 38 14 40 00 08 00 00 00 00 24 04 FF FF ...8.@......$...
+00400EE0 8F 99 80 90 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00400EF0 8F DC 00 38 00 00 00 00 8F C2 00 50 00 00 00 00 ...8.......P....
+00400F00 8C 42 00 18 00 00 00 00 10 00 FF E6 AF C2 00 50 .B.............P
+00400F10 8F 82 80 60 00 00 00 00 8C 42 00 00 00 00 00 00 ...`.....B......
+00400F20 10 40 00 03 00 00 00 00 10 00 02 EA 00 00 00 00 .@..............
+00400F30 AF C0 00 40 00 00 20 25 8F 99 80 D0 00 00 00 00 ...@.. %........
+00400F40 03 20 F8 09 00 00 00 00 8F DC 00 38 AF C2 01 70 . .........8...p
+00400F50 27 C2 00 70 AF C2 01 78 AF C0 01 74 8F C2 01 74 '..p...x...t...t
+00400F60 00 00 00 00 2C 42 00 20 14 40 00 03 00 00 00 00 ....,B. .@......
+00400F70 10 00 00 0C 00 00 00 00 8F C3 01 78 8F C2 01 74 ...........x...t
+00400F80 00 00 00 00 00 02 10 80 00 62 10 21 AC 40 00 00 .........b.!.@..
+00400F90 8F C2 01 74 00 00 00 00 24 42 00 01 10 00 FF EF ...t....$B......
+00400FA0 AF C2 01 74 27 C2 00 F0 AF C2 01 74 AF C0 01 78 ...t'......t...x
+00400FB0 8F C2 01 78 00 00 00 00 2C 42 00 20 14 40 00 03 ...x....,B. .@..
+00400FC0 00 00 00 00 10 00 00 0C 00 00 00 00 8F C3 01 74 ...............t
+00400FD0 8F C2 01 78 00 00 00 00 00 02 10 80 00 62 10 21 ...x.........b.!
+00400FE0 AC 40 00 00 8F C2 01 78 00 00 00 00 24 42 00 01 .@.....x....$B..
+00400FF0 10 00 FF EF AF C2 01 78 8F C2 00 54 00 00 00 00 .......x...T....
+00401000 8C 42 00 08 00 00 00 00 AF C2 00 50 8F C2 00 50 .B.........P...P
+00401010 00 00 00 00 14 40 00 03 00 00 00 00 10 00 00 2B .....@.........+
+00401020 00 00 00 00 8F C2 00 50 00 00 00 00 8C 42 00 00 .......P.....B..
+00401030 00 00 00 00 00 02 21 42 00 80 10 25 00 02 18 80 ......!B...%....
+00401040 27 C2 00 70 00 43 28 21 00 80 10 25 00 02 18 80 '..p.C(!...%....
+00401050 27 C2 00 70 00 43 20 21 8F C2 00 50 00 00 00 00 '..p.C !...P....
+00401060 8C 42 00 00 00 00 00 00 30 43 00 1F 24 02 00 01 .B......0C..$...
+00401070 00 62 18 04 8C 82 00 00 00 00 00 00 00 43 10 25 .b...........C.%
+00401080 AC A2 00 00 8F C2 00 50 8F C3 00 40 8C 42 00 00 .......P...@.B..
+00401090 00 00 00 00 00 62 10 2A 10 40 00 06 00 00 00 00 .....b.*.@......
+004010A0 8F C2 00 50 00 00 00 00 8C 42 00 00 00 00 00 00 ...P.....B......
+004010B0 AF C2 00 40 8F C2 00 50 00 00 00 00 8C 42 00 18 ...@...P.....B..
+004010C0 00 00 00 00 10 00 FF D1 AF C2 00 50 8F C2 00 4C ...........P...L
+004010D0 00 00 00 00 8C 42 00 08 00 00 00 00 AF C2 00 48 .....B.........H
+004010E0 8F C2 00 48 00 00 00 00 14 40 00 03 00 00 00 00 ...H.....@......
+004010F0 10 00 00 99 00 00 00 00 8F C2 00 48 00 00 00 00 ...........H....
+00401100 8C 42 00 00 00 00 00 00 04 40 00 44 00 00 00 00 .B.......@.D....
+00401110 8F C2 00 48 8F C3 00 40 8C 42 00 00 00 00 00 00 ...H...@.B......
+00401120 00 62 10 2A 10 40 00 06 00 00 00 00 8F C2 00 48 .b.*.@.........H
+00401130 00 00 00 00 8C 42 00 00 00 00 00 00 AF C2 00 40 .....B.........@
+00401140 8F C2 00 48 00 00 00 00 8C 42 0F AC 00 00 00 00 ...H.....B......
+00401150 14 40 00 1A 00 00 00 00 8F C2 00 48 00 00 00 00 .@.........H....
+00401160 8C 42 00 00 00 00 00 00 00 02 21 42 00 80 10 25 .B........!B...%
+00401170 00 02 18 80 27 C2 00 70 00 43 28 21 00 80 10 25 ....'..p.C(!...%
+00401180 00 02 18 80 27 C2 00 70 00 43 20 21 8F C2 00 48 ....'..p.C !...H
+00401190 00 00 00 00 8C 42 00 00 00 00 00 00 30 43 00 1F .....B......0C..
+004011A0 24 02 00 01 00 62 18 04 8C 82 00 00 00 00 00 00 $....b..........
+004011B0 00 43 10 25 10 00 00 19 AC A2 00 00 8F C2 00 48 .C.%...........H
+004011C0 00 00 00 00 8C 42 00 00 00 00 00 00 00 02 21 42 .....B........!B
+004011D0 00 80 10 25 00 02 18 80 27 C2 00 F0 00 43 28 21 ...%....'....C(!
+004011E0 00 80 10 25 00 02 18 80 27 C2 00 F0 00 43 20 21 ...%....'....C !
+004011F0 8F C2 00 48 00 00 00 00 8C 42 00 00 00 00 00 00 ...H.....B......
+00401200 30 43 00 1F 24 02 00 01 00 62 18 04 8C 82 00 00 0C..$....b......
+00401210 00 00 00 00 00 43 10 25 AC A2 00 00 8F C2 00 48 .....C.%.......H
+00401220 00 00 00 00 8C 42 00 04 00 00 00 00 04 40 00 44 .....B.......@.D
+00401230 00 00 00 00 8F C2 00 48 8F C3 00 40 8C 42 00 04 .......H...@.B..
+00401240 00 00 00 00 00 62 10 2A 10 40 00 06 00 00 00 00 .....b.*.@......
+00401250 8F C2 00 48 00 00 00 00 8C 42 00 04 00 00 00 00 ...H.....B......
+00401260 AF C2 00 40 8F C2 00 48 00 00 00 00 8C 42 17 8C ...@...H.....B..
+00401270 00 00 00 00 14 40 00 1A 00 00 00 00 8F C2 00 48 .....@.........H
+00401280 00 00 00 00 8C 42 00 04 00 00 00 00 00 02 21 42 .....B........!B
+00401290 00 80 10 25 00 02 18 80 27 C2 00 70 00 43 28 21 ...%....'..p.C(!
+004012A0 00 80 10 25 00 02 18 80 27 C2 00 70 00 43 20 21 ...%....'..p.C !
+004012B0 8F C2 00 48 00 00 00 00 8C 42 00 04 00 00 00 00 ...H.....B......
+004012C0 30 43 00 1F 24 02 00 01 00 62 18 04 8C 82 00 00 0C..$....b......
+004012D0 00 00 00 00 00 43 10 25 10 00 00 19 AC A2 00 00 .....C.%........
+004012E0 8F C2 00 48 00 00 00 00 8C 42 00 04 00 00 00 00 ...H.....B......
+004012F0 00 02 21 42 00 80 10 25 00 02 18 80 27 C2 00 F0 ..!B...%....'...
+00401300 00 43 28 21 00 80 10 25 00 02 18 80 27 C2 00 F0 .C(!...%....'...
+00401310 00 43 20 21 8F C2 00 48 00 00 00 00 8C 42 00 04 .C !...H.....B..
+00401320 00 00 00 00 30 43 00 1F 24 02 00 01 00 62 18 04 ....0C..$....b..
+00401330 8C 82 00 00 00 00 00 00 00 43 10 25 AC A2 00 00 .........C.%....
+00401340 8F C2 00 48 00 00 00 00 8C 42 17 B8 00 00 00 00 ...H.....B......
+00401350 10 00 FF 63 AF C2 00 48 8F C2 00 40 00 00 00 00 ...c...H...@....
+00401360 24 42 00 01 27 C3 00 70 AF A0 00 10 00 40 20 25 $B..'..p.....@ %
+00401370 00 60 28 25 00 00 30 25 00 00 38 25 8F 99 81 B8 .`(%..0%..8%....
+00401380 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+00401390 04 41 00 30 00 00 00 00 8F 99 80 98 00 00 00 00 .A.0............
+004013A0 03 20 F8 09 00 00 00 00 8F DC 00 38 8C 43 00 00 . .........8.C..
+004013B0 24 02 00 04 14 62 00 03 00 00 00 00 10 00 FE D4 $....b..........
+004013C0 00 00 00 00 8F 99 80 98 00 00 00 00 03 20 F8 09 ............. ..
+004013D0 00 00 00 00 8F DC 00 38 00 40 80 25 8F 99 80 98 .......8.@.%....
+004013E0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+004013F0 8C 44 00 00 8F 99 82 1C 00 00 00 00 03 20 F8 09 .D........... ..
+00401400 00 00 00 00 8F DC 00 38 00 00 20 25 8F 85 80 20 .......8.. %... 
+00401410 00 00 00 00 24 A5 9E B0 8E 06 00 00 00 40 38 25 ....$........@8%
+00401420 8F 99 81 8C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00401430 8F DC 00 38 00 00 00 00 24 04 FF FF 8F 99 80 90 ...8....$.......
+00401440 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+00401450 00 00 00 00 8F C2 00 54 00 00 00 00 8C 42 00 08 .......T.....B..
+00401460 00 00 00 00 AF C2 00 50 8F C2 00 50 00 00 00 00 .......P...P....
+00401470 14 40 00 03 00 00 00 00 10 00 00 4E 00 00 00 00 .@.........N....
+00401480 8F C2 00 50 00 00 00 00 8C 42 00 00 00 00 00 00 ...P.....B......
+00401490 00 02 11 42 00 02 18 80 27 C2 00 70 00 43 20 21 ...B....'..p.C !
+004014A0 8F C2 00 50 00 00 00 00 8C 42 00 00 00 00 00 00 ...P.....B......
+004014B0 30 43 00 1F 8C 82 00 00 00 00 00 00 00 62 10 07 0C...........b..
+004014C0 30 42 00 01 10 40 00 35 00 00 00 00 8F C2 00 50 0B...@.5.......P
+004014D0 00 00 00 00 24 42 00 08 27 C3 00 58 8F C6 00 50 ....$B..'..X...P
+004014E0 8F C7 00 50 00 40 20 25 00 60 28 25 8C C6 00 00 ...P.@ %.`(%....
+004014F0 8C E7 00 20 8F 99 80 D8 00 00 00 00 03 20 F8 09 ... ......... ..
+00401500 00 00 00 00 8F DC 00 38 AF C2 00 44 8F C2 00 44 .......8...D...D
+00401510 00 00 00 00 14 40 00 03 00 00 00 00 10 00 00 1F .....@..........
+00401520 00 00 00 00 8F C4 00 4C 8F C5 00 44 8F 99 80 B8 .......L...D....
+00401530 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+00401540 14 40 00 16 00 00 00 00 24 04 00 01 8F 85 80 20 .@......$...... 
+00401550 00 00 00 00 24 A5 9E CC 8F 86 80 20 00 00 00 00 ....$...... ....
+00401560 24 C6 9E F8 24 07 00 E0 8F 99 81 8C 00 00 00 00 $...$...........
+00401570 03 20 F8 09 00 00 00 00 8F DC 00 38 00 00 00 00 . .........8....
+00401580 8F C4 00 44 8F 99 80 7C 00 00 00 00 03 20 F8 09 ...D...|..... ..
+00401590 00 00 00 00 8F DC 00 38 00 00 00 00 8F C2 00 50 .......8.......P
+004015A0 00 00 00 00 8C 42 00 18 00 00 00 00 10 00 FF AE .....B..........
+004015B0 AF C2 00 50 8F C2 00 4C 00 00 00 00 8C 42 00 08 ...P...L.....B..
+004015C0 00 00 00 00 AF C2 00 48 8F C2 00 48 00 00 00 00 .......H...H....
+004015D0 14 40 00 03 00 00 00 00 10 00 FE 4D 00 00 00 00 .@.........M....
+004015E0 8F C2 00 48 00 00 00 00 10 40 00 4E 00 00 00 00 ...H.....@.N....
+004015F0 8F C2 00 48 00 00 00 00 8C 42 00 00 00 00 00 00 ...H.....B......
+00401600 04 40 00 48 00 00 00 00 8F C2 00 48 00 00 00 00 .@.H.......H....
+00401610 8C 42 00 00 00 00 00 00 00 02 11 42 00 02 18 80 .B.........B....
+00401620 27 C2 00 70 00 43 20 21 8F C2 00 48 00 00 00 00 '..p.C !...H....
+00401630 8C 42 00 00 00 00 00 00 30 43 00 1F 8C 82 00 00 .B......0C......
+00401640 00 00 00 00 00 62 10 07 30 42 00 01 10 40 00 35 .....b..0B...@.5
+00401650 00 00 00 00 8F C4 00 48 8F 99 81 08 00 00 00 00 .......H........
+00401660 03 20 F8 09 00 00 00 00 8F DC 00 38 00 00 00 00 . .........8....
+00401670 8F C2 00 48 00 00 00 00 8C 42 07 D8 00 00 00 00 ...H.....B......
+00401680 1C 40 00 15 00 00 00 00 8F C2 00 48 00 00 00 00 .@.........H....
+00401690 8C 42 00 00 00 00 00 00 04 40 00 22 00 00 00 00 .B.......@."....
+004016A0 8F C2 00 48 00 00 00 00 8C 44 00 00 8F 99 80 3C ...H.....D.....<
+004016B0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+004016C0 00 00 00 00 8F C3 00 48 24 02 FF FF AC 62 00 00 .......H$....b..
+004016D0 10 00 00 14 00 00 00 00 8F C2 00 48 00 00 00 00 ...........H....
+004016E0 8C 42 17 C0 00 00 00 00 AF C2 01 84 8F C4 00 48 .B.............H
+004016F0 8F D9 01 84 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00401700 8F DC 00 38 00 00 00 00 8F C4 00 48 8F 99 81 50 ...8.......H...P
+00401710 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+00401720 00 00 00 00 8F C2 00 48 00 00 00 00 10 40 00 47 .......H.....@.G
+00401730 00 00 00 00 8F C2 00 48 00 00 00 00 8C 42 00 04 .......H.....B..
+00401740 00 00 00 00 04 40 00 41 00 00 00 00 8F C2 00 48 .....@.A.......H
+00401750 00 00 00 00 8C 42 00 04 00 00 00 00 00 02 11 42 .....B.........B
+00401760 00 02 18 80 27 C2 00 70 00 43 20 21 8F C2 00 48 ....'..p.C !...H
+00401770 00 00 00 00 8C 42 00 04 00 00 00 00 30 43 00 1F .....B......0C..
+00401780 8C 82 00 00 00 00 00 00 00 62 10 07 30 42 00 01 .........b..0B..
+00401790 10 40 00 2E 00 00 00 00 8F C4 00 48 8F 99 81 F0 .@.........H....
+004017A0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 38 ..... .........8
+004017B0 00 00 00 00 8F C2 00 48 00 00 00 00 8C 42 17 8C .......H.....B..
+004017C0 00 00 00 00 1C 40 00 15 00 00 00 00 8F C2 00 48 .....@.........H
+004017D0 00 00 00 00 8C 42 00 04 00 00 00 00 04 40 00 1B .....B.......@..
+004017E0 00 00 00 00 8F C2 00 48 00 00 00 00 8C 44 00 04 .......H.....D..
+004017F0 8F 99 80 3C 00 00 00 00 03 20 F8 09 00 00 00 00 ...<..... ......
+00401800 8F DC 00 38 00 00 00 00 8F C3 00 48 24 02 FF FF ...8.......H$...
+00401810 AC 62 00 04 10 00 00 0D 00 00 00 00 8F C2 00 48 .b.............H
+00401820 00 00 00 00 8C 42 17 C4 00 00 00 00 AF C2 01 88 .....B..........
+00401830 8F C4 00 48 8F D9 01 88 00 00 00 00 03 20 F8 09 ...H......... ..
+00401840 00 00 00 00 8F DC 00 38 00 00 00 00 8F C2 00 48 .......8.......H
+00401850 00 00 00 00 10 40 00 26 00 00 00 00 8F C2 00 48 .....@.&.......H
+00401860 00 00 00 00 8C 42 00 00 00 00 00 00 04 40 00 20 .....B.......@. 
+00401870 00 00 00 00 8F C2 00 48 00 00 00 00 8C 42 00 00 .......H.....B..
+00401880 00 00 00 00 00 02 11 42 00 02 18 80 27 C2 00 F0 .......B....'...
+00401890 00 43 20 21 8F C2 00 48 00 00 00 00 8C 42 00 00 .C !...H.....B..
+004018A0 00 00 00 00 30 43 00 1F 8C 82 00 00 00 00 00 00 ....0C..........
+004018B0 00 62 10 07 30 42 00 01 10 40 00 0D 00 00 00 00 .b..0B...@......
+004018C0 8F C2 00 48 00 00 00 00 8C 42 17 C4 00 00 00 00 ...H.....B......
+004018D0 AF C2 01 8C 8F C4 00 48 8F D9 01 8C 00 00 00 00 .......H........
+004018E0 03 20 F8 09 00 00 00 00 8F DC 00 38 00 00 00 00 . .........8....
+004018F0 8F C2 00 48 00 00 00 00 10 40 00 21 00 00 00 00 ...H.....@.!....
+00401900 8F C2 00 48 00 00 00 00 8C 42 00 04 00 00 00 00 ...H.....B......
+00401910 04 40 00 1B 00 00 00 00 8F C2 00 48 00 00 00 00 .@.........H....
+00401920 8C 42 00 04 00 00 00 00 00 02 11 42 00 02 18 80 .B.........B....
+00401930 27 C2 00 F0 00 43 20 21 8F C2 00 48 00 00 00 00 '....C !...H....
+00401940 8C 42 00 04 00 00 00 00 30 43 00 1F 8C 82 00 00 .B......0C......
+00401950 00 00 00 00 00 62 10 07 30 42 00 01 10 40 00 08 .....b..0B...@..
+00401960 00 00 00 00 8F C4 00 48 8F 99 81 50 00 00 00 00 .......H...P....
+00401970 03 20 F8 09 00 00 00 00 8F DC 00 38 00 00 00 00 . .........8....
+00401980 8F C2 00 48 00 00 00 00 10 40 00 46 00 00 00 00 ...H.....@.F....
+00401990 8F C2 00 48 00 00 00 00 8C 42 00 04 00 00 00 00 ...H.....B......
+004019A0 04 41 00 07 00 00 00 00 8F C2 00 48 00 00 00 00 .A.........H....
+004019B0 8C 42 00 00 00 00 00 00 04 40 00 31 00 00 00 00 .B.......@.1....
+004019C0 8F C2 00 48 00 00 00 00 8C 42 00 04 00 00 00 00 ...H.....B......
+004019D0 04 41 00 0D 00 00 00 00 8F C2 00 48 00 00 00 00 .A.........H....
+004019E0 8C 42 00 00 00 00 00 00 04 40 00 07 00 00 00 00 .B.......@......
+004019F0 8F C2 00 48 00 00 00 00 8C 42 17 8C 00 00 00 00 ...H.....B......
+00401A00 18 40 00 1F 00 00 00 00 8F C2 00 48 00 00 00 00 .@.........H....
+00401A10 8C 42 00 00 00 00 00 00 04 41 00 0D 00 00 00 00 .B.......A......
+00401A20 8F C2 00 48 00 00 00 00 8C 42 00 04 00 00 00 00 ...H.....B......
+00401A30 04 40 00 07 00 00 00 00 8F C2 00 48 00 00 00 00 .@.........H....
+00401A40 8C 42 0F AC 00 00 00 00 18 40 00 0D 00 00 00 00 .B.......@......
+00401A50 8F C4 00 48 8F C5 01 70 8F 99 80 38 00 00 00 00 ...H...p...8....
+00401A60 03 20 F8 09 00 00 00 00 8F DC 00 38 28 42 00 03 . .........8(B..
+00401A70 10 40 00 03 00 00 00 00 10 00 00 0A 00 00 00 00 .@..............
+00401A80 8F C4 00 4C 8F C5 00 48 8F 99 81 B4 00 00 00 00 ...L...H........
+00401A90 03 20 F8 09 00 00 00 00 8F DC 00 38 00 00 00 00 . .........8....
+00401AA0 AF C0 00 48 8F C2 00 48 00 00 00 00 14 40 00 03 ...H...H.....@..
+00401AB0 00 00 00 00 10 00 FD 16 00 00 00 00 8F C2 00 48 ...............H
+00401AC0 00 00 00 00 8C 42 17 B8 00 00 00 00 10 00 FE BE .....B..........
+00401AD0 AF C2 00 48 8F C4 00 4C 8F 99 81 30 00 00 00 00 ...H...L...0....
+00401AE0 03 20 F8 09 00 00 00 00 8F DC 00 38 00 00 00 00 . .........8....
+00401AF0 8F C4 00 54 8F 99 80 48 00 00 00 00 03 20 F8 09 ...T...H..... ..
+00401B00 00 00 00 00 8F DC 00 38 00 00 00 00 8F C2 00 68 .......8.......h
+00401B10 00 00 00 00 10 40 00 0E 00 00 00 00 8F C2 00 68 .....@.........h
+00401B20 00 00 00 00 80 42 00 00 00 00 00 00 10 40 00 08 .....B.......@..
+00401B30 00 00 00 00 8F C4 00 68 8F 99 81 28 00 00 00 00 .......h...(....
+00401B40 03 20 F8 09 00 00 00 00 8F DC 00 38 00 00 00 00 . .........8....
+00401B50 00 00 20 25 8F 99 80 90 00 00 00 00 03 20 F8 09 .. %......... ..
+00401B60 00 00 00 00 8F DC 00 38 00 00 00 00 00 00 00 00 .......8........
+00401B70 3C 1C 0F C0 27 9C 6C F0 03 99 E0 21 27 BD FF B8 <...'.l....!'...
+00401B80 AF BC 00 20 AF BF 00 40 AF BE 00 3C 03 A0 F0 25 ... ...@...<...%
+00401B90 AF C4 00 48 AF C5 00 4C AF C6 00 50 AF C7 00 54 ...H...L...P...T
+00401BA0 24 04 17 D4 8F 99 81 D4 00 00 00 00 03 20 F8 09 $............ ..
+00401BB0 00 00 00 00 8F DC 00 20 AF C2 00 2C 8F C2 00 2C ....... ...,...,
+00401BC0 00 00 00 00 14 40 00 0D AF C2 00 2C 00 00 20 25 .....@.....,.. %
+00401BD0 8F 85 80 20 00 00 00 00 24 A5 9F 00 8F 99 81 8C ... ....$.......
+00401BE0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 20 ..... ......... 
+00401BF0 00 00 00 00 10 00 01 07 00 00 10 25 24 02 00 10 ...........%$...
+00401C00 AF C2 00 28 8F C2 00 2C 00 00 00 00 24 42 17 98 ...(...,....$B..
+00401C10 00 40 20 25 8F C5 00 28 8F 99 81 94 00 00 00 00 .@ %...(........
+00401C20 03 20 F8 09 00 00 00 00 8F DC 00 20 00 00 00 00 . ......... ....
+00401C30 8F C3 00 2C 24 02 00 02 A4 62 17 98 8F C3 00 2C ...,$....b.....,
+00401C40 8F C2 00 48 00 00 00 00 94 42 00 02 00 00 00 00 ...H.....B......
+00401C50 A4 62 17 9A 8F C3 00 2C 8F C2 00 48 00 00 00 00 .b.....,...H....
+00401C60 8C 42 00 04 00 00 00 00 AC 62 17 9C 8F C2 00 2C .B.......b.....,
+00401C70 00 00 00 00 24 42 17 98 8F C4 00 50 00 40 28 25 ....$B.....P.@(%
+00401C80 27 C6 00 28 8F 99 81 84 00 00 00 00 03 20 F8 09 '..(......... ..
+00401C90 00 00 00 00 8F DC 00 20 00 40 18 25 8F C2 00 2C ....... .@.%...,
+00401CA0 00 00 00 00 AC 43 00 00 24 02 00 10 AF C2 00 28 .....C..$......(
+00401CB0 8F C3 00 2C 24 02 00 02 A4 62 17 A8 8F C3 00 2C ...,$....b.....,
+00401CC0 8F C2 00 4C 00 00 00 00 94 42 00 02 00 00 00 00 ...L.....B......
+00401CD0 A4 62 17 AA 8F C3 00 2C 8F C2 00 4C 00 00 00 00 .b.....,...L....
+00401CE0 8C 42 00 04 00 00 00 00 AC 62 17 AC 8F C3 00 2C .B.......b.....,
+00401CF0 8F C2 00 54 00 00 00 00 AC 62 17 90 8F C2 00 2C ...T.....b.....,
+00401D00 00 00 00 00 24 42 17 A8 00 40 20 25 8F 99 80 84 ....$B...@ %....
+00401D10 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 20 ..... ......... 
+00401D20 00 40 18 25 8F C2 00 2C 00 00 00 00 AC 43 00 04 .@.%...,.....C..
+00401D30 8F C2 00 2C 00 00 00 00 8C 42 00 04 00 00 00 00 ...,.....B......
+00401D40 04 41 00 26 00 00 00 00 8F C2 00 2C 00 00 00 00 .A.&.......,....
+00401D50 8C 42 00 00 00 00 00 00 AF A2 00 10 24 04 00 01 .B..........$...
+00401D60 8F 85 80 20 00 00 00 00 24 A5 9F 28 8F 86 80 20 ... ....$..(... 
+00401D70 00 00 00 00 24 C6 9F 54 24 07 00 37 8F 99 81 8C ....$..T$..7....
+00401D80 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 20 ..... ......... 
+00401D90 00 00 00 00 8F C2 00 2C 00 00 00 00 8C 44 00 00 .......,.....D..
+00401DA0 8F 99 80 3C 00 00 00 00 03 20 F8 09 00 00 00 00 ...<..... ......
+00401DB0 8F DC 00 20 00 00 00 00 8F C4 00 2C 8F 99 80 2C ... .......,...,
+00401DC0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 20 ..... ......... 
+00401DD0 00 00 00 00 10 00 00 8F 00 00 10 25 8F C2 00 2C ...........%...,
+00401DE0 00 00 00 00 8C 44 17 9C 8F 99 80 D4 00 00 00 00 .....D..........
+00401DF0 03 20 F8 09 00 00 00 00 8F DC 00 20 AF A2 00 10 . ......... ....
+00401E00 8F C2 00 2C 00 00 00 00 8C 42 00 00 00 00 00 00 ...,.....B......
+00401E10 AF A2 00 14 8F C2 00 2C 00 00 00 00 8C 42 00 04 .......,.....B..
+00401E20 00 00 00 00 AF A2 00 18 24 04 00 03 8F 85 80 20 ........$...... 
+00401E30 00 00 00 00 24 A5 9F 60 8F 86 80 20 00 00 00 00 ....$..`... ....
+00401E40 24 C6 9F 54 24 07 00 3D 8F 99 81 8C 00 00 00 00 $..T$..=........
+00401E50 03 20 F8 09 00 00 00 00 8F DC 00 20 00 00 00 00 . ......... ....
+00401E60 8F C2 00 2C 00 00 00 00 AC 40 07 D8 8F C2 00 2C ...,.....@.....,
+00401E70 00 00 00 00 AC 40 0F AC 8F C2 00 2C 00 00 00 00 .....@.....,....
+00401E80 AC 40 17 8C 8F C3 00 2C 8F C2 00 2C 00 00 00 00 .@.....,...,....
+00401E90 24 42 07 DC AC 62 0F B0 8F C3 00 2C 8F C2 00 2C $B...b.....,...,
+00401EA0 00 00 00 00 24 42 0F B8 AC 62 17 88 8F C2 00 2C ....$B...b.....,
+00401EB0 00 00 00 00 AC 40 17 94 8F C2 00 2C 00 00 00 00 .....@.....,....
+00401EC0 AC 40 0F B4 8F C2 00 2C 00 00 00 00 AC 40 17 BC .@.....,.....@..
+00401ED0 8F C2 00 2C 00 00 00 00 AC 40 17 B8 00 00 20 25 ...,.....@.... %
+00401EE0 8F 99 80 D0 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00401EF0 8F DC 00 20 00 40 18 25 8F C2 00 2C 00 00 00 00 ... .@.%...,....
+00401F00 AC 43 17 C8 00 00 20 25 8F 99 80 D0 00 00 00 00 .C.... %........
+00401F10 03 20 F8 09 00 00 00 00 8F DC 00 20 00 40 18 25 . ......... .@.%
+00401F20 8F C2 00 2C 00 00 00 00 AC 43 17 CC 00 00 20 25 ...,.....C.... %
+00401F30 8F 99 80 D0 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00401F40 8F DC 00 20 00 40 18 25 8F C2 00 2C 00 00 00 00 ... .@.%...,....
+00401F50 AC 43 17 D0 8F C2 00 54 00 00 00 00 AF C2 00 30 .C.....T.......0
+00401F60 8F C3 00 30 00 00 00 00 10 60 00 08 00 00 00 00 ...0.....`......
+00401F70 24 02 00 01 8F C3 00 30 00 00 00 00 10 62 00 0D $......0.....b..
+00401F80 00 00 00 00 10 00 00 21 00 00 00 00 8F C3 00 2C .......!.......,
+00401F90 8F 82 81 04 00 00 00 00 AC 62 17 C0 8F C3 00 2C .........b.....,
+00401FA0 8F 82 80 F8 00 00 00 00 AC 62 17 C4 10 00 00 17 .........b......
+00401FB0 00 00 00 00 8F C3 00 2C 8F 82 81 70 00 00 00 00 .......,...p....
+00401FC0 AC 62 17 C0 8F C3 00 2C 8F 82 81 44 00 00 00 00 .b.....,...D....
+00401FD0 AC 62 17 C4 8F C4 00 2C 8F 99 81 F8 00 00 00 00 .b.....,........
+00401FE0 03 20 F8 09 00 00 00 00 8F DC 00 20 00 00 00 00 . ......... ....
+00401FF0 8F C4 00 2C 8F 99 81 50 00 00 00 00 03 20 F8 09 ...,...P..... ..
+00402000 00 00 00 00 8F DC 00 20 00 00 00 00 8F C2 00 2C ....... .......,
+00402010 00 00 00 00 03 C0 E8 25 8F BF 00 40 8F BE 00 3C .......%...@...<
+00402020 03 E0 00 08 27 BD 00 48                         ....'..H       
+00402028                         3C 1C 0F C0 27 9C 68 38         <...'.h8
+00402030 03 99 E0 21 27 BD FE C0 AF BC 00 20 AF BF 01 3C ...!'...... ...<
+00402040 AF BE 01 38 AF B0 01 34 03 A0 F0 25 AF C4 01 40 ...8...4...%...@
+00402050 24 02 00 10 AF C2 01 28 8F C3 01 40 8F C2 01 40 $......(...@...@
+00402060 00 00 00 00 24 47 17 98 27 C2 01 28 AF A2 00 10 ....$G..'..(....
+00402070 8C 64 00 00 00 00 28 25 24 06 00 50 8F 99 80 A4 .d....(%$..P....
+00402080 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 20 ..... ......... 
+00402090 00 00 00 00 8F C2 01 40 00 00 00 00 8C 44 17 9C .......@.....D..
+004020A0 8F 99 80 D4 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+004020B0 8F DC 00 20 00 40 80 25 8F C2 01 40 00 00 00 00 ... .@.%...@....
+004020C0 8C 44 17 9C 8F 99 80 D4 00 00 00 00 03 20 F8 09 .D........... ..
+004020D0 00 00 00 00 8F DC 00 20 00 40 18 25 8F C2 01 40 ....... .@.%...@
+004020E0 00 00 00 00 94 42 17 9A 00 00 00 00 AF A2 00 10 .....B..........
+004020F0 AF A3 00 14 8F C2 01 40 00 00 00 00 94 42 17 9A .......@.....B..
+00402100 00 00 00 00 AF A2 00 18 27 C4 00 28 24 05 01 00 ........'..($...
+00402110 8F 86 80 20 00 00 00 00 24 C6 9F 94 02 00 38 25 ... ....$.....8%
+00402120 8F 99 82 14 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00402130 8F DC 00 20 AF C2 01 28 8F C2 01 28 00 00 00 00 ... ...(...(....
+00402140 28 42 01 00 14 40 00 04 00 00 00 00 A3 C0 01 27 (B...@.........'
+00402150 24 02 01 00 AF C2 01 28 8F C2 01 40 8F C4 01 40 $......(...@...@
+00402160 8C 45 0F B0 27 C6 00 28 8F C7 01 28 8F 99 81 80 .E..'..(...(....
+00402170 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 20 ..... ......... 
+00402180 00 00 00 00 00 00 10 25 03 C0 E8 25 8F BF 01 3C .......%...%...<
+00402190 8F BE 01 38 8F B0 01 34 03 E0 00 08 27 BD 01 40 ...8...4....'..@
+004021A0 3C 1C 0F C0 27 9C 66 C0 03 99 E0 21 27 BD FF D8 <...'.f....!'...
+004021B0 AF BC 00 10 AF BF 00 20 AF BE 00 1C 03 A0 F0 25 ....... .......%
+004021C0 AF C4 00 28 8F C2 00 28 00 00 00 00 24 44 07 DC ...(...(....$D..
+004021D0 8F C2 00 28 00 00 00 00 24 42 00 08 8F C3 00 28 ...(....$B.....(
+004021E0 00 40 28 25 8C 66 07 D8 8F 99 81 E8 00 00 00 00 .@(%.f..........
+004021F0 03 20 F8 09 00 00 00 00 8F DC 00 10 00 00 00 00 . ..............
+00402200 8F C3 00 28 8F C2 00 28 00 00 00 00 24 42 07 DC ...(...(....$B..
+00402210 AC 62 0F B0 8F C3 00 28 8F C2 00 28 00 00 00 00 .b.....(...(....
+00402220 8C 42 07 D8 00 00 00 00 AC 62 0F AC 24 02 00 01 .B.......b..$...
+00402230 03 C0 E8 25 8F BF 00 20 8F BE 00 1C 03 E0 00 08 ...%... ........
+00402240 27 BD 00 28                                     '..(           
+00402244             3C 1C 0F C0 27 9C 66 1C 03 99 E0 21     <...'.f....!
+00402250 27 BD F7 C8 AF BC 00 18 AF BF 08 30 AF BE 08 2C '..........0...,
+00402260 03 A0 F0 25 AF C4 08 38 AF C0 08 14 8F C2 08 38 ...%...8.......8
+00402270 00 00 00 00 24 42 00 08 AF C2 07 F8 8F C2 08 38 ....$B.........8
+00402280 00 00 00 00 8C 42 07 D8 00 00 00 00 AF C2 00 20 .....B......... 
+00402290 8F C2 08 38 00 00 00 00 24 42 07 DC AF C2 08 10 ...8....$B......
+004022A0 8F C2 08 38 00 00 00 00 24 42 00 08 AF C2 08 04 ...8....$B......
+004022B0 8F C2 08 38 00 00 00 00 8C 42 0F B4 00 00 00 00 ...8.....B......
+004022C0 AF C2 08 18 8F C2 00 20 00 00 00 00 1C 40 00 03 ....... .....@..
+004022D0 00 00 00 00 10 00 01 DC 00 00 00 00 8F C2 00 20 ............... 
+004022E0 00 00 00 00 AF C2 08 0C 27 C2 00 28 00 40 20 25 ........'..(.@ %
+004022F0 8F C5 07 F8 27 C6 00 20 8F 99 80 4C 00 00 00 00 ....'.. ...L....
+00402300 03 20 F8 09 00 00 00 00 8F DC 00 18 AF C2 07 FC . ..............
+00402310 8F C3 08 0C 8F C2 00 20 00 00 00 00 00 62 10 23 ....... .....b.#
+00402320 AF C2 08 08 27 C2 00 28 AF C2 08 00 AF C0 08 1C ....'..(........
+00402330 8F C2 08 00 00 00 00 00 80 43 00 00 24 02 00 0A .........C..$...
+00402340 10 62 00 09 00 00 00 00 8F C2 08 00 00 00 00 00 .b..............
+00402350 80 43 00 00 24 02 00 0D 10 62 00 03 00 00 00 00 .C..$....b......
+00402360 10 00 00 03 00 00 00 00 24 02 00 01 AF C2 08 1C ........$.......
+00402370 8F C3 08 1C 00 00 00 00 AF C3 08 14 8F C2 08 38 ...............8
+00402380 00 00 00 00 8C 42 17 94 00 00 00 00 AF C2 08 20 .....B......... 
+00402390 24 02 00 01 8F C3 08 20 00 00 00 00 10 62 00 99 $...... .....b..
+004023A0 00 00 00 00 8F C3 08 20 00 00 00 00 28 62 00 02 ....... ....(b..
+004023B0 10 40 00 07 00 00 00 00 8F C2 08 20 00 00 00 00 .@......... ....
+004023C0 10 40 00 0F 00 00 00 00 10 00 01 9A 00 00 00 00 .@..............
+004023D0 24 02 00 02 8F C3 08 20 00 00 00 00 10 62 01 39 $...... .....b.9
+004023E0 00 00 00 00 24 02 00 03 8F C3 08 20 00 00 00 00 ....$...... ....
+004023F0 10 62 01 74 00 00 00 00 10 00 01 8E 00 00 00 00 .b.t............
+00402400 8F C2 08 14 00 00 00 00 14 40 00 71 00 00 00 00 .........@.q....
+00402410 8F C2 08 38 00 00 00 00 8C 42 0F B4 00 00 00 00 ...8.....B......
+00402420 10 40 00 36 00 00 00 00 24 04 00 04 8F 85 80 20 .@.6....$...... 
+00402430 00 00 00 00 24 A5 A0 08 8F 86 80 20 00 00 00 00 ....$...... ....
+00402440 24 C6 A0 24 24 07 00 A5 8F 99 81 8C 00 00 00 00 $..$$...........
+00402450 03 20 F8 09 00 00 00 00 8F DC 00 18 00 00 00 00 . ..............
+00402460 8F C2 08 38 00 00 00 00 8C 42 0F B4 00 00 00 00 ...8.....B......
+00402470 AF C2 08 18 27 C2 00 28 8F C4 08 18 00 40 28 25 ....'..(.....@(%
+00402480 8F 99 81 1C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00402490 8F DC 00 18 14 40 00 21 00 00 00 00 24 04 00 04 .....@.!....$...
+004024A0 8F 85 80 20 00 00 00 00 24 A5 A0 3C 8F 86 80 20 ... ....$..<... 
+004024B0 00 00 00 00 24 C6 A0 24 24 07 00 A9 8F 99 81 8C ....$..$$.......
+004024C0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+004024D0 00 00 00 00 8F C4 08 18 8F 99 82 20 00 00 00 00 ........... ....
+004024E0 03 20 F8 09 00 00 00 00 8F DC 00 18 00 00 00 00 . ..............
+004024F0 AF C0 08 18 10 00 00 09 00 00 00 00 27 C2 00 28 ............'..(
+00402500 00 40 20 25 8F 99 82 34 00 00 00 00 03 20 F8 09 .@ %...4..... ..
+00402510 00 00 00 00 8F DC 00 18 AF C2 08 18 8F C2 08 38 ...............8
+00402520 8F C3 08 18 00 00 00 00 AC 43 0F B4 8F C2 08 18 .........C......
+00402530 00 00 00 00 10 40 00 06 00 00 00 00 8F C3 08 38 .....@.........8
+00402540 24 02 00 01 AC 62 17 94 10 00 01 3A 00 00 00 00 $....b.....:....
+00402550 27 C2 00 28 AF A2 00 10 24 04 00 03 8F 85 80 20 '..(....$...... 
+00402560 00 00 00 00 24 A5 A0 74 8F 86 80 20 00 00 00 00 ....$..t... ....
+00402570 24 C6 A0 24 24 07 00 B5 8F 99 81 8C 00 00 00 00 $..$$...........
+00402580 03 20 F8 09 00 00 00 00 8F DC 00 18 00 00 00 00 . ..............
+00402590 27 C2 00 28 8F C4 08 38 8F C5 08 10 00 40 30 25 '..(...8.....@0%
+004025A0 8F C7 08 08 8F 99 81 80 00 00 00 00 03 20 F8 09 ............. ..
+004025B0 00 00 00 00 8F DC 00 18 00 00 00 00 8F C3 08 38 ...............8
+004025C0 24 02 00 02 AC 62 17 94 10 00 01 1A 00 00 00 00 $....b..........
+004025D0 27 C2 00 28 8F C4 08 38 8F C5 08 10 00 40 30 25 '..(...8.....@0%
+004025E0 8F C7 08 08 8F 99 81 80 00 00 00 00 03 20 F8 09 ............. ..
+004025F0 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 01 0D ................
+00402600 00 00 00 00 8F C2 08 14 00 00 00 00 10 40 00 14 .............@..
+00402610 00 00 00 00 24 04 00 02 8F 85 80 20 00 00 00 00 ....$...... ....
+00402620 24 A5 A0 B4 8F 86 80 20 00 00 00 00 24 C6 A0 24 $...... ....$..$
+00402630 24 07 00 C3 8F 99 81 8C 00 00 00 00 03 20 F8 09 $............ ..
+00402640 00 00 00 00 8F DC 00 18 00 00 00 00 8F C2 08 38 ...............8
+00402650 00 00 00 00 AC 40 17 94 10 00 00 FC 00 00 10 25 .....@.........%
+00402660 8F C2 08 08 00 00 00 00 28 42 00 07 14 40 00 62 ........(B...@.b
+00402670 00 00 00 00 27 C2 00 28 00 40 20 25 8F 85 80 20 ....'..(.@ %... 
+00402680 00 00 00 00 24 A5 9F BC 24 06 00 06 8F 99 81 98 ....$...$.......
+00402690 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+004026A0 14 40 00 55 00 00 00 00 8F C2 08 18 00 00 00 00 .@.U............
+004026B0 14 40 00 11 00 00 00 00 24 04 00 02 8F 85 80 20 .@......$...... 
+004026C0 00 00 00 00 24 A5 9F C4 8F 86 80 20 00 00 00 00 ....$...... ....
+004026D0 24 C6 A0 24 24 07 00 CC 8F 99 81 8C 00 00 00 00 $..$$...........
+004026E0 03 20 F8 09 00 00 00 00 8F DC 00 18 00 00 00 00 . ..............
+004026F0 10 00 00 D0 00 00 00 00 27 C2 00 28 8F C4 08 18 ........'..(....
+00402700 00 40 28 25 8F 99 80 54 00 00 00 00 03 20 F8 09 .@(%...T..... ..
+00402710 00 00 00 00 8F DC 00 18 00 00 00 00 8F C4 08 18 ................
+00402720 8F 99 81 D8 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00402730 8F DC 00 18 00 00 00 00 8F C2 08 18 00 00 00 00 ................
+00402740 24 42 02 14 00 40 20 25 8F 99 80 6C 00 00 00 00 $B...@ %...l....
+00402750 03 20 F8 09 00 00 00 00 8F DC 00 18 00 40 18 25 . ...........@.%
+00402760 8F C2 08 18 00 00 00 00 24 42 02 14 8F C4 08 38 ........$B.....8
+00402770 8F C5 08 10 00 40 30 25 00 60 38 25 8F 99 81 80 .....@0%.`8%....
+00402780 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00402790 AF C2 08 10 8F C4 08 18 8F C5 08 38 8F C6 08 10 ...........8....
+004027A0 8F 99 80 8C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+004027B0 8F DC 00 18 AF C2 08 10 27 C2 00 28 8F C4 08 38 ........'..(...8
+004027C0 8F C5 08 10 00 40 30 25 8F C7 08 08 8F 99 81 80 .....@0%........
+004027D0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+004027E0 AF C2 08 10 8F C3 08 38 24 02 00 02 AC 62 17 94 .......8$....b..
+004027F0 10 00 00 90 00 00 00 00 8F C2 08 08 00 00 00 00 ................
+00402800 28 42 00 0B 14 40 00 23 00 00 00 00 27 C2 00 28 (B...@.#....'..(
+00402810 8F 84 80 20 00 00 00 00 24 84 9F E0 00 40 28 25 ... ....$....@(%
+00402820 24 06 00 0A 8F 99 81 98 00 00 00 00 03 20 F8 09 $............ ..
+00402830 00 00 00 00 8F DC 00 18 14 40 00 16 00 00 00 00 .........@......
+00402840 27 C2 00 28 8F C4 08 18 00 40 28 25 8F 99 81 9C '..(.....@(%....
+00402850 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00402860 00 00 00 00 27 C2 00 28 8F C4 08 18 00 40 28 25 ....'..(.....@(%
+00402870 8F C6 08 08 8F 99 80 F4 00 00 00 00 03 20 F8 09 ............. ..
+00402880 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 00 69 ...............i
+00402890 00 00 00 00 27 C2 00 28 8F C4 08 18 00 40 28 25 ....'..(.....@(%
+004028A0 8F C6 08 08 8F 99 80 F4 00 00 00 00 03 20 F8 09 ............. ..
+004028B0 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 00 5D ...............]
+004028C0 00 00 00 00 27 C2 00 28 8F C4 08 38 8F C5 08 10 ....'..(...8....
+004028D0 00 40 30 25 8F C7 08 08 8F 99 81 80 00 00 00 00 .@0%............
+004028E0 03 20 F8 09 00 00 00 00 8F DC 00 18 AF C2 08 10 . ..............
+004028F0 8F C2 08 14 00 00 00 00 10 40 00 15 00 00 00 00 .........@......
+00402900 8F C2 08 18 00 00 00 00 10 40 00 0C 00 00 00 00 .........@......
+00402910 8F C2 08 18 00 00 00 00 8C 42 05 54 00 00 00 00 .........B.T....
+00402920 14 40 00 06 00 00 00 00 8F C2 08 38 00 00 00 00 .@.........8....
+00402930 AC 40 17 94 10 00 00 3F 00 00 00 00 8F C3 08 38 .@.....?.......8
+00402940 24 02 00 03 AC 62 17 94 10 00 00 3A 00 00 00 00 $....b.....:....
+00402950 8F C2 08 08 00 00 00 00 28 42 00 0B 14 40 00 35 ........(B...@.5
+00402960 00 00 00 00 27 C2 00 28 8F 84 80 20 00 00 00 00 ....'..(... ....
+00402970 24 84 9F F4 00 40 28 25 24 06 00 0A 8F 99 81 98 $....@(%$.......
+00402980 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00402990 14 40 00 28 00 00 00 00 27 C2 00 28 8F C4 08 18 .@.(....'..(....
+004029A0 00 40 28 25 8F 99 81 9C 00 00 00 00 03 20 F8 09 .@(%......... ..
+004029B0 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 00 1D ................
+004029C0 00 00 00 00 27 C2 00 28 8F C4 08 38 8F C5 08 10 ....'..(...8....
+004029D0 00 40 30 25 8F C7 08 08 8F 99 81 80 00 00 00 00 .@0%............
+004029E0 03 20 F8 09 00 00 00 00 8F DC 00 18 AF C2 08 10 . ..............
+004029F0 8F C4 08 18 8F C2 08 18 00 00 00 00 8C 43 05 54 .............C.T
+00402A00 8F C2 08 08 00 00 00 00 00 62 10 23 AC 82 05 54 .........b.#...T
+00402A10 8F C2 08 18 00 00 00 00 8C 42 05 54 00 00 00 00 .........B.T....
+00402A20 14 40 00 04 00 00 00 00 8F C2 08 38 00 00 00 00 .@.........8....
+00402A30 AC 40 17 94 8F C2 07 FC 00 00 00 00 AF C2 07 F8 .@..............
+00402A40 10 00 FE 20 00 00 00 00 24 02 00 01 03 C0 E8 25 ... ....$......%
+00402A50 8F BF 08 30 8F BE 08 2C 03 E0 00 08 27 BD 08 38 ...0...,....'..8
+00402A60 3C 1C 0F C0 27 9C 5E 00 03 99 E0 21 27 BD FF D8 <...'.^....!'...
+00402A70 AF BC 00 10 AF BF 00 20 AF BE 00 1C 03 A0 F0 25 ....... .......%
+00402A80 AF C4 00 28 AF C5 00 2C AF C6 00 30 AF C7 00 34 ...(...,...0...4
+00402A90 8F C2 00 2C 00 00 00 00 14 40 00 11 00 00 00 00 ...,.....@......
+00402AA0 24 04 00 01 8F 85 80 20 00 00 00 00 24 A5 A0 E4 $...... ....$...
+00402AB0 8F 86 80 20 00 00 00 00 24 C6 A1 14 24 07 01 00 ... ....$...$...
+00402AC0 8F 99 81 8C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00402AD0 8F DC 00 10 00 00 00 00 10 00 00 4B 00 00 10 25 ...........K...%
+00402AE0 8F C2 00 30 00 00 00 00 10 40 00 07 00 00 00 00 ...0.....@......
+00402AF0 8F C2 00 34 00 00 00 00 18 40 00 03 00 00 00 00 ...4.....@......
+00402B00 10 00 00 12 00 00 00 00 24 04 00 02 8F 85 80 20 ........$...... 
+00402B10 00 00 00 00 24 A5 A1 24 8F 86 80 20 00 00 00 00 ....$..$... ....
+00402B20 24 C6 A1 14 24 07 01 05 8F 99 81 8C 00 00 00 00 $...$...........
+00402B30 03 20 F8 09 00 00 00 00 8F DC 00 10 00 00 00 00 . ..............
+00402B40 8F C2 00 2C 10 00 00 30 00 00 00 00 8F C4 00 28 ...,...0.......(
+00402B50 8F C2 00 28 00 00 00 00 8C 43 0F AC 8F C2 00 34 ...(.....C.....4
+00402B60 00 00 00 00 00 62 10 21 AC 82 0F AC 8F C2 00 28 .....b.!.......(
+00402B70 00 00 00 00 8C 42 0F AC 00 00 00 00 28 42 07 D0 .....B......(B..
+00402B80 10 40 00 0F 00 00 00 00 8F C4 00 2C 8F C5 00 30 .@.........,...0
+00402B90 8F C6 00 34 8F 99 81 E8 00 00 00 00 03 20 F8 09 ...4......... ..
+00402BA0 00 00 00 00 8F DC 00 10 00 00 00 00 8F C2 00 2C ...............,
+00402BB0 8F C3 00 34 00 00 00 00 10 00 00 13 00 43 10 21 ...4.........C.!
+00402BC0 24 04 00 01 8F 85 80 20 00 00 00 00 24 A5 A1 48 $...... ....$..H
+00402BD0 8F 86 80 20 00 00 00 00 24 C6 A1 14 24 07 01 0F ... ....$...$...
+00402BE0 8F 99 81 8C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00402BF0 8F DC 00 10 00 00 00 00 8F C2 00 28 00 00 00 00 ...........(....
+00402C00 AC 40 0F AC 00 00 10 25 03 C0 E8 25 8F BF 00 20 .@.....%...%... 
+00402C10 8F BE 00 1C 03 E0 00 08 27 BD 00 28             ........'..(   
+00402C1C                                     3C 1C 0F C0             <...
+00402C20 27 9C 5C 44 03 99 E0 21 27 BD FF F0 AF BC 00 00 '.\D...!'.......
+00402C30 AF BE 00 0C 03 A0 F0 25 AF C4 00 10 AF C5 00 14 .......%........
+00402C40 AF C6 00 18 8F C2 00 18 00 00 00 00 8C 42 00 00 .............B..
+00402C50 00 00 00 00 18 40 00 24 00 00 00 00 8F C2 00 14 .....@.$........
+00402C60 00 00 00 00 80 43 00 00 24 02 00 0A 10 62 00 1E .....C..$....b..
+00402C70 00 00 00 00 8F C2 00 14 00 00 00 00 80 43 00 00 .............C..
+00402C80 24 02 00 0D 14 62 00 03 00 00 00 00 10 00 00 16 $....b..........
+00402C90 00 00 00 00 8F C4 00 10 27 C5 00 14 8C A2 00 00 ........'.......
+00402CA0 00 00 00 00 90 43 00 00 00 00 00 00 A0 83 00 00 .....C..........
+00402CB0 24 42 00 01 AC A2 00 00 24 84 00 01 AF C4 00 10 $B......$.......
+00402CC0 8F C2 00 18 8F C3 00 18 8F C2 00 18 00 00 00 00 ................
+00402CD0 8C 42 00 00 00 00 00 00 24 42 FF FF AC 62 00 00 .B......$B...b..
+00402CE0 10 00 FF D8 00 00 00 00 8F C2 00 18 00 00 00 00 ................
+00402CF0 8C 42 00 00 00 00 00 00 18 40 00 22 00 00 00 00 .B.......@."....
+00402D00 8F C2 00 14 00 00 00 00 80 43 00 00 24 02 00 0A .........C..$...
+00402D10 10 62 00 09 00 00 00 00 8F C2 00 14 00 00 00 00 .b..............
+00402D20 80 43 00 00 24 02 00 0D 10 62 00 03 00 00 00 00 .C..$....b......
+00402D30 10 00 00 14 00 00 00 00 8F C4 00 10 27 C5 00 14 ............'...
+00402D40 8C A2 00 00 00 00 00 00 90 43 00 00 00 00 00 00 .........C......
+00402D50 A0 83 00 00 24 42 00 01 AC A2 00 00 24 84 00 01 ....$B......$...
+00402D60 AF C4 00 10 8F C2 00 18 8F C3 00 18 8F C2 00 18 ................
+00402D70 00 00 00 00 8C 42 00 00 00 00 00 00 24 42 FF FF .....B......$B..
+00402D80 AC 62 00 00 8F C2 00 18 00 00 00 00 8C 42 00 00 .b...........B..
+00402D90 00 00 00 00 18 40 00 22 00 00 00 00 8F C2 00 14 .....@."........
+00402DA0 00 00 00 00 80 43 00 00 24 02 00 0A 10 62 00 09 .....C..$....b..
+00402DB0 00 00 00 00 8F C2 00 14 00 00 00 00 80 43 00 00 .............C..
+00402DC0 24 02 00 0D 10 62 00 03 00 00 00 00 10 00 00 14 $....b..........
+00402DD0 00 00 00 00 8F C4 00 10 27 C5 00 14 8C A2 00 00 ........'.......
+00402DE0 00 00 00 00 90 43 00 00 00 00 00 00 A0 83 00 00 .....C..........
+00402DF0 24 42 00 01 AC A2 00 00 24 84 00 01 AF C4 00 10 $B......$.......
+00402E00 8F C2 00 18 8F C3 00 18 8F C2 00 18 00 00 00 00 ................
+00402E10 8C 42 00 00 00 00 00 00 24 42 FF FF AC 62 00 00 .B......$B...b..
+00402E20 8F C2 00 10 00 00 00 00 A0 40 00 00 8F C2 00 14 .........@......
+00402E30 00 00 00 00 03 C0 E8 25 8F BE 00 0C 03 E0 00 08 .......%........
+00402E40 27 BD 00 10                                     '...           
+00402E44             3C 1C 0F C0 27 9C 5A 1C 03 99 E0 21     <...'.Z....!
+00402E50 27 BD FF D8 AF BC 00 10 AF BF 00 20 AF BE 00 1C '.......... ....
+00402E60 03 A0 F0 25 AF C4 00 28 00 00 20 25 8F 99 80 D0 ...%...(.. %....
+00402E70 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00402E80 00 40 18 25 8F C2 00 28 00 00 00 00 AC 43 17 CC .@.%...(.....C..
+00402E90 8F C3 00 28 8F C2 00 28 00 00 00 00 24 42 00 08 ...(...(....$B..
+00402EA0 8C 64 00 00 00 40 28 25 24 06 06 D0 24 07 40 00 .d...@(%$...$.@.
+00402EB0 8F 99 82 2C 00 00 00 00 03 20 F8 09 00 00 00 00 ...,..... ......
+00402EC0 8F DC 00 10 00 40 18 25 8F C2 00 28 00 00 00 00 .....@.%...(....
+00402ED0 AC 43 07 D8 8F C2 00 28 00 00 00 00 8C 42 07 D8 .C.....(.....B..
+00402EE0 00 00 00 00 03 C0 E8 25 8F BF 00 20 8F BE 00 1C .......%... ....
+00402EF0 03 E0 00 08 27 BD 00 28                         ....'..(       
+00402EF8                         3C 1C 0F C0 27 9C 59 68         <...'.Yh
+00402F00 03 99 E0 21 27 BD FF C8 AF BC 00 18 AF BF 00 30 ...!'..........0
+00402F10 AF BE 00 2C 03 A0 F0 25 AF C4 00 38 AF C0 00 20 ...,...%...8... 
+00402F20 00 00 20 25 8F 99 80 D0 00 00 00 00 03 20 F8 09 .. %......... ..
+00402F30 00 00 00 00 8F DC 00 18 00 40 18 25 8F C2 00 38 .........@.%...8
+00402F40 00 00 00 00 AC 43 17 CC 8F C2 00 38 00 00 00 00 .....C.....8....
+00402F50 8C 42 0F AC 00 00 00 00 1C 40 00 03 00 00 00 00 .B.......@......
+00402F60 10 00 00 41 00 00 10 25 8F C2 00 38 8F C3 00 38 ...A...%...8...8
+00402F70 8F C6 00 38 8C 44 00 04 8C 65 0F B0 8C C6 0F AC ...8.D...e......
+00402F80 00 00 38 25 8F 99 81 90 00 00 00 00 03 20 F8 09 ..8%......... ..
+00402F90 00 00 00 00 8F DC 00 18 AF C2 00 20 8F C2 00 38 ........... ...8
+00402FA0 8F C3 00 20 8C 42 0F AC 00 00 00 00 14 62 00 0B ... .B.......b..
+00402FB0 00 00 00 00 8F C2 00 38 00 00 00 00 AC 40 0F AC .......8.....@..
+00402FC0 8F C3 00 38 8F C2 00 38 00 00 00 00 24 42 07 DC ...8...8....$B..
+00402FD0 AC 62 0F B0 10 00 00 22 00 00 00 00 8F C4 00 38 .b.....".......8
+00402FE0 8F C2 00 38 00 00 00 00 8C 43 0F B0 8F C2 00 20 ...8.....C..... 
+00402FF0 00 00 00 00 00 62 10 21 AC 82 0F B0 8F C4 00 38 .....b.!.......8
+00403000 8F C2 00 38 00 00 00 00 8C 43 0F AC 8F C2 00 20 ...8.....C..... 
+00403010 00 00 00 00 00 62 10 23 AC 82 0F AC 8F C2 00 20 .....b.#....... 
+00403020 00 00 00 00 AF A2 00 10 24 04 00 04 8F 85 80 20 ........$...... 
+00403030 00 00 00 00 24 A5 A1 74 8F 86 80 20 00 00 00 00 ....$..t... ....
+00403040 24 C6 A1 94 24 07 01 4D 8F 99 81 8C 00 00 00 00 $...$..M........
+00403050 03 20 F8 09 00 00 00 00 8F DC 00 18 00 00 00 00 . ..............
+00403060 8F C2 00 20 00 00 00 00 03 C0 E8 25 8F BF 00 30 ... .......%...0
+00403070 8F BE 00 2C 03 E0 00 08 27 BD 00 38             ...,....'..8   
+0040307C                                     3C 1C 0F C0             <...
+00403080 27 9C 57 E4 03 99 E0 21 27 BD FF D8 AF BC 00 10 '.W....!'.......
+00403090 AF BF 00 20 AF BE 00 1C 03 A0 F0 25 AF C4 00 28 ... .......%...(
+004030A0 00 00 20 25 8F 99 80 D0 00 00 00 00 03 20 F8 09 .. %......... ..
+004030B0 00 00 00 00 8F DC 00 10 00 40 18 25 8F C2 00 28 .........@.%...(
+004030C0 00 00 00 00 AC 43 17 D0 8F C3 00 28 8F C2 00 28 .....C.....(...(
+004030D0 00 00 00 00 24 42 0F B8 8C 64 00 04 00 40 28 25 ....$B...d...@(%
+004030E0 24 06 07 CF 8F 99 81 3C 00 00 00 00 03 20 F8 09 $......<..... ..
+004030F0 00 00 00 00 8F DC 00 10 00 40 18 25 8F C2 00 28 .........@.%...(
+00403100 00 00 00 00 AC 43 17 8C 8F C3 00 28 8F C2 00 28 .....C.....(...(
+00403110 00 00 00 00 24 42 0F B8 AC 62 17 88 8F C2 00 28 ....$B...b.....(
+00403120 00 00 00 00 8C 42 17 8C 00 00 00 00 03 C0 E8 25 .....B.........%
+00403130 8F BF 00 20 8F BE 00 1C 03 E0 00 08 27 BD 00 28 ... ........'..(
+00403140 3C 1C 0F C0 27 9C 57 20 03 99 E0 21 27 BD FF D8 <...'.W ...!'...
+00403150 AF BC 00 10 AF BF 00 20 AF BE 00 1C 03 A0 F0 25 ....... .......%
+00403160 AF C4 00 28 8F C2 00 28 00 00 00 00 8C 42 17 8C ...(...(.....B..
+00403170 00 00 00 00 1C 40 00 03 00 00 00 00 10 00 00 12 .....@..........
+00403180 00 00 10 25 8F C4 00 28 8F 99 82 38 00 00 00 00 ...%...(...8....
+00403190 03 20 F8 09 00 00 00 00 8F DC 00 10 10 40 00 03 . ...........@..
+004031A0 00 00 00 00 10 00 00 08 00 00 10 25 8F C4 00 28 ...........%...(
+004031B0 8F 99 80 F8 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+004031C0 8F DC 00 10 00 00 00 00 03 C0 E8 25 8F BF 00 20 ...........%... 
+004031D0 8F BE 00 1C 03 E0 00 08 27 BD 00 28             ........'..(   
+004031DC                                     3C 1C 0F C0             <...
+004031E0 27 9C 56 84 03 99 E0 21 27 BD FF D0 AF BC 00 10 '.V....!'.......
+004031F0 AF BF 00 28 AF BE 00 24 03 A0 F0 25 AF C4 00 30 ...(...$...%...0
+00403200 8F C2 00 30 00 00 00 00 8C 42 17 8C 00 00 00 00 ...0.....B......
+00403210 1C 40 00 03 00 00 00 00 10 00 00 3A 00 00 10 25 .@.........:...%
+00403220 00 00 20 25 8F 99 80 D0 00 00 00 00 03 20 F8 09 .. %......... ..
+00403230 00 00 00 00 8F DC 00 10 00 40 18 25 8F C2 00 30 .........@.%...0
+00403240 00 00 00 00 AC 43 17 D0 8F C2 00 30 8F C3 00 30 .....C.....0...0
+00403250 8F C6 00 30 8C 44 00 00 8C 65 17 88 8C C6 17 8C ...0.D...e......
+00403260 00 00 38 25 8F 99 81 90 00 00 00 00 03 20 F8 09 ..8%......... ..
+00403270 00 00 00 00 8F DC 00 10 AF C2 00 18 8F C2 00 30 ...............0
+00403280 8F C3 00 18 8C 42 17 8C 00 00 00 00 14 62 00 0B .....B.......b..
+00403290 00 00 00 00 8F C3 00 30 8F C2 00 30 00 00 00 00 .......0...0....
+004032A0 24 42 0F B8 AC 62 17 88 8F C2 00 30 00 00 00 00 $B...b.....0....
+004032B0 AC 40 17 8C 10 00 00 11 00 00 00 00 8F C4 00 30 .@.............0
+004032C0 8F C2 00 30 00 00 00 00 8C 43 17 88 8F C2 00 18 ...0.....C......
+004032D0 00 00 00 00 00 62 10 21 AC 82 17 88 8F C4 00 30 .....b.!.......0
+004032E0 8F C2 00 30 00 00 00 00 8C 43 17 8C 8F C2 00 18 ...0.....C......
+004032F0 00 00 00 00 00 62 10 23 AC 82 17 8C 8F C2 00 18 .....b.#........
+00403300 00 00 00 00 03 C0 E8 25 8F BF 00 28 8F BE 00 24 .......%...(...$
+00403310 03 E0 00 08 27 BD 00 30                         ....'..0       
+00403318                         3C 1C 0F C0 27 9C 55 48         <...'.UH
+00403320 03 99 E0 21 27 BD FF D0 AF BC 00 10 AF BF 00 28 ...!'..........(
+00403330 AF BE 00 24 03 A0 F0 25 AF C4 00 30 8F C2 00 30 ...$...%...0...0
+00403340 00 00 00 00 8C 42 17 88 00 00 00 00 AF C2 00 18 .....B..........
+00403350 8F C2 00 30 00 00 00 00 8C 42 17 8C 00 00 00 00 ...0.....B......
+00403360 AF C2 00 1C 8F C2 00 1C 00 00 00 00 18 40 00 18 .............@..
+00403370 00 00 00 00 8F C2 00 18 00 00 00 00 80 43 00 00 .............C..
+00403380 24 02 00 0A 10 62 00 09 00 00 00 00 8F C2 00 18 $....b..........
+00403390 00 00 00 00 80 43 00 00 24 02 00 0D 10 62 00 03 .....C..$....b..
+004033A0 00 00 00 00 10 00 00 0A 00 00 00 00 8F C2 00 18 ................
+004033B0 00 00 00 00 24 42 00 01 AF C2 00 18 8F C2 00 1C ....$B..........
+004033C0 00 00 00 00 24 42 FF FF 10 00 FF E6 AF C2 00 1C ....$B..........
+004033D0 8F C2 00 1C 00 00 00 00 28 42 00 05 14 40 00 B1 ........(B...@..
+004033E0 00 00 00 00 8F C4 00 18 8F 85 80 20 00 00 00 00 ........... ....
+004033F0 24 A5 A1 A8 24 06 00 04 8F 99 81 98 00 00 00 00 $...$...........
+00403400 03 20 F8 09 00 00 00 00 8F DC 00 10 14 40 00 A5 . ...........@..
+00403410 00 00 00 00 8F C3 00 30 8F 82 80 F8 00 00 00 00 .......0........
+00403420 AC 62 17 C4 8F C2 00 1C 00 00 00 00 1C 40 00 0B .b...........@..
+00403430 00 00 00 00 8F C3 00 30 8F C2 00 30 00 00 00 00 .......0...0....
+00403440 24 42 0F B8 AC 62 17 88 8F C2 00 30 00 00 00 00 $B...b.....0....
+00403450 AC 40 17 8C 10 00 00 94 24 02 00 01 8F C2 00 1C .@......$.......
+00403460 00 00 00 00 18 40 00 19 00 00 00 00 8F C2 00 18 .....@..........
+00403470 00 00 00 00 80 43 00 00 24 02 00 0A 10 62 00 13 .....C..$....b..
+00403480 00 00 00 00 8F C2 00 18 00 00 00 00 80 43 00 00 .............C..
+00403490 24 02 00 0D 14 62 00 03 00 00 00 00 10 00 00 0B $....b..........
+004034A0 00 00 00 00 8F C2 00 1C 00 00 00 00 24 42 FF FF ............$B..
+004034B0 AF C2 00 1C 8F C2 00 18 00 00 00 00 24 42 00 01 ............$B..
+004034C0 AF C2 00 18 10 00 FF E5 00 00 00 00 8F C2 00 1C ................
+004034D0 00 00 00 00 28 42 00 02 14 40 FF D2 00 00 00 00 ....(B...@......
+004034E0 8F C2 00 18 00 00 00 00 80 43 00 00 24 02 00 0A .........C..$...
+004034F0 10 62 00 09 00 00 00 00 8F C2 00 18 00 00 00 00 .b..............
+00403500 80 43 00 00 24 02 00 0D 10 62 00 03 00 00 00 00 .C..$....b......
+00403510 10 00 FF C4 00 00 00 00 8F C2 00 18 00 00 00 00 ................
+00403520 24 42 00 01 80 43 00 00 24 02 00 0A 10 62 00 0A $B...C..$....b..
+00403530 00 00 00 00 8F C2 00 18 00 00 00 00 24 42 00 01 ............$B..
+00403540 80 43 00 00 24 02 00 0D 10 62 00 03 00 00 00 00 .C..$....b......
+00403550 10 00 FF B4 00 00 00 00 8F C2 00 18 00 00 00 00 ................
+00403560 24 42 00 01 AF C2 00 18 8F C2 00 18 00 00 00 00 $B..............
+00403570 24 42 00 01 AF C2 00 18 8F C2 00 1C 00 00 00 00 $B..............
+00403580 24 42 FF FE AF C2 00 1C 8F C2 00 1C 00 00 00 00 $B..............
+00403590 28 42 00 02 14 40 FF A3 00 00 00 00 8F C2 00 18 (B...@..........
+004035A0 00 00 00 00 80 43 00 00 24 02 00 0A 10 62 00 09 .....C..$....b..
+004035B0 00 00 00 00 8F C2 00 18 00 00 00 00 80 43 00 00 .............C..
+004035C0 24 02 00 0D 10 62 00 03 00 00 00 00 10 00 FF 95 $....b..........
+004035D0 00 00 00 00 8F C2 00 18 00 00 00 00 24 42 00 01 ............$B..
+004035E0 80 43 00 00 24 02 00 0A 10 62 00 0A 00 00 00 00 .C..$....b......
+004035F0 8F C2 00 18 00 00 00 00 24 42 00 01 80 43 00 00 ........$B...C..
+00403600 24 02 00 0D 10 62 00 03 00 00 00 00 10 00 FF 85 $....b..........
+00403610 00 00 00 00 8F C2 00 18 00 00 00 00 24 42 00 01 ............$B..
+00403620 AF C2 00 18 8F C2 00 18 00 00 00 00 24 42 00 01 ............$B..
+00403630 AF C2 00 18 8F C2 00 1C 00 00 00 00 24 42 FF FE ............$B..
+00403640 AF C2 00 1C 8F C2 00 1C 00 00 00 00 18 40 00 0B .............@..
+00403650 00 00 00 00 8F C3 00 30 8F C2 00 18 00 00 00 00 .......0........
+00403660 AC 62 17 88 8F C3 00 30 8F C2 00 1C 00 00 00 00 .b.....0........
+00403670 AC 62 17 8C 10 00 00 0C 00 00 10 25 8F C3 00 30 .b.........%...0
+00403680 8F C2 00 30 00 00 00 00 24 42 0F B8 AC 62 17 88 ...0....$B...b..
+00403690 8F C2 00 30 00 00 00 00 AC 40 17 8C 10 00 00 02 ...0.....@......
+004036A0 24 02 00 01 00 00 10 25 03 C0 E8 25 8F BF 00 28 $......%...%...(
+004036B0 8F BE 00 24 03 E0 00 08 27 BD 00 30             ...$....'..0   
+004036BC                                     3C 1C 0F C0             <...
+004036C0 27 9C 51 A4 03 99 E0 21 27 BD FF D8 AF BC 00 10 '.Q....!'.......
+004036D0 AF BF 00 20 AF BE 00 1C 03 A0 F0 25 AF C4 00 28 ... .......%...(
+004036E0 8F C2 00 28 00 00 00 00 10 40 00 25 00 00 00 00 ...(.....@.%....
+004036F0 8F C2 00 28 00 00 00 00 8C 42 00 00 00 00 00 00 ...(.....B......
+00403700 04 40 00 0D 00 00 00 00 8F C2 00 28 00 00 00 00 .@.........(....
+00403710 8C 44 00 00 8F 99 80 3C 00 00 00 00 03 20 F8 09 .D.....<..... ..
+00403720 00 00 00 00 8F DC 00 10 00 00 00 00 8F C3 00 28 ...............(
+00403730 24 02 FF FF AC 62 00 00 8F C2 00 28 00 00 00 00 $....b.....(....
+00403740 8C 42 00 04 00 00 00 00 04 40 00 0D 00 00 00 00 .B.......@......
+00403750 8F C2 00 28 00 00 00 00 8C 44 00 04 8F 99 80 3C ...(.....D.....<
+00403760 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00403770 00 00 00 00 8F C3 00 28 24 02 FF FF AC 62 00 04 .......($....b..
+00403780 03 C0 E8 25 8F BF 00 20 8F BE 00 1C 03 E0 00 08 ...%... ........
+00403790 27 BD 00 28                                     '..(           
+00403794             3C 1C 0F C0 27 9C 50 CC 03 99 E0 21     <...'.P....!
+004037A0 27 BD FF D8 AF BC 00 10 AF BF 00 20 AF BE 00 1C '.......... ....
+004037B0 03 A0 F0 25 AF C4 00 28 8F C4 00 28 8F 99 80 5C ...%...(...(...\
+004037C0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+004037D0 00 00 00 00 8F C2 00 28 00 00 00 00 8C 42 0F B4 .......(.....B..
+004037E0 00 00 00 00 10 40 00 0A 00 00 00 00 8F C2 00 28 .....@.........(
+004037F0 00 00 00 00 8C 44 0F B4 8F 99 82 20 00 00 00 00 .....D..... ....
+00403800 03 20 F8 09 00 00 00 00 8F DC 00 10 00 00 00 00 . ..............
+00403810 8F C4 00 28 8F 99 80 2C 00 00 00 00 03 20 F8 09 ...(...,..... ..
+00403820 00 00 00 00 8F DC 00 10 00 00 00 00 03 C0 E8 25 ...............%
+00403830 8F BF 00 20 8F BE 00 1C 03 E0 00 08 27 BD 00 28 ... ........'..(
+00403840 3C 1C 0F C0 27 9C 50 20 03 99 E0 21 27 BD FF C0 <...'.P ...!'...
+00403850 AF BC 00 20 AF BF 00 38 AF BE 00 34 03 A0 F0 25 ... ...8...4...%
+00403860 AF C4 00 40 AF C5 00 44 AF C0 00 28 8F C2 00 44 ...@...D...(...D
+00403870 00 00 00 00 04 41 00 08 00 00 00 00 00 00 20 25 .....A........ %
+00403880 8F 99 80 D0 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00403890 8F DC 00 20 AF C2 00 44 8F C2 00 40 8F C3 00 44 ... ...D...@...D
+004038A0 8C 42 17 CC 00 00 00 00 00 62 18 23 8F 82 80 AC .B.......b.#....
+004038B0 00 00 00 00 8C 42 00 00 00 00 00 00 00 43 10 2A .....B.......C.*
+004038C0 10 40 00 21 00 00 00 00 8F C2 00 40 00 00 00 00 .@.!.......@....
+004038D0 8C 42 00 00 00 00 00 00 AF A2 00 10 8F C2 00 40 .B.............@
+004038E0 00 00 00 00 8C 42 00 04 00 00 00 00 AF A2 00 14 .....B..........
+004038F0 8F C2 00 40 8F C3 00 44 8C 42 17 CC 00 00 00 00 ...@...D.B......
+00403900 00 62 10 23 AF A2 00 18 24 04 00 03 8F 85 80 20 .b.#....$...... 
+00403910 00 00 00 00 24 A5 A1 B0 8F 86 80 20 00 00 00 00 ....$...... ....
+00403920 24 C6 A1 E0 24 07 01 D3 8F 99 81 8C 00 00 00 00 $...$...........
+00403930 03 20 F8 09 00 00 00 00 8F DC 00 20 00 00 00 00 . ......... ....
+00403940 24 02 00 01 AF C2 00 28 8F C2 00 40 8F C3 00 44 $......(...@...D
+00403950 8C 42 17 D0 00 00 00 00 00 62 18 23 8F 82 80 AC .B.......b.#....
+00403960 00 00 00 00 8C 42 00 00 00 00 00 00 00 43 10 2A .....B.......C.*
+00403970 10 40 00 23 00 00 00 00 8F C2 00 40 00 00 00 00 .@.#.......@....
+00403980 8C 42 00 00 00 00 00 00 AF A2 00 10 8F C2 00 40 .B.............@
+00403990 00 00 00 00 8C 42 00 04 00 00 00 00 AF A2 00 14 .....B..........
+004039A0 8F C2 00 40 8F C3 00 44 8C 42 17 D0 00 00 00 00 ...@...D.B......
+004039B0 00 62 10 23 AF A2 00 18 24 04 00 03 8F 85 80 20 .b.#....$...... 
+004039C0 00 00 00 00 24 A5 A1 F4 8F 86 80 20 00 00 00 00 ....$...... ....
+004039D0 24 C6 A1 E0 24 07 01 D9 8F 99 81 8C 00 00 00 00 $...$...........
+004039E0 03 20 F8 09 00 00 00 00 8F DC 00 20 00 00 00 00 . ......... ....
+004039F0 8F C2 00 28 00 00 00 00 24 42 00 02 AF C2 00 28 ...(....$B.....(
+00403A00 8F C2 00 28 00 00 00 00 03 C0 E8 25 8F BF 00 38 ...(.......%...8
+00403A10 8F BE 00 34 03 E0 00 08 27 BD 00 40             ...4....'..@   
+00403A1C                                     3C 1C 0F C0             <...
+00403A20 27 9C 4E 44 03 99 E0 21 27 BD FF C8 AF BC 00 18 '.ND...!'.......
+00403A30 AF BF 00 34 AF BE 00 30 AF B0 00 2C 03 A0 F0 25 ...4...0...,...%
+00403A40 AF C4 00 38 24 04 00 02 24 05 00 02 24 06 00 06 ...8$...$...$...
+00403A50 8F 99 81 BC 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00403A60 8F DC 00 18 AF C2 00 20 8F C2 00 20 00 00 00 00 ....... ... ....
+00403A70 04 41 00 27 00 00 00 00 8F 99 80 98 00 00 00 00 .A.'............
+00403A80 03 20 F8 09 00 00 00 00 8F DC 00 18 00 40 80 25 . ...........@.%
+00403A90 8F 99 80 98 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00403AA0 8F DC 00 18 8C 44 00 00 8F 99 82 1C 00 00 00 00 .....D..........
+00403AB0 03 20 F8 09 00 00 00 00 8F DC 00 18 00 40 18 25 . ...........@.%
+00403AC0 8E 02 00 00 00 00 00 00 AF A2 00 10 AF A3 00 14 ................
+00403AD0 24 04 00 01 8F 85 80 20 00 00 00 00 24 A5 A2 24 $...... ....$..$
+00403AE0 8F 86 80 20 00 00 00 00 24 C6 A2 54 24 07 01 E9 ... ....$..T$...
+00403AF0 8F 99 81 8C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00403B00 8F DC 00 18 00 00 00 00 10 00 00 34 24 02 FF FF ...........4$...
+00403B10 8F C2 00 38 8F C4 00 20 00 40 28 25 24 06 00 10 ...8... .@(%$...
+00403B20 8F 99 82 28 00 00 00 00 03 20 F8 09 00 00 00 00 ...(..... ......
+00403B30 8F DC 00 18 04 41 00 27 00 00 00 00 8F 99 80 98 .....A.'........
+00403B40 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00403B50 00 40 80 25 8F 99 80 98 00 00 00 00 03 20 F8 09 .@.%......... ..
+00403B60 00 00 00 00 8F DC 00 18 8C 44 00 00 8F 99 82 1C .........D......
+00403B70 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00403B80 00 40 18 25 8E 02 00 00 00 00 00 00 AF A2 00 10 .@.%............
+00403B90 AF A3 00 14 24 04 00 01 8F 85 80 20 00 00 00 00 ....$...... ....
+00403BA0 24 A5 A2 68 8F 86 80 20 00 00 00 00 24 C6 A2 54 $..h... ....$..T
+00403BB0 24 07 01 F0 8F 99 81 8C 00 00 00 00 03 20 F8 09 $............ ..
+00403BC0 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 00 03 ................
+00403BD0 24 02 FF FF 8F C2 00 20 00 00 00 00 03 C0 E8 25 $...... .......%
+00403BE0 8F BF 00 34 8F BE 00 30 8F B0 00 2C 03 E0 00 08 ...4...0...,....
+00403BF0 27 BD 00 38 00 00 00 00 00 00 00 00 00 00 00 00 '..8............
+00403C00 3C 1C 0F C0 27 9C 4C 60 03 99 E0 21 27 BD FF D0 <...'.L`...!'...
+00403C10 AF BC 00 10 AF BF 00 28 AF BE 00 24 03 A0 F0 25 .......(...$...%
+00403C20 24 04 00 0C 8F 99 81 D4 00 00 00 00 03 20 F8 09 $............ ..
+00403C30 00 00 00 00 8F DC 00 10 AF C2 00 18 8F C2 00 18 ................
+00403C40 00 00 00 00 14 40 00 0D AF C2 00 18 00 00 20 25 .....@........ %
+00403C50 8F 85 80 20 00 00 00 00 24 A5 A2 A0 8F 99 81 8C ... ....$.......
+00403C60 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00403C70 00 00 00 00 10 00 00 0C 00 00 10 25 8F C2 00 18 ...........%....
+00403C80 00 00 00 00 AC 40 00 08 8F C2 00 18 00 00 00 00 .....@..........
+00403C90 AC 40 00 00 8F C2 00 18 00 00 00 00 AC 40 00 04 .@...........@..
+00403CA0 8F C2 00 18 00 00 00 00 03 C0 E8 25 8F BF 00 28 ...........%...(
+00403CB0 8F BE 00 24 03 E0 00 08 27 BD 00 30             ...$....'..0   
+00403CBC                                     3C 1C 0F C0             <...
+00403CC0 27 9C 4B A4 03 99 E0 21 27 BD FF F0 AF BC 00 00 '.K....!'.......
+00403CD0 AF BE 00 0C 03 A0 F0 25 AF C4 00 10 AF C5 00 14 .......%........
+00403CE0 8F C2 00 10 00 00 00 00 8C 42 00 08 00 00 00 00 .........B......
+00403CF0 10 40 00 0D 00 00 00 00 8F C2 00 10 00 00 00 00 .@..............
+00403D00 8C 43 00 08 8F C2 00 14 00 00 00 00 AC 62 17 BC .C...........b..
+00403D10 8F C3 00 14 8F C2 00 10 00 00 00 00 8C 42 00 08 .............B..
+00403D20 00 00 00 00 AC 62 17 B8 8F C2 00 14 00 00 00 00 .....b..........
+00403D30 AC 40 17 BC 8F C3 00 10 8F C2 00 14 00 00 00 00 .@..............
+00403D40 AC 62 00 08 8F C2 00 10 8F C3 00 10 8F C2 00 10 .b..............
+00403D50 00 00 00 00 8C 42 00 00 00 00 00 00 24 42 00 01 .....B......$B..
+00403D60 AC 62 00 00 8F C2 00 10 8F C3 00 10 8C 44 00 00 .b...........D..
+00403D70 8C 62 00 04 00 00 00 00 00 44 10 2A 10 40 00 07 .b.......D.*.@..
+00403D80 00 00 00 00 8F C2 00 10 8F C3 00 10 00 00 00 00 ................
+00403D90 8C 63 00 00 00 00 00 00 AC 43 00 04 8F C2 00 10 .c.......C......
+00403DA0 00 00 00 00 8C 42 00 00 00 00 00 00 03 C0 E8 25 .....B.........%
+00403DB0 8F BE 00 0C 03 E0 00 08 27 BD 00 10             ........'...   
+00403DBC                                     3C 1C 0F C0             <...
+00403DC0 27 9C 4A A4 03 99 E0 21 27 BD FF F0 AF BC 00 00 '.J....!'.......
+00403DD0 AF BE 00 0C 03 A0 F0 25 AF C4 00 10 AF C5 00 14 .......%........
+00403DE0 8F C2 00 14 00 00 00 00 10 40 00 2D 00 00 00 00 .........@.-....
+00403DF0 8F C2 00 10 8F C3 00 14 8C 42 00 08 00 00 00 00 .........B......
+00403E00 14 62 00 09 00 00 00 00 8F C2 00 10 8F C3 00 14 .b..............
+00403E10 00 00 00 00 8C 63 17 B8 00 00 00 00 AC 43 00 08 .....c.......C..
+00403E20 10 00 00 09 00 00 00 00 8F C2 00 14 00 00 00 00 ................
+00403E30 8C 43 17 BC 8F C2 00 14 00 00 00 00 8C 42 17 B8 .C...........B..
+00403E40 00 00 00 00 AC 62 17 B8 8F C2 00 14 00 00 00 00 .....b..........
+00403E50 8C 42 17 B8 00 00 00 00 10 40 00 09 00 00 00 00 .B.......@......
+00403E60 8F C2 00 14 00 00 00 00 8C 43 17 B8 8F C2 00 14 .........C......
+00403E70 00 00 00 00 8C 42 17 BC 00 00 00 00 AC 62 17 BC .....B.......b..
+00403E80 8F C2 00 10 8F C3 00 10 8F C2 00 10 00 00 00 00 ................
+00403E90 8C 42 00 00 00 00 00 00 24 42 FF FF AC 62 00 00 .B......$B...b..
+00403EA0 8F C2 00 10 00 00 00 00 8C 42 00 00 00 00 00 00 .........B......
+00403EB0 03 C0 E8 25 8F BE 00 0C 03 E0 00 08 27 BD 00 10 ...%........'...
+00403EC0 3C 1C 0F C0 27 9C 49 A0 03 99 E0 21 27 BD FF E8 <...'.I....!'...
+00403ED0 AF BC 00 00 AF BE 00 14 03 A0 F0 25 AF C4 00 18 ...........%....
+00403EE0 AF C5 00 1C 8F C2 00 18 00 00 00 00 8C 42 00 08 .............B..
+00403EF0 00 00 00 00 AF C2 00 08 8F C2 00 08 00 00 00 00 ................
+00403F00 10 40 00 10 00 00 00 00 8F C2 00 08 00 00 00 00 .@..............
+00403F10 8C 43 00 00 8F C2 00 1C 00 00 00 00 14 62 00 03 .C...........b..
+00403F20 00 00 00 00 10 00 00 07 00 00 00 00 8F C2 00 08 ................
+00403F30 00 00 00 00 8C 42 17 B8 00 00 00 00 10 00 FF EE .....B..........
+00403F40 AF C2 00 08 8F C2 00 08 00 00 00 00 03 C0 E8 25 ...............%
+00403F50 8F BE 00 14 03 E0 00 08 27 BD 00 18             ........'...   
+00403F5C                                     3C 1C 0F C0             <...
+00403F60 27 9C 49 04 03 99 E0 21 27 BD FF E8 AF BC 00 00 '.I....!'.......
+00403F70 AF BE 00 14 03 A0 F0 25 AF C4 00 18 AF C5 00 1C .......%........
+00403F80 8F C2 00 18 00 00 00 00 8C 42 00 08 00 00 00 00 .........B......
+00403F90 AF C2 00 08 8F C2 00 08 00 00 00 00 10 40 00 10 .............@..
+00403FA0 00 00 00 00 8F C2 00 08 00 00 00 00 8C 43 00 04 .............C..
+00403FB0 8F C2 00 1C 00 00 00 00 14 62 00 03 00 00 00 00 .........b......
+00403FC0 10 00 00 07 00 00 00 00 8F C2 00 08 00 00 00 00 ................
+00403FD0 8C 42 17 B8 00 00 00 00 10 00 FF EE AF C2 00 08 .B..............
+00403FE0 8F C2 00 08 00 00 00 00 03 C0 E8 25 8F BE 00 14 ...........%....
+00403FF0 03 E0 00 08 27 BD 00 18                         ....'...       
+00403FF8                         3C 1C 0F C0 27 9C 48 68         <...'.Hh
+00404000 03 99 E0 21 27 BD FF D8 AF BC 00 10 AF BF 00 20 ...!'.......... 
+00404010 AF BE 00 1C 03 A0 F0 25 AF C4 00 28 AF C5 00 2C .......%...(...,
+00404020 8F C4 00 28 8F C5 00 2C 8F 99 81 E4 00 00 00 00 ...(...,........
+00404030 03 20 F8 09 00 00 00 00 8F DC 00 10 00 00 00 00 . ..............
+00404040 8F C4 00 2C 8F 99 80 7C 00 00 00 00 03 20 F8 09 ...,...|..... ..
+00404050 00 00 00 00 8F DC 00 10 00 00 00 00 03 C0 E8 25 ...............%
+00404060 8F BF 00 20 8F BE 00 1C 03 E0 00 08 27 BD 00 28 ... ........'..(
+00404070 3C 1C 0F C0 27 9C 47 F0 03 99 E0 21 27 BD FF D0 <...'.G....!'...
+00404080 AF BC 00 10 AF BF 00 28 AF BE 00 24 03 A0 F0 25 .......(...$...%
+00404090 AF C4 00 30 8F C2 00 30 00 00 00 00 8C 42 00 08 ...0...0.....B..
+004040A0 00 00 00 00 AF C2 00 18 8F C2 00 18 00 00 00 00 ................
+004040B0 14 40 00 03 00 00 00 00 10 00 00 0E 00 00 00 00 .@..............
+004040C0 8F C4 00 18 8F 99 80 5C 00 00 00 00 03 20 F8 09 .......\..... ..
+004040D0 00 00 00 00 8F DC 00 10 00 00 00 00 8F C2 00 18 ................
+004040E0 00 00 00 00 8C 42 17 B8 00 00 00 00 10 00 FF EE .....B..........
+004040F0 AF C2 00 18 03 C0 E8 25 8F BF 00 28 8F BE 00 24 .......%...(...$
+00404100 03 E0 00 08 27 BD 00 30                         ....'..0       
+00404108                         3C 1C 0F C0 27 9C 47 58         <...'.GX
+00404110 03 99 E0 21 27 BD FF D0 AF BC 00 10 AF BF 00 28 ...!'..........(
+00404120 AF BE 00 24 03 A0 F0 25 AF C4 00 30 8F C2 00 30 ...$...%...0...0
+00404130 00 00 00 00 8C 42 00 08 00 00 00 00 AF C2 00 18 .....B..........
+00404140 8F C2 00 30 00 00 00 00 8C 42 00 08 00 00 00 00 ...0.....B......
+00404150 14 40 00 03 00 00 00 00 10 00 00 10 00 00 00 00 .@..............
+00404160 8F C2 00 30 00 00 00 00 8C 42 00 08 00 00 00 00 ...0.....B......
+00404170 AF C2 00 18 8F C4 00 30 8F C5 00 18 8F 99 81 B4 .......0........
+00404180 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00404190 00 00 00 00 10 00 FF EA 00 00 00 00 03 C0 E8 25 ...............%
+004041A0 8F BF 00 28 8F BE 00 24 03 E0 00 08 27 BD 00 30 ...(...$....'..0
+004041B0 3C 1C 0F C0 27 9C 46 B0 03 99 E0 21 27 BD FF D8 <...'.F....!'...
+004041C0 AF BC 00 10 AF BF 00 20 AF BE 00 1C 03 A0 F0 25 ....... .......%
+004041D0 AF C4 00 28 8F C4 00 28 8F 99 80 C8 00 00 00 00 ...(...(........
+004041E0 03 20 F8 09 00 00 00 00 8F DC 00 10 00 00 00 00 . ..............
+004041F0 8F C4 00 28 8F 99 80 CC 00 00 00 00 03 20 F8 09 ...(......... ..
+00404200 00 00 00 00 8F DC 00 10 00 00 00 00 8F C4 00 28 ...............(
+00404210 8F 99 80 2C 00 00 00 00 03 20 F8 09 00 00 00 00 ...,..... ......
+00404220 8F DC 00 10 00 00 00 00 03 C0 E8 25 8F BF 00 20 ...........%... 
+00404230 8F BE 00 1C 03 E0 00 08 27 BD 00 28 00 00 00 00 ........'..(....
+00404240 3C 1C 0F C0 27 9C 46 20 03 99 E0 21 27 BD FF D0 <...'.F ...!'...
+00404250 AF BC 00 10 AF BF 00 28 AF BE 00 24 03 A0 F0 25 .......(...$...%
+00404260 AF C4 00 30 24 04 05 5C 8F 99 81 D4 00 00 00 00 ...0$..\........
+00404270 03 20 F8 09 00 00 00 00 8F DC 00 10 AF C2 00 18 . ..............
+00404280 8F C2 00 18 00 00 00 00 14 40 00 0D AF C2 00 18 .........@......
+00404290 00 00 20 25 8F 85 80 20 00 00 00 00 24 A5 A3 08 .. %... ....$...
+004042A0 8F 99 81 8C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+004042B0 8F DC 00 10 00 00 00 00 10 00 00 2A 00 00 10 25 ...........*...%
+004042C0 8F C2 00 18 00 00 00 00 A0 40 00 00 8F C2 00 18 .........@......
+004042D0 00 00 00 00 A0 40 01 14 8F C2 00 18 00 00 00 00 .....@..........
+004042E0 A0 40 03 14 8F C2 00 18 00 00 00 00 A0 40 02 14 .@...........@..
+004042F0 8F C2 00 18 00 00 00 00 A0 40 00 14 8F C2 00 18 .........@......
+00404300 00 00 00 00 AC 40 04 14 8F C3 00 18 24 02 FF FF .....@......$...
+00404310 AC 62 05 58 8F C2 00 18 00 00 00 00 AC 40 05 54 .b.X.........@.T
+00404320 8F C2 00 30 00 00 00 00 10 40 00 0C 00 00 00 00 ...0.....@......
+00404330 8F C4 00 18 8F C5 00 30 8F 99 81 1C 00 00 00 00 .......0........
+00404340 03 20 F8 09 00 00 00 00 8F DC 00 10 14 40 00 03 . ...........@..
+00404350 00 00 00 00 10 00 00 03 00 00 10 25 8F C2 00 18 ...........%....
+00404360 00 00 00 00 03 C0 E8 25 8F BF 00 28 8F BE 00 24 .......%...(...$
+00404370 03 E0 00 08 27 BD 00 30                         ....'..0       
+00404378                         3C 1C 0F C0 27 9C 44 E8         <...'.D.
+00404380 03 99 E0 21 27 BD FF D0 AF BC 00 10 AF BF 00 28 ...!'..........(
+00404390 AF BE 00 24 03 A0 F0 25 AF C4 00 30 AF C5 00 34 ...$...%...0...4
+004043A0 8F C4 00 30 8F C5 00 34 8F 99 81 38 00 00 00 00 ...0...4...8....
+004043B0 03 20 F8 09 00 00 00 00 8F DC 00 10 AF C2 00 18 . ..............
+004043C0 8F C4 00 30 8F 99 82 40 00 00 00 00 03 20 F8 09 ...0...@..... ..
+004043D0 00 00 00 00 8F DC 00 10 14 40 00 03 00 00 00 00 .........@......
+004043E0 10 00 00 18 00 00 10 25 8F C2 00 30 00 00 00 00 .......%...0....
+004043F0 24 42 01 14 00 40 20 25 8F C5 00 18 8F 99 80 E0 $B...@ %........
+00404400 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00404410 AF C2 00 18 8F C2 00 30 00 00 00 00 24 42 03 14 .......0....$B..
+00404420 00 40 20 25 8F C5 00 18 8F 99 80 88 00 00 00 00 .@ %............
+00404430 03 20 F8 09 00 00 00 00 8F DC 00 10 AF C2 00 18 . ..............
+00404440 24 02 00 01 03 C0 E8 25 8F BF 00 28 8F BE 00 24 $......%...(...$
+00404450 03 E0 00 08 27 BD 00 30                         ....'..0       
+00404458                         3C 1C 0F C0 27 9C 44 08         <...'.D.
+00404460 03 99 E0 21 27 BD FF D0 AF BC 00 18 AF BF 00 28 ...!'..........(
+00404470 AF BE 00 24 03 A0 F0 25 AF C4 00 30 AF C5 00 34 ...$...%...0...4
+00404480 AF C6 00 38 8F C2 00 30 00 00 00 00 14 40 00 11 ...8...0.....@..
+00404490 00 00 00 00 24 04 00 02 8F 85 80 20 00 00 00 00 ....$...... ....
+004044A0 24 A5 A3 98 8F 86 80 20 00 00 00 00 24 C6 A3 30 $...... ....$..0
+004044B0 24 07 00 4B 8F 99 81 8C 00 00 00 00 03 20 F8 09 $..K......... ..
+004044C0 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 00 78 ...............x
+004044D0 00 00 00 00 8F C2 00 30 00 00 00 00 8C 42 05 58 .......0.....B.X
+004044E0 00 00 00 00 28 42 00 3F 14 40 00 16 00 00 00 00 ....(B.?.@......
+004044F0 8F C2 00 30 00 00 00 00 8C 42 05 58 00 00 00 00 ...0.....B.X....
+00404500 AF A2 00 10 24 04 00 02 8F 85 80 20 00 00 00 00 ....$...... ....
+00404510 24 A5 A3 44 8F 86 80 20 00 00 00 00 24 C6 A3 30 $..D... ....$..0
+00404520 24 07 00 50 8F 99 81 8C 00 00 00 00 03 20 F8 09 $..P......... ..
+00404530 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 00 5C ...............\
+00404540 00 00 00 00 8F C2 00 30 8F C3 00 30 8F C2 00 30 .......0...0...0
+00404550 00 00 00 00 8C 42 05 58 00 00 00 00 24 42 00 01 .....B.X....$B..
+00404560 AC 62 05 58 8F C4 00 38 8F 99 81 D4 00 00 00 00 .b.X...8........
+00404570 03 20 F8 09 00 00 00 00 8F DC 00 18 00 40 28 25 . ...........@(%
+00404580 8F C4 00 30 8F C2 00 30 00 00 00 00 8C 42 05 58 ...0...0.....B.X
+00404590 00 00 00 00 00 02 10 80 24 43 04 10 24 82 00 04 ........$C..$...
+004045A0 00 43 10 21 AC 45 00 00 8F C4 00 30 8F C2 00 30 .C.!.E.....0...0
+004045B0 00 00 00 00 8C 42 05 58 00 00 00 00 00 02 10 80 .....B.X........
+004045C0 24 43 04 10 24 82 00 04 00 43 10 21 8C 42 00 00 $C..$....C.!.B..
+004045D0 00 00 00 00 14 40 00 19 00 00 00 00 24 04 00 02 .....@......$...
+004045E0 8F 85 80 20 00 00 00 00 24 A5 A3 64 8F 86 80 20 ... ....$..d... 
+004045F0 00 00 00 00 24 C6 A3 30 24 07 00 57 8F 99 81 8C ....$..0$..W....
+00404600 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00404610 00 00 00 00 8F C2 00 30 8F C3 00 30 8F C2 00 30 .......0...0...0
+00404620 00 00 00 00 8C 42 05 58 00 00 00 00 24 42 FF FF .....B.X....$B..
+00404630 AC 62 05 58 10 00 00 1E 00 00 00 00 8F C4 00 30 .b.X...........0
+00404640 8F C2 00 30 00 00 00 00 8C 42 05 58 00 00 00 00 ...0.....B.X....
+00404650 24 43 05 10 24 82 00 04 00 43 18 21 93 C2 00 3B $C..$....C.!...;
+00404660 00 00 00 00 A0 62 00 00 8F C4 00 30 8F C2 00 30 .....b.....0...0
+00404670 00 00 00 00 8C 42 05 58 00 00 00 00 00 02 10 80 .....B.X........
+00404680 24 43 04 10 24 82 00 04 00 43 10 21 8C 44 00 00 $C..$....C.!.D..
+00404690 8F C5 00 34 8F C6 00 38 8F 99 81 E8 00 00 00 00 ...4...8........
+004046A0 03 20 F8 09 00 00 00 00 8F DC 00 18 00 00 00 00 . ..............
+004046B0 03 C0 E8 25 8F BF 00 28 8F BE 00 24 03 E0 00 08 ...%...(...$....
+004046C0 27 BD 00 30                                     '..0           
+004046C4             3C 1C 0F C0 27 9C 41 9C 03 99 E0 21     <...'.A....!
+004046D0 27 BD FF C8 AF BC 00 20 AF BF 00 30 AF BE 00 2C '...... ...0...,
+004046E0 03 A0 F0 25 AF C4 00 38 8F C2 00 38 00 00 00 00 ...%...8...8....
+004046F0 14 40 00 11 00 00 00 00 24 04 00 02 8F 85 80 20 .@......$...... 
+00404700 00 00 00 00 24 A5 A3 C4 8F 86 80 20 00 00 00 00 ....$...... ....
+00404710 24 C6 A3 E8 24 07 00 66 8F 99 81 8C 00 00 00 00 $...$..f........
+00404720 03 20 F8 09 00 00 00 00 8F DC 00 20 00 00 00 00 . ......... ....
+00404730 10 00 00 65 00 00 00 00 8F C2 00 38 00 00 00 00 ...e.......8....
+00404740 24 42 01 14 00 40 20 25 8F 85 80 20 00 00 00 00 $B...@ %... ....
+00404750 24 A5 A3 FC 24 06 00 07 8F 99 81 98 00 00 00 00 $...$...........
+00404760 03 20 F8 09 00 00 00 00 8F DC 00 20 14 40 00 19 . ......... .@..
+00404770 00 00 00 00 8F C2 00 38 00 00 00 00 24 43 02 14 .......8....$C..
+00404780 8F C2 00 38 00 00 00 00 24 42 01 14 AF A2 00 10 ...8....$B......
+00404790 8F C2 00 38 00 00 00 00 24 42 03 14 AF A2 00 14 ...8....$B......
+004047A0 00 60 20 25 24 05 01 00 8F 86 80 20 00 00 00 00 .` %$...... ....
+004047B0 24 C6 A4 04 8F C7 00 38 8F 99 82 14 00 00 00 00 $......8........
+004047C0 03 20 F8 09 00 00 00 00 8F DC 00 20 10 00 00 3E . ......... ...>
+004047D0 00 00 00 00 8F C2 00 38 00 00 00 00 80 43 01 14 .......8.....C..
+004047E0 24 02 00 2F 14 62 00 1D 00 00 00 00 8F C2 00 38 $../.b.........8
+004047F0 00 00 00 00 24 43 02 14 8F C2 00 38 00 00 00 00 ....$C.....8....
+00404800 24 42 00 14 AF A2 00 10 8F C2 00 38 00 00 00 00 $B.........8....
+00404810 24 42 01 14 AF A2 00 14 8F C2 00 38 00 00 00 00 $B.........8....
+00404820 24 42 03 14 AF A2 00 18 00 60 20 25 24 05 01 00 $B.......` %$...
+00404830 8F 86 80 20 00 00 00 00 24 C6 A4 10 8F C7 00 38 ... ....$......8
+00404840 8F 99 82 14 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00404850 8F DC 00 20 10 00 00 1C 00 00 00 00 8F C2 00 38 ... ...........8
+00404860 00 00 00 00 24 43 02 14 8F C2 00 38 00 00 00 00 ....$C.....8....
+00404870 24 42 00 14 AF A2 00 10 8F C2 00 38 00 00 00 00 $B.........8....
+00404880 24 42 01 14 AF A2 00 14 8F C2 00 38 00 00 00 00 $B.........8....
+00404890 24 42 03 14 AF A2 00 18 00 60 20 25 24 05 01 00 $B.......` %$...
+004048A0 8F 86 80 20 00 00 00 00 24 C6 A4 24 8F C7 00 38 ... ....$..$...8
+004048B0 8F 99 82 14 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+004048C0 8F DC 00 20 00 00 00 00 03 C0 E8 25 8F BF 00 30 ... .......%...0
+004048D0 8F BE 00 2C 03 E0 00 08 27 BD 00 38             ...,....'..8   
+004048DC                                     3C 1C 0F C0             <...
+004048E0 27 9C 3F 84 03 99 E0 21 27 BD FF D0 AF BC 00 10 '.?....!'.......
+004048F0 AF BF 00 28 AF BE 00 24 03 A0 F0 25 AF C4 00 30 ...(...$...%...0
+00404900 AF C5 00 34 AF C6 00 38 AF C0 00 18 8F C2 00 30 ...4...8.......0
+00404910 8F C3 00 18 8C 42 05 58 00 00 00 00 00 43 10 2A .....B.X.....C.*
+00404920 10 40 00 03 00 00 00 00 10 00 00 5E 00 00 00 00 .@.........^....
+00404930 8F C4 00 30 8F C2 00 18 00 00 00 00 00 02 10 80 ...0............
+00404940 24 43 04 10 24 82 00 04 00 43 10 21 8C 42 00 00 $C..$....C.!.B..
+00404950 00 00 00 00 10 40 00 4E 00 00 00 00 8F C5 00 34 .....@.N.......4
+00404960 8F C3 00 30 8F C2 00 18 00 00 00 00 24 44 05 10 ...0........$D..
+00404970 24 62 00 04 00 44 10 21 80 43 00 00 8C A2 0F AC $b...D.!.C......
+00404980 00 00 00 00 00 62 10 21 28 42 07 D0 10 40 00 32 .....b.!(B...@.2
+00404990 00 00 00 00 8F C6 00 34 8F C5 00 34 8F C3 00 30 .......4...4...0
+004049A0 8F C2 00 18 00 00 00 00 24 44 05 10 24 62 00 04 ........$D..$b..
+004049B0 00 44 10 21 80 43 00 00 8C A2 0F AC 00 00 00 00 .D.!.C..........
+004049C0 00 43 10 21 AC C2 0F AC 8F C4 00 30 8F C2 00 18 .C.!.......0....
+004049D0 00 00 00 00 00 02 10 80 24 43 04 10 24 82 00 04 ........$C..$...
+004049E0 00 43 28 21 8F C3 00 30 8F C2 00 18 00 00 00 00 .C(!...0........
+004049F0 24 44 05 10 24 62 00 04 00 44 10 21 80 42 00 00 $D..$b...D.!.B..
+00404A00 8F C4 00 38 8C A5 00 00 00 40 30 25 8F 99 81 E8 ...8.....@0%....
+00404A10 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00404A20 00 00 00 00 8F C3 00 30 8F C2 00 18 00 00 00 00 .......0........
+00404A30 24 44 05 10 24 62 00 04 00 44 10 21 80 43 00 00 $D..$b...D.!.C..
+00404A40 8F C2 00 38 00 00 00 00 00 43 10 21 AF C2 00 38 ...8.....C.!...8
+00404A50 10 00 00 0F 00 00 00 00 24 04 00 02 8F 85 80 20 ........$...... 
+00404A60 00 00 00 00 24 A5 A4 3C 8F 86 80 20 00 00 00 00 ....$..<... ....
+00404A70 24 C6 A4 50 24 07 00 84 8F 99 81 8C 00 00 00 00 $..P$...........
+00404A80 03 20 F8 09 00 00 00 00 8F DC 00 10 00 00 00 00 . ..............
+00404A90 8F C2 00 18 00 00 00 00 24 42 00 01 10 00 FF 9B ........$B......
+00404AA0 AF C2 00 18 8F C2 00 30 00 00 00 00 8C 42 05 58 .......0.....B.X
+00404AB0 00 00 00 00 04 41 00 03 00 00 00 00 10 00 00 16 .....A..........
+00404AC0 00 00 00 00 8F C6 00 30 8F C2 00 30 00 00 00 00 .......0...0....
+00404AD0 24 45 05 58 8C A3 00 00 00 00 00 00 00 60 10 25 $E.X.........`.%
+00404AE0 00 02 10 80 24 44 04 10 24 C2 00 04 00 44 10 21 ....$D..$....D.!
+00404AF0 24 63 FF FF AC A3 00 00 8C 44 00 00 8F 99 80 2C $c.......D.....,
+00404B00 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00404B10 10 00 FF E4 00 00 00 00 8F C2 00 38 00 00 00 00 ...........8....
+00404B20 03 C0 E8 25 8F BF 00 28 8F BE 00 24 03 E0 00 08 ...%...(...$....
+00404B30 27 BD 00 30                                     '..0           
+00404B34             3C 1C 0F C0 27 9C 3D 2C 03 99 E0 21     <...'.=,...!
+00404B40 27 BD FF D0 AF BC 00 10 AF BF 00 28 AF BE 00 24 '..........(...$
+00404B50 03 A0 F0 25 AF C4 00 30 AF C5 00 34 27 C2 00 34 ...%...0...4'..4
+00404B60 00 40 20 25 8F 85 80 20 00 00 00 00 24 A5 A4 64 .@ %... ....$..d
+00404B70 8F 99 80 B0 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00404B80 8F DC 00 10 AF C2 00 18 8F C4 00 30 8F C5 00 18 ...........0....
+00404B90 24 06 01 00 8F 99 81 2C 00 00 00 00 03 20 F8 09 $......,..... ..
+00404BA0 00 00 00 00 8F DC 00 10 00 00 00 00 8F C2 00 34 ...............4
+00404BB0 00 00 00 00 03 C0 E8 25 8F BF 00 28 8F BE 00 24 .......%...(...$
+00404BC0 03 E0 00 08 27 BD 00 30                         ....'..0       
+00404BC8                         3C 1C 0F C0 27 9C 3C 98         <...'.<.
+00404BD0 03 99 E0 21 27 BD FF D0 AF BC 00 10 AF BF 00 28 ...!'..........(
+00404BE0 AF BE 00 24 03 A0 F0 25 AF C4 00 30 AF C5 00 34 ...$...%...0...4
+00404BF0 27 C2 00 34 00 40 20 25 8F 85 80 20 00 00 00 00 '..4.@ %... ....
+00404C00 24 A5 A4 64 8F 99 80 B0 00 00 00 00 03 20 F8 09 $..d......... ..
+00404C10 00 00 00 00 8F DC 00 10 AF C2 00 18 8F C4 00 30 ...............0
+00404C20 8F C5 00 18 24 06 01 00 8F 99 81 2C 00 00 00 00 ....$......,....
+00404C30 03 20 F8 09 00 00 00 00 8F DC 00 10 00 00 00 00 . ..............
+00404C40 8F C2 00 34 00 00 00 00 03 C0 E8 25 8F BF 00 28 ...4.......%...(
+00404C50 8F BE 00 24 03 E0 00 08 27 BD 00 30             ...$....'..0   
+00404C5C                                     3C 1C 0F C0             <...
+00404C60 27 9C 3C 04 03 99 E0 21 27 BD FF D0 AF BC 00 10 '.<....!'.......
+00404C70 AF BF 00 28 AF BE 00 24 03 A0 F0 25 AF C4 00 30 ...(...$...%...0
+00404C80 AF C5 00 34 27 C2 00 34 00 40 20 25 8F 85 80 20 ...4'..4.@ %... 
+00404C90 00 00 00 00 24 A5 A4 68 8F 99 80 B0 00 00 00 00 ....$..h........
+00404CA0 03 20 F8 09 00 00 00 00 8F DC 00 10 AF C2 00 18 . ..............
+00404CB0 8F C4 00 30 8F C5 00 18 24 06 01 00 8F 99 81 2C ...0....$......,
+00404CC0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00404CD0 00 00 00 00 8F C2 00 34 00 00 00 00 03 C0 E8 25 .......4.......%
+00404CE0 8F BF 00 28 8F BE 00 24 03 E0 00 08 27 BD 00 30 ...(...$....'..0
+00404CF0 3C 1C 0F C0 27 9C 3B 70 03 99 E0 21 27 BD FF C8 <...'.;p...!'...
+00404D00 AF BC 00 18 AF BF 00 30 AF BE 00 2C 03 A0 F0 25 .......0...,...%
+00404D10 AF C4 00 38 AF C5 00 3C 8F C2 00 38 00 00 00 00 ...8...<...8....
+00404D20 10 40 00 92 00 00 00 00 8F C3 00 38 24 02 FF EC .@.........8$...
+00404D30 10 62 00 8E 00 00 00 00 8F C4 00 3C 8F 85 80 20 .b.........<... 
+00404D40 00 00 00 00 24 A5 A4 6C 8F 99 80 30 00 00 00 00 ....$..l...0....
+00404D50 03 20 F8 09 00 00 00 00 8F DC 00 18 AF C2 00 20 . ............. 
+00404D60 8F C2 00 20 00 00 00 00 14 40 00 11 00 00 00 00 ... .....@......
+00404D70 24 04 00 02 8F 85 80 20 00 00 00 00 24 A5 A4 70 $...... ....$..p
+00404D80 8F 86 80 20 00 00 00 00 24 C6 A4 98 24 07 00 BF ... ....$...$...
+00404D90 8F 99 81 8C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00404DA0 8F DC 00 18 00 00 00 00 10 00 00 80 00 00 10 25 ...............%
+00404DB0 8F C2 00 3C 00 00 00 00 24 43 01 00 8F C2 00 20 ...<....$C..... 
+00404DC0 00 00 00 00 00 43 10 2B 10 40 00 14 00 00 00 00 .....C.+.@......
+00404DD0 8F C2 00 20 00 00 00 00 80 43 00 00 24 02 00 20 ... .....C..$.. 
+00404DE0 10 62 00 09 00 00 00 00 8F C2 00 20 00 00 00 00 .b......... ....
+00404DF0 80 43 00 00 24 02 00 09 10 62 00 03 00 00 00 00 .C..$....b......
+00404E00 10 00 00 06 00 00 00 00 8F C2 00 20 00 00 00 00 ........... ....
+00404E10 24 42 00 01 10 00 FF E6 AF C2 00 20 8F C4 00 20 $B......... ... 
+00404E20 8F 85 80 20 00 00 00 00 24 A5 A4 68 8F 99 80 30 ... ....$..h...0
+00404E30 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00404E40 AF C2 00 24 8F C2 00 24 00 00 00 00 14 40 00 11 ...$...$.....@..
+00404E50 00 00 00 00 24 04 00 02 8F 85 80 20 00 00 00 00 ....$...... ....
+00404E60 24 A5 A4 AC 8F 86 80 20 00 00 00 00 24 C6 A4 98 $...... ....$...
+00404E70 24 07 00 C6 8F 99 81 8C 00 00 00 00 03 20 F8 09 $............ ..
+00404E80 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 00 47 ...............G
+00404E90 00 00 10 25 8F C3 00 24 8F C2 00 20 00 00 00 00 ...%...$... ....
+00404EA0 00 62 10 23 28 42 01 01 14 40 00 16 00 00 00 00 .b.#(B...@......
+00404EB0 8F C2 00 24 8F C3 00 20 00 00 00 00 00 43 10 23 ...$... .....C.#
+00404EC0 AF A2 00 10 24 04 00 02 8F 85 80 20 00 00 00 00 ....$...... ....
+00404ED0 24 A5 A4 D0 8F 86 80 20 00 00 00 00 24 C6 A4 98 $...... ....$...
+00404EE0 24 07 00 CA 8F 99 81 8C 00 00 00 00 03 20 F8 09 $............ ..
+00404EF0 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 00 2B ...............+
+00404F00 00 00 10 25 8F C2 00 38 00 00 00 00 24 44 00 14 ...%...8....$D..
+00404F10 8F C3 00 24 8F C2 00 20 00 00 00 00 00 62 10 23 ...$... .....b.#
+00404F20 8F C5 00 20 00 40 30 25 8F 99 81 2C 00 00 00 00 ... .@0%...,....
+00404F30 03 20 F8 09 00 00 00 00 8F DC 00 18 00 00 00 00 . ..............
+00404F40 8F C4 00 38 8F C3 00 24 8F C2 00 20 00 00 00 00 ...8...$... ....
+00404F50 00 62 10 23 24 43 00 10 24 82 00 04 00 43 10 21 .b.#$C..$....C.!
+00404F60 A0 40 00 00 10 00 00 0F 00 00 00 00 24 04 00 02 .@..........$...
+00404F70 8F 85 80 20 00 00 00 00 24 A5 A4 F0 8F 86 80 20 ... ....$...... 
+00404F80 00 00 00 00 24 C6 A4 98 24 07 00 D0 8F 99 81 8C ....$...$.......
+00404F90 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00404FA0 00 00 00 00 8F C2 00 24 00 00 00 00 03 C0 E8 25 .......$.......%
+00404FB0 8F BF 00 30 8F BE 00 2C 03 E0 00 08 27 BD 00 38 ...0...,....'..8
+00404FC0 3C 1C 0F C0 27 9C 38 A0 03 99 E0 21 27 BD FF C8 <...'.8....!'...
+00404FD0 AF BC 00 18 AF BF 00 30 AF BE 00 2C 03 A0 F0 25 .......0...,...%
+00404FE0 AF C4 00 38 AF C5 00 3C 8F C2 00 38 00 00 00 00 ...8...<...8....
+00404FF0 10 40 00 87 00 00 00 00 8F C3 00 38 24 02 FF EC .@.........8$...
+00405000 10 62 00 83 00 00 00 00 8F C4 00 3C 8F 85 80 20 .b.........<... 
+00405010 00 00 00 00 24 A5 A4 6C 8F 99 80 30 00 00 00 00 ....$..l...0....
+00405020 03 20 F8 09 00 00 00 00 8F DC 00 18 AF C2 00 20 . ............. 
+00405030 8F C2 00 20 00 00 00 00 14 40 00 11 00 00 00 00 ... .....@......
+00405040 24 04 00 02 8F 85 80 20 00 00 00 00 24 A5 A5 64 $...... ....$..d
+00405050 8F 86 80 20 00 00 00 00 24 C6 A5 1C 24 07 00 E2 ... ....$...$...
+00405060 8F 99 81 8C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00405070 8F DC 00 18 00 00 00 00 10 00 00 75 00 00 10 25 ...........u...%
+00405080 8F C2 00 3C 00 00 00 00 24 43 01 00 8F C2 00 20 ...<....$C..... 
+00405090 00 00 00 00 00 43 10 2B 10 40 00 14 00 00 00 00 .....C.+.@......
+004050A0 8F C2 00 20 00 00 00 00 80 43 00 00 24 02 00 20 ... .....C..$.. 
+004050B0 10 62 00 09 00 00 00 00 8F C2 00 20 00 00 00 00 .b......... ....
+004050C0 80 43 00 00 24 02 00 09 10 62 00 03 00 00 00 00 .C..$....b......
+004050D0 10 00 00 06 00 00 00 00 8F C2 00 20 00 00 00 00 ........... ....
+004050E0 24 42 00 01 10 00 FF E6 AF C2 00 20 8F C4 00 20 $B......... ... 
+004050F0 8F 85 80 20 00 00 00 00 24 A5 A4 68 8F 99 80 30 ... ....$..h...0
+00405100 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00405110 AF C2 00 24 8F C2 00 24 00 00 00 00 14 40 00 11 ...$...$.....@..
+00405120 00 00 00 00 24 04 00 02 8F 85 80 20 00 00 00 00 ....$...... ....
+00405130 24 A5 A4 AC 8F 86 80 20 00 00 00 00 24 C6 A5 1C $...... ....$...
+00405140 24 07 00 EB 8F 99 81 8C 00 00 00 00 03 20 F8 09 $............ ..
+00405150 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 00 3C ...............<
+00405160 00 00 10 25 8F C3 00 24 8F C2 00 20 00 00 00 00 ...%...$... ....
+00405170 00 62 10 23 28 42 01 01 14 40 00 16 00 00 00 00 .b.#(B...@......
+00405180 8F C2 00 24 8F C3 00 20 00 00 00 00 00 43 10 23 ...$... .....C.#
+00405190 AF A2 00 10 24 04 00 02 8F 85 80 20 00 00 00 00 ....$...... ....
+004051A0 24 A5 A4 D0 8F 86 80 20 00 00 00 00 24 C6 A5 1C $...... ....$...
+004051B0 24 07 00 F0 8F 99 81 8C 00 00 00 00 03 20 F8 09 $............ ..
+004051C0 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 00 20 ............... 
+004051D0 00 00 10 25 27 C2 00 24 8F C4 00 20 00 40 28 25 ...%'..$... .@(%
+004051E0 24 06 00 0A 8F 99 81 CC 00 00 00 00 03 20 F8 09 $............ ..
+004051F0 00 00 00 00 8F DC 00 18 00 40 18 25 8F C2 00 38 .........@.%...8
+00405200 00 00 00 00 AC 43 05 54 10 00 00 0F 00 00 00 00 .....C.T........
+00405210 24 04 00 02 8F 85 80 20 00 00 00 00 24 A5 A5 38 $...... ....$..8
+00405220 8F 86 80 20 00 00 00 00 24 C6 A5 1C 24 07 00 F6 ... ....$...$...
+00405230 8F 99 81 8C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00405240 8F DC 00 18 00 00 00 00 8F C2 00 24 00 00 00 00 ...........$....
+00405250 03 C0 E8 25 8F BF 00 30 8F BE 00 2C 03 E0 00 08 ...%...0...,....
+00405260 27 BD 00 38                                     '..8           
+00405264             3C 1C 0F C0 27 9C 35 FC 03 99 E0 21     <...'.5....!
+00405270 27 BD FF D0 AF BC 00 10 AF BF 00 28 AF BE 00 24 '..........(...$
+00405280 03 A0 F0 25 AF C4 00 30 AF C0 00 18 8F C2 00 18 ...%...0........
+00405290 00 00 00 00 00 02 18 80 8F 82 81 68 00 00 00 00 ...........h....
+004052A0 00 43 10 21 8C 42 00 00 00 00 00 00 14 40 00 03 .C.!.B.......@..
+004052B0 00 00 00 00 10 00 00 16 00 00 00 00 8F C3 00 18 ................
+004052C0 00 00 00 00 00 60 10 25 00 02 20 80 8F 82 81 68 .....`.%.. ....h
+004052D0 00 00 00 00 00 44 10 21 24 63 00 01 AF C3 00 18 .....D.!$c......
+004052E0 8C 44 00 00 8F C5 00 30 24 06 00 14 8F 99 81 34 .D.....0$......4
+004052F0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00405300 14 40 FF E2 00 00 00 00 10 00 00 02 24 02 00 01 .@..........$...
+00405310 00 00 10 25 03 C0 E8 25 8F BF 00 28 8F BE 00 24 ...%...%...(...$
+00405320 03 E0 00 08 27 BD 00 30                         ....'..0       
+00405328                         3C 1C 0F C0 27 9C 35 38         <...'.58
+00405330 03 99 E0 21 27 BD FF D8 AF BC 00 10 AF BF 00 20 ...!'.......... 
+00405340 AF BE 00 1C 03 A0 F0 25 AF C4 00 28 8F C2 00 28 .......%...(...(
+00405350 00 00 00 00 8C 42 05 58 00 00 00 00 04 41 00 03 .....B.X.....A..
+00405360 00 00 00 00 10 00 00 16 00 00 00 00 8F C6 00 28 ...............(
+00405370 8F C2 00 28 00 00 00 00 24 45 05 58 8C A3 00 00 ...(....$E.X....
+00405380 00 00 00 00 00 60 10 25 00 02 10 80 24 44 04 10 .....`.%....$D..
+00405390 24 C2 00 04 00 44 10 21 24 63 FF FF AC A3 00 00 $....D.!$c......
+004053A0 8C 44 00 00 8F 99 80 2C 00 00 00 00 03 20 F8 09 .D.....,..... ..
+004053B0 00 00 00 00 8F DC 00 10 10 00 FF E4 00 00 00 00 ................
+004053C0 8F C4 00 28 8F 99 80 2C 00 00 00 00 03 20 F8 09 ...(...,..... ..
+004053D0 00 00 00 00 8F DC 00 10 00 00 00 00 03 C0 E8 25 ...............%
+004053E0 8F BF 00 20 8F BE 00 1C 03 E0 00 08 27 BD 00 28 ... ........'..(
+004053F0 3C 1C 0F C0 27 9C 34 70 03 99 E0 21 27 BD FF C8 <...'.4p...!'...
+00405400 AF BC 00 18 AF BF 00 30 AF BE 00 2C 03 A0 F0 25 .......0...,...%
+00405410 AF C4 00 38 AF C5 00 3C 8F C4 00 38 27 C5 00 20 ...8...<...8'.. 
+00405420 00 00 30 25 8F 99 81 CC 00 00 00 00 03 20 F8 09 ..0%......... ..
+00405430 00 00 00 00 8F DC 00 18 AF C2 00 24 8F C2 00 20 ...........$... 
+00405440 00 00 00 00 80 42 00 00 00 00 00 00 10 40 00 19 .....B.......@..
+00405450 00 00 00 00 8F C3 00 20 8F C2 00 3C 00 00 00 00 ....... ...<....
+00405460 10 62 00 14 00 00 00 00 8F C2 00 38 00 00 00 00 .b.........8....
+00405470 AF A2 00 10 24 04 00 02 8F 85 80 20 00 00 00 00 ....$...... ....
+00405480 24 A5 A5 90 8F 86 80 20 00 00 00 00 24 C6 A5 A8 $...... ....$...
+00405490 24 07 00 1F 8F 99 81 8C 00 00 00 00 03 20 F8 09 $............ ..
+004054A0 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 00 03 ................
+004054B0 00 00 10 25 8F C2 00 24 00 00 00 00 03 C0 E8 25 ...%...$.......%
+004054C0 8F BF 00 30 8F BE 00 2C 03 E0 00 08 27 BD 00 38 ...0...,....'..8
+004054D0 3C 1C 0F C0 27 9C 33 90 03 99 E0 21 27 BD FE 90 <...'.3....!'...
+004054E0 AF BC 00 18 AF BF 01 68 AF BE 01 64 03 A0 F0 25 .......h...d...%
+004054F0 AF C4 01 70 AF C5 01 74 27 C2 01 30 27 C3 01 30 ...p...t'..0'..0
+00405500 8F 82 80 20 00 00 00 00 24 42 A5 E0 00 00 00 00 ... ....$B......
+00405510 88 44 00 00 98 44 00 03 88 45 00 04 98 45 00 07 .D...D...E...E..
+00405520 80 46 00 08 80 47 00 09 A8 64 00 00 B8 64 00 03 .F...G...d...d..
+00405530 A8 65 00 04 B8 65 00 07 A0 66 00 08 A0 67 00 09 .e...e...f...g..
+00405540 AF C0 01 40 8F C2 01 70 00 00 00 00 14 40 00 03 ...@...p.....@..
+00405550 00 00 00 00 10 00 01 D9 00 00 10 25 8F C2 01 74 ...........%...t
+00405560 00 00 00 00 14 40 00 4C 00 00 00 00 8F C4 01 70 .....@.L.......p
+00405570 8F 99 80 6C 00 00 00 00 03 20 F8 09 00 00 00 00 ...l..... ......
+00405580 8F DC 00 18 24 42 00 0B 00 40 20 25 8F 99 81 D4 ....$B...@ %....
+00405590 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+004055A0 AF C2 01 74 8F C2 01 74 00 00 00 00 14 40 00 11 ...t...t.....@..
+004055B0 00 00 00 00 24 04 00 01 8F 85 80 20 00 00 00 00 ....$...... ....
+004055C0 24 A5 A5 EC 8F 86 80 20 00 00 00 00 24 C6 A6 04 $...... ....$...
+004055D0 24 07 00 39 8F 99 81 8C 00 00 00 00 03 20 F8 09 $..9......... ..
+004055E0 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 01 B3 ................
+004055F0 00 00 10 25 24 02 00 01 AF C2 01 40 8F C4 01 74 ...%$......@...t
+00405600 8F C5 01 70 8F 99 82 44 00 00 00 00 03 20 F8 09 ...p...D..... ..
+00405610 00 00 00 00 8F DC 00 18 00 00 00 00 8F C4 01 74 ...............t
+00405620 24 05 00 2F 8F 99 81 74 00 00 00 00 03 20 F8 09 $../...t..... ..
+00405630 00 00 00 00 8F DC 00 18 AF C2 01 28 8F C2 01 28 ...........(...(
+00405640 00 00 00 00 10 40 00 08 00 00 00 00 8F C2 01 28 .....@.........(
+00405650 00 00 00 00 24 42 00 01 AF C2 01 28 A0 40 00 00 ....$B.....(.@..
+00405660 10 00 00 04 00 00 00 00 8F C2 01 74 00 00 00 00 ...........t....
+00405670 AF C2 01 28 27 C2 01 30 8F C4 01 28 00 40 28 25 ...('..0...(.@(%
+00405680 8F 99 82 44 00 00 00 00 03 20 F8 09 00 00 00 00 ...D..... ......
+00405690 8F DC 00 18 00 00 00 00 8F C4 01 74 8F 85 80 20 ...........t... 
+004056A0 00 00 00 00 24 A5 A6 14 8F 99 80 EC 00 00 00 00 ....$...........
+004056B0 03 20 F8 09 00 00 00 00 8F DC 00 18 AF C2 00 20 . ............. 
+004056C0 8F C2 00 20 00 00 00 00 14 40 00 14 00 00 00 00 ... .....@......
+004056D0 8F C2 01 74 00 00 00 00 AF A2 00 10 24 04 00 01 ...t........$...
+004056E0 8F 85 80 20 00 00 00 00 24 A5 A6 18 8F 86 80 20 ... ....$...... 
+004056F0 00 00 00 00 24 C6 A6 04 24 07 00 4B 8F 99 81 8C ....$...$..K....
+00405700 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00405710 00 00 00 00 10 00 01 69 00 00 10 25 8F C2 01 40 .......i...%...@
+00405720 00 00 00 00 10 40 00 08 00 00 00 00 8F C4 01 74 .....@.........t
+00405730 8F 99 80 2C 00 00 00 00 03 20 F8 09 00 00 00 00 ...,..... ......
+00405740 8F DC 00 18 00 00 00 00 27 C2 00 28 00 40 20 25 ........'..(.@ %
+00405750 24 05 00 FF 8F C6 00 20 8F 99 81 EC 00 00 00 00 $...... ........
+00405760 03 20 F8 09 00 00 00 00 8F DC 00 18 AF C2 01 28 . .............(
+00405770 8F C2 01 28 00 00 00 00 14 40 00 03 00 00 00 00 ...(.....@......
+00405780 10 00 01 46 00 00 00 00 8F C4 01 28 24 05 00 0A ...F.......($...
+00405790 8F 99 80 58 00 00 00 00 03 20 F8 09 00 00 00 00 ...X..... ......
+004057A0 8F DC 00 18 AF C2 01 48 8F C2 01 48 00 00 00 00 .......H...H....
+004057B0 10 40 00 04 00 00 00 00 8F C2 01 48 00 00 00 00 .@.........H....
+004057C0 A0 40 00 00 8F C4 01 28 24 05 00 23 8F 99 80 58 .@.....($..#...X
+004057D0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+004057E0 AF C2 01 48 8F C2 01 48 00 00 00 00 10 40 00 04 ...H...H.....@..
+004057F0 00 00 00 00 8F C2 01 48 00 00 00 00 A0 40 00 00 .......H.....@..
+00405800 8F C4 01 28 8F 85 80 20 00 00 00 00 24 A5 A6 40 ...(... ....$..@
+00405810 8F 99 80 74 00 00 00 00 03 20 F8 09 00 00 00 00 ...t..... ......
+00405820 8F DC 00 18 00 40 18 25 8F C2 01 28 00 00 00 00 .....@.%...(....
+00405830 00 43 10 21 AF C2 01 28 8F C2 01 28 00 00 00 00 .C.!...(...(....
+00405840 80 42 00 00 00 00 00 00 14 40 00 03 00 00 00 00 .B.......@......
+00405850 10 00 FF BD 00 00 00 00 8F C2 01 28 00 00 00 00 ...........(....
+00405860 AF C2 01 4C 8F C4 01 28 8F 85 80 20 00 00 00 00 ...L...(... ....
+00405870 24 A5 A6 44 8F 99 80 BC 00 00 00 00 03 20 F8 09 $..D......... ..
+00405880 00 00 00 00 8F DC 00 18 00 40 18 25 8F C2 01 28 .........@.%...(
+00405890 00 00 00 00 00 43 10 21 AF C2 01 28 8F C2 01 28 .....C.!...(...(
+004058A0 00 00 00 00 AF C2 01 50 8F C4 01 28 24 05 00 3D .......P...($..=
+004058B0 8F 99 80 58 00 00 00 00 03 20 F8 09 00 00 00 00 ...X..... ......
+004058C0 8F DC 00 18 AF C2 01 28 8F C2 01 28 00 00 00 00 .......(...(....
+004058D0 14 40 00 13 00 00 00 00 27 C2 00 28 AF A2 00 10 .@......'..(....
+004058E0 24 04 00 02 8F 85 80 20 00 00 00 00 24 A5 A6 48 $...... ....$..H
+004058F0 8F 86 80 20 00 00 00 00 24 C6 A6 04 24 07 00 6E ... ....$...$..n
+00405900 8F 99 81 8C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00405910 8F DC 00 18 00 00 00 00 10 00 FF 8B 00 00 00 00 ................
+00405920 8F C2 01 28 00 00 00 00 24 42 00 01 AF C2 01 28 ...(....$B.....(
+00405930 8F C4 01 28 8F 85 80 20 00 00 00 00 24 A5 A6 40 ...(... ....$..@
+00405940 8F 99 80 74 00 00 00 00 03 20 F8 09 00 00 00 00 ...t..... ......
+00405950 8F DC 00 18 00 40 18 25 8F C2 01 28 00 00 00 00 .....@.%...(....
+00405960 00 43 10 21 AF C2 01 28 8F C2 01 28 00 00 00 00 .C.!...(...(....
+00405970 AF C2 01 54 8F C4 01 28 8F 85 80 20 00 00 00 00 ...T...(... ....
+00405980 24 A5 A6 40 8F 99 80 BC 00 00 00 00 03 20 F8 09 $..@......... ..
+00405990 00 00 00 00 8F DC 00 18 00 40 18 25 8F C2 01 28 .........@.%...(
+004059A0 00 00 00 00 00 43 10 21 AF C2 01 28 8F C2 01 28 .....C.!...(...(
+004059B0 00 00 00 00 A0 40 00 00 8F C2 01 50 00 00 00 00 .....@.....P....
+004059C0 A0 40 00 00 AF C0 01 44 AF C0 00 24 8F C3 00 24 .@.....D...$...$
+004059D0 00 00 00 00 00 60 10 25 00 02 10 80 00 43 10 21 .....`.%.....C.!
+004059E0 00 02 10 80 00 43 10 23 00 02 10 C0 24 42 00 08 .....C.#....$B..
+004059F0 8F 83 81 E0 00 00 00 00 00 62 18 21 80 63 00 04 .........b.!.c..
+00405A00 24 02 00 20 10 62 00 8E 00 00 00 00 8F C2 01 44 $.. .b.........D
+00405A10 00 00 00 00 14 40 00 8A 00 00 00 00 8F C3 00 24 .....@.........$
+00405A20 00 00 00 00 00 60 10 25 00 02 10 80 00 43 10 21 .....`.%.....C.!
+00405A30 00 02 10 80 00 43 10 23 00 02 18 C0 8F 82 81 E0 .....C.#........
+00405A40 00 00 00 00 24 42 00 04 00 43 10 21 8F C4 01 4C ....$B...C.!...L
+00405A50 8C 45 00 00 8F 99 81 20 00 00 00 00 03 20 F8 09 .E..... ..... ..
+00405A60 00 00 00 00 8F DC 00 18 14 40 00 70 00 00 00 00 .........@.p....
+00405A70 24 02 00 01 AF C2 01 44 8F C3 00 24 00 00 00 00 $......D...$....
+00405A80 00 60 10 25 00 02 10 80 00 43 10 21 00 02 10 80 .`.%.....C.!....
+00405A90 00 43 10 23 00 02 10 C0 24 43 00 08 8F 82 81 E0 .C.#....$C......
+00405AA0 00 00 00 00 00 43 10 21 8C 42 00 00 00 00 00 00 .....C.!.B......
+00405AB0 AF C2 01 58 24 02 00 01 8F C3 01 58 00 00 00 00 ...X$......X....
+00405AC0 10 62 00 24 00 00 00 00 8F C4 01 58 00 00 00 00 .b.$.......X....
+00405AD0 2C 82 00 01 14 40 00 08 00 00 00 00 24 02 00 02 ,....@......$...
+00405AE0 8F C5 01 58 00 00 00 00 10 A2 00 34 00 00 00 00 ...X.......4....
+00405AF0 10 00 00 4E 00 00 00 00 8F C3 00 24 00 00 00 00 ...N.......$....
+00405B00 00 60 10 25 00 02 10 80 00 43 10 21 00 02 10 80 .`.%.....C.!....
+00405B10 00 43 10 23 00 02 18 C0 8F 82 81 E0 00 00 00 00 .C.#............
+00405B20 24 42 00 0D 00 62 10 21 00 40 20 25 8F C5 01 54 $B...b.!.@ %...T
+00405B30 24 06 00 14 8F 99 81 2C 00 00 00 00 03 20 F8 09 $......,..... ..
+00405B40 00 00 00 00 8F DC 00 18 00 00 00 00 10 00 00 37 ...............7
+00405B50 00 00 00 00 8F C4 01 54 00 00 28 25 8F 99 80 1C .......T..(%....
+00405B60 00 00 00 00 27 39 53 F0 00 00 00 00 03 20 F8 09 ....'9S...... ..
+00405B70 00 00 00 00 8F DC 00 18 00 40 20 25 8F C3 00 24 .........@ %...$
+00405B80 00 00 00 00 00 60 10 25 00 02 10 80 00 43 10 21 .....`.%.....C.!
+00405B90 00 02 10 80 00 43 10 23 00 02 10 C0 24 43 00 90 .....C.#....$C..
+00405BA0 8F 82 81 E0 00 00 00 00 24 42 00 04 00 43 10 21 ........$B...C.!
+00405BB0 AC 44 00 00 10 00 00 1D 00 00 00 00 8F C2 01 54 .D.............T
+00405BC0 00 00 00 00 80 42 00 00 8F 84 80 20 00 00 00 00 .....B..... ....
+00405BD0 24 84 A5 C0 00 40 28 25 8F 99 80 58 00 00 00 00 $....@(%...X....
+00405BE0 03 20 F8 09 00 00 00 00 8F DC 00 18 00 40 20 25 . ...........@ %
+00405BF0 8F C3 00 24 00 00 00 00 00 60 10 25 00 02 10 80 ...$.....`.%....
+00405C00 00 43 10 21 00 02 10 80 00 43 10 23 00 02 10 C0 .C.!.....C.#....
+00405C10 24 43 00 90 8F 82 81 E0 00 00 00 00 24 42 00 04 $C..........$B..
+00405C20 00 43 18 21 00 04 10 2B AC 62 00 00 8F C2 00 24 .C.!...+.b.....$
+00405C30 00 00 00 00 24 42 00 01 10 00 FF 64 AF C2 00 24 ....$B.....d...$
+00405C40 8F C2 01 44 00 00 00 00 14 40 FE BF 00 00 00 00 ...D.....@......
+00405C50 8F C2 01 4C 00 00 00 00 AF A2 00 10 24 04 00 01 ...L........$...
+00405C60 8F 85 80 20 00 00 00 00 24 A5 A5 C4 8F 86 80 20 ... ....$...... 
+00405C70 00 00 00 00 24 C6 A6 04 24 07 00 8E 8F 99 81 8C ....$...$.......
+00405C80 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00405C90 00 00 00 00 10 00 FE AC 00 00 00 00 8F C4 00 20 ............... 
+00405CA0 8F 99 80 DC 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00405CB0 8F DC 00 18 00 00 00 00 24 02 00 01 03 C0 E8 25 ........$......%
+00405CC0 8F BF 01 68 8F BE 01 64 03 E0 00 08 27 BD 01 70 ...h...d....'..p
+00405CD0 3C 1C 0F C0 27 9C 2B 90 03 99 E0 21 27 BD FF B8 <...'.+....!'...
+00405CE0 AF BC 00 18 AF BF 00 44 AF BE 00 40 AF B0 00 3C .......D...@...<
+00405CF0 03 A0 F0 25 AF C4 00 48 AF C5 00 4C AF C0 00 20 ...%...H...L... 
+00405D00 8F C2 00 20 8F C3 00 48 00 00 00 00 00 43 10 2A ... ...H.....C.*
+00405D10 14 40 00 03 00 00 00 00 10 00 01 55 00 00 00 00 .@.........U....
+00405D20 8F C2 00 20 00 00 00 00 00 02 18 80 8F C2 00 4C ... ...........L
+00405D30 00 00 00 00 00 62 10 21 8C 42 00 00 00 00 00 00 .....b.!.B......
+00405D40 80 43 00 00 24 02 00 2D 14 62 01 44 00 00 00 00 .C..$..-.b.D....
+00405D50 8F C2 00 20 00 00 00 00 00 02 18 80 8F C2 00 4C ... ...........L
+00405D60 00 00 00 00 00 62 10 21 8C 42 00 00 00 00 00 00 .....b.!.B......
+00405D70 24 42 00 01 90 42 00 00 00 00 00 00 A3 C2 00 2C $B...B.........,
+00405D80 83 C2 00 2C 00 00 00 00 10 40 00 1A 00 00 00 00 ...,.....@......
+00405D90 8F C2 00 20 00 00 00 00 00 02 18 80 8F C2 00 4C ... ...........L
+00405DA0 00 00 00 00 00 62 10 21 8C 42 00 00 00 00 00 00 .....b.!.B......
+00405DB0 24 42 00 02 80 42 00 00 00 00 00 00 10 40 00 0D $B...B.......@..
+00405DC0 00 00 00 00 8F C2 00 20 00 00 00 00 00 02 18 80 ....... ........
+00405DD0 8F C2 00 4C 00 00 00 00 00 62 10 21 8C 42 00 00 ...L.....b.!.B..
+00405DE0 00 00 00 00 24 42 00 02 AF C2 00 30 10 00 00 19 ....$B.....0....
+00405DF0 00 00 00 00 8F C2 00 48 8F C3 00 20 00 00 00 00 .......H... ....
+00405E00 00 62 10 2A 10 40 00 0E 00 00 00 00 8F C2 00 20 .b.*.@......... 
+00405E10 00 00 00 00 24 42 00 01 AF C2 00 20 00 02 18 80 ....$B..... ....
+00405E20 8F C2 00 4C 00 00 00 00 00 62 10 21 8C 42 00 00 ...L.....b.!.B..
+00405E30 00 00 00 00 AF C2 00 30 10 00 00 06 00 00 00 00 .......0........
+00405E40 8F 82 80 20 00 00 00 00 24 42 A6 70 00 00 00 00 ... ....$B.p....
+00405E50 AF C2 00 30 83 C3 00 2C 24 02 00 68 14 62 00 11 ...0...,$..h.b..
+00405E60 00 00 00 00 8F C2 00 4C 00 00 00 00 8C 44 00 00 .......L.....D..
+00405E70 8F 99 82 3C 00 00 00 00 03 20 F8 09 00 00 00 00 ...<..... ......
+00405E80 8F DC 00 18 00 00 00 00 00 00 20 25 8F 99 80 90 .......... %....
+00405E90 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00405EA0 00 00 00 00 AF C0 00 28 AF C0 00 24 8F C3 00 24 .......(...$...$
+00405EB0 00 00 00 00 00 60 10 25 00 02 10 80 00 43 10 21 .....`.%.....C.!
+00405EC0 00 02 10 80 00 43 10 23 00 02 10 C0 24 42 00 08 .....C.#....$B..
+00405ED0 8F 83 81 E0 00 00 00 00 00 62 18 21 80 63 00 04 .........b.!.c..
+00405EE0 24 02 00 20 10 62 00 BD 00 00 00 00 8F C2 00 28 $.. .b.........(
+00405EF0 00 00 00 00 14 40 00 B9 00 00 00 00 8F C3 00 24 .....@.........$
+00405F00 00 00 00 00 00 60 10 25 00 02 10 80 00 43 10 21 .....`.%.....C.!
+00405F10 00 02 10 80 00 43 10 23 00 02 10 C0 24 42 00 08 .....C.#....$B..
+00405F20 83 C3 00 2C 8F 81 81 E0 00 00 00 00 00 22 08 21 ...,.........".!
+00405F30 80 22 00 04 00 00 00 00 10 62 00 32 00 00 00 00 .".......b.2....
+00405F40 8F C3 00 24 00 00 00 00 00 60 10 25 00 02 10 80 ...$.....`.%....
+00405F50 00 43 10 21 00 02 10 80 00 43 10 23 00 02 10 C0 .C.!.....C.#....
+00405F60 24 43 00 08 8F 82 81 E0 00 00 00 00 00 43 10 21 $C...........C.!
+00405F70 8C 43 00 00 24 02 00 02 14 62 00 93 00 00 00 00 .C..$....b......
+00405F80 83 C2 00 2C 00 00 00 00 00 40 20 25 8F 99 80 64 ...,.....@ %...d
+00405F90 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00405FA0 00 40 80 25 8F C3 00 24 00 00 00 00 00 60 10 25 .@.%...$.....`.%
+00405FB0 00 02 10 80 00 43 10 21 00 02 10 80 00 43 10 23 .....C.!.....C.#
+00405FC0 00 02 10 C0 24 42 00 08 8F 81 81 E0 00 00 00 00 ....$B..........
+00405FD0 00 22 08 21 80 22 00 04 00 00 00 00 00 40 20 25 .".!.".......@ %
+00405FE0 8F 99 80 64 00 00 00 00 03 20 F8 09 00 00 00 00 ...d..... ......
+00405FF0 8F DC 00 18 12 02 00 03 00 00 00 00 10 00 00 72 ...............r
+00406000 00 00 00 00 24 02 00 01 AF C2 00 28 8F C3 00 24 ....$......(...$
+00406010 00 00 00 00 00 60 10 25 00 02 10 80 00 43 10 21 .....`.%.....C.!
+00406020 00 02 10 80 00 43 10 23 00 02 10 C0 24 43 00 08 .....C.#....$C..
+00406030 8F 82 81 E0 00 00 00 00 00 43 10 21 8C 42 00 00 .........C.!.B..
+00406040 00 00 00 00 AF C2 00 34 24 02 00 01 8F C3 00 34 .......4$......4
+00406050 00 00 00 00 10 62 00 24 00 00 00 00 8F C3 00 34 .....b.$.......4
+00406060 00 00 00 00 2C 62 00 01 14 40 00 08 00 00 00 00 ....,b...@......
+00406070 24 02 00 02 8F C3 00 34 00 00 00 00 10 62 00 34 $......4.....b.4
+00406080 00 00 00 00 10 00 00 50 00 00 00 00 8F C3 00 24 .......P.......$
+00406090 00 00 00 00 00 60 10 25 00 02 10 80 00 43 10 21 .....`.%.....C.!
+004060A0 00 02 10 80 00 43 10 23 00 02 18 C0 8F 82 81 E0 .....C.#........
+004060B0 00 00 00 00 24 42 00 0D 00 62 10 21 00 40 20 25 ....$B...b.!.@ %
+004060C0 8F C5 00 30 24 06 00 14 8F 99 81 2C 00 00 00 00 ...0$......,....
+004060D0 03 20 F8 09 00 00 00 00 8F DC 00 18 00 00 00 00 . ..............
+004060E0 10 00 00 39 00 00 00 00 8F C4 00 30 00 00 28 25 ...9.......0..(%
+004060F0 8F 99 80 1C 00 00 00 00 27 39 53 F0 00 00 00 00 ........'9S.....
+00406100 03 20 F8 09 00 00 00 00 8F DC 00 18 00 40 20 25 . ...........@ %
+00406110 8F C3 00 24 00 00 00 00 00 60 10 25 00 02 10 80 ...$.....`.%....
+00406120 00 43 10 21 00 02 10 80 00 43 10 23 00 02 10 C0 .C.!.....C.#....
+00406130 24 43 00 90 8F 82 81 E0 00 00 00 00 24 42 00 04 $C..........$B..
+00406140 00 43 10 21 AC 44 00 00 10 00 00 1F 00 00 00 00 .C.!.D..........
+00406150 8F C3 00 24 00 00 00 00 00 60 10 25 00 02 10 80 ...$.....`.%....
+00406160 00 43 10 21 00 02 10 80 00 43 10 23 00 02 10 C0 .C.!.....C.#....
+00406170 24 43 00 90 8F 82 81 E0 00 00 00 00 24 42 00 04 $C..........$B..
+00406180 00 43 20 21 83 C2 00 2C 00 00 00 00 00 02 18 40 .C !...,.......@
+00406190 8F 82 82 0C 00 00 00 00 8C 42 00 00 00 00 00 00 .........B......
+004061A0 00 62 10 21 94 42 00 00 00 00 00 00 30 42 00 01 .b.!.B......0B..
+004061B0 30 42 FF FF AC 82 00 00 8F C2 00 20 00 00 00 00 0B......... ....
+004061C0 24 42 FF FF AF C2 00 20 8F C2 00 24 00 00 00 00 $B..... ...$....
+004061D0 24 42 00 01 10 00 FF 35 AF C2 00 24 8F C2 00 28 $B.....5...$...(
+004061E0 00 00 00 00 14 40 00 1D 00 00 00 00 83 C2 00 2C .....@.........,
+004061F0 00 00 00 00 AF A2 00 10 24 04 00 01 8F 85 80 20 ........$...... 
+00406200 00 00 00 00 24 A5 A6 74 8F 86 80 20 00 00 00 00 ....$..t... ....
+00406210 24 C6 A6 8C 24 07 00 C8 8F 99 81 8C 00 00 00 00 $...$...........
+00406220 03 20 F8 09 00 00 00 00 8F DC 00 18 00 00 00 00 . ..............
+00406230 8F C2 00 4C 00 00 00 00 8C 44 00 00 8F 99 82 3C ...L.....D.....<
+00406240 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00406250 00 00 00 00 10 00 00 07 00 00 10 25 8F C2 00 20 ...........%... 
+00406260 00 00 00 00 24 42 00 01 10 00 FE A5 AF C2 00 20 ....$B......... 
+00406270 24 02 00 01 03 C0 E8 25 8F BF 00 44 8F BE 00 40 $......%...D...@
+00406280 8F B0 00 3C 03 E0 00 08 27 BD 00 48             ...<....'..H   
+0040628C                                     3C 1C 0F C0             <...
+00406290 27 9C 25 D4 03 99 E0 21 27 BD FF D0 AF BC 00 10 '.%....!'.......
+004062A0 AF BF 00 28 AF BE 00 24 03 A0 F0 25 AF C4 00 30 ...(...$...%...0
+004062B0 8F C2 00 30 00 00 00 00 10 40 00 12 00 00 00 00 ...0.....@......
+004062C0 8F C2 00 30 00 00 00 00 80 42 00 00 00 00 00 00 ...0.....B......
+004062D0 10 40 00 0C 00 00 00 00 8F 84 80 20 00 00 00 00 .@......... ....
+004062E0 24 84 A6 AC 8F C5 00 30 8F 99 82 30 00 00 00 00 $......0...0....
+004062F0 03 20 F8 09 00 00 00 00 8F DC 00 10 10 00 00 0A . ..............
+00406300 00 00 00 00 8F 84 80 20 00 00 00 00 24 84 A6 BC ....... ....$...
+00406310 8F 99 82 30 00 00 00 00 03 20 F8 09 00 00 00 00 ...0..... ......
+00406320 8F DC 00 10 00 00 00 00 AF C0 00 18 8F C3 00 18 ................
+00406330 00 00 00 00 00 60 10 25 00 02 10 80 00 43 10 21 .....`.%.....C.!
+00406340 00 02 10 80 00 43 10 23 00 02 10 C0 24 42 00 08 .....C.#....$B..
+00406350 8F 83 81 E0 00 00 00 00 00 62 18 21 80 63 00 04 .........b.!.c..
+00406360 24 02 00 20 14 62 00 03 00 00 00 00 10 00 00 98 $.. .b..........
+00406370 00 00 00 00 8F C3 00 18 00 00 00 00 00 60 10 25 .............`.%
+00406380 00 02 10 80 00 43 10 21 00 02 10 80 00 43 10 23 .....C.!.....C.#
+00406390 00 02 10 C0 24 43 00 08 8F 82 81 E0 00 00 00 00 ....$C..........
+004063A0 00 43 10 21 8C 43 00 00 24 02 00 02 14 62 00 60 .C.!.C..$....b.`
+004063B0 00 00 00 00 8F C3 00 18 00 00 00 00 00 60 10 25 .............`.%
+004063C0 00 02 10 80 00 43 10 21 00 02 10 80 00 43 10 23 .....C.!.....C.#
+004063D0 00 02 10 C0 24 42 00 08 8F 81 81 E0 00 00 00 00 ....$B..........
+004063E0 00 22 08 21 80 22 00 04 00 00 00 00 00 02 18 40 .".!.".........@
+004063F0 8F 82 82 0C 00 00 00 00 8C 42 00 00 00 00 00 00 .........B......
+00406400 00 62 10 21 94 42 00 00 00 00 00 00 30 42 00 01 .b.!.B......0B..
+00406410 30 42 FF FF 10 40 00 17 00 00 00 00 8F C3 00 18 0B...@..........
+00406420 00 00 00 00 00 60 10 25 00 02 10 80 00 43 10 21 .....`.%.....C.!
+00406430 00 02 10 80 00 43 10 23 00 02 10 C0 24 42 00 08 .....C.#....$B..
+00406440 8F 81 81 E0 00 00 00 00 00 22 08 21 80 22 00 04 .........".!."..
+00406450 00 00 00 00 00 40 20 25 8F 99 81 DC 00 00 00 00 .....@ %........
+00406460 03 20 F8 09 00 00 00 00 8F DC 00 10 10 00 00 16 . ..............
+00406470 AF C2 00 1C 8F C3 00 18 00 00 00 00 00 60 10 25 .............`.%
+00406480 00 02 10 80 00 43 10 21 00 02 10 80 00 43 10 23 .....C.!.....C.#
+00406490 00 02 10 C0 24 42 00 08 8F 81 81 E0 00 00 00 00 ....$B..........
+004064A0 00 22 08 21 80 22 00 04 00 00 00 00 00 40 20 25 .".!.".......@ %
+004064B0 8F 99 80 64 00 00 00 00 03 20 F8 09 00 00 00 00 ...d..... ......
+004064C0 8F DC 00 10 AF C2 00 1C 8F C3 00 18 00 00 00 00 ................
+004064D0 00 60 10 25 00 02 10 80 00 43 10 21 00 02 10 80 .`.%.....C.!....
+004064E0 00 43 10 23 00 02 10 C0 24 42 00 08 8F 81 81 E0 .C.#....$B......
+004064F0 00 00 00 00 00 22 08 21 80 22 00 04 8F 84 80 20 .....".!."..... 
+00406500 00 00 00 00 24 84 A6 D0 00 40 28 25 8F C6 00 1C ....$....@(%....
+00406510 8F 99 82 30 00 00 00 00 03 20 F8 09 00 00 00 00 ...0..... ......
+00406520 8F DC 00 10 00 00 00 00 10 00 00 24 00 00 00 00 ...........$....
+00406530 8F C3 00 18 00 00 00 00 00 60 10 25 00 02 10 80 .........`.%....
+00406540 00 43 10 21 00 02 10 80 00 43 10 23 00 02 10 C0 .C.!.....C.#....
+00406550 24 42 00 08 8F 85 81 E0 00 00 00 00 00 A2 28 21 $B............(!
+00406560 80 A5 00 04 8F C3 00 18 00 00 00 00 00 60 10 25 .............`.%
+00406570 00 02 10 80 00 43 10 21 00 02 10 80 00 43 10 23 .....C.!.....C.#
+00406580 00 02 18 C0 8F 82 81 E0 00 00 00 00 24 42 00 04 ............$B..
+00406590 00 43 10 21 8F 84 80 20 00 00 00 00 24 84 A6 D8 .C.!... ....$...
+004065A0 8C 46 00 00 8F 99 82 30 00 00 00 00 03 20 F8 09 .F.....0..... ..
+004065B0 00 00 00 00 8F DC 00 10 00 00 00 00 8F C2 00 18 ................
+004065C0 00 00 00 00 24 42 00 01 10 00 FF 58 AF C2 00 18 ....$B.....X....
+004065D0 8F 84 80 20 00 00 00 00 24 84 A6 E0 8F 99 82 30 ... ....$......0
+004065E0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+004065F0 00 00 00 00 03 C0 E8 25 8F BF 00 28 8F BE 00 24 .......%...(...$
+00406600 03 E0 00 08 27 BD 00 30 00 00 00 00 00 00 00 00 ....'..0........
+00406610 3C 1C 0F C0 27 9C 22 50 03 99 E0 21 27 BD FB C8 <...'."P...!'...
+00406620 AF BC 00 10 AF A5 04 3C AF A6 04 40 AF A7 04 44 .......<...@...D
+00406630 AF BF 04 30 AF BE 04 2C 03 A0 F0 25 AF C4 04 38 ...0...,...%...8
+00406640 AF C5 04 3C 8F C2 04 38 8F 83 80 94 00 00 00 00 ...<...8........
+00406650 8C 63 00 00 00 00 00 00 00 62 10 2A 14 40 00 1D .c.......b.*.@..
+00406660 00 00 00 00 27 C2 04 40 AF C2 00 18 27 C2 00 20 ....'..@....'.. 
+00406670 00 40 20 25 24 05 03 FF 8F C6 04 3C 8F C7 00 18 .@ %$......<....
+00406680 8F 99 81 D0 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00406690 8F DC 00 10 AF C2 04 20 27 C2 00 20 8F 84 81 C0 ....... '.. ....
+004066A0 00 00 00 00 8C 84 00 00 8F C5 04 38 8F C6 04 20 ...........8... 
+004066B0 00 40 38 25 8F 99 80 1C 00 00 00 00 27 39 69 7C .@8%........'9i|
+004066C0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+004066D0 00 00 00 00 03 C0 E8 25 8F BF 04 30 8F BE 04 2C .......%...0...,
+004066E0 03 E0 00 08 27 BD 04 38                         ....'..8       
+004066E8                         3C 1C 0F C0 27 9C 21 78         <...'.!x
+004066F0 03 99 E0 21 27 BD FF D8 AF BC 00 10 AF BF 00 20 ...!'.......... 
+00406700 AF BE 00 1C 03 A0 F0 25 AF C4 00 28 8F 82 80 40 .......%...(...@
+00406710 00 00 00 00 8C 42 00 00 00 00 00 00 80 42 00 00 .....B.......B..
+00406720 00 00 00 00 10 40 00 31 00 00 00 00 8F 82 80 40 .....@.1.......@
+00406730 00 00 00 00 8C 42 00 00 00 00 00 00 80 43 00 00 .....B.......C..
+00406740 24 02 00 2D 10 62 00 29 00 00 00 00 8F 84 80 40 $..-.b.).......@
+00406750 00 00 00 00 8C 84 00 00 8F C5 00 28 8F 99 80 EC ...........(....
+00406760 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00406770 00 00 00 00 8F 81 81 C0 00 00 00 00 AC 22 00 00 ............."..
+00406780 8F 82 81 C0 00 00 00 00 8C 42 00 00 00 00 00 00 .........B......
+00406790 14 40 00 28 00 00 00 00 8F 82 80 B4 00 00 00 00 .@.(............
+004067A0 8C 42 00 00 8F 81 81 C0 00 00 00 00 AC 22 00 00 .B..........."..
+004067B0 00 00 20 25 8F 85 80 20 00 00 00 00 24 A5 A7 04 .. %... ....$...
+004067C0 8F 86 80 40 00 00 00 00 8C C6 00 00 8F 99 81 8C ...@............
+004067D0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+004067E0 00 00 00 00 10 00 00 13 00 00 00 00 8F 82 80 B4 ................
+004067F0 00 00 00 00 8C 42 00 00 8F 81 81 C0 00 00 00 00 .....B..........
+00406800 AC 22 00 00 8F 84 80 40 00 00 00 00 8C 84 00 00 .".....@........
+00406810 8F 85 80 20 00 00 00 00 24 A5 A7 3C 8F 99 82 44 ... ....$..<...D
+00406820 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00406830 00 00 00 00 03 C0 E8 25 8F BF 00 20 8F BE 00 1C .......%... ....
+00406840 03 E0 00 08 27 BD 00 28                         ....'..(       
+00406848                         3C 1C 0F C0 27 9C 20 18         <...'. .
+00406850 03 99 E0 21 27 BD FE D8 AF BC 00 10 AF BF 01 20 ...!'.......... 
+00406860 AF BE 01 1C 03 A0 F0 25 8F 84 81 C0 00 00 00 00 .......%........
+00406870 8C 84 00 00 8F 99 80 DC 00 00 00 00 03 20 F8 09 ............. ..
+00406880 00 00 00 00 8F DC 00 10 00 00 00 00 8F 82 80 40 ...............@
+00406890 00 00 00 00 8C 42 00 00 00 00 00 00 80 42 00 00 .....B.......B..
+004068A0 00 00 00 00 10 40 00 27 00 00 00 00 8F 82 80 40 .....@.'.......@
+004068B0 00 00 00 00 8C 42 00 00 00 00 00 00 80 43 00 00 .....B.......C..
+004068C0 24 02 00 2D 10 62 00 1F 00 00 00 00 27 C4 00 18 $..-.b......'...
+004068D0 8F 85 80 40 00 00 00 00 8C A5 00 00 8F 99 82 44 ...@...........D
+004068E0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+004068F0 00 00 00 00 27 C4 00 18 8F 85 80 20 00 00 00 00 ....'...... ....
+00406900 24 A5 A7 44 8F 99 81 60 00 00 00 00 03 20 F8 09 $..D...`..... ..
+00406910 00 00 00 00 8F DC 00 10 00 00 00 00 8F 84 80 40 ...............@
+00406920 00 00 00 00 8C 84 00 00 27 C5 00 18 8F 99 81 78 ........'......x
+00406930 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00406940 00 00 00 00 8F 84 80 20 00 00 00 00 24 84 A7 40 ....... ....$..@
+00406950 8F 99 80 70 00 00 00 00 03 20 F8 09 00 00 00 00 ...p..... ......
+00406960 8F DC 00 10 00 00 00 00 03 C0 E8 25 8F BF 01 20 ...........%... 
+00406970 8F BE 01 1C 03 E0 00 08 27 BD 01 28             ........'..(   
+0040697C                                     3C 1C 0F C0             <...
+00406980 27 9C 1E E4 03 99 E0 21 27 BD FF 98 AF BC 00 18 '......!'.......
+00406990 AF BF 00 60 AF BE 00 5C AF B1 00 58 AF B0 00 54 ...`...\...X...T
+004069A0 03 A0 F0 25 AF C4 00 68 00 A0 80 25 00 C0 10 25 ...%...h...%...%
+004069B0 00 E0 88 25 27 C2 00 40 00 40 20 25 00 00 28 25 ...%'..@.@ %..(%
+004069C0 8F 99 80 F0 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+004069D0 8F DC 00 18 00 00 00 00 27 C2 00 40 00 40 20 25 ........'..@.@ %
+004069E0 8F 99 80 78 00 00 00 00 03 20 F8 09 00 00 00 00 ...x..... ......
+004069F0 8F DC 00 18 27 C4 00 20 24 05 00 1C 8F 86 80 20 ....'.. $...... 
+00406A00 00 00 00 00 24 C6 A7 4C 00 40 38 25 8F 99 80 A0 ....$..L.@8%....
+00406A10 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00406A20 00 00 00 00 02 00 10 25 00 02 18 80 8F 82 80 9C .......%........
+00406A30 00 00 00 00 00 43 30 21 8F C4 00 44 3C 02 10 62 .....C0!...D<..b
+00406A40 34 42 4D D3 00 82 00 18 00 00 10 10 00 02 19 83 4BM.............
+00406A50 00 04 17 C3 00 62 10 23 AF A2 00 10 AF B1 00 14 .....b.#........
+00406A60 8F C4 00 68 8F 85 80 20 00 00 00 00 24 A5 A7 60 ...h... ....$..`
+00406A70 8C C6 00 00 27 C7 00 20 8F 99 81 64 00 00 00 00 ....'.. ...d....
+00406A80 03 20 F8 09 00 00 00 00 8F DC 00 18 00 00 00 00 . ..............
+00406A90 8F C4 00 68 8F 99 81 AC 00 00 00 00 03 20 F8 09 ...h......... ..
+00406AA0 00 00 00 00 8F DC 00 18 00 00 00 00 8F 82 80 18 ................
+00406AB0 00 00 00 00 24 42 08 24 8C 42 00 00 00 00 00 00 ....$B.$.B......
+00406AC0 24 42 00 01 8F 81 80 18 00 00 00 00 24 21 08 24 $B..........$!.$
+00406AD0 AC 22 00 00 8F 82 81 C8 00 00 00 00 8C 42 00 00 ."...........B..
+00406AE0 00 00 00 00 10 40 00 39 00 00 00 00 8F 82 81 C8 .....@.9........
+00406AF0 00 00 00 00 8C 42 00 00 00 00 00 00 AF C2 00 48 .....B.........H
+00406B00 8F C2 00 48 00 00 00 00 04 41 00 05 00 00 00 00 ...H.....A......
+00406B10 8F C3 00 48 00 00 00 00 24 63 03 FF AF C3 00 48 ...H....$c.....H
+00406B20 8F C3 00 48 00 00 00 00 00 03 12 83 8F 83 80 18 ...H............
+00406B30 00 00 00 00 24 63 08 24 8C 63 00 00 00 00 00 00 ....$c.$.c......
+00406B40 00 43 10 2A 10 40 00 21 00 00 00 00 8F C4 00 68 .C.*.@.!.......h
+00406B50 8F 99 80 E4 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00406B60 8F DC 00 18 00 00 00 00 8F 83 81 C8 00 00 00 00 ................
+00406B70 8C 63 00 00 00 00 00 00 00 43 10 2A 14 40 00 09 .c.......C.*.@..
+00406B80 00 00 00 00 8F C4 00 68 8F 99 82 10 00 00 00 00 .......h........
+00406B90 03 20 F8 09 00 00 00 00 8F DC 00 18 10 00 00 0B . ..............
+00406BA0 00 00 00 00 8F 82 80 18 00 00 00 00 24 42 08 24 ............$B.$
+00406BB0 8C 42 00 00 00 00 00 00 24 42 FF F6 8F 81 80 18 .B......$B......
+00406BC0 00 00 00 00 24 21 08 24 AC 22 00 00 03 C0 E8 25 ....$!.$.".....%
+00406BD0 8F BF 00 60 8F BE 00 5C 8F B1 00 58 8F B0 00 54 ...`...\...X...T
+00406BE0 03 E0 00 08 27 BD 00 68 00 00 00 00 00 00 00 00 ....'..h........
+00406BF0 3C 1C 0F C0 27 9C 1C 70 03 99 E0 21 27 BD FF D0 <...'..p...!'...
+00406C00 AF BC 00 10 AF BF 00 28 AF BE 00 24 03 A0 F0 25 .......(...$...%
+00406C10 AF C4 00 30 AF C5 00 34 AF C6 00 38 AF C7 00 3C ...0...4...8...<
+00406C20 24 04 00 24 8F 99 81 D4 00 00 00 00 03 20 F8 09 $..$......... ..
+00406C30 00 00 00 00 8F DC 00 10 AF C2 00 18 8F C2 00 18 ................
+00406C40 00 00 00 00 14 40 00 0D AF C2 00 18 00 00 20 25 .....@........ %
+00406C50 8F 85 80 20 00 00 00 00 24 A5 A7 70 8F 99 81 8C ... ....$..p....
+00406C60 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00406C70 00 00 00 00 10 00 00 30 00 00 10 25 8F C3 00 18 .......0...%....
+00406C80 24 02 FF FF AC 62 00 00 8F C3 00 18 8F C2 00 3C $....b.........<
+00406C90 00 00 00 00 AC 62 00 20 8F C2 00 18 00 00 00 00 .....b. ........
+00406CA0 AC 40 00 18 8F C2 00 18 00 00 00 00 AC 40 00 1C .@...........@..
+00406CB0 8F C3 00 18 8F C2 00 38 00 00 00 00 AC 62 00 04 .......8.....b..
+00406CC0 8F C2 00 18 00 00 00 00 24 42 00 08 00 40 20 25 ........$B...@ %
+00406CD0 24 05 00 10 8F 99 81 94 00 00 00 00 03 20 F8 09 $............ ..
+00406CE0 00 00 00 00 8F DC 00 10 00 00 00 00 8F C3 00 18 ................
+00406CF0 24 02 00 02 A4 62 00 08 8F C3 00 18 97 C2 00 36 $....b.........6
+00406D00 00 00 00 00 A4 62 00 0A 8F C4 00 30 8F 99 81 58 .....b.....0...X
+00406D10 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00406D20 00 40 18 25 8F C2 00 18 00 00 00 00 AC 43 00 0C .@.%.........C..
+00406D30 8F C2 00 18 00 00 00 00 03 C0 E8 25 8F BF 00 28 ...........%...(
+00406D40 8F BE 00 24 03 E0 00 08 27 BD 00 30             ...$....'..0   
+00406D4C                                     3C 1C 0F C0             <...
+00406D50 27 9C 1B 14 03 99 E0 21 27 BD FF C8 AF BC 00 18 '......!'.......
+00406D60 AF BF 00 34 AF BE 00 30 AF B0 00 2C 03 A0 F0 25 ...4...0...,...%
+00406D70 AF C4 00 38 24 04 00 02 24 05 00 02 24 06 00 06 ...8$...$...$...
+00406D80 8F 99 81 BC 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00406D90 8F DC 00 18 AF C2 00 20 8F C2 00 20 00 00 00 00 ....... ... ....
+00406DA0 04 41 00 27 00 00 00 00 8F 99 80 98 00 00 00 00 .A.'............
+00406DB0 03 20 F8 09 00 00 00 00 8F DC 00 18 00 40 80 25 . ...........@.%
+00406DC0 8F 99 80 98 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00406DD0 8F DC 00 18 8C 44 00 00 8F 99 82 1C 00 00 00 00 .....D..........
+00406DE0 03 20 F8 09 00 00 00 00 8F DC 00 18 00 40 18 25 . ...........@.%
+00406DF0 8E 02 00 00 00 00 00 00 AF A2 00 10 AF A3 00 14 ................
+00406E00 24 04 00 01 8F 85 80 20 00 00 00 00 24 A5 A7 9C $...... ....$...
+00406E10 8F 86 80 20 00 00 00 00 24 C6 A7 C8 24 07 00 31 ... ....$...$..1
+00406E20 8F 99 81 8C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00406E30 8F DC 00 18 00 00 00 00 10 00 00 69 00 00 10 25 ...........i...%
+00406E40 8F C2 00 38 00 00 00 00 24 42 00 08 8F C4 00 20 ...8....$B..... 
+00406E50 00 40 28 25 24 06 00 10 8F 99 81 5C 00 00 00 00 .@(%$......\....
+00406E60 03 20 F8 09 00 00 00 00 8F DC 00 18 04 41 00 27 . ...........A.'
+00406E70 00 00 00 00 8F 99 80 98 00 00 00 00 03 20 F8 09 ............. ..
+00406E80 00 00 00 00 8F DC 00 18 00 40 80 25 8F 99 80 98 .........@.%....
+00406E90 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00406EA0 8C 44 00 00 8F 99 82 1C 00 00 00 00 03 20 F8 09 .D........... ..
+00406EB0 00 00 00 00 8F DC 00 18 00 40 18 25 8E 02 00 00 .........@.%....
+00406EC0 00 00 00 00 AF A2 00 10 AF A3 00 14 24 04 00 01 ............$...
+00406ED0 8F 85 80 20 00 00 00 00 24 A5 A7 D4 8F 86 80 20 ... ....$...... 
+00406EE0 00 00 00 00 24 C6 A7 C8 24 07 00 37 8F 99 81 8C ....$...$..7....
+00406EF0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00406F00 00 00 00 00 10 00 00 36 00 00 10 25 8F C2 00 38 .......6...%...8
+00406F10 8F C4 00 20 8C 45 00 04 8F 99 81 0C 00 00 00 00 ... .E..........
+00406F20 03 20 F8 09 00 00 00 00 8F DC 00 18 04 41 00 27 . ...........A.'
+00406F30 00 00 00 00 8F 99 80 98 00 00 00 00 03 20 F8 09 ............. ..
+00406F40 00 00 00 00 8F DC 00 18 00 40 80 25 8F 99 80 98 .........@.%....
+00406F50 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00406F60 8C 44 00 00 8F 99 82 1C 00 00 00 00 03 20 F8 09 .D........... ..
+00406F70 00 00 00 00 8F DC 00 18 00 40 18 25 8E 02 00 00 .........@.%....
+00406F80 00 00 00 00 AF A2 00 10 AF A3 00 14 24 04 00 01 ............$...
+00406F90 8F 85 80 20 00 00 00 00 24 A5 A7 FC 8F 86 80 20 ... ....$...... 
+00406FA0 00 00 00 00 24 C6 A7 C8 24 07 00 41 8F 99 81 8C ....$...$..A....
+00406FB0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00406FC0 00 00 00 00 10 00 00 06 00 00 10 25 8F C3 00 38 ...........%...8
+00406FD0 8F C2 00 20 00 00 00 00 AC 62 00 00 24 02 00 01 ... .....b..$...
+00406FE0 03 C0 E8 25 8F BF 00 34 8F BE 00 30 8F B0 00 2C ...%...4...0...,
+00406FF0 03 E0 00 08 27 BD 00 38                         ....'..8       
+00406FF8                         3C 1C 0F C0 27 9C 18 68         <...'..h
+00407000 03 99 E0 21 27 BD FF D8 AF BC 00 10 AF BF 00 20 ...!'.......... 
+00407010 AF BE 00 1C 03 A0 F0 25 AF C4 00 28 8F C2 00 28 .......%...(...(
+00407020 00 00 00 00 10 40 00 13 00 00 00 00 8F C2 00 28 .....@.........(
+00407030 00 00 00 00 8C 42 00 00 00 00 00 00 18 40 00 0D .....B.......@..
+00407040 00 00 00 00 8F C2 00 28 00 00 00 00 8C 44 00 00 .......(.....D..
+00407050 8F 99 80 3C 00 00 00 00 03 20 F8 09 00 00 00 00 ...<..... ......
+00407060 8F DC 00 10 00 00 00 00 8F C3 00 28 24 02 FF FF ...........($...
+00407070 AC 62 00 00 24 02 FF FF 03 C0 E8 25 8F BF 00 20 .b..$......%... 
+00407080 8F BE 00 1C 03 E0 00 08 27 BD 00 28             ........'..(   
+0040708C                                     3C 1C 0F C0             <...
+00407090 27 9C 17 D4 03 99 E0 21 27 BD FF D0 AF BC 00 18 '......!'.......
+004070A0 AF BF 00 28 AF BE 00 24 03 A0 F0 25 AF C4 00 30 ...(...$...%...0
+004070B0 8F C2 00 30 00 00 00 00 8C 42 00 20 00 00 00 00 ...0.....B. ....
+004070C0 AF A2 00 10 24 04 00 04 8F 85 80 20 00 00 00 00 ....$...... ....
+004070D0 24 A5 A8 1C 8F 86 80 20 00 00 00 00 24 C6 A8 38 $...... ....$..8
+004070E0 24 07 00 5A 8F 99 81 8C 00 00 00 00 03 20 F8 09 $..Z......... ..
+004070F0 00 00 00 00 8F DC 00 18 00 00 00 00 8F C4 00 30 ...............0
+00407100 8F 99 81 14 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00407110 8F DC 00 18 00 00 00 00 8F C4 00 30 8F 99 80 2C ...........0...,
+00407120 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00407130 00 00 00 00 03 C0 E8 25 8F BF 00 28 8F BE 00 24 .......%...(...$
+00407140 03 E0 00 08 27 BD 00 30 00 00 00 00 00 00 00 00 ....'..0........
+00407150 3C 1C 0F C0 27 9C 17 10 03 99 E0 21 27 BD FF D0 <...'......!'...
+00407160 AF BC 00 10 AF BF 00 28 AF BE 00 24 03 A0 F0 25 .......(...$...%
+00407170 24 04 00 0C 8F 99 81 D4 00 00 00 00 03 20 F8 09 $............ ..
+00407180 00 00 00 00 8F DC 00 10 AF C2 00 18 8F C2 00 18 ................
+00407190 00 00 00 00 14 40 00 0D AF C2 00 18 00 00 20 25 .....@........ %
+004071A0 8F 85 80 20 00 00 00 00 24 A5 A8 50 8F 99 81 8C ... ....$..P....
+004071B0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+004071C0 00 00 00 00 10 00 00 0C 00 00 10 25 8F C2 00 18 ...........%....
+004071D0 00 00 00 00 AC 40 00 08 8F C2 00 18 00 00 00 00 .....@..........
+004071E0 AC 40 00 00 8F C2 00 18 00 00 00 00 AC 40 00 04 .@...........@..
+004071F0 8F C2 00 18 00 00 00 00 03 C0 E8 25 8F BF 00 28 ...........%...(
+00407200 8F BE 00 24 03 E0 00 08 27 BD 00 30             ...$....'..0   
+0040720C                                     3C 1C 0F C0             <...
+00407210 27 9C 16 54 03 99 E0 21 27 BD FF F0 AF BC 00 00 '..T...!'.......
+00407220 AF BE 00 0C 03 A0 F0 25 AF C4 00 10 AF C5 00 14 .......%........
+00407230 8F C2 00 10 00 00 00 00 8C 42 00 08 00 00 00 00 .........B......
+00407240 10 40 00 0D 00 00 00 00 8F C2 00 10 00 00 00 00 .@..............
+00407250 8C 43 00 08 8F C2 00 14 00 00 00 00 AC 62 00 1C .C...........b..
+00407260 8F C3 00 14 8F C2 00 10 00 00 00 00 8C 42 00 08 .............B..
+00407270 00 00 00 00 AC 62 00 18 8F C2 00 14 00 00 00 00 .....b..........
+00407280 AC 40 00 1C 8F C3 00 10 8F C2 00 14 00 00 00 00 .@..............
+00407290 AC 62 00 08 8F C2 00 10 8F C3 00 10 8F C2 00 10 .b..............
+004072A0 00 00 00 00 8C 42 00 00 00 00 00 00 24 42 00 01 .....B......$B..
+004072B0 AC 62 00 00 8F C2 00 10 8F C3 00 10 8C 44 00 00 .b...........D..
+004072C0 8C 62 00 04 00 00 00 00 00 44 10 2A 10 40 00 07 .b.......D.*.@..
+004072D0 00 00 00 00 8F C2 00 10 8F C3 00 10 00 00 00 00 ................
+004072E0 8C 63 00 00 00 00 00 00 AC 43 00 04 8F C2 00 10 .c.......C......
+004072F0 00 00 00 00 8C 42 00 00 00 00 00 00 03 C0 E8 25 .....B.........%
+00407300 8F BE 00 0C 03 E0 00 08 27 BD 00 10             ........'...   
+0040730C                                     3C 1C 0F C0             <...
+00407310 27 9C 15 54 03 99 E0 21 27 BD FF F0 AF BC 00 00 '..T...!'.......
+00407320 AF BE 00 0C 03 A0 F0 25 AF C4 00 10 AF C5 00 14 .......%........
+00407330 8F C2 00 14 00 00 00 00 10 40 00 2D 00 00 00 00 .........@.-....
+00407340 8F C2 00 10 8F C3 00 14 8C 42 00 08 00 00 00 00 .........B......
+00407350 14 62 00 09 00 00 00 00 8F C2 00 10 8F C3 00 14 .b..............
+00407360 00 00 00 00 8C 63 00 18 00 00 00 00 AC 43 00 08 .....c.......C..
+00407370 10 00 00 09 00 00 00 00 8F C2 00 14 00 00 00 00 ................
+00407380 8C 43 00 1C 8F C2 00 14 00 00 00 00 8C 42 00 18 .C...........B..
+00407390 00 00 00 00 AC 62 00 18 8F C2 00 14 00 00 00 00 .....b..........
+004073A0 8C 42 00 18 00 00 00 00 10 40 00 09 00 00 00 00 .B.......@......
+004073B0 8F C2 00 14 00 00 00 00 8C 43 00 18 8F C2 00 14 .........C......
+004073C0 00 00 00 00 8C 42 00 1C 00 00 00 00 AC 62 00 1C .....B.......b..
+004073D0 8F C2 00 10 8F C3 00 10 8F C2 00 10 00 00 00 00 ................
+004073E0 8C 42 00 00 00 00 00 00 24 42 FF FF AC 62 00 00 .B......$B...b..
+004073F0 8F C2 00 10 00 00 00 00 8C 42 00 00 00 00 00 00 .........B......
+00407400 03 C0 E8 25 8F BE 00 0C 03 E0 00 08 27 BD 00 10 ...%........'...
+00407410 3C 1C 0F C0 27 9C 14 50 03 99 E0 21 27 BD FF E8 <...'..P...!'...
+00407420 AF BC 00 00 AF BE 00 14 03 A0 F0 25 AF C4 00 18 ...........%....
+00407430 AF C5 00 1C 8F C2 00 18 00 00 00 00 8C 42 00 08 .............B..
+00407440 00 00 00 00 AF C2 00 08 8F C2 00 08 00 00 00 00 ................
+00407450 10 40 00 10 00 00 00 00 8F C2 00 08 00 00 00 00 .@..............
+00407460 8C 43 00 00 8F C2 00 1C 00 00 00 00 14 62 00 03 .C...........b..
+00407470 00 00 00 00 10 00 00 07 00 00 00 00 8F C2 00 08 ................
+00407480 00 00 00 00 8C 42 00 18 00 00 00 00 10 00 FF EE .....B..........
+00407490 AF C2 00 08 8F C2 00 08 00 00 00 00 03 C0 E8 25 ...............%
+004074A0 8F BE 00 14 03 E0 00 08 27 BD 00 18             ........'...   
+004074AC                                     3C 1C 0F C0             <...
+004074B0 27 9C 13 B4 03 99 E0 21 27 BD FF D0 AF BC 00 18 '......!'.......
+004074C0 AF BF 00 28 AF BE 00 24 03 A0 F0 25 AF C4 00 30 ...(...$...%...0
+004074D0 AF C5 00 34 8F C4 00 30 8F C5 00 34 8F 99 81 10 ...4...0...4....
+004074E0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+004074F0 00 00 00 00 8F C2 00 34 00 00 00 00 AF A2 00 10 .......4........
+00407500 24 04 00 02 8F 85 80 20 00 00 00 00 24 A5 A8 7C $...... ....$..|
+00407510 8F 86 80 20 00 00 00 00 24 C6 A8 98 24 07 00 55 ... ....$...$..U
+00407520 8F 99 81 8C 00 00 00 00 03 20 F8 09 00 00 00 00 ......... ......
+00407530 8F DC 00 18 00 00 00 00 8F C4 00 34 8F 99 81 A0 ...........4....
+00407540 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 18 ..... ..........
+00407550 00 00 00 00 03 C0 E8 25 8F BF 00 28 8F BE 00 24 .......%...(...$
+00407560 03 E0 00 08 27 BD 00 30                         ....'..0       
+00407568                         3C 1C 0F C0 27 9C 12 F8         <...'...
+00407570 03 99 E0 21 27 BD FF D0 AF BC 00 10 AF BF 00 28 ...!'..........(
+00407580 AF BE 00 24 03 A0 F0 25 AF C4 00 30 8F C2 00 30 ...$...%...0...0
+00407590 00 00 00 00 8C 42 00 08 00 00 00 00 AF C2 00 18 .....B..........
+004075A0 8F C2 00 18 00 00 00 00 14 40 00 03 00 00 00 00 .........@......
+004075B0 10 00 00 0E 00 00 00 00 8F C4 00 18 8F 99 81 14 ................
+004075C0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+004075D0 00 00 00 00 8F C2 00 18 00 00 00 00 8C 42 00 18 .............B..
+004075E0 00 00 00 00 10 00 FF EE AF C2 00 18 03 C0 E8 25 ...............%
+004075F0 8F BF 00 28 8F BE 00 24 03 E0 00 08 27 BD 00 30 ...(...$....'..0
+00407600 3C 1C 0F C0 27 9C 12 60 03 99 E0 21 27 BD FF D0 <...'..`...!'...
+00407610 AF BC 00 10 AF BF 00 28 AF BE 00 24 03 A0 F0 25 .......(...$...%
+00407620 AF C4 00 30 8F C2 00 30 00 00 00 00 8C 42 00 08 ...0...0.....B..
+00407630 00 00 00 00 AF C2 00 18 8F C2 00 30 00 00 00 00 ...........0....
+00407640 8C 42 00 08 00 00 00 00 14 40 00 03 00 00 00 00 .B.......@......
+00407650 10 00 00 10 00 00 00 00 8F C2 00 30 00 00 00 00 ...........0....
+00407660 8C 42 00 08 00 00 00 00 AF C2 00 18 8F C4 00 30 .B.............0
+00407670 8F C5 00 18 8F 99 80 80 00 00 00 00 03 20 F8 09 ............. ..
+00407680 00 00 00 00 8F DC 00 10 00 00 00 00 10 00 FF EA ................
+00407690 00 00 00 00 03 C0 E8 25 8F BF 00 28 8F BE 00 24 .......%...(...$
+004076A0 03 E0 00 08 27 BD 00 30                         ....'..0       
+004076A8                         3C 1C 0F C0 27 9C 11 B8         <...'...
+004076B0 03 99 E0 21 27 BD FF D8 AF BC 00 10 AF BF 00 20 ...!'.......... 
+004076C0 AF BE 00 1C 03 A0 F0 25 AF C4 00 28 8F C4 00 28 .......%...(...(
+004076D0 8F 99 81 24 00 00 00 00 03 20 F8 09 00 00 00 00 ...$..... ......
+004076E0 8F DC 00 10 00 00 00 00 8F C4 00 28 8F 99 81 A4 ...........(....
+004076F0 00 00 00 00 03 20 F8 09 00 00 00 00 8F DC 00 10 ..... ..........
+00407700 00 00 00 00 8F C4 00 28 8F 99 80 2C 00 00 00 00 .......(...,....
+00407710 03 20 F8 09 00 00 00 00 8F DC 00 10 00 00 00 00 . ..............
+00407720 03 C0 E8 25 8F BF 00 20 8F BE 00 1C 03 E0 00 08 ...%... ........
+00407730 27 BD 00 28 00 00 00 00 00 00 00 00 00 00 00 00 '..(............
+00407740 3C 1C 0F C0 27 9C 11 20 03 99 E0 21 3C 01 41 E0 <...'.. ...!<.A.
+00407750 44 81 08 00 44 80 00 00 00 00 00 00 46 2C 00 3E D...D.......F,.>
+00407760 44 43 F8 00 00 00 00 00 34 61 00 03 38 21 00 02 DC......4a..8!..
+00407770 44 C1 F8 00 00 00 00 00 46 20 60 24 44 C3 F8 00 D.......F `$D...
+00407780 00 00 00 00 44 02 00 00 45 00 00 12 00 00 00 00 ....D...E.......
+00407790 3C 01 C1 E0 44 81 08 00 44 80 00 00 3C 02 80 00 <...D...D...<...
+004077A0 46 20 60 00 44 43 F8 00 00 00 00 00 34 61 00 03 F `.DC......4a..
+004077B0 38 21 00 02 44 C1 F8 00 00 00 00 00 46 20 00 A4 8!..D.......F ..
+004077C0 44 C3 F8 00 00 00 00 00 44 03 10 00 00 00 00 00 D.......D.......
+004077D0 00 62 10 21 03 E0 00 08 00 00 00 00 00 00 00 00 .b.!............
+004077E0 3C 1C 0F C0 27 9C 10 80 03 99 E0 21 00 80 58 25 <...'......!..X%
+004077F0 8D 67 00 00 00 00 00 00 2C E3 00 02 14 60 00 8C .g......,....`..
+00407800 01 60 10 25 8C A4 00 00 00 00 00 00 2C 83 00 02 .`.%........,...
+00407810 14 60 00 87 00 A0 10 25 38 E2 00 04 14 40 00 0B .`.....%8....@..
+00407820 38 83 00 04 38 82 00 04 14 40 00 06 00 00 00 00 8...8....@......
+00407830 8C A4 00 04 8D 63 00 04 8F 82 80 FC 14 64 00 7C .....c.......d.|
+00407840 00 00 00 00 03 E0 00 08 01 60 10 25 10 60 00 78 .........`.%.`.x
+00407850 00 A0 10 25 38 82 00 02 14 40 00 16 38 E3 00 02 ...%8....@..8...
+00407860 38 E2 00 02 14 40 00 11 00 00 00 00 AC C7 00 00 8....@..........
+00407870 8D 64 00 04 00 C0 10 25 AC C4 00 04 8D 63 00 08 .d.....%.....c..
+00407880 00 00 00 00 AC C3 00 08 8D 64 00 0C 00 00 00 00 .........d......
+00407890 AC C4 00 0C 8D 63 00 04 8C A4 00 04 00 00 00 00 .....c..........
+004078A0 00 64 18 24 03 E0 00 08 AC C3 00 04 03 E0 00 08 .d.$............
+004078B0 01 60 10 25 10 60 00 5E 00 A0 10 25 8D 68 00 08 .`.%.`.^...%.h..
+004078C0 8C A7 00 08 8D 6A 00 0C 01 07 10 23 8C A9 00 0C .....j.....#....
+004078D0 04 41 00 02 00 00 00 00 00 02 10 23 28 42 00 20 .A.........#(B. 
+004078E0 10 40 00 16 00 E8 10 2A 10 40 00 09 01 07 10 2A .@.....*.@.....*
+004078F0 01 07 38 23 00 09 18 42 31 22 00 01 24 E7 FF FF ..8#...B1"..$...
+00407900 14 E0 FF FC 00 43 48 25 01 00 38 25 01 07 10 2A .....CH%..8%...*
+00407910 00 00 00 00 10 40 00 10 00 00 00 00 25 08 00 01 .....@......%...
+00407920 00 0A 10 42 31 43 00 01 01 07 20 2A 14 80 FF FB ...B1C.... *....
+00407930 00 62 50 25 10 00 00 08 00 00 00 00 00 00 00 00 .bP%............
+00407940 10 40 00 03 00 00 00 00 10 00 00 03 00 00 48 25 .@............H%
+00407950 00 E0 40 25 00 00 50 25 8D 64 00 04 8C A2 00 04 ..@%..P%.d......
+00407960 00 00 00 00 10 82 00 22 00 00 00 00 14 80 00 02 ......."........
+00407970 01 2A 18 23 01 49 18 23 04 60 00 05 24 02 00 01 .*.#.I.#.`..$...
+00407980 AC C8 00 08 AC C3 00 0C 10 00 00 05 AC C0 00 04 ................
+00407990 00 03 18 23 AC C2 00 04 AC C8 00 08 AC C3 00 0C ...#............
+004079A0 8C C7 00 0C 3C 02 3F FF 24 E3 FF FF 34 42 FF FE ....<.?.$...4B..
+004079B0 00 43 10 2B 14 40 00 14 24 02 00 03 00 07 28 40 .C.+.@..$.....(@
+004079C0 8C C2 00 08 3C 03 3F FF 24 A4 FF FF 34 63 FF FE ....<.?.$...4c..
+004079D0 24 42 FF FF 00 64 18 2B AC C2 00 08 AC C5 00 0C $B...d.+........
+004079E0 10 60 FF F6 00 A0 38 25 10 00 00 07 24 02 00 03 .`....8%....$...
+004079F0 01 49 10 21 AC C4 00 04 AC C8 00 08 AC C2 00 0C .I.!............
+00407A00 00 40 38 25 24 02 00 03 04 E1 00 08 AC C2 00 00 .@8%$...........
+00407A10 8C C2 00 08 00 07 20 42 30 E3 00 01 00 64 18 25 ...... B0....d.%
+00407A20 24 42 00 01 AC C3 00 0C AC C2 00 08 00 C0 10 25 $B.............%
+00407A30 03 E0 00 08 00 00 00 00                         ........       
+00407A38                         3C 1C 0F C0 27 9C 0E 28         <...'..(
+00407A40 03 99 E0 21 27 BD FF A0 AF BC 00 10 AF B1 00 58 ...!'..........X
+00407A50 8F 91 81 7C AF BF 00 5C AF B0 00 54 27 A4 00 48 ...|...\...T'..H
+00407A60 27 A5 00 18 E7 AC 00 48 02 20 C8 25 03 20 F8 09 '......H. .%. ..
+00407A70 E7 AE 00 4C 8F BC 00 10 27 B0 00 28 27 A4 00 4C ...L....'..('..L
+00407A80 02 20 C8 25 03 20 F8 09 02 00 28 25 8F BC 00 10 . .%. ....(%....
+00407A90 00 00 00 00 8F 99 80 1C 00 00 00 00 27 39 77 E0 ............'9w.
+00407AA0 02 00 28 25 27 A4 00 18 03 20 F8 09 27 A6 00 38 ..(%'.... ..'..8
+00407AB0 8F BC 00 10 00 00 00 00 8F 99 81 4C 00 00 00 00 ...........L....
+00407AC0 03 20 F8 09 00 40 20 25 8F BC 00 10 8F BF 00 5C . ...@ %.......\
+00407AD0 8F B1 00 58 8F B0 00 54 03 E0 00 08 27 BD 00 60 ...X...T....'..`
+00407AE0 3C 1C 0F C0 27 9C 0D 80 03 99 E0 21 27 BD FF A0 <...'......!'...
+00407AF0 AF BC 00 10 AF B1 00 58 8F 91 81 7C AF BF 00 5C .......X...|...\
+00407B00 AF B0 00 54 27 A4 00 48 27 A5 00 18 E7 AC 00 48 ...T'..H'......H
+00407B10 02 20 C8 25 03 20 F8 09 E7 AE 00 4C 8F BC 00 10 . .%. .....L....
+00407B20 27 B0 00 28 27 A4 00 4C 02 20 C8 25 03 20 F8 09 '..('..L. .%. ..
+00407B30 02 00 28 25 8F BC 00 10 00 00 00 00 8F 99 80 1C ..(%............
+00407B40 00 00 00 00 27 39 77 E0 8F A2 00 2C 02 00 28 25 ....'9w....,..(%
+00407B50 38 42 00 01 27 A4 00 18 27 A6 00 38 03 20 F8 09 8B..'...'..8. ..
+00407B60 AF A2 00 2C 8F BC 00 10 00 00 00 00 8F 99 81 4C ...,...........L
+00407B70 00 00 00 00 03 20 F8 09 00 40 20 25 8F BC 00 10 ..... ...@ %....
+00407B80 8F BF 00 5C 8F B1 00 58 8F B0 00 54 03 E0 00 08 ...\...X...T....
+00407B90 27 BD 00 60 00 00 00 00 00 00 00 00 00 00 00 00 '..`............
+00407BA0 3C 1C 0F C0 27 9C 0C C0 03 99 E0 21 27 BD FF A0 <...'......!'...
+00407BB0 AF BC 00 10 AF B1 00 58 8F 91 81 7C AF BF 00 5C .......X...|...\
+00407BC0 AF B0 00 54 27 A4 00 48 27 A5 00 18 E7 AC 00 48 ...T'..H'......H
+00407BD0 02 20 C8 25 03 20 F8 09 E7 AE 00 4C 8F BC 00 10 . .%. .....L....
+00407BE0 27 B0 00 28 27 A4 00 4C 02 20 C8 25 03 20 F8 09 '..('..L. .%. ..
+00407BF0 02 00 28 25 8F BC 00 10 8F A4 00 18 00 00 00 00 ..(%............
+00407C00 2C 82 00 02 14 40 00 17 27 A7 00 18 8F A3 00 28 ,....@..'......(
+00407C10 00 00 00 00 2C 62 00 02 14 40 00 1C 38 82 00 04 ....,b...@..8...
+00407C20 14 40 00 07 38 62 00 04 38 62 00 02 8F 84 80 FC .@..8b..8b......
+00407C30 10 40 00 5C 00 00 00 00 10 00 00 0A 00 00 00 00 .@.\............
+00407C40 14 40 00 06 38 82 00 02 8F 84 80 FC 10 40 00 55 .@..8........@.U
+00407C50 00 00 00 00 10 00 00 0D 00 00 00 00 14 40 00 08 .............@..
+00407C60 38 62 00 02 8C E2 00 04 8F A3 00 2C 00 E0 20 25 8b.........,.. %
+00407C70 00 43 10 26 00 02 10 2B 10 00 00 4A AC E2 00 04 .C.&...+...J....
+00407C80 00 00 00 00 14 40 00 08 00 00 00 00 8C E2 00 04 .....@..........
+00407C90 8F A3 00 2C 02 00 20 25 00 43 10 26 00 02 10 2B ...,.. %.C.&...+
+00407CA0 10 00 00 40 AF A2 00 2C 8C E4 00 0C 8F A6 00 34 ...@...,.......4
+00407CB0 8C E2 00 04 00 86 00 19 8C E3 00 08 8F A7 00 2C ...............,
+00407CC0 8F A6 00 30 00 47 10 26 00 66 18 21 00 02 10 2B ...0.G.&.f.!...+
+00407CD0 24 67 00 02 AF A2 00 3C AF A7 00 40 00 00 20 10 $g.....<...@.. .
+00407CE0 00 00 28 12 00 04 18 03 00 04 17 C3 00 60 30 25 ..(..........`0%
+00407CF0 04 C1 00 0C 00 A0 20 25 00 E0 18 25 3C 05 80 00 ...... %...%<...
+00407D00 30 C2 00 01 24 63 00 01 10 40 00 03 00 06 30 42 0...$c...@....0B
+00407D10 00 04 20 42 00 85 20 25 04 C0 FF FA 30 C2 00 01 .. B.. %....0...
+00407D20 AF A3 00 40 3C 02 3F FF 34 42 FF FF 00 46 10 2B ...@<.?.4B...F.+
+00407D30 14 40 00 0E 00 00 00 00 3C 05 3F FF 8F A3 00 40 .@......<.?....@
+00407D40 3C 07 80 00 34 A5 FF FF 00 87 10 24 00 06 30 40 <...4......$..0@
+00407D50 10 40 00 02 24 63 FF FF 34 C6 00 01 00 A6 10 2B .@..$c..4......+
+00407D60 10 40 FF F9 00 04 20 40 AF A3 00 40 30 C3 00 7F .@.... @...@0...
+00407D70 24 02 00 40 14 62 00 08 24 02 00 03 30 C2 00 80 $..@.b..$...0...
+00407D80 14 40 00 03 00 00 00 00 10 80 00 03 24 02 00 03 .@..........$...
+00407D90 24 C6 00 40 24 02 00 03 AF A6 00 44 AF A2 00 38 $..@$......D...8
+00407DA0 27 A4 00 38 8F 99 81 4C 00 00 00 00 03 20 F8 09 '..8...L..... ..
+00407DB0 00 00 00 00 8F BC 00 10 8F BF 00 5C 8F B1 00 58 ...........\...X
+00407DC0 8F B0 00 54 03 E0 00 08 27 BD 00 60 00 00 00 00 ...T....'..`....
+00407DD0 3C 1C 0F C0 27 9C 0A 90 03 99 E0 21 27 BD FF B0 <...'......!'...
+00407DE0 AF BC 00 10 AF B1 00 48 8F 91 81 7C AF BF 00 4C .......H...|...L
+00407DF0 AF B0 00 44 27 A4 00 38 27 A5 00 18 E7 AC 00 38 ...D'..8'......8
+00407E00 02 20 C8 25 03 20 F8 09 E7 AE 00 3C 8F BC 00 10 . .%. .....<....
+00407E10 27 B0 00 28 27 A4 00 3C 02 20 C8 25 03 20 F8 09 '..('..<. .%. ..
+00407E20 02 00 28 25 8F BC 00 10 8F A6 00 18 27 A8 00 18 ..(%........'...
+00407E30 2C C2 00 02 14 40 00 41 01 00 20 25 8F A5 00 28 ,....@.A.. %...(
+00407E40 00 00 00 00 2C A2 00 02 14 40 00 3C 02 00 20 25 ....,....@.<.. %
+00407E50 8D 02 00 04 8F A3 00 2C 38 C4 00 04 00 43 10 26 .......,8....C.&
+00407E60 10 80 00 04 AD 02 00 04 38 C2 00 02 14 40 00 06 ........8....@..
+00407E70 38 A2 00 04 8F 84 80 FC 10 C5 00 30 00 00 00 00 8..........0....
+00407E80 10 00 00 2E 01 00 20 25 14 40 00 05 38 A2 00 02 ...... %.@..8...
+00407E90 AD 00 00 0C AD 00 00 08 10 00 00 28 01 00 20 25 ...........(.. %
+00407EA0 14 40 00 04 24 02 00 04 AF A2 00 18 10 00 00 23 .@..$..........#
+00407EB0 01 00 20 25 8D 03 00 08 8F A2 00 30 8F A7 00 34 .. %.......0...4
+00407EC0 8D 04 00 0C 00 62 10 23 00 87 28 2B 10 A0 00 05 .....b.#..(+....
+00407ED0 AD 02 00 08 24 42 FF FF 00 04 20 40 AD 02 00 08 ....$B.... @....
+00407EE0 00 87 28 2B 3C 02 40 00 00 00 30 25 00 00 00 00 ..(+<.@...0%....
+00407EF0 14 A0 00 03 00 00 00 00 00 C2 30 25 00 87 20 23 ..........0%.. #
+00407F00 00 04 20 40 00 02 10 42 14 40 FF F8 00 87 28 2B .. @...B.@....(+
+00407F10 30 C3 00 7F 24 02 00 40 14 62 00 06 30 C2 00 80 0...$..@.b..0...
+00407F20 14 40 00 03 00 00 00 00 10 80 00 02 00 00 00 00 .@..............
+00407F30 24 C6 00 40 AD 06 00 0C 01 00 20 25 8F 99 81 4C $..@...... %...L
+00407F40 00 00 00 00 03 20 F8 09 00 00 00 00 8F BC 00 10 ..... ..........
+00407F50 8F BF 00 4C 8F B1 00 48 8F B0 00 44 03 E0 00 08 ...L...H...D....
+00407F60 27 BD 00 50 00 00 00 00 00 00 00 00 00 00 00 00 '..P............
+00407F70 3C 1C 0F C0 27 9C 08 F0 03 99 E0 21 27 BD FF D0 <...'......!'...
+00407F80 AF BC 00 10 24 02 00 03 00 04 1F C2 AF BF 00 2C ....$..........,
+00407F90 AF A2 00 18 14 80 00 04 AF A3 00 1C 24 02 00 02 ............$...
+00407FA0 10 00 00 1C AF A2 00 18 24 02 00 1E 10 60 00 08 ........$....`..
+00407FB0 AF A2 00 20 3C 02 80 00 3C 01 CF 00 44 81 00 00 ... <...<...D...
+00407FC0 10 82 00 19 00 04 10 23 10 00 00 02 AF A2 00 24 .......#.......$
+00407FD0 AF A4 00 24 8F A6 00 24 3C 02 3F FF 34 42 FF FF ...$...$<.?.4B..
+00407FE0 00 46 10 2B 14 40 00 0B 00 00 00 00 3C 05 3F FF .F.+.@......<.?.
+00407FF0 8F A4 00 20 34 A5 FF FF 00 06 18 40 00 A3 10 2B ... 4......@...+
+00408000 24 84 FF FF 10 40 FF FC 00 60 30 25 AF A4 00 20 $....@...`0%... 
+00408010 AF A3 00 24 8F 99 81 4C 00 00 00 00 03 20 F8 09 ...$...L..... ..
+00408020 27 A4 00 18 8F BC 00 10 8F BF 00 2C 00 00 00 00 '..........,....
+00408030 03 E0 00 08 27 BD 00 30 00 00 00 00 00 00 00 00 ....'..0........
+00408040 3C 1C 0F C0 27 9C 08 20 03 99 E0 21 27 BD FF C8 <...'.. ...!'...
+00408050 AF BC 00 10 8F 99 81 7C 27 A4 00 28 27 A5 00 18 .......|'..('...
+00408060 AF BF 00 34 03 20 F8 09 E7 AC 00 28 8F BC 00 10 ...4. .....(....
+00408070 8F A4 00 18 00 00 00 00 38 83 00 02 10 60 00 1A ........8....`..
+00408080 00 00 10 25 2C 83 00 02 14 60 00 17 00 00 00 00 ...%,....`......
+00408090 38 82 00 04 10 40 00 08 00 00 00 00 8F A5 00 20 8....@......... 
+004080A0 00 00 00 00 04 A0 00 10 00 00 10 25 28 A2 00 1F ...........%(...
+004080B0 14 40 00 06 00 00 00 00 8F A2 00 1C 3C 03 80 00 .@..........<...
+004080C0 2C 42 00 01 10 00 00 08 00 62 10 23 24 02 00 1E ,B.......b.#$...
+004080D0 8F A3 00 24 8F A4 00 1C 00 45 10 23 10 80 00 02 ...$.....E.#....
+004080E0 00 43 10 06 00 02 10 23 8F BF 00 34 00 00 00 00 .C.....#...4....
+004080F0 03 E0 00 08 27 BD 00 38 00 00 00 00 00 00 00 00 ....'..8........
+00408100 3C 1C 0F C0 27 9C 07 60 03 99 E0 21 27 BD FF C0 <...'..`...!'...
+00408110 AF BC 00 18 AF BF 00 3C 8F 99 81 7C 27 A4 00 30 .......<...|'..0
+00408120 27 A5 00 20 03 20 F8 09 E7 AC 00 30 8F BC 00 18 '.. . .....0....
+00408130 00 00 10 25 8F A3 00 2C 8F A4 00 20 00 02 17 80 ...%...,... ....
+00408140 00 03 38 82 00 47 10 25 00 03 1F 80 8F A5 00 24 ..8..G.%.......$
+00408150 8F A6 00 28 8F 99 82 08 AF A2 00 10 03 20 F8 09 ...(......... ..
+00408160 AF A3 00 14 8F BC 00 18 8F BF 00 3C 00 00 00 00 ...........<....
+00408170 03 E0 00 08 27 BD 00 40 00 00 00 00 00 00 00 00 ....'..@........
+00408180 3C 1C 0F C0 27 9C 06 E0 03 99 E0 21 00 80 C0 25 <...'......!...%
+00408190 8F 07 00 00 00 A0 C8 25 2C E3 00 02 00 C0 68 25 .......%,.....h%
+004081A0 14 60 00 D4 03 00 10 25 8F 24 00 00 00 00 00 00 .`.....%.$......
+004081B0 2C 83 00 02 14 60 00 CF 03 20 10 25 38 E2 00 04 ,....`... .%8...
+004081C0 14 40 00 0B 38 83 00 04 38 82 00 04 14 40 00 06 .@..8...8....@..
+004081D0 00 00 00 00 8F 24 00 04 8F 03 00 04 8F 82 80 C4 .....$..........
+004081E0 14 64 00 C4 00 00 00 00 03 E0 00 08 03 00 10 25 .d.............%
+004081F0 10 60 00 C0 03 20 10 25 38 82 00 02 14 40 00 1C .`... .%8....@..
+00408200 38 E3 00 02 38 E2 00 02 14 40 00 17 00 00 00 00 8...8....@......
+00408210 AD A7 00 00 8F 04 00 04 01 A0 10 25 AD A4 00 04 ...........%....
+00408220 8F 03 00 08 00 00 00 00 AD A3 00 08 8F 04 00 0C ................
+00408230 00 00 00 00 AD A4 00 0C 8F 03 00 10 00 00 00 00 ................
+00408240 AD A3 00 10 8F 04 00 14 00 00 00 00 AD A4 00 14 ................
+00408250 8F 03 00 04 8F 24 00 04 00 00 00 00 00 64 18 24 .....$.......d.$
+00408260 03 E0 00 08 AD A3 00 04 03 E0 00 08 03 00 10 25 ...............%
+00408270 10 60 00 A0 03 20 10 25 8F 0C 00 08 8F 27 00 08 .`... .%.....'..
+00408280 8F 0A 00 10 8F 0B 00 14 01 87 10 23 8F 28 00 10 ...........#.(..
+00408290 8F 29 00 14 04 41 00 02 00 00 00 00 00 02 10 23 .)...A.........#
+004082A0 28 42 00 40 10 40 00 24 00 EC 10 2A 10 40 00 10 (B.@.@.$...*.@..
+004082B0 01 87 10 2A 24 0E 00 00 24 0F 00 01 01 87 38 23 ...*$...$.....8#
+004082C0 00 09 28 42 00 08 37 C0 01 0E 10 24 00 A6 28 25 ..(B..7....$..(%
+004082D0 01 2F 18 24 00 08 20 42 24 E7 FF FF 00 44 40 25 ./.$.. B$....D@%
+004082E0 14 E0 FF F7 00 65 48 25 01 80 38 25 01 87 10 2A .....eH%..8%...*
+004082F0 00 00 00 00 10 40 00 19 00 00 00 00 24 0E 00 00 .....@......$...
+00408300 24 0F 00 01 00 0A 37 C0 00 0B 28 42 25 8C 00 01 $.....7...(B%...
+00408310 00 A6 28 25 01 4E 10 24 00 0A 20 42 01 6F 18 24 ..(%.N.$.. B.o.$
+00408320 01 87 30 2A 00 44 50 25 14 C0 FF F6 00 65 58 25 ..0*.DP%.....eX%
+00408330 10 00 00 0A 00 00 00 00 00 00 00 00 10 40 00 04 .............@..
+00408340 00 00 00 00 00 00 40 25 10 00 00 04 00 00 48 25 ......@%......H%
+00408350 00 E0 60 25 00 00 50 25 00 00 58 25 8F 06 00 04 ..`%..P%..X%....
+00408360 8F 22 00 04 00 00 00 00 10 C2 00 41 01 2B 10 2B .".........A.+.+
+00408370 01 2B 28 23 01 0A 20 23 14 C0 00 05 00 82 20 23 .+(#.. #...... #
+00408380 01 69 10 2B 01 69 28 23 01 48 20 23 00 82 20 23 .i.+.i(#.H #.. #
+00408390 04 80 00 06 24 02 00 01 AD AC 00 08 AD A4 00 10 ....$...........
+004083A0 AD A5 00 14 10 00 00 09 AD A0 00 04 00 05 28 23 ..............(#
+004083B0 00 04 20 23 00 05 18 2B 00 83 20 23 AD A2 00 04 .. #...+.. #....
+004083C0 AD AC 00 08 AD A4 00 10 AD A5 00 14 8D A8 00 10 ................
+004083D0 8D A9 00 14 3C 03 0F FF 25 25 FF FF 2C A2 FF FF ....<...%%..,...
+004083E0 25 04 FF FF 00 82 20 21 34 63 FF FF 00 64 10 2B %..... !4c...d.+
+004083F0 14 40 00 27 00 00 00 00 14 83 00 05 00 09 17 C2 .@.'............
+00408400 2C A2 FF FF 10 40 00 22 00 00 00 00 00 09 17 C2 ,....@."........
+00408410 00 08 30 40 00 C2 30 25 8D A3 00 08 00 09 38 40 ..0@..0%......8@
+00408420 3C 0A 0F FF 24 E5 FF FF 2C A2 FF FF 24 C4 FF FF <...$...,...$...
+00408430 00 82 20 21 35 4A FF FF 24 63 FF FF 01 44 10 2B .. !5J..$c...D.+
+00408440 AD A3 00 08 AD A6 00 10 AD A7 00 14 14 40 00 10 .............@..
+00408450 2C AB FF FF 00 C0 40 25 14 8A FF EC 00 E0 48 25 ,.....@%......H%
+00408460 11 60 00 0B 00 09 17 C2 10 00 FF EA 00 08 30 40 .`............0@
+00408470 01 69 18 21 00 69 20 2B 01 48 10 21 00 44 10 21 .i.!.i +.H.!.D.!
+00408480 AD A6 00 04 AD AC 00 08 AD A2 00 10 AD A3 00 14 ................
+00408490 8D A2 00 10 3C 03 1F FF 34 63 FF FF 24 04 00 03 ....<...4c..$...
+004084A0 00 62 18 2B 10 60 00 12 AD A4 00 00 8D A4 00 10 .b.+.`..........
+004084B0 8D A5 00 14 24 02 00 00 24 03 00 01 00 82 10 24 ....$...$......$
+004084C0 00 A3 18 24 00 05 28 42 00 04 3F C0 00 A7 28 25 ...$..(B..?...(%
+004084D0 8D A6 00 08 00 04 20 42 00 44 10 25 00 65 18 25 ...... B.D.%.e.%
+004084E0 24 C6 00 01 AD A2 00 10 AD A3 00 14 AD A6 00 08 $...............
+004084F0 01 A0 10 25 03 E0 00 08 00 00 00 00             ...%........   
+004084FC                                     3C 1C 0F C0             <...
+00408500 27 9C 03 64 03 99 E0 21 27 BD FF 78 AF BC 00 10 '..d...!'..x....
+00408510 44 03 60 00 44 02 68 00 44 07 70 00 44 06 78 00 D.`.D.h.D.p.D.x.
+00408520 27 A8 00 60 AF B2 00 7C AF B1 00 78 8F 92 81 B0 '..`...|...x....
+00408530 27 B1 00 68 AF A2 00 60 AF A6 00 68 AF BF 00 80 '..h...`...h....
+00408540 AD 03 00 04 AF B0 00 74 01 00 20 25 27 A5 00 18 .......t.. %'...
+00408550 02 40 C8 25 03 20 F8 09 AE 27 00 04 8F BC 00 10 .@.%. ...'......
+00408560 27 B0 00 30 02 20 20 25 02 40 C8 25 03 20 F8 09 '..0.  %.@.%. ..
+00408570 02 00 28 25 8F BC 00 10 00 00 00 00 8F 99 80 20 ..(%........... 
+00408580 00 00 00 00 27 39 81 80 02 00 28 25 27 A4 00 18 ....'9....(%'...
+00408590 03 20 F8 09 27 A6 00 48 8F BC 00 10 00 00 00 00 . ..'..H........
+004085A0 8F 99 80 34 00 00 00 00 03 20 F8 09 00 40 20 25 ...4..... ...@ %
+004085B0 8F BC 00 10 8F BF 00 80 8F B2 00 7C 8F B1 00 78 ...........|...x
+004085C0 8F B0 00 74 03 E0 00 08 27 BD 00 88             ...t....'...   
+004085CC                                     3C 1C 0F C0             <...
+004085D0 27 9C 02 94 03 99 E0 21 27 BD FF 78 AF BC 00 10 '......!'..x....
+004085E0 44 03 60 00 44 02 68 00 44 07 70 00 44 06 78 00 D.`.D.h.D.p.D.x.
+004085F0 27 A8 00 60 AF B2 00 7C AF B1 00 78 8F 92 81 B0 '..`...|...x....
+00408600 27 B1 00 68 AF A2 00 60 AF A6 00 68 AF BF 00 80 '..h...`...h....
+00408610 AD 03 00 04 AF B0 00 74 01 00 20 25 27 A5 00 18 .......t.. %'...
+00408620 02 40 C8 25 03 20 F8 09 AE 27 00 04 8F BC 00 10 .@.%. ...'......
+00408630 27 B0 00 30 02 20 20 25 02 40 C8 25 03 20 F8 09 '..0.  %.@.%. ..
+00408640 02 00 28 25 8F BC 00 10 00 00 00 00 8F 99 80 20 ..(%........... 
+00408650 00 00 00 00 27 39 81 80 8F A2 00 34 02 00 28 25 ....'9.....4..(%
+00408660 38 42 00 01 27 A4 00 18 27 A6 00 48 03 20 F8 09 8B..'...'..H. ..
+00408670 AF A2 00 34 8F BC 00 10 00 00 00 00 8F 99 80 34 ...4...........4
+00408680 00 00 00 00 03 20 F8 09 00 40 20 25 8F BC 00 10 ..... ...@ %....
+00408690 8F BF 00 80 8F B2 00 7C 8F B1 00 78 8F B0 00 74 .......|...x...t
+004086A0 03 E0 00 08 27 BD 00 88 00 00 00 00 00 00 00 00 ....'...........
+004086B0 3C 1C 0F C0 27 9C 01 B0 03 99 E0 21 27 BD FF 60 <...'......!'..`
+004086C0 AF BC 00 10 44 03 60 00 44 02 68 00 44 07 70 00 ....D.`.D.h.D.p.
+004086D0 44 06 78 00 27 A8 00 60 AF B2 00 84 AF B0 00 7C D.x.'..`.......|
+004086E0 8F 92 81 B0 27 B0 00 68 AF A2 00 60 AF A6 00 68 ....'..h...`...h
+004086F0 AF BF 00 98 AD 03 00 04 AF B6 00 94 AF B5 00 90 ................
+00408700 AF B4 00 8C AF B3 00 88 AF B1 00 80 01 00 20 25 .............. %
+00408710 27 A5 00 18 02 40 C8 25 03 20 F8 09 AE 07 00 04 '....@.%. ......
+00408720 8F BC 00 10 27 B1 00 30 02 00 20 25 02 40 C8 25 ....'..0.. %.@.%
+00408730 03 20 F8 09 02 20 28 25 8F BC 00 10 8F A4 00 18 . ... (%........
+00408740 00 00 00 00 2C 82 00 02 14 40 00 17 27 B6 00 18 ....,....@..'...
+00408750 8F A3 00 30 00 00 00 00 2C 62 00 02 14 40 00 1C ...0....,b...@..
+00408760 38 82 00 04 14 40 00 07 38 62 00 04 38 62 00 02 8....@..8b..8b..
+00408770 8F 84 80 C4 10 40 00 F8 00 00 00 00 10 00 00 0A .....@..........
+00408780 00 00 00 00 14 40 00 06 38 82 00 02 8F 84 80 C4 .....@..8.......
+00408790 10 40 00 F1 00 00 00 00 10 00 00 0D 00 00 00 00 .@..............
+004087A0 14 40 00 08 38 62 00 02 8E C2 00 04 8F A3 00 34 .@..8b.........4
+004087B0 02 C0 20 25 00 43 10 26 00 02 10 2B 10 00 00 E6 .. %.C.&...+....
+004087C0 AE C2 00 04 00 00 00 00 14 40 00 08 00 00 00 00 .........@......
+004087D0 8E C2 00 04 8F A3 00 34 02 20 20 25 00 43 10 26 .......4.  %.C.&
+004087E0 00 02 10 2B 10 00 00 DC AF A2 00 34 8E C6 00 10 ...+.......4....
+004087F0 8E C7 00 14 24 02 00 00 24 03 FF FF 8F A4 00 40 ....$...$......@
+00408800 8F A5 00 44 00 06 58 02 00 C2 30 24 00 E3 38 24 ...D..X...0$..8$
+00408810 00 82 40 24 00 A3 48 24 00 04 28 02 00 00 20 25 ..@$..H$..(... %
+00408820 00 A6 00 18 00 00 50 25 00 00 10 25 00 00 18 25 ......P%...%...%
+00408830 AF A2 00 70 AF A3 00 74 00 00 68 12 00 00 00 00 ...p...t..h.....
+00408840 00 00 00 00 01 2A 00 18 00 00 70 12 00 00 00 00 .....*....p.....
+00408850 00 00 00 00 00 A7 00 19 00 00 C0 10 00 00 C8 12 ................
+00408860 03 0D C0 21 00 00 00 00 01 2B 00 19 00 00 10 10 ...!.....+......
+00408870 00 00 18 12 00 4E 10 21 00 00 00 00 00 E4 00 18 .....N.!........
+00408880 00 00 60 12 03 0C C0 21 00 00 00 00 01 68 00 18 ..`....!.....h..
+00408890 00 00 68 12 00 4D 10 21 03 23 A8 21 01 26 00 18 ..h..M.!.#.!.&..
+004088A0 02 A3 78 2B 03 02 A0 21 02 8F A0 21 02 98 60 2B ..x+...!...!..`+
+004088B0 00 00 70 12 00 00 00 00 00 00 00 00 00 AA 00 18 ..p.............
+004088C0 00 00 10 12 00 00 00 00 00 00 00 00 01 27 00 19 .............'..
+004088D0 00 00 80 10 00 00 88 12 02 0E 80 21 00 00 00 00 ...........!....
+004088E0 00 AB 00 19 00 00 90 10 00 00 98 12 02 42 90 21 .............B.!
+004088F0 00 00 00 00 01 64 00 18 00 00 20 12 02 44 90 21 .....d.... ..D.!
+00408900 00 00 00 00 00 E8 00 18 00 00 40 12 15 80 00 05 ..........@.....
+00408910 02 08 80 21 17 14 00 07 02 B9 10 2B 10 40 00 05 ...!.......+.@..
+00408920 00 00 00 00 24 02 00 01 24 03 00 00 AF A2 00 70 ....$...$......p
+00408930 AF A3 00 74 24 02 FF FF 24 03 00 00 00 15 20 00 ...t$...$..... .
+00408940 00 00 28 25 00 82 C0 24 00 A3 C8 24 02 39 58 21 ..(%...$...$.9X!
+00408950 01 79 30 2B 02 18 50 21 01 46 50 21 01 50 10 2B .y0+..P!.FP!.P.+
+00408960 14 40 00 05 00 00 00 00 16 0A 00 0B 01 71 10 2B .@...........q.+
+00408970 10 40 00 09 00 00 00 00 8F A4 00 70 8F A5 00 74 .@.........p...t
+00408980 00 00 00 00 24 A5 00 01 2C A2 00 01 00 82 20 21 ....$...,..... !
+00408990 AF A4 00 70 AF A5 00 74 24 02 00 00 24 03 FF FF ...p...t$...$...
+004089A0 00 14 28 02 00 00 20 25 00 82 20 24 00 A3 28 24 ..(... %.. $..($
+004089B0 00 B3 28 21 00 B3 48 2B 8F AC 00 70 8F AD 00 74 ..(!..H+...p...t
+004089C0 00 92 20 21 00 89 20 21 8E C6 00 04 8E C3 00 08 .. !.. !........
+004089D0 8F A7 00 38 01 A5 68 21 8F A8 00 34 01 A5 48 2B ...8..h!...4..H+
+004089E0 3C 02 1F FF 01 84 60 21 00 67 18 21 01 89 60 21 <.....`!.g.!..`!
+004089F0 00 C8 30 26 34 42 FF FF 00 06 30 2B 24 63 00 04 ..0&4B....0+$c..
+00408A00 00 4C 10 2B AF A6 00 4C AF A3 00 50 01 40 30 25 .L.+...L...P.@0%
+00408A10 10 40 00 1A 01 60 38 25 3C 08 1F FF 00 60 28 25 .@...`8%<....`(%
+00408A20 24 0E 00 00 24 0F 00 01 3C 0A 80 00 24 0B 00 00 $...$...<...$...
+00408A30 35 08 FF FF 01 8E 10 24 01 AF 18 24 00 0D 68 42 5......$...$..hB
+00408A40 00 0C 27 C0 01 A4 68 25 00 0C 60 42 01 0C 20 2B ..'...h%..`B.. +
+00408A50 10 60 00 07 24 A5 00 01 00 07 38 42 00 06 17 C0 .`..$.....8B....
+00408A60 00 E2 38 25 00 06 30 42 00 CA 30 25 00 EB 38 25 ..8%..0B..0%..8%
+00408A70 14 80 FF F1 01 8E 10 24 AF A5 00 50 3C 02 0F FF .......$...P<...
+00408A80 34 42 FF FF 00 4C 10 2B 14 40 00 1A 00 00 00 00 4B...L.+.@......
+00408A90 3C 08 0F FF 8F A5 00 50 3C 0E 80 00 24 0F 00 00 <......P<...$...
+00408AA0 24 0A 00 00 24 0B 00 01 35 08 FF FF 00 0C 60 40 $...$...5.....`@
+00408AB0 00 CE 10 24 00 0D 27 C2 00 EF 18 24 01 84 60 25 ...$..'....$..`%
+00408AC0 00 62 10 25 00 0D 68 40 10 40 00 03 24 A5 FF FF .b.%..h@.@..$...
+00408AD0 01 8A 60 25 01 AB 68 25 00 06 30 40 00 07 1F C2 ..`%..h%..0@....
+00408AE0 00 C3 30 25 01 0C 10 2B 10 40 FF F0 00 07 38 40 ..0%...+.@....8@
+00408AF0 AF A5 00 50 24 02 00 00 24 03 00 FF 01 82 20 24 ...P$...$..... $
+00408B00 14 80 00 10 01 A3 28 24 24 02 00 80 14 A2 00 0E ......($$.......
+00408B10 24 02 00 03 24 02 00 00 24 03 01 00 01 82 10 24 $...$...$......$
+00408B20 01 A3 18 24 00 62 10 25 14 40 00 03 00 E6 10 25 ...$.b.%.@.....%
+00408B30 10 40 00 05 24 02 00 03 25 AD 00 80 2D A2 00 80 .@..$...%...-...
+00408B40 01 82 60 21 24 02 00 03 AF AC 00 58 AF AD 00 5C ..`!$......X...\
+00408B50 AF A2 00 48 27 A4 00 48 8F 99 80 34 00 00 00 00 ...H'..H...4....
+00408B60 03 20 F8 09 00 00 00 00 8F BC 00 10 8F BF 00 98 . ..............
+00408B70 8F B6 00 94 8F B5 00 90 8F B4 00 8C 8F B3 00 88 ................
+00408B80 8F B2 00 84 8F B1 00 80 8F B0 00 7C 03 E0 00 08 ...........|....
+00408B90 27 BD 00 A0 00 00 00 00 00 00 00 00 00 00 00 00 '...............
+00408BA0 3C 1C 0F C0 27 9C FC C0 03 99 E0 21 27 BD FF 90 <...'......!'...
+00408BB0 AF BC 00 10 44 03 60 00 44 02 68 00 44 07 70 00 ....D.`.D.h.D.p.
+00408BC0 44 06 78 00 27 A8 00 48 AF B2 00 64 AF B0 00 5C D.x.'..H...d...\
+00408BD0 8F 92 81 B0 27 B0 00 50 AF A2 00 48 AF A6 00 50 ....'..P...H...P
+00408BE0 AF BF 00 68 AD 03 00 04 AF B1 00 60 01 00 20 25 ...h.......`.. %
+00408BF0 27 A5 00 18 02 40 C8 25 03 20 F8 09 AE 07 00 04 '....@.%. ......
+00408C00 8F BC 00 10 27 B1 00 30 02 00 20 25 02 40 C8 25 ....'..0.. %.@.%
+00408C10 03 20 F8 09 02 20 28 25 8F BC 00 10 8F A6 00 18 . ... (%........
+00408C20 27 AF 00 18 2C C2 00 02 14 40 00 6C 01 E0 20 25 '...,....@.l.. %
+00408C30 8F A5 00 30 00 00 00 00 2C A2 00 02 14 40 00 67 ...0....,....@.g
+00408C40 02 20 20 25 8D E2 00 04 8F A3 00 34 38 C4 00 04 .  %.......48...
+00408C50 00 43 10 26 10 80 00 04 AD E2 00 04 38 C2 00 02 .C.&........8...
+00408C60 14 40 00 06 38 A2 00 04 8F 84 80 C4 10 C5 00 5B .@..8..........[
+00408C70 00 00 00 00 10 00 00 59 01 E0 20 25 14 40 00 08 .......Y.. %.@..
+00408C80 38 A2 00 02 00 00 10 25 00 00 18 25 AD E2 00 10 8......%...%....
+00408C90 AD E3 00 14 AD E0 00 08 10 00 00 50 01 E0 20 25 ...........P.. %
+00408CA0 14 40 00 04 24 02 00 04 AF A2 00 18 10 00 00 4B .@..$..........K
+00408CB0 01 E0 20 25 8D E3 00 08 8F A2 00 38 8F A8 00 40 .. %.......8...@
+00408CC0 8F A9 00 44 8D E4 00 10 8D E5 00 14 00 62 18 23 ...D.........b.#
+00408CD0 00 88 70 2B 15 C0 00 05 AD E3 00 08 15 04 00 0A ..p+............
+00408CE0 00 A9 10 2B 10 40 00 08 00 00 00 00 00 04 20 40 ...+.@........ @
+00408CF0 24 62 FF FF 00 05 1F C2 00 83 20 25 00 05 28 40 $b........ %..(@
+00408D00 AD E2 00 08 00 88 70 2B 3C 0A 10 00 24 0B 00 00 ......p+<...$...
+00408D10 00 00 60 25 00 00 68 25 00 00 00 00 15 C0 00 0B ..`%..h%........
+00408D20 00 00 00 00 15 04 00 04 00 A9 10 2B 00 A9 10 2B ...........+...+
+00408D30 14 40 00 06 00 A9 10 2B 00 A9 28 23 00 88 20 23 .@.....+..(#.. #
+00408D40 01 8A 60 25 00 82 20 23 01 AB 68 25 00 0B 58 42 ..`%.. #..h%..XB
+00408D50 00 0A 17 C0 01 62 58 25 00 04 30 40 00 05 1F C2 .....bX%..0@....
+00408D60 00 0A 50 42 00 C3 30 25 01 6A 10 25 00 05 38 40 ..PB..0%.j.%..8@
+00408D70 00 C0 20 25 00 C8 70 2B 14 40 FF E7 00 E0 28 25 .. %..p+.@....(%
+00408D80 24 02 00 00 24 03 00 FF 01 82 20 24 14 80 00 10 $...$..... $....
+00408D90 01 A3 28 24 24 02 00 80 14 A2 00 0D 00 00 00 00 ..($$...........
+00408DA0 24 02 00 00 24 03 01 00 01 82 10 24 01 A3 18 24 $...$......$...$
+00408DB0 00 62 10 25 14 40 00 03 00 E6 10 25 10 40 00 04 .b.%.@.....%.@..
+00408DC0 00 00 00 00 25 AD 00 80 2D A2 00 80 01 82 60 21 ....%...-.....`!
+00408DD0 AD EC 00 10 AD ED 00 14 01 E0 20 25 8F 99 80 34 .......... %...4
+00408DE0 00 00 00 00 03 20 F8 09 00 00 00 00 8F BC 00 10 ..... ..........
+00408DF0 8F BF 00 68 8F B2 00 64 8F B1 00 60 8F B0 00 5C ...h...d...`...\
+00408E00 03 E0 00 08 27 BD 00 70 00 00 00 00 00 00 00 00 ....'..p........
+00408E10 3C 1C 0F C0 27 9C FA 50 03 99 E0 21 27 BD FF 90 <...'..P...!'...
+00408E20 AF BC 00 10 44 03 60 00 44 02 68 00 44 07 70 00 ....D.`.D.h.D.p.
+00408E30 44 06 78 00 27 A8 00 48 AF B2 00 64 AF B0 00 5C D.x.'..H...d...\
+00408E40 8F 92 81 B0 27 B0 00 50 AF A2 00 48 AF A6 00 50 ....'..P...H...P
+00408E50 AF BF 00 68 AD 03 00 04 AF B1 00 60 01 00 20 25 ...h.......`.. %
+00408E60 27 A5 00 18 02 40 C8 25 03 20 F8 09 AE 07 00 04 '....@.%. ......
+00408E70 8F BC 00 10 27 B1 00 30 02 00 20 25 02 40 C8 25 ....'..0.. %.@.%
+00408E80 03 20 F8 09 02 20 28 25 8F BC 00 10 8F A3 00 18 . ... (%........
+00408E90 00 00 00 00 2C 63 00 02 14 60 00 0B 24 02 00 01 ....,c...`..$...
+00408EA0 8F A3 00 30 00 00 00 00 2C 63 00 02 14 60 00 06 ...0....,c...`..
+00408EB0 27 A4 00 18 8F 99 81 18 00 00 00 00 03 20 F8 09 '............ ..
+00408EC0 02 20 28 25 8F BC 00 10 8F BF 00 68 8F B2 00 64 . (%.......h...d
+00408ED0 8F B1 00 60 8F B0 00 5C 03 E0 00 08 27 BD 00 70 ...`...\....'..p
+00408EE0 3C 1C 0F C0 27 9C F9 80 03 99 E0 21 27 BD FF 90 <...'......!'...
+00408EF0 AF BC 00 10 44 03 60 00 44 02 68 00 44 07 70 00 ....D.`.D.h.D.p.
+00408F00 44 06 78 00 27 A8 00 48 AF B2 00 64 AF B0 00 5C D.x.'..H...d...\
+00408F10 8F 92 81 B0 27 B0 00 50 AF A2 00 48 AF A6 00 50 ....'..P...H...P
+00408F20 AF BF 00 68 AD 03 00 04 AF B1 00 60 01 00 20 25 ...h.......`.. %
+00408F30 27 A5 00 18 02 40 C8 25 03 20 F8 09 AE 07 00 04 '....@.%. ......
+00408F40 8F BC 00 10 27 B1 00 30 02 00 20 25 02 40 C8 25 ....'..0.. %.@.%
+00408F50 03 20 F8 09 02 20 28 25 8F BC 00 10 8F A3 00 18 . ... (%........
+00408F60 00 00 00 00 2C 63 00 02 14 60 00 0B 24 02 00 01 ....,c...`..$...
+00408F70 8F A3 00 30 00 00 00 00 2C 63 00 02 14 60 00 06 ...0....,c...`..
+00408F80 27 A4 00 18 8F 99 81 18 00 00 00 00 03 20 F8 09 '............ ..
+00408F90 02 20 28 25 8F BC 00 10 8F BF 00 68 8F B2 00 64 . (%.......h...d
+00408FA0 8F B1 00 60 8F B0 00 5C 03 E0 00 08 27 BD 00 70 ...`...\....'..p
+00408FB0 3C 1C 0F C0 27 9C F8 B0 03 99 E0 21 27 BD FF 90 <...'......!'...
+00408FC0 AF BC 00 10 44 03 60 00 44 02 68 00 44 07 70 00 ....D.`.D.h.D.p.
+00408FD0 44 06 78 00 27 A8 00 48 AF B2 00 64 AF B0 00 5C D.x.'..H...d...\
+00408FE0 8F 92 81 B0 27 B0 00 50 AF A2 00 48 AF A6 00 50 ....'..P...H...P
+00408FF0 AF BF 00 68 AD 03 00 04 AF B1 00 60 01 00 20 25 ...h.......`.. %
+00409000 27 A5 00 18 02 40 C8 25 03 20 F8 09 AE 07 00 04 '....@.%. ......
+00409010 8F BC 00 10 27 B1 00 30 02 00 20 25 02 40 C8 25 ....'..0.. %.@.%
+00409020 03 20 F8 09 02 20 28 25 8F BC 00 10 8F A3 00 18 . ... (%........
+00409030 00 00 00 00 2C 63 00 02 14 60 00 0B 24 02 FF FF ....,c...`..$...
+00409040 8F A3 00 30 00 00 00 00 2C 63 00 02 14 60 00 06 ...0....,c...`..
+00409050 27 A4 00 18 8F 99 81 18 00 00 00 00 03 20 F8 09 '............ ..
+00409060 02 20 28 25 8F BC 00 10 8F BF 00 68 8F B2 00 64 . (%.......h...d
+00409070 8F B1 00 60 8F B0 00 5C 03 E0 00 08 27 BD 00 70 ...`...\....'..p
+00409080 3C 1C 0F C0 27 9C F7 E0 03 99 E0 21 27 BD FF 90 <...'......!'...
+00409090 AF BC 00 10 44 03 60 00 44 02 68 00 44 07 70 00 ....D.`.D.h.D.p.
+004090A0 44 06 78 00 27 A8 00 48 AF B2 00 64 AF B0 00 5C D.x.'..H...d...\
+004090B0 8F 92 81 B0 27 B0 00 50 AF A2 00 48 AF A6 00 50 ....'..P...H...P
+004090C0 AF BF 00 68 AD 03 00 04 AF B1 00 60 01 00 20 25 ...h.......`.. %
+004090D0 27 A5 00 18 02 40 C8 25 03 20 F8 09 AE 07 00 04 '....@.%. ......
+004090E0 8F BC 00 10 27 B1 00 30 02 00 20 25 02 40 C8 25 ....'..0.. %.@.%
+004090F0 03 20 F8 09 02 20 28 25 8F BC 00 10 8F A3 00 18 . ... (%........
+00409100 00 00 00 00 2C 63 00 02 14 60 00 0B 24 02 00 01 ....,c...`..$...
+00409110 8F A3 00 30 00 00 00 00 2C 63 00 02 14 60 00 06 ...0....,c...`..
+00409120 27 A4 00 18 8F 99 81 18 00 00 00 00 03 20 F8 09 '............ ..
+00409130 02 20 28 25 8F BC 00 10 8F BF 00 68 8F B2 00 64 . (%.......h...d
+00409140 8F B1 00 60 8F B0 00 5C 03 E0 00 08 27 BD 00 70 ...`...\....'..p
+00409150 3C 1C 0F C0 27 9C F7 10 03 99 E0 21 27 BD FF C8 <...'......!'...
+00409160 AF BC 00 10 24 02 00 03 00 04 1F C2 AF BF 00 34 ....$..........4
+00409170 AF A2 00 18 14 80 00 04 AF A3 00 1C 24 02 00 02 ............$...
+00409180 10 00 00 2A AF A2 00 18 24 02 00 3C 10 60 00 0C ...*....$..<.`..
+00409190 AF A2 00 20 3C 02 80 00 3C 01 C1 E0 44 81 08 00 ... <...<...D...
+004091A0 44 80 00 00 10 82 00 26 00 04 10 23 00 40 18 25 D......&...#.@.%
+004091B0 00 02 17 C3 AF A2 00 28 10 00 00 05 AF A3 00 2C .......(.......,
+004091C0 00 80 18 25 00 04 17 C3 AF A2 00 28 AF A3 00 2C ...%.......(...,
+004091D0 8F A3 00 28 3C 02 0F FF 34 42 FF FF 00 43 10 2B ...(<...4B...C.+
+004091E0 14 40 00 12 00 00 00 00 3C 06 0F FF 8F A5 00 20 .@......<...... 
+004091F0 34 C6 FF FF 8F A2 00 28 8F A3 00 2C 00 02 10 40 4......(...,...@
+00409200 00 03 27 C2 00 44 10 25 00 03 18 40 AF A2 00 28 ..'..D.%...@...(
+00409210 AF A3 00 2C 8F A4 00 28 00 00 00 00 00 C4 20 2B ...,...(...... +
+00409220 10 80 FF F4 24 A5 FF FF AF A5 00 20 8F 99 80 34 ....$...... ...4
+00409230 00 00 00 00 03 20 F8 09 27 A4 00 18 8F BC 00 10 ..... ..'.......
+00409240 8F BF 00 34 00 00 00 00 03 E0 00 08 27 BD 00 38 ...4........'..8
+00409250 3C 1C 0F C0 27 9C F6 10 03 99 E0 21 27 BD FF C0 <...'......!'...
+00409260 AF BC 00 10 44 03 60 00 44 02 68 00 27 A6 00 30 ....D.`.D.h.'..0
+00409270 AF A2 00 30 AF BF 00 3C 00 C0 20 25 8F 99 81 B0 ...0...<.. %....
+00409280 27 A5 00 18 03 20 F8 09 AC C3 00 04 8F BC 00 10 '.... ..........
+00409290 00 00 00 00 8F 99 80 34 27 A3 00 18 8C 62 00 04 .......4'....b..
+004092A0 00 60 20 25 2C 42 00 01 03 20 F8 09 AC 62 00 04 .` %,B... ...b..
+004092B0 8F BC 00 10 8F BF 00 3C 00 00 00 00 03 E0 00 08 .......<........
+004092C0 27 BD 00 40 00 00 00 00 00 00 00 00 00 00 00 00 '..@............
+004092D0 3C 1C 0F C0 27 9C F5 90 03 99 E0 21 27 BD FF C8 <...'......!'...
+004092E0 AF BC 00 10 8F A2 00 48 8F A3 00 4C AF A4 00 18 .......H...L....
+004092F0 8F 99 80 34 AF BF 00 34 AF A5 00 1C AF A6 00 20 ...4...4....... 
+00409300 AF A2 00 28 AF A3 00 2C 03 20 F8 09 27 A4 00 18 ...(...,. ..'...
+00409310 8F BC 00 10 8F BF 00 34 00 00 00 00 03 E0 00 08 .......4........
+00409320 27 BD 00 38 00 00 00 00 00 00 00 00 00 00 00 00 '..8............
+00409330 3C 1C 0F C0 27 9C F5 30 03 99 E0 21 27 BD FF C0 <...'..0...!'...
+00409340 AF BC 00 10 44 03 60 00 44 02 68 00 27 A6 00 30 ....D.`.D.h.'..0
+00409350 AF A2 00 30 AF BF 00 3C 00 C0 20 25 8F 99 81 B0 ...0...<.. %....
+00409360 27 A5 00 18 03 20 F8 09 AC C3 00 04 8F BC 00 10 '.... ..........
+00409370 24 02 00 00 3C 03 3F FF 34 63 FF FF 8F A4 00 28 $...<.?.4c.....(
+00409380 8F A5 00 2C 8F 99 82 04 00 82 10 24 00 A3 18 24 ...,.......$...$
+00409390 00 05 2F 82 00 04 30 80 00 A6 28 25 00 04 27 82 ../...0...(%..'.
+004093A0 00 62 10 25 10 40 00 02 00 A0 38 25 34 E7 00 01 .b.%.@....8%4...
+004093B0 8F A4 00 18 8F A5 00 1C 8F A6 00 20 03 20 F8 09 ........... . ..
+004093C0 00 00 00 00 8F BC 00 10 8F BF 00 3C 00 00 00 00 ...........<....
+004093D0 03 E0 00 08 27 BD 00 40 00 00 00 00 00 00 00 00 ....'..@........
+004093E0 00 80 30 25 8C C3 00 00 8C C4 00 0C 2C 62 00 02 ..0%........,b..
+004093F0 8C C7 00 04 10 40 00 05 00 00 28 25 3C 02 00 10 .....@....(%<...
+00409400 00 82 20 25 10 00 00 41 24 05 00 FF 38 62 00 04 .. %...A$...8b..
+00409410 10 40 00 2B 00 00 00 00 38 62 00 02 14 40 00 03 .@.+....8b...@..
+00409420 00 00 00 00 10 00 00 39 00 00 20 25 10 80 00 38 .......9.. %...8
+00409430 3C 02 00 7F 8C C5 00 08 00 00 00 00 28 A2 FF 82 <...........(...
+00409440 10 40 00 1C 28 A2 00 80 24 02 FF 82 00 45 10 23 .@..(...$....E.#
+00409450 24 03 00 01 00 43 18 04 24 63 FF FF 00 83 18 24 $....C..$c.....$
+00409460 00 03 18 2B 00 44 20 06 28 42 00 1A 14 40 00 02 ...+.D .(B...@..
+00409470 00 83 20 25 00 00 20 25 30 83 00 7F 24 02 00 40 .. %.. %0...$..@
+00409480 14 62 00 06 00 00 00 00 30 82 00 80 10 40 00 04 .b......0....@..
+00409490 00 00 00 00 10 00 00 02 24 84 00 40 24 84 00 3F ........$..@$..?
+004094A0 3C 02 3F FF 34 42 FF FF 00 44 28 2B 10 00 00 17 <.?.4B...D(+....
+004094B0 00 04 21 C2 00 00 00 00 14 40 00 04 00 00 00 00 ..!......@......
+004094C0 24 05 00 FF 10 00 00 11 00 00 20 25 30 83 00 7F $......... %0...
+004094D0 24 02 00 40 14 62 00 06 24 A5 00 7F 30 82 00 80 $..@.b..$...0...
+004094E0 10 40 00 04 00 00 00 00 10 00 00 02 24 84 00 40 .@..........$..@
+004094F0 24 84 00 3F 00 00 00 00 04 81 00 03 00 00 00 00 $..?............
+00409500 00 04 20 42 24 A5 00 01 00 04 21 C2 3C 02 00 7F .. B$.....!.<...
+00409510 30 A3 00 FF 34 42 FF FF 00 82 10 24 00 03 1D C0 0...4B.....$....
+00409520 00 43 10 25 00 07 27 C0 00 44 10 25 44 82 00 00 .C.%..'..D.%D...
+00409530 03 E0 00 08 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00409540 8C 83 00 00 3C 02 00 7F 00 03 25 C2 00 A0 30 25 ....<.....%...0%
+00409550 34 42 FF FF 00 03 2F C2 30 84 00 FF AC C5 00 04 4B..../.0.......
+00409560 14 80 00 18 00 62 28 24 14 A0 00 04 3C 02 3F FF .....b($....<.?.
+00409570 24 02 00 02 03 E0 00 08 AC C2 00 00 00 05 29 C0 $.............).
+00409580 34 42 FF FF 24 03 FF 82 24 04 00 03 00 45 10 2B 4B..$...$....E.+
+00409590 AC C3 00 08 14 40 00 09 AC C4 00 00 3C 03 3F FF .....@......<.?.
+004095A0 34 63 FF FF 24 04 FF 82 00 05 28 40 00 65 10 2B 4c..$.....(@.e.+
+004095B0 10 40 FF FD 24 84 FF FF AC C4 00 08 03 E0 00 08 .@..$...........
+004095C0 AC C5 00 0C 24 02 00 FF 14 82 00 0E 3C 02 40 00 ....$.......<.@.
+004095D0 14 A0 00 04 3C 02 00 10 24 02 00 04 03 E0 00 08 ....<...$.......
+004095E0 AC C2 00 00 00 A2 10 24 10 40 00 03 24 02 00 01 .......$.@..$...
+004095F0 10 00 00 02 AC C2 00 00 AC C0 00 00 03 E0 00 08 ................
+00409600 AC C5 00 0C 00 05 19 C0 00 62 18 25 24 84 FF 81 .........b.%$...
+00409610 24 02 00 03 AC C3 00 0C AC C4 00 08 03 E0 00 08 $...............
+00409620 AC C2 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00409630 3C 1C 0F C0 27 9C F2 30 03 99 E0 21 27 BD FF D0 <...'..0...!'...
+00409640 AF BC 00 10 AF A4 00 18 8F 99 81 4C 27 A4 00 18 ...........L'...
+00409650 AF BF 00 2C AF A5 00 1C AF A6 00 20 03 20 F8 09 ...,....... . ..
+00409660 AF A7 00 24 8F BC 00 10 8F BF 00 2C 00 00 00 00 ...$.......,....
+00409670 03 E0 00 08 27 BD 00 30 00 00 00 00 00 00 00 00 ....'..0........
+00409680 3C 1C 0F C0 27 9C F1 E0 03 99 E0 21 8C 83 00 00 <...'......!....
+00409690 8C 8A 00 10 8C 8B 00 14 2C 62 00 02 8C 88 00 04 ........,b......
+004096A0 10 40 00 07 00 00 48 25 3C 02 00 08 24 03 00 00 .@....H%<...$...
+004096B0 01 42 50 25 01 63 58 25 10 00 00 7F 24 09 07 FF .BP%.cX%....$...
+004096C0 38 62 00 04 10 40 00 53 00 00 00 00 38 62 00 02 8b...@.S....8b..
+004096D0 14 40 00 04 00 00 00 00 00 00 50 25 10 00 00 76 .@........P%...v
+004096E0 00 00 58 25 01 6A 10 25 10 40 00 73 00 00 00 00 ..X%.j.%.@.s....
+004096F0 8C 84 00 08 00 00 00 00 28 82 FC 02 10 40 00 42 ........(....@.B
+00409700 28 82 04 00 24 02 FC 02 00 44 20 23 28 83 00 39 (...$....D #(..9
+00409710 14 60 00 04 24 02 00 01 00 00 50 25 10 00 00 1D .`..$.....P%....
+00409720 00 00 58 25 00 82 10 04 24 42 FF FF 00 40 18 25 ..X%....$B...@.%
+00409730 00 02 17 C3 01 42 10 24 01 63 18 24 00 62 10 25 .....B.$.c.$.b.%
+00409740 10 40 00 02 00 00 28 25 24 05 00 01 00 04 36 80 .@....(%$.....6.
+00409750 04 C1 00 04 00 00 00 00 00 8A 78 06 10 00 00 07 ..........x.....
+00409760 00 00 70 25 10 C0 00 04 00 8B 78 06 00 04 30 23 ..p%......x...0#
+00409770 00 CA 30 04 01 E6 78 25 00 8A 70 06 00 A0 18 25 ..0...x%..p....%
+00409780 00 00 10 25 01 C0 20 25 01 E0 28 25 00 82 50 25 ...%.. %..(%..P%
+00409790 00 A3 58 25 24 02 00 00 24 03 00 FF 01 42 20 24 ..X%$...$....B $
+004097A0 14 80 00 0F 01 63 28 24 24 02 00 80 14 A2 00 0C .....c($$.......
+004097B0 00 00 00 00 24 02 00 00 24 03 01 00 01 42 10 24 ....$...$....B.$
+004097C0 01 63 18 24 00 62 10 25 10 40 00 09 3C 02 0F FF .c.$.b.%.@..<...
+004097D0 25 6B 00 80 2D 62 00 80 10 00 00 04 01 42 50 21 %k..-b.......BP!
+004097E0 25 6B 00 7F 2D 62 00 7F 01 42 50 21 3C 02 0F FF %k..-b...BP!<...
+004097F0 34 42 FF FF 00 4A 10 2B 10 40 00 2B 00 00 00 00 4B...J.+.@.+....
+00409800 10 00 00 29 24 09 00 01 00 00 00 00 14 40 00 05 ...)$........@..
+00409810 00 00 00 00 00 00 50 25 00 00 58 25 10 00 00 26 ......P%..X%...&
+00409820 24 09 07 FF 24 02 00 00 24 03 00 FF 01 42 30 24 $...$...$....B0$
+00409830 01 63 38 24 14 C0 00 0F 24 89 03 FF 24 02 00 80 .c8$....$...$...
+00409840 14 E2 00 0C 00 00 00 00 24 02 00 00 24 03 01 00 ........$...$...
+00409850 01 42 10 24 01 63 18 24 00 62 10 25 10 40 00 09 .B.$.c.$.b.%.@..
+00409860 3C 02 1F FF 25 6B 00 80 2D 62 00 80 10 00 00 04 <...%k..-b......
+00409870 01 42 50 21 25 6B 00 7F 2D 62 00 7F 01 42 50 21 .BP!%k..-b...BP!
+00409880 3C 02 1F FF 34 42 FF FF 00 4A 10 2B 10 40 00 06 <...4B...J.+.@..
+00409890 00 00 00 00 00 0B 58 42 00 0A 17 C0 01 62 58 25 ......XB.....bX%
+004098A0 00 0A 50 42 25 29 00 01 00 0B 5A 02 00 0A 16 00 ..PB%)....Z.....
+004098B0 01 62 58 25 00 0A 52 02 3C 06 00 0F 34 C6 FF FF .bX%..R.<...4...
+004098C0 24 07 FF FF 31 22 07 FF 01 46 30 24 00 40 28 25 $...1"...F0$.@(%
+004098D0 01 67 38 24 00 00 20 25 00 E0 68 25 00 C0 60 25 .g8$.. %..h%..`%
+004098E0 00 05 25 00 00 00 28 25 01 84 20 25 31 08 00 01 ..%...(%.. %1...
+004098F0 01 A5 28 25 01 00 18 25 00 00 10 25 00 A0 68 25 ..(%...%...%..h%
+00409900 00 80 60 25 00 03 17 C0 00 00 18 25 01 82 10 25 ..`%.......%...%
+00409910 01 A3 18 25 00 60 68 25 00 40 60 25 44 8D 00 00 ...%.`h%.@`%D...
+00409920 44 8C 08 00 03 E0 00 08 00 00 00 00 00 00 00 00 D...............
+00409930 3C 1C 0F C0 27 9C EF 30 03 99 E0 21 8C 82 00 00 <...'..0...!....
+00409940 8C 83 00 04 00 A0 50 25 00 02 3D 02 00 02 2F C2 ......P%..=.../.
+00409950 00 00 30 25 00 00 20 25 30 A8 00 01 30 E7 07 FF ..0%.. %0...0...
+00409960 3C 04 00 0F 34 84 FF FF 24 05 FF FF AD 48 00 04 <...4...$....H..
+00409970 00 44 40 24 14 E0 00 20 00 65 48 24 01 28 10 25 .D@$... .eH$.(.%
+00409980 14 40 00 04 3C 02 0F FF 24 02 00 02 03 E0 00 08 .@..<...$.......
+00409990 AD 42 00 00 00 08 42 00 00 09 1E 02 01 03 40 25 .B....B.......@%
+004099A0 00 09 4A 00 34 42 FF FF 24 03 FC 02 24 04 00 03 ..J.4B..$...$...
+004099B0 00 48 10 2B AD 43 00 08 14 40 00 0C AD 44 00 00 .H.+.C...@...D..
+004099C0 3C 04 0F FF 34 84 FF FF 00 08 40 40 00 09 1F C2 <...4.....@@....
+004099D0 8D 42 00 08 01 03 40 25 00 09 48 40 24 42 FF FF .B....@%..H@$B..
+004099E0 00 88 18 2B 10 60 FF F8 AD 42 00 08 AD 48 00 10 ...+.`...B...H..
+004099F0 03 E0 00 08 AD 49 00 14 24 02 07 FF 14 E2 00 13 .....I..$.......
+00409A00 00 09 36 02 01 28 10 25 14 40 00 03 24 02 00 04 ..6..(.%.@..$...
+00409A10 03 E0 00 08 AD 42 00 00 3C 02 00 08 24 03 00 00 .....B..<...$...
+00409A20 01 02 10 24 01 23 18 24 00 62 10 25 10 40 00 03 ...$.#.$.b.%.@..
+00409A30 24 02 00 01 10 00 00 02 AD 42 00 00 AD 40 00 00 $........B...@..
+00409A40 AD 48 00 10 03 E0 00 08 AD 49 00 14 00 08 22 00 .H.......I....".
+00409A50 3C 02 10 00 24 03 00 00 00 86 20 25 00 09 2A 00 <...$..... %..*.
+00409A60 00 82 20 25 00 A3 28 25 24 E6 FC 01 24 02 00 03 .. %..(%$...$...
+00409A70 AD 44 00 10 AD 45 00 14 AD 46 00 08 03 E0 00 08 .D...E...F......
+00409A80 AD 42 00 00 00 00 00 00 00 00 00 00 00 00 00 00 .B..............
+00409A90 8C 86 00 00 00 00 00 00 2C C2 00 02 14 40 00 06 ........,....@..
+00409AA0 00 00 00 00 8C A3 00 00 00 00 00 00 2C 62 00 02 ............,b..
+00409AB0 10 40 00 03 00 00 00 00 03 E0 00 08 24 02 00 01 .@..........$...
+00409AC0 38 C2 00 04 14 40 00 07 38 62 00 04 14 40 00 17 8....@..8b...@..
+00409AD0 00 00 00 00 8C A3 00 04 8C 82 00 04 03 E0 00 08 ................
+00409AE0 00 62 10 23 00 00 00 00 10 40 00 07 00 00 00 00 .b.#.....@......
+00409AF0 38 C2 00 02 14 40 00 0A 00 00 00 00 38 63 00 02 8....@......8c..
+00409B00 10 60 00 3F 00 00 10 25 8C A2 00 04 00 00 00 00 .`.?...%........
+00409B10 2C 42 00 01 00 02 10 23 03 E0 00 08 34 42 00 01 ,B.....#....4B..
+00409B20 38 62 00 02 14 40 00 07 00 00 00 00 8C 82 00 04 8b...@..........
+00409B30 00 00 00 00 00 02 10 2B 00 02 10 23 03 E0 00 08 .......+...#....
+00409B40 34 42 00 01 8C 88 00 04 8C A2 00 04 00 00 00 00 4B..............
+00409B50 15 02 00 18 00 08 10 2B 8C 86 00 08 8C A3 00 08 .......+........
+00409B60 00 00 00 00 00 66 10 2A 14 40 00 12 00 08 10 2B .....f.*.@.....+
+00409B70 00 C3 10 2A 14 40 00 1E 2D 02 00 01 8C 87 00 10 ...*.@..-.......
+00409B80 8C A6 00 10 00 00 00 00 00 C7 10 2B 14 40 00 09 ...........+.@..
+00409B90 00 08 10 2B 14 E6 00 0B 00 E6 10 2B 8C 83 00 14 ...+.......+....
+00409BA0 8C A2 00 14 00 00 00 00 00 43 10 2B 10 40 00 04 .........C.+.@..
+00409BB0 00 08 10 2B 00 02 10 23 03 E0 00 08 34 42 00 01 ...+...#....4B..
+00409BC0 00 E6 10 2B 14 40 00 0A 2D 02 00 01 14 C7 00 0C ...+.@..-.......
+00409BD0 00 00 10 25 8C A3 00 14 8C 82 00 14 00 00 00 00 ...%............
+00409BE0 00 43 10 2B 10 40 00 05 00 00 00 00 2D 02 00 01 .C.+.@......-...
+00409BF0 00 02 10 23 03 E0 00 08 34 42 00 01 00 00 10 25 ...#....4B.....%
+00409C00 03 E0 00 08 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00409C10 3C 1C 0F C0 27 9C EC 50 03 99 E0 21 27 BD FF D8 <...'..P...!'...
+00409C20 AF BC 00 10 AF B0 00 1C 8F 82 80 18 00 00 00 00 ................
+00409C30 24 42 08 58 AF BF 00 24 AF B1 00 20 8C 59 FF FC $B.X...$... .Y..
+00409C40 24 03 FF FF 13 23 00 0A 24 50 FF FC 24 11 FF FF $....#..$P..$...
+00409C50 03 20 F8 09 00 00 00 00 8F BC 00 10 26 10 FF FC . ..........&...
+00409C60 8E 02 00 00 00 00 00 00 14 51 FF F9 00 40 C8 25 .........Q...@.%
+00409C70 8F BF 00 24 8F B1 00 20 8F B0 00 1C 03 E0 00 08 ...$... ........
+00409C80 27 BD 00 28                                     '..(           
+00409C84             3C 1C 0F C0 27 9C EB DC 03 99 E0 21     <...'......!
+00409C90 27 BD FF E0 AF BC 00 10 AF BF 00 1C 8F BF 00 1C '...............
+00409CA0 00 00 00 00 03 E0 00 08 27 BD 00 20 00 00 00 00 ........'.. ....
 ;;; Segment .fini (00409CB0)
-
-;; _fini: 00409CB0
-_fini proc
-	lui	r28,+0FC0
-	addiu	r28,r28,-00001450
-	addu	r28,r28,r25
-	addiu	sp,sp,-00000020
-	sw	r28,0010(sp)
-	sw	ra,001C(sp)
-	sw	r28,0018(sp)
-	lw	r25,-7FE4(r28)
-	nop
-	addiu	r25,r25,+00000620
-	nop
-	jalr	ra,r25
-	nop
-	lw	r28,0010(sp)
-	nop
-	lw	ra,001C(sp)
-	nop
-	jr	ra
-	addiu	sp,sp,+00000020
+00409CB0 3C 1C 0F C0 27 9C EB B0 03 99 E0 21 27 BD FF E0 <...'......!'...
+00409CC0 AF BC 00 10 AF BF 00 1C AF BC 00 18 8F 99 80 1C ................
+00409CD0 00 00 00 00 27 39 06 20 00 00 00 00 03 20 F8 09 ....'9. ..... ..
+00409CE0 00 00 00 00 8F BC 00 10 00 00 00 00 8F BF 00 1C ................
+00409CF0 00 00 00 00 03 E0 00 08 27 BD 00 20             ........'..    
 ;;; Segment .rodata (00409D00)
 00409D00 31 2E 30 2E 37 00 00 00 00 00 00 00 70 69 64 5F 1.0.7.......pid_
 00409D10 66 69 6C 65 00 00 00 00 6D 61 78 5F 6C 6F 67 66 file....max_logf

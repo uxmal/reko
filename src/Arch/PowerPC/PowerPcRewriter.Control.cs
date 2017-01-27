@@ -36,7 +36,7 @@ namespace Reko.Arch.PowerPC
         private void RewriteB()
         {
             var dst = RewriteOperand(instr.op1);
-            emitter.Goto(dst);
+            m.Goto(dst);
         }
 
         private void RewriteBc(bool linkRegister)
@@ -56,24 +56,24 @@ namespace Reko.Arch.PowerPC
             if (addrDst != null && instr.Address.ToLinear() + 4 == addrDst.ToLinear())
             {
                 // PowerPC idiom to get the current instruction pointer in the lr register
-                emitter.Assign(frame.EnsureRegister(arch.lr), addrDst);
+                m.Assign(frame.EnsureRegister(arch.lr), addrDst);
             }
             else
             {
-                cluster.Class = RtlClass.Transfer;
-                emitter.Call(dst, 0);
+                rtlc = RtlClass.Transfer;
+                m.Call(dst, 0);
             }
         }
 
         private void RewriteBlr()
         {
-            cluster.Class = RtlClass.Transfer;
-            emitter.Return(0, 0);
+            rtlc = RtlClass.Transfer;
+            m.Return(0, 0);
         }
 
         private void RewriteBranch(bool updateLinkregister, bool toLinkRegister, ConditionCode cc)
         {
-            cluster.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
             var ccrOp = instr.op1 as RegisterOperand;
             Expression cr;
             if (ccrOp != null)
@@ -89,11 +89,11 @@ namespace Reko.Arch.PowerPC
                 var dst = frame.EnsureRegister(arch.lr);
                 if (updateLinkregister)
                 {
-                    emitter.If(emitter.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
+                    m.If(m.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
                 }
                 else
                 {
-                    emitter.If(emitter.Test(cc, cr), new RtlReturn(0, 0, RtlClass.Transfer));
+                    m.If(m.Test(cc, cr), new RtlReturn(0, 0, RtlClass.Transfer));
                 }
             }
             else
@@ -101,11 +101,11 @@ namespace Reko.Arch.PowerPC
                 var dst = RewriteOperand(ccrOp != null ? instr.op2 : instr.op1);
                 if (updateLinkregister)
                 {
-                    emitter.If(emitter.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
+                    m.If(m.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
                 }
                 else
                 {
-                    emitter.Branch(emitter.Test(cc, cr), (Address)dst, RtlClass.ConditionalTransfer);
+                    m.Branch(m.Test(cc, cr), (Address)dst, RtlClass.ConditionalTransfer);
                 }
             }
         }
@@ -129,7 +129,7 @@ namespace Reko.Arch.PowerPC
         
         private void RewriteCtrBranch(bool updateLinkRegister, bool toLinkRegister, Func<Expression,Expression,Expression> decOp, bool ifSet)
         {
-            cluster.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
             var ctr = frame.EnsureRegister(arch.ctr);
             var ccOp = instr.op1 as ConditionOperand;
             Expression dest;
@@ -138,12 +138,12 @@ namespace Reko.Arch.PowerPC
 
             if (ccOp != null)
             {
-                Expression test = emitter.Test(
+                Expression test = m.Test(
                     CcFromOperand(ccOp),
                     frame.EnsureRegister(CrFromOperand(ccOp)));
                 if (!ifSet)
                     test = test.Invert();
-                cond = emitter.Cand(cond, test);
+                cond = m.Cand(cond, test);
                 dest = RewriteOperand(instr.op2);
             }
             else
@@ -151,16 +151,16 @@ namespace Reko.Arch.PowerPC
                 dest = RewriteOperand(instr.op1);
             }
             
-            emitter.Assign(ctr, emitter.ISub(ctr, 1));
+            m.Assign(ctr, m.ISub(ctr, 1));
             if (updateLinkRegister)
             {
-                emitter.If(
+                m.If(
                     cond,
                     new RtlCall(dest, 0, RtlClass.ConditionalTransfer));
             }
             else
             {
-                emitter.Branch(
+                m.Branch(
                     cond,
                     (Address)dest,
                     RtlClass.ConditionalTransfer);
@@ -169,7 +169,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteBranch(bool linkRegister, Expression destination)
         {
-            cluster.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
             var ctr = frame.EnsureRegister(arch.ctr);
             var bo = ((Constant)RewriteOperand(instr.op1)).ToByte();
             switch (bo)
@@ -200,16 +200,16 @@ namespace Reko.Arch.PowerPC
             case 0x1B: throw new NotImplementedException("condition true");
             default:
                 if (linkRegister)
-                    emitter.Call(ctr, 0);
+                    m.Call(ctr, 0);
                 else
-                    emitter.Goto(ctr);
+                    m.Goto(ctr);
                 return;
             }
         }
 
         private void RewriteSc()
         {
-            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, arch.WordWidth));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, arch.WordWidth));
         }
     }
 }
