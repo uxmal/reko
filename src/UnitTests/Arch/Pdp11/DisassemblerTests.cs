@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Arch.Pdp11
         [Test]
         public void Pdp11dis_f()
         {
-            RunTest("@@@", 0xFBAC);
+            RunTest("stcdi\tac4,@-(r4)", 0xFBAC);
         }
     }
 }
