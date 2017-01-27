@@ -81,6 +81,7 @@
     <Compile Include="Pdp11Rewriter.Alu.cs" />
     <Compile Include="Pdp11Rewriter.Control.cs" />
     <Compile Include="Pdp11Rewriter.cs" />
+    <Compile Include="Pdp11Rewriter.Fpu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

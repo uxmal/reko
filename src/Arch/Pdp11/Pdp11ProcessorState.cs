@@ -38,8 +38,8 @@ namespace Reko.Arch.Pdp11
         public Pdp11ProcessorState(Pdp11Architecture arch)
         {
             this.arch = arch;
-            this.regs = new ushort[8];
-            this.valid = new bool[8];
+            this.regs = new ushort[22];
+            this.valid = new bool[22];
         }
 
         public Pdp11ProcessorState(Pdp11ProcessorState that)
