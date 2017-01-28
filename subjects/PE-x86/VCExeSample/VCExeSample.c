@@ -56,13 +56,13 @@ void test7(real64 rArg04)
 	return;
 }
 
-void nested_if_blocks_test8(real64 rArg04, real64 rArg0)
+word32 nested_if_blocks_test8(real64 rArg04, real64 rArg0)
 {
 	globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, ~0x00, rArg04);
 	if (globals->r4020F8 != rArg04 && globals->r4020F0 > rArg04)
 		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg04);
 	test6(globals->gbl_c, 0x06, 0x07);
-	return;
+	return ebp;
 }
 
 void loop_test9(real32 rArg04, real64 rArg0)
@@ -91,6 +91,40 @@ void const_div_test10(word32 dwArg04)
 	}
 	globals->dw40301C = ecx_19;
 	globals->dw403020 = eax_16;
+	return;
+}
+
+void loop_test11(real32 ecx, word32 ebp)
+{
+	struct Eq_223 * ebp_19 = fp - 0x04;
+	ptr32 esp_21 = fp - 0x0C;
+	while (*(ebp_19 - 0x04) > 0x00)
+	{
+		ui32 eax_26 = *(ebp_19 - 0x04);
+		ui32 eax_27 = eax_26 & 0x80000001;
+		if ((eax_26 & 0x80000001) < 0x00)
+			eax_27 = ((eax_26 & 0x80000001) - 0x01 | ~0x01) + 0x01;
+		if (eax_27 == 0x00)
+		{
+			*(ebp_19 - 0x08) = (real32) ebp_19->r0008;
+			real64 rLoc1_44 = (real64) *(ebp_19 - 0x08);
+			real32 * esp_45 = esp_21 - 0x04;
+			*esp_45 = ecx;
+			*esp_45 = (real32) rLoc1_44;
+			loop_test9(rArg00, rArg0);
+			esp_21 = esp_45 + 0x01;
+		}
+		else
+		{
+			real64 * esp_52 = esp_21 - 0x08;
+			*esp_52 = ebp_19->r0008;
+			ebp_19 = nested_if_blocks_test8(rArg00, rArg0);
+			esp_21 = esp_52 + 0x01;
+		}
+		word32 ecx_38 = *(ebp_19 - 0x04);
+		*(ebp_19 - 0x04) = ecx_38 - 0x01;
+		ecx = ecx_38 - 0x01;
+	}
 	return;
 }
 

@@ -112,3 +112,16 @@ store:
         mov quotient, eax
     }
 }
+
+extern "C" __declspec(dllexport) void loop_test11(double d)
+{
+    int i = 5;
+    while (i > 0)
+    {
+        if ((i % 2) == 0)
+            loop_test9(d);
+        else
+            nested_if_blocks_test8(d);
+        i--;
+    }
+}
