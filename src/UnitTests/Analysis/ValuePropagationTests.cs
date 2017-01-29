@@ -515,6 +515,52 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual("x = fp - 0x000C", phiStm.Instruction.ToString());
         }
 
+        [Test(Description =
+            "if x = phi(a_1, a_2, ... a_n) and all phi arguments after " +
+            "value propagation are equal to <exp> or x where <exp> is some  " +
+            "expression then replace phi assignment with x = <exp>)")]
+        public void VpPhiLoopsSimplifyArgs()
+        {
+            var m = new ProcedureBuilder();
+            var ssa = new SsaState(m.Procedure, null);
+            ssaIds = ssa.Identifiers;
+            var sp = Reg16("sp");
+            var sp_1 = Reg16("sp_1");
+            var sp_2 = Reg16("sp_2");
+            var a = Reg16("a");
+            var b = Reg16("b");
+            var c = Reg16("c");
+            var d = Reg16("d");
+            var v = Reg16("v");
+            var w = Reg16("w");
+            var x = Reg16("x");
+            var y = Reg16("y");
+            var z = Reg16("z");
+            m.Phi(sp, sp_1, sp_2);
+            m.Emit(m.Assign(v, m.ISub(sp, 4)));
+            m.Emit(m.Assign(w, m.ISub(sp, 8)));
+            m.Emit(m.Assign(y, m.IAdd(x, 4)));
+            m.Emit(m.Assign(z, m.ISub(x, 8)));
+            m.Emit(m.Assign(a, m.ISub(v, 8)));
+            m.Emit(m.Assign(b, m.ISub(w, 4)));
+            m.Emit(m.Assign(c, m.ISub(y, 4)));
+            m.Emit(m.Assign(d, m.IAdd(z, 8)));
+            var phiStm = m.Phi(x, a, b, c, d);
+            var stms = m.Procedure.EntryBlock.Succ[0].Statements;
+            stms.ForEach(stm =>
+            {
+                var ass = stm.Instruction as Assignment;
+                if (ass != null)
+                    ssaIds[ass.Dst].DefStatement = stm;
+                var phiAss = stm.Instruction as PhiAssignment;
+                if (phiAss != null)
+                    ssaIds[phiAss.Dst].DefStatement = stm;
+            });
+            var vp = new ValuePropagator(arch, ssa, listener);
+            vp.Transform();
+            Assert.AreEqual("x = sp - 0x000C", phiStm.Instruction.ToString());
+        }
+
         private class DpbMock : ProcedureBuilder
 		{
 			protected override void BuildBody()
