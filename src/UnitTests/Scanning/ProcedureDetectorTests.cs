@@ -101,6 +101,12 @@ namespace Reko.UnitTests.Scanning
             sr.DirectlyCalledAddresses.Add(aTo.Address, 1);
         }
 
+        public void Given_DirectCall(uint to)
+        {
+            var aTo = Block(to);
+            sr.DirectlyCalledAddresses.Add(aTo.Address, 1);
+        }
+
         private void AssertCluster(
             string sExp, 
             ProcedureDetector.Cluster cluster)
@@ -360,6 +366,39 @@ namespace Reko.UnitTests.Scanning
             prdet.RemoveJumpsToKnownProcedures();
 
             Assert.False(sr.ICFG.ContainsEdge(Block(4), Block(10)), "Should have removed tail call to 10");
+        }
+
+        [Test]
+        public void Prdet_PartitionCluster()
+        {
+            Given_Edge(1, 2);
+            Given_Edge(1, 3);
+            Given_Edge(2, 4);
+            Given_Edge(3, 4);
+            Given_Edge(4, 5);
+            Given_Edge(5, 100);
+
+            Given_Edge(11, 12);
+            Given_Edge(11, 13);
+            Given_Edge(12, 14);
+            Given_Edge(13, 14);
+            Given_Edge(14, 15);
+            Given_Edge(15, 100);
+
+            Given_Edge(100, 101);
+            Given_Edge(100, 102);
+
+            Given_DirectCall(1);
+            Given_DirectCall(11);
+
+            Given_ProcedureDetector();
+            var clusters = prdet.FindClusters();
+            Assert.AreEqual(1, clusters.Count);
+            var cluster = clusters[0];
+            prdet.FindClusterEntries(cluster);
+            Assert.AreEqual(2, cluster.Entries.Count);
+            var newClusters = prdet.PartitionIntoSubclusters(cluster);
+            Assert.AreEqual(3, newClusters.Count);
         }
     }
 }

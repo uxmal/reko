@@ -1,72 +1,99 @@
-﻿using System;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2017 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Lib
 {
-    public class LTDominatorGraph<node> where node: class
+    /// <summary>
+    /// Implements the Lengauer-Tarjan algorithm for finding dominators as
+    /// described in Appel "Modern Compiler Implementation in Java".
+    /// </summary>
+    /// <typeparam name="TNode"></typeparam>
+    public class LTDominatorGraph<TNode> where TNode: class
     {
-        public static void Create(DirectedGraph<node> graph, node root)
+        public static Dictionary<TNode,TNode> Create(DirectedGraph<TNode> graph, TNode root)
         {
-            new Builder(graph, root).Dominators();
+            return new Builder(graph, root).Dominators();
         }
 
         public class Builder
         {
-            private DirectedGraph<node> graph;
-            private node root;
-            private Dictionary<node, int> dfnum;
+            private DirectedGraph<TNode> graph;
+            private TNode root;
+            private Dictionary<TNode, int> dfnum;
             private int N;
-            private Dictionary<node, node> parent;
-            private Dictionary<int, node> vertex;
-            private Dictionary<node, HashSet<node>> bucket;
-            private Dictionary<node, node> semi;
-            private Dictionary<node, node> ancestor;
-            private Dictionary<node, node> idom;
-            private Dictionary<node, node> samedom;
-            private Dictionary<node, node> best;
+            private Dictionary<TNode, TNode> parent;
+            private Dictionary<int, TNode> vertex;
+            private Dictionary<TNode, HashSet<TNode>> bucket;
+            private Dictionary<TNode, TNode> semi;
+            private Dictionary<TNode, TNode> ancestor;
+            private Dictionary<TNode, TNode> idom;
+            private Dictionary<TNode, TNode> samedom;
+            private Dictionary<TNode, TNode> best;
 
-            public Builder(DirectedGraph<node> graph, node root)
+            public Builder(DirectedGraph<TNode> graph, TNode root)
             {
                 this.graph = graph;
                 this.root = root;
                 N = 0;
-                bucket = graph.Nodes.ToDictionary(n => n, n => new HashSet<node>());
+                bucket = graph.Nodes.ToDictionary(n => n, n => new HashSet<TNode>());
                 dfnum = graph.Nodes.ToDictionary(n => n, n => 0);
-                semi = graph.Nodes.ToDictionary(n => n, n => default(node));
-                ancestor = graph.Nodes.ToDictionary(n => n, n => default(node));
-                idom = graph.Nodes.ToDictionary(n => n, n => default(node));
-                samedom = graph.Nodes.ToDictionary(n => n, n => default(node));
-                best = graph.Nodes.ToDictionary(n => n, n => default(node));
+                semi = graph.Nodes.ToDictionary(n => n, n => default(TNode));
+                ancestor = graph.Nodes.ToDictionary(n => n, n => default(TNode));
+                idom = graph.Nodes.ToDictionary(n => n, n => default(TNode));
+                samedom = graph.Nodes.ToDictionary(n => n, n => default(TNode));
+                best = graph.Nodes.ToDictionary(n => n, n => default(TNode));
+                parent = graph.Nodes.ToDictionary(n => n, n => default(TNode));
+                vertex = new Dictionary<int, TNode>();
             }
 
-            void DFS(node p, node n)
+            void DFS(TNode p, TNode n)
             {
                 if (dfnum[n] == 0)
                 {
                     dfnum[n] = N;
                     vertex[N] = n;
                     parent[n] = p;
-                    foreach (var w in graph.Successors(p))
+                    ++N;
+                    foreach (var w in graph.Successors(n))
                     {
                         DFS(n, w);
                     }
                 }
             }
 
-
-            public Dictionary<node, node> Dominators()
+            public Dictionary<TNode, TNode> Dominators()
             {
-                DFS(default(node), root);
-                for (int i = N - 1; i > 0; --i)   // skip ove rroot node 0
+                DFS(default(TNode), root);
+                for (int i = N - 1; i > 0; --i)   // skip over root node 0
                 {
                     var n = vertex[i];
                     var p = parent[n];
                     var s = p;
                     foreach (var v in graph.Predecessors(n))
                     {
-                        node ss;
+                        TNode ss;
                         if (dfnum[v] <= dfnum[n])
                         {
                             ss = v;
@@ -106,7 +133,7 @@ namespace Reko.Core.Lib
                 return idom;
             }
 
-            node AncestorWithLowestSemi(node v)
+            TNode AncestorWithLowestSemi(TNode v)
             {
                 var a = ancestor[v];
                 if (ancestor[a] != null)
@@ -119,7 +146,7 @@ namespace Reko.Core.Lib
                 return best[v];
             }
 
-            void Link(node p, node n)
+            void Link(TNode p, TNode n)
             {
                 ancestor[n] = p; best[n] = n;
             }

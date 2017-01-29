@@ -97,6 +97,18 @@ namespace Reko.Scanning
             public SortedSet<RtlBlock> Blocks = new SortedSet<RtlBlock>(Cmp.Instance);
             public SortedSet<RtlBlock> Entries = new SortedSet<RtlBlock>(Cmp.Instance);
 
+            public Cluster()
+            {
+                this.Entries = new SortedSet<RtlBlock>(Cmp.Instance);
+                this.Blocks = new SortedSet<RtlBlock>(Cmp.Instance);
+            }
+
+            public Cluster(IEnumerable<RtlBlock> entries, IEnumerable<RtlBlock> blocks)
+            {
+                this.Entries = new SortedSet<RtlBlock>(entries, Cmp.Instance);
+                this.Blocks = new SortedSet<RtlBlock>(blocks, Cmp.Instance);
+            }
+
             private class Cmp : Comparer<RtlBlock>
             {
                 public override int Compare(RtlBlock x, RtlBlock y)
@@ -284,9 +296,7 @@ namespace Reko.Scanning
                 // $TODO: Build dominator trees for each entry. Nodes dominated
                 // by an entry constitute a procedure.
 
-                // After removing the nodes in the dominator trees, there may be 
-                // nodes left. Each one of those nodes is part of 1..n clusters.
-                // Redo the processing work on those.
+                PartitionIntoSubclusters(cluster);
 
             }
             else
@@ -294,6 +304,66 @@ namespace Reko.Scanning
                 procs.Add(cluster);
             }
             return procs;
+        }
+
+        public List<Cluster> PartitionIntoSubclusters(Cluster cluster)
+        {
+            var auxNode = new RtlBlock(null, "<root>");
+            sr.ICFG.AddNode(auxNode);
+            foreach (var entry in cluster.Entries)
+            {
+                sr.ICFG.AddEdge(auxNode, entry);
+            }
+            var idoms = LTDominatorGraph<RtlBlock>.Create(sr.ICFG, auxNode);
+            DumpDomGraph(cluster.Blocks, idoms);
+
+            // Find all nodes whose immediate dominator is "<root>". Those are the new clusters.
+            var newEntries = cluster.Blocks.Where(b => idoms[b] == auxNode).ToList();
+            var dominatedEntries = newEntries.ToDictionary(k => k, v => new HashSet<RtlBlock> { v });
+
+            // Partition the nodes in the cluster into categories depending on which
+            // one of the newEntries theey are dominated by.
+            foreach (var b in cluster.Blocks)
+            {
+                if (dominatedEntries.ContainsKey(b))
+                    continue; // already there.
+                var n = b;
+                for (;;)
+                {
+                    var i = idoms[n];
+                    if (dominatedEntries.ContainsKey(i))
+                    {
+                        dominatedEntries[i].Add(b);
+                        break;
+                    }
+                    else
+                    {
+                        n = i;
+                    }
+                }
+            }
+
+            // $TODO: Special case
+            // Nice: we now have new clusters to hatch.
+
+            return dominatedEntries
+                .OrderBy(e => e.Key.Address)
+                .Select(e => new Cluster(new[] { e.Key }, e.Value))
+                .ToList();
+        }
+
+        private void DumpDomGraph(IEnumerable<RtlBlock>  nodes, Dictionary<RtlBlock, RtlBlock> domGraph)
+        {
+            var q =
+                from n in nodes
+                join de in domGraph on n equals de.Value into des
+                from de in des.DefaultIfEmpty()
+                orderby n.Name, de.Key != null ? de.Key.Name : ""
+                select new { Name = n.Name, Kid = de.Key != null ? de.Key.Name : "*" };
+            foreach (var item in q)
+            {
+                Debug.Print("{0}: {1}", item.Name, item.Kid );
+            }
         }
 
         private HashSet<RtlBlock> DetachFusedTails(Cluster cluster)
