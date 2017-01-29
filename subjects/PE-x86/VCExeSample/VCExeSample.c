@@ -94,10 +94,9 @@ void const_div_test10(word32 dwArg04)
 	return;
 }
 
-void loop_test11(real32 ecx, word32 ebp)
+void loop_test11(word32 ecx, word32 ebp)
 {
 	struct Eq_223 * ebp_19 = fp - 0x04;
-	ptr32 esp_21 = fp - 0x0C;
 	while (*(ebp_19 - 0x04) > 0x00)
 	{
 		ui32 eax_26 = *(ebp_19 - 0x04);
@@ -108,18 +107,14 @@ void loop_test11(real32 ecx, word32 ebp)
 		{
 			*(ebp_19 - 0x08) = (real32) ebp_19->r0008;
 			real64 rLoc1_44 = (real64) *(ebp_19 - 0x08);
-			real32 * esp_45 = esp_21 - 0x04;
-			*esp_45 = ecx;
-			*esp_45 = (real32) rLoc1_44;
+			*(fp - 0x10) = ecx;
+			*(fp - 0x10) = (real32) rLoc1_44;
 			loop_test9(rArg00, rArg0);
-			esp_21 = esp_45 + 0x01;
 		}
 		else
 		{
-			real64 * esp_52 = esp_21 - 0x08;
-			*esp_52 = ebp_19->r0008;
+			*(fp - 0x14) = ebp_19->r0008;
 			ebp_19 = nested_if_blocks_test8(rArg00, rArg0);
-			esp_21 = esp_52 + 0x01;
 		}
 		word32 ecx_38 = *(ebp_19 - 0x04);
 		*(ebp_19 - 0x04) = ecx_38 - 0x01;

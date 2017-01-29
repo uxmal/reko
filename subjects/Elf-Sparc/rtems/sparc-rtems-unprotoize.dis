@@ -4907,12 +4907,13 @@ process_aux_info_file_entry:
 
 l00013034:
 	strlen()
+	word32 o0_22 = o0 + 0x0000000A & 0xFFFFFFF8
 	strcpy()
 	strcat()
 	word32 i0_386 = o0
 	word32 i2_383 = o2
 	word32 i6_15 = fp
-	word32 sp_23 = fp + 0xFFFFFF08 - (o0 + 0x0000000A & 0xFFFFFFF8)
+	word32 sp_23 = fp + 0xFFFFFF08 - o0_22
 	word32 l2_30 = 0x00000000
 // DataOut: i0 i2 i3 i6 l0 l1 l2 l4 o3
 // DataOut (flags): 
@@ -4927,7 +4928,7 @@ l00013078:
 	bool Z_122
 	word32 o0_143
 	access()
-	branch sp_23 != 0xFFFFFF9F l00013034_ds_t
+	branch fp + 0xFFFFFF08 - o0_22 != 0x00000061 l00013034_ds_t
 // DataOut: i0 i2 i3 i6 l0 l1 l2 l4 o3
 // DataOut (flags): 
 // SymbolicIn: l2:<invalid> o0:l4 g0:<invalid> i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid>

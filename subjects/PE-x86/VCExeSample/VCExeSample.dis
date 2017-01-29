@@ -410,7 +410,6 @@ loop_test11_entry:
 
 l004012D0:
 	word32 ebp_19 = fp - 0x00000004
-	word32 esp_21 = fp - 0x0000000C
 // DataOut: ebp ecx esp
 // DataOut (flags): 
 // SymbolicIn: esp:fp
@@ -458,10 +457,8 @@ l004012F2:
 // LocalsOut: Local -0004(32)
 
 l0040130D:
-	word32 esp_52 = esp_21 - 0x00000008
-	Mem55[esp_52:real64] = Mem0[ebp_19 + 0x00000008:real64]
+	Mem55[fp - 0x00000014:real64] = Mem0[ebp_19 + 0x00000008:real64]
 	ebp_19 = nested_if_blocks_test8(rArg00, rArg0)
-	esp_21 = esp_52 + 0x00000008
 // DataOut: ebp esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):0x00000005 -4(fp):ebp
@@ -470,11 +467,9 @@ l0040130D:
 l004012F6:
 	Mem43[ebp_19 - 0x00000008:real32] = (real32) Mem0[ebp_19 + 0x00000008:real64]
 	real64 rLoc1_44 = (real64) Mem43[ebp_19 - 0x00000008:real32]
-	word32 esp_45 = esp_21 - 0x00000004
-	Mem46[esp_45:word32] = ecx
-	Mem47[esp_45:real32] = (real32) rLoc1_44
+	Mem46[fp - 0x00000010:word32] = ecx
+	Mem47[fp - 0x00000010:real32] = (real32) rLoc1_44
 	loop_test9(rArg00, rArg0)
-	esp_21 = esp_45 + 0x00000004
 // DataOut: ebp esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):0x00000005 -4(fp):ebp
