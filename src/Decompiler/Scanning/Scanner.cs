@@ -171,6 +171,83 @@ namespace Reko.Scanning
         }
 
         /// <summary>
+        /// Scans the image, locating blobs of data and procedures.
+        /// End result is that the program.ImageMap is populated with
+        /// chunks of data, and the program.Procedures dictionary contains
+        /// all procedures to decompile.
+        /// </summary>
+        public void ScanImageNew()
+        {
+            var sr = new ScanResults();
+            var tlDeser = program.CreateTypeLibraryDeserializer();
+
+            // Enqueue know data items, then process them. If we find code
+            // pointers, they will be added to sr.DirectlyCalledAddresses.
+            
+            foreach (var global in program.User.Globals)
+            {
+                var addr = global.Key;
+                var dt = global.Value.DataType.Accept(tlDeser);
+                EnqueueUserGlobalData(addr, dt);
+            }
+            foreach (var sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Data))
+            {
+                EnqueueImageSymbol(sym, false);
+            }
+            ProcessQueue();
+
+            // Now scan the executable parts of the image, to find all potential basic blocks.
+            // We use symbols, user procedures, and the current contenrs of sr.DirectlyCalledAddresses
+            // as "seeds". The end result is sr.ICFG, the interprocedural graph.
+
+            foreach (Procedure_v1 up in program.User.Procedures.Values)
+            {
+                EnsureUserProcedure(up);
+            }
+            foreach (ImageSymbol ep in program.EntryPoints.Values)
+            {
+                EnsureEntryPoint(ep);
+            }
+            foreach (ImageSymbol sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
+            {
+                EnsureProcedure(sym.Address, sym.Name);
+                if (sym.NoDecompile)
+                    program.EnsureUserProcedure(sym.Address, sym.Name, false);
+                else
+                    EnqueueImageSymbol(sym, false);
+            }
+
+            // Once the ICFG is discovered, locate them procedures.
+
+            var pd = new ProcedureDetector(program, sr, eventListener);
+            var procs = pd.DetectProcedures();
+
+            // At this point, we have RtlProcedures and RtlBlocks.
+            //$TODO: However, Reko hasn't had a chance to reconstitute constants yet, 
+            // because that requires SSA, so we may be missing
+            // opportunities to build and detect pointers. This typicall happens in 
+            // the type inference phase, when we both have constants and their types.
+            // 
+            // When this gets merged into analyis-development phase, fold 
+            // Procedure construction into SSA construction.
+
+            // Install the procedures into the progam.Procedures collection.
+            BuildProcedures(procs);
+        }
+
+        private void BuildProcedures(List<ProcedureDetector.Cluster> clusters)
+        {
+            var mpClusterProc = new Dictionary<ProcedureDetector.Cluster, Procedure>();
+            foreach (var cluster in clusters)
+            {
+                Debug.Assert(cluster.Entries.Count == 1);
+                var addr = cluster.Entries.First().Address;
+                var proc = EnsureProcedure(addr, null);
+                program.Procedures.Add(addr, proc);
+            }
+        }
+
+        /// <summary>
         /// Adds a new basic block to the procedure <paramref name="proc"/>.
         /// </summary>
         /// <param name="addr"></param>
@@ -279,15 +356,35 @@ namespace Reko.Scanning
             queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, null));
         }
 
-        public void EnqueueUserProcedure(Procedure_v1 sp) {
+        public void EnqueueUserProcedure(Procedure_v1 sp)
+        {
+            var de = EnsureUserProcedure(sp);
+            if (de == null)
+                return;
+            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, de.Value.Key, sp.Name));
+        }
+
+        public void EnsureEntryPoint(ImageSymbol ep)
+        {
+            var proc = EnsureProcedure(ep.Address, ep.Name);
+            if (ep.Signature != null)
+            {
+                var sser = program.CreateProcedureSerializer();
+                proc.Signature = sser.Deserialize(ep.Signature, proc.Frame);
+            }
+            program.CallGraph.EntryPoints.Add(proc);
+        }
+
+        private KeyValuePair<Address, Procedure>? EnsureUserProcedure(Procedure_v1 sp)
+        {
             Address addr;
             if (!program.Architecture.TryParseAddress(sp.Address, out addr))
-                return;
+                return null;
             Procedure proc;
             if (program.Procedures.TryGetValue(addr, out proc))
-                return; // Already scanned. Do nothing.
+                return null; // Already scanned. Do nothing.
             if (!sp.Decompile)
-                return;
+                return null;
             proc = EnsureProcedure(addr, sp.Name);
             if (sp.Signature != null)
             {
@@ -298,7 +395,7 @@ namespace Reko.Scanning
             {
                 proc.Characteristics = sp.Characteristics;
             }
-            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, sp.Name));
+            return new KeyValuePair<Address, Procedure>(addr, proc);
         }
 
         public void EnqueueUserProcedure(Address addr, FunctionType sig)
@@ -824,6 +921,32 @@ namespace Reko.Scanning
         /// </summary>
         public void ScanImage()
         {
+            var tlDeser = program.CreateTypeLibraryDeserializer();
+            foreach (var global in program.User.Globals)
+            {
+                var addr = global.Key;
+                var dt = global.Value.DataType.Accept(tlDeser);
+                EnqueueUserGlobalData(addr, dt);
+            }
+            foreach (ImageSymbol ep in program.EntryPoints.Values)
+            {
+                EnqueueImageSymbol(ep, true);
+            }
+            foreach (Procedure_v1 up in program.User.Procedures.Values)
+            {
+                EnqueueUserProcedure(up);
+            }
+            foreach (ImageSymbol sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
+            {
+                if (sym.NoDecompile)
+                    program.EnsureUserProcedure(sym.Address, sym.Name, false);
+                else
+                    EnqueueImageSymbol(sym, false);
+            }
+
+            //var hsc = new HeuristicScanner(Services, program, this, eventListener);
+            //var sr = hsc.ScanImage();
+
             ProcessQueue();
         }
 

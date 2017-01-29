@@ -38,7 +38,6 @@ namespace Reko.Scanning
         public bool IsValidAddress(Address addr)
         {
             return this.BeginAddress <= addr && addr < this.EndAddress;
-
         }
     }
 }

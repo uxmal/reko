@@ -54,7 +54,7 @@ namespace Reko.Scanning
             this.mpAddrToBlock = sr.ICFG.Nodes.ToDictionary(de => de.Address);
         }
 
-        public List<Procedure> DetectProcedures()
+        public List<Cluster> DetectProcedures()
         {
             PreprocessIcfg();
             var clusters = FindClusters();
@@ -181,17 +181,18 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="sr"></param>
         /// <param name="clusters"></param>
-        public List<Procedure> BuildProcedures(IEnumerable<Cluster> clusters)
+        public List<Cluster> BuildProcedures(IEnumerable<Cluster> clusters)
         {
-            var procs = new List<Procedure>();
+            var clustersOut = new List<Cluster>();
             foreach (var cluster in clusters)
             {
                 if (listener.IsCanceled())
                     break;
                 FindClusterEntries(cluster);
-                procs.AddRange(PostProcessCluster(cluster));
+                clustersOut.AddRange(PostProcessCluster(cluster));
             }
-            return procs;
+
+            return clustersOut;
         }
 
         /// <summary>
@@ -237,16 +238,20 @@ namespace Reko.Scanning
         /// <param name="cluster"></param>
         /// <param name="entries"></param>
         /// <returns></returns>
-        public List<Procedure> PostProcessCluster(Cluster cluster)
+        public List<Cluster> PostProcessCluster(Cluster cluster)
         {
             var entries = cluster.Entries;
-            var procs = new List<Procedure>();
+            var procs = new List<Cluster>();
 
             // Remove all nodes with no predecessors which haven't been marked as entries.
             var deadNodes = cluster.Blocks
                 .Where(b => !entries.Contains(b) && sr.ICFG.Predecessors(b).Count == 0)
                 .ToHashSet();
             cluster.Blocks.ExceptWith(deadNodes);
+
+            // Join blocks which have a single successor / single predecessor
+            // relationship.
+            FuseBlocks(cluster);
 
             // If the cluster has more than one entry, we have to try to pick it apart.
             if (entries.Count > 1)
@@ -286,7 +291,7 @@ namespace Reko.Scanning
             }
             else
             {
-                procs.Add(BuildProcedure(cluster, entries.First()));
+                procs.Add(cluster);
             }
             return procs;
         }
@@ -308,12 +313,6 @@ namespace Reko.Scanning
                 }
             }
             return fusedTails;
-        }
-
-        private Procedure BuildProcedure(Cluster cluster, RtlBlock entry)
-        {
-            FuseBlocks(cluster);
-            return Procedure.Create(entry.Address, program.Architecture.CreateFrame());
         }
 
         private void FuseBlocks(Cluster cluster)

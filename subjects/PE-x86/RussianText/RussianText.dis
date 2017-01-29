@@ -1,0 +1,96 @@
+void _GetExceptDLLinfo(word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  fs
+// LiveOut:
+// Trashed: SCZO ah al ax dh dl dx eax edx rax rdx
+// Preserved: ebp ebx esp
+// Stack args: Stack +0004(32)
+__GetExceptDLLinfo_entry:
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(32)
+
+l00401071:
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(32)
+
+l004011FC:
+	Mem14[0x004020F8:word32] = fn00401158() + 0x0000001C
+	Mem15[dwArg04:word32] = 0x82727349
+	Mem16[dwArg04 + 0x00000004:word32] = 0x004020E4
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+__GetExceptDLLinfo_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebp:ebp ebx:ebx eax:<invalid> edx:<invalid> -8(fp):ebx -4(fp):ebp
+
+
+
+word32 fn00401158()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  fs
+// LiveOut: eax
+// Trashed: ah al ax dh dl dx eax edx rax rdx
+// Preserved: esp
+fn00401158_entry:
+// DataOut: ebx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+l00401158:
+	return Mem0[Mem0[fs:0x002C:word32] + Mem0[0x0040208B:word32] * 0x00000004:word32]
+// DataOut: eax ebx
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+fn00401158_exit:
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> edx:<invalid>
+
+
+
+int32 main(int32 argc, char * * argv)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax bp bpl ch cl cx eax ebp ecx esp rax rbp rcx rsp sp spl
+// Preserved:
+main_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l00401168:
+	word32 esp_14
+	word32 ebp_15
+	word32 ecx_16
+	word32 eax_17
+	byte SZO_18
+	byte C_19
+	call printf (retsize: 4; depth: 12)
+		uses: dwLoc04_10,dwLoc08_13,ebp_11,esp_12
+		defs: C_19,eax_17,ebp_15,ecx_16,esp_14,SZO_18
+	return 0x00000000
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+main_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> ecx:<invalid> eax:0x00000000 -8(fp):0x004020A4 -4(fp):ebp 4(fp):argc 8(fp):argv
+
+
+

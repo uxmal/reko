@@ -316,26 +316,6 @@ l0001001D:  // pred:
             AssertBlocks(sExp, sr.ICFG);
         }
 
-        [Test(Description = "The NOP sled ends with a ret instruction, so it's valid.")]
-        public void HSC_ScanImage_IntCall()
-        {
-            Given_Image32(0x0010000, "cd 21 00 00");
-            Given_x86_32();
-            Given_RewriterHost();
-            Given_NoImportedProcedures();
-            mr.ReplayAll();
-
-            When_ScanImage();
-
-            var sExp =
-            #region Expected
-@"l00010000:  // pred:
-    int 21
-";
-            #endregion
-            AssertBlocks(sExp, sr.ICFG);
-        }
-
         [Test]
         public void HSC_ScanImage_FallIntoCalledProcedure()
         {

@@ -410,32 +410,6 @@ namespace Reko
             {
                 eventListener.ShowStatus("Rewriting reachable machine code.");
                 scanner = CreateScanner(program);
-                var tlDeser = program.CreateTypeLibraryDeserializer();
-                foreach (var global in program.User.Globals)
-                {
-                    var addr = global.Key;
-                    var dt = global.Value.DataType.Accept(tlDeser);
-                    scanner.EnqueueUserGlobalData(addr, dt);
-                }
-                foreach (ImageSymbol ep in program.EntryPoints.Values)
-                {
-                    scanner.EnqueueImageSymbol(ep, true);
-                }
-                foreach (Procedure_v1 up in program.User.Procedures.Values)
-                {
-                    scanner.EnqueueUserProcedure(up);
-                }
-                foreach (ImageSymbol sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
-                {
-                    if (sym.NoDecompile)
-                        program.EnsureUserProcedure(sym.Address, sym.Name, false);
-                    else
-                        scanner.EnqueueImageSymbol(sym, false);
-                }
-
-                var hsc = new HeuristicScanner(services, program, null, eventListener);
-                var sr = hsc.ScanImage();
-
                 scanner.ScanImage();
 
                 if (program.User.Heuristics.Contains("HeuristicScanning"))
