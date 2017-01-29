@@ -536,13 +536,13 @@ namespace Reko.Evaluation
         {
             var oldChanged = Changed;
             var args = pc.Arguments
-                .Select(a => a.Accept(this))
-                .Where(a =>
+                .Select(a =>
                 {
-                    var arg = SimplifyPhiArg(a);
+                    var arg = SimplifyPhiArg(a.Accept(this));
                     ctx.RemoveExpressionUse(arg);
-                    return ctx.GetValue(arg as Identifier) != pc;
+                    return arg;
                 })
+                .Where(a => ctx.GetValue(a as Identifier) != pc)
                 .ToArray();
             Changed = oldChanged;
 
