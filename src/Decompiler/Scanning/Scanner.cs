@@ -36,55 +36,6 @@ using System.Threading;
 namespace Reko.Scanning
 {
     /// <summary>
-    /// A class implementing IScanner is responsible for tracing the execution
-    /// flow of a binary image. It uses a Rewriter to convert the machine-
-    /// specific instructions into lower-level register-transfer (RTL) 
-    /// instructions. By simulating the execution of branch and call
-    /// instructions, the IScanner can reconstruct the basic blocks and 
-    /// procedures that constituted the original source program. Any 
-    /// discoveries made are added to the Program instance.
-    /// </summary>
-    public interface IScanner
-    {
-        IServiceProvider Services { get; }
-
-        void ScanImage();
-        void ScanImageHeuristically();
-
-        ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
-
-        void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint);
-        void EnqueueProcedure(Address addr);
-        Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
-        void EnqueueUserProcedure(Procedure_v1 sp);
-        void EnqueueUserProcedure(Address addr, FunctionType sig);
-        void EnqueueUserGlobalData(Address addr, DataType dt);
-
-        void Warn(Address addr, string message);
-        void Warn(Address addr, string message, params object[] args);
-        void Error(Address addr, string message);
-
-        ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
-        void TerminateBlock(Block block, Address addrEnd);
-
-        /// <summary>
-        /// Find the block that contains the address <paramref name="addr"/>, or return null if there
-        /// is no such block.
-        /// </summary>
-        /// <param name="addrStart"></param>
-        /// <returns></returns>
-        Block FindContainingBlock(Address addr);
-        Block FindExactBlock(Address addr);
-        Block SplitBlock(Block block, Address addr);
-
-        Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew);
-        void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
-
-        IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, IStorageBinder frame);
-
-    }
-
-    /// <summary>
     /// Scans the binary, locating and creating procedures and basic blocks by following calls, jumps,
     /// and branches. Simple data type analysis is done as well: for instance, pointers to
     /// code are located, as are global data pointers.
