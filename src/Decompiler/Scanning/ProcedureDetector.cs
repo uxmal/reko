@@ -44,7 +44,6 @@ namespace Reko.Scanning
         private DecompilerEventListener listener;
         private HashSet<Address> knownProcedures;
         private Dictionary<Address, RtlBlock> mpAddrToBlock;
-        private object e;
 
         public ProcedureDetector(Program program, ScanResults sr, DecompilerEventListener listener)
         {
@@ -103,8 +102,8 @@ namespace Reko.Scanning
         /// </summary>
         public class Cluster
         {
-            public SortedSet<RtlBlock> Blocks = new SortedSet<RtlBlock>(Cmp.Instance);
-            public SortedSet<RtlBlock> Entries = new SortedSet<RtlBlock>(Cmp.Instance);
+            public readonly SortedSet<RtlBlock> Blocks;
+            public readonly SortedSet<RtlBlock> Entries;
 
             public Cluster()
             {
