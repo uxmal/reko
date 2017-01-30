@@ -46,6 +46,9 @@ namespace Reko.Scanning
         public List<RtlInstructionCluster> Instructions { get; private set; }
         public bool IsValid { get; set; }
 
+        // True if this block has been identifierd as a shared exit block
+        public bool IsSharedExitBlock { get; set; }
+
         public Address GetEndAddress()
         {
             int iLast = Instructions.Count - 1;

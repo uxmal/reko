@@ -44,6 +44,7 @@ namespace Reko.Scanning
         private DecompilerEventListener listener;
         private HashSet<Address> knownProcedures;
         private Dictionary<Address, RtlBlock> mpAddrToBlock;
+        private object e;
 
         public ProcedureDetector(Program program, ScanResults sr, DecompilerEventListener listener)
         {
@@ -54,6 +55,11 @@ namespace Reko.Scanning
             this.mpAddrToBlock = sr.ICFG.Nodes.ToDictionary(de => de.Address);
         }
 
+        /// <summary>
+        /// Master function to locate "Clusters" of RtlBlocks from the ICFG
+        /// passed in the ScanResults.
+        /// </summary>
+        /// <returns></returns>
         public List<Cluster> DetectProcedures()
         {
             PreprocessIcfg();
@@ -64,10 +70,13 @@ namespace Reko.Scanning
         private void PreprocessIcfg()
         {
             RemoveJumpsToKnownProcedures();
-            //BuildDominatorTree();
             ProcessIndirectJumps();
         }
 
+        /// <summary>
+        /// Remove any links between nodes where the destination is 
+        /// a known call target.
+        /// </summary>
         public void RemoveJumpsToKnownProcedures()
         {
             foreach (var calldest in this.knownProcedures)
@@ -203,7 +212,6 @@ namespace Reko.Scanning
                 FindClusterEntries(cluster);
                 clustersOut.AddRange(PostProcessCluster(cluster));
             }
-
             return clustersOut;
         }
 
@@ -253,7 +261,6 @@ namespace Reko.Scanning
         public List<Cluster> PostProcessCluster(Cluster cluster)
         {
             var entries = cluster.Entries;
-            var procs = new List<Cluster>();
 
             // Remove all nodes with no predecessors which haven't been marked as entries.
             var deadNodes = cluster.Blocks
@@ -269,45 +276,34 @@ namespace Reko.Scanning
             if (entries.Count > 1)
             {
                 Debug.Print("Entries {0} share common code", string.Join(",", entries.Select(e => e.Name)));
-                var fusedTails = DetachFusedTails(cluster);
 
-                // for each Articulation point ap:
-                //    if (ap.Succ.Count(1) == 0 || is_return_ap
-                //      preds = ap.preds;
-                //      Remove ap from cluster)
-                //      foreach (p in ap.pred)
-                //          add Clone(p) as succ p.
-                //   
-
-                // Foreach entry in entries
-                //      c = new cluster
-                //      foreach (var node in DFS(entry))
-                //          if (node.domby(entry))
-                //          {
-                //              c.nodes.Add(node)
-                //              cluster.nodes.remove();
-                //              foreach (s in node.siccs)
-                //                  if (c.nodes.!domBy(entry)
-                //                      newEntries.Add(s)
-                //                  else addEdge(node, s)
-                //          }
-                //      }
-
-                // $TODO: Build dominator trees for each entry. Nodes dominated
-                // by an entry constitute a procedure.
-
-                PartitionIntoSubclusters(cluster);
+                return PartitionIntoSubclusters(cluster);
 
             }
             else
             {
-                procs.Add(cluster);
+                return new List<Cluster> { cluster };
             }
-            return procs;
         }
 
+        /// <summary>
+        /// Splits a multiple entry cluster into separate sub-clusters by 
+        /// partitioning all the blocks into subsets where each subset is 
+        /// dominated by one of the original entries. 
+        /// </summary>
+        /// <remarks>
+        /// Many binaries contain cross-procedure jumps. If the target of 
+        /// those jumps is a single block with no successors, it is very
+        /// likely an instance of a "shared exit node" pattern that many
+        /// compilers+linkers emit. We handle that case separately.
+        /// </remarks>
+        /// <param name="cluster"></param>
+        /// <returns></returns>
         public List<Cluster> PartitionIntoSubclusters(Cluster cluster)
         {
+            // Create a fake node that will serve as the parent of all the 
+            // existing entries. That node will be used to compute all
+            // immediate dominatores of all reachable blocks.
             var auxNode = new RtlBlock(null, "<root>");
             sr.ICFG.AddNode(auxNode);
             foreach (var entry in cluster.Entries)
@@ -315,14 +311,15 @@ namespace Reko.Scanning
                 sr.ICFG.AddEdge(auxNode, entry);
             }
             var idoms = LTDominatorGraph<RtlBlock>.Create(sr.ICFG, auxNode);
-            DumpDomGraph(cluster.Blocks, idoms);
 
-            // Find all nodes whose immediate dominator is "<root>". Those are the new clusters.
+            // Find all nodes whose immediate dominator is "<root>". 
+            // Those are the entries to new clusters and may contain blocks
+            // that are shared between procedures in the source program.
             var newEntries = cluster.Blocks.Where(b => idoms[b] == auxNode).ToList();
             var dominatedEntries = newEntries.ToDictionary(k => k, v => new HashSet<RtlBlock> { v });
 
             // Partition the nodes in the cluster into categories depending on which
-            // one of the newEntries theey are dominated by.
+            // one of the newEntries they are dominated by.
             foreach (var b in cluster.Blocks)
             {
                 if (dominatedEntries.ContainsKey(b))
@@ -333,18 +330,29 @@ namespace Reko.Scanning
                     var i = idoms[n];
                     if (dominatedEntries.ContainsKey(i))
                     {
+                        // If my idom is already in the set, add me too.
                         dominatedEntries[i].Add(b);
                         break;
                     }
-                    else
-                    {
-                        n = i;
-                    }
+                    n = i;
                 }
             }
 
-            // $TODO: Special case
-            // Nice: we now have new clusters to hatch.
+            // Now remove the fake node 
+            sr.ICFG.RemoveNode(auxNode);
+
+            // Handle the special case with new entries that weren't there before,
+            // and only consist of a single block. Mark such nodes as "shared".
+            // Later stages will copy these nodes into their respective procedures.
+            foreach (var newEntry in dominatedEntries.Keys
+                .Where(e => !cluster.Entries.Contains(e)).ToList())
+            {
+                if (sr.ICFG.Successors(newEntry).Count == 0)
+                {
+                    newEntry.IsSharedExitBlock = true;
+                    dominatedEntries.Remove(newEntry);
+                }
+            }
 
             return dominatedEntries
                 .OrderBy(e => e.Key.Address)
@@ -352,7 +360,8 @@ namespace Reko.Scanning
                 .ToList();
         }
 
-        private void DumpDomGraph(IEnumerable<RtlBlock>  nodes, Dictionary<RtlBlock, RtlBlock> domGraph)
+        [Conditional("DEBUG")]
+        private void DumpDomGraph(IEnumerable<RtlBlock> nodes, Dictionary<RtlBlock, RtlBlock> domGraph)
         {
             var q =
                 from n in nodes
@@ -364,25 +373,6 @@ namespace Reko.Scanning
             {
                 Debug.Print("{0}: {1}", item.Name, item.Kid );
             }
-        }
-
-        private HashSet<RtlBlock> DetachFusedTails(Cluster cluster)
-        {
-            var aps = new ArticulationPointFinder<RtlBlock>().FindArticulationPoints(sr.ICFG, cluster.Entries);
-            aps.IntersectWith(cluster.Blocks);
-            var fusedTails = new HashSet<RtlBlock>();
-
-            foreach (var ap in aps)
-            {
-                if (sr.ICFG.Successors(ap).Count == 0)
-                {
-                    var preds = sr.ICFG.Predecessors(ap).ToList();
-                    cluster.Blocks.Remove(ap);
-                    sr.ICFG.Nodes.Remove(ap);
-                    fusedTails.Add(ap);
-                }
-            }
-            return fusedTails;
         }
 
         private void FuseBlocks(Cluster cluster)

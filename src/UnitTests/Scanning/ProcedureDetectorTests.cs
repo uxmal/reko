@@ -368,7 +368,7 @@ namespace Reko.UnitTests.Scanning
             Assert.False(sr.ICFG.ContainsEdge(Block(4), Block(10)), "Should have removed tail call to 10");
         }
 
-        [Test]
+        [Test(Description = "Partition a graph with two entries that don't dominate all of the blocks into three subgraphs")]
         public void Prdet_PartitionCluster()
         {
             Given_Edge(1, 2);
@@ -399,6 +399,22 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(2, cluster.Entries.Count);
             var newClusters = prdet.PartitionIntoSubclusters(cluster);
             Assert.AreEqual(3, newClusters.Count);
+        }
+
+        [Test(Description = "Handles the special case when multiple functions share the same epilog")]
+        public void Prdet_PartitionCluster_SharedTailExit()
+        {
+            Given_FusedExitNode();
+            Given_ProcedureDetector();
+            var clusters = prdet.FindClusters();
+            Assert.AreEqual(1, clusters.Count);
+            var cluster = clusters[0];
+            prdet.FindClusterEntries(cluster);
+            Assert.AreEqual(3, cluster.Entries.Count);
+            var newClusters = prdet.PartitionIntoSubclusters(cluster);
+            Assert.AreEqual(3, newClusters.Count);
+
+            Assert.IsTrue(Block(FusedExit).IsSharedExitBlock);
         }
     }
 }
