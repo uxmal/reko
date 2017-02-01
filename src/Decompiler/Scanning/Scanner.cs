@@ -983,6 +983,11 @@ namespace Reko.Scanning
         }
     }
 
+    /// <summary>
+    /// The new scanning algorithm, which incorporates the HeuristicScanner
+    /// to disassemble pockets of bytes that are not reachable by simple 
+    /// recursive disassembly of the binary.
+    /// </summary>
     public class ScannerNew : Scanner
     {
         public ScannerNew(Program program, IImportResolver importResolver, IServiceProvider services) : base(program, importResolver, services)
@@ -999,7 +1004,7 @@ namespace Reko.Scanning
         {
             var tlDeser = program.CreateTypeLibraryDeserializer();
 
-            // Enqueue know data items, then process them. If we find code
+            // Enqueue known data items, then process them. If we find code
             // pointers, they will be added to sr.DirectlyCalledAddresses.
 
             foreach (var global in program.User.Globals)
@@ -1014,9 +1019,10 @@ namespace Reko.Scanning
             }
             ProcessQueue();
 
-            // Now scan the executable parts of the image, to find all potential basic blocks.
-            // We use symbols, user procedures, and the current contenrs of sr.DirectlyCalledAddresses
-            // as "seeds". The end result is sr.ICFG, the interprocedural graph.
+            // Now scan the executable parts of the image, to find all 
+            // potential basic blocks. We use symbols, user procedures, and
+            // the current contents of sr.DirectlyCalledAddresses as "seeds".
+            // The end result is sr.ICFG, the interprocedural control graph.
 
             foreach (Procedure_v1 up in program.User.Procedures.Values)
             {
@@ -1038,7 +1044,7 @@ namespace Reko.Scanning
             var hsc = new HeuristicScanner(Services, program, this, eventListener);
             var sr = hsc.ScanImage();
 
-            // Once the ICFG is built, locate them procedures.
+            // Once the ICFG is built, detect the procedures.
 
             var pd = new ProcedureDetector(program, sr, eventListener);
             var procs = pd.DetectProcedures();
@@ -1046,12 +1052,11 @@ namespace Reko.Scanning
             // At this point, we have RtlProcedures and RtlBlocks.
             //$TODO: However, Reko hasn't had a chance to reconstitute constants yet, 
             // because that requires SSA, so we may be missing
-            // opportunities to build and detect pointers. This typicall happens in 
+            // opportunities to build and detect pointers. This typically happens in 
             // the type inference phase, when we both have constants and their types.
             // 
             // When this gets merged into analyis-development phase, fold 
             // Procedure construction into SSA construction.
-
             foreach (Procedure_v1 up in program.User.Procedures.Values)
             {
                 EnqueueUserProcedure(up);

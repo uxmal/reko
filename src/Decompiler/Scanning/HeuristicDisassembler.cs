@@ -167,7 +167,8 @@ namespace Reko.Scanning
                             }
                             else
                             {
-                                Debug.Print("{0} jumps to invalid address", instr.Address);
+                                // Very verbose debugging statement disabled to speed up Reko.
+                                //Debug.Print("{0} jumps to invalid address", instr.Address);
                                 current.IsValid = false;
                             }
                             return current;
