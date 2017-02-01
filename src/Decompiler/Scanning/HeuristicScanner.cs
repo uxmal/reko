@@ -225,9 +225,11 @@ namespace Reko.Scanning
             var invalidNodes = new DfsIterator<RtlBlock>(revGraph)
                 .PreOrder(invalid)
                 .ToList();
-            foreach (var n in invalidNodes)
+            foreach (var n in invalidNodes.Where(nn => nn != invalid))
             {
                 sr.ICFG.RemoveNode(n);
+                sr.DirectlyCalledAddresses.Remove(n.Address);
+                // Debug.Print("Removed invalid node {0}", n.Address);  // commented out as this becomes very verbose.
             }
         }
 

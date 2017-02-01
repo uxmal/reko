@@ -293,6 +293,7 @@
     <Compile Include="Scanning\PromoteBlockWorkItem.cs" />
     <Compile Include="Scanning\RobustRewriter.cs" />
     <Compile Include="Scanning\ProcedureDetector.cs" />
+    <Compile Include="Scanning\RtlProcedure.cs" />
     <Compile Include="Scanning\ScanResults.cs" />
     <Compile Include="Scanning\ShingledScanner.cs" />
     <Compile Include="Scanning\StringFinder.cs" />

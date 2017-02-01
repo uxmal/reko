@@ -51,7 +51,22 @@ namespace Reko.Scanning
             this.sr = sr;
             this.listener = listener;
             this.knownProcedures = sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys).ToHashSet();
+            DumpDuplicates(sr.ICFG.Nodes);
             this.mpAddrToBlock = sr.ICFG.Nodes.ToDictionary(de => de.Address);
+        }
+
+        [Conditional("DEBUG")]
+        public void DumpDuplicates(IEnumerable<RtlBlock> blocks)
+        {
+            var q = from b in blocks
+                    orderby b.Address
+                    group b by b.Address into g
+                    where g.Count() > 1
+                    select new { g.Key, Count = g.Count() };
+            foreach (var item in q)
+            {
+                Debug.Print("{0}: {1}", item.Key, item.Count);
+            }
         }
 
         /// <summary>
@@ -59,7 +74,7 @@ namespace Reko.Scanning
         /// passed in the ScanResults.
         /// </summary>
         /// <returns></returns>
-        public List<Cluster> DetectProcedures()
+        public List<RtlProcedure> DetectProcedures()
         {
             PreprocessIcfg();
             var clusters = FindClusters();
@@ -201,17 +216,17 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="sr"></param>
         /// <param name="clusters"></param>
-        public List<Cluster> BuildProcedures(IEnumerable<Cluster> clusters)
+        private List<RtlProcedure> BuildProcedures(IEnumerable<Cluster> clusters)
         {
-            var clustersOut = new List<Cluster>();
+            var procs = new List<RtlProcedure>();
             foreach (var cluster in clusters)
             {
                 if (listener.IsCanceled())
                     break;
                 FindClusterEntries(cluster);
-                clustersOut.AddRange(PostProcessCluster(cluster));
+                procs.AddRange(PostProcessCluster(cluster));
             }
-            return clustersOut;
+            return procs;
         }
 
         /// <summary>
@@ -257,7 +272,7 @@ namespace Reko.Scanning
         /// <param name="cluster"></param>
         /// <param name="entries"></param>
         /// <returns></returns>
-        public List<Cluster> PostProcessCluster(Cluster cluster)
+        public List<RtlProcedure> PostProcessCluster(Cluster cluster)
         {
             var entries = cluster.Entries;
 
@@ -277,11 +292,10 @@ namespace Reko.Scanning
                 Debug.Print("Entries {0} share common code", string.Join(",", entries.Select(e => e.Name)));
 
                 return PartitionIntoSubclusters(cluster);
-
             }
             else
             {
-                return new List<Cluster> { cluster };
+                return new List<RtlProcedure> { new RtlProcedure(cluster.Entries.First(), cluster.Blocks) };
             }
         }
 
@@ -298,7 +312,7 @@ namespace Reko.Scanning
         /// </remarks>
         /// <param name="cluster"></param>
         /// <returns></returns>
-        public List<Cluster> PartitionIntoSubclusters(Cluster cluster)
+        public List<RtlProcedure> PartitionIntoSubclusters(Cluster cluster)
         {
             // Create a fake node that will serve as the parent of all the 
             // existing entries. That node will be used to compute all
@@ -355,7 +369,7 @@ namespace Reko.Scanning
 
             return dominatedEntries
                 .OrderBy(e => e.Key.Address)
-                .Select(e => new Cluster(new[] { e.Key }, e.Value))
+                .Select(e => new RtlProcedure(e.Key, e.Value))
                 .ToList();
         }
 
@@ -392,6 +406,7 @@ namespace Reko.Scanning
                     sr.ICFG.RemoveEdge(block, s);
                     block.Instructions.AddRange(s.Instructions);
                     sr.ICFG.RemoveNode(s);
+                    cluster.Blocks.Remove(s);
                     foreach (var n in ss)
                     {
                         sr.ICFG.AddEdge(block, n);

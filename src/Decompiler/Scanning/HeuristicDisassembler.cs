@@ -157,10 +157,19 @@ namespace Reko.Scanning
                         return current;
                     case RtlClass.Transfer:
                         addrOp = DestinationAddress(instr);
-                        if (addrOp != null && isAddrValid(addrOp))
+                        if (addrOp != null)
                         {
-                            block = Disassemble(addrOp);
-                            AddEdge(current, block);
+                            if (isAddrValid(addrOp))
+                            {
+                                block = Disassemble(addrOp);
+                                AddEdge(current, block);
+                                return current;
+                            }
+                            else
+                            {
+                                Debug.Print("{0} jumps to invalid address", instr.Address);
+                                current.IsValid = false;
+                            }
                             return current;
                         }
                         return current;
