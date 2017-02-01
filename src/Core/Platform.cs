@@ -41,6 +41,7 @@ namespace Reko.Core
     /// </summary>
     public interface IPlatform
     {
+        string Name { get; }
         IProcessorArchitecture Architecture { get; }
         string DefaultCallingConvention { get; }
         Encoding DefaultTextEncoding { get; set; }
@@ -53,7 +54,6 @@ namespace Reko.Core
         /// available in the MemoryMap.
         /// </summary>
         MemoryMap_v1 MemoryMap { get; set; }
-        string Name { get; }
         string PlatformIdentifier { get; }
         PrimitiveType PointerType { get; }
 
@@ -116,6 +116,8 @@ namespace Reko.Core
 
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
+        DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr);
+
         string FormatProcedureName(Program program, Procedure proc);
 
         /// <summary>
@@ -330,6 +332,11 @@ namespace Reko.Core
         }
 
         public abstract SystemService FindService(int vector, ProcessorState state);
+
+        public virtual DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr)
+        {
+            return null;
+        }
 
         public virtual SystemService FindService(RtlInstruction rtl, ProcessorState state)
         {

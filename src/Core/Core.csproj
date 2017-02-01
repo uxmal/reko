@@ -244,6 +244,7 @@
     <Compile Include="Rational.cs" />
     <Compile Include="SegmentMap.cs" />
     <Compile Include="Serialization\ArgumentDeserializer.cs" />
+    <Compile Include="Serialization\DispatchProcedure_v1.cs" />
     <Compile Include="Serialization\GlobalDataItem_v2.cs" />
     <Compile Include="IByteSource.cs" />
     <Compile Include="ICodeLocation.cs" />

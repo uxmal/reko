@@ -90,6 +90,7 @@ namespace Reko.Core.Serialization
                     segment.Name);
                 return null;
             }
+
             return new ImageSegment(segment.Name, addr, size, ConvertAccess(segment.Attributes));
         }
 
@@ -135,6 +136,7 @@ namespace Reko.Core.Serialization
 
         [XmlElement("procedure", typeof(Procedure_v1))]
         [XmlElement("service", typeof(SerializedService))]
+        [XmlElement("dispatch-procedure", typeof(DispatchProcedure_v1))]
         public List<ProcedureBase_v1> Procedures;
 
         [XmlElement("global", typeof(GlobalVariable_v1))]
