@@ -79,7 +79,7 @@ namespace Reko.Arch.Z80
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new Z80InstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()
@@ -258,6 +258,7 @@ namespace Reko.Arch.Z80
         public static readonly RegisterStorage bc_ = new RegisterStorage("bc'", 12, 0, PrimitiveType.Word16);
         public static readonly RegisterStorage de_ = new RegisterStorage("de'", 13, 0, PrimitiveType.Word16);
         public static readonly RegisterStorage hl_ = new RegisterStorage("hl'", 14, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage af_ = new RegisterStorage("af'", 15, 0, PrimitiveType.Word16);
 
         public static readonly RegisterStorage S = new RegisterStorage("S", 24, 0, PrimitiveType.Bool);
         public static readonly RegisterStorage Z = new RegisterStorage("Z", 25, 0, PrimitiveType.Bool);
