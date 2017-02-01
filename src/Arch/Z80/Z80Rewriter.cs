@@ -65,6 +65,7 @@ namespace Reko.Arch.Z80
                     dasm.Current.Address,
                     "Rewriting of Z80 instruction '{0}' not implemented yet.",
                     dasm.Current.Code);
+                case Opcode.illegal: m.Invalid(); break;
                 case Opcode.adc: RewriteAdc(); break;
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.and: RewriteAnd(); break;
@@ -80,6 +81,7 @@ namespace Reko.Arch.Z80
                 case Opcode.djnz: RewriteDjnz(dasm.Current.Op1); break;
                 case Opcode.ei: RewriteEi(); break;
                 case Opcode.ex: RewriteEx(); break;
+                case Opcode.ex_af: RewriteExAf(); break;
                 case Opcode.exx: RewriteExx(); break;
                 case Opcode.hlt: m.SideEffect(host.PseudoProcedure("__hlt", VoidType.Instance)); break;
                 case Opcode.@in: RewriteIn(); break;
@@ -128,7 +130,6 @@ namespace Reko.Arch.Z80
         case Opcode.cpd: goto default;
         case Opcode.cpdr: goto default;
         case Opcode.cpi: goto default;
-        case Opcode.ex_af: goto default;
         case Opcode.ind: goto default;
         case Opcode.indr: goto default;
         case Opcode.inir: goto default;
@@ -313,7 +314,7 @@ namespace Reko.Arch.Z80
 
         private void RewriteCall(Z80Instruction instr)
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             var cOp = instr.Op1 as ConditionOperand;
             if (cOp != null)
             {
@@ -406,6 +407,16 @@ namespace Reko.Arch.Z80
             m.Assign(RewriteOp(dasm.Current.Op2), t);
         }
 
+        private void RewriteExAf()
+        {
+            var t = frame.CreateTemporary(Registers.af.DataType);
+            var af = frame.EnsureRegister(Registers.af);
+            var af_ = frame.EnsureRegister(Registers.af_);
+            m.Assign(t, af);
+            m.Assign(af, af_);
+            m.Assign(af_, t);
+        }
+
         private void RewriteExx()
         {
             foreach (var r in new[] { "bc", "de", "hl" })
@@ -418,6 +429,8 @@ namespace Reko.Arch.Z80
                 m.Assign(reg_, t);
             }
         }
+
+
 
         private void RewriteInc()
         {
