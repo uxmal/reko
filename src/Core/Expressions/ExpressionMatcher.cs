@@ -131,6 +131,9 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitArrayAccess(ArrayAccess acc)
         {
+            var arrayP = p as ArrayAccess;
+            if (arrayP == null)
+                return false;
             throw new NotImplementedException();
         }
 
@@ -289,6 +292,9 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitSlice(Slice slice)
         {
+            var slicePat = p as Slice;
+            if (slicePat == null)
+                return false;
             throw new NotImplementedException();
         }
 
