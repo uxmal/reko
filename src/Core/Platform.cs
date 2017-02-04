@@ -64,6 +64,13 @@ namespace Reko.Core
         IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         TypeLibrary CreateMetadata();
+
+        /// <summary>
+        /// Creates an empty SegmentMap based on the absolute memory map. It is 
+        /// the caller's responsibility to fill in the MemoryArea properties
+        /// of each resulting ImageSegment.
+        /// </summary>
+        /// <returns></returns>
         SegmentMap CreateAbsoluteMemoryMap();
 
         /// <summary>

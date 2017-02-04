@@ -124,7 +124,10 @@ namespace Reko.Arch.Z80
                     ops[iOp++] = DirectOperand(PrimitiveType.Byte, OperandSize(fmt[i++]));
                     break;
                 case 'I':
-                    ops[iOp++] = new ImmediateOperand(rdr.ReadLe(OperandSize(fmt[i++])));
+                    Constant imm;
+                    if (!rdr.TryReadLe(OperandSize(fmt[i++]), out imm))
+                        return null;
+                    ops[iOp++] = new ImmediateOperand(imm);
                     break;
                 case 'W':
                     ops[iOp++] = new RegisterOperand(WordRegister(fmt[i++]));

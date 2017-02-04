@@ -91,7 +91,8 @@ namespace Reko.Core.Serialization
                 return null;
             }
 
-            return new ImageSegment(segment.Name, addr, size, ConvertAccess(segment.Attributes));
+            var mem = new MemoryArea(addr, new byte[size]);
+            return new ImageSegment(segment.Name, mem, ConvertAccess(segment.Attributes));
         }
 
         public static AccessMode ConvertAccess(string attributes)
