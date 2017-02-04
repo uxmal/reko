@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -33,6 +34,14 @@ namespace Reko.Gui.Windows.Controls
         internal object Line;
         internal int Span;
         internal int Character;
+
+        public TextPointer(object line, int span, int ch)
+        {
+            Debug.Assert(line != null);
+            this.Line = line;
+            this.Span = span;
+            this.Character = ch;
+        }
 
         public override string ToString()
         {
