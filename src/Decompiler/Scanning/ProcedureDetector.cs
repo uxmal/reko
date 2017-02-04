@@ -97,7 +97,9 @@ namespace Reko.Scanning
             {
                 if (listener.IsCanceled())
                     break;
-                var node = mpAddrToBlock[calldest];
+                RtlBlock node;
+                if (!mpAddrToBlock.TryGetValue(calldest, out node))
+                    continue;
                 var preds = sr.ICFG.Predecessors(node).ToList();
                 foreach (var p in preds)
                 {

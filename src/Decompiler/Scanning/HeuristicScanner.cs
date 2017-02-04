@@ -110,10 +110,6 @@ namespace Reko.Scanning
                 eventListener.ShowProgress("Estimating procedures", n, fnRanges.Count);
                 ++n;
             }
-            eventListener.Info(
-                new NullCodeLocation("Heuristics"),
-                string.Format("Scanned image in {0} seconds, finding {1} blocks.",
-                    sw.Elapsed.TotalSeconds, list.Count));
             list.ToString();
             return new ScanResults
             {
@@ -123,9 +119,6 @@ namespace Reko.Scanning
 
         public ScanResults ScanImage()
         {
-            var sw = new Stopwatch();
-            sw.Start();
-            var list = new List<RtlBlock>();
             //$TODO: scan user datas - may yield procedure addresses
             //$TODO: scan image symbols
 
@@ -148,7 +141,8 @@ namespace Reko.Scanning
             // break up the unscanned ranges.
 
             var ranges = FindUnscannedRanges();
-           
+
+            var stopwatch = new Stopwatch();
             foreach (var range in ranges)
             {
                 DisassembleRange(range.Item2, range.Item3, sr);
@@ -175,11 +169,6 @@ namespace Reko.Scanning
 
             var pd = new ProcedureDetector(program, sr, this.eventListener);
             var procs = pd.DetectProcedures();
-            sw.Stop();
-            eventListener.Info(
-                new NullCodeLocation("Heuristics"),
-                string.Format("Scanned image in {0} seconds, finding {1} blocks.",
-                    sw.Elapsed.TotalSeconds, list.Count));
             return sr;
         }
 
