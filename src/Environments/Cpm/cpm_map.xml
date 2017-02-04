@@ -12,10 +12,6 @@
       </service>
     </dispatch-procedure> 
   </segment>
-  
-  <segment name="tpa" addr="0100" size="FF00" attr="rwx">
-    <description>Transient program area</description>
-  </segment>
 </memory>
 <!--
 0000 - Warm boot
