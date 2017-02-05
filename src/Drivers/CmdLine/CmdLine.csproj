@@ -86,6 +86,7 @@
       <SubType>Designer</SubType>
     </DecompilerMetadata>
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows32.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wsock32.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows64.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\oleaut32.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win32characteristics.xml" />

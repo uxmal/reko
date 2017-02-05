@@ -209,8 +209,13 @@ namespace Reko.Analysis
             SsaIdentifier sid;
             if (ssa.Identifiers.TryGetValue(id, out sid))
             {
-                if (sid.DefExpression != null)
-                    return Expand(sid.DefExpression);
+                Assignment ass;
+                if (sid.DefStatement != null &&
+                    sid.DefStatement.Instruction.As(out ass) &&
+                    ass.Dst == id)
+                {
+                    return Expand(ass.Src);
+                }
             }
             return id;
         }
