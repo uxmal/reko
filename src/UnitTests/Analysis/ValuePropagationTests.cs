@@ -173,6 +173,26 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
+        private void RunValuePropagator(ProcedureBuilder m)
+        {
+            var ssa = new SsaState(m.Procedure, null);
+            foreach (var ssaId in ssaIds)
+                ssa.Identifiers.Add(ssaId.Identifier, ssaId);
+            ssaIds = ssa.Identifiers;
+            var stms = m.Procedure.EntryBlock.Succ[0].Statements;
+            stms.ForEach(stm =>
+            {
+                var ass = stm.Instruction as Assignment;
+                if (ass != null)
+                    ssaIds[ass.Dst].DefStatement = stm;
+                var phiAss = stm.Instruction as PhiAssignment;
+                if (phiAss != null)
+                    ssaIds[phiAss.Dst].DefStatement = stm;
+            });
+            var vp = new ValuePropagator(arch, ssa, listener);
+            vp.Transform();
+        }
+
 		[Test]
         [Category(Categories.IntegrationTests)]
 		public void VpChainTest()
@@ -517,23 +537,17 @@ namespace Reko.UnitTests.Analysis
         [Category(Categories.UnitTests)]
         public void VpPhiWithConstants()
         {
-            Constant c1 = Constant.Word16(0x4711);
-            Constant c2 = Constant.Word16(0x4711);
-            Identifier r1 = Reg16("r1");
-            Identifier r2 = Reg16("r2");
-            Identifier r3 = Reg16("r3");
-            var stm1 = new Statement(1, new Assignment(r1, c1), null);
-            var stm2 = new Statement(2, new Assignment(r2, c2), null);
-            var proc = new Procedure("foo", arch.CreateFrame());
-            var ssa = new SsaState(proc, null);
-            var r1Sid = ssa.Identifiers.Add(r1, null, null, false);
-            var r2Sid = ssa.Identifiers.Add(r2, null, null, false);
-            r1Sid.DefStatement = stm1;
-            r2Sid.DefStatement = stm2;
-            var vp = new ValuePropagator(arch, ssa, listener);
-            Instruction instr = new PhiAssignment(r3, new PhiFunction(r1.DataType, r1, r2));
-            instr = instr.Accept(vp);
-            Assert.AreEqual("r3 = 0x4711", instr.ToString());
+            var m = new ProcedureBuilder();
+            var c1 = Constant.Word16(0x4711);
+            var c2 = Constant.Word16(0x4711);
+            var r1 = Reg16("r1");
+            var r2 = Reg16("r2");
+            var r3 = Reg16("r3");
+            m.Emit(m.Assign(r1, c1));
+            m.Emit(m.Assign(r2, c2));
+            var phiStm = m.Phi(r3, r1, r2);
+            RunValuePropagator(m);
+            Assert.AreEqual("r3 = 0x4711", phiStm.Instruction.ToString());
         }
 
         [Test(Description =
@@ -544,8 +558,6 @@ namespace Reko.UnitTests.Analysis
         public void VpPhiLoops()
         {
             var m = new ProcedureBuilder();
-            var ssa = new SsaState(m.Procedure, null);
-            ssaIds = ssa.Identifiers;
             var fp = Reg16("fp");
             var a = Reg16("a");
             var b = Reg16("b");
@@ -561,20 +573,60 @@ namespace Reko.UnitTests.Analysis
             m.Emit(m.Assign(c, m.ISub(y, 4)));
             m.Emit(m.Assign(d, m.IAdd(z, 8)));
             var phiStm = m.Phi(x, a, b, c, d);
-            var stms = m.Procedure.EntryBlock.Succ[0].Statements;
-            stms.ForEach(stm =>
-            {
-                var ass = stm.Instruction as Assignment;
-                if (ass != null)
-                    ssaIds[ass.Dst].DefStatement = stm;
-                var phiAss = stm.Instruction as PhiAssignment;
-                if (phiAss != null)
-                    ssaIds[phiAss.Dst].DefStatement = stm;
-            });
-            var vp = new ValuePropagator(arch, ssa, listener);
-            vp.Transform();
+            RunValuePropagator(m);
             Assert.AreEqual("x = fp - 0x000C", phiStm.Instruction.ToString());
         }
+
+        [Test(Description =
+            "if x = phi(a_1, a_2, ... a_n) and all phi arguments after " +
+            "value propagation are equal to <exp> or x where <exp> is some  " +
+            "expression then replace phi assignment with x = <exp>)")]
+        public void VpPhiLoopsSimplifyArgs()
+        {
+            var m = new ProcedureBuilder();
+            var sp = Reg16("sp");
+            var sp_1 = Reg16("sp_1");
+            var sp_2 = Reg16("sp_2");
+            var a = Reg16("a");
+            var b = Reg16("b");
+            var c = Reg16("c");
+            var d = Reg16("d");
+            var v = Reg16("v");
+            var w = Reg16("w");
+            var x = Reg16("x");
+            var y = Reg16("y");
+            var z = Reg16("z");
+            m.Phi(sp, sp_1, sp_2);
+            m.Emit(m.Assign(v, m.ISub(sp, 4)));
+            m.Emit(m.Assign(w, m.ISub(sp, 8)));
+            m.Emit(m.Assign(y, m.IAdd(x, 4)));
+            m.Emit(m.Assign(z, m.ISub(x, 8)));
+            m.Emit(m.Assign(a, m.ISub(v, 8)));
+            m.Emit(m.Assign(b, m.ISub(w, 4)));
+            m.Emit(m.Assign(c, m.ISub(y, 4)));
+            m.Emit(m.Assign(d, m.IAdd(z, 8)));
+            var phiStm = m.Phi(x, a, b, c, d);
+            RunValuePropagator(m);
+            Assert.AreEqual("x = sp - 0x000C", phiStm.Instruction.ToString());
+        }
+
+        private class DpbMock : ProcedureBuilder
+		{
+			protected override void BuildBody()
+			{
+				var dl = LocalByte("dl");
+				Local16("dx");
+				var edx = Local32("edx");
+
+				Assign(edx, Int32(0x0AAA00AA));
+				Assign(edx, Dpb(edx, Int8(0x55), 8));
+				Store(Int32(0x1000000), edx);
+
+				Assign(edx, Int32(0));
+                Assign(edx, Dpb(edx, dl, 0));
+				Return(edx);
+			}
+		}
 
         [Test]
         [Category(Categories.IntegrationTests)]

@@ -215,7 +215,8 @@ namespace Reko.Analysis
             {
                 Assignment ass;
                 if (sid.DefStatement != null &&
-                    sid.DefStatement.Instruction.As(out ass))
+                    sid.DefStatement.Instruction.As(out ass) &&
+                    ass.Dst == id)
                 {
                     return Expand(ass.Src);
                 }
