@@ -1,0 +1,913 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" module="wsock32.dll" xmlns="http://schemata.jklnet.org/Decompiler">
+  <procedure name="accept" ordinal="1">
+    <signature convention="__stdcall">
+      <return>
+        <type>SOCKET</type>
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="addr">
+        <ptr>
+          <struct name="sockaddr" />
+        </ptr>
+      </arg>
+      <arg name="addrlen">
+        <ptr>
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="bind" ordinal="2">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="addr">
+        <ptr>
+          <struct name="sockaddr" />
+        </ptr>
+      </arg>
+      <arg name="namelen">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="closesocket" ordinal="3">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="connect" ordinal="4">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="name">
+        <ptr>
+          <struct name="sockaddr" />
+        </ptr>
+      </arg>
+      <arg name="namelen">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="ioctlsocket" ordinal="12">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="cmd">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="argp">
+        <ptr>
+          <type>u_long</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="getpeername" ordinal="5">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="name">
+        <ptr>
+          <struct name="sockaddr" />
+        </ptr>
+      </arg>
+      <arg name="namelen">
+        <ptr>
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="getsockname" ordinal="6">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="name">
+        <ptr>
+          <struct name="sockaddr" />
+        </ptr>
+      </arg>
+      <arg name="namelen">
+        <ptr>
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="getsockopt" ordinal="7">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="level">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="optname">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="optval">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="optlen">
+        <ptr>
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="htonl" ordinal="8">
+    <signature convention="__stdcall">
+      <return>
+        <type>u_long</type>
+      </return>
+      <arg name="hostlong">
+        <type>u_long</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="htons" ordinal="9">
+    <signature convention="__stdcall">
+      <return>
+        <type>u_short</type>
+      </return>
+      <arg name="hostshort">
+        <type>u_short</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="inet_addr" ordinal="10">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="UnsignedInt" size="4" />
+      </return>
+      <arg name="cp">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="inet_ntoa" ordinal="11">
+    <signature>
+      <return>
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+      <arg name="in">
+        <struct name="in_addr" />
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="listen" ordinal="13">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="backlog">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="ntohl" ordinal="14">
+    <signature convention="__stdcall">
+      <return>
+        <type>u_long</type>
+      </return>
+      <arg name="netlong">
+        <type>u_long</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="ntohs" ordinal="15">
+    <signature convention="__stdcall">
+      <return>
+        <type>u_short</type>
+      </return>
+      <arg name="netshort">
+        <type>u_short</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="recv" ordinal="16">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="buf">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="len">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="flags">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="recvfrom" ordinal="17">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="buf">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="len">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="flags">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="from">
+        <ptr>
+          <struct name="sockaddr" />
+        </ptr>
+      </arg>
+      <arg name="fromlen">
+        <ptr>
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="select" ordinal="18">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="nfds">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="readfds">
+        <ptr>
+          <type>fd_set</type>
+        </ptr>
+      </arg>
+      <arg name="writefds">
+        <ptr>
+          <type>fd_set</type>
+        </ptr>
+      </arg>
+      <arg name="exceptfds">
+        <ptr>
+          <type>fd_set</type>
+        </ptr>
+      </arg>
+      <arg name="timeout">
+        <ptr>
+          <struct name="timeval" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="send" ordinal="19">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="buf">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="len">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="flags">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="sendto" ordinal="20">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="buf">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="len">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="flags">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="to">
+        <ptr>
+          <struct name="sockaddr" />
+        </ptr>
+      </arg>
+      <arg name="tolen">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="setsockopt" ordinal="21">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="level">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="optname">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="optval">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="optlen">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="shutdown" ordinal="22">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="how">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="socket" ordinal="23">
+    <signature convention="__stdcall">
+      <return>
+        <type>SOCKET</type>
+      </return>
+      <arg name="af">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="type">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="protocol">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gethostbyaddr" ordinal="51">
+    <signature>
+      <return>
+        <ptr>
+          <struct name="hostent" />
+        </ptr>
+      </return>
+      <arg name="addr">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="len">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="type">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gethostbyname" ordinal="52">
+    <signature>
+      <return>
+        <ptr>
+          <struct name="hostent" />
+        </ptr>
+      </return>
+      <arg name="name">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gethostname" ordinal="57">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="name">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="namelen">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="getservbyport" ordinal="56">
+    <signature>
+      <return>
+        <ptr>
+          <struct name="servent" />
+        </ptr>
+      </return>
+      <arg name="port">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="proto">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="getservbyname" ordinal="55">
+    <signature>
+      <return>
+        <ptr>
+          <struct name="servent" />
+        </ptr>
+      </return>
+      <arg name="name">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="proto">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="getprotobynumber" ordinal="54">
+    <signature>
+      <return>
+        <ptr>
+          <struct name="protoent" />
+        </ptr>
+      </return>
+      <arg name="proto">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="getprotobyname" ordinal="53">
+    <signature>
+      <return>
+        <ptr>
+          <struct name="protoent" />
+        </ptr>
+      </return>
+      <arg name="name">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="WSAStartup" ordinal="115">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="wVersionRequired">
+        <type>WORD</type>
+      </arg>
+      <arg name="lpWSAData">
+        <type>LPWSADATA</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="WSACleanup" ordinal="116">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="WSASetLastError" ordinal="112">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="iError">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="WSAGetLastError" ordinal="111">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="WSAIsBlocking" ordinal="114">
+    <signature convention="__stdcall">
+      <return>
+        <type>BOOL</type>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="WSAUnhookBlockingHook" ordinal="110">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="WSASetBlockingHook" ordinal="109">
+    <signature convention="__stdcall">
+      <return>
+        <type>FARPROC</type>
+      </return>
+      <arg name="lpBlockFunc">
+        <type>FARPROC</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="WSACancelBlockingCall" ordinal="113">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="WSAAsyncGetServByName" ordinal="107">
+    <signature convention="__stdcall">
+      <return>
+        <type>HANDLE</type>
+      </return>
+      <arg name="hWnd">
+        <type>HWND</type>
+      </arg>
+      <arg name="wMsg">
+        <type>u_int</type>
+      </arg>
+      <arg name="name">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="proto">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="buf">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="buflen">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="WSAAsyncGetServByPort" ordinal="106">
+    <signature convention="__stdcall">
+      <return>
+        <type>HANDLE</type>
+      </return>
+      <arg name="hWnd">
+        <type>HWND</type>
+      </arg>
+      <arg name="wMsg">
+        <type>u_int</type>
+      </arg>
+      <arg name="port">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="proto">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="buf">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="buflen">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="WSAAsyncGetProtoByName" ordinal="105">
+    <signature convention="__stdcall">
+      <return>
+        <type>HANDLE</type>
+      </return>
+      <arg name="hWnd">
+        <type>HWND</type>
+      </arg>
+      <arg name="wMsg">
+        <type>u_int</type>
+      </arg>
+      <arg name="name">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="buf">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="buflen">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="WSAAsyncGetProtoByNumber" ordinal="104">
+    <signature convention="__stdcall">
+      <return>
+        <type>HANDLE</type>
+      </return>
+      <arg name="hWnd">
+        <type>HWND</type>
+      </arg>
+      <arg name="wMsg">
+        <type>u_int</type>
+      </arg>
+      <arg name="number">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="buf">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="buflen">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="WSAAsyncGetHostByName" ordinal="103">
+    <signature convention="__stdcall">
+      <return>
+        <type>HANDLE</type>
+      </return>
+      <arg name="hWnd">
+        <type>HWND</type>
+      </arg>
+      <arg name="wMsg">
+        <type>u_int</type>
+      </arg>
+      <arg name="name">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="buf">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="buflen">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="WSAAsyncGetHostByAddr" ordinal="102">
+    <signature convention="__stdcall">
+      <return>
+        <type>HANDLE</type>
+      </return>
+      <arg name="hWnd">
+        <type>HWND</type>
+      </arg>
+      <arg name="wMsg">
+        <type>u_int</type>
+      </arg>
+      <arg name="addr">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="len">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="type">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="buf">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="buflen">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="WSACancelAsyncRequest" ordinal="108">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="hAsyncTaskHandle">
+        <type>HANDLE</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="WSAAsyncSelect" ordinal="101">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="hWnd">
+        <type>HWND</type>
+      </arg>
+      <arg name="wMsg">
+        <type>u_int</type>
+      </arg>
+      <arg name="lEvent">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="WSARecvEx" ordinal="1107">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="s">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="buf">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="len">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="flags">
+        <ptr>
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="TransmitFile" ordinal="1140">
+    <signature convention="__stdcall">
+      <return>
+        <type>BOOL</type>
+      </return>
+      <arg name="hSocket">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="hFile">
+        <type>HANDLE</type>
+      </arg>
+      <arg name="nNumberOfBytesToWrite">
+        <type>DWORD</type>
+      </arg>
+      <arg name="nNumberOfBytesPerSend">
+        <type>DWORD</type>
+      </arg>
+      <arg name="lpOverlapped">
+        <type>LPOVERLAPPED</type>
+      </arg>
+      <arg name="lpTransmitBuffers">
+        <type>LPTRANSMIT_FILE_BUFFERS</type>
+      </arg>
+      <arg name="dwReserved">
+        <type>DWORD</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="AcceptEx" ordinal="1141">
+    <signature convention="__stdcall">
+      <return>
+        <type>BOOL</type>
+      </return>
+      <arg name="sListenSocket">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="sAcceptSocket">
+        <type>SOCKET</type>
+      </arg>
+      <arg name="lpOutputBuffer">
+        <type>PVOID</type>
+      </arg>
+      <arg name="dwReceiveDataLength">
+        <type>DWORD</type>
+      </arg>
+      <arg name="dwLocalAddressLength">
+        <type>DWORD</type>
+      </arg>
+      <arg name="dwRemoteAddressLength">
+        <type>DWORD</type>
+      </arg>
+      <arg name="lpdwBytesReceived">
+        <type>LPDWORD</type>
+      </arg>
+      <arg name="lpOverlapped">
+        <type>LPOVERLAPPED</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetAcceptExSockaddrs" ordinal="1142">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="lpOutputBuffer">
+        <type>PVOID</type>
+      </arg>
+      <arg name="dwReceiveDataLength">
+        <type>DWORD</type>
+      </arg>
+      <arg name="dwLocalAddressLength">
+        <type>DWORD</type>
+      </arg>
+      <arg name="dwRemoteAddressLength">
+        <type>DWORD</type>
+      </arg>
+      <arg name="LocalSockaddr">
+        <ptr>
+          <ptr>
+            <struct name="sockaddr" />
+          </ptr>
+        </ptr>
+      </arg>
+      <arg name="LocalSockaddrLength">
+        <type>LPINT</type>
+      </arg>
+      <arg name="RemoteSockaddr">
+        <ptr>
+          <ptr>
+            <struct name="sockaddr" />
+          </ptr>
+        </ptr>
+      </arg>
+      <arg name="RemoteSockaddrLength">
+        <type>LPINT</type>
+      </arg>
+    </signature>
+  </procedure>
+</library>
