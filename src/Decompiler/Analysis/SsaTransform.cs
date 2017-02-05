@@ -496,7 +496,8 @@ namespace Reko.Analysis
 								PhiFunction p = phi.Src;
 								// replace 'n's slot with the renamed name of the variable.
 								p.Arguments[j] = 
-									NewUse((Identifier)p.Arguments[j], stm, newPhi);
+									NewUse((Identifier)p.Arguments[j], stm, newPhi
+                                    );
 							}
 						}
 					}
