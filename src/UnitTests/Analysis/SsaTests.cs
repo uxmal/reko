@@ -229,7 +229,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore("Crashes when doing dead code elimination")]
         public void SsaSwitchWithSharedBranches()
         {
             var m = new ProcedureBuilder("SsaSwitchWithSharedBranches");

@@ -477,15 +477,12 @@ namespace Reko.Analysis
 
 				// Rename arguments to phi functions in successor blocks.
 
-				bool [] visited = new bool[proc.ControlGraph.Blocks.Count];
 				foreach (Block y in n.Succ)
 				{
 					for (int j = 0; j < y.Pred.Count; ++j)
 					{
-						if (y.Pred[j] == n && !visited[ssa.RpoNumber(y)])
+						if (y.Pred[j] == n)
 						{
-							visited[ssa.RpoNumber(y)] = true;
-
 							// For each phi function in y...
 
 							foreach (Statement stm in y.Statements.Where(s => s.Instruction is PhiAssignment))

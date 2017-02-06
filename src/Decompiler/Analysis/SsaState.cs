@@ -150,6 +150,12 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Collect all the statements that are used in statement
+        /// stm, _according to the SsaState_. 
+        /// </summary>
+        /// <param name="stm"></param>
+        /// <returns></returns>
         private IDictionary<Identifier, int> GetStatementIdentifiers(Statement stm)
         {
             var idMap =
