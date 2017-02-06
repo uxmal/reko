@@ -477,7 +477,7 @@ namespace Reko.Analysis
 
 				// Rename arguments to phi functions in successor blocks.
 
-				foreach (Block y in n.Succ)
+				foreach (Block y in n.Succ.Distinct())
 				{
 					for (int j = 0; j < y.Pred.Count; ++j)
 					{
@@ -487,6 +487,7 @@ namespace Reko.Analysis
 
 							foreach (Statement stm in y.Statements.Where(s => s.Instruction is PhiAssignment))
 							{
+
                                 var newPhi = newPhiStatements.Contains(stm);
 								stmCur = stm;
 								PhiAssignment phi = (PhiAssignment) stmCur.Instruction;

@@ -6305,7 +6305,6 @@ word16 fn0800_45E2(word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & dxOut)
 
 word16 fn0800_463B(word16 bp, selector ds, word16 wArg00, word16 wArg02, selector psegArg04, word16 wArg06, ptr16 & bpOut)
 {
-	*bpOut = bp;
 	word16 wLoc0C_102 = ~0x00;
 	word16 wLoc0E_103 = ~0x00;
 	word16 wLoc08_104 = ~0x00;
@@ -6350,8 +6349,8 @@ word16 fn0800_463B(word16 bp, selector ds, word16 wArg00, word16 wArg02, selecto
 		if (wLoc0E_103 == ~0x00)
 		{
 			return 0x00;
-			word16 bp_78;
-			*bpOut = Mem0[ss:bp + 0x00:word16];
+			word16 bp_78 = Mem0[ss:bp + 0x00:word16];
+			*bpOut = bp_78;
 			return 0x00;
 		}
 	}
