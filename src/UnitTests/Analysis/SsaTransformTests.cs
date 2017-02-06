@@ -1748,7 +1748,6 @@ proc1_exit:
                 m.Return(eax);      // forces liveness of eax.
             });
         }
-
         [Test]
         public void SsaAliasedSequence()
         {
