@@ -14508,8 +14508,8 @@ l0800_46F5:
 
 l0800_46ED:
 	return 0x0000
-	word16 bp_78 = Mem0[ss:bp:word16]
-	*bpOut = bp_78
+	word16 bp_78
+	*bpOut = Mem0[ss:bp:word16]
 	return 0x0000
 // DataOut: ax bp ds sp ss
 // DataOut (flags): 

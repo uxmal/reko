@@ -6349,8 +6349,8 @@ word16 fn0800_463B(word16 bp, selector ds, word16 wArg00, word16 wArg02, selecto
 		if (wLoc0E_103 == ~0x00)
 		{
 			return 0x00;
-			word16 bp_78 = Mem0[ss:bp + 0x00:word16];
-			*bpOut = bp_78;
+			word16 bp_78;
+			*bpOut = Mem0[ss:bp + 0x00:word16];
 			return 0x00;
 		}
 	}

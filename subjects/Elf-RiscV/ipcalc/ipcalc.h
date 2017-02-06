@@ -9230,11 +9230,11 @@ T_1855: (in fp + 48 : word64)
   DataType: ptr64
   OrigDataType: ptr64
 T_1856: (in Mem0[fp + 48:word64] : word64)
-  Class: Eq_1853
+  Class: Eq_1856
   DataType: word64
   OrigDataType: word64
 T_1857: (in *s0Out : word64)
-  Class: Eq_1853
+  Class: Eq_1856
   DataType: word64
   OrigDataType: word64
 T_1858: (in s1_60 : word64)
@@ -9250,11 +9250,11 @@ T_1860: (in fp + 40 : word64)
   DataType: ptr64
   OrigDataType: ptr64
 T_1861: (in Mem0[fp + 40:word64] : word64)
-  Class: Eq_1858
+  Class: Eq_1861
   DataType: word64
   OrigDataType: word64
 T_1862: (in *s1Out : word64)
-  Class: Eq_1858
+  Class: Eq_1861
   DataType: word64
   OrigDataType: word64
 T_1863: (in s4_63 : word64)
@@ -9270,27 +9270,27 @@ T_1865: (in fp + 16 : word64)
   DataType: ptr64
   OrigDataType: ptr64
 T_1866: (in Mem0[fp + 16:word64] : word64)
-  Class: Eq_1863
+  Class: Eq_1866
   DataType: word64
   OrigDataType: word64
 T_1867: (in *s4Out : word64)
-  Class: Eq_1863
+  Class: Eq_1866
   DataType: word64
   OrigDataType: word64
-T_1868: (in sp_64 : ptr64)
+T_1868: (in sp_64 : word64)
   Class: Eq_1868
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: word64
+  OrigDataType: word64
 T_1869: (in 64 : int32)
   Class: Eq_1869
   DataType: int32
   OrigDataType: (union (int32 u0) (int64 u1))
 T_1870: (in fp + 64 : word64)
-  Class: Eq_1868
+  Class: Eq_1870
   DataType: ptr64
   OrigDataType: ptr64
 T_1871: (in *spOut : word64)
-  Class: Eq_1868
+  Class: Eq_1870
   DataType: ptr64
   OrigDataType: word64
 T_1872: (in 56 : int32)

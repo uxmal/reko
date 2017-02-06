@@ -1281,14 +1281,14 @@ l00000000000167F4:
 					else
 					{
 						return fp->qwFFFFFFF8;
-						word64 s0_59 = fp->qw0030;
-						*s0Out = s0_59;
-						word64 s1_60 = fp->qw0028;
-						*s1Out = s1_60;
-						word64 s4_63 = fp->qw0010;
-						*s4Out = s4_63;
-						ptr64 sp_64 = fp->qw0038 + 0x01;
-						*spOut = sp_64;
+						word64 s0_59;
+						*s0Out = fp->qw0030;
+						word64 s1_60;
+						*s1Out = fp->qw0028;
+						word64 s4_63;
+						*s4Out = fp->qw0010;
+						word64 sp_64;
+						*spOut = fp->qw0038 + 0x01;
 						return fp->qw0038;
 					}
 				}

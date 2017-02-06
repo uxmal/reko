@@ -3525,14 +3525,14 @@ l0000000000016848_thunk_fn000000000001684C:
 
 l0000000000016800:
 	return Mem0[fp + -8:word64]
-	word64 s0_59 = Mem0[fp + 48:word64]
-	*s0Out = s0_59
-	word64 s1_60 = Mem0[fp + 40:word64]
-	*s1Out = s1_60
-	word64 s4_63 = Mem0[fp + 16:word64]
-	*s4Out = s4_63
-	word64 sp_64 = fp + 64
-	*spOut = sp_64
+	word64 s0_59
+	*s0Out = Mem0[fp + 48:word64]
+	word64 s1_60
+	*s1Out = Mem0[fp + 40:word64]
+	word64 s4_63
+	*s4Out = Mem0[fp + 16:word64]
+	word64 sp_64
+	*spOut = fp + 64
 	return Mem0[fp + 56:word64]
 // DataOut: a0 a1 gp ra s0 s1 s10 s4 sp
 // DataOut (flags): 
