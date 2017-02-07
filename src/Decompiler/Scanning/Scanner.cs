@@ -311,6 +311,8 @@ namespace Reko.Scanning
         {
             if (program.Procedures.ContainsKey(addr))
                 return; // Already scanned. Do nothing.
+            if (IsNoDecompiledProcedure(addr))
+                return;
             var proc = EnsureProcedure(addr, null);
             proc.Signature = (FunctionType)sig.Clone();
             queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, proc.Name));

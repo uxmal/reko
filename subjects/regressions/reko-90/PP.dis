@@ -14367,7 +14367,6 @@ word16 fn0800_463B(word16 bp, selector ds, word16 wArg00, word16 wArg02, selecto
 // Preserved:
 // Stack args: Stack +0002(16) Stack +0004(16) Stack +0006(16)
 fn0800_463B_entry:
-	*bpOut = bp
 // DataOut: bp ds ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
