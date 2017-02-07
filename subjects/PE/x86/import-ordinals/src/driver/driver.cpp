@@ -1,4 +1,4 @@
-#define APIENTITY __declspec(dllexport)
+#define APIEXPORT
 
 #include "driver.h"
 

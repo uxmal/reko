@@ -1,7 +1,9 @@
 #pragma once
 
-#ifndef APIENTITY
+#ifndef APIEXPORT
 # define APIENTITY __declspec(dllimport)
+#else
+# define APIENTITY
 #endif
 
 class MathService
