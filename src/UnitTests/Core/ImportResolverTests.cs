@@ -210,15 +210,19 @@ namespace Reko.UnitTests.Core
                 GlobalsByName =
                 {
                     {
-                         "bar",
-                         new StructureType
-                         {
-                             Fields =
-                             {
-                                 { 0, new Pointer(PrimitiveType.Char, 4), "name" },
-                                 { 4, PrimitiveType.Int32, "age" }
-                             }
-                         }
+                        "bar",
+                        new ImageSymbol
+                        {
+                            Type = SymbolType.Data,
+                            DataType = new StructureType
+                            {
+                                Fields =
+                                {
+                                    { 0, new Pointer(PrimitiveType.Char, 4), "name" },
+                                    { 4, PrimitiveType.Int32, "age" }
+                                }
+                            }
+                        }
                     }
                 }
             };

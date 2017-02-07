@@ -86,10 +86,11 @@ namespace Reko.Core
                 foreach (var g in sLib.Globals.Where(gg => !string.IsNullOrEmpty(gg.Name) && gg.Type != null))
                 {
                     var dt = this.LoadType(g.Type);
-                    mod.GlobalsByName[g.Name] = dt;
+                    var sym = new ImageSymbol { Type = SymbolType.Data };
+                    mod.GlobalsByName[g.Name] = sym;
                     if (g.Ordinal != GlobalVariable_v1.NoOrdinal)
                     {
-                        mod.GlobalsByOrdinal[g.Ordinal] = dt;
+                        mod.GlobalsByOrdinal[g.Ordinal] = sym;
                     }
                     library.Globals[g.Name] = dt;       //$REVIEW: How to cope with colissions MODULE1!foo and MODULE2!foo?
                 }

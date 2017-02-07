@@ -118,10 +118,10 @@ namespace Reko.Core
                 if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
                     continue;
 
-                DataType dt;
-                if (mod.GlobalsByName.TryGetValue(globalName, out dt))
+                ImageSymbol sym;
+                if (mod.GlobalsByName.TryGetValue(globalName, out sym))
                 {
-                    return new Identifier(globalName, dt, new MemoryStorage());
+                    return new Identifier(globalName, sym.DataType, new MemoryStorage());
                 }
             }
 
@@ -144,16 +144,14 @@ namespace Reko.Core
                 if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
                     continue;
 
-                DataType dt;
-                if (mod.GlobalsByOrdinal.TryGetValue(ordinal, out dt))
+                ImageSymbol sym;
+                if (mod.GlobalsByOrdinal.TryGetValue(ordinal, out sym))
                 {
-                    return new Identifier("ExportedGlobal_" + ordinal, dt, new MemoryStorage());
+                    return new Identifier(sym.Name, sym.DataType, new MemoryStorage());
                 }
             }
-
             return platform.LookupGlobalByOrdinal(moduleName, ordinal);
         }
-
 
         public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
         {
