@@ -87,6 +87,10 @@ namespace Reko.Core
                 {
                     var dt = this.LoadType(g.Type);
                     mod.GlobalsByName[g.Name] = dt;
+                    if (g.Ordinal != GlobalVariable_v1.NoOrdinal)
+                    {
+                        mod.GlobalsByOrdinal[g.Ordinal] = dt;
+                    }
                     library.Globals[g.Name] = dt;       //$REVIEW: How to cope with colissions MODULE1!foo and MODULE2!foo?
                 }
             }
