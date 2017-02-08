@@ -113,10 +113,5 @@ namespace Reko.Environments.MacOS
         {
             throw new NotImplementedException();
         }
-
-        public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
-        {
-            return base.LookupProcedureByOrdinal(moduleName, ordinal);
-        }
     }
 }

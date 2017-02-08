@@ -246,12 +246,12 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException();
         }
 
-        public Identifier ResolveGlobal(string moduleName, string name, IPlatform platform)
+        public Expression ResolveImport(string moduleName, string name, IPlatform platform)
         {
             throw new NotImplementedException();
         }
 
-        public Identifier ResolveGlobal(string moduleName, int ordinal, IPlatform platform)
+        public Expression ResolveImport(string moduleName, int ordinal, IPlatform platform)
         {
             throw new NotImplementedException();
         }

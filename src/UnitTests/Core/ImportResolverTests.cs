@@ -210,23 +210,28 @@ namespace Reko.UnitTests.Core
                 GlobalsByName =
                 {
                     {
-                         "bar",
-                         new StructureType
-                         {
-                             Fields =
-                             {
-                                 { 0, new Pointer(PrimitiveType.Char, 4), "name" },
-                                 { 4, PrimitiveType.Int32, "age" }
-                             }
-                         }
+                        "bar",
+                        new ImageSymbol
+                        {
+                            Name = "bar",
+                            Type = SymbolType.Data,
+                            DataType = new StructureType
+                            {
+                                Fields =
+                                {
+                                    { 0, new Pointer(PrimitiveType.Char, 4), "name" },
+                                    { 4, PrimitiveType.Int32, "age" }
+                                }
+                            }
+                        }
                     }
                 }
             };
             program.EnvironmentMetadata.Modules.Add(module.ModuleName, module);
 
             var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
-            var dt = impres.ResolveGlobal("foo", "bar", platform);
-            Assert.AreEqual("bar", dt.ToString());
+            var dt = impres.ResolveImport("foo", "bar", platform);
+            Assert.AreEqual("&bar", dt.ToString());
         }
     }
 }

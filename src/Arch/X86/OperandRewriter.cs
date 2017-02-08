@@ -93,7 +93,11 @@ namespace Reko.Arch.X86
         public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand mem, DataType dt, X86State state)
         {
             var exg = ImportedGlobal(instr.Address, mem.Width, mem);
-            if (exg != null)
+            if (exg is ProcedureConstant)
+            {
+                return exg;
+            }
+            else if (exg != null)
             {
                 return new UnaryExpression(Operator.AddrOf, dt, exg);
             }
@@ -223,12 +227,12 @@ namespace Reko.Arch.X86
             return new MemoryAccess(Registers.ST, idx, PrimitiveType.Real64);
         }
 
-        public Identifier ImportedGlobal(Address addrInstruction, PrimitiveType addrWidth, MemoryOperand mem)
+        public Expression ImportedGlobal(Address addrInstruction, PrimitiveType addrWidth, MemoryOperand mem)
         {
             if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
                 mem.Index == RegisterStorage.None)
             {
-                var id = host.GetImportedGlobal(Address.Ptr32(mem.Offset.ToUInt32()), addrInstruction);
+                var id = host.GetImport(Address.Ptr32(mem.Offset.ToUInt32()), addrInstruction);
                 return id;
             }
             return null;

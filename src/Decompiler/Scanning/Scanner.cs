@@ -727,12 +727,12 @@ namespace Reko.Scanning
             return target;
         }
 
-        public Identifier GetImportedGlobal(Address addrImportThunk, Address addrInstruction)
+        public Expression GetImport(Address addrImportThunk, Address addrInstruction)
         {
             ImportReference impref;
             if (importReferences.TryGetValue(addrImportThunk, out impref))
             {
-                var global = impref.ResolveImportedGlobal(
+                var global = impref.ResolveImport(
                     importResolver,
                     program.Platform,
                     new AddressContext(program, addrInstruction, this.eventListener));

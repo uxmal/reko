@@ -133,7 +133,7 @@ namespace Reko.UnitTests.Scanning
                 sigs.Add(addrCallInstruction.ToLinear(), signature);
             }
 
-            public Identifier GetImportedGlobal(Address addrThunk, Address addrInstr)
+            public Expression GetImport(Address addrThunk, Address addrInstr)
             {
                 return null;
             }
@@ -161,12 +161,12 @@ namespace Reko.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
-            public Identifier ResolveGlobal(string moduleName, string globalName, IPlatform platform)
+            public Expression ResolveImport(string moduleName, string globalName, IPlatform platform)
             {
                 throw new NotImplementedException();
             }
 
-            public Identifier ResolveGlobal(string moduleName, int ordinal, IPlatform platform)
+            public Expression ResolveImport(string moduleName, int ordinal, IPlatform platform)
             {
                 throw new NotImplementedException();
             }
