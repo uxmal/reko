@@ -43,7 +43,8 @@ namespace Reko.Core
             this.ModuleName = moduleName;
         }
 
-        public abstract Identifier ResolveImportedGlobal(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
+        public abstract Expression ResolveImport(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
+
         public abstract ExternalProcedure ResolveImportedProcedure(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
 
         public abstract int CompareTo(ImportReference that);
@@ -75,12 +76,12 @@ namespace Reko.Core
             return cmp;
         }
 
-        public override Identifier ResolveImportedGlobal(
+        public override Expression ResolveImport(
             IImportResolver resolver,
             IPlatform platform,
             AddressContext ctx)
         {
-            var global = resolver.ResolveGlobal(ModuleName, ImportName, platform);
+            var global = resolver.ResolveImport(ModuleName, ImportName, platform);
             if (global != null)
                 return global;
             var t = platform.DataTypeFromImportName(ImportName);
@@ -92,6 +93,7 @@ namespace Reko.Core
                 return null;
         }
 
+        [Obsolete("", true)]
         public override ExternalProcedure ResolveImportedProcedure(
             IImportResolver resolver, 
             IPlatform platform, 
@@ -144,10 +146,12 @@ namespace Reko.Core
             return cmp;
         }
 
-        public override Identifier ResolveImportedGlobal(IImportResolver importResolver, IPlatform platform, AddressContext ctx)
+        public override Expression ResolveImport(IImportResolver importResolver, IPlatform platform, AddressContext ctx)
         {
-            ctx.Warn("Ordinal global imports not supported. Please report this message to the Reko maintainers (https://github.com/uxmal/reko).");
-            var id = importResolver.ResolveGlobal(ModuleName, Ordinal, platform);
+            var imp = importResolver.ResolveImport(ModuleName, Ordinal, platform);
+            if (imp != null)
+                return imp;
+            ctx.Warn("Unable to resolve imported reference {0}.", this);
             return null;
         }
 

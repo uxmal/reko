@@ -39,11 +39,28 @@ namespace Reko.Core
     /// </remarks>
     public class ImageSymbol
     {
+        /// <summary>
+        /// Use this ctor when the symbol is imported from another module.
+        /// </summary>
+        public ImageSymbol()
+        {
+        }
+
+        /// <summary>
+        /// Use this ctor when only the address of the symbol is known.
+        /// </summary>
+        /// <param name="address"></param>
         public ImageSymbol(Address address)
         {
             this.Address = address;
         }
 
+        /// <summary>
+        /// Use this ctor when symbolic data is available.
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="name"></param>
+        /// <param name="dataType"></param>
         public ImageSymbol(Address address, string name, DataType dataType)
         {
             this.Address = address;

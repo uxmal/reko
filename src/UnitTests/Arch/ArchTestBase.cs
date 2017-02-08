@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch
                 return new PseudoProcedure(name, returnType, arity);
             }
 
-            public Identifier GetImportedGlobal(Address addrThunk, Address addrInstr)
+            public Expression GetImport(Address addrThunk, Address addrInstr)
             {
                 return null;
             }

@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Arch.Arm
                 throw new NotImplementedException();
             }
 
-            public Identifier GetImportedGlobal(Address addrThunk, Address addrInstr)
+            public Expression GetImport(Address addrThunk, Address addrInstr)
             {
                 throw new NotImplementedException();
             }

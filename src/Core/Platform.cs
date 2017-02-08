@@ -137,8 +137,8 @@ namespace Reko.Core
         void LoadUserOptions(Dictionary<string, object> options);
         ExternalProcedure LookupProcedureByName(string moduleName, string procName);
         ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
-        Identifier LookupGlobalByName(string moduleName, string globalName);
-        Identifier LookupGlobalByOrdinal(string moduleName, int ordinal);
+        Expression ResolveImportByName(string moduleName, string globalName);
+        Expression ResolveImportByOrdinal(string moduleName, int ordinal);
         ProcedureCharacteristics LookupCharacteristicsByName(string procName);
         Address MakeAddressFromConstant(Constant c);
         Address MakeAddressFromLinear(ulong uAddr);
@@ -428,14 +428,22 @@ namespace Reko.Core
             return null;
         }
 
-        public virtual Identifier LookupGlobalByName(string moduleName, string globalName)
+        public virtual Expression ResolveImportByName(string moduleName, string globalName)
         {
-            return null;
+            var ep = LookupProcedureByName(moduleName, globalName);
+            if (ep != null)
+                return new ProcedureConstant(PointerType, ep);
+            else
+                return null;
         }
 
-        public virtual Identifier LookupGlobalByOrdinal(string moduleName, int ordinal)
+        public virtual Expression ResolveImportByOrdinal(string moduleName, int ordinal)
         {
-            return null;
+            var ep = LookupProcedureByOrdinal(moduleName, ordinal);
+            if (ep != null)
+                return new ProcedureConstant(PointerType, ep);
+            else
+                return null;
         }
 
         public virtual ProcedureCharacteristics LookupCharacteristicsByName(string procName)

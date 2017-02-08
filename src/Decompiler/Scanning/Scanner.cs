@@ -231,6 +231,8 @@ namespace Reko.Scanning
         {
             if (program.Procedures.ContainsKey(addr))
                 return; // Already scanned. Do nothing.
+            if (IsNoDecompiledProcedure(addr))
+                return;
             var proc = EnsureProcedure(addr, null);
             proc.Signature = (FunctionType)sig.Clone();
             queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, proc.Name));
@@ -692,12 +694,12 @@ namespace Reko.Scanning
             return target;
         }
 
-        public Identifier GetImportedGlobal(Address addrImportThunk, Address addrInstruction)
+        public Expression GetImport(Address addrImportThunk, Address addrInstruction)
         {
             ImportReference impref;
             if (importReferences.TryGetValue(addrImportThunk, out impref))
             {
-                var global = impref.ResolveImportedGlobal(
+                var global = impref.ResolveImport(
                     importResolver,
                     program.Platform,
                     new AddressContext(program, addrInstruction, this.eventListener));
