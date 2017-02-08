@@ -25,6 +25,7 @@ using System.Text;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Core.Operators;
 
 namespace Reko.Core
 {
@@ -32,8 +33,8 @@ namespace Reko.Core
     {
         ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform);
         ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
-        Identifier ResolveGlobal(string moduleName, string globalName, IPlatform platform);
-        Identifier ResolveGlobal(string moduleName, int ordinal, IPlatform platform);
+        Expression ResolveImport(string moduleName, string globalName, IPlatform platform);
+        Expression ResolveImport(string moduleName, int ordinal, IPlatform platform);
         ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c);
     }
 
@@ -110,7 +111,7 @@ namespace Reko.Core
             return platform.LookupProcedureByOrdinal(moduleName, ordinal);
         }
 
-        public Identifier ResolveGlobal(string moduleName, string globalName, IPlatform platform)
+        public Expression ResolveImport(string moduleName, string name, IPlatform platform)
         {
             foreach (var program in project.Programs)
             {
@@ -119,24 +120,24 @@ namespace Reko.Core
                     continue;
 
                 ImageSymbol sym;
-                if (mod.GlobalsByName.TryGetValue(globalName, out sym))
+                if (mod.GlobalsByName.TryGetValue(name, out sym))
                 {
-                    return new Identifier(globalName, sym.DataType, new MemoryStorage());
+                    return CreateReferenceToImport(sym);
                 }
             }
 
             foreach (var program in project.Programs)
             {
                 DataType dt;
-                if (program.EnvironmentMetadata.Globals.TryGetValue(globalName, out dt))
+                if (program.EnvironmentMetadata.Globals.TryGetValue(name, out dt))
                 {
-                    return new Identifier(globalName, dt, new MemoryStorage());
+                    return new Identifier(name, dt, new MemoryStorage());
                 }
             }
-            return platform.LookupGlobalByName(moduleName, globalName);
+            return platform.LookupGlobalByName(moduleName, name);
         }
 
-        public Identifier ResolveGlobal(string moduleName, int ordinal, IPlatform platform)
+        public Expression ResolveImport(string moduleName, int ordinal, IPlatform platform)
         {
             foreach (var program in project.Programs)
             {
@@ -147,13 +148,30 @@ namespace Reko.Core
                 ImageSymbol sym;
                 if (mod.GlobalsByOrdinal.TryGetValue(ordinal, out sym))
                 {
-                    return new Identifier(sym.Name, sym.DataType, new MemoryStorage());
+                    return CreateReferenceToImport(sym);
                 }
             }
             return platform.LookupGlobalByOrdinal(moduleName, ordinal);
         }
 
-        public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+        private Expression CreateReferenceToImport(ImageSymbol sym)
+        {
+            if (sym.Type == SymbolType.ExternalProcedure)
+            {
+                throw new NotImplementedException();
+            }
+            else if (sym.Type == SymbolType.Procedure)
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                var id = new Identifier(sym.Name, sym.DataType, new MemoryStorage());
+                return new UnaryExpression(Operator.AddrOf, program.Platform.PointerType, id);
+            }
+    }
+
+    public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
         {
             var addrInstruction = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
             var addrImportThunk = program.Platform.MakeAddressFromConstant(c);

@@ -744,7 +744,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
             public abstract bool ImportedFunctionNameSpecified(ulong rvaEntry);
 
-            public ImportReference ResolveImportedFunction(string dllName, ulong rvaEntry, Address addrThunk)
+            public ImportReference CreateImportReference(string dllName, ulong rvaEntry, Address addrThunk)
             {
                 if (!ImportedFunctionNameSpecified(rvaEntry))
                 {
@@ -773,10 +773,8 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
             public override Address ReadPreferredImageBase(ImageReader rdr)
             {
-                {
-                    uint rvaBaseOfData = rdr.ReadLeUInt32();        // Only exists in PE32, not PE32+
-                    return Address32.Ptr32(rdr.ReadLeUInt32());
-                }
+                uint rvaBaseOfData = rdr.ReadLeUInt32();        // Only exists in PE32, not PE32+
+                return Address32.Ptr32(rdr.ReadLeUInt32());
             }
 
             public override bool ResolveImportDescriptorEntry(string dllName, ImageReader rdrIlt, ImageReader rdrIat)
@@ -789,7 +787,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
                 outer.importReferences.Add(
                     addrThunk,
-                    ResolveImportedFunction(dllName, iltEntry, addrThunk));
+                    CreateImportReference(dllName, iltEntry, addrThunk));
                 return true;
             }
         }
@@ -817,7 +815,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                     return false;
                 outer.importReferences.Add(
                     addrThunk,
-                    ResolveImportedFunction(dllName, iltEntry, addrThunk));
+                    CreateImportReference(dllName, iltEntry, addrThunk));
                 Debug.Print("{0}: {1}", addrThunk, outer.importReferences[addrThunk]);
                 return true;
             }
@@ -841,7 +839,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                     break;
                 importReferences.Add(
                     addrThunk, 
-                    innerLoader.ResolveImportedFunction(dllName, rvaName, addrThunk));
+                    innerLoader.CreateImportReference(dllName, rvaName, addrThunk));
             }
             rdr.ReadLeInt32();
             rdr.ReadLeInt32();

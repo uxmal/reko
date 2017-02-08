@@ -213,6 +213,7 @@ namespace Reko.UnitTests.Core
                         "bar",
                         new ImageSymbol
                         {
+                            Name = "bar",
                             Type = SymbolType.Data,
                             DataType = new StructureType
                             {
@@ -229,8 +230,8 @@ namespace Reko.UnitTests.Core
             program.EnvironmentMetadata.Modules.Add(module.ModuleName, module);
 
             var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
-            var dt = impres.ResolveGlobal("foo", "bar", platform);
-            Assert.AreEqual("bar", dt.ToString());
+            var dt = impres.ResolveImport("foo", "bar", platform);
+            Assert.AreEqual("&bar", dt.ToString());
         }
     }
 }
