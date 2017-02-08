@@ -225,7 +225,8 @@ namespace Reko.Environments.Windows
                 SystemService svc;
                 if (mod.ServicesByName.TryGetValue(procName, out svc))
                 {
-                    return new ExternalProcedure(svc.Name, svc.Signature);
+                    var chr = LookupCharacteristicsByName(svc.Name);
+                    return new ExternalProcedure(svc.Name, svc.Signature, chr);
                 }
                 else
                 {
