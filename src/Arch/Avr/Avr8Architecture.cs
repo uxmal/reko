@@ -68,9 +68,15 @@ namespace Reko.Arch.Avr
                 Tuple.Create(FlagM.ZF, 'Z'),
                 Tuple.Create(FlagM.CF, 'C'),
             };
-        }
+		}
         
-        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
+		public FlagRegister sreg { get; private set; }
+		public RegisterStorage x { get; private set; }
+		public RegisterStorage y { get; private set; }
+		public RegisterStorage z { get; private set; }
+		public RegisterStorage code { get; private set; }
+
+		public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Avr8Disassembler(this, rdr);
         }
