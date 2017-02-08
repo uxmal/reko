@@ -57,7 +57,7 @@ namespace Reko.Arch.M68k
         /// invalid, either due to a bad encoding or because the reader read
         /// off the end of the memory area.
         /// </returns>
-        public bool TryGetOperand(ImageReader rdr, string args, PrimitiveType dataWidth, out MachineOperand op)
+        public bool TryGetOperand(EndianImageReader rdr, string args, PrimitiveType dataWidth, out MachineOperand op)
         {
             if (i >= args.Length)
             {
@@ -202,7 +202,7 @@ namespace Reko.Arch.M68k
             return TryParseOperandInner(addressMode, operandBits, dataWidth, rdr, out op);
         }
 
-		private bool TryParseSwappedOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr, out MachineOperand op)
+		private bool TryParseSwappedOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
 		{
             opcode >>= bitOffset;
             byte addressMode = (byte) (opcode & 7);
