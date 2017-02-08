@@ -119,6 +119,13 @@ namespace Reko.Core
                 if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
                     continue;
 
+                SystemService svc;
+                if (mod.ServicesByName.TryGetValue(name, out svc))
+                {
+                    var ep = new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
+                    return new ProcedureConstant(platform.PointerType, ep);
+                }
+
                 ImageSymbol sym;
                 if (mod.GlobalsByName.TryGetValue(name, out sym))
                 {
@@ -134,7 +141,7 @@ namespace Reko.Core
                     return new Identifier(name, dt, new MemoryStorage());
                 }
             }
-            return platform.LookupGlobalByName(moduleName, name);
+            return platform.ResolveImportByName(moduleName, name);
         }
 
         public Expression ResolveImport(string moduleName, int ordinal, IPlatform platform)
@@ -145,13 +152,20 @@ namespace Reko.Core
                 if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
                     continue;
 
+                SystemService svc;
+                if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
+                {
+                    var ep = new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
+                    return new ProcedureConstant(platform.PointerType, ep);
+                }
+
                 ImageSymbol sym;
                 if (mod.GlobalsByOrdinal.TryGetValue(ordinal, out sym))
                 {
                     return CreateReferenceToImport(sym);
                 }
             }
-            return platform.LookupGlobalByOrdinal(moduleName, ordinal);
+            return platform.ResolveImportByOrdinal(moduleName, ordinal);
         }
 
         private Expression CreateReferenceToImport(ImageSymbol sym)
@@ -171,6 +185,7 @@ namespace Reko.Core
             }
     }
 
+        [Obsolete()]
     public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
         {
             var addrInstruction = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);

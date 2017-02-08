@@ -93,7 +93,11 @@ namespace Reko.Arch.X86
         public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand mem, DataType dt, X86State state)
         {
             var exg = ImportedGlobal(instr.Address, mem.Width, mem);
-            if (exg != null)
+            if (exg is ProcedureConstant)
+            {
+                return exg;
+            }
+            else if (exg != null)
             {
                 return new UnaryExpression(Operator.AddrOf, dt, exg);
             }

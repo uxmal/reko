@@ -45,7 +45,6 @@ namespace Reko.Core
 
         public abstract Expression ResolveImport(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
 
-        [Obsolete]
         public abstract ExternalProcedure ResolveImportedProcedure(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
 
         public abstract int CompareTo(ImportReference that);
@@ -94,6 +93,7 @@ namespace Reko.Core
                 return null;
         }
 
+        [Obsolete("", true)]
         public override ExternalProcedure ResolveImportedProcedure(
             IImportResolver resolver, 
             IPlatform platform, 
@@ -153,6 +153,7 @@ namespace Reko.Core
             return null;
         }
 
+        [Obsolete("", true)]
         public override ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, IPlatform platform, AddressContext ctx)
         {
             var ep = resolver.ResolveProcedure(ModuleName, Ordinal, platform);

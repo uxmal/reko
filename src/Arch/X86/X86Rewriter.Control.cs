@@ -93,6 +93,8 @@ namespace Reko.Arch.X86
             {
                 if (addr.ToLinear() == (dasm.Current.Address + dasm.Current.Length).ToLinear())
                 {
+                    // Calling the following address. Is the call followed by a 
+                    // pop?
                     var next = dasm.Peek(1);
                     RegisterOperand reg = next.op1 as RegisterOperand;
                     if (next.code == Opcode.pop && reg != null)
