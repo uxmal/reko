@@ -68,6 +68,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Gee.External.Capstone">
+      <HintPath>..\..\..\external\Capstone.NET\Gee.External.Capstone.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="A64Registers.cs" />
