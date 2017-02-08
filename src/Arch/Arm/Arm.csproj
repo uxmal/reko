@@ -95,11 +95,6 @@
     <Compile Include="ThumbRewriter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\external\Capstone.NET\Gee.External.Capstone\Gee.External.Capstone.csproj">
-      <Project>{1297dcee-009d-4739-8124-3f064ea9ea10}</Project>
-      <Name>Gee.External.Capstone</Name>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
