@@ -35,19 +35,19 @@ namespace Reko.Arch.M68k
 
     public partial class M68kDisassembler : DisassemblerBase<M68kInstruction>
     {
-        private ImageReader rdr;        // program counter 
+        private EndianImageReader rdr;        // program counter 
         internal M68kInstruction instr;  // instruction being built
         private static TraceSwitch trace = new TraceSwitch("m68dasm", "Detailed tracing of M68k disassembler");
         
-        private M68kDisassembler(ImageReader rdr, uint cpuType)
+        private M68kDisassembler(EndianImageReader rdr, uint cpuType)
         {
             this.rdr = rdr;
             this.g_cpu_type = cpuType;
         }
 
-        public static M68kDisassembler Create68000(ImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68000); }
-        public static M68kDisassembler Create68010(ImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68010); }
-        public static M68kDisassembler Create68020(ImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68020); }
+        public static M68kDisassembler Create68000(EndianImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68000); }
+        public static M68kDisassembler Create68010(EndianImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68010); }
+        public static M68kDisassembler Create68020(EndianImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68020); }
 
         static M68kDisassembler()
         {

@@ -37,7 +37,7 @@ namespace Reko.ImageLoaders.Elf
         public byte st_other;
         public ushort st_shndx;
 
-        public static Elf32_Sym Load(ImageReader rdr)
+        public static Elf32_Sym Load(EndianImageReader rdr)
         {
             var sym = new Elf32_Sym();
             sym.st_name = rdr.ReadUInt32();
@@ -61,7 +61,7 @@ namespace Reko.ImageLoaders.Elf
         public ulong st_value;
         public ulong st_size;
 
-        public static Elf64_Sym Load(ImageReader rdr)
+        public static Elf64_Sym Load(EndianImageReader rdr)
         {
             var sym = new Elf64_Sym();
             sym.st_name = rdr.ReadUInt32();

@@ -260,7 +260,7 @@ namespace Reko.ImageLoaders.Elf
 
         public abstract SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred);
 
-        public ImageReader CreateReader(ulong fileOffset)
+        public EndianImageReader CreateReader(ulong fileOffset)
         {
             return imgLoader.CreateReader(fileOffset);
         }

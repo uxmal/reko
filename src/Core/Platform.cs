@@ -61,7 +61,7 @@ namespace Reko.Core
         HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
         HashSet<RegisterStorage> CreateTrashedRegisters();
 
-        IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
+        IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         TypeLibrary CreateMetadata();
         SegmentMap CreateAbsoluteMemoryMap();
@@ -102,7 +102,7 @@ namespace Reko.Core
         /// <returns></returns>
         string GetPrimitiveTypeName(PrimitiveType t, string language);
 
-        ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
+        ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host);
 
         /// <summary>
         /// Given an executable entry point, find the location of the "main" program,
@@ -223,7 +223,7 @@ namespace Reko.Core
 
         public IEnumerable<Address> CreatePointerScanner(
             SegmentMap segmentMap,
-            ImageReader rdr,
+            EndianImageReader rdr,
             IEnumerable<Address> address,
             PointerScannerFlags pointerScannerFlags)
         {
@@ -348,7 +348,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="imageReader"></param>
         /// <returns></returns>
-        public abstract ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
+        public abstract ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host);
 
         public virtual Address MakeAddressFromConstant(Constant c)
         {
@@ -511,7 +511,7 @@ namespace Reko.Core
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
         }
-        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
         {
             // No trampolines are supported.
             return null;

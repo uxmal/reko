@@ -22,6 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -278,7 +279,7 @@ namespace Reko.Core.CLanguage
                     break;
                 case State.RealNumber:
                     if (c < 0)
-                        return Tok(CTokenType.RealLiteral, Convert.ToDouble(sb.ToString()));
+                        return Tok(CTokenType.RealLiteral, Convert.ToDouble(sb.ToString(), CultureInfo.InvariantCulture));
                     switch (ch)
                     {
                     case 'e': 
@@ -290,7 +291,7 @@ namespace Reko.Core.CLanguage
                     case 'f':
                     case 'F':
                         rdr.Read();
-                        return Tok(CTokenType.RealLiteral, Convert.ToSingle(sb.ToString()));
+                        return Tok(CTokenType.RealLiteral, Convert.ToSingle(sb.ToString(), CultureInfo.InvariantCulture));
                     default:
                         if (Char.IsDigit(ch))
                         {
@@ -299,7 +300,7 @@ namespace Reko.Core.CLanguage
                         }
                         else 
                         {
-                            return Tok(CTokenType.RealLiteral, Convert.ToDouble(sb.ToString()));
+                            return Tok(CTokenType.RealLiteral, Convert.ToDouble(sb.ToString(), CultureInfo.InvariantCulture));
                         }
                         break;
                     }
@@ -337,15 +338,15 @@ namespace Reko.Core.CLanguage
                     break;
                 case State.RealExponentDigits:
                     if (c < 0)
-                        return Tok(CTokenType.RealLiteral, Convert.ToDouble(sb.ToString()));
+                        return Tok(CTokenType.RealLiteral, Convert.ToDouble(sb.ToString(), CultureInfo.InvariantCulture));
                     if (ch == 'f' || ch == 'F')
                     {
                         rdr.Read();
-                        return Tok(CTokenType.RealLiteral, Convert.ToSingle(sb.ToString()));
+                        return Tok(CTokenType.RealLiteral, Convert.ToSingle(sb.ToString(), CultureInfo.InvariantCulture));
                     }
                     else 
                     {
-                        return Tok(CTokenType.RealLiteral, Convert.ToDouble(sb.ToString()));
+                        return Tok(CTokenType.RealLiteral, Convert.ToDouble(sb.ToString(), CultureInfo.InvariantCulture));
                     }
                 case State.HexNumber:
                     if (c >= 0 && IsHexDigit(ch))

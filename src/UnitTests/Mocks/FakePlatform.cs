@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Mocks
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
         }
-        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
         {
             return null;
         }

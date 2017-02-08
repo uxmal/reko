@@ -32,11 +32,11 @@ namespace Reko.Arch.Arm
 {
     public class ThumbDisassembler : DisassemblerBase<Arm32Instruction>
     {
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private IEnumerator<Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> stream;
         private CapstoneDisassembler<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> dasm;
 
-        public ThumbDisassembler(ImageReader rdr)
+        public ThumbDisassembler(EndianImageReader rdr)
         {
             this.rdr = rdr;
             this.dasm = CapstoneDisassembler.CreateArmDisassembler(DisassembleMode.ArmThumb);

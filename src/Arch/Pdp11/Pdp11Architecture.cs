@@ -102,22 +102,22 @@ namespace Reko.Arch.Pdp11
         #region IProcessorArchitecture Members
 
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Pdp11Disassembler(rdr, this);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
         {
             return new LeImageReader(image, addrBegin, addrEnd);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
+        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -142,7 +142,7 @@ namespace Reko.Arch.Pdp11
             return new Pdp11ProcessorState(this);
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -256,7 +256,7 @@ namespace Reko.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), frame, host);
         }
@@ -266,7 +266,7 @@ namespace Reko.Arch.Pdp11
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             ushort uAddr = rdr.ReadLeUInt16();
             return Address.Ptr16(uAddr);

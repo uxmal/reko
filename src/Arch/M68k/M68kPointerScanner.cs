@@ -28,7 +28,7 @@ namespace Reko.Arch.M68k
 {
     public class M68kPointerScanner : PointerScanner<uint>
     {
-        public M68kPointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public M68kPointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)
         {
         }
@@ -40,7 +40,7 @@ namespace Reko.Arch.M68k
             return address.ToUInt32();
         }
 
-        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
+        public override bool TryPeekOpcode(EndianImageReader rdr, out uint opcode)
         {
             ushort wOpcode;
             if (rdr.TryPeekBeUInt16(0, out wOpcode))
@@ -55,7 +55,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-        public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)
+        public override bool MatchCall(EndianImageReader rdr, uint opcode, out uint target)
         {
             if ((opcode & 0xFF00) == 0x6100)
             {
@@ -69,7 +69,7 @@ namespace Reko.Arch.M68k
             return false;
         }
 
-        public override bool MatchJump(ImageReader rdr, uint opcode, out uint target)
+        public override bool MatchJump(EndianImageReader rdr, uint opcode, out uint target)
         {
             if ((opcode & 0xF000) == 0x6000)
             {
@@ -83,7 +83,7 @@ namespace Reko.Arch.M68k
             return false;
         }
 
-        public override bool TryPeekPointer(ImageReader rdr, out uint target)
+        public override bool TryPeekPointer(EndianImageReader rdr, out uint target)
         {
             if (!rdr.IsValidOffset(rdr.Offset + 4 - 1))
             {
@@ -97,7 +97,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private bool AbsoluteJumpCall(ImageReader rdr, uint opcode, out uint target)
+        private bool AbsoluteJumpCall(EndianImageReader rdr, uint opcode, out uint target)
         {
             if ((opcode & 1) == 0)
             {
@@ -119,7 +119,7 @@ namespace Reko.Arch.M68k
             return false;
         }
 
-        private bool RelativeBranchCall(ImageReader rdr, uint opcode, out uint target)
+        private bool RelativeBranchCall(EndianImageReader rdr, uint opcode, out uint target)
         {
             int callOffset = (sbyte) opcode;
             if (callOffset == -1// bsr.l

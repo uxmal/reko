@@ -132,7 +132,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="platform"></param>
         /// <returns></returns>
-        public ImageReader CreateImageReader(IProcessorArchitecture arch)
+        public EndianImageReader CreateImageReader(IProcessorArchitecture arch)
         {
             var addrBegin = Address.Max(this.Address, this.MemoryArea.BaseAddress);
             var addrEnd = Address.Min(this.Address + this.Size, this.MemoryArea.EndAddress);

@@ -32,7 +32,7 @@ namespace Reko.Arch.Mips
     public class MipsPointerScanner32 : PointerScanner<uint>
     {
         public MipsPointerScanner32(
-            ImageReader rdr, 
+            EndianImageReader rdr, 
             HashSet<uint> knownLinAddresses,
             PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)
@@ -46,7 +46,7 @@ namespace Reko.Arch.Mips
             return address.ToUInt32();
         }
 
-        public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)
+        public override bool MatchCall(EndianImageReader rdr, uint opcode, out uint target)
         {
             if ((opcode & 0xFC000000) == 0x0C000000 // JAL
                 &&
@@ -60,7 +60,7 @@ namespace Reko.Arch.Mips
             return false;
         }
 
-        public override bool MatchJump(ImageReader rdr, uint opcode, out uint target)
+        public override bool MatchJump(EndianImageReader rdr, uint opcode, out uint target)
         {
             if ((opcode & 0xFC000000) == 0x08000000  // J - far jump
                 &&
@@ -84,12 +84,12 @@ namespace Reko.Arch.Mips
             return false;
         }
 
-        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
+        public override bool TryPeekOpcode(EndianImageReader rdr, out uint opcode)
         {
             return rdr.TryPeekUInt32(0, out opcode);
         }
 
-        public override bool TryPeekPointer(ImageReader rdr, out uint target)
+        public override bool TryPeekPointer(EndianImageReader rdr, out uint target)
         {
             return rdr.TryPeekUInt32(0, out target);
         }

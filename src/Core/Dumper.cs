@@ -138,7 +138,7 @@ namespace Reko.Core
                 return;
             byte[] prevLine = null;
             bool showEllipsis = true;
-			ImageReader rdr = arch.CreateImageReader(segment.MemoryArea, address);
+			EndianImageReader rdr = arch.CreateImageReader(segment.MemoryArea, address);
 			while (cbBytes > 0)
 			{
 				StringBuilder sb = new StringBuilder(0x12);
@@ -258,13 +258,13 @@ namespace Reko.Core
             stm.Write(Block.GenerateName(item.Address));
             stm.Write("\t");
 
-            ImageReader rdr = arch.CreateImageReader(segment.MemoryArea, item.Address);
+            var rdr = arch.CreateImageReader(segment.MemoryArea, item.Address);
             item.DataType.Accept(new TypedDataDumper(rdr, item.Size, stm));
         }
 
         public void WriteByteRange(MemoryArea image, Address begin, Address addrEnd, InstrWriter writer)
 		{
-			ImageReader rdr = arch.CreateImageReader(image, begin);
+			EndianImageReader rdr = arch.CreateImageReader(image, begin);
 			while (rdr.Address < addrEnd)
 			{
 				writer.Write(string.Format("{0:X2} ", rdr.ReadByte()));

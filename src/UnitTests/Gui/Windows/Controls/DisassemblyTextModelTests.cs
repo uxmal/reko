@@ -178,8 +178,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         private void Given_Disassembler()
         {
             program.Architecture.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
-                .Do(new Func<MemoryArea, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
-            program.Architecture.Stub(a => a.CreateDisassembler(Arg<ImageReader>.Is.NotNull))
+                .Do(new Func<MemoryArea, Address, EndianImageReader>((i, a) => new LeImageReader(i, a)));
+            program.Architecture.Stub(a => a.CreateDisassembler(Arg<EndianImageReader>.Is.NotNull))
                 .Return(instrs);
         }
 
