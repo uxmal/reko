@@ -148,12 +148,13 @@ namespace Reko.Core
 
         public override Expression ResolveImport(IImportResolver importResolver, IPlatform platform, AddressContext ctx)
         {
-            ctx.Warn("Ordinal global imports not supported. Please report this message to the Reko maintainers (https://github.com/uxmal/reko).");
-            var id = importResolver.ResolveImport(ModuleName, Ordinal, platform);
+            var imp = importResolver.ResolveImport(ModuleName, Ordinal, platform);
+            if (imp != null)
+                return imp;
+            ctx.Warn("Unable to resolve imported reference {0}.", this);
             return null;
         }
 
-        [Obsolete("", true)]
         public override ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, IPlatform platform, AddressContext ctx)
         {
             var ep = resolver.ResolveProcedure(ModuleName, Ordinal, platform);
