@@ -4,7 +4,7 @@
 
 #include "varargs_test.h"
 
-struct Eq_1527 * g_ptrE66CFADE;
+struct Eq_1524 * g_ptrE66CFADE;
 <anonymous> * g_ptr40002028;
 <anonymous> * g_ptr40002058;
 <anonymous> * g_ptr40002068;
@@ -28,7 +28,7 @@ word32 g_dw40003044;
 word64 g_qw40003050;
 word32 g_dw40003058;
 word64 g_a40003060[];
-struct Eq_774 g_t400030E0;
+struct Eq_772 g_t400030E0;
 word64 g_qw40003160;
 ptr64 g_ptr40003178;
 word64 g_qw400031D8;
