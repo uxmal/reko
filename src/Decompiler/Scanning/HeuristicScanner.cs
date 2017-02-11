@@ -145,7 +145,7 @@ namespace Reko.Scanning
             var stopwatch = new Stopwatch();
             foreach (var range in ranges)
             {
-                DisassembleRange(range.Item2, range.Item3, sr);
+                DisassembleRange(range.Item1, range.Item2, range.Item3, sr);
             }
 
             // Remove blocks that fall off the end of the segment
@@ -370,20 +370,10 @@ namespace Reko.Scanning
             return proc;
         }
 
-        public void DisassembleRange(Address addrStart, Address addrEnd, ScanResults sr)
+        public void DisassembleRange(MemoryArea mem,  Address addrStart, Address addrEnd, ScanResults sr)
         {
-            var dasm = new HeuristicDisassembler(
-                program,
-                frame,
-                sr,
-                program.SegmentMap.IsValidAddress,
-                false,
-                host);
-            int instrByteGranularity = program.Architecture.InstructionBitSize / 8;
-            for (Address addr = addrStart; addr < addrEnd; addr = addr + instrByteGranularity)
-            {
-                dasm.Disassemble(addr);
-            }
+            var dasm = new ShingledScanner(program, host, sr, eventListener);
+            dasm.ScanSegment(mem, addrStart, addrEnd, addrEnd.ToLinear() - addrStart.ToLinear());
         }
 
         // Partition memory into chunks betweeen each candidate.

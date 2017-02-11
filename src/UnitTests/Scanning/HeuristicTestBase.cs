@@ -127,7 +127,7 @@ namespace Reko.UnitTests.Scanning
             host.Stub(h => h.GetImportedProcedure(null, null))
                 .IgnoreArguments()
                 .Return(null);
-            host.Stub(h => h.GetImportedGlobal(null, null))
+            host.Stub(h => h.GetImport(null, null))
                 .IgnoreArguments()
                 .Return(null);
         }

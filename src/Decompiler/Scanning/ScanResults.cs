@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +29,17 @@ using System.Text;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// A data class containing the accumulated knowledge garnered during
+    /// Reko's scanning phase.
+    /// </summary>
     public class ScanResults
     {
         /// <summary>
-        /// All the discovered machine instructions.
+        /// All the discovered machine instructions, rewritten into RTL
+        /// instruction clusters.
         /// </summary>
-        public SortedList<Address, MachineInstruction> Instructions;
+        public SortedList<Address, RtlInstructionCluster> Instructions;
 
         /// <summary>
         /// Interprocedural control flow graph, consisting of all
@@ -47,6 +53,11 @@ namespace Reko.Scanning
         /// instruction.
         /// </summary>
         public Dictionary<Address, int> DirectlyCalledAddresses;
+
+        /// <summary>
+        /// Addresses that are targets (destinations) of jumps or calls.
+        /// </summary>
+        public HashSet<Address> TransferTargets;
 
         /// <summary>
         /// These are addresses that are known, because metadata in the

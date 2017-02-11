@@ -420,7 +420,8 @@ namespace Reko
                 if (program.User.Heuristics.Contains("Shingle heuristic"))
                 {
                     eventListener.ShowStatus("Shingle scanning");
-                    var sh = new ShingledScanner(program, (IRewriterHost)scanner, eventListener);
+                    var sr = new ScanResults();
+                    var sh = new ShingledScanner(program, (IRewriterHost)scanner, sr, eventListener);
                     var watch = new Stopwatch();
                     watch.Start();
                     var procs = sh.Scan();

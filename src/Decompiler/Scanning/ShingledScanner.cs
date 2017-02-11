@@ -58,22 +58,24 @@ namespace Reko.Scanning
 
         private Program program;
         private readonly Address bad;
+        private ScanResults sr;
         private IRewriterHost host;
         private DecompilerEventListener eventListener;
-        private Dictionary<Address, int> possiblyDirectCalls;
         private Dictionary<Address, int> possiblePointerTargetTallies;
         private SortedList<Address, MachineInstruction> instructions;
         private HashSet<Address> indirectCalls;
         private HashSet<Address> indirectJumps;
         private DiGraph<RtlBlock> icfg;
 
-        public ShingledScanner(Program program, IRewriterHost host, DecompilerEventListener eventListener)
+        public ShingledScanner(Program program, IRewriterHost host, ScanResults sr, DecompilerEventListener eventListener)
         {
             this.program = program;
             this.host = host;
+            this.sr = sr;
             this.eventListener = eventListener;
             this.bad = program.Platform.MakeAddressFromLinear(~0ul);
-            this.possiblyDirectCalls = new Dictionary<Address,int>();
+            this.sr.TransferTargets = new HashSet<Address>();
+            this.sr.DirectlyCalledAddresses = new Dictionary<Address,int>();
             this.possiblePointerTargetTallies = new Dictionary<Address, int>();
             this.instructions = new SortedList<Address, MachineInstruction>();
             this.indirectCalls = new HashSet<Address>();
@@ -146,7 +148,7 @@ namespace Reko.Scanning
             foreach (var segment in program.SegmentMap.Segments.Values
                 .Where(s => s.IsExecutable))
             {
-                var sc = ScanSegment(segment, workToDo);
+                var sc = ScanSegment(segment.MemoryArea, segment.Address, segment.EndAddress, workToDo);
                 map.Add(segment, sc.CodeFlags);
             }
             return map;
@@ -165,13 +167,11 @@ namespace Reko.Scanning
         /// <param name="segment"></param>
         /// <returns>An array of bytes classifying each byte as code or data.
         /// </returns>
-        public ScannedSegment ScanSegment(ImageSegment segment, ulong workToDo)
+        public ScannedSegment ScanSegment(MemoryArea mem, Address addrStart, Address addrEnd, ulong workToDo)
         {
             var G = new DiGraph<Address>();
             G.AddNode(bad);
-            var cbAlloc = Math.Min(
-                segment.Size,
-                segment.MemoryArea.EndAddress - segment.Address);
+            var cbAlloc = addrEnd - addrStart;
             var y = new byte[cbAlloc];
 
             // Advance by the instruction granularity.
@@ -180,13 +180,15 @@ namespace Reko.Scanning
             for (var a = 0; a < y.Length; a += step)
             {
                 y[a] = MaybeCode;
-                var i = Dasm(segment, a);
-                if (i == null)
+                var addr = addrStart + a;
+                var dasm = EnsureRewriter(addr);
+                if (!dasm.MoveNext())
                 {
-                    AddEdge(G, bad, segment.Address + a);
+                    AddEdge(G, bad, addr);
                     break;
                 }
-                if (IsInvalid(segment.MemoryArea, i))
+                var i = dasm.Current;
+                if (IsInvalid(mem, i))
                 {
                     AddEdge(G, bad, i.Address);
                     delaySlot = InstructionClass.None;
@@ -196,7 +198,7 @@ namespace Reko.Scanning
                 {
                     if (MayFallThrough(i))
                     {
-                        if (delaySlot != DT)
+                        if ((delaySlot & DT) != DT)
                         {
                             if (a + i.Length < y.Length)
                             {
@@ -223,9 +225,9 @@ namespace Reko.Scanning
                                 if ((i.InstructionClass & InstructionClass.Call) != 0)
                                 {
                                     int callTally;
-                                    if (!this.possiblyDirectCalls.TryGetValue(addrDest, out callTally))
+                                    if (!this.sr.DirectlyCalledAddresses.TryGetValue(addrDest, out callTally))
                                         callTally = 0;
-                                    this.possiblyDirectCalls[addrDest] = callTally + 1;
+                                    this.sr.DirectlyCalledAddresses[addrDest] = callTally + 1;
                                 }
                             }
                             else
@@ -262,11 +264,11 @@ namespace Reko.Scanning
             {
                 if (a != bad)
                 {
-                    y[a - segment.Address] = Data;
+                    y[a - addrStart] = Data;
                     instructions.Remove(a);
 
                     // Destination can't be a call destination.
-                    possiblyDirectCalls.Remove(a);
+                    sr.DirectlyCalledAddresses.Remove(a);
                 }
             }
 
@@ -277,6 +279,11 @@ namespace Reko.Scanning
                 Blocks = blocks,
                 CodeFlags = y,
             };
+        }
+
+        private IEnumerator<MachineInstruction> EnsureRewriter(Address address)
+        {
+            return program.CreateDisassembler(address).GetEnumerator();
         }
 
         /// <summary>
@@ -492,7 +499,7 @@ namespace Reko.Scanning
         public IEnumerable<KeyValuePair<Address, int>> SpeculateCallDests(IDictionary<ImageSegment, byte[]> map)
         {
             var addrs = 
-                from addr in this.possiblyDirectCalls
+                from addr in this.sr.DirectlyCalledAddresses
                 orderby addr.Value descending
                 where IsPossibleExecutableCodeDestination(addr.Key, map)
                 select addr;

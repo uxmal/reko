@@ -49,6 +49,7 @@ namespace Reko.UnitTests.Scanning
         private DiGraph<Address> graph;
         private SortedList<Address, MachineInstruction> instrs;
         private static readonly string nl = Environment.NewLine;
+        private ScanResults sr;
 
         [SetUp]
         public void Setup()
@@ -169,7 +170,8 @@ namespace Reko.UnitTests.Scanning
                 .Return(new PseudoProcedure("<>", PrimitiveType.Word32, 2));
             host.Replay();
             dev.Replay();
-            this.sh = new ShingledScanner(program, host, dev);
+            this.sr = new ScanResults();
+            this.sh = new ShingledScanner(program, host, sr, dev);
         }
 
         [Test]
@@ -178,7 +180,7 @@ namespace Reko.UnitTests.Scanning
             Given_Mips_Image(0x00001403);
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanSegment(seg, 0);
+            var scseg = sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
             Assert.AreEqual(new byte[] { 0 }, TakeEach(scseg.CodeFlags, 4));
         }
 
@@ -187,7 +189,8 @@ namespace Reko.UnitTests.Scanning
         {
             Given_Mips_Image(0x03E00008, 0);
             Given_Scanner();
-            var scseg = sh.ScanSegment(program.SegmentMap.Segments.Values.First(), 0);
+            var seg = program.SegmentMap.Segments.Values.First();
+            var scseg = sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
             Assert.AreEqual(new byte[] { 1, 1 }, TakeEach(scseg.CodeFlags, 4));
         }
 
@@ -196,7 +199,8 @@ namespace Reko.UnitTests.Scanning
         {
             Given_Mips_Image(0x1C60FFFF, 0, 0x03e00008, 0);
             Given_Scanner();
-            var scseg = sh.ScanSegment(program.SegmentMap.Segments.Values.First(), 0);
+            var seg = program.SegmentMap.Segments.Values.First();
+            var scseg = sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
             Assert.AreEqual(new byte[] { 1, 1, 1, 1, }, TakeEach(scseg.CodeFlags, 4));
         }
 
@@ -205,7 +209,8 @@ namespace Reko.UnitTests.Scanning
         {
             Given_x86_Image(0x33, 0xC0, 0xC0, 0x90, 0xc3);
             Given_Scanner();
-            var scseg = sh.ScanSegment(program.SegmentMap.Segments.Values.First(), 0);
+            var seg = program.SegmentMap.Segments.Values.First();
+            var scseg = sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
             Assert.AreEqual(new byte[] { 0, 1, 0, 1, 1 }, scseg.CodeFlags);
         }
 
@@ -295,7 +300,7 @@ namespace Reko.UnitTests.Scanning
             Given_Scanner();
 
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = this.sh.ScanSegment(seg, 0);
+            var scseg = this.sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
             Assert.AreEqual(new byte[]
                 {
                     0, 0, 0, 0, 0
@@ -315,7 +320,7 @@ namespace Reko.UnitTests.Scanning
             Given_Scanner();
 
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = this.sh.ScanSegment(seg, 0);
+            var scseg = this.sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
             Assert.AreEqual(new byte[]
                 {
                     1, 1,
@@ -428,7 +433,7 @@ namespace Reko.UnitTests.Scanning
                 0xC3);
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanSegment(seg, 0);
+            var scseg = sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
 
             var sExp =
                 "00010000 - 00010003" + nl +
@@ -460,7 +465,7 @@ namespace Reko.UnitTests.Scanning
                 0xC3);
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanSegment(seg, 0);
+            var scseg = sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
 
             var sExp =
                 "00010000 - 00010002" + nl +
