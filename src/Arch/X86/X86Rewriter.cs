@@ -88,7 +88,7 @@ namespace Reko.Arch.X86
                         instrCur.Address,
                         "Rewriting x86 opcode '{0}' is not supported yet.",
                         instrCur.code);
-                case Opcode.illegal: rtlc = 0; m.Invalid(); break;
+                case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
                 case Opcode.aaa: RewriteAaa(); break;
                 case Opcode.aad: RewriteAad(); break;
                 case Opcode.aam: RewriteAam(); break;

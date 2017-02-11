@@ -25,6 +25,7 @@ using Reko.Assemblers.x86;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
@@ -47,7 +48,6 @@ namespace Reko.UnitTests.Scanning
         private ShingledScanner sh;
         private RelocationDictionary rd;
         private DiGraph<Address> graph;
-        private SortedList<Address, MachineInstruction> instrs;
         private static readonly string nl = Environment.NewLine;
         private ScanResults sr;
 
@@ -57,7 +57,6 @@ namespace Reko.UnitTests.Scanning
             mr = new MockRepository();
             rd = null;
             this.graph = new DiGraph<Address>();
-            this.instrs = new SortedList<Address, MachineInstruction>();
         }
 
         [Conditional("DEBUG")]
@@ -168,10 +167,17 @@ namespace Reko.UnitTests.Scanning
             host.Stub(h => h.EnsurePseudoProcedure(null, null, 0))
                 .IgnoreArguments()
                 .Return(new PseudoProcedure("<>", PrimitiveType.Word32, 2));
+            host.Stub(h => h.PseudoProcedure("", VoidType.Instance, null)).IgnoreArguments().Return(null);
+            host.Stub(h => h.GetImport(null, null)).IgnoreArguments().Return(null);
+            host.Stub(h => h.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
             host.Replay();
             dev.Replay();
-            this.sr = new ScanResults();
-            this.sh = new ShingledScanner(program, host, sr, dev);
+            var frame = program.Architecture.CreateFrame();
+            this.sr = new ScanResults
+            {
+                Instructions = new SortedList<Address, RtlInstructionCluster>()
+            };
+            this.sh = new ShingledScanner(program, host, frame, sr, dev);
         }
 
         [Test]
@@ -180,8 +186,8 @@ namespace Reko.UnitTests.Scanning
             Given_Mips_Image(0x00001403);
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
-            Assert.AreEqual(new byte[] { 0 }, TakeEach(scseg.CodeFlags, 4));
+            var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
+            Assert.AreEqual(new byte[] { 0 }, TakeEach(scseg, 4));
         }
 
         [Test]
@@ -190,28 +196,36 @@ namespace Reko.UnitTests.Scanning
             Given_Mips_Image(0x03E00008, 0);
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
-            Assert.AreEqual(new byte[] { 1, 1 }, TakeEach(scseg.CodeFlags, 4));
+            var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
+            Assert.AreEqual(new byte[] { 1, 0 }, TakeEach(scseg, 4));
         }
 
         [Test]
         public void Shsc_CondJump()
         {
-            Given_Mips_Image(0x1C60FFFF, 0, 0x03e00008, 0);
+            Given_Mips_Image(
+                0x1C60FFFF,     // 
+                0,
+                0x03e00008,     // jr ra
+                0);             // nop
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
-            Assert.AreEqual(new byte[] { 1, 1, 1, 1, }, TakeEach(scseg.CodeFlags, 4));
+            var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
+            sh.RemoveBadInstructionsFromGraph();
+            Assert.AreEqual(new byte[] { 1, 1, 1, 0, }, TakeEach(scseg, 4));
         }
 
         [Test]
         public void Shsc_Overlapping()
         {
+            // At offset 0, we have 0x33, 0xC0, garbage.
+            // At offset 1, we have rol al,0x90, ret.
             Given_x86_Image(0x33, 0xC0, 0xC0, 0x90, 0xc3);
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
-            Assert.AreEqual(new byte[] { 0, 1, 0, 1, 1 }, scseg.CodeFlags);
+            var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
+            sh.RemoveBadInstructionsFromGraph();
+            AssertValidInstructions(new byte[] { 0, 1, 0, 1, 1 }, seg.Address);
         }
 
         [Test]
@@ -300,12 +314,12 @@ namespace Reko.UnitTests.Scanning
             Given_Scanner();
 
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = this.sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
+            var scseg = this.sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
             Assert.AreEqual(new byte[]
                 {
                     0, 0, 0, 0, 0
                 },
-                scseg.CodeFlags);
+                scseg);
         }
 
         [Test(Description ="Calls to functions that turn out to be bad should also be bad")]
@@ -320,29 +334,38 @@ namespace Reko.UnitTests.Scanning
             Given_Scanner();
 
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = this.sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
-            Assert.AreEqual(new byte[]
+            var scseg = this.sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
+            this.sh.RemoveBadInstructionsFromGraph();
+            AssertValidInstructions(new byte[]
                 {
                     1, 1,
                     0, 0, 1, 0, 1, 0, 1,
                     0, 0
-                },
-                scseg.CodeFlags);
+                }, seg.Address);
         }
 
-        private MachineInstruction Lin(uint addr, int length)
+        private void AssertValidInstructions(byte[] expected, Address addrBase)
         {
-            var instr = new FakeInstruction(InstructionClass.Linear, Operation.Add)
+            var actual =
+                Enumerable.Range(0, expected.Length)
+                .Select(n => sr.Instructions.ContainsKey(addrBase + n) ? 1 : 0)
+                .ToArray();
+            Assert.AreEqual(expected, actual);
+        }
+
+        private RtlInstructionCluster Lin(uint addr, int length)
+        {
+            var instr = new RtlInstructionCluster(
+                Address.Ptr32(addr), length, new RtlInstruction[1])
             {
-                Address = Address.Ptr32(addr),
-                Length = length
+                Class = RtlClass.Linear
             };
             return instr;
         }
 
-        private void AddInstr(MachineInstruction instr, params uint[] succs)
+        private void AddInstr(RtlInstructionCluster instr, params uint[] succs)
         {
-            this.instrs.Add(instr.Address, instr);
+            this.sr.Instructions.Add(instr.Address, instr);
             foreach (var succ in succs)
             {
                 var addrSucc = Address.Ptr32(succ);
@@ -371,7 +394,7 @@ namespace Reko.UnitTests.Scanning
             AddInstr(Lin(0x1000, 2), 0x1002);
             AddInstr(Lin(0x1002, 3));
 
-            var blocks = sh.BuildBlocks(this.graph, this.instrs);
+            var blocks = sh.BuildBlocks(graph);
 
             var sExp =
                 "00001000 - 00001005" + nl;
@@ -389,7 +412,7 @@ namespace Reko.UnitTests.Scanning
             AddInstr(Lin(0x1003, 2));
             AddInstr(Lin(0x1004, 2));
 
-            var blocks = sh.BuildBlocks(this.graph, this.instrs);
+            var blocks = sh.BuildBlocks(graph);
 
             var sExp =
                 "00001000 - 00001006" + nl +
@@ -407,7 +430,7 @@ namespace Reko.UnitTests.Scanning
             AddInstr(Lin(0x1002, 3), 0x1005);
             AddInstr(Lin(0x1005, 2));
 
-            var blocks = sh.BuildBlocks(this.graph, this.instrs);
+            var blocks = sh.BuildBlocks(graph);
 
             var sExp =
                 "00001000 - 00001005" + nl +
@@ -433,8 +456,9 @@ namespace Reko.UnitTests.Scanning
                 0xC3);
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
-
+            var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
+            sh.RemoveBadInstructionsFromGraph();
+            var blocks = sh.BuildBlocks();
             var sExp =
                 "00010000 - 00010003" + nl +
                 "00010002 - 00010003" + nl +
@@ -451,7 +475,7 @@ namespace Reko.UnitTests.Scanning
                 "00010015 - 00010017" + nl +
                 "00010017 - 00010018" + nl +
                 "00010019 - 0001001A" + nl;
-            Assert.AreEqual(sExp, DumpBlocks(scseg.Blocks));
+            Assert.AreEqual(sExp, DumpBlocks(blocks));
         }
 
         [Test]
@@ -465,7 +489,9 @@ namespace Reko.UnitTests.Scanning
                 0xC3);
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanSegment(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
+            var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
+            sh.RemoveBadInstructionsFromGraph();
+            var blocks = sh.BuildBlocks();
 
             var sExp =
                 "00010000 - 00010002" + nl +
@@ -474,7 +500,7 @@ namespace Reko.UnitTests.Scanning
                 "00010004 - 00010009" + nl +
                 "00010005 - 00010009" + nl +
                 "00010009 - 0001000A" + nl;
-            Assert.AreEqual(sExp, DumpBlocks(scseg.Blocks));
+            Assert.AreEqual(sExp, DumpBlocks(blocks));
         }
 
         [Test]

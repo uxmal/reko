@@ -421,7 +421,8 @@ namespace Reko
                 {
                     eventListener.ShowStatus("Shingle scanning");
                     var sr = new ScanResults();
-                    var sh = new ShingledScanner(program, (IRewriterHost)scanner, sr, eventListener);
+                    var sb = program.Architecture.CreateFrame();
+                    var sh = new ShingledScanner(program,(IRewriterHost)scanner, sb, sr, eventListener);
                     var watch = new Stopwatch();
                     watch.Start();
                     var procs = sh.Scan();

@@ -50,6 +50,7 @@ namespace Reko.Scanning
         private Program program;
         private IRewriterHost host;
         private DecompilerEventListener eventListener;
+        private IStorageBinder storageBinder;
         private RtlBlock invalidBlock;
         private IStorageBinder frame;
 
@@ -62,6 +63,7 @@ namespace Reko.Scanning
             this.Services = services;
             this.program = program;
             this.host = host;
+            this.storageBinder = program.Architecture.CreateFrame();
             this.eventListener = eventListener;
             this.invalidBlock = new RtlBlock(null, "<invalid>");
             this.frame = program.Architecture.CreateFrame();
@@ -143,13 +145,18 @@ namespace Reko.Scanning
             var ranges = FindUnscannedRanges();
 
             var stopwatch = new Stopwatch();
+            var dasm = new ShingledScanner(program, host, storageBinder, sr, eventListener);
             foreach (var range in ranges)
             {
-                DisassembleRange(range.Item1, range.Item2, range.Item3, sr);
+                dasm.ScanRange(range.Item1,
+                    range.Item2, 
+                    range.Item3,
+                    range.Item3.ToLinear() - range.Item2.ToLinear());
             }
-
             // Remove blocks that fall off the end of the segment
             // or into data.
+            dasm.RemoveBadInstructionsFromGraph();
+            dasm.BuildBlocks();
 
             // On processors with variable length instructions,
             // there may be many blocks that partially overlap the 
@@ -368,12 +375,6 @@ namespace Reko.Scanning
             }
             DumpBlocks(proc.Cfg.Nodes);
             return proc;
-        }
-
-        public void DisassembleRange(MemoryArea mem,  Address addrStart, Address addrEnd, ScanResults sr)
-        {
-            var dasm = new ShingledScanner(program, host, sr, eventListener);
-            dasm.ScanSegment(mem, addrStart, addrEnd, addrEnd.ToLinear() - addrStart.ToLinear());
         }
 
         // Partition memory into chunks betweeen each candidate.

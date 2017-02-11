@@ -47,40 +47,45 @@ namespace Reko.Scanning
         private const byte MaybeCode = 1;
         private const byte Data = 0;
 
-        private const InstructionClass L = InstructionClass.Linear;
-        private const InstructionClass T = InstructionClass.Transfer;
+        private const RtlClass L = RtlClass.Linear;
+        private const RtlClass T = RtlClass.Transfer;
         
-        private const InstructionClass CL = InstructionClass.Linear | InstructionClass.Conditional;
-        private const InstructionClass CT = InstructionClass.Transfer | InstructionClass.Conditional;
+        private const RtlClass CL = RtlClass.Linear | RtlClass.Conditional;
+        private const RtlClass CT = RtlClass.Transfer | RtlClass.Conditional;
         
-        private const InstructionClass DT = InstructionClass.Transfer | InstructionClass.Delay;
-        private const InstructionClass DCT = InstructionClass.Transfer | InstructionClass.Conditional | InstructionClass.Delay;
+        private const RtlClass DT = RtlClass.Transfer | RtlClass.Delay;
+        private const RtlClass DCT = RtlClass.Transfer | RtlClass.Conditional | RtlClass.Delay;
 
         private Program program;
-        private readonly Address bad;
         private ScanResults sr;
         private IRewriterHost host;
+        private IStorageBinder storageBinder;
         private DecompilerEventListener eventListener;
+        private DiGraph<Address> G;
+        private readonly Address bad;
         private Dictionary<Address, int> possiblePointerTargetTallies;
-        private SortedList<Address, MachineInstruction> instructions;
         private HashSet<Address> indirectCalls;
         private HashSet<Address> indirectJumps;
         private DiGraph<RtlBlock> icfg;
 
-        public ShingledScanner(Program program, IRewriterHost host, ScanResults sr, DecompilerEventListener eventListener)
+        public ShingledScanner(Program program, IRewriterHost host, IStorageBinder storageBinder, ScanResults sr, DecompilerEventListener eventListener)
         {
             this.program = program;
             this.host = host;
+            this.storageBinder = storageBinder;
             this.sr = sr;
             this.eventListener = eventListener;
             this.bad = program.Platform.MakeAddressFromLinear(~0ul);
             this.sr.TransferTargets = new HashSet<Address>();
             this.sr.DirectlyCalledAddresses = new Dictionary<Address,int>();
+            this.sr.Instructions = new SortedList<Address, RtlInstructionCluster>();
             this.possiblePointerTargetTallies = new Dictionary<Address, int>();
-            this.instructions = new SortedList<Address, MachineInstruction>();
             this.indirectCalls = new HashSet<Address>();
             this.indirectJumps = new HashSet<Address>();
             this.icfg = new DiGraph<RtlBlock>();
+            this.G = new DiGraph<Address>();
+            G.AddNode(bad);
+
         }
 
         /// <summary>
@@ -148,15 +153,17 @@ namespace Reko.Scanning
             foreach (var segment in program.SegmentMap.Segments.Values
                 .Where(s => s.IsExecutable))
             {
-                var sc = ScanSegment(segment.MemoryArea, segment.Address, segment.EndAddress, workToDo);
-                map.Add(segment, sc.CodeFlags);
+                var sc = ScanRange(segment.MemoryArea, segment.Address, segment.EndAddress, workToDo);
+                map.Add(segment, sc);
             }
             return map;
         }
 
         /// <summary>
-        /// Disassemble every byte of the segment, marking those addresses
-        /// that likely are code as MaybeCode, everything else as data.
+        /// Disassemble every byte of a range of addresses, marking those 
+        /// addresses that likely are code as MaybeCode, everything else as
+        /// data. Simultaneously, the graph G of cross references is built
+        /// up.
         /// </summary>
         /// <remarks>
         /// The plan is to disassemble every location of the segment, building
@@ -167,31 +174,30 @@ namespace Reko.Scanning
         /// <param name="segment"></param>
         /// <returns>An array of bytes classifying each byte as code or data.
         /// </returns>
-        public ScannedSegment ScanSegment(MemoryArea mem, Address addrStart, Address addrEnd, ulong workToDo)
+        public byte[] ScanRange(MemoryArea mem, Address addrStart, Address addrEnd, ulong workToDo)
         {
-            var G = new DiGraph<Address>();
-            G.AddNode(bad);
             var cbAlloc = addrEnd - addrStart;
             var y = new byte[cbAlloc];
 
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
-            var delaySlot = InstructionClass.None;
+            var delaySlot = RtlClass.None;
+            var rewriterPool = new Dictionary<Address, IEnumerator<RtlInstructionCluster>>();
             for (var a = 0; a < y.Length; a += step)
             {
                 y[a] = MaybeCode;
                 var addr = addrStart + a;
-                var dasm = EnsureRewriter(addr);
+                var dasm = GetRewriter(addr, rewriterPool);
                 if (!dasm.MoveNext())
                 {
                     AddEdge(G, bad, addr);
-                    break;
+                    continue;
                 }
                 var i = dasm.Current;
                 if (IsInvalid(mem, i))
                 {
                     AddEdge(G, bad, i.Address);
-                    delaySlot = InstructionClass.None;
+                    delaySlot = RtlClass.None;
                     y[a] = Data;
                 }
                 else
@@ -213,7 +219,7 @@ namespace Reko.Scanning
                             }
                         }
                     }
-                    if ((i.InstructionClass & InstructionClass.Transfer) != 0)
+                    if ((i.Class & RtlClass.Transfer) != 0)
                     {
                         var addrDest = DestinationAddress(i);
                         if (addrDest != null)
@@ -222,7 +228,7 @@ namespace Reko.Scanning
                             {
                                 // call / jump destination is executable
                                 AddEdge(G, addrDest, i.Address);
-                                if ((i.InstructionClass & InstructionClass.Call) != 0)
+                                if ((i.Class & RtlClass.Call) != 0)
                                 {
                                     int callTally;
                                     if (!this.sr.DirectlyCalledAddresses.TryGetValue(addrDest, out callTally))
@@ -239,7 +245,7 @@ namespace Reko.Scanning
                         }
                         else
                         {
-                            if ((i.InstructionClass & InstructionClass.Call) != 0)
+                            if ((i.Class & RtlClass.Call) != 0)
                             {
                                 this.indirectCalls.Add(i.Address);
                             }
@@ -251,39 +257,55 @@ namespace Reko.Scanning
                     }
 
                     // If this is a delayed unconditional branch...
-                    delaySlot = i.InstructionClass;
+                    delaySlot = i.Class;
                 }
                 if (y[a] == MaybeCode)
-                    instructions.Add(i.Address, i);
-                eventListener.ShowProgress("Shingle scanning", instructions.Count, (int)workToDo);
+                {
+                    sr.Instructions.Add(i.Address, i);
+                }
+                eventListener.ShowProgress("Shingle scanning", sr.Instructions.Count, (int)workToDo);
             }
+            return y;
+        }
 
+        // Remove blocks that fall off the end of the segment
+        // or into data.
+        public void RemoveBadInstructionsFromGraph()
+        {
             // Find all places that are reachable from "bad" addresses.
             // By transitivity, they must also be be bad.
             foreach (var a in new DfsIterator<Address>(G).PreOrder(bad))
             {
                 if (a != bad)
                 {
-                    y[a - addrStart] = Data;
-                    instructions.Remove(a);
+                    sr.Instructions.Remove(a);
 
                     // Destination can't be a call destination.
                     sr.DirectlyCalledAddresses.Remove(a);
                 }
             }
-
-            // Build blocks out of sequences of instructions.
-            var blocks = BuildBlocks(G, instructions);
-            return new ScannedSegment
-            {
-                Blocks = blocks,
-                CodeFlags = y,
-            };
         }
 
-        private IEnumerator<MachineInstruction> EnsureRewriter(Address address)
+
+        /// <summary>
+        /// Get a rewriter for the specified address. If a rewriter is already
+        /// available from the rewriter pool, remove it and use it, otherwise
+        /// create a new one.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns></returns>
+        private IEnumerator<RtlInstructionCluster> GetRewriter(
+            Address addr, 
+            IDictionary<Address, IEnumerator<RtlInstructionCluster>> pool)
         {
-            return program.CreateDisassembler(address).GetEnumerator();
+            var rdr = program.CreateImageReader(addr);
+            var arch = program.Architecture;
+            var rw = arch.CreateRewriter(
+                program.CreateImageReader(addr), 
+                arch.CreateProcessorState(),
+                storageBinder,
+                host);
+            return rw.GetEnumerator();
         }
 
         /// <summary>
@@ -301,27 +323,29 @@ namespace Reko.Scanning
             public Address EndAddress;
         }
 
+        public SortedList<Address, ShingleBlock> BuildBlocks()
+        {
+            return BuildBlocks(G);
+        }
+
         /// <summary>
         /// Build Shingle blocks from the graph. An instruction can only be 
         /// in one block at a time, so at each point in the graph where the 
         /// successors > 1 or the predecessors > 1, we create a new node.
         /// </summary>
-        /// <param name="g"></param>
         /// <param name="instructions"></param>
         /// <returns></returns>
-        public SortedList<Address,ShingleBlock> BuildBlocks(
-            DiGraph<Address> g,
-            SortedList<Address,MachineInstruction> instructions)
+        public SortedList<Address,ShingleBlock> BuildBlocks(DiGraph<Address> graph)
         {
             // Remember, the graph is backwards!
             var activeBlocks = new List<ShingleBlock>();
             var allBlocks = new SortedList<Address, ShingleBlock>();
-            var wl = instructions.Keys.ToSortedSet();
+            var wl = sr.Instructions.Keys.ToSortedSet();
             while (wl.Count > 0)
             {
                 var addr = wl.First();
                 wl.Remove(addr);
-                var instr = instructions[addr];
+                var instr = sr.Instructions[addr];
                 var block = new ShingleBlock { BaseAddress = addr };
                 allBlocks.Add(addr, block);
                 bool terminateNow = false;
@@ -329,9 +353,9 @@ namespace Reko.Scanning
                 for (;;)
                 {
                     var addrInstrEnd = instr.Address + instr.Length;
-                    if ((instr.InstructionClass & InstructionClass.Transfer) != 0)
+                    if ((instr.Class & RtlClass.Transfer) != 0)
                     {
-                        if ((instr.InstructionClass & DT) == DT)
+                        if ((instr.Class & DT) == DT)
                         {
                             terminateDeferred = true;
                         }
@@ -346,15 +370,15 @@ namespace Reko.Scanning
                     }
                     if (terminateNow || 
                         !wl.Contains(addrInstrEnd) ||
-                        !g.Nodes.Contains(addrInstrEnd) || 
-                        g.Successors(addrInstrEnd).Count != 1)
+                        !graph.Nodes.Contains(addrInstrEnd) || 
+                        graph.Successors(addrInstrEnd).Count != 1)
                     {
                         block.EndAddress = addrInstrEnd;
                         break;
                     }
 
                     wl.Remove(addrInstrEnd);
-                    instr = instructions[addrInstrEnd];
+                    instr = sr.Instructions[addrInstrEnd];
                     terminateNow = terminateDeferred;
                 }
             }
@@ -368,9 +392,9 @@ namespace Reko.Scanning
             return live;
         }
 
-        private bool IsInvalid(MemoryArea mem, MachineInstruction instr)
+        private bool IsInvalid(MemoryArea mem, RtlInstructionCluster instr)
         {
-            if (instr.InstructionClass == InstructionClass.Invalid)
+            if (instr.Class == RtlClass.Invalid)
                 return true;
             // If an instruction straddles a relocation, it can't be 
             // a real instruction.
@@ -384,12 +408,12 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        private bool MayFallThrough(MachineInstruction i)
+        private bool MayFallThrough(RtlInstructionCluster i)
         {
-            return (i.InstructionClass &
-                (InstructionClass.Linear 
-                | InstructionClass.Conditional 
-                | InstructionClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
+            return (i.Class &
+                ( RtlClass.Linear 
+                | RtlClass.Conditional 
+                | RtlClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
         }
 
         private bool IsTransfer(RtlInstructionCluster i, RtlInstruction r)
@@ -466,17 +490,20 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        private Address DestinationAddress(MachineInstruction i)
+        private Address DestinationAddress(RtlInstructionCluster i)
         {
-            var op = i.GetOperand(0) as AddressOperand;
-            if (op == null)
+            var rtl = i.Instructions[i.Instructions.Length - 1];
+            for (;;)
             {
-                // Z80 has JP Z,<dest> instructions...
-                op = i.GetOperand(1) as AddressOperand;
+                var rif = rtl as RtlIf;
+                if (rif == null)
+                    break;
+                rtl = rif.Instruction;
             }
-            if (op != null)
+            var xfer = rtl as RtlTransfer;
+            if (xfer != null)
             {
-                return op.Address;
+                return xfer.Target as Address;
             }
             return null;
         }
