@@ -323,9 +323,10 @@ namespace Reko.Scanning
             public Address EndAddress;
         }
 
-        public SortedList<Address, ShingleBlock> BuildBlocks()
+        public DiGraph<RtlBlock> BuildBlocks()
         {
-            return BuildBlocks(G);
+            sr.ICFG = BuildBlocks(G);
+            return sr.ICFG;
         }
 
         /// <summary>
@@ -335,19 +336,20 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="instructions"></param>
         /// <returns></returns>
-        public SortedList<Address,ShingleBlock> BuildBlocks(DiGraph<Address> graph)
+        public DiGraph<RtlBlock> BuildBlocks(DiGraph<Address> graph)
         {
             // Remember, the graph is backwards!
-            var activeBlocks = new List<ShingleBlock>();
-            var allBlocks = new SortedList<Address, ShingleBlock>();
+            var activeBlocks = new List<RtlBlock>();
+            var allBlocks = new DiGraph<RtlBlock>();
             var wl = sr.Instructions.Keys.ToSortedSet();
             while (wl.Count > 0)
             {
                 var addr = wl.First();
                 wl.Remove(addr);
                 var instr = sr.Instructions[addr];
-                var block = new ShingleBlock { BaseAddress = addr };
-                allBlocks.Add(addr, block);
+                var block = new RtlBlock(addr, addr.GenerateName("l", ""));
+                block.Instructions.Add(instr);
+                allBlocks.AddNode(block);
                 bool terminateNow = false;
                 bool terminateDeferred = false;
                 for (;;)
@@ -373,12 +375,13 @@ namespace Reko.Scanning
                         !graph.Nodes.Contains(addrInstrEnd) || 
                         graph.Successors(addrInstrEnd).Count != 1)
                     {
-                        block.EndAddress = addrInstrEnd;
+                        //block.EndAddress = addrInstrEnd;
                         break;
                     }
 
                     wl.Remove(addrInstrEnd);
                     instr = sr.Instructions[addrInstrEnd];
+                    block.Instructions.Add(instr);
                     terminateNow = terminateDeferred;
                 }
             }

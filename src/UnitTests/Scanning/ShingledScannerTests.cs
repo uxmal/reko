@@ -375,12 +375,12 @@ namespace Reko.UnitTests.Scanning
             }
         }
 
-        private string DumpBlocks(SortedList<Address, ShingledScanner.ShingleBlock> blocks)
+        private string DumpBlocks(DiGraph<RtlBlock> blocks)
         {
             var sb = new StringBuilder();
-            foreach (var block in blocks.Values.OrderBy(b => b.BaseAddress))
+            foreach (var block in blocks.Nodes.OrderBy(b => b.Address))
             {
-                sb.AppendFormat("{0} - {1}", block.BaseAddress, block.EndAddress);
+                sb.AppendFormat("{0} - {1}", block.Address, block.GetEndAddress());
                 sb.AppendLine();
             }
             return sb.ToString();
