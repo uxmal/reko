@@ -156,7 +156,7 @@ namespace Reko.Scanning
             // Remove blocks that fall off the end of the segment
             // or into data.
             dasm.RemoveBadInstructionsFromGraph();
-            dasm.BuildBlocks();
+            dasm.BuildIcfg();
 
             // On processors with variable length instructions,
             // there may be many blocks that partially overlap the 
@@ -171,7 +171,6 @@ namespace Reko.Scanning
                 host);
             hsc.DumpGraph();
             RemoveInvalidBlocks(sr);
-
             hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
 
             var pd = new ProcedureDetector(program, sr, this.eventListener);

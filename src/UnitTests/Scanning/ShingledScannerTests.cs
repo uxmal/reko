@@ -458,7 +458,7 @@ namespace Reko.UnitTests.Scanning
             var seg = program.SegmentMap.Segments.Values.First();
             var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
             sh.RemoveBadInstructionsFromGraph();
-            var blocks = sh.BuildBlocks();
+            var blocks = sh.BuildIcfg();
             var sExp =
                 "00010000 - 00010003" + nl +
                 "00010002 - 00010003" + nl +
@@ -491,7 +491,7 @@ namespace Reko.UnitTests.Scanning
             var seg = program.SegmentMap.Segments.Values.First();
             var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
             sh.RemoveBadInstructionsFromGraph();
-            var blocks = sh.BuildBlocks();
+            var blocks = sh.BuildIcfg();
 
             var sExp =
                 "00010000 - 00010002" + nl +

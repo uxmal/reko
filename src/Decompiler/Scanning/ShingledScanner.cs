@@ -323,9 +323,10 @@ namespace Reko.Scanning
             public Address EndAddress;
         }
 
-        public DiGraph<RtlBlock> BuildBlocks()
+        public DiGraph<RtlBlock> BuildIcfg()
         {
             sr.ICFG = BuildBlocks(G);
+            //BuildEdges(G, sr.ICFG);
             return sr.ICFG;
         }
 
@@ -355,7 +356,7 @@ namespace Reko.Scanning
                 for (;;)
                 {
                     var addrInstrEnd = instr.Address + instr.Length;
-                    if ((instr.Class & RtlClass.Transfer) != 0)
+                    if ((instr.Class & DT) != 0 && (instr.Class & RtlClass.Call) == 0)
                     {
                         if ((instr.Class & DT) == DT)
                         {
@@ -372,10 +373,19 @@ namespace Reko.Scanning
                     }
                     if (terminateNow || 
                         !wl.Contains(addrInstrEnd) ||
-                        !graph.Nodes.Contains(addrInstrEnd) || 
+                        !graph.Nodes.Contains(addrInstrEnd) ||
                         graph.Successors(addrInstrEnd).Count != 1)
                     {
+                        Debug.Print("addr: {0}, end {1}, term: {2}, wl: {3}, nodes: {4}, succ: {5}",
+                            addr,
+                            addrInstrEnd,
+                            terminateNow,
+                            !wl.Contains(addrInstrEnd),
+                            !graph.Nodes.Contains(addrInstrEnd),
+                            graph.Successors(addrInstrEnd).Count);
+
                         //block.EndAddress = addrInstrEnd;
+
                         break;
                     }
 
