@@ -45,7 +45,7 @@ namespace Reko.Arch.Sparc
         private List<RtlInstruction> rtlInstructions;
         private RtlClass rtlc;
 
-        public SparcRewriter(SparcArchitecture arch, ImageReader rdr, SparcProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public SparcRewriter(SparcArchitecture arch, EndianImageReader rdr, SparcProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.frame = frame;
@@ -61,7 +61,7 @@ namespace Reko.Arch.Sparc
             this.dasm = new LookaheadEnumerator<SparcInstruction>(instrs);
         }
 
-        private IEnumerable<SparcInstruction> CreateDisassemblyStream(ImageReader rdr)
+        private IEnumerable<SparcInstruction> CreateDisassemblyStream(EndianImageReader rdr)
         {
             return new SparcDisassembler(arch, rdr);
         }

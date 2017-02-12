@@ -98,7 +98,7 @@ namespace Reko.Environments.Ps3
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(EndianImageReader rdr, IRewriterHost host)
         {
             var dasm = new PowerPcDisassembler(
                 (PowerPcArchitecture64) Architecture,

@@ -41,7 +41,7 @@ namespace Reko.Arch.Mos6502
         private RtlClass rtlc;
         private RtlEmitter m;
 
-        public Rewriter(Mos6502ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public Rewriter(Mos6502ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.state = state;

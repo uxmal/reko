@@ -27,11 +27,11 @@ namespace Reko.Core
 {
     public class TypedDataDumper : IDataTypeVisitor
     {
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private uint cbSize;
         private Formatter fmt;
 
-        public TypedDataDumper(ImageReader rdr, uint cbSize, Formatter stm) 
+        public TypedDataDumper(EndianImageReader rdr, uint cbSize, Formatter stm) 
         {
             this.rdr = rdr;
             this.cbSize = cbSize;

@@ -45,7 +45,7 @@ namespace Reko.Arch.Arm
         private int itState;
         private ArmCodeCondition itStateCondition;
 
-        public ThumbRewriter(ThumbProcessorArchitecture arch, ImageReader rdr, ArmProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public ThumbRewriter(ThumbProcessorArchitecture arch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.instrs = CreateInstructionStream(rdr);
             this.frame = frame;
@@ -54,7 +54,7 @@ namespace Reko.Arch.Arm
             this.itStateCondition = ArmCodeCondition.AL;
         }
 
-        private IEnumerator<Arm32Instruction> CreateInstructionStream(ImageReader rdr)
+        private IEnumerator<Arm32Instruction> CreateInstructionStream(EndianImageReader rdr)
         {
             return new ThumbDisassembler(rdr).GetEnumerator();
         }

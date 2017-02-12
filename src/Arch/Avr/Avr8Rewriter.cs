@@ -44,7 +44,7 @@ namespace Reko.Arch.Avr
         private List<RtlInstructionCluster> clusters;
         private RtlEmitter m;
 
-        public Avr8Rewriter(Avr8Architecture arch, ImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public Avr8Rewriter(Avr8Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.dasm = new Avr8Disassembler(arch, rdr).GetEnumerator();

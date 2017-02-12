@@ -46,7 +46,7 @@ namespace Reko.Arch.Arm
         private RtlEmitter m;
         private IRewriterHost host;
 
-        public ArmRewriter(Arm32ProcessorArchitecture arch, ImageReader rdr, ArmProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public ArmRewriter(Arm32ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.instrs = CreateInstructionStream(rdr);
@@ -58,7 +58,7 @@ namespace Reko.Arch.Arm
         public ArmInstructionOperand Src1 { get { return ops[1]; } }
         public ArmInstructionOperand Src2 { get { return ops[2]; } }
 
-        private IEnumerator<Arm32Instruction> CreateInstructionStream(ImageReader rdr)
+        private IEnumerator<Arm32Instruction> CreateInstructionStream(EndianImageReader rdr)
         {
             return new Arm32Disassembler(arch, rdr).GetEnumerator();
         }

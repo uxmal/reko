@@ -36,7 +36,7 @@ namespace Reko.Arch.Vax
     {
         private IStorageBinder frame;
         private IRewriterHost host;
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private ProcessorState state;
         private VaxArchitecture arch;
         private RtlClass rtlc;
@@ -44,7 +44,7 @@ namespace Reko.Arch.Vax
         private RtlEmitter m;
         private IEnumerator<VaxInstruction> dasm;
 
-        public VaxRewriter(VaxArchitecture arch, ImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public VaxRewriter(VaxArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;

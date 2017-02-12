@@ -54,7 +54,7 @@ namespace Reko.Arch.X86
             IntelArchitecture arch,
             IRewriterHost host,
             X86State state,
-            ImageReader rdr,
+            EndianImageReader rdr,
             IStorageBinder frame)
         {
             if (host == null)

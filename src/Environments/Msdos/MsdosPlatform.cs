@@ -150,7 +150,7 @@ namespace Reko.Environments.Msdos
         /// <param name="imageReader"></param>
         /// <param name="host"></param>
         /// <returns></returns>
-        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
         {
             return null;
         }

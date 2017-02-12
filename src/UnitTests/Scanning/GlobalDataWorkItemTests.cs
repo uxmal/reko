@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Scanning
             this.platform = mr.StrictMock<IPlatform>();
             arch.Stub(a => a.CreateImageReader(null, null))
                 .IgnoreArguments()
-                .Do(new Func<MemoryArea, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
+                .Do(new Func<MemoryArea, Address, EndianImageReader>((i, a) => new LeImageReader(i, a)));
             platform.Stub(p => p.Architecture).Return(arch);
             scanner.Stub(s => s.Error(null, null))
                 .IgnoreArguments()

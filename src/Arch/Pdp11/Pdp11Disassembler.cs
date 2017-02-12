@@ -32,11 +32,11 @@ namespace Reko.Arch.Pdp11
     public class Pdp11Disassembler : DisassemblerBase<Pdp11Instruction>
     {
         private Pdp11Architecture arch;
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private Pdp11Instruction instrCur;
         private PrimitiveType dataWidth;
 
-        public Pdp11Disassembler(ImageReader rdr, Pdp11Architecture arch)
+        public Pdp11Disassembler(EndianImageReader rdr, Pdp11Architecture arch)
         {
             this.rdr = rdr;
             this.arch = arch;

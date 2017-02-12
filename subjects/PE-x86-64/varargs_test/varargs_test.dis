@@ -1734,9 +1734,10 @@ l000000014000186C:
 
 l0000000140001894:
 	GetSystemTimeAsFileTime(tLoc20)
-	word64 v15_50 = qwArg14 & 0x0000000000000000 ^ DPB(qwArg14 & 0x0000000000000000, GetCurrentThreadId(), 0) ^ DPB(qwArg14 & 0x0000000000000000, GetCurrentProcessId(), 0)
+	word64 rax_43 = DPB(qwArg14 & 0x0000000000000000, GetCurrentThreadId(), 0)
+	word64 v15_50 = qwArg14 & 0x0000000000000000 ^ rax_43 ^ DPB(rax_43, GetCurrentProcessId(), 0)
 	QueryPerformanceCounter(tLoc20)
-	rax_15 = (DPB(qwArg14 & 0x0000000000000000, dwArg1C, 0) << 0x0000000000000020 ^ qwArg1C ^ v15_50 ^ fp + 0x000000000000000C) & fp + 0x000000000000000C
+	rax_15 = (DPB(rax_43, dwArg1C, 0) << 0x0000000000000020 ^ qwArg1C ^ v15_50 ^ fp + 0x000000000000000C) & fp + 0x000000000000000C
 	branch rax_15 != rbx l00000001400018FC
 // DataOut: edx gs r13 rax rdi
 // DataOut (flags): 

@@ -166,7 +166,7 @@ namespace Reko.UnitTests.Arch.Intel
 		{
 		}
 
-		public ImageReader CreateImageReader(Address addr)
+		public EndianImageReader CreateImageReader(Address addr)
 		{
 			throw new NotImplementedException();
 		}
