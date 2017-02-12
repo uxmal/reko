@@ -27,6 +27,18 @@ using Reko.Core.Expressions;
 
 namespace Reko.Evaluation
 {
+    /// <summary>
+    /// Reconstitutes a segmented pointer that has been sliced:
+    /// <code>
+    /// seg = SLICE(ptr32, 16)
+    /// off = SLICE(ptr32, 0)
+    /// ...Mem[seg:off]
+    /// </code>
+    /// becomes
+    /// <code>
+    /// ...Mem[ptr32]
+    /// </code>
+    /// </summary>
     public class SliceSegmentedPointer_Rule
     {
         private EvaluationContext ctx;
@@ -52,6 +64,7 @@ namespace Reko.Evaluation
             this.idOff = off as Identifier;
             if (idOff != null)
             {
+                // [seg:idOff] => [seg_idOff]
                 segPtr = SlicedSegPointer(seg, idOff);
             }
             else 
@@ -62,12 +75,20 @@ namespace Reko.Evaluation
                 idOff = binOff.Left as Identifier;
                 if (idOff != null)
                 {
+                    // [seg:idOff +/- C] => [seg_idOff + C]
                     segPtr = SlicedSegPointer(seg, idOff);
                 }
             }
             return segPtr != null;
         }
 
+        /// <summary>
+        /// Try to find an original 32-bit segmented pointer that may have 
+        /// been SLICE'd and cast to a segment and offset register.
+        /// </summary>
+        /// <param name="seg"></param>
+        /// <param name="off"></param>
+        /// <returns></returns>
         private Identifier SlicedSegPointer(Identifier seg, Identifier off)
         {
             var defSeg = ctx.GetDefiningExpression(seg) as Slice;
@@ -87,7 +108,7 @@ namespace Reko.Evaluation
             Expression ea;
             if (segMem.EffectiveAddress == idOff)
             {
-                ea = new MemoryAccess(segPtr, segMem.DataType);
+                ea = segPtr;
             }
             else
             {
@@ -100,7 +121,7 @@ namespace Reko.Evaluation
                     throw new NotImplementedException();
             }
             ctx.UseExpression(segPtr);
-            return new MemoryAccess(ea, segMem.DataType);
+            return new MemoryAccess(segMem.MemoryId, ea, segMem.DataType);
         }
     }
 }

@@ -582,9 +582,9 @@ namespace Reko.UnitTests.Analysis
             m.Assign(es_bx_1, SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
             m.Assign(bx_3, m.Cast(PrimitiveType.Word16, es_bx_1));
-            var instr = m.Assign(bx_4, SegMem(PrimitiveType.Byte, es_2, m.IAdd(bx_3, 4)));
+            var instr = m.Assign(bx_4, SegMem(PrimitiveType.Word16, es_2, m.IAdd(bx_3, 4)));
             RunValuePropagator(m);
-            Assert.AreEqual("bx_4 = Mem0[es_bx_1 + 0x0004:byte]", instr.ToString());
+            Assert.AreEqual("bx_4 = Mem8[es_bx_1 + 0x0004:word16]", instr.ToString());
         }
 
 
@@ -809,13 +809,13 @@ es_bx_3: orig: es_bx
     def:  es_bx_3 = Mem0[es:bx:word32]
     uses: es_4 = SLICE(es_bx_3, word16, 16)
           bx_5 = (word16) es_bx_3
-          Mem0[es_bx_3 + 0x0004:byte] = 0x03
+          Mem6[es_bx_3 + 0x0004:byte] = 0x03
 es_4: orig: es
     def:  es_4 = SLICE(es_bx_3, word16, 16)
 bx_5: orig: bx
     def:  bx_5 = (word16) es_bx_3
 Mem6: orig: Mem0
-    def:  Mem0[es_bx_3 + 0x0004:byte] = 0x03
+    def:  Mem6[es_bx_3 + 0x0004:byte] = 0x03
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -828,7 +828,7 @@ l1:
 	es_bx_3 = Mem0[es:bx:word32]
 	es_4 = SLICE(es_bx_3, word16, 16)
 	bx_5 = (word16) es_bx_3
-	Mem0[es_bx_3 + 0x0004:byte] = 0x03
+	Mem6[es_bx_3 + 0x0004:byte] = 0x03
 ProcedureBuilder_exit:
 ";
             #endregion
@@ -992,6 +992,25 @@ ProcedureBuilder_exit:
 
             mr.ReplayAll();
             RunFileTest(m, "Analysis/VpAddress32Const.txt");
+        }
+
+        [Test]
+        public void VpUndoSlicingOfSegmentPointerCheckUses_NoOffset()
+        {
+            var es = Reg16("es");
+            var es_2 = Reg16("es_2");
+            var bx = Reg16("bx");
+            var bx_3 = Reg16("bx_3");
+            var bx_4 = Reg16("bx_4");
+            var es_bx_1 = Reg32("es_bx_1");
+
+            m.Store(SegMem(PrimitiveType.Byte, es, m.IAdd(bx, 4)), m.Byte(3));
+            m.Assign(es_bx_1, SegMem(PrimitiveType.Word32, es, bx));
+            m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
+            m.Assign(bx_3, m.Cast(PrimitiveType.Word16, es_bx_1));
+            var instr = m.Assign(bx_4, SegMem(PrimitiveType.Word16, es_2, bx_3));
+            RunValuePropagator(m);
+            Assert.AreEqual("bx_4 = Mem8[es_bx_1:word16]", instr.ToString());
         }
     }
 }
