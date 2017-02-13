@@ -279,7 +279,7 @@ namespace Reko.Core
             this.GlobalsFilename = GlobalsFilename ?? Path.ChangeExtension(fileName, ".globals.c");
         }
        
-        public ImageReader CreateImageReader(Address addr)
+        public EndianImageReader CreateImageReader(Address addr)
         {
             ImageSegment segment;
             if (!SegmentMap.TryFindSegment(addr, out segment))

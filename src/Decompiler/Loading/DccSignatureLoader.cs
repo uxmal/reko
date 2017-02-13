@@ -602,7 +602,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         }
 
         // Read a section of the file, considering endian issues
-        void readFileSection(ushort[] p, int len, ImageReader rdr)
+        void readFileSection(ushort[] p, int len, EndianImageReader rdr)
         {
             int pp = 0;
             for (int i = 0; i < len; i += 2)
@@ -612,7 +612,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         }
 
         // Read a section of the file, considering endian issues
-        void readFileSection(short[] p, int len, ImageReader rdr)
+        void readFileSection(short[] p, int len, EndianImageReader rdr)
         {
             int pp = 0;
             for (int i = 0; i < len; i += 2)

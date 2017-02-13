@@ -44,7 +44,7 @@ namespace Reko.ImageLoaders.Elf
         public ushort e_shnum;          // Number of section header entries.
         public ushort e_shstrndx;       // section name string table index
 
-        public static Elf32_EHdr Load(ImageReader rdr)
+        public static Elf32_EHdr Load(EndianImageReader rdr)
         {
             return new Elf32_EHdr
             {
@@ -83,7 +83,7 @@ namespace Reko.ImageLoaders.Elf
         public ushort e_shnum;          // Number of section header entries.
         public ushort e_shstrndx;       // section name string table index
 
-        public static Elf64_EHdr Load(ImageReader rdr)
+        public static Elf64_EHdr Load(EndianImageReader rdr)
         {
             return new Elf64_EHdr
             {

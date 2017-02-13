@@ -52,10 +52,10 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             this.platform.Stub(p => p.Architecture).Return(arch);
             this.arch.Stub(a => a.CreateImageReader(null, null))
                 .IgnoreArguments()
-                .Do(new Func<MemoryArea, Address, ImageReader>((m, a) => new LeImageReader(m, a)));
+                .Do(new Func<MemoryArea, Address, EndianImageReader>((m, a) => new LeImageReader(m, a)));
             this.arch.Stub(a => a.CreateDisassembler(null))
                 .IgnoreArguments()
-                .Do(new Func<ImageReader, IEnumerable<MachineInstruction>>((rdr) => new MachineInstruction[]
+                .Do(new Func<EndianImageReader, IEnumerable<MachineInstruction>>((rdr) => new MachineInstruction[]
                 {
                     Instr(rdr.Address.ToUInt32()),
                     Instr(rdr.Address.ToUInt32()+2)

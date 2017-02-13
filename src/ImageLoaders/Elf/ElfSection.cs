@@ -64,7 +64,7 @@ namespace Reko.ImageLoaders.Elf
         public uint sh_addralign;
         public uint sh_entsize;
 
-        public static Elf32_SHdr Load(ImageReader rdr)
+        public static Elf32_SHdr Load(EndianImageReader rdr)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace Reko.ImageLoaders.Elf
         public ulong sh_addralign;
         public ulong sh_entsize;
 
-        public static Elf64_SHdr Load(ImageReader rdr)
+        public static Elf64_SHdr Load(EndianImageReader rdr)
         {
             return new Elf64_SHdr
             {

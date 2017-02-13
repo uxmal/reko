@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Mocks
 
 		#region IProcessorArchitecture Members
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             var linAddr = rdr.Address.ToLinear();
             RtlTrace trace;
@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Mocks
             return trace;
         }
 
-        public IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownLinAddrs, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownLinAddrs, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -107,17 +107,17 @@ namespace Reko.UnitTests.Mocks
             return MemoryAccess.Create(sp, offset, dataType);
         }
 
-        public ImageReader CreateImageReader(MemoryArea image, Address addr)
+        public EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        public EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
         {
             return new LeImageReader(image, addrBegin, addrEnd);
         }
 
-        public ImageReader CreateImageReader(MemoryArea image, ulong offset)
+        public EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -213,7 +213,7 @@ namespace Reko.UnitTests.Mocks
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.RegisterToString implementation");
 		}
 
-		public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
+		public IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
 		{
             return new FakeDisassembler(rdr.Address, Test_DisassemblyStream.GetEnumerator());
 		}
@@ -267,7 +267,7 @@ namespace Reko.UnitTests.Mocks
             return Address.Ptr32(c.ToUInt32());
         }
 
-        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             if (size == 4)
             {

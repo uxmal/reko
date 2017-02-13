@@ -315,10 +315,10 @@ namespace Reko.UnitTests.Arch.Pdp11
         }
 
         [Test]
-        [Ignore]
+        [Ignore("JMP / JSR are problematic")]
         public void Pdp11Rw_PostIncrDef()
         {
-            BuildTest(0x0BE4); // jmp @(r4)+
+            BuildTest(0x0054); // jmp @(r4)+
             AssertCode(
                  "0|T--|0200(2): 3 instructions",
                  "1|L--|v3 = Mem0[r4:word16]",

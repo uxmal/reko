@@ -126,26 +126,26 @@ namespace Reko.Arch.Xtensa
             { 0xF0, new RegisterStorage("CCOMPARE0", 0x1F0, 0, PrimitiveType.Word32) },
         };
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new XtensaDisassembler(this, rdr);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea img, ulong off)
+        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
         {
             //$TODO: Xtensa is bi-endian, but we're assuming little-endian here.
             // Fix this if encountering a big-endian binary.
             return new LeImageReader(img, off);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea img, Address addr)
+        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
         {
             //$TODO: Xtensa is bi-endian, but we're assuming little-endian here.
             // Fix this if encountering a big-endian binary.
             return new LeImageReader(img, addr);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
+        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
             throw new NotImplementedException();
         }
@@ -165,7 +165,7 @@ namespace Reko.Arch.Xtensa
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -175,7 +175,7 @@ namespace Reko.Arch.Xtensa
             return new XtensaProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new XtensaRewriter(this, rdr, state, frame, host);
         }
@@ -257,7 +257,7 @@ namespace Reko.Arch.Xtensa
             throw new NotImplementedException();
         }
 
-        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }

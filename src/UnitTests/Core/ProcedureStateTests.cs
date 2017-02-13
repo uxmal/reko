@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Core
             public string Name { get; set; }
             public string Description { get; set; }
 
-            public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+            public IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
             {
                 throw new NotImplementedException();
             }
@@ -95,12 +95,12 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownLinAddrs, PointerScannerFlags flags)
+            public IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownLinAddrs, PointerScannerFlags flags)
             {
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+            public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
             {
                 throw new NotImplementedException();
             }
@@ -110,17 +110,17 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public ImageReader CreateImageReader(MemoryArea image, Address addr)
+            public EndianImageReader CreateImageReader(MemoryArea image, Address addr)
             {
                 return new LeImageReader(image, addr);
             }
 
-            public ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+            public EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
             {
                 return new LeImageReader(image, addrBegin, addrEnd);
             }
 
-            public ImageReader CreateImageReader(MemoryArea image, ulong offset)
+            public EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
             {
                 return new LeImageReader(image, offset);
             }
@@ -140,7 +140,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+            public ProcedureBase GetTrampolineDestination(EndianImageReader rdr, IRewriterHost host)
             {
                 return null;
             }
@@ -185,7 +185,7 @@ namespace Reko.UnitTests.Core
                 return Address.Ptr32(c.ToUInt32());
             }
 
-            public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+            public Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
             {
                 throw new NotImplementedException();
             }

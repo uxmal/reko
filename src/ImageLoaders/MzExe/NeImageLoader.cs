@@ -84,7 +84,7 @@ namespace Reko.ImageLoaders.MzExe
         public NeImageLoader(IServiceProvider services, string filename, byte[] rawBytes, uint e_lfanew)
             : base(services, filename, rawBytes)
         {
-            ImageReader rdr = new LeImageReader(RawImage, e_lfanew);
+            EndianImageReader rdr = new LeImageReader(RawImage, e_lfanew);
             diags = Services.RequireService<IDiagnosticsService>();
             this.lfaNew = e_lfanew;
             this.importStubs = new Dictionary<uint, Tuple<Address, ImportReference>>();
@@ -102,7 +102,7 @@ namespace Reko.ImageLoaders.MzExe
             }
         }
 
-        private bool LoadNeHeader(ImageReader rdr)
+        private bool LoadNeHeader(EndianImageReader rdr)
         {
             ushort magic;
             if (!rdr.TryReadLeUInt16(out magic) || magic != 0x454E)
@@ -347,7 +347,7 @@ namespace Reko.ImageLoaders.MzExe
             }
         }
 
-        string ReadByteLengthString(ImageReader rdr, int offset)
+        string ReadByteLengthString(EndianImageReader rdr, int offset)
         {
             var clone = rdr.Clone();
             clone.Offset = clone.Offset + offset;
@@ -652,7 +652,7 @@ namespace Reko.ImageLoaders.MzExe
         }
 
         // Apply relocations to a segment.
-        bool ApplyRelocations(ImageReader rdr, int cRelocations, NeSegment seg)
+        bool ApplyRelocations(EndianImageReader rdr, int cRelocations, NeSegment seg)
         {
             string module = "";
             Address address = null;

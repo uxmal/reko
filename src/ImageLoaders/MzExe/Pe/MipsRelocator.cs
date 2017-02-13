@@ -50,7 +50,7 @@ public const short 	IMAGE_REL_MIPS_JMPADDR16    =  0x0010; // The low 26 bits of
 public const short 	IMAGE_REL_MIPS_REFWORDNB    =  0x0022; // The target's 32-bit relative virtual address. 
 public const short 	IMAGE_REL_MIPS_PAIR    	    =  0x0025; // This relocation is only valid when it immediately follows a REFHI or SECRELHI relocation. Its SymbolTableIndex contains a displacement and not an index into the symbol table. 
 
-        public override void ApplyRelocation(Address baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
+        public override void ApplyRelocation(Address baseOfImage, uint page, EndianImageReader rdr, RelocationDictionary relocations)
         {
             ushort fixup = rdr.ReadUInt16();
             Address offset = baseOfImage + page + (fixup & 0x0FFFu);

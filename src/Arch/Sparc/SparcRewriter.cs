@@ -44,7 +44,7 @@ namespace Reko.Arch.Sparc
         private RtlEmitter emitter;
         private RtlInstructionCluster ric;
 
-        public SparcRewriter(SparcArchitecture arch, ImageReader rdr, SparcProcessorState state, Frame frame, IRewriterHost host)
+        public SparcRewriter(SparcArchitecture arch, EndianImageReader rdr, SparcProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
             this.frame = frame;
@@ -60,7 +60,7 @@ namespace Reko.Arch.Sparc
             this.dasm = new LookaheadEnumerator<SparcInstruction>(instrs);
         }
 
-        private IEnumerable<SparcInstruction> CreateDisassemblyStream(ImageReader rdr)
+        private IEnumerable<SparcInstruction> CreateDisassemblyStream(EndianImageReader rdr)
         {
             return new SparcDisassembler(arch, rdr);
         }

@@ -57,7 +57,7 @@ namespace Reko.Arch.M68k
         /// invalid, either due to a bad encoding or because the reader read
         /// off the end of the memory area.
         /// </returns>
-        public bool TryGetOperand(ImageReader rdr, string args, PrimitiveType dataWidth, out MachineOperand op)
+        public bool TryGetOperand(EndianImageReader rdr, string args, PrimitiveType dataWidth, out MachineOperand op)
         {
             if (i >= args.Length)
             {
@@ -176,8 +176,8 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private static bool TryGetImmediate(ImageReader rdr, PrimitiveType type, out MachineOperand op)
-        {
+		private static bool TryGetImmediate(ImageReader rdr, PrimitiveType type, out MachineOperand op)
+		{
             if (type.Size == 1)
             {
                 rdr.Offset += 1;    // skip a byte so we get the appropriate lsb byte and align the word stream.
@@ -194,16 +194,16 @@ namespace Reko.Arch.M68k
             }
         }
 
-        public bool TryParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr, out MachineOperand op)
-        {
+		public bool TryParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
+		{
             opcode >>= bitOffset;
             byte operandBits = (byte) (opcode & 7);
             byte addressMode = (byte) ((opcode >> 3) & 7);
             return TryParseOperandInner(addressMode, operandBits, dataWidth, rdr, out op);
         }
 
-        private bool TryParseSwappedOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr, out MachineOperand op)
-        {
+		private bool TryParseSwappedOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
+		{
             opcode >>= bitOffset;
             byte addressMode = (byte) (opcode & 7);
             byte operandBits = (byte) ((opcode >> 3) & 7);
@@ -233,8 +233,8 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private bool TryParseOperandInner(byte addressMode, byte operandBits, PrimitiveType dataWidth, ImageReader rdr, out MachineOperand op)
-        {
+		private bool TryParseOperandInner(byte addressMode, byte operandBits, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
+		{
             Constant offset;
             switch (addressMode)
             {
@@ -368,7 +368,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private bool TryAddressRegisterIndirectWithIndex(PrimitiveType dataWidth, ImageReader rdr, out MachineOperand op)
+        private bool TryAddressRegisterIndirectWithIndex(PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
         {
             ushort extension;
             if (!rdr.TryReadBeUInt16(out extension))
