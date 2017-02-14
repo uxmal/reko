@@ -52,23 +52,62 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         }
 
         [Test]
-        public void WasmLdr_LoadSection_Empty()
+        public void WasmLdr_LoadTypeSection()
         {
             var bytes = new byte[]
             {
-                0x0B,   // data section
-                0x04,   // payload length
-                0x05,   // section name length,
-                0x02E, 0x64, 0x61, 0x74, 0x61,      // .data
-                0x01, 0x02, 0x03, 0x04
+                0x01,   // type  section
+                0x05,   // payload length
+                0x01,   // One type
+                    0x60, 0x01, 0x7F, 0x00      // fn taking one int arg
             };
 
             Create_Loader();
             var rdr = new LeImageReader(bytes);
             var section = ldr.LoadSection(rdr);
-            Assert.AreEqual(WasmSection.Data, section.Type);
-            Assert.AreEqual(4, section.Bytes.Length);
-            Assert.AreEqual(".data", section.Name);
+            var ts = (TypeSection)section;
+            Assert.AreEqual(1, ts.Types.Count);
+            Assert.AreEqual("(fn void (word32))", ts.Types[0].ToString());
+        }
+
+        [Test]
+        public void WasmLdr_LoadImportSection()
+        {
+            var bytes = new byte[]
+            {
+                0x02, 0x0C,     // import section
+                0x01,           // one import
+                    0x03, 0x65, 0x6E, 0x76,         // env
+                    0x04, 0x70, 0x75, 0x74, 0x73,   // puts
+                    0x00, 0x42,     // kind of external
+            };
+
+            Create_Loader();
+            var rdr = new LeImageReader(bytes);
+            var section = ldr.LoadSection(rdr);
+            var imps = (ImportSection)section;
+            Assert.AreEqual(1, imps.Imports.Count);
+            Assert.AreEqual("env", imps.Imports[0].Module);
+            Assert.AreEqual("puts", imps.Imports[0].Field);
+            Assert.AreEqual(0x42, imps.Imports[0].FunctionIndex);
+        }
+
+        [Test]
+        public void WasmLdr_LoadFunctionSection()
+        {
+            var bytes = new byte[]
+            {
+                0x03, 0x02,     // Function section
+                0x01,           // one function declaration
+                    0x42
+            };
+
+            Create_Loader();
+            var rdr = new LeImageReader(bytes);
+            var section = ldr.LoadSection(rdr);
+            var funcs = (FunctionSection)section;
+            Assert.AreEqual(1, funcs.Declarations.Count);
+            Assert.AreEqual(0x42, funcs.Declarations[0]);
         }
     }
 }
