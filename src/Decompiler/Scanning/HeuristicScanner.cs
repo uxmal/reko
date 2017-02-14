@@ -153,10 +153,11 @@ namespace Reko.Scanning
                     range.Item3,
                     range.Item3.ToLinear() - range.Item2.ToLinear());
             }
+
             // Remove blocks that fall off the end of the segment
             // or into data.
-            dasm.RemoveBadInstructionsFromGraph();
-            dasm.BuildIcfg();
+            var deadNodes = dasm.RemoveBadInstructionsFromGraph();
+            dasm.BuildIcfg(deadNodes);
 
             // On processors with variable length instructions,
             // there may be many blocks that partially overlap the 

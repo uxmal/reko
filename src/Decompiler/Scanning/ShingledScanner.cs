@@ -227,7 +227,10 @@ namespace Reko.Scanning
                             if (IsExecutable(addrDest))
                             {
                                 // call / jump destination is executable
-                                AddEdge(G, addrDest, i.Address);
+                                if ((i.Class & RtlClass.Call) == 0)
+                                {
+                                    AddEdge(G, addrDest, i.Address);
+                                }
                                 if ((i.Class & RtlClass.Call) != 0)
                                 {
                                     int callTally;
@@ -270,22 +273,24 @@ namespace Reko.Scanning
 
         // Remove blocks that fall off the end of the segment
         // or into data.
-        public void RemoveBadInstructionsFromGraph()
+        public HashSet<Address> RemoveBadInstructionsFromGraph()
         {
             // Find all places that are reachable from "bad" addresses.
             // By transitivity, they must also be be bad.
+            var deadNodes = new HashSet<Address>();
             foreach (var a in new DfsIterator<Address>(G).PreOrder(bad))
             {
                 if (a != bad)
                 {
                     sr.Instructions.Remove(a);
+                    deadNodes.Add(a);
 
                     // Destination can't be a call destination.
                     sr.DirectlyCalledAddresses.Remove(a);
                 }
             }
+            return deadNodes;
         }
-
 
         /// <summary>
         /// Get a rewriter for the specified address. If a rewriter is already
@@ -323,10 +328,10 @@ namespace Reko.Scanning
             public Address EndAddress;
         }
 
-        public DiGraph<RtlBlock> BuildIcfg()
+        public DiGraph<RtlBlock> BuildIcfg(Dictionary<Address, RtlBlock> deadNodes)
         {
             sr.ICFG = BuildBlocks(G);
-            //BuildEdges(G, sr.ICFG);
+            BuildEdges(G, sr.ICFG);
             return sr.ICFG;
         }
 
@@ -396,6 +401,10 @@ namespace Reko.Scanning
                 }
             }
             return allBlocks;
+        }
+
+        private void BuildEdges(DiGraph<Address> g, DiGraph<RtlBlock> icfg)
+        {
         }
 
         private List<ShingleBlock> TerminateBlocks(List<ShingleBlock> blocks, Address addrTerm)
