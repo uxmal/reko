@@ -350,7 +350,22 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private Section LoadCodeSection(LeImageReader rdr)
         {
-            throw new NotImplementedException();
+            uint count;
+            if (!this.TryReadVarUInt32(rdr, out count))
+                return null;
+            var funcBodies = new List<byte[]>();
+            for (int i = 0; i < count; ++i)
+            {
+                uint len;
+                if (!TryReadVarUInt32(rdr, out len))
+                    return null;
+                var codeBytes = rdr.ReadBytes(len);
+                funcBodies.Add(codeBytes);
+            }
+            return new CodeSection
+            {
+                 FunctionBodies = funcBodies,
+            };
         }
 
         private Section LoadDataSection(LeImageReader rdr)
@@ -567,5 +582,10 @@ namespace Reko.ImageLoaders.WebAssembly
                 Index);
             return sb.ToString();
         }
+    }
+
+    public class CodeSection : Section
+    {
+        public List<byte[]> FunctionBodies;
     }
 }

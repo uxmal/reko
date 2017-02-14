@@ -178,5 +178,22 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             Assert.AreEqual("(export \"memory\" (memory 0))", mems.ExportEntries[0].ToString());
             Assert.AreEqual("(export \"hello\" (func 1))", mems.ExportEntries[1].ToString());
         }
+
+        [Test]
+        public void WasmLdr_LoadCodeSection()
+        {
+            var bytes = new byte[]
+            {
+                0x0A, 0x08,
+                0x01,
+                    0x06, 0x00, 0x41, 0x10, 0x10, 0x00, 0x0B
+            };
+            Create_Loader();
+            var rdr = new LeImageReader(bytes);
+            var section = ldr.LoadSection(rdr);
+            var codes = (CodeSection)section;
+            Assert.AreEqual(1, codes.FunctionBodies.Count);
+            Assert.AreEqual(new byte[] { 0x00, 0x41, 0x10, 0x10, 0x00, 0x0B }, codes.FunctionBodies[0]);
+        }
     }
 }
