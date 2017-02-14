@@ -109,5 +109,74 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             Assert.AreEqual(1, funcs.Declarations.Count);
             Assert.AreEqual(0x42, funcs.Declarations[0]);
         }
+
+        [Test]
+        public void WasmLdr_LoadTableSection()
+        {
+            var bytes = new byte[]
+            {
+                0x04, 0x04,     // Table section
+                0x01,           // one table declaration
+                    0x70, 0x00, 0x00
+            };
+
+            Create_Loader();
+            var rdr = new LeImageReader(bytes);
+            var section = ldr.LoadSection(rdr);
+            var tables = (TableSection)section;
+            Assert.AreEqual(1, tables.Tables.Count);
+            Assert.AreEqual("(table 0 0 anyfunc)", tables.Tables[0].ToString());
+        }
+
+        [Test]
+        public void WasmLdr_LoadMemorySection()
+        {
+            var bytes = new byte[]
+            {
+                0x05, 0x04,     // Memory section
+                0x01,           // one table declaration
+                    0x01, 0x00, 0x10
+            };
+
+            Create_Loader();
+            var rdr = new LeImageReader(bytes);
+            var section = ldr.LoadSection(rdr);
+            var mems = (MemorySection)section;
+            Assert.AreEqual(1, mems.Memories.Count);
+            Assert.AreEqual("(memory 0 16)", mems.Memories[0].ToString());
+        }
+
+/*
+
+07 12		;; exports
+02 06 6D 65 6D 6F 72 79 
+   02 00
+   05 68 65 6C 6C 6F
+   00 01
+
+0A 08 */
+
+        [Test]
+        public void WasmLdr_LoadExportSection()
+        {
+            var bytes = new byte[]
+            {
+0x07, 0x12,                 //       ; ; exports
+0x02, 0x06, 0x6D, 0x65, 0x6D, 0x6F, 0x72, 0x79,
+      0x02, 0x00,
+      0x05, 0x68, 0x65, 0x6C, 0x6C, 0x6F,
+      0x00, 0x01, 
+
+//0A 08
+            };
+
+            Create_Loader();
+            var rdr = new LeImageReader(bytes);
+            var section = ldr.LoadSection(rdr);
+            var mems = (ExportSection)section;
+            Assert.AreEqual(2, mems.ExportEntries.Count);
+            Assert.AreEqual("(export \"memory\" (memory 0))", mems.ExportEntries[0].ToString());
+            Assert.AreEqual("(export \"hello\" (func 1))", mems.ExportEntries[1].ToString());
+        }
     }
 }

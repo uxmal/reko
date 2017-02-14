@@ -31,6 +31,14 @@ namespace Reko.ImageLoaders.WebAssembly
 {
     public class WasmLoader : ImageLoader
     {
+        internal static string[] ExportKinds =
+        {
+            "func",
+            "table",
+            "memory",
+            "global",
+        };
+
         public WasmLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
         {
         }
@@ -225,12 +233,73 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private Section LoadTableSection(LeImageReader rdr)
         {
-            throw new NotImplementedException();
+            uint count;
+            if (!this.TryReadVarUInt32(rdr, out count))
+                return null;
+            var tables = new List<TableType>();
+            for (int i = 0; i < count; ++i)
+            {
+                var dt = ReadValueType(rdr);
+                if (dt == null)
+                    return null;
+                uint flags;
+                if (!TryReadVarUInt32(rdr, out flags))
+                    return null;
+                uint init;
+                if (!TryReadVarUInt32(rdr, out init))
+                    return null;
+                    uint max = 0;
+                if ((flags & 1) != 0)
+                {
+                    if (!TryReadVarUInt32(rdr, out max))
+                        return null;
+                }
+                var tt = new TableType
+                {
+                    EntryType = dt,
+                    Initial = init,
+                    Maximum = max,
+                };
+                tables.Add(tt);
+            }
+            return new TableSection
+            {
+                Tables = tables
+            };
         }
 
         private Section LoadMemorySection(LeImageReader rdr)
         {
-            throw new NotImplementedException();
+            uint count;
+            if (!this.TryReadVarUInt32(rdr, out count))
+                return null;
+            var mems = new List<Memory>();
+            for (int i = 0; i < count; ++i)
+            {
+                uint flags;
+                if (!TryReadVarUInt32(rdr, out flags))
+                    return null;
+                uint init;
+                if (!TryReadVarUInt32(rdr, out init))
+                    return null;
+                uint max = 0;
+                if ((flags & 1) != 0)
+                {
+                    if (!TryReadVarUInt32(rdr, out max))
+                        return null;
+                }
+                var mem = new Memory
+                {
+                    Flags = flags,
+                    Initial = init,
+                    Maximum = max,
+                };
+                mems.Add(mem);
+            }
+            return new MemorySection
+            {
+                Memories = mems,
+            };
         }
 
         private Section LoadGlobalSection(LeImageReader rdr)
@@ -240,7 +309,33 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private Section LoadExportSection(LeImageReader rdr)
         {
-            throw new NotImplementedException();
+            uint count;
+            if (!this.TryReadVarUInt32(rdr, out count))
+                return null;
+            var exports = new List<ExportEntry>();
+            for (int i = 0; i < count; ++i)
+            {
+                uint len;
+                if (!TryReadVarUInt32(rdr, out len))
+                    return null;
+                var field = Encoding.UTF8.GetString(rdr.ReadBytes(len));
+                byte kind;
+                if (!rdr.TryReadByte(out kind))
+                    return null;
+                uint index;
+                if (!TryReadVarUInt32(rdr, out index))
+                    return null;
+                exports.Add(new ExportEntry
+                {
+                    Field = field,
+                    Kind = kind,
+                    Index = index,
+                });
+            }
+            return new ExportSection
+            {
+                ExportEntries = exports
+            };
         }
 
         private Section LoadStartSection(LeImageReader rdr)
@@ -313,7 +408,7 @@ namespace Reko.ImageLoaders.WebAssembly
             case -0x02: return PrimitiveType.Word64; // i64
             case -0x03: return PrimitiveType.Real32; // f32
             case -0x04: return PrimitiveType.Real64; // f64
-            case -0x10: throw new NotImplementedException(); // anyfunc
+            case -0x10: return new TypeReference("anyfunc", new StructureType("anyfunc", 4)); // anyfunc
             case -0x20: throw new NotImplementedException(); // func
             case -0x40: throw new NotImplementedException(); // pseudo type for representing an empty block_type
             default: throw new NotImplementedException();
@@ -411,4 +506,66 @@ namespace Reko.ImageLoaders.WebAssembly
         public List<uint> Declarations;
     }
 
+    public class TableSection : Section
+    {
+        public List<TableType> Tables;
+    }
+
+    public class TableType
+    {
+        public DataType EntryType;
+        public uint Flags;
+        public uint Initial;
+        public uint Maximum;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("(table {0}", Initial);
+            sb.AppendFormat(" {0}", Maximum);
+            sb.AppendFormat(" {0})", EntryType);
+            return sb.ToString();
+        }
+    }
+
+    public class MemorySection : Section
+    {
+        public List<Memory> Memories;
+    }
+
+    public class Memory
+    {
+        public uint Flags;
+        public uint Initial;
+        public uint Maximum;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("(memory {0} {1})", Initial, Maximum);
+            return sb.ToString();
+        }
+    }
+
+    public class ExportSection : Section
+    {
+        public List<ExportEntry> ExportEntries;
+    }
+
+    public class ExportEntry
+    {
+        public string Field;
+        public byte Kind;
+        public uint Index;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("(export \"{0}\" (", Field);
+            sb.AppendFormat("{0} {1}))",
+                WasmLoader.ExportKinds[Kind],
+                Index);
+            return sb.ToString();
+        }
+    }
 }
