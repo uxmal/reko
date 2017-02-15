@@ -49,7 +49,10 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             var rdr = LoadHeader();
             LoadSections(rdr);
-            throw new NotImplementedException();
+            return new Program()
+            {
+
+            };
         }
 
         private void LoadSections(WasmImageReader rdr)
@@ -58,9 +61,10 @@ namespace Reko.ImageLoaders.WebAssembly
             for (;;)
             {
                 var s = LoadSection(rdr);
-                Console.WriteLine("{0,-20}: {1,-20} {2}", s.Name, s.Type, s.Bytes.Length);
+                if (s == null)
+                    break;
+                Console.WriteLine(s.ToString());
             }
-            throw new NotImplementedException();
         }
 
         public WasmImageReader LoadHeader()
@@ -114,32 +118,31 @@ namespace Reko.ImageLoaders.WebAssembly
             var rdr2 = new WasmImageReader(bytes);
             switch (type)
             {
-            case WasmSection.Custom: return LoadCustomSection(name, rdr2);     // custom section
+            case WasmSection.Custom: return LoadCustomSection(name, bytes); // custom section
 
-            case WasmSection.Type: return LoadTypeSection(rdr2);       // Function signature declarations
-            case WasmSection.Import: return LoadImportSection(rdr2);     // Import declarations
-            case WasmSection.Function: return LoadFunctionSection(rdr2);   // Function declarations
-            case WasmSection.Table: return LoadTableSection(rdr2);      // Indirect function table and other tables
-            case WasmSection.Memory: return LoadMemorySection(rdr2);     // Memory attributes
-            case WasmSection.Global: return LoadGlobalSection(rdr2);     // Global declarations
-            case WasmSection.Export: return LoadExportSection(rdr2);     // Exports
-            case WasmSection.Start: return LoadStartSection(rdr2);      // Start function declaration
-            case WasmSection.Element: return LoadElementSection(rdr2);    // Elements section
-            case WasmSection.Code: return LoadCodeSection(rdr2);      // Function bodies (code)
-            case WasmSection.Data: return LoadDataSection(rdr2);      // Data segments
+            case WasmSection.Type: return LoadTypeSection(rdr2);            // Function signature declarations
+            case WasmSection.Import: return LoadImportSection(rdr2);        // Import declarations
+            case WasmSection.Function: return LoadFunctionSection(rdr2);    // Function declarations
+            case WasmSection.Table: return LoadTableSection(rdr2);          // Indirect function table and other tables
+            case WasmSection.Memory: return LoadMemorySection(rdr2);        // Memory attributes
+            case WasmSection.Global: return LoadGlobalSection(rdr2);        // Global declarations
+            case WasmSection.Export: return LoadExportSection(rdr2);        // Exports
+            case WasmSection.Start: return LoadStartSection(rdr2);          // Start function declaration
+            case WasmSection.Element: return LoadElementSection(rdr2);      // Elements section
+            case WasmSection.Code: return LoadCodeSection(rdr2);            // Function bodies (code)
+            case WasmSection.Data: return LoadDataSection(rdr2);            // Data segments
+            default: throw new NotSupportedException();
             }
+        }
 
-            return new Section
+        private Section LoadCustomSection(string name, byte[] bytes)
+        {
+            return new CustomSection
             {
-                Type = type,
                 Name = name,
                 Bytes = bytes,
             };
-        }
 
-        private Section LoadCustomSection(string name, WasmImageReader rdr)
-        {
-            throw new NotImplementedException();
         }
 
         // The type section declares all function signatures that will be used in the module.
@@ -184,12 +187,47 @@ namespace Reko.ImageLoaders.WebAssembly
                 case 0:
                     uint function_index;
                     if (!rdr.TryReadVarUInt32(out function_index))
-                        break;
+                        return null;
                     imps.Add(new Import
                     {
+                        Type = SymbolType.ExternalProcedure,
                         Module = module,
                         Field = field,
-                        FunctionIndex = function_index,
+                        Index = function_index,
+                    });
+                    break;
+                case 1:
+                    var table = this.ReadTableType(rdr);
+                    if (table == null)
+                        return null;
+                    imps.Add(new Import
+                    {
+                        Type = SymbolType.Table,
+                        Module = module,
+                        Field = field,
+                        TableType = table,
+                    });
+                    break;
+                case 2:
+                    var memory_type = ReadResizableLimits(rdr);
+                    if (memory_type == null)
+                        return null;
+                    imps.Add(new Import
+                    {
+                        Type = SymbolType.AddressSpace,
+                        Module = module,
+                        Field = field,
+                        MemoryType = memory_type,
+                    });
+                    break;
+                case 3:
+                    var global_type = ReadGlobalType(rdr);
+                    imps.Add(new Import
+                    {
+                        Type = SymbolType.Data,
+                        Module = module,
+                        Field = field,
+                        GlobalType = global_type,
                     });
                     break;
                 default:
@@ -204,7 +242,7 @@ namespace Reko.ImageLoaders.WebAssembly
     3 indicating a Global import or definition
                  * 
                  */
-
+                Console.WriteLine("{0}", imps.Last());
             }
             return new ImportSection
             {
@@ -239,33 +277,50 @@ namespace Reko.ImageLoaders.WebAssembly
             var tables = new List<TableType>();
             for (int i = 0; i < count; ++i)
             {
-                var dt = ReadValueType(rdr);
-                if (dt == null)
+                TableType tt = ReadTableType(rdr);
+                if (tt == null)
                     return null;
-                uint flags;
-                if (!rdr.TryReadVarUInt32(out flags))
-                    return null;
-                uint init;
-                if (!rdr.TryReadVarUInt32(out init))
-                    return null;
-                uint max = 0;
-                if ((flags & 1) != 0)
-                {
-                    if (!rdr.TryReadVarUInt32(out max))
-                        return null;
-                }
-                var tt = new TableType
-                {
-                    EntryType = dt,
-                    Initial = init,
-                    Maximum = max,
-                };
                 tables.Add(tt);
             }
             return new TableSection
             {
                 Tables = tables
             };
+        }
+
+        private TableType ReadTableType(WasmImageReader rdr)
+        {
+            var dt = ReadValueType(rdr);
+            if (dt == null)
+                return null;
+
+            var tpl = ReadResizableLimits(rdr);
+            if (tpl == null)
+                return null;
+
+            return new TableType
+            {
+                EntryType = dt,
+                Initial = tpl.Item1,
+                Maximum = tpl.Item2,
+            };
+        }
+
+        private Tuple<uint,uint> ReadResizableLimits(WasmImageReader rdr)
+        {
+            uint flags;
+            if (!rdr.TryReadVarUInt32(out flags))
+                return null;
+            uint init;
+            if (!rdr.TryReadVarUInt32(out init))
+                return null;
+            uint max = 0;
+            if ((flags & 1) != 0)
+            {
+                if (!rdr.TryReadVarUInt32(out max))
+                    return null;
+            }
+            return Tuple.Create(init, max);
         }
 
         private Section LoadMemorySection(WasmImageReader rdr)
@@ -304,7 +359,26 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private Section LoadGlobalSection(WasmImageReader rdr)
         {
-            throw new NotImplementedException();
+            uint count;
+            if (!rdr.TryReadVarUInt32(out count))
+                return null;
+            var globals = new List<GlobalEntry>();
+            for (int i = 0; i < count; ++i)
+            {
+                var global_type = ReadGlobalType(rdr);
+                if (global_type == null)
+                    return null;
+                var expr = LoadInitExpr(rdr);
+                globals.Add(new GlobalEntry
+                {
+                    Type = global_type,
+                    InitExpr = expr,
+                });
+            }
+            return new GlobalSection
+            {
+                Globals = globals
+            };
         }
 
         private Section LoadExportSection(WasmImageReader rdr)
@@ -345,7 +419,38 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private Section LoadElementSection(WasmImageReader rdr)
         {
-            throw new NotImplementedException();
+            uint count;
+            if (!rdr.TryReadVarUInt32(out count))
+                return null;
+            var elementSegs = new List<ElementSegment>();
+            for (int i = 0; i < count; ++i)
+            {
+                uint table_index;
+                if (!rdr.TryReadVarUInt32(out table_index))
+                    return null;
+                var offset = LoadInitExpr(rdr);
+                uint cElems;
+                if (!rdr.TryReadVarUInt32(out cElems))
+                    return null;
+                var elements = new List<uint>();
+                for (int j = 0; j < cElems; ++j)
+                {
+                    uint elem;
+                    if (!rdr.TryReadVarUInt32(out elem))
+                        return null;
+                    elements.Add(elem);
+                }
+                elementSegs.Add(new ElementSegment
+                {
+                    TableIndex = table_index,
+                    Offset = offset,
+                    Elements = elements,
+                });
+            }
+            return new ElementSection
+            {
+                Segments = elementSegs
+            };
         }
 
         private Section LoadCodeSection(WasmImageReader rdr)
@@ -467,6 +572,15 @@ namespace Reko.ImageLoaders.WebAssembly
             var eval = new WasmEvaluator(rdr);
             return eval.Run();
         }
+
+        private Tuple<DataType, bool> ReadGlobalType(WasmImageReader rdr)
+        {
+            var dt = this.ReadValueType(rdr);
+            byte b;
+            if (!rdr.TryReadByte(out b))
+                return null;
+            return Tuple.Create(dt, b != 0);
+        }
     }
 
     public enum WasmSection
@@ -488,14 +602,28 @@ namespace Reko.ImageLoaders.WebAssembly
 
     public class Section
     {
-        public byte[] Bytes { get; internal set; }
+
+    }
+    public class CustomSection : Section
+    {
         public string Name { get; internal set; }
-        public WasmSection Type { get; internal set; }
+        public byte[] Bytes { get; internal set; }
     }
 
     public class TypeSection :Section
     {
         public List<FunctionType> Types;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < Types.Count; ++i)
+            {
+                sb.AppendFormat("(type $type{0} {1})", i, Types[i]);
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
     }
 
     public class ImportSection : Section
@@ -505,9 +633,38 @@ namespace Reko.ImageLoaders.WebAssembly
 
     public class Import
     {
+        public SymbolType Type;
         public string Module;
         public string Field;
-        public uint FunctionIndex;
+        public uint Index = ~0u;
+        public Tuple<DataType, bool> GlobalType;
+        public Tuple<uint, uint> MemoryType;
+        public TableType TableType;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("(import \"{0}\", \"{1}\" (", Module, Field);
+            switch (Type)
+            {
+            case SymbolType.Data:
+                sb.AppendFormat("global {0} {1}", GlobalType.Item2, GlobalType.Item1);
+                break;
+            case SymbolType.ExternalProcedure:
+                sb.AppendFormat("func {0}", Index);
+                break;
+            case SymbolType.AddressSpace:
+                sb.AppendFormat("memory {0} {1}", MemoryType.Item1, MemoryType.Item2);
+                break;
+            case SymbolType.Table:
+                sb.AppendFormat("table {0} {1} {2}", TableType.Initial, TableType.Maximum, TableType.EntryType);
+                break;
+            default:
+                throw new NotImplementedException();
+            }
+            sb.Append("))");
+            return sb.ToString();
+        }
     }
 
     public class FunctionSection : Section
@@ -593,5 +750,28 @@ namespace Reko.ImageLoaders.WebAssembly
         public uint MemoryIndex;
         public object Offset;
         public byte[] Bytes;
+    }
+
+    public class GlobalSection : Section
+    {
+        public List<GlobalEntry> Globals;
+    }
+
+    public class GlobalEntry
+    {
+        public object InitExpr { get; internal set; }
+        public Tuple<DataType, bool> Type { get; internal set; }
+    }
+
+    public class ElementSegment
+    {
+        public List<uint> Elements { get; internal set; }
+        public object Offset { get; internal set; }
+        public uint TableIndex { get; internal set; }
+    }
+
+    public class ElementSection : Section
+    {
+        public List<ElementSegment> Segments { get; internal set; }
     }
 }

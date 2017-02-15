@@ -174,15 +174,20 @@ namespace Reko.Core.Expressions
 
 		public static Constant FloatFromBitpattern(long bits)
 		{
-			long mant = bits & 0x007FFFFF;
-			int exp =  (int) (bits >> 23) & 0xFF;
-			float sign = (bits < 0) ? -1.0F : 1.0F;
-			if (mant == 0 && exp == 0)
-				return Constant.Real32(0.0F);
-			return Constant.Real32(sign * (float) MakeReal(exp, 0x7F, mant, 23));
+            return Constant.Real32(Int32BitsToFloat((int)bits));
 		}
 
-		public static Constant DoubleFromBitpattern(long bits)
+        public static float Int32BitsToFloat(int bits)
+        {
+            long mant = bits & 0x007FFFFF;
+            int exp = (int)(bits >> 23) & 0xFF;
+            float sign = (bits < 0) ? -1.0F : 1.0F;
+            if (mant == 0 && exp == 0)
+                return 0.0F;
+            return sign * (float)MakeReal(exp, 0x7F, mant, 23);
+        }
+
+        public static Constant DoubleFromBitpattern(long bits)
 		{
             return Constant.Real64(BitConverter.Int64BitsToDouble(bits));
 		}

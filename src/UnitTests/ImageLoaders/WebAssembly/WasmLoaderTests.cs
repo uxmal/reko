@@ -89,7 +89,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             Assert.AreEqual(1, imps.Imports.Count);
             Assert.AreEqual("env", imps.Imports[0].Module);
             Assert.AreEqual("puts", imps.Imports[0].Field);
-            Assert.AreEqual(0x42, imps.Imports[0].FunctionIndex);
+            Assert.AreEqual(0x42, imps.Imports[0].Index);
         }
 
         [Test]
@@ -216,6 +216,25 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             Assert.AreEqual(0, codes.Segments[0].MemoryIndex);
             Assert.AreEqual(4, codes.Segments[0].Offset);
             Assert.AreEqual(new byte[] { 0x60, 0x42, 0x0F, 0x00 } , codes.Segments[0].Bytes);
+        }
+
+        [Test]
+        public void WasmLdr_LoadGlobalSection()
+        {
+            var bytes = new byte[]
+            {
+                0x06, 0x06,
+                0x01,
+                    0x7F, 0x01, 
+                          0x23, 0x02, 0x0B,
+                    // global_type
+                    // init_expr
+            };
+            Create_Loader();
+            var rdr = new WasmImageReader(bytes);
+            var section = ldr.LoadSection(rdr);
+            var codes = (GlobalSection)section;
+            Assert.AreEqual(1, codes.Globals.Count);
         }
     }
 }

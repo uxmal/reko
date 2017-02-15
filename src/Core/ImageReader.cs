@@ -410,7 +410,7 @@ namespace Reko.Core
             case SeekOrigin.End:
                 off = offEnd + offset;
                 break;
-            }
+        }
             return off;
         }
 
@@ -421,7 +421,6 @@ namespace Reko.Core
             off += ab.Length;
             return ab;
         }
-
         public int Read(byte[] buffer, int offset, int count)
         {
             int bytesRead = (int)Math.Min(buffer.Length - offset, count);
@@ -429,6 +428,6 @@ namespace Reko.Core
             Array.Copy(bytes, this.off, buffer, offset, bytesRead);
             off += bytesRead;
             return bytesRead;
-        }
+    }
     }
 }

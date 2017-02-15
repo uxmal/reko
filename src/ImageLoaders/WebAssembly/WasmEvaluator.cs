@@ -21,6 +21,7 @@
 using Reko.Core;
 using System.Collections.Generic;
 using System;
+using Reko.Core.Expressions;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
@@ -41,6 +42,8 @@ namespace Reko.ImageLoaders.WebAssembly
             {
                 byte b;
                 uint u;
+                long l;
+                int i;
                 if (!rdr.TryReadByte(out b))
                     throw new BadImageFormatException();
                 switch ((Opcode)b)
@@ -67,6 +70,11 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Opcode.set_local:
                 case Opcode.tee_local:
                 case Opcode.get_global:
+                    if (!rdr.TryReadVarUInt32(out u))
+                        throw new InvalidOperationException();
+                    //$TODO: real impl.
+                    stack.Push(0);
+                    break;
                 case Opcode.set_global:
                 case Opcode.i32_load:
                 case Opcode.i64_load:
@@ -100,8 +108,20 @@ namespace Reko.ImageLoaders.WebAssembly
                     stack.Push(u);
                     break;
                 case Opcode.i64_const:
+                    if (!rdr.TryReadLeInt64(out l))
+                        throw new InvalidOperationException();
+                    stack.Push(l);
+                    break;
                 case Opcode.f32_const:
+                    if (!rdr.TryReadLeInt32(out i))
+                        throw new InvalidOperationException();
+                    stack.Push(Constant.Int32BitsToFloat(i));
+                    break;
                 case Opcode.f64_const:
+                    if (!rdr.TryReadLeInt64(out l))
+                        throw new InvalidOperationException();
+                    stack.Push(BitConverter.Int64BitsToDouble(l));
+                    break;
                 case Opcode.i32_eqz:
                 case Opcode.i32_eq:
                 case Opcode.i32_ne:
