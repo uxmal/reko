@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -67,6 +68,14 @@ namespace Reko.ImageLoaders.WebAssembly
                         break;
                     }
                     ops.Add(ImmediateOperand.Word32(u));
+                    break;
+                case 'r':
+                    if (!rdr.TryReadUInt32(out u))
+                    {
+                        opcode = Opcode.unreachable;
+                        break;
+                    }
+                    ops.Add(new ImmediateOperand(Constant.FloatFromBitpattern(u)));
                     break;
                 default:
                     throw new NotImplementedException(string.Format("Format '{0}'.", fmt[i - 1]));

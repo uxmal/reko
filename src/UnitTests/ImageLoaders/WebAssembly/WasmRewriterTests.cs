@@ -61,7 +61,6 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         private void BuildTest(params byte[] bytes)
         {
             this.mem = new MemoryArea(Address.Ptr32(0x00123400), bytes);
-
         }
 
         [Test]
@@ -73,6 +72,17 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
                 "1|L--|v2 = 0x00000004",
                 "2|L--|sp = sp - 0x00000008",
                 "3|L--|Mem0[sp:word32] = v2");
+        }
+
+        [Test]
+        public void WasmRw_Const_r32()
+        {
+            BuildTest(0x43, 0xC3, 0xF5, 0x48, 0xC0);
+            base.AssertCode(
+                "0|L--|(0): 3 instructions",
+                "1|L--|v2 = -3.14F",
+                "2|L--|sp = sp - 0x00000008",
+                "3|L--|Mem0[sp:real32] = v2");
         }
     }
 }

@@ -58,6 +58,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 switch (instr.Opcode)
                 {
                 case Opcode.i32_const: Const(PrimitiveType.Word32); break;
+                case Opcode.f32_const: Const(PrimitiveType.Real32); break;
                 default: m.Invalid(); break;
                 }
                 yield return rtlc;
