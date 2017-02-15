@@ -79,7 +79,11 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            throw new NotImplementedException();
+            return new RelocationResults(
+                new List<ImageSymbol>(),
+                new SortedList<Address, ImageSymbol>())
+            {
+            };
         }
 
         public Section LoadSection(WasmImageReader rdr)
@@ -735,6 +739,11 @@ namespace Reko.ImageLoaders.WebAssembly
     public class CodeSection : Section
     {
         public List<byte[]> FunctionBodies;
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
 
     public class DataSection : Section

@@ -23,10 +23,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Reko.Core.Machine;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
-    public class WasmInstruction
+    public class WasmInstruction : MachineInstruction
     {
         internal static Dictionary<Opcode, string> mpoptostring = new Dictionary<Opcode, string>
         {
@@ -209,5 +210,34 @@ namespace Reko.ImageLoaders.WebAssembly
             { Opcode.f32_reinterpret_i32, "f32.reinterpret/i32" },
             { Opcode.f64_reinterpret_i64, "f64.reinterpret/i64" },
         };
+
+        public WasmInstruction(Opcode code)
+        {
+            this.Opcode = code;
+        }
+
+        public override InstructionClass InstructionClass
+        {
+            get
+            {
+                return InstructionClass.Linear;
+            }
+        } 
+
+        public override bool IsValid {  get { return this.Opcode != Opcode.unreachable; } }
+
+        public Opcode Opcode { get; internal set; }
+
+        public override int OpcodeAsInteger { get { return (int)Opcode; } }
+
+        public MachineOperand[] Operands { get; internal set; }
+
+        public override MachineOperand GetOperand(int i)
+        {
+            if (0 <= i && i < Operands.Length)
+                return Operands[i];
+            else
+                return null;
+        }
     }
 }
