@@ -57,13 +57,11 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private void LoadSections(WasmImageReader rdr)
         {
-            Console.WriteLine("Wasm");
             for (;;)
             {
                 var s = LoadSection(rdr);
                 if (s == null)
                     break;
-                Console.WriteLine(s.ToString());
             }
         }
 
@@ -242,7 +240,6 @@ namespace Reko.ImageLoaders.WebAssembly
     3 indicating a Global import or definition
                  * 
                  */
-                Console.WriteLine("{0}", imps.Last());
             }
             return new ImportSection
             {
