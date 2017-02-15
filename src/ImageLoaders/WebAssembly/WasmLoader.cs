@@ -52,7 +52,7 @@ namespace Reko.ImageLoaders.WebAssembly
             throw new NotImplementedException();
         }
 
-        private void LoadSections(LeImageReader rdr)
+        private void LoadSections(WasmImageReader rdr)
         {
             Console.WriteLine("Wasm");
             for (;;)
@@ -63,9 +63,9 @@ namespace Reko.ImageLoaders.WebAssembly
             throw new NotImplementedException();
         }
 
-        public LeImageReader LoadHeader()
+        public WasmImageReader LoadHeader()
         {
-            var rdr = new LeImageReader(RawImage);
+            var rdr = new WasmImageReader(RawImage);
             uint magic;
             if (!rdr.TryReadLeUInt32(out magic))
                 throw new BadImageFormatException();
@@ -80,20 +80,20 @@ namespace Reko.ImageLoaders.WebAssembly
             throw new NotImplementedException();
         }
 
-        public Section LoadSection(LeImageReader rdr)
+        public Section LoadSection(WasmImageReader rdr)
         {
             byte bType;
             uint payload_len;
             uint name_len;
-            if (!TryReadVarUInt7(rdr, out bType))
+            if (!rdr.TryReadVarUInt7(out bType))
                 return null;            // no more data, return.
             var type = (WasmSection)bType;
-            if (!TryReadVarUInt32(rdr, out payload_len))
+            if (!rdr.TryReadVarUInt32(out payload_len))
                 throw new BadImageFormatException();
             string name;
             if (type == WasmSection.Custom)
             {
-                if (!TryReadVarUInt32(rdr, out name_len) || name_len == 0)
+                if (!rdr.TryReadVarUInt32(out name_len) || name_len == 0)
                     throw new NotImplementedException();
                 name = Encoding.UTF8.GetString(rdr.ReadBytes(name_len));
             }
@@ -111,7 +111,7 @@ namespace Reko.ImageLoaders.WebAssembly
             {
                 bytes = new byte[0];
             }
-            var rdr2 = new LeImageReader(bytes);
+            var rdr2 = new WasmImageReader(bytes);
             switch (type)
             {
             case WasmSection.Custom: return LoadCustomSection(name, rdr2);     // custom section
@@ -137,16 +137,16 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadCustomSection(string name, LeImageReader rdr)
+        private Section LoadCustomSection(string name, WasmImageReader rdr)
         {
             throw new NotImplementedException();
         }
 
         // The type section declares all function signatures that will be used in the module.
-        private Section LoadTypeSection(LeImageReader rdr)
+        private Section LoadTypeSection(WasmImageReader rdr)
         {
             uint count;
-            if (!this.TryReadVarUInt32(rdr, out count))
+            if (!rdr.TryReadVarUInt32(out count))
                 return null;
 
             var types = new List<FunctionType>();
@@ -161,19 +161,19 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadImportSection(LeImageReader rdr)
+        private Section LoadImportSection(WasmImageReader rdr)
         {
             uint count;
-            if (!this.TryReadVarUInt32(rdr, out count))
+            if (!rdr.TryReadVarUInt32(out count))
                 return null;
             var imps = new List<Import>();
             for (uint i = 0; i < count; ++i)
             {
                 uint len;
-                if (!this.TryReadVarUInt32(rdr, out len))
+                if (!rdr.TryReadVarUInt32(out len))
                     return null;
                 string module = Encoding.UTF8.GetString(rdr.ReadBytes(len));
-                if (!this.TryReadVarUInt32(rdr, out len))
+                if (!rdr.TryReadVarUInt32(out len))
                     return null;
                 string field = Encoding.UTF8.GetString(rdr.ReadBytes(len));
                 byte external_kind;
@@ -183,7 +183,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 {
                 case 0:
                     uint function_index;
-                    if (!TryReadVarUInt32(rdr, out function_index))
+                    if (!rdr.TryReadVarUInt32(out function_index))
                         break;
                     imps.Add(new Import
                     {
@@ -212,16 +212,16 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadFunctionSection(LeImageReader rdr)
+        private Section LoadFunctionSection(WasmImageReader rdr)
         {
             uint count;
-            if (!this.TryReadVarUInt32(rdr, out count))
+            if (!rdr.TryReadVarUInt32(out count))
                 return null;
             var decls = new List<uint>();
             for (int i = 0; i < count; ++i)
             {
                 uint decl;
-                if (!this.TryReadVarUInt32(rdr, out decl))
+                if (!rdr.TryReadVarUInt32(out decl))
                     return null;
                 decls.Add(decl);
             }
@@ -231,10 +231,10 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadTableSection(LeImageReader rdr)
+        private Section LoadTableSection(WasmImageReader rdr)
         {
             uint count;
-            if (!this.TryReadVarUInt32(rdr, out count))
+            if (!rdr.TryReadVarUInt32(out count))
                 return null;
             var tables = new List<TableType>();
             for (int i = 0; i < count; ++i)
@@ -243,15 +243,15 @@ namespace Reko.ImageLoaders.WebAssembly
                 if (dt == null)
                     return null;
                 uint flags;
-                if (!TryReadVarUInt32(rdr, out flags))
+                if (!rdr.TryReadVarUInt32(out flags))
                     return null;
                 uint init;
-                if (!TryReadVarUInt32(rdr, out init))
+                if (!rdr.TryReadVarUInt32(out init))
                     return null;
-                    uint max = 0;
+                uint max = 0;
                 if ((flags & 1) != 0)
                 {
-                    if (!TryReadVarUInt32(rdr, out max))
+                    if (!rdr.TryReadVarUInt32(out max))
                         return null;
                 }
                 var tt = new TableType
@@ -268,24 +268,24 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadMemorySection(LeImageReader rdr)
+        private Section LoadMemorySection(WasmImageReader rdr)
         {
             uint count;
-            if (!this.TryReadVarUInt32(rdr, out count))
+            if (!rdr.TryReadVarUInt32(out count))
                 return null;
             var mems = new List<Memory>();
             for (int i = 0; i < count; ++i)
             {
                 uint flags;
-                if (!TryReadVarUInt32(rdr, out flags))
+                if (!rdr.TryReadVarUInt32(out flags))
                     return null;
                 uint init;
-                if (!TryReadVarUInt32(rdr, out init))
+                if (!rdr.TryReadVarUInt32(out init))
                     return null;
                 uint max = 0;
                 if ((flags & 1) != 0)
                 {
-                    if (!TryReadVarUInt32(rdr, out max))
+                    if (!rdr.TryReadVarUInt32(out max))
                         return null;
                 }
                 var mem = new Memory
@@ -302,28 +302,28 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadGlobalSection(LeImageReader rdr)
+        private Section LoadGlobalSection(WasmImageReader rdr)
         {
             throw new NotImplementedException();
         }
 
-        private Section LoadExportSection(LeImageReader rdr)
+        private Section LoadExportSection(WasmImageReader rdr)
         {
             uint count;
-            if (!this.TryReadVarUInt32(rdr, out count))
+            if (!rdr.TryReadVarUInt32(out count))
                 return null;
             var exports = new List<ExportEntry>();
             for (int i = 0; i < count; ++i)
             {
                 uint len;
-                if (!TryReadVarUInt32(rdr, out len))
+                if (!rdr.TryReadVarUInt32(out len))
                     return null;
                 var field = Encoding.UTF8.GetString(rdr.ReadBytes(len));
                 byte kind;
                 if (!rdr.TryReadByte(out kind))
                     return null;
                 uint index;
-                if (!TryReadVarUInt32(rdr, out index))
+                if (!rdr.TryReadVarUInt32(out index))
                     return null;
                 exports.Add(new ExportEntry
                 {
@@ -338,51 +338,83 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section LoadStartSection(LeImageReader rdr)
+        private Section LoadStartSection(WasmImageReader rdr)
         {
             throw new NotImplementedException();
         }
 
-        private Section LoadElementSection(LeImageReader rdr)
+        private Section LoadElementSection(WasmImageReader rdr)
         {
             throw new NotImplementedException();
         }
 
-        private Section LoadCodeSection(LeImageReader rdr)
+        private Section LoadCodeSection(WasmImageReader rdr)
         {
             uint count;
-            if (!this.TryReadVarUInt32(rdr, out count))
+            if (!rdr.TryReadVarUInt32(out count))
                 return null;
             var funcBodies = new List<byte[]>();
             for (int i = 0; i < count; ++i)
             {
                 uint len;
-                if (!TryReadVarUInt32(rdr, out len))
+                if (!rdr.TryReadVarUInt32(out len))
                     return null;
                 var codeBytes = rdr.ReadBytes(len);
                 funcBodies.Add(codeBytes);
             }
             return new CodeSection
             {
-                 FunctionBodies = funcBodies,
+                FunctionBodies = funcBodies,
             };
         }
 
-        private Section LoadDataSection(LeImageReader rdr)
+        private Section LoadDataSection(WasmImageReader rdr)
         {
-            throw new NotImplementedException();
+            uint count;
+            if (!rdr.TryReadVarUInt32(out count))
+                return null;
+            var segments = new List<DataSegment>();
+            for (int i = 0; i < count; ++i)
+            {
+                /*
+                index 	varuint32 	the linear memory index (0 in the MVP)
+                offset 	init_expr 	an i32 initializer expression that computes the offset at which to place the data
+                size 	varuint32 	size of data (in bytes)
+                data 	bytes 	sequence of size bytes
+                 */
+                uint index;
+                if (!rdr.TryReadVarUInt32(out index))
+                    return null;
+                var offset = LoadInitExpr(rdr);
+                uint size;
+                if (!rdr.TryReadVarUInt32(out size))
+                    return null;
+                var bytes = rdr.ReadBytes(size);
+                if (bytes == null)
+                    return null;
+                segments.Add(new DataSegment
+                {
+                    MemoryIndex = index,
+                    Offset = offset,
+                    Bytes = bytes,
+                });
+            }
+            return new DataSection
+            {
+                Segments = segments
+            };
         }
 
-        private FunctionType LoadFuncType(LeImageReader rdr)
+        private FunctionType LoadFuncType(WasmImageReader rdr)
         {
             byte form;          // varint7     the value for the func type constructor as defined above
             uint param_count;   //  varuint32   the number of parameters to the function
             byte return_count;    // varuint1    the number of results from the function
             Identifier ret = null;   //      value_type ? the result type of the function(if return_count is 1)
 
-            if (!TryReadVarUInt7(rdr, out form))
+            if (!rdr.TryReadVarUInt7(out form))
                 return null;
-            if (!TryReadVarUInt32(rdr, out param_count))
+            if (!rdr.TryReadVarUInt32(out param_count))
                 return null;
             var args = new List<Identifier>();
             int cbOffset = 0;
@@ -397,7 +429,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     new StackArgumentStorage(cbOffset, dt)));
                 cbOffset += dt.Size;
             }
-            if (!TryReadVarUInt7(rdr, out return_count))
+            if (!rdr.TryReadVarUInt7(out return_count))
                 return null;
             if (return_count == 1)
             {
@@ -412,10 +444,10 @@ namespace Reko.ImageLoaders.WebAssembly
                 args.ToArray());
         }
 
-        private DataType ReadValueType(LeImageReader rdr)
+        private DataType ReadValueType(WasmImageReader rdr)
         {
             sbyte ty;
-            if (!TryReadVarInt7(rdr, out ty))
+            if (!rdr.TryReadVarInt7(out ty))
                 return null;
             switch (ty)
             {
@@ -430,48 +462,10 @@ namespace Reko.ImageLoaders.WebAssembly
             }
         }
 
-        private bool TryReadVarUInt32(LeImageReader rdr, out uint u)
+        private object LoadInitExpr(WasmImageReader rdr)
         {
-            u = 0;
-            int sh = 0;
-            byte b;
-            do
-            {
-                if (!rdr.TryReadByte(out b))
-                    return false;
-                u = ((b & 0x7Fu) << sh) | u;
-                sh += 7;
-                //$TODO: overflow.
-            } while ((b & 0x80) != 0);
-            return true;
-        }
-
-        private bool TryReadVarUInt7(ImageReader rdr, out byte b)
-        {
-            if (!rdr.TryReadByte(out b))
-                return false;
-            if ((b & 0x80) != 0)
-                return false;
-            return true;
-        }
-
-        private bool TryReadVarInt7(ImageReader rdr, out sbyte sb)
-        {
-            byte b;
-            sb = 0;
-            if (!rdr.TryReadByte(out b))
-                return false;
-            if ((b & 0x80) != 0)
-                return false;
-            if ((b & 40) != 0)
-            {
-                sb = (sbyte)(0xC0 | b);
-            }
-            else
-            {
-                sb = (sbyte)b;
-            }
-            return true;
+            var eval = new WasmEvaluator(rdr);
+            return eval.Run();
         }
     }
 
@@ -587,5 +581,17 @@ namespace Reko.ImageLoaders.WebAssembly
     public class CodeSection : Section
     {
         public List<byte[]> FunctionBodies;
+    }
+
+    public class DataSection : Section
+    {
+        public List<DataSegment> Segments;
+    }
+
+    public class DataSegment
+    {
+        public uint MemoryIndex;
+        public object Offset;
+        public byte[] Bytes;
     }
 }

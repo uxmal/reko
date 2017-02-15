@@ -41,7 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestFixtureAttribute.cs" />
+    <Compile Include="WasmEvaluator.cs" />
+    <Compile Include="WasmImageReader.cs" />
+    <Compile Include="WasmInstruction.cs" />
     <Compile Include="WasmLoader.cs" />
   </ItemGroup>
   <ItemGroup>

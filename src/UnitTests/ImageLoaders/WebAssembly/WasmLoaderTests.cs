@@ -63,7 +63,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             };
 
             Create_Loader();
-            var rdr = new LeImageReader(bytes);
+            var rdr = new WasmImageReader(bytes);
             var section = ldr.LoadSection(rdr);
             var ts = (TypeSection)section;
             Assert.AreEqual(1, ts.Types.Count);
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             };
 
             Create_Loader();
-            var rdr = new LeImageReader(bytes);
+            var rdr = new WasmImageReader(bytes);
             var section = ldr.LoadSection(rdr);
             var imps = (ImportSection)section;
             Assert.AreEqual(1, imps.Imports.Count);
@@ -103,7 +103,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             };
 
             Create_Loader();
-            var rdr = new LeImageReader(bytes);
+            var rdr = new WasmImageReader(bytes);
             var section = ldr.LoadSection(rdr);
             var funcs = (FunctionSection)section;
             Assert.AreEqual(1, funcs.Declarations.Count);
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             };
 
             Create_Loader();
-            var rdr = new LeImageReader(bytes);
+            var rdr = new WasmImageReader(bytes);
             var section = ldr.LoadSection(rdr);
             var tables = (TableSection)section;
             Assert.AreEqual(1, tables.Tables.Count);
@@ -139,7 +139,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             };
 
             Create_Loader();
-            var rdr = new LeImageReader(bytes);
+            var rdr = new WasmImageReader(bytes);
             var section = ldr.LoadSection(rdr);
             var mems = (MemorySection)section;
             Assert.AreEqual(1, mems.Memories.Count);
@@ -171,7 +171,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             };
 
             Create_Loader();
-            var rdr = new LeImageReader(bytes);
+            var rdr = new WasmImageReader(bytes);
             var section = ldr.LoadSection(rdr);
             var mems = (ExportSection)section;
             Assert.AreEqual(2, mems.ExportEntries.Count);
@@ -189,11 +189,33 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
                     0x06, 0x00, 0x41, 0x10, 0x10, 0x00, 0x0B
             };
             Create_Loader();
-            var rdr = new LeImageReader(bytes);
+            var rdr = new WasmImageReader(bytes);
             var section = ldr.LoadSection(rdr);
             var codes = (CodeSection)section;
             Assert.AreEqual(1, codes.FunctionBodies.Count);
             Assert.AreEqual(new byte[] { 0x00, 0x41, 0x10, 0x10, 0x00, 0x0B }, codes.FunctionBodies[0]);
+        }
+
+        [Test]
+        public void WasmLdr_LoadDataSection()
+        {
+            var bytes = new byte[]
+            {
+                0x0B, 0x1C,
+                0x02,
+                      0x00, 0x41, 0x04, 0x0B, 0x04,
+                            0x60, 0x42, 0x0F, 0x00,
+                      0x00, 0x41, 0x10, 0x0B, 0x0D,
+                            0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21, 0x00
+            };
+            Create_Loader();
+            var rdr = new WasmImageReader(bytes);
+            var section = ldr.LoadSection(rdr);
+            var codes = (DataSection)section;
+            Assert.AreEqual(2, codes.Segments.Count);
+            Assert.AreEqual(0, codes.Segments[0].MemoryIndex);
+            Assert.AreEqual(4, codes.Segments[0].Offset);
+            Assert.AreEqual(new byte[] { 0x60, 0x42, 0x0F, 0x00 } , codes.Segments[0].Bytes);
         }
     }
 }
