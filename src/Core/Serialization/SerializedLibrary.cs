@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -129,9 +130,15 @@ namespace Reko.Core.Serialization
     /// </summary>
     public class GlobalVariable_v1
     {
+        public const int NoOrdinal = -1;
+
         [XmlAttribute("name")]
         public string Name;
 
+        [XmlAttribute("ordinal")]
+        [DefaultValue(NoOrdinal)]
+        public int Ordinal;
+    
         public SerializedType Type;
     }
 }

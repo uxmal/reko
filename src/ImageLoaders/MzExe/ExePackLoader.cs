@@ -63,7 +63,7 @@ namespace Reko.ImageLoaders.MzExe
             var exe = new ExeImageLoader(services, filename, imgRaw);
             this.exeHdrSize = (uint)(exe.e_cparHeader * 0x10U);
             this.hdrOffset = (uint)(exe.e_cparHeader + exe.e_cs) * 0x10U;
-            ImageReader rdr = new LeImageReader(RawImage, hdrOffset);
+            EndianImageReader rdr = new LeImageReader(RawImage, hdrOffset);
             this.ip = rdr.ReadLeUInt16();
             this.cs = rdr.ReadLeUInt16();
             rdr.ReadLeUInt16();
@@ -157,7 +157,7 @@ namespace Reko.ImageLoaders.MzExe
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            ImageReader rdr = new LeImageReader(RawImage, hdrOffset + relocationsOffset);
+            EndianImageReader rdr = new LeImageReader(RawImage, hdrOffset + relocationsOffset);
             ushort segCode = (ushort)(addrLoad.Selector.Value + (ExeImageLoader.CbPsp >> 4));
             ushort dx = 0;
             for (; ; )

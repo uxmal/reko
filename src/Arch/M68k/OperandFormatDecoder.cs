@@ -45,10 +45,24 @@ namespace Reko.Arch.M68k
             this.i = i;
         }
 
-        public MachineOperand GetOperand(ImageReader rdr, string args, PrimitiveType dataWidth)
+        /// <summary>
+        /// Attempts to decode an operand.
+        /// </summary>
+        /// <param name="rdr"></param>
+        /// <param name="args"></param>
+        /// <param name="dataWidth"></param>
+        /// <param name="op"></param>
+        /// <returns>If true, either no more operands are needed, or an
+        /// operand was fetched sucessfully. If false, the operand was
+        /// invalid, either due to a bad encoding or because the reader read
+        /// off the end of the memory area.
+        /// </returns>
+        public bool TryGetOperand(EndianImageReader rdr, string args, PrimitiveType dataWidth, out MachineOperand op)
         {
             if (i >= args.Length)
-                return null;
+            {
+                op = null; return true;
+            }
             for (; ; )
             {
                 if (args[i] == ',')
@@ -57,40 +71,39 @@ namespace Reko.Arch.M68k
                 switch (args[i++])
                 {
                 case 'A':   // Address register A0-A7 encoded in in instrution
-                    return new RegisterOperand(AddressRegister(opcode, GetOpcodeOffset(args[i++])));
+                    op = new RegisterOperand(AddressRegister(opcode, GetOpcodeOffset(args[i++])));
+                    return true;
                 case 'c':   // CCR register 
-                    return new RegisterOperand(Registers.ccr);
+                    op= new RegisterOperand(Registers.ccr);
+                    return true;
                 case 'D':   // Data register D0-D7 encoded in instruction
-                    return DataRegisterOperand(opcode, GetOpcodeOffset(args[i++]));
+                    op = DataRegisterOperand(opcode, GetOpcodeOffset(args[i++]));
+                    return true;
                 case 'E':   // Effective address (EA) 
-                    return ParseOperand(opcode, GetOpcodeOffset(args[i++]), dataWidth, rdr);
+                    return TryParseOperand(opcode, GetOpcodeOffset(args[i++]), dataWidth, rdr, out op);
                 case 'e':   // Effective address with 3-bit halves swapped
-                    return ParseSwappedOperand(opcode, GetOpcodeOffset(args[i++]), dataWidth, rdr);
+                    return TryParseSwappedOperand(opcode, GetOpcodeOffset(args[i++]), dataWidth, rdr, out op);
                 case 'I':   // Immediate operand
-                    return GetImmediate(rdr, GetSizeType(0, args[i++], dataWidth));
+                    return TryGetImmediate(rdr, GetSizeType(0, args[i++], dataWidth), out op);
                 case 'J':   // PC Relative jump 
-                    addr = rdr.Address;
-                    int offset = opcode & 0xFF;
-                    if (offset == 0xFF)
-                        offset = rdr.ReadBeInt32();
-                    else if (offset == 0x00)
-                        offset = rdr.ReadBeInt16();
-                    else
-                        offset = (sbyte) offset;
-                    return new M68kAddressOperand(addr + offset);
+                    return TryPcRelative(rdr, opcode, out op);
                 case 'M':   // Register bitset
                     var size = GetSizeType(0, args[i++], dataWidth);
-                    return new RegisterSetOperand(rdr.ReadBeUInt16(), size);
+                    op = new RegisterSetOperand(rdr.ReadBeUInt16(), size);
+                    return true;
                 case 'n':   // cache bitset
                     bitSet = rdr.ReadBeUInt16();
                     break;
                 case 'm':   // Register bitset reversed
                     size = GetSizeType(0, args[i++], dataWidth);
-                    return RegisterSetOperand.CreateReversed(bitSet, size);
+                    op = RegisterSetOperand.CreateReversed(bitSet, size);
+                    return true;
                 case 'q':   // "Small" quick constant (3-bit part of the opcode)
-                    return GetQuickImmediate(GetOpcodeOffset(args[i++]), 0x07, 8, PrimitiveType.Byte);
+                    op = GetQuickImmediate(GetOpcodeOffset(args[i++]), 0x07, 8, PrimitiveType.Byte);
+                    return true;
                 case 'Q':   // "Large" quick constant (8-bit part of the opcode)
-                    return GetQuickImmediate(GetOpcodeOffset(args[i++]), 0xFF, 0, PrimitiveType.SByte);
+                    op = GetQuickImmediate(GetOpcodeOffset(args[i++]), 0xFF, 0, PrimitiveType.SByte);
+                    return true;
                 case 'R': // relative
                     addr = rdr.Address;
                     int relative = 0;
@@ -100,16 +113,48 @@ namespace Reko.Arch.M68k
                     case 'l': relative = rdr.ReadBeInt32(); break;
                     default: throw new NotImplementedException();
                     }
-                    return new M68kAddressOperand(addr + relative);
+                    op = new M68kAddressOperand(addr + relative);
+                    return true;
                 case 's':   // SR register
-                    return new RegisterOperand(Registers.sr);
+                    op = new RegisterOperand(Registers.sr);
+                    return true;
                 case '+':   // Postincrement operator; following character specifies bit offset of the address register code.
-                    return new PostIncrementMemoryOperand(dataWidth, AddressRegister(opcode, GetOpcodeOffset(args[i++])));
+                    op = new PostIncrementMemoryOperand(dataWidth, AddressRegister(opcode, GetOpcodeOffset(args[i++])));
+                    return true;
                 case '-':   // Predecrement operator; following character specifies bit offset of the address register code.
-                    return new PredecrementMemoryOperand(dataWidth, AddressRegister(opcode, GetOpcodeOffset(args[i++])));
+                    op = new PredecrementMemoryOperand(dataWidth, AddressRegister(opcode, GetOpcodeOffset(args[i++])));
+                    return true;
                 default: throw new FormatException(string.Format("Unknown argument type {0}.", args[--i]));
                 }
             }
+        }
+
+        private bool TryPcRelative(ImageReader rdr, ushort opcode, out MachineOperand op)
+        {
+            var addr = rdr.Address;
+            int offset = opcode & 0xFF;
+            if (offset == 0xFF)
+            {
+                if (!rdr.TryReadBeInt32(out offset))
+                {
+                    op = null;
+                    return false;
+                }
+            }
+            else if (offset == 0x00)
+            {
+                short sOffset;
+                if (!rdr.TryReadBeInt16(out sOffset))
+                {
+                    op = null;
+                    return false;
+                }
+                offset = sOffset;
+            }
+            else
+                offset = (sbyte)offset;
+            op = new M68kAddressOperand(addr + offset);
+            return true;
         }
 
         private MachineOperand GetQuickImmediate(int offset, int mask, int zeroValue, PrimitiveType dataWidth)
@@ -131,29 +176,38 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private static M68kImmediateOperand GetImmediate(ImageReader rdr, PrimitiveType type)
-        {
+		private static bool TryGetImmediate(ImageReader rdr, PrimitiveType type, out MachineOperand op)
+		{
             if (type.Size == 1)
             {
-                rdr.ReadByte();     // skip a byte so we get the appropriate lsb byte and align the word stream.
+                rdr.Offset += 1;    // skip a byte so we get the appropriate lsb byte and align the word stream.
             }
-            return new M68kImmediateOperand(rdr.ReadBe(type));
+            Constant imm;
+            if (!rdr.TryReadBe(type, out imm))
+            {
+                op = null; return false;
+            }
+            else
+            {
+                op = new M68kImmediateOperand(imm);
+                return true;
+            }
         }
 
-        public MachineOperand ParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr)
-        {
+		public bool TryParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
+		{
             opcode >>= bitOffset;
             byte operandBits = (byte) (opcode & 7);
             byte addressMode = (byte) ((opcode >> 3) & 7);
-            return ParseOperandInner(addressMode, operandBits, dataWidth, rdr);
+            return TryParseOperandInner(addressMode, operandBits, dataWidth, rdr, out op);
         }
 
-        private MachineOperand ParseSwappedOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr)
-        {
+		private bool TryParseSwappedOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
+		{
             opcode >>= bitOffset;
             byte addressMode = (byte) (opcode & 7);
             byte operandBits = (byte) ((opcode >> 3) & 7);
-            return ParseOperandInner(addressMode, operandBits, dataWidth, rdr);
+            return TryParseOperandInner(addressMode, operandBits, dataWidth, rdr, out op);
         }
 
         private static int GetOpcodeOffset(char c)
@@ -179,37 +233,65 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private MachineOperand ParseOperandInner(byte addressMode, byte operandBits, PrimitiveType dataWidth, ImageReader rdr)
-        {
+		private bool TryParseOperandInner(byte addressMode, byte operandBits, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
+		{
             Constant offset;
             switch (addressMode)
             {
             case 0: // Data register direct.
-                return DataRegisterOperand(operandBits, 0);
+                op = DataRegisterOperand(operandBits, 0);
+                return true;
             case 1: // Address register direct
-                return new RegisterOperand(AddressRegister(operandBits, 0));
+                op = new RegisterOperand(AddressRegister(operandBits, 0));
+                return true;
             case 2:  // Address register indirect
-                return MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0));
+                op = MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0));
+                return true;
             case 3:  // Address register indirect with postincrement.
-                return MemoryOperand.PostIncrement(dataWidth, AddressRegister(operandBits, 0));
+                op = MemoryOperand.PostIncrement(dataWidth, AddressRegister(operandBits, 0));
+                return true;
             case 4:  // Address register indirect with predecrement.
-                return MemoryOperand.PreDecrement(dataWidth, AddressRegister(operandBits, 0));
+                op = MemoryOperand.PreDecrement(dataWidth, AddressRegister(operandBits, 0));
+                return true;
             case 5: // Address register indirect with displacement.
-                offset = Constant.Int16(rdr.ReadBeInt16());
-                return MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0), offset);
+                if (!rdr.TryReadBe(PrimitiveType.Int16, out offset))
+                {
+                    op = null;
+                    return false;
+                }
+                op = MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0), offset);
+                return true;
             case 6: // Address register indirect with index
-                return AddressRegisterIndirectWithIndex(dataWidth, rdr);
+                return TryAddressRegisterIndirectWithIndex(dataWidth, rdr, out op);
             case 7:
                 switch (operandBits)
                 {
                 case 0: // Absolute short address
-                    return new M68kAddressOperand(rdr.ReadBeUInt16());
+                    ushort usAddr;
+                    if (!rdr.TryReadBeUInt16(out usAddr))
+                    {
+                        op = null; return false;
+                    }
+                    op = new M68kAddressOperand(usAddr);
+                    return true;
                 case 1: // Absolute long address
-                    return new M68kAddressOperand(rdr.ReadBeUInt32());
+                    uint uAddr;
+                    if (!rdr.TryReadBeUInt32(out uAddr))
+                    {
+                        op = null; return false;
+                    }
+                    op = new M68kAddressOperand(uAddr);
+                    return true;
                 case 2: // Program counter with displacement
                     var off = rdr.Address - dasm.instr.Address;
-                    off += rdr.ReadBeInt16();
-                    return new MemoryOperand(dataWidth, Registers.pc, Constant.Int16((short) off));
+                    short sOffset;
+                    if (!rdr.TryReadBeInt16(out sOffset))
+                    {
+                        op = null; return false;
+                    }
+                    off += sOffset;
+                    op = new MemoryOperand(dataWidth, Registers.pc, Constant.Int16((short) off));
+                    return true;
                 case 3:
                     // Program counter with index
                     var addrExt = rdr.Address;
@@ -219,7 +301,8 @@ namespace Reko.Arch.M68k
                     {
                         if (EXT_EFFECTIVE_ZERO(extension))
                         {
-                            return new M68kImmediateOperand(Constant.Word32(0));
+                            op = new M68kImmediateOperand(Constant.Word32(0));
+                            return true;
                         }
                         Constant @base = null;
                         Constant outer = null;
@@ -247,11 +330,12 @@ namespace Reko.Arch.M68k
                                 ? 1 << EXT_INDEX_SCALE(extension)
                                 : 0;
                         }
-                       return new IndexedOperand(dataWidth, @base, outer, base_reg, index_reg, index_width, index_scale, 
+                       op = new IndexedOperand(dataWidth, @base, outer, base_reg, index_reg, index_width, index_scale, 
                            (extension & 7) > 0 && (extension & 7) < 4,
                            (extension & 7) > 4);
+                        return true;
                     }
-                    return new IndirectIndexedOperand(
+                    op = new IndirectIndexedOperand(
                         dataWidth,
                         EXT_8BIT_DISPLACEMENT(extension), 
                         Registers.pc,
@@ -262,12 +346,20 @@ namespace Reko.Arch.M68k
                             ? PrimitiveType.Word32
                             : PrimitiveType.Int16,
                         1 << EXT_INDEX_SCALE(extension));
-
+                    return true;
                 case 4:
                     //  Immediate
                     if (dataWidth.Size == 1)        // don't want the instruction stream to get misaligned!
-                        rdr.ReadByte();
-                    return new M68kImmediateOperand(rdr.ReadBe(dataWidth));
+                    {
+                        rdr.Offset += 1;
+                    }
+                    Constant coff;
+                    if (!rdr.TryReadBe(dataWidth, out coff))
+                    {
+                        op = null; return false;
+                    }
+                    op = new M68kImmediateOperand(coff);
+                    return true;
                 default:
                     throw new NotImplementedException(string.Format("Address mode {0}:{1} not implemented.", addressMode, operandBits));
                 }
@@ -276,14 +368,19 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private MachineOperand AddressRegisterIndirectWithIndex(PrimitiveType dataWidth, ImageReader rdr)
+        private bool TryAddressRegisterIndirectWithIndex(PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
         {
-            ushort extension = rdr.ReadBeUInt16();
+            ushort extension;
+            if (!rdr.TryReadBeUInt16(out extension))
+            {
+                op = null; return false;
+            }
             if (EXT_FULL(extension))
             {
                 if (M68kDisassembler.EXT_EFFECTIVE_ZERO(extension))
                 {
-                    return new M68kImmediateOperand(Constant.Zero(dataWidth));
+                    op = new M68kImmediateOperand(Constant.Zero(dataWidth));
+                    return true;
                 }
 
                 RegisterStorage base_reg = null;
@@ -293,32 +390,32 @@ namespace Reko.Arch.M68k
                 Constant @base = null;
                 if (EXT_BASE_DISPLACEMENT_PRESENT(extension))
                 {
-                    @base = rdr.ReadBe(EXT_BASE_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32: PrimitiveType.Int16);
+                    @base = rdr.ReadBe(EXT_BASE_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16);
                 }
 
                 Constant outer = null;
                 if (EXT_OUTER_DISPLACEMENT_PRESENT(extension))
                 {
-                    outer = rdr.ReadBe(EXT_OUTER_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32: PrimitiveType.Int16);
+                    outer = rdr.ReadBe(EXT_OUTER_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16);
                 }
                 if (EXT_BASE_REGISTER_PRESENT(extension))
                     base_reg = Registers.AddressRegister(opcode & 7);
                 if (EXT_INDEX_REGISTER_PRESENT(extension))
                 {
                     index_reg = EXT_INDEX_AR(extension)
-                        ? Registers.AddressRegister((int) EXT_INDEX_REGISTER(extension))
-                        : Registers.DataRegister((int) EXT_INDEX_REGISTER(extension));
+                        ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
+                        : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension));
                     index_reg_width = EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Word16;
                     if (EXT_INDEX_SCALE(extension) != 0)
                         index_scale = 1 << EXT_INDEX_SCALE(extension);
                 }
                 bool preindex = (extension & 7) > 0 && (extension & 7) < 4;
                 bool postindex = (extension & 7) > 4;
-                return new IndexedOperand(dataWidth, @base, outer, base_reg, index_reg, index_reg_width, index_scale, preindex, postindex);
+                op = new IndexedOperand(dataWidth, @base, outer, base_reg, index_reg, index_reg_width, index_scale, preindex, postindex);
             }
             else
             {
-                return new IndirectIndexedOperand(
+                op = new IndirectIndexedOperand(
                     dataWidth,
                     EXT_8BIT_DISPLACEMENT(extension),
                     Registers.AddressRegister(opcode & 7),
@@ -328,6 +425,7 @@ namespace Reko.Arch.M68k
                     EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
                     EXT_INDEX_SCALE(extension));
             }
+            return true;
         }
 
         // Extension word formats

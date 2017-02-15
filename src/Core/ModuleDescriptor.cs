@@ -37,8 +37,8 @@ namespace Reko.Core
             this.ModuleName = name;
             this.ServicesByName = new Dictionary<string, SystemService>();
             this.ServicesByVector = new Dictionary<int, SystemService>();
-            this.GlobalsByName = new Dictionary<string, DataType>();
-            this.GlobalsByOrdinal = new Dictionary<int, DataType>();
+            this.GlobalsByName = new Dictionary<string, ImageSymbol>();
+            this.GlobalsByOrdinal = new Dictionary<int, ImageSymbol>();
         }
 
         public ModuleDescriptor(ModuleDescriptor other)
@@ -46,15 +46,15 @@ namespace Reko.Core
             this.ModuleName = other.ModuleName;
             this.ServicesByName = new Dictionary<string, SystemService>(other.ServicesByName);
             this.ServicesByVector = new Dictionary<int, SystemService>(other.ServicesByVector);
-            this.GlobalsByName = new Dictionary<string, DataType>();
-            this.GlobalsByOrdinal = new Dictionary<int, DataType>();
+            this.GlobalsByName = new Dictionary<string, ImageSymbol>();
+            this.GlobalsByOrdinal = new Dictionary<int, ImageSymbol>();
         }
 
         public string ModuleName { get; private set; }
         public IDictionary<string, SystemService> ServicesByName { get; private set; }
         public IDictionary<int, SystemService> ServicesByVector { get; private set; }
-        public IDictionary<string, DataType> GlobalsByName { get; private set; }
-        public IDictionary<int, DataType> GlobalsByOrdinal { get; private set; }
+        public IDictionary<string, ImageSymbol> GlobalsByName { get; private set; }
+        public IDictionary<int, ImageSymbol> GlobalsByOrdinal { get; private set; }
 
         public ModuleDescriptor Clone()
         {

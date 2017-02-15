@@ -60,9 +60,9 @@ namespace Reko.Arch.X86
             get { return Registers.sp; }
         }
 
-        public abstract IEnumerable<Address> CreateInstructionScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
+        public abstract IEnumerable<Address> CreateInstructionScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
 
-        public abstract X86Disassembler CreateDisassembler(ImageReader rdr, X86Options options);
+        public abstract X86Disassembler CreateDisassembler(EndianImageReader rdr, X86Options options);
 
         public abstract OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, Frame frame, IRewriterHost host);
 
@@ -77,9 +77,9 @@ namespace Reko.Arch.X86
 
         public abstract Address MakeAddressFromConstant(Constant c);
 
-        public abstract Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state);
+        public abstract Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state);
 
-        protected Address ReadSegmentedCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
+        protected Address ReadSegmentedCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
         {
             if (byteSize == PrimitiveType.Word16.Size)
             {
@@ -124,13 +124,13 @@ namespace Reko.Arch.X86
         {
         }
 
-        public override IEnumerable<Address> CreateInstructionScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreateInstructionScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             return new X86RealModePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
-        public override X86Disassembler CreateDisassembler(ImageReader rdr, X86Options options)
+        public override X86Disassembler CreateDisassembler(EndianImageReader rdr, X86Options options)
         {
             var dasm = new X86Disassembler(this, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
             if (options != null)
@@ -155,7 +155,7 @@ namespace Reko.Arch.X86
             throw new NotSupportedException("Must pass segment:offset to make a segmented address.");
         }
 
-        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
         {
             return ReadSegmentedCodeAddress(byteSize, rdr, state);
         }
@@ -173,12 +173,12 @@ namespace Reko.Arch.X86
         {
         }
 
-        public override X86Disassembler CreateDisassembler(ImageReader rdr, X86Options options)
+        public override X86Disassembler CreateDisassembler(EndianImageReader rdr, X86Options options)
         {
             return new X86Disassembler(this, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
         }
 
-        public override IEnumerable<Address> CreateInstructionScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreateInstructionScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             return new X86RealModePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
@@ -199,7 +199,7 @@ namespace Reko.Arch.X86
             throw new NotSupportedException("Must pass segment:offset to make a segmented address.");
         }
 
-        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
         {
             return ReadSegmentedCodeAddress(byteSize, rdr, state);
         }
@@ -234,7 +234,7 @@ namespace Reko.Arch.X86
 
         public override IEnumerable<Address> CreateInstructionScanner(
             SegmentMap map,
-            ImageReader rdr,
+            EndianImageReader rdr,
             IEnumerable<Address> knownAddresses,
             PointerScannerFlags flags)
         {
@@ -242,7 +242,7 @@ namespace Reko.Arch.X86
             return new X86PointerScanner32(rdr, knownLinaddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
-        public override X86Disassembler CreateDisassembler(ImageReader rdr, X86Options options)
+        public override X86Disassembler CreateDisassembler(EndianImageReader rdr, X86Options options)
         {
             return new X86Disassembler(this, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
         }
@@ -263,7 +263,7 @@ namespace Reko.Arch.X86
             return MemoryAccess.Create(esp, offset, dataType);
         }
 
-        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
         {
             return Address.Ptr32(rdr.ReadLeUInt32());
         }
@@ -296,13 +296,13 @@ namespace Reko.Arch.X86
             return Address.Ptr64(offset);
         }
 
-        public override IEnumerable<Address> CreateInstructionScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreateInstructionScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => (ulong)a.ToLinear()).ToHashSet();
             return new X86PointerScanner64(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
-        public override X86Disassembler CreateDisassembler(ImageReader rdr, X86Options options)
+        public override X86Disassembler CreateDisassembler(EndianImageReader rdr, X86Options options)
         {
             return new X86Disassembler(this, rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
         }
@@ -323,7 +323,7 @@ namespace Reko.Arch.X86
             return MemoryAccess.Create(rsp, offset, dataType);
         }
 
-        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
         {
             return Address.Ptr64(rdr.ReadLeUInt64());
         }

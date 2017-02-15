@@ -48,22 +48,22 @@ namespace Reko.Arch.Sparc
 
         #region IProcessorArchitecture Members
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new SparcDisassembler(this, imageReader);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new BeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
         {
             return new BeImageReader(image, addrBegin, addrEnd);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
+        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new BeImageReader(image, offset);
         }
@@ -88,12 +88,12 @@ namespace Reko.Arch.Sparc
             return new SparcProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new SparcRewriter(this, rdr, (SparcProcessorState)state, frame, host);
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -189,7 +189,7 @@ namespace Reko.Arch.Sparc
             return Address.Ptr32(c.ToUInt32());
         }
 
-        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }

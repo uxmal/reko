@@ -111,7 +111,7 @@ namespace Reko.ImageLoaders.Elf
             this.osAbi = rdr.ReadByte();
         }
 
-        public ImageReader CreateReader(ulong fileOffset)
+        public EndianImageReader CreateReader(ulong fileOffset)
         {
             switch (endianness)
             {
@@ -121,7 +121,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public ImageReader CreateReader(uint fileOffset)
+        public EndianImageReader CreateReader(uint fileOffset)
         {
             switch (endianness)
             {
@@ -251,7 +251,7 @@ namespace Reko.ImageLoaders.Elf
         /// <returns></returns>
         private Elf32_Ehdr ReadElfHeaderStart()
         {
-            var rdr = new ImageReader(RawImage, 0);
+            var rdr = new EndianImageReader(RawImage, 0);
             var h = new Elf32_Ehdr();
 
             h.e_ident = rdr.ReadBeUInt32();
@@ -296,12 +296,12 @@ namespace Reko.ImageLoaders.Elf
             return h;
         }
 
-        private ImageReader CreateImageReader(uint offset)
+        private EndianImageReader CreateImageReader(uint offset)
         {
             return CreateImageReader(pHeader.endianness, offset);
         }
 
-        private ImageReader CreateImageReader(int endianness, uint offset)
+        private EndianImageReader CreateImageReader(int endianness, uint offset)
         {
             switch (endianness)
             {

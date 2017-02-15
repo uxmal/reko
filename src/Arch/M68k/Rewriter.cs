@@ -50,7 +50,7 @@ namespace Reko.Arch.M68k
         private RtlInstructionCluster ric;
         private OperandRewriter orw;
 
-        public Rewriter(M68kArchitecture m68kArchitecture, ImageReader rdr, M68kState m68kState, Frame frame, IRewriterHost host)
+        public Rewriter(M68kArchitecture m68kArchitecture, EndianImageReader rdr, M68kState m68kState, Frame frame, IRewriterHost host)
         {
             this.arch = m68kArchitecture;
             this.state = m68kState;

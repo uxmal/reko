@@ -136,10 +136,10 @@ namespace Reko.ImageLoaders.MachO
         public abstract class Parser
         {
             private MachOLoader ldr;
-            protected ImageReader rdr;
+            protected EndianImageReader rdr;
             public IProcessorArchitecture arch;
 
-            protected Parser(MachOLoader ldr, ImageReader rdr)
+            protected Parser(MachOLoader ldr, EndianImageReader rdr)
             {
                 this.ldr = ldr;
                 this.rdr = rdr;
@@ -267,7 +267,7 @@ namespace Reko.ImageLoaders.MachO
                 return imageMap;
             }
 
-            private static string ReadSectionName(ImageReader rdr, int maxSize)
+            private static string ReadSectionName(EndianImageReader rdr, int maxSize)
             {
                 byte[] bytes = rdr.ReadBytes(maxSize);
                 Encoding asc = Encoding.ASCII;
@@ -319,7 +319,7 @@ namespace Reko.ImageLoaders.MachO
                 }
             }
 
-            void parseFunctionStarts(ImageReader rdr)
+            void parseFunctionStarts(EndianImageReader rdr)
             {
                 uint dataoff;
                 uint datasize;
@@ -429,7 +429,7 @@ namespace Reko.ImageLoaders.MachO
 
         public class Loader32 : Parser
         {
-            public Loader32(MachOLoader ldr, ImageReader rdr) : base(ldr, rdr)
+            public Loader32(MachOLoader ldr, EndianImageReader rdr) : base(ldr, rdr)
             {
             }
 
@@ -460,7 +460,7 @@ namespace Reko.ImageLoaders.MachO
 
         public class Loader64 : Parser
         {
-            public Loader64(MachOLoader ldr, ImageReader rdr)
+            public Loader64(MachOLoader ldr, EndianImageReader rdr)
                 : base(ldr, rdr)
             {
             }
@@ -518,7 +518,7 @@ Tuple<int, ByteOrder> getBitnessAndByteOrder(uint magic) {
     //return null;
 }
 
-    ImageReader source_;
+    EndianImageReader source_;
     //core::image::Image *image_;
     //const LogToken &log_;
 
@@ -528,7 +528,7 @@ Tuple<int, ByteOrder> getBitnessAndByteOrder(uint magic) {
 
 
 
-    private ImageReader CreateImageReader(byte[] source)
+    private EndianImageReader CreateImageReader(byte[] source)
     {
  	    throw new NotImplementedException();
     }

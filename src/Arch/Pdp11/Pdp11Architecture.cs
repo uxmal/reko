@@ -45,6 +45,13 @@ namespace Reko.Arch.Pdp11
 
         public static FlagRegister psw = new FlagRegister("psw", 12, PrimitiveType.Word16);
 
+        public static RegisterStorage ac0 = new RegisterStorage("ac0", 16, 0, PrimitiveType.Real64);
+        public static RegisterStorage ac1 = new RegisterStorage("ac1", 17, 0, PrimitiveType.Real64);
+        public static RegisterStorage ac2 = new RegisterStorage("ac2", 18, 0, PrimitiveType.Real64);
+        public static RegisterStorage ac3 = new RegisterStorage("ac3", 19, 0, PrimitiveType.Real64);
+        public static RegisterStorage ac4 = new RegisterStorage("ac4", 20, 0, PrimitiveType.Real64);
+        public static RegisterStorage ac5 = new RegisterStorage("ac5", 21, 0, PrimitiveType.Real64);
+
         public static FlagGroupStorage N = new FlagGroupStorage(psw, 8, "N",PrimitiveType.Bool);
         public static FlagGroupStorage Z = new FlagGroupStorage(psw, 4, "Z",PrimitiveType.Bool);
         public static FlagGroupStorage V = new FlagGroupStorage(psw, 2, "V", PrimitiveType.Bool);
@@ -63,6 +70,7 @@ namespace Reko.Arch.Pdp11
     public class Pdp11Architecture : ProcessorArchitecture
     {
         private RegisterStorage[] regs;
+        private RegisterStorage[] fpuRegs;
         private FlagGroupStorage[] flagRegs;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
@@ -70,7 +78,13 @@ namespace Reko.Arch.Pdp11
         {
             regs = new RegisterStorage[] { 
                 Registers.r0, Registers.r1, Registers.r2, Registers.r3, 
-                Registers.r4, Registers.r5, Registers.sp, Registers.pc, };
+                Registers.r4, Registers.r5, Registers.sp, Registers.pc,
+            };
+            fpuRegs = new RegisterStorage[]
+            {
+                Registers.ac0, Registers.ac1, Registers.ac2,Registers.ac3,
+                Registers.ac4, Registers.ac5, 
+            };
             flagRegs = new FlagGroupStorage[] 
             {
                 Registers.N, Registers.Z, Registers.V, Registers.C
@@ -88,22 +102,22 @@ namespace Reko.Arch.Pdp11
         #region IProcessorArchitecture Members
 
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Pdp11Disassembler(rdr, this);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
         {
             return new LeImageReader(image, addrBegin, addrEnd);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
+        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -120,7 +134,7 @@ namespace Reko.Arch.Pdp11
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new Pdp11InstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()
@@ -128,7 +142,7 @@ namespace Reko.Arch.Pdp11
             return new Pdp11ProcessorState(this);
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -137,6 +151,13 @@ namespace Reko.Arch.Pdp11
         {
             return (0 <= i && i < regs.Length)
                 ? regs[i]
+                : null;
+        }
+
+        internal RegisterStorage GetFpuRegister(int i)
+        {
+            return (0 <= i && i < fpuRegs.Length)
+                ? fpuRegs[i]
                 : null;
         }
 
@@ -235,7 +256,7 @@ namespace Reko.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), frame, host);
         }
@@ -245,7 +266,7 @@ namespace Reko.Arch.Pdp11
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             ushort uAddr = rdr.ReadLeUInt16();
             return Address.Ptr16(uAddr);

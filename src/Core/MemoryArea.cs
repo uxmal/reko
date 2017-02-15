@@ -436,6 +436,20 @@ namespace Reko.Core
             return u;
         }
 
+        public static bool TryReadBeInt16(byte[] img, long offset, out short value)
+        {
+            if (offset <= img.Length - 2)
+            {
+                value = (short)(img[offset] << 8 | img[offset + 1]);
+                return true;
+            }
+            else
+            {
+                value = 0;
+                return false;
+            }
+        }
+
         public static bool TryReadBeUInt16(byte[] img, long offset, out ushort value)
         {
             if (offset <= img.Length - 2)

@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.Arch.Arm</RootNamespace>
     <AssemblyName>Reko.Arch.Arm</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -79,6 +79,7 @@
     <Compile Include="AArch64Instruction.cs" />
     <Compile Include="Arm32Disassembler.cs" />
     <Compile Include="Arm32Instruction.cs" />
+    <Compile Include="Arm32InstructionComparer.cs" />
     <Compile Include="ArmProcedureSerializer.cs" />
     <Compile Include="Arm32ProcessorArchitecture.cs" />
     <Compile Include="ArmProcessorState.cs" />

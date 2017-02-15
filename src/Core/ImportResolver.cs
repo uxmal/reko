@@ -25,6 +25,7 @@ using System.Text;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Core.Operators;
 
 namespace Reko.Core
 {
@@ -32,8 +33,8 @@ namespace Reko.Core
     {
         ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform);
         ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
-        Identifier ResolveGlobal(string moduleName, string globalName, IPlatform platform);
-        Identifier ResolveGlobal(string moduleName, int ordinal, IPlatform platform);
+        Expression ResolveImport(string moduleName, string globalName, IPlatform platform);
+        Expression ResolveImport(string moduleName, int ordinal, IPlatform platform);
         ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c);
     }
 
@@ -110,7 +111,7 @@ namespace Reko.Core
             return platform.LookupProcedureByOrdinal(moduleName, ordinal);
         }
 
-        public Identifier ResolveGlobal(string moduleName, string globalName, IPlatform platform)
+        public Expression ResolveImport(string moduleName, string name, IPlatform platform)
         {
             foreach (var program in project.Programs)
             {
@@ -118,25 +119,32 @@ namespace Reko.Core
                 if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
                     continue;
 
-                DataType dt;
-                if (mod.GlobalsByName.TryGetValue(globalName, out dt))
+                SystemService svc;
+                if (mod.ServicesByName.TryGetValue(name, out svc))
                 {
-                    return new Identifier(globalName, dt, new MemoryStorage());
+                    var ep = new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
+                    return new ProcedureConstant(platform.PointerType, ep);
+                }
+
+                ImageSymbol sym;
+                if (mod.GlobalsByName.TryGetValue(name, out sym))
+                {
+                    return CreateReferenceToImport(sym);
                 }
             }
 
             foreach (var program in project.Programs)
             {
                 DataType dt;
-                if (program.EnvironmentMetadata.Globals.TryGetValue(globalName, out dt))
+                if (program.EnvironmentMetadata.Globals.TryGetValue(name, out dt))
                 {
-                    return new Identifier(globalName, dt, new MemoryStorage());
+                    return new Identifier(name, dt, new MemoryStorage());
                 }
             }
-            return platform.LookupGlobalByName(moduleName, globalName);
+            return platform.ResolveImportByName(moduleName, name);
         }
 
-        public Identifier ResolveGlobal(string moduleName, int ordinal, IPlatform platform)
+        public Expression ResolveImport(string moduleName, int ordinal, IPlatform platform)
         {
             foreach (var program in project.Programs)
             {
@@ -144,18 +152,41 @@ namespace Reko.Core
                 if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
                     continue;
 
-                DataType dt;
-                if (mod.GlobalsByOrdinal.TryGetValue(ordinal, out dt))
+                SystemService svc;
+                if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
                 {
-                    return new Identifier("ExportedGlobal_" + ordinal, dt, new MemoryStorage());
+                    var ep = new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
+                    return new ProcedureConstant(platform.PointerType, ep);
+                }
+
+                ImageSymbol sym;
+                if (mod.GlobalsByOrdinal.TryGetValue(ordinal, out sym))
+                {
+                    return CreateReferenceToImport(sym);
                 }
             }
-
-            return platform.LookupGlobalByOrdinal(moduleName, ordinal);
+            return platform.ResolveImportByOrdinal(moduleName, ordinal);
         }
 
+        private Expression CreateReferenceToImport(ImageSymbol sym)
+        {
+            if (sym.Type == SymbolType.ExternalProcedure)
+            {
+                throw new NotImplementedException();
+            }
+            else if (sym.Type == SymbolType.Procedure)
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                var id = new Identifier(sym.Name, sym.DataType, new MemoryStorage());
+                return new UnaryExpression(Operator.AddrOf, program.Platform.PointerType, id);
+            }
+    }
 
-        public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+        [Obsolete()]
+    public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
         {
             var addrInstruction = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
             var addrImportThunk = program.Platform.MakeAddressFromConstant(c);

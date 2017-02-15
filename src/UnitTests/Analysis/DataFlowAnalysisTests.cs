@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Analysis
 		public void DfaGlobalHandle()
 		{
             Given_FakeWin32Platform(mr);
-            this.platform.Stub(p => p.LookupGlobalByName(null, null)).IgnoreArguments().Return(null);
+            this.platform.Stub(p => p.ResolveImportByName(null, null)).IgnoreArguments().Return(null);
             this.platform.Stub(p => p.DataTypeFromImportName(null)).IgnoreArguments().Return(null);
             mr.ReplayAll();
             RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/DfaGlobalHandle.txt");

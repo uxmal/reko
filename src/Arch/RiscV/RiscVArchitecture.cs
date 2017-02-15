@@ -32,7 +32,6 @@ namespace Reko.Arch.RiscV
 {
     public class RiscVArchitecture : ProcessorArchitecture
     {
-
         static string [] regnames = {
             "zero", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
             "s0",   "s1", "a0", "a1", "a2", "a3", "a4", "a5",
@@ -73,22 +72,22 @@ namespace Reko.Arch.RiscV
             this.StackRegister = regs[2];       // sp
         }
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new RiscVDisassembler(this, imageReader);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea img, ulong off)
+        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
         {
             return new LeImageReader(img, off);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea img, Address addr)
+        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
         {
             return new LeImageReader(img, addr);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
+        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
             throw new NotImplementedException();
         }
@@ -108,7 +107,7 @@ namespace Reko.Arch.RiscV
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -118,7 +117,7 @@ namespace Reko.Arch.RiscV
             return new RiscVState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new RiscVRewriter(this, rdr, state, frame, host);
         }
@@ -170,10 +169,11 @@ namespace Reko.Arch.RiscV
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            //$TODO: what about 32-bit? 
+            return Address.FromConstant(c);
         }
 
-        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }

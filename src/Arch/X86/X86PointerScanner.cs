@@ -31,7 +31,7 @@ namespace Reko.Arch.X86
     /// </summary>
     public class X86PointerScanner32 : PointerScanner<uint>
     {
-        public X86PointerScanner32(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags) : base(rdr, knownLinAddresses, flags)
+        public X86PointerScanner32(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags) : base(rdr, knownLinAddresses, flags)
         {
         }
 
@@ -42,7 +42,7 @@ namespace Reko.Arch.X86
             return address.ToUInt32();
         }
 
-        public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)
+        public override bool MatchCall(EndianImageReader rdr, uint opcode, out uint target)
         {
             if (opcode == 0xE8 // CALL NEAR
                 &&
@@ -56,7 +56,7 @@ namespace Reko.Arch.X86
             return false;
         }
 
-        public override bool MatchJump(ImageReader rdr, uint opcode, out uint target)
+        public override bool MatchJump(EndianImageReader rdr, uint opcode, out uint target)
         {
             if (opcode == 0xE9 // JMP NEAR
                 &&
@@ -88,7 +88,7 @@ namespace Reko.Arch.X86
             return false;
         }
 
-        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
+        public override bool TryPeekOpcode(EndianImageReader rdr, out uint opcode)
         {
             byte bOpcode;
             bool ret = rdr.TryPeekByte(0, out bOpcode);
@@ -96,7 +96,7 @@ namespace Reko.Arch.X86
             return ret;
         }
 
-        public override bool TryPeekPointer(ImageReader rdr, out uint target)
+        public override bool TryPeekPointer(EndianImageReader rdr, out uint target)
         {
             if (!rdr.IsValidOffset(rdr.Offset + 4 - 1))
             {
@@ -113,7 +113,7 @@ namespace Reko.Arch.X86
 
     public class X86PointerScanner64 : PointerScanner<ulong>
     {
-        public X86PointerScanner64(ImageReader rdr, HashSet<ulong> knownLinAddresses, PointerScannerFlags flags)
+        public X86PointerScanner64(EndianImageReader rdr, HashSet<ulong> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)
         {
         }
@@ -125,7 +125,7 @@ namespace Reko.Arch.X86
             return address.ToLinear();
         }
 
-        public override bool MatchCall(ImageReader rdr, uint opcode, out ulong target)
+        public override bool MatchCall(EndianImageReader rdr, uint opcode, out ulong target)
         {
             if (opcode == 0xE8 // CALL NEAR
                 &&
@@ -139,7 +139,7 @@ namespace Reko.Arch.X86
             return false;
         }
 
-        public override bool MatchJump(ImageReader rdr, uint opcode, out ulong target)
+        public override bool MatchJump(EndianImageReader rdr, uint opcode, out ulong target)
         {
             if (opcode == 0xE9 // JMP NEAR
                 &&
@@ -171,7 +171,7 @@ namespace Reko.Arch.X86
             return false;
         }
 
-        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
+        public override bool TryPeekOpcode(EndianImageReader rdr, out uint opcode)
         {
             byte bOpcode;
             bool ret = rdr.TryPeekByte(0, out bOpcode);
@@ -179,7 +179,7 @@ namespace Reko.Arch.X86
             return ret;
         }
 
-        public override bool TryPeekPointer(ImageReader rdr, out ulong target)
+        public override bool TryPeekPointer(EndianImageReader rdr, out ulong target)
         {
             if (!rdr.IsValidOffset(rdr.Offset + 4 - 1))
             {
@@ -196,7 +196,7 @@ namespace Reko.Arch.X86
 
     public class X86RealModePointerScanner : PointerScanner<uint>
     {
-        public X86RealModePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public X86RealModePointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)
         {
         }
@@ -208,7 +208,7 @@ namespace Reko.Arch.X86
             return (uint)address.ToLinear();
         }
 
-        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
+        public override bool TryPeekOpcode(EndianImageReader rdr, out uint opcode)
         {
             byte bOpcode;
             bool ret = rdr.TryPeekByte(0, out bOpcode);
@@ -216,7 +216,7 @@ namespace Reko.Arch.X86
             return ret;
         }
 
-        public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)
+        public override bool MatchCall(EndianImageReader rdr, uint opcode, out uint target)
         {
             if (opcode == 0xE8 // CALL NEAR
                 &&
@@ -239,7 +239,7 @@ namespace Reko.Arch.X86
             return false;
         }
 
-        public override bool MatchJump(ImageReader rdr, uint opcode, out uint target)
+        public override bool MatchJump(EndianImageReader rdr, uint opcode, out uint target)
         {
             if (opcode == 0xE9 // JMP NEAR
                 &&
@@ -280,7 +280,7 @@ namespace Reko.Arch.X86
             return false;
         }
 
-        public override bool TryPeekPointer(ImageReader rdr, out uint target)
+        public override bool TryPeekPointer(EndianImageReader rdr, out uint target)
         {
             if (!rdr.IsValidOffset(rdr.Offset + 2 - 1))
             {

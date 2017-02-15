@@ -246,7 +246,7 @@ namespace Reko.ImageLoaders.Hunk
             return f.ReadBeInt32();
         }
 
-        public virtual short read_word(ImageReader f)
+        public virtual short read_word(EndianImageReader f)
         {
             if (!f.IsValid)
                 return -1;

@@ -39,7 +39,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
         private const ushort RelocationHighLow = 3;
 
 
-        public override void ApplyRelocation(Address baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
+        public override void ApplyRelocation(Address baseOfImage, uint page, EndianImageReader rdr, RelocationDictionary relocations)
         {
             ushort fixup = rdr.ReadLeUInt16();
             Address offset = baseOfImage + page + (fixup & 0x0FFFu);

@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Gui.Windows
             var dasm = mr.Stub<IEnumerable<MachineInstruction>>();
             var e = mr.Stub<IEnumerator<MachineInstruction>>();
 
-            arch.Stub(a => a.CreateDisassembler(Arg<ImageReader>.Is.NotNull)).Return(dasm);
+            arch.Stub(a => a.CreateDisassembler(Arg<EndianImageReader>.Is.NotNull)).Return(dasm);
             arch.Stub(a => a.InstructionBitSize).Return(8);
             arch.Stub(a => a.CreateImageReader(
                 Arg<MemoryArea>.Is.NotNull,

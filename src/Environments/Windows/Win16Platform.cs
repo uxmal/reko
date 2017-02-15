@@ -92,7 +92,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
         {
             return null;
         }

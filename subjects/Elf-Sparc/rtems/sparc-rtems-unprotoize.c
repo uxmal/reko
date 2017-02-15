@@ -1669,12 +1669,13 @@ void process_aux_info_file(word32 o0, word32 o2, word32 o3)
 {
 process_aux_info_file_entry:
 	strlen()
+	word32 o0_22 = o0 + 0x0A & ~0x07
 	strcpy()
 	strcat()
 	word32 i0_386 = o0
 	word32 i2_383 = o2
 	word32 i6_15 = fp
-	word32 sp_23 = fp + ~0xF7 - (o0 + 0x0A & ~0x07)
+	word32 sp_23 = fp + ~0xF7 - o0_22
 	word32 l2_30 = 0x00
 	goto l00013074
 l00013034:
@@ -1690,7 +1691,7 @@ l00013078:
 	bool Z_122
 	word32 o0_143
 	access()
-	branch sp_23 != ~0x60 l00013034_ds_t
+	branch fp + ~0xF7 - o0_22 != 0x61 l00013034_ds_t
 	goto l00013034_ds_f
 l0001308C:
 l0001308C_ds_f:

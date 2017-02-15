@@ -24,7 +24,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
@@ -182,6 +182,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\msvcrt.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\ntoskrnl.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows32.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wsock32.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows64.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\oleaut32.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win32characteristics.xml" />
@@ -249,7 +250,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>
     <VisualStudio>
-      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+      <FlavorProperties GUID="{349C5851-65DF-11DA-9384-00065B846F21}">
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
@@ -289,5 +290,6 @@
     <Message Importance="high" Text="Copying external binaries to $(TargetDir)" />
     <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying configuration files to $(TargetDir)" />
-    <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />  </Target>
+    <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>

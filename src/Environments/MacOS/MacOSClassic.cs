@@ -104,7 +104,7 @@ namespace Reko.Environments.MacOS
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
         {
             return null;
         }
@@ -112,11 +112,6 @@ namespace Reko.Environments.MacOS
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
-        }
-
-        public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
-        {
-            return base.LookupProcedureByOrdinal(moduleName, ordinal);
         }
     }
 }

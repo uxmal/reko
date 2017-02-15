@@ -123,29 +123,29 @@ namespace Reko.Arch.PowerPC
 
         #region IProcessorArchitecture Members
 
-        public PowerPcDisassembler CreateDisassemblerImpl(ImageReader rdr)
+        public PowerPcDisassembler CreateDisassemblerImpl(EndianImageReader rdr)
         {
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             //$TODO: PowerPC is bi-endian.
             return new BeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
         {
             //$TODO: PowerPC is bi-endian.
             return new BeImageReader(image, addrBegin, addrEnd);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
+        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             //$TODO: PowerPC is bi-endian.
             return new BeImageReader(image, offset);
@@ -170,11 +170,11 @@ namespace Reko.Arch.PowerPC
 
         public override abstract IEnumerable<Address> CreatePointerScanner(
             SegmentMap map, 
-            ImageReader rdr,
+            EndianImageReader rdr,
             IEnumerable<Address> addrs, 
             PointerScannerFlags flags);
 
-        //public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        //public override ProcedureBase GetTrampolineDestination(EndianImageReader rdr, IRewriterHost host)
         //{
         //    var dasm = new PowerPcDisassembler(this, rdr, WordWidth);
         //    return GetTrampolineDestination(dasm, host);
@@ -308,14 +308,14 @@ namespace Reko.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new PowerPcRewriter(this, rdr, frame, host);
         }
 
         public override abstract Address MakeAddressFromConstant(Constant c);
 
-        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
@@ -336,7 +336,7 @@ namespace Reko.Arch.PowerPC
 
         public override IEnumerable<Address> CreatePointerScanner(
             SegmentMap map, 
-            ImageReader rdr, 
+            EndianImageReader rdr, 
             IEnumerable<Address> knownAddresses,
             PointerScannerFlags flags)
         {
@@ -361,7 +361,7 @@ namespace Reko.Arch.PowerPC
 
         public override IEnumerable<Address> CreatePointerScanner(
             SegmentMap map,
-            ImageReader rdr,
+            EndianImageReader rdr,
             IEnumerable<Address> knownAddresses,
             PointerScannerFlags flags)
         {

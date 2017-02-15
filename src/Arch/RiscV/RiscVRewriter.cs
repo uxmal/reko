@@ -40,7 +40,7 @@ namespace Reko.Arch.RiscV
         private RtlInstructionCluster rtlc;
         private ProcessorState state;
 
-        public RiscVRewriter(RiscVArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public RiscVRewriter(RiscVArchitecture arch, EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
             this.dasm = new RiscVDisassembler(arch, rdr).GetEnumerator();

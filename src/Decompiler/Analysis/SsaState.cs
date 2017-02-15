@@ -125,7 +125,7 @@ namespace Reko.Analysis
             var uc = new InstructionUseCollector();
             foreach (var stm in Procedure.Statements)
             {
-                var idMapStored = GetStatemenIdentifiers(stm);
+                var idMapStored = GetStatementIdentifiers(stm);
                 var idMapActual = uc.CollectUses(stm);
                 foreach (var id in idMapStored.Keys)
                 {
@@ -150,7 +150,13 @@ namespace Reko.Analysis
             }
         }
 
-        private IDictionary<Identifier, int> GetStatemenIdentifiers(Statement stm)
+        /// <summary>
+        /// Collect all the statements that are used in statement
+        /// stm, _according to the SsaState_. 
+        /// </summary>
+        /// <param name="stm"></param>
+        /// <returns></returns>
+        private IDictionary<Identifier, int> GetStatementIdentifiers(Statement stm)
         {
             var idMap =
                (from sid in Identifiers

@@ -287,7 +287,7 @@ namespace Reko.Arch.X86
 		private PrimitiveType addressWidth;
 		private PrimitiveType defaultDataWidth;
 		private PrimitiveType defaultAddressWidth;
-		private ImageReader	rdr;
+		private EndianImageReader	rdr;
 
         bool isRegisterExtensionEnabled;
 
@@ -300,7 +300,7 @@ namespace Reko.Arch.X86
         /// 16-bit operation, PrimitiveType.Word32 for 32-bit operation.</param>
 		public X86Disassembler(
             ProcessorMode mode,
-            ImageReader rdr,
+            EndianImageReader rdr,
             PrimitiveType defaultWordSize,
             PrimitiveType defaultAddressSize,
             bool useRexPrefix)

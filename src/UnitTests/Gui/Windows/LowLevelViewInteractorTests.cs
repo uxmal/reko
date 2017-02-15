@@ -152,9 +152,9 @@ namespace Reko.UnitTests.Gui.Windows
             arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
             arch.Stub(a => a.CreateImageReader(null, null))
                 .IgnoreArguments()
-                .Do(new Func<MemoryArea, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
+                .Do(new Func<MemoryArea, Address, EndianImageReader>((i, a) => new LeImageReader(i, a)));
             arch.Stub(a => a.CreateDisassembler(
-                Arg<ImageReader>.Is.NotNull)).Return(dasm);
+                Arg<EndianImageReader>.Is.NotNull)).Return(dasm);
             Address dummy;
             arch.Stub(a => a.TryParseAddress(null, out dummy)).IgnoreArguments().WhenCalled(m =>
                 {
