@@ -638,9 +638,9 @@
       <Project>{66A00AB2-6964-4815-9140-F28FEE48E6D6}</Project>
       <Name>Z80</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Assemblers\M68k\M68kAssembler-2010.csproj">
-      <Project>{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC}</Project>
-      <Name>M68kAssembler-2010</Name>
+    <ProjectReference Include="..\Assemblers\M68k\M68kAssembler.csproj">
+      <Project>{fd6ad906-bed1-4ac1-a7c5-0a04cca2d7dc}</Project>
+      <Name>M68kAssembler</Name>
     </ProjectReference>
     <ProjectReference Include="..\Assemblers\Pdp11\Pdp11Assembler.csproj">
       <Project>{3BB6B0FB-6686-428B-9DC9-A32F349E50E6}</Project>
