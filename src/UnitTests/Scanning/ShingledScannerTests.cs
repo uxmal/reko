@@ -348,7 +348,7 @@ namespace Reko.UnitTests.Scanning
         {
             var actual =
                 Enumerable.Range(0, expected.Length)
-                .Select(n => sr.Instructions.ContainsKey(addrBase + n) ? 1 : 0)
+                .Select(n => (byte) (sr.Instructions.ContainsKey(addrBase + n) ? 1 : 0))
                 .ToArray();
             Assert.AreEqual(expected, actual);
         }
@@ -394,11 +394,11 @@ namespace Reko.UnitTests.Scanning
             AddInstr(Lin(0x1000, 2), 0x1002);
             AddInstr(Lin(0x1002, 3));
 
-            var blocks = sh.BuildBlocks(graph);
+            var icb = sh.BuildBlocks(graph);
 
             var sExp =
                 "00001000 - 00001005" + nl;
-            Assert.AreEqual(sExp, DumpBlocks(blocks));
+            Assert.AreEqual(sExp, DumpBlocks(icb.allBlocks));
         }
 
         [Test]
@@ -412,12 +412,12 @@ namespace Reko.UnitTests.Scanning
             AddInstr(Lin(0x1003, 2));
             AddInstr(Lin(0x1004, 2));
 
-            var blocks = sh.BuildBlocks(graph);
+            var icb = sh.BuildBlocks(graph);
 
             var sExp =
                 "00001000 - 00001006" + nl +
                 "00001001 - 00001005" + nl;
-            Assert.AreEqual(sExp, DumpBlocks(blocks));
+            Assert.AreEqual(sExp, DumpBlocks(icb.allBlocks));
         }
 
         [Test]
@@ -430,13 +430,13 @@ namespace Reko.UnitTests.Scanning
             AddInstr(Lin(0x1002, 3), 0x1005);
             AddInstr(Lin(0x1005, 2));
 
-            var blocks = sh.BuildBlocks(graph);
+            var icb = sh.BuildBlocks(graph);
 
             var sExp =
                 "00001000 - 00001005" + nl +
                 "00001001 - 00001005" + nl +
                 "00001005 - 00001007" + nl;
-            Assert.AreEqual(sExp, DumpBlocks(blocks));
+            Assert.AreEqual(sExp, DumpBlocks(icb.allBlocks));
         }
 
         [Test]

@@ -337,7 +337,7 @@ l0001001D:  // pred:
 @"l00001000:  // pred:
     xor eax,eax
     call 0000100C
-l00001007:  // pred: 
+l00001007:  // pred: l00001000
     mov eax,[00000001]
 l0000100C:  // pred:
     stosd 

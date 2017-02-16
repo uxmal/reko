@@ -615,7 +615,11 @@ namespace Reko.Arch.X86
                     return;
                 }
             }
-            Debug.Assert(dasm.Current.dataWidth == PrimitiveType.Word16 || dasm.Current.dataWidth == PrimitiveType.Word32);
+            Debug.Assert(
+                dasm.Current.dataWidth == PrimitiveType.Word16 ||
+                dasm.Current.dataWidth == PrimitiveType.Word32 ||
+                dasm.Current.dataWidth == PrimitiveType.Word64,
+                string.Format("Unexpected size {0}", dasm.Current.dataWidth));
             RewritePush(dasm.Current.dataWidth, SrcOp(dasm.Current.op1));
         }
 

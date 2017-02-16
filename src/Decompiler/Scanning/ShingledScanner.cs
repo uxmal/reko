@@ -227,10 +227,7 @@ namespace Reko.Scanning
                             if (IsExecutable(addrDest))
                             {
                                 // call / jump destination is executable
-                                if ((i.Class & RtlClass.Call) == 0)
-                                {
-                                    AddEdge(G, addrDest, i.Address);
-                                }
+                                AddEdge(G, addrDest, i.Address);
                                 if ((i.Class & RtlClass.Call) != 0)
                                 {
                                     int callTally;
@@ -313,25 +310,11 @@ namespace Reko.Scanning
             return rw.GetEnumerator();
         }
 
-        /// <summary>
-        /// The results of running the shingle scanner on an image segment.
-        /// </summary>
-        public class ScannedSegment
+        public DiGraph<RtlBlock> BuildIcfg(HashSet<Address> deadNodes)
         {
-            public SortedList<Address, ShingleBlock> Blocks;
-            public byte[] CodeFlags;
-        }
-
-        public class ShingleBlock
-        {
-            public Address BaseAddress;
-            public Address EndAddress;
-        }
-
-        public DiGraph<RtlBlock> BuildIcfg(Dictionary<Address, RtlBlock> deadNodes)
-        {
-            sr.ICFG = BuildBlocks(G);
-            BuildEdges(G, sr.ICFG);
+            var icb = BuildBlocks(G);
+            BuildEdges(icb);
+            sr.ICFG = icb.allBlocks;
             return sr.ICFG;
         }
 
@@ -342,11 +325,13 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="instructions"></param>
         /// <returns></returns>
-        public DiGraph<RtlBlock> BuildBlocks(DiGraph<Address> graph)
+        public IcfgBuilder BuildBlocks(DiGraph<Address> graph)
         {
             // Remember, the graph is backwards!
             var activeBlocks = new List<RtlBlock>();
             var allBlocks = new DiGraph<RtlBlock>();
+            var edges = new List<Tuple<RtlBlock, Address>>();
+            var mpBlocks = new Dictionary<Address, RtlBlock>();
             var wl = sr.Instructions.Keys.ToSortedSet();
             while (wl.Count > 0)
             {
@@ -356,13 +341,24 @@ namespace Reko.Scanning
                 var block = new RtlBlock(addr, addr.GenerateName("l", ""));
                 block.Instructions.Add(instr);
                 allBlocks.AddNode(block);
+                mpBlocks.Add(addr, block);
                 bool terminateNow = false;
                 bool terminateDeferred = false;
                 for (;;)
                 {
                     var addrInstrEnd = instr.Address + instr.Length;
-                    if ((instr.Class & DT) != 0 && (instr.Class & RtlClass.Call) == 0)
+                    if ((instr.Class & DT) != 0)
                     {
+                        if (MayFallThrough(instr))
+                        {
+                            edges.Add(Tuple.Create(block, addrInstrEnd));
+                        }
+                        var addrDst = DestinationAddress(instr);
+                        if (addrDst != null && (instr.Class & RtlClass.Call) == 0)
+                        {
+                            edges.Add(Tuple.Create(block, addrDst));
+                        }
+
                         if ((instr.Class & DT) == DT)
                         {
                             terminateDeferred = true;
@@ -400,18 +396,22 @@ namespace Reko.Scanning
                     terminateNow = terminateDeferred;
                 }
             }
-            return allBlocks;
+            return new IcfgBuilder
+            {
+                edges = edges,
+                mpBlocks=mpBlocks,
+                allBlocks = allBlocks,
+            };
         }
 
-        private void BuildEdges(DiGraph<Address> g, DiGraph<RtlBlock> icfg)
+        private void BuildEdges(IcfgBuilder icb)
         {
-        }
-
-        private List<ShingleBlock> TerminateBlocks(List<ShingleBlock> blocks, Address addrTerm)
-        {
-            var live = blocks.Where(de => de.EndAddress == addrTerm)
-                .ToList();
-            return live;
+            foreach (var edge in icb.edges)
+            {
+                var from = edge.Item1;
+                var to = icb.mpBlocks[edge.Item2];
+                icb.allBlocks.AddEdge(from, to);
+            }
         }
 
         private bool IsInvalid(MemoryArea mem, RtlInstructionCluster instr)

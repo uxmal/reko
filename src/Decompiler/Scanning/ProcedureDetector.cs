@@ -286,7 +286,7 @@ namespace Reko.Scanning
 
             // Join blocks which have a single successor / single predecessor
             // relationship.
-            FuseBlocks(cluster);
+            //FuseBlocks(cluster);
 
             // If the cluster has more than one entry, we have to try to pick it apart.
             if (entries.Count > 1)

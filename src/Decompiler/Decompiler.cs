@@ -474,7 +474,7 @@ namespace Reko
 
         private IScanner CreateScanner(Program program)
         {
-            return new ScannerNew(
+            return new Scanner(
                 program,
                 new ImportResolver(project, program, eventListener),
                 services);
