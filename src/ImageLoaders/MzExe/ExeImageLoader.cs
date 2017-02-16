@@ -145,7 +145,7 @@ namespace Reko.ImageLoaders.MzExe
 
 		public void ReadCommonExeFields()
 		{
-			ImageReader rdr = new LeImageReader(RawImage, 0);
+			EndianImageReader rdr = new LeImageReader(RawImage, 0);
 
 			e_magic = rdr.ReadLeUInt16();
 			e_cbLastPage = rdr.ReadLeUInt16();

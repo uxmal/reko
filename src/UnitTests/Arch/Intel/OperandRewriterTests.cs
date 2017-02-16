@@ -166,7 +166,7 @@ namespace Reko.UnitTests.Arch.Intel
 		{
 		}
 
-		public ImageReader CreateImageReader(Address addr)
+		public EndianImageReader CreateImageReader(Address addr)
 		{
 			throw new NotImplementedException();
 		}
@@ -206,7 +206,6 @@ namespace Reko.UnitTests.Arch.Intel
                 return null;
 		}
 
-
 		public Procedure[] GetAddressesFromVector(Address addrCaller, int cbReturnAddress)
 		{
 			return null;
@@ -217,7 +216,7 @@ namespace Reko.UnitTests.Arch.Intel
 			return new Procedure[0];
 		}
 
-        public Identifier GetImportedGlobal(Address addrTunk, Address addrInstruction)
+        public Expression GetImport(Address addrTunk, Address addrInstruction)
         {
             return null;
         }
@@ -266,18 +265,14 @@ namespace Reko.UnitTests.Arch.Intel
 
 		#endregion
 
-
-
         public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
         {
             throw new NotImplementedException();
         }
-
 
         public void Error(Address address, string message)
         {
             throw new NotImplementedException();
         }
     }
-
 }

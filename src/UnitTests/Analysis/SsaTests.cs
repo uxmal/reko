@@ -227,5 +227,45 @@ namespace Reko.UnitTests.Analysis
             cg.Write(sw);
             Debug.Print("{0}", sw.ToString());
         }
-	}
+
+        [Test]
+        public void SsaSwitchWithSharedBranches()
+        {
+            var m = new ProcedureBuilder("SsaSwitchWithSharedBranches");
+
+            var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
+            var foo = new ExternalProcedure("foo", new FunctionType(
+                new Identifier("", VoidType.Instance, null),
+                new Identifier("arg1", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32))));
+            m.Assign(sp, m.Frame.FramePointer);
+            m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
+            m.BranchIf(m.Ugt(r1, m.Word32(0x5)), "m4_default");
+            m.Label("m1");
+            m.Switch(r1,
+                "m2", "m2", "m3", "m3", "m2", "m3");
+            m.Label("m2");
+            m.Assign(sp, m.ISub(sp, 4));
+            m.Store(sp, 0x42);
+            m.Call(foo, 4);
+            m.Assign(sp, m.IAdd(sp, 4));
+            // fall through
+            m.Label("m3");
+            m.Assign(sp, m.ISub(sp, 4));
+            m.Store(sp, 42);
+            m.Call(foo, 4);
+            m.Assign(sp, m.IAdd(sp, 4));
+            // fall through
+            m.Label("m4_default");
+            m.Assign(sp, m.ISub(sp, 4));
+            m.Store(sp, 0);
+            m.Call(foo, 4);
+            m.Assign(sp, m.IAdd(sp, 4));
+
+            m.Return();
+
+            RunUnitTest(m, "Analysis/SsaSwitchWithSharedBranches.txt");
+        }
+    }
 }

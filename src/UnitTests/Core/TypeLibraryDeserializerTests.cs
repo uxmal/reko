@@ -323,5 +323,29 @@ namespace Reko.UnitTests.Core
         {
             procSer.Stub(p => p.Deserialize(null, null)).IgnoreArguments().Return(sig);
         }
+
+        [Test(Description = "Verifies that globals can be specified by ordinal")]
+        public void Tlldr_LoadGlobalByOrdinal()
+        {
+            var typelib = new TypeLibrary();
+            var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
+            tlldr.Load(new SerializedLibrary
+            {
+                ModuleName = "stdlib",
+                Globals = new List<GlobalVariable_v1>
+                 {
+                     new GlobalVariable_v1
+                     {
+                         Name = "errno",
+                         Ordinal = 42,
+                         Type = PrimitiveType_v1.Int32(),
+                     }
+                 }
+            });
+            var stdlib = typelib.Modules["stdlib"];
+            var globalByName = stdlib.GlobalsByName["errno"];
+            var globalByOrdinal = stdlib.GlobalsByOrdinal[42];
+            Assert.AreSame(globalByName, globalByOrdinal);
+        }
     }
 }

@@ -4,11 +4,6 @@
 
 #include "space.h"
 
-Eq_1040 g_t000A = 
-	{
-		null,
-		null,
-	};
 Eq_520 g_t001E = 
 	{
 		0x0000

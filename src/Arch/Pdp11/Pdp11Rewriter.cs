@@ -106,6 +106,7 @@ namespace Reko.Arch.Pdp11
                 case Opcode.reset: RewriteReset(); break;
                 case Opcode.rol: RewriteRol(instr); break;
                 case Opcode.rts: RewriteRts(instr); break;
+                case Opcode.stcdi: RewriteStcdi(instr); break;
                 case Opcode.sub: RewriteSub(instr); break;
                 case Opcode.sxt: RewriteSxt(instr); break;
                 case Opcode.trap: RewriteTrap(instr); break;

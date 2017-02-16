@@ -33,7 +33,7 @@ namespace Reko.Arch.Xtensa
     {
         private Frame frame;
         private IRewriterHost host;
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private ProcessorState state;
         private XtensaArchitecture arch;
         private IEnumerator<XtensaInstruction> dasm;
@@ -41,7 +41,7 @@ namespace Reko.Arch.Xtensa
         private RtlEmitter emitter;
         private XtensaInstruction instr;
 
-        public XtensaRewriter(XtensaArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public XtensaRewriter(XtensaArchitecture arch, EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;

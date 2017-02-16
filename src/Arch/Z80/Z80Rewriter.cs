@@ -41,7 +41,7 @@ namespace Reko.Arch.Z80
         private RtlInstructionCluster rtlc;
         private RtlEmitter emitter;
 
-        public Z80Rewriter(Z80ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public Z80Rewriter(Z80ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
             this.frame = frame;

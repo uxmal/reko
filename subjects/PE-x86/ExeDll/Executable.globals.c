@@ -4,9 +4,9 @@
 
 #include "Executable.h"
 
-Eq_676 g_t5A4D;
+Eq_674 g_t5A4D;
 word16 g_w400000;
-struct Eq_676 * g_ptr40003C;
+struct Eq_674 * g_ptr40003C;
 <anonymous> g_t401BA4 = <code>;
 <anonymous> * g_ptr4020D0 = &g_t401BA4;
 Eq_191 g_t4020DC = null;

@@ -24,45 +24,132 @@ using System.Linq;
 using System.Diagnostics;
 using System.Text;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using Reko.Core.Types;
 
 namespace Reko.Core
 {
-    /// <summary>
-    /// Reads in a structure field by field from an image reader.
-    /// </summary>
-    public class StructureReader
+	public class StructureMemberAttribute : Attribute {
+		public Type memberType { get; private set; }
+
+		/// <summary>
+		/// </summary>
+		/// <param name="memberType">Type of a class to invoke to process the member</param>
+		public StructureMemberAttribute(Type memberType) {
+			this.memberType = memberType;
+		}
+	}
+
+	/// <summary>
+	/// Reads in a structure field by field from an image reader.
+	/// </summary>
+	public class StructureReader<T> where T : struct
     {
-        private object structure;
-        private FieldInfo[] fields;
+        private T structure;
+		private ImageReader reader;
+		private Endianness defaultEndianess = Endianness.LittleEndian;
 
-        public StructureReader(object structure)
+        public StructureReader(ImageReader reader)
         {
-            this.structure = structure;
-            this.fields = structure.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+			this.reader = reader;
+			if (typeof(T).IsDefined(typeof(EndianAttribute), false)) {
+				EndianAttribute attr = (EndianAttribute)(typeof(T).GetCustomAttribute(typeof(EndianAttribute), false));
+				this.defaultEndianess = attr.Endianness;
+			}
         }
 
-        public void Read(ImageReader rdr)
+        public T Read()
         {
-            foreach (var f in fields)
-            {
-                var attr = GetFieldAttribute(f);
-                uint alignment = (uint) attr.Align;
-                rdr.Offset = (rdr.Offset + alignment - 1u) & ~(alignment - 1u);
-                Debug.Print("At offset: {0:X8} reading field '{1}.{2}' after alignment of {3}.", rdr.Offset, f.DeclaringType.Name, f.Name, alignment);
-
-                object value = attr.ReadValue(f, rdr, null);
-                f.SetValue(structure, value);
-            }
+			return this.BytesToStruct<T>(this.reader);
         }
 
-        private FieldAttribute GetFieldAttribute(FieldInfo f)
+        private int GetAlignment(FieldInfo f)
         {
             var attrs = f.GetCustomAttributes(typeof(FieldAttribute), true);
             if (attrs == null || attrs.Length == 0)
             {
-                return new FieldAttribute { Align = 1 };
+				return 1;
             }
-            return (FieldAttribute) attrs[0]; 
+            return ((FieldAttribute)attrs[0]).Align; 
         }
-    }
+
+		private int FieldSize(FieldInfo field) {
+			if (field.FieldType.IsArray) {
+				MarshalAsAttribute attr = (MarshalAsAttribute)field.GetCustomAttribute(typeof(MarshalAsAttribute), false);
+				return Marshal.SizeOf(field.FieldType.GetElementType()) * attr.SizeConst;
+			} else {
+				return Marshal.SizeOf(field.FieldType);
+			}
+		}
+
+		private void SwapEndian(byte[] data, Type type, FieldInfo field) {
+			int offset = Marshal.OffsetOf(type, field.Name).ToInt32();
+			if (field.FieldType.IsArray) {
+				MarshalAsAttribute attr = (MarshalAsAttribute)field.GetCustomAttribute(typeof(MarshalAsAttribute), false);
+				int subSize = Marshal.SizeOf(field.FieldType.GetElementType());
+				for(int i=0; i<attr.SizeConst; i++) {
+					Array.Reverse(data, offset + (i * subSize), subSize);
+				}
+			} else {
+				Array.Reverse(data, offset, FieldSize(field));
+			}
+		}
+
+		/* Adapted from http://stackoverflow.com/a/2624377 */
+		private void RespectEndianness(Type type, byte[] data) {
+			foreach (var field in type.GetFields()) {
+				if (field.IsDefined(typeof(EndianAttribute), false)) {
+					Endianness fieldEndianess = ((EndianAttribute)field.GetCustomAttributes(typeof(EndianAttribute), false)[0]).Endianness;
+					if (
+						(fieldEndianess == Endianness.BigEndian && BitConverter.IsLittleEndian) ||
+						(fieldEndianess == Endianness.LittleEndian && !BitConverter.IsLittleEndian)
+					) {
+						SwapEndian(data, type, field);
+					}
+				} else if (
+					(this.defaultEndianess == Endianness.BigEndian && BitConverter.IsLittleEndian) ||
+					(this.defaultEndianess == Endianness.LittleEndian && !BitConverter.IsLittleEndian)
+				) {
+					SwapEndian(data, type, field);
+				}
+			}
+		}
+
+		private byte[] StructToBytes<T>(T data) {
+			byte[] rawData = new byte[Marshal.SizeOf(data)];
+			GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
+			try {
+				IntPtr rawDataPtr = handle.AddrOfPinnedObject();
+				Marshal.StructureToPtr(data, rawDataPtr, false);
+			} finally {
+				handle.Free();
+			}
+
+			RespectEndianness(typeof(T), rawData);
+
+			return rawData;
+		}
+
+		private T BytesToStruct<T>(ImageReader reader) {
+			byte[] bytes = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
+			return this.BytesToStruct<T>(bytes);
+		}
+
+		private T BytesToStruct<T>(byte[] rawData) {
+			T result = default(T);
+
+			RespectEndianness(typeof(T), rawData);
+
+			GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
+
+			try {
+				IntPtr rawDataPtr = handle.AddrOfPinnedObject();
+				result = (T)Marshal.PtrToStructure(rawDataPtr, typeof(T));
+			} finally {
+				handle.Free();
+			}
+
+			return result;
+		}
+	}
 }

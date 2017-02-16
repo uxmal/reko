@@ -216,7 +216,7 @@ namespace Reko.ImageLoaders.MzExe
 		{
 			// Extract the LZ stuff.
 
-			ImageReader rdr = new LeImageReader(abC, (uint) lzHdrOffset);
+			EndianImageReader rdr = new LeImageReader(abC, (uint) lzHdrOffset);
 			lzIp = rdr.ReadLeUInt16();
 			lzCs = rdr.ReadLeUInt16();
 			ushort lzSp = rdr.ReadLeUInt16();

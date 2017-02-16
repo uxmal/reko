@@ -32,11 +32,11 @@ namespace Reko.Arch.Pdp11
     public class Pdp11Disassembler : DisassemblerBase<Pdp11Instruction>
     {
         private Pdp11Architecture arch;
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private Pdp11Instruction instrCur;
         private PrimitiveType dataWidth;
 
-        public Pdp11Disassembler(ImageReader rdr, Pdp11Architecture arch)
+        public Pdp11Disassembler(EndianImageReader rdr, Pdp11Architecture arch)
         {
             this.rdr = rdr;
             this.arch = arch;
@@ -68,6 +68,13 @@ namespace Reko.Arch.Pdp11
             List<MachineOperand> ops = new List<MachineOperand>(2);
             int i = 0;
             dataWidth = PrimitiveType.Word16;
+            if (fmt.Length == 0)
+            {
+                return new Pdp11Instruction
+                {
+                    Opcode = opcode,
+                };
+            }
             switch (fmt[i])
             {
             case 'b': dataWidth = PrimitiveType.Byte; i += 2; break;
@@ -77,12 +84,20 @@ namespace Reko.Arch.Pdp11
             {
                 if (fmt[i] == ',')
                     ++i;
+                MachineOperand op;
                 switch (fmt[i++])
                 {
-                case 'E': ops.Add(DecodeOperand(wOpcode)); break;
-                case 'e': ops.Add(DecodeOperand(wOpcode >> 6)); break;
+                case 'E': op = this.DecodeOperand(wOpcode); break;
+                case 'e': op = this.DecodeOperand(wOpcode >> 6); break;
+                case 'r': op = new RegisterOperand(arch.GetRegister((wOpcode >> 6) & 7)); break;
+                case 'I': op = Imm6(wOpcode); break;
+                case 'F': op = this.DecodeOperand(wOpcode, true); break;
+                case 'f': op = FpuAccumulator(wOpcode); break;
                 default: throw new NotImplementedException();
                 }
+                if (op == null)
+                    return new Pdp11Instruction {  Opcode = Opcode.illegal };
+                ops.Add(op);
             }
             var instr = new Pdp11Instruction
             {
@@ -132,6 +147,8 @@ namespace Reko.Arch.Pdp11
         }
 
         private static OpRec[] decoders;
+        private static OpRec[] extraDecoders;
+        private static OpRec[] fpu2Decoders;
 
         static Pdp11Disassembler()
         {
@@ -154,11 +171,61 @@ namespace Reko.Arch.Pdp11
                 new FormatOpRec("w:e,E", Opcode.sub),
                 null,
             };
+
+            extraDecoders = new OpRec[]
+            {
+                new FormatOpRec("E,r", Opcode.mul),
+                new FormatOpRec("E,r", Opcode.div),
+                new FormatOpRec("E,r", Opcode.ash),
+                new FormatOpRec("E,r", Opcode.ashc),
+                new FormatOpRec("E,r", Opcode.xor),
+                new FnOpRec(FpuArithmetic),
+                new FormatOpRec("", Opcode.illegal),
+                new FormatOpRec("r,I", Opcode.sob )
+            };
+
+            fpu2Decoders = new OpRec[16]
+            {
+                new FormatOpRec("", Opcode.illegal),
+                // 00 cfcc
+                // 01 setf
+                // 02 seti
+                // 09 setd
+                // 0A setl
+
+                new FormatOpRec("", Opcode.illegal),
+                // 01 - ldfps
+                // 02 - stfps
+                // 03 - stst
+                // 4 clrf
+                // 5 tstf
+                // 6 absf
+                //{  7, "F", Opcode.negf }, 
+                new FormatOpRec("F,f", Opcode.mulf),
+                new FormatOpRec("F,f", Opcode.modf),
+
+                new FormatOpRec("F,f", Opcode.addf),
+                new FormatOpRec("", Opcode.illegal),
+                new FormatOpRec("F,f", Opcode.subf),
+                new FormatOpRec("F,f", Opcode.cmpf),
+
+                new FormatOpRec("", Opcode.illegal),
+                new FormatOpRec("f,F", Opcode.divf),
+                new FormatOpRec("r,F", Opcode.stexp),
+                new FormatOpRec("f,F", Opcode.stcdi),
+
+                new FormatOpRec("f,F", Opcode.stcfd),
+                new FormatOpRec("F,f", Opcode.ldexp),
+                new FormatOpRec("F,f", Opcode.ldcid),
+                new FormatOpRec("F,f", Opcode.ldcfd),
+            };
         }
 
         private Pdp11Instruction Disassemble()
         {
-            ushort opcode = rdr.ReadLeUInt16();
+            ushort opcode;
+            if (!rdr.TryReadLeUInt16(out opcode))
+                return new Pdp11Instruction { Opcode = Opcode.illegal };
             dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
             var decoder = decoders[(opcode >> 0x0C) & 0x00F];
             if (decoder != null)
@@ -166,70 +233,8 @@ namespace Reko.Arch.Pdp11
 
             switch ((opcode >> 0x0C) & 0x007)
             {
-            case 0: return NonDoubleOperandInstruction(opcode);
-            case 7:
-                switch ((opcode >> 0x09) & 7)
-                {
-                case 0:
-                    dataWidth = PrimitiveType.Word16;
-                    return new Pdp11Instruction
-                    {
-                        Opcode = Opcode.mul,
-                        DataWidth = dataWidth,
-                        op1 = DecodeOperand(opcode),
-                        op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
-                    };
-                case 1:
-                    dataWidth = PrimitiveType.Word16;
-                    return new Pdp11Instruction
-                    {
-                        Opcode = Opcode.div,
-                        DataWidth = dataWidth,
-                        op1 = DecodeOperand(opcode),
-                        op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
-                    };
-                case 2:
-                    dataWidth = PrimitiveType.Word16;
-                    return new Pdp11Instruction
-                    {
-                        Opcode = Opcode.ash,
-                        DataWidth = dataWidth,
-                        op1 = DecodeOperand(opcode),
-                        op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
-                    };
-                case 3:
-                    dataWidth = PrimitiveType.Word16;
-                    return new Pdp11Instruction
-                    {
-                        Opcode = Opcode.ashc,
-                        DataWidth = dataWidth,
-                        op1 = DecodeOperand(opcode),
-                        op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
-                    };
-                case 4:
-                    dataWidth = PrimitiveType.Word16;
-                    return new Pdp11Instruction
-                    {
-                        Opcode = Opcode.xor,
-                        DataWidth = dataWidth,
-                        op1 = DecodeOperand(opcode),
-                        op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
-                    };
-                case 5:
-                    return FpuArithmetic(opcode);
-                case 7:
-                    dataWidth = PrimitiveType.Word16;
-                    return new Pdp11Instruction
-                    {
-                        Opcode = Opcode.sob,
-                        DataWidth = dataWidth,
-                        op1 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
-                        op2 = Imm6(opcode),
-                    };
-                }
-                throw new NotSupportedException();
-            default:
-                throw new NotSupportedException();
+            case 0: return NonDoubleOperandInstruction(opcode, this);
+            case 7: return extraDecoders[(opcode >> 0x09) & 7].Decode(opcode, this);
             }
             throw new NotImplementedException();
         }
@@ -240,9 +245,17 @@ namespace Reko.Arch.Pdp11
             return new AddressOperand(rdr.Address - offset);
         }
 
-        private Pdp11Instruction FpuArithmetic(ushort opcode)
+        private RegisterOperand FpuAccumulator(int opcode)
         {
-            return new Pdp11Instruction { Opcode = Opcode.nop };
+            var freg= arch.GetFpuRegister(opcode & 0x7);
+            if (freg == null)
+                return null;
+            return new RegisterOperand(freg);
+        }
+
+        private static Pdp11Instruction FpuArithmetic(ushort opcode, Pdp11Disassembler dasm)
+        {
+            return fpu2Decoders[(opcode >> 8) & 0x0F].Decode(opcode, dasm);
         }
 
         private PrimitiveType DataWidthFromSizeBit(uint p)
@@ -250,59 +263,60 @@ namespace Reko.Arch.Pdp11
             return p != 0 ? PrimitiveType.Byte : PrimitiveType.Word16;
         }
 
-        private Pdp11Instruction NonDoubleOperandInstruction(ushort opcode)
+        private static Pdp11Instruction NonDoubleOperandInstruction(ushort opcode, Pdp11Disassembler dasm)
         {
             switch ((opcode >> 8))
             {
-            case 0x01: return BranchInstruction(opcode, Opcode.br);
-            case 0x02: return BranchInstruction(opcode, Opcode.bne);
-            case 0x03: return BranchInstruction(opcode, Opcode.beq);
-            case 0x04: return BranchInstruction(opcode, Opcode.bge);
-            case 0x05: return BranchInstruction(opcode, Opcode.blt);
-            case 0x06: return BranchInstruction(opcode, Opcode.bgt);
-            case 0x07: return BranchInstruction(opcode, Opcode.ble);
-            case 0x80: return BranchInstruction(opcode, Opcode.bpl);
-            case 0x81: return BranchInstruction(opcode, Opcode.bmi);
-            case 0x82: return BranchInstruction(opcode, Opcode.bhi);
-            case 0x83: return BranchInstruction(opcode, Opcode.blos);
-            case 0x84: return BranchInstruction(opcode, Opcode.bvc);
-            case 0x85: return BranchInstruction(opcode, Opcode.bvs);
-            case 0x86: return BranchInstruction(opcode, Opcode.bcc);
-            case 0x87: return BranchInstruction(opcode, Opcode.bcs);
+            case 0x01: return dasm.BranchInstruction(opcode, Opcode.br);
+            case 0x02: return dasm.BranchInstruction(opcode, Opcode.bne);
+            case 0x03: return dasm.BranchInstruction(opcode, Opcode.beq);
+            case 0x04: return dasm.BranchInstruction(opcode, Opcode.bge);
+            case 0x05: return dasm.BranchInstruction(opcode, Opcode.blt);
+            case 0x06: return dasm.BranchInstruction(opcode, Opcode.bgt);
+            case 0x07: return dasm.BranchInstruction(opcode, Opcode.ble);
+            case 0x80: return dasm.BranchInstruction(opcode, Opcode.bpl);
+            case 0x81: return dasm.BranchInstruction(opcode, Opcode.bmi);
+            case 0x82: return dasm.BranchInstruction(opcode, Opcode.bhi);
+            case 0x83: return dasm.BranchInstruction(opcode, Opcode.blos);
+            case 0x84: return dasm.BranchInstruction(opcode, Opcode.bvc);
+            case 0x85: return dasm.BranchInstruction(opcode, Opcode.bvs);
+            case 0x86: return dasm.BranchInstruction(opcode, Opcode.bcc);
+            case 0x87: return dasm.BranchInstruction(opcode, Opcode.bcs);
             }
 
-
-            var dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
-            MachineOperand op = null;
+            var dataWidth = dasm.DataWidthFromSizeBit(opcode & 0x8000u);
+            int cop = 1;
+            MachineOperand op1 = null;
+            MachineOperand op2 = null;
             Opcode oc = Opcode.illegal;
             switch ((opcode >> 6) & 0x3FF)
             {
             case 0x000:
                 switch (opcode & 0x3F)
                 {
-                case 0x00: op = null; oc = Opcode.halt; break;
-                case 0x01: op = null; oc = Opcode.wait; break;
-                case 0x02: op = null; oc = Opcode.rti; break;
-                case 0x03: op = null; oc = Opcode.bpt; break;
-                case 0x04: op = null; oc = Opcode.iot; break;
-                case 0x05: op = null; oc = Opcode.reset; break;
-                case 0x06: op = null; oc = Opcode.rtt; break;
-                case 0x07: op = null; oc = Opcode.illegal; break;
+                case 0x00: cop = 0; oc = Opcode.halt; break;
+                case 0x01: cop = 0; oc = Opcode.wait; break;
+                case 0x02: cop = 0; oc = Opcode.rti; break;
+                case 0x03: cop = 0; oc = Opcode.bpt; break;
+                case 0x04: cop = 0; oc = Opcode.iot; break;
+                case 0x05: cop = 0; oc = Opcode.reset; break;
+                case 0x06: cop = 0; oc = Opcode.rtt; break;
+                case 0x07: cop = 0; oc = Opcode.illegal; break;
                 }
                 break;
-            case 0x001: op = DecodeOperand(opcode); oc = Opcode.jmp; break;
+            case 0x001: op1 = dasm.DecodeOperand(opcode); oc = Opcode.jmp; break;
             case 0x002:
                 switch (opcode & 0x38)
                 {
-                case 0: op = DecodeOperand(opcode & 7); oc = Opcode.rts; break;
-                case 3: op = DecodeOperand(opcode); oc = Opcode.spl; break;
+                case 0: op1 = dasm.DecodeOperand(opcode & 7); oc = Opcode.rts; break;
+                case 3: op1 = dasm.DecodeOperand(opcode); oc = Opcode.spl; break;
                 case 0x20:
                 case 0x30:
-                    return DecodeCondCode(opcode);
+                    return dasm.DecodeCondCode(opcode);
                 }
                 break;
             case 0x003:
-                oc = Opcode.swab; op = DecodeOperand(opcode);
+                oc = Opcode.swab; op1 = dasm.DecodeOperand(opcode);
                 dataWidth = PrimitiveType.Byte;
                 break;
             case 0x020:
@@ -313,105 +327,111 @@ namespace Reko.Arch.Pdp11
             case 0x025:
             case 0x026:
             case 0x027:
-                return new Pdp11Instruction
-                {
-                    Opcode = Opcode.jsr,
-                    op1 = Reg(opcode >> 6),
-                    op2 = DecodeOperand(opcode),
-                    DataWidth = PrimitiveType.Word16
-                };
+                oc = Opcode.jsr;
+                cop = 2;
+                op1 = Reg(opcode >> 6, dasm);
+                op2 = dasm.DecodeOperand(opcode);
+                dataWidth = PrimitiveType.Word16;
+                break;
             case 0x220:
             case 0x221:
             case 0x222:
             case 0x223:
                 oc = Opcode.emt;
-                op = new ImmediateOperand(Constant.Byte((byte)opcode));
+                op1 = new ImmediateOperand(Constant.Byte((byte)opcode));
                 break;
             case 0x224:
             case 0x225:
             case 0x226:
             case 0x227:
                 oc = Opcode.trap;
-                op = new ImmediateOperand(Constant.Byte((byte)opcode));
+                op1 = new ImmediateOperand(Constant.Byte((byte)opcode));
                 break;
             case 0x028:
             case 0x228:
-                oc = dataWidth.Size == 1 ? Opcode.clrb : Opcode.clr; op = DecodeOperand(opcode);
+                oc = dataWidth.Size == 1 ? Opcode.clrb : Opcode.clr;
+                op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x029:
             case 0x229:
-                oc = Opcode.com; op = DecodeOperand(opcode);
+                oc = Opcode.com; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x02A:
             case 0x22A:
-                oc = Opcode.inc; op = DecodeOperand(opcode);
+                oc = Opcode.inc; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x02B:
             case 0x22B:
-                oc = Opcode.dec; op = DecodeOperand(opcode);
+                oc = Opcode.dec; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x02C:
             case 0x22C:
-                oc = Opcode.neg; op = DecodeOperand(opcode);
+                oc = Opcode.neg; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x02D:
             case 0x22D:
-                oc = Opcode.adc; op = DecodeOperand(opcode);
+                oc = Opcode.adc; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x02E:
             case 0x22E:
-                oc = Opcode.sbc; op = DecodeOperand(opcode);
+                oc = Opcode.sbc; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x02F:
             case 0x22F:
-                oc = Opcode.tst; op = DecodeOperand(opcode);
+                oc = Opcode.tst; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x030:
             case 0x230:
-                oc = Opcode.ror; op = DecodeOperand(opcode);
+                oc = Opcode.ror; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x031:
             case 0x231:
-                oc = Opcode.rol; op = DecodeOperand(opcode);
+                oc = Opcode.rol; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x032:
             case 0x232:
-                oc = Opcode.asr; op = DecodeOperand(opcode);
+                oc = Opcode.asr; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x033:
             case 0x233:
-                oc = Opcode.asl; op = DecodeOperand(opcode);
+                oc = Opcode.asl; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x034:
-                oc = Opcode.mark; op = DecodeOperand(opcode);
+                oc = Opcode.mark; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x234:
-                oc = Opcode.mtps; op = DecodeOperand(opcode);
+                oc = Opcode.mtps; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x035:
-                oc = Opcode.mfpi; op = DecodeOperand(opcode);
+                oc = Opcode.mfpi; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x235:
-                oc = Opcode.mfpd; op = DecodeOperand(opcode);
+                oc = Opcode.mfpd; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x036:
-                oc = Opcode.mtpi; op = DecodeOperand(opcode);
+                oc = Opcode.mtpi; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x236:
-                oc = Opcode.mtpd; op = DecodeOperand(opcode);
+                oc = Opcode.mtpd; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x037:
-                oc = Opcode.sxt; op = DecodeOperand(opcode);
+                oc = Opcode.sxt; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x237:
-                oc = Opcode.mfps; op = DecodeOperand(opcode);
+                oc = Opcode.mfps; op1 = dasm.DecodeOperand(opcode);
                 break;
+            }
+            if (cop > 0 && op1 == null ||
+                cop > 1 && op2 == null)
+            {
+                return new Pdp11Instruction { Opcode = Opcode.illegal };
             }
             return new Pdp11Instruction
             {
                 Opcode = oc,
                 DataWidth = dataWidth,
-                op1 = op,
+                op1 = op1,
+                op2 = op2,
             };
         }
 
@@ -432,9 +452,9 @@ namespace Reko.Arch.Pdp11
             };
         }
 
-        private MachineOperand Reg(int bits)
+        private static MachineOperand Reg(int bits, Pdp11Disassembler dasm)
         {
-            return new RegisterOperand(arch.GetRegister(bits & 7));
+            return new RegisterOperand(dasm.arch.GetRegister(bits & 7));
         }
 
         private MachineOperand Imm3(ushort opcode)
@@ -448,57 +468,78 @@ namespace Reko.Arch.Pdp11
             {
                 Opcode = oc,
                 DataWidth = PrimitiveType.Word16,
-                op1 = new AddressOperand(rdr.Address + 2 * (sbyte)(opcode & 0xFF)),
+                op1 = new AddressOperand(this.rdr.Address + 2 * (sbyte)(opcode & 0xFF)),
             };
         }
 
-        private MachineOperand DecodeOperand(int operandBits)
+        /// <summary>
+        /// Decodes an operand based on the 6-bit quantitity <paramref name="operandBits"/>.
+        /// </summary>
+        /// <param name="operandBits"></param>
+        /// <returns>A decoded operand, or null if invalid.</returns>
+        private MachineOperand DecodeOperand(int operandBits, bool fpuReg = false)
         {
-            var reg = arch.GetRegister(operandBits & 7);
+            ushort u;
+            var reg = this.arch.GetRegister(operandBits & 7);
             //Debug.Print("operandBits {0:X} {1:X} ", (operandBits >> 3) & 7, operandBits & 7);
             if (reg == Registers.pc)
             {
                 switch ((operandBits >> 3) & 7)
                 {
-                case 0: return new RegisterOperand(reg);
-                case 1: return new MemoryOperand(AddressMode.RegDef, dataWidth, reg);
-                case 2: return new ImmediateOperand(Constant.Word16(rdr.ReadLeUInt16()));
-                case 3: return new MemoryOperand(rdr.ReadLeUInt16(), dataWidth);
+                case 0:
+                    if (fpuReg)
+                        return FpuAccumulator(operandBits & 7);
+                    else
+                        return new RegisterOperand(reg);
+                case 1: return new MemoryOperand(AddressMode.RegDef, this.dataWidth, reg);
+                case 2:
+                    if (!this.rdr.TryReadLeUInt16(out u))
+                        return null;
+                    return ImmediateOperand.Word16(u);
+                case 3: return new MemoryOperand(this.rdr.ReadLeUInt16(), this.dataWidth);
                 case 6:
-                    return new MemoryOperand(AddressMode.Indexed, dataWidth, reg)
+                    if (!this.rdr.TryReadLeUInt16(out u))
+                        return null;
+                    return new MemoryOperand(AddressMode.Indexed, this.dataWidth, reg)
                     {
-                        EffectiveAddress = rdr.ReadLeUInt16()
+                        EffectiveAddress = u,
                     };
                 // PC relative
                 case 7:
-                    return new MemoryOperand(AddressMode.IndexedDef, dataWidth, reg)
+                    if (!this.rdr.TryReadLeUInt16(out u))
+                        return null;
+                    return new MemoryOperand(AddressMode.IndexedDef, this.dataWidth, reg)
                     {
-                        EffectiveAddress = rdr.ReadLeUInt16()
+                        EffectiveAddress =  u,
                     };
                 }
-                throw new NotImplementedException();
+                return null;
             }
             else
             {
                 switch ((operandBits >> 3) & 7)
                 {
                 case 0: return new RegisterOperand(reg);                                 //   Reg           Direct addressing of the register
-                case 1: return new MemoryOperand(AddressMode.RegDef, dataWidth, reg);      //   Reg Def       Contents of Reg is the address
-                case 2: return new MemoryOperand(AddressMode.AutoIncr, dataWidth, reg);   //   AutoIncr      Contents of Reg is the address, then Reg incremented
-                case 3: return new MemoryOperand(AddressMode.AutoIncrDef, dataWidth, reg);    //   AutoIncrDef   Content of Reg is addr of addr, then Reg Incremented
-                case 4: return new MemoryOperand(AddressMode.AutoDecr, dataWidth, reg);   //   AutoDecr      Reg incremented, then contents of Reg is the address
-                case 5: return new MemoryOperand(AddressMode.AutoDecrDef, dataWidth, reg);    //   AutoDecrDef   Reg is decremented then contents is addr of addr
-                case 6: return new MemoryOperand(AddressMode.Indexed, dataWidth, reg)
-                        {
-                            EffectiveAddress = rdr.ReadLeUInt16()
-                        };
-                //case 6: return new MemoryOperand(reg, rdr.ReadLeUInt16());   //   Index         Contents of Reg + Following word is address
-                case 7: return new MemoryOperand(AddressMode.IndexedDef, dataWidth, reg)
-                        {
-                            EffectiveAddress = rdr.ReadLeUInt16()
-                        };
-                //   IndexDef      Contents of Reg + Following word is addr of addr
-                default: throw new NotSupportedException(string.Format("Address mode {0} not supported.", (operandBits >> 3) & 7));
+                case 1: return new MemoryOperand(AddressMode.RegDef, this.dataWidth, reg);      //   Reg Def       Contents of Reg is the address
+                case 2: return new MemoryOperand(AddressMode.AutoIncr, this.dataWidth, reg);   //   AutoIncr      Contents of Reg is the address, then Reg incremented
+                case 3: return new MemoryOperand(AddressMode.AutoIncrDef, this.dataWidth, reg);    //   AutoIncrDef   Content of Reg is addr of addr, then Reg Incremented
+                case 4: return new MemoryOperand(AddressMode.AutoDecr, this.dataWidth, reg);   //   AutoDecr      Reg incremented, then contents of Reg is the address
+                case 5: return new MemoryOperand(AddressMode.AutoDecrDef, this.dataWidth, reg);    //   AutoDecrDef   Reg is decremented then contents is addr of addr
+                case 6:
+                    if (!this.rdr.TryReadLeUInt16(out u))
+                        return null;
+                    return new MemoryOperand(AddressMode.Indexed, this.dataWidth, reg)
+                    {
+                        EffectiveAddress = u
+                    };
+                case 7:
+                    if (!this.rdr.TryReadLeUInt16(out u))
+                        return null;
+                    return new MemoryOperand(AddressMode.IndexedDef, this.dataWidth, reg)
+                    {
+                        EffectiveAddress = u
+                    };
+                default: return null;
                 }
             }
         }

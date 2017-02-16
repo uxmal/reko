@@ -28,12 +28,12 @@ namespace Reko.Arch.PowerPC
 {
     public abstract class PowerPcPointerScanner<T> : PointerScanner<T>
     {
-        public PowerPcPointerScanner(ImageReader rdr, HashSet<T> knownLinAddresses, PointerScannerFlags flags)
+        public PowerPcPointerScanner(EndianImageReader rdr, HashSet<T> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)
         {
         }
 
-        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
+        public override bool TryPeekOpcode(EndianImageReader rdr, out uint opcode)
         {
             return rdr.TryPeekBeUInt32(0, out opcode);
         }
@@ -56,7 +56,7 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcPointerScanner32 : PowerPcPointerScanner<uint>
     {
-        public PowerPcPointerScanner32(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public PowerPcPointerScanner32(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)
         {
         }
@@ -71,7 +71,7 @@ namespace Reko.Arch.PowerPC
             return address.ToUInt32();
         }
 
-        public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)
+        public override bool MatchCall(EndianImageReader rdr, uint opcode, out uint target)
         {
             int offset;
             if (TryGetDisplacement(opcode, 0x48000001u, out offset))
@@ -83,7 +83,7 @@ namespace Reko.Arch.PowerPC
             return false;
         }
 
-        public override bool MatchJump(ImageReader rdr, uint opcode, out uint target)
+        public override bool MatchJump(EndianImageReader rdr, uint opcode, out uint target)
         {
             int offset;
             if (TryGetDisplacement(opcode, 0x48000000u, out offset))
@@ -95,7 +95,7 @@ namespace Reko.Arch.PowerPC
             return false;
         }
 
-        public override bool TryPeekPointer(ImageReader rdr, out uint target)
+        public override bool TryPeekPointer(EndianImageReader rdr, out uint target)
         {
             return rdr.TryPeekBeUInt32(0, out target);
         }
@@ -103,7 +103,7 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcPointerScanner64 : PowerPcPointerScanner<ulong>
     {
-        public PowerPcPointerScanner64(ImageReader rdr, HashSet<ulong> knownLinAddresses, PointerScannerFlags flags)
+        public PowerPcPointerScanner64(EndianImageReader rdr, HashSet<ulong> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)
         {
         }
@@ -118,7 +118,7 @@ namespace Reko.Arch.PowerPC
             return address.ToLinear();
         }
 
-        public override bool MatchCall(ImageReader rdr, uint opcode, out ulong target)
+        public override bool MatchCall(EndianImageReader rdr, uint opcode, out ulong target)
         {
             int offset;
             if (TryGetDisplacement(opcode, 0x48000001u, out offset))
@@ -130,7 +130,7 @@ namespace Reko.Arch.PowerPC
             return false;
         }
 
-        public override bool MatchJump(ImageReader rdr, uint opcode, out ulong target)
+        public override bool MatchJump(EndianImageReader rdr, uint opcode, out ulong target)
         {
             int offset;
             if (TryGetDisplacement(opcode, 0x48000000u, out offset))
@@ -141,7 +141,7 @@ namespace Reko.Arch.PowerPC
             target = 0;
             return false;
         }
-        public override bool TryPeekPointer(ImageReader rdr, out ulong target)
+        public override bool TryPeekPointer(EndianImageReader rdr, out ulong target)
         {
             return rdr.TryPeekBeUInt64(0, out target);
         }

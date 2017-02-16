@@ -170,7 +170,7 @@ namespace Reko.UnitTests.Arch.Intel
                 throw new NotImplementedException();
             }
 
-            public Identifier GetImportedGlobal(Address addrThunk, Address addrInstruction)
+            public Expression GetImport(Address addrThunk, Address addrInstruction)
             {
                 throw new NotImplementedException();
             }

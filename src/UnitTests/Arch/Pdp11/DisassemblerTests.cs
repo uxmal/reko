@@ -184,5 +184,17 @@ namespace Reko.UnitTests.Arch.Pdp11
         {
             RunTest("setflags\t#04", 0x00B4);
         }
+
+        [Test]
+        public void Pdp11dis_mul2()
+        {
+            RunTest("mul\tr0,r3", 0xF0C0);
+        }
+
+        [Test]
+        public void Pdp11dis_f()
+        {
+            RunTest("stcdi\tac4,@-(r4)", 0xFBAC);
+        }
     }
 }

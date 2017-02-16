@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Arch.Arm
             return armInstr;
         }
 
-        protected override IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, ImageReader rdr)
+        protected override IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, EndianImageReader rdr)
         {
             return new ThumbDisassembler(rdr).GetEnumerator();
         }

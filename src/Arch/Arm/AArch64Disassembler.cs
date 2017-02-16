@@ -34,7 +34,7 @@ namespace Reko.Arch.Arm
     {
         private IEnumerator<Instruction<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail>> stream;
 
-        public AArch64Disassembler(ImageReader rdr)
+        public AArch64Disassembler(EndianImageReader rdr)
         {
             var dasm = CapstoneDisassembler.CreateArm64Disassembler(DisassembleMode.Arm32);
             dasm.EnableDetails = true;

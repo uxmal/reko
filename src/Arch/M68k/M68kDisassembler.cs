@@ -35,19 +35,19 @@ namespace Reko.Arch.M68k
 
     public partial class M68kDisassembler : DisassemblerBase<M68kInstruction>
     {
-        private ImageReader rdr;        // program counter 
+        private EndianImageReader rdr;        // program counter 
         internal M68kInstruction instr;  // instruction being built
         private static TraceSwitch trace = new TraceSwitch("m68dasm", "Detailed tracing of M68k disassembler");
         
-        private M68kDisassembler(ImageReader rdr, uint cpuType)
+        private M68kDisassembler(EndianImageReader rdr, uint cpuType)
         {
             this.rdr = rdr;
             this.g_cpu_type = cpuType;
         }
 
-        public static M68kDisassembler Create68000(ImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68000); }
-        public static M68kDisassembler Create68010(ImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68010); }
-        public static M68kDisassembler Create68020(ImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68020); }
+        public static M68kDisassembler Create68000(EndianImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68000); }
+        public static M68kDisassembler Create68010(EndianImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68010); }
+        public static M68kDisassembler Create68020(EndianImageReader rdr) { return new M68kDisassembler(rdr, TYPE_68020); }
 
         static M68kDisassembler()
         {
@@ -280,10 +280,16 @@ namespace Reko.Arch.M68k
                     i = 3;
                 }
                 var opTranslator = new OperandFormatDecoder(dasm, i);
-                instr.op1 = opTranslator.GetOperand(dasm.rdr, args, instr.dataWidth);
-                instr.op2 = opTranslator.GetOperand(dasm.rdr, args, instr.dataWidth);
-                instr.op3 = opTranslator.GetOperand(dasm.rdr, args, instr.dataWidth);
-                return instr;
+                if (opTranslator.TryGetOperand(dasm.rdr, args, instr.dataWidth, out instr.op1) &&
+                    opTranslator.TryGetOperand(dasm.rdr, args, instr.dataWidth, out instr.op2) &&
+                    opTranslator.TryGetOperand(dasm.rdr, args, instr.dataWidth, out instr.op3))
+                {
+                    return instr;
+                }
+                else
+                {
+                    return new M68kInstruction { code = Opcode.illegal };
+                }
             }
         }
 
@@ -2450,7 +2456,11 @@ namespace Reko.Arch.M68k
             var opDecoder = new OperandFormatDecoder(dasm, 0);
             dasm.instr.code = BIT_B(extension) ? Opcode.muls : Opcode.mulu;
             dasm.instr.dataWidth = PrimitiveType.Word32;
-            dasm.instr.op1 = opDecoder.ParseOperand(dasm.instruction, 0, PrimitiveType.Word32, dasm.rdr);
+
+            if (!opDecoder.TryParseOperand(dasm.instruction, 0, PrimitiveType.Word32, dasm.rdr, out dasm.instr.op1))
+            {
+                return new M68kInstruction { code = Opcode.illegal };
+            }
             dasm.instr.op2 = op2;
             return dasm.instr;
         }

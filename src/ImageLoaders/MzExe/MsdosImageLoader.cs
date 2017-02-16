@@ -72,7 +72,7 @@ namespace Reko.ImageLoaders.MzExe
         public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
 			SegmentMap imageMap = segmentMap;
-			ImageReader rdr = new LeImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);
+			EndianImageReader rdr = new LeImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);
             var relocations = imgLoaded.Relocations;
 			int i = exe.e_cRelocations;
             var segments = new Dictionary<Address, ushort>();

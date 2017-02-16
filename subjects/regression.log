@@ -24,134 +24,6 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 
 === ipcalc.dcproject
 *** ipcalc.dcproject
-fn0000000000015180: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn0000000000015F64: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Core.Code.InstructionTransformer.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 161
-   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 51
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn0000000000015F94: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn0000000000015FCC: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn00000000000163B0: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn000000000001654C: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn0000000000016630: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn00000000000166F4: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn0000000000016830: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
 fn0000000000016864: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -160,353 +32,22 @@ fn0000000000016864: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Analysis.Aliases.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 175
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 84
-fn00000000000168E4: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn00000000000169D8: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn0000000000016D74: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn000000000001730C: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn00000000000173D4: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Core.Code.InstructionTransformer.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 161
-   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 51
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn00000000000175BC: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn0000000000017924: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn0000000000017B40: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn0000000000017D10: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn0000000000017F04: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-fn0000000000018118: error: An error occurred during data flow analysis.
-    The method or operation is not implemented.
-       at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
-   at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
-   at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
-   at Reko.Analysis.SsaTransform.VariableRenamer.TransformAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 614
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 472
-   at Reko.Analysis.SsaTransform.VariableRenamer.RenameBlock(Block n) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 507
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 206
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
-: error: Error when reconstructing types.
-    Specified argument was out of the range of valid values.
-Parameter name: Linear address 00000000 is not in known segment.
-       at Reko.Core.SegmentMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\SegmentMap.cs:line 161
-   at Reko.CmdLine.CmdLineListener.CreateStatementNavigator(Program program, Statement stm) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineListener.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 81
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 90
-   at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 309
-fn0000000000015180: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn0000000000015F64: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn0000000000015F94: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn0000000000015FCC: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn00000000000163B0: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
+0000000000018320: error: An error occurred while processing the statement branch 0x0000000000019E20 - 0x0000000000019E18 >> 0x00000003 == 0x0000000000000000 l0000000000018354.
+    Pulling difference ptr64 and ptr64
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+fn0000000000015F94: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn00000000000164D0: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-fn000000000001654C: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn0000000000016630: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn00000000000166F4: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn0000000000016830: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn00000000000168E4: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn00000000000169D8: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn0000000000016D74: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn000000000001730C: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn00000000000173D4: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn00000000000175BC: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn0000000000017924: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn0000000000017B40: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn0000000000017D10: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn0000000000017F04: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn0000000000018118: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
+fn0000000000016830: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+fn00000000000173D4: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
 === sparc-rtems-unprotoize
 *** sparc-rtems-unprotoize
@@ -2143,26 +1684,6 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00001B18: error: An error occurred while processing the statement branch d5_1692 - Mem1455[a7_208 + 0x0000006A:word32] <=u 0x00000000 l00001B36.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00001B2C: error: An error occurred while processing the statement branch d5_1692 - d0_1434 <=u 0x00000000 l00001B32.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 0000288D: warning: Expected sizes of arrays to have been determined by now
 00003EAC: warning: Expected sizes of arrays to have been determined by now
@@ -2191,26 +1712,6 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00001C48: error: An error occurred while processing the statement branch d5_1720 - Mem1483[a7_210 + 0x0000006A:word32] <=u 0x00000000 l00001C66.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00001C5C: error: An error occurred while processing the statement branch d5_1720 - d0_1462 <=u 0x00000000 l00001C62.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 000028C5: warning: Expected sizes of arrays to have been determined by now
 00003E5C: warning: Expected sizes of arrays to have been determined by now
@@ -2228,26 +1729,6 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00001DA0: error: An error occurred while processing the statement branch d5_1720 - Mem1483[a7_210 + 0x0000006A:word32] <=u 0x00000000 l00001DBE.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00001DB4: error: An error occurred while processing the statement branch d5_1720 - d0_1462 <=u 0x00000000 l00001DBA.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 00002B15: warning: Expected sizes of arrays to have been determined by now
@@ -2267,26 +1748,6 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00001AE0: error: An error occurred while processing the statement branch d5_1692 - Mem1455[a7_208 + 0x0000006A:word32] <=u 0x00000000 l00001AFE.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00001AF4: error: An error occurred while processing the statement branch d5_1692 - d0_1434 <=u 0x00000000 l00001AFA.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 00002BC4: warning: Expected sizes of arrays to have been determined by now
 00002BC4: warning: Expected sizes of arrays to have been determined by now
@@ -2302,26 +1763,6 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00001B3C: error: An error occurred while processing the statement branch d5_1692 - Mem1455[a7_208 + 0x0000006A:word32] <=u 0x00000000 l00001B5A.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00001B50: error: An error occurred while processing the statement branch d5_1692 - d0_1434 <=u 0x00000000 l00001B56.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 000028B1: warning: Expected sizes of arrays to have been determined by now
@@ -2342,26 +1783,6 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-000035BC: error: An error occurred while processing the statement branch d5_1720 - Mem1483[a7_210 + 0x0000006A:word32] <=u 0x00000000 l000035DA.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-000035D0: error: An error occurred while processing the statement branch d5_1720 - d0_1462 <=u 0x00000000 l000035D6.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 00002BED: warning: Expected sizes of arrays to have been determined by now
 00003DCC: warning: Expected sizes of arrays to have been determined by now
@@ -2381,26 +1802,6 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00001AA0: error: An error occurred while processing the statement branch d5_1692 - Mem1455[a7_208 + 0x0000006A:word32] <=u 0x00000000 l00001ABE.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00001AB4: error: An error occurred while processing the statement branch d5_1692 - d0_1434 <=u 0x00000000 l00001ABA.
-    Pulling difference int32 and (ptr (union ((struct 0001 (0 word32 dw0000)) u1) ((struct 0004 (0 word32 dw0000)) u0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 00002815: warning: Expected sizes of arrays to have been determined by now
 00003DAC: warning: Expected sizes of arrays to have been determined by now
@@ -2408,107 +1809,7 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 00003DAC: warning: Expected sizes of arrays to have been determined by now
 
 === BENCHFN.dcproject
-*** BENCHFN.dcproject
-0800:1140: warning: Can't determine size of jump vector; probing only one entry.
-0800:17B2: warning: Can't determine size of jump vector; probing only one entry.
-0800:1737: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_40, Mem149[ss_43:bp_50 + 0x0004:word16]) (retsize: 2; depth: 2)	uses: al_55,ax_142,bh_35,bl_36,bLoc2B,bp_50,bx_37,C_59,cs_40,cx_44,CZ_34,D_42,di_143,ds_41,es_46,S_38,SCZO_94,si_54,SO_39,sp_148,ss_43,SZO_146,wLoc02_4,wLoc24,wLoc28_145,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_95	defs: al_160,ax_165,bh_172,bl_171,bp_153,bx_170,C_163,cs_166,cx_167,CZ_173,D_159,di_157,ds_161,es_158,S_169,SCZO_155,si_156,SO_168,sp_152,ss_154,SZO_162,Z_164.
-    Unable to cast object of type 'Reko.Core.Expressions.Identifier' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:176B: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_250, Mem278[ss_254:bp_261 + 0x0006:word16]) (retsize: 2; depth: 2)	uses: al_265,ax_264,bh_268,bl_269,bLoc2B,bp_261,bx_270,C_273,cs_250,cx_255,CZ_247,D_253,di_259,ds_252,es_257,S_272,SCZO_256,si_260,SO_249,sp_277,ss_254,SZO_271,wLoc02_4,wLoc24,wLoc28_246,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_251	defs: al_287,ax_292,bh_299,bl_298,bp_280,bx_297,C_290,cs_293,cx_294,CZ_300,D_286,di_284,ds_288,es_285,S_296,SCZO_282,si_283,SO_295,sp_279,ss_281,SZO_289,Z_291.
-    Unable to cast object of type 'Reko.Core.Expressions.DepositBits' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:175C: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_250, Mem315[ss_254:bp_261 + 0x0004:word16]) (retsize: 2; depth: 2)	uses: al_265,ax_264,bh_268,bl_269,bLoc2B,bp_261,bx_270,C_273,cs_250,cx_255,CZ_247,D_253,di_259,ds_252,es_257,S_272,SCZO_308,si_260,SO_249,sp_314,ss_254,SZO_312,wLoc02_4,wLoc24,wLoc28_311,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_309	defs: al_324,ax_329,bh_336,bl_335,bp_317,bx_334,C_327,cs_330,cx_331,CZ_337,D_323,di_321,ds_325,es_322,S_333,SCZO_319,si_320,SO_332,sp_316,ss_318,SZO_326,Z_328.
-    Unable to cast object of type 'Reko.Core.Expressions.Identifier' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:1AF2: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_40, Mem108[ss_100:bp_50 + 0x0006:word16]) (retsize: 2; depth: 2)	uses: al_55,ax_106,bh_35,bl_36,bLoc2B_97,bp_50,bx_37,C_59,cs_40,cx_44,CZ_34,D_42,di_48,ds_41,es_46,S_38,SCZO_94,si_54,SO_39,sp_107,ss_100,SZO_57,wLoc02_4,wLoc24_96,wLoc28_99,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_95	defs: al_117,ax_122,bh_129,bl_128,bp_110,bx_127,C_120,cs_123,cx_124,CZ_130,D_116,di_114,ds_118,es_115,S_126,SCZO_112,si_113,SO_125,sp_109,ss_111,SZO_119,Z_121.
-    Unable to cast object of type 'Reko.Core.Expressions.ConstantUInt16' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:177D: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_166, Mem214[ss_154:bp_153 + 0x0006:word16]) (retsize: 2; depth: 2)	uses: al_177,ax_176,bh_172,bl_171,bLoc2B,bp_153,bx_170,C_207,cs_166,cx_174,CZ_173,D_159,di_204,ds_161,es_158,S_206,SCZO_208,si_156,SO_179,sp_213,ss_154,SZO_205,wLoc02_4,wLoc24,wLoc28_145,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_209	defs: al_223,ax_228,bh_235,bl_234,bp_216,bx_233,C_226,cs_229,cx_230,CZ_236,D_222,di_220,ds_224,es_221,S_232,SCZO_218,si_219,SO_231,sp_215,ss_217,SZO_225,Z_227.
-    Unable to cast object of type 'Reko.Core.Expressions.BinaryExpression' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-fn0800_1099: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-
 === BENCHFN.EXE
-*** BENCHFN.EXE
-0800:1140: warning: Can't determine size of jump vector; probing only one entry.
-0800:17B2: warning: Can't determine size of jump vector; probing only one entry.
-0800:1737: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_40, Mem149[ss_43:bp_50 + 0x0004:word16]) (retsize: 2; depth: 2)	uses: al_55,ax_142,bh_35,bl_36,bLoc2B,bp_50,bx_37,C_59,cs_40,cx_44,CZ_34,D_42,di_143,ds_41,es_46,S_38,SCZO_94,si_54,SO_39,sp_148,ss_43,SZO_146,wLoc02_4,wLoc24,wLoc28_145,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_95	defs: al_160,ax_165,bh_172,bl_171,bp_153,bx_170,C_163,cs_166,cx_167,CZ_173,D_159,di_157,ds_161,es_158,S_169,SCZO_155,si_156,SO_168,sp_152,ss_154,SZO_162,Z_164.
-    Unable to cast object of type 'Reko.Core.Expressions.Identifier' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:176B: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_250, Mem278[ss_254:bp_261 + 0x0006:word16]) (retsize: 2; depth: 2)	uses: al_265,ax_264,bh_268,bl_269,bLoc2B,bp_261,bx_270,C_273,cs_250,cx_255,CZ_247,D_253,di_259,ds_252,es_257,S_272,SCZO_256,si_260,SO_249,sp_277,ss_254,SZO_271,wLoc02_4,wLoc24,wLoc28_246,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_251	defs: al_287,ax_292,bh_299,bl_298,bp_280,bx_297,C_290,cs_293,cx_294,CZ_300,D_286,di_284,ds_288,es_285,S_296,SCZO_282,si_283,SO_295,sp_279,ss_281,SZO_289,Z_291.
-    Unable to cast object of type 'Reko.Core.Expressions.DepositBits' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:175C: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_250, Mem315[ss_254:bp_261 + 0x0004:word16]) (retsize: 2; depth: 2)	uses: al_265,ax_264,bh_268,bl_269,bLoc2B,bp_261,bx_270,C_273,cs_250,cx_255,CZ_247,D_253,di_259,ds_252,es_257,S_272,SCZO_308,si_260,SO_249,sp_314,ss_254,SZO_312,wLoc02_4,wLoc24,wLoc28_311,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_309	defs: al_324,ax_329,bh_336,bl_335,bp_317,bx_334,C_327,cs_330,cx_331,CZ_337,D_323,di_321,ds_325,es_322,S_333,SCZO_319,si_320,SO_332,sp_316,ss_318,SZO_326,Z_328.
-    Unable to cast object of type 'Reko.Core.Expressions.Identifier' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:1AF2: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_40, Mem108[ss_100:bp_50 + 0x0006:word16]) (retsize: 2; depth: 2)	uses: al_55,ax_106,bh_35,bl_36,bLoc2B_97,bp_50,bx_37,C_59,cs_40,cx_44,CZ_34,D_42,di_48,ds_41,es_46,S_38,SCZO_94,si_54,SO_39,sp_107,ss_100,SZO_57,wLoc02_4,wLoc24_96,wLoc28_99,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_95	defs: al_117,ax_122,bh_129,bl_128,bp_110,bx_127,C_120,cs_123,cx_124,CZ_130,D_116,di_114,ds_118,es_115,S_126,SCZO_112,si_113,SO_125,sp_109,ss_111,SZO_119,Z_121.
-    Unable to cast object of type 'Reko.Core.Expressions.ConstantUInt16' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:177D: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_166, Mem214[ss_154:bp_153 + 0x0006:word16]) (retsize: 2; depth: 2)	uses: al_177,ax_176,bh_172,bl_171,bLoc2B,bp_153,bx_170,C_207,cs_166,cx_174,CZ_173,D_159,di_204,ds_161,es_158,S_206,SCZO_208,si_156,SO_179,sp_213,ss_154,SZO_205,wLoc02_4,wLoc24,wLoc28_145,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_209	defs: al_223,ax_228,bh_235,bl_234,bp_216,bx_233,C_226,cs_229,cx_230,CZ_236,D_222,di_220,ds_224,es_221,S_232,SCZO_218,si_219,SO_231,sp_215,ss_217,SZO_225,Z_227.
-    Unable to cast object of type 'Reko.Core.Expressions.BinaryExpression' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-fn0800_1099: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-
 === space.sav
 *** space.sav
 0B1E: error: An error occurred while processing instruction at address 0B1E.
@@ -2726,6 +2027,112 @@ fn1DAE: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
 
+=== lunar.lda
+*** lunar.lda
+1156: error: Rewriting of PDP-11 instruction clrflags not supported yet.
+028C: error: Rewriting of PDP-11 instruction swab not supported yet.
+0E4E: error: Rewriting of PDP-11 instruction swab not supported yet.
+0B0A: error: Rewriting of PDP-11 instruction sob not supported yet.
+0A08: error: Rewriting of PDP-11 instruction illegal not supported yet.
+0AC4: error: Rewriting of PDP-11 instruction swab not supported yet.
+3558: error: Rewriting of PDP-11 instruction illegal not supported yet.
+00E8: error: An error occurred while processing instruction at address 00E8.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+0D62: error: An error occurred while processing instruction at address 0D62.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+0D62: error: An error occurred while processing instruction at address 0D62.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+0D62: error: An error occurred while processing instruction at address 0D62.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+0D62: error: An error occurred while processing instruction at address 0D62.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+fn00E0: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 199
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 86
+fn0204: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 199
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 86
+fn0D3C: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 373
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
+   at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitApplication(Application app) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 308
+   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
+   at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 113
+   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
+   at Reko.Analysis.SsaTransform.LocateDefinedVariables.LocateDefs(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 271
+   at Reko.Analysis.SsaTransform.LocateAllDefinedVariables(Dictionary`2[] defOrig) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 95
+   at Reko.Analysis.SsaTransform.PlacePhiFunctions() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 123
+   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 204
+   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
+: warning: Type transformer has looped 51 times, quitting prematurely.
+fn053A: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
+   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
+   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
+fn0D3C: error: An error occurred while rewriting procedure to high-level language.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 208
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
+0000013E: warning: Expected sizes of arrays to have been determined by now
+00000FEC: warning: Expected sizes of arrays to have been determined by now
+0000168C: warning: Expected sizes of arrays to have been determined by now
+00001696: warning: Expected sizes of arrays to have been determined by now
+000027B0: warning: Expected sizes of arrays to have been determined by now
+000028F0: warning: Expected sizes of arrays to have been determined by now
+000028F2: warning: Expected sizes of arrays to have been determined by now
+000028F8: warning: Expected sizes of arrays to have been determined by now
+000034E0: warning: Expected sizes of arrays to have been determined by now
+0000013E: warning: Expected sizes of arrays to have been determined by now
+00000FEC: warning: Expected sizes of arrays to have been determined by now
+0000168C: warning: Expected sizes of arrays to have been determined by now
+00001696: warning: Expected sizes of arrays to have been determined by now
+000027B0: warning: Expected sizes of arrays to have been determined by now
+000028F0: warning: Expected sizes of arrays to have been determined by now
+000028F2: warning: Expected sizes of arrays to have been determined by now
+000028F8: warning: Expected sizes of arrays to have been determined by now
+000034E0: warning: Expected sizes of arrays to have been determined by now
+
+=== import-ordinals.dcproject
 === Executable.exe
 === pySample.dcproject
 === RussianText.exe
@@ -2833,39 +2240,6 @@ fn1DAE: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-0000000140001A94: error: An error occurred while processing the statement word32 eax_109 = UnhandledExceptionFilter(tLoc05C0).
-    Both structures have names! Woo! Return null and make union of it?
-       at Reko.Core.Types.Unifier.UnifyStructures(StructureType a, StructureType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 500
-   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 365
-   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 267
-   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 292
-   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 267
-   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 194
-   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 441
-   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 228
-   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 194
-   at Reko.Typing.ExpressionTypeDescender.MeetDataType(TypeVariable tvExp, DataType dt) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 406
-   at Reko.Typing.ExpressionTypeDescender.MeetDataType(Expression exp, DataType dt) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 394
-   at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 111
-   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
-   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 159
-   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-: error: Error when reconstructing types.
-    Both structures have names! Woo! Return null and make union of it?
-       at Reko.Core.Types.Unifier.UnifyStructures(StructureType a, StructureType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 500
-   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 365
-   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 267
-   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 292
-   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 274
-   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 194
-   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 441
-   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 233
-   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 194
-   at Reko.Core.Types.TypeStore.BuildEquivalenceClassDataTypes(TypeFactory factory) in D:\dev\uxmal\reko\master\src\Core\Types\TypeStore.cs:line 108
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 91
-   at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 309
 
 === test
 *** test
@@ -2979,121 +2353,6 @@ Borland C v3 runtime detected
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-0800:0235: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_15, Mem78[es_19:bx_75 + 0x0002:word16]) (retsize: 2; depth: 4)	uses: ah_38,al_14,bx_75,C_36,cs_15,CZ_37,di_17,dx_39,es_19,SCZO_76,si_18,sp_79,ss_16,SZO_35,wLoc02_80,Z_77	defs: ah_102,al_112,bx_107,C_104,cs_111,CZ_110,di_106,dx_105,es_108,SCZO_100,si_99,sp_98,ss_109,SZO_103,Z_101.
-    Unable to cast object of type 'Reko.Core.Expressions.ConstantByte' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:022E: error: Indirect call rewriter encountered an error while processing the statement call Mem78[es_19:bx_75 + 0x0002:ptr32] (retsize: 4; depth: 6)	uses: ah_38,al_14,bx_75,C_36,cs_15,CZ_37,di_17,dx_39,es_19,SCZO_76,si_18,sp_79,ss_16,SZO_35,wLoc02_80,Z_77	defs: ah_85,al_95,bx_90,C_87,cs_94,CZ_93,di_89,dx_88,es_91,SCZO_83,si_82,sp_81,ss_92,SZO_86,Z_84.
-    Unable to cast object of type 'Reko.Core.Expressions.ConstantByte' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:0665: error: Indirect call rewriter encountered an error while processing the statement call Mem126[0x0800:bx_168 + 0x098D:word16] (retsize: 4; depth: 4)	uses: al_151,ax_155,bp_159,bx_168,C_150,cx,CZ_164,di_157,dl_148,ds_154,dx_149,es_152,SCZO_169,si_158,SO_147,sp_160,ss,SZO_156,wLoc02_4,wLoc08_9,wLoc0A_12,Z_153	defs: al_181,ax_176,bp_171,bx_179,C_185,cx_186,CZ_183,di_175,dl_188,ds_177,dx_187,es_180,SCZO_173,si_174,SO_182,sp_170,ss_172,SZO_184,Z_178.
-    Unable to cast object of type 'Reko.Core.Expressions.ConstantUInt16' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:4E94: error: Indirect call rewriter encountered an error while processing the statement call Mem399[0x0800:bx_403 + 0x0010:word16] (retsize: 4; depth: 4)	uses: ax_419,bp_5,bx_403,C_397,cl_405,cx_404,ds_391,dx_394,SCZO_420,si_354,sp_392,ss,SZO_396,wLoc02_4,wLoc1C_12,wLoc1E_15,Z_421	defs: ax_431,bp_423,bx_433,C_429,cl_432,cx_434,ds_426,dx_427,SCZO_425,si_435,sp_422,ss_424,SZO_428,Z_430.
-    Unable to cast object of type 'Reko.Core.Expressions.Application' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 213
-   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 80
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 154
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 213
-   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 80
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 213
-   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 80
-   at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:6D26: error: Indirect call rewriter encountered an error while processing the statement call Mem384[0x0800:bx_388 + 0x001C:word16] (retsize: 4; depth: 4)	uses: ah_358,al_357,ax_405,bp_5,bx_388,C_382,cl_390,cx_389,dh_327,dl_326,ds_373,dx_379,SCZO_406,si_355,sp_375,ss,SZO_381,wLoc02_4,wLoc1C_9,wLoc1E_57,wLoc20_60,Z_407	defs: ah_415,al_413,ax_417,bp_409,bx_425,C_422,cl_416,cx_424,dh_419,dl_418,ds_414,dx_420,SCZO_411,si_412,sp_408,ss_410,SZO_421,Z_423.
-    Unable to cast object of type 'Reko.Core.Expressions.Application' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 213
-   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 80
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 154
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 213
-   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 80
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 213
-   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 80
-   at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-fn0800_889A: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
-   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
-   at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 200
-   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 62
-   at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 199
-   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 62
-   at Reko.Analysis.DeadCode.VisitAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 143
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 116
-   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 107
-0800:8B46: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_21, Mem0[ds_22:0x2354:word16]) (retsize: 2; depth: 2)	uses: al_31,bp_28,bx_20,C_56,cs_21,cx_26,dl_30,ds_22,SCZO_33,si_53,sp_29,ss_25,SZO_54,wLoc02_4,wLoc04_8,Z_55	defs: al_89,bp_78,bx_88,C_82,cs_86,cx_87,dl_90,ds_85,SCZO_84,si_80,sp_77,ss_79,SZO_81,Z_83.
-    Value does not fall within the expected range.
-       at Reko.Core.Expressions.MkSequence..ctor(DataType dt, Expression head, Expression tail) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 38
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 218
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:8B24: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_110, Mem136[ds_111:bx_138 + 0x4E96:word16]) (retsize: 2; depth: 2)	uses: al_108,bp_117,bx_138,C_112,cs_110,cx_115,dl_107,ds_111,SCZO_139,si_116,sp_118,ss_114,SZO_113,wLoc02_4,wLoc04_8,Z_120	defs: al_152,bp_141,bx_151,C_145,cs_149,cx_150,dl_153,ds_148,SCZO_147,si_143,sp_140,ss_142,SZO_144,Z_146.
-    Unable to cast object of type 'Reko.Core.Expressions.BinaryExpression' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 213
-   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 80
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 154
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 213
-   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 80
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 154
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 248
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
-0800:8B32: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_110, Mem0[ds_111:0x2352:word16]) (retsize: 2; depth: 2)	uses: al_108,bp_117,bx_109,C_112,cs_110,cx_115,dl_107,ds_111,SCZO_119,si_116,sp_118,ss_114,SZO_113,wLoc02_4,wLoc04_8,Z_120	defs: al_133,bp_122,bx_132,C_126,cs_130,cx_131,dl_134,ds_129,SCZO_128,si_124,sp_121,ss_123,SZO_125,Z_127.
-    Value does not fall within the expected range.
-       at Reko.Core.Expressions.MkSequence..ctor(DataType dt, Expression head, Expression tail) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 38
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 218
-   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
 fn0800_9F92: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -3107,26 +2366,6 @@ fn0800_9F92: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 104
-fn0800_A96D: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
-   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
-   at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 200
-   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 62
-   at Reko.Analysis.DeadCode.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
-   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 107
-0800:BD04: error: Indirect call rewriter encountered an error while processing the statement call Mem121[0x0800:bx_142 + 0x000E:word16] (retsize: 4; depth: 98)	uses: al_136,ax_145,bp_5,bx_142,C_124,cx_144,di_13,es_135,ptrLoc06_131,ptrLoc62_78,ptrLoc64_105,ptrLoc68_113,SCZO_146,si_122,sp_114,ss,SZO_132,wLoc02_4,wLoc04_59,wLoc06_130,wLoc08_138,wLoc5C_9,wLoc5E_12,wLoc60_97,wLoc62_100,wLoc64_103,wLoc66_108,wLoc68_111,Z_147	defs: al_165,ax_160,bp_153,bx_162,C_159,cx_164,di_157,es_163,SCZO_155,si_156,sp_152,ss_154,SZO_158,Z_161.
-    Unable to cast object of type 'Reko.Core.Expressions.ConstantByte' to type 'Reko.Core.Expressions.MemoryIdentifier'.
-       at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 111
-   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 204
-   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 97
-   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 80
 : error: Error when reconstructing types.
     Specified argument was out of the range of valid values.
 Parameter name: Linear address 00000000 is not in known segment.
@@ -3221,26 +2460,8 @@ fn0800_7FDC: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn0800_889A: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
 fn0800_984F: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0800_9F92: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 523
-fn0800_A96D: error: An error occurred while rewriting procedure to high-level language.
     The method or operation is not implemented.
        at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
    at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89

@@ -6,7 +6,7 @@
 
 void herror()
 {
-	word64 t3_4 = Mem0[0x000000000001A010 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A010;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -16,7 +16,7 @@ void herror()
 
 void __strdup()
 {
-	word64 t3_4 = Mem0[0x000000000001A018 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A018;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -26,7 +26,7 @@ void __strdup()
 
 void clock_gettime()
 {
-	word64 t3_4 = Mem0[0x000000000001A020 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A020;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -36,7 +36,7 @@ void clock_gettime()
 
 void close()
 {
-	word64 t3_4 = Mem0[0x000000000001A028 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A028;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -46,7 +46,7 @@ void close()
 
 void read()
 {
-	word64 t3_4 = Mem0[0x000000000001A030 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A030;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -56,7 +56,7 @@ void read()
 
 void inet_ntop()
 {
-	word64 t3_4 = Mem0[0x000000000001A038 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A038;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -66,7 +66,7 @@ void inet_ntop()
 
 void snprintf()
 {
-	word64 t3_4 = Mem0[0x000000000001A040 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A040;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -76,7 +76,7 @@ void snprintf()
 
 void getaddrinfo()
 {
-	word64 t3_4 = Mem0[0x000000000001A048 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A048;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -86,7 +86,7 @@ void getaddrinfo()
 
 void dlopen()
 {
-	word64 t3_4 = Mem0[0x000000000001A050 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A050;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -96,7 +96,7 @@ void dlopen()
 
 void open()
 {
-	word64 t3_4 = Mem0[0x000000000001A058 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A058;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -106,7 +106,7 @@ void open()
 
 void __snprintf_chk()
 {
-	word64 t3_4 = Mem0[0x000000000001A060 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A060;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -116,7 +116,7 @@ void __snprintf_chk()
 
 void dlsym()
 {
-	word64 t3_4 = Mem0[0x000000000001A068 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A068;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -126,7 +126,7 @@ void dlsym()
 
 void getopt_long()
 {
-	word64 t3_4 = Mem0[0x000000000001A078 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A078;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -136,7 +136,7 @@ void getopt_long()
 
 void __vasprintf_chk()
 {
-	word64 t3_4 = Mem0[0x000000000001A080 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A080;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -146,7 +146,7 @@ void __vasprintf_chk()
 
 void __asprintf_chk()
 {
-	word64 t3_4 = Mem0[0x000000000001A088 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A088;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -156,7 +156,7 @@ void __asprintf_chk()
 
 void getnameinfo()
 {
-	word64 t3_4 = Mem0[0x000000000001A090 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A090;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -166,7 +166,7 @@ void getnameinfo()
 
 void memset()
 {
-	word64 t3_4 = Mem0[0x000000000001A098 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A098;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -176,7 +176,7 @@ void memset()
 
 void inet_pton()
 {
-	word64 t3_4 = Mem0[0x000000000001A0A0 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A0A0;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -186,7 +186,7 @@ void inet_pton()
 
 void strcmp()
 {
-	word64 t3_4 = Mem0[0x000000000001A0A8 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A0A8;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -196,7 +196,7 @@ void strcmp()
 
 void free()
 {
-	word64 t3_4 = Mem0[0x000000000001A0B0 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A0B0;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -206,7 +206,7 @@ void free()
 
 void __printf_chk()
 {
-	word64 t3_4 = Mem0[0x000000000001A0B8 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A0B8;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -216,7 +216,7 @@ void __printf_chk()
 
 void __sprintf_chk()
 {
-	word64 t3_4 = Mem0[0x000000000001A0C0 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A0C0;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -226,7 +226,7 @@ void __sprintf_chk()
 
 void fwrite()
 {
-	word64 t3_4 = Mem0[0x000000000001A0C8 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A0C8;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -236,7 +236,7 @@ void fwrite()
 
 void memcmp()
 {
-	word64 t3_4 = Mem0[0x000000000001A0D0 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A0D0;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -246,7 +246,7 @@ void memcmp()
 
 void fputs()
 {
-	word64 t3_4 = Mem0[0x000000000001A0D8 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A0D8;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -256,7 +256,7 @@ void fputs()
 
 void isatty()
 {
-	word64 t3_4 = Mem0[0x000000000001A0E0 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A0E0;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -266,7 +266,7 @@ void isatty()
 
 void __fprintf_chk()
 {
-	word64 t3_4 = Mem0[0x000000000001A0E8 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A0E8;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -276,7 +276,7 @@ void __fprintf_chk()
 
 void putchar()
 {
-	word64 t3_4 = Mem0[0x000000000001A0F8 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A0F8;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -286,7 +286,7 @@ void putchar()
 
 void fputc()
 {
-	word64 t3_4 = Mem0[0x000000000001A100 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A100;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -296,7 +296,7 @@ void fputc()
 
 void __stack_chk_fail()
 {
-	word64 t3_4 = Mem0[0x000000000001A108 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A108;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -306,7 +306,7 @@ void __stack_chk_fail()
 
 void __errno_location()
 {
-	word64 t3_4 = Mem0[0x000000000001A110 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A110;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -316,7 +316,7 @@ void __errno_location()
 
 void strtol()
 {
-	word64 t3_4 = Mem0[0x000000000001A118 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A118;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -326,7 +326,7 @@ void strtol()
 
 void strchr()
 {
-	word64 t3_4 = Mem0[0x000000000001A120 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A120;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -336,7 +336,7 @@ void strchr()
 
 void memcpy()
 {
-	word64 t3_4 = Mem0[0x000000000001A128 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A128;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -346,7 +346,7 @@ void memcpy()
 
 void abort()
 {
-	word64 t3_4 = Mem0[0x000000000001A130 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A130;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -356,7 +356,7 @@ void abort()
 
 void freeaddrinfo()
 {
-	word64 t3_4 = Mem0[0x000000000001A138 + 0x00:word64];
+	<anonymous> * t3_4 = globals->ptr1A138;
 	word64 sp_6;
 	word64 t3_7;
 	word64 t1_8;
@@ -364,1378 +364,499 @@ void freeaddrinfo()
 	return;
 }
 
-void fn0000000000015180(word64 ra, word64 gp, word64 a0, word64 a1)
+void fn0000000000015180(word64 ra, Eq_291 * gp, Eq_292 a0, word64 a1)
 {
-fn0000000000015180_entry:
-	def fp
-	def s5
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -448
-	qwLoc38_4 = s5
-	a5 = Mem0[-0x0790:word64]
-	qwLoc18 = s1
-	s1 = 0x00011000
-	qwLoc78 = a5
-	a5 = 0x00010000
-	a5 = 0x00010008
-	qwLoc10 = s0
-	qwLoc20 = s2
-	qwLoc28 = s3
-	qwLoc30 = s4
-	qwLoc40 = s6
-	qwLoc48 = s7
-	qwLoc50 = s8
-	qwLoc58 = s9
-	qwLoc60 = s10
-	qwLoc68 = s11
-	qwLoc08 = ra
-	s8 = 0x1000
-	s3 = a0
-	s2 = a1
-	dwLoc01A4 = 0x00
-	s0 = 0x00
-	s6 = 0x00
-	s9 = 0x00
-	s10 = 0x00
-	dwLoc01C0 = 0x00
-	s1 = 0x000108E0
-	s4 = 0x00012000
-	s7 = 0x01
-	dwLoc01B8 = 0x00010008
-	goto l0000000000015200
-l0000000000015180:
+	Eq_294 sp_132 = &fp->tFFFFFE40;
+	Eq_298 dwLoc01A4_41 = 0x00;
+	Eq_292 s0_1002 = 0x00;
+	Eq_302 s6_43 = 0x00;
+	Eq_304 s9_44 = 0x00;
+	Eq_306 s10_45 = 0x00;
+	Eq_308 dwLoc01C0_46 = 0x00;
 l0000000000015200:
-	a4 = 0x00
-	a3 = 0x000108E0
-	a2 = 0x000119A8
-	a1 = s2
-	a0 = s3
-	getopt_long()
-	a4 = -0x01
-	a5 = a0
-	branch a0 == a4 l0000000000015348
-l0000000000015224:
-	a4 = 118
-	branch a4 <u a0 l0000000000015200
-l000000000001522C:
-	a5 = a5 << 0x00
-	a4 = 0x00010000
-	a5 = a5 >>u 0x1E
-	a4 = 0x000102A0
-	a5 = a5 + 0x000102A0
-	a5 = (word64) Mem0[a5 + 0x00:int32]
-	call a5 (retsize: 0; depth: 448)
-		defs: a0,a1,a2,a3,a4,a5,gp,ra,s0,s1,s10,s11,s2,s3,s4,s5,s6,s7,s8,s9,sp
-	return
-l0000000000015348:
-	a4 = (word64) Mem0[gp + -0x0770:int32]
-	branch a4 >= s3 l0000000000015428
-l0000000000015350:
-	a1 = (int64) ((word32) a4 + 0x01)
-	a3 = a4 << 0x03
-	s2 = s2 + a3
-	Mem0[gp + 2192:word32] = a1
-	s1 = Mem0[s2 + 0x00:word64]
-	s4 = 0x00
-	branch a1 >= s3 l0000000000015378
-l000000000001536C:
-	s4 = Mem0[s2 + 0x08:word64]
-	a4 = (int64) ((word32) a4 + 0x02)
-	Mem0[gp + 2192:word32] = a4
-l0000000000015378:
-	a3 = PHI(a3, a3, a3)
-	a4 = PHI(a4, a4, a4)
-	a1 = PHI(a1, a1, a1)
-	s4 = PHI(s4, s4, s4)
-	s2 = PHI(s2, s2, s2)
-	s1 = PHI(s1, s1, s1)
-	branch s6 != 0x00 l0000000000015588
-l000000000001537C:
-	a4 = (word64) dwLoc01A4
-	branch a4 == 0x00 l00000000000153B4
-l0000000000015384:
-	a4 = (word64) dwLoc01C0
-	branch a4 == 0x00 l00000000000153B4
-l000000000001538C:
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l00000000000153D8
-l0000000000015394:
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00012000
-	a2 = 0x002E
-	a1 = 0x01
-	a0 = 0x000119D8
-	fwrite()
-	s6 = (word64) dwLoc01C0
-	goto l00000000000153DC
-l00000000000153B4:
-	a4 = PHI(a4, a4)
-	qwLoc01B8 = a5
-	branch s9 == 0x00 l0000000000015924
-l00000000000153BC:
-	a0 = fn0000000000017924(gp)
-	s2 = s0 | 0x02
-	a5 = qwLoc01B8
-	branch a0 == 0x00 l0000000000015434
+	getopt_long();
+	if (a0 != -0x01)
+	{
+		if (118 < a0)
+			goto l0000000000015200;
+		<anonymous> * a5_87 = (word64) (a0 << 0x00 >> 0x1E)->dw102A0;
+		word64 sp_90;
+		word64 s5_91;
+		word64 a5_92;
+		word64 gp_93;
+		word64 s1_94;
+		word64 s0_95;
+		word64 s2_96;
+		word64 s3_97;
+		word64 s4_98;
+		word64 s6_99;
+		word64 s7_100;
+		word64 s8_101;
+		word64 s9_102;
+		word64 s10_103;
+		word64 s11_104;
+		word64 ra_105;
+		word64 a0_106;
+		word64 a1_107;
+		word64 a4_108;
+		word64 a3_109;
+		word64 a2_110;
+		a5_87();
+		return;
+	}
+	Eq_310 s1_1026;
+	Eq_306 s4_1027;
+	Eq_292 a4_111 = (word64) gp->dwFFFFF890;
+	if (a4_111 < a0)
+	{
+		Eq_292 a1_1022 = (int64) ((word32) a4_111 + 0x01);
+		gp->t0890 = a1_1022;
+		struct Eq_365 * s2_1024 = a1 + (a4_111 << 0x03);
+		s1_1026 = s2_1024->t0000;
+		s4_1027.u0 = 0x00;
+		if (a1_1022 < a0)
+		{
+			s4_1027 = s2_1024->t0008;
+			gp->t0890 = (int64) ((word32) a4_111 + 0x02);
+		}
+	}
+	else
+	{
+		s4_1027.u0 = 0x00;
+		s1_1026.u0 = 0x00;
+	}
+	if (s6_43 != 0x00)
+	{
+		__printf_chk();
+		goto l00000000000153DC;
+	}
+	if ((word64) dwLoc01A4_41 != 0x00 && (word64) dwLoc01C0_46 != 0x00)
+	{
+		if ((word64) gp->dwFFFFF814 == 0x00)
+		{
+			fwrite();
+			goto l00000000000153DC;
+		}
+		goto l00000000000153D8;
+	}
+	Eq_292 s2_816;
+	Eq_292 a5_771;
+	Eq_292 a5_670;
+	Eq_310 a0_748;
+	int64 a0_220;
+	if (s9_44 != 0x00)
+	{
+		s2_816 = s0_1002 | 0x02;
+		if (fn0000000000017924(gp) != 0x00 || (s0_1002 & 0x00010008) != 0x00010008)
+			goto l00000000000153CC;
+		s0_1002 = s0_1002 | 0x02;
+	}
+	else if (fn0000000000017924(gp) != 0x00 || (s0_1002 & 0x00010008) != 0x00010008)
+		goto l0000000000015458;
+	s2_816 = s0_1002 | 0x4000;
+	if (s9_44 != 0x00)
+	{
 l00000000000153CC:
-	a3 = PHI(a3, a3, a3)
-	a4 = PHI(a4, a4, a4)
-	a0 = PHI(a0, a0, a0)
-	s2 = PHI(s2, s2, s2)
-	s0 = PHI(s0, s0, s0)
-	a5 = PHI(a5, a5, a5)
-	branch s10 == 0x00 l00000000000155A8
-l00000000000153D0:
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 == 0x00 l000000000001556C
-l00000000000153D8:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0)
-	a2 = PHI(a2, a2, a2, a2, a2, a2, a2, a2, a2, a2, a2)
-	a3 = PHI(a3, a3, a3, a3, a3, a3, a3, a3, a3, a3, a3)
-	a4 = PHI(a4, a4, a4, a4, a4, a4, a4, a4, a4, a4, a4)
-	a1 = PHI(a1, a1, a1, a1, a1, a1, a1, a1, a1, a1, a1)
-	a0 = PHI(a0, a0, a0, a0, a0, a0, a0, a0, a0, a0, a0)
-	ra = PHI(ra, ra, ra, ra, ra, ra, ra, ra, ra, ra, ra)
-	s4 = PHI(s4, s4, s4, s4, s4, s4, s4, s4, s4, s4, s4)
-	s2 = PHI(s2, s2, s2, s2, s2, s2, s2, s2, s2, s2, s2)
-	s0 = PHI(s0, s0, s0, s0, s0, s0, s0, s0, s0, s0, s0)
-	s1 = PHI(s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1)
-	a5 = PHI(a5, a5, a5, a5, a5, a5, a5, a5, a5, a5, a5)
-	sp = PHI(sp, sp, sp, sp, sp, sp, sp, sp, sp, sp, sp)
-	s6 = 0x01
-l00000000000153DC:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0, qwLoc01C0)
-	a2 = PHI(a2, a2, a2, a2, a2, a2, a2, a2, a2, a2, a2, a2, a2)
-	a3 = PHI(a3, a3, a3, a3, a3, a3, a3, a3, a3, a3, a3, a3, a3)
-	a1 = PHI(a1, a1, a1, a1, a1, a1, a1, a1, a1, a1, a1, a1, a1)
-	ra = PHI(ra, ra, ra, ra, ra, ra, ra, ra, ra, ra, ra, ra, ra)
-	s6 = PHI(s6, s6, s6, s6, s6, s6, s6, s6, s6, s6, s6, s6, s6)
-	s4 = PHI(s4, s4, s4, s4, s4, s4, s4, s4, s4, s4, s4, s4, s4)
-	s3 = PHI(s3, s3, s3, s3, s3, s3, s3, s3, s3, s3, s3, s3, s3)
-	s2 = PHI(s2, s2, s2, s2, s2, s2, s2, s2, s2, s2, s2, s2, s2)
-	s0 = PHI(s0, s0, s0, s0, s0, s0, s0, s0, s0, s0, s0, s0, s0)
-	s1 = PHI(s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1)
-	sp = PHI(sp, sp, sp, sp, sp, sp, sp, sp, sp, sp, sp, sp, sp)
-	a4 = Mem0[sp + 0x0148:word64]
-	a5 = Mem0[gp + -0x0790:word64]
-	a0 = s6
-	branch a4 != a5 l0000000000015E8C
-l00000000000153EC:
-	ra = Mem0[sp + 440:word64]
-	s0 = Mem0[sp + 0x01B0:word64]
-	s1 = Mem0[sp + 424:word64]
-	s2 = Mem0[sp + 0x01A0:word64]
-	s3 = Mem0[sp + 0x0198:word64]
-	s4 = Mem0[sp + 400:word64]
-	s5 = Mem0[sp + 0x0188:word64]
-	s6 = Mem0[sp + 0x0180:word64]
-	s7 = Mem0[sp + 0x0178:word64]
-	s8 = Mem0[sp + 0x0170:word64]
-	s9 = Mem0[sp + 0x0168:word64]
-	s10 = Mem0[sp + 0x0160:word64]
-	s11 = Mem0[sp + 344:word64]
-	sp = sp + 448
-	return
-l0000000000015428:
-	s4 = 0x00
-	s1 = 0x00
-	goto l0000000000015378
-l0000000000015434:
-	a4 = 0x00010000
-	a4 = 0x00010008
-	s0 = s0 & 0x00010008
-	branch s0 != 0x00010008 l00000000000153CC
-l0000000000015444:
-	s0 = s2
-l0000000000015448:
-	a3 = PHI(a3, a3)
-	a4 = PHI(a4, a4)
-	a0 = PHI(a0, a0)
-	s0 = PHI(s0, s0)
-	a5 = PHI(a5, a5)
-	s2 = 0x4000
-	s2 = s0 | 0x4000
-	branch s9 != 0x00 l00000000000153CC
-l0000000000015454:
-	s0 = s2
-l0000000000015458:
-	a3 = PHI(a3, a3, a3)
-	a4 = PHI(a4, a4, a4)
-	a0 = PHI(a0, a0, a0)
-	s2 = PHI(s2, s2, s2)
-	s0 = PHI(s0, s0, s0)
-	a5 = PHI(a5, a5, a5)
-	branch s10 == 0x00 l0000000000015CE4
-l000000000001545C:
-	a2 = 0x01
-	a1 = s10
-	a0 = fp + -0x01A4
-	ra = fn00000000000166F4(ra, gp, a0, a1, a2, out sp, out s0, out s1, out a0, out a1, out s4)
-	a5 = a0
-	branch a0 < 0x00 l0000000000015BC8
-l0000000000015474:
-	a1 = sp + 0x0028
-	a0 = 0x02
-	Mem0[sp + 0x08:word64] = a5
-	s1 = (word64) Mem0[sp + 0x001C:int32]
-	Mem0[sp + 0x0020:word64] = 0x00
-	clock_gettime()
-	a5 = Mem0[sp + 0x08:word64]
-	branch a0 < 0x00 l0000000000015CB0
-l0000000000015494:
-	branch s1 == 0x00 l0000000000015C48
-l0000000000015498:
-	a4 = Mem0[sp + 0x0030:word64]
-	a1 = 0x0F
-	a0 = sp + 0x0039
-	a4 = a4 & 0x01
-	a4 = a4 | -0x04
-	Mem0[sp + 0x0038:byte] = a4
-	ra = fn00000000000164D0(a1, out sp, out s0, out s1, out a0)
-	a5 = Mem0[sp + 0x08:word64]
-	branch a0 < 0x00 l0000000000015CB0
-l00000000000154BC:
-	s1 = sp + 0x0108
-	a3 = 0x0040
-	a2 = s1
-	a1 = sp + 0x0038
-	a0 = 0x0A
-	inet_ntop()
-	a5 = Mem0[sp + 0x08:word64]
-	branch a0 == 0x00 l0000000000015CB0
-l00000000000154DC:
-	ra = PHI(ra, ra)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	a5 = PHI(a5, a5)
-	sp = PHI(sp, sp)
-	a2 = 0x00012000
-	a4 = a5
-	a3 = s1
-	a2 = 0x00011A90
-	a1 = 0x01
-	a0 = sp + 0x0020
-	Mem0[sp + 0x08:word64] = a5
-	__asprintf_chk()
-	a4 = -0x01
-	a5 = Mem0[sp + 0x08:word64]
-	branch a0 == a4 l0000000000015CB0
-l0000000000015508:
-	s1 = Mem0[sp + 0x0020:word64]
-	branch s1 == 0x00 l0000000000015CB0
-l0000000000015510:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8, qwLoc01B8)
-	a2 = PHI(a2, a2, a2)
-	a3 = PHI(a3, a3, a3)
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	ra = PHI(ra, ra, ra)
-	s4 = PHI(s4, s4, s4)
-	s2 = PHI(s2, s2, s2)
-	s0 = PHI(s0, s0, s0)
-	s1 = PHI(s1, s1, s1)
-	a5 = PHI(a5, a5, a5)
-	sp = PHI(sp, sp, sp)
-	a4 = (word64) Mem0[sp + 0x00:int32]
-	branch a4 != 0x00 l00000000000155D8
-l0000000000015518:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0)
-	a2 = PHI(a2, a2)
-	a3 = PHI(a3, a3)
-	a4 = PHI(a4, a4)
-	ra = PHI(ra, ra)
-	s4 = PHI(s4, s4)
-	s2 = PHI(s2, s2)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	a5 = PHI(a5, a5)
-	sp = PHI(sp, sp)
-	a1 = 0x003A
-	a0 = s1
-	Mem0[sp + 0x00:word64] = a5
-	strchr()
-	a5 = Mem0[sp + 0x00:word64]
-	branch a0 == 0x00 l00000000000155D8
-l0000000000015530:
-	a4 = 0x01
-	Mem0[sp + 0x001C:word32] = a4
-	branch s4 == 0x00 l0000000000015BEC
-l000000000001553C:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0)
-	a2 = PHI(a2, a2)
-	a3 = PHI(a3, a3)
-	a4 = PHI(a4, a4)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	ra = PHI(ra, ra)
-	s4 = PHI(s4, s4)
-	s2 = PHI(s2, s2)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	sp = PHI(sp, sp)
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l00000000000153D8
-l0000000000015544:
-	a0 = Mem0[gp + -0x0780:word64]
-	a2 = 0x00012000
-	a3 = s4
-	a2 = 0x00011AD0
-	a1 = 0x01
-	__fprintf_chk()
-	a0 = 0x01
-	fn0000000000015FCC(gp, a0)
-	s6 = 0x01
-	goto l00000000000153DC
-l000000000001556C:
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00012000
-	a2 = 0x0025
-	a1 = 0x01
-	a0 = 72200
-	fwrite()
-	goto l00000000000153D8
-l0000000000015588:
-	a2 = 0x00012000
-	a1 = 0x00012000
-	a2 = 0x000119C0
-	a1 = 0x000119C8
-	a0 = 0x01
-	__printf_chk()
-	s6 = 0x00
-	goto l00000000000153DC
-l00000000000155A8:
-	a4 = (word64) dwLoc01A4
-	branch a4 != 0x00 l0000000000015944
-l00000000000155B0:
-	a4 = (word64) dwLoc01C0
-	branch a4 == 0x00 l000000000001598C
-l00000000000155B8:
-	a1 = s9
-	a0 = 0x02
-	qwLoc01C0 = a5
-	a0 = fn00000000000169D8(gp, a1)
-	s1 = a0
-	branch a0 == 0x00 l0000000000015964
-l00000000000155D0:
-	a5 = Mem0[sp + 0x00:word64]
-	s0 = s2
-l00000000000155D8:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0, qwLoc01C0)
-	a2 = PHI(a2, a2, a2)
-	a3 = PHI(a3, a3, a3)
-	a4 = PHI(a4, a4, a4)
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	ra = PHI(ra, ra, ra)
-	s4 = PHI(s4, s4, s4)
-	s2 = PHI(s2, s2, s2)
-	s0 = PHI(s0, s0, s0)
-	s1 = PHI(s1, s1, s1)
-	a5 = PHI(a5, a5, a5)
-	sp = PHI(sp, sp, sp)
-	branch s4 == 0x00 l0000000000015BA0
-l00000000000155DC:
-	a5 = (word64) Mem0[sp + 0x001C:int32]
-	branch a5 != 0x00 l000000000001553C
-l00000000000155E4:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0)
-	a3 = PHI(a3, a3)
-	a4 = PHI(a4, a4)
-	ra = PHI(ra, ra)
-	s4 = PHI(s4, s4)
-	s2 = PHI(s2, s2)
-	sp = PHI(sp, sp)
-	a2 = 0x00
-	a1 = s4
-	a0 = sp + 0x001C
-	ra = fn00000000000166F4(ra, gp, a0, a1, a2, out sp, out s0, out s1, out a0, out a1, out s4)
-	a5 = a0
-	branch a0 < 0x00 l0000000000015B6C
-l00000000000155FC:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0, qwLoc01C0)
-	a2 = PHI(a2, a2, a2)
-	a3 = PHI(a3, a3, a3)
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	ra = PHI(ra, ra, ra)
-	s4 = PHI(s4, s4, s4)
-	s2 = PHI(s2, s2, s2)
-	s0 = PHI(s0, s0, s0)
-	s1 = PHI(s1, s1, s1)
-	a5 = PHI(a5, a5, a5)
-	sp = PHI(sp, sp, sp)
-	a4 = (word64) Mem0[sp + 0x001C:int32]
-	branch a4 == 0x00 l00000000000159B0
-l0000000000015604:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0)
-	a4 = PHI(a4, a4)
-	ra = PHI(ra, ra)
-	s4 = PHI(s4, s4)
-	s2 = PHI(s2, s2)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	a5 = PHI(a5, a5)
-	sp = PHI(sp, sp)
-	a3 = s0
-	a2 = sp + 0x0038
-	a1 = a5
-	a0 = s1
-	a0 = fn00000000000175BC(gp)
-l0000000000015618:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0)
-	a2 = PHI(a2, a2)
-	a3 = PHI(a3, a3)
-	a4 = PHI(a4, a4)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	ra = PHI(ra, ra)
-	s4 = PHI(s4, s4)
-	s2 = PHI(s2, s2)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	a5 = PHI(a5, a5)
-	sp = PHI(sp, sp)
-	branch a0 < 0x00 l00000000000153D8
-l000000000001561C:
-	a5 = 0xFFFAC000
-	a5 = 0xFFFABFFF
-	a5 = s0 & 0xFFFABFFF
-	branch a5 != 0x00 l0000000000015630
-l000000000001562C:
-	s0 = s0 | 0x08
-l0000000000015630:
-	s0 = PHI(s0, s0)
-	a0 = 0x01
-	isatty()
-	branch a0 == 0x00 l0000000000015644
-l000000000001563C:
-	a4 = 0x01
-	Mem0[gp + 0x0810:word32] = a4
-l0000000000015644:
-	a4 = PHI(a4, a4)
-	a5 = s0 & 0x08
-	branch a5 == 0x00 l00000000000159C8
-l000000000001564C:
-	a5 = (word64) Mem0[sp + 0x001C:int32]
-	s2 = (word64) Mem0[sp + 0x00D8:int32]
-	branch a5 != 0x00 l000000000001590C
-l0000000000015658:
-	a5 = 0x0020
-	branch s2 == a5 l0000000000015914
-l0000000000015660:
-	a5 = PHI(a5, a5)
-	branch s10 == 0x00 l0000000000015860
-l0000000000015664:
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	s3 = PHI(s3, s3)
-	s1 = 0x00012000
-l0000000000015668:
-	a2 = PHI(a2, a2, a2)
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	s4 = PHI(s4, s4, s4)
-	s2 = PHI(s2, s2, s2)
-	s1 = PHI(s1, s1, s1)
-	a5 = PHI(a5, a5, a5)
-	a3 = Mem0[sp + 0x0048:word64]
-	s3 = 0x00012000
-	branch a3 == 0x00 l0000000000015690
-l0000000000015674:
-	a1 = 0x00012000
-	a4 = s2
-	a2 = 0x00011B20
-	a1 = 0x00011B28
-	a0 = s1 + -1272
-	s4 = fn000000000001654C(ra, gp)
-	s2 = (word64) Mem0[sp + 0x00D8:int32]
-l0000000000015690:
-	s2 = PHI(s2, s2)
-	a3 = Mem0[sp + 88:word64]
-	a1 = 0x00012000
-	a4 = s2
-	a2 = s3 + -0x04E0
-	a1 = 0x00011B38
-	a0 = s1 + -1272
-	s4 = fn000000000001654C(ra, gp)
-	a3 = Mem0[sp + 0x0068:word64]
-	a4 = (word64) Mem0[sp + 0x00D8:int32]
-	a2 = 0x00012000
-	a1 = 0x00012000
-	a2 = 0x00011B48
-	a1 = 0x00011B58
-	a0 = s1 + -1272
-	s4 = fn000000000001654C(ra, gp)
-	a3 = Mem0[sp + 0x0060:word64]
-	branch a3 == 0x00 l00000000000156EC
-l00000000000156D4:
-	s2 = 0x00012000
-	a1 = 0x00012000
-	a2 = 0x00011C60
-	a1 = 72552
-	a0 = s1 + -1272
-	s4 = fn000000000001654C(ra, gp)
-l00000000000156EC:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	s4 = PHI(s4, s4)
-	s2 = PHI(s2, s2)
-	a5 = 0x00010000
-	a5 = 0x00010008
-	s0 = s0 & 0x00010008
-	branch s0 == 0x00010008 l0000000000015C1C
-l00000000000156FC:
-	a2 = PHI(a2, a2, a2)
-	a4 = PHI(a4, a4, a4)
-	a1 = PHI(a1, a1, a1)
-	s4 = PHI(s4, s4, s4)
-	s3 = PHI(s3, s3, s3)
-	s2 = PHI(s2, s2, s2)
-	s0 = PHI(s0, s0, s0)
-	s1 = PHI(s1, s1, s1)
-	a5 = PHI(a5, a5, a5)
-	a0 = 0x0A
-	putchar()
-	a3 = Mem0[sp + 0x00F0:word64]
-	branch a3 == 0x00 l0000000000015728
-l000000000001570C:
-	a2 = 0x00012000
-	a1 = 0x00012000
-	a0 = 0x00012000
-	a2 = 0x00011C60
-	a1 = 0x00011B88
-	a0 = 0x00011B98
-	s4 = fn000000000001654C(ra, gp)
-l0000000000015728:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	s4 = PHI(s4, s4)
-	a3 = Mem0[sp + 0x00F8:word64]
-	branch a3 == 0x00 l000000000001574C
-l0000000000015730:
-	a2 = 0x00012000
-	a1 = 0x00012000
-	a0 = 0x00012000
-	a2 = 0x00011C60
-	a1 = 0x00011BA0
-	a0 = 0x00011B98
-	s4 = fn000000000001654C(ra, gp)
-l000000000001574C:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	s4 = PHI(s4, s4)
-	a3 = Mem0[sp + 224:word64]
-	branch a3 == 0x00 l000000000001576C
-l0000000000015754:
-	a2 = 0x00012000
-	a1 = 0x00012000
-	a2 = 0x00011C60
-	a1 = 0x00011BB0
-	a0 = s1 + -1272
-	s4 = fn000000000001654C(ra, gp)
-l000000000001576C:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	s4 = PHI(s4, s4)
-	a3 = Mem0[sp + 232:word64]
-	branch a3 == 0x00 l000000000001578C
-l0000000000015774:
-	a2 = 0x00012000
-	a1 = 0x00012000
-	a2 = 0x00011C60
-	a1 = 0x00011BC0
-	a0 = s1 + -1272
-	s4 = fn000000000001654C(ra, gp)
-l000000000001578C:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	s4 = PHI(s4, s4)
-	a5 = (word64) Mem0[sp + 0x001C:int32]
-	branch a5 == 0x00 l00000000000157A0
-l0000000000015794:
-	a5 = (word64) Mem0[sp + 0x00D8:int32]
-	a4 = 111
-	branch a4 >=u a5 l0000000000015E3C
-l00000000000157A0:
-	a4 = PHI(a4, a4)
-	a5 = PHI(a5, a5)
-	a2 = 0x00012000
-	a1 = 0x00012000
-	a3 = sp + 0x0098
-	a2 = 0x00011C60
-	a1 = 72672
-	a0 = s1 + -1272
-	s4 = fn000000000001654C(ra, gp)
-l00000000000157BC:
-	a2 = PHI(a2, a2, a2, a2)
-	a3 = PHI(a3, a3, a3, a3)
-	a4 = PHI(a4, a4, a4, a4)
-	a1 = PHI(a1, a1, a1, a1)
-	a0 = PHI(a0, a0, a0, a0)
-	s4 = PHI(s4, s4, s4, s4)
-	s3 = PHI(s3, s3, s3, s3)
-	s2 = PHI(s2, s2, s2, s2)
-	s0 = PHI(s0, s0, s0, s0)
-	s1 = PHI(s1, s1, s1, s1)
-	a5 = Mem0[sp + 0x0078:word64]
-	branch a5 == 0x00 l0000000000015C08
-l00000000000157C4:
-	a5 = PHI(a5, a5, a5)
-	a0 = 0x0A
-	putchar()
-	a3 = Mem0[sp + 0x0080:word64]
-	branch a3 == 0x00 l00000000000157F0
-l00000000000157D4:
-	a2 = 0x00012000
-	a1 = 0x00012000
-	a0 = 0x00012000
-	a2 = 0x00011C60
-	a1 = 0x00011BF0
-	a0 = 0x00011B98
-	s4 = fn000000000001654C(ra, gp)
-l00000000000157F0:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	s4 = PHI(s4, s4)
-	a3 = Mem0[sp + 0x0078:word64]
-	branch a3 == 0x00 l0000000000015814
-l00000000000157F8:
-	a2 = 0x00012000
-	a1 = 0x00012000
-	a0 = 0x00012000
-	a2 = 0x00011C60
-	a1 = 0x00011C00
-	a0 = 0x00011B98
-	s4 = fn000000000001654C(ra, gp)
-l0000000000015814:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	s4 = PHI(s4, s4)
-	a3 = Mem0[sp + 0x0088:word64]
-	branch a3 == 0x00 l0000000000015838
-l000000000001581C:
-	a2 = 0x00012000
-	a1 = 0x00012000
-	a0 = 0x00012000
-	a2 = 0x00011C60
-	a1 = 0x00011C10
-	a0 = 0x00011B98
-	s4 = fn000000000001654C(ra, gp)
-l0000000000015838:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	s4 = PHI(s4, s4)
-	a3 = Mem0[sp + 144:word64]
-	branch a3 == 0x00 l00000000000153DC
-l0000000000015840:
-	a2 = 0x00012000
-	a1 = 0x00012000
-	a0 = 0x00012000
-	a2 = 0x00011C60
-	a1 = 0x00011C18
-	a0 = 0x00011B98
-	s4 = fn000000000001654C(ra, gp)
-	goto l00000000000153DC
-l0000000000015860:
-	s3 = Mem0[sp + 0x0038:word64]
-	a0 = Mem0[sp + 88:word64]
-	a1 = s3
-	strcmp()
-	branch a0 == 0x00 l0000000000015664
-l0000000000015874:
-	a3 = Mem0[sp + 0x0040:word64]
-	s4 = 0x00
-	branch a3 == 0x00 l0000000000015E14
-l0000000000015880:
-	s3 = PHI(s3, s3)
-	a5 = PHI(a5, a5)
-	s2 = 0x00012000
-	s1 = 0x00012000
-	a1 = 0x00012000
-	a2 = 0x00011C60
-	a1 = 0x00011AF8
-	a0 = 0x00011B08
-	s4 = fn000000000001654C(ra, gp)
-	a3 = Mem0[sp + 0x0038:word64]
-	a1 = 0x00012000
-	a2 = s2 + -0x03A0
-	a1 = 0x00011B10
-	a0 = s1 + -1272
-	s4 = fn000000000001654C(ra, gp)
-	branch s4 == 0x00 l0000000000015E74
-l00000000000158B8:
-	a2 = PHI(a2, a2)
-	a3 = PHI(a3, a3)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	s4 = PHI(s4, s4)
-	s3 = PHI(s3, s3)
-	s2 = PHI(s2, s2)
-	s1 = PHI(s1, s1)
-	a5 = 0x00010000
-	a5 = 0x00010008
-	s0 = s0 & 0x00010008
-	branch s0 == 0x00010008 l0000000000015E64
-l00000000000158C8:
-	a2 = PHI(a2, a2, a2)
-	a4 = PHI(a4, a4, a4)
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	s4 = PHI(s4, s4, s4)
-	s3 = PHI(s3, s3, s3)
-	s2 = PHI(s2, s2, s2)
-	s0 = PHI(s0, s0, s0)
-	s1 = PHI(s1, s1, s1)
-	a5 = PHI(a5, a5, a5)
-	a3 = Mem0[sp + 0x00F0:word64]
-	branch a3 == 0x00 l00000000000158E8
-l00000000000158D0:
-	a1 = 0x00012000
-	a0 = 0x00012000
-	a2 = s2 + -0x03A0
-	a1 = 0x00011B88
-	a0 = 0x00011B98
-	s4 = fn000000000001654C(ra, gp)
-l00000000000158E8:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	s4 = PHI(s4, s4)
-	a3 = Mem0[sp + 0x00F8:word64]
-	branch a3 == 0x00 l00000000000157BC
-l00000000000158F0:
-	a1 = 0x00012000
-	a0 = 0x00012000
-	a2 = s2 + -0x03A0
-	a1 = 0x00011BA0
-	a0 = 0x00011B98
-	s4 = fn000000000001654C(ra, gp)
-	goto l00000000000157BC
-l000000000001590C:
-	a5 = 0x0080
-	branch s2 != a5 l0000000000015660
-l0000000000015914:
-	a5 = PHI(a5, a5)
-	a3 = Mem0[sp + 0x0040:word64]
-	branch a3 == 0x00 l0000000000015DDC
-	a3 = Mem0[sp + 0x0040:word64]
-	branch a3 == 0x00 l0000000000015DDC
-l000000000001591C:
-	s4 = 0x01
-	goto l0000000000015880
-l0000000000015924:
-	a0 = fn0000000000017924(gp)
-	a5 = qwLoc01B8
-	branch a0 != 0x00 l0000000000015458
-l0000000000015930:
-	a4 = 0x00010000
-	a4 = 0x00010008
-	a3 = s0 & 0x00010008
-	branch a3 != 0x00010008 l0000000000015458
-	goto l0000000000015448
-l0000000000015944:
-	a1 = s9
-	a0 = 0x0A
-	qwLoc01B8 = a5
-	a0 = fn00000000000169D8(gp, a1)
-	s1 = a0
-	s0 = s2
-	a5 = Mem0[sp + 0x08:word64]
-	branch a0 != 0x00 l0000000000015510
+		if (s10_45 != 0x00)
+		{
+			if ((word64) gp->dwFFFFF814 == 0x00)
+				fwrite();
+			goto l00000000000153D8;
+		}
+		if ((word64) dwLoc01A4_41 == 0x00)
+		{
+			if ((word64) dwLoc01C0_46 != 0x00)
+			{
+				Eq_310 a0_844 = fn00000000000169D8(gp, s9_44);
+				s1_1026 = a0_844;
+				if (a0_844 != 0x00)
+				{
+					a5_771 = fp->tFFFFFE40;
+					s0_1002 = s2_816;
+					goto l00000000000155D8;
+				}
 l0000000000015964:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0, qwLoc01C0)
-	a4 = PHI(a4, a4, a4)
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	s0 = PHI(s0, s0, s0)
-	s1 = PHI(s1, s1, s1)
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l00000000000153D8
-l000000000001596C:
-	a0 = Mem0[gp + -0x0780:word64]
-	a2 = 0x00012000
-	a3 = s9
-	a2 = 72272
-	a1 = 0x01
-	__fprintf_chk()
-	s6 = 0x01
-	goto l00000000000153DC
-l000000000001598C:
-	a1 = s9
-	a0 = 0x00
-	qwLoc01C0 = a5
-	a0 = fn00000000000169D8(gp, a1)
-	s1 = a0
-	branch a0 == 0x00 l0000000000015964
-l00000000000159A4:
-	s0 = s2
-	a5 = Mem0[sp + 0x00:word64]
-	goto l0000000000015518
-l00000000000159B0:
-	a3 = s0
-	a2 = sp + 0x0038
-	a1 = a5
-	a0 = s1
-	a0 = fn0000000000016D74(ra, gp, s0, a0, a1, a2, a3)
-	goto l0000000000015618
-l00000000000159C8:
-	a5 = s0 & 0x0080
-	branch a5 != 0x00 l0000000000015D18
-l00000000000159D0:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	a5 = s0 & 0x0200
-	branch a5 != 0x00 l0000000000015D48
-l00000000000159D8:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	a5 = s0 & 0x0040
-	branch a5 == 0x00 l00000000000159FC
-l00000000000159E0:
-	a5 = (word64) Mem0[sp + 0x001C:int32]
-	branch a5 != 0x00 l00000000000159FC
-l00000000000159E8:
-	a2 = Mem0[sp + 0x0060:word64]
-	a1 = 0x00012000
-	a1 = 72776
-	a0 = 0x01
-	__printf_chk()
-l00000000000159FC:
-	a2 = PHI(a2, a2, a2)
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	a5 = s0 & 0x0100
-	branch a5 != 0x00 l0000000000015D30
-l0000000000015A04:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	a5 = s0 << 0x0E
-	branch a5 < 0x00 l0000000000015D78
-l0000000000015A0C:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	a5 = s0 & 0x0400
-	branch a5 == 0x00 l0000000000015A2C
-l0000000000015A14:
-	a2 = Mem0[sp + 224:word64]
-	branch a2 == 0x00 l0000000000015A2C
-l0000000000015A1C:
-	a1 = 0x00012000
-	a1 = 0x00011C78
-	a0 = 0x01
-	__printf_chk()
-l0000000000015A2C:
-	a2 = PHI(a2, a2, a2)
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	a5 = s0 << 0x14
-	branch a5 >= 0x00 l0000000000015A4C
-l0000000000015A34:
-	a2 = Mem0[sp + 232:word64]
-	branch a2 == 0x00 l0000000000015A4C
-l0000000000015A3C:
-	a1 = 0x00012000
-	a1 = 0x00011C88
-	a0 = 0x01
-	__printf_chk()
-l0000000000015A4C:
-	a2 = PHI(a2, a2, a2)
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	a5 = s0 << 0x12
-	branch a5 >= 0x00 l0000000000015A80
-l0000000000015A54:
-	s2 = Mem0[sp + 0x00F0:word64]
-	branch s2 == 0x00 l0000000000015A80
-l0000000000015A5C:
-	a1 = 0x0020
-	a0 = s2
-	strchr()
-	a2 = s2
-	branch a0 == 0x00 l0000000000015DA4
-l0000000000015A70:
-	a1 = 0x00012000
-	a1 = 0x00011C98
-	a0 = 0x01
-	__printf_chk()
-l0000000000015A80:
-	a2 = PHI(a2, a2, a2, a2)
-	a1 = PHI(a1, a1, a1, a1)
-	a0 = PHI(a0, a0, a0, a0)
-	s2 = PHI(s2, s2, s2, s2)
-	a5 = s0 << 0x13
-	branch a5 >= 0x00 l0000000000015AAC
-l0000000000015A88:
-	a1 = 0x0020
-	a0 = sp + 0x0098
-	strchr()
-	a2 = sp + 0x0098
-	branch a0 == 0x00 l0000000000015D90
-l0000000000015A9C:
-	a1 = 0x00012000
-	a1 = 72888
-	a0 = 0x01
-	__printf_chk()
-l0000000000015AAC:
-	a2 = PHI(a2, a2, a2)
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	a5 = s0 & 0x01
-	branch a5 == 0x00 l0000000000015ACC
-l0000000000015AB4:
-	a2 = Mem0[sp + 112:word64]
-	branch a2 == 0x00 l0000000000015ACC
-l0000000000015ABC:
-	a1 = 0x00012000
-	a1 = 0x00011CD8
-	a0 = 0x01
-	__printf_chk()
-l0000000000015ACC:
-	a2 = PHI(a2, a2, a2)
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	a5 = s0 & 0x02
-	branch a5 != 0x00 l0000000000015D60
-l0000000000015AD4:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	a5 = 0xC000
-	s0 = s0 & 0xC000
-	branch s0 != 0xC000 l00000000000153DC
-l0000000000015AE0:
-	a2 = Mem0[sp + 0x0080:word64]
-	branch a2 == 0x00 l0000000000015AF8
-l0000000000015AE8:
-	a1 = 0x00012000
-	a1 = 0x00011CF8
-	a0 = 0x01
-	__printf_chk()
-l0000000000015AF8:
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	s0 = Mem0[sp + 0x0078:word64]
-	branch s0 == 0x00 l0000000000015B24
-l0000000000015B00:
-	a1 = 0x0020
-	a0 = s0
-	strchr()
-	a2 = s0
-	branch a0 == 0x00 l0000000000015E90
-l0000000000015B14:
-	a1 = 0x00012000
-	a1 = 0x00011D08
-	a0 = 0x01
-	__printf_chk()
-l0000000000015B24:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0, qwLoc01C0)
-	a2 = PHI(a2, a2, a2)
-	a3 = PHI(a3, a3, a3)
-	a4 = PHI(a4, a4, a4)
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	ra = PHI(ra, ra, ra)
-	s6 = PHI(s6, s6, s6)
-	s4 = PHI(s4, s4, s4)
-	s3 = PHI(s3, s3, s3)
-	s2 = PHI(s2, s2, s2)
-	s1 = PHI(s1, s1, s1)
-	a5 = PHI(a5, a5, a5)
-	sp = PHI(sp, sp, sp)
-	s0 = Mem0[sp + 0x0088:word64]
-	branch s0 == 0x00 l0000000000015B50
-l0000000000015B2C:
-	a1 = 0x0020
-	a0 = s0
-	strchr()
-	a2 = s0
-	branch a0 == 0x00 l0000000000015EA4
-l0000000000015B40:
-	a1 = 0x00012000
-	a1 = 73000
-	a0 = 0x01
-	__printf_chk()
-l0000000000015B50:
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	a2 = Mem0[sp + 144:word64]
-	branch a2 == 0x00 l00000000000153DC
-l0000000000015B58:
-	a1 = 0x00012000
-	a1 = 0x00011D48
-	a0 = 0x01
-	__printf_chk()
-	goto l00000000000153DC
-l0000000000015B6C:
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l00000000000153D8
-l0000000000015B74:
-	a5 = (word64) Mem0[sp + 0x001C:int32]
-	a0 = Mem0[gp + -0x0780:word64]
-	branch a5 != 0x00 l0000000000015CD8
-l0000000000015B80:
-	a3 = 0x00012000
-	a3 = 0x000119A0
-l0000000000015B88:
-	a3 = PHI(a3, a3)
-	a4 = s4
-l0000000000015B8C:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0, qwLoc01C0)
-	a3 = PHI(a3, a3, a3)
-	a4 = PHI(a4, a4, a4)
-	a0 = PHI(a0, a0, a0)
-	ra = PHI(ra, ra, ra)
-	s4 = PHI(s4, s4, s4)
-	s2 = PHI(s2, s2, s2)
-	s0 = PHI(s0, s0, s0)
-	s1 = PHI(s1, s1, s1)
-	a5 = PHI(a5, a5, a5)
-	sp = PHI(sp, sp, sp)
-	a2 = 0x00012000
-	a2 = 0x00011A70
-	a1 = 0x01
-	__fprintf_chk()
-	goto l00000000000153D8
-l0000000000015BA0:
-	a1 = 0x002F
-	a0 = s1
-	Mem0[sp + 0x00:word64] = a5
-	strchr()
-	a5 = Mem0[sp + 0x00:word64]
-	branch a0 == 0x00 l00000000000155FC
-l0000000000015BB8:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0)
-	a2 = PHI(a2, a2)
-	a3 = PHI(a3, a3)
-	a4 = PHI(a4, a4)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	ra = PHI(ra, ra)
-	s2 = PHI(s2, s2)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	a5 = PHI(a5, a5)
-	sp = PHI(sp, sp)
-	Mem0[a0 + 0x00:byte] = 0x00
-	s4 = a0 + 0x01
-	branch s4 == 0x00 l00000000000155FC
-	Mem0[a0 + 0x00:byte] = 0x00
-	s4 = a0 + 0x01
-	branch s4 == 0x00 l00000000000155FC
-	goto l00000000000155E4
-l0000000000015BC8:
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l00000000000153D8
-l0000000000015BD0:
-	a5 = (word64) Mem0[sp + 0x001C:int32]
-	a0 = Mem0[gp + -0x0780:word64]
-	branch a5 != 0x00 l0000000000015E7C
-l0000000000015BDC:
-	a3 = 0x00012000
-	a3 = 0x000119A0
-	a4 = s10
-	goto l0000000000015B8C
-l0000000000015BEC:
-	a1 = 0x002F
-	a0 = s1
-	Mem0[sp + 0x00:word64] = a5
-	strchr()
-	a5 = Mem0[sp + 0x00:word64]
-	branch a0 != 0x00 l0000000000015BB8
-	goto l0000000000015604
-l0000000000015C08:
-	a5 = Mem0[sp + 0x0088:word64]
-	branch a5 != 0x00 l00000000000157C4
-l0000000000015C10:
-	a5 = Mem0[sp + 144:word64]
-	branch a5 != 0x00 l00000000000157C4
-	goto l00000000000153DC
-l0000000000015C1C:
-	a3 = Mem0[sp + 0x0050:word64]
-	branch a3 == 0x00 l00000000000156FC
-l0000000000015C24:
-	s0 = 0x00
-	s2 = 0x00012000
+				if ((word64) gp->dwFFFFF814 == 0x00)
+				{
+					__fprintf_chk();
+					goto l00000000000153DC;
+				}
+				goto l00000000000153D8;
+			}
+			Eq_310 a0_851 = fn00000000000169D8(gp, s9_44);
+			s1_1026 = a0_851;
+			if (a0_851 == 0x00)
+				goto l0000000000015964;
+			s0_1002 = s2_816;
+			a5_771 = fp->tFFFFFE40;
+l0000000000015518:
+			*sp_132 = a5_771;
+			strchr();
+			a5_771 = *sp_132;
+			if (s1_1026 != 0x00)
+			{
+				sp_132->u0 = 0x01;
+				if (s4_1027 != 0x00)
+				{
+l000000000001553C:
+					if ((word64) gp->dwFFFFF814 == 0x00)
+					{
+						__fprintf_chk();
+						fn0000000000015FCC(gp, 0x01);
+						goto l00000000000153DC;
+					}
+					goto l00000000000153D8;
+				}
+				*sp_132 = a5_771;
+				strchr();
+				a0_748 = s1_1026;
+				a5_670 = *sp_132;
+				if (s1_1026 == 0x00)
+				{
+l0000000000015604:
+					a0_220 = fn00000000000175BC(gp);
+l0000000000015618:
+					if (a0_220 >= 0x00)
+					{
+						if ((s0_1002 & 0xFFFABFFF) == 0x00)
+							s0_1002 = s0_1002 | 0x08;
+						isatty();
+						if (0x01 != 0x00)
+							gp->dw0810 = 0x01;
+						if ((s0_1002 & 0x08) != 0x00)
+						{
+							Eq_792 s0_405;
+							Eq_793 s2_236 = (word64) *sp_132;
+							if ((word64) *sp_132 == 0x00)
+							{
+								if (s2_236 != 0x0020)
+								{
+l0000000000015660:
+									if (s10_45 != 0x00)
+									{
+l0000000000015664:
+										goto l0000000000015668;
+									}
+									word64 a0_498 = *sp_132;
+									strcmp();
+									if (a0_498 == 0x00)
+										goto l0000000000015664;
+									if (*sp_132 == 0x00)
+									{
+										fn000000000001654C(ra, gp);
+										goto l0000000000015668;
+									}
+l0000000000015880:
+									fn000000000001654C(ra, gp);
+									if (fn000000000001654C(ra, gp) != 0x00)
+										goto l00000000000158B8;
+l0000000000015668:
+									if (*sp_132 != 0x00)
+										fn000000000001654C(ra, gp);
+									fn000000000001654C(ra, gp);
+									fn000000000001654C(ra, gp);
+									if (*sp_132 != 0x00)
+										fn000000000001654C(ra, gp);
+									if ((s0_1002 & 0x00010008) != 0x00010008 || *sp_132 == 0x00)
+									{
+l00000000000156FC:
+										putchar();
+										if (*sp_132 != 0x00)
+											fn000000000001654C(ra, gp);
+										if (*sp_132 != 0x00)
+											fn000000000001654C(ra, gp);
+										if (*sp_132 != 0x00)
+											fn000000000001654C(ra, gp);
+										if (*sp_132 != 0x00)
+											fn000000000001654C(ra, gp);
+										if ((word64) *sp_132 != 0x00 && 111 >= (word64) (*sp_132))
+											fn000000000001654C(ra, gp);
+										else
+											fn000000000001654C(ra, gp);
+										goto l00000000000157BC;
+									}
+									s0_405.u0 = 0x00;
+									goto l0000000000015C2C;
+								}
+							}
+							else if (s2_236 != 0x0080)
+								goto l0000000000015660;
+							if (*sp_132 == 0x00)
+							{
+								fn000000000001654C(ra, gp);
+l00000000000158B8:
+								if ((s0_1002 & 0x00010008) != 0x00010008)
+									goto l00000000000158C8;
+								s0_405.u0 = 0x01;
+								if (*sp_132 == 0x00)
+								{
+l00000000000158C8:
+									if (*sp_132 != 0x00)
+										fn000000000001654C(ra, gp);
+									if (*sp_132 != 0x00)
+										fn000000000001654C(ra, gp);
+l00000000000157BC:
+									if (*sp_132 != 0x00 || (*sp_132 != 0x00 || *sp_132 != 0x00))
+									{
+										putchar();
+										if (*sp_132 != 0x00)
+											fn000000000001654C(ra, gp);
+										if (*sp_132 != 0x00)
+											fn000000000001654C(ra, gp);
+										if (*sp_132 != 0x00)
+											fn000000000001654C(ra, gp);
+										if (*sp_132 != 0x00)
+											fn000000000001654C(ra, gp);
+									}
+									goto l00000000000153DC;
+								}
 l0000000000015C2C:
-	a3 = PHI(a3, a3)
-	a4 = PHI(a4, a4)
-	s3 = PHI(s3, s3)
-	s2 = PHI(s2, s2)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	a5 = PHI(a5, a5)
-	a1 = 0x00012000
-	a2 = s2 + -0x03A0
-	a1 = 0x00011B78
-	a0 = s1 + -1272
-	s4 = fn000000000001654C(ra, gp)
-	branch s0 != 0x00 l00000000000158C8
-	goto l00000000000156FC
-l0000000000015C48:
-	a1 = 0x04
-	a0 = sp + 0x0100
-	Mem0[sp + 0x08:word64] = a5
-	s1 = Mem0[sp + 0x0030:word64]
-	ra = fn00000000000164D0(a1, out sp, out s0, out s1, out a0)
-	a5 = Mem0[sp + 0x08:word64]
-	branch a0 < 0x00 l0000000000015CB0
-l0000000000015C64:
-	a4 = 0x0F
-	branch a4 >= a5 l0000000000015C7C
-l0000000000015C6C:
-	a4 = 0x04
-	a4 = s1 | a4
-	a3 = 0x01
-	branch a3 >=u a4 l0000000000015DB8
-l0000000000015C7C:
-	a3 = PHI(a3, a3)
-	a4 = 0x0A
-	Mem0[sp + 0x0100:byte] = a4
-l0000000000015C84:
-	a4 = (word64) Mem0[sp + 0x0100:int32]
-	s1 = sp + 0x0108
-	a3 = 0x0040
-	a2 = s1
-	a1 = sp + 0x0018
-	a0 = 0x02
-	Mem0[sp + 0x08:word64] = a5
-	Mem0[sp + 0x0018:word32] = a4
-	inet_ntop()
-	a5 = Mem0[sp + 0x08:word64]
-	branch a0 != 0x00 l00000000000154DC
-l0000000000015CB0:
-	a2 = PHI(a2, a2, a2, a2, a2, a2, a2)
-	a3 = PHI(a3, a3, a3, a3, a3, a3, a3)
-	a1 = PHI(a1, a1, a1, a1, a1, a1, a1)
-	a0 = PHI(a0, a0, a0, a0, a0, a0, a0)
-	ra = PHI(ra, ra, ra, ra, ra, ra, ra)
-	s0 = PHI(s0, s0, s0, s0, s0, s0, s0)
-	s1 = PHI(s1, s1, s1, s1, s1, s1, s1)
-	a5 = PHI(a5, a5, a5, a5, a5, a5, a5)
-	sp = PHI(sp, sp, sp, sp, sp, sp, sp)
-	a4 = (word64) Mem0[gp + -2028:int32]
-	branch a4 != 0x00 l00000000000153D8
-l0000000000015CB8:
-	a0 = Mem0[gp + -0x0780:word64]
-	a2 = 0x00012000
-	a3 = a5
-	a2 = 0x00011A98
-	a1 = 0x01
-	__fprintf_chk()
-	s6 = 0x01
-	goto l00000000000153DC
-l0000000000015CD8:
-	a3 = 0x00012000
-	a3 = 0x00011998
-	goto l0000000000015B88
-l0000000000015CE4:
-	branch s1 != 0x00 l0000000000015510
-l0000000000015CE8:
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l00000000000153D8
-l0000000000015CF0:
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00012000
-	a2 = 0x001C
-	a1 = 0x01
-	a0 = 0x00011A30
-	fwrite()
-	a0 = 0x01
-	fn0000000000015FCC(gp, a0)
-	s6 = 0x01
-	goto l00000000000153DC
-l0000000000015D18:
-	a2 = Mem0[sp + 0x0068:word64]
-	a1 = 0x00012000
-	a1 = 72744
-	a0 = 0x01
-	__printf_chk()
-	goto l00000000000159D0
-l0000000000015D30:
-	a2 = Mem0[sp + 88:word64]
-	a1 = 0x00012000
-	a1 = 72792
-	a0 = 0x01
-	__printf_chk()
-	goto l0000000000015A04
-l0000000000015D48:
-	a2 = (word64) Mem0[sp + 0x00D8:int32]
-	a1 = 0x00012000
-	a1 = 0x00011C38
-	a0 = 0x01
-	__printf_chk()
-	goto l00000000000159D8
-l0000000000015D60:
-	a1 = 0x00012000
-	a2 = s1
-	a1 = 0x00011CE8
-	a0 = 0x01
-	__printf_chk()
-	goto l0000000000015AD4
-l0000000000015D78:
-	a2 = Mem0[sp + 0x0050:word64]
-	a1 = 0x00012000
-	a1 = 0x00011C68
-	a0 = 0x01
-	__printf_chk()
-	goto l0000000000015A0C
-l0000000000015D90:
-	a1 = 0x00012000
-	a1 = 0x00011CC8
-	a0 = 0x01
-	__printf_chk()
-	goto l0000000000015AAC
-l0000000000015DA4:
-	a1 = 0x00012000
-	a1 = 72872
-	a0 = 0x01
-	__printf_chk()
-	goto l0000000000015A80
-l0000000000015DB8:
-	branch a4 == a3 l0000000000015E00
-l0000000000015DBC:
-	a4 = -0x0054
-	Mem0[sp + 0x0100:byte] = a4
-	a4 = Mem0[sp + 0x0030:word64]
-	a4 = a4 >> 0x04
-	a4 = a4 & 0x0F
-	a4 = a4 | 0x0010
-	Mem0[sp + 0x0101:byte] = a4
-	goto l0000000000015C84
-l0000000000015DDC:
-	a3 = Mem0[sp + 0x0038:word64]
-	s2 = 0x00012000
-	s1 = 0x00012000
-	a1 = 0x00012000
-	a2 = 0x00011C60
-	a1 = 0x00011B10
-	a0 = 0x00011B08
-	s4 = fn000000000001654C(ra, gp)
-	goto l00000000000158B8
-l0000000000015E00:
-	a4 = -0x0040
-	Mem0[sp + 0x0100:byte] = a4
-	a4 = -88
-	Mem0[sp + 0x0101:byte] = a4
-	goto l0000000000015C84
-l0000000000015E14:
-	s2 = 0x00012000
-	s1 = 0x00012000
-	a1 = 0x00012000
-	a2 = 0x00011C60
-	a3 = s3
-	a1 = 0x00011B10
-	a0 = 0x00011B08
-	s4 = fn000000000001654C(ra, gp)
-	s2 = (word64) Mem0[sp + 0x00D8:int32]
-	goto l0000000000015668
-l0000000000015E3C:
-	a3 = 0x0080
-	a2 = 0x00012000
-	a1 = 0x00012000
-	a4 = sp + 0x0098
-	a3 = (int64) (a3 - a5)
-	a2 = 0x00011BD0
-	a1 = 72672
-	a0 = s1 + -1272
-	s4 = fn000000000001654C(ra, gp)
-	goto l00000000000157BC
-l0000000000015E64:
-	a3 = Mem0[sp + 0x0050:word64]
-	s0 = 0x01
-	branch a3 != 0x00 l0000000000015C2C
-	goto l00000000000158C8
-l0000000000015E74:
-	s2 = (word64) Mem0[sp + 0x00D8:int32]
-	goto l0000000000015668
-l0000000000015E7C:
-	a3 = 0x00012000
-	a3 = 0x00011998
-	a4 = s10
-	goto l0000000000015B8C
-l0000000000015E8C:
-	__stack_chk_fail()
+								fn000000000001654C(ra, gp);
+								if (s0_405 == 0x00)
+									goto l00000000000156FC;
+								goto l00000000000158C8;
+							}
+							goto l0000000000015880;
+						}
+						if ((s0_1002 & 0x0080) != 0x00)
+							__printf_chk();
+						if ((s0_1002 & 0x0200) != 0x00)
+							__printf_chk();
+						if ((s0_1002 & 0x0040) != 0x00 && (word64) (*sp_132) == 0x00)
+							__printf_chk();
+						if ((s0_1002 & 0x0100) != 0x00)
+							__printf_chk();
+						if (s0_1002 << 0x0E < 0x00)
+							__printf_chk();
+						if ((s0_1002 & 0x0400) != 0x00 && *sp_132 != 0x00)
+							__printf_chk();
+						if (s0_1002 << 0x14 < 0x00 && *sp_132 != 0x00)
+							__printf_chk();
+						if (s0_1002 << 0x12 < 0x00)
+						{
+							word64 s2_602 = *sp_132;
+							if (s2_602 != 0x00)
+							{
+								strchr();
+								if (s2_602 != 0x00)
+									__printf_chk();
+								else
+									__printf_chk();
+							}
+						}
+						if (s0_1002 << 0x13 < 0x00)
+						{
+							strchr();
+							if (sp_132 != 0x98)
+								__printf_chk();
+							else
+								__printf_chk();
+						}
+						if ((s0_1002 & 0x01) != 0x00 && *sp_132 != 0x00)
+							__printf_chk();
+						if ((s0_1002 & 0x02) != 0x00)
+							__printf_chk();
+						if ((s0_1002 & 0xC000) == 0xC000)
+						{
+							if (*sp_132 != 0x00)
+								__printf_chk();
+							word64 s0_575 = *sp_132;
+							if (s0_575 != 0x00)
+							{
+								strchr();
+								if (s0_575 == 0x00)
+									goto l0000000000015E90;
+								__printf_chk();
+							}
+l0000000000015B24:
+							word64 s0_133 = *sp_132;
+							if (s0_133 != 0x00)
+							{
+								strchr();
+								if (s0_133 != 0x00)
+									__printf_chk();
+								else
+									__printf_chk();
+							}
+							if (*sp_132 != 0x00)
+								__printf_chk();
+							goto l00000000000153DC;
+						}
+l00000000000153DC:
+						if (*sp_132 == gp->qwFFFFF870)
+							return;
+						__stack_chk_fail();
 l0000000000015E90:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0)
-	a2 = PHI(a2, a2)
-	a3 = PHI(a3, a3)
-	a4 = PHI(a4, a4)
-	ra = PHI(ra, ra)
-	s6 = PHI(s6, s6)
-	s4 = PHI(s4, s4)
-	s3 = PHI(s3, s3)
-	s2 = PHI(s2, s2)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	a5 = PHI(a5, a5)
-	sp = PHI(sp, sp)
-	a1 = 0x00012000
-	a1 = 0x00011D18
-	a0 = 0x01
-	__printf_chk()
-	goto l0000000000015B24
-l0000000000015EA4:
-	a1 = 0x00012000
-	a1 = 0x00011D38
-	a0 = 0x01
-	__printf_chk()
-	goto l0000000000015B50
-fn0000000000015180_exit:
-	qwLoc01B8 = PHI(qwLoc01B8, qwLoc01B8)
-	qwLoc01C0 = PHI(qwLoc01C0, qwLoc01C0)
-	a2 = PHI(a2, a2)
-	a3 = PHI(a3, a3)
-	a4 = PHI(a4, a4)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	ra = PHI(ra, ra)
-	s11 = PHI(s11, s11)
-	s10 = PHI(s10, s10)
-	s9 = PHI(s9, s9)
-	s8 = PHI(s8, s8)
-	s7 = PHI(s7, s7)
-	s6 = PHI(s6, s6)
-	s4 = PHI(s4, s4)
-	s3 = PHI(s3, s3)
-	s2 = PHI(s2, s2)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	gp = PHI(gp, gp)
-	a5 = PHI(a5, a5)
-	s5 = PHI(s5, s5)
-	sp = PHI(sp, sp)
+						__printf_chk();
+						goto l0000000000015B24;
+					}
+					goto l00000000000153D8;
+				}
+l0000000000015BB8:
+				*a0_748 = 0x00;
+				*a0_748 = 0x00;
+				s4_1027 = a0_748;
+				if (s4_1027 == 0x00)
+				{
+l00000000000155FC:
+					if ((word64) *sp_132 == 0x00)
+					{
+						a0_220 = fn0000000000016D74(ra, gp, s0_1002, s1_1026, a5_670, sp_132, s0_1002);
+						goto l0000000000015618;
+					}
+					goto l0000000000015604;
+				}
+l00000000000155E4:
+				Eq_292 a0_707;
+				word64 a1_708;
+				word64 s4_709;
+				ra = fn00000000000166F4(ra, gp, sp_132, s4_1027, 0x00, out sp_132, out s0_1002, out s1_1026, out a0_707, out a1_708, out s4_709);
+				a5_670 = a0_707;
+				if (a0_707 >= 0x00)
+					goto l00000000000155FC;
+				if ((word64) gp->dwFFFFF814 != 0x00)
+					goto l00000000000153D8;
+l0000000000015B8C:
+				__fprintf_chk();
+				goto l00000000000153D8;
+			}
+l00000000000155D8:
+			if (s4_1027 != 0x00)
+			{
+				if ((word64) *sp_132 == 0x00)
+					goto l00000000000155E4;
+				goto l000000000001553C;
+			}
+			*sp_132 = a5_771;
+			strchr();
+			a0_748 = s1_1026;
+			a5_670 = *sp_132;
+			if (s1_1026 == 0x00)
+				goto l00000000000155FC;
+			goto l0000000000015BB8;
+		}
+		Eq_310 a0_858 = fn00000000000169D8(gp, s9_44);
+		s1_1026 = a0_858;
+		s0_1002 = s2_816;
+		a5_771 = fp->tFFFFFE48;
+		if (a0_858 == 0x00)
+			goto l0000000000015964;
+l0000000000015510:
+		if ((word64) *sp_132 != 0x00)
+			goto l00000000000155D8;
+		goto l0000000000015518;
+	}
+	s0_1002 = s2_816;
+l0000000000015458:
+	a5_771 = a0;
+	if (s10_45 == 0x00)
+	{
+		if (s1_1026 == 0x00)
+		{
+			if ((word64) gp->dwFFFFF814 == 0x00)
+			{
+				fwrite();
+				fn0000000000015FCC(gp, 0x01);
+				goto l00000000000153DC;
+			}
+l00000000000153D8:
+			goto l00000000000153DC;
+		}
+		goto l0000000000015510;
+	}
+	word64 s0_872;
+	word64 s1_873;
+	Eq_292 a0_874;
+	word64 a1_875;
+	fn00000000000166F4(ra, gp, &fp->tFFFFFE48, s10_45, 0x01, out sp_132, out s0_872, out s1_873, out a0_874, out a1_875, out s4_1027);
+	if (a0_874 < 0x00)
+	{
+		if ((word64) gp->dwFFFFF814 != 0x00)
+			goto l00000000000153D8;
+		goto l0000000000015B8C;
+	}
+	*sp_132 = a0_874;
+	word64 s1_882 = (word64) *sp_132;
+	sp_132->u0 = 0x00;
+	clock_gettime();
+	Eq_292 a5_884 = *sp_132;
+	if (false)
+	{
+l0000000000015CB0:
+		if ((word64) gp->dwFFFFF814 == 0x00)
+		{
+			__fprintf_chk();
+			goto l00000000000153DC;
+		}
+		goto l00000000000153D8;
+	}
+	Eq_292 a5_904;
+	if (s1_882 != 0x00)
+	{
+		*sp_132 = *sp_132 & 0x01 | -0x04;
+		word64 s1_924;
+		int64 a0_925;
+		ra = fn00000000000164D0(0x0F, out sp_132, out s0_1002, out s1_924, out a0_925);
+		if (a0_925 < 0x00)
+			goto l0000000000015CB0;
+		inet_ntop();
+		a5_904 = *sp_132;
+		if (0x0A != 0x00)
+		{
+l00000000000154DC:
+			*sp_132 = a5_904;
+			__asprintf_chk();
+			a5_771 = *sp_132;
+			if (sp_132 != 33)
+			{
+				s1_1026 = *sp_132;
+				if (s1_1026 != 0x00)
+					goto l0000000000015510;
+			}
+			goto l0000000000015CB0;
+		}
+		goto l0000000000015CB0;
+	}
+	*sp_132 = a5_884;
+	ui64 s1_940;
+	int64 a0_941;
+	ra = fn00000000000164D0(0x04, out sp_132, out s0_1002, out s1_940, out a0_941);
+	Eq_292 a5_943 = *sp_132;
+	if (a0_941 < 0x00)
+		goto l0000000000015CB0;
+	if (0x0F < a5_943)
+	{
+		Eq_1025 a3_959 = 0x01;
+		if (a3_959 >= (s1_940 | 0x04))
+		{
+			if ((s1_940 | 0x04) != a3_959)
+			{
+				sp_132->u0 = -0x0054;
+				*sp_132 = *sp_132 >> 0x04 & 0x0F | 0x0010;
+			}
+			else
+			{
+				sp_132->u0 = -0x0040;
+				sp_132->u0 = -88;
+			}
+l0000000000015C84:
+			Eq_1081 a4_945 = (word64) *sp_132;
+			*sp_132 = a5_943;
+			*sp_132 = a4_945;
+			inet_ntop();
+			a5_904 = *sp_132;
+			if (true)
+				goto l00000000000154DC;
+			goto l0000000000015CB0;
+		}
+	}
+	sp_132->u0 = 0x0A;
+	goto l0000000000015C84;
 }
 
 void fn0000000000015EB8(word64 qwArg00)
 {
-	word64 t3_19 = Mem0[0x000000000001A0F0 + 0x00:word64];
+	<anonymous> * t3_19 = globals->ptr1A0F0;
 	word64 sp_21;
 	word64 gp_22;
 	word64 a5_23;
@@ -1753,8 +874,8 @@ void fn0000000000015EB8(word64 qwArg00)
 
 void fn0000000000015EF0()
 {
-	word64 a4_7 = 0x0E;
-	if (a4_7 >=u 0x07 || 0x00 == 0x00)
+	Eq_1231 a4_7 = 0x0E;
+	if (a4_7 >= 0x07 || 0x00 == 0x00)
 		return;
 	else
 	{
@@ -1764,7 +885,7 @@ void fn0000000000015EF0()
 		word64 a4_23;
 		word64 t1_24;
 		word64 ra_25;
-		0x00();
+		null();
 		return;
 	}
 }
@@ -1781,505 +902,158 @@ void fn0000000000015F24()
 		word64 a1_26;
 		word64 t1_27;
 		word64 ra_28;
-		0x00();
+		null();
 		return;
 	}
 }
 
-void fn0000000000015F64(word64 gp)
+void fn0000000000015F64(Eq_1258 * gp)
 {
-fn0000000000015F64_entry:
-	def fp
-	def s0
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -0x0010
-	qwLoc10_4 = s0
-	a5 = (word64) Mem0[-1900:byte]
-	qwLoc08 = ra
-	branch a5 != 0x00 l0000000000015F84
-	goto l0000000000015F78
-l0000000000015F64:
-l0000000000015F78:
-	fn0000000000015EF0()
-	a5 = 0x01
-	Mem0[gp + 0x0894:byte] = a5
-l0000000000015F84:
-	a5 = PHI(a5, a5)
-	ra = qwLoc08
-	s0 = qwLoc10
-	sp = fp
-	return
-fn0000000000015F64_exit:
+	if ((word64) gp->bFFFFF894 == 0x00)
+	{
+		fn0000000000015EF0();
+		gp->t0894.u0 = 0x01;
+	}
+	return;
 }
 
 void fn0000000000015F94()
 {
-fn0000000000015F94_entry:
-	def fp
-	sp_1 = fp
-	a5_2 = 0x0001A000
-	a0_3 = 106024
-	a5 = Mem0[106024:word64]
-	branch a5 != 0x00 l0000000000015FA8
-	goto l0000000000015FA4
-l0000000000015F94:
-l0000000000015FA4:
-	a5 = PHI(a5, a5)
-l0000000000015FA4_thunk_fn0000000000015F24:
-	fn0000000000015F24()
-	return
-l0000000000015FA4_thunk_fn0000000000015F24:
-	fn0000000000015F24()
-	return
-l0000000000015FA8:
-	a5 = 0x00
-	a5 = 0x00
-	branch 0x00 == 0x00 l0000000000015FA4
-l0000000000015FB4:
-	sp = fp + -0x0010
-	qwLoc08 = ra
-	call 0x00 (retsize: 0; depth: 16)
-		defs: a0,a5,ra,sp
-	ra = qwLoc08
-	sp = fp
-	fn0000000000015F24()
-	return
-l0000000000015FC8_thunk_fn0000000000015F24:
-fn0000000000015F94_exit:
-	qwLoc08 = PHI(qwLoc08, qwLoc08, qwLoc08)
-	a0 = PHI(a0, a0, a0)
-	a5 = PHI(a5, a5, a5)
-	ra = PHI(ra, ra, ra)
-	sp = PHI(sp, sp, sp)
+	if (globals->qw19E28 != 0x00 && 0x00 != 0x00)
+	{
+		word64 sp_18;
+		word64 a5_19;
+		word64 a0_20;
+		word64 ra_21;
+		null();
+		fn0000000000015F24();
+		return;
+	}
+	else
+	{
+		fn0000000000015F24();
+		return;
+	}
 }
 
-void fn0000000000015FCC(word64 gp, word64 a0)
+void fn0000000000015FCC(Eq_291 * gp, Eq_759 a0)
 {
-fn0000000000015FCC_entry:
-	def fp
-	def s0
-	def ra
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -0x0010
-	qwLoc10_4 = s0
-	qwLoc08_6 = ra
-	a3 = Mem0[-0x0780:word64]
-	branch a0 != 0x00 l0000000000016090
-	goto l0000000000015FE0
-l0000000000015FCC:
-l0000000000015FE0:
-	a0 = 0x00011000
-	a2 = 77
-	a1 = 0x01
-	a0 = 0x00011408
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x003E
-	a1 = 0x01
-	a0 = 70744
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0041
-	a1 = 0x01
-	a0 = 70808
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x004C
-	a1 = 0x01
-	a0 = 70880
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0041
-	a1 = 0x01
-	a0 = 0x00011530
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0029
-	a1 = 0x01
-	a0 = 0x00011578
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	ra = qwLoc08
-	s0 = qwLoc10
-	a0 = 0x00011000
-	a2 = 0x001E
-	a1 = 0x01
-	a0 = 0x000115A8
-	sp = fp
-	fwrite()
-	return
-l000000000001608C_thunk_fwrite:
-l0000000000016090:
-	a0 = 0x00011000
-	a2 = 0x001A
-	a1 = 0x01
-	a0 = 0x00010BE0
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0036
-	a1 = 0x01
-	a0 = 0x00010C00
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 77
-	a1 = 0x01
-	a0 = 68664
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x003E
-	a1 = 0x01
-	a0 = 0x00010C88
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x004F
-	a1 = 0x01
-	a0 = 68808
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x004F
-	a1 = 0x01
-	a0 = 68888
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x002A
-	a1 = 0x01
-	a0 = 68968
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x004C
-	a1 = 0x01
-	a0 = 69016
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 77
-	a1 = 0x01
-	a0 = 69096
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 77
-	a1 = 0x01
-	a0 = 69176
-	fwrite()
-	a1 = Mem0[gp + -0x0780:word64]
-	a0 = 0x0A
-	fputc()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0017
-	a1 = 0x01
-	a0 = 0x00010E88
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0047
-	a1 = 0x01
-	a0 = 0x00010EA0
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0039
-	a1 = 0x01
-	a0 = 0x00010EE8
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x003A
-	a1 = 0x01
-	a0 = 69416
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0039
-	a1 = 0x01
-	a0 = 0x00010F68
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 77
-	a1 = 0x01
-	a0 = 69544
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 77
-	a1 = 0x01
-	a0 = 0x00010FF8
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 77
-	a1 = 0x01
-	a0 = 0x00011048
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x002E
-	a1 = 0x01
-	a0 = 0x00011098
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0048
-	a1 = 0x01
-	a0 = 0x000110C8
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x002D
-	a1 = 0x01
-	a0 = 0x00011118
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0043
-	a1 = 0x01
-	a0 = 0x00011148
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0040
-	a1 = 0x01
-	a0 = 0x00011190
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0048
-	a1 = 0x01
-	a0 = 0x000111D8
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x002E
-	a1 = 0x01
-	a0 = 0x00011228
-	fwrite()
-	a1 = Mem0[gp + -0x0780:word64]
-	a0 = 0x0A
-	fputc()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0F
-	a1 = 0x01
-	a0 = 0x00011258
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0057
-	a1 = 0x01
-	a0 = 0x00011268
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x003C
-	a1 = 0x01
-	a0 = 0x000112C0
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0044
-	a1 = 0x01
-	a0 = 70400
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x003A
-	a1 = 0x01
-	a0 = 0x00011348
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x0039
-	a1 = 0x01
-	a0 = 0x00011388
-	fwrite()
-	a3 = Mem0[gp + -0x0780:word64]
-	ra = qwLoc08
-	s0 = qwLoc10
-	a0 = 0x00011000
-	a2 = 0x003E
-	a1 = 0x01
-	a0 = 70600
-	sp = fp
-	fwrite()
-	return
-l00000000000163AC_thunk_fwrite:
-fn0000000000015FCC_exit:
-	a3 = PHI(a3, a3)
-	ra = PHI(ra, ra)
-	s0 = PHI(s0, s0)
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	sp = PHI(sp, sp)
+	if (a0 != 0x00)
+	{
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fputc();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fputc();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		return;
+	}
+	else
+	{
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		fwrite();
+		return;
+	}
 }
 
-word64 fn00000000000163B0(word64 gp, word64 a0)
+Eq_1376 fn00000000000163B0(Eq_291 * gp, Eq_1376 a0)
 {
-fn00000000000163B0_entry:
-	def fp
-	def s0
-	def s1
-	def s2
-	def s3
-	def s4
-	def s5
-	def s6
-	def s7
-	def s8
-	def s9
-	def ra
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -0x00F0
-	qwLoc10_4 = s0
-	qwLoc18_6 = s1
-	qwLoc20_8 = s2
-	qwLoc28_10 = s3
-	qwLoc30_12 = s4
-	qwLoc38_14 = s5
-	qwLoc40_16 = s6
-	qwLoc48_18 = s7
-	qwLoc50_20 = s8
-	qwLoc58_22 = s9
-	qwLoc08_24 = ra
-	a5 = Mem0[-0x0790:word64]
-	a4 = (word64) Mem0[a0 + 0x00:byte]
-	s4 = 0x00011000
-	s0 = 0x00
-	s2 = a0
-	a3 = 71112
-	a2 = 0x0080
-	a1 = 0x01
-	a0 = fp + -232
-	s3 = 0x0010
-	s0 = (int64) ((word32) s0 + 0x01)
-	qwLoc68 = a5
-	s2 = s2 + 0x01
-	__sprintf_chk()
-	s1 = fp + -0x00E6
-	s6 = 0x0080
-	s5 = 0x01
-	s9 = 0x0F
-	s7 = 0x003A
-	branch s0 == s3 l000000000001646C
-	goto l0000000000016430
-l00000000000163B0:
-l0000000000016430:
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	s2 = PHI(s2, s2)
-	a4 = (word64) Mem0[s2 + 0x00:byte]
-	a3 = 71112
-	a2 = s6
-	a1 = s5
-	a0 = s1
-	__sprintf_chk()
-	a5 = s0 & 0x01
-	a4 = s1 + 0x02
-	branch a5 == 0x00 l00000000000164B8
-l0000000000016454:
-	branch s0 == s9 l00000000000164C4
-l0000000000016458:
-	Mem0[s1 + 0x02:byte] = s7
-	s2 = s2 + 0x01
-	s1 = s1 + 0x03
-l0000000000016464:
-	s1 = PHI(s1, s1)
-	s2 = PHI(s2, s2)
-	s0 = (int64) ((word32) s0 + 0x01)
-	branch s0 != s3 l0000000000016430
-l000000000001646C:
-	a3 = PHI(a3, a3, a3)
-	a2 = PHI(a2, a2, a2)
-	a1 = PHI(a1, a1, a1)
-	s0 = PHI(s0, s0, s0)
-	s1 = PHI(s1, s1, s1)
-	s2 = PHI(s2, s2, s2)
-	Mem0[s1 + 0x00:byte] = 0x00
-	a0 = fp + -232
-	__strdup()
-	a4 = qwLoc68
-	a5 = Mem0[gp + -0x0790:word64]
-	branch a4 != a5 l00000000000164CC
-l0000000000016484:
-	ra = qwLoc08
-	s0 = qwLoc10
-	s1 = qwLoc18
-	s2 = qwLoc20
-	s3 = qwLoc28
-	s4 = qwLoc30
-	s5 = qwLoc38
-	s6 = qwLoc40
-	s7 = qwLoc48
-	s8 = qwLoc50
-	s9 = qwLoc58
-	sp = fp
-	return a0
-l00000000000164B8:
-	s1 = a4
-	s2 = s2 + 0x01
-	goto l0000000000016464
-l00000000000164C4:
-	s1 = a4
-	goto l000000000001646C
-l00000000000164CC:
-	__stack_chk_fail()
-	sp = fp + -0x0110
-	qwLoc0100 = s0
-	s0 = fp + -232
-	a0 = 0x00011000
-	qwLoc0110 = s2
-	a0 = 0x000115D0
-	s2 = a1
-	a1 = 0x00
-	qwLocF8 = ra
-	qwLoc0108 = s1
-	open()
-	branch false l0000000000016544
-l00000000000164FC_thunk_fn0000000000016500:
-	ra = fn0000000000016500(a0, s2, out sp, out s0, out s1, out a0, out s2)
-	return a0
-l00000000000164FC_thunk_fn0000000000016544:
-	ra = fn0000000000016544(out sp, out s0, out s1, out a0, out s2)
-	return a0
-fn00000000000163B0_exit:
-	qwLoc0100 = PHI(qwLoc0100, qwLoc0100, qwLoc0100)
-	qwLoc0110 = PHI(qwLoc0110, qwLoc0110, qwLoc0110)
-	a1 = PHI(a1, a1, a1)
-	qwLocF8 = PHI(qwLocF8, qwLocF8, qwLocF8)
-	qwLoc0108 = PHI(qwLoc0108, qwLoc0108, qwLoc0108)
-	a0 = PHI(a0, a0, a0)
-	ra = PHI(ra, ra, ra)
-	s0 = PHI(s0, s0, s0)
-	s1 = PHI(s1, s1, s1)
-	s2 = PHI(s2, s2, s2)
-	s3 = PHI(s3, s3, s3)
-	s4 = PHI(s4, s4, s4)
-	s5 = PHI(s5, s5, s5)
-	s6 = PHI(s6, s6, s6)
-	s7 = PHI(s7, s7, s7)
-	s8 = PHI(s8, s8, s8)
-	s9 = PHI(s9, s9, s9)
-	sp = PHI(sp, sp, sp)
+	word64 a5_27 = gp->qwFFFFF870;
+	__sprintf_chk();
+	Eq_656 a1_118 = 0x01;
+	Eq_1387 s3_37 = 0x0010;
+	Eq_1387 s0_112 = 0x01;
+	struct Eq_1391 * s1_113 = fp + -0x00E6;
+	Eq_656 s5_43 = 0x01;
+	Eq_1387 s9_44 = 0x0F;
+	Eq_1399 s7_45 = 0x003A;
+	if (0x01 != s3_37)
+	{
+		do
+		{
+			__sprintf_chk();
+			a1_118 = s5_43;
+			struct Eq_1391 * a4_121 = &s1_113->b0002;
+			if ((s0_112 & 0x01) != 0x00)
+			{
+				if (s0_112 == s9_44)
+				{
+					s1_113 = a4_121;
+					break;
+				}
+				s1_113->b0002 = (byte) s7_45;
+				s1_113 = s1_113 + 0x01;
+			}
+			else
+				s1_113 = a4_121;
+			s0_112 = (int64) ((word32) s0_112 + 0x01);
+		} while (s0_112 != s3_37);
+	}
+	s1_113->b0000 = (byte) 0x00;
+	__strdup();
+	if (a5_27 != gp->qwFFFFF870)
+	{
+		__stack_chk_fail();
+		open();
+		if (false)
+		{
+			word64 sp_106;
+			word64 s0_107;
+			word64 s1_108;
+			Eq_1376 a0_109;
+			word64 s2_110;
+			fn0000000000016544(out sp_106, out s0_107, out s1_108, out a0_109, out s2_110);
+			return a0_109;
+		}
+		else
+		{
+			word64 sp_100;
+			word64 s0_101;
+			word64 s1_102;
+			Eq_1376 a0_103;
+			word64 s2_104;
+			fn0000000000016500(0x000115D0, a1_118, out sp_100, out s0_101, out s1_102, out a0_103, out s2_104);
+			return a0_103;
+		}
+	}
+	else
+		return fp + -232;
 }
 
-word64 fn00000000000164D0(word64 a1, ptr64 & spOut, ptr64 & s0Out, ptr64 & s1Out, ptr64 & a0Out)
+word64 fn00000000000164D0(Eq_656 a1, Eq_657 * & spOut, Eq_658 & s0Out, ptr64 & s1Out, ptr64 & a0Out)
 {
 	open();
 	if (false)
@@ -2297,12 +1071,12 @@ word64 fn00000000000164D0(word64 a1, ptr64 & spOut, ptr64 & s0Out, ptr64 & s1Out
 		word64 s0_29;
 		word64 s1_30;
 		word64 a0_31;
-		word64 s2_32;
+		Eq_656 s2_32;
 		return fn0000000000016500(0x000115D0, a1, out sp_28, out s0_29, out s1_30, out a0_31, out s2_32);
 	}
 }
 
-word64 fn0000000000016500(word64 a0, word64 s2, ptr64 & spOut, ptr64 & s0Out, ptr64 & s1Out, ptr64 & a0Out, ptr64 & s2Out)
+word64 fn0000000000016500(word64 a0, Eq_656 s2, ptr64 & spOut, ptr64 & s0Out, ptr64 & s1Out, ptr64 & a0Out, ptr64 & s2Out)
 {
 	read();
 	close();
@@ -2319,467 +1093,277 @@ word64 fn0000000000016544(ptr64 & spOut, ptr64 & s0Out, ptr64 & s1Out, ptr64 & a
 	word64 a0_2;
 	*a0Out = -0x01;
 	word64 s0_5;
-	*s0Out = Mem0[v3 + 0x0010:word64];
+	*s0Out = v3->qw0010;
 	word64 s1_6;
-	*s1Out = Mem0[v3 + 0x08:word64];
+	*s1Out = v3->qw0008;
 	word64 s2_7;
-	*s2Out = Mem0[v3 + 0x00:word64];
+	*s2Out = v3->qw0000;
 	word64 sp_8;
-	*spOut = v3 + 0x0020;
-	return Mem0[v3 + 0x0018:word64];
+	*spOut = v3->qw0018 + 0x01;
+	return v3->qw0018;
 }
 
-word64 fn000000000001654C(word64 ra, word64 gp)
+word64 fn000000000001654C(word64 ra, Eq_291 * gp)
 {
-fn000000000001654C_entry:
-	def fp
-	def s0
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -0x0080
-	qwLoc40_4 = s0
-	t3 = Mem0[-0x0790:word64]
-	t1 = fp + -0x0028
-	qwLoc50 = s2
-	qwLoc58 = s3
-	s2 = a1
-	s3 = a0
-	qwLoc28 = a3
-	a1 = 0x01
-	a3 = fp + -0x0028
-	a0 = fp + -112
-	qwLoc38 = ra
-	qwLoc48 = s1
-	qwLoc20 = a4
-	qwLoc18 = a5
-	qwLoc10 = a6
-	qwLoc08 = a7
-	qwLoc68 = t3
-	qwLoc70 = 0x00
-	qwLoc78 = fp + -0x0028
-	__vasprintf_chk()
-	branch fp + -112 < 0x00 l00000000000165D8
-	goto l00000000000165A8
-l000000000001654C:
-l00000000000165A8:
-	a1 = Mem0[gp + -0x0778:word64]
-	a0 = s2
-	fputs()
-	a5 = (word64) Mem0[gp + -2032:int32]
-	branch a5 != 0x00 l000000000001661C
-l00000000000165BC:
-	a1 = Mem0[gp + -0x0778:word64]
-	a0 = 0x00
-	fputs()
-	a5 = (word64) Mem0[gp + -2032:int32]
-	branch a5 != 0x00 l0000000000016600
-l00000000000165D0:
-	a3 = PHI(a3, a3)
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = 0x00
-	free()
-l00000000000165D8:
-	a3 = PHI(a3, a3)
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	a4 = qwLoc68
-	a5 = Mem0[gp + -0x0790:word64]
-	branch a4 != a5 l000000000001662C
-l00000000000165E4:
-	ra = qwLoc38
-	s0 = qwLoc40
-	s1 = qwLoc48
-	s2 = qwLoc50
-	s3 = qwLoc58
-	sp = fp
-	return s4
-l0000000000016600:
-	a3 = Mem0[gp + -0x0778:word64]
-	a0 = 0x00011000
-	a2 = 0x04
-	a1 = 0x01
-	a0 = 0x000115E0
-	fwrite()
-	goto l00000000000165D0
-l000000000001661C:
-	a1 = Mem0[gp + -0x0778:word64]
-	a0 = s3
-	fputs()
-	goto l00000000000165BC
-l000000000001662C:
-	__stack_chk_fail()
-	a0 = fn0000000000016630(ra, gp, a0, a1, out a1, out s4)
-	return s4
-l000000000001662C_thunk_fn0000000000016630:
-fn000000000001654C_exit:
-	a1 = PHI(a1, a1)
-	s4 = PHI(s4, s4)
-	a0 = PHI(a0, a0)
-	ra = PHI(ra, ra)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	s2 = PHI(s2, s2)
-	s3 = PHI(s3, s3)
-	sp = PHI(sp, sp)
+	word64 t3_7 = gp->qwFFFFF870;
+	__vasprintf_chk();
+	Eq_1576 a1_19 = 0x01;
+	Eq_306 a0_21 = fp;
+	if (fp >= ~0x6F)
+	{
+		fputs();
+		if ((word64) gp->dwFFFFF810 != 0x00)
+			fputs();
+		a1_19 = gp->tFFFFF888;
+		fputs();
+		if ((word64) gp->dwFFFFF810 != 0x00)
+		{
+			fwrite();
+			a1_19.u0 = 0x01;
+		}
+		free();
+		a0_21.u0 = 0x00;
+	}
+	if (t3_7 != gp->qwFFFFF870)
+	{
+		__stack_chk_fail();
+		word64 a1_60;
+		word64 s4_61;
+		fn0000000000016630(ra, gp, a0_21, a1_19, out a1_60, out s4_61);
+		return s4_61;
+	}
+	else
+		return s4;
 }
 
-word64 fn0000000000016630(word64 ra, word64 gp, word64 a0, word64 a1, ptr64 & a1Out, ptr64 & s4Out)
+Eq_306 fn0000000000016630(word64 ra, Eq_291 * gp, Eq_306 a0, Eq_1576 a1, ptr64 & a1Out, ptr64 & s4Out)
 {
-fn0000000000016630_entry:
-	def fp
-	def s0
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -0x0040
-	qwLoc10_4 = s0
-	a5 = Mem0[-0x0790:word64]
-	qwLoc08 = ra
-	qwLoc18 = s1
-	qwLoc38 = a5
-	qwLoc20 = s2
-	qwLoc28 = s3
-	s2 = a0
-	s3 = a1
-	qwLoc40 = 0x00
-	__errno_location()
-	Mem0[a0 + 0x00:word32] = 0x00
-	s1 = a0
-	a2 = 0x00
-	a1 = fp + -0x0040
-	a0 = s2
-	strtol()
-	a5 = 0x00
-	branch 0x00 == 0x00 || s2 == 0x00 l000000000001668C
-	goto l0000000000016684
-l0000000000016630:
-l0000000000016680:
-l0000000000016684:
-	a5 = (word64) Mem0[0x00:byte]
-	branch a5 == 0x00 l00000000000166C4
-l000000000001668C:
-	a5 = (word64) Mem0[s1 + 0x00:int32]
-l0000000000016690:
-	a5 = PHI(a5, a5)
-	branch 0x00 >= a5 l00000000000166E8
-l0000000000016694:
-	a5 = (int64) (0x00 - a5)
+	*s4Out = s4;
+	Eq_306 a5_28;
+	word64 a5_7 = gp->qwFFFFF870;
+	__errno_location();
+	*a0 = 0x00;
+	strtol();
+	Eq_535 a2_24 = 0x00;
+	word64 a1_25;
+	*a1Out = (ptr64) fp;
+	if (0x00 != 0x00 && (a0 != 0x00 && (word64) null == 0x00))
+	{
+		a5_28 = (word64) *a0;
+		if (a5_28 == 0x00)
+		{
+			Eq_306 a4_63 = (int64) (word32) a0;
+			if (a0 == a4_63)
+				*a1 = a4_63;
+			else
+				a5_28.u0 = -0x0022;
+			goto l0000000000016698;
+		}
+	}
+	else
+		a5_28 = (word64) *a0;
+	if (0x00 < a5_28)
+		a5_28 = (int64) (0x00 - a5_28);
+	else
+		a5_28.u0 = -22;
 l0000000000016698:
-	a5 = PHI(a5, a5, a5, a5)
-	a3 = qwLoc38
-	a4 = Mem0[gp + -0x0790:word64]
-	a0 = a5
-	branch a3 != a4 l00000000000166F0
-l00000000000166A8:
-	ra = qwLoc08
-	s0 = qwLoc10
-	s1 = qwLoc18
-	s2 = qwLoc20
-	s3 = qwLoc28
-	sp = fp
-	return a0
-l00000000000166C4:
-	a5 = (word64) Mem0[s1 + 0x00:int32]
-	branch a5 != 0x00 l0000000000016690
-l00000000000166CC:
-	a4 = (int64) (word32) a0
-	a3 = a4
-	branch a0 != a3 l00000000000166E0
-l00000000000166D8:
-	Mem0[s3 + 0x00:word32] = a4
-	goto l0000000000016698
-l00000000000166E0:
-	a5 = -0x0022
-	goto l0000000000016698
-l00000000000166E8:
-	a5 = -22
-	goto l0000000000016698
-l00000000000166F0:
-	__stack_chk_fail()
-	ra = fn00000000000166F4(ra, gp, a0, a1, a2, out sp, out s0, out s1, out a0, out a1, out s4)
-	return a0
-l00000000000166F0_thunk_fn00000000000166F4:
-fn0000000000016630_exit:
-	a0 = PHI(a0, a0)
-	a1 = PHI(a1, a1)
-	s4 = PHI(s4, s4)
-	ra = PHI(ra, ra)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	s2 = PHI(s2, s2)
-	s3 = PHI(s3, s3)
-	sp = PHI(sp, sp)
-	use a1 (=> a1Out)
-	use s4 (=> s4Out)
+	if (a5_7 != gp->qwFFFFF870)
+	{
+		__stack_chk_fail();
+		word64 sp_50;
+		word64 s0_51;
+		word64 s1_52;
+		Eq_306 a0_53;
+		word64 a1_54;
+		word64 s4_55;
+		fn00000000000166F4(ra, gp, a5_28, fp, a2_24, out sp_50, out s0_51, out s1_52, out a0_53, out a1_54, out s4_55);
+		return a0_53;
+	}
+	else
+		return a5_28;
 }
 
-word64 fn00000000000166F4(word64 ra, word64 gp, word64 a0, word64 a1, word64 a2, ptr64 & spOut, ptr64 & s0Out, ptr64 & s1Out, ptr64 & a0Out, ptr64 & a1Out, ptr64 & s4Out)
+word64 fn00000000000166F4(word64 ra, Eq_291 * gp, Eq_306 a0, Eq_306 a1, Eq_535 a2, Eq_536 * & spOut, Eq_537 & s0Out, Eq_538 & s1Out, ptr64 & a0Out, ptr64 & a1Out, Eq_541 & s4Out)
 {
-fn00000000000166F4_entry:
-	def fp
-	def s2
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -0x0040
-	qwLoc20_4 = s2
-	a5 = Mem0[-0x0790:word64]
-	qwLoc10 = s0
-	s0 = (word64) Mem0[a0 + 0x00:int32]
-	qwLoc18 = s1
-	qwLoc28 = s3
-	qwLoc30 = s4
-	qwLoc08 = ra
-	qwLoc38 = a5
-	s1 = a0
-	s3 = a1
-	s4 = a2
-	branch s0 != 0x00 l00000000000167C8
-	goto l000000000001672C
-l00000000000166F4:
-l000000000001672C:
-	a1 = 0x002E
-	a0 = s3
-	strchr()
-	branch a0 == 0x00 l00000000000167C8
-l000000000001673C:
-	a2 = fp + -0x0040
-	a1 = s3
-	a0 = 0x02
-	inet_pton()
-	branch a0 == 0x00 l000000000001678C
-l0000000000016750:
-	a0 = (word64) dwLoc40
-	a0 = fn00000000000182B4(a0)
-	branch a0 == 0x00 l0000000000016790
-l000000000001675C:
-	a4 = PHI(a4, a4)
-	a0 = PHI(a0, a0)
-	a5 = a0 & 0x01
-	branch a5 != 0x00 l0000000000016778
-l0000000000016764:
-	a5 = (int64) (int32) (a0 >>u 0x01)
-	branch a5 == 0x00 l0000000000016790
-l000000000001676C:
-	a4 = a5 & 0x01
-	branch a4 == 0x00 l0000000000016820
-l0000000000016774:
-	a0 = a5
+	Eq_292 a1_108;
+	Eq_292 a0_29;
+	Eq_292 s0_11 = (word64) *a0;
+	word64 s1_21;
+	*s1Out = a0;
+	word64 s4_109;
+	*s4Out = a2;
+	if (s0_11 == 0x00)
+	{
+		strchr();
+		if (a1 != 0x00)
+		{
+			inet_pton();
+			*a1Out = a1;
+			if (0x02 != 0x00)
+			{
+				Eq_1745 a0_128 = fn00000000000182B4((word64) dwLoc40);
+				if (a0_128 != 0x00)
+				{
+					if ((a0_128 & 0x01) != 0x00)
+					{
 l0000000000016778:
-	a4 = PHI(a4, a4, a4)
-	a5 = PHI(a5, a5, a5)
-	a0 = PHI(a0, a0, a0)
-	s0 = PHI(s0, s0, s0)
-	a0 = (int64) (int32) (a0 >>u 0x01)
-	s0 = (int64) ((word32) s0 + 0x01)
-	branch a0 == 0x00 l0000000000016790
-l0000000000016784:
-	a5 = a0 & 0x01
-	branch a5 != 0x00 l0000000000016778
+						do
+						{
+							a0_128 = (int64) (int32) (a0_128 >> 0x01);
+							s0_11 = (int64) ((word32) s0_11 + 0x01);
+							if (a0_128 == 0x00)
+								goto l0000000000016790;
+						} while ((a0_128 & 0x01) != 0x00);
+						goto l000000000001678C;
+					}
+					Eq_1745 a5_139 = (int64) (int32) (a0_128 >> 0x01);
+					if (a5_139 == 0x00)
+						break;
+					if ((a5_139 & 0x01) != 0x00)
+					{
+						a0_128 = a5_139;
+						goto l0000000000016778;
+					}
+					a0_128 = (int64) (int32) (a0_128 >> 0x02);
+					if (a0_128 != 0x00)
+						goto l000000000001675C;
+				}
+			}
+			else
+			{
 l000000000001678C:
-	a4 = PHI(a4, a4)
-	a5 = PHI(a5, a5)
-	a0 = PHI(a0, a0)
-	s0 = -0x01
-l0000000000016790:
-	a4 = PHI(a4, a4, a4, a4, a4)
-	a5 = PHI(a5, a5, a5, a5, a5)
-	a0 = PHI(a0, a0, a0, a0, a0)
-	s0 = PHI(s0, s0, s0, s0, s0)
-	dwLoc40 = s0
+				s0_11.u0 = -0x01;
+			}
 l0000000000016794:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	dwLoc40 = PHI(dwLoc40, dwLoc40)
-	a4 = PHI(a4, a4)
-	a0 = PHI(a0, a0)
-	s0 = PHI(s0, s0)
-	s4 = PHI(s4, s4)
-	a5 = (word64) Mem0[sp + 0x00:int32]
-	branch s4 == 0x00 l00000000000167DC
-l000000000001679C:
-	a4 = 0x0020
-	a0 = a5
-	branch a4 >= a5 l00000000000167DC
-l00000000000167A8:
-	a4 = (word64) Mem0[s1 + 0x00:int32]
-	branch a4 != 0x00 l00000000000167B8
-l00000000000167B0:
-	a4 = 0x01
-	Mem0[s1 + 0x00:word32] = a4
-l00000000000167B8:
-	a0 = PHI(a0, a0, a0)
-	a4 = 0x0080
-	branch a4 >= a5 l00000000000167F4
+			Eq_1785 a5_94 = (word64) fp->dwFFFFFFC0;
+			if (s4_109 != 0x00 && 0x0020 < a5_94)
+			{
+				if ((word64) *a0 == 0x00)
+					a0->u0 = 0x01;
+			}
+			else
+			{
+				*a0Out = a5_94;
+				if (a5_94 < 0x00)
+					goto l00000000000167C0;
+				if ((word64) *a0 == 0x00)
+				{
+					if (0x0020 < a5_94)
+					{
 l00000000000167C0:
-	a2 = PHI(a2, a2, a2, a2)
-	a1 = PHI(a1, a1, a1, a1)
-	dwLoc40 = PHI(dwLoc40, dwLoc40, dwLoc40, dwLoc40)
-	a4 = PHI(a4, a4, a4, a4)
-	a5 = PHI(a5, a5, a5, a5)
-	s0 = PHI(s0, s0, s0, s0)
-	s4 = PHI(s4, s4, s4, s4)
-	a0 = -0x01
-	goto l00000000000167F4
-l00000000000167C8:
-	a1 = fp + -0x0040
-	a0 = s3
-	a0 = fn0000000000016630(ra, gp, a0, a1, out a1, out s4)
-	branch a0 == 0x00 l0000000000016794
-	goto l00000000000167C0
-l00000000000167DC:
-	a4 = PHI(a4, a4)
-	a0 = a5
-	branch a5 < 0x00 l00000000000167C0
-l00000000000167E4:
-	a4 = (word64) Mem0[s1 + 0x00:int32]
-	branch a4 != 0x00 l00000000000167B8
-l00000000000167EC:
-	a5 = 0x0020
-	branch a5 < a0 l00000000000167C0
+						*a0Out = -0x01;
+						goto l00000000000167F4;
+					}
 l00000000000167F4:
-	a2 = PHI(a2, a2, a2)
-	a1 = PHI(a1, a1, a1)
-	dwLoc40 = PHI(dwLoc40, dwLoc40, dwLoc40)
-	a0 = PHI(a0, a0, a0)
-	s0 = PHI(s0, s0, s0)
-	s4 = PHI(s4, s4, s4)
-	a4 = Mem0[sp + 0x08:word64]
-	a5 = Mem0[gp + -0x0790:word64]
-	branch a4 != a5 l000000000001682C
-	a4 = Mem0[sp + 0x08:word64]
-	a5 = Mem0[gp + -0x0790:word64]
-	branch a4 != a5 l000000000001682C
-l0000000000016800:
-	ra = Mem0[sp + 0x0038:word64]
-	s0 = Mem0[sp + 0x0030:word64]
-	s1 = Mem0[sp + 0x0028:word64]
-	s2 = Mem0[sp + 0x0020:word64]
-	s3 = Mem0[sp + 0x0018:word64]
-	s4 = Mem0[sp + 0x0010:word64]
-	sp = sp + 0x0040
-	return ra
-	ra = Mem0[sp + 0x0038:word64]
-	s0 = Mem0[sp + 0x0030:word64]
-	s1 = Mem0[sp + 0x0028:word64]
-	s2 = Mem0[sp + 0x0020:word64]
-	s3 = Mem0[sp + 0x0018:word64]
-	s4 = Mem0[sp + 0x0010:word64]
-	sp = sp + 0x0040
-	return ra
-l0000000000016820:
-	a0 = (int64) (int32) (a0 >>u 0x02)
-	branch a0 != 0x00 l000000000001675C
-	goto l0000000000016790
-l000000000001682C:
-	__stack_chk_fail()
-	sp = sp + -0x0020
-	Mem0[sp + 0x0010:word64] = s0
-	a5 = Mem0[gp + -0x0790:word64]
-	Mem0[sp + 0x0018:word64] = ra
-	Mem0[sp + 0x00:word32] = 0x00
-	Mem0[sp + 0x08:word64] = a5
-	branch a0 == 0x00 l0000000000016864
-l0000000000016848_thunk_fn000000000001684C:
-	ra = fn000000000001684C(ra, gp, s0, a0, a1, out sp, out s0, out a0)
-	return ra
-l0000000000016848_thunk_fn0000000000016864:
-	ra = fn0000000000016864(ra, gp, s0, a1, out sp, out s0, out a0)
-	return ra
-fn00000000000166F4_exit:
-	a5 = PHI(a5, a5, a5, a5)
-	a0 = PHI(a0, a0, a0, a0)
-	ra = PHI(ra, ra, ra, ra)
-	s0 = PHI(s0, s0, s0, s0)
-	s1 = PHI(s1, s1, s1, s1)
-	s2 = PHI(s2, s2, s2, s2)
-	s3 = PHI(s3, s3, s3, s3)
-	s4 = PHI(s4, s4, s4, s4)
-	sp = PHI(sp, sp, sp, sp)
-	use sp (=> spOut)
-	use s0 (=> s0Out)
-	use s1 (=> s1Out)
-	use a0 (=> a0Out)
-	use a1 (=> a1Out)
-	use s4 (=> s4Out)
+					if (fp->qwFFFFFFC8 != gp->qwFFFFF870)
+					{
+						__stack_chk_fail();
+						fp->tFFFFFFB0 = s0_11;
+						word64 a5_67 = gp->qwFFFFF870;
+						fp->qwFFFFFFB8 = ra;
+						fp->tFFFFFFA0.u0 = 0x00;
+						fp->qwFFFFFFA8 = a5_67;
+						if (a0_29 == 0x00)
+						{
+							word64 sp_75;
+							word64 s0_76;
+							word64 a0_77;
+							return fn0000000000016864(ra, gp, s0_11, a1_108, out sp_75, out s0_76, out a0_77);
+						}
+						else
+						{
+							word64 sp_71;
+							word64 s0_72;
+							word64 a0_73;
+							return fn000000000001684C(ra, gp, s0_11, a0_29, a1_108, out sp_71, out s0_72, out a0_73);
+						}
+					}
+					else
+					{
+						return fp->qwFFFFFFF8;
+						word64 s0_59;
+						*s0Out = fp->qw0030;
+						word64 s1_60;
+						*s1Out = fp->qw0028;
+						word64 s4_63;
+						*s4Out = fp->qw0010;
+						word64 sp_64;
+						*spOut = fp->qw0038 + 0x01;
+						return fp->qw0038;
+					}
+				}
+			}
+			*a0Out = a5_94;
+			if (0x0080 < a5_94)
+				goto l00000000000167C0;
+			goto l00000000000167F4;
+		}
+	}
+	if (fn0000000000016630(ra, gp, a1, &fp->dwFFFFFFC0, out a1_108, out s4_109) != 0x00)
+		goto l00000000000167C0;
+	goto l0000000000016794;
 }
 
-word64 fn0000000000016830(word64 ra, word64 gp, word64 s0, word64 a0, word64 a1, ptr64 & spOut, ptr64 & s0Out, ptr64 & a0Out)
+word64 fn0000000000016830(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a1, Eq_1921 * & spOut, ptr64 & s0Out, ptr64 & a0Out)
 {
-fn0000000000016830_entry:
-	def fp
-	def s0
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -0x0020
-	qwLoc10_4 = s0
-	a5 = Mem0[-0x0790:word64]
-	qwLoc08 = ra
-	dwLoc20 = 0x00
-	qwLoc18 = a5
-	branch a0 == 0x00 l0000000000016848_thunk_fn0000000000016864
-	goto l0000000000016848_thunk_fn000000000001684C
-l0000000000016830:
-l0000000000016848_thunk_fn000000000001684C:
-	ra = fn000000000001684C(ra, gp, s0, a0, a1, out sp, out s0, out a0)
-	return ra
-l0000000000016848_thunk_fn000000000001684C:
-	ra = fn000000000001684C(ra, gp, s0, a0, a1, out sp, out s0, out a0)
-	return ra
-l0000000000016848_thunk_fn0000000000016864:
-	ra = fn0000000000016864(ra, gp, s0, a1, out sp, out s0, out a0)
-	return ra
-fn0000000000016830_exit:
-	sp = PHI(sp, sp, sp)
-	s0 = PHI(s0, s0, s0)
-	a0 = PHI(a0, a0, a0)
-	ra = PHI(ra, ra, ra)
-	use sp (=> spOut)
-	use s0 (=> s0Out)
-	use a0 (=> a0Out)
+	if (a0 == 0x00)
+	{
+		word64 sp_29;
+		word64 s0_30;
+		word64 a0_31;
+		return fn0000000000016864(ra, gp, s0, a1, out sp_29, out s0_30, out a0_31);
+	}
+	else
+	{
+		word64 sp_21;
+		Eq_292 s0_22;
+		Eq_292 a0_23;
+		word64 ra_24 = fn000000000001684C(ra, gp, s0, a0, a1, out sp_21, out s0_22, out a0_23);
+		return ra_24;
+	}
 }
 
-word64 fn000000000001684C(word64 ra, word64 gp, word64 s0, word64 a0, word64 a1, ptr64 & spOut, ptr64 & s0Out, ptr64 & a0Out)
+word64 fn000000000001684C(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a1, ptr64 & spOut, ptr64 & s0Out, ptr64 & a0Out)
 {
-	Mem8[v3 + 0x00:word32] = fn00000000000182B4((int64) (int32) (-0x01 << (int64) (0x0020 - a0)));
+	*v3 = (union Eq_1745 *) fn00000000000182B4((int64) (int32) (-0x01 << (int64) (0x0020 - a0)));
 	word64 sp_13;
 	word64 s0_14;
 	word64 a0_15;
 	return fn0000000000016864(ra, gp, s0, a1, out sp_13, out s0_14, out a0_15);
 }
 
-word64 fn0000000000016864(word64 ra, word64 gp, word64 s0, word64 a1, ptr64 & spOut, ptr64 & s0Out, ptr64 & a0Out)
+word64 fn0000000000016864(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a1, ptr64 & spOut, ptr64 & s0Out, ptr64 & a0Out)
 {
 	sp = v3;
-	a4 = Mem0[sp + 0x08:word64];
-	a5 = Mem0[gp + -0x0790:word64];
-	a0 = (word64) Mem0[sp + 0x00:int32];
+	a4 = sp->qw0008;
+	a5 = gp->qwFFFFF870;
+	a0 = (word64) sp->t0000;
 	if (a4 != a5)
 	{
 		__stack_chk_fail();
 		sp = sp + -0x0010;
-		Mem0[sp + 0x00:word64] = s0;
+		sp->t0000 = s0;
 		s0 = a0;
 		a0 = a1;
-		Mem0[sp + 0x08:word64] = ra;
+		sp->qw0008 = ra;
 		ra = fn0000000000016830(ra, gp, s0, a0, a1, out sp, out s0, out a0);
-		ra = Mem0[sp + 0x08:word64];
+		ra = sp->qw0008;
 		a0 = a0 ^ -0x01;
 		a0 = a0 | s0;
-		s0 = Mem0[sp + 0x00:word64];
-		sp = sp + 0x0010;
+		s0 = sp->qw0000;
+		sp = sp->qw0008 + 0x01;
 		return ra;
 	}
 	else
 	{
-		ra = Mem0[sp + 0x0018:word64];
-		s0 = Mem0[sp + 0x0010:word64];
-		sp = sp + 0x0020;
+		ra = sp->qw0018;
+		s0 = sp->t0010;
+		sp = sp->qw0018 + 0x01;
 		return ra;
 	}
 }
 
-void fn00000000000168B8(word64 ra, word64 gp, word64 a0, word64 a1)
+void fn00000000000168B8(word64 ra, Eq_291 * gp, Eq_292 a0, Eq_292 a1)
 {
 	word64 sp_12;
 	word64 s0_13;
@@ -2788,405 +1372,170 @@ void fn00000000000168B8(word64 ra, word64 gp, word64 a0, word64 a1)
 	return;
 }
 
-word64 fn00000000000168E4(word64 gp, word64 a0, word64 a1)
+Eq_310 fn00000000000168E4(Eq_291 * gp, Eq_310 a0, Eq_304 a1)
 {
-fn00000000000168E4_entry:
-	def fp
-	def s0
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -0x0060
-	qwLoc10_4 = s0
-	a4 = Mem0[-0x0790:word64]
-	qwLoc08 = ra
-	qwLoc18 = s1
-	a5 = 0x02
-	qwLoc28 = a4
-	a7 = a0
-	branch a0 == a5 l0000000000016984
-	goto l0000000000016908
-l00000000000168E4:
-l0000000000016908:
-	a5 = 0x0A
-	branch a0 == a5 l0000000000016934
-l0000000000016910:
-	t5 = PHI(t5, t5)
-	t4 = PHI(t4, t4)
-	t3 = PHI(t3, t3)
-	t1 = PHI(t1, t1)
-	qwLoc58 = PHI(qwLoc58, qwLoc58)
-	qwLoc50 = PHI(qwLoc50, qwLoc50)
-	wLoc58 = PHI(wLoc58, wLoc58)
-	bLoc54 = PHI(bLoc54, bLoc54)
-	bLoc53 = PHI(bLoc53, bLoc53)
-	bLoc52 = PHI(bLoc52, bLoc52)
-	bLoc51 = PHI(bLoc51, bLoc51)
-	qwLoc48 = PHI(qwLoc48, qwLoc48)
-	qwLoc40 = PHI(qwLoc40, qwLoc40)
-	qwLoc38 = PHI(qwLoc38, qwLoc38)
-	dwLoc30 = PHI(dwLoc30, dwLoc30)
-	wLoc48 = PHI(wLoc48, wLoc48)
-	a6 = PHI(a6, a6)
-	a3 = PHI(a3, a3)
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a4 = PHI(a4, a4)
-	a5 = PHI(a5, a5)
-	a0 = 0x00
+	ptr64 a0_130;
+	Eq_310 a0_36;
+	word64 a4_7 = gp->qwFFFFF870;
+	if (a0 != 0x02)
+	{
+		if (a0 != 0x0A)
+			goto l0000000000016910;
+		memcpy();
+		getnameinfo();
+		a1.u0 = 0x001C;
+		a0_130 = fp + -0x0048;
+	}
+	else
+	{
+		getnameinfo();
+		a1.u0 = 0x0010;
+		a0_130 = fp + -88;
+	}
+	if (a0_130 == 0x00)
+	{
+		__strdup();
+		a0_36 = gp->dwFFFFF890 + 0x02;
 l0000000000016914:
-	t5 = PHI(t5, t5)
-	t4 = PHI(t4, t4)
-	t3 = PHI(t3, t3)
-	t1 = PHI(t1, t1)
-	qwLoc58 = PHI(qwLoc58, qwLoc58)
-	qwLoc50 = PHI(qwLoc50, qwLoc50)
-	wLoc58 = PHI(wLoc58, wLoc58)
-	bLoc54 = PHI(bLoc54, bLoc54)
-	bLoc53 = PHI(bLoc53, bLoc53)
-	bLoc52 = PHI(bLoc52, bLoc52)
-	bLoc51 = PHI(bLoc51, bLoc51)
-	qwLoc48 = PHI(qwLoc48, qwLoc48)
-	qwLoc40 = PHI(qwLoc40, qwLoc40)
-	qwLoc38 = PHI(qwLoc38, qwLoc38)
-	dwLoc30 = PHI(dwLoc30, dwLoc30)
-	wLoc48 = PHI(wLoc48, wLoc48)
-	a6 = PHI(a6, a6)
-	a3 = PHI(a3, a3)
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	a4 = qwLoc28
-	a5 = Mem0[gp + -0x0790:word64]
-	branch a4 != a5 l00000000000169D4
-l0000000000016920:
-	ra = qwLoc08
-	s0 = qwLoc10
-	s1 = qwLoc18
-	sp = fp
-	return a0
-l0000000000016934:
-	qwLoc48 = 0x00
-	a2 = 0x0010
-	a0 = fp + -0x0040
-	qwLoc40 = 0x00
-	qwLoc38 = 0x00
-	dwLoc30 = 0x00
-	wLoc48 = a7
-	memcpy()
-	a6 = 0x00
-	a5 = 0x00
-	a4 = 0x00
-	a3 = 0x0401
-	a2 = gp + -0x0768
-	a1 = 0x001C
-	a0 = fp + -0x0048
-	getnameinfo()
-l0000000000016974:
-	t5 = PHI(t5, t5)
-	t4 = PHI(t4, t4)
-	t3 = PHI(t3, t3)
-	t1 = PHI(t1, t1)
-	qwLoc58 = PHI(qwLoc58, qwLoc58)
-	qwLoc50 = PHI(qwLoc50, qwLoc50)
-	wLoc58 = PHI(wLoc58, wLoc58)
-	bLoc54 = PHI(bLoc54, bLoc54)
-	bLoc53 = PHI(bLoc53, bLoc53)
-	bLoc52 = PHI(bLoc52, bLoc52)
-	bLoc51 = PHI(bLoc51, bLoc51)
-	qwLoc48 = PHI(qwLoc48, qwLoc48)
-	qwLoc40 = PHI(qwLoc40, qwLoc40)
-	qwLoc38 = PHI(qwLoc38, qwLoc38)
-	dwLoc30 = PHI(dwLoc30, dwLoc30)
-	wLoc48 = PHI(wLoc48, wLoc48)
-	a6 = PHI(a6, a6)
-	a3 = PHI(a3, a3)
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a4 = PHI(a4, a4)
-	a5 = PHI(a5, a5)
-	a0 = PHI(a0, a0)
-	branch a0 != 0x00 l0000000000016910
-l0000000000016978:
-	a0 = gp + -0x0768
-	__strdup()
-	goto l0000000000016914
-l0000000000016984:
-	t5 = (word64) Mem0[a1 + 0x00:byte]
-	t4 = (word64) Mem0[a1 + 0x01:byte]
-	t3 = (word64) Mem0[a1 + 0x02:byte]
-	t1 = (word64) Mem0[a1 + 0x03:byte]
-	qwLoc58 = 0x00
-	a6 = 0x00
-	a5 = 0x00
-	a4 = 0x00
-	a3 = 0x0401
-	a2 = gp + -0x0768
-	a1 = 0x0010
-	a0 = fp + -88
-	qwLoc50 = 0x00
-	wLoc58 = a7
-	bLoc54 = t5
-	bLoc53 = t4
-	bLoc52 = t3
-	bLoc51 = t1
-	getnameinfo()
-	goto l0000000000016974
-l00000000000169D4:
-	__stack_chk_fail()
-	a0 = fn00000000000169D8(gp, a1)
-	return a0
-l00000000000169D4_thunk_fn00000000000169D8:
-fn00000000000168E4_exit:
-	a0 = PHI(a0, a0)
-	ra = PHI(ra, ra)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	sp = PHI(sp, sp)
+		if (a4_7 != gp->qwFFFFF870)
+		{
+			__stack_chk_fail();
+			return fn00000000000169D8(gp, a1);
+		}
+		else
+			return a0_36;
+	}
+l0000000000016910:
+	a0_36.u0 = 0x00;
+	goto l0000000000016914;
 }
 
-word64 fn00000000000169D8(word64 gp, word64 a1)
+Eq_2080 fn00000000000169D8(Eq_291 * gp, Eq_304 a1)
 {
-fn00000000000169D8_entry:
-	def fp
-	def s4
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -112
-	qwLoc30_4 = s4
-	a5 = Mem0[-0x0790:word64]
-	a4 = a1
-	qwLoc68 = 0x00
-	dwLoc64 = a0
-	a3 = fp + -112
-	a2 = fp + -0x0068
-	a1 = 0x00
-	a0 = a4
-	qwLoc08 = ra
-	qwLoc10 = s0
-	qwLoc18 = s1
-	qwLoc20 = s2
-	qwLoc28 = s3
-	qwLoc38 = a5
-	qwLoc60 = 0x00
-	qwLoc58 = 0x00
-	qwLoc50 = 0x00
-	qwLoc48 = 0x00
-	qwLoc40 = 0x00
-	getaddrinfo()
-	branch a0 != 0x00 l0000000000016AD8
-	goto l0000000000016A34
-l00000000000169D8:
-l0000000000016A34:
-	s0 = qwLoc70
-	branch s0 == 0x00 l0000000000016AA0
-l0000000000016A3C:
-	s1 = gp + -0x0360
-	s3 = 0x02
-	s2 = 0x0040
-	goto l0000000000016A68
-l0000000000016A4C:
-	a1 = a1 + 0x08
-	a3 = s2
-	a2 = s1
-	inet_ntop()
-	branch a0 != 0x00 l0000000000016A88
-l0000000000016A60:
-	a1 = PHI(a1, a1)
-	a2 = PHI(a2, a2)
-	a3 = PHI(a3, a3)
-	s0 = Mem0[s0 + 0x0028:word64]
-	branch s0 == 0x00 l0000000000016A9C
-	s0 = Mem0[s0 + 0x0028:word64]
-	branch s0 == 0x00 l0000000000016A9C
+	Eq_2080 a0_119;
+	word64 a5_7 = gp->qwFFFFF870;
+	getaddrinfo();
+	if (a1 == 0x00)
+	{
+		struct Eq_2092 * s0_104 = qwLoc70;
+		if (qwLoc70 != null)
+		{
+			Eq_2100 s3_100 = 0x02;
 l0000000000016A68:
-	a2 = PHI(a2, a2)
-	a3 = PHI(a3, a3)
-	s0 = PHI(s0, s0)
-	a0 = (word64) Mem0[s0 + 0x04:int32]
-	a1 = Mem0[s0 + 0x0018:word64]
-	branch a0 != s3 l0000000000016A4C
-	a0 = (word64) Mem0[s0 + 0x04:int32]
-	a1 = Mem0[s0 + 0x0018:word64]
-	branch a0 != s3 l0000000000016A4C
-	a0 = (word64) Mem0[s0 + 0x04:int32]
-	a1 = Mem0[s0 + 0x0018:word64]
-	branch a0 != s3 l0000000000016A4C
-l0000000000016A74:
-	a1 = a1 + 0x04
-	a3 = s2
-	a2 = s1
-	inet_ntop()
-	branch a0 == 0x00 l0000000000016A60
-	a1 = a1 + 0x04
-	a3 = s2
-	a2 = s1
-	inet_ntop()
-	branch a0 == 0x00 l0000000000016A60
-	a1 = a1 + 0x04
-	a3 = s2
-	a2 = s1
-	inet_ntop()
-	branch a0 == 0x00 l0000000000016A60
+			Eq_2100 a0_109 = (word64) s0_104->dw0004;
+			if (a0_109 == s3_100)
+			{
+				inet_ntop();
+				inet_ntop();
+				inet_ntop();
+				if (a0_109 != 0x00)
+				{
 l0000000000016A88:
-	a1 = PHI(a1, a1)
-	a2 = PHI(a2, a2)
-	a3 = PHI(a3, a3)
-	a0 = qwLoc70
-	freeaddrinfo()
-	a0 = s1
-	__strdup()
-	a0 = qwLoc70
-	freeaddrinfo()
-	a0 = s1
-	__strdup()
-	a0 = qwLoc70
-	freeaddrinfo()
-	a0 = s1
-	__strdup()
-	goto l0000000000016AAC
-l0000000000016A9C:
-	s0 = qwLoc70
-l0000000000016AA0:
-	a1 = PHI(a1, a1)
-	a2 = PHI(a2, a2)
-	a3 = PHI(a3, a3)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	s2 = PHI(s2, s2)
-	s3 = PHI(s3, s3)
-	a0 = s0
-	freeaddrinfo()
-	a0 = 0x00
-l0000000000016AAC:
-	a1 = PHI(a1, a1, a1)
-	a2 = PHI(a2, a2, a2)
-	a3 = PHI(a3, a3, a3)
-	a0 = PHI(a0, a0, a0)
-	s0 = PHI(s0, s0, s0)
-	s1 = PHI(s1, s1, s1)
-	s2 = PHI(s2, s2, s2)
-	s3 = PHI(s3, s3, s3)
-	a4 = qwLoc38
-	a5 = Mem0[gp + -0x0790:word64]
-	branch a4 != a5 l0000000000016AE0
-l0000000000016AB8:
-	ra = qwLoc08
-	s0 = qwLoc10
-	s1 = qwLoc18
-	s2 = qwLoc20
-	s3 = qwLoc28
-	s4 = qwLoc30
-	sp = fp
-	return a0
-l0000000000016AD8:
-	a0 = 0x00
-	goto l0000000000016AAC
-l0000000000016AE0:
-	__stack_chk_fail()
-	a5 = a0
+					freeaddrinfo();
+					__strdup();
+					freeaddrinfo();
+					__strdup();
+					freeaddrinfo();
+					__strdup();
+					a0_119 = gp->dwFFFFF890 + 0x0104;
+					goto l0000000000016AAC;
+				}
+			}
+			else
+			{
+				inet_ntop();
+				if (a0_109 != 0x00)
+					goto l0000000000016A88;
+			}
+			struct Eq_2138 * s0_123 = s0_104->ptr0028;
+			s0_104 = s0_123->ptr0028;
+			if (s0_104 != null)
+				goto l0000000000016A68;
+		}
+		freeaddrinfo();
+		a0_119.u0 = 0x00;
+	}
+	else
+		a0_119.u0 = 0x00;
+	if (a5_7 != gp->qwFFFFF870)
+	{
+		__stack_chk_fail();
+		Eq_2080 a5_61 = a0_119;
 l0000000000016AE8:
-	a3 = PHI(a3, a3)
-	a5 = PHI(a5, a5)
-	a4 = PHI(a4, a4)
-	branch a5 == 0x00 l0000000000016B30
-l0000000000016AEC:
-	a4 = a5 & 0x01
-	branch a4 == 0x00 l0000000000016B14
+		Eq_2080 a0_68;
+		if (a5_61 != 0x00)
+		{
+			if ((a5_61 & 0x01) != 0x00)
+				goto l0000000000016AF4;
+			Eq_2080 a4_84 = (int64) (int32) (a5_61 >> 0x01);
+			a5_61 = (int64) (int32) (a5_61 >> 0x02);
+			if (a4_84 != 0x00)
+			{
+				if ((a4_84 & 0x01) == 0x00)
+					goto l0000000000016AE8;
+				a5_61 = a4_84;
 l0000000000016AF4:
-	a3 = PHI(a3, a3)
-	a5 = PHI(a5, a5)
-	a4 = PHI(a4, a4)
-	a0 = 0x00
-l0000000000016AF8:
-	a5 = PHI(a5, a5)
-	a0 = PHI(a0, a0)
-	a5 = (int64) (int32) (a5 >>u 0x01)
-	a4 = a5 & 0x01
-	a0 = (int64) ((word32) a0 + 0x01)
-	branch a5 == 0x00 l0000000000016B34
-l0000000000016B08:
-	branch a4 != 0x00 l0000000000016AF8
-l0000000000016B0C:
-	a0 = -0x01
-	return a0
-l0000000000016B14:
-	a4 = (int64) (int32) (a5 >>u 0x01)
-	a3 = a4 & 0x01
-	a5 = (int64) (int32) (a5 >>u 0x02)
-	branch a4 == 0x00 l0000000000016B30
-l0000000000016B24:
-	branch a3 == 0x00 l0000000000016AE8
-l0000000000016B28:
-	a5 = a4
-	goto l0000000000016AF4
-l0000000000016B30:
-	a3 = PHI(a3, a3)
-	a5 = PHI(a5, a5)
-	a4 = PHI(a4, a4)
-	a0 = 0x00
-l0000000000016B34:
-	a3 = PHI(a3, a3)
-	a5 = PHI(a5, a5)
-	a4 = PHI(a4, a4)
-	a0 = PHI(a0, a0)
-	return a0
-fn00000000000169D8_exit:
-	a3 = PHI(a3, a3, a3)
-	a5 = PHI(a5, a5, a5)
-	a4 = PHI(a4, a4, a4)
-	a0 = PHI(a0, a0, a0)
-	ra = PHI(ra, ra, ra)
-	s0 = PHI(s0, s0, s0)
-	s1 = PHI(s1, s1, s1)
-	s2 = PHI(s2, s2, s2)
-	s3 = PHI(s3, s3, s3)
-	s4 = PHI(s4, s4, s4)
-	sp = PHI(sp, sp, sp)
+				a0_68.u0 = 0x00;
+				do
+				{
+					a5_61 = (int64) (int32) (a5_61 >> 0x01);
+					a0_68 = (int64) ((word32) a0_68 + 0x01);
+					if (a5_61 == 0x00)
+						return a0_68;
+				} while ((a5_61 & 0x01) != 0x00);
+				return -0x01;
+			}
+		}
+		a0_68.u0 = 0x00;
+		return a0_68;
+	}
+	else
+		return a0_119;
 }
 
-void fn0000000000016B38(word64 a0)
+void fn0000000000016B38(Eq_2205 a0)
 {
-	if (0x007F <u a0)
+	if (0x007F < a0)
 		return;
 	else
 		return;
 }
 
-word64 fn0000000000016B68(word64 a0)
+Eq_1745 fn0000000000016B68(Eq_1745 a0)
 {
-	word64 a4_102;
-	word64 a0_6 = fn00000000000182B4(a0);
-	word64 a5_7 = (int64) (int32) (a0_6 >>u 0x18);
+	Eq_1745 a4_102;
+	Eq_1745 a0_6 = fn00000000000182B4(a0);
+	Eq_2213 a5_7 = (int64) (int32) (a0_6 >> 0x18);
 	if (a5_7 == 0x00)
 	{
-		a4_102 = 71144;
+		a4_102.u0 = 71144;
 		return a4_102;
 	}
 	if (a5_7 == 0x0A)
 		return 71176;
 	else
 	{
-		word64 a4_41 = (int64) (int32) (a0_6 >>u 0x10);
+		int64 a4_41 = (int64) (int32) (a0_6 >> 0x10);
 		if (a5_7 == 100)
 		{
 			if ((a4_41 & 0x00C0) == 0x0040)
 			{
-				a4_102 = 0x00011618;
+				a4_102.u0 = 0x00011618;
 				return a4_102;
 			}
 			goto l0000000000016BC0;
 		}
 		if (a5_7 == 0x007F)
 		{
-			a4_102 = 0x00011630;
+			a4_102.u0 = 0x00011630;
 			return a4_102;
 		}
-		word64 a2_63 = (int64) (int32) (a0_6 >>u 0x08);
+		int64 a2_63 = (int64) (int32) (a0_6 >> 0x08);
 		if (a5_7 == 0x00A9)
 		{
 			if ((a4_41 & 0x00FF) == 0x00FE)
 			{
-				a4_102 = 0x00011640;
+				a4_102.u0 = 0x00011640;
 				return a4_102;
 			}
 			goto l0000000000016BC0;
@@ -3201,7 +1550,7 @@ word64 fn0000000000016B68(word64 a0)
 		{
 			if (((a4_41 | a2_63) & 0x00FF) == 0x00)
 			{
-				a4_102 = 0x00011660;
+				a4_102.u0 = 0x00011660;
 				return a4_102;
 			}
 			if ((a4_41 & 0x00FF) != 0x02)
@@ -3212,14 +1561,14 @@ word64 fn0000000000016B68(word64 a0)
 					{
 						if ((a2_63 & 0x00FF) == 99)
 						{
-							a4_102 = 0x000116E0;
+							a4_102.u0 = 0x000116E0;
 							return a4_102;
 						}
 l0000000000016CB8:
 						if ((a5_7 & 0x00F0 & 0x00F0) != 0x00F0)
-							a4_102 = 0x00011650;
+							a4_102.u0 = 0x00011650;
 						else
-							a4_102 = 0x00011710;
+							a4_102.u0 = 0x00011710;
 						return a4_102;
 					}
 					if ((a4_41 & 0x00FF) != 0x0034)
@@ -3229,19 +1578,19 @@ l0000000000016CB8:
 					}
 					else if ((a2_63 & 0x00FF) == 0x00C1)
 					{
-						a4_102 = 0x00011708;
+						a4_102.u0 = 0x00011708;
 						return a4_102;
 					}
 				}
 				else if ((a2_63 & 0x00FF) == 100)
 				{
-					a4_102 = 0x000116A0;
+					a4_102.u0 = 0x000116A0;
 					return a4_102;
 				}
 			}
 			else if ((a2_63 & 0x00FF) == 0x00)
 			{
-				a4_102 = 0x00011680;
+				a4_102.u0 = 0x00011680;
 				return a4_102;
 			}
 		}
@@ -3249,776 +1598,377 @@ l0000000000016CB8:
 		{
 			if ((a4_41 & 0x00FF) == 0x00 && (a2_63 & 0x00FF) == 113)
 			{
-				a4_102 = 0x000116C0;
+				a4_102.u0 = 0x000116C0;
 				return a4_102;
 			}
 		}
 		else
 		{
-			word64 a2_95 = 0x00FF;
+			Eq_2213 a2_95 = 0x00FF;
 			if (a5_7 == a2_95)
 			{
-				a4_102 = 0x00011710;
+				a4_102.u0 = 0x00011710;
 				if ((a4_41 & 0x00FF) == a5_7)
 				{
-					a4_102 = 0x00011710;
+					a4_102.u0 = 0x00011710;
 					if ((a2_63 & 0x00FF) == a2_95 && (a0_6 & a2_95) == (a2_63 & 0x00FF))
-						a4_102 = 0x00011720;
+						a4_102.u0 = 0x00011720;
 				}
 				return a4_102;
 			}
 			if (a5_7 == 0x00C6)
 			{
-				a4_102 = 0x00011650;
+				a4_102.u0 = 0x00011650;
 				if ((a4_41 & 0x00FE) == 0x0012)
-					a4_102 = 0x00011738;
+					a4_102.u0 = 0x00011738;
 				return a4_102;
 			}
 		}
 l0000000000016BC0:
-		if (0x0F >=u (int64) ((word32) a5_7 + -224))
+		if (0x0F >= (int64) ((word32) a5_7 + -224))
 		{
-			a4_102 = 0x00011748;
+			a4_102.u0 = 0x00011748;
 			return a4_102;
 		}
 		goto l0000000000016CB8;
 	}
 }
 
-word64 fn0000000000016D74(word64 ra, word64 gp, word64 s0, word64 a0, word64 a1, word64 a2, word64 a3)
+Eq_310 fn0000000000016D74(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_310 a0, Eq_292 a1, Eq_573 * a2, Eq_292 a3)
 {
-fn0000000000016D74_entry:
-	def fp
-	def s7
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -448
-	qwLoc48_4 = s7
-	a5 = Mem0[-0x0790:word64]
-	qwLoc40 = s6
-	s6 = a2
-	qwLoc18 = s1
-	qwLoc38 = s5
-	s1 = a0
-	a2 = 200
-	s5 = a1
-	a0 = s6
-	a1 = 0x00
-	qwLoc50 = s8
-	qwLoc08 = ra
-	qwLoc10 = s0
-	qwLoc20 = s2
-	qwLoc28 = s3
-	qwLoc30 = s4
-	s8 = a3
-	qwLoc58 = a5
-	memset()
-	a2 = fp + -440
-	a1 = s1
-	a0 = 0x02
-	inet_pton()
-	branch 0x00 >= a0 l0000000000016E60
-	goto l0000000000016DDC
-l0000000000016D74:
-l0000000000016DDC:
-	branch s5 < 0x00 l0000000000016E88
-l0000000000016DE0:
-	qwLoc0190 = s1
-	a0 = s1
-	s0 = 0x03
-	s2 = 0x002E
-l0000000000016DF0:
-	a0 = PHI(a0, a0)
-	s0 = PHI(s0, s0)
-	a1 = s2
-	strchr()
-	qwLoc0190 = a0
-	branch a0 == 0x00 l0000000000017194
-l0000000000016E00:
-	a0 = a0 + 0x01
-	qwLoc0190 = a0
-	s0 = (int64) ((word32) s0 + -0x01)
-	branch s0 != 0x00 l0000000000016DF0
-l0000000000016E10:
-	qwLoc0190 = PHI(qwLoc0190, qwLoc0190)
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	a3 = PHI(a3, a3)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	s2 = PHI(s2, s2)
-	s3 = PHI(s3, s3)
-	s4 = PHI(s4, s4)
-	a5 = 0x0020
-	branch a5 >= s5 l0000000000016EBC
-l0000000000016E18:
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 == 0x00 l0000000000017054
-l0000000000016E20:
-	qwLoc0190 = PHI(qwLoc0190, qwLoc0190, qwLoc0190, qwLoc0190, qwLoc0190)
-	a2 = PHI(a2, a2, a2, a2, a2)
-	a1 = PHI(a1, a1, a1, a1, a1)
-	a4 = PHI(a4, a4, a4, a4, a4)
-	a5 = PHI(a5, a5, a5, a5, a5)
-	a3 = PHI(a3, a3, a3, a3, a3)
-	ra = PHI(ra, ra, ra, ra, ra)
-	s0 = PHI(s0, s0, s0, s0, s0)
-	s1 = PHI(s1, s1, s1, s1, s1)
-	s2 = PHI(s2, s2, s2, s2, s2)
-	s3 = PHI(s3, s3, s3, s3, s3)
-	s4 = PHI(s4, s4, s4, s4, s4)
-	s5 = PHI(s5, s5, s5, s5, s5)
-	s8 = PHI(s8, s8, s8, s8, s8)
-	sp = PHI(sp, sp, sp, sp, sp)
-	a0 = -0x01
+	Eq_310 a0_115;
+	memset();
+	inet_pton();
+	struct Eq_2351 * sp_114 = fp + -448;
+	Eq_292 s5_140 = a1;
+	if (false)
+	{
+		if ((word64) gp->dwFFFFF814 != 0x00)
+			goto l0000000000016E20;
+		__fprintf_chk();
+		a0_115.u0 = -0x01;
 l0000000000016E24:
-	qwLoc0190 = PHI(qwLoc0190, qwLoc0190, qwLoc0190, qwLoc0190, qwLoc0190)
-	a2 = PHI(a2, a2, a2, a2, a2)
-	a1 = PHI(a1, a1, a1, a1, a1)
-	a0 = PHI(a0, a0, a0, a0, a0)
-	a3 = PHI(a3, a3, a3, a3, a3)
-	ra = PHI(ra, ra, ra, ra, ra)
-	s0 = PHI(s0, s0, s0, s0, s0)
-	s1 = PHI(s1, s1, s1, s1, s1)
-	s2 = PHI(s2, s2, s2, s2, s2)
-	s3 = PHI(s3, s3, s3, s3, s3)
-	s4 = PHI(s4, s4, s4, s4, s4)
-	s5 = PHI(s5, s5, s5, s5, s5)
-	s8 = PHI(s8, s8, s8, s8, s8)
-	sp = PHI(sp, sp, sp, sp, sp)
-	a4 = Mem0[sp + 0x0168:word64]
-	a5 = Mem0[gp + -0x0790:word64]
-	branch a4 != a5 l00000000000172D8
-l0000000000016E30:
-	ra = Mem0[sp + 440:word64]
-	s0 = Mem0[sp + 0x01B0:word64]
-	s1 = Mem0[sp + 424:word64]
-	s2 = Mem0[sp + 0x01A0:word64]
-	s3 = Mem0[sp + 0x0198:word64]
-	s4 = Mem0[sp + 400:word64]
-	s5 = Mem0[sp + 0x0188:word64]
-	s6 = Mem0[sp + 0x0180:word64]
-	s7 = Mem0[sp + 0x0178:word64]
-	s8 = Mem0[sp + 0x0170:word64]
-	sp = sp + 448
-	return a0
-l0000000000016E60:
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l0000000000016E20
-l0000000000016E68:
-	a0 = Mem0[gp + -0x0780:word64]
-	a2 = 0x00011000
-	a3 = s1
-	a2 = 0x00011788
-	a1 = 0x01
-	__fprintf_chk()
-	a0 = -0x01
-	goto l0000000000016E24
-l0000000000016E88:
-	a5 = s8 << 0x0D
-	s5 = 0x0020
-	branch a5 >= 0x00 l0000000000016EBC
-l0000000000016E94:
-	a0 = (word64) dwLoc01B8
-	s5 = 0x08
-	a0 = fn00000000000182B4(a0)
-	a5 = (int64) (int32) (a0 >>u 0x18)
-	branch a0 >= 0x00 l0000000000016EBC
-l0000000000016EA8:
-	a5 = (int64) ((word32) a5 + -0x0080)
-	a4 = 0x003F
-	s5 = 0x0018
-	branch a4 <u a5 l0000000000016EBC
-l0000000000016EB8:
-	s5 = 0x0010
-l0000000000016EBC:
-	qwLoc0190 = PHI(qwLoc0190, qwLoc0190, qwLoc0190, qwLoc0190, qwLoc0190)
-	a4 = PHI(a4, a4, a4, a4, a4)
-	a5 = PHI(a5, a5, a5, a5, a5)
-	s0 = PHI(s0, s0, s0, s0, s0)
-	s1 = PHI(s1, s1, s1, s1, s1)
-	s2 = PHI(s2, s2, s2, s2, s2)
-	s3 = PHI(s3, s3, s3, s3, s3)
-	s4 = PHI(s4, s4, s4, s4, s4)
-	s5 = PHI(s5, s5, s5, s5, s5)
-	a3 = 0x002F
-	a2 = fp + -0x0188
-	a1 = fp + -440
-	a0 = 0x02
-	inet_ntop()
-	branch a0 == 0x00 l0000000000017074
-l0000000000016ED4:
-	a0 = fp + -0x0188
-	__strdup()
-	Mem0[s6 + 0x00:word64] = fp + -0x0188
-	a0 = s5
-	ra = fn0000000000016830(ra, gp, s0, a0, a1, out sp, out s0, out a0)
-	Mem0[sp + 0x0010:word32] = a0
-	a3 = 0x0010
-	a2 = sp + 0x0038
-	a1 = sp + 0x0010
-	a0 = 0x02
-	Mem0[sp + 0x0038:word64] = 0x00
-	Mem0[sp + 0x0040:word64] = 0x00
-	Mem0[sp + 0x0048:word64] = 0x00
-	Mem0[sp + 0x0050:word64] = 0x00
-	Mem0[sp + 88:word64] = 0x00
-	Mem0[sp + 0x0060:word32] = 0x00
-	Mem0[sp + 100:word16] = 0x00
-	Mem0[sp + 0x0066:byte] = 0x00
-	inet_ntop()
-	branch a0 == 0x00 l0000000000017300
-l0000000000016F24:
-	a0 = sp + 0x0038
-	__strdup()
-	Mem0[s6 + 0x0030:word64] = a0
-	s0 = (word64) Mem0[sp + 0x08:int32]
-	Mem0[s6 + 0x00A0:word32] = s5
-	a0 = s5
-	ra = fn0000000000016830(ra, gp, s0, a0, a1, out sp, out s0, out a0)
-	a5 = a0 ^ -0x01
-	a5 = a5 | s0
-	a3 = 0x0010
-	a2 = sp + 0x0038
-	a1 = sp + 0x0020
-	a0 = 0x02
-	Mem0[sp + 0x0020:word32] = a5
-	Mem0[sp + 0x0038:word64] = 0x00
-	Mem0[sp + 0x0040:word64] = 0x00
-	Mem0[sp + 0x0048:word64] = 0x00
-	Mem0[sp + 0x0050:word64] = 0x00
-	Mem0[sp + 88:word64] = 0x00
-	Mem0[sp + 0x0060:word32] = 0x00
-	Mem0[sp + 100:word16] = 0x00
-	Mem0[sp + 0x0066:byte] = 0x00
-	inet_ntop()
-	branch a0 == 0x00 l00000000000172F4
-l0000000000016F84:
-	a0 = sp + 0x0038
-	__strdup()
-	Mem0[s6 + 0x0028:word64] = a0
-	s0 = (word64) Mem0[sp + 0x08:int32]
-	a0 = s5
-	ra = fn0000000000016830(ra, gp, s0, a0, a1, out sp, out s0, out a0)
-	a3 = (word64) Mem0[sp + 0x0020:int32]
-	s0 = a0 & s0
-	a2 = s0
-	a1 = s5
-	a0 = s0
-	Mem0[sp + 0x0018:word32] = s0
-	a0 = fn0000000000017F04(gp, a0, a1, a2, a3)
-	Mem0[s6 + 0x0018:word64] = a0
-	a3 = 0x0010
-	a2 = sp + 0x0038
-	a1 = sp + 0x0018
-	a0 = 0x02
-	Mem0[sp + 0x0038:word64] = 0x00
-	Mem0[sp + 0x0040:word64] = 0x00
-	Mem0[sp + 0x0048:word64] = 0x00
-	Mem0[sp + 0x0050:word64] = 0x00
-	Mem0[sp + 88:word64] = 0x00
-	Mem0[sp + 0x0060:word32] = 0x00
-	Mem0[sp + 100:word16] = 0x00
-	Mem0[sp + 0x0066:byte] = 0x00
-	inet_ntop()
-	branch a0 == 0x00 l00000000000172DC
-l0000000000016FF4:
-	a0 = sp + 0x0038
-	__strdup()
-	s0 = (word64) Mem0[sp + 0x0018:int32]
-	Mem0[s6 + 0x0020:word64] = a0
-	s3 = a0
-	a0 = s0
-	a0 = fn0000000000016B68(a0)
-	Mem0[s6 + 0x00B8:word64] = a0
-	a0 = s0
-	a0 = fn00000000000182B4(a0)
-	a5 = (int64) (int32) (a0 >>u 0x18)
-	branch a0 >= 0x00 l0000000000017098
-l0000000000017024:
-	a4 = (int64) ((word32) a5 + -0x0080)
-	a3 = 0x003F
-	branch a3 >=u a4 l000000000001727C
-l0000000000017030:
-	a4 = (int64) ((word32) a5 + -0x00C0)
-	a3 = 0x001F
-	branch a3 >=u a4 l00000000000172A4
-l000000000001703C:
-	a5 = (int64) ((word32) a5 + -224)
-	a4 = 0x0E
-	branch a4 <u a5 l00000000000172B0
-l0000000000017048:
-	a5 = 0x00011000
-	a5 = 0x00011770
-	goto l00000000000170A0
-l0000000000017054:
-	a0 = Mem0[gp + -0x0780:word64]
-	a2 = 0x00011000
-	a3 = s5
-	a2 = 0x000117D8
-	a1 = 0x01
-	__fprintf_chk()
-	a0 = -0x01
-	goto l0000000000016E24
-l0000000000017074:
-	a2 = PHI(a2, a2, a2)
-	a1 = PHI(a1, a1, a1)
-	a4 = PHI(a4, a4, a4)
-	a0 = PHI(a0, a0, a0)
-	a3 = PHI(a3, a3, a3)
-	ra = PHI(ra, ra, ra)
-	s0 = PHI(s0, s0, s0)
-	s2 = PHI(s2, s2, s2)
-	s3 = PHI(s3, s3, s3)
-	sp = PHI(sp, sp, sp)
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l0000000000016E20
-l000000000001707C:
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x002B
-	a1 = 0x01
-	a0 = 0x000117F8
-	fwrite()
-	goto l0000000000016E20
-l0000000000017098:
-	a5 = 0x00011000
-	a5 = 0x00011758
-l00000000000170A0:
-	a4 = PHI(a4, a4, a4, a4, a4)
-	a5 = PHI(a5, a5, a5, a5, a5)
-	a3 = PHI(a3, a3, a3, a3, a3)
-	Mem0[s6 + 0x00C0:word64] = a5
-	s2 = 0x0020
-	branch s5 == s2 l0000000000017158
-l00000000000170AC:
-	Mem0[sp + 0x0028:word32] = s0
-	a5 = 0x001F
-	branch s5 == a5 l0000000000017210
-l00000000000170B8:
-	a5 = 0x01000000
-	s0 = s0 | 0x01000000
-	a3 = 0x0010
-	a2 = sp + 0x0038
-	a1 = sp + 0x0028
-	a0 = 0x02
-	Mem0[sp + 0x0028:word32] = s0
-	inet_ntop()
-	branch a0 == 0x00 l00000000000172E8
-l00000000000170DC:
-	a0 = sp + 0x0038
-	__strdup()
-	a5 = (word64) Mem0[sp + 0x0010:int32]
-	Mem0[s6 + 0x00A8:word64] = a0
-	a0 = (word64) Mem0[sp + 0x0018:int32]
-	a5 = a5 ^ -0x01
-	a0 = a5 | a0
-	a0 = fn00000000000182B4(a0)
-	a0 = (int64) ((word32) a0 + -0x01)
-	a0 = fn00000000000182B4(a0)
-	Mem0[sp + 0x0030:word32] = a0
-	a3 = 0x002F
-	a2 = sp + 0x0038
-	a1 = sp + 0x0030
-	a0 = 0x02
-	inet_ntop()
-	branch a0 == 0x00 l0000000000017074
-l0000000000017120:
-	a0 = sp + 0x0038
-	__strdup()
-	a2 = 0x01
-	a5 = (int64) (s2 - s5)
-	a5 = (int64) (int32) (a2 << a5)
-	a3 = 0x0040
-	a4 = 0x00012000
-	Mem0[s6 + 0x00B0:word64] = a0
-	a5 = (int64) ((word32) a5 + -0x02)
-	a4 = 0x00011828
-	a1 = a3
-	a0 = s6 + 0x0060
-	__snprintf_chk()
-	goto l000000000001717C
-l0000000000017158:
-	a5 = 0x00011000
-	Mem0[s6 + 0x00A8:word64] = s3
-	Mem0[s6 + 0x00B0:word64] = s3
-	a4 = s6 + 0x0060
-	a5 = 0x00011780
-l000000000001716C:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a4 = PHI(a4, a4)
-	a5 = PHI(a5, a5)
-	a0 = PHI(a0, a0)
-	a3 = (word64) Mem0[a5 + 0x00:byte]
-	Mem0[a4 + 0x00:byte] = a3
-	a5 = (word64) Mem0[a5 + 0x01:byte]
-	Mem0[a4 + 0x01:byte] = a5
-l000000000001717C:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a4 = PHI(a4, a4)
-	a0 = PHI(a0, a0)
-	a3 = PHI(a3, a3)
-	s0 = PHI(s0, s0)
-	a5 = s8 << 0x11
-	branch a5 < 0x00 l0000000000017288
-l0000000000017184:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a4 = PHI(a4, a4)
-	a0 = PHI(a0, a0)
-	a3 = PHI(a3, a3)
-	s8 = s8 & 0x01
-	branch s8 != 0x00 l00000000000171C8
-l000000000001718C:
-	a1 = PHI(a1, a1)
-	a0 = 0x00
-	goto l0000000000016E24
-l0000000000017194:
-	s4 = 0x00011000
-	s3 = 0x01
-	s2 = -0x01
-l00000000000171A0:
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	a3 = s1
-	a2 = 0x000117A8
-	a1 = s3
-	a0 = fp + -400
-	__asprintf_chk()
-	branch fp + -400 == s2 l00000000000172BC
-l00000000000171B8:
-	s0 = (int64) ((word32) s0 + -0x01)
-	s1 = qwLoc0190
-	branch s0 != 0x00 l00000000000171A0
-	goto l0000000000016E10
-l00000000000171C8:
-	a1 = sp + 0x08
-	a0 = 0x02
-	a0 = fn00000000000168E4(gp, a0, a1)
-	Mem0[s6 + 0x0038:word64] = a0
-	branch a0 != 0x00 l000000000001718C
-l00000000000171DC:
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l0000000000016E20
-l00000000000171E4:
-	a3 = 0x00012000
-	a4 = s1
-	a3 = 0x00011830
-	a2 = 0x00FA
-	a1 = 0x01
-	a0 = sp + 0x0068
-	__sprintf_chk()
-	a0 = sp + 0x0068
-	herror()
-	a0 = -0x01
-	goto l0000000000016E24
-l0000000000017210:
-	a3 = 0x0010
-	a2 = sp + 0x0038
-	a1 = sp + 0x0028
-	a0 = 0x02
-	inet_ntop()
-	branch a0 == 0x00 l00000000000172E8
-l0000000000017228:
-	a0 = sp + 0x0038
-	__strdup()
-	a5 = (word64) Mem0[sp + 0x0010:int32]
-	a4 = (word64) Mem0[sp + 0x0018:int32]
-	Mem0[s6 + 0x00A8:word64] = a0
-	a5 = a5 ^ -0x01
-	a5 = a5 | a4
-	a3 = 0x002F
-	a2 = sp + 0x0038
-	a1 = sp + 0x0030
-	a0 = 0x02
-	Mem0[sp + 0x0030:word32] = a5
-	inet_ntop()
-	branch a0 == 0x00 l0000000000017074
-l0000000000017260:
-	a0 = sp + 0x0038
-	__strdup()
-	a5 = 0x00012000
-	Mem0[s6 + 0x00B0:word64] = a0
-	a4 = s6 + 0x0060
-	a5 = 0x00012660
-	goto l000000000001716C
-l000000000001727C:
-	a5 = 0x00011000
-	a5 = 0x00011760
-	goto l00000000000170A0
-l0000000000017288:
-	a0 = (word64) Mem0[sp + 0x08:int32]
-	a4 = s6 + 88
-	a3 = s6 + 0x0050
-	a2 = s6 + 0x0048
-	a1 = s6 + 0x0040
-	fn0000000000017B40(gp, a0, a1, a2, a3)
-	goto l0000000000017184
-l00000000000172A4:
-	a5 = 0x00011000
-	a5 = 0x00011768
-	goto l00000000000170A0
-l00000000000172B0:
-	a5 = 0x00011000
-	a5 = 0x00011778
-	goto l00000000000170A0
-l00000000000172BC:
-	a0 = Mem0[gp + -0x0780:word64]
-	a3 = 0x0265
+		if (sp_114->qw0168 == gp->qwFFFFF870)
+			return a0_115;
+		goto l00000000000172D8;
+	}
+	if (a1 >= 0x00)
+	{
+		Eq_310 a0_376 = a0;
+		s0.u0 = 0x03;
+		do
+		{
+			strchr();
+			if (a0_376 == 0x00)
+			{
+				Eq_2372 s2_407 = -0x01;
+				do
+				{
+					__asprintf_chk();
+					if (fp + -400 == s2_407)
+						goto l00000000000172C4;
+					s0 = (int64) ((word32) s0 + -0x01);
+				} while (s0 != 0x00);
+				break;
+			}
+			a0_376 = a0_376;
+			s0 = (int64) ((word32) s0 + -0x01);
+		} while (s0 != 0x00);
+		if (0x0020 < a1)
+		{
+			if ((word64) gp->dwFFFFF814 == 0x00)
+			{
+				__fprintf_chk();
+				a0_115.u0 = -0x01;
+				goto l0000000000016E24;
+			}
+			goto l0000000000016E20;
+		}
+	}
+	else
+	{
+		s5_140.u0 = 0x0020;
+		if (a3 << 0x0D < 0x00)
+		{
+			Eq_1745 a0_424 = fn00000000000182B4((word64) dwLoc01B8);
+			s5_140.u0 = 0x08;
+			int64 a5_425 = (int64) (int32) (a0_424 >> 0x18);
+			if (a0_424 < 0x00)
+			{
+				s5_140.u0 = 0x0018;
+				if (0x003F >= (int64) ((word32) a5_425 + -0x0080))
+					s5_140.u0 = 0x0010;
+			}
+		}
+	}
+	inet_ntop();
+	if (0x02 != 0x00)
+	{
+		__strdup();
+		a2->ptr0000 = fp + -0x0188;
+		struct Eq_2433 * sp_164;
+		word64 s0_165;
+		Eq_2435 a0_166;
+		word64 ra_167 = fn0000000000016830(ra, gp, s0, s5_140, fp + -440, out sp_164, out s0_165, out a0_166);
+		sp_164->t0010 = a0_166;
+		sp_164->qw0038 = 0x00;
+		sp_164->qw0040 = 0x00;
+		sp_164->qw0048 = 0x00;
+		sp_164->qw0050 = 0x00;
+		sp_164->qw0058 = 0x00;
+		sp_164->t0060.u0 = 0x00;
+		sp_164->t0064.u0 = 0x00;
+		sp_164->t0066.u1 = 0x00;
+		inet_ntop();
+		if (0x02 == 0x00)
+		{
 l00000000000172C4:
-	qwLoc0190 = PHI(qwLoc0190, qwLoc0190, qwLoc0190, qwLoc0190)
-	a4 = PHI(a4, a4, a4, a4)
-	a5 = PHI(a5, a5, a5, a5)
-	a0 = PHI(a0, a0, a0, a0)
-	a3 = PHI(a3, a3, a3, a3)
-	ra = PHI(ra, ra, ra, ra)
-	s0 = PHI(s0, s0, s0, s0)
-	s1 = PHI(s1, s1, s1, s1)
-	s2 = PHI(s2, s2, s2, s2)
-	s3 = PHI(s3, s3, s3, s3)
-	s4 = PHI(s4, s4, s4, s4)
-	s5 = PHI(s5, s5, s5, s5)
-	sp = PHI(sp, sp, sp, sp)
-	a2 = 0x00011000
-	a2 = 0x000117B0
-	a1 = 0x01
-	__fprintf_chk()
-	abort()
+			__fprintf_chk();
+			abort();
 l00000000000172D8:
-	qwLoc0190 = PHI(qwLoc0190, qwLoc0190)
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a4 = PHI(a4, a4)
-	a5 = PHI(a5, a5)
-	a0 = PHI(a0, a0)
-	a3 = PHI(a3, a3)
-	ra = PHI(ra, ra)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	s2 = PHI(s2, s2)
-	s3 = PHI(s3, s3)
-	s4 = PHI(s4, s4)
-	s5 = PHI(s5, s5)
-	s8 = PHI(s8, s8)
-	sp = PHI(sp, sp)
-	__stack_chk_fail()
-l00000000000172DC:
-	qwLoc0190 = PHI(qwLoc0190, qwLoc0190)
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a4 = PHI(a4, a4)
-	a5 = PHI(a5, a5)
-	ra = PHI(ra, ra)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	s2 = PHI(s2, s2)
-	s3 = PHI(s3, s3)
-	s4 = PHI(s4, s4)
-	s5 = PHI(s5, s5)
-	s8 = PHI(s8, s8)
-	sp = PHI(sp, sp)
-	a0 = Mem0[gp + -0x0780:word64]
-	a3 = 667
+			__stack_chk_fail();
+			goto l00000000000172DC;
+		}
+		__strdup();
+		a2->ptr0030 = (word64 *) &sp_164->qw0038;
+		Eq_292 s0_183 = (word64) sp_164->dw0008;
+		a2->t00A0 = s5_140;
+		struct Eq_2499 * sp_186;
+		ui64 s0_187;
+		word64 a0_188;
+		word64 ra_189 = fn0000000000016830(ra_167, gp, s0_183, s5_140, &sp_164->t0010, out sp_186, out s0_187, out a0_188);
+		sp_186->t0020 = a0_188 ^ -0x01 | s0_187;
+		sp_186->qw0038 = 0x00;
+		sp_186->qw0040 = 0x00;
+		sp_186->qw0048 = 0x00;
+		sp_186->qw0050 = 0x00;
+		sp_186->qw0058 = 0x00;
+		sp_186->t0060.u0 = 0x00;
+		sp_186->t0064.u0 = 0x00;
+		sp_186->t0066.u1 = 0x00;
+		inet_ntop();
+		if (0x02 == 0x00)
+			goto l00000000000172C4;
+		__strdup();
+		a2->ptr0028 = (word64 *) &sp_186->qw0038;
+		ui64 s0_210;
+		ui64 a0_211;
+		fn0000000000016830(ra_189, gp, (word64) sp_186->dw0008, s5_140, &sp_186->t0020, out sp_114, out s0_210, out a0_211);
+		Eq_1745 a3_213 = (word64) sp_114->dw0020;
+		Eq_1745 s0_214 = a0_211 & s0_210;
+		sp_114->t0018 = s0_214;
+		a2->qw0018 = fn0000000000017F04(gp, s0_214, s5_140, s0_214, a3_213);
+		sp_114->qw0038 = 0x00;
+		sp_114->qw0040 = 0x00;
+		sp_114->qw0048 = 0x00;
+		sp_114->qw0050 = 0x00;
+		sp_114->qw0058 = 0x00;
+		sp_114->t0060.u0 = 0x00;
+		sp_114->t0064.u0 = 0x00;
+		sp_114->t0066.u1 = 0x00;
+		inet_ntop();
+		if (0x02 == 0x00)
+			;
+		word64 a5_244;
+		__strdup();
+		Eq_1745 s0_234 = (word64) sp_114->t0018;
+		a2->ptr0020 = (word64 *) &sp_114->qw0038;
+		a2->qw00B8 = fn0000000000016B68(s0_234);
+		Eq_1745 a0_241 = fn00000000000182B4(s0_234);
+		int64 a5_242 = (int64) (int32) (a0_241 >> 0x18);
+		if (a0_241 < 0x00)
+		{
+			if (0x003F < (int64) ((word32) a5_242 + -0x0080))
+			{
+				if (0x001F < (int64) ((word32) a5_242 + -0x00C0))
+				{
+					if (0x0E >= (int64) ((word32) a5_242 + -224))
+						a5_244 = 0x00011770;
+					else
+						a5_244 = 0x00011778;
+				}
+				else
+					a5_244 = 0x00011768;
+			}
+			else
+				a5_244 = 0x00011760;
+		}
+		else
+			a5_244 = 0x00011758;
+		struct Eq_2683 * a5_284;
+		a2->qw00C0 = a5_244;
+		if (s5_140 == 0x0020)
+		{
+			a2->ptr00A8 = (word64 *) &sp_114->qw0038;
+			a2->ptr00B0 = (word64 *) &sp_114->qw0038;
+			a5_284 = &globals->t11780;
+			goto l000000000001716C;
+		}
+		sp_114->t0028 = s0_234;
+		if (s5_140 != 0x001F)
+		{
+			sp_114->t0028 = s0_234 | 0x01000000;
+			inet_ntop();
+			if (0x02 != 0x00)
+			{
+				__strdup();
+				word64 a5_306 = (word64) sp_114->dw0010;
+				a2->ptr00A8 = (word64 *) &sp_114->qw0038;
+				sp_114->t0030 = fn00000000000182B4((int64) ((word32) fn00000000000182B4(a5_306 ^ -0x01 | (word64) sp_114->t0018) + -0x01));
+				inet_ntop();
+				if (0x02 != 0x00)
+				{
+					__strdup();
+					a2->ptr00B0 = (word64 *) &sp_114->qw0038;
+					__snprintf_chk();
+					goto l000000000001717C;
+				}
+				goto l0000000000017074;
+			}
 l00000000000172E8:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a5 = PHI(a5, a5)
-	s0 = PHI(s0, s0)
-	a0 = Mem0[gp + -0x0780:word64]
-	a3 = 0x02AC
-	goto l00000000000172C4
-l00000000000172F4:
-	a0 = Mem0[gp + -0x0780:word64]
-	a3 = 655
-	goto l00000000000172C4
-l0000000000017300:
-	a0 = Mem0[gp + -0x0780:word64]
-	a3 = 644
-	goto l00000000000172C4
-fn0000000000016D74_exit:
+			goto l00000000000172C4;
+		}
+		inet_ntop();
+		if (0x02 == 0x00)
+			goto l00000000000172E8;
+		__strdup();
+		word64 a5_335 = (word64) sp_114->dw0010;
+		ui64 a4_336 = (word64) sp_114->t0018;
+		a2->ptr00A8 = (word64 *) &sp_114->qw0038;
+		sp_114->t0030 = a5_335 ^ -0x01 | a4_336;
+		inet_ntop();
+		if (0x02 != 0x00)
+		{
+			__strdup();
+			a2->ptr00B0 = (word64 *) &sp_114->qw0038;
+			a5_284 = &globals->t12660;
+l000000000001716C:
+			a2->t0060 = (word64) a5_284->b0000;
+			a2->t0061 = (word64) a5_284->b0001;
+l000000000001717C:
+			if (a3 << 0x11 < 0x00)
+				fn0000000000017B40(gp, (word64) sp_114->dw0008, a2->qw0038 + 0x01, a2->qw0038 + 0x02, a2->qw0038 + 0x03);
+			if ((a3 & 0x01) == 0x00)
+			{
+l000000000001718C:
+				a0_115.u0 = 0x00;
+				goto l0000000000016E24;
+			}
+			word64 a0_265 = fn00000000000168E4(gp, 0x02, &sp_114->dw0008);
+			a2->qw0038 = a0_265;
+			if (a0_265 != 0x00)
+				goto l000000000001718C;
+			if ((word64) gp->dwFFFFF814 == 0x00)
+			{
+				__sprintf_chk();
+				herror();
+				a0_115.u0 = -0x01;
+				goto l0000000000016E24;
+			}
+l0000000000016E20:
+			a0_115.u0 = -0x01;
+			goto l0000000000016E24;
+		}
+	}
+l0000000000017074:
+	if ((word64) gp->dwFFFFF814 == 0x00)
+		fwrite();
+	goto l0000000000016E20;
 }
 
-word64 fn000000000001730C(word64 gp, word64 a0, word64 a1, ptr64 & s3Out)
+Eq_292 fn000000000001730C(Eq_291 * gp, Eq_292 a0, Eq_292 a1, ptr64 & s3Out)
 {
-fn000000000001730C_entry:
-	def fp
-	def s0
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -0x00C0
-	qwLoc10_4 = s0
-	a4 = Mem0[-0x0790:word64]
-	qwLoc08 = ra
-	qwLoc18 = s1
-	a5 = 0x0080
-	qwLoc28 = a4
-	branch a5 <u a0 l00000000000173BC
-	goto l000000000001732C
-l000000000001730C:
-l000000000001732C:
-	a4 = 0x08
-	qwLocB8 = 0x00
-	qwLocB0 = 0x00
-	s1 = a1
-	a5 = fp + -0x00B8
-	a4 = (int64) (a4 - a0)
-	a3 = 0x07
-	a2 = -0x01
-	a1 = 0x00FF
-	branch a0 == 0x00 l000000000001736C
-l0000000000017354:
-	a6 = PHI(a6, a6)
-	a4 = PHI(a4, a4)
-	a5 = PHI(a5, a5)
-	a0 = PHI(a0, a0)
-	branch a3 >= a0 l00000000000173C4
-l0000000000017358:
-	Mem0[a5 + 0x00:byte] = a2
-l000000000001735C:
-	a6 = PHI(a6, a6)
-	a0 = (int64) ((word32) a0 + -0x08)
-	a5 = a5 + 0x01
-	a4 = (int64) ((word32) a4 + 0x08)
-	branch 0x00 < a0 l0000000000017354
-l000000000001736C:
-	a6 = PHI(a6, a6)
-	a4 = PHI(a4, a4)
-	a5 = PHI(a5, a5)
-	a3 = 0x0080
-	a2 = fp + -0x00A8
-	a1 = fp + -0x00B8
-	a0 = 0x0A
-	inet_ntop()
-	branch a0 == 0x00 l00000000000173BC
-l0000000000017384:
-	a2 = 0x0010
-	a1 = fp + -0x00B8
-	a0 = s1
-	memcpy()
-	a0 = fp + -0x00A8
-	__strdup()
+	*s3Out = s3;
+	Eq_292 a0_108;
+	word64 a4_7 = gp->qwFFFFF870;
+	if (0x0080 >= a0)
+	{
+		byte * a5_111 = fp.u1;
+		int64 a4_110 = (int64) (0x08 - a0);
+		Eq_292 a3_95 = 0x07;
+		Eq_2922 a2_96 = -0x01;
+		Eq_2924 a1_97 = 0x00FF;
+		if (a0 != 0x00)
+		{
+			do
+			{
+				if (a3_95 < a0)
+					*a5_111 = (byte) a2_96;
+				else
+					*a5_111 = (byte) (int64) (int32) (a1_97 << a4_110);
+				a0 = (int64) ((word32) a0 + -0x08);
+				a5_111 = a5_111 + 0x01;
+				a4_110 = (int64) ((word32) a4_110 + 0x08);
+			} while (0x00 < a0);
+		}
+		inet_ntop();
+		a1 = fp.u1;
+		if (0x0A != 0x00)
+		{
+			memcpy();
+			__strdup();
+			a1 = fp.u1;
+			a0_108 = fp.u1;
 l000000000001739C:
-	qwLocB8 = PHI(qwLocB8, qwLocB8)
-	qwLocB0 = PHI(qwLocB0, qwLocB0)
-	a6 = PHI(a6, a6)
-	a3 = PHI(a3, a3)
-	a2 = PHI(a2, a2)
-	a0 = PHI(a0, a0)
-	a1 = PHI(a1, a1)
-	s1 = PHI(s1, s1)
-	a4 = qwLoc28
-	a5 = Mem0[gp + -0x0790:word64]
-	branch a4 != a5 l00000000000173D0
-l00000000000173A8:
-	ra = qwLoc08
-	s0 = qwLoc10
-	s1 = qwLoc18
-	sp = fp
-	return a0
-l00000000000173BC:
-	qwLocB8 = PHI(qwLocB8, qwLocB8)
-	qwLocB0 = PHI(qwLocB0, qwLocB0)
-	a6 = PHI(a6, a6)
-	a3 = PHI(a3, a3)
-	a2 = PHI(a2, a2)
-	a4 = PHI(a4, a4)
-	a5 = PHI(a5, a5)
-	a1 = PHI(a1, a1)
-	s1 = PHI(s1, s1)
-	a0 = 0x00
-	goto l000000000001739C
-l00000000000173C4:
-	a6 = (int64) (int32) (a1 << a4)
-	Mem0[a5 + 0x00:byte] = a6
-	goto l000000000001735C
-l00000000000173D0:
-	__stack_chk_fail()
-	sp = fp + -0x00F0
-	qwLocD0 = s0
-	qwLocC8 = ra
-	qwLocD8 = s1
-	qwLocE0 = s2
-	qwLocE8 = s3
-	a5 = 0x0080
-	s0 = a0
-	s2 = (word64) Mem0[a0 + 0x00:byte]
-	s3 = (word64) Mem0[a0 + 0x01:byte]
-	branch fp + -0x00B8 == a5 l00000000000174DC
-l00000000000173FC_thunk_fn0000000000017400:
-	sp = fn0000000000017400(s0, a0, a1, s2, s3, out s0, out a0, out a1, out s2, out s3)
-	return a0
-l00000000000173FC_thunk_fn00000000000174DC:
-	sp = fn00000000000174DC(s0, a0, s2, s3, out s0, out a0, out a1, out s2, out s3)
-	return a0
-fn000000000001730C_exit:
-	qwLocD0 = PHI(qwLocD0, qwLocD0, qwLocD0)
-	qwLocC8 = PHI(qwLocC8, qwLocC8, qwLocC8)
-	qwLocD8 = PHI(qwLocD8, qwLocD8, qwLocD8)
-	qwLocE0 = PHI(qwLocE0, qwLocE0, qwLocE0)
-	qwLocE8 = PHI(qwLocE8, qwLocE8, qwLocE8)
-	a5 = PHI(a5, a5, a5)
-	a0 = PHI(a0, a0, a0)
-	a1 = PHI(a1, a1, a1)
-	s2 = PHI(s2, s2, s2)
-	s3 = PHI(s3, s3, s3)
-	ra = PHI(ra, ra, ra)
-	s0 = PHI(s0, s0, s0)
-	s1 = PHI(s1, s1, s1)
-	sp = PHI(sp, sp, sp)
-	use s3 (=> s3Out)
+			if (a4_7 != gp->qwFFFFF870)
+			{
+				__stack_chk_fail();
+				Eq_2955 s2_65 = (word64) *a0_108;
+				ui64 s3_66 = (word64) *a0_108;
+				if (fp == -0x0138)
+				{
+					word64 s0_73;
+					Eq_292 a0_74;
+					word64 a1_75;
+					word64 s2_76;
+					word64 s3_77;
+					fn00000000000174DC(a0_108, a0_108, s2_65, s3_66, out s0_73, out a0_74, out a1_75, out s2_76, out s3_77);
+					return a0_74;
+				}
+				else
+				{
+					word64 s0_67;
+					Eq_292 a0_68;
+					word64 a1_69;
+					word64 s2_70;
+					word64 s3_71;
+					fn0000000000017400(a0_108, a0_108, a1, s2_65, s3_66, out s0_67, out a0_68, out a1_69, out s2_70, out s3_71);
+					return a0_68;
+				}
+			}
+			else
+				return a0_108;
+		}
+	}
+	a0_108.u0 = 0x00;
+	goto l000000000001739C;
 }
 
-word64 fn00000000000173D4(word64 a0, word64 a1, ptr64 & s0Out, ptr64 & a0Out, ptr64 & s2Out, ptr64 & s3Out)
+word64 fn00000000000173D4(Eq_292 a0, Eq_292 a1, ptr64 & s0Out, ptr64 & a0Out, ptr64 & s2Out, ptr64 & s3Out)
 {
-fn00000000000173D4_entry:
-	def fp
-	def s0
-	def ra
-	def s1
-	def s2
-	def s3
-	def a0
-	def Mem0
-	sp_1 = fp
-	sp_2 = fp + -0x0030
-	qwLoc10_4 = s0
-	qwLoc08_6 = ra
-	qwLoc18_8 = s1
-	qwLoc20_10 = s2
-	qwLoc28_12 = s3
-	a5_13 = 0x0080
-	s0_15 = a0
-	s2_17 = (word64) Mem0[a0 + 0x00:byte]
-	s3 = (word64) Mem0[0x01:byte]
-	branch a1 == a5 l00000000000173FC_thunk_fn00000000000174DC
-	goto l00000000000173FC_thunk_fn0000000000017400
-l00000000000173D4:
-l00000000000173FC_thunk_fn0000000000017400:
-	sp = fn0000000000017400(s0, a0, a1, s2, s3, out s0, out a0, out a1, out s2, out s3)
-	return sp
-l00000000000173FC_thunk_fn0000000000017400:
-	sp = fn0000000000017400(s0, a0, a1, s2, s3, out s0, out a0, out a1, out s2, out s3)
-	return sp
-l00000000000173FC_thunk_fn00000000000174DC:
-	sp = fn00000000000174DC(s0, a0, s2, s3, out s0, out a0, out a1, out s2, out s3)
-	return sp
-fn00000000000173D4_exit:
-	s0 = PHI(s0, s0, s0)
-	a0 = PHI(a0, a0, a0)
-	a1 = PHI(a1, a1, a1)
-	s2 = PHI(s2, s2, s2)
-	s3 = PHI(s3, s3, s3)
-	sp = PHI(sp, sp, sp)
-	use s0 (=> s0Out)
-	use a0 (=> a0Out)
-	use s2 (=> s2Out)
-	use s3 (=> s3Out)
+	Eq_2955 s2_17 = (word64) *a0;
+	ui64 s3_18 = (word64) *a0;
+	if (a1 == 0x0080)
+	{
+		word64 s0_42;
+		word64 a0_43;
+		word64 a1_44;
+		word64 s2_45;
+		word64 s3_46;
+		return fn00000000000174DC(a0, a0, s2_17, s3_18, out s0_42, out a0_43, out a1_44, out s2_45, out s3_46);
+	}
+	else
+	{
+		Eq_292 s0_30;
+		Eq_292 a0_31;
+		Eq_292 a1_32;
+		Eq_2955 s2_33;
+		ui64 s3_34;
+		return fn0000000000017400(a0, a0, a1, s2_17, s3_18, out s0_30, out a0_31, out a1_32, out s2_33, out s3_34);
+	}
 }
 
-word64 fn0000000000017400(word64 s0, word64 a0, word64 a1, word64 s2, word64 s3, ptr64 & s0Out, ptr64 & a0Out, ptr64 & a1Out, ptr64 & s2Out, ptr64 & s3Out)
+word64 fn0000000000017400(Eq_292 s0, Eq_292 a0, Eq_292 a1, Eq_2955 s2, ui64 s3, ptr64 & s0Out, ptr64 & a0Out, ptr64 & a1Out, ptr64 & s2Out, ptr64 & s3Out)
 {
 	if (0x005F < a1)
 	{
@@ -4040,7 +1990,7 @@ word64 fn0000000000017400(word64 s0, word64 a0, word64 a1, word64 s2, word64 s3,
 	}
 }
 
-word64 fn00000000000174DC(word64 s0, word64 a0, word64 s2, word64 s3, ptr64 & s0Out, ptr64 & a0Out, ptr64 & a1Out, ptr64 & s2Out, ptr64 & s3Out)
+ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Out, ptr64 & a0Out, ptr64 & a1Out, ptr64 & s2Out, ptr64 & s3Out)
 {
 	memcmp();
 	word64 a1_5;
@@ -4050,12 +2000,12 @@ word64 fn00000000000174DC(word64 s0, word64 a0, word64 s2, word64 s3, ptr64 & s0
 		word64 a0_108;
 		*a0Out = 0x00011858;
 		word64 s0_109;
-		*s0Out = Mem0[v3 + 0x0020:word64];
+		*s0Out = v3->qw0020;
 		word64 s2_111;
-		*s2Out = Mem0[v3 + 0x0010:word64];
+		*s2Out = v3->qw0010;
 		word64 s3_112;
-		*s3Out = Mem0[v3 + 0x08:word64];
-		return v3 + 0x0030;
+		*s3Out = v3->qw0008;
+		return v3->qw0020 + 0x02;
 	}
 	else
 	{
@@ -4077,12 +2027,12 @@ word64 fn00000000000174DC(word64 s0, word64 a0, word64 s2, word64 s3, ptr64 & s0
 				word64 a0_100;
 				*a0Out = 0x00011888;
 				word64 s0_101;
-				*s0Out = Mem0[v3 + 0x0020:word64];
+				*s0Out = v3->qw0020;
 				word64 s2_103;
-				*s2Out = Mem0[v3 + 0x0010:word64];
+				*s2Out = v3->qw0010;
 				word64 s3_104;
-				*s3Out = Mem0[v3 + 0x08:word64];
-				return v3 + 0x0030;
+				*s3Out = v3->qw0008;
+				return v3->qw0020 + 0x02;
 			}
 			memcmp();
 			word64 a1_50;
@@ -4092,12 +2042,12 @@ word64 fn00000000000174DC(word64 s0, word64 a0, word64 s2, word64 s3, ptr64 & s0
 				word64 a0_92;
 				*a0Out = 0x000118A0;
 				word64 s0_93;
-				*s0Out = Mem0[v3 + 0x0020:word64];
+				*s0Out = v3->qw0020;
 				word64 s2_95;
-				*s2Out = Mem0[v3 + 0x0010:word64];
+				*s2Out = v3->qw0010;
 				word64 s3_96;
-				*s3Out = Mem0[v3 + 0x08:word64];
-				return v3 + 0x0030;
+				*s3Out = v3->qw0008;
+				return v3->qw0020 + 0x02;
 			}
 			memcmp();
 			word64 a1_53;
@@ -4107,14 +2057,14 @@ word64 fn00000000000174DC(word64 s0, word64 a0, word64 s2, word64 s3, ptr64 & s0
 				word64 a0_57;
 				*a0Out = 0x000118B8;
 				word64 s0_58;
-				*s0Out = Mem0[v3 + 0x0020:word64];
+				*s0Out = v3->qw0020;
 				word64 s2_60;
-				*s2Out = Mem0[v3 + 0x0010:word64];
+				*s2Out = v3->qw0010;
 				word64 s3_61;
-				*s3Out = Mem0[v3 + 0x08:word64];
-				return v3 + 0x0030;
+				*s3Out = v3->qw0008;
+				return v3->qw0020 + 0x02;
 			}
-			word64 a5_66 = s2 << 0x08 | s3;
+			ui64 a5_66 = s2 << 0x08 | s3;
 			if ((a5_66 & 0xFFFFE000) != 0x2000)
 			{
 				if ((s2 & 0x00FE) != 252)
@@ -4156,1354 +2106,937 @@ word64 fn00000000000174DC(word64 s0, word64 a0, word64 s2, word64 s3, ptr64 & s0
 			}
 		}
 		word64 s0_36;
-		*s0Out = Mem0[v3 + 0x0020:word64];
+		*s0Out = v3->qw0020;
 		word64 s2_38;
-		*s2Out = Mem0[v3 + 0x0010:word64];
+		*s2Out = v3->qw0010;
 		word64 s3_39;
-		*s3Out = Mem0[v3 + 0x08:word64];
-		return v3 + 0x0030;
+		*s3Out = v3->qw0008;
+		return v3->qw0020 + 0x02;
 	}
 }
 
-word64 fn00000000000175BC(word64 gp)
+Eq_430 fn00000000000175BC(Eq_291 * gp)
 {
-fn00000000000175BC_entry:
-	def fp
-	def s1
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -0x01A0
-	qwLoc18_4 = s1
-	a5 = Mem0[-0x0790:word64]
-	qwLoc10 = s0
-	s0 = a2
-	qwLoc20 = s2
-	qwLoc30 = s4
-	a2 = 200
-	s4 = a0
-	s2 = a1
-	a0 = s0
-	a1 = 0x00
-	qwLoc40 = s6
-	qwLoc08 = ra
-	qwLoc28 = s3
-	qwLoc38 = s5
-	qwLoc48 = s7
-	qwLoc50 = s8
-	qwLoc58 = s9
-	s6 = a3
-	qwLoc68 = a5
-	memset()
-	a2 = fp + -0x0198
-	a1 = s4
-	a0 = 0x0A
-	inet_pton()
-	branch 0x00 >= a0 l00000000000177B4
-	goto l0000000000017628
-l00000000000175BC:
-l0000000000017628:
-	a0 = fp + -0x0198
-	a0 = fn00000000000163B0(gp, a0)
-	s3 = sp + 0x0038
-	Mem0[s0 + 0x08:word64] = a0
-	a3 = 0x00FA
-	a2 = s3
-	a1 = sp + 0x08
-	a0 = 0x0A
-	inet_ntop()
-	branch a0 == 0x00 l0000000000017768
-l0000000000017650:
-	a0 = s3
-	__strdup()
-	Mem0[s0 + 0x00:word64] = a0
-	s5 = 0x0080
-	branch s5 < s2 l00000000000177DC
-l0000000000017664:
-	branch s2 < 0x00 l0000000000017868
-l0000000000017668:
-	s5 = s2
-l000000000001766C:
-	s2 = PHI(s2, s2)
-	s5 = PHI(s5, s5)
-	s7 = sp + 0x0018
-	Mem0[s0 + 0x00A0:word32] = s5
-	a1 = s7
-	a0 = s5
-	a0 = fn000000000001730C(gp, a0, a1, out s3)
-	Mem0[s0 + 0x0030:word64] = a0
-	branch a0 == 0x00 l00000000000178F8
-l0000000000017688:
-	s8 = sp + 0x0028
-	a5 = sp + 0x08
-	s9 = s7
-	a2 = s8
-	a3 = s7
-l000000000001769C:
-	a3 = PHI(a3, a3)
-	a2 = PHI(a2, a2)
-	a5 = PHI(a5, a5)
-	a4 = (word64) Mem0[a5 + 0x00:byte]
-	a1 = (word64) Mem0[a3 + 0x00:byte]
-	a5 = a5 + 0x01
-	a3 = a3 + 0x01
-	a4 = a4 & a1
-	Mem0[a2 + 0x00:byte] = a4
-	a2 = a2 + 0x01
-	branch s7 != a5 l000000000001769C
-l00000000000176BC:
-	a3 = 0x00FA
-	a2 = s3
-	a1 = sp + 0x0028
-	a0 = 0x0A
-	inet_ntop()
-	branch a0 == 0x00 l0000000000017768
-l00000000000176D4:
-	a0 = s3
-	__strdup()
-	Mem0[s0 + 0x0020:word64] = a0
-	a0 = sp + 0x0028
-	a0 = fn00000000000163B0(gp, a0)
-	Mem0[s0 + 0x0010:word64] = a0
-	a1 = s2
-	a0 = sp + 0x0028
-	sp = fn00000000000173D4(a0, a1, out s0, out a0, out s2, out s3)
-	Mem0[s0 + 0x00B8:word64] = a0
-	a1 = s5
-	a0 = sp + 0x0028
-	a0 = fn0000000000018118(gp, a0, a1)
-	Mem0[s0 + 0x0018:word64] = a0
-	a5 = 0x0080
-	branch s2 != a5 l0000000000017870
-l0000000000017714:
-	a5 = Mem0[s0 + 0x0020:word64]
-	a0 = s0 + 0x0060
-	s2 = 0x00
-	Mem0[s0 + 0x00A8:word64] = a5
-	Mem0[s0 + 0x00B0:word64] = a5
-l0000000000017728:
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a4 = PHI(a4, a4)
-	a0 = PHI(a0, a0)
-	s2 = PHI(s2, s2)
-	s8 = PHI(s8, s8)
-	s9 = PHI(s9, s9)
-	s2 = s2 << 0x00
-	a5 = 0x00010000
-	s2 = s2 >>u 0x1D
-	a5 = 66688
-	s2 = 66688 + s2
-	a3 = Mem0[s2 + 0x00:word64]
-l0000000000017740:
-	a3 = PHI(a3, a3)
-	a4 = PHI(a4, a4)
-	a0 = PHI(a0, a0)
-	s2 = PHI(s2, s2)
-	s8 = PHI(s8, s8)
-	s9 = PHI(s9, s9)
-	a2 = 0x00012000
-	a2 = 0x00011990
-	a1 = 0x0040
-	snprintf()
-	a5 = s6 << 0x11
-	branch a5 < 0x00 l00000000000178DC
-l0000000000017758:
-	a3 = PHI(a3, a3)
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a4 = PHI(a4, a4)
-	a0 = PHI(a0, a0)
-	s6 = s6 & 0x01
-	branch s6 != 0x00 l0000000000017824
-l0000000000017760:
-	a1 = PHI(a1, a1)
-	a0 = 0x00
-	goto l0000000000017774
+	Eq_430 a0_127;
+	memset();
+	inet_pton();
+	struct Eq_3294 * sp_120 = fp;
+	Eq_292 s2_131 = a1;
+	if (false)
+	{
+		if ((word64) gp->dwFFFFF814 != 0x00)
+			goto l0000000000017770;
+		__fprintf_chk();
+		a0_127.u0 = -0x01;
+		goto l0000000000017774;
+	}
+	a2->qw0008 = fn00000000000163B0(gp, fp);
+	inet_ntop();
+	if (0x0A == 0x00)
+	{
 l0000000000017768:
-	a3 = PHI(a3, a3, a3)
-	a2 = PHI(a2, a2, a2)
-	a1 = PHI(a1, a1, a1)
-	a4 = PHI(a4, a4, a4)
-	a0 = PHI(a0, a0, a0)
-	s0 = PHI(s0, s0, s0)
-	s2 = PHI(s2, s2, s2)
-	s3 = PHI(s3, s3, s3)
-	s5 = PHI(s5, s5, s5)
-	s7 = PHI(s7, s7, s7)
-	s8 = PHI(s8, s8, s8)
-	s9 = PHI(s9, s9, s9)
-	sp = PHI(sp, sp, sp)
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 == 0x00 l0000000000017804
+		if ((word64) gp->dwFFFFF814 != 0x00)
+			goto l0000000000017770;
+		fwrite();
+		a0_127.u0 = -0x01;
+		goto l0000000000017774;
+	}
+	else
+	{
+		__strdup();
+		a2->ptr0000 = (ptr64) fp;
+		Eq_292 s5_130 = 0x0080;
+		if (s5_130 >= a1)
+		{
+			if (a1 >= 0x00)
+				s5_130 = a1;
+			else
+				s2_131 = s5_130;
+			a2->t00A0 = s5_130;
+			word64 s3_137;
+			word64 a0_138 = fn000000000001730C(gp, s5_130, fp, out s3_137);
+			a2->qw0030 = a0_138;
+			if (a0_138 != 0x00)
+			{
+				struct Eq_3351 * s8_140 = fp;
+				Eq_3354 a5_141 = fp;
+				byte * s9_142 = fp;
+				byte * a2_143 = fp;
+				Eq_3362 a3_144 = fp;
+				do
+				{
+					*a2_143 = (byte) ((word64) *a5_141 & (word64) (*a3_144));
+					a5_141 = a5_141;
+					a3_144 = a3_144;
+					a2_143 = a2_143 + 0x01;
+				} while (fp != a5_141);
+				inet_ntop();
+				if (0x0A != 0x00)
+				{
+					__strdup();
+					a2->qw0020 = s3_137;
+					a2->qw0010 = fn00000000000163B0(gp, fp);
+					struct Eq_3404 * s0_166;
+					word64 a0_167;
+					Eq_3406 s2_168;
+					struct Eq_3351 * s3_169;
+					sp_120 = fn00000000000173D4(fp, s2_131, out s0_166, out a0_167, out s2_168, out s3_169);
+					s0_166->qw00B8 = a0_167;
+					Mem175[s0_166 + 0x0018:word64] = fn0000000000018118(gp, sp_120 + 0x0028, s5_130);
+					if (s2_168 == 0x0080)
+					{
+						struct Eq_3351 * a5_225 = s0_166->ptr0020;
+						s0_166->ptr00A8 = a5_225;
+						s0_166->ptr00B0 = a5_225;
+						goto l0000000000017728;
+					}
+					__strdup();
+					s0_166->ptr00A8 = s3_169;
+					do
+					{
+						s8_140 = s8_140 + 0x01;
+						s8_140[0x0FFF] = (struct Eq_3351) ((word64) *s9_142 ^ -0x01 | (word64) s8_140->b0000);
+						s9_142 = s9_142 + 0x01;
+					} while (s3_169 != s8_140);
+					inet_ntop();
+					if (0x0A != 0x00)
+					{
+						__strdup();
+						s0_166->ptr00B0 = s3_169;
+						Eq_3535 a5_246 = 0x0080;
+						if ((int64) (a5_246 - s2_168) == a5_246)
+							goto l0000000000017740;
+l0000000000017740:
+						snprintf();
+						if (a3 << 0x11 < 0x00)
+							fn0000000000017D10(gp, sp_120 + 0x08, s0_166 + 0x0040, s0_166 + 0x0048, s0_166 + 0x0050);
+						if ((a3 & 0x01) == 0x00)
+						{
+l0000000000017760:
+							a0_127.u0 = 0x00;
+							goto l0000000000017774;
+						}
+						word64 a0_197 = fn00000000000168E4(gp, 0x0A, sp_120 + 0x08);
+						s0_166->qw0038 = a0_197;
+						if (a0_197 != 0x00)
+							goto l0000000000017760;
+						if ((word64) gp->dwFFFFF814 == 0x00)
+						{
+							__sprintf_chk();
+							herror();
+						}
 l0000000000017770:
-	a3 = PHI(a3, a3, a3, a3, a3, a3)
-	a2 = PHI(a2, a2, a2, a2, a2, a2)
-	a1 = PHI(a1, a1, a1, a1, a1, a1)
-	a4 = PHI(a4, a4, a4, a4, a4, a4)
-	a5 = PHI(a5, a5, a5, a5, a5, a5)
-	s0 = PHI(s0, s0, s0, s0, s0, s0)
-	s2 = PHI(s2, s2, s2, s2, s2, s2)
-	s3 = PHI(s3, s3, s3, s3, s3, s3)
-	s5 = PHI(s5, s5, s5, s5, s5, s5)
-	s6 = PHI(s6, s6, s6, s6, s6, s6)
-	s7 = PHI(s7, s7, s7, s7, s7, s7)
-	s8 = PHI(s8, s8, s8, s8, s8, s8)
-	s9 = PHI(s9, s9, s9, s9, s9, s9)
-	sp = PHI(sp, sp, sp, sp, sp, sp)
-	a0 = -0x01
+						a0_127.u0 = -0x01;
+						goto l0000000000017774;
+					}
+				}
+				goto l0000000000017768;
+			}
+			if ((word64) gp->dwFFFFF814 != 0x00)
+				goto l0000000000017770;
+			__fprintf_chk();
+			a0_127.u0 = -0x01;
+		}
+		else
+		{
+			if ((word64) gp->dwFFFFF814 != 0x00)
+				goto l0000000000017770;
+			__fprintf_chk();
+			a0_127.u0 = -0x01;
+		}
 l0000000000017774:
-	a3 = PHI(a3, a3, a3, a3, a3, a3)
-	a2 = PHI(a2, a2, a2, a2, a2, a2)
-	a1 = PHI(a1, a1, a1, a1, a1, a1)
-	a0 = PHI(a0, a0, a0, a0, a0, a0)
-	s0 = PHI(s0, s0, s0, s0, s0, s0)
-	s2 = PHI(s2, s2, s2, s2, s2, s2)
-	s3 = PHI(s3, s3, s3, s3, s3, s3)
-	s5 = PHI(s5, s5, s5, s5, s5, s5)
-	s6 = PHI(s6, s6, s6, s6, s6, s6)
-	s7 = PHI(s7, s7, s7, s7, s7, s7)
-	s8 = PHI(s8, s8, s8, s8, s8, s8)
-	s9 = PHI(s9, s9, s9, s9, s9, s9)
-	sp = PHI(sp, sp, sp, sp, sp, sp)
-	a4 = Mem0[sp + 0x0138:word64]
-	a5 = Mem0[gp + -0x0790:word64]
-	branch a4 != a5 l0000000000017920
-l0000000000017780:
-	ra = Mem0[sp + 0x0198:word64]
-	s0 = Mem0[sp + 400:word64]
-	s1 = Mem0[sp + 0x0188:word64]
-	s2 = Mem0[sp + 0x0180:word64]
-	s3 = Mem0[sp + 0x0178:word64]
-	s4 = Mem0[sp + 0x0170:word64]
-	s5 = Mem0[sp + 0x0168:word64]
-	s6 = Mem0[sp + 0x0160:word64]
-	s7 = Mem0[sp + 344:word64]
-	s8 = Mem0[sp + 336:word64]
-	s9 = Mem0[sp + 0x0148:word64]
-	sp = sp + 0x01A0
-	return a0
-l00000000000177B4:
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l0000000000017770
-l00000000000177BC:
-	a0 = Mem0[gp + -0x0780:word64]
-	a2 = 0x00012000
-	a3 = s4
-	a2 = 0x00011920
-	a1 = 0x01
-	__fprintf_chk()
-	a0 = -0x01
-	goto l0000000000017774
-l00000000000177DC:
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l0000000000017770
-l00000000000177E4:
-	a0 = Mem0[gp + -0x0780:word64]
-	a2 = 0x00012000
-	a3 = s2
-	a2 = 72000
-	a1 = 0x01
-	__fprintf_chk()
-	a0 = -0x01
-	goto l0000000000017774
-l0000000000017804:
-	a3 = Mem0[gp + -0x0780:word64]
-	a0 = 0x00011000
-	a2 = 0x002B
-	a1 = 0x01
-	a0 = 0x000117F8
-	fwrite()
-	a0 = -0x01
-	goto l0000000000017774
-l0000000000017824:
-	a1 = sp + 0x08
-	a0 = 0x0A
-	a0 = fn00000000000168E4(gp, a0, a1)
-	Mem0[s0 + 0x0038:word64] = a0
-	branch a0 != 0x00 l0000000000017760
-l0000000000017838:
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l0000000000017770
-l0000000000017840:
-	a3 = 0x00012000
-	a4 = s4
-	a3 = 0x00011830
-	a2 = 0x00FA
-	a1 = 0x01
-	a0 = s3
-	__sprintf_chk()
-	a0 = s3
-	herror()
-	goto l0000000000017770
-l0000000000017868:
-	s2 = s5
-	goto l000000000001766C
-l0000000000017870:
-	a0 = s3
-	__strdup()
-	Mem0[s0 + 0x00A8:word64] = a0
-l000000000001787C:
-	s8 = PHI(s8, s8)
-	s9 = PHI(s9, s9)
-	a5 = (word64) Mem0[s9 + 0x00:byte]
-	a4 = (word64) Mem0[s8 + 0x00:byte]
-	s8 = s8 + 0x01
-	a5 = a5 ^ -0x01
-	a5 = a5 | a4
-	Mem0[s8 + 0x0FFF:byte] = a5
-	s9 = s9 + 0x01
-	branch s3 != s8 l000000000001787C
-l000000000001789C:
-	a3 = 0x00FA
-	a2 = s3
-	a1 = sp + 0x0028
-	a0 = 0x0A
-	inet_ntop()
-	branch a0 == 0x00 l0000000000017768
-l00000000000178B4:
-	a0 = s3
-	__strdup()
-	a5 = 0x0080
-	Mem0[s0 + 0x00B0:word64] = a0
-	s2 = (int64) (a5 - s2)
-	a0 = s0 + 0x0060
-	branch s2 != a5 l0000000000017728
-l00000000000178D0:
-	a3 = 0x00011000
-	a3 = 0x000111D0
-	goto l0000000000017740
-l00000000000178DC:
-	a4 = s0 + 88
-	a3 = s0 + 0x0050
-	a2 = s0 + 0x0048
-	a1 = s0 + 0x0040
-	a0 = sp + 0x08
-	fn0000000000017D10(gp, a0, a1, a2, a3)
-	goto l0000000000017758
-l00000000000178F8:
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l0000000000017770
-l0000000000017900:
-	a0 = Mem0[gp + -0x0780:word64]
-	a2 = 0x00012000
-	a3 = s2
-	a2 = 0x00011960
-	a1 = 0x01
-	__fprintf_chk()
-	a0 = -0x01
-	goto l0000000000017774
-l0000000000017920:
-	__stack_chk_fail()
-	a0 = fn0000000000017924(gp)
-	return a0
-l0000000000017920_thunk_fn0000000000017924:
-fn00000000000175BC_exit:
-	a0 = PHI(a0, a0)
-	ra = PHI(ra, ra)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	s2 = PHI(s2, s2)
-	s3 = PHI(s3, s3)
-	s4 = PHI(s4, s4)
-	s5 = PHI(s5, s5)
-	s6 = PHI(s6, s6)
-	s7 = PHI(s7, s7)
-	s8 = PHI(s8, s8)
-	s9 = PHI(s9, s9)
-	sp = PHI(sp, sp)
+		if (sp_120->qw0138 != gp->qwFFFFF870)
+		{
+			__stack_chk_fail();
+			return fn0000000000017924(gp);
+		}
+		else
+			return a0_127;
+	}
 }
 
-word64 fn0000000000017924(word64 gp)
+Eq_3571 fn0000000000017924(Eq_291 * gp)
 {
-fn0000000000017924_entry:
-	def fp
-	def s2
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -0x0060
-	qwLoc20_4 = s2
-	a5 = Mem0[-0x07E0:word64]
-	qwLoc18 = s1
-	qwLoc08 = ra
-	qwLoc10 = s0
-	qwLoc28 = s3
-	qwLoc30 = s4
-	qwLoc38 = s5
-	qwLoc40 = s6
-	qwLoc48 = s7
-	qwLoc50 = s8
-	qwLoc58 = s9
-	branch a5 == 0x00 l00000000000179B8
-	goto l000000000001795C
-l0000000000017924:
-l000000000001795C:
-	s0 = PHI(s0, s0)
-	a5 = (word64) Mem0[gp + -2028:int32]
-	branch a5 != 0x00 l000000000001796C
-l0000000000017964:
-	a5 = (word64) Mem0[gp + -800:byte]
-	branch a5 != 0x00 l00000000000179A8
-l000000000001796C:
-	a5 = PHI(a5, a5, a5)
-	a1 = PHI(a1, a1, a1)
-	a0 = PHI(a0, a0, a0)
-	s0 = (word64) Mem0[gp + -2024:int32]
-l0000000000017970:
-	a6 = PHI(a6, a6, a6, a6)
-	a2 = PHI(a2, a2, a2, a2)
-	a3 = PHI(a3, a3, a3, a3)
-	a4 = PHI(a4, a4, a4, a4)
-	a5 = PHI(a5, a5, a5, a5)
-	a1 = PHI(a1, a1, a1, a1)
-	s0 = PHI(s0, s0, s0, s0)
-	ra = qwLoc08
-	a0 = s0
-	s1 = qwLoc18
-	s0 = qwLoc10
-	s2 = qwLoc20
-	s3 = qwLoc28
-	s4 = qwLoc30
-	s5 = qwLoc38
-	s6 = qwLoc40
-	s7 = qwLoc48
-	s8 = qwLoc50
-	s9 = qwLoc58
-	sp = fp
-	return a0
-l00000000000179A8:
-	a1 = Mem0[gp + -0x0780:word64]
-	a0 = gp + -800
-	fputs()
-	goto l000000000001796C
-l00000000000179B8:
-	s0 = (word64) Mem0[gp + -2024:int32]
-	branch s0 != 0x00 l000000000001795C
-l00000000000179C0:
-	s4 = 0x00013000
-	a1 = 0x01
-	a0 = 76344
-	dlopen()
-	Mem0[gp + 2080:word64] = 76344
-	s3 = 76344
-	branch 76344 == 0x00 l0000000000017B14
-l00000000000179DC:
-	a1 = 0x00013000
-	a1 = 0x00012A78
-	dlsym()
-	a1 = 0x00013000
-	Mem0[gp + 0x0868:word64] = 76344
-	a1 = 0x00012A90
-	a0 = 76344
-	dlsym()
-	a1 = 0x00013000
-	s2 = 76344
-	a1 = 0x00012AA0
-	a0 = 76344
-	Mem0[gp + 2144:word64] = 76344
-	dlsym()
-	a1 = 0x00013000
-	s4 = 76344
-	a1 = 0x00012AC0
-	a0 = 76344
-	Mem0[gp + 0x0858:word64] = 76344
-	dlsym()
-	a1 = 0x00013000
-	s5 = 76344
-	a1 = 76496
-	a0 = 76344
-	Mem0[gp + 0x0848:word64] = 76344
-	dlsym()
-	a1 = 0x00013000
-	s6 = 76344
-	a1 = 0x00012AE8
-	a0 = 76344
-	Mem0[gp + 2112:word64] = 76344
-	dlsym()
-	a1 = 0x00013000
-	s7 = 76344
-	a1 = 0x00012B00
-	a0 = 76344
-	Mem0[gp + 0x0838:word64] = 76344
-	dlsym()
-	a1 = 0x00013000
-	s8 = 76344
-	a1 = 0x00012B18
-	a0 = 76344
-	Mem0[gp + 0x0830:word64] = 76344
-	dlsym()
-	a1 = 0x00013000
-	s9 = 76344
-	a1 = 76600
-	a0 = 76344
-	Mem0[gp + 0x0828:word64] = 76344
-	dlsym()
-	Mem0[gp + 2128:word64] = 76344
-	branch 76344 == 0x00 || (76344 == 0x00 || (76344 == 0x00 || (76344 == 0x00 || (76344 == 0x00 || (76344 == 0x00 || 76344 == 0x00))))) l0000000000017ACC
-	goto l0000000000017AC4
-l0000000000017AAC:
-l0000000000017AB0:
-l0000000000017AB4:
-l0000000000017AB8:
-l0000000000017ABC:
-l0000000000017AC0:
-l0000000000017AC4:
-	Mem0[gp + 0x0818:word32] = 0x00
-	goto l0000000000017970
-l0000000000017ACC:
-	a4 = 0x00013000
-	a5 = 76624
-	a6 = Mem0[76624:word64]
-	a0 = Mem0[76632:word64]
-	a1 = Mem0[76640:word64]
-	a2 = Mem0[76648:word64]
-	a3 = Mem0[76656:word64]
-	a4 = (word64) Mem0[76664:int32]
-	a5 = gp + -800
-	s0 = -0x01
-	Mem0[a5 + 0x00:word64] = a6
-	Mem0[a5 + 0x08:word64] = a0
-	Mem0[a5 + 0x0010:word64] = a1
-	Mem0[a5 + 0x0018:word64] = a2
-	Mem0[a5 + 0x0020:word64] = a3
-	Mem0[a5 + 0x0028:word32] = a4
-	Mem0[gp + 0x0818:word32] = s0
-	goto l0000000000017970
-l0000000000017B14:
-	a3 = 0x0100
-	a4 = 0x00013000
-	a5 = 76344
-	a4 = 76376
-	a2 = 0x01
-	a1 = a3
-	a0 = gp + -800
-	s0 = -0x01
-	__snprintf_chk()
-	Mem0[gp + 0x0818:word32] = s0
-	goto l0000000000017970
-fn0000000000017924_exit:
+	Eq_3571 s0_120;
+	if (gp->qwFFFFF820 == 0x00)
+	{
+		s0_120 = (word64) gp->dwFFFFF818;
+		if (s0_120 == 0x00)
+		{
+			dlopen();
+			gp->qw0820 = 76344;
+			if (76344 != 0x00)
+			{
+				dlsym();
+				gp->qw0868 = 76344;
+				dlsym();
+				gp->qw0860 = 76344;
+				dlsym();
+				gp->qw0858 = 76344;
+				dlsym();
+				gp->qw0848 = 76344;
+				dlsym();
+				gp->qw0840 = 76344;
+				dlsym();
+				gp->qw0838 = 76344;
+				dlsym();
+				gp->qw0830 = 76344;
+				dlsym();
+				gp->qw0828 = 76344;
+				dlsym();
+				gp->qw0850 = 76344;
+				if (76344 != 0x00 && (76344 != 0x00 && (76344 != 0x00 && (76344 != 0x00 && (76344 != 0x00 && (76344 != 0x00 && 76344 != 0x00))))))
+					gp->t0818.u1 = 0x00;
+				else
+				{
+					word64 a0_114 = globals->qw12B58;
+					word64 a1_115 = globals->qw12B60;
+					word64 a2_116 = globals->qw12B68;
+					word64 a3_117 = globals->qw12B70;
+					Eq_3688 a4_118 = (word64) globals->dw12B78;
+					gp->tFFFFFCE0 = globals->t12B50;
+					gp->qwFFFFFCE8 = a0_114;
+					gp->qwFFFFFCF0 = a1_115;
+					gp->qwFFFFFCF8 = a2_116;
+					gp->qwFFFFFD00 = a3_117;
+					gp->tFFFFFD08 = a4_118;
+					s0_120.u0 = -0x01;
+					gp->t0818 = s0_120;
+				}
+			}
+			else
+			{
+				__snprintf_chk();
+				s0_120.u0 = -0x01;
+				gp->t0818 = s0_120;
+			}
+			return s0_120;
+		}
+	}
+	if ((word64) gp->dwFFFFF814 == 0x00 && (word64) gp->tFFFFFCE0 != 0x00)
+		fputs();
+	s0_120 = (word64) gp->dwFFFFF818;
+	return s0_120;
 }
 
-void fn0000000000017B40(word64 gp, word64 a0, word64 a1, word64 a2, word64 a3)
+void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 {
-fn0000000000017B40_entry:
-	def fp
-	def s0
-	def s1
-	def s2
-	def s3
-	def s4
-	def ra
-	def s5
-	def s6
-	def s7
-	def a0
-	def a1
-	def a2
-	def a3
-	def a4
-	def gp
-	def fa3
-	def t1
-	def fa5
-	def fa4
-	def a5
-	sp_1 = fp
-	sp_2 = fp + -0x0050
-	qwLoc10_4 = s0
-	qwLoc18_6 = s1
-	qwLoc20_8 = s2
-	qwLoc28_10 = s3
-	qwLoc30_12 = s4
-	qwLoc08_14 = ra
-	qwLoc38_16 = s5
-	qwLoc40_18 = s6
-	qwLoc48_20 = s7
-	s0_22 = a0
-	s3_24 = a1
-	s2_26 = a2
-	s1_28 = a3
-	s4_30 = a4
-	a0_32 = fn0000000000017924(gp)
-	branch a0_32 == 0x00 l0000000000017BB0
-	goto l0000000000017B84
-l0000000000017B40:
-l0000000000017B84:
-	fa3_59 = PHI(fa3, fa3, fa3)
-	t1_60 = PHI(t1, t1, t1)
-	fa5_61 = PHI(fa5, fa5, fa5)
-	fa4_62 = PHI(fa4, fa4, fa4)
-	gp_63 = PHI(gp, gp, gp)
-	a5_64 = PHI(a5, a5, a5)
-	a4_65 = PHI(a4, a4, a4)
-	a3_66 = PHI(a3, a3, a3)
-	a2_67 = PHI(a2, a2, a2)
-	a1_68 = PHI(a1, a1, a1)
-	a0_69 = PHI(a0_32, a0, a0)
-	ra_70 = qwLoc08_14
-	s0_71 = qwLoc10_4
-	s1_72 = qwLoc18_6
-	s2_73 = qwLoc20_8
-	s3_74 = qwLoc28_10
-	s4_75 = qwLoc30_12
-	s5_76 = qwLoc38_16
-	s6_77 = qwLoc40_18
-	s7_78 = qwLoc48_20
-	sp_79 = fp
-	return
-l0000000000017BB0:
-	a0_80 = s0_22
-	a0_81 = fn00000000000182B4(a0_80)
-	a5 = Mem0[-1944:word64]
-	s7 = a0
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	a5 = Mem0[gp + -0x07A0:word64]
-	a1 = 0x0010
-	a0 = 0x01
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	s0 = a0
-	branch a0 == 0x00 l0000000000017C3C
-l0000000000017BDC:
-	a5 = Mem0[gp + -1992:word64]
-	a4 = 0x01
-	a1 = s7 << 0x00
-	Mem0[a0 + 0x004C:word32] = a4
-	a1 = a1 >>u 0x00
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	s6 = a0
-	branch a0 < 0x00 l0000000000017B84
-l0000000000017BFC:
-	a5 = Mem0[gp + -0x07A8:word64]
-	a1 = a0
-	a0 = s0
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	branch a0 == 0x00 l0000000000017C18
-l0000000000017C10:
-	__strdup()
-	Mem0[s3 + 0x00:word64] = a0
-l0000000000017C18:
-	a5 = Mem0[gp + -0x07B0:word64]
-	a0 = s6
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	branch a0 == 0x00 l0000000000017C30
-l0000000000017C28:
-	__strdup()
-	Mem0[s2 + 0x00:word64] = a0
-l0000000000017C30:
-	a5 = Mem0[gp + -0x07B8:word64]
-	a0 = s0
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-l0000000000017C3C:
-	gp = PHI(gp, gp)
-	a5 = Mem0[gp + -0x07A0:word64]
-	a1 = 0x0010
-	a0 = 0x02
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	s0 = a0
-	branch a0 == 0x00 l0000000000017CF4
-l0000000000017C54:
-	gp = PHI(gp, gp)
-	s0 = PHI(s0, s0)
-	s7 = PHI(s7, s7)
-	a5 = Mem0[gp + -0x07C0:word64]
-	a4 = 0x01
-	a1 = s7 << 0x00
-	Mem0[s0 + 0x004C:word32] = a4
-	a1 = a1 >>u 0x00
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	s2 = a0
-	branch a0 == 0x00 l0000000000017C94
-l0000000000017C74:
-	a0 = Mem0[a0 + 0x0020:word64]
-	branch a0 == 0x00 l0000000000017C84
-l0000000000017C7C:
-	__strdup()
-	Mem0[s1 + 0x00:word64] = a0
-l0000000000017C84:
-	fa4 = Mem0[s2 + 0x0034:real32]
-	fa5 = (real32) 0x00
-	a5 = (word64) ((real32) fa4 = (real32) fa5)
-	branch a5 == 0x00 l0000000000017CC8
-l0000000000017C94:
-	a0 = s0
-	ra = qwLoc08
-	s0 = qwLoc10
-	s1 = qwLoc18
-	s2 = qwLoc20
-	s3 = qwLoc28
-	s4 = qwLoc30
-	s5 = qwLoc38
-	s6 = qwLoc40
-	s7 = qwLoc48
-	t1 = Mem0[gp + -0x07B8:word64]
-	sp = fp
-	call t1 (retsize: 0;)
-		defs: a0,a1,a2,a3,a4,a5,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	return
-l0000000000017CC8:
-	fa5 = Mem0[s2 + 0x0030:real32]
-	a2 = 0x00013000
-	fa5 = (real64) fa5
-	fa4 = (real64) a4
-	a2 = 76672
-	fa3 = (real64) a5
-	a1 = 0x01
-	a0 = s4
-	__asprintf_chk()
-	goto l0000000000017C94
-l0000000000017CF4:
-	a5 = Mem0[gp + -0x07A0:word64]
-	a1 = 0x0010
-	a0 = 0x06
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	s0 = a0
-	branch a0 != 0x00 l0000000000017C54
-	goto l0000000000017B84
-fn0000000000017B40_exit:
-	fa3_38 = PHI(fa3_59, fa3)
-	t1_39 = PHI(t1_60, t1)
-	fa5_40 = PHI(fa5_61, fa5)
-	fa4_41 = PHI(fa4_62, fa4)
-	gp_42 = PHI(gp_63, gp)
-	a5_43 = PHI(a5_64, a5)
-	a4_44 = PHI(a4_65, a4)
-	a3_45 = PHI(a3_66, a3)
-	a2_46 = PHI(a2_67, a2)
-	a1_47 = PHI(a1_68, a1)
-	a0_48 = PHI(a0_69, a0)
-	ra_49 = PHI(ra_70, ra)
-	s0_50 = PHI(s0_71, s0)
-	s1_51 = PHI(s1_72, s1)
-	s2_52 = PHI(s2_73, s2)
-	s3_53 = PHI(s3_74, s3)
-	s4_54 = PHI(s4_75, s4)
-	s5_55 = PHI(s5_76, s5)
-	s6_56 = PHI(s6_77, s6)
-	s7_57 = PHI(s7_78, s7)
-	sp_58 = PHI(sp_79, sp)
+	if (fn0000000000017924(gp) == 0x00)
+	{
+		Eq_1745 a0_81 = fn00000000000182B4(a0);
+		<anonymous> * a5_83 = gp->ptrFFFFF868;
+		word64 sp_85;
+		word64 s0_86;
+		word64 s1_87;
+		word64 s2_88;
+		word64 s3_89;
+		word64 s4_90;
+		word64 ra_91;
+		word64 s5_92;
+		word64 s6_93;
+		word64 s7_94;
+		word64 a0_95;
+		word64 a1_96;
+		word64 a2_97;
+		word64 a3_98;
+		word64 a4_99;
+		word64 a5_100;
+		struct Eq_3765 * gp_101;
+		word64 fa4_102;
+		word64 fa5_103;
+		word64 t1_104;
+		word64 fa3_105;
+		a5_83();
+		<anonymous> * a5_106 = gp_101->ptrFFFFF860;
+		word64 sp_109;
+		word64 s0_110;
+		word64 s1_111;
+		word64 s2_112;
+		word64 s3_113;
+		word64 s4_114;
+		word64 ra_115;
+		word64 s5_116;
+		word64 s6_117;
+		word64 s7_118;
+		struct Eq_3784 * a0_119;
+		word64 a1_120;
+		word64 a2_121;
+		word64 a3_122;
+		word64 a4_123;
+		word64 a5_124;
+		word64 fa4_126;
+		word64 fa5_127;
+		word64 t1_128;
+		word64 fa3_129;
+		struct Eq_3794 * gp_125;
+		a5_106();
+		if (a0_119 != null)
+		{
+			<anonymous> * a5_258 = gp_125->ptrFFFFF838;
+			Eq_3829 a4_259 = 0x01;
+			a0_119->t004C = a4_259;
+			word64 sp_263;
+			word64 s0_264;
+			word64 s1_265;
+			word64 s2_266;
+			word64 s3_267;
+			word64 s4_268;
+			word64 ra_269;
+			word64 s5_270;
+			word64 s6_271;
+			word64 s7_272;
+			int64 a0_273;
+			word64 a1_274;
+			word64 a2_275;
+			word64 a3_276;
+			word64 a4_277;
+			word64 a5_278;
+			struct Eq_3850 * gp_279;
+			word64 fa4_280;
+			word64 fa5_281;
+			word64 t1_282;
+			word64 fa3_283;
+			a5_258();
+			if (a0_273 < 0x00)
+				return;
+			<anonymous> * a5_285 = gp_279->ptrFFFFF858;
+			word64 sp_288;
+			word64 s0_289;
+			word64 s1_290;
+			word64 s2_291;
+			word64 * s3_292;
+			word64 s4_293;
+			word64 ra_294;
+			word64 s5_295;
+			word64 s6_296;
+			word64 s7_297;
+			word64 a0_298;
+			word64 a1_299;
+			word64 a2_300;
+			word64 a3_301;
+			word64 a4_302;
+			word64 a5_303;
+			struct Eq_3877 * gp_304;
+			word64 fa4_305;
+			word64 fa5_306;
+			word64 t1_307;
+			word64 fa3_308;
+			a5_285();
+			if (a0_298 != 0x00)
+			{
+				__strdup();
+				*s3_292 = a0_298;
+			}
+			<anonymous> * a5_309 = gp_304->ptrFFFFF850;
+			word64 sp_311;
+			word64 s0_312;
+			word64 s1_313;
+			word64 * s2_314;
+			word64 s3_315;
+			word64 s4_316;
+			word64 ra_317;
+			word64 s5_318;
+			word64 s6_319;
+			word64 s7_320;
+			word64 a0_321;
+			word64 a1_322;
+			word64 a2_323;
+			word64 a3_324;
+			word64 a4_325;
+			word64 a5_326;
+			struct Eq_3904 * gp_327;
+			word64 fa4_328;
+			word64 fa5_329;
+			word64 t1_330;
+			word64 fa3_331;
+			a5_309();
+			if (a0_321 != 0x00)
+			{
+				__strdup();
+				*s2_314 = a0_321;
+			}
+			<anonymous> * a5_332 = gp_327->ptrFFFFF848;
+			word64 sp_334;
+			word64 s0_335;
+			word64 s1_336;
+			word64 s2_337;
+			word64 s3_338;
+			word64 s4_339;
+			word64 ra_340;
+			word64 s5_341;
+			word64 s6_342;
+			word64 s7_343;
+			word64 a0_344;
+			word64 a1_345;
+			word64 a2_346;
+			word64 a3_347;
+			word64 a4_348;
+			word64 a5_349;
+			word64 fa4_351;
+			word64 fa5_352;
+			word64 t1_353;
+			word64 fa3_354;
+			a5_332();
+		}
+		<anonymous> * a5_132 = gp_125->ptrFFFFF860;
+		word64 sp_135;
+		word64 s0_136;
+		word64 s1_137;
+		word64 s2_138;
+		word64 s3_139;
+		word64 s4_140;
+		word64 ra_141;
+		word64 s5_142;
+		word64 s6_143;
+		word64 s7_144;
+		struct Eq_3811 * a0_145;
+		word64 a1_146;
+		word64 a2_147;
+		word64 a3_148;
+		word64 a4_149;
+		word64 a5_150;
+		word64 fa4_152;
+		word64 fa5_153;
+		word64 t1_154;
+		word64 fa3_155;
+		struct Eq_3821 * gp_151;
+		a5_132();
+		struct Eq_3811 * s0_156 = a0_145;
+		if (a0_145 == null)
+		{
+			<anonymous> * a5_233 = gp_151->ptrFFFFF860;
+			word64 sp_236;
+			word64 s0_237;
+			word64 s1_238;
+			word64 s2_239;
+			word64 s3_240;
+			word64 s4_241;
+			word64 ra_242;
+			word64 s5_243;
+			word64 s6_244;
+			word64 s7_245;
+			struct Eq_3811 * a0_246;
+			word64 a1_247;
+			word64 a2_248;
+			word64 a3_249;
+			word64 a4_250;
+			word64 a5_251;
+			word64 fa4_253;
+			word64 fa5_254;
+			word64 t1_255;
+			word64 fa3_256;
+			a5_233();
+			s0_156 = a0_246;
+			if (a0_246 == null)
+				return;
+		}
+		<anonymous> * a5_160 = gp_151->ptrFFFFF840;
+		Eq_3946 a4_161 = 0x01;
+		s0_156->t004C = a4_161;
+		word64 sp_165;
+		word64 s0_166;
+		word64 * s1_167;
+		word64 s2_168;
+		word64 s3_169;
+		word64 s4_170;
+		word64 ra_171;
+		word64 s5_172;
+		word64 s6_173;
+		word64 s7_174;
+		struct Eq_3961 * a0_175;
+		word64 a1_176;
+		word64 a2_177;
+		word64 a3_178;
+		word64 a4_179;
+		word64 a5_180;
+		struct Eq_3967 * gp_181;
+		word64 fa4_182;
+		word64 fa5_183;
+		word64 t1_184;
+		word64 fa3_185;
+		a5_160();
+		if (a0_175 != null)
+		{
+			word64 a0_220 = a0_175->qw0020;
+			if (a0_220 != 0x00)
+			{
+				__strdup();
+				*s1_167 = a0_220;
+			}
+			if ((word64) ((real32) a0_175->r0034 = (real32) ((real32) 0x00)) == 0x00)
+				__asprintf_chk();
+		}
+		<anonymous> * t1_197 = gp_181->ptrFFFFF848;
+		word64 sp_199;
+		word64 s0_200;
+		word64 s1_201;
+		word64 s2_202;
+		word64 s3_203;
+		word64 s4_204;
+		word64 ra_205;
+		word64 s5_206;
+		word64 s6_207;
+		word64 s7_208;
+		word64 a0_209;
+		word64 a1_210;
+		word64 a2_211;
+		word64 a3_212;
+		word64 a4_213;
+		word64 a5_214;
+		word64 gp_215;
+		word64 fa4_216;
+		word64 fa5_217;
+		word64 t1_218;
+		word64 fa3_219;
+		t1_197();
+		return;
+	}
+	else
+		return;
 }
 
-void fn0000000000017D10(word64 gp, word64 a0, word64 a1, word64 a2, word64 a3)
+void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 {
-fn0000000000017D10_entry:
-	def fp
-	def s0
-	def s2
-	def s3
-	def s4
-	def s5
-	def ra
-	def s1
-	def s6
-	def s7
-	def a0
-	def a1
-	def a2
-	def a3
-	def a4
-	def gp
-	def fa3
-	def t1
-	def fa5
-	def fa4
-	def a6
-	def a5
-	sp_1 = fp
-	sp_2 = fp + -0x0050
-	qwLoc10_4 = s0
-	qwLoc20_6 = s2
-	qwLoc28_8 = s3
-	qwLoc30_10 = s4
-	qwLoc38_12 = s5
-	qwLoc08_14 = ra
-	qwLoc18_16 = s1
-	qwLoc40_18 = s6
-	qwLoc48_20 = s7
-	s0_22 = a0
-	s4_24 = a1
-	s3_26 = a2
-	s2_28 = a3
-	s5_30 = a4
-	a0_32 = fn0000000000017924(gp)
-	branch a0_32 == 0x00 l0000000000017D80
-	goto l0000000000017D54
-l0000000000017D10:
-l0000000000017D54:
-	fa3_61 = PHI(fa3, fa3, fa3)
-	t1_62 = PHI(t1, t1, t1)
-	fa5_63 = PHI(fa5, fa5, fa5)
-	fa4_64 = PHI(fa4, fa4, fa4)
-	a6_65 = PHI(a6, a6, a6)
-	gp_66 = PHI(gp, gp, gp)
-	a5_67 = PHI(a5, a5, a5)
-	a4_68 = PHI(a4, a4, a4)
-	a3_69 = PHI(a3, a3, a3)
-	a2_70 = PHI(a2, a2, a2)
-	a1_71 = PHI(a1, a1, a1)
-	a0_72 = PHI(a0_32, a0, a0)
-	ra_73 = qwLoc08_14
-	s0_74 = qwLoc10_4
-	s1_75 = qwLoc18_16
-	s2_76 = qwLoc20_6
-	s3_77 = qwLoc28_8
-	s4_78 = qwLoc30_10
-	s5_79 = qwLoc38_12
-	s6_80 = qwLoc40_18
-	s7_81 = qwLoc48_20
-	sp_82 = fp
-	return
-l0000000000017D80:
-	a5 = Mem0[-1944:word64]
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,a6,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	a5 = Mem0[gp + -0x07A0:word64]
-	a1 = 0x0010
-	a0 = 0x0C
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,a6,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	s1 = a0
-	branch a0 == 0x00 l0000000000017E18
-l0000000000017DA0:
-	a4 = (word64) Mem0[s0 + 0x04:uint32]
-	a5 = (word64) Mem0[s0 + 0x0C:uint32]
-	a1 = (word64) Mem0[s0 + 0x00:uint32]
-	a2 = (word64) Mem0[s0 + 0x08:uint32]
-	a3 = Mem0[gp + -2000:word64]
-	a4 = a4 << 0x00
-	a5 = a5 << 0x00
-	a6 = 0x01
-	Mem0[a0 + 0x004C:word32] = a6
-	a1 = a4 | a1
-	a2 = a5 | a2
-	call a3 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,a6,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	s7 = a0
-	branch a0 < 0x00 l0000000000017D54
-l0000000000017DD8:
-	a5 = Mem0[gp + -0x07A8:word64]
-	a1 = a0
-	a0 = s1
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,a6,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	branch a0 == 0x00 l0000000000017DF4
-l0000000000017DEC:
-	__strdup()
-	Mem0[s4 + 0x00:word64] = a0
-l0000000000017DF4:
-	a5 = Mem0[gp + -0x07B0:word64]
-	a0 = s7
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,a6,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	branch a0 == 0x00 l0000000000017E0C
-l0000000000017E04:
-	__strdup()
-	Mem0[s3 + 0x00:word64] = a0
-l0000000000017E0C:
-	a5 = Mem0[gp + -0x07B8:word64]
-	a0 = s1
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,a6,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-l0000000000017E18:
-	gp = PHI(gp, gp)
-	a5 = Mem0[gp + -0x07A0:word64]
-	a1 = 0x0010
-	a0 = 0x001E
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,a6,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	s1 = a0
-	branch a0 == 0x00 l0000000000017EE8
-l0000000000017E30:
-	gp = PHI(gp, gp)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	a4 = (word64) Mem0[s0 + 0x04:uint32]
-	a5 = (word64) Mem0[s0 + 0x0C:uint32]
-	a1 = (word64) Mem0[s0 + 0x00:uint32]
-	a2 = (word64) Mem0[s0 + 0x08:uint32]
-	a3 = Mem0[gp + -2008:word64]
-	a4 = a4 << 0x00
-	a5 = a5 << 0x00
-	a6 = 0x01
-	Mem0[s1 + 0x004C:word32] = a6
-	a1 = a4 | a1
-	a2 = a5 | a2
-	call a3 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,a6,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	s0 = a0
-	branch a0 == 0x00 l0000000000017E88
-l0000000000017E68:
-	a0 = Mem0[a0 + 0x0020:word64]
-	branch a0 == 0x00 l0000000000017E78
-l0000000000017E70:
-	__strdup()
-	Mem0[s2 + 0x00:word64] = a0
-l0000000000017E78:
-	fa4 = Mem0[s0 + 0x0034:real32]
-	fa5 = (real32) 0x00
-	a5 = (word64) ((real32) fa4 = (real32) fa5)
-	branch a5 == 0x00 l0000000000017EBC
-l0000000000017E88:
-	a0 = s1
-	ra = qwLoc08
-	s0 = qwLoc10
-	s1 = qwLoc18
-	s2 = qwLoc20
-	s3 = qwLoc28
-	s4 = qwLoc30
-	s5 = qwLoc38
-	s6 = qwLoc40
-	s7 = qwLoc48
-	t1 = Mem0[gp + -0x07B8:word64]
-	sp = fp
-	call t1 (retsize: 0;)
-		defs: a0,a1,a2,a3,a4,a5,a6,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	return
-l0000000000017EBC:
-	fa5 = Mem0[s0 + 0x0030:real32]
-	a2 = 0x00013000
-	fa5 = (real64) fa5
-	fa4 = (real64) a4
-	a2 = 76672
-	fa3 = (real64) a5
-	a1 = 0x01
-	a0 = s5
-	__asprintf_chk()
-	goto l0000000000017E88
-l0000000000017EE8:
-	a5 = Mem0[gp + -0x07A0:word64]
-	a1 = 0x0010
-	a0 = 0x001F
-	call a5 (retsize: 0; depth: 80)
-		defs: a0,a1,a2,a3,a4,a5,a6,fa3,fa4,fa5,gp,ra,s0,s1,s2,s3,s4,s5,s6,s7,sp,t1
-	s1 = a0
-	branch a0 != 0x00 l0000000000017E30
-	goto l0000000000017D54
-fn0000000000017D10_exit:
-	fa3_39 = PHI(fa3_61, fa3)
-	t1_40 = PHI(t1_62, t1)
-	fa5_41 = PHI(fa5_63, fa5)
-	fa4_42 = PHI(fa4_64, fa4)
-	a6_43 = PHI(a6_65, a6)
-	gp_44 = PHI(gp_66, gp)
-	a5_45 = PHI(a5_67, a5)
-	a4_46 = PHI(a4_68, a4)
-	a3_47 = PHI(a3_69, a3)
-	a2_48 = PHI(a2_70, a2)
-	a1_49 = PHI(a1_71, a1)
-	a0_50 = PHI(a0_72, a0)
-	ra_51 = PHI(ra_73, ra)
-	s0_52 = PHI(s0_74, s0)
-	s1_53 = PHI(s1_75, s1)
-	s2_54 = PHI(s2_76, s2)
-	s3_55 = PHI(s3_77, s3)
-	s4_56 = PHI(s4_78, s4)
-	s5_57 = PHI(s5_79, s5)
-	s6_58 = PHI(s6_80, s6)
-	s7_59 = PHI(s7_81, s7)
-	sp_60 = PHI(sp_82, sp)
+	Eq_430 a0_32 = fn0000000000017924(gp);
+	if (a0_32 == 0x00)
+	{
+		<anonymous> * a5_84 = gp->ptrFFFFF868;
+		word64 sp_85;
+		word64 s0_86;
+		word64 s2_87;
+		word64 s3_88;
+		word64 s4_89;
+		word64 s5_90;
+		word64 ra_91;
+		word64 s1_92;
+		word64 s6_93;
+		word64 s7_94;
+		word64 a0_95;
+		word64 a1_96;
+		word64 a2_97;
+		word64 a3_98;
+		word64 a4_99;
+		word64 a5_100;
+		struct Eq_4077 * gp_101;
+		word64 a6_102;
+		word64 fa4_103;
+		word64 fa5_104;
+		word64 t1_105;
+		word64 fa3_106;
+		a5_84();
+		<anonymous> * a5_107 = gp_101->ptrFFFFF860;
+		word64 sp_110;
+		word64 s0_111;
+		word64 s2_112;
+		word64 s3_113;
+		word64 s4_114;
+		word64 s5_115;
+		word64 ra_116;
+		word64 s1_117;
+		word64 s6_118;
+		word64 s7_119;
+		struct Eq_4097 * a0_120;
+		word64 a1_121;
+		word64 a2_122;
+		word64 a3_123;
+		word64 a4_124;
+		word64 a5_125;
+		word64 a6_127;
+		word64 fa4_128;
+		word64 fa5_129;
+		word64 t1_130;
+		word64 fa3_131;
+		struct Eq_4108 * gp_126;
+		a5_107();
+		if (a0_120 != null)
+		{
+			<anonymous> * a3_274 = gp_126->ptrFFFFF830;
+			Eq_4144 a6_277 = 0x01;
+			a0_120->t004C = a6_277;
+			word64 sp_281;
+			word64 s0_282;
+			word64 s2_283;
+			word64 s3_284;
+			word64 s4_285;
+			word64 s5_286;
+			word64 ra_287;
+			word64 s1_288;
+			word64 s6_289;
+			word64 s7_290;
+			int64 a0_291;
+			word64 a1_292;
+			word64 a2_293;
+			word64 a3_294;
+			word64 a4_295;
+			word64 a5_296;
+			struct Eq_4165 * gp_297;
+			word64 a6_298;
+			word64 fa4_299;
+			word64 fa5_300;
+			word64 t1_301;
+			word64 fa3_302;
+			a3_274();
+			if (a0_291 < 0x00)
+				return;
+			<anonymous> * a5_304 = gp_297->ptrFFFFF858;
+			word64 sp_307;
+			word64 s0_308;
+			word64 s2_309;
+			word64 s3_310;
+			word64 * s4_311;
+			word64 s5_312;
+			word64 ra_313;
+			word64 s1_314;
+			word64 s6_315;
+			word64 s7_316;
+			word64 a0_317;
+			word64 a1_318;
+			word64 a2_319;
+			word64 a3_320;
+			word64 a4_321;
+			word64 a5_322;
+			struct Eq_4193 * gp_323;
+			word64 a6_324;
+			word64 fa4_325;
+			word64 fa5_326;
+			word64 t1_327;
+			word64 fa3_328;
+			a5_304();
+			if (a0_317 != 0x00)
+			{
+				__strdup();
+				*s4_311 = a0_317;
+			}
+			<anonymous> * a5_329 = gp_323->ptrFFFFF850;
+			word64 sp_331;
+			word64 s0_332;
+			word64 s2_333;
+			word64 * s3_334;
+			word64 s4_335;
+			word64 s5_336;
+			word64 ra_337;
+			word64 s1_338;
+			word64 s6_339;
+			word64 s7_340;
+			word64 a0_341;
+			word64 a1_342;
+			word64 a2_343;
+			word64 a3_344;
+			word64 a4_345;
+			word64 a5_346;
+			struct Eq_4221 * gp_347;
+			word64 a6_348;
+			word64 fa4_349;
+			word64 fa5_350;
+			word64 t1_351;
+			word64 fa3_352;
+			a5_329();
+			if (a0_341 != 0x00)
+			{
+				__strdup();
+				*s3_334 = a0_341;
+			}
+			<anonymous> * a5_353 = gp_347->ptrFFFFF848;
+			word64 sp_355;
+			word64 s0_356;
+			word64 s2_357;
+			word64 s3_358;
+			word64 s4_359;
+			word64 s5_360;
+			word64 ra_361;
+			word64 s1_362;
+			word64 s6_363;
+			word64 s7_364;
+			word64 a0_365;
+			word64 a1_366;
+			word64 a2_367;
+			word64 a3_368;
+			word64 a4_369;
+			word64 a5_370;
+			word64 a6_372;
+			word64 fa4_373;
+			word64 fa5_374;
+			word64 t1_375;
+			word64 fa3_376;
+			a5_353();
+		}
+		<anonymous> * a5_134 = gp_126->ptrFFFFF860;
+		word64 sp_137;
+		word64 s0_138;
+		word64 s2_139;
+		word64 s3_140;
+		word64 s4_141;
+		word64 s5_142;
+		word64 ra_143;
+		word64 s1_144;
+		word64 s6_145;
+		word64 s7_146;
+		struct Eq_4125 * a0_147;
+		word64 a1_148;
+		word64 a2_149;
+		word64 a3_150;
+		word64 a4_151;
+		word64 a5_152;
+		word64 a6_154;
+		word64 fa4_155;
+		word64 fa5_156;
+		word64 t1_157;
+		word64 fa3_158;
+		struct Eq_4136 * gp_153;
+		a5_134();
+		struct Eq_4125 * s1_159 = a0_147;
+		if (a0_147 == null)
+		{
+			<anonymous> * a5_244 = gp_153->ptrFFFFF860;
+			word64 sp_247;
+			word64 s0_248;
+			word64 s2_249;
+			word64 s3_250;
+			word64 s4_251;
+			word64 s5_252;
+			word64 ra_253;
+			word64 s1_254;
+			word64 s6_255;
+			word64 s7_256;
+			struct Eq_4125 * a0_257;
+			word64 a1_258;
+			word64 a2_259;
+			word64 a3_260;
+			word64 a4_261;
+			word64 a5_262;
+			word64 a6_264;
+			word64 fa4_265;
+			word64 fa5_266;
+			word64 t1_267;
+			word64 fa3_268;
+			a5_244();
+			s1_159 = a0_257;
+			if (a0_257 == null)
+				return;
+		}
+		<anonymous> * a3_167 = gp_153->ptrFFFFF828;
+		Eq_4265 a6_170 = 0x01;
+		s1_159->t004C = a6_170;
+		word64 sp_174;
+		word64 s0_175;
+		word64 * s2_176;
+		word64 s3_177;
+		word64 s4_178;
+		word64 s5_179;
+		word64 ra_180;
+		word64 s1_181;
+		word64 s6_182;
+		word64 s7_183;
+		struct Eq_4280 * a0_184;
+		word64 a1_185;
+		word64 a2_186;
+		word64 a3_187;
+		word64 a4_188;
+		word64 a5_189;
+		struct Eq_4286 * gp_190;
+		word64 a6_191;
+		word64 fa4_192;
+		word64 fa5_193;
+		word64 t1_194;
+		word64 fa3_195;
+		a3_167();
+		if (a0_184 != null)
+		{
+			word64 a0_231 = a0_184->qw0020;
+			if (a0_231 != 0x00)
+			{
+				__strdup();
+				*s2_176 = a0_231;
+			}
+			if ((word64) ((real32) a0_184->r0034 = (real32) ((real32) 0x00)) == 0x00)
+				__asprintf_chk();
+		}
+		<anonymous> * t1_207 = gp_190->ptrFFFFF848;
+		word64 sp_209;
+		word64 s0_210;
+		word64 s2_211;
+		word64 s3_212;
+		word64 s4_213;
+		word64 s5_214;
+		word64 ra_215;
+		word64 s1_216;
+		word64 s6_217;
+		word64 s7_218;
+		word64 a0_219;
+		word64 a1_220;
+		word64 a2_221;
+		word64 a3_222;
+		word64 a4_223;
+		word64 a5_224;
+		word64 gp_225;
+		word64 a6_226;
+		word64 fa4_227;
+		word64 fa5_228;
+		word64 t1_229;
+		word64 fa3_230;
+		t1_207();
+		return;
+	}
+	else
+		return;
 }
 
-word64 fn0000000000017F04(word64 gp, word64 a0, word64 a1, word64 a2, word64 a3)
+Eq_1745 fn0000000000017F04(Eq_291 * gp, Eq_1745 a0, Eq_292 a1, Eq_1745 a2, Eq_1745 a3)
 {
-fn0000000000017F04_entry:
-	def fp
-	def s3
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -0x0050
-	qwLoc28_4 = s3
-	a5 = Mem0[-0x0790:word64]
-	qwLoc10 = s0
-	qwLoc18 = s1
-	qwLoc20 = s2
-	qwLoc30 = s4
-	qwLoc38 = s5
-	qwLoc40 = s6
-	s0 = a1
-	qwLoc08 = ra
-	s5 = a2
-	s4 = a3
-	qwLoc48 = a5
-	qwLoc50 = 0x00
-	a0 = fn00000000000182B4(a0)
-	a1 = (int64) (int32) (a0 >>u 0x10)
-	t1 = (int64) (int32) (a0 >>u 0x08)
-	t3 = 0x0020
-	s6 = (int64) (int32) (a0 >>u 0x18)
-	s1 = a1 & 0x00FF
-	s2 = t1 & 0x00FF
-	branch s0 == t3 l0000000000018048
-	goto l0000000000017F60
-l0000000000017F04:
-l0000000000017F60:
-	a1 = 0x0018
-	branch s0 == a1 l0000000000018070
-l0000000000017F68:
-	a0 = 0x0010
-	branch s0 == a0 l00000000000180D8
-l0000000000017F70:
-	a5 = 0x08
-	branch s0 == a5 l00000000000180F8
-l0000000000017F78:
-	branch a1 <u s0 l0000000000017FBC
-l0000000000017F7C:
-	branch a0 <u s0 l0000000000018094
-l0000000000017F80:
-	branch a5 <u s0 l0000000000018008
-l0000000000017F84:
-	a7 = PHI(a7, a7)
-	a6 = PHI(a6, a6)
-	a3 = PHI(a3, a3)
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a4 = PHI(a4, a4)
-	a5 = PHI(a5, a5)
-	s0 = PHI(s0, s0)
-	a0 = 0x00
+	Eq_292 a1_104;
+	Eq_1745 a0_43;
+	word64 a5_7 = gp->qwFFFFF870;
+	fn00000000000182B4(a0);
+	if (a1 != 0x0020)
+	{
+		a1_104.u0 = 0x0018;
+		if (a1 != a1_104)
+		{
+			Eq_292 a0_87 = 0x0010;
+			if (a1 != a0_87)
+			{
+				Eq_292 a5_88 = 0x08;
+				if (a1 != a5_88)
+				{
+					if (a1_104 >= a1)
+					{
+						if (a0_87 >= a1)
+						{
+							if (a5_88 >= a1)
+								goto l0000000000017F84;
+							fn00000000000182B4(a2);
+							fn00000000000182B4(a3);
+							__asprintf_chk();
+							a1_104.u0 = 0x01;
+						}
+						else
+						{
+							fn00000000000182B4(a2);
+							fn00000000000182B4(a3);
+							__asprintf_chk();
+							a1_104.u0 = 0x01;
+						}
+					}
+					else
+					{
+						fn00000000000182B4(a2);
+						fn00000000000182B4(a3);
+						__asprintf_chk();
+						a1_104.u0 = 0x01;
+					}
+				}
+				else
+				{
+					__asprintf_chk();
+					a1_104.u0 = 0x01;
+				}
+			}
+			else
+			{
+				__asprintf_chk();
+				a1_104.u0 = 0x01;
+			}
+		}
+		else
+		{
+			__asprintf_chk();
+			a1_104.u0 = 0x01;
+		}
+	}
+	else
+	{
+		__asprintf_chk();
+		a1_104.u0 = 0x01;
+	}
+	if (fp != -0x004F)
+	{
+		a0_43.u0 = 0x00;
 l0000000000017F88:
-	a7 = PHI(a7, a7)
-	a6 = PHI(a6, a6)
-	a3 = PHI(a3, a3)
-	a2 = PHI(a2, a2)
-	a1 = PHI(a1, a1)
-	a0 = PHI(a0, a0)
-	s0 = PHI(s0, s0)
-	a4 = qwLoc48
-	a5 = Mem0[gp + -0x0790:word64]
-	branch a4 != a5 l0000000000018114
-l0000000000017F94:
-	ra = qwLoc08
-	s0 = qwLoc10
-	s1 = qwLoc18
-	s2 = qwLoc20
-	s3 = qwLoc28
-	s4 = qwLoc30
-	s5 = qwLoc38
-	s6 = qwLoc40
-	sp = fp
-	return a0
-l0000000000017FBC:
-	a0 = s5
-	a0 = fn00000000000182B4(a0)
-	s0 = a0
-	a0 = s4
-	a0 = fn00000000000182B4(a0)
-	a2 = 0x00013000
-	a4 = a0 & 0x00FF
-	a7 = s6
-	a6 = s1
-	a5 = s2
-	a3 = s0 & 0x00FF
-	a2 = 76784
-	a1 = 0x01
-	a0 = fp + -0x0050
-	__asprintf_chk()
-l0000000000017FF8:
-	a7 = PHI(a7, a7, a7, a7, a7, a7, a7)
-	a6 = PHI(a6, a6, a6, a6, a6, a6, a6)
-	a3 = PHI(a3, a3, a3, a3, a3, a3, a3)
-	a2 = PHI(a2, a2, a2, a2, a2, a2, a2)
-	a1 = PHI(a1, a1, a1, a1, a1, a1, a1)
-	a4 = PHI(a4, a4, a4, a4, a4, a4, a4)
-	a0 = PHI(a0, a0, a0, a0, a0, a0, a0)
-	s0 = PHI(s0, s0, s0, s0, s0, s0, s0)
-	a5 = -0x01
-	branch fp + -0x0050 == a5 l0000000000017F84
-l0000000000018000:
-	a0 = 0x00
-	goto l0000000000017F88
-l0000000000018008:
-	a0 = s5
-	a0 = fn00000000000182B4(a0)
-	s0 = a0
-	a0 = s4
-	a0 = fn00000000000182B4(a0)
-	a4 = (int64) (int32) (a0 >>u 0x10)
-	a3 = (int64) (int32) (s0 >>u 0x10)
-	a2 = 0x00013000
-	a5 = s6
-	a4 = a4 & 0x00FF
-	a3 = a3 & 0x00FF
-	a2 = 76848
-	a1 = 0x01
-	a0 = fp + -0x0050
-	__asprintf_chk()
-	goto l0000000000017FF8
-l0000000000018048:
-	a2 = 0x00013000
-	a3 = a0 & 0x00FF
-	a6 = s6
-	a5 = s1
-	a4 = s2
-	a2 = 0x00012B88
-	a1 = 0x01
-	a0 = fp + -0x0050
-	__asprintf_chk()
-	goto l0000000000017FF8
-l0000000000018070:
-	a2 = 0x00013000
-	a5 = s6
-	a4 = s1
-	a3 = s2
-	a2 = 76712
-	a1 = 0x01
-	a0 = fp + -0x0050
-	__asprintf_chk()
-	goto l0000000000017FF8
-l0000000000018094:
-	a0 = s5
-	a0 = fn00000000000182B4(a0)
-	s0 = a0
-	a0 = s4
-	a0 = fn00000000000182B4(a0)
-	a4 = (int64) (int32) (a0 >>u 0x08)
-	a3 = (int64) (int32) (s0 >>u 0x08)
-	a2 = 0x00013000
-	a6 = s6
-	a5 = s1
-	a4 = a4 & 0x00FF
-	a3 = a3 & 0x00FF
-	a2 = 0x00012C10
-	a1 = 0x01
-	a0 = fp + -0x0050
-	__asprintf_chk()
-	goto l0000000000017FF8
-l00000000000180D8:
-	a2 = 0x00013000
-	a4 = s6
-	a3 = s1
-	a2 = 76736
-	a1 = 0x01
-	a0 = fp + -0x0050
-	__asprintf_chk()
-	goto l0000000000017FF8
-l00000000000180F8:
-	a2 = 0x00013000
-	a3 = s6
-	a2 = 76760
-	a1 = 0x01
-	a0 = fp + -0x0050
-	__asprintf_chk()
-	goto l0000000000017FF8
-l0000000000018114:
-	__stack_chk_fail()
-	a0 = fn0000000000018118(gp, a0, a1)
-	return a0
-l0000000000018114_thunk_fn0000000000018118:
-fn0000000000017F04_exit:
-	a0 = PHI(a0, a0)
-	ra = PHI(ra, ra)
-	s0 = PHI(s0, s0)
-	s1 = PHI(s1, s1)
-	s2 = PHI(s2, s2)
-	s3 = PHI(s3, s3)
-	s4 = PHI(s4, s4)
-	s5 = PHI(s5, s5)
-	s6 = PHI(s6, s6)
-	sp = PHI(sp, sp)
+		if (a5_7 != gp->qwFFFFF870)
+		{
+			__stack_chk_fail();
+			return fn0000000000018118(gp, a0_43, a1_104);
+		}
+		else
+			return a0_43;
+	}
+l0000000000017F84:
+	a0_43.u0 = 0x00;
+	goto l0000000000017F88;
 }
 
-word64 fn0000000000018118(word64 gp, word64 a0, word64 a1)
+Eq_1745 fn0000000000018118(Eq_291 * gp, Eq_1745 a0, Eq_292 a1)
 {
-fn0000000000018118_entry:
-	def fp
-	def s0
-	def gp
-	sp_1 = fp
-	sp_2 = fp + -288
-	qwLoc10_4 = s0
-	a5 = Mem0[-0x0790:word64]
-	qwLoc08 = ra
-	t4 = a1 & 0x03
-	qwLoc18 = a5
-	branch t4 != 0x00 l00000000000182A8
-	goto l0000000000018134
-l0000000000018118:
-l0000000000018134:
-	a5 = a1 & 0x07
-	a4 = 0x04
-	t5 = (int64) (int32) (a1 >>u 0x03)
-	branch a5 == a4 l0000000000018264
-l0000000000018144:
-	bLoc0118 = PHI(bLoc0118, bLoc0118)
-	bLoc0117 = PHI(bLoc0117, bLoc0117)
-	a3 = PHI(a3, a3)
-	t4 = PHI(t4, t4)
-	a4 = PHI(a4, a4)
-	a5 = PHI(a5, a5)
-	branch t5 == 0x00 l00000000000181FC
-l0000000000018148:
-	a1 = (int64) ((word32) t5 + -0x01)
-	a4 = t4
-	t1 = 0x09
-	a7 = 0x002E
-	t3 = -0x01
-	goto l0000000000018190
-l0000000000018160:
-	a6 = PHI(a6, a6)
-	a2 = a2 << 0x00
-	a5 = fp + -0x0010
-	a2 = a2 >>u 0x00
-	a3 = a3 << 0x00
-	a2 = fp + -0x0010 + a2
-	a3 = a3 >>u 0x00
-	Mem0[a2 + 3832:byte] = a6
-	a3 = fp + -0x0010 + a3
-	Mem0[a3 + 3832:byte] = a7
-	a1 = (int64) ((word32) a1 + -0x01)
-	a4 = (int64) ((word32) a4 + 0x04)
-	branch a1 == t3 l00000000000181F4
-l0000000000018190:
-	t6 = PHI(t6, t6)
-	a1 = PHI(a1, a1)
-	a4 = PHI(a4, a4)
-	a5 = a1 << 0x00
-	a5 = a5 >>u 0x00
-	a5 = a0 + a5
-	a5 = (word64) Mem0[a5 + 0x00:byte]
-	a2 = a5 & 0x0F
-	branch t1 <u a2 l00000000000181B4
-	a5 = a1 << 0x00
-	a5 = a5 >>u 0x00
-	a5 = a0 + a5
-	a5 = (word64) Mem0[a5 + 0x00:byte]
-	a3 = (int64) ((word32) a4 + 0x01)
-	a2 = a5 & 0x0F
-	a6 = a2 + 0x0057
-	branch t1 <u a2 l00000000000181B4
-l00000000000181B0:
-	a6 = a2 + 0x0030
-l00000000000181B4:
-	a6 = PHI(a6, a6)
-	a2 = a4 << 0x00
-	t6 = fp + -0x0010
-	a2 = a2 >>u 0x00
-	a3 = a3 << 0x00
-	a2 = fp + -0x0010 + a2
-	a3 = a3 >>u 0x00
-	Mem0[a2 + 3832:byte] = a6
-	a3 = fp + -0x0010 + a3
-	a5 = a5 >>u 0x04
-	Mem0[a3 + 3832:byte] = a7
-	a2 = (int64) ((word32) a4 + 0x02)
-	a3 = (int64) ((word32) a4 + 0x03)
-	a6 = a5 + 0x0030
-	branch t1 >=u a5 l0000000000018160
-l00000000000181EC:
-	a6 = a5 + 0x0057
-	goto l0000000000018160
-l00000000000181F4:
-	t5 = (int64) (int32) (t5 << 0x02)
-	t4 = (int64) ((word32) t4 + t5)
-l00000000000181FC:
-	t1 = PHI(t1, t1)
-	a7 = PHI(a7, a7)
-	t3 = PHI(t3, t3)
-	t6 = PHI(t6, t6)
-	a6 = PHI(a6, a6)
-	a2 = PHI(a2, a2)
-	a3 = PHI(a3, a3)
-	a1 = PHI(a1, a1)
-	t5 = PHI(t5, t5)
-	t4 = PHI(t4, t4)
-	t4 = t4 << 0x00
-	a5 = 0x7000
-	a4 = fp + -0x0118
-	t4 = t4 >>u 0x00
-	t4 = fp + -0x0118 + t4
-	a4 = 28777
-	a5 = 29281
-	Mem0[t4 + 0x04:word16] = 29281
-	a5 = 0x6000
-	a5 = 24944
-	Mem0[t4 + 0x00:word16] = 28777
-	a4 = 0x3000
-	a4 = 11830
-	Mem0[t4 + 0x06:word16] = 24944
-	a5 = 0x002E
-	a0 = fp + -0x0118
-	Mem0[t4 + 0x02:word16] = 11830
-	Mem0[t4 + 0x08:word16] = a5
-	__strdup()
-l0000000000018248:
-	bLoc0118 = PHI(bLoc0118, bLoc0118)
-	bLoc0117 = PHI(bLoc0117, bLoc0117)
-	t1 = PHI(t1, t1)
-	a7 = PHI(a7, a7)
-	t3 = PHI(t3, t3)
-	t6 = PHI(t6, t6)
-	a6 = PHI(a6, a6)
-	a2 = PHI(a2, a2)
-	a3 = PHI(a3, a3)
-	a1 = PHI(a1, a1)
-	t5 = PHI(t5, t5)
-	t4 = PHI(t4, t4)
-	a0 = PHI(a0, a0)
-	a4 = qwLoc18
-	a5 = Mem0[gp + -0x0790:word64]
-	branch a4 != a5 l00000000000182B0
-l0000000000018254:
-	ra = qwLoc08
-	s0 = qwLoc10
-	sp = fp
-	return a0
-l0000000000018264:
-	a5 = (int64) ((word32) a1 + a4)
-	a5 = (int64) (int32) (a5 >>u 0x03)
-	a5 = (int64) ((word32) a5 + -0x01)
-	a5 = a5 << 0x00
-	a5 = a5 >>u 0x00
-	a5 = a0 + a5
-	a5 = (word64) Mem0[a5 + 0x00:byte]
-	a3 = 0x09
-	a5 = a5 >>u 0x04
-	a4 = a5 + 0x0057
-	branch a3 <u a5 l0000000000018294
-l0000000000018290:
-	a4 = a5 + 0x0030
-l0000000000018294:
-	a4 = PHI(a4, a4)
-	a5 = 0x002E
-	bLoc0118 = a4
-	bLoc0117 = a5
-	t4 = 0x02
-	goto l0000000000018144
-l00000000000182A8:
-	a0 = 0x00
-	goto l0000000000018248
-l00000000000182B0:
-	__stack_chk_fail()
-	a0 = fn00000000000182B4(a0)
-	return a0
-l00000000000182B0_thunk_fn00000000000182B4:
-fn0000000000018118_exit:
-	a0 = PHI(a0, a0)
-	ra = PHI(ra, ra)
-	s0 = PHI(s0, s0)
-	sp = PHI(sp, sp)
+	Eq_1745 a0_149;
+	word64 a5_7 = gp->qwFFFFF870;
+	Eq_4446 t4_11 = a1 & 0x03;
+	if ((a1 & 0x03) == 0x00)
+	{
+		Eq_4453 a4_37 = 0x04;
+		int64 t5_38 = (int64) (int32) (a1 >> 0x03);
+		if ((a1 & 0x07) == a4_37)
+			t4_11.u0 = 0x02;
+		if (t5_38 != 0x00)
+		{
+			Eq_4520 a1_127 = (int64) ((word32) t5_38 + -0x01);
+			Eq_4446 a4_128 = t4_11;
+			Eq_4526 t1_84 = 0x09;
+			Eq_4528 a7_85 = 0x002E;
+			Eq_4520 t3_86 = -0x01;
+			do
+			{
+				word64 a5_99 = (word64) Mem0[a0 + ((a1_127 << 0x00) >>u 0x00):byte];
+				int64 a3_100 = (int64) ((word32) a4_128 + 0x01);
+				Eq_4555 a6_102 = *(a5_99 & 0x0F);
+				if (t1_84 >= (a5_99 & 0x0F))
+					a6_102 = a5_99 & 0x0F;
+				Mem110[fp + -0x0010 + ((a4_128 << 0x00) >>u 0x00) + 3832:byte] = a6_102;
+				Mem113[fp + -0x0010 + ((a3_100 << 0x00) >>u 0x00) + 3832:byte] = a7_85;
+				int64 a2_114 = (int64) ((word32) a4_128 + 0x02);
+				int64 a3_115 = (int64) ((word32) a4_128 + 0x03);
+				Eq_4528 a6_116 = a5_99 >> 0x04;
+				if (t1_84 < a5_99 >> 0x04)
+					a6_116 = a5_99 >> 0x04;
+				Mem124[fp + -0x0010 + ((a2_114 << 0x00) >>u 0x00) + 3832:byte] = a6_116;
+				Mem126[fp + -0x0010 + ((a3_115 << 0x00) >>u 0x00) + 3832:byte] = a7_85;
+				a1_127 = (int64) ((word32) a1_127 + -0x01);
+				a4_128 = (int64) ((word32) a4_128 + 0x04);
+			} while (a1_127 == t3_86);
+			t4_11 = (int64) (int64) (int32) (t5_38 << 0x02);
+		}
+		word64 t4_68 = fp + -0x0118 + ((t4_11 << 0x00) >>u 0x00);
+		t4_68->t0004.u0 = 29281;
+		t4_68->t0000.u0 = 28777;
+		t4_68->t0006.u0 = 24944;
+		t4_68->t0002.u0 = 11830;
+		t4_68->t0008.u0 = 0x002E;
+		__strdup();
+		a0_149 = *fp;
+	}
+	else
+		a0_149.u0 = 0x00;
+	if (a5_7 != gp->qwFFFFF870)
+	{
+		__stack_chk_fail();
+		return fn00000000000182B4(a0_149);
+	}
+	else
+		return a0_149;
 }
 
-word64 fn00000000000182B4(word64 a0)
+Eq_1745 fn00000000000182B4(Eq_1745 a0)
 {
-	return (int64) (int32) (a0 >>u 0x18) | (int64) ((int32) (a0 << 0x18)) | (int64) ((int32) ((a0 & 0x00FF0000) >> 0x08)) | (int64) ((int32) ((a0 & 0x0000FF00) << 0x08));
+	return (int64) (int32) (a0 >> 0x18) | (int64) ((int32) (a0 << 0x18)) | (int64) ((int32) ((a0 & 0x00FF0000) >> 0x08)) | (int64) ((int32) ((a0 & 0x0000FF00) << 0x08));
 }
 
 void fn00000000000182E8()
 {
-	word64 s0_43 = 0x0000000000019E18;
+	word64 * s0_43 = &globals->qw19E18;
 	if (0x0000000000019E20 - 0x0000000000019E18 >> 0x03 != 0x00)
 	{
 		do
 		{
-			word64 a5_49 = Mem0[s0_43 + 0x00:word64];
+			<anonymous> * a5_49 = *s0_43;
 			word64 sp_54;
 			word64 s0_55;
 			word64 s2_56;

@@ -40,7 +40,7 @@ namespace Reko.ImageLoaders.Elf
 
         public const int Size = 32;
 
-        public static Elf32_PHdr Load(ImageReader rdr)
+        public static Elf32_PHdr Load(EndianImageReader rdr)
         {
             var hdr = new Elf32_PHdr
             {
@@ -68,7 +68,7 @@ namespace Reko.ImageLoaders.Elf
         public ulong p_pmemsz;
         public ulong p_align;
 
-        public static Elf64_PHdr Load(ImageReader rdr)
+        public static Elf64_PHdr Load(EndianImageReader rdr)
         {
             var hdr = new Elf64_PHdr
             {

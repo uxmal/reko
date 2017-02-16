@@ -36,7 +36,7 @@ namespace Reko.Scanning
         private IScanner scanner;
         private Program program;
         private DataType dt;
-        private ImageReader rdr;
+        private EndianImageReader rdr;
 
         public GlobalDataWorkItem(IScanner scanner, Program program, Address addr, DataType dt) : base(addr)
         {

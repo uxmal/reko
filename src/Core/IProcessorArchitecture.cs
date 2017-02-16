@@ -42,7 +42,7 @@ namespace Reko.Core
         /// like Take().</remarks>
         /// <param name="imageReader"></param>
         /// <returns></returns>
-        IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader);
+        IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
 
         /// <summary>
         /// Creates an instance of a ProcessorState appropriate for this processor.
@@ -55,7 +55,7 @@ namespace Reko.Core
         /// machine-specific instructions and rewriting them into one or more machine-independent RtlInstructions codes. These are then 
         /// returned as clusters of RtlInstructions.
         /// </summary>
-        IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
+        IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
 
         /// <summary>
         /// Given a set of addresses, returns a set of address where something
@@ -68,7 +68,7 @@ namespace Reko.Core
         /// <param name="knownAddresses"></param>
         /// <param name="flags"></param>
         /// <returns></returns>
-        IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
+        IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
 
         /// <summary>
         /// Creates a Frame instance appropriate for this architecture type.
@@ -77,30 +77,30 @@ namespace Reko.Core
         Frame CreateFrame();
 
         /// <summary>
-        /// Creates an <see cref="ImageReader" /> with the preferred endianness of the processor.
+        /// Creates an <see cref="EndianImageReader" /> with the preferred endianness of the processor.
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <returns>An imagereader of the appropriate endianness</returns>
-        ImageReader CreateImageReader(MemoryArea img, Address addr);
+        EndianImageReader CreateImageReader(MemoryArea img, Address addr);
 
         /// <summary>
-        /// Creates an <see cref="ImageReader" /> with the preferred 
+        /// Creates an <see cref="EndianImageReader" /> with the preferred 
         /// endianness of the processor, limited to the specified address range.
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <returns>An imagereader of the appropriate endianness</returns>
-        ImageReader CreateImageReader(MemoryArea memoryArea, Address addrBegin, Address addrEnd);
+        EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addrBegin, Address addrEnd);
 
         /// <summary>
-        /// Creates an <see cref="ImageReader" /> with the preferred
+        /// Creates an <see cref="EndianImageReader" /> with the preferred
         /// endianness of the processor.
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">offset from the start of the image</param>
         /// <returns>An imagereader of the appropriate endianness</returns>
-        ImageReader CreateImageReader(MemoryArea img, ulong off);
+        EndianImageReader CreateImageReader(MemoryArea img, ulong off);
 
         /// <summary>
         /// Creates an <see cref="ImageWriter" /> with the preferred 
@@ -146,7 +146,7 @@ namespace Reko.Core
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
 		FlagGroupStorage GetFlagGroup(string name);
         Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
-        Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
+        Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
         string GrfToString(uint grf);                       // Converts a union of processor flag bits to its string representation
@@ -202,17 +202,17 @@ namespace Reko.Core
         public RegisterStorage StackRegister { get; protected set; }
         public uint CarryFlagMask { get; protected set; }
 
-        public abstract IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader);
+        public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
-        public abstract ImageReader CreateImageReader(MemoryArea img, Address addr);
-        public abstract ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd);
-        public abstract ImageReader CreateImageReader(MemoryArea img, ulong off);
+        public abstract EndianImageReader CreateImageReader(MemoryArea img, Address addr);
+        public abstract EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd);
+        public abstract EndianImageReader CreateImageReader(MemoryArea img, ulong off);
         public abstract ImageWriter CreateImageWriter();
         public abstract ImageWriter CreateImageWriter(MemoryArea img, Address addr);
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
-        public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
-        public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
+        public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
+        public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
         public abstract Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
@@ -267,7 +267,7 @@ namespace Reko.Core
         public virtual void LoadUserOptions(Dictionary<string, object> options) { }
         public abstract Address MakeAddressFromConstant(Constant c);
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
-        public abstract Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
+        public abstract Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
         public virtual Dictionary<string, object> SaveUserOptions() { return null; }
 
         public abstract bool TryParseAddress(string txtAddr, out Address addr);
