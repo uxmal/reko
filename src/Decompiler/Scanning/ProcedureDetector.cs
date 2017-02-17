@@ -265,7 +265,7 @@ namespace Reko.Scanning
 
             // If we can't find another possibility, return the node with the
             // lowest address.
-            cluster.Entries.Add(cluster.Blocks.Min());
+            cluster.Entries.Add(cluster.Blocks.OrderBy(b => b.Address).First());
         }
 
         /// <summary>
