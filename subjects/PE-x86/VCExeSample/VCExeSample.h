@@ -387,7 +387,7 @@ T_52: (in c : (ptr Eq_52))
 T_53: (in c : (ptr cdecl_class))
   Class: Eq_53
   DataType: (ptr Eq_53)
-  OrigDataType: (ptr cdecl_class)
+  OrigDataType: (ptr (union (cdecl_class u1)))
 T_54: (in 0x00000000 : word32)
   Class: Eq_54
   DataType: word32
@@ -414,8 +414,8 @@ T_59: (in Mem0[Mem0[c + 0x00000000:word32] + 0x00000004:word32] : word32)
   OrigDataType: (ptr (fn T_61 ((ptr cdecl_class), int32)))
 T_60: (in 0x000003E8 : word32)
   Class: Eq_60
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_61: (in c->vtbl->method04(c, 0x000003E8) : void)
   Class: Eq_61
   DataType: void
@@ -459,7 +459,7 @@ T_70: (in 0x00403018 : word32)
 T_71: (in Mem0[0x00403018:word32] : word32)
   Class: Eq_63
   DataType: Eq_63
-  OrigDataType: cdecl_class_ptr
+  OrigDataType: (union ((ptr cdecl_class) u1) (cdecl_class_ptr u0))
 T_72: (in globals->gbl_c->vtbl->method00(globals->gbl_c) : void)
   Class: Eq_72
   DataType: void
@@ -559,7 +559,7 @@ T_95: (in Mem48[c + 0x00000000:word32] + 0x00000004 : word32)
 T_96: (in Mem48[Mem48[c + 0x00000000:word32] + 0x00000004:word32] : word32)
   Class: Eq_96
   DataType: (ptr Eq_96)
-  OrigDataType: (ptr (fn void ((ptr cdecl_class), int32)))
+  OrigDataType: (ptr (fn T_106 ((ptr cdecl_class), int32)))
 T_97: (in 0x00000000 : word32)
   Class: Eq_97
   DataType: word32
@@ -655,11 +655,11 @@ T_119: (in 0x00403024 : ptr32)
 T_120: (in Mem18[0x00403024:word32] : word32)
   Class: Eq_112
   DataType: (ptr Eq_112)
-  OrigDataType: (ptr thiscall_class)
+  OrigDataType: (ptr (union (thiscall_class u1)))
 T_121: (in 0x0000000D : word32)
   Class: Eq_121
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_122: (in globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, 0x0000000D, rArg04) : real64)
   Class: Eq_122
   DataType: real64
@@ -703,7 +703,7 @@ T_131: (in 0x00403024 : ptr32)
 T_132: (in Mem0[0x00403024:word32] : word32)
   Class: Eq_112
   DataType: (ptr Eq_112)
-  OrigDataType: (ptr thiscall_class)
+  OrigDataType: (ptr (union (thiscall_class u1)))
 T_133: (in globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg04) : void)
   Class: Eq_133
   DataType: void
@@ -759,11 +759,11 @@ T_145: (in 0x00403024 : ptr32)
 T_146: (in Mem0[0x00403024:word32] : word32)
   Class: Eq_112
   DataType: (ptr Eq_112)
-  OrigDataType: (ptr thiscall_class)
+  OrigDataType: (ptr (union (thiscall_class u1)))
 T_147: (in 0xFFFFFFFF : word32)
   Class: Eq_147
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_148: (in rArg04 : real64)
   Class: Eq_148
   DataType: real64
@@ -863,7 +863,7 @@ T_171: (in 0x00403024 : ptr32)
 T_172: (in Mem52[0x00403024:word32] : word32)
   Class: Eq_112
   DataType: (ptr Eq_112)
-  OrigDataType: (ptr thiscall_class)
+  OrigDataType: (ptr (union (thiscall_class u1)))
 T_173: (in globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg04) : void)
   Class: Eq_173
   DataType: void
@@ -876,13 +876,13 @@ T_175: (in rArg0 : real64)
   Class: Eq_136
   DataType: real64
   OrigDataType: real64
-T_176: (in dwLoc08_12 : word32)
+T_176: (in dwLoc08_12 : int32)
   Class: Eq_176
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_177: (in 0x00000000 : word32)
   Class: Eq_176
-  DataType: word32
+  DataType: int32
   OrigDataType: word32
 T_178: (in 0x00403024 : ptr32)
   Class: Eq_178
@@ -923,7 +923,7 @@ T_186: (in 0x00403024 : ptr32)
 T_187: (in Mem21[0x00403024:word32] : word32)
   Class: Eq_112
   DataType: (ptr Eq_112)
-  OrigDataType: (ptr thiscall_class)
+  OrigDataType: (ptr (union (thiscall_class u1)))
 T_188: (in rArg04 : real32)
   Class: Eq_188
   DataType: real32
@@ -987,7 +987,7 @@ T_202: (in 0x00403024 : ptr32)
 T_203: (in Mem39[0x00403024:word32] : word32)
   Class: Eq_112
   DataType: (ptr Eq_112)
-  OrigDataType: (ptr thiscall_class)
+  OrigDataType: (ptr (union (thiscall_class u1)))
 T_204: (in globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg0) : void)
   Class: Eq_204
   DataType: void
@@ -998,7 +998,7 @@ T_205: (in 0x00000001 : word32)
   OrigDataType: word32
 T_206: (in dwLoc08_12 + 0x00000001 : word32)
   Class: Eq_176
-  DataType: word32
+  DataType: int32
   OrigDataType: word32
 T_207: (in dwArg04 : word32)
   Class: Eq_207
@@ -1495,7 +1495,7 @@ typedef cdecl_class_vtbl Eq_93;
 
 typedef void (Eq_95)(cdecl_class * ptrArg04, int32 dwArg08);
 
-typedef void (Eq_96)(cdecl_class * ptrArg04, int32 dwArg08);
+typedef void (Eq_96)(cdecl_class *, int32);
 
 typedef cdecl_class_vtbl Eq_98;
 
