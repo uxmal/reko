@@ -1045,33 +1045,27 @@ namespace Reko.Scanning
 
             var hsc = new HeuristicScanner(Services, program, this, eventListener);
             var sr = hsc.ScanImage();
-
-            // Once the ICFG is built, detect the procedures.
-
-            var pd = new ProcedureDetector(program, sr, eventListener);
-            var procs = pd.DetectProcedures();
-
-            // At this point, we have RtlProcedures and RtlBlocks.
-            //$TODO: However, Reko hasn't had a chance to reconstitute constants yet, 
-            // because that requires SSA, so we may be missing
-            // opportunities to build and detect pointers. This typically happens in 
-            // the type inference phase, when we both have constants and their types.
-            // 
-            // When this gets merged into analyis-development phase, fold 
-            // Procedure construction into SSA construction.
-            foreach (Procedure_v1 up in program.User.Procedures.Values)
+            if (sr != null)
             {
-                EnqueueUserProcedure(up);
+                // Once the ICFG is built, detect the procedures.
+
+                var pd = new ProcedureDetector(program, sr, eventListener);
+                var procs = pd.DetectProcedures();
+
+                // At this point, we have RtlProcedures and RtlBlocks.
+                //$TODO: However, Reko hasn't had a chance to reconstitute constants yet, 
+                // because that requires SSA, so we may be missing
+                // opportunities to build and detect pointers. This typically happens in 
+                // the type inference phase, when we both have constants and their types.
+                // 
+                // When this gets merged into analyis-development phase, fold 
+                // Procedure construction into SSA construction.
+                foreach (var rtlProc in procs)
+                {
+                    EnqueueProcedure(rtlProc.Entry.Address);
+                }
+                ProcessQueue();
             }
-            foreach (ImageSymbol ep in program.EntryPoints.Values)
-            {
-                EnqueueImageSymbol(ep, true);
-            }
-            foreach (var rtlProc in procs)
-            {
-                EnqueueProcedure(rtlProc.Entry.Address);
-            }
-            ProcessQueue();
         }
 
         /*

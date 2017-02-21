@@ -119,6 +119,13 @@ namespace Reko.Scanning
             };
         }
 
+        /// <summary>
+        /// Assumes that an initial recursive scan has been performed,
+        /// potentially leaving "islands" of unscanned data and code in the 
+        /// ImageMap.
+        /// </summary>
+        /// <returns>If there were any unscanned blocks, a ScanResults object.
+        /// If no unscanned blocks were found, returns null.</returns>
         public ScanResults ScanImage()
         {
             //$TODO: scan user datas - may yield procedure addresses
@@ -131,11 +138,11 @@ namespace Reko.Scanning
                 DirectlyCalledAddresses = new Dictionary<Address, int>()
             };
 
-            // Break up the image map along known procedure boundaries
-            foreach (var addr in sr.KnownProcedures)
-            {
-                program.ImageMap.AddItem(addr, new ImageMapItem());
-            }
+            //// Break up the image map along known procedure boundaries
+            //foreach (var addr in sr.KnownProcedures)
+            //{
+            //    program.ImageMap.AddItem(addr, new ImageMapItem());
+            //}
 
             // At this point, we have some entries in the image map
             // that are data, and unscanned ranges in betweeen. We
@@ -146,12 +153,19 @@ namespace Reko.Scanning
 
             var stopwatch = new Stopwatch();
             var dasm = new ShingledScanner(program, host, storageBinder, sr, eventListener);
+            bool unscanned = false;
             foreach (var range in ranges)
             {
+                unscanned = true;
                 dasm.ScanRange(range.Item1,
                     range.Item2, 
                     range.Item3,
                     range.Item3.ToLinear() - range.Item2.ToLinear());
+            }
+            if (!unscanned)
+            {
+                // No unscanned blocks were found.
+                return null;
             }
 
             // Remove blocks that fall off the end of the segment

@@ -35,6 +35,7 @@ namespace Reko.Scanning
     /// </summary>
     public class ScanResults
     {
+        public ScanResults() { }
         /// <summary>
         /// All the discovered machine instructions, rewritten into RTL
         /// instruction clusters.
@@ -69,7 +70,7 @@ namespace Reko.Scanning
         /// More specifically, these are addresses that are known to be
         /// function entry points.
         /// </summary>
-        public HashSet<Address> KnownProcedures;
+        public HashSet<Address> KnownProcedures { get; set; }
 
         /// <summary>
         /// Tally of occurrences of bitpatterns that look like addresses,
