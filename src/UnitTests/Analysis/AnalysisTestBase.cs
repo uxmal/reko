@@ -357,6 +357,9 @@ namespace Reko.UnitTests.Analysis
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
             platform.Stub(p => p.CreateImplicitArgumentRegisters()).Return(
                 new HashSet<RegisterStorage>());
+            platform.Stub(p => p.MakeAddressFromLinear(0ul))
+                .IgnoreArguments()
+                .Do(new Func<ulong, Address>(ul => Address.Ptr32((uint) ul)));
             Given_Platform(platform);
         }
 	}
