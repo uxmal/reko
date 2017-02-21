@@ -521,6 +521,11 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
+        void IScanner.ScanImageSymbol(Program program, ImageSymbol sym, bool isEntryPoint)
+        {
+            throw new NotImplementedException();
+        }
+
         ExternalProcedure IScanner.GetImportedProcedure(Address addrImportThunk, Address addrInstruction)
         {
             throw new NotImplementedException();

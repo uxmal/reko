@@ -179,7 +179,7 @@ namespace Reko.UnitTests.Scanning
             this.project = new Project { Programs = { program } };
         }
 
-        private void Given_Trace( RtlTrace trace)
+        private void Given_Trace(RtlTrace trace)
         {
             fakeArch.Test_AddTrace(trace);
         }
@@ -453,6 +453,7 @@ fn0C00_0000_exit:
                 m => { m.Assign(reg1, m.Word32(1)); },
                 m => { m.Goto(Address.Ptr32(0x1004)); },
             });
+            fakeArch.Test_IgnoreAllUnkownTraces();
 
             scan.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x1000)) { ProcessorState = arch.CreateProcessorState(), }, true);
             scan.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x1100)) { ProcessorState = arch.CreateProcessorState(), }, true);

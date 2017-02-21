@@ -75,5 +75,6 @@ namespace Reko.Scanning
         void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
 
         IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, IStorageBinder frame);
+        void ScanImageSymbol(Program program, ImageSymbol sym, bool isEntryPoint);
     }
 }

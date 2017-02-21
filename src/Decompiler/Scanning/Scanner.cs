@@ -44,7 +44,7 @@ namespace Reko.Scanning
     /// Callers feed the scanner by calling EnqueueXXX methods before calling ProcessQueue(). ProcessQueue() then
     /// processes the queues.
     /// </remarks>
-    public class Scanner : IScanner, IRewriterHost
+    public class ScannerOld : IScanner, IRewriterHost
     {
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
@@ -70,7 +70,7 @@ namespace Reko.Scanning
         private CancellationTokenSource cancelSvc;
         private HashSet<Address> scannedGlobalData = new HashSet<Address>();
 
-        public Scanner(
+        public ScannerOld(
             Program program,
             IImportResolver importResolver,
             IServiceProvider services)
@@ -990,9 +990,9 @@ namespace Reko.Scanning
     /// to disassemble pockets of bytes that are not reachable by simple 
     /// recursive disassembly of the binary.
     /// </summary>
-    public class ScannerNew : Scanner
+    public class Scanner : ScannerOld
     {
-        public ScannerNew(Program program, IImportResolver importResolver, IServiceProvider services) : base(program, importResolver, services)
+        public Scanner(Program program, IImportResolver importResolver, IServiceProvider services) : base(program, importResolver, services)
         {
         }
 
