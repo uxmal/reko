@@ -107,8 +107,11 @@ namespace Reko.Scanning
             {
                 //$PERF: slow! need a map (address => block)
                 var entry = blocks.Nodes.Where(b => b.Address == addrProcStart).FirstOrDefault();
-                var r = new DfsIterator<RtlBlock>(blocks).PreOrder(entry).ToHashSet();
-                reachable.UnionWith(r);
+                if (entry != null)
+                {
+                    var r = new DfsIterator<RtlBlock>(blocks).PreOrder(entry).ToHashSet();
+                    reachable.UnionWith(r);
+                }
             }
             return reachable;
         }
