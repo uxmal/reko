@@ -67,19 +67,32 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteJmp()
         {
-            this.rtlc = RtlClass.Transfer;
             var jmpDst = RewriteJmpSrc(instr.op1);
-            m.Goto(jmpDst);
+            if (jmpDst != null)
+            {
+                this.rtlc = RtlClass.Transfer;
+                m.Goto(jmpDst);
+            }
+            else
+            {
+                m.Invalid();
+            }
         }
 
         private void RewriteJsr()
         {
-            this.rtlc = RtlClass.Transfer;
             var regLink = (RegisterOperand)instr.op1;
             //$TODO: do something with regLink.
             var callDst = RewriteJmpSrc(instr.op2);
-            m.Call(callDst, 2);
-            return;
+            if (callDst != null)
+            {
+                this.rtlc = RtlClass.Transfer;
+                m.Call(callDst, 2);
+            }
+            else
+            {
+                m.Invalid();
+            }
         }
 
         private void RewriteReset()

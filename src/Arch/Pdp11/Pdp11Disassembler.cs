@@ -47,16 +47,23 @@ namespace Reko.Arch.Pdp11
             if (!rdr.IsValid)
                 return null;
             var addr = rdr.Address;
-            try
+                ushort opcode;
+                if (!rdr.TryReadLeUInt16(out opcode))
+                    return null;
+                dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
+                var decoder = decoders[(opcode >> 0x0C) & 0x00F];
+            if (decoder != null)
             {
-                instrCur = Disassemble();
-            } catch (AddressCorrelatedException)
-            {
-                throw;
+                instrCur= decoder.Decode(opcode, this);
             }
-            catch (Exception ex)
+            else
             {
-                throw new AddressCorrelatedException(addr, "{0}", ex.Message);
+                switch ((opcode >> 0x0C) & 0x007)
+                {
+                case 0: instrCur = NonDoubleOperandInstruction(opcode, this); break;
+                case 7: instrCur = extraDecoders[(opcode >> 0x09) & 7].Decode(opcode, this); break;
+                default: throw new NotImplementedException();
+                }
             }
             instrCur.Address = addr;
             instrCur.Length = (int)(rdr.Address - addr);
@@ -221,23 +228,7 @@ namespace Reko.Arch.Pdp11
             };
         }
 
-        private Pdp11Instruction Disassemble()
-        {
-            ushort opcode;
-            if (!rdr.TryReadLeUInt16(out opcode))
-                return new Pdp11Instruction { Opcode = Opcode.illegal };
-            dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
-            var decoder = decoders[(opcode >> 0x0C) & 0x00F];
-            if (decoder != null)
-                return decoder.Decode(opcode, this);
 
-            switch ((opcode >> 0x0C) & 0x007)
-            {
-            case 0: return NonDoubleOperandInstruction(opcode, this);
-            case 7: return extraDecoders[(opcode >> 0x09) & 7].Decode(opcode, this);
-            }
-            throw new NotImplementedException();
-        }
 
         private MachineOperand Imm6(ushort opcode)
         {

@@ -63,9 +63,14 @@ namespace Reko.Arch.Pdp11
                 m = new RtlEmitter(this.rtlInstructions);
                 switch (instr.Opcode)
                 {
-                default: throw new AddressCorrelatedException(
-                    instr.Address,
-                    "Rewriting of PDP-11 instruction {0} not supported yet.", instr.Opcode);
+                default:
+                    host.Warn(
+                        instr.Address,
+                        "Rewriting of PDP-11 instruction {0} not supported yet.", 
+                        instr.Opcode);
+                    m.Invalid();
+                    break;
+                case Opcode.illegal: m.Invalid(); break;
                 case Opcode.adc: RewriteAdc(); break;
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.addb: RewriteAdd(); break;
@@ -131,6 +136,11 @@ namespace Reko.Arch.Pdp11
 
         private void SetFlags(Expression e, FlagM changed, FlagM zeroed, FlagM set)
         {
+            if (e == null)
+            {
+                Invalid();
+                return;
+            }
             uint uChanged = (uint)changed;
             if (uChanged != 0)
             {
@@ -164,10 +174,9 @@ namespace Reko.Arch.Pdp11
             var memOp = op as MemoryOperand;
             if (memOp == null)
             {
-                throw new AddressCorrelatedException(
-                      dasm.Current.Address,
-                      "Invalid addressing mode for transfer functions.",
-                      memOp.Mode);
+                // PDP-11 always has a memory reference 
+                // for the destination of a transfer instruction.
+                return null;
             }
             var r = binder.EnsureRegister(memOp.Register);
             var tmp = binder.CreateTemporary(op.Width);
@@ -368,6 +377,11 @@ namespace Reko.Arch.Pdp11
                     m.Assign(m.Load(tmp.DataType, r), tmp);
                     m.Assign(r, m.IAdd(r, tmp.DataType.Size));
                     break;
+                case AddressMode.AutoIncrDef:
+                    m.Assign(tmp, gen(src));
+                    m.Assign(m.Load(PrimitiveType.Ptr16, m.Load(tmp.DataType, r)), tmp);
+                    m.Assign(r, m.IAdd(r, tmp.DataType.Size));
+                    break;
                 case AddressMode.AutoDecr:
                     m.Assign(r, m.ISub(r, tmp.DataType.Size));
                     m.Assign(m.Load(tmp.DataType, r), gen(src));
@@ -415,12 +429,22 @@ namespace Reko.Arch.Pdp11
                             tmp);
                     }
                     else
-                        throw new NotImplementedException();
+                    {
+                        m.Assign(
+                            m.Load(
+                                PrimitiveType.Ptr16,
+                                m.Load(
+                                    this.dasm.Current.DataWidth,
+                                    m.IAdd(
+                                        r,
+                                        Constant.Word16(memOp.EffectiveAddress)))),
+                            gen(src));
+                    }
                     break;
                 }
                 return tmp;
             }
-            throw new NotImplementedException(string.Format("Not implemented: addressing mode {0}.", op.GetType().Name));
+            return null;
         }
 
         private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression, Expression> gen)
@@ -457,6 +481,11 @@ namespace Reko.Arch.Pdp11
                     m.Assign(r, m.ISub(r, tmp.DataType.Size));
                     m.Assign(tmp, gen(src, m.Load(tmp.DataType, r)));
                     m.Assign(m.Load(tmp.DataType, r), tmp);
+                    break;
+                case AddressMode.AutoIncrDef:
+                    m.Assign(tmp, gen(src, m.Load(PrimitiveType.Ptr16, m.Load(tmp.DataType, r))));
+                    m.Assign(m.Load(tmp.DataType, r), tmp);
+                    m.Assign(r, m.IAdd(r, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoDecrDef:
                     m.Assign(r, m.ISub(r, tmp.DataType.Size));
@@ -532,7 +561,14 @@ namespace Reko.Arch.Pdp11
                 }
                 return tmp;
             }
-            throw new NotImplementedException(string.Format("Not implemented: addressing mode {0}.", op.GetType().Name));
+            return null;
+        }
+
+        private void Invalid()
+        {
+            rtlInstructions.Clear();
+            rtlc = RtlClass.Invalid;
+            m.Invalid();
         }
     }
 }
