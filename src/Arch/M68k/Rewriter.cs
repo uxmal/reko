@@ -73,6 +73,12 @@ namespace Reko.Arch.M68k
                 orw = new OperandRewriter(arch, this.m, this.binder, di.dataWidth);
                 switch (di.code)
                 {
+                default:
+                    throw new AddressCorrelatedException(
+                        di.Address,
+                        "Rewriting M68k opcode '{0}' is not supported yet.",
+                        di.code);
+
                 case Opcode.add: RewriteBinOp((s, d) => m.IAdd(d, s), FlagM.CVZNX); break;
                 case Opcode.adda: RewriteBinOp((s, d) => m.IAdd(d, s)); break;
                 case Opcode.addi: RewriteArithmetic((s, d) => m.IAdd(d, s)); break;
@@ -190,11 +196,6 @@ VS Overflow Set 1001 V
                 case Opcode.swap: RewriteSwap(); break;
                 case Opcode.tst: RewriteTst(); break;
                 case Opcode.unlk: RewriteUnlk(); break;
-                default:
-                    throw new AddressCorrelatedException(
-                        di.Address,
-                        "Rewriting M68k opcode '{0}' is not supported yet.",
-                        di.code);
                 }
                 yield return new RtlInstructionCluster(
                     addr,

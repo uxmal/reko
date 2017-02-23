@@ -225,8 +225,10 @@ namespace Reko.Scanning
             {
                 if (listener.IsCanceled())
                     break;
-                FindClusterEntries(cluster);
-                procs.AddRange(PostProcessCluster(cluster));
+                if (FindClusterEntries(cluster))
+                {
+                    procs.AddRange(PostProcessCluster(cluster));
+                }
             }
             return procs;
         }
@@ -236,7 +238,7 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="sr"></param>
         /// <param name="cluster"></param>
-        public void FindClusterEntries(Cluster cluster)
+        public bool FindClusterEntries(Cluster cluster)
         {
             var nopreds = new List<RtlBlock>();
             foreach (var block in cluster.Blocks)
@@ -254,18 +256,24 @@ namespace Reko.Scanning
             // If one or more nodes were the destination of a direct call,
             // use those as entries.
             if (cluster.Entries.Count > 0)
-                return;
+                return true;
+            //$REVIEW: the heuristic of returning the nodes with zero predecessor
+            // yields a lot of false positives.
+            /*
+             *            return false;
 
-            // Otherwise, if one or more nodes has zero predecessors, pick it.
-            if (nopreds.Count > 0)
-            {
-                cluster.Entries.UnionWith(nopreds);
-                return;
-            }
+                        // Otherwise, if one or more nodes has zero predecessors, pick it.
+                        if (nopreds.Count > 0)
+                        {
+                            cluster.Entries.UnionWith(nopreds);
+                            return;
+                        }
 
-            // If we can't find another possibility, return the node with the
-            // lowest address.
-            cluster.Entries.Add(cluster.Blocks.OrderBy(b => b.Address).First());
+                        // If we can't find another possibility, return the node with the
+                        // lowest address.
+                        cluster.Entries.Add(cluster.Blocks.OrderBy(b => b.Address).First());
+             */
+            return false;
         }
 
         /// <summary>

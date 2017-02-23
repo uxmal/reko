@@ -274,7 +274,9 @@ namespace Reko.Gui.Windows
             if (dlg == null)
                 return;
             System.Threading.Interlocked.Exchange<string>(ref status, caption);
-            var percentDone = (int)((numerator * 100L) / denominator);
+            var percentDone = Math.Min(
+                100,
+                (int)((numerator * 100L) / denominator));
             dlg.Worker.ReportProgress(percentDone);
         }
 
