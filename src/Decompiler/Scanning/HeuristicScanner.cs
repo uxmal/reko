@@ -157,10 +157,17 @@ namespace Reko.Scanning
             foreach (var range in ranges)
             {
                 unscanned = true;
-                dasm.ScanRange(range.Item1,
-                    range.Item2, 
-                    range.Item3,
-                    range.Item3.ToLinear() - range.Item2.ToLinear());
+                try
+                {
+                    dasm.ScanRange(range.Item1,
+                        range.Item2,
+                        range.Item3,
+                        range.Item3.ToLinear() - range.Item2.ToLinear());
+                }
+                catch (AddressCorrelatedException aex)
+                {
+                    host.Error(aex.Address, aex.Message);
+                }
             }
             if (!unscanned)
             {

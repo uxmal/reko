@@ -100,6 +100,11 @@ namespace Reko.UnitTests.Arch.Arm
             {
                 throw new NotImplementedException();
             }
+
+            public void Warn(Address address, string format, params object[] args)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         #region Lots of Thumb!

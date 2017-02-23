@@ -176,13 +176,17 @@ namespace Reko.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
+            public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+            {
+                throw new NotImplementedException();
+            }
 
             public void Error(Address address, string message)
             {
                 throw new NotImplementedException();
             }
 
-            public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+            public void Warn(Address address, string format, params object[] args)
             {
                 throw new NotImplementedException();
             }

@@ -110,6 +110,12 @@ namespace Reko.UnitTests.Arch
             {
                 throw new Exception(string.Format("{0}: {1}", address, message));
             }
+
+            public void Warn(Address address, string format, params object[] args)
+            {
+                throw new Exception(string.Format("{0}: {1}", address,
+                    string.Format(format, args)));
+            }
         }
 
         protected virtual IRewriterHost CreateRewriterHost()

@@ -455,5 +455,27 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "0|T--|0200(4): 1 instructions",
                 "1|T--|goto Mem0[r1 + 0x02CC:ptr16]");
         }
+
+        [Test(Description = "Destination mustn't be an immediate")]
+        public void Pdp11Rw_invalid_dst_immediate()
+        {
+            // 57 58 59 5A
+            BuildTest(0x5857, 0x5A59);
+            AssertCode(
+                  "0|---|0200(4): 1 instructions",
+                  "1|---|<invalid>");
+        }
+
+        [Test]
+        public void Pdp11Rw_Indexed_Deferred()
+        {
+            BuildTest(0x193C, 0x0A26); // mov-(r4),@0A26(r4)
+            AssertCode(
+                  "0|L--|0200(4): 4 instructions",
+                  "1|L--|r4 = r4 - 0x0002",
+                  "2|L--|Mem0[Mem0[r4 + 0x0A26:word16]:ptr16] = Mem0[r4:word16]",
+                  "3|L--|NZ = cond(v4)",
+                  "4|L--|V = false");
+        }
     }
 }
