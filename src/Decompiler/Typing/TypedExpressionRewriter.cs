@@ -74,6 +74,8 @@ namespace Reko.Typing
                     {
                         Debug.WriteLine(
                             string.Format("Exception in TypedExpressionRewriter.RewriteProgram: {0} ({1})\r\n{2}", proc, ex.Message, ex.StackTrace));
+                        // reset flags after error
+                        dereferenced = false;
                     }
                 }
             }
