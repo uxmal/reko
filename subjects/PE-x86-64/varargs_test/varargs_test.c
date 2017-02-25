@@ -1127,7 +1127,7 @@ void fn0000000140001E9C(Eq_1846 * rax, Eq_1847 * rcx, Eq_1848 * rdx, Eq_1854 * r
 	}
 	struct Eq_1873 * rax_24 = rdx->ptr0010;
 	word64 rdx_23 = Mem0[(int64) (r11d_7 & ~0x07) + r10_17:word64];
-	struct Eq_1883 * rcx_27 = DPB(rcx_20, rax_24->dw0008, 0)[rdx->qw0008 / 0x0C];
+	struct Eq_1883 * rcx_27 = DPB(rcx_20, rax_24->dw0008, 0) + rdx->qw0008 / 0x0C;
 	if ((rcx_27->b0003 & 0x0F) != 0x00)
 		r9_12 = rcx + DPB(rax_24, (word32) rcx_27->b0003 & ~0x0F, 0);
 	ui64 r9_37 = r9_12 ^ rdx_23;
