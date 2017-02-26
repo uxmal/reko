@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Reko.Core;
+using Reko.Core.Rtl;
 
 namespace Reko.Arch.M68k
 {
@@ -58,6 +59,11 @@ namespace Reko.Arch.M68k
                     Constant.Byte(1), (s, d) =>
                         host.PseudoProcedure(procName, PrimitiveType.Word32, d, s));
             }
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
             m.Assign(
                 orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.ZF),
                 m.Cond(opDst));
@@ -69,6 +75,11 @@ namespace Reko.Arch.M68k
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) =>
                 host.PseudoProcedure(procName, di.dataWidth, d, s, orw.FlagGroup(FlagM.XF)));
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
             m.Assign(
                 orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.XF | FlagM.ZF),
                 m.Cond(opDst));
@@ -106,6 +117,11 @@ namespace Reko.Arch.M68k
             var tmpMask = binder.CreateTemporary(PrimitiveType.UInt32);
             m.Assign(tmpMask, m.Shl(1, opSrc));
             var opDst = orw.RewriteDst(di.op2, di.Address, tmpMask, (s, d) => m.Xor(d, s));
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
             m.Assign(
                 orw.FlagGroup(FlagM.ZF),
                 m.Cond(m.And(opDst, tmpMask)));
@@ -183,6 +199,11 @@ namespace Reko.Arch.M68k
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, PrimitiveType.Int32, opSrc, binOpGen);
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
             m.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF), m.Cond(opDst));
             m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
@@ -213,6 +234,11 @@ namespace Reko.Arch.M68k
             else
             {
                 var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, opGen);
+                if (opDst == null)
+                {
+                    EmitInvalid();
+                    return;
+                }
                 m.Assign(orw.FlagGroup(FlagM.CVZNX), m.Cond(opDst));
             }
         }
@@ -225,6 +251,11 @@ namespace Reko.Arch.M68k
             var src = orw.RewriteSrc(di.op1, di.Address);
             var dst = orw.RewriteDst(di.op2, di.Address, src, (d, s) => 
                     opr(opr(d, s), x));
+            if (dst == null)
+            {
+                EmitInvalid();
+                return;
+            }
             m.Assign(orw.FlagGroup(FlagM.CVZNX), m.Cond(dst));
         }
 
@@ -247,12 +278,22 @@ namespace Reko.Arch.M68k
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, opGen);
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
         }
 
         private void RewriteBinOp(Func<Expression, Expression, Expression> opGen, FlagM flags)
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, opGen);
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
             m.Assign(orw.FlagGroup(flags), m.Cond(opDst));
         }
 
@@ -418,6 +459,11 @@ namespace Reko.Arch.M68k
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) => s);
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
             var isSr = GetRegister(di.op1) == Registers.sr || GetRegister(di.op2) == Registers.sr;
             if (setFlag && !isSr)
             {
@@ -566,12 +612,22 @@ namespace Reko.Arch.M68k
 
         private void AllConditions(Expression expr)
         {
+            if (expr == null)
+            {
+                EmitInvalid();
+                return;
+            }
             var f = orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.VF | FlagM.XF | FlagM.ZF);
             m.Assign(f, m.Cond(expr));
         }
 
         private void LogicalConditions(Expression expr)
         {
+            if (expr == null)
+            {
+                EmitInvalid();
+                return;
+            }
             m.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), m.Cond(expr));
             m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
             m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());

@@ -869,18 +869,3 @@ void fn0C00_0294()
 	return;
 }
 ===========================
-// fn0C00_0295
-// Return size: 0
-void fn0C00_0295()
-fn0C00_0295_entry:
-	// succ:  l0C00_0295
-l0C00_0295:
-	return
-	// succ:  fn0C00_0295_exit
-fn0C00_0295_exit:
-
-void fn0C00_0295()
-{
-	return;
-}
-===========================

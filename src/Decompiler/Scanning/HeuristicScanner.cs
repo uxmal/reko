@@ -457,7 +457,7 @@ namespace Reko.Scanning
             eventListener.Warn(eventListener.CreateAddressNavigator(program, addr), message, args);
         }
 
-        void IScanner.Error(Address addr, string message)
+        void IScanner.Error(Address addr, string message, params object[] args)
         {
             eventListener.Error(eventListener.CreateAddressNavigator(program, addr), message);
         }

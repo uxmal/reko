@@ -106,9 +106,10 @@ namespace Reko.UnitTests.Arch
                 throw new NotImplementedException();
             }
 
-            public void Error(Address address, string message)
+            public void Error(Address address, string message, params object[] args)
             {
-                throw new Exception(string.Format("{0}: {1}", address, message));
+                throw new Exception(string.Format("{0}: {1}", address, 
+                    string.Format(message, args)));
             }
 
             public void Warn(Address address, string format, params object[] args)

@@ -38,13 +38,16 @@ namespace Reko.Arch.Vax
             var limit = RewriteSrcOp(0, width);
             var add = RewriteSrcOp(1, width);
             var index = RewriteDstOp(2, width, e => m.FAdd(e, add));
-            NZV(index);
+            if (!NZV(index))
+                return;
             var cAdd = add as Constant;
             if (cAdd == null)
-                throw new AddressCorrelatedException(
+            {
+                host.Error(
                     dasm.Current.Address,
-                    "Instruction {0] too complex to rewrite.",
+                    "Instruction {0} too complex to rewrite.",
                     dasm.Current);
+            }
             if (cAdd.ToReal64() >= 0.0)
             {
                 m.Branch(
@@ -67,7 +70,8 @@ namespace Reko.Arch.Vax
             var limit = RewriteSrcOp(0, width);
             var add = RewriteSrcOp(1, width);
             var index = RewriteDstOp(2, width, e => m.IAdd(e, add));
-            NZV(index);
+            if (!NZV(index))
+                return;
             var cAdd = add as Constant;
             if (cAdd == null)
                 throw new AddressCorrelatedException(
@@ -155,7 +159,8 @@ namespace Reko.Arch.Vax
                 1,
                 PrimitiveType.Word32,
                 e => m.IAdd(e, m.Word32(1)));
-            AllFlags(dst);
+            if (!AllFlags(dst))
+                return;
             m.Branch(
                 cmp(dst, limit),
                 ((AddressOperand)dasm.Current.Operands[2]).Address,
@@ -170,7 +175,8 @@ namespace Reko.Arch.Vax
                 0,
                 PrimitiveType.Word32,
                 e => m.ISub(e, m.Word32(1)));
-            AllFlags(dst);
+            if (!AllFlags(dst))
+                return;
             m.Branch(
                 cmp(dst, Constant.Word32(0)),
                 ((AddressOperand)dasm.Current.Operands[1]).Address,

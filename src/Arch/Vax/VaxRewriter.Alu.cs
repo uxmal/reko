@@ -133,32 +133,32 @@ namespace Reko.Arch.Vax
             AllFlags(dst);
         }
 
-        private void RewriteAlu2(PrimitiveType width, Func<Expression, Expression, Expression> fn, Action<Expression> genFlags)
+        private bool RewriteAlu2(PrimitiveType width, Func<Expression, Expression, Expression> fn, Func<Expression, bool> genFlags)
         {
             var op1 = RewriteSrcOp(0, width);
             var dst = RewriteDstOp(1, width, e => fn(e, op1));
-            genFlags(dst);
+            return genFlags(dst);
         }
 
-        private void RewriteAlu3(PrimitiveType width, Func<Expression, Expression, Expression> fn, Action<Expression> genFlags)
+        private bool RewriteAlu3(PrimitiveType width, Func<Expression, Expression, Expression> fn, Func<Expression, bool> genFlags)
         {
             var op1 = RewriteSrcOp(0, width);
             var op2 = RewriteSrcOp(1, width);
             var dst = RewriteDstOp(2, width, e => fn(op2, op1));
-            genFlags(dst);
+            return genFlags(dst);
         }
 
-        private void RewriteAluUnary1(PrimitiveType width, Func<Expression, Expression> fn, Action<Expression> genFlags)
+        private bool RewriteAluUnary1(PrimitiveType width, Func<Expression, Expression> fn, Func<Expression, bool> genFlags)
         {
             var dst = RewriteDstOp(1, width, e => fn(e));
-            genFlags(dst);
+            return genFlags(dst);
         }
 
-        private void RewriteAluUnary2(PrimitiveType width, Func<Expression, Expression> fn, Action<Expression> genFlags)
+        private bool RewriteAluUnary2(PrimitiveType width, Func<Expression, Expression> fn, Func<Expression, bool> genFlags)
         {
             var op1 = RewriteSrcOp(0, width);
             var dst = RewriteDstOp(1, width, e => fn(op1));
-            genFlags(dst);
+            return genFlags(dst);
         }
 
         private void RewriteAsh(PrimitiveType width)
@@ -357,7 +357,12 @@ namespace Reko.Arch.Vax
         {
             var sp = frame.EnsureRegister(Registers.sp);
             m.Assign(sp, m.ISub(sp, PrimitiveType.Word32.Size));
-            var op0 = (MemoryAccess) RewriteSrcOp(0, PrimitiveType.Word32);
+            var op0 = RewriteSrcOp(0, PrimitiveType.Word32) as MemoryAccess;
+            if (op0 == null)
+            {
+                EmitInvalid();
+                return;
+            }
             var ea = op0.EffectiveAddress;
             if (!(ea is Identifier || ea is Constant))
             {

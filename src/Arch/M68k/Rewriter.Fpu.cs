@@ -58,6 +58,11 @@ namespace Reko.Arch.M68k
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, binOpGen);
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
             m.Assign(binder.EnsureIdentifier(Registers.fpsr), m.Cond(opDst));
         }
 
@@ -81,6 +86,11 @@ namespace Reko.Arch.M68k
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, MaybeCastFpuArgs);
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
             m.Assign(binder.EnsureIdentifier(Registers.fpsr), m.Cond(opDst));
         }
 

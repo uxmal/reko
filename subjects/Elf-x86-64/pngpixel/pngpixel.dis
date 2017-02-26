@@ -1,0 +1,617 @@
+// _init
+// Return size: 0
+void _init()
+_init_entry:
+_init_exit:
+
+
+// _start
+// Return size: 0
+void _start()
+_start_entry:
+_start_exit:
+
+
+// deregister_tm_clones
+// Return size: 0
+void deregister_tm_clones()
+deregister_tm_clones_entry:
+deregister_tm_clones_exit:
+
+
+// register_tm_clones
+// Return size: 0
+void register_tm_clones()
+register_tm_clones_entry:
+register_tm_clones_exit:
+
+
+// __do_global_dtors_aux
+// Return size: 0
+void __do_global_dtors_aux()
+__do_global_dtors_aux_entry:
+__do_global_dtors_aux_exit:
+
+
+// frame_dummy
+// Return size: 0
+void frame_dummy()
+frame_dummy_entry:
+frame_dummy_exit:
+
+
+// component
+// Return size: 0
+void component()
+component_entry:
+component_exit:
+
+
+// print_pixel
+// Return size: 0
+void print_pixel()
+print_pixel_entry:
+print_pixel_exit:
+
+
+// main
+// Return size: 0
+void main()
+main_entry:
+main_exit:
+
+
+// __libc_csu_init
+// Return size: 0
+void __libc_csu_init()
+__libc_csu_init_entry:
+__libc_csu_init_exit:
+
+
+// __libc_csu_fini
+// Return size: 0
+void __libc_csu_fini()
+__libc_csu_fini_entry:
+__libc_csu_fini_exit:
+
+
+// _fini
+// Return size: 0
+void _fini()
+_fini_entry:
+_fini_exit:
+
+
+// _IO_stdin_used
+// Return size: 0
+void _IO_stdin_used()
+_IO_stdin_used_entry:
+	// succ:  l0000000000401800
+l0000000000401800:
+	rsp = fp
+	v5 = Mem0[rax:word32] + eax
+	Mem0[rax:word32] = v5
+	SCZO = cond(v5)
+	al = al + Mem0[rax:byte]
+	SCZO = cond(al)
+	v8 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v8
+	SCZO = cond(v8)
+	v9 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v9
+	SCZO = cond(v9)
+	branch Test(OV,O) l0000000000401878
+	// succ:  l000000000040180A l0000000000401878
+l000000000040180A:
+	branch Test(OV,O) l0000000000401876
+	// succ:  l000000000040180D l0000000000401876
+l000000000040180D:
+	branch Test(SG,S) l0000000000401874
+	// succ:  l000000000040180F l0000000000401874
+l000000000040180F:
+	Mem0[rdi:byte] = __in(Mem0)
+	rdi = rdi + 0x0000000000000001
+	SCZO = cond(ah - Mem0[rax:byte])
+	ebp = Mem0[rsi + 0x0000000000000076:word32] *s 0x64696C61
+	SCZO = cond(ebp)
+	v17 = Mem0[rdx + 0x0000000000000069:byte] & ah
+	Mem0[rdx + 0x0000000000000069:byte] = v17
+	SZO = cond(Mem0[rdx + 0x0000000000000069:byte])
+	C = false
+	branch Test(EQ,Z) l000000000040183E
+	// succ:  l000000000040181E l000000000040183E
+l000000000040181E:
+	branch Test(OV,O) l0000000000401896
+	// succ:  l0000000000401822 l0000000000401896
+l0000000000401822:
+	rsp = rsp - 0x0000000000000004
+	Mem0[rsp:word32] = 0x0A752520
+	cl = cl + al
+	SCZO = cond(cl)
+l000000000040183E:
+	v29 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v29
+	SCZO = cond(v29)
+	v30 = (Mem0[rsi:word32] & 0x00000001 << 0x40) != 0x00000000
+	Mem0[rsi:word32] = __ror(Mem0[rsi:word32], 0x40)
+	C = v30
+	v31 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v31
+	SCZO = cond(v31)
+	v32 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v32
+	SCZO = cond(v32)
+	v34 = Mem0[rdi + 0x000000000000000E:byte] + dh
+	Mem0[rdi + 0x000000000000000E:byte] = v34
+	SCZO = cond(v34)
+	v35 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v35
+	SCZO = cond(v35)
+	v36 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v36
+	SCZO = cond(v36)
+	cl = cl + al
+	SCZO = cond(cl)
+l0000000000401874:
+	v37 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v37
+	SCZO = cond(v37)
+	// succ:  l0000000000401876
+l0000000000401876:
+	v38 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v38
+	SCZO = cond(v38)
+	// succ:  l0000000000401878
+l0000000000401878:
+	v22 = (Mem0[rsi:word32] & 0x00000001 << 0x40) != 0x00000000
+	Mem0[rsi:word32] = __ror(Mem0[rsi:word32], 0x40)
+	C = v22
+	v23 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v23
+	SCZO = cond(v23)
+	v24 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v24
+	SCZO = cond(v24)
+	cl = cl + al
+	SCZO = cond(cl)
+l0000000000401896:
+	v25 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v25
+	SCZO = cond(v25)
+	v26 = (Mem0[rsi:word32] & 0x00000001 << 0x40) != 0x00000000
+	Mem0[rsi:word32] = __ror(Mem0[rsi:word32], 0x40)
+	C = v26
+	v27 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v27
+	SCZO = cond(v27)
+	v28 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v28
+	SCZO = cond(v28)
+	cl = cl + al
+	SCZO = cond(cl)
+_IO_stdin_used_exit:
+
+
+// __FRAME_END__
+// Return size: 0
+void __FRAME_END__()
+__FRAME_END___entry:
+	// succ:  l0000000000401C18
+l0000000000401C18:
+	rsp = fp
+	v5 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v5
+	SCZO = cond(v5)
+	v7 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v7
+	SCZO = cond(v7)
+__FRAME_END___exit:
+
+
+// __frame_dummy_init_array_entry
+// Return size: 0
+void __frame_dummy_init_array_entry()
+__frame_dummy_init_array_entry_entry:
+	// succ:  l0000000000601E00
+l0000000000601E00:
+	rsp = fp
+	al = Mem0[0x800000000000400D:byte]
+	// succ:  l0000000000601E00_thunk_fn0000000000601E09
+l0000000000601E00_thunk_fn0000000000601E09:
+	call fn0000000000601E09 (retsize: 0;)
+	return
+	// succ:  __frame_dummy_init_array_entry_exit
+__frame_dummy_init_array_entry_exit:
+
+
+// __do_global_dtors_aux_fini_array_entry
+// Return size: 0
+void __do_global_dtors_aux_fini_array_entry()
+__do_global_dtors_aux_fini_array_entry_entry:
+	// succ:  l0000000000601E08
+l0000000000601E08:
+	rsp = fp
+	v3 = Mem0[0x0000000000601E4F:byte] | 0x00
+	Mem0[0x0000000000601E4F:byte] = v3
+	SZO = cond(Mem0[0x0000000000601E4F:byte])
+	C = false
+	// succ:  l0000000000601E08_thunk_fn0000000000601E09
+l0000000000601E08_thunk_fn0000000000601E09:
+	call fn0000000000601E09 (retsize: 0;)
+	return
+	// succ:  __do_global_dtors_aux_fini_array_entry_exit
+__do_global_dtors_aux_fini_array_entry_exit:
+
+
+// fn0000000000601E09
+// Return size: 0
+void fn0000000000601E09()
+fn0000000000601E09_entry:
+	// succ:  l0000000000601E09
+l0000000000601E09:
+	rsp = fp
+	eax = eax | 0x00000040
+	SZO = cond(eax)
+	C = false
+	v8 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v8
+	SCZO = cond(v8)
+	goto l0000000000601E0E_thunk___JCR_END__
+	// succ:  l0000000000601E0E_thunk___JCR_END__
+l0000000000601E09:
+	v10 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v10
+	SCZO = cond(v10)
+	v11 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v11
+	SCZO = cond(v11)
+	v12 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v12
+	SCZO = cond(v12)
+	v13 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v13
+	SCZO = cond(v13)
+	v15 = Mem0[rcx:byte] + al
+	Mem0[rcx:byte] = v15
+	SCZO = cond(v15)
+	v16 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v16
+	SCZO = cond(v16)
+	v17 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v17
+	SCZO = cond(v17)
+	v18 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v18
+	SCZO = cond(v18)
+	v19 = Mem0[rcx:byte] + al
+	Mem0[rcx:byte] = v19
+	SCZO = cond(v19)
+	v20 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v20
+	SCZO = cond(v20)
+	v21 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v21
+	SCZO = cond(v21)
+	v22 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v22
+	SCZO = cond(v22)
+	v23 = Mem0[rcx:byte] + al
+	Mem0[rcx:byte] = v23
+	SCZO = cond(v23)
+	v24 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v24
+	SCZO = cond(v24)
+	v25 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v25
+	SCZO = cond(v25)
+	v26 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v26
+	SCZO = cond(v26)
+	v29 = Mem0[rbp + 0x0000000000000001:byte] + bh
+	Mem0[rbp + 0x0000000000000001:byte] = v29
+	SCZO = cond(v29)
+	v30 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v30
+	SCZO = cond(v30)
+	v31 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v31
+	SCZO = cond(v31)
+	v32 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v32
+	SCZO = cond(v32)
+	al = al | 0x00
+	SZO = cond(al)
+	C = false
+	v33 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v33
+	SCZO = cond(v33)
+	v34 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v34
+	SCZO = cond(v34)
+	v35 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v35
+	SCZO = cond(v35)
+	call fn0000000000605E4F (retsize: 8;)
+	v36 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v36
+	SCZO = cond(v36)
+	v38 = Mem0[0x0000000000601E4D:byte] + cl
+	Mem0[0x0000000000601E4D:byte] = v38
+	SCZO = cond(v38)
+	v39 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v39
+	SCZO = cond(v39)
+	ah = ah + dh
+	SCZO = cond(ah)
+l0000000000601E0E_thunk___JCR_END__:
+	call __JCR_END__ (retsize: 0;)
+	return
+	// succ:  fn0000000000601E09_exit
+fn0000000000601E09_exit:
+
+
+// __JCR_END__
+// Return size: 0
+void __JCR_END__()
+__JCR_END___entry:
+	// succ:  l0000000000601E10
+l0000000000601E10:
+	rsp = fp
+	v5 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v5
+	SCZO = cond(v5)
+	v7 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v7
+	SCZO = cond(v7)
+	v8 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v8
+	SCZO = cond(v8)
+	v9 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v9
+	SCZO = cond(v9)
+	// succ:  l0000000000601E16_thunk__DYNAMIC
+l0000000000601E16_thunk__DYNAMIC:
+	call _DYNAMIC (retsize: 0;)
+	return
+	// succ:  __JCR_END___exit
+__JCR_END___exit:
+
+
+// _DYNAMIC
+// Return size: 0
+void _DYNAMIC()
+_DYNAMIC_entry:
+	// succ:  l0000000000601E18
+l0000000000601E18:
+	rsp = fp
+	v5 = Mem0[rax:word32] + eax
+	Mem0[rax:word32] = v5
+	SCZO = cond(v5)
+	v8 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v8
+	SCZO = cond(v8)
+	v9 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v9
+	SCZO = cond(v9)
+	v10 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v10
+	SCZO = cond(v10)
+	v11 = Mem0[rax:word32] + eax
+	Mem0[rax:word32] = v11
+	SCZO = cond(v11)
+	v12 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v12
+	SCZO = cond(v12)
+	v13 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v13
+	SCZO = cond(v13)
+	v14 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v14
+	SCZO = cond(v14)
+	v15 = Mem0[rax:word32] + eax
+	Mem0[rax:word32] = v15
+	SCZO = cond(v15)
+	v16 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v16
+	SCZO = cond(v16)
+	v17 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v17
+	SCZO = cond(v17)
+	v18 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v18
+	SCZO = cond(v18)
+	branch Test(GE,SO) l0000000000601E33
+	// succ:  l0000000000601E32 l0000000000601E33
+l0000000000601E32:
+	v20 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v20
+	SCZO = cond(v20)
+	goto l0000000000601E34
+	// succ:  l0000000000601E34
+l0000000000601E33:
+	v21 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v21
+	SCZO = cond(v21)
+	goto l0000000000601E35
+	// succ:  l0000000000601E35
+l0000000000601E34:
+	v22 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v22
+	SCZO = cond(v22)
+	goto l0000000000601E36
+	// succ:  l0000000000601E36
+l0000000000601E35:
+	v23 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v23
+	SCZO = cond(v23)
+	goto l0000000000601E37
+	// succ:  l0000000000601E37
+l0000000000601E36:
+	v24 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v24
+	SCZO = cond(v24)
+	goto l0000000000601E38
+	// succ:  l0000000000601E38
+l0000000000601E37:
+	v26 = Mem0[rax + rax:byte] + cl
+	Mem0[rax + rax:byte] = v26
+	SCZO = cond(v26)
+	goto l0000000000601E3A
+	// succ:  l0000000000601E3A
+l0000000000601E38:
+	al = al | 0x00
+	SZO = cond(al)
+	C = false
+	// succ:  l0000000000601E3A
+l0000000000601E3A:
+	v29 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v29
+	SCZO = cond(v29)
+	v30 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v30
+	SCZO = cond(v30)
+	v31 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v31
+	SCZO = cond(v31)
+	call fn0000000000605E4F (retsize: 8;)
+	v32 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v32
+	SCZO = cond(v32)
+	v33 = Mem0[0x0000000000601E4D:byte] + cl
+	Mem0[0x0000000000601E4D:byte] = v33
+	SCZO = cond(v33)
+	v34 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v34
+	SCZO = cond(v34)
+	ah = ah + dh
+	SCZO = cond(ah)
+_DYNAMIC_exit:
+
+
+// _GLOBAL_OFFSET_TABLE_
+// Return size: 0
+void _GLOBAL_OFFSET_TABLE_()
+_GLOBAL_OFFSET_TABLE__entry:
+	// succ:  l0000000000602000
+l0000000000602000:
+	rsp = fp
+	v6 = Mem0[rsi:byte] - bl - C
+	Mem0[rsi:byte] = v6
+	SCZO = cond(v6)
+_GLOBAL_OFFSET_TABLE__exit:
+
+
+// __dso_handle
+// Return size: 0
+void __dso_handle()
+__dso_handle_entry:
+	// succ:  l00000000006020F0
+l00000000006020F0:
+	rsp = fp
+	v5 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v5
+	SCZO = cond(v5)
+	v7 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v7
+	SCZO = cond(v7)
+	v8 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v8
+	SCZO = cond(v8)
+	v9 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v9
+	SCZO = cond(v9)
+	v10 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v10
+	SCZO = cond(v10)
+	v11 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v11
+	SCZO = cond(v11)
+	v12 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v12
+	SCZO = cond(v12)
+	v13 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v13
+	SCZO = cond(v13)
+	v14 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v14
+	SCZO = cond(v14)
+	v15 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v15
+	SCZO = cond(v15)
+	v16 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v16
+	SCZO = cond(v16)
+	v17 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v17
+	SCZO = cond(v17)
+	v18 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v18
+	SCZO = cond(v18)
+	v19 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v19
+	SCZO = cond(v19)
+	v20 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v20
+	SCZO = cond(v20)
+	v21 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v21
+	SCZO = cond(v21)
+__dso_handle_exit:
+
+
+// __TMC_END__
+// Return size: 0
+void __TMC_END__()
+__TMC_END___entry:
+__TMC_END___exit:
+
+
+// stderr@@GLIBC_2.2.5
+// Return size: 0
+void stderr@@GLIBC_2.2.5()
+stderr@@GLIBC_2.2.5_entry:
+	// succ:  l0000000000602100
+l0000000000602100:
+	rsp = fp
+	v5 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v5
+	SCZO = cond(v5)
+	v7 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v7
+	SCZO = cond(v7)
+	v8 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v8
+	SCZO = cond(v8)
+	v9 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v9
+	SCZO = cond(v9)
+	// succ:  l0000000000602106_thunk_completed.7585
+l0000000000602106_thunk_completed.7585:
+	call completed.7585 (retsize: 0;)
+	return
+	// succ:  stderr@@GLIBC_2.2.5_exit
+stderr@@GLIBC_2.2.5_exit:
+
+
+// completed.7585
+// Return size: 0
+void completed.7585()
+completed.7585_entry:
+	// succ:  l0000000000602108
+l0000000000602108:
+	rsp = fp
+	v5 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v5
+	SCZO = cond(v5)
+	v7 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v7
+	SCZO = cond(v7)
+	v8 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v8
+	SCZO = cond(v8)
+	v9 = Mem0[rax:byte] + al
+	Mem0[rax:byte] = v9
+	SCZO = cond(v9)
+completed.7585_exit:
+
+

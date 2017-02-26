@@ -56,7 +56,7 @@ namespace Reko.Scanning
 
         void Warn(Address addr, string message);
         void Warn(Address addr, string message, params object[] args);
-        void Error(Address addr, string message);
+        void Error(Address addr, string message, params object[] args);
 
         ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
         void TerminateBlock(Block block, Address addrEnd);

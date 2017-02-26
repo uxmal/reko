@@ -74,11 +74,12 @@ namespace Reko.Arch.M68k
                 switch (di.code)
                 {
                 default:
-                    throw new AddressCorrelatedException(
+                    host.Warn(
                         di.Address,
                         "Rewriting M68k opcode '{0}' is not supported yet.",
                         di.code);
-
+                    m.Invalid();
+                    break;
                 case Opcode.add: RewriteBinOp((s, d) => m.IAdd(d, s), FlagM.CVZNX); break;
                 case Opcode.adda: RewriteBinOp((s, d) => m.IAdd(d, s)); break;
                 case Opcode.addi: RewriteArithmetic((s, d) => m.IAdd(d, s)); break;
@@ -217,6 +218,13 @@ VS Overflow Set 1001 V
         {
             var rOp = op as RegisterOperand;
             return rOp != null ? rOp.Register : null;
+        }
+
+        private void EmitInvalid()
+        {
+            rtlInstructions.Clear();
+            rtlc = RtlClass.Invalid;
+            m.Invalid();
         }
 
         static Rewriter()

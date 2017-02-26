@@ -29,19 +29,19 @@ namespace Reko.Arch.Vax
 {
     public partial class VaxRewriter
     {
-        private void RewriteFpu2(PrimitiveType width, Func<Expression, Expression, Expression> fn, Action<Expression> genFlags)
+        private bool RewriteFpu2(PrimitiveType width, Func<Expression, Expression, Expression> fn, Func<Expression, bool> genFlags)
         {
             var op1 = RewriteSrcOp(0, width);
             var dst = RewriteDstOp(1, width, e => fn(e, op1));
-            genFlags(dst);
+            return genFlags(dst);
         }
 
-        private void RewriteFpu3(PrimitiveType width, Func<Expression, Expression, Expression> fn, Action<Expression> genFlags)
+        private bool RewriteFpu3(PrimitiveType width, Func<Expression, Expression, Expression> fn, Func<Expression, bool> genFlags)
         {
             var op1 = RewriteSrcOp(0, width);
             var op2 = RewriteSrcOp(1, width);
             var dst = RewriteDstOp(2, width, e => fn(op2, op1));
-            genFlags(dst);
+            return genFlags(dst);
         }
     }
 }

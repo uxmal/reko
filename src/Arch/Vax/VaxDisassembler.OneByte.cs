@@ -125,7 +125,7 @@ namespace Reko.Arch.Vax
  /* 55 */ new OpRec(Opcode.polyf, "rf,rw,ab"), 
  /* 56 */ new OpRec(Opcode.cvtfd, "rf,wd"),
  /* 57 */ new OpRec(Opcode.Reserved ,  -1), 
- /* 58 */ new OpRec(Opcode.adawi,  -1), 
+ /* 58 */ new OpRec(Opcode.adawi, "rw,aw"), 
  /* 59 */ new OpRec(Opcode.Reserved,  -1), 
  /* 5A */ new OpRec(Opcode.Reserved,  -1), 
  /* 5B */ new OpRec(Opcode.Reserved,  -1), 

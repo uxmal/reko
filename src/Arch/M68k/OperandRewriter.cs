@@ -285,7 +285,7 @@ namespace Reko.Arch.M68k
                 m.Assign(load, tmp);
                 return tmp;
             }
-            throw new NotImplementedException("Unimplemented RewriteDst for operand type " + operand.ToString());
+            return null;
         }
 
         private MemoryAccess RewriteMemoryAccess(MemoryOperand mem, PrimitiveType dataWidth, Address addrInstr)

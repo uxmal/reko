@@ -171,12 +171,12 @@ namespace Reko.Scanning
 
         public void Warn(Address addr, string message, params object[] args)
         {
-            eventListener.Warn(eventListener.CreateAddressNavigator(program, addr), string.Format(message, args));
+            eventListener.Warn(eventListener.CreateAddressNavigator(program, addr), message, args);
         }
 
-        public void Error(Address addr, string message)
+        public void Error(Address addr, string message, params object[] args)
         {
-            eventListener.Error(eventListener.CreateAddressNavigator(program, addr), message);
+            eventListener.Error(eventListener.CreateAddressNavigator(program, addr), message, args);
         }
 
         /// <summary>

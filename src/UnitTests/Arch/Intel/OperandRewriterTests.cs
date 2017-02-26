@@ -270,7 +270,7 @@ namespace Reko.UnitTests.Arch.Intel
             throw new NotImplementedException();
         }
 
-        public void Error(Address address, string message)
+        public void Error(Address address, string format, params object[] args)
         {
             throw new NotImplementedException();
         }

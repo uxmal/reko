@@ -229,6 +229,12 @@ namespace Reko.Arch.M68k
             case 'u': return PrimitiveType.UInt16;
             case 'w': return PrimitiveType.Word16;
             case 'l': return PrimitiveType.Word32;
+            case 'r':
+                // If EA is register, 32 bits, else 8.
+                if ((opcode & 0x30) == 0)
+                    return PrimitiveType.Word32;
+                else
+                    return PrimitiveType.Byte;
             default: return SizeField(opcode, GetOpcodeOffset(c));
             }
         }

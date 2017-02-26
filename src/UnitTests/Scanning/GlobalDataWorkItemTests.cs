@@ -52,9 +52,9 @@ namespace Reko.UnitTests.Scanning
                 .IgnoreArguments()
                 .Do(new Func<MemoryArea, Address, EndianImageReader>((i, a) => new LeImageReader(i, a)));
             platform.Stub(p => p.Architecture).Return(arch);
-            scanner.Stub(s => s.Error(null, null))
+            scanner.Stub(s => s.Error(null, null, null))
                 .IgnoreArguments()
-                .Do(new Action<Address, string>((a, s) => { Assert.Fail(string.Format("{0}: {1}", a, s)); }));
+                .Do(new Action<Address, string, object[]>((a, s, args) => { Assert.Fail(string.Format("{0}: {1}", a, string.Format(s, args))); }));
         }
 
         private void Given_Program(Address address, byte[] bytes)

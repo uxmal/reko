@@ -71,10 +71,13 @@ namespace Reko.Arch.Vax
                     //    dasm.Current.ToString(),
                     //    StringType.NullTerminated(PrimitiveType.Char)));
                     //break;
-                    throw new AddressCorrelatedException(
+                    host.Warn(
                         dasm.Current.Address,
                         "Rewriting of VAX instruction {0} not implemented yet.",
                         dasm.Current.Opcode);
+                    m.Invalid();
+                    break;
+                case Opcode.Invalid: m.Invalid(); break;
                 case Opcode.acbb: RewriteAcbi(PrimitiveType.Byte); break;
                 case Opcode.acbd: RewriteAcbf(PrimitiveType.Real64); break;
                 case Opcode.acbf: RewriteAcbf(PrimitiveType.Real32); break;
@@ -627,12 +630,10 @@ namespace Reko.Arch.Vax
                 m.Assign(reg, fn(reg));
                 return reg;
             }
-            if( op is ImmediateOperand)
+            if (op is ImmediateOperand)
             {
-                throw new AddressCorrelatedException(
-                    dasm.Current.Address,
-                    "Instruction {0} is attempting to assign to an immediate value.",
-                    dasm.Current);
+                // Can't assign to an immediate.
+                return null;
             }
             var memOp = op as MemoryOperand;
             if (memOp != null)
@@ -678,34 +679,65 @@ namespace Reko.Arch.Vax
             return frame.EnsureFlagGroup(Registers.psw, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
         }
 
-        private void AllFlags(Expression dst)
+        private bool AllFlags(Expression dst)
         {
+            if (dst == null)
+            {
+                EmitInvalid();
+                return false;
+            }
             var grf = FlagGroup(FlagM.NZVC);
             m.Assign(grf, m.Cond(dst));
+            return true;
         }
 
-        private void NZ00(Expression dst)
+        private bool NZ00(Expression dst)
         {
+            if (dst == null)
+            {
+                EmitInvalid();
+                return false;
+            }
             var grf = FlagGroup(FlagM.NF| FlagM.ZF);
             m.Assign(grf, m.Cond(dst));
             var c = FlagGroup(FlagM.CF);
             var v = FlagGroup(FlagM.VF);
             m.Assign(c, Constant.False());
             m.Assign(v, Constant.False());
+            return true;
         }
 
-        private void NZV(Expression dst)
+        private bool NZV(Expression dst)
         {
+            if (dst == null)
+            {
+                EmitInvalid();
+                return false;
+            }
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
             m.Assign(grf, m.Cond(dst));
+            return true;
         }
 
-        private void NZV0(Expression dst)
+        private bool NZV0(Expression dst)
         {
+            if (dst == null)
+            {
+                EmitInvalid();
+                return false;
+            }
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
             m.Assign(grf, m.Cond(dst));
             var c = FlagGroup(FlagM.CF);
             m.Assign(c, Constant.False());
+            return true;
+        }
+
+        private void EmitInvalid()
+        {
+            rtlInstructions.Clear();
+            rtlc = RtlClass.Invalid;
+            m.Invalid();
         }
     }
 }
