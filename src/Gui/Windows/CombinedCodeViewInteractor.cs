@@ -59,6 +59,8 @@ namespace Reko.Gui.Windows
 
         private PreviewInteractor previewInteractor;
 
+        private const int maxNumProcLines = 5000000;
+
         public CombinedCodeViewInteractor()
         {
         }
@@ -146,13 +148,12 @@ namespace Reko.Gui.Windows
             var dataItemNodes = mixedCodeDataModel.GetDataItemNodes();
 
             this.nodeByAddress = new SortedList<Address, MixedCodeDataModel.DataItemNode>();
-
+            int numProcLines = 0;
             foreach (var dataItemNode in dataItemNodes)
             {
                 var curAddr = dataItemNode.StartAddress;
 
                 bool nodeCreated = false;
-
                 ImageMapItem item;
                 Procedure proc = dataItemNode.Proc;
                 if (ShowItem(dataItemNode))
@@ -162,11 +163,16 @@ namespace Reko.Gui.Windows
                         var tsf = new TextSpanFormatter();
                         var fmt = new AbsynCodeFormatter(tsf);
                         fmt.InnerFormatter.UseTabs = false;
-                        fmt.Write(proc);
+                        if (numProcLines <= maxNumProcLines)
+                            fmt.Write(proc);
+                        else
+                            tsf.WriteLine("<{0} is not displayed>", proc.Name);
                         //$TODO: make spacing between globals / procedures user adjustable
                         tsf.WriteLine("");
                         tsf.WriteLine("");
-                        nestedTextModel.Nodes.Add(tsf.GetModel());
+                        var model = tsf.GetModel();
+                        numProcLines += model.LineCount;
+                        nestedTextModel.Nodes.Add(model);
                         nodeCreated = true;
                     }
                     else if (program.ImageMap.TryFindItem(curAddr, out item) &&
