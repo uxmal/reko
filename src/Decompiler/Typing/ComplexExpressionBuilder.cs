@@ -101,6 +101,52 @@ namespace Reko.Typing
             return exp;
         }
 
+        /// <summary>
+        /// Return fallback expression. This is something like
+        ///    (char *)exp + offset + index
+        /// It used when we could not build appropriate C-like expression.
+        /// e.g. if data type of expression is (int *) and offset is 2 we
+        /// could not generate array access as size of (int *) is 4 (on x86).
+        /// Returning just expression will cause to lose offset. So best way is
+        /// returning '(char *)expression + offset'
+        /// </summary>
+        private Expression FallbackExpression()
+        {
+            Expression e;
+            if (offset == 0 && index == null)
+            {
+                e = expComplex;
+            }
+            else
+            {
+                DataType dt;
+                if (enclosingPtr != null)
+                    dt = new Pointer(PrimitiveType.Char, enclosingPtr.Size);
+                else
+                    dt = PrimitiveType.CreateWord(expComplex.DataType.Size);
+                e = new Cast(dt, expComplex);
+            }
+            if (offset != 0)
+            {
+                var op = offset < 0 ? Operator.ISub : Operator.IAdd;
+                offset = Math.Abs(offset);
+                e = new BinaryExpression(
+                    op,
+                    e.DataType,
+                    e,
+                    Constant.Word(e.DataType.Size, offset));
+            }
+            if (index != null)
+            {
+                e = new BinaryExpression(
+                    Operator.IAdd,
+                    e.DataType,
+                    e,
+                    index);
+            }
+            return e;
+        }
+
         public Expression VisitArray(ArrayType at)
         {
             int i = (int)(offset / at.ElementType.Size);
@@ -311,7 +357,7 @@ namespace Reko.Typing
 
         public Expression VisitVoidType(VoidType voidType)
         {
-            throw new NotImplementedException();
+            return FallbackExpression();
         }
 
         private Expression CreateArrayAccess(DataType dtPointee, DataType dtPointer, int offset, Expression arrayIndex)
