@@ -4,4 +4,70 @@
 
 #include "CB80.h"
 
+Eq_310 g_tFFFFEB17;
+word16 g_w0006 = 0x0000;
+bool g_f0080 = false;
+bool g_f138C = false;
+struct Eq_845 * g_ptr1521 = null;
+word16 g_w1640 = 0x0000;
+<anonymous> * g_ptr1648 = null;
+struct Eq_106 * g_ptr164E = &g_t1A1A;
+bool g_f1653 = true;
+Eq_8 g_t1654 = 
+	{
+		0x1A
+	};
+byte g_b1655 = 0x1A;
+byte g_b1656 = 0x1A;
+cu8 g_b1657 = 0x1A;
+Eq_66 g_t1658 = 
+	{
+		true
+	};
+Eq_79 g_t1659 = 
+	{
+		0x1A
+	};
+Eq_138 g_t1676 = 
+	{
+		0x1A
+	};
+byte g_b1677 = 0x1A;
+Eq_129 g_t1678 = 
+	{
+		0x1A
+	};
+byte g_b1679 = 0x1A;
+Eq_150 g_t167A = 
+	{
+		true
+	};
+byte g_b167B = 0x1A;
+byte g_b167C = 0x1A;
+struct Eq_310 * g_ptr168B = &g_tFFFFEB17;
+Eq_307 g_t1692 = 
+	{
+		0x2A
+	};
+byte g_b1693 = 0x09;
+Eq_296 g_t1694 = 
+	{
+		0x3A
+	};
+byte g_b1695 = 0x25;
+Eq_66 g_t1696 = 
+	{
+		true
+	};
+Eq_489 g_t1697 = 
+	{
+		true
+	};
+bool g_f16A6 = true;
+Eq_960 g_t16A7 = 
+	{
+		true
+	};
+bool g_f16A8 = true;
+Eq_106 g_t1A1A;
 
