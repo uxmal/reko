@@ -37,12 +37,14 @@ namespace Reko.Scanning
         private Program program;
         private DataType dt;
         private EndianImageReader rdr;
+        private string name;
 
-        public GlobalDataWorkItem(IScanner scanner, Program program, Address addr, DataType dt) : base(addr)
+        public GlobalDataWorkItem(IScanner scanner, Program program, Address addr, DataType dt, string name) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;
             this.dt = dt;
+            this.name = name;
             this.rdr = program.CreateImageReader(addr);
         }
 
@@ -108,7 +110,7 @@ namespace Reko.Scanning
             if (!program.SegmentMap.IsValidAddress(addr))
                 return;
 
-            scanner.EnqueueUserGlobalData(addr, ptr.Pointee);
+            scanner.EnqueueUserGlobalData(addr, ptr.Pointee, null);
         }
 
         public void VisitReference(ReferenceTo refTo)

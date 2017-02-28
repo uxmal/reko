@@ -57,7 +57,7 @@ namespace Reko.Scanning
         protected Program program;
         protected DecompilerEventListener eventListener;
 
-        private PriorityQueue<WorkItem> queue;
+        private PriorityQueue<WorkItem> procQueue;
         private SegmentMap segmentMap;
         private ImageMap imageMap;
         private IImportResolver importResolver;
@@ -88,7 +88,7 @@ namespace Reko.Scanning
                 program.ImageMap = segmentMap.CreateImageMap();
             }
             this.imageMap = program.ImageMap;
-            this.queue = new PriorityQueue<WorkItem>();
+            this.procQueue = new PriorityQueue<WorkItem>();
             this.blocks = new SortedList<Address, BlockRange>();
             this.blockStarts = new Dictionary<Block, Address>();
             this.pseudoProcs = program.PseudoProcedures;
@@ -224,7 +224,7 @@ namespace Reko.Scanning
         {
             if (sym.ProcessorState == null)
                 sym.ProcessorState = program.Architecture.CreateProcessorState();
-            queue.Enqueue(PriorityEntryPoint, new ImageSymbolWorkItem(this, program, sym, isEntryPoint));
+            procQueue.Enqueue(PriorityEntryPoint, new ImageSymbolWorkItem(this, program, sym, isEntryPoint));
         }
 
         public void EnqueueUserProcedure(Address addr, FunctionType sig)
@@ -235,7 +235,7 @@ namespace Reko.Scanning
                 return;
             var proc = EnsureProcedure(addr, null);
             proc.Signature = (FunctionType)sig.Clone();
-            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, proc.Name));
+            procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, proc.Name));
         }
 
         public Block EnqueueJumpTarget(Address addrSrc, Address addrDest, Procedure proc, ProcessorState state)
@@ -259,7 +259,7 @@ namespace Reko.Scanning
                 {
                     // Easy case: split a block in our own procedure.
                     var wi = CreateBlockWorkItem(addrDest, proc, state);
-                    queue.Enqueue(PriorityJumpTarget, wi);
+                    procQueue.Enqueue(PriorityJumpTarget, wi);
                 }
                 else if (IsBlockLinearProcedureExit(block))
                 {
@@ -273,7 +273,7 @@ namespace Reko.Scanning
                     procDest = (Procedure)ScanProcedure(addrDest, null, state);
                     var blockThunk = CreateCallRetThunk(addrSrc, proc, procDest);
                     var wi = CreatePromoteWorkItem(addrDest, block, procDest);
-                    queue.Enqueue(PriorityBlockPromote, wi);
+                    procQueue.Enqueue(PriorityBlockPromote, wi);
                     block = blockThunk;
                 }
             }
@@ -288,7 +288,7 @@ namespace Reko.Scanning
                         proc.Signature.StackDelta = block.Procedure.Signature.StackDelta;
                         proc.Signature.FpuStackDelta = block.Procedure.Signature.FpuStackDelta;
                         var wi = CreatePromoteWorkItem(addrDest, block, procDest);
-                        queue.Enqueue(PriorityBlockPromote, wi);
+                        procQueue.Enqueue(PriorityBlockPromote, wi);
                     }
                     else
                     {
@@ -316,7 +316,7 @@ namespace Reko.Scanning
                         procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
                         InjectProcedureEntryInstructions(addrDest, procDest);
                         var wi = CreatePromoteWorkItem(addrDest, block, procDest);
-                        queue.Enqueue(PriorityBlockPromote, wi);
+                        procQueue.Enqueue(PriorityBlockPromote, wi);
                         return blockNew;
                     }
                 }
@@ -326,7 +326,7 @@ namespace Reko.Scanning
 
         public void EnqueueProcedure(Address addr)
         {
-            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, null));
+            procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, null));
         }
 
         public void EnqueueUserProcedure(Procedure_v1 sp)
@@ -334,7 +334,7 @@ namespace Reko.Scanning
             var de = EnsureUserProcedure(sp);
             if (de == null)
                 return;
-            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, de.Value.Key, sp.Name));
+            procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, de.Value.Key, sp.Name));
         }
 
         public void EnsureEntryPoint(ImageSymbol ep)
@@ -528,13 +528,13 @@ namespace Reko.Scanning
             EstablishInitialState(addr, st, proc);
 
             //$REFACTOR: make the stack explicit?
-            var oldQueue = queue;
-            queue = new PriorityQueue<WorkItem>();
+            var oldQueue = procQueue;
+            procQueue = new PriorityQueue<WorkItem>();
             var block = EnqueueJumpTarget(addr, addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             ProcessQueue();
 
-            queue = oldQueue;
+            procQueue = oldQueue;
 
             InjectProcedureEntryInstructions(addr, proc);
             var usb = new UserSignatureBuilder(program);
@@ -638,12 +638,12 @@ namespace Reko.Scanning
             return true;
         }
 
-        public void EnqueueUserGlobalData(Address addr, DataType dt)
+        public void EnqueueUserGlobalData(Address addr, DataType dt, string name)
         {
             if (scannedGlobalData.Contains(addr))
                 return;
             scannedGlobalData.Add(addr);
-            queue.Enqueue(PriorityGlobalData, new GlobalDataWorkItem(this, program, addr, dt));
+            procQueue.Enqueue(PriorityGlobalData, new GlobalDataWorkItem(this, program, addr, dt, name));
         }
 
         public Block FindContainingBlock(Address address)
@@ -804,7 +804,7 @@ namespace Reko.Scanning
             {
                 var addr = global.Key;
                 var dt = global.Value.DataType.Accept(tlDeser);
-                EnqueueUserGlobalData(addr, dt);
+                EnqueueUserGlobalData(addr, dt, global.Value.Name);
             }
             foreach (ImageSymbol ep in program.EntryPoints.Values)
             {
@@ -865,13 +865,13 @@ namespace Reko.Scanning
 
         protected void ProcessQueue()
         {
-            while (queue.Count > 0)
+            while (procQueue.Count > 0)
             {
                 if (eventListener.IsCanceled())
                 {
                     break;
                 }
-                var workitem = queue.Dequeue();
+                var workitem = procQueue.Dequeue();
                 try
                 {
                     workitem.Process();
@@ -992,8 +992,16 @@ namespace Reko.Scanning
     /// </summary>
     public class Scanner : ScannerOld
     {
+        private ScanResults sr;
+
         public Scanner(Program program, IImportResolver importResolver, IServiceProvider services) : base(program, importResolver, services)
         {
+            this.sr = new ScanResults
+            {
+                KnownProcedures = program.User.Procedures.Keys.ToHashSet(),
+                KnownAddresses = program.ImageSymbols.ToDictionary(de => de.Key, de=> de.Value),
+                ICFG = new DiGraph<RtlBlock>(),
+            };
         }
 
         /// <summary>
@@ -1004,22 +1012,7 @@ namespace Reko.Scanning
         /// </summary>
         public override void ScanImage()
         {
-            var tlDeser = program.CreateTypeLibraryDeserializer();
-
-            // Enqueue known data items, then process them. If we find code
-            // pointers, they will be added to sr.DirectlyCalledAddresses.
-
-            foreach (var global in program.User.Globals)
-            {
-                var addr = global.Key;
-                var dt = global.Value.DataType.Accept(tlDeser);
-                EnqueueUserGlobalData(addr, dt);
-            }
-            foreach (var sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Data))
-            {
-                EnqueueImageSymbol(sym, false);
-            }
-            ProcessQueue();
+            ScanDataItems();
 
             // Now scan the executable parts of the image, to find all 
             // potential basic blocks. We use symbols, user procedures, and
@@ -1066,6 +1059,34 @@ namespace Reko.Scanning
                 }
                 ProcessQueue();
             }
+        }
+
+        /// <summary>
+        /// Using user-specified globals and image metadata, scan all known 
+        /// data. If we discover pointers to procedures, we add them to
+        /// the list of known procedures. They are known because we reached
+        /// them by tracing from known roots.
+        /// </summary>
+        /// <returns></returns>
+        public ScanResults ScanDataItems()
+        {
+            var tlDeser = program.CreateTypeLibraryDeserializer();
+
+            // Enqueue known data items, then process them. If we find code
+            // pointers, they will be added to sr.DirectlyCalledAddresses.
+
+            foreach (var global in program.User.Globals)
+            {
+                var addr = global.Key;
+                var dt = global.Value.DataType.Accept(tlDeser);
+                EnqueueUserGlobalData(addr, dt, global.Value.Name);
+            }
+            foreach (var sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Data))
+            {
+                EnqueueUserGlobalData(sym.Address, sym.DataType, sym.Name);
+            }
+            ProcessQueue();
+            return sr;
         }
 
         /*

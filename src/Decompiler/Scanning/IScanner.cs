@@ -52,7 +52,7 @@ namespace Reko.Scanning
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
         void EnqueueUserProcedure(Procedure_v1 sp);
         void EnqueueUserProcedure(Address addr, FunctionType sig);
-        void EnqueueUserGlobalData(Address addr, DataType dt);
+        void EnqueueUserGlobalData(Address addr, DataType dt, string name);
 
         void Warn(Address addr, string message);
         void Warn(Address addr, string message, params object[] args);

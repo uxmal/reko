@@ -137,7 +137,11 @@ namespace Reko.Scanning
                 ICFG = new DiGraph<RtlBlock>(),
                 DirectlyCalledAddresses = new Dictionary<Address, int>()
             };
+            return ScanImage(sr);
+        }
 
+        public ScanResults ScanImage(ScanResults sr)
+        { 
             //// Break up the image map along known procedure boundaries
             //foreach (var addr in sr.KnownProcedures)
             //{
@@ -537,7 +541,7 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        void IScanner.EnqueueUserGlobalData(Address addr, DataType dt)
+        void IScanner.EnqueueUserGlobalData(Address addr, DataType dt, string name)
         {
             throw new NotImplementedException();
         }
