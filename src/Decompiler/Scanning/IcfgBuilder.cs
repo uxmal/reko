@@ -30,8 +30,8 @@ namespace Reko.Scanning
 {
     public class IcfgBuilder
     {
-        public DiGraph<RtlBlock> allBlocks;
-        public List<Tuple<RtlBlock, Address>> edges;
-        public Dictionary<Address, RtlBlock> mpBlocks;
+        public DiGraph<RtlBlock> Blocks;
+        public List<Tuple<RtlBlock, Address>> Edges;
+        public Dictionary<Address, RtlBlock> AddrToBlock;
     }
 }

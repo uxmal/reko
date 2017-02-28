@@ -993,7 +993,10 @@ namespace Reko.Arch.X86
                     break;
                 case 'J':		// Relative ("near") jump.
                     width = OperandWidth(strFormat[i++]);
-                    long jOffset = rdr.ReadLeSigned(width);
+                    Constant cOffset;
+                    if (!rdr.TryRead(width, out cOffset))
+                        return null;
+                    long jOffset = cOffset.ToInt64();
                     ulong uAddr = (ulong) ((long)rdr.Address.Offset + jOffset);
                     if (defaultAddressWidth.BitSize == 64)      //$REVIEW: not too keen on the switch statement here.
                         pOperand = AddressOperand.Ptr64(uAddr);

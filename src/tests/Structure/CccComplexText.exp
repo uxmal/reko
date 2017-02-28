@@ -37,6 +37,8 @@ l0C00_002E:
 	// succ:  l0C00_0030
 l0C00_0030:
 	Mem17[ds:0x0302:word16] = ax_16
+	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 // fn0C00_0000
@@ -74,5 +76,7 @@ l0C00_002E:
 	// succ:  l0C00_0030
 l0C00_0030:
 	Mem17[ds:0x0302:word16] = ax_16
+	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 ================

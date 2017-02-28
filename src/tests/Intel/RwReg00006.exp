@@ -419,6 +419,23 @@ l10000242:
 	// succ:  fn10000242_exit
 fn10000242_exit:
 
+// fn10000247
+// Return size: 4
+// Mem0:Global memory
+// fp:fp
+// esp:esp
+// eax:eax
+// return address size: 4
+void fn10000247()
+fn10000247_entry:
+	// succ:  l10000247
+l10000247:
+	esp = fp
+	eax = Mem0[esp + 0x00000004:word32]
+	return
+	// succ:  fn10000247_exit
+fn10000247_exit:
+
 // fn1000024C
 // Return size: 4
 // Mem0:Global memory

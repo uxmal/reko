@@ -314,7 +314,7 @@ namespace Reko.Scanning
         {
             var icb = BuildBlocks(G);
             BuildEdges(icb);
-            sr.ICFG = icb.allBlocks;
+            sr.ICFG = icb.Blocks;
             return sr.ICFG;
         }
 
@@ -398,19 +398,19 @@ namespace Reko.Scanning
             }
             return new IcfgBuilder
             {
-                edges = edges,
-                mpBlocks=mpBlocks,
-                allBlocks = allBlocks,
+                Edges = edges,
+                AddrToBlock = mpBlocks,
+                Blocks = allBlocks,
             };
         }
 
         private void BuildEdges(IcfgBuilder icb)
         {
-            foreach (var edge in icb.edges)
+            foreach (var edge in icb.Edges)
             {
                 var from = edge.Item1;
-                var to = icb.mpBlocks[edge.Item2];
-                icb.allBlocks.AddEdge(from, to);
+                var to = icb.AddrToBlock[edge.Item2];
+                icb.Blocks.AddEdge(from, to);
             }
         }
 

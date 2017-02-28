@@ -398,7 +398,7 @@ namespace Reko.UnitTests.Scanning
 
             var sExp =
                 "00001000 - 00001005" + nl;
-            Assert.AreEqual(sExp, DumpBlocks(icb.allBlocks));
+            Assert.AreEqual(sExp, DumpBlocks(icb.Blocks));
         }
 
         [Test]
@@ -417,7 +417,7 @@ namespace Reko.UnitTests.Scanning
             var sExp =
                 "00001000 - 00001006" + nl +
                 "00001001 - 00001005" + nl;
-            Assert.AreEqual(sExp, DumpBlocks(icb.allBlocks));
+            Assert.AreEqual(sExp, DumpBlocks(icb.Blocks));
         }
 
         [Test]
@@ -436,7 +436,7 @@ namespace Reko.UnitTests.Scanning
                 "00001000 - 00001005" + nl +
                 "00001001 - 00001005" + nl +
                 "00001005 - 00001007" + nl;
-            Assert.AreEqual(sExp, DumpBlocks(icb.allBlocks));
+            Assert.AreEqual(sExp, DumpBlocks(icb.Blocks));
         }
 
         [Test]

@@ -1012,6 +1012,7 @@ namespace Reko.Scanning
         /// </summary>
         public override void ScanImage()
         {
+            // Find all blobs of data, and potentially pointers
             ScanDataItems();
 
             // Now scan the executable parts of the image, to find all 
@@ -1022,10 +1023,15 @@ namespace Reko.Scanning
             foreach (Procedure_v1 up in program.User.Procedures.Values)
             {
                 var tup = EnsureUserProcedure(up);
+                if (tup.HasValue)
+                {
+                    sr.KnownProcedures.Add(tup.Value.Key);
+                }
             }
             foreach (ImageSymbol ep in program.EntryPoints.Values)
             {
                 EnsureEntryPoint(ep);
+                sr.KnownProcedures.Add(ep.Address);
             }
             foreach (ImageSymbol sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
             {
@@ -1034,10 +1040,11 @@ namespace Reko.Scanning
                     program.EnsureUserProcedure(sym.Address, sym.Name, false);
                 else
                     EnqueueImageSymbol(sym, false);
+                sr.KnownProcedures.Add(sym.Address);
             }
 
             var hsc = new HeuristicScanner(Services, program, this, eventListener);
-            var sr = hsc.ScanImage();
+            sr = hsc.ScanImage(sr);
             if (sr != null)
             {
                 // Once the ICFG is built, detect the procedures.
@@ -1072,8 +1079,9 @@ namespace Reko.Scanning
         {
             var tlDeser = program.CreateTypeLibraryDeserializer();
             var dataScanner = new DataScanner(program, sr, eventListener);
+
             // Enqueue known data items, then process them. If we find code
-            // pointers, they will be added to sr.DirectlyCalledAddresses.
+            // pointers, they will be added to sr.KnownProcedures.
 
             foreach (var global in program.User.Globals)
             {
