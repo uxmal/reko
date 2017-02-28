@@ -73,7 +73,7 @@ namespace Reko.Scanning
 
         public void VisitCode(CodeType c)
         {
-            throw new NotImplementedException();
+            program.ImageMap.TerminateItem(rdr.Address);
         }
 
         public void VisitEnum(EnumType e)

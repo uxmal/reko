@@ -205,13 +205,23 @@ namespace Reko.ImageLoaders.Elf
                 ? symSection.Address + sym.Value
                 : platform.MakeAddressFromLinear(sym.Value);
 
+            var dt = GetSymbolDataType(sym);
             return new ImageSymbol(addr)
             {
                 Type = st,
                 Name = sym.Name,
                 Size = (uint)sym.Size,     //$REVIEW: is int32 a problem? Could such large objects (like arrays) exist?
+                DataType = dt,
                 ProcessorState = Architecture.CreateProcessorState()
             };
+        }
+
+        private DataType GetSymbolDataType(ElfSymbol sym)
+        {
+            if (sym.Type == ElfSymbolType.STT_FUNC)
+                return new FunctionType();
+            else
+                return new UnknownType();
         }
 
         public IPlatform LoadPlatform(byte osAbi, IProcessorArchitecture arch)

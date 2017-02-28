@@ -71,6 +71,8 @@ namespace Reko.Scanning
 
         public void EnqueueUserGlobalData(Address addr, DataType dt, string name)
         {
+            if (dt == null)     //$DEBUG
+                addr.ToString();
             var wi = new GlobalDataWorkItem(this, program, addr, dt, name);
             queue.Enqueue(wi);
         }

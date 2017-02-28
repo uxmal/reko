@@ -67,6 +67,8 @@ namespace Reko.Arch.Mips
                     instr.Address,
                     "Rewriting of MIPS instruction {0} not implemented yet.",
                     instr.opcode);
+                case Opcode.illegal:
+                    rtlc = RtlClass.Invalid; m.Invalid(); break;
                 case Opcode.add:
                 case Opcode.addi:
                 case Opcode.addiu:
