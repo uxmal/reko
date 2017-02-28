@@ -451,17 +451,17 @@ namespace Reko.Scanning
 
         // IScanner interface.
 
-        void IScanner.Warn(Address addr, string message)
+        void IScannerQueue.Warn(Address addr, string message)
         {
             eventListener.Warn(eventListener.CreateAddressNavigator(program, addr), message);
         }
 
-        void IScanner.Warn(Address addr, string message, params object[] args)
+        void IScannerQueue.Warn(Address addr, string message, params object[] args)
         {
             eventListener.Warn(eventListener.CreateAddressNavigator(program, addr), message, args);
         }
 
-        void IScanner.Error(Address addr, string message, params object[] args)
+        void IScannerQueue.Error(Address addr, string message, params object[] args)
         {
             eventListener.Error(eventListener.CreateAddressNavigator(program, addr), message);
         }
@@ -516,12 +516,12 @@ namespace Reko.Scanning
             this.ScanImage();
         }
 
-        void IScanner.EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint)
+        void IScannerQueue.EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
             throw new NotImplementedException();
         }
 
-        void IScanner.EnqueueProcedure(Address addr)
+        void IScannerQueue.EnqueueProcedure(Address addr)
         {
             throw new NotImplementedException();
         }
@@ -536,12 +536,12 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        void IScanner.EnqueueUserProcedure(Address addr, FunctionType sig)
+        void IScannerQueue.EnqueueUserProcedure(Address addr, FunctionType sig, string name)
         {
             throw new NotImplementedException();
         }
 
-        void IScanner.EnqueueUserGlobalData(Address addr, DataType dt, string name)
+        void IScannerQueue.EnqueueUserGlobalData(Address addr, DataType dt, string name)
         {
             throw new NotImplementedException();
         }

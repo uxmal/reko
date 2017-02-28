@@ -33,13 +33,13 @@ namespace Reko.Scanning
     /// </summary>
     public class GlobalDataWorkItem : WorkItem, IDataTypeVisitor
     {
-        private IScanner scanner;
+        private IScannerQueue scanner;
         private Program program;
         private DataType dt;
         private EndianImageReader rdr;
         private string name;
 
-        public GlobalDataWorkItem(IScanner scanner, Program program, Address addr, DataType dt, string name) : base(addr)
+        public GlobalDataWorkItem(IScannerQueue scanner, Program program, Address addr, DataType dt, string name) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;
@@ -89,7 +89,7 @@ namespace Reko.Scanning
         public void VisitFunctionType(FunctionType ft)
         {
             var addr = rdr.Address;
-            scanner.EnqueueUserProcedure(addr, ft);
+            scanner.EnqueueUserProcedure(addr, ft, null);
         }
 
         public void VisitPrimitive(PrimitiveType pt)

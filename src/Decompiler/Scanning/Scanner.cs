@@ -227,13 +227,13 @@ namespace Reko.Scanning
             procQueue.Enqueue(PriorityEntryPoint, new ImageSymbolWorkItem(this, program, sym, isEntryPoint));
         }
 
-        public void EnqueueUserProcedure(Address addr, FunctionType sig)
+        public void EnqueueUserProcedure(Address addr, FunctionType sig, string name)
         {
             if (program.Procedures.ContainsKey(addr))
                 return; // Already scanned. Do nothing.
             if (IsNoDecompiledProcedure(addr))
                 return;
-            var proc = EnsureProcedure(addr, null);
+            var proc = EnsureProcedure(addr, name);
             proc.Signature = (FunctionType)sig.Clone();
             procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, proc.Name));
         }
@@ -1071,7 +1071,7 @@ namespace Reko.Scanning
         public ScanResults ScanDataItems()
         {
             var tlDeser = program.CreateTypeLibraryDeserializer();
-
+            var dataScanner = new DataScanner(program, sr, eventListener);
             // Enqueue known data items, then process them. If we find code
             // pointers, they will be added to sr.DirectlyCalledAddresses.
 
@@ -1079,13 +1079,13 @@ namespace Reko.Scanning
             {
                 var addr = global.Key;
                 var dt = global.Value.DataType.Accept(tlDeser);
-                EnqueueUserGlobalData(addr, dt, global.Value.Name);
+                dataScanner.EnqueueUserGlobalData(addr, dt, global.Value.Name);
             }
             foreach (var sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Data))
             {
-                EnqueueUserGlobalData(sym.Address, sym.DataType, sym.Name);
+                dataScanner.EnqueueUserGlobalData(sym.Address, sym.DataType, sym.Name);
             }
-            ProcessQueue();
+            dataScanner.ProcessQueue();
             return sr;
         }
 

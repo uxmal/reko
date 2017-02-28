@@ -172,6 +172,11 @@ namespace Reko.Arch.X86
                 }
                 return h;
             }
+            var fpuOp = op as FpuOperand;
+            if (fpuOp != null)
+            {
+                return h = 59 * fpuOp.StNumber.GetHashCode();
+            }
 			throw new NotImplementedException("Unhandled operand type: " + op.GetType().FullName);
 		}
 	}

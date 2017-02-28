@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Scanning
     public class GlobalDataWorkItemTests
     {
         private MockRepository mr;
-        private IScanner scanner;
+        private IScannerQueue scanner;
         private IProcessorArchitecture arch;
         private IPlatform platform;
         private Program program;
@@ -206,7 +206,8 @@ namespace Reko.UnitTests.Scanning
                new Identifier[0]);
             scanner.Expect(s => s.EnqueueUserProcedure(
                 Arg<Address>.Is.Equal(addr),
-                Arg<FunctionType>.Is.NotNull));
+                Arg<FunctionType>.Is.NotNull,
+                Arg<string>.Is.Anything));
             mr.ReplayAll();
 
             var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, ft, null);

@@ -601,10 +601,12 @@ fn00001100_exit:
             var sc = CreateScanner(program);
             sc.EnqueueUserProcedure(
                 Address.Ptr32(0x12314),
-                FunctionType.Action());
+                FunctionType.Action(),
+                null);
             sc.EnqueueUserProcedure(
                 Address.Ptr32(0x12324),
-                FunctionType.Action());
+                FunctionType.Action(),
+                null);
             sc.ScanImage();
 
             Assert.AreEqual(1, program.Procedures.Count);
@@ -961,8 +963,8 @@ fn00001200_exit:
 
             var scanner = new Scanner(program, importResolver, sc);
             var sr = scanner.ScanDataItems();
-            Assert.AreEqual(1, sr.KnownProcedures);
-            Assert.AreEqual("@@@", sr.KnownProcedures.First().ToString());
+            Assert.AreEqual(1, sr.KnownProcedures.Count);
+            Assert.AreEqual("00100010", sr.KnownProcedures.First().ToString());
         }
     }
 }

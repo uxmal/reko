@@ -38,7 +38,7 @@ namespace Reko.Scanning
     /// procedures that constituted the original source program. Any 
     /// discoveries made are added to the Program instance.
     /// </summary>
-    public interface IScanner
+    public interface IScanner : IScannerQueue
     {
         IServiceProvider Services { get; }
 
@@ -47,16 +47,8 @@ namespace Reko.Scanning
 
         ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
 
-        void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint);
-        void EnqueueProcedure(Address addr);
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
         void EnqueueUserProcedure(Procedure_v1 sp);
-        void EnqueueUserProcedure(Address addr, FunctionType sig);
-        void EnqueueUserGlobalData(Address addr, DataType dt, string name);
-
-        void Warn(Address addr, string message);
-        void Warn(Address addr, string message, params object[] args);
-        void Error(Address addr, string message, params object[] args);
 
         ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
         void TerminateBlock(Block block, Address addrEnd);
