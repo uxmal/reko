@@ -33,11 +33,20 @@ namespace Reko.Arch.M68k
     {
         private void RewriteBcc(ConditionCode cc, FlagM flags)
         {
-            rtlc = RtlClass.ConditionalTransfer;
-            m.Branch(
-                m.Test(cc, orw.FlagGroup(flags)),
-                ((M68kAddressOperand)di.op1).Address,
-                RtlClass.ConditionalTransfer);
+            var addr = ((M68kAddressOperand)di.op1).Address;
+            if ((addr.ToUInt32() & 1) != 0)
+            {
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+            }
+            else
+            {
+                rtlc = RtlClass.ConditionalTransfer;
+                m.Branch(
+                    m.Test(cc, orw.FlagGroup(flags)),
+                    addr,
+                    RtlClass.ConditionalTransfer);
+            }
         }
 
         private void RewriteBra()
@@ -48,8 +57,29 @@ namespace Reko.Arch.M68k
 
         private void RewriteBsr()
         {
-            rtlc = RtlClass.Transfer;
-            m.Call(orw.RewriteSrc(di.op1, di.Address, true), 4);
+            var addr = ((M68kAddressOperand)di.op1).Address;
+            if ((addr.ToUInt32() & 1) != 0)
+            {
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+            }
+            else
+            {
+                rtlc = RtlClass.Transfer;
+                m.Call(orw.RewriteSrc(di.op1, di.Address, true), 4);
+            }
+        }
+
+        private void RewriteChk()
+        {
+            rtlc = RtlClass.Conditional | RtlClass.Linear;
+            var src = orw.RewriteSrc(di.op1, di.Address, true);
+            var bound = orw.RewriteSrc(di.op2, di.Address, true);
+            m.If(m.Cor(
+                m.Lt0(src),
+                m.Gt(src, bound)),
+                new RtlSideEffect(
+                    host.PseudoProcedure("__trap", VoidType.Instance, m.Byte(6))));
         }
 
         private void RewriteJmp()
@@ -91,12 +121,17 @@ namespace Reko.Arch.M68k
                 RtlClass.ConditionalTransfer);
         }
 
-        private bool RewriteIllegal()
+        private void RewriteIllegal()
         {
-            if (dasm.Current.op1 == null)
-                return false;
-            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, RewriteSrcOperand(dasm.Current.op1)));
-            return true;
+            if (dasm.Current.op1 != null)
+            {
+                m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, RewriteSrcOperand(dasm.Current.op1)));
+            }
+            else
+            {
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+            }
         }
 
         private void RewriteRts()

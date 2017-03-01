@@ -418,6 +418,16 @@ namespace Reko.Arch.M68k
                 m.Assign(load, src);
                 return src;
             }
+            var idxop = opDst as IndexedOperand;
+            if (idxop != null)
+            {
+                var b = binder.EnsureRegister(idxop.base_reg);
+                var i = binder.EnsureRegister(idxop.index_reg);
+                var s = m.Const(i.DataType, idxop.index_scale);
+                var load = m.Load(dataWidth, m.IAdd(b, m.IMul(i, s)));
+                m.Assign(load, src);
+                return src;
+            }
             var indidx = opDst as IndirectIndexedOperand;
             if (indidx != null)
             {

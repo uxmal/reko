@@ -120,6 +120,7 @@ VS Overflow Set 1001 V
                 case Opcode.bsr: RewriteBsr(); break;
                 case Opcode.btst: RewriteBtst(); break;
                 case Opcode.clr: RewriteClr(); break;
+                case Opcode.chk: RewriteChk(); break;
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.cmpa: RewriteCmp(); break;
                 case Opcode.cmpi: RewriteCmp(); break;
@@ -150,7 +151,7 @@ VS Overflow Set 1001 V
                 case Opcode.fneg: RewriteFUnaryOp(m.Neg); break;
                 case Opcode.fsub: RewriteFBinOp((s, d) => m.FSub(d, s)); break;
 
-                case Opcode.illegal: if (!RewriteIllegal()) goto default; break;
+                case Opcode.illegal: RewriteIllegal(); break;
                 case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.jsr: RewriteJsr(); break;
                 case Opcode.lea: RewriteLea(); break;

@@ -76,6 +76,8 @@ namespace Reko.Arch.M68k
 
         private int OperandHash(MachineOperand op)
         {
+            if (op == null)
+                return 0;
             var rop = op as RegisterOperand;
             if (rop != null)
             {
@@ -84,13 +86,52 @@ namespace Reko.Arch.M68k
                 else
                     return rop.Register.GetHashCode();
             }
-            var immop = op as ImmediateOperand;
+            var immop = op as M68kImmediateOperand;
             if (immop != null)
             {
                 if (NormalizeConstants)
                     return 0;
                 else
-                    return immop.Value.GetHashCode();
+                    return immop.Constant.GetHashCode();
+            }
+            var addrOp = op as M68kAddressOperand;
+            if (addrOp != null)
+            {
+                if (NormalizeConstants)
+                    return 0;
+                else
+                    return addrOp.Address.GetHashCode();
+            }
+            var memOp = op as MemoryOperand;
+            if (memOp != null)
+            {
+                int h = 0;
+                if (!NormalizeConstants)
+                {
+                    h = memOp.Offset.GetHashCode();
+                }
+                if (!NormalizeRegisters)
+                {
+                    h = h * 9 ^ memOp.Base.GetHashCode();
+                }
+                return h;
+            }
+            var ind = op as IndirectIndexedOperand;
+            if (ind != null)
+            {
+                int h = 0;
+                if (!NormalizeConstants)
+                {
+                    h = ind.Imm8.GetHashCode();
+                    h = h * 11 ^ ind.Scale.GetHashCode();
+                    h = h * 13 ^ ind.Imm8.GetHashCode();
+                }
+                if (!NormalizeRegisters)
+                {
+                    h = h * 5 ^ ind.ARegister.GetHashCode();
+                    h = h * 17 ^ ind.XRegister.GetHashCode();
+                }
+                return h;
             }
             throw new NotImplementedException();
 

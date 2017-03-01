@@ -1441,5 +1441,14 @@ namespace Reko.UnitTests.Arch.Intel
                   "3|L--|eax = (int32) (v5 / Mem0[esp + 0x00000004:word32])",
                   "4|L--|SCZO = cond(eax)");
         }
+
+        [Test]
+        public void X86rw_long_nop()
+        {
+            Run32bitTest(0x66, 0x0f, 0x1f, 0x44, 0x00, 0x00); // nop WORD PTR[eax + eax*1 + 0x0]
+            AssertCode(
+                "0|L--|10000000(6): 1 instructions",
+                "1|L--|nop");
+        }
     }
 }

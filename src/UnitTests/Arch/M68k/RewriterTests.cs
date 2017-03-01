@@ -726,6 +726,15 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68krw_bcc_invalid_address()
+        {
+            Rewrite(0x6439);
+            AssertCode(
+                "0|---|00010000(2): 1 instructions",
+                "1|---|<invalid>");
+        }
+
+        [Test]
         public void M68krw_addq_d()
         {
             Rewrite(0x5401);
@@ -1222,10 +1231,48 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0xF22E, 0xD020, 0xFFE8); //  fmovemx %fp@(-24),%fp2
             AssertCode(
-                 "0|L--|00010000(6): 3 instructions",
-                 "1|L--|v3 = a6 + -24",
-                 "2|L--|fp2 = Mem0[v3:real96]",
-                 "3|L--|v3 = v3 + 0x0000000C");
+                "0|L--|00010000(6): 3 instructions",
+                "1|L--|v3 = a6 + -24",
+                "2|L--|fp2 = Mem0[v3:real96]",
+                "3|L--|v3 = v3 + 0x0000000C");
+        }
+
+        [Test]
+        public void M68krw_chk16_dreg()
+        {
+            Rewrite(0x4D82);         // chk
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|---|if ((word16) d2 < 0x0000 || (word16) d2 > (word16) d6) __trap(0x06)");
+        }
+
+        [Test]
+        public void M68krw_chk16_indirect()
+        {
+            Rewrite(0x4D92);         // chk
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|---|if (Mem0[a2:word16] < 0x0000 || Mem0[a2:word16] > (word16) d6) __trap(0x06)");
+        }
+
+        [Test]
+        public void M68krw_chk16_postinc()
+        {
+            Rewrite(0x4D9A);         // chk
+            AssertCode(
+                "0|L--|00010000(2): 3 instructions",
+                "1|L--|v3 = Mem0[a2:word16]",
+                "2|L--|a2 = a2 + 0x00000002",
+                "3|---|if (v3 < 0x0000 || v3 > (word16) d6) __trap(0x06)");
+        }
+
+        [Test]
+        public void M68krw_chk32_dreg()
+        {
+            Rewrite(0x4D02);         // chk
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|---|if (d2 < 0x00000000 || d2 > d6) __trap(0x06)");
         }
     }
 }

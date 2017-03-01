@@ -82,6 +82,10 @@ namespace Reko.Arch.Sparc
                         instrCur.Address,
                         "Rewriting SPARC opcode '{0}' is not supported yet.",
                         instrCur.Opcode);
+                case Opcode.illegal:
+                    rtlc = RtlClass.Invalid;
+                    m.Invalid();
+                    break;
                 case Opcode.add: RewriteAlu(m.IAdd, false); break;
                 case Opcode.addcc: RewriteAluCc(m.IAdd, false); break;
                 case Opcode.addx: RewriteAddxSubx(m.IAdd, false); break;
