@@ -112,39 +112,16 @@ namespace Reko.Typing
         /// </summary>
         private Expression FallbackExpression()
         {
-            Expression e;
             if (offset == 0 && index == null)
-            {
-                e = expComplex;
-            }
+                return expComplex;
+            DataType dt;
+            if (enclosingPtr != null)
+                dt = new Pointer(PrimitiveType.Char, enclosingPtr.Size);
             else
-            {
-                DataType dt;
-                if (enclosingPtr != null)
-                    dt = new Pointer(PrimitiveType.Char, enclosingPtr.Size);
-                else
-                    dt = PrimitiveType.CreateWord(expComplex.DataType.Size);
-                e = new Cast(dt, expComplex);
-            }
-            if (offset != 0)
-            {
-                var op = offset < 0 ? Operator.ISub : Operator.IAdd;
-                offset = Math.Abs(offset);
-                e = new BinaryExpression(
-                    op,
-                    e.DataType,
-                    e,
-                    Constant.Word(e.DataType.Size, offset));
-            }
-            if (index != null)
-            {
-                e = new BinaryExpression(
-                    Operator.IAdd,
-                    e.DataType,
-                    e,
-                    index);
-            }
-            return e;
+                dt = PrimitiveType.CreateWord(expComplex.DataType.Size);
+            var e = new Cast(dt, expComplex);
+            var eOffset = CreateOffsetExpression(offset, index);
+            return new BinaryExpression(Operator.IAdd, e.DataType, e, eOffset);
         }
 
         public Expression VisitArray(ArrayType at)
@@ -364,7 +341,7 @@ namespace Reko.Typing
         {
             if (offset == 0 && arrayIndex == null && !dereferenced)
                 return expComplex;
-            arrayIndex = CreateArrayIndexExpression(offset, arrayIndex);
+            arrayIndex = CreateOffsetExpression(offset, arrayIndex);
             if (dereferenced)
             {
                 enclosingPtr = null;
@@ -380,23 +357,23 @@ namespace Reko.Typing
             }
         }
 
-        Expression CreateArrayIndexExpression(int offset, Expression arrayIndex)
+        Expression CreateOffsetExpression(int offset, Expression index)
         {
-            BinaryOperator op = offset < 0 ? Operator.ISub : Operator.IAdd;
+            var op = offset < 0 ? Operator.ISub : Operator.IAdd;
             offset = Math.Abs(offset);
-            Constant cOffset = Constant.Int32(offset); //$REVIEW: forcing 32-bit ints
-            if (arrayIndex != null)
+            var cOffset = Constant.Int32(offset); //$REVIEW: forcing 32-bit ints
+            if (index != null)
             {
                 if (offset != 0)
                 {
-                    return new BinaryExpression(op, arrayIndex.DataType, arrayIndex, cOffset);
+                    return new BinaryExpression(op, index.DataType, index, cOffset);
                 }
             }
             else
             {
                 return cOffset;
             }
-            return arrayIndex;
+            return index;
         }
 
         private Expression CreateDereference(DataType dt, Expression e)
