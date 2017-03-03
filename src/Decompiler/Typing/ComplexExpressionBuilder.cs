@@ -145,7 +145,7 @@ namespace Reko.Typing
 
         public Expression VisitCode(CodeType c)
         {
-            return expComplex;
+            return FallbackExpression();
         }
 
         public Expression VisitEnum(EnumType e)
