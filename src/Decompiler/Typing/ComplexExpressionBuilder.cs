@@ -329,7 +329,7 @@ namespace Reko.Typing
 
         public Expression VisitUnknownType(UnknownType ut)
         {
-            return expComplex;
+            return FallbackExpression();
         }
 
         public Expression VisitVoidType(VoidType voidType)
