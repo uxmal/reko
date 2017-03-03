@@ -215,6 +215,20 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        public void CEB_BuildPointerToCode()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var indexId = new Identifier("index", PrimitiveType.Word32, null);
+            var index = m.IMul(indexId, 16);
+            CreateTv(id, Ptr32(new CodeType()), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, index, -4);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual(
+                "(char *) id + (index * 0x00000010 - 4)",
+                e.ToString());
+        }
+
+        [Test]
         public void CEB_BuildUnionFetch()
         {
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
