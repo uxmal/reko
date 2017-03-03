@@ -204,6 +204,17 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        public void CEB_BuildPointerToUnknown()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var index = new Identifier("index", PrimitiveType.Word32, null);
+            CreateTv(id, Ptr32(new UnknownType()), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, index, 0);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(char *) id + index", e.ToString());
+        }
+
+        [Test]
         public void CEB_BuildUnionFetch()
         {
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
