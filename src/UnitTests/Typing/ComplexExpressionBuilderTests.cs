@@ -261,6 +261,16 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        public void CEB_BuildUnionWithOffset()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            CreateTv(id, ptrUnion.Pointee, PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, 2);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(word32) id.w + 2", e.ToString());
+        }
+
+        [Test]
         public void CEB_BuildUnionFetch()
         {
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
