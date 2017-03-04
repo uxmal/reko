@@ -213,7 +213,7 @@ namespace Reko.Typing
             {
                 // We're not in a pointer context.
                 expComplex.DataType = dtComplex;
-                return expComplex;
+                return FallbackExpression();
             }
             if (offset == 0 || pt.Size > 0 && offset % pt.Size == 0)
             {
