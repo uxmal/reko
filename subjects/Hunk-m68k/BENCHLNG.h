@@ -282,9 +282,9 @@ Eq_95: (union "Eq_95" (bool u0) (word16 u1) ((ptr (ptr Eq_4629)) u2) ((ptr Eq_84
 	T_5411 (in Mem2678[a7_2673 - 0x00000004 + 0x00000000:word32] : word32)
 	T_5413 (in fn00002C0C(bArg03, dwArg04) : word32)
 	T_5416 (in 0x0000002D : word32)
-	T_5429 (in &d2_146->ptrFFFFFFFC >> 0x00000002 << 0x00000002 : word32)
+	T_5429 (in &((char *) d2_146->ptrFFFFFFFC + 7) >> 0x00000002 << 0x00000002 : word32)
 	T_5435 (in 0xFFFFFFFF : word32)
-	T_5460 (in &d2_146->ptrFFFFFFFC >> 0x00000002 << 0x00000002 : word32)
+	T_5460 (in &((char *) d2_146->ptrFFFFFFFC + 7) >> 0x00000002 << 0x00000002 : word32)
 	T_5474 (in 0xFFFFFFFF : word32)
 	T_5486 (in d0_1728 & 0x00000008 : word32)
 	T_5539 (in d2_146 + 0x00000003 >>u 0x00000002 << 0x00000002 : word32)
@@ -24065,7 +24065,7 @@ T_5426: (in 0x00000002 : word32)
   Class: Eq_5426
   DataType: word32
   OrigDataType: word32
-T_5427: (in &d2_146->ptrFFFFFFFC >> 0x00000002 : word32)
+T_5427: (in &((char *) d2_146->ptrFFFFFFFC + 7) >> 0x00000002 : word32)
   Class: Eq_5427
   DataType: uint32
   OrigDataType: uint32
@@ -24073,7 +24073,7 @@ T_5428: (in 0x00000002 : word32)
   Class: Eq_5428
   DataType: word32
   OrigDataType: word32
-T_5429: (in &d2_146->ptrFFFFFFFC >> 0x00000002 << 0x00000002 : word32)
+T_5429: (in &((char *) d2_146->ptrFFFFFFFC + 7) >> 0x00000002 << 0x00000002 : word32)
   Class: Eq_95
   DataType: Eq_95
   OrigDataType: ui32
@@ -24189,7 +24189,7 @@ T_5457: (in 0x00000002 : word32)
   Class: Eq_5457
   DataType: word32
   OrigDataType: word32
-T_5458: (in &d2_146->ptrFFFFFFFC >> 0x00000002 : word32)
+T_5458: (in &((char *) d2_146->ptrFFFFFFFC + 7) >> 0x00000002 : word32)
   Class: Eq_5458
   DataType: uint32
   OrigDataType: uint32
@@ -24197,7 +24197,7 @@ T_5459: (in 0x00000002 : word32)
   Class: Eq_5459
   DataType: word32
   OrigDataType: word32
-T_5460: (in &d2_146->ptrFFFFFFFC >> 0x00000002 << 0x00000002 : word32)
+T_5460: (in &((char *) d2_146->ptrFFFFFFFC + 7) >> 0x00000002 << 0x00000002 : word32)
   Class: Eq_95
   DataType: Eq_95
   OrigDataType: ui32

@@ -329,9 +329,9 @@ Eq_784: (union "Eq_784" (bool u0) (word16 u1) ((ptr (ptr Eq_4476)) u2) (Eq_6680 
 	T_5250 (in Mem2677[a7_2672 - 0x00000004 + 0x00000000:word32] : word32)
 	T_5252 (in fn00002BF8(bArg03, dwArg04) : word32)
 	T_5255 (in 0x0000002D : word32)
-	T_5268 (in &d2_145->ptrFFFFFFFC >> 0x00000002 << 0x00000002 : word32)
+	T_5268 (in &((char *) d2_145->ptrFFFFFFFC + 7) >> 0x00000002 << 0x00000002 : word32)
 	T_5274 (in 0xFFFFFFFF : word32)
-	T_5299 (in &d2_145->ptrFFFFFFFC >> 0x00000002 << 0x00000002 : word32)
+	T_5299 (in &((char *) d2_145->ptrFFFFFFFC + 7) >> 0x00000002 << 0x00000002 : word32)
 	T_5313 (in 0xFFFFFFFF : word32)
 	T_5325 (in d0_1727 & 0x00000008 : word32)
 	T_5378 (in d2_145 + 0x00000003 >>u 0x00000002 << 0x00000002 : word32)
@@ -23388,7 +23388,7 @@ T_5265: (in 0x00000002 : word32)
   Class: Eq_5265
   DataType: word32
   OrigDataType: word32
-T_5266: (in &d2_145->ptrFFFFFFFC >> 0x00000002 : word32)
+T_5266: (in &((char *) d2_145->ptrFFFFFFFC + 7) >> 0x00000002 : word32)
   Class: Eq_5266
   DataType: uint32
   OrigDataType: uint32
@@ -23396,7 +23396,7 @@ T_5267: (in 0x00000002 : word32)
   Class: Eq_5267
   DataType: word32
   OrigDataType: word32
-T_5268: (in &d2_145->ptrFFFFFFFC >> 0x00000002 << 0x00000002 : word32)
+T_5268: (in &((char *) d2_145->ptrFFFFFFFC + 7) >> 0x00000002 << 0x00000002 : word32)
   Class: Eq_784
   DataType: Eq_784
   OrigDataType: ui32
@@ -23512,7 +23512,7 @@ T_5296: (in 0x00000002 : word32)
   Class: Eq_5296
   DataType: word32
   OrigDataType: word32
-T_5297: (in &d2_145->ptrFFFFFFFC >> 0x00000002 : word32)
+T_5297: (in &((char *) d2_145->ptrFFFFFFFC + 7) >> 0x00000002 : word32)
   Class: Eq_5297
   DataType: uint32
   OrigDataType: uint32
@@ -23520,7 +23520,7 @@ T_5298: (in 0x00000002 : word32)
   Class: Eq_5298
   DataType: word32
   OrigDataType: word32
-T_5299: (in &d2_145->ptrFFFFFFFC >> 0x00000002 << 0x00000002 : word32)
+T_5299: (in &((char *) d2_145->ptrFFFFFFFC + 7) >> 0x00000002 << 0x00000002 : word32)
   Class: Eq_784
   DataType: Eq_784
   OrigDataType: ui32
@@ -35636,7 +35636,7 @@ T_8327: (in 0x00000080 : word32)
   Class: Eq_8327
   DataType: ui32
   OrigDataType: ui32
-T_8328: (in **(struct Eq_8323 **) 0x00003FF4 & 0x00000080 : word32)
+T_8328: (in *((char *) *(struct Eq_8323 **) 0x00003FF4 + 24) & 0x00000080 : word32)
   Class: Eq_8328
   DataType: ui32
   OrigDataType: ui32
@@ -35644,7 +35644,7 @@ T_8329: (in 0x00000000 : word32)
   Class: Eq_8328
   DataType: ui32
   OrigDataType: word32
-T_8330: (in (**(struct Eq_8323 **) 0x00003FF4 & 0x00000080) != 0x00000000 : bool)
+T_8330: (in (*((char *) *(struct Eq_8323 **) 0x00003FF4 + 24) & 0x00000080) != 0x00000000 : bool)
   Class: Eq_8330
   DataType: bool
   OrigDataType: bool

@@ -500,7 +500,7 @@ l0888:
 			word16 r2_36;
 			word16 r3_37;
 			word16 pc_38;
-			(*globals->a0FEC)();
+			(*((char *) globals->a0FEC + r0_12 * 0x02))();
 			return;
 		}
 	}

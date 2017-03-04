@@ -311,9 +311,9 @@ Eq_714: (union "Eq_714" (bool u0) (word16 u1) ((ptr Eq_8280) u2) (Eq_3160 u3) (E
 	T_1730 (in Mem2677[a7_2672 - 0x00000004 + 0x00000000:word32] : word32)
 	T_1732 (in fn00001438(bArg03, dwArg04) : word32)
 	T_1735 (in 0x0000002D : word32)
-	T_1748 (in &d2_145->ptrFFFFFFFC >> 0x00000002 << 0x00000002 : word32)
+	T_1748 (in &((char *) d2_145->ptrFFFFFFFC + 7) >> 0x00000002 << 0x00000002 : word32)
 	T_1754 (in 0xFFFFFFFF : word32)
-	T_1779 (in &d2_145->ptrFFFFFFFC >> 0x00000002 << 0x00000002 : word32)
+	T_1779 (in &((char *) d2_145->ptrFFFFFFFC + 7) >> 0x00000002 << 0x00000002 : word32)
 	T_1793 (in 0xFFFFFFFF : word32)
 	T_1805 (in d0_1727 & 0x00000008 : word32)
 	T_1858 (in d2_145 + 0x00000003 >>u 0x00000002 << 0x00000002 : word32)
@@ -9289,7 +9289,7 @@ T_1745: (in 0x00000002 : word32)
   Class: Eq_1745
   DataType: word32
   OrigDataType: word32
-T_1746: (in &d2_145->ptrFFFFFFFC >> 0x00000002 : word32)
+T_1746: (in &((char *) d2_145->ptrFFFFFFFC + 7) >> 0x00000002 : word32)
   Class: Eq_1746
   DataType: uint32
   OrigDataType: uint32
@@ -9297,7 +9297,7 @@ T_1747: (in 0x00000002 : word32)
   Class: Eq_1747
   DataType: word32
   OrigDataType: word32
-T_1748: (in &d2_145->ptrFFFFFFFC >> 0x00000002 << 0x00000002 : word32)
+T_1748: (in &((char *) d2_145->ptrFFFFFFFC + 7) >> 0x00000002 << 0x00000002 : word32)
   Class: Eq_714
   DataType: Eq_714
   OrigDataType: ui32
@@ -9413,7 +9413,7 @@ T_1776: (in 0x00000002 : word32)
   Class: Eq_1776
   DataType: word32
   OrigDataType: word32
-T_1777: (in &d2_145->ptrFFFFFFFC >> 0x00000002 : word32)
+T_1777: (in &((char *) d2_145->ptrFFFFFFFC + 7) >> 0x00000002 : word32)
   Class: Eq_1777
   DataType: uint32
   OrigDataType: uint32
@@ -9421,7 +9421,7 @@ T_1778: (in 0x00000002 : word32)
   Class: Eq_1778
   DataType: word32
   OrigDataType: word32
-T_1779: (in &d2_145->ptrFFFFFFFC >> 0x00000002 << 0x00000002 : word32)
+T_1779: (in &((char *) d2_145->ptrFFFFFFFC + 7) >> 0x00000002 << 0x00000002 : word32)
   Class: Eq_714
   DataType: Eq_714
   OrigDataType: ui32

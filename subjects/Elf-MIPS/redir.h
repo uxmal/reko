@@ -23014,7 +23014,7 @@ T_5534: (in Mem0[Mem0[0x10000A6C:word32] + 0x00000000:word32][(word32) bLoc1C_11
   Class: Eq_5534
   DataType: word16
   OrigDataType: word16
-T_5535: (in (word32) **globals->ptr10000A6C : word32)
+T_5535: (in (word32) *((char *) *globals->ptr10000A6C + (word32) bLoc1C_111 * 0x00000002) : word32)
   Class: Eq_5535
   DataType: word32
   OrigDataType: word32
@@ -23022,7 +23022,7 @@ T_5536: (in 0x00010000 : word32)
   Class: Eq_5536
   DataType: word32
   OrigDataType: word32
-T_5537: (in (word32) **globals->ptr10000A6C + 0x00010000 : word32)
+T_5537: (in (word32) *((char *) *globals->ptr10000A6C + (word32) bLoc1C_111 * 0x00000002) + 0x00010000 : word32)
   Class: Eq_5537
   DataType: word32
   OrigDataType: word32

@@ -45,7 +45,7 @@ void __do_global_dtors_aux()
 		<anonymous> ** r3_25 = globals->ptr10000878->ptr0004;
 		if (*r3_25 != null)
 		{
-			<anonymous> ** r2_59 = r3_25;
+			<anonymous> ** r2_59 = (char *) r3_25 + 0x04;
 			while (true)
 			{
 				<anonymous> * r25_62 = *r3_25;
@@ -62,7 +62,7 @@ void __do_global_dtors_aux()
 				r3_25 = globals->ptr10000878->ptr0004;
 				if (*r3_25 == null)
 					break;
-				r2_59 = r3_25;
+				r2_59 = (<anonymous> **) ((char *) r3_25 + 0x04);
 			}
 		}
 		<anonymous> * r25_34 = globals->ptr100009B4;
@@ -4341,7 +4341,7 @@ l004061C8:
 					{
 						if (r2_261 == 0x02)
 						{
-							(Mem0[0x10000A40:word32] + 0x04 + 144)[(dwLoc24_132 * 0x14 - dwLoc24_132) * 0x08] = (word32) **globals->ptr10000A6C + 0x00010000;
+							(Mem0[0x10000A40:word32] + 0x04 + 144)[(dwLoc24_132 * 0x14 - dwLoc24_132) * 0x08] = (word32) *((char *) *globals->ptr10000A6C + (word32) bLoc1C_111 * 0x02) + 0x00010000;
 							dwLoc28_103 = dwLoc28_103 + -0x01;
 						}
 					}

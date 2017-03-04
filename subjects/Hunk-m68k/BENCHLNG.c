@@ -443,7 +443,7 @@ Eq_95 fn00001390(Eq_95 d0, Eq_95 d1, int32 d7, byte * a1, Eq_70 * a5, Eq_120 * a
 			else
 				d0_168.u0 = 0x01;
 			fp->tFFFFFFEC = d0_168;
-			d2_107 = &d2_107->ptrFFFFFFFC;
+			d2_107 = &((char *) d2_107->ptrFFFFFFFC + 0x05);
 		}
 		d3_119 = d3_119 + 0x01;
 	}
@@ -872,7 +872,7 @@ l0000183E:
 			struct Eq_1249 * d0_1002 = a7_996->ptr0038;
 			int32 d1_1003 = a7_996->dw0034;
 			*(a7_996 - 0x08) = d2_1247;
-			a7_1019 = (struct Eq_1249 *) &a7_996->ptr0000;
+			a7_1019 = (struct Eq_1249 *) &((char *) a7_996->ptr0000 + 0x04);
 			if (d1_1003 - (d0_1002 < null) < 0x00)
 			{
 				a7_996->b006E = 0x2D;
@@ -2818,7 +2818,7 @@ l00003942:
 					}
 					if (a7_156->b0049 == 0x00)
 					{
-						d0 = &d2_146->ptrFFFFFFFC >> 0x02 << 0x02;
+						d0 = &((char *) d2_146->ptrFFFFFFFC + 0x07) >> 0x02 << 0x02;
 						d2_146 = (struct Eq_883 *) d0;
 						a5 = (struct Eq_70 *) *d0;
 					}
@@ -2898,7 +2898,7 @@ l000031CE:
 					{
 						if (a7_156->b0048 == 0x01)
 						{
-							d0 = &d2_146->ptrFFFFFFFC >> 0x02 << 0x02;
+							d0 = &((char *) d2_146->ptrFFFFFFFC + 0x07) >> 0x02 << 0x02;
 							struct Eq_5461 * a0_1877 = *d0;
 							a0_1877->t0004 = d4_147;
 							a0_1877->dw0000 = 0x00;
