@@ -183,7 +183,7 @@ namespace Reko.Typing
         {
             if (enclosingPtr != null)
             {
-                return expComplex;
+                return FallbackExpression();
             }
             var pointee = ptr.Pointee;
             var origPtr = dtComplexOrig.ResolveAs<Pointer>();
