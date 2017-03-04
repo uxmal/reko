@@ -241,7 +241,7 @@ namespace Reko.Typing
                     return CreateArrayAccess(pt, enclosingPtr, offset / pt.Size, index);
                 }
             }
-            throw new NotImplementedException();
+            return FallbackExpression();
         }
 
 
