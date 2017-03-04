@@ -229,6 +229,17 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        public void CEB_BuildPointerToPointerToInteger()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var index = new Identifier("index", PrimitiveType.Word32, null);
+            CreateTv(id, Ptr32(Ptr32(PrimitiveType.Int32)), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, index, -8);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(char *) id + (index - 8)", e.ToString());
+        }
+
+        [Test]
         public void CEB_BuildUnionFetch()
         {
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
