@@ -708,7 +708,7 @@ l00400F30_ds_f:
 	goto l00400FB0
 l00400F30_ds_t:
 	fp->aFFFFFED0[dwLoc2C_1332] = 0x00
-	dwLoc2C_1332 = dwLoc2C_1332
+	dwLoc2C_1332 = (word32) dwLoc2C_1332 + 0x01
 l00400F5C:
 	branch (word32) (dwLoc2C_1332 < 0x0020) != 0x00 l00400F30_ds_t
 	goto l00400F30_ds_f
@@ -720,7 +720,7 @@ l00400FA4_ds_f:
 	goto l0040100C
 l00400FA4_ds_t:
 	fp->aFFFFFF50[dwLoc28_1324] = 0x00
-	dwLoc28_1324 = dwLoc28_1324
+	dwLoc28_1324 = (word32) dwLoc28_1324 + 0x01
 l00400FB0:
 	branch (word32) (dwLoc28_1324 < 0x0020) != 0x00 l00400FA4_ds_t
 	goto l00400FA4_ds_f
@@ -732,7 +732,7 @@ l00400FF8_ds_f:
 	goto l004010E0
 l00400FF8_ds_t:
 	Eq_721 r2_1288 = dwLoc0150_1313->t0000
-	fp->aFFFFFED0[r2_1288 >> 0x05] = fp->aFFFFFED0[r2_1288 >> 0x05] | 0x01 << dwLoc0150_1313->t0000
+	fp->aFFFFFED0[r2_1288 >> 0x05] = fp->aFFFFFED0[r2_1288 >> 0x05] | 0x01 << (word32) dwLoc0150_1313->t0000 + 0x001F
 	branch (word32) (dwLoc0160_1178 < dwLoc0150_1313->t0000) == 0x00 l00401024_ds_t
 	goto l00401024_ds_f
 l0040100C:
@@ -786,11 +786,11 @@ l00401140:
 	branch dwLoc0158_1190->dw0FAC != 0x00 l00401140_ds_t
 l00401140_ds_f:
 	Eq_721 r2_1247 = dwLoc0158_1190->t0000
-	fp->aFFFFFED0[r2_1247 >> 0x05] = fp->aFFFFFED0[r2_1247 >> 0x05] | 0x01 << dwLoc0158_1190->t0000
+	fp->aFFFFFED0[r2_1247 >> 0x05] = fp->aFFFFFED0[r2_1247 >> 0x05] | 0x01 << (word32) dwLoc0158_1190->t0000 + 0x001F
 	goto l0040121C
 l00401140_ds_t:
 	Eq_721 r2_1266 = dwLoc0158_1190->t0000
-	fp->aFFFFFF50[r2_1266 >> 0x05] = fp->aFFFFFF50[r2_1266 >> 0x05] | 0x01 << dwLoc0158_1190->t0000
+	fp->aFFFFFF50[r2_1266 >> 0x05] = fp->aFFFFFF50[r2_1266 >> 0x05] | 0x01 << (word32) dwLoc0158_1190->t0000 + 0x001F
 	goto l0040121C
 l00401158:
 l004011BC:
@@ -808,11 +808,11 @@ l00401264:
 	branch dwLoc0158_1190->dw178C != 0x00 l00401264_ds_t
 l00401264_ds_f:
 	Eq_721 r2_1199 = dwLoc0158_1190->t0004
-	fp->aFFFFFED0[r2_1199 >> 0x05] = fp->aFFFFFED0[r2_1199 >> 0x05] | 0x01 << dwLoc0158_1190->t0004
+	fp->aFFFFFED0[r2_1199 >> 0x05] = fp->aFFFFFED0[r2_1199 >> 0x05] | 0x01 << (word32) dwLoc0158_1190->t0004 + 0x001F
 	goto l00401340
 l00401264_ds_t:
 	Eq_721 r2_1218 = dwLoc0158_1190->t0004
-	fp->aFFFFFF50[r2_1218 >> 0x05] = fp->aFFFFFF50[r2_1218 >> 0x05] | 0x01 << dwLoc0158_1190->t0004
+	fp->aFFFFFF50[r2_1218 >> 0x05] = fp->aFFFFFF50[r2_1218 >> 0x05] | 0x01 << (word32) dwLoc0158_1190->t0004 + 0x001F
 	goto l00401340
 l0040127C:
 l004012E0:
@@ -926,7 +926,7 @@ l00401454_ds_f:
 	struct Eq_873 * dwLoc0158_600 = r2_229->ptr0008
 	goto l004015C8
 l00401454_ds_t:
-	branch fp->aFFFFFED0[dwLoc0150_582->t0000 >> 0x05] >> dwLoc0150_582->t0000 == 0x01 l00401480_ds_t
+	branch fp->aFFFFFED0[dwLoc0150_582->t0000 >> 0x05] >> (word32) dwLoc0150_582->t0000 + 0x001F == 0x01 l00401480_ds_t
 	goto l00401480_ds_f
 l00401468:
 	branch dwLoc0150_582 != null l00401454_ds_t
@@ -1022,7 +1022,7 @@ l004015E0_ds_f:
 	goto l004015F0_ds_f
 l004015F0:
 l004015F0_ds_f:
-	branch fp->aFFFFFED0[dwLoc0158_600->t0000 >> 0x05] >> dwLoc0158_600->t0000 == 0x01 l00401608_ds_t
+	branch fp->aFFFFFED0[dwLoc0158_600->t0000 >> 0x05] >> (word32) dwLoc0158_600->t0000 + 0x001F == 0x01 l00401608_ds_t
 	goto l00401608_ds_f
 l00401608:
 l00401608_ds_f:
@@ -1107,7 +1107,7 @@ l00401724_ds_f:
 	goto l00401734_ds_f
 l00401734:
 l00401734_ds_f:
-	branch fp->aFFFFFED0[dwLoc0158_600->t0004 >> 0x05] >> dwLoc0158_600->t0004 == 0x01 l0040174C_ds_t
+	branch fp->aFFFFFED0[dwLoc0158_600->t0004 >> 0x05] >> (word32) dwLoc0158_600->t0004 + 0x001F == 0x01 l0040174C_ds_t
 	goto l0040174C_ds_f
 l0040174C:
 l0040174C_ds_f:
@@ -1177,7 +1177,7 @@ l0040184C_ds_f:
 	goto l0040185C_ds_f
 l0040185C:
 l0040185C_ds_f:
-	branch fp->aFFFFFF50[dwLoc0158_600->t0000 >> 0x05] >> dwLoc0158_600->t0000 == 0x01 l00401874_ds_t
+	branch fp->aFFFFFF50[dwLoc0158_600->t0000 >> 0x05] >> (word32) dwLoc0158_600->t0000 + 0x001F == 0x01 l00401874_ds_t
 	goto l00401874_ds_f
 l00401874:
 l00401874_ds_f:
@@ -1205,7 +1205,7 @@ l004018F0_ds_f:
 	goto l00401900_ds_f
 l00401900:
 l00401900_ds_f:
-	branch fp->aFFFFFF50[dwLoc0158_600->t0004 >> 0x05] >> dwLoc0158_600->t0004 == 0x01 l00401918_ds_t
+	branch fp->aFFFFFF50[dwLoc0158_600->t0004 >> 0x05] >> (word32) dwLoc0158_600->t0004 + 0x001F == 0x01 l00401918_ds_t
 	goto l00401918_ds_f
 l00401918:
 l00401918_ds_f:
@@ -5529,14 +5529,14 @@ void _fpadd_parts(Eq_6818 * r4, Eq_6819 * r5, Eq_6820 * r6)
 							r6->t000C = 0x00 - r3_127;
 						}
 						r7_103 = r6->t000C;
-						if ((word32) (0x3FFFFFFE < r7_103) == 0x00)
+						if ((word32) (0x3FFFFFFE < (word32) r7_103 + 0x01) == 0x00)
 						{
 							while (true)
 							{
 								r6->dw0008 = r6->dw0008 + -0x01;
 								Eq_6887 r5_104 = r7_103 << 0x01;
 								r6->t000C = r5_104;
-								if ((word32) (0x3FFFFFFE < r5_104) != 0x00)
+								if ((word32) (0x3FFFFFFE < (word32) r5_104 + 0x01) != 0x00)
 									break;
 								r7_103 = r5_104;
 							}
@@ -5555,7 +5555,7 @@ void _fpadd_parts(Eq_6818 * r4, Eq_6819 * r5, Eq_6820 * r6)
 					{
 						r6->t0000.u0 = 0x03;
 						int32 r2_88 = r6->dw0008;
-						r6->t000C = r7_103 | r7_103 >> 0x01;
+						r6->t000C = (word32) r7_103 + 0x01 | r7_103 >> 0x01;
 						r6->dw0008 = r2_88 + 0x01;
 					}
 					else
@@ -5777,7 +5777,7 @@ l00407C8C:
 				r6_160 = r6_160 >> 0x01;
 			if (r6_160 >= 0x00)
 				break;
-			r2_209 = r6_160;
+			r2_209 = (word32) r6_160 + 0x01;
 		}
 	}
 	else
@@ -6091,7 +6091,7 @@ void _fpadd_parts(Eq_7578 * r4, Eq_7579 * r5, Eq_7580 * r6)
 					while (true)
 					{
 						ui32 r5_275 = r9_100 >> 0x01 | r8_241 << 0x1F;
-						int32 r3_276 = r9_100;
+						int32 r3_276 = (word32) r9_100 + 0x01;
 						r7_268 = r7_268 + -0x01;
 						r8_241 = r8_241 | r8_241 >> 0x01;
 						if (r7_268 == 0x00)
@@ -6110,7 +6110,7 @@ void _fpadd_parts(Eq_7578 * r4, Eq_7579 * r5, Eq_7580 * r6)
 					{
 						r12_251 = r12_251 + 0x01;
 						ui32 r5_257 = r11_253 >> 0x01 | r10_252 << 0x1F;
-						int32 r3_260 = r11_253;
+						int32 r3_260 = (word32) r11_253 + 0x01;
 						r10_252 = r10_252 | r10_252 >> 0x01;
 						if ((word32) (r12_251 < r7_243) == 0x00)
 							break;
@@ -6172,7 +6172,7 @@ void _fpadd_parts(Eq_7578 * r4, Eq_7579 * r5, Eq_7580 * r6)
 			}
 			Eq_7659 r9_151 = r6->t0014;
 			Eq_7653 r8_150 = r6->t0010;
-			uint32 r4_156 = r8_150;
+			uint32 r4_156 = (word32) r8_150 + 0x01 + (word32) (r9_151 < 0x00);
 			if ((word32) (0x0FFFFFFF < r4_156) == 0x00)
 			{
 				uint32 r2_167;
@@ -6500,22 +6500,22 @@ l004087D0:
 	if ((dwLoc70 ^ 0x02) == 0x00)
 		goto l004087D0;
 	uint32 r16_296;
-	Eq_8287 hi_lo_244 = (dwLoc60 >> 0x00) * dwLoc74;
-	Eq_8295 hi_lo_250 = dwLoc5C * (dwLoc78 >> 0x00);
+	Eq_8287 hi_lo_244 = (dwLoc60 >> 0x00) * ((word32) dwLoc74 + 0x01);
+	Eq_8295 hi_lo_250 = ((word32) dwLoc5C + 0x01) * (dwLoc78 >> 0x00);
 	uint32 lo_245 = (word32) hi_lo_244;
 	uint32 lo_251 = (word32) hi_lo_250;
 	uint32 r21_264 = lo_245 + lo_251;
-	uint32 r24_259 = SLICE(hi_lo_244, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s dwLoc78) + (word32) (dwLoc74 *s 0x00);
-	Eq_8320 hi_lo_275 = dwLoc5C * dwLoc74;
+	uint32 r24_259 = SLICE(hi_lo_244, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s dwLoc78) + (word32) (((word32) dwLoc74 + 0x01) *s 0x00);
+	Eq_8320 hi_lo_275 = ((word32) dwLoc5C + 0x01) * ((word32) dwLoc74 + 0x01);
 	Eq_8324 hi_lo_281 = (dwLoc60 >> 0x00) * (dwLoc78 >> 0x00);
 	word32 lo_288 = (word32) ((dwLoc78 >> 0x00) *s 0x00);
-	uint32 r20_269 = r24_259 + ((SLICE(hi_lo_250, word32, 32) + (word32) (dwLoc5C *s 0x00)) + (word32) ((dwLoc78 >> 0x00) *s dwLoc60)) + (word32) (r21_264 < lo_251);
+	uint32 r20_269 = r24_259 + ((SLICE(hi_lo_250, word32, 32) + (word32) (((word32) dwLoc5C + 0x01) *s 0x00)) + (word32) ((dwLoc78 >> 0x00) *s dwLoc60)) + (word32) (r21_264 < lo_251);
 	int32 dwLoc30_238 = 0x00;
 	Eq_8350 lo_276 = (word32) hi_lo_275;
-	word32 r16_280 = SLICE(hi_lo_275, word32, 32) + (word32) (dwLoc5C *s dwLoc78);
+	word32 r16_280 = SLICE(hi_lo_275, word32, 32) + (word32) (((word32) dwLoc5C + 0x01) *s dwLoc78);
 	Eq_8358 lo_282 = (word32) hi_lo_281;
 	word32 r18_290 = SLICE(hi_lo_281, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s 0x00) + lo_288;
-	word32 lo_292 = (word32) (dwLoc74 *s dwLoc60);
+	word32 lo_292 = (word32) (((word32) dwLoc74 + 0x01) *s dwLoc60);
 	if ((word32) (r20_269 < r24_259) != 0x00)
 	{
 		r16_296 = r16_280 + lo_292;
@@ -6554,7 +6554,7 @@ l00408978:
 			}
 l00408998:
 			Eq_8350 r7_352;
-			word32 r5_315 = (r20_269 >>u 0x00) + -0x01 + lo_282;
+			Eq_8358 r5_315 = (word32) lo_282.u1 + ((word32) (r20_269 >> 0x00) + 0x01);
 			Eq_8358 r13_326 = (word32) r5_315.u1 + dwLoc2C_295;
 			uint32 r12_332 = dwLoc30_238 + (r18_290 + (word32) (r5_315 < lo_282)) + (word32) (r13_326 < r5_315);
 			uint32 r6_340 = r10_305;
@@ -6596,10 +6596,10 @@ l00408998:
 l00408B44:
 				goto l00408B48;
 			}
-			int32 r5_385 = r13_326;
+			int32 r5_385 = (word32) r13_326 + 0x00FF;
 			if (r5_385 == 0x0080)
 			{
-				if ((r13_326 | r12_332) != 0x00)
+				if (((word32) r13_326 + 0x0100 | r12_332) != 0x00)
 				{
 l00408B38:
 					goto l00408B44;
@@ -7272,7 +7272,7 @@ void __pack_f(Eq_9127 * r4)
 			{
 				ui32 r4_48;
 				int32 r2_40 = -0x007E - r5_36;
-				word32 r3_45 = (word32) (0x00 <u r4_66 + ((0x01 << r2_40) + -0x01));
+				ui32 r3_45 = (word32) (0x00 < (word32) r4_66 + ((word32) (0x01 << r2_40) + 0x01));
 				uint32 r4_46 = r4_66 >> r2_40;
 				if ((word32) (r2_40 < 0x001A) == 0x00)
 					r4_48 = 0x00;
@@ -7286,10 +7286,10 @@ void __pack_f(Eq_9127 * r4)
 				if (r4_66 == 0x3F)
 				{
 					if (r4_66 != 0x80)
-						r4_66 = r4_66;
+						r4_66 = (word32) r4_66 + 0x0040;
 				}
 				else
-					r4_66 = r4_66;
+					r4_66 = (word32) r4_66 + 0x003F;
 				return;
 			}
 		}
@@ -7401,7 +7401,7 @@ void __pack_d(Eq_9319 * r4)
 		{
 			int32 r5_134;
 			int32 r2_127 = 0x01 << r4_80;
-			if ((r11_10 | r10_163) != 0x00)
+			if (((word32) r11_10 + (r2_127 + -0x01) | (word32) r10_163 + (r2_127 + -0x01 >> 0x1F)) != 0x00)
 				r5_134 = 0x01;
 			else
 				r5_134 = 0x00;
@@ -7447,7 +7447,7 @@ void __pack_d(Eq_9319 * r4)
 	{
 		if (r11_10 == 0x007F)
 		{
-			if ((r11_10 | r10_163) == 0x00)
+			if (((word32) r11_10 + 0x0100 | r10_163) == 0x00)
 				return;
 			r10_163 = r10_163 + (word32) (r11_10 < 0x00);
 			return;
@@ -7467,20 +7467,20 @@ void __unpack_d(Eq_9458 * r4, Eq_9459 * r5)
 	{
 		if (r7_16 != 0x07FF)
 		{
-			r5->dw0010 = r2_8 + 0x000FFFFF << 0x08 | r3_9 >> 0x18 | 0x10000000;
-			r5->t0014 = r3_9 << 0x08;
+			r5->dw0010 = r2_8 + 0x000FFFFF << 0x08 | (word32) r3_9 + 0x01 >> 0x18 | 0x10000000;
+			r5->t0014 = (word32) r3_9 + 0x01 << 0x08;
 			r5->dw0008 = r7_16 + -0x03FF;
 			r5->dw0000 = 0x03;
 			return;
 		}
-		else if ((r3_9 | r2_8 + 0x000FFFFF) != 0x00)
+		else if (((word32) r3_9 + 0x01 | r2_8 + 0x000FFFFF) != 0x00)
 		{
-			if ((r3_9 | r2_8 + 0x0017FFFF) != 0x00)
+			if (((word32) r3_9 + 0x01 | r2_8 + 0x0017FFFF) != 0x00)
 				r5->dw0000 = 0x01;
 			else
 				r5->dw0000 = 0x00;
 			r5->dw0010 = r2_8 + 0x000FFFFF;
-			r5->t0014 = r3_9;
+			r5->t0014 = (word32) r3_9 + 0x01;
 			return;
 		}
 		else
@@ -7489,11 +7489,11 @@ void __unpack_d(Eq_9458 * r4, Eq_9459 * r5)
 			return;
 		}
 	}
-	else if ((r3_9 | r2_8 + 0x000FFFFF) != 0x00)
+	else if (((word32) r3_9 + 0x01 | r2_8 + 0x000FFFFF) != 0x00)
 	{
 		r5->dw0008 = -1022;
-		uint32 r8_37 = r2_8 + 0x000FFFFF << 0x08 | r3_9 >> 0x18;
-		Eq_9503 r9_38 = r3_9 << 0x08;
+		uint32 r8_37 = r2_8 + 0x000FFFFF << 0x08 | (word32) r3_9 + 0x01 >> 0x18;
+		Eq_9503 r9_38 = (word32) r3_9 + 0x01 << 0x08;
 		if ((word32) (0x0FFFFFFF < r8_37) == 0x00)
 		{
 			r5->dw0000 = 0x03;

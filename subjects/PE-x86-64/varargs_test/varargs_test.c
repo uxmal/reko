@@ -801,9 +801,9 @@ void fn000000014000186C(Eq_706 rbx, word64 qwArg0C, word64 qwArg14, word64 qwArg
 		ui64 rax_43 = DPB(qwArg14 & 0x00, GetCurrentThreadId(), 0);
 		ui64 v15_50 = qwArg14 & 0x00 ^ rax_43 ^ DPB(rax_43, GetCurrentProcessId(), 0);
 		QueryPerformanceCounter(tLoc20);
-		rax_15 = (DPB(rax_43, dwArg1C, 0) << 0x20 ^ qwArg1C ^ v15_50 ^ fp) & fp;
+		rax_15 = (DPB(rax_43, dwArg1C, 0) << 0x20 ^ qwArg1C ^ v15_50 ^ (word64) fp + 0x0C) & (word64) fp + 0x0C;
 		if (rax_15 == rbx)
-			rax_15 = fp;
+			rax_15 = (word64) fp + 0x0C;
 		globals->qw40003000 = rax_15;
 	}
 	globals->qw40003008 = ~rax_15;

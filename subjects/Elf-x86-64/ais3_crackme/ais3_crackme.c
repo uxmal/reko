@@ -200,7 +200,7 @@ void __libc_csu_init()
 			byte C_70;
 			byte Z_71;
 			word32 ebx_72;
-			(*globals->a600DF8)();
+			(*((char *) globals->a600DF8 + rbx_47 * 0x08))();
 		} while (rbx_63 + 0x01 != rbp_58);
 	}
 	return;

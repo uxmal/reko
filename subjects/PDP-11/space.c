@@ -106,13 +106,13 @@ word16 fn0216(word16 r4, ptr16 & r2Out, ptr16 & r3Out, ptr16 & r4Out)
 				}
 				*(r4_62 - &globals->u00A2) = (union Eq_218 *) 0x8000;
 				*(r4_62 - &globals->u0062) = (union Eq_218 *) (r4_62 - &globals->u00B2);
-				*(r4_62 - &globals->u0062) = *(r4_62 - &globals->u0062);
+				*(r4_62 - &globals->u0062) = (union Eq_218 *) ((char *) *(r4_62 - &globals->u0062) + 0x0022);
 				*(r4_62 - &globals->u0048) = *(sp_27 - 0x04);
 				Eq_218 v76_162 = *(sp_27 - 0x02);
 				*(r4_62 - &globals->u004A) = (union Eq_218 *) v76_162;
 				Eq_218 v78_166 = *v76_162;
 				*(r4_62 - &globals->u0036) = (union Eq_218 *) *v78_166;
-				*(r4_62 - &globals->u0038) = (union Eq_218 *) *v78_166;
+				*(r4_62 - &globals->u0038) = (union Eq_218 *) *((word16) v78_166 + 0x02);
 				globals->w0020 = 0x0202;
 				globals->w0024 = globals->w0024 | 0x2000;
 				struct Eq_386 * r3_178 = fn1CF8(r4_62 - &globals->u00B2);
@@ -136,7 +136,7 @@ word16 fn0216(word16 r4, ptr16 & r2Out, ptr16 & r3Out, ptr16 & r4Out)
 					word16 r2_243;
 					byte NZV_244;
 					bcuiposr0 None_245;
-					(*v76_162)();
+					(*((word16) v76_162 + 0x02))();
 					return r0_234;
 				}
 				else
@@ -158,7 +158,7 @@ word16 fn0216(word16 r4, ptr16 & r2Out, ptr16 & r3Out, ptr16 & r4Out)
 					word16 r2_221;
 					byte NZV_222;
 					bcuiposr0 None_223;
-					(*v76_162)();
+					(*((word16) v76_162 + 0x02))();
 					return r0_212;
 				}
 			}
@@ -202,9 +202,9 @@ Eq_520 * fn0AE0(Eq_520 * r3, Eq_521 r4, word16 wArg00, word16 wArg01, word16 wAr
 	Eq_528 wLoc04_11 = (word16) bArg00;
 	struct Eq_531 * r3_6 = globals->ptr5424;
 	if (0x01 - wLoc04_11 != 0x00 && 0x08 - wLoc04_11 != 0x00)
-		wLoc04_11 = wLoc04_11;
+		wLoc04_11.u1 = (word16) wLoc04_11 + 0x03;
 	byte NZVC_19 = cond(wArg01 - wArg00);
-	r3_6->t00A4 = wLoc04_11;
+	r3_6->t00A4.u1 = (word16) wLoc04_11 + NZVC_19;
 	if (r3_6->b0074 == 0x00)
 	{
 		r3_6->w0052 = wArg00;
@@ -257,11 +257,11 @@ Eq_496 * fn0B42(Eq_496 * r0, Eq_520 * r3, word16 wArg00, word16 wArg01, word16 w
 	Eq_616 wLoc04_11 = (word16) bArg00;
 	struct Eq_619 * r3_6 = globals->ptr5424;
 	if (0x01 - wLoc04_11 != 0x00 && 0x08 - wLoc04_11 != 0x00)
-		wLoc04_11 = wLoc04_11;
+		wLoc04_11.u1 = (word16) wLoc04_11 + 0x03;
 	<anonymous> ** sp_119;
 	ptr16 sp_151;
 	byte NZVC_19 = cond(wArg01 - wArg00);
-	r3_6->t00A4 = wLoc04_11;
+	r3_6->t00A4.u1 = (word16) wLoc04_11 + NZVC_19;
 	if (r3_6->b0074 != 0x00)
 	{
 		r3_6->w0052 = wArg00;
@@ -418,11 +418,11 @@ Eq_496 * fn0DC6(Eq_496 * r0, Eq_891 r2, Eq_520 * r3, Eq_521 r4, word16 r5, word1
 
 Eq_520 * fn0EA6(Eq_520 * r3, word16 wArg00)
 {
-	*r3 = 0x00;
-	*r3 = 0x00;
-	*r3 = 0x00;
-	*r3 = *r3;
-	*r3 = (union Eq_520 *) 0x00;
+	*((char *) r3 + 114) = 0x00;
+	*((char *) r3 + 112) = 0x00;
+	*((char *) r3 + 0x0014) = 0x00;
+	*((char *) r3 + 0x0C) = *((char *) r3 + 88);
+	*((char *) r3 + 0x00A2) = (union Eq_520 *) 0x00;
 	return wArg00;
 }
 
@@ -1045,11 +1045,11 @@ void fn2438(ci16 r0, Eq_2091 r4, word16 * r5, Eq_1307 * pc, real64 ac4)
 		{
 			globals->w24CA = globals->w24CA;
 			ci16 r1_117 = globals->w56A2;
-			r0_121 = (struct Eq_496 *) *r4_109;
+			r0_121 = (word16) *r4_109 + r1_117;
 			r0_121->b551D = (byte) *r3_108;
 			globals->w24DC = globals->w24DC;
-			r4_109 = r4_109;
-			r3_108 = r3_108;
+			r4_109 = (word16) r4_109 + 0x02;
+			r3_108 = (union Eq_520 *) ((char *) r3_108 + 0x01);
 			r2_107 = r2_107 - 0x01;
 		} while (r2_107 > 0x00);
 		globals->w24E6 = globals->w24E6;
@@ -1104,7 +1104,7 @@ void fn2438(ci16 r0, Eq_2091 r4, word16 * r5, Eq_1307 * pc, real64 ac4)
 				do
 				{
 					globals->w259C = globals->w259C;
-					struct Eq_3965 * r2_1293 = *r3_1001;
+					struct Eq_3965 * r2_1293 = (char *) *r3_1001 + globals->w56A2;
 					*r4_1283 = r2_1293->b551D;
 					globals->w25AA = globals->w25AA + 0x01;
 					r2_1293->b551D = r2_1293->b551E;
@@ -1113,7 +1113,7 @@ void fn2438(ci16 r0, Eq_2091 r4, word16 * r5, Eq_1307 * pc, real64 ac4)
 					globals->w25BE = globals->w25BE;
 					ci16 v119_1306 = globals->w25C2 - 0x01;
 					globals->w25C2 = v119_1306;
-					r3_1001 = r3_1001;
+					r3_1001 = (union Eq_520 *) ((char *) r3_1001 + 0x02);
 					r4_1283 = r4_1283 + 0x01;
 				} while (v119_1306 > 0x00);
 			}
@@ -1153,11 +1153,11 @@ l2A84:
 				do
 				{
 					globals->w2AB2 = globals->w2AB2;
-					struct Eq_496 * r0_289 = *r3_277;
+					struct Eq_496 * r0_289 = (char *) *r3_277 + globals->w56A2;
 					*r4_278 = r0_289->b551D;
 					globals->w2AC2 = globals->w2AC2;
-					r3_277 = r3_277;
-					r4_278 = r4_278;
+					r3_277 = (union Eq_520 *) ((char *) r3_277 + 0x02);
+					r4_278 = (word16) r4_278 + 0x01;
 					r2_276 = r2_276 - 0x01;
 				} while (r2_276 > 0x00);
 				globals->w2ACA = globals->w2ACA + 0x01;
