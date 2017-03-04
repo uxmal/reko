@@ -1883,7 +1883,7 @@ Eq_292 fn000000000001730C(Eq_291 * gp, Eq_292 a0, Eq_292 a1, ptr64 & s3Out)
 	word64 a4_7 = gp->qwFFFFF870;
 	if (0x0080 >= a0)
 	{
-		byte * a5_111 = fp.u1;
+		byte * a5_111 = (word64) fp.u1 + 0x00B8;
 		int64 a4_110 = (int64) (0x08 - a0);
 		Eq_292 a3_95 = 0x07;
 		Eq_2922 a2_96 = -0x01;
@@ -1902,13 +1902,13 @@ Eq_292 fn000000000001730C(Eq_291 * gp, Eq_292 a0, Eq_292 a1, ptr64 & s3Out)
 			} while (0x00 < a0);
 		}
 		inet_ntop();
-		a1 = fp.u1;
+		a1 = (word64) fp.u1 + 0x00B8;
 		if (0x0A != 0x00)
 		{
 			memcpy();
 			__strdup();
-			a1 = fp.u1;
-			a0_108 = fp.u1;
+			a1 = (word64) fp.u1 + 0x00B8;
+			a0_108 = (word64) fp.u1 + 0x00A8;
 l000000000001739C:
 			if (a4_7 != gp->qwFFFFF870)
 			{

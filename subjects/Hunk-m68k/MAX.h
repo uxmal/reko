@@ -6132,7 +6132,7 @@ T_955: (in dwArg04 : word32)
 T_956: (in d4_146 : Eq_956)
   Class: Eq_956
   DataType: Eq_956
-  OrigDataType: int32
+  OrigDataType: word32
 T_957: (in 0 : int32)
   Class: Eq_956
   DataType: int32
@@ -6188,7 +6188,7 @@ T_969: (in d3_1695 : Eq_969)
 T_970: (in d3_156 : Eq_970)
   Class: Eq_970
   DataType: Eq_970
-  OrigDataType: int32
+  OrigDataType: word32
 T_971: (in 0 : int32)
   Class: Eq_970
   DataType: int32

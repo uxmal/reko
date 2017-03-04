@@ -690,7 +690,7 @@ Eq_1107 fn0000000140001718(word64 * rcx)
 	if (*(word16 *) 0x140000000 == 23117)
 	{
 		rax = (int64) *(word32 *) 0x14000003C;
-		struct Eq_1122 * rcx_52 = rax.u0;
+		struct Eq_1122 * rcx_52 = (word64) rax.u0 + 0x40000000;
 		if (rcx_52->dw0000 == 0x4550 && rcx_52->w0018 == 0x020B)
 		{
 			Eq_1135 rax_115 = DPB(rax, (word32) rcx_52->w0006, 0);

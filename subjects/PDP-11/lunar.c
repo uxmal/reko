@@ -157,7 +157,7 @@ void fn03CE()
 	int16 r2_9 = (int16) (globals->ptr0064 >> 0x03)->b2766;
 	globals->w008A = globals->w008A + 0x01;
 	Eq_437 r2_14 = r2_9 + (int16) (globals->w008A & ~~0x1F)->b2773;
-	globals->w008C = r2_14.u0;
+	globals->w008C = (word16) r2_14.u0 + globals->w008C;
 	ci16 r4_19 = 0x0C;
 	byte * r5_20 = globals->a27B0;
 	byte * r3_21 = (globals->w008C & ~~0x03) + 10131;

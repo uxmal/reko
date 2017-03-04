@@ -20936,7 +20936,7 @@ T_4643: (in d3_1696 : Eq_4643)
 T_4644: (in d3_157 : Eq_4644)
   Class: Eq_4644
   DataType: Eq_4644
-  OrigDataType: int32
+  OrigDataType: word32
 T_4645: (in 0 : int32)
   Class: Eq_4644
   DataType: int32

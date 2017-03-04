@@ -13408,7 +13408,7 @@ T_2899: (in gp : (ptr Eq_291))
 T_2900: (in a1 : Eq_292)
   Class: Eq_292
   DataType: Eq_292
-  OrigDataType: ptr64
+  OrigDataType: word64
 T_2901: (in s3Out : ptr64)
   Class: Eq_2901
   DataType: ptr64
@@ -13424,7 +13424,7 @@ T_2903: (in *s3Out : word64)
 T_2904: (in a0_108 : Eq_292)
   Class: Eq_292
   DataType: Eq_292
-  OrigDataType: ptr64
+  OrigDataType: word64
 T_2905: (in a4_7 : word64)
   Class: Eq_290
   DataType: word64

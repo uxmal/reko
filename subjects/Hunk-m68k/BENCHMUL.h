@@ -23136,7 +23136,7 @@ T_5163: (in dwArg04 : word32)
 T_5164: (in d4_147 : Eq_5164)
   Class: Eq_5164
   DataType: Eq_5164
-  OrigDataType: int32
+  OrigDataType: word32
 T_5165: (in 0 : int32)
   Class: Eq_5164
   DataType: int32
@@ -23196,7 +23196,7 @@ T_5178: (in d3_1696 : Eq_5178)
 T_5179: (in d3_157 : Eq_5179)
   Class: Eq_5179
   DataType: Eq_5179
-  OrigDataType: int32
+  OrigDataType: word32
 T_5180: (in 0 : int32)
   Class: Eq_5179
   DataType: int32

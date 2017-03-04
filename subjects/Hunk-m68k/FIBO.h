@@ -20231,7 +20231,7 @@ T_4475: (in dwArg04 : word32)
 T_4476: (in d4_146 : Eq_4476)
   Class: Eq_4476
   DataType: Eq_4476
-  OrigDataType: int32
+  OrigDataType: word32
 T_4477: (in 0 : int32)
   Class: Eq_4476
   DataType: int32
@@ -20287,7 +20287,7 @@ T_4489: (in d3_1695 : Eq_4489)
 T_4490: (in d3_156 : Eq_4490)
   Class: Eq_4490
   DataType: Eq_4490
-  OrigDataType: int32
+  OrigDataType: word32
 T_4491: (in 0 : int32)
   Class: Eq_4490
   DataType: int32

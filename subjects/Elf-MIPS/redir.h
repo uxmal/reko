@@ -574,7 +574,7 @@ Eq_7653: (union "Eq_7653" (int32 u0) (uint32 u1))
 	T_7684 (in Mem0[r4 + 0x00000010:word32] : word32)
 	T_7766 (in r10_252 | r10_252 >> 0x01 : word32)
 	T_7773 (in 0x00000000 : word32)
-	T_7788 (in r10_252.u0 + (word32) (r3_230 < r9_100) : word32)
+	T_7788 (in (word32) r10_252.u0 + r8_241 + (word32) (r3_230 < r9_100) : word32)
 	T_7791 (in Mem236[r6 + 0x00000010:word32] : word32)
 	T_7795 (in r4_148 : Eq_7653)
 	T_7805 (in 0x00000000 : word32)
@@ -623,7 +623,7 @@ Eq_7659: (union "Eq_7659" (int32 u0) (uint32 u1))
 	T_7859 (in 0 : int32)
 	T_7872 (in r5_127 : Eq_7659)
 	T_7875 (in Mem125[r6 + 0x00000014:word32] : word32)
-	T_7893 (in r5_127.u1 | (r5_127 >> 0x01 | r4_126 << 0x1F) : word32)
+	T_7893 (in (word32) r5_127.u1 + 1 | (r5_127 >> 0x01 | r4_126 << 0x1F) : word32)
 	T_7896 (in Mem141[r6 + 0x00000014:word32] : word32)
 	T_7924 (in 0 : int32)
 	T_7938 (in r7_176 : Eq_7659)
@@ -32026,7 +32026,7 @@ T_7787: (in (word32) (r3_230 < r9_100) : word32)
   Class: Eq_7787
   DataType: word32
   OrigDataType: word32
-T_7788: (in r10_252.u0 + (word32) (r3_230 < r9_100) : word32)
+T_7788: (in (word32) r10_252.u0 + r8_241 + (word32) (r3_230 < r9_100) : word32)
   Class: Eq_7653
   DataType: Eq_7653
   OrigDataType: word32
@@ -32446,7 +32446,7 @@ T_7892: (in r5_127 >> 0x01 | r4_126 << 0x1F : word32)
   Class: Eq_7892
   DataType: ui32
   OrigDataType: ui32
-T_7893: (in r5_127.u1 | (r5_127 >> 0x01 | r4_126 << 0x1F) : word32)
+T_7893: (in (word32) r5_127.u1 + 1 | (r5_127 >> 0x01 | r4_126 << 0x1F) : word32)
   Class: Eq_7659
   DataType: Eq_7659
   OrigDataType: ui32
@@ -32754,7 +32754,7 @@ T_7969: (in (word32) (r7_176 < 0) : word32)
   Class: Eq_7969
   DataType: word32
   OrigDataType: word32
-T_7970: (in r6_174.u0 + (word32) (r7_176 < 0) : word32)
+T_7970: (in (word32) r6_174.u0 + 1 + (word32) (r7_176 < 0) : word32)
   Class: Eq_7934
   DataType: uint32
   OrigDataType: word32
@@ -38482,7 +38482,7 @@ T_9401: (in r11_123 + 256 : word32)
   Class: Eq_9401
   DataType: Eq_9401
   OrigDataType: (union (int32 u1) (uint32 u0))
-T_9402: (in r11_123.u0 | r10_107 : word32)
+T_9402: (in (word32) r11_123.u0 + 256 | r10_107 : word32)
   Class: Eq_9402
   DataType: ui32
   OrigDataType: ui32
@@ -38490,7 +38490,7 @@ T_9403: (in 0x00000000 : word32)
   Class: Eq_9402
   DataType: ui32
   OrigDataType: word32
-T_9404: (in (r11_123.u0 | r10_107) == 0x00000000 : bool)
+T_9404: (in ((word32) r11_123.u0 + 256 | r10_107) == 0x00000000 : bool)
   Class: Eq_9404
   DataType: bool
   OrigDataType: bool
