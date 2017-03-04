@@ -311,7 +311,7 @@ namespace Reko.Typing
             if (alt == null)
             {
                 Debug.Print("Unable to find {0} in {1} (offset {2}).", dtComplexOrig, ut, offset);          //$diagnostic service
-                return expComplex;
+                return FallbackExpression();
             }
 
             dtComplex = alt.DataType;
