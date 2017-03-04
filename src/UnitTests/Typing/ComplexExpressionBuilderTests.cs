@@ -271,6 +271,17 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        public void CEB_BuildPointerToStruct_NoFieldAtGivenOffset()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var str = Struct(Fld(8, PrimitiveType.Int32));
+            CreateTv(id, Ptr32(str), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, 4);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(char *) id + 4", e.ToString());
+        }
+
+        [Test]
         public void CEB_BuildUnionFetch()
         {
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
