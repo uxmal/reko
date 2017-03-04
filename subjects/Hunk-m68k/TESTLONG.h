@@ -4399,7 +4399,7 @@ T_528: (in a3 + 92 : word32)
   Class: Eq_526
   DataType: word32
   OrigDataType: word32
-T_529: (in WaitPort(a3 + 92) : void)
+T_529: (in WaitPort(&((char *) a3->dw003A + 34)) : void)
   Class: Eq_529
   DataType: void
   OrigDataType: void
@@ -4423,7 +4423,7 @@ T_534: (in a3 + 92 : word32)
   Class: Eq_532
   DataType: word32
   OrigDataType: word32
-T_535: (in GetMsg(a3 + 92) : void)
+T_535: (in GetMsg(&((char *) a3->dw003A + 34)) : void)
   Class: Eq_535
   DataType: void
   OrigDataType: void

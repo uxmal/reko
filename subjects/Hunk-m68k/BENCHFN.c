@@ -233,8 +233,8 @@ l00001202:
 
 void fn00001214(Eq_26 * a3)
 {
-	WaitPort(a3 + 0x005C);
-	GetMsg(a3 + 0x005C);
+	WaitPort(&((char *) a3->dw003A + 0x0022));
+	GetMsg(&((char *) a3->dw003A + 0x0022));
 	return;
 }
 
@@ -517,7 +517,7 @@ l00001DD0:
 				a2_1645 = a2_1645 + 0x01;
 				break;
 			}
-			d1_1736 = d1_1736 + 0x01;
+			d1_1736 = &((char *) d1_1736->dw0000 + 0x01);
 		} while (d1_1736 < (struct Eq_861 *) 0x05);
 	} while (d1_1736 < (struct Eq_861 *) 0x05);
 	struct Eq_954 * a0_1452;

@@ -226,8 +226,8 @@ l00001202:
 
 void fn00001214(Eq_25 * a3)
 {
-	WaitPort(a3 + 0x005C);
-	GetMsg(a3 + 0x005C);
+	WaitPort(&((char *) a3->dw003A + 0x0022));
+	GetMsg(&((char *) a3->dw003A + 0x0022));
 	return;
 }
 

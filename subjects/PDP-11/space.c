@@ -569,7 +569,7 @@ word16 fn194C(Eq_940 * r3, word16 r4, word16 r5, ptr16 & r5Out)
 	word16 r5_4;
 	*r5Out = __shift(r5, r4);
 	word16 r1_9 = *r3->ptr0012;
-	Mem10[r3 + 0x12:word16] = Mem0[r3 + 0x12:word16] + 0x01;
+	r3->ptr0012 = (word16 *) ((char *) r3->ptr0012 + 0x01);
 	return r1_9;
 }
 
