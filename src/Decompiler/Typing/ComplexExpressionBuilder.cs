@@ -284,7 +284,7 @@ namespace Reko.Typing
             }
             StructureField field = str.Fields.LowerBound(this.offset);
             if (field == null)
-                throw new TypeInferenceException("Expected structure type {0} to have a field at offset {1} ({1:X}).", str.Name, offset);
+                return FallbackExpression();
 
             dtComplex = field.DataType;
             dtComplexOrig = field.DataType.ResolveAs<DataType>();
