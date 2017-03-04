@@ -937,7 +937,7 @@ Eq_1745: (union "Eq_1745" (int32 u0) ((ptr (arr Eq_4480)) u1))
 	T_2888 (in 0x0000000000000000 : word64)
 	T_3423 (in a0 : Eq_1745)
 	T_3426 (in sp_120 + 40 : word64)
-	T_3427 (in fn0000000000018118(gp, sp_120 + 40, s5_130) : word64)
+	T_3427 (in fn0000000000018118(gp, (char *) sp_120 + 40, s5_130) : word64)
 	T_3430 (in Mem175[s0_166 + 24:word64] : word64)
 	T_3742 (in a0_81 : Eq_1745)
 	T_3744 (in fn00000000000182B4(a0) : word64)
@@ -15513,7 +15513,7 @@ T_3426: (in sp_120 + 40 : word64)
   Class: Eq_1745
   DataType: Eq_1745
   OrigDataType: ptr64
-T_3427: (in fn0000000000018118(gp, sp_120 + 40, s5_130) : word64)
+T_3427: (in fn0000000000018118(gp, (char *) sp_120 + 40, s5_130) : word64)
   Class: Eq_1745
   DataType: Eq_1745
   OrigDataType: word64
@@ -15635,7 +15635,7 @@ T_3456: (in sp_120 + 8 : word64)
   OrigDataType: ptr64
 T_3457: (in 64 : int32)
   Class: Eq_3457
-  DataType: Eq_3457
+  DataType: int32
   OrigDataType: (union (int32 u0) (int64 u1))
 T_3458: (in s0_166 + 64 : word64)
   Class: Eq_3452
@@ -15643,7 +15643,7 @@ T_3458: (in s0_166 + 64 : word64)
   OrigDataType: ptr64
 T_3459: (in 72 : int32)
   Class: Eq_3459
-  DataType: Eq_3459
+  DataType: int32
   OrigDataType: (union (int32 u0) (int64 u1))
 T_3460: (in s0_166 + 72 : word64)
   Class: Eq_3453
@@ -15651,13 +15651,13 @@ T_3460: (in s0_166 + 72 : word64)
   OrigDataType: ptr64
 T_3461: (in 80 : int32)
   Class: Eq_3461
-  DataType: Eq_3461
+  DataType: int32
   OrigDataType: (union (int32 u0) (int64 u1))
 T_3462: (in s0_166 + 80 : word64)
   Class: Eq_3454
   DataType: ptr64
   OrigDataType: ptr64
-T_3463: (in fn0000000000017D10(gp, sp_120 + 8, s0_166 + 64, s0_166 + 72, s0_166 + 80) : void)
+T_3463: (in fn0000000000017D10(gp, (char *) sp_120 + 8, s0_166->qw0038 + 1, s0_166->qw0038 + 2, s0_166->qw0038 + 3) : void)
   Class: Eq_3463
   DataType: void
   OrigDataType: void
@@ -15701,7 +15701,7 @@ T_3473: (in sp_120 + 8 : word64)
   Class: Eq_304
   DataType: Eq_304
   OrigDataType: ptr64
-T_3474: (in fn00000000000168E4(gp, 10, sp_120 + 8) : word64)
+T_3474: (in fn00000000000168E4(gp, 10, (char *) sp_120 + 8) : word64)
   Class: Eq_2789
   DataType: word64
   OrigDataType: word64

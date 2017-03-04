@@ -1464,7 +1464,7 @@ word16 fn1578(word16 * r0, word16 pc, ptr16 & r4Out)
 		struct Eq_3192 * r5_37 = r4_20[2886];
 		if (r5_37 == null)
 			break;
-		Mem45[Mem0[r4_20 + 0x1696:word16] + 0x12:word16] = r5_37 + 0x0A;
+		*((word16) r4_20[0x0B4B] + 0x0012) = (struct Eq_3179) ((char *) r5_37 + 0x0A);
 		word16 * r3_46 = *r5_37->ptrFFFC;
 		ci16 r0_47 = r5_37->wFFFE;
 		if (r0_47 != 0x00)
@@ -1475,7 +1475,7 @@ word16 fn1578(word16 * r0, word16 pc, ptr16 & r4Out)
 			if (*r5_37->ptrFFFC <= null)
 				r3_46 = -r3_46;
 		}
-		fn1674(r3_46, Mem45[r4_20 + 0x1696:word16] + 0x0A, pc);
+		fn1674(r3_46, (word16) r4_20[0x0B4B] + 0x0A, pc);
 		r4_20 = r4_20 + 0x01;
 	}
 	if (globals->w0062 - globals->w0060 != 0x00)

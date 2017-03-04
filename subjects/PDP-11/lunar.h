@@ -13427,7 +13427,7 @@ T_3223: (in Mem45[r4_20 + 0x1696:word16] + 0x000A : word16)
   Class: Eq_3217
   DataType: (ptr Eq_3217)
   OrigDataType: ptr16
-T_3224: (in fn1674(r3_46, Mem45[r4_20 + 0x1696:word16] + 0x000A, pc) : void)
+T_3224: (in fn1674(r3_46, (word16) r4_20[2891] + 10, pc) : void)
   Class: Eq_3224
   DataType: void
   OrigDataType: void
