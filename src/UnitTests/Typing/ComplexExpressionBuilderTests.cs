@@ -282,6 +282,16 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        public void CEB_BuildPointerToUnion_NotFoundAlternative()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            CreateTv(id, ptrUnion, PrimitiveType.Real64);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, 2);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(char *) id + 2", e.ToString());
+        }
+
+        [Test]
         public void CEB_BuildUnionFetch()
         {
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
