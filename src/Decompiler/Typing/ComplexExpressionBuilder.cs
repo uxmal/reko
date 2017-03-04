@@ -121,7 +121,14 @@ namespace Reko.Typing
                 dt = PrimitiveType.CreateWord(expComplex.DataType.Size);
             var e = new Cast(dt, expComplex);
             var eOffset = CreateOffsetExpression(offset, index);
-            return new BinaryExpression(Operator.IAdd, e.DataType, e, eOffset);
+            var op = Operator.IAdd;
+            var cOffset = eOffset as Constant;
+            if (cOffset != null && cOffset.IsNegative)
+            {
+                op = Operator.ISub;
+                eOffset = cOffset.Negate();
+            }
+            return new BinaryExpression(op, e.DataType, e, eOffset);
         }
 
         public Expression VisitArray(ArrayType at)
@@ -359,21 +366,14 @@ namespace Reko.Typing
 
         Expression CreateOffsetExpression(int offset, Expression index)
         {
+            if (index == null)
+                return Constant.Int32(offset); //$REVIEW: forcing 32-bit ints;
+            if (offset == 0)
+                return index;
             var op = offset < 0 ? Operator.ISub : Operator.IAdd;
             offset = Math.Abs(offset);
             var cOffset = Constant.Int32(offset); //$REVIEW: forcing 32-bit ints
-            if (index != null)
-            {
-                if (offset != 0)
-                {
-                    return new BinaryExpression(op, index.DataType, index, cOffset);
-                }
-            }
-            else
-            {
-                return cOffset;
-            }
-            return index;
+            return new BinaryExpression(op, index.DataType, index, cOffset);
         }
 
         private Expression CreateDereference(DataType dt, Expression e)
