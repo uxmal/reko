@@ -228,7 +228,7 @@ l00401172:
 		esp_133->dwFFFFFFF4 = *edi_145;
 		esp_133->dwFFFFFFF0 = *esi_144;
 		Eq_62 eax_157 = fn00401040();
-		ptr32 esp_158 = &esp_133->tFFFFFFF8;
+		ptr32 esp_158 = &((char *) esp_133->tFFFFFFF8 + 0x04);
 		Eq_62 esi_160 = eax_157;
 		byte al_161 = fn0040188B();
 		if (al_161 == 0x00)

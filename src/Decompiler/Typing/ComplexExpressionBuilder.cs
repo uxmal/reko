@@ -145,7 +145,7 @@ namespace Reko.Typing
 
         public Expression VisitCode(CodeType c)
         {
-            return expComplex;
+            return FallbackExpression();
         }
 
         public Expression VisitEnum(EnumType e)
@@ -183,7 +183,7 @@ namespace Reko.Typing
         {
             if (enclosingPtr != null)
             {
-                return expComplex;
+                return FallbackExpression();
             }
             var pointee = ptr.Pointee;
             var origPtr = dtComplexOrig.ResolveAs<Pointer>();
@@ -213,7 +213,7 @@ namespace Reko.Typing
             {
                 // We're not in a pointer context.
                 expComplex.DataType = dtComplex;
-                return expComplex;
+                return FallbackExpression();
             }
             if (offset == 0 || pt.Size > 0 && offset % pt.Size == 0)
             {
@@ -241,7 +241,7 @@ namespace Reko.Typing
                     return CreateArrayAccess(pt, enclosingPtr, offset / pt.Size, index);
                 }
             }
-            throw new NotImplementedException();
+            return FallbackExpression();
         }
 
 
@@ -284,7 +284,7 @@ namespace Reko.Typing
             }
             StructureField field = str.Fields.LowerBound(this.offset);
             if (field == null)
-                throw new TypeInferenceException("Expected structure type {0} to have a field at offset {1} ({1:X}).", str.Name, offset);
+                return FallbackExpression();
 
             dtComplex = field.DataType;
             dtComplexOrig = field.DataType.ResolveAs<DataType>();
@@ -311,7 +311,7 @@ namespace Reko.Typing
             if (alt == null)
             {
                 Debug.Print("Unable to find {0} in {1} (offset {2}).", dtComplexOrig, ut, offset);          //$diagnostic service
-                return expComplex;
+                return FallbackExpression();
             }
 
             dtComplex = alt.DataType;

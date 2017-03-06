@@ -1820,7 +1820,7 @@ T_410: (in 0x01 : byte)
   Class: Eq_409
   DataType: byte
   OrigDataType: byte
-T_411: (in ds->*di_157 != 0x01 : bool)
+T_411: (in ds->*((word16) di_157 + 1370) != 0x01 : bool)
   Class: Eq_411
   DataType: bool
   OrigDataType: bool
@@ -1996,7 +1996,7 @@ T_454: (in 0x01 : byte)
   Class: Eq_409
   DataType: byte
   OrigDataType: byte
-T_455: (in ds->*bx_270 != 0x01 : bool)
+T_455: (in ds->*((word16) bx_270 + 1370) != 0x01 : bool)
   Class: Eq_455
   DataType: bool
   OrigDataType: bool

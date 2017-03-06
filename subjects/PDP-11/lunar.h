@@ -3331,7 +3331,7 @@ T_699: (in out r3_149 : ptr16)
   Class: Eq_294
   DataType: Eq_294
   OrigDataType: ptr16
-T_700: (in fn126C(0x0258, r3_50 < null, r3_50, out r3_149) : word16)
+T_700: (in fn126C(0x0258, (byte) (r3_50 < null) + r2_46, r3_50, out r3_149) : word16)
   Class: Eq_2
   DataType: (ptr word16)
   OrigDataType: word16
@@ -3699,7 +3699,7 @@ T_791: (in out r3_122 : ptr16)
   Class: Eq_294
   DataType: Eq_294
   OrigDataType: ptr16
-T_792: (in fn126C(0x0258, r3_117 < null, r3_117, out r3_122) : word16)
+T_792: (in fn126C(0x0258, (byte) (r3_117 < null) + r2_113, r3_117, out r3_122) : word16)
   Class: Eq_2
   DataType: (ptr word16)
   OrigDataType: word16
@@ -3943,7 +3943,7 @@ T_852: (in out r3_38 : ptr16)
   Class: Eq_294
   DataType: Eq_294
   OrigDataType: ptr16
-T_853: (in fn126C(0x003C, r3_33 < null, r3_33, out r3_38) : word16)
+T_853: (in fn126C(0x003C, (byte) (r3_33 < null) + r2_29, r3_33, out r3_38) : word16)
   Class: Eq_2
   DataType: (ptr word16)
   OrigDataType: word16
@@ -11871,7 +11871,7 @@ T_2834: (in r2_35 + C_37 : word16)
   Class: Eq_2834
   DataType: word16
   OrigDataType: word16
-T_2835: (in -C_37 : word16)
+T_2835: (in -((word16) C_37 + r2_35) : word16)
   Class: Eq_2816
   DataType: word16
   OrigDataType: word16
@@ -13427,7 +13427,7 @@ T_3223: (in Mem45[r4_20 + 0x1696:word16] + 0x000A : word16)
   Class: Eq_3217
   DataType: (ptr Eq_3217)
   OrigDataType: ptr16
-T_3224: (in fn1674(r3_46, Mem45[r4_20 + 0x1696:word16] + 0x000A, pc) : void)
+T_3224: (in fn1674(r3_46, (word16) r4_20[2891] + 10, pc) : void)
   Class: Eq_3224
   DataType: void
   OrigDataType: void

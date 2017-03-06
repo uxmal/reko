@@ -104,7 +104,7 @@ l000011F8:
 			int32 d0_226 = (int32) null[d0_217].b0000;
 			Mem227[a0_225 + d0_226:byte] = 0x00;
 			d0_132->ptr0010 = a0_225;
-			word32 * a6_230 = &d0_132->ptr0010;
+			word32 * a6_230 = &((char *) d0_132->ptr0010 + 0x04);
 			int32 d3_231 = 0x01;
 			struct Eq_239 * a0_233 = a0 + d2_235;
 l000010DA:
@@ -226,8 +226,8 @@ l00001202:
 
 void fn00001214(Eq_25 * a3)
 {
-	WaitPort(a3 + 0x005C);
-	GetMsg(a3 + 0x005C);
+	WaitPort(&((char *) a3->dw003A + 0x0022));
+	GetMsg(&((char *) a3->dw003A + 0x0022));
 	return;
 }
 
@@ -366,9 +366,9 @@ void fn00001390(ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C)
 				uint32 d5_128 = __swap(d0_122) * (word16) d1_123;
 				word32 d0_135 = d0_122 * (word16) d1_123 + DPB(__swap(DPB(d5_128, (word16) d5_128 + (word16) (__swap(d1_123) * (word16) d0_122), 0)), 0x00, 0);
 				uint32 d5_141 = __swap(0x0014) * (word16) d4_32;
-				word32 d0_152 = *((word16) d4_32 * 0x0014);
+				word32 d0_152 = d0_135 + (dwArg0C + ((word32) ((word16) d4_32 * 0x0014) + DPB(__swap(DPB(d5_141, (word16) d5_141 + (word16) (__swap(d4_32) * 0x14), 0)), 0x00, 0)))[d3_67];
 				uint32 d5_158 = __swap(0x0014) * (word16) d4_32;
-				*((word16) d4_32 * 0x0014) = d0_152;
+				(dwArg0C + ((word32) ((word16) d4_32 * 0x0014) + DPB(__swap(DPB(d5_158, (word16) d5_158 + (word16) (__swap(d4_32) * 0x14), 0)), 0x00, 0)))[d3_67] = d0_152;
 				d2_171 = d2_171 + 0x01;
 			}
 			d3_67 = d3_67 + 0x01;

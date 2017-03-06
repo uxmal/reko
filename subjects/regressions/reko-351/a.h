@@ -1081,7 +1081,7 @@ T_258: (in tArg14 + 0x00000000 : word32)
   OrigDataType: (union ((ptr word32) u1) ((ref int32) u0))
 T_259: (in Mem150[tArg14 + 0x00000000:word32] : word32)
   Class: Eq_254
-  DataType: word32
+  DataType: Eq_231
   OrigDataType: word32
 T_260: (in v24_77 : word32)
   Class: Eq_260

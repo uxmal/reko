@@ -2766,7 +2766,7 @@ T_527: (in r4Out : ptr16)
 T_528: (in wLoc04_11 : Eq_528)
   Class: Eq_528
   DataType: Eq_528
-  OrigDataType: (union (byte u0) (word16 u1))
+  OrigDataType: word16
 T_529: (in bArg00 : byte)
   Class: Eq_529
   DataType: byte
@@ -2846,7 +2846,7 @@ T_547: (in r3_6 + 0x00A4 : word16)
 T_548: (in Mem25[r3_6 + 0x00A4:word16] : word16)
   Class: Eq_545
   DataType: Eq_545
-  OrigDataType: Eq_528
+  OrigDataType: word16
 T_549: (in 0x0074 : word16)
   Class: Eq_549
   DataType: word16
@@ -3118,7 +3118,7 @@ T_615: (in r3Out : ptr16)
 T_616: (in wLoc04_11 : Eq_616)
   Class: Eq_616
   DataType: Eq_616
-  OrigDataType: (union (byte u0) (word16 u1))
+  OrigDataType: word16
 T_617: (in bArg00 : byte)
   Class: Eq_617
   DataType: byte
@@ -3206,7 +3206,7 @@ T_637: (in r3_6 + 0x00A4 : word16)
 T_638: (in Mem25[r3_6 + 0x00A4:word16] : word16)
   Class: Eq_635
   DataType: Eq_635
-  OrigDataType: Eq_616
+  OrigDataType: word16
 T_639: (in 0x0074 : word16)
   Class: Eq_639
   DataType: word16
@@ -17726,7 +17726,7 @@ T_4267: (in Mem285[r0_289 + 0x551D:byte] : byte)
 T_4268: (in r4_278 : Eq_521)
   Class: Eq_521
   DataType: Eq_521
-  OrigDataType: (ptr (struct 0001 (0 byte b0000)))
+  OrigDataType: word16
 T_4269: (in 0x0000 : word16)
   Class: Eq_4269
   DataType: word16
