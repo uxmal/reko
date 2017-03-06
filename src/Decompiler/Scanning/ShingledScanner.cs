@@ -194,6 +194,8 @@ namespace Reko.Scanning
                     continue;
                 }
                 var i = dasm.Current;
+                if (watched.Contains( i.Address)) //$DEBUG
+                    i.ToString();
                 if (IsInvalid(mem, i))
                 {
                     AddEdge(G, bad, i.Address);
@@ -279,6 +281,8 @@ namespace Reko.Scanning
             {
                 if (a != bad)
                 {
+                    if (watched.Contains(a))        //$DEBUG
+                        a.ToString();
                     sr.Instructions.Remove(a);
                     deadNodes.Add(a);
 
@@ -344,6 +348,8 @@ namespace Reko.Scanning
                 mpBlocks.Add(addr, block);
                 bool terminateNow = false;
                 bool terminateDeferred = false;
+                bool addFallthroughEdge = false;
+                bool addFallthroughEdgeDeferred = false;
                 for (;;)
                 {
                     var addrInstrEnd = instr.Address + instr.Length;
@@ -351,7 +357,8 @@ namespace Reko.Scanning
                     {
                         if (MayFallThrough(instr))
                         {
-                            edges.Add(Tuple.Create(block, addrInstrEnd));
+                            addFallthroughEdge = (instr.Class & DT) == T;
+                            addFallthroughEdgeDeferred = (instr.Class & DT) == DT;
                         }
                         var addrDst = DestinationAddress(instr);
                         if (addrDst != null && (instr.Class & RtlClass.Call) == 0)
@@ -371,7 +378,15 @@ namespace Reko.Scanning
                     else
                     {
                         terminateNow = terminateDeferred;
+                        addFallthroughEdge = addFallthroughEdgeDeferred;
+                        addFallthroughEdgeDeferred = false;
                     }
+
+                    if (addFallthroughEdge)
+                    {
+                        edges.Add(Tuple.Create(block, addrInstrEnd));
+                    }
+
                     if (terminateNow || 
                         !wl.Contains(addrInstrEnd) ||
                         !graph.Nodes.Contains(addrInstrEnd) ||
@@ -409,7 +424,11 @@ namespace Reko.Scanning
             foreach (var edge in icb.Edges)
             {
                 var from = edge.Item1;
-                var to = icb.AddrToBlock[edge.Item2];
+                RtlBlock to;
+                if (!icb.AddrToBlock.TryGetValue(edge.Item2, out to))
+                {
+                    continue;
+                }
                 icb.Blocks.AddEdge(from, to);
             }
         }

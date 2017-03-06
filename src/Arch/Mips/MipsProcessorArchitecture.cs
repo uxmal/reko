@@ -58,7 +58,7 @@ namespace Reko.Arch.Mips
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new MipsInstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()

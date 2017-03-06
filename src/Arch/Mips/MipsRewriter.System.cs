@@ -40,7 +40,7 @@ namespace Reko.Arch.Mips
                 host.PseudoProcedure(
                     "__break",
                     VoidType.Instance,
-                    this.RewriteOperand(instr.op1)));
+                    this.RewriteOperand0(instr.op1)));
         }
 
         private void RewriteMfc0(MipsInstruction instr)
@@ -52,32 +52,32 @@ namespace Reko.Arch.Mips
             case 9: from = binder.CreateTemporary("__counter__", PrimitiveType.UInt32); break;
             default: from = binder.CreateTemporary("__cp" + cpregFrom.Number, PrimitiveType.UInt32); break;
             }
-            m.Assign(RewriteOperand(instr.op1), from);
+            m.Assign(RewriteOperand0(instr.op1), from);
         }
 
         private void RewriteTrap(MipsInstruction instr, Func<Expression,Expression,Expression> op)
         {
-            var trap = host.PseudoProcedure("__trap", VoidType.Instance, RewriteOperand(instr.op3));
+            var trap = host.PseudoProcedure("__trap", VoidType.Instance, RewriteOperand0(instr.op3));
             m.If(op(
-                RewriteOperand(instr.op1),
-                RewriteOperand(instr.op2)),
+                RewriteOperand0(instr.op1),
+                RewriteOperand0(instr.op2)),
                 new RtlSideEffect(trap));
         }
 
         private void RewriteReadHardwareRegister(MipsInstruction instr)
         {
-            var rdhwr = host.PseudoProcedure("__read_hardware_register", PrimitiveType.UInt32, this.RewriteOperand(instr.op2));
-            m.Assign(this.RewriteOperand(instr.op1), rdhwr);
+            var rdhwr = host.PseudoProcedure("__read_hardware_register", PrimitiveType.UInt32, this.RewriteOperand0(instr.op2));
+            m.Assign(this.RewriteOperand0(instr.op1), rdhwr);
         }
 
         private void RewriteSyscall(MipsInstruction instr)
         {
-            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, this.RewriteOperand(instr.op1)));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, this.RewriteOperand0(instr.op1)));
         }
 
         private void RewriteSync(MipsInstruction instr)
         {
-            m.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance, this.RewriteOperand(instr.op1)));
+            m.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance, this.RewriteOperand0(instr.op1)));
         }
     }
 }

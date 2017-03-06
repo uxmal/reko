@@ -33,29 +33,31 @@ namespace Reko.Arch.Mips
 {
     public partial class MipsRewriter
     {
-        private void RewriteBranch(MipsInstruction instr, Func<Expression,Expression,Expression> condOp, bool link)
+        private void RewriteBranch(MipsInstruction instr, Func<Expression, Expression, Expression> condOp, bool link)
         {
             if (!link)
             {
-                var reg1 = RewriteOperand(instr.op1);
-                var reg2 = RewriteOperand(instr.op2);
-                var addr = (Address)RewriteOperand(instr.op3);
+                var reg1 = RewriteOperand0(instr.op1);
+                var reg2 = RewriteOperand0(instr.op2);
+                var addr = (Address)RewriteOperand0(instr.op3);
                 var cond = condOp(reg1, reg2);
                 if (condOp == m.Eq &&
                     ((RegisterOperand)instr.op1).Register ==
                     ((RegisterOperand)instr.op2).Register)
                 {
-                    rtlc = RtlClass.Transfer;
+                    rtlc = RtlClass.Transfer | RtlClass.Delay;
                     m.GotoD(addr);
                 }
                 else
                 {
-                    rtlc = RtlClass.ConditionalTransfer;
+                    rtlc = RtlClass.ConditionalTransfer | RtlClass.Delay;
                     m.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
                 }
             }
             else
+            {
                 throw new NotImplementedException("Linked branches not implemented yet.");
+            }
         }
 
         private void RewriteBranch0(MipsInstruction instr, Func<Expression, Expression, Expression> condOp, bool link)
@@ -66,8 +68,8 @@ namespace Reko.Arch.Mips
                     binder.EnsureRegister(Registers.ra),
                     instr.Address + 8);
             }
-            var reg = RewriteOperand(instr.op1);
-            var addr = (Address)RewriteOperand(instr.op2);
+            var reg = RewriteOperand0(instr.op1);
+            var addr = (Address)RewriteOperand0(instr.op2);
             if (reg is Constant)
             {
                 // r0 has been replaced with '0'.
@@ -81,23 +83,43 @@ namespace Reko.Arch.Mips
             m.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
         }
 
+        private void RewriteBranchLikely(MipsInstruction instr, Func<Expression, Expression, Expression> condOp)
+        {
+            var reg1 = RewriteOperand0(instr.op1);
+            var reg2 = RewriteOperand0(instr.op2);
+            var addr = (Address)RewriteOperand0(instr.op3);
+            var cond = condOp(reg1, reg2);
+            if (condOp == m.Eq &&
+                ((RegisterOperand)instr.op1).Register ==
+                ((RegisterOperand)instr.op2).Register)
+            {
+                rtlc = RtlClass.Transfer | RtlClass.Delay;
+                m.GotoD(addr);
+            }
+            else
+            {
+                rtlc = RtlClass.ConditionalTransfer | RtlClass.Delay;
+                m.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+            }
+        }
+
         private void RewriteBc1f(MipsInstruction instr, bool opTrue)
         {
-            var cond = RewriteOperand(instr.op1);
+            var cond = RewriteOperand0(instr.op1);
             if (!opTrue)
                 cond = m.Not(cond);
-            var addr = (Address)RewriteOperand(instr.op2);
+            var addr = (Address)RewriteOperand0(instr.op2);
             rtlc = RtlClass.ConditionalTransfer | RtlClass.Delay;
             m.Branch(cond, addr, rtlc);
         }
-    
+
         private void RewriteJal(MipsInstruction instr)
         {
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
             rtlc = RtlClass.Transfer;
-            m.CallD(RewriteOperand(instr.op1), 0);
+            m.CallD(RewriteOperand0(instr.op1), 0);
         }
 
         private void RewriteJalr(MipsInstruction instr)
@@ -106,21 +128,25 @@ namespace Reko.Arch.Mips
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
             rtlc = RtlClass.Transfer;
-            var dst = RewriteOperand(instr.op2);
+            var dst = RewriteOperand0(instr.op2);
             var lr = ((RegisterOperand)instr.op1).Register;
             if (lr == Registers.ra)
             {
                 m.CallD(dst, 0);
                 return;
             }
-            throw new NotImplementedException("jalr to register other than ra not implemented yet.");
-
+            else
+            {
+                m.Assign(binder.EnsureRegister(lr), instr.Address + 8);
+                m.GotoD(dst);
+            }
         }
 
         private void RewriteJr(MipsInstruction instr)
         {
             rtlc = RtlClass.Transfer;
             var dst = RewriteOperand(instr.op1);
+
             var reg = (RegisterStorage)((Identifier)dst).Storage;
             if (reg == Registers.ra)
             {
@@ -134,7 +160,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteJump(MipsInstruction instr)
         {
-            var dst = RewriteOperand(instr.op1);
+            var dst = RewriteOperand0(instr.op1);
             rtlc = RtlClass.Transfer;
             m.GotoD(dst);
         }

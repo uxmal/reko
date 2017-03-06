@@ -79,10 +79,8 @@ namespace Reko.Arch.Mips
                 case Opcode.andi:
                     RewriteAnd(instr); break;
                 case Opcode.bc1f: RewriteBc1f(instr, false); break;
-                case Opcode.beq:
-                    RewriteBranch(instr, m.Eq, false); break;
-                case Opcode.beql:
-                    RewriteBranch(instr, m.Eq, true); break;
+                case Opcode.beq:  RewriteBranch(instr, m.Eq, false); break;
+                case Opcode.beql: RewriteBranchLikely(instr, m.Eq); break;
                 case Opcode.bgez:
                     RewriteBranch0(instr, m.Ge, false); break;
                 case Opcode.bgezl:
@@ -109,8 +107,7 @@ namespace Reko.Arch.Mips
                     RewriteBranch0(instr, m.Lt, true); break;
                 case Opcode.bne:
                     RewriteBranch(instr, m.Ne, false); break;
-                case Opcode.bnel:
-                    RewriteBranch(instr, m.Ne, true); break;
+                case Opcode.bnel: RewriteBranchLikely(instr, m.Ne); break;
                 case Opcode.@break: RewriteBreak(instr); break;
                 case Opcode.c_le_d: RewriteFpuCmpD(instr, Operator.Fle); break;
                 case Opcode.cfc1: RewriteCfc1(instr); break;
@@ -125,20 +122,21 @@ namespace Reko.Arch.Mips
                 case Opcode.ddivu:
                 case Opcode.div: RewriteDiv(instr, m.SDiv); break;
                 case Opcode.divu: RewriteDiv(instr, m.UDiv); break;
-                case Opcode.dmult:
-                case Opcode.dmultu:
-                case Opcode.dsll:
-                case Opcode.dsll32:
-                case Opcode.dsllv:
-                case Opcode.dsra:
-                case Opcode.dsra32:
-                case Opcode.dsrav:
-                case Opcode.dsrl:
-                case Opcode.dsrl32:
-                case Opcode.dsrlv:
+                case Opcode.dmult: RewriteMul(instr, m.SDiv, PrimitiveType.Int64); break;
+                case Opcode.dmultu: RewriteMul(instr, m.UDiv, PrimitiveType.UInt64); break;
+                case Opcode.dsll:   RewriteDshiftC(instr, m.Shl, 0); break;
+                case Opcode.dsll32: RewriteDshiftC(instr, m.Shl, 32); break;
+                case Opcode.dsllv: RewriteDshift(instr, m.Shl); break;
+                case Opcode.dsra: RewriteDshiftC(instr, m.Sar, 0); break;
+                case Opcode.dsra32: RewriteDshiftC(instr, m.Sar, 32); break;
+                case Opcode.dsrav: RewriteDshift(instr, m.Sar); break;
+                case Opcode.dsrl: RewriteDshiftC(instr, m.Shr, 0); break;
+                case Opcode.dsrl32: RewriteDshiftC(instr, m.Shr, 32); break;
+                case Opcode.dsrlv: RewriteDshift(instr, m.Shr); break;
                 case Opcode.dsub:
                 case Opcode.dsubu:
-                    goto default;
+                    RewriteSub(instr, PrimitiveType.Word64); break;
+
                 case Opcode.j:
                     RewriteJump(instr); break;
                 case Opcode.jal:
@@ -151,9 +149,9 @@ namespace Reko.Arch.Mips
                 case Opcode.lbu:
                     RewriteLoad(instr); break;
                 case Opcode.ld:
-                case Opcode.ldl:
-                case Opcode.ldr:
                     goto default;
+                case Opcode.ldl: RewriteLdl(instr); break;
+                case Opcode.ldr: RewriteLdr(instr); break;
                 case Opcode.lh:
                 case Opcode.lhu:
                     RewriteLoad(instr); break;
@@ -172,12 +170,11 @@ namespace Reko.Arch.Mips
                 case Opcode.mflo:   RewriteMf(instr, Registers.lo); break;
                 case Opcode.mthi:   RewriteMt(instr, Registers.hi); break;
                 case Opcode.mtlo:   RewriteMt(instr, Registers.lo); break;
-                case Opcode.movn:
-                case Opcode.movz:
-                    goto default;
-                case Opcode.mtc1: RewriteMtc1(instr); break;
-                case Opcode.mult: RewriteMul(instr, m.SMul, PrimitiveType.Int64); break;
-                case Opcode.multu: RewriteMul(instr, m.UMul, PrimitiveType.UInt64); break;
+                case Opcode.movn:   RewriteMovCc(instr, m.Ne0); break;
+                case Opcode.movz:   RewriteMovCc(instr, m.Eq0); break;
+                case Opcode.mtc1:   RewriteMtc1(instr); break;
+                case Opcode.mult:   RewriteMul(instr, m.SMul, PrimitiveType.Int64); break;
+                case Opcode.multu:  RewriteMul(instr, m.UMul, PrimitiveType.UInt64); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.nor: RewriteNor(instr); break;
                 case Opcode.or:
@@ -188,9 +185,10 @@ namespace Reko.Arch.Mips
                 case Opcode.sb: RewriteStore(instr); break;
                 case Opcode.sc:
                 case Opcode.scd:
-                case Opcode.sd:
-                case Opcode.sdl:
-                case Opcode.sdr:
+                    goto default;
+                case Opcode.sd: RewriteStore(instr); break;
+                case Opcode.sdl: RewriteSdl(instr); break;
+                case Opcode.sdr: RewriteSdr(instr); break;
                     goto default;
                 case Opcode.sh: RewriteStore(instr); break;
                 case Opcode.sll:
@@ -208,7 +206,7 @@ namespace Reko.Arch.Mips
                     RewriteSrl(instr); break;
                 case Opcode.sub:
                 case Opcode.subu:
-                    RewriteSub(instr); break;
+                    RewriteSub(instr, PrimitiveType.Word32); break;
                 case Opcode.sw:
                 case Opcode.swc1:
                     RewriteStore(instr); break;
@@ -218,7 +216,12 @@ namespace Reko.Arch.Mips
                     goto default;
                 case Opcode.sync: RewriteSync(instr); break;
                 case Opcode.syscall: RewriteSyscall(instr); break;
+                case Opcode.teq: RewriteTrap(instr, m.Eq); break;
                 case Opcode.tge: RewriteTrap(instr, m.Ge); break;
+                case Opcode.tgeu: RewriteTrap(instr, m.Uge); break;
+                case Opcode.tlt: RewriteTrap(instr, m.Lt); break;
+                case Opcode.tltu: RewriteTrap(instr, m.Ult); break;
+                case Opcode.tne: RewriteTrap(instr, m.Ne); break;
                 case Opcode.xor:
                 case Opcode.xori:
                     RewriteXor(instr); break;
@@ -240,6 +243,39 @@ namespace Reko.Arch.Mips
         }
 
         private Expression RewriteOperand(MachineOperand op)
+        {
+            var regOp = op as RegisterOperand;
+            if (regOp != null)
+            {
+                return binder.EnsureRegister(regOp.Register);
+            }
+            var immOp = op as ImmediateOperand;
+            if (immOp != null)
+            {
+                return immOp.Value;
+            }
+            var indOp = op as IndirectOperand;
+            if (indOp != null)
+            {
+                Expression ea;
+                Identifier baseReg = binder.EnsureRegister(indOp.Base);
+                if (indOp.Offset == 0)
+                    ea = baseReg;
+                else if (indOp.Offset > 0)
+                    ea = m.IAdd(baseReg, indOp.Offset);
+                else
+                    ea = m.ISub(baseReg, -indOp.Offset);
+                return m.Load(indOp.Width, ea);
+            }
+            var addrOp = op as AddressOperand;
+            if (addrOp != null)
+            {
+                return addrOp.Address;
+            }
+            throw new NotImplementedException(string.Format("Rewriting of operand type {0} not implemented yet.", op.GetType().Name));
+        }
+
+        private Expression RewriteOperand0(MachineOperand op)
         {
             var regOp = op as RegisterOperand;
             if (regOp != null)
@@ -273,5 +309,6 @@ namespace Reko.Arch.Mips
             }
             throw new NotImplementedException(string.Format("Rewriting of operand type {0} not implemented yet.", op.GetType().Name));
         }
+
     }
 }

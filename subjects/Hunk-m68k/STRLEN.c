@@ -4,6 +4,7 @@
 
 #include "STRLEN.h"
 
+// 00001000: void fn00001000(Register int32 d0, Register (ptr byte) a0)
 void fn00001000(int32 d0, byte * a0)
 {
 	struct Eq_4 * a6_8 = *(struct Eq_4 **) 0x04;
@@ -224,6 +225,7 @@ l00001202:
 	return;
 }
 
+// 00001214: void fn00001214(Register (ptr Eq_25) a3)
 void fn00001214(Eq_25 * a3)
 {
 	WaitPort(a3 + 0x005C);
@@ -231,6 +233,7 @@ void fn00001214(Eq_25 * a3)
 	return;
 }
 
+// 0000126C: void fn0000126C(Register (ptr Eq_31) a2)
 void fn0000126C(Eq_31 * a2)
 {
 	Forbid();
@@ -238,12 +241,14 @@ void fn0000126C(Eq_31 * a2)
 	return;
 }
 
+// 00001278: void fn00001278(Stack word32 dwArg04)
 void fn00001278(word32 dwArg04)
 {
 	fn0000127C(dwArg04);
 	return;
 }
 
+// 0000127C: void fn0000127C(Register int32 d2)
 void fn0000127C(int32 d2)
 {
 	ptr32 a7_3 = globals->ptr13C8;
@@ -258,6 +263,7 @@ void fn0000127C(int32 d2)
 	return;
 }
 
+// 000012D0: void fn000012D0(Stack word32 dwArg04)
 void fn000012D0(word32 dwArg04)
 {
 	Eq_600 a3_11[] = (Eq_600 (*)[]) 0x1404;
@@ -296,6 +302,7 @@ void fn000012D0(word32 dwArg04)
 	return;
 }
 
+// 0000131C: void fn0000131C(Stack word32 dwArg04)
 void fn0000131C(word32 dwArg04)
 {
 	if (*(word32 *) 5112 == 0x00)
@@ -325,6 +332,7 @@ void fn0000131C(word32 dwArg04)
 	return;
 }
 
+// 00001354: void fn00001354(Stack int32 dwArg04, Stack (ptr Eq_67) dwArg08)
 void fn00001354(int32 dwArg04, Eq_67 * dwArg08)
 {
 	<anonymous> ** a3_45 = (<anonymous> **) 0x1400;
@@ -347,11 +355,13 @@ void fn00001354(int32 dwArg04, Eq_67 * dwArg08)
 	return;
 }
 
+// 00001390: Register word32 fn00001390()
 word32 fn00001390()
 {
 	return fn000013AC(0x13A4);
 }
 
+// 000013AC: Register int32 fn000013AC(Stack ptr32 dwArg04)
 int32 fn000013AC(ptr32 dwArg04)
 {
 	byte * a1_11 = dwArg04;

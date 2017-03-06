@@ -4,19 +4,57 @@
 
 #include "RussianText.h"
 
-void _GetExceptDLLinfo(word32 dwArg04)
+// 00401071: void __GetExceptDLLinfo()
+void __GetExceptDLLinfo()
 {
-	globals->dw4020F8 = fn00401158() + 0x1C;
-	dwArg04->dw0000 = 0x82727349;
-	dwArg04->ptr0004 = 0x004020E4;
+	fn004011FC(dwArg00);
 	return;
 }
 
-word32 fn00401158()
+// 00401084: void fn00401084()
+void fn00401084()
 {
-	return fs->ptr002C[globals->dw40208B];
+	return;
 }
 
+// 0040110B: void fn0040110B(Register word32 eax)
+void fn0040110B(word32 eax)
+{
+	if (globals->t40208B >= null)
+	{
+		word32 esp_19;
+		byte SCZO_20;
+		byte C_21;
+		Eq_9 eax_22;
+		byte SZO_23;
+		byte Z_24;
+		__CRTL_TLS_GetValue();
+		if (eax_22 != null)
+		{
+			fp->tFFFFFFF4 = eax_22;
+			fp->tFFFFFFF0 = 0x08;
+			fp->tFFFFFFEC = GetProcessHeap();
+			Eq_36 eax_37 = HeapFree(fp->tFFFFFFEC, fp->tFFFFFFF0, fp->tFFFFFFF4);
+			fp->tFFFFFFF4 = globals->t40208B;
+			word32 esp_42;
+			byte SCZO_43;
+			byte C_44;
+			word32 eax_45;
+			byte SZO_46;
+			byte Z_47;
+			__CRTL_TLS_ExitThread();
+		}
+	}
+	return;
+}
+
+// 00401158: Register word32 fn00401158()
+word32 fn00401158()
+{
+	return fs->ptr002C[globals->t40208B];
+}
+
+// 00401168: Register int32 main(Stack int32 argc, Stack (ptr (ptr char)) argv)
 int32 main(int32 argc, char * * argv)
 {
 	word32 esp_14;
@@ -27,5 +65,59 @@ int32 main(int32 argc, char * * argv)
 	byte C_19;
 	printf();
 	return 0x00;
+}
+
+// 0040117C: void fn0040117C()
+void fn0040117C()
+{
+	return;
+}
+
+// 00401180: void fn00401180()
+void fn00401180()
+{
+	return;
+}
+
+// 004011B0: void fn004011B0(Stack word32 dwArg04)
+void fn004011B0(word32 dwArg04)
+{
+	if (dwArg04 == 0x00 && dwArg04 == 0x00)
+		fn004011FC(fp - 0x0C);
+	fn00401158();
+	word32 esp_31;
+	word32 ebp_32;
+	byte SCZO_33;
+	word32 ebx_34;
+	byte SZO_35;
+	byte C_36;
+	byte al_37;
+	byte Z_38;
+	word32 eax_39;
+	word32 edx_40;
+	word32 ecx_41;
+	memcpy();
+	word32 esp_45;
+	word32 ebp_46;
+	byte SCZO_47;
+	word32 ebx_48;
+	byte SZO_49;
+	byte C_50;
+	byte al_51;
+	byte Z_52;
+	word32 eax_53;
+	word32 edx_54;
+	word32 ecx_55;
+	_InitTermAndUnexPtrs$qv();
+	return;
+}
+
+// 004011FC: void fn004011FC(Stack ptr32 dwArg04)
+void fn004011FC(ptr32 dwArg04)
+{
+	globals->dw4020F8 = fn00401158() + 0x1C;
+	dwArg04->dw0000 = 0x82727349;
+	dwArg04->ptr0004 = 0x004020E4;
+	return;
 }
 

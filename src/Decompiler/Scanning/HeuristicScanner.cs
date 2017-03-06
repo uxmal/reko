@@ -141,12 +141,12 @@ namespace Reko.Scanning
         }
 
         public ScanResults ScanImage(ScanResults sr)
-        { 
-            //// Break up the image map along known procedure boundaries
-            //foreach (var addr in sr.KnownProcedures)
-            //{
-            //    program.ImageMap.AddItem(addr, new ImageMapItem());
-            //}
+        {
+            // Break up the image map along known procedure boundaries
+            foreach (var addr in sr.KnownProcedures)
+            {
+                program.ImageMap.AddItem(addr, new ImageMapItem());
+            }
 
             // At this point, we have some entries in the image map
             // that are data, and unscanned ranges in betweeen. We

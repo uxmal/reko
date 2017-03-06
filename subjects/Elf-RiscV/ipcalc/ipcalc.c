@@ -4,6 +4,7 @@
 
 #include "ipcalc.h"
 
+// 0000000000014F20: void herror()
 void herror()
 {
 	<anonymous> * t3_4 = globals->ptr1A010;
@@ -14,6 +15,7 @@ void herror()
 	return;
 }
 
+// 0000000000014F30: void __strdup()
 void __strdup()
 {
 	<anonymous> * t3_4 = globals->ptr1A018;
@@ -24,6 +26,7 @@ void __strdup()
 	return;
 }
 
+// 0000000000014F40: void clock_gettime()
 void clock_gettime()
 {
 	<anonymous> * t3_4 = globals->ptr1A020;
@@ -34,6 +37,7 @@ void clock_gettime()
 	return;
 }
 
+// 0000000000014F50: void close()
 void close()
 {
 	<anonymous> * t3_4 = globals->ptr1A028;
@@ -44,6 +48,7 @@ void close()
 	return;
 }
 
+// 0000000000014F60: void read()
 void read()
 {
 	<anonymous> * t3_4 = globals->ptr1A030;
@@ -54,6 +59,7 @@ void read()
 	return;
 }
 
+// 0000000000014F70: void inet_ntop()
 void inet_ntop()
 {
 	<anonymous> * t3_4 = globals->ptr1A038;
@@ -64,6 +70,7 @@ void inet_ntop()
 	return;
 }
 
+// 0000000000014F80: void snprintf()
 void snprintf()
 {
 	<anonymous> * t3_4 = globals->ptr1A040;
@@ -74,6 +81,7 @@ void snprintf()
 	return;
 }
 
+// 0000000000014F90: void getaddrinfo()
 void getaddrinfo()
 {
 	<anonymous> * t3_4 = globals->ptr1A048;
@@ -84,6 +92,7 @@ void getaddrinfo()
 	return;
 }
 
+// 0000000000014FA0: void dlopen()
 void dlopen()
 {
 	<anonymous> * t3_4 = globals->ptr1A050;
@@ -94,6 +103,7 @@ void dlopen()
 	return;
 }
 
+// 0000000000014FB0: void open()
 void open()
 {
 	<anonymous> * t3_4 = globals->ptr1A058;
@@ -104,6 +114,7 @@ void open()
 	return;
 }
 
+// 0000000000014FC0: void __snprintf_chk()
 void __snprintf_chk()
 {
 	<anonymous> * t3_4 = globals->ptr1A060;
@@ -114,6 +125,7 @@ void __snprintf_chk()
 	return;
 }
 
+// 0000000000014FD0: void dlsym()
 void dlsym()
 {
 	<anonymous> * t3_4 = globals->ptr1A068;
@@ -124,6 +136,7 @@ void dlsym()
 	return;
 }
 
+// 0000000000014FF0: void getopt_long()
 void getopt_long()
 {
 	<anonymous> * t3_4 = globals->ptr1A078;
@@ -134,6 +147,7 @@ void getopt_long()
 	return;
 }
 
+// 0000000000015000: void __vasprintf_chk()
 void __vasprintf_chk()
 {
 	<anonymous> * t3_4 = globals->ptr1A080;
@@ -144,6 +158,7 @@ void __vasprintf_chk()
 	return;
 }
 
+// 0000000000015010: void __asprintf_chk()
 void __asprintf_chk()
 {
 	<anonymous> * t3_4 = globals->ptr1A088;
@@ -154,6 +169,7 @@ void __asprintf_chk()
 	return;
 }
 
+// 0000000000015020: void getnameinfo()
 void getnameinfo()
 {
 	<anonymous> * t3_4 = globals->ptr1A090;
@@ -164,6 +180,7 @@ void getnameinfo()
 	return;
 }
 
+// 0000000000015030: void memset()
 void memset()
 {
 	<anonymous> * t3_4 = globals->ptr1A098;
@@ -174,6 +191,7 @@ void memset()
 	return;
 }
 
+// 0000000000015040: void inet_pton()
 void inet_pton()
 {
 	<anonymous> * t3_4 = globals->ptr1A0A0;
@@ -184,6 +202,7 @@ void inet_pton()
 	return;
 }
 
+// 0000000000015050: void strcmp()
 void strcmp()
 {
 	<anonymous> * t3_4 = globals->ptr1A0A8;
@@ -194,6 +213,7 @@ void strcmp()
 	return;
 }
 
+// 0000000000015060: void free()
 void free()
 {
 	<anonymous> * t3_4 = globals->ptr1A0B0;
@@ -204,6 +224,7 @@ void free()
 	return;
 }
 
+// 0000000000015070: void __printf_chk()
 void __printf_chk()
 {
 	<anonymous> * t3_4 = globals->ptr1A0B8;
@@ -214,6 +235,7 @@ void __printf_chk()
 	return;
 }
 
+// 0000000000015080: void __sprintf_chk()
 void __sprintf_chk()
 {
 	<anonymous> * t3_4 = globals->ptr1A0C0;
@@ -224,6 +246,7 @@ void __sprintf_chk()
 	return;
 }
 
+// 0000000000015090: void fwrite()
 void fwrite()
 {
 	<anonymous> * t3_4 = globals->ptr1A0C8;
@@ -234,6 +257,7 @@ void fwrite()
 	return;
 }
 
+// 00000000000150A0: void memcmp()
 void memcmp()
 {
 	<anonymous> * t3_4 = globals->ptr1A0D0;
@@ -244,6 +268,7 @@ void memcmp()
 	return;
 }
 
+// 00000000000150B0: void fputs()
 void fputs()
 {
 	<anonymous> * t3_4 = globals->ptr1A0D8;
@@ -254,6 +279,7 @@ void fputs()
 	return;
 }
 
+// 00000000000150C0: void isatty()
 void isatty()
 {
 	<anonymous> * t3_4 = globals->ptr1A0E0;
@@ -264,6 +290,7 @@ void isatty()
 	return;
 }
 
+// 00000000000150D0: void __fprintf_chk()
 void __fprintf_chk()
 {
 	<anonymous> * t3_4 = globals->ptr1A0E8;
@@ -274,6 +301,7 @@ void __fprintf_chk()
 	return;
 }
 
+// 00000000000150F0: void putchar()
 void putchar()
 {
 	<anonymous> * t3_4 = globals->ptr1A0F8;
@@ -284,6 +312,7 @@ void putchar()
 	return;
 }
 
+// 0000000000015100: void fputc()
 void fputc()
 {
 	<anonymous> * t3_4 = globals->ptr1A100;
@@ -294,6 +323,7 @@ void fputc()
 	return;
 }
 
+// 0000000000015110: void __stack_chk_fail()
 void __stack_chk_fail()
 {
 	<anonymous> * t3_4 = globals->ptr1A108;
@@ -304,6 +334,7 @@ void __stack_chk_fail()
 	return;
 }
 
+// 0000000000015120: void __errno_location()
 void __errno_location()
 {
 	<anonymous> * t3_4 = globals->ptr1A110;
@@ -314,6 +345,7 @@ void __errno_location()
 	return;
 }
 
+// 0000000000015130: void strtol()
 void strtol()
 {
 	<anonymous> * t3_4 = globals->ptr1A118;
@@ -324,6 +356,7 @@ void strtol()
 	return;
 }
 
+// 0000000000015140: void strchr()
 void strchr()
 {
 	<anonymous> * t3_4 = globals->ptr1A120;
@@ -334,6 +367,7 @@ void strchr()
 	return;
 }
 
+// 0000000000015150: void memcpy()
 void memcpy()
 {
 	<anonymous> * t3_4 = globals->ptr1A128;
@@ -344,6 +378,7 @@ void memcpy()
 	return;
 }
 
+// 0000000000015160: void abort()
 void abort()
 {
 	<anonymous> * t3_4 = globals->ptr1A130;
@@ -354,6 +389,7 @@ void abort()
 	return;
 }
 
+// 0000000000015170: void freeaddrinfo()
 void freeaddrinfo()
 {
 	<anonymous> * t3_4 = globals->ptr1A138;
@@ -364,6 +400,7 @@ void freeaddrinfo()
 	return;
 }
 
+// 0000000000015180: void fn0000000000015180(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 a0, Register word64 a1)
 void fn0000000000015180(word64 ra, Eq_291 * gp, Eq_292 a0, word64 a1)
 {
 	Eq_294 sp_132 = &fp->tFFFFFE40;
@@ -854,6 +891,7 @@ l0000000000015C84:
 	goto l0000000000015C84;
 }
 
+// 0000000000015EB8: void fn0000000000015EB8(Stack word64 qwArg00)
 void fn0000000000015EB8(word64 qwArg00)
 {
 	<anonymous> * t3_19 = globals->ptr1A0F0;
@@ -872,6 +910,7 @@ void fn0000000000015EB8(word64 qwArg00)
 	return;
 }
 
+// 0000000000015EF0: void fn0000000000015EF0()
 void fn0000000000015EF0()
 {
 	Eq_1231 a4_7 = 0x0E;
@@ -890,6 +929,7 @@ void fn0000000000015EF0()
 	}
 }
 
+// 0000000000015F24: void fn0000000000015F24()
 void fn0000000000015F24()
 {
 	if (0x00 == 0x00 || 0x00 == 0x00)
@@ -907,6 +947,7 @@ void fn0000000000015F24()
 	}
 }
 
+// 0000000000015F64: void fn0000000000015F64(Register (ptr Eq_1258) gp)
 void fn0000000000015F64(Eq_1258 * gp)
 {
 	if ((word64) gp->bFFFFF894 == 0x00)
@@ -917,6 +958,7 @@ void fn0000000000015F64(Eq_1258 * gp)
 	return;
 }
 
+// 0000000000015F94: void fn0000000000015F94()
 void fn0000000000015F94()
 {
 	if (globals->qw19E28 != 0x00 && 0x00 != 0x00)
@@ -936,6 +978,7 @@ void fn0000000000015F94()
 	}
 }
 
+// 0000000000015FCC: void fn0000000000015FCC(Register (ptr Eq_291) gp, Register Eq_759 a0)
 void fn0000000000015FCC(Eq_291 * gp, Eq_759 a0)
 {
 	if (a0 != 0x00)
@@ -989,6 +1032,7 @@ void fn0000000000015FCC(Eq_291 * gp, Eq_759 a0)
 	}
 }
 
+// 00000000000163B0: Register Eq_1376 fn00000000000163B0(Register (ptr Eq_291) gp, Register Eq_1376 a0)
 Eq_1376 fn00000000000163B0(Eq_291 * gp, Eq_1376 a0)
 {
 	word64 a5_27 = gp->qwFFFFF870;
@@ -1053,6 +1097,7 @@ Eq_1376 fn00000000000163B0(Eq_291 * gp, Eq_1376 a0)
 		return fp + -232;
 }
 
+// 00000000000164D0: Register word64 fn00000000000164D0(Register Eq_656 a1, Register out (ptr Eq_657) spOut, Register out Eq_658 s0Out, Register out ptr64 s1Out, Register out ptr64 a0Out)
 word64 fn00000000000164D0(Eq_656 a1, Eq_657 * & spOut, Eq_658 & s0Out, ptr64 & s1Out, ptr64 & a0Out)
 {
 	open();
@@ -1076,6 +1121,7 @@ word64 fn00000000000164D0(Eq_656 a1, Eq_657 * & spOut, Eq_658 & s0Out, ptr64 & s
 	}
 }
 
+// 0000000000016500: Register word64 fn0000000000016500(Register word64 a0, Register Eq_656 s2, Register out ptr64 spOut, Register out ptr64 s0Out, Register out ptr64 s1Out, Register out ptr64 a0Out, Register out ptr64 s2Out)
 word64 fn0000000000016500(word64 a0, Eq_656 s2, ptr64 & spOut, ptr64 & s0Out, ptr64 & s1Out, ptr64 & a0Out, ptr64 & s2Out)
 {
 	read();
@@ -1088,6 +1134,7 @@ word64 fn0000000000016500(word64 a0, Eq_656 s2, ptr64 & spOut, ptr64 & s0Out, pt
 	return fn0000000000016544(out sp_14, out s0_15, out s1_16, out a0_17, out s2_18);
 }
 
+// 0000000000016544: Register word64 fn0000000000016544(Register out ptr64 spOut, Register out ptr64 s0Out, Register out ptr64 s1Out, Register out ptr64 a0Out, Register out ptr64 s2Out)
 word64 fn0000000000016544(ptr64 & spOut, ptr64 & s0Out, ptr64 & s1Out, ptr64 & a0Out, ptr64 & s2Out)
 {
 	word64 a0_2;
@@ -1103,6 +1150,7 @@ word64 fn0000000000016544(ptr64 & spOut, ptr64 & s0Out, ptr64 & s1Out, ptr64 & a
 	return v3->qw0018;
 }
 
+// 000000000001654C: Register word64 fn000000000001654C(Register word64 ra, Register (ptr Eq_291) gp)
 word64 fn000000000001654C(word64 ra, Eq_291 * gp)
 {
 	word64 t3_7 = gp->qwFFFFF870;
@@ -1136,6 +1184,7 @@ word64 fn000000000001654C(word64 ra, Eq_291 * gp)
 		return s4;
 }
 
+// 0000000000016630: Register Eq_306 fn0000000000016630(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_306 a0, Register Eq_1576 a1, Register out ptr64 a1Out, Register out ptr64 s4Out)
 Eq_306 fn0000000000016630(word64 ra, Eq_291 * gp, Eq_306 a0, Eq_1576 a1, ptr64 & a1Out, ptr64 & s4Out)
 {
 	*s4Out = s4;
@@ -1183,6 +1232,7 @@ l0000000000016698:
 		return a5_28;
 }
 
+// 00000000000166F4: Register word64 fn00000000000166F4(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_306 a0, Register Eq_306 a1, Register Eq_535 a2, Register out (ptr Eq_536) spOut, Register out Eq_537 s0Out, Register out Eq_538 s1Out, Register out ptr64 a0Out, Register out ptr64 a1Out, Register out Eq_541 s4Out)
 word64 fn00000000000166F4(word64 ra, Eq_291 * gp, Eq_306 a0, Eq_306 a1, Eq_535 a2, Eq_536 * & spOut, Eq_537 & s0Out, Eq_538 & s1Out, ptr64 & a0Out, ptr64 & a1Out, Eq_541 & s4Out)
 {
 	Eq_292 a1_108;
@@ -1304,6 +1354,7 @@ l00000000000167F4:
 	goto l0000000000016794;
 }
 
+// 0000000000016830: Register word64 fn0000000000016830(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 s0, Register Eq_292 a0, Register Eq_292 a1, Register out (ptr Eq_1921) spOut, Register out ptr64 s0Out, Register out ptr64 a0Out)
 word64 fn0000000000016830(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a1, Eq_1921 * & spOut, ptr64 & s0Out, ptr64 & a0Out)
 {
 	if (a0 == 0x00)
@@ -1323,6 +1374,7 @@ word64 fn0000000000016830(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a
 	}
 }
 
+// 000000000001684C: Register word64 fn000000000001684C(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 s0, Register Eq_292 a0, Register Eq_292 a1, Register out ptr64 spOut, Register out ptr64 s0Out, Register out ptr64 a0Out)
 word64 fn000000000001684C(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a1, ptr64 & spOut, ptr64 & s0Out, ptr64 & a0Out)
 {
 	*v3 = (union Eq_1745 *) fn00000000000182B4((int64) (int32) (-0x01 << (int64) (0x0020 - a0)));
@@ -1332,6 +1384,7 @@ word64 fn000000000001684C(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a
 	return fn0000000000016864(ra, gp, s0, a1, out sp_13, out s0_14, out a0_15);
 }
 
+// 0000000000016864: Register word64 fn0000000000016864(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 s0, Register Eq_292 a1, Register out ptr64 spOut, Register out ptr64 s0Out, Register out ptr64 a0Out)
 word64 fn0000000000016864(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a1, ptr64 & spOut, ptr64 & s0Out, ptr64 & a0Out)
 {
 	sp = v3;
@@ -1363,6 +1416,7 @@ word64 fn0000000000016864(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a1, ptr64 & 
 	}
 }
 
+// 00000000000168B8: void fn00000000000168B8(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 a0, Register Eq_292 a1)
 void fn00000000000168B8(word64 ra, Eq_291 * gp, Eq_292 a0, Eq_292 a1)
 {
 	word64 sp_12;
@@ -1372,6 +1426,7 @@ void fn00000000000168B8(word64 ra, Eq_291 * gp, Eq_292 a0, Eq_292 a1)
 	return;
 }
 
+// 00000000000168E4: Register Eq_310 fn00000000000168E4(Register (ptr Eq_291) gp, Register Eq_310 a0, Register Eq_304 a1)
 Eq_310 fn00000000000168E4(Eq_291 * gp, Eq_310 a0, Eq_304 a1)
 {
 	ptr64 a0_130;
@@ -1410,6 +1465,7 @@ l0000000000016910:
 	goto l0000000000016914;
 }
 
+// 00000000000169D8: Register Eq_2080 fn00000000000169D8(Register (ptr Eq_291) gp, Register Eq_304 a1)
 Eq_2080 fn00000000000169D8(Eq_291 * gp, Eq_304 a1)
 {
 	Eq_2080 a0_119;
@@ -1493,6 +1549,7 @@ l0000000000016AF4:
 		return a0_119;
 }
 
+// 0000000000016B38: void fn0000000000016B38(Register Eq_2205 a0)
 void fn0000000000016B38(Eq_2205 a0)
 {
 	if (0x007F < a0)
@@ -1501,6 +1558,7 @@ void fn0000000000016B38(Eq_2205 a0)
 		return;
 }
 
+// 0000000000016B68: Register Eq_1745 fn0000000000016B68(Register Eq_1745 a0)
 Eq_1745 fn0000000000016B68(Eq_1745 a0)
 {
 	Eq_1745 a4_102;
@@ -1634,6 +1692,7 @@ l0000000000016BC0:
 	}
 }
 
+// 0000000000016D74: Register Eq_310 fn0000000000016D74(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 s0, Register Eq_310 a0, Register Eq_292 a1, Register (ptr Eq_573) a2, Register Eq_292 a3)
 Eq_310 fn0000000000016D74(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_310 a0, Eq_292 a1, Eq_573 * a2, Eq_292 a3)
 {
 	Eq_310 a0_115;
@@ -1876,6 +1935,7 @@ l0000000000017074:
 	goto l0000000000016E20;
 }
 
+// 000000000001730C: Register Eq_292 fn000000000001730C(Register (ptr Eq_291) gp, Register Eq_292 a0, Register Eq_292 a1, Register out ptr64 s3Out)
 Eq_292 fn000000000001730C(Eq_291 * gp, Eq_292 a0, Eq_292 a1, ptr64 & s3Out)
 {
 	*s3Out = s3;
@@ -1944,6 +2004,7 @@ l000000000001739C:
 	goto l000000000001739C;
 }
 
+// 00000000000173D4: Register word64 fn00000000000173D4(Register Eq_292 a0, Register Eq_292 a1, Register out ptr64 s0Out, Register out ptr64 a0Out, Register out ptr64 s2Out, Register out ptr64 s3Out)
 word64 fn00000000000173D4(Eq_292 a0, Eq_292 a1, ptr64 & s0Out, ptr64 & a0Out, ptr64 & s2Out, ptr64 & s3Out)
 {
 	Eq_2955 s2_17 = (word64) *a0;
@@ -1968,6 +2029,7 @@ word64 fn00000000000173D4(Eq_292 a0, Eq_292 a1, ptr64 & s0Out, ptr64 & a0Out, pt
 	}
 }
 
+// 0000000000017400: Register word64 fn0000000000017400(Register Eq_292 s0, Register Eq_292 a0, Register Eq_292 a1, Register Eq_2955 s2, Register ui64 s3, Register out ptr64 s0Out, Register out ptr64 a0Out, Register out ptr64 a1Out, Register out ptr64 s2Out, Register out ptr64 s3Out)
 word64 fn0000000000017400(Eq_292 s0, Eq_292 a0, Eq_292 a1, Eq_2955 s2, ui64 s3, ptr64 & s0Out, ptr64 & a0Out, ptr64 & a1Out, ptr64 & s2Out, ptr64 & s3Out)
 {
 	if (0x005F < a1)
@@ -1990,6 +2052,7 @@ word64 fn0000000000017400(Eq_292 s0, Eq_292 a0, Eq_292 a1, Eq_2955 s2, ui64 s3, 
 	}
 }
 
+// 00000000000174DC: Register ptr64 fn00000000000174DC(Register Eq_292 s0, Register Eq_292 a0, Register Eq_2955 s2, Register ui64 s3, Register out ptr64 s0Out, Register out ptr64 a0Out, Register out ptr64 a1Out, Register out ptr64 s2Out, Register out ptr64 s3Out)
 ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Out, ptr64 & a0Out, ptr64 & a1Out, ptr64 & s2Out, ptr64 & s3Out)
 {
 	memcmp();
@@ -2115,6 +2178,7 @@ ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Ou
 	}
 }
 
+// 00000000000175BC: Register Eq_430 fn00000000000175BC(Register (ptr Eq_291) gp)
 Eq_430 fn00000000000175BC(Eq_291 * gp)
 {
 	Eq_430 a0_127;
@@ -2255,6 +2319,7 @@ l0000000000017774:
 	}
 }
 
+// 0000000000017924: Register Eq_3571 fn0000000000017924(Register (ptr Eq_291) gp)
 Eq_3571 fn0000000000017924(Eq_291 * gp)
 {
 	Eq_3571 s0_120;
@@ -2319,6 +2384,7 @@ Eq_3571 fn0000000000017924(Eq_291 * gp)
 	return s0_120;
 }
 
+// 0000000000017B40: void fn0000000000017B40(Register (ptr Eq_291) gp, Register Eq_1745 a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3)
 void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 {
 	if (fn0000000000017924(gp) == 0x00)
@@ -2595,6 +2661,7 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		return;
 }
 
+// 0000000000017D10: void fn0000000000017D10(Register (ptr Eq_291) gp, Register ptr64 a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3)
 void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 {
 	Eq_430 a0_32 = fn0000000000017924(gp);
@@ -2881,6 +2948,7 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		return;
 }
 
+// 0000000000017F04: Register Eq_1745 fn0000000000017F04(Register (ptr Eq_291) gp, Register Eq_1745 a0, Register Eq_292 a1, Register Eq_1745 a2, Register Eq_1745 a3)
 Eq_1745 fn0000000000017F04(Eq_291 * gp, Eq_1745 a0, Eq_292 a1, Eq_1745 a2, Eq_1745 a3)
 {
 	Eq_292 a1_104;
@@ -2965,6 +3033,7 @@ l0000000000017F84:
 	goto l0000000000017F88;
 }
 
+// 0000000000018118: Register Eq_1745 fn0000000000018118(Register (ptr Eq_291) gp, Register Eq_1745 a0, Register Eq_292 a1)
 Eq_1745 fn0000000000018118(Eq_291 * gp, Eq_1745 a0, Eq_292 a1)
 {
 	Eq_1745 a0_149;
@@ -3024,11 +3093,13 @@ Eq_1745 fn0000000000018118(Eq_291 * gp, Eq_1745 a0, Eq_292 a1)
 		return a0_149;
 }
 
+// 00000000000182B4: Register Eq_1745 fn00000000000182B4(Register Eq_1745 a0)
 Eq_1745 fn00000000000182B4(Eq_1745 a0)
 {
 	return (int64) (int32) (a0 >> 0x18) | (int64) ((int32) (a0 << 0x18)) | (int64) ((int32) ((a0 & 0x00FF0000) >> 0x08)) | (int64) ((int32) ((a0 & 0x0000FF00) << 0x08));
 }
 
+// 00000000000182E8: void fn00000000000182E8()
 void fn00000000000182E8()
 {
 	word64 * s0_43 = &globals->qw19E18;
@@ -3056,6 +3127,7 @@ void fn00000000000182E8()
 	return;
 }
 
+// 0000000000018378: void fn0000000000018378()
 void fn0000000000018378()
 {
 	return;

@@ -325,8 +325,10 @@ namespace Reko
             w.WriteLine("#include \"{0}\"", Path.GetFileName(program.TypesFilename));
             w.WriteLine();
             var fmt = new AbsynCodeFormatter(new TextFormatter(w));
-            foreach (Procedure proc in program.Procedures.Values)
+            foreach (var de in program.Procedures)
             {
+                w.WriteLine("// {0}: {1}", de.Key, de.Value);
+                var proc = de.Value;
                 try
                 {
                     fmt.Write(proc);

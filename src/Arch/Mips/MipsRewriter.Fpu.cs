@@ -55,7 +55,7 @@ namespace Reko.Arch.Mips
         private void RewriteFpuCmpD(MipsInstruction instr, Operator cmp)
         {
             m.Assign(
-                RewriteOperand(instr.op1),
+                RewriteOperand0(instr.op1),
                 new BinaryExpression(cmp, PrimitiveType.Bool,
                     GetFpuRegPair(instr.op2),
                     GetFpuRegPair(instr.op3)));
@@ -65,32 +65,32 @@ namespace Reko.Arch.Mips
         {
             m.Assign(
                     RewriteOperand(instr.op1),
-                    RewriteOperand(instr.op2));
+                    RewriteOperand0(instr.op2));
         }
 
         private void RewriteCtc1(MipsInstruction instr)
         {
             m.Assign(
                     RewriteOperand(instr.op2),
-                    RewriteOperand(instr.op1));
+                    RewriteOperand0(instr.op1));
         }
 
         private void RewriteCvtD(MipsInstruction instr, DataType dt)
         {
             var regPair = GetFpuRegPair(instr.op2);
             m.Assign(
-                RewriteOperand(instr.op1),
+                RewriteOperand0(instr.op1),
                 m.Cast(dt, regPair));
         }
 
         private void RewriteMfc1(MipsInstruction instr)
         {
-            m.Assign(RewriteOperand(instr.op1), RewriteOperand(instr.op2));
+            m.Assign(RewriteOperand0(instr.op1), RewriteOperand0(instr.op2));
         }
 
         private void RewriteMtc1(MipsInstruction instr)
         {
-            m.Assign(RewriteOperand(instr.op2), RewriteOperand(instr.op1));
+            m.Assign(RewriteOperand0(instr.op2), RewriteOperand0(instr.op1));
         }
     }
 }
