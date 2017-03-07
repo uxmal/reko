@@ -247,7 +247,7 @@ namespace Reko.UnitTests.Typing
             CreateTv(id, Ptr32(str), PrimitiveType.Word32);
             var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, 6);
             var e = ceb.BuildComplex(false);
-            Assert.AreEqual("&((char *) id->dw0004 + 2)", e.ToString());
+            Assert.AreEqual("(char *) &id->dw0004 + 2", e.ToString());
         }
 
         [Test]
