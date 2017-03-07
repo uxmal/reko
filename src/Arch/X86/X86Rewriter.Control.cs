@@ -172,7 +172,7 @@ namespace Reko.Arch.X86
 
         private void RewriteLoop(FlagM useFlags, ConditionCode cc)
         {
-            Identifier cx = orw.AluRegister(Registers.ecx, instrCur.dataWidth);
+            Identifier cx = orw.AluRegister(Registers.rcx, instrCur.dataWidth);
             m.Assign(cx, m.ISub(cx, 1));
             if (useFlags != 0)
             {

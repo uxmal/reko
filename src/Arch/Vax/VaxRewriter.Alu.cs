@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -72,9 +73,13 @@ namespace Reko.Arch.Vax
             var opSrc = RewriteSrcOp(0, width);
             var mem = opSrc as MemoryAccess;
             if (mem == null)
-                throw new AddressCorrelatedException(
-                    dasm.Current.Address,
-                    "Source operand must be a memory reference.");
+            {
+                Debug.Print(
+                    "{0}: Source operand must be a memory reference.",
+                    dasm.Current.Address);
+                m.Invalid();
+                return;
+            }
             var dst = RewriteDstOp(1, PrimitiveType.Word32, e => mem.EffectiveAddress);
             NZ00(dst);
         }
@@ -137,6 +142,11 @@ namespace Reko.Arch.Vax
         {
             var op1 = RewriteSrcOp(0, width);
             var dst = RewriteDstOp(1, width, e => fn(e, op1));
+            if (dst == null)
+            {
+                m.Invalid();
+                return false;
+            }
             return genFlags(dst);
         }
 
@@ -164,10 +174,11 @@ namespace Reko.Arch.Vax
         private void RewriteAsh(PrimitiveType width)
         {
             var op1 = RewriteSrcOp(0, PrimitiveType.SByte);
+            Func<Expression, Expression, Expression> fn;
+            Expression shift;
             var c = op1 as Constant;
             if (c != null)
             {
-                Func<Expression, Expression, Expression> fn;
                 var sh = c.ToInt16();
                 if (sh > 0)
                 {
@@ -176,14 +187,18 @@ namespace Reko.Arch.Vax
                 else
                 {
                     fn = m.Sar;
-                    sh = (short) -sh;
+                    sh = (short)-sh;
                 }
-                var op2 = RewriteSrcOp(1, width);
-                var dst = RewriteDstOp(2, width, e => fn(op2, Constant.SByte((sbyte)sh)));
-                this.NZV0(dst);
-                return;
+                shift = Constant.SByte((sbyte)sh);
             }
-            throw new NotImplementedException();
+            else
+            {
+                shift = RewriteSrcOp(0, width);
+                fn = (a, b) => host.PseudoProcedure("__ashift", width, a, b);
+            }
+            var op2 = RewriteSrcOp(1, width);
+            var dst = RewriteDstOp(2, width, e => fn(op2, shift));
+            this.NZV0(dst);
         }
 
         private void RewriteAshp()

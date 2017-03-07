@@ -37,7 +37,22 @@ namespace Reko.Arch.X86
             instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
             m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, SrcOp(instrCur.op2)));
         }
-        
+
+        private void RewriteCvttps2pi()
+        {
+            var dtSrc = PrimitiveType.Real32;
+            var dtDst = PrimitiveType.Int32;
+            var src = SrcOp(instrCur.op2);
+
+            var tmp1 = frame.CreateTemporary(dtDst);
+            m.Assign(tmp1, m.Cast(dtDst, m.Slice(dtSrc, src, 0)));
+
+            var tmp2 = frame.CreateTemporary(dtDst);
+            m.Assign(tmp2, m.Cast(dtDst, m.Slice(dtSrc, src, 32)));
+
+            m.Assign(SrcOp(instrCur.op1), m.Seq(tmp2, tmp1));
+        }
+
         private void RewritePcmpeqb()
         {
             m.Assign(

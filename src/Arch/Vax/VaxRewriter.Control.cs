@@ -26,6 +26,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -47,6 +48,8 @@ namespace Reko.Arch.Vax
                     dasm.Current.Address,
                     "Instruction {0} too complex to rewrite.",
                     dasm.Current);
+                m.Invalid();
+                return;
             }
             if (cAdd.ToReal64() >= 0.0)
             {
@@ -74,10 +77,14 @@ namespace Reko.Arch.Vax
                 return;
             var cAdd = add as Constant;
             if (cAdd == null)
-                throw new AddressCorrelatedException(
+            {
+                Debug.Print(
+                    "{0}: Instruction {1} too complex to rewrite.",
                     dasm.Current.Address,
-                    "Instruction {0] too complex to rewrite.",
                     dasm.Current);
+                m.Invalid();
+                return;
+            }
             if (cAdd.ToInt32() >= 0)
             {
                 m.Branch(

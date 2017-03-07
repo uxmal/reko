@@ -41,7 +41,7 @@ namespace Reko.Arch.Vax
         private void RewriteChme()
         {
             m.SideEffect(host.PseudoProcedure("vax_chme", VoidType.Instance,
-                RewriteSrcOp(1, PrimitiveType.Word16)));
+                RewriteSrcOp(0, PrimitiveType.Word16)));
         }
     }
 }

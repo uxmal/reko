@@ -131,6 +131,7 @@ namespace Reko.Arch.X86
                 case Opcode.cmpsb: RewriteStringInstruction(); break;
                 case Opcode.cpuid: RewriteCpuid(); break;
                 case Opcode.cvttsd2si: RewriteCvttsd2si(); break;
+                case Opcode.cvttps2pi: RewriteCvttps2pi(); break;
                 case Opcode.cwd: RewriteCwd(); break;
                 case Opcode.daa: EmitDaaDas("__daa"); break;
                 case Opcode.das: EmitDaaDas("__das"); break;

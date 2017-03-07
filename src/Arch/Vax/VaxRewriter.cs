@@ -513,13 +513,18 @@ namespace Reko.Arch.Vax
             if (regOp != null)
             {
                 var reg = frame.EnsureRegister(regOp.Register);
+                if (reg == null)
+                    return null;
                 if (width.Size == 4)
                 {
                     return reg;
                 }
                 else if (width.Size == 8)
                 {
-                    var regHi = frame.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
+                    var rHi = arch.GetRegister(1 + (int)reg.Storage.Domain);
+                    if (rHi == null)
+                        return null;
+                    var regHi = frame.EnsureRegister(rHi);
                     return frame.EnsureSequence(regHi.Storage, reg.Storage, width);
                 }
                 else if (width.Size == 16)
@@ -605,6 +610,8 @@ namespace Reko.Arch.Vax
             if (regOp != null)
             {
                 var reg = frame.EnsureRegister(regOp.Register);
+                if (reg == null)
+                    return null;
                 if (width.Size < 4)
                 {
                     var tmp = frame.CreateTemporary(width);
@@ -614,7 +621,10 @@ namespace Reko.Arch.Vax
                 }
                 else if (width.Size == 8)
                 {
-                    var regHi = frame.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
+                    var rHi = arch.GetRegister(1 + (int)reg.Storage.Domain);
+                    if (rHi == null)
+                        return null;
+                    var regHi = frame.EnsureRegister(rHi);
                     reg = frame.EnsureSequence(regHi.Storage, reg.Storage, width);
                 }
                 else if (width.Size == 16)
@@ -630,7 +640,7 @@ namespace Reko.Arch.Vax
                 m.Assign(reg, fn(reg));
                 return reg;
             }
-            if (op is ImmediateOperand)
+            if (op is ImmediateOperand || op is AddressOperand)
             {
                 // Can't assign to an immediate.
                 return null;

@@ -194,8 +194,6 @@ namespace Reko.Scanning
                     continue;
                 }
                 var i = dasm.Current;
-                if (watched.Contains( i.Address)) //$DEBUG
-                    i.ToString();
                 if (IsInvalid(mem, i))
                 {
                     AddEdge(G, bad, i.Address);
@@ -281,8 +279,6 @@ namespace Reko.Scanning
             {
                 if (a != bad)
                 {
-                    if (watched.Contains(a))        //$DEBUG
-                        a.ToString();
                     sr.Instructions.Remove(a);
                     deadNodes.Add(a);
 

@@ -41,6 +41,11 @@ namespace Reko.Arch.Vax
             var op1 = RewriteSrcOp(0, width);
             var op2 = RewriteSrcOp(1, width);
             var dst = RewriteDstOp(2, width, e => fn(op2, op1));
+            if (dst == null)
+            {
+                m.Invalid();
+                return false;
+            }
             return genFlags(dst);
         }
     }
