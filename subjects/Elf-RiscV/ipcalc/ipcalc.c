@@ -768,7 +768,7 @@ l00000000000153D8:
 	word64 s1_873;
 	Eq_292 a0_874;
 	word64 a1_875;
-	fn00000000000166F4(ra, gp, &((char *) fp->tFFFFFE48 + 0x0014), s10_45, 0x01, out sp_132, out s0_872, out s1_873, out a0_874, out a1_875, out s4_1027);
+	fn00000000000166F4(ra, gp, (char *) &fp->tFFFFFE48 + 0x0014, s10_45, 0x01, out sp_132, out s0_872, out s1_873, out a0_874, out a1_875, out s4_1027);
 	if (a0_874 < 0x00)
 	{
 		if ((word64) gp->dwFFFFF814 != 0x00)

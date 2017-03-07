@@ -387,7 +387,7 @@ l00400A8C_ds_f:
 l00400AC4:
 l00400B20:
 	*globals->ptr100008F4 = globals->ptr10000A40->dw038C
-	*globals->ptr100008A0 = (int8 **) &((char *) globals->ptr10000A40->dw038C + 0x0011)
+	*globals->ptr100008A0 = (int8 **) ((char *) &globals->ptr10000A40->dw038C + 0x0011)
 	*globals->ptr10000A28 = globals->ptr10000A40->dw0684 << 0x0A
 	int32 r2_129 = globals->ptr10000A40->dw05EC
 	int32 * r1_130 = globals->ptr1000090C

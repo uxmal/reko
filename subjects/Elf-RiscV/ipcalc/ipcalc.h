@@ -4249,7 +4249,7 @@ T_610: (in out s4_1027 : ptr64)
   Class: Eq_541
   DataType: Eq_541
   OrigDataType: (union (int32 u1) (ptr64 u0))
-T_611: (in fn00000000000166F4(ra, gp, &((char *) fp->tFFFFFE48 + 20), s10_45, 1, out sp_132, out s0_872, out s1_873, out a0_874, out a1_875, out s4_1027) : word64)
+T_611: (in fn00000000000166F4(ra, gp, (char *) &fp->tFFFFFE48 + 20, s10_45, 1, out sp_132, out s0_872, out s1_873, out a0_874, out a1_875, out s4_1027) : word64)
   Class: Eq_290
   DataType: word64
   OrigDataType: word64

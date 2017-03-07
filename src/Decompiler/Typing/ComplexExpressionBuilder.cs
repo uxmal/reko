@@ -114,12 +114,18 @@ namespace Reko.Typing
         {
             if (offset == 0 && index == null)
                 return expComplex;
+            var e = expComplex;
+            if (dereferenceGenerated)
+            {
+                dereferenceGenerated = false;
+                e = new UnaryExpression(Operator.AddrOf, dtComplex, e);
+            }
             DataType dt;
             if (enclosingPtr != null)
                 dt = new Pointer(PrimitiveType.Char, enclosingPtr.Size);
             else
-                dt = PrimitiveType.CreateWord(expComplex.DataType.Size);
-            var e = new Cast(dt, expComplex);
+                dt = PrimitiveType.CreateWord(e.DataType.Size);
+            e = new Cast(dt, e);
             var eOffset = CreateOffsetExpression(offset, index);
             var op = Operator.IAdd;
             var cOffset = eOffset as Constant;
