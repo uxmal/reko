@@ -33,6 +33,13 @@ namespace Reko.Arch.Pdp11
 {
     public partial class Pdp11Rewriter
     {
+        private void RewriteBpt()
+        {
+            this.rtlc = RtlClass.Call | RtlClass.Transfer;
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF)));
+            m.Assign(grf, host.PseudoProcedure("__bpt", PrimitiveType.Byte)); 
+        }
+
         private void RewriteBr()
         {
             this.rtlc = RtlClass.Transfer;
@@ -65,6 +72,13 @@ namespace Reko.Arch.Pdp11
             m.SideEffect(host.PseudoProcedure("__halt", c, VoidType.Instance));
         }
 
+        private void RewriteIot()
+        {
+            this.rtlc = RtlClass.Call | RtlClass.Transfer;
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF)));
+            m.Assign(grf, host.PseudoProcedure("__bpt", PrimitiveType.Byte));
+        }
+
         private void RewriteJmp()
         {
             var jmpDst = RewriteJmpSrc(instr.op1);
@@ -95,9 +109,31 @@ namespace Reko.Arch.Pdp11
             }
         }
 
+        private void RewriteMark()
+        {
+            rtlc = RtlClass.Transfer;
+            var sp = binder.EnsureRegister(Registers.sp);
+            var pc = binder.EnsureRegister(Registers.pc);
+            var tmp = binder.CreateTemporary(PrimitiveType.Word16);
+            var r5 = binder.EnsureRegister(Registers.r5);
+            m.Assign(sp, m.IAdd(pc,
+                Constant.Int16((short)(2 *
+                ((ImmediateOperand)instr.op1).Value.ToInt16()))));
+            m.Assign(tmp, r5);
+            m.Assign(r5, m.LoadW(sp));
+            m.Assign(sp, m.IAdd(sp, 2));
+            m.Goto(tmp);
+        }
+
         private void RewriteReset()
         {
             m.SideEffect(host.PseudoProcedure("__reset", VoidType.Instance));
+        }
+
+        private void RewriteRti()
+        {
+            this.rtlc = RtlClass.Transfer;
+            m.Return(2, 2);
         }
 
         private void RewriteRts()
@@ -119,6 +155,27 @@ namespace Reko.Arch.Pdp11
                 m.Assign(sp, m.IAdd(sp, reg.DataType.Size));
                 m.Call(tmp, 0);
                 m.Return(0, 0);
+            }
+        }
+
+        private void RewriteRtt()
+        {
+            this.rtlc = RtlClass.Transfer;
+            m.Return(2, 2);
+        }
+
+        private void RewriteSob()
+        {
+            this.rtlc = RtlClass.ConditionalTransfer;
+            var reg = RewriteSrc(instr.op1);
+            if (reg == null)
+            {
+                m.Invalid();
+            }
+            else
+            {
+                m.Assign(reg, m.ISub(reg, 1));
+                m.Branch(m.Ne0(reg), ((AddressOperand)instr.op2).Address, this.rtlc);
             }
         }
 

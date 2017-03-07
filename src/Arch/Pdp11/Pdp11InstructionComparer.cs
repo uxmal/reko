@@ -54,6 +54,14 @@ namespace Reko.Arch.Pdp11
                 var ropB = (RegisterOperand)opB;
                 return ropA.Register == ropB.Register; 
             }
+            var addrA = opA as AddressOperand;
+            if (addrA != null)
+            {
+                if (NormalizeConstants)
+                    return true;
+                var addrB = opB as AddressOperand;
+                return addrA.Address.ToLinear() == addrB.Address.ToLinear();
+            }
             var immA = opA as ImmediateOperand;
             if (immA != null)
             {
@@ -91,6 +99,14 @@ namespace Reko.Arch.Pdp11
                     return 0;
                 else 
                     return immop.Value.GetHashCode();
+            }
+            var addrop = op as AddressOperand;
+            if (addrop != null)
+            {
+                if (NormalizeRegisters)
+                    return 0;
+                else
+                    return addrop.Address.GetHashCode();
             }
             var mem = op as MemoryOperand;
             if (mem != null)

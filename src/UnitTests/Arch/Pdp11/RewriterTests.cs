@@ -477,5 +477,85 @@ namespace Reko.UnitTests.Arch.Pdp11
                   "3|L--|NZ = cond(v4)",
                   "4|L--|V = false");
         }
+
+        [Test]
+        public void Pdp11Rw_Swab()
+        {
+            BuildTest(0x00C3);      // swab r3
+            AssertCode(
+                  "0|L--|0200(2): 4 instructions",
+                  "1|L--|r3 = __swab(r3)",
+                  "2|L--|NZ = cond(r3)",
+                  "3|L--|C = false",
+                  "4|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_Sob()
+        {
+            BuildTest(0x7E44);      // sob r0,..
+            AssertCode(
+                  "0|T--|0200(2): 2 instructions",
+                  "1|L--|r1 = r1 - 0x0001",
+                  "2|T--|if (r1 != 0x0000) branch 01FA");
+        }
+
+        [Test]
+        public void Pdp11Rw_mark()
+        {
+            BuildTest(0x0D27);      // mark 27
+            AssertCode(
+                "0|T--|0200(2): 5 instructions",
+                "1|L--|sp = pc + 78",
+                "2|L--|v4 = r5",
+                "3|L--|r5 = Mem0[sp:word16]",
+                "4|L--|sp = sp + 0x0002",
+                "5|T--|goto v4");
+        }
+
+        [Test]
+        public void Pdp11Rw_mul()
+        {
+            BuildTest(0x7001);     // mul r1,r0
+            AssertCode(
+                "0|L--|0200(2): 3 instructions",
+                "1|L--|r0_r1 = r0 *s r1",
+                "2|L--|NZC = cond(r0_r1)",
+                "3|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_mul_oddDstReg()
+        {
+            BuildTest(0x7042);     // mul r2,r1
+            AssertCode(
+                "0|L--|0200(2): 3 instructions",
+                "1|L--|r1 = r1 *s r2",
+                "2|L--|NZC = cond(r1)",
+                "3|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_clrflags()
+        {
+            BuildTest(0x00AA);      // clrflags NV
+            AssertCode(
+                "0|L--|0200(2): 2 instructions",
+                "1|L--|N = false",
+                "2|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_stexp()
+        {
+            BuildTest(0xFA4A);      // stexp ac3,@(a2)
+            AssertCode(
+                "0|L--|0200(2): 5 instructions",
+                "1|L--|v4 = __stexp(ac2)",
+                "2|L--|Mem0[r2:word16] = v4",
+                "3|L--|NZ = cond(v4)",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
     }
 }

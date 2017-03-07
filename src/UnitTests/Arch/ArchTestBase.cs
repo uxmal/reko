@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Arch
             yield break;
         }
 
-        private class RewriterHost : IRewriterHost
+        public class RewriterHost : IRewriterHost
         {
             private IProcessorArchitecture arch;
 

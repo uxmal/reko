@@ -218,7 +218,7 @@ namespace Reko.Arch.Pdp11
 
                 new FormatOpRec("", Opcode.illegal),
                 new FormatOpRec("f,F", Opcode.divf),
-                new FormatOpRec("r,F", Opcode.stexp),
+                new FormatOpRec("f,E", Opcode.stexp),
                 new FormatOpRec("f,F", Opcode.stcdi),
 
                 new FormatOpRec("f,F", Opcode.stcfd),
@@ -302,7 +302,9 @@ namespace Reko.Arch.Pdp11
                 case 0: op1 = dasm.DecodeOperand(opcode & 7); oc = Opcode.rts; break;
                 case 3: op1 = dasm.DecodeOperand(opcode); oc = Opcode.spl; break;
                 case 0x20:
+                case 0x28:
                 case 0x30:
+                case 0x38:
                     return dasm.DecodeCondCode(opcode);
                 }
                 break;
@@ -388,7 +390,8 @@ namespace Reko.Arch.Pdp11
                 oc = Opcode.asl; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x034:
-                oc = Opcode.mark; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.mark;
+                op1 = new ImmediateOperand(Constant.Byte((byte)opcode));
                 break;
             case 0x234:
                 oc = Opcode.mtps; op1 = dasm.DecodeOperand(opcode);

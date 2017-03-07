@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -31,11 +32,19 @@ namespace Reko.Arch.Pdp11
 {
     public partial class Pdp11Rewriter
     {
-        private void RewriteAdc()
+        private void RewriteAdcSbc(Func<Expression, Expression, Expression> fn)
         {
             var src = binder.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.CF));
-            var dst = RewriteDst(instr.op1, src, m.IAdd);
-            SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
+            var dst = RewriteDst(instr.op1, src, fn);
+            if (dst == null)
+            {
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+            }
+            else
+            {
+                SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
+            }
         }
 
         private void RewriteAdd()
@@ -43,6 +52,42 @@ namespace Reko.Arch.Pdp11
             var src = RewriteSrc(instr.op1);
             var dst = RewriteDst(instr.op2, src, m.IAdd);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
+        }
+
+        private void RewriteAshc()
+        {
+            var r = ((RegisterOperand)instr.op2).Register;
+            if (r == Registers.pc)
+            {
+                m.Invalid();
+                return;
+            }
+            var r1 = arch.GetRegister(r.Number + 1);
+            var dst = binder.EnsureSequence(r, r1, PrimitiveType.Word32);
+            var sh = RewriteSrc(instr.op1);
+            if (sh == null)
+            {
+                m.Invalid();
+                return;
+            }
+            var csh = sh as Constant;
+            if (csh != null)
+            {
+                var n = csh.ToInt16();
+                if (n >= 0)
+                {
+                    m.Assign(dst, m.Shl(dst, Constant.Int16(n)));
+                }
+                else
+                {
+                    m.Assign(dst, m.Sar(dst, Constant.Int16(n)));
+                }
+            }
+            else
+            {
+                m.Assign(dst, host.PseudoProcedure("__shift", dst.DataType, dst, sh));
+            }
+            SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.CF | FlagM.VF, 0, 0);
         }
 
         private void RewriteAsl()
@@ -86,6 +131,25 @@ namespace Reko.Arch.Pdp11
             SetFlags(dst, 0, FlagM.NF | FlagM.CF | FlagM.VF, FlagM.ZF);
         }
 
+        private void RewriteClrSetFlags(Func<Constant> gen)
+        {
+            var grf = ((ImmediateOperand)instr.op1).Value.ToByte();
+            AddFlagAssignment(grf, FlagM.NF, gen);
+            AddFlagAssignment(grf, FlagM.ZF, gen);
+            AddFlagAssignment(grf, FlagM.VF, gen);
+            AddFlagAssignment(grf, FlagM.CF, gen);
+        }
+
+        private void AddFlagAssignment(uint grf, FlagM flag, Func<Constant> gen)
+        {
+            if ((grf & (uint)flag) != 0)
+            {
+                m.Assign(
+                    binder.EnsureFlagGroup(arch.GetFlagGroup((uint)flag)),
+                    gen());
+            }
+        }
+
         private void RewriteCmp()
         {
             var src = RewriteSrc(instr.op1);
@@ -101,7 +165,7 @@ namespace Reko.Arch.Pdp11
             var dst = RewriteDst(instr.op1, src, m.Comp);
             SetFlags(dst, FlagM.NF | FlagM.ZF, FlagM.VF, FlagM.CF);
         }
-    
+
         private void RewriteDiv()
         {
             var reg = ((RegisterOperand)instr.op2).Register;
@@ -124,6 +188,57 @@ namespace Reko.Arch.Pdp11
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF, 0, 0);
         }
 
+        private void RewriteMfpd()
+        {
+            var src = RewriteSrc(instr.op1);
+            if (src == null)
+            {
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            var tmp = binder.CreateTemporary(PrimitiveType.Word16);
+            var sp = binder.EnsureRegister(arch.StackRegister);
+            m.Assign(tmp, host.PseudoProcedure("__mfpd", tmp.DataType, src));
+            m.Assign(sp, m.ISub(sp, 2));
+            m.Assign(m.LoadW(sp), tmp);
+            SetFlags(tmp, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
+        }
+
+        private void RewriteMfpi()
+        {
+            var src = RewriteSrc(instr.op1);
+            if (src == null)
+            {
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            var tmp = binder.CreateTemporary(PrimitiveType.Word16);
+            var sp = binder.EnsureRegister(arch.StackRegister);
+            m.Assign(tmp, host.PseudoProcedure("__mfpi", tmp.DataType, src));
+            m.Assign(sp, m.ISub(sp, 2));
+            m.Assign(m.LoadW(sp), tmp);
+            SetFlags(tmp, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
+        }
+
+        private void RewriteMtpi()
+        {
+            var src = RewriteSrc(instr.op1);
+            if (src == null)
+            {
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            var tmp = binder.CreateTemporary(PrimitiveType.Word16);
+            var sp = binder.EnsureRegister(arch.StackRegister);
+            m.Assign(tmp, m.LoadW(sp));
+            m.Assign(sp, m.ISub(sp, 2));
+            m.SideEffect(host.PseudoProcedure("__mtpi", tmp.DataType, src, tmp));
+            SetFlags(tmp, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
+        }
+
         private void RewriteMov()
         {
             var src = RewriteSrc(instr.op1);
@@ -139,6 +254,26 @@ namespace Reko.Arch.Pdp11
             SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.VF, 0);
         }
 
+        private void RewriteMul()
+        {
+            var src = RewriteSrc(instr.op1);
+            var reg = ((RegisterOperand)instr.op2).Register;
+            // Even numbered register R_2n means result
+            // goes into the pair [R_2n:R_2n+1]
+            Identifier dst;
+            if ((reg.Number & 1) == 0)
+            {
+                var regLo = arch.GetRegister(reg.Number + 1);
+                dst = binder.EnsureSequence(reg, regLo, PrimitiveType.Int32);
+            }
+            else
+            {
+                dst = binder.EnsureRegister(reg);
+            }
+            m.Assign(dst, m.SMul(RewriteSrc(instr.op2), src));
+            SetFlags(dst, FlagM.CF | FlagM.ZF | FlagM.NF, FlagM.VF, 0);
+        }
+
         private void RewriteNeg()
         {
             var src = RewriteSrc(instr.op1);
@@ -146,11 +281,11 @@ namespace Reko.Arch.Pdp11
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF, 0, 0);
         }
 
-        private void RewriteRol()
+        private void RewriteRotate(string op)
         {
             var src = RewriteSrc(instr.op1);
             var dst = RewriteDst(instr.op1, src, (a, b) =>
-                host.PseudoProcedure(PseudoProcedure.Rol, instr.DataWidth, a, b));
+                host.PseudoProcedure(op, instr.DataWidth, a, b));
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
@@ -175,7 +310,7 @@ namespace Reko.Arch.Pdp11
             }
             else
             {
-                fn = (a, b) => 
+                fn = (a, b) =>
                     host.PseudoProcedure("__shift", instr.DataWidth, a, b);
             }
             var dst = RewriteDst(instr.op2, src, fn);
@@ -189,6 +324,14 @@ namespace Reko.Arch.Pdp11
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
+        private void RewriteStexp()
+        {
+            var src = RewriteSrc(instr.op1);
+            var dst = RewriteDst(instr.op2, src, e =>
+                host.PseudoProcedure("__stexp", PrimitiveType.Int16, e));
+            SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.CF | FlagM.VF, 0);
+        }
+
         private void RewriteSxt()
         {
             var n  = binder.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.NF));
@@ -198,6 +341,19 @@ namespace Reko.Arch.Pdp11
             SetFlags(dst, FlagM.ZF, 0, 0);
         }
 
+        private void RewriteSwab()
+        {
+            var src = RewriteSrc(instr.op1);
+            var dst = RewriteDst(instr.op1, src, e => host.PseudoProcedure("__swab", PrimitiveType.Word16, e));
+            if (dst == null)
+            {
+                m.Invalid();
+            }
+            else
+            {
+                SetFlags(dst, FlagM.NF | FlagM.ZF, FlagM.CF | FlagM.VF, 0);
+            }
+        }
         private void RewriteTst()
         {
             var src = RewriteSrc(instr.op1);
