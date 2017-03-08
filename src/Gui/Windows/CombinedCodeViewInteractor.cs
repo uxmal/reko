@@ -157,14 +157,10 @@ namespace Reko.Gui.Windows
                 {
                     if (proc != null)
                     {
-                        var tsf = new TextSpanFormatter();
-                        var fmt = new AbsynCodeFormatter(tsf);
-                        fmt.InnerFormatter.UseTabs = false;
-                        fmt.Write(proc);
+                        var model = new ProcedureCodeModel(proc);
                         //$TODO: make spacing between globals / procedures user adjustable
-                        tsf.WriteLine("");
-                        tsf.WriteLine("");
-                        nestedTextModel.Nodes.Add(tsf.GetModel());
+                        model.NumEmptyLinesAfter = 2;
+                        nestedTextModel.Nodes.Add(model);
                         nodeCreated = true;
                     }
                     else if (program.ImageMap.TryFindItem(curAddr, out item) &&
