@@ -273,6 +273,7 @@
     <Compile Include="Windows\Controls\MenuSystem.cs" />
     <Compile Include="Windows\Controls\MixedCodeDataModel.SpanGenerator.cs" />
     <Compile Include="Windows\Controls\NestedTextModel.cs" />
+    <Compile Include="Windows\Controls\ProcedureCodeModel.cs" />
     <Compile Include="Windows\Controls\RegexValidator.cs">
       <SubType>Component</SubType>
     </Compile>
