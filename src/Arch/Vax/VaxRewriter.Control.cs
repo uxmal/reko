@@ -157,6 +157,12 @@ namespace Reko.Arch.Vax
             rtlc = RtlClass.ConditionalTransfer;
         }
 
+        private void RewriteCaseb()
+        {
+            var sel = RewriteSrcOp(0, PrimitiveType.Byte);
+            var bas = RewriteSrcOp(1, PrimitiveType.Byte);
+            var lim = RewriteSrcOp(2, PrimitiveType.Byte);
+        }
 
         private void RewriteAob(
             Func<Expression, Expression, Expression> cmp)
@@ -200,6 +206,12 @@ namespace Reko.Arch.Vax
         private void RewriteJsb()
         {
             m.Call(RewriteSrcOp(0, PrimitiveType.Word32), 4);
+            rtlc = RtlClass.Transfer;
+        }
+
+        private void RewriteRei()
+        {
+            m.Return(4, 4);
             rtlc = RtlClass.Transfer;
         }
 

@@ -277,6 +277,20 @@ namespace Reko.Arch.Vax
             NZV0(dst);
         }
 
+        private void RewriteCvtComplex(string cvtfn)
+        {
+            var srclen = RewriteSrcOp(0, PrimitiveType.Word16);
+            var srcaddr = RewriteSrcOp(1, PrimitiveType.Pointer32);
+            var dstlen = RewriteSrcOp(2, PrimitiveType.Word16);
+            var dstaddr = RewriteSrcOp(3, PrimitiveType.Word16);
+            NZV0(host.PseudoProcedure(cvtfn,
+                PrimitiveType.Byte,
+                srclen,
+                srcaddr,
+                dstlen,
+                dstaddr));
+        }
+
         private void RewriteCvtr(PrimitiveType from, PrimitiveType to)
         {
             var src = RewriteSrcOp(0, from);

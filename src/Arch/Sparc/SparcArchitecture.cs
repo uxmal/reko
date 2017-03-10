@@ -80,7 +80,7 @@ namespace Reko.Arch.Sparc
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new SparcInstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()

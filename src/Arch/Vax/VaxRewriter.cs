@@ -78,6 +78,7 @@ namespace Reko.Arch.Vax
                     m.Invalid();
                     break;
                 case Opcode.Invalid: m.Invalid(); break;
+                case Opcode.Reserved: m.Invalid(); break;
                 case Opcode.acbb: RewriteAcbi(PrimitiveType.Byte); break;
                 case Opcode.acbd: RewriteAcbf(PrimitiveType.Real64); break;
                 case Opcode.acbf: RewriteAcbf(PrimitiveType.Real32); break;
@@ -139,6 +140,7 @@ namespace Reko.Arch.Vax
                 case Opcode.brw: RewriteBranch(); break;
                 case Opcode.bsbb: RewriteBsb(); break;
                 case Opcode.bsbw: RewriteBsb(); break;
+                case Opcode.caseb: RewriteCase(); break;
 
                 case Opcode.chme: RewriteChme(); break;
                 case Opcode.clrb: RewriteClr(PrimitiveType.Byte); break;
@@ -187,6 +189,7 @@ namespace Reko.Arch.Vax
                 case Opcode.cvthg: RewriteCvt(PrimitiveType.Real128, PrimitiveType.Real64); break;
                 case Opcode.cvthl: RewriteCvt(PrimitiveType.Real128, PrimitiveType.Int32); break;
                 case Opcode.cvthw: RewriteCvt(PrimitiveType.Real128, PrimitiveType.Int16); break;
+                case Opcode.cvtps: RewriteCvtComplex("__cvtps"); break;
                 case Opcode.cvtrdl: RewriteCvtr(PrimitiveType.Real64, PrimitiveType.Int32); break;
                 case Opcode.cvtrfl: RewriteCvtr(PrimitiveType.Real32, PrimitiveType.Int32); break;
                 case Opcode.cvtrgl: RewriteCvtr(PrimitiveType.Real64, PrimitiveType.Int32); break;
@@ -199,9 +202,8 @@ namespace Reko.Arch.Vax
                 case Opcode.cvtlp: goto default;
                 case Opcode.cvtlw: RewriteCvt(PrimitiveType.Int32, PrimitiveType.Int16); break;
                 case Opcode.cvtpl: goto default;
-                case Opcode.cvtps: goto default;
                 case Opcode.cvtpt: goto default;
-                case Opcode.cvtsp: goto default;
+                case Opcode.cvtsp: RewriteCvtComplex("__cvtsp"); break;
                 case Opcode.cvttp: goto default;
                 case Opcode.cvtwb: RewriteCvt(PrimitiveType.Int16, PrimitiveType.SByte); break;
                 case Opcode.cvtwd: RewriteCvt(PrimitiveType.Int16, PrimitiveType.Real64); break;
@@ -297,6 +299,7 @@ namespace Reko.Arch.Vax
                 case Opcode.pushaq: RewritePusha(); break;
                 case Opcode.pushl: RewritePush(PrimitiveType.Word32); break;
 
+                case Opcode.rei: RewriteRei(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.rotl: RewriteAlu3(PrimitiveType.Word32, Rotl, NZ00); break;
                 case Opcode.rsb: RewriteRsb(); break;
@@ -334,7 +337,6 @@ namespace Reko.Arch.Vax
                 case Opcode.xorw2: RewriteAlu2(PrimitiveType.Word16, m.Xor, NZ00); break;
                 case Opcode.xorw3: RewriteAlu3(PrimitiveType.Word16, m.Xor, NZ00); break;
 
-                case Opcode.rei: goto default;
                 case Opcode.ldpctx: goto default;
                 case Opcode.svpctx: goto default;
                 case Opcode.editpc: goto default;
@@ -364,7 +366,6 @@ namespace Reko.Arch.Vax
                 case Opcode.bitw: goto default;
                 case Opcode.chmk: goto default;
                 case Opcode.chms: goto default;
-                case Opcode.caseb: goto default;
                 case Opcode.chmu: goto default;
                 case Opcode.bbss: goto default;
                 case Opcode.bbcs: goto default;
