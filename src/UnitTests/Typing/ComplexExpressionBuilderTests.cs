@@ -251,6 +251,17 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        public void CEB_BuildPointerToStruct_EndOfTheField()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var str = Struct(Fld(4, PrimitiveType.Int32));
+            CreateTv(id, Ptr32(str), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, 8);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("&id->dw0004 + 1", e.ToString());
+        }
+
+        [Test]
         public void CEB_BuildPointerToInteger()
         {
             var id = new Identifier("id", PrimitiveType.Word32, null);
