@@ -1502,8 +1502,8 @@ void client_new(word32 r2, Eq_795 * r4, Eq_796 * r5, int32 r7, word32 dwArg00, w
 			r2_33->dw07D8 = 0x00;
 			r2_33->dw0FAC = 0x00;
 			r2_33->dw178C = 0x00;
-			r2_33->ptr0FB0 = r2_33->dw07D8 + 0x01;
-			r2_33->ptr1788 = r2_33->dw0FB4 + 0x01;
+			r2_33->ptr0FB0 = &r2_33->dw07D8 + 0x01;
+			r2_33->ptr1788 = &r2_33->dw0FB4 + 0x01;
 			r2_33->dw1794 = 0x00;
 			r2_33->dw0FB4 = 0x00;
 			r2_33->dw17BC = 0x00;
@@ -1684,7 +1684,7 @@ void client_copy_request(Eq_2051 * r4, word32 dwArg00)
 	word32 r5_32;
 	word32 r6_33;
 	r25_23();
-	r4->dw0FB0 = r4->dw07D8 + 0x01;
+	r4->dw0FB0 = &r4->dw07D8 + 0x01;
 	r4->dw0FAC = r4->dw07D8;
 	return;
 }
@@ -2547,7 +2547,7 @@ void client_check_reply_http(Eq_3042 * r4, word32 dwArg00)
 			} while ((word32) r2_99->b0002 == 0x0D);
 			if (r2_105 > ~0x01)
 			{
-				r4->ptr1788 = (struct Eq_3044 *) (r2_99->b0002 + 0x01);
+				r4->ptr1788 = (struct Eq_3044 *) (&r2_99->b0002 + 0x01);
 				r4->dw178C = r2_105 + -0x02;
 			}
 			else

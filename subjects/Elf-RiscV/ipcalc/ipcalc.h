@@ -12941,7 +12941,7 @@ T_2783: (in a2 + 80 : word64)
   Class: Eq_2773
   DataType: ptr64
   OrigDataType: ptr64
-T_2784: (in fn0000000000017B40(gp, (word64) sp_114->dw0008, a2->qw0038 + 1, a2->qw0038 + 2, a2->qw0038 + 3) : void)
+T_2784: (in fn0000000000017B40(gp, (word64) sp_114->dw0008, &a2->qw0038 + 1, &a2->qw0038 + 2, &a2->qw0038 + 3) : void)
   Class: Eq_2784
   DataType: void
   OrigDataType: void
@@ -15657,7 +15657,7 @@ T_3462: (in s0_166 + 80 : word64)
   Class: Eq_3454
   DataType: ptr64
   OrigDataType: ptr64
-T_3463: (in fn0000000000017D10(gp, (char *) sp_120 + 8, s0_166->qw0038 + 1, s0_166->qw0038 + 2, s0_166->qw0038 + 3) : void)
+T_3463: (in fn0000000000017D10(gp, (char *) sp_120 + 8, &s0_166->qw0038 + 1, &s0_166->qw0038 + 2, &s0_166->qw0038 + 3) : void)
   Class: Eq_3463
   DataType: void
   OrigDataType: void

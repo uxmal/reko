@@ -1099,7 +1099,7 @@ word64 fn0000000000016544(ptr64 & spOut, ptr64 & s0Out, ptr64 & s1Out, ptr64 & a
 	word64 s2_7;
 	*s2Out = v3->qw0000;
 	word64 sp_8;
-	*spOut = v3->qw0018 + 0x01;
+	*spOut = &v3->qw0018 + 0x01;
 	return v3->qw0018;
 }
 
@@ -1288,7 +1288,7 @@ l00000000000167F4:
 						word64 s4_63;
 						*s4Out = fp->qw0010;
 						word64 sp_64;
-						*spOut = fp->qw0038 + 0x01;
+						*spOut = &fp->qw0038 + 0x01;
 						return fp->qw0038;
 					}
 				}
@@ -1351,14 +1351,14 @@ word64 fn0000000000016864(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a1, ptr64 & 
 		a0 = a0 ^ -0x01;
 		a0 = a0 | s0;
 		s0 = sp->qw0000;
-		sp = sp->qw0008 + 0x01;
+		sp = &sp->qw0008 + 0x01;
 		return ra;
 	}
 	else
 	{
 		ra = sp->qw0018;
 		s0 = sp->t0010;
-		sp = sp->qw0018 + 0x01;
+		sp = &sp->qw0018 + 0x01;
 		return ra;
 	}
 }
@@ -1395,7 +1395,7 @@ Eq_310 fn00000000000168E4(Eq_291 * gp, Eq_310 a0, Eq_304 a1)
 	if (a0_130 == 0x00)
 	{
 		__strdup();
-		a0_36 = gp->dwFFFFF890 + 0x02;
+		a0_36 = &gp->dwFFFFF890 + 0x02;
 l0000000000016914:
 		if (a4_7 != gp->qwFFFFF870)
 		{
@@ -1437,7 +1437,7 @@ l0000000000016A88:
 					__strdup();
 					freeaddrinfo();
 					__strdup();
-					a0_119 = gp->dwFFFFF890 + 0x0104;
+					a0_119 = &gp->dwFFFFF890 + 0x0104;
 					goto l0000000000016AAC;
 				}
 			}
@@ -1847,7 +1847,7 @@ l000000000001716C:
 			a2->t0061 = (word64) a5_284->b0001;
 l000000000001717C:
 			if (a3 << 0x11 < 0x00)
-				fn0000000000017B40(gp, (word64) sp_114->dw0008, a2->qw0038 + 0x01, a2->qw0038 + 0x02, a2->qw0038 + 0x03);
+				fn0000000000017B40(gp, (word64) sp_114->dw0008, &a2->qw0038 + 0x01, &a2->qw0038 + 0x02, &a2->qw0038 + 0x03);
 			if ((a3 & 0x01) == 0x00)
 			{
 l000000000001718C:
@@ -2005,7 +2005,7 @@ ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Ou
 		*s2Out = v3->qw0010;
 		word64 s3_112;
 		*s3Out = v3->qw0008;
-		return v3->qw0020 + 0x02;
+		return &v3->qw0020 + 0x02;
 	}
 	else
 	{
@@ -2032,7 +2032,7 @@ ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Ou
 				*s2Out = v3->qw0010;
 				word64 s3_104;
 				*s3Out = v3->qw0008;
-				return v3->qw0020 + 0x02;
+				return &v3->qw0020 + 0x02;
 			}
 			memcmp();
 			word64 a1_50;
@@ -2047,7 +2047,7 @@ ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Ou
 				*s2Out = v3->qw0010;
 				word64 s3_96;
 				*s3Out = v3->qw0008;
-				return v3->qw0020 + 0x02;
+				return &v3->qw0020 + 0x02;
 			}
 			memcmp();
 			word64 a1_53;
@@ -2062,7 +2062,7 @@ ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Ou
 				*s2Out = v3->qw0010;
 				word64 s3_61;
 				*s3Out = v3->qw0008;
-				return v3->qw0020 + 0x02;
+				return &v3->qw0020 + 0x02;
 			}
 			ui64 a5_66 = s2 << 0x08 | s3;
 			if ((a5_66 & 0xFFFFE000) != 0x2000)
@@ -2111,7 +2111,7 @@ ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Ou
 		*s2Out = v3->qw0010;
 		word64 s3_39;
 		*s3Out = v3->qw0008;
-		return v3->qw0020 + 0x02;
+		return &v3->qw0020 + 0x02;
 	}
 }
 
@@ -2209,7 +2209,7 @@ l0000000000017768:
 l0000000000017740:
 						snprintf();
 						if (a3 << 0x11 < 0x00)
-							fn0000000000017D10(gp, (char *) sp_120 + 0x08, s0_166->qw0038 + 0x01, s0_166->qw0038 + 0x02, s0_166->qw0038 + 0x03);
+							fn0000000000017D10(gp, (char *) sp_120 + 0x08, &s0_166->qw0038 + 0x01, &s0_166->qw0038 + 0x02, &s0_166->qw0038 + 0x03);
 						if ((a3 & 0x01) == 0x00)
 						{
 l0000000000017760:
