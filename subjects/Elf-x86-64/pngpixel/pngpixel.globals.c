@@ -4,5 +4,19 @@
 
 #include "pngpixel.h"
 
+word64 g_a401828[] = 
+	{
+	};
+word64 g_a401958[] = 
+	{
+	};
+Eq_1061 g_a601E00[] = 
+	{
+	};
 word64 g_qw601FF8 = 0x0000000000000000;
+union Eq_162 g_u602100 = 
+	{
+		null
+	};
+byte g_b602108 = 0x00;
 

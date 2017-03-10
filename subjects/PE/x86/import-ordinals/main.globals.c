@@ -4,9 +4,9 @@
 
 #include "main.h"
 
-Eq_765 g_t5A4D;
+Eq_777 g_t5A4D;
 word16 g_w400000;
-struct Eq_765 * g_ptr40003C;
+struct Eq_777 * g_ptr40003C;
 LONG g_t4018DB(struct _EXCEPTION_POINTERS * ExceptionInfo) = Unexpected function type (fn LONG ((ptr (struct "_EXCEPTION_POINTERS"))))
 ;
 <anonymous> * g_ptr4020D4 = fn00401731;

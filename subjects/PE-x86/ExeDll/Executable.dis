@@ -346,11 +346,11 @@ l0040123B:
 	call get_initial_narrow_environment (retsize: 4; depth: 4)
 		uses: al_117,bl_121,C_119,cl_125,dwLoc04_5,dwLoc08_7,dwLoc0C,eax_123,ebp_122,ebx_128,ecx_116,edi_127,edx_129,esi_131,esp_130,SCZO_124,SZO_118,Z_120
 		defs: al_134,bl_138,C_136,cl_142,eax_140,ebp_139,ebx_145,ecx_133,edi_144,edx_146,esi_143,esp_132,SCZO_141,SZO_135,Z_137
-	Mem149[esp_132 + 0xFFFFFFF8:word32] = eax_140
-	Mem152[esp_132 + 0xFFFFFFF4:word32] = Mem149[edi_144:word32]
-	Mem155[esp_132 + 0xFFFFFFF0:word32] = Mem152[esi_143:word32]
+	Mem149[esp_132 - 0x00000008:word32] = eax_140
+	Mem152[esp_132 - 0x0000000C:word32] = Mem149[edi_144:word32]
+	Mem155[esp_132 - 0x00000010:word32] = Mem152[esi_143:word32]
 	word32 eax_157 = fn00401000(out ebp_12)
-	word32 esp_158 = esp_132 + 0xFFFFFFFC
+	word32 esp_158 = esp_132 - 0x00000004
 	word32 esi_160 = eax_157
 	byte al_161 = fn0040188F()
 	branch al_161 != 0x00 l0040126C
@@ -402,8 +402,8 @@ l00401275:
 // LocalsOut: Local -0004(32)
 
 l00401266:
-	Mem166[esp_132 + 0xFFFFFFF8:word32] = eax_157
-	exit(Mem166[esp_132 + 0xFFFFFFF8:int32])
+	Mem166[esp_132 - 0x00000008:word32] = eax_157
+	exit(Mem166[esp_132 - 0x00000008:int32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ecx:<invalid> bl:<invalid> eax:<invalid> al:<invalid> esi:<invalid> edi:<invalid> edx:<invalid> ebx:<invalid> ebp:<invalid> -12(fp):<invalid> -8(fp):0x004024D8 -4(fp):0x00000014
@@ -785,7 +785,7 @@ l004014CD:
 // LocalsOut: fp(32)
 
 l004014E0:
-	Mem148[fp + 0xFFFFFFE4:word32] = 0x00403348
+	Mem148[fp - 0x0000001C:word32] = 0x00403348
 	word32 esp_149
 	word32 ebp_150
 	byte SCZO_151
@@ -1331,7 +1331,7 @@ l00401718:
 // LocalsOut: Local -0004(32)
 
 l00401731:
-	Mem21[fp + 0xFFFFFFF8:word32] = 0x00000007
+	Mem21[fp - 0x00000008:word32] = 0x00000007
 	fn00401774(0x00030000, dwArg00)
 	int3()
 // DataOut:
@@ -1514,7 +1514,7 @@ l00401774:
 
 l0040178F:
 	Mem30[0x00403368:word32] = 0x00000000
-	memset(fp + 0xFFFFFCD8, 0x00000000, 0x000002CC)
+	memset(fp - 0x00000328, 0x00000000, 0x000002CC)
 	memset(fp - 0x0000005C, 0x00000000, 0x00000050)
 	byte bl_90 = 0x00 - (0x00000001 - IsDebuggerPresent() == 0x00000000)
 	SetUnhandledExceptionFilter(0x00000000)
@@ -1528,19 +1528,19 @@ l0040187C:
 	Mem118[0x00403368:word32] = Mem30[0x00403368:word32] & 0x00000000 - (-((word32) (bl_90 + 0x01)) == 0x00000000)
 // DataOut: ecx edi fs
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000330 ebp:fp - 0x00000004 eax:<invalid> esi:0x00000000 ebx:<invalid> bl:<invalid> -828(fp):fp - 0x0000005C -824(fp):0x00000000 -820(fp):fp - 0x0000000C -816(fp):esi -812(fp):ebx -808(fp):0x00010001 -668(fp):gs -664(fp):fs -660(fp):es -656(fp):ds -652(fp):edi -648(fp):0x00000000 -644(fp):ebx -640(fp):edx -636(fp):ecx -632(fp):<invalid> -628(fp):fp - 0x00000004 -624(fp):<invalid> -620(fp):cs -616(fp):<invalid> -612(fp):fp -608(fp):ss -92(fp):0x40000015 -88(fp):0x00000001 -80(fp):<invalid> -12(fp):fp - 0x0000005C -8(fp):fp + 0xFFFFFCD8 -4(fp):ebp
+// SymbolicIn: esp:fp - 0x00000330 ebp:fp - 0x00000004 eax:<invalid> esi:0x00000000 ebx:<invalid> bl:<invalid> -828(fp):fp - 0x0000005C -824(fp):0x00000000 -820(fp):fp - 0x0000000C -816(fp):esi -812(fp):ebx -808(fp):0x00010001 -668(fp):gs -664(fp):fs -660(fp):es -656(fp):ds -652(fp):edi -648(fp):0x00000000 -644(fp):ebx -640(fp):edx -636(fp):ecx -632(fp):<invalid> -628(fp):fp - 0x00000004 -624(fp):<invalid> -620(fp):cs -616(fp):<invalid> -612(fp):fp -608(fp):ss -92(fp):0x40000015 -88(fp):0x00000001 -80(fp):<invalid> -12(fp):fp - 0x0000005C -8(fp):fp - 0x00000328 -4(fp):ebp
 // LocalsOut: fp(32)
 
 l00401889:
 	return
 // DataOut: ecx edi fs
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000330 ebp:fp - 0x00000004 eax:<invalid> esi:0x00000000 ebx:<invalid> bl:<invalid> -828(fp):fp - 0x0000005C -824(fp):0x00000000 -820(fp):fp - 0x0000000C -816(fp):esi -812(fp):ebx -808(fp):0x00010001 -668(fp):gs -664(fp):fs -660(fp):es -656(fp):ds -652(fp):edi -648(fp):0x00000000 -644(fp):ebx -640(fp):edx -636(fp):ecx -632(fp):<invalid> -628(fp):fp - 0x00000004 -624(fp):<invalid> -620(fp):cs -616(fp):<invalid> -612(fp):fp -608(fp):ss -92(fp):0x40000015 -88(fp):0x00000001 -80(fp):<invalid> -12(fp):fp - 0x0000005C -8(fp):fp + 0xFFFFFCD8 -4(fp):ebp
+// SymbolicIn: esp:fp - 0x00000330 ebp:fp - 0x00000004 eax:<invalid> esi:0x00000000 ebx:<invalid> bl:<invalid> -828(fp):fp - 0x0000005C -824(fp):0x00000000 -820(fp):fp - 0x0000000C -816(fp):esi -812(fp):ebx -808(fp):0x00010001 -668(fp):gs -664(fp):fs -660(fp):es -656(fp):ds -652(fp):edi -648(fp):0x00000000 -644(fp):ebx -640(fp):edx -636(fp):ecx -632(fp):<invalid> -628(fp):fp - 0x00000004 -624(fp):<invalid> -620(fp):cs -616(fp):<invalid> -612(fp):fp -608(fp):ss -92(fp):0x40000015 -88(fp):0x00000001 -80(fp):<invalid> -12(fp):fp - 0x0000005C -8(fp):fp - 0x00000328 -4(fp):ebp
 
 fn00401774_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp ebp:ebp eax:<invalid> esi:esi ebx:ebx bl:<invalid> -828(fp):fp - 0x0000005C -824(fp):0x00000000 -820(fp):fp - 0x0000000C -816(fp):esi -812(fp):ebx -808(fp):0x00010001 -668(fp):gs -664(fp):fs -660(fp):es -656(fp):ds -652(fp):edi -648(fp):0x00000000 -644(fp):ebx -640(fp):edx -636(fp):ecx -632(fp):<invalid> -628(fp):fp - 0x00000004 -624(fp):<invalid> -620(fp):cs -616(fp):<invalid> -612(fp):fp -608(fp):ss -92(fp):0x40000015 -88(fp):0x00000001 -80(fp):<invalid> -12(fp):fp - 0x0000005C -8(fp):fp + 0xFFFFFCD8 -4(fp):ebp
+// SymbolicIn: esp:fp ebp:ebp eax:<invalid> esi:esi ebx:ebx bl:<invalid> -828(fp):fp - 0x0000005C -824(fp):0x00000000 -820(fp):fp - 0x0000000C -816(fp):esi -812(fp):ebx -808(fp):0x00010001 -668(fp):gs -664(fp):fs -660(fp):es -656(fp):ds -652(fp):edi -648(fp):0x00000000 -644(fp):ebx -640(fp):edx -636(fp):ecx -632(fp):<invalid> -628(fp):fp - 0x00000004 -624(fp):<invalid> -620(fp):cs -616(fp):<invalid> -612(fp):fp -608(fp):ss -92(fp):0x40000015 -88(fp):0x00000001 -80(fp):<invalid> -12(fp):fp - 0x0000005C -8(fp):fp - 0x00000328 -4(fp):ebp
 
 l0040178A:
 	__fastfail(dwArg04)

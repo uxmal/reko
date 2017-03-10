@@ -27,15 +27,15 @@ _start_entry:
 _start_exit:
 }
 
-// 0000000000400D00: void deregister_tm_clones(Register word64 r8)
-void deregister_tm_clones(word64 r8)
+// 0000000000400D00: Register ptr64 deregister_tm_clones(Register word64 r8)
+ptr64 deregister_tm_clones(word64 r8)
 {
 	if (DPB(rax, 0x006020FF, 0) > 0x0E)
 	{
 		word64 rax_37 = DPB(rax, 0x00, 0);
 		if (rax_37 != 0x00)
 		{
-			word64 rsp_44;
+			ptr64 rsp_44;
 			word32 eax_45;
 			word64 rbp_46;
 			word64 r8_47;
@@ -47,16 +47,16 @@ void deregister_tm_clones(word64 r8)
 			byte Z_53;
 			word32 edi_54;
 			0x00();
-			return;
+			return rsp_44;
 		}
 	}
-	return;
+	return fp + 0x04;
 }
 
 // 0000000000400D40: void register_tm_clones()
 void register_tm_clones()
 {
-	Eq_39 rsi_9 = DPB(rsi, 6299896, 0) - 6299896 >> 0x03;
+	Eq_43 rsi_9 = DPB(rsi, 6299896, 0) - 6299896 >> 0x03;
 	if (rsi_9 + (rsi_9 >>u 0x3F) >> 0x01 != 0x00)
 	{
 		uint64 rax_41 = DPB(rsi_9 >> 0x3F, 0x00, 0);
@@ -80,46 +80,664 @@ void register_tm_clones()
 	return;
 }
 
-// 0000000000400D80: void __do_global_dtors_aux()
-void __do_global_dtors_aux()
+// 0000000000400D80: void __do_global_dtors_aux(Register word64 r8)
+void __do_global_dtors_aux(word64 r8)
 {
-__do_global_dtors_aux_entry:
-__do_global_dtors_aux_exit:
+	if (globals->b602108 == 0x00)
+	{
+		deregister_tm_clones(r8);
+		globals->b602108 = 0x01;
+	}
+	return;
 }
 
 // 0000000000400DA0: void frame_dummy()
 void frame_dummy()
 {
 frame_dummy_entry:
+	rsp = fp
+	edi = 0x00601E10
+	rdi = DPB(rdi, edi, 0)
+	SCZO = cond(*rdi - 0x00)
+	Z = SCZO
+	branch Test(NE,Z) l0000000000400DB0
+	goto l0000000000400DAB
+l0000000000400DA0:
+l0000000000400DAB:
+	register_tm_clones()
+	return
+l0000000000400DB0:
+	eax = 0x00
+	rax = DPB(rax, eax, 0)
+	SZO = cond(rax & rax)
+	Z = SZO
+	C = false
+	branch Test(EQ,Z) l0000000000400DAB
+l0000000000400DBA:
+	rsp = fp - 0x04
+	dwLoc04 = rbp
+	qwLoc04 = DPB(qwLoc04, dwLoc04, 0)
+	rbp = fp - 0x04
+	0x00()
+	rbp = qwLoc04
+	rsp = fp + 0x04
+	register_tm_clones()
+	return
+l0000000000400DC0_thunk_register_tm_clones:
 frame_dummy_exit:
 }
 
-// 0000000000400DC6: void component()
-void component()
+// 0000000000400DC6: void component(Register Eq_131 ecx, Register int32 edx, Register uint32 esi, Register word32 edi, Register word32 r8d, Register ptr64 r13)
+void component(Eq_131 ecx, int32 edx, uint32 esi, word32 edi, word32 r8d, ptr64 r13)
 {
-component_entry:
-component_exit:
+	*(r13 - 0x28) = r8d;
+	ui64 rax_41 = DPB(DPB(rax, (esi >> 0x06) *s dwLoc2C *s ecx, 0) << 0x03, (edx + (esi & 0x3F) *s dwLoc2C) *s ecx >> 0x03, 0);
+	if (ecx > 0x10)
+	{
+		Eq_162 rax_69 = globals->u602100;
+		word64 rax_78 = DPB(rax_69, fprintf(rax_69, DPB(rsi, 0x00401808, 0), tLoc34), 0);
+		exit(DPB(rax_69, 0x01, 0));
+	}
+	else
+	{
+		word64 rax_51 = globals->a401828[DPB(rax_41, ecx, 0) * 0x08];
+		Eq_191 eax_52 = (word32) rax_51;
+		word64 rsp_53;
+		word64 rbp_54;
+		byte SCZO_55;
+		word64 rdi_56;
+		word32 esi_57;
+		word32 edx_58;
+		word32 ecx_59;
+		word64 r13_60;
+		word32 r8d_61;
+		word32 eax_62;
+		byte SZO_63;
+		byte C_64;
+		word64 rax_65;
+		byte CZ_66;
+		word64 rsi_67;
+		word32 edi_68;
+		eax_52();
+		return;
+	}
 }
 
-// 0000000000400EE9: void print_pixel()
-void print_pixel()
+// 0000000000400EE9: Register word64 print_pixel(Register byte dil, Register (ptr Eq_211) fs, Stack word64 qwArg04, Stack word64 qwArg0C)
+word64 print_pixel(byte dil, Eq_211 * fs, word64 qwArg04, word64 qwArg0C)
 {
-print_pixel_entry:
-print_pixel_exit:
+	word64 rsp_35;
+	word64 rbp_36;
+	word64 rbx_37;
+	byte SCZO_38;
+	word64 rdi_39;
+	word64 rsi_40;
+	word64 rdx_41;
+	word32 ecx_42;
+	word64 rax_43;
+	struct Eq_223 * fs_44;
+	word32 eax_45;
+	byte SZO_46;
+	byte C_47;
+	byte al_48;
+	byte CZ_49;
+	word32 esi_50;
+	byte Z_51;
+	byte dil_52;
+	png_get_bit_depth();
+	word64 rsp_60;
+	word64 rbp_61;
+	word64 rbx_62;
+	byte SCZO_63;
+	word64 rdi_64;
+	word64 rsi_65;
+	word64 rdx_66;
+	word32 ecx_67;
+	word64 rax_68;
+	struct Eq_242 * fs_69;
+	word32 eax_70;
+	byte SZO_71;
+	byte C_72;
+	byte al_73;
+	byte CZ_74;
+	word32 esi_75;
+	byte Z_76;
+	byte dil_77;
+	png_get_color_type();
+	Eq_162 rax_25 = fs->t0028;
+	uint32 eax_78 = (word32) al_73;
+	if (eax_78 > 0x06)
+	{
+		word64 rsp_126;
+		word64 rbp_127;
+		word64 rbx_128;
+		byte SCZO_129;
+		word64 rdi_130;
+		word64 rsi_131;
+		word64 rdx_132;
+		word32 ecx_133;
+		word64 rax_134;
+		struct Eq_268 * fs_135;
+		word32 eax_136;
+		byte SZO_137;
+		byte C_138;
+		byte al_139;
+		byte CZ_140;
+		word32 esi_141;
+		byte Z_142;
+		byte dil_143;
+		png_error();
+		if ((rax_25 ^ fs_135->qw0028) != 0x00)
+			__stack_chk_fail();
+		return qwArg0C;
+	}
+	else
+	{
+		word64 rax_103 = globals->a401958[DPB(rax_68, eax_78, 0) * 0x08];
+		Eq_289 eax_104 = (word32) rax_103;
+		word64 rsp_105;
+		word64 rbp_106;
+		word64 rbx_107;
+		byte SCZO_108;
+		word64 rdi_109;
+		word64 rsi_110;
+		word64 rdx_111;
+		word32 ecx_112;
+		word64 rax_113;
+		struct Eq_300 * fs_114;
+		word32 eax_115;
+		byte SZO_116;
+		byte C_117;
+		byte al_118;
+		byte CZ_119;
+		word32 esi_120;
+		byte Z_121;
+		byte dil_122;
+		eax_104();
+		return rbp_106;
+	}
 }
 
-// 00000000004012F9: void main()
-void main()
+// 00000000004012F9: void main(Register Eq_162 rsi, Register word32 edi, Register word64 r13, Register (ptr Eq_211) fs)
+void main(Eq_162 rsi, word32 edi, word64 r13, Eq_211 * fs)
 {
 main_entry:
+	rsp = fp
+	rsp = fp - 0x04
+	dwLoc04 = rbp
+	rbp = fp - 0x04
+	rsp = fp - 0xA4
+	dwLoc98 = edi
+	qwLocA4 = rsi
+	rax = fs->t0028
+	qwLoc0C = rax
+	eax.u0 = 0x00
+	dwLoc88.u0 = 0x01
+	SCZO = cond(dwLoc98 - 0x04)
+	Z = SCZO
+	branch Test(NE,Z) l000000000040173F
+	goto l0000000000401337
+l00000000004012F9:
+l0000000000401337:
+	rax = qwLocA4
+	rax = rax
+	SCZO = cond(rax)
+	rax = *rax
+	rdi = rax
+	atol()
+	qwLoc2C = rax
+	rax = qwLocA4
+	rax = rax
+	SCZO = cond(rax)
+	rax = *rax
+	rdi = rax
+	atol()
+	qwLoc24 = rax
+	rax = qwLocA4
+	rax = rax
+	rax = *rax
+	esi.u0 = 0x00401990
+	rsi = DPB(rsi, esi, 0)
+	rdi = rax
+	rax = fopen(rdi, rsi)
+	eax = (word32) rax
+	al = (byte) rax
+	qwLoc1C = rax
+	qwLoc44.u0 = 0x00
+	SCZO = cond(qwLoc1C - 0x00)
+	Z = SCZO
+	branch Test(EQ,Z) l0000000000401716
+l000000000040139D:
+	ecx.u0 = 0x00
+	edx.u0 = 0x00
+	esi.u0 = 0x00
+	edi = 0x00401993
+	png_create_read_struct()
+	qwLoc3C = rax
+	rax = qwLoc3C
+	SZO = cond(rax & rax)
+	Z = SZO
+	C = false
+	branch Test(EQ,Z) l00000000004016F6
+l00000000004013C7:
+	rax = qwLoc3C
+	rdi = rax
+	png_create_info_struct()
+	qwLoc34 = rax
+	rax = qwLoc34
+	SZO = cond(rax & rax)
+	Z = SZO
+	C = false
+	branch Test(EQ,Z) l00000000004016C0
+l00000000004013E4:
+	rax = qwLoc3C
+	rdx = qwLoc1C
+	rsi = rdx
+	rdi = rax
+	png_init_io()
+	rdx = qwLoc34
+	rax = qwLoc3C
+	rsi = rdx
+	rdi = rax
+	png_read_info()
+	rdx = qwLoc34
+	rax = qwLoc3C
+	rsi = rdx
+	rdi = rax
+	png_get_rowbytes()
+	rdx = rax
+	rax = qwLoc3C
+	rsi = rdx
+	rdi = rax
+	png_malloc()
+	qwLoc44 = rax
+	rax = qwLoc44
+	qwLoc14 = rax
+	rsi = qwLoc34
+	rax = qwLoc3C
+	eax = (word32) rax
+	r9 = r13 - 116
+	r8 = r13 - 0x78
+	rcx = fp - 0x80
+	rdx = fp - 0x84
+	rsp = fp - 0xAC
+	SCZO = cond(fp - 0xAC)
+	rdi = fp - 0x6C
+	rsp = fp - 0xB0
+	dwLocB0 = fp - 0x6C
+	rdi = fp - 0x70
+	rsp = fp - 0xB4
+	dwLocB4 = fp - 0x70
+	rdi = fp - 116
+	rsp = fp - 0xB8
+	dwLocB8 = fp - 116
+	rdi = rax
+	png_get_IHDR()
+	rsp = fp - 0x98
+	SZO = cond(eax & eax)
+	Z = SZO
+	C = false
+	branch Test(EQ,Z) l00000000004016AF
+l000000000040147A:
+	eax = dwLoc74
+	rax = DPB(rax, eax, 0)
+	al = (byte) eax
+	SZO = cond(eax & eax)
+	Z = SZO
+	C = false
+	branch Test(EQ,Z) l0000000000401488
+l0000000000401481:
+	SCZO = cond(eax - 0x01)
+	Z = SCZO
+	branch Test(EQ,Z) l0000000000401491
+l0000000000401486:
+	rax = qwLoc3C
+	esi.u0 = 0x0040199A
+	rdi = rax
+	png_error()
+	goto l00000000004014AB
+l0000000000401488:
+	dwLoc68 = 0x01
+	goto l00000000004014AB
+l0000000000401491:
+	dwLoc68 = 0x07
+	goto l00000000004014AB
+l000000000040149A:
+l00000000004014AB:
+	rax = qwLoc3C
+	rdi = rax
+	png_start_read_image()
+	dwLoc64 = 0x00
+l00000000004014C3:
+	eax = *(rbp - 0x70)
+	SCZO = cond(eax - 0x01)
+	Z = SCZO
+	branch Test(NE,Z) l00000000004015CE
+l00000000004014CF:
+	SCZO = cond(*(rbp - 0x60) - 0x01)
+	SZO = SCZO
+	branch Test(LE,SZO) l00000000004014EF
+l00000000004014D5:
+	eax.u0 = 0x07
+	eax = 0x07 - *(rbp - 0x60)
+	eax = eax >> 0x01
+	edx.u0 = 0x01
+	ecx = eax
+	cl = (byte) ecx
+	edx = 0x01 << cl
+	eax = edx
+	eax = eax - 0x01
+	rax = DPB(rax, eax, 0)
+	al = (byte) eax
+	SCZO = cond(eax)
+	goto l00000000004014F4
+l00000000004014EF:
+	eax.u0 = 0x07
+	rax = DPB(rax, eax, 0)
+	al = (byte) eax
+l00000000004014F4:
+	edx = *(rbp - 0x60)
+	esi = edx
+	esi = esi & 0x01
+	edx = *(rbp - 0x60)
+	edx = edx
+	edx = edx >> 0x01
+	ecx.u0 = 0x03
+	ecx = 0x03 - edx
+	edx = ecx
+	ecx = edx
+	cl = (byte) ecx
+	esi = esi << cl
+	edx = esi
+	edx = edx & 0x07
+	eax = eax - edx
+	edx = eax
+	eax = *(rbp - 0x80)
+	edx = edx + eax
+	rdx = DPB(rdx, edx, 0)
+	SCZO = cond(*(rbp - 0x60) - 0x01)
+	SZO = SCZO
+	branch Test(LE,SZO) l0000000000401531
+l0000000000401525:
+	eax.u0 = 0x07
+	eax = 0x07 - *(rbp - 0x60)
+	eax = eax >> 0x01
+	rax = DPB(rax, eax, 0)
+	al = (byte) eax
+	SCZO = cond(eax)
+	goto l0000000000401536
+l0000000000401531:
+	eax.u0 = 0x03
+	rax = DPB(rax, eax, 0)
+	al = (byte) eax
+l0000000000401536:
+	ecx = eax
+	cl = (byte) ecx
+	edx = edx >> cl
+	eax = edx
+	SZO = cond(eax & eax)
+	Z = SZO
+	C = false
+	branch Test(EQ,Z) l000000000040166E
+l0000000000401544:
+	eax = *(rbp - 0x60)
+	eax = eax & 0x01
+	edx = eax
+	eax = *(rbp - 0x60)
+	eax = eax
+	eax = eax >> 0x01
+	ecx.u0 = 0x03
+	ecx = 0x03 - eax
+	eax = ecx
+	ecx = eax
+	cl = (byte) ecx
+	edx = edx << cl
+	eax = edx
+	eax = eax & 0x07
+	*(rbp - 88) = (union Eq_332 *) eax
+	eax = *(rbp - 0x60)
+	eax = eax & 0x01
+	SZO = cond(eax & eax)
+	Z = SZO
+	al = Test(EQ,Z)
+	edx = (word32) al
+	eax = *(rbp - 0x60)
+	eax = eax >> 0x01
+	ecx.u0 = 0x03
+	ecx = 0x03 - eax
+	eax = ecx
+	ecx = eax
+	cl = (byte) ecx
+	edx = edx << cl
+	eax = edx
+	eax = eax & 0x07
+	*(rbp - 0x5C) = (union Eq_332 *) eax
+	eax.u0 = 0x07
+	eax = 0x07 - *(rbp - 0x60)
+	eax = eax >> 0x01
+	edx.u0 = 0x01
+	ecx = eax
+	cl = (byte) ecx
+	edx = 0x01 << cl
+	eax = edx
+	*(rbp - 0x50) = (union Eq_332 *) eax
+	SCZO = cond(*(rbp - 0x60) - 0x02)
+	SZO = SCZO
+	branch Test(LE,SZO) l00000000004015C4
+l00000000004015AF:
+	eax = *(rbp - 0x60)
+	eax = eax - 0x01
+	eax = eax >> 0x01
+	edx.u0 = 0x08
+	ecx = eax
+	cl = (byte) ecx
+	edx = 0x08 >> cl
+	SCZO = cond(edx)
+	eax = edx
+	rax = DPB(rax, eax, 0)
+	al = (byte) eax
+	goto l00000000004015C9
+l00000000004015C4:
+	eax.u0 = 0x08
+	rax = DPB(rax, eax, 0)
+	al = (byte) eax
+l00000000004015C9:
+	*(rbp - 0x54) = (union Eq_332 *) eax
+	goto l00000000004015E8
+l00000000004015CE:
+	*(rbp - 88) = 0x00
+	eax = *(rbp - 88)
+	*(rbp - 0x5C) = (union Eq_332 *) eax
+	*(rbp - 0x50) = 0x01
+	eax = *(rbp - 0x50)
+	*(rbp - 0x54) = (union Eq_332 *) eax
+l00000000004015E8:
+	eax = *(rbp - 0x5C)
+	*(rbp - 0x4C) = (union Eq_332 *) eax
+l00000000004015F0:
+	edi = 4200886
+	rdi = DPB(rdi, edi, 0)
+	rax = DPB(rax, puts(rdi), 0)
+	rax = *(rbp - 0x38)
+	rcx = *(rbp - 0x10)
+	edx.u0 = 0x00
+	rsi = rcx
+	rdi = rax
+	png_read_row()
+	eax = *(rbp - 0x4C)
+	rax = DPB(rax, eax, 0)
+	SCZO = cond(rax - *(rbp - 0x20))
+	Z = SCZO
+	branch Test(NE,Z) l000000000040165E
+l000000000040161B:
+	eax = *(rbp - 88)
+	*(rbp - 0x48) = (union Eq_332 *) eax
+	*(rbp - 0x44) = 0x00
+	goto l0000000000401656
+l000000000040162A:
+	eax = *(rbp - 0x48)
+	rax = DPB(rax, eax, 0)
+	SCZO = cond(rax - *(rbp - 0x28))
+	Z = SCZO
+	branch Test(NE,Z) l000000000040164C
+l0000000000401633:
+	rsi = *(rbp - 0x30)
+	rax = *(rbp - 0x38)
+	ecx = *(rbp - 0x44)
+	rdx = *(rbp - 0x10)
+	rdi = rax
+	dil = (byte) rdi
+	rbp = print_pixel(dil, fs, qwArg04, qwArg0C)
+	goto l000000000040167F
+l000000000040164C:
+	eax = *(rbp - 0x50)
+	v27 = (word32) eax
+	*(rbp - 0x48) = v27
+	v28 = *(rbp - 0x44) + 0x01
+	*(rbp - 0x44) = v28
+	SCZO = cond(v28)
+l0000000000401656:
+	eax = *(rbp - 0x80)
+	SCZO = cond(*(rbp - 0x48) - eax)
+	C = SCZO
+	branch Test(ULT,C) l000000000040162A
+l000000000040165E:
+	eax = *(rbp - 0x54)
+	v26 = (word32) eax
+	*(rbp - 0x4C) = v26
+	SCZO = cond(v26)
+l0000000000401664:
+	eax = *(rbp - 0x7C)
+	rax = DPB(rax, eax, 0)
+	al = (byte) eax
+	SCZO = cond(*(rbp - 0x4C) - eax)
+	C = SCZO
+	branch Test(ULT,C) l00000000004015F0
+l000000000040166F:
+	v25 = *(rbp - 0x60) + 0x01
+	*(rbp - 0x60) = v25
+	SCZO = cond(v25)
+l0000000000401673:
+	eax = *(rbp - 0x60)
+	SCZO = cond(eax - *(rbp - 100))
+	SO = SCZO
+	branch Test(LT,SO) l00000000004014C3
+l000000000040167F:
+	*(rbp - 0x40) = 0x00
+	rax = *(rbp - 0x38)
+	rdx = *(rbp - 0x10)
+	rsi = rdx
+	rdi = rax
+	png_free()
+	rax = *(rbp - 0x38)
+	rdx = rbp - 0x30
+	rsi = rdx
+	rdi = rax
+	png_destroy_info_struct()
+	goto l00000000004016DE
+l00000000004016AF:
+	rax = qwLoc3C
+	esi.u0 = 4200899
+	rdi = rax
+	png_error()
+l00000000004016C0:
+	rax = globals->u602100
+	rcx = rax
+	edx.u0 = 44
+	rdx = DPB(rdx, edx, 0)
+	esi.u0 = 0x01
+	rsi = DPB(rsi, esi, 0)
+	edi = 0x004019E8
+	rdi = DPB(rdi, edi, 0)
+	rax = DPB(rax, fwrite(rdi, rsi, rdx, rcx), 0)
+l00000000004016DE:
+	rax = fp - 0x3C
+	edx.u0 = 0x00
+	esi.u0 = 0x00
+	rdi = fp - 0x3C
+	png_destroy_read_struct()
+	goto l000000000040175D
+l00000000004016F6:
+	rax = globals->u602100
+	rcx = rax
+	edx.u0 = 0x2E
+	rdx = DPB(rdx, edx, 0)
+	esi.u0 = 0x01
+	rsi = DPB(rsi, esi, 0)
+	edi = 0x00401A18
+	rdi = DPB(rdi, edi, 0)
+	rax = DPB(rax, fwrite(rdi, rsi, rdx, rcx), 0)
+	goto l000000000040175D
+l0000000000401716:
+	rax = qwLocA4
+	rax = rax
+	SCZO = cond(rax)
+	rdx = *rax
+	rax = globals->u602100
+	esi.u0 = 0x00401A48
+	rsi = DPB(rsi, esi, 0)
+	rdi = rax
+	eax.u0 = 0x00
+	rax = DPB(rax, eax, 0)
+	rax = DPB(rax, fprintf(rdi, rsi, tLocA4), 0)
+	goto l000000000040175D
+l000000000040173F:
+	rax = globals->u602100
+	rcx = rax
+	edx.u0 = 0x27
+	rdx = DPB(rdx, edx, 0)
+	esi.u0 = 0x01
+	rsi = DPB(rsi, esi, 0)
+	edi = 0x00401A70
+	rdi = DPB(rdi, edi, 0)
+	rax = DPB(rax, fwrite(rdi, rsi, rdx, rcx), 0)
+l000000000040175D:
+	eax.u0 = 0x01
+	rdi = qwLoc0C
+	rdi = rdi ^ fs->t0028
+	SZO = cond(rdi)
+	Z = SZO
+	C = false
+	branch Test(EQ,Z) l0000000000401777
+l0000000000401772:
+	__stack_chk_fail()
+l0000000000401777:
+	rsp = Mem0
+	Mem0 = Mem0[rsp + 0x00:<unknown>]
+	rsp = rsp + 0x00
+	return
 main_exit:
 }
 
-// 0000000000401780: void __libc_csu_init()
-void __libc_csu_init()
+// 0000000000401780: void __libc_csu_init(Register word64 rsi)
+void __libc_csu_init(word64 rsi)
 {
-__libc_csu_init_entry:
-__libc_csu_init_exit:
+	_init();
+	if (0x0000000000601E08 - 0x0000000000601E00 >> 0x03 != 0x00)
+	{
+		ui64 rbx_63 = DPB(rbx, 0x00, 0);
+		do
+		{
+			word64 rsp_72;
+			word64 rdi_73;
+			word64 rsi_74;
+			word32 r15d_75;
+			word32 edi_76;
+			word64 rbp_77;
+			word64 r12_78;
+			word64 rbx_79;
+			word64 r14_80;
+			word64 r13_81;
+			word64 rdx_82;
+			byte SCZO_83;
+			byte SZO_84;
+			byte C_85;
+			byte Z_86;
+			word32 ebx_87;
+			(*globals->a601E00)();
+		} while (rbx_79 + 0x01 != rbp_77);
+	}
+	return;
 }
 
 // 00000000004017F0: void __libc_csu_fini()
