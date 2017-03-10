@@ -114,12 +114,7 @@ namespace Reko.Typing
         {
             if (offset == 0 && index == null)
                 return expComplex;
-            var e = expComplex;
-            if (dereferenceGenerated)
-            {
-                dereferenceGenerated = false;
-                e = new UnaryExpression(Operator.AddrOf, dtComplex, e);
-            }
+            var e = CreateAddressOf(expComplex);
             DataType dt;
             if (enclosingPtr != null)
                 dt = new Pointer(PrimitiveType.Char, enclosingPtr.Size);
@@ -135,6 +130,15 @@ namespace Reko.Typing
                 eOffset = cOffset.Negate();
             }
             return new BinaryExpression(op, e.DataType, e, eOffset);
+        }
+
+        private Expression CreateAddressOf(Expression e)
+        {
+            if (!dereferenceGenerated)
+                return e;
+
+            dereferenceGenerated = false;
+            return new UnaryExpression(Operator.AddrOf, dtComplex, e);
         }
 
         public Expression VisitArray(ArrayType at)
@@ -354,19 +358,20 @@ namespace Reko.Typing
         {
             if (offset == 0 && arrayIndex == null && !dereferenced)
                 return expComplex;
+            var e = CreateAddressOf(expComplex);
             arrayIndex = CreateOffsetExpression(offset, arrayIndex);
             if (dereferenced)
             {
                 enclosingPtr = null;
                 dereferenceGenerated = true;
-                return new ArrayAccess(dtPointee, expComplex, arrayIndex);
+                return new ArrayAccess(dtPointee, e, arrayIndex);
             }
             else
             {
                 // Could generate &a[index] here, but 
                 // a + index is more idiomatic C/C++
                 dereferenceGenerated = false;
-                return new BinaryExpression(Operator.IAdd, dtPointer, expComplex, arrayIndex);
+                return new BinaryExpression(Operator.IAdd, dtPointer, e, arrayIndex);
             }
         }
 
