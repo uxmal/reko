@@ -140,7 +140,6 @@ namespace Reko.Arch.Vax
                 case Opcode.brw: RewriteBranch(); break;
                 case Opcode.bsbb: RewriteBsb(); break;
                 case Opcode.bsbw: RewriteBsb(); break;
-                case Opcode.caseb: RewriteCase(); break;
 
                 case Opcode.chme: RewriteChme(); break;
                 case Opcode.clrb: RewriteClr(PrimitiveType.Byte); break;

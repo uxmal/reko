@@ -852,12 +852,32 @@ namespace Reko.Scanning
             Procedure proc;
             if (program.Procedures.TryGetValue(addr, out proc))
                 return proc;
-            ImageSymbol sym;
+
+            ImageSymbol sym = null;
+            proc = Procedure.Create(procedureName, addr, program.Architecture.CreateFrame());
             if (procedureName == null && program.ImageSymbols.TryGetValue(addr, out sym))
             {
                 procedureName = sym.Name;
+                if (sym.Signature != null)
+                {
+                    var sser = program.CreateProcedureSerializer();
+                    proc.Signature = sser.Deserialize(sym.Signature, proc.Frame);
+                }
             }
-            proc = Procedure.Create(procedureName, addr, program.Architecture.CreateFrame());
+            if (procedureName != null)
+            {
+                var exp = program.Platform.SignatureFromName(procedureName);
+                if (exp != null)
+                {
+                    proc.Name = exp.Name;
+                    proc.Signature = exp.Signature;
+                    proc.EnclosingType = exp.EnclosingType;
+                }
+                else
+                {
+                    proc.Name = procedureName;
+                }
+            }
             program.Procedures.Add(addr, proc);
             program.CallGraph.AddProcedure(proc);
             return proc;
@@ -1035,7 +1055,7 @@ namespace Reko.Scanning
             }
             foreach (ImageSymbol sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
             {
-                EnsureProcedure(sym.Address, sym.Name);
+                EnsureProcedure(sym.Address, null);
                 if (sym.NoDecompile)
                     program.EnsureUserProcedure(sym.Address, sym.Name, false);
                 else

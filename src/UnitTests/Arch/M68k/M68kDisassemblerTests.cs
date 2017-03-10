@@ -665,7 +665,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_address_mode()
         {
-            RunTest("move.l\t(-04,a2,d0*2),d2", 0x2432, 0x04fc);
+            RunTest("move.l\t(-04,a2,d0*4),d2", 0x2432, 0x04fc);
         }
 
         [Test]

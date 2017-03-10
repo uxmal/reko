@@ -292,6 +292,8 @@ namespace Reko.Scanning
             ImageSegment seg;
             if (!this.program.SegmentMap.TryFindSegment(de.Key, out seg))
                 return null;
+            if (!seg.IsExecutable)
+                return null;
             return Tuple.Create(
                 seg.MemoryArea,
                 de.Key,

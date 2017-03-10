@@ -93,7 +93,7 @@ namespace Reko.Environments.SysV
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)

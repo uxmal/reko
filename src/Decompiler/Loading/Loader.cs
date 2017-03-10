@@ -147,7 +147,6 @@ namespace Reko.Loading
             }
             else
             {
-                var imgLoader = new NullImageLoader(Services, filename, image);
                 var segmentMap = CreatePlatformSegmentMap(platform, addrLoad, image);
                 program = new Program(
                     segmentMap,

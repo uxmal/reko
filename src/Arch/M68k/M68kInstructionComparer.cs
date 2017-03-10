@@ -56,11 +56,29 @@ namespace Reko.Arch.M68k
                 var regB = opB as RegisterOperand;
                 return NormalizeRegisters || regA.Register == regB.Register;
             }
-            var immA = opA as ImmediateOperand;
+            var immA = opA as M68kImmediateOperand;
             if (immA != null)
             {
-                var immB = opB as ImmediateOperand;
-                return CompareValues(immA.Value, immB.Value);
+                var immB = opB as M68kImmediateOperand;
+                return CompareValues(immA.Constant, immB.Constant);
+            }
+            var preA = opA as PredecrementMemoryOperand;
+            if (preA != null)
+            {
+                var preB = opB as PredecrementMemoryOperand;
+                return CompareRegisters(preA.Register, preB.Register);
+            }
+            var postA = opA as PostIncrementMemoryOperand;
+            if (postA != null)
+            {
+                var postB = opB as PostIncrementMemoryOperand;
+                return CompareRegisters(postA.Register, postB.Register);
+            }
+            var regsetA = opA as RegisterSetOperand;
+            if (regsetA != null)
+            {
+                var regsetB = opB as RegisterSetOperand;
+                return NormalizeRegisters || regsetA.BitSet == regsetB.BitSet;
             }
             throw new NotImplementedException();
         }
@@ -130,6 +148,36 @@ namespace Reko.Arch.M68k
                 {
                     h = h * 5 ^ ind.ARegister.GetHashCode();
                     h = h * 17 ^ ind.XRegister.GetHashCode();
+                }
+                return h;
+            }
+            var pre = op as PredecrementMemoryOperand;
+            if (pre != null)
+            {
+                int h = 43;
+                if (!NormalizeRegisters)
+                {
+                    h = h * 5 ^ base.GetRegisterHash(pre.Register);
+                }
+                return h;
+            }
+            var post = op as PostIncrementMemoryOperand;
+            if (post != null)
+            {
+                int h = 47;
+                if (!NormalizeRegisters)
+                {
+                    h = h * 7 ^ base.GetRegisterHash(pre.Register);
+                }
+                return h;
+            }
+            var regset = op as RegisterSetOperand;
+            if (regset != null)
+            {
+                int h = 29;
+                if (!NormalizeRegisters)
+                {
+                    h = h ^ regset.BitSet.GetHashCode();
                 }
                 return h;
             }

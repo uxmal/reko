@@ -1022,7 +1022,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0x2432, 0x04fc);    // move.l\t(-04,a2,d0*2),d2",
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
-                "1|L--|d2 = Mem0[a2 + -4 + (int32) ((int16) d0) * 2:word32]"
+                "1|L--|d2 = Mem0[a2 + -4 + (int32) ((int16) d0) * 4:word32]"
                 );
         }
 
