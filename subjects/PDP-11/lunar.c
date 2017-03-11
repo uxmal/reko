@@ -680,7 +680,7 @@ void fn0CEC(word16 * r0, word16 * r2, ci16 r4, Eq_1074 * r5, word16 pc)
 	r5->w0000 = r4_13;
 	globals->w0082 = r4_13;
 	r5->w0002 = 0x8C50;
-	cui16 * r5_22 = r5->w0002 + 0x01;
+	cui16 * r5_22 = &r5->w0002 + 0x01;
 	struct Eq_1945 * r0_23 = globals->a28F0;
 	while (true)
 	{
@@ -854,7 +854,7 @@ void fn0F04(word16 * r0, word16 * r2, ci16 r4, Eq_1323 * r5, word16 pc)
 	r5->w0000 = r4_130;
 	globals->w0082 = r4_130;
 	r5->w0002 = 0x8C50;
-	cui16 * r5_33 = r5->w0002 + 0x01;
+	cui16 * r5_33 = &r5->w0002 + 0x01;
 	while (true)
 	{
 		wchar_t r3_121;
@@ -1522,7 +1522,7 @@ Eq_3217 * fn15F2(word16 * r0, Eq_3217 * r1, word16 pc)
 		r3_25 = &globals->t2814;
 	}
 	union Eq_3267 * r3_26;
-	struct Eq_3217 * r1_27 = fn1658(r1->b0001 + 0x01, r3_25, wLoc02_14, out r3_26);
+	struct Eq_3217 * r1_27 = fn1658(&r1->b0001 + 0x01, r3_25, wLoc02_14, out r3_26);
 	word16 r3_28;
 	union Eq_3267 * r3_34;
 	struct Eq_3217 * r1_35 = fn1658(fn1658(r1_27, r3_26, wLoc02_14, out r3_28), (r2_24 << 0x01) + 10260, wLoc02_14, out r3_34);

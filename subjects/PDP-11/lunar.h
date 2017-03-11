@@ -481,7 +481,7 @@ Eq_3217: (struct "Eq_3217" (0 Eq_3267 t0000) (1 byte b0001))
 	T_3315 (in r1_27 : (ptr Eq_3217))
 	T_3318 (in r1 : (ptr Eq_3217))
 	T_3323 (in r1 + 0x0002 : word16)
-	T_3325 (in fn1658(r1->b0001 + 1, r3_25, wLoc02_14, out r3_26) : word16)
+	T_3325 (in fn1658(&r1->b0001 + 1, r3_25, wLoc02_14, out r3_26) : word16)
 	T_3328 (in r1_35 : (ptr Eq_3217))
 	T_3332 (in fn1658(r1_27, r3_26, wLoc02_14, out r3_28) : word16)
 	T_3338 (in fn1658(fn1658(r1_27, r3_26, wLoc02_14, out r3_28), (r2_24 << 1) + 0x2814, wLoc02_14, out r3_34) : word16)
@@ -13831,7 +13831,7 @@ T_3324: (in out r3_26 : ptr16)
   Class: Eq_3321
   DataType: ptr16
   OrigDataType: ptr16
-T_3325: (in fn1658(r1->b0001 + 1, r3_25, wLoc02_14, out r3_26) : word16)
+T_3325: (in fn1658(&r1->b0001 + 1, r3_25, wLoc02_14, out r3_26) : word16)
   Class: Eq_3217
   DataType: (ptr Eq_3217)
   OrigDataType: word16
