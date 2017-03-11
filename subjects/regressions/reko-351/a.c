@@ -216,7 +216,7 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_231 tArg14)
 	int32 dwLoc20_132 = 0x01;
 	while ((real64) ((real80) rLoc0C_117 / rLoc14) >= rArg0C)
 	{
-		*tArg14 = *tArg14;
+		*tArg14 = (word32) *tArg14 + 0x01;
 		word32 v24_77 = dwLoc20_132 + 0x01;
 		rLoc0C_117 = (real64) ((real80) (real64) ((real80) rLoc0C_117 * v9_28) * v9_28);
 		dwLoc20_132 = v24_77 + 0x03;

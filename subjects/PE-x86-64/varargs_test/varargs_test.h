@@ -220,7 +220,7 @@ Eq_706: (union "Eq_706" (int64 u0) (ptr64 u1))
 	T_712 (in rbx : word64)
 	T_1278 (in rax_15 : Eq_706)
 	T_1282 (in Mem0[0x0000000140003000 + 0x0000000000000000:word64] : word64)
-	T_1326 (in (DPB(rax_43, dwArg1C, 0) << 0x0000000000000020 ^ qwArg1C ^ v15_50 ^ fp) & fp : word64)
+	T_1326 (in (DPB(rax_43, dwArg1C, 0) << 0x0000000000000020 ^ qwArg1C ^ v15_50 ^ (word64) fp + 12) & (word64) fp + 12 : word64)
 	T_1329 (in fp + 0x000000000000000C : word64)
 	T_1333 (in Mem70[0x0000000140003000 + 0x0000000000000000:word64] : word64)
 Eq_719: (fn Eq_703 (word32, word64, ptr64, (ptr Eq_382), word64, word64))
@@ -5609,7 +5609,7 @@ T_1277: (in fn0000000140001804(eax) : word64)
 T_1278: (in rax_15 : Eq_706)
   Class: Eq_706
   DataType: Eq_706
-  OrigDataType: Eq_1321
+  OrigDataType: word64
 T_1279: (in 0000000140003000 : ptr64)
   Class: Eq_1279
   DataType: (ptr Eq_706)
@@ -5790,7 +5790,7 @@ T_1323: (in fp + 0x000000000000000C : word64)
   Class: Eq_1323
   DataType: ptr64
   OrigDataType: ptr64
-T_1324: (in DPB(rax_43, dwArg1C, 0) << 0x0000000000000020 ^ qwArg1C ^ v15_50 ^ fp : word64)
+T_1324: (in DPB(rax_43, dwArg1C, 0) << 0x0000000000000020 ^ qwArg1C ^ v15_50 ^ (word64) fp + 12 : word64)
   Class: Eq_1324
   DataType: ui64
   OrigDataType: ui64
@@ -5798,7 +5798,7 @@ T_1325: (in fp + 0x000000000000000C : word64)
   Class: Eq_1325
   DataType: Eq_1325
   OrigDataType: (union (ui64 u1) (ptr64 u0))
-T_1326: (in (DPB(rax_43, dwArg1C, 0) << 0x0000000000000020 ^ qwArg1C ^ v15_50 ^ fp) & fp : word64)
+T_1326: (in (DPB(rax_43, dwArg1C, 0) << 0x0000000000000020 ^ qwArg1C ^ v15_50 ^ (word64) fp + 12) & (word64) fp + 12 : word64)
   Class: Eq_706
   DataType: Eq_706
   OrigDataType: ui64

@@ -161,7 +161,7 @@ void __libc_csu_init(word64 rsi)
 			byte SZO_82;
 			byte C_83;
 			byte Z_84;
-			(*globals->a600E10)();
+			(*((char *) globals->a600E10 + rbx_28 * 0x08))();
 		} while (rbx_79 + 0x01 != rbp_75);
 	}
 	return;

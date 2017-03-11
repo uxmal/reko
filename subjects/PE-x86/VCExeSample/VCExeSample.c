@@ -67,7 +67,7 @@ word32 nested_if_blocks_test8(real64 rArg04, real64 rArg0)
 
 void loop_test9(real32 rArg04, real64 rArg0)
 {
-	word32 dwLoc08_12 = 0x00;
+	int32 dwLoc08_12 = 0x00;
 	while (true)
 	{
 		globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, dwLoc08_12, (real64) rArg04);
