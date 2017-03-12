@@ -127,7 +127,6 @@ namespace Reko.Arch.Arm
         case Opcode.LDMDA:
         case Opcode.LDMIB:
         case Opcode.LDRBT:
-        case Opcode.LDRD:
         case Opcode.LDREX:
         case Opcode.LDREXB:
         case Opcode.LDREXD:
@@ -499,6 +498,7 @@ namespace Reko.Arch.Arm
                 case Opcode.LDRH: RewriteLdr(PrimitiveType.UInt16); break;
                 case Opcode.LDRSB: RewriteLdr(PrimitiveType.SByte); break;
                 case Opcode.LDRSH: RewriteLdr(PrimitiveType.Int16); break;
+                case Opcode.LDRD: RewriteLdrd(); break;
                 case Opcode.LDM: RewriteLdm(); break;
                 case Opcode.LDMDB: RewriteLdm(); break;
                 case Opcode.NOP: m.Nop(); break;
@@ -671,6 +671,7 @@ namespace Reko.Arch.Arm
             {
             case Opcode.LDR: return PrimitiveType.Word32;
             case Opcode.LDRB: return PrimitiveType.Byte;
+            case Opcode.LDRD: return PrimitiveType.Word64;
             case Opcode.LDRH: return PrimitiveType.Word16;
             case Opcode.LDRSB: return PrimitiveType.SByte;
             case Opcode.LDRSH: return PrimitiveType.Int16;

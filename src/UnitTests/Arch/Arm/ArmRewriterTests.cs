@@ -397,5 +397,14 @@ BX              LR
 means
   return (v3 << 16) | 0xD;
          */
+
+        [Test]
+        public void ArmRw_ldrd()
+        {
+            BuildTest(0xE1C722D8);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3_r2 = Mem0[r7 + 40:word64]");
+        }
     }
 }
