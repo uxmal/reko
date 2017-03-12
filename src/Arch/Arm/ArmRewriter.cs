@@ -89,7 +89,6 @@ namespace Reko.Arch.Arm
         case Opcode.AESIMC:
         case Opcode.AESMC:
         case Opcode.BFC:
-        case Opcode.BFI:
         case Opcode.BKPT:
         case Opcode.BXJ:
         case Opcode.CDP:
@@ -487,6 +486,7 @@ namespace Reko.Arch.Arm
                 case Opcode.ADD: RewriteBinOp(m.IAdd, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.EOR: RewriteBinOp(m.Xor, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.B: RewriteB(false); break;
+                case Opcode.BFI: RewriteBfi(); break;
                 case Opcode.BIC: RewriteBic(); break;
                 case Opcode.BL: RewriteB(true); break;
                 case Opcode.BLX: RewriteB(true); break;

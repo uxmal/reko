@@ -68,6 +68,7 @@ namespace Reko.Arch.Arm
         public static readonly RegisterStorage q13 = new RegisterStorage("q13", 45, 0, PrimitiveType.Word128) ;
         public static readonly RegisterStorage q14 = new RegisterStorage("q14", 46, 0, PrimitiveType.Word128) ;
         public static readonly RegisterStorage q15 = new RegisterStorage("q15", 47, 0, PrimitiveType.Word128);
+
         public static readonly RegisterStorage d0 = new RegisterStorage("d0", 32, 0, PrimitiveType.Word64);
         public static readonly RegisterStorage d1 = new RegisterStorage("d1", 32, 64, PrimitiveType.Word64);
         public static readonly RegisterStorage d2 = new RegisterStorage("d2", 33, 0, PrimitiveType.Word64);
@@ -84,10 +85,10 @@ namespace Reko.Arch.Arm
         public static readonly RegisterStorage d13 = new RegisterStorage("d13", 38, 64, PrimitiveType.Word64);
         public static readonly RegisterStorage d14 = new RegisterStorage("d14", 39, 0, PrimitiveType.Word64);
         public static readonly RegisterStorage d15 = new RegisterStorage("d15", 39, 64, PrimitiveType.Word64);
-        public static readonly RegisterStorage d16 = new RegisterStorage("d11", 40, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage d17 = new RegisterStorage("d11", 40, 64, PrimitiveType.Word64);
-        public static readonly RegisterStorage d18 = new RegisterStorage("d11", 41, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage d19 = new RegisterStorage("d11", 41, 64, PrimitiveType.Word64);
+        public static readonly RegisterStorage d16 = new RegisterStorage("d16", 40, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage d17 = new RegisterStorage("d17", 40, 64, PrimitiveType.Word64);
+        public static readonly RegisterStorage d18 = new RegisterStorage("d18", 41, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage d19 = new RegisterStorage("d19", 41, 64, PrimitiveType.Word64);
         public static readonly RegisterStorage d20 = new RegisterStorage("d20", 42, 0, PrimitiveType.Word64);
         public static readonly RegisterStorage d21 = new RegisterStorage("d20", 42, 64, PrimitiveType.Word64);
         public static readonly RegisterStorage d22 = new RegisterStorage("d20", 43, 0, PrimitiveType.Word64);
@@ -101,7 +102,38 @@ namespace Reko.Arch.Arm
         public static readonly RegisterStorage d30 = new RegisterStorage("d30", 47, 0, PrimitiveType.Word64);
         public static readonly RegisterStorage d31 = new RegisterStorage("d31", 47, 64, PrimitiveType.Word64);
 
-
+        public static readonly RegisterStorage s0 = new RegisterStorage("s0", 32, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage s1 = new RegisterStorage("s1", 32, 32, PrimitiveType.Word64);
+        public static readonly RegisterStorage s2 = new RegisterStorage("s2", 32, 64, PrimitiveType.Word64);
+        public static readonly RegisterStorage s3 = new RegisterStorage("s3", 32, 96, PrimitiveType.Word64);
+        public static readonly RegisterStorage s4 = new RegisterStorage("s4", 33, 0,  PrimitiveType.Word64);
+        public static readonly RegisterStorage s5 = new RegisterStorage("s5", 33, 32, PrimitiveType.Word64);
+        public static readonly RegisterStorage s6 = new RegisterStorage("s6", 33, 64, PrimitiveType.Word64);
+        public static readonly RegisterStorage s7 = new RegisterStorage("s7", 33, 96, PrimitiveType.Word64);
+        public static readonly RegisterStorage s8 = new RegisterStorage("s8", 34, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage s9 = new RegisterStorage("s9", 34, 32, PrimitiveType.Word64);
+        public static readonly RegisterStorage s10 = new RegisterStorage("s10", 34, 64, PrimitiveType.Word64);
+        public static readonly RegisterStorage s11 = new RegisterStorage("s11", 34, 96, PrimitiveType.Word64);
+        public static readonly RegisterStorage s12 = new RegisterStorage("s12", 35, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage s13 = new RegisterStorage("s13", 35, 32, PrimitiveType.Word64);
+        public static readonly RegisterStorage s14 = new RegisterStorage("s14", 35, 64, PrimitiveType.Word64);
+        public static readonly RegisterStorage s15 = new RegisterStorage("s15", 35, 96, PrimitiveType.Word64);
+        public static readonly RegisterStorage s16 = new RegisterStorage("s16", 36, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage s17 = new RegisterStorage("s17", 36, 32, PrimitiveType.Word64);
+        public static readonly RegisterStorage s18 = new RegisterStorage("s18", 36, 64, PrimitiveType.Word64);
+        public static readonly RegisterStorage s19 = new RegisterStorage("s19", 36, 96, PrimitiveType.Word64);
+        public static readonly RegisterStorage s20 = new RegisterStorage("s20", 37, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage s21 = new RegisterStorage("s20", 37, 32, PrimitiveType.Word64);
+        public static readonly RegisterStorage s22 = new RegisterStorage("s20", 37, 64, PrimitiveType.Word64);
+        public static readonly RegisterStorage s23 = new RegisterStorage("s20", 37, 96, PrimitiveType.Word64);
+        public static readonly RegisterStorage s24 = new RegisterStorage("s20", 38, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage s25 = new RegisterStorage("s20", 38, 32, PrimitiveType.Word64);
+        public static readonly RegisterStorage s26 = new RegisterStorage("s20", 38, 64, PrimitiveType.Word64);
+        public static readonly RegisterStorage s27 = new RegisterStorage("s20", 38, 96, PrimitiveType.Word64);
+        public static readonly RegisterStorage s28 = new RegisterStorage("s20", 39, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage s29 = new RegisterStorage("s20", 39, 32, PrimitiveType.Word64);
+        public static readonly RegisterStorage s30 = new RegisterStorage("s30", 39, 64, PrimitiveType.Word64);
+        public static readonly RegisterStorage s31 = new RegisterStorage("s31", 39, 96, PrimitiveType.Word64);
 
         public static readonly Dictionary<ArmRegister, RegisterStorage> RegisterByCapstoneID;
 
@@ -196,6 +228,40 @@ namespace Reko.Arch.Arm
                   { ArmRegister.D29,      d29 },
                   { ArmRegister.D30,      d30 },
                   { ArmRegister.D31,      d31 },
+
+                  { ArmRegister.S0 ,      s0 },
+                  { ArmRegister.S1 ,      s1 },
+                  { ArmRegister.S2 ,      s2 },
+                  { ArmRegister.S3 ,      s3 },
+                  { ArmRegister.S4 ,      s4 },
+                  { ArmRegister.S5 ,      s5 },
+                  { ArmRegister.S6 ,      s6 },
+                  { ArmRegister.S7 ,      s7 },
+                  { ArmRegister.S8 ,      s8 },
+                  { ArmRegister.S9 ,      s9 },
+                  { ArmRegister.S10,      s10 },
+                  { ArmRegister.S11,      s11 },
+                  { ArmRegister.S12,      s12 },
+                  { ArmRegister.S13,      s13 },
+                  { ArmRegister.S14,      s14 },
+                  { ArmRegister.S15,      s15 },
+                  { ArmRegister.S16,      s16 },
+                  { ArmRegister.S17,      s17 },
+                  { ArmRegister.S18,      s18 },
+                  { ArmRegister.S19,      s19 },
+                  { ArmRegister.S20,      s20 },
+                  { ArmRegister.S21,      s21 },
+                  { ArmRegister.S22,      s22 },
+                  { ArmRegister.S23,      s23 },
+                  { ArmRegister.S24,      s24 },
+                  { ArmRegister.S25,      s25 },
+                  { ArmRegister.S26,      s26 },
+                  { ArmRegister.S27,      s27 },
+                  { ArmRegister.S28,      s28 },
+                  { ArmRegister.S29,      s29 },
+                  { ArmRegister.S30,      s30 },
+                  { ArmRegister.S31,      s31 },
+
             };
 
             RegistersByName = new Dictionary<string, RegisterStorage>(StringComparer.InvariantCultureIgnoreCase)

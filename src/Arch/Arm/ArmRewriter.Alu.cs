@@ -28,11 +28,24 @@ using Reko.Core.Types;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Reko.Core.Lib;
 
 namespace Reko.Arch.Arm
 {
     public partial class ArmRewriter
     {
+        private void RewriteBfi()
+        {
+            var opDst = this.Operand(Dst);
+            var opSrc = this.Operand(Src1);
+            var tmp = frame.CreateTemporary(opDst.DataType);
+            var lsb = instr.ArchitectureDetail.Operands[2].ImmediateValue.Value;
+            var bitsize = instr.ArchitectureDetail.Operands[3].ImmediateValue.Value;
+            ConditionalSkip();
+            m.Assign(tmp, m.And(opSrc, Bits.Mask(0, bitsize)));
+            m.Assign(opDst, m.Dpb(opDst, tmp, lsb));
+        }
+
         private void RewriteBinOp(Func<Expression,Expression,Expression> op, bool setflags)
         {
             var opDst = this.Operand(Dst);

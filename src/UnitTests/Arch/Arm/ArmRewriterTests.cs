@@ -360,5 +360,42 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|r1 = r2 * r3 + r4",
                 "2|L--|SZCO = cond(r1)");
         }
+
+        [Test]
+        public void ArmRw_bfi()
+        {
+            BuildTest(0xE7CD1292);
+            AssertCode(
+               "0|L--|00100000(4): 2 instructions",
+               "1|L--|v4 = r2 & 0x000001FF",
+               "2|L--|r1 = DPB(r1, v4, 5)");
+        }
+
+        /*
+        MOV             R2, R0,LSR#8
+        MOV             R3, #0
+        AND             R0, R0, #0xF
+        BFI             R3, R2, #0, #8
+        SUB             SP, SP, #8
+        BFI             R3, R0, #8, #8
+        MOV             R0, R3
+        ADD             SP, SP, #8
+        BX              LR
+        int __fastcall AUDIO_ConvertVolumeValue(unsigned __int16 a1)
+        {
+          return (a1 >> 8) | ((a1 & 0xF) << 8);
+        }
+
+        MOV             R3, #0
+MOV             R1, #0xD
+MOV             R0, R3
+BFI             R0, R1, #0, #8
+BFI             R0, R3, #8, #8
+BFI             R0, R2, #0x10, #8
+ADD             SP, SP, #8
+BX              LR
+means
+  return (v3 << 16) | 0xD;
+         */
     }
 }
