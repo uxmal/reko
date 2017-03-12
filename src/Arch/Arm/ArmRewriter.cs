@@ -471,7 +471,6 @@ namespace Reko.Arch.Arm
         case Opcode.CBNZ:
         case Opcode.CBZ:
         case Opcode.MOVS:
-        case Opcode.POP:
         case Opcode.YIELD:
         case Opcode.WFE:
         case Opcode.WFI:
@@ -510,6 +509,7 @@ namespace Reko.Arch.Arm
                 case Opcode.MOVW: RewriteMov(); break;
                 case Opcode.MVN: RewriteUnaryOp(Operator.Not); break;
                 case Opcode.ORR: RewriteBinOp(m.Or, false); break;
+                case Opcode.POP: RewritePop(); break;
                 case Opcode.PUSH: RewritePush(); break;
                 case Opcode.RSB: RewriteRevBinOp(Operator.ISub, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.STM: RewriteStm(); break;
@@ -610,6 +610,19 @@ namespace Reko.Arch.Arm
                 rtlInstr = new RtlIf(TestCond(instr.ArchitectureDetail.CodeCondition), rtlInstr);
             }
             ric.Instructions.Add(rtlInstr);
+        }
+
+        // If a conditional ARM instruction is encountered, generate an IL
+        // instruction to skip the remainder of the instruction cluster.
+        private void ConditionalSkip()
+        {
+            var cc = instr.ArchitectureDetail.CodeCondition;
+            if (cc == ArmCodeCondition.AL)
+                return; // never skip!
+            m.BranchInMiddleOfInstruction(
+                TestCond(cc).Invert(),
+                Address.Ptr32((uint)instr.Address + 4),
+                RtlClass.ConditionalTransfer);
         }
 
         private Expression Operand(ArmInstructionOperand op)

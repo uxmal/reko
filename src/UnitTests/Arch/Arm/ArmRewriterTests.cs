@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Arch.Arm
         private void BuildTest(params string[] bitStrings)
         {
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
-                .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
+                .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
                 .ToArray();
             image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
         }
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Arch.Arm
         private void BuildTest(params uint[] words)
         {
             var bytes = words
-                .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
+                .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
                 .ToArray();
             image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
         }
@@ -297,6 +297,29 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                "0|L--|00100000(4): 1 instructions",
                "1|L--|r4 = DPB(r4, 0xFFFF, 16)");
+        }
+
+        [Test]
+        public void ArmRw_pop()
+        {
+            BuildTest(0xE8BD000C);
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|r2 = Mem0[sp:word32]",
+                "2|L--|r3 = Mem0[sp + 4:word32]",
+                "3|L--|sp = sp + 8");
+        }
+
+        [Test]
+        public void ArmRw_popne()
+        {
+            BuildTest(0x18BD000C);
+            AssertCode(
+                "0|L--|00100000(4): 4 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 00100004",
+                "2|L--|r2 = Mem0[sp:word32]",
+                "3|L--|r3 = Mem0[sp + 4:word32]",
+                "4|L--|sp = sp + 8");
         }
     }
 }

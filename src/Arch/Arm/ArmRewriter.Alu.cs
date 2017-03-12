@@ -27,6 +27,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Reko.Arch.Arm
 {
@@ -168,32 +169,46 @@ namespace Reko.Arch.Arm
 
         private void RewriteLdm()
         {
-            throw new NotImplementedException();
-#if NYI
-            var dst = frame.EnsureRegister(((RegisterOperand) Dst).Register);
-            var range = (RegisterRangeOperand) Src1;
+            var dst = this.Operand(Dst);
+            var range = instr.ArchitectureDetail.Operands.Skip(1);
+            RewriteLdm(dst, range, instr.ArchitectureDetail.WriteBack);
+        }
+
+        private void RewriteLdm(Expression dst, IEnumerable<ArmInstructionOperand> range, bool writeback)
+        {
+            ConditionalSkip();
             int offset = 0;
             bool pcRestored = false;
-            foreach (var r in range.GetRegisters().Reverse())
+            foreach (var r in range)
             {
                 Expression ea = offset != 0
-                    ? emitter.IAdd(dst, offset)
-                    : (Expression) dst;
-                var reg = arch.GetRegister(r);
-                var srcReg = frame.EnsureRegister(reg);
-                emitter.Assign(srcReg, emitter.LoadDw(ea));
-                offset += srcReg.DataType.Size;
-                if (reg == A32Registers.pc)
+                    ? m.IAdd(dst, Constant.Int32(offset))
+                    : dst;
+                if (r.RegisterValue.Value == ArmRegister.PC)
+                {
                     pcRestored = true;
+                }
+                else
+                {
+                    var dstReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.RegisterValue.Value]);
+                    m.Assign(dstReg, m.LoadDw(ea));
+                }
+                offset += 4;
             }
-            if (offset != 0 && instr.Update)
+            if (writeback)
             {
-                emitter.Assign(dst, emitter.IAdd(dst, offset));
+                m.Assign(dst, m.IAdd(dst, Constant.Int32(offset)));
             }
-            //$REVIEW: most likely case.
             if (pcRestored)
-                emitter.Return(0, 0);
-#endif
+            {
+                m.Return(0, 0);
+            }
+        }
+
+        private void RewritePop()
+        {
+            var sp = frame.EnsureRegister(A32Registers.sp);
+            RewriteLdm(sp, instr.ArchitectureDetail.Operands, true);
         }
 
         private void RewritePush()
