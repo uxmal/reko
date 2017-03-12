@@ -1438,17 +1438,17 @@ pexecute: error: An error occurred during data flow analysis.
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 86
 00011BA0: error: An error occurred while processing the statement branch (int32) Mem0[o0 - o0_56 + o0 + -1:int8] != 0x0000002F l00011B88_ds_t.
     Not handling ptr32 and (union (int32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 381
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 218
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 312
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 532
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 475
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 544
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 487
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 57
-   at Reko.Typing.ExpressionTypeDescender.VisitCast(Cast cast, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 414
+   at Reko.Typing.ExpressionTypeDescender.VisitCast(Cast cast, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 426
    at Reko.Core.Expressions.Cast.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 46
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 312
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 137
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
@@ -1891,11 +1891,11 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 02DE: error: An error occurred while processing the statement Mem124[r4_62 - 0x003E + 0x0000:byte] = 0x0A01.
     Not handling (ptr (struct (0 T_217 t0000))) and (union (cu16 u0) (ptr16 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 381
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 218
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 532
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 475
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 544
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 487
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 57
    at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 211
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
@@ -2137,90 +2137,6 @@ fn0D3C: error: An error occurred while rewriting procedure to high-level languag
 === pySample.dcproject
 === RussianText.exe
 === VCExeSample.dcproject
-*** VCExeSample.dcproject
-004010C4: error: An error occurred while processing the statement Mem0[Mem0[c + 0x00000000:word32] + 0x00000004:word32](c, 0x000003E8).
-    The type inference of indirect calls are not implmented yet.
-       at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
-   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
-   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
-   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-004010E3: error: An error occurred while processing the statement Mem0[Mem0[Mem0[0x00403018:word32] + 0x00000000:word32] + 0x00000000:word32](Mem0[0x00403018:word32]).
-    The type inference of indirect calls are not implmented yet.
-       at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
-   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
-   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
-   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00401113: error: An error occurred while processing the statement Mem0[Mem0[Mem0[0x00403018:word32] + 0x00000000:word32] + 0x00000004:word32](Mem0[0x00403018:word32], 0x000003E7, Mem0[0x004020EC:real32]).
-    The type inference of indirect calls are not implmented yet.
-       at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
-   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
-   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
-   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00401150: error: An error occurred while processing the statement Mem48[Mem48[c + 0x00000000:word32] + 0x00000004:word32](c, Mem0[Mem0[c + 0x00000000:word32] + 0x00000008:word32](c, a, b)).
-    The type inference of indirect calls are not implmented yet.
-       at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
-   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
-   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
-   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 88
-   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
-   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-004011A5: error: An error occurred while processing the statement Mem18[Mem18[Mem18[0x00403024:word32] + 0x00000000:word32] + 0x00000004:word32](Mem18[0x00403024:word32], 0x0000000D, rArg04).
-    The type inference of indirect calls are not implmented yet.
-       at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
-   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
-   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
-   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00401187: error: An error occurred while processing the statement Mem0[Mem0[Mem0[0x00403024:word32] + 0x00000000:word32] + 0x00000000:word32](Mem0[0x00403024:word32], rArg04).
-    The type inference of indirect calls are not implmented yet.
-       at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
-   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
-   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
-   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-004011CE: error: An error occurred while processing the statement Mem0[Mem0[Mem0[0x00403024:word32] + 0x00000000:word32] + 0x00000004:word32](Mem0[0x00403024:word32], 0xFFFFFFFF, rArg04).
-    The type inference of indirect calls are not implmented yet.
-       at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
-   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
-   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
-   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-0040120B: error: An error occurred while processing the statement Mem52[Mem52[Mem52[0x00403024:word32] + 0x00000000:word32] + 0x00000000:word32](Mem52[0x00403024:word32], rArg04).
-    The type inference of indirect calls are not implmented yet.
-       at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
-   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
-   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
-   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-0040126C: error: An error occurred while processing the statement Mem21[Mem21[Mem21[0x00403024:word32] + 0x00000000:word32] + 0x00000004:word32](Mem21[0x00403024:word32], dwLoc08_12, (real64) rArg04).
-    The type inference of indirect calls are not implmented yet.
-       at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
-   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
-   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
-   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00401290: error: An error occurred while processing the statement Mem39[Mem39[Mem39[0x00403024:word32] + 0x00000000:word32] + 0x00000000:word32](Mem39[0x00403024:word32], rArg0).
-    The type inference of indirect calls are not implmented yet.
-       at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
-   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
-   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
-   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-
 === varargs_test.exe
 *** varargs_test.exe
 0000000140001A14: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.

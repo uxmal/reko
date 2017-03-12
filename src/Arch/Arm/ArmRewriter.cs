@@ -144,7 +144,6 @@ namespace Reko.Arch.Arm
         case Opcode.MLA:
         case Opcode.MLS:
         case Opcode.MOVT:
-        case Opcode.MOVW:
         case Opcode.MRC:
         case Opcode.MRC2:
         case Opcode.MRRC:
@@ -509,6 +508,7 @@ namespace Reko.Arch.Arm
                 case Opcode.LDMDB: RewriteLdm(); break;
                 case Opcode.NOP: emitter.Nop(); break;
                 case Opcode.MOV: RewriteMov(); break;
+                case Opcode.MOVW: RewriteMov(); break;
                 case Opcode.MVN: RewriteUnaryOp(Operator.Not); break;
                 case Opcode.ORR: RewriteBinOp(emitter.Or, false); break;
                 case Opcode.PUSH: RewritePush(); break;
@@ -647,6 +647,7 @@ namespace Reko.Arch.Arm
             case Opcode.LDR: return PrimitiveType.Word32;
             case Opcode.LDRB: return PrimitiveType.Byte;
             case Opcode.LDRSB: return PrimitiveType.SByte;
+            case Opcode.STR: return PrimitiveType.Word32;
             }
             throw new NotImplementedException(instr.Id.ToString());
         }

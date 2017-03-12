@@ -258,5 +258,14 @@ namespace Reko.UnitTests.Arch.Arm
                "2|L--|Mem0[sp - 0x00000004:word32] = lr",
                "3|L--|sp = sp - 0x00000008");
         }
+
+        [Test]
+        public void ArmRw_movw()
+        {
+            BuildTest(0xE30F4FFF);
+            AssertCode(
+               "0|L--|00100000(4): 1 instructions",
+               "1|L--|r4 = 0x0000FFFF");
+        }
     }
 }

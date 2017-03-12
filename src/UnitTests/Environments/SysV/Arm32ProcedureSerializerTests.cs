@@ -242,5 +242,65 @@ namespace Reko.UnitTests.Environments.SysV
             Assert.AreEqual("Stack +0004", args[5].Storage.ToString());
             Assert.AreEqual("Stack +0008", args[6].Storage.ToString());
         }
+
+        [Test]
+        public void SvArm32Ps_mmap()
+        {
+            var ssig = new SerializedSignature
+            {
+                ReturnValue = new Argument_v1
+                {
+                    Type = new PointerType_v1
+                    {
+                        PointerSize = 4,
+                        DataType = new VoidType_v1(),
+                    }
+                },
+                Arguments = new Argument_v1[]
+                {
+                    new Argument_v1
+                    {
+                        Name = "addr",
+                        Type = new PointerType_v1
+                        {
+                            PointerSize = 4,
+                            DataType = new VoidType_v1(),
+                        }
+                    },
+                    new Argument_v1
+                    {
+                        Name = "length",
+                        Type = PrimitiveType_v1.UInt32(),
+                    },
+                    new Argument_v1
+                    {
+                        Name = "prot",
+                        Type = PrimitiveType_v1.Int32(),
+                    },
+                    new Argument_v1
+                    {
+                        Name = "flags",
+                        Type = PrimitiveType_v1.Int32(),
+                    },
+                    new Argument_v1
+                    {
+                        Name = "fd",
+                        Type = PrimitiveType_v1.Int32(),
+                    },
+                    new Argument_v1
+                    {
+                        Name = "offset",
+                        Type = PrimitiveType_v1.Int32(),
+                    }
+                }
+            };
+            Given_ProcedureSerializer();
+
+            mr.ReplayAll();
+
+            var sig = ser.Deserialize(ssig, arch.CreateFrame());
+            var args = sig.Parameters;
+
+        }
     }
 }
