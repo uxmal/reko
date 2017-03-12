@@ -275,6 +275,10 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r2 = (byte) r1");
+            BuildTest(0xE6EF2471);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = (byte) (r1 >>u 8)");
         }
     }
 }

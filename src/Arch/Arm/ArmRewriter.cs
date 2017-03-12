@@ -42,7 +42,7 @@ namespace Reko.Arch.Arm
         private CapstoneArmInstruction instr;
         private ArmInstructionOperand [] ops;
         private RtlInstructionCluster ric;
-        private RtlEmitter emitter;
+        private RtlEmitter m;
         private IRewriterHost host;
 
         public ArmRewriter(Arm32ProcessorArchitecture arch, EndianImageReader rdr, ArmProcessorState state, Frame frame, IRewriterHost host)
@@ -76,7 +76,7 @@ namespace Reko.Arch.Arm
 
                 this.ric = new RtlInstructionCluster(instrs.Current.Address, instr.Bytes.Length);
                 this.ric.Class = RtlClass.Linear;
-                this.emitter = new RtlEmitter(ric.Instructions);
+                this.m = new RtlEmitter(ric.Instructions);
                 switch (instr.Id)
                 {
                 default:
@@ -485,12 +485,12 @@ namespace Reko.Arch.Arm
                         string.Format(
                             "Rewriting ARM opcode '{0}' is not supported yet.",
                             instr.Mnemonic));
-                    emitter.Invalid();
+                    m.Invalid();
                     break;
 
-                case Opcode.AND: RewriteBinOp(emitter.And, instr.ArchitectureDetail.UpdateFlags); break;
-                case Opcode.ADD: RewriteBinOp(emitter.IAdd, instr.ArchitectureDetail.UpdateFlags); break;
-                case Opcode.EOR: RewriteBinOp(emitter.Xor, instr.ArchitectureDetail.UpdateFlags); break;
+                case Opcode.AND: RewriteBinOp(m.And, instr.ArchitectureDetail.UpdateFlags); break;
+                case Opcode.ADD: RewriteBinOp(m.IAdd, instr.ArchitectureDetail.UpdateFlags); break;
+                case Opcode.EOR: RewriteBinOp(m.Xor, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.B: RewriteB(false); break;
                 case Opcode.BIC: RewriteBic(); break;
                 case Opcode.BL: RewriteB(true); break;
@@ -505,11 +505,11 @@ namespace Reko.Arch.Arm
                 case Opcode.LDRSH: RewriteLdr(PrimitiveType.Int16); break;
                 case Opcode.LDM: RewriteLdm(); break;
                 case Opcode.LDMDB: RewriteLdm(); break;
-                case Opcode.NOP: emitter.Nop(); break;
+                case Opcode.NOP: m.Nop(); break;
                 case Opcode.MOV: RewriteMov(); break;
                 case Opcode.MOVW: RewriteMov(); break;
                 case Opcode.MVN: RewriteUnaryOp(Operator.Not); break;
-                case Opcode.ORR: RewriteBinOp(emitter.Or, false); break;
+                case Opcode.ORR: RewriteBinOp(m.Or, false); break;
                 case Opcode.PUSH: RewritePush(); break;
                 case Opcode.RSB: RewriteRevBinOp(Operator.ISub, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.STM: RewriteStm(); break;
@@ -518,10 +518,11 @@ namespace Reko.Arch.Arm
                 case Opcode.STR: RewriteStr(PrimitiveType.Word32); break;
                 case Opcode.STRB: RewriteStr(PrimitiveType.Byte); break;
                 case Opcode.STRH: RewriteStr(PrimitiveType.UInt16); break;
-                case Opcode.SUB: RewriteBinOp(emitter.ISub, instr.ArchitectureDetail.UpdateFlags); break;
+                case Opcode.SUB: RewriteBinOp(m.ISub, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.SVC: RewriteSvc(); break;
                 case Opcode.TEQ: RewriteTeq(); break;
                 case Opcode.TST: RewriteTst(); break;
+                case Opcode.UXTB: RewriteUxtb(); break;
 
                 }
                 yield return ric;
@@ -557,11 +558,11 @@ namespace Reko.Arch.Arm
                 ric.Class = RtlClass.Transfer;
                 if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
                 {
-                    emitter.Call(dst, 0);
+                    m.Call(dst, 0);
                 }
                 else
                 {
-                    emitter.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlCall(dst, 0, RtlClass.Transfer));
+                    m.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlCall(dst, 0, RtlClass.Transfer));
                 }
             }
             else
@@ -569,12 +570,12 @@ namespace Reko.Arch.Arm
                 if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
                 {
                     ric.Class = RtlClass.Transfer;
-                    emitter.Goto(dst);
+                    m.Goto(dst);
                 }
                 else
                 {
                     ric.Class = RtlClass.ConditionalTransfer;
-                    emitter.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), (Address) dst, RtlClass.ConditionalTransfer);
+                    m.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), (Address) dst, RtlClass.ConditionalTransfer);
                 }
             }
         }
@@ -620,22 +621,22 @@ namespace Reko.Arch.Arm
                     if (op.MemoryValue.Displacement != 0)
                     {
                         var dst = (uint)((int)instrs.Current.Address.ToUInt32() + op.MemoryValue.Displacement) + 8u;
-                        return emitter.Load(SizeFromLoadStore(instr), Address.Ptr32(dst));
+                        return m.Load(SizeFromLoadStore(instr), Address.Ptr32(dst));
                     }
                 }
                 if (op.MemoryValue.Displacement != 0 && instrs.Current.IsLastOperand(op))
                 {
                     var offset = Constant.Int32(op.MemoryValue.Displacement);
                     ea = op.MemoryValue.IndexRegisterScale < 0
-                        ? emitter.ISub(ea, offset)
-                        : emitter.IAdd(ea, offset);
+                        ? m.ISub(ea, offset)
+                        : m.IAdd(ea, offset);
                 }
                 if (instrs.Current.IsLastOperand(op) && instr.ArchitectureDetail.WriteBack)
                 {
-                    emitter.Assign(baseReg, ea);
+                    m.Assign(baseReg, ea);
                     ea = baseReg;
                 }
-                return emitter.Load(SizeFromLoadStore(instr), ea);
+                return m.Load(SizeFromLoadStore(instr), ea);
             }
             throw new NotImplementedException(op.Type.ToString());
         }
@@ -666,14 +667,14 @@ namespace Reko.Arch.Arm
         {
             switch (op.Shifter.Type)
             {
-            case ArmShifterType.ASR: return emitter.Sar(exp, op.Shifter.Value);
-            case ArmShifterType.LSL: return emitter.Shl(exp, op.Shifter.Value);
-            case ArmShifterType.LSR: return emitter.Shr(exp, op.Shifter.Value);
+            case ArmShifterType.ASR: return m.Sar(exp, op.Shifter.Value);
+            case ArmShifterType.LSL: return m.Shl(exp, op.Shifter.Value);
+            case ArmShifterType.LSR: return m.Shr(exp, op.Shifter.Value);
             case ArmShifterType.ROR: return host.PseudoProcedure(PseudoProcedure.Ror, PrimitiveType.Word32, exp, Constant.Int32(op.Shifter.Value)); 
             case ArmShifterType.RRX: return host.PseudoProcedure("rrx", PrimitiveType.Word32, exp, Constant.Int32(op.Shifter.Value));
-            case ArmShifterType.ASR_REG: return emitter.Sar(exp, Reg(op.Shifter.Value));
-            case ArmShifterType.LSL_REG: return emitter.Shl(exp, Reg(op.Shifter.Value));
-            case ArmShifterType.LSR_REG: return emitter.Shr(exp, Reg(op.Shifter.Value));
+            case ArmShifterType.ASR_REG: return m.Sar(exp, Reg(op.Shifter.Value));
+            case ArmShifterType.LSL_REG: return m.Shl(exp, Reg(op.Shifter.Value));
+            case ArmShifterType.LSR_REG: return m.Shr(exp, Reg(op.Shifter.Value));
             case ArmShifterType.ROR_REG: return host.PseudoProcedure(PseudoProcedure.Ror, PrimitiveType.Word32, exp, Reg(op.Shifter.Value));
             case ArmShifterType.RRX_REG: return host.PseudoProcedure("rrx", PrimitiveType.Word32, exp, Reg(op.Shifter.Value));
             default: return exp;
@@ -690,9 +691,9 @@ namespace Reko.Arch.Arm
             Expression baseReg = Reg(op.MemoryValue.BaseRegister);
             var offset = Operand(lastOp);
             var ea = lastOp.IsSubtracted
-                ? emitter.ISub(baseReg, offset)
-                : emitter.IAdd(baseReg, offset);
-            emitter.Assign(baseReg, ea);
+                ? m.ISub(baseReg, offset)
+                : m.IAdd(baseReg, offset);
+            m.Assign(baseReg, ea);
 #if NYI
             if (memOp == null || memOp.Offset == null)
                 return;
@@ -749,7 +750,7 @@ namespace Reko.Arch.Arm
 
         private void RewriteSvc()
         {
-            emitter.SideEffect(emitter.Fn(
+            m.SideEffect(m.Fn(
                 host.EnsurePseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 2), 
                 Operand(Dst)));
         }
