@@ -158,6 +158,14 @@ namespace Reko.Arch.Arm
             ConditionalAssign(opDst, opSrc);
         }
 
+        private void RewriteMovt()
+        {
+            var opDst = Operand(Dst);
+            var iSrc = ((Constant)Operand(Src1)).ToUInt32();
+            var opSrc = m.Dpb(opDst, Constant.Word16((ushort)iSrc), 16);
+            ConditionalAssign(opDst, opSrc);
+        }
+
         private void RewriteLdm()
         {
             throw new NotImplementedException();

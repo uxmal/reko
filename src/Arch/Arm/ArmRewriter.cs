@@ -143,7 +143,6 @@ namespace Reko.Arch.Arm
         case Opcode.MCRR2:
         case Opcode.MLA:
         case Opcode.MLS:
-        case Opcode.MOVT:
         case Opcode.MRC:
         case Opcode.MRC2:
         case Opcode.MRRC:
@@ -507,6 +506,7 @@ namespace Reko.Arch.Arm
                 case Opcode.LDMDB: RewriteLdm(); break;
                 case Opcode.NOP: m.Nop(); break;
                 case Opcode.MOV: RewriteMov(); break;
+                case Opcode.MOVT: RewriteMovt(); break;
                 case Opcode.MOVW: RewriteMov(); break;
                 case Opcode.MVN: RewriteUnaryOp(Operator.Not); break;
                 case Opcode.ORR: RewriteBinOp(m.Or, false); break;

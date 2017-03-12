@@ -289,5 +289,14 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|if (Test(UGE,C)) goto lr");
         }
+
+        [Test]
+        public void ArmRw_movt()
+        {
+            BuildTest(0xE34F4FFF);
+            AssertCode(
+               "0|L--|00100000(4): 1 instructions",
+               "1|L--|r4 = DPB(r4, 0xFFFF, 16)");
+        }
     }
 }
