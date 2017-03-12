@@ -149,6 +149,17 @@ namespace Reko.Arch.Arm
             MaybePostOperand(Src1);
         }
 
+        private void RewriteStrd()
+        {
+            var ops = instr.ArchitectureDetail.Operands;
+            var regLo = A32Registers.RegisterByCapstoneID[ops[0].RegisterValue.Value];
+            var regHi = A32Registers.RegisterByCapstoneID[ops[1].RegisterValue.Value];
+            var opSrc = frame.EnsureSequence(regHi, regLo, PrimitiveType.Word64);
+            var opDst = this.Operand(ops[2]);
+            m.Assign(opDst, opSrc);
+            MaybePostOperand(ops[2]);
+        }
+
         private void RewriteMov()
         {
             if (Dst.Type == ArmInstructionOperandType.Register && Dst.RegisterValue.Value == ArmRegister.PC)

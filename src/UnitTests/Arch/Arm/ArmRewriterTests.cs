@@ -330,5 +330,15 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r4 = __clz(r3)");
         }
+
+        [Test]
+        public void ArmRw_strd()
+        {
+            BuildTest(0xE04343F8);
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|Mem0[r3:word64] = r5_r4",
+                "2|L--|r3 = r3 + 0xFFFFFFC8");
+        }
     }
 }

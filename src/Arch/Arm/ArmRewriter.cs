@@ -256,7 +256,6 @@ namespace Reko.Arch.Arm
         case Opcode.STLH:
         case Opcode.STMDA:
         case Opcode.STRBT:
-        case Opcode.STRD:
         case Opcode.STREX:
         case Opcode.STREXB:
         case Opcode.STREXD:
@@ -517,7 +516,9 @@ namespace Reko.Arch.Arm
                 case Opcode.STMIB: RewriteStmib(); break;
                 case Opcode.STR: RewriteStr(PrimitiveType.Word32); break;
                 case Opcode.STRB: RewriteStr(PrimitiveType.Byte); break;
+                case Opcode.STRD: RewriteStrd(); break;
                 case Opcode.STRH: RewriteStr(PrimitiveType.UInt16); break;
+
                 case Opcode.SUB: RewriteBinOp(m.ISub, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.SVC: RewriteSvc(); break;
                 case Opcode.TEQ: RewriteTeq(); break;
@@ -637,7 +638,8 @@ namespace Reko.Arch.Arm
             case ArmInstructionOperandType.Memory:
                 Expression baseReg = Reg(op.MemoryValue.BaseRegister);
                 Expression ea = baseReg;
-                if (op.MemoryValue.BaseRegister == ArmRegister.PC)  // PC-relative address
+                if (op.MemoryValue.BaseRegister
+                    == ArmRegister.PC)  // PC-relative address
                 {
                     if (op.MemoryValue.Displacement != 0)
                     {
@@ -673,6 +675,7 @@ namespace Reko.Arch.Arm
             case Opcode.LDRSH: return PrimitiveType.Int16;
             case Opcode.STR: return PrimitiveType.Word32;
             case Opcode.STRB: return PrimitiveType.Byte;
+            case Opcode.STRD: return PrimitiveType.Word64;
             case Opcode.STRH: return PrimitiveType.Word16;
             }
             throw new NotImplementedException(instr.Id.ToString());
