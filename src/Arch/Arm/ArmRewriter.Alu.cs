@@ -160,6 +160,19 @@ namespace Reko.Arch.Arm
             MaybePostOperand(ops[2]);
         }
 
+        private void RewriteMla()
+        {
+            var opDst = this.Operand(Dst);
+            var opSrc1 = this.Operand(Src1);
+            var opSrc2 = this.Operand(Src2);
+            var opSrc3 = this.Operand(Src3);
+            ConditionalAssign(opDst, m.IAdd(m.IMul(opSrc1, opSrc2), opSrc3));
+            if (instr.ArchitectureDetail.UpdateFlags)
+            {
+                ConditionalAssign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "SZCO", PrimitiveType.Byte), m.Cond(opDst));
+            }
+        }
+
         private void RewriteMov()
         {
             if (Dst.Type == ArmInstructionOperandType.Register && Dst.RegisterValue.Value == ArmRegister.PC)

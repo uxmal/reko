@@ -56,6 +56,7 @@ namespace Reko.Arch.Arm
         public ArmInstructionOperand Dst { get { return ops[0]; } }
         public ArmInstructionOperand Src1 { get { return ops[1]; } }
         public ArmInstructionOperand Src2 { get { return ops[2]; } }
+        public ArmInstructionOperand Src3 { get { return ops[3]; } }
 
         private IEnumerator<Arm32Instruction> CreateInstructionStream(EndianImageReader rdr)
         {
@@ -140,7 +141,6 @@ namespace Reko.Arch.Arm
         case Opcode.MCR2:
         case Opcode.MCRR:
         case Opcode.MCRR2:
-        case Opcode.MLA:
         case Opcode.MLS:
         case Opcode.MRC:
         case Opcode.MRC2:
@@ -148,7 +148,6 @@ namespace Reko.Arch.Arm
         case Opcode.MRRC2:
         case Opcode.MRS:
         case Opcode.MSR:
-        case Opcode.MUL:
         case Opcode.PKHBT:
         case Opcode.PKHTB:
         case Opcode.PLDW:
@@ -503,9 +502,11 @@ namespace Reko.Arch.Arm
                 case Opcode.LDM: RewriteLdm(); break;
                 case Opcode.LDMDB: RewriteLdm(); break;
                 case Opcode.NOP: m.Nop(); break;
+                case Opcode.MLA: RewriteMla(); break;
                 case Opcode.MOV: RewriteMov(); break;
                 case Opcode.MOVT: RewriteMovt(); break;
                 case Opcode.MOVW: RewriteMov(); break;
+                case Opcode.MUL: RewriteBinOp(m.IMul, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.MVN: RewriteUnaryOp(Operator.Not); break;
                 case Opcode.ORR: RewriteBinOp(m.Or, false); break;
                 case Opcode.POP: RewritePop(); break;

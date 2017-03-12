@@ -340,5 +340,25 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|Mem0[r3:word64] = r5_r4",
                 "2|L--|r3 = r3 + 0xFFFFFFC8");
         }
+
+        [Test]
+        public void ArmRw_muls()
+        {
+            BuildTest(0xE0120A94);
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r2 = r4 * r10",
+                "2|L--|SZCO = cond(r2)");
+        }
+
+        [Test]
+        public void ArmRw_mlas()
+        {
+            BuildTest(0xE0314392);
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r1 = r2 * r3 + r4",
+                "2|L--|SZCO = cond(r1)");
+        }
     }
 }
