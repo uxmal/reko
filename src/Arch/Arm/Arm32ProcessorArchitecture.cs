@@ -150,7 +150,10 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            throw new NotImplementedException();
+            if (offset == 0 || (ulong) width != reg.BitSize)
+                return null;
+            else
+                return reg;
         }
 
         public override Address MakeAddressFromConstant(Constant c)

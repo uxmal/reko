@@ -575,7 +575,15 @@ namespace Reko.Arch.Arm
                 else
                 {
                     ric.Class = RtlClass.ConditionalTransfer;
-                    m.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), (Address) dst, RtlClass.ConditionalTransfer);
+                    var addr = dst as Address;
+                    if (addr != null)
+                    {
+                        m.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), addr, RtlClass.ConditionalTransfer);
+                    }
+                    else
+                    {
+                        m.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlGoto(dst, RtlClass.ConditionalTransfer));
+                    }
                 }
             }
         }
@@ -647,8 +655,11 @@ namespace Reko.Arch.Arm
             {
             case Opcode.LDR: return PrimitiveType.Word32;
             case Opcode.LDRB: return PrimitiveType.Byte;
+            case Opcode.LDRH: return PrimitiveType.Word16;
             case Opcode.LDRSB: return PrimitiveType.SByte;
             case Opcode.STR: return PrimitiveType.Word32;
+            case Opcode.STRB: return PrimitiveType.Byte;
+            case Opcode.STRH: return PrimitiveType.Word16;
             }
             throw new NotImplementedException(instr.Id.ToString());
         }

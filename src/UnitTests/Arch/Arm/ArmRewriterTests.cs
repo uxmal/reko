@@ -278,7 +278,16 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xE6EF2471);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = (byte) (r1 >>u 8)");
+                "1|L--|r2 = (byte) (r1 >>u 0x08)");
+        }
+
+        [Test]
+        public void ArmRw_bxuge()
+        {
+            BuildTest(0x212FFF1E);
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (Test(UGE,C)) goto lr");
         }
     }
 }

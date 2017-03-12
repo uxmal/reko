@@ -226,7 +226,20 @@ namespace Reko.Arch.Arm
 
         private void RewriteStmib()
         {
-            throw new NotImplementedException();
+            var dst = this.Operand(Dst);
+            var range = instr.ArchitectureDetail.Operands.Skip(1);
+            int offset = 4;
+            foreach (var r in range)
+            {
+                Expression ea = m.IAdd(dst, Constant.Int32( offset));
+                var srcReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.RegisterValue.Value]);
+                m.Assign(m.LoadDw(ea), srcReg);
+                offset += 4;
+            }
+            if (offset != 4 && instr.ArchitectureDetail.WriteBack)
+            {
+                m.Assign(dst, m.IAdd(dst, Constant.Int32(offset)));
+            }
 #if NYI
             var dst = frame.EnsureRegister(((RegisterOperand)Dst).Register);
             var range = (RegisterRangeOperand)Src1;
