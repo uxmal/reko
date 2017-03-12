@@ -321,5 +321,14 @@ namespace Reko.UnitTests.Arch.Arm
                 "3|L--|r3 = Mem0[sp + 4:word32]",
                 "4|L--|sp = sp + 8");
         }
+
+        [Test]
+        public void ArmRw_clz()
+        {
+            BuildTest(0xE16F4F13);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = __clz(r3)");
+        }
     }
 }

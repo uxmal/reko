@@ -76,6 +76,16 @@ namespace Reko.Arch.Arm
             ConditionalAssign(opDst, m.And(opSrc1, m.Comp(opSrc2)));
         }
 
+        private void RewriteClz()
+        {
+            var opDst = this.Operand(Dst);
+            var opSrc = this.Operand(Src1);
+
+            ConditionalAssign(
+                opDst,
+                host.PseudoProcedure("__clz", PrimitiveType.Int32, opSrc));
+        }
+
         private void RewriteCmn()
         {
             var opDst = this.Operand(Dst);

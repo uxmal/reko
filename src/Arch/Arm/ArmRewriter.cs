@@ -94,7 +94,6 @@ namespace Reko.Arch.Arm
         case Opcode.CDP:
         case Opcode.CDP2:
         case Opcode.CLREX:
-        case Opcode.CLZ:
         case Opcode.CPS:
         case Opcode.CRC32B:
         case Opcode.CRC32CB:
@@ -494,6 +493,7 @@ namespace Reko.Arch.Arm
                 case Opcode.BL: RewriteB(true); break;
                 case Opcode.BLX: RewriteB(true); break;
                 case Opcode.BX: RewriteB(false); break;
+                case Opcode.CLZ: RewriteClz(); break;
                 case Opcode.CMN: RewriteCmn(); break;
                 case Opcode.CMP: RewriteCmp(); break;
                 case Opcode.LDR: RewriteLdr(PrimitiveType.Word32); break;
@@ -670,6 +670,7 @@ namespace Reko.Arch.Arm
             case Opcode.LDRB: return PrimitiveType.Byte;
             case Opcode.LDRH: return PrimitiveType.Word16;
             case Opcode.LDRSB: return PrimitiveType.SByte;
+            case Opcode.LDRSH: return PrimitiveType.Int16;
             case Opcode.STR: return PrimitiveType.Word32;
             case Opcode.STRB: return PrimitiveType.Byte;
             case Opcode.STRH: return PrimitiveType.Word16;
