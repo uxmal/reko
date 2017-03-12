@@ -267,5 +267,14 @@ namespace Reko.UnitTests.Arch.Arm
                "0|L--|00100000(4): 1 instructions",
                "1|L--|r4 = 0x0000FFFF");
         }
+
+        [Test]
+        public void ArmRw_uxtb()
+        {
+            BuildTest(0xE6EF2071);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = (byte) r1");
+        }
     }
 }
