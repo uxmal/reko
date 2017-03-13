@@ -201,7 +201,10 @@ namespace Reko.Scanning
 
         public Expression VisitDepositBits(DepositBits d)
         {
-            throw new NotImplementedException();
+            return new DepositBits(
+                d.Source.Accept(this),
+                d.InsertedBits.Accept(this),
+                d.BitPosition);
         }
 
         public Expression VisitDereference(Dereference deref)

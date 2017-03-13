@@ -460,9 +460,10 @@ means
             //04 0B E3 EC
             BuildTest(0xECF20B04);
             AssertCode(
-                "0|L--|00100000(4): 2 instructions",
+                "0|L--|00100000(4): 3 instructions",
                 "1|L--|d16 = Mem0[r2:word64]",
-                "2|L--|d17 = Mem0[r2 + 8:word64]");
+                "2|L--|d17 = Mem0[r2 + 8:word64]",
+                "3|L--|r2 = r2 + 16");
         }
 
         [Test]
@@ -510,6 +511,17 @@ means
             AssertCode(
                "0|L--|00100000(4): 2 instructions",
                "1|L--|r2 = r2 - r2 - C");
+        }
+
+        [Test]
+        public void ArmRw_vstmia()
+        {
+            BuildTest(0xECE30B04);  // vstmia r3, d16, d17
+            AssertCode(
+               "0|L--|00100000(4): 3 instructions",
+               "1|L--|Mem0[r3:word64] = d16",
+               "2|L--|Mem0[r3 + 8:word64] = d17",
+               "3|L--|r3 = r3 + 16");
         }
     }
 }

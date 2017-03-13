@@ -419,7 +419,6 @@ namespace Reko.Arch.Arm
         case Opcode.VST3:
         case Opcode.VST4:
         case Opcode.VSTMDB:
-        case Opcode.VSTMIA:
         case Opcode.VSTR:
         case Opcode.VSUB:
         case Opcode.VSUBHN:
@@ -525,6 +524,8 @@ namespace Reko.Arch.Arm
 
                 case Opcode.VLDMIA: RewriteVldmia(); break;
                 case Opcode.VMOV: RewriteVmov(); break;
+                case Opcode.VSTMIA: RewriteVstmia(); break;
+
                 }
                 yield return ric;
             }

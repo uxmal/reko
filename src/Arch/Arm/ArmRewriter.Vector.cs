@@ -47,7 +47,7 @@ namespace Reko.Arch.Arm
                 m.Assign(dst, m.Load(dst.DataType, ea));
                     offset += dst.DataType.Size;
             }
-            if (instr.ArchitectureDetail.UpdateFlags)
+            if (instr.ArchitectureDetail.WriteBack)
             {
                 m.Assign(rSrc, m.IAdd(rSrc, Constant.Int32(offset)));
             }
@@ -61,6 +61,28 @@ namespace Reko.Arch.Arm
             var fname = "__vmov_" + VectorElementType();
             m.Assign(dst,
                 host.PseudoProcedure(fname, dst.DataType, src));
+        }
+
+        private void RewriteVstmia()
+        {
+            ConditionalSkip();
+
+            var rSrc = this.Operand(Dst);
+            var offset = 0;
+            foreach (var r in instr.ArchitectureDetail.Operands.Skip(1))
+            {
+                var dst = this.Operand(r);
+                Expression ea =
+                    offset != 0
+                        ? m.IAdd(rSrc, Constant.Int32(offset))
+                        : rSrc;
+                m.Assign(m.Load(dst.DataType, ea), dst);
+                offset += dst.DataType.Size;
+            }
+            if (instr.ArchitectureDetail.WriteBack)
+            {
+                m.Assign(rSrc, m.IAdd(rSrc, Constant.Int32(offset)));
+            }
         }
 
         private string VectorElementType()
