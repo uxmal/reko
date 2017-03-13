@@ -42,7 +42,7 @@ namespace Reko.Arch.Arm
             var lsb = instr.ArchitectureDetail.Operands[2].ImmediateValue.Value;
             var bitsize = instr.ArchitectureDetail.Operands[3].ImmediateValue.Value;
             ConditionalSkip();
-            m.Assign(tmp, m.And(opSrc, Bits.Mask(0, bitsize)));
+            m.Assign(tmp, m.Slice(opSrc, 0, bitsize));
             m.Assign(opDst, m.Dpb(opDst, tmp, lsb));
         }
 
@@ -353,7 +353,7 @@ namespace Reko.Arch.Arm
             ConditionalAssign(dst, src);
         }
 
-        private void RewriteUxtb()
+        private void RewriteXtb(DataType dt)
         {
             var dst = this.Operand(Dst);
             Expression src = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[Src1.RegisterValue.Value]);
@@ -361,9 +361,8 @@ namespace Reko.Arch.Arm
             {
                 src = m.Shr(src, Src1.Shifter.Value);
             }
-            src = m.Cast(PrimitiveType.Byte, src);
+            src = m.Cast(dt, src);
             ConditionalAssign(dst, src);
         }
-
     }
 }

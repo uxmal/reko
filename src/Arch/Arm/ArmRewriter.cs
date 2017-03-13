@@ -264,7 +264,6 @@ namespace Reko.Arch.Arm
         case Opcode.SXTAB:
         case Opcode.SXTAB16:
         case Opcode.SXTAH:
-        case Opcode.SXTB:
         case Opcode.SXTB16:
         case Opcode.SXTH:
         case Opcode.TRAP:
@@ -518,13 +517,13 @@ namespace Reko.Arch.Arm
                 case Opcode.STRB: RewriteStr(PrimitiveType.Byte); break;
                 case Opcode.STRD: RewriteStrd(); break;
                 case Opcode.STRH: RewriteStr(PrimitiveType.UInt16); break;
-
                 case Opcode.SUB: RewriteBinOp(m.ISub, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.SVC: RewriteSvc(); break;
+                case Opcode.SXTB: RewriteXtb(PrimitiveType.SByte); break;
                 case Opcode.TEQ: RewriteTeq(); break;
                 case Opcode.TST: RewriteTst(); break;
                 case Opcode.UBFX: RewriteUbfx(); break;
-                case Opcode.UXTB: RewriteUxtb(); break;
+                case Opcode.UXTB: RewriteXtb(PrimitiveType.Byte); break;
 
                 }
                 yield return ric;
