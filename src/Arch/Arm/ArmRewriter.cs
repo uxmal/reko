@@ -298,7 +298,6 @@ namespace Reko.Arch.Arm
         case Opcode.UXTAB16:
         case Opcode.UXTAH:
         case Opcode.UXTB16:
-        case Opcode.UXTH:
         case Opcode.VABAL:
         case Opcode.VABA:
         case Opcode.VABDL:
@@ -524,6 +523,7 @@ namespace Reko.Arch.Arm
                 case Opcode.TST: RewriteTst(); break;
                 case Opcode.UBFX: RewriteUbfx(); break;
                 case Opcode.UXTB: RewriteXtb(PrimitiveType.Byte); break;
+                case Opcode.UXTH: RewriteXtb(PrimitiveType.UInt16); break;
 
                 }
                 yield return ric;

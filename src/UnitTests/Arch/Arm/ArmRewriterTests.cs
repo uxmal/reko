@@ -424,5 +424,15 @@ means
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r1 = (int8) (r2 >>u 0x08)");
         }
+
+
+        [Test]
+        public void ArmRw_uxth()
+        {
+            BuildTest(0xE6FF1472);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = (uint16) (r2 >>u 0x08)");
+        }
     }
 }
