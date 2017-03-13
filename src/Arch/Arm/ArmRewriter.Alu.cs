@@ -341,6 +341,16 @@ namespace Reko.Arch.Arm
 #endif
         }
 
+        private void RewriteUbfx()
+        {
+            var dst = this.Operand(Dst);
+            var src = m.Slice(
+                this.Operand(Src1),
+                Src2.ImmediateValue.Value,
+                Src3.ImmediateValue.Value);
+            ConditionalAssign(dst, src);
+        }
+
         private void RewriteUxtb()
         {
             var dst = this.Operand(Dst);

@@ -406,5 +406,14 @@ means
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3_r2 = Mem0[r7 + 40:word64]");
         }
+
+        [Test]
+        public void ArmRw_ubfx()
+        {
+            BuildTest(0xE7F01252);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3_r2 = Mem0[r7 + 40:word64]");
+        }
     }
 }

@@ -519,6 +519,12 @@ namespace Reko.Core.Expressions
             return new Slice(primitiveType, value, bitOffset);
         }
 
+        public Slice Slice(Expression value, int bitOffset, int bitlength)
+        {
+            var type = PrimitiveType.CreateBitSlice(bitlength);
+            return new Slice(type, value, (uint)bitOffset);
+        }
+
         public TestCondition Test(ConditionCode cc, Expression expr)
         {
             return new TestCondition(cc, expr);

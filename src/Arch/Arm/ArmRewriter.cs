@@ -271,7 +271,6 @@ namespace Reko.Arch.Arm
         case Opcode.UADD16:
         case Opcode.UADD8:
         case Opcode.UASX:
-        case Opcode.UBFX:
         case Opcode.UDF:
         case Opcode.UDIV:
         case Opcode.UHADD16:
@@ -524,6 +523,7 @@ namespace Reko.Arch.Arm
                 case Opcode.SVC: RewriteSvc(); break;
                 case Opcode.TEQ: RewriteTeq(); break;
                 case Opcode.TST: RewriteTst(); break;
+                case Opcode.UBFX: RewriteUbfx(); break;
                 case Opcode.UXTB: RewriteUxtb(); break;
 
                 }
