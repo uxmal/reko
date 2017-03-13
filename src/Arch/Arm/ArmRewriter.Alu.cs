@@ -344,10 +344,12 @@ namespace Reko.Arch.Arm
         private void RewriteUbfx()
         {
             var dst = this.Operand(Dst);
-            var src = m.Slice(
-                this.Operand(Src1),
-                Src2.ImmediateValue.Value,
-                Src3.ImmediateValue.Value);
+            var src = m.Cast(
+                PrimitiveType.UInt32,
+                m.Slice(
+                    this.Operand(Src1),
+                    Src2.ImmediateValue.Value,
+                    Src3.ImmediateValue.Value));
             ConditionalAssign(dst, src);
         }
 
