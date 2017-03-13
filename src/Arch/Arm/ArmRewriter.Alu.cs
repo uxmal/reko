@@ -263,6 +263,22 @@ namespace Reko.Arch.Arm
             }
         }
 
+        private void RewriteMull(PrimitiveType dtResult, Func<Expression, Expression, Expression> op)
+        {
+            var ops = instr.ArchitectureDetail.Operands;
+            var regLo = A32Registers.RegisterByCapstoneID[ops[0].RegisterValue.Value];
+            var regHi = A32Registers.RegisterByCapstoneID[ops[1].RegisterValue.Value];
+
+            var opDst = frame.EnsureSequence(regHi, regLo, dtResult);
+            var opSrc1 = this.Operand(Src3);
+            var opSrc2 = this.Operand(Src2);
+            ConditionalAssign(opDst, op(opSrc1, opSrc2));
+            if (instr.ArchitectureDetail.UpdateFlags)
+            {
+                ConditionalAssign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "SZCO", PrimitiveType.Byte), m.Cond(opDst));
+            }
+        }
+
         private void RewritePop()
         {
             var sp = frame.EnsureRegister(A32Registers.sp);

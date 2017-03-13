@@ -224,7 +224,6 @@ namespace Reko.Arch.Arm
         case Opcode.SMUADX:
         case Opcode.SMULBB:
         case Opcode.SMULBT:
-        case Opcode.SMULL:
         case Opcode.SMULTB:
         case Opcode.SMULTT:
         case Opcode.SMULWB:
@@ -265,7 +264,6 @@ namespace Reko.Arch.Arm
         case Opcode.SXTAB16:
         case Opcode.SXTAH:
         case Opcode.SXTB16:
-        case Opcode.SXTH:
         case Opcode.TRAP:
         case Opcode.UADD16:
         case Opcode.UADD8:
@@ -280,7 +278,6 @@ namespace Reko.Arch.Arm
         case Opcode.UHSUB8:
         case Opcode.UMAAL:
         case Opcode.UMLAL:
-        case Opcode.UMULL:
         case Opcode.UQADD16:
         case Opcode.UQADD8:
         case Opcode.UQASX:
@@ -509,6 +506,7 @@ namespace Reko.Arch.Arm
                 case Opcode.POP: RewritePop(); break;
                 case Opcode.PUSH: RewritePush(); break;
                 case Opcode.RSB: RewriteRevBinOp(Operator.ISub, instr.ArchitectureDetail.UpdateFlags); break;
+                case Opcode.SMULL: RewriteMull(PrimitiveType.Int64, m.SMul); break;
                 case Opcode.STM: RewriteStm(); break;
                 case Opcode.STMDB: RewriteStm(); break;
                 case Opcode.STMIB: RewriteStmib(); break;
@@ -519,12 +517,13 @@ namespace Reko.Arch.Arm
                 case Opcode.SUB: RewriteBinOp(m.ISub, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.SVC: RewriteSvc(); break;
                 case Opcode.SXTB: RewriteXtb(PrimitiveType.SByte); break;
+                case Opcode.SXTH: RewriteXtb(PrimitiveType.Int16); break;
                 case Opcode.TEQ: RewriteTeq(); break;
                 case Opcode.TST: RewriteTst(); break;
                 case Opcode.UBFX: RewriteUbfx(); break;
+                case Opcode.UMULL: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
                 case Opcode.UXTB: RewriteXtb(PrimitiveType.Byte); break;
                 case Opcode.UXTH: RewriteXtb(PrimitiveType.UInt16); break;
-
                 }
                 yield return ric;
             }

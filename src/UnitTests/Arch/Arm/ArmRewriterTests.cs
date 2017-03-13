@@ -425,7 +425,6 @@ means
                 "1|L--|r1 = (int8) (r2 >>u 0x08)");
         }
 
-
         [Test]
         public void ArmRw_uxth()
         {
@@ -433,6 +432,16 @@ means
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r1 = (uint16) (r2 >>u 0x08)");
+        }
+
+        [Test]
+        public void ArmRw_umull()
+        {
+            BuildTest(0xE0912394);
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r1_r2 = r3 *u r4",
+                "2|L--|SZCO = cond(r1_r2)");
         }
     }
 }
