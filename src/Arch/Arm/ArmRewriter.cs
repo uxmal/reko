@@ -139,7 +139,6 @@ namespace Reko.Arch.Arm
         case Opcode.MCR2:
         case Opcode.MCRR:
         case Opcode.MCRR2:
-        case Opcode.MLS:
         case Opcode.MRC:
         case Opcode.MRC2:
         case Opcode.MRRC:
@@ -343,7 +342,6 @@ namespace Reko.Arch.Arm
         case Opcode.VLD3:
         case Opcode.VLD4:
         case Opcode.VLDMDB:
-        case Opcode.VLDMIA:
         case Opcode.VLDR:
         case Opcode.VMAXNM:
         case Opcode.VMAX:
@@ -496,7 +494,8 @@ namespace Reko.Arch.Arm
                 case Opcode.LDM: RewriteLdm(); break;
                 case Opcode.LDMDB: RewriteLdm(); break;
                 case Opcode.NOP: m.Nop(); break;
-                case Opcode.MLA: RewriteMla(); break;
+                case Opcode.MLA: RewriteMultiplyAccumulate(m.IAdd); break;
+                case Opcode.MLS: RewriteMultiplyAccumulate(m.ISub); break;
                 case Opcode.MOV: RewriteMov(); break;
                 case Opcode.MOVT: RewriteMovt(); break;
                 case Opcode.MOVW: RewriteMov(); break;
@@ -524,6 +523,9 @@ namespace Reko.Arch.Arm
                 case Opcode.UMULL: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
                 case Opcode.UXTB: RewriteXtb(PrimitiveType.Byte); break;
                 case Opcode.UXTH: RewriteXtb(PrimitiveType.UInt16); break;
+
+                case Opcode.VLDMIA: RewriteVldmia(); break;
+
                 }
                 yield return ric;
             }

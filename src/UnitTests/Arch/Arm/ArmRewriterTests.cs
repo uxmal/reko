@@ -357,7 +357,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xE0314392);
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r1 = r2 * r3 + r4",
+                "1|L--|r1 = r4 + r2 * r3",
                 "2|L--|SZCO = cond(r1)");
         }
 
@@ -442,6 +442,27 @@ means
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r1_r2 = r3 *u r4",
                 "2|L--|SZCO = cond(r1_r2)");
+        }
+
+        [Test]
+        public void ArmRw_mls()
+        {
+            BuildTest(0xE0612394);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = r2 - r4 * r3");
+        }
+
+        [Test]
+        public void ArmRw_vldmia()
+        {
+//04 0B F2 EC
+//04 0B E3 EC
+            BuildTest(0xECF20B04);
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|d16 = Mem0[r2:word64]",
+                "2|L--|d17 = Mem0[r2 + 8:word64]");
         }
     }
 }
