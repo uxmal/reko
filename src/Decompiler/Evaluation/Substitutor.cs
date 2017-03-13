@@ -185,7 +185,10 @@ namespace Reko.Evaluation
 
         public Expression VisitSlice(Slice slice)
         {
-            throw new NotImplementedException();
+            var exp = slice.Expression.Accept(this);
+            if (exp == Constant.Invalid)
+                return exp;
+            return new Slice(slice.DataType, exp, slice.Offset);
         }
 
         public Expression VisitTestCondition(TestCondition tc)

@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Arch.Arm
         private void BuildTest(params string[] bitStrings)
         {
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
-                .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
+                .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
                 .ToArray();
             image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
         }
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Arch.Arm
         private void BuildTest(params uint[] words)
         {
             var bytes = words
-                .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
+                .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
                 .ToArray();
             image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
         }
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r1 = r2 + r3",
-                "2|L--|SZCO = cond(r1)");
+                "2|L--|NZCV = cond(r1)");
         }
 
         [Test]
@@ -257,6 +257,271 @@ namespace Reko.UnitTests.Arch.Arm
                "1|L--|Mem0[sp:word32] = r4",
                "2|L--|Mem0[sp - 0x00000004:word32] = lr",
                "3|L--|sp = sp - 0x00000008");
+        }
+
+        [Test]
+        public void ArmRw_movw()
+        {
+            BuildTest(0xE30F4FFF);
+            AssertCode(
+               "0|L--|00100000(4): 1 instructions",
+               "1|L--|r4 = 0x0000FFFF");
+        }
+
+        [Test]
+        public void ArmRw_uxtb()
+        {
+            BuildTest(0xE6EF2071);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = (byte) r1");
+            BuildTest(0xE6EF2471);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = (byte) (r1 >>u 0x08)");
+        }
+
+        [Test]
+        public void ArmRw_bxuge()
+        {
+            BuildTest(0x212FFF1E);
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (Test(UGE,C)) goto lr");
+        }
+
+        [Test]
+        public void ArmRw_movt()
+        {
+            BuildTest(0xE34F4FFF);
+            AssertCode(
+               "0|L--|00100000(4): 1 instructions",
+               "1|L--|r4 = DPB(r4, 0xFFFF, 16)");
+        }
+
+        [Test]
+        public void ArmRw_pop()
+        {
+            BuildTest(0xE8BD000C);
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|r2 = Mem0[sp:word32]",
+                "2|L--|r3 = Mem0[sp + 4:word32]",
+                "3|L--|sp = sp + 8");
+        }
+
+        [Test]
+        public void ArmRw_popne()
+        {
+            BuildTest(0x18BD000C);
+            AssertCode(
+                "0|L--|00100000(4): 4 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 00100004",
+                "2|L--|r2 = Mem0[sp:word32]",
+                "3|L--|r3 = Mem0[sp + 4:word32]",
+                "4|L--|sp = sp + 8");
+        }
+
+        [Test]
+        public void ArmRw_clz()
+        {
+            BuildTest(0xE16F4F13);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = __clz(r3)");
+        }
+
+        [Test]
+        public void ArmRw_strd()
+        {
+            BuildTest(0xE04343F8);
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|Mem0[r3:word64] = r5_r4",
+                "2|L--|r3 = r3 + 0xFFFFFFC8");
+        }
+
+        [Test]
+        public void ArmRw_muls()
+        {
+            BuildTest(0xE0120A94);
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r2 = r4 * r10",
+                "2|L--|NZCV = cond(r2)");
+        }
+
+        [Test]
+        public void ArmRw_mlas()
+        {
+            BuildTest(0xE0314392);
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r1 = r4 + r2 * r3",
+                "2|L--|NZCV = cond(r1)");
+        }
+
+        [Test]
+        public void ArmRw_bfi()
+        {
+            BuildTest(0xE7CD1292);
+            AssertCode(
+               "0|L--|00100000(4): 2 instructions",
+               "1|L--|v4 = SLICE(r2, ui9, 0)",
+               "2|L--|r1 = DPB(r1, v4, 5)");
+        }
+
+        /*
+        MOV             R2, R0,LSR#8
+        MOV             R3, #0
+        AND             R0, R0, #0xF
+        BFI             R3, R2, #0, #8
+        SUB             SP, SP, #8
+        BFI             R3, R0, #8, #8
+        MOV             R0, R3
+        ADD             SP, SP, #8
+        BX              LR
+        int __fastcall AUDIO_ConvertVolumeValue(unsigned __int16 a1)
+        {
+          return (a1 >> 8) | ((a1 & 0xF) << 8);
+        }
+
+        MOV             R3, #0
+MOV             R1, #0xD
+MOV             R0, R3
+BFI             R0, R1, #0, #8
+BFI             R0, R3, #8, #8
+BFI             R0, R2, #0x10, #8
+ADD             SP, SP, #8
+BX              LR
+means
+  return (v3 << 16) | 0xD;
+         */
+
+        [Test]
+        public void ArmRw_ldrd()
+        {
+            BuildTest(0xE1C722D8);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3_r2 = Mem0[r7 + 40:word64]");
+        }
+
+        [Test]
+        public void ArmRw_ubfx()
+        {
+            BuildTest(0xE7F01252);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = (uint32) SLICE(r2, ui17, 4)");
+        }
+
+        [Test]
+        public void ArmRw_sxtb()
+        {
+            BuildTest(0xE6AF1472);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = (int8) (r2 >>u 0x08)");
+        }
+
+        [Test]
+        public void ArmRw_uxth()
+        {
+            BuildTest(0xE6FF1472);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = (uint16) (r2 >>u 0x08)");
+        }
+
+        [Test]
+        public void ArmRw_umull()
+        {
+            BuildTest(0xE0912394);
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r1_r2 = r3 *u r4",
+                "2|L--|NZCV = cond(r1_r2)");
+        }
+
+        [Test]
+        public void ArmRw_mls()
+        {
+            BuildTest(0xE0612394);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = r2 - r4 * r3");
+        }
+
+        [Test]
+        public void ArmRw_vldmia()
+        {
+            //04 0B F2 EC
+            //04 0B E3 EC
+            BuildTest(0xECF20B04);
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|d16 = Mem0[r2:word64]",
+                "2|L--|d17 = Mem0[r2 + 8:word64]",
+                "3|L--|r2 = r2 + 16");
+        }
+
+        [Test]
+        public void ArmRw_ldmib()
+        {
+            BuildTest(0xE9950480); // ldmibr5, r7, r10
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r7 = Mem0[r5 + 4:word32]",
+                "2|L--|r10 = Mem0[r5 + 8:word32]");
+        }
+
+        [Test]
+        public void ArmRw_rev()
+        {
+            BuildTest(0xE6BF2F32); // rev r2,r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = __rev(r2)");
+        }
+
+        [Test]
+        public void ArmRw_vmov_i32()
+        {
+            //  51 00 C0 F2 vmov.i32 q8,#0
+            BuildTest(0xF2C00051); // rev r2,r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q8 = __vmov_i32(0x00000001)");
+        }
+
+        [Test]
+        public void ArmRw_adc()
+        {
+            BuildTest(0xE0A22002); // adc r2,r2,r2
+            AssertCode(
+               "0|L--|00100000(4): 2 instructions",
+               "1|L--|r2 = r2 + r2 + C");
+        }
+
+        [Test]
+        public void ArmRw_sbc()
+        {
+            BuildTest(0xE0C22002); // sbc r2,r2,r2
+            AssertCode(
+               "0|L--|00100000(4): 2 instructions",
+               "1|L--|r2 = r2 - r2 - C");
+        }
+
+        [Test]
+        public void ArmRw_vstmia()
+        {
+            BuildTest(0xECE30B04);  // vstmia r3, d16, d17
+            AssertCode(
+               "0|L--|00100000(4): 3 instructions",
+               "1|L--|Mem0[r3:word64] = d16",
+               "2|L--|Mem0[r3 + 8:word64] = d17",
+               "3|L--|r3 = r3 + 16");
         }
     }
 }

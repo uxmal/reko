@@ -7,6 +7,8 @@ struct timespec
 	long	tv_sec;
 	long	tv_nsec;
 };
+typedef unsigned int size_t;
+typedef unsigned long long off_t;
 typedef int clockid_t;
 typedef long time_t;
 typedef void * va_list;	
@@ -25,12 +27,15 @@ struct passwd {
 struct stat
 {
 };
+
 int __libc_start_main(int (*main) (int, char **, char **), int argc, char ** ubp_av, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end));
 int scanf(char * format, ...);
 int __isoc99_scanf(char * format, ...);
 int printf(char * format, ...);
 int sprintf(char * buffer, char * format, ...);
 void free(void * p);
+
+void __assert_fail(const char * assertion, const char * file, unsigned int line, const char * function);
 
 
 int getpagesize(void);

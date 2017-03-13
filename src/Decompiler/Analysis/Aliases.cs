@@ -243,7 +243,7 @@ namespace Reko.Analysis
 				}
 				else
 				{
-					aliasExpr = new Slice(varTo.DataType, varFrom, (uint) offsetFrom);
+					aliasExpr = new Slice(varTo.DataType, varFrom, offsetFrom);
 				}
 			}
 			else

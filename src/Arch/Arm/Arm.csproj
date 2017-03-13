@@ -85,6 +85,7 @@
     <Compile Include="ArmProcessorState.cs" />
     <Compile Include="ArmRewriter.Alu.cs" />
     <Compile Include="ArmRewriter.cs" />
+    <Compile Include="ArmRewriter.Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="A32Registers.cs" />
     <Compile Include="RegisterRangeOperand.cs" />

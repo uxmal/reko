@@ -51,6 +51,11 @@ namespace Reko.Core.Lib
             return r;
         }
 
+        public static ulong Mask(int lsb, int bitsize)
+        {
+            return ((1ul << bitsize) - 1) << lsb;
+        }
+
         public static int BitCount(ulong u)
         {
             u = u - ((u >> 1) & 0x5555555555555555UL);
