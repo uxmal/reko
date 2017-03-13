@@ -456,13 +456,23 @@ means
         [Test]
         public void ArmRw_vldmia()
         {
-//04 0B F2 EC
-//04 0B E3 EC
+            //04 0B F2 EC
+            //04 0B E3 EC
             BuildTest(0xECF20B04);
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|d16 = Mem0[r2:word64]",
                 "2|L--|d17 = Mem0[r2 + 8:word64]");
+        }
+
+        [Test]
+        public void ArmRw_ldmib()
+        {
+            BuildTest(0xE9950480); // ldmibr5, r7, r10
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r7 = Mem0[r5 + 4:word32]",
+                "2|L--|r10 = Mem0[r5 + 8:word32]");
         }
     }
 }

@@ -225,17 +225,16 @@ namespace Reko.Arch.Arm
             ConditionalAssign(opDst, opSrc);
         }
 
-        private void RewriteLdm()
+        private void RewriteLdm(int initialOffset)
         {
             var dst = this.Operand(Dst);
             var range = instr.ArchitectureDetail.Operands.Skip(1);
-            RewriteLdm(dst, range, instr.ArchitectureDetail.WriteBack);
+            RewriteLdm(dst, range, initialOffset, instr.ArchitectureDetail.WriteBack);
         }
 
-        private void RewriteLdm(Expression dst, IEnumerable<ArmInstructionOperand> range, bool writeback)
+        private void RewriteLdm(Expression dst, IEnumerable<ArmInstructionOperand> range, int offset, bool writeback)
         {
             ConditionalSkip();
-            int offset = 0;
             bool pcRestored = false;
             foreach (var r in range)
             {
@@ -282,7 +281,7 @@ namespace Reko.Arch.Arm
         private void RewritePop()
         {
             var sp = frame.EnsureRegister(A32Registers.sp);
-            RewriteLdm(sp, instr.ArchitectureDetail.Operands, true);
+            RewriteLdm(sp, instr.ArchitectureDetail.Operands, 0, true);
         }
 
         private void RewritePush()

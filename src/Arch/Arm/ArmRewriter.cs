@@ -125,7 +125,6 @@ namespace Reko.Arch.Arm
         case Opcode.LDCL:
         case Opcode.LDC:
         case Opcode.LDMDA:
-        case Opcode.LDMIB:
         case Opcode.LDRBT:
         case Opcode.LDREX:
         case Opcode.LDREXB:
@@ -491,8 +490,9 @@ namespace Reko.Arch.Arm
                 case Opcode.LDRSB: RewriteLdr(PrimitiveType.SByte); break;
                 case Opcode.LDRSH: RewriteLdr(PrimitiveType.Int16); break;
                 case Opcode.LDRD: RewriteLdrd(); break;
-                case Opcode.LDM: RewriteLdm(); break;
-                case Opcode.LDMDB: RewriteLdm(); break;
+                case Opcode.LDM: RewriteLdm(0); break;
+                case Opcode.LDMDB: RewriteLdm(0); break;
+                case Opcode.LDMIB: RewriteLdm(4); break;
                 case Opcode.NOP: m.Nop(); break;
                 case Opcode.MLA: RewriteMultiplyAccumulate(m.IAdd); break;
                 case Opcode.MLS: RewriteMultiplyAccumulate(m.ISub); break;
