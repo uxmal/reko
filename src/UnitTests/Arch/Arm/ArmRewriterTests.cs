@@ -493,5 +493,23 @@ means
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|q8 = __vmov_i32(0x00000001)");
         }
+
+        [Test]
+        public void ArmRw_adc()
+        {
+            BuildTest(0xE0A22002); // adc r2,r2,r2
+            AssertCode(
+               "0|L--|00100000(4): 2 instructions",
+               "1|L--|r2 = r2 + r2 + C");
+        }
+
+        [Test]
+        public void ArmRw_sbc()
+        {
+            BuildTest(0xE0C22002); // sbc r2,r2,r2
+            AssertCode(
+               "0|L--|00100000(4): 2 instructions",
+               "1|L--|r2 = r2 - r2 - C");
+        }
     }
 }

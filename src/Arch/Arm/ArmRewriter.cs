@@ -82,7 +82,6 @@ namespace Reko.Arch.Arm
                 {
                 default:
                    
-        case Opcode.ADC:
         case Opcode.ADR:
         case Opcode.AESD:
         case Opcode.AESE:
@@ -169,7 +168,6 @@ namespace Reko.Arch.Arm
         case Opcode.SADD16:
         case Opcode.SADD8:
         case Opcode.SASX:
-        case Opcode.SBC:
         case Opcode.SBFX:
         case Opcode.SDIV:
         case Opcode.SEL:
@@ -470,8 +468,9 @@ namespace Reko.Arch.Arm
                     m.Invalid();
                     break;
 
-                case Opcode.AND: RewriteBinOp(m.And, instr.ArchitectureDetail.UpdateFlags); break;
+                case Opcode.ADC: RewriteAdcSbc(m.IAdd); break;
                 case Opcode.ADD: RewriteBinOp(m.IAdd, instr.ArchitectureDetail.UpdateFlags); break;
+                case Opcode.AND: RewriteBinOp(m.And, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.EOR: RewriteBinOp(m.Xor, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.B: RewriteB(false); break;
                 case Opcode.BFI: RewriteBfi(); break;
@@ -504,6 +503,7 @@ namespace Reko.Arch.Arm
                 case Opcode.PUSH: RewritePush(); break;
                 case Opcode.REV: RewriteRev(); break;
                 case Opcode.RSB: RewriteRevBinOp(Operator.ISub, instr.ArchitectureDetail.UpdateFlags); break;
+                case Opcode.SBC: RewriteAdcSbc(m.ISub); break;
                 case Opcode.SMULL: RewriteMull(PrimitiveType.Int64, m.SMul); break;
                 case Opcode.STM: RewriteStm(); break;
                 case Opcode.STMDB: RewriteStm(); break;

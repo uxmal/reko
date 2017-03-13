@@ -34,6 +34,26 @@ namespace Reko.Arch.Arm
 {
     public partial class ArmRewriter
     {
+        public void RewriteAdcSbc(Func<Expression, Expression, Expression> opr)
+        {
+            ConditionalSkip();
+            var opDst = this.Operand(Dst);
+            var opSrc1 = this.Operand(Src1);
+            var opSrc2 = this.Operand(Src2);
+            // We do not take the trouble of widening the CF to the word size
+            // to simplify code analysis in later stages. 
+            var c = frame.EnsureFlagGroup( arch.GetFlagGroup((uint)FlagM.CF));
+            ConditionalAssign(
+                opDst,
+                opr(
+                    opr(opSrc1, opSrc2),
+                    c));
+            if (instr.ArchitectureDetail.UpdateFlags)
+            {
+                m.Assign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte), m.Cond(opDst));
+            }
+        }
+
         private void RewriteBfi()
         {
             var opDst = this.Operand(Dst);
