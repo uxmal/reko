@@ -34,12 +34,12 @@ namespace Reko.Arch.Arm
     {
         private IProcessorArchitecture arch;
         private uint isValid;
-        private uint[] regData;
+        private ulong[] regData;
 
         public ArmProcessorState(IProcessorArchitecture arch)
         {
             this.arch = arch;
-            this.regData = new uint[16];
+            this.regData = new ulong[48];
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
@@ -48,14 +48,14 @@ namespace Reko.Arch.Arm
         {
             var state = new ArmProcessorState(arch);
             state.isValid = this.isValid;
-            state.regData = (uint[])regData.Clone();
+            state.regData = (ulong[])regData.Clone();
             return state;
         }
 
         public override Constant GetRegister(RegisterStorage r)
         {
             if (((isValid >> r.Number) & 1) != 0)
-                return Constant.Word32(regData[r.Number]);
+                return Constant.Create(r.DataType, regData[r.Number]);
             else
                 return Constant.Invalid;
         }

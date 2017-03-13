@@ -50,6 +50,7 @@ namespace Reko.Arch.Arm
 
         public static readonly RegisterStorage[] GpRegs;
 
+        public static readonly FlagRegister fpscr = new FlagRegister("fpscr", 30, PrimitiveType.Word32);
         public static readonly FlagRegister cpsr = new FlagRegister("cpsr", 31, PrimitiveType.Word32);
 
         public static readonly RegisterStorage q0 =  new RegisterStorage("q0" , 32, 0, PrimitiveType.Word128) ;
@@ -262,6 +263,8 @@ namespace Reko.Arch.Arm
                   { ArmRegister.S30,      s30 },
                   { ArmRegister.S31,      s31 },
 
+                { ArmRegister.APSR_NZCV, cpsr },
+                { ArmRegister.FPSCR, fpscr },
             };
 
             RegistersByName = new Dictionary<string, RegisterStorage>(StringComparer.InvariantCultureIgnoreCase)

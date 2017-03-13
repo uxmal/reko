@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r1 = r2 + r3",
-                "2|L--|SZCO = cond(r1)");
+                "2|L--|NZCV = cond(r1)");
         }
 
         [Test]
@@ -348,7 +348,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r2 = r4 * r10",
-                "2|L--|SZCO = cond(r2)");
+                "2|L--|NZCV = cond(r2)");
         }
 
         [Test]
@@ -358,7 +358,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r1 = r4 + r2 * r3",
-                "2|L--|SZCO = cond(r1)");
+                "2|L--|NZCV = cond(r1)");
         }
 
         [Test]
@@ -441,7 +441,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r1_r2 = r3 *u r4",
-                "2|L--|SZCO = cond(r1_r2)");
+                "2|L--|NZCV = cond(r1_r2)");
         }
 
         [Test]
