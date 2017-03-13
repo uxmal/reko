@@ -18,7 +18,10 @@
  */
 #endregion
 
+using Gee.External.Capstone.Arm;
+using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +50,28 @@ namespace Reko.Arch.Arm
             if (instr.ArchitectureDetail.UpdateFlags)
             {
                 m.Assign(rSrc, m.IAdd(rSrc, Constant.Int32(offset)));
+            }
+        }
+
+        private void RewriteVmov()
+        {
+            ConditionalSkip();
+            var dst = this.Operand(Dst);
+            var src = this.Operand(Src1);
+            var fname = "__vmov_" + VectorElementType();
+            m.Assign(dst,
+                host.PseudoProcedure(fname, dst.DataType, src));
+        }
+
+        private string VectorElementType()
+        {
+            switch (instr.ArchitectureDetail.VectorDataType)
+            {
+            case ArmVectorDataType.I32: return "i32";
+            default: throw new AddressCorrelatedException(
+                Address.Ptr32((uint)instr.Address),
+                "Rewriting of ARM instruction '{0}' not implemented.",
+                instr.Mnemonic);
             }
         }
     }

@@ -104,7 +104,6 @@ namespace Reko.Arch.Arm
         case Opcode.DBG:
         case Opcode.DMB:
         case Opcode.DSB:
-        case Opcode.VMOV:
         case Opcode.FLDMDBX:
         case Opcode.FLDMIAX:
         case Opcode.VMRS:
@@ -160,7 +159,6 @@ namespace Reko.Arch.Arm
         case Opcode.QSUB16:
         case Opcode.QSUB8:
         case Opcode.RBIT:
-        case Opcode.REV:
         case Opcode.REV16:
         case Opcode.REVSH:
         case Opcode.RFEDA:
@@ -504,6 +502,7 @@ namespace Reko.Arch.Arm
                 case Opcode.ORR: RewriteBinOp(m.Or, false); break;
                 case Opcode.POP: RewritePop(); break;
                 case Opcode.PUSH: RewritePush(); break;
+                case Opcode.REV: RewriteRev(); break;
                 case Opcode.RSB: RewriteRevBinOp(Operator.ISub, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.SMULL: RewriteMull(PrimitiveType.Int64, m.SMul); break;
                 case Opcode.STM: RewriteStm(); break;
@@ -525,7 +524,7 @@ namespace Reko.Arch.Arm
                 case Opcode.UXTH: RewriteXtb(PrimitiveType.UInt16); break;
 
                 case Opcode.VLDMIA: RewriteVldmia(); break;
-
+                case Opcode.VMOV: RewriteVmov(); break;
                 }
                 yield return ric;
             }

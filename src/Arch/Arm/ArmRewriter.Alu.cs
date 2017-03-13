@@ -58,6 +58,15 @@ namespace Reko.Arch.Arm
             }
         }
 
+        private void RewriteRev()
+        {
+            var opDst = this.Operand(Dst);
+            var opSrc = this.Operand(Src1);
+            ConditionalAssign(
+                opDst,
+                host.PseudoProcedure("__rev", PrimitiveType.Word32, opSrc));
+        }
+
         private void RewriteRevBinOp(Operator op, bool setflags)
         {
             var opDst = this.Operand(Dst);

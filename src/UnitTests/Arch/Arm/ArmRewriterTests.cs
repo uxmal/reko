@@ -474,5 +474,24 @@ means
                 "1|L--|r7 = Mem0[r5 + 4:word32]",
                 "2|L--|r10 = Mem0[r5 + 8:word32]");
         }
+
+        [Test]
+        public void ArmRw_rev()
+        {
+            BuildTest(0xE6BF2F32); // rev r2,r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = __rev(r2)");
+        }
+
+        [Test]
+        public void ArmRw_vmov_i32()
+        {
+            //  51 00 C0 F2 vmov.i32 q8,#0
+            BuildTest(0xF2C00051); // rev r2,r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q8 = __vmov_i32(0x00000001)");
+        }
     }
 }
