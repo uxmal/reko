@@ -54,6 +54,15 @@ namespace Reko.Arch.Arm
             }
         }
 
+        private void RewriteBfc()
+        {
+            var opDst = this.Operand(Dst);
+            var lsb = instr.ArchitectureDetail.Operands[1].ImmediateValue.Value;
+            var bitsize = instr.ArchitectureDetail.Operands[2].ImmediateValue.Value;
+            ConditionalSkip();
+            m.Assign(opDst, m.And(opDst, (uint) ~Bits.Mask(lsb, bitsize)));
+        }
+
         private void RewriteBfi()
         {
             var opDst = this.Operand(Dst);
@@ -291,6 +300,19 @@ namespace Reko.Arch.Arm
             }
         }
 
+        private void RewriteMulbb( bool hiLeft, bool hiRight, DataType dtMultiplicand, Func<Expression,Expression,Expression> mul)
+        {
+            if (hiLeft || hiRight)
+            {
+                NotImplementedYet();
+                return;
+            }
+            var opDst = this.Operand(Dst);
+            var opLeft = m.Cast(dtMultiplicand, this.Operand(Src1));
+            var opRight = m.Cast(dtMultiplicand, this.Operand(Src2));
+            m.Assign(opDst, mul(opLeft, opRight));
+        }
+
         private void RewriteMull(PrimitiveType dtResult, Func<Expression, Expression, Expression> op)
         {
             var ops = instr.ArchitectureDetail.Operands;
@@ -327,6 +349,18 @@ namespace Reko.Arch.Arm
                 offset += reg.DataType.Size;
             }
             m.Assign(dst, m.ISub(dst, offset));
+        }
+
+        private void RewriteSbfx()
+        {
+            var dst = this.Operand(Dst);
+            var src = m.Cast(
+                PrimitiveType.Int32,
+                m.Slice(
+                    this.Operand(Src1),
+                    Src2.ImmediateValue.Value,
+                    Src3.ImmediateValue.Value));
+            ConditionalAssign(dst, src);
         }
 
         private void RewriteStm()

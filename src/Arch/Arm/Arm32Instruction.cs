@@ -219,6 +219,9 @@ namespace Reko.Arch.Arm
                 writer.Write(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value].Name);
                 WriteShift(op, writer);
                 break;
+            case ArmInstructionOperandType.SysRegister:
+                writer.Write(A32Registers.SysRegisterByCapstoneID[op.SysRegisterValue.Value].Name);
+                break;
             case ArmInstructionOperandType.Memory:
                 WriteMemoryOperand(op, writer);
                 break;

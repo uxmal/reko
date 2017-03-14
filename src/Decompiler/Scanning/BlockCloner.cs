@@ -280,7 +280,10 @@ namespace Reko.Scanning
 
         public Expression VisitSlice(Slice slice)
         {
-            throw new NotImplementedException();
+            return new Slice(
+                slice.DataType,
+                slice.Expression.Accept(this),
+                slice.Offset);
         }
 
         public Expression VisitTestCondition(TestCondition tc)

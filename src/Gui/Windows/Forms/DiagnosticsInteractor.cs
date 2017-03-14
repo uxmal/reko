@@ -124,6 +124,11 @@ namespace Reko.Gui.Windows.Forms
             AddDiagnostic(location, new ErrorDiagnostic(message));
         }
 
+        public void Error(ICodeLocation location, string message, params object[] args)
+        {
+            AddDiagnostic(location, new ErrorDiagnostic(string.Format(message, args)));
+        }
+
         public void Error(ICodeLocation location, Exception ex, string message)
         {
             AddDiagnostic(location, new ErrorDiagnostic(message, ex));
@@ -238,11 +243,6 @@ namespace Reko.Gui.Windows.Forms
             for (int i = 0; i < listView.Items.Count; ++i)
                 listView.SelectedIndices.Add(i);
             return true;
-        }
-
-        public void Error(ICodeLocation location, string message, params object[] args)
-        {
-            throw new NotImplementedException();
         }
     }
 }
