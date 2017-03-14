@@ -595,7 +595,16 @@ means
             BuildTest(0xE6E10070);  // uxtab r0, r1, r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|ip = (int32) SLICE(ip, ui10, 6)");
+                "1|L--|r0 = r1 + (byte) r0");
+        }
+
+        [Test]
+        public void ArmRw_sxtab()
+        {
+            BuildTest(0xE6A55078);  // sxtab r5, r5, r8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r5 = r5 + (int8) r8");
         }
     }
 }

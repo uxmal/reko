@@ -248,7 +248,6 @@ namespace Reko.Arch.Arm
                 case Opcode.STRT:
                 case Opcode.SWP:
                 case Opcode.SWPB:
-                case Opcode.SXTAB:
                 case Opcode.SXTAB16:
                 case Opcode.SXTAH:
                 case Opcode.SXTB16:
@@ -506,6 +505,7 @@ namespace Reko.Arch.Arm
                 case Opcode.STRH: RewriteStr(PrimitiveType.UInt16); break;
                 case Opcode.SUB: RewriteBinOp(m.ISub, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.SVC: RewriteSvc(); break;
+                case Opcode.SXTAB: RewriteXtab(PrimitiveType.SByte); break;
                 case Opcode.SXTB: RewriteXtb(PrimitiveType.SByte); break;
                 case Opcode.SXTH: RewriteXtb(PrimitiveType.Int16); break;
                 case Opcode.TEQ: RewriteTeq(); break;
