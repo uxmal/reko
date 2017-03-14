@@ -568,5 +568,34 @@ means
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|ip = (int32) SLICE(ip, ui10, 6)");
         }
+
+
+        [Test]
+        public void ArmRw_umlalne()
+        {
+            BuildTest(0x10A54A93); // umlalne r4,r5,r3,r10
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 00100004",
+                "2|L--|r5_r4 = r3 *u r10 + r5_r4");
+        }
+
+        [Test]
+        public void ArmRw_msr()
+        {
+            BuildTest(0xE121F001); // msr cpsr, r1
+            AssertCode(
+               "0|L--|00100000(4): 1 instructions",
+               "1|L--|__msr(cpsr, r1)");
+        }
+
+        [Test]
+        public void ArmRw_uxtab()
+        {
+            BuildTest(0xE6E10070);  // uxtab r0, r1, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ip = (int32) SLICE(ip, ui10, 6)");
+        }
     }
 }

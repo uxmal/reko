@@ -45,5 +45,11 @@ namespace Reko.Arch.Arm
             ConditionalSkip();
             m.Assign(Operand(Dst), host.PseudoProcedure("__mrs", PrimitiveType.Word32, Operand(Src1)));
         }
+
+        private void RewriteMsr()
+        {
+            ConditionalSkip();
+            m.SideEffect(host.PseudoProcedure("__msr", PrimitiveType.Word32, Operand(Dst), Operand(Src1)));
+        }
     }
 }

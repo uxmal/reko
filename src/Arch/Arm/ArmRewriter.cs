@@ -138,7 +138,6 @@ namespace Reko.Arch.Arm
                 case Opcode.MRC2:
                 case Opcode.MRRC:
                 case Opcode.MRRC2:
-                case Opcode.MSR:
                 case Opcode.PKHBT:
                 case Opcode.PKHTB:
                 case Opcode.PLDW:
@@ -266,7 +265,6 @@ namespace Reko.Arch.Arm
                 case Opcode.UHSUB16:
                 case Opcode.UHSUB8:
                 case Opcode.UMAAL:
-                case Opcode.UMLAL:
                 case Opcode.UQADD16:
                 case Opcode.UQADD8:
                 case Opcode.UQASX:
@@ -280,7 +278,6 @@ namespace Reko.Arch.Arm
                 case Opcode.USAX:
                 case Opcode.USUB16:
                 case Opcode.USUB8:
-                case Opcode.UXTAB:
                 case Opcode.UXTAB16:
                 case Opcode.UXTAH:
                 case Opcode.UXTB16:
@@ -488,6 +485,7 @@ namespace Reko.Arch.Arm
                 case Opcode.MOVT: RewriteMovt(); break;
                 case Opcode.MOVW: RewriteMov(); break;
                 case Opcode.MRS: RewriteMrs(); break;
+                case Opcode.MSR: RewriteMsr(); break;
                 case Opcode.MUL: RewriteBinOp(m.IMul, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.MVN: RewriteUnaryOp(Operator.Not); break;
                 case Opcode.ORR: RewriteBinOp(m.Or, false); break;
@@ -513,7 +511,9 @@ namespace Reko.Arch.Arm
                 case Opcode.TEQ: RewriteTeq(); break;
                 case Opcode.TST: RewriteTst(); break;
                 case Opcode.UBFX: RewriteUbfx(); break;
+                case Opcode.UMLAL: RewriteUmlal(); break;
                 case Opcode.UMULL: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
+                case Opcode.UXTAB: RewriteXtab(PrimitiveType.Byte); break;
                 case Opcode.UXTB: RewriteXtb(PrimitiveType.Byte); break;
                 case Opcode.UXTH: RewriteXtb(PrimitiveType.UInt16); break;
 
@@ -541,12 +541,12 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        private AddressCorrelatedException NYI()
+        private void MaybeUpdateFlags(Expression opDst)
         {
-            return new AddressCorrelatedException(
-                instrs.Current.Address,
-                "Rewriting ARM opcode '{0}' is not supported yet.",
-                instr.Mnemonic);
+            if (instr.ArchitectureDetail.UpdateFlags)
+            {
+                m.Assign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte), m.Cond(opDst));
+            }
         }
 
         private void RewriteB(bool link)
@@ -639,6 +639,9 @@ namespace Reko.Arch.Arm
             case ArmInstructionOperandType.Register:
                 var reg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value]);
                 return MaybeShiftOperand(reg, op);
+            case ArmInstructionOperandType.SysRegister:
+                var sysreg = frame.EnsureRegister(A32Registers.SysRegisterByCapstoneID[op.SysRegisterValue.Value]);
+                return sysreg;
             case ArmInstructionOperandType.Immediate:
                 return Constant.Word32(op.ImmediateValue.Value);
             case ArmInstructionOperandType.Memory:
