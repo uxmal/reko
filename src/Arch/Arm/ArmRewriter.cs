@@ -99,7 +99,6 @@ namespace Reko.Arch.Arm
                 case Opcode.CRC32H:
                 case Opcode.CRC32W:
                 case Opcode.DBG:
-                case Opcode.DMB:
                 case Opcode.DSB:
                 case Opcode.FLDMDBX:
                 case Opcode.FLDMIAX:
@@ -130,11 +129,9 @@ namespace Reko.Arch.Arm
                 case Opcode.LDRSBT:
                 case Opcode.LDRSHT:
                 case Opcode.LDRT:
-                case Opcode.MCR:
                 case Opcode.MCR2:
                 case Opcode.MCRR:
                 case Opcode.MCRR2:
-                case Opcode.MRC:
                 case Opcode.MRC2:
                 case Opcode.MRRC:
                 case Opcode.MRRC2:
@@ -249,7 +246,6 @@ namespace Reko.Arch.Arm
                 case Opcode.SWP:
                 case Opcode.SWPB:
                 case Opcode.SXTAB16:
-                case Opcode.SXTAH:
                 case Opcode.SXTB16:
                 case Opcode.TRAP:
                 case Opcode.UADD16:
@@ -278,7 +274,6 @@ namespace Reko.Arch.Arm
                 case Opcode.USUB16:
                 case Opcode.USUB8:
                 case Opcode.UXTAB16:
-                case Opcode.UXTAH:
                 case Opcode.UXTB16:
                 case Opcode.VABAL:
                 case Opcode.VABA:
@@ -468,6 +463,7 @@ namespace Reko.Arch.Arm
                 case Opcode.CMN: RewriteCmn(); break;
                 case Opcode.CMP: RewriteCmp(); break;
                 case Opcode.CPS: RewriteCps(); break;
+                case Opcode.DMB: RewriteDmb(); break;
                 case Opcode.LDR: RewriteLdr(PrimitiveType.Word32); break;
                 case Opcode.LDRB: RewriteLdr(PrimitiveType.Byte); break;
                 case Opcode.LDRH: RewriteLdr(PrimitiveType.UInt16); break;
@@ -478,11 +474,13 @@ namespace Reko.Arch.Arm
                 case Opcode.LDMDB: RewriteLdm(0); break;
                 case Opcode.LDMIB: RewriteLdm(4); break;
                 case Opcode.NOP: m.Nop(); break;
+                case Opcode.MCR: RewriteMcr(); break;
                 case Opcode.MLA: RewriteMultiplyAccumulate(m.IAdd); break;
                 case Opcode.MLS: RewriteMultiplyAccumulate(m.ISub); break;
                 case Opcode.MOV: RewriteMov(); break;
                 case Opcode.MOVT: RewriteMovt(); break;
                 case Opcode.MOVW: RewriteMov(); break;
+                case Opcode.MRC: RewriteMrc(); break;
                 case Opcode.MRS: RewriteMrs(); break;
                 case Opcode.MSR: RewriteMsr(); break;
                 case Opcode.MUL: RewriteBinOp(m.IMul, instr.ArchitectureDetail.UpdateFlags); break;
@@ -506,6 +504,7 @@ namespace Reko.Arch.Arm
                 case Opcode.SUB: RewriteBinOp(m.ISub, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.SVC: RewriteSvc(); break;
                 case Opcode.SXTAB: RewriteXtab(PrimitiveType.SByte); break;
+                case Opcode.SXTAH: RewriteXtab(PrimitiveType.Int16); break;
                 case Opcode.SXTB: RewriteXtb(PrimitiveType.SByte); break;
                 case Opcode.SXTH: RewriteXtb(PrimitiveType.Int16); break;
                 case Opcode.TEQ: RewriteTeq(); break;
@@ -514,6 +513,7 @@ namespace Reko.Arch.Arm
                 case Opcode.UMLAL: RewriteUmlal(); break;
                 case Opcode.UMULL: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
                 case Opcode.UXTAB: RewriteXtab(PrimitiveType.Byte); break;
+                case Opcode.UXTAH: RewriteXtab(PrimitiveType.UInt16); break;
                 case Opcode.UXTB: RewriteXtb(PrimitiveType.Byte); break;
                 case Opcode.UXTH: RewriteXtb(PrimitiveType.UInt16); break;
 
@@ -644,6 +644,9 @@ namespace Reko.Arch.Arm
                 return sysreg;
             case ArmInstructionOperandType.Immediate:
                 return Constant.Word32(op.ImmediateValue.Value);
+            case ArmInstructionOperandType.CImmediate:
+            case ArmInstructionOperandType.PImmediate:
+                return Constant.Byte((byte)op.ImmediateValue.Value);
             case ArmInstructionOperandType.Memory:
                 Expression baseReg = Reg(op.MemoryValue.BaseRegister);
                 Expression ea = baseReg;

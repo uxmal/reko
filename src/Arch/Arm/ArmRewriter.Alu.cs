@@ -463,7 +463,8 @@ namespace Reko.Arch.Arm
                 src = m.Shr(src, Src1.Shifter.Value);
             }
             src = m.Cast(dt, src);
-            ConditionalAssign(dst, src);
+            ConditionalSkip();
+            m.Assign(dst, src);
         }
     }
 }

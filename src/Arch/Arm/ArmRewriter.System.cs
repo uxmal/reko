@@ -19,6 +19,7 @@
 #endregion
 
 using Gee.External.Capstone.Arm;
+using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,37 @@ namespace Reko.Arch.Arm
             NotImplementedYet();
         }
 
-		private void RewriteMrs()
+        private void RewriteDmb()
+        {
+            var memBarrier = instr.ArchitectureDetail.MemoryBarrier.ToString().ToLowerInvariant();
+            var name = "__dmb_" + memBarrier;
+            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
+        }
+
+        private void RewriteMcr()
+        {
+            m.SideEffect(host.PseudoProcedure(
+                "__mcr",
+                VoidType.Instance,
+                instr.ArchitectureDetail.Operands
+                    .Select(o => Operand(o))
+                    .ToArray()));
+        }
+
+        private void RewriteMrc()
+        {
+            var ops = instr.ArchitectureDetail.Operands
+                    .Select(o => Operand(o))
+                    .ToList();
+            var regDst = ops.OfType<Identifier>().SingleOrDefault();
+            ops.Remove(regDst);
+            m.Assign(regDst, host.PseudoProcedure(
+                "__mrc",
+                PrimitiveType.Word32,
+                ops.ToArray()));
+        }
+
+        private void RewriteMrs()
         {
             ConditionalSkip();
             m.Assign(Operand(Dst), host.PseudoProcedure("__mrs", PrimitiveType.Word32, Operand(Src1)));

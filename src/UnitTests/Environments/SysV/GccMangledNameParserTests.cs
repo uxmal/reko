@@ -318,6 +318,15 @@ namespace Reko.UnitTests.Environments.SysV
                 "std::string::~string()",
                 "_ZNSsD1Ev");
         }
+
+        [Test]
+        public void Gmnp_regression1()
+        {
+            RunTest(
+                "CDSMCC_T_List_T<CDSMCC_Object>::Add(CDSMCC_Object *)",
+                "_ZN15CDSMCC_T_List_TI13CDSMCC_ObjectE3AddEPS0_");
+        }
+
         /*
 
  _ZN5Timer14getElapsedTimeEv

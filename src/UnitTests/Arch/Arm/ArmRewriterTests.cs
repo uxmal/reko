@@ -606,5 +606,59 @@ means
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r5 = r5 + (int8) r8");
         }
+
+        [Test]
+        public void ArmRw_sxtah()
+        {
+            BuildTest(0xE6B6A07A);  // sxtah r10,r6,r10
+            AssertCode(
+             "0|L--|00100000(4): 1 instructions",
+             "1|L--|r10 = r6 + (int16) r10");
+        }
+
+        [Test]
+        public void ArmRw_sxthne()
+        {
+            BuildTest(0x16BF9077);  //  sxthne r9,r7
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 00100004");
+        }
+
+        [Test]
+        public void ArmRw_uxtah()
+        {
+            BuildTest(0xE6F30072);  // uxtah r0,r3,r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = r3 + (uint16) r2");
+        }
+
+        [Test]
+        public void ArmRw_dmb()
+        {
+            BuildTest(0xF57FF05F);  // dmb
+            AssertCode(
+             "0|L--|00100000(4): 1 instructions",
+             "1|L--|__dmb_sy()");
+        }
+
+        [Test]
+        public void ArmRw_mrc()
+        {
+            BuildTest(0xEE123F10);  // mrc p15,#0,r3,c2
+            AssertCode(
+             "0|L--|00100000(4): 1 instructions",
+             "1|L--|r3 = __mrc(0x0F, 0x00000000, 0x02, 0x00, 0x00000000)");
+        }
+
+        [Test]
+        public void ArmRw_mcr()
+        {
+            BuildTest(0xEE070F58);  // mcr p15,#0,r0,c7
+            AssertCode(
+             "0|L--|00100000(4): 1 instructions",
+             "1|L--|__mcr(0x0F, 0x00000000, r0, 0x07, 0x08, 0x00000002)");
+        }
     }
 }
