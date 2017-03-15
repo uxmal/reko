@@ -101,7 +101,7 @@ namespace Reko.Environments.SysV
             var prefixes = new List<object>();
             if (Peek('S'))
             {
-                prefixes.Add(Substitution());
+                prefixes.AddRange(Substitution());
                 return prefixes;
             }
 
