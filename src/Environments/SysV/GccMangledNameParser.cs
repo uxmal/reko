@@ -32,11 +32,13 @@ namespace Reko.Environments.SysV
         private string str;
         private int i;
         private int ptrSize;
+        private Dictionary<string, object> substitutions;
 
         public GccMangledNameParser(string parse, int ptrSize)
         {
             this.str = parse;
             this.ptrSize = ptrSize;
+            this.substitutions = new Dictionary<string, object>();
         }
 
         public string Modifier { get; set; }
@@ -83,7 +85,7 @@ namespace Reko.Environments.SysV
             };
         }
 
-        private List<string> NestedName()
+        private List<object> NestedName()
         {
             Expect('N');
             var items = Prefix();
@@ -94,11 +96,81 @@ namespace Reko.Environments.SysV
             return items;
         }
 
-        private List<string> Prefix()
+        private List<object> Prefix()
         {
+            var prefixes = new List<object>();
             if (Peek('S'))
-                return Substitution();
+            {
+                prefixes.AddRange(Substitution());
+                return prefixes;
+            }
+
+            while (true)
+            {
+                if (Char.IsDigit(str[i]))
+                {
+                    var n = SourceName();
+                    if (Peek('I'))
+                    {
+                        // n is the name of a template.
+                        AddSubstitution(n);
+                        var args = TemplateArgs();
+                        var tmplate = new SerializedTemplate(new string[0], n, args);
+                        AddSubstitution(tmplate);
+                        prefixes.Add(tmplate);
+                        return prefixes;
+                    }
+                }
+                else
+                    break;
+            }
             throw new NotImplementedException();
+        }
+
+        private void AddSubstitution(object n)
+        {
+            int c = substitutions.Count;
+            if (c == 0)
+            {
+                substitutions.Add("_", n);
+            }
+            else if (c <= 10)
+            {
+                substitutions.Add(string.Format("{0}_", (char)('0' + c - 1)), n);
+            }
+            else if (c <= 36)
+            {
+                substitutions.Add(string.Format("{0}_",(char) ('A' + c - 11)), n);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        private string SourceName()
+        {
+            int len = 0;
+            while (char.IsDigit(str[i]))
+            {
+                len = len * 10 + (str[i] - '0');
+                ++i;
+            }
+                var n = str.Substring(i, len);
+            i += len;
+            return n;
+        }
+
+        private SerializedType[] TemplateArgs()
+        {
+            Expect('I');
+            var args = new List<SerializedType>();
+            do
+            {
+                var type = Type();
+                args.Add(type);
+            } while (!PeekAndDiscard('E'));
+            return args.ToArray();
         }
 
         private List<string> Substitution()
@@ -264,16 +336,25 @@ namespace Reko.Environments.SysV
                         Scope = new[] { "std" },
                         TypeName = "string"
                     };
+                default:
+                    int iStart = --i;
+                    while (str[i] != '_')
+                        ++i;
+                    ++i;
+                    var sub = str.Substring(iStart, i - iStart);
+                    return (SerializedType)substitutions[sub];
                 }
                 throw new NotImplementedException();
             default:
                 --i;
                 if (char.IsDigit(str[i]))
                 {
-                    return new TypeReference_v1
+                    var tref = new TypeReference_v1
                     {
-                        TypeName = UnqualifiedName(),
+                        TypeName = UnqualifiedName()
                     };
+                    AddSubstitution(tref);
+                    return tref;
                 }
                 throw new NotImplementedException(string.Format("Unknown GCC type code '{0}'.", str[i]));
             }

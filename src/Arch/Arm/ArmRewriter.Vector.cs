@@ -90,10 +90,7 @@ namespace Reko.Arch.Arm
             switch (instr.ArchitectureDetail.VectorDataType)
             {
             case ArmVectorDataType.I32: return "i32";
-            default: throw new AddressCorrelatedException(
-                Address.Ptr32((uint)instr.Address),
-                "Rewriting of ARM instruction '{0}' not implemented.",
-                instr.Mnemonic);
+            default: NotImplementedYet(); return "(NYI)";
             }
         }
     }

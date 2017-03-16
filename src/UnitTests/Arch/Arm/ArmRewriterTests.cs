@@ -523,5 +523,142 @@ means
                "2|L--|Mem0[r3 + 8:word64] = d17",
                "3|L--|r3 = r3 + 16");
         }
+
+        [Test]
+        public void ArmRw_mrs()
+        {
+            BuildTest(0xE10F3000); // mrs r3, cpsr
+            AssertCode(
+               "0|L--|00100000(4): 1 instructions",
+               "1|L--|r3 = __mrs(cpsr)");
+        }
+
+        [Test]
+        public void ArmRw_cpsid()
+        {
+            BuildTest(0xF10C0080); // cpsid
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__cps_id()");
+        }
+
+        [Test]
+        public void ArmRw_smulbb()
+        {
+            BuildTest(0xE1600380); //  smulbb r0, r0, r3
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = (int16) r0 *s (int16) r3");
+        }
+
+        [Test]
+        public void ArmRw_bfc()
+        {
+            BuildTest(0xE7C5901F);  // bfc r9, #0, #6
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r9 = r9 & 0xFFFFFFC0");
+        }
+
+        [Test]
+        public void ArmRw_sbfx()
+        {
+            BuildTest(0xE7A9C35C); // sbfx ip,ip,#6,#&A
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ip = (int32) SLICE(ip, ui10, 6)");
+        }
+
+
+        [Test]
+        public void ArmRw_umlalne()
+        {
+            BuildTest(0x10A54A93); // umlalne r4,r5,r3,r10
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 00100004",
+                "2|L--|r5_r4 = r3 *u r10 + r5_r4");
+        }
+
+        [Test]
+        public void ArmRw_msr()
+        {
+            BuildTest(0xE121F001); // msr cpsr, r1
+            AssertCode(
+               "0|L--|00100000(4): 1 instructions",
+               "1|L--|__msr(cpsr, r1)");
+        }
+
+        [Test]
+        public void ArmRw_uxtab()
+        {
+            BuildTest(0xE6E10070);  // uxtab r0, r1, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = r1 + (byte) r0");
+        }
+
+        [Test]
+        public void ArmRw_sxtab()
+        {
+            BuildTest(0xE6A55078);  // sxtab r5, r5, r8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r5 = r5 + (int8) r8");
+        }
+
+        [Test]
+        public void ArmRw_sxtah()
+        {
+            BuildTest(0xE6B6A07A);  // sxtah r10,r6,r10
+            AssertCode(
+             "0|L--|00100000(4): 1 instructions",
+             "1|L--|r10 = r6 + (int16) r10");
+        }
+
+        [Test]
+        public void ArmRw_sxthne()
+        {
+            BuildTest(0x16BF9077);  //  sxthne r9,r7
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 00100004");
+        }
+
+        [Test]
+        public void ArmRw_uxtah()
+        {
+            BuildTest(0xE6F30072);  // uxtah r0,r3,r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = r3 + (uint16) r2");
+        }
+
+        [Test]
+        public void ArmRw_dmb()
+        {
+            BuildTest(0xF57FF05F);  // dmb
+            AssertCode(
+             "0|L--|00100000(4): 1 instructions",
+             "1|L--|__dmb_sy()");
+        }
+
+        [Test]
+        public void ArmRw_mrc()
+        {
+            BuildTest(0xEE123F10);  // mrc p15,#0,r3,c2
+            AssertCode(
+             "0|L--|00100000(4): 1 instructions",
+             "1|L--|r3 = __mrc(0x0F, 0x00000000, 0x02, 0x00, 0x00000000)");
+        }
+
+        [Test]
+        public void ArmRw_mcr()
+        {
+            BuildTest(0xEE070F58);  // mcr p15,#0,r0,c7
+            AssertCode(
+             "0|L--|00100000(4): 1 instructions",
+             "1|L--|__mcr(0x0F, 0x00000000, r0, 0x07, 0x08, 0x00000002)");
+        }
     }
 }

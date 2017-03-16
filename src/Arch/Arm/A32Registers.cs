@@ -19,6 +19,7 @@
 #endregion
 
 using ArmRegister = Gee.External.Capstone.Arm.ArmRegister;
+using ArmSysRegister = Gee.External.Capstone.Arm.ArmSysRegister;
 using Reko.Core;
 using Reko.Core.Types;
 using System;
@@ -137,6 +138,7 @@ namespace Reko.Arch.Arm
         public static readonly RegisterStorage s31 = new RegisterStorage("s31", 39, 96, PrimitiveType.Word64);
 
         public static readonly Dictionary<ArmRegister, RegisterStorage> RegisterByCapstoneID;
+        public static readonly Dictionary<ArmSysRegister, RegisterStorage> SysRegisterByCapstoneID;
 
         public static Dictionary<string, RegisterStorage> RegistersByName { get; set; }
 
@@ -263,8 +265,14 @@ namespace Reko.Arch.Arm
                   { ArmRegister.S30,      s30 },
                   { ArmRegister.S31,      s31 },
 
-                { ArmRegister.APSR_NZCV, cpsr },
-                { ArmRegister.FPSCR, fpscr },
+                  { ArmRegister.APSR, cpsr },
+                  { ArmRegister.APSR_NZCV, cpsr },
+                  { ArmRegister.FPSCR, fpscr },
+            };
+
+            SysRegisterByCapstoneID = new Dictionary<ArmSysRegister, RegisterStorage>
+            {
+                { ArmSysRegister.CPSR_C, cpsr },
             };
 
             RegistersByName = new Dictionary<string, RegisterStorage>(StringComparer.InvariantCultureIgnoreCase)

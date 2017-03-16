@@ -42,16 +42,22 @@ namespace Reko.Arch.Arm
             var opSrc2 = this.Operand(Src2);
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
-            var c = frame.EnsureFlagGroup( arch.GetFlagGroup((uint)FlagM.CF));
+            var c = frame.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
             ConditionalAssign(
                 opDst,
                 opr(
                     opr(opSrc1, opSrc2),
                     c));
-            if (instr.ArchitectureDetail.UpdateFlags)
-            {
-                m.Assign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte), m.Cond(opDst));
-            }
+            MaybeUpdateFlags(opDst);
+        }
+
+        private void RewriteBfc()
+        {
+            var opDst = this.Operand(Dst);
+            var lsb = instr.ArchitectureDetail.Operands[1].ImmediateValue.Value;
+            var bitsize = instr.ArchitectureDetail.Operands[2].ImmediateValue.Value;
+            ConditionalSkip();
+            m.Assign(opDst, m.And(opDst, (uint) ~Bits.Mask(lsb, bitsize)));
         }
 
         private void RewriteBfi()
@@ -291,6 +297,19 @@ namespace Reko.Arch.Arm
         }
         }
 
+        private void RewriteMulbb( bool hiLeft, bool hiRight, DataType dtMultiplicand, Func<Expression,Expression,Expression> mul)
+        {
+            if (hiLeft || hiRight)
+            {
+                NotImplementedYet();
+                return;
+            }
+            var opDst = this.Operand(Dst);
+            var opLeft = m.Cast(dtMultiplicand, this.Operand(Src1));
+            var opRight = m.Cast(dtMultiplicand, this.Operand(Src2));
+            m.Assign(opDst, mul(opLeft, opRight));
+        }
+
         private void RewriteMull(PrimitiveType dtResult, Func<Expression, Expression, Expression> op)
         {
             var ops = instr.ArchitectureDetail.Operands;
@@ -327,6 +346,18 @@ namespace Reko.Arch.Arm
                 offset += reg.DataType.Size;
             }
             m.Assign(dst, m.ISub(dst, offset));
+        }
+
+        private void RewriteSbfx()
+        {
+            var dst = this.Operand(Dst);
+            var src = m.Cast(
+                PrimitiveType.Int32,
+                m.Slice(
+                    this.Operand(Src1),
+                    Src2.ImmediateValue.Value,
+                    Src3.ImmediateValue.Value));
+            ConditionalAssign(dst, src);
         }
 
         private void RewriteStm()
@@ -397,6 +428,32 @@ namespace Reko.Arch.Arm
             ConditionalAssign(dst, src);
     }
 
+        private void RewriteUmlal()
+        {
+            var dst = frame.EnsureSequence(
+                A32Registers.RegisterByCapstoneID[Src1.RegisterValue.Value],
+                A32Registers.RegisterByCapstoneID[Dst.RegisterValue.Value],
+                PrimitiveType.Word64);
+            var left = this.Operand(Src2);
+            var right = this.Operand(Src3);
+            ConditionalSkip();
+            m.Assign(dst, m.IAdd(m.UMul(left, right), dst));
+            MaybeUpdateFlags(dst);
+        }
+
+        private void RewriteXtab(DataType dt)
+        {
+            var dst = this.Operand(Dst);
+            Expression src = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[Src2.RegisterValue.Value]);
+            if (Src2.Shifter.Type == ArmShifterType.ROR)
+            {
+                src = m.Shr(src, Src2.Shifter.Value);
+            }
+            src = m.Cast(dt, src);
+            ConditionalSkip();
+            m.Assign(dst, m.IAdd(this.Operand(Src1), src));
+        }
+
         private void RewriteXtb(DataType dt)
         {
             var dst = this.Operand(Dst);
@@ -406,7 +463,8 @@ namespace Reko.Arch.Arm
                 src = m.Shr(src, Src1.Shifter.Value);
             }
             src = m.Cast(dt, src);
-            ConditionalAssign(dst, src);
+            ConditionalSkip();
+            m.Assign(dst, src);
         }
     }
 }

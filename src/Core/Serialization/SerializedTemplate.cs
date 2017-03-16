@@ -43,5 +43,29 @@ namespace Reko.Core.Serialization
         {
             return visitor.VisitTemplate(this);
         }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            if (Scope != null)
+            {
+                foreach (var seg in Scope)
+                {
+                    sb.Append(seg);
+                    sb.Append("::");
+                }
+            }
+            sb.Append(Name);
+            sb.Append("<");
+            var sep = "";
+            foreach (var tyArg in TypeArguments)
+            {
+                sb.Append(sep);
+                sb.Append(tyArg);
+                sep = ",";
+            }
+            sb.Append(">");
+            return sb.ToString();
+        }
     }
 }
