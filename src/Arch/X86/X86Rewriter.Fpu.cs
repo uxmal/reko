@@ -445,7 +445,28 @@ namespace Reko.Arch.X86
             //$REVIEW: Candidate for idiom search.
             Identifier op1 = FpuRegister(0);
             Identifier op2 = FpuRegister(1);
-            m.Assign(op1, m.ISub(op2, host.PseudoProcedure("lg2", PrimitiveType.Real64, op1)));
+            m.Assign(op2, 
+                m.FMul(op2, 
+                      host.PseudoProcedure("lg2", PrimitiveType.Real64, op2)));
+            state.ShrinkFpuStack(1);
+            WriteFpuStack(0);
+        }
+
+        private void RewriteFyl2xp1()
+        {
+            //$REVIEW: Candidate for idiom search.
+            Identifier op1 = FpuRegister(0);
+            Identifier op2 = FpuRegister(1);
+            m.Assign(op2,
+                m.FMul(
+                    op2,
+                    host.PseudoProcedure(
+                        "lg2",
+                        PrimitiveType.Real64,
+                        m.FAdd(op1, Constant.Real64(1.0)))));
+            m.Assign(
+                orw.FlagGroup(FlagM.FPUF),
+                m.Cond(op2));
             state.ShrinkFpuStack(1);
             WriteFpuStack(0);
         }

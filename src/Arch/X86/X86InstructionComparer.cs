@@ -74,7 +74,13 @@ namespace Reko.Arch.X86
                     return false;
                 return base.CompareValues(memOpA.Offset, memOpB.Offset);
             }
-			throw new NotImplementedException("NYI");
+            var fpuA = opA as FpuOperand;
+            if (fpuA != null)
+            {
+                var fpuB = opB as FpuOperand;
+                return NormalizeRegisters || fpuA.StNumber == fpuB.StNumber;
+            }
+			throw new NotImplementedException(string.Format("NYI: {0}", opA.GetType()));
 		}
 
 

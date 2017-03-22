@@ -53,6 +53,18 @@ namespace Reko.Arch.X86
             m.Assign(SrcOp(instrCur.op1), m.Seq(tmp2, tmp1));
         }
 
+        private void RewriteMovlhps()
+        {
+            var src = SrcOp(instrCur.op2);
+            var dst = SrcOp(instrCur.op1);
+            m.Assign(
+                m.Array(PrimitiveType.Real32, dst, Constant.Int32(2)),
+                m.Array(PrimitiveType.Real32, src, Constant.Int32(0)));
+            m.Assign(
+                m.Array(PrimitiveType.Real32, dst, Constant.Int32(3)),
+                m.Array(PrimitiveType.Real32, src, Constant.Int32(1)));
+        }
+
         private void RewritePcmpeqb()
         {
             m.Assign(

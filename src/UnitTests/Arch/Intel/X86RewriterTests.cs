@@ -1450,5 +1450,25 @@ namespace Reko.UnitTests.Arch.Intel
                 "0|L--|10000000(6): 1 instructions",
                 "1|L--|nop");
         }
+
+        [Test]
+        public void X86rw_movlhps()
+        {
+            Run32bitTest(0x0F, 0x16, 0xF3);
+            AssertCode(
+                "0|L--|10000000(3): 2 instructions",
+                "1|L--|xmm6[2] = xmm3[0]",
+                "2|L--|xmm6[3] = xmm3[1]");
+        }
+
+        [Test]
+        public void X86rw_fyl2xp1()
+        {
+            Run16bitTest(0xD9, 0xF9);
+            AssertCode(
+                "0|L--|0C00:0000(2): 2 instructions",
+                "1|L--|rArg1 = rArg1 * lg2(rArg0 + 1.0)",
+                "2|L--|FPUF = cond(rArg1)");
+        } 
     }
 }

@@ -200,6 +200,7 @@ namespace Reko.Arch.X86
                 case Opcode.fxam: RewriteFxam(); break;
                 case Opcode.fxch: RewriteExchange(); break;
                 case Opcode.fyl2x: RewriteFyl2x(); break;
+                case Opcode.fyl2xp1: RewriteFyl2xp1(); break;
                 case Opcode.hlt: RewriteHlt(); break;
                 case Opcode.idiv: RewriteDivide(m.SDiv, Domain.SignedInt); break;
                 case Opcode.@in: RewriteIn(); break;
@@ -246,6 +247,7 @@ namespace Reko.Arch.X86
                 case Opcode.movaps: RewriteMov(); break;
                 case Opcode.movd: RewriteMovzx(); break;
                 case Opcode.movdqa: RewriteMov(); break;
+                case Opcode.movlhps: RewriteMovlhps(); break;
                 case Opcode.movq: RewriteMov(); break;
                 case Opcode.movs: RewriteStringInstruction(); break;
                 case Opcode.movsb: RewriteStringInstruction(); break;

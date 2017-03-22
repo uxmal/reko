@@ -786,6 +786,8 @@ namespace Reko.Arch.Arm
                 return new TestCondition(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF, "NZ", PrimitiveType.Byte));
             case ArmCodeCondition.NE:
                 return new TestCondition(ConditionCode.NE, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Byte));
+            case ArmCodeCondition.VC:
+                return new TestCondition(ConditionCode.NO, FlagGroup(FlagM.VF, "V", PrimitiveType.Byte));
             case ArmCodeCondition.VS:
                 return new TestCondition(ConditionCode.OV, FlagGroup(FlagM.VF, "V", PrimitiveType.Byte));
             }
