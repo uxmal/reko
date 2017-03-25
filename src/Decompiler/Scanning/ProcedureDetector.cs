@@ -143,6 +143,34 @@ namespace Reko.Scanning
 
                 public static readonly Cmp Instance = new Cmp();
             }
+
+            [Conditional("DEBUG")]
+            public void Dump(DirectedGraph<RtlBlock> icfg)
+            {
+                foreach (var b in Blocks)
+                {
+                    var isEntry = Entries.Contains(b);
+                    Debug.Print("{0}: {1}", b.Address, isEntry ? "*" : "");
+                    Debug.Print("  pred: {0}",
+                       string.Join(",", icfg.Predecessors(b)));
+
+                    foreach (var c in b.Instructions)
+                    {
+                        Debug.Print("  {0} - {1}", c.Address, c.Length);
+                        foreach (var r in c.Instructions)
+                        {
+                            Debug.Print("    {0}", r);
+                        }
+                    }
+                    Debug.Print("  succ: {0}",
+                        string.Join(",",icfg.Successors(b)));
+                }
+            }
+            //$DEBUG
+            public bool ContainsEntry(Address address)
+            {
+                return Entries.Contains(new RtlBlock(address, "test"));
+            }
         }
 
         /// <summary>
@@ -185,7 +213,6 @@ namespace Reko.Scanning
         {
             nodesLeft.Remove(node);
             cluster.Blocks.Add(node);
-
             foreach (var s in sr.ICFG.Successors(node))
             {
                 if (nodesLeft.Contains(s))

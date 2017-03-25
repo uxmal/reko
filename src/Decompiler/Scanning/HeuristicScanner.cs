@@ -178,11 +178,11 @@ namespace Reko.Scanning
                 // No unscanned blocks were found.
                 return null;
             }
-
             // Remove blocks that fall off the end of the segment
             // or into data.
             var deadNodes = dasm.RemoveBadInstructionsFromGraph();
             dasm.BuildIcfg(deadNodes);
+            Probe(sr);
 
             // On processors with variable length instructions,
             // there may be many blocks that partially overlap the 
@@ -202,6 +202,20 @@ namespace Reko.Scanning
             var pd = new ProcedureDetector(program, sr, this.eventListener);
             var procs = pd.DetectProcedures();
             return sr;
+        }
+
+        /// <summary>
+        /// Use this procedure as a handy place to put 
+        /// breakpoints when debugging large binaries.
+        /// </summary>
+        /// <param name="sr"></param>
+        [Conditional("DEBUG")]
+        private void Probe(ScanResults sr)
+        {
+            //var p = sr.ICFG.Nodes.FirstOrDefault(n => n.Address.ToString().EndsWith("93DB"));
+            //var q = sr.ICFG.Nodes.FirstOrDefault(n => n.Address.ToString().EndsWith("93DC"));
+            //if (!sr.ICFG.ContainsEdge(p, q))
+                //p.ToString();   //$DEBUG
         }
 
         private HashSet<Address> FindKnownProcedures()

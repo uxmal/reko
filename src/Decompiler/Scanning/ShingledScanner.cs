@@ -279,6 +279,8 @@ namespace Reko.Scanning
             {
                 if (a != bad)
                 {
+                    if (a.ToString().EndsWith("93DC"))  //$DEBUG
+                        a.ToString();
                     sr.Instructions.Remove(a);
                     deadNodes.Add(a);
 
@@ -337,12 +339,13 @@ namespace Reko.Scanning
             {
                 var addr = wl.First();
                 wl.Remove(addr);
+
                 var instr = sr.Instructions[addr];
                 var block = new RtlBlock(addr, addr.GenerateName("l", ""));
                 block.Instructions.Add(instr);
                 allBlocks.AddNode(block);
                 mpBlocks.Add(addr, block);
-                bool terminateNow = false;
+                bool endBlockNow = false;
                 bool terminateDeferred = false;
                 bool addFallthroughEdge = false;
                 bool addFallthroughEdgeDeferred = false;
@@ -368,12 +371,12 @@ namespace Reko.Scanning
                         }
                         else
                         {
-                            terminateNow = true;
+                            endBlockNow = true;
                         }
                     }
                     else
                     {
-                        terminateNow = terminateDeferred;
+                        endBlockNow = terminateDeferred;
                         addFallthroughEdge = addFallthroughEdgeDeferred;
                         addFallthroughEdgeDeferred = false;
                     }
@@ -383,28 +386,36 @@ namespace Reko.Scanning
                         edges.Add(Tuple.Create(block, addrInstrEnd));
                     }
 
-                    if (terminateNow || 
+                    if (endBlockNow || 
                         !wl.Contains(addrInstrEnd) ||
                         !graph.Nodes.Contains(addrInstrEnd) ||
                         graph.Successors(addrInstrEnd).Count != 1)
                     {
-                        //Debug.Print("addr: {0}, end {1}, term: {2}, wl: {3}, nodes: {4}, succ: {5}",
-                        //    addr,
-                        //    addrInstrEnd,
-                        //    terminateNow,
-                        //    !wl.Contains(addrInstrEnd),
-                        //    !graph.Nodes.Contains(addrInstrEnd),
-                        //    graph.Successors(addrInstrEnd).Count);
-
+                        /*
+                        Debug.Print("addr: {0}, end {1}, term: {2}, wl: {3}, nodes: {4}, succ: {5}",
+                            addr,
+                            addrInstrEnd,
+                            endBlockNow,
+                            !wl.Contains(addrInstrEnd),
+                            !graph.Nodes.Contains(addrInstrEnd),
+                            graph.Nodes.Contains(addrInstrEnd)
+                                ? graph.Successors(addrInstrEnd).Count
+                                : 0);
+                        */
                         //block.EndAddress = addrInstrEnd;
-
+                        if (!endBlockNow && !addFallthroughEdge)
+                        {
+                            edges.Add(Tuple.Create(block, addrInstrEnd));
+                        }
                         break;
                     }
 
                     wl.Remove(addrInstrEnd);
+                    if (addrInstrEnd.ToString().EndsWith("93DC"))
+                        addrInstrEnd.ToString();
                     instr = sr.Instructions[addrInstrEnd];
                     block.Instructions.Add(instr);
-                    terminateNow = terminateDeferred;
+                    endBlockNow = terminateDeferred;
                 }
             }
             return new IcfgBuilder
