@@ -68,9 +68,16 @@ namespace Reko.Scanning
 
         /// <summary>
         /// More specifically, these are addresses that are known to be
-        /// function entry points.
+        /// function entry points because they are called from other 
+        /// instructions.
         /// </summary>
         public HashSet<Address> KnownProcedures { get; set; }
+
+        /// <summary>
+        /// These are procedures, either because they were called,
+        /// or because they were jumped to from different procedures.
+        /// </summary>
+        public List<RtlProcedure> Procedures { get; internal set; }
 
         /// <summary>
         /// Tally of occurrences of bitpatterns that look like addresses,

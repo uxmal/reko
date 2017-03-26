@@ -279,8 +279,6 @@ namespace Reko.Scanning
             {
                 if (a != bad)
                 {
-                    if (a.ToString().EndsWith("93DC"))  //$DEBUG
-                        a.ToString();
                     sr.Instructions.Remove(a);
                     deadNodes.Add(a);
 
@@ -391,7 +389,7 @@ namespace Reko.Scanning
                         !graph.Nodes.Contains(addrInstrEnd) ||
                         graph.Successors(addrInstrEnd).Count != 1)
                     {
-                        /*
+                        
                         Debug.Print("addr: {0}, end {1}, term: {2}, wl: {3}, nodes: {4}, succ: {5}",
                             addr,
                             addrInstrEnd,
@@ -401,8 +399,9 @@ namespace Reko.Scanning
                             graph.Nodes.Contains(addrInstrEnd)
                                 ? graph.Successors(addrInstrEnd).Count
                                 : 0);
-                        */
+                        
                         //block.EndAddress = addrInstrEnd;
+                        
                         if (!endBlockNow && !addFallthroughEdge)
                         {
                             edges.Add(Tuple.Create(block, addrInstrEnd));

@@ -201,6 +201,7 @@ namespace Reko.Scanning
 
             var pd = new ProcedureDetector(program, sr, this.eventListener);
             var procs = pd.DetectProcedures();
+            sr.Procedures = procs;
             return sr;
         }
 
@@ -215,7 +216,6 @@ namespace Reko.Scanning
             //var p = sr.ICFG.Nodes.FirstOrDefault(n => n.Address.ToString().EndsWith("93DB"));
             //var q = sr.ICFG.Nodes.FirstOrDefault(n => n.Address.ToString().EndsWith("93DC"));
             //if (!sr.ICFG.ContainsEdge(p, q))
-                //p.ToString();   //$DEBUG
         }
 
         private HashSet<Address> FindKnownProcedures()

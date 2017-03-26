@@ -1067,10 +1067,9 @@ namespace Reko.Scanning
             sr = hsc.ScanImage(sr);
             if (sr != null)
             {
-                // Once the ICFG is built, detect the procedures.
+                // The heuristic scanner will have detected the procedures.
 
-                var pd = new ProcedureDetector(program, sr, eventListener);
-                var procs = pd.DetectProcedures();
+                var procs = sr.Procedures;
 
                 // At this point, we have RtlProcedures and RtlBlocks.
                 //$TODO: However, Reko hasn't had a chance to reconstitute constants yet, 

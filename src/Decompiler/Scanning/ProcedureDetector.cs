@@ -392,7 +392,7 @@ namespace Reko.Scanning
             sr.ICFG.RemoveNode(auxNode);
 
             // Handle the special case with new entries that weren't there before,
-            // and only consist of a single block. Mark such nodes as "shared".
+            // and only consist of a linear sequence of blocks. Mark such nodes as "shared".
             // Later stages will copy these nodes into their respective procedures.
             foreach (var newEntry in dominatedEntries.Keys
                 .Where(e => !cluster.Entries.Contains(e)).ToList())
@@ -408,6 +408,11 @@ namespace Reko.Scanning
                 .OrderBy(e => e.Key.Address)
                 .Select(e => new RtlProcedure(e.Key, e.Value))
                 .ToList();
+        }
+
+        public List<RtlBlock> LinearSequence(RtlBlock start)
+        {
+            return new List<RtlBlock>();
         }
 
         [Conditional("DEBUG")]
