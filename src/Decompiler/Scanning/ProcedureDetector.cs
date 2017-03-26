@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Rtl;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -252,12 +253,43 @@ namespace Reko.Scanning
             {
                 if (listener.IsCanceled())
                     break;
+                Simplify(cluster);
                 if (FindClusterEntries(cluster))
                 {
                     procs.AddRange(PostProcessCluster(cluster));
                 }
             }
             return procs;
+        }
+
+        public void Simplify(Cluster cluster)
+        {
+            var wl = new WorkList<RtlBlock>(cluster.Blocks);
+            RtlBlock block;
+            while (wl.GetWorkItem(out block))
+            {
+                if (sr.ICFG.Successors(block).Count != 1)
+                    continue;
+                var succ = sr.ICFG.Successors(block).First();
+                if (sr.ICFG.Predecessors(succ).Count != 1)
+                    continue;
+                Debug.Assert(sr.ICFG.Predecessors(succ).First() == block, "Inconsistent graph");
+                if (!(block.Instructions.Last().Instructions.Last() is RtlAssignment))
+                    continue;
+
+                // Move all instructions into predecessor.
+                block.Instructions.AddRange(succ.Instructions);
+                sr.ICFG.RemoveEdge(block, succ);
+                var succSuccs = sr.ICFG.Successors(succ).ToList();
+                foreach (var ss in succSuccs)
+                {
+                    sr.ICFG.RemoveEdge(succ, ss);
+                    sr.ICFG.AddEdge(block, ss);
+                }
+                cluster.Blocks.Remove(succ);
+                // May be more blocks.
+                wl.Add(block);
+            }
         }
 
         /// <summary>
@@ -410,6 +442,11 @@ namespace Reko.Scanning
                 .ToList();
         }
 
+        /// <summary>
+        /// Starting at <paramref name="start"/> 
+        /// </summary>
+        /// <param name="start"></param>
+        /// <returns></returns>
         public List<RtlBlock> LinearSequence(RtlBlock start)
         {
             return new List<RtlBlock>();

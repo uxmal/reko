@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Rtl;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using System;
@@ -107,6 +108,20 @@ namespace Reko.UnitTests.Scanning
             sr.DirectlyCalledAddresses.Add(aTo.Address, 1);
         }
 
+        public void Given_Instrs(uint iBlock, Action<RtlEmitter> b)
+        {
+            var block = Block(iBlock);
+            var instrs = new List<RtlInstruction>();
+            var trace = new RtlEmitter(instrs);
+            b(trace);
+
+            block.Instructions.Add(
+                new RtlInstructionCluster(
+                    Address.Ptr32(iBlock * 4),
+                    4, 
+                    instrs.ToArray()));
+        }
+        
         private void AssertCluster(
             string sExp, 
             ProcedureDetector.Cluster cluster)
@@ -202,6 +217,18 @@ namespace Reko.UnitTests.Scanning
             Given_DirectCall(0x42, Fused3);
         }
 
+        private void Given_LinearCode()
+        {
+            // Models a simple linear set of blocks.
+            Given_Edge(1, 2);
+            Given_Edge(2, 3);
+            Given_DirectCall(1);
+            Given_Instrs(1, m =>
+            {
+                m.Assign(m.LoadW(m.Word16(0x1234)), m.Word16(0x5678));
+            });
+        }
+        
         public void Given_KnownProcedures()
         {
             // The set of known procedures is...
@@ -415,6 +442,24 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(3, newClusters.Count);
 
             Assert.IsTrue(Block(FusedExit).IsSharedExitBlock);
+        }
+
+        [Test]
+        public void Prdet_SimplifyCluster()
+        {
+            Given_LinearCode();
+            Given_ProcedureDetector();
+
+            var clusters = prdet.FindClusters();
+            Assert.AreEqual(1, clusters.Count);
+            var cluster = clusters[0];
+            prdet.Simplify(cluster);
+            var sExp =
+            #region Expected
+@"  00000001
+";
+            #endregion
+            AssertCluster(sExp, cluster);
         }
     }
 }
