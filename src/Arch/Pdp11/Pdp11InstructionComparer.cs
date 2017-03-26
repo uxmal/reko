@@ -68,7 +68,23 @@ namespace Reko.Arch.Pdp11
                 var immB = (ImmediateOperand)opB;
                 return CompareValues(immA.Value, immB.Value);
             }
-            throw new NotImplementedException();
+            var memA = opA as MemoryOperand;
+            if (memA != null)
+            {
+                var memB = (MemoryOperand)opB;
+                if (memA.PreDec != memB.PreDec)
+                    return false;
+                if (memA.PostInc != memB.PostInc)
+                    return false;
+                if (memA.Mode != memB.Mode)
+                    return false;
+                if (!NormalizeRegisters && !CompareRegisters(memA.Register, memB.Register))
+                    return false;
+                if (!NormalizeConstants && memA.EffectiveAddress != memB.EffectiveAddress)
+                    return false;
+                return true;
+            }
+            throw new NotImplementedException(opA.GetType().FullName);
         }
 
         public override int GetOperandsHash(MachineInstruction i)
