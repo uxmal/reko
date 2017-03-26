@@ -253,7 +253,7 @@ namespace Reko.Scanning
             {
                 if (listener.IsCanceled())
                     break;
-                Simplify(cluster);
+                FuseLinearBlocks(cluster);
                 if (FindClusterEntries(cluster))
                 {
                     procs.AddRange(PostProcessCluster(cluster));
@@ -262,7 +262,12 @@ namespace Reko.Scanning
             return procs;
         }
 
-        public void Simplify(Cluster cluster)
+        /// <summary>
+        /// As far as possible, try fusing consecutive linear blocks in the 
+        /// cluster.
+        /// </summary>
+        /// <param name="cluster"></param>
+        public void FuseLinearBlocks(Cluster cluster)
         {
             var wl = new WorkList<RtlBlock>(cluster.Blocks);
             RtlBlock block;

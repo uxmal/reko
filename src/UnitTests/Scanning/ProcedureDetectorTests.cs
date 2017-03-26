@@ -453,7 +453,7 @@ namespace Reko.UnitTests.Scanning
             var clusters = prdet.FindClusters();
             Assert.AreEqual(1, clusters.Count);
             var cluster = clusters[0];
-            prdet.Simplify(cluster);
+            prdet.FuseLinearBlocks(cluster);
             var sExp =
             #region Expected
 @"  00000001
