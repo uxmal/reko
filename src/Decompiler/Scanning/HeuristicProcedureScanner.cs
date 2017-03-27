@@ -189,7 +189,7 @@ namespace Reko.Scanning
 
         private void RemoveBlockFromGraph(RtlBlock n)
         {
-            Debug.Print("Removing block: {0}", n.Address);
+            //Debug.Print("Removing block: {0}", n.Address);
             blocks.Nodes.Remove(n);
         }
 

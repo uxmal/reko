@@ -83,7 +83,7 @@ namespace Reko.Arch.Z80
                 case Opcode.ex: RewriteEx(); break;
                 case Opcode.ex_af: RewriteExAf(); break;
                 case Opcode.exx: RewriteExx(); break;
-                case Opcode.hlt: m.SideEffect(host.PseudoProcedure("__hlt", VoidType.Instance)); break;
+                case Opcode.hlt: RewriteHlt(); break;
                 case Opcode.@in: RewriteIn(); break;
                 case Opcode.ini: RewriteIni(); break;
                 case Opcode.im:
@@ -92,10 +92,7 @@ namespace Reko.Arch.Z80
                 case Opcode.inc: RewriteInc(); break;
                 case Opcode.jp: RewriteJp(dasm.Current); break;
                 case Opcode.jr: RewriteJr(); break;
-                case Opcode.ld: m.Assign(
-                    RewriteOp(dasm.Current.Op1),
-                    RewriteOp(dasm.Current.Op2));
-                    break;
+                case Opcode.ld: RewriteLd();  break;
                 case Opcode.rl: RewriteRotation(PseudoProcedure.RolC, true); break;
                 case Opcode.rla: RewriteRotation(PseudoProcedure.Rol, false); break;
                 case Opcode.rlc: RewriteRotation(PseudoProcedure.RolC, false); break;
@@ -430,7 +427,11 @@ namespace Reko.Arch.Z80
             }
         }
 
-
+        private void RewriteHlt()
+        {
+            rtlc = RtlClass.Terminates;
+            m.SideEffect(host.PseudoProcedure("__hlt", VoidType.Instance));
+        }
 
         private void RewriteInc()
         {
@@ -498,6 +499,13 @@ namespace Reko.Arch.Z80
             {
                 m.Goto(target.Address);
             }
+        }
+
+        private void RewriteLd()
+        {
+            m.Assign(
+                RewriteOp(dasm.Current.Op1),
+                RewriteOp(dasm.Current.Op2));
         }
 
         private Expression RewriteOp(MachineOperand op)

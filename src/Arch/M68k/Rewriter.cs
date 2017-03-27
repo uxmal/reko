@@ -80,6 +80,7 @@ namespace Reko.Arch.M68k
                         di.code);
                     m.Invalid();
                     break;
+                case Opcode.illegal: RewriteIllegal(); break;
                 case Opcode.add: RewriteBinOp((s, d) => m.IAdd(d, s), FlagM.CVZNX); break;
                 case Opcode.adda: RewriteBinOp((s, d) => m.IAdd(d, s)); break;
                 case Opcode.addi: RewriteArithmetic((s, d) => m.IAdd(d, s)); break;
@@ -157,8 +158,6 @@ VS Overflow Set 1001 V
                 case Opcode.fmul: RewriteFBinOp((s, d) => m.FMul(d,s)); break;
                 case Opcode.fneg: RewriteFUnaryOp(m.Neg); break;
                 case Opcode.fsub: RewriteFBinOp((s, d) => m.FSub(d, s)); break;
-
-                case Opcode.illegal: RewriteIllegal(); break;
                 case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.jsr: RewriteJsr(); break;
                 case Opcode.lea: RewriteLea(); break;
@@ -198,12 +197,14 @@ VS Overflow Set 1001 V
                 case Opcode.spl: RewriteScc(ConditionCode.GT, FlagM.NF); break;
                 case Opcode.st: orw.RewriteMoveDst(di.op1, di.Address, PrimitiveType.Bool, Constant.True()); break;
                 case Opcode.sf: orw.RewriteMoveDst(di.op1, di.Address, PrimitiveType.Bool, Constant.False()); break;
+                case Opcode.stop: RewriteStop(); break;
                 case Opcode.sub: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
                 case Opcode.suba: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
                 case Opcode.subi: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
                 case Opcode.subq: RewriteAddSubq((s, d) => m.ISub(d, s)); break;
                 case Opcode.subx: RewriteArithmetic((s, d) => m.ISub(m.ISub(d, s), binder.EnsureFlagGroup(Registers.ccr, (uint)FlagM.XF, "X", PrimitiveType.Bool))); break;
                 case Opcode.swap: RewriteSwap(); break;
+                case Opcode.trap: RewriteTrap(); break;
                 case Opcode.tst: RewriteTst(); break;
                 case Opcode.unlk: RewriteUnlk(); break;
                 }

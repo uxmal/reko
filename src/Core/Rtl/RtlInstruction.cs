@@ -90,7 +90,8 @@ namespace Reko.Core.Rtl
         Call = 8,           // Instruction saves its continuation.
         Delay = 16,         // Next instruction is in the delay slot and may be executed.
         Annul = 32,         // Next instruction is annulled (see SPARC architecture)
-        Invalid = 64,       // Invalid instruction
+        Terminates = 64,    // Instruction terminates execution (e.g. x86 and ARM HLT)
+        Invalid = 128,      // Invalid instruction
         ConditionalTransfer = Conditional | Transfer,
     }
 

@@ -65,6 +65,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteHalt()
         {
+            rtlc = RtlClass.Terminates;
             var c = new ProcedureCharacteristics
             {
                 Terminates = true,

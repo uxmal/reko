@@ -153,5 +153,17 @@ namespace Reko.Arch.M68k
             rtlc = RtlClass.Transfer;
             m.Return(4, 0);
         }
+
+        private void RewriteStop()
+        {
+            m.SideEffect(host.PseudoProcedure("__stop", VoidType.Instance));
+        }
+
+        private void RewriteTrap()
+        {
+            rtlc = RtlClass.Transfer;
+            var vector = orw.RewriteSrc(di.op1, di.Address);
+            m.SideEffect(host.PseudoProcedure("__trap", VoidType.Instance, vector));
+        }
     }
 }

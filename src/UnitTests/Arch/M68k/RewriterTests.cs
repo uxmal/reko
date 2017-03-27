@@ -1301,7 +1301,16 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0x0ED3, 0x0102);        // cas.w d2,d1,(a3)
             AssertCode(
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|CVZN = atomic_compare_exchange_weak(&Mem0[a3:word16], (word16)d2, (word16)d1)");
+                "1|L--|CVZN = atomic_compare_exchange_weak(&Mem0[a3:word16], (word16) d1, (word16) d2)");
+        }
+
+        [Test]
+        public void M68krw_trap()
+        {
+            Rewrite(0x4E4E);
+            AssertCode(
+                "0|T--|00010000(2): 1 instructions",
+                "1|L--|__trap(0x0E)");
         }
     }
 }
