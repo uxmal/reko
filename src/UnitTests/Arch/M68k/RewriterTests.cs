@@ -1293,5 +1293,15 @@ namespace Reko.UnitTests.Arch.M68k
               "1|L--|C = a2 < Mem0[a1:word32] || a2 > Mem0[a1 + 0x00000004:word32]",
               "2|L--|Z = a2 == Mem0[a1:word32] || a2 == Mem0[a1 + 0x00000004:word32]");
         }
+
+        [Test]
+        public void M68krw_cas()
+        {
+            //$TODO: add "stdatomic.h"  to output file.
+            Rewrite(0x0ED3, 0x0102);        // cas.w d2,d1,(a3)
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|CVZN = atomic_compare_exchange_weak(&Mem0[a3:word16], (word16)d2, (word16)d1)");
+        }
     }
 }

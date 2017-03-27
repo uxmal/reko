@@ -119,6 +119,7 @@ VS Overflow Set 1001 V
                 case Opcode.bset: RewriteBclrBset("__bset"); break;
                 case Opcode.bsr: RewriteBsr(); break;
                 case Opcode.btst: RewriteBtst(); break;
+                case Opcode.cas: RewriteCas(); break;
                 case Opcode.clr: RewriteClr(); break;
                 case Opcode.chk: RewriteChk(); break;
                 case Opcode.chk2: RewriteChk2(); break;

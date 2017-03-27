@@ -308,6 +308,16 @@ namespace Reko.Arch.M68k
                     opDst, opSrc));
         }
 
+        private void RewriteCas()
+        {
+            m.Assign(
+                orw.FlagGroup(FlagM.CVZN),
+                host.PseudoProcedure("atomic_compare_exchange_weak", PrimitiveType.Bool,
+                    m.AddrOf(orw.RewriteSrc(di.op3, di.Address)),
+                    orw.RewriteSrc(di.op2, di.Address),
+                    orw.RewriteSrc(di.op1, di.Address)));
+        }
+
         private void RewriteClr()
         {
             var src = Constant.Create(di.dataWidth, 0);
