@@ -1073,7 +1073,7 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Hlt();
             });
             AssertCode(
-                "0|L--|10000000(1): 1 instructions",
+                "0|H--|10000000(1): 1 instructions",
                 "1|L--|__hlt()");
         }
 

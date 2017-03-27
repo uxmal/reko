@@ -64,10 +64,11 @@ namespace Reko.Core.Rtl
         public static string FormatClass(RtlClass rtlClass)
         {
             var sb = new StringBuilder();
-            switch (rtlClass & (RtlClass.Transfer|RtlClass.Linear))
+            switch (rtlClass & (RtlClass.Transfer|RtlClass.Linear|RtlClass.Terminates))
             {
             case RtlClass.Linear: sb.Append('L'); break;
             case RtlClass.Transfer: sb.Append('T'); break;
+            case RtlClass.Terminates: sb.Append('H'); break;
             default: sb.Append('-'); break;
             }
             sb.Append((rtlClass & RtlClass.Delay) != 0 ? 'D' : '-');
