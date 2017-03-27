@@ -329,6 +329,18 @@ namespace Reko.Arch.M68k
                 m.Cond(tmp));
         }
 
+        private void RewriteCmp2()
+        {
+            var reg = orw.RewriteSrc(di.op2, di.Address);
+            var lowBound = orw.RewriteSrc(di.op1, di.Address);
+            var ea = ((MemoryAccess)lowBound).EffectiveAddress;
+            var hiBound = m.Load(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
+            var C = orw.FlagGroup(FlagM.CF);
+            var Z = orw.FlagGroup(FlagM.ZF);
+            m.Assign(C, m.Cor(m.Lt(reg, lowBound), m.Gt(reg, hiBound)));
+            m.Assign(Z, m.Cor(m.Eq(reg, lowBound), m.Eq(reg, hiBound)));
+        }
+
         private void RewriteDiv(Func<Expression,Expression,Expression> op, DataType dt)
         {
             Debug.Print(di.dataWidth.ToString());
@@ -562,6 +574,16 @@ namespace Reko.Arch.M68k
                 return;
             }
             throw new AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
+        }
+
+        public void RewriteMovep()
+        {
+            var pname = (di.dataWidth == PrimitiveType.Word32)
+                ? "__movep_l"
+                : "__movep_w";
+            var op1 = RewriteSrcOperand(di.op1);
+            var op2 = RewriteSrcOperand(di.op2);
+            m.SideEffect(host.PseudoProcedure(pname, VoidType.Instance, op1, op2));
         }
 
         private Expression RewriteNegx(Expression expr)

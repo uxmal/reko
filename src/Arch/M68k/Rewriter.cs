@@ -121,7 +121,9 @@ VS Overflow Set 1001 V
                 case Opcode.btst: RewriteBtst(); break;
                 case Opcode.clr: RewriteClr(); break;
                 case Opcode.chk: RewriteChk(); break;
+                case Opcode.chk2: RewriteChk2(); break;
                 case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.cmp2: RewriteCmp2(); break;
                 case Opcode.cmpa: RewriteCmp(); break;
                 case Opcode.cmpi: RewriteCmp(); break;
                 case Opcode.cmpm: RewriteCmp(); break;
@@ -139,9 +141,13 @@ VS Overflow Set 1001 V
                 case Opcode.extb: RewriteExtb(); break;
                 case Opcode.fadd: RewriteFBinOp((s, d) => m.FAdd(d, s)); break;
                     //$REVIEW: the following don't respect NaN, but NaN typically doesn't exist in HLLs.
+                case Opcode.fbf: m.Nop(); break;
                 case Opcode.fbnge: RewriteFbcc(ConditionCode.LT); break;
                 case Opcode.fbnlt: RewriteFbcc(ConditionCode.GE); break;
                 case Opcode.fbnle: RewriteFbcc(ConditionCode.GT); break;
+                case Opcode.fbogl: RewriteFbcc(ConditionCode.NE); break;
+                case Opcode.fbult: RewriteFbcc(ConditionCode.LT); break;
+                case Opcode.fbun: RewriteFbcc(ConditionCode.IS_NAN); break;
                 case Opcode.fcmp: RewriteFcmp(); break;
                 case Opcode.fdiv: RewriteFBinOp((s, d) => m.FDiv(d, s)); break;
                 case Opcode.fmove: RewriteFmove(); break;
@@ -160,6 +166,7 @@ VS Overflow Set 1001 V
                 case Opcode.lsr: RewriteShift((s, d) => m.Shr(d, s)); break;
                 case Opcode.move: RewriteMove(true); break;
                 case Opcode.movea: RewriteMove(false); break;
+                case Opcode.movep: RewriteMovep(); break;
                 case Opcode.moveq: RewriteMoveq(); break;
                 case Opcode.movem: RewriteMovem(arch.GetRegister); break;
                 case Opcode.muls: RewriteMul((s, d) => m.SMul(d, s)); break;

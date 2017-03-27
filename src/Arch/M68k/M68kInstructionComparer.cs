@@ -167,7 +167,7 @@ namespace Reko.Arch.M68k
                 int h = 47;
                 if (!NormalizeRegisters)
                 {
-                    h = h * 7 ^ base.GetRegisterHash(pre.Register);
+                    h = h * 7 ^ base.GetRegisterHash(post.Register);
                 }
                 return h;
             }

@@ -82,6 +82,20 @@ namespace Reko.Arch.M68k
                     host.PseudoProcedure("__trap", VoidType.Instance, m.Byte(6))));
         }
 
+        private void RewriteChk2()
+        {
+            rtlc = RtlClass.Conditional | RtlClass.Linear;
+            var reg = orw.RewriteSrc(di.op2, di.Address);
+            var lowBound = orw.RewriteSrc(di.op1, di.Address);
+            var ea = ((MemoryAccess)lowBound).EffectiveAddress;
+            var hiBound = m.Load(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
+            m.If(m.Cor(
+                m.Lt(reg, lowBound),
+                m.Gt(reg, hiBound)),
+                new RtlSideEffect(
+                    host.PseudoProcedure("__trap", VoidType.Instance, m.Byte(6))));
+        }
+
         private void RewriteJmp()
         {
             rtlc = RtlClass.Transfer;

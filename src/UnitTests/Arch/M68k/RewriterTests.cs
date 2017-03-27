@@ -1274,5 +1274,24 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|L--|00010000(2): 1 instructions",
                 "1|---|if (d2 < 0x00000000 || d2 > d6) __trap(0x06)");
         }
+
+        [Test]
+        public void M68krw_movep()
+        {
+            Rewrite(0x0949, 0x0010);        // movep.w $10(a1), d4
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|__movep_l(Mem0[a1 + 16:word32], d4)");
+        }
+
+        [Test]
+        public void M68krw_cmp2()
+        {
+            Rewrite(0x04D1, 0xA000);        // cmp2 (a1),a2
+            AssertCode(
+              "0|L--|00010000(4): 2 instructions",
+              "1|L--|C = a2 < Mem0[a1:word32] || a2 > Mem0[a1 + 0x00000004:word32]",
+              "2|L--|Z = a2 == Mem0[a1:word32] || a2 == Mem0[a1 + 0x00000004:word32]");
+        }
     }
 }
