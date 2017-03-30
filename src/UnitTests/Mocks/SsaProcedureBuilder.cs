@@ -109,19 +109,5 @@ namespace Reko.UnitTests.Mocks
             AddMemIdToSsa(access);
             return access;
         }
-
-        public Statement Call(
-            Expression e,
-            int retSizeOnstack,
-            ICollection<Identifier> uses,
-            ICollection<Identifier> definitions)
-        {
-            var ci = new CallInstruction(e, new CallSite(retSizeOnstack, 0));
-            foreach (var use in uses)
-                ci.Uses.Add(new UseInstruction(use));
-            foreach (var def in definitions)
-                ci.Definitions.Add(new DefInstruction(def));
-            return Emit(ci);
-        }
     }
 }
