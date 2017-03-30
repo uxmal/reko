@@ -267,21 +267,6 @@ namespace Reko.Analysis
 	}
 
 
-	/// <summary>
-	/// Represents an assignment due to alias expansion. 
-	/// </summary>
-	public class AliasAssignment : Assignment
-	{
-		public AliasAssignment(Identifier idDst, Expression expSrc) : base(idDst, expSrc)
-		{
-		}
-
-		public override bool IsAlias
-		{
-			get { return true; }
-		}
-	}
-
     public class AliasDeadVariableMarker : StorageVisitor<Storage>
     {
         private Identifier idCur;

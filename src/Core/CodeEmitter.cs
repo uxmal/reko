@@ -38,6 +38,13 @@ namespace Reko.Core
         public abstract Frame Frame { get; }
         public abstract Identifier Register(int i);
 
+        public virtual AliasAssignment Alias(Identifier dst, Expression src)
+        {
+            var ass = new AliasAssignment(dst, src);
+            Emit(ass);
+            return ass;
+        }
+
         public virtual Assignment Assign(Identifier dst, Expression src)
         {
             var ass = new Assignment(dst, src);
@@ -47,9 +54,7 @@ namespace Reko.Core
 
         public virtual Assignment Assign(Identifier dst, int n)
         {
-            var ass = new Assignment(dst, Constant.Create((PrimitiveType)dst.DataType, n));
-            Emit(ass);
-            return ass;
+            return Assign(dst, Constant.Create((PrimitiveType)dst.DataType, n));
         }
 
         public virtual Assignment Assign(Identifier dst, bool f)
@@ -107,6 +112,7 @@ namespace Reko.Core
             return Emit(s);
         }
 
+
         public Statement SegStore(Expression basePtr, Expression ea, Expression src)
         {
             Store s = new Store(new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ea, src.DataType), src);
@@ -116,16 +122,6 @@ namespace Reko.Core
         public Statement Store(SegmentedAccess s, Expression exp)
         {
             return Emit(new Store(s, exp));
-        }
-
-        public Statement Sub(Identifier diff, Expression left, Expression right)
-        {
-            return Emit(new Assignment(diff, ISub(left, right)));
-        }
-
-        public Statement Sub(Identifier diff, Expression left, int right)
-        {
-            return Sub(diff, left, Int32(right));
         }
 
         public Identifier Local(PrimitiveType primitiveType, string name)

@@ -41,61 +41,20 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class ValuePropagationTests : AnalysisTestBase
 	{
-		SsaIdentifierCollection ssaIds;
         private MockRepository mr;
         private IProcessorArchitecture arch;
         private IImportResolver importResolver;
         private FakeDecompilerEventListener listener;
-        private ProcedureBuilder m;
+        private SsaProcedureBuilder m;
 
         [SetUp]
 		public void Setup()
 		{
-			ssaIds = new SsaIdentifierCollection();
             mr = new MockRepository();
             arch = mr.Stub<IProcessorArchitecture>();
             importResolver = mr.Stub<IImportResolver>();
             listener = new FakeDecompilerEventListener();
-            m = new ProcedureBuilder();
-        }
-
-        private Identifier Reg32(string name)
-        {
-            var mr = new RegisterStorage(name, ssaIds.Count, 0, PrimitiveType.Word32);
-            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
-            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-            ssaIds.Add(id, sid);
-            return sid.Identifier;
-        }
-
-        private Identifier Reg16(string name)
-        {
-            var mr = new RegisterStorage(name, ssaIds.Count, 0, PrimitiveType.Word16);
-            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
-            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-            ssaIds.Add(id, sid);
-            return sid.Identifier;
-        }
-
-
-        private Identifier Reg8(string name)
-        {
-            var mr = new RegisterStorage(name, ssaIds.Count, 0, PrimitiveType.Byte);
-            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
-            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-            ssaIds.Add(id, sid);
-            return sid.Identifier;
-        }
-
-        private SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression ptr)
-        {
-            var segMem = m.SegMem(dt, basePtr, ptr);
-            var idOld = segMem.MemoryId;
-            var idNew = new MemoryIdentifier(ssaIds.Count, idOld.DataType);
-            segMem.MemoryId = idNew;
-            var sid = new SsaIdentifier(idNew, idOld, null, null, false);
-            ssaIds.Add(idNew, sid);
-            return segMem;
+            m = new SsaProcedureBuilder();
         }
 
         private ExternalProcedure CreateExternalProcedure(string name, Identifier ret, params Identifier[] parameters)
@@ -161,32 +120,11 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
-        private void RunValuePropagator(ProcedureBuilder m)
+        private void RunValuePropagator()
         {
-            var ssa = new SsaState(m.Procedure, null);
-            foreach (var ssaId in ssaIds)
-                ssa.Identifiers.Add(ssaId.Identifier, ssaId);
-            ssaIds = ssa.Identifiers;
-            var stms = m.Procedure.EntryBlock.Succ[0].Statements;
-            stms.ForEach(stm =>
-            {
-                var ass = stm.Instruction as Assignment;
-                if (ass != null)
-                {
-                    ssaIds[ass.Dst].DefStatement = stm;
-                    ssaIds[ass.Dst].DefExpression = ass.Src;
-                }
-                var phiAss = stm.Instruction as PhiAssignment;
-                if (phiAss != null)
-                {
-                    ssaIds[phiAss.Dst].DefStatement = stm;
-                    ssaIds[phiAss.Dst].DefExpression = phiAss.Src;
-                }
-                ssa.AddUses(stm);
-            });
-            var vp = new ValuePropagator(arch, ssa, listener);
+            var vp = new ValuePropagator(arch, m.Ssa, listener);
             vp.Transform();
-            ssa.CheckUses(s => Assert.Fail(s));
+            m.Ssa.CheckUses(s => Assert.Fail(s));
         }
 
 		[Test]
@@ -297,7 +235,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpEquality()
 		{
-			Identifier foo = Reg32("foo");
+			Identifier foo = m.Reg32("foo");
 
             var vp = CreatePropagatorWithDummyStatement();
 			BinaryExpression expr = 
@@ -313,7 +251,7 @@ namespace Reko.UnitTests.Analysis
 
         private ExpressionSimplifier CreatePropagatorWithDummyStatement()
         {
-            var ctx = new SsaEvaluationContext(arch, ssaIds);
+            var ctx = new SsaEvaluationContext(arch, m.Ssa.Identifiers);
             ctx.Statement = new Statement(0, new SideEffect(Constant.Word32(32)), null);
             return new ExpressionSimplifier(ctx, listener);
         }
@@ -321,10 +259,10 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpAddZero()
 		{
-			Identifier r = Reg32("r");
+			Identifier r = m.Reg32("r");
 
             var sub = new BinaryExpression(Operator.ISub, PrimitiveType.Word32, new MemoryAccess(MemoryIdentifier.GlobalMemory, r, PrimitiveType.Word32), Constant.Word32(0));
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds), listener);
+            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
 			var exp = sub.Accept(vp);
 			Assert.AreEqual("Mem0[r:word32]", exp.ToString());
 		}
@@ -339,21 +277,16 @@ namespace Reko.UnitTests.Analysis
             // y = x - 2
             // if (x == 2)
 
-            ProcedureBuilder m = new ProcedureBuilder();
-            var ssa = new SsaState(m.Procedure, null);
-            this.ssaIds = ssa.Identifiers;
-            Identifier x = Reg32("x");
-			Identifier y = Reg32("y");
+            var x = m.Reg32("x");
+			var y = m.Reg32("y");
             var stmX = m.Assign(x, m.LoadDw(Constant.Word32(0x1000300)));
-			ssaIds[x].DefStatement = m.Block.Statements.Last;
             var stmY = m.Assign(y, m.ISub(x, 2));
-			ssaIds[y].DefStatement = m.Block.Statements.Last;
 			var stm = m.BranchIf(m.Eq(y, 0), "test");
-			Assert.AreEqual("x = Mem0[0x01000300:word32]", stmX.ToString());
+			Assert.AreEqual("x = Mem2[0x01000300:word32]", stmX.ToString());
 			Assert.AreEqual("y = x - 0x00000002", stmY.ToString());
 			Assert.AreEqual("branch y == 0x00000000 test", stm.ToString());
 
-			var vp = new ValuePropagator(arch, ssa, listener);
+			var vp = new ValuePropagator(arch, m.Ssa, listener);
 			vp.Transform(stm);
 			Assert.AreEqual("branch x == 0x00000002 test", stm.Instruction.ToString());
 		}
@@ -361,46 +294,41 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpCopyPropagate()
 		{
-            var ssa = new SsaState(new Procedure("foo", new Frame(PrimitiveType.Pointer32)), null);
-            ssaIds = ssa.Identifiers;
-			Identifier x = Reg32("x");
-			Identifier y = Reg32("y");
-			Identifier z = Reg32("z");
-			Identifier w = Reg32("w");
-			Statement stmX = new Statement(0, new Assignment(x, new MemoryAccess(MemoryIdentifier.GlobalMemory, Constant.Word32(0x10004000), PrimitiveType.Word32)), null);
-			Statement stmY = new Statement(1, new Assignment(y, x), null);
-			Statement stmZ = new Statement(2, new Assignment(z, new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, y, Constant.Word32(2))), null);
-			Statement stmW = new Statement(3, new Assignment(w, y), null);
-			ssaIds[x].DefStatement = stmX;
-			ssaIds[y].DefStatement = stmY;
-			ssaIds[z].DefStatement = stmZ;
-			ssaIds[w].DefStatement = stmW;
-			ssaIds[x].Uses.Add(stmY);
-			ssaIds[y].Uses.Add(stmZ);
-			ssaIds[y].Uses.Add(stmW);
-			Assert.AreEqual("x = Mem0[0x10004000:word32]", stmX.Instruction.ToString());
+			var x = m.Reg32("x");
+            var y = m.Reg32("y");
+            var z = m.Reg32("z");
+            var w = m.Reg32("w");
+			m.Assign(x, m.LoadDw(Constant.Word32(0x10004000)));
+            var stmX = m.Block.Statements.Last();
+            m.Assign(y, x);
+            var stmY = m.Block.Statements.Last();
+            m.Assign(z, m.IAdd(y, Constant.Word32(2)));
+            var stmZ = m.Block.Statements.Last();
+            m.Assign(w, y);
+            var stmW = m.Block.Statements.Last();
+            Assert.AreEqual("x = Mem4[0x10004000:word32]", stmX.Instruction.ToString());
 			Assert.AreEqual("y = x", stmY.Instruction.ToString());
 			Assert.AreEqual("z = y + 0x00000002", stmZ.Instruction.ToString());
 			Assert.AreEqual("w = y", stmW.Instruction.ToString());
 
-			ValuePropagator vp = new ValuePropagator(arch, ssa, listener);
+			var vp = new ValuePropagator(arch, m.Ssa, listener);
 			vp.Transform(stmX);
 			vp.Transform(stmY);
 			vp.Transform(stmZ);
 			vp.Transform(stmW);
 
-			Assert.AreEqual("x = Mem0[0x10004000:word32]", stmX.Instruction.ToString());
+			Assert.AreEqual("x = Mem4[0x10004000:word32]", stmX.Instruction.ToString());
 			Assert.AreEqual("y = x", stmY.Instruction.ToString());
 			Assert.AreEqual("z = x + 0x00000002", stmZ.Instruction.ToString());
 			Assert.AreEqual("w = x", stmW.Instruction.ToString());
-			Assert.AreEqual(3, ssaIds[x].Uses.Count);
-			Assert.AreEqual(0, ssaIds[y].Uses.Count);
+			Assert.AreEqual(3, m.Ssa.Identifiers[x].Uses.Count);
+			Assert.AreEqual(0, m.Ssa.Identifiers[y].Uses.Count);
 		}
 
 		[Test]
 		public void VpSliceConstant()
 		{
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds), listener);
+            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, null), listener);
             Expression c = new Slice(PrimitiveType.Byte, Constant.Word32(0x10FF), 0).Accept(vp);
 			Assert.AreEqual("0xFF", c.ToString());
 		}
@@ -408,9 +336,9 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpNegSub()
 		{
-			Identifier x = Reg32("x");
-			Identifier y = Reg32("y");
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds), listener);
+			Identifier x = m.Reg32("x");
+			Identifier y = m.Reg32("y");
+            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
 			Expression e = vp.VisitUnaryExpression(
 				new UnaryExpression(Operator.Neg, PrimitiveType.Word32, new BinaryExpression(
 				Operator.ISub, PrimitiveType.Word32, x, y)));
@@ -423,8 +351,8 @@ namespace Reko.UnitTests.Analysis
 		[Test] 
 		public void VpMulAddShift()
 		{
-			Identifier id = Reg32("id");
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds), listener);
+			Identifier id = m.Reg32("id");
+            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
 			PrimitiveType t = PrimitiveType.Int32;
 			BinaryExpression b = new BinaryExpression(Operator.Shl, t, 
 				new BinaryExpression(Operator.IAdd, t, 
@@ -438,10 +366,9 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpShiftShift()
 		{
-			Identifier id = Reg32("id");
-			ProcedureBuilder m = new ProcedureBuilder();
+			Identifier id = m.Reg32("id");
 			Expression e = m.Shl(m.Shl(id, 1), 4);
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds), listener);
+            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
 			e = e.Accept(vp);
 			Assert.AreEqual("id << 0x05", e.ToString());
 		}
@@ -451,7 +378,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
 			Expression e = m.Shl(1, m.ISub(Constant.Byte(32), 1));
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds), listener);
+            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, null), listener);
 			e = e.Accept(vp);
 			Assert.AreEqual("0x80000000", e.ToString());
 		}
@@ -462,7 +389,7 @@ namespace Reko.UnitTests.Analysis
 			Constant pre = Constant.Word16(0x0001);
 			Constant fix = Constant.Word16(0x0002);
 			Expression e = new MkSequence(PrimitiveType.Word32, pre, fix);
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds), listener);
+            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, null), listener);
 			e = e.Accept(vp);
 			Assert.AreEqual("0x00010002", e.ToString());
 		}
@@ -471,9 +398,9 @@ namespace Reko.UnitTests.Analysis
         public void SliceShift()
         {
             Constant eight = Constant.Word16(8);
-            Identifier C = Reg8("C");
+            Identifier C = m.Reg8("C");
             Expression e = new Slice(PrimitiveType.Byte, new BinaryExpression(Operator.Shl, PrimitiveType.Word16, C, eight), 8);
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds), listener);
+            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
             e = e.Accept(vp);
             Assert.AreEqual("C", e.ToString());
         }
@@ -487,7 +414,7 @@ namespace Reko.UnitTests.Analysis
             mr.ReplayAll();
 
             Expression e = new MkSequence(PrimitiveType.Word32, seg, off);
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds), listener);
+            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, null), listener);
             e = e.Accept(vp);
             Assert.IsInstanceOf(typeof(Address), e);
             Assert.AreEqual("4711:4111", e.ToString());
@@ -500,13 +427,13 @@ namespace Reko.UnitTests.Analysis
         {
             var c1 = Constant.Word16(0x4711);
             var c2 = Constant.Word16(0x4711);
-            var r1 = Reg16("r1");
-            var r2 = Reg16("r2");
-            var r3 = Reg16("r3");
-            m.Emit(m.Assign(r1, c1));
-            m.Emit(m.Assign(r2, c2));
+            var r1 = m.Reg16("r1");
+            var r2 = m.Reg16("r2");
+            var r3 = m.Reg16("r3");
+            m.Assign(r1, c1);
+            m.Assign(r2, c2);
             var phiStm = m.Phi(r3, r1, r2);
-            RunValuePropagator(m);
+            RunValuePropagator();
             Assert.AreEqual("r3 = 0x4711", phiStm.Instruction.ToString());
         }
 
@@ -516,14 +443,14 @@ namespace Reko.UnitTests.Analysis
             "expression then replace phi assignment with x = <exp>)")]
         public void VpPhiLoops()
         {
-            var fp = Reg16("fp");
-            var a = Reg16("a");
-            var b = Reg16("b");
-            var c = Reg16("c");
-            var d = Reg16("d");
-            var x = Reg16("x");
-            var y = Reg16("y");
-            var z = Reg16("z");
+            var fp = m.Reg16("fp");
+            var a = m.Reg16("a");
+            var b = m.Reg16("b");
+            var c = m.Reg16("c");
+            var d = m.Reg16("d");
+            var x = m.Reg16("x");
+            var y = m.Reg16("y");
+            var z = m.Reg16("z");
             m.Assign(y, m.IAdd(x, 4));
             m.Assign(z, m.ISub(x, 8));
             m.Assign(a, m.ISub(fp, 12));
@@ -531,7 +458,7 @@ namespace Reko.UnitTests.Analysis
             m.Assign(c, m.ISub(y, 4));
             m.Assign(d, m.IAdd(z, 8));
             var phiStm = m.Phi(x, a, b, c, d);
-            RunValuePropagator(m);
+            RunValuePropagator();
             Assert.AreEqual("x = fp - 0x000C", phiStm.Instruction.ToString());
         }
 
@@ -541,19 +468,18 @@ namespace Reko.UnitTests.Analysis
             "expression then replace phi assignment with x = <exp>)")]
         public void VpPhiLoopsSimplifyArgs()
         {
-            var m = new ProcedureBuilder();
-            var sp = Reg16("sp");
-            var sp_1 = Reg16("sp_1");
-            var sp_2 = Reg16("sp_2");
-            var a = Reg16("a");
-            var b = Reg16("b");
-            var c = Reg16("c");
-            var d = Reg16("d");
-            var v = Reg16("v");
-            var w = Reg16("w");
-            var x = Reg16("x");
-            var y = Reg16("y");
-            var z = Reg16("z");
+            var sp = m.Reg16("sp");
+            var sp_1 = m.Reg16("sp_1");
+            var sp_2 = m.Reg16("sp_2");
+            var a = m.Reg16("a");
+            var b = m.Reg16("b");
+            var c = m.Reg16("c");
+            var d = m.Reg16("d");
+            var v = m.Reg16("v");
+            var w = m.Reg16("w");
+            var x = m.Reg16("x");
+            var y = m.Reg16("y");
+            var z = m.Reg16("z");
             m.Phi(sp, sp_1, sp_2);
             m.Assign(v, m.ISub(sp, 4));
             m.Assign(w, m.ISub(sp, 8));
@@ -564,26 +490,26 @@ namespace Reko.UnitTests.Analysis
             m.Assign(c, m.ISub(y, 4));
             m.Assign(d, m.IAdd(z, 8));
             var phiStm = m.Phi(x, a, b, c, d);
-            RunValuePropagator(m);
+            RunValuePropagator();
             Assert.AreEqual("x = sp - 0x000C", phiStm.Instruction.ToString());
         }
 
         [Test]
         public void VpUndoSlicingOfSegmentPointerCheckUses()
         {
-            var es = Reg16("es");
-            var es_2 = Reg16("es_2");
-            var bx = Reg16("bx");
-            var bx_3 = Reg16("bx_3");
-            var bx_4 = Reg16("bx_4");
-            var es_bx_1 = Reg32("es_bx_1");
+            var es = m.Reg16("es");
+            var es_2 = m.Reg16("es_2");
+            var bx = m.Reg16("bx");
+            var bx_3 = m.Reg16("bx_3");
+            var bx_4 = m.Reg16("bx_4");
+            var es_bx_1 = m.Reg32("es_bx_1");
 
-            m.Store(SegMem(PrimitiveType.Byte, es, m.IAdd(bx, 4)), m.Byte(3));
-            m.Assign(es_bx_1, SegMem(PrimitiveType.Word32, es, bx));
+            m.Store(m.SegMem(PrimitiveType.Byte, es, m.IAdd(bx, 4)), m.Byte(3));
+            m.Assign(es_bx_1, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
             m.Assign(bx_3, m.Cast(PrimitiveType.Word16, es_bx_1));
-            var instr = m.Assign(bx_4, SegMem(PrimitiveType.Word16, es_2, m.IAdd(bx_3, 4)));
-            RunValuePropagator(m);
+            var instr = m.Assign(bx_4, m.SegMem(PrimitiveType.Word16, es_2, m.IAdd(bx_3, 4)));
+            RunValuePropagator();
             Assert.AreEqual("bx_4 = Mem8[es_bx_1 + 0x0004:word16]", instr.ToString());
         }
 
@@ -997,19 +923,19 @@ ProcedureBuilder_exit:
         [Test]
         public void VpUndoSlicingOfSegmentPointerCheckUses_NoOffset()
         {
-            var es = Reg16("es");
-            var es_2 = Reg16("es_2");
-            var bx = Reg16("bx");
-            var bx_3 = Reg16("bx_3");
-            var bx_4 = Reg16("bx_4");
-            var es_bx_1 = Reg32("es_bx_1");
+            var es = m.Reg16("es");
+            var es_2 = m.Reg16("es_2");
+            var bx = m.Reg16("bx");
+            var bx_3 = m.Reg16("bx_3");
+            var bx_4 = m.Reg16("bx_4");
+            var es_bx_1 = m.Reg32("es_bx_1");
 
-            m.Store(SegMem(PrimitiveType.Byte, es, m.IAdd(bx, 4)), m.Byte(3));
-            m.Assign(es_bx_1, SegMem(PrimitiveType.Word32, es, bx));
+            m.Store(m.SegMem(PrimitiveType.Byte, es, m.IAdd(bx, 4)), m.Byte(3));
+            m.Assign(es_bx_1, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
             m.Assign(bx_3, m.Cast(PrimitiveType.Word16, es_bx_1));
-            var instr = m.Assign(bx_4, SegMem(PrimitiveType.Word16, es_2, bx_3));
-            RunValuePropagator(m);
+            var instr = m.Assign(bx_4, m.SegMem(PrimitiveType.Word16, es_2, bx_3));
+            RunValuePropagator();
             Assert.AreEqual("bx_4 = Mem8[es_bx_1:word16]", instr.ToString());
         }
     }
