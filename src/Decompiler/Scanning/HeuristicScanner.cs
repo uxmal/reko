@@ -180,6 +180,7 @@ namespace Reko.Scanning
             }
             // Remove blocks that fall off the end of the segment
             // or into data.
+            Probe(sr);
             var deadNodes = dasm.RemoveBadInstructionsFromGraph();
             dasm.BuildIcfg(deadNodes);
             Probe(sr);
@@ -195,10 +196,11 @@ namespace Reko.Scanning
                 sr.ICFG,
                 program.SegmentMap.IsValidAddress,
                 host);
-            hsc.DumpGraph();
             RemoveInvalidBlocks(sr);
+            Probe(sr);
             hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
-
+            Probe(sr);
+            hsc.DumpGraph();
             var pd = new ProcedureDetector(program, sr, this.eventListener);
             var procs = pd.DetectProcedures();
             sr.Procedures = procs;

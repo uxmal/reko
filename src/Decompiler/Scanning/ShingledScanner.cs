@@ -194,6 +194,7 @@ namespace Reko.Scanning
                     continue;
                 }
                 var i = dasm.Current;
+
                 if (IsInvalid(mem, i))
                 {
                     AddEdge(G, bad, i.Address);
@@ -333,6 +334,7 @@ namespace Reko.Scanning
             var edges = new List<Tuple<RtlBlock, Address>>();
             var mpBlocks = new Dictionary<Address, RtlBlock>();
             var wl = sr.Instructions.Keys.ToSortedSet();
+
             while (wl.Count > 0)
             {
                 var addr = wl.First();
@@ -410,8 +412,6 @@ namespace Reko.Scanning
                     }
 
                     wl.Remove(addrInstrEnd);
-                    if (addrInstrEnd.ToString().EndsWith("93DC"))
-                        addrInstrEnd.ToString();
                     instr = sr.Instructions[addrInstrEnd];
                     block.Instructions.Add(instr);
                     endBlockNow = terminateDeferred;
@@ -457,10 +457,13 @@ namespace Reko.Scanning
         /// <returns></returns>
         private bool MayFallThrough(RtlInstructionCluster i)
         {
-            return (i.Class &
-                ( RtlClass.Linear 
-                | RtlClass.Conditional 
-                | RtlClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
+            return 
+                (i.Class & RtlClass.Terminates) == 0
+                &&
+                (i.Class &
+                  (RtlClass.Linear 
+                   | RtlClass.Conditional 
+                   | RtlClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
         }
 
         private bool IsTransfer(RtlInstructionCluster i, RtlInstruction r)

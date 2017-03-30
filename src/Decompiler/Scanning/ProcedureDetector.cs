@@ -43,7 +43,7 @@ namespace Reko.Scanning
         private Program program;
         private ScanResults sr;
         private DecompilerEventListener listener;
-        private HashSet<Address> knownProcedures;
+        private HashSet<Address> procedures;
         private Dictionary<Address, RtlBlock> mpAddrToBlock;
 
         public ProcedureDetector(Program program, ScanResults sr, DecompilerEventListener listener)
@@ -51,7 +51,7 @@ namespace Reko.Scanning
             this.program = program;
             this.sr = sr;
             this.listener = listener;
-            this.knownProcedures = sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys).ToHashSet();
+            this.procedures = sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys).ToHashSet();
             DumpDuplicates(sr.ICFG.Nodes);
             this.mpAddrToBlock = sr.ICFG.Nodes.ToDictionary(de => de.Address);
         }
@@ -94,7 +94,7 @@ namespace Reko.Scanning
         /// </summary>
         public void RemoveJumpsToKnownProcedures()
         {
-            foreach (var calldest in this.knownProcedures)
+            foreach (var calldest in this.procedures)
             {
                 if (listener.IsCanceled())
                     break;
@@ -157,7 +157,7 @@ namespace Reko.Scanning
 
                     foreach (var c in b.Instructions)
                     {
-                        Debug.Print("  {0} - {1}", c.Address, c.Length);
+                        //Debug.Print("  {0} - {1}", c.Address, c.Length);
                         foreach (var r in c.Instructions)
                         {
                             Debug.Print("    {0}", r);
@@ -219,13 +219,13 @@ namespace Reko.Scanning
                 if (nodesLeft.Contains(s))
                 {
                     // Only add if successor is not CALLed.
-                    if (!knownProcedures.Contains(s.Address))
+                    if (!procedures.Contains(s.Address))
                     {
                         BuildWCC(s, cluster, nodesLeft);
                     }
                 }
             }
-            if (!knownProcedures.Contains(node.Address))
+            if (!procedures.Contains(node.Address))
             {
                 // Only backtrack through predecessors if the node
                 // is not CALLed.
@@ -307,7 +307,7 @@ namespace Reko.Scanning
             var nopreds = new List<RtlBlock>();
             foreach (var block in cluster.Blocks)
             {
-                if (knownProcedures.Contains(block.Address))
+                if (procedures.Contains(block.Address))
                 {
                     cluster.Entries.Add(block);
                 }

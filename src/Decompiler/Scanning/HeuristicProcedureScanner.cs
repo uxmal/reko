@@ -517,12 +517,12 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         public void DumpGraph()
         {
-            return;     // This is horribly verbose, so only use it when debugging unit tests.
+            //return;     // This is horribly verbose, so only use it when debugging unit tests.
             Debug.Print("{0} nodes", blocks.Nodes.Count);
             foreach (var block in blocks.Nodes.OrderBy(n => n.Address))
             {
                 var addrEnd = block.GetEndAddress();
-                Debug.Print("{0}:  //  {1}",
+                Debug.Print("{0}:  //  pred: {1}",
                     block.Name, 
                     string.Join(" ", blocks.Predecessors(block)
                         .OrderBy(n => n.Address)
@@ -535,7 +535,7 @@ namespace Reko.Scanning
                         Debug.Print("    {0}", instr);
                     }
                 }
-                Debug.Print("  {0}", string.Join(" ", blocks.Successors(block)
+                Debug.Print("  succ: {0}", string.Join(" ", blocks.Successors(block)
                     .OrderBy(n => n.Address)
                     .Select(n => n.Address)));
             }

@@ -62,7 +62,8 @@ namespace Reko.Scanning
 
         /// <summary>
         /// These are addresses that are known, because metadata in the
-        /// executable image describes them as such.
+        /// executable image describes them as such, or because the user
+        /// specified the address.
         /// </summary>
         public Dictionary<Address, ImageSymbol> KnownAddresses;
 

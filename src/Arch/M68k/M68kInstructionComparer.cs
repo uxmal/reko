@@ -80,7 +80,21 @@ namespace Reko.Arch.M68k
                 var regsetB = opB as RegisterSetOperand;
                 return NormalizeRegisters || regsetA.BitSet == regsetB.BitSet;
             }
-            throw new NotImplementedException();
+            var memA = opA as MemoryOperand;
+            if (memA != null)
+            {
+                var memB = (MemoryOperand)opB;
+                if (!NormalizeRegisters && !CompareRegisters(memA.Base, memB.Base))
+                    return false;
+                return NormalizeConstants || CompareValues(memA.Offset, memB.Offset);
+            }
+            var addrA = opA as M68kAddressOperand;
+            if (addrA != null)
+            {
+                var addrB = (M68kAddressOperand)opB;
+                return NormalizeConstants || addrA.Address == addrB.Address;
+            }
+            throw new NotImplementedException(opA.GetType().FullName);
         }
 
         public override int GetOperandsHash(MachineInstruction instr)
