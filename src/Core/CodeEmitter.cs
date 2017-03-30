@@ -45,6 +45,13 @@ namespace Reko.Core
             return ass;
         }
 
+        public virtual AliasAssignment Alias(Identifier dst, Expression src)
+        {
+            var ass = new AliasAssignment(dst, src);
+            Emit(ass);
+            return ass;
+        }
+
         public virtual Assignment Assign(Identifier dst, int n)
         {
             var ass = new Assignment(dst, Constant.Create((PrimitiveType)dst.DataType, n));
@@ -122,16 +129,6 @@ namespace Reko.Core
         public Statement Store(SegmentedAccess s, Expression exp)
         {
             return Emit(new Store(s, exp));
-        }
-
-        public Statement Sub(Identifier diff, Expression left, Expression right)
-        {
-            return Emit(new Assignment(diff, ISub(left, right)));
-        }
-
-        public Statement Sub(Identifier diff, Expression left, int right)
-        {
-            return Sub(diff, left, Int32(right));
         }
 
         public Identifier Local(PrimitiveType primitiveType, string name)

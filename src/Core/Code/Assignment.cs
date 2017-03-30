@@ -90,4 +90,20 @@ namespace Reko.Core.Code
 			v.VisitStore(this);
 		}
 	}
+
+    /// <summary>
+    /// Represents an assignment due to alias expansion. 
+    /// //$REFACTOR: this class is used so rarely, it may be deleted.
+    /// </summary>
+    public class AliasAssignment : Assignment
+    {
+        public AliasAssignment(Identifier idDst, Expression expSrc) : base(idDst, expSrc)
+        {
+        }
+
+        public override bool IsAlias
+        {
+            get { return true; }
+        }
+    }
 }
