@@ -329,7 +329,9 @@ namespace Reko.UnitTests.Analysis
             var uses = new Identifier[] { b };
             var defines = new Identifier[] { a };
             var callStm = m.Call(fn, 4, uses, defines);
+
             RunIndirectCallRewriter();
+
             Assert.AreEqual("a = fn(b)", callStm.Instruction.ToString());
         }
     }
