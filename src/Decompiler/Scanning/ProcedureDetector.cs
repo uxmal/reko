@@ -79,7 +79,6 @@ namespace Reko.Scanning
         {
             PreprocessIcfg();
             var clusters = FindClusters();
-            DumpClusters(clusters, sr);
             return BuildProcedures(clusters);
         }
 
@@ -165,7 +164,7 @@ namespace Reko.Scanning
                         }
                     }
                     Debug.Print("  succ: {0}",
-                        string.Join(",",icfg.Successors(b)));
+                        string.Join(",", icfg.Successors(b)));
                 }
             }
             //$DEBUG
@@ -250,6 +249,7 @@ namespace Reko.Scanning
         private List<RtlProcedure> BuildProcedures(IEnumerable<Cluster> clusters)
         {
             var procs = new List<RtlProcedure>();
+            int n = 0;
             foreach (var cluster in clusters)
             {
                 if (listener.IsCanceled())
@@ -259,6 +259,7 @@ namespace Reko.Scanning
                 {
                     procs.AddRange(PostProcessCluster(cluster));
                 }
+                ++n;
             }
             return procs;
         }
@@ -392,12 +393,19 @@ namespace Reko.Scanning
             // immediate dominatores of all reachable blocks.
             var auxNode = new RtlBlock(null, "<root>");
             sr.ICFG.AddNode(auxNode);
-            foreach (var entry in cluster.Entries)
+            var allEntries =
+                cluster.Entries.Concat(
+                cluster.Blocks
+                    .Where(b => sr.ICFG.Predecessors(b).Count == 0))
+                .Distinct()
+                .OrderBy(b => b.Address)
+                .ToList();
+            foreach (var entry in allEntries)
             {
                 sr.ICFG.AddEdge(auxNode, entry);
             }
             var idoms = LTDominatorGraph<RtlBlock>.Create(sr.ICFG, auxNode);
-
+            DumpDominatorTrees(idoms);
             // Find all nodes whose immediate dominator is "<root>". 
             // Those are the entries to new clusters and may contain blocks
             // that are shared between procedures in the source program.
@@ -414,6 +422,8 @@ namespace Reko.Scanning
                 for (;;)
                 {
                     var i = idoms[n];
+                    if (i == null)
+                        break;
                     if (dominatedEntries.ContainsKey(i))
                     {
                         // If my idom is already in the set, add me too.
@@ -446,6 +456,48 @@ namespace Reko.Scanning
                 .ToList();
         }
 
+        private void DumpDominatorTrees(Dictionary<RtlBlock, RtlBlock> idoms)
+        {
+            var roots = new SortedSet<Address>();
+            var tree = new SortedList<Address, SortedSet<Address>>();
+            foreach (var de in idoms)
+            {
+                if (de.Key.Address == null)
+                    continue;
+                if (de.Value == null || de.Value.Address == null)
+                    roots.Add(de.Key.Address);
+                else
+                {
+                    SortedSet<Address> kids;
+                    if (!tree.TryGetValue(de.Value.Address, out kids))
+                    {
+                        kids = new SortedSet<Address>();
+                        tree.Add(de.Value.Address, kids);
+                    }
+                    kids.Add(de.Key.Address);
+                }
+            }
+            foreach (var root in roots)
+            {
+                Debug.Print("== {0} =======", root);
+                DumpDominatorTree(root, tree, "");
+            }
+        }
+
+        private void DumpDominatorTree(Address node, SortedList<Address, SortedSet<Address>> tree, string sIndent)
+        {
+            Debug.Print("{0}+ {1}", sIndent, node);
+            SortedSet<Address> kids;
+            if (tree.TryGetValue(node, out kids))
+            {
+                sIndent = sIndent + "  ";
+                foreach (var kid in kids)
+                {
+                    DumpDominatorTree(kid, tree, sIndent);
+                }
+            }
+        }
+
         /// <summary>
         /// Starting at <paramref name="start"/> 
         /// </summary>
@@ -467,7 +519,7 @@ namespace Reko.Scanning
                 select new { Name = n.Name, Kid = de.Key != null ? de.Key.Name : "*" };
             foreach (var item in q)
             {
-                Debug.Print("{0}: {1}", item.Name, item.Kid );
+                Debug.Print("{0}: {1}", item.Name, item.Kid);
             }
         }
 
@@ -499,6 +551,7 @@ namespace Reko.Scanning
             }
         }
 
+        [Conditional("DEBUG")]
         private void DumpClusters(List<Cluster> clusters, ScanResults sr)
         {
             var ICFG = sr.ICFG;
@@ -509,42 +562,44 @@ namespace Reko.Scanning
                  orderby min
                  select c))
             {
-                Debug.Print("-- Cluster -----------------------------");
-                Debug.Print("{0} nodes", cc.Blocks.Count);
-                foreach (var block in cc.Blocks.OrderBy(n => n.Address))
+                DumpCluster(cc, sr);
+            }
+        }
+
+        [Conditional("DEBUG")]
+        private void DumpCluster(Cluster cc, ScanResults sr)
+        {
+            Debug.Print("-- Cluster -----------------------------");
+            Debug.Print("{0} nodes", cc.Blocks.Count);
+            foreach (var block in cc.Blocks.OrderBy(n => n.Address))
+            {
+                var addrEnd = block.GetEndAddress();
+                if (sr.KnownProcedures.Contains(block.Address))
                 {
-                    var addrEnd = block.GetEndAddress();
-                    if (sr.KnownProcedures.Contains(block.Address))
-                    {
-                        Debug.WriteLine("");
-                        Debug.Print("-- {0}: known procedure ----------", block.Address);
-                    }
-                    else if (sr.DirectlyCalledAddresses.ContainsKey(block.Address))
-                    {
-                        Debug.WriteLine("");
-                        Debug.Print("-- {0}: possible procedure, called {1} time(s) ----------",
-                            block.Address,
-                            sr.DirectlyCalledAddresses[block.Address]);
-                    }
-                    Debug.Print("{0}:  //  pred: {1}",
-                        block.Name,
-                        string.Join(" ", ICFG.Predecessors(block)
-                            .OrderBy(n => n.Address)
-                            .Select(n => n.Address)));
-                    foreach (var cluster in block.Instructions)
-                    {
-                        Debug.Print("  {0}", cluster);
-                        foreach (var instr in cluster.Instructions)
-                        {
-                            Debug.Print("    {0}", instr);
-                        }
-                    }
-                    Debug.Print("  // succ: {0}", string.Join(" ", ICFG.Successors(block)
+                    Debug.WriteLine("");
+                    Debug.Print("-- {0}: known procedure ----------", block.Address);
+                }
+                else if (sr.DirectlyCalledAddresses.ContainsKey(block.Address))
+                {
+                    Debug.WriteLine("");
+                    Debug.Print("-- {0}: possible procedure, called {1} time(s) ----------",
+                        block.Address,
+                        sr.DirectlyCalledAddresses[block.Address]);
+                }
+                Debug.Print("{0}:  //  pred: {1}",
+                    block.Name,
+                    string.Join(" ", sr.ICFG.Predecessors(block)
                         .OrderBy(n => n.Address)
                         .Select(n => n.Address)));
+                foreach (var instr in block.Instructions.SelectMany(c => c.Instructions))
+                {
+                    Debug.Print("    {0}", instr);
                 }
-                Debug.Print("");
+                Debug.Print("  // succ: {0}", string.Join(" ",sr.ICFG.Successors(block)
+                    .OrderBy(n => n.Address)
+                    .Select(n => n.Address)));
             }
+            Debug.Print("");
         }
     }
 }
