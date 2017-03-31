@@ -70,11 +70,10 @@ namespace Reko.Arch.Vax
                     //emitter.SideEffect(Constant.String(
                     //    dasm.Current.ToString(),
                     //    StringType.NullTerminated(PrimitiveType.Char)));
-                    //break;
-                    host.Warn(
-                        dasm.Current.Address,
-                        "Rewriting of VAX instruction {0} not implemented yet.",
-                        dasm.Current.Opcode);
+                    //host.Warn(
+                    //    dasm.Current.Address,
+                    //    "Rewriting of VAX instruction {0} not implemented yet.",
+                    //    dasm.Current.Opcode);
                     m.Invalid();
                     break;
                 case Opcode.Invalid: m.Invalid(); break;
@@ -139,6 +138,9 @@ namespace Reko.Arch.Vax
                 case Opcode.bisl3: RewriteAlu3(PrimitiveType.Word32, m.Or, NZ00); break;
                 case Opcode.bisw2: RewriteAlu2(PrimitiveType.Word16, m.Or, NZ00); break;
                 case Opcode.bisw3: RewriteAlu3(PrimitiveType.Word16, m.Or, NZ00); break;
+                case Opcode.bitb: RewriteBit(PrimitiveType.Byte); break;
+                case Opcode.bitw: RewriteBit(PrimitiveType.Byte); break;
+                case Opcode.bitl: RewriteBit(PrimitiveType.Byte); break;
                 case Opcode.blbc: RewriteBlb(m.Eq0); break;
                 case Opcode.blbs: RewriteBlb(m.Ne0); break;
                 case Opcode.bpt: RewriteBpt(); break;
@@ -147,7 +149,13 @@ namespace Reko.Arch.Vax
                 case Opcode.bsbb: RewriteBsb(); break;
                 case Opcode.bsbw: RewriteBsb(); break;
 
-                case Opcode.chme: RewriteChme(); break;
+                case Opcode.caseb: goto default;
+                case Opcode.casel: goto default;
+                case Opcode.chme: RewriteChm("vax_chme"); break;
+                case Opcode.chmk: RewriteChm("vax_chmk"); break;
+                case Opcode.chms: RewriteChm("vax_chms"); break;
+                case Opcode.chmu: RewriteChm("vax_chmu"); break;
+
                 case Opcode.clrb: RewriteClr(PrimitiveType.Byte); break;
                 case Opcode.clrh: RewriteClr(PrimitiveType.Word128); break;
                 case Opcode.clrl: RewriteClr(PrimitiveType.Word32); break;
@@ -162,8 +170,6 @@ namespace Reko.Arch.Vax
                 case Opcode.cmpw: RewriteCmp(PrimitiveType.Word16); break;
                 case Opcode.cmpp3: RewriteCmpp3(); break;
                 case Opcode.cmpp4: RewriteCmpp4(); break;
-                case Opcode.cmpc3: goto default;
-                case Opcode.cmpc5: goto default;
                 case Opcode.cmpv: goto default;
                 case Opcode.cmpzv: goto default;
                 case Opcode.cvtbd: RewriteCvt(PrimitiveType.SByte, PrimitiveType.Real64); break;
@@ -317,6 +323,7 @@ namespace Reko.Arch.Vax
                 case Opcode.rsb: RewriteRsb(); break;
 
                 case Opcode.sbwc: RewriteSbwc(); break;
+                case Opcode.scanc: RewriteScanc(); break;
                 case Opcode.sobgeq: RewriteSob(m.Ge); break;
                 case Opcode.sobgtr: RewriteSob(m.Gt); break;
                 case Opcode.subb2: RewriteAlu2(PrimitiveType.Byte, m.ISub, AllFlags); break;
@@ -358,7 +365,6 @@ namespace Reko.Arch.Vax
                 case Opcode.crc: goto default;
                 case Opcode.skpc: goto default;
                 case Opcode.remque: goto default;
-                case Opcode.scanc: goto default;
                 case Opcode.spanc: goto default;
                 case Opcode.insqhi: goto default;
                 case Opcode.insqti: goto default;
@@ -367,21 +373,14 @@ namespace Reko.Arch.Vax
                 case Opcode.movtuc: goto default;
                 case Opcode.remqti: goto default;
 
-                case Opcode.bitb: goto default;
 
                 case Opcode.emul: goto default;
                 case Opcode.ediv: goto default;
                 case Opcode.casew: goto default;
-                case Opcode.bitw: goto default;
-                case Opcode.chmk: goto default;
-                case Opcode.chms: goto default;
-                case Opcode.chmu: goto default;
                 case Opcode.extv: goto default;
-                case Opcode.casel: goto default;
                 case Opcode.extzv: goto default;
                 case Opcode.insv: goto default;
 
-                case Opcode.bitl: goto default;
                 case Opcode.mtpr: goto default;
                 case Opcode.callg: goto default;
                 case Opcode.mfpr: goto default;

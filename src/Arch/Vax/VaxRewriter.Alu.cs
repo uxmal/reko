@@ -220,6 +220,16 @@ namespace Reko.Arch.Vax
             m.Assign(c, Constant.False());
         }
 
+        private void RewriteBit(PrimitiveType width)
+        {
+            var mask = RewriteSrcOp(0, width);
+            var src = RewriteSrcOp(1, width);
+            var tmp = frame.CreateTemporary(width);
+            m.Assign(tmp, m.And(src, mask));
+            m.Assign(FlagGroup(FlagM.NZ), m.Cond(tmp));
+            m.Assign(FlagGroup(FlagM.VF), Constant.False());
+        }
+
         private void RewriteClr(PrimitiveType width)
         {
             RewriteDstOp(0, width, e => Constant.Create(width, 0));

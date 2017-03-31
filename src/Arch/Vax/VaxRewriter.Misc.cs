@@ -64,10 +64,47 @@ namespace Reko.Arch.Vax
             m.SideEffect(host.PseudoProcedure("vax_bpt", VoidType.Instance));
         }
 
-        private void RewriteChme()
+        private void RewriteChm(string name)
         {
-            m.SideEffect(host.PseudoProcedure("vax_chme", VoidType.Instance,
+            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance,
                 RewriteSrcOp(0, PrimitiveType.Word16)));
+        }
+
+        private void RewriteCmpc3()
+        {
+            var len = RewriteSrcOp(0, PrimitiveType.Word16);
+            var str1 = RewriteSrcOp(1, PrimitiveType.Pointer32);
+            var str2 = RewriteSrcOp(2, PrimitiveType.Pointer32);
+            var addrCur = dasm.Current.Address;
+            var r0 = frame.EnsureRegister(Registers.r0);
+            var r1 = frame.EnsureRegister(Registers.r1);
+            var r2 = frame.EnsureRegister(Registers.r2);
+            var r3 = frame.EnsureRegister(Registers.r3);
+            var addrNext = addrCur + dasm.Current.Length;
+
+            m.Assign(r0, len);
+            m.Assign(r1, str1);
+            m.Assign(r2, str2);
+            //$TODO: emit clusters.
+        }
+
+        private void RewriteScanc()
+        {
+            var len = RewriteSrcOp(0, PrimitiveType.Word16);
+            var addr = RewriteSrcOp(1, PrimitiveType.Pointer32);
+            var tbl = RewriteSrcOp(2, PrimitiveType.Pointer32);
+            var mask = RewriteSrcOp(3, PrimitiveType.Byte);
+            var r0 = frame.EnsureRegister(Registers.r0);
+            var r1 = frame.EnsureRegister(Registers.r1);
+            var r2 = frame.EnsureRegister(Registers.r2);
+            var r3 = frame.EnsureRegister(Registers.r3);
+            var z = FlagGroup(FlagM.ZF);
+            m.Assign(r3, tbl);
+            m.Assign(z, host.PseudoProcedure("__scanc", z.DataType, len, addr, tbl, mask,
+                m.Out(PrimitiveType.Word32, r0),
+                m.Out(PrimitiveType.Word32, r1)));
+            m.Assign(r2, 0);
+            m.Assign(FlagGroup(FlagM.NVC), 0);
         }
     }
 }
