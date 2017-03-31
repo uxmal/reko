@@ -249,7 +249,6 @@ namespace Reko.Scanning
         private List<RtlProcedure> BuildProcedures(IEnumerable<Cluster> clusters)
         {
             var procs = new List<RtlProcedure>();
-            int n = 0;
             foreach (var cluster in clusters)
             {
                 if (listener.IsCanceled())
@@ -259,7 +258,6 @@ namespace Reko.Scanning
                 {
                     procs.AddRange(PostProcessCluster(cluster));
                 }
-                ++n;
             }
             return procs;
         }
@@ -405,7 +403,7 @@ namespace Reko.Scanning
                 sr.ICFG.AddEdge(auxNode, entry);
             }
             var idoms = LTDominatorGraph<RtlBlock>.Create(sr.ICFG, auxNode);
-            DumpDominatorTrees(idoms);
+            // DumpDominatorTrees(idoms);
             // Find all nodes whose immediate dominator is "<root>". 
             // Those are the entries to new clusters and may contain blocks
             // that are shared between procedures in the source program.
