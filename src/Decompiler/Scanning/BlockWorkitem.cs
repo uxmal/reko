@@ -753,7 +753,7 @@ namespace Reko.Scanning
             }
             else
             {
-                var bw = new Backwalker(new BackwalkerHost(this), xfer, eval);
+                var bw = new Backwalker<Block,Instruction>(new BackwalkerHost(this), xfer, eval);
                 if (!bw.CanBackwalk())
                     return false;
                 var bwops = bw.BackWalk(blockCur);
@@ -1041,7 +1041,7 @@ namespace Reko.Scanning
             return svc;
         }
 
-        private class BackwalkerHost : IBackWalkHost
+        private class BackwalkerHost : IBackWalkHost<Block, Instruction>
         {
             private IScannerQueue scanner;
             private SegmentMap segmentMap;
@@ -1054,6 +1054,22 @@ namespace Reko.Scanning
                 this.segmentMap = item.program.SegmentMap;
                 this.arch = item.program.Architecture;
                 this.platform = item.program.Platform;
+            }
+
+            public Tuple<Expression,Expression> AsAssignment(Instruction instr)
+            {
+                var ass = instr as Assignment;
+                if (ass == null)
+                    return null;
+                return Tuple.Create((Expression)ass.Dst, ass.Src);
+            }
+
+            public Expression AsBranch(Instruction instr)
+            {
+                var bra = instr as Branch;
+                if (bra == null)
+                    return null;
+                return bra.Condition;
             }
 
             public AddressRange GetSinglePredecessorAddressRange(Address block)
@@ -1089,6 +1105,11 @@ namespace Reko.Scanning
             public Address MakeSegmentedAddress(Constant seg, Constant off)
             {
                 return arch.MakeSegmentedAddress(seg, off);
+            }
+
+            public IEnumerable<Instruction> GetReversedBlockInstructions(Block block)
+            {
+                return block.Statements.Select(s => s.Instruction).Reverse();
             }
         }
     }

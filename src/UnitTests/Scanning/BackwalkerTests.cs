@@ -49,10 +49,10 @@ namespace Reko.UnitTests.Scanning
         private IProcessorArchitecture arch;
         private ProcessorState state;
         private ExpressionSimplifier expSimp;
-        private IBackWalkHost host;
+        private IBackWalkHost<Block,Instruction> host;
         private FakeDecompilerEventListener listener;
 
-        private class BackwalkerHost : IBackWalkHost
+        private class BackwalkerHost : IBackWalkHost<Block,Instruction>
         {
             private IProcessorArchitecture arch;
 
@@ -63,6 +63,21 @@ namespace Reko.UnitTests.Scanning
                 this.arch = arch;
             }
 
+            public Tuple<Expression, Expression> AsAssignment(Instruction instr)
+            {
+                var ass = instr as Assignment;
+                if (ass == null)
+                    return null;
+                return Tuple.Create((Expression)ass.Dst, ass.Src);
+            }
+
+            public Expression AsBranch(Instruction instr)
+            {
+                var bra = instr as Branch;
+                if (bra == null)
+                    return null;
+                return bra.Condition;
+            }
             public AddressRange GetSinglePredecessorAddressRange(Address block)
             {
                 throw new NotImplementedException();
@@ -98,6 +113,10 @@ namespace Reko.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
+            public IEnumerable<Instruction> GetReversedBlockInstructions(Block block)
+            {
+                return block.Statements.Select(s => s.Instruction).Reverse();
+            }
             #endregion
         }
 
@@ -174,7 +193,7 @@ namespace Reko.UnitTests.Scanning
             m.Assign(a5, m.LoadDw(m.IAdd(Address.Ptr32(0x0000C046), d0)));
             var xfer = new RtlCall(a5, 4, RtlClass.Transfer);
 
-            var bw = new Backwalker(host, xfer, expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
             Assert.IsTrue(bw.CanBackwalk());
             Assert.AreEqual("a5", bw.Index.Name);
             bw.BackWalk(m.Block);
