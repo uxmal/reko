@@ -123,6 +123,28 @@ namespace Reko.Arch.Vax
             rtlc = RtlClass.ConditionalTransfer;
         }
 
+        private void RewriteBbxx(bool testBit, bool updateBit)
+        {
+            var pos = RewriteSrcOp(0, PrimitiveType.Word32);
+            var bas = RewriteSrcOp(1, PrimitiveType.Word32);
+            var dst = ((AddressOperand)dasm.Current.Operands[2]).Address;
+            var tst = frame.CreateTemporary(PrimitiveType.Word32);
+            m.Assign(tst, m.And(bas, m.Shl(Constant.Int32(1), pos)));
+            if (updateBit)
+            {
+                m.Assign(bas, m.Or(bas, m.Shl(Constant.Int32(1), pos)));
+            } 
+            else
+            {
+                m.Assign(bas, m.And(bas, m.Comp( m.Shl(Constant.Int32(1), pos))));
+            }
+            var t = testBit
+                ? m.Ne0(tst)
+                : m.Eq0(tst);
+            m.Branch(t, dst, RtlClass.ConditionalTransfer);
+            rtlc = RtlClass.ConditionalTransfer;
+        }
+
         private void RewriteBlb(Func<Expression,Expression> fn)
         {
             var n = RewriteSrcOp(0, PrimitiveType.Word32);

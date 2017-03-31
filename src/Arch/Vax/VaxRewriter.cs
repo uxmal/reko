@@ -106,6 +106,7 @@ namespace Reko.Arch.Vax
                 case Opcode.ashp: RewriteAshp(); break;
                 case Opcode.ashq: RewriteAsh(PrimitiveType.Word64); break;
                 case Opcode.bbc: RewriteBb(false); break;
+                case Opcode.bbcc: RewriteBbxx(false, false); break;
                 case Opcode.bbs: RewriteBb(true); break;
                 case Opcode.beql: RewriteBranch(ConditionCode.EQ, FlagM.ZF); break;
                 case Opcode.bgeq: RewriteBranch(ConditionCode.GE, FlagM.NF); break;
@@ -369,7 +370,6 @@ namespace Reko.Arch.Vax
                 case Opcode.bbss: goto default;
                 case Opcode.bbcs: goto default;
                 case Opcode.bbsc: goto default;
-                case Opcode.bbcc: goto default;
                 case Opcode.bbssi: goto default;
                 case Opcode.bbcci: goto default;
                 case Opcode.ffs: goto default;

@@ -319,13 +319,14 @@ namespace Reko.UnitTests.Arch.Vax
         }
 
         [Test]
-        [Ignore]
         public void VaxRw_bbcc()
         {
-            BuildTest(0xE5, 0x02, 0x52, 0x34);	// bbcc	
+            BuildTest(0xE5, 0x02, 0x52, 0x34);	// bbcc	#02,r2,10038
             AssertCode(
-                "0|T--|00010000(8): 1 instructions",
-                "1|T--|if ((r2 & 0x00000001 << 0x00000002) == 0x00000000) branch 0001000F");
+                "0|T--|00010000(4): 3 instructions",
+                "1|L--|v3 = r2 & 1 << 0x00000002",
+                "2|L--|r2 = r2 & ~(1 << 0x00000002)",
+                "3|T--|if (v3 == 0x00000000) branch 00010038");
         }
 
         [Test]
@@ -2080,18 +2081,15 @@ namespace Reko.UnitTests.Arch.Vax
 
         // These instructions are "extra credit" as most VAX user mode programs won't have them.
 
-#if LATER
         [Test]
-        [Ignore]
         public void VaxRw_adawi()
         {
             BuildTest(0x58, 0x52, 0x64);	// adawi	
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
-                "1|L--|atomic_fetch_add(Mem0[r4:word16], r2)");
+                "1|L--|v4 = atomic_fetch_add(Mem0[r4:word16], (word16) r2)");
         }
 
-        [Test]
         [Ignore]
         public void VaxRw_bbsc()
         {
@@ -2101,6 +2099,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
+#if LATER
         [Test]
         [Ignore]
         public void VaxRw_bbss()
