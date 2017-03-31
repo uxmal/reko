@@ -29,6 +29,22 @@ namespace Reko.Arch.Vax
 {
     public partial class VaxRewriter
     {
+        private void RewriteEmod(string fnname, PrimitiveType floatType, PrimitiveType extType)
+        {
+            var mulr = RewriteSrcOp(0, floatType);
+            var mulrx = RewriteSrcOp(1, extType);
+            var muld = RewriteSrcOp(2, floatType);
+            var integral = RewriteSrcOp(3, PrimitiveType.Int32);
+            var frac = RewriteSrcOp(4, floatType);
+            var nzv = FlagGroup(FlagM.NZV);
+            m.Assign(
+                nzv,
+                host.PseudoProcedure(fnname, nzv.DataType, mulr, mulrx, muld,
+                m.Out(PrimitiveType.Word32, integral),
+                m.Out(floatType, frac)));
+            m.Assign(FlagGroup(FlagM.CF), Constant.False());
+        }
+
         private bool RewriteFpu2(PrimitiveType width, Func<Expression, Expression, Expression> fn, Func<Expression, bool> genFlags)
         {
             var op1 = RewriteSrcOp(0, width);

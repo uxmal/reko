@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -29,10 +30,33 @@ namespace Reko.Arch.Vax
 {
     public partial class VaxRewriter
     {
+        private void RewriteBicpsw()
+        {
+            var mask = RewriteSrcOp(0, PrimitiveType.UInt16);
+            var psw = frame.EnsureRegister(Registers.psw);
+            m.Assign(psw, m.And(psw, m.Comp(mask)));
+        }
+
+        private void RewriteBispsw()
+        {
+            var mask = RewriteSrcOp(0, PrimitiveType.UInt16);
+            var psw = frame.EnsureRegister(Registers.psw);
+            m.Assign(psw, m.Or(psw, mask));
+        }
+
         private void RewriteHalt()
         {
             rtlc = RtlClass.Terminates;
             m.SideEffect(host.PseudoProcedure("__halt", VoidType.Instance));
+        }
+
+        private void RewriteInsque()
+        {
+            var entry = RewriteSrcOp(0, PrimitiveType.Word32);
+            var queue = RewriteSrcOp(1, PrimitiveType.Word32);
+            var grf = FlagGroup(FlagM.NZC);
+            m.Assign(grf, host.PseudoProcedure("__insque", grf.DataType, queue, entry));
+            m.Assign(FlagGroup(FlagM.VF), Constant.False());
         }
 
         private void RewriteBpt()

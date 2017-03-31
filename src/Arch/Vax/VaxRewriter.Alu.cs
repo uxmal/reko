@@ -319,6 +319,24 @@ namespace Reko.Arch.Vax
             m.Assign(c, Constant.False());
         }
 
+        private void RewriteFfx(string fnname)
+        {
+            var start = RewriteSrcOp(0, PrimitiveType.Word32);
+            var size = RewriteSrcOp(1, PrimitiveType.Byte);
+            var bas = RewriteSrcOp(2, PrimitiveType.Word32);
+            var findPos = RewriteSrcOp(3, PrimitiveType.Word32);
+            var z = FlagGroup(FlagM.ZF);
+            var grf = FlagGroup(FlagM.NVC);
+            m.Assign(
+                z,
+                host.PseudoProcedure(
+                    fnname,
+                    z.DataType,
+                    bas, size, start,
+                    m.Out(PrimitiveType.Pointer32, findPos)));
+            m.Assign(grf, 0);
+        }
+
         private void RewriteIncDec(PrimitiveType width, Func<Expression, Expression> incdec)
         {
             var dst = RewriteDstOp(0, width, e => incdec(e));

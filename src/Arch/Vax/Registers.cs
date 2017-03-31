@@ -62,6 +62,9 @@ namespace Reko.Arch.Vax
         VF = 2,
         CF = 1,
 
-        NZVC = NF|ZF|VF|CF
+        NZVC = NF|ZF|VF|CF,
+        NVC = NF|VF| CF,
+        NZC = NF|ZF|CF,
+        NZV = NF|ZF|VF,
     }
 }
