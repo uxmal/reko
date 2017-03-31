@@ -337,13 +337,13 @@ namespace Reko.Scanning
             procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, de.Value.Key, sp.Name));
         }
 
-        public void EnsureEntryPoint(ImageSymbol ep)
+        public void EnsureEntryPoint(ImageSymbol sym)
         {
-            var proc = EnsureProcedure(ep.Address, ep.Name);
-            if (ep.Signature != null)
+            var proc = EnsureProcedure(sym.Address, sym.Name);
+            if (sym.Signature != null)
             {
                 var sser = program.CreateProcedureSerializer();
-                proc.Signature = sser.Deserialize(ep.Signature, proc.Frame);
+                proc.Signature = sser.Deserialize(sym.Signature, proc.Frame);
             }
             program.CallGraph.EntryPoints.Add(proc);
         }

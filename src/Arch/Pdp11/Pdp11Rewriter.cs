@@ -84,6 +84,7 @@ namespace Reko.Arch.Pdp11
                 case Opcode.bge: RewriteBxx(ConditionCode.GE, FlagM.VF|FlagM.NF); break;
                 case Opcode.bgt: RewriteBxx(ConditionCode.GT, FlagM.ZF|FlagM.NF|FlagM.VF); break;
                 case Opcode.bhi: RewriteBxx(ConditionCode.UGT, FlagM.ZF|FlagM.CF); break;
+                case Opcode.bvs: RewriteBxx(ConditionCode.OV, FlagM.VF); break;
                 case Opcode.bic: RewriteBic(); break;
                 case Opcode.bis: RewriteBis(); break;
                 case Opcode.bisb: RewriteBis(); break;
