@@ -39,19 +39,21 @@ namespace Reko.Scanning
     {
         private Program program;
         private IRewriterHost host;
-        private DirectedGraph<RtlBlock> blocks;
+        private ScanResults sr;
+        private DiGraph<RtlBlock> blocks;
         private Func<Address, bool> isAddressValid;
         private HashSet<Tuple<RtlBlock, RtlBlock>> conflicts;
 
         public HeuristicProcedureScanner(
             Program program, 
-            DirectedGraph<RtlBlock> blocks,
+            ScanResults sr,
             Func<Address,bool> isAddressValid,
             IRewriterHost host)
         {
             this.program = program;
             this.host = host;
-            this.blocks = blocks;
+            this.sr = sr;
+            this.blocks = sr.ICFG;
             this.isAddressValid = isAddressValid;
             this.conflicts = BuildConflictGraph(blocks.Nodes);
         }
@@ -60,17 +62,17 @@ namespace Reko.Scanning
         {
             var reachable = TraceReachableBlocks(procedureStarts);
             ComputeStatistics(reachable);
-            DumpGraph();
+            this.sr.Dump("Before conflict resolution");
             RemoveBlocksEndingWithInvalidInstruction();
-            DumpGraph();
+            this.sr.Dump("After invalid instruction eliminiation");
             RemoveBlocksConflictingWithValidBlocks(reachable);
-            DumpGraph();
+            this.sr.Dump("After conflicting block removal");
             RemoveParentsOfConflictingBlocks();
-            DumpGraph();
+            this.sr.Dump("After parents of conflicting blocks removed");
             //RemoveBlocksWithFewPredecessors();
             //DumpGraph();
             RemoveBlocksWithFewSuccessors();
-            DumpGraph();
+            this.sr.Dump("After few successor removal");
             RemoveConflictsRandomly();
         }
 
@@ -82,17 +84,17 @@ namespace Reko.Scanning
         {
             var valid = TraceReachableBlocks(new[] { addrProcedureStart });
             ComputeStatistics(valid);
-            DumpGraph();
+            this.sr.Dump();
             RemoveBlocksEndingWithInvalidInstruction();
-            DumpGraph();
+            this.sr.Dump();
             RemoveBlocksConflictingWithValidBlocks(valid);
-            DumpGraph();
+            this.sr.Dump();
             RemoveParentsOfConflictingBlocks();
-            DumpGraph();
+            this.sr.Dump();
             RemoveBlocksWithFewPredecessors();
-            DumpGraph();
+            this.sr.Dump();
             RemoveBlocksWithFewSuccessors();
-            DumpGraph();
+            this.sr.Dump();
             RemoveConflictsRandomly();
         }
 
@@ -513,32 +515,5 @@ namespace Reko.Scanning
         //        When all possible instruction sequences are determined,
         //the one with the highest sequence score is selected as the
         //valid instruction sequence between b1 and b2.
-
-        [Conditional("DEBUG")]
-        public void DumpGraph()
-        {
-            //return;     // This is horribly verbose, so only use it when debugging unit tests.
-            Debug.Print("{0} nodes", blocks.Nodes.Count);
-            foreach (var block in blocks.Nodes.OrderBy(n => n.Address))
-            {
-                var addrEnd = block.GetEndAddress();
-                Debug.Print("{0}:  //  pred: {1}",
-                    block.Name, 
-                    string.Join(" ", blocks.Predecessors(block)
-                        .OrderBy(n => n.Address)
-                        .Select(n => n.Address)));
-                foreach (var cluster in block.Instructions)
-                {
-                    Debug.Print("  {0}", cluster);
-                    foreach (var instr in cluster.Instructions)
-                    {
-                        Debug.Print("    {0}", instr);
-                    }
-                }
-                Debug.Print("  succ: {0}", string.Join(" ", blocks.Successors(block)
-                    .OrderBy(n => n.Address)
-                    .Select(n => n.Address)));
-            }
-        }
     }
 }

@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Types;
 using Reko.Core;
+using Reko.Core.Lib;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -57,6 +58,14 @@ namespace Reko.UnitTests.Scanning
                 Debug.Print(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
+        }
+
+        private ScanResults CreateScanResults(DiGraph<RtlBlock> icfg)
+        {
+            return new ScanResults
+            {
+                ICFG = icfg
+            };
         }
 
         private void When_DisassembleProcedure()
@@ -124,7 +133,7 @@ namespace Reko.UnitTests.Scanning
             mr.ReplayAll();
 
             When_DisassembleProcedure();
-            var hps = new HeuristicProcedureScanner(program, proc.Cfg, proc.IsValidAddress, host);
+            var hps = new HeuristicProcedureScanner(program, CreateScanResults(proc.Cfg), proc.IsValidAddress, host);
             hps.BlockConflictResolution(proc.BeginAddress);
 
             var sExp =
@@ -159,7 +168,7 @@ l00010009:  // pred: l00010008
             mr.ReplayAll();
 
             When_DisassembleProcedure();
-            var hps = new HeuristicProcedureScanner(program, proc.Cfg, proc.IsValidAddress, host);
+            var hps = new HeuristicProcedureScanner(program, CreateScanResults(proc.Cfg), proc.IsValidAddress, host);
             hps.BlockConflictResolution(proc.BeginAddress);
 
             var sExp =

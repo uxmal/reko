@@ -99,24 +99,20 @@ namespace Reko.Scanning
             var fnRanges = FindPossibleFunctions(ranges).ToList();
             int n = 0;
             var icfg = new DiGraph<RtlBlock>();
+            var sr = new ScanResults { ICFG = icfg };
             foreach (var range in fnRanges)
             {
                 var hproc = DisassembleProcedure(range.Item1, range.Item2);
-                var hps = new HeuristicProcedureScanner(program, icfg, program.SegmentMap.IsValidAddress, host);
+                var hps = new HeuristicProcedureScanner(program, sr, program.SegmentMap.IsValidAddress, host);
                 hps.BlockConflictResolution(hproc.BeginAddress);
                 DumpBlocks(hproc.Cfg.Nodes);
                 hps.GapResolution();
                 // TODO: add all guessed code to image map -- clearly labelled.
                 AddBlocks(hproc);
-                list.AddRange(hproc.Cfg.Nodes);
                 eventListener.ShowProgress("Estimating procedures", n, fnRanges.Count);
                 ++n;
             }
-            list.ToString();
-            return new ScanResults
-            {
-                ICFG = icfg,
-            };
+            return sr;
         }
 
         /// <summary>
@@ -193,14 +189,14 @@ namespace Reko.Scanning
 
             var hsc = new HeuristicProcedureScanner(
                 program,
-                sr.ICFG,
+                sr,
                 program.SegmentMap.IsValidAddress,
                 host);
             RemoveInvalidBlocks(sr);
             Probe(sr);
             hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
             Probe(sr);
-            hsc.DumpGraph();
+            sr.Dump("After block conflict resolution");
             var pd = new ProcedureDetector(program, sr, this.eventListener);
             var procs = pd.DetectProcedures();
             sr.Procedures = procs;

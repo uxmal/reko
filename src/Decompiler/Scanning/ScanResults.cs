@@ -24,6 +24,7 @@ using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -77,6 +78,7 @@ namespace Reko.Scanning
         /// <summary>
         /// These are procedures, either because they were called,
         /// or because they were jumped to from different procedures.
+        /// This is a key end result of the scanning stage.
         /// </summary>
         public List<RtlProcedure> Procedures { get; internal set; }
 
@@ -101,5 +103,45 @@ namespace Reko.Scanning
         /// </summary>
         public HashSet<Address> IndirectCalls;
 
+        [Conditional("DEBUG")]
+        public void Dump(string caption = "Dump")
+        {
+            return;     // This is horribly verbose, so only use it when debugging unit tests.
+            Debug.Print("== {0} =====================", caption);
+            Debug.Print("{0} nodes", ICFG.Nodes.Count);
+            foreach (var block in ICFG.Nodes.OrderBy(n => n.Address))
+            {
+                var addrEnd = block.GetEndAddress();
+                if (KnownProcedures.Contains(block.Address))
+                {
+                    Debug.WriteLine("");
+                    Debug.Print("-- {0}: known procedure ----------", block.Address);
+                }
+                else if (DirectlyCalledAddresses.ContainsKey(block.Address))
+                {
+                    Debug.WriteLine("");
+                    Debug.Print("-- {0}: possible procedure, called {1} time(s) ----------",
+                        block.Address,
+                        DirectlyCalledAddresses[block.Address]);
+                }
+                Debug.Print("{0}:  //  pred: {1}",
+                    block.Name,
+                    string.Join(" ", ICFG.Predecessors(block)
+                        .OrderBy(n => n.Address)
+                        .Select(n => n.Address)));
+                foreach (var cluster in block.Instructions)
+                {
+                    Debug.Print("  {0}", cluster);
+                    foreach (var instr in cluster.Instructions)
+                    {
+                        Debug.Print("    {0}", instr);
+                    }
+                }
+                Debug.Print("  // succ: {0}", string.Join(" ", ICFG.Successors(block)
+                    .OrderBy(n => n.Address)
+                    .Select(n => n.Address)));
+            }
+        }
+
+        }
     }
-}

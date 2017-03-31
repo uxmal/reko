@@ -79,6 +79,7 @@ namespace Reko.Scanning
         {
             PreprocessIcfg();
             var clusters = FindClusters();
+            DumpClusters(clusters, sr);
             return BuildProcedures(clusters);
         }
 
@@ -358,13 +359,11 @@ namespace Reko.Scanning
 
             // Join blocks which have a single successor / single predecessor
             // relationship.
-            //FuseBlocks(cluster);
 
             // If the cluster has more than one entry, we have to try to pick it apart.
             if (entries.Count > 1)
             {
                 Debug.Print("Entries {0} share common code", string.Join(",", entries.Select(e => e.Name)));
-
                 return PartitionIntoSubclusters(cluster);
             }
             else
@@ -497,6 +496,54 @@ namespace Reko.Scanning
                     }
                     Debug.Print("Fused {0} {1}", block.Address, s.Address);
                 }
+            }
+        }
+
+        private void DumpClusters(List<Cluster> clusters, ScanResults sr)
+        {
+            var ICFG = sr.ICFG;
+            // Sort clusters by their earliest address
+            foreach (var cc in
+                (from c in clusters
+                 let min = c.Blocks.Min(b => b.Address)
+                 orderby min
+                 select c))
+            {
+                Debug.Print("-- Cluster -----------------------------");
+                Debug.Print("{0} nodes", cc.Blocks.Count);
+                foreach (var block in cc.Blocks.OrderBy(n => n.Address))
+                {
+                    var addrEnd = block.GetEndAddress();
+                    if (sr.KnownProcedures.Contains(block.Address))
+                    {
+                        Debug.WriteLine("");
+                        Debug.Print("-- {0}: known procedure ----------", block.Address);
+                    }
+                    else if (sr.DirectlyCalledAddresses.ContainsKey(block.Address))
+                    {
+                        Debug.WriteLine("");
+                        Debug.Print("-- {0}: possible procedure, called {1} time(s) ----------",
+                            block.Address,
+                            sr.DirectlyCalledAddresses[block.Address]);
+                    }
+                    Debug.Print("{0}:  //  pred: {1}",
+                        block.Name,
+                        string.Join(" ", ICFG.Predecessors(block)
+                            .OrderBy(n => n.Address)
+                            .Select(n => n.Address)));
+                    foreach (var cluster in block.Instructions)
+                    {
+                        Debug.Print("  {0}", cluster);
+                        foreach (var instr in cluster.Instructions)
+                        {
+                            Debug.Print("    {0}", instr);
+                        }
+                    }
+                    Debug.Print("  // succ: {0}", string.Join(" ", ICFG.Successors(block)
+                        .OrderBy(n => n.Address)
+                        .Select(n => n.Address)));
+                }
+                Debug.Print("");
             }
         }
     }
