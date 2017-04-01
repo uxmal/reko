@@ -205,9 +205,22 @@ fn0000000000400CC0 proc
 	jmp	dword ptr [rip+00201332]
 0000000000400CC6                   66 90                               f.       
 ;;; Segment .text (0000000000400CD0)
-0000000000400CD0 31 ED 49 89 D1 5E 48 89 E2 48 83 E4 F0 50 54 49 1.I..^H..H...PTI
-0000000000400CE0 C7 C0 F0 17 40 00 48 C7 C1 80 17 40 00 48 C7 C7 ....@.H....@.H..
-0000000000400CF0 F9 12 40 00 E8 C7 FE FF FF F4 66 0F 1F 44 00 00 ..@.......f..D..
+
+;; _start: 0000000000400CD0
+_start proc
+	xor	ebp,ebp
+	mov	r9,rdx
+	pop	rsi
+	mov	rdx,rsp
+	and	rsp,F0
+	push	rax
+	push	rsp
+	mov	r8,+004017F0
+	mov	rcx,+00401780
+	mov	rdi,+004012F9
+	call	0000000000400BC0
+	hlt	
+0000000000400CFA                               66 0F 1F 44 00 00           f..D..
 
 ;; deregister_tm_clones: 0000000000400D00
 deregister_tm_clones proc

@@ -532,7 +532,7 @@ l0000000000015518:
 			a5_771 = *sp_132;
 			if (s1_1026 != 0x00)
 			{
-				sp_132->u0 = 0x01;
+				((word64) sp_132 + 0x001C)->u0 = 0x01;
 				if (s4_1027 != 0x00)
 				{
 l000000000001553C:
@@ -563,8 +563,8 @@ l0000000000015618:
 						if ((s0_1002 & 0x08) != 0x00)
 						{
 							Eq_792 s0_405;
-							Eq_793 s2_236 = (word64) *sp_132;
-							if ((word64) *sp_132 == 0x00)
+							Eq_793 s2_236 = (word64) *((word64) sp_132 + 0x00D8);
+							if ((word64) *((word64) sp_132 + 0x001C) == 0x00)
 							{
 								if (s2_236 != 0x0020)
 								{
@@ -574,11 +574,11 @@ l0000000000015660:
 l0000000000015664:
 										goto l0000000000015668;
 									}
-									word64 a0_498 = *sp_132;
+									word64 a0_498 = *((word64) sp_132 + 88);
 									strcmp();
 									if (a0_498 == 0x00)
 										goto l0000000000015664;
-									if (*sp_132 == 0x00)
+									if (*((word64) sp_132 + 0x0040) == 0x00)
 									{
 										fn000000000001654C(ra, gp);
 										goto l0000000000015668;
@@ -588,25 +588,25 @@ l0000000000015880:
 									if (fn000000000001654C(ra, gp) != 0x00)
 										goto l00000000000158B8;
 l0000000000015668:
-									if (*sp_132 != 0x00)
+									if (*((word64) sp_132 + 0x0048) != 0x00)
 										fn000000000001654C(ra, gp);
 									fn000000000001654C(ra, gp);
 									fn000000000001654C(ra, gp);
-									if (*sp_132 != 0x00)
+									if (*((word64) sp_132 + 0x0060) != 0x00)
 										fn000000000001654C(ra, gp);
-									if ((s0_1002 & 0x00010008) != 0x00010008 || *sp_132 == 0x00)
+									if ((s0_1002 & 0x00010008) != 0x00010008 || *((word64) sp_132 + 0x0050) == 0x00)
 									{
 l00000000000156FC:
 										putchar();
-										if (*sp_132 != 0x00)
+										if (*((word64) sp_132 + 0x00F0) != 0x00)
 											fn000000000001654C(ra, gp);
-										if (*sp_132 != 0x00)
+										if (*((word64) sp_132 + 0x00F8) != 0x00)
 											fn000000000001654C(ra, gp);
-										if (*sp_132 != 0x00)
+										if (*((word64) sp_132 + 224) != 0x00)
 											fn000000000001654C(ra, gp);
-										if (*sp_132 != 0x00)
+										if (*((word64) sp_132 + 232) != 0x00)
 											fn000000000001654C(ra, gp);
-										if ((word64) *sp_132 != 0x00 && 111 >= (word64) (*sp_132))
+										if ((word64) *((word64) sp_132 + 0x001C) != 0x00 && 111 >= (word64) (*((word64) sp_132 + 0x00D8)))
 											fn000000000001654C(ra, gp);
 										else
 											fn000000000001654C(ra, gp);
@@ -618,31 +618,31 @@ l00000000000156FC:
 							}
 							else if (s2_236 != 0x0080)
 								goto l0000000000015660;
-							if (*sp_132 == 0x00)
+							if (*((word64) sp_132 + 0x0040) == 0x00)
 							{
 								fn000000000001654C(ra, gp);
 l00000000000158B8:
 								if ((s0_1002 & 0x00010008) != 0x00010008)
 									goto l00000000000158C8;
 								s0_405.u0 = 0x01;
-								if (*sp_132 == 0x00)
+								if (*((word64) sp_132 + 0x0050) == 0x00)
 								{
 l00000000000158C8:
-									if (*sp_132 != 0x00)
+									if (*((word64) sp_132 + 0x00F0) != 0x00)
 										fn000000000001654C(ra, gp);
-									if (*sp_132 != 0x00)
+									if (*((word64) sp_132 + 0x00F8) != 0x00)
 										fn000000000001654C(ra, gp);
 l00000000000157BC:
-									if (*sp_132 != 0x00 || (*sp_132 != 0x00 || *sp_132 != 0x00))
+									if (*((word64) sp_132 + 0x0078) != 0x00 || (*((word64) sp_132 + 0x0088) != 0x00 || *((word64) sp_132 + 144) != 0x00))
 									{
 										putchar();
-										if (*sp_132 != 0x00)
+										if (*((word64) sp_132 + 0x0080) != 0x00)
 											fn000000000001654C(ra, gp);
-										if (*sp_132 != 0x00)
+										if (*((word64) sp_132 + 0x0078) != 0x00)
 											fn000000000001654C(ra, gp);
-										if (*sp_132 != 0x00)
+										if (*((word64) sp_132 + 0x0088) != 0x00)
 											fn000000000001654C(ra, gp);
-										if (*sp_132 != 0x00)
+										if (*((word64) sp_132 + 144) != 0x00)
 											fn000000000001654C(ra, gp);
 									}
 									goto l00000000000153DC;
@@ -659,19 +659,19 @@ l0000000000015C2C:
 							__printf_chk();
 						if ((s0_1002 & 0x0200) != 0x00)
 							__printf_chk();
-						if ((s0_1002 & 0x0040) != 0x00 && (word64) (*sp_132) == 0x00)
+						if ((s0_1002 & 0x0040) != 0x00 && (word64) (*((word64) sp_132 + 0x001C)) == 0x00)
 							__printf_chk();
 						if ((s0_1002 & 0x0100) != 0x00)
 							__printf_chk();
 						if (s0_1002 << 0x0E < 0x00)
 							__printf_chk();
-						if ((s0_1002 & 0x0400) != 0x00 && *sp_132 != 0x00)
+						if ((s0_1002 & 0x0400) != 0x00 && *((word64) sp_132 + 224) != 0x00)
 							__printf_chk();
-						if (s0_1002 << 0x14 < 0x00 && *sp_132 != 0x00)
+						if (s0_1002 << 0x14 < 0x00 && *((word64) sp_132 + 232) != 0x00)
 							__printf_chk();
 						if (s0_1002 << 0x12 < 0x00)
 						{
-							word64 s2_602 = *sp_132;
+							word64 s2_602 = *((word64) sp_132 + 0x00F0);
 							if (s2_602 != 0x00)
 							{
 								strchr();
@@ -689,15 +689,15 @@ l0000000000015C2C:
 							else
 								__printf_chk();
 						}
-						if ((s0_1002 & 0x01) != 0x00 && *sp_132 != 0x00)
+						if ((s0_1002 & 0x01) != 0x00 && *((word64) sp_132 + 112) != 0x00)
 							__printf_chk();
 						if ((s0_1002 & 0x02) != 0x00)
 							__printf_chk();
 						if ((s0_1002 & 0xC000) == 0xC000)
 						{
-							if (*sp_132 != 0x00)
+							if (*((word64) sp_132 + 0x0080) != 0x00)
 								__printf_chk();
-							word64 s0_575 = *sp_132;
+							word64 s0_575 = *((word64) sp_132 + 0x0078);
 							if (s0_575 != 0x00)
 							{
 								strchr();
@@ -706,7 +706,7 @@ l0000000000015C2C:
 								__printf_chk();
 							}
 l0000000000015B24:
-							word64 s0_133 = *sp_132;
+							word64 s0_133 = *((word64) sp_132 + 0x0088);
 							if (s0_133 != 0x00)
 							{
 								strchr();
@@ -715,12 +715,12 @@ l0000000000015B24:
 								else
 									__printf_chk();
 							}
-							if (*sp_132 != 0x00)
+							if (*((word64) sp_132 + 144) != 0x00)
 								__printf_chk();
 							goto l00000000000153DC;
 						}
 l00000000000153DC:
-						if (*sp_132 == gp->qwFFFFF870)
+						if (*((word64) sp_132 + 0x0148) == gp->qwFFFFF870)
 							return;
 						__stack_chk_fail();
 l0000000000015E90:
@@ -732,13 +732,13 @@ l0000000000015E90:
 l0000000000015BB8:
 				*a0_748 = 0x00;
 				*a0_748 = 0x00;
-				s4_1027 = a0_748;
+				s4_1027 = (word64) a0_748 + 0x01;
 				if (s4_1027 == 0x00)
 				{
 l00000000000155FC:
-					if ((word64) *sp_132 == 0x00)
+					if ((word64) *((word64) sp_132 + 0x001C) == 0x00)
 					{
-						a0_220 = fn0000000000016D74(ra, gp, s0_1002, s1_1026, a5_670, sp_132, s0_1002);
+						a0_220 = fn0000000000016D74(ra, gp, s0_1002, s1_1026, a5_670, (word64) sp_132 + 0x0038, s0_1002);
 						goto l0000000000015618;
 					}
 					goto l0000000000015604;
@@ -747,7 +747,7 @@ l00000000000155E4:
 				Eq_292 a0_707;
 				word64 a1_708;
 				word64 s4_709;
-				ra = fn00000000000166F4(ra, gp, sp_132, s4_1027, 0x00, out sp_132, out s0_1002, out s1_1026, out a0_707, out a1_708, out s4_709);
+				ra = fn00000000000166F4(ra, gp, (word64) sp_132 + 0x001C, s4_1027, 0x00, out sp_132, out s0_1002, out s1_1026, out a0_707, out a1_708, out s4_709);
 				a5_670 = a0_707;
 				if (a0_707 >= 0x00)
 					goto l00000000000155FC;
@@ -760,7 +760,7 @@ l0000000000015B8C:
 l00000000000155D8:
 			if (s4_1027 != 0x00)
 			{
-				if ((word64) *sp_132 == 0x00)
+				if ((word64) *((word64) sp_132 + 0x001C) == 0x00)
 					goto l00000000000155E4;
 				goto l000000000001553C;
 			}
@@ -805,18 +805,18 @@ l00000000000153D8:
 	word64 s1_873;
 	Eq_292 a0_874;
 	word64 a1_875;
-	fn00000000000166F4(ra, gp, &fp->tFFFFFE48, s10_45, 0x01, out sp_132, out s0_872, out s1_873, out a0_874, out a1_875, out s4_1027);
+	fn00000000000166F4(ra, gp, (char *) &fp->tFFFFFE48 + 0x0014, s10_45, 0x01, out sp_132, out s0_872, out s1_873, out a0_874, out a1_875, out s4_1027);
 	if (a0_874 < 0x00)
 	{
 		if ((word64) gp->dwFFFFF814 != 0x00)
 			goto l00000000000153D8;
 		goto l0000000000015B8C;
 	}
-	*sp_132 = a0_874;
-	word64 s1_882 = (word64) *sp_132;
-	sp_132->u0 = 0x00;
+	*((word64) sp_132 + 0x08) = a0_874;
+	word64 s1_882 = (word64) *((word64) sp_132 + 0x001C);
+	((word64) sp_132 + 0x0020)->u0 = 0x00;
 	clock_gettime();
-	Eq_292 a5_884 = *sp_132;
+	Eq_292 a5_884 = *((word64) sp_132 + 0x08);
 	if (false)
 	{
 l0000000000015CB0:
@@ -830,23 +830,23 @@ l0000000000015CB0:
 	Eq_292 a5_904;
 	if (s1_882 != 0x00)
 	{
-		*sp_132 = *sp_132 & 0x01 | -0x04;
+		*((word64) sp_132 + 0x0038) = *((word64) sp_132 + 0x0030) & 0x01 | -0x04;
 		word64 s1_924;
 		int64 a0_925;
 		ra = fn00000000000164D0(0x0F, out sp_132, out s0_1002, out s1_924, out a0_925);
 		if (a0_925 < 0x00)
 			goto l0000000000015CB0;
 		inet_ntop();
-		a5_904 = *sp_132;
+		a5_904 = *((word64) sp_132 + 0x08);
 		if (0x0A != 0x00)
 		{
 l00000000000154DC:
-			*sp_132 = a5_904;
+			*((word64) sp_132 + 0x08) = a5_904;
 			__asprintf_chk();
-			a5_771 = *sp_132;
+			a5_771 = *((word64) sp_132 + 0x08);
 			if (sp_132 != 33)
 			{
-				s1_1026 = *sp_132;
+				s1_1026 = *((word64) sp_132 + 0x0020);
 				if (s1_1026 != 0x00)
 					goto l0000000000015510;
 			}
@@ -854,11 +854,11 @@ l00000000000154DC:
 		}
 		goto l0000000000015CB0;
 	}
-	*sp_132 = a5_884;
+	*((word64) sp_132 + 0x08) = a5_884;
 	ui64 s1_940;
 	int64 a0_941;
 	ra = fn00000000000164D0(0x04, out sp_132, out s0_1002, out s1_940, out a0_941);
-	Eq_292 a5_943 = *sp_132;
+	Eq_292 a5_943 = *((word64) sp_132 + 0x08);
 	if (a0_941 < 0x00)
 		goto l0000000000015CB0;
 	if (0x0F < a5_943)
@@ -868,26 +868,26 @@ l00000000000154DC:
 		{
 			if ((s1_940 | 0x04) != a3_959)
 			{
-				sp_132->u0 = -0x0054;
-				*sp_132 = *sp_132 >> 0x04 & 0x0F | 0x0010;
+				((word64) sp_132 + 0x0100)->u0 = -0x0054;
+				*((word64) sp_132 + 0x0101) = *((word64) sp_132 + 0x0030) >> 0x04 & 0x0F | 0x0010;
 			}
 			else
 			{
-				sp_132->u0 = -0x0040;
-				sp_132->u0 = -88;
+				((word64) sp_132 + 0x0100)->u0 = -0x0040;
+				((word64) sp_132 + 0x0101)->u0 = -88;
 			}
 l0000000000015C84:
-			Eq_1081 a4_945 = (word64) *sp_132;
-			*sp_132 = a5_943;
-			*sp_132 = a4_945;
+			Eq_1081 a4_945 = (word64) *((word64) sp_132 + 0x0100);
+			*((word64) sp_132 + 0x08) = a5_943;
+			*((word64) sp_132 + 0x0018) = a4_945;
 			inet_ntop();
-			a5_904 = *sp_132;
+			a5_904 = *((word64) sp_132 + 0x08);
 			if (true)
 				goto l00000000000154DC;
 			goto l0000000000015CB0;
 		}
 	}
-	sp_132->u0 = 0x0A;
+	((word64) sp_132 + 0x0100)->u0 = 0x0A;
 	goto l0000000000015C84;
 }
 
@@ -936,19 +936,18 @@ void fn0000000000015F24()
 		return;
 	else
 	{
-		word64 sp_23;
-		word64 a0_24;
-		word64 a5_25;
-		word64 a1_26;
-		word64 t1_27;
-		word64 ra_28;
+		word64 sp_21;
+		word64 a0_22;
+		word64 a5_23;
+		word64 a1_24;
+		word64 t1_25;
 		null();
 		return;
 	}
 }
 
-// 0000000000015F64: void fn0000000000015F64(Register (ptr Eq_1258) gp)
-void fn0000000000015F64(Eq_1258 * gp)
+// 0000000000015F64: void fn0000000000015F64(Register (ptr Eq_1257) gp)
+void fn0000000000015F64(Eq_1257 * gp)
 {
 	if ((word64) gp->bFFFFF894 == 0x00)
 	{
@@ -961,21 +960,31 @@ void fn0000000000015F64(Eq_1258 * gp)
 // 0000000000015F94: void fn0000000000015F94()
 void fn0000000000015F94()
 {
-	if (globals->qw19E28 != 0x00 && 0x00 != 0x00)
-	{
-		word64 sp_18;
-		word64 a5_19;
-		word64 a0_20;
-		word64 ra_21;
-		null();
-		fn0000000000015F24();
-		return;
-	}
-	else
-	{
-		fn0000000000015F24();
-		return;
-	}
+fn0000000000015F94_entry:
+	sp = fp
+	a5 = 0x0001A000
+	a0 = 106024
+	a5 = globals->qw19E28
+	branch a5 != 0x00 l0000000000015FA8
+	goto l0000000000015FA4
+l0000000000015F94:
+l0000000000015FA4:
+	fn0000000000015F24()
+	return
+l0000000000015FA8:
+	a5 = 0x00
+	a5 = 0x00
+	branch 0x00 == 0x00 l0000000000015FA4
+l0000000000015FB4:
+	sp = fp + -0x0010
+	qwLoc08 = ra
+	null()
+	ra = qwLoc08
+	sp = fp
+	fn0000000000015F24()
+	return
+l0000000000015FC4_thunk_fn0000000000015F24:
+fn0000000000015F94_exit:
 }
 
 // 0000000000015FCC: void fn0000000000015FCC(Register (ptr Eq_291) gp, Register Eq_759 a0)
@@ -1032,25 +1041,25 @@ void fn0000000000015FCC(Eq_291 * gp, Eq_759 a0)
 	}
 }
 
-// 00000000000163B0: Register Eq_1376 fn00000000000163B0(Register (ptr Eq_291) gp, Register Eq_1376 a0)
-Eq_1376 fn00000000000163B0(Eq_291 * gp, Eq_1376 a0)
+// 00000000000163B0: Register Eq_1381 fn00000000000163B0(Register (ptr Eq_291) gp, Register Eq_1381 a0)
+Eq_1381 fn00000000000163B0(Eq_291 * gp, Eq_1381 a0)
 {
 	word64 a5_27 = gp->qwFFFFF870;
 	__sprintf_chk();
 	Eq_656 a1_118 = 0x01;
-	Eq_1387 s3_37 = 0x0010;
-	Eq_1387 s0_112 = 0x01;
-	struct Eq_1391 * s1_113 = fp + -0x00E6;
+	Eq_1392 s3_37 = 0x0010;
+	Eq_1392 s0_112 = 0x01;
+	struct Eq_1396 * s1_113 = fp + -0x00E6;
 	Eq_656 s5_43 = 0x01;
-	Eq_1387 s9_44 = 0x0F;
-	Eq_1399 s7_45 = 0x003A;
+	Eq_1392 s9_44 = 0x0F;
+	Eq_1404 s7_45 = 0x003A;
 	if (0x01 != s3_37)
 	{
 		do
 		{
 			__sprintf_chk();
 			a1_118 = s5_43;
-			struct Eq_1391 * a4_121 = &s1_113->b0002;
+			struct Eq_1396 * a4_121 = &s1_113->b0002;
 			if ((s0_112 & 0x01) != 0x00)
 			{
 				if (s0_112 == s9_44)
@@ -1077,7 +1086,7 @@ Eq_1376 fn00000000000163B0(Eq_291 * gp, Eq_1376 a0)
 			word64 sp_106;
 			word64 s0_107;
 			word64 s1_108;
-			Eq_1376 a0_109;
+			Eq_1381 a0_109;
 			word64 s2_110;
 			fn0000000000016544(out sp_106, out s0_107, out s1_108, out a0_109, out s2_110);
 			return a0_109;
@@ -1087,7 +1096,7 @@ Eq_1376 fn00000000000163B0(Eq_291 * gp, Eq_1376 a0)
 			word64 sp_100;
 			word64 s0_101;
 			word64 s1_102;
-			Eq_1376 a0_103;
+			Eq_1381 a0_103;
 			word64 s2_104;
 			fn0000000000016500(0x000115D0, a1_118, out sp_100, out s0_101, out s1_102, out a0_103, out s2_104);
 			return a0_103;
@@ -1146,7 +1155,7 @@ word64 fn0000000000016544(ptr64 & spOut, ptr64 & s0Out, ptr64 & s1Out, ptr64 & a
 	word64 s2_7;
 	*s2Out = v3->qw0000;
 	word64 sp_8;
-	*spOut = v3->qw0018 + 0x01;
+	*spOut = &v3->qw0018 + 0x01;
 	return v3->qw0018;
 }
 
@@ -1155,8 +1164,8 @@ word64 fn000000000001654C(word64 ra, Eq_291 * gp)
 {
 	word64 t3_7 = gp->qwFFFFF870;
 	__vasprintf_chk();
-	Eq_1576 a1_19 = 0x01;
-	Eq_306 a0_21 = fp;
+	Eq_1581 a1_19 = 0x01;
+	Eq_306 a0_21 = (word64) fp - 112;
 	if (fp >= ~0x6F)
 	{
 		fputs();
@@ -1184,8 +1193,8 @@ word64 fn000000000001654C(word64 ra, Eq_291 * gp)
 		return s4;
 }
 
-// 0000000000016630: Register Eq_306 fn0000000000016630(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_306 a0, Register Eq_1576 a1, Register out ptr64 a1Out, Register out ptr64 s4Out)
-Eq_306 fn0000000000016630(word64 ra, Eq_291 * gp, Eq_306 a0, Eq_1576 a1, ptr64 & a1Out, ptr64 & s4Out)
+// 0000000000016630: Register Eq_306 fn0000000000016630(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_306 a0, Register Eq_1581 a1, Register out ptr64 a1Out, Register out ptr64 s4Out)
+Eq_306 fn0000000000016630(word64 ra, Eq_291 * gp, Eq_306 a0, Eq_1581 a1, ptr64 & a1Out, ptr64 & s4Out)
 {
 	*s4Out = s4;
 	Eq_306 a5_28;
@@ -1195,7 +1204,7 @@ Eq_306 fn0000000000016630(word64 ra, Eq_291 * gp, Eq_306 a0, Eq_1576 a1, ptr64 &
 	strtol();
 	Eq_535 a2_24 = 0x00;
 	word64 a1_25;
-	*a1Out = (ptr64) fp;
+	*a1Out = (word64) fp - 0x0040;
 	if (0x00 != 0x00 && (a0 != 0x00 && (word64) null == 0x00))
 	{
 		a5_28 = (word64) *a0;
@@ -1225,7 +1234,7 @@ l0000000000016698:
 		Eq_306 a0_53;
 		word64 a1_54;
 		word64 s4_55;
-		fn00000000000166F4(ra, gp, a5_28, fp, a2_24, out sp_50, out s0_51, out s1_52, out a0_53, out a1_54, out s4_55);
+		fn00000000000166F4(ra, gp, a5_28, (word64) fp - 0x0040, a2_24, out sp_50, out s0_51, out s1_52, out a0_53, out a1_54, out s4_55);
 		return a0_53;
 	}
 	else
@@ -1251,7 +1260,7 @@ word64 fn00000000000166F4(word64 ra, Eq_291 * gp, Eq_306 a0, Eq_306 a1, Eq_535 a
 			*a1Out = a1;
 			if (0x02 != 0x00)
 			{
-				Eq_1745 a0_128 = fn00000000000182B4((word64) dwLoc40);
+				Eq_1750 a0_128 = fn00000000000182B4((word64) dwLoc40);
 				if (a0_128 != 0x00)
 				{
 					if ((a0_128 & 0x01) != 0x00)
@@ -1266,7 +1275,7 @@ l0000000000016778:
 						} while ((a0_128 & 0x01) != 0x00);
 						goto l000000000001678C;
 					}
-					Eq_1745 a5_139 = (int64) (int32) (a0_128 >> 0x01);
+					Eq_1750 a5_139 = (int64) (int32) (a0_128 >> 0x01);
 					if (a5_139 == 0x00)
 						break;
 					if ((a5_139 & 0x01) != 0x00)
@@ -1285,7 +1294,7 @@ l000000000001678C:
 				s0_11.u0 = -0x01;
 			}
 l0000000000016794:
-			Eq_1785 a5_94 = (word64) fp->dwFFFFFFC0;
+			Eq_1790 a5_94 = (word64) fp->dwFFFFFFC0;
 			if (s4_109 != 0x00 && 0x0020 < a5_94)
 			{
 				if ((word64) *a0 == 0x00)
@@ -1338,7 +1347,7 @@ l00000000000167F4:
 						word64 s4_63;
 						*s4Out = fp->qw0010;
 						word64 sp_64;
-						*spOut = fp->qw0038 + 0x01;
+						*spOut = &fp->qw0038 + 0x01;
 						return fp->qw0038;
 					}
 				}
@@ -1354,8 +1363,8 @@ l00000000000167F4:
 	goto l0000000000016794;
 }
 
-// 0000000000016830: Register word64 fn0000000000016830(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 s0, Register Eq_292 a0, Register Eq_292 a1, Register out (ptr Eq_1921) spOut, Register out ptr64 s0Out, Register out ptr64 a0Out)
-word64 fn0000000000016830(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a1, Eq_1921 * & spOut, ptr64 & s0Out, ptr64 & a0Out)
+// 0000000000016830: Register word64 fn0000000000016830(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 s0, Register Eq_292 a0, Register Eq_292 a1, Register out (ptr Eq_1926) spOut, Register out ptr64 s0Out, Register out ptr64 a0Out)
+word64 fn0000000000016830(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a1, Eq_1926 * & spOut, ptr64 & s0Out, ptr64 & a0Out)
 {
 	if (a0 == 0x00)
 	{
@@ -1377,7 +1386,7 @@ word64 fn0000000000016830(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a
 // 000000000001684C: Register word64 fn000000000001684C(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 s0, Register Eq_292 a0, Register Eq_292 a1, Register out ptr64 spOut, Register out ptr64 s0Out, Register out ptr64 a0Out)
 word64 fn000000000001684C(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a1, ptr64 & spOut, ptr64 & s0Out, ptr64 & a0Out)
 {
-	*v3 = (union Eq_1745 *) fn00000000000182B4((int64) (int32) (-0x01 << (int64) (0x0020 - a0)));
+	*v3 = (union Eq_1750 *) fn00000000000182B4((int64) (int32) (-0x01 << (int64) (0x0020 - a0)));
 	word64 sp_13;
 	word64 s0_14;
 	word64 a0_15;
@@ -1394,7 +1403,7 @@ word64 fn0000000000016864(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a1, ptr64 & 
 	if (a4 != a5)
 	{
 		__stack_chk_fail();
-		sp = sp + -0x0010;
+		sp = (struct Eq_1977 *) ((char *) sp - 0x0010);
 		sp->t0000 = s0;
 		s0 = a0;
 		a0 = a1;
@@ -1404,14 +1413,14 @@ word64 fn0000000000016864(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a1, ptr64 & 
 		a0 = a0 ^ -0x01;
 		a0 = a0 | s0;
 		s0 = sp->qw0000;
-		sp = sp->qw0008 + 0x01;
+		sp = &sp->qw0008 + 0x01;
 		return ra;
 	}
 	else
 	{
 		ra = sp->qw0018;
 		s0 = sp->t0010;
-		sp = sp->qw0018 + 0x01;
+		sp = &sp->qw0018 + 0x01;
 		return ra;
 	}
 }
@@ -1450,7 +1459,7 @@ Eq_310 fn00000000000168E4(Eq_291 * gp, Eq_310 a0, Eq_304 a1)
 	if (a0_130 == 0x00)
 	{
 		__strdup();
-		a0_36 = gp->dwFFFFF890 + 0x02;
+		a0_36 = &gp->dwFFFFF890 + 0x02;
 l0000000000016914:
 		if (a4_7 != gp->qwFFFFF870)
 		{
@@ -1465,20 +1474,20 @@ l0000000000016910:
 	goto l0000000000016914;
 }
 
-// 00000000000169D8: Register Eq_2080 fn00000000000169D8(Register (ptr Eq_291) gp, Register Eq_304 a1)
-Eq_2080 fn00000000000169D8(Eq_291 * gp, Eq_304 a1)
+// 00000000000169D8: Register Eq_2085 fn00000000000169D8(Register (ptr Eq_291) gp, Register Eq_304 a1)
+Eq_2085 fn00000000000169D8(Eq_291 * gp, Eq_304 a1)
 {
-	Eq_2080 a0_119;
+	Eq_2085 a0_119;
 	word64 a5_7 = gp->qwFFFFF870;
 	getaddrinfo();
 	if (a1 == 0x00)
 	{
-		struct Eq_2092 * s0_104 = qwLoc70;
+		struct Eq_2097 * s0_104 = qwLoc70;
 		if (qwLoc70 != null)
 		{
-			Eq_2100 s3_100 = 0x02;
+			Eq_2105 s3_100 = 0x02;
 l0000000000016A68:
-			Eq_2100 a0_109 = (word64) s0_104->dw0004;
+			Eq_2105 a0_109 = (word64) s0_104->dw0004;
 			if (a0_109 == s3_100)
 			{
 				inet_ntop();
@@ -1493,7 +1502,7 @@ l0000000000016A88:
 					__strdup();
 					freeaddrinfo();
 					__strdup();
-					a0_119 = gp->dwFFFFF890 + 0x0104;
+					a0_119 = &gp->dwFFFFF890 + 0x0104;
 					goto l0000000000016AAC;
 				}
 			}
@@ -1503,7 +1512,7 @@ l0000000000016A88:
 				if (a0_109 != 0x00)
 					goto l0000000000016A88;
 			}
-			struct Eq_2138 * s0_123 = s0_104->ptr0028;
+			struct Eq_2143 * s0_123 = s0_104->ptr0028;
 			s0_104 = s0_123->ptr0028;
 			if (s0_104 != null)
 				goto l0000000000016A68;
@@ -1516,14 +1525,14 @@ l0000000000016A88:
 	if (a5_7 != gp->qwFFFFF870)
 	{
 		__stack_chk_fail();
-		Eq_2080 a5_61 = a0_119;
+		Eq_2085 a5_61 = a0_119;
 l0000000000016AE8:
-		Eq_2080 a0_68;
+		Eq_2085 a0_68;
 		if (a5_61 != 0x00)
 		{
 			if ((a5_61 & 0x01) != 0x00)
 				goto l0000000000016AF4;
-			Eq_2080 a4_84 = (int64) (int32) (a5_61 >> 0x01);
+			Eq_2085 a4_84 = (int64) (int32) (a5_61 >> 0x01);
 			a5_61 = (int64) (int32) (a5_61 >> 0x02);
 			if (a4_84 != 0x00)
 			{
@@ -1549,8 +1558,8 @@ l0000000000016AF4:
 		return a0_119;
 }
 
-// 0000000000016B38: void fn0000000000016B38(Register Eq_2205 a0)
-void fn0000000000016B38(Eq_2205 a0)
+// 0000000000016B38: void fn0000000000016B38(Register Eq_2210 a0)
+void fn0000000000016B38(Eq_2210 a0)
 {
 	if (0x007F < a0)
 		return;
@@ -1558,12 +1567,12 @@ void fn0000000000016B38(Eq_2205 a0)
 		return;
 }
 
-// 0000000000016B68: Register Eq_1745 fn0000000000016B68(Register Eq_1745 a0)
-Eq_1745 fn0000000000016B68(Eq_1745 a0)
+// 0000000000016B68: Register Eq_1750 fn0000000000016B68(Register Eq_1750 a0)
+Eq_1750 fn0000000000016B68(Eq_1750 a0)
 {
-	Eq_1745 a4_102;
-	Eq_1745 a0_6 = fn00000000000182B4(a0);
-	Eq_2213 a5_7 = (int64) (int32) (a0_6 >> 0x18);
+	Eq_1750 a4_102;
+	Eq_1750 a0_6 = fn00000000000182B4(a0);
+	Eq_2218 a5_7 = (int64) (int32) (a0_6 >> 0x18);
 	if (a5_7 == 0x00)
 	{
 		a4_102.u0 = 71144;
@@ -1662,7 +1671,7 @@ l0000000000016CB8:
 		}
 		else
 		{
-			Eq_2213 a2_95 = 0x00FF;
+			Eq_2218 a2_95 = 0x00FF;
 			if (a5_7 == a2_95)
 			{
 				a4_102.u0 = 0x00011710;
@@ -1698,7 +1707,7 @@ Eq_310 fn0000000000016D74(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_310 a0, Eq_292 a
 	Eq_310 a0_115;
 	memset();
 	inet_pton();
-	struct Eq_2351 * sp_114 = fp + -448;
+	struct Eq_2356 * sp_114 = fp + -448;
 	Eq_292 s5_140 = a1;
 	if (false)
 	{
@@ -1720,7 +1729,7 @@ l0000000000016E24:
 			strchr();
 			if (a0_376 == 0x00)
 			{
-				Eq_2372 s2_407 = -0x01;
+				Eq_2377 s2_407 = -0x01;
 				do
 				{
 					__asprintf_chk();
@@ -1730,7 +1739,7 @@ l0000000000016E24:
 				} while (s0 != 0x00);
 				break;
 			}
-			a0_376 = a0_376;
+			a0_376 = (word64) a0_376 + 0x01;
 			s0 = (int64) ((word32) s0 + -0x01);
 		} while (s0 != 0x00);
 		if (0x0020 < a1)
@@ -1749,7 +1758,7 @@ l0000000000016E24:
 		s5_140.u0 = 0x0020;
 		if (a3 << 0x0D < 0x00)
 		{
-			Eq_1745 a0_424 = fn00000000000182B4((word64) dwLoc01B8);
+			Eq_1750 a0_424 = fn00000000000182B4((word64) dwLoc01B8);
 			s5_140.u0 = 0x08;
 			int64 a5_425 = (int64) (int32) (a0_424 >> 0x18);
 			if (a0_424 < 0x00)
@@ -1765,9 +1774,9 @@ l0000000000016E24:
 	{
 		__strdup();
 		a2->ptr0000 = fp + -0x0188;
-		struct Eq_2433 * sp_164;
+		struct Eq_2438 * sp_164;
 		word64 s0_165;
-		Eq_2435 a0_166;
+		Eq_2440 a0_166;
 		word64 ra_167 = fn0000000000016830(ra, gp, s0, s5_140, fp + -440, out sp_164, out s0_165, out a0_166);
 		sp_164->t0010 = a0_166;
 		sp_164->qw0038 = 0x00;
@@ -1792,7 +1801,7 @@ l00000000000172D8:
 		a2->ptr0030 = (word64 *) &sp_164->qw0038;
 		Eq_292 s0_183 = (word64) sp_164->dw0008;
 		a2->t00A0 = s5_140;
-		struct Eq_2499 * sp_186;
+		struct Eq_2504 * sp_186;
 		ui64 s0_187;
 		word64 a0_188;
 		word64 ra_189 = fn0000000000016830(ra_167, gp, s0_183, s5_140, &sp_164->t0010, out sp_186, out s0_187, out a0_188);
@@ -1813,8 +1822,8 @@ l00000000000172D8:
 		ui64 s0_210;
 		ui64 a0_211;
 		fn0000000000016830(ra_189, gp, (word64) sp_186->dw0008, s5_140, &sp_186->t0020, out sp_114, out s0_210, out a0_211);
-		Eq_1745 a3_213 = (word64) sp_114->dw0020;
-		Eq_1745 s0_214 = a0_211 & s0_210;
+		Eq_1750 a3_213 = (word64) sp_114->dw0020;
+		Eq_1750 s0_214 = a0_211 & s0_210;
 		sp_114->t0018 = s0_214;
 		a2->qw0018 = fn0000000000017F04(gp, s0_214, s5_140, s0_214, a3_213);
 		sp_114->qw0038 = 0x00;
@@ -1830,10 +1839,10 @@ l00000000000172D8:
 			;
 		word64 a5_244;
 		__strdup();
-		Eq_1745 s0_234 = (word64) sp_114->t0018;
+		Eq_1750 s0_234 = (word64) sp_114->t0018;
 		a2->ptr0020 = (word64 *) &sp_114->qw0038;
 		a2->qw00B8 = fn0000000000016B68(s0_234);
-		Eq_1745 a0_241 = fn00000000000182B4(s0_234);
+		Eq_1750 a0_241 = fn00000000000182B4(s0_234);
 		int64 a5_242 = (int64) (int32) (a0_241 >> 0x18);
 		if (a0_241 < 0x00)
 		{
@@ -1854,7 +1863,7 @@ l00000000000172D8:
 		}
 		else
 			a5_244 = 0x00011758;
-		struct Eq_2683 * a5_284;
+		struct Eq_2688 * a5_284;
 		a2->qw00C0 = a5_244;
 		if (s5_140 == 0x0020)
 		{
@@ -1906,7 +1915,7 @@ l000000000001716C:
 			a2->t0061 = (word64) a5_284->b0001;
 l000000000001717C:
 			if (a3 << 0x11 < 0x00)
-				fn0000000000017B40(gp, (word64) sp_114->dw0008, a2->qw0038 + 0x01, a2->qw0038 + 0x02, a2->qw0038 + 0x03);
+				fn0000000000017B40(gp, (word64) sp_114->dw0008, &a2->qw0038 + 0x01, &a2->qw0038 + 0x02, &a2->qw0038 + 0x03);
 			if ((a3 & 0x01) == 0x00)
 			{
 l000000000001718C:
@@ -1943,11 +1952,11 @@ Eq_292 fn000000000001730C(Eq_291 * gp, Eq_292 a0, Eq_292 a1, ptr64 & s3Out)
 	word64 a4_7 = gp->qwFFFFF870;
 	if (0x0080 >= a0)
 	{
-		byte * a5_111 = fp.u1;
+		byte * a5_111 = (word64) fp.u1 - 0x00B8;
 		int64 a4_110 = (int64) (0x08 - a0);
 		Eq_292 a3_95 = 0x07;
-		Eq_2922 a2_96 = -0x01;
-		Eq_2924 a1_97 = 0x00FF;
+		Eq_2927 a2_96 = -0x01;
+		Eq_2929 a1_97 = 0x00FF;
 		if (a0 != 0x00)
 		{
 			do
@@ -1962,19 +1971,19 @@ Eq_292 fn000000000001730C(Eq_291 * gp, Eq_292 a0, Eq_292 a1, ptr64 & s3Out)
 			} while (0x00 < a0);
 		}
 		inet_ntop();
-		a1 = fp.u1;
+		a1 = (word64) fp.u1 - 0x00B8;
 		if (0x0A != 0x00)
 		{
 			memcpy();
 			__strdup();
-			a1 = fp.u1;
-			a0_108 = fp.u1;
+			a1 = (word64) fp.u1 - 0x00B8;
+			a0_108 = (word64) fp.u1 - 0x00A8;
 l000000000001739C:
 			if (a4_7 != gp->qwFFFFF870)
 			{
 				__stack_chk_fail();
-				Eq_2955 s2_65 = (word64) *a0_108;
-				ui64 s3_66 = (word64) *a0_108;
+				Eq_2960 s2_65 = (word64) *a0_108;
+				ui64 s3_66 = (word64) *((word64) a0_108 + 0x01);
 				if (fp == -0x0138)
 				{
 					word64 s0_73;
@@ -2007,8 +2016,8 @@ l000000000001739C:
 // 00000000000173D4: Register word64 fn00000000000173D4(Register Eq_292 a0, Register Eq_292 a1, Register out ptr64 s0Out, Register out ptr64 a0Out, Register out ptr64 s2Out, Register out ptr64 s3Out)
 word64 fn00000000000173D4(Eq_292 a0, Eq_292 a1, ptr64 & s0Out, ptr64 & a0Out, ptr64 & s2Out, ptr64 & s3Out)
 {
-	Eq_2955 s2_17 = (word64) *a0;
-	ui64 s3_18 = (word64) *a0;
+	Eq_2960 s2_17 = (word64) *a0;
+	ui64 s3_18 = (word64) *((word64) a0 + 0x01);
 	if (a1 == 0x0080)
 	{
 		word64 s0_42;
@@ -2023,14 +2032,14 @@ word64 fn00000000000173D4(Eq_292 a0, Eq_292 a1, ptr64 & s0Out, ptr64 & a0Out, pt
 		Eq_292 s0_30;
 		Eq_292 a0_31;
 		Eq_292 a1_32;
-		Eq_2955 s2_33;
+		Eq_2960 s2_33;
 		ui64 s3_34;
 		return fn0000000000017400(a0, a0, a1, s2_17, s3_18, out s0_30, out a0_31, out a1_32, out s2_33, out s3_34);
 	}
 }
 
-// 0000000000017400: Register word64 fn0000000000017400(Register Eq_292 s0, Register Eq_292 a0, Register Eq_292 a1, Register Eq_2955 s2, Register ui64 s3, Register out ptr64 s0Out, Register out ptr64 a0Out, Register out ptr64 a1Out, Register out ptr64 s2Out, Register out ptr64 s3Out)
-word64 fn0000000000017400(Eq_292 s0, Eq_292 a0, Eq_292 a1, Eq_2955 s2, ui64 s3, ptr64 & s0Out, ptr64 & a0Out, ptr64 & a1Out, ptr64 & s2Out, ptr64 & s3Out)
+// 0000000000017400: Register word64 fn0000000000017400(Register Eq_292 s0, Register Eq_292 a0, Register Eq_292 a1, Register Eq_2960 s2, Register ui64 s3, Register out ptr64 s0Out, Register out ptr64 a0Out, Register out ptr64 a1Out, Register out ptr64 s2Out, Register out ptr64 s3Out)
+word64 fn0000000000017400(Eq_292 s0, Eq_292 a0, Eq_292 a1, Eq_2960 s2, ui64 s3, ptr64 & s0Out, ptr64 & a0Out, ptr64 & a1Out, ptr64 & s2Out, ptr64 & s3Out)
 {
 	if (0x005F < a1)
 	{
@@ -2052,8 +2061,8 @@ word64 fn0000000000017400(Eq_292 s0, Eq_292 a0, Eq_292 a1, Eq_2955 s2, ui64 s3, 
 	}
 }
 
-// 00000000000174DC: Register ptr64 fn00000000000174DC(Register Eq_292 s0, Register Eq_292 a0, Register Eq_2955 s2, Register ui64 s3, Register out ptr64 s0Out, Register out ptr64 a0Out, Register out ptr64 a1Out, Register out ptr64 s2Out, Register out ptr64 s3Out)
-ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Out, ptr64 & a0Out, ptr64 & a1Out, ptr64 & s2Out, ptr64 & s3Out)
+// 00000000000174DC: Register ptr64 fn00000000000174DC(Register Eq_292 s0, Register Eq_292 a0, Register Eq_2960 s2, Register ui64 s3, Register out ptr64 s0Out, Register out ptr64 a0Out, Register out ptr64 a1Out, Register out ptr64 s2Out, Register out ptr64 s3Out)
+ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2960 s2, ui64 s3, ptr64 & s0Out, ptr64 & a0Out, ptr64 & a1Out, ptr64 & s2Out, ptr64 & s3Out)
 {
 	memcmp();
 	word64 a1_5;
@@ -2068,7 +2077,7 @@ ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Ou
 		*s2Out = v3->qw0010;
 		word64 s3_112;
 		*s3Out = v3->qw0008;
-		return v3->qw0020 + 0x02;
+		return &v3->qw0020 + 0x02;
 	}
 	else
 	{
@@ -2095,7 +2104,7 @@ ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Ou
 				*s2Out = v3->qw0010;
 				word64 s3_104;
 				*s3Out = v3->qw0008;
-				return v3->qw0020 + 0x02;
+				return &v3->qw0020 + 0x02;
 			}
 			memcmp();
 			word64 a1_50;
@@ -2110,7 +2119,7 @@ ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Ou
 				*s2Out = v3->qw0010;
 				word64 s3_96;
 				*s3Out = v3->qw0008;
-				return v3->qw0020 + 0x02;
+				return &v3->qw0020 + 0x02;
 			}
 			memcmp();
 			word64 a1_53;
@@ -2125,7 +2134,7 @@ ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Ou
 				*s2Out = v3->qw0010;
 				word64 s3_61;
 				*s3Out = v3->qw0008;
-				return v3->qw0020 + 0x02;
+				return &v3->qw0020 + 0x02;
 			}
 			ui64 a5_66 = s2 << 0x08 | s3;
 			if ((a5_66 & 0xFFFFE000) != 0x2000)
@@ -2174,7 +2183,7 @@ ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2955 s2, ui64 s3, ptr64 & s0Ou
 		*s2Out = v3->qw0010;
 		word64 s3_39;
 		*s3Out = v3->qw0008;
-		return v3->qw0020 + 0x02;
+		return &v3->qw0020 + 0x02;
 	}
 }
 
@@ -2184,7 +2193,7 @@ Eq_430 fn00000000000175BC(Eq_291 * gp)
 	Eq_430 a0_127;
 	memset();
 	inet_pton();
-	struct Eq_3294 * sp_120 = fp;
+	struct Eq_3299 * sp_120 = (word64) fp - 0x01A0;
 	Eq_292 s2_131 = a1;
 	if (false)
 	{
@@ -2194,7 +2203,7 @@ Eq_430 fn00000000000175BC(Eq_291 * gp)
 		a0_127.u0 = -0x01;
 		goto l0000000000017774;
 	}
-	a2->qw0008 = fn00000000000163B0(gp, fp);
+	a2->qw0008 = fn00000000000163B0(gp, (word64) fp - 0x0198);
 	inet_ntop();
 	if (0x0A == 0x00)
 	{
@@ -2208,7 +2217,7 @@ l0000000000017768:
 	else
 	{
 		__strdup();
-		a2->ptr0000 = (ptr64) fp;
+		a2->ptr0000 = (word64) fp - 0x0168;
 		Eq_292 s5_130 = 0x0080;
 		if (s5_130 >= a1)
 		{
@@ -2218,38 +2227,38 @@ l0000000000017768:
 				s2_131 = s5_130;
 			a2->t00A0 = s5_130;
 			word64 s3_137;
-			word64 a0_138 = fn000000000001730C(gp, s5_130, fp, out s3_137);
+			word64 a0_138 = fn000000000001730C(gp, s5_130, (word64) fp - 0x0188, out s3_137);
 			a2->qw0030 = a0_138;
 			if (a0_138 != 0x00)
 			{
-				struct Eq_3351 * s8_140 = fp;
-				Eq_3354 a5_141 = fp;
-				byte * s9_142 = fp;
-				byte * a2_143 = fp;
-				Eq_3362 a3_144 = fp;
+				struct Eq_3356 * s8_140 = (word64) fp - 0x0178;
+				Eq_3359 a5_141 = (word64) fp - 0x0198;
+				byte * s9_142 = (word64) fp - 0x0188;
+				byte * a2_143 = (word64) fp - 0x0178;
+				Eq_3367 a3_144 = (word64) fp - 0x0188;
 				do
 				{
 					*a2_143 = (byte) ((word64) *a5_141 & (word64) (*a3_144));
-					a5_141 = a5_141;
-					a3_144 = a3_144;
+					a5_141 = (word64) a5_141 + 0x01;
+					a3_144 = (word64) a3_144 + 0x01;
 					a2_143 = a2_143 + 0x01;
-				} while (fp != a5_141);
+				} while ((word64) fp - 0x0188 != a5_141);
 				inet_ntop();
 				if (0x0A != 0x00)
 				{
 					__strdup();
 					a2->qw0020 = s3_137;
-					a2->qw0010 = fn00000000000163B0(gp, fp);
-					struct Eq_3404 * s0_166;
+					a2->qw0010 = fn00000000000163B0(gp, (word64) fp - 0x0178);
+					struct Eq_3409 * s0_166;
 					word64 a0_167;
-					Eq_3406 s2_168;
-					struct Eq_3351 * s3_169;
-					sp_120 = fn00000000000173D4(fp, s2_131, out s0_166, out a0_167, out s2_168, out s3_169);
+					Eq_3411 s2_168;
+					struct Eq_3356 * s3_169;
+					sp_120 = fn00000000000173D4((word64) fp - 0x0178, s2_131, out s0_166, out a0_167, out s2_168, out s3_169);
 					s0_166->qw00B8 = a0_167;
-					Mem175[s0_166 + 0x0018:word64] = fn0000000000018118(gp, sp_120 + 0x0028, s5_130);
+					s0_166->t0018 = fn0000000000018118(gp, (char *) sp_120 + 0x0028, s5_130);
 					if (s2_168 == 0x0080)
 					{
-						struct Eq_3351 * a5_225 = s0_166->ptr0020;
+						struct Eq_3356 * a5_225 = s0_166->ptr0020;
 						s0_166->ptr00A8 = a5_225;
 						s0_166->ptr00B0 = a5_225;
 						goto l0000000000017728;
@@ -2259,7 +2268,7 @@ l0000000000017768:
 					do
 					{
 						s8_140 = s8_140 + 0x01;
-						s8_140[0x0FFF] = (struct Eq_3351) ((word64) *s9_142 ^ -0x01 | (word64) s8_140->b0000);
+						s8_140[0x0FFF] = (struct Eq_3356) ((word64) *s9_142 ^ -0x01 | (word64) s8_140->b0000);
 						s9_142 = s9_142 + 0x01;
 					} while (s3_169 != s8_140);
 					inet_ntop();
@@ -2267,20 +2276,20 @@ l0000000000017768:
 					{
 						__strdup();
 						s0_166->ptr00B0 = s3_169;
-						Eq_3535 a5_246 = 0x0080;
+						Eq_3540 a5_246 = 0x0080;
 						if ((int64) (a5_246 - s2_168) == a5_246)
 							goto l0000000000017740;
 l0000000000017740:
 						snprintf();
 						if (a3 << 0x11 < 0x00)
-							fn0000000000017D10(gp, sp_120 + 0x08, s0_166 + 0x0040, s0_166 + 0x0048, s0_166 + 0x0050);
+							fn0000000000017D10(gp, (char *) sp_120 + 0x08, &s0_166->qw0038 + 0x01, &s0_166->qw0038 + 0x02, &s0_166->qw0038 + 0x03);
 						if ((a3 & 0x01) == 0x00)
 						{
 l0000000000017760:
 							a0_127.u0 = 0x00;
 							goto l0000000000017774;
 						}
-						word64 a0_197 = fn00000000000168E4(gp, 0x0A, sp_120 + 0x08);
+						word64 a0_197 = fn00000000000168E4(gp, 0x0A, (char *) sp_120 + 0x08);
 						s0_166->qw0038 = a0_197;
 						if (a0_197 != 0x00)
 							goto l0000000000017760;
@@ -2319,10 +2328,10 @@ l0000000000017774:
 	}
 }
 
-// 0000000000017924: Register Eq_3571 fn0000000000017924(Register (ptr Eq_291) gp)
-Eq_3571 fn0000000000017924(Eq_291 * gp)
+// 0000000000017924: Register Eq_3576 fn0000000000017924(Register (ptr Eq_291) gp)
+Eq_3576 fn0000000000017924(Eq_291 * gp)
 {
-	Eq_3571 s0_120;
+	Eq_3576 s0_120;
 	if (gp->qwFFFFF820 == 0x00)
 	{
 		s0_120 = (word64) gp->dwFFFFF818;
@@ -2358,7 +2367,7 @@ Eq_3571 fn0000000000017924(Eq_291 * gp)
 					word64 a1_115 = globals->qw12B60;
 					word64 a2_116 = globals->qw12B68;
 					word64 a3_117 = globals->qw12B70;
-					Eq_3688 a4_118 = (word64) globals->dw12B78;
+					Eq_3693 a4_118 = (word64) globals->dw12B78;
 					gp->tFFFFFCE0 = globals->t12B50;
 					gp->qwFFFFFCE8 = a0_114;
 					gp->qwFFFFFCF0 = a1_115;
@@ -2384,12 +2393,12 @@ Eq_3571 fn0000000000017924(Eq_291 * gp)
 	return s0_120;
 }
 
-// 0000000000017B40: void fn0000000000017B40(Register (ptr Eq_291) gp, Register Eq_1745 a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3)
-void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
+// 0000000000017B40: void fn0000000000017B40(Register (ptr Eq_291) gp, Register Eq_1750 a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3)
+void fn0000000000017B40(Eq_291 * gp, Eq_1750 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 {
 	if (fn0000000000017924(gp) == 0x00)
 	{
-		Eq_1745 a0_81 = fn00000000000182B4(a0);
+		Eq_1750 a0_81 = fn00000000000182B4(a0);
 		<anonymous> * a5_83 = gp->ptrFFFFF868;
 		word64 sp_85;
 		word64 s0_86;
@@ -2407,7 +2416,7 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 a3_98;
 		word64 a4_99;
 		word64 a5_100;
-		struct Eq_3765 * gp_101;
+		struct Eq_3770 * gp_101;
 		word64 fa4_102;
 		word64 fa5_103;
 		word64 t1_104;
@@ -2424,7 +2433,7 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 s5_116;
 		word64 s6_117;
 		word64 s7_118;
-		struct Eq_3784 * a0_119;
+		struct Eq_3789 * a0_119;
 		word64 a1_120;
 		word64 a2_121;
 		word64 a3_122;
@@ -2434,12 +2443,12 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 fa5_127;
 		word64 t1_128;
 		word64 fa3_129;
-		struct Eq_3794 * gp_125;
+		struct Eq_3799 * gp_125;
 		a5_106();
 		if (a0_119 != null)
 		{
 			<anonymous> * a5_258 = gp_125->ptrFFFFF838;
-			Eq_3829 a4_259 = 0x01;
+			Eq_3834 a4_259 = 0x01;
 			a0_119->t004C = a4_259;
 			word64 sp_263;
 			word64 s0_264;
@@ -2457,7 +2466,7 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 			word64 a3_276;
 			word64 a4_277;
 			word64 a5_278;
-			struct Eq_3850 * gp_279;
+			struct Eq_3855 * gp_279;
 			word64 fa4_280;
 			word64 fa5_281;
 			word64 t1_282;
@@ -2482,7 +2491,7 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 			word64 a3_301;
 			word64 a4_302;
 			word64 a5_303;
-			struct Eq_3877 * gp_304;
+			struct Eq_3882 * gp_304;
 			word64 fa4_305;
 			word64 fa5_306;
 			word64 t1_307;
@@ -2510,7 +2519,7 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 			word64 a3_324;
 			word64 a4_325;
 			word64 a5_326;
-			struct Eq_3904 * gp_327;
+			struct Eq_3909 * gp_327;
 			word64 fa4_328;
 			word64 fa5_329;
 			word64 t1_330;
@@ -2555,7 +2564,7 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 s5_142;
 		word64 s6_143;
 		word64 s7_144;
-		struct Eq_3811 * a0_145;
+		struct Eq_3816 * a0_145;
 		word64 a1_146;
 		word64 a2_147;
 		word64 a3_148;
@@ -2565,9 +2574,9 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 fa5_153;
 		word64 t1_154;
 		word64 fa3_155;
-		struct Eq_3821 * gp_151;
+		struct Eq_3826 * gp_151;
 		a5_132();
-		struct Eq_3811 * s0_156 = a0_145;
+		struct Eq_3816 * s0_156 = a0_145;
 		if (a0_145 == null)
 		{
 			<anonymous> * a5_233 = gp_151->ptrFFFFF860;
@@ -2581,7 +2590,7 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 			word64 s5_243;
 			word64 s6_244;
 			word64 s7_245;
-			struct Eq_3811 * a0_246;
+			struct Eq_3816 * a0_246;
 			word64 a1_247;
 			word64 a2_248;
 			word64 a3_249;
@@ -2597,7 +2606,7 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 				return;
 		}
 		<anonymous> * a5_160 = gp_151->ptrFFFFF840;
-		Eq_3946 a4_161 = 0x01;
+		Eq_3951 a4_161 = 0x01;
 		s0_156->t004C = a4_161;
 		word64 sp_165;
 		word64 s0_166;
@@ -2609,13 +2618,13 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1745 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 s5_172;
 		word64 s6_173;
 		word64 s7_174;
-		struct Eq_3961 * a0_175;
+		struct Eq_3966 * a0_175;
 		word64 a1_176;
 		word64 a2_177;
 		word64 a3_178;
 		word64 a4_179;
 		word64 a5_180;
-		struct Eq_3967 * gp_181;
+		struct Eq_3972 * gp_181;
 		word64 fa4_182;
 		word64 fa5_183;
 		word64 t1_184;
@@ -2684,7 +2693,7 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 a3_98;
 		word64 a4_99;
 		word64 a5_100;
-		struct Eq_4077 * gp_101;
+		struct Eq_4082 * gp_101;
 		word64 a6_102;
 		word64 fa4_103;
 		word64 fa5_104;
@@ -2702,7 +2711,7 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 s1_117;
 		word64 s6_118;
 		word64 s7_119;
-		struct Eq_4097 * a0_120;
+		struct Eq_4102 * a0_120;
 		word64 a1_121;
 		word64 a2_122;
 		word64 a3_123;
@@ -2713,12 +2722,12 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 fa5_129;
 		word64 t1_130;
 		word64 fa3_131;
-		struct Eq_4108 * gp_126;
+		struct Eq_4113 * gp_126;
 		a5_107();
 		if (a0_120 != null)
 		{
 			<anonymous> * a3_274 = gp_126->ptrFFFFF830;
-			Eq_4144 a6_277 = 0x01;
+			Eq_4149 a6_277 = 0x01;
 			a0_120->t004C = a6_277;
 			word64 sp_281;
 			word64 s0_282;
@@ -2736,7 +2745,7 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 			word64 a3_294;
 			word64 a4_295;
 			word64 a5_296;
-			struct Eq_4165 * gp_297;
+			struct Eq_4170 * gp_297;
 			word64 a6_298;
 			word64 fa4_299;
 			word64 fa5_300;
@@ -2762,7 +2771,7 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 			word64 a3_320;
 			word64 a4_321;
 			word64 a5_322;
-			struct Eq_4193 * gp_323;
+			struct Eq_4198 * gp_323;
 			word64 a6_324;
 			word64 fa4_325;
 			word64 fa5_326;
@@ -2791,7 +2800,7 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 			word64 a3_344;
 			word64 a4_345;
 			word64 a5_346;
-			struct Eq_4221 * gp_347;
+			struct Eq_4226 * gp_347;
 			word64 a6_348;
 			word64 fa4_349;
 			word64 fa5_350;
@@ -2838,7 +2847,7 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 s1_144;
 		word64 s6_145;
 		word64 s7_146;
-		struct Eq_4125 * a0_147;
+		struct Eq_4130 * a0_147;
 		word64 a1_148;
 		word64 a2_149;
 		word64 a3_150;
@@ -2849,9 +2858,9 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 fa5_156;
 		word64 t1_157;
 		word64 fa3_158;
-		struct Eq_4136 * gp_153;
+		struct Eq_4141 * gp_153;
 		a5_134();
-		struct Eq_4125 * s1_159 = a0_147;
+		struct Eq_4130 * s1_159 = a0_147;
 		if (a0_147 == null)
 		{
 			<anonymous> * a5_244 = gp_153->ptrFFFFF860;
@@ -2865,7 +2874,7 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 			word64 s1_254;
 			word64 s6_255;
 			word64 s7_256;
-			struct Eq_4125 * a0_257;
+			struct Eq_4130 * a0_257;
 			word64 a1_258;
 			word64 a2_259;
 			word64 a3_260;
@@ -2882,7 +2891,7 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 				return;
 		}
 		<anonymous> * a3_167 = gp_153->ptrFFFFF828;
-		Eq_4265 a6_170 = 0x01;
+		Eq_4270 a6_170 = 0x01;
 		s1_159->t004C = a6_170;
 		word64 sp_174;
 		word64 s0_175;
@@ -2894,13 +2903,13 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 s1_181;
 		word64 s6_182;
 		word64 s7_183;
-		struct Eq_4280 * a0_184;
+		struct Eq_4285 * a0_184;
 		word64 a1_185;
 		word64 a2_186;
 		word64 a3_187;
 		word64 a4_188;
 		word64 a5_189;
-		struct Eq_4286 * gp_190;
+		struct Eq_4291 * gp_190;
 		word64 a6_191;
 		word64 fa4_192;
 		word64 fa5_193;
@@ -2948,11 +2957,11 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		return;
 }
 
-// 0000000000017F04: Register Eq_1745 fn0000000000017F04(Register (ptr Eq_291) gp, Register Eq_1745 a0, Register Eq_292 a1, Register Eq_1745 a2, Register Eq_1745 a3)
-Eq_1745 fn0000000000017F04(Eq_291 * gp, Eq_1745 a0, Eq_292 a1, Eq_1745 a2, Eq_1745 a3)
+// 0000000000017F04: Register Eq_1750 fn0000000000017F04(Register (ptr Eq_291) gp, Register Eq_1750 a0, Register Eq_292 a1, Register Eq_1750 a2, Register Eq_1750 a3)
+Eq_1750 fn0000000000017F04(Eq_291 * gp, Eq_1750 a0, Eq_292 a1, Eq_1750 a2, Eq_1750 a3)
 {
 	Eq_292 a1_104;
-	Eq_1745 a0_43;
+	Eq_1750 a0_43;
 	word64 a5_7 = gp->qwFFFFF870;
 	fn00000000000182B4(a0);
 	if (a1 != 0x0020)
@@ -3033,54 +3042,54 @@ l0000000000017F84:
 	goto l0000000000017F88;
 }
 
-// 0000000000018118: Register Eq_1745 fn0000000000018118(Register (ptr Eq_291) gp, Register Eq_1745 a0, Register Eq_292 a1)
-Eq_1745 fn0000000000018118(Eq_291 * gp, Eq_1745 a0, Eq_292 a1)
+// 0000000000018118: Register Eq_1750 fn0000000000018118(Register (ptr Eq_291) gp, Register Eq_1750 a0, Register Eq_292 a1)
+Eq_1750 fn0000000000018118(Eq_291 * gp, Eq_1750 a0, Eq_292 a1)
 {
-	Eq_1745 a0_149;
+	Eq_1750 a0_149;
 	word64 a5_7 = gp->qwFFFFF870;
-	Eq_4446 t4_11 = a1 & 0x03;
+	Eq_4451 t4_11 = a1 & 0x03;
 	if ((a1 & 0x03) == 0x00)
 	{
-		Eq_4453 a4_37 = 0x04;
+		Eq_4458 a4_37 = 0x04;
 		int64 t5_38 = (int64) (int32) (a1 >> 0x03);
 		if ((a1 & 0x07) == a4_37)
 			t4_11.u0 = 0x02;
 		if (t5_38 != 0x00)
 		{
-			Eq_4520 a1_127 = (int64) ((word32) t5_38 + -0x01);
-			Eq_4446 a4_128 = t4_11;
-			Eq_4526 t1_84 = 0x09;
-			Eq_4528 a7_85 = 0x002E;
-			Eq_4520 t3_86 = -0x01;
+			Eq_4525 a1_127 = (int64) ((word32) t5_38 + -0x01);
+			Eq_4451 a4_128 = t4_11;
+			Eq_4531 t1_84 = 0x09;
+			Eq_4533 a7_85 = 0x002E;
+			Eq_4525 t3_86 = -0x01;
 			do
 			{
 				word64 a5_99 = (word64) Mem0[a0 + ((a1_127 << 0x00) >>u 0x00):byte];
 				int64 a3_100 = (int64) ((word32) a4_128 + 0x01);
-				Eq_4555 a6_102 = *(a5_99 & 0x0F);
+				Eq_4560 a6_102 = (word64) (a5_99 & 0x0F) + 0x0057;
 				if (t1_84 >= (a5_99 & 0x0F))
-					a6_102 = a5_99 & 0x0F;
-				Mem110[fp + -0x0010 + ((a4_128 << 0x00) >>u 0x00) + 3832:byte] = a6_102;
-				Mem113[fp + -0x0010 + ((a3_100 << 0x00) >>u 0x00) + 3832:byte] = a7_85;
+					a6_102.u2 = (word64) (a5_99 & 0x0F) + 0x0030;
+				(word64) (a4_128 << 0x00 >> 0x00) + ((word64) fp - 0x0010) + 3832 = (ptr64) a6_102;
+				(word64) (a3_100 << 0x00 >> 0x00) + ((word64) fp - 0x0010) + 3832 = (ptr64) a7_85;
 				int64 a2_114 = (int64) ((word32) a4_128 + 0x02);
 				int64 a3_115 = (int64) ((word32) a4_128 + 0x03);
-				Eq_4528 a6_116 = a5_99 >> 0x04;
+				Eq_4533 a6_116 = (word64) (a5_99 >> 0x04) + 0x0030;
 				if (t1_84 < a5_99 >> 0x04)
-					a6_116 = a5_99 >> 0x04;
-				Mem124[fp + -0x0010 + ((a2_114 << 0x00) >>u 0x00) + 3832:byte] = a6_116;
-				Mem126[fp + -0x0010 + ((a3_115 << 0x00) >>u 0x00) + 3832:byte] = a7_85;
+					a6_116.u2 = (word64) (a5_99 >> 0x04) + 0x0057;
+				(word64) (a2_114 << 0x00 >> 0x00) + ((word64) fp - 0x0010) + 3832 = a6_116;
+				(word64) (a3_115 << 0x00 >> 0x00) + ((word64) fp - 0x0010) + 3832 = a7_85;
 				a1_127 = (int64) ((word32) a1_127 + -0x01);
 				a4_128 = (int64) ((word32) a4_128 + 0x04);
 			} while (a1_127 == t3_86);
-			t4_11 = (int64) (int64) (int32) (t5_38 << 0x02);
+			t4_11 = (int64) ((word64) (int64) (int32) (t5_38 << 0x02) + (word32) t4_11);
 		}
-		word64 t4_68 = fp + -0x0118 + ((t4_11 << 0x00) >>u 0x00);
+		struct Eq_4492 * t4_68 = (word64) (t4_11 << 0x00 >> 0x00) + ((word64) fp - 0x0118);
 		t4_68->t0004.u0 = 29281;
 		t4_68->t0000.u0 = 28777;
 		t4_68->t0006.u0 = 24944;
 		t4_68->t0002.u0 = 11830;
 		t4_68->t0008.u0 = 0x002E;
 		__strdup();
-		a0_149 = *fp;
+		a0_149 = (word64) fp - 0x0118;
 	}
 	else
 		a0_149.u0 = 0x00;
@@ -3093,8 +3102,8 @@ Eq_1745 fn0000000000018118(Eq_291 * gp, Eq_1745 a0, Eq_292 a1)
 		return a0_149;
 }
 
-// 00000000000182B4: Register Eq_1745 fn00000000000182B4(Register Eq_1745 a0)
-Eq_1745 fn00000000000182B4(Eq_1745 a0)
+// 00000000000182B4: Register Eq_1750 fn00000000000182B4(Register Eq_1750 a0)
+Eq_1750 fn00000000000182B4(Eq_1750 a0)
 {
 	return (int64) (int32) (a0 >> 0x18) | (int64) ((int32) (a0 << 0x18)) | (int64) ((int32) ((a0 & 0x00FF0000) >> 0x08)) | (int64) ((int32) ((a0 & 0x0000FF00) << 0x08));
 }

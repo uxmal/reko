@@ -8,8 +8,8 @@
 00401060 E8 E7 01 00 00 A3 93 20 40 00 6A 00 E9 6D 02 00 ....... @.j..m..
 00401070 00                                              .              
 
-;; __GetExceptDLLinfo: 00401071
-__GetExceptDLLinfo proc
+;; _GetExceptDLLinfo: 00401071
+_GetExceptDLLinfo proc
 	jmp	004011FC
 00401076                   33 C0 A0 7D 20 40 00 C3 A1 93       3..} @....
 00401080 20 40 00 C3                                      @..           

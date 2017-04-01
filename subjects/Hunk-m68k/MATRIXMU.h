@@ -2216,7 +2216,7 @@ T_504: (in a3 + 92 : word32)
   Class: Eq_502
   DataType: word32
   OrigDataType: word32
-T_505: (in WaitPort(a3 + 92) : void)
+T_505: (in WaitPort((char *) &a3->dw003A + 34) : void)
   Class: Eq_505
   DataType: void
   OrigDataType: void
@@ -2240,7 +2240,7 @@ T_510: (in a3 + 92 : word32)
   Class: Eq_508
   DataType: word32
   OrigDataType: word32
-T_511: (in GetMsg(a3 + 92) : void)
+T_511: (in GetMsg((char *) &a3->dw003A + 34) : void)
   Class: Eq_511
   DataType: void
   OrigDataType: void
@@ -3396,7 +3396,7 @@ T_799: (in (word16) d4_32 *u 20 + DPB(__swap(DPB(d5_141, (word16) d5_141 + (word
   Class: Eq_799
   DataType: int32
   OrigDataType: int32
-T_800: (in dwArg0C + ((word16) d4_32 *u 20 + DPB(__swap(DPB(d5_141, (word16) d5_141 + (word16) (__swap(d4_32) * 0x0014), 0)), 0x0000, 0)) : word32)
+T_800: (in dwArg0C + ((word32) ((word16) d4_32 * 20) + DPB(__swap(DPB(d5_141, (word16) d5_141 + (word16) (__swap(d4_32) * 0x0014), 0)), 0x0000, 0)) : (arr word32))
   Class: Eq_800
   DataType: (ptr (arr word32))
   OrigDataType: (ptr (struct (0 (arr T_858) a0000)))
@@ -3412,7 +3412,7 @@ T_803: (in (dwArg0C + ((word16) d4_32 *u 20 + DPB(__swap(DPB(d5_141, (word16) d5
   Class: Eq_803
   DataType: word32
   OrigDataType: word32
-T_804: (in d0_135 + (dwArg0C + ((word16) d4_32 *u 20 + DPB(__swap(DPB(d5_141, (word16) d5_141 + (word16) (__swap(d4_32) * 0x0014), 0)), 0x0000, 0)))[d3_67 * 0x00000004] : word32)
+T_804: (in d0_135 + (dwArg0C + ((word32) ((word16) d4_32 * 20) + DPB(__swap(DPB(d5_141, (word16) d5_141 + (word16) (__swap(d4_32) * 0x0014), 0)), 0x0000, 0)))[d3_67] : word32)
   Class: Eq_782
   DataType: word32
   OrigDataType: word32
@@ -3504,7 +3504,7 @@ T_826: (in (word16) d4_32 *u 20 + DPB(__swap(DPB(d5_158, (word16) d5_158 + (word
   Class: Eq_826
   DataType: int32
   OrigDataType: int32
-T_827: (in dwArg0C + ((word16) d4_32 *u 20 + DPB(__swap(DPB(d5_158, (word16) d5_158 + (word16) (__swap(d4_32) * 0x0014), 0)), 0x0000, 0)) : word32)
+T_827: (in dwArg0C + ((word32) ((word16) d4_32 * 20) + DPB(__swap(DPB(d5_158, (word16) d5_158 + (word16) (__swap(d4_32) * 0x0014), 0)), 0x0000, 0)) : (arr word32))
   Class: Eq_827
   DataType: (ptr (arr word32))
   OrigDataType: (ptr (struct (0 (arr T_859) a0000)))
@@ -3518,7 +3518,7 @@ T_829: (in d3_67 * 0x00000004 : word32)
   OrigDataType: ui32
 T_830: (in (dwArg0C + ((word16) d4_32 *u 20 + DPB(__swap(DPB(d5_158, (word16) d5_158 + (word16) (__swap(d4_32) * 0x0014), 0)), 0x0000, 0)))[d3_67 * 0x00000004] : word32)
   Class: Eq_782
-  DataType: Eq_813
+  DataType: word32
   OrigDataType: word32
 T_831: (in 0x00000001 : word32)
   Class: Eq_831

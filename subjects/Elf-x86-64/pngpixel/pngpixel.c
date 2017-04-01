@@ -20,11 +20,12 @@ void fn0000000000400CC0()
 	return;
 }
 
-// 0000000000400CD0: void _start()
-void _start()
+// 0000000000400CD0: void _start(Register word64 rax, Register (ptr Eq_17) rdx, Stack word64 qwArg00, Stack word32 dwArg04)
+void _start(word64 rax,  * rdx, word64 qwArg00, word32 dwArg04)
 {
-_start_entry:
-_start_exit:
+	__align(fp + 0x08);
+	word64 rax_21 = DPB(rax, __libc_start_main(&globals->t4012F9, qwArg00, fp + 0x08, &globals->t401780, &globals->t4017F0, rdx, DPB(qwArg00, fp + 0x04, 0)), 0);
+	__hlt();
 }
 
 // 0000000000400D00: Register ptr64 deregister_tm_clones(Register word64 r8)
@@ -56,7 +57,7 @@ ptr64 deregister_tm_clones(word64 r8)
 // 0000000000400D40: void register_tm_clones()
 void register_tm_clones()
 {
-	Eq_43 rsi_9 = DPB(rsi, 6299896, 0) - 6299896 >> 0x03;
+	Eq_74 rsi_9 = DPB(rsi, 6299896, 0) - 6299896 >> 0x03;
 	if (rsi_9 + (rsi_9 >>u 0x3F) >> 0x01 != 0x00)
 	{
 		uint64 rax_41 = DPB(rsi_9 >> 0x3F, 0x00, 0);
@@ -94,7 +95,7 @@ void __do_global_dtors_aux(word64 r8)
 // 0000000000400DA0: void frame_dummy()
 void frame_dummy()
 {
-frame_dummy_entry:
+fn0000000000400DA0_entry:
 	rsp = fp
 	edi = 0x00601E10
 	rdi = DPB(rdi, edi, 0)
@@ -124,24 +125,24 @@ l0000000000400DBA:
 	register_tm_clones()
 	return
 l0000000000400DC0_thunk_register_tm_clones:
-frame_dummy_exit:
+fn0000000000400DA0_exit:
 }
 
-// 0000000000400DC6: void component(Register Eq_131 ecx, Register int32 edx, Register uint32 esi, Register word32 edi, Register word32 r8d, Register ptr64 r13)
-void component(Eq_131 ecx, int32 edx, uint32 esi, word32 edi, word32 r8d, ptr64 r13)
+// 0000000000400DC6: void component(Register Eq_162 ecx, Register int32 edx, Register uint32 esi, Register word32 edi, Register word32 r8d, Register ptr64 r13)
+void component(Eq_162 ecx, int32 edx, uint32 esi, word32 edi, word32 r8d, ptr64 r13)
 {
 	*(r13 - 0x28) = r8d;
 	ui64 rax_41 = DPB(DPB(rax, (esi >> 0x06) *s dwLoc2C *s ecx, 0) << 0x03, (edx + (esi & 0x3F) *s dwLoc2C) *s ecx >> 0x03, 0);
 	if (ecx > 0x10)
 	{
-		Eq_162 rax_69 = globals->u602100;
+		Eq_193 rax_69 = globals->u602100;
 		word64 rax_78 = DPB(rax_69, fprintf(rax_69, DPB(rsi, 0x00401808, 0), tLoc34), 0);
 		exit(DPB(rax_69, 0x01, 0));
 	}
 	else
 	{
 		word64 rax_51 = globals->a401828[DPB(rax_41, ecx, 0) * 0x08];
-		Eq_191 eax_52 = (word32) rax_51;
+		Eq_222 eax_52 = (word32) rax_51;
 		word64 rsp_53;
 		word64 rbp_54;
 		byte SCZO_55;
@@ -163,8 +164,8 @@ void component(Eq_131 ecx, int32 edx, uint32 esi, word32 edi, word32 r8d, ptr64 
 	}
 }
 
-// 0000000000400EE9: Register word64 print_pixel(Register byte dil, Register (ptr Eq_211) fs, Stack word64 qwArg04, Stack word64 qwArg0C)
-word64 print_pixel(byte dil, Eq_211 * fs, word64 qwArg04, word64 qwArg0C)
+// 0000000000400EE9: Register word64 print_pixel(Register byte dil, Register (ptr Eq_242) fs, Stack word64 qwArg04, Stack word64 qwArg0C)
+word64 print_pixel(byte dil, Eq_242 * fs, word64 qwArg04, word64 qwArg0C)
 {
 	word64 rsp_35;
 	word64 rbp_36;
@@ -175,7 +176,7 @@ word64 print_pixel(byte dil, Eq_211 * fs, word64 qwArg04, word64 qwArg0C)
 	word64 rdx_41;
 	word32 ecx_42;
 	word64 rax_43;
-	struct Eq_223 * fs_44;
+	struct Eq_254 * fs_44;
 	word32 eax_45;
 	byte SZO_46;
 	byte C_47;
@@ -194,7 +195,7 @@ word64 print_pixel(byte dil, Eq_211 * fs, word64 qwArg04, word64 qwArg0C)
 	word64 rdx_66;
 	word32 ecx_67;
 	word64 rax_68;
-	struct Eq_242 * fs_69;
+	struct Eq_273 * fs_69;
 	word32 eax_70;
 	byte SZO_71;
 	byte C_72;
@@ -204,7 +205,7 @@ word64 print_pixel(byte dil, Eq_211 * fs, word64 qwArg04, word64 qwArg0C)
 	byte Z_76;
 	byte dil_77;
 	png_get_color_type();
-	Eq_162 rax_25 = fs->t0028;
+	Eq_193 rax_25 = fs->t0028;
 	uint32 eax_78 = (word32) al_73;
 	if (eax_78 > 0x06)
 	{
@@ -217,7 +218,7 @@ word64 print_pixel(byte dil, Eq_211 * fs, word64 qwArg04, word64 qwArg0C)
 		word64 rdx_132;
 		word32 ecx_133;
 		word64 rax_134;
-		struct Eq_268 * fs_135;
+		struct Eq_299 * fs_135;
 		word32 eax_136;
 		byte SZO_137;
 		byte C_138;
@@ -234,7 +235,7 @@ word64 print_pixel(byte dil, Eq_211 * fs, word64 qwArg04, word64 qwArg0C)
 	else
 	{
 		word64 rax_103 = globals->a401958[DPB(rax_68, eax_78, 0) * 0x08];
-		Eq_289 eax_104 = (word32) rax_103;
+		Eq_320 eax_104 = (word32) rax_103;
 		word64 rsp_105;
 		word64 rbp_106;
 		word64 rbx_107;
@@ -244,7 +245,7 @@ word64 print_pixel(byte dil, Eq_211 * fs, word64 qwArg04, word64 qwArg0C)
 		word64 rdx_111;
 		word32 ecx_112;
 		word64 rax_113;
-		struct Eq_300 * fs_114;
+		struct Eq_331 * fs_114;
 		word32 eax_115;
 		byte SZO_116;
 		byte C_117;
@@ -258,10 +259,10 @@ word64 print_pixel(byte dil, Eq_211 * fs, word64 qwArg04, word64 qwArg0C)
 	}
 }
 
-// 00000000004012F9: void main(Register Eq_162 rsi, Register word32 edi, Register word64 r13, Register (ptr Eq_211) fs)
-void main(Eq_162 rsi, word32 edi, word64 r13, Eq_211 * fs)
+// 00000000004012F9: void main(Register Eq_193 rsi, Register word32 edi, Register word64 r13, Register (ptr Eq_242) fs)
+void main(Eq_193 rsi, word32 edi, word64 r13, Eq_242 * fs)
 {
-main_entry:
+fn00000000004012F9_entry:
 	rsp = fp
 	rsp = fp - 0x04
 	dwLoc04 = rbp
@@ -280,21 +281,21 @@ main_entry:
 l00000000004012F9:
 l0000000000401337:
 	rax = qwLocA4
-	rax = rax
+	rax = (word64) rax + 0x08
 	SCZO = cond(rax)
 	rax = *rax
 	rdi = rax
 	atol()
 	qwLoc2C = rax
 	rax = qwLocA4
-	rax = rax
+	rax = (word64) rax + 0x0010
 	SCZO = cond(rax)
 	rax = *rax
 	rdi = rax
 	atol()
 	qwLoc24 = rax
 	rax = qwLocA4
-	rax = rax
+	rax = (word64) rax + 0x0018
 	rax = *rax
 	esi.u0 = 0x00401990
 	rsi = DPB(rsi, esi, 0)
@@ -440,7 +441,7 @@ l00000000004014F4:
 	esi = edx
 	esi = esi & 0x01
 	edx = *(rbp - 0x60)
-	edx = edx
+	edx = (word32) edx + 0x01
 	edx = edx >> 0x01
 	ecx.u0 = 0x03
 	ecx = 0x03 - edx
@@ -484,7 +485,7 @@ l0000000000401544:
 	eax = eax & 0x01
 	edx = eax
 	eax = *(rbp - 0x60)
-	eax = eax
+	eax = (word32) eax + 0x01
 	eax = eax >> 0x01
 	ecx.u0 = 0x03
 	ecx = 0x03 - eax
@@ -494,7 +495,7 @@ l0000000000401544:
 	edx = edx << cl
 	eax = edx
 	eax = eax & 0x07
-	*(rbp - 88) = (union Eq_332 *) eax
+	*(rbp - 88) = (union Eq_363 *) eax
 	eax = *(rbp - 0x60)
 	eax = eax & 0x01
 	SZO = cond(eax & eax)
@@ -511,7 +512,7 @@ l0000000000401544:
 	edx = edx << cl
 	eax = edx
 	eax = eax & 0x07
-	*(rbp - 0x5C) = (union Eq_332 *) eax
+	*(rbp - 0x5C) = (union Eq_363 *) eax
 	eax.u0 = 0x07
 	eax = 0x07 - *(rbp - 0x60)
 	eax = eax >> 0x01
@@ -520,7 +521,7 @@ l0000000000401544:
 	cl = (byte) ecx
 	edx = 0x01 << cl
 	eax = edx
-	*(rbp - 0x50) = (union Eq_332 *) eax
+	*(rbp - 0x50) = (union Eq_363 *) eax
 	SCZO = cond(*(rbp - 0x60) - 0x02)
 	SZO = SCZO
 	branch Test(LE,SZO) l00000000004015C4
@@ -542,18 +543,18 @@ l00000000004015C4:
 	rax = DPB(rax, eax, 0)
 	al = (byte) eax
 l00000000004015C9:
-	*(rbp - 0x54) = (union Eq_332 *) eax
+	*(rbp - 0x54) = (union Eq_363 *) eax
 	goto l00000000004015E8
 l00000000004015CE:
 	*(rbp - 88) = 0x00
 	eax = *(rbp - 88)
-	*(rbp - 0x5C) = (union Eq_332 *) eax
+	*(rbp - 0x5C) = (union Eq_363 *) eax
 	*(rbp - 0x50) = 0x01
 	eax = *(rbp - 0x50)
-	*(rbp - 0x54) = (union Eq_332 *) eax
+	*(rbp - 0x54) = (union Eq_363 *) eax
 l00000000004015E8:
 	eax = *(rbp - 0x5C)
-	*(rbp - 0x4C) = (union Eq_332 *) eax
+	*(rbp - 0x4C) = (union Eq_363 *) eax
 l00000000004015F0:
 	edi = 4200886
 	rdi = DPB(rdi, edi, 0)
@@ -571,7 +572,7 @@ l00000000004015F0:
 	branch Test(NE,Z) l000000000040165E
 l000000000040161B:
 	eax = *(rbp - 88)
-	*(rbp - 0x48) = (union Eq_332 *) eax
+	*(rbp - 0x48) = (union Eq_363 *) eax
 	*(rbp - 0x44) = 0x00
 	goto l0000000000401656
 l000000000040162A:
@@ -591,7 +592,7 @@ l0000000000401633:
 	goto l000000000040167F
 l000000000040164C:
 	eax = *(rbp - 0x50)
-	v27 = (word32) eax
+	v27 = (word32) eax + *(rbp - 0x48)
 	*(rbp - 0x48) = v27
 	v28 = *(rbp - 0x44) + 0x01
 	*(rbp - 0x44) = v28
@@ -603,7 +604,7 @@ l0000000000401656:
 	branch Test(ULT,C) l000000000040162A
 l000000000040165E:
 	eax = *(rbp - 0x54)
-	v26 = (word32) eax
+	v26 = (word32) eax + *(rbp - 0x4C)
 	*(rbp - 0x4C) = v26
 	SCZO = cond(v26)
 l0000000000401664:
@@ -670,7 +671,7 @@ l00000000004016F6:
 	goto l000000000040175D
 l0000000000401716:
 	rax = qwLocA4
-	rax = rax
+	rax = (word64) rax + 0x0018
 	SCZO = cond(rax)
 	rdx = *rax
 	rax = globals->u602100
@@ -706,7 +707,7 @@ l0000000000401777:
 	Mem0 = Mem0[rsp + 0x00:<unknown>]
 	rsp = rsp + 0x00
 	return
-main_exit:
+fn00000000004012F9_exit:
 }
 
 // 0000000000401780: void __libc_csu_init(Register word64 rsi)
@@ -734,7 +735,7 @@ void __libc_csu_init(word64 rsi)
 			byte C_85;
 			byte Z_86;
 			word32 ebx_87;
-			(*globals->a601E00)();
+			(*((char *) globals->a601E00 + rbx_63 * 0x08))();
 		} while (rbx_79 + 0x01 != rbp_77);
 	}
 	return;

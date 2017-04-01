@@ -1,3 +1,33 @@
+void fn0221()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0221_exit:
+// DataOut:
+// DataOut (flags): ZC
+// SymbolicIn:
+
+fn0221_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0221:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0005:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+
+
 void fn0387()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
@@ -6,8 +36,8 @@ void fn0387()
 // Trashed: hl sp
 // Preserved:
 fn0387_entry:
-// DataOut:
-// DataOut (flags): 
+// DataOut: a b d e h l
+// DataOut (flags): C
 // SymbolicIn: sp:fp
 // LocalsOut: fp(16)
 
@@ -19,13 +49,13 @@ l0387:
 		uses: hl_6,sp_3,wLoc02_4
 		defs: hl_8,sp_7
 	return
-// DataOut:
-// DataOut (flags): 
+// DataOut: a b d e h l
+// DataOut (flags): C
 // SymbolicIn: sp:fp
 
 fn0387_exit:
 // DataOut:
-// DataOut (flags): 
+// DataOut (flags): C
 // SymbolicIn: sp:fp - 0x0002 hl:<invalid> -2(fp):0x038F
 
 
@@ -245,6 +275,532 @@ fn045B_exit:
 
 
 
+void fn0473(byte c)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0473_entry:
+// DataOut: b c d e l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0473:
+	Mem4[0x165F:byte] = c
+	fn0221()
+	return
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// Terminates process
+
+fn0473_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+byte fn0483(byte c, byte b, byte e, byte d, byte l, byte h, word16 wArg00, word16 wArg02, ptr16 & hOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b c d e h l
+// LiveOut: h l
+// Trashed: SZPC a bc c de h hl l sp
+// Preserved:
+fn0483_entry:
+// DataOut: b c d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l0483:
+	Mem4[0x1665:byte] = d
+	Mem7[0x1664:byte] = e
+	Mem10[0x1663:byte] = b
+	Mem13[0x1662:byte] = c
+	Mem23[0x1661:byte] = SLICE(wArg02, byte, 8)
+	Mem25[0x1660:byte] = (byte) wArg02
+	word16 hl_29 = Mem25[0x1664:word16]
+	byte h_38
+	Mem48[0x1667:byte] = fn1326(0x07, (byte) (hl_29 + 0x007F), SLICE(hl_29 + 0x007F, byte, 8), out h_38)
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l04A6:
+	byte h_60
+	*hOut = 0x16
+	branch 0x00 - Mem48[0x1667:byte] l0523
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> c:<invalid> a:<invalid> h:0x16 l:0x67 2(fp):<invalid>
+
+l0523:
+	return 0x67
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> hl:0x1667 de:<invalid> bc:<invalid> c:<invalid> a:0x00 h:0x16 l:0x67 2(fp):<invalid>
+
+fn0483_exit:
+// DataOut: h l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> hl:0x1667 de:<invalid> bc:<invalid> c:<invalid> a:0x00 h:0x16 l:0x67 2(fp):<invalid>
+
+l04AF:
+	fn0221()
+	fn0221()
+	branch 0x00 l04D7
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> hl:0x1667 de:<invalid> bc:<invalid> c:<invalid> a:0x00 h:0x16 l:0x67 2(fp):<invalid>
+// Terminates process
+
+l04D7:
+	Mem107[0x1668:word16] = 0x02A3
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: 2(fp):<invalid>
+
+l04DD:
+	branch Mem107[Mem107[0x1668:word16]:byte] - 0x24 l04F7
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: hl:<invalid> 2(fp):<invalid>
+
+l04F7:
+	byte a_129 = Mem107[Mem107[0x1660:word16]:byte]
+	branch a_129 l050D
+// DataOut: a b d e h l
+// DataOut (flags): 
+// SymbolicIn: hl:<invalid> a:<invalid> 2(fp):<invalid>
+
+l0500:
+	fn0221()
+	Mem157[Mem107[0x1660:word16]:byte] = a_129 + 0x01
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: hl:<invalid> a:<invalid> 2(fp):<invalid>
+
+l050D:
+	fn0473(Mem107[Mem107[0x1660:word16]:byte] + 0x60)
+	fn0473(0x3A)
+	fn0387()
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: hl:<invalid> a:<invalid> 2(fp):<invalid>
+// Terminates process
+
+l04E6:
+	fn0473(Mem107[Mem107[0x1668:word16]:byte])
+	Mem125[0x1668:word16] = Mem107[0x1668:word16] + 0x0001
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: hl:<invalid> a:<invalid> 2(fp):<invalid>
+
+l04C6:
+	Mem93[0x1667:byte] = Mem48[0x1667:byte] - 0x01
+	Mem103[0x1662:word16] = Mem93[0x1662:word16] + 0x0080
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: 2(fp):<invalid>
+
+l0520:
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: hl:<invalid> de:0x0080 sp:<invalid> 2(fp):<invalid>
+
+
+
+void fn0524(byte c)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0524_entry:
+// DataOut: b c d e l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0524:
+	Mem4[0x166A:byte] = c
+	fn0221()
+	return
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// Terminates process
+
+fn0524_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+byte fn0534(byte c, byte e, byte d, byte l, byte h, ptr16 & lOut, ptr16 & hOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c d e h l
+// LiveOut: b h l
+// Trashed: SZPC a b bc c de h hl l sp
+// Preserved:
+fn0534_entry:
+// DataOut: b c d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l0534:
+	Mem4[0x166B:byte] = c
+	Mem13[Mem4[0x14BC:word16] + Mem4[0x14BE:word16]:byte] = Mem4[0x166B:byte]
+	word16 hl_14 = Mem13[0x14BE:word16]
+	Mem17[0x14BE:word16] = hl_14 + 0x0001
+	byte l_25
+	byte h_26
+	branch fn1335(SLICE(hl_14 + 0x0001, byte, 8), (byte) (hl_14 + 0x0001), 0x02, 0x00, out l_25, out h_26) l056A
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l0555:
+	word16 hl_47 = Mem17[0x14BC:word16]
+	byte h_49 = SLICE(hl_47, byte, 8)
+	byte l_48 = (byte) hl_47
+	byte h_57
+	fn0483(l_48, h_49, 0x00, 0x02, l_48, h_49, wLoc04, 0x14C0, out h_57)
+	Mem62[0x14BE:word16] = 0x0000
+	b = h_49
+	byte l_60
+	*lOut = 0x00
+	byte h_61
+	*hOut = 0x00
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:0x0200 de:<invalid> a:<invalid> l:<invalid> h:<invalid>
+
+l056A:
+	return b
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> a:<invalid> bc:<invalid> b:<invalid> c:<invalid> l:<invalid> h:<invalid> -2(fp):0x14C0
+
+fn0534_exit:
+// DataOut: b h l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> a:<invalid> bc:<invalid> b:<invalid> c:<invalid> l:<invalid> h:<invalid> -2(fp):0x14C0
+
+
+
+bool fn056B(byte c, byte e, byte d, byte l, byte h, ptr16 & aOut, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c d e h l
+// LiveOut: C a b h l
+// Trashed: SZPC a b bc c de h hl l sp
+// Preserved:
+fn056B_entry:
+	*bOut = b
+// DataOut: b c d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l056B:
+	Mem6[0x166C:byte] = c
+	byte l_3
+	*lOut = 0x6C
+	byte h_4
+	*hOut = 0x16
+	branch Mem6[0x14F3:byte] - 0x01 l0581
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0581:
+	branch Mem6[0x14F3:byte] - 0x02 l0593
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:0x166C a:<invalid>
+
+l0593:
+	branch Mem6[0x14F3:byte] - 0x04 l05A2
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:0x166C a:<invalid>
+
+l059B:
+	word16 hl_81 = Mem6[0x166C:word16]
+	byte l_82 = (byte) hl_81
+	byte l_87
+	byte h_88
+	byte b_89
+	*bOut = fn0534(l_82, e, d, l_82, SLICE(hl_81, byte, 8), out l_87, out h_88)
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:0x166C a:<invalid>
+
+l0589:
+	word16 hl_74 = Mem6[0x166C:word16]
+	byte l_75 = (byte) hl_74
+	*lOut = l_75
+	fn0473(l_75)
+	byte h_76
+	*hOut = SLICE(hl_74, byte, 8)
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:0x166C a:<invalid>
+
+l0577:
+	word16 hl_66 = Mem6[0x166C:word16]
+	byte l_67 = (byte) hl_66
+	*lOut = l_67
+	fn0524(l_67)
+	byte h_68
+	*hOut = SLICE(hl_66, byte, 8)
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:0x166C a:<invalid>
+
+l05A2:
+	byte a_15 = Mem6[0x166C:byte]
+	*aOut = a_15
+	bool C_19 = a_15 - 0x0D
+	branch a_15 - 0x0D l05B2
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+l05B2:
+	byte a_36 = Mem6[0x166C:byte]
+	*aOut = a_36
+	C_19 = a_36 - 0x0A (alias)
+	branch a_36 - 0x0A l05C9
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+l05C9:
+	Mem62[0x14F6:byte] = Mem6[0x14F6:byte] + 0x01
+	byte l_60
+	*lOut = 0xF6
+	byte h_61
+	*hOut = 0x14
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+l05BA:
+	byte a_41 = Mem6[0x14F3:byte]
+	*aOut = a_41
+	C_19 = a_41 (alias)
+	branch a_41 l05C6
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+l05C2:
+	Mem55[0x14FD:byte] = Mem6[0x14FD:byte] + 0x01
+	byte l_53
+	*lOut = 0xFD
+	byte h_54
+	*hOut = 0x14
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+l05C6:
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+l05AA:
+	Mem35[0x14F6:byte] = 0x01
+	byte l_33
+	*lOut = 0xF6
+	byte h_34
+	*hOut = 0x14
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+l05CD:
+	return C_19
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+fn056B_exit:
+// DataOut: a b h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+
+
+byte fn05CE(byte c, byte b, byte e, byte d, byte l, byte h, ptr16 & lOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b c d e h l
+// LiveOut: h l
+// Trashed: SZPC a b bc c de h hl l sp
+// Preserved: sp
+fn05CE_entry:
+// DataOut: b c d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l05CE:
+	Mem4[0x166E:byte] = b
+	Mem10[0x166D:byte] = c
+// DataOut: d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l05D4:
+	word16 hl_16 = Mem10[0x166D:word16]
+	byte l_17
+	*lOut = (byte) hl_16
+	byte h_18 = SLICE(hl_16, byte, 8)
+	branch Mem10[hl_16:byte] - 0x24 l05EE
+// DataOut: d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+l05EE:
+	return h_18
+// DataOut: d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+fn05CE_exit:
+// DataOut: h l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+l05DD:
+	word16 hl_22 = Mem10[0x166D:word16]
+	byte a_28
+	byte b_29
+	byte l_30
+	byte h_31
+	fn056B(Mem10[hl_22:byte], e, d, (byte) hl_22, SLICE(hl_22, byte, 8), out a_28, out b_29, out l_30, out h_31)
+	Mem38[0x166D:word16] = Mem10[0x166D:word16] + 0x0001
+// DataOut: d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+
+
+byte fn05EF(byte c, byte b, byte e, byte d, byte l, ptr16 & aOut, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b c d e l
+// LiveOut: C a b h l
+// Trashed: SZPC a b bc c de h hl l sp
+// Preserved: sp
+fn05EF_entry:
+	*bOut = b
+// DataOut: b c d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l05EF:
+	Mem4[0x1670:byte] = b
+	Mem8[0x166F:byte] = c
+	Mem12[0x1671:byte] = 0x01
+// DataOut: b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l05FA:
+	byte a_22 = Mem12[Mem12[0x166F:word16]:byte]
+	*aOut = a_22
+	byte C_29 = a_22 - Mem12[0x1671:byte]
+	branch a_22 - Mem12[0x1671:byte] l061A
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:0x1671 a:<invalid> h:0x16 de:<invalid> c:<invalid> bc:<invalid> b:<invalid> l:0x71
+
+l0605:
+	word16 hl_49 = DPB(Mem12[0x1671:word16], 0x00, 8)
+	word16 hl_55 = Mem12[0x166F:word16] + hl_49
+	byte a_60
+	byte b_61
+	byte l_62
+	byte h_63
+	C_29 = fn056B(Mem12[hl_55:byte], (byte) hl_49, SLICE(hl_49, byte, 8), (byte) hl_55, SLICE(hl_55, byte, 8), out a_60, out b_61, out l_62, out h_63)
+	Mem68[0x1671:byte] = Mem12[0x1671:byte] + 0x01
+	branch Mem68[0x1671:byte] != 0x00 l05FA
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:0x1671 a:<invalid> h:0x16 de:<invalid> c:<invalid> bc:<invalid> b:<invalid> l:0x71
+
+l061A:
+	byte l_38
+	*lOut = 0x71
+	byte h_39
+	*hOut = 0x16
+	return C_29
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:0x1671 a:<invalid> h:0x16 de:<invalid> c:<invalid> bc:<invalid> b:<invalid> l:0x71
+
+fn05EF_exit:
+// DataOut: a b h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:0x1671 a:<invalid> h:0x16 de:<invalid> c:<invalid> bc:<invalid> b:<invalid> l:0x71
+
+
+
+bool fn061B(byte c, byte b, byte e, byte d, byte l, byte h, ptr16 & aOut, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b c d e h l
+// LiveOut: C a b h l
+// Trashed: SZPC a b bc c de h hl l sp
+// Preserved: sp
+fn061B_entry:
+// DataOut: b c d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l061B:
+	Mem4[0x1675:byte] = d
+	Mem7[0x1674:byte] = e
+	Mem10[0x1673:byte] = b
+	Mem14[0x1672:byte] = c
+	Mem16[0x14F3:byte] = 0x02
+	word16 hl_17 = Mem16[0x1672:word16]
+	byte l_18 = (byte) hl_17
+	byte h_19 = SLICE(hl_17, byte, 8)
+	byte l_22
+	fn05CE(l_18, h_19, e, d, l_18, h_19, out l_22)
+	word16 hl_24 = Mem16[0x1674:word16]
+	byte l_25 = (byte) hl_24
+	byte a_29
+	byte b_30
+	byte l_31
+	byte h_32
+	bool C_33 = fn05EF(l_25, SLICE(hl_24, byte, 8), e, d, l_25, out a_29, out b_30, out l_31, out h_32)
+	fn0387()
+	return C_33
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+fn061B_exit:
+// DataOut: a b h l
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> hl:<invalid> b:<invalid> c:<invalid> a:<invalid> h:0x16 de:<invalid> bc:<invalid> l:0x71
+
+
+
 void fn063E(word16 bc, byte e, byte d)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
@@ -352,6 +908,272 @@ l0678:
 // DataOut (flags): 
 // SymbolicIn: sp:fp hl:<invalid> a:<invalid> h:<invalid> bc:0x0227 de:<invalid> c:<invalid> b:<invalid> l:<invalid>
 // LocalsOut: fp(16)
+
+
+
+void fn08EC(byte b, byte e, byte l, byte h)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b e h l
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn08EC_entry:
+// DataOut: b e h l
+// DataOut (flags): ZC
+// SymbolicIn: sp:fp
+
+l08EC:
+	word16 hl_3 = Mem0[0x168B:word16]
+	Mem7[hl_3:byte] = Mem0[0x151E:byte]
+	byte l_4 = (byte) hl_3
+	byte h_5 = SLICE(hl_3, byte, 8)
+// DataOut: b e h l
+// DataOut (flags): ZC
+// SymbolicIn: sp:fp
+
+l08FD:
+// DataOut: b e h l
+// DataOut (flags): ZC
+// SymbolicIn: sp:fp hl:<invalid> a:<invalid>
+
+l0920:
+	fn0221()
+	byte a_13 = Mem7[0x168D:byte]
+// DataOut: a b e h l
+// DataOut (flags): ZC
+// SymbolicIn: sp:fp hl:<invalid> a:<invalid>
+
+l0928_thunk_fn092A:
+	fn092A(a_13, b, 0x80, l_4, h_5)
+	return
+// DataOut: b e h l
+// DataOut (flags): C
+// SymbolicIn: a:<invalid>
+// Terminates process
+
+fn08EC_exit:
+// DataOut:
+// DataOut (flags): C
+// SymbolicIn:
+
+
+
+void fn092A(byte a, byte b, byte e, byte l, byte h)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Z a b e h l
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+l092A:
+	SZPC = a - 0x00
+	Z = SZPC (alias)
+	branch Test(NE,Z) l096E
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn:
+
+l092C_thunk_fn096E:
+	fn096E(a, b, e, d, l, h)
+	return
+// DataOut: b e h l
+// DataOut (flags): C
+// SymbolicIn:
+// Terminates process
+
+l092C_thunk_fn0930:
+	fn0930(a, b, e, d, l, h)
+	return
+// DataOut: b e h l
+// DataOut (flags): C
+// SymbolicIn:
+// Terminates process
+
+fn092A_entry:
+	def fp
+	def Z
+	def a
+	def b
+	def e
+	def l
+	def h
+// DataOut: a b e h l
+// DataOut (flags): ZC
+// SymbolicIn: sp:fp
+
+l092A:
+	sp_1 = fp
+	d_2 = 0xFE
+	branch Z l092D_thunk_fn096E
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l092D_thunk_fn096E:
+	fn096E(a, b, e, d_2, l, h)
+	return
+// DataOut: b e h l
+// DataOut (flags): C
+// SymbolicIn: sp:fp d:0xFE
+// Terminates process
+
+l092D_thunk_fn0930:
+	fn0930(a, b, e, d_2, l, h)
+	return
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:fp d:0xFE
+// Terminates process
+
+l092D_thunk_fn0930:
+	fn0930(a, b, e, d_2, l, h)
+	return
+// DataOut: b e h l
+// DataOut (flags): C
+// SymbolicIn:
+// Terminates process
+
+fn092A_exit:
+// DataOut:
+// DataOut (flags): C
+// SymbolicIn:
+
+
+
+void fn0930(byte a, byte b, byte e, byte d, byte l, byte h)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a b d e h l
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0930_entry:
+// DataOut: a b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0930:
+	fn0221()
+	byte a_22 = __ror(~(0x00 - (a <u 0x30)) & Mem0[0x168E:byte], false)
+	branch a_22 >=u 0x00 l0953
+// DataOut: a b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0944:
+	a_22 = Mem0[Mem0[0x168B:word16] + 0x0007:byte] | 0x80
+	Mem84[Mem0[0x168B:word16] + 0x0007:byte] = a_22
+	b = 0x00 (alias)
+// DataOut: a b d e h l
+// DataOut (flags): 
+// SymbolicIn: a:<invalid> hl:0x168E
+
+l0953:
+	word16 hl_28 = Mem0[0x168B:word16]
+	fn0221()
+	byte e_31 = (byte) hl_28
+	byte d_32 = SLICE(hl_28, byte, 8)
+	byte l_34 = 0x00
+	byte h_35 = 0x00
+	branch a_22 - 0xFF l096B
+// DataOut: a b c d e h l
+// DataOut (flags): C
+// SymbolicIn: a:<invalid> hl:<invalid> bc:0x0007
+// Terminates process
+
+l0961:
+	word16 hl_55 = Mem0[0x1687:word16]
+	e_31 = (byte) hl_55 (alias)
+	d_32 = SLICE(hl_55, byte, 8) (alias)
+	fn061B(0x36, 0x02, e_31, d_32, (byte) hl_28, SLICE(hl_28, byte, 8), out a_22, out b, out l_34, out h_35)
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn:
+
+l096B:
+	fn096E(a_22, b, e_31, d_32, l_34, h_35)
+	return
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: hl:<invalid> de:<invalid> bc:<invalid> b:<invalid> c:<invalid> sp:<invalid> a:<invalid> h:0x16 l:0x71
+
+l098F:
+	return
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn:
+
+fn0930_exit:
+// DataOut:
+// DataOut (flags): C
+// SymbolicIn:
+
+
+
+void fn096E(byte a, byte b, byte e, byte d, byte l, byte h)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a b d e h l
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn096E_entry:
+// DataOut: a b d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l096E:
+	word16 hl_3 = Mem0[0x168B:word16]
+	fn0221()
+	word16 hl_9 = Mem0[0x168B:word16]
+	fn0221()
+	byte e_12 = (byte) hl_9
+	byte d_13 = SLICE(hl_9, byte, 8)
+	byte l_15 = (byte) hl_3
+	byte h_16 = SLICE(hl_3, byte, 8)
+	branch a - 0xFF l098F
+// DataOut: a b c d e h l
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l0982_thunk_fn0930:
+	fn0930(a, b, e_12, d_13, l_15, h_16)
+	return
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn:
+// Terminates process
+
+l0985:
+	word16 hl_36 = Mem0[0x1687:word16]
+	byte e_39 = (byte) hl_36
+	byte d_40 = SLICE(hl_36, byte, 8)
+	byte a_47
+	byte b_48
+	byte l_49
+	byte h_50
+	fn061B(0x87, 0x02, e_39, d_40, (byte) hl_9, SLICE(hl_9, byte, 8), out a_47, out b_48, out l_49, out h_50)
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn:
+
+l098C_thunk_fn0930:
+	fn0930(a_47, b_48, e_39, d_40, l_49, h_50)
+	return
+// DataOut: a b d e h l
+// DataOut (flags): C
+// SymbolicIn: hl:<invalid> de:<invalid> bc:<invalid> b:<invalid> c:<invalid> sp:<invalid> a:<invalid> h:0x16 l:0x71
+// Terminates process
+
+fn096E_exit:
+// DataOut:
+// DataOut (flags): C
+// SymbolicIn:
 
 
 
@@ -1070,62 +1892,70 @@ fn1315_exit:
 
 
 
-void fn1326(byte c, byte l, byte h)
+byte fn1326(byte c, byte l, byte h, ptr16 & hOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  c h l
-// LiveOut:
+// LiveOut: h l
 // Trashed: SZPC a c h l
 // Preserved: sp
 fn1326_entry:
-// DataOut: c h l
+// DataOut: b c d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l1326:
 	byte a_11 = __ror(h, false)
+	byte a_15 = __ror(l, cond(a_11))
 	h = a_11
-	l = __ror(l, cond(a_11))
+	*hOut = h
+	l = a_15
 	c = c - 0x01
 	branch c != 0x00 l1326
-// DataOut: c h l
+// DataOut: b c d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:<invalid> h:<invalid> l:<invalid> c:<invalid>
 
 l1331:
-	return
-// DataOut:
+	return a_15
+// DataOut: b d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:<invalid> h:<invalid> l:<invalid> c:<invalid>
 
 fn1326_exit:
-// DataOut:
+// DataOut: h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:<invalid> h:<invalid> l:<invalid> c:<invalid>
 
 
 
-void fn1335(byte d, byte e, byte h, byte l)
+byte fn1335(byte d, byte e, byte h, byte l, ptr16 & lOut, ptr16 & hOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  d e h l
-// LiveOut:
+// LiveOut: C h l
 // Trashed: SZPC a h l
 // Preserved: sp
 fn1335_entry:
-// DataOut: d e h l
+// DataOut: b d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l1335:
-	return
-// DataOut:
-// DataOut (flags): 
+	byte a_5 = e - l
+	ui16 a_a_13 = SEQ(d, d) - SEQ(h, a_5)
+	byte l_7
+	*lOut = a_5
+	byte h_18
+	*hOut = (byte) a_a_13
+	return cond(a_a_13)
+// DataOut: b d e h l
+// DataOut (flags): C
 // SymbolicIn: sp:fp
 
 fn1335_exit:
-// DataOut:
-// DataOut (flags): 
+// DataOut: h l
+// DataOut (flags): C
 // SymbolicIn: sp:fp a:<invalid> l:e - l h:<invalid>
 
 
@@ -1276,6 +2106,162 @@ fn1356_exit:
 // DataOut: a de l
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:<invalid> l:<invalid> de:de + 0x0001 h:<invalid>
+
+
+
+void fn140B()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn140B_entry:
+// DataOut: b e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l140B:
+// DataOut: b e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1493_thunk_fn1494:
+	fn1494()
+	return
+// DataOut: b e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// Terminates process
+
+fn140B_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void fn1494()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn1494_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn1494_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1494:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+
+
+void fn156F(byte a, word16 bc, word16 de, byte h)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a b bc de e h
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn156F_entry:
+// DataOut: a b bc de e h
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l156F:
+// DataOut: a b bc de e h
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l15AF_thunk_fn15B0:
+	fn15B0(a, bc, de, h)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// Terminates process
+
+fn156F_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void fn15B0(byte a, word16 bc, word16 de, byte h)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C a b bc de e h
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn15B0_entry:
+// DataOut: a b bc de e h
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l15B0:
+	__hlt()
+	byte b_4 = SLICE(bc + 0x0001, byte, 8)
+	branch C l164C
+// DataOut: b de e h l
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l1647:
+// DataOut: b de e h l
+// DataOut (flags): C
+// SymbolicIn: sp:fp bc:bc + 0x0001 l:a
+
+l164C:
+	fn08EC(b_4 - 0x01, e, a, h)
+	branch C l1494
+// DataOut: b e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp bc:bc + 0x0001 l:a
+
+l1683_thunk_fn1494:
+	fn1494()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+// Terminates process
+
+l1686:
+	fn140B()
+	byte e_81 = (byte) Mem0[0x1752:word16]
+	byte l_83 = (byte) de
+	byte h_84 = SLICE(de, byte, 8)
+// DataOut: a b e h l
+// DataOut (flags): Z
+// SymbolicIn:
+
+l1691_thunk_fn092A:
+	fn092A(0x82, b_4 - 0x01, e_81, l_83, h_84)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+// Terminates process
+
+fn15B0_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
 
 
 

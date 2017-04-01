@@ -266,7 +266,7 @@ Eq_578 * fn004013FB(ui32 dwArg04, word32 dwArg08)
 {
 	struct Eq_578 * eax_26;
 	struct Eq_582 * ecx_13 = dwArg04 + dwArg04->dw003C / 0x0040;
-	struct Eq_578 * edx_16 = ecx_13->w0014 + 0x02 + (word32) ecx_13->w0014 / 22;
+	struct Eq_578 * edx_16 = &ecx_13->w0014 + 0x02 + (word32) ecx_13->w0014 / 22;
 	struct Eq_578 * esi_19 = edx_16 + (word32) ecx_13->w0006;
 	if (edx_16 != esi_19)
 	{

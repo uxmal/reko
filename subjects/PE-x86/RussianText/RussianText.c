@@ -4,8 +4,8 @@
 
 #include "RussianText.h"
 
-// 00401071: void __GetExceptDLLinfo()
-void __GetExceptDLLinfo()
+// 00401071: void _GetExceptDLLinfo()
+void _GetExceptDLLinfo()
 {
 	fn004011FC(dwArg00);
 	return;

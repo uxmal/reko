@@ -641,8 +641,8 @@ T_139: (in Z : byte)
   OrigDataType: byte
 T_140: (in Test(EQ,Z) : bool)
   Class: Eq_140
-  DataType: Eq_140
-  OrigDataType: 
+  DataType: bool
+  OrigDataType: bool
 T_141: (in register_tm_clones : ptr64)
   Class: Eq_141
   DataType: (ptr Eq_141)
@@ -693,8 +693,8 @@ T_152: (in C : byte)
   OrigDataType: bool
 T_153: (in Test(EQ,Z) : bool)
   Class: Eq_153
-  DataType: Eq_153
-  OrigDataType: 
+  DataType: bool
+  OrigDataType: bool
 T_154: (in 0x0000000000000004 : word64)
   Class: Eq_154
   DataType: ui64

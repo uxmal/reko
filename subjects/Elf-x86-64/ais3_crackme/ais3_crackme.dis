@@ -5,7 +5,7 @@ void _init()
 // LiveOut:
 // Trashed: SCZO ah al ax eax rax
 // Preserved: rsp
-_init_entry:
+fn00000000004003C8_entry:
 // DataOut: rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -18,7 +18,7 @@ l00000000004003C8:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
-_init_exit:
+fn00000000004003C8_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp rax:<invalid>
@@ -62,7 +62,7 @@ void call_gmon_start()
 // LiveOut:
 // Trashed: SCZO ah al ax eax rax
 // Preserved: rsp
-call_gmon_start_entry:
+fn000000000040043C_entry:
 // DataOut: rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -98,7 +98,7 @@ l000000000040044E:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
 
-call_gmon_start_exit:
+fn000000000040043C_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp rax:<invalid>
@@ -112,7 +112,7 @@ word64 deregister_tm_clones(word64 r8)
 // LiveOut: rsp
 // Trashed: SCZO ah al ax di dil eax edi esp r8 r8b r8d r8w rax rdi rsp sp spl
 // Preserved: rbp
-deregister_tm_clones_entry:
+fn0000000000400460_entry:
 // DataOut: r8
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -159,7 +159,7 @@ l0000000000400475:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:r8 - 6295608 rbp:fp - 0x0000000000000004 -4(fp):rbp
 
-deregister_tm_clones_exit:
+fn0000000000400460_exit:
 // DataOut: rsp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp + 0x0000000000000004 eax:<invalid> r8:<invalid> rbp:rbp edi:<invalid> -4(fp):rbp
@@ -173,7 +173,7 @@ void register_tm_clones(word64 r8)
 // LiveOut:
 // Trashed: SCZO ah al ax dh di dil dl dx eax edi edx esi esp r8 r8b r8d r8w rax rdi rdx rsi rsp si sil sp spl
 // Preserved: rbp
-register_tm_clones_entry:
+fn0000000000400490_entry:
 // DataOut: r8
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -224,7 +224,7 @@ l00000000004004B2:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:<invalid> rsi:<invalid> edi:<invalid> -4(fp):rbp
 
-register_tm_clones_exit:
+fn0000000000400490_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp + 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:rbp rdx:<invalid> edx:<invalid> rsi:<invalid> edi:<invalid> -4(fp):rbp
@@ -238,7 +238,7 @@ void __do_global_dtors_aux(word64 r8)
 // LiveOut:
 // Trashed: SCZO ah al ax bp bpl di dil eax ebp edi esp r8 r8b r8d r8w rax rbp rdi rsp sp spl
 // Preserved: rbp
-__do_global_dtors_aux_entry:
+fn00000000004004D0_entry:
 // DataOut: r8
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -264,7 +264,7 @@ l00000000004004EA:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rbp:<invalid> eax:<invalid> r8:<invalid> edi:<invalid> -4(fp):rbp
 
-__do_global_dtors_aux_exit:
+fn00000000004004D0_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rbp:<invalid> eax:<invalid> r8:<invalid> edi:<invalid> -4(fp):rbp
@@ -278,7 +278,7 @@ void frame_dummy(word64 r8)
 // LiveOut:
 // Trashed: SCZO ah al ax dh di dil dl dx eax edi edx esi esp r8 r8b r8d r8w rax rdi rdx rsi rsp si sil sp spl
 // Preserved: rbp rsp
-frame_dummy_entry:
+fn00000000004004F0_entry:
 // DataOut: r8
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -358,7 +358,7 @@ l00000000004004B2:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:<invalid> rsi:<invalid> edi:<invalid> -4(fp):rbp
 
-register_tm_clones_exit:
+fn0000000000400490_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp + 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:rbp rdx:<invalid> edx:<invalid> rsi:<invalid> edi:<invalid> -4(fp):rbp
@@ -384,7 +384,7 @@ l000000000040050F_thunk_register_tm_clones:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp + 0x0000000000000004 eax:<invalid> edi:<invalid> rbp:rbp -4(fp):rbp
 
-frame_dummy_exit:
+fn00000000004004F0_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> eax:<invalid> r8:<invalid> rax:<invalid> rdx:<invalid> edi:<invalid> rbp:rbp edx:<invalid> rsi:<invalid> -4(fp):rbp
@@ -398,7 +398,7 @@ word64 verify(word64 rdi)
 // LiveOut: eax rax
 // Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx esi esp rax rcx rdx rsi rsp si sil sp spl
 // Preserved: rbp
-verify_entry:
+fn0000000000400520_entry:
 // DataOut: rdi
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -456,7 +456,7 @@ l00000000004005C3:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 eax:<invalid> rdx:<invalid> rax:<invalid> al:<invalid> edx:<invalid> ecx:<invalid> esi:(word32) al >> cl ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
 
-verify_exit:
+fn0000000000400520_exit:
 // DataOut: eax rax
 // DataOut (flags): 
 // SymbolicIn: rsp:fp + 0x0000000000000004 rbp:rbp eax:<invalid> rdx:<invalid> rax:<invalid> al:<invalid> edx:<invalid> ecx:<invalid> esi:(word32) al >> cl ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
@@ -470,7 +470,7 @@ void main(word64 rax, word64 rsi, word32 edi)
 // LiveOut:
 // Trashed: SCZO ah al ax bp bpl ch cl cx dh di dil dl dx eax ebp ecx edi edx esi esp rax rbp rcx rdi rdx rsi rsp si sil sp spl
 // Preserved:
-main_entry:
+fn00000000004005C5_entry:
 // DataOut: edi rax rsi
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -520,7 +520,7 @@ l000000000040061D:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rbp:fp - 0x0000000000000004 edi:<invalid> rax:<invalid> eax:<invalid> rdi:<invalid> rdx:<invalid> al:0x00 edx:<invalid> ecx:<invalid> esi:<invalid> ax:0x0000 -20(fp):rsi -8(fp):edi -4(fp):rbp
 
-main_exit:
+fn00000000004005C5_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:Mem0 rbp:fp - 0x0000000000000004 edi:<invalid> rax:<invalid> eax:<invalid> rdi:<invalid> rdx:<invalid> al:0x00 edx:<invalid> ecx:<invalid> esi:<invalid> ax:0x0000 -20(fp):rsi -8(fp):edi -4(fp):rbp
@@ -534,7 +534,7 @@ void __libc_csu_init()
 // LiveOut:
 // Trashed: SCZO ah al ax bh bl bx dh di dil dl dx eax ebx edi edx esi r13 r13b r13d r13w rax rbx rdi rdx rsi si sil
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
-__libc_csu_init_entry:
+fn0000000000400620_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -587,7 +587,7 @@ l0000000000400686:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000038 rbp:0x0000000000600E00 - 0x0000000000600DF8 >> 0x0000000000000003 r12:0000000000600DF8 r13d:edi r14:rsi r15:rdx ebx:<invalid> rdx:<invalid> rsi:<invalid> edi:<invalid> rbx:<invalid> rax:<invalid> -48(fp):rbx -40(fp):rbp -32(fp):r12 -24(fp):r13 -16(fp):r14 -8(fp):r15
 
-__libc_csu_init_exit:
+fn0000000000400620_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp rbp:rbp r12:r12 r13d:<invalid> r14:r14 r15:r15 rbx:rbx r13:r13 ebx:<invalid> rdx:<invalid> rsi:<invalid> edi:<invalid> rax:<invalid> -48(fp):rbx -40(fp):rbp -32(fp):r12 -24(fp):r13 -16(fp):r14 -8(fp):r15
@@ -601,7 +601,7 @@ void __libc_csu_fini()
 // LiveOut:
 // Trashed:
 // Preserved: rsp
-__libc_csu_fini_entry:
+fn00000000004006B0_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -612,7 +612,7 @@ l00000000004006B0:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
-__libc_csu_fini_exit:
+fn00000000004006B0_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -626,7 +626,7 @@ void _fini()
 // LiveOut:
 // Trashed: SCZO
 // Preserved: rsp
-_fini_entry:
+fn00000000004006B4_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -638,7 +638,7 @@ l00000000004006B4:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
-_fini_exit:
+fn00000000004006B4_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp

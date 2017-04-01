@@ -4,12 +4,14 @@
 
 #include "ais3_crackme.h"
 
+// 00000000004003C8: void _init()
 void _init()
 {
 	call_gmon_start();
 	return;
 }
 
+// 0000000000400410: void _start(Register word64 rax, Register (ptr Eq_6) rdx, Stack word64 qwArg00, Stack word32 dwArg04)
 void _start(word64 rax,  * rdx, word64 qwArg00, word32 dwArg04)
 {
 	__align(fp + 0x08);
@@ -17,6 +19,7 @@ void _start(word64 rax,  * rdx, word64 qwArg00, word32 dwArg04)
 	__hlt();
 }
 
+// 000000000040043C: void call_gmon_start()
 void call_gmon_start()
 {
 	word64 rax_4 = globals->qw600FE0;
@@ -34,6 +37,7 @@ void call_gmon_start()
 	return;
 }
 
+// 0000000000400460: Register ptr64 deregister_tm_clones(Register word64 r8)
 ptr64 deregister_tm_clones(word64 r8)
 {
 	if (DPB(rax, 0x0060103F, 0) > 0x0E)
@@ -59,6 +63,7 @@ ptr64 deregister_tm_clones(word64 r8)
 	return fp + 0x04;
 }
 
+// 0000000000400490: void register_tm_clones(Register word64 r8)
 void register_tm_clones(word64 r8)
 {
 	int64 rax_4 = DPB(rax, 0x00601038, 0);
@@ -88,6 +93,7 @@ void register_tm_clones(word64 r8)
 	return;
 }
 
+// 00000000004004D0: void __do_global_dtors_aux(Register word64 r8)
 void __do_global_dtors_aux(word64 r8)
 {
 	if (globals->b601038 == 0x00)
@@ -98,9 +104,10 @@ void __do_global_dtors_aux(word64 r8)
 	return;
 }
 
+// 00000000004004F0: void frame_dummy(Register word64 r8)
 void frame_dummy(word64 r8)
 {
-frame_dummy_entry:
+fn00000000004004F0_entry:
 	rsp = fp
 	SCZO = cond(globals->qw600E08 - 0x00)
 	Z = SCZO
@@ -129,9 +136,10 @@ l000000000040050F_thunk_register_tm_clones:
 l0000000000400518:
 	register_tm_clones(r8)
 	return
-frame_dummy_exit:
+fn00000000004004F0_exit:
 }
 
+// 0000000000400520: Register (ptr byte) verify(Register word64 rdi)
 byte * verify(word64 rdi)
 {
 	word32 dwLoc08_104 = 0x00;
@@ -154,6 +162,7 @@ byte * verify(word64 rdi)
 	return rax_100;
 }
 
+// 00000000004005C5: void main(Register word64 rax, Register (ptr Eq_231) rsi, Register word32 edi)
 void main(word64 rax, Eq_231 * rsi, word32 edi)
 {
 	if (edi != 0x02)
@@ -176,6 +185,7 @@ void main(word64 rax, Eq_231 * rsi, word32 edi)
 	return;
 }
 
+// 0000000000400620: void __libc_csu_init()
 void __libc_csu_init()
 {
 	_init();
@@ -200,17 +210,19 @@ void __libc_csu_init()
 			byte C_70;
 			byte Z_71;
 			word32 ebx_72;
-			(*globals->a600DF8)();
+			(*((char *) globals->a600DF8 + rbx_47 * 0x08))();
 		} while (rbx_63 + 0x01 != rbp_58);
 	}
 	return;
 }
 
+// 00000000004006B0: void __libc_csu_fini()
 void __libc_csu_fini()
 {
 	return;
 }
 
+// 00000000004006B4: void _fini()
 void _fini()
 {
 	return;

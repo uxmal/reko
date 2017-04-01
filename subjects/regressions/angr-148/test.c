@@ -4,6 +4,7 @@
 
 #include "test.h"
 
+// 00000000004003E0: void _init()
 void _init()
 {
 	word64 rax_4 = globals->qw600FF8;
@@ -20,6 +21,7 @@ void _init()
 	return;
 }
 
+// 0000000000400440: void _start(Register word64 rax, Register (ptr Eq_17) rdx, Stack word64 qwArg00, Stack word32 dwArg04)
 void _start(word64 rax,  * rdx, word64 qwArg00, word32 dwArg04)
 {
 	__align(fp + 0x08);
@@ -27,6 +29,7 @@ void _start(word64 rax,  * rdx, word64 qwArg00, word32 dwArg04)
 	__hlt();
 }
 
+// 0000000000400470: Register ptr64 deregister_tm_clones(Register word64 r8)
 ptr64 deregister_tm_clones(word64 r8)
 {
 	if (DPB(rax, 0x00601047, 0) > 0x0E)
@@ -52,6 +55,7 @@ ptr64 deregister_tm_clones(word64 r8)
 	return fp + 0x04;
 }
 
+// 00000000004004A0: void register_tm_clones(Register word64 r8)
 void register_tm_clones(word64 r8)
 {
 	int64 rax_4 = DPB(rax, 0x00601040, 0);
@@ -81,6 +85,7 @@ void register_tm_clones(word64 r8)
 	return;
 }
 
+// 00000000004004E0: void __do_global_dtors_aux(Register word64 r8)
 void __do_global_dtors_aux(word64 r8)
 {
 	if (globals->b601040 == 0x00)
@@ -91,9 +96,10 @@ void __do_global_dtors_aux(word64 r8)
 	return;
 }
 
+// 0000000000400500: void frame_dummy(Register word64 r8)
 void frame_dummy(word64 r8)
 {
-frame_dummy_entry:
+fn0000000000400500_entry:
 	rsp = fp
 	SCZO = cond(globals->qw600E20 - 0x00)
 	Z = SCZO
@@ -122,21 +128,24 @@ l000000000040051F_thunk_register_tm_clones:
 l0000000000400528:
 	register_tm_clones(r8)
 	return
-frame_dummy_exit:
+fn0000000000400500_exit:
 }
 
+// 000000000040052D: Register ptr64 f(Register word64 rax)
 ptr64 f(word64 rax)
 {
 	word64 rax_11 = DPB(rax, putchar(DPB(rdi, 0x78, 0)), 0);
 	return fp + 0x04;
 }
 
+// 000000000040053D: void main()
 void main()
 {
 	f(DPB(rax, 0x00, 0));
 	return;
 }
 
+// 0000000000400550: void __libc_csu_init(Register word64 rsi)
 void __libc_csu_init(word64 rsi)
 {
 	_init();
@@ -161,17 +170,19 @@ void __libc_csu_init(word64 rsi)
 			byte SZO_82;
 			byte C_83;
 			byte Z_84;
-			(*globals->a600E10)();
+			(*((char *) globals->a600E10 + rbx_28 * 0x08))();
 		} while (rbx_79 + 0x01 != rbp_75);
 	}
 	return;
 }
 
+// 00000000004005C0: void __libc_csu_fini()
 void __libc_csu_fini()
 {
 	return;
 }
 
+// 00000000004005C4: void _fini()
 void _fini()
 {
 	return;
