@@ -14,7 +14,7 @@
     </signature>
   </service> 
   
-  <service name="TTYOUT ">  <!-- Write one character to TTY, Cy=1 if no space in output buffer -->
+  <service name="TTYOUT">  <!-- Write one character to TTY, Cy=1 if no space in output buffer -->
     <syscallinfo><vector>88E1</vector></syscallinfo>
     <signature>
             <return>

@@ -374,6 +374,12 @@ namespace Reko.Scanning
                             endBlockNow = true;
                         }
                     }
+                    else if (instr.Class == RtlClass.Terminates)
+                    {
+                        endBlockNow = true;
+                        addFallthroughEdge = false;
+                        addFallthroughEdge = false;
+                    }
                     else
                     {
                         endBlockNow = terminateDeferred;

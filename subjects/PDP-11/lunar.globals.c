@@ -4,19 +4,22 @@
 
 #include "lunar.h"
 
-word16 g_w0003 = 0x0000;
 word16 g_w0004 = 0x0200;
 word16 g_w0006 = 0x00E0;
-word16 g_w000A = 0x00E0;
-word16 g_w000C = 0x0204;
-word16 g_w000D = 0xE002;
-word16 g_w0030 = 0x0000;
-word16 g_w003C = 0x0000;
-word16 * g_ptr0044 = null;
+union Eq_2 g_u0044 = 
+	{
+		L'\x00'
+	};
 ci16 g_w0046 = 0x0000;
 word16 g_w0048 = 0x0000;
-word16 * g_ptr004A = null;
-word16 * g_ptr004C = null;
+union Eq_2 g_u004A = 
+	{
+		L'\x00'
+	};
+union Eq_2 g_u004C = 
+	{
+		L'\x00'
+	};
 word16 g_w004E = 0x0000;
 word16 g_w0050 = 0x0000;
 word16 g_w0052 = 0x0000;
@@ -28,7 +31,10 @@ word16 g_w005C = 0x0000;
 word16 g_w005E = 0x0000;
 word16 g_w0060 = 0x0000;
 word16 g_w0062 = 0x0000;
-word16 * g_ptr0064 = null;
+union Eq_2 g_u0064 = 
+	{
+		L'\x00'
+	};
 word16 g_w0066 = 0x0000;
 word16 g_w0068 = 0x0000;
 word16 g_w006A = 0x0000;
@@ -41,7 +47,7 @@ word16 g_w0076 = 0x0000;
 ui16 g_w0078 = 0x0000;
 wchar_t g_w007A = L'\x00';
 int16 g_w007C = 0;
-word16 * g_ptr007E = null;
+ci16 g_w007E = 0x0000;
 word16 g_w0080 = 0x0000;
 word16 g_w0082 = 0x0000;
 word16 g_w0084 = 0x0000;
@@ -52,8 +58,6 @@ word16 g_w008C = 0x0000;
 word16 g_w008E = 0x0000;
 word16 g_w0090 = 0x0000;
 word16 g_w0092 = 0x0000;
-word16 g_w0094 = 0x0000;
-word16 g_w0096 = 0x00CE;
 word16 g_w009E = 0x009E;
 word16 g_w00A0 = 0x0000;
 word16 g_w00A2 = 0x0000;
@@ -63,32 +67,32 @@ word16 g_w00A8 = 0x0000;
 word16 g_w00AA = 0x0000;
 word16 g_w00AC = 0x0000;
 word16 g_w00AE = 0x0000;
-struct Eq_2047 * g_ptr00B0 = &g_ptr00B0;
-word16 g_w00CE = 0x0000;
+struct Eq_1884 * g_ptr00B0 = &g_ptr00B0;
 word16 * g_a013E[] = 
 	{
 	};
-word16 g_w0258 = 0x09DF;
-word16 g_w0377 = 0x4A09;
-word16 g_w05DC = 0x0BDF;
 word16 g_w07BA = 0x0000;
-word16 g_w0BB8 = 0x09DF;
 word16 g_w0C72 = 0x0000;
 word16 g_w0F70 = 0x0A9F;
 <anonymous> * g_a0FEC[] = 
 	{
 	};
-struct Eq_4220 * g_a168C[] = 
+struct Eq_4179 * g_a168C[] = 
 	{
 	};
-struct Eq_4225 * g_a1696[] = 
+struct Eq_4184 * g_a1696[] = 
 	{
 	};
-word16 g_w182A = 0x0000;
+word16 g_a182A[] = 
+	{
+	};
 word16 g_w182C = 0x0000;
 word16 g_w182E = 0x0000;
+wchar_t g_w1830 = L'\x00';
+word16 g_w1832 = 0x0000;
+cui16 g_w1834 = 0x0000;
 word16 g_w25AA = 0x0000;
-Eq_4245 g_t25B8 = 
+Eq_4204 g_t25B8 = 
 	{
 		
 		{
@@ -107,22 +111,21 @@ word16 g_w27A8 = 0x0000;
 byte g_a27B0[] = 
 	{
 	};
-Eq_4295 g_t2814 = 
+Eq_4254 g_t2814 = 
 	{
 		0x30
 	};
-word16 * g_a28F0[] = 
+Eq_2 g_a28F0[] = 
 	{
 	};
-word16 * g_a28F2[] = 
+Eq_2 g_a28F2[] = 
 	{
 	};
-Eq_4520 g_a28F8[] = 
+Eq_4477 g_a28F8[] = 
 	{
 	};
-word16 g_w2904 = 0x010E;
 word16 g_w34B4 = 0x0000;
-word16 * g_ptr34B6 = null;
+word16 g_w34B6 = 0x0000;
 word16 * g_ptr34BA = null;
 word16 g_w34C2 = 0x0000;
 word16 g_w34CA = 0x0000;

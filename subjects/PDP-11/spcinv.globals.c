@@ -4,6 +4,20 @@
 
 #include "spcinv.h"
 
+Eq_1390 g_t0002 = 
+	{
+		0x00,
+		0x0000,
+		0x00,
+	};
+Eq_481 g_t0008 = 
+	{
+		
+		{
+			L'\x00'
+		},
+		0x00,
+	};
 cui16 g_w0024 = 0x0000;
 word16 g_w0244 = 0x10F7;
 word16 g_w0248 = 0x55DF;
@@ -21,15 +35,132 @@ ci16 g_w0364 = 0x0605;
 word16 g_w036C = 0x09FF;
 word16 g_w03AA = 0x0077;
 word16 g_w03BC = 0x15C0;
+word16 g_w04B8 = 0x9D40;
+word16 g_w0550 = 0x0AF0;
+ci16 g_w0572 = 0x0608;
+word16 g_w057E = 0x15F7;
+word16 g_w0584 = 0x8A35;
+byte g_b0646 = 0xB4;
+word16 g_w06CE = 0x0102;
+word16 g_w0770 = 0x15F7;
+word16 g_w0776 = 0x0AF7;
+word16 g_w077A = 0x0977;
+word16 g_w07AA = 0x0302;
+word16 g_w07B6 = 0x0A05;
+word16 g_w0814 = 0x2017;
+word16 g_w081E = 0x2017;
+word16 g_w087C = 0x011A;
+word16 g_w0884 = 0x0A77;
+word16 g_w0888 = 0x0BF7;
+word16 g_w0892 = 0x010B;
+word16 g_w089E = 0x0BF7;
+word16 g_w08AA = 0x0A37;
+word16 g_w08AE = 0x0A37;
+word16 g_w08B2 = 0x0BF7;
+byte g_b097C = 0xF7;
+byte g_b0982 = 0x87;
+byte g_b0990 = 0xF7;
+byte g_b0996 = 0x87;
+word16 g_w09A2 = 0x023D;
+word16 g_w09AA = 0x15C2;
+word16 g_w09B2 = 0x15F7;
+word16 g_w09B8 = 0x0A01;
+word16 g_w09CA = 0x15F7;
+word16 g_w09D0 = 0x15C1;
+word16 g_w09DC = 0x6077;
+word16 g_w0A1C = 0x0087;
+word16 g_w0A4E = 0x0BF7;
+word16 g_w0A58 = 0x15F7;
+word16 g_w0A5E = 0x0087;
+word16 g_w0AB2 = 0x0087;
 word16 g_w0B5A = 0x0087;
+word16 g_w0B72 = 0x0104;
+word16 g_w0B7C = 0x10C5;
+byte g_b0BC6 = 0x87;
+word16 g_w0BDC = 0x0A37;
+word16 g_w0BE0 = 0x15F7;
+word16 g_w0BE6 = 0x15F7;
+word16 g_w0BEC = 0x15C1;
+word16 g_w0C1E = 0x0087;
+word16 g_w0C7C = 0x15F7;
+word16 g_w0C82 = 0x15F7;
+word16 g_w0C88 = 0x15F7;
+word16 g_w0C8E = 0x15F7;
+word16 g_w0C94 = 0x15F7;
+word16 g_w0C9A = 0x15F7;
+word16 g_w0CA0 = 0x15F7;
+word16 g_w0CA6 = 0x15F7;
+word16 g_w0CAC = 0x0CF7;
+word16 g_w0DA8 = 0x0087;
+word16 g_a0DB8[] = 
+	{
+	};
+word16 g_a0DC4[] = 
+	{
+	};
+word16 g_a0DE0[] = 
+	{
+	};
+word16 g_a0DF0[] = 
+	{
+	};
+word16 g_a0E00[] = 
+	{
+	};
+word16 g_a0E10[] = 
+	{
+	};
+word16 g_a0E20[] = 
+	{
+	};
+word16 g_a0E30[] = 
+	{
+	};
+byte g_b0E56 = 0x00;
+Eq_3549 g_a0EE6[] = 
+	{
+	};
+Eq_3548 g_a0EE9[] = 
+	{
+	};
+ci8 g_a0EEC[] = 
+	{
+	};
+Eq_3552 g_a0EF0[] = 
+	{
+	};
+byte g_a0EF3[] = 
+	{
+	};
+cui16 g_w0EF4 = 0x0000;
+word16 g_w0EF6 = 0x0000;
 word16 g_w0EF8 = 0x0000;
 <anonymous> * g_ptr0EFA = null;
+word16 g_w0EFC = 0x0000;
+word16 g_w0EFE = 0x0000;
+word16 g_w0F00 = 0x0000;
 word16 g_w0F02 = 0x0000;
+struct Eq_3 * g_ptr0F04 = null;
+struct Eq_1390 * g_ptr0F06 = &g_t0002;
+int16 g_w0F08 = 0;
+word16 g_w0F0A = 0xFFFF;
+cui16 g_w0F0C = 0x0001;
+cui16 g_w0F0E = 0x0000;
+ci16 g_w0F10 = 0x0000;
 word16 g_w0F12 = 0x0000;
 cu16 g_w0F14 = 0x0000;
 word16 g_w0F18 = 0x0000;
+struct Eq_1895 * g_ptr0F1A = null;
+ci16 g_w0F1E = 0x0000;
+word16 g_w0F20 = 0x0000;
+byte g_b0F24 = 0x00;
+Eq_212 g_a0F2A[] = 
+	{
+	};
 char g_b0F9A = '\x0D';
 char g_b0FDA = '\x0D';
+byte g_b1159 = 0x20;
+byte g_b115A = 0x00;
 word16 g_w1166 = 0x0000;
 word16 g_w1168 = 0x0000;
 word16 g_w116A = 0x0000;
@@ -37,4 +168,5 @@ word16 g_w116C = 0x0000;
 word16 g_w116E = 0x0000;
 word16 g_w1170 = 0x0000;
 word16 g_w1172 = 0x0000;
+char g_b1178 = '\x00';
 

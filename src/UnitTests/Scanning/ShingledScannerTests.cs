@@ -50,6 +50,7 @@ namespace Reko.UnitTests.Scanning
         private DiGraph<Address> graph;
         private static readonly string nl = Environment.NewLine;
         private ScanResults sr;
+        private IRewriterHost host;
 
         [SetUp]
         public void Setup()
@@ -162,11 +163,11 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Scanner()
         {
-            var host = mr.Stub<IRewriterHost>();
+            this.host = mr.Stub<IRewriterHost>();
             var dev = mr.Stub<DecompilerEventListener>();
-            host.Stub(h => h.EnsurePseudoProcedure(null, null, 0))
-                .IgnoreArguments()
-                .Return(new PseudoProcedure("<>", PrimitiveType.Word32, 2));
+            //host.Stub(h => h.EnsurePseudoProcedure(null, null, 0))
+            //    .IgnoreArguments()
+            //    .Return(new PseudoProcedure("<>", PrimitiveType.Word32, 2));
             host.Stub(h => h.PseudoProcedure("", VoidType.Instance, null)).IgnoreArguments().Return(null);
             host.Stub(h => h.GetImport(null, null)).IgnoreArguments().Return(null);
             host.Stub(h => h.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
@@ -519,7 +520,31 @@ namespace Reko.UnitTests.Scanning
             Given_Scanner();
             var sr = sh.ScanNew();
             Dump(sr);
-        }     
+        } 
+        
+        [Test]
+        public void Shsc_Terminate()
+        {
+            Given_x86_Image(m =>
+            {
+                m.Hlt();
+                m.Mov(m.eax, 0);
+                m.Ret();
+            });
+            Given_Scanner();
+            host.Stub(h => h.EnsurePseudoProcedure(
+                Arg<string>.Is.Equal("__hlt"),
+                Arg<DataType>.Is.NotNull,
+                Arg<int>.Is.Equal(0))).
+                Return(new PseudoProcedure("__hlt", VoidType.Instance, 0));
+
+            var sr = sh.ScanNew();
+            sr.ICFG = sh.BuildIcfg(new HashSet<Address>());
+
+            var from = sr.ICFG.Nodes.Single(n => n.Address == Address.Ptr32(0x00100000));
+            var to = sr.ICFG.Nodes.Single(n => n.Address == Address.Ptr32(0x00100001));
+            Assert.IsFalse(sr.ICFG.ContainsEdge(from, to));
+        }  
     }
 }
 
