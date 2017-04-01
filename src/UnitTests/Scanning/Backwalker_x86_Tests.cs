@@ -96,6 +96,11 @@ namespace Reko.UnitTests.Scanning
                 return arch.GetSubregister(reg, off, width);
             }
 
+            public bool IsStackRegister(Storage stg)
+            {
+                return stg == arch.StackRegister;
+            }
+
             public bool IsValidAddress(Address addr)
             {
                 return true;

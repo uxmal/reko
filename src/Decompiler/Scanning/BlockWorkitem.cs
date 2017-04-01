@@ -788,6 +788,9 @@ namespace Reko.Scanning
                     }
                     var nav = listener.CreateJumpTableNavigator(program, addrSwitch, bw.VectorAddress, bw.Stride);
                     listener.Warn(nav, msg);
+                    if (vector.Count == 0)
+                        return false;
+
                 }
                 imgVector = new ImageMapVectorTable(
                     bw.VectorAddress,
@@ -1090,6 +1093,11 @@ namespace Reko.Scanning
             public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
             {
                 return arch.GetSubregister(reg, offset, width);
+            }
+
+            public bool IsStackRegister(Storage stg)
+            {
+                return stg == arch.StackRegister;
             }
 
             public bool IsValidAddress(Address addr)

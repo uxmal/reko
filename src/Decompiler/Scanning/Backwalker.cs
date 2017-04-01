@@ -438,6 +438,8 @@ namespace Reko.Scanning
             {
                 // We have [id + C]
                 Stride = 1;
+                if (host.IsStackRegister(idLeft.Storage))
+                    return null;
                 DetermineVector(mem, bin.Right);
                 if (VectorAddress != null && host.IsValidAddress(VectorAddress))
                     return RegisterOf(idLeft);

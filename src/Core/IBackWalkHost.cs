@@ -41,5 +41,6 @@ namespace Reko.Core
         IEnumerable<TInstr> GetReversedBlockInstructions(TBlock block);
         Tuple<Expression,Expression> AsAssignment(TInstr instr);
         Expression AsBranch(TInstr instr);
+        bool IsStackRegister(Storage storage);
     }
 }

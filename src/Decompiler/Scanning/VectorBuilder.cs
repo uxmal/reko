@@ -236,6 +236,11 @@ namespace Reko.Scanning
             get { return bw != null ? bw.Index: RegisterStorage.None; }
         }
 
+        public bool IsStackRegister(Storage stg)
+        {
+            return stg == program.Architecture.StackRegister;
+        }
+
         private List<Address> PostError(string err, Address addrInstr, Address addrTable)
         {
             Debug.WriteLine(string.Format("Instruction at {0}, table at {1}: {2}", addrInstr, addrTable, err));

@@ -101,7 +101,6 @@ namespace Reko.Arch.Pdp11
 
         #region IProcessorArchitecture Members
 
-
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Pdp11Disassembler(rdr, this);

@@ -37,7 +37,7 @@ namespace Reko.Arch.Pdp11
             var b = (Pdp11Instruction)y;
             return
                 Compare(a.op1, b.op1) &&
-                Compare(a.op1, b.op2);
+                Compare(a.op2, b.op2);
         }
 
         private bool Compare(MachineOperand opA, MachineOperand opB)
@@ -111,10 +111,7 @@ namespace Reko.Arch.Pdp11
             var immop = op as ImmediateOperand;
             if (immop != null)
             {
-                if (NormalizeRegisters)
-                    return 0;
-                else 
-                    return immop.Value.GetHashCode();
+                return base.GetConstantHash(immop.Value);
             }
             var addrop = op as AddressOperand;
             if (addrop != null)
@@ -133,6 +130,10 @@ namespace Reko.Arch.Pdp11
                 var o = NormalizeConstants
                     ? 0
                     : mem.EffectiveAddress.GetHashCode();
+                if (mem.PreDec)
+                    r ^= 167;
+                if (mem.PostInc)
+                    r ^= 3163;
                 return mem.Mode.GetHashCode() ^
                     r * 17 ^
                     o * 5;

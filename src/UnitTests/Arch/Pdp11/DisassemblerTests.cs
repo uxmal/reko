@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Reko.UnitTests.Arch.Pdp11
 {
-    [TestFixture]   
+    [TestFixture]
     public class DisassemblerTests
     {
         private void RunTest(string expected, params ushort[] words)
@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             Assert.AreEqual(expected, instr.ToString());
         }
 
-        private MachineInstruction RunTest(params ushort [] words)
+        private MachineInstruction RunTest(params ushort[] words)
         {
             var bytes = new byte[words.Length * 2];
             LeImageWriter writer = new LeImageWriter(bytes);
