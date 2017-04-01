@@ -229,7 +229,7 @@ namespace Reko.Arch.Pdp11
                 {
                     var offset = (short)memOp.EffectiveAddress;
                     var addrBase = (long)instr.Address.ToLinear();
-                    var addr = Address.Ptr16((ushort)(2 + addrBase + offset));
+                    var addr = Address.Ptr16((ushort)(instr.Length + addrBase + offset));
                     return addr;
                 }
                 else

@@ -153,5 +153,23 @@ namespace Reko.UnitTests.Arch.RiscV
                  "0|L--|0000000000010000(4): 1 instructions",
                  "1|L--|s1 = 0x0000000000011000");
         }
+
+        [Test]
+        public void RiscV_rw_lh()
+        {
+            Rewrite(0x03131083u);   // lh
+            AssertCode(
+                 "0|L--|0000000000010000(4): 1 instructions",
+                 "1|L--|ra = (word64) Mem0[t1 + 49:int16]");
+        }
+
+        [Test]
+        public void RiscV_rw_fmadd()
+        {
+            Rewrite(0x8293FD43);
+            AssertCode(
+                 "0|L--|0000000000010000(4): 1 instructions",
+                 "1|L--|fs10 = ft7 * fs1 + fa6");
+        }
     }
 }

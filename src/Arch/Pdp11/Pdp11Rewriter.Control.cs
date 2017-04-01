@@ -101,7 +101,7 @@ namespace Reko.Arch.Pdp11
             var callDst = RewriteJmpSrc(instr.op2);
             if (callDst != null)
             {
-                this.rtlc = RtlClass.Transfer;
+                this.rtlc = RtlClass.Transfer|RtlClass.Call;
                 m.Call(callDst, 2);
             }
             else

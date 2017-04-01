@@ -64,10 +64,14 @@ namespace Reko.Arch.RiscV
                 switch (instr.opcode)
                 {
                 default:
-                    throw new AddressCorrelatedException(
-                       instr.Address,
-                       "Rewriting of Risc-V instruction '{0}' not implemented yet.",
-                       instr.opcode);
+                    host.Warn(
+                        instr.Address, 
+                        "Rewriting of Risc-V instruction '{0}' not implemented yet.",
+                        instr.opcode);
+                    rtlc = RtlClass.Invalid;
+                    m.Invalid();
+                    break;
+                case Opcode.invalid: rtlc = RtlClass.Invalid; m.Invalid(); break;
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.addi: RewriteAdd(); break;
                 case Opcode.addiw: RewriteAddw(); break;
@@ -83,6 +87,7 @@ namespace Reko.Arch.RiscV
                 case Opcode.bne: RewriteBranch(m.Ne); break;
                 case Opcode.fcvt_d_s: RewriteFcvt(PrimitiveType.Real64); break;
                 case Opcode.feq_s: RewriteFcmp(PrimitiveType.Real32, m.FEq); break;
+                case Opcode.fmadd_s: RewriteFmadd(PrimitiveType.Real32, m.FAdd); break;
                 case Opcode.fmv_d_x: RewriteFcvt(PrimitiveType.Real64); break;
                 case Opcode.fmv_s_x: RewriteFcvt(PrimitiveType.Real32); break;
                 case Opcode.flw: RewriteFload(PrimitiveType.Real32); break;
@@ -91,6 +96,8 @@ namespace Reko.Arch.RiscV
                 case Opcode.lb: RewriteLoad(PrimitiveType.SByte); break;
                 case Opcode.lbu: RewriteLoad(PrimitiveType.Byte); break;
                 case Opcode.ld: RewriteLoad(PrimitiveType.Word64); break;
+                case Opcode.lh: RewriteLoad(PrimitiveType.Int16); break;
+                case Opcode.lhu: RewriteLoad(PrimitiveType.UInt16); break;
                 case Opcode.lui: RewriteLui(); break;
                 case Opcode.lw: RewriteLoad(PrimitiveType.Int32); break;
                 case Opcode.lwu: RewriteLoad(PrimitiveType.UInt32); break;

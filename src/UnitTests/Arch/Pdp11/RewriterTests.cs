@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             BuildTest(0x09F7, 0x0582);  // jsr\tpc,0582(pc)
             AssertCode(
                 "0|T--|0200(4): 1 instructions",
-                "1|T--|call 0784 (2)");
+                "1|T--|call 0786 (2)");
         }
 
         [Test]
@@ -556,6 +556,15 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "3|L--|NZ = cond(v4)",
                 "4|L--|C = false",
                 "5|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_jsr()
+        {
+            BuildTest(0x09F7, 0x02D8);  // jsr pc, 0x000004DC
+            AssertCode(
+               "0|T--|0200(4): 1 instructions",
+               "1|T--|call 04DC (2)");
         }
     }
 }
