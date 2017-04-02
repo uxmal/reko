@@ -398,17 +398,15 @@ namespace Reko.Scanning
                         graph.Successors(addrInstrEnd).Count != 1)
                     {
                         
-                        Debug.Print("addr: {0}, end {1}, term: {2}, wl: {3}, nodes: {4}, succ: {5}",
-                            addr,
-                            addrInstrEnd,
-                            endBlockNow,
-                            !wl.Contains(addrInstrEnd),
-                            !graph.Nodes.Contains(addrInstrEnd),
-                            graph.Nodes.Contains(addrInstrEnd)
-                                ? graph.Successors(addrInstrEnd).Count
-                                : 0);
-                        
-                        //block.EndAddress = addrInstrEnd;
+                        //Debug.Print("addr: {0}, end {1}, term: {2}, wl: {3}, nodes: {4}, succ: {5}",
+                        //    addr,
+                        //    addrInstrEnd,
+                        //    endBlockNow,
+                        //    !wl.Contains(addrInstrEnd),
+                        //    !graph.Nodes.Contains(addrInstrEnd),
+                        //    graph.Nodes.Contains(addrInstrEnd)
+                        //        ? graph.Successors(addrInstrEnd).Count
+                        //        : 0);
                         
                         if (!endBlockNow && !addFallthroughEdge)
                         {

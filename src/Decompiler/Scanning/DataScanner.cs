@@ -31,17 +31,16 @@ using Reko.Core.Services;
 
 namespace Reko.Scanning
 {
-    public class DataScanner : IScannerQueue
+    public class DataScanner : ScannerBase, IScannerQueue
     {
         private DecompilerEventListener listener;
-        private Program program;
         private Queue<WorkItem> queue;
         private ScanResults sr;
         private Dictionary<Address, ImageSymbol> procedures;
 
         public DataScanner(Program program, ScanResults sr, DecompilerEventListener listener)
+            :base(program)
         {
-            this.program = program;
             this.sr = sr;
             this.listener = listener;
             this.queue = new Queue<WorkItem>();
@@ -71,9 +70,9 @@ namespace Reko.Scanning
 
         public void EnqueueUserGlobalData(Address addr, DataType dt, string name)
         {
-            if (program.SegmentMap.IsValidAddress(addr))
+            if (Program.SegmentMap.IsValidAddress(addr))
             {
-                var wi = new GlobalDataWorkItem(this, program, addr, dt, name);
+                var wi = new GlobalDataWorkItem(this, Program, addr, dt, name);
                 queue.Enqueue(wi);
             }
         }
@@ -84,23 +83,25 @@ namespace Reko.Scanning
                 return;
             procedures.Add(addr, new ImageSymbol(addr, name, sig) { Type = SymbolType.Procedure });
             sr.KnownProcedures.Add(addr);
+            var proc = EnsureProcedure(addr, name);
+            proc.Signature = sig;
         }
 
         public void Error(Address addr, string message, params object[] args)
         {
-            var nav = listener.CreateAddressNavigator(program, addr);
+            var nav = listener.CreateAddressNavigator(Program, addr);
             listener.Error(nav, message, args);
         }
 
         public void Warn(Address addr, string message)
         {
-            var nav = listener.CreateAddressNavigator(program, addr);
+            var nav = listener.CreateAddressNavigator(Program, addr);
             listener.Error(nav, message);
         }
 
         public void Warn(Address addr, string message, params object[] args)
         {
-            var nav = listener.CreateAddressNavigator(program, addr);
+            var nav = listener.CreateAddressNavigator(Program, addr);
             listener.Error(nav, message, args);
         }
 
