@@ -865,6 +865,69 @@ DllMain_exit:
 
 
 
+void fn10001680()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax di dil eax edi esi esp rax rdi rsi rsp si sil sp spl
+// Preserved:
+fn10001680_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l10001680:
+	word32 esi_12 = 0x100021D8
+	branch true l100016A1
+// DataOut: esi esp
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+l10001692:
+	word32 eax_34 = Mem0[esi_12:word32]
+	branch eax_34 == 0x00000000 l1000169A
+// DataOut: esi esp
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> eax:<invalid> edi:0x100021D8 esi:<invalid> -8(fp):edi -4(fp):esi
+
+l10001698:
+	word32 esp_47
+	word32 edi_49
+	word32 eax_50
+	byte SCZO_51
+	byte C_52
+	byte SZO_53
+	byte Z_54
+	call eax_34 (retsize: 4; depth: 4)
+		uses: C_37,dwLoc04_4,dwLoc08_7,eax_34,edi_31,esi_32,esp_33,SCZO_30,SZO_35,Z_36
+		defs: C_52,eax_50,edi_49,esi_48,esp_47,SCZO_51,SZO_53,Z_54
+// DataOut: esi esp
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> eax:<invalid> edi:0x100021D8 esi:<invalid> -8(fp):edi -4(fp):esi
+
+l1000169A:
+	esi_12 = esi_12 + 0x00000004
+	branch esi_12 <u 0x100021D8 l10001692
+// DataOut: esi esp
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> eax:<invalid> edi:0x100021D8 esi:<invalid> -8(fp):edi -4(fp):esi
+
+l100016A1:
+	return
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> eax:<invalid> edi:0x100021D8 esi:<invalid> -8(fp):edi -4(fp):esi
+
+fn10001680_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> eax:<invalid> edi:<invalid> esi:<invalid> -8(fp):edi -4(fp):esi
+
+
+
 word32 fn100016D0(word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
@@ -1048,6 +1111,66 @@ fn10001742_exit:
 // DataOut: eax edi esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> edx:<invalid> ecx:<invalid> eax:<invalid> edi:<invalid> esi:<invalid> ebx:<invalid> ebp:<invalid> cl:<invalid> -16(fp):0x10000000 -12(fp):<invalid> -8(fp):0x10002230 -4(fp):0x00000008
+
+
+
+void fn100017B4()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn100017B4_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn100017B4_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn100017BA()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn100017BA_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn100017BA_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn100017C0()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn100017C0_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn100017C0_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
 
 
 
@@ -1246,6 +1369,126 @@ fn10001864_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp ebp:ebp eax:<invalid> edi:edi ebx:ebx esi:esi -36(fp):fp - 0x00000014 -32(fp):esi -28(fp):edi -24(fp):ebx -12(fp):<invalid> -8(fp):<invalid> -4(fp):ebp
+
+
+
+void fn100018F8()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn100018F8_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn100018F8_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn100018FE()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn100018FE_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn100018FE_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn10001904()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn10001904_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn10001904_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn1000190A()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn1000190A_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn1000190A_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn10001910()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn10001910_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn10001910_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn10001916()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn10001916_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn10001916_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
 
 
 
