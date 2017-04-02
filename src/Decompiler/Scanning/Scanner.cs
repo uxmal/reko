@@ -338,12 +338,12 @@ namespace Reko.Scanning
 
         public void EnsureEntryPoint(ImageSymbol sym)
         {
-            FunctionType sig = null;
             var proc = EnsureProcedure(sym.Address, sym.Name);
-            if (sym.Signature != null)
+            if (sym.Signature != null && !proc.Signature.ParametersValid)
             {
                 var sser = Program.CreateProcedureSerializer();
-                sig = sser.Deserialize(sym.Signature, proc.Frame);
+                var sig = sser.Deserialize(sym.Signature, proc.Frame);
+                proc.Signature = sig;
             }
             Program.CallGraph.EntryPoints.Add(proc);
         }

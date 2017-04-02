@@ -143,6 +143,5 @@ namespace Reko.Scanning
                     .Select(n => n.Address)));
             }
         }
-
-        }
     }
+}

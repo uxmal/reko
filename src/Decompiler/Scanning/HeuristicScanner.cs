@@ -180,6 +180,7 @@ namespace Reko.Scanning
             var deadNodes = dasm.RemoveBadInstructionsFromGraph();
             dasm.BuildIcfg(deadNodes);
             Probe(sr);
+            sr.Dump("After shingle scan");
 
             // On processors with variable length instructions,
             // there may be many blocks that partially overlap the 
@@ -211,7 +212,11 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         private void Probe(ScanResults sr)
         {
-            //var p = sr.ICFG.Nodes.FirstOrDefault(n => n.Address.ToString().EndsWith("93DB"));
+            var p = sr.ICFG.Nodes.FirstOrDefault(n => n.Address.ToString().EndsWith("0800:0164"));
+            if (p == null)
+                sr.ToString();
+            var i = sr.Instructions.Keys.FirstOrDefault(n => n.ToString().EndsWith("0800:0164"));
+            sr.ToString();
             //var q = sr.ICFG.Nodes.FirstOrDefault(n => n.Address.ToString().EndsWith("93DC"));
             //if (!sr.ICFG.ContainsEdge(p, q))
         }

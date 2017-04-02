@@ -218,6 +218,11 @@ namespace Reko.Scanning
             //      remove v
             foreach (var conflict in conflicts.Where(c => Remaining(c)))
             {
+                var n = 0x100016A4u;  //  pred:         //$DEBUG
+                if (conflict.Item1.Address.ToLinear() == n ||
+                    conflict.Item2.Address.ToLinear() == n)
+                    n.ToString();
+
                 if (blocks.Nodes.Contains(conflict.Item1) &&
                     blocks.Nodes.Contains(conflict.Item2))
                 {

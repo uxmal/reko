@@ -144,7 +144,7 @@ namespace Reko.Arch.Vax
             var dst = RewriteDstOp(1, width, e => fn(e, op1));
             if (dst == null)
             {
-                m.Invalid();
+                EmitInvalid();
                 return false;
             }
             return genFlags(dst);
@@ -153,9 +153,20 @@ namespace Reko.Arch.Vax
         private bool RewriteAlu3(PrimitiveType width, Func<Expression, Expression, Expression> fn, Func<Expression, bool> genFlags)
         {
             var op1 = RewriteSrcOp(0, width);
-            var op2 = RewriteSrcOp(1, width);
-            var dst = RewriteDstOp(2, width, e => fn(op2, op1));
-            return genFlags(dst);
+            if (op1 != null)
+            {
+                var op2 = RewriteSrcOp(1, width);
+                if (op2 != null)
+                {
+                    var dst = RewriteDstOp(2, width, e => fn(op2, op1));
+                    if (dst != null)
+                    {
+                        return genFlags(dst);
+                    }
+                }
+            }
+            EmitInvalid();
+            return false;
         }
 
         private bool RewriteAluUnary1(PrimitiveType width, Func<Expression, Expression> fn, Func<Expression, bool> genFlags)
