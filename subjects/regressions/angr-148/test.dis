@@ -47,6 +47,46 @@ fn00000000004003E0_exit:
 
 
 
+void fn0000000000400420()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0000000000400420_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0000000000400420_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp
+
+
+
+void fn0000000000400430()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0000000000400430_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0000000000400430_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp
+
+
+
 void _start(word64 rax, word64 rdx, word64 qwArg00, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 

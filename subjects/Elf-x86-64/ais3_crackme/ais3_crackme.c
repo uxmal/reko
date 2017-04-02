@@ -11,6 +11,13 @@ void _init()
 	return;
 }
 
+// 0000000000400400: void fn0000000000400400()
+void fn0000000000400400()
+{
+fn0000000000400400_entry:
+fn0000000000400400_exit:
+}
+
 // 0000000000400410: void _start(Register word64 rax, Register (ptr Eq_6) rdx, Stack word64 qwArg00, Stack word32 dwArg04)
 void _start(word64 rax,  * rdx, word64 qwArg00, word32 dwArg04)
 {
