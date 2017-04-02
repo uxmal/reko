@@ -1081,6 +1081,7 @@ namespace Reko.Scanning
                 // Procedure construction into SSA construction.
                 foreach (var rtlProc in procs)
                 {
+                    EnsureProcedure(rtlProc.Entry.Address, null);
                     EnqueueProcedure(rtlProc.Entry.Address);
                 }
                 ProcessQueue();
