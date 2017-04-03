@@ -196,6 +196,8 @@ namespace Reko.Arch.X86
                 case Opcode.fsubr: EmitCommonFpuInstruction(m.FSub, true, false); break;
                 case Opcode.fsubrp: EmitCommonFpuInstruction(m.FSub, true, true); break;
                 case Opcode.ftst: RewriteFtst(); break;
+                case Opcode.fucomi: RewrteFucomi(false); break;
+                case Opcode.fucomip: RewrteFucomi(true); break;
                 case Opcode.fucompp: RewriteFcom(2); break;
                 case Opcode.fxam: RewriteFxam(); break;
                 case Opcode.fxch: RewriteExchange(); break;
@@ -251,8 +253,11 @@ namespace Reko.Arch.X86
                 case Opcode.movq: RewriteMov(); break;
                 case Opcode.movs: RewriteStringInstruction(); break;
                 case Opcode.movsb: RewriteStringInstruction(); break;
+                case Opcode.movsd: RewriteMovssd(PrimitiveType.Real64); break;
+                case Opcode.movss: RewriteMovssd(PrimitiveType.Real32); break;
                 case Opcode.movsx: RewriteMovsx(); break;
                 case Opcode.movups: RewriteMov(); break;
+                case Opcode.movupd: RewriteMov(); break;
                 case Opcode.movzx: RewriteMovzx(); break;
                 case Opcode.mul: RewriteMultiply(Operator.UMul, Domain.UnsignedInt); break;
                 case Opcode.neg: RewriteNeg(); break;

@@ -30,33 +30,41 @@ namespace Reko.Arch.X86
         private static OpRec[] CreateTwobyteOprecs()
         {
             return new OpRec[]
-			{
+            {
 				// 00
 				new SingleByteOpRec(Opcode.illegal),
-				new GroupOpRec(7, ""),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new Alternative64OpRec(
+                new GroupOpRec(7, ""),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.illegal),
                     new SingleByteOpRec(Opcode.syscall)),
-				new SingleByteOpRec(Opcode.illegal),
-				new Alternative64OpRec(
+                new SingleByteOpRec(Opcode.illegal),
+                new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.illegal),
                     new SingleByteOpRec(Opcode.sysret)),
 
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
 
 				// 10
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.movups, "Wps,Vps"),
+				new PrefixedOpRec(
+                    Opcode.movups, "Vps,Wps",
+                    Opcode.movupd, "Vpd,Wpd",
+                    Opcode.movss,  "Vx,Wss",
+                    Opcode.movsd,  "Vx,Wsd"),
+				new PrefixedOpRec(
+                    Opcode.movups, "Wps,Vps",
+                    Opcode.movupd, "Wpd,Vpd",
+                    Opcode.movss,  "Wss,Vss",
+                    Opcode.movsd,  "Wsd,Vsd"),
                 new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),

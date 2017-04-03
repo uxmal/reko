@@ -146,6 +146,8 @@ namespace Reko.Arch.X86
         fsubr,
         fsubrp,
         ftst,
+        fucomi,
+        fucomip,
         fucompp,
         fxam,
         fxch,
@@ -206,7 +208,10 @@ namespace Reko.Arch.X86
         movs,
         movsb,
         movshdup,
+        movsd,
+        movss,
         movsx,
+        movupd,
         movups,
         movzx,
         mul,
@@ -287,6 +292,6 @@ namespace Reko.Arch.X86
         // Borland implemented an x87 emulator, and introduced these
         // pseudo-instructions.
         BOR_exp,
-        BOR_ln
+        BOR_ln,
     }
 }

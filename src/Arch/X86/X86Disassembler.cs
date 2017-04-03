@@ -1130,10 +1130,18 @@ namespace Reko.Arch.X86
                 switch (fmt[i++])
                 {
                 case 's': return PrimitiveType.Word128;
+                case 'd': return PrimitiveType.Word128;
                 default: throw new NotImplementedException(string.Format("Unknown operand width p{0}", fmt[i-1]));
                 }
             case 'q':
                 return PrimitiveType.Word64;
+            case 's':
+                switch (fmt[i++])
+                {
+                case 's': return PrimitiveType.Real32;
+                case 'd': return PrimitiveType.Real64;
+                default: throw new NotImplementedException(string.Format("Unknown operand width s{0}", fmt[i - 1]));
+                }
             case 'x':
                 return defaultDataWidth != dataWidth
                     ? PrimitiveType.Word128

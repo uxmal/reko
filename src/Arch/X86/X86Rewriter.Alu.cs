@@ -574,6 +574,24 @@ namespace Reko.Arch.X86
                 SrcOp(instrCur.op2, instrCur.op1.Width));
         }
 
+        private void RewriteMovssd(PrimitiveType dt)
+        {
+            var dst = SrcOp(instrCur.op1);
+            var src = SrcOp(instrCur.op2);
+            if (src is Identifier)
+            {
+                src = m.Cast(dt, src);
+            }
+            if (dst is Identifier)
+            {
+                m.Assign(dst, m.Dpb(dst, src, 0));
+            }
+            else
+            {
+                m.Assign(dst, src);
+            }
+        }
+
         private void RewriteMovsx()
         {
             m.Assign(

@@ -435,6 +435,20 @@ namespace Reko.Arch.X86
                 m.ISub(FpuRegister(0), Constant.Real64(0.0)));
         }
 
+        private void RewrteFucomi(bool pop)
+        {
+            var op1 = SrcOp(instrCur.op1);
+            var op2 = SrcOp(instrCur.op2);
+            m.Assign(
+                orw.FlagGroup(FlagM.ZF|FlagM.PF|FlagM.CF),
+                m.Cond(
+                    m.FSub(op1, op2)));
+            if (pop)
+            {
+                state.ShrinkFpuStack(1);
+            }
+        }
+
         private void RewriteFxam()
         {
             m.Assign(orw.FlagGroup(FlagM.FPUF), m.Cond(FpuRegister(0)));
