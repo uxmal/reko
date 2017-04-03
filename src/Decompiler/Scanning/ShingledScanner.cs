@@ -188,8 +188,6 @@ namespace Reko.Scanning
                 y[a] = MaybeCode;
                 var addr = addrStart + a;
                 var dasm = GetRewriter(addr, rewriterPool);
-                if (addr.Offset == 0x164)       //$DEBUG
-                    addr.ToString();
                 if (!dasm.MoveNext())
                 {
                     AddEdge(G, bad, addr);
@@ -230,16 +228,13 @@ namespace Reko.Scanning
                             if (IsExecutable(addrDest))
                             {
                                 // call / jump destination is executable
+                                AddEdge(G, addrDest, i.Address);
                                 if ((i.Class & RtlClass.Call) != 0)
                                 {
                                     int callTally;
                                     if (!this.sr.DirectlyCalledAddresses.TryGetValue(addrDest, out callTally))
                                         callTally = 0;
                                     this.sr.DirectlyCalledAddresses[addrDest] = callTally + 1;
-                                }
-                                else
-                                {
-                                    AddEdge(G, addrDest, i.Address);
                                 }
                             }
                             else
