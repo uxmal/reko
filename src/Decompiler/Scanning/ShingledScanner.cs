@@ -596,5 +596,35 @@ namespace Reko.Scanning
                 throw new InvalidOperationException(string.Format("Address {0} doesn't belong to any segment.", addr));
             return map[seg][addr - seg.Address] == MaybeCode;
         }
+
+        [Conditional("DEBUG")]
+        public void Dump(string caption)
+        {
+            return;     // This is horribly verbose, so only use it when debugging unit tests.
+            Debug.Print("== {0} =====================", caption);
+            Debug.Print("{0} nodes", G.Nodes.Count);
+            foreach (var block in G.Nodes.OrderBy(n => n))
+            {
+                Debug.Print("{0}:  //  pred: {1}",
+                    block,
+                    string.Join(" ", G.Successors(block)
+                        .OrderBy(n => n)));
+                RtlInstructionCluster cluster;
+                if (!sr.Instructions.TryGetValue(block, out cluster))
+                {
+                    Debug.Print("  *****");
+                }
+                else
+                { 
+                    Debug.Print("  {0}", cluster);
+                    foreach (var instr in cluster.Instructions)
+                    {
+                        Debug.Print("    {0}", instr);
+                    }
+                }
+                Debug.Print("  // succ: {0}", string.Join(" ", G.Predecessors(block)
+                    .OrderBy(n => n)));
+            }
+        }
     }
 }
