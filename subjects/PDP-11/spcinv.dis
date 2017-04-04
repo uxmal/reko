@@ -1284,12 +1284,12 @@ l06F6:
 
 l0710:
 	sp_1 = sp_1 - 0x0001
-	Mem210[sp_1:byte] = r3_28 + 0x0001
-	Mem211[sp_1 + 0x0001:byte] = r0_58
-	word16 r3_216
-	r1_103 = fn0AB6(r0_58, r3_28 + 0x0001, r4, r5, out r2_106, out r3_216, out r4, out r5)
-	Mem222[r2_106 + 0x0EEC:word16] = Mem211[r2_106 + 0x0EEC:word16] & ~0x0080
-	r3_141 = r3_216 - 0x0001
+	Mem213[sp_1:byte] = r3_28 + 0x0001
+	Mem214[sp_1 + 0x0001:byte] = r0_58
+	word16 r3_219
+	r1_103 = fn0AB6(r0_58, r3_28 + 0x0001, r4, r5, out r2_106, out r3_219, out r4, out r5)
+	Mem225[r2_106 + 0x0EEC:word16] = Mem214[r2_106 + 0x0EEC:word16] & ~0x0080
+	r3_141 = r3_219 - 0x0001
 // DataOut: pc r0 r1 r2 r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r2:<invalid> r3:<invalid> r0:<invalid> r4:<invalid> r1:<invalid> r5:<invalid> -1(fp):<invalid> 0(fp):<invalid>
@@ -1297,12 +1297,12 @@ l0710:
 
 l0700:
 	sp_1 = sp_1 - 0x0001
-	Mem193[sp_1:byte] = r3_28
-	Mem194[sp_1 + 0x0001:byte] = r0_58
-	word16 r4_200
-	r1_103 = fn0AB6(r0_58, r3_28, r4, r5, out r2_106, out r3_141, out r4_200, out r5)
-	Mem204[r4_200:byte] = 0x20
-	r4 = r4_200 + 0x0001
+	Mem196[sp_1:byte] = r3_28
+	Mem197[sp_1 + 0x0001:byte] = r0_58
+	word16 r4_203
+	r1_103 = fn0AB6(r0_58, r3_28, r4, r5, out r2_106, out r3_141, out r4_203, out r5)
+	Mem207[r4_203:byte] = 0x20
+	r4 = r4_203 + 0x0001
 // DataOut: pc r0 r1 r2 r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r2:<invalid> r3:<invalid> r0:<invalid> r4:<invalid> r1:<invalid> r5:<invalid> -1(fp):<invalid> 0(fp):<invalid>
@@ -1366,7 +1366,9 @@ l075A:
 	word16 r5_182
 	fn0AE8(r0_172, r4_170, r5_171, wLoc02, out r4_181, out r5_182)
 	Mem185[r1_169 - 0x0002:word16] = r4_181
-	r2_106 = fn0B3A(r4_181, r5_182, bLoc02, out r4, out r5)
+	word16 r1_189
+	word16 r3_191
+	fn0B3A(r4_181, r5_182, bLoc02, out r1_189, out r2_106, out r3_191, out r4, out r5)
 // DataOut: pc r2 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r2:<invalid> r3:<invalid> r0:<invalid> r4:<invalid> r5:<invalid> r1:<invalid> -1(fp):<invalid> 0(fp):<invalid>
@@ -2526,7 +2528,7 @@ fn0B1A_entry:
 // DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) v10(8) v15(16) v19(8) v23(16)
+// LocalsOut: fp(16) v10(8) v15(16)
 
 l0B1A:
 	word16 r0_3 = Mem0[0x0B5A:word16]
@@ -2540,50 +2542,39 @@ l0B1A:
 	word16 r5_23
 	word16 r0_24 = fn0AE8(r0_3, r4_19, r5_20, wLoc02_8, out r4_22, out r5_23)
 	Mem26[r1_21 - 0x0002:word16] = r4_22
-	word16 wArg00_11 = DPB(wArg00, 0x02, 0)
 	word16 r1_32
 	word16 r2_33
 	word16 r3_34
 	word16 r4_35
 	word16 r5_36
-	fn0B60(r0_24, r3_18, r4_22, wLoc02_8, wArg00_11, wArg02, wArg04, out r1_32, out r2_33, out r3_34, out r4_35, out r5_36)
-	word16 r0_38 = Mem26[0x0F18:word16]
-	Mem41[fp - 0x0002:byte] = 0x1F
-	Mem42[fp - 0x0001:byte] = 0x02
-	word16 r2_46
-	word16 r3_47
-	word16 r4_48
-	word16 r5_49
-	fn0AB6(r0_38, 0x0003, r4_35, r5_36, out r2_46, out r3_47, out r4_48, out r5_49)
-	word16 r1_51
-	word16 r2_52
-	word16 r3_53
-	word16 r4_54
-	word16 r5_55
-	word16 r0_56 = fn0B60(r0_38, r3_47, r4_48, wLoc02_8, wArg00_11, wArg02, wArg04, out r1_51, out r2_52, out r3_53, out r4_54, out r5_55)
-	word16 r4_57
-	word16 r5_58
-	word16 r0_59 = fn0AE8(r0_56, r4_54, r5_55, wLoc02_8, out r4_57, out r5_58)
-	Mem61[r1_51 - 0x0002:word16] = r4_57
-	word16 r1_60
-	*r1Out = r1_51 - 0x0002
-	return r0_59
-// DataOut: pc r0 r1 r3 r4 r5 sp
+	fn0B60(r0_24, r3_18, r4_22, wLoc02_8, DPB(wArg00, 0x02, 0), wArg02, wArg04, out r1_32, out r2_33, out r3_34, out r4_35, out r5_36)
+// DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+
+l0B36_thunk_fn0B3A:
+	word16 r1_38
+	word16 r2_39
+	word16 r3_40
+	word16 r4_41
+	word16 r5_42
+	return fn0B3A(r4_35, r5_36, 0x02, out r1_38, out r2_39, out r3_40, out r4_41, out r5_42)
+// DataOut: pc r0 r1 r3 r4 r5 sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> r0:<invalid> r3:<invalid> r1:<invalid> r4:<invalid> r5:<invalid> r2:<invalid> -1(fp):0x2B 0(fp):0x02
 
 fn0B1A_exit:
 // DataOut: r0 r1 r3 r4 r5 sp
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r0:<invalid> r3:<invalid> r1:<invalid> r4:<invalid> r5:<invalid> r2:<invalid> -2(fp):0x1F -1(fp):<invalid> 0(fp):0x02
+// SymbolicIn: sp:<invalid> r0:<invalid> r3:<invalid> r1:<invalid> r4:<invalid> r5:<invalid> r2:<invalid> -1(fp):0x2B 0(fp):0x02
 
 
 
-word16 fn0B3A(word16 r4, word16 r5, byte bArg00, ptr16 & r4Out, ptr16 & r5Out)
+word16 fn0B3A(word16 r4, word16 r5, byte bArg00, ptr16 & r1Out, ptr16 & r2Out, ptr16 & r3Out, ptr16 & r4Out, ptr16 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r4 r5
-// LiveOut: r2 r4 r5 sp
+// LiveOut: r0 r1 r2 r3 r4 r5 sp
 // Trashed: NZVC r0 r1 r2 r3 r4 r5 sp
 // Preserved:
 fn0B3A_entry:
@@ -2608,15 +2599,17 @@ l0B3A:
 	word16 r0_29 = fn0B60(r0_3, r3_18, r4_19, wLoc02_8, DPB(wArg00, 0x02, 0), wArg02, wArg04, out r1_24, out r2_25, out r3_26, out r4_27, out r5_28)
 	word16 r4_30
 	word16 r5_31
-	fn0AE8(r0_29, r4_27, r5_28, wLoc02_8, out r4_30, out r5_31)
+	word16 r0_32 = fn0AE8(r0_29, r4_27, r5_28, wLoc02_8, out r4_30, out r5_31)
 	Mem34[r1_24 - 0x0002:word16] = r4_30
-	return r2_25
-// DataOut: pc r2 r4 r5 sp
+	word16 r1_33
+	*r1Out = r1_24 - 0x0002
+	return r0_32
+// DataOut: pc r0 r1 r2 r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 fn0B3A_exit:
-// DataOut: r2 r4 r5 sp
+// DataOut: r0 r1 r2 r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r3:<invalid> r1:<invalid> r4:<invalid> r5:<invalid> r2:<invalid> -1(fp):0x1F 0(fp):0x02
 

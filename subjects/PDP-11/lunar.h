@@ -7188,7 +7188,7 @@ T_1582: (in fn0B06(r3, r5_140, pc) : word16)
 T_1583: (in fn097C : ptr16)
   Class: Eq_1583
   DataType: (ptr Eq_1583)
-  OrigDataType: (ptr (fn T_1589 (T_1541, T_1588, T_1332)))
+  OrigDataType: (ptr (fn T_1589 (T_1559, T_1588, T_1332)))
 T_1584: (in signature of fn097C : void)
   Class: Eq_1583
   DataType: (ptr Eq_1583)
@@ -7205,23 +7205,23 @@ T_1587: (in pc : word16)
   Class: Eq_3
   DataType: word16
   OrigDataType: word16
-T_1588: (in 0x2258 : word16)
+T_1588: (in 0x2314 : word16)
   Class: Eq_1586
   DataType: word16
   OrigDataType: word16
-T_1589: (in fn097C(r0_98, 0x2258, pc) : void)
+T_1589: (in fn097C(r0_108, 0x2314, pc) : void)
   Class: Eq_1589
   DataType: void
   OrigDataType: void
 T_1590: (in fn097C : ptr16)
   Class: Eq_1583
   DataType: (ptr Eq_1583)
-  OrigDataType: (ptr (fn T_1592 (T_1559, T_1591, T_1332)))
-T_1591: (in 0x2314 : word16)
+  OrigDataType: (ptr (fn T_1592 (T_1541, T_1591, T_1332)))
+T_1591: (in 0x2258 : word16)
   Class: Eq_1586
   DataType: word16
   OrigDataType: word16
-T_1592: (in fn097C(r0_108, 0x2314, pc) : void)
+T_1592: (in fn097C(r0_98, 0x2258, pc) : void)
   Class: Eq_1589
   DataType: void
   OrigDataType: void

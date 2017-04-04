@@ -1369,12 +1369,10 @@ fn0FB2 proc
 	tst	0014(r3)
 	beq	0FCC
 
-;; fn0FCA: 0FCA
-fn0FCA proc
+l0FCA:
 	trap	#9A
 
-;; fn0FCC: 0FCC
-fn0FCC proc
+l0FCC:
 	mov	0002(sp),0014(r3)
 	mov	0006(sp),001C(r3)
 	mov	(sp)+,r3

@@ -117,16 +117,16 @@ word16 g_a0E30[] =
 	{
 	};
 byte g_b0E56 = 0x00;
-Eq_3549 g_a0EE6[] = 
+Eq_3516 g_a0EE6[] = 
 	{
 	};
-Eq_3548 g_a0EE9[] = 
+Eq_3515 g_a0EE9[] = 
 	{
 	};
 ci8 g_a0EEC[] = 
 	{
 	};
-Eq_3552 g_a0EF0[] = 
+Eq_3519 g_a0EF0[] = 
 	{
 	};
 byte g_a0EF3[] = 
@@ -150,7 +150,7 @@ ci16 g_w0F10 = 0x0000;
 word16 g_w0F12 = 0x0000;
 cu16 g_w0F14 = 0x0000;
 word16 g_w0F18 = 0x0000;
-struct Eq_1895 * g_ptr0F1A = null;
+struct Eq_1903 * g_ptr0F1A = null;
 ci16 g_w0F1E = 0x0000;
 word16 g_w0F20 = 0x0000;
 byte g_b0F24 = 0x00;

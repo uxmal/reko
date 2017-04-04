@@ -4,35 +4,65 @@
 
 #include "PP.h"
 
-void fn0800_0150(byte al)
+// 0800:0000: void fn0800_0000()
+void fn0800_0000()
 {
-	fn0800_01E6(al, 10004, 10004, Mem0[0x0800:0x025A:selector]);
-	return;
+fn0800_0000_entry:
+fn0800_0000_exit:
 }
 
+// 0800:0150: Register word16 fn0800_0150(Register byte al)
+word16 fn0800_0150(byte al)
+{
+	return fn0800_01E6(al, 10004, 10004, Mem0[0x0800:0x025A:selector]);
+}
+
+// 0800:0163: void fn0800_0163()
 void fn0800_0163()
 {
 	return;
 }
 
+// 0800:0164: void fn0800_0164(Register byte al, Stack byte bArg02)
 void fn0800_0164(byte al, byte bArg02)
 {
 	msdos_terminate(bArg02);
 }
 
-byte fn0800_01B9(selector ds, ptr16 & dlOut)
+// 0800:0176: void fn0800_0176(Register selector ds)
+void fn0800_0176(selector ds)
+{
+	word32 es_bx_7 = msdos_get_interrupt_vector(0x00);
+	Mem10[ds:0x5B:word16] = (word16) es_bx_7;
+	Mem11[ds:0x5D:word16] = SLICE(es_bx_7, selector, 16);
+	word32 es_bx_14 = msdos_get_interrupt_vector(0x04);
+	Mem17[ds:0x5F:word16] = (word16) es_bx_14;
+	Mem18[ds:0x61:word16] = SLICE(es_bx_14, selector, 16);
+	word32 es_bx_21 = msdos_get_interrupt_vector(0x05);
+	Mem24[ds:99:word16] = (word16) es_bx_21;
+	Mem25[ds:101:word16] = SLICE(es_bx_21, selector, 16);
+	word32 es_bx_28 = msdos_get_interrupt_vector(0x06);
+	Mem31[ds:0x67:word16] = (word16) es_bx_28;
+	Mem32[ds:0x69:word16] = SLICE(es_bx_28, selector, 16);
+	msdos_set_interrupt_vector(0x00, SEQ(cs, 0x016D));
+	return;
+}
+
+// 0800:01B9: Register word16 fn0800_01B9(Register selector ds, Register out ptr16 dxOut)
+word16 fn0800_01B9(selector ds, ptr16 & dxOut)
 {
 	msdos_set_interrupt_vector(0x00, Mem0[ds:0x5B:segptr32]);
 	msdos_set_interrupt_vector(0x04, Mem0[ds:0x5F:segptr32]);
 	msdos_set_interrupt_vector(0x05, Mem0[ds:99:segptr32]);
 	ptr32 ds_dx_29 = Mem0[ds:0x67:segptr32];
 	msdos_set_interrupt_vector(0x06, ds_dx_29);
-	byte dl_31;
-	*dlOut = (byte) ds_dx_29;
-	return 0x06;
+	word16 dx_30;
+	*dxOut = (word16) ds_dx_29;
+	return 0x2506;
 }
 
-void fn0800_01E6(byte al, word16 si, word16 di, selector es)
+// 0800:01E6: Register word16 fn0800_01E6(Register byte al, Register word16 si, Register word16 di, Register selector es)
+word16 fn0800_01E6(byte al, word16 si, word16 di, selector es)
 {
 	while (true)
 	{
@@ -98,167 +128,197 @@ void fn0800_01E6(byte al, word16 si, word16 di, selector es)
 			es = Mem78[ss_109:sp_98 + 0x00:selector];
 		}
 	}
+	return bx_34;
+}
+
+// 0800:023D: void fn0800_023D(Register byte al, Register word16 cx, Register word16 dx, Register selector ds)
+void fn0800_023D(byte al, word16 cx, word16 dx, selector ds)
+{
+	word16 ax_8;
+	msdos_write_file(0x02, cx, ds_dx, out ax_8);
 	return;
 }
 
-void main(word16 bp, selector ds)
+// 0800:024B: void fn0800_024B(Register byte al, Register word16 cx, Register word16 dx)
+void fn0800_024B(byte al, word16 cx, word16 dx)
 {
-main_entry:
-	Mem11[ds:0x2A27:word16] = 0x01
-	Mem13[ds:11853:word16] = 0x00
-	Mem14[ds:0x2A1F:word16] = 0x00
-	Mem15[ds:11855:word16] = 0x00
-	Mem16[ds:10781:word16] = 0x00
-	Mem17[ds:10775:word16] = 0x00
-	Mem18[ds:10779:word16] = 0x00
-	Mem19[ds:0x2A11:word16] = 0x00
-	Mem20[ds:0x2A0F:word16] = 0x00
-	Mem21[ds:0x2A0D:word16] = 0x00
-	Mem22[ds:0x2A0B:word16] = 0x3000
-	Mem23[ds:11825:word16] = 0x8000
-	Mem24[ds:0x2E2F:word16] = 0x1000
-	Mem25[ds:0x2A21:word16] = 0x01
-	Mem26[ds:10741:word16] = 0x00
-	Mem27[ds:0x29F3:word16] = 0x00
-	Mem28[ds:10737:word16] = 0x00
-	Mem29[ds:0x29EF:word16] = 0x00
-	Mem30[ds:10771:word16] = 0x00
-	Mem31[ds:0x2A23:word16] = 0x01
-	fn0800_2C9A(ds)
-	word16 di_42
-	word16 si_291 = fn0800_B2EF(ds, 2024, ds, out di_42)
-	selector ds_46
-	word16 bp_277 = fn0800_0402(fp - 0x02, si_291, ds, out ds_46)
-	selector ds_48
-	byte dl_49 = fn0800_0541(bp_277, ds_46, out ds_48)
-	Mem54[ss:fp - 0x0A + 0x00:word16] = 0x01
-	Mem57[ss:fp - 0x0C + 0x00:word16] = 0x01
-	fn0800_2DBF(ds_48, wArg00, wArg02)
-	Mem65[ss:fp - 0x0A + 0x00:word16] = 0x00
-	Mem67[ss:fp - 0x0C + 0x00:word16] = 0x00
-	word16 dx_280 = DPB(dx, dl_49, 0)
-	word16 di_70
-	byte dl_279
-	selector ds_278
-	word16 ax_72 = fn0800_9764(dl_49, ds_48, ptrArg00, wArg02, out dl_279, out di_70, out ds_278)
-	Mem75[ss:bp_277 - 0x02 + 0x00:word16] = dx_280
-	Mem76[ss:bp_277 - 0x04 + 0x00:word16] = ax_72
-	word16 bx_77 = Mem76[ds_278:0x2A25:word16]
-	branch bx_77 >u 0x08 l0800_0338
+fn0800_024B_entry:
+	selector ds_3 = Mem0[0x0800:0x025A:selector]
+	fn0800_023D(al, cx, dx, ds_3)
+	word16 bx_10
+	word16 si_11
+	selector ds_12
+	byte al_14 = (byte) fn0800_8B69(ds_3, 0x03, out bx_10, out si_11, out ds_12)
+	Mem16[ds_12:bx_10 + si_11:byte] = Mem0[ds_12:bx_10 + si_11:byte] + al_14
+	Mem22[ss:fp - 0x08 + 0x00:word16] = si_11
+	Mem24[ds_12:0x2A27:word16] = 0x01
+	Mem25[ds_12:11853:word16] = 0x00
+	Mem26[ds_12:0x2A1F:word16] = 0x00
+	Mem27[ds_12:11855:word16] = 0x00
+	Mem28[ds_12:10781:word16] = 0x00
+	Mem29[ds_12:10775:word16] = 0x00
+	Mem30[ds_12:10779:word16] = 0x00
+	Mem31[ds_12:0x2A11:word16] = 0x00
+	Mem32[ds_12:0x2A0F:word16] = 0x00
+	Mem33[ds_12:0x2A0D:word16] = 0x00
+	Mem34[ds_12:0x2A0B:word16] = 0x3000
+	Mem35[ds_12:11825:word16] = 0x8000
+	Mem36[ds_12:0x2E2F:word16] = 0x1000
+	Mem37[ds_12:0x2A21:word16] = 0x01
+	Mem38[ds_12:10741:word16] = 0x00
+	Mem39[ds_12:0x29F3:word16] = 0x00
+	Mem40[ds_12:10737:word16] = 0x00
+	Mem41[ds_12:0x29EF:word16] = 0x00
+	Mem42[ds_12:10771:word16] = 0x00
+	Mem43[ds_12:0x2A23:word16] = 0x01
+	fn0800_2C9A(ds_12)
+	Mem45[ss:fp - 0x0A + 0x00:word16] = ds_12
+	Mem48[ss:fp - 0x0C + 0x00:word16] = 0x94
+	Mem50[ss:fp - 0x0E + 0x00:word16] = ds_12
+	Mem53[ss:fp - 0x10 + 0x00:word16] = 2024
+	word16 di_56
+	word16 si_289 = fn0800_B2EF(ds_12, wArg00, wArg02, out di_56)
+	selector ds_60
+	word16 bp_288 = fn0800_0402(fp - 0x02, si_289, ds_12, out ds_60)
+	selector ds_62
+	byte dl_63 = fn0800_0541(bp_288, ds_60, out ds_62)
+	Mem67[ss:fp - 0x0A + 0x00:word16] = 0x01
+	Mem69[ss:fp - 0x0C + 0x00:word16] = 0x01
+	fn0800_2DBF(ds_62, wArg00, wArg02)
+	Mem75[ss:fp - 0x0A + 0x00:word16] = 0x00
+	Mem77[ss:fp - 0x0C + 0x00:word16] = 0x00
+	word16 dx_292 = DPB(dx, dl_63, 0)
+	word16 di_80
+	byte dl_291
+	selector ds_290
+	word16 ax_82 = fn0800_9764(dl_63, ds_62, ptrArg00, wArg02, out dl_291, out di_80, out ds_290)
+	Mem85[ss:bp_288 - 0x02 + 0x00:word16] = dx_292
+	Mem86[ss:bp_288 - 0x04 + 0x00:word16] = ax_82
+	word16 sp_306 = fp - 0x08
+	word16 bx_87 = Mem86[ds_290:0x2A25:word16]
+	branch bx_87 >u 0x08 l0800_0338
 	goto l0800_031A
-l0800_025E:
+l0800_024B:
 l0800_031A:
-	switch (bx_77 << 0x01) { l0800_0321 l0800_0330 l0800_0330 l0800_0326 l0800_0326 l0800_032B l0800_0335 l0800_0335 l0800_0335 }
+	switch (bx_87 << 0x01) { l0800_0321 l0800_0330 l0800_0330 l0800_0326 l0800_0326 l0800_032B l0800_0335 l0800_0335 l0800_0335 }
 l0800_0321:
-	dl_279 = fn0800_0DE8(bp_277, si_291, ds_278, out bp_277, out ds_278)
-	dx_280 = DPB(dx, dl_279, 0) (alias)
+	dl_291 = fn0800_0DE8(bp_288, si_289, ds_290, out bp_288, out si_289, out ds_290)
+	dx_292 = DPB(dx, dl_291, 0) (alias)
 	goto l0800_0338
 l0800_0326:
-	dl_279 = fn0800_12E2(bp_277, ds_278, out ds_278)
-	dx_280 = DPB(dx, dl_279, 0) (alias)
+	dl_291 = fn0800_12E2(bp_288, ds_290, out bp_288, out si_289, out ds_290)
+	dx_292 = DPB(dx, dl_291, 0) (alias)
+	sp_306 = fp - 0x06
 	goto l0800_0338
 l0800_032B:
-	dl_279 = fn0800_18D9(bp_277, ds_278, out si_291, out ds_278)
-	dx_280 = DPB(dx, dl_279, 0) (alias)
+	fn0800_18D9(bp_288, ds_290)
 	goto l0800_0338
 l0800_0330:
-	dl_279 = fn0800_112D(bp_277, si_291, ds_278, out bp_277, out ds_278)
-	dx_280 = DPB(dx, dl_279, 0) (alias)
+	dl_291 = fn0800_112D(bp_288, si_289, ds_290, out bp_288, out si_289, out ds_290)
+	dx_292 = DPB(dx, dl_291, 0) (alias)
 	goto l0800_0338
 l0800_0335:
-	dl_279 = fn0800_19EE(bp_277, ds_278, out ds_278)
-	dx_280 = DPB(dx, dl_279, 0) (alias)
+	fn0800_19EE(bp_288, ds_290)
 l0800_0338:
-	Mem89[ss:fp - 0x0A + 0x00:word16] = 0x00
-	Mem91[ss:fp - 0x0C + 0x00:word16] = 0x00
-	byte dl_92
-	word16 di_93
-	selector ds_94
-	word16 ax_97 = fn0800_9764(dl_279, ds_278, ptrArg00, wArg02, out dl_92, out di_93, out ds_94) - Mem91[ss:(bp_277 - 0x04) + 0x00:word16]
-	Mem102[ss:bp_277 - 0x02 + 0x00:word16] = dx_280 - Mem91[ss:(bp_277 - 0x02) + 0x00:word16] - (ax_97 <u 0x00)
-	Mem103[ss:bp_277 - 0x04 + 0x00:word16] = ax_97
-	Mem106[ss:fp - 0x0A + 0x00:word16] = Mem103[ds_94:10737:word16]
-	Mem109[ss:fp - 0x0C + 0x00:word16] = Mem106[ds_94:0x29EF:word16]
-	Mem112[ss:fp - 0x0E + 0x00:word16] = Mem109[ds_94:10741:word16]
-	Mem115[ss:fp - 0x10 + 0x00:word16] = Mem112[ds_94:0x29F3:word16]
-	word16 di_118
-	word16 ax_119 = fn0800_0B79(bp_277, si_291, di_93, wArg00, wArg02, wArg04, wArg06, out di_118)
-	Mem127[ss:fp - 0x0A + 0x00:word16] = 0x00
-	Mem129[ss:fp - 0x0C + 0x00:word16] = 0x3C
-	Mem132[ss:fp - 0x0E + 0x00:word16] = Mem129[ss:bp_277 - 0x02 + 0x00:word16]
-	Mem135[ss:fp - 0x10 + 0x00:word16] = Mem132[ss:bp_277 - 0x04 + 0x00:word16]
-	word16 dx_136
-	word16 bp_137
-	word16 si_138
-	word16 di_139
-	word16 ax_140 = fn0800_8BCA(bp_277, ax_119, di_118, bp, out dx_136, out bp_137, out si_138, out di_139)
-	Mem142[ss:fp - 0x12 + 0x00:word16] = dx_136
-	Mem144[ss:fp - 0x14 + 0x00:word16] = ax_140
-	Mem150[ss:fp - 22 + 0x00:word16] = 0x00
-	Mem152[ss:fp - 0x18 + 0x00:word16] = 0x3C
-	Mem155[ss:fp - 0x1A + 0x00:word16] = 0x00
-	Mem157[ss:fp - 0x1C + 0x00:word16] = 0x0E10
-	Mem160[ss:fp - 0x1E + 0x00:word16] = Mem157[ss:bp_137 - 0x02 + 0x00:word16]
-	Mem163[ss:fp - 0x20 + 0x00:word16] = Mem160[ss:bp_137 - 0x04 + 0x00:word16]
-	word16 dx_164
-	word16 bp_165
-	word16 si_166
-	word16 di_167
-	word16 ax_168 = fn0800_8BCA(bp_137, si_138, di_139, bp, out dx_164, out bp_165, out si_166, out di_167)
-	Mem170[ss:fp - 0x22 + 0x00:word16] = dx_164
-	Mem172[ss:fp - 0x24 + 0x00:word16] = ax_168
-	word16 dx_173
-	word16 bp_174
-	word16 si_175
-	word16 di_176
-	word16 ax_177 = fn0800_8BBB(bp_165, si_166, di_167, bp, out dx_173, out bp_174, out si_175, out di_176)
-	Mem179[ss:fp - 0x26 + 0x00:word16] = dx_173
-	Mem181[ss:fp - 0x28 + 0x00:word16] = ax_177
-	Mem187[ss:fp - 0x2A + 0x00:word16] = 0x00
-	Mem189[ss:fp - 44 + 0x00:word16] = 0x0E10
-	Mem192[ss:fp - 0x2E + 0x00:word16] = 0x00
-	Mem194[ss:fp - 0x30 + 0x00:word16] = 0x5180
-	Mem197[ss:fp - 0x32 + 0x00:word16] = Mem194[ss:bp_174 - 0x02 + 0x00:word16]
-	Mem200[ss:fp - 0x34 + 0x00:word16] = Mem197[ss:bp_174 - 0x04 + 0x00:word16]
-	word16 dx_201
-	word16 bp_202
-	word16 si_203
-	word16 di_204
-	word16 ax_205 = fn0800_8BCA(bp_174, si_175, di_176, bp, out dx_201, out bp_202, out si_203, out di_204)
-	Mem207[ss:fp - 0x36 + 0x00:word16] = dx_201
-	Mem209[ss:fp - 0x38 + 0x00:word16] = ax_205
-	word16 dx_210
-	word16 bp_211
-	word16 si_212
-	word16 di_213
-	word16 ax_214 = fn0800_8BBB(bp_202, si_203, di_204, bp, out dx_210, out bp_211, out si_212, out di_213)
-	Mem216[ss:fp - 0x3A + 0x00:word16] = dx_210
-	Mem218[ss:fp - 0x3C + 0x00:word16] = ax_214
-	Mem227[ss:fp - 0x3E + 0x00:word16] = (uint16) ((uint32) (uint16) si_212 % 100)
-	Mem236[ss:fp - 0x40 + 0x00:word16] = (uint16) ((uint32) (uint16) si_212 /u 100)
-	Mem239[ss:fp - 66 + 0x00:word16] = Mem236[ds_94:10737:word16]
-	Mem242[ss:fp - 0x44 + 0x00:word16] = Mem239[ds_94:0x29EF:word16]
-	Mem245[ss:fp - 0x46 + 0x00:word16] = Mem242[ds_94:10741:word16]
-	Mem248[ss:fp - 0x48 + 0x00:word16] = Mem245[ds_94:0x29F3:word16]
-	Mem250[ss:fp - 0x4A + 0x00:word16] = ds_94
-	Mem253[ss:fp - 0x4C + 0x00:word16] = 1500
-	Mem256[ss:fp - 0x4E + 0x00:word16] = 0x08
-	Mem259[ss:fp - 0x50 + 0x00:word16] = Mem256[ds_94:10771:word16]
-	Mem261[ss:fp - 0x52 + 0x00:word16] = ds_94
-	Mem264[ss:fp - 0x54 + 0x00:word16] = 2027
-	word16 di_265
-	fn0800_B2EF(ds_94, wArg00, wArg02, out di_265)
+	word16 sp_99 = sp_306 - 0x02
+	Mem100[ss:sp_99 + 0x00:word16] = 0x00
+	Mem102[ss:sp_99 - 0x02 + 0x00:word16] = 0x00
+	byte dl_103
+	word16 di_104
+	selector ds_105
+	word16 ax_108 = fn0800_9764(dl_291, ds_290, ptrArg00, wArg02, out dl_103, out di_104, out ds_105) - Mem102[ss:(bp_288 - 0x04) + 0x00:word16]
+	Mem113[ss:bp_288 - 0x02 + 0x00:word16] = dx_292 - Mem102[ss:(bp_288 - 0x02) + 0x00:word16] - (ax_108 <u 0x00)
+	Mem114[ss:bp_288 - 0x04 + 0x00:word16] = ax_108
+	Mem117[ss:sp_99 + 0x00:word16] = Mem114[ds_105:10737:word16]
+	Mem120[ss:sp_99 - 0x02 + 0x00:word16] = Mem117[ds_105:0x29EF:word16]
+	Mem123[ss:sp_99 - 0x04 + 0x00:word16] = Mem120[ds_105:10741:word16]
+	Mem126[ss:sp_99 - 0x06 + 0x00:word16] = Mem123[ds_105:0x29F3:word16]
+	word16 di_129
+	word16 ax_130 = fn0800_0B79(bp_288, si_289, di_104, wArg00, wArg02, wArg04, wArg06, out di_129)
+	Mem138[ss:sp_99 + 0x00:word16] = 0x00
+	Mem140[ss:sp_99 - 0x02 + 0x00:word16] = 0x3C
+	Mem143[ss:sp_99 - 0x04 + 0x00:word16] = Mem140[ss:bp_288 - 0x02 + 0x00:word16]
+	Mem146[ss:sp_99 - 0x06 + 0x00:word16] = Mem143[ss:bp_288 - 0x04 + 0x00:word16]
+	word16 dx_147
+	word16 bp_148
+	word16 si_149
+	word16 di_150
+	word16 ax_151 = fn0800_8BCA(bp_288, ax_130, di_129, 0x03, out dx_147, out bp_148, out si_149, out di_150)
+	Mem153[ss:sp_99 - 0x08 + 0x00:word16] = dx_147
+	Mem155[ss:sp_99 - 0x0A + 0x00:word16] = ax_151
+	Mem161[ss:sp_99 - 0x0C + 0x00:word16] = 0x00
+	Mem163[ss:sp_99 - 0x0E + 0x00:word16] = 0x3C
+	Mem166[ss:sp_99 - 0x10 + 0x00:word16] = 0x00
+	Mem168[ss:sp_99 - 0x12 + 0x00:word16] = 0x0E10
+	Mem171[ss:sp_99 - 0x14 + 0x00:word16] = Mem168[ss:bp_148 - 0x02 + 0x00:word16]
+	Mem174[ss:sp_99 - 22 + 0x00:word16] = Mem171[ss:bp_148 - 0x04 + 0x00:word16]
+	word16 dx_175
+	word16 bp_176
+	word16 si_177
+	word16 di_178
+	word16 ax_179 = fn0800_8BCA(bp_148, si_149, di_150, 0x03, out dx_175, out bp_176, out si_177, out di_178)
+	Mem181[ss:sp_99 - 0x18 + 0x00:word16] = dx_175
+	Mem183[ss:sp_99 - 0x1A + 0x00:word16] = ax_179
+	word16 dx_184
+	word16 bp_185
+	word16 si_186
+	word16 di_187
+	word16 ax_188 = fn0800_8BBB(bp_176, si_177, di_178, 0x03, out dx_184, out bp_185, out si_186, out di_187)
+	Mem190[ss:sp_99 - 0x1C + 0x00:word16] = dx_184
+	Mem192[ss:sp_99 - 0x1E + 0x00:word16] = ax_188
+	Mem198[ss:sp_99 - 0x20 + 0x00:word16] = 0x00
+	Mem200[ss:sp_99 - 0x22 + 0x00:word16] = 0x0E10
+	Mem203[ss:sp_99 - 0x24 + 0x00:word16] = 0x00
+	Mem205[ss:sp_99 - 0x26 + 0x00:word16] = 0x5180
+	Mem208[ss:sp_99 - 0x28 + 0x00:word16] = Mem205[ss:bp_185 - 0x02 + 0x00:word16]
+	Mem211[ss:sp_99 - 0x2A + 0x00:word16] = Mem208[ss:bp_185 - 0x04 + 0x00:word16]
+	word16 dx_212
+	word16 bp_213
+	word16 si_214
+	word16 di_215
+	word16 ax_216 = fn0800_8BCA(bp_185, si_186, di_187, 0x03, out dx_212, out bp_213, out si_214, out di_215)
+	Mem218[ss:sp_99 - 44 + 0x00:word16] = dx_212
+	Mem220[ss:sp_99 - 0x2E + 0x00:word16] = ax_216
+	word16 dx_221
+	word16 bp_222
+	word16 si_223
+	word16 di_224
+	word16 ax_225 = fn0800_8BBB(bp_213, si_214, di_215, 0x03, out dx_221, out bp_222, out si_223, out di_224)
+	Mem227[ss:sp_99 - 0x30 + 0x00:word16] = dx_221
+	Mem229[ss:sp_99 - 0x32 + 0x00:word16] = ax_225
+	Mem238[ss:sp_99 - 0x34 + 0x00:word16] = (uint16) ((uint32) (uint16) si_223 % 100)
+	Mem247[ss:sp_99 - 0x36 + 0x00:word16] = (uint16) ((uint32) (uint16) si_223 /u 100)
+	Mem250[ss:sp_99 - 0x38 + 0x00:word16] = Mem247[ds_105:10737:word16]
+	Mem253[ss:sp_99 - 0x3A + 0x00:word16] = Mem250[ds_105:0x29EF:word16]
+	Mem256[ss:sp_99 - 0x3C + 0x00:word16] = Mem253[ds_105:10741:word16]
+	Mem259[ss:sp_99 - 0x3E + 0x00:word16] = Mem256[ds_105:0x29F3:word16]
+	Mem261[ss:sp_99 - 0x40 + 0x00:word16] = ds_105
+	Mem264[ss:sp_99 - 66 + 0x00:word16] = 1500
+	Mem267[ss:sp_99 - 0x44 + 0x00:word16] = 0x08
+	Mem270[ss:sp_99 - 0x46 + 0x00:word16] = Mem267[ds_105:10771:word16]
+	Mem272[ss:sp_99 - 0x48 + 0x00:word16] = ds_105
+	Mem275[ss:sp_99 - 0x4A + 0x00:word16] = 2027
+	word16 di_276
+	fn0800_B2EF(ds_105, wArg00, wArg02, out di_276)
 	return
-main_exit:
+fn0800_024B_exit:
 }
 
+// 0800:025E: void main()
+void main()
+{
+fn0800_025E_entry:
+fn0800_025E_exit:
+}
+
+// 0800:0402: Register word16 fn0800_0402(Register word16 bp, Register word16 si, Register selector ds, Register out ptr16 dsOut)
 word16 fn0800_0402(word16 bp, word16 si, selector ds, ptr16 & dsOut)
 {
 	*dsOut = ds;
 	if (Mem0[ds:0x2A27:word16] == Mem0[ds:9882:word16])
 	{
-		word16 si_374;
-		bp = fn0800_0DCE(ds, out si_374, out ds);
+		word16 si_376;
+		bp = fn0800_0DCE(ds, out si_376, out ds);
 	}
 	ptr32 es_bx_20 = Mem0[ds:9884:segptr32];
 	selector es_22 = SLICE(es_bx_20, selector, 16);
@@ -267,134 +327,135 @@ word16 fn0800_0402(word16 bp, word16 si, selector ds, ptr16 & dsOut)
 	Mem31[ss:fp - 0x08 + 0x00:word16] = Mem27[es_22:bx_23 + 0x00:word16];
 	if (fn0800_BFC7(ptrArg00, wArg02) >u 0x01)
 	{
-		ptr32 es_bx_354 = Mem31[ds:9884:segptr32];
-		selector es_356 = SLICE(es_bx_354, selector, 16);
-		word16 bx_357 = (word16) es_bx_354 + (Mem31[ds:0x2A27:word16] << 0x02);
-		Mem361[ss:fp - 0x06 + 0x00:word16] = Mem31[es_356:bx_357 + 0x02:word16];
-		Mem364[ss:fp - 0x08 + 0x00:word16] = Mem361[es_356:bx_357 + 0x00:word16];
-		Mem367[ss:fp - 0x0A + 0x00:word16] = 0x01;
-		word16 si_368;
-		word16 di_369;
-		fn0800_0D24(bp, ds, out si_368, out di_369, out ds);
+		ptr32 es_bx_356 = Mem31[ds:9884:segptr32];
+		selector es_358 = SLICE(es_bx_356, selector, 16);
+		word16 bx_359 = (word16) es_bx_356 + (Mem31[ds:0x2A27:word16] << 0x02);
+		Mem363[ss:fp - 0x06 + 0x00:word16] = Mem31[es_358:bx_359 + 0x02:word16];
+		Mem366[ss:fp - 0x08 + 0x00:word16] = Mem363[es_358:bx_359 + 0x00:word16];
+		Mem369[ss:fp - 0x0A + 0x00:word16] = 0x01;
+		word16 si_370;
+		word16 di_371;
+		fn0800_0D24(bp, ds, out si_370, out di_371, out ds);
 	}
-	word16 ax_42 = Mem31[ds:0x2A27:word16];
-	Mem55[ss:fp - 0x06 + 0x00:word16] = DPB(ax_42 << 0x02, Mem31[SEQ(ds, (word16) Mem31[ds:9884:segptr32])[ax_42 * 0x04] + 0x00:byte], 0);
-	Mem57[ss:fp - 0x08 + 0x00:word16] = ds;
-	Mem60[ss:fp - 0x0A + 0x00:word16] = 0x0829;
-	byte dl_63;
-	word16 ax_64 = fn0800_0C29(ds, wArg00, wArg02, bArg04, out dl_63);
-	Mem66[ds:0x2A25:word16] = ax_64;
-	if (ax_64 >= 0x09)
+	word16 ax_44 = Mem31[ds:0x2A27:word16];
+	Mem57[ss:fp - 0x06 + 0x00:word16] = DPB(ax_44 << 0x02, Mem31[SEQ(ds, (word16) Mem31[ds:9884:segptr32])[ax_44 * 0x04] + 0x00:byte], 0);
+	Mem59[ss:fp - 0x08 + 0x00:word16] = ds;
+	Mem62[ss:fp - 0x0A + 0x00:word16] = 0x0829;
+	byte dl_65;
+	word16 ax_66 = fn0800_0C29(ds, wArg00, wArg02, bArg04, out dl_65);
+	Mem68[ds:0x2A25:word16] = ax_66;
+	if (ax_66 >= 0x09)
 	{
-		ptr32 es_bx_331 = Mem66[ds:9884:segptr32];
-		selector es_333 = SLICE(es_bx_331, selector, 16);
-		word16 bx_334 = (word16) es_bx_331 + (Mem66[ds:0x2A27:word16] << 0x02);
-		Mem338[ss:fp - 0x06 + 0x00:word16] = Mem66[es_333:bx_334 + 0x02:word16];
-		Mem341[ss:fp - 0x08 + 0x00:word16] = Mem338[es_333:bx_334 + 0x00:word16];
-		Mem344[ss:fp - 0x0A + 0x00:word16] = 0x01;
-		word16 si_345;
-		word16 di_346;
-		fn0800_0D24(bp, ds, out si_345, out di_346, out ds);
+		ptr32 es_bx_333 = Mem68[ds:9884:segptr32];
+		selector es_335 = SLICE(es_bx_333, selector, 16);
+		word16 bx_336 = (word16) es_bx_333 + (Mem68[ds:0x2A27:word16] << 0x02);
+		Mem340[ss:fp - 0x06 + 0x00:word16] = Mem68[es_335:bx_336 + 0x02:word16];
+		Mem343[ss:fp - 0x08 + 0x00:word16] = Mem340[es_335:bx_336 + 0x00:word16];
+		Mem346[ss:fp - 0x0A + 0x00:word16] = 0x01;
+		word16 si_347;
+		word16 di_348;
+		fn0800_0D24(bp, ds, out si_347, out di_348, out ds);
 	}
-	Mem79[ds:0x2A27:word16] = Mem66[ds:0x2A27:word16] + 0x01;
-	if (Mem79[ds:0x2A25:word16] > 0x02)
+	Mem81[ds:0x2A27:word16] = Mem68[ds:0x2A27:word16] + 0x01;
+	if (Mem81[ds:0x2A25:word16] > 0x02)
 	{
-		if (Mem79[ds:0x2A27:word16] == Mem79[ds:9882:word16])
+		if (Mem81[ds:0x2A27:word16] == Mem81[ds:9882:word16])
 		{
-			word16 si_325;
-			bp = fn0800_0DCE(ds, out si_325, out ds);
+			word16 si_327;
+			bp = fn0800_0DCE(ds, out si_327, out ds);
 		}
-		word16 ax_113 = Mem79[ds:0x2A27:word16];
-		Mem115[ds:0x2A27:word16] = Mem79[ds:0x2A27:word16] + 0x01;
-		ptr32 es_bx_118 = Mem115[ds:9884:segptr32];
-		selector es_120 = SLICE(es_bx_118, selector, 16);
-		word16 bx_121 = (word16) es_bx_118 + (ax_113 << 0x02);
-		Mem125[ss:fp - 0x06 + 0x00:word16] = Mem115[es_120:bx_121 + 0x02:word16];
-		Mem128[ss:fp - 0x08 + 0x00:word16] = Mem125[es_120:bx_121 + 0x00:word16];
-		Mem130[ss:fp - 0x0A + 0x00:word16] = ds;
-		Mem133[ss:fp - 0x0C + 0x00:word16] = 0x4348;
+		word16 ax_115 = Mem81[ds:0x2A27:word16];
+		Mem117[ds:0x2A27:word16] = Mem81[ds:0x2A27:word16] + 0x01;
+		ptr32 es_bx_120 = Mem117[ds:9884:segptr32];
+		selector es_122 = SLICE(es_bx_120, selector, 16);
+		word16 bx_123 = (word16) es_bx_120 + (ax_115 << 0x02);
+		Mem127[ss:fp - 0x06 + 0x00:word16] = Mem117[es_122:bx_123 + 0x02:word16];
+		Mem130[ss:fp - 0x08 + 0x00:word16] = Mem127[es_122:bx_123 + 0x00:word16];
+		Mem132[ss:fp - 0x0A + 0x00:word16] = ds;
+		Mem135[ss:fp - 0x0C + 0x00:word16] = 0x4348;
 		fn0800_BF9E(ptrArg00, wArg02, ptrArg04);
-		Mem138[ss:fp - 0x06 + 0x00:word16] = ds;
-		Mem141[ss:fp - 0x08 + 0x00:word16] = 0x4348;
+		Mem140[ss:fp - 0x06 + 0x00:word16] = ds;
+		Mem143[ss:fp - 0x08 + 0x00:word16] = 0x4348;
 		fn0800_0C6C(ds, ptrArg00);
-		Mem145[ss:fp - 0x06 + 0x00:word16] = ds;
-		selector es_146 = Mem145[ss:fp - 0x06 + 0x00:selector];
-		word16 di_149 = 0x4348;
-		word16 cx_154 = ~0x00;
-		if (cx_154 != 0x00)
+		Mem147[ss:fp - 0x06 + 0x00:word16] = ds;
+		selector es_148 = Mem147[ss:fp - 0x06 + 0x00:selector];
+		word16 di_151 = 0x4348;
+		word16 cx_156 = ~0x00;
+		if (cx_156 != 0x00)
 		{
-			di_149 = di_149 + 0x01;
-			cx_154 = cx_154 - 0x01;
-			if (0x00 != Mem145[es_146:di_149 + 0x00:byte])
+			di_151 = di_151 + 0x01;
+			cx_156 = cx_156 - 0x01;
+			if (0x00 != Mem147[es_148:di_151 + 0x00:byte])
 				goto l0800_04E4;
 		}
-		word16 di_163 = di_149 - 0x01;
-		word16 cx_161 = ~cx_154;
-		byte Z_168 = cond(di_163);
-		if (cx_161 != 0x00)
+		word16 di_165 = di_151 - 0x01;
+		word16 cx_163 = ~cx_156;
+		byte Z_170 = cond(di_165);
+		if (cx_163 != 0x00)
 		{
-			Z_168 = cond(0x2E - Mem145[es_146:di_163 + 0x00:byte]);
-			di_163 = di_163 - 0x01;
-			cx_161 = cx_161 - 0x01;
-			if (0x2E != Mem145[es_146:di_163 + 0x00:byte])
+			Z_170 = cond(0x2E - Mem147[es_148:di_165 + 0x00:byte]);
+			di_165 = di_165 - 0x01;
+			cx_163 = cx_163 - 0x01;
+			if (0x2E != Mem147[es_148:di_165 + 0x00:byte])
 				goto l0800_04ED;
 		}
-		if (!Z_168)
-			di_163 = ~0x00;
-		Mem192[ss:fp - 0x06 + 0x00:word16] = ds;
-		selector es_193 = Mem192[ss:fp - 0x06 + 0x00:selector];
-		Mem197[ss:fp - 0x06 + 0x00:word16] = di_163 + 0x01;
-		word16 di_198 = 0x4348;
-		word16 cx_203 = ~0x00;
-		if (cx_203 != 0x00)
+		if (!Z_170)
+			di_165 = ~0x00;
+		Mem194[ss:fp - 0x06 + 0x00:word16] = ds;
+		selector es_195 = Mem194[ss:fp - 0x06 + 0x00:selector];
+		Mem199[ss:fp - 0x06 + 0x00:word16] = di_165 + 0x01;
+		word16 di_200 = 0x4348;
+		word16 cx_205 = ~0x00;
+		if (cx_205 != 0x00)
 		{
-			di_198 = di_198 + 0x01;
-			cx_203 = cx_203 - 0x01;
-			if (0x00 != Mem197[es_193:di_198 + 0x00:byte])
+			di_200 = di_200 + 0x01;
+			cx_205 = cx_205 - 0x01;
+			if (0x00 != Mem199[es_195:di_200 + 0x00:byte])
 				goto l0800_0507;
 		}
-		word16 cx_210 = ~cx_203;
-		word16 di_212 = di_198 - cx_210;
-		byte Z_214 = cond(di_212);
-		if (cx_210 != 0x00)
+		word16 cx_212 = ~cx_205;
+		word16 di_214 = di_200 - cx_212;
+		byte Z_216 = cond(di_214);
+		if (cx_212 != 0x00)
 		{
-			Z_214 = cond(0x5C - Mem197[es_193:di_212 + 0x00:byte]);
-			di_212 = di_212 + 0x01;
-			cx_210 = cx_210 - 0x01;
-			if (0x5C != Mem197[es_193:di_212 + 0x00:byte])
+			Z_216 = cond(0x5C - Mem199[es_195:di_214 + 0x00:byte]);
+			di_214 = di_214 + 0x01;
+			cx_212 = cx_212 - 0x01;
+			if (0x5C != Mem199[es_195:di_214 + 0x00:byte])
 				goto l0800_0510;
 		}
-		if (!Z_214)
-			di_212 = 0x01;
-		if (Mem197[ss:fp - 0x06 + 0x00:word16] <=u di_212 - 0x01)
+		if (!Z_216)
+			di_214 = 0x01;
+		if (Mem199[ss:fp - 0x06 + 0x00:word16] <=u di_214 - 0x01)
 		{
-			Mem258[ss:fp - 0x06 + 0x00:word16] = ds;
-			selector es_259 = Mem258[ss:fp - 0x06 + 0x00:selector];
-			word16 di_262 = 0x4348;
-			word16 si_263 = 0x0833;
-			word16 cx_264 = ~0x00;
-			if (cx_264 != 0x00)
+			Mem260[ss:fp - 0x06 + 0x00:word16] = ds;
+			selector es_261 = Mem260[ss:fp - 0x06 + 0x00:selector];
+			word16 di_264 = 0x4348;
+			word16 si_265 = 0x0833;
+			word16 cx_266 = ~0x00;
+			if (cx_266 != 0x00)
 			{
-				di_262 = di_262 + 0x01;
-				cx_264 = cx_264 - 0x01;
-				if (0x00 != Mem258[es_259:di_262 + 0x00:byte])
+				di_264 = di_264 + 0x01;
+				cx_266 = cx_266 - 0x01;
+				if (0x00 != Mem260[es_261:di_264 + 0x00:byte])
 					goto l0800_0530;
 			}
-			word16 di_276 = di_262 - 0x01;
-			word16 cx_278 = 0x05;
-			while (cx_278 != 0x00)
+			word16 di_278 = di_264 - 0x01;
+			word16 cx_280 = 0x05;
+			while (cx_280 != 0x00)
 			{
-				Mem283[es_259:di_276 + 0x00:byte] = Mem258[ds:si_263 + 0x00:byte];
-				si_263 = si_263 + 0x01;
-				di_276 = di_276 + 0x01;
-				cx_278 = cx_278 - 0x01;
+				Mem285[es_261:di_278 + 0x00:byte] = Mem260[ds:si_265 + 0x00:byte];
+				si_265 = si_265 + 0x01;
+				di_278 = di_278 + 0x01;
+				cx_280 = cx_280 - 0x01;
 			}
 		}
-		Mem256[ds:10777:word16] = 0x01;
+		Mem258[ds:10777:word16] = 0x01;
 	}
 	return bp;
 }
 
+// 0800:0541: Register byte fn0800_0541(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
 byte fn0800_0541(word16 bp, selector ds, ptr16 & dsOut)
 {
 fn0800_0541_entry:
@@ -428,7 +489,7 @@ l0800_05B1:
 	Mem289[ss:fp - 0x0E + 0x00:word16] = Mem286[es_281:bx_282 + 0x00:word16]
 	Mem292[ss:fp - 0x10 + 0x00:word16] = 0x02
 	word16 di_294
-	dl = fn0800_0D24(bp_159, ds, out si_133, out di_294, out ds)
+	dl = (byte) fn0800_0D24(bp_159, ds, out si_133, out di_294, out ds) (alias)
 l0800_05CF:
 	branch si_133 < 0x06 l0800_05D7
 	goto l0800_0659
@@ -468,7 +529,7 @@ l0800_064A:
 	Mem227[ss:fp - 0x0E + 0x00:word16] = 1500
 	Mem230[ss:fp - 0x10 + 0x00:word16] = 0x02
 	word16 di_232
-	dl = fn0800_0D24(bp_159, ds, out si_133, out di_232, out ds)
+	dl = (byte) fn0800_0D24(bp_159, ds, out si_133, out di_232, out ds) (alias)
 l0800_0659:
 	branch si_133 <=u 0x0A l0800_0663
 l0800_0660:
@@ -513,118 +574,118 @@ l0800_08A7:
 	branch ax_311 == 0x02 l0800_08D9
 	goto l0800_0902
 l0800_08AE:
-	Mem521[ss:fp - 0x0C + 0x00:word16] = ds
-	selector es_522 = Mem521[ss:fp - 0x0C + 0x00:selector]
-	word16 di_525 = 17009
-	word16 si_526 = 0x085B
-	word16 cx_527 = ~0x00
+	Mem518[ss:fp - 0x0C + 0x00:word16] = ds
+	selector es_519 = Mem518[ss:fp - 0x0C + 0x00:selector]
+	word16 di_522 = 17009
+	word16 si_523 = 0x085B
+	word16 cx_524 = ~0x00
 l0800_08BB:
-	branch cx_527 == 0x00 l0800_08BD
+	branch cx_524 == 0x00 l0800_08BD
 l0800_08BB_1:
-	di_525 = di_525 + 0x01
-	cx_527 = cx_527 - 0x01
-	branch 0x00 != Mem521[es_522:di_525 + 0x00:byte] l0800_08BB
+	di_522 = di_522 + 0x01
+	cx_524 = cx_524 - 0x01
+	branch 0x00 != Mem518[es_519:di_522 + 0x00:byte] l0800_08BB
 l0800_08BD:
-	word16 di_539 = di_525 - 0x01
-	word16 cx_541 = 0x02
+	word16 di_536 = di_522 - 0x01
+	word16 cx_538 = 0x02
 l0800_08C1:
-	branch cx_541 == 0x00 l0800_08C3
+	branch cx_538 == 0x00 l0800_08C3
 l0800_08C1_2:
-	Mem546[es_522:di_539 + 0x00:byte] = Mem521[ds:si_526 + 0x00:byte]
-	si_526 = si_526 + 0x01
-	di_539 = di_539 + 0x01
-	cx_541 = cx_541 - 0x01
+	Mem543[es_519:di_536 + 0x00:byte] = Mem518[ds:si_523 + 0x00:byte]
+	si_523 = si_523 + 0x01
+	di_536 = di_536 + 0x01
+	cx_538 = cx_538 - 0x01
 	goto l0800_08C1
 l0800_08C3:
-	branch Mem521[ds:11825:word16] <=u 0x8000 l0800_08D1
+	branch Mem518[ds:11825:word16] <=u 0x8000 l0800_08D1
 l0800_08CB:
-	Mem553[ds:11825:word16] = 0x8000
+	Mem550[ds:11825:word16] = 0x8000
 l0800_08D1:
-	Mem552[ds:0x2E2F:word16] = 0x1000
+	Mem549[ds:0x2E2F:word16] = 0x1000
 	goto l0800_0902
 l0800_08D9:
-	Mem483[ss:fp - 0x0C + 0x00:word16] = ds
-	selector es_484 = Mem483[ss:fp - 0x0C + 0x00:selector]
-	word16 di_487 = 17009
-	word16 si_488 = 2141
-	word16 cx_489 = ~0x00
+	Mem480[ss:fp - 0x0C + 0x00:word16] = ds
+	selector es_481 = Mem480[ss:fp - 0x0C + 0x00:selector]
+	word16 di_484 = 17009
+	word16 si_485 = 2141
+	word16 cx_486 = ~0x00
 l0800_08E6:
-	branch cx_489 == 0x00 l0800_08E8
+	branch cx_486 == 0x00 l0800_08E8
 l0800_08E6_1:
-	di_487 = di_487 + 0x01
-	cx_489 = cx_489 - 0x01
-	branch 0x00 != Mem483[es_484:di_487 + 0x00:byte] l0800_08E6
+	di_484 = di_484 + 0x01
+	cx_486 = cx_486 - 0x01
+	branch 0x00 != Mem480[es_481:di_484 + 0x00:byte] l0800_08E6
 l0800_08E8:
-	word16 di_501 = di_487 - 0x01
-	word16 cx_503 = 0x02
+	word16 di_498 = di_484 - 0x01
+	word16 cx_500 = 0x02
 l0800_08EC:
-	branch cx_503 == 0x00 l0800_08EE
+	branch cx_500 == 0x00 l0800_08EE
 l0800_08EC_2:
-	Mem508[es_484:di_501 + 0x00:byte] = Mem483[ds:si_488 + 0x00:byte]
-	si_488 = si_488 + 0x01
-	di_501 = di_501 + 0x01
-	cx_503 = cx_503 - 0x01
+	Mem505[es_481:di_498 + 0x00:byte] = Mem480[ds:si_485 + 0x00:byte]
+	si_485 = si_485 + 0x01
+	di_498 = di_498 + 0x01
+	cx_500 = cx_500 - 0x01
 	goto l0800_08EC
 l0800_08EE:
-	branch Mem483[ds:11825:word16] <=u 0x1000 l0800_08FC
+	branch Mem480[ds:11825:word16] <=u 0x1000 l0800_08FC
 l0800_08F6:
-	Mem515[ds:11825:word16] = 0x1000
+	Mem512[ds:11825:word16] = 0x1000
 l0800_08FC:
-	Mem514[ds:0x2E2F:word16] = 0xFF
+	Mem511[ds:0x2E2F:word16] = 0xFF
 l0800_0902:
 	branch Mem0[ds:0x2A23:word16] != 0x02 l0800_0911
 l0800_0909:
-	Mem478[ds:10781:word16] = 0x00
-	Mem479[ds:11855:word16] = 0x00
+	Mem475[ds:10781:word16] = 0x00
+	Mem476[ds:11855:word16] = 0x00
 l0800_0911:
 	branch Mem0[ds:11855:word16] == 0x00 l0800_092D
 l0800_0918:
-	Mem442[ss:fp - 0x0C + 0x00:word16] = ds
-	selector es_443 = Mem442[ss:fp - 0x0C + 0x00:selector]
-	word16 di_446 = 17009
-	word16 si_447 = 1619
-	word16 cx_448 = ~0x00
+	Mem439[ss:fp - 0x0C + 0x00:word16] = ds
+	selector es_440 = Mem439[ss:fp - 0x0C + 0x00:selector]
+	word16 di_443 = 17009
+	word16 si_444 = 1619
+	word16 cx_445 = ~0x00
 l0800_0925:
-	branch cx_448 == 0x00 l0800_0927
+	branch cx_445 == 0x00 l0800_0927
 l0800_0925_1:
-	di_446 = di_446 + 0x01
-	cx_448 = cx_448 - 0x01
-	branch 0x00 != Mem442[es_443:di_446 + 0x00:byte] l0800_0925
+	di_443 = di_443 + 0x01
+	cx_445 = cx_445 - 0x01
+	branch 0x00 != Mem439[es_440:di_443 + 0x00:byte] l0800_0925
 l0800_0927:
-	word16 di_460 = di_446 - 0x01
-	word16 cx_462 = 0x02
+	word16 di_457 = di_443 - 0x01
+	word16 cx_459 = 0x02
 l0800_092B:
-	branch cx_462 == 0x00 l0800_092D
+	branch cx_459 == 0x00 l0800_092D
 l0800_092B_2:
-	Mem467[es_443:di_460 + 0x00:byte] = Mem442[ds:si_447 + 0x00:byte]
-	si_447 = si_447 + 0x01
-	di_460 = di_460 + 0x01
-	cx_462 = cx_462 - 0x01
+	Mem464[es_440:di_457 + 0x00:byte] = Mem439[ds:si_444 + 0x00:byte]
+	si_444 = si_444 + 0x01
+	di_457 = di_457 + 0x01
+	cx_459 = cx_459 - 0x01
 	goto l0800_092B
 l0800_092D:
 	branch Mem0[ds:10781:word16] == 0x00 l0800_0949
 l0800_0934:
-	Mem408[ss:fp - 0x0C + 0x00:word16] = ds
-	selector es_409 = Mem408[ss:fp - 0x0C + 0x00:selector]
-	word16 di_412 = 17009
-	word16 si_413 = 0x085F
-	word16 cx_414 = ~0x00
+	Mem405[ss:fp - 0x0C + 0x00:word16] = ds
+	selector es_406 = Mem405[ss:fp - 0x0C + 0x00:selector]
+	word16 di_409 = 17009
+	word16 si_410 = 0x085F
+	word16 cx_411 = ~0x00
 l0800_0941:
-	branch cx_414 == 0x00 l0800_0943
+	branch cx_411 == 0x00 l0800_0943
 l0800_0941_1:
-	di_412 = di_412 + 0x01
-	cx_414 = cx_414 - 0x01
-	branch 0x00 != Mem408[es_409:di_412 + 0x00:byte] l0800_0941
+	di_409 = di_409 + 0x01
+	cx_411 = cx_411 - 0x01
+	branch 0x00 != Mem405[es_406:di_409 + 0x00:byte] l0800_0941
 l0800_0943:
-	word16 di_426 = di_412 - 0x01
-	word16 cx_428 = 0x02
+	word16 di_423 = di_409 - 0x01
+	word16 cx_425 = 0x02
 l0800_0947:
-	branch cx_428 == 0x00 l0800_0949
+	branch cx_425 == 0x00 l0800_0949
 l0800_0947_2:
-	Mem433[es_409:di_426 + 0x00:byte] = Mem408[ds:si_413 + 0x00:byte]
-	si_413 = si_413 + 0x01
-	di_426 = di_426 + 0x01
-	cx_428 = cx_428 - 0x01
+	Mem430[es_406:di_423 + 0x00:byte] = Mem405[ds:si_410 + 0x00:byte]
+	si_410 = si_410 + 0x01
+	di_423 = di_423 + 0x01
+	cx_425 = cx_425 - 0x01
 	goto l0800_0947
 l0800_0949:
 	Mem349[ss:fp - 0x0C + 0x00:word16] = ds
@@ -658,74 +719,66 @@ l0800_0977:
 	Mem392[ss:fp - 0x0E + 0x00:word16] = 11893
 	Mem394[ss:fp - 0x10 + 0x00:word16] = ds
 	Mem397[ss:fp - 0x12 + 0x00:word16] = 17009
-	selector ds_398
-	dl = fn0800_09A3(bp_159, ds, out ds_398)
+	fn0800_09A3(bp_159, ds)
 l0800_0987:
 	return dl
 fn0800_0541_exit:
 }
 
-byte fn0800_09A3(word16 bp, selector ds, ptr16 & dsOut)
+// 0800:09A3: void fn0800_09A3(Register word16 bp, Register selector ds)
+void fn0800_09A3(word16 bp, selector ds)
 {
 	word16 ax_34 = ((int16) Mem0[ds:2676:byte] << 0x08) + DPB(bx, 0x00, 8);
 	ui32 ax_dx_42 = SEQ(((int16) Mem0[ds:0x0A72:byte] << 0x08) + DPB(dx, 0x00, 8) + (ax_34 <u 0x00), ax_34 + 0x20);
 	word16 ax_45 = SLICE(ax_dx_42 + 0x20, word16, 16);
 	word16 dx_315 = (word16) (ax_dx_42 + 0x20);
-	selector ds_52 = fn0800_4311(ds, dx_315, ax_45);
-	Mem55[ss:fp - 0x04 + 0x00:word16] = dx_315;
-	Mem57[ss:fp - 0x06 + 0x00:word16] = ax_45;
-	Mem58[ss:fp - 0x08 + 0x00:word16] = dx_315;
-	Mem59[ss:fp - 0x0A + 0x00:word16] = ax_45;
-	Mem62[ss:fp - 0x10 + 0x00:word16] = Mem59[ss:fp - 0x04 + 0x00:word16];
-	Mem64[ss:fp - 0x12 + 0x00:word16] = ax_45;
-	Mem66[ss:fp - 0x14 + 0x00:word16] = ds_52;
-	Mem69[ss:fp - 22 + 0x00:word16] = 0x0A6E;
-	selector ds_144;
-	word16 bp_76 = fn0800_867A(wArg02, psegArg04, wArg06, psegArg08, out ds_144);
+	fn0800_4311(ax_45, dx_315, ds, dx_315, ax_45);
+	selector ds_139;
+	word16 bp_70 = fn0800_867A(0x0A6E, ds, ax_45, dx_315, out ds_139);
 	while (true)
 	{
-		word16 si_129 = Mem69[ss:bp_76 + 0x04:word16];
-		Mem92[ss:fp - 0x12 + 0x00:word16] = ds_144;
-		ptr32 es_di_94 = Mem92[ss:bp_76 - 0x08 + 0x00:segptr32];
-		selector ds_93 = Mem92[ss:bp_76 + 0x06:selector];
-		word16 di_110 = (word16) es_di_94;
-		selector es_96 = SLICE(es_di_94, selector, 16);
-		word16 ax_141 = 0x00;
-		word16 cx_103 = ~0x00;
-		if (cx_103 != 0x00)
+		word16 si_124 = Mem0[ss:bp_70 + 0x04:word16];
+		Mem87[ss:fp - 0x12 + 0x00:word16] = ds_139;
+		ptr32 es_di_89 = Mem87[ss:bp_70 - 0x08 + 0x00:segptr32];
+		selector ds_88 = Mem87[ss:bp_70 + 0x06:selector];
+		word16 di_105 = (word16) es_di_89;
+		selector es_91 = SLICE(es_di_89, selector, 16);
+		word16 ax_136 = 0x00;
+		word16 cx_102 = ~0x00;
+		if (cx_102 != 0x00)
 		{
-			di_110 = di_110 + 0x01;
-			cx_103 = cx_103 - 0x01;
-			if (0x00 != Mem92[es_96:di_110 + 0x00:byte])
+			di_105 = di_105 + 0x01;
+			cx_102 = cx_102 - 0x01;
+			if (0x00 != Mem87[es_91:di_105 + 0x00:byte])
 				goto l0800_0A5E;
 		}
-		word16 cx_113 = ~cx_103;
-		word16 di_115 = di_110 - cx_113;
-		byte SCZO_117 = cond(di_115);
-		byte Z_119 = SCZO_117;
-		byte C_120 = SCZO_117;
-		if (cx_113 != 0x00)
+		word16 cx_108 = ~cx_102;
+		word16 di_110 = di_105 - cx_108;
+		byte SCZO_112 = cond(di_110);
+		byte Z_114 = SCZO_112;
+		byte C_115 = SCZO_112;
+		if (cx_108 != 0x00)
 		{
-			byte SCZO_345 = cond(Mem92[ds_93:si_362 + 0x00:byte] - Mem92[es_96:di_361 + 0x00:byte]);
-			Z_119 = SCZO_345;
-			C_120 = SCZO_345;
-			si_129 = si_362 + 0x01;
-			di_115 = di_361 + 0x01;
-			cx_113 = cx_113 - 0x01;
-			word16 di_361 = di_115;
-			word16 si_362 = si_129;
-			if (Mem92[ds_93:si_362 + 0x00:byte] != Mem92[es_96:di_361 + 0x00:byte])
+			byte SCZO_345 = cond(Mem87[ds_88:si_362 + 0x00:byte] - Mem87[es_91:di_361 + 0x00:byte]);
+			Z_114 = SCZO_345;
+			C_115 = SCZO_345;
+			si_124 = si_362 + 0x01;
+			di_110 = di_361 + 0x01;
+			cx_108 = cx_108 - 0x01;
+			word16 di_361 = di_110;
+			word16 si_362 = si_124;
+			if (Mem87[ds_88:si_362 + 0x00:byte] != Mem87[es_91:di_361 + 0x00:byte])
 				goto l0800_0A64;
 		}
-		if (!Z_119)
+		if (!Z_114)
 		{
-			word16 ax_337 = 0x00 - C_120;
-			ax_141 = ax_337 - ~0x00 - (ax_337 <u 0x00);
+			word16 ax_337 = 0x00 - C_115;
+			ax_136 = ax_337 - ~0x00 - (ax_337 <u 0x00);
 		}
-		ds_144 = Mem92[ss:fp - 0x12 + 0x00:selector];
-		if (ax_141 == 0x00)
+		ds_139 = Mem87[ss:fp - 0x12 + 0x00:selector];
+		if (ax_136 == 0x00)
 			break;
-		ptr32 es_di_229 = Mem92[ss:bp_76 - 0x08 + 0x00:segptr32];
+		ptr32 es_di_229 = Mem87[ss:bp_70 - 0x08 + 0x00:segptr32];
 		word16 di_230 = (word16) es_di_229;
 		selector es_231 = SLICE(es_di_229, selector, 16);
 		word16 cx_237 = ~0x00;
@@ -734,11 +787,11 @@ byte fn0800_09A3(word16 bp, selector ds, ptr16 & dsOut)
 			di_230 = di_364 + 0x01;
 			cx_237 = cx_237 - 0x01;
 			word16 di_364 = di_230;
-			if (0x00 != Mem92[es_231:di_364 + 0x00:byte])
+			if (0x00 != Mem87[es_231:di_364 + 0x00:byte])
 				goto l0800_0A07;
 		}
-		word16 di_258 = Mem92[ss:bp_76 - 0x08 + 0x00:word16];
-		Mem261[ss:fp - 0x12 + 0x00:word16] = (int16) Mem92[es_231:Mem92[ss:bp_76 - 0x08 + 0x00:word16] + (~cx_237 - 0x01) + 0x01:byte] << 0x08;
+		word16 di_258 = Mem87[ss:bp_70 - 0x08 + 0x00:word16];
+		Mem261[ss:fp - 0x12 + 0x00:word16] = (int16) Mem87[es_231:Mem87[ss:bp_70 - 0x08 + 0x00:word16] + (~cx_237 - 0x01) + 0x01:byte] << 0x08;
 		word16 cx_267 = ~0x00;
 		if (cx_267 != 0x00)
 		{
@@ -748,8 +801,8 @@ byte fn0800_09A3(word16 bp, selector ds, ptr16 & dsOut)
 			if (0x00 != Mem261[es_231:di_365 + 0x00:byte])
 				goto l0800_0A25;
 		}
-		word16 dx_289 = Mem261[ss:fp - 0x12 + 0x00:word16] + DPB(Mem261[ss:(bp_76 - 0x08) + 0x00:word16] + (~cx_267 - 0x01), 0x00, 8);
-		word16 di_292 = Mem261[ss:bp_76 - 0x08 + 0x00:word16];
+		word16 dx_289 = Mem261[ss:fp - 0x12 + 0x00:word16] + DPB(Mem261[ss:(bp_70 - 0x08) + 0x00:word16] + (~cx_267 - 0x01), 0x00, 8);
+		word16 di_292 = Mem261[ss:bp_70 - 0x08 + 0x00:word16];
 		word16 cx_299 = ~0x00;
 		if (cx_299 != 0x00)
 		{
@@ -760,35 +813,39 @@ byte fn0800_09A3(word16 bp, selector ds, ptr16 & dsOut)
 				goto l0800_0A42;
 		}
 		word16 dx_314 = dx_289 + (~cx_299 - 0x01);
-		Mem317[ss:bp_76 - 0x08 + 0x00:word16] = Mem261[ss:bp_76 - 0x08 + 0x00:word16] + (dx_314 + 0x03);
+		Mem317[ss:bp_70 - 0x08 + 0x00:word16] = Mem261[ss:bp_70 - 0x08 + 0x00:word16] + (dx_314 + 0x03);
 		dx_315 = dx_314 + 0x03;
 	}
-	ptr32 es_di_150 = Mem92[ss:bp_76 - 0x08 + 0x00:segptr32];
-	word16 di_151 = (word16) es_di_150;
-	selector es_152 = SLICE(es_di_150, selector, 16);
-	word16 cx_158 = ~0x00;
-	if (cx_158 != 0x00)
+	ptr32 es_di_145 = Mem87[ss:bp_70 - 0x08 + 0x00:segptr32];
+	word16 di_146 = (word16) es_di_145;
+	selector es_147 = SLICE(es_di_145, selector, 16);
+	word16 cx_153 = ~0x00;
+	if (cx_153 != 0x00)
 	{
-		di_151 = di_363 + 0x01;
-		cx_158 = cx_158 - 0x01;
-		word16 di_363 = di_151;
-		if (0x00 != Mem92[es_152:di_363 + 0x00:byte])
+		di_146 = di_363 + 0x01;
+		cx_153 = cx_153 - 0x01;
+		word16 di_363 = di_146;
+		if (0x00 != Mem87[es_147:di_363 + 0x00:byte])
 			goto l0800_0A7A;
 	}
-	Mem173[ss:bp_76 - 0x08 + 0x00:word16] = Mem92[ss:bp_76 - 0x08 + 0x00:word16] + ~cx_158;
-	ptr32 es_bx_174 = Mem173[ss:bp_76 - 0x08 + 0x00:segptr32];
-	Mem188[ss:fp - 0x12 + 0x00:word16] = ((int16) Mem173[es_bx_174 + 0x00:byte] << 0x08) + DPB(dx_315, 0x00, 8) + 0x02;
-	Mem191[ss:fp - 0x14 + 0x00:word16] = Mem188[ss:bp_76 - 0x06 + 0x00:word16];
-	Mem193[ss:fp - 22 + 0x00:word16] = (word16) es_bx_174;
-	Mem196[ss:fp - 0x18 + 0x00:word16] = Mem193[ss:bp_76 + 0x0A:word16];
-	Mem199[ss:fp - 0x1A + 0x00:word16] = Mem196[ss:bp_76 + 0x08:word16];
-	selector ds_201 = fn0800_B0F3(wArg00, wArg02, psegArg04, wArg06, psegArg08);
-	Mem206[ss:fp - 0x12 + 0x00:word16] = Mem199[ss:bp_76 - 0x02 + 0x00:word16];
-	Mem209[ss:fp - 0x14 + 0x00:word16] = Mem206[ss:bp_76 - 0x04 + 0x00:word16];
-	selector ds_210;
-	return fn0800_4346(ds_201, wArg00, wArg02, out ds_210);
+	Mem168[ss:bp_70 - 0x08 + 0x00:word16] = Mem87[ss:bp_70 - 0x08 + 0x00:word16] + ~cx_153;
+	ptr32 es_bx_169 = Mem168[ss:bp_70 - 0x08 + 0x00:segptr32];
+	Mem183[ss:fp - 0x12 + 0x00:word16] = ((int16) Mem168[es_bx_169 + 0x00:byte] << 0x08) + DPB(dx_315, 0x00, 8) + 0x02;
+	Mem186[ss:fp - 0x14 + 0x00:word16] = Mem183[ss:bp_70 - 0x06 + 0x00:word16];
+	Mem188[ss:fp - 22 + 0x00:word16] = (word16) es_bx_169;
+	Mem191[ss:fp - 0x18 + 0x00:word16] = Mem188[ss:bp_70 + 0x0A:word16];
+	Mem194[ss:fp - 0x1A + 0x00:word16] = Mem191[ss:bp_70 + 0x08:word16];
+	word16 di_200;
+	selector ds_201;
+	fn0800_B0F3(wArg00, wArg02, wArg04, wArg06, wArg08, out di_200, out ds_201);
+	Mem207[ss:fp - 0x12 + 0x00:word16] = Mem194[ss:bp_70 - 0x02 + 0x00:word16];
+	Mem210[ss:fp - 0x14 + 0x00:word16] = Mem207[ss:bp_70 - 0x04 + 0x00:word16];
+	selector ds_211;
+	fn0800_4346(ds_201, wArg00, wArg02, out ds_211);
+	return;
 }
 
+// 0800:0ABC: Register selector fn0800_0ABC(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06)
 selector fn0800_0ABC(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 {
 	fn0800_35A3(ds, wArg04, wArg06);
@@ -837,6 +894,7 @@ selector fn0800_0ABC(word16 bp, selector ds, word16 wArg02, word16 wArg04, word1
 	return ds;
 }
 
+// 0800:0B79: Register word16 fn0800_0B79(Register word16 bp, Register word16 si, Register word16 di, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Register out ptr16 diOut)
 word16 fn0800_0B79(word16 bp, word16 si, word16 di, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & diOut)
 {
 	*diOut = di;
@@ -887,6 +945,7 @@ word16 fn0800_0B79(word16 bp, word16 si, word16 di, word16 wArg02, word16 wArg04
 	}
 }
 
+// 0800:0C08: Register word16 fn0800_0C08(Stack word16 wArg02)
 word16 fn0800_0C08(word16 wArg02)
 {
 	word16 si_10 = wArg02;
@@ -902,6 +961,7 @@ word16 fn0800_0C08(word16 wArg02)
 	return cx_11;
 }
 
+// 0800:0C29: Register word16 fn0800_0C29(Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack byte bArg06, Register out ptr16 dlOut)
 word16 fn0800_0C29(selector ds, word16 wArg02, word16 wArg04, byte bArg06, ptr16 & dlOut)
 {
 	byte dl_15;
@@ -915,6 +975,7 @@ word16 fn0800_0C29(selector ds, word16 wArg02, word16 wArg04, byte bArg06, ptr16
 	return ax_39;
 }
 
+// 0800:0C6C: Register byte fn0800_0C6C(Register selector ds, Stack segptr32 ptrArg02)
 byte fn0800_0C6C(selector ds, segptr32 ptrArg02)
 {
 	while (Mem0[ptrArg02 + 0x00:byte] != 0x00)
@@ -922,6 +983,7 @@ byte fn0800_0C6C(selector ds, segptr32 ptrArg02)
 	return dl;
 }
 
+// 0800:0C93: void fn0800_0C93(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 void fn0800_0C93(word16 bp, selector ds, word16 wArg02, word16 wArg04)
 {
 	fn0800_3509(ds, wArg02, wArg04);
@@ -1018,7 +1080,8 @@ void fn0800_0C93(word16 bp, selector ds, word16 wArg02, word16 wArg04)
 	return;
 }
 
-byte fn0800_0D24(word16 bp, selector ds, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
+// 0800:0D24: Register word16 fn0800_0D24(Register word16 bp, Register selector ds, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_0D24(word16 bp, selector ds, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	selector ds_19 = fn0800_0DA9(fp - 0x02, ds, Mem0[ds:10715:word16], Mem0[ds:10717:word16]);
 	Mem23[ss:fp - 0x04 + 0x00:word16] = ds_19;
@@ -1059,6 +1122,7 @@ byte fn0800_0D24(word16 bp, selector ds, ptr16 & siOut, ptr16 & diOut, ptr16 & d
 	return fn0800_8B5A(ds_50, wArg00, out si_88, out ds_89);
 }
 
+// 0800:0DA9: Register selector fn0800_0DA9(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 selector fn0800_0DA9(word16 bp, selector ds, word16 wArg02, word16 wArg04)
 {
 	if ((wArg02 | wArg04) != 0x00)
@@ -1073,6 +1137,7 @@ selector fn0800_0DA9(word16 bp, selector ds, word16 wArg02, word16 wArg04)
 	return ds;
 }
 
+// 0800:0DCE: Register word16 fn0800_0DCE(Register selector ds, Register out ptr16 siOut, Register out ptr16 dsOut)
 word16 fn0800_0DCE(selector ds, ptr16 & siOut, ptr16 & dsOut)
 {
 	word16 di_13;
@@ -1083,20 +1148,20 @@ word16 fn0800_0DCE(selector ds, ptr16 & siOut, ptr16 & dsOut)
 	return bp;
 }
 
-byte fn0800_0DE8(word16 bp, word16 si, selector ds, ptr16 & bpOut, ptr16 & dsOut)
+// 0800:0DE8: Register byte fn0800_0DE8(Register word16 bp, Register word16 si, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 dsOut)
+byte fn0800_0DE8(word16 bp, word16 si, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
 {
-	*bpOut = bp;
 	word16 di_31;
 	fn0800_B2EF(ds, 2220, ds, out di_31);
 	if (Mem0[ds:11855:word16] != 0x00)
 	{
-		word16 di_409;
-		fn0800_B2EF(ds, 2234, ds, out di_409);
+		word16 di_416;
+		fn0800_B2EF(ds, 2234, ds, out di_416);
 	}
 	if (Mem0[ds:0x2A1F:word16] != 0x00)
 	{
-		word16 di_397;
-		fn0800_B2EF(ds, 2255, ds, out di_397);
+		word16 di_404;
+		fn0800_B2EF(ds, 2255, ds, out di_404);
 	}
 	word16 di_50;
 	fn0800_B2EF(ds, 2268, ds, out di_50);
@@ -1112,196 +1177,206 @@ byte fn0800_0DE8(word16 bp, word16 si, selector ds, ptr16 & bpOut, ptr16 & dsOut
 	Mem89[ss:fp - 0x06 + 0x00:word16] = 2284;
 	Mem91[ss:fp - 0x08 + 0x00:word16] = ds_62;
 	Mem94[ss:fp - 0x0A + 0x00:word16] = 0x4477;
-	word16 di_109;
-	selector ds_112;
-	word16 si_110 = fn0800_4234(si_82, di_81, ds_62, wArg00, wArg02, wArg04, wArg06, out di_109, out ds_112);
-	Mem101[ds_112:10717:word16] = dx;
-	Mem102[ds_112:10715:word16] = 0x4477;
+	word16 di_95;
+	selector ds_110;
+	word16 si_108 = fn0800_4234(si_82, di_81, ds_62, wArg00, wArg02, wArg04, wArg06, out di_95, out ds_110);
+	Mem101[ds_110:10717:word16] = dx;
+	Mem102[ds_110:10715:word16] = 0x4477;
 l0800_10F4:
-	Mem116[ss:fp - 0x04 + 0x00:word16] = ds_112;
-	Mem119[ss:fp - 0x06 + 0x00:word16] = 0x4541;
-	byte dl_121;
+	Mem114[ss:fp - 0x04 + 0x00:word16] = ds_110;
+	Mem117[ss:fp - 0x06 + 0x00:word16] = 0x4541;
+	byte dl_118;
+	word16 bp_119;
+	word16 si_120;
+	word16 di_121;
 	selector ds_122;
-	if (fn0800_2DE2(bp, si_110, ds_112, ptrArg00, wArg02, out dl_121, out ds_122) == 0x00)
+	if (fn0800_2DE2(si_108, ds_110, out dl_118, out bp_119, out si_120, out di_121, out ds_122) == 0x00)
 	{
-		Mem370[ss:fp - 0x04 + 0x00:word16] = Mem119[ds_122:10717:word16];
-		Mem373[ss:fp - 0x06 + 0x00:word16] = Mem370[ds_122:10715:word16];
-		byte dl_374;
-		word16 di_375;
-		selector ds_376;
-		fn0800_A614(bp, ds_122, ptrArg00, wArg02, out dl_374, out di_375, out ds_376);
-		Mem381[ss:fp - 0x04 + 0x00:word16] = ds_376;
-		Mem385[ss:fp - 0x06 + 0x00:word16] = 0x4477;
-		return fn0800_8F7F(0x77, ds_376, ptrArg00);
+		Mem377[ss:fp - 0x04 + 0x00:word16] = Mem117[ds_122:10717:word16];
+		Mem380[ss:fp - 0x06 + 0x00:word16] = Mem377[ds_122:10715:word16];
+		byte dl_381;
+		word16 di_382;
+		selector ds_383;
+		fn0800_A614(bp_119, ds_122, ptrArg00, wArg02, out dl_381, out di_382, out ds_383);
+		Mem388[ss:fp - 0x04 + 0x00:word16] = ds_383;
+		Mem392[ss:fp - 0x06 + 0x00:word16] = 0x4477;
+		byte dl_393 = fn0800_8F7F(0x77, ds_383, ptrArg00);
+		word16 si_397;
+		*siOut = Mem392[ss:fp - 0x02 + 0x00:word16];
+		return dl_393;
 	}
-	bp = fn0800_3764(ds_122);
-	*bpOut = bp;
-	if (fn0800_388C(bp, si_110, di_109, ds_122, out si_110, out ds_112) == 0x00)
+	word16 bp_147 = fn0800_3764(ds_122);
+	*bpOut = bp_147;
+	if (fn0800_388C(bp_147, si_120, di_121, ds_122, out si_108, out ds_110) == 0x00)
 		continue;
-	Mem155[ss:fp - 0x04 + 0x00:word16] = ds_112;
-	Mem158[ss:fp - 0x06 + 0x00:word16] = 0x4541;
-	fn0800_0C93(bp, ds_112, wArg00, wArg02);
-	Mem163[ss:fp - 0x04 + 0x00:word16] = Mem158[ds_112:0x29E5:word16];
-	Mem166[ss:fp - 0x06 + 0x00:word16] = Mem163[ds_112:0x29E3:word16];
-	word16 si_167;
-	selector ds_168;
-	word16 ax_169 = fn0800_4194(bp, ds_112, wArg00, wArg02, out si_167, out ds_168);
-	Mem171[ds_168:0x2A09:word16] = dx;
-	Mem172[ds_168:0x2A07:word16] = ax_169;
-	Mem173[ds_168:0x2A05:word16] = dx;
-	Mem174[ds_168:0x2A03:word16] = ax_169;
-	if (Mem174[ds_168:0x2A09:word16] <=u 0x00 && (Mem174[ds_168:0x2A09:word16] != 0x00 || Mem174[ds_168:0x2A07:word16] <=u 0x12) && Mem174[ds_168:10773:word16] == 0x00)
+	Mem156[ss:fp - 0x04 + 0x00:word16] = ds_110;
+	Mem159[ss:fp - 0x06 + 0x00:word16] = 0x4541;
+	fn0800_0C93(bp_147, ds_110, wArg00, wArg02);
+	Mem164[ss:fp - 0x04 + 0x00:word16] = Mem159[ds_110:0x29E5:word16];
+	Mem167[ss:fp - 0x06 + 0x00:word16] = Mem164[ds_110:0x29E3:word16];
+	word16 si_168;
+	selector ds_169;
+	word16 ax_170 = fn0800_4194(bp_147, ds_110, wArg00, wArg02, out si_168, out ds_169);
+	Mem172[ds_169:0x2A09:word16] = dx;
+	Mem173[ds_169:0x2A07:word16] = ax_170;
+	Mem174[ds_169:0x2A05:word16] = dx;
+	Mem175[ds_169:0x2A03:word16] = ax_170;
+	if (Mem175[ds_169:0x2A09:word16] <=u 0x00 && (Mem175[ds_169:0x2A09:word16] != 0x00 || Mem175[ds_169:0x2A07:word16] <=u 0x12) && Mem175[ds_169:10773:word16] == 0x00)
 	{
-		si_110 = 0x03;
+		si_108 = 0x03;
 		goto l0800_105C;
 	}
-	byte dl_305;
-	if (fn0800_3992(bp, ds_168, out dl_305, out ds_168) != 0x00)
+	byte dl_311;
+	word16 si_312;
+	if (fn0800_3992(bp_147, ds_169, out dl_311, out si_312, out ds_169) != 0x00)
 	{
-		si_110 = 0x0E;
+		si_108 = 0x0E;
 		goto l0800_105C;
 	}
-	if (Mem174[ds_168:0x2A23:word16] <=u 0x05)
-		return dl_305;
+	if (Mem175[ds_169:0x2A23:word16] <=u 0x05)
+		return dl_311;
 l0800_1007:
-	Mem320[ss:fp - 0x04 + 0x00:word16] = Mem174[ds_168:10721:word16];
-	Mem323[ss:fp - 0x06 + 0x00:word16] = Mem320[ds_168:10719:word16];
-	word16 ax_326 = fn0800_4194(bp, ds_168, wArg00, wArg02, out si_110, out ds_168);
-	Mem328[ds_168:0x2A05:word16] = dx;
-	Mem329[ds_168:0x2A03:word16] = ax_326;
-	word16 ax_330 = Mem329[ds_168:0x2A05:word16];
-	dx = Mem329[ds_168:0x2A03:word16];
-	if (ax_330 >=u Mem329[ds_168:0x2A09:word16] && (ax_330 != Mem329[ds_168:0x2A09:word16] || dx >=u Mem329[ds_168:0x2A07:word16]) && Mem329[ds_168:10773:word16] == 0x00)
+	Mem327[ss:fp - 0x04 + 0x00:word16] = Mem175[ds_169:10721:word16];
+	Mem330[ss:fp - 0x06 + 0x00:word16] = Mem327[ds_169:10719:word16];
+	word16 ax_333 = fn0800_4194(bp_147, ds_169, wArg00, wArg02, out si_108, out ds_169);
+	Mem335[ds_169:0x2A05:word16] = dx;
+	Mem336[ds_169:0x2A03:word16] = ax_333;
+	word16 ax_337 = Mem336[ds_169:0x2A05:word16];
+	dx = Mem336[ds_169:0x2A03:word16];
+	if (ax_337 >=u Mem336[ds_169:0x2A09:word16] && (ax_337 != Mem336[ds_169:0x2A09:word16] || dx >=u Mem336[ds_169:0x2A07:word16]) && Mem336[ds_169:10773:word16] == 0x00)
 	{
-		dx = Mem329[ds_168:0x2A07:word16];
-		Mem353[ds_168:0x2A05:word16] = Mem329[ds_168:0x2A09:word16];
-		Mem354[ds_168:0x2A03:word16] = dx;
-		si_110 = 0x03;
+		dx = Mem336[ds_169:0x2A07:word16];
+		Mem360[ds_169:0x2A05:word16] = Mem336[ds_169:0x2A09:word16];
+		Mem361[ds_169:0x2A03:word16] = dx;
+		si_108 = 0x03;
 	}
-	if (si_110 == 0x04)
+	if (si_108 == 0x04)
 	{
-		dx = Mem329[ds_168:0x2A07:word16];
-		Mem346[ds_168:0x2A05:word16] = Mem329[ds_168:0x2A09:word16];
-		Mem347[ds_168:0x2A03:word16] = dx;
+		dx = Mem336[ds_169:0x2A07:word16];
+		Mem353[ds_169:0x2A05:word16] = Mem336[ds_169:0x2A09:word16];
+		Mem354[ds_169:0x2A03:word16] = dx;
 	}
 l0800_105C:
-	if (Mem174[ds_168:17022:byte] != 0x00 && (si_110 == 0x03 || si_110 == 0x04))
+	if (Mem175[ds_169:17022:byte] != 0x00 && (si_108 == 0x03 || si_108 == 0x04))
 	{
-		dx = Mem174[ds_168:0x2A07:word16];
-		Mem256[ds_168:0x2A05:word16] = Mem174[ds_168:0x2A09:word16];
-		Mem257[ds_168:0x2A03:word16] = dx;
-		Mem260[ss:fp - 0x04 + 0x00:word16] = Mem257[ds_168:0x29E5:word16];
-		Mem263[ss:fp - 0x06 + 0x00:word16] = Mem260[ds_168:0x29E3:word16];
-		selector ds_264 = fn0800_BA67(ds_168, wArg00, wArg02);
-		Mem269[ss:fp - 0x04 + 0x00:word16] = Mem263[ds_264:10721:word16];
-		Mem272[ss:fp - 0x06 + 0x00:word16] = Mem269[ds_264:10719:word16];
-		selector ds_273 = fn0800_BA67(ds_264, wArg00, wArg02);
-		Mem278[ss:fp - 0x04 + 0x00:word16] = Mem272[ds_273:0x2A09:word16];
-		Mem281[ss:fp - 0x06 + 0x00:word16] = Mem278[ds_273:0x2A07:word16];
-		Mem284[ss:fp - 0x08 + 0x00:word16] = Mem281[ds_273:10721:word16];
-		Mem287[ss:fp - 0x0A + 0x00:word16] = Mem284[ds_273:10719:word16];
-		Mem290[ss:fp - 0x0C + 0x00:word16] = Mem287[ds_273:0x29E5:word16];
-		Mem293[ss:fp - 0x0E + 0x00:word16] = Mem290[ds_273:0x29E3:word16];
-		ds_168 = fn0800_3B0A(bp, ds_273, wArg08, wArg0A);
-		si_110 = 0x00;
+		dx = Mem175[ds_169:0x2A07:word16];
+		Mem261[ds_169:0x2A05:word16] = Mem175[ds_169:0x2A09:word16];
+		Mem262[ds_169:0x2A03:word16] = dx;
+		Mem265[ss:fp - 0x04 + 0x00:word16] = Mem262[ds_169:0x29E5:word16];
+		Mem268[ss:fp - 0x06 + 0x00:word16] = Mem265[ds_169:0x29E3:word16];
+		selector ds_269 = fn0800_BA67(ds_169, wArg00, wArg02);
+		Mem274[ss:fp - 0x04 + 0x00:word16] = Mem268[ds_269:10721:word16];
+		Mem277[ss:fp - 0x06 + 0x00:word16] = Mem274[ds_269:10719:word16];
+		selector ds_278 = fn0800_BA67(ds_269, wArg00, wArg02);
+		Mem283[ss:fp - 0x04 + 0x00:word16] = Mem277[ds_278:0x2A09:word16];
+		Mem286[ss:fp - 0x06 + 0x00:word16] = Mem283[ds_278:0x2A07:word16];
+		Mem289[ss:fp - 0x08 + 0x00:word16] = Mem286[ds_278:10721:word16];
+		Mem292[ss:fp - 0x0A + 0x00:word16] = Mem289[ds_278:10719:word16];
+		Mem295[ss:fp - 0x0C + 0x00:word16] = Mem292[ds_278:0x29E5:word16];
+		Mem298[ss:fp - 0x0E + 0x00:word16] = Mem295[ds_278:0x29E3:word16];
+		bp_147 = fn0800_3B0A(bp_147, ds_278, wArg08, wArg0A, out ds_169);
+		si_108 = 0x00;
 	}
-	Mem202[ss:fp - 0x04 + 0x00:word16] = Mem174[ds_168:0x29E5:word16];
-	Mem205[ss:fp - 0x06 + 0x00:word16] = Mem202[ds_168:0x29E3:word16];
-	byte dl_206;
-	word16 di_207;
-	selector ds_208;
-	fn0800_A614(bp, ds_168, ptrArg00, wArg02, out dl_206, out di_207, out ds_208);
-	Mem214[ss:fp - 0x04 + 0x00:word16] = Mem205[ds_208:10721:word16];
-	Mem217[ss:fp - 0x06 + 0x00:word16] = Mem214[ds_208:10719:word16];
-	byte dl_218;
-	selector ds_220;
-	fn0800_A614(bp, ds_208, ptrArg00, wArg02, out dl_218, out di_109, out ds_220);
-	if (si_110 > 0x02)
+	Mem204[ss:fp - 0x04 + 0x00:word16] = Mem175[ds_169:0x29E5:word16];
+	Mem207[ss:fp - 0x06 + 0x00:word16] = Mem204[ds_169:0x29E3:word16];
+	byte dl_209;
+	word16 di_210;
+	selector ds_211;
+	fn0800_A614(bp_147, ds_169, ptrArg00, wArg02, out dl_209, out di_210, out ds_211);
+	Mem217[ss:fp - 0x04 + 0x00:word16] = Mem207[ds_211:10721:word16];
+	Mem220[ss:fp - 0x06 + 0x00:word16] = Mem217[ds_211:10719:word16];
+	byte dl_221;
+	word16 di_222;
+	selector ds_223;
+	fn0800_A614(bp_147, ds_211, ptrArg00, wArg02, out dl_221, out di_222, out ds_223);
+	if (si_108 > 0x02)
 	{
-		Mem241[ss:fp - 0x04 + 0x00:word16] = ds_220;
-		Mem245[ss:fp - 0x06 + 0x00:word16] = 0x44DC;
-		fn0800_8F7F(220, ds_220, ptrArg00);
+		Mem245[ss:fp - 0x04 + 0x00:word16] = ds_223;
+		Mem249[ss:fp - 0x06 + 0x00:word16] = 0x44DC;
+		fn0800_8F7F(220, ds_223, ptrArg00);
 	}
 	else
-		si_110 = fn0800_37DF(bp, ds_220, out ds_220);
-	Mem231[ss:fp - 0x04 + 0x00:word16] = ds_220;
-	Mem234[ss:fp - 0x06 + 0x00:word16] = 0x4541;
-	Mem236[ss:fp - 0x08 + 0x00:word16] = si_110;
-	ds_112 = fn0800_0ABC(bp, ds_220, wArg00, wArg02, wArg04);
+		bp_147 = fn0800_37DF(bp_147, ds_223, out si_108, out ds_223);
+	Mem235[ss:fp - 0x04 + 0x00:word16] = ds_223;
+	Mem238[ss:fp - 0x06 + 0x00:word16] = 0x4541;
+	Mem240[ss:fp - 0x08 + 0x00:word16] = si_108;
+	ds_110 = fn0800_0ABC(bp_147, ds_223, wArg00, wArg02, wArg04);
 	goto l0800_10F4;
 }
 
-byte fn0800_112D(word16 bp, word16 si, selector ds, ptr16 & bpOut, ptr16 & dsOut)
+// 0800:112D: Register byte fn0800_112D(Register word16 bp, Register word16 si, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 dsOut)
+byte fn0800_112D(word16 bp, word16 si, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
 {
-	*bpOut = bp;
 	word16 di_31;
 	fn0800_B2EF(ds, 2288, ds, out di_31);
 	if (Mem0[ds:11855:word16] != 0x00)
 	{
-		word16 di_309;
-		fn0800_B2EF(ds, 2302, ds, out di_309);
+		word16 di_313;
+		fn0800_B2EF(ds, 2302, ds, out di_313);
 	}
-	word16 di_171;
-	word16 si_180 = fn0800_B2EF(ds, 2323, ds, out di_171);
+	word16 di_42;
+	word16 si_181 = fn0800_B2EF(ds, 2323, ds, out di_42);
 	if (Mem0[ds:0x2A25:word16] == 0x01)
-		si_180 = fn0800_3678(bp, ds, DPB(ptrLoc06, 17022, 0), ds, out ds);
+		si_181 = fn0800_3678(bp, ds, DPB(ptrLoc06, 17022, 0), ds, out ds);
 	while (true)
 	{
-		Mem62[ss:fp - 0x04 + 0x00:word16] = ds;
-		Mem66[ss:fp - 0x06 + 0x00:word16] = 0x4541;
-		byte dl_69;
-		selector ds_70;
-		if (fn0800_2DE2(bp, si_180, ds, ptrArg00, wArg02, out dl_69, out ds_70) == 0x00)
+		Mem60[ss:fp - 0x04 + 0x00:word16] = ds;
+		Mem64[ss:fp - 0x06 + 0x00:word16] = 0x4541;
+		byte dl_65;
+		word16 bp_66;
+		word16 si_67;
+		word16 di_68;
+		selector ds_69;
+		if (fn0800_2DE2(si_181, ds, out dl_65, out bp_66, out si_67, out di_68, out ds_69) == 0x00)
 			break;
-		bp = fn0800_3764(ds_70);
-		*bpOut = bp;
-		if (fn0800_388C(bp, si_180, di_171, ds_70, out si_180, out ds) != 0x00)
+		word16 bp_117 = fn0800_3764(ds_69);
+		if (fn0800_388C(bp_117, si_67, di_68, ds_69, out si_181, out ds) != 0x00)
 		{
-			Mem86[ss:fp - 0x04 + 0x00:word16] = ds;
-			Mem89[ss:fp - 0x06 + 0x00:word16] = 0x4541;
-			fn0800_0C93(bp, ds, wArg00, wArg02);
-			Mem95[ss:fp - 0x04 + 0x00:word16] = Mem89[ds:0x29E5:word16];
+			Mem85[ss:fp - 0x04 + 0x00:word16] = ds;
+			Mem88[ss:fp - 0x06 + 0x00:word16] = 0x4541;
+			fn0800_0C93(bp_117, ds, wArg00, wArg02);
+			Mem95[ss:fp - 0x04 + 0x00:word16] = Mem88[ds:0x29E5:word16];
 			Mem98[ss:fp - 0x06 + 0x00:word16] = Mem95[ds:0x29E3:word16];
 			word16 si_99;
 			selector ds_100;
-			word16 ax_101 = fn0800_4194(bp, ds, wArg00, wArg02, out si_99, out ds_100);
+			word16 ax_101 = fn0800_4194(bp_117, ds, wArg00, wArg02, out si_99, out ds_100);
 			Mem104[ds_100:0x2A05:word16] = dx;
 			Mem105[ds_100:0x2A03:word16] = ax_101;
 			if (false || true && ax_101 >=u 0x12)
 			{
-				word16 bx_220 = Mem105[ds_100:0x2A23:word16];
-				if (bx_220 <=u 0x05)
+				word16 bx_223 = Mem105[ds_100:0x2A23:word16];
+				if (bx_223 <=u 0x05)
 				{
-					switch (bx_220 << 0x01)
+					switch (bx_223 << 0x01)
 					{
 					case 0x00:
-						ds_100 = fn0800_4C55(bp, ds_100);
+						ds_100 = fn0800_4C55(bp_117, ds_100);
 						break;
 					case 0x01:
-						Mem229[ss:fp - 0x04 + 0x00:word16] = Mem105[ds_100:0x29E5:word16];
-						Mem232[ss:fp - 0x06 + 0x00:word16] = Mem229[ds_100:0x29E3:word16];
-						word16 di_233;
-						word16 ax_240 = fn0800_8CAA(ax_101, 0x08, fn0800_3F58(bp, ds_100, wArg00, wArg02, out di_233, out ds_100), si, out dx);
-						if (dx == 0x52 && ax_240 == 0x4E43)
-							fn0800_5374(bp, ds_100, out ds_100);
+						Mem232[ss:fp - 0x04 + 0x00:word16] = Mem105[ds_100:0x29E5:word16];
+						Mem235[ss:fp - 0x06 + 0x00:word16] = Mem232[ds_100:0x29E3:word16];
+						word16 di_236;
+						word16 ax_243 = fn0800_8CAA(ax_101, 0x08, fn0800_3F58(bp_117, ds_100, wArg00, wArg02, out di_236, out ds_100), si, out dx);
+						if (dx == 0x52 && ax_243 == 0x4E43)
+							fn0800_5374(bp_117, ds_100, out ds_100);
 						break;
 					case 0x02:
-						ds_100 = fn0800_51A9(bp, ds_100);
+						ds_100 = fn0800_51A9(bp_117, ds_100);
 						break;
 					case 0x03:
-						*bpOut = fn0800_518F(bp, ds_100, out ds_100);
+						bp_117 = fn0800_518F(bp_117, ds_100, out ds_100);
 						break;
 					case 0x04:
-						Mem259[ss:fp - 0x04 + 0x00:word16] = Mem105[ds_100:0x29E5:word16];
-						Mem262[ss:fp - 0x06 + 0x00:word16] = Mem259[ds_100:0x29E3:word16];
-						selector ds_263;
-						if (fn0800_3F0A(bp, ds_100, wArg00, wArg02, out ds_263) == 0x4D5A)
-							ds_100 = fn0800_46FE(bp, ds_263);
+						Mem262[ss:fp - 0x04 + 0x00:word16] = Mem105[ds_100:0x29E5:word16];
+						Mem265[ss:fp - 0x06 + 0x00:word16] = Mem262[ds_100:0x29E3:word16];
+						selector ds_266;
+						if (fn0800_3F0A(bp_117, ds_100, wArg00, wArg02, out ds_266) == 0x4D5A)
+							ds_100 = fn0800_46FE(bp_117, ds_266);
 						else
-							*bpOut = fn0800_4B97(bp, ds_263, out ds_100);
+							bp_117 = fn0800_4B97(bp_117, ds_266, out ds_100);
 						break;
 					case 0x05:
-						*bpOut = fn0800_4BB1(bp, ds_100, out ds_100);
+						bp_117 = fn0800_4BB1(bp_117, ds_100, out ds_100);
 						break;
 					}
 				}
@@ -1310,1216 +1385,1931 @@ byte fn0800_112D(word16 bp, word16 si, selector ds, ptr16 & bpOut, ptr16 & dsOut
 			Mem126[ss:fp - 0x06 + 0x00:word16] = Mem123[ds_100:10719:word16];
 			word16 si_127;
 			selector ds_128;
-			word16 ax_129 = fn0800_4194(bp, ds_100, wArg00, wArg02, out si_127, out ds_128);
+			word16 ax_129 = fn0800_4194(bp_117, ds_100, wArg00, wArg02, out si_127, out ds_128);
 			Mem132[ds_128:0x2A09:word16] = dx;
 			Mem133[ds_128:0x2A07:word16] = ax_129;
 			Mem136[ss:fp - 0x04 + 0x00:word16] = Mem133[ds_128:0x29E5:word16];
 			Mem139[ss:fp - 0x06 + 0x00:word16] = Mem136[ds_128:0x29E3:word16];
 			word16 si_140;
 			selector ds_141;
-			word16 ax_142 = fn0800_4194(bp, ds_128, wArg00, wArg02, out si_140, out ds_141);
+			word16 ax_142 = fn0800_4194(bp_117, ds_128, wArg00, wArg02, out si_140, out ds_141);
 			Mem144[ds_141:0x2A05:word16] = dx;
 			Mem145[ds_141:0x2A03:word16] = ax_142;
 			if (si_140 != 0x00)
 			{
 				dx = Mem145[ds_141:0x2A03:word16];
-				Mem217[ds_141:0x2A09:word16] = Mem145[ds_141:0x2A05:word16];
-				Mem218[ds_141:0x2A07:word16] = dx;
+				Mem220[ds_141:0x2A09:word16] = Mem145[ds_141:0x2A05:word16];
+				Mem221[ds_141:0x2A07:word16] = dx;
 			}
 			Mem154[ss:fp - 0x04 + 0x00:word16] = Mem145[ds_141:0x29E5:word16];
 			Mem157[ss:fp - 0x06 + 0x00:word16] = Mem154[ds_141:0x29E3:word16];
-			byte dl_158;
-			word16 di_159;
-			selector ds_160;
-			fn0800_A614(bp, ds_141, ptrArg00, wArg02, out dl_158, out di_159, out ds_160);
-			Mem166[ss:fp - 0x04 + 0x00:word16] = Mem157[ds_160:10721:word16];
-			Mem169[ss:fp - 0x06 + 0x00:word16] = Mem166[ds_160:10719:word16];
-			byte dl_170;
-			selector ds_172;
-			fn0800_A614(bp, ds_160, ptrArg00, wArg02, out dl_170, out di_171, out ds_172);
-			if (Mem169[ds_172:0x2A25:word16] != 0x02 && si_140 == 0x00)
-				si_180 = fn0800_37DF(bp, ds_172, out ds_172);
+			byte dl_159;
+			word16 di_160;
+			selector ds_161;
+			fn0800_A614(bp_117, ds_141, ptrArg00, wArg02, out dl_159, out di_160, out ds_161);
+			Mem167[ss:fp - 0x04 + 0x00:word16] = Mem157[ds_161:10721:word16];
+			Mem170[ss:fp - 0x06 + 0x00:word16] = Mem167[ds_161:10719:word16];
+			byte dl_171;
+			word16 di_172;
+			selector ds_173;
+			fn0800_A614(bp_117, ds_161, ptrArg00, wArg02, out dl_171, out di_172, out ds_173);
+			if (Mem170[ds_173:0x2A25:word16] != 0x02 && si_140 == 0x00)
+				bp_117 = fn0800_37DF(bp_117, ds_173, out si_181, out ds_173);
 			else
 			{
-				Mem201[ss:fp - 0x04 + 0x00:word16] = ds_172;
-				Mem205[ss:fp - 0x06 + 0x00:word16] = 0x44DC;
-				fn0800_8F7F(220, ds_172, ptrArg00);
-				si_180 = si_140;
+				Mem203[ss:fp - 0x04 + 0x00:word16] = ds_173;
+				Mem207[ss:fp - 0x06 + 0x00:word16] = 0x44DC;
+				fn0800_8F7F(220, ds_173, ptrArg00);
+				si_181 = si_140;
 			}
-			Mem186[ss:fp - 0x04 + 0x00:word16] = ds_172;
-			Mem189[ss:fp - 0x06 + 0x00:word16] = 0x4541;
-			Mem191[ss:fp - 0x08 + 0x00:word16] = si_180;
-			ds = fn0800_0ABC(bp, ds_172, wArg00, wArg02, wArg04);
+			Mem188[ss:fp - 0x04 + 0x00:word16] = ds_173;
+			Mem191[ss:fp - 0x06 + 0x00:word16] = 0x4541;
+			Mem193[ss:fp - 0x08 + 0x00:word16] = si_181;
+			ds = fn0800_0ABC(bp_117, ds_173, wArg00, wArg02, wArg04);
 		}
 	}
-	return dl_69;
+	word16 si_284;
+	*siOut = Mem64[ss:fp - 0x02 + 0x00:word16];
+	return dl_65;
 }
 
-byte fn0800_12E2(word16 bp, selector ds, ptr16 & dsOut)
+// 0800:12E2: Register byte fn0800_12E2(Register word16 bp, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 dsOut)
+byte fn0800_12E2(word16 bp, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
 {
-	word16 di_35;
-	fn0800_B2EF(ds, 2326, ds, out di_35);
-	word16 bp_108 = fp - 0x02;
-	if (Mem0[ds:11855:word16] != 0x00)
+fn0800_12E2_entry:
+	sp = fp
+	sp = fp - 0x02
+	wLoc02 = bp
+	bp = fp - 0x02
+	sp = fp - 0x86
+	sp = fp - 0x88
+	wLoc88 = si
+	sp = fp - 0x8A
+	wLoc8A = di
+	sp = fp - 0x8C
+	wLoc8C = ds
+	ax = 0x4348
+	sp = fp - 0x8E
+	wLoc8E = 0x4348
+	bx = Mem0[ds:0x2A25:word16]
+	bx = bx << 0x01
+	bx = bx << 0x01
+	SCZO = cond(bx)
+	v11 = Mem0[ds:bx + 0x050B:word16]
+	sp = fp - 0x90
+	wLoc90 = v11
+	v12 = Mem0[ds:bx + 0x0509:word16]
+	sp = fp - 0x92
+	wLoc92 = v12
+	sp = fp - 0x94
+	wLoc94 = ds
+	ax = 2326
+	sp = fp - 0x96
+	wLoc96 = 2326
+	si = fn0800_B2EF(ds, wLoc96, wLoc94, out di)
+	sp = fp - 0x8A
+	SCZO = cond(Mem0[ds:11855:word16] - 0x00)
+	Z = SCZO (alias)
+	branch Test(EQ,Z) l0800_1321
+	goto l0800_1312
+l0800_12E2:
+l0800_1312:
+	v14 = Mem0[ds:11855:word16]
+	sp = fp - 0x8C
+	wLoc8C = v14
+	sp = fp - 0x8E
+	wLoc8E = ds
+	ax = 0x0925
+	sp = fp - 0x90
+	wLoc90 = 0x0925
+	si = fn0800_B2EF(ds, wLoc90, wLoc8E, out di)
+	sp = fp - 0x8A
+	SCZO = cond(fp - 0x8A)
+l0800_1321:
+	sp = fp - 0x8C
+	wLoc8C = ds
+	ax = 2362
+	sp = fp - 0x8E
+	wLoc8E = 2362
+	si = fn0800_B2EF(ds, wLoc8E, wLoc8C, out di)
+	sp = fp - 0x8A
+	SCZO = cond(fp - 0x8A)
+	sp = fp - 0x8C
+	wLoc8C = ds
+	ax = 0x093D
+	sp = fp - 0x8E
+	wLoc8E = 0x093D
+	sp = fp - 0x90
+	wLoc90 = ds
+	ax = 0x4348
+	sp = fp - 0x92
+	wLoc92 = 0x4348
+	ax = fn0800_AA7E(si, di, ds, wLoc92, wLoc90, wLoc8E, wLoc8C, out dx, out si, out di, out ds)
+	sp = sp + 0x08
+	Mem0[ds:10705:word16] = dx
+	Mem0[ds:10703:word16] = ax
+	ax = Mem0[ds:0x2A25:word16]
+	dx_ax = SEQ(dx, ax) (alias)
+	al = (byte) ax (alias)
+	ah = SLICE(ax, byte, 8) (alias)
+	SCZO = cond(ax - 0x03)
+	Z = SCZO (alias)
+	branch Test(EQ,Z) l0800_1353
+l0800_134B:
+	SCZO = cond(ax - 0x04)
+	Z = SCZO (alias)
+	branch Test(EQ,Z) l0800_1371
+l0800_1350:
+	fn0800_1478(bp, ds)
+	return dl
+l0800_1353:
+	ax = Mem0[ds:10703:word16]
+	ax = ax | Mem0[ds:10705:word16]
+	dx_ax = SEQ(dx, ax) (alias)
+	SZO = cond(ax)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_135F
+l0800_135C:
+	fn0800_1478(bp, ds)
+	return dl
+l0800_135F:
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ds
+	ax = 0x4348
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x4348
+	ax = 0x07
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x07
+	dx = fn0800_0D24(bp, ds, out si, out di, out ds)
+	dx_ax = SEQ(dx, ax) (alias)
+	dl = (byte) dx (alias)
+	sp = sp + 0x06
+	SCZO = cond(sp)
+	fn0800_1478(bp, ds)
+	return dl
+l0800_136B_thunk_fn0800_1478:
+l0800_1371:
+	ax = Mem0[ds:10703:word16]
+	ax = ax | Mem0[ds:10705:word16]
+	dx_ax = SEQ(dx, ax) (alias)
+	SZO = cond(ax)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_13C6
+	goto l0800_137A
+l0800_1378_thunk_fn0800_13C6:
+	fn0800_13C6(bp, si, di, ds)
+	return dl
+l0800_137A:
+	v18 = Mem0[ds:10705:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v18
+	v19 = Mem0[ds:10703:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v19
+	ax = fn0800_3E27(bp, ds, wArg00, wArg02, out dx, out si, out di, out ds)
+	dx_ax = SEQ(dx, ax) (alias)
+	sp = sp + 0x04
+	SCZO = cond(ax - 0x4D5A)
+	Z = SCZO (alias)
+	branch Test(NE,Z) l0800_13BA
+l0800_138D:
+	ax = 0x02
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x02
+	ax = 0x00
+	SZO = cond(0x00)
+	C = false
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x00
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x00
+	v20 = Mem0[ds:10705:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v20
+	v21 = Mem0[ds:10703:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v21
+	ax = fn0800_ACB3(bp, ds, wArg00, wArg02, wArg08, out di, out ds)
+	sp = sp + 0x0A
+	SCZO = cond(sp)
+	v22 = Mem0[ds:10705:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v22
+	v23 = Mem0[ds:10703:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v23
+	dl = fn0800_13AB(di, ds, out bp, out si)
+	dx = DPB(dx, dl, 0) (alias)
+	dx_ax = DPB(dx_ax, dl, 16) (alias)
+	return dl
+l0800_13A7_thunk_fn0800_13AB:
+l0800_13BA:
+	Mem0[ds:10705:word16] = 0x00
+	Mem0[ds:10703:word16] = 0x00
+	fn0800_13C6(bp, si, di, ds)
+	return dl
+l0800_13C0_thunk_fn0800_13C6:
+fn0800_12E2_exit:
+	use bp (=> bpOut)
+	use si (=> siOut)
+	use ds (=> dsOut)
+}
+
+// 0800:13AB: Register byte fn0800_13AB(Register word16 di, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut)
+byte fn0800_13AB(word16 di, selector ds, ptr16 & bpOut, ptr16 & siOut)
+{
+	*bpOut = bp;
+	byte dl_5;
+	word16 si_6;
+	word16 ax_7 = fn0800_AD2F(ds, ptrArg00, wArg02, out dl_5, out si_6);
+	Mem11[ds:10733:word16] = dx;
+	Mem12[ds:10731:word16] = ax_7;
+	fn0800_13C6(bp, si_6, di, ds);
+	return dl_5;
+}
+
+// 0800:13C6: void fn0800_13C6(Register word16 bp, Register word16 si, Register word16 di, Register selector ds)
+void fn0800_13C6(word16 bp, word16 si, word16 di, selector ds)
+{
+	if ((Mem0[ds:10703:word16] | Mem0[ds:10705:word16]) == 0x00)
 	{
-		word16 di_1470;
-		fn0800_B2EF(ds, 0x0925, ds, out di_1470);
+		word16 di_127;
+		fn0800_4234(si, di, ds, 0x4348, ds, 0x0941, ds, out di_127, out ds);
+		Mem133[ds:10705:word16] = dx;
+		Mem134[ds:10703:word16] = 0x4348;
+		Mem135[ds:10733:word16] = 0x00;
+		Mem136[ds:10731:word16] = 0x00;
 	}
-	word16 di_45;
-	word16 si_46 = fn0800_B2EF(ds, 2362, ds, out di_45);
-	word16 dx_59;
-	word16 di_1280;
-	word16 si_1281;
-	selector ds_1278;
-	word16 ax_63 = fn0800_AA7E(si_46, di_45, ds, 0x4348, ds, 0x093D, ds, out dx_59, out si_1281, out di_1280, out ds_1278);
-	Mem65[ds_1278:10705:word16] = dx_59;
-	Mem66[ds_1278:10703:word16] = ax_63;
-	word16 ax_67 = Mem66[ds_1278:0x2A25:word16];
-	if (ax_67 != 0x03)
-	{
-		if (ax_67 == 0x04)
-		{
-			if ((Mem66[ds_1278:10703:word16] | Mem66[ds_1278:10705:word16]) != 0x00)
-			{
-				Mem1397[ss:fp - 0x8C + 0x00:word16] = Mem66[ds_1278:10705:word16];
-				Mem1400[ss:fp - 0x8E + 0x00:word16] = Mem1397[ds_1278:10703:word16];
-				if (fn0800_3E27(fp - 0x02, ds_1278, wArg00, wArg02, out si_1281, out di_1280, out ds_1278) == 0x4D5A)
-				{
-					Mem1410[ss:fp - 0x8C + 0x00:word16] = 0x02;
-					Mem1415[ss:fp - 0x8E + 0x00:word16] = 0x00;
-					Mem1417[ss:fp - 0x90 + 0x00:word16] = 0x00;
-					Mem1420[ss:fp - 0x92 + 0x00:word16] = Mem1417[ds_1278:10705:word16];
-					Mem1423[ss:fp - 0x94 + 0x00:word16] = Mem1420[ds_1278:10703:word16];
-					fn0800_ACB3(fp - 0x02, ds_1278, ptrArg00, wArg02, wArg08, out ds_1278);
-					Mem1430[ss:fp - 0x8C + 0x00:word16] = Mem1423[ds_1278:10705:word16];
-					Mem1433[ss:fp - 0x8E + 0x00:word16] = Mem1430[ds_1278:10703:word16];
-					word16 ax_1435 = fn0800_AD2F(ds_1278, ptrArg00, wArg02, out si_1281);
-					Mem1438[ds_1278:10733:word16] = dx_59;
-					Mem1439[ds_1278:10731:word16] = ax_1435;
-				}
-				else
-				{
-					Mem1440[ds_1278:10705:word16] = 0x00;
-					Mem1441[ds_1278:10703:word16] = 0x00;
-				}
-			}
-			if ((Mem66[ds_1278:10703:word16] | Mem66[ds_1278:10705:word16]) == 0x00)
-			{
-				Mem1377[ss:fp - 0x8C + 0x00:word16] = ds_1278;
-				Mem1380[ss:fp - 0x8E + 0x00:word16] = 0x0941;
-				Mem1382[ss:fp - 0x90 + 0x00:word16] = ds_1278;
-				Mem1385[ss:fp - 0x92 + 0x00:word16] = 0x4348;
-				word16 di_1386;
-				fn0800_4234(si_1281, di_1280, ds_1278, wArg00, wArg02, wArg04, wArg06, out di_1386, out ds_1278);
-				Mem1391[ds_1278:10705:word16] = dx_59;
-				Mem1392[ds_1278:10703:word16] = 0x4348;
-				Mem1393[ds_1278:10733:word16] = 0x00;
-				Mem1394[ds_1278:10731:word16] = 0x00;
-			}
-			Mem1292[ss:fp - 0x70 + 0x00:byte] = 0x52;
-			Mem1293[ss:fp - 111 + 0x00:byte] = 0x4E;
-			Mem1294[ss:fp - 110 + 0x00:byte] = 0x43;
-			Mem1295[ss:fp - 0x6D + 0x00:byte] = 0x41;
-			Mem1296[ss:fp - 0x6C + 0x00:byte] = 0x00;
-			Mem1297[ss:fp - 0x6B + 0x00:byte] = 0x0C;
-			Mem1298[ss:fp - 0x68 + 0x00:byte] = 0x00;
-			Mem1299[ss:fp - 0x67 + 0x00:byte] = 0x0C;
-			Mem1300[ss:fp - 0x66 + 0x00:byte] = 0x00;
-			Mem1301[ss:fp - 101 + 0x00:byte] = 0x00;
-			Mem1306[ss:fp - 0x8C + 0x00:word16] = 0x00;
-			Mem1309[ss:fp - 0x8E + 0x00:word16] = 0x04;
-			Mem1311[ss:fp - 0x90 + 0x00:word16] = ss;
-			Mem1314[ss:fp - 0x92 + 0x00:word16] = fp - 0x68;
-			Mem1320[ss:fp - 0x6A + 0x00:byte] = (byte) (fn0800_2CCF(ds_1278, ptrArg00, wArg04, wArg06) >>u 0x08);
-			Mem1325[ss:fp - 0x8C + 0x00:word16] = 0x00;
-			Mem1328[ss:fp - 0x8E + 0x00:word16] = 0x04;
-			Mem1330[ss:fp - 0x90 + 0x00:word16] = ss;
-			Mem1333[ss:fp - 0x92 + 0x00:word16] = fp - 0x68;
-			Mem1337[ss:fp - 0x69 + 0x00:byte] = (byte) fn0800_2CCF(ds_1278, ptrArg00, wArg04, wArg06);
-			Mem1340[ss:fp - 0x8C + 0x00:word16] = Mem1337[ds_1278:10705:word16];
-			Mem1343[ss:fp - 0x8E + 0x00:word16] = Mem1340[ds_1278:10703:word16];
-			Mem1350[ss:fp - 0x90 + 0x00:word16] = 0x00;
-			Mem1352[ss:fp - 0x92 + 0x00:word16] = 0x0C;
-			Mem1354[ss:fp - 0x94 + 0x00:word16] = ss;
-			Mem1357[ss:fp - 0x96 + 0x00:word16] = fp - 0x70;
-			selector ds_1358 = fn0800_4152(ds_1278, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0A);
-			Mem1363[ss:fp - 0x8C + 0x00:word16] = Mem1357[ds_1358:10705:word16];
-			Mem1366[ss:fp - 0x8E + 0x00:word16] = Mem1363[ds_1358:10703:word16];
-			Mem1369[ss:fp - 0x90 + 0x00:word16] = Mem1366[ds_1358:10733:word16];
-			Mem1372[ss:fp - 0x92 + 0x00:word16] = Mem1369[ds_1358:10731:word16];
-			ds_1278 = fn0800_409C(fp - 0x02, ds_1358, wArg02, wArg04, wArg06);
-		}
-	}
-	else if ((Mem66[ds_1278:10703:word16] | Mem66[ds_1278:10705:word16]) == 0x00)
-	{
-		Mem1448[ss:fp - 0x8C + 0x00:word16] = ds_1278;
-		Mem1451[ss:fp - 0x8E + 0x00:word16] = 0x4348;
-		Mem1454[ss:fp - 0x90 + 0x00:word16] = 0x07;
-		word16 si_1455;
-		word16 di_1456;
-		fn0800_0D24(fp - 0x02, ds_1278, out si_1455, out di_1456, out ds_1278);
-	}
-	Mem87[ss:fp - 0x8C + 0x00:word16] = 0x00;
-	selector ds_104 = fn0800_1CF6(fp - 0x02, ds_1278);
-	word16 si_107 = 0x00;
+	Mem21[ss:bp - 110 + 0x00:byte] = 0x52;
+	Mem24[ss:bp - 0x6D + 0x00:byte] = 0x4E;
+	Mem25[ss:bp - 0x6C + 0x00:byte] = 0x43;
+	Mem26[ss:bp - 0x6B + 0x00:byte] = 0x41;
+	Mem27[ss:bp - 0x6A + 0x00:byte] = 0x00;
+	Mem28[ss:bp - 0x69 + 0x00:byte] = 0x0C;
+	Mem29[ss:bp - 0x66 + 0x00:byte] = 0x00;
+	Mem30[ss:bp - 101 + 0x00:byte] = 0x0C;
+	Mem31[ss:bp - 100 + 0x00:byte] = 0x00;
+	Mem32[ss:bp - 99 + 0x00:byte] = 0x00;
+	Mem37[ss:fp - 0x02 + 0x00:word16] = 0x00;
+	Mem40[ss:fp - 0x04 + 0x00:word16] = 0x04;
+	Mem42[ss:fp - 0x06 + 0x00:word16] = ss;
+	Mem45[ss:fp - 0x08 + 0x00:word16] = bp - 0x66;
+	Mem54[ss:bp - 0x68 + 0x00:byte] = (byte) (fn0800_2CCF(ds, ptrArg00, wArg04, wArg06) >>u 0x08);
+	Mem59[ss:fp - 0x02 + 0x00:word16] = 0x00;
+	Mem62[ss:fp - 0x04 + 0x00:word16] = 0x04;
+	Mem64[ss:fp - 0x06 + 0x00:word16] = ss;
+	Mem67[ss:fp - 0x08 + 0x00:word16] = bp - 0x66;
+	Mem71[ss:bp - 0x67 + 0x00:byte] = (byte) fn0800_2CCF(ds, ptrArg00, wArg04, wArg06);
+	Mem74[ss:fp - 0x02 + 0x00:word16] = Mem71[ds:10705:word16];
+	Mem77[ss:fp - 0x04 + 0x00:word16] = Mem74[ds:10703:word16];
+	Mem83[ss:fp - 0x06 + 0x00:word16] = 0x00;
+	Mem85[ss:fp - 0x08 + 0x00:word16] = 0x0C;
+	Mem87[ss:fp - 0x0A + 0x00:word16] = ss;
+	Mem90[ss:fp - 0x0C + 0x00:word16] = bp - 110;
+	selector ds_95 = fn0800_4152(bp, ds, wArg00, wArg02, wArg04, wArg08, wArg0A);
+	Mem100[ss:fp - 0x02 + 0x00:word16] = Mem90[ds_95:10705:word16];
+	Mem103[ss:fp - 0x04 + 0x00:word16] = Mem100[ds_95:10703:word16];
+	Mem106[ss:fp - 0x06 + 0x00:word16] = Mem103[ds_95:10733:word16];
+	Mem109[ss:fp - 0x08 + 0x00:word16] = Mem106[ds_95:10731:word16];
+	word16 si_110;
+	selector ds_111;
+	fn0800_409C(bp, ds_95, wArg02, wArg04, wArg06, out si_110, out ds_111);
+	fn0800_1478(bp, ds_111);
+	return;
+}
+
+// 0800:1478: void fn0800_1478(Register word16 bp, Register selector ds)
+void fn0800_1478(word16 bp, selector ds)
+{
+	fn0800_1CF6(bp, ds);
+	word16 sp_246 = fp;
+	word16 si_10 = 0x00;
 l0800_1527:
-	Mem112[ss:fp - 0x8C + 0x00:word16] = ds_104;
-	Mem115[ss:fp - 0x8E + 0x00:word16] = 0x4541;
-	byte dl_118;
-	selector ds_119;
-	Mem127[ss:fp - 0x8C + 0x00:word16] = ds_119;
-	Mem130[ss:fp - 0x8E + 0x00:word16] = 0x4541;
-	byte dl_131;
-	if (fn0800_2DE2(bp_108, si_107, ds_119, ptrArg00, wArg02, out dl_131, out ds_104) != 0x00)
+	word16 sp_34 = sp_246 - 0x02;
+	Mem35[ss:sp_34 + 0x00:word16] = ds;
+	Mem39[ss:sp_34 - 0x02 + 0x00:word16] = 0x4541;
+	byte dl_40;
+	word16 bp_41;
+	word16 si_42;
+	word16 di_43;
+	selector ds_44;
+	Mem52[ss:sp_34 + 0x00:word16] = ds_44;
+	Mem55[ss:sp_34 - 0x02 + 0x00:word16] = 0x4541;
+	sp_246 = sp_34 + 0x02;
+	byte dl_56;
+	word16 di_59;
+	word16 bp_245;
+	if (fn0800_2DE2(si_42, ds_44, out dl_56, out bp_245, out si_10, out di_59, out ds) != 0x00)
 	{
-		Mem1148[ss:fp - 0x8C + 0x00:word16] = ds_104;
-		Mem1151[ss:fp - 0x8E + 0x00:word16] = 0x4541;
-		Mem1153[ss:fp - 0x90 + 0x00:word16] = ss;
-		Mem1156[ss:fp - 0x92 + 0x00:word16] = bp_108 - 110;
-		fn0800_3509(ds_104, wArg04, wArg06);
-		Mem1160[ss:fp - 0x8C + 0x00:word16] = ds_104;
-		Mem1163[ss:fp - 0x8E + 0x00:word16] = 0x4541;
-		Mem1165[ss:fp - 0x90 + 0x00:word16] = ss;
-		Mem1168[ss:fp - 0x92 + 0x00:word16] = bp_108 - 0x84;
-		fn0800_35A3(ds_104, wArg04, wArg06);
-		Mem1175[ss:fp - 0x8C + 0x00:word16] = ss;
-		Mem1178[ss:fp - 0x8E + 0x00:word16] = bp_108 - 110;
-		word16 dx_1179;
-		word16 ax_1180 = fn0800_283D(ds_104, ptrArg00, wArg02, out dx_1179);
-		Mem1182[ss:bp_108 - 0x02 + 0x00:word16] = dx_1179;
-		Mem1183[ss:bp_108 - 0x04 + 0x00:word16] = ax_1180;
-		if ((ax_1180 | dx_1179) == 0x00)
+		Mem178[ss:sp_34 + 0x00:word16] = ds;
+		Mem181[ss:sp_34 - 0x02 + 0x00:word16] = 0x4541;
+		Mem183[ss:sp_34 - 0x04 + 0x00:word16] = ss;
+		Mem186[ss:sp_34 - 0x06 + 0x00:word16] = bp_245 - 110;
+		fn0800_3509(ds, wArg04, wArg06);
+		Mem190[ss:sp_34 + 0x00:word16] = ds;
+		Mem193[ss:sp_34 - 0x02 + 0x00:word16] = 0x4541;
+		Mem195[ss:sp_34 - 0x04 + 0x00:word16] = ss;
+		Mem198[ss:sp_34 - 0x06 + 0x00:word16] = bp_245 - 0x84;
+		fn0800_35A3(ds, wArg04, wArg06);
+		Mem204[ss:sp_34 + 0x00:word16] = ss;
+		Mem207[ss:sp_34 - 0x02 + 0x00:word16] = bp_245 - 110;
+		word16 dx_208;
+		word16 bp_209;
+		word16 ax_210 = fn0800_283D(si_10, di_59, ds, ptrArg00, out dx_208, out bp_209);
+		Mem213[ss:bp_209 - 0x02 + 0x00:word16] = dx_208;
+		Mem214[ss:bp_209 - 0x04 + 0x00:word16] = ax_210;
+		if ((ax_210 | dx_208) == 0x00)
 		{
-			Mem1257[ss:fp - 0x8C + 0x00:word16] = ss;
-			Mem1260[ss:fp - 0x8E + 0x00:word16] = bp_108 - 110;
-			word16 dx_1261;
-			word16 ax_1263 = fn0800_1F5C(bp_108, ds_104, ptrArg00, wArg02, out dx_1261, out ds_104);
-			Mem1266[ss:bp_108 - 0x02 + 0x00:word16] = dx_1261;
-			Mem1267[ss:bp_108 - 0x04 + 0x00:word16] = ax_1263;
+			Mem288[ss:sp_34 + 0x02:word16] = ss;
+			Mem291[ss:sp_34 + 0x00:word16] = bp_209 - 110;
+			word16 dx_292;
+			word16 ax_294 = fn0800_1F5C(bp_209, ds, ptrArg00, wArg02, out dx_292, out ds);
+			Mem297[ss:bp_209 - 0x02 + 0x00:word16] = dx_292;
+			Mem298[ss:bp_209 - 0x04 + 0x00:word16] = ax_294;
 		}
-		Mem1193[ss:fp - 0x8C + 0x00:word16] = Mem1183[ss:bp_108 - 0x02 + 0x00:word16];
-		Mem1196[ss:fp - 0x8E + 0x00:word16] = Mem1193[ss:bp_108 - 0x04 + 0x00:word16];
-		Mem1198[ss:fp - 0x90 + 0x00:word16] = ss;
-		Mem1201[ss:fp - 0x92 + 0x00:word16] = bp_108 - 0x84;
-		word16 dx_1202;
-		word16 ax_1203 = fn0800_2931(ptrArg00, ptrArg04, wArg06, out dx_1202);
-		Mem1205[ss:bp_108 - 0x06 + 0x00:word16] = dx_1202;
-		Mem1206[ss:bp_108 - 0x08 + 0x00:word16] = ax_1203;
-		word16 ax_1207 = ax_1203 | dx_1202;
-		if (ax_1207 == 0x00)
+		word16 sp_221 = sp_246 + 0x02;
+		Mem224[ss:sp_221 - 0x02 + 0x00:word16] = Mem214[ss:bp_209 - 0x02 + 0x00:word16];
+		Mem227[ss:sp_221 - 0x04 + 0x00:word16] = Mem224[ss:bp_209 - 0x04 + 0x00:word16];
+		Mem229[ss:sp_221 - 0x06 + 0x00:word16] = ss;
+		Mem232[ss:sp_221 - 0x08 + 0x00:word16] = bp_209 - 0x84;
+		word16 dx_234;
+		word16 ax_235 = fn0800_2931(ptrArg00, ptrArg04, wArg06, out dx_234);
+		Mem237[ss:bp_209 - 0x06 + 0x00:word16] = dx_234;
+		Mem238[ss:bp_209 - 0x08 + 0x00:word16] = ax_235;
+		word16 ax_239 = ax_235 | dx_234;
+		if (ax_239 == 0x00)
 		{
-			Mem1234[ss:fp - 0x8C + 0x00:word16] = Mem1206[ss:bp_108 - 0x02 + 0x00:word16];
-			Mem1237[ss:fp - 0x8E + 0x00:word16] = Mem1234[ss:bp_108 - 0x04 + 0x00:word16];
-			Mem1239[ss:fp - 0x90 + 0x00:word16] = ss;
-			ax_1207 = bp_108 - 0x84;
-			Mem1242[ss:fp - 0x92 + 0x00:word16] = ax_1207;
-			fn0800_2085(ds_104, ptrArg00, wArg02, ptrArg04);
+			Mem264[ss:sp_221 - 0x02 + 0x00:word16] = Mem238[ss:bp_209 - 0x02 + 0x00:word16];
+			Mem267[ss:sp_221 - 0x04 + 0x00:word16] = Mem264[ss:bp_209 - 0x04 + 0x00:word16];
+			Mem269[ss:sp_221 - 0x06 + 0x00:word16] = ss;
+			Mem272[ss:sp_221 - 0x08 + 0x00:word16] = bp_209 - 0x84;
+			ax_239 = bp_209 - 0x84;
+			bp_245 = fn0800_2085(ds, out ds);
 		}
 		else
 		{
-			Mem1247[ss:fp - 0x8C + 0x00:word16] = Mem1206[ss:bp_108 - 0x06 + 0x00:word16];
-			Mem1250[ss:fp - 0x8E + 0x00:word16] = Mem1247[ss:bp_108 - 0x08 + 0x00:word16];
-			bp_108 = fn0800_23EC(bp_108, ds_104, wArg00, wArg02, out ds_104);
+			Mem279[ss:sp_221 - 0x02 + 0x00:word16] = Mem238[ss:bp_209 - 0x06 + 0x00:word16];
+			Mem282[ss:sp_221 - 0x04 + 0x00:word16] = Mem279[ss:bp_209 - 0x08 + 0x00:word16];
+			bp_245 = fn0800_23EC(bp_209, ds, wArg00, wArg02, out ds);
 		}
-		si_107 = 0x01;
-		if ((DPB(ax_1207, 0x00, 8) << 0x08) + DPB(dx_1202, 0x00, 8) <u ~0x73)
+		sp_246 = sp_221;
+		si_10 = 0x01;
+		if ((DPB(ax_239, 0x00, 8) << 0x08) + DPB(dx_234, 0x00, 8) <u ~0x73)
 			goto l0800_1527;
 	}
-	if (si_107 == 0x00)
+	if (si_10 != 0x00)
 	{
-		Mem186[ss:fp - 0x8C + 0x00:word16] = Mem130[ds_104:10705:word16];
-		Mem189[ss:fp - 0x8E + 0x00:word16] = Mem186[ds_104:10703:word16];
-		byte dl_190;
-		word16 di_191;
-		selector ds_192;
-		fn0800_A614(bp_108, ds_104, ptrArg00, wArg02, out dl_190, out di_191, out ds_192);
-		return dl_190;
+		selector ds_118;
+		word16 bp_119 = fn0800_1E5E(bp_245, si_10, ds, out ds_118);
+		word16 sp_121 = sp_246 - 0x02;
+		Mem122[ss:sp_121 + 0x00:word16] = 0x01;
+		fn0800_1CF6(bp_119, ds_118);
+		Mem126[ss:sp_121 + 0x00:word16] = 0x01;
+		Mem131[ss:sp_121 - 0x02 + 0x00:word16] = 0x00;
+		fn0800_2DBF(ds_118, wArg00, wArg02);
+		word16 dx_136 = Mem131[ds_118:10703:word16];
+		Mem137[ds_118:10721:word16] = Mem131[ds_118:10705:word16];
+		Mem138[ds_118:10719:word16] = dx_136;
+		Mem140[ss:sp_121 + 0x00:word16] = ds_118;
+		Mem143[ss:sp_121 - 0x02 + 0x00:word16] = 2373;
+		Mem145[ss:sp_121 - 0x04 + 0x00:word16] = ds_118;
+		Mem148[ss:sp_121 - 0x06 + 0x00:word16] = 0x4477;
+		word16 di_151;
+		word16 si_152 = fn0800_37BE(ds_118, wArg00, wArg02, wArg04, wArg06, out di_151);
+		Mem156[ss:sp_121 + 0x00:word16] = ds_118;
+		Mem159[ss:sp_121 - 0x02 + 0x00:word16] = 0x0941;
+		Mem161[ss:sp_121 - 0x04 + 0x00:word16] = ds_118;
+		Mem164[ss:sp_121 - 0x06 + 0x00:word16] = 0x4477;
+		word16 di_165;
+		selector ds_166;
+		word16 si_167 = fn0800_4234(si_152, di_151, ds_118, wArg00, wArg02, wArg04, wArg06, out di_165, out ds_166);
+		Mem170[ds_166:10717:word16] = dx_136;
+		Mem171[ds_166:10715:word16] = 0x4477;
+		word16 bp_172;
+		word16 si_173;
+		selector ds_174;
+		fn0800_1897(si_167, ds_166, out bp_172, out si_173, out ds_174);
+		return;
 	}
-	selector ds_207;
-	word16 bp_208 = fn0800_1E5E(bp_108, si_107, ds_104, out ds_207);
-	Mem211[ss:fp - 0x8C + 0x00:word16] = 0x01;
-	selector ds_212 = fn0800_1CF6(bp_208, ds_207);
-	Mem216[ss:fp - 0x8C + 0x00:word16] = 0x01;
-	Mem221[ss:fp - 0x8E + 0x00:word16] = 0x00;
-	fn0800_2DBF(ds_212, wArg00, wArg02);
-	word16 dx_226 = Mem221[ds_212:10703:word16];
-	Mem228[ds_212:10721:word16] = Mem221[ds_212:10705:word16];
-	Mem229[ds_212:10719:word16] = dx_226;
-	Mem231[ss:fp - 0x8C + 0x00:word16] = ds_212;
-	Mem234[ss:fp - 0x8E + 0x00:word16] = 2373;
-	Mem236[ss:fp - 0x90 + 0x00:word16] = ds_212;
-	Mem239[ss:fp - 0x92 + 0x00:word16] = 0x4477;
-	word16 di_242;
-	word16 si_243 = fn0800_37BE(ds_212, wArg00, wArg02, wArg04, wArg06, out di_242);
-	Mem247[ss:fp - 0x8C + 0x00:word16] = ds_212;
-	Mem250[ss:fp - 0x8E + 0x00:word16] = 0x0941;
-	Mem252[ss:fp - 0x90 + 0x00:word16] = ds_212;
-	Mem255[ss:fp - 0x92 + 0x00:word16] = 0x4477;
-	word16 di_256;
-	selector ds_257;
-	word16 si_258 = fn0800_4234(si_243, di_242, ds_212, wArg00, wArg02, wArg04, wArg06, out di_256, out ds_257);
-	Mem261[ds_257:10717:word16] = dx_226;
-	Mem262[ds_257:10715:word16] = 0x4477;
-	ui32 dx_bp_227 = SEQ(dx_226, bp_208);
-l0800_1897:
-	Mem282[ss:fp - 0x8C + 0x00:word16] = ds_257;
-	Mem285[ss:fp - 0x8E + 0x00:word16] = 0x4541;
-	byte dl_286;
-	if (fn0800_2DE2(bp_208, si_258, ds_257, ptrArg00, wArg02, out dl_286, out ds_257) == 0x00)
-		goto l0800_18A9;
-	Mem356[ss:fp - 0x8C + 0x00:word16] = ds_257;
-	Mem359[ss:fp - 0x8E + 0x00:word16] = 0x093D;
-	Mem361[ss:fp - 0x90 + 0x00:word16] = ds_257;
-	Mem364[ss:fp - 0x92 + 0x00:word16] = 0x4541;
-	word16 di_365;
-	selector ds_366;
-	fn0800_4234(si_258, di_256, ds_257, wArg00, wArg02, wArg04, wArg06, out di_365, out ds_366);
-	Mem370[ds_366:0x29E5:word16] = dx_226;
-	Mem371[ds_366:0x29E3:word16] = 0x4541;
-	Mem373[ss:fp - 0x8C + 0x00:word16] = ds_366;
-	Mem376[ss:fp - 0x8E + 0x00:word16] = 0x4541;
-	Mem378[ss:fp - 0x90 + 0x00:word16] = ss;
-	Mem381[ss:fp - 0x92 + 0x00:word16] = bp_208 - 110;
-	fn0800_3509(ds_366, wArg04, wArg06);
-	Mem385[ss:fp - 0x8C + 0x00:word16] = ds_366;
-	Mem388[ss:fp - 0x8E + 0x00:word16] = 0x4541;
-	Mem390[ss:fp - 0x90 + 0x00:word16] = ss;
-	Mem393[ss:fp - 0x92 + 0x00:word16] = bp_208 - 0x84;
-	ui32 dx_bp_396 = DPB(dx_bp_227, fn0800_35A3(ds_366, wArg04, wArg06), 16);
-	Mem400[ss:fp - 0x8C + 0x00:word16] = ds_366;
-	Mem403[ss:fp - 0x8E + 0x00:word16] = 0x4541;
-	fn0800_0C93(bp_208, ds_366, wArg00, wArg02);
-	Mem407[ss:fp - 0x8C + 0x00:word16] = ss;
-	Mem410[ss:fp - 0x8E + 0x00:word16] = bp_208 - 110;
-	word16 dx_411;
-	word16 ax_412 = fn0800_283D(ds_366, ptrArg00, wArg02, out dx_411);
-	Mem416[ss:fp - 0x8C + 0x00:word16] = dx_411;
-	Mem418[ss:fp - 0x8E + 0x00:word16] = ax_412;
-	Mem420[ss:fp - 0x90 + 0x00:word16] = ss;
-	Mem423[ss:fp - 0x92 + 0x00:word16] = bp_208 - 0x84;
-	word16 dx_425;
-	word16 ax_426 = fn0800_2931(ptrArg00, ptrArg04, wArg06, out dx_425);
-	Mem429[ss:bp_208 - 0x06 + 0x00:word16] = dx_425;
-	Mem430[ss:bp_208 - 0x08 + 0x00:word16] = ax_426;
-	Mem433[ss:fp - 0x8C + 0x00:word16] = Mem430[ds_366:10705:word16];
-	Mem436[ss:fp - 0x8E + 0x00:word16] = Mem433[ds_366:10703:word16];
-	word16 si_437;
-	selector ds_438;
-	fn0800_4194(bp_208, ds_366, wArg00, wArg02, out si_437, out ds_438);
-	Mem447[ds_438:0x29E9:word16] = SLICE(dx_bp_396 - 110, word16, 16);
-	Mem448[ds_438:10727:word16] = (word16) (dx_bp_396 - 110);
-	int32 dx_ax_450 = (int32) Mem448[ds_438:0x29E9:word16];
-	word16 dx_454;
-	word16 ax_455 = fn0800_8C8A((word16) dx_ax_450, 0x08, SLICE(dx_ax_450, word16, 16), bp, out dx_454);
-	ptr32 es_di_456 = Mem448[ss:bp_208 - 0x08 + 0x00:segptr32];
-	Mem460[ss:fp - 0x8C + 0x00:word16] = ax_455;
-	word16 di_1143 = (word16) es_di_456;
-	selector es_1129 = SLICE(es_di_456, selector, 16);
-	word16 cx_1145 = ~0x00;
-	if (cx_1145 != 0x00)
+	else
 	{
-		di_1143 = di_1143 + 0x01;
-		cx_1145 = cx_1145 - 0x01;
-		if (0x00 != Mem460[es_1129:di_1143 + 0x00:byte])
-			goto l0800_1632;
+		word16 sp_99 = sp_246 - 0x02;
+		Mem100[ss:sp_99 + 0x00:word16] = Mem55[ds:10705:word16];
+		Mem103[ss:sp_99 - 0x02 + 0x00:word16] = Mem100[ds:10703:word16];
+		byte dl_106;
+		word16 di_107;
+		selector ds_108;
+		fn0800_A614(bp_245, ds, ptrArg00, wArg02, out dl_106, out di_107, out ds_108);
+		return;
 	}
-	word16 cx_1139 = ~cx_1145;
-	word16 di_1125 = di_1143 - cx_1139;
-	byte Z_1133 = cond(di_1125);
-	if (cx_1139 != 0x00)
-	{
-		Z_1133 = cond(0x00 - Mem460[es_1129:di_1125 + 0x00:byte]);
-		di_1125 = di_1125 + 0x01;
-		cx_1139 = cx_1139 - 0x01;
-		if (0x00 != Mem460[es_1129:di_1125 + 0x00:byte])
-			goto l0800_163A;
-	}
-	if (!Z_1133)
-	{
-		di_1125 = 0x01;
-		es_1129 = 0x00;
-	}
-	Mem515[es_1129:di_1125 + 0x00:byte] = (byte) Mem460[ss:fp - 0x8C + 0x00:word16];
-	ptr32 es_di_519 = Mem515[ss:bp_208 - 0x08 + 0x00:segptr32];
-	Mem523[ss:fp - 0x8C + 0x00:word16] = (word16) (int32) Mem515[ds_438:0x29E9:word16];
-	word16 di_1121 = (word16) es_di_519 + 0x01;
-	selector es_1107 = SLICE(es_di_519, selector, 16);
-	word16 cx_1123 = ~0x00;
-	if (cx_1123 != 0x00)
-	{
-		di_1121 = di_1121 + 0x00;
-		cx_1123 = cx_1123 - 0x01;
-		if (0x00 != Mem523[es_1107:di_1121 + 0x00:byte])
-			goto l0800_165C;
-	}
-	word16 cx_1117 = ~cx_1123;
-	word16 di_1103 = di_1121 - cx_1117;
-	byte Z_1111 = cond(di_1103);
-	if (cx_1117 != 0x00)
-	{
-		Z_1111 = cond(0x00 - Mem523[es_1107:di_1103 + 0x00:byte]);
-		di_1103 = di_1103 + 0x01;
-		cx_1117 = cx_1117 - 0x01;
-		if (0x00 != Mem523[es_1107:di_1103 + 0x00:byte])
-			goto l0800_1664;
-	}
-	if (!Z_1111)
-	{
-		di_1103 = 0x01;
-		es_1107 = 0x00;
-	}
-	Mem579[es_1107:di_1103 + 0x01:byte] = (byte) Mem523[ss:fp - 0x8C + 0x00:word16];
-	word16 dx_580 = Mem579[ds_438:0x29E9:word16];
-	word16 dx_584;
-	word16 ax_585 = fn0800_8C8A(Mem579[ds_438:10727:word16], 0x08, dx_580, bp, out dx_584);
-	ptr32 es_di_586 = Mem579[ss:bp_208 - 0x08 + 0x00:segptr32];
-	Mem590[ss:fp - 0x8C + 0x00:word16] = ax_585;
-	ui32 dx_bp_581 = SEQ(dx_580, bp_208);
-	word16 di_1099 = (word16) es_di_586;
-	selector es_1085 = SLICE(es_di_586, selector, 16);
-	word16 cx_1101 = ~0x00;
-	if (cx_1101 != 0x00)
-	{
-		di_1099 = di_1099 + 0x01;
-		cx_1101 = cx_1101 - 0x01;
-		if (0x00 != Mem590[es_1085:di_1099 + 0x00:byte])
-			goto l0800_168E;
-	}
-	word16 cx_1095 = ~cx_1101;
-	word16 di_1081 = di_1099 - cx_1095;
-	byte Z_1089 = cond(di_1081);
-	if (cx_1095 != 0x00)
-	{
-		Z_1089 = cond(0x00 - Mem590[es_1085:di_1081 + 0x00:byte]);
-		di_1081 = di_1081 + 0x01;
-		cx_1095 = cx_1095 - 0x01;
-		if (0x00 != Mem590[es_1085:di_1081 + 0x00:byte])
-			goto l0800_1696;
-	}
-	if (!Z_1089)
-	{
-		di_1081 = 0x01;
-		es_1085 = 0x00;
-	}
-	Mem645[es_1085:di_1081 + 0x02:byte] = (byte) Mem590[ss:fp - 0x8C + 0x00:word16];
-	ptr32 es_di_646 = Mem645[ss:bp_208 - 0x08 + 0x00:segptr32];
-	word16 di_1077 = (word16) es_di_646;
-	selector es_1063 = SLICE(es_di_646, selector, 16);
-	word16 cx_1079 = ~0x00;
-	if (cx_1079 != 0x00)
-	{
-		di_1077 = di_1077 + 0x01;
-		cx_1079 = cx_1079 - 0x01;
-		if (0x00 != Mem645[es_1063:di_1077 + 0x00:byte])
-			goto l0800_16B3;
-	}
-	word16 cx_1073 = ~cx_1079;
-	word16 di_1059 = di_1077 - cx_1073;
-	byte Z_1067 = cond(di_1059);
-	if (cx_1073 != 0x00)
-	{
-		Z_1067 = cond(0x00 - Mem645[es_1063:di_1059 + 0x00:byte]);
-		di_1059 = di_1059 + 0x01;
-		cx_1073 = cx_1073 - 0x01;
-		if (0x00 != Mem645[es_1063:di_1059 + 0x00:byte])
-			goto l0800_16BB;
-	}
-	if (!Z_1067)
-	{
-		di_1059 = 0x01;
-		es_1063 = 0x00;
-	}
-	byte dl_699 = Mem645[ds_438:10727:byte];
-	Mem703[es_1063:di_1059 + 0x03:byte] = dl_699;
-	Mem709[ds_438:0x2A05:word16] = 0x00;
-	Mem710[ds_438:0x2A03:word16] = 0x00;
-	Mem714[ss:fp - 0x8C + 0x00:word16] = Mem710[ds_438:0x29E5:word16];
-	Mem717[ss:fp - 0x8E + 0x00:word16] = Mem714[ds_438:0x29E3:word16];
-	word16 dx_1021 = DPB(dx_584, dl_699, 0);
-	selector ds_719;
-	word16 ax_720 = fn0800_4194(bp_208, ds_438, wArg00, wArg02, out si_258, out ds_719);
-	Mem722[ds_719:0x2A09:word16] = dx_1021;
-	Mem723[ds_719:0x2A07:word16] = ax_720;
-	Mem728[ss:fp - 0x8C + 0x00:word16] = 0x00;
-	Mem731[ss:fp - 0x8E + 0x00:word16] = Mem728[ds_719:0x29E9:word16];
-	Mem734[ss:fp - 0x90 + 0x00:word16] = Mem731[ds_719:10727:word16];
-	Mem737[ss:fp - 0x92 + 0x00:word16] = Mem734[ds_719:10721:word16];
-	Mem740[ss:fp - 0x94 + 0x00:word16] = Mem737[ds_719:10719:word16];
-	ui32 dx_bp_1022 = DPB(dx_bp_581, dl_699, 16);
-	word16 di_1009 = 0x01;
-	selector ds_1036;
-	word16 ax_743 = fn0800_ACB3(bp_208, ds_719, ptrArg00, wArg02, wArg08, out ds_1036);
-	if (Mem740[ds_1036:0x2A09:word16] >=u 0x00)
-	{
-		if ((Mem740[ds_1036:0x2A09:word16] >u 0x00 || Mem740[ds_1036:0x2A07:word16] >u 0x12) && Mem740[ds_1036:0x2A21:word16] != 0x00)
-		{
-			Mem961[ss:fp - 0x8C + 0x00:word16] = Mem740[ds_1036:0x29E5:word16];
-			Mem964[ss:fp - 0x8E + 0x00:word16] = Mem961[ds_1036:0x29E3:word16];
-			word16 dx_967 = fn0800_3F58(bp_208, ds_1036, wArg00, wArg02, out di_1009, out ds_1036);
-			dx_bp_1022 = SEQ(dx_967, bp_208);
-			word16 ax_973 = fn0800_8CAA(ax_743, 0x08, dx_967, bp, out dx_1021);
-			if (dx_1021 != 0x52 || ax_973 != 0x4E43)
-			{
-				word16 ax_1005;
-				Mem981[ss:fp - 0x8C + 0x00:word16] = Mem964[ds_1036:0x2A09:word16];
-				Mem984[ss:fp - 0x8E + 0x00:word16] = Mem981[ds_1036:0x2A07:word16];
-				Mem987[ss:fp - 0x90 + 0x00:word16] = Mem984[ds_1036:0x2A09:word16];
-				Mem990[ss:fp - 0x92 + 0x00:word16] = Mem987[ds_1036:0x2A07:word16];
-				ds_1036 = fn0800_75EA(bp_208, ds_1036, wArg00, wArg02, wArg04, wArg06);
-				dx_1021 = Mem990[ds_1036:0x2A03:word16];
-				word16 ax_993 = Mem990[ds_1036:0x2A05:word16];
-				dx_bp_1022 = SEQ(dx_1021, bp_208);
-				if (ax_993 >=u Mem990[ds_1036:0x2A09:word16] && (ax_993 != Mem990[ds_1036:0x2A09:word16] || dx_1021 >=u Mem990[ds_1036:0x2A07:word16]))
-					ax_1005 = 0x01;
-				else
-					ax_1005 = 0x00;
-				di_1009 = ax_1005;
-				if (ax_1005 != 0x00)
-				{
-					Mem1017[ss:fp - 0x8C + 0x00:word16] = 0x01;
-					dx_1021 = -Mem1017[ds_1036:0x2A03:word16];
-					Mem1027[ss:fp - 0x8E + 0x00:word16] = -Mem1017[ds_1036:0x2A05:word16] - (dx_1021 == 0x00);
-					Mem1029[ss:fp - 0x90 + 0x00:word16] = dx_1021;
-					Mem1032[ss:fp - 0x92 + 0x00:word16] = Mem1029[ds_1036:10721:word16];
-					Mem1035[ss:fp - 0x94 + 0x00:word16] = Mem1032[ds_1036:10719:word16];
-					fn0800_ACB3(bp_208, ds_1036, ptrArg00, wArg02, wArg08, out ds_1036);
-					dx_bp_1022 = SEQ(dx_1021, bp_208);
-				}
-			}
-		}
-	}
-	if (di_1009 == 0x00)
-	{
-l0800_183F:
-		Mem780[ss:fp - 0x8C + 0x00:word16] = Mem740[ds_1036:10705:word16];
-		Mem783[ss:fp - 0x8E + 0x00:word16] = Mem780[ds_1036:10703:word16];
-		Mem786[ss:fp - 0x90 + 0x00:word16] = Mem783[ds_1036:10733:word16];
-		Mem789[ss:fp - 0x92 + 0x00:word16] = Mem786[ds_1036:10731:word16];
-		selector ds_790 = fn0800_409C(bp_208, ds_1036, wArg02, wArg04, wArg06);
-		Mem795[ss:fp - 0x8C + 0x00:word16] = Mem789[ds_790:0x29E5:word16];
-		Mem798[ss:fp - 0x8E + 0x00:word16] = Mem795[ds_790:0x29E3:word16];
-		byte dl_799;
-		selector ds_801;
-		fn0800_A614(bp_208, ds_790, ptrArg00, wArg02, out dl_799, out di_256, out ds_801);
-		Mem806[ss:fp - 0x8C + 0x00:word16] = ds_801;
-		Mem809[ss:fp - 0x8E + 0x00:word16] = 0x4541;
-		Mem811[ss:fp - 0x90 + 0x00:word16] = si_258;
-		ds_257 = fn0800_0ABC(bp_208, ds_801, wArg00, wArg02, wArg04);
-		dx_226 = DPB(dx_1021, 0x00, 8);
-		dx_bp_227 = DPB(dx_bp_1022, 0x00, 24);
-		if (dx_226 <u 0x4174)
-			goto l0800_1897;
-		Mem830[ss:fp - 0x8C + 0x00:word16] = ds_257;
-		Mem833[ss:fp - 0x8E + 0x00:word16] = 0x0952;
-		word16 di_834;
-		si_258 = fn0800_B2EF(ds_257, wArg00, wArg02, out di_834);
-l0800_18A9:
-		Mem313[ss:fp - 0x8C + 0x00:word16] = Mem285[ds_257:10717:word16];
-		Mem316[ss:fp - 0x8E + 0x00:word16] = Mem313[ds_257:10715:word16];
-		byte dl_317;
-		word16 di_318;
-		selector ds_319;
-		fn0800_A614(bp_208, ds_257, ptrArg00, wArg02, out dl_317, out di_318, out ds_319);
-		Mem324[ss:fp - 0x8C + 0x00:word16] = ds_319;
-		Mem328[ss:fp - 0x8E + 0x00:word16] = 0x4477;
-		fn0800_8F7F(0x77, ds_319, ptrArg00);
-		selector ds_333;
-		word16 bp_334 = fn0800_1E5E(bp_208, si_258, ds_319, out ds_333);
-		Mem337[ss:fp - 0x8C + 0x00:word16] = Mem328[ds_333:10705:word16];
-		Mem340[ss:fp - 0x8E + 0x00:word16] = Mem337[ds_333:10703:word16];
-		byte dl_341;
-		word16 di_342;
-		selector ds_343;
-		fn0800_A614(bp_334, ds_333, ptrArg00, wArg02, out dl_341, out di_342, out ds_343);
-		return dl_341;
-	}
-	word16 ax_838 = Mem740[ds_1036:0x2A09:word16];
-	word16 dx_839 = Mem740[ds_1036:0x2A07:word16];
-	Mem841[ds_1036:0x2A05:word16] = ax_838;
-	Mem842[ds_1036:0x2A03:word16] = dx_839;
-	Mem845[ss:fp - 0x8C + 0x00:word16] = Mem842[ds_1036:0x29E5:word16];
-	Mem848[ss:fp - 0x8E + 0x00:word16] = Mem845[ds_1036:0x29E3:word16];
-	selector ds_849 = fn0800_BA67(ds_1036, wArg00, wArg02);
-	if (Mem848[ds_849:0x2A09:word16] >=u 0x00 && (Mem848[ds_849:0x2A09:word16] != 0x00 || Mem848[ds_849:0x2A07:word16] >=u 0x12))
-	{
-		Mem934[ss:fp - 0x8C + 0x00:word16] = Mem848[ds_849:0x29E5:word16];
-		Mem937[ss:fp - 0x8E + 0x00:word16] = Mem934[ds_849:0x29E3:word16];
-		word16 di_938;
-		word16 dx_940 = fn0800_3F58(bp_208, ds_849, wArg00, wArg02, out di_938, out ds_849);
-		dx_bp_1022 = SEQ(dx_940, bp_208);
-		word16 ax_946 = fn0800_8CAA(ax_838, 0x08, dx_940, bp, out dx_1021);
-		if (dx_1021 == 0x52 && ax_946 == 0x4E43)
-		{
-l0800_181E:
-			Mem870[ss:fp - 0x8C + 0x00:word16] = Mem848[ds_849:0x2A09:word16];
-			Mem873[ss:fp - 0x8E + 0x00:word16] = Mem870[ds_849:0x2A07:word16];
-			Mem876[ss:fp - 0x90 + 0x00:word16] = Mem873[ds_849:10705:word16];
-			Mem879[ss:fp - 0x92 + 0x00:word16] = Mem876[ds_849:10703:word16];
-			Mem882[ss:fp - 0x94 + 0x00:word16] = Mem879[ds_849:0x29E5:word16];
-			Mem885[ss:fp - 0x96 + 0x00:word16] = Mem882[ds_849:0x29E3:word16];
-			ds_1036 = fn0800_3B0A(bp_208, ds_849, wArg08, wArg0A);
-			si_258 = 0x02;
-			goto l0800_183F;
-		}
-	}
-	Mem902[ss:fp - 0x8C + 0x00:word16] = Mem848[ds_849:10705:word16];
-	Mem905[ss:fp - 0x8E + 0x00:word16] = Mem902[ds_849:10703:word16];
-	Mem910[ss:fp - 0x90 + 0x00:word16] = 21070;
-	Mem912[ss:fp - 0x92 + 0x00:word16] = 0x4300;
-	selector ds_913 = fn0800_409C(bp_208, ds_849, wArg02, wArg04, wArg06);
-	Mem918[ss:fp - 0x8C + 0x00:word16] = Mem912[ds_913:10705:word16];
-	Mem921[ss:fp - 0x8E + 0x00:word16] = Mem918[ds_913:10703:word16];
-	Mem924[ss:fp - 0x90 + 0x00:word16] = Mem921[ds_913:0x2A09:word16];
-	Mem927[ss:fp - 0x92 + 0x00:word16] = Mem924[ds_913:0x2A07:word16];
-	dx_1021 = 0x4300;
-	dx_bp_1022 = SEQ(0x4300, bp_208);
-	ds_849 = fn0800_409C(bp_208, ds_913, wArg02, wArg04, wArg06);
-	goto l0800_181E;
 }
 
-byte fn0800_18D9(word16 bp, selector ds, ptr16 & siOut, ptr16 & dsOut)
+// 0800:1758: Register byte fn0800_1758(Register word16 bp, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 dsOut)
+byte fn0800_1758(word16 bp, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
+{
+	word16 ax_19;
+	selector ds_8 = fn0800_75EA(bp, ds, wArg00, wArg02, wArg04, wArg06);
+	word16 ax_12 = Mem0[ds_8:0x2A05:word16];
+	word16 dx_13 = Mem0[ds_8:0x2A03:word16];
+	if (ax_12 >=u Mem0[ds_8:0x2A09:word16] && (ax_12 != Mem0[ds_8:0x2A09:word16] || dx_13 >=u Mem0[ds_8:0x2A07:word16]))
+		ax_19 = 0x01;
+	else
+		ax_19 = 0x00;
+	if (ax_19 == 0x00)
+	{
+		word16 bp_71;
+		word16 si_72;
+		selector ds_73;
+		return fn0800_17A2(bp, ax_19, ds_8, out bp_71, out si_72, out ds_73);
+	}
+	else
+	{
+		Mem41[ss:fp + 0x04:word16] = 0x01;
+		word16 dx_46 = -Mem41[ds_8:0x2A03:word16];
+		Mem51[ss:fp + 0x02:word16] = -Mem41[ds_8:0x2A05:word16] - (dx_46 == 0x00);
+		Mem53[ss:fp + 0x00:word16] = dx_46;
+		Mem56[ss:fp - 0x02 + 0x00:word16] = Mem53[ds_8:10721:word16];
+		Mem59[ss:fp - 0x04 + 0x00:word16] = Mem56[ds_8:10719:word16];
+		word16 di_61;
+		selector ds_62;
+		fn0800_ACB3(bp, ds_8, wArg00, wArg02, wArg08, out di_61, out ds_62);
+		word16 bp_66;
+		word16 si_67;
+		selector ds_68;
+		return fn0800_17A2(bp, di_61, ds_62, out bp_66, out si_67, out ds_68);
+	}
+}
+
+// 0800:17A2: Register byte fn0800_17A2(Register word16 bp, Register word16 di, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 dsOut)
+byte fn0800_17A2(word16 bp, word16 di, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
+{
+fn0800_17A2_entry:
+	def fp
+	def di
+	def Mem0
+	def ss
+	def wArg02
+	def wArg04
+	def wArg06
+	def ptrArg00
+	def wArg00
+	def bpOut
+	def siOut
+	def dsOut
+	def wLoc02
+	def wLoc04
+	def bp
+	def ds
+	def dx
+	def al
+	def ah
+	def cl
+	def wArg08
+	def wArg0A
+	def dl
+	sp_1 = fp
+	di_3 = di | di
+	SZO_4 = cond(di_3)
+	Z_5 = SZO_4 (alias)
+	C_6 = false
+	branch di_3 != 0x00 l0800_17A9
+	goto l0800_183F
+l0800_17A2:
+l0800_17A9:
+	ax_101 = Mem0[ds:0x2A09:word16]
+	dx_102 = Mem0[ds:0x2A07:word16]
+	Mem103[ds:0x2A05:word16] = ax_101
+	Mem104[ds:0x2A03:word16] = dx_102
+	v27_105 = Mem104[ds:0x29E5:word16]
+	sp_106 = fp - 0x02
+	wLoc02_107 = v27_105
+	v28_108 = Mem104[ds:0x29E3:word16]
+	sp_109 = fp - 0x04
+	wLoc04_110 = v28_108
+	ds_111 = fn0800_BA67(ds, wLoc04_110, wLoc02_107)
+	sp_112 = sp_109 + 0x04
+	SCZO_113 = cond(Mem104[ds_111:0x2A09:word16] - 0x00)
+	C_114 = SCZO_113 (alias)
+	SZO_115 = SCZO_113 (alias)
+	Z_116 = SCZO_113 (alias)
+	branch Mem104[ds_111:0x2A09:word16] <u 0x00 l0800_17F2
+l0800_17CC:
+	branch Mem104[ds_111:0x2A09:word16] != 0x00 l0800_17D5
+l0800_17CE:
+	SCZO_220 = cond(Mem104[ds_111:0x2A07:word16] - 0x12)
+	C_221 = SCZO_220 (alias)
+	branch Mem104[ds_111:0x2A07:word16] <u 0x12 l0800_17F2
+l0800_17D5:
+	C_198 = PHI(C_114, C_221)
+	v29_199 = Mem104[ds_111:0x29E5:word16]
+	sp_200 = sp_112 - 0x02
+	Mem201[ss:sp_200 + 0x00:word16] = v29_199
+	v30_202 = Mem201[ds_111:0x29E3:word16]
+	sp_203 = sp_200 - 0x02
+	Mem204[ss:sp_203 + 0x00:word16] = v30_202
+	dx_207 = fn0800_3F58(bp, ds_111, wArg00, wArg02, out di_205, out ds_206)
+	sp_208 = sp_203 + 0x04
+	SCZO_209 = cond(sp_208)
+	cl_210 = 0x08
+	ax_212 = fn0800_8CAA(ax_101, cl_210, dx_207, wLoc02_107, out dx_211)
+	al_213 = (byte) ax_212 (alias)
+	ah_214 = SLICE(ax_212, byte, 8) (alias)
+	SCZO_215 = cond(dx_211 - 0x52)
+	Z_216 = SCZO_215 (alias)
+	branch dx_211 != 0x52 l0800_17F2
+l0800_17ED:
+	SCZO_217 = cond(ax_212 - 0x4E43)
+	Z_218 = SCZO_217 (alias)
+	branch ax_212 == 0x4E43 l0800_181E
+l0800_17F2:
+	Z_156 = PHI(Z_116, Z_116, Z_216, Z_218)
+	al_157 = PHI(al, al, al_213, al_213)
+	ah_158 = PHI(ah, ah, ah_214, ah_214)
+	cl_159 = PHI(cl, cl, cl_210, cl_210)
+	C_160 = PHI(C_114, C_221, C_198, C_198)
+	di_161 = PHI(di_3, di_3, di_205, di_205)
+	sp_162 = PHI(sp_112, sp_112, sp_208, sp_208)
+	ds_163 = PHI(ds_111, ds_111, ds_206, ds_206)
+	v31_164 = Mem104[ds_163:10705:word16]
+	sp_165 = sp_162 - 0x02
+	Mem166[ss:sp_165 + 0x00:word16] = v31_164
+	v32_167 = Mem166[ds_163:10703:word16]
+	sp_168 = sp_165 - 0x02
+	Mem169[ss:sp_168 + 0x00:word16] = v32_167
+	ax_170 = 21070
+	dx_171 = 0x4300
+	sp_172 = sp_168 - 0x02
+	Mem173[ss:sp_172 + 0x00:word16] = 21070
+	sp_174 = sp_172 - 0x02
+	Mem175[ss:sp_174 + 0x00:word16] = 0x4300
+	dl_178 = fn0800_409C(bp, ds_163, wArg02, wArg04, wArg06, out si_176, out ds_177)
+	sp_179 = sp_174 + 0x08
+	SCZO_180 = cond(sp_179)
+	v33_181 = Mem175[ds_177:10705:word16]
+	sp_182 = sp_179 - 0x02
+	Mem183[ss:sp_182 + 0x00:word16] = v33_181
+	v34_184 = Mem183[ds_177:10703:word16]
+	sp_185 = sp_182 - 0x02
+	Mem186[ss:sp_185 + 0x00:word16] = v34_184
+	v35_187 = Mem186[ds_177:0x2A09:word16]
+	sp_188 = sp_185 - 0x02
+	Mem189[ss:sp_188 + 0x00:word16] = v35_187
+	v36_190 = Mem189[ds_177:0x2A07:word16]
+	sp_191 = sp_188 - 0x02
+	Mem192[ss:sp_191 + 0x00:word16] = v36_190
+	dl_195 = fn0800_409C(bp, ds_177, wArg02, wArg04, wArg06, out si_193, out ds_194)
+	sp_196 = sp_191 + 0x08
+	SCZO_197 = cond(sp_196)
+l0800_181E:
+	Z_120 = PHI(Z_218, Z_156)
+	al_121 = PHI(al_213, al_157)
+	ah_122 = PHI(ah_214, ah_158)
+	cl_123 = PHI(cl_210, cl_159)
+	C_124 = PHI(C_198, C_160)
+	ax_125 = PHI(ax_212, ax_170)
+	di_126 = PHI(di_205, di_161)
+	sp_127 = PHI(sp_208, sp_196)
+	ds_128 = PHI(ds_206, ds_194)
+	dl_129 = PHI(dl, dl_195)
+	dx_130 = PHI(dx_211, dx_171)
+	v37_131 = Mem104[ds_128:0x2A09:word16]
+	sp_132 = sp_127 - 0x02
+	Mem133[ss:sp_132 + 0x00:word16] = v37_131
+	v38_134 = Mem133[ds_128:0x2A07:word16]
+	sp_135 = sp_132 - 0x02
+	Mem136[ss:sp_135 + 0x00:word16] = v38_134
+	v39_137 = Mem136[ds_128:10705:word16]
+	sp_138 = sp_135 - 0x02
+	Mem139[ss:sp_138 + 0x00:word16] = v39_137
+	v40_140 = Mem139[ds_128:10703:word16]
+	sp_141 = sp_138 - 0x02
+	Mem142[ss:sp_141 + 0x00:word16] = v40_140
+	v41_143 = Mem142[ds_128:0x29E5:word16]
+	sp_144 = sp_141 - 0x02
+	Mem145[ss:sp_144 + 0x00:word16] = v41_143
+	v42_146 = Mem145[ds_128:0x29E3:word16]
+	sp_147 = sp_144 - 0x02
+	Mem148[ss:sp_147 + 0x00:word16] = v42_146
+	bp_152 = fn0800_3B0A(bp, ds_128, wArg08, wArg0A, out ds_151)
+	sp_153 = sp_147 + 0x0C
+	SCZO_154 = cond(sp_153)
+	si_155 = 0x02
+l0800_183F:
+	wLoc02_7 = PHI(wLoc02, wLoc02_107)
+	wLoc04_8 = PHI(wLoc04, wLoc04_110)
+	SZO_9 = PHI(SZO_4, SZO_115)
+	Z_10 = PHI(Z_5, Z_120)
+	sp_11 = PHI(sp_1, sp_153)
+	bp_12 = PHI(bp, bp_152)
+	ds_13 = PHI(ds, ds_151)
+	dx_14 = PHI(dx, dx_130)
+	v8_16 = Mem0[ds_13:10705:word16]
+	sp_17 = sp_11 - 0x02
+	Mem18[ss:sp_17 + 0x00:word16] = v8_16
+	v10_20 = Mem18[ds_13:10703:word16]
+	sp_21 = sp_17 - 0x02
+	Mem22[ss:sp_21 + 0x00:word16] = v10_20
+	v11_23 = Mem22[ds_13:10733:word16]
+	sp_24 = sp_21 - 0x02
+	Mem25[ss:sp_24 + 0x00:word16] = v11_23
+	v12_26 = Mem25[ds_13:10731:word16]
+	sp_27 = sp_24 - 0x02
+	Mem28[ss:sp_27 + 0x00:word16] = v12_26
+	dl_34 = fn0800_409C(bp_12, ds_13, wArg02, wArg04, wArg06, out si_32, out ds_33)
+	sp_35 = sp_27 + 0x08
+	SCZO_36 = cond(sp_35)
+	v14_37 = Mem28[ds_33:0x29E5:word16]
+	sp_38 = sp_35 - 0x02
+	Mem39[ss:sp_38 + 0x00:word16] = v14_37
+	v15_40 = Mem39[ds_33:0x29E3:word16]
+	sp_41 = sp_38 - 0x02
+	Mem42[ss:sp_41 + 0x00:word16] = v15_40
+	al_47 = fn0800_A614(bp_12, ds_33, ptrArg00, wArg02, out dl_44, out di_45, out ds_46)
+	sp_48 = sp_41 + 0x04
+	SCZO_49 = cond(sp_48)
+	sp_50 = sp_48 - 0x02
+	Mem51[ss:sp_50 + 0x00:word16] = ds_46
+	ax_52 = 0x4541
+	sp_53 = sp_50 - 0x02
+	Mem54[ss:sp_53 + 0x00:word16] = 0x4541
+	sp_55 = sp_53 - 0x02
+	Mem56[ss:sp_55 + 0x00:word16] = si_32
+	ds_58 = fn0800_0ABC(bp_12, ds_46, wArg00, wArg02, wArg04)
+	sp_59 = sp_55 + 0x06
+	es_bx_60 = Mem56[ds_58:11857:segptr32]
+	es_61 = SLICE(es_bx_60, selector, 16) (alias)
+	bx_62 = (word16) es_bx_60 (alias)
+	al_63 = Mem56[es_61:bx_62 + 0x04:byte]
+	ah_64 = 0x00
+	ax_65 = DPB(ax_52, ah_64, 8) (alias)
+	cl_66 = 0x08
+	ax_67 = ax_65 << 0x08
+	dl_68 = Mem56[es_61:bx_62 + 0x05:byte]
+	dh_69 = 0x00
+	dx_70 = DPB(dx_14, dh_69, 8) (alias)
+	ax_71 = ax_67 + dx_70
+	SCZO_72 = cond(ax_71 - ~0x73)
+	C_73 = SCZO_72 (alias)
+	branch ax_71 <u ~0x73 l0800_1897
+	goto l0800_188A
+l0800_1888_thunk_fn0800_1897:
+	dl = fn0800_1897(si, ds, out bp, out si, out ds)
+	dx = DPB(dx, dl, 0) (alias)
+	return dl
+l0800_188A:
+	sp_74 = sp_59 - 0x02
+	Mem75[ss:sp_74 + 0x00:word16] = ds_58
+	ax_76 = 0x0952
+	sp_77 = sp_74 - 0x02
+	Mem78[ss:sp_77 + 0x00:word16] = 0x0952
+	si_80 = fn0800_B2EF(ds_58, wArg00, wArg02, out di_79)
+	sp_81 = sp_77 + 0x04
+	SCZO_82 = cond(sp_81)
+	dl_86 = fn0800_18A9(bp_12, ds_58, out bp_83, out si_84, out ds_85)
+	dx_87 = DPB(dx_70, dl_86, 0) (alias)
+	return dl_86
+l0800_1892_thunk_fn0800_18A9:
+fn0800_17A2_exit:
+	bp_88 = PHI(bp, bp_83)
+	si_89 = PHI(si, si_84)
+	ds_90 = PHI(ds, ds_85)
+	dl_91 = PHI(dl, dl_86)
+	dx_92 = PHI(dx, dx_87)
+	use bp_88 (=> bpOut)
+	use si_89 (=> siOut)
+	use ds_90 (=> dsOut)
+}
+
+// 0800:1897: Register byte fn0800_1897(Register word16 si, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 dsOut)
+byte fn0800_1897(word16 si, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
+{
+fn0800_1897_entry:
+	goto l0800_1897
+l0800_15A3:
+l0800_1632:
+	branch cx == 0x00 l0800_1634
+l0800_1632_1:
+	SCZO = cond(al - Mem0[es:di + 0x00:byte])
+	Z = SCZO (alias)
+	di = di + 0x01
+	es_di = SEQ(es, di) (alias)
+	cx = cx - 0x01
+	cl = (byte) cx (alias)
+	branch Test(NE,Z) l0800_1632
+l0800_1634:
+	cx = ~cx
+	cl = (byte) cx (alias)
+	ax = 0x00
+	dx_ax = SEQ(dx, ax) (alias)
+	al = (byte) ax (alias)
+	di = di - cx
+	es_di = SEQ(es, di) (alias)
+	SCZO = cond(di)
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	C = SCZO (alias)
+	CZ = SCZO (alias)
+l0800_163A:
+	branch cx == 0x00 l0800_163C
+l0800_163A_2:
+	SCZO = cond(al - Mem0[es:di + 0x00:byte])
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	C = SCZO (alias)
+	CZ = SCZO (alias)
+	di = di + 0x01
+	es_di = SEQ(es, di) (alias)
+	cx = cx - 0x01
+	cl = (byte) cx (alias)
+	branch Test(NE,Z) l0800_163A
+l0800_163C:
+	branch Test(EQ,Z) l0800_1645
+l0800_163E:
+	di = 0x01
+	ax = 0x00
+	SZO = cond(0x00)
+	C = false
+	es = 0x00
+	es_di = SEQ(es, di) (alias)
+	es_bx = SEQ(es, bx) (alias)
+l0800_1645:
+	di = di - 0x01
+	ax = es
+	es = ax
+	es_bx = SEQ(es, bx) (alias)
+	ax = Mem0[ss:sp + 0x00:word16]
+	al = (byte) ax (alias)
+	sp = sp + 0x02
+	Mem0[es:di + 0x01:byte] = al
+	ax = Mem0[ds:0x29E9:word16]
+	dx_ax = (int32) ax
+	ax = (word16) dx_ax (alias)
+	es_di = Mem0[ss:bp - 0x08 + 0x00:segptr32]
+	es = SLICE(es_di, selector, 16) (alias)
+	di = (word16) es_di (alias)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	ax = 0x00
+	dx_ax = SEQ(dx, ax) (alias)
+	al = (byte) ax (alias)
+	SZO = cond(0x00)
+	C = false
+	cx = ~0x00
+	cl = (byte) cx (alias)
+l0800_165C:
+	branch cx == 0x00 l0800_165E
+l0800_165C_1:
+	SCZO = cond(al - Mem0[es:di + 0x00:byte])
+	Z = SCZO (alias)
+	di = di + 0x01
+	es_di = SEQ(es, di) (alias)
+	cx = cx - 0x01
+	cl = (byte) cx (alias)
+	branch Test(NE,Z) l0800_165C
+l0800_165E:
+	cx = ~cx
+	cl = (byte) cx (alias)
+	ax = 0x00
+	dx_ax = SEQ(dx, ax) (alias)
+	al = (byte) ax (alias)
+	di = di - cx
+	es_di = SEQ(es, di) (alias)
+	SCZO = cond(di)
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	C = SCZO (alias)
+	CZ = SCZO (alias)
+l0800_1664:
+	branch cx == 0x00 l0800_1666
+l0800_1664_2:
+	SCZO = cond(al - Mem0[es:di + 0x00:byte])
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	C = SCZO (alias)
+	CZ = SCZO (alias)
+	di = di + 0x01
+	es_di = SEQ(es, di) (alias)
+	cx = cx - 0x01
+	cl = (byte) cx (alias)
+	branch Test(NE,Z) l0800_1664
+l0800_1666:
+	branch Test(EQ,Z) l0800_166F
+l0800_1668:
+	di = 0x01
+	ax = 0x00
+	SZO = cond(0x00)
+	C = false
+	es = 0x00
+	es_di = SEQ(es, di) (alias)
+	es_bx = SEQ(es, bx) (alias)
+l0800_166F:
+	di = di - 0x01
+	SZO = cond(di)
+	ax = es
+	es = ax
+	es_bx = SEQ(es, bx) (alias)
+	ax = Mem0[ss:sp + 0x00:word16]
+	al = (byte) ax (alias)
+	sp = sp + 0x02
+	Mem0[es:di + 0x02:byte] = al
+	dx = Mem0[ds:0x29E9:word16]
+	dx_bp = SEQ(dx, bp) (alias)
+	ax = Mem0[ds:10727:word16]
+	cl = 0x08
+	ax = fn0800_8C8A(ax, cl, dx, wLoc02, out dx)
+	es_di = Mem0[ss:bp - 0x08 + 0x00:segptr32]
+	es = SLICE(es_di, selector, 16) (alias)
+	di = (word16) es_di (alias)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	ax = 0x00
+	dx_ax = SEQ(dx, ax) (alias)
+	al = (byte) ax (alias)
+	SZO = cond(0x00)
+	C = false
+	cx = ~0x00
+	cl = (byte) cx (alias)
+l0800_168E:
+	branch cx == 0x00 l0800_1690
+l0800_168E_1:
+	SCZO = cond(al - Mem0[es:di + 0x00:byte])
+	Z = SCZO (alias)
+	di = di + 0x01
+	es_di = SEQ(es, di) (alias)
+	cx = cx - 0x01
+	cl = (byte) cx (alias)
+	branch Test(NE,Z) l0800_168E
+l0800_1690:
+	cx = ~cx
+	cl = (byte) cx (alias)
+	ax = 0x00
+	dx_ax = SEQ(dx, ax) (alias)
+	al = (byte) ax (alias)
+	di = di - cx
+	es_di = SEQ(es, di) (alias)
+	SCZO = cond(di)
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	C = SCZO (alias)
+	CZ = SCZO (alias)
+l0800_1696:
+	branch cx == 0x00 l0800_1698
+l0800_1696_2:
+	SCZO = cond(al - Mem0[es:di + 0x00:byte])
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	C = SCZO (alias)
+	CZ = SCZO (alias)
+	di = di + 0x01
+	es_di = SEQ(es, di) (alias)
+	cx = cx - 0x01
+	cl = (byte) cx (alias)
+	branch Test(NE,Z) l0800_1696
+l0800_1698:
+	branch Test(EQ,Z) l0800_16A1
+l0800_169A:
+	di = 0x01
+	ax = 0x00
+	SZO = cond(0x00)
+	C = false
+	es = 0x00
+	es_di = SEQ(es, di) (alias)
+	es_bx = SEQ(es, bx) (alias)
+l0800_16A1:
+	di = di - 0x01
+	ax = es
+	es = ax
+	es_bx = SEQ(es, bx) (alias)
+	ax = Mem0[ss:sp + 0x00:word16]
+	al = (byte) ax (alias)
+	sp = sp + 0x02
+	Mem0[es:di + 0x03:byte] = al
+	es_di = Mem0[ss:bp - 0x08 + 0x00:segptr32]
+	es = SLICE(es_di, selector, 16) (alias)
+	di = (word16) es_di (alias)
+	ax = 0x00
+	dx_ax = SEQ(dx, ax) (alias)
+	al = (byte) ax (alias)
+	SZO = cond(0x00)
+	C = false
+	cx = ~0x00
+	cl = (byte) cx (alias)
+l0800_16B3:
+	branch cx == 0x00 l0800_16B5
+l0800_16B3_1:
+	SCZO = cond(al - Mem0[es:di + 0x00:byte])
+	Z = SCZO (alias)
+	di = di + 0x01
+	es_di = SEQ(es, di) (alias)
+	cx = cx - 0x01
+	cl = (byte) cx (alias)
+	branch Test(NE,Z) l0800_16B3
+l0800_16B5:
+	cx = ~cx
+	cl = (byte) cx (alias)
+	ax = 0x00
+	dx_ax = SEQ(dx, ax) (alias)
+	al = (byte) ax (alias)
+	di = di - cx
+	es_di = SEQ(es, di) (alias)
+	SCZO = cond(di)
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	C = SCZO (alias)
+	CZ = SCZO (alias)
+l0800_16BB:
+	branch cx == 0x00 l0800_16BD
+l0800_16BB_2:
+	SCZO = cond(al - Mem0[es:di + 0x00:byte])
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	C = SCZO (alias)
+	CZ = SCZO (alias)
+	di = di + 0x01
+	es_di = SEQ(es, di) (alias)
+	cx = cx - 0x01
+	cl = (byte) cx (alias)
+	branch Test(NE,Z) l0800_16BB
+l0800_16BD:
+	branch Test(EQ,Z) l0800_16C6
+l0800_16BF:
+	di = 0x01
+	ax = 0x00
+	SZO = cond(0x00)
+	C = false
+	es = 0x00
+	es_di = SEQ(es, di) (alias)
+	es_bx = SEQ(es, bx) (alias)
+l0800_16C6:
+	di = di - 0x01
+	ax = es
+	dl = Mem0[ds:10727:byte]
+	dx = DPB(dx, dl, 0) (alias)
+	dx_bp = DPB(dx_bp, dl, 16) (alias)
+	es = ax
+	Mem0[es:di + 0x04:byte] = dl
+	di = 0x01
+	es_di = SEQ(es, di) (alias)
+	ax = 0x00
+	SZO = cond(0x00)
+	C = false
+	Mem0[ds:0x2A05:word16] = 0x00
+	Mem0[ds:0x2A03:word16] = 0x00
+	si = 0x00
+	v23 = Mem0[ds:0x29E5:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v23
+	v24 = Mem0[ds:0x29E3:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v24
+	ax = fn0800_4194(bp, ds, wArg00, wArg02, out si, out ds)
+	sp = sp + 0x04
+	Mem0[ds:0x2A09:word16] = dx
+	Mem0[ds:0x2A07:word16] = ax
+	ax = 0x00
+	SZO = cond(0x00)
+	C = false
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x00
+	v25 = Mem0[ds:0x29E9:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v25
+	v26 = Mem0[ds:10727:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v26
+	v27 = Mem0[ds:10721:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v27
+	v28 = Mem0[ds:10719:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v28
+	ax = fn0800_ACB3(bp, ds, wArg00, wArg02, wArg08, out di, out ds)
+	sp = sp + 0x0A
+	SCZO = cond(Mem0[ds:0x2A09:word16] - 0x00)
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	C = SCZO (alias)
+	CZ = SCZO (alias)
+	branch Test(UGE,C) l0800_171B
+l0800_1718:
+	dl = fn0800_17A2(bp, di, ds, out bp, out si, out ds)
+	dx = DPB(dx, dl, 0) (alias)
+	dx_ax = DPB(dx_ax, dl, 16) (alias)
+	dx_bp = DPB(dx_bp, dl, 16) (alias)
+	return dl
+l0800_171B:
+	branch Test(UGT,CZ) l0800_1724
+l0800_171D:
+	SCZO = cond(Mem0[ds:0x2A07:word16] - 0x12)
+	CZ = SCZO (alias)
+	branch Test(ULE,CZ) l0800_17A2
+	goto l0800_1724
+l0800_1722_thunk_fn0800_17A2:
+	dl = fn0800_17A2(bp, di, ds, out bp, out si, out ds)
+	dx = DPB(dx, dl, 0) (alias)
+	dx_ax = DPB(dx_ax, dl, 16) (alias)
+	dx_bp = DPB(dx_bp, dl, 16) (alias)
+	return dl
+l0800_1724:
+	SCZO = cond(Mem0[ds:0x2A21:word16] - 0x00)
+	Z = SCZO (alias)
+	branch Test(EQ,Z) l0800_17A2
+	goto l0800_172B
+l0800_1729_thunk_fn0800_17A2:
+	dl = fn0800_17A2(bp, di, ds, out bp, out si, out ds)
+	dx = DPB(dx, dl, 0) (alias)
+	dx_ax = DPB(dx_ax, dl, 16) (alias)
+	dx_bp = DPB(dx_bp, dl, 16) (alias)
+	return dl
+l0800_172B:
+	v56 = Mem0[ds:0x29E5:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v56
+	v57 = Mem0[ds:0x29E3:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v57
+	dx = fn0800_3F58(bp, ds, wArg00, wArg02, out di, out ds)
+	dx_bp = SEQ(dx, bp) (alias)
+	sp = sp + 0x04
+	SCZO = cond(sp)
+	cl = 0x08
+	ax = fn0800_8CAA(ax, cl, dx, wLoc02, out dx)
+	dx_ax = SEQ(dx, ax) (alias)
+	al = (byte) ax (alias)
+	ah = SLICE(ax, byte, 8) (alias)
+	SCZO = cond(dx - 0x52)
+	Z = SCZO (alias)
+	branch Test(NE,Z) l0800_1748
+l0800_1743:
+	SCZO = cond(ax - 0x4E43)
+	Z = SCZO (alias)
+	branch Test(EQ,Z) l0800_17A2
+	goto l0800_1748
+l0800_1746_thunk_fn0800_17A2:
+	dl = fn0800_17A2(bp, di, ds, out bp, out si, out ds)
+	dx = DPB(dx, dl, 0) (alias)
+	dx_ax = DPB(dx_ax, dl, 16) (alias)
+	dx_bp = DPB(dx_bp, dl, 16) (alias)
+	return dl
+l0800_1748:
+	v58 = Mem0[ds:0x2A09:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v58
+	v59 = Mem0[ds:0x2A07:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v59
+	v60 = Mem0[ds:0x2A09:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v60
+	v61 = Mem0[ds:0x2A07:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v61
+	dl = fn0800_1758(bp, ds, out bp, out si, out ds)
+	dx = DPB(dx, dl, 0) (alias)
+	dx_ax = DPB(dx_ax, dl, 16) (alias)
+	dx_bp = DPB(dx_bp, dl, 16) (alias)
+	return dl
+l0800_1754_thunk_fn0800_1758:
+l0800_1897:
+	sp = fp
+	sp = fp - 0x02
+	wLoc02 = ds
+	ax = 0x4541
+	sp = fp - 0x04
+	wLoc04 = 0x4541
+	ax = fn0800_2DE2(si, ds, out dl, out bp, out si, out di, out ds)
+	sp = sp + 0x04
+	ax = ax | ax
+	SZO = cond(ax)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_18A9
+	goto l0800_18A6
+l0800_18A4_thunk_fn0800_18A9:
+	dl = fn0800_18A9(bp, ds, out bp, out si, out ds)
+	dx = DPB(dx, dl, 0) (alias)
+	dx_ax = DPB(dx_ax, dl, 16) (alias)
+	dx_bp = DPB(dx_bp, dl, 16) (alias)
+	return dl
+l0800_18A6:
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ds
+	ax = 0x093D
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x093D
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ds
+	ax = 0x4541
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x4541
+	si = fn0800_4234(si, di, ds, wArg00, wArg02, wArg04, wArg06, out di, out ds)
+	sp = sp + 0x08
+	SCZO = cond(sp)
+	Mem0[ds:0x29E5:word16] = dx
+	Mem0[ds:0x29E3:word16] = ax
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ds
+	ax = 0x4541
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x4541
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ss
+	ax = bp - 110
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	fn0800_3509(ds, wArg04, wArg06)
+	sp = sp + 0x08
+	SCZO = cond(sp)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ds
+	ax = 0x4541
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x4541
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ss
+	ax = bp - 0x84
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	dl = fn0800_35A3(ds, wArg04, wArg06)
+	dx = DPB(dx, dl, 0) (alias)
+	dx_bp = DPB(dx_bp, dl, 16) (alias)
+	sp = sp + 0x08
+	SCZO = cond(sp)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ds
+	ax = 0x4541
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x4541
+	fn0800_0C93(bp, ds, wArg00, wArg02)
+	sp = sp + 0x04
+	SCZO = cond(sp)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ss
+	ax = bp - 110
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	ax = fn0800_283D(si, di, ds, ptrArg00, out dx, out bp)
+	sp = sp + 0x02
+	sp = sp + 0x04
+	SCZO = cond(sp)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = dx
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ss
+	ax = bp - 0x84
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	ax = fn0800_2931(ptrArg00, ptrArg04, wArg06, out dx)
+	sp = sp + 0x08
+	SCZO = cond(sp)
+	Mem0[ss:bp - 0x06 + 0x00:word16] = dx
+	Mem0[ss:bp - 0x08 + 0x00:word16] = ax
+	v12 = Mem0[ds:10705:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v12
+	v13 = Mem0[ds:10703:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v13
+	ax = fn0800_4194(bp, ds, wArg00, wArg02, out si, out ds)
+	sp = sp + 0x04
+	ax = ax - 0x04
+	SCZO = cond(ax)
+	dx_ax = dx_bp - 110
+	ax = (word16) dx_ax (alias)
+	dx = SLICE(dx_ax, word16, 16) (alias)
+	SCZO = cond(dx_ax)
+	Mem0[ds:0x29E9:word16] = dx
+	Mem0[ds:10727:word16] = ax
+	ax = Mem0[ds:0x29E9:word16]
+	dx_ax = (int32) ax
+	ax = (word16) dx_ax (alias)
+	dx = SLICE(dx_ax, word16, 16) (alias)
+	cl = 0x08
+	ax = fn0800_8C8A(ax, cl, dx, wLoc02, out dx)
+	es_di = Mem0[ss:bp - 0x08 + 0x00:segptr32]
+	es = SLICE(es_di, selector, 16) (alias)
+	di = (word16) es_di (alias)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	ax = 0x00
+	dx_ax = SEQ(dx, ax) (alias)
+	al = (byte) ax (alias)
+	SZO = cond(0x00)
+	C = false
+	cx = ~0x00
+	cl = (byte) cx (alias)
+	goto l0800_1632
+fn0800_1897_exit:
+	use bp (=> bpOut)
+	use si (=> siOut)
+	use ds (=> dsOut)
+}
+
+// 0800:18A9: Register byte fn0800_18A9(Register word16 bp, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 dsOut)
+byte fn0800_18A9(word16 bp, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
+{
+	byte dl_13;
+	word16 di_14;
+	selector ds_15;
+	fn0800_A614(bp, ds, DPB(ptrLoc04, Mem0[ds:10715:word16], 0), Mem0[ds:10717:word16], out dl_13, out di_14, out ds_15);
+	Mem20[ss:fp - 0x02 + 0x00:word16] = ds_15;
+	Mem25[ss:fp - 0x04 + 0x00:word16] = 0x4477;
+	fn0800_8F7F(0x77, ds_15, ptrArg00);
+	selector ds_31;
+	word16 bp_32 = fn0800_1E5E(bp, si, ds_15, out ds_31);
+	Mem35[ss:fp - 0x02 + 0x00:word16] = Mem25[ds_31:10705:word16];
+	Mem38[ss:fp - 0x04 + 0x00:word16] = Mem35[ds_31:10703:word16];
+	byte dl_40;
+	word16 di_41;
+	selector ds_42;
+	fn0800_A614(bp_32, ds_31, ptrArg00, wArg02, out dl_40, out di_41, out ds_42);
+	word16 si_48;
+	*siOut = Mem38[ss:fp + 0x02:word16];
+	word16 bp_50;
+	*bpOut = Mem38[ss:bp_32 + 0x00:word16];
+	return dl_40;
+}
+
+// 0800:18D9: void fn0800_18D9(Register word16 bp, Register selector ds)
+void fn0800_18D9(word16 bp, selector ds)
 {
 	word16 di_32;
 	word16 si_33 = fn0800_B2EF(ds, 2412, ds, out di_32);
 	word16 dx_46;
 	word16 di_48;
-	word16 si_275;
-	selector ds_277;
-	word16 ax_50 = fn0800_AA7E(si_33, di_32, ds, 0x4348, ds, 2429, ds, out dx_46, out si_275, out di_48, out ds_277);
-	Mem52[ds_277:10705:word16] = dx_46;
-	Mem53[ds_277:10703:word16] = ax_50;
-	word16 bp_132 = fp - 0x02;
+	word16 si_112;
+	selector ds_211;
+	word16 ax_50 = fn0800_AA7E(si_33, di_32, ds, 0x4348, ds, 2429, ds, out dx_46, out si_112, out di_48, out ds_211);
+	Mem52[ds_211:10705:word16] = dx_46;
+	Mem53[ds_211:10703:word16] = ax_50;
+	word16 bp_135 = fp - 0x02;
 	if ((ax_50 | dx_46) == 0x00)
 	{
-		Mem268[ss:fp - 116 + 0x00:word16] = ds_277;
-		Mem271[ss:fp - 118 + 0x00:word16] = 0x4348;
-		Mem274[ss:fp - 0x78 + 0x00:word16] = 0x07;
-		word16 di_276;
-		fn0800_0D24(fp - 0x02, ds_277, out si_275, out di_276, out ds_277);
+		Mem269[ss:fp - 116 + 0x00:word16] = ds_211;
+		Mem272[ss:fp - 118 + 0x00:word16] = 0x4348;
+		Mem275[ss:fp - 0x78 + 0x00:word16] = 0x07;
+		word16 di_277;
+		fn0800_0D24(fp - 0x02, ds_211, out si_112, out di_277, out ds_211);
 	}
-	Mem66[ss:fp - 116 + 0x00:word16] = 0x01;
-	selector ds_208 = fn0800_1CF6(fp - 0x02, ds_277);
-	Mem74[ss:fp - 116 + 0x00:word16] = 0x00;
-	Mem76[ss:fp - 118 + 0x00:word16] = 0x00;
-	fn0800_2DBF(ds_208, wArg00, wArg02);
+	Mem65[ss:fp - 116 + 0x00:word16] = 0x01;
+	fn0800_1CF6(fp - 0x02, ds_211);
+	Mem72[ss:fp - 116 + 0x00:word16] = 0x00;
+	Mem74[ss:fp - 118 + 0x00:word16] = 0x00;
+	fn0800_2DBF(ds_211, wArg00, wArg02);
+	word16 sp_212 = fp - 114;
 	while (true)
 	{
-		Mem97[ss:fp - 116 + 0x00:word16] = ss;
-		Mem100[ss:fp - 118 + 0x00:word16] = bp_132 - 110;
-		Mem102[ss:fp - 0x78 + 0x00:word16] = ss;
-		Mem105[ss:fp - 122 + 0x00:word16] = bp_132 - 0x08;
-		Mem107[ss:fp - 0x7C + 0x00:word16] = ss;
-		Mem110[ss:fp - 0x7E + 0x00:word16] = bp_132 - 0x04;
-		selector ds_111;
-		if (fn0800_29C5(bp_132, si_275, ds_208, out ds_111) == 0x00)
+		word16 sp_96 = sp_212 - 0x02;
+		Mem97[ss:sp_96 + 0x00:word16] = ss;
+		Mem100[ss:sp_96 - 0x02 + 0x00:word16] = bp_135 - 110;
+		Mem102[ss:sp_96 - 0x04 + 0x00:word16] = ss;
+		Mem105[ss:sp_96 - 0x06 + 0x00:word16] = bp_135 - 0x08;
+		Mem107[ss:sp_96 - 0x08 + 0x00:word16] = ss;
+		Mem110[ss:sp_96 - 0x0A + 0x00:word16] = bp_135 - 0x04;
+		word16 bp_111;
+		selector ds_113;
+		if (fn0800_29C5(si_112, ds_211, out bp_111, out si_112, out ds_113) == 0x00)
 			break;
-		Mem119[ss:fp - 116 + 0x00:word16] = ss;
-		Mem122[ss:fp - 118 + 0x00:word16] = bp_132 - 110;
-		fn0800_0C93(bp_132, ds_111, wArg00, wArg02);
-		Mem127[ss:fp - 116 + 0x00:word16] = Mem122[ss:bp_132 - 0x06 + 0x00:word16];
-		Mem130[ss:fp - 118 + 0x00:word16] = Mem127[ss:bp_132 - 0x08 + 0x00:word16];
-		selector ds_131;
-		bp_132 = fn0800_23EC(bp_132, ds_111, wArg00, wArg02, out ds_131);
-		Mem137[ss:fp - 116 + 0x00:word16] = Mem130[ss:bp_132 - 0x06 + 0x00:word16];
-		Mem140[ss:fp - 118 + 0x00:word16] = Mem137[ss:bp_132 - 0x08 + 0x00:word16];
-		selector ds_142 = fn0800_22FE(ds_131, ptrArg00, wArg02);
-		ptr32 es_di_144 = Mem140[ss:bp_132 - 0x04 + 0x00:segptr32];
-		selector es_146 = SLICE(es_di_144, selector, 16);
-		word16 di_147 = (word16) es_di_144 + 0x02;
-		word16 cx_153 = ~0x00;
-		if (cx_153 != 0x00)
+		Mem122[ss:sp_96 + 0x02:word16] = ss;
+		Mem125[ss:sp_96 + 0x00:word16] = bp_111 - 110;
+		fn0800_0C93(bp_111, ds_113, wArg00, wArg02);
+		Mem130[ss:sp_96 + 0x02:word16] = Mem125[ss:bp_111 - 0x06 + 0x00:word16];
+		Mem133[ss:sp_96 + 0x00:word16] = Mem130[ss:bp_111 - 0x08 + 0x00:word16];
+		selector ds_134;
+		bp_135 = fn0800_23EC(bp_111, ds_113, wArg00, wArg02, out ds_134);
+		Mem140[ss:sp_96 + 0x02:word16] = Mem133[ss:bp_135 - 0x06 + 0x00:word16];
+		Mem143[ss:sp_96 + 0x00:word16] = Mem140[ss:bp_135 - 0x08 + 0x00:word16];
+		selector ds_145 = fn0800_22FE(ds_134, ptrArg00, wArg02);
+		ptr32 es_di_147 = Mem143[ss:bp_135 - 0x04 + 0x00:segptr32];
+		selector es_149 = SLICE(es_di_147, selector, 16);
+		word16 di_150 = (word16) es_di_147 + 0x02;
+		word16 cx_156 = ~0x00;
+		if (cx_156 != 0x00)
 		{
-			di_147 = di_147 + 0x01;
-			cx_153 = cx_153 - 0x01;
-			if (0x00 != Mem140[es_146:di_147 + 0x00:byte])
+			di_150 = di_150 + 0x01;
+			cx_156 = cx_156 - 0x01;
+			if (0x00 != Mem143[es_149:di_150 + 0x00:byte])
 				goto l0800_196E;
 		}
-		word16 cx_161 = ~cx_153;
-		word16 di_164 = di_147 - cx_161;
-		byte Z_168 = cond(di_164);
-		if (cx_161 != 0x00)
+		word16 cx_164 = ~cx_156;
+		word16 di_167 = di_150 - cx_164;
+		byte Z_171 = cond(di_167);
+		if (cx_164 != 0x00)
 		{
-			Z_168 = cond(0x00 - Mem140[es_146:di_164 + 0x00:byte]);
-			di_164 = di_164 + 0x01;
-			cx_161 = cx_161 - 0x01;
-			if (0x00 != Mem140[es_146:di_164 + 0x00:byte])
+			Z_171 = cond(0x00 - Mem143[es_149:di_167 + 0x00:byte]);
+			di_167 = di_167 + 0x01;
+			cx_164 = cx_164 - 0x01;
+			if (0x00 != Mem143[es_149:di_167 + 0x00:byte])
 				goto l0800_1976;
 		}
-		if (!Z_168)
+		if (!Z_171)
 		{
-			di_164 = 0x01;
-			es_146 = 0x00;
+			di_167 = 0x01;
+			es_149 = 0x00;
 		}
-		if (Mem140[es_146:di_164 + 0x00:byte] == 0x00)
+		if (Mem143[es_149:di_167 + 0x00:byte] == 0x00)
 		{
-			word16 dx_212 = Mem140[ds_142:11857:word16];
-			if (Mem140[ds_142:11859:word16] != Mem140[ss:(bp_132 - 0x02) + 0x00:word16] || dx_212 + 0x08 != Mem140[ss:(bp_132 - 0x04) + 0x00:word16])
+			word16 dx_215 = Mem143[ds_145:11857:word16];
+			if (Mem143[ds_145:11859:word16] != Mem143[ss:(bp_135 - 0x02) + 0x00:word16] || dx_215 + 0x08 != Mem143[ss:(bp_135 - 0x04) + 0x00:word16])
 			{
-				Mem220[ss:fp - 116 + 0x00:word16] = Mem140[ss:bp_132 - 0x02 + 0x00:word16];
-				Mem223[ss:fp - 118 + 0x00:word16] = Mem220[ss:bp_132 - 0x04 + 0x00:word16];
-				ds_142 = fn0800_2201(ds_142, ptrArg00, wArg02);
+				Mem223[ss:sp_96 + 0x02:word16] = Mem143[ss:bp_135 - 0x02 + 0x00:word16];
+				Mem226[ss:sp_96 + 0x00:word16] = Mem223[ss:bp_135 - 0x04 + 0x00:word16];
+				ds_145 = fn0800_2201(ds_145, ptrArg00, wArg02);
 			}
 		}
-		Mem200[ss:fp - 116 + 0x00:word16] = ss;
-		Mem203[ss:fp - 118 + 0x00:word16] = bp_132 - 110;
-		Mem206[ss:fp - 0x78 + 0x00:word16] = 0x0D;
-		ds_208 = fn0800_0ABC(bp_132, ds_142, wArg00, wArg02, wArg04);
+		word16 sp_201 = sp_212 + 0x02;
+		Mem203[ss:sp_201 - 0x02 + 0x00:word16] = ss;
+		Mem206[ss:sp_201 - 0x04 + 0x00:word16] = bp_135 - 110;
+		Mem209[ss:sp_201 - 0x06 + 0x00:word16] = 0x0D;
+		ds_211 = fn0800_0ABC(bp_135, ds_145, wArg00, wArg02, wArg04);
+		sp_212 = sp_201;
 	}
-	selector ds_247;
-	word16 bp_248 = fn0800_1E5E(bp_132, si_275, ds_111, out ds_247);
-	Mem251[ss:fp - 116 + 0x00:word16] = Mem110[ds_247:10705:word16];
-	Mem254[ss:fp - 118 + 0x00:word16] = Mem251[ds_247:10703:word16];
-	byte dl_255;
-	word16 di_256;
-	selector ds_257;
-	fn0800_A614(bp_248, ds_247, ptrArg00, wArg02, out dl_255, out di_256, out ds_257);
-	return dl_255;
+	selector ds_250;
+	word16 bp_251 = fn0800_1E5E(bp_111, si_112, ds_113, out ds_250);
+	Mem254[ss:sp_96 + 0x02:word16] = Mem110[ds_250:10705:word16];
+	Mem257[ss:sp_96 + 0x00:word16] = Mem254[ds_250:10703:word16];
+	byte dl_258;
+	word16 di_259;
+	selector ds_260;
+	fn0800_A614(bp_251, ds_250, ptrArg00, wArg02, out dl_258, out di_259, out ds_260);
+	return;
 }
 
-byte fn0800_19EE(word16 bp, selector ds, ptr16 & dsOut)
+// 0800:19EE: void fn0800_19EE(Register word16 bp, Register selector ds)
+void fn0800_19EE(word16 bp, selector ds)
 {
 	word16 di_35;
 	word16 si_36 = fn0800_B2EF(ds, 0x0986, ds, out di_35);
 	word16 dx_49;
 	word16 di_51;
-	selector ds_1024;
-	word16 si_1022;
-	word16 ax_53 = fn0800_AA7E(si_36, di_35, ds, 0x4348, ds, 0x0997, ds, out dx_49, out si_1022, out di_51, out ds_1024);
-	Mem55[ds_1024:10705:word16] = dx_49;
-	Mem56[ds_1024:10703:word16] = ax_53;
-	word16 bp_149 = fp - 0x02;
+	word16 si_1024;
+	selector ds_1026;
+	word16 ax_53 = fn0800_AA7E(si_36, di_35, ds, 0x4348, ds, 0x0997, ds, out dx_49, out si_1024, out di_51, out ds_1026);
+	Mem55[ds_1026:10705:word16] = dx_49;
+	Mem56[ds_1026:10703:word16] = ax_53;
+	word16 bp_150 = fp - 0x02;
 	if ((ax_53 | dx_49) == 0x00)
 	{
-		Mem1015[ss:fp - 122 + 0x00:word16] = ds_1024;
-		Mem1018[ss:fp - 0x7C + 0x00:word16] = 0x4348;
-		Mem1021[ss:fp - 0x7E + 0x00:word16] = 0x07;
-		word16 di_1023;
-		fn0800_0D24(fp - 0x02, ds_1024, out si_1022, out di_1023, out ds_1024);
+		Mem1017[ss:fp - 122 + 0x00:word16] = ds_1026;
+		Mem1020[ss:fp - 0x7C + 0x00:word16] = 0x4348;
+		Mem1023[ss:fp - 0x7E + 0x00:word16] = 0x07;
+		word16 di_1025;
+		fn0800_0D24(fp - 0x02, ds_1026, out si_1024, out di_1025, out ds_1026);
 	}
-	if (Mem56[ds_1024:0x2A27:word16] == Mem56[ds_1024:9882:word16])
+	if (Mem56[ds_1026:0x2A27:word16] == Mem56[ds_1026:9882:word16])
 	{
-		word16 dx_1000 = Mem56[ds_1024:2434:word16];
-		Mem1001[ss:fp - 0x0C + 0x00:word16] = Mem56[ds_1024:0x0984:word16];
-		Mem1002[ss:fp - 0x0E + 0x00:word16] = dx_1000;
-		ptr32 es_bx_1005 = Mem1002[ds_1024:9884:segptr32];
-		Mem1009[es_bx_1005 + 0x06:word16] = ss;
-		Mem1010[es_bx_1005 + 0x04:word16] = fp - 0x0E;
-		Mem1011[ds_1024:0x2A27:word16] = 0x01;
-		Mem1012[ds_1024:9882:word16] = 0x02;
-		Mem1013[ds_1024:10779:word16] = 0x01;
+		word16 dx_1002 = Mem56[ds_1026:2434:word16];
+		Mem1003[ss:fp - 0x0C + 0x00:word16] = Mem56[ds_1026:0x0984:word16];
+		Mem1004[ss:fp - 0x0E + 0x00:word16] = dx_1002;
+		ptr32 es_bx_1007 = Mem1004[ds_1026:9884:segptr32];
+		Mem1011[es_bx_1007 + 0x06:word16] = ss;
+		Mem1012[es_bx_1007 + 0x04:word16] = fp - 0x0E;
+		Mem1013[ds_1026:0x2A27:word16] = 0x01;
+		Mem1014[ds_1026:9882:word16] = 0x02;
+		Mem1015[ds_1026:10779:word16] = 0x01;
 	}
-	Mem80[ss:fp - 122 + 0x00:word16] = 0x00;
-	Mem84[ss:fp - 0x7C + 0x00:word16] = 0x01;
-	fn0800_2DBF(ds_1024, wArg00, wArg02);
-	Mem91[ss:fp - 122 + 0x00:word16] = 0x01;
-	selector ds_109 = fn0800_1CF6(fp - 0x02, ds_1024);
-	if (Mem91[ds_109:0x2A25:word16] == 0x07)
+	Mem79[ss:fp - 122 + 0x00:word16] = 0x00;
+	Mem83[ss:fp - 0x7C + 0x00:word16] = 0x01;
+	fn0800_2DBF(ds_1026, wArg00, wArg02);
+	Mem90[ss:fp - 122 + 0x00:word16] = 0x01;
+	fn0800_1CF6(fp - 0x02, ds_1026);
+	word16 sp_108 = fp - 0x78;
+	if (Mem90[ds_1026:0x2A25:word16] == 0x07)
 	{
-		Mem986[ss:fp - 122 + 0x00:word16] = ds_109;
-		Mem989[ss:fp - 0x7C + 0x00:word16] = 0x099B;
-		Mem991[ss:fp - 0x7E + 0x00:word16] = ds_109;
-		Mem994[ss:fp - 0x80 + 0x00:word16] = 0x44DC;
-		word16 di_995;
-		si_1022 = fn0800_37BE(ds_109, wArg00, wArg02, wArg04, wArg06, out di_995);
+		Mem988[ss:fp - 122 + 0x00:word16] = ds_1026;
+		Mem991[ss:fp - 0x7C + 0x00:word16] = 0x099B;
+		Mem993[ss:fp - 0x7E + 0x00:word16] = ds_1026;
+		Mem996[ss:fp - 0x80 + 0x00:word16] = 0x44DC;
+		word16 di_997;
+		si_1024 = fn0800_37BE(ds_1026, wArg00, wArg02, wArg04, wArg06, out di_997);
+		sp_108 = fp - 0x78;
 	}
 	while (true)
 	{
-		Mem113[ss:fp - 122 + 0x00:word16] = ss;
-		Mem116[ss:fp - 0x7C + 0x00:word16] = bp_149 - 114;
-		Mem118[ss:fp - 0x7E + 0x00:word16] = ss;
-		Mem121[ss:fp - 0x80 + 0x00:word16] = bp_149 - 0x08;
-		Mem123[ss:fp - 0x82 + 0x00:word16] = ss;
-		Mem126[ss:fp - 0x84 + 0x00:word16] = bp_149 - 0x04;
+		word16 sp_110 = sp_108 - 0x02;
+		Mem111[ss:sp_110 + 0x00:word16] = ss;
+		Mem114[ss:sp_110 - 0x02 + 0x00:word16] = bp_150 - 114;
+		Mem116[ss:sp_110 - 0x04 + 0x00:word16] = ss;
+		Mem119[ss:sp_110 - 0x06 + 0x00:word16] = bp_150 - 0x08;
+		Mem121[ss:sp_110 - 0x08 + 0x00:word16] = ss;
+		Mem124[ss:sp_110 - 0x0A + 0x00:word16] = bp_150 - 0x04;
+		word16 bp_125;
 		selector ds_127;
-		if (fn0800_29C5(bp_149, si_1022, ds_109, out ds_127) == 0x00)
+		word16 si_126;
+		if (fn0800_29C5(si_1024, ds_1026, out bp_125, out si_126, out ds_127) == 0x00)
 			break;
-		Mem135[ss:fp - 122 + 0x00:word16] = ss;
-		Mem138[ss:fp - 0x7C + 0x00:word16] = bp_149 - 114;
-		fn0800_0C93(bp_149, ds_127, wArg00, wArg02);
-		Mem143[ss:fp - 122 + 0x00:word16] = Mem138[ss:bp_149 - 0x06 + 0x00:word16];
-		Mem146[ss:fp - 0x7C + 0x00:word16] = Mem143[ss:bp_149 - 0x08 + 0x00:word16];
-		word16 dx_148;
-		selector ds_150;
-		fn0800_24FE(bp_149, ds_127, ptrArg00, out dx_148, out bp_149, out ds_150);
-		Mem159[ss:fp - 122 + 0x00:word16] = 0x00;
-		ptr32 es_di_160 = Mem159[ss:bp_149 - 0x08 + 0x00:segptr32];
-		word16 di_1028 = (word16) es_di_160;
-		selector es_162 = SLICE(es_di_160, selector, 16);
-		word16 cx_163 = ~0x00;
-		if (cx_163 != 0x00)
-		{
-			di_1028 = di_1028 + 0x01;
-			cx_163 = cx_163 - 0x01;
-			if (0x00 != Mem159[es_162:di_1028 + 0x00:byte])
-				goto l0800_1AD1;
-		}
-		word16 cx_173 = ~cx_163;
-		word16 di_1029 = di_1028 - cx_173;
-		byte Z_182 = cond(di_1029);
-		if (cx_173 != 0x00)
-		{
-			Z_182 = cond(0x00 - Mem159[es_162:di_1029 + 0x00:byte]);
-			di_1029 = di_1029 + 0x01;
-			cx_173 = cx_173 - 0x01;
-			if (0x00 != Mem159[es_162:di_1029 + 0x00:byte])
-				goto l0800_1AD9;
-		}
-		if (!Z_182)
-		{
-			di_1029 = 0x01;
-			es_162 = 0x00;
-		}
-		ptr32 es_di_210 = Mem159[ss:bp_149 - 0x08 + 0x00:segptr32];
-		Mem214[ss:fp - 0x7C + 0x00:word16] = (int16) Mem159[es_162:di_1029 + 0x00:byte] << 0x08;
-		word16 di_1030 = (word16) es_di_210;
-		selector es_212 = SLICE(es_di_210, selector, 16);
-		word16 cx_220 = ~0x00;
-		if (cx_220 != 0x00)
+		Mem136[ss:sp_110 + 0x02:word16] = ss;
+		Mem139[ss:sp_110 + 0x00:word16] = bp_125 - 114;
+		fn0800_0C93(bp_125, ds_127, wArg00, wArg02);
+		Mem144[ss:sp_110 + 0x02:word16] = Mem139[ss:bp_125 - 0x06 + 0x00:word16];
+		Mem147[ss:sp_110 + 0x00:word16] = Mem144[ss:bp_125 - 0x08 + 0x00:word16];
+		word16 dx_149;
+		selector ds_151;
+		fn0800_24FE(bp_125, ds_127, ptrArg00, out dx_149, out bp_150, out ds_151);
+		Mem160[ss:sp_110 + 0x02:word16] = 0x00;
+		ptr32 es_di_161 = Mem160[ss:bp_150 - 0x08 + 0x00:segptr32];
+		word16 di_1030 = (word16) es_di_161;
+		selector es_163 = SLICE(es_di_161, selector, 16);
+		word16 cx_164 = ~0x00;
+		if (cx_164 != 0x00)
 		{
 			di_1030 = di_1030 + 0x01;
-			cx_220 = cx_220 - 0x01;
-			if (0x00 != Mem214[es_212:di_1030 + 0x00:byte])
-				goto l0800_1AFB;
+			cx_164 = cx_164 - 0x01;
+			if (0x00 != Mem160[es_163:di_1030 + 0x00:byte])
+				goto l0800_1AD1;
 		}
-		word16 cx_230 = ~cx_220;
-		word16 di_235 = di_1030 - cx_230;
-		byte Z_239 = cond(di_235);
-		if (cx_230 != 0x00)
+		word16 cx_174 = ~cx_164;
+		word16 di_1031 = di_1030 - cx_174;
+		byte Z_183 = cond(di_1031);
+		if (cx_174 != 0x00)
 		{
-			Z_239 = cond(0x00 - Mem214[es_212:di_1031 + 0x00:byte]);
-			di_235 = di_1031 + 0x01;
-			cx_230 = cx_230 - 0x01;
-			word16 di_1031 = di_235;
-			if (0x00 != Mem214[es_212:di_1031 + 0x00:byte])
-				goto l0800_1B03;
+			Z_183 = cond(0x00 - Mem160[es_163:di_1031 + 0x00:byte]);
+			di_1031 = di_1031 + 0x01;
+			cx_174 = cx_174 - 0x01;
+			if (0x00 != Mem160[es_163:di_1031 + 0x00:byte])
+				goto l0800_1AD9;
 		}
-		if (!Z_239)
-			es_212 = 0x00;
-		ptr32 es_di_274 = Mem214[ss:bp_149 - 0x08 + 0x00:segptr32];
-		Mem278[ss:fp - 0x7C + 0x00:word16] = Mem214[ss:fp - 0x7C + 0x00:word16] + DPB(es_212, 0x00, 8);
-		Mem280[ss:fp - 0x7E + 0x00:word16] = 0x00;
-		word16 di_1032 = (word16) es_di_274;
-		selector es_276 = SLICE(es_di_274, selector, 16);
-		word16 cx_281 = ~0x00;
-		if (cx_281 != 0x00)
+		if (!Z_183)
+		{
+			di_1031 = 0x01;
+			es_163 = 0x00;
+		}
+		ptr32 es_di_211 = Mem160[ss:bp_150 - 0x08 + 0x00:segptr32];
+		Mem215[ss:sp_110 + 0x00:word16] = (int16) Mem160[es_163:di_1031 + 0x00:byte] << 0x08;
+		word16 di_1032 = (word16) es_di_211;
+		selector es_213 = SLICE(es_di_211, selector, 16);
+		word16 cx_221 = ~0x00;
+		if (cx_221 != 0x00)
 		{
 			di_1032 = di_1032 + 0x01;
-			cx_281 = cx_281 - 0x01;
-			if (0x00 != Mem280[es_276:di_1032 + 0x00:byte])
-				goto l0800_1B26;
+			cx_221 = cx_221 - 0x01;
+			if (0x00 != Mem215[es_213:di_1032 + 0x00:byte])
+				goto l0800_1AFB;
 		}
-		word16 cx_291 = ~cx_281;
-		word16 di_1033 = di_1032 - cx_291;
-		byte Z_300 = cond(di_1033);
-		if (cx_291 != 0x00)
+		word16 cx_231 = ~cx_221;
+		word16 di_236 = di_1032 - cx_231;
+		byte Z_240 = cond(di_236);
+		if (cx_231 != 0x00)
 		{
-			Z_300 = cond(0x00 - Mem280[es_276:di_1033 + 0x00:byte]);
-			di_1033 = di_1033 + 0x01;
-			cx_291 = cx_291 - 0x01;
-			if (0x00 != Mem280[es_276:di_1033 + 0x00:byte])
-				goto l0800_1B2E;
+			Z_240 = cond(0x00 - Mem215[es_213:di_1033 + 0x00:byte]);
+			di_236 = di_1033 + 0x01;
+			cx_231 = cx_231 - 0x01;
+			word16 di_1033 = di_236;
+			if (0x00 != Mem215[es_213:di_1033 + 0x00:byte])
+				goto l0800_1B03;
 		}
-		if (!Z_300)
-		{
-			di_1033 = 0x01;
-			es_276 = 0x00;
-		}
-		ptr32 es_di_328 = Mem280[ss:bp_149 - 0x08 + 0x00:segptr32];
-		Mem332[ss:fp - 0x80 + 0x00:word16] = (int16) Mem280[es_276:di_1033 + 0x02:byte] << 0x08;
-		word16 di_1034 = (word16) es_di_328;
-		selector es_330 = SLICE(es_di_328, selector, 16);
-		word16 cx_338 = ~0x00;
-		if (cx_338 != 0x00)
+		if (!Z_240)
+			es_213 = 0x00;
+		ptr32 es_di_275 = Mem215[ss:bp_150 - 0x08 + 0x00:segptr32];
+		Mem279[ss:sp_110 + 0x00:word16] = Mem215[ss:sp_110 + 0x00:word16] + DPB(es_213, 0x00, 8);
+		Mem281[ss:sp_110 - 0x02 + 0x00:word16] = 0x00;
+		word16 di_1034 = (word16) es_di_275;
+		selector es_277 = SLICE(es_di_275, selector, 16);
+		word16 cx_282 = ~0x00;
+		if (cx_282 != 0x00)
 		{
 			di_1034 = di_1034 + 0x01;
-			cx_338 = cx_338 - 0x01;
-			if (0x00 != Mem332[es_330:di_1034 + 0x00:byte])
-				goto l0800_1B50;
+			cx_282 = cx_282 - 0x01;
+			if (0x00 != Mem281[es_277:di_1034 + 0x00:byte])
+				goto l0800_1B26;
 		}
-		word16 cx_348 = ~cx_338;
-		word16 di_1035 = di_1034 - cx_348;
-		byte Z_357 = cond(di_1035);
-		if (cx_348 != 0x00)
+		word16 cx_292 = ~cx_282;
+		word16 di_1035 = di_1034 - cx_292;
+		byte Z_301 = cond(di_1035);
+		if (cx_292 != 0x00)
 		{
-			Z_357 = cond(0x00 - Mem332[es_330:di_1035 + 0x00:byte]);
+			Z_301 = cond(0x00 - Mem281[es_277:di_1035 + 0x00:byte]);
 			di_1035 = di_1035 + 0x01;
-			cx_348 = cx_348 - 0x01;
-			if (0x00 != Mem332[es_330:di_1035 + 0x00:byte])
-				goto l0800_1B58;
+			cx_292 = cx_292 - 0x01;
+			if (0x00 != Mem281[es_277:di_1035 + 0x00:byte])
+				goto l0800_1B2E;
 		}
-		if (!Z_357)
+		if (!Z_301)
 		{
 			di_1035 = 0x01;
-			es_330 = 0x00;
+			es_277 = 0x00;
 		}
-		word16 ax_391 = Mem332[ss:fp - 0x7E + 0x00:word16] + (Mem332[ss:(fp - 0x80) + 0x00:word16] + DPB(es_330, 0x00, 8));
-		word16 dx_396 = Mem332[ss:fp - 0x7C + 0x00:word16] + (ax_391 <u 0x00);
-		Mem399[ss:fp - 0x7C + 0x00:word16] = dx_396;
-		Mem401[ss:fp - 0x7E + 0x00:word16] = ax_391;
-		Mem404[ss:fp - 0x80 + 0x00:word16] = Mem401[ds_150:10705:word16];
-		Mem407[ss:fp - 0x82 + 0x00:word16] = Mem404[ds_150:10703:word16];
-		selector ds_409;
-		fn0800_ACB3(bp_149, ds_150, ptrArg00, wArg02, wArg08, out ds_409);
-		word16 di_379 = di_1035 - 0x01;
-		if (Mem407[ds_409:0x2A25:word16] != 0x07)
+		ptr32 es_di_329 = Mem281[ss:bp_150 - 0x08 + 0x00:segptr32];
+		Mem333[ss:sp_110 - 0x04 + 0x00:word16] = (int16) Mem281[es_277:di_1035 + 0x02:byte] << 0x08;
+		word16 di_1036 = (word16) es_di_329;
+		selector es_331 = SLICE(es_di_329, selector, 16);
+		word16 cx_339 = ~0x00;
+		if (cx_339 != 0x00)
 		{
-			Mem489[ss:fp - 122 + 0x00:word16] = ds_409;
-			selector es_490 = Mem489[ss:fp - 122 + 0x00:selector];
-			Mem495[ss:fp - 122 + 0x00:word16] = es_490;
-			Mem497[ss:fp - 0x7C + 0x00:word16] = 0x44DC;
-			word16 di_1036 = 17022;
-			word16 cx_505 = ~0x00;
-			if (cx_505 != 0x00)
+			di_1036 = di_1036 + 0x01;
+			cx_339 = cx_339 - 0x01;
+			if (0x00 != Mem333[es_331:di_1036 + 0x00:byte])
+				goto l0800_1B50;
+		}
+		word16 cx_349 = ~cx_339;
+		word16 di_354 = di_1036 - cx_349;
+		byte Z_358 = cond(di_354);
+		if (cx_349 != 0x00)
+		{
+			Z_358 = cond(0x00 - Mem333[es_331:di_1037 + 0x00:byte]);
+			di_354 = di_1037 + 0x01;
+			cx_349 = cx_349 - 0x01;
+			word16 di_1037 = di_354;
+			if (0x00 != Mem333[es_331:di_1037 + 0x00:byte])
+				goto l0800_1B58;
+		}
+		if (!Z_358)
+			es_331 = 0x00;
+		word16 ax_392 = Mem333[ss:sp_110 - 0x02 + 0x00:word16] + (Mem333[ss:(sp_110 - 0x04) + 0x00:word16] + DPB(es_331, 0x00, 8));
+		word16 dx_397 = Mem333[ss:sp_110 + 0x00:word16] + (ax_392 <u 0x00);
+		Mem400[ss:sp_110 + 0x00:word16] = dx_397;
+		Mem402[ss:sp_110 - 0x02 + 0x00:word16] = ax_392;
+		Mem405[ss:sp_110 - 0x04 + 0x00:word16] = Mem402[ds_151:10705:word16];
+		Mem408[ss:sp_110 - 0x06 + 0x00:word16] = Mem405[ds_151:10703:word16];
+		word16 di_410;
+		selector ds_411;
+		fn0800_ACB3(bp_150, ds_151, wArg00, wArg02, wArg08, out di_410, out ds_411);
+		word16 sp_413 = sp_110 + 0x04;
+		if (Mem408[ds_411:0x2A25:word16] != 0x07)
+		{
+			Mem491[ss:sp_110 + 0x02:word16] = ds_411;
+			selector es_492 = Mem491[ss:sp_110 + 0x02:selector];
+			Mem497[ss:sp_110 + 0x02:word16] = es_492;
+			Mem499[ss:sp_110 + 0x00:word16] = 0x44DC;
+			word16 di_1038 = 17022;
+			word16 cx_507 = ~0x00;
+			if (cx_507 != 0x00)
 			{
-				di_1036 = di_1036 + 0x01;
-				cx_505 = cx_505 - 0x01;
-				if (0x00 != Mem497[es_490:di_1036 + 0x00:byte])
+				di_1038 = di_1038 + 0x01;
+				cx_507 = cx_507 - 0x01;
+				if (0x00 != Mem499[es_492:di_1038 + 0x00:byte])
 					goto l0800_1BA1;
 			}
-			word16 di_524 = Mem497[ss:fp - 0x7C + 0x00:word16];
-			selector es_527 = Mem497[ss:fp - 122 + 0x00:selector];
-			Mem532[ss:fp - 122 + 0x00:word16] = ds_409;
-			word16 cx_515 = ~cx_505;
-			word16 cx_517 = cx_515 >>u 0x01;
-			word16 si_523 = di_1036 - cx_515;
-			while (cx_517 != 0x00)
+			word16 di_526 = Mem499[ss:sp_110 + 0x00:word16];
+			selector es_529 = Mem499[ss:sp_110 + 0x02:selector];
+			Mem534[ss:sp_110 + 0x02:word16] = ds_411;
+			word16 cx_517 = ~cx_507;
+			word16 cx_519 = cx_517 >>u 0x01;
+			word16 si_525 = di_1038 - cx_517;
+			while (cx_519 != 0x00)
 			{
-				Mem540[es_527:di_524 + 0x00:word16] = Mem532[es_490:si_523 + 0x00:word16];
-				si_523 = si_523 + 0x02;
-				di_524 = di_524 + 0x02;
-				cx_517 = cx_517 - 0x01;
+				Mem542[es_529:di_526 + 0x00:word16] = Mem534[es_492:si_525 + 0x00:word16];
+				si_525 = si_525 + 0x02;
+				di_526 = di_526 + 0x02;
+				cx_519 = cx_519 - 0x01;
 			}
-			word16 cx_546 = cx_517 * 0x02 + (cx_515 >>u 0x01 <u 0x00);
-			while (cx_546 != 0x00)
+			word16 cx_548 = cx_519 * 0x02 + (cx_517 >>u 0x01 <u 0x00);
+			while (cx_548 != 0x00)
 			{
-				Mem555[es_527:di_524 + 0x00:byte] = Mem532[es_490:si_523 + 0x00:byte];
-				si_523 = si_523 + 0x01;
-				di_524 = di_524 + 0x01;
-				cx_546 = cx_546 - 0x01;
+				Mem557[es_529:di_526 + 0x00:byte] = Mem534[es_492:si_525 + 0x00:byte];
+				si_525 = si_525 + 0x01;
+				di_526 = di_526 + 0x01;
+				cx_548 = cx_548 - 0x01;
 			}
-			selector ds_561 = Mem532[ss:fp - 122 + 0x00:selector];
-			if (Mem532[ds_561:0x2A25:word16] == 0x08)
+			selector ds_563 = Mem534[ss:sp_110 + 0x02:selector];
+			if (Mem534[ds_563:0x2A25:word16] == 0x08)
 			{
-				if (Mem532[ds_561:17022:byte] != 0x00 && Mem532[ss:(bp_149 - 114) + 0x00:byte] == 0x5C)
+				if (Mem534[ds_563:17022:byte] != 0x00 && Mem534[ss:(bp_150 - 114) + 0x00:byte] == 0x5C)
 				{
-					Mem762[ss:fp - 122 + 0x00:word16] = ss;
-					Mem765[ss:fp - 0x7C + 0x00:word16] = bp_149 - 113;
-					Mem767[ss:fp - 0x7E + 0x00:word16] = ds_561;
-					selector es_768 = Mem767[ss:fp - 0x7E + 0x00:selector];
-					word16 di_1041 = 0x44DC;
-					word16 cx_778 = ~0x00;
-					if (cx_778 != 0x00)
+					Mem764[ss:sp_110 + 0x02:word16] = ss;
+					Mem767[ss:sp_110 + 0x00:word16] = bp_150 - 113;
+					Mem769[ss:sp_110 - 0x02 + 0x00:word16] = ds_563;
+					selector es_770 = Mem769[ss:sp_110 - 0x02 + 0x00:selector];
+					word16 di_1043 = 0x44DC;
+					word16 cx_780 = ~0x00;
+					if (cx_780 != 0x00)
 					{
-						di_1041 = di_1041 + 0x01;
-						cx_778 = cx_778 - 0x01;
-						if (0x00 != Mem767[es_768:di_1041 + 0x00:byte])
+						di_1043 = di_1043 + 0x01;
+						cx_780 = cx_780 - 0x01;
+						if (0x00 != Mem769[es_770:di_1043 + 0x00:byte])
 							goto l0800_1BDC;
 					}
-					word16 cx_788 = ~cx_778;
-					word16 di_1042 = di_1041 - cx_788;
-					byte Z_797 = cond(di_1042);
-					if (cx_788 != 0x00)
+					word16 cx_790 = ~cx_780;
+					word16 di_1044 = di_1043 - cx_790;
+					byte Z_799 = cond(di_1044);
+					if (cx_790 != 0x00)
 					{
-						Z_797 = cond(0x00 - Mem767[es_768:di_1042 + 0x00:byte]);
-						di_1042 = di_1042 + 0x01;
-						cx_788 = cx_788 - 0x01;
-						if (0x00 != Mem767[es_768:di_1042 + 0x00:byte])
+						Z_799 = cond(0x00 - Mem769[es_770:di_1044 + 0x00:byte]);
+						di_1044 = di_1044 + 0x01;
+						cx_790 = cx_790 - 0x01;
+						if (0x00 != Mem769[es_770:di_1044 + 0x00:byte])
 							goto l0800_1BE4;
 					}
-					if (!Z_797)
+					if (!Z_799)
 					{
-						di_1042 = 0x01;
-						es_768 = 0x00;
+						di_1044 = 0x01;
+						es_770 = 0x00;
 					}
-					Mem824[ss:fp - 0x7E + 0x00:word16] = es_768;
-					Mem826[ss:fp - 0x80 + 0x00:word16] = di_1042 - 0x01;
-					fn0800_3509(ds_561, wArg04, wArg06);
+					Mem826[ss:sp_110 - 0x02 + 0x00:word16] = es_770;
+					Mem828[ss:sp_110 - 0x04 + 0x00:word16] = di_1044 - 0x01;
+					fn0800_3509(ds_563, wArg04, wArg06);
 				}
 				else
 				{
-					Mem671[ss:fp - 122 + 0x00:word16] = ss;
-					Mem674[ss:fp - 0x7C + 0x00:word16] = bp_149 - 114;
-					Mem676[ss:fp - 0x7E + 0x00:word16] = ds_561;
-					selector es_677 = Mem676[ss:fp - 0x7E + 0x00:selector];
-					word16 di_1039 = 0x44DC;
-					word16 cx_687 = ~0x00;
-					if (cx_687 != 0x00)
+					Mem673[ss:sp_110 + 0x02:word16] = ss;
+					Mem676[ss:sp_110 + 0x00:word16] = bp_150 - 114;
+					Mem678[ss:sp_110 - 0x02 + 0x00:word16] = ds_563;
+					selector es_679 = Mem678[ss:sp_110 - 0x02 + 0x00:selector];
+					word16 di_1041 = 0x44DC;
+					word16 cx_689 = ~0x00;
+					if (cx_689 != 0x00)
 					{
-						di_1039 = di_1039 + 0x01;
-						cx_687 = cx_687 - 0x01;
-						if (0x00 != Mem676[es_677:di_1039 + 0x00:byte])
+						di_1041 = di_1041 + 0x01;
+						cx_689 = cx_689 - 0x01;
+						if (0x00 != Mem678[es_679:di_1041 + 0x00:byte])
 							goto l0800_1C0B;
 					}
-					word16 cx_697 = ~cx_687;
-					word16 di_1040 = di_1039 - cx_697;
-					byte Z_706 = cond(di_1040);
-					if (cx_697 != 0x00)
+					word16 cx_699 = ~cx_689;
+					word16 di_1042 = di_1041 - cx_699;
+					byte Z_708 = cond(di_1042);
+					if (cx_699 != 0x00)
 					{
-						Z_706 = cond(0x00 - Mem676[es_677:di_1040 + 0x00:byte]);
-						di_1040 = di_1040 + 0x01;
-						cx_697 = cx_697 - 0x01;
-						if (0x00 != Mem676[es_677:di_1040 + 0x00:byte])
+						Z_708 = cond(0x00 - Mem678[es_679:di_1042 + 0x00:byte]);
+						di_1042 = di_1042 + 0x01;
+						cx_699 = cx_699 - 0x01;
+						if (0x00 != Mem678[es_679:di_1042 + 0x00:byte])
 							goto l0800_1C13;
 					}
-					if (!Z_706)
+					if (!Z_708)
 					{
-						di_1040 = 0x01;
-						es_677 = 0x00;
+						di_1042 = 0x01;
+						es_679 = 0x00;
 					}
-					Mem733[ss:fp - 0x7E + 0x00:word16] = es_677;
-					Mem735[ss:fp - 0x80 + 0x00:word16] = di_1040 - 0x01;
-					fn0800_3509(ds_561, wArg04, wArg06);
+					Mem735[ss:sp_110 - 0x02 + 0x00:word16] = es_679;
+					Mem737[ss:sp_110 - 0x04 + 0x00:word16] = di_1042 - 0x01;
+					fn0800_3509(ds_563, wArg04, wArg06);
 				}
 			}
-			Mem569[ss:fp - 122 + 0x00:word16] = ds_561;
-			Mem572[ss:fp - 0x7C + 0x00:word16] = 0x44DC;
-			si_1022 = fn0800_3678(bp_149, ds_561, ptrArg00, wArg02, out ds_409);
-			Mem577[ss:fp - 122 + 0x00:word16] = ss;
-			Mem580[ss:fp - 0x7C + 0x00:word16] = bp_149 - 114;
-			Mem582[ss:fp - 0x7E + 0x00:word16] = ds_409;
-			selector es_583 = Mem582[ss:fp - 0x7E + 0x00:selector];
-			word16 di_1037 = 0x44DC;
-			word16 cx_593 = ~0x00;
-			if (cx_593 != 0x00)
+			word16 sp_568 = sp_108 + 0x02;
+			Mem571[ss:sp_568 - 0x02 + 0x00:word16] = ds_563;
+			Mem574[ss:sp_568 - 0x04 + 0x00:word16] = 0x44DC;
+			si_126 = fn0800_3678(bp_150, ds_563, ptrArg00, wArg02, out ds_411);
+			Mem579[ss:sp_568 - 0x02 + 0x00:word16] = ss;
+			Mem582[ss:sp_568 - 0x04 + 0x00:word16] = bp_150 - 114;
+			Mem584[ss:sp_568 - 0x06 + 0x00:word16] = ds_411;
+			selector es_585 = Mem584[ss:sp_568 - 0x06 + 0x00:selector];
+			word16 di_1039 = 0x44DC;
+			word16 cx_595 = ~0x00;
+			if (cx_595 != 0x00)
 			{
-				di_1037 = di_1037 + 0x01;
-				cx_593 = cx_593 - 0x01;
-				if (0x00 != Mem582[es_583:di_1037 + 0x00:byte])
+				di_1039 = di_1039 + 0x01;
+				cx_595 = cx_595 - 0x01;
+				if (0x00 != Mem584[es_585:di_1039 + 0x00:byte])
 					goto l0800_1C43;
 			}
-			word16 cx_603 = ~cx_593;
-			word16 di_1038 = di_1037 - cx_603;
-			byte Z_612 = cond(di_1038);
-			if (cx_603 != 0x00)
+			word16 cx_605 = ~cx_595;
+			word16 di_1040 = di_1039 - cx_605;
+			byte Z_614 = cond(di_1040);
+			if (cx_605 != 0x00)
 			{
-				Z_612 = cond(0x00 - Mem582[es_583:di_1038 + 0x00:byte]);
-				di_1038 = di_1038 + 0x01;
-				cx_603 = cx_603 - 0x01;
-				if (0x00 != Mem582[es_583:di_1038 + 0x00:byte])
+				Z_614 = cond(0x00 - Mem584[es_585:di_1040 + 0x00:byte]);
+				di_1040 = di_1040 + 0x01;
+				cx_605 = cx_605 - 0x01;
+				if (0x00 != Mem584[es_585:di_1040 + 0x00:byte])
 					goto l0800_1C4B;
 			}
-			if (!Z_612)
+			if (!Z_614)
 			{
-				di_1038 = 0x01;
-				es_583 = 0x00;
+				di_1040 = 0x01;
+				es_585 = 0x00;
 			}
-			Mem639[ss:fp - 0x7E + 0x00:word16] = es_583;
-			di_379 = di_1038 - 0x01;
-			Mem641[ss:fp - 0x80 + 0x00:word16] = di_379;
-			fn0800_35A3(ds_409, wArg04, wArg06);
+			Mem641[ss:sp_568 - 0x06 + 0x00:word16] = es_585;
+			di_410 = di_1040 - 0x01;
+			Mem643[ss:sp_568 - 0x08 + 0x00:word16] = di_410;
+			fn0800_35A3(ds_411, wArg04, wArg06);
+			sp_413 = sp_568;
 		}
-		Mem425[ss:fp - 122 + 0x00:word16] = ds_409;
-		Mem428[ss:fp - 0x7C + 0x00:word16] = 2472;
-		Mem430[ss:fp - 0x7E + 0x00:word16] = ds_409;
-		Mem433[ss:fp - 0x80 + 0x00:word16] = 0x44DC;
-		word16 di_436;
-		selector ds_437;
-		fn0800_4234(si_1022, di_379, ds_409, wArg00, wArg02, wArg04, wArg06, out di_436, out ds_437);
-		Mem441[ds_437:10721:word16] = dx_396;
-		Mem442[ds_437:10719:word16] = 0x44DC;
-		word16 dx_444 = Mem442[ds_437:10703:word16];
-		Mem446[ds_437:0x29E5:word16] = Mem442[ds_437:10705:word16];
-		Mem447[ds_437:0x29E3:word16] = dx_444;
-		selector ds_448;
-		word16 ax_449 = fn0800_5374(bp_149, ds_437, out ds_448);
-		Mem453[ss:fp - 122 + 0x00:word16] = Mem447[ds_448:10721:word16];
-		Mem456[ss:fp - 0x7C + 0x00:word16] = Mem453[ds_448:10719:word16];
-		byte dl_457;
-		word16 di_458;
-		selector ds_459;
-		fn0800_A614(bp_149, ds_448, ptrArg00, wArg02, out dl_457, out di_458, out ds_459);
-		si_1022 = ax_449;
-		if (ax_449 != 0x00)
+		word16 sp_426 = sp_413 - 0x02;
+		Mem427[ss:sp_426 + 0x00:word16] = ds_411;
+		Mem430[ss:sp_426 - 0x02 + 0x00:word16] = 2472;
+		Mem432[ss:sp_426 - 0x04 + 0x00:word16] = ds_411;
+		Mem435[ss:sp_426 - 0x06 + 0x00:word16] = 0x44DC;
+		word16 di_438;
+		selector ds_439;
+		fn0800_4234(si_126, di_410, ds_411, wArg00, wArg02, wArg04, wArg06, out di_438, out ds_439);
+		Mem443[ds_439:10721:word16] = dx_397;
+		Mem444[ds_439:10719:word16] = 0x44DC;
+		word16 dx_446 = Mem444[ds_439:10703:word16];
+		Mem448[ds_439:0x29E5:word16] = Mem444[ds_439:10705:word16];
+		Mem449[ds_439:0x29E3:word16] = dx_446;
+		selector ds_450;
+		word16 ax_451 = fn0800_5374(bp_150, ds_439, out ds_450);
+		Mem455[ss:sp_426 + 0x00:word16] = Mem449[ds_450:10721:word16];
+		Mem458[ss:sp_426 - 0x02 + 0x00:word16] = Mem455[ds_450:10719:word16];
+		byte dl_459;
+		word16 di_460;
+		selector ds_461;
+		fn0800_A614(bp_150, ds_450, ptrArg00, wArg02, out dl_459, out di_460, out ds_461);
+		si_1024 = ax_451;
+		if (ax_451 != 0x00)
 		{
-			Mem480[ss:fp - 122 + 0x00:word16] = ds_459;
-			Mem484[ss:fp - 0x7C + 0x00:word16] = 0x44DC;
-			fn0800_8F7F(220, ds_459, ptrArg00);
+			Mem482[ss:sp_426 + 0x00:word16] = ds_461;
+			Mem486[ss:sp_426 - 0x02 + 0x00:word16] = 0x44DC;
+			fn0800_8F7F(220, ds_461, ptrArg00);
 		}
-		Mem470[ss:fp - 122 + 0x00:word16] = ss;
-		Mem473[ss:fp - 0x7C + 0x00:word16] = bp_149 - 114;
-		Mem475[ss:fp - 0x7E + 0x00:word16] = ax_449;
-		ds_109 = fn0800_0ABC(bp_149, ds_459, wArg00, wArg02, wArg04);
+		word16 sp_471 = sp_413 - 0x02;
+		Mem472[ss:sp_471 + 0x00:word16] = ss;
+		Mem475[ss:sp_471 - 0x02 + 0x00:word16] = bp_150 - 114;
+		Mem477[ss:sp_471 - 0x04 + 0x00:word16] = ax_451;
+		ds_1026 = fn0800_0ABC(bp_150, ds_461, wArg00, wArg02, wArg04);
+		sp_108 = sp_471 + 0x02;
 	}
-	Mem942[ss:fp - 122 + 0x00:word16] = Mem126[ds_127:10705:word16];
-	Mem945[ss:fp - 0x7C + 0x00:word16] = Mem942[ds_127:10703:word16];
-	word16 di_947;
-	selector ds_948;
-	byte dl_946;
-	fn0800_A614(bp_149, ds_127, ptrArg00, wArg02, out dl_946, out di_947, out ds_948);
-	if (Mem945[ds_948:0x2A25:word16] == 0x07)
+	Mem944[ss:sp_110 + 0x02:word16] = Mem124[ds_127:10705:word16];
+	Mem947[ss:sp_110 + 0x00:word16] = Mem944[ds_127:10703:word16];
+	byte dl_948;
+	word16 di_949;
+	selector ds_950;
+	fn0800_A614(bp_125, ds_127, ptrArg00, wArg02, out dl_948, out di_949, out ds_950);
+	if (Mem947[ds_950:0x2A25:word16] == 0x07)
 	{
-		Mem969[ss:fp - 122 + 0x00:word16] = ds_948;
-		Mem973[ss:fp - 0x7C + 0x00:word16] = 0x44DC;
-		dl_946 = fn0800_8F7F(220, ds_948, ptrArg00);
+		Mem970[ss:sp_110 + 0x02:word16] = ds_950;
+		Mem974[ss:sp_110 + 0x00:word16] = 0x44DC;
+		fn0800_8F7F(220, ds_950, ptrArg00);
 	}
-	return dl_946;
+	return;
 }
 
-selector fn0800_1CF6(word16 bp, selector ds)
+// 0800:1CF6: void fn0800_1CF6(Register word16 bp, Register selector ds)
+void fn0800_1CF6(word16 bp, selector ds)
 {
 	Mem14[ds:0x45A8:word16] = 0x00;
 	Mem16[ds:0x45A6:word16] = 0x00;
 	Mem17[ds:10733:word16] = 0x00;
 	Mem18[ds:10731:word16] = 0x00;
-	selector ds_36;
-	word16 ax_37 = fn0800_ACB3(fp - 0x02, ds, DPB(ptrLoc10, Mem18[ds:10703:word16], 0), Mem18[ds:10705:word16], 0x02, out ds_36);
-	Mem42[ss:fp - 0x08 + 0x00:word16] = Mem18[ds_36:10705:word16];
-	Mem46[ss:fp - 0x0A + 0x00:word16] = Mem42[ds_36:10703:word16];
-	selector ds_49;
-	word16 dx_50 = fn0800_3E5D(fp - 0x02, ds_36, wArg00, wArg02, out ds_49);
-	Mem53[ds_49:10733:word16] = dx_50;
-	Mem54[ds_49:10731:word16] = ax_37;
-	Mem57[ss:fp - 0x08 + 0x00:word16] = Mem54[ds_49:10705:word16];
-	Mem60[ss:fp - 0x0A + 0x00:word16] = Mem57[ds_49:10703:word16];
-	word16 si_61;
-	selector ds_286;
-	word16 ax_63 = fn0800_4194(fp - 0x02, ds_49, wArg00, wArg02, out si_61, out ds_286);
-	if (dx_50 <=u Mem60[ds_286:10733:word16] && (dx_50 <u Mem60[ds_286:10733:word16] || ax_63 <u Mem60[ds_286:10731:word16]))
+	word16 di_34;
+	selector ds_35;
+	word16 ax_36 = fn0800_ACB3(fp - 0x02, ds, Mem18[ds:10703:word16], Mem18[ds:10705:word16], 0x02, out di_34, out ds_35);
+	Mem41[ss:fp - 0x08 + 0x00:word16] = Mem18[ds_35:10705:word16];
+	Mem45[ss:fp - 0x0A + 0x00:word16] = Mem41[ds_35:10703:word16];
+	selector ds_48;
+	word16 dx_49 = fn0800_3E5D(fp - 0x02, ds_35, wArg00, wArg02, out ds_48);
+	Mem52[ds_48:10733:word16] = dx_49;
+	Mem53[ds_48:10731:word16] = ax_36;
+	Mem56[ss:fp - 0x08 + 0x00:word16] = Mem53[ds_48:10705:word16];
+	Mem59[ss:fp - 0x0A + 0x00:word16] = Mem56[ds_48:10703:word16];
+	word16 si_60;
+	selector ds_154;
+	word16 ax_62 = fn0800_4194(fp - 0x02, ds_48, wArg00, wArg02, out si_60, out ds_154);
+	if (dx_49 <=u Mem59[ds_154:10733:word16] && (dx_49 <u Mem59[ds_154:10733:word16] || ax_62 <u Mem59[ds_154:10731:word16]))
 	{
-		Mem277[ss:fp - 0x08 + 0x00:word16] = ds_286;
-		Mem280[ss:fp - 0x0A + 0x00:word16] = 0x4348;
-		Mem283[ss:fp - 0x0C + 0x00:word16] = 11;
-		word16 si_284;
-		word16 di_285;
-		fn0800_0D24(fp - 0x02, ds_286, out si_284, out di_285, out ds_286);
+		Mem145[ss:fp - 0x08 + 0x00:word16] = ds_154;
+		Mem148[ss:fp - 0x0A + 0x00:word16] = 0x4348;
+		Mem151[ss:fp - 0x0C + 0x00:word16] = 11;
+		word16 si_152;
+		word16 di_153;
+		fn0800_0D24(fp - 0x02, ds_154, out si_152, out di_153, out ds_154);
 	}
-	Mem81[ss:fp - 0x08 + 0x00:word16] = 0x00;
-	Mem84[ss:fp - 0x0A + 0x00:word16] = Mem81[ds_286:10733:word16];
-	Mem87[ss:fp - 0x0C + 0x00:word16] = Mem84[ds_286:10731:word16];
-	Mem90[ss:fp - 0x0E + 0x00:word16] = Mem87[ds_286:10705:word16];
-	Mem93[ss:fp - 0x10 + 0x00:word16] = Mem90[ds_286:10703:word16];
-	selector ds_96;
-	word16 ax_97 = fn0800_ACB3(fp - 0x02, ds_286, ptrArg00, wArg02, wArg08, out ds_96);
-	Mem102[ss:fp - 0x08 + 0x00:word16] = Mem93[ds_96:10705:word16];
-	Mem105[ss:fp - 0x0A + 0x00:word16] = Mem102[ds_96:10703:word16];
-	selector ds_106;
-	word16 dx_107 = fn0800_3E5D(fp - 0x02, ds_96, wArg00, wArg02, out ds_106);
-	if (dx_107 != 21070 || ax_97 != 17217)
+	Mem76[ss:fp - 0x08 + 0x00:word16] = 0x00;
+	Mem79[ss:fp - 0x0A + 0x00:word16] = Mem76[ds_154:10733:word16];
+	Mem82[ss:fp - 0x0C + 0x00:word16] = Mem79[ds_154:10731:word16];
+	Mem85[ss:fp - 0x0E + 0x00:word16] = Mem82[ds_154:10705:word16];
+	Mem88[ss:fp - 0x10 + 0x00:word16] = Mem85[ds_154:10703:word16];
+	word16 di_90;
+	selector ds_91;
+	word16 ax_92 = fn0800_ACB3(fp - 0x02, ds_154, wArg00, wArg02, wArg08, out di_90, out ds_91);
+	Mem97[ss:fp - 0x08 + 0x00:word16] = Mem88[ds_91:10705:word16];
+	Mem100[ss:fp - 0x0A + 0x00:word16] = Mem97[ds_91:10703:word16];
+	selector ds_101;
+	if (fn0800_3E5D(fp - 0x02, ds_91, wArg00, wArg02, out ds_101) != 21070 || ax_92 != 17217)
 	{
-		Mem260[ss:fp - 0x08 + 0x00:word16] = ds_106;
-		Mem263[ss:fp - 0x0A + 0x00:word16] = 0x4348;
-		Mem266[ss:fp - 0x0C + 0x00:word16] = 11;
-		word16 si_267;
-		word16 di_268;
-		fn0800_0D24(fp - 0x02, ds_106, out si_267, out di_268, out ds_106);
+		Mem128[ss:fp - 0x08 + 0x00:word16] = ds_101;
+		Mem131[ss:fp - 0x0A + 0x00:word16] = 0x4348;
+		Mem134[ss:fp - 0x0C + 0x00:word16] = 11;
+		word16 si_135;
+		word16 di_136;
+		fn0800_0D24(fp - 0x02, ds_101, out si_135, out di_136, out ds_101);
 	}
-	selector ds_142;
-	Mem116[ss:fp - 0x08 + 0x00:word16] = Mem105[ds_106:10705:word16];
-	Mem119[ss:fp - 0x0A + 0x00:word16] = Mem116[ds_106:10703:word16];
-	word16 si_120;
-	word16 di_121;
-	selector ds_122;
-	fn0800_3E27(fp - 0x02, ds_106, wArg00, wArg02, out si_120, out di_121, out ds_122);
-	Mem129[ss:fp - 0x08 + 0x00:word16] = Mem119[ds_122:10705:word16];
-	Mem132[ss:fp - 0x0A + 0x00:word16] = Mem129[ds_122:10703:word16];
-	word16 si_133;
-	word16 di_134;
-	selector ds_135;
-	Mem138[ss:fp - 0x04 + 0x00:word16] = fn0800_3E27(fp - 0x02, ds_122, wArg00, wArg02, out si_133, out di_134, out ds_135);
-	if (Mem138[ss:fp + 0x02:word16] != 0x00)
+	Mem111[ss:fp - 0x08 + 0x00:word16] = Mem100[ds_101:10705:word16];
+	Mem114[ss:fp - 0x0A + 0x00:word16] = Mem111[ds_101:10703:word16];
+	word16 dx_115;
+	word16 si_116;
+	word16 di_117;
+	selector ds_118;
+	fn0800_3E27(fp - 0x02, ds_101, wArg00, wArg02, out dx_115, out si_116, out di_117, out ds_118);
+	Mem125[ss:fp - 0x08 + 0x00:word16] = Mem114[ds_118:10705:word16];
+	fn0800_1DBE(fp - 0x02, ds_118);
+	return;
+}
+
+// 0800:1DBE: void fn0800_1DBE(Register word16 bp, Register selector ds)
+void fn0800_1DBE(word16 bp, selector ds)
+{
+	word16 dx_9;
+	word16 si_10;
+	word16 di_11;
+	selector ds_12;
+	Mem15[ss:bp - 0x02 + 0x00:word16] = fn0800_3E27(bp, ds, Mem0[ds:10703:word16], wArg00, out dx_9, out si_10, out di_11, out ds_12);
+	if (Mem15[ss:bp + 0x04:word16] != 0x00)
 	{
-		Mem237[ss:fp - 0x08 + 0x00:word16] = 0x00;
-		Mem239[ss:fp - 0x0A + 0x00:word16] = si_133;
-		ds_142 = fn0800_4311(ds_135, wArg00, wArg02);
-		Mem243[ds_142:11859:word16] = dx_107;
-		Mem244[ds_142:11857:word16] = 0x00;
+		Mem118[ss:fp + 0x00:word16] = 0x00;
+		Mem120[ss:fp - 0x02 + 0x00:word16] = si_10;
+		fn0800_4311(0x00, dx_9, ds_12, wArg00, wArg02);
+		Mem123[ds_12:11859:word16] = dx_9;
+		Mem124[ds_12:11857:word16] = 0x00;
 	}
 	else
 	{
-		Mem250[ss:fp - 0x08 + 0x00:word16] = 0x00;
-		Mem252[ss:fp - 0x0A + 0x00:word16] = ~0x0F;
-		ds_142 = fn0800_4311(ds_135, wArg00, wArg02);
-		Mem256[ds_142:11859:word16] = ~0x0F;
-		Mem257[ds_142:11857:word16] = 0x00;
+		Mem130[ss:fp + 0x00:word16] = 0x00;
+		Mem132[ss:fp - 0x02 + 0x00:word16] = ~0x0F;
+		fn0800_4311(0x00, ~0x0F, ds_12, wArg00, wArg02);
+		Mem135[ds_12:11859:word16] = ~0x0F;
+		Mem136[ds_12:11857:word16] = 0x00;
 	}
-	Mem148[ss:fp - 0x08 + 0x00:word16] = 0x00;
-	Mem151[ss:fp - 0x0A + 0x00:word16] = Mem148[ds_142:10733:word16];
-	Mem154[ss:fp - 0x0C + 0x00:word16] = Mem151[ds_142:10731:word16];
-	Mem157[ss:fp - 0x0E + 0x00:word16] = Mem154[ds_142:10705:word16];
-	Mem160[ss:fp - 0x10 + 0x00:word16] = Mem157[ds_142:10703:word16];
-	selector ds_161;
-	fn0800_ACB3(fp - 0x02, ds_142, ptrArg00, wArg02, wArg08, out ds_161);
-	Mem166[ss:fp - 0x08 + 0x00:word16] = Mem160[ds_161:10705:word16];
-	Mem169[ss:fp - 0x0A + 0x00:word16] = Mem166[ds_161:10703:word16];
-	Mem174[ss:fp - 0x0C + 0x00:word16] = 0x00;
-	Mem176[ss:fp - 0x0E + 0x00:word16] = si_133;
-	Mem179[ss:fp - 0x10 + 0x00:word16] = Mem176[ds_161:11859:word16];
-	Mem182[ss:fp - 0x12 + 0x00:word16] = Mem179[ds_161:11857:word16];
-	word16 di_186;
-	selector ds_187;
-	word16 si_188 = fn0800_4110(ds_161, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0A, out di_186, out ds_187);
-	Mem192[ss:fp - 0x08 + 0x00:word16] = 0x00;
-	Mem196[ss:fp - 0x0A + 0x00:word16] = si_188 - 0x08;
-	word16 ax_197 = Mem196[ds_187:11857:word16];
-	Mem202[ss:fp - 0x0C + 0x00:word16] = Mem196[ds_187:11859:word16];
-	Mem204[ss:fp - 0x0E + 0x00:word16] = ax_197 + 0x08;
-	if (fn0800_2CCF(ds_187, ptrArg00, wArg04, wArg06) != Mem204[ss:(fp - 0x04) + 0x00:word16])
+	Mem25[ss:fp + 0x00:word16] = 0x00;
+	Mem28[ss:fp - 0x02 + 0x00:word16] = Mem25[ds_12:10733:word16];
+	Mem31[ss:fp - 0x04 + 0x00:word16] = Mem28[ds_12:10731:word16];
+	Mem34[ss:fp - 0x06 + 0x00:word16] = Mem31[ds_12:10705:word16];
+	Mem37[ss:fp - 0x08 + 0x00:word16] = Mem34[ds_12:10703:word16];
+	word16 di_40;
+	selector ds_41;
+	fn0800_ACB3(bp, ds_12, wArg00, wArg02, wArg08, out di_40, out ds_41);
+	Mem46[ss:fp + 0x00:word16] = Mem37[ds_41:10705:word16];
+	Mem49[ss:fp - 0x02 + 0x00:word16] = Mem46[ds_41:10703:word16];
+	Mem54[ss:fp - 0x04 + 0x00:word16] = 0x00;
+	Mem56[ss:fp - 0x06 + 0x00:word16] = si_10;
+	Mem59[ss:fp - 0x08 + 0x00:word16] = Mem56[ds_41:11859:word16];
+	Mem62[ss:fp - 0x0A + 0x00:word16] = Mem59[ds_41:11857:word16];
+	word16 di_65;
+	selector ds_66;
+	word16 si_67 = fn0800_4110(bp, ds_41, wArg00, wArg02, wArg04, wArg08, wArg0A, out di_65, out ds_66);
+	Mem71[ss:fp + 0x00:word16] = 0x00;
+	Mem75[ss:fp - 0x02 + 0x00:word16] = si_67 - 0x08;
+	word16 ax_76 = Mem75[ds_66:11857:word16];
+	Mem81[ss:fp - 0x04 + 0x00:word16] = Mem75[ds_66:11859:word16];
+	Mem83[ss:fp - 0x06 + 0x00:word16] = ax_76 + 0x08;
+	if (fn0800_2CCF(ds_66, ptrArg00, wArg04, wArg06) != Mem83[ss:(bp - 0x02) + 0x00:word16])
 	{
-		Mem220[ss:fp - 0x08 + 0x00:word16] = ds_187;
-		Mem223[ss:fp - 0x0A + 0x00:word16] = 0x4348;
-		Mem226[ss:fp - 0x0C + 0x00:word16] = 0x0D;
-		word16 si_227;
-		word16 di_228;
-		fn0800_0D24(fp - 0x02, ds_187, out si_227, out di_228, out ds_187);
+		Mem101[ss:fp + 0x00:word16] = ds_66;
+		Mem104[ss:fp - 0x02 + 0x00:word16] = 0x4348;
+		Mem107[ss:fp - 0x04 + 0x00:word16] = 0x0D;
+		word16 si_108;
+		word16 di_109;
+		selector ds_110;
+		fn0800_0D24(bp, ds_66, out si_108, out di_109, out ds_110);
 	}
-	return ds_187;
+	return;
 }
 
+// 0800:1E5E: Register word16 fn0800_1E5E(Register word16 bp, Register word16 si, Register selector ds, Register out ptr16 dsOut)
 word16 fn0800_1E5E(word16 bp, word16 si, selector ds, ptr16 & dsOut)
 {
 	word16 ax_39 = fn0800_2CCF(ds, DPB(ptrLoc0A, Mem0[ds:11857:word16] + 0x08, 0), (DPB(ax, 0x00, 8) << 0x08) + DPB(dx, 0x00, 8) - 0x08, 0x00);
 	ptr32 es_bx_46 = Mem0[ds:11857:segptr32];
 	Mem49[es_bx_46 + 0x06:byte] = (byte) (ax_39 >>u 0x08);
 	Mem50[es_bx_46 + 0x07:byte] = (byte) ax_39;
-	selector ds_76;
-	fn0800_ACB3(bp, ds, DPB(ptrLoc0C, Mem50[ds:10703:word16], 0), Mem50[ds:10705:word16], 0x00, out ds_76);
-	Mem82[ss:fp - 0x04 + 0x00:word16] = Mem50[ds_76:10705:word16];
-	Mem86[ss:fp - 0x06 + 0x00:word16] = Mem82[ds_76:10703:word16];
+	word16 di_74;
+	selector ds_75;
+	fn0800_ACB3(bp, ds, Mem50[ds:10703:word16], Mem50[ds:10705:word16], 0x00, out di_74, out ds_75);
+	Mem81[ss:fp - 0x04 + 0x00:word16] = Mem50[ds_75:10705:word16];
+	Mem85[ss:fp - 0x06 + 0x00:word16] = Mem81[ds_75:10703:word16];
+	word16 dx_88;
 	word16 si_89;
 	word16 di_90;
-	selector ds_101;
-	word16 ax_92 = fn0800_3E27(bp, ds_76, wArg00, wArg02, out si_89, out di_90, out ds_101);
+	selector ds_102;
+	word16 ax_92 = fn0800_3E27(bp, ds_75, wArg00, wArg02, out dx_88, out si_89, out di_90, out ds_102);
 	if (si_89 >u ax_92)
 	{
 		Mem169[ss:fp - 0x04 + 0x00:word16] = 0x00;
 		Mem171[ss:fp - 0x06 + 0x00:word16] = si_89 - ax_92;
-		Mem174[ss:fp - 0x08 + 0x00:word16] = Mem171[ds_101:10733:word16];
-		Mem177[ss:fp - 0x0A + 0x00:word16] = Mem174[ds_101:10731:word16];
-		Mem180[ss:fp - 0x0C + 0x00:word16] = Mem177[ds_101:10705:word16];
-		Mem183[ss:fp - 0x0E + 0x00:word16] = Mem180[ds_101:10703:word16];
-		ds_101 = fn0800_3BC3(bp, ds_101);
+		Mem174[ss:fp - 0x08 + 0x00:word16] = Mem171[ds_102:10733:word16];
+		Mem177[ss:fp - 0x0A + 0x00:word16] = Mem174[ds_102:10731:word16];
+		Mem180[ss:fp - 0x0C + 0x00:word16] = Mem177[ds_102:10705:word16];
+		Mem183[ss:fp - 0x0E + 0x00:word16] = Mem180[ds_102:10703:word16];
+		ds_102 = fn0800_3BC3(bp, ds_102);
 	}
 	else if (si_89 <u ax_92)
 	{
 		Mem195[ss:fp - 0x04 + 0x00:word16] = 0x00;
 		Mem197[ss:fp - 0x06 + 0x00:word16] = ax_92 - si_89;
-		Mem200[ss:fp - 0x08 + 0x00:word16] = Mem197[ds_101:10733:word16];
-		Mem203[ss:fp - 0x0A + 0x00:word16] = Mem200[ds_101:10731:word16];
-		Mem206[ss:fp - 0x0C + 0x00:word16] = Mem203[ds_101:10705:word16];
-		Mem209[ss:fp - 0x0E + 0x00:word16] = Mem206[ds_101:10703:word16];
-		ds_101 = fn0800_3C99(bp, ds_101);
+		Mem200[ss:fp - 0x08 + 0x00:word16] = Mem197[ds_102:10733:word16];
+		Mem203[ss:fp - 0x0A + 0x00:word16] = Mem200[ds_102:10731:word16];
+		Mem206[ss:fp - 0x0C + 0x00:word16] = Mem203[ds_102:10705:word16];
+		Mem209[ss:fp - 0x0E + 0x00:word16] = Mem206[ds_102:10703:word16];
+		bp = fn0800_3C99(bp, ds_102, out ds_102);
 	}
-	Mem107[ss:fp - 0x04 + 0x00:word16] = 0x00;
-	Mem110[ss:fp - 0x06 + 0x00:word16] = Mem107[ds_101:10733:word16];
-	Mem113[ss:fp - 0x08 + 0x00:word16] = Mem110[ds_101:10731:word16];
-	Mem116[ss:fp - 0x0A + 0x00:word16] = Mem113[ds_101:10705:word16];
-	Mem119[ss:fp - 0x0C + 0x00:word16] = Mem116[ds_101:10703:word16];
-	selector ds_122;
-	fn0800_ACB3(bp, ds_101, ptrArg00, wArg02, wArg08, out ds_122);
-	Mem127[ss:fp - 0x04 + 0x00:word16] = Mem119[ds_122:10705:word16];
-	Mem130[ss:fp - 0x06 + 0x00:word16] = Mem127[ds_122:10703:word16];
-	Mem135[ss:fp - 0x08 + 0x00:word16] = 0x00;
-	Mem137[ss:fp - 0x0A + 0x00:word16] = si_89;
-	Mem140[ss:fp - 0x0C + 0x00:word16] = Mem137[ds_122:11859:word16];
-	Mem143[ss:fp - 0x0E + 0x00:word16] = Mem140[ds_122:11857:word16];
-	selector ds_147 = fn0800_4152(ds_122, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0A);
-	Mem152[ss:fp - 0x04 + 0x00:word16] = Mem143[ds_147:11859:word16];
+	Mem108[ss:fp - 0x04 + 0x00:word16] = 0x00;
+	Mem111[ss:fp - 0x06 + 0x00:word16] = Mem108[ds_102:10733:word16];
+	Mem114[ss:fp - 0x08 + 0x00:word16] = Mem111[ds_102:10731:word16];
+	Mem117[ss:fp - 0x0A + 0x00:word16] = Mem114[ds_102:10705:word16];
+	Mem120[ss:fp - 0x0C + 0x00:word16] = Mem117[ds_102:10703:word16];
+	word16 di_122;
+	selector ds_123;
+	fn0800_ACB3(bp, ds_102, wArg00, wArg02, wArg08, out di_122, out ds_123);
+	Mem128[ss:fp - 0x04 + 0x00:word16] = Mem120[ds_123:10705:word16];
+	Mem131[ss:fp - 0x06 + 0x00:word16] = Mem128[ds_123:10703:word16];
+	Mem136[ss:fp - 0x08 + 0x00:word16] = 0x00;
+	Mem138[ss:fp - 0x0A + 0x00:word16] = si_89;
+	Mem141[ss:fp - 0x0C + 0x00:word16] = Mem138[ds_123:11859:word16];
+	Mem144[ss:fp - 0x0E + 0x00:word16] = Mem141[ds_123:11857:word16];
+	selector ds_147 = fn0800_4152(bp, ds_123, wArg00, wArg02, wArg04, wArg08, wArg0A);
+	Mem152[ss:fp - 0x04 + 0x00:word16] = Mem144[ds_147:11859:word16];
 	Mem155[ss:fp - 0x06 + 0x00:word16] = Mem152[ds_147:11857:word16];
 	selector ds_156;
 	fn0800_4346(ds_147, wArg00, wArg02, out ds_156);
 	return bp;
 }
 
+// 0800:1F5C: Register word16 fn0800_1F5C(Register word16 bp, Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Register out ptr16 dxOut, Register out ptr16 dsOut)
 word16 fn0800_1F5C(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dxOut, ptr16 & dsOut)
 {
 	word16 di_15 = (word16) ptrArg02;
@@ -2641,274 +3431,312 @@ word16 fn0800_1F5C(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg04, ptr
 	return dx_95;
 }
 
-void fn0800_2085(selector ds, segptr32 ptrArg02, selector psegArg04, segptr32 ptrArg06)
+// 0800:2085: Register word16 fn0800_2085(Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_2085(selector ds, ptr16 & dsOut)
 {
-	word16 ax_28 = (DPB(ax, 0x00, 8) << 0x08) + DPB(dx, 0x00, 8);
-	word16 dx_32 = Mem0[ds:11857:word16] + ax_28;
-	word16 di_37 = (word16) ptrArg02;
-	selector es_38 = SLICE(ptrArg02, selector, 16);
-	word16 cx_43 = ~0x00;
-	if (cx_43 != 0x00)
-	{
-		di_37 = di_509 + 0x01;
-		cx_43 = cx_43 - 0x01;
-		word16 di_509 = di_37;
-		if (0x00 != Mem0[es_38:di_509 + 0x00:byte])
-			goto l0800_20BE;
-	}
-	word16 bx_73 = Mem0[ds:11857:word16] + (((int16) Mem0[ptrArg06 + 0x00:byte] << 0x08) + DPB(dx_32, 0x00, 8));
-	word16 cx_55 = ~cx_43;
-	segptr32 ptrLoc06_78 = DPB(ptrLoc06, bx_73 - 0x01, 0);
-	selector ds_100 = fn0800_B0F3(bx_73 - 0x01 + (cx_55 + 0x04), Mem0[ds:11859:word16], bx_73 - 0x01, Mem0[ds:11859:word16], dx_32 - (bx_73 - 0x01));
-	selector es_104 = SLICE(ptrLoc06_78, selector, 16);
-	word16 di_113 = wArg02;
-	word16 cx_119 = ~0x00;
-	if (cx_119 != 0x00)
-	{
-		di_113 = di_113 + 0x01;
-		cx_119 = cx_119 - 0x01;
-		if (0x00 != Mem0[psegArg04:di_113 + 0x00:byte])
-			goto l0800_211F;
-	}
-	word16 cx_129 = ~cx_119;
-	word16 cx_131 = cx_129 >>u 0x01;
-	word16 si_137 = di_113 - cx_129;
-	word16 di_138 = bx_73 - 0x01;
-	while (cx_131 != 0x00)
-	{
-		Mem154[es_104:di_138 + 0x00:word16] = Mem0[psegArg04:si_137 + 0x00:word16];
-		si_137 = si_137 + 0x02;
-		di_138 = di_138 + 0x02;
-		cx_131 = cx_131 - 0x01;
-	}
-	word16 cx_160 = cx_131 * 0x02 + (cx_129 >>u 0x01 <u 0x00);
-	while (cx_160 != 0x00)
-	{
-		Mem169[es_104:di_138 + 0x00:byte] = Mem0[psegArg04:si_137 + 0x00:byte];
-		si_137 = si_137 + 0x01;
-		di_138 = di_138 + 0x01;
-		cx_160 = cx_160 - 0x01;
-	}
-	word16 di_178 = bx_73 - 0x01;
-	selector es_179 = SLICE(ptrLoc06_78, selector, 16);
-	word16 cx_184 = ~0x00;
-	if (cx_184 != 0x00)
-	{
-		di_178 = di_178 + 0x01;
-		cx_184 = cx_184 - 0x01;
-		if (0x00 != Mem0[es_179:di_178 + 0x00:byte])
-			goto l0800_213F;
-	}
-	word16 cx_194 = ~cx_184;
-	word16 di_198 = di_178 - cx_194;
-	byte Z_202 = cond(di_198);
-	if (cx_194 != 0x00)
-	{
-		Z_202 = cond(0x00 - Mem0[es_179:di_198 + 0x00:byte]);
-		di_198 = di_198 + 0x01;
-		cx_194 = cx_194 - 0x01;
-		if (0x00 != Mem0[es_179:di_198 + 0x00:byte])
-			goto l0800_2147;
-	}
-	if (!Z_202)
-	{
-		di_198 = 0x01;
-		es_179 = 0x00;
-	}
-	Mem226[es_179:di_198 + 0x00:byte] = 0x00;
-	word16 di_228 = bx_73 - 0x01;
-	selector es_229 = SLICE(ptrLoc06_78, selector, 16);
-	word16 cx_234 = ~0x00;
-	if (cx_234 != 0x00)
-	{
-		di_228 = di_228 + 0x01;
-		cx_234 = cx_234 - 0x01;
-		if (0x00 != Mem226[es_229:di_228 + 0x00:byte])
-			goto l0800_2164;
-	}
-	word16 cx_244 = ~cx_234;
-	word16 di_248 = di_228 - cx_244;
-	byte Z_252 = cond(di_248);
-	if (cx_244 != 0x00)
-	{
-		Z_252 = cond(0x00 - Mem226[es_229:di_248 + 0x00:byte]);
-		di_248 = di_248 + 0x01;
-		cx_244 = cx_244 - 0x01;
-		if (0x00 != Mem226[es_229:di_248 + 0x00:byte])
-			goto l0800_216C;
-	}
-	if (!Z_252)
-	{
-		di_248 = 0x01;
-		es_229 = 0x00;
-	}
-	Mem276[es_229:di_248 + 0x01:byte] = 0x00;
-	word16 di_278 = bx_73 - 0x01;
-	selector es_279 = SLICE(ptrLoc06_78, selector, 16);
-	word16 cx_284 = ~0x00;
-	if (cx_284 != 0x00)
-	{
-		di_278 = di_278 + 0x01;
-		cx_284 = cx_284 - 0x01;
-		if (0x00 != Mem276[es_279:di_278 + 0x00:byte])
-			goto l0800_2189;
-	}
-	word16 cx_294 = ~cx_284;
-	word16 di_298 = di_278 - cx_294;
-	byte Z_302 = cond(di_298);
-	if (cx_294 != 0x00)
-	{
-		Z_302 = cond(0x00 - Mem276[es_279:di_298 + 0x00:byte]);
-		di_298 = di_298 + 0x01;
-		cx_294 = cx_294 - 0x01;
-		if (0x00 != Mem276[es_279:di_298 + 0x00:byte])
-			goto l0800_2191;
-	}
-	if (!Z_302)
-	{
-		di_298 = 0x01;
-		es_279 = 0x00;
-	}
-	Mem326[es_279:di_298 + 0x02:byte] = 0x00;
-	word16 di_328 = bx_73 - 0x01;
-	selector es_329 = SLICE(ptrLoc06_78, selector, 16);
-	word16 cx_334 = ~0x00;
-	if (cx_334 != 0x00)
-	{
-		di_328 = di_328 + 0x01;
-		cx_334 = cx_334 - 0x01;
-		if (0x00 != Mem326[es_329:di_328 + 0x00:byte])
-			goto l0800_21AE;
-	}
-	word16 cx_344 = ~cx_334;
-	word16 di_348 = di_328 - cx_344;
-	byte Z_352 = cond(di_348);
-	if (cx_344 != 0x00)
-	{
-		Z_352 = cond(0x00 - Mem326[es_329:di_348 + 0x00:byte]);
-		di_348 = di_348 + 0x01;
-		cx_344 = cx_344 - 0x01;
-		if (0x00 != Mem326[es_329:di_348 + 0x00:byte])
-			goto l0800_21B6;
-	}
-	if (!Z_352)
-	{
-		di_348 = 0x01;
-		es_329 = 0x00;
-	}
-	Mem376[es_329:di_348 + 0x03:byte] = 0x00;
-	ptr32 es_bx_382 = Mem376[ds_100:11857:segptr32];
-	Mem385[es_bx_382 + 0x04:byte] = (byte) (ax_28 + (cx_55 + 0x04) >>u 0x08);
-	Mem390[es_bx_382 + 0x05:byte] = bLoc0C + bLoc0E;
-	fn0800_2688(fp - 0x02, ds_100, cx_55 + 0x04, 0x00, 0x00, 0x00);
-	return;
+	word16 ax_21 = DPB(ax, 0x00, 8);
+	word16 dx_30 = DPB(dx, 0x00, 8);
+	selector ds_31;
+	return fn0800_20A1(ax_21 << 0x08, dx_30, fp - 0x02, ds, out ds_31);
 }
 
+// 0800:20A1: Register word16 fn0800_20A1(Register word16 ax, Register word16 dx, Register word16 bp, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_20A1(word16 ax, word16 dx, word16 bp, selector ds, ptr16 & dsOut)
+{
+	*dsOut = ds;
+	Mem5[ss:bp - 0x0A + 0x00:word16] = ax + dx;
+	word16 dx_11 = Mem5[ds:11857:word16] + Mem5[ss:(bp - 0x0A) + 0x00:word16];
+	Mem12[ss:bp - 0x06 + 0x00:word16] = Mem5[ds:11859:word16];
+	Mem13[ss:bp - 0x08 + 0x00:word16] = dx_11;
+	ptr32 es_di_14 = Mem13[ss:bp + 0x04:segptr32];
+	selector es_15 = SLICE(es_di_14, selector, 16);
+	word16 di_16 = (word16) es_di_14;
+	word16 cx_21 = ~0x00;
+	if (cx_21 != 0x00)
+	{
+		di_16 = di_76 + 0x01;
+		cx_21 = cx_21 - 0x01;
+		word16 di_76 = di_16;
+		if (0x00 != Mem13[es_15:di_76 + 0x00:byte])
+			goto l0800_20BE;
+	}
+	Mem37[ss:bp - 0x0C + 0x00:word16] = ~cx_21 + 0x04;
+	word16 bx_51 = Mem37[ds:11857:word16] + (((int16) Mem37[Mem37[ss:bp + 0x08:segptr32] + 0x00:byte] << 0x08) + DPB(dx_11, 0x00, 8));
+	Mem54[ss:bp - 0x02 + 0x00:word16] = Mem37[ds:11859:word16];
+	Mem55[ss:bp - 0x04 + 0x00:word16] = bx_51 - 0x01;
+	word16 ax_60 = Mem55[ss:bp - 0x08 + 0x00:word16] - Mem55[ss:(bp - 0x04) + 0x00:word16];
+	return fn0800_20F5(ax_60, 0x00, bx_51 - 0x01, bp, ds, wLoc02, wArg00);
+}
+
+// 0800:20F5: Register word16 fn0800_20F5(Register word16 ax, Register word16 dx, Register word16 bx, Register word16 bp, Register selector ds, Stack word16 wArg00, Stack word16 wArg02)
+word16 fn0800_20F5(word16 ax, word16 dx, word16 bx, word16 bp, selector ds, word16 wArg00, word16 wArg02)
+{
+	word16 di_26;
+	selector ds_27;
+	fn0800_B0F3(Mem0[ss:bp - 0x04 + 0x00:word16] + Mem0[ss:(bp - 0x0C) + 0x00:word16], Mem0[ds:11859:word16], bx, Mem0[ds:11859:word16], ax, out di_26, out ds_27);
+	ptr32 es_di_30 = Mem0[ss:bp - 0x04 + 0x00:segptr32];
+	selector es_31 = SLICE(es_di_30, selector, 16);
+	word16 di_32 = (word16) es_di_30;
+	selector es_35 = Mem0[ss:bp + 0x06:selector];
+	word16 di_39 = Mem0[ss:bp + 0x04:word16];
+	word16 cx_428 = ~0x00;
+	if (cx_428 != 0x00)
+	{
+		di_39 = di_39 + 0x01;
+		cx_428 = cx_428 - 0x01;
+		if (0x00 != Mem0[es_35:di_39 + 0x00:byte])
+			goto l0800_211F;
+	}
+	word16 cx_56 = ~cx_428;
+	word16 cx_58 = cx_56 >>u 0x01;
+	word16 si_64 = di_39 - cx_56;
+	word16 di_65 = di_32;
+	while (cx_58 != 0x00)
+	{
+		Mem81[es_31:di_65 + 0x00:word16] = Mem0[es_35:si_64 + 0x00:word16];
+		si_64 = si_64 + 0x02;
+		di_65 = di_65 + 0x02;
+		cx_58 = cx_58 - 0x01;
+	}
+	word16 cx_100 = cx_58 * 0x02 + (cx_56 >>u 0x01 <u 0x00);
+	while (cx_100 != 0x00)
+	{
+		Mem96[es_31:di_65 + 0x00:byte] = Mem0[es_35:si_64 + 0x00:byte];
+		si_64 = si_64 + 0x01;
+		di_65 = di_65 + 0x01;
+		cx_100 = cx_100 - 0x01;
+	}
+	ptr32 es_di_104 = Mem0[ss:bp - 0x04 + 0x00:segptr32];
+	selector es_105 = SLICE(es_di_104, selector, 16);
+	word16 di_106 = (word16) es_di_104;
+	word16 cx_111 = ~0x00;
+	if (cx_111 != 0x00)
+	{
+		di_106 = di_106 + 0x01;
+		cx_111 = cx_111 - 0x01;
+		if (0x00 != Mem0[es_105:di_106 + 0x00:byte])
+			goto l0800_213F;
+	}
+	word16 cx_121 = ~cx_111;
+	word16 di_125 = di_106 - cx_121;
+	byte Z_130 = cond(di_125);
+	if (cx_121 != 0x00)
+	{
+		Z_130 = cond(0x00 - Mem0[es_105:di_125 + 0x00:byte]);
+		di_125 = di_125 + 0x01;
+		cx_121 = cx_121 - 0x01;
+		if (0x00 != Mem0[es_105:di_125 + 0x00:byte])
+			goto l0800_2147;
+	}
+	if (!Z_130)
+	{
+		di_125 = 0x01;
+		es_105 = 0x00;
+	}
+	Mem153[es_105:di_125 + 0x00:byte] = 0x00;
+	ptr32 es_di_154 = Mem153[ss:bp - 0x04 + 0x00:segptr32];
+	selector es_155 = SLICE(es_di_154, selector, 16);
+	word16 di_156 = (word16) es_di_154;
+	word16 cx_161 = ~0x00;
+	if (cx_161 != 0x00)
+	{
+		di_156 = di_156 + 0x01;
+		cx_161 = cx_161 - 0x01;
+		if (0x00 != Mem153[es_155:di_156 + 0x00:byte])
+			goto l0800_2164;
+	}
+	word16 cx_171 = ~cx_161;
+	word16 di_175 = di_156 - cx_171;
+	byte Z_180 = cond(di_175);
+	if (cx_171 != 0x00)
+	{
+		Z_180 = cond(0x00 - Mem153[es_155:di_175 + 0x00:byte]);
+		di_175 = di_175 + 0x01;
+		cx_171 = cx_171 - 0x01;
+		if (0x00 != Mem153[es_155:di_175 + 0x00:byte])
+			goto l0800_216C;
+	}
+	if (!Z_180)
+	{
+		di_175 = 0x01;
+		es_155 = 0x00;
+	}
+	Mem203[es_155:di_175 + 0x01:byte] = 0x00;
+	ptr32 es_di_204 = Mem203[ss:bp - 0x04 + 0x00:segptr32];
+	selector es_205 = SLICE(es_di_204, selector, 16);
+	word16 di_206 = (word16) es_di_204;
+	word16 cx_211 = ~0x00;
+	if (cx_211 != 0x00)
+	{
+		di_206 = di_206 + 0x01;
+		cx_211 = cx_211 - 0x01;
+		if (0x00 != Mem203[es_205:di_206 + 0x00:byte])
+			goto l0800_2189;
+	}
+	word16 cx_221 = ~cx_211;
+	word16 di_225 = di_206 - cx_221;
+	byte Z_230 = cond(di_225);
+	if (cx_221 != 0x00)
+	{
+		Z_230 = cond(0x00 - Mem203[es_205:di_225 + 0x00:byte]);
+		di_225 = di_225 + 0x01;
+		cx_221 = cx_221 - 0x01;
+		if (0x00 != Mem203[es_205:di_225 + 0x00:byte])
+			goto l0800_2191;
+	}
+	if (!Z_230)
+	{
+		di_225 = 0x01;
+		es_205 = 0x00;
+	}
+	Mem253[es_205:di_225 + 0x02:byte] = 0x00;
+	ptr32 es_di_254 = Mem253[ss:bp - 0x04 + 0x00:segptr32];
+	selector es_255 = SLICE(es_di_254, selector, 16);
+	word16 di_256 = (word16) es_di_254;
+	word16 cx_261 = ~0x00;
+	if (cx_261 != 0x00)
+	{
+		di_256 = di_256 + 0x01;
+		cx_261 = cx_261 - 0x01;
+		if (0x00 != Mem253[es_255:di_256 + 0x00:byte])
+			goto l0800_21AE;
+	}
+	word16 cx_271 = ~cx_261;
+	word16 di_275 = di_256 - cx_271;
+	byte Z_280 = cond(di_275);
+	if (cx_271 != 0x00)
+	{
+		Z_280 = cond(0x00 - Mem253[es_255:di_275 + 0x00:byte]);
+		di_275 = di_275 + 0x01;
+		cx_271 = cx_271 - 0x01;
+		if (0x00 != Mem253[es_255:di_275 + 0x00:byte])
+			goto l0800_21B6;
+	}
+	if (!Z_280)
+	{
+		di_275 = 0x01;
+		es_255 = 0x00;
+	}
+	Mem303[es_255:di_275 + 0x03:byte] = 0x00;
+	ptr32 es_bx_309 = Mem303[ds_27:11857:segptr32];
+	Mem312[es_bx_309 + 0x04:byte] = (byte) (Mem303[ss:bp - 0x0A + 0x00:word16] + Mem303[ss:(bp - 0x0C) + 0x00:word16] >>u 0x08);
+	Mem315[es_bx_309 + 0x05:byte] = Mem312[ss:bp - 0x0A + 0x00:byte] + Mem312[ss:(bp - 0x0C) + 0x00:byte];
+	fn0800_2688(bp, ds_27, Mem315[ss:bp - 0x0C + 0x00:word16], 0x00, 0x00, 0x00);
+	return Mem315[ss:bp + 0x00:word16];
+}
+
+// 0800:2201: Register selector fn0800_2201(Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04)
 selector fn0800_2201(selector ds, segptr32 ptrArg02, word16 wArg04)
 {
 	word16 ax_25 = (DPB(ax, 0x00, 8) << 0x08) + DPB(dx, 0x00, 8);
 	word16 dx_30 = Mem0[ds:11857:word16] + ax_25;
 	word16 dx_48 = Mem0[ds:11857:word16] + (((int16) Mem0[ptrArg02 + 0x00:byte] << 0x08) + DPB(dx_30, 0x00, 8)) - wArg02;
 	word16 ax_55 = wArg02 + dx_48;
-	selector ds_78 = fn0800_B0F3(wArg02, wArg04, ax_55, wArg04, dx_30 - ax_55);
-	ptr32 es_bx_85 = Mem0[ds_78:11857:segptr32];
-	Mem88[es_bx_85 + 0x04:byte] = (byte) (ax_25 - dx_48 >>u 0x08);
-	Mem91[es_bx_85 + 0x05:byte] = (byte) ax_25 - (byte) dx_48;
-	word16 ax_100 = -dx_48;
-	fn0800_2688(fp - 0x02, ds_78, ax_100, -0x00 - (ax_100 == 0x00), 0x00, 0x00);
-	word16 dx_110 = Mem91[ds_78:17838:word16];
-	if (Mem91[ds_78:0x45B0:word16] != wArg04 || dx_110 != wArg02)
+	word16 di_78;
+	selector ds_79;
+	fn0800_B0F3(wArg02, wArg04, ax_55, wArg04, dx_30 - ax_55, out di_78, out ds_79);
+	ptr32 es_bx_87 = Mem0[ds_79:11857:segptr32];
+	Mem90[es_bx_87 + 0x04:byte] = (byte) (ax_25 - dx_48 >>u 0x08);
+	Mem93[es_bx_87 + 0x05:byte] = (byte) ax_25 - (byte) dx_48;
+	word16 ax_102 = -dx_48;
+	fn0800_2688(fp - 0x02, ds_79, ax_102, -0x00 - (ax_102 == 0x00), 0x00, 0x00);
+	word16 dx_112 = Mem93[ds_79:17838:word16];
+	if (Mem93[ds_79:0x45B0:word16] != wArg04 || dx_112 != wArg02)
 	{
-		if (Mem91[ds_78:17838:word16] >u wArg02)
-			Mem145[ds_78:0x45AA:word16] = Mem91[ds_78:0x45AA:word16] - dx_48;
-		return ds_78;
+		if (Mem93[ds_79:17838:word16] >u wArg02)
+			Mem147[ds_79:0x45AA:word16] = Mem93[ds_79:0x45AA:word16] - dx_48;
+		return ds_79;
 	}
 	else
 	{
-		selector es_151 = SLICE(ptrArg02, selector, 16);
-		word16 di_152 = (word16) ptrArg02 + 0x02;
-		word16 cx_158 = ~0x00;
-		if (cx_158 != 0x00)
+		selector es_153 = SLICE(ptrArg02, selector, 16);
+		word16 di_154 = (word16) ptrArg02 + 0x02;
+		word16 cx_160 = ~0x00;
+		if (cx_160 != 0x00)
 		{
-			di_152 = di_152 + 0x01;
-			cx_158 = cx_158 - 0x01;
-			if (0x00 != Mem91[es_151:di_152 + 0x00:byte])
+			di_154 = di_154 + 0x01;
+			cx_160 = cx_160 - 0x01;
+			if (0x00 != Mem93[es_153:di_154 + 0x00:byte])
 				goto l0800_22C7;
 		}
-		word16 cx_168 = ~cx_158;
-		word16 di_172 = di_152 - cx_168;
-		byte Z_176 = cond(di_172);
-		if (cx_168 != 0x00)
+		word16 cx_170 = ~cx_160;
+		word16 di_174 = di_154 - cx_170;
+		byte Z_178 = cond(di_174);
+		if (cx_170 != 0x00)
 		{
-			Z_176 = cond(0x00 - Mem91[es_151:di_172 + 0x00:byte]);
-			di_172 = di_172 + 0x01;
-			cx_168 = cx_168 - 0x01;
-			if (0x00 != Mem91[es_151:di_172 + 0x00:byte])
+			Z_178 = cond(0x00 - Mem93[es_153:di_174 + 0x00:byte]);
+			di_174 = di_174 + 0x01;
+			cx_170 = cx_170 - 0x01;
+			if (0x00 != Mem93[es_153:di_174 + 0x00:byte])
 				goto l0800_22CF;
 		}
-		if (!Z_176)
+		if (!Z_178)
 		{
-			di_172 = 0x01;
-			es_151 = 0x00;
+			di_174 = 0x01;
+			es_153 = 0x00;
 		}
-		Mem206[ds_78:0x45AC:word16] = es_151;
-		Mem207[ds_78:0x45AA:word16] = di_172;
-		return ds_78;
+		Mem208[ds_79:0x45AC:word16] = es_153;
+		Mem209[ds_79:0x45AA:word16] = di_174;
+		return ds_79;
 	}
 }
 
+// 0800:22FE: Register selector fn0800_22FE(Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04)
 selector fn0800_22FE(selector ds, segptr32 ptrArg02, word16 wArg04)
 {
 	word16 ax_25 = (DPB(ax, 0x00, 8) << 0x08) + DPB(dx, 0x00, 8);
 	word16 dx_29 = Mem0[ds:11857:word16] + ax_25;
-	word16 di_205 = (word16) ptrArg02;
+	word16 di_207 = (word16) ptrArg02;
 	selector es_35 = SLICE(ptrArg02, selector, 16);
-	word16 cx_207 = ~0x00;
-	if (cx_207 != 0x00)
+	word16 cx_209 = ~0x00;
+	if (cx_209 != 0x00)
 	{
-		di_205 = di_205 + 0x01;
-		cx_207 = cx_207 - 0x01;
-		if (0x00 != Mem0[es_35:di_205 + 0x00:byte])
+		di_207 = di_207 + 0x01;
+		cx_209 = cx_209 - 0x01;
+		if (0x00 != Mem0[es_35:di_207 + 0x00:byte])
 			goto l0800_2336;
 	}
-	word16 cx_201 = ~cx_207;
-	word16 di_188 = di_205 - cx_201;
-	byte Z_196 = cond(di_188);
-	if (cx_201 != 0x00)
+	word16 cx_203 = ~cx_209;
+	word16 di_190 = di_207 - cx_203;
+	byte Z_198 = cond(di_190);
+	if (cx_203 != 0x00)
 	{
-		Z_196 = cond(0x00 - Mem0[es_35:di_188 + 0x00:byte]);
-		di_188 = di_188 + 0x01;
-		cx_201 = cx_201 - 0x01;
-		if (0x00 != Mem0[es_35:di_188 + 0x00:byte])
+		Z_198 = cond(0x00 - Mem0[es_35:di_190 + 0x00:byte]);
+		di_190 = di_190 + 0x01;
+		cx_203 = cx_203 - 0x01;
+		if (0x00 != Mem0[es_35:di_190 + 0x00:byte])
 			goto l0800_233E;
 	}
-	if (!Z_196)
-		di_188 = 0x01;
-	word16 di_89 = di_188 + 0x04 - wArg02;
+	if (!Z_198)
+		di_190 = 0x01;
+	word16 di_89 = di_190 + 0x04 - wArg02;
 	word16 ax_96 = wArg02 + di_89;
-	selector ds_119 = fn0800_B0F3(wArg02, wArg04, ax_96, wArg04, dx_29 - ax_96);
-	ptr32 es_bx_126 = Mem0[ds_119:11857:segptr32];
-	Mem129[es_bx_126 + 0x04:byte] = (byte) (ax_25 - di_89 >>u 0x08);
-	Mem133[es_bx_126 + 0x05:byte] = bLoc08 - (byte) di_89;
-	word16 ax_142 = -di_89;
-	fn0800_2688(fp - 0x02, ds_119, ax_142, -0x00 - (ax_142 == 0x00), 0x00, 0x00);
-	Mem154[ds_119:0x45AC:word16] = wArg04;
-	word16 dx_153 = wArg02 + di_89;
-	Mem155[ds_119:0x45AA:word16] = dx_153;
-	if ((dx_153 | wArg04) == 0x00)
+	word16 di_119;
+	selector ds_120;
+	fn0800_B0F3(wArg02, wArg04, ax_96, wArg04, dx_29 - ax_96, out di_119, out ds_120);
+	ptr32 es_bx_128 = Mem0[ds_120:11857:segptr32];
+	Mem131[es_bx_128 + 0x04:byte] = (byte) (ax_25 - di_89 >>u 0x08);
+	Mem135[es_bx_128 + 0x05:byte] = bLoc08 - (byte) di_89;
+	word16 ax_144 = -di_89;
+	fn0800_2688(fp - 0x02, ds_120, ax_144, -0x00 - (ax_144 == 0x00), 0x00, 0x00);
+	Mem156[ds_120:0x45AC:word16] = wArg04;
+	word16 dx_155 = wArg02 + di_89;
+	Mem157[ds_120:0x45AA:word16] = dx_155;
+	if ((dx_155 | wArg04) == 0x00)
 	{
-		if (Mem155[ds_119:0x45AA:word16] >u wArg02)
-			Mem186[ds_119:0x45AA:word16] = Mem155[ds_119:0x45AA:word16] - di_89;
-		return ds_119;
+		if (Mem157[ds_120:0x45AA:word16] >u wArg02)
+			Mem188[ds_120:0x45AA:word16] = Mem157[ds_120:0x45AA:word16] - di_89;
+		return ds_120;
 	}
 	else
 	{
-		Mem169[ds_119:0x45AC:word16] = wArg04;
-		Mem170[ds_119:0x45AA:word16] = wArg02;
-		return ds_119;
+		Mem171[ds_120:0x45AC:word16] = wArg04;
+		Mem172[ds_120:0x45AA:word16] = wArg02;
+		return ds_120;
 	}
 }
 
+// 0800:23EC: Register word16 fn0800_23EC(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 dsOut)
 word16 fn0800_23EC(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & dsOut)
 {
 	word16 dx_22;
@@ -2928,24 +3756,24 @@ word16 fn0800_23EC(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 &
 		if (0x00 != Mem29[es_32:di_31 + 0x00:byte])
 			goto l0800_240D;
 	}
-	word16 cx_402 = ~cx_39;
-	word16 di_390 = di_31 - cx_402;
-	byte Z_398 = cond(di_390);
-	if (cx_402 != 0x00)
+	word16 cx_403 = ~cx_39;
+	word16 di_391 = di_31 - cx_403;
+	byte Z_399 = cond(di_391);
+	if (cx_403 != 0x00)
 	{
-		Z_398 = cond(0x00 - Mem29[es_32:di_390 + 0x00:byte]);
-		di_390 = di_390 + 0x01;
-		cx_402 = cx_402 - 0x01;
-		if (0x00 != Mem29[es_32:di_390 + 0x00:byte])
+		Z_399 = cond(0x00 - Mem29[es_32:di_391 + 0x00:byte]);
+		di_391 = di_391 + 0x01;
+		cx_403 = cx_403 - 0x01;
+		if (0x00 != Mem29[es_32:di_391 + 0x00:byte])
 			goto l0800_2415;
 	}
-	if (!Z_398)
+	if (!Z_399)
 	{
-		di_390 = 0x01;
+		di_391 = 0x01;
 		es_32 = 0x00;
 	}
 	ptr32 es_di_87 = Mem29[ss:bp_23 + 0x04:segptr32];
-	Mem91[ss:fp - 0x0E + 0x00:word16] = (int16) Mem29[es_32:di_390 + 0x00:byte] << 0x08;
+	Mem91[ss:fp - 0x0E + 0x00:word16] = (int16) Mem29[es_32:di_391 + 0x00:byte] << 0x08;
 	word16 di_105 = (word16) es_di_87;
 	selector es_136 = SLICE(es_di_87, selector, 16);
 	word16 cx_101 = ~0x00;
@@ -2961,11 +3789,11 @@ word16 fn0800_23EC(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 &
 	byte Z_118 = cond(di_114);
 	if (cx_108 != 0x00)
 	{
-		Z_118 = cond(0x00 - Mem91[es_136:di_413 + 0x00:byte]);
-		di_114 = di_413 + 0x01;
+		Z_118 = cond(0x00 - Mem91[es_136:di_414 + 0x00:byte]);
+		di_114 = di_414 + 0x01;
 		cx_108 = cx_108 - 0x01;
-		word16 di_413 = di_114;
-		if (0x00 != Mem91[es_136:di_413 + 0x00:byte])
+		word16 di_414 = di_114;
+		if (0x00 != Mem91[es_136:di_414 + 0x00:byte])
 			goto l0800_243F;
 	}
 	if (!Z_118)
@@ -3016,11 +3844,11 @@ word16 fn0800_23EC(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 &
 	byte Z_238 = cond(di_234);
 	if (cx_228 != 0x00)
 	{
-		Z_238 = cond(0x00 - Mem211[es_209:di_417 + 0x00:byte]);
-		di_234 = di_417 + 0x01;
+		Z_238 = cond(0x00 - Mem211[es_209:di_418 + 0x00:byte]);
+		di_234 = di_418 + 0x01;
 		cx_228 = cx_228 - 0x01;
-		word16 di_417 = di_234;
-		if (0x00 != Mem211[es_209:di_417 + 0x00:byte])
+		word16 di_418 = di_234;
+		if (0x00 != Mem211[es_209:di_418 + 0x00:byte])
 			goto l0800_2494;
 	}
 	if (!Z_238)
@@ -3035,17 +3863,18 @@ word16 fn0800_23EC(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 &
 	Mem295[ss:fp - 0x14 + 0x00:word16] = dx_287;
 	Mem298[ss:fp - 22 + 0x00:word16] = Mem295[ds_24:10705:word16];
 	Mem301[ss:fp - 0x18 + 0x00:word16] = Mem298[ds_24:10703:word16];
-	selector ds_302 = fn0800_3C99(bp_23, ds_24);
-	*dsOut = ds_302;
-	Mem306[ss:fp - 0x0E + 0x00:word16] = Mem301[ss:bp_23 - 0x02 + 0x00:word16];
-	Mem309[ss:fp - 0x10 + 0x00:word16] = Mem306[ss:bp_23 - 0x04 + 0x00:word16];
-	word16 dx_313 = -Mem309[ss:bp_23 - 0x08 + 0x00:word16];
-	Mem318[ss:fp - 0x12 + 0x00:word16] = -Mem309[ss:bp_23 - 0x06 + 0x00:word16] - (dx_313 == 0x00);
-	Mem320[ss:fp - 0x14 + 0x00:word16] = dx_313;
-	fn0800_2688(bp_23, ds_302, wArg00, wArg02, wArg04, wArg06);
-	return Mem320[ss:bp_23 + 0x00:word16];
+	selector ds_302;
+	word16 bp_303 = fn0800_3C99(bp_23, ds_24, out ds_302);
+	Mem307[ss:fp - 0x0E + 0x00:word16] = Mem301[ss:bp_303 - 0x02 + 0x00:word16];
+	Mem310[ss:fp - 0x10 + 0x00:word16] = Mem307[ss:bp_303 - 0x04 + 0x00:word16];
+	word16 dx_314 = -Mem310[ss:bp_303 - 0x08 + 0x00:word16];
+	Mem319[ss:fp - 0x12 + 0x00:word16] = -Mem310[ss:bp_303 - 0x06 + 0x00:word16] - (dx_314 == 0x00);
+	Mem321[ss:fp - 0x14 + 0x00:word16] = dx_314;
+	fn0800_2688(bp_303, ds_302, wArg00, wArg02, wArg04, wArg06);
+	return Mem321[ss:bp_303 + 0x00:word16];
 }
 
+// 0800:24FE: Register word16 fn0800_24FE(Register word16 bp, Register selector ds, Stack segptr32 ptrArg02, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 dsOut)
 word16 fn0800_24FE(word16 bp, selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
 {
 	word16 di_12 = (word16) ptrArg02;
@@ -3063,32 +3892,32 @@ word16 fn0800_24FE(word16 bp, selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr
 	byte Z_43 = cond(di_39);
 	if (cx_33 != 0x00)
 	{
-		Z_43 = cond(0x00 - Mem0[es_13:di_498 + 0x00:byte]);
-		di_39 = di_498 + 0x01;
+		Z_43 = cond(0x00 - Mem0[es_13:di_495 + 0x00:byte]);
+		di_39 = di_495 + 0x01;
 		cx_33 = cx_33 - 0x01;
-		word16 di_498 = di_39;
-		if (0x00 != Mem0[es_13:di_498 + 0x00:byte])
+		word16 di_495 = di_39;
+		if (0x00 != Mem0[es_13:di_495 + 0x00:byte])
 			goto l0800_2515;
 	}
-	word16 di_473 = (word16) ptrArg02;
-	word16 cx_475 = ~0x00;
-	if (cx_475 != 0x00)
+	word16 di_470 = (word16) ptrArg02;
+	word16 cx_472 = ~0x00;
+	if (cx_472 != 0x00)
 	{
-		di_473 = di_473 + 0x01;
-		cx_475 = cx_475 - 0x01;
-		if (0x00 != Mem0[0x00:di_473 + 0x00:byte])
+		di_470 = di_470 + 0x01;
+		cx_472 = cx_472 - 0x01;
+		if (0x00 != Mem0[0x00:di_470 + 0x00:byte])
 			goto l0800_2537;
 	}
-	word16 cx_103 = ~cx_475;
-	word16 di_110 = di_473 - cx_103;
+	word16 cx_103 = ~cx_472;
+	word16 di_110 = di_470 - cx_103;
 	byte Z_101 = cond(di_110);
 	if (cx_103 != 0x00)
 	{
-		Z_101 = cond(0x00 - Mem0[0x00:di_500 + 0x00:byte]);
-		di_110 = di_500 + 0x01;
+		Z_101 = cond(0x00 - Mem0[0x00:di_497 + 0x00:byte]);
+		di_110 = di_497 + 0x01;
 		cx_103 = cx_103 - 0x01;
-		word16 di_500 = di_110;
-		if (0x00 != Mem0[0x00:di_500 + 0x00:byte])
+		word16 di_497 = di_110;
+		if (0x00 != Mem0[0x00:di_497 + 0x00:byte])
 			goto l0800_253F;
 	}
 	word16 di_137 = (word16) ptrArg02;
@@ -3106,11 +3935,11 @@ word16 fn0800_24FE(word16 bp, selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr
 	byte Z_163 = cond(di_159);
 	if (cx_153 != 0x00)
 	{
-		Z_163 = cond(0x00 - Mem0[es_138:di_502 + 0x00:byte]);
-		di_159 = di_502 + 0x01;
+		Z_163 = cond(0x00 - Mem0[es_138:di_499 + 0x00:byte]);
+		di_159 = di_499 + 0x01;
 		cx_153 = cx_153 - 0x01;
-		word16 di_502 = di_159;
-		if (0x00 != Mem0[es_138:di_502 + 0x00:byte])
+		word16 di_499 = di_159;
+		if (0x00 != Mem0[es_138:di_499 + 0x00:byte])
 			goto l0800_256A;
 	}
 	word16 di_191 = (word16) ptrArg02;
@@ -3128,72 +3957,74 @@ word16 fn0800_24FE(word16 bp, selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr
 	byte Z_221 = cond(di_217);
 	if (cx_211 != 0x00)
 	{
-		Z_221 = cond(0x00 - Mem0[es_192:di_504 + 0x00:byte]);
-		di_217 = di_504 + 0x01;
+		Z_221 = cond(0x00 - Mem0[es_192:di_501 + 0x00:byte]);
+		di_217 = di_501 + 0x01;
 		cx_211 = cx_211 - 0x01;
-		word16 di_504 = di_217;
-		if (0x00 != Mem0[es_192:di_504 + 0x00:byte])
+		word16 di_501 = di_217;
+		if (0x00 != Mem0[es_192:di_501 + 0x00:byte])
 			goto l0800_2594;
 	}
-	selector ds_285;
-	word16 ax_286 = fn0800_ACB3(fp - 0x02, ds, DPB(ptrLoc1A, Mem0[ds:10703:word16], 0), Mem0[ds:10705:word16], 0x00, out ds_285);
-	Mem291[ss:fp - 0x12 + 0x00:word16] = Mem0[ds_285:10705:word16];
-	Mem295[ss:fp - 0x14 + 0x00:word16] = Mem291[ds_285:10703:word16];
-	selector ds_298;
-	word16 dx_299 = fn0800_3E5D(fp - 0x02, ds_285, wArg00, wArg02, out ds_298);
-	Mem302[ss:fp - 0x08 + 0x00:word16] = dx_299;
-	Mem303[ss:fp - 0x0A + 0x00:word16] = ax_286;
-	word16 dx_305;
-	word16 ax_306 = fn0800_8C8A(ax_286, 0x08, dx_299, bp, out dx_305);
-	if (dx_305 != 0x52 || ax_306 != 0x4E43)
+	word16 di_283;
+	selector ds_284;
+	word16 ax_285 = fn0800_ACB3(fp - 0x02, ds, Mem0[ds:10703:word16], Mem0[ds:10705:word16], 0x00, out di_283, out ds_284);
+	Mem290[ss:fp - 0x12 + 0x00:word16] = Mem0[ds_284:10705:word16];
+	Mem294[ss:fp - 0x14 + 0x00:word16] = Mem290[ds_284:10703:word16];
+	selector ds_297;
+	word16 dx_298 = fn0800_3E5D(fp - 0x02, ds_284, wArg00, wArg02, out ds_297);
+	Mem301[ss:fp - 0x08 + 0x00:word16] = dx_298;
+	Mem302[ss:fp - 0x0A + 0x00:word16] = ax_285;
+	word16 dx_304;
+	word16 ax_305 = fn0800_8C8A(ax_285, 0x08, dx_298, bp, out dx_304);
+	if (dx_304 != 0x52 || ax_305 != 0x4E43)
 	{
-		Mem400[ss:fp - 0x12 + 0x00:word16] = ds_298;
-		Mem403[ss:fp - 0x14 + 0x00:word16] = 0x4348;
-		Mem406[ss:fp - 22 + 0x00:word16] = 0x0C;
-		word16 si_407;
-		word16 di_408;
-		fn0800_0D24(fp - 0x02, ds_298, out si_407, out di_408, out ds_298);
+		Mem398[ss:fp - 0x12 + 0x00:word16] = ds_297;
+		Mem401[ss:fp - 0x14 + 0x00:word16] = 0x4348;
+		Mem404[ss:fp - 22 + 0x00:word16] = 0x0C;
+		word16 si_405;
+		word16 di_406;
+		fn0800_0D24(fp - 0x02, ds_297, out si_405, out di_406, out ds_297);
 	}
-	word16 ax_319 = Mem303[ss:fp - 0x0A + 0x00:word16];
-	if ((ax_319 & 0xFF) != 0x00)
+	word16 ax_318 = Mem302[ss:fp - 0x0A + 0x00:word16];
+	if ((ax_318 & 0xFF) != 0x00)
 	{
-		Mem344[ss:fp - 0x12 + 0x00:word16] = Mem303[ds_298:10705:word16];
-		Mem347[ss:fp - 0x14 + 0x00:word16] = Mem344[ds_298:10703:word16];
-		selector ds_348;
-		word16 dx_349 = fn0800_3E5D(fp - 0x02, ds_298, wArg00, wArg02, out ds_348);
-		Mem352[ds_348:0x2A09:word16] = dx_349;
-		Mem353[ds_348:0x2A07:word16] = ax_319 & 0xFF;
-		Mem356[ss:fp - 0x12 + 0x00:word16] = Mem353[ds_348:10705:word16];
-		Mem359[ss:fp - 0x14 + 0x00:word16] = Mem356[ds_348:10703:word16];
-		selector ds_360;
-		word16 dx_361 = fn0800_3E5D(fp - 0x02, ds_348, wArg00, wArg02, out ds_360);
-		Mem363[ds_360:0x2A05:word16] = dx_361;
-		Mem364[ds_360:0x2A03:word16] = ax_319 & 0xFF;
-		ui32 ax_dx_368 = SEQ(Mem364[ds_360:0x2A05:word16], Mem364[ds_360:0x2A03:word16] + 0x12);
-		Mem374[ss:fp - 0x0C + 0x00:word16] = SLICE(ax_dx_368 + 0x12, word16, 16);
-		Mem375[ss:fp - 0x0E + 0x00:word16] = (word16) (ax_dx_368 + 0x12);
+		Mem342[ss:fp - 0x12 + 0x00:word16] = Mem302[ds_297:10705:word16];
+		Mem345[ss:fp - 0x14 + 0x00:word16] = Mem342[ds_297:10703:word16];
+		selector ds_346;
+		word16 dx_347 = fn0800_3E5D(fp - 0x02, ds_297, wArg00, wArg02, out ds_346);
+		Mem350[ds_346:0x2A09:word16] = dx_347;
+		Mem351[ds_346:0x2A07:word16] = ax_318 & 0xFF;
+		Mem354[ss:fp - 0x12 + 0x00:word16] = Mem351[ds_346:10705:word16];
+		Mem357[ss:fp - 0x14 + 0x00:word16] = Mem354[ds_346:10703:word16];
+		selector ds_358;
+		word16 dx_359 = fn0800_3E5D(fp - 0x02, ds_346, wArg00, wArg02, out ds_358);
+		Mem361[ds_358:0x2A05:word16] = dx_359;
+		Mem362[ds_358:0x2A03:word16] = ax_318 & 0xFF;
+		ui32 ax_dx_366 = SEQ(Mem362[ds_358:0x2A05:word16], Mem362[ds_358:0x2A03:word16] + 0x12);
+		Mem372[ss:fp - 0x0C + 0x00:word16] = SLICE(ax_dx_366 + 0x12, word16, 16);
+		Mem373[ss:fp - 0x0E + 0x00:word16] = (word16) (ax_dx_366 + 0x12);
 	}
 	else
 	{
-		Mem378[ss:fp - 0x12 + 0x00:word16] = Mem303[ds_298:10705:word16];
-		Mem381[ss:fp - 0x14 + 0x00:word16] = Mem378[ds_298:10703:word16];
-		selector ds_382;
-		word16 dx_383 = fn0800_3E5D(fp - 0x02, ds_298, wArg00, wArg02, out ds_382);
-		Mem385[ds_382:0x2A05:word16] = dx_383;
-		Mem386[ds_382:0x2A03:word16] = ax_319 & 0xFF;
-		Mem387[ds_382:0x2A09:word16] = dx_383;
-		Mem388[ds_382:0x2A07:word16] = ax_319 & 0xFF;
-		ui32 dx_ax_390 = SEQ(dx_383, (ax_319 & 0xFF) + 0x08);
-		Mem396[ss:fp - 0x0C + 0x00:word16] = SLICE(dx_ax_390 + 0x08, word16, 16);
-		Mem397[ss:fp - 0x0E + 0x00:word16] = (word16) (dx_ax_390 + 0x08);
+		Mem376[ss:fp - 0x12 + 0x00:word16] = Mem302[ds_297:10705:word16];
+		Mem379[ss:fp - 0x14 + 0x00:word16] = Mem376[ds_297:10703:word16];
+		selector ds_380;
+		word16 dx_381 = fn0800_3E5D(fp - 0x02, ds_297, wArg00, wArg02, out ds_380);
+		Mem383[ds_380:0x2A05:word16] = dx_381;
+		Mem384[ds_380:0x2A03:word16] = ax_318 & 0xFF;
+		Mem385[ds_380:0x2A09:word16] = dx_381;
+		Mem386[ds_380:0x2A07:word16] = ax_318 & 0xFF;
+		ui32 dx_ax_388 = SEQ(dx_381, (ax_318 & 0xFF) + 0x08);
+		Mem394[ss:fp - 0x0C + 0x00:word16] = SLICE(dx_ax_388 + 0x08, word16, 16);
+		Mem395[ss:fp - 0x0E + 0x00:word16] = (word16) (dx_ax_388 + 0x08);
 	}
-	word16 dx_328;
-	*dxOut = Mem303[ss:fp - 0x0C + 0x00:word16];
-	word16 bp_337;
-	*bpOut = Mem303[ss:fp - 0x02 + 0x00:word16];
-	return Mem303[ss:fp - 0x0E + 0x00:word16];
+	word16 dx_327;
+	*dxOut = Mem302[ss:fp - 0x0C + 0x00:word16];
+	word16 bp_335;
+	*bpOut = Mem302[ss:fp - 0x02 + 0x00:word16];
+	return Mem302[ss:fp - 0x0E + 0x00:word16];
 }
 
+// 0800:2688: void fn0800_2688(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08)
 void fn0800_2688(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08)
 {
 fn0800_2688_entry:
@@ -3260,116 +4091,171 @@ l0800_27DF:
 fn0800_2688_exit:
 }
 
-word16 fn0800_283D(selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dxOut)
+// 0800:283D: Register word16 fn0800_283D(Register word16 si, Register word16 di, Register selector ds, Stack segptr32 ptrArg02, Register out ptr16 dxOut, Register out ptr16 bpOut)
+word16 fn0800_283D(word16 si, word16 di, selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & bpOut)
 {
 	word16 di_15 = (word16) ptrArg02;
 	selector es_16 = SLICE(ptrArg02, selector, 16);
-	word16 cx_21 = ~0x00;
-	if (cx_21 != 0x00)
+	word16 cx_178 = ~0x00;
+	if (cx_178 != 0x00)
 	{
 		di_15 = di_15 + 0x01;
-		cx_21 = cx_21 - 0x01;
+		cx_178 = cx_178 - 0x01;
 		if (0x00 != Mem0[es_16:di_15 + 0x00:byte])
 			goto l0800_284D;
 	}
-	word16 cx_33 = ~cx_21;
-	word16 di_346 = di_15 - cx_33;
-	byte Z_354 = cond(di_346);
-	if (cx_33 != 0x00)
+	word16 cx_172 = ~cx_178;
+	word16 di_160 = di_15 - cx_172;
+	byte Z_168 = cond(di_160);
+	if (cx_172 != 0x00)
 	{
-		Z_354 = cond(0x3A - Mem0[es_16:di_346 + 0x00:byte]);
-		di_346 = di_346 + 0x01;
-		cx_33 = cx_33 - 0x01;
-		if (0x3A != Mem0[es_16:di_346 + 0x00:byte])
+		Z_168 = cond(0x3A - Mem0[es_16:di_160 + 0x00:byte]);
+		di_160 = di_160 + 0x01;
+		cx_172 = cx_172 - 0x01;
+		if (0x3A != Mem0[es_16:di_160 + 0x00:byte])
 			goto l0800_2856;
 	}
-	if (!Z_354)
-		di_346 = 0x01;
-	if (di_346 != 0x01)
+	if (!Z_168)
+		di_160 = 0x01;
+	if (di_160 == 0x01)
 	{
-		word16 di_275 = (word16) ptrArg02;
-		word16 cx_280 = ~0x00;
-		if (cx_280 != 0x00)
+		word16 dx_155;
+		word16 bp_156;
+		return fn0800_288E(fp - 0x02, ds, di, si, out dx_155, out bp_156);
+	}
+	else
+	{
+		word16 di_100 = (word16) ptrArg02;
+		selector es_86 = SLICE(ptrArg02, selector, 16);
+		word16 cx_153 = ~0x00;
+		if (cx_153 != 0x00)
 		{
-			di_275 = di_275 + 0x01;
-			cx_280 = cx_280 - 0x01;
-			if (0x00 != Mem0[0x00:di_275 + 0x00:byte])
+			di_100 = di_100 + 0x01;
+			cx_153 = cx_153 - 0x01;
+			if (0x00 != Mem0[0x00:di_100 + 0x00:byte])
 				goto l0800_2870;
 		}
-		word16 cx_290 = ~cx_280;
-		word16 di_294 = di_275 - cx_290;
-		byte Z_298 = cond(di_294);
-		if (cx_290 != 0x00)
+		word16 cx_101 = ~cx_153;
+		word16 di_105 = di_100 - cx_101;
+		byte Z_109 = cond(di_105);
+		if (cx_101 != 0x00)
 		{
-			Z_298 = cond(0x3A - Mem0[0x00:di_372 + 0x00:byte]);
-			di_294 = di_372 + 0x01;
-			cx_290 = cx_290 - 0x01;
-			word16 di_372 = di_294;
-			if (0x3A != Mem0[0x00:di_372 + 0x00:byte])
+			Z_109 = cond(0x3A - Mem0[0x00:di_105 + 0x00:byte]);
+			di_105 = di_105 + 0x01;
+			cx_101 = cx_101 - 0x01;
+			if (0x3A != Mem0[0x00:di_105 + 0x00:byte])
 				goto l0800_2879;
 		}
-	}
-	word16 dx_94 = Mem0[ds:11859:word16];
-	word16 bx_95 = (word16) Mem0[ds:11857:segptr32] + DPB(dx, 0x00, 8);
-	word16 wLoc08_102 = Mem0[ds:11859:word16];
-	word16 wLoc0A_103 = Mem0[ds:11857:word16] + 0x08;
-	if (wLoc08_102 != dx_94 || wLoc0A_103 != bx_95)
-	{
-		word16 si_150 = wLoc0A_103 + 0x02;
-		word16 di_155 = (word16) ptrArg02;
-		word16 ax_156 = 0x00;
-		word16 cx_161 = ~0x00;
-		if (cx_161 != 0x00)
+		if (Z_109)
 		{
-			di_155 = di_155 + 0x01;
-			cx_161 = cx_161 - 0x01;
-			if (0x00 != Mem0[0x00:di_155 + 0x00:byte])
+			word16 dx_135;
+			word16 bp_136;
+			return fn0800_2884(fp - 0x02, di_105, es_86, ds, out dx_135, out bp_136);
+		}
+		else
+		{
+			word16 dx_130;
+			word16 bp_131;
+			return fn0800_2880(fp - 0x02, 0x01, ds, out dx_130, out bp_131);
+		}
+	}
+}
+
+// 0800:2880: Register word16 fn0800_2880(Register word16 bp, Register word16 di, Register selector ds, Register out ptr16 dxOut, Register out ptr16 bpOut)
+word16 fn0800_2880(word16 bp, word16 di, selector ds, ptr16 & dxOut, ptr16 & bpOut)
+{
+	word16 dx_9;
+	word16 bp_10;
+	return fn0800_2884(bp, di, 0x00, ds, out dx_9, out bp_10);
+}
+
+// 0800:2884: Register word16 fn0800_2884(Register word16 bp, Register word16 di, Register selector es, Register selector ds, Register out ptr16 dxOut, Register out ptr16 bpOut)
+word16 fn0800_2884(word16 bp, word16 di, selector es, selector ds, ptr16 & dxOut, ptr16 & bpOut)
+{
+	Mem8[ss:bp + 0x06:word16] = es;
+	Mem11[ss:bp + 0x04:word16] = di;
+	word16 dx_15;
+	word16 bp_16;
+	return fn0800_288E(bp, ds, wArg00, wArg02, out dx_15, out bp_16);
+}
+
+// 0800:288E: Register word16 fn0800_288E(Register word16 bp, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Register out ptr16 dxOut, Register out ptr16 bpOut)
+word16 fn0800_288E(word16 bp, selector ds, word16 wArg00, word16 wArg02, ptr16 & dxOut, ptr16 & bpOut)
+{
+	word16 bx_19 = (word16) Mem0[ds:11857:segptr32] + ((DPB(ax, 0x00, 8) << 0x08) + DPB(dx, 0x00, 8));
+	Mem20[ss:bp - 0x02 + 0x00:word16] = Mem0[ds:11859:word16];
+	Mem23[ss:bp - 0x04 + 0x00:word16] = bx_19;
+	word16 dx_25 = Mem23[ds:11857:word16];
+	Mem28[ss:bp - 0x06 + 0x00:word16] = Mem23[ds:11859:word16];
+	Mem29[ss:bp - 0x08 + 0x00:word16] = dx_25 + 0x08;
+l0800_2917:
+	word16 dx_53 = Mem29[ss:bp - 0x08 + 0x00:word16];
+	if (Mem29[ss:bp - 0x06 + 0x00:word16] != Mem29[ss:(bp - 0x02) + 0x00:word16] || dx_53 != Mem29[ss:(bp - 0x04) + 0x00:word16])
+	{
+		ptr32 es_di_87 = Mem29[ss:bp + 0x04:segptr32];
+		word16 si_121 = Mem29[ss:bp - 0x08 + 0x00:word16] + 0x02;
+		selector ds_86 = Mem29[ss:bp - 0x06 + 0x00:selector];
+		selector es_88 = SLICE(es_di_87, selector, 16);
+		word16 di_102 = (word16) es_di_87;
+		word16 ax_132 = 0x00;
+		word16 cx_103 = ~0x00;
+		if (cx_103 != 0x00)
+		{
+			di_102 = di_102 + 0x01;
+			cx_103 = cx_103 - 0x01;
+			if (0x00 != Mem29[es_88:di_102 + 0x00:byte])
 				goto l0800_28D4;
 		}
-		word16 cx_171 = ~cx_161;
-		word16 di_173 = di_155 - cx_171;
-		byte SCZO_175 = cond(di_173);
-		byte Z_177 = SCZO_175;
-		byte C_178 = SCZO_175;
-		if (cx_171 != 0x00)
+		word16 cx_105 = ~cx_103;
+		word16 di_107 = di_102 - cx_105;
+		byte SCZO_109 = cond(di_107);
+		byte Z_110 = SCZO_109;
+		byte C_112 = SCZO_109;
+		if (cx_105 != 0x00)
 		{
-			byte SCZO_243 = cond(Mem0[wLoc08_102:si_370 + 0x00:byte] - Mem0[0x00:di_369 + 0x00:byte]);
-			Z_177 = SCZO_243;
-			C_178 = SCZO_243;
-			si_150 = si_370 + 0x01;
-			di_173 = di_369 + 0x01;
-			cx_171 = cx_171 - 0x01;
-			word16 di_369 = di_173;
-			word16 si_370 = si_150;
-			if (Mem0[wLoc08_102:si_370 + 0x00:byte] != Mem0[0x00:di_369 + 0x00:byte])
+			byte SCZO_179 = cond(Mem29[ds_86:si_212 + 0x00:byte] - Mem29[es_88:di_211 + 0x00:byte]);
+			Z_110 = SCZO_179;
+			C_112 = SCZO_179;
+			si_121 = si_212 + 0x01;
+			di_107 = di_211 + 0x01;
+			cx_105 = cx_105 - 0x01;
+			word16 di_211 = di_107;
+			word16 si_212 = si_121;
+			if (Mem29[ds_86:si_212 + 0x00:byte] != Mem29[es_88:di_211 + 0x00:byte])
 				goto l0800_28DA;
 		}
-		if (!Z_177)
+		if (!Z_110)
 		{
-			word16 ax_236 = 0x00 - C_178;
-			ax_156 = ax_236 - ~0x00 - (ax_236 <u 0x00);
+			word16 ax_172 = 0x00 - C_112;
+			ax_132 = ax_172 - ~0x00 - (ax_172 <u 0x00);
 		}
-		if (ax_156 != 0x00)
+		if (ax_132 != 0x00)
 		{
-			wLoc08_102 = Mem0[ds:11859:word16];
-			wLoc0A_103 = Mem0[ds:11857:word16] + (((int16) Mem0[0x00:(word16) ptrLoc0A + 0x00:byte] << 0x08) + DPB(wLoc0A_103, 0x00, 8));
+			word16 bx_168 = Mem29[ds:11857:word16] + (((int16) Mem29[Mem29[ss:(bp - 0x08) + 0x00:segptr32] + 0x00:byte] << 0x08) + DPB(dx_53, 0x00, 8));
+			Mem170[ss:bp - 0x06 + 0x00:word16] = Mem29[ds:11859:word16];
+			Mem171[ss:bp - 0x08 + 0x00:word16] = bx_168;
 			goto l0800_2917;
 		}
 		else
 		{
-			word16 dx_207;
-			*dxOut = wLoc08_102;
-			return wLoc0A_103;
+			word16 dx_141;
+			*dxOut = Mem29[ss:bp - 0x06 + 0x00:word16];
+			word16 bp_153;
+			*bpOut = Mem29[ss:bp + 0x00:word16];
+			return Mem29[ss:bp - 0x08 + 0x00:word16];
 		}
 	}
 	else
 	{
-		word16 dx_260;
+		word16 dx_196;
 		*dxOut = 0x00;
+		word16 bp_208;
+		*bpOut = Mem29[ss:bp + 0x00:word16];
 		return 0x00;
 	}
 }
 
+// 0800:2931: Register word16 fn0800_2931(Stack segptr32 ptrArg02, Stack segptr32 ptrArg06, Stack word16 wArg08, Register out ptr16 dxOut)
 word16 fn0800_2931(segptr32 ptrArg02, segptr32 ptrArg06, word16 wArg08, ptr16 & dxOut)
 {
 	selector es_15 = SLICE(ptrArg06, selector, 16);
@@ -3481,337 +4367,391 @@ word16 fn0800_2931(segptr32 ptrArg02, segptr32 ptrArg06, word16 wArg08, ptr16 & 
 	}
 }
 
-word16 fn0800_29C5(word16 bp, word16 si, selector ds, ptr16 & dsOut)
+// 0800:29C5: Register word16 fn0800_29C5(Register word16 si, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 dsOut)
+word16 fn0800_29C5(word16 si, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
 {
-fn0800_29C5_entry:
-	branch (Mem0[ds:17838:word16] | Mem0[ds:0x45B0:word16]) != 0x00 || (Mem0[ds:0x45AA:word16] | Mem0[ds:0x45AC:word16]) != 0x00 l0800_2A07
-	goto l0800_29DF
-l0800_29C5:
-l0800_29D6:
-l0800_29DF:
-	byte dl_867
-	branch fn0800_2DE2(fp - 0x02, si, ds, DPB(ptrLoc82, 0x4541, 0), ds, out dl_867, out ds) != 0x00 l0800_29F6
-l0800_29EE:
-	return 0x00
-l0800_29F6:
-	word16 dx_893 = Mem0[ds:11857:word16]
-	Mem896[ds:0x45B0:word16] = Mem0[ds:11859:word16]
-	Mem897[ds:17838:word16] = dx_893 + 0x08
-	dx = dx_893 + 0x08
-l0800_2A07:
-	Mem59[ss:fp - 0x80 + 0x00:word16] = ds
-	Mem63[ss:fp - 0x82 + 0x00:word16] = 0x4541
-	Mem65[ss:fp - 0x84 + 0x00:word16] = ss
-	Mem68[ss:fp - 0x86 + 0x00:word16] = fp - 0x6C
-	fn0800_3509(ds, wArg04, wArg06)
-	Mem74[ss:fp - 0x80 + 0x00:word16] = ds
-	Mem77[ss:fp - 0x82 + 0x00:word16] = 0x4541
-	Mem79[ss:fp - 0x84 + 0x00:word16] = ss
-	Mem82[ss:fp - 0x86 + 0x00:word16] = fp - 122
+	if ((Mem0[ds:17838:word16] | Mem0[ds:0x45B0:word16]) != 0x00)
+	{
+		word16 bp_35;
+		word16 si_36;
+		selector ds_37;
+		return fn0800_2A07(fp - 0x02, ds, out bp_35, out si_36, out ds_37);
+	}
+	else
+	{
+		word16 bp_29;
+		word16 si_30;
+		selector ds_31;
+		return fn0800_29D6(fp - 0x02, si, ds, out bp_29, out si_30, out ds_31);
+	}
+}
+
+// 0800:29D6: Register word16 fn0800_29D6(Register word16 bp, Register word16 si, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 dsOut)
+word16 fn0800_29D6(word16 bp, word16 si, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
+{
+	if ((Mem0[ds:0x45AA:word16] | Mem0[ds:0x45AC:word16]) != 0x00)
+	{
+		word16 bp_70;
+		word16 si_71;
+		selector ds_72;
+		return fn0800_2A07(bp, ds, out bp_70, out si_71, out ds_72);
+	}
+	else
+	{
+		byte dl_32;
+		word16 bp_33;
+		word16 si_34;
+		word16 di_35;
+		selector ds_36;
+		if (fn0800_2DE2(si, ds, out dl_32, out bp_33, out si_34, out di_35, out ds_36) != 0x00)
+		{
+			word16 dx_56 = Mem0[ds_36:11857:word16];
+			Mem59[ds_36:0x45B0:word16] = Mem0[ds_36:11859:word16];
+			Mem60[ds_36:17838:word16] = dx_56 + 0x08;
+			word16 bp_61;
+			word16 si_62;
+			selector ds_63;
+			return fn0800_29D6(bp_33, si_34, ds_36, out bp_61, out si_62, out ds_63);
+		}
+		else
+		{
+			word16 si_49;
+			*siOut = Mem0[ss:fp + 0x02:word16];
+			word16 bp_51;
+			*bpOut = Mem0[ss:bp_33 + 0x00:word16];
+			return 0x00;
+		}
+	}
+}
+
+// 0800:2A07: Register word16 fn0800_2A07(Register word16 bp, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 dsOut)
+word16 fn0800_2A07(word16 bp, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & dsOut)
+{
+fn0800_2A07_entry:
+	fn0800_3509(ds, 0x4541, ds)
+	Mem18[ss:fp - 0x02 + 0x00:word16] = ds
+	Mem21[ss:fp - 0x04 + 0x00:word16] = 0x4541
+	Mem23[ss:fp - 0x06 + 0x00:word16] = ss
+	Mem26[ss:fp - 0x08 + 0x00:word16] = bp - 0x78
 	fn0800_35A3(ds, wArg04, wArg06)
-	word16 bx_98 = (word16) Mem82[ds:11857:segptr32] + ((DPB(fp - 122, 0x00, 8) << 0x08) + DPB(dx, 0x00, 8))
-	Mem100[ss:fp - 0x04 + 0x00:word16] = Mem82[ds:11859:word16]
-	Mem101[ss:fp - 0x06 + 0x00:word16] = bx_98
+	word16 bx_45 = (word16) Mem26[ds:11857:segptr32] + ((DPB(bp - 0x78, 0x00, 8) << 0x08) + DPB(dx, 0x00, 8))
+	Mem47[ss:bp - 0x02 + 0x00:word16] = Mem26[ds:11859:word16]
+	Mem48[ss:bp - 0x04 + 0x00:word16] = bx_45
+	ds_107 = ds
 	goto l0800_2C53
+l0800_2A07:
 l0800_2A4C:
-	branch (Mem101[ds:0x45AA:word16] | Mem101[ds:0x45AC:word16]) != 0x00 l0800_2A58
+	branch (Mem48[ds_107:0x45AA:word16] | Mem48[ds_107:0x45AC:word16]) != 0x00 l0800_2A58
 	goto l0800_2C12
 l0800_2A5B:
 l0800_2A72:
-	ptr32 es_di_449 = Mem442[ds:0x45AA:segptr32]
-	word16 di_450 = (word16) es_di_449
-	selector es_451 = SLICE(es_di_449, selector, 16)
-	word16 cx_456 = ~0x00
+	ptr32 es_di_424 = Mem417[ds_107:0x45AA:segptr32]
+	selector es_425 = SLICE(es_di_424, selector, 16)
+	word16 di_426 = (word16) es_di_424
+	word16 cx_431 = ~0x00
 	goto l0800_2B34
 l0800_2A75:
-	ptr32 es_bx_525 = Mem442[ss:fp + 0x02:segptr32]
-	word16 dx_529 = Mem442[ds:17838:word16]
-	Mem530[es_bx_525 + 0x02:word16] = Mem442[ds:0x45B0:word16]
-	Mem531[es_bx_525 + 0x00:word16] = dx_529
-	ptr32 es_bx_532 = Mem531[ss:fp + 0x06:segptr32]
-	word16 dx_536 = Mem531[ds:0x45AA:word16]
-	Mem537[es_bx_532 + 0x02:word16] = Mem531[ds:0x45AC:word16]
-	Mem538[es_bx_532 + 0x00:word16] = dx_536
-	ptr32 es_di_539 = Mem538[ds:17838:segptr32]
-	Mem544[ss:fp - 0x80 + 0x00:word16] = SLICE(es_di_539, selector, 16)
-	selector es_545 = Mem544[ss:fp + 0x0C:selector]
-	Mem547[ss:fp - 0x82 + 0x00:word16] = (word16) es_di_539 + 0x02
-	word16 di_548 = Mem547[ss:fp + 0x0A:word16]
-	word16 di_550 = Mem547[ss:fp - 0x82 + 0x00:word16]
-	selector es_553 = Mem547[ss:fp - 0x80 + 0x00:selector]
-	Mem558[ss:fp - 0x80 + 0x00:word16] = es_545
-	Mem560[ss:fp - 0x82 + 0x00:word16] = di_548
-	word16 cx_565 = ~0x00
+	ptr32 es_bx_500 = Mem417[ss:bp + 0x04:segptr32]
+	word16 dx_504 = Mem417[ds_107:17838:word16]
+	Mem505[es_bx_500 + 0x02:word16] = Mem417[ds_107:0x45B0:word16]
+	Mem506[es_bx_500 + 0x00:word16] = dx_504
+	ptr32 es_bx_507 = Mem506[ss:bp + 0x08:segptr32]
+	word16 dx_511 = Mem506[ds_107:0x45AA:word16]
+	Mem512[es_bx_507 + 0x02:word16] = Mem506[ds_107:0x45AC:word16]
+	Mem513[es_bx_507 + 0x00:word16] = dx_511
+	ptr32 es_di_514 = Mem513[ds_107:17838:segptr32]
+	Mem519[ss:fp - 0x02 + 0x00:word16] = SLICE(es_di_514, selector, 16)
+	selector es_520 = Mem519[ss:bp + 0x0E:selector]
+	Mem522[ss:fp - 0x04 + 0x00:word16] = (word16) es_di_514 + 0x02
+	word16 di_523 = Mem522[ss:bp + 0x0C:word16]
+	word16 di_525 = Mem522[ss:fp - 0x04 + 0x00:word16]
+	selector es_528 = Mem522[ss:fp - 0x02 + 0x00:selector]
+	Mem533[ss:fp - 0x02 + 0x00:word16] = es_520
+	Mem535[ss:fp - 0x04 + 0x00:word16] = di_523
+	word16 cx_540 = ~0x00
 l0800_2AB3:
-	branch cx_565 == 0x00 l0800_2AB5
+	branch cx_540 == 0x00 l0800_2AB5
 l0800_2AB3_1:
-	di_550 = di_550 + 0x01
-	cx_565 = cx_565 - 0x01
-	branch 0x00 != Mem560[es_553:di_550 + 0x00:byte] l0800_2AB3
+	di_525 = di_525 + 0x01
+	cx_540 = cx_540 - 0x01
+	branch 0x00 != Mem535[es_528:di_525 + 0x00:byte] l0800_2AB3
 l0800_2AB5:
-	word16 di_584 = Mem560[ss:fp - 0x82 + 0x00:word16]
-	selector es_587 = Mem560[ss:fp - 0x80 + 0x00:selector]
-	Mem592[ss:fp - 0x80 + 0x00:word16] = ds
-	word16 cx_575 = ~cx_565
-	word16 cx_577 = cx_575 >>u 0x01
-	word16 si_583 = di_550 - cx_575
+	word16 di_559 = Mem535[ss:fp - 0x04 + 0x00:word16]
+	selector es_562 = Mem535[ss:fp - 0x02 + 0x00:selector]
+	Mem567[ss:fp - 0x02 + 0x00:word16] = ds_107
+	word16 cx_550 = ~cx_540
+	word16 cx_552 = cx_550 >>u 0x01
+	word16 si_558 = di_525 - cx_550
 l0800_2AC4:
-	branch cx_577 == 0x00 l0800_2AC6
+	branch cx_552 == 0x00 l0800_2AC6
 l0800_2AC4_2:
-	Mem600[es_587:di_584 + 0x00:word16] = Mem592[es_553:si_583 + 0x00:word16]
-	si_583 = si_583 + 0x02
-	di_584 = di_584 + 0x02
-	cx_577 = cx_577 - 0x01
+	Mem575[es_562:di_559 + 0x00:word16] = Mem567[es_528:si_558 + 0x00:word16]
+	si_558 = si_558 + 0x02
+	di_559 = di_559 + 0x02
+	cx_552 = cx_552 - 0x01
 	goto l0800_2AC4
 l0800_2AC6:
-	word16 cx_606 = cx_577 * 0x02 + (cx_575 >>u 0x01 <u 0x00)
+	word16 cx_581 = cx_552 * 0x02 + (cx_550 >>u 0x01 <u 0x00)
 l0800_2AC8:
-	branch cx_606 == 0x00 l0800_2ACA
+	branch cx_581 == 0x00 l0800_2ACA
 l0800_2AC8_1:
-	Mem615[es_587:di_584 + 0x00:byte] = Mem592[es_553:si_583 + 0x00:byte]
-	si_583 = si_583 + 0x01
-	di_584 = di_584 + 0x01
-	cx_606 = cx_606 - 0x01
+	Mem590[es_562:di_559 + 0x00:byte] = Mem567[es_528:si_558 + 0x00:byte]
+	si_558 = si_558 + 0x01
+	di_559 = di_559 + 0x01
+	cx_581 = cx_581 - 0x01
 	goto l0800_2AC8
 l0800_2ACA:
-	ptr32 es_di_623 = Mem592[ss:fp + 0x0A:segptr32]
-	selector ds_621 = Mem592[ss:fp - 0x80 + 0x00:selector]
-	Mem627[ss:fp - 0x80 + 0x00:word16] = SLICE(es_di_623, selector, 16)
-	selector es_628 = Mem627[ds_621:0x45AC:selector]
-	Mem631[ss:fp - 0x82 + 0x00:word16] = (word16) es_di_623
-	word16 di_632 = Mem631[ds_621:0x45AA:word16]
-	word16 cx_638 = ~0x00
+	ptr32 es_di_598 = Mem567[ss:bp + 0x0C:segptr32]
+	selector ds_596 = Mem567[ss:fp - 0x02 + 0x00:selector]
+	Mem602[ss:fp - 0x02 + 0x00:word16] = SLICE(es_di_598, selector, 16)
+	selector es_603 = Mem602[ds_596:0x45AC:selector]
+	Mem606[ss:fp - 0x04 + 0x00:word16] = (word16) es_di_598
+	word16 di_607 = Mem606[ds_596:0x45AA:word16]
+	word16 cx_613 = ~0x00
 l0800_2ADD:
-	branch cx_638 == 0x00 l0800_2ADF
+	branch cx_613 == 0x00 l0800_2ADF
 l0800_2ADD_1:
-	di_632 = di_632 + 0x01
-	cx_638 = cx_638 - 0x01
-	branch 0x00 != Mem631[es_628:di_632 + 0x00:byte] l0800_2ADD
+	di_607 = di_607 + 0x01
+	cx_613 = cx_613 - 0x01
+	branch 0x00 != Mem606[es_603:di_607 + 0x00:byte] l0800_2ADD
 l0800_2ADF:
-	word16 cx_650 = ~cx_638
-	word16 di_653 = Mem631[ss:fp - 0x82 + 0x00:word16]
-	selector es_656 = Mem631[ss:fp - 0x80 + 0x00:selector]
-	Mem665[ss:fp - 0x80 + 0x00:word16] = cx_650
-	word16 si_652 = di_632 - cx_650
-	word16 cx_666 = ~0x00
+	word16 cx_625 = ~cx_613
+	word16 di_628 = Mem606[ss:fp - 0x04 + 0x00:word16]
+	selector es_631 = Mem606[ss:fp - 0x02 + 0x00:selector]
+	Mem640[ss:fp - 0x02 + 0x00:word16] = cx_625
+	word16 si_627 = di_607 - cx_625
+	word16 cx_641 = ~0x00
 l0800_2AF3:
-	branch cx_666 == 0x00 l0800_2AF5
+	branch cx_641 == 0x00 l0800_2AF5
 l0800_2AF3_2:
-	di_653 = di_653 + 0x01
-	cx_666 = cx_666 - 0x01
-	branch 0x00 != Mem665[es_656:di_653 + 0x00:byte] l0800_2AF3
+	di_628 = di_628 + 0x01
+	cx_641 = cx_641 - 0x01
+	branch 0x00 != Mem640[es_631:di_628 + 0x00:byte] l0800_2AF3
 l0800_2AF5:
-	word16 di_681 = di_653 - 0x01
-	word16 cx_684 = Mem665[ss:fp - 0x80 + 0x00:word16]
+	word16 di_656 = di_628 - 0x01
+	word16 cx_659 = Mem640[ss:fp - 0x02 + 0x00:word16]
 l0800_2AF7:
-	branch cx_684 == 0x00 l0800_2AF9
+	branch cx_659 == 0x00 l0800_2AF9
 l0800_2AF7_3:
-	Mem693[es_656:di_681 + 0x00:byte] = Mem665[es_628:si_652 + 0x00:byte]
-	si_652 = si_652 + 0x01
-	di_681 = di_681 + 0x01
-	cx_684 = cx_684 - 0x01
+	Mem668[es_631:di_656 + 0x00:byte] = Mem640[es_603:si_627 + 0x00:byte]
+	si_627 = si_627 + 0x01
+	di_656 = di_656 + 0x01
+	cx_659 = cx_659 - 0x01
 	goto l0800_2AF7
 l0800_2AF9:
-	ptr32 es_di_700 = Mem665[ds_621:0x45AA:segptr32]
-	selector ds_699
-	*dsOut = ds_621
-	word16 di_701 = (word16) es_di_700
-	selector es_702 = SLICE(es_di_700, selector, 16)
-	word16 cx_703 = ~0x00
+	ptr32 es_di_675 = Mem640[ds_596:0x45AA:segptr32]
+	selector ds_674
+	*dsOut = ds_596
+	selector es_676 = SLICE(es_di_675, selector, 16)
+	word16 di_677 = (word16) es_di_675
+	word16 cx_678 = ~0x00
 l0800_2B02:
-	branch cx_703 == 0x00 l0800_2B04
+	branch cx_678 == 0x00 l0800_2B04
 l0800_2B02_1:
-	di_701 = di_701 + 0x01
-	cx_703 = cx_703 - 0x01
-	branch 0x00 != Mem665[es_702:di_701 + 0x00:byte] l0800_2B02
+	di_677 = di_677 + 0x01
+	cx_678 = cx_678 - 0x01
+	branch 0x00 != Mem640[es_676:di_677 + 0x00:byte] l0800_2B02
 l0800_2B04:
-	word16 cx_713 = ~cx_703
-	word16 di_717 = di_701 - cx_713
-	byte Z_721 = cond(di_717)
+	word16 cx_688 = ~cx_678
+	word16 di_692 = di_677 - cx_688
+	byte Z_695 = cond(di_692)
 l0800_2B0A:
-	branch cx_713 == 0x00 l0800_2B0C
+	branch cx_688 == 0x00 l0800_2B0C
 l0800_2B0A_2:
-	Z_721 = cond(0x00 - Mem665[es_702:di_717 + 0x00:byte]) (alias)
-	di_717 = di_717 + 0x01
-	cx_713 = cx_713 - 0x01
-	branch 0x00 != Mem665[es_702:di_717 + 0x00:byte] l0800_2B0A
+	Z_695 = cond(0x00 - Mem640[es_676:di_692 + 0x00:byte]) (alias)
+	di_692 = di_692 + 0x01
+	cx_688 = cx_688 - 0x01
+	branch 0x00 != Mem640[es_676:di_692 + 0x00:byte] l0800_2B0A
 l0800_2B0C:
-	branch Z_721 l0800_2B15
+	branch Z_695 l0800_2B15
 l0800_2B0E:
-	di_717 = 0x01
-	es_702 = 0x00
+	di_692 = 0x01
+	es_676 = 0x00
 l0800_2B15:
-	Mem749[ds_621:0x45AC:word16] = es_702
-	Mem750[ds_621:0x45AA:word16] = di_717 + 0x04
+	Mem724[ds_596:0x45AC:word16] = es_676
+	Mem725[ds_596:0x45AA:word16] = di_692 + 0x04
+	word16 si_731
+	*siOut = Mem725[ss:fp + 0x02:word16]
+	word16 bp_733
+	*bpOut = Mem725[ss:bp + 0x00:word16]
 	return 0x01
 l0800_2B2B:
 l0800_2B34:
-	branch cx_456 == 0x00 l0800_2B36
+	branch cx_431 == 0x00 l0800_2B36
 l0800_2B34_1:
-	di_450 = di_450 + 0x01
-	cx_456 = cx_456 - 0x01
-	branch 0x00 != Mem442[es_451:di_450 + 0x00:byte] l0800_2B34
+	di_426 = di_426 + 0x01
+	cx_431 = cx_431 - 0x01
+	branch 0x00 != Mem417[es_425:di_426 + 0x00:byte] l0800_2B34
 l0800_2B36:
-	word16 cx_466 = ~cx_456
-	word16 di_470 = di_450 - cx_466
-	byte Z_474 = cond(di_470)
+	word16 cx_441 = ~cx_431
+	word16 di_445 = di_426 - cx_441
+	byte Z_448 = cond(di_445)
 l0800_2B3C:
-	branch cx_466 == 0x00 l0800_2B3E
+	branch cx_441 == 0x00 l0800_2B3E
 l0800_2B3C_2:
-	Z_474 = cond(0x00 - Mem442[es_451:di_470 + 0x00:byte]) (alias)
-	di_470 = di_470 + 0x01
-	cx_466 = cx_466 - 0x01
-	branch 0x00 != Mem442[es_451:di_470 + 0x00:byte] l0800_2B3C
+	Z_448 = cond(0x00 - Mem417[es_425:di_445 + 0x00:byte]) (alias)
+	di_445 = di_445 + 0x01
+	cx_441 = cx_441 - 0x01
+	branch 0x00 != Mem417[es_425:di_445 + 0x00:byte] l0800_2B3C
 l0800_2B3E:
-	branch Z_474 l0800_2B47
+	branch Z_448 l0800_2B47
 l0800_2B40:
-	di_470 = 0x01
-	es_451 = 0x00
+	di_445 = 0x01
+	es_425 = 0x00
 l0800_2B47:
-	Mem502[ds:0x45AC:word16] = es_451
-	Mem503[ds:0x45AA:word16] = di_470 + 0x04
+	Mem477[ds_107:0x45AC:word16] = es_425
+	Mem478[ds_107:0x45AA:word16] = di_445 + 0x04
 l0800_2B54:
-	branch Mem101[Mem101[ds:0x45AA:segptr32] + 0x00:byte] == 0x00 l0800_2B61
+	branch Mem48[Mem48[ds_107:0x45AA:segptr32] + 0x00:byte] == 0x00 l0800_2B61
 l0800_2B5E:
-	Mem433[ss:fp - 0x80 + 0x00:word16] = ss
-	Mem436[ss:fp - 0x82 + 0x00:word16] = fp - 122
-	Mem439[ss:fp - 0x84 + 0x00:word16] = Mem436[ds:0x45AC:word16]
-	Mem442[ss:fp - 0x86 + 0x00:word16] = Mem439[ds:0x45AA:word16]
-	branch fn0800_4357(bp, ptrArg00, ptrArg04) != 0x00 l0800_2A75
+	Mem408[ss:fp - 0x02 + 0x00:word16] = ss
+	Mem411[ss:fp - 0x04 + 0x00:word16] = bp - 0x78
+	Mem414[ss:fp - 0x06 + 0x00:word16] = Mem411[ds_107:0x45AC:word16]
+	Mem417[ss:fp - 0x08 + 0x00:word16] = Mem414[ds_107:0x45AA:word16]
+	branch fn0800_4357(ds, ptrArg00, ptrArg04) != 0x00 l0800_2A75
 	goto l0800_2A72
 l0800_2B61:
-	word16 bx_812 = Mem101[ds:11857:word16] + (((int16) Mem101[Mem101[ds:17838:segptr32] + 0x00:byte] << 0x08) + DPB(dx_119, 0x00, 8))
-	Mem814[ds:0x45B0:word16] = Mem101[ds:11859:word16]
-	Mem815[ds:17838:word16] = bx_812
+	word16 bx_787 = Mem48[ds_107:11857:word16] + (((int16) Mem48[Mem48[ds_107:17838:segptr32] + 0x00:byte] << 0x08) + DPB(dx_70, 0x00, 8))
+	Mem789[ds_107:0x45B0:word16] = Mem48[ds_107:11859:word16]
+	Mem790[ds_107:17838:word16] = bx_787
 	goto l0800_2C12
 l0800_2B8A:
-	branch Mem101[ds:10779:word16] == 0x00 l0800_2BBB
+	branch Mem48[ds_107:10779:word16] == 0x00 l0800_2BBB
 l0800_2B91:
-	Mem362[ss:fp - 0x80 + 0x00:word16] = ss
-	selector es_363 = Mem362[ss:fp - 0x80 + 0x00:selector]
-	word16 di_366 = fp - 0x6C
-	word16 cx_372 = ~0x00
+	Mem337[ss:fp - 0x02 + 0x00:word16] = ss
+	selector es_338 = Mem337[ss:fp - 0x02 + 0x00:selector]
+	word16 di_341 = bp - 0x6A
+	word16 cx_347 = ~0x00
 l0800_2B9B:
-	branch cx_372 == 0x00 l0800_2B9D
+	branch cx_347 == 0x00 l0800_2B9D
 l0800_2B9B_1:
-	di_366 = di_903 + 0x01
-	cx_372 = cx_372 - 0x01
-	word16 di_903 = di_366
-	branch 0x00 != Mem362[es_363:di_903 + 0x00:byte] l0800_2B9B
+	di_341 = di_839 + 0x01
+	cx_347 = cx_347 - 0x01
+	word16 di_839 = di_341
+	branch 0x00 != Mem337[es_338:di_839 + 0x00:byte] l0800_2B9B
 l0800_2B9D:
-	Mem387[ss:fp - 0x80 + 0x00:word16] = ~cx_372 - 0x01
-	Mem389[ss:fp - 0x82 + 0x00:word16] = ss
-	Mem392[ss:fp - 0x84 + 0x00:word16] = fp - 0x6C
-	word16 ax_393 = Mem392[ds:17838:word16]
-	Mem398[ss:fp - 0x86 + 0x00:word16] = Mem392[ds:0x45B0:word16]
-	Mem400[ss:fp - 0x88 + 0x00:word16] = ax_393 + 0x02
+	Mem362[ss:fp - 0x02 + 0x00:word16] = ~cx_347 - 0x01
+	Mem364[ss:fp - 0x04 + 0x00:word16] = ss
+	Mem367[ss:fp - 0x06 + 0x00:word16] = bp - 0x6A
+	word16 ax_368 = Mem367[ds_107:17838:word16]
+	Mem373[ss:fp - 0x08 + 0x00:word16] = Mem367[ds_107:0x45B0:word16]
+	Mem375[ss:fp - 0x0A + 0x00:word16] = ax_368 + 0x02
 	branch fn0800_BFE6(ptrArg00, ptrArg04, wArg08) == 0x00 l0800_2C29
 l0800_2BBB:
-	branch Mem101[ds:10779:word16] != 0x00 l0800_2BEC
+	branch Mem48[ds_107:10779:word16] != 0x00 l0800_2BEC
 l0800_2BC2:
-	si = Mem101[ds:17838:word16] + 0x02
-	Mem279[ss:fp - 0x80 + 0x00:word16] = ds
-	selector ds_280 = Mem279[ds:0x45B0:selector]
-	Mem282[ss:fp - 0x82 + 0x00:word16] = ss
-	selector es_283 = Mem282[ss:fp - 0x82 + 0x00:selector]
-	word16 di_286 = fp - 0x6C
-	word16 ax_288 = 0x00
-	word16 cx_293 = ~0x00
+	si = Mem48[ds_107:17838:word16] + 0x02
+	Mem254[ss:fp - 0x02 + 0x00:word16] = ds_107
+	selector ds_255 = Mem254[ds_107:0x45B0:selector]
+	Mem257[ss:fp - 0x04 + 0x00:word16] = ss
+	selector es_258 = Mem257[ss:fp - 0x04 + 0x00:selector]
+	word16 di_261 = bp - 0x6A
+	word16 ax_263 = 0x00
+	word16 cx_268 = ~0x00
 l0800_2BD8:
-	branch cx_293 == 0x00 l0800_2BDA
+	branch cx_268 == 0x00 l0800_2BDA
 l0800_2BD8_2:
-	di_286 = di_286 + 0x01
-	cx_293 = cx_293 - 0x01
-	branch 0x00 != Mem282[es_283:di_286 + 0x00:byte] l0800_2BD8
+	di_261 = di_261 + 0x01
+	cx_268 = cx_268 - 0x01
+	branch 0x00 != Mem257[es_258:di_261 + 0x00:byte] l0800_2BD8
 l0800_2BDA:
-	word16 cx_303 = ~cx_293
-	word16 di_305 = di_286 - cx_303
-	byte SCZO_307 = cond(di_305)
-	byte Z_309 = SCZO_307
-	byte C_310 = SCZO_307
+	word16 cx_278 = ~cx_268
+	word16 di_280 = di_261 - cx_278
+	byte SCZO_282 = cond(di_280)
+	byte Z_283 = SCZO_282
+	byte C_285 = SCZO_282
 l0800_2BDE:
-	branch cx_303 == 0x00 l0800_2BE0
+	branch cx_278 == 0x00 l0800_2BE0
 l0800_2BDE_3:
-	byte SCZO_346 = cond(Mem282[ds_280:si + 0x00:byte] - Mem282[es_283:di_901 + 0x00:byte])
-	Z_309 = SCZO_346 (alias)
-	C_310 = SCZO_346 (alias)
+	byte SCZO_321 = cond(Mem257[ds_255:si + 0x00:byte] - Mem257[es_258:di_838 + 0x00:byte])
+	Z_283 = SCZO_321 (alias)
+	C_285 = SCZO_321 (alias)
 	si = si + 0x01
-	di_305 = di_901 + 0x01
-	cx_303 = cx_303 - 0x01
-	word16 di_901 = di_305
-	branch Mem282[ds_280:si + 0x00:byte] != Mem282[es_283:di_901 + 0x00:byte] l0800_2BDE
+	di_280 = di_838 + 0x01
+	cx_278 = cx_278 - 0x01
+	word16 di_838 = di_280
+	branch Mem257[ds_255:si + 0x00:byte] != Mem257[es_258:di_838 + 0x00:byte] l0800_2BDE
 l0800_2BE0:
-	branch Z_309 l0800_2BE7
+	branch Z_283 l0800_2BE7
 l0800_2BE2:
-	word16 ax_339 = 0x00 - C_310
-	ax_288 = ax_339 - ~0x00 - (ax_339 <u 0x00)
+	word16 ax_314 = 0x00 - C_285
+	ax_263 = ax_314 - ~0x00 - (ax_314 <u 0x00)
 l0800_2BE7:
-	ds = Mem282[ss:fp - 0x80 + 0x00:selector]
-	branch ax_288 == 0x00 l0800_2C29
+	ds_107 = Mem257[ss:fp - 0x02 + 0x00:selector]
+	branch ax_263 == 0x00 l0800_2C29
 l0800_2BEC:
-	word16 bx_272 = Mem101[ds:11857:word16] + (((int16) Mem101[Mem101[ds:17838:segptr32] + 0x00:byte] << 0x08) + DPB(dx_145, 0x00, 8))
-	Mem274[ds:0x45B0:word16] = Mem101[ds:11859:word16]
-	Mem275[ds:17838:word16] = bx_272
+	word16 bx_247 = Mem48[ds_107:11857:word16] + (((int16) Mem48[Mem48[ds_107:17838:segptr32] + 0x00:byte] << 0x08) + DPB(dx_120, 0x00, 8))
+	Mem249[ds_107:0x45B0:word16] = Mem48[ds_107:11859:word16]
+	Mem250[ds_107:17838:word16] = bx_247
 l0800_2C12:
-	word16 dx_145 = Mem101[ds:17838:word16]
-	branch Mem101[ds:0x45B0:word16] == Mem101[ss:(fp - 0x04) + 0x00:word16] l0800_2C21
+	word16 dx_120 = Mem48[ds_107:17838:word16]
+	branch Mem48[ds_107:0x45B0:word16] == Mem48[ss:(bp - 0x02) + 0x00:word16] l0800_2C21
 	goto l0800_2B8A
 l0800_2C21:
-	branch dx_145 == Mem101[ss:(fp - 0x06) + 0x00:word16] l0800_2C29
+	branch dx_120 == Mem48[ss:(bp - 0x04) + 0x00:word16] l0800_2C29
 	goto l0800_2B8A
 l0800_2C29:
-	ptr32 es_di_157 = Mem101[ds:17838:segptr32]
-	selector es_159 = SLICE(es_di_157, selector, 16)
-	word16 di_160 = (word16) es_di_157 + 0x02
-	word16 cx_166 = ~0x00
+	ptr32 es_di_132 = Mem48[ds_107:17838:segptr32]
+	selector es_133 = SLICE(es_di_132, selector, 16)
+	word16 di_135 = (word16) es_di_132 + 0x02
+	word16 cx_141 = ~0x00
 l0800_2C35:
-	branch cx_166 == 0x00 l0800_2C37
+	branch cx_141 == 0x00 l0800_2C37
 l0800_2C35_1:
-	di_160 = di_160 + 0x01
-	cx_166 = cx_166 - 0x01
-	branch 0x00 != Mem101[es_159:di_160 + 0x00:byte] l0800_2C35
+	di_135 = di_135 + 0x01
+	cx_141 = cx_141 - 0x01
+	branch 0x00 != Mem48[es_133:di_135 + 0x00:byte] l0800_2C35
 l0800_2C37:
-	word16 cx_176 = ~cx_166
-	word16 di_180 = di_160 - cx_176
-	byte Z_184 = cond(di_180)
+	word16 cx_151 = ~cx_141
+	word16 di_155 = di_135 - cx_151
+	byte Z_158 = cond(di_155)
 l0800_2C3D:
-	branch cx_176 == 0x00 l0800_2C3F
+	branch cx_151 == 0x00 l0800_2C3F
 l0800_2C3D_2:
-	Z_184 = cond(0x00 - Mem101[es_159:di_180 + 0x00:byte]) (alias)
-	di_180 = di_180 + 0x01
-	cx_176 = cx_176 - 0x01
-	branch 0x00 != Mem101[es_159:di_180 + 0x00:byte] l0800_2C3D
+	Z_158 = cond(0x00 - Mem48[es_133:di_155 + 0x00:byte]) (alias)
+	di_155 = di_155 + 0x01
+	cx_151 = cx_151 - 0x01
+	branch 0x00 != Mem48[es_133:di_155 + 0x00:byte] l0800_2C3D
 l0800_2C3F:
-	branch Z_184 l0800_2C48
+	branch Z_158 l0800_2C48
 l0800_2C41:
-	di_180 = 0x01
-	es_159 = 0x00
+	di_155 = 0x01
+	es_133 = 0x00
 l0800_2C48:
-	Mem211[ds:0x45AC:word16] = es_159
-	Mem212[ds:0x45AA:word16] = di_180
+	Mem186[ds_107:0x45AC:word16] = es_133
+	Mem187[ds_107:0x45AA:word16] = di_155
 l0800_2C53:
-	word16 dx_119 = Mem101[ds:17838:word16]
-	branch Mem101[ds:0x45B0:word16] == Mem101[ss:(fp - 0x04) + 0x00:word16] l0800_2C62
+	selector ds_107
+	word16 dx_70 = Mem48[ds_107:17838:word16]
+	branch Mem48[ds_107:0x45B0:word16] == Mem48[ss:(bp - 0x02) + 0x00:word16] l0800_2C62
 	goto l0800_2A4C
 l0800_2C62:
-	branch dx_119 == Mem101[ss:(fp - 0x06) + 0x00:word16] l0800_2C6A
+	branch dx_70 == Mem48[ss:(bp - 0x04) + 0x00:word16] l0800_2C6A
 	goto l0800_2A4C
 l0800_2C6A:
-	Mem822[ds:0x45AC:word16] = 0x00
-	Mem823[ds:0x45AA:word16] = 0x00
-	Mem824[ds:0x45B0:word16] = 0x00
-	Mem825[ds:17838:word16] = 0x00
-	Mem828[ss:fp - 0x80 + 0x00:word16] = Mem825[ss:fp + 0x0C:word16]
-	Mem831[ss:fp - 0x82 + 0x00:word16] = Mem828[ss:fp + 0x0A:word16]
-	Mem834[ss:fp - 0x84 + 0x00:word16] = Mem831[ss:fp + 0x08:word16]
-	Mem837[ss:fp - 0x86 + 0x00:word16] = Mem834[ss:fp + 0x06:word16]
-	Mem840[ss:fp - 0x88 + 0x00:word16] = Mem837[ss:fp + 0x04:word16]
-	Mem843[ss:fp - 0x8A + 0x00:word16] = Mem840[ss:fp + 0x02:word16]
-	selector ds_844
-	return fn0800_29C5(fp - 0x02, si, ds, out ds_844)
-fn0800_29C5_exit:
+	Mem797[ds_107:0x45AC:word16] = 0x00
+	Mem798[ds_107:0x45AA:word16] = 0x00
+	Mem799[ds_107:0x45B0:word16] = 0x00
+	Mem800[ds_107:17838:word16] = 0x00
+	Mem803[ss:fp - 0x02 + 0x00:word16] = Mem800[ss:bp + 0x0E:word16]
+	Mem806[ss:fp - 0x04 + 0x00:word16] = Mem803[ss:bp + 0x0C:word16]
+	Mem809[ss:fp - 0x06 + 0x00:word16] = Mem806[ss:bp + 0x0A:word16]
+	Mem812[ss:fp - 0x08 + 0x00:word16] = Mem809[ss:bp + 0x08:word16]
+	Mem815[ss:fp - 0x0A + 0x00:word16] = Mem812[ss:bp + 0x06:word16]
+	Mem818[ss:fp - 0x0C + 0x00:word16] = Mem815[ss:bp + 0x04:word16]
+	word16 bp_819
+	word16 si_820
+	selector ds_821
+	word16 ax_822 = fn0800_29C5(si, ds_107, out bp_819, out si_820, out ds_821)
+	word16 si_830
+	*siOut = Mem818[ss:fp + 0x04:word16]
+	word16 bp_832
+	*bpOut = Mem818[ss:bp_819 + 0x00:word16]
+	return ax_822
+fn0800_2A07_exit:
 }
 
+// 0800:2C9A: void fn0800_2C9A(Register selector ds)
 void fn0800_2C9A(selector ds)
 {
 	word16 cx_15 = 0x00;
@@ -3837,6 +4777,7 @@ void fn0800_2C9A(selector ds)
 	return;
 }
 
+// 0800:2CCF: Register word16 fn0800_2CCF(Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg06, Stack word16 wArg08)
 word16 fn0800_2CCF(selector ds, segptr32 ptrArg02, word16 wArg06, word16 wArg08)
 {
 	word16 si_10 = wArg06;
@@ -3850,63 +4791,62 @@ word16 fn0800_2CCF(selector ds, segptr32 ptrArg02, word16 wArg06, word16 wArg08)
 	return wArg08;
 }
 
-word16 fn0800_2D0A(word16 bp, selector ds, ptr16 & dsOut)
+// 0800:2D0A: void fn0800_2D0A(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
+void fn0800_2D0A(word16 bp, selector ds, word16 wArg02, word16 wArg04)
 {
-	selector ds_135 = fn0800_4311(ds, ~0x0F, 0x00);
-	Mem22[ss:fp - 0x04 + 0x00:word16] = ~0x0F;
-	Mem24[ss:fp - 0x06 + 0x00:word16] = 0x00;
-	Mem27[ss:fp - 0x12 + 0x00:word16] = Mem24[ss:fp + 0x04:word16];
-	Mem30[ss:fp - 0x14 + 0x00:word16] = Mem27[ss:fp + 0x02:word16];
-	word16 si_33;
-	word16 ax_34 = fn0800_AD2F(ds_135, ptrArg00, wArg02, out si_33);
-	Mem36[ss:fp - 0x0C + 0x00:word16] = ~0x0F;
-	Mem37[ss:fp - 0x0E + 0x00:word16] = ax_34;
-	word16 si_152 = 0x00;
-	while ((Mem37[ss:fp + 0x06:word16] | Mem37[ss:fp + 0x08:word16]) != 0x00)
+	fn0800_4311(0x00, ~0x0F, ds, ~0x0F, 0x00);
+	byte dl_34;
+	word16 si_35;
+	word16 ax_36 = fn0800_AD2F(ds, DPB(ptrLoc14, wArg02, 0), wArg04, out dl_34, out si_35);
+	Mem38[ss:fp - 0x0C + 0x00:word16] = ~0x0F;
+	Mem40[ss:fp - 0x0E + 0x00:word16] = ax_36;
+	while ((Mem40[ss:fp + 0x06:word16] | Mem40[ss:fp + 0x08:word16]) != 0x00)
 	{
-		word16 ax_111;
-		word16 dx_107;
-		if (Mem37[ss:fp + 0x08:word16] >=u 0x00 && (Mem37[ss:fp + 0x08:word16] >u 0x00 || Mem37[ss:fp + 0x06:word16] >u ~0x0F))
+		word16 ax_113;
+		word16 dx_109;
+		if (Mem40[ss:fp + 0x08:word16] >=u 0x00 && (Mem40[ss:fp + 0x08:word16] >u 0x00 || Mem40[ss:fp + 0x06:word16] >u ~0x0F))
 		{
-			dx_107 = 0x00;
-			ax_111 = ~0x0F;
+			dx_109 = 0x00;
+			ax_113 = ~0x0F;
 		}
 		else
 		{
-			dx_107 = Mem37[ss:fp + 0x08:word16];
-			ax_111 = Mem37[ss:fp + 0x06:word16];
+			dx_109 = Mem40[ss:fp + 0x08:word16];
+			ax_113 = Mem40[ss:fp + 0x06:word16];
 		}
-		Mem112[ss:fp - 0x08 + 0x00:word16] = dx_107;
-		Mem113[ss:fp - 0x0A + 0x00:word16] = ax_111;
-		Mem116[ss:fp - 0x12 + 0x00:word16] = Mem113[ss:fp + 0x04:word16];
-		Mem119[ss:fp - 0x14 + 0x00:word16] = Mem116[ss:fp + 0x02:word16];
-		Mem122[ss:fp - 22 + 0x00:word16] = Mem119[ss:fp - 0x08 + 0x00:word16];
-		Mem124[ss:fp - 0x18 + 0x00:word16] = ax_111;
-		Mem127[ss:fp - 0x1A + 0x00:word16] = Mem124[ss:fp - 0x04 + 0x00:word16];
-		Mem130[ss:fp - 0x1C + 0x00:word16] = Mem127[ss:fp - 0x06 + 0x00:word16];
+		Mem114[ss:fp - 0x08 + 0x00:word16] = dx_109;
+		Mem115[ss:fp - 0x0A + 0x00:word16] = ax_113;
+		Mem118[ss:fp - 0x12 + 0x00:word16] = Mem115[ss:fp + 0x04:word16];
+		Mem121[ss:fp - 0x14 + 0x00:word16] = Mem118[ss:fp + 0x02:word16];
+		Mem124[ss:fp - 22 + 0x00:word16] = Mem121[ss:fp - 0x08 + 0x00:word16];
+		Mem126[ss:fp - 0x18 + 0x00:word16] = ax_113;
+		Mem129[ss:fp - 0x1A + 0x00:word16] = Mem126[ss:fp - 0x04 + 0x00:word16];
+		Mem132[ss:fp - 0x1C + 0x00:word16] = Mem129[ss:fp - 0x06 + 0x00:word16];
 		word16 di_134;
-		Mem140[ss:fp - 0x12 + 0x00:word16] = fn0800_4110(ds_135, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0A, out di_134, out ds_135);
+		Mem140[ss:fp - 0x12 + 0x00:word16] = fn0800_4110(fp - 0x02, ds, wArg00, wArg02, wArg04, wArg08, wArg0A, out di_134, out ds);
 		Mem143[ss:fp - 0x14 + 0x00:word16] = Mem140[ss:fp - 0x0A + 0x00:word16];
 		Mem146[ss:fp - 22 + 0x00:word16] = Mem143[ss:fp - 0x04 + 0x00:word16];
 		Mem149[ss:fp - 0x18 + 0x00:word16] = Mem146[ss:fp - 0x06 + 0x00:word16];
-		si_152 = fn0800_2CCF(ds_135, ptrArg00, wArg04, wArg06);
-		Mem157[ss:fp + 0x06:word16] = Mem149[ss:fp + 0x06:word16] - Mem149[ss:(fp - 0x0A) + 0x00:word16];
-		Mem161[ss:fp + 0x08:word16] = v30;
+		fn0800_2CCF(ds, ptrArg00, wArg04, wArg06);
+		Mem159[ss:fp + 0x06:word16] = Mem149[ss:fp + 0x06:word16] - Mem149[ss:(fp - 0x0A) + 0x00:word16];
+		Mem163[ss:fp + 0x08:word16] = v30;
 	}
-	Mem65[ss:fp - 0x12 + 0x00:word16] = 0x00;
-	Mem68[ss:fp - 0x14 + 0x00:word16] = Mem65[ss:fp - 0x0C + 0x00:word16];
-	Mem71[ss:fp - 22 + 0x00:word16] = Mem68[ss:fp - 0x0E + 0x00:word16];
-	Mem74[ss:fp - 0x18 + 0x00:word16] = Mem71[ss:fp + 0x04:word16];
-	Mem77[ss:fp - 0x1A + 0x00:word16] = Mem74[ss:fp + 0x02:word16];
-	selector ds_79;
-	fn0800_ACB3(fp - 0x02, ds_135, ptrArg00, wArg02, wArg08, out ds_79);
-	Mem85[ss:fp - 0x12 + 0x00:word16] = Mem77[ss:fp - 0x04 + 0x00:word16];
-	Mem88[ss:fp - 0x14 + 0x00:word16] = Mem85[ss:fp - 0x06 + 0x00:word16];
-	selector ds_90;
-	fn0800_4346(ds_79, wArg00, wArg02, out ds_90);
-	return si_152;
+	Mem67[ss:fp - 0x12 + 0x00:word16] = 0x00;
+	Mem70[ss:fp - 0x14 + 0x00:word16] = Mem67[ss:fp - 0x0C + 0x00:word16];
+	Mem73[ss:fp - 22 + 0x00:word16] = Mem70[ss:fp - 0x0E + 0x00:word16];
+	Mem76[ss:fp - 0x18 + 0x00:word16] = Mem73[ss:fp + 0x04:word16];
+	Mem79[ss:fp - 0x1A + 0x00:word16] = Mem76[ss:fp + 0x02:word16];
+	word16 di_82;
+	selector ds_83;
+	fn0800_ACB3(fp - 0x02, ds, wArg00, wArg02, wArg08, out di_82, out ds_83);
+	Mem89[ss:fp - 0x12 + 0x00:word16] = Mem79[ss:fp - 0x04 + 0x00:word16];
+	Mem92[ss:fp - 0x14 + 0x00:word16] = Mem89[ss:fp - 0x06 + 0x00:word16];
+	selector ds_93;
+	fn0800_4346(ds_83, wArg00, wArg02, out ds_93);
+	return;
 }
 
+// 0800:2DBF: void fn0800_2DBF(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 void fn0800_2DBF(selector ds, word16 wArg02, word16 wArg04)
 {
 	Mem6[ds:0x4656:word16] = ~0x00;
@@ -3917,561 +4857,692 @@ void fn0800_2DBF(selector ds, word16 wArg02, word16 wArg04)
 	return;
 }
 
-word16 fn0800_2DE2(word16 bp, word16 si, selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dlOut, ptr16 & dsOut)
+// 0800:2DE2: Register word16 fn0800_2DE2(Register word16 si, Register selector ds, Register out ptr16 dlOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_2DE2(word16 si, selector ds, ptr16 & dlOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
+{
+	byte dl_10;
+	word16 bp_11;
+	word16 si_12;
+	word16 di_13;
+	selector ds_14;
+	return fn0800_2DE8(fp - 0x02, si, ds, out dl_10, out bp_11, out si_12, out di_13, out ds_14);
+}
+
+// 0800:2DE8: Register word16 fn0800_2DE8(Register word16 bp, Register word16 si, Register selector ds, Register out ptr16 dlOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_2DE8(word16 bp, word16 si, selector ds, ptr16 & dlOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	*dsOut = ds;
 	*dlOut = dl;
 	if (Mem0[ds:0x4654:word16] == 0x00 && (Mem0[ds:18002:word16] == Mem0[ds:0x4656:word16] && Mem0[ds:0x464E:word16] != 0x00))
 	{
-		byte dl_1190;
-		si = fn0800_3479(ds, DPB(ptrLoc1C, fp - 0x12, 0), ss, 0x00, out dl_1190, out ds);
+		fn0800_3479();
+		si = bp - 0x10;
 	}
 	if (Mem0[ds:0x4654:word16] != 0x00)
 	{
-		Mem792[ds:0x4617:word16] = 0x00;
-		word16 dx_808;
-		selector ds_809;
-		word16 ax_810 = fn0800_A77D(ds, 0x45B2, ds, 101, DPB(ptrLoc1A, Mem792[ds:17947:word16], 0), Mem792[ds:17949:word16], out dx_808, out ds_809);
-		if ((ax_810 | dx_808) == 0x00)
+		Mem773[ds:0x4617:word16] = 0x00;
+		Mem776[ss:fp - 0x06 + 0x00:word16] = Mem773[ds:17949:word16];
+		Mem779[ss:fp - 0x08 + 0x00:word16] = Mem776[ds:17947:word16];
+		Mem782[ss:fp - 0x0A + 0x00:word16] = 101;
+		Mem784[ss:fp - 0x0C + 0x00:word16] = ds;
+		Mem787[ss:fp - 0x0E + 0x00:word16] = 0x45B2;
+		word16 dx_788;
+		selector ds_789;
+		word16 ax_790 = fn0800_A77D(bp, ds, wArg00, wArg02, wArg04, out dx_788, out ds_789);
+		if ((ax_790 | dx_788) == 0x00)
 		{
-			byte dl_823;
-			word16 di_824;
-			selector ds_825;
-			fn0800_A614(fp - 0x02, ds_809, DPB(ptrLoc1A, Mem792[ds_809:17947:word16], 0), Mem792[ds_809:17949:word16], out dl_823, out di_824, out ds_825);
-			Mem829[ds_825:0x4654:word16] = 0x00;
-			Mem830[ds_825:17949:word16] = 0x00;
-			Mem831[ds_825:17947:word16] = 0x00;
-			Mem833[ds_825:18002:word16] = Mem831[ds_825:18002:word16] + 0x01;
-			Mem837[ss:fp - 0x18 + 0x00:word16] = Mem833[ss:fp + 0x04:word16];
-			Mem840[ss:fp - 0x1A + 0x00:word16] = Mem837[ss:fp + 0x02:word16];
-			byte dl_841;
-			selector ds_842;
-			return fn0800_2DE2(fp - 0x02, si, ds_825, ptrArg00, wArg02, out dl_841, out ds_842);
+			Mem798[ss:fp - 0x06 + 0x00:word16] = Mem787[ds_789:17949:word16];
+			Mem801[ss:fp - 0x08 + 0x00:word16] = Mem798[ds_789:17947:word16];
+			byte dl_802;
+			word16 di_803;
+			selector ds_804;
+			fn0800_A614(bp, ds_789, ptrArg00, wArg02, out dl_802, out di_803, out ds_804);
+			Mem808[ds_804:0x4654:word16] = 0x00;
+			Mem809[ds_804:17949:word16] = 0x00;
+			Mem810[ds_804:17947:word16] = 0x00;
+			Mem812[ds_804:18002:word16] = Mem810[ds_804:18002:word16] + 0x01;
+			Mem816[ss:fp - 0x06 + 0x00:word16] = Mem812[ss:bp + 0x06:word16];
+			Mem819[ss:fp - 0x08 + 0x00:word16] = Mem816[ss:bp + 0x04:word16];
+			byte dl_820;
+			word16 bp_821;
+			word16 si_822;
+			word16 di_823;
+			selector ds_824;
+			word16 ax_825 = fn0800_2DE2(si, ds_804, out dl_820, out bp_821, out si_822, out di_823, out ds_824);
+			word16 di_829;
+			*diOut = Mem819[ss:fp - 0x04 + 0x00:word16];
+			word16 si_832;
+			*siOut = Mem819[ss:fp - 0x02 + 0x00:word16];
+			word16 bp_834;
+			*bpOut = Mem819[ss:bp_821 + 0x00:word16];
+			return ax_825;
 		}
-		selector es_1159 = ds_809;
-		word16 di_1171 = 0x45B2;
-		word16 cx_1173 = ~0x00;
-		if (cx_1173 != 0x00)
+		Mem837[ss:fp - 0x06 + 0x00:word16] = ds_789;
+		selector es_1142 = Mem837[ss:fp - 0x06 + 0x00:selector];
+		word16 di_1154 = 0x45B2;
+		word16 cx_1156 = ~0x00;
+		if (cx_1156 != 0x00)
 		{
-			di_1171 = di_1171 + 0x01;
-			cx_1173 = cx_1173 - 0x01;
-			if (0x00 != Mem792[ds_809:di_1171 + 0x00:byte])
+			di_1154 = di_1154 + 0x01;
+			cx_1156 = cx_1156 - 0x01;
+			if (0x00 != Mem837[es_1142:di_1154 + 0x00:byte])
 				goto l0800_2E49;
 		}
-		word16 cx_1168 = ~cx_1173;
-		word16 di_1155 = di_1171 - cx_1168;
-		byte Z_1163 = cond(di_1155);
-		if (cx_1168 != 0x00)
+		word16 cx_1151 = ~cx_1156;
+		word16 di_1138 = di_1154 - cx_1151;
+		byte Z_1146 = cond(di_1138);
+		if (cx_1151 != 0x00)
 		{
-			Z_1163 = cond(0x0D - Mem792[ds_809:di_1155 + 0x00:byte]);
-			di_1155 = di_1155 + 0x01;
-			cx_1168 = cx_1168 - 0x01;
-			if (0x0D != Mem792[ds_809:di_1155 + 0x00:byte])
+			Z_1146 = cond(0x0D - Mem837[es_1142:di_1138 + 0x00:byte]);
+			di_1138 = di_1138 + 0x01;
+			cx_1151 = cx_1151 - 0x01;
+			if (0x0D != Mem837[es_1142:di_1138 + 0x00:byte])
 				goto l0800_2E52;
 		}
-		if (!Z_1163)
+		if (!Z_1146)
 		{
-			di_1155 = 0x01;
-			es_1159 = 0x00;
+			di_1138 = 0x01;
+			es_1142 = 0x00;
 		}
-		if ((di_1155 - 0x01 | es_1159) != 0x00)
+		if ((di_1138 - 0x01 | es_1142) != 0x00)
 		{
-			selector es_1087 = ds_809;
-			word16 di_1090 = 0x45B2;
-			word16 cx_1096 = ~0x00;
-			if (cx_1096 != 0x00)
+			Mem1069[ss:fp - 0x06 + 0x00:word16] = ds_789;
+			selector es_1070 = Mem1069[ss:fp - 0x06 + 0x00:selector];
+			word16 di_1073 = 0x45B2;
+			word16 cx_1079 = ~0x00;
+			if (cx_1079 != 0x00)
 			{
-				di_1090 = di_1090 + 0x01;
-				cx_1096 = cx_1096 - 0x01;
-				if (0x00 != Mem792[ds_809:di_1090 + 0x00:byte])
+				di_1073 = di_1073 + 0x01;
+				cx_1079 = cx_1079 - 0x01;
+				if (0x00 != Mem1069[es_1070:di_1073 + 0x00:byte])
 					goto l0800_2E6E;
 			}
-			word16 cx_1104 = ~cx_1096;
-			word16 di_1106 = di_1090 - cx_1104;
-			byte Z_1109 = cond(di_1106);
-			if (cx_1104 != 0x00)
+			word16 cx_1087 = ~cx_1079;
+			word16 di_1089 = di_1073 - cx_1087;
+			byte Z_1092 = cond(di_1089);
+			if (cx_1087 != 0x00)
 			{
-				Z_1109 = cond(0x0D - Mem792[ds_809:di_1106 + 0x00:byte]);
-				di_1106 = di_1106 + 0x01;
-				cx_1104 = cx_1104 - 0x01;
-				if (0x0D != Mem792[ds_809:di_1106 + 0x00:byte])
+				Z_1092 = cond(0x0D - Mem1069[es_1070:di_1089 + 0x00:byte]);
+				di_1089 = di_1089 + 0x01;
+				cx_1087 = cx_1087 - 0x01;
+				if (0x0D != Mem1069[es_1070:di_1089 + 0x00:byte])
 					goto l0800_2E77;
 			}
-			if (!Z_1109)
+			if (!Z_1092)
 			{
-				di_1106 = 0x01;
-				es_1087 = 0x00;
+				di_1089 = 0x01;
+				es_1070 = 0x00;
 			}
-			Mem1135[es_1087:di_1106 - 0x01 + 0x00:byte] = 0x00;
+			Mem1118[es_1070:di_1089 - 0x01 + 0x00:byte] = 0x00;
 		}
-		if ((int16) Mem792[ds_809:0x45B2:byte] == 0x00)
+		if ((int16) Mem837[ds_789:0x45B2:byte] == 0x00)
 		{
-			byte dl_925;
-			selector ds_926;
-			return fn0800_2DE2(fp - 0x02, si, ds_809, DPB(ptrLoc1A, wArg02, 0), wArg04, out dl_925, out ds_926);
+			Mem902[ss:fp - 0x06 + 0x00:word16] = Mem837[ss:bp + 0x06:word16];
+			Mem905[ss:fp - 0x08 + 0x00:word16] = Mem902[ss:bp + 0x04:word16];
+			byte dl_906;
+			word16 bp_907;
+			word16 si_908;
+			word16 di_909;
+			selector ds_910;
+			word16 ax_911 = fn0800_2DE2(si, ds_789, out dl_906, out bp_907, out si_908, out di_909, out ds_910);
+			word16 di_915;
+			*diOut = Mem905[ss:fp - 0x04 + 0x00:word16];
+			word16 si_918;
+			*siOut = Mem905[ss:fp - 0x02 + 0x00:word16];
+			word16 bp_920;
+			*bpOut = Mem905[ss:bp_907 + 0x00:word16];
+			return ax_911;
 		}
-		word16 di_1082 = 0x45B2;
-		word16 cx_1084 = ~0x00;
-		if (cx_1084 != 0x00)
+		Mem923[ss:fp - 0x06 + 0x00:word16] = ds_789;
+		selector es_924 = Mem923[ss:fp - 0x06 + 0x00:selector];
+		word16 di_1065 = 0x45B2;
+		word16 cx_1067 = ~0x00;
+		if (cx_1067 != 0x00)
 		{
-			di_1082 = di_1208 + 0x01;
-			cx_1084 = cx_1084 - 0x01;
-			word16 di_1208 = di_1082;
-			if (0x00 != Mem792[ds_809:di_1208 + 0x00:byte])
+			di_1065 = di_1187 + 0x01;
+			cx_1067 = cx_1067 - 0x01;
+			word16 di_1187 = di_1065;
+			if (0x00 != Mem923[es_924:di_1187 + 0x00:byte])
 				goto l0800_2EAF;
 		}
-		Mem960[ds_809:0x4619:word16] = ~cx_1084 - 0x01;
-		ptrLoc1A = DPB(ptrLoc1A, 0x45B2, 0);
-		byte dl_967 = fn0800_0C6C(ds_809, ptrLoc1A);
-		*dlOut = dl_967;
-		dx = DPB(dx_808, dl_967, 0);
-		if (Mem960[ds_809:0x464E:word16] == 0x00)
+		Mem945[ds_789:0x4619:word16] = ~cx_1067 - 0x01;
+		Mem947[ss:fp - 0x06 + 0x00:word16] = ds_789;
+		Mem950[ss:fp - 0x08 + 0x00:word16] = 0x45B2;
+		byte dl_951 = fn0800_0C6C(ds_789, ptrArg00);
+		*dlOut = dl_951;
+		dx = DPB(dx_788, dl_951, 0);
+		if (Mem950[ds_789:0x464E:word16] == 0x00)
 		{
-			word16 di_974 = (word16) ptrArg02;
-			selector es_975 = SLICE(ptrArg02, selector, 16);
-			word16 di_1054 = 0x45B2;
-			word16 cx_1056 = ~0x00;
-			if (cx_1056 != 0x00)
+			ptr32 es_di_956 = Mem950[ss:bp + 0x04:segptr32];
+			Mem960[ss:fp - 0x06 + 0x00:word16] = SLICE(es_di_956, selector, 16);
+			Mem962[ss:fp - 0x08 + 0x00:word16] = ds_789;
+			selector es_963 = Mem962[ss:fp - 0x08 + 0x00:selector];
+			Mem967[ss:fp - 0x08 + 0x00:word16] = (word16) es_di_956;
+			word16 di_1038 = 0x45B2;
+			word16 cx_1040 = ~0x00;
+			if (cx_1040 != 0x00)
 			{
-				di_1054 = di_1054 + 0x01;
-				cx_1056 = cx_1056 - 0x01;
-				if (0x00 != Mem960[ds_809:di_1054 + 0x00:byte])
+				di_1038 = di_1038 + 0x01;
+				cx_1040 = cx_1040 - 0x01;
+				if (0x00 != Mem967[es_963:di_1038 + 0x00:byte])
 					goto l0800_2ED9;
 			}
-			word16 cx_999 = ~cx_1056;
-			word16 cx_1001 = cx_999 >>u 0x01;
-			word16 si_1006 = di_1054 - cx_999;
-			word16 di_1007 = di_974;
-			while (cx_1001 != 0x00)
+			word16 di_1001 = Mem967[ss:fp - 0x08 + 0x00:word16];
+			selector es_993 = Mem967[ss:fp - 0x06 + 0x00:selector];
+			Mem998[ss:fp - 0x06 + 0x00:word16] = ds_789;
+			word16 cx_982 = ~cx_1040;
+			word16 cx_1003 = cx_982 >>u 0x01;
+			word16 si_1000 = di_1038 - cx_982;
+			while (cx_1003 != 0x00)
 			{
-				Mem1022[es_975:di_1007 + 0x00:word16] = Mem960[ds_809:si_1006 + 0x00:word16];
-				si_1006 = si_1006 + 0x02;
-				di_1007 = di_1007 + 0x02;
-				cx_1001 = cx_1001 - 0x01;
+				Mem1005[es_993:di_1001 + 0x00:word16] = Mem998[es_963:si_1000 + 0x00:word16];
+				si_1000 = si_1000 + 0x02;
+				di_1001 = di_1001 + 0x02;
+				cx_1003 = cx_1003 - 0x01;
 			}
-			word16 cx_1027 = cx_1001 * 0x02 + (cx_999 >>u 0x01 <u 0x00);
-			while (cx_1027 != 0x00)
+			word16 cx_1010 = cx_1003 * 0x02 + (cx_982 >>u 0x01 <u 0x00);
+			while (cx_1010 != 0x00)
 			{
-				Mem1034[es_975:di_1007 + 0x00:byte] = Mem960[ds_809:si_1006 + 0x00:byte];
-				si_1006 = si_1006 + 0x01;
-				di_1007 = di_1007 + 0x01;
-				cx_1027 = cx_1027 - 0x01;
+				Mem1017[es_993:di_1001 + 0x00:byte] = Mem998[es_963:si_1000 + 0x00:byte];
+				si_1000 = si_1000 + 0x01;
+				di_1001 = di_1001 + 0x01;
+				cx_1010 = cx_1010 - 0x01;
 			}
-			Mem1042[ds_809:0x4617:word16] = Mem960[ds_809:0x4617:word16] + 0x01;
-			selector ds_1039;
-			*dsOut = ds_809;
+			selector ds_1022 = Mem998[ss:fp - 0x06 + 0x00:selector];
+			*dsOut = ds_1022;
+			Mem1025[ds_1022:0x4617:word16] = Mem998[ds_1022:0x4617:word16] + 0x01;
+			word16 di_1029;
+			*diOut = Mem1025[ss:fp - 0x04 + 0x00:word16];
+			word16 si_1032;
+			*siOut = Mem1025[ss:fp - 0x02 + 0x00:word16];
+			word16 bp_1034;
+			*bpOut = Mem1025[ss:bp + 0x00:word16];
 			return 0x01;
 		}
-		byte dl_1073;
-		si = fn0800_33CD(ds_809, DPB(ptrLoc20, fp - 0x12, 0), ss, 0x00, 0x45B2, ds_809, out dl_1073, out ds);
-		Mem1079[ds:0x4654:word16] = 0x00;
+		Mem1042[ss:fp - 0x06 + 0x00:word16] = ds_789;
+		Mem1045[ss:fp - 0x08 + 0x00:word16] = 0x45B2;
+		Mem1050[ss:fp - 0x0A + 0x00:word16] = 0x00;
+		Mem1052[ss:fp - 0x0C + 0x00:word16] = ss;
+		Mem1055[ss:fp - 0x0E + 0x00:word16] = bp - 0x10;
+		byte dl_1056;
+		si = fn0800_33CD(ds_789, ptrArg00, wArg02, wArg04, wArg06, wArg08, out dl_1056, out ds);
+		Mem1062[ds:0x4654:word16] = 0x00;
 	}
-	word16 ax_85 = Mem0[ds:18002:word16];
-	if (ax_85 != Mem0[ds:0x4656:word16])
+	word16 ax_63 = Mem0[ds:18002:word16];
+	if (ax_63 != Mem0[ds:0x4656:word16])
 	{
-		if (ax_85 == Mem0[ds:9882:word16])
-			return 0x00;
-		ptr32 es_bx_550 = Mem0[ds:9884:segptr32];
-		fn0800_BF9E(DPB(ptrLoc1E, 0x45B2, 0), ds, DPB(ptrLoc1A, SEQ(SLICE(es_bx_550, selector, 16), (word16) es_bx_550)[Mem0[ds:18002:word16] * 0x04], 0));
-		word16 di_1204 = 0x45B2;
-		word16 cx_580 = ~0x00;
-		if (cx_580 != 0x00)
+		if (ax_63 == Mem0[ds:9882:word16])
 		{
-			di_1204 = di_1204 + 0x01;
-			cx_580 = cx_580 - 0x01;
-			if (0x00 != Mem0[ds:di_1204 + 0x00:byte])
+			word16 di_521;
+			*diOut = Mem0[ss:fp - 0x04 + 0x00:word16];
+			word16 si_524;
+			*siOut = Mem0[ss:fp - 0x02 + 0x00:word16];
+			word16 bp_526;
+			*bpOut = Mem0[ss:bp + 0x00:word16];
+			return 0x00;
+		}
+		ptr32 es_bx_531 = Mem0[ds:9884:segptr32];
+		selector es_532 = SLICE(es_bx_531, selector, 16);
+		word16 bx_534 = (word16) es_bx_531 + (Mem0[ds:18002:word16] << 0x02);
+		Mem538[ss:fp - 0x06 + 0x00:word16] = Mem0[es_532:bx_534 + 0x02:word16];
+		Mem541[ss:fp - 0x08 + 0x00:word16] = Mem538[es_532:bx_534 + 0x00:word16];
+		Mem543[ss:fp - 0x0A + 0x00:word16] = ds;
+		Mem546[ss:fp - 0x0C + 0x00:word16] = 0x45B2;
+		fn0800_BF9E(ptrArg00, wArg02, ptrArg04);
+		Mem550[ss:fp - 0x06 + 0x00:word16] = ds;
+		selector es_551 = Mem550[ss:fp - 0x06 + 0x00:selector];
+		word16 di_1183 = 0x45B2;
+		word16 cx_560 = ~0x00;
+		if (cx_560 != 0x00)
+		{
+			di_1183 = di_1183 + 0x01;
+			cx_560 = cx_560 - 0x01;
+			if (0x00 != Mem550[es_551:di_1183 + 0x00:byte])
 				goto l0800_2F94;
 		}
-		Mem592[ds:0x4619:word16] = ~cx_580 - 0x01;
-		fn0800_0C6C(ds, DPB(ptrLoc1A, 0x45B2, 0));
-		word16 ax_601 = Mem592[ds:18002:word16];
-		Mem602[ds:0x4656:word16] = ax_601;
-		Mem603[ds:0x4617:word16] = 0x00;
-		if (Mem603[SEQ(ds, (word16) Mem603[ds:9884:segptr32])[ax_601 * 0x04] + 0x00:byte] == 0x40)
+		Mem572[ds:0x4619:word16] = ~cx_560 - 0x01;
+		Mem574[ss:fp - 0x06 + 0x00:word16] = ds;
+		Mem577[ss:fp - 0x08 + 0x00:word16] = 0x45B2;
+		fn0800_0C6C(ds, ptrArg00);
+		word16 ax_580 = Mem577[ds:18002:word16];
+		Mem581[ds:0x4656:word16] = ax_580;
+		Mem582[ds:0x4617:word16] = 0x00;
+		if (Mem582[SEQ(ds, (word16) Mem582[ds:9884:segptr32])[ax_580 * 0x04] + 0x00:byte] == 0x40)
 		{
-			ptr32 es_bx_622 = Mem603[ds:9884:segptr32];
-			selector es_623 = SLICE(es_bx_622, selector, 16);
-			word16 bx_625 = (word16) es_bx_622 + (Mem603[ds:18002:word16] << 0x02);
-			word16 ax_627 = Mem603[es_623:bx_625 + 0x00:word16];
-			word16 di_635;
-			selector ds_636;
-			word16 si_637 = fn0800_4234(si, di_1204, ds, ax_627 + 0x01, Mem603[es_623:bx_625 + 0x02:word16], 0x0A13, ds, out di_635, out ds_636);
-			Mem640[ds_636:17949:word16] = dx;
-			Mem641[ds_636:17947:word16] = ax_627 + 0x01;
-			Mem642[ds_636:0x4654:word16] = 0x01;
-			Mem645[ss:fp - 0x18 + 0x00:word16] = Mem642[ss:fp + 0x04:word16];
-			Mem648[ss:fp - 0x1A + 0x00:word16] = Mem645[ss:fp + 0x02:word16];
-			byte dl_649;
-			selector ds_650;
-			return fn0800_2DE2(fp - 0x02, si_637, ds_636, ptrArg00, wArg02, out dl_649, out ds_650);
+			Mem594[ss:fp - 0x06 + 0x00:word16] = ds;
+			Mem597[ss:fp - 0x08 + 0x00:word16] = 0x0A13;
+			ptr32 es_bx_601 = Mem597[ds:9884:segptr32];
+			selector es_602 = SLICE(es_bx_601, selector, 16);
+			word16 bx_604 = (word16) es_bx_601 + (Mem597[ds:18002:word16] << 0x02);
+			word16 ax_606 = Mem597[es_602:bx_604 + 0x00:word16];
+			Mem611[ss:fp - 0x0A + 0x00:word16] = Mem597[es_602:bx_604 + 0x02:word16];
+			Mem613[ss:fp - 0x0C + 0x00:word16] = ax_606 + 0x01;
+			word16 di_614;
+			selector ds_615;
+			word16 si_616 = fn0800_4234(si, di_1183, ds, wArg00, wArg02, wArg04, wArg06, out di_614, out ds_615);
+			Mem619[ds_615:17949:word16] = dx;
+			Mem620[ds_615:17947:word16] = ax_606 + 0x01;
+			Mem621[ds_615:0x4654:word16] = 0x01;
+			Mem624[ss:fp - 0x06 + 0x00:word16] = Mem621[ss:bp + 0x06:word16];
+			Mem627[ss:fp - 0x08 + 0x00:word16] = Mem624[ss:bp + 0x04:word16];
+			byte dl_628;
+			word16 bp_629;
+			word16 si_630;
+			word16 di_631;
+			selector ds_632;
+			word16 ax_633 = fn0800_2DE2(si_616, ds_615, out dl_628, out bp_629, out si_630, out di_631, out ds_632);
+			word16 di_637;
+			*diOut = Mem627[ss:fp - 0x04 + 0x00:word16];
+			word16 si_640;
+			*siOut = Mem627[ss:fp - 0x02 + 0x00:word16];
+			word16 bp_642;
+			*bpOut = Mem627[ss:bp_629 + 0x00:word16];
+			return ax_633;
 		}
-		byte dl_666;
-		*dlOut = fn0800_335C(ds, 0x45B2, ds);
-		if (Mem603[ds:0x464E:word16] == 0x00)
+		Mem645[ss:fp - 0x06 + 0x00:word16] = ds;
+		Mem648[ss:fp - 0x08 + 0x00:word16] = 0x45B2;
+		byte dl_649;
+		*dlOut = fn0800_335C(bp, ds, wArg00, wArg02);
+		if (Mem648[ds:0x464E:word16] == 0x00)
 		{
-			ptr32 es_di_671 = Mem603[ss:fp + 0x02:segptr32];
-			Mem675[ss:fp - 0x18 + 0x00:word16] = SLICE(es_di_671, selector, 16);
-			Mem677[ss:fp - 0x1A + 0x00:word16] = ds;
-			selector es_678 = Mem677[ss:fp - 0x1A + 0x00:selector];
-			Mem682[ss:fp - 0x1A + 0x00:word16] = (word16) es_di_671;
-			word16 di_1205 = 0x45B2;
-			word16 cx_689 = ~0x00;
-			if (cx_689 != 0x00)
+			ptr32 es_di_654 = Mem648[ss:bp + 0x04:segptr32];
+			Mem658[ss:fp - 0x06 + 0x00:word16] = SLICE(es_di_654, selector, 16);
+			Mem660[ss:fp - 0x08 + 0x00:word16] = ds;
+			selector es_661 = Mem660[ss:fp - 0x08 + 0x00:selector];
+			Mem665[ss:fp - 0x08 + 0x00:word16] = (word16) es_di_654;
+			word16 di_1184 = 0x45B2;
+			word16 cx_672 = ~0x00;
+			if (cx_672 != 0x00)
 			{
-				di_1205 = di_1205 + 0x01;
-				cx_689 = cx_689 - 0x01;
-				if (0x00 != Mem682[es_678:di_1205 + 0x00:byte])
+				di_1184 = di_1184 + 0x01;
+				cx_672 = cx_672 - 0x01;
+				if (0x00 != Mem665[es_661:di_1184 + 0x00:byte])
 					goto l0800_3028;
 			}
-			word16 di_705 = Mem682[ss:fp - 0x1A + 0x00:word16];
-			selector es_708 = Mem682[ss:fp - 0x18 + 0x00:selector];
-			Mem713[ss:fp - 0x18 + 0x00:word16] = ds;
-			word16 cx_697 = ~cx_689;
-			word16 cx_699 = cx_697 >>u 0x01;
-			word16 si_704 = di_1205 - cx_697;
-			while (cx_699 != 0x00)
+			word16 di_688 = Mem665[ss:fp - 0x08 + 0x00:word16];
+			selector es_691 = Mem665[ss:fp - 0x06 + 0x00:selector];
+			Mem696[ss:fp - 0x06 + 0x00:word16] = ds;
+			word16 cx_680 = ~cx_672;
+			word16 cx_682 = cx_680 >>u 0x01;
+			word16 si_687 = di_1184 - cx_680;
+			while (cx_682 != 0x00)
 			{
-				Mem720[es_708:di_705 + 0x00:word16] = Mem713[es_678:si_704 + 0x00:word16];
-				si_704 = si_704 + 0x02;
-				di_705 = di_705 + 0x02;
-				cx_699 = cx_699 - 0x01;
+				Mem703[es_691:di_688 + 0x00:word16] = Mem696[es_661:si_687 + 0x00:word16];
+				si_687 = si_687 + 0x02;
+				di_688 = di_688 + 0x02;
+				cx_682 = cx_682 - 0x01;
 			}
-			word16 cx_725 = cx_699 * 0x02 + (cx_697 >>u 0x01 <u 0x00);
-			while (cx_725 != 0x00)
+			word16 cx_708 = cx_682 * 0x02 + (cx_680 >>u 0x01 <u 0x00);
+			while (cx_708 != 0x00)
 			{
-				Mem732[es_708:di_705 + 0x00:byte] = Mem713[es_678:si_704 + 0x00:byte];
-				si_704 = si_704 + 0x01;
-				di_705 = di_705 + 0x01;
-				cx_725 = cx_725 - 0x01;
+				Mem715[es_691:di_688 + 0x00:byte] = Mem696[es_661:si_687 + 0x00:byte];
+				si_687 = si_687 + 0x01;
+				di_688 = di_688 + 0x01;
+				cx_708 = cx_708 - 0x01;
 			}
-			selector ds_737 = Mem713[ss:fp - 0x18 + 0x00:selector];
-			*dsOut = ds_737;
-			Mem740[ds_737:0x4617:word16] = Mem713[ds_737:0x4617:word16] + 0x01;
-			Mem742[ds_737:18002:word16] = Mem740[ds_737:18002:word16] + 0x01;
+			selector ds_720 = Mem696[ss:fp - 0x06 + 0x00:selector];
+			*dsOut = ds_720;
+			Mem723[ds_720:0x4617:word16] = Mem696[ds_720:0x4617:word16] + 0x01;
+			Mem725[ds_720:18002:word16] = Mem723[ds_720:18002:word16] + 0x01;
+			word16 di_729;
+			*diOut = Mem725[ss:fp - 0x04 + 0x00:word16];
+			word16 si_732;
+			*siOut = Mem725[ss:fp - 0x02 + 0x00:word16];
+			word16 bp_734;
+			*bpOut = Mem725[ss:bp + 0x00:word16];
 			return 0x01;
 		}
-		Mem758[ss:fp - 0x18 + 0x00:word16] = ds;
-		Mem761[ss:fp - 0x1A + 0x00:word16] = 0x45B2;
-		Mem766[ss:fp - 0x1C + 0x00:word16] = 0x00;
-		Mem768[ss:fp - 0x1E + 0x00:word16] = ss;
-		Mem771[ss:fp - 0x20 + 0x00:word16] = fp - 0x12;
-		byte dl_772;
-		si = fn0800_33CD(ds, ptrArg00, wArg02, wArg04, wArg06, wArg08, out dl_772, out ds);
+		Mem742[ss:fp - 0x06 + 0x00:word16] = ds;
+		Mem745[ss:fp - 0x08 + 0x00:word16] = 0x45B2;
+		Mem750[ss:fp - 0x0A + 0x00:word16] = 0x00;
+		Mem752[ss:fp - 0x0C + 0x00:word16] = ss;
+		Mem755[ss:fp - 0x0E + 0x00:word16] = bp - 0x10;
+		byte dl_756;
+		si = fn0800_33CD(ds, ptrArg00, wArg02, wArg04, wArg06, wArg08, out dl_756, out ds);
 	}
-	word16 si_109 = si;
+	word16 si_407 = si;
 	if (si != 0x00)
 	{
 		if (Mem0[ds:10779:word16] != 0x00)
 		{
-			while (si_109 != 0x00)
+			while (si_407 != 0x00)
 			{
-				Mem500[ss:fp - 0x18 + 0x00:word16] = ds;
-				Mem503[ss:fp - 0x1A + 0x00:word16] = 0x45B2;
-				if (fn0800_31B4(fp - 0x02, ds, out ds) == 0x00)
+				Mem481[ss:fp - 0x06 + 0x00:word16] = ds;
+				Mem484[ss:fp - 0x08 + 0x00:word16] = 0x45B2;
+				if (fn0800_31B4(bp, ds, out ds) == 0x00)
 					break;
-				Mem512[ss:fp - 0x18 + 0x00:word16] = ds;
-				Mem515[ss:fp - 0x1A + 0x00:word16] = 0x45B2;
-				Mem520[ss:fp - 0x1C + 0x00:word16] = 0x00;
-				Mem522[ss:fp - 0x1E + 0x00:word16] = ss;
-				Mem525[ss:fp - 0x20 + 0x00:word16] = fp - 0x12;
-				byte dl_527;
-				si_109 = fn0800_33CD(ds, ptrArg00, wArg02, wArg04, wArg06, wArg08, out dl_527, out ds);
+				Mem493[ss:fp - 0x06 + 0x00:word16] = ds;
+				Mem496[ss:fp - 0x08 + 0x00:word16] = 0x45B2;
+				Mem501[ss:fp - 0x0A + 0x00:word16] = 0x00;
+				Mem503[ss:fp - 0x0C + 0x00:word16] = ss;
+				Mem506[ss:fp - 0x0E + 0x00:word16] = bp - 0x10;
+				byte dl_508;
+				si_407 = fn0800_33CD(ds, ptrArg00, wArg02, wArg04, wArg06, wArg08, out dl_508, out ds);
 			}
 		}
-		word16 si_432 = si_109;
-		if (si_109 != 0x00)
+		word16 si_408 = si_407;
+		if (si_407 != 0x00)
 		{
-			Mem437[ds:Mem0[ds:0x4619:word16] + 0x45B2:byte] = 0x00;
-			if (Mem437[ds:0x4617:word16] == 0x00 && Mem437[ds:18000:word16] != 0x00)
+			Mem413[ds:Mem0[ds:0x4619:word16] + 0x45B2:byte] = 0x00;
+			if (Mem413[ds:0x4617:word16] == 0x00 && Mem413[ds:18000:word16] != 0x00)
 			{
-				Mem475[ss:fp - 0x18 + 0x00:word16] = ds;
-				Mem478[ss:fp - 0x1A + 0x00:word16] = 0x45B2;
-				Mem480[ss:fp - 0x1C + 0x00:word16] = ds;
-				Mem483[ss:fp - 0x1E + 0x00:word16] = 0x0A17;
-				word16 di_485;
-				si_432 = fn0800_B2EF(ds, wArg00, wArg02, out di_485);
+				Mem455[ss:fp - 0x06 + 0x00:word16] = ds;
+				Mem458[ss:fp - 0x08 + 0x00:word16] = 0x45B2;
+				Mem460[ss:fp - 0x0A + 0x00:word16] = ds;
+				Mem463[ss:fp - 0x0C + 0x00:word16] = 0x0A17;
+				word16 di_466;
+				si_408 = fn0800_B2EF(ds, wArg00, wArg02, out di_466);
 			}
-			if ((Mem437[ds:17947:word16] | Mem437[ds:17949:word16]) != 0x00)
-				Mem468[ds:0x4654:word16] = 0x01;
+			if ((Mem413[ds:17947:word16] | Mem413[ds:17949:word16]) != 0x00)
+				Mem448[ds:0x4654:word16] = 0x01;
 			else
-				Mem470[ds:18002:word16] = Mem437[ds:18002:word16] + 0x01;
-			Mem452[ss:fp - 0x18 + 0x00:word16] = Mem437[ss:fp + 0x04:word16];
-			Mem455[ss:fp - 0x1A + 0x00:word16] = Mem452[ss:fp + 0x02:word16];
-			byte dl_456;
-			selector ds_457;
-			return fn0800_2DE2(fp - 0x02, si_432, ds, ptrArg00, wArg02, out dl_456, out ds_457);
+				Mem450[ds:18002:word16] = Mem413[ds:18002:word16] + 0x01;
+			Mem428[ss:fp - 0x06 + 0x00:word16] = Mem413[ss:bp + 0x06:word16];
+			Mem431[ss:fp - 0x08 + 0x00:word16] = Mem428[ss:bp + 0x04:word16];
+			byte dl_432;
+			word16 bp_433;
+			word16 si_434;
+			word16 di_435;
+			selector ds_436;
+			word16 ax_437 = fn0800_2DE2(si_408, ds, out dl_432, out bp_433, out si_434, out di_435, out ds_436);
+			word16 di_441;
+			*diOut = Mem431[ss:fp - 0x04 + 0x00:word16];
+			word16 si_444;
+			*siOut = Mem431[ss:fp - 0x02 + 0x00:word16];
+			word16 bp_446;
+			*bpOut = Mem431[ss:bp_433 + 0x00:word16];
+			return ax_437;
 		}
 	}
-	Mem120[ss:fp - 0x18 + 0x00:word16] = ds;
-	Mem124[ss:fp - 0x1A + 0x00:word16] = 0x45B2;
-	Mem127[ss:fp - 0x1C + 0x00:word16] = Mem124[ss:fp + 0x04:word16];
-	Mem130[ss:fp - 0x1E + 0x00:word16] = Mem127[ss:fp + 0x02:word16];
+	Mem92[ss:fp - 0x06 + 0x00:word16] = ds;
+	Mem96[ss:fp - 0x08 + 0x00:word16] = 0x45B2;
+	Mem100[ss:fp - 0x0A + 0x00:word16] = Mem96[ss:bp + 0x06:word16];
+	Mem103[ss:fp - 0x0C + 0x00:word16] = Mem100[ss:bp + 0x04:word16];
 	fn0800_3509(ds, wArg04, wArg06);
-	Mem135[ss:fp - 0x18 + 0x00:word16] = ss;
-	Mem140[ss:fp - 0x18 + 0x00:word16] = Mem135[ss:fp - 0x18 + 0x00:selector];
-	selector es_141 = Mem140[ss:fp + 0x04:selector];
-	Mem143[ss:fp - 0x1A + 0x00:word16] = fp - 0x12;
-	word16 di_144 = Mem143[ss:fp + 0x02:word16];
-	word16 di_1196 = Mem143[ss:fp - 0x1A + 0x00:word16];
-	selector es_149 = Mem143[ss:fp - 0x18 + 0x00:selector];
-	Mem154[ss:fp - 0x18 + 0x00:word16] = es_141;
-	Mem156[ss:fp - 0x1A + 0x00:word16] = di_144;
-	word16 cx_161 = ~0x00;
-	if (cx_161 != 0x00)
+	Mem108[ss:fp - 0x06 + 0x00:word16] = ss;
+	Mem113[ss:fp - 0x06 + 0x00:word16] = Mem108[ss:fp - 0x06 + 0x00:selector];
+	selector es_114 = Mem113[ss:bp + 0x06:selector];
+	Mem116[ss:fp - 0x08 + 0x00:word16] = bp - 0x10;
+	word16 di_117 = Mem116[ss:bp + 0x04:word16];
+	word16 di_1175 = Mem116[ss:fp - 0x08 + 0x00:word16];
+	selector es_122 = Mem116[ss:fp - 0x06 + 0x00:selector];
+	Mem127[ss:fp - 0x06 + 0x00:word16] = es_114;
+	Mem129[ss:fp - 0x08 + 0x00:word16] = di_117;
+	word16 cx_134 = ~0x00;
+	if (cx_134 != 0x00)
 	{
-		di_1196 = di_1196 + 0x01;
-		cx_161 = cx_161 - 0x01;
-		if (0x00 != Mem156[es_149:di_1196 + 0x00:byte])
+		di_1175 = di_1175 + 0x01;
+		cx_134 = cx_134 - 0x01;
+		if (0x00 != Mem129[es_122:di_1175 + 0x00:byte])
 			goto l0800_311B;
 	}
-	word16 di_1197 = Mem156[ss:fp - 0x1A + 0x00:word16];
-	selector es_177 = Mem156[ss:fp - 0x18 + 0x00:selector];
-	Mem181[ss:fp - 0x04 + 0x00:word16] = ds;
-	word16 cx_171 = ~cx_161;
-	Mem184[ss:fp - 0x18 + 0x00:word16] = cx_171;
-	word16 si_173 = di_1196 - cx_171;
-	word16 cx_185 = ~0x00;
-	if (cx_185 != 0x00)
+	word16 di_1176 = Mem129[ss:fp - 0x08 + 0x00:word16];
+	selector es_150 = Mem129[ss:fp - 0x06 + 0x00:selector];
+	Mem154[ss:bp - 0x02 + 0x00:word16] = ds;
+	word16 cx_144 = ~cx_134;
+	Mem157[ss:fp - 0x06 + 0x00:word16] = cx_144;
+	word16 si_146 = di_1175 - cx_144;
+	word16 cx_158 = ~0x00;
+	if (cx_158 != 0x00)
 	{
-		di_1197 = di_1197 + 0x01;
-		cx_185 = cx_185 - 0x01;
-		if (0x00 != Mem184[es_177:di_1197 + 0x00:byte])
+		di_1176 = di_1176 + 0x01;
+		cx_158 = cx_158 - 0x01;
+		if (0x00 != Mem157[es_150:di_1176 + 0x00:byte])
 			goto l0800_3132;
 	}
-	word16 di_198 = di_1197 - 0x01;
-	word16 cx_201 = Mem184[ss:fp - 0x18 + 0x00:word16];
-	while (cx_201 != 0x00)
+	word16 di_171 = di_1176 - 0x01;
+	word16 cx_174 = Mem157[ss:fp - 0x06 + 0x00:word16];
+	while (cx_174 != 0x00)
 	{
-		Mem208[es_177:di_198 + 0x00:byte] = Mem184[es_149:si_173 + 0x00:byte];
-		si_173 = si_173 + 0x01;
-		di_198 = di_198 + 0x01;
-		cx_201 = cx_201 - 0x01;
+		Mem181[es_150:di_171 + 0x00:byte] = Mem157[es_122:si_146 + 0x00:byte];
+		si_146 = si_146 + 0x01;
+		di_171 = di_171 + 0x01;
+		cx_174 = cx_174 - 0x01;
 	}
-	selector ds_213 = Mem184[ss:fp - 0x04 + 0x00:selector];
-	Mem216[ss:fp - 0x18 + 0x00:word16] = Mem184[ss:fp + 0x04:word16];
-	Mem219[ss:fp - 0x1A + 0x00:word16] = Mem216[ss:fp + 0x02:word16];
-	byte dl_221;
-	*dlOut = fn0800_0C6C(ds_213, ptrArg00);
-	word16 si_1199 = Mem219[ss:fp + 0x02:word16];
-	word16 cx_225 = Mem219[ss:fp + 0x04:word16];
-	Mem227[ss:fp - 0x18 + 0x00:word16] = ds_213;
-	selector es_228 = Mem227[ss:fp - 0x18 + 0x00:selector];
-	Mem234[ss:fp - 0x18 + 0x00:word16] = ds_213;
-	word16 di_1198 = 0x4348;
-	word16 ax_236 = 0x00;
-	word16 cx_240 = ~0x00;
-	if (cx_240 != 0x00)
+	selector ds_186 = Mem157[ss:bp - 0x02 + 0x00:selector];
+	Mem189[ss:fp - 0x06 + 0x00:word16] = Mem157[ss:bp + 0x06:word16];
+	Mem192[ss:fp - 0x08 + 0x00:word16] = Mem189[ss:bp + 0x04:word16];
+	byte dl_194;
+	*dlOut = fn0800_0C6C(ds_186, ptrArg00);
+	word16 si_1178 = Mem192[ss:bp + 0x04:word16];
+	word16 cx_198 = Mem192[ss:bp + 0x06:word16];
+	Mem200[ss:fp - 0x06 + 0x00:word16] = ds_186;
+	selector es_201 = Mem200[ss:fp - 0x06 + 0x00:selector];
+	Mem207[ss:fp - 0x06 + 0x00:word16] = ds_186;
+	word16 di_1177 = 0x4348;
+	word16 ax_209 = 0x00;
+	word16 cx_213 = ~0x00;
+	if (cx_213 != 0x00)
 	{
-		di_1198 = di_1198 + 0x01;
-		cx_240 = cx_240 - 0x01;
-		if (0x00 != Mem234[es_228:di_1198 + 0x00:byte])
+		di_1177 = di_1177 + 0x01;
+		cx_213 = cx_213 - 0x01;
+		if (0x00 != Mem207[es_201:di_1177 + 0x00:byte])
 			goto l0800_315A;
 	}
-	word16 cx_248 = ~cx_240;
-	word16 di_249 = di_1198 - cx_248;
-	byte SCZO_251 = cond(di_249);
-	byte Z_252 = SCZO_251;
-	byte C_254 = SCZO_251;
-	if (cx_248 != 0x00)
+	word16 cx_221 = ~cx_213;
+	word16 di_222 = di_1177 - cx_221;
+	byte SCZO_224 = cond(di_222);
+	byte Z_225 = SCZO_224;
+	byte C_227 = SCZO_224;
+	if (cx_221 != 0x00)
 	{
-		byte SCZO_401 = cond(Mem234[cx_225:si_1199 + 0x00:byte] - Mem234[es_228:di_1200 + 0x00:byte]);
-		Z_252 = SCZO_401;
-		C_254 = SCZO_401;
-		si_1199 = si_1199 + 0x01;
-		di_249 = di_1200 + 0x01;
-		cx_248 = cx_248 - 0x01;
-		word16 di_1200 = di_249;
-		if (Mem234[cx_225:si_1199 + 0x00:byte] != Mem234[es_228:di_1200 + 0x00:byte])
+		byte SCZO_377 = cond(Mem207[cx_198:si_1178 + 0x00:byte] - Mem207[es_201:di_1179 + 0x00:byte]);
+		Z_225 = SCZO_377;
+		C_227 = SCZO_377;
+		si_1178 = si_1178 + 0x01;
+		di_222 = di_1179 + 0x01;
+		cx_221 = cx_221 - 0x01;
+		word16 di_1179 = di_222;
+		if (Mem207[cx_198:si_1178 + 0x00:byte] != Mem207[es_201:di_1179 + 0x00:byte])
 			goto l0800_3160;
 	}
-	if (!Z_252)
+	if (!Z_225)
 	{
-		word16 ax_395 = 0x00 - C_254;
-		ax_236 = ax_395 - ~0x00 - (ax_395 <u 0x00);
+		word16 ax_371 = 0x00 - C_227;
+		ax_209 = ax_371 - ~0x00 - (ax_371 <u 0x00);
 	}
-	selector ds_274 = Mem234[ss:fp - 0x18 + 0x00:selector];
-	if (ax_236 != 0x00)
+	selector ds_247 = Mem207[ss:fp - 0x06 + 0x00:selector];
+	if (ax_209 != 0x00)
 	{
-		si_1199 = Mem234[ss:fp + 0x02:word16];
-		word16 cx_310 = Mem234[ss:fp + 0x04:word16];
-		Mem312[ss:fp - 0x18 + 0x00:word16] = ds_274;
-		selector es_313 = Mem312[ss:fp - 0x18 + 0x00:selector];
-		Mem319[ss:fp - 0x18 + 0x00:word16] = ds_274;
-		word16 di_1201 = 0x4477;
-		word16 ax_321 = 0x00;
-		word16 cx_325 = ~0x00;
-		if (cx_325 != 0x00)
+		si_1178 = Mem207[ss:bp + 0x04:word16];
+		word16 cx_285 = Mem207[ss:bp + 0x06:word16];
+		Mem287[ss:fp - 0x06 + 0x00:word16] = ds_247;
+		selector es_288 = Mem287[ss:fp - 0x06 + 0x00:selector];
+		Mem294[ss:fp - 0x06 + 0x00:word16] = ds_247;
+		word16 di_1180 = 0x4477;
+		word16 ax_296 = 0x00;
+		word16 cx_300 = ~0x00;
+		if (cx_300 != 0x00)
 		{
-			di_1201 = di_1201 + 0x01;
-			cx_325 = cx_325 - 0x01;
-			if (0x00 != Mem319[es_313:di_1201 + 0x00:byte])
+			di_1180 = di_1180 + 0x01;
+			cx_300 = cx_300 - 0x01;
+			if (0x00 != Mem294[es_288:di_1180 + 0x00:byte])
 				goto l0800_3181;
 		}
-		word16 cx_333 = ~cx_325;
-		word16 di_334 = di_1201 - cx_333;
-		byte SCZO_336 = cond(di_334);
-		byte Z_337 = SCZO_336;
-		byte C_339 = SCZO_336;
-		if (cx_333 != 0x00)
+		word16 cx_308 = ~cx_300;
+		word16 di_309 = di_1180 - cx_308;
+		byte SCZO_311 = cond(di_309);
+		byte Z_312 = SCZO_311;
+		byte C_314 = SCZO_311;
+		if (cx_308 != 0x00)
 		{
-			byte SCZO_382 = cond(Mem319[cx_310:si_1199 + 0x00:byte] - Mem319[es_313:di_1203 + 0x00:byte]);
-			Z_337 = SCZO_382;
-			C_339 = SCZO_382;
-			si_1199 = si_1199 + 0x01;
-			di_334 = di_1203 + 0x01;
-			cx_333 = cx_333 - 0x01;
-			word16 di_1203 = di_334;
-			if (Mem319[cx_310:si_1199 + 0x00:byte] != Mem319[es_313:di_1203 + 0x00:byte])
+			byte SCZO_358 = cond(Mem294[cx_285:si_1178 + 0x00:byte] - Mem294[es_288:di_1182 + 0x00:byte]);
+			Z_312 = SCZO_358;
+			C_314 = SCZO_358;
+			si_1178 = si_1178 + 0x01;
+			di_309 = di_1182 + 0x01;
+			cx_308 = cx_308 - 0x01;
+			word16 di_1182 = di_309;
+			if (Mem294[cx_285:si_1178 + 0x00:byte] != Mem294[es_288:di_1182 + 0x00:byte])
 				goto l0800_3187;
 		}
-		if (!Z_337)
+		if (!Z_312)
 		{
-			word16 ax_376 = 0x00 - C_339;
-			ax_321 = ax_376 - ~0x00 - (ax_376 <u 0x00);
+			word16 ax_352 = 0x00 - C_314;
+			ax_296 = ax_352 - ~0x00 - (ax_352 <u 0x00);
 		}
-		ds_274 = Mem319[ss:fp - 0x18 + 0x00:selector];
-		*dsOut = ds_274;
-		if (ax_321 != 0x00)
+		ds_247 = Mem294[ss:fp - 0x06 + 0x00:selector];
+		*dsOut = ds_247;
+		if (ax_296 != 0x00)
 		{
-			Mem366[ds_274:0x4617:word16] = Mem319[ds_274:0x4617:word16] + 0x01;
+			Mem341[ds_247:0x4617:word16] = Mem294[ds_247:0x4617:word16] + 0x01;
+			word16 di_345;
+			*diOut = Mem341[ss:fp - 0x04 + 0x00:word16];
+			word16 si_348;
+			*siOut = Mem341[ss:fp - 0x02 + 0x00:word16];
+			word16 bp_350;
+			*bpOut = Mem341[ss:bp + 0x00:word16];
 			return 0x01;
 		}
 	}
-	Mem292[ss:fp - 0x18 + 0x00:word16] = Mem234[ss:fp + 0x04:word16];
-	Mem295[ss:fp - 0x1A + 0x00:word16] = Mem292[ss:fp + 0x02:word16];
-	byte dl_297;
-	selector ds_298;
-	return fn0800_2DE2(fp - 0x02, si_1199, ds_274, ptrArg00, wArg02, out dl_297, out ds_298);
+	Mem264[ss:fp - 0x06 + 0x00:word16] = Mem207[ss:bp + 0x06:word16];
+	Mem267[ss:fp - 0x08 + 0x00:word16] = Mem264[ss:bp + 0x04:word16];
+	byte dl_268;
+	word16 bp_269;
+	word16 si_270;
+	word16 di_271;
+	selector ds_272;
+	word16 ax_273 = fn0800_2DE2(si_1178, ds_247, out dl_268, out bp_269, out si_270, out di_271, out ds_272);
+	word16 di_277;
+	*diOut = Mem267[ss:fp - 0x04 + 0x00:word16];
+	word16 si_280;
+	*siOut = Mem267[ss:fp - 0x02 + 0x00:word16];
+	word16 bp_282;
+	*bpOut = Mem267[ss:bp_269 + 0x00:word16];
+	return ax_273;
 }
 
+// 0800:31B4: Register word16 fn0800_31B4(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
 word16 fn0800_31B4(word16 bp, selector ds, ptr16 & dsOut)
 {
+	word16 bp_26 = fp - 0x02;
 l0800_31BD:
-	Mem31[ss:fp - 0x8A + 0x00:word16] = Mem0[ss:fp + 0x04:word16];
-	Mem34[ss:fp - 0x8C + 0x00:word16] = Mem31[ss:fp + 0x02:word16];
-	Mem36[ss:fp - 0x8E + 0x00:word16] = ss;
-	Mem39[ss:fp - 0x90 + 0x00:word16] = fp - 0x84;
+	Mem32[ss:fp - 0x8A + 0x00:word16] = Mem0[ss:bp_26 + 0x06:word16];
+	Mem35[ss:fp - 0x8C + 0x00:word16] = Mem32[ss:bp_26 + 0x04:word16];
+	Mem37[ss:fp - 0x8E + 0x00:word16] = ss;
+	Mem40[ss:fp - 0x90 + 0x00:word16] = bp_26 - 0x82;
 	fn0800_3509(ds, wArg04, wArg06);
-	Mem46[ss:fp - 0x8A + 0x00:word16] = Mem39[ss:fp + 0x04:word16];
-	Mem49[ss:fp - 0x8C + 0x00:word16] = Mem46[ss:fp + 0x02:word16];
-	Mem51[ss:fp - 0x8E + 0x00:word16] = ss;
-	Mem54[ss:fp - 0x90 + 0x00:word16] = fp - 0x10;
+	Mem47[ss:fp - 0x8A + 0x00:word16] = Mem40[ss:bp_26 + 0x06:word16];
+	Mem50[ss:fp - 0x8C + 0x00:word16] = Mem47[ss:bp_26 + 0x04:word16];
+	Mem52[ss:fp - 0x8E + 0x00:word16] = ss;
+	Mem55[ss:fp - 0x90 + 0x00:word16] = bp_26 - 0x0E;
 	fn0800_35A3(ds, wArg04, wArg06);
-	Mem62[ss:fp - 0x8A + 0x00:word16] = SEQ(ds, 0x09AE)[Mem54[ds:0x09AC:word16] * 0x02];
-	Mem64[ss:fp - 0x8C + 0x00:word16] = ss;
-	Mem67[ss:fp - 0x8E + 0x00:word16] = fp - 0x84;
-	Mem69[ss:fp - 0x90 + 0x00:word16] = ss;
-	Mem72[ss:fp - 0x92 + 0x00:word16] = fp - 0x1E;
-	selector ds_76;
-	if (fn0800_32CD(ds, wArg00, wArg02, wArg04, wArg06, wArg08, out ds_76) != 0x00)
+	Mem63[ss:fp - 0x8A + 0x00:word16] = SEQ(ds, 0x09AE)[Mem55[ds:0x09AC:word16] * 0x02];
+	Mem65[ss:fp - 0x8C + 0x00:word16] = ss;
+	Mem68[ss:fp - 0x8E + 0x00:word16] = bp_26 - 0x82;
+	Mem70[ss:fp - 0x90 + 0x00:word16] = ss;
+	Mem73[ss:fp - 0x92 + 0x00:word16] = bp_26 - 0x1C;
+	selector ds_77;
+	if (fn0800_32CD(ds, wArg00, wArg02, wArg04, wArg06, out bp_26, out ds_77) != 0x00)
 	{
-		if (Mem72[ds_76:0x09AC:word16] != 0x00)
+		if (Mem73[ds_77:0x09AC:word16] != 0x00)
 		{
-			Mem158[ss:fp - 0x8A + 0x00:word16] = ss;
-			selector es_159 = Mem158[ss:fp - 0x8A + 0x00:selector];
-			word16 di_161 = fp - 0x84;
-			word16 cx_166 = ~0x00;
-			if (cx_166 != 0x00)
+			Mem159[ss:fp - 0x8A + 0x00:word16] = ss;
+			selector es_160 = Mem159[ss:fp - 0x8A + 0x00:selector];
+			word16 di_162 = bp_26 - 0x82;
+			word16 cx_167 = ~0x00;
+			if (cx_167 != 0x00)
 			{
-				di_161 = di_284 + 0x01;
-				cx_166 = cx_166 - 0x01;
-				word16 di_284 = di_161;
-				if (0x00 != Mem158[es_159:di_284 + 0x00:byte])
+				di_162 = di_285 + 0x01;
+				cx_167 = cx_167 - 0x01;
+				word16 di_285 = di_162;
+				if (0x00 != Mem159[es_160:di_285 + 0x00:byte])
 					goto l0800_325E;
 			}
-			Mem180[ss:~cx_166 - 0x02 + (fp - 0x84):byte] = 0x00;
-			Mem182[ss:fp - 0x8A + 0x00:word16] = ss;
-			Mem184[ss:fp - 0x8C + 0x00:word16] = fp - 0x84;
-			Mem187[ss:fp - 0x8E + 0x00:word16] = Mem184[ss:fp + 0x04:word16];
-			Mem190[ss:fp - 0x90 + 0x00:word16] = Mem187[ss:fp + 0x02:word16];
-			fn0800_3509(ds_76, wArg04, wArg06);
-			Mem193[ss:fp - 0x8A + 0x00:word16] = ss;
-			Mem198[ss:fp - 0x8A + 0x00:word16] = Mem193[ss:fp - 0x8A + 0x00:selector];
-			selector es_199 = Mem198[ss:fp + 0x04:selector];
-			Mem201[ss:fp - 0x8C + 0x00:word16] = fp - 0x10;
-			word16 di_202 = Mem201[ss:fp + 0x02:word16];
-			word16 di_204 = Mem201[ss:fp - 0x8C + 0x00:word16];
-			selector es_207 = Mem201[ss:fp - 0x8A + 0x00:selector];
-			Mem210[ss:fp - 0x8A + 0x00:word16] = es_199;
-			Mem212[ss:fp - 0x8C + 0x00:word16] = di_202;
-			word16 cx_217 = ~0x00;
-			if (cx_217 != 0x00)
+			Mem181[ss:~cx_167 - 0x02 + (bp_26 - 0x82):byte] = 0x00;
+			Mem183[ss:fp - 0x8A + 0x00:word16] = ss;
+			Mem185[ss:fp - 0x8C + 0x00:word16] = bp_26 - 0x82;
+			Mem188[ss:fp - 0x8E + 0x00:word16] = Mem185[ss:bp_26 + 0x06:word16];
+			Mem191[ss:fp - 0x90 + 0x00:word16] = Mem188[ss:bp_26 + 0x04:word16];
+			fn0800_3509(ds_77, wArg04, wArg06);
+			Mem194[ss:fp - 0x8A + 0x00:word16] = ss;
+			Mem199[ss:fp - 0x8A + 0x00:word16] = Mem194[ss:fp - 0x8A + 0x00:selector];
+			selector es_200 = Mem199[ss:bp_26 + 0x06:selector];
+			Mem202[ss:fp - 0x8C + 0x00:word16] = bp_26 - 0x0E;
+			word16 di_203 = Mem202[ss:bp_26 + 0x04:word16];
+			word16 di_205 = Mem202[ss:fp - 0x8C + 0x00:word16];
+			selector es_208 = Mem202[ss:fp - 0x8A + 0x00:selector];
+			Mem211[ss:fp - 0x8A + 0x00:word16] = es_200;
+			Mem213[ss:fp - 0x8C + 0x00:word16] = di_203;
+			word16 cx_218 = ~0x00;
+			if (cx_218 != 0x00)
 			{
-				di_204 = di_204 + 0x01;
-				cx_217 = cx_217 - 0x01;
-				if (0x00 != Mem212[es_207:di_204 + 0x00:byte])
+				di_205 = di_205 + 0x01;
+				cx_218 = cx_218 - 0x01;
+				if (0x00 != Mem213[es_208:di_205 + 0x00:byte])
 					goto l0800_3298;
 			}
-			word16 cx_226 = ~cx_217;
-			word16 di_229 = Mem212[ss:fp - 0x8C + 0x00:word16];
-			selector es_232 = Mem212[ss:fp - 0x8A + 0x00:selector];
-			Mem238[ss:fp - 0x8A + 0x00:word16] = cx_226;
-			word16 si_228 = di_204 - cx_226;
-			word16 cx_239 = ~0x00;
-			if (cx_239 != 0x00)
+			word16 cx_227 = ~cx_218;
+			word16 di_230 = Mem213[ss:fp - 0x8C + 0x00:word16];
+			selector es_233 = Mem213[ss:fp - 0x8A + 0x00:selector];
+			Mem239[ss:fp - 0x8A + 0x00:word16] = cx_227;
+			word16 si_229 = di_205 - cx_227;
+			word16 cx_240 = ~0x00;
+			if (cx_240 != 0x00)
 			{
-				di_229 = di_229 + 0x01;
-				cx_239 = cx_239 - 0x01;
-				if (0x00 != Mem238[es_232:di_229 + 0x00:byte])
+				di_230 = di_230 + 0x01;
+				cx_240 = cx_240 - 0x01;
+				if (0x00 != Mem239[es_233:di_230 + 0x00:byte])
 					goto l0800_32AE;
 			}
-			word16 di_251 = di_229 - 0x01;
-			word16 cx_253 = Mem238[ss:fp - 0x8A + 0x00:word16];
-			while (cx_253 != 0x00)
+			word16 di_252 = di_230 - 0x01;
+			word16 cx_254 = Mem239[ss:fp - 0x8A + 0x00:word16];
+			while (cx_254 != 0x00)
 			{
-				Mem259[es_232:di_251 + 0x00:byte] = Mem238[es_207:si_228 + 0x00:byte];
-				si_228 = si_228 + 0x01;
-				di_251 = di_251 + 0x01;
-				cx_253 = cx_253 - 0x01;
+				Mem260[es_233:di_252 + 0x00:byte] = Mem239[es_208:si_229 + 0x00:byte];
+				si_229 = si_229 + 0x01;
+				di_252 = di_252 + 0x01;
+				cx_254 = cx_254 - 0x01;
 			}
-			Mem265[ds_76:0x09AC:word16] = Mem238[ds_76:0x09AC:word16] - 0x01;
-			word16 bx_266 = Mem265[ds_76:0x09AC:word16];
-			SEQ(ds_76, 0x09AE)[bx_266 * 0x02] = SEQ(ds_76, 0x09AE)[bx_266 * 0x02] + 0x01;
-			ds = ds_76;
+			Mem266[ds_77:0x09AC:word16] = Mem239[ds_77:0x09AC:word16] - 0x01;
+			word16 bx_267 = Mem266[ds_77:0x09AC:word16];
+			SEQ(ds_77, 0x09AE)[bx_267 * 0x02] = SEQ(ds_77, 0x09AE)[bx_267 * 0x02] + 0x01;
+			ds = ds_77;
 			goto l0800_31BD;
 		}
 		else
 		{
-			Mem146[ds_76:0x09AE:word16] = 0x00;
+			Mem147[ds_77:0x09AE:word16] = 0x00;
 			return 0x00;
 		}
 	}
 	else
 	{
-		Mem96[ss:fp - 0x8A + 0x00:word16] = ss;
-		Mem99[ss:fp - 0x8C + 0x00:word16] = fp - 0x10;
-		Mem101[ss:fp - 0x8E + 0x00:word16] = ds_76;
-		Mem104[ss:fp - 0x90 + 0x00:word16] = 0x0A30;
-		Mem106[ss:fp - 0x92 + 0x00:word16] = ss;
-		Mem109[ss:fp - 0x94 + 0x00:word16] = fp - 0x1E;
-		Mem111[ss:fp - 0x96 + 0x00:word16] = ss;
-		Mem114[ss:fp - 0x98 + 0x00:word16] = fp - 0x84;
-		Mem116[ss:fp - 0x9A + 0x00:word16] = ds_76;
-		Mem119[ss:fp - 0x9C + 0x00:word16] = 2599;
-		Mem122[ss:fp - 0x9E + 0x00:word16] = Mem119[ss:fp + 0x04:word16];
-		Mem125[ss:fp - 0xA0 + 0x00:word16] = Mem122[ss:fp + 0x02:word16];
-		word16 di_127;
-		fn0800_BEA2(ds_76, ptrArg00, wArg04, wArg06, out di_127);
-		Mem131[ds_76:0x09AC:word16] = Mem125[ds_76:0x09AC:word16] + 0x01;
-		SEQ(ds_76, 0x09AE)[Mem131[ds_76:0x09AC:word16] * 0x02] = 0x00;
+		Mem97[ss:fp - 0x8A + 0x00:word16] = ss;
+		Mem100[ss:fp - 0x8C + 0x00:word16] = bp_26 - 0x0E;
+		Mem102[ss:fp - 0x8E + 0x00:word16] = ds_77;
+		Mem105[ss:fp - 0x90 + 0x00:word16] = 0x0A30;
+		Mem107[ss:fp - 0x92 + 0x00:word16] = ss;
+		Mem110[ss:fp - 0x94 + 0x00:word16] = bp_26 - 0x1C;
+		Mem112[ss:fp - 0x96 + 0x00:word16] = ss;
+		Mem115[ss:fp - 0x98 + 0x00:word16] = bp_26 - 0x82;
+		Mem117[ss:fp - 0x9A + 0x00:word16] = ds_77;
+		Mem120[ss:fp - 0x9C + 0x00:word16] = 2599;
+		Mem123[ss:fp - 0x9E + 0x00:word16] = Mem120[ss:bp_26 + 0x06:word16];
+		Mem126[ss:fp - 0xA0 + 0x00:word16] = Mem123[ss:bp_26 + 0x04:word16];
+		word16 di_128;
+		fn0800_BEA2(ds_77, ptrArg00, wArg04, wArg06, out di_128);
+		Mem132[ds_77:0x09AC:word16] = Mem126[ds_77:0x09AC:word16] + 0x01;
+		SEQ(ds_77, 0x09AE)[Mem132[ds_77:0x09AC:word16] * 0x02] = 0x00;
 		return 0x01;
 	}
 }
 
-word16 fn0800_32CD(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, selector psegArg08, word16 wArg0A, ptr16 & dsOut)
+// 0800:32CD: Register word16 fn0800_32CD(Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack selector psegArg08, Register out ptr16 bpOut, Register out ptr16 dsOut)
+word16 fn0800_32CD(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, selector psegArg08, ptr16 & bpOut, ptr16 & dsOut)
 {
-	word16 di_218 = wArg06;
-	word16 cx_219 = ~0x00;
-	if (cx_219 != 0x00)
+	word16 di_194 = wArg06;
+	word16 cx_195 = ~0x00;
+	if (cx_195 != 0x00)
 	{
-		di_218 = di_218 + 0x01;
-		cx_219 = cx_219 - 0x01;
-		if (0x00 != Mem0[psegArg08:di_218 + 0x00:byte])
+		di_194 = di_194 + 0x01;
+		cx_195 = cx_195 - 0x01;
+		if (0x00 != Mem0[psegArg08:di_194 + 0x00:byte])
 			goto l0800_32E7;
 	}
-	word16 cx_40 = ~cx_219;
+	word16 cx_40 = ~cx_195;
 	word16 cx_42 = cx_40 >>u 0x01;
-	word16 si_47 = di_218 - cx_40;
+	word16 si_47 = di_194 - cx_40;
 	word16 di_48 = fp - 0x68;
 	while (cx_42 != 0x00)
 	{
@@ -4488,17 +5559,17 @@ word16 fn0800_32CD(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, sel
 		di_48 = di_48 + 0x01;
 		cx_66 = cx_66 - 0x01;
 	}
-	word16 di_214 = fp - 0x68;
+	word16 di_190 = fp - 0x68;
 	word16 si_104 = 0x0A32;
-	word16 cx_215 = ~0x00;
-	if (cx_215 != 0x00)
+	word16 cx_191 = ~0x00;
+	if (cx_191 != 0x00)
 	{
-		di_214 = di_214 + 0x01;
-		cx_215 = cx_215 - 0x01;
-		if (0x00 != Mem0[ss:di_214 + 0x00:byte])
+		di_190 = di_190 + 0x01;
+		cx_191 = cx_191 - 0x01;
+		if (0x00 != Mem0[ss:di_190 + 0x00:byte])
 			goto l0800_330C;
 	}
-	word16 di_100 = di_214 - 0x01;
+	word16 di_100 = di_190 - 0x01;
 	word16 cx_101 = 0x04;
 	while (cx_101 != 0x00)
 	{
@@ -4511,294 +5582,347 @@ word16 fn0800_32CD(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, sel
 	selector ds_126;
 	if (fn0800_33CD(ds, DPB(ptrLoc76, wArg02, 0), wArg04, 0x10, fp - 0x68, ss, out dl_125, out ds_126) == 0x00)
 	{
-		while (wArg0A != 0x00)
+		while (Mem0[ss:fp + 0x0A:word16] != 0x00)
 		{
-			ptrLoc72 = DPB(ptrLoc72, wArg02, 0);
-			byte dl_201;
-			if (fn0800_3479(ds_126, ptrLoc72, wArg04, 0x10, out dl_201, out ds_126) != 0x00)
-				return wArg0A;
-			wArg0A = wArg0A - 0x01;
+			Mem173[ss:fp - 110 + 0x00:word16] = 0x10;
+			Mem176[ss:fp - 0x70 + 0x00:word16] = Mem173[ss:fp + 0x04:word16];
+			Mem179[ss:fp - 114 + 0x00:word16] = Mem176[ss:fp + 0x02:word16];
+			fn0800_3479();
+			if (true)
+				break;
+			Mem186[ss:fp + 0x0A:word16] = Mem179[ss:fp + 0x0A:word16] - 0x01;
 		}
-		return wArg0A;
+		word16 bp_169;
+		*bpOut = Mem0[ss:fp - 0x02 + 0x00:word16];
+		return Mem0[ss:fp + 0x0A:word16];
 	}
 	else
+	{
+		word16 bp_151;
+		*bpOut = Mem0[ss:fp - 0x02 + 0x00:word16];
 		return 0x01;
+	}
 }
 
-byte fn0800_335C(selector ds, word16 wArg02, word16 wArg04)
+// 0800:335C: Register byte fn0800_335C(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
+byte fn0800_335C(word16 bp, selector ds, word16 wArg02, word16 wArg04)
 {
 	selector ds_35;
 	byte dl_34;
 	if (fn0800_33CD(ds, DPB(ptrLoc2C, fp - 0x10, 0), ss, 0x10, wArg02, wArg04, out dl_34, out ds_35) == 0x00)
 	{
-		dl_34 = fn0800_35A3(ds_35, wArg02, wArg04);
-		Mem85[ss:fp - 0x24 + 0x00:word16] = ds_35;
-		Mem88[ss:fp - 0x26 + 0x00:word16] = ss;
-		word16 si_116 = fp - 0x10;
-		selector es_89 = Mem88[ss:fp - 0x26 + 0x00:selector];
+		Mem67[ss:fp - 0x24 + 0x00:word16] = Mem0[ss:fp + 0x04:word16];
+		Mem70[ss:fp - 0x26 + 0x00:word16] = Mem67[ss:fp + 0x02:word16];
+		Mem72[ss:fp - 0x28 + 0x00:word16] = ss;
+		Mem75[ss:fp - 0x2A + 0x00:word16] = fp - 0x1E;
+		dl_34 = fn0800_35A3(ds_35, wArg04, wArg06);
+		Mem82[ss:fp - 0x24 + 0x00:word16] = ds_35;
+		Mem85[ss:fp - 0x26 + 0x00:word16] = ss;
+		word16 si_113 = fp - 0x10;
+		selector es_86 = Mem85[ss:fp - 0x26 + 0x00:selector];
 		word16 di_100 = fp - 0x1E;
-		word16 ax_128 = 0x00;
-		word16 cx_102 = ~0x00;
-		if (cx_102 != 0x00)
+		word16 ax_125 = 0x00;
+		word16 cx_101 = ~0x00;
+		if (cx_101 != 0x00)
 		{
 			di_100 = di_100 + 0x01;
-			cx_102 = cx_102 - 0x01;
-			if (0x00 != Mem88[es_89:di_100 + 0x00:byte])
+			cx_101 = cx_101 - 0x01;
+			if (0x00 != Mem85[es_86:di_100 + 0x00:byte])
 				goto l0800_33A0;
 		}
-		word16 cx_105 = ~cx_102;
-		word16 di_106 = di_100 - cx_105;
-		byte SCZO_108 = cond(di_106);
-		byte Z_110 = SCZO_108;
-		byte C_111 = SCZO_108;
-		if (cx_105 != 0x00)
+		word16 cx_102 = ~cx_101;
+		word16 di_103 = di_100 - cx_102;
+		byte SCZO_105 = cond(di_103);
+		byte Z_107 = SCZO_105;
+		byte C_108 = SCZO_105;
+		if (cx_102 != 0x00)
 		{
-			byte SCZO_179 = cond(Mem88[ss:si_193 + 0x00:byte] - Mem88[es_89:di_194 + 0x00:byte]);
-			Z_110 = SCZO_179;
-			C_111 = SCZO_179;
-			si_116 = si_193 + 0x01;
-			di_106 = di_194 + 0x01;
-			cx_105 = cx_105 - 0x01;
-			word16 si_193 = si_116;
-			word16 di_194 = di_106;
-			if (Mem88[ss:si_193 + 0x00:byte] != Mem88[es_89:di_194 + 0x00:byte])
+			byte SCZO_176 = cond(Mem85[ss:si_190 + 0x00:byte] - Mem85[es_86:di_191 + 0x00:byte]);
+			Z_107 = SCZO_176;
+			C_108 = SCZO_176;
+			si_113 = si_190 + 0x01;
+			di_103 = di_191 + 0x01;
+			cx_102 = cx_102 - 0x01;
+			word16 si_190 = si_113;
+			word16 di_191 = di_103;
+			if (Mem85[ss:si_190 + 0x00:byte] != Mem85[es_86:di_191 + 0x00:byte])
 				goto l0800_33A6;
 		}
-		if (!Z_110)
+		if (!Z_107)
 		{
-			word16 ax_173 = 0x00 - C_111;
-			ax_128 = ax_173 - ~0x00 - (ax_173 <u 0x00);
+			word16 ax_170 = 0x00 - C_108;
+			ax_125 = ax_170 - ~0x00 - (ax_170 <u 0x00);
 		}
-		selector ds_131 = Mem88[ss:fp - 0x24 + 0x00:selector];
-		if (ax_128 == 0x00)
+		selector ds_128 = Mem85[ss:fp - 0x24 + 0x00:selector];
+		if (ax_125 == 0x00)
 		{
-			ptr32 es_di_137 = Mem88[ss:fp + 0x02:segptr32];
-			word16 di_138 = (word16) es_di_137;
-			selector es_139 = SLICE(es_di_137, selector, 16);
-			word16 si_140 = 0x0A36;
-			word16 cx_141 = ~0x00;
-			if (cx_141 != 0x00)
+			ptr32 es_di_134 = Mem85[ss:fp + 0x02:segptr32];
+			word16 di_135 = (word16) es_di_134;
+			selector es_136 = SLICE(es_di_134, selector, 16);
+			word16 si_137 = 0x0A36;
+			word16 cx_138 = ~0x00;
+			if (cx_138 != 0x00)
 			{
-				di_138 = di_138 + 0x01;
-				cx_141 = cx_141 - 0x01;
-				if (0x00 != Mem88[es_139:di_138 + 0x00:byte])
+				di_135 = di_135 + 0x01;
+				cx_138 = cx_138 - 0x01;
+				if (0x00 != Mem85[es_136:di_135 + 0x00:byte])
 					goto l0800_33BF;
 			}
-			word16 di_154 = di_138 - 0x01;
-			word16 cx_157 = 0x05;
-			while (cx_157 != 0x00)
+			word16 di_151 = di_135 - 0x01;
+			word16 cx_154 = 0x05;
+			while (cx_154 != 0x00)
 			{
-				Mem163[es_139:di_154 + 0x00:byte] = Mem88[ds_131:si_140 + 0x00:byte];
-				si_140 = si_140 + 0x01;
-				di_154 = di_154 + 0x01;
-				cx_157 = cx_157 - 0x01;
+				Mem160[es_136:di_151 + 0x00:byte] = Mem85[ds_128:si_137 + 0x00:byte];
+				si_137 = si_137 + 0x01;
+				di_151 = di_151 + 0x01;
+				cx_154 = cx_154 - 0x01;
 			}
 		}
 	}
 	return dl_34;
 }
 
+// 0800:33CD: Register word16 fn0800_33CD(Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Register out ptr16 dlOut, Register out ptr16 dsOut)
 word16 fn0800_33CD(selector ds, segptr32 ptrArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, ptr16 & dlOut, ptr16 & dsOut)
 {
-	*dsOut = ds;
 	byte dl_35;
 	if (fn0800_A817(0x23, ds, DPB(ptrLoc10, wArg08, 0), DPB(ptrLoc0C, 17955, 0), wArg06, out dl_35) == 0x00)
 	{
-		word16 di_305 = 0x0A3B;
-		word16 si_304 = 0x4641;
-		word16 cx_307 = 0x02;
-		word16 ax_106 = 0x00;
-		byte Z_302 = cond(0x00);
-		byte C_303 = false;
-		if (cx_307 != 0x00)
+		word16 di_301 = 0x0A3B;
+		word16 si_300 = 0x4641;
+		word16 cx_303 = 0x02;
+		word16 ax_104 = 0x00;
+		byte Z_298 = cond(0x00);
+		byte C_299 = false;
+		if (cx_303 != 0x00)
 		{
-			byte SCZO_300 = cond(Mem0[ds:si_309 + 0x00:byte] - Mem0[ds:di_308 + 0x00:byte]);
-			Z_302 = SCZO_300;
-			C_303 = SCZO_300;
-			si_304 = si_309 + 0x01;
-			di_305 = di_308 + 0x01;
-			cx_307 = cx_307 - 0x01;
-			word16 di_308 = di_305;
-			word16 si_309 = si_304;
-			if (Mem0[ds:si_309 + 0x00:byte] != Mem0[ds:di_308 + 0x00:byte])
+			byte SCZO_296 = cond(Mem0[ds:si_305 + 0x00:byte] - Mem0[ds:di_304 + 0x00:byte]);
+			Z_298 = SCZO_296;
+			C_299 = SCZO_296;
+			si_300 = si_305 + 0x01;
+			di_301 = di_304 + 0x01;
+			cx_303 = cx_303 - 0x01;
+			word16 di_304 = di_301;
+			word16 si_305 = si_300;
+			if (Mem0[ds:si_305 + 0x00:byte] != Mem0[ds:di_304 + 0x00:byte])
 				goto l0800_33FE;
 		}
-		if (!Z_302)
+		if (!Z_298)
 		{
-			word16 ax_294 = 0x00 - C_303;
-			ax_106 = ax_294 - ~0x00 - (ax_294 <u 0x00);
+			word16 ax_290 = 0x00 - C_299;
+			ax_104 = ax_290 - ~0x00 - (ax_290 <u 0x00);
 		}
-		if (ax_106 != 0x00)
+		word16 ax_105 = ax_104;
+		if (ax_104 != 0x00)
 		{
-			word16 di_146 = 2621;
-			word16 si_148 = 0x4641;
-			word16 cx_149 = 0x03;
-			word16 ax_150 = 0x00;
-			byte Z_153 = cond(0x00);
-			byte C_154 = false;
-			if (cx_149 != 0x00)
+			word16 di_141 = 2621;
+			word16 si_143 = 0x4641;
+			word16 cx_144 = 0x03;
+			word16 ax_145 = 0x00;
+			byte Z_148 = cond(0x00);
+			byte C_149 = false;
+			if (cx_144 != 0x00)
 			{
-				byte SCZO_286 = cond(Mem0[ds:si_311 + 0x00:byte] - Mem0[ds:di_310 + 0x00:byte]);
-				Z_153 = SCZO_286;
-				C_154 = SCZO_286;
-				si_148 = si_311 + 0x01;
-				di_146 = di_310 + 0x01;
-				cx_149 = cx_149 - 0x01;
-				word16 di_310 = di_146;
-				word16 si_311 = si_148;
-				if (Mem0[ds:si_311 + 0x00:byte] != Mem0[ds:di_310 + 0x00:byte])
+				byte SCZO_282 = cond(Mem0[ds:si_307 + 0x00:byte] - Mem0[ds:di_306 + 0x00:byte]);
+				Z_148 = SCZO_282;
+				C_149 = SCZO_282;
+				si_143 = si_307 + 0x01;
+				di_141 = di_306 + 0x01;
+				cx_144 = cx_144 - 0x01;
+				word16 di_306 = di_141;
+				word16 si_307 = si_143;
+				if (Mem0[ds:si_307 + 0x00:byte] != Mem0[ds:di_306 + 0x00:byte])
 					goto l0800_3418;
 			}
-			if (!Z_153)
+			if (!Z_148)
 			{
-				word16 ax_280 = 0x00 - C_154;
-				ax_150 = ax_280 - ~0x00 - (ax_280 <u 0x00);
+				word16 ax_276 = 0x00 - C_149;
+				ax_145 = ax_276 - ~0x00 - (ax_276 <u 0x00);
 			}
-			if (ax_150 != 0x00 && ((int16) Mem0[ds:17976:byte] & wArg06) == wArg06)
+			ax_105 = ax_145;
+			if (ax_145 != 0x00)
 			{
-				if ((wArg02 | wArg04) != 0x00)
+				ax_105 = (int16) Mem0[ds:17976:byte] & wArg06;
+				if (ax_105 == wArg06)
 				{
-					word16 di_210 = (word16) ptrArg02;
-					selector es_211 = SLICE(ptrArg02, selector, 16);
-					word16 di_220 = 0x4641;
-					word16 cx_226 = ~0x00;
-					if (cx_226 != 0x00)
+					if ((wArg02 | wArg04) != 0x00)
 					{
-						di_220 = di_220 + 0x01;
-						cx_226 = cx_226 - 0x01;
-						if (0x00 != Mem0[ds:di_220 + 0x00:byte])
-							goto l0800_345B;
+						word16 di_206 = (word16) ptrArg02;
+						selector es_207 = SLICE(ptrArg02, selector, 16);
+						word16 di_216 = 0x4641;
+						word16 cx_222 = ~0x00;
+						if (cx_222 != 0x00)
+						{
+							di_216 = di_216 + 0x01;
+							cx_222 = cx_222 - 0x01;
+							if (0x00 != Mem0[ds:di_216 + 0x00:byte])
+								goto l0800_345B;
+						}
+						word16 cx_230 = ~cx_222;
+						word16 cx_232 = cx_230 >>u 0x01;
+						word16 si_237 = di_216 - cx_230;
+						word16 di_238 = di_206;
+						while (cx_232 != 0x00)
+						{
+							Mem252[es_207:di_238 + 0x00:word16] = Mem0[ds:si_237 + 0x00:word16];
+							si_237 = si_237 + 0x02;
+							di_238 = di_238 + 0x02;
+							cx_232 = cx_232 - 0x01;
+						}
+						word16 cx_257 = cx_232 * 0x02 + (cx_230 >>u 0x01 <u 0x00);
+						while (cx_257 != 0x00)
+						{
+							Mem264[es_207:di_238 + 0x00:byte] = Mem0[ds:si_237 + 0x00:byte];
+							si_237 = si_237 + 0x01;
+							di_238 = di_238 + 0x01;
+							cx_257 = cx_257 - 0x01;
+						}
 					}
-					word16 cx_234 = ~cx_226;
-					word16 cx_236 = cx_234 >>u 0x01;
-					word16 si_241 = di_220 - cx_234;
-					word16 di_242 = di_210;
-					while (cx_236 != 0x00)
-					{
-						Mem256[es_211:di_242 + 0x00:word16] = Mem0[ds:si_241 + 0x00:word16];
-						si_241 = si_241 + 0x02;
-						di_242 = di_242 + 0x02;
-						cx_236 = cx_236 - 0x01;
-					}
-					word16 cx_261 = cx_236 * 0x02 + (cx_234 >>u 0x01 <u 0x00);
-					while (cx_261 != 0x00)
-					{
-						Mem268[es_211:di_242 + 0x00:byte] = Mem0[ds:si_241 + 0x00:byte];
-						si_241 = si_241 + 0x01;
-						di_242 = di_242 + 0x01;
-						cx_261 = cx_261 - 0x01;
-					}
+					return 0x00;
 				}
-				selector ds_196;
-				*dsOut = ds;
-				return 0x00;
 			}
 		}
-		byte dl_130;
-		selector ds_131;
-		return fn0800_3479(ds, DPB(ptrLoc0C, wArg02, 0), wArg04, wArg06, out dl_130, out ds_131);
+		fn0800_3479();
+		return ax_105;
 	}
 	else
 		return 0x01;
 }
 
-word16 fn0800_3479(selector ds, segptr32 ptrArg02, word16 wArg04, word16 wArg06, ptr16 & dlOut, ptr16 & dsOut)
+// 0800:3479: void fn0800_3479()
+void fn0800_3479()
 {
-	do
-	{
-		ptrLoc0A = DPB(ptrLoc0A, 17955, 0);
-		word16 ax_32;
-		byte dl_33;
-		fn0800_A84A(0x23, ds, ptrLoc0A, out ax_32, out dl_33);
-		if (ax_32 != 0x00)
-			return 0x01;
-		word16 di_271 = 0x0A3B;
-		word16 si_270 = 0x4641;
-		word16 cx_273 = 0x02;
-		word16 ax_263 = 0x00;
-		byte Z_268 = cond(0x00);
-		byte C_269 = false;
-		if (cx_273 != 0x00)
-		{
-			byte SCZO_266 = cond(Mem0[ds:si_275 + 0x00:byte] - Mem0[ds:di_274 + 0x00:byte]);
-			Z_268 = SCZO_266;
-			C_269 = SCZO_266;
-			si_270 = si_275 + 0x01;
-			di_271 = di_274 + 0x01;
-			cx_273 = cx_273 - 0x01;
-			word16 di_274 = di_271;
-			word16 si_275 = si_270;
-			if (Mem0[ds:si_275 + 0x00:byte] != Mem0[ds:di_274 + 0x00:byte])
-				goto l0800_34A1;
-		}
-		if (!Z_268)
-		{
-			word16 ax_260 = 0x00 - C_269;
-			ax_263 = ax_260 - ~0x00 - (ax_260 <u 0x00);
-		}
-		if (ax_263 == 0x00)
-			continue;
-		word16 di_107 = 2621;
-		word16 si_109 = 0x4641;
-		word16 cx_110 = 0x03;
-		word16 ax_111 = 0x00;
-		byte Z_114 = cond(0x00);
-		byte C_115 = false;
-		if (cx_110 != 0x00)
-		{
-			byte SCZO_252 = cond(Mem0[ds:si_277 + 0x00:byte] - Mem0[ds:di_276 + 0x00:byte]);
-			Z_114 = SCZO_252;
-			C_115 = SCZO_252;
-			si_109 = si_277 + 0x01;
-			di_107 = di_276 + 0x01;
-			cx_110 = cx_110 - 0x01;
-			word16 di_276 = di_107;
-			word16 si_277 = si_109;
-			if (Mem0[ds:si_277 + 0x00:byte] != Mem0[ds:di_276 + 0x00:byte])
-				goto l0800_34BB;
-		}
-		if (!Z_114)
-		{
-			word16 ax_246 = 0x00 - C_115;
-			ax_111 = ax_246 - ~0x00 - (ax_246 <u 0x00);
-		}
-	} while (ax_111 == 0x00 || ((int16) Mem0[ds:17976:byte] & wArg06) != wArg06);
-	if ((wArg02 | wArg04) != 0x00)
-	{
-		word16 di_176 = (word16) ptrArg02;
-		selector es_177 = SLICE(ptrArg02, selector, 16);
-		word16 di_186 = 0x4641;
-		word16 cx_192 = ~0x00;
-		if (cx_192 != 0x00)
-		{
-			di_186 = di_186 + 0x01;
-			cx_192 = cx_192 - 0x01;
-			if (0x00 != Mem0[ds:di_186 + 0x00:byte])
-				goto l0800_34EB;
-		}
-		word16 cx_200 = ~cx_192;
-		word16 cx_202 = cx_200 >>u 0x01;
-		word16 si_207 = di_186 - cx_200;
-		word16 di_208 = di_176;
-		while (cx_202 != 0x00)
-		{
-			Mem222[es_177:di_208 + 0x00:word16] = Mem0[ds:si_207 + 0x00:word16];
-			si_207 = si_207 + 0x02;
-			di_208 = di_208 + 0x02;
-			cx_202 = cx_202 - 0x01;
-		}
-		word16 cx_227 = cx_202 * 0x02 + (cx_200 >>u 0x01 <u 0x00);
-		while (cx_227 != 0x00)
-		{
-			Mem234[es_177:di_208 + 0x00:byte] = Mem0[ds:si_207 + 0x00:byte];
-			si_207 = si_207 + 0x01;
-			di_208 = di_208 + 0x01;
-			cx_227 = cx_227 - 0x01;
-		}
-	}
-	return 0x00;
+fn0800_3479_entry:
+l0800_3479:
+fn0800_3479_exit:
 }
 
+// 0800:347E: void fn0800_347E(Register word16 bp, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04)
+void fn0800_347E(word16 bp, selector ds, word16 wArg00, word16 wArg02, word16 wArg04)
+{
+	if (fn0800_A84A(0x23, ds, DPB(ptrLoc04, 17955, 0)) == 0x00)
+	{
+		word16 di_47 = 0x0A3B;
+		word16 si_48 = 0x4641;
+		word16 cx_49 = 0x02;
+		byte Z_53 = cond(0x00);
+		byte C_54 = false;
+		if (cx_49 != 0x00)
+		{
+			byte SCZO_78 = cond(Mem0[ds:si_86 + 0x00:byte] - Mem0[ds:di_85 + 0x00:byte]);
+			Z_53 = SCZO_78;
+			C_54 = SCZO_78;
+			si_48 = si_86 + 0x01;
+			di_47 = di_85 + 0x01;
+			cx_49 = cx_49 - 0x01;
+			word16 di_85 = di_47;
+			word16 si_86 = si_48;
+			if (Mem0[ds:si_86 + 0x00:byte] != Mem0[ds:di_85 + 0x00:byte])
+				goto l0800_34A1;
+		}
+		if (Z_53)
+		{
+			fn0800_34AA(0x00, bp, ds, wArg00, wArg02, wArg04);
+			return;
+		}
+		else
+		{
+			word16 ax_70 = 0x00 - C_54;
+			word16 ax_73 = ax_70 - ~0x00 - (ax_70 <u 0x00);
+			fn0800_34AA(ax_73, bp, ds, wArg00, wArg02, wArg04);
+			return;
+		}
+	}
+	else
+		return;
+}
+
+// 0800:34AA: void fn0800_34AA(Register word16 ax, Register word16 bp, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04)
+void fn0800_34AA(word16 ax, word16 bp, selector ds, word16 wArg00, word16 wArg02, word16 wArg04)
+{
+	if (ax == 0x00)
+	{
+		fn0800_347E(bp, ds, wLoc02, wArg00, wArg02);
+		return;
+	}
+	else
+	{
+		word16 di_178 = 2621;
+		word16 si_177 = 0x4641;
+		word16 cx_180 = 0x03;
+		word16 ax_170 = 0x00;
+		byte Z_176 = cond(0x00);
+		byte C_174 = false;
+		if (cx_180 != 0x00)
+		{
+			byte SCZO_173 = cond(Mem0[ds:si_189 + 0x00:byte] - Mem0[ds:di_190 + 0x00:byte]);
+			C_174 = SCZO_173;
+			Z_176 = SCZO_173;
+			si_177 = si_189 + 0x01;
+			di_178 = di_190 + 0x01;
+			cx_180 = cx_180 - 0x01;
+			word16 si_189 = si_177;
+			word16 di_190 = di_178;
+			if (Mem0[ds:si_189 + 0x00:byte] != Mem0[ds:di_190 + 0x00:byte])
+				goto l0800_34BB;
+		}
+		if (!Z_176)
+		{
+			word16 ax_167 = 0x00 - C_174;
+			ax_170 = ax_167 - ~0x00 - (ax_167 <u 0x00);
+		}
+		if (ax_170 == 0x00)
+		{
+			fn0800_347E(bp, ds, ds, wArg00, wArg02);
+			return;
+		}
+		else if (((int16) Mem0[ds:17976:byte] & Mem0[ss:bp + 0x08:word16]) != Mem0[ss:bp + 0x08:word16])
+		{
+			fn0800_347E(bp, ds, ds, wArg00, wArg02);
+			return;
+		}
+		else
+		{
+			if ((Mem0[ss:bp + 0x04:word16] | Mem0[ss:bp + 0x06:word16]) != 0x00)
+			{
+				ptr32 es_di_96 = Mem0[ss:bp + 0x04:segptr32];
+				selector es_97 = SLICE(es_di_96, selector, 16);
+				word16 di_98 = (word16) es_di_96;
+				word16 di_107 = 0x4641;
+				word16 cx_113 = ~0x00;
+				if (cx_113 != 0x00)
+				{
+					di_107 = di_107 + 0x01;
+					cx_113 = cx_113 - 0x01;
+					if (0x00 != Mem0[ds:di_107 + 0x00:byte])
+						goto l0800_34EB;
+				}
+				word16 cx_121 = ~cx_113;
+				word16 cx_123 = cx_121 >>u 0x01;
+				word16 si_128 = di_107 - cx_121;
+				word16 di_129 = di_98;
+				while (cx_123 != 0x00)
+				{
+					Mem143[es_97:di_129 + 0x00:word16] = Mem0[ds:si_128 + 0x00:word16];
+					si_128 = si_128 + 0x02;
+					di_129 = di_129 + 0x02;
+					cx_123 = cx_123 - 0x01;
+				}
+				word16 cx_148 = cx_123 * 0x02 + (cx_121 >>u 0x01 <u 0x00);
+				while (cx_148 != 0x00)
+				{
+					Mem155[es_97:di_129 + 0x00:byte] = Mem0[ds:si_128 + 0x00:byte];
+					si_128 = si_128 + 0x01;
+					di_129 = di_129 + 0x01;
+					cx_148 = cx_148 - 0x01;
+				}
+			}
+			return;
+		}
+	}
+}
+
+// 0800:3509: void fn0800_3509(Register selector ds, Stack word16 wArg06, Stack word16 wArg08)
 void fn0800_3509(selector ds, word16 wArg06, word16 wArg08)
 {
 	fn0800_BE3B(wArg06, wArg08, fp - 0x06, ss, fp - 0x5A, ss, fp - 0x10, ss, fp - 22, ss);
@@ -4884,6 +6008,7 @@ void fn0800_3509(selector ds, word16 wArg06, word16 wArg08)
 	return;
 }
 
+// 0800:35A3: Register byte fn0800_35A3(Register selector ds, Stack word16 wArg06, Stack word16 wArg08)
 byte fn0800_35A3(selector ds, word16 wArg06, word16 wArg08)
 {
 	fn0800_BE3B(wArg06, wArg08, fp - 0x06, ss, fp - 0x5A, ss, fp - 0x10, ss, fp - 22, ss);
@@ -4970,6 +6095,7 @@ byte fn0800_35A3(selector ds, word16 wArg06, word16 wArg08)
 	return dl_129;
 }
 
+// 0800:363D: Register selector fn0800_363D(Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg06, Stack word16 wArg08)
 selector fn0800_363D(selector ds, segptr32 ptrArg02, word16 wArg06, word16 wArg08)
 {
 	byte dl_32;
@@ -4983,6 +6109,7 @@ selector fn0800_363D(selector ds, segptr32 ptrArg02, word16 wArg06, word16 wArg0
 		return ds;
 }
 
+// 0800:3678: Register word16 fn0800_3678(Register word16 bp, Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Register out ptr16 dsOut)
 word16 fn0800_3678(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dsOut)
 {
 	*dsOut = ds;
@@ -4996,20 +6123,20 @@ word16 fn0800_3678(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg04, ptr
 		if (0x00 != Mem0[es_19:di_18 + 0x00:byte])
 			goto l0800_3693;
 	}
-	word16 cx_276 = ~cx_24;
-	word16 di_264 = di_18 - cx_276;
-	byte Z_272 = cond(di_264);
-	if (cx_276 != 0x00)
+	word16 cx_275 = ~cx_24;
+	word16 di_263 = di_18 - cx_275;
+	byte Z_271 = cond(di_263);
+	if (cx_275 != 0x00)
 	{
-		Z_272 = cond(0x5C - Mem0[es_19:di_264 + 0x00:byte]);
-		di_264 = di_264 + 0x01;
-		cx_276 = cx_276 - 0x01;
-		if (0x5C != Mem0[es_19:di_264 + 0x00:byte])
+		Z_271 = cond(0x5C - Mem0[es_19:di_263 + 0x00:byte]);
+		di_263 = di_263 + 0x01;
+		cx_275 = cx_275 - 0x01;
+		if (0x5C != Mem0[es_19:di_263 + 0x00:byte])
 			goto l0800_369C;
 	}
-	if (!Z_272)
-		di_264 = 0x01;
-	word16 di_60 = di_264 - 0x01;
+	if (!Z_271)
+		di_263 = 0x01;
+	word16 di_60 = di_263 - 0x01;
 	while (true)
 	{
 		ptr32 es_di_87 = Mem0[ss:fp - 0x06 + 0x00:segptr32];
@@ -5055,25 +6182,26 @@ word16 fn0800_3678(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg04, ptr
 		byte al_173 = (byte) ax_170;
 		if (ax_170 != 0x00)
 		{
-			Mem198[ss:fp - 0x0E + 0x00:word16] = Mem164[ss:fp + 0x04:word16];
-			Mem201[ss:fp - 0x10 + 0x00:word16] = Mem198[ss:fp + 0x02:word16];
+			Mem197[ss:fp - 0x0E + 0x00:word16] = Mem164[ss:fp + 0x04:word16];
+			Mem200[ss:fp - 0x10 + 0x00:word16] = Mem197[ss:fp + 0x02:word16];
 			if (fn0800_8E52(al_173, ds, ptrArg00) != 0x00)
 			{
-				Mem210[ss:fp - 0x0E + 0x00:word16] = Mem201[ss:fp + 0x04:word16];
-				Mem213[ss:fp - 0x10 + 0x00:word16] = Mem210[ss:fp + 0x02:word16];
-				Mem216[ss:fp - 0x12 + 0x00:word16] = 0x0E;
-				word16 di_218;
-				fn0800_0D24(fp - 0x02, ds, out si, out di_218, out ds);
+				Mem209[ss:fp - 0x0E + 0x00:word16] = Mem200[ss:fp + 0x04:word16];
+				Mem212[ss:fp - 0x10 + 0x00:word16] = Mem209[ss:fp + 0x02:word16];
+				Mem215[ss:fp - 0x12 + 0x00:word16] = 0x0E;
+				word16 di_217;
+				fn0800_0D24(fp - 0x02, ds, out si, out di_217, out ds);
 			}
 		}
-		Mem189[Mem164[ss:fp - 0x0A + 0x00:segptr32] + 0x00:byte] = 0x5C;
-		word16 dx_191 = Mem189[ss:fp - 0x0A + 0x00:word16];
-		Mem194[ss:fp - 0x04 + 0x00:word16] = Mem189[ss:fp - 0x08 + 0x00:word16];
-		Mem195[ss:fp - 0x06 + 0x00:word16] = dx_191 + 0x01;
+		Mem188[Mem164[ss:fp - 0x0A + 0x00:segptr32] + 0x00:byte] = 0x5C;
+		word16 dx_190 = Mem188[ss:fp - 0x0A + 0x00:word16];
+		Mem193[ss:fp - 0x04 + 0x00:word16] = Mem188[ss:fp - 0x08 + 0x00:word16];
+		Mem194[ss:fp - 0x06 + 0x00:word16] = dx_190 + 0x01;
 	}
 	return si;
 }
 
+// 0800:3764: Register word16 fn0800_3764(Register selector ds)
 word16 fn0800_3764(selector ds)
 {
 	if (Mem0[ds:17022:byte] != 0x00)
@@ -5133,46 +6261,48 @@ word16 fn0800_3764(selector ds)
 	return bp;
 }
 
+// 0800:37BE: Register word16 fn0800_37BE(Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Register out ptr16 diOut)
 word16 fn0800_37BE(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & diOut)
 {
 	word16 di_35;
 	return fn0800_BEA2(ds, DPB(ptrLoc12, wArg02, 0), 0x0A2B, ds, out di_35);
 }
 
-word16 fn0800_37DF(word16 bp, selector ds, ptr16 & dsOut)
+// 0800:37DF: Register word16 fn0800_37DF(Register word16 bp, Register selector ds, Register out ptr16 siOut, Register out ptr16 dsOut)
+word16 fn0800_37DF(word16 bp, selector ds, ptr16 & siOut, ptr16 & dsOut)
 {
 	fn0800_3509(ds, 0x44DC, ds);
 	Mem25[ss:fp - 0x70 + 0x00:word16] = ds;
 	Mem28[ss:fp - 114 + 0x00:word16] = 0x4541;
 	Mem30[ss:fp - 116 + 0x00:word16] = ss;
-	selector es_187 = Mem30[ss:fp - 116 + 0x00:selector];
-	word16 di_196 = fp - 0x6C;
-	word16 cx_197 = ~0x00;
-	if (cx_197 != 0x00)
+	selector es_156 = Mem30[ss:fp - 116 + 0x00:selector];
+	word16 di_165 = fp - 0x6C;
+	word16 cx_166 = ~0x00;
+	if (cx_166 != 0x00)
 	{
-		di_196 = di_196 + 0x01;
-		cx_197 = cx_197 - 0x01;
-		if (0x00 != Mem30[es_187:di_196 + 0x00:byte])
+		di_165 = di_165 + 0x01;
+		cx_166 = cx_166 - 0x01;
+		if (0x00 != Mem30[es_156:di_165 + 0x00:byte])
 			goto l0800_3805;
 	}
-	word16 cx_193 = ~cx_197;
-	word16 di_183 = di_196 - cx_193;
-	byte Z_190 = cond(di_183);
-	if (cx_193 != 0x00)
+	word16 cx_162 = ~cx_166;
+	word16 di_152 = di_165 - cx_162;
+	byte Z_159 = cond(di_152);
+	if (cx_162 != 0x00)
 	{
-		Z_190 = cond(0x00 - Mem30[es_187:di_183 + 0x00:byte]);
-		di_183 = di_183 + 0x01;
-		cx_193 = cx_193 - 0x01;
-		if (0x00 != Mem30[es_187:di_183 + 0x00:byte])
+		Z_159 = cond(0x00 - Mem30[es_156:di_152 + 0x00:byte]);
+		di_152 = di_152 + 0x01;
+		cx_162 = cx_162 - 0x01;
+		if (0x00 != Mem30[es_156:di_152 + 0x00:byte])
 			goto l0800_380D;
 	}
-	if (!Z_190)
+	if (!Z_159)
 	{
-		di_183 = 0x01;
-		es_187 = 0x00;
+		di_152 = 0x01;
+		es_156 = 0x00;
 	}
-	Mem70[ss:fp - 116 + 0x00:word16] = es_187;
-	word16 di_66 = di_183 - 0x01;
+	Mem70[ss:fp - 116 + 0x00:word16] = es_156;
+	word16 di_66 = di_152 - 0x01;
 	Mem72[ss:fp - 118 + 0x00:word16] = di_66;
 	fn0800_35A3(ds, wArg04, wArg06);
 	Mem81[ss:fp - 0x70 + 0x00:word16] = ds;
@@ -5180,45 +6310,50 @@ word16 fn0800_37DF(word16 bp, selector ds, ptr16 & dsOut)
 	Mem86[ss:fp - 116 + 0x00:word16] = ss;
 	Mem89[ss:fp - 118 + 0x00:word16] = fp - 0x6C;
 	word16 dx_93;
+	word16 si_94;
 	word16 di_95;
-	selector ds_105;
-	word16 si_127;
-	word16 ax_97 = fn0800_AA7E(si, di_66, ds, wArg00, wArg02, wArg04, wArg06, out dx_93, out si_127, out di_95, out ds_105);
+	selector ds_109;
+	word16 ax_97 = fn0800_AA7E(si, di_66, ds, wArg00, wArg02, wArg04, wArg06, out dx_93, out si_94, out di_95, out ds_109);
 	Mem99[ss:fp - 0x04 + 0x00:word16] = dx_93;
 	Mem100[ss:fp - 0x06 + 0x00:word16] = ax_97;
 	if ((ax_97 | dx_93) != 0x00)
 	{
-		Mem153[ss:fp - 0x70 + 0x00:word16] = Mem100[ss:fp - 0x04 + 0x00:word16];
-		Mem156[ss:fp - 114 + 0x00:word16] = Mem153[ss:fp - 0x06 + 0x00:word16];
-		byte dl_157;
-		word16 di_158;
-		selector ds_159;
-		fn0800_A614(fp - 0x02, ds_105, ptrArg00, wArg02, out dl_157, out di_158, out ds_159);
-		Mem165[ss:fp - 0x70 + 0x00:word16] = 0x0180;
-		Mem167[ss:fp - 114 + 0x00:word16] = ss;
-		Mem170[ss:fp - 116 + 0x00:word16] = fp - 0x6C;
-		ds_105 = fn0800_A4F6(fp - 0x02, ds_159, wArg00, wArg02, wArg04);
-		*dsOut = ds_105;
-		Mem175[ss:fp - 0x70 + 0x00:word16] = ss;
-		Mem179[ss:fp - 114 + 0x00:word16] = fp - 0x6C;
-		fn0800_8F7F((byte) (fp - 0x6C), ds_105, ptrArg00);
+		Mem121[ss:fp - 0x70 + 0x00:word16] = Mem100[ss:fp - 0x04 + 0x00:word16];
+		Mem124[ss:fp - 114 + 0x00:word16] = Mem121[ss:fp - 0x06 + 0x00:word16];
+		byte dl_126;
+		word16 di_127;
+		selector ds_128;
+		fn0800_A614(fp - 0x02, ds_109, ptrArg00, wArg02, out dl_126, out di_127, out ds_128);
+		Mem134[ss:fp - 0x70 + 0x00:word16] = 0x0180;
+		Mem136[ss:fp - 114 + 0x00:word16] = ss;
+		Mem139[ss:fp - 116 + 0x00:word16] = fp - 0x6C;
+		ds_109 = fn0800_A4F6(fp - 0x02, ds_128, wArg00, wArg02, wArg04);
+		Mem144[ss:fp - 0x70 + 0x00:word16] = ss;
+		Mem148[ss:fp - 114 + 0x00:word16] = fp - 0x6C;
+		fn0800_8F7F((byte) (fp - 0x6C), ds_109, ptrArg00);
 	}
-	Mem110[ss:fp - 0x70 + 0x00:word16] = ss;
-	Mem113[ss:fp - 114 + 0x00:word16] = fp - 0x6C;
-	Mem115[ss:fp - 116 + 0x00:word16] = ds_105;
-	Mem119[ss:fp - 118 + 0x00:word16] = 0x44DC;
-	if (fn0800_BA4A(220, ds_105, ptrArg00, ptrArg04) == ~0x00)
-	{
-		Mem138[ss:fp - 0x70 + 0x00:word16] = ds_105;
-		Mem141[ss:fp - 114 + 0x00:word16] = 0x44DC;
-		Mem144[ss:fp - 116 + 0x00:word16] = 0x0A;
-		word16 di_146;
-		selector ds_147;
-		fn0800_0D24(fp - 0x02, ds_105, out si_127, out di_146, out ds_147);
-	}
-	return si_127;
+	Mem111[ss:fp - 0x70 + 0x00:word16] = ss;
+	word16 si_114;
+	selector ds_115;
+	return fn0800_3867(fp - 0x6C, fp - 0x02, ds_109, wArg00, out si_114, out ds_115);
 }
 
+// 0800:3867: Register word16 fn0800_3867(Register word16 ax, Register word16 bp, Register selector ds, Stack word16 wArg00, Register out ptr16 siOut, Register out ptr16 dsOut)
+word16 fn0800_3867(word16 ax, word16 bp, selector ds, word16 wArg00, ptr16 & siOut, ptr16 & dsOut)
+{
+	*dsOut = ds;
+	*siOut = si;
+	if (fn0800_BA4A(220, ds, DPB(ptrLoc06, 0x44DC, 0), DPB(ptrLoc02, ax, 0)) == ~0x00)
+	{
+		word16 si_49;
+		word16 di_50;
+		selector ds_51;
+		fn0800_0D24(bp, ds, out si_49, out di_50, out ds_51);
+	}
+	return Mem0[ss:bp + 0x00:word16];
+}
+
+// 0800:388C: Register word16 fn0800_388C(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 siOut, Register out ptr16 dsOut)
 word16 fn0800_388C(word16 bp, word16 si, word16 di, selector ds, ptr16 & siOut, ptr16 & dsOut)
 {
 	word16 di_21;
@@ -5291,6 +6426,7 @@ word16 fn0800_388C(word16 bp, word16 si, word16 di, selector ds, ptr16 & siOut, 
 	}
 }
 
+// 0800:395B: Register word16 fn0800_395B(Stack segptr32 ptrArg02, Stack segptr32 ptrArg06)
 word16 fn0800_395B(segptr32 ptrArg02, segptr32 ptrArg06)
 {
 	word16 ax_12 = Mem0[ptrArg02 + 0x02:word16];
@@ -5300,141 +6436,140 @@ word16 fn0800_395B(segptr32 ptrArg02, segptr32 ptrArg06)
 		return Mem0[ptrArg02 + 0x00:word16] - Mem0[ptrArg06 + 0x00:word16];
 }
 
-word16 fn0800_3992(word16 bp, selector ds, ptr16 & dlOut, ptr16 & dsOut)
+// 0800:3992: Register word16 fn0800_3992(Register word16 bp, Register selector ds, Register out ptr16 dlOut, Register out ptr16 siOut, Register out ptr16 dsOut)
+word16 fn0800_3992(word16 bp, selector ds, ptr16 & dlOut, ptr16 & siOut, ptr16 & dsOut)
 {
 	*dsOut = ds;
+	*siOut = si;
 	*dlOut = dl;
 	if (Mem0[ds:17022:byte] == 0x00 || (Mem0[ds:0x2A23:word16] != 0x01 || Mem0[ds:10775:word16] == 0x00))
 		return 0x00;
 	else
 	{
 		fn0800_3509(ds, 0x44DC, ds);
-		Mem79[ss:fp - 0x78 + 0x00:word16] = ds;
-		Mem82[ss:fp - 122 + 0x00:word16] = 0x4541;
-		Mem84[ss:fp - 0x7C + 0x00:word16] = ss;
-		selector es_128 = Mem84[ss:fp - 0x7C + 0x00:selector];
-		word16 di_416 = fp - 116;
-		word16 cx_417 = ~0x00;
-		if (cx_417 != 0x00)
+		Mem80[ss:fp - 0x78 + 0x00:word16] = ds;
+		Mem83[ss:fp - 122 + 0x00:word16] = 0x4541;
+		Mem85[ss:fp - 0x7C + 0x00:word16] = ss;
+		selector es_129 = Mem85[ss:fp - 0x7C + 0x00:selector];
+		word16 di_100 = fp - 116;
+		word16 cx_394 = ~0x00;
+		if (cx_394 != 0x00)
 		{
-			di_416 = di_416 + 0x01;
-			cx_417 = cx_417 - 0x01;
-			if (0x00 != Mem84[es_128:di_416 + 0x00:byte])
+			di_100 = di_100 + 0x01;
+			cx_394 = cx_394 - 0x01;
+			if (0x00 != Mem85[es_129:di_100 + 0x00:byte])
 				goto l0800_39D4;
 		}
-		word16 cx_100 = ~cx_417;
-		word16 di_103 = di_416 - cx_100;
-		byte Z_105 = cond(di_103);
-		if (cx_100 != 0x00)
+		word16 cx_101 = ~cx_394;
+		word16 di_104 = di_100 - cx_101;
+		byte Z_106 = cond(di_104);
+		if (cx_101 != 0x00)
 		{
-			Z_105 = cond(0x00 - Mem84[es_128:di_103 + 0x00:byte]);
-			di_103 = di_103 + 0x01;
-			cx_100 = cx_100 - 0x01;
-			if (0x00 != Mem84[es_128:di_103 + 0x00:byte])
+			Z_106 = cond(0x00 - Mem85[es_129:di_104 + 0x00:byte]);
+			di_104 = di_104 + 0x01;
+			cx_101 = cx_101 - 0x01;
+			if (0x00 != Mem85[es_129:di_104 + 0x00:byte])
 				goto l0800_39DC;
 		}
-		if (!Z_105)
+		if (!Z_106)
 		{
-			di_103 = 0x01;
-			es_128 = 0x00;
+			di_104 = 0x01;
+			es_129 = 0x00;
 		}
-		Mem134[ss:fp - 0x7C + 0x00:word16] = es_128;
-		word16 di_130 = di_103 - 0x01;
-		Mem136[ss:fp - 0x7E + 0x00:word16] = di_130;
-		byte dl_139;
+		Mem135[ss:fp - 0x7C + 0x00:word16] = es_129;
+		word16 di_131 = di_104 - 0x01;
+		Mem137[ss:fp - 0x7E + 0x00:word16] = di_131;
+		byte dl_140;
 		*dlOut = fn0800_35A3(ds, wArg04, wArg06);
-		Mem144[ss:fp - 0x78 + 0x00:word16] = ds;
-		Mem147[ss:fp - 122 + 0x00:word16] = 0x0A4D;
-		Mem149[ss:fp - 0x7C + 0x00:word16] = ss;
-		Mem152[ss:fp - 0x7E + 0x00:word16] = fp - 116;
-		word16 dx_155;
-		word16 si_156;
-		word16 di_157;
-		selector ds_158;
-		word16 ax_159 = fn0800_AA7E(si, di_130, ds, wArg00, wArg02, wArg04, wArg06, out dx_155, out si_156, out di_157, out ds_158);
-		Mem161[ss:fp - 0x04 + 0x00:word16] = dx_155;
-		Mem162[ss:fp - 0x06 + 0x00:word16] = ax_159;
-		if ((ax_159 | dx_155) != 0x00)
+		Mem145[ss:fp - 0x78 + 0x00:word16] = ds;
+		Mem148[ss:fp - 122 + 0x00:word16] = 0x0A4D;
+		Mem150[ss:fp - 0x7C + 0x00:word16] = ss;
+		Mem153[ss:fp - 0x7E + 0x00:word16] = fp - 116;
+		word16 dx_156;
+		word16 si_157;
+		word16 di_158;
+		selector ds_159;
+		word16 ax_160 = fn0800_AA7E(si, di_131, ds, wArg00, wArg02, wArg04, wArg06, out dx_156, out si_157, out di_158, out ds_159);
+		Mem162[ss:fp - 0x04 + 0x00:word16] = dx_156;
+		Mem163[ss:fp - 0x06 + 0x00:word16] = ax_160;
+		if ((ax_160 | dx_156) != 0x00)
 		{
-			Mem179[ss:fp - 0x78 + 0x00:word16] = Mem162[ss:fp - 0x04 + 0x00:word16];
-			Mem182[ss:fp - 122 + 0x00:word16] = Mem179[ss:fp - 0x06 + 0x00:word16];
-			word16 si_183;
-			selector ds_184;
-			word16 ax_185 = fn0800_4194(fp - 0x02, ds_158, wArg00, wArg02, out si_183, out ds_184);
-			if (false || dx_155 == 0x00 && ax_185 >u 0x12)
+			Mem176[ss:fp - 0x78 + 0x00:word16] = Mem163[ss:fp - 0x04 + 0x00:word16];
+			Mem179[ss:fp - 122 + 0x00:word16] = Mem176[ss:fp - 0x06 + 0x00:word16];
+			word16 si_180;
+			selector ds_181;
+			word16 ax_182 = fn0800_4194(fp - 0x02, ds_159, wArg00, wArg02, out si_180, out ds_181);
+			if (false || dx_156 == 0x00 && ax_182 >u 0x12)
 			{
-				Mem199[ss:fp - 0x78 + 0x00:word16] = Mem182[ss:fp - 0x04 + 0x00:word16];
-				Mem202[ss:fp - 122 + 0x00:word16] = Mem199[ss:fp - 0x06 + 0x00:word16];
-				selector ds_203;
-				word16 dx_208;
-				word16 ax_209 = fn0800_8CAA(ax_185, 0x08, fn0800_3E5D(fp - 0x02, ds_184, wArg00, wArg02, out ds_203), bp, out dx_208);
-				if (dx_208 != 0x52 || ax_209 != 0x4E43)
+				Mem196[ss:fp - 0x78 + 0x00:word16] = Mem179[ss:fp - 0x04 + 0x00:word16];
+				Mem199[ss:fp - 122 + 0x00:word16] = Mem196[ss:fp - 0x06 + 0x00:word16];
+				selector ds_200;
+				word16 dx_205;
+				word16 ax_206 = fn0800_8CAA(ax_182, 0x08, fn0800_3E5D(fp - 0x02, ds_181, wArg00, wArg02, out ds_200), bp, out dx_205);
+				if (dx_205 != 0x52 || ax_206 != 0x4E43)
 				{
-					Mem218[ss:fp - 0x78 + 0x00:word16] = Mem202[ss:fp - 0x04 + 0x00:word16];
-					Mem221[ss:fp - 122 + 0x00:word16] = Mem218[ss:fp - 0x06 + 0x00:word16];
-					byte dl_223;
-					word16 di_224;
-					selector ds_225;
-					fn0800_A614(fp - 0x02, ds_203, ptrArg00, wArg02, out dl_223, out di_224, out ds_225);
-					return 0x00;
+					Mem215[ss:fp - 0x78 + 0x00:word16] = Mem199[ss:fp - 0x04 + 0x00:word16];
+					Mem218[ss:fp - 122 + 0x00:word16] = Mem215[ss:fp - 0x06 + 0x00:word16];
+					byte dl_220;
+					word16 di_221;
+					selector ds_222;
+					fn0800_A614(fp - 0x02, ds_200, ptrArg00, wArg02, out dl_220, out di_221, out ds_222);
+					return fn0800_3A61(fp - 0x02, wArg04);
 				}
 				else
 				{
-					Mem241[ss:fp - 0x78 + 0x00:word16] = Mem202[ss:fp - 0x04 + 0x00:word16];
-					Mem244[ss:fp - 122 + 0x00:word16] = Mem241[ss:fp - 0x06 + 0x00:word16];
-					selector ds_245;
-					word16 dx_246 = fn0800_3E5D(fp - 0x02, ds_203, wArg00, wArg02, out ds_245);
-					if (dx_246 != Mem244[ds_245:0x2A09:word16] || ax_209 != Mem244[ds_245:0x2A07:word16])
+					Mem232[ss:fp - 0x78 + 0x00:word16] = Mem199[ss:fp - 0x04 + 0x00:word16];
+					Mem235[ss:fp - 122 + 0x00:word16] = Mem232[ss:fp - 0x06 + 0x00:word16];
+					selector ds_236;
+					word16 dx_237 = fn0800_3E5D(fp - 0x02, ds_200, wArg00, wArg02, out ds_236);
+					if (dx_237 != Mem235[ds_236:0x2A09:word16] || ax_206 != Mem235[ds_236:0x2A07:word16])
 					{
-						Mem255[ss:fp - 0x78 + 0x00:word16] = Mem244[ss:fp - 0x04 + 0x00:word16];
-						Mem258[ss:fp - 122 + 0x00:word16] = Mem255[ss:fp - 0x06 + 0x00:word16];
-						byte dl_259;
-						word16 di_260;
-						selector ds_261;
-						fn0800_A614(fp - 0x02, ds_245, ptrArg00, wArg02, out dl_259, out di_260, out ds_261);
+						Mem246[ss:fp - 0x78 + 0x00:word16] = Mem235[ss:fp - 0x04 + 0x00:word16];
+						Mem249[ss:fp - 122 + 0x00:word16] = Mem246[ss:fp - 0x06 + 0x00:word16];
+						byte dl_250;
+						word16 di_251;
+						selector ds_252;
+						fn0800_A614(fp - 0x02, ds_236, ptrArg00, wArg02, out dl_250, out di_251, out ds_252);
 						return 0x00;
 					}
 					else
 					{
-						Mem276[ss:fp - 0x78 + 0x00:word16] = ss;
-						Mem279[ss:fp - 122 + 0x00:word16] = fp - 116;
-						Mem281[ss:fp - 0x7C + 0x00:word16] = ss;
-						Mem284[ss:fp - 0x7E + 0x00:word16] = fp - 0x0E;
-						selector ds_285 = fn0800_363D(ds_245, ptrArg00, wArg04, wArg06);
-						Mem289[ss:fp - 0x78 + 0x00:word16] = ds_285;
-						Mem292[ss:fp - 122 + 0x00:word16] = 0x4541;
-						Mem294[ss:fp - 0x7C + 0x00:word16] = ss;
-						Mem297[ss:fp - 0x7E + 0x00:word16] = fp - 0x0A;
-						selector ds_298 = fn0800_363D(ds_285, ptrArg00, wArg04, wArg06);
-						Mem302[ss:fp - 0x78 + 0x00:word16] = ss;
-						Mem305[ss:fp - 122 + 0x00:word16] = fp - 0x0A;
-						Mem307[ss:fp - 0x7C + 0x00:word16] = ss;
-						Mem310[ss:fp - 0x7E + 0x00:word16] = fp - 0x0E;
-						word16 ax_312 = fn0800_395B(ptrArg00, ptrArg04);
-						if (ax_312 >= 0x00)
+						Mem267[ss:fp - 0x78 + 0x00:word16] = ss;
+						Mem270[ss:fp - 122 + 0x00:word16] = fp - 116;
+						Mem272[ss:fp - 0x7C + 0x00:word16] = ss;
+						Mem275[ss:fp - 0x7E + 0x00:word16] = fp - 0x0E;
+						selector ds_276 = fn0800_363D(ds_236, ptrArg00, wArg04, wArg06);
+						Mem280[ss:fp - 0x78 + 0x00:word16] = ds_276;
+						Mem283[ss:fp - 122 + 0x00:word16] = 0x4541;
+						Mem285[ss:fp - 0x7C + 0x00:word16] = ss;
+						Mem288[ss:fp - 0x7E + 0x00:word16] = fp - 0x0A;
+						selector ds_289 = fn0800_363D(ds_276, ptrArg00, wArg04, wArg06);
+						Mem293[ss:fp - 0x78 + 0x00:word16] = ss;
+						Mem296[ss:fp - 122 + 0x00:word16] = fp - 0x0A;
+						Mem298[ss:fp - 0x7C + 0x00:word16] = ss;
+						Mem301[ss:fp - 0x7E + 0x00:word16] = fp - 0x0E;
+						word16 ax_303 = fn0800_395B(ptrArg00, ptrArg04);
+						if (ax_303 >= 0x00)
 						{
-							Mem340[ss:fp - 0x78 + 0x00:word16] = Mem310[ss:fp - 0x04 + 0x00:word16];
-							Mem343[ss:fp - 122 + 0x00:word16] = Mem340[ss:fp - 0x06 + 0x00:word16];
-							selector ds_344;
-							ui32 dx_ax_348 = SEQ(fn0800_3E5D(fp - 0x02, ds_298, wArg00, wArg02, out ds_344), ax_312 + 0x12);
-							Mem355[ds_344:0x2A05:word16] = SLICE(dx_ax_348 + 0x12, word16, 16);
-							Mem356[ds_344:0x2A03:word16] = (word16) (dx_ax_348 + 0x12);
-							Mem359[ss:fp - 0x78 + 0x00:word16] = Mem356[ss:fp - 0x04 + 0x00:word16];
-							Mem362[ss:fp - 122 + 0x00:word16] = Mem359[ss:fp - 0x06 + 0x00:word16];
-							byte dl_363;
-							word16 di_364;
-							selector ds_365;
-							fn0800_A614(fp - 0x02, ds_344, ptrArg00, wArg02, out dl_363, out di_364, out ds_365);
-							return 0x01;
+							Mem331[ss:fp - 0x78 + 0x00:word16] = Mem301[ss:fp - 0x04 + 0x00:word16];
+							Mem334[ss:fp - 122 + 0x00:word16] = Mem331[ss:fp - 0x06 + 0x00:word16];
+							selector ds_335;
+							ui32 dx_ax_339 = SEQ(fn0800_3E5D(fp - 0x02, ds_289, wArg00, wArg02, out ds_335), ax_303 + 0x12);
+							word16 ax_342 = (word16) (dx_ax_339 + 0x12);
+							word16 dx_344 = SLICE(dx_ax_339 + 0x12, word16, 16);
+							byte dl_347;
+							word16 si_348;
+							selector ds_349;
+							return fn0800_3AEF(ax_342, dx_344, fp - 0x02, ds_335, out dl_347, out si_348, out ds_349);
 						}
 						else
 						{
-							Mem320[ss:fp - 0x78 + 0x00:word16] = Mem310[ss:fp - 0x04 + 0x00:word16];
-							Mem323[ss:fp - 122 + 0x00:word16] = Mem320[ss:fp - 0x06 + 0x00:word16];
-							byte dl_324;
-							word16 di_325;
-							selector ds_326;
-							fn0800_A614(fp - 0x02, ds_298, ptrArg00, wArg02, out dl_324, out di_325, out ds_326);
+							Mem311[ss:fp - 0x78 + 0x00:word16] = Mem301[ss:fp - 0x04 + 0x00:word16];
+							Mem314[ss:fp - 122 + 0x00:word16] = Mem311[ss:fp - 0x06 + 0x00:word16];
+							byte dl_315;
+							word16 di_316;
+							selector ds_317;
+							fn0800_A614(fp - 0x02, ds_289, ptrArg00, wArg02, out dl_315, out di_316, out ds_317);
 							return 0x00;
 						}
 					}
@@ -5442,81 +6577,219 @@ word16 fn0800_3992(word16 bp, selector ds, ptr16 & dlOut, ptr16 & dsOut)
 			}
 			else
 			{
-				Mem380[ss:fp - 0x78 + 0x00:word16] = Mem182[ss:fp - 0x04 + 0x00:word16];
-				Mem383[ss:fp - 122 + 0x00:word16] = Mem380[ss:fp - 0x06 + 0x00:word16];
-				byte dl_384;
-				word16 di_385;
-				selector ds_386;
-				fn0800_A614(fp - 0x02, ds_184, ptrArg00, wArg02, out dl_384, out di_385, out ds_386);
+				Mem357[ss:fp - 0x78 + 0x00:word16] = Mem179[ss:fp - 0x04 + 0x00:word16];
+				Mem360[ss:fp - 122 + 0x00:word16] = Mem357[ss:fp - 0x06 + 0x00:word16];
+				byte dl_361;
+				word16 di_362;
+				selector ds_363;
+				fn0800_A614(fp - 0x02, ds_181, ptrArg00, wArg02, out dl_361, out di_362, out ds_363);
 				return 0x00;
 			}
 		}
 		else
+		{
+			fn0800_3A0E(fp - 0x02, wArg00);
 			return 0x00;
+		}
 	}
 }
 
-selector fn0800_3B0A(word16 bp, selector ds, word16 wArg0A, word16 wArg0C)
+// 0800:3A0E: void fn0800_3A0E(Register word16 bp, Stack word16 wArg00)
+void fn0800_3A0E(word16 bp, word16 wArg00)
 {
-	if ((wArg0A | wArg0C) != 0x00)
-	{
-		word16 dx_191;
-		word16 ax_193;
-		if (wArg0C >= 0x00 && (wArg0C > 0x00 || wArg0A >u 65000))
-		{
-			dx_191 = 0x00;
-			ax_193 = 65000;
-		}
-		else
-		{
-			dx_191 = wArg0C;
-			ax_193 = wArg0A;
-		}
-		selector ds_161 = fn0800_4311(ds, ax_193, dx_191);
-		Mem74[ss:fp - 0x04 + 0x00:word16] = dx_191;
-		Mem75[ss:fp - 0x06 + 0x00:word16] = ax_193;
-		while ((Mem75[ss:fp + 0x0A:word16] | Mem75[ss:fp + 0x0C:word16]) != 0x00)
-		{
-			word16 dx_114;
-			word16 ax_113;
-			if (Mem75[ss:fp + 0x0C:word16] >= 0x00 && (Mem75[ss:fp + 0x0C:word16] > 0x00 || Mem75[ss:fp + 0x0A:word16] >u 65000))
-			{
-				dx_114 = 0x00;
-				ax_113 = 65000;
-			}
-			else
-			{
-				dx_114 = Mem75[ss:fp + 0x0C:word16];
-				ax_113 = Mem75[ss:fp + 0x0A:word16];
-			}
-			Mem116[ss:fp - 0x08 + 0x00:word16] = dx_114;
-			Mem117[ss:fp - 0x0A + 0x00:word16] = ax_113;
-			Mem120[ss:fp - 0x0C + 0x00:word16] = Mem117[ss:fp + 0x04:word16];
-			Mem123[ss:fp - 0x0E + 0x00:word16] = Mem120[ss:fp + 0x02:word16];
-			Mem126[ss:fp - 0x10 + 0x00:word16] = Mem123[ss:fp - 0x08 + 0x00:word16];
-			Mem128[ss:fp - 0x12 + 0x00:word16] = ax_113;
-			Mem131[ss:fp - 0x14 + 0x00:word16] = Mem128[ss:fp - 0x04 + 0x00:word16];
-			Mem134[ss:fp - 22 + 0x00:word16] = Mem131[ss:fp - 0x06 + 0x00:word16];
-			word16 di_138;
-			selector ds_139;
-			fn0800_4110(ds_161, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0A, out di_138, out ds_139);
-			Mem145[ss:fp - 0x0C + 0x00:word16] = Mem134[ss:fp + 0x08:word16];
-			Mem148[ss:fp - 0x0E + 0x00:word16] = Mem145[ss:fp + 0x06:word16];
-			Mem151[ss:fp - 0x10 + 0x00:word16] = Mem148[ss:fp - 0x08 + 0x00:word16];
-			Mem154[ss:fp - 0x12 + 0x00:word16] = Mem151[ss:fp - 0x0A + 0x00:word16];
-			Mem157[ss:fp - 0x14 + 0x00:word16] = Mem154[ss:fp - 0x04 + 0x00:word16];
-			Mem160[ss:fp - 22 + 0x00:word16] = Mem157[ss:fp - 0x06 + 0x00:word16];
-			ds_161 = fn0800_4152(ds_139, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0A);
-			Mem167[ss:fp + 0x0A:word16] = Mem160[ss:fp + 0x0A:word16] - Mem160[ss:(fp - 0x0A) + 0x00:word16];
-			Mem171[ss:fp + 0x0C:word16] = v28;
-		}
-		Mem94[ss:fp - 0x0C + 0x00:word16] = Mem75[ss:fp - 0x04 + 0x00:word16];
-		Mem97[ss:fp - 0x0E + 0x00:word16] = Mem94[ss:fp - 0x06 + 0x00:word16];
-		fn0800_4346(ds_161, wArg00, wArg02, out ds);
-	}
-	return ds;
+	return;
 }
 
+// 0800:3A61: Register word16 fn0800_3A61(Register word16 bp, Stack word16 wArg04)
+word16 fn0800_3A61(word16 bp, word16 wArg04)
+{
+	return 0x00;
+}
+
+// 0800:3AEF: Register word16 fn0800_3AEF(Register word16 ax, Register word16 dx, Register word16 bp, Register selector ds, Register out ptr16 dlOut, Register out ptr16 siOut, Register out ptr16 dsOut)
+word16 fn0800_3AEF(word16 ax, word16 dx, word16 bp, selector ds, ptr16 & dlOut, ptr16 & siOut, ptr16 & dsOut)
+{
+	*siOut = si;
+	Mem3[ds:0x2A05:word16] = dx;
+	Mem6[ds:0x2A03:word16] = ax;
+	byte dl_17;
+	word16 di_18;
+	selector ds_19;
+	fn0800_A614(bp, ds, DPB(ptrLoc04, Mem6[ss:bp - 0x04 + 0x00:word16], 0), Mem6[ss:bp - 0x02 + 0x00:word16], out dl_17, out di_18, out ds_19);
+	return 0x01;
+}
+
+// 0800:3B0A: Register word16 fn0800_3B0A(Register word16 bp, Register selector ds, Stack word16 wArg0A, Stack word16 wArg0C, Register out ptr16 dsOut)
+word16 fn0800_3B0A(word16 bp, selector ds, word16 wArg0A, word16 wArg0C, ptr16 & dsOut)
+{
+fn0800_3B0A_entry:
+	sp = fp
+	sp = fp - 0x02
+	wLoc02 = bp
+	bp = fp - 0x02
+	sp = fp - 0x0A
+	ax = wArg0A
+	ax = ax | wArg0C
+	SZO = cond(ax)
+	Z = SZO (alias)
+	C = false
+	branch Test(NE,Z) l0800_3B1B
+	goto l0800_3B18
+l0800_3B0A:
+l0800_3B18:
+	bp = fn0800_3BBF(bp)
+	return bp
+l0800_3B1B:
+	SCZO = cond(wArg0C - 0x00)
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	SO = SCZO (alias)
+	C = SCZO (alias)
+	CZ = SCZO (alias)
+	branch Test(LT,SO) l0800_3B31
+l0800_3B21:
+	branch Test(GT,SZO) l0800_3B2A
+l0800_3B23:
+	SCZO = cond(wArg0A - 65000)
+	CZ = SCZO (alias)
+	branch Test(ULE,CZ) l0800_3B31
+l0800_3B2A:
+	dx = 0x00
+	dl = (byte) dx (alias)
+	SZO = cond(0x00)
+	C = false
+	ax = 65000
+	ax_dx = SEQ(ax, dx) (alias)
+	goto l0800_3B37
+l0800_3B31:
+	dx = wArg0C
+	dl = (byte) dx (alias)
+	ax = wArg0A
+	ax_dx = SEQ(ax, dx) (alias)
+l0800_3B37:
+	wLoc08 = dx
+	wLoc0A = ax
+	v13 = wLoc08
+	sp = fp - 0x0C
+	wLoc0C = v13
+	sp = fp - 0x0E
+	wLoc0E = ax
+	fn0800_4311(ax, dx, ds, wLoc0E, wLoc0C)
+	sp = fp - 0x0A
+	SCZO = cond(fp - 0x0A)
+	wLoc04 = dx
+	wLoc06 = ax
+	goto l0800_3BAB
+l0800_3B4F:
+	SCZO = cond(Mem0[ss:bp + 0x0E:word16] - 0x00)
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	SO = SCZO (alias)
+	C = SCZO (alias)
+	CZ = SCZO (alias)
+	branch Test(LT,SO) l0800_3B65
+l0800_3B55:
+	branch Test(GT,SZO) l0800_3B5E
+l0800_3B57:
+	SCZO = cond(Mem0[ss:bp + 0x0C:word16] - 65000)
+	CZ = SCZO (alias)
+	branch Test(ULE,CZ) l0800_3B65
+l0800_3B5E:
+	dx = 0x00
+	dl = (byte) dx (alias)
+	SZO = cond(0x00)
+	C = false
+	ax = 65000
+	ax_dx = SEQ(ax, dx) (alias)
+	goto l0800_3B6B
+l0800_3B65:
+	dx = Mem0[ss:bp + 0x0E:word16]
+	dl = (byte) dx (alias)
+	ax = Mem0[ss:bp + 0x0C:word16]
+	ax_dx = SEQ(ax, dx) (alias)
+l0800_3B6B:
+	Mem0[ss:bp - 0x06 + 0x00:word16] = dx
+	Mem0[ss:bp - 0x08 + 0x00:word16] = ax
+	v16 = Mem0[ss:bp + 0x06:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v16
+	v17 = Mem0[ss:bp + 0x04:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v17
+	v18 = Mem0[ss:bp - 0x06 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v18
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	v19 = Mem0[ss:bp - 0x02 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v19
+	v20 = Mem0[ss:bp - 0x04 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v20
+	si = fn0800_4110(bp, ds, wArg00, wArg02, wArg04, wArg08, wArg0A, out di, out ds)
+	sp = sp + 0x0C
+	SCZO = cond(sp)
+	v21 = Mem0[ss:bp + 0x0A:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v21
+	v22 = Mem0[ss:bp + 0x08:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v22
+	v23 = Mem0[ss:bp - 0x06 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v23
+	v24 = Mem0[ss:bp - 0x08 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v24
+	v25 = Mem0[ss:bp - 0x02 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v25
+	v26 = Mem0[ss:bp - 0x04 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v26
+	ds = fn0800_4152(bp, ds, wArg00, wArg02, wArg04, wArg08, wArg0A)
+	sp = sp + 0x0C
+	ax = Mem0[ss:bp - 0x06 + 0x00:word16]
+	dx = Mem0[ss:bp - 0x08 + 0x00:word16]
+	ax_dx = SEQ(ax, dx) (alias)
+	v27 = Mem0[ss:bp + 0x0C:word16] - dx
+	Mem0[ss:bp + 0x0C:word16] = v27
+	SCZO = cond(v27)
+	v28_v27 = Mem0[ss:bp + 0x0C:ui32] - ax_dx
+	Mem0[ss:bp + 0x0E:word16] = v28
+	SCZO = cond(v28_v27)
+l0800_3BAB:
+	ax = Mem0[ss:bp + 0x0C:word16]
+	ax = ax | Mem0[ss:bp + 0x0E:word16]
+	SZO = cond(ax)
+	Z = SZO (alias)
+	C = false
+	branch Test(NE,Z) l0800_3B4F
+l0800_3BB3:
+	v14 = Mem0[ss:bp - 0x02 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v14
+	v15 = Mem0[ss:bp - 0x04 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v15
+	dl = fn0800_4346(ds, wArg00, wArg02, out ds)
+	sp = sp + 0x04
+	SCZO = cond(sp)
+	bp = fn0800_3BBF(bp)
+	return bp
+l0800_3BBC_thunk_fn0800_3BBF:
+fn0800_3B0A_exit:
+	use ds (=> dsOut)
+}
+
+// 0800:3BBF: Register word16 fn0800_3BBF(Register word16 bp)
+word16 fn0800_3BBF(word16 bp)
+{
+	return Mem0[ss:bp + 0x00:word16];
+}
+
+// 0800:3BC3: Register selector fn0800_3BC3(Register word16 bp, Register selector ds)
 selector fn0800_3BC3(word16 bp, selector ds)
 {
 	word16 di_19;
@@ -5538,62 +6811,67 @@ selector fn0800_3BC3(word16 bp, selector ds)
 	Mem72[ss:fp - 0x0C + 0x00:word16] = Mem69[ss:fp + 0x06:word16];
 	Mem75[ss:fp - 0x0E + 0x00:word16] = Mem72[ss:fp + 0x04:word16];
 	Mem78[ss:fp - 0x10 + 0x00:word16] = Mem75[ss:fp + 0x02:word16];
+	word16 di_80;
 	selector ds_81;
-	fn0800_ACB3(fp - 0x02, ds_51, ptrArg00, wArg02, wArg08, out ds_81);
+	fn0800_ACB3(fp - 0x02, ds_51, wArg00, wArg02, wArg08, out di_80, out ds_81);
 	Mem87[ss:fp - 0x08 + 0x00:word16] = Mem78[ss:fp - 0x04 + 0x00:word16];
 	Mem90[ss:fp - 0x0A + 0x00:word16] = Mem87[ss:fp - 0x06 + 0x00:word16];
 	Mem93[ss:fp - 0x0C + 0x00:word16] = Mem90[ds_81:10709:word16];
 	Mem96[ss:fp - 0x0E + 0x00:word16] = Mem93[ds_81:10707:word16];
 	Mem99[ss:fp - 0x10 + 0x00:word16] = Mem96[ss:fp + 0x04:word16];
 	Mem102[ss:fp - 0x12 + 0x00:word16] = Mem99[ss:fp + 0x02:word16];
-	selector ds_104 = fn0800_3B0A(fp - 0x02, ds_81, wArg08, wArg0A);
-	Mem109[ss:fp - 0x08 + 0x00:word16] = Mem102[ds_104:10709:word16];
-	Mem112[ss:fp - 0x0A + 0x00:word16] = Mem109[ds_104:10707:word16];
-	selector ds_113 = fn0800_BA67(ds_104, wArg00, wArg02);
-	Mem117[ss:fp - 0x08 + 0x00:word16] = 0x00;
-	word16 ax_118 = Mem117[ss:fp + 0x08:word16];
-	word16 dx_120 = Mem117[ss:fp + 0x06:word16] + Mem117[ss:fp + 0x0A:word16];
-	Mem128[ss:fp - 0x0A + 0x00:word16] = ax_118 + Mem117[ss:fp + 0x0C:word16] + (SEQ(dx_120, ax_118) <u 0x00);
-	Mem130[ss:fp - 0x0C + 0x00:word16] = dx_120;
-	Mem133[ss:fp - 0x0E + 0x00:word16] = Mem130[ss:fp + 0x04:word16];
-	Mem136[ss:fp - 0x10 + 0x00:word16] = Mem133[ss:fp + 0x02:word16];
-	selector ds_137;
-	fn0800_ACB3(fp - 0x02, ds_113, ptrArg00, wArg02, wArg08, out ds_137);
-	Mem143[ss:fp - 0x08 + 0x00:word16] = Mem136[ss:fp - 0x04 + 0x00:word16];
-	Mem146[ss:fp - 0x0A + 0x00:word16] = Mem143[ss:fp - 0x06 + 0x00:word16];
-	Mem149[ss:fp - 0x0C + 0x00:word16] = Mem146[ss:fp + 0x04:word16];
-	Mem152[ss:fp - 0x0E + 0x00:word16] = Mem149[ss:fp + 0x02:word16];
-	Mem155[ss:fp - 0x10 + 0x00:word16] = Mem152[ds_137:10709:word16];
-	Mem158[ss:fp - 0x12 + 0x00:word16] = Mem155[ds_137:10707:word16];
-	selector ds_159 = fn0800_3B0A(fp - 0x02, ds_137, wArg08, wArg0A);
-	Mem164[ss:fp - 0x08 + 0x00:word16] = Mem158[ds_159:10709:word16];
-	Mem167[ss:fp - 0x0A + 0x00:word16] = Mem164[ds_159:10707:word16];
-	byte dl_168;
-	word16 di_169;
-	selector ds_170;
-	fn0800_A614(fp - 0x02, ds_159, ptrArg00, wArg02, out dl_168, out di_169, out ds_170);
-	Mem175[ss:fp - 0x08 + 0x00:word16] = ds_170;
-	Mem179[ss:fp - 0x0A + 0x00:word16] = 0x43AD;
-	fn0800_8F7F(~0x52, ds_170, ptrArg00);
-	return ds_170;
+	selector ds_104;
+	word16 bp_105 = fn0800_3B0A(fp - 0x02, ds_81, wArg08, wArg0A, out ds_104);
+	Mem110[ss:fp - 0x08 + 0x00:word16] = Mem102[ds_104:10709:word16];
+	Mem113[ss:fp - 0x0A + 0x00:word16] = Mem110[ds_104:10707:word16];
+	selector ds_114 = fn0800_BA67(ds_104, wArg00, wArg02);
+	Mem118[ss:fp - 0x08 + 0x00:word16] = 0x00;
+	word16 ax_119 = Mem118[ss:bp_105 + 0x0A:word16];
+	word16 dx_121 = Mem118[ss:bp_105 + 0x08:word16] + Mem118[ss:bp_105 + 0x0C:word16];
+	Mem129[ss:fp - 0x0A + 0x00:word16] = ax_119 + Mem118[ss:bp_105 + 0x0E:word16] + (SEQ(dx_121, ax_119) <u 0x00);
+	Mem131[ss:fp - 0x0C + 0x00:word16] = dx_121;
+	Mem134[ss:fp - 0x0E + 0x00:word16] = Mem131[ss:bp_105 + 0x06:word16];
+	Mem137[ss:fp - 0x10 + 0x00:word16] = Mem134[ss:bp_105 + 0x04:word16];
+	word16 di_138;
+	selector ds_139;
+	fn0800_ACB3(bp_105, ds_114, wArg00, wArg02, wArg08, out di_138, out ds_139);
+	Mem145[ss:fp - 0x08 + 0x00:word16] = Mem137[ss:bp_105 - 0x02 + 0x00:word16];
+	Mem148[ss:fp - 0x0A + 0x00:word16] = Mem145[ss:bp_105 - 0x04 + 0x00:word16];
+	Mem151[ss:fp - 0x0C + 0x00:word16] = Mem148[ss:bp_105 + 0x06:word16];
+	Mem154[ss:fp - 0x0E + 0x00:word16] = Mem151[ss:bp_105 + 0x04:word16];
+	Mem157[ss:fp - 0x10 + 0x00:word16] = Mem154[ds_139:10709:word16];
+	Mem160[ss:fp - 0x12 + 0x00:word16] = Mem157[ds_139:10707:word16];
+	selector ds_161;
+	word16 bp_162 = fn0800_3B0A(bp_105, ds_139, wArg08, wArg0A, out ds_161);
+	Mem167[ss:fp - 0x08 + 0x00:word16] = Mem160[ds_161:10709:word16];
+	Mem170[ss:fp - 0x0A + 0x00:word16] = Mem167[ds_161:10707:word16];
+	byte dl_172;
+	word16 di_173;
+	selector ds_174;
+	fn0800_A614(bp_162, ds_161, ptrArg00, wArg02, out dl_172, out di_173, out ds_174);
+	Mem179[ss:fp - 0x08 + 0x00:word16] = ds_174;
+	Mem183[ss:fp - 0x0A + 0x00:word16] = 0x43AD;
+	fn0800_8F7F(~0x52, ds_174, ptrArg00);
+	return ds_174;
 }
 
-selector fn0800_3C99(word16 bp, selector ds)
+// 0800:3C99: Register word16 fn0800_3C99(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_3C99(word16 bp, selector ds, ptr16 & dsOut)
 {
 	fn0800_3509(ds, 0x4348, ds);
 	Mem28[ss:fp - 114 + 0x00:word16] = ss;
 	selector es_29 = Mem28[ss:fp - 114 + 0x00:selector];
-	word16 di_305 = fp - 0x6C;
+	word16 di_211 = fp - 0x6C;
 	word16 si_32 = 2644;
-	word16 cx_306 = ~0x00;
-	if (cx_306 != 0x00)
+	word16 cx_212 = ~0x00;
+	if (cx_212 != 0x00)
 	{
-		di_305 = di_305 + 0x01;
-		cx_306 = cx_306 - 0x01;
-		if (0x00 != Mem28[es_29:di_305 + 0x00:byte])
+		di_211 = di_211 + 0x01;
+		cx_212 = cx_212 - 0x01;
+		if (0x00 != Mem28[es_29:di_211 + 0x00:byte])
 			goto l0800_3CBE;
 	}
-	word16 di_52 = di_305 - 0x01;
+	word16 di_52 = di_211 - 0x01;
 	word16 cx_54 = 0x0D;
 	while (cx_54 != 0x00)
 	{
@@ -5616,350 +6894,483 @@ selector fn0800_3C99(word16 bp, selector ds)
 	Mem94[ss:fp - 118 + 0x00:word16] = 0x00;
 	Mem97[ss:fp - 0x78 + 0x00:word16] = Mem94[ss:fp + 0x04:word16];
 	Mem100[ss:fp - 122 + 0x00:word16] = Mem97[ss:fp + 0x02:word16];
+	word16 di_102;
 	selector ds_103;
-	fn0800_ACB3(fp - 0x02, ds_81, ptrArg00, wArg02, wArg08, out ds_103);
+	fn0800_ACB3(fp - 0x02, ds_81, wArg00, wArg02, wArg08, out di_102, out ds_103);
 	Mem109[ss:fp - 114 + 0x00:word16] = Mem100[ss:fp + 0x08:word16];
 	Mem112[ss:fp - 116 + 0x00:word16] = Mem109[ss:fp + 0x06:word16];
 	Mem115[ss:fp - 118 + 0x00:word16] = Mem112[ss:fp - 0x04 + 0x00:word16];
 	Mem118[ss:fp - 0x78 + 0x00:word16] = Mem115[ss:fp - 0x06 + 0x00:word16];
 	Mem121[ss:fp - 122 + 0x00:word16] = Mem118[ss:fp + 0x04:word16];
 	Mem124[ss:fp - 0x7C + 0x00:word16] = Mem121[ss:fp + 0x02:word16];
-	selector ds_126 = fn0800_3B0A(fp - 0x02, ds_103, wArg08, wArg0A);
-	Mem130[ss:fp - 114 + 0x00:word16] = 0x00;
-	ui32 ax_dx_136 = SEQ(Mem130[ss:fp + 0x08:word16], Mem130[ss:fp + 0x06:word16] + Mem130[ss:fp + 0x0A:word16]) + Mem130[ss:fp + 0x0A:ui32];
-	Mem141[ss:fp - 116 + 0x00:word16] = SLICE(ax_dx_136, word16, 16);
-	word16 dx_138 = (word16) ax_dx_136;
-	Mem143[ss:fp - 118 + 0x00:word16] = dx_138;
-	Mem146[ss:fp - 0x78 + 0x00:word16] = Mem143[ss:fp + 0x04:word16];
-	Mem149[ss:fp - 122 + 0x00:word16] = Mem146[ss:fp + 0x02:word16];
-	selector ds_150;
-	fn0800_ACB3(fp - 0x02, ds_126, ptrArg00, wArg02, wArg08, out ds_150);
-	Mem156[ss:fp - 114 + 0x00:word16] = Mem149[ss:fp + 0x04:word16];
-	Mem159[ss:fp - 116 + 0x00:word16] = Mem156[ss:fp + 0x02:word16];
-	selector ds_161;
-	word16 si_160;
-	word16 ax_162 = fn0800_4194(fp - 0x02, ds_150, wArg00, wArg02, out si_160, out ds_161);
-	ui32 bx_cx_169 = SEQ(Mem159[ss:fp + 0x08:word16], Mem159[ss:fp + 0x06:word16] + Mem159[ss:fp + 0x0A:word16]) + Mem159[ss:fp + 0x0A:ui32];
-	ui32 dx_ax_174 = SEQ(dx_138, ax_162 - (word16) bx_cx_169) - bx_cx_169;
-	word16 dx_176 = SLICE(dx_ax_174, word16, 16);
-	Mem179[ss:fp + 0x0C:word16] = dx_176;
-	word16 ax_175 = (word16) dx_ax_174;
-	Mem180[ss:fp + 0x0A:word16] = ax_175;
-	Mem183[ss:fp - 114 + 0x00:word16] = Mem180[ss:fp + 0x0C:word16];
-	Mem185[ss:fp - 116 + 0x00:word16] = ax_175;
-	Mem188[ss:fp - 118 + 0x00:word16] = Mem185[ss:fp - 0x04 + 0x00:word16];
-	Mem191[ss:fp - 0x78 + 0x00:word16] = Mem188[ss:fp - 0x06 + 0x00:word16];
-	Mem194[ss:fp - 122 + 0x00:word16] = Mem191[ss:fp + 0x04:word16];
-	Mem197[ss:fp - 0x7C + 0x00:word16] = Mem194[ss:fp + 0x02:word16];
-	selector ds_198 = fn0800_3B0A(fp - 0x02, ds_161, wArg08, wArg0A);
-	Mem203[ss:fp - 114 + 0x00:word16] = Mem197[ss:fp - 0x04 + 0x00:word16];
-	Mem206[ss:fp - 116 + 0x00:word16] = Mem203[ss:fp - 0x06 + 0x00:word16];
-	byte dl_207;
-	word16 di_208;
-	selector ds_209;
-	fn0800_A614(fp - 0x02, ds_198, ptrArg00, wArg02, out dl_207, out di_208, out ds_209);
-	Mem215[ss:fp - 114 + 0x00:word16] = Mem206[ds_209:10705:word16];
-	Mem218[ss:fp - 116 + 0x00:word16] = Mem215[ds_209:10703:word16];
-	byte dl_219;
-	selector ds_221;
-	word16 di_220;
-	fn0800_A614(fp - 0x02, ds_209, ptrArg00, wArg02, out dl_219, out di_220, out ds_221);
-	Mem227[ss:fp - 114 + 0x00:word16] = 0x0180;
-	Mem229[ss:fp - 116 + 0x00:word16] = ds_221;
-	Mem232[ss:fp - 118 + 0x00:word16] = 0x4348;
-	selector ds_233 = fn0800_A4F6(fp - 0x02, ds_221, wArg00, wArg02, wArg04);
-	Mem237[ss:fp - 114 + 0x00:word16] = ds_233;
-	Mem241[ss:fp - 116 + 0x00:word16] = 0x4348;
-	fn0800_8F7F(0x48, ds_233, ptrArg00);
-	Mem246[ss:fp - 114 + 0x00:word16] = ds_233;
-	Mem249[ss:fp - 116 + 0x00:word16] = 0x4348;
-	Mem251[ss:fp - 118 + 0x00:word16] = ss;
-	Mem255[ss:fp - 0x78 + 0x00:word16] = fp - 0x6C;
-	if (fn0800_BA4A((byte) (fp - 0x6C), ds_233, ptrArg00, ptrArg04) == ~0x00)
-	{
-		Mem290[ss:fp - 114 + 0x00:word16] = ss;
-		Mem293[ss:fp - 116 + 0x00:word16] = fp - 0x6C;
-		Mem296[ss:fp - 118 + 0x00:word16] = 0x0A;
-		fn0800_0D24(fp - 0x02, ds_233, out si_160, out di_220, out ds_233);
-	}
-	Mem267[ss:fp - 114 + 0x00:word16] = ds_233;
-	Mem270[ss:fp - 116 + 0x00:word16] = 2661;
-	Mem272[ss:fp - 118 + 0x00:word16] = ds_233;
-	Mem275[ss:fp - 0x78 + 0x00:word16] = 0x4348;
-	word16 di_276;
-	selector ds_277;
-	fn0800_4234(si_160, di_220, ds_233, wArg00, wArg02, wArg04, wArg06, out di_276, out ds_277);
-	Mem281[ds_277:10705:word16] = dx_176;
-	Mem282[ds_277:10703:word16] = 0x4348;
-	return ds_277;
+	selector ds_126;
+	word16 bp_127 = fn0800_3B0A(fp - 0x02, ds_103, wArg08, wArg0A, out ds_126);
+	Mem131[ss:fp - 114 + 0x00:word16] = 0x00;
+	ui32 ax_dx_137 = SEQ(Mem131[ss:bp_127 + 0x0A:word16], Mem131[ss:bp_127 + 0x08:word16] + Mem131[ss:bp_127 + 0x0C:word16]) + Mem131[ss:bp_127 + 0x0C:ui32];
+	Mem142[ss:fp - 116 + 0x00:word16] = SLICE(ax_dx_137, word16, 16);
+	word16 dx_139 = (word16) ax_dx_137;
+	Mem144[ss:fp - 118 + 0x00:word16] = dx_139;
+	Mem147[ss:fp - 0x78 + 0x00:word16] = Mem144[ss:bp_127 + 0x06:word16];
+	Mem150[ss:fp - 122 + 0x00:word16] = Mem147[ss:bp_127 + 0x04:word16];
+	word16 di_151;
+	selector ds_152;
+	fn0800_ACB3(bp_127, ds_126, wArg00, wArg02, wArg08, out di_151, out ds_152);
+	Mem158[ss:fp - 114 + 0x00:word16] = Mem150[ss:bp_127 + 0x06:word16];
+	Mem161[ss:fp - 116 + 0x00:word16] = Mem158[ss:bp_127 + 0x04:word16];
+	word16 si_162;
+	selector ds_163;
+	word16 ax_164 = fn0800_4194(bp_127, ds_152, wArg00, wArg02, out si_162, out ds_163);
+	ui32 bx_cx_171 = SEQ(Mem161[ss:bp_127 + 0x0A:word16], Mem161[ss:bp_127 + 0x08:word16] + Mem161[ss:bp_127 + 0x0C:word16]) + Mem161[ss:bp_127 + 0x0C:ui32];
+	ui32 dx_ax_176 = SEQ(dx_139, ax_164 - (word16) bx_cx_171) - bx_cx_171;
+	Mem180[ss:bp_127 + 0x0E:word16] = SLICE(dx_ax_176, word16, 16);
+	word16 ax_177 = (word16) dx_ax_176;
+	Mem181[ss:bp_127 + 0x0C:word16] = ax_177;
+	Mem184[ss:fp - 114 + 0x00:word16] = Mem181[ss:bp_127 + 0x0E:word16];
+	Mem186[ss:fp - 116 + 0x00:word16] = ax_177;
+	Mem189[ss:fp - 118 + 0x00:word16] = Mem186[ss:bp_127 - 0x02 + 0x00:word16];
+	Mem192[ss:fp - 0x78 + 0x00:word16] = Mem189[ss:bp_127 - 0x04 + 0x00:word16];
+	Mem195[ss:fp - 122 + 0x00:word16] = Mem192[ss:bp_127 + 0x06:word16];
+	Mem198[ss:fp - 0x7C + 0x00:word16] = Mem195[ss:bp_127 + 0x04:word16];
+	selector ds_199;
+	word16 bp_200 = fn0800_3B0A(bp_127, ds_163, wArg08, wArg0A, out ds_199);
+	Mem205[ss:fp - 114 + 0x00:word16] = Mem198[ss:bp_200 - 0x02 + 0x00:word16];
+	selector ds_206;
+	return fn0800_3D5D(bp_200, ds_199, out ds_206);
 }
 
-word16 fn0800_3DCF(selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & diOut, ptr16 & dsOut)
+// 0800:3D5D: Register word16 fn0800_3D5D(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_3D5D(word16 bp, selector ds, ptr16 & dsOut)
+{
+	byte dl_12;
+	word16 di_13;
+	selector ds_14;
+	fn0800_A614(bp, ds, DPB(ptrLoc02, Mem0[ss:bp - 0x04 + 0x00:word16], 0), wArg00, out dl_12, out di_13, out ds_14);
+	Mem20[ss:fp + 0x00:word16] = Mem0[ds_14:10705:word16];
+	Mem23[ss:fp - 0x02 + 0x00:word16] = Mem20[ds_14:10703:word16];
+	byte dl_26;
+	selector ds_28;
+	word16 di_110;
+	fn0800_A614(bp, ds_14, ptrArg00, wArg02, out dl_26, out di_110, out ds_28);
+	Mem34[ss:fp + 0x00:word16] = 0x0180;
+	Mem36[ss:fp - 0x02 + 0x00:word16] = ds_28;
+	Mem39[ss:fp - 0x04 + 0x00:word16] = 0x4348;
+	selector ds_111 = fn0800_A4F6(bp, ds_28, wArg00, wArg02, wArg04);
+	Mem45[ss:fp + 0x00:word16] = ds_111;
+	Mem49[ss:fp - 0x02 + 0x00:word16] = 0x4348;
+	fn0800_8F7F(0x48, ds_111, ptrArg00);
+	Mem54[ss:fp + 0x00:word16] = ds_111;
+	Mem57[ss:fp - 0x02 + 0x00:word16] = 0x4348;
+	Mem59[ss:fp - 0x04 + 0x00:word16] = ss;
+	Mem63[ss:fp - 0x06 + 0x00:word16] = bp - 0x6A;
+	if (fn0800_BA4A((byte) (bp - 0x6A), ds_111, ptrArg00, ptrArg04) == ~0x00)
+	{
+		Mem102[ss:fp + 0x00:word16] = ss;
+		Mem105[ss:fp - 0x02 + 0x00:word16] = bp - 0x6A;
+		Mem108[ss:fp - 0x04 + 0x00:word16] = 0x0A;
+		dx = fn0800_0D24(bp, ds_111, out si, out di_110, out ds_111);
+	}
+	Mem77[ss:fp + 0x00:word16] = ds_111;
+	Mem80[ss:fp - 0x02 + 0x00:word16] = 2661;
+	Mem82[ss:fp - 0x04 + 0x00:word16] = ds_111;
+	Mem85[ss:fp - 0x06 + 0x00:word16] = 0x4348;
+	word16 di_87;
+	selector ds_88;
+	fn0800_4234(si, di_110, ds_111, wArg00, wArg02, wArg04, wArg06, out di_87, out ds_88);
+	Mem92[ds_88:10705:word16] = dx;
+	Mem93[ds_88:10703:word16] = 0x4348;
+	return Mem93[ss:bp + 0x00:word16];
+}
+
+// 0800:3DCF: Register word16 fn0800_3DCF(Register word16 bp, Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Register out ptr16 dxOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_3DCF(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dxOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	*diOut = di;
 	*dsOut = ds;
-	word16 ax_100;
+	*dxOut = dx;
+	word16 ax_103;
 	word16 v10_16 = Mem0[ptrArg02 + 0x00:word16] - 0x01;
 	Mem17[ptrArg02 + 0x00:word16] = v10_16;
 	if (v10_16 >= 0x00)
 	{
-		word16 ax_79 = Mem17[ptrArg02 + 0x0E:word16];
-		Mem82[ptrArg02 + 0x0C:word16] = Mem17[ptrArg02 + 0x0C:word16] + 0x01;
-		ax_100 = DPB(ax_79, 0x00, 8);
+		word16 ax_77 = Mem17[ptrArg02 + 0x0E:word16];
+		Mem80[ptrArg02 + 0x0C:word16] = Mem17[ptrArg02 + 0x0C:word16] + 0x01;
+		ax_103 = DPB(ax_77, 0x00, 8);
 	}
 	else
-		ax_100 = fn0800_AEC2(ds, DPB(ptrLoc0A, wArg02, 0), wArg04, out ds);
-	if (ax_100 == ~0x00)
 	{
-		fn0800_4271(ds, wArg02, wArg04);
+		word16 dx_100;
+		word16 di_101;
+		ax_103 = fn0800_AEC2(ds, DPB(ptrLoc0A, wArg02, 0), wArg04, out dx_100, out di_101, out ds);
+	}
+	Mem33[ss:fp - 0x04 + 0x00:word16] = ax_103;
+	if (ax_103 == ~0x00)
+	{
+		Mem54[ss:fp - 0x08 + 0x00:word16] = Mem33[ss:fp + 0x04:word16];
+		Mem57[ss:fp - 0x0A + 0x00:word16] = Mem54[ss:fp + 0x02:word16];
+		word16 dx_60;
+		word16 ax_61 = fn0800_4271(ds, wArg00, wArg02, out dx_60);
+		Mem65[ss:fp - 0x08 + 0x00:word16] = dx_60;
+		Mem67[ss:fp - 0x0A + 0x00:word16] = ax_61;
+		Mem70[ss:fp - 0x0C + 0x00:word16] = 0x08;
+		ax_103 = 0x08;
+		word16 si_71;
+		word16 di_72;
+		selector ds_73;
+		word16 dx_74;
+		*dxOut = fn0800_0D24(fp - 0x02, ds, out si_71, out di_72, out ds_73);
+	}
+	return DPB(ax_103, Mem33[ss:fp - 0x04 + 0x00:byte], 0);
+}
+
+// 0800:3E27: Register word16 fn0800_3E27(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 dxOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_3E27(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & dxOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
+{
+	*siOut = si;
+	word16 dx_19;
+	word16 di_20;
+	selector ds_21;
+	Mem27[ss:fp - 0x04 + 0x00:word16] = DPB(fn0800_3DCF(fp - 0x02, ds, DPB(ptrLoc0A, wArg02, 0), wArg04, out dx_19, out di_20, out ds_21), 0x00, 8);
+	Mem31[ss:fp - 0x08 + 0x00:word16] = Mem27[ss:fp + 0x04:word16];
+	Mem34[ss:fp - 0x0A + 0x00:word16] = Mem31[ss:fp + 0x02:word16];
+	word16 dx_36;
+	word16 di_37;
+	selector ds_38;
+	Mem43[ss:fp - 0x06 + 0x00:word16] = DPB(fn0800_3DCF(fp - 0x02, ds_21, ptrArg00, wArg02, out dx_36, out di_37, out ds_38), 0x00, 8);
+	return (Mem43[ss:fp - 0x04 + 0x00:word16] << 0x08) + Mem43[ss:(fp - 0x06) + 0x00:word16];
+}
+
+// 0800:3E5D: Register word16 fn0800_3E5D(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 dsOut)
+word16 fn0800_3E5D(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & dsOut)
+{
+	word16 dx_17;
+	word16 si_18;
+	word16 di_19;
+	selector ds_20;
+	word16 ax_21 = fn0800_3E27(fp - 0x02, ds, wArg02, wArg04, out dx_17, out si_18, out di_19, out ds_20);
+	Mem24[ss:fp - 0x04 + 0x00:word16] = 0x00;
+	Mem26[ss:fp - 0x06 + 0x00:word16] = ax_21;
+	Mem29[ss:fp - 0x0C + 0x00:word16] = Mem26[ss:fp + 0x04:word16];
+	Mem32[ss:fp - 0x0E + 0x00:word16] = Mem29[ss:fp + 0x02:word16];
+	word16 dx_34;
+	word16 si_35;
+	word16 di_36;
+	selector ds_37;
+	word16 ax_38 = fn0800_3E27(fp - 0x02, ds_20, wArg00, wArg02, out dx_34, out si_35, out di_36, out ds_37);
+	Mem40[ss:fp - 0x08 + 0x00:word16] = 0x00;
+	Mem41[ss:fp - 0x0A + 0x00:word16] = ax_38;
+	return Mem41[ss:fp - 0x06 + 0x00:word16] + (Mem41[ss:(fp - 0x0A) + 0x00:word16] <u 0x00);
+}
+
+// 0800:3E9A: Register word16 fn0800_3E9A(Register word16 bp, Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Register out ptr16 dsOut)
+word16 fn0800_3E9A(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dsOut)
+{
+	word16 ax_101;
+	word16 v10_16 = Mem0[ptrArg02 + 0x00:word16] - 0x01;
+	Mem17[ptrArg02 + 0x00:word16] = v10_16;
+	if (v10_16 >= 0x00)
+	{
+		word16 ax_93 = Mem17[ptrArg02 + 0x0E:word16];
+		Mem96[ptrArg02 + 0x0C:word16] = Mem17[ptrArg02 + 0x0C:word16] + 0x01;
+		ax_101 = DPB(ax_93, 0x00, 8);
+	}
+	else
+	{
+		word16 dx_116;
+		word16 di_117;
+		ax_101 = fn0800_AEC2(ds, DPB(ptrLoc0A, wArg02, 0), wArg04, out dx_116, out di_117, out ds);
+	}
+	Mem33[ss:fp - 0x04 + 0x00:word16] = ax_101;
+	if (ax_101 == ~0x00)
+	{
+		Mem72[ss:fp - 0x08 + 0x00:word16] = Mem33[ss:fp + 0x04:word16];
+		Mem75[ss:fp - 0x0A + 0x00:word16] = Mem72[ss:fp + 0x02:word16];
+		word16 dx_76;
+		word16 ax_77 = fn0800_4271(ds, wArg00, wArg02, out dx_76);
+		Mem81[ss:fp - 0x08 + 0x00:word16] = dx_76;
+		Mem83[ss:fp - 0x0A + 0x00:word16] = ax_77;
+		Mem86[ss:fp - 0x0C + 0x00:word16] = 0x08;
+		word16 si_87;
+		word16 di_88;
+		fn0800_0D24(fp - 0x02, ds, out si_87, out di_88, out ds);
+	}
+	Mem41[ss:fp - 0x08 + 0x00:word16] = 0x01;
+	Mem45[ss:fp - 0x0A + 0x00:word16] = ~0x00;
+	Mem47[ss:fp - 0x0C + 0x00:word16] = ~0x00;
+	Mem50[ss:fp - 0x0E + 0x00:word16] = Mem47[ss:fp + 0x04:word16];
+	Mem53[ss:fp - 0x10 + 0x00:word16] = Mem50[ss:fp + 0x02:word16];
+	word16 di_57;
+	selector ds_58;
+	return DPB(fn0800_ACB3(fp - 0x02, ds, wArg00, wArg02, wArg08, out di_57, out ds_58), Mem53[ss:fp - 0x04 + 0x00:byte], 0);
+}
+
+// 0800:3F0A: Register word16 fn0800_3F0A(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 dsOut)
+word16 fn0800_3F0A(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & dsOut)
+{
+	word16 dx_19;
+	word16 di_20;
+	selector ds_21;
+	Mem27[ss:fp - 0x04 + 0x00:word16] = DPB(fn0800_3DCF(fp - 0x02, ds, DPB(ptrLoc0A, wArg02, 0), wArg04, out dx_19, out di_20, out ds_21), 0x00, 8);
+	Mem31[ss:fp - 0x08 + 0x00:word16] = Mem27[ss:fp + 0x04:word16];
+	Mem34[ss:fp - 0x0A + 0x00:word16] = Mem31[ss:fp + 0x02:word16];
+	word16 dx_36;
+	word16 di_37;
+	selector ds_38;
+	Mem44[ss:fp - 0x06 + 0x00:word16] = DPB(fn0800_3DCF(fp - 0x02, ds_21, ptrArg00, wArg02, out dx_36, out di_37, out ds_38), 0x00, 8);
+	Mem47[ss:fp - 0x08 + 0x00:word16] = 0x01;
+	Mem51[ss:fp - 0x0A + 0x00:word16] = ~0x00;
+	Mem53[ss:fp - 0x0C + 0x00:word16] = ~0x01;
+	Mem56[ss:fp - 0x0E + 0x00:word16] = Mem53[ss:fp + 0x04:word16];
+	Mem59[ss:fp - 0x10 + 0x00:word16] = Mem56[ss:fp + 0x02:word16];
+	word16 di_62;
+	selector ds_63;
+	fn0800_ACB3(fp - 0x02, ds_38, wArg00, wArg02, wArg08, out di_62, out ds_63);
+	return (Mem59[ss:fp - 0x04 + 0x00:word16] << 0x08) + Mem59[ss:(fp - 0x06) + 0x00:word16];
+}
+
+// 0800:3F58: Register word16 fn0800_3F58(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_3F58(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & diOut, ptr16 & dsOut)
+{
+	word16 dx_17;
+	word16 si_18;
+	word16 di_19;
+	selector ds_20;
+	word16 ax_21 = fn0800_3E27(fp - 0x02, ds, wArg02, wArg04, out dx_17, out si_18, out di_19, out ds_20);
+	Mem24[ss:fp - 0x04 + 0x00:word16] = 0x00;
+	Mem26[ss:fp - 0x06 + 0x00:word16] = ax_21;
+	Mem29[ss:fp - 0x0C + 0x00:word16] = Mem26[ss:fp + 0x04:word16];
+	Mem32[ss:fp - 0x0E + 0x00:word16] = Mem29[ss:fp + 0x02:word16];
+	word16 dx_34;
+	word16 si_35;
+	word16 di_36;
+	selector ds_37;
+	word16 ax_38 = fn0800_3E27(fp - 0x02, ds_20, wArg00, wArg02, out dx_34, out si_35, out di_36, out ds_37);
+	Mem41[ss:fp - 0x08 + 0x00:word16] = 0x00;
+	Mem42[ss:fp - 0x0A + 0x00:word16] = ax_38;
+	Mem45[ss:fp - 0x0C + 0x00:word16] = 0x01;
+	Mem49[ss:fp - 0x0E + 0x00:word16] = ~0x00;
+	Mem51[ss:fp - 0x10 + 0x00:word16] = ~0x03;
+	Mem54[ss:fp - 0x12 + 0x00:word16] = Mem51[ss:fp + 0x04:word16];
+	Mem57[ss:fp - 0x14 + 0x00:word16] = Mem54[ss:fp + 0x02:word16];
+	word16 di_59;
+	selector ds_60;
+	fn0800_ACB3(fp - 0x02, ds_37, wArg00, wArg02, wArg08, out di_59, out ds_60);
+	return Mem57[ss:fp - 0x06 + 0x00:word16] + Mem57[ss:(fp - 0x08) + 0x00:word16] + (Mem57[ss:(fp - 0x0A) + 0x00:word16] <u 0x00);
+}
+
+// 0800:3FAD: Register word16 fn0800_3FAD(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_3FAD(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
+{
+	*siOut = si;
+	word16 dx_19;
+	word16 di_20;
+	selector ds_21;
+	Mem27[ss:fp - 0x04 + 0x00:word16] = DPB(fn0800_3DCF(fp - 0x02, ds, DPB(ptrLoc0A, wArg02, 0), wArg04, out dx_19, out di_20, out ds_21), 0x00, 8);
+	Mem31[ss:fp - 0x08 + 0x00:word16] = Mem27[ss:fp + 0x04:word16];
+	Mem34[ss:fp - 0x0A + 0x00:word16] = Mem31[ss:fp + 0x02:word16];
+	word16 dx_36;
+	word16 di_37;
+	selector ds_38;
+	word16 ax_42 = DPB(fn0800_3DCF(fp - 0x02, ds_21, ptrArg00, wArg02, out dx_36, out di_37, out ds_38), 0x00, 8);
+	Mem43[ss:fp - 0x06 + 0x00:word16] = ax_42;
+	return (ax_42 << 0x08) + Mem43[ss:(fp - 0x04) + 0x00:word16];
+}
+
+// 0800:401E: Register byte fn0800_401E(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Register out ptr16 siOut, Register out ptr16 dsOut)
+byte fn0800_401E(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & siOut, ptr16 & dsOut)
+{
+	*siOut = si;
+	word16 di_25;
+	selector ds_26;
+	fn0800_4047(fp - 0x02, ds, (byte) (wArg02 >>u 0x08), DPB(ptrLoc06, wArg04, 0), wArg06, out di_25, out ds_26);
+	Mem34[ss:fp - 0x04 + 0x00:word16] = Mem0[ss:fp + 0x06:word16];
+	Mem37[ss:fp - 0x06 + 0x00:word16] = Mem34[ss:fp + 0x04:word16];
+	Mem41[ss:fp - 0x08 + 0x00:word16] = DPB(wArg02 >>u 0x08, Mem37[ss:fp + 0x02:byte], 0);
+	word16 di_44;
+	selector ds_45;
+	return fn0800_4047(fp - 0x02, ds_26, bArg00, ptrArg02, wArg04, out di_44, out ds_45);
+}
+
+// 0800:4047: Register byte fn0800_4047(Register word16 bp, Register selector ds, Stack byte bArg02, Stack segptr32 ptrArg04, Stack word16 wArg06, Register out ptr16 diOut, Register out ptr16 dsOut)
+byte fn0800_4047(word16 bp, selector ds, byte bArg02, segptr32 ptrArg04, word16 wArg06, ptr16 & diOut, ptr16 & dsOut)
+{
+	*diOut = di;
+	*dsOut = ds;
+	byte dl_110;
+	word16 ax_114;
+	word16 v10_18 = Mem0[ptrArg04 + 0x00:word16] + 0x01;
+	Mem19[ptrArg04 + 0x00:word16] = v10_18;
+	word16 bp_111 = fp - 0x02;
+	if (v10_18 < 0x00)
+	{
+		word16 ax_80 = Mem19[ptrArg04 + 0x0E:word16];
+		word16 si_81 = Mem19[ptrArg04 + 0x0C:word16];
+		Mem83[ptrArg04 + 0x0C:word16] = Mem19[ptrArg04 + 0x0C:word16] + 0x01;
+		Mem89[ax_80:si_81 + 0x00:byte] = bArg02;
+		dl_110 = bArg02;
+		ax_114 = DPB(ax_80, 0x00, 8);
+	}
+	else
+	{
+		word16 di_112;
+		ax_114 = fn0800_B30A(ds, DPB(ptrLoc08, wArg04, 0), out dl_110, out bp_111, out di_112, out ds);
+	}
+	if (ax_114 == ~0x00)
+	{
+		Mem56[ss:fp - 0x06 + 0x00:word16] = Mem19[ss:bp_111 + 0x08:word16];
+		Mem59[ss:fp - 0x08 + 0x00:word16] = Mem56[ss:bp_111 + 0x06:word16];
+		word16 dx_62;
+		word16 ax_63 = fn0800_4271(ds, wArg00, wArg02, out dx_62);
+		Mem67[ss:fp - 0x06 + 0x00:word16] = dx_62;
+		Mem69[ss:fp - 0x08 + 0x00:word16] = ax_63;
+		Mem72[ss:fp - 0x0A + 0x00:word16] = 0x09;
 		word16 si_73;
 		word16 di_74;
 		selector ds_75;
-		fn0800_0D24(fp - 0x02, ds, out si_73, out di_74, out ds_75);
-		ax_100 = 0x08;
+		dl_110 = (byte) fn0800_0D24(bp_111, ds, out si_73, out di_74, out ds_75);
 	}
-	return DPB(ax_100, Mem17[ss:fp - 0x04 + 0x00:byte], 0);
+	fn0800_409B();
+	return dl_110;
 }
 
-word16 fn0800_3E27(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
+// 0800:409B: void fn0800_409B()
+void fn0800_409B()
 {
-	*siOut = si;
-	word16 di_19;
+	return;
+}
+
+// 0800:409C: Register byte fn0800_409C(Register word16 bp, Register selector ds, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Register out ptr16 siOut, Register out ptr16 dsOut)
+byte fn0800_409C(word16 bp, selector ds, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & siOut, ptr16 & dsOut)
+{
+	word16 si_19;
 	selector ds_20;
-	Mem26[ss:fp - 0x04 + 0x00:word16] = DPB(fn0800_3DCF(ds, DPB(ptrLoc0A, wArg02, 0), wArg04, out di_19, out ds_20), 0x00, 8);
-	Mem30[ss:fp - 0x08 + 0x00:word16] = Mem26[ss:fp + 0x04:word16];
-	Mem33[ss:fp - 0x0A + 0x00:word16] = Mem30[ss:fp + 0x02:word16];
-	word16 di_35;
-	selector ds_36;
-	Mem41[ss:fp - 0x06 + 0x00:word16] = DPB(fn0800_3DCF(ds_20, ptrArg00, wArg02, out di_35, out ds_36), 0x00, 8);
-	return (Mem41[ss:fp - 0x04 + 0x00:word16] << 0x08) + Mem41[ss:(fp - 0x06) + 0x00:word16];
+	fn0800_401E(fp - 0x02, ds, wArg04, wArg06, wArg08, out si_19, out ds_20);
+	Mem28[ss:fp - 0x04 + 0x00:word16] = Mem0[ss:fp + 0x08:word16];
+	Mem31[ss:fp - 0x06 + 0x00:word16] = Mem28[ss:fp + 0x06:word16];
+	Mem34[ss:fp - 0x08 + 0x00:word16] = Mem31[ss:fp + 0x02:word16];
+	word16 si_37;
+	selector ds_38;
+	return fn0800_401E(fp - 0x02, ds_20, wArg00, wArg02, wArg04, out si_37, out ds_38);
 }
 
-word16 fn0800_3E5D(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & dsOut)
-{
-	word16 si_17;
-	word16 di_18;
-	selector ds_19;
-	word16 ax_20 = fn0800_3E27(fp - 0x02, ds, wArg02, wArg04, out si_17, out di_18, out ds_19);
-	Mem23[ss:fp - 0x04 + 0x00:word16] = 0x00;
-	Mem25[ss:fp - 0x06 + 0x00:word16] = ax_20;
-	Mem28[ss:fp - 0x0C + 0x00:word16] = Mem25[ss:fp + 0x04:word16];
-	Mem31[ss:fp - 0x0E + 0x00:word16] = Mem28[ss:fp + 0x02:word16];
-	word16 si_33;
-	word16 di_34;
-	selector ds_35;
-	word16 ax_36 = fn0800_3E27(fp - 0x02, ds_19, wArg00, wArg02, out si_33, out di_34, out ds_35);
-	Mem38[ss:fp - 0x08 + 0x00:word16] = 0x00;
-	Mem39[ss:fp - 0x0A + 0x00:word16] = ax_36;
-	return Mem39[ss:fp - 0x06 + 0x00:word16] + (Mem39[ss:(fp - 0x0A) + 0x00:word16] <u 0x00);
-}
-
-word16 fn0800_3E9A(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dsOut)
-{
-	word16 ax_106;
-	word16 v10_16 = Mem0[ptrArg02 + 0x00:word16] - 0x01;
-	Mem17[ptrArg02 + 0x00:word16] = v10_16;
-	if (v10_16 >= 0x00)
-	{
-		word16 ax_98 = Mem17[ptrArg02 + 0x0E:word16];
-		Mem101[ptrArg02 + 0x0C:word16] = Mem17[ptrArg02 + 0x0C:word16] + 0x01;
-		ax_106 = DPB(ax_98, 0x00, 8);
-	}
-	else
-		ax_106 = fn0800_AEC2(ds, DPB(ptrLoc0A, wArg02, 0), wArg04, out ds);
-	if (ax_106 == ~0x00)
-	{
-		fn0800_4271(ds, wArg02, wArg04);
-		word16 si_92;
-		word16 di_93;
-		fn0800_0D24(fp - 0x02, ds, out si_92, out di_93, out ds);
-	}
-	Mem46[ss:fp - 0x08 + 0x00:word16] = 0x01;
-	Mem51[ss:fp - 0x0A + 0x00:word16] = ~0x00;
-	Mem53[ss:fp - 0x0C + 0x00:word16] = ~0x00;
-	Mem56[ss:fp - 0x0E + 0x00:word16] = Mem53[ss:fp + 0x04:word16];
-	Mem59[ss:fp - 0x10 + 0x00:word16] = Mem56[ss:fp + 0x02:word16];
-	selector ds_63;
-	return DPB(fn0800_ACB3(fp - 0x02, ds, ptrArg00, wArg02, wArg08, out ds_63), Mem59[ss:fp - 0x04 + 0x00:byte], 0);
-}
-
-word16 fn0800_3F0A(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & dsOut)
-{
-	word16 di_19;
-	selector ds_20;
-	Mem26[ss:fp - 0x04 + 0x00:word16] = DPB(fn0800_3DCF(ds, DPB(ptrLoc0A, wArg02, 0), wArg04, out di_19, out ds_20), 0x00, 8);
-	Mem30[ss:fp - 0x08 + 0x00:word16] = Mem26[ss:fp + 0x04:word16];
-	Mem33[ss:fp - 0x0A + 0x00:word16] = Mem30[ss:fp + 0x02:word16];
-	word16 di_35;
-	selector ds_36;
-	Mem42[ss:fp - 0x06 + 0x00:word16] = DPB(fn0800_3DCF(ds_20, ptrArg00, wArg02, out di_35, out ds_36), 0x00, 8);
-	Mem45[ss:fp - 0x08 + 0x00:word16] = 0x01;
-	Mem49[ss:fp - 0x0A + 0x00:word16] = ~0x00;
-	Mem51[ss:fp - 0x0C + 0x00:word16] = ~0x01;
-	Mem54[ss:fp - 0x0E + 0x00:word16] = Mem51[ss:fp + 0x04:word16];
-	Mem57[ss:fp - 0x10 + 0x00:word16] = Mem54[ss:fp + 0x02:word16];
-	selector ds_59;
-	fn0800_ACB3(fp - 0x02, ds_36, ptrArg00, wArg02, wArg08, out ds_59);
-	return (Mem57[ss:fp - 0x04 + 0x00:word16] << 0x08) + Mem57[ss:(fp - 0x06) + 0x00:word16];
-}
-
-word16 fn0800_3F58(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & diOut, ptr16 & dsOut)
-{
-	word16 si_17;
-	word16 di_18;
-	selector ds_19;
-	word16 ax_20 = fn0800_3E27(fp - 0x02, ds, wArg02, wArg04, out si_17, out di_18, out ds_19);
-	Mem23[ss:fp - 0x04 + 0x00:word16] = 0x00;
-	Mem25[ss:fp - 0x06 + 0x00:word16] = ax_20;
-	Mem28[ss:fp - 0x0C + 0x00:word16] = Mem25[ss:fp + 0x04:word16];
-	Mem31[ss:fp - 0x0E + 0x00:word16] = Mem28[ss:fp + 0x02:word16];
-	word16 si_33;
-	word16 di_34;
-	selector ds_35;
-	word16 ax_36 = fn0800_3E27(fp - 0x02, ds_19, wArg00, wArg02, out si_33, out di_34, out ds_35);
-	Mem39[ss:fp - 0x08 + 0x00:word16] = 0x00;
-	Mem40[ss:fp - 0x0A + 0x00:word16] = ax_36;
-	Mem43[ss:fp - 0x0C + 0x00:word16] = 0x01;
-	Mem47[ss:fp - 0x0E + 0x00:word16] = ~0x00;
-	Mem49[ss:fp - 0x10 + 0x00:word16] = ~0x03;
-	Mem52[ss:fp - 0x12 + 0x00:word16] = Mem49[ss:fp + 0x04:word16];
-	Mem55[ss:fp - 0x14 + 0x00:word16] = Mem52[ss:fp + 0x02:word16];
-	selector ds_58;
-	fn0800_ACB3(fp - 0x02, ds_35, ptrArg00, wArg02, wArg08, out ds_58);
-	return Mem55[ss:fp - 0x06 + 0x00:word16] + Mem55[ss:(fp - 0x08) + 0x00:word16] + (Mem55[ss:(fp - 0x0A) + 0x00:word16] <u 0x00);
-}
-
-word16 fn0800_3FAD(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & diOut, ptr16 & dsOut)
-{
-	word16 di_19;
-	selector ds_20;
-	Mem26[ss:fp - 0x04 + 0x00:word16] = DPB(fn0800_3DCF(ds, DPB(ptrLoc0A, wArg02, 0), wArg04, out di_19, out ds_20), 0x00, 8);
-	Mem30[ss:fp - 0x08 + 0x00:word16] = Mem26[ss:fp + 0x04:word16];
-	Mem33[ss:fp - 0x0A + 0x00:word16] = Mem30[ss:fp + 0x02:word16];
-	word16 di_35;
-	selector ds_36;
-	word16 ax_40 = DPB(fn0800_3DCF(ds_20, ptrArg00, wArg02, out di_35, out ds_36), 0x00, 8);
-	Mem41[ss:fp - 0x06 + 0x00:word16] = ax_40;
-	return (ax_40 << 0x08) + Mem41[ss:(fp - 0x04) + 0x00:word16];
-}
-
-selector fn0800_401E(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
-{
-	selector ds_25;
-	fn0800_4047(ds, (byte) (wArg02 >>u 0x08), DPB(ptrLoc06, wArg04, 0), wArg06, out ds_25);
-	Mem33[ss:fp - 0x04 + 0x00:word16] = Mem0[ss:fp + 0x06:word16];
-	Mem36[ss:fp - 0x06 + 0x00:word16] = Mem33[ss:fp + 0x04:word16];
-	Mem40[ss:fp - 0x08 + 0x00:word16] = DPB(wArg02 >>u 0x08, Mem36[ss:fp + 0x02:byte], 0);
-	selector ds_43;
-	fn0800_4047(ds_25, bArg00, ptrArg02, wArg04, out ds_43);
-	return ds_43;
-}
-
-word16 fn0800_4047(selector ds, byte bArg02, segptr32 ptrArg04, word16 wArg06, ptr16 & dsOut)
-{
-	*dsOut = ds;
-	word16 ax_106;
-	word16 v10_18 = Mem0[ptrArg04 + 0x00:word16] + 0x01;
-	Mem19[ptrArg04 + 0x00:word16] = v10_18;
-	if (v10_18 < 0x00)
-	{
-		word16 ax_78 = Mem19[ptrArg04 + 0x0E:word16];
-		word16 si_79 = Mem19[ptrArg04 + 0x0C:word16];
-		Mem81[ptrArg04 + 0x0C:word16] = Mem19[ptrArg04 + 0x0C:word16] + 0x01;
-		Mem85[ax_78:si_79 + 0x00:byte] = bArg02;
-		ax_106 = DPB(ax_78, 0x00, 8);
-	}
-	else
-		ax_106 = fn0800_B30A(ds, bArg02, DPB(ptrLoc08, wArg04, 0), wArg06, out ds);
-	if (ax_106 == ~0x00)
-	{
-		fn0800_4271(ds, wArg04, wArg06);
-		word16 si_72;
-		selector ds_74;
-		fn0800_0D24(fp - 0x02, ds, out si_72, out di, out ds_74);
-	}
-	return di;
-}
-
-selector fn0800_409C(word16 bp, selector ds, word16 wArg04, word16 wArg06, word16 wArg08)
-{
-	selector ds_19 = fn0800_401E(fp - 0x02, ds, wArg04, wArg06, wArg08);
-	Mem26[ss:fp - 0x04 + 0x00:word16] = Mem0[ss:fp + 0x08:word16];
-	Mem29[ss:fp - 0x06 + 0x00:word16] = Mem26[ss:fp + 0x06:word16];
-	Mem32[ss:fp - 0x08 + 0x00:word16] = Mem29[ss:fp + 0x02:word16];
-	return fn0800_401E(fp - 0x02, ds_19, wArg00, wArg02, wArg04);
-}
-
+// 0800:40BF: Register word16 fn0800_40BF(Register word16 bp, Register selector ds, Stack byte bArg02, Stack word16 wArg04, Stack word16 wArg06, Register out ptr16 dsOut)
 word16 fn0800_40BF(word16 bp, selector ds, byte bArg02, word16 wArg04, word16 wArg06, ptr16 & dsOut)
 {
-	selector ds_27;
-	fn0800_4047(ds, bArg02 & ~0x00, DPB(ptrLoc06, wArg04, 0), wArg06, out ds_27);
-	Mem34[ss:fp - 0x04 + 0x00:word16] = Mem0[ss:fp + 0x06:word16];
-	Mem37[ss:fp - 0x06 + 0x00:word16] = Mem34[ss:fp + 0x04:word16];
-	word16 ax_38 = Mem37[ss:fp + 0x02:word16];
-	Mem47[ss:fp - 0x08 + 0x00:word16] = DPB(ax_38 >>u 0x08, (byte) (ax_38 >>u 0x08) & ~0x00, 0);
-	selector ds_50;
-	return fn0800_4047(ds_27, bArg00, ptrArg02, wArg04, out ds_50);
+	word16 di_27;
+	selector ds_28;
+	fn0800_4047(fp - 0x02, ds, bArg02 & ~0x00, DPB(ptrLoc06, wArg04, 0), wArg06, out di_27, out ds_28);
+	Mem35[ss:fp - 0x04 + 0x00:word16] = Mem0[ss:fp + 0x06:word16];
+	Mem38[ss:fp - 0x06 + 0x00:word16] = Mem35[ss:fp + 0x04:word16];
+	word16 ax_39 = Mem38[ss:fp + 0x02:word16];
+	Mem48[ss:fp - 0x08 + 0x00:word16] = DPB(ax_39 >>u 0x08, (byte) (ax_39 >>u 0x08) & ~0x00, 0);
+	word16 di_51;
+	selector ds_52;
+	fn0800_4047(fp - 0x02, ds_28, bArg00, ptrArg02, wArg04, out di_51, out ds_52);
+	return di_51;
 }
 
-word16 fn0800_4110(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, ptr16 & diOut, ptr16 & dsOut)
+// 0800:4110: Register word16 fn0800_4110(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg0A, Stack word16 wArg0C, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_4110(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg0A, word16 wArg0C, ptr16 & diOut, ptr16 & dsOut)
 {
 	*diOut = di;
 	selector ds_30;
 	word16 ax_31 = fn0800_ABA3(fp - 0x02, ds, wArg02, wArg04, 0x01, wArg06, wArg0A, wArg0C, out ds_30);
-	if (0x00 != wArg08 || ax_31 != wArg06)
+	if (0x00 != Mem0[ss:fp + 0x08:word16] || ax_31 != Mem0[ss:fp + 0x06:word16])
 	{
-		fn0800_4271(ds_30, wArg0A, wArg0C);
-		word16 di_71;
-		selector ds_72;
-		fn0800_0D24(fp - 0x02, ds_30, out si, out di_71, out ds_72);
+		Mem53[ss:fp - 0x04 + 0x00:word16] = Mem0[ss:fp + 0x0C:word16];
+		Mem56[ss:fp - 0x06 + 0x00:word16] = Mem53[ss:fp + 0x0A:word16];
+		word16 dx_58;
+		word16 ax_59 = fn0800_4271(ds_30, wArg00, wArg02, out dx_58);
+		Mem63[ss:fp - 0x04 + 0x00:word16] = dx_58;
+		Mem65[ss:fp - 0x06 + 0x00:word16] = ax_59;
+		Mem68[ss:fp - 0x08 + 0x00:word16] = 0x08;
+		word16 di_70;
+		selector ds_71;
+		fn0800_0D24(fp - 0x02, ds_30, out si, out di_70, out ds_71);
 	}
 	return si;
 }
 
-selector fn0800_4152(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C)
+// 0800:4152: Register selector fn0800_4152(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg0A, Stack word16 wArg0C)
+selector fn0800_4152(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg0A, word16 wArg0C)
 {
 	selector ds_30;
 	word16 ax_31 = fn0800_AD85(fp - 0x02, ds, wArg02, wArg04, 0x01, wArg06, wArg0A, wArg0C, out ds_30);
-	if (0x00 != wArg08 || ax_31 != wArg06)
+	if (0x00 != Mem0[ss:fp + 0x08:word16] || ax_31 != Mem0[ss:fp + 0x06:word16])
 	{
-		fn0800_4271(ds_30, wArg0A, wArg0C);
-		word16 si_68;
-		word16 di_69;
-		fn0800_0D24(fp - 0x02, ds_30, out si_68, out di_69, out ds_30);
+		Mem51[ss:fp - 0x04 + 0x00:word16] = Mem0[ss:fp + 0x0C:word16];
+		Mem54[ss:fp - 0x06 + 0x00:word16] = Mem51[ss:fp + 0x0A:word16];
+		word16 dx_56;
+		word16 ax_57 = fn0800_4271(ds_30, wArg00, wArg02, out dx_56);
+		Mem61[ss:fp - 0x04 + 0x00:word16] = dx_56;
+		Mem63[ss:fp - 0x06 + 0x00:word16] = ax_57;
+		Mem66[ss:fp - 0x08 + 0x00:word16] = 0x09;
+		word16 si_67;
+		word16 di_68;
+		fn0800_0D24(fp - 0x02, ds_30, out si_67, out di_68, out ds_30);
 	}
 	return ds_30;
 }
 
+// 0800:4194: Register word16 fn0800_4194(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 siOut, Register out ptr16 dsOut)
 word16 fn0800_4194(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & siOut, ptr16 & dsOut)
 {
-	word16 si_19;
-	word16 ax_20 = fn0800_AD2F(ds, DPB(ptrLoc0E, wArg02, 0), wArg04, out si_19);
-	Mem23[ss:fp - 0x04 + 0x00:word16] = dx;
-	Mem25[ss:fp - 0x06 + 0x00:word16] = ax_20;
-	Mem28[ss:fp - 0x0C + 0x00:word16] = 0x02;
-	Mem33[ss:fp - 0x0E + 0x00:word16] = 0x00;
-	Mem35[ss:fp - 0x10 + 0x00:word16] = 0x00;
-	Mem38[ss:fp - 0x12 + 0x00:word16] = Mem35[ss:fp + 0x04:word16];
-	Mem41[ss:fp - 0x14 + 0x00:word16] = Mem38[ss:fp + 0x02:word16];
-	selector ds_44;
-	fn0800_ACB3(fp - 0x02, ds, ptrArg00, wArg02, wArg08, out ds_44);
-	Mem50[ss:fp - 0x0C + 0x00:word16] = Mem41[ss:fp + 0x04:word16];
-	Mem53[ss:fp - 0x0E + 0x00:word16] = Mem50[ss:fp + 0x02:word16];
-	word16 si_54;
-	word16 ax_55 = fn0800_AD2F(ds_44, ptrArg00, wArg02, out si_54);
-	Mem57[ss:fp - 0x08 + 0x00:word16] = dx;
-	Mem58[ss:fp - 0x0A + 0x00:word16] = ax_55;
-	Mem63[ss:fp - 0x0C + 0x00:word16] = 0x00;
-	Mem66[ss:fp - 0x0E + 0x00:word16] = Mem63[ss:fp - 0x04 + 0x00:word16];
-	Mem69[ss:fp - 0x10 + 0x00:word16] = Mem66[ss:fp - 0x06 + 0x00:word16];
-	Mem72[ss:fp - 0x12 + 0x00:word16] = Mem69[ss:fp + 0x04:word16];
-	Mem75[ss:fp - 0x14 + 0x00:word16] = Mem72[ss:fp + 0x02:word16];
-	selector ds_76;
-	fn0800_ACB3(fp - 0x02, ds_44, ptrArg00, wArg02, wArg08, out ds_76);
-	return Mem75[ss:fp - 0x0A + 0x00:word16];
+	byte dl_19;
+	word16 si_20;
+	word16 ax_21 = fn0800_AD2F(ds, DPB(ptrLoc0E, wArg02, 0), wArg04, out dl_19, out si_20);
+	Mem24[ss:fp - 0x04 + 0x00:word16] = dx;
+	Mem26[ss:fp - 0x06 + 0x00:word16] = ax_21;
+	Mem29[ss:fp - 0x0C + 0x00:word16] = 0x02;
+	Mem34[ss:fp - 0x0E + 0x00:word16] = 0x00;
+	Mem36[ss:fp - 0x10 + 0x00:word16] = 0x00;
+	Mem39[ss:fp - 0x12 + 0x00:word16] = Mem36[ss:fp + 0x04:word16];
+	Mem42[ss:fp - 0x14 + 0x00:word16] = Mem39[ss:fp + 0x02:word16];
+	word16 di_45;
+	selector ds_46;
+	fn0800_ACB3(fp - 0x02, ds, wArg00, wArg02, wArg08, out di_45, out ds_46);
+	Mem52[ss:fp - 0x0C + 0x00:word16] = Mem42[ss:fp + 0x04:word16];
+	Mem55[ss:fp - 0x0E + 0x00:word16] = Mem52[ss:fp + 0x02:word16];
+	byte dl_57;
+	word16 si_58;
+	word16 ax_59 = fn0800_AD2F(ds_46, ptrArg00, wArg02, out dl_57, out si_58);
+	Mem61[ss:fp - 0x08 + 0x00:word16] = dx;
+	Mem62[ss:fp - 0x0A + 0x00:word16] = ax_59;
+	Mem67[ss:fp - 0x0C + 0x00:word16] = 0x00;
+	Mem70[ss:fp - 0x0E + 0x00:word16] = Mem67[ss:fp - 0x04 + 0x00:word16];
+	Mem73[ss:fp - 0x10 + 0x00:word16] = Mem70[ss:fp - 0x06 + 0x00:word16];
+	Mem76[ss:fp - 0x12 + 0x00:word16] = Mem73[ss:fp + 0x04:word16];
+	Mem79[ss:fp - 0x14 + 0x00:word16] = Mem76[ss:fp + 0x02:word16];
+	word16 di_80;
+	selector ds_81;
+	fn0800_ACB3(fp - 0x02, ds_46, wArg00, wArg02, wArg08, out di_80, out ds_81);
+	return Mem79[ss:fp - 0x0A + 0x00:word16];
 }
 
+// 0800:41F3: void fn0800_41F3(Register word16 dx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds)
+void fn0800_41F3(word16 dx, word16 bp, word16 si, word16 di, selector ds)
+{
+	__inb(dx);
+	word16 di_23;
+	selector ds_24;
+	fn0800_4234(si, di, ds, Mem0[ss:bp + 0x04:word16], Mem0[ss:bp + 0x06:word16], 2665, ds, out di_23, out ds_24);
+	Mem28[ss:bp - 0x02 + 0x00:word16] = dx;
+	Mem29[ss:bp - 0x04 + 0x00:word16] = 2665;
+	Mem32[ss:fp - 0x0A + 0x00:word16] = Mem29[ss:bp - 0x02 + 0x00:word16];
+	Mem34[ss:fp - 0x0C + 0x00:word16] = 2665;
+	word16 si_37;
+	selector ds_38;
+	word16 ax_39 = fn0800_4194(bp, ds_24, wArg00, wArg02, out si_37, out ds_38);
+	Mem42[ss:bp - 0x06 + 0x00:word16] = dx;
+	Mem43[ss:bp - 0x08 + 0x00:word16] = ax_39;
+	Mem46[ss:fp - 0x0A + 0x00:word16] = Mem43[ss:bp - 0x02 + 0x00:word16];
+	Mem49[ss:fp - 0x0C + 0x00:word16] = Mem46[ss:bp - 0x04 + 0x00:word16];
+	byte dl_51;
+	word16 di_52;
+	selector ds_53;
+	fn0800_A614(bp, ds_38, ptrArg00, wArg02, out dl_51, out di_52, out ds_53);
+	return;
+}
+
+// 0800:4234: Register word16 fn0800_4234(Register word16 si, Register word16 di, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Register out ptr16 diOut, Register out ptr16 dsOut)
 word16 fn0800_4234(word16 si, word16 di, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & diOut, ptr16 & dsOut)
 {
 	word16 dx_27;
@@ -5971,17 +7382,18 @@ word16 fn0800_4234(word16 si, word16 di, selector ds, word16 wArg02, word16 wArg
 	Mem35[ss:fp - 0x06 + 0x00:word16] = ax_31;
 	if ((ax_31 | Mem35[ss:(fp - 0x04) + 0x00:word16]) == 0x00)
 	{
-		Mem55[ss:fp - 0x08 + 0x00:word16] = Mem35[ss:fp + 0x04:word16];
-		Mem58[ss:fp - 0x0A + 0x00:word16] = Mem55[ss:fp + 0x02:word16];
-		Mem61[ss:fp - 0x0C + 0x00:word16] = 0x07;
-		word16 di_63;
-		selector ds_64;
-		fn0800_0D24(fp - 0x02, ds_30, out si_28, out di_63, out ds_64);
+		Mem53[ss:fp - 0x08 + 0x00:word16] = Mem35[ss:fp + 0x04:word16];
+		Mem56[ss:fp - 0x0A + 0x00:word16] = Mem53[ss:fp + 0x02:word16];
+		Mem59[ss:fp - 0x0C + 0x00:word16] = 0x07;
+		word16 di_61;
+		selector ds_62;
+		fn0800_0D24(fp - 0x02, ds_30, out si_28, out di_61, out ds_62);
 	}
 	return si_28;
 }
 
-void fn0800_4271(selector ds, word16 wArg02, word16 wArg04)
+// 0800:4271: Register word16 fn0800_4271(Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 dxOut)
+word16 fn0800_4271(selector ds, word16 wArg02, word16 wArg04, ptr16 & dxOut)
 {
 	if (wArg04 != Mem0[ds:0x29E5:word16] || wArg02 != Mem0[ds:0x29E3:word16])
 	{
@@ -5994,52 +7406,51 @@ void fn0800_4271(selector ds, word16 wArg02, word16 wArg04)
 					if (wArg04 != Mem0[ds:0x29D9:word16] || wArg02 != Mem0[ds:10711:word16])
 					{
 						if (wArg04 != Mem0[ds:10709:word16] || wArg02 != Mem0[ds:10707:word16])
-							return;
+							return 0x0A60;
 						else
-							return;
+							return 0x43AD;
 					}
 					else
-						return;
+						return 0x4412;
 				}
 				else
-					return;
+					return 0x4477;
 			}
 			else
-				return;
+				return 0x4348;
 		}
 		else
-			return;
+			return 0x44DC;
 	}
 	else
-		return;
+		return 0x4541;
 }
 
-selector fn0800_4311(selector ds, word16 wArg02, word16 wArg04)
+// 0800:4311: void fn0800_4311(Register word16 ax, Register word16 dx, Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
+void fn0800_4311(word16 ax, word16 dx, selector ds, word16 wArg02, word16 wArg04)
 {
-	word16 dx_17;
-	word16 bp_18;
-	selector ds_19;
-	word16 ax_20 = fn0800_9F89(fp - 0x02, ds, wArg02, wArg04, out dx_17, out bp_18, out ds_19);
-	Mem22[ss:bp_18 - 0x02 + 0x00:word16] = dx_17;
-	Mem24[ss:bp_18 - 0x04 + 0x00:word16] = ax_20;
-	if ((ax_20 | dx_17) == 0x00)
+	fn0800_9F89(wArg02, wArg04);
+	if ((ax | dx) == 0x00)
 	{
-		Mem43[ss:fp - 0x08 + 0x00:word16] = ds_19;
-		Mem46[ss:fp - 0x0A + 0x00:word16] = 2668;
-		Mem49[ss:fp - 0x0C + 0x00:word16] = 0x06;
-		word16 si_50;
-		word16 di_51;
-		fn0800_0D24(bp_18, ds_19, out si_50, out di_51, out ds_19);
+		Mem40[ss:fp - 0x08 + 0x00:word16] = ds;
+		Mem43[ss:fp - 0x0A + 0x00:word16] = 2668;
+		Mem46[ss:fp - 0x0C + 0x00:word16] = 0x06;
+		word16 si_47;
+		word16 di_48;
+		selector ds_49;
+		fn0800_0D24(fp - 0x02, ds, out si_47, out di_48, out ds_49);
 	}
-	return ds_19;
+	return;
 }
 
+// 0800:4346: Register byte fn0800_4346(Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 dsOut)
 byte fn0800_4346(selector ds, word16 wArg02, word16 wArg04, ptr16 & dsOut)
 {
 	selector ds_15;
 	return fn0800_9E75(ds, wArg04, out ds_15);
 }
 
+// 0800:4357: Register word16 fn0800_4357(Stack word16 wArg00, Stack segptr32 ptrArg02, Stack segptr32 ptrArg06)
 word16 fn0800_4357(word16 wArg00, segptr32 ptrArg02, segptr32 ptrArg06)
 {
 	if (Mem0[ptrArg06 + 0x00:byte] == 0x00)
@@ -6080,6 +7491,7 @@ l0800_43B6:
 	goto l0800_43B9;
 }
 
+// 0800:43D4: void fn0800_43D4(Stack word16 wArg02, Stack selector psegArg04, Stack word16 wArg06)
 void fn0800_43D4(word16 wArg02, selector psegArg04, word16 wArg06)
 {
 	word16 cx_10 = wArg06;
@@ -6100,106 +7512,157 @@ void fn0800_43D4(word16 wArg02, selector psegArg04, word16 wArg06)
 	return;
 }
 
-void fn0800_441C(word16 bp, selector ds, segptr32 ptrArg02, selector psegArg04, word16 wArg06)
+// 0800:441C: Register word16 fn0800_441C(Register word16 si, Register word16 di, Register selector ds, Stack word16 wArg02, Stack word16 wArg06, Register out ptr16 siOut, Register out ptr16 diOut)
+word16 fn0800_441C(word16 si, word16 di, selector ds, word16 wArg02, word16 wArg06, ptr16 & siOut, ptr16 & diOut)
 {
-	word16 bp_118 = fp - 0x02;
-	word16 di_13 = 0x00;
-	word16 cx_14 = 0x00;
-	word16 si_20 = wArg02;
-	if (0x00 <u wArg06)
+	if (0x00 >=u wArg06)
 	{
-		do
-		{
-			if ((Mem0[psegArg04:si_20 + 0x00:word16] | Mem0[psegArg04:si_20 + 0x02:word16]) != 0x00)
-			{
-				di_13 = di_13 + 0x01;
-				wLoc04 = cx_14;
-			}
-			si_20 = si_20 + 0x0C;
-			cx_14 = cx_14 + 0x01;
-		} while (cx_14 <u wArg06);
+		word16 si_33;
+		word16 di_34;
+		return fn0800_4452(fp - 0x02, 0x00, ds, di, si, out si_33, out di_34);
 	}
-	if (di_13 != 0x00)
+	else
 	{
-		if (di_13 == 0x01)
+		word16 si_30;
+		word16 di_31;
+		return fn0800_4449(0x00, fp - 0x02, wArg02, 0x00, ds, out si_30, out di_31);
+	}
+}
+
+// 0800:4439: Register word16 fn0800_4439(Register word16 cx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 siOut, Register out ptr16 diOut)
+word16 fn0800_4439(word16 cx, word16 bp, word16 si, word16 di, selector ds, ptr16 & siOut, ptr16 & diOut)
+{
+fn0800_4439_entry:
+	*siOut = si
+	*diOut = di
+	selector es_5 = Mem0[ss:bp + 0x06:selector]
+	branch (Mem0[es_5:si + 0x00:word16] | Mem0[es_5:si + 0x02:word16]) == 0x00 l0800_4449
+	goto l0800_4445
+l0800_4439:
+l0800_4443_thunk_fn0800_4449:
+	bp = fn0800_4449(cx, bp, si, di, ds, out si, out di)
+	return bp
+l0800_4445:
+	word16 si_17
+	word16 di_18
+	return fn0800_4446(cx, bp, si, di + 0x01, ds, out si_17, out di_18)
+l0800_4445_thunk_fn0800_4446:
+fn0800_4439_exit:
+}
+
+// 0800:4446: Register word16 fn0800_4446(Register word16 cx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 siOut, Register out ptr16 diOut)
+word16 fn0800_4446(word16 cx, word16 bp, word16 si, word16 di, selector ds, ptr16 & siOut, ptr16 & diOut)
+{
+	Mem3[ss:bp - 0x02 + 0x00:word16] = cx;
+	word16 si_9;
+	word16 di_10;
+	return fn0800_4449(cx, bp, si, di, ds, out si_9, out di_10);
+}
+
+// 0800:4449: Register word16 fn0800_4449(Register word16 cx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 siOut, Register out ptr16 diOut)
+word16 fn0800_4449(word16 cx, word16 bp, word16 si, word16 di, selector ds, ptr16 & siOut, ptr16 & diOut)
+{
+	sp = fp;
+	si = si + 0x0C;
+	cx = cx + 0x01;
+	SCZO = cond(cx - Mem0[ss:bp + 0x08:word16]);
+	C = SCZO;
+}
+
+// 0800:4452: Register word16 fn0800_4452(Register word16 bp, Register word16 di, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Register out ptr16 siOut, Register out ptr16 diOut)
+word16 fn0800_4452(word16 bp, word16 di, selector ds, word16 wArg00, word16 wArg02, ptr16 & siOut, ptr16 & diOut)
+{
+	if (di == 0x00)
+		;
+	else
+	{
+		if (di == 0x01)
 		{
-			selector es_244 = SLICE(ptrArg02, selector, 16);
-			word16 bx_246 = (word16) ptrArg02 + (word16) (wLoc04 *s 0x0C);
-			Mem249[es_244:bx_246 + 0x0A:word16] = Mem0[es_244:bx_246 + 0x0A:word16] + 0x01;
-			return;
+			ptr32 es_bx_221 = Mem0[ss:bp + 0x04:segptr32];
+			selector es_222 = SLICE(es_bx_221, selector, 16);
+			word16 bx_224 = (word16) es_bx_221 + (word16) (Mem0[ss:(bp - 0x02) + 0x00:word16] *s 0x0C);
+			Mem227[es_222:bx_224 + 0x0A:word16] = Mem0[es_222:bx_224 + 0x0A:word16] + 0x01;
+			word16 di_229;
+			*diOut = wArg00;
+			word16 si_231;
+			*siOut = wArg02;
+			return Mem227[ss:bp + 0x00:word16];
 		}
 		while (true)
 		{
-			Mem92[ss:fp - 0x0A + 0x00:word16] = Mem0[ss:bp_118 + 0x08:word16];
-			Mem95[ss:fp - 0x0C + 0x00:word16] = Mem92[ss:bp_118 + 0x06:word16];
-			Mem98[ss:fp - 0x0E + 0x00:word16] = Mem95[ss:bp_118 + 0x04:word16];
-			word16 bp_102;
-			Mem111[ss:fp - 0x0A + 0x00:word16] = Mem98[ss:bp_102 + 0x08:word16];
-			Mem114[ss:fp - 0x0C + 0x00:word16] = Mem111[ss:bp_102 + 0x06:word16];
-			Mem117[ss:fp - 0x0E + 0x00:word16] = Mem114[ss:bp_102 + 0x04:word16];
-			if (fn0800_463B(bp_102, ds, bp, wArg00, wArg02, psegArg04, out bp_118) == 0x00)
+			Mem69[ss:fp - 0x02 + 0x00:word16] = Mem0[ss:bp + 0x08:word16];
+			Mem72[ss:fp - 0x04 + 0x00:word16] = Mem69[ss:bp + 0x06:word16];
+			Mem75[ss:fp - 0x06 + 0x00:word16] = Mem72[ss:bp + 0x04:word16];
+			word16 bp_81;
+			Mem90[ss:fp - 0x02 + 0x00:word16] = Mem75[ss:bp_81 + 0x08:word16];
+			Mem93[ss:fp - 0x04 + 0x00:word16] = Mem90[ss:bp_81 + 0x06:word16];
+			Mem96[ss:fp - 0x06 + 0x00:word16] = Mem93[ss:bp_81 + 0x04:word16];
+			if (fn0800_463B(bp_81, ds, wLoc02, wArg00, wArg02, wArg04, out bp) == 0x00)
 				break;
-			ptr32 es_bx_130 = Mem117[ss:bp_118 + 0x04:segptr32];
-			word16 ax_128 = (word16) (Mem117[ds:18008:word16] *s 0x0C);
-			selector es_131 = SLICE(es_bx_130, selector, 16);
-			word16 bx_133 = (word16) es_bx_130 + ax_128;
-			word16 dx_135 = Mem117[es_131:bx_133 + 0x00:word16];
-			Mem137[ss:fp - 0x0A + 0x00:word16] = Mem117[es_131:bx_133 + 0x02:word16];
-			word16 ax_138 = Mem137[ds:18010:word16];
-			Mem141[ss:fp - 0x0C + 0x00:word16] = dx_135;
-			word16 ax_143 = (word16) (ax_138 *s 0x0C);
-			word16 bx_146 = Mem141[ss:bp_118 + 0x04:word16] + ax_143;
-			word16 v23_149 = Mem141[es_131:bx_146 + 0x00:word16] + Mem141[ss:(fp - 0x0C) + 0x00:word16];
-			Mem150[es_131:bx_146 + 0x00:word16] = v23_149;
-			Mem157[es_131:bx_146 + 0x02:word16] = Mem150[es_131:bx_146 + 0x02:word16] + Mem150[ss:(fp - 0x0A) + 0x00:word16] + (v23_149 <u 0x00);
-			word16 bx_159 = Mem157[ss:bp_118 + 0x04:word16] + ax_128;
-			Mem160[es_131:bx_159 + 0x02:word16] = 0x00;
-			Mem161[es_131:bx_159 + 0x00:word16] = 0x00;
-			word16 bx_163 = Mem161[ss:bp_118 + 0x04:word16] + ax_143;
-			Mem166[es_131:bx_163 + 0x0A:word16] = Mem161[es_131:bx_163 + 0x0A:word16] + 0x01;
-			word16 cx_129 = ax_128;
-			word16 dx_144 = ax_143;
+			ptr32 es_bx_109 = Mem96[ss:bp + 0x04:segptr32];
+			word16 ax_107 = (word16) (Mem96[ds:18008:word16] *s 0x0C);
+			selector es_110 = SLICE(es_bx_109, selector, 16);
+			word16 bx_112 = (word16) es_bx_109 + ax_107;
+			word16 dx_114 = Mem96[es_110:bx_112 + 0x00:word16];
+			Mem116[ss:fp - 0x02 + 0x00:word16] = Mem96[es_110:bx_112 + 0x02:word16];
+			word16 ax_117 = Mem116[ds:18010:word16];
+			Mem120[ss:fp - 0x04 + 0x00:word16] = dx_114;
+			word16 ax_122 = (word16) (ax_117 *s 0x0C);
+			word16 bx_125 = Mem120[ss:bp + 0x04:word16] + ax_122;
+			word16 v25_128 = Mem120[es_110:bx_125 + 0x00:word16] + Mem120[ss:(fp - 0x04) + 0x00:word16];
+			Mem129[es_110:bx_125 + 0x00:word16] = v25_128;
+			Mem136[es_110:bx_125 + 0x02:word16] = Mem129[es_110:bx_125 + 0x02:word16] + Mem129[ss:(fp - 0x02) + 0x00:word16] + (v25_128 <u 0x00);
+			word16 bx_138 = Mem136[ss:bp + 0x04:word16] + ax_107;
+			Mem139[es_110:bx_138 + 0x02:word16] = 0x00;
+			Mem140[es_110:bx_138 + 0x00:word16] = 0x00;
+			word16 bx_142 = Mem140[ss:bp + 0x04:word16] + ax_122;
+			Mem145[es_110:bx_142 + 0x0A:word16] = Mem140[es_110:bx_142 + 0x0A:word16] + 0x01;
+			word16 cx_108 = ax_107;
+			word16 dx_123 = ax_122;
 			while (true)
 			{
-				ptr32 es_bx_172 = Mem166[ss:bp_118 + 0x04:segptr32];
-				selector es_173 = SLICE(es_bx_172, selector, 16);
-				word16 bx_175 = (word16) es_bx_172 + dx_144;
-				if (Mem166[es_173:bx_175 + 0x04:word16] == ~0x00)
+				ptr32 es_bx_151 = Mem145[ss:bp + 0x04:segptr32];
+				selector es_152 = SLICE(es_bx_151, selector, 16);
+				word16 bx_154 = (word16) es_bx_151 + dx_123;
+				if (Mem145[es_152:bx_154 + 0x04:word16] == ~0x00)
 					break;
-				selector es_213 = Mem166[ss:bp_118 + 0x06:selector];
-				word16 ax_214 = Mem166[es_213:bx_175 + 0x04:word16];
-				Mem215[ds:18010:word16] = ax_214;
-				word16 ax_218 = (word16) (ax_214 *s 0x0C);
-				word16 bx_222 = Mem215[ss:bp_118 + 0x04:word16] + ax_218;
-				Mem225[es_213:bx_222 + 0x0A:word16] = Mem215[es_213:bx_222 + 0x0A:word16] + 0x01;
-				dx_144 = ax_218;
+				selector es_192 = Mem145[ss:bp + 0x06:selector];
+				word16 ax_193 = Mem145[es_192:bx_154 + 0x04:word16];
+				Mem194[ds:18010:word16] = ax_193;
+				word16 ax_197 = (word16) (ax_193 *s 0x0C);
+				word16 bx_201 = Mem194[ss:bp + 0x04:word16] + ax_197;
+				Mem204[es_192:bx_201 + 0x0A:word16] = Mem194[es_192:bx_201 + 0x0A:word16] + 0x01;
+				dx_123 = ax_197;
 			}
-			Mem181[es_173:bx_175 + 0x04:word16] = Mem166[ds:18008:word16];
-			word16 bx_183 = Mem181[ss:bp_118 + 0x04:word16] + ax_128;
-			Mem186[es_173:bx_183 + 0x0A:word16] = Mem181[es_173:bx_183 + 0x0A:word16] + 0x01;
+			Mem160[es_152:bx_154 + 0x04:word16] = Mem145[ds:18008:word16];
+			word16 bx_162 = Mem160[ss:bp + 0x04:word16] + ax_107;
+			Mem165[es_152:bx_162 + 0x0A:word16] = Mem160[es_152:bx_162 + 0x0A:word16] + 0x01;
 			while (true)
 			{
-				ptr32 es_bx_193 = Mem186[ss:bp_118 + 0x04:segptr32];
-				word16 bx_196 = (word16) es_bx_193 + cx_129;
-				if (Mem186[SLICE(es_bx_193, selector, 16):bx_196 + 0x04:word16] == ~0x00)
+				ptr32 es_bx_172 = Mem165[ss:bp + 0x04:segptr32];
+				word16 bx_175 = (word16) es_bx_172 + cx_108;
+				if (Mem165[SLICE(es_bx_172, selector, 16):bx_175 + 0x04:word16] == ~0x00)
 					break;
-				selector es_200 = Mem186[ss:bp_118 + 0x06:selector];
-				word16 ax_201 = Mem186[es_200:bx_196 + 0x04:word16];
-				Mem202[ds:18008:word16] = ax_201;
-				word16 ax_205 = (word16) (ax_201 *s 0x0C);
-				word16 bx_208 = Mem202[ss:bp_118 + 0x04:word16] + ax_205;
-				Mem211[es_200:bx_208 + 0x0A:word16] = Mem202[es_200:bx_208 + 0x0A:word16] + 0x01;
-				cx_129 = ax_205;
+				selector es_179 = Mem165[ss:bp + 0x06:selector];
+				word16 ax_180 = Mem165[es_179:bx_175 + 0x04:word16];
+				Mem181[ds:18008:word16] = ax_180;
+				word16 ax_184 = (word16) (ax_180 *s 0x0C);
+				word16 bx_187 = Mem181[ss:bp + 0x04:word16] + ax_184;
+				Mem190[es_179:bx_187 + 0x0A:word16] = Mem181[es_179:bx_187 + 0x0A:word16] + 0x01;
+				cx_108 = ax_184;
 			}
 		}
-		Mem229[ss:fp - 0x0A + 0x00:word16] = Mem117[ss:bp_118 + 0x08:word16];
-		Mem232[ss:fp - 0x0C + 0x00:word16] = Mem229[ss:bp_118 + 0x06:word16];
-		Mem235[ss:fp - 0x0E + 0x00:word16] = Mem232[ss:bp_118 + 0x04:word16];
-		fn0800_4550(bp_118);
+		Mem208[ss:fp - 0x02 + 0x00:word16] = Mem96[ss:bp + 0x08:word16];
+		Mem211[ss:fp - 0x04 + 0x00:word16] = Mem208[ss:bp + 0x06:word16];
+		Mem214[ss:fp - 0x06 + 0x00:word16] = Mem211[ss:bp + 0x04:word16];
+		fn0800_4550(bp);
 	}
-	return;
+	word16 si_235;
+	word16 di_236;
+	return fn0800_4452(bp, di, ds, wArg00, wArg02, out si_235, out di_236);
 }
 
+// 0800:4550: void fn0800_4550(Register word16 bp)
 void fn0800_4550(word16 bp)
 {
 	word16 bp_113 = fp - 0x02;
@@ -6250,6 +7713,7 @@ void fn0800_4550(word16 bp)
 	return;
 }
 
+// 0800:45E2: Register word16 fn0800_45E2(Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Register out ptr16 dxOut)
 word16 fn0800_45E2(word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & dxOut)
 {
 	word16 bx_15 = wArg06;
@@ -6275,6 +7739,7 @@ word16 fn0800_45E2(word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & dxOut)
 	return wLoc06_11;
 }
 
+// 0800:463B: Register word16 fn0800_463B(Register word16 bp, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Stack selector psegArg04, Stack word16 wArg06, Register out ptr16 bpOut)
 word16 fn0800_463B(word16 bp, selector ds, word16 wArg00, word16 wArg02, selector psegArg04, word16 wArg06, ptr16 & bpOut)
 {
 	word16 wLoc0C_102 = ~0x00;
@@ -6331,342 +7796,435 @@ word16 fn0800_463B(word16 bp, selector ds, word16 wArg00, word16 wArg02, selecto
 	return 0x01;
 }
 
+// 0800:46FE: Register selector fn0800_46FE(Register word16 bp, Register selector ds)
 selector fn0800_46FE(word16 bp, selector ds)
 {
 	if (Mem0[ds:0x2A05:word16] >u 0x00 || Mem0[ds:0x2A05:word16] >=u 0x00 && Mem0[ds:0x2A03:word16] >=u 0x2A)
 	{
-		selector ds_62;
-		fn0800_ACB3(fp - 0x02, ds, DPB(ptrLoc30, Mem0[ds:0x29E3:word16], 0), Mem0[ds:0x29E5:word16], 0x00, out ds_62);
-		Mem68[ss:fp - 0x28 + 0x00:word16] = Mem0[ds_62:0x29E5:word16];
-		Mem72[ss:fp - 0x2A + 0x00:word16] = Mem68[ds_62:0x29E3:word16];
-		word16 di_75;
-		selector ds_76;
-		word16 ax_77 = fn0800_3FAD(fp - 0x02, ds_62, wArg00, wArg02, out di_75, out ds_76);
-		if (0x00 <u Mem72[ds_76:0x2A05:word16] || 0x00 <=u Mem72[ds_76:0x2A05:word16] && ax_77 + 0x24 <=u Mem72[ds_76:0x2A03:word16])
+		word16 di_55;
+		selector ds_56;
+		fn0800_ACB3(fp - 0x02, ds, Mem0[ds:0x29E3:word16], Mem0[ds:0x29E5:word16], 0x00, out di_55, out ds_56);
+		Mem62[ss:fp - 0x28 + 0x00:word16] = Mem0[ds_56:0x29E5:word16];
+		Mem66[ss:fp - 0x2A + 0x00:word16] = Mem62[ds_56:0x29E3:word16];
+		word16 si_69;
+		word16 di_70;
+		selector ds_71;
+		word16 ax_72 = fn0800_3FAD(fp - 0x02, ds_56, wArg00, wArg02, out si_69, out di_70, out ds_71);
+		if (0x00 <u Mem66[ds_71:0x2A05:word16] || 0x00 <=u Mem66[ds_71:0x2A05:word16] && ax_72 + 0x24 <=u Mem66[ds_71:0x2A03:word16])
 		{
-			Mem94[ss:fp - 0x28 + 0x00:word16] = 0x00;
-			Mem101[ss:fp - 0x2A + 0x00:word16] = 0x00;
-			Mem103[ss:fp - 44 + 0x00:word16] = ax_77 + 0x20;
-			Mem106[ss:fp - 0x2E + 0x00:word16] = Mem103[ds_76:0x29E5:word16];
-			Mem109[ss:fp - 0x30 + 0x00:word16] = Mem106[ds_76:0x29E3:word16];
-			selector ds_112;
-			word16 ax_113 = fn0800_ACB3(fp - 0x02, ds_76, ptrArg00, wArg02, wArg08, out ds_112);
-			Mem118[ss:fp - 0x28 + 0x00:word16] = Mem109[ds_112:0x29E5:word16];
-			Mem121[ss:fp - 0x2A + 0x00:word16] = Mem118[ds_112:0x29E3:word16];
-			word16 di_122;
-			selector ds_123;
-			word16 dx_128;
-			word16 ax_129 = fn0800_8CAA(ax_113, 0x08, fn0800_3F58(fp - 0x02, ds_112, wArg00, wArg02, out di_122, out ds_123), bp, out dx_128);
-			if (dx_128 != 0x52 || ax_129 != 0x4E43)
-				return ds_123;
+			Mem86[ss:fp - 0x28 + 0x00:word16] = 0x00;
+			Mem93[ss:fp - 0x2A + 0x00:word16] = 0x00;
+			Mem95[ss:fp - 44 + 0x00:word16] = ax_72 + 0x20;
+			Mem98[ss:fp - 0x2E + 0x00:word16] = Mem95[ds_71:0x29E5:word16];
+			Mem101[ss:fp - 0x30 + 0x00:word16] = Mem98[ds_71:0x29E3:word16];
+			word16 di_103;
+			selector ds_104;
+			word16 ax_105 = fn0800_ACB3(fp - 0x02, ds_71, wArg00, wArg02, wArg08, out di_103, out ds_104);
+			Mem110[ss:fp - 0x28 + 0x00:word16] = Mem101[ds_104:0x29E5:word16];
+			Mem113[ss:fp - 0x2A + 0x00:word16] = Mem110[ds_104:0x29E3:word16];
+			word16 di_114;
+			selector ds_115;
+			word16 dx_120;
+			word16 ax_121 = fn0800_8CAA(ax_105, 0x08, fn0800_3F58(fp - 0x02, ds_104, wArg00, wArg02, out di_114, out ds_115), bp, out dx_120);
+			if (dx_120 != 0x52 || ax_121 != 0x4E43)
+				return ds_115;
 			else
 			{
-				Mem148[ss:fp - 0x28 + 0x00:word16] = Mem121[ds_123:0x29E5:word16];
-				Mem151[ss:fp - 0x2A + 0x00:word16] = Mem148[ds_123:0x29E3:word16];
-				word16 si_152;
-				word16 ax_153 = fn0800_AD2F(ds_123, ptrArg00, wArg02, out si_152);
-				Mem155[ss:fp - 0x08 + 0x00:word16] = dx_128;
-				Mem156[ss:fp - 0x0A + 0x00:word16] = ax_153;
-				Mem161[ss:fp - 0x28 + 0x00:word16] = 0x00;
-				Mem164[ss:fp - 0x2A + 0x00:word16] = 0x00;
-				Mem166[ss:fp - 44 + 0x00:word16] = 0x02;
-				Mem169[ss:fp - 0x2E + 0x00:word16] = Mem166[ds_123:0x29E5:word16];
-				Mem172[ss:fp - 0x30 + 0x00:word16] = Mem169[ds_123:0x29E3:word16];
-				selector ds_173;
-				fn0800_ACB3(fp - 0x02, ds_123, ptrArg00, wArg02, wArg08, out ds_173);
-				Mem179[ss:fp - 0x28 + 0x00:word16] = Mem172[ds_173:0x29E5:word16];
-				Mem182[ss:fp - 0x2A + 0x00:word16] = Mem179[ds_173:0x29E3:word16];
-				word16 di_183;
-				selector ds_184;
-				fn0800_3FAD(fp - 0x02, ds_173, wArg00, wArg02, out di_183, out ds_184);
-				Mem191[ss:fp - 0x28 + 0x00:word16] = Mem182[ds_184:0x29E5:word16];
-				Mem194[ss:fp - 0x2A + 0x00:word16] = Mem191[ds_184:0x29E3:word16];
-				word16 di_195;
-				selector ds_196;
-				Mem199[ss:fp - 0x0C + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_184, wArg00, wArg02, out di_195, out ds_196);
-				if (di_195 != 0x00)
-					Mem933[ss:fp - 0x0C + 0x00:word16] = Mem199[ss:fp - 0x0C + 0x00:word16] - 0x01;
-				word16 dx_209;
-				word16 ax_211 = fn0800_8C69(Mem199[ss:fp - 0x0C + 0x00:word16], 0x09, 0x00, bp, out dx_209) + di_195;
-				Mem215[ss:fp - 0x04 + 0x00:word16] = dx_209 + (ax_211 <u 0x00);
-				Mem216[ss:fp - 0x06 + 0x00:word16] = ax_211;
-				Mem221[ss:fp - 0x28 + 0x00:word16] = 0x00;
-				Mem224[ss:fp - 0x2A + 0x00:word16] = 0x00;
-				Mem226[ss:fp - 44 + 0x00:word16] = 22;
-				Mem229[ss:fp - 0x2E + 0x00:word16] = Mem226[ds_196:0x29E5:word16];
-				Mem232[ss:fp - 0x30 + 0x00:word16] = Mem229[ds_196:0x29E3:word16];
-				selector ds_233;
-				fn0800_ACB3(fp - 0x02, ds_196, ptrArg00, wArg02, wArg08, out ds_233);
-				Mem239[ss:fp - 0x28 + 0x00:word16] = Mem232[ds_233:0x29E5:word16];
-				Mem242[ss:fp - 0x2A + 0x00:word16] = Mem239[ds_233:0x29E3:word16];
-				word16 di_243;
-				selector ds_244;
-				fn0800_3FAD(fp - 0x02, ds_233, wArg00, wArg02, out di_243, out ds_244);
-				Mem250[ss:fp - 0x28 + 0x00:word16] = Mem242[ds_244:0x29E5:word16];
-				Mem253[ss:fp - 0x2A + 0x00:word16] = Mem250[ds_244:0x29E3:word16];
-				word16 di_254;
-				selector ds_255;
-				Mem259[ss:fp - 0x1E + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_244, wArg00, wArg02, out di_254, out ds_255);
-				Mem262[ss:fp - 0x28 + 0x00:word16] = Mem259[ds_255:0x29E5:word16];
-				Mem265[ss:fp - 0x2A + 0x00:word16] = Mem262[ds_255:0x29E3:word16];
-				word16 di_266;
-				selector ds_267;
-				Mem271[ss:fp - 0x20 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_255, wArg00, wArg02, out di_266, out ds_267);
-				Mem274[ss:fp - 0x28 + 0x00:word16] = Mem271[ds_267:0x29E5:word16];
-				Mem277[ss:fp - 0x2A + 0x00:word16] = Mem274[ds_267:0x29E3:word16];
+				Mem138[ss:fp - 0x28 + 0x00:word16] = Mem113[ds_115:0x29E5:word16];
+				Mem141[ss:fp - 0x2A + 0x00:word16] = Mem138[ds_115:0x29E3:word16];
+				byte dl_143;
+				word16 si_144;
+				word16 ax_145 = fn0800_AD2F(ds_115, ptrArg00, wArg02, out dl_143, out si_144);
+				Mem147[ss:fp - 0x08 + 0x00:word16] = dx_120;
+				Mem148[ss:fp - 0x0A + 0x00:word16] = ax_145;
+				Mem153[ss:fp - 0x28 + 0x00:word16] = 0x00;
+				Mem156[ss:fp - 0x2A + 0x00:word16] = 0x00;
+				Mem158[ss:fp - 44 + 0x00:word16] = 0x02;
+				Mem161[ss:fp - 0x2E + 0x00:word16] = Mem158[ds_115:0x29E5:word16];
+				Mem164[ss:fp - 0x30 + 0x00:word16] = Mem161[ds_115:0x29E3:word16];
+				word16 di_165;
+				selector ds_166;
+				fn0800_ACB3(fp - 0x02, ds_115, wArg00, wArg02, wArg08, out di_165, out ds_166);
+				Mem172[ss:fp - 0x28 + 0x00:word16] = Mem164[ds_166:0x29E5:word16];
+				Mem175[ss:fp - 0x2A + 0x00:word16] = Mem172[ds_166:0x29E3:word16];
+				word16 si_176;
+				word16 di_177;
+				selector ds_178;
+				fn0800_3FAD(fp - 0x02, ds_166, wArg00, wArg02, out si_176, out di_177, out ds_178);
+				Mem185[ss:fp - 0x28 + 0x00:word16] = Mem175[ds_178:0x29E5:word16];
+				Mem188[ss:fp - 0x2A + 0x00:word16] = Mem185[ds_178:0x29E3:word16];
+				word16 si_189;
+				word16 di_190;
+				selector ds_191;
+				Mem194[ss:fp - 0x0C + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_178, wArg00, wArg02, out si_189, out di_190, out ds_191);
+				if (di_190 != 0x00)
+					Mem558[ss:fp - 0x0C + 0x00:word16] = Mem194[ss:fp - 0x0C + 0x00:word16] - 0x01;
+				word16 dx_204;
+				word16 ax_206 = fn0800_8C69(Mem194[ss:fp - 0x0C + 0x00:word16], 0x09, 0x00, bp, out dx_204) + di_190;
+				Mem210[ss:fp - 0x04 + 0x00:word16] = dx_204 + (ax_206 <u 0x00);
+				Mem211[ss:fp - 0x06 + 0x00:word16] = ax_206;
+				Mem216[ss:fp - 0x28 + 0x00:word16] = 0x00;
+				Mem219[ss:fp - 0x2A + 0x00:word16] = 0x00;
+				Mem221[ss:fp - 44 + 0x00:word16] = 22;
+				Mem224[ss:fp - 0x2E + 0x00:word16] = Mem221[ds_191:0x29E5:word16];
+				Mem227[ss:fp - 0x30 + 0x00:word16] = Mem224[ds_191:0x29E3:word16];
+				word16 di_228;
+				selector ds_229;
+				fn0800_ACB3(fp - 0x02, ds_191, wArg00, wArg02, wArg08, out di_228, out ds_229);
+				Mem235[ss:fp - 0x28 + 0x00:word16] = Mem227[ds_229:0x29E5:word16];
+				Mem238[ss:fp - 0x2A + 0x00:word16] = Mem235[ds_229:0x29E3:word16];
+				word16 si_239;
+				word16 di_240;
+				selector ds_241;
+				fn0800_3FAD(fp - 0x02, ds_229, wArg00, wArg02, out si_239, out di_240, out ds_241);
+				Mem247[ss:fp - 0x28 + 0x00:word16] = Mem238[ds_241:0x29E5:word16];
+				Mem250[ss:fp - 0x2A + 0x00:word16] = Mem247[ds_241:0x29E3:word16];
+				word16 si_251;
+				word16 di_252;
+				selector ds_253;
+				Mem257[ss:fp - 0x1E + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_241, wArg00, wArg02, out si_251, out di_252, out ds_253);
+				Mem260[ss:fp - 0x28 + 0x00:word16] = Mem257[ds_253:0x29E5:word16];
+				Mem263[ss:fp - 0x2A + 0x00:word16] = Mem260[ds_253:0x29E3:word16];
+				word16 si_264;
+				word16 di_265;
+				selector ds_266;
+				Mem270[ss:fp - 0x20 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_253, wArg00, wArg02, out si_264, out di_265, out ds_266);
+				Mem273[ss:fp - 0x28 + 0x00:word16] = Mem270[ds_266:0x29E5:word16];
+				Mem276[ss:fp - 0x2A + 0x00:word16] = Mem273[ds_266:0x29E3:word16];
+				word16 si_277;
 				word16 di_278;
 				selector ds_279;
-				Mem283[ss:fp - 0x12 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_267, wArg00, wArg02, out di_278, out ds_279);
+				Mem283[ss:fp - 0x12 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_266, wArg00, wArg02, out si_277, out di_278, out ds_279);
 				Mem286[ss:fp - 0x28 + 0x00:word16] = Mem283[ds_279:0x29E5:word16];
 				Mem289[ss:fp - 0x2A + 0x00:word16] = Mem286[ds_279:0x29E3:word16];
-				word16 di_290;
-				selector ds_291;
-				Mem295[ss:fp - 0x14 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_279, wArg00, wArg02, out di_290, out ds_291);
-				Mem298[ss:fp - 0x28 + 0x00:word16] = Mem295[ds_291:0x29E5:word16];
-				Mem301[ss:fp - 0x2A + 0x00:word16] = Mem298[ds_291:0x29E3:word16];
-				word16 di_302;
-				selector ds_303;
-				Mem307[ss:fp - 0x1A + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_291, wArg00, wArg02, out di_302, out ds_303);
-				Mem310[ss:fp - 0x28 + 0x00:word16] = Mem307[ds_303:0x29E5:word16];
-				Mem313[ss:fp - 0x2A + 0x00:word16] = Mem310[ds_303:0x29E3:word16];
-				word16 di_314;
-				selector ds_315;
-				Mem319[ss:fp - 0x1C + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_303, wArg00, wArg02, out di_314, out ds_315);
-				Mem322[ss:fp - 0x28 + 0x00:word16] = Mem319[ds_315:0x29E5:word16];
-				Mem325[ss:fp - 0x2A + 0x00:word16] = Mem322[ds_315:0x29E3:word16];
-				word16 di_326;
-				selector ds_327;
-				Mem331[ss:fp - 0x18 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_315, wArg00, wArg02, out di_326, out ds_327);
-				Mem334[ss:fp - 0x28 + 0x00:word16] = Mem331[ds_327:0x29E5:word16];
-				Mem337[ss:fp - 0x2A + 0x00:word16] = Mem334[ds_327:0x29E3:word16];
-				word16 di_338;
-				selector ds_339;
-				Mem343[ss:fp - 22 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_327, wArg00, wArg02, out di_338, out ds_339);
-				Mem346[ss:fp - 0x28 + 0x00:word16] = Mem343[ds_339:10721:word16];
-				Mem349[ss:fp - 0x2A + 0x00:word16] = Mem346[ds_339:10719:word16];
-				Mem352[ss:fp - 44 + 0x00:word16] = 0x4D5A;
-				selector ds_354 = fn0800_401E(fp - 0x02, ds_339, wArg00, wArg02, wArg04);
-				Mem358[ss:fp - 0x28 + 0x00:word16] = Mem352[ds_354:10721:word16];
-				Mem361[ss:fp - 0x2A + 0x00:word16] = Mem358[ds_354:10719:word16];
-				Mem366[ss:fp - 44 + 0x00:word16] = 0x00;
-				Mem368[ss:fp - 0x2E + 0x00:word16] = 0x00;
-				selector ds_370 = fn0800_409C(fp - 0x02, ds_354, wArg02, wArg04, wArg06);
-				Mem374[ss:fp - 0x28 + 0x00:word16] = Mem368[ds_370:10721:word16];
-				Mem377[ss:fp - 0x2A + 0x00:word16] = Mem374[ds_370:10719:word16];
-				Mem382[ss:fp - 44 + 0x00:word16] = 0x00;
-				Mem384[ss:fp - 0x2E + 0x00:word16] = 0x00;
-				selector ds_385 = fn0800_409C(fp - 0x02, ds_370, wArg02, wArg04, wArg06);
-				Mem390[ss:fp - 0x28 + 0x00:word16] = Mem384[ds_385:10721:word16];
-				Mem393[ss:fp - 0x2A + 0x00:word16] = Mem390[ds_385:10719:word16];
-				Mem396[ss:fp - 44 + 0x00:word16] = Mem393[ss:fp - 0x12 + 0x00:word16];
-				selector ds_398;
-				fn0800_40BF(fp - 0x02, ds_385, bArg00, wArg02, wArg04, out ds_398);
-				Mem404[ss:fp - 0x28 + 0x00:word16] = Mem396[ds_398:10721:word16];
-				Mem407[ss:fp - 0x2A + 0x00:word16] = Mem404[ds_398:10719:word16];
-				Mem410[ss:fp - 44 + 0x00:word16] = Mem407[ss:fp - 0x14 + 0x00:word16];
-				selector ds_411;
-				fn0800_40BF(fp - 0x02, ds_398, bArg00, wArg02, wArg04, out ds_411);
-				Mem417[ss:fp - 0x28 + 0x00:word16] = Mem410[ds_411:10721:word16];
-				Mem420[ss:fp - 0x2A + 0x00:word16] = Mem417[ds_411:10719:word16];
-				Mem423[ss:fp - 44 + 0x00:word16] = Mem420[ss:fp - 22 + 0x00:word16];
-				selector ds_424;
-				fn0800_40BF(fp - 0x02, ds_411, bArg00, wArg02, wArg04, out ds_424);
-				Mem430[ss:fp - 0x28 + 0x00:word16] = Mem423[ds_424:10721:word16];
-				Mem433[ss:fp - 0x2A + 0x00:word16] = Mem430[ds_424:10719:word16];
-				Mem436[ss:fp - 44 + 0x00:word16] = Mem433[ss:fp - 0x18 + 0x00:word16];
-				selector ds_437;
-				fn0800_40BF(fp - 0x02, ds_424, bArg00, wArg02, wArg04, out ds_437);
-				Mem442[ss:fp - 0x28 + 0x00:word16] = Mem436[ds_437:10721:word16];
-				Mem445[ss:fp - 0x2A + 0x00:word16] = Mem442[ds_437:10719:word16];
-				Mem450[ss:fp - 44 + 0x00:word16] = 0x00;
-				selector ds_451 = fn0800_401E(fp - 0x02, ds_437, wArg00, wArg02, wArg04);
-				Mem456[ss:fp - 0x28 + 0x00:word16] = Mem450[ds_451:10721:word16];
-				Mem459[ss:fp - 0x2A + 0x00:word16] = Mem456[ds_451:10719:word16];
-				Mem462[ss:fp - 44 + 0x00:word16] = Mem459[ss:fp - 0x1A + 0x00:word16];
+				word16 si_290;
+				word16 di_291;
+				selector ds_292;
+				Mem296[ss:fp - 0x14 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_279, wArg00, wArg02, out si_290, out di_291, out ds_292);
+				Mem299[ss:fp - 0x28 + 0x00:word16] = Mem296[ds_292:0x29E5:word16];
+				Mem302[ss:fp - 0x2A + 0x00:word16] = Mem299[ds_292:0x29E3:word16];
+				word16 si_303;
+				word16 di_304;
+				selector ds_305;
+				Mem309[ss:fp - 0x1A + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_292, wArg00, wArg02, out si_303, out di_304, out ds_305);
+				Mem312[ss:fp - 0x28 + 0x00:word16] = Mem309[ds_305:0x29E5:word16];
+				Mem315[ss:fp - 0x2A + 0x00:word16] = Mem312[ds_305:0x29E3:word16];
+				word16 si_316;
+				word16 di_317;
+				selector ds_318;
+				Mem322[ss:fp - 0x1C + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_305, wArg00, wArg02, out si_316, out di_317, out ds_318);
+				Mem325[ss:fp - 0x28 + 0x00:word16] = Mem322[ds_318:0x29E5:word16];
+				Mem328[ss:fp - 0x2A + 0x00:word16] = Mem325[ds_318:0x29E3:word16];
+				word16 si_329;
+				word16 di_330;
+				selector ds_331;
+				Mem335[ss:fp - 0x18 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_318, wArg00, wArg02, out si_329, out di_330, out ds_331);
+				Mem338[ss:fp - 0x28 + 0x00:word16] = Mem335[ds_331:0x29E5:word16];
+				Mem341[ss:fp - 0x2A + 0x00:word16] = Mem338[ds_331:0x29E3:word16];
+				word16 si_342;
+				word16 di_343;
+				selector ds_344;
+				Mem348[ss:fp - 22 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_331, wArg00, wArg02, out si_342, out di_343, out ds_344);
+				Mem351[ss:fp - 0x28 + 0x00:word16] = Mem348[ds_344:10721:word16];
+				Mem354[ss:fp - 0x2A + 0x00:word16] = Mem351[ds_344:10719:word16];
+				Mem357[ss:fp - 44 + 0x00:word16] = 0x4D5A;
+				word16 si_359;
+				selector ds_360;
+				fn0800_401E(fp - 0x02, ds_344, wArg00, wArg02, wArg04, out si_359, out ds_360);
+				Mem365[ss:fp - 0x28 + 0x00:word16] = Mem357[ds_360:10721:word16];
+				Mem368[ss:fp - 0x2A + 0x00:word16] = Mem365[ds_360:10719:word16];
+				Mem373[ss:fp - 44 + 0x00:word16] = 0x00;
+				Mem375[ss:fp - 0x2E + 0x00:word16] = 0x00;
+				word16 si_377;
+				selector ds_378;
+				fn0800_409C(fp - 0x02, ds_360, wArg02, wArg04, wArg06, out si_377, out ds_378);
+				Mem383[ss:fp - 0x28 + 0x00:word16] = Mem375[ds_378:10721:word16];
+				Mem386[ss:fp - 0x2A + 0x00:word16] = Mem383[ds_378:10719:word16];
+				Mem391[ss:fp - 44 + 0x00:word16] = 0x00;
+				Mem393[ss:fp - 0x2E + 0x00:word16] = 0x00;
+				word16 si_394;
+				selector ds_395;
+				fn0800_409C(fp - 0x02, ds_378, wArg02, wArg04, wArg06, out si_394, out ds_395);
+				Mem401[ss:fp - 0x28 + 0x00:word16] = Mem393[ds_395:10721:word16];
+				Mem404[ss:fp - 0x2A + 0x00:word16] = Mem401[ds_395:10719:word16];
+				Mem407[ss:fp - 44 + 0x00:word16] = Mem404[ss:fp - 0x12 + 0x00:word16];
+				selector ds_409;
+				fn0800_40BF(fp - 0x02, ds_395, bArg00, wArg02, wArg04, out ds_409);
+				Mem415[ss:fp - 0x28 + 0x00:word16] = Mem407[ds_409:10721:word16];
+				Mem418[ss:fp - 0x2A + 0x00:word16] = Mem415[ds_409:10719:word16];
+				Mem421[ss:fp - 44 + 0x00:word16] = Mem418[ss:fp - 0x14 + 0x00:word16];
+				selector ds_422;
+				fn0800_40BF(fp - 0x02, ds_409, bArg00, wArg02, wArg04, out ds_422);
+				Mem428[ss:fp - 0x28 + 0x00:word16] = Mem421[ds_422:10721:word16];
+				Mem431[ss:fp - 0x2A + 0x00:word16] = Mem428[ds_422:10719:word16];
+				Mem434[ss:fp - 44 + 0x00:word16] = Mem431[ss:fp - 22 + 0x00:word16];
+				selector ds_435;
+				fn0800_40BF(fp - 0x02, ds_422, bArg00, wArg02, wArg04, out ds_435);
+				Mem441[ss:fp - 0x28 + 0x00:word16] = Mem434[ds_435:10721:word16];
+				Mem444[ss:fp - 0x2A + 0x00:word16] = Mem441[ds_435:10719:word16];
+				Mem447[ss:fp - 44 + 0x00:word16] = Mem444[ss:fp - 0x18 + 0x00:word16];
+				selector ds_448;
+				fn0800_40BF(fp - 0x02, ds_435, bArg00, wArg02, wArg04, out ds_448);
+				Mem453[ss:fp - 0x28 + 0x00:word16] = Mem447[ds_448:10721:word16];
+				Mem456[ss:fp - 0x2A + 0x00:word16] = Mem453[ds_448:10719:word16];
+				Mem461[ss:fp - 44 + 0x00:word16] = 0x00;
+				word16 si_462;
 				selector ds_463;
-				fn0800_40BF(fp - 0x02, ds_451, bArg00, wArg02, wArg04, out ds_463);
-				Mem469[ss:fp - 0x28 + 0x00:word16] = Mem462[ds_463:10721:word16];
+				fn0800_401E(fp - 0x02, ds_448, wArg00, wArg02, wArg04, out si_462, out ds_463);
+				Mem469[ss:fp - 0x28 + 0x00:word16] = Mem461[ds_463:10721:word16];
 				Mem472[ss:fp - 0x2A + 0x00:word16] = Mem469[ds_463:10719:word16];
-				Mem475[ss:fp - 44 + 0x00:word16] = Mem472[ss:fp - 0x1C + 0x00:word16];
+				Mem475[ss:fp - 44 + 0x00:word16] = Mem472[ss:fp - 0x1A + 0x00:word16];
 				selector ds_476;
 				fn0800_40BF(fp - 0x02, ds_463, bArg00, wArg02, wArg04, out ds_476);
 				Mem482[ss:fp - 0x28 + 0x00:word16] = Mem475[ds_476:10721:word16];
 				Mem485[ss:fp - 0x2A + 0x00:word16] = Mem482[ds_476:10719:word16];
-				Mem488[ss:fp - 44 + 0x00:word16] = 0x1E;
+				Mem488[ss:fp - 44 + 0x00:word16] = Mem485[ss:fp - 0x1C + 0x00:word16];
 				selector ds_489;
 				fn0800_40BF(fp - 0x02, ds_476, bArg00, wArg02, wArg04, out ds_489);
 				Mem495[ss:fp - 0x28 + 0x00:word16] = Mem488[ds_489:10721:word16];
 				Mem498[ss:fp - 0x2A + 0x00:word16] = Mem495[ds_489:10719:word16];
-				Mem501[ss:fp - 44 + 0x00:word16] = Mem498[ss:fp - 0x20 + 0x00:word16];
+				Mem501[ss:fp - 44 + 0x00:word16] = 0x1E;
 				selector ds_502;
 				fn0800_40BF(fp - 0x02, ds_489, bArg00, wArg02, wArg04, out ds_502);
-				Mem507[ss:fp - 0x28 + 0x00:word16] = Mem501[ds_502:10721:word16];
-				Mem510[ss:fp - 0x2A + 0x00:word16] = Mem507[ds_502:10719:word16];
-				Mem515[ss:fp - 44 + 0x00:word16] = 0x00;
-				selector ds_516 = fn0800_401E(fp - 0x02, ds_502, wArg00, wArg02, wArg04);
-				Mem520[ss:fp - 0x28 + 0x00:word16] = 0x00;
-				word16 ax_521 = Mem520[ss:fp - 0x1E + 0x00:word16];
-				Mem527[ss:fp - 0x2A + 0x00:word16] = 0x00;
-				Mem529[ss:fp - 44 + 0x00:word16] = ax_521 + 0x20;
-				Mem532[ss:fp - 0x2E + 0x00:word16] = Mem529[ds_516:0x29E5:word16];
-				Mem535[ss:fp - 0x30 + 0x00:word16] = Mem532[ds_516:0x29E3:word16];
-				selector ds_536;
-				fn0800_ACB3(fp - 0x02, ds_516, ptrArg00, wArg02, wArg08, out ds_536);
-				Mem540[ss:fp - 0x0E + 0x00:word16] = 0x00;
-				do
-				{
-					Mem547[ss:fp - 0x28 + 0x00:word16] = Mem540[ds_536:0x29E5:word16];
-					Mem550[ss:fp - 0x2A + 0x00:word16] = Mem547[ds_536:0x29E3:word16];
-					word16 di_551;
-					word16 ax_556 = DPB(fn0800_3DCF(ds_536, ptrArg00, wArg02, out di_551, out ds_536), 0x00, 8);
-					word16 di_558 = ax_556;
-					if (ax_556 != 0x00)
-					{
-						Mem864[ss:fp - 0x28 + 0x00:word16] = Mem550[ds_536:0x29E5:word16];
-						Mem867[ss:fp - 0x2A + 0x00:word16] = Mem864[ds_536:0x29E3:word16];
-						Mem872[ss:fp - 0x22 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_536, wArg00, wArg02, out di_558, out ds_536);
-						Mem876[ss:fp - 0x0C + 0x00:word16] = di_558;
-						word16 si_873 = 0x00;
-						while (true)
-						{
-							word16 ax_883 = Mem876[ss:fp - 0x0C + 0x00:word16];
-							Mem885[ss:fp - 0x0C + 0x00:word16] = Mem876[ss:fp - 0x0C + 0x00:word16] - 0x01;
-							if (ax_883 == 0x00)
-								break;
-							Mem895[ss:fp - 0x28 + 0x00:word16] = Mem885[ds_536:0x29E5:word16];
-							Mem898[ss:fp - 0x2A + 0x00:word16] = Mem895[ds_536:0x29E3:word16];
-							word16 di_899;
-							selector ds_900;
-							si_873 = si_873 + DPB(fn0800_3DCF(ds_536, ptrArg00, wArg02, out di_899, out ds_900), 0x00, 8);
-							Mem909[ss:fp - 0x28 + 0x00:word16] = Mem898[ds_900:10721:word16];
-							Mem912[ss:fp - 0x2A + 0x00:word16] = Mem909[ds_900:10719:word16];
-							Mem914[ss:fp - 44 + 0x00:word16] = si_873;
-							selector ds_915;
-							fn0800_40BF(fp - 0x02, ds_900, bArg00, wArg02, wArg04, out ds_915);
-							Mem921[ss:fp - 0x28 + 0x00:word16] = Mem914[ds_915:10721:word16];
-							Mem924[ss:fp - 0x2A + 0x00:word16] = Mem921[ds_915:10719:word16];
-							Mem927[ss:fp - 44 + 0x00:word16] = Mem924[ss:fp - 0x22 + 0x00:word16];
-							di_558 = fn0800_40BF(fp - 0x02, ds_915, bArg00, wArg02, wArg04, out ds_536);
-						}
-						Mem891[ss:fp - 0x0E + 0x00:word16] = Mem885[ss:fp - 0x0E + 0x00:word16] + di_558;
-					}
-				} while (di_558 != 0x00);
-				word16 di_596;
-				word16 dx_593;
-				Mem575[ss:fp - 0x28 + 0x00:word16] = Mem550[ds_536:10721:word16];
-				Mem578[ss:fp - 0x2A + 0x00:word16] = Mem575[ds_536:10719:word16];
-				word16 si_579;
-				word16 ax_580 = fn0800_AD2F(ds_536, ptrArg00, wArg02, out si_579);
-				if (true && (false || ax_580 <u 0x0200))
-				{
-					Mem849[ss:fp - 0x28 + 0x00:word16] = Mem578[ds_536:10721:word16];
-					Mem852[ss:fp - 0x2A + 0x00:word16] = Mem849[ds_536:10719:word16];
-					word16 si_853;
-					dx_593 = 0x0200 - fn0800_AD2F(ds_536, ptrArg00, wArg02, out si_853);
-					di_596 = dx_593;
-				}
-				else
-				{
-					Mem833[ss:fp - 0x28 + 0x00:word16] = Mem578[ds_536:10721:word16];
-					Mem836[ss:fp - 0x2A + 0x00:word16] = Mem833[ds_536:10719:word16];
-					word16 si_837;
-					word16 dx_841 = 0x10 - fn0800_AD2F(ds_536, ptrArg00, wArg02, out si_837);
-					dx_593 = dx_841 & 0x0F;
-					di_596 = dx_841 & 0x0F;
-				}
-				while (di_596 != 0x00)
-				{
-					Mem817[ss:fp - 0x28 + 0x00:word16] = Mem578[ds_536:10721:word16];
-					Mem820[ss:fp - 0x2A + 0x00:word16] = Mem817[ds_536:10719:word16];
-					Mem824[ss:fp - 44 + 0x00:word16] = DPB(di_596, 0x00, 0);
-					di_596 = fn0800_4047(ds_536, bArg00, ptrArg02, wArg04, out ds_536);
-				}
-				Mem607[ss:fp - 0x28 + 0x00:word16] = Mem578[ds_536:10721:word16];
-				Mem610[ss:fp - 0x2A + 0x00:word16] = Mem607[ds_536:10719:word16];
-				word16 si_611;
-				word16 dx_616;
-				Mem618[ss:fp - 0x10 + 0x00:word16] = fn0800_8C8A(fn0800_AD2F(ds_536, ptrArg00, wArg02, out si_611), 0x04, dx_593, bp, out dx_616);
-				Mem623[ss:fp - 0x28 + 0x00:word16] = 0x00;
-				Mem626[ss:fp - 0x2A + 0x00:word16] = Mem623[ss:fp - 0x08 + 0x00:word16];
-				Mem629[ss:fp - 44 + 0x00:word16] = Mem626[ss:fp - 0x0A + 0x00:word16];
-				Mem632[ss:fp - 0x2E + 0x00:word16] = Mem629[ds_536:0x29E5:word16];
-				Mem635[ss:fp - 0x30 + 0x00:word16] = Mem632[ds_536:0x29E3:word16];
-				selector ds_636;
-				fn0800_ACB3(fp - 0x02, ds_536, ptrArg00, wArg02, wArg08, out ds_636);
-				selector ds_640;
-				word16 ax_641 = fn0800_5374(fp - 0x02, ds_636, out ds_640);
-				if (ax_641 == 0x00)
-				{
-					Mem655[ss:fp - 0x28 + 0x00:word16] = Mem635[ds_640:10721:word16];
-					Mem658[ss:fp - 0x2A + 0x00:word16] = Mem655[ds_640:10719:word16];
-					word16 si_659;
-					word16 ax_660 = fn0800_AD2F(ds_640, ptrArg00, wArg02, out si_659);
-					Mem662[ss:fp - 0x08 + 0x00:word16] = ax_641;
-					Mem663[ss:fp - 0x0A + 0x00:word16] = ax_660;
-					Mem668[ss:fp - 0x28 + 0x00:word16] = 0x00;
-					Mem671[ss:fp - 0x2A + 0x00:word16] = Mem668[ss:fp - 0x04 + 0x00:word16];
-					Mem674[ss:fp - 44 + 0x00:word16] = Mem671[ss:fp - 0x06 + 0x00:word16];
-					Mem677[ss:fp - 0x2E + 0x00:word16] = Mem674[ds_640:0x29E5:word16];
-					Mem680[ss:fp - 0x30 + 0x00:word16] = Mem677[ds_640:0x29E3:word16];
-					selector ds_681;
-					fn0800_ACB3(fp - 0x02, ds_640, ptrArg00, wArg02, wArg08, out ds_681);
-					Mem687[ss:fp - 0x28 + 0x00:word16] = Mem680[ds_681:0x29E5:word16];
-					Mem690[ss:fp - 0x2A + 0x00:word16] = Mem687[ds_681:0x29E3:word16];
-					word16 si_691;
-					selector ds_692;
-					word16 ax_695 = fn0800_4194(fp - 0x02, ds_681, wArg00, wArg02, out si_691, out ds_692) - Mem690[ss:(fp - 0x06) + 0x00:word16];
-					Mem701[ss:fp - 0x28 + 0x00:word16] = ax_641 - Mem690[ss:(fp - 0x04) + 0x00:word16] - (ax_695 <u 0x00);
-					Mem703[ss:fp - 0x2A + 0x00:word16] = ax_695;
-					Mem706[ss:fp - 44 + 0x00:word16] = Mem703[ds_692:10721:word16];
-					Mem709[ss:fp - 0x2E + 0x00:word16] = Mem706[ds_692:10719:word16];
-					Mem712[ss:fp - 0x30 + 0x00:word16] = Mem709[ds_692:0x29E5:word16];
-					Mem715[ss:fp - 0x32 + 0x00:word16] = Mem712[ds_692:0x29E3:word16];
-					selector ds_717 = fn0800_3B0A(fp - 0x02, ds_692, wArg08, wArg0A);
-					word16 di_719 = Mem715[ss:fp - 0x0A + 0x00:word16];
-					word16 dx_726;
-					Mem728[ss:fp - 0x0C + 0x00:word16] = fn0800_8CAA(Mem715[ss:fp - 0x0A + 0x00:word16], 0x09, Mem715[ss:fp - 0x08 + 0x00:word16], bp, out dx_726);
-					if ((di_719 & 0x01FF) != 0x00)
-						Mem813[ss:fp - 0x0C + 0x00:word16] = Mem728[ss:fp - 0x0C + 0x00:word16] + 0x01;
-					Mem737[ss:fp - 0x28 + 0x00:word16] = 0x00;
-					Mem740[ss:fp - 0x2A + 0x00:word16] = 0x00;
-					Mem742[ss:fp - 44 + 0x00:word16] = 0x02;
-					Mem745[ss:fp - 0x2E + 0x00:word16] = Mem742[ds_717:10721:word16];
-					Mem748[ss:fp - 0x30 + 0x00:word16] = Mem745[ds_717:10719:word16];
-					selector ds_749;
-					fn0800_ACB3(fp - 0x02, ds_717, ptrArg00, wArg02, wArg08, out ds_749);
-					Mem755[ss:fp - 0x28 + 0x00:word16] = Mem748[ds_749:10721:word16];
-					Mem758[ss:fp - 0x2A + 0x00:word16] = Mem755[ds_749:10719:word16];
-					Mem760[ss:fp - 44 + 0x00:word16] = di_719 & 0x01FF;
-					selector ds_761;
-					fn0800_40BF(fp - 0x02, ds_749, bArg00, wArg02, wArg04, out ds_761);
-					Mem767[ss:fp - 0x28 + 0x00:word16] = Mem760[ds_761:10721:word16];
-					Mem770[ss:fp - 0x2A + 0x00:word16] = Mem767[ds_761:10719:word16];
-					Mem773[ss:fp - 44 + 0x00:word16] = Mem770[ss:fp - 0x0C + 0x00:word16];
-					selector ds_774;
-					fn0800_40BF(fp - 0x02, ds_761, bArg00, wArg02, wArg04, out ds_774);
-					Mem780[ss:fp - 0x28 + 0x00:word16] = Mem773[ds_774:10721:word16];
-					Mem783[ss:fp - 0x2A + 0x00:word16] = Mem780[ds_774:10719:word16];
-					Mem786[ss:fp - 44 + 0x00:word16] = Mem783[ss:fp - 0x0E + 0x00:word16];
-					selector ds_787;
-					fn0800_40BF(fp - 0x02, ds_774, bArg00, wArg02, wArg04, out ds_787);
-					Mem793[ss:fp - 0x28 + 0x00:word16] = Mem786[ds_787:10721:word16];
-					Mem796[ss:fp - 0x2A + 0x00:word16] = Mem793[ds_787:10719:word16];
-					Mem799[ss:fp - 44 + 0x00:word16] = Mem796[ss:fp - 0x10 + 0x00:word16];
-					selector ds_800;
-					fn0800_40BF(fp - 0x02, ds_787, bArg00, wArg02, wArg04, out ds_800);
-					return ds_800;
-				}
-				else
-					return ds_640;
+				Mem508[ss:fp - 0x28 + 0x00:word16] = Mem501[ds_502:10721:word16];
+				Mem511[ss:fp - 0x2A + 0x00:word16] = Mem508[ds_502:10719:word16];
+				Mem514[ss:fp - 44 + 0x00:word16] = Mem511[ss:fp - 0x20 + 0x00:word16];
+				selector ds_515;
+				fn0800_40BF(fp - 0x02, ds_502, bArg00, wArg02, wArg04, out ds_515);
+				Mem520[ss:fp - 0x28 + 0x00:word16] = Mem514[ds_515:10721:word16];
+				Mem523[ss:fp - 0x2A + 0x00:word16] = Mem520[ds_515:10719:word16];
+				Mem528[ss:fp - 44 + 0x00:word16] = 0x00;
+				word16 si_529;
+				selector ds_530;
+				fn0800_401E(fp - 0x02, ds_515, wArg00, wArg02, wArg04, out si_529, out ds_530);
+				Mem535[ss:fp - 0x28 + 0x00:word16] = 0x00;
+				word16 ax_536 = Mem535[ss:fp - 0x1E + 0x00:word16];
+				Mem542[ss:fp - 0x2A + 0x00:word16] = 0x00;
+				Mem544[ss:fp - 44 + 0x00:word16] = ax_536 + 0x20;
+				Mem547[ss:fp - 0x2E + 0x00:word16] = Mem544[ds_530:0x29E5:word16];
+				Mem550[ss:fp - 0x30 + 0x00:word16] = Mem547[ds_530:0x29E3:word16];
+				word16 di_551;
+				selector ds_552;
+				fn0800_ACB3(fp - 0x02, ds_530, wArg00, wArg02, wArg08, out di_551, out ds_552);
+				Mem556[ss:fp - 0x0E + 0x00:word16] = 0x00;
 			}
 		}
 		else
-			return ds_76;
+			return ds_71;
 	}
 	else
 		return ds;
 }
 
+// 0800:49B5: void fn0800_49B5(Register word16 bp, Register selector ds)
+void fn0800_49B5(word16 bp, selector ds)
+{
+	word16 dx_13;
+	word16 di_14;
+	selector ds_15;
+	word16 ax_19 = DPB(fn0800_3DCF(bp, ds, DPB(ptrLoc04, Mem0[ds:0x29E3:word16], 0), Mem0[ds:0x29E5:word16], out dx_13, out di_14, out ds_15), 0x00, 8);
+	if (ax_19 == 0x00)
+	{
+		fn0800_4A22(bp, ax_19, ds_15);
+		return;
+	}
+	else
+	{
+		Mem34[ss:fp - 0x02 + 0x00:word16] = Mem0[ds_15:0x29E5:word16];
+		Mem38[ss:fp - 0x04 + 0x00:word16] = Mem34[ds_15:0x29E3:word16];
+		word16 si_41;
+		word16 di_42;
+		selector ds_43;
+		Mem46[ss:bp - 0x20 + 0x00:word16] = fn0800_3FAD(bp, ds_15, wArg00, wArg02, out si_41, out di_42, out ds_43);
+		Mem50[ss:bp - 0x0A + 0x00:word16] = di_42;
+		fn0800_4A15(bp, di_42, ds_43);
+		return;
+	}
+}
+
+// 0800:49F6: void fn0800_49F6(Register word16 cx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds)
+void fn0800_49F6(word16 cx, word16 bp, word16 si, word16 di, selector ds)
+{
+	if (Z && cx != 0x01)
+	{
+		fn0800_4A22(bp, di, ds);
+		return;
+	}
+	else
+	{
+		selector ds_23;
+		fn0800_40BF(bp, ds, (byte) si, Mem0[ds:10719:word16], wArg00, out ds_23);
+		Mem29[ss:fp + 0x00:word16] = Mem0[ds_23:10721:word16];
+		Mem33[ss:fp - 0x02 + 0x00:word16] = Mem29[ds_23:10719:word16];
+		Mem36[ss:fp - 0x04 + 0x00:word16] = Mem33[ss:bp - 0x20 + 0x00:word16];
+		selector ds_40;
+		word16 di_41 = fn0800_40BF(bp, ds_23, bArg00, wArg02, wArg04, out ds_40);
+		fn0800_4A15(bp, di_41, ds_40);
+		return;
+	}
+}
+
+// 0800:4A15: void fn0800_4A15(Register word16 bp, Register word16 di, Register selector ds)
+void fn0800_4A15(word16 bp, word16 di, selector ds)
+{
+	word16 ax_5 = Mem0[ss:bp - 0x0A + 0x00:word16];
+	Mem7[ss:bp - 0x0A + 0x00:word16] = Mem0[ss:bp - 0x0A + 0x00:word16] - 0x01;
+	if (ax_5 != 0x00)
+	{
+		word16 dx_41;
+		word16 di_42;
+		selector ds_43;
+		word16 si_48 = si + DPB(fn0800_3DCF(bp, ds, DPB(ptrLoc04, Mem7[ds:0x29E3:word16], 0), Mem7[ds:0x29E5:word16], out dx_41, out di_42, out ds_43), 0x00, 8);
+		Mem52[ss:fp - 0x02 + 0x00:word16] = Mem7[ds_43:10721:word16];
+		Mem55[ss:fp - 0x04 + 0x00:word16] = Mem52[ds_43:10719:word16];
+		Mem57[ss:fp - 0x06 + 0x00:word16] = si_48;
+		selector ds_61;
+		fn0800_40BF(bp, ds_43, bArg00, wArg02, wArg04, out ds_61);
+		Mem67[ss:fp - 0x02 + 0x00:word16] = Mem57[ds_61:10721:word16];
+		Mem70[ss:fp - 0x04 + 0x00:word16] = Mem67[ds_61:10719:word16];
+		Mem73[ss:fp - 0x06 + 0x00:word16] = Mem70[ss:bp - 0x20 + 0x00:word16];
+		selector ds_74;
+		word16 di_75 = fn0800_40BF(bp, ds_61, bArg00, wArg02, wArg04, out ds_74);
+		fn0800_4A15(bp, di_75, ds_74);
+		return;
+	}
+	else
+	{
+		Mem25[ss:bp - 0x0C + 0x00:word16] = Mem7[ss:bp - 0x0C + 0x00:word16] + di;
+		fn0800_4A22(bp, di, ds);
+		return;
+	}
+}
+
+// 0800:4A22: void fn0800_4A22(Register word16 bp, Register word16 di, Register selector ds)
+void fn0800_4A22(word16 bp, word16 di, selector ds)
+{
+	if (di != 0x00)
+	{
+		fn0800_49B5(bp, ds);
+		return;
+	}
+	else
+	{
+		word16 di_298;
+		word16 dx_316;
+		word16 v8_28 = Mem0[ds:10721:word16];
+		byte dl_36;
+		word16 si_37;
+		word16 ax_38 = fn0800_AD2F(ds, DPB(ptrLoc04, Mem0[ds:10719:word16], 0), v8_28, out dl_36, out si_37);
+		if (dx <= 0x00 && (dx < 0x00 || ax_38 <u 0x0200))
+		{
+			Mem323[ss:fp - 0x02 + 0x00:word16] = Mem0[ds:10721:word16];
+			Mem326[ss:fp - 0x04 + 0x00:word16] = Mem323[ds:10719:word16];
+			byte dl_327;
+			word16 si_328;
+			dx_316 = 0x0200 - fn0800_AD2F(ds, ptrArg00, wArg02, out dl_327, out si_328);
+			di_298 = dx_316;
+		}
+		else
+		{
+			Mem306[ss:fp - 0x02 + 0x00:word16] = Mem0[ds:10721:word16];
+			Mem309[ss:fp - 0x04 + 0x00:word16] = Mem306[ds:10719:word16];
+			byte dl_310;
+			word16 si_311;
+			word16 dx_315 = 0x10 - fn0800_AD2F(ds, ptrArg00, wArg02, out dl_310, out si_311);
+			dx_316 = dx_315 & 0x0F;
+			di_298 = dx_315 & 0x0F;
+		}
+		while (di_298 != 0x00)
+		{
+			Mem289[ss:fp - 0x02 + 0x00:word16] = Mem0[ds:10721:word16];
+			Mem292[ss:fp - 0x04 + 0x00:word16] = Mem289[ds:10719:word16];
+			Mem296[ss:fp - 0x06 + 0x00:word16] = DPB(di_298, 0x00, 0);
+			fn0800_4047(bp, ds, bArg00, ptrArg02, wArg04, out di_298, out ds);
+		}
+		Mem65[ss:fp - 0x02 + 0x00:word16] = Mem0[ds:10721:word16];
+		Mem69[ss:fp - 0x04 + 0x00:word16] = Mem65[ds:10719:word16];
+		byte dl_72;
+		word16 si_73;
+		word16 dx_78;
+		Mem80[ss:bp - 0x0E + 0x00:word16] = fn0800_8C8A(fn0800_AD2F(ds, ptrArg00, wArg02, out dl_72, out si_73), 0x04, dx_316, v8_28, out dx_78);
+		Mem86[ss:fp - 0x02 + 0x00:word16] = 0x00;
+		Mem89[ss:fp - 0x04 + 0x00:word16] = Mem86[ss:bp - 0x06 + 0x00:word16];
+		Mem92[ss:fp - 0x06 + 0x00:word16] = Mem89[ss:bp - 0x08 + 0x00:word16];
+		Mem95[ss:fp - 0x08 + 0x00:word16] = Mem92[ds:0x29E5:word16];
+		Mem98[ss:fp - 0x0A + 0x00:word16] = Mem95[ds:0x29E3:word16];
+		word16 di_101;
+		selector ds_102;
+		fn0800_ACB3(bp, ds, wArg00, wArg02, wArg08, out di_101, out ds_102);
+		selector ds_106;
+		word16 ax_107 = fn0800_5374(bp, ds_102, out ds_106);
+		if (ax_107 == 0x00)
+		{
+			Mem121[ss:fp - 0x02 + 0x00:word16] = Mem98[ds_106:10721:word16];
+			Mem124[ss:fp - 0x04 + 0x00:word16] = Mem121[ds_106:10719:word16];
+			byte dl_125;
+			word16 si_126;
+			word16 ax_127 = fn0800_AD2F(ds_106, ptrArg00, wArg02, out dl_125, out si_126);
+			Mem129[ss:bp - 0x06 + 0x00:word16] = ax_107;
+			Mem130[ss:bp - 0x08 + 0x00:word16] = ax_127;
+			Mem135[ss:fp - 0x02 + 0x00:word16] = 0x00;
+			Mem138[ss:fp - 0x04 + 0x00:word16] = Mem135[ss:bp - 0x02 + 0x00:word16];
+			Mem141[ss:fp - 0x06 + 0x00:word16] = Mem138[ss:bp - 0x04 + 0x00:word16];
+			Mem144[ss:fp - 0x08 + 0x00:word16] = Mem141[ds_106:0x29E5:word16];
+			Mem147[ss:fp - 0x0A + 0x00:word16] = Mem144[ds_106:0x29E3:word16];
+			word16 di_148;
+			selector ds_149;
+			fn0800_ACB3(bp, ds_106, wArg00, wArg02, wArg08, out di_148, out ds_149);
+			Mem155[ss:fp - 0x02 + 0x00:word16] = Mem147[ds_149:0x29E5:word16];
+			Mem158[ss:fp - 0x04 + 0x00:word16] = Mem155[ds_149:0x29E3:word16];
+			word16 si_159;
+			selector ds_160;
+			word16 ax_163 = fn0800_4194(bp, ds_149, wArg00, wArg02, out si_159, out ds_160) - Mem158[ss:(bp - 0x04) + 0x00:word16];
+			Mem169[ss:fp - 0x02 + 0x00:word16] = ax_107 - Mem158[ss:(bp - 0x02) + 0x00:word16] - (ax_163 <u 0x00);
+			Mem171[ss:fp - 0x04 + 0x00:word16] = ax_163;
+			Mem174[ss:fp - 0x06 + 0x00:word16] = Mem171[ds_160:10721:word16];
+			Mem177[ss:fp - 0x08 + 0x00:word16] = Mem174[ds_160:10719:word16];
+			Mem180[ss:fp - 0x0A + 0x00:word16] = Mem177[ds_160:0x29E5:word16];
+			Mem183[ss:fp - 0x0C + 0x00:word16] = Mem180[ds_160:0x29E3:word16];
+			selector ds_185;
+			word16 bp_186 = fn0800_3B0A(bp, ds_160, wArg08, wArg0A, out ds_185);
+			word16 di_188 = Mem183[ss:bp_186 - 0x08 + 0x00:word16];
+			word16 dx_195;
+			Mem197[ss:bp_186 - 0x0A + 0x00:word16] = fn0800_8CAA(Mem183[ss:bp_186 - 0x08 + 0x00:word16], 0x09, Mem183[ss:bp_186 - 0x06 + 0x00:word16], v8_28, out dx_195);
+			if ((di_188 & 0x01FF) != 0x00)
+				Mem285[ss:bp_186 - 0x0A + 0x00:word16] = Mem197[ss:bp_186 - 0x0A + 0x00:word16] + 0x01;
+			Mem206[ss:fp - 0x02 + 0x00:word16] = 0x00;
+			Mem209[ss:fp - 0x04 + 0x00:word16] = 0x00;
+			Mem211[ss:fp - 0x06 + 0x00:word16] = 0x02;
+			Mem214[ss:fp - 0x08 + 0x00:word16] = Mem211[ds_185:10721:word16];
+			Mem217[ss:fp - 0x0A + 0x00:word16] = Mem214[ds_185:10719:word16];
+			word16 di_218;
+			selector ds_219;
+			fn0800_ACB3(bp_186, ds_185, wArg00, wArg02, wArg08, out di_218, out ds_219);
+			Mem225[ss:fp - 0x02 + 0x00:word16] = Mem217[ds_219:10721:word16];
+			Mem228[ss:fp - 0x04 + 0x00:word16] = Mem225[ds_219:10719:word16];
+			Mem230[ss:fp - 0x06 + 0x00:word16] = di_218;
+			selector ds_233;
+			fn0800_40BF(bp_186, ds_219, bArg00, wArg02, wArg04, out ds_233);
+			Mem239[ss:fp - 0x02 + 0x00:word16] = Mem230[ds_233:10721:word16];
+			Mem242[ss:fp - 0x04 + 0x00:word16] = Mem239[ds_233:10719:word16];
+			Mem245[ss:fp - 0x06 + 0x00:word16] = Mem242[ss:bp_186 - 0x0A + 0x00:word16];
+			selector ds_246;
+			fn0800_40BF(bp_186, ds_233, bArg00, wArg02, wArg04, out ds_246);
+			Mem252[ss:fp - 0x02 + 0x00:word16] = Mem245[ds_246:10721:word16];
+			Mem255[ss:fp - 0x04 + 0x00:word16] = Mem252[ds_246:10719:word16];
+			Mem258[ss:fp - 0x06 + 0x00:word16] = Mem255[ss:bp_186 - 0x0C + 0x00:word16];
+			selector ds_259;
+			fn0800_40BF(bp_186, ds_246, bArg00, wArg02, wArg04, out ds_259);
+			Mem265[ss:fp - 0x02 + 0x00:word16] = Mem258[ds_259:10721:word16];
+			Mem268[ss:fp - 0x04 + 0x00:word16] = Mem265[ds_259:10719:word16];
+			Mem271[ss:fp - 0x06 + 0x00:word16] = Mem268[ss:bp_186 - 0x0E + 0x00:word16];
+			selector ds_272;
+			fn0800_40BF(bp_186, ds_259, bArg00, wArg02, wArg04, out ds_272);
+			return;
+		}
+		else
+			return;
+	}
+}
+
+// 0800:4B97: Register word16 fn0800_4B97(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
 word16 fn0800_4B97(word16 bp, selector ds, ptr16 & dsOut)
 {
 	selector ds_11;
@@ -6680,55 +8238,69 @@ word16 fn0800_4B97(word16 bp, selector ds, ptr16 & dsOut)
 		return bp;
 }
 
+// 0800:4BB1: Register word16 fn0800_4BB1(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
 word16 fn0800_4BB1(word16 bp, selector ds, ptr16 & dsOut)
 {
 	selector ds_11;
 	if (fn0800_5DCE(bp, ds, Mem0[ds:0x29E3:word16], Mem0[ds:0x29E5:word16], out ds_11) != 0x00)
 	{
-		Mem35[ss:fp - 0x02 + 0x00:word16] = 0x01;
-		Mem40[ss:fp - 0x04 + 0x00:word16] = ~0x00;
-		Mem42[ss:fp - 0x06 + 0x00:word16] = ~0x11;
-		Mem45[ss:fp - 0x08 + 0x00:word16] = Mem42[ds_11:0x29E5:word16];
-		Mem48[ss:fp - 0x0A + 0x00:word16] = Mem45[ds_11:0x29E3:word16];
-		selector ds_52;
-		fn0800_ACB3(bp, ds_11, ptrArg00, wArg02, wArg08, out ds_52);
-		Mem58[ss:fp - 0x02 + 0x00:word16] = Mem48[ds_52:10721:word16];
-		Mem61[ss:fp - 0x04 + 0x00:word16] = Mem58[ds_52:10719:word16];
-		Mem64[ss:fp - 0x06 + 0x00:word16] = 0x601A;
-		selector ds_67 = fn0800_401E(bp, ds_52, wArg00, wArg02, wArg04);
-		Mem74[ss:fp - 0x02 + 0x00:word16] = 0x00;
-		Mem76[ss:fp - 0x04 + 0x00:word16] = 0x10;
-		Mem79[ss:fp - 0x06 + 0x00:word16] = Mem76[ds_67:10721:word16];
-		Mem82[ss:fp - 0x08 + 0x00:word16] = Mem79[ds_67:10719:word16];
-		Mem85[ss:fp - 0x0A + 0x00:word16] = Mem82[ds_67:0x29E5:word16];
-		Mem88[ss:fp - 0x0C + 0x00:word16] = Mem85[ds_67:0x29E3:word16];
-		selector ds_90 = fn0800_3B0A(bp, ds_67, wArg08, wArg0A);
-		Mem94[ss:fp - 0x02 + 0x00:word16] = Mem88[ds_90:10721:word16];
-		Mem97[ss:fp - 0x04 + 0x00:word16] = Mem94[ds_90:10719:word16];
-		Mem102[ss:fp - 0x06 + 0x00:word16] = 0x00;
-		Mem104[ss:fp - 0x08 + 0x00:word16] = 0x00;
-		selector ds_106 = fn0800_409C(bp, ds_90, wArg02, wArg04, wArg06);
-		Mem110[ss:fp - 0x02 + 0x00:word16] = Mem104[ds_106:10721:word16];
-		Mem113[ss:fp - 0x04 + 0x00:word16] = Mem110[ds_106:10719:word16];
-		Mem118[ss:fp - 0x06 + 0x00:word16] = 0x00;
-		Mem120[ss:fp - 0x08 + 0x00:word16] = 0x00;
-		selector ds_121 = fn0800_409C(bp, ds_106, wArg02, wArg04, wArg06);
-		Mem126[ss:fp - 0x02 + 0x00:word16] = Mem120[ds_121:10721:word16];
-		Mem129[ss:fp - 0x04 + 0x00:word16] = Mem126[ds_121:10719:word16];
-		Mem132[ss:fp - 0x06 + 0x00:word16] = Mem129[ds_121:0x29E5:word16];
-		Mem135[ss:fp - 0x08 + 0x00:word16] = Mem132[ds_121:0x29E3:word16];
-		word16 si_136;
-		word16 di_137;
-		selector ds_138;
-		Mem143[ss:fp - 0x06 + 0x00:word16] = fn0800_3E27(bp, ds_121, wArg00, wArg02, out si_136, out di_137, out ds_138);
-		selector ds_147;
-		fn0800_5374(bp, fn0800_401E(bp, ds_138, wArg00, wArg02, wArg04), out ds_147);
-		return bp;
+		Mem38[ss:fp - 0x02 + 0x00:word16] = 0x01;
+		Mem43[ss:fp - 0x04 + 0x00:word16] = ~0x00;
+		Mem45[ss:fp - 0x06 + 0x00:word16] = ~0x11;
+		Mem48[ss:fp - 0x08 + 0x00:word16] = Mem45[ds_11:0x29E5:word16];
+		Mem51[ss:fp - 0x0A + 0x00:word16] = Mem48[ds_11:0x29E3:word16];
+		word16 di_55;
+		selector ds_56;
+		fn0800_ACB3(bp, ds_11, wArg00, wArg02, wArg08, out di_55, out ds_56);
+		Mem62[ss:fp - 0x02 + 0x00:word16] = Mem51[ds_56:10721:word16];
+		Mem65[ss:fp - 0x04 + 0x00:word16] = Mem62[ds_56:10719:word16];
+		Mem68[ss:fp - 0x06 + 0x00:word16] = 0x601A;
+		word16 si_70;
+		selector ds_71;
+		fn0800_401E(bp, ds_56, wArg00, wArg02, wArg04, out si_70, out ds_71);
+		Mem79[ss:fp - 0x02 + 0x00:word16] = 0x00;
+		Mem81[ss:fp - 0x04 + 0x00:word16] = 0x10;
+		Mem84[ss:fp - 0x06 + 0x00:word16] = Mem81[ds_71:10721:word16];
+		Mem87[ss:fp - 0x08 + 0x00:word16] = Mem84[ds_71:10719:word16];
+		Mem90[ss:fp - 0x0A + 0x00:word16] = Mem87[ds_71:0x29E5:word16];
+		Mem93[ss:fp - 0x0C + 0x00:word16] = Mem90[ds_71:0x29E3:word16];
+		selector ds_95;
+		word16 bp_96 = fn0800_3B0A(bp, ds_71, wArg08, wArg0A, out ds_95);
+		Mem100[ss:fp - 0x02 + 0x00:word16] = Mem93[ds_95:10721:word16];
+		Mem103[ss:fp - 0x04 + 0x00:word16] = Mem100[ds_95:10719:word16];
+		Mem108[ss:fp - 0x06 + 0x00:word16] = 0x00;
+		Mem110[ss:fp - 0x08 + 0x00:word16] = 0x00;
+		word16 si_112;
+		selector ds_113;
+		fn0800_409C(bp_96, ds_95, wArg02, wArg04, wArg06, out si_112, out ds_113);
+		Mem118[ss:fp - 0x02 + 0x00:word16] = Mem110[ds_113:10721:word16];
+		Mem121[ss:fp - 0x04 + 0x00:word16] = Mem118[ds_113:10719:word16];
+		Mem126[ss:fp - 0x06 + 0x00:word16] = 0x00;
+		Mem128[ss:fp - 0x08 + 0x00:word16] = 0x00;
+		word16 si_129;
+		selector ds_130;
+		fn0800_409C(bp_96, ds_113, wArg02, wArg04, wArg06, out si_129, out ds_130);
+		Mem137[ss:fp - 0x02 + 0x00:word16] = Mem128[ds_130:10721:word16];
+		Mem140[ss:fp - 0x04 + 0x00:word16] = Mem137[ds_130:10719:word16];
+		Mem143[ss:fp - 0x06 + 0x00:word16] = Mem140[ds_130:0x29E5:word16];
+		Mem146[ss:fp - 0x08 + 0x00:word16] = Mem143[ds_130:0x29E3:word16];
+		word16 dx_147;
+		word16 si_148;
+		word16 di_149;
+		selector ds_150;
+		Mem155[ss:fp - 0x06 + 0x00:word16] = fn0800_3E27(bp_96, ds_130, wArg00, wArg02, out dx_147, out si_148, out di_149, out ds_150);
+		word16 si_156;
+		selector ds_157;
+		fn0800_401E(bp_96, ds_150, wArg00, wArg02, wArg04, out si_156, out ds_157);
+		selector ds_161;
+		fn0800_5374(bp_96, ds_157, out ds_161);
+		return bp_96;
 	}
 	else
 		return bp;
 }
 
+// 0800:4C55: Register selector fn0800_4C55(Register word16 bp, Register selector ds)
 selector fn0800_4C55(word16 bp, selector ds)
 {
 	selector ds_16;
@@ -6736,202 +8308,413 @@ selector fn0800_4C55(word16 bp, selector ds)
 		return ds_16;
 	else
 	{
-		Mem57[ss:fp - 0x1C + 0x00:word16] = Mem0[ds_16:10721:word16];
-		Mem60[ss:fp - 0x1E + 0x00:word16] = Mem57[ds_16:10719:word16];
-		Mem66[ss:fp - 0x20 + 0x00:word16] = 0x00;
-		Mem68[ss:fp - 0x22 + 0x00:word16] = 1011;
-		word16 ax_125 = 0x00;
-		selector ds_107 = fn0800_409C(fp - 0x02, ds_16, wArg02, wArg04, wArg06);
+		Mem61[ss:fp - 0x1C + 0x00:word16] = Mem0[ds_16:10721:word16];
+		Mem64[ss:fp - 0x1E + 0x00:word16] = Mem61[ds_16:10719:word16];
+		Mem70[ss:fp - 0x20 + 0x00:word16] = 0x00;
+		Mem72[ss:fp - 0x22 + 0x00:word16] = 1011;
+		word16 si_76;
+		selector ds_114;
+		fn0800_409C(fp - 0x02, ds_16, wArg02, wArg04, wArg06, out si_76, out ds_114);
+		word16 ax_135 = 0x00;
 		do
 		{
-			Mem83[ss:fp - 0x1C + 0x00:word16] = Mem68[ds_107:0x29E5:word16];
-			Mem86[ss:fp - 0x1E + 0x00:word16] = Mem83[ds_107:0x29E3:word16];
-			selector ds_88;
-			word16 dx_89 = fn0800_3E5D(fp - 0x02, ds_107, wArg00, wArg02, out ds_88);
-			Mem92[ss:fp - 0x08 + 0x00:word16] = dx_89;
-			Mem93[ss:fp - 0x0A + 0x00:word16] = ax_125;
-			Mem94[ss:fp - 0x04 + 0x00:word16] = dx_89;
-			Mem95[ss:fp - 0x06 + 0x00:word16] = ax_125;
-			Mem98[ss:fp - 0x1C + 0x00:word16] = Mem95[ds_88:10721:word16];
-			Mem101[ss:fp - 0x1E + 0x00:word16] = Mem98[ds_88:10719:word16];
-			Mem104[ss:fp - 0x20 + 0x00:word16] = Mem101[ss:fp - 0x04 + 0x00:word16];
-			Mem106[ss:fp - 0x22 + 0x00:word16] = ax_125;
-			ds_107 = fn0800_409C(fp - 0x02, ds_88, wArg02, wArg04, wArg06);
+			Mem89[ss:fp - 0x1C + 0x00:word16] = Mem72[ds_114:0x29E5:word16];
+			Mem92[ss:fp - 0x1E + 0x00:word16] = Mem89[ds_114:0x29E3:word16];
+			selector ds_94;
+			word16 dx_95 = fn0800_3E5D(fp - 0x02, ds_114, wArg00, wArg02, out ds_94);
+			Mem98[ss:fp - 0x08 + 0x00:word16] = dx_95;
+			Mem99[ss:fp - 0x0A + 0x00:word16] = ax_135;
+			Mem100[ss:fp - 0x04 + 0x00:word16] = dx_95;
+			Mem101[ss:fp - 0x06 + 0x00:word16] = ax_135;
+			Mem104[ss:fp - 0x1C + 0x00:word16] = Mem101[ds_94:10721:word16];
+			Mem107[ss:fp - 0x1E + 0x00:word16] = Mem104[ds_94:10719:word16];
+			Mem110[ss:fp - 0x20 + 0x00:word16] = Mem107[ss:fp - 0x04 + 0x00:word16];
+			Mem112[ss:fp - 0x22 + 0x00:word16] = ax_135;
+			word16 si_113;
+			fn0800_409C(fp - 0x02, ds_94, wArg02, wArg04, wArg06, out si_113, out ds_114);
 			while (true)
 			{
-				word16 ax_112 = Mem106[ss:fp - 0x0A + 0x00:word16];
-				word16 dx_113 = Mem106[ss:fp - 0x08 + 0x00:word16];
-				word16 v21_114 = Mem106[ss:fp - 0x0A + 0x00:word16] - 0x01;
-				Mem115[ss:fp - 0x0A + 0x00:word16] = v21_114;
-				Mem119[ss:fp - 0x08 + 0x00:word16] = Mem115[ss:fp - 0x08 + 0x00:word16] - (v21_114 <u 0x00);
-				word16 ax_120 = ax_112 | dx_113;
-				if (ax_120 == 0x00)
+				word16 ax_122 = Mem112[ss:fp - 0x0A + 0x00:word16];
+				word16 dx_123 = Mem112[ss:fp - 0x08 + 0x00:word16];
+				word16 v21_124 = Mem112[ss:fp - 0x0A + 0x00:word16] - 0x01;
+				Mem125[ss:fp - 0x0A + 0x00:word16] = v21_124;
+				Mem129[ss:fp - 0x08 + 0x00:word16] = Mem125[ss:fp - 0x08 + 0x00:word16] - (v21_124 <u 0x00);
+				word16 ax_130 = ax_122 | dx_123;
+				if (ax_130 == 0x00)
 					break;
-				Mem476[ss:fp - 0x1C + 0x00:word16] = Mem119[ds_107:10721:word16];
-				Mem479[ss:fp - 0x1E + 0x00:word16] = Mem476[ds_107:10719:word16];
-				Mem482[ss:fp - 0x20 + 0x00:word16] = Mem479[ds_107:0x29E5:word16];
-				Mem485[ss:fp - 0x22 + 0x00:word16] = Mem482[ds_107:0x29E3:word16];
-				selector ds_486;
-				Mem491[ss:fp - 0x20 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_107, wArg00, wArg02, out ds_486);
-				Mem493[ss:fp - 0x22 + 0x00:word16] = ax_120;
-				ds_107 = fn0800_409C(fp - 0x02, ds_486, wArg02, wArg04, wArg06);
+				Mem507[ss:fp - 0x1C + 0x00:word16] = Mem129[ds_114:10721:word16];
+				Mem510[ss:fp - 0x1E + 0x00:word16] = Mem507[ds_114:10719:word16];
+				Mem513[ss:fp - 0x20 + 0x00:word16] = Mem510[ds_114:0x29E5:word16];
+				Mem516[ss:fp - 0x22 + 0x00:word16] = Mem513[ds_114:0x29E3:word16];
+				selector ds_517;
+				Mem522[ss:fp - 0x20 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_114, wArg00, wArg02, out ds_517);
+				Mem524[ss:fp - 0x22 + 0x00:word16] = ax_130;
+				word16 si_525;
+				fn0800_409C(fp - 0x02, ds_517, wArg02, wArg04, wArg06, out si_525, out ds_114);
 			}
-			ax_125 = Mem119[ss:fp - 0x06 + 0x00:word16] | Mem119[ss:(fp - 0x04) + 0x00:word16];
-		} while (ax_125 != 0x00);
-		Mem131[ss:fp - 0x1C + 0x00:word16] = Mem119[ds_107:10721:word16];
-		Mem134[ss:fp - 0x1E + 0x00:word16] = Mem131[ds_107:10719:word16];
-		Mem137[ss:fp - 0x20 + 0x00:word16] = Mem134[ds_107:0x29E5:word16];
-		Mem140[ss:fp - 0x22 + 0x00:word16] = Mem137[ds_107:0x29E3:word16];
-		selector ds_141;
-		ui32 dx_ax_145 = SEQ(fn0800_3E5D(fp - 0x02, ds_107, wArg00, wArg02, out ds_141), ax_125 - 0x01);
-		Mem152[ss:fp - 0x20 + 0x00:word16] = SLICE(dx_ax_145 - 0x01, word16, 16);
-		word16 ax_149 = (word16) (dx_ax_145 - 0x01);
-		Mem154[ss:fp - 0x22 + 0x00:word16] = ax_149;
-		selector ds_155 = fn0800_409C(fp - 0x02, ds_141, wArg02, wArg04, wArg06);
-		Mem160[ss:fp - 0x1C + 0x00:word16] = Mem154[ds_155:0x29E5:word16];
-		Mem163[ss:fp - 0x1E + 0x00:word16] = Mem160[ds_155:0x29E3:word16];
-		selector ds_164;
-		Mem168[ss:fp - 0x0C + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_155, wArg00, wArg02, out ds_164);
-		Mem169[ss:fp - 0x0E + 0x00:word16] = ax_149;
-		Mem172[ss:fp - 0x1C + 0x00:word16] = Mem169[ds_164:0x29E5:word16];
-		Mem175[ss:fp - 0x1E + 0x00:word16] = Mem172[ds_164:0x29E3:word16];
+			ax_135 = Mem129[ss:fp - 0x06 + 0x00:word16] | Mem129[ss:(fp - 0x04) + 0x00:word16];
+		} while (ax_135 != 0x00);
+		Mem141[ss:fp - 0x1C + 0x00:word16] = Mem129[ds_114:10721:word16];
+		Mem144[ss:fp - 0x1E + 0x00:word16] = Mem141[ds_114:10719:word16];
+		Mem147[ss:fp - 0x20 + 0x00:word16] = Mem144[ds_114:0x29E5:word16];
+		Mem150[ss:fp - 0x22 + 0x00:word16] = Mem147[ds_114:0x29E3:word16];
+		selector ds_151;
+		ui32 dx_ax_155 = SEQ(fn0800_3E5D(fp - 0x02, ds_114, wArg00, wArg02, out ds_151), ax_135 - 0x01);
+		Mem162[ss:fp - 0x20 + 0x00:word16] = SLICE(dx_ax_155 - 0x01, word16, 16);
+		word16 ax_159 = (word16) (dx_ax_155 - 0x01);
+		Mem164[ss:fp - 0x22 + 0x00:word16] = ax_159;
+		word16 si_165;
+		selector ds_166;
+		fn0800_409C(fp - 0x02, ds_151, wArg02, wArg04, wArg06, out si_165, out ds_166);
+		Mem172[ss:fp - 0x1C + 0x00:word16] = Mem164[ds_166:0x29E5:word16];
+		Mem175[ss:fp - 0x1E + 0x00:word16] = Mem172[ds_166:0x29E3:word16];
 		selector ds_176;
-		Mem179[ss:fp - 0x10 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_164, wArg00, wArg02, out ds_176);
-		Mem180[ss:fp - 0x12 + 0x00:word16] = ax_149;
-		word16 dx_183 = Mem180[ss:fp - 0x12 + 0x00:word16] - Mem180[ss:(fp - 0x0E) + 0x00:word16];
-		Mem188[ss:fp - 0x14 + 0x00:word16] = Mem180[ss:fp - 0x10 + 0x00:word16] - Mem180[ss:(fp - 0x0C) + 0x00:word16] - (dx_183 <u 0x00);
-		Mem189[ss:fp - 22 + 0x00:word16] = dx_183;
-		Mem192[ss:fp - 0x1C + 0x00:word16] = Mem189[ds_176:10721:word16];
-		Mem195[ss:fp - 0x1E + 0x00:word16] = Mem192[ds_176:10719:word16];
-		Mem198[ss:fp - 0x20 + 0x00:word16] = Mem195[ss:fp - 0x0C + 0x00:word16];
-		Mem201[ss:fp - 0x22 + 0x00:word16] = Mem198[ss:fp - 0x0E + 0x00:word16];
-		selector ds_202 = fn0800_409C(fp - 0x02, ds_176, wArg02, wArg04, wArg06);
-		Mem206[ss:fp - 0x1C + 0x00:word16] = Mem201[ds_202:10721:word16];
-		Mem209[ss:fp - 0x1E + 0x00:word16] = Mem206[ds_202:10719:word16];
-		ui32 ax_dx_213 = SEQ(Mem209[ss:fp - 0x10 + 0x00:word16], Mem209[ss:fp - 0x12 + 0x00:word16] - 0x01);
-		Mem220[ss:fp - 0x20 + 0x00:word16] = SLICE(ax_dx_213 - 0x01, word16, 16);
-		word16 dx_217 = (word16) (ax_dx_213 - 0x01);
-		Mem222[ss:fp - 0x22 + 0x00:word16] = dx_217;
-		selector ds_223 = fn0800_409C(fp - 0x02, ds_202, wArg02, wArg04, wArg06);
-		Mem228[ss:fp - 0x1C + 0x00:word16] = Mem222[ds_223:10721:word16];
-		Mem231[ss:fp - 0x1E + 0x00:word16] = Mem228[ds_223:10719:word16];
-		word16 si_233;
-		word16 ax_234 = fn0800_AD2F(ds_223, ptrArg00, wArg02, out si_233);
-		Mem236[ds_223:20110:word16] = dx_217;
-		Mem237[ds_223:20108:word16] = ax_234;
-		Mem240[ss:fp - 0x1C + 0x00:word16] = 0x01;
-		Mem246[ss:fp - 0x1E + 0x00:word16] = 0x00;
-		Mem248[ss:fp - 0x20 + 0x00:word16] = 0x04;
-		Mem251[ss:fp - 0x22 + 0x00:word16] = Mem248[ds_223:0x29E5:word16];
-		Mem254[ss:fp - 0x24 + 0x00:word16] = Mem251[ds_223:0x29E3:word16];
-		selector ds_256;
-		fn0800_ACB3(fp - 0x02, ds_223, ptrArg00, wArg02, wArg08, out ds_256);
-		word16 dx_261 = Mem254[ss:fp - 22 + 0x00:word16];
-		Mem262[ss:fp - 0x04 + 0x00:word16] = Mem254[ss:fp - 0x14 + 0x00:word16];
-		Mem263[ss:fp - 0x06 + 0x00:word16] = dx_261;
+		Mem180[ss:fp - 0x0C + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_166, wArg00, wArg02, out ds_176);
+		Mem181[ss:fp - 0x0E + 0x00:word16] = ax_159;
+		Mem184[ss:fp - 0x1C + 0x00:word16] = Mem181[ds_176:0x29E5:word16];
+		Mem187[ss:fp - 0x1E + 0x00:word16] = Mem184[ds_176:0x29E3:word16];
+		selector ds_188;
+		Mem191[ss:fp - 0x10 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_176, wArg00, wArg02, out ds_188);
+		Mem192[ss:fp - 0x12 + 0x00:word16] = ax_159;
+		word16 dx_195 = Mem192[ss:fp - 0x12 + 0x00:word16] - Mem192[ss:(fp - 0x0E) + 0x00:word16];
+		Mem200[ss:fp - 0x14 + 0x00:word16] = Mem192[ss:fp - 0x10 + 0x00:word16] - Mem192[ss:(fp - 0x0C) + 0x00:word16] - (dx_195 <u 0x00);
+		Mem201[ss:fp - 22 + 0x00:word16] = dx_195;
+		Mem204[ss:fp - 0x1C + 0x00:word16] = Mem201[ds_188:10721:word16];
+		Mem207[ss:fp - 0x1E + 0x00:word16] = Mem204[ds_188:10719:word16];
+		Mem210[ss:fp - 0x20 + 0x00:word16] = Mem207[ss:fp - 0x0C + 0x00:word16];
+		Mem213[ss:fp - 0x22 + 0x00:word16] = Mem210[ss:fp - 0x0E + 0x00:word16];
+		word16 si_214;
+		selector ds_215;
+		fn0800_409C(fp - 0x02, ds_188, wArg02, wArg04, wArg06, out si_214, out ds_215);
+		Mem220[ss:fp - 0x1C + 0x00:word16] = Mem213[ds_215:10721:word16];
+		Mem223[ss:fp - 0x1E + 0x00:word16] = Mem220[ds_215:10719:word16];
+		ui32 ax_dx_227 = SEQ(Mem223[ss:fp - 0x10 + 0x00:word16], Mem223[ss:fp - 0x12 + 0x00:word16] - 0x01);
+		Mem234[ss:fp - 0x20 + 0x00:word16] = SLICE(ax_dx_227 - 0x01, word16, 16);
+		word16 dx_231 = (word16) (ax_dx_227 - 0x01);
+		Mem236[ss:fp - 0x22 + 0x00:word16] = dx_231;
+		word16 si_237;
+		selector ds_238;
+		word16 dx_240 = DPB(dx_231, fn0800_409C(fp - 0x02, ds_215, wArg02, wArg04, wArg06, out si_237, out ds_238), 0);
+		Mem245[ss:fp - 0x1C + 0x00:word16] = Mem236[ds_238:10721:word16];
+		Mem248[ss:fp - 0x1E + 0x00:word16] = Mem245[ds_238:10719:word16];
+		byte dl_250;
+		word16 si_251;
+		word16 ax_252 = fn0800_AD2F(ds_238, ptrArg00, wArg02, out dl_250, out si_251);
+		Mem254[ds_238:20110:word16] = dx_240;
+		Mem255[ds_238:20108:word16] = ax_252;
+		Mem258[ss:fp - 0x1C + 0x00:word16] = 0x01;
+		Mem264[ss:fp - 0x1E + 0x00:word16] = 0x00;
+		Mem266[ss:fp - 0x20 + 0x00:word16] = 0x04;
+		Mem269[ss:fp - 0x22 + 0x00:word16] = Mem266[ds_238:0x29E5:word16];
+		Mem272[ss:fp - 0x24 + 0x00:word16] = Mem269[ds_238:0x29E3:word16];
+		word16 di_274;
+		selector ds_275;
+		fn0800_ACB3(fp - 0x02, ds_238, wArg00, wArg02, wArg08, out di_274, out ds_275);
+		word16 dx_280 = Mem272[ss:fp - 22 + 0x00:word16];
+		Mem281[ss:fp - 0x04 + 0x00:word16] = Mem272[ss:fp - 0x14 + 0x00:word16];
+		Mem282[ss:fp - 0x06 + 0x00:word16] = dx_280;
 		while (true)
 		{
-			word16 ax_269 = Mem263[ss:fp - 0x06 + 0x00:word16] | Mem263[ss:(fp - 0x04) + 0x00:word16];
-			if (ax_269 == 0x00)
+			word16 ax_290 = Mem282[ss:fp - 0x06 + 0x00:word16] | Mem282[ss:(fp - 0x04) + 0x00:word16];
+			if (ax_290 == 0x00)
 				break;
-			Mem447[ss:fp - 0x1C + 0x00:word16] = Mem263[ds_256:10721:word16];
-			Mem450[ss:fp - 0x1E + 0x00:word16] = Mem447[ds_256:10719:word16];
-			Mem453[ss:fp - 0x20 + 0x00:word16] = Mem450[ds_256:0x29E5:word16];
-			Mem456[ss:fp - 0x22 + 0x00:word16] = Mem453[ds_256:0x29E3:word16];
-			selector ds_457;
-			Mem462[ss:fp - 0x20 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_256, wArg00, wArg02, out ds_457);
-			Mem464[ss:fp - 0x22 + 0x00:word16] = ax_269;
-			ds_256 = fn0800_409C(fp - 0x02, ds_457, wArg02, wArg04, wArg06);
-			word16 v56_467 = Mem464[ss:fp - 0x06 + 0x00:word16] - 0x01;
-			Mem468[ss:fp - 0x06 + 0x00:word16] = v56_467;
-			Mem472[ss:fp - 0x04 + 0x00:word16] = Mem468[ss:fp - 0x04 + 0x00:word16] - (v56_467 <u 0x00);
+			Mem476[ss:fp - 0x1C + 0x00:word16] = Mem282[ds_275:10721:word16];
+			Mem479[ss:fp - 0x1E + 0x00:word16] = Mem476[ds_275:10719:word16];
+			Mem482[ss:fp - 0x20 + 0x00:word16] = Mem479[ds_275:0x29E5:word16];
+			Mem485[ss:fp - 0x22 + 0x00:word16] = Mem482[ds_275:0x29E3:word16];
+			selector ds_486;
+			Mem491[ss:fp - 0x20 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_275, wArg00, wArg02, out ds_486);
+			Mem493[ss:fp - 0x22 + 0x00:word16] = ax_290;
+			word16 si_494;
+			fn0800_409C(fp - 0x02, ds_486, wArg02, wArg04, wArg06, out si_494, out ds_275);
+			word16 v56_498 = Mem493[ss:fp - 0x06 + 0x00:word16] - 0x01;
+			Mem499[ss:fp - 0x06 + 0x00:word16] = v56_498;
+			Mem503[ss:fp - 0x04 + 0x00:word16] = Mem499[ss:fp - 0x04 + 0x00:word16] - (v56_498 <u 0x00);
 		}
-		Mem275[ss:fp - 0x1C + 0x00:word16] = 0x01;
-		Mem281[ss:fp - 0x1E + 0x00:word16] = 0x00;
-		Mem283[ss:fp - 0x20 + 0x00:word16] = 0x04;
-		Mem286[ss:fp - 0x22 + 0x00:word16] = Mem283[ds_256:0x29E5:word16];
-		Mem289[ss:fp - 0x24 + 0x00:word16] = Mem286[ds_256:0x29E3:word16];
-		selector ds_290;
-		word16 ax_291 = fn0800_ACB3(fp - 0x02, ds_256, ptrArg00, wArg02, wArg08, out ds_290);
-		Mem296[ss:fp - 0x1C + 0x00:word16] = Mem289[ds_290:0x29E5:word16];
-		Mem299[ss:fp - 0x1E + 0x00:word16] = Mem296[ds_290:0x29E3:word16];
-		selector ds_300;
-		ui32 dx_ax_304 = SEQ(fn0800_3E5D(fp - 0x02, ds_290, wArg00, wArg02, out ds_300), ax_291 + 0x01);
-		Mem310[ss:fp - 0x04 + 0x00:word16] = SLICE(dx_ax_304 + 0x01, word16, 16);
-		Mem311[ss:fp - 0x06 + 0x00:word16] = (word16) (dx_ax_304 + 0x01);
-		Mem314[ss:fp - 0x1C + 0x00:word16] = 0x01;
-		word16 dx_318;
-		word16 ax_319 = fn0800_8C69(Mem314[ss:fp - 0x06 + 0x00:word16], 0x02, Mem314[ss:fp - 0x04 + 0x00:word16], bp, out dx_318);
-		Mem321[ss:fp - 0x1E + 0x00:word16] = dx_318;
-		Mem323[ss:fp - 0x20 + 0x00:word16] = ax_319;
-		Mem326[ss:fp - 0x22 + 0x00:word16] = Mem323[ds_300:0x29E5:word16];
-		Mem329[ss:fp - 0x24 + 0x00:word16] = Mem326[ds_300:0x29E3:word16];
-		selector ds_330;
-		fn0800_ACB3(fp - 0x02, ds_300, ptrArg00, wArg02, wArg08, out ds_330);
-		Mem336[ss:fp - 0x1C + 0x00:word16] = Mem329[ds_330:0x29E5:word16];
-		Mem339[ss:fp - 0x1E + 0x00:word16] = Mem336[ds_330:0x29E3:word16];
-		word16 si_340;
-		Mem345[ss:fp - 0x1C + 0x00:word16] = fn0800_AD2F(ds_330, ptrArg00, wArg02, out si_340);
-		Mem347[ss:fp - 0x1E + 0x00:word16] = dx_318;
-		Mem350[ss:fp - 0x20 + 0x00:word16] = Mem347[ds_330:0x29E5:word16];
-		Mem353[ss:fp - 0x22 + 0x00:word16] = Mem350[ds_330:0x29E3:word16];
-		word16 si_354;
-		selector ds_355;
-		word16 ax_356 = fn0800_4194(fp - 0x02, ds_330, wArg00, wArg02, out si_354, out ds_355);
-		word16 bx_358 = Mem353[ss:fp - 0x1E + 0x00:word16];
-		word16 dx_364 = Mem353[ss:fp - 0x1C + 0x00:word16];
-		if (bx_358 >=u dx_318)
+		Mem296[ss:fp - 0x1C + 0x00:word16] = 0x01;
+		Mem302[ss:fp - 0x1E + 0x00:word16] = 0x00;
+		Mem304[ss:fp - 0x20 + 0x00:word16] = 0x04;
+		Mem307[ss:fp - 0x22 + 0x00:word16] = Mem304[ds_275:0x29E5:word16];
+		Mem310[ss:fp - 0x24 + 0x00:word16] = Mem307[ds_275:0x29E3:word16];
+		word16 di_311;
+		selector ds_312;
+		word16 ax_313 = fn0800_ACB3(fp - 0x02, ds_275, wArg00, wArg02, wArg08, out di_311, out ds_312);
+		Mem318[ss:fp - 0x1C + 0x00:word16] = Mem310[ds_312:0x29E5:word16];
+		Mem321[ss:fp - 0x1E + 0x00:word16] = Mem318[ds_312:0x29E3:word16];
+		selector ds_322;
+		ui32 dx_ax_326 = SEQ(fn0800_3E5D(fp - 0x02, ds_312, wArg00, wArg02, out ds_322), ax_313 + 0x01);
+		Mem332[ss:fp - 0x04 + 0x00:word16] = SLICE(dx_ax_326 + 0x01, word16, 16);
+		Mem333[ss:fp - 0x06 + 0x00:word16] = (word16) (dx_ax_326 + 0x01);
+		Mem336[ss:fp - 0x1C + 0x00:word16] = 0x01;
+		word16 dx_340;
+		word16 ax_341 = fn0800_8C69(Mem336[ss:fp - 0x06 + 0x00:word16], 0x02, Mem336[ss:fp - 0x04 + 0x00:word16], bp, out dx_340);
+		Mem343[ss:fp - 0x1E + 0x00:word16] = dx_340;
+		Mem345[ss:fp - 0x20 + 0x00:word16] = ax_341;
+		Mem348[ss:fp - 0x22 + 0x00:word16] = Mem345[ds_322:0x29E5:word16];
+		Mem351[ss:fp - 0x24 + 0x00:word16] = Mem348[ds_322:0x29E3:word16];
+		word16 di_352;
+		selector ds_353;
+		fn0800_ACB3(fp - 0x02, ds_322, wArg00, wArg02, wArg08, out di_352, out ds_353);
+		Mem359[ss:fp - 0x1C + 0x00:word16] = Mem351[ds_353:0x29E5:word16];
+		Mem362[ss:fp - 0x1E + 0x00:word16] = Mem359[ds_353:0x29E3:word16];
+		byte dl_363;
+		word16 si_364;
+		Mem369[ss:fp - 0x1C + 0x00:word16] = fn0800_AD2F(ds_353, ptrArg00, wArg02, out dl_363, out si_364);
+		Mem371[ss:fp - 0x1E + 0x00:word16] = dx_340;
+		Mem374[ss:fp - 0x20 + 0x00:word16] = Mem371[ds_353:0x29E5:word16];
+		Mem377[ss:fp - 0x22 + 0x00:word16] = Mem374[ds_353:0x29E3:word16];
+		word16 si_378;
+		selector ds_379;
+		word16 ax_380 = fn0800_4194(fp - 0x02, ds_353, wArg00, wArg02, out si_378, out ds_379);
+		word16 bx_382 = Mem377[ss:fp - 0x1E + 0x00:word16];
+		word16 dx_388 = Mem377[ss:fp - 0x1C + 0x00:word16];
+		if (bx_382 >=u dx_340)
 		{
-			if (bx_358 != dx_318 || dx_364 >=u ax_356)
-				return ds_355;
+			if (bx_382 != dx_340 || dx_388 >=u ax_380)
+				return ds_379;
 		}
-		Mem370[ss:fp - 0x1C + 0x00:word16] = Mem353[ds_355:0x29E5:word16];
-		Mem373[ss:fp - 0x1E + 0x00:word16] = Mem370[ds_355:0x29E3:word16];
-		selector ds_374;
-		Mem378[ss:fp - 0x08 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_355, wArg00, wArg02, out ds_374);
-		Mem379[ss:fp - 0x0A + 0x00:word16] = ax_356;
-		Mem382[ss:fp - 0x1C + 0x00:word16] = Mem379[ds_374:10721:word16];
-		Mem385[ss:fp - 0x1E + 0x00:word16] = Mem382[ds_374:10719:word16];
-		Mem388[ss:fp - 0x20 + 0x00:word16] = Mem385[ss:fp - 0x08 + 0x00:word16];
-		Mem390[ss:fp - 0x22 + 0x00:word16] = ax_356;
-		selector ds_391 = fn0800_409C(fp - 0x02, ds_374, wArg02, wArg04, wArg06);
-		word16 ax_393 = Mem390[ss:fp - 0x08 + 0x00:word16];
-		word16 dx_394 = Mem390[ss:fp - 0x0A + 0x00:word16];
-		Mem398[ss:fp - 0x1A + 0x00:word16] = dx_394;
-		Mem399[ss:fp - 0x18 + 0x00:word16] = ax_393 & 0x3FFF;
-		word16 cx_400 = 0x04;
-		word16 bx_402 = 20244;
-		if (Mem399[0x0800:bx_402 + 0x00:word16] == Mem399[ss:(fp - 0x0A) + 0x00:word16])
+		Mem395[ss:fp - 0x1C + 0x00:word16] = Mem377[ds_379:0x29E5:word16];
+		Mem398[ss:fp - 0x1E + 0x00:word16] = Mem395[ds_379:0x29E3:word16];
+		selector ds_399;
+		Mem403[ss:fp - 0x08 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_379, wArg00, wArg02, out ds_399);
+		Mem404[ss:fp - 0x0A + 0x00:word16] = ax_380;
+		Mem407[ss:fp - 0x1C + 0x00:word16] = Mem404[ds_399:10721:word16];
+		Mem410[ss:fp - 0x1E + 0x00:word16] = Mem407[ds_399:10719:word16];
+		Mem413[ss:fp - 0x20 + 0x00:word16] = Mem410[ss:fp - 0x08 + 0x00:word16];
+		Mem415[ss:fp - 0x22 + 0x00:word16] = ax_380;
+		word16 si_416;
+		selector ds_417;
+		byte dl_418 = fn0800_409C(fp - 0x02, ds_399, wArg02, wArg04, wArg06, out si_416, out ds_417);
+		word16 ax_420 = Mem415[ss:fp - 0x08 + 0x00:word16];
+		word16 dx_421 = Mem415[ss:fp - 0x0A + 0x00:word16];
+		Mem425[ss:fp - 0x1A + 0x00:word16] = dx_421;
+		Mem426[ss:fp - 0x18 + 0x00:word16] = ax_420 & 0x3FFF;
+		word16 cx_427 = 0x04;
+		word16 bx_429 = 20244;
+		if (Mem426[0x0800:bx_429 + 0x00:word16] == Mem426[ss:(fp - 0x0A) + 0x00:word16])
 		{
-			word16 ax_419 = Mem399[0x0800:bx_402 + 0x08:word16];
-			if (ax_419 == Mem399[ss:(fp - 0x18) + 0x00:word16])
+			word16 ax_446 = Mem426[0x0800:bx_429 + 0x08:word16];
+			if (ax_446 == Mem426[ss:(fp - 0x18) + 0x00:word16])
 			{
-				word16 sp_422;
-				word16 bp_423;
-				selector ss_424;
-				byte SCZO_425;
-				selector ds_426;
-				word16 dx_427;
-				byte SZO_428;
-				byte C_429;
-				byte Z_430;
-				word16 ax_431;
-				byte cl_432;
-				word16 bx_433;
-				word16 cx_434;
-				word16 si_435;
-				Mem399[0x0800:bx_402 + 0x10:word16]();
-				return ds_426;
+				word16 sp_449;
+				word16 bp_450;
+				selector ss_451;
+				byte SCZO_452;
+				selector ds_453;
+				word16 dx_454;
+				byte SZO_455;
+				byte C_456;
+				byte Z_457;
+				word16 ax_458;
+				byte cl_459;
+				word16 bx_460;
+				word16 cx_461;
+				byte dl_462;
+				word16 si_463;
+				word16 di_464;
+				Mem426[0x0800:bx_429 + 0x10:word16]();
+				return ds_453;
 			}
 		}
-		bx_402 = bx_402 + 0x02;
-		cx_400 = cx_400 - 0x01;
-		if (cx_400 != 0x00)
+		bx_429 = bx_429 + 0x02;
+		cx_427 = cx_427 - 0x01;
+		if (cx_427 != 0x00)
 			goto l0800_4E7C;
-		return ds_391;
+		return ds_417;
 	}
 }
 
+// 0800:4F2C: void fn0800_4F2C(Register word16 bp, Register selector ds)
+void fn0800_4F2C(word16 bp, selector ds)
+{
+	word16 dx_23;
+	selector ds_16;
+	word16 ax_24 = fn0800_8C69(ax, 0x02, fn0800_3E5D(fp - 0x02, ds, Mem0[ds:0x29E3:word16], Mem0[ds:0x29E5:word16], out ds_16), bp, out dx_23);
+	Mem25[ss:fp - 0x12 + 0x00:word16] = dx_23;
+	Mem27[ss:fp - 0x14 + 0x00:word16] = ax_24;
+	Mem30[ss:fp - 0x1E + 0x00:word16] = Mem27[ds_16:0x29E5:word16];
+	Mem33[ss:fp - 0x20 + 0x00:word16] = Mem30[ds_16:0x29E3:word16];
+	byte dl_36;
+	word16 si_37;
+	word16 ax_38 = fn0800_AD2F(ds_16, ptrArg00, wArg02, out dl_36, out si_37);
+	Mem40[ss:fp - 0x1A + 0x00:word16] = dx_23;
+	Mem41[ss:fp - 0x1C + 0x00:word16] = ax_38;
+	if (Mem41[ss:fp - 0x12 + 0x00:word16] >=u 0x00 && (Mem41[ss:(fp - 0x12) + 0x00:word16] >u 0x00 || Mem41[ss:(fp - 0x14) + 0x00:word16] >u 0x12))
+	{
+		Mem478[ss:fp - 0x1E + 0x00:word16] = Mem41[ds_16:0x29E5:word16];
+		Mem481[ss:fp - 0x20 + 0x00:word16] = Mem478[ds_16:0x29E3:word16];
+		selector ds_482;
+		Mem486[ss:fp - 22 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_16, wArg00, wArg02, out ds_482);
+		Mem487[ss:fp - 0x18 + 0x00:word16] = ax_38;
+		Mem490[ss:fp - 0x1E + 0x00:word16] = Mem487[ds_482:0x29E5:word16];
+		Mem493[ss:fp - 0x20 + 0x00:word16] = Mem490[ds_482:0x29E3:word16];
+		Mem498[ss:fp - 0x0E + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_482, wArg00, wArg02, out ds_16);
+		Mem499[ss:fp - 0x10 + 0x00:word16] = ax_38;
+	}
+	Mem52[ss:fp - 0x1E + 0x00:word16] = Mem41[ds_16:0x29E5:word16];
+	Mem55[ss:fp - 0x20 + 0x00:word16] = Mem52[ds_16:0x29E3:word16];
+	word16 di_57;
+	selector ds_58;
+	word16 dx_63;
+	word16 ax_64 = fn0800_8CAA(ax_38, 0x08, fn0800_3F58(fp - 0x02, ds_16, wArg00, wArg02, out di_57, out ds_58), bp, out dx_63);
+	if (dx_63 != 0x52 || ax_64 != 0x4E43)
+	{
+		Mem87[ss:fp - 0x1E + 0x00:word16] = Mem55[ds_58:10721:word16];
+		Mem90[ss:fp - 0x20 + 0x00:word16] = Mem87[ds_58:10719:word16];
+		word16 dx_94;
+		word16 ax_95 = fn0800_8CAA(Mem90[ss:fp - 0x14 + 0x00:word16], 0x02, Mem90[ss:fp - 0x12 + 0x00:word16], bp, out dx_94);
+		Mem97[ss:fp - 0x22 + 0x00:word16] = dx_94;
+		Mem99[ss:fp - 0x24 + 0x00:word16] = ax_95;
+		word16 si_102;
+		selector ds_103;
+		fn0800_409C(fp - 0x02, ds_58, wArg02, wArg04, wArg06, out si_102, out ds_103);
+		Mem110[ss:fp - 0x1E + 0x00:word16] = 0x00;
+		Mem113[ss:fp - 0x20 + 0x00:word16] = Mem110[ss:fp - 0x1A + 0x00:word16];
+		Mem116[ss:fp - 0x22 + 0x00:word16] = Mem113[ss:fp - 0x1C + 0x00:word16];
+		Mem119[ss:fp - 0x24 + 0x00:word16] = Mem116[ds_103:0x29E5:word16];
+		Mem122[ss:fp - 0x26 + 0x00:word16] = Mem119[ds_103:0x29E3:word16];
+		word16 di_124;
+		selector ds_125;
+		word16 ax_126 = fn0800_ACB3(fp - 0x02, ds_103, wArg00, wArg02, wArg08, out di_124, out ds_125);
+		Mem131[ss:fp - 0x1E + 0x00:word16] = Mem122[ss:fp - 0x12 + 0x00:word16];
+		Mem134[ss:fp - 0x20 + 0x00:word16] = Mem131[ss:fp - 0x14 + 0x00:word16];
+		Mem137[ss:fp - 0x22 + 0x00:word16] = Mem134[ds_125:10721:word16];
+		Mem140[ss:fp - 0x24 + 0x00:word16] = Mem137[ds_125:10719:word16];
+		Mem143[ss:fp - 0x26 + 0x00:word16] = Mem140[ds_125:0x29E5:word16];
+		Mem146[ss:fp - 0x28 + 0x00:word16] = Mem143[ds_125:0x29E3:word16];
+		selector ds_148;
+		word16 bp_149 = fn0800_3B0A(fp - 0x02, ds_125, wArg08, wArg0A, out ds_148);
+		while (true)
+		{
+			Mem162[ss:fp - 0x1E + 0x00:word16] = Mem146[ds_148:0x29E5:word16];
+			Mem165[ss:fp - 0x20 + 0x00:word16] = Mem162[ds_148:0x29E3:word16];
+			word16 di_166;
+			selector ds_167;
+			if (fn0800_3F58(bp_149, ds_148, wArg00, wArg02, out di_166, out ds_167) != 0x00 || ax_126 != 1004)
+				break;
+			Mem193[ss:fp - 0x1E + 0x00:word16] = 0x01;
+			Mem199[ss:fp - 0x20 + 0x00:word16] = 0x00;
+			Mem201[ss:fp - 0x22 + 0x00:word16] = 0x04;
+			Mem204[ss:fp - 0x24 + 0x00:word16] = Mem201[ds_167:0x29E5:word16];
+			Mem207[ss:fp - 0x26 + 0x00:word16] = Mem204[ds_167:0x29E3:word16];
+			word16 di_208;
+			selector ds_209;
+			fn0800_ACB3(bp_149, ds_167, wArg00, wArg02, wArg08, out di_208, out ds_209);
+			Mem214[ss:fp - 0x1E + 0x00:word16] = Mem207[ds_209:10721:word16];
+			Mem217[ss:fp - 0x20 + 0x00:word16] = Mem214[ds_209:10719:word16];
+			Mem223[ss:fp - 0x22 + 0x00:word16] = 0x00;
+			Mem225[ss:fp - 0x24 + 0x00:word16] = 1004;
+			word16 si_226;
+			fn0800_409C(bp_149, ds_209, wArg02, wArg04, wArg06, out si_226, out ds_148);
+			ax_126 = 0x00;
+			do
+			{
+				Mem239[ss:fp - 0x1E + 0x00:word16] = Mem225[ds_148:0x29E5:word16];
+				Mem242[ss:fp - 0x20 + 0x00:word16] = Mem239[ds_148:0x29E3:word16];
+				selector ds_243;
+				Mem247[ss:bp_149 - 0x04 + 0x00:word16] = fn0800_3E5D(bp_149, ds_148, wArg00, wArg02, out ds_243);
+				Mem248[ss:bp_149 - 0x06 + 0x00:word16] = ax_126;
+				Mem251[ss:fp - 0x1E + 0x00:word16] = Mem248[ds_243:10721:word16];
+				Mem254[ss:fp - 0x20 + 0x00:word16] = Mem251[ds_243:10719:word16];
+				Mem257[ss:fp - 0x22 + 0x00:word16] = Mem254[ss:bp_149 - 0x04 + 0x00:word16];
+				Mem259[ss:fp - 0x24 + 0x00:word16] = ax_126;
+				word16 si_260;
+				fn0800_409C(bp_149, ds_243, wArg02, wArg04, wArg06, out si_260, out ds_148);
+				word16 ax_265 = Mem259[ss:bp_149 - 0x06 + 0x00:word16] | Mem259[ss:(bp_149 - 0x04) + 0x00:word16];
+				if (ax_265 != 0x00)
+				{
+					Mem285[ss:fp - 0x1E + 0x00:word16] = Mem259[ds_148:0x29E5:word16];
+					Mem288[ss:fp - 0x20 + 0x00:word16] = Mem285[ds_148:0x29E3:word16];
+					selector ds_289;
+					ui32 dx_ax_293 = SEQ(fn0800_3E5D(bp_149, ds_148, wArg00, wArg02, out ds_289), ax_265 - 0x01);
+					Mem299[ss:bp_149 - 0x08 + 0x00:word16] = SLICE(dx_ax_293 - 0x01, word16, 16);
+					word16 ax_297 = (word16) (dx_ax_293 - 0x01);
+					Mem300[ss:bp_149 - 0x0A + 0x00:word16] = ax_297;
+					Mem303[ss:fp - 0x1E + 0x00:word16] = Mem300[ds_289:10721:word16];
+					Mem306[ss:fp - 0x20 + 0x00:word16] = Mem303[ds_289:10719:word16];
+					Mem309[ss:fp - 0x22 + 0x00:word16] = Mem306[ss:bp_149 - 0x08 + 0x00:word16];
+					Mem311[ss:fp - 0x24 + 0x00:word16] = ax_297;
+					word16 si_312;
+					selector ds_313;
+					fn0800_409C(bp_149, ds_289, wArg02, wArg04, wArg06, out si_312, out ds_313);
+					word16 dx_320;
+					word16 ax_321 = fn0800_8C69(Mem311[ss:bp_149 - 0x06 + 0x00:word16], 0x02, Mem311[ss:bp_149 - 0x04 + 0x00:word16], bp, out dx_320);
+					Mem323[ss:fp - 0x1E + 0x00:word16] = dx_320;
+					Mem325[ss:fp - 0x20 + 0x00:word16] = ax_321;
+					Mem328[ss:fp - 0x22 + 0x00:word16] = Mem325[ds_313:10721:word16];
+					Mem331[ss:fp - 0x24 + 0x00:word16] = Mem328[ds_313:10719:word16];
+					Mem334[ss:fp - 0x26 + 0x00:word16] = Mem331[ds_313:0x29E5:word16];
+					Mem337[ss:fp - 0x28 + 0x00:word16] = Mem334[ds_313:0x29E3:word16];
+					bp_149 = fn0800_3B0A(bp_149, ds_313, wArg08, wArg0A, out ds_148);
+				}
+				ax_126 = Mem259[ss:bp_149 - 0x06 + 0x00:word16] | Mem259[ss:(bp_149 - 0x04) + 0x00:word16];
+			} while (ax_126 == 0x00);
+		}
+		word16 v58_177 = Mem165[ds_167:20108:word16] + 0x04;
+		Mem178[ds_167:20108:word16] = v58_177;
+		Mem182[ds_167:20110:word16] = Mem178[ds_167:20110:word16] + (v58_177 <u 0x00);
+		return;
+	}
+	else
+	{
+		Mem346[ss:fp - 0x1E + 0x00:word16] = Mem55[ds_58:10721:word16];
+		Mem349[ss:fp - 0x20 + 0x00:word16] = Mem346[ds_58:10719:word16];
+		word16 dx_353;
+		word16 ax_354 = fn0800_8CAA(Mem349[ss:fp - 0x18 + 0x00:word16], 0x02, Mem349[ss:fp - 22 + 0x00:word16], bp, out dx_353);
+		Mem356[ss:fp - 0x22 + 0x00:word16] = dx_353;
+		Mem358[ss:fp - 0x24 + 0x00:word16] = ax_354;
+		word16 si_359;
+		selector ds_360;
+		word16 dx_362 = DPB(dx_353, fn0800_409C(fp - 0x02, ds_58, wArg02, wArg04, wArg06, out si_359, out ds_360), 0);
+		Mem367[ss:fp - 0x1E + 0x00:word16] = Mem358[ds_360:10721:word16];
+		Mem370[ss:fp - 0x20 + 0x00:word16] = Mem367[ds_360:10719:word16];
+		byte dl_371;
+		word16 si_372;
+		word16 ax_373 = fn0800_AD2F(ds_360, ptrArg00, wArg02, out dl_371, out si_372);
+		Mem375[ss:fp - 0x06 + 0x00:word16] = dx_362;
+		Mem376[ss:fp - 0x08 + 0x00:word16] = ax_373;
+		Mem381[ss:fp - 0x1E + 0x00:word16] = 0x00;
+		Mem384[ss:fp - 0x20 + 0x00:word16] = Mem381[ds_360:20110:word16];
+		Mem387[ss:fp - 0x22 + 0x00:word16] = Mem384[ds_360:20108:word16];
+		Mem390[ss:fp - 0x24 + 0x00:word16] = Mem387[ds_360:10721:word16];
+		Mem393[ss:fp - 0x26 + 0x00:word16] = Mem390[ds_360:10719:word16];
+		word16 di_394;
+		selector ds_395;
+		fn0800_ACB3(fp - 0x02, ds_360, wArg00, wArg02, wArg08, out di_394, out ds_395);
+		Mem401[ss:fp - 0x1E + 0x00:word16] = Mem393[ds_395:10721:word16];
+		Mem404[ss:fp - 0x20 + 0x00:word16] = Mem401[ds_395:10719:word16];
+		Mem407[ss:fp - 0x22 + 0x00:word16] = Mem404[ss:fp - 0x0E + 0x00:word16];
+		Mem410[ss:fp - 0x24 + 0x00:word16] = Mem407[ss:fp - 0x10 + 0x00:word16];
+		word16 si_411;
+		selector ds_412;
+		fn0800_409C(fp - 0x02, ds_395, wArg02, wArg04, wArg06, out si_411, out ds_412);
+		word16 v48_415 = Mem410[ds_412:20108:word16] + 0x04;
+		Mem416[ds_412:20108:word16] = v48_415;
+		Mem420[ds_412:20110:word16] = Mem416[ds_412:20110:word16] + (v48_415 <u 0x00);
+		Mem425[ss:fp - 0x1E + 0x00:word16] = 0x00;
+		Mem428[ss:fp - 0x20 + 0x00:word16] = Mem425[ss:fp - 0x06 + 0x00:word16];
+		Mem431[ss:fp - 0x22 + 0x00:word16] = Mem428[ss:fp - 0x08 + 0x00:word16];
+		Mem434[ss:fp - 0x24 + 0x00:word16] = Mem431[ds_412:10721:word16];
+		Mem437[ss:fp - 0x26 + 0x00:word16] = Mem434[ds_412:10719:word16];
+		word16 di_438;
+		selector ds_439;
+		fn0800_ACB3(fp - 0x02, ds_412, wArg00, wArg02, wArg08, out di_438, out ds_439);
+		selector ds_443;
+		Mem445[ss:fp - 0x04 + 0x00:word16] = fn0800_5374(fp - 0x02, ds_439, out ds_443);
+		Mem448[ss:fp - 0x1E + 0x00:word16] = 0x00;
+		word16 dx_451 = Mem448[ss:fp - 0x1C + 0x00:word16] + Mem448[ss:(fp - 0x14) + 0x00:word16];
+		Mem457[ss:fp - 0x20 + 0x00:word16] = Mem448[ss:fp - 0x1A + 0x00:word16] + Mem448[ss:(fp - 0x12) + 0x00:word16] + (dx_451 <u 0x00);
+		Mem459[ss:fp - 0x22 + 0x00:word16] = dx_451;
+		Mem462[ss:fp - 0x24 + 0x00:word16] = Mem459[ds_443:0x29E5:word16];
+		Mem465[ss:fp - 0x26 + 0x00:word16] = Mem462[ds_443:0x29E3:word16];
+		word16 di_466;
+		selector ds_467;
+		fn0800_ACB3(fp - 0x02, ds_443, wArg00, wArg02, wArg08, out di_466, out ds_467);
+		return;
+	}
+}
+
+// 0800:518F: Register word16 fn0800_518F(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
 word16 fn0800_518F(word16 bp, selector ds, ptr16 & dsOut)
 {
 	selector ds_11;
@@ -6945,584 +8728,645 @@ word16 fn0800_518F(word16 bp, selector ds, ptr16 & dsOut)
 		return bp;
 }
 
+// 0800:51A9: Register selector fn0800_51A9(Register word16 bp, Register selector ds)
 selector fn0800_51A9(word16 bp, selector ds)
 {
 fn0800_51A9_entry:
+	word16 bp_20 = fp - 0x02
 	goto l0800_533D
 l0800_51A9:
 l0800_51B3:
-	Mem80[ss:fp - 0x0A + 0x00:word16] = Mem47[ds_50:0x29E5:word16]
-	Mem83[ss:fp - 0x0C + 0x00:word16] = Mem80[ds_50:0x29E3:word16]
-	word16 ax_85 = fn0800_3E9A(fp - 0x02, ds_50, ptrArg00, wArg02, out ds)
-	branch ax_85 == 0x00 l0800_51D5
+	Mem84[ss:fp - 0x0A + 0x00:word16] = Mem49[ds_52:0x29E5:word16]
+	Mem87[ss:fp - 0x0C + 0x00:word16] = Mem84[ds_52:0x29E3:word16]
+	word16 ax_89 = fn0800_3E9A(bp_20, ds_52, ptrArg00, wArg02, out ds)
+	branch ax_89 == 0x00 l0800_51D5
 l0800_51C5:
-	branch ax_85 == 0x01 l0800_51F5
+	branch ax_89 == 0x01 l0800_51F5
 l0800_51CA:
-	branch ax_85 != 0x03 l0800_51D2
+	branch ax_89 != 0x03 l0800_51D2
 l0800_51CF:
-	word16 si_104 = 0x00
+	word16 si_101 = 0x00
 	goto l0800_52FA
 l0800_51D2:
-	Mem138[ss:fp - 0x0A + 0x00:word16] = Mem83[ds:0x29E5:word16]
-	Mem141[ss:fp - 0x0C + 0x00:word16] = Mem138[ds:0x29E3:word16]
-	word16 si_142
-	selector ds_143
-	Mem148[ss:fp - 0x0A + 0x00:word16] = fn0800_4194(fp - 0x02, ds, wArg00, wArg02, out si_142, out ds_143)
-	Mem150[ss:fp - 0x0C + 0x00:word16] = dx
-	Mem153[ss:fp - 0x0E + 0x00:word16] = Mem150[ds_143:0x29E5:word16]
-	Mem156[ss:fp - 0x10 + 0x00:word16] = Mem153[ds_143:0x29E3:word16]
-	word16 si_157
-	word16 ax_158 = fn0800_AD2F(ds_143, ptrArg00, wArg02, out si_157)
-	ui32 bx_cx_168 = SEQ(Mem156[ss:fp - 0x0C + 0x00:word16], Mem156[ss:fp - 0x0A + 0x00:word16] - ax_158) - SEQ(dx, ax_158)
-	Mem173[ss:fp - 0x0A + 0x00:word16] = SLICE(bx_cx_168, word16, 16)
-	Mem175[ss:fp - 0x0C + 0x00:word16] = (word16) bx_cx_168
-	Mem178[ss:fp - 0x0E + 0x00:word16] = Mem175[ds_143:10721:word16]
-	Mem181[ss:fp - 0x10 + 0x00:word16] = Mem178[ds_143:10719:word16]
-	Mem184[ss:fp - 0x12 + 0x00:word16] = Mem181[ds_143:0x29E5:word16]
-	Mem187[ss:fp - 0x14 + 0x00:word16] = Mem184[ds_143:0x29E3:word16]
-	ds = fn0800_3B0A(fp - 0x02, ds_143, wArg08, wArg0A)
+	Mem146[ss:fp - 0x0A + 0x00:word16] = Mem87[ds:0x29E5:word16]
+	Mem149[ss:fp - 0x0C + 0x00:word16] = Mem146[ds:0x29E3:word16]
+	word16 si_150
+	selector ds_151
+	Mem156[ss:fp - 0x0A + 0x00:word16] = fn0800_4194(bp_20, ds, wArg00, wArg02, out si_150, out ds_151)
+	Mem158[ss:fp - 0x0C + 0x00:word16] = dx
+	Mem161[ss:fp - 0x0E + 0x00:word16] = Mem158[ds_151:0x29E5:word16]
+	Mem164[ss:fp - 0x10 + 0x00:word16] = Mem161[ds_151:0x29E3:word16]
+	byte dl_165
+	word16 si_166
+	word16 ax_167 = fn0800_AD2F(ds_151, ptrArg00, wArg02, out dl_165, out si_166)
+	ui32 bx_cx_177 = SEQ(Mem164[ss:fp - 0x0C + 0x00:word16], Mem164[ss:fp - 0x0A + 0x00:word16] - ax_167) - SEQ(dx, ax_167)
+	Mem182[ss:fp - 0x0A + 0x00:word16] = SLICE(bx_cx_177, word16, 16)
+	Mem184[ss:fp - 0x0C + 0x00:word16] = (word16) bx_cx_177
+	Mem187[ss:fp - 0x0E + 0x00:word16] = Mem184[ds_151:10721:word16]
+	Mem190[ss:fp - 0x10 + 0x00:word16] = Mem187[ds_151:10719:word16]
+	Mem193[ss:fp - 0x12 + 0x00:word16] = Mem190[ds_151:0x29E5:word16]
+	Mem196[ss:fp - 0x14 + 0x00:word16] = Mem193[ds_151:0x29E3:word16]
+	bp_20 = fn0800_3B0A(bp_20, ds_151, wArg08, wArg0A, out ds)
 	goto l0800_533D
 l0800_51D5:
-	Mem360[ss:fp - 0x0A + 0x00:word16] = Mem83[ds:10721:word16]
-	Mem363[ss:fp - 0x0C + 0x00:word16] = Mem360[ds:10719:word16]
-	Mem366[ss:fp - 0x0E + 0x00:word16] = Mem363[ds:0x29E5:word16]
-	Mem369[ss:fp - 0x10 + 0x00:word16] = Mem366[ds:0x29E3:word16]
-	word16 di_370
-	selector ds_371
-	Mem376[ss:fp - 0x0E + 0x00:word16] = fn0800_3DCF(ds, ptrArg00, wArg02, out di_370, out ds_371)
-	fn0800_4047(ds_371, bArg00, ptrArg02, wArg04, out ds)
+	Mem376[ss:fp - 0x0A + 0x00:word16] = Mem87[ds:10721:word16]
+	Mem379[ss:fp - 0x0C + 0x00:word16] = Mem376[ds:10719:word16]
+	Mem382[ss:fp - 0x0E + 0x00:word16] = Mem379[ds:0x29E5:word16]
+	Mem385[ss:fp - 0x10 + 0x00:word16] = Mem382[ds:0x29E3:word16]
+	word16 di_387
+	selector ds_388
+	Mem393[ss:fp - 0x0E + 0x00:word16] = fn0800_3DCF(bp_20, ds, ptrArg00, wArg02, out dx, out di_387, out ds_388)
+	word16 di_394
+	fn0800_4047(bp_20, ds_388, bArg00, ptrArg02, wArg04, out di_394, out ds)
 	goto l0800_533D
 l0800_51F5:
-	Mem195[ss:fp - 0x0A + 0x00:word16] = Mem83[ds:10721:word16]
-	Mem198[ss:fp - 0x0C + 0x00:word16] = Mem195[ds:10719:word16]
-	Mem201[ss:fp - 0x0E + 0x00:word16] = Mem198[ds:0x29E5:word16]
-	Mem204[ss:fp - 0x10 + 0x00:word16] = Mem201[ds:0x29E3:word16]
-	selector ds_205
-	Mem210[ss:fp - 0x0E + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds, wArg00, wArg02, out ds_205)
-	Mem212[ss:fp - 0x10 + 0x00:word16] = ax_85
-	selector ds_214 = fn0800_409C(fp - 0x02, ds_205, wArg02, wArg04, wArg06)
-	Mem219[ss:fp - 0x0A + 0x00:word16] = Mem212[ds_214:0x29E5:word16]
-	Mem222[ss:fp - 0x0C + 0x00:word16] = Mem219[ds_214:0x29E3:word16]
-	word16 di_223
-	selector ds_224
-	word16 ax_225 = fn0800_3FAD(fp - 0x02, ds_214, wArg00, wArg02, out di_223, out ds_224)
-	Mem228[ss:fp - 0x04 + 0x00:word16] = 0x00
-	Mem229[ss:fp - 0x06 + 0x00:word16] = ax_225
-	Mem232[ss:fp - 0x0A + 0x00:word16] = Mem229[ds_224:10721:word16]
-	Mem235[ss:fp - 0x0C + 0x00:word16] = Mem232[ds_224:10719:word16]
-	Mem237[ss:fp - 0x0E + 0x00:word16] = ax_225
-	selector ds_238
-	fn0800_40BF(fp - 0x02, ds_224, bArg00, wArg02, wArg04, out ds_238)
-	Mem244[ss:fp - 0x0A + 0x00:word16] = Mem237[ds_238:0x29E5:word16]
-	Mem247[ss:fp - 0x0C + 0x00:word16] = Mem244[ds_238:0x29E3:word16]
-	word16 di_248
-	selector ds_249
-	word16 ax_255 = fn0800_8CAA(ax_225, 0x08, fn0800_3F58(fp - 0x02, ds_238, wArg00, wArg02, out di_248, out ds_249), bp, out dx)
-	branch dx != 0x52 || ax_255 != 0x4E43 l0800_52BA
+	Mem205[ss:fp - 0x0A + 0x00:word16] = Mem87[ds:10721:word16]
+	Mem208[ss:fp - 0x0C + 0x00:word16] = Mem205[ds:10719:word16]
+	Mem211[ss:fp - 0x0E + 0x00:word16] = Mem208[ds:0x29E5:word16]
+	Mem214[ss:fp - 0x10 + 0x00:word16] = Mem211[ds:0x29E3:word16]
+	selector ds_215
+	Mem220[ss:fp - 0x0E + 0x00:word16] = fn0800_3E5D(bp_20, ds, wArg00, wArg02, out ds_215)
+	Mem222[ss:fp - 0x10 + 0x00:word16] = ax_89
+	word16 si_224
+	selector ds_225
+	fn0800_409C(bp_20, ds_215, wArg02, wArg04, wArg06, out si_224, out ds_225)
+	Mem231[ss:fp - 0x0A + 0x00:word16] = Mem222[ds_225:0x29E5:word16]
+	Mem234[ss:fp - 0x0C + 0x00:word16] = Mem231[ds_225:0x29E3:word16]
+	word16 si_235
+	word16 di_236
+	selector ds_237
+	word16 ax_238 = fn0800_3FAD(bp_20, ds_225, wArg00, wArg02, out si_235, out di_236, out ds_237)
+	Mem241[ss:bp_20 - 0x02 + 0x00:word16] = 0x00
+	Mem242[ss:bp_20 - 0x04 + 0x00:word16] = ax_238
+	Mem245[ss:fp - 0x0A + 0x00:word16] = Mem242[ds_237:10721:word16]
+	Mem248[ss:fp - 0x0C + 0x00:word16] = Mem245[ds_237:10719:word16]
+	Mem250[ss:fp - 0x0E + 0x00:word16] = ax_238
+	selector ds_251
+	fn0800_40BF(bp_20, ds_237, bArg00, wArg02, wArg04, out ds_251)
+	Mem257[ss:fp - 0x0A + 0x00:word16] = Mem250[ds_251:0x29E5:word16]
+	Mem260[ss:fp - 0x0C + 0x00:word16] = Mem257[ds_251:0x29E3:word16]
+	word16 di_261
+	selector ds_262
+	word16 ax_268 = fn0800_8CAA(ax_238, 0x08, fn0800_3F58(bp_20, ds_251, wArg00, wArg02, out di_261, out ds_262), bp, out dx)
+	branch dx != 0x52 || ax_268 != 0x4E43 l0800_52BA
 	goto l0800_5255
 l0800_5250:
 l0800_5255:
-	selector ds_284
-	branch fn0800_5374(fp - 0x02, ds_249, out ds_284) == 0x00 l0800_5263
+	selector ds_298
+	branch fn0800_5374(bp_20, ds_262, out ds_298) == 0x00 l0800_5263
 l0800_525E:
-	return ds_284
+	return ds_298
 l0800_5263:
-	Mem297[ss:fp - 0x0A + 0x00:word16] = 0x01
-	ui32 ax_dx_301 = SEQ(Mem297[ds_284:0x2A09:word16], Mem297[ds_284:0x2A07:word16] + 0x02)
-	dx = -(word16) (ax_dx_301 + 0x02)
-	Mem313[ss:fp - 0x0C + 0x00:word16] = -SLICE(ax_dx_301 + 0x02, word16, 16) - (dx == 0x00)
-	Mem315[ss:fp - 0x0E + 0x00:word16] = dx
-	Mem318[ss:fp - 0x10 + 0x00:word16] = Mem315[ds_284:10721:word16]
-	Mem321[ss:fp - 0x12 + 0x00:word16] = Mem318[ds_284:10719:word16]
-	selector ds_322
-	fn0800_ACB3(fp - 0x02, ds_284, ptrArg00, wArg02, wArg08, out ds_322)
-	Mem328[ss:fp - 0x0A + 0x00:word16] = Mem321[ds_322:10721:word16]
-	Mem331[ss:fp - 0x0C + 0x00:word16] = Mem328[ds_322:10719:word16]
-	Mem334[ss:fp - 0x0E + 0x00:word16] = Mem331[ds_322:0x2A07:word16]
-	selector ds_335
-	fn0800_40BF(fp - 0x02, ds_322, bArg00, wArg02, wArg04, out ds_335)
-	Mem341[ss:fp - 0x0A + 0x00:word16] = 0x01
-	Mem344[ss:fp - 0x0C + 0x00:word16] = Mem341[ds_335:0x2A09:word16]
-	Mem347[ss:fp - 0x0E + 0x00:word16] = Mem344[ds_335:0x2A07:word16]
-	Mem350[ss:fp - 0x10 + 0x00:word16] = Mem347[ds_335:10721:word16]
-	Mem353[ss:fp - 0x12 + 0x00:word16] = Mem350[ds_335:10719:word16]
-	fn0800_ACB3(fp - 0x02, ds_335, ptrArg00, wArg02, wArg08, out ds)
+	Mem311[ss:fp - 0x0A + 0x00:word16] = 0x01
+	ui32 ax_dx_315 = SEQ(Mem311[ds_298:0x2A09:word16], Mem311[ds_298:0x2A07:word16] + 0x02)
+	dx = -(word16) (ax_dx_315 + 0x02)
+	Mem327[ss:fp - 0x0C + 0x00:word16] = -SLICE(ax_dx_315 + 0x02, word16, 16) - (dx == 0x00)
+	Mem329[ss:fp - 0x0E + 0x00:word16] = dx
+	Mem332[ss:fp - 0x10 + 0x00:word16] = Mem329[ds_298:10721:word16]
+	Mem335[ss:fp - 0x12 + 0x00:word16] = Mem332[ds_298:10719:word16]
+	word16 di_336
+	selector ds_337
+	fn0800_ACB3(bp_20, ds_298, wArg00, wArg02, wArg08, out di_336, out ds_337)
+	Mem343[ss:fp - 0x0A + 0x00:word16] = Mem335[ds_337:10721:word16]
+	Mem346[ss:fp - 0x0C + 0x00:word16] = Mem343[ds_337:10719:word16]
+	Mem349[ss:fp - 0x0E + 0x00:word16] = Mem346[ds_337:0x2A07:word16]
+	selector ds_350
+	fn0800_40BF(bp_20, ds_337, bArg00, wArg02, wArg04, out ds_350)
+	Mem356[ss:fp - 0x0A + 0x00:word16] = 0x01
+	Mem359[ss:fp - 0x0C + 0x00:word16] = Mem356[ds_350:0x2A09:word16]
+	Mem362[ss:fp - 0x0E + 0x00:word16] = Mem359[ds_350:0x2A07:word16]
+	Mem365[ss:fp - 0x10 + 0x00:word16] = Mem362[ds_350:10721:word16]
+	Mem368[ss:fp - 0x12 + 0x00:word16] = Mem365[ds_350:10719:word16]
+	word16 di_369
+	fn0800_ACB3(bp_20, ds_350, wArg00, wArg02, wArg08, out di_369, out ds)
 	goto l0800_533D
 l0800_52BA:
-	Mem263[ss:fp - 0x0A + 0x00:word16] = Mem247[ss:fp - 0x04 + 0x00:word16]
-	Mem266[ss:fp - 0x0C + 0x00:word16] = Mem263[ss:fp - 0x06 + 0x00:word16]
-	Mem269[ss:fp - 0x0E + 0x00:word16] = Mem266[ds_249:10721:word16]
-	Mem272[ss:fp - 0x10 + 0x00:word16] = Mem269[ds_249:10719:word16]
-	Mem275[ss:fp - 0x12 + 0x00:word16] = Mem272[ds_249:0x29E5:word16]
-	Mem278[ss:fp - 0x14 + 0x00:word16] = Mem275[ds_249:0x29E3:word16]
-	ds = fn0800_3B0A(fp - 0x02, ds_249, wArg08, wArg0A)
+	Mem276[ss:fp - 0x0A + 0x00:word16] = Mem260[ss:bp_20 - 0x02 + 0x00:word16]
+	Mem279[ss:fp - 0x0C + 0x00:word16] = Mem276[ss:bp_20 - 0x04 + 0x00:word16]
+	Mem282[ss:fp - 0x0E + 0x00:word16] = Mem279[ds_262:10721:word16]
+	Mem285[ss:fp - 0x10 + 0x00:word16] = Mem282[ds_262:10719:word16]
+	Mem288[ss:fp - 0x12 + 0x00:word16] = Mem285[ds_262:0x29E5:word16]
+	Mem291[ss:fp - 0x14 + 0x00:word16] = Mem288[ds_262:0x29E3:word16]
+	bp_20 = fn0800_3B0A(bp_20, ds_262, wArg08, wArg0A, out ds)
 	goto l0800_533D
 l0800_52D8:
 l0800_52DC:
-	Mem110[ss:fp - 0x0A + 0x00:word16] = Mem83[ds:10721:word16]
-	Mem113[ss:fp - 0x0C + 0x00:word16] = Mem110[ds:10719:word16]
-	Mem116[ss:fp - 0x0E + 0x00:word16] = Mem113[ds:0x29E5:word16]
-	Mem119[ss:fp - 0x10 + 0x00:word16] = Mem116[ds:0x29E3:word16]
-	word16 di_120
-	selector ds_121
-	Mem126[ss:fp - 0x0E + 0x00:word16] = fn0800_3DCF(ds, ptrArg00, wArg02, out di_120, out ds_121)
-	fn0800_4047(ds_121, bArg00, ptrArg02, wArg04, out ds)
-	si_104 = si_104 + 0x01
+	Mem116[ss:fp - 0x0A + 0x00:word16] = Mem87[ds:10721:word16]
+	Mem119[ss:fp - 0x0C + 0x00:word16] = Mem116[ds:10719:word16]
+	Mem122[ss:fp - 0x0E + 0x00:word16] = Mem119[ds:0x29E5:word16]
+	Mem125[ss:fp - 0x10 + 0x00:word16] = Mem122[ds:0x29E3:word16]
+	word16 di_127
+	selector ds_128
+	Mem133[ss:fp - 0x0E + 0x00:word16] = fn0800_3DCF(bp_20, ds, ptrArg00, wArg02, out dx, out di_127, out ds_128)
+	word16 di_137
+	fn0800_4047(bp_20, ds_128, bArg00, ptrArg02, wArg04, out di_137, out ds)
+	si_101 = si_101 + 0x01
 l0800_52FA:
-	branch si_104 != 0x03 l0800_52DC
+	branch si_101 != 0x03 l0800_52DC
 	goto l0800_533D
 l0800_5301:
 l0800_533D:
-	Mem27[ss:fp - 0x0A + 0x00:word16] = Mem0[ds:0x29E5:word16]
-	Mem31[ss:fp - 0x0C + 0x00:word16] = Mem27[ds:0x29E3:word16]
-	word16 si_34
-	Mem39[ss:fp - 0x0A + 0x00:word16] = fn0800_AD2F(ds, ptrArg00, wArg02, out si_34)
-	Mem41[ss:fp - 0x0C + 0x00:word16] = dx
-	Mem44[ss:fp - 0x0E + 0x00:word16] = Mem41[ds:0x29E5:word16]
-	Mem47[ss:fp - 0x10 + 0x00:word16] = Mem44[ds:0x29E3:word16]
-	word16 si_49
-	selector ds_50
-	word16 ax_51 = fn0800_4194(fp - 0x02, ds, wArg00, wArg02, out si_49, out ds_50)
-	word16 bx_53 = Mem47[ss:fp - 0x0C + 0x00:word16]
-	dx = Mem47[ss:fp - 0x0A + 0x00:word16]
-	branch bx_53 >=u dx l0800_5364
+	Mem28[ss:fp - 0x0A + 0x00:word16] = Mem0[ds:0x29E5:word16]
+	Mem32[ss:fp - 0x0C + 0x00:word16] = Mem28[ds:0x29E3:word16]
+	byte dl_35
+	word16 si_36
+	Mem41[ss:fp - 0x0A + 0x00:word16] = fn0800_AD2F(ds, ptrArg00, wArg02, out dl_35, out si_36)
+	Mem43[ss:fp - 0x0C + 0x00:word16] = dx
+	Mem46[ss:fp - 0x0E + 0x00:word16] = Mem43[ds:0x29E5:word16]
+	Mem49[ss:fp - 0x10 + 0x00:word16] = Mem46[ds:0x29E3:word16]
+	word16 si_51
+	selector ds_52
+	word16 ax_53 = fn0800_4194(bp_20, ds, wArg00, wArg02, out si_51, out ds_52)
+	word16 bx_55 = Mem49[ss:fp - 0x0C + 0x00:word16]
+	dx = Mem49[ss:fp - 0x0A + 0x00:word16]
+	branch bx_55 >=u dx l0800_5364
 	goto l0800_51B3
 l0800_5364:
-	branch bx_53 != dx || dx >=u ax_51 l0800_536D
+	branch bx_55 != dx || dx >=u ax_53 l0800_536D
 	goto l0800_51B3
 l0800_5366:
 l0800_536D:
-	return ds_50
+	return ds_52
 fn0800_51A9_exit:
 }
 
+// 0800:5374: Register word16 fn0800_5374(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
 word16 fn0800_5374(word16 bp, selector ds, ptr16 & dsOut)
 {
-	word16 si_21;
-	word16 ax_22 = fn0800_AD2F(ds, DPB(ptrLoc16, Mem0[ds:0x29E3:word16], 0), Mem0[ds:0x29E5:word16], out si_21);
-	Mem26[ss:fp - 0x0C + 0x00:word16] = dx;
-	Mem28[ss:fp - 0x0E + 0x00:word16] = ax_22;
-	Mem31[ss:fp - 0x14 + 0x00:word16] = Mem28[ds:0x29E5:word16];
-	Mem34[ss:fp - 22 + 0x00:word16] = Mem31[ds:0x29E3:word16];
-	selector ds_37;
-	fn0800_3E5D(fp - 0x02, ds, wArg00, wArg02, out ds_37);
-	Mem43[ds_37:0x2A21:word16] = ax_22 & 0x03;
-	Mem46[ss:fp - 0x14 + 0x00:word16] = Mem43[ds_37:0x29E5:word16];
-	Mem49[ss:fp - 22 + 0x00:word16] = Mem46[ds_37:0x29E3:word16];
-	selector ds_50;
-	word16 dx_51 = fn0800_3E5D(fp - 0x02, ds_37, wArg00, wArg02, out ds_50);
-	Mem54[ds_50:0x2A09:word16] = dx_51;
-	Mem55[ds_50:0x2A07:word16] = ax_22 & 0x03;
-	word16 bp_261 = fp - 0x02;
-	if (Mem55[ds_50:0x2A21:word16] != 0x00)
+	byte dl_21;
+	word16 si_22;
+	word16 ax_23 = fn0800_AD2F(ds, DPB(ptrLoc16, Mem0[ds:0x29E3:word16], 0), Mem0[ds:0x29E5:word16], out dl_21, out si_22);
+	Mem27[ss:fp - 0x0C + 0x00:word16] = dx;
+	Mem29[ss:fp - 0x0E + 0x00:word16] = ax_23;
+	Mem32[ss:fp - 0x14 + 0x00:word16] = Mem29[ds:0x29E5:word16];
+	Mem35[ss:fp - 22 + 0x00:word16] = Mem32[ds:0x29E3:word16];
+	selector ds_38;
+	fn0800_3E5D(fp - 0x02, ds, wArg00, wArg02, out ds_38);
+	Mem44[ds_38:0x2A21:word16] = ax_23 & 0x03;
+	Mem47[ss:fp - 0x14 + 0x00:word16] = Mem44[ds_38:0x29E5:word16];
+	Mem50[ss:fp - 22 + 0x00:word16] = Mem47[ds_38:0x29E3:word16];
+	selector ds_51;
+	word16 dx_52 = fn0800_3E5D(fp - 0x02, ds_38, wArg00, wArg02, out ds_51);
+	Mem54[ds_51:0x2A09:word16] = dx_52;
+	Mem55[ds_51:0x2A07:word16] = ax_23 & 0x03;
+	if (Mem55[ds_51:0x2A21:word16] != 0x00)
 	{
-		Mem109[ss:fp - 0x14 + 0x00:word16] = Mem55[ds_50:0x29E5:word16];
-		Mem112[ss:fp - 22 + 0x00:word16] = Mem109[ds_50:0x29E3:word16];
-		selector ds_113;
-		word16 dx_114 = fn0800_3E5D(fp - 0x02, ds_50, wArg00, wArg02, out ds_113);
-		Mem117[ds_113:0x2A05:word16] = dx_114;
-		Mem118[ds_113:0x2A03:word16] = ax_22 & 0x03;
-		Mem121[ss:fp - 0x14 + 0x00:word16] = Mem118[ds_113:0x29E5:word16];
-		Mem124[ss:fp - 22 + 0x00:word16] = Mem121[ds_113:0x29E3:word16];
-		word16 si_125;
-		word16 di_126;
-		selector ds_127;
-		word16 ax_128 = fn0800_3E27(fp - 0x02, ds_113, wArg00, wArg02, out si_125, out di_126, out ds_127);
-		Mem131[ds_127:11851:word16] = ax_128;
-		Mem134[ss:fp - 0x14 + 0x00:word16] = Mem131[ds_127:0x29E5:word16];
-		Mem137[ss:fp - 22 + 0x00:word16] = Mem134[ds_127:0x29E3:word16];
-		word16 si_138;
-		word16 di_139;
-		selector ds_140;
-		word16 ax_141 = fn0800_3E27(fp - 0x02, ds_127, wArg00, wArg02, out si_138, out di_139, out ds_140);
-		Mem144[ds_140:11849:word16] = ax_141;
-		Mem147[ss:fp - 0x14 + 0x00:word16] = Mem144[ds_140:0x29E5:word16];
-		Mem150[ss:fp - 22 + 0x00:word16] = Mem147[ds_140:0x29E3:word16];
+		Mem106[ss:fp - 0x14 + 0x00:word16] = Mem55[ds_51:0x29E5:word16];
+		Mem109[ss:fp - 22 + 0x00:word16] = Mem106[ds_51:0x29E3:word16];
+		selector ds_110;
+		word16 dx_111 = fn0800_3E5D(fp - 0x02, ds_51, wArg00, wArg02, out ds_110);
+		Mem114[ds_110:0x2A05:word16] = dx_111;
+		Mem115[ds_110:0x2A03:word16] = ax_23 & 0x03;
+		Mem118[ss:fp - 0x14 + 0x00:word16] = Mem115[ds_110:0x29E5:word16];
+		Mem121[ss:fp - 22 + 0x00:word16] = Mem118[ds_110:0x29E3:word16];
+		word16 dx_122;
+		word16 si_123;
+		word16 di_124;
+		selector ds_125;
+		word16 ax_126 = fn0800_3E27(fp - 0x02, ds_110, wArg00, wArg02, out dx_122, out si_123, out di_124, out ds_125);
+		Mem129[ds_125:11851:word16] = ax_126;
+		Mem132[ss:fp - 0x14 + 0x00:word16] = Mem129[ds_125:0x29E5:word16];
+		Mem135[ss:fp - 22 + 0x00:word16] = Mem132[ds_125:0x29E3:word16];
+		word16 dx_136;
+		word16 si_137;
+		word16 di_138;
+		selector ds_139;
+		word16 ax_140 = fn0800_3E27(fp - 0x02, ds_125, wArg00, wArg02, out dx_136, out si_137, out di_138, out ds_139);
+		Mem143[ds_139:11849:word16] = ax_140;
+		Mem146[ss:fp - 0x14 + 0x00:word16] = Mem143[ds_139:0x29E5:word16];
+		Mem149[ss:fp - 22 + 0x00:word16] = Mem146[ds_139:0x29E3:word16];
+		word16 dx_150;
 		word16 si_151;
 		word16 di_152;
 		selector ds_153;
-		fn0800_3E27(fp - 0x02, ds_140, wArg00, wArg02, out si_151, out di_152, out ds_153);
-		Mem159[ss:fp - 0x14 + 0x00:word16] = Mem150[ds_153:0x2A05:word16];
+		word16 ax_154 = fn0800_3E27(fp - 0x02, ds_139, wArg00, wArg02, out dx_150, out si_151, out di_152, out ds_153);
+		Mem159[ss:fp - 0x14 + 0x00:word16] = Mem149[ds_153:0x2A05:word16];
 		Mem162[ss:fp - 22 + 0x00:word16] = Mem159[ds_153:0x2A03:word16];
 		Mem165[ss:fp - 0x18 + 0x00:word16] = Mem162[ds_153:0x29E5:word16];
 		Mem168[ss:fp - 0x1A + 0x00:word16] = Mem165[ds_153:0x29E3:word16];
-		selector ds_169;
-		word16 ax_170 = fn0800_2D0A(fp - 0x02, ds_153, out ds_169);
-		if (ax_170 == Mem168[ds_169:11849:word16])
+		fn0800_2D0A(fp - 0x02, ds_153, wArg00, wArg02);
+		if (ax_154 == Mem168[ds_153:11849:word16])
 		{
-			Mem183[ss:fp - 0x14 + 0x00:word16] = 0x01;
-			Mem185[ss:fp - 22 + 0x00:word16] = 0x0F;
-			selector ds_186 = fn0800_4311(ds_169, wArg00, wArg02);
-			Mem189[ss:fp - 0x08 + 0x00:word16] = 0x0F;
-			Mem190[ss:fp - 0x0A + 0x00:word16] = 0x01;
-			Mem193[ds_186:11891:word16] = 0x10;
-			Mem194[ds_186:11889:word16] = 0x00;
-			Mem198[ss:fp - 0x14 + 0x00:word16] = 0x01;
-			Mem200[ss:fp - 22 + 0x00:word16] = 0x0F;
-			selector ds_201 = fn0800_4311(ds_186, wArg00, wArg02);
-			Mem203[ss:fp - 0x04 + 0x00:word16] = 0x0F;
-			Mem204[ss:fp - 0x06 + 0x00:word16] = 0x01;
-			Mem206[ds_201:11867:word16] = 0x10;
-			Mem207[ds_201:11865:word16] = 0x00;
-			word16 dx_209 = Mem207[ds_201:11889:word16];
-			Mem211[ds_201:11887:word16] = Mem207[ds_201:11891:word16];
-			Mem212[ds_201:11885:word16] = dx_209 + ~0x02;
-			word16 dx_215 = Mem212[ds_201:11865:word16] + Mem212[ds_201:11825:word16];
-			Mem216[ds_201:11863:word16] = Mem212[ds_201:11867:word16];
-			Mem217[ds_201:11861:word16] = dx_215;
-			Mem218[ds_201:11853:word16] = 0x00;
-			Mem222[ds_201:11845:word16] = 0x00;
-			Mem223[ds_201:0x29FD:word16] = 0x00;
-			Mem224[ds_201:10747:word16] = 0x00;
-			Mem225[ds_201:0x2A01:word16] = 0x00;
-			Mem226[ds_201:0x29FF:word16] = 0x00;
-			Mem228[ss:fp - 0x10 + 0x00:word16] = Mem226[ds_201:11855:word16];
-			Mem231[ss:fp - 0x14 + 0x00:word16] = 0x01;
-			word16 si_232;
-			selector ds_233;
-			if (fn0800_5C1A(ds_201, wArg00, out si_232, out ds_233) != 0x00 && (Mem231[ds_233:0x2A25:word16] != 0x02 && Mem231[ds_233:0x2A25:word16] != 0x07))
-				si_232 = 0x0A;
-			word16 si_242 = si_232;
-			if (si_232 == 0x00)
+			Mem180[ss:fp - 0x14 + 0x00:word16] = 0x01;
+			Mem182[ss:fp - 22 + 0x00:word16] = 0x0F;
+			fn0800_4311(0x01, 0x0F, ds_153, wArg00, wArg02);
+			Mem185[ss:fp - 0x08 + 0x00:word16] = 0x0F;
+			Mem186[ss:fp - 0x0A + 0x00:word16] = 0x01;
+			Mem189[ds_153:11891:word16] = 0x10;
+			Mem190[ds_153:11889:word16] = 0x00;
+			Mem194[ss:fp - 0x14 + 0x00:word16] = 0x01;
+			Mem196[ss:fp - 22 + 0x00:word16] = 0x0F;
+			fn0800_4311(0x01, 0x0F, ds_153, wArg00, wArg02);
+			Mem198[ss:fp - 0x04 + 0x00:word16] = 0x0F;
+			Mem199[ss:fp - 0x06 + 0x00:word16] = 0x01;
+			Mem201[ds_153:11867:word16] = 0x10;
+			Mem202[ds_153:11865:word16] = 0x00;
+			word16 dx_204 = Mem202[ds_153:11889:word16];
+			Mem206[ds_153:11887:word16] = Mem202[ds_153:11891:word16];
+			Mem207[ds_153:11885:word16] = dx_204 + ~0x02;
+			word16 dx_210 = Mem207[ds_153:11865:word16] + Mem207[ds_153:11825:word16];
+			Mem211[ds_153:11863:word16] = Mem207[ds_153:11867:word16];
+			Mem212[ds_153:11861:word16] = dx_210;
+			Mem213[ds_153:11853:word16] = 0x00;
+			Mem217[ds_153:11845:word16] = 0x00;
+			Mem218[ds_153:0x29FD:word16] = 0x00;
+			Mem219[ds_153:10747:word16] = 0x00;
+			Mem220[ds_153:0x2A01:word16] = 0x00;
+			Mem221[ds_153:0x29FF:word16] = 0x00;
+			Mem223[ss:fp - 0x10 + 0x00:word16] = Mem221[ds_153:11855:word16];
+			Mem226[ss:fp - 0x14 + 0x00:word16] = 0x01;
+			word16 di_228;
+			selector ds_229;
+			word16 si_227;
+			if (fn0800_5C1A(0x00, di_152, ds_153, wArg00, out si_227, out di_228, out ds_229) != 0x00 && (Mem226[ds_229:0x2A25:word16] != 0x02 && Mem226[ds_229:0x2A25:word16] != 0x07))
+				si_227 = 0x0A;
+			if (si_227 != 0x00)
 			{
-				Mem353[ss:fp - 0x14 + 0x00:word16] = 0x01;
-				if (fn0800_5C1A(ds_233, wArg00, out si_242, out ds_233) != 0x00)
-				{
-					if (Mem353[ds_233:0x2A23:word16] != 0x01)
-					{
-						Mem376[ss:fp - 0x14 + 0x00:word16] = 0x10;
-						word16 ax_379 = fn0800_5C1A(ds_233, wArg00, out si_242, out ds_233);
-						if (Mem376[ds_233:0x2A25:word16] == 0x02 && Mem376[ds_233:11855:word16] == 0x00)
-							Mem393[ds_233:11855:word16] = ax_379;
-						if (Mem376[ds_233:11855:word16] != ax_379 && Mem376[ds_233:11855:word16] != 0x00)
-							si_242 = 0x0C;
-					}
-					if (Mem353[ds_233:11855:word16] == 0x00)
-						si_242 = 11;
-				}
-				else
-					Mem394[ds_233:11855:word16] = 0x00;
-			}
-			word16 si_254 = si_242;
-			if (si_242 == 0x00)
-			{
-				word16 ax_340 = Mem231[ds_233:0x2A21:word16];
-				if (ax_340 != 0x01)
-				{
-					if (ax_340 == 0x02)
-					{
-						bp_261 = fn0800_579B(ds_233, out ds_233);
-						si_254 = ax_340;
-					}
-				}
-				else
-				{
-					ds_233 = fn0800_55E8(fp - 0x02, ds_233);
-					si_254 = ax_340;
-				}
-			}
-			Mem263[ds_233:11855:word16] = Mem231[ss:bp_261 - 0x0E + 0x00:word16];
-			Mem266[ss:fp - 0x14 + 0x00:word16] = Mem263[ss:bp_261 - 0x06 + 0x00:word16];
-			Mem269[ss:fp - 22 + 0x00:word16] = Mem266[ss:bp_261 - 0x08 + 0x00:word16];
-			selector ds_270;
-			fn0800_4346(ds_233, wArg00, wArg02, out ds_270);
-			Mem276[ss:fp - 0x14 + 0x00:word16] = Mem269[ss:bp_261 - 0x02 + 0x00:word16];
-			Mem279[ss:fp - 22 + 0x00:word16] = Mem276[ss:bp_261 - 0x04 + 0x00:word16];
-			selector ds_280;
-			fn0800_4346(ds_270, wArg00, wArg02, out ds_280);
-			word16 v40_283 = Mem279[ds_280:0x2A03:word16] + 0x12;
-			Mem284[ds_280:0x2A03:word16] = v40_283;
-			Mem288[ds_280:0x2A05:word16] = Mem284[ds_280:0x2A05:word16] + (v40_283 <u 0x00);
-			Mem291[ss:fp - 0x14 + 0x00:word16] = 0x00;
-			word16 dx_294 = Mem291[ss:bp_261 - 0x0C + 0x00:word16] + Mem291[ds_280:0x2A03:word16];
-			Mem300[ss:fp - 22 + 0x00:word16] = Mem291[ss:bp_261 - 0x0A + 0x00:word16] + Mem291[ds_280:0x2A05:word16] + (dx_294 <u 0x00);
-			Mem302[ss:fp - 0x18 + 0x00:word16] = dx_294;
-			Mem305[ss:fp - 0x1A + 0x00:word16] = Mem302[ds_280:0x29E5:word16];
-			Mem308[ss:fp - 0x1C + 0x00:word16] = Mem305[ds_280:0x29E3:word16];
-			selector ds_310;
-			fn0800_ACB3(bp_261, ds_280, ptrArg00, wArg02, wArg08, out ds_310);
-			if (si_254 == 0x00)
-			{
-				if (Mem308[ds_310:11853:word16] == Mem308[ds_310:11851:word16])
-					return 0x00;
-				else
-					return 0x06;
+				selector ds_263;
+				return fn0800_555D(fp - 0x02, si_227, di_228, ds_229, out ds_263);
 			}
 			else
-				return si_254;
+			{
+				Mem244[ss:fp - 0x14 + 0x00:word16] = 0x01;
+				word16 si_245;
+				word16 di_246;
+				selector ds_247;
+				if (fn0800_5C1A(si_227, di_228, ds_229, wArg00, out si_245, out di_246, out ds_247) == 0x00)
+				{
+					Mem260[ds_247:11855:word16] = 0x00;
+					selector ds_261;
+					return fn0800_555D(fp - 0x02, si_245, di_246, ds_247, out ds_261);
+				}
+				else
+				{
+					selector ds_258;
+					return fn0800_551B(fp - 0x02, si_245, di_246, ds_247, out ds_258);
+				}
+			}
 		}
 		else
 			return 0x05;
 	}
 	else
 	{
-		Mem74[ss:fp - 0x14 + 0x00:word16] = Mem55[ds_50:0x2A09:word16];
-		Mem76[ss:fp - 22 + 0x00:word16] = ax_22 & 0x03;
-		Mem79[ss:fp - 0x18 + 0x00:word16] = Mem76[ds_50:10721:word16];
-		Mem82[ss:fp - 0x1A + 0x00:word16] = Mem79[ds_50:10719:word16];
-		Mem85[ss:fp - 0x1C + 0x00:word16] = Mem82[ds_50:0x29E5:word16];
-		Mem88[ss:fp - 0x1E + 0x00:word16] = Mem85[ds_50:0x29E3:word16];
-		selector ds_91 = fn0800_3B0A(fp - 0x02, ds_50, wArg08, wArg0A);
-		*dsOut = ds_91;
-		word16 dx_94 = Mem88[ds_91:0x2A07:word16];
-		Mem95[ds_91:0x2A05:word16] = Mem88[ds_91:0x2A09:word16];
-		Mem96[ds_91:0x2A03:word16] = dx_94;
+		Mem72[ss:fp - 0x14 + 0x00:word16] = Mem55[ds_51:0x2A09:word16];
+		Mem74[ss:fp - 22 + 0x00:word16] = ax_23 & 0x03;
+		Mem77[ss:fp - 0x18 + 0x00:word16] = Mem74[ds_51:10721:word16];
+		Mem80[ss:fp - 0x1A + 0x00:word16] = Mem77[ds_51:10719:word16];
+		Mem83[ss:fp - 0x1C + 0x00:word16] = Mem80[ds_51:0x29E5:word16];
+		Mem86[ss:fp - 0x1E + 0x00:word16] = Mem83[ds_51:0x29E3:word16];
+		selector ds_89;
+		fn0800_3B0A(fp - 0x02, ds_51, wArg08, wArg0A, out ds_89);
+		word16 dx_93 = Mem86[ds_89:0x2A07:word16];
+		Mem94[ds_89:0x2A05:word16] = Mem86[ds_89:0x2A09:word16];
+		Mem95[ds_89:0x2A03:word16] = dx_93;
 		return 0x00;
 	}
 }
 
+// 0800:551B: Register word16 fn0800_551B(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_551B(word16 bp, word16 si, word16 di, selector ds, ptr16 & dsOut)
+{
+	if (!Z)
+	{
+		word16 ax_35 = fn0800_5C1A(si, di, ds, 0x10, out si, out di, out ds);
+		if (Mem0[ds:0x2A25:word16] == 0x02 && Mem0[ds:11855:word16] == 0x00)
+			Mem47[ds:11855:word16] = ax_35;
+		if (Mem0[ds:11855:word16] != ax_35 && Mem0[ds:11855:word16] != 0x00)
+			si = 0x0C;
+	}
+	if (Mem0[ds:11855:word16] != 0x00)
+	{
+		selector ds_27;
+		return fn0800_555D(bp, si, di, ds, out ds_27);
+	}
+	else
+	{
+		selector ds_25;
+		return fn0800_555D(bp, 11, di, ds, out ds_25);
+	}
+}
+
+// 0800:555D: Register word16 fn0800_555D(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_555D(word16 bp, word16 si, word16 di, selector ds, ptr16 & dsOut)
+{
+	word16 si_117 = si;
+	if (si == 0x00)
+	{
+		word16 ax_107 = Mem0[ds:0x2A21:word16];
+		if (ax_107 != 0x01)
+		{
+			if (ax_107 == 0x02)
+			{
+				bp = fn0800_579B(bp, si, di, ds, out ds);
+				si_117 = ax_107;
+			}
+		}
+		else
+		{
+			ds = fn0800_55E8(bp, ds);
+			si_117 = ax_107;
+		}
+	}
+	Mem17[ds:11855:word16] = Mem0[ss:bp - 0x0E + 0x00:word16];
+	Mem20[ss:fp - 0x02 + 0x00:word16] = Mem17[ss:bp - 0x06 + 0x00:word16];
+	Mem23[ss:fp - 0x04 + 0x00:word16] = Mem20[ss:bp - 0x08 + 0x00:word16];
+	selector ds_26;
+	fn0800_4346(ds, wArg00, wArg02, out ds_26);
+	Mem32[ss:fp - 0x02 + 0x00:word16] = Mem23[ss:bp - 0x02 + 0x00:word16];
+	Mem35[ss:fp - 0x04 + 0x00:word16] = Mem32[ss:bp - 0x04 + 0x00:word16];
+	selector ds_36;
+	fn0800_4346(ds_26, wArg00, wArg02, out ds_36);
+	word16 v16_39 = Mem35[ds_36:0x2A03:word16] + 0x12;
+	Mem40[ds_36:0x2A03:word16] = v16_39;
+	Mem44[ds_36:0x2A05:word16] = Mem40[ds_36:0x2A05:word16] + (v16_39 <u 0x00);
+	Mem47[ss:fp - 0x02 + 0x00:word16] = 0x00;
+	word16 dx_50 = Mem47[ss:bp - 0x0C + 0x00:word16] + Mem47[ds_36:0x2A03:word16];
+	Mem56[ss:fp - 0x04 + 0x00:word16] = Mem47[ss:bp - 0x0A + 0x00:word16] + Mem47[ds_36:0x2A05:word16] + (dx_50 <u 0x00);
+	Mem58[ss:fp - 0x06 + 0x00:word16] = dx_50;
+	Mem61[ss:fp - 0x08 + 0x00:word16] = Mem58[ds_36:0x29E5:word16];
+	Mem64[ss:fp - 0x0A + 0x00:word16] = Mem61[ds_36:0x29E3:word16];
+	word16 di_66;
+	selector ds_67;
+	fn0800_ACB3(bp, ds_36, wArg00, wArg02, wArg08, out di_66, out ds_67);
+	if (si_117 == 0x00)
+	{
+		if (Mem64[ds_67:11853:word16] == Mem64[ds_67:11851:word16])
+			return 0x00;
+		else
+			return 0x06;
+	}
+	else
+		return si_117;
+}
+
+// 0800:55E8: Register selector fn0800_55E8(Register word16 bp, Register selector ds)
 selector fn0800_55E8(word16 bp, selector ds)
 {
 fn0800_55E8_entry:
+	word16 bp_104 = fp - 0x02
 	goto l0800_574B
 l0800_55E8:
 l0800_55F1:
-	Mem49[ss:fp - 0x08 + 0x00:word16] = 0x10
-	Mem52[ss:fp - 0x0A + 0x00:word16] = ds
-	Mem55[ss:fp - 0x0C + 0x00:word16] = 10511
-	selector ds_59 = fn0800_5A24(fp - 0x02, ds, wArg00, wArg02, wArg04)
-	Mem64[ss:fp - 0x08 + 0x00:word16] = 0x10
-	Mem66[ss:fp - 0x0A + 0x00:word16] = ds_59
-	Mem69[ss:fp - 0x0C + 0x00:word16] = 10319
-	selector ds_70 = fn0800_5A24(fp - 0x02, ds_59, wArg00, wArg02, wArg04)
-	Mem75[ss:fp - 0x08 + 0x00:word16] = 0x10
-	Mem77[ss:fp - 0x0A + 0x00:word16] = ds_70
-	Mem80[ss:fp - 0x0C + 0x00:word16] = 10127
-	selector ds_81 = fn0800_5A24(fp - 0x02, ds_70, wArg00, wArg02, wArg04)
-	Mem86[ss:fp - 0x08 + 0x00:word16] = 0x10
-	word16 ax_88 = fn0800_5C39(fp - 0x02, ds_81, wArg00, out ds)
-	Mem91[ss:fp - 0x04 + 0x00:word16] = 0x00
-	Mem92[ss:fp - 0x06 + 0x00:word16] = ax_88
+	Mem50[ss:fp - 0x08 + 0x00:word16] = 0x10
+	Mem53[ss:fp - 0x0A + 0x00:word16] = ds
+	Mem56[ss:fp - 0x0C + 0x00:word16] = 10511
+	selector ds_60 = fn0800_5A24(bp_104, ds, wArg00, wArg02, wArg04)
+	Mem65[ss:fp - 0x08 + 0x00:word16] = 0x10
+	Mem67[ss:fp - 0x0A + 0x00:word16] = ds_60
+	Mem70[ss:fp - 0x0C + 0x00:word16] = 10319
+	selector ds_71 = fn0800_5A24(bp_104, ds_60, wArg00, wArg02, wArg04)
+	Mem76[ss:fp - 0x08 + 0x00:word16] = 0x10
+	Mem78[ss:fp - 0x0A + 0x00:word16] = ds_71
+	Mem81[ss:fp - 0x0C + 0x00:word16] = 10127
+	selector ds_82 = fn0800_5A24(bp_104, ds_71, wArg00, wArg02, wArg04)
+	Mem87[ss:fp - 0x08 + 0x00:word16] = 0x10
+	word16 ax_89 = fn0800_5C39(bp_104, ds_82, wArg00, out ds)
+	Mem92[ss:bp_104 - 0x02 + 0x00:word16] = 0x00
+	Mem93[ss:bp_104 - 0x04 + 0x00:word16] = ax_89
 	goto l0800_5736
 l0800_5633:
 l0800_5656:
-	word16 si_335
-	word16 di_336
-	selector ds_337
-	byte al_338 = fn0800_5B15(fp - 0x02, ds, out si_335, out di_336, out ds_337)
-	Mem344[ss:fp - 0x08 + 0x00:word16] = DPB(ax_237, al_338 ^ Mem239[ds_337:11855:byte], 0)
-	ds = fn0800_5D2F(fp - 0x02, ds_337)
+	word16 si_344
+	word16 di_345
+	selector ds_346
+	byte al_347 = fn0800_5B15(bp_104, ds, out si_344, out di_345, out ds_346)
+	Mem353[ss:fp - 0x08 + 0x00:word16] = DPB(ax_246, al_347 ^ Mem248[ds_346:11855:byte], 0)
+	word16 di_354
+	fn0800_5D2F(bp_104, ds_346, out di_354, out ds)
 l0800_5664:
-	word16 ax_237 = Mem148[ds:11847:word16]
-	Mem239[ds:11847:word16] = Mem148[ds:11847:word16] - 0x01
-	word16 ax_240 = ax_237
-	branch ax_237 != 0x00 l0800_5656
+	word16 ax_246 = Mem151[ds:11847:word16]
+	Mem248[ds:11847:word16] = Mem151[ds:11847:word16] - 0x01
+	word16 ax_249 = ax_246
+	branch ax_246 != 0x00 l0800_5656
 l0800_566F:
-	branch (Mem239[ds:11855:word16] & 0x01) == 0x00 l0800_5684
+	branch (Mem248[ds:11855:word16] & 0x01) == 0x00 l0800_5684
 l0800_5677:
-	ax_240 = Mem239[ds:11855:word16] >>u 0x01 | 0x8000
-	Mem331[ds:11855:word16] = ax_240
+	ax_249 = Mem248[ds:11855:word16] >>u 0x01 | 0x8000
+	Mem340[ds:11855:word16] = ax_249
 	goto l0800_5688
 l0800_5684:
-	Mem333[ds:11855:word16] = Mem239[ds:11855:word16] >>u 0x01
+	Mem342[ds:11855:word16] = Mem248[ds:11855:word16] >>u 0x01
 l0800_5688:
-	word16 bx_250 = (word16) Mem239[ds:11885:segptr32]
-	Mem256[ss:fp - 0x08 + 0x00:word16] = DPB(ax_240, 0x00, 8)
-	word16 dx_260 = DPB(dx_123, 0x00, 8)
-	word16 dx_268 = Mem256[ss:fp - 0x08 + 0x00:word16] + (dx_260 << 0x08 <u 0x00)
-	Mem273[ss:fp - 0x08 + 0x00:word16] = dx_260 << 0x08
-	Mem276[ss:fp - 0x0A + 0x00:word16] = dx_268
-	int32 dx_ax_277 = (int32) DPB(bx_250, 0x00, 8)
-	word16 ax_278 = (word16) dx_ax_277
-	int32 dx_ax_290 = SEQ(Mem276[ss:fp - 0x0A + 0x00:word16], Mem276[ss:fp - 0x08 + 0x00:word16] + ax_278) + SEQ(SLICE(dx_ax_277, word16, 16), ax_278)
-	word16 dx_295
-	Mem298[ss:fp - 0x08 + 0x00:word16] = fn0800_8C69((word16) dx_ax_290, Mem276[ds:11845:byte], SLICE(dx_ax_290, word16, 16), bp, out dx_295)
-	word16 ax_301 = 0x01 << Mem298[ds:11845:byte]
-	Mem304[ss:fp - 0x0A + 0x00:word16] = dx_295
-	int32 dx_ax_305 = (int32) (ax_301 - 0x01)
-	word16 cx_310 = Mem304[ds:10747:word16] & (word16) dx_ax_305
-	ui32 ax_dx_320 = SEQ(Mem304[ss:fp - 0x0A + 0x00:word16], Mem304[ss:fp - 0x08 + 0x00:word16] + cx_310) + SEQ(Mem304[ds:0x29FD:word16] & SLICE(dx_ax_305, word16, 16), cx_310)
-	Mem324[ds:0x29FD:word16] = SLICE(ax_dx_320, word16, 16)
-	Mem325[ds:10747:word16] = (word16) ax_dx_320
+	word16 bx_259 = (word16) Mem248[ds:11885:segptr32]
+	Mem265[ss:fp - 0x08 + 0x00:word16] = DPB(ax_249, 0x00, 8)
+	word16 dx_269 = DPB(dx_125, 0x00, 8)
+	word16 dx_277 = Mem265[ss:fp - 0x08 + 0x00:word16] + (dx_269 << 0x08 <u 0x00)
+	Mem282[ss:fp - 0x08 + 0x00:word16] = dx_269 << 0x08
+	Mem285[ss:fp - 0x0A + 0x00:word16] = dx_277
+	int32 dx_ax_286 = (int32) DPB(bx_259, 0x00, 8)
+	word16 ax_287 = (word16) dx_ax_286
+	int32 dx_ax_299 = SEQ(Mem285[ss:fp - 0x0A + 0x00:word16], Mem285[ss:fp - 0x08 + 0x00:word16] + ax_287) + SEQ(SLICE(dx_ax_286, word16, 16), ax_287)
+	word16 dx_304
+	Mem307[ss:fp - 0x08 + 0x00:word16] = fn0800_8C69((word16) dx_ax_299, Mem285[ds:11845:byte], SLICE(dx_ax_299, word16, 16), bp, out dx_304)
+	word16 ax_310 = 0x01 << Mem307[ds:11845:byte]
+	Mem313[ss:fp - 0x0A + 0x00:word16] = dx_304
+	int32 dx_ax_314 = (int32) (ax_310 - 0x01)
+	word16 cx_319 = Mem313[ds:10747:word16] & (word16) dx_ax_314
+	ui32 ax_dx_329 = SEQ(Mem313[ss:fp - 0x0A + 0x00:word16], Mem313[ss:fp - 0x08 + 0x00:word16] + cx_319) + SEQ(Mem313[ds:0x29FD:word16] & SLICE(dx_ax_314, word16, 16), cx_319)
+	Mem333[ds:0x29FD:word16] = SLICE(ax_dx_329, word16, 16)
+	Mem334[ds:10747:word16] = (word16) ax_dx_329
 l0800_56E6:
-	branch (Mem148[ss:fp - 0x06 + 0x00:word16] | Mem148[ss:(fp - 0x04) + 0x00:word16]) == 0x00 l0800_574B
+	branch (Mem151[ss:bp_104 - 0x04 + 0x00:word16] | Mem151[ss:(bp_104 - 0x02) + 0x00:word16]) == 0x00 l0800_574B
 l0800_56EE:
-	Mem177[ss:fp - 0x08 + 0x00:word16] = ds
-	Mem180[ss:fp - 0x0A + 0x00:word16] = 10319
-	selector ds_181
-	word16 ax_182 = fn0800_5A8D(fp - 0x02, ds, wArg00, wArg02, out ds_181)
-	Mem187[ds_181:11819:word16] = ax_182 + 0x01
-	Mem189[ss:fp - 0x08 + 0x00:word16] = ds_181
-	Mem192[ss:fp - 0x0A + 0x00:word16] = 10127
-	word16 ax_194 = fn0800_5A8D(fp - 0x02, ds_181, wArg00, wArg02, out ds)
-	Mem197[ds:11817:word16] = ax_194 + 0x02
-	word16 v19_198 = Mem197[ds:0x29FF:word16] + (ax_194 + 0x02)
-	Mem199[ds:0x29FF:word16] = v19_198
-	Mem203[ds:0x2A01:word16] = Mem199[ds:0x2A01:word16] + (v19_198 <u 0x00)
+	Mem180[ss:fp - 0x08 + 0x00:word16] = ds
+	Mem183[ss:fp - 0x0A + 0x00:word16] = 10319
+	word16 bp_184
+	selector ds_185
+	word16 ax_186 = fn0800_5A8D(ds, wArg00, out bp_184, out ds_185)
+	Mem191[ds_185:11819:word16] = ax_186 + 0x01
+	Mem193[ss:fp - 0x08 + 0x00:word16] = ds_185
+	Mem196[ss:fp - 0x0A + 0x00:word16] = 10127
+	word16 ax_199 = fn0800_5A8D(ds_185, wArg00, out bp_104, out ds)
+	Mem202[ds:11817:word16] = ax_199 + 0x02
+	word16 v19_203 = Mem202[ds:0x29FF:word16] + (ax_199 + 0x02)
+	Mem204[ds:0x29FF:word16] = v19_203
+	Mem208[ds:0x2A01:word16] = Mem204[ds:0x2A01:word16] + (v19_203 <u 0x00)
 	goto l0800_572B
 l0800_5719:
-	ptr32 es_bx_219 = Mem214[ds:11861:segptr32]
-	Mem227[ss:fp - 0x08 + 0x00:word16] = DPB(ax_212, Mem214[SLICE(es_bx_219, selector, 16):(word16) es_bx_219 - Mem214[ds:11819:word16] + 0x00:byte], 0)
-	ds = fn0800_5D2F(fp - 0x02, ds)
+	ptr32 es_bx_226 = Mem221[ds:11861:segptr32]
+	Mem234[ss:fp - 0x08 + 0x00:word16] = DPB(ax_219, Mem221[SLICE(es_bx_226, selector, 16):(word16) es_bx_226 - Mem221[ds:11819:word16] + 0x00:byte], 0)
+	word16 di_235
+	fn0800_5D2F(bp_104, ds, out di_235, out ds)
 l0800_572B:
-	word16 ax_212 = Mem203[ds:11817:word16]
-	Mem214[ds:11817:word16] = Mem203[ds:11817:word16] - 0x01
-	branch ax_212 != 0x00 l0800_5719
+	word16 ax_219 = Mem208[ds:11817:word16]
+	Mem221[ds:11817:word16] = Mem208[ds:11817:word16] - 0x01
+	branch ax_219 != 0x00 l0800_5719
 l0800_5736:
-	word16 ax_111 = Mem92[ss:fp - 0x06 + 0x00:word16]
-	word16 dx_112 = Mem92[ss:fp - 0x04 + 0x00:word16]
-	word16 v11_113 = Mem92[ss:fp - 0x06 + 0x00:word16] - 0x01
-	Mem114[ss:fp - 0x06 + 0x00:word16] = v11_113
-	Mem118[ss:fp - 0x04 + 0x00:word16] = Mem114[ss:fp - 0x04 + 0x00:word16] - (v11_113 <u 0x00)
-	branch (ax_111 | dx_112) == 0x00 l0800_574B
-	word16 ax_122 = Mem118[ss:fp - 0x06 + 0x00:word16]
-	word16 dx_123 = Mem118[ss:fp - 0x04 + 0x00:word16]
-	word16 v23_124 = Mem118[ss:fp - 0x06 + 0x00:word16] - 0x01
-	Mem125[ss:fp - 0x06 + 0x00:word16] = v23_124
-	Mem129[ss:fp - 0x04 + 0x00:word16] = Mem125[ss:fp - 0x04 + 0x00:word16] - (v23_124 <u 0x00)
-	branch (ax_122 | dx_123) == 0x00 l0800_574B
+	word16 ax_113 = Mem93[ss:bp_104 - 0x04 + 0x00:word16]
+	word16 dx_114 = Mem93[ss:bp_104 - 0x02 + 0x00:word16]
+	word16 v11_115 = Mem93[ss:bp_104 - 0x04 + 0x00:word16] - 0x01
+	Mem116[ss:bp_104 - 0x04 + 0x00:word16] = v11_115
+	Mem120[ss:bp_104 - 0x02 + 0x00:word16] = Mem116[ss:bp_104 - 0x02 + 0x00:word16] - (v11_115 <u 0x00)
+	branch (ax_113 | dx_114) == 0x00 l0800_574B
+	word16 ax_124 = Mem120[ss:bp_104 - 0x04 + 0x00:word16]
+	word16 dx_125 = Mem120[ss:bp_104 - 0x02 + 0x00:word16]
+	word16 v23_126 = Mem120[ss:bp_104 - 0x04 + 0x00:word16] - 0x01
+	Mem127[ss:bp_104 - 0x04 + 0x00:word16] = v23_126
+	Mem131[ss:bp_104 - 0x02 + 0x00:word16] = Mem127[ss:bp_104 - 0x02 + 0x00:word16] - (v23_126 <u 0x00)
+	branch (ax_124 | dx_125) == 0x00 l0800_574B
 l0800_5748:
-	Mem135[ss:fp - 0x08 + 0x00:word16] = ds
-	Mem138[ss:fp - 0x0A + 0x00:word16] = 10511
-	word16 ax_140 = fn0800_5A8D(fp - 0x02, ds, wArg00, wArg02, out ds)
-	Mem142[ds:11847:word16] = ax_140
-	word16 v17_143 = Mem142[ds:0x29FF:word16] + ax_140
-	Mem144[ds:0x29FF:word16] = v17_143
-	Mem148[ds:0x2A01:word16] = Mem144[ds:0x2A01:word16] + (v17_143 <u 0x00)
-	branch Mem148[ds:11847:word16] != 0x00 l0800_5654
+	Mem137[ss:fp - 0x08 + 0x00:word16] = ds
+	Mem140[ss:fp - 0x0A + 0x00:word16] = 10511
+	word16 ax_143 = fn0800_5A8D(ds, wArg00, out bp_104, out ds)
+	Mem145[ds:11847:word16] = ax_143
+	word16 v17_146 = Mem145[ds:0x29FF:word16] + ax_143
+	Mem147[ds:0x29FF:word16] = v17_146
+	Mem151[ds:0x2A01:word16] = Mem147[ds:0x2A01:word16] + (v17_146 <u 0x00)
+	branch Mem151[ds:11847:word16] != 0x00 l0800_5654
 	goto l0800_56E6
 l0800_574B:
-	word16 ax_36 = Mem0[ds:0x2A01:word16]
-	word16 dx_37 = Mem0[ds:0x29FF:word16]
-	branch ax_36 >=u Mem0[ds:0x2A09:word16] l0800_575B
+	word16 ax_37 = Mem0[ds:0x2A01:word16]
+	word16 dx_38 = Mem0[ds:0x29FF:word16]
+	branch ax_37 >=u Mem0[ds:0x2A09:word16] l0800_575B
 	goto l0800_55F1
 l0800_575B:
-	branch ax_36 != Mem0[ds:0x2A09:word16] || dx_37 >=u Mem0[ds:0x2A07:word16] l0800_5766
+	branch ax_37 != Mem0[ds:0x2A09:word16] || dx_38 >=u Mem0[ds:0x2A07:word16] l0800_5766
 	goto l0800_55F1
 l0800_575D:
 l0800_5766:
-	Mem350[ss:fp - 0x08 + 0x00:word16] = Mem0[ds:10721:word16]
-	Mem353[ss:fp - 0x0A + 0x00:word16] = Mem350[ds:10719:word16]
-	word16 ax_356 = Mem353[ds:11861:word16] - Mem353[ds:11865:word16]
-	word16 ax_360 = ax_356 - Mem353[ds:11825:word16]
-	Mem365[ss:fp - 0x0C + 0x00:word16] = 0x00 - (ax_356 <u 0x00) - (ax_360 <u 0x00)
-	Mem367[ss:fp - 0x0E + 0x00:word16] = ax_360
-	word16 ax_369 = Mem367[ds:11865:word16] + Mem367[ds:11825:word16]
-	Mem373[ss:fp - 0x10 + 0x00:word16] = Mem367[ds:11867:word16]
-	Mem375[ss:fp - 0x12 + 0x00:word16] = ax_369
-	return fn0800_4152(ds, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0A)
+	Mem361[ss:fp - 0x08 + 0x00:word16] = Mem0[ds:10721:word16]
+	Mem364[ss:fp - 0x0A + 0x00:word16] = Mem361[ds:10719:word16]
+	word16 ax_367 = Mem364[ds:11861:word16] - Mem364[ds:11865:word16]
+	word16 ax_371 = ax_367 - Mem364[ds:11825:word16]
+	Mem376[ss:fp - 0x0C + 0x00:word16] = 0x00 - (ax_367 <u 0x00) - (ax_371 <u 0x00)
+	Mem378[ss:fp - 0x0E + 0x00:word16] = ax_371
+	word16 ax_380 = Mem378[ds:11865:word16] + Mem378[ds:11825:word16]
+	Mem384[ss:fp - 0x10 + 0x00:word16] = Mem378[ds:11867:word16]
+	Mem386[ss:fp - 0x12 + 0x00:word16] = ax_380
+	return fn0800_4152(bp_104, ds, wArg00, wArg02, wArg04, wArg08, wArg0A)
 fn0800_55E8_exit:
 }
 
-word16 fn0800_579B(selector ds, ptr16 & dsOut)
+// 0800:579B: Register word16 fn0800_579B(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_579B(word16 bp, word16 si, word16 di, selector ds, ptr16 & dsOut)
 {
 fn0800_579B_entry:
 	goto l0800_58F2
 l0800_579B:
 l0800_579E:
-	word16 si_250
-	word16 di_251
-	selector ds_252
-	byte al_253 = fn0800_5B15(bp, ds_45, out si_250, out di_251, out ds_252)
-	Mem259[ss:fp - 0x02 + 0x00:word16] = DPB(ax_46, al_253 ^ Mem42[ds_252:11855:byte], 0)
-	ds = fn0800_5D2F(bp, ds_252)
-	branch (Mem259[ds:11855:word16] & 0x01) == 0x00 l0800_57C1
+	word16 si_284
+	word16 di_285
+	selector ds_286
+	byte al_287 = fn0800_5B15(bp, ds_48, out si_284, out di_285, out ds_286)
+	Mem293[ss:fp - 0x02 + 0x00:word16] = DPB(ax_49, al_287 ^ Mem42[ds_286:11855:byte], 0)
+	si = fn0800_5D2F(bp, ds_286, out di, out ds)
+	branch (Mem293[ds:11855:word16] & 0x01) == 0x00 l0800_57C1
 l0800_57B4:
-	Mem279[ds:11855:word16] = Mem259[ds:11855:word16] >>u 0x01 | 0x8000
+	Mem315[ds:11855:word16] = Mem293[ds:11855:word16] >>u 0x01 | 0x8000
 	goto l0800_57C5
 l0800_57C1:
-	Mem281[ds:11855:word16] = Mem259[ds:11855:word16] >>u 0x01
+	Mem317[ds:11855:word16] = Mem293[ds:11855:word16] >>u 0x01
 l0800_57C5:
-	word16 v16_267 = Mem259[ds:0x29FF:word16] + 0x01
-	Mem268[ds:0x29FF:word16] = v16_267
-	Mem272[ds:0x2A01:word16] = Mem268[ds:0x2A01:word16] + (v16_267 <u 0x00)
+	word16 v16_303 = Mem293[ds:0x29FF:word16] + 0x01
+	Mem304[ds:0x29FF:word16] = v16_303
+	Mem308[ds:0x2A01:word16] = Mem304[ds:0x2A01:word16] + (v16_303 <u 0x00)
 l0800_57CF:
 	Mem42[ss:fp - 0x02 + 0x00:word16] = 0x01
-	selector ds_45
-	word16 ax_46 = fn0800_5CD9(ds, wArg00, out ds_45)
-	branch ax_46 == 0x00 l0800_579E
+	word16 si_46
+	word16 di_47
+	selector ds_48
+	word16 ax_49 = fn0800_5CD9(bp, si, di, ds, wArg00, out bp, out si_46, out di_47, out ds_48)
+	branch ax_49 == 0x00 l0800_579E
 l0800_57DD:
-	Mem54[ss:fp - 0x02 + 0x00:word16] = 0x01
-	selector ds_55
-	branch fn0800_5CD9(ds_45, wArg00, out ds_55) == 0x00 l0800_5866
+	Mem57[ss:fp - 0x02 + 0x00:word16] = 0x01
+	word16 bp_58
+	word16 si_59
+	word16 di_60
+	selector ds_61
+	branch fn0800_5CD9(bp, si_46, di_47, ds_48, wArg00, out bp_58, out si_59, out di_60, out ds_61) == 0x00 l0800_5866
 l0800_57EB:
-	Mem64[ss:fp - 0x02 + 0x00:word16] = 0x01
-	selector ds_65
-	word16 ax_66 = fn0800_5CD9(ds_55, wArg00, out ds_65)
-	branch ax_66 != 0x00 l0800_580A
+	Mem70[ss:fp - 0x02 + 0x00:word16] = 0x01
+	word16 si_72
+	word16 di_73
+	selector ds_74
+	word16 ax_75 = fn0800_5CD9(bp_58, si_59, di_60, ds_61, wArg00, out bp, out si_72, out di_73, out ds_74)
+	branch ax_75 != 0x00 l0800_580A
 l0800_57F9:
-	Mem115[ds_65:11817:word16] = 0x02
-	word16 si_116
-	word16 di_117
-	fn0800_5B15(bp, ds_65, out si_116, out di_117, out ds)
-	Mem124[ds:11819:word16] = DPB(ax_66, 0x00, 8) + 0x01
+	Mem128[ds_74:11817:word16] = 0x02
+	fn0800_5B15(bp, ds_74, out si, out di, out ds)
+	Mem137[ds:11819:word16] = DPB(ax_75, 0x00, 8) + 0x01
 	goto l0800_5838
 l0800_580A:
-	Mem127[ss:fp - 0x02 + 0x00:word16] = 0x01
-	selector ds_128
-	word16 ax_129 = fn0800_5CD9(ds_65, wArg00, out ds_128)
-	branch ax_129 != 0x00 l0800_5820
+	Mem140[ss:fp - 0x02 + 0x00:word16] = 0x01
+	word16 bp_141
+	word16 di_143
+	selector ds_144
+	word16 si_142
+	word16 ax_145 = fn0800_5CD9(bp, si_72, di_73, ds_74, wArg00, out bp_141, out si_142, out di_143, out ds_144)
+	branch ax_145 != 0x00 l0800_5820
 l0800_5818:
-	Mem145[ds_128:11817:word16] = 0x03
+	Mem163[ds_144:11817:word16] = 0x03
 	goto l0800_5835
 l0800_5820:
-	word16 si_146
-	word16 di_147
-	fn0800_5B15(bp, ds_128, out si_146, out di_147, out ds_128)
-	Mem153[ds_128:11817:word16] = DPB(ax_129, 0x00, 8) + 0x08
-	branch Mem153[ds_128:11817:word16] != 0x08 l0800_5835
+	fn0800_5B15(bp_141, ds_144, out si_142, out di_143, out ds_144)
+	Mem171[ds_144:11817:word16] = DPB(ax_145, 0x00, 8) + 0x08
+	branch Mem171[ds_144:11817:word16] != 0x08 l0800_5835
 l0800_5832:
-	Mem158[ss:fp - 0x02 + 0x00:word16] = 0x01
-	fn0800_5CD9(ds_128, wArg00, out ds)
+	Mem176[ss:fp - 0x02 + 0x00:word16] = 0x01
+	fn0800_5CD9(bp_141, si_142, di_143, ds_144, wArg00, out bp, out si, out di, out ds)
 	goto l0800_58F2
 l0800_5835:
-	bp = fn0800_5975(ds_128, out ds)
+	bp = fn0800_5975(bp_141, si_142, di_143, ds_144, out si, out di, out ds)
 l0800_5838:
-	word16 v13_82 = Mem64[ds:0x29FF:word16] + Mem64[ds:11817:word16]
-	Mem83[ds:0x29FF:word16] = v13_82
-	Mem87[ds:0x2A01:word16] = Mem83[ds:0x2A01:word16] + (v13_82 <u 0x00)
+	word16 v13_91 = Mem70[ds:0x29FF:word16] + Mem70[ds:11817:word16]
+	Mem92[ds:0x29FF:word16] = v13_91
+	Mem96[ds:0x2A01:word16] = Mem92[ds:0x2A01:word16] + (v13_91 <u 0x00)
 	goto l0800_5858
 l0800_5846:
-	ptr32 es_bx_103 = Mem98[ds:11861:segptr32]
-	Mem111[ss:fp - 0x02 + 0x00:word16] = DPB(ax_96, Mem98[SLICE(es_bx_103, selector, 16):(word16) es_bx_103 - Mem98[ds:11819:word16] + 0x00:byte], 0)
-	ds = fn0800_5D2F(bp, ds)
+	ptr32 es_bx_114 = Mem109[ds:11861:segptr32]
+	Mem122[ss:fp - 0x02 + 0x00:word16] = DPB(ax_107, Mem109[SLICE(es_bx_114, selector, 16):(word16) es_bx_114 - Mem109[ds:11819:word16] + 0x00:byte], 0)
+	si = fn0800_5D2F(bp, ds, out di, out ds)
 l0800_5858:
-	word16 ax_96 = Mem87[ds:11817:word16]
-	Mem98[ds:11817:word16] = Mem87[ds:11817:word16] - 0x01
-	branch ax_96 != 0x00 l0800_5846
+	word16 ax_107 = Mem96[ds:11817:word16]
+	Mem109[ds:11817:word16] = Mem96[ds:11817:word16] - 0x01
+	branch ax_107 != 0x00 l0800_5846
 	goto l0800_57CF
 l0800_5866:
-	selector ds_163 = fn0800_593F(ds_55)
-	branch Mem54[ds_163:11817:word16] != 0x09 l0800_58B7
+	word16 si_184
+	word16 di_185
+	selector ds_186
+	word16 bp_187 = fn0800_593F(bp_58, si_59, di_60, ds_61, out si_184, out di_185, out ds_186)
+	branch Mem57[ds_186:11817:word16] != 0x09 l0800_58B7
 l0800_5870:
-	bp = fn0800_5A0F(ds_163, out ds)
-	word16 v22_169 = Mem54[ds:0x29FF:word16] + Mem54[ds:11847:word16]
-	Mem170[ds:0x29FF:word16] = v22_169
-	Mem174[ds:0x2A01:word16] = Mem170[ds:0x2A01:word16] + (v22_169 <u 0x00)
+	bp = fn0800_5A0F(bp_187, si_184, di_185, ds_186, out si, out di, out ds)
+	word16 v22_195 = Mem57[ds:0x29FF:word16] + Mem57[ds:11847:word16]
+	Mem196[ds:0x29FF:word16] = v22_195
+	Mem200[ds:0x2A01:word16] = Mem196[ds:0x2A01:word16] + (v22_195 <u 0x00)
 	goto l0800_588F
 l0800_5881:
-	word16 si_201
-	word16 di_202
-	selector ds_203
-	byte al_204 = fn0800_5B15(bp, ds, out si_201, out di_202, out ds_203)
-	Mem210[ss:fp - 0x02 + 0x00:word16] = DPB(ax_182, al_204 ^ Mem184[ds_203:11855:byte], 0)
-	ds = fn0800_5D2F(bp, ds_203)
+	word16 si_227
+	word16 di_228
+	selector ds_229
+	byte al_230 = fn0800_5B15(bp, ds, out si_227, out di_228, out ds_229)
+	Mem236[ss:fp - 0x02 + 0x00:word16] = DPB(ax_208, al_230 ^ Mem210[ds_229:11855:byte], 0)
+	si = fn0800_5D2F(bp, ds_229, out di, out ds)
 l0800_588F:
-	word16 ax_182 = Mem174[ds:11847:word16]
-	Mem184[ds:11847:word16] = Mem174[ds:11847:word16] - 0x01
-	branch ax_182 != 0x00 l0800_5881
+	word16 ax_208 = Mem200[ds:11847:word16]
+	Mem210[ds:11847:word16] = Mem200[ds:11847:word16] - 0x01
+	branch ax_208 != 0x00 l0800_5881
 l0800_589A:
-	branch (Mem184[ds:11855:word16] & 0x01) == 0x00 l0800_58B0
+	branch (Mem210[ds:11855:word16] & 0x01) == 0x00 l0800_58B0
 l0800_58A2:
-	Mem197[ds:11855:word16] = Mem184[ds:11855:word16] >>u 0x01 | 0x8000
+	Mem223[ds:11855:word16] = Mem210[ds:11855:word16] >>u 0x01 | 0x8000
 	goto l0800_57CF
 l0800_58B0:
-	Mem199[ds:11855:word16] = Mem184[ds:11855:word16] >>u 0x01
+	Mem225[ds:11855:word16] = Mem210[ds:11855:word16] >>u 0x01
 	goto l0800_57CF
 l0800_58B7:
-	bp = fn0800_5975(ds_163, out ds)
-	word16 v28_217 = Mem54[ds:0x29FF:word16] + Mem54[ds:11817:word16]
-	Mem218[ds:0x29FF:word16] = v28_217
-	Mem222[ds:0x2A01:word16] = Mem218[ds:0x2A01:word16] + (v28_217 <u 0x00)
+	bp = fn0800_5975(bp_187, si_184, di_185, ds_186, out si, out di, out ds)
+	word16 v28_247 = Mem57[ds:0x29FF:word16] + Mem57[ds:11817:word16]
+	Mem248[ds:0x29FF:word16] = v28_247
+	Mem252[ds:0x2A01:word16] = Mem248[ds:0x2A01:word16] + (v28_247 <u 0x00)
 	goto l0800_58DA
 l0800_58C8:
-	ptr32 es_bx_238 = Mem233[ds:11861:segptr32]
-	Mem246[ss:fp - 0x02 + 0x00:word16] = DPB(ax_231, Mem233[SLICE(es_bx_238, selector, 16):(word16) es_bx_238 - Mem233[ds:11819:word16] + 0x00:byte], 0)
-	ds = fn0800_5D2F(bp, ds)
+	ptr32 es_bx_270 = Mem265[ds:11861:segptr32]
+	Mem278[ss:fp - 0x02 + 0x00:word16] = DPB(ax_263, Mem265[SLICE(es_bx_270, selector, 16):(word16) es_bx_270 - Mem265[ds:11819:word16] + 0x00:byte], 0)
+	si = fn0800_5D2F(bp, ds, out di, out ds)
 l0800_58DA:
-	word16 ax_231 = Mem222[ds:11817:word16]
-	Mem233[ds:11817:word16] = Mem222[ds:11817:word16] - 0x01
-	branch ax_231 != 0x00 l0800_58C8
+	word16 ax_263 = Mem252[ds:11817:word16]
+	Mem265[ds:11817:word16] = Mem252[ds:11817:word16] - 0x01
+	branch ax_263 != 0x00 l0800_58C8
 	goto l0800_57CF
 l0800_58E8:
 l0800_58F2:
@@ -7535,92 +9379,125 @@ l0800_5902:
 	goto l0800_57CF
 l0800_5904:
 l0800_590D:
-	Mem285[ss:fp - 0x02 + 0x00:word16] = Mem0[ds:10721:word16]
-	Mem288[ss:fp - 0x04 + 0x00:word16] = Mem285[ds:10719:word16]
-	word16 ax_291 = Mem288[ds:11861:word16] - Mem288[ds:11865:word16]
-	word16 ax_295 = ax_291 - Mem288[ds:11825:word16]
-	Mem300[ss:fp - 0x06 + 0x00:word16] = 0x00 - (ax_291 <u 0x00) - (ax_295 <u 0x00)
-	Mem302[ss:fp - 0x08 + 0x00:word16] = ax_295
-	word16 ax_304 = Mem302[ds:11865:word16] + Mem302[ds:11825:word16]
-	Mem308[ss:fp - 0x0A + 0x00:word16] = Mem302[ds:11867:word16]
-	Mem310[ss:fp - 0x0C + 0x00:word16] = ax_304
-	selector ds_316
-	*dsOut = fn0800_4152(ds, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0A)
+	Mem321[ss:fp - 0x02 + 0x00:word16] = Mem0[ds:10721:word16]
+	Mem324[ss:fp - 0x04 + 0x00:word16] = Mem321[ds:10719:word16]
+	word16 ax_327 = Mem324[ds:11861:word16] - Mem324[ds:11865:word16]
+	word16 ax_331 = ax_327 - Mem324[ds:11825:word16]
+	Mem336[ss:fp - 0x06 + 0x00:word16] = 0x00 - (ax_327 <u 0x00) - (ax_331 <u 0x00)
+	Mem338[ss:fp - 0x08 + 0x00:word16] = ax_331
+	word16 ax_340 = Mem338[ds:11865:word16] + Mem338[ds:11825:word16]
+	Mem344[ss:fp - 0x0A + 0x00:word16] = Mem338[ds:11867:word16]
+	Mem346[ss:fp - 0x0C + 0x00:word16] = ax_340
+	selector ds_351
+	*dsOut = fn0800_4152(bp, ds, wArg00, wArg02, wArg04, wArg08, wArg0A)
 	return bp
 fn0800_579B_exit:
 }
 
-selector fn0800_593F(selector ds)
+// 0800:593F: Register word16 fn0800_593F(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_593F(word16 bp, word16 si, word16 di, selector ds, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 {
-	selector ds_6;
-	word16 ax_7 = fn0800_5CD9(ds, 0x01, out ds_6);
-	Mem11[ds_6:11817:word16] = ax_7 + 0x04;
-	Mem14[ss:fp - 0x02 + 0x00:word16] = 0x01;
-	selector ds_17;
-	if (fn0800_5CD9(ds_6, wArg00, out ds_17) != 0x00)
+	word16 bp_9;
+	word16 si_10;
+	word16 di_11;
+	selector ds_12;
+	word16 ax_13 = fn0800_5CD9(bp, si, di, ds, 0x01, out bp_9, out si_10, out di_11, out ds_12);
+	Mem17[ds_12:11817:word16] = ax_13 + 0x04;
+	Mem20[ss:fp - 0x02 + 0x00:word16] = 0x01;
+	word16 si_24;
+	word16 di_25;
+	selector ds_26;
+	word16 bp_23;
+	if (fn0800_5CD9(bp_9, si_10, di_11, ds_12, wArg00, out bp_23, out si_24, out di_25, out ds_26) != 0x00)
 	{
-		Mem32[ss:fp - 0x02 + 0x00:word16] = 0x01;
-		word16 ax_34 = fn0800_5CD9(ds_17, wArg00, out ds_17);
-		Mem41[ds_17:11817:word16] = (Mem32[ds_17:11817:word16] - 0x01 << 0x01) + ax_34;
+		Mem47[ss:fp - 0x02 + 0x00:word16] = 0x01;
+		word16 si_49;
+		word16 di_50;
+		selector ds_51;
+		word16 ax_52 = fn0800_5CD9(bp_23, si_24, di_25, ds_26, wArg00, out bp_23, out si_49, out di_50, out ds_51);
+		Mem59[ds_51:11817:word16] = (Mem47[ds_51:11817:word16] - 0x01 << 0x01) + ax_52;
 	}
-	return ds_17;
+	return bp_23;
 }
 
-word16 fn0800_5975(selector ds, ptr16 & dsOut)
+// 0800:5975: Register word16 fn0800_5975(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_5975(word16 bp, word16 si, word16 di, selector ds, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	Mem2[ds:11819:word16] = 0x00;
-	selector ds_17;
-	word16 ax_8 = fn0800_5CD9(ds, 0x01, out ds_17);
-	word16 ax_10 = ax_8;
-	if (ax_8 != 0x00)
+	word16 si_11;
+	word16 di_12;
+	word16 bp_10;
+	selector ds_104;
+	word16 ax_14 = fn0800_5CD9(bp, si, di, ds, 0x01, out bp_10, out si_11, out di_12, out ds_104);
+	word16 ax_105 = ax_14;
+	if (ax_14 != 0x00)
 	{
-		Mem37[ss:fp - 0x02 + 0x00:word16] = 0x01;
-		selector ds_40;
-		word16 ax_41 = fn0800_5CD9(ds_17, wArg00, out ds_40);
-		Mem44[ds_40:11819:word16] = ax_41;
-		Mem47[ss:fp - 0x02 + 0x00:word16] = 0x01;
-		word16 ax_49 = fn0800_5CD9(ds_40, wArg00, out ds_17);
-		ax_10 = ax_49;
-		if (ax_49 != 0x00)
+		Mem45[ss:fp - 0x02 + 0x00:word16] = 0x01;
+		word16 bp_48;
+		word16 si_49;
+		word16 di_50;
+		selector ds_51;
+		word16 ax_52 = fn0800_5CD9(bp_10, si_11, di_12, ds_104, wArg00, out bp_48, out si_49, out di_50, out ds_51);
+		Mem55[ds_51:11819:word16] = ax_52;
+		Mem58[ss:fp - 0x02 + 0x00:word16] = 0x01;
+		word16 si_60;
+		word16 di_61;
+		word16 ax_63 = fn0800_5CD9(bp_48, si_49, di_50, ds_51, wArg00, out bp_10, out si_60, out di_61, out ds_104);
+		ax_105 = ax_63;
+		if (ax_63 != 0x00)
 		{
-			Mem57[ss:fp - 0x02 + 0x00:word16] = 0x01;
-			selector ds_58;
-			word16 ax_59 = fn0800_5CD9(ds_17, wArg00, out ds_58);
-			Mem67[ds_58:11819:word16] = (Mem57[ds_58:11819:word16] << 0x01) + ax_59 | 0x04;
-			Mem70[ss:fp - 0x02 + 0x00:word16] = 0x01;
-			word16 ax_72 = fn0800_5CD9(ds_58, wArg00, out ds_17);
-			ax_10 = ax_72;
-			if (ax_72 == 0x00)
+			Mem71[ss:fp - 0x02 + 0x00:word16] = 0x01;
+			word16 bp_72;
+			word16 si_73;
+			word16 di_74;
+			selector ds_75;
+			word16 ax_76 = fn0800_5CD9(bp_10, si_60, di_61, ds_104, wArg00, out bp_72, out si_73, out di_74, out ds_75);
+			Mem84[ds_75:11819:word16] = (Mem71[ds_75:11819:word16] << 0x01) + ax_76 | 0x04;
+			Mem87[ss:fp - 0x02 + 0x00:word16] = 0x01;
+			word16 si_89;
+			word16 di_90;
+			word16 ax_92 = fn0800_5CD9(bp_72, si_73, di_74, ds_75, wArg00, out bp_10, out si_89, out di_90, out ds_104);
+			ax_105 = ax_92;
+			if (ax_92 == 0x00)
 			{
-				Mem80[ss:fp - 0x02 + 0x00:word16] = 0x01;
-				ax_10 = fn0800_5CD9(ds_17, wArg00, out ds_17);
-				Mem88[ds_17:11819:word16] = (Mem80[ds_17:11819:word16] << 0x01) + ax_10;
+				Mem100[ss:fp - 0x02 + 0x00:word16] = 0x01;
+				word16 si_102;
+				word16 di_103;
+				ax_105 = fn0800_5CD9(bp_10, si_89, di_90, ds_104, wArg00, out bp_10, out si_102, out di_103, out ds_104);
+				Mem111[ds_104:11819:word16] = (Mem100[ds_104:11819:word16] << 0x01) + ax_105;
 			}
 		}
-		else if (Mem47[ds_17:11819:word16] == 0x00)
+		else if (Mem58[ds_104:11819:word16] == 0x00)
 		{
-			Mem93[ss:fp - 0x02 + 0x00:word16] = 0x01;
-			word16 ax_95 = fn0800_5CD9(ds_17, wArg00, out ds_17);
-			Mem99[ds_17:11819:word16] = ax_95 + 0x02;
-			ax_10 = ax_95 + 0x02;
+			Mem116[ss:fp - 0x02 + 0x00:word16] = 0x01;
+			word16 si_118;
+			word16 di_119;
+			word16 ax_121 = fn0800_5CD9(bp_10, si_60, di_61, ds_104, wArg00, out bp_10, out si_118, out di_119, out ds_104);
+			Mem125[ds_104:11819:word16] = ax_121 + 0x02;
+			ax_105 = ax_121 + 0x02;
 		}
 	}
-	word16 si_20;
-	word16 di_21;
-	selector ds_22;
-	fn0800_5B15(bp, ds_17, out si_20, out di_21, out ds_22);
-	Mem33[ds_22:11819:word16] = (Mem2[ds_22:11819:word16] << 0x08) + DPB(ax_10, 0x00, 8) + 0x01;
-	return bp;
+	word16 si_26;
+	word16 di_27;
+	selector ds_28;
+	fn0800_5B15(bp_10, ds_104, out si_26, out di_27, out ds_28);
+	Mem39[ds_28:11819:word16] = (Mem2[ds_28:11819:word16] << 0x08) + DPB(ax_105, 0x00, 8) + 0x01;
+	return bp_10;
 }
 
-word16 fn0800_5A0F(selector ds, ptr16 & dsOut)
+// 0800:5A0F: Register word16 fn0800_5A0F(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_5A0F(word16 bp, word16 si, word16 di, selector ds, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 {
-	selector ds_6;
-	word16 ax_11 = (fn0800_5CD9(ds, 0x04, out ds_6) << 0x02) + 0x0C;
-	Mem13[ds_6:11847:word16] = ax_11;
-	return bp;
+	word16 bp_9;
+	word16 si_10;
+	word16 di_11;
+	selector ds_12;
+	word16 ax_17 = (fn0800_5CD9(bp, si, di, ds, 0x04, out bp_9, out si_10, out di_11, out ds_12) << 0x02) + 0x0C;
+	Mem19[ds_12:11847:word16] = ax_17;
+	return bp_9;
 }
 
+// 0800:5A24: Register selector fn0800_5A24(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06)
 selector fn0800_5A24(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 {
 	fn0800_43D4(wArg02, wArg04, wArg06);
@@ -7651,135 +9528,189 @@ selector fn0800_5A24(word16 bp, selector ds, word16 wArg02, word16 wArg04, word1
 	return ds_30;
 }
 
-word16 fn0800_5A8D(word16 bp, selector ds, word16 wArg02, selector psegArg04, ptr16 & dsOut)
+// 0800:5A8D: Register word16 fn0800_5A8D(Register selector ds, Stack word16 wArg02, Register out ptr16 bpOut, Register out ptr16 dsOut)
+word16 fn0800_5A8D(selector ds, word16 wArg02, ptr16 & bpOut, ptr16 & dsOut)
 {
-fn0800_5A8D_entry:
-	word16 wLoc04_14 = 0x00
-	word16 di_16 = wArg02
-	goto l0800_5AA5
-l0800_5A8D:
-l0800_5A9F:
-	di_16 = di_16 + 0x0C
-	wLoc04_14 = wLoc04_14 + 0x01
-l0800_5AA5:
-	branch Mem0[psegArg04:di_16 + 0x0A:word16] == 0x00 l0800_5A9F
-l0800_5AAF:
-	int32 dx_ax_54 = (int32) ((0x01 << Mem0[psegArg04:di_16 + 0x0A:byte]) - 0x01)
-	word16 cx_60 = Mem0[ds:10747:word16] & (word16) dx_ax_54
-	branch (Mem0[ds:0x29FD:word16] & SLICE(dx_ax_54, word16, 16)) != Mem0[psegArg04:di_16 + 0x08:word16] || cx_60 != Mem0[psegArg04:di_16 + 0x06:word16] l0800_5A9F
-	goto l0800_5AD2
-l0800_5ACC:
-l0800_5AD2:
-	selector ds_77
-	fn0800_5C39(fp - 0x02, ds, Mem0[psegArg04:wArg02 + (word16) (wLoc04_14 *s 0x0C) + 0x0A:word16], out ds_77)
-	branch Mem0[ss:fp - 0x04 + 0x00:word16] >=u 0x02 l0800_5AF8
-l0800_5AEF:
-	return Mem0[ss:fp - 0x04 + 0x00:word16]
-l0800_5AF8:
-	Mem107[ss:fp - 0x0A + 0x00:word16] = Mem0[ss:fp - 0x04 + 0x00:word16] - 0x01
-	selector ds_109
-	return fn0800_5C39(fp - 0x02, ds_77, wArg00, out ds_109) | 0x01 << Mem107[ss:(fp - 0x04) + 0x00:byte] - 0x01
-fn0800_5A8D_exit:
+	word16 bp_18;
+	selector ds_19;
+	return fn0800_5AA5(fp - 0x02, wArg02, ds, out bp_18, out ds_19);
 }
 
+// 0800:5A9F: Register word16 fn0800_5A9F(Register word16 bp, Register word16 di, Register selector ds, Register out ptr16 bpOut, Register out ptr16 dsOut)
+word16 fn0800_5A9F(word16 bp, word16 di, selector ds, ptr16 & bpOut, ptr16 & dsOut)
+{
+	Mem9[ss:bp - 0x02 + 0x00:word16] = Mem0[ss:bp - 0x02 + 0x00:word16] + 0x01;
+	word16 bp_12;
+	selector ds_13;
+	return fn0800_5AA5(bp, di + 0x0C, ds, out bp_12, out ds_13);
+}
+
+// 0800:5AA5: Register word16 fn0800_5AA5(Register word16 bp, Register word16 di, Register selector ds, Register out ptr16 bpOut, Register out ptr16 dsOut)
+word16 fn0800_5AA5(word16 bp, word16 di, selector ds, ptr16 & bpOut, ptr16 & dsOut)
+{
+	selector es_5 = Mem0[ss:bp + 0x06:selector];
+	if (Mem0[es_5:di + 0x0A:word16] == 0x00)
+	{
+		word16 bp_33;
+		selector ds_34;
+		return fn0800_5A9F(bp, di, ds, out bp_33, out ds_34);
+	}
+	else
+	{
+		int32 dx_ax_25 = (int32) ((0x01 << Mem0[es_5:di + 0x0A:byte]) - 0x01);
+		word16 ax_26 = (word16) dx_ax_25;
+		word16 dx_27 = SLICE(dx_ax_25, word16, 16);
+		word16 bp_29;
+		selector ds_30;
+		return fn0800_5ABA(ax_26, dx_27, bp, di, es_5, ds, out bp_29, out ds_30);
+	}
+}
+
+// 0800:5ABA: Register word16 fn0800_5ABA(Register word16 ax, Register word16 dx, Register word16 bp, Register word16 di, Register selector es, Register selector ds, Register out ptr16 bpOut, Register out ptr16 dsOut)
+word16 fn0800_5ABA(word16 ax, word16 dx, word16 bp, word16 di, selector es, selector ds, ptr16 & bpOut, ptr16 & dsOut)
+{
+	word16 cx_7 = Mem0[ds:10747:word16] & ax;
+	if ((Mem0[ds:0x29FD:word16] & dx) != Mem0[es:di + 0x08:word16])
+	{
+		word16 bp_90;
+		selector ds_91;
+		return fn0800_5A9F(bp, di, ds, out bp_90, out ds_91);
+	}
+	else if (cx_7 != Mem0[es:di + 0x06:word16])
+	{
+		word16 bp_83;
+		selector ds_84;
+		return fn0800_5A9F(bp, di, ds, out bp_83, out ds_84);
+	}
+	else
+	{
+		selector ds_46;
+		fn0800_5C39(bp, ds, Mem0[es:Mem0[ss:bp + 0x04:word16] + (word16) (Mem0[ss:(bp - 0x02) + 0x00:word16] *s 0x0C) + 0x0A:word16], out ds_46);
+		if (Mem0[ss:bp - 0x02 + 0x00:word16] >=u 0x02)
+		{
+			Mem64[ss:fp - 0x02 + 0x00:word16] = Mem0[ss:bp - 0x02 + 0x00:word16] - 0x01;
+			selector ds_66;
+			word16 ax_67 = fn0800_5C39(bp, ds_46, wArg00, out ds_66);
+			word16 bp_81;
+			*bpOut = Mem64[ss:bp + 0x00:word16];
+			return ax_67 | 0x01 << Mem64[ss:(bp - 0x02) + 0x00:byte] - 0x01;
+		}
+		else
+		{
+			word16 bp_57;
+			*bpOut = Mem0[ss:bp + 0x00:word16];
+			return Mem0[ss:bp - 0x02 + 0x00:word16];
+		}
+	}
+}
+
+// 0800:5B15: Register byte fn0800_5B15(Register word16 bp, Register selector ds, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
 byte fn0800_5B15(word16 bp, selector ds, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	*dsOut = ds;
-	*diOut = di;
 	*siOut = si;
+	*diOut = di;
 	word16 dx_10 = Mem0[ds:11889:word16];
 	if (Mem0[ds:11891:word16] == Mem0[ds:11887:word16])
 	{
 		if (dx_10 + ~0x02 == Mem0[ds:11885:word16])
 		{
-			word16 ax_104;
-			word16 dx_102;
-			word16 si_64;
-			selector ds_65;
-			Mem70[ss:fp - 0x0C + 0x00:word16] = fn0800_4194(fp - 0x02, ds, Mem0[ds:0x29E3:word16], Mem0[ds:0x29E5:word16], out si_64, out ds_65);
-			Mem72[ss:fp - 0x0E + 0x00:word16] = dx_10 + ~0x02;
-			Mem75[ss:fp - 0x10 + 0x00:word16] = Mem72[ds_65:0x29E5:word16];
-			Mem78[ss:fp - 0x12 + 0x00:word16] = Mem75[ds_65:0x29E3:word16];
-			word16 si_81;
-			word16 ax_82 = fn0800_AD2F(ds_65, ptrArg00, wArg02, out si_81);
-			ui32 bx_cx_92 = SEQ(Mem78[ss:fp - 0x0E + 0x00:word16], Mem78[ss:fp - 0x0C + 0x00:word16] - ax_82) - SEQ(dx_10 + ~0x02, ax_82);
-			Mem95[ss:fp - 0x04 + 0x00:word16] = SLICE(bx_cx_92, word16, 16);
-			Mem96[ss:fp - 0x06 + 0x00:word16] = (word16) bx_cx_92;
-			if (Mem96[ss:fp - 0x04 + 0x00:word16] >=u 0x00 && (Mem96[ss:(fp - 0x04) + 0x00:word16] >u 0x00 || Mem96[ss:(fp - 0x06) + 0x00:word16] >u ~0x02))
+			word16 ax_107;
+			word16 dx_105;
+			word16 si_66;
+			selector ds_67;
+			Mem72[ss:fp - 0x0C + 0x00:word16] = fn0800_4194(fp - 0x02, ds, Mem0[ds:0x29E3:word16], Mem0[ds:0x29E5:word16], out si_66, out ds_67);
+			Mem74[ss:fp - 0x0E + 0x00:word16] = dx_10 + ~0x02;
+			Mem77[ss:fp - 0x10 + 0x00:word16] = Mem74[ds_67:0x29E5:word16];
+			Mem80[ss:fp - 0x12 + 0x00:word16] = Mem77[ds_67:0x29E3:word16];
+			byte dl_83;
+			word16 si_84;
+			word16 ax_85 = fn0800_AD2F(ds_67, ptrArg00, wArg02, out dl_83, out si_84);
+			ui32 bx_cx_95 = SEQ(Mem80[ss:fp - 0x0E + 0x00:word16], Mem80[ss:fp - 0x0C + 0x00:word16] - ax_85) - SEQ(dx_10 + ~0x02, ax_85);
+			Mem98[ss:fp - 0x04 + 0x00:word16] = SLICE(bx_cx_95, word16, 16);
+			Mem99[ss:fp - 0x06 + 0x00:word16] = (word16) bx_cx_95;
+			if (Mem99[ss:fp - 0x04 + 0x00:word16] >=u 0x00 && (Mem99[ss:(fp - 0x04) + 0x00:word16] >u 0x00 || Mem99[ss:(fp - 0x06) + 0x00:word16] >u ~0x02))
 			{
-				dx_102 = 0x00;
-				ax_104 = ~0x02;
+				dx_105 = 0x00;
+				ax_107 = ~0x02;
 			}
 			else
 			{
-				dx_102 = Mem96[ss:fp - 0x04 + 0x00:word16];
-				ax_104 = Mem96[ss:fp - 0x06 + 0x00:word16];
+				dx_105 = Mem99[ss:fp - 0x04 + 0x00:word16];
+				ax_107 = Mem99[ss:fp - 0x06 + 0x00:word16];
 			}
-			Mem105[ss:fp - 0x08 + 0x00:word16] = dx_102;
-			Mem106[ss:fp - 0x0A + 0x00:word16] = ax_104;
-			Mem109[ss:fp - 0x0C + 0x00:word16] = Mem106[ds_65:0x29E5:word16];
-			Mem112[ss:fp - 0x0E + 0x00:word16] = Mem109[ds_65:0x29E3:word16];
-			Mem115[ss:fp - 0x10 + 0x00:word16] = Mem112[ss:fp - 0x08 + 0x00:word16];
-			Mem117[ss:fp - 0x12 + 0x00:word16] = ax_104;
-			word16 ax_118 = Mem117[ds_65:11891:word16];
-			word16 dx_119 = Mem117[ds_65:11889:word16];
-			Mem120[ds_65:11887:word16] = ax_118;
-			Mem121[ds_65:11885:word16] = dx_119;
-			Mem123[ss:fp - 0x14 + 0x00:word16] = ax_118;
-			Mem125[ss:fp - 22 + 0x00:word16] = dx_119;
-			word16 di_131;
-			selector ds_132;
-			fn0800_4110(ds_65, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0A, out di_131, out ds_132);
-			word16 ax_135 = Mem125[ss:fp - 0x08 + 0x00:word16];
-			word16 v26_137 = Mem125[ss:fp - 0x06 + 0x00:word16] - Mem125[ss:(fp - 0x0A) + 0x00:word16];
-			Mem138[ss:fp - 0x06 + 0x00:word16] = v26_137;
-			word16 dx_141 = Mem138[ss:fp - 0x06 + 0x00:word16];
-			Mem143[ss:fp - 0x04 + 0x00:word16] = Mem138[ss:fp - 0x04 + 0x00:word16] - ax_135 - (v26_137 <u 0x00);
-			if (true && (false || dx_141 >u 0x02))
+			Mem108[ss:fp - 0x08 + 0x00:word16] = dx_105;
+			Mem109[ss:fp - 0x0A + 0x00:word16] = ax_107;
+			Mem112[ss:fp - 0x0C + 0x00:word16] = Mem109[ds_67:0x29E5:word16];
+			Mem115[ss:fp - 0x0E + 0x00:word16] = Mem112[ds_67:0x29E3:word16];
+			Mem118[ss:fp - 0x10 + 0x00:word16] = Mem115[ss:fp - 0x08 + 0x00:word16];
+			Mem120[ss:fp - 0x12 + 0x00:word16] = ax_107;
+			word16 ax_121 = Mem120[ds_67:11891:word16];
+			word16 dx_122 = Mem120[ds_67:11889:word16];
+			Mem123[ds_67:11887:word16] = ax_121;
+			Mem124[ds_67:11885:word16] = dx_122;
+			Mem126[ss:fp - 0x14 + 0x00:word16] = ax_121;
+			Mem128[ss:fp - 22 + 0x00:word16] = dx_122;
+			word16 di_133;
+			selector ds_134;
+			fn0800_4110(fp - 0x02, ds_67, wArg00, wArg02, wArg04, wArg08, wArg0A, out di_133, out ds_134);
+			word16 ax_137 = Mem128[ss:fp - 0x08 + 0x00:word16];
+			word16 v26_139 = Mem128[ss:fp - 0x06 + 0x00:word16] - Mem128[ss:(fp - 0x0A) + 0x00:word16];
+			Mem140[ss:fp - 0x06 + 0x00:word16] = v26_139;
+			word16 dx_143 = Mem140[ss:fp - 0x06 + 0x00:word16];
+			Mem146[ss:fp - 0x04 + 0x00:word16] = Mem140[ss:fp - 0x04 + 0x00:word16] - ax_137 - (v26_139 <u 0x00);
+			if (true && (false || dx_143 >u 0x02))
 			{
-				Mem204[ss:fp - 0x04 + 0x00:word16] = 0x00;
-				Mem205[ss:fp - 0x06 + 0x00:word16] = 0x02;
+				Mem208[ss:fp - 0x04 + 0x00:word16] = 0x00;
+				Mem209[ss:fp - 0x06 + 0x00:word16] = 0x02;
 			}
-			Mem156[ss:fp - 0x0C + 0x00:word16] = Mem143[ds_132:0x29E5:word16];
-			Mem159[ss:fp - 0x0E + 0x00:word16] = Mem156[ds_132:0x29E3:word16];
-			Mem162[ss:fp - 0x10 + 0x00:word16] = Mem159[ss:fp - 0x04 + 0x00:word16];
-			Mem165[ss:fp - 0x12 + 0x00:word16] = Mem162[ss:fp - 0x06 + 0x00:word16];
-			word16 ax_167 = Mem165[ds_132:11889:word16] + Mem165[ss:(fp - 0x0A) + 0x00:word16];
-			Mem171[ss:fp - 0x14 + 0x00:word16] = Mem165[ds_132:11891:word16];
-			Mem173[ss:fp - 22 + 0x00:word16] = ax_167;
-			word16 di_174;
-			selector ds_175;
-			word16 si_176;
-			*siOut = fn0800_4110(ds_132, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0A, out di_174, out ds_175);
-			Mem180[ss:fp - 0x0C + 0x00:word16] = 0x01;
-			word16 dx_184 = -Mem180[ss:fp - 0x06 + 0x00:word16];
-			Mem189[ss:fp - 0x0E + 0x00:word16] = -Mem180[ss:fp - 0x04 + 0x00:word16] - (dx_184 == 0x00);
-			Mem191[ss:fp - 0x10 + 0x00:word16] = dx_184;
-			Mem194[ss:fp - 0x12 + 0x00:word16] = Mem191[ds_175:0x29E5:word16];
-			Mem197[ss:fp - 0x14 + 0x00:word16] = Mem194[ds_175:0x29E3:word16];
-			fn0800_ACB3(fp - 0x02, ds_175, ptrArg00, wArg02, wArg08, out ds);
+			Mem159[ss:fp - 0x0C + 0x00:word16] = Mem146[ds_134:0x29E5:word16];
+			Mem162[ss:fp - 0x0E + 0x00:word16] = Mem159[ds_134:0x29E3:word16];
+			Mem165[ss:fp - 0x10 + 0x00:word16] = Mem162[ss:fp - 0x04 + 0x00:word16];
+			Mem168[ss:fp - 0x12 + 0x00:word16] = Mem165[ss:fp - 0x06 + 0x00:word16];
+			word16 ax_170 = Mem168[ds_134:11889:word16] + Mem168[ss:(fp - 0x0A) + 0x00:word16];
+			Mem174[ss:fp - 0x14 + 0x00:word16] = Mem168[ds_134:11891:word16];
+			Mem176[ss:fp - 22 + 0x00:word16] = ax_170;
+			word16 di_177;
+			selector ds_178;
+			word16 si_179;
+			*siOut = fn0800_4110(fp - 0x02, ds_134, wArg00, wArg02, wArg04, wArg08, wArg0A, out di_177, out ds_178);
+			Mem183[ss:fp - 0x0C + 0x00:word16] = 0x01;
+			word16 dx_187 = -Mem183[ss:fp - 0x06 + 0x00:word16];
+			Mem192[ss:fp - 0x0E + 0x00:word16] = -Mem183[ss:fp - 0x04 + 0x00:word16] - (dx_187 == 0x00);
+			Mem194[ss:fp - 0x10 + 0x00:word16] = dx_187;
+			Mem197[ss:fp - 0x12 + 0x00:word16] = Mem194[ds_178:0x29E5:word16];
+			Mem200[ss:fp - 0x14 + 0x00:word16] = Mem197[ds_178:0x29E3:word16];
+			word16 di_201;
+			fn0800_ACB3(fp - 0x02, ds_178, wArg00, wArg02, wArg08, out di_201, out ds);
 		}
 	}
-	ptr32 es_bx_31 = Mem0[ds:11885:segptr32];
-	Mem35[ds:11885:word16] = Mem0[ds:11885:word16] + 0x01;
-	return Mem35[es_bx_31 + 0x00:byte];
+	ptr32 es_bx_33 = Mem0[ds:11885:segptr32];
+	Mem37[ds:11885:word16] = Mem0[ds:11885:word16] + 0x01;
+	return Mem37[es_bx_33 + 0x00:byte];
 }
 
-word16 fn0800_5C1A(selector ds, word16 wArg02, ptr16 & siOut, ptr16 & dsOut)
+// 0800:5C1A: Register word16 fn0800_5C1A(Register word16 si, Register word16 di, Register selector ds, Stack word16 wArg02, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_5C1A(word16 si, word16 di, selector ds, word16 wArg02, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	*siOut = si;
+	*diOut = di;
 	if (Mem0[ds:0x2A21:word16] != 0x02)
 	{
-		selector ds_32;
-		return fn0800_5C39(fp - 0x02, ds, wArg02, out ds_32);
+		selector ds_39;
+		return fn0800_5C39(fp - 0x02, ds, wArg02, out ds_39);
 	}
 	else
 	{
-		selector ds_23;
-		return fn0800_5CD9(ds, wArg02, out ds_23);
+		word16 bp_27;
+		word16 si_28;
+		word16 di_29;
+		selector ds_30;
+		return fn0800_5CD9(fp - 0x02, si, di, ds, wArg02, out bp_27, out si_28, out di_29, out ds_30);
 	}
 }
 
+// 0800:5C39: Register word16 fn0800_5C39(Register word16 bp, Register selector ds, Stack word16 wArg02, Register out ptr16 dsOut)
 word16 fn0800_5C39(word16 bp, selector ds, word16 wArg02, ptr16 & dsOut)
 {
 	*dsOut = ds;
@@ -7821,78 +9752,132 @@ word16 fn0800_5C39(word16 bp, selector ds, word16 wArg02, ptr16 & dsOut)
 	return di_100;
 }
 
-word16 fn0800_5CD9(selector ds, word16 wArg02, ptr16 & dsOut)
+// 0800:5CD9: Register word16 fn0800_5CD9(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Stack word16 wArg02, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_5CD9(word16 bp, word16 si, word16 di, selector ds, word16 wArg02, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
+{
+	word16 bp_18;
+	word16 si_19;
+	word16 di_20;
+	selector ds_21;
+	return fn0800_5D25(fp - 0x02, 0x00, wArg02, ds, di, si, bp, out bp_18, out si_19, out di_20, out ds_21);
+}
+
+// 0800:5CF7: Register word16 fn0800_5CF7(Register word16 ax, Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_5CF7(word16 ax, word16 bp, word16 si, word16 di, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
+{
+	Mem3[ds:10747:word16] = ax;
+	Mem5[ds:11845:word16] = 0x08;
+	word16 bp_9;
+	word16 si_10;
+	word16 di_11;
+	selector ds_12;
+	return fn0800_5D00(bp, si, di, ds, out bp_9, out si_10, out di_11, out ds_12);
+}
+
+// 0800:5D00: Register word16 fn0800_5D00(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_5D00(word16 bp, word16 si, word16 di, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
+{
+	word16 si_12 = si << 0x01;
+	if ((Mem0[ds:10747:word16] & 0x80) != 0x00)
+		si_12 = (si << 0x01) + 0x01;
+	word16 dx_14 = Mem0[ds:10747:word16];
+	Mem21[ds:0x29FD:word16] = __rcl(Mem0[ds:0x29FD:word16], 0x01, cond(dx_14 << 0x01));
+	Mem22[ds:10747:word16] = dx_14 << 0x01;
+	Mem24[ds:11845:word16] = Mem22[ds:11845:word16] - 0x01;
+	word16 bp_32;
+	word16 si_33;
+	word16 di_34;
+	selector ds_35;
+	return fn0800_5D25(bp, si_12, di - 0x01, ds, wArg00, wArg02, wArg04, out bp_32, out si_33, out di_34, out ds_35);
+}
+
+// 0800:5D25: Register word16 fn0800_5D25(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_5D25(word16 bp, word16 si, word16 di, selector ds, word16 wArg00, word16 wArg02, word16 wArg04, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	*dsOut = ds;
-	word16 di_13 = wArg02;
-	word16 si_14 = 0x00;
-	while (true)
+	if (di != 0x00)
 	{
-		word16 di_31 = di_13;
-		if (di_13 == 0x00)
-			break;
-		if (Mem0[ds:11845:word16] == 0x00)
+		if (Mem0[ds:11845:word16] != 0x00)
 		{
-			fn0800_5B15(fp - 0x02, ds, out si_14, out di_31, out ds);
-			Mem84[ds:0x29FD:word16] = 0x00;
-			Mem85[ds:10747:word16] = DPB(ax, 0x00, 8);
-			Mem86[ds:11845:word16] = 0x08;
+			word16 bp_55;
+			word16 si_56;
+			word16 di_57;
+			selector ds_58;
+			return fn0800_5D00(bp, si, di, ds, out bp_55, out si_56, out di_57, out ds_58);
 		}
-		si_14 = si_14 << 0x01;
-		if ((Mem0[ds:10747:word16] & 0x80) != 0x00)
-			si_14 = si_14 + 0x01;
-		word16 dx_63 = Mem0[ds:10747:word16];
-		ax = __rcl(Mem0[ds:0x29FD:word16], 0x01, cond(dx_63 << 0x01));
-		Mem70[ds:0x29FD:word16] = ax;
-		Mem71[ds:10747:word16] = dx_63 << 0x01;
-		Mem73[ds:11845:word16] = Mem71[ds:11845:word16] - 0x01;
-		di_13 = di_31 - 0x01;
+		else
+		{
+			word16 si_40;
+			word16 di_41;
+			selector ds_42;
+			fn0800_5B15(bp, ds, out si_40, out di_41, out ds_42);
+			Mem47[ds_42:0x29FD:word16] = 0x00;
+			word16 ax_46 = DPB(ax, 0x00, 8);
+			word16 bp_48;
+			word16 si_49;
+			word16 di_50;
+			selector ds_51;
+			return fn0800_5CF7(ax_46, bp, si_40, di_41, ds_42, out bp_48, out si_49, out di_50, out ds_51);
+		}
 	}
-	return si_14;
-}
-
-selector fn0800_5D2F(word16 bp, selector ds)
-{
-	word16 ax_107 = Mem0[ds:11867:word16];
-	word16 dx_9 = Mem0[ds:11865:word16];
-	if (ax_107 == Mem0[ds:11863:word16] && dx_9 - 0x01 == Mem0[ds:11861:word16])
-	{
-		word16 dx_65 = ~0x00 - Mem0[ds:11825:word16];
-		selector ds_81 = fn0800_4152(ds, Mem0[ds:11865:word16] + Mem0[ds:11825:word16], Mem0[ds:11867:word16], dx_65, 0x00 - (dx_65 <u 0x00), Mem0[ds:10719:word16], Mem0[ds:10721:word16]);
-		Mem85[ss:fp - 0x04 + 0x00:word16] = Mem0[ds_81:11825:word16];
-		word16 ax_87 = Mem85[ds_81:11861:word16] - Mem85[ds_81:11825:word16];
-		Mem91[ss:fp - 0x06 + 0x00:word16] = Mem85[ds_81:11863:word16];
-		Mem93[ss:fp - 0x08 + 0x00:word16] = ax_87;
-		Mem96[ss:fp - 0x0A + 0x00:word16] = Mem93[ds_81:11867:word16];
-		Mem99[ss:fp - 0x0C + 0x00:word16] = Mem96[ds_81:11865:word16];
-		ds = fn0800_B0F3(wArg00, wArg02, wArg04, wArg06, wArg08);
-		ax_107 = Mem99[ds:11867:word16];
-		word16 dx_109 = Mem99[ds:11865:word16] + Mem99[ds:11825:word16];
-		Mem111[ds:11863:word16] = ax_107;
-		Mem112[ds:11861:word16] = dx_109;
-	}
-	Mem35[Mem0[ds:11861:segptr32] + 0x00:byte] = Mem0[ss:fp + 0x02:byte];
-	Mem37[ds:11861:word16] = Mem35[ds:11861:word16] + 0x01;
-	Mem52[ds:11853:word16] = SEQ(ds, 0x2A29)[(DPB(ax_107, 0x00, 8) & 0xFF) * 0x02] ^ Mem37[ds:11853:word16] >>u 0x08;
-	return ds;
-}
-
-word16 fn0800_5DCE(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & dsOut)
-{
-	word16 ax_150;
-	word16 si_18;
-	selector ds_135;
-	word16 ax_20 = fn0800_4194(fp - 0x02, ds, wArg02, wArg04, out si_18, out ds_135);
-	if (true && (dx != 0x00 || ax_20 >=u 0x0400))
-		ax_150 = 0x0400;
 	else
 	{
-		Mem142[ss:fp - 0x06 + 0x00:word16] = Mem0[ss:fp + 0x04:word16];
-		Mem145[ss:fp - 0x08 + 0x00:word16] = Mem142[ss:fp + 0x02:word16];
-		word16 si_146;
-		ax_150 = fn0800_4194(fp - 0x02, ds_135, wArg00, wArg02, out si_146, out ds_135) & ~0x03;
+		word16 di_26;
+		*diOut = wArg00;
+		word16 si_29;
+		*siOut = wArg02;
+		word16 bp_32;
+		*bpOut = wArg04;
+		return si;
 	}
-	word16 si_34 = ax_150;
+}
+
+// 0800:5D2F: Register word16 fn0800_5D2F(Register word16 bp, Register selector ds, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_5D2F(word16 bp, selector ds, ptr16 & diOut, ptr16 & dsOut)
+{
+	*dsOut = ds;
+	*diOut = di;
+	word16 ax_115 = Mem0[ds:11867:word16];
+	word16 dx_9 = Mem0[ds:11865:word16];
+	if (ax_115 == Mem0[ds:11863:word16] && dx_9 - 0x01 == Mem0[ds:11861:word16])
+	{
+		selector ds_87 = fn0800_4152(fp - 0x02, ds, Mem0[ds:11865:word16] + Mem0[ds:11825:word16], Mem0[ds:11867:word16], ~0x00 - Mem0[ds:11825:word16], Mem0[ds:10719:word16], Mem0[ds:10721:word16]);
+		Mem91[ss:fp - 0x04 + 0x00:word16] = Mem0[ds_87:11825:word16];
+		word16 ax_93 = Mem91[ds_87:11861:word16] - Mem91[ds_87:11825:word16];
+		Mem97[ss:fp - 0x06 + 0x00:word16] = Mem91[ds_87:11863:word16];
+		Mem99[ss:fp - 0x08 + 0x00:word16] = ax_93;
+		Mem102[ss:fp - 0x0A + 0x00:word16] = Mem99[ds_87:11867:word16];
+		Mem105[ss:fp - 0x0C + 0x00:word16] = Mem102[ds_87:11865:word16];
+		word16 di_111;
+		si = fn0800_B0F3(wArg00, wArg02, wArg04, wArg06, wArg08, out di_111, out ds);
+		ax_115 = Mem105[ds:11867:word16];
+		word16 dx_117 = Mem105[ds:11865:word16] + Mem105[ds:11825:word16];
+		Mem119[ds:11863:word16] = ax_115;
+		Mem120[ds:11861:word16] = dx_117;
+	}
+	Mem39[Mem0[ds:11861:segptr32] + 0x00:byte] = Mem0[ss:fp + 0x02:byte];
+	Mem41[ds:11861:word16] = Mem39[ds:11861:word16] + 0x01;
+	Mem56[ds:11853:word16] = SEQ(ds, 0x2A29)[(DPB(ax_115, 0x00, 8) & 0xFF) * 0x02] ^ Mem41[ds:11853:word16] >>u 0x08;
+	return si;
+}
+
+// 0800:5DCE: Register word16 fn0800_5DCE(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 dsOut)
+word16 fn0800_5DCE(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & dsOut)
+{
+	word16 ax_153;
+	word16 si_18;
+	selector ds_138;
+	word16 ax_20 = fn0800_4194(fp - 0x02, ds, wArg02, wArg04, out si_18, out ds_138);
+	if (true && (dx != 0x00 || ax_20 >=u 0x0400))
+		ax_153 = 0x0400;
+	else
+	{
+		Mem145[ss:fp - 0x06 + 0x00:word16] = Mem0[ss:fp + 0x04:word16];
+		Mem148[ss:fp - 0x08 + 0x00:word16] = Mem145[ss:fp + 0x02:word16];
+		word16 si_149;
+		ax_153 = fn0800_4194(fp - 0x02, ds_138, wArg00, wArg02, out si_149, out ds_138) & ~0x03;
+	}
+	word16 si_34 = ax_153;
 	while (true)
 	{
 		word16 si_43 = si_34;
@@ -7900,36 +9885,1018 @@ word16 fn0800_5DCE(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 &
 			break;
 		Mem64[ss:fp - 0x06 + 0x00:word16] = Mem0[ss:fp + 0x04:word16];
 		Mem67[ss:fp - 0x08 + 0x00:word16] = Mem64[ss:fp + 0x02:word16];
-		word16 di_70;
-		if (fn0800_3E27(fp - 0x02, ds_135, wArg00, wArg02, out si_43, out di_70, out ds_135) == 21070)
+		word16 dx_69;
+		word16 di_71;
+		if (fn0800_3E27(fp - 0x02, ds_138, wArg00, wArg02, out dx_69, out si_43, out di_71, out ds_138) == 21070)
 		{
-			Mem87[ss:fp - 0x06 + 0x00:word16] = Mem67[ss:fp + 0x04:word16];
-			Mem90[ss:fp - 0x08 + 0x00:word16] = Mem87[ss:fp + 0x02:word16];
-			word16 di_92;
-			selector ds_93;
-			if ((fn0800_3E27(fp - 0x02, ds_135, wArg00, wArg02, out si_43, out di_92, out ds_93) & 0xFF00) == 0x4300)
+			Mem88[ss:fp - 0x06 + 0x00:word16] = Mem67[ss:fp + 0x04:word16];
+			Mem91[ss:fp - 0x08 + 0x00:word16] = Mem88[ss:fp + 0x02:word16];
+			word16 dx_92;
+			word16 di_94;
+			selector ds_95;
+			if ((fn0800_3E27(fp - 0x02, ds_138, wArg00, wArg02, out dx_92, out si_43, out di_94, out ds_95) & 0xFF00) == 0x4300)
 			{
-				Mem101[ss:fp - 0x06 + 0x00:word16] = 0x01;
-				Mem105[ss:fp - 0x08 + 0x00:word16] = ~0x00;
-				Mem107[ss:fp - 0x0A + 0x00:word16] = ~0x03;
-				Mem110[ss:fp - 0x0C + 0x00:word16] = Mem107[ss:fp + 0x04:word16];
-				Mem113[ss:fp - 0x0E + 0x00:word16] = Mem110[ss:fp + 0x02:word16];
-				selector ds_116;
-				fn0800_ACB3(fp - 0x02, ds_93, ptrArg00, wArg02, wArg08, out ds_116);
+				Mem103[ss:fp - 0x06 + 0x00:word16] = 0x01;
+				Mem107[ss:fp - 0x08 + 0x00:word16] = ~0x00;
+				Mem109[ss:fp - 0x0A + 0x00:word16] = ~0x03;
+				Mem112[ss:fp - 0x0C + 0x00:word16] = Mem109[ss:fp + 0x04:word16];
+				Mem115[ss:fp - 0x0E + 0x00:word16] = Mem112[ss:fp + 0x02:word16];
+				word16 di_117;
+				selector ds_118;
+				fn0800_ACB3(fp - 0x02, ds_95, wArg00, wArg02, wArg08, out di_117, out ds_118);
 				return si_43;
 			}
-			Mem122[ss:fp - 0x06 + 0x00:word16] = 0x01;
-			Mem126[ss:fp - 0x08 + 0x00:word16] = ~0x00;
-			Mem128[ss:fp - 0x0A + 0x00:word16] = ~0x01;
-			Mem131[ss:fp - 0x0C + 0x00:word16] = Mem128[ss:fp + 0x04:word16];
-			Mem134[ss:fp - 0x0E + 0x00:word16] = Mem131[ss:fp + 0x02:word16];
-			fn0800_ACB3(fp - 0x02, ds_93, ptrArg00, wArg02, wArg08, out ds_135);
+			Mem124[ss:fp - 0x06 + 0x00:word16] = 0x01;
+			Mem128[ss:fp - 0x08 + 0x00:word16] = ~0x00;
+			Mem130[ss:fp - 0x0A + 0x00:word16] = ~0x01;
+			Mem133[ss:fp - 0x0C + 0x00:word16] = Mem130[ss:fp + 0x04:word16];
+			Mem136[ss:fp - 0x0E + 0x00:word16] = Mem133[ss:fp + 0x02:word16];
+			word16 di_137;
+			fn0800_ACB3(fp - 0x02, ds_95, wArg00, wArg02, wArg08, out di_137, out ds_138);
 		}
 		si_34 = si_43 - 0x02;
 	}
 	return si_43;
 }
 
+// 0800:5E64: void fn0800_5E64(Register word16 bp, Register selector ds)
+void fn0800_5E64(word16 bp, selector ds)
+{
+	word16 bp_390 = fp - 0x02;
+	word16 di_18 = 0x2202;
+	word16 si_19 = 17009;
+	word16 cx_20 = 0x04;
+	word16 dx_22 = 0x03;
+	if (false)
+		cx_20 = 0x03;
+	word16 ax_27 = 0x00;
+	byte Z_33 = cond(0x00);
+	byte C_34 = false;
+	if (cx_20 != 0x00)
+	{
+		byte SCZO_935 = cond(Mem0[ds:si_946 + 0x00:byte] - Mem0[ds:di_947 + 0x00:byte]);
+		Z_33 = SCZO_935;
+		C_34 = SCZO_935;
+		si_19 = si_946 + 0x01;
+		di_18 = di_947 + 0x01;
+		cx_20 = cx_20 - 0x01;
+		word16 si_946 = si_19;
+		word16 di_947 = di_18;
+		if (Mem0[ds:si_946 + 0x00:byte] != Mem0[ds:di_947 + 0x00:byte])
+			goto l0800_5E82;
+	}
+	if (!Z_33)
+	{
+		word16 ax_926 = 0x00 - C_34;
+		ax_27 = ax_926 - ~0x00 - (ax_926 <u 0x00);
+	}
+	word16 ax_61 = ax_27;
+	if (ax_27 != 0x00)
+	{
+		word16 di_842 = 17009;
+		word16 si_843 = 0x2202;
+		word16 cx_845 = 0x04;
+		dx_22 = ~0x00;
+		if (false)
+		{
+			cx_845 = 0x03;
+			dx_22 = 0x00;
+		}
+		word16 cx_860 = cx_845 >>u 0x01;
+		cx_869 = cx_860;
+		while (true)
+		{
+			word16 cx_869;
+			if (cx_869 == 0x00)
+				break;
+			Mem872[ds:di_842 + 0x00:word16] = Mem0[ds:si_843 + 0x00:word16];
+			si_843 = si_843 + 0x02;
+			di_842 = di_842 + 0x02;
+			cx_869 = cx_869 - 0x01;
+		}
+		word16 cx_877 = cx_869 * 0x02 + (cx_860 <u 0x00);
+		while (cx_877 != 0x00)
+		{
+			Mem885[ds:di_842 + 0x00:byte] = Mem0[ds:si_843 + 0x00:byte];
+			si_843 = si_843 + 0x01;
+			di_842 = di_842 + 0x01;
+			cx_877 = cx_877 - 0x01;
+		}
+		word16 cx_890 = dx_22;
+		while (cx_890 != 0x00)
+		{
+			Mem901[ds:di_842 + 0x00:byte] = 0x00;
+			di_842 = di_842 + 0x01;
+			cx_890 = cx_890 - 0x01;
+		}
+		fn0800_09A3(fp - 0x02, ds);
+		ax_61 = 17009;
+	}
+	word16 ax_88 = (DPB(ax_61, 0x00, 8) << 0x08) + DPB(dx_22, 0x00, 8);
+	if (0x00 <u Mem0[ds:0x2A09:word16] || 0x00 == Mem0[ds:0x2A09:word16] && ax_88 <u Mem0[ds:0x2A07:word16])
+	{
+		if (Mem0[ds:0x2A0D:word16] >=u 0x00 && (Mem0[ds:0x2A0D:word16] >u 0x00 || Mem0[ds:0x2A0B:word16] >u 0x7FF0))
+		{
+			Mem823[ds:0x2A0D:word16] = 0x00;
+			Mem824[ds:0x2A0B:word16] = 0x7FF0;
+		}
+		Mem131[ss:fp - 0x40 + 0x00:word16] = 0x00;
+		Mem135[ss:fp - 66 + 0x00:word16] = 0x00;
+		Mem137[ss:fp - 0x44 + 0x00:word16] = 0x02;
+		Mem140[ss:fp - 0x46 + 0x00:word16] = Mem137[ds:0x29E5:word16];
+		Mem143[ss:fp - 0x48 + 0x00:word16] = Mem140[ds:0x29E3:word16];
+		word16 di_147;
+		selector ds_148;
+		fn0800_ACB3(fp - 0x02, ds, wArg00, wArg02, wArg08, out di_147, out ds_148);
+		Mem154[ss:fp - 0x40 + 0x00:word16] = Mem143[ds_148:0x29E5:word16];
+		Mem157[ss:fp - 66 + 0x00:word16] = Mem154[ds_148:0x29E3:word16];
+		word16 si_158;
+		word16 di_159;
+		selector ds_160;
+		Mem164[ss:fp - 0x24 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_148, wArg00, wArg02, out si_158, out di_159, out ds_160);
+		Mem167[ss:fp - 0x40 + 0x00:word16] = Mem164[ds_160:0x29E5:word16];
+		Mem170[ss:fp - 66 + 0x00:word16] = Mem167[ds_160:0x29E3:word16];
+		word16 si_171;
+		word16 di_172;
+		selector ds_173;
+		word16 ax_174 = fn0800_3FAD(fp - 0x02, ds_160, wArg00, wArg02, out si_171, out di_172, out ds_173);
+		word16 di_176 = ax_174;
+		if (Mem170[ss:fp - 0x24 + 0x00:word16] != 0x00)
+			di_176 = ax_174 - 0x01;
+		word16 dx_185;
+		word16 ax_187 = fn0800_8C69(di_176, 0x09, 0x00, bp, out dx_185) + Mem170[ss:(fp - 0x24) + 0x00:word16];
+		Mem191[ss:fp - 0x04 + 0x00:word16] = dx_185 + (ax_187 <u 0x00);
+		Mem192[ss:fp - 0x06 + 0x00:word16] = ax_187;
+		word16 ax_193 = Mem192[ss:fp - 0x04 + 0x00:word16];
+		word16 dx_194 = Mem192[ss:fp - 0x06 + 0x00:word16];
+		if (ax_193 >=u Mem192[ds_173:0x2A09:word16] && (ax_193 >u Mem192[ds_173:0x2A09:word16] || dx_194 >u Mem192[ds_173:0x2A07:word16]))
+		{
+			dx_194 = Mem192[ds_173:0x2A07:word16];
+			Mem815[ss:fp - 0x04 + 0x00:word16] = Mem192[ds_173:0x2A09:word16];
+			Mem816[ss:fp - 0x06 + 0x00:word16] = dx_194;
+		}
+		Mem208[ss:fp - 0x40 + 0x00:word16] = Mem192[ds_173:0x29E5:word16];
+		Mem211[ss:fp - 66 + 0x00:word16] = Mem208[ds_173:0x29E3:word16];
+		word16 si_212;
+		word16 di_213;
+		selector ds_214;
+		Mem218[ss:fp - 0x26 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_173, wArg00, wArg02, out si_212, out di_213, out ds_214);
+		Mem221[ss:fp - 0x40 + 0x00:word16] = Mem218[ds_214:0x29E5:word16];
+		Mem224[ss:fp - 66 + 0x00:word16] = Mem221[ds_214:0x29E3:word16];
+		word16 si_225;
+		word16 di_226;
+		selector ds_227;
+		Mem231[ss:fp - 0x28 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_214, wArg00, wArg02, out si_225, out di_226, out ds_227);
+		Mem234[ss:fp - 0x40 + 0x00:word16] = Mem231[ds_227:0x29E5:word16];
+		Mem237[ss:fp - 66 + 0x00:word16] = Mem234[ds_227:0x29E3:word16];
+		word16 si_238;
+		word16 di_239;
+		selector ds_240;
+		Mem244[ss:fp - 0x2A + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_227, wArg00, wArg02, out si_238, out di_239, out ds_240);
+		Mem247[ss:fp - 0x40 + 0x00:word16] = Mem244[ds_240:0x29E5:word16];
+		Mem250[ss:fp - 66 + 0x00:word16] = Mem247[ds_240:0x29E3:word16];
+		word16 si_251;
+		word16 di_252;
+		selector ds_253;
+		Mem257[ss:fp - 44 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_240, wArg00, wArg02, out si_251, out di_252, out ds_253);
+		Mem260[ss:fp - 0x40 + 0x00:word16] = Mem257[ds_253:0x29E5:word16];
+		Mem263[ss:fp - 66 + 0x00:word16] = Mem260[ds_253:0x29E3:word16];
+		word16 si_264;
+		word16 di_265;
+		selector ds_266;
+		Mem270[ss:fp - 0x2E + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_253, wArg00, wArg02, out si_264, out di_265, out ds_266);
+		Mem273[ss:fp - 0x40 + 0x00:word16] = Mem270[ds_266:0x29E5:word16];
+		Mem276[ss:fp - 66 + 0x00:word16] = Mem273[ds_266:0x29E3:word16];
+		word16 si_277;
+		word16 di_278;
+		selector ds_279;
+		Mem283[ss:fp - 0x30 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_266, wArg00, wArg02, out si_277, out di_278, out ds_279);
+		Mem286[ss:fp - 0x40 + 0x00:word16] = Mem283[ds_279:0x29E5:word16];
+		Mem289[ss:fp - 66 + 0x00:word16] = Mem286[ds_279:0x29E3:word16];
+		word16 si_290;
+		word16 di_291;
+		selector ds_292;
+		fn0800_3FAD(fp - 0x02, ds_279, wArg00, wArg02, out si_290, out di_291, out ds_292);
+		Mem298[ss:fp - 0x40 + 0x00:word16] = Mem289[ds_292:0x29E5:word16];
+		Mem301[ss:fp - 66 + 0x00:word16] = Mem298[ds_292:0x29E3:word16];
+		word16 si_302;
+		word16 di_303;
+		selector ds_304;
+		Mem308[ss:fp - 0x32 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_292, wArg00, wArg02, out si_302, out di_303, out ds_304);
+		Mem311[ss:fp - 0x40 + 0x00:word16] = Mem308[ds_304:0x29E5:word16];
+		Mem314[ss:fp - 66 + 0x00:word16] = Mem311[ds_304:0x29E3:word16];
+		word16 si_315;
+		word16 di_316;
+		selector ds_317;
+		Mem321[ss:fp - 0x34 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_304, wArg00, wArg02, out si_315, out di_316, out ds_317);
+		Mem324[ss:fp - 0x40 + 0x00:word16] = Mem321[ds_317:0x29E5:word16];
+		Mem327[ss:fp - 66 + 0x00:word16] = Mem324[ds_317:0x29E3:word16];
+		word16 si_328;
+		word16 di_329;
+		selector ds_330;
+		Mem334[ss:fp - 0x36 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_317, wArg00, wArg02, out si_328, out di_329, out ds_330);
+		Mem337[ss:fp - 0x40 + 0x00:word16] = Mem334[ds_330:0x29E5:word16];
+		Mem340[ss:fp - 66 + 0x00:word16] = Mem337[ds_330:0x29E3:word16];
+		word16 si_341;
+		word16 di_342;
+		selector ds_343;
+		word16 ax_344 = fn0800_3FAD(fp - 0x02, ds_330, wArg00, wArg02, out si_341, out di_342, out ds_343);
+		Mem348[ss:fp - 0x40 + 0x00:word16] = Mem340[ds_343:10721:word16];
+		Mem351[ss:fp - 66 + 0x00:word16] = Mem348[ds_343:10719:word16];
+		Mem365[ss:fp - 0x44 + 0x00:word16] = 0x00;
+		Mem367[ss:fp - 0x46 + 0x00:word16] = (DPB(ax_344, 0x00, 8) << 0x08) + DPB(dx_194, 0x00, 8);
+		Mem369[ss:fp - 0x48 + 0x00:word16] = ds_343;
+		Mem372[ss:fp - 0x4A + 0x00:word16] = 0x2E77;
+		word16 dx_361 = 0x00;
+		word16 ax_370 = 0x2E77;
+		selector ds_375 = fn0800_4152(fp - 0x02, ds_343, wArg00, wArg02, wArg04, wArg08, wArg0A);
+		word16 sp_376 = fp - 0x3E;
+		if (Mem372[ss:fp - 0x26 + 0x00:word16] != 0x00)
+		{
+			Mem478[ss:fp - 0x40 + 0x00:word16] = 0x00;
+			Mem480[ss:fp - 66 + 0x00:word16] = ~0x00;
+			fn0800_4311(0x00, ~0x00, ds_375, wArg00, wArg02);
+			Mem482[ss:fp - 0x0C + 0x00:word16] = ~0x00;
+			Mem483[ss:fp - 0x0E + 0x00:word16] = 0x00;
+			Mem488[ss:fp - 0x40 + 0x00:word16] = 0x00;
+			Mem490[ss:fp - 66 + 0x00:word16] = 0x00;
+			Mem493[ss:fp - 0x44 + 0x00:word16] = Mem490[ss:fp - 0x36 + 0x00:word16];
+			Mem496[ss:fp - 0x46 + 0x00:word16] = Mem493[ds_375:0x29E5:word16];
+			Mem499[ss:fp - 0x48 + 0x00:word16] = Mem496[ds_375:0x29E3:word16];
+			word16 di_500;
+			selector ds_501;
+			fn0800_ACB3(fp - 0x02, ds_375, wArg00, wArg02, wArg08, out di_500, out ds_501);
+			Mem508[ss:fp - 0x38 + 0x00:word16] = Mem499[ss:fp - 0x0E + 0x00:word16];
+			dx_361 = ~0x00;
+			word16 si_504 = 0x00;
+			while (si_504 != Mem508[ss:(fp - 0x26) + 0x00:word16])
+			{
+				Mem769[ss:fp - 0x40 + 0x00:word16] = Mem508[ds_501:0x29E5:word16];
+				Mem772[ss:fp - 66 + 0x00:word16] = Mem769[ds_501:0x29E3:word16];
+				word16 si_773;
+				word16 di_774;
+				selector ds_775;
+				Mem779[ss:fp - 0x24 + 0x00:word16] = fn0800_3FAD(fp - 0x02, ds_501, wArg00, wArg02, out si_773, out di_774, out ds_775);
+				Mem782[ss:fp - 0x40 + 0x00:word16] = Mem779[ds_775:0x29E5:word16];
+				Mem785[ss:fp - 66 + 0x00:word16] = Mem782[ds_775:0x29E3:word16];
+				word16 si_786;
+				word16 di_787;
+				word16 dx_796;
+				word16 ax_798 = fn0800_8C69(fn0800_3FAD(fp - 0x02, ds_775, wArg00, wArg02, out si_786, out di_787, out ds_501), 0x04, 0x00, bp, out dx_796) + Mem785[ss:(fp - 0x24) + 0x00:word16];
+				dx_361 = dx_796 + (ax_798 <u 0x00);
+				selector es_802 = Mem785[ss:fp - 0x0C + 0x00:selector];
+				word16 bx_803 = Mem785[ss:fp - 0x38 + 0x00:word16];
+				Mem804[es_802:bx_803 + 0x02:word16] = dx_361;
+				Mem805[es_802:bx_803 + 0x00:word16] = ax_798;
+				Mem807[ss:fp - 0x38 + 0x00:word16] = Mem805[ss:fp - 0x38 + 0x00:word16] + 0x04;
+				si_504 = si_786 + 0x01;
+			}
+			Mem524[ss:fp - 0x40 + 0x00:word16] = 0x667B;
+			Mem527[ss:fp - 66 + 0x00:word16] = 0x04;
+			Mem530[ss:fp - 0x44 + 0x00:word16] = Mem527[ss:fp - 0x26 + 0x00:word16];
+			Mem533[ss:fp - 0x46 + 0x00:word16] = Mem530[ss:fp - 0x0C + 0x00:word16];
+			Mem536[ss:fp - 0x48 + 0x00:word16] = Mem533[ss:fp - 0x0E + 0x00:word16];
+			bp_390 = fn0800_B95E(fp - 0x02, ds_501);
+			word16 di_541 = Mem536[ss:bp_390 - 0x0C + 0x00:word16];
+			ax_370 = -false;
+			Mem548[ss:bp_390 - 0x38 + 0x00:word16] = ax_370;
+			word16 si_540 = 0x00;
+			while (si_540 != Mem548[ss:(bp_390 - 0x24) + 0x00:word16])
+			{
+				selector es_567 = Mem548[ss:bp_390 - 0x0A + 0x00:selector];
+				word16 ax_568 = Mem548[es_567:di_541 + 0x02:word16];
+				word16 dx_569 = Mem548[es_567:di_541 + 0x00:word16];
+				Mem570[ss:bp_390 - 0x12 + 0x00:word16] = ax_568;
+				Mem571[ss:bp_390 - 0x14 + 0x00:word16] = dx_569;
+				Mem576[ss:bp_390 - 0x0E + 0x00:word16] = ax_568 & 0x0F;
+				Mem577[ss:bp_390 - 0x10 + 0x00:word16] = dx_569 & ~0x0F;
+				Mem580[ss:fp - 66 + 0x00:word16] = Mem577[ds_501:10721:word16];
+				Mem583[ss:fp - 0x44 + 0x00:word16] = Mem580[ds_501:10719:word16];
+				Mem587[ss:fp - 0x46 + 0x00:word16] = DPB(ax_568 & 0x0F, 0x00, 0);
+				word16 di_588;
+				selector ds_589;
+				fn0800_4047(bp_390, ds_501, bArg00, ptrArg02, wArg04, out di_588, out ds_589);
+				Mem595[ss:fp - 66 + 0x00:word16] = Mem587[ds_589:10721:word16];
+				Mem598[ss:fp - 0x44 + 0x00:word16] = Mem595[ds_589:10719:word16];
+				word16 dx_602;
+				Mem605[ss:fp - 0x46 + 0x00:word16] = fn0800_8CAA(Mem598[ss:bp_390 - 0x10 + 0x00:word16], 0x04, Mem598[ss:bp_390 - 0x0E + 0x00:word16], bp, out dx_602);
+				selector ds_606;
+				word16 di_607 = fn0800_40BF(bp_390, ds_589, bArg00, wArg02, wArg04, out ds_606);
+				Mem610[ss:bp_390 - 0x22 + 0x00:word16] = 0x00;
+l0800_6150:
+				selector es_620 = Mem610[ss:bp_390 - 0x0A + 0x00:selector];
+				word16 dx_623 = Mem610[es_620:di_607 + 0x00:word16] - Mem610[ss:(bp_390 - 0x10) + 0x00:word16];
+				word16 ax_626 = Mem610[es_620:di_607 + 0x02:word16] - Mem610[ss:(bp_390 - 0x0E) + 0x00:word16] - (dx_623 <u 0x00);
+				Mem627[ss:bp_390 - 22 + 0x00:word16] = ax_626;
+				Mem628[ss:bp_390 - 0x18 + 0x00:word16] = dx_623;
+				word16 v74_629 = Mem628[ss:bp_390 - 0x10 + 0x00:word16] + dx_623;
+				Mem630[ss:bp_390 - 0x10 + 0x00:word16] = v74_629;
+				Mem634[ss:bp_390 - 0x0E + 0x00:word16] = Mem630[ss:bp_390 - 0x0E + 0x00:word16] + ax_626 + (v74_629 <u 0x00);
+				if (Mem634[ss:bp_390 - 22 + 0x00:word16] <=u 0x00 && (Mem634[ss:(bp_390 - 22) + 0x00:word16] != 0x00 || Mem634[ss:(bp_390 - 0x18) + 0x00:word16] <=u 0xFF))
+				{
+					word16 dx_715 = Mem634[ss:bp_390 - 0x10 + 0x00:word16] - Mem634[ss:(bp_390 - 0x14) + 0x00:word16];
+					word16 ax_720 = Mem634[ss:bp_390 - 0x0E + 0x00:word16] - Mem634[ss:(bp_390 - 0x12) + 0x00:word16] - (dx_715 <u 0x00);
+					if (false || true && dx_715 >=u ~0x0F || Mem634[ss:(bp_390 - 0x22) + 0x00:word16] == 0xFF)
+						break;
+					Mem734[ss:fp - 66 + 0x00:word16] = Mem634[ds_606:10721:word16];
+					Mem737[ss:fp - 0x44 + 0x00:word16] = Mem734[ds_606:10719:word16];
+					Mem741[ss:fp - 0x46 + 0x00:word16] = DPB(ax_720, Mem737[ss:bp_390 - 0x18 + 0x00:byte], 0);
+					word16 di_742;
+					fn0800_4047(bp_390, ds_606, bArg00, ptrArg02, wArg04, out di_742, out ds_606);
+					Mem747[ss:bp_390 - 0x22 + 0x00:word16] = Mem741[ss:bp_390 - 0x22 + 0x00:word16] + 0x01;
+					di_607 = di_742 + 0x04;
+					si_540 = si_540 + 0x01;
+					if (si_540 != Mem747[ss:(bp_390 - 0x24) + 0x00:word16])
+						goto l0800_6150;
+				}
+				Mem651[ss:fp - 66 + 0x00:word16] = 0x01;
+				word16 ax_655 = -(Mem651[ss:bp_390 - 0x22 + 0x00:word16] + 0x03);
+				Mem660[ss:fp - 0x44 + 0x00:word16] = Mem651[ss:bp_390 - 0x38 + 0x00:word16] - (ax_655 == 0x00);
+				Mem662[ss:fp - 0x46 + 0x00:word16] = ax_655;
+				Mem665[ss:fp - 0x48 + 0x00:word16] = Mem662[ds_606:10721:word16];
+				Mem668[ss:fp - 0x4A + 0x00:word16] = Mem665[ds_606:10719:word16];
+				word16 di_669;
+				selector ds_670;
+				word16 ax_671 = fn0800_ACB3(bp_390, ds_606, wArg00, wArg02, wArg08, out di_669, out ds_670);
+				Mem676[ss:fp - 66 + 0x00:word16] = Mem668[ds_670:10721:word16];
+				Mem679[ss:fp - 0x44 + 0x00:word16] = Mem676[ds_670:10719:word16];
+				Mem683[ss:fp - 0x46 + 0x00:word16] = DPB(ax_671, Mem679[ss:bp_390 - 0x22 + 0x00:byte], 0);
+				word16 di_684;
+				selector ds_685;
+				fn0800_4047(bp_390, ds_670, bArg00, ptrArg02, wArg04, out di_684, out ds_685);
+				Mem690[ss:fp - 66 + 0x00:word16] = 0x01;
+				word16 ax_691 = Mem690[ss:bp_390 - 0x22 + 0x00:word16];
+				Mem699[ss:fp - 0x44 + 0x00:word16] = ax_691 <u 0x02;
+				Mem701[ss:fp - 0x46 + 0x00:word16] = ax_691 + 0x02;
+				Mem704[ss:fp - 0x48 + 0x00:word16] = Mem701[ds_685:10721:word16];
+				Mem707[ss:fp - 0x4A + 0x00:word16] = Mem704[ds_685:10719:word16];
+				dx_361 = ax_691 <u 0x02;
+				ax_370 = fn0800_ACB3(bp_390, ds_685, wArg00, wArg02, wArg08, out di_541, out ds_501);
+			}
+			Mem759[ss:fp - 66 + 0x00:word16] = Mem548[ss:bp_390 - 0x0A + 0x00:word16];
+			Mem762[ss:fp - 0x44 + 0x00:word16] = Mem759[ss:bp_390 - 0x0C + 0x00:word16];
+			fn0800_4346(ds_501, wArg00, wArg02, out ds_375);
+			sp_376 = fp - 0x40;
+		}
+		word16 sp_394 = sp_376 - 0x02;
+		Mem395[ss:sp_394 + 0x00:word16] = Mem372[ds_375:10721:word16];
+		Mem398[ss:sp_394 - 0x02 + 0x00:word16] = Mem395[ds_375:10719:word16];
+		Mem402[ss:sp_394 - 0x04 + 0x00:word16] = DPB(ax_370, 0x00, 0);
+		word16 di_405;
+		selector ds_406;
+		fn0800_4047(bp_390, ds_375, bArg00, ptrArg02, wArg04, out di_405, out ds_406);
+		Mem412[ss:sp_394 + 0x00:word16] = Mem402[ds_406:10721:word16];
+		Mem415[ss:sp_394 - 0x02 + 0x00:word16] = Mem412[ds_406:10719:word16];
+		byte dl_417;
+		word16 si_418;
+		ui32 dx_ax_422 = SEQ(dx_361, fn0800_AD2F(ds_406, ptrArg00, wArg02, out dl_417, out si_418) + ~0x1F);
+		Mem428[ss:bp_390 - 0x1A + 0x00:word16] = SLICE(dx_ax_422 + 0x00FFFFE0, word16, 16);
+		Mem429[ss:bp_390 - 0x1C + 0x00:word16] = (word16) (dx_ax_422 + 0x00FFFFE0);
+		while (true)
+		{
+			word16 ax_436 = Mem429[ss:bp_390 - 0x1C + 0x00:word16];
+			if ((ax_436 & 0x0F) == 0x00)
+				break;
+			word16 sp_452 = sp_376 - 0x02;
+			Mem453[ss:sp_452 + 0x00:word16] = Mem429[ds_406:10721:word16];
+			Mem456[ss:sp_452 - 0x02 + 0x00:word16] = Mem453[ds_406:10719:word16];
+			Mem460[ss:sp_452 - 0x04 + 0x00:word16] = DPB(ax_436 & 0x0F, 0x00, 0);
+			word16 di_461;
+			fn0800_4047(bp_390, ds_406, bArg00, ptrArg02, wArg04, out di_461, out ds_406);
+			word16 v66_465 = Mem460[ss:bp_390 - 0x1C + 0x00:word16] + 0x01;
+			Mem466[ss:bp_390 - 0x1C + 0x00:word16] = v66_465;
+			Mem470[ss:bp_390 - 0x1A + 0x00:word16] = Mem466[ss:bp_390 - 0x1A + 0x00:word16] + (v66_465 <u 0x00);
+		}
+		word16 ax_442 = Mem429[ss:bp_390 - 0x26 + 0x00:word16];
+		fn0800_6278(ax_442 << 0x04, 0x04, bp_390, ds_406);
+		return;
+	}
+	else
+		return;
+}
+
+// 0800:6278: void fn0800_6278(Register word16 ax, Register byte cl, Register word16 bp, Register selector ds)
+void fn0800_6278(word16 ax, byte cl, word16 bp, selector ds)
+{
+	word16 v6_6 = Mem0[ss:bp - 0x04 + 0x00:word16] - ax;
+	Mem7[ss:bp - 0x04 + 0x00:word16] = v6_6;
+	Mem11[ss:bp - 0x02 + 0x00:word16] = Mem7[ss:bp - 0x02 + 0x00:word16] - (v6_6 <u 0x00);
+	word16 di_32;
+	selector ds_33;
+	fn0800_ACB3(bp, ds, Mem11[ds:0x29E3:word16], Mem11[ds:0x29E5:word16], 0x00, out di_32, out ds_33);
+	Mem39[ss:fp - 0x02 + 0x00:word16] = Mem11[ss:bp - 0x02 + 0x00:word16];
+	Mem42[ss:fp - 0x04 + 0x00:word16] = Mem39[ss:bp - 0x04 + 0x00:word16];
+	Mem45[ss:fp - 0x06 + 0x00:word16] = Mem42[ss:bp - 0x02 + 0x00:word16];
+	Mem48[ss:fp - 0x08 + 0x00:word16] = Mem45[ss:bp - 0x04 + 0x00:word16];
+	selector ds_53 = fn0800_75EA(bp, ds_33, wArg00, wArg02, wArg04, wArg06);
+	Mem60[ss:fp - 0x04 + 0x00:word16] = 0x00;
+	Mem63[ss:fp - 0x06 + 0x00:word16] = 0x00;
+	Mem65[ss:fp - 0x08 + 0x00:word16] = 0x20;
+	Mem68[ss:fp - 0x0A + 0x00:word16] = Mem65[ds_53:10721:word16];
+	Mem71[ss:fp - 0x0C + 0x00:word16] = Mem68[ds_53:10719:word16];
+	word16 di_73;
+	selector ds_74;
+	fn0800_ACB3(bp, ds_53, wArg00, wArg02, wArg08, out di_73, out ds_74);
+	Mem80[ss:fp - 0x04 + 0x00:word16] = Mem71[ds_74:10721:word16];
+	Mem83[ss:fp - 0x06 + 0x00:word16] = Mem80[ds_74:10719:word16];
+	Mem86[ss:fp - 0x08 + 0x00:word16] = Mem83[ss:bp - 0x30 + 0x00:word16];
+	selector ds_88;
+	fn0800_40BF(bp, ds_74, bArg00, wArg02, wArg04, out ds_88);
+	Mem94[ss:fp - 0x04 + 0x00:word16] = Mem86[ds_88:10721:word16];
+	Mem97[ss:fp - 0x06 + 0x00:word16] = Mem94[ds_88:10719:word16];
+	Mem100[ss:fp - 0x08 + 0x00:word16] = Mem97[ss:bp - 0x32 + 0x00:word16];
+	selector ds_101;
+	fn0800_40BF(bp, ds_88, bArg00, wArg02, wArg04, out ds_101);
+	Mem107[ss:fp - 0x04 + 0x00:word16] = Mem100[ds_101:10721:word16];
+	Mem110[ss:fp - 0x06 + 0x00:word16] = Mem107[ds_101:10719:word16];
+	Mem113[ss:fp - 0x08 + 0x00:word16] = Mem110[ss:bp - 0x2E + 0x00:word16];
+	selector ds_114;
+	fn0800_40BF(bp, ds_101, bArg00, wArg02, wArg04, out ds_114);
+	Mem120[ss:fp - 0x04 + 0x00:word16] = Mem113[ds_114:10721:word16];
+	Mem123[ss:fp - 0x06 + 0x00:word16] = Mem120[ds_114:10719:word16];
+	Mem126[ss:fp - 0x08 + 0x00:word16] = Mem123[ss:bp - 44 + 0x00:word16];
+	selector ds_127;
+	fn0800_40BF(bp, ds_114, bArg00, wArg02, wArg04, out ds_127);
+	Mem133[ss:fp - 0x04 + 0x00:word16] = Mem126[ds_127:10721:word16];
+	Mem136[ss:fp - 0x06 + 0x00:word16] = Mem133[ds_127:10719:word16];
+	Mem139[ss:fp - 0x08 + 0x00:word16] = Mem136[ss:bp - 0x1C + 0x00:word16];
+	selector ds_140;
+	fn0800_40BF(bp, ds_127, bArg00, wArg02, wArg04, out ds_140);
+	word16 dx_147;
+	Mem149[ss:bp - 0x22 + 0x00:word16] = fn0800_8CAA(Mem139[ds_140:0x2A03:word16], 0x04, Mem139[ds_140:0x2A05:word16], 0x00, out dx_147);
+	if ((Mem149[ds_140:0x2A03:word16] & 0x0F) != 0x00)
+		Mem225[ss:bp - 0x22 + 0x00:word16] = Mem149[ss:bp - 0x22 + 0x00:word16] + 0x01;
+	Mem159[ss:fp - 0x04 + 0x00:word16] = Mem149[ds_140:10721:word16];
+	Mem162[ss:fp - 0x06 + 0x00:word16] = Mem159[ds_140:10719:word16];
+	Mem165[ss:fp - 0x08 + 0x00:word16] = Mem162[ss:bp - 0x22 + 0x00:word16];
+	selector ds_166;
+	fn0800_40BF(bp, ds_140, bArg00, wArg02, wArg04, out ds_166);
+	Mem172[ss:fp - 0x04 + 0x00:word16] = Mem165[ds_166:10721:word16];
+	Mem175[ss:fp - 0x06 + 0x00:word16] = Mem172[ds_166:10719:word16];
+	word16 dx_179;
+	Mem185[ss:fp - 0x08 + 0x00:word16] = Mem175[ss:bp - 0x22 + 0x00:word16] + fn0800_8CAA(Mem175[ss:(bp - 0x1C) + 0x00:word16], 0x04, Mem175[ss:(bp - 0x1A) + 0x00:word16], 0x00, out dx_179);
+	selector ds_186;
+	fn0800_40BF(bp, ds_166, bArg00, wArg02, wArg04, out ds_186);
+	word16 dx_191 = Mem185[ss:bp - 0x04 + 0x00:word16] - Mem185[ds_186:0x2A03:word16];
+	word16 dx_195 = dx_191 + Mem185[ds_186:0x4E88:word16];
+	ui32 ax_dx_200 = SEQ(Mem185[ss:bp - 0x02 + 0x00:word16] - Mem185[ds_186:0x2A05:word16] - (dx_191 <u 0x00) + Mem185[ds_186:20106:word16] + (dx_195 <u 0x00), dx_195 + 0x80);
+	Mem205[ss:bp - 0x06 + 0x00:word16] = SLICE(ax_dx_200 + 0x80, word16, 16);
+	Mem206[ss:bp - 0x08 + 0x00:word16] = (word16) (ax_dx_200 + 0x80);
+	if (Mem206[ds_186:10781:word16] == 0x00)
+	{
+		fn0800_639D(bp, ds_186);
+		return;
+	}
+	else
+	{
+		word16 v44_213 = Mem206[ss:bp - 0x08 + 0x00:word16] + 0x0200;
+		Mem214[ss:bp - 0x08 + 0x00:word16] = v44_213;
+		Mem218[ss:bp - 0x06 + 0x00:word16] = Mem214[ss:bp - 0x06 + 0x00:word16] + (v44_213 <u 0x00);
+		fn0800_63A8(bp, ds_186);
+		return;
+	}
+}
+
+// 0800:639D: void fn0800_639D(Register word16 bp, Register selector ds)
+void fn0800_639D(word16 bp, selector ds)
+{
+	if (Z)
+	{
+		fn0800_63A8(bp, ds);
+		return;
+	}
+	else
+	{
+		word16 v6_8 = Mem0[ss:bp - 0x08 + 0x00:word16] + 0x0180;
+		Mem9[ss:bp - 0x08 + 0x00:word16] = v6_8;
+		Mem13[ss:bp - 0x06 + 0x00:word16] = Mem9[ss:bp - 0x06 + 0x00:word16] + (v6_8 <u 0x00);
+		fn0800_63A8(bp, ds);
+		return;
+	}
+}
+
+// 0800:63A8: void fn0800_63A8(Register word16 bp, Register selector ds)
+void fn0800_63A8(word16 bp, selector ds)
+{
+	word16 dx_16 = Mem0[ss:bp - 0x02 + 0x00:word16] + (Mem0[ss:(bp - 0x04) + 0x00:word16] + (Mem0[ss:(bp - 0x26) + 0x00:word16] << 0x04) <u 0x00);
+	word16 di_30;
+	selector ds_31;
+	fn0800_ACB3(bp, ds, Mem0[ds:0x29E3:word16], Mem0[ds:0x29E5:word16], 0x00, out di_30, out ds_31);
+	Mem36[ss:fp - 0x02 + 0x00:word16] = 0x02;
+	Mem41[ss:fp - 0x04 + 0x00:word16] = 0x00;
+	Mem43[ss:fp - 0x06 + 0x00:word16] = 0x00;
+	Mem46[ss:fp - 0x08 + 0x00:word16] = Mem43[ds_31:10721:word16];
+	Mem49[ss:fp - 0x0A + 0x00:word16] = Mem46[ds_31:10719:word16];
+	word16 di_53;
+	selector ds_54;
+	fn0800_ACB3(bp, ds_31, wArg00, wArg02, wArg08, out di_53, out ds_54);
+	Mem60[ss:fp - 0x02 + 0x00:word16] = Mem49[ds_54:10721:word16];
+	Mem63[ss:fp - 0x04 + 0x00:word16] = Mem60[ds_54:10719:word16];
+	byte dl_65;
+	word16 si_66;
+	word16 ax_67 = fn0800_AD2F(ds_54, ptrArg00, wArg02, out dl_65, out si_66);
+	Mem69[ss:bp - 0x1E + 0x00:word16] = dx_16;
+	Mem70[ss:bp - 0x20 + 0x00:word16] = ax_67;
+	word16 bx_76 = Mem70[ds_54:0x2A07:word16] - Mem70[ss:(bp - 0x04) + 0x00:word16];
+	word16 bx_80 = bx_76 - (Mem70[ss:(bp - 0x26) + 0x00:word16] << 0x04);
+	Mem86[ss:fp - 0x02 + 0x00:word16] = Mem70[ds_54:0x2A09:word16] - Mem70[ss:(bp - 0x02) + 0x00:word16] - (bx_76 <u 0x00) - (bx_80 <u 0x00);
+	Mem88[ss:fp - 0x04 + 0x00:word16] = bx_80;
+	Mem91[ss:fp - 0x06 + 0x00:word16] = Mem88[ds_54:10721:word16];
+	Mem94[ss:fp - 0x08 + 0x00:word16] = Mem91[ds_54:10719:word16];
+	Mem97[ss:fp - 0x0A + 0x00:word16] = Mem94[ds_54:0x29E5:word16];
+	Mem100[ss:fp - 0x0C + 0x00:word16] = Mem97[ds_54:0x29E3:word16];
+	selector ds_102;
+	word16 bp_103 = fn0800_3B0A(bp, ds_54, wArg08, wArg0A, out ds_102);
+	Mem109[ss:bp_103 - 0x22 + 0x00:word16] = Mem100[ss:bp_103 - 0x20 + 0x00:word16] & 0x01FF;
+	word16 dx_113;
+	fn0800_8CAA(Mem109[ss:bp_103 - 0x20 + 0x00:word16], 0x09, Mem109[ss:bp_103 - 0x1E + 0x00:word16], 0x00, out dx_113);
+	Mem122[ss:fp - 0x02 + 0x00:word16] = 0x00;
+	Mem125[ss:fp - 0x04 + 0x00:word16] = 0x00;
+	Mem127[ss:fp - 0x06 + 0x00:word16] = 0x02;
+	Mem130[ss:fp - 0x08 + 0x00:word16] = Mem127[ds_102:10721:word16];
+	Mem133[ss:fp - 0x0A + 0x00:word16] = Mem130[ds_102:10719:word16];
+	word16 di_134;
+	selector ds_135;
+	fn0800_ACB3(bp_103, ds_102, wArg00, wArg02, wArg08, out di_134, out ds_135);
+	Mem141[ss:fp - 0x02 + 0x00:word16] = Mem133[ds_135:10721:word16];
+	Mem144[ss:fp - 0x04 + 0x00:word16] = Mem141[ds_135:10719:word16];
+	Mem147[ss:fp - 0x06 + 0x00:word16] = Mem144[ss:bp_103 - 0x22 + 0x00:word16];
+	selector ds_150;
+	word16 di_151 = fn0800_40BF(bp_103, ds_135, bArg00, wArg02, wArg04, out ds_150);
+	Mem156[ss:fp - 0x02 + 0x00:word16] = Mem147[ds_150:10721:word16];
+	Mem159[ss:fp - 0x04 + 0x00:word16] = Mem156[ds_150:10719:word16];
+	Mem161[ss:fp - 0x06 + 0x00:word16] = di_151;
+	selector ds_162;
+	fn0800_40BF(bp_103, ds_150, bArg00, wArg02, wArg04, out ds_162);
+	fn0800_647C(bp_103, ds_162);
+	return;
+}
+
+// 0800:647C: void fn0800_647C(Register word16 bp, Register selector ds)
+void fn0800_647C(word16 bp, selector ds)
+{
+	if (Mem0[ds:10781:word16] != 0x00)
+	{
+		word16 di_362;
+		selector ds_363;
+		fn0800_ACB3(bp, ds, Mem0[ds:10719:word16], Mem0[ds:10721:word16], 0x00, out di_362, out ds_363);
+		Mem369[ss:fp - 0x02 + 0x00:word16] = Mem0[ds_363:10721:word16];
+		Mem372[ss:fp - 0x04 + 0x00:word16] = Mem369[ds_363:10719:word16];
+		Mem375[ss:fp - 0x06 + 0x00:word16] = Mem372[ss:bp - 0x22 + 0x00:word16];
+		selector ds_376;
+		word16 di_377 = fn0800_40BF(bp, ds_363, bArg00, wArg02, wArg04, out ds_376);
+		Mem382[ss:fp - 0x02 + 0x00:word16] = Mem375[ds_376:10721:word16];
+		Mem385[ss:fp - 0x04 + 0x00:word16] = Mem382[ds_376:10719:word16];
+		Mem387[ss:fp - 0x06 + 0x00:word16] = di_377;
+		fn0800_40BF(bp, ds_376, bArg00, wArg02, wArg04, out ds);
+		wLoc02 = 0x00;
+	}
+	Mem22[ss:fp - 0x02 + 0x00:word16] = 0x00;
+	Mem26[ss:fp - 0x04 + 0x00:word16] = 0x00;
+	Mem28[ss:fp - 0x06 + 0x00:word16] = 0x18;
+	Mem31[ss:fp - 0x08 + 0x00:word16] = Mem28[ds:10721:word16];
+	Mem34[ss:fp - 0x0A + 0x00:word16] = Mem31[ds:10719:word16];
+	word16 di_39;
+	selector ds_40;
+	word16 ax_41 = fn0800_ACB3(bp, ds, wArg00, wArg02, wArg08, out di_39, out ds_40);
+	Mem45[ss:fp - 0x02 + 0x00:word16] = Mem34[ds_40:10721:word16];
+	Mem48[ss:fp - 0x04 + 0x00:word16] = Mem45[ds_40:10719:word16];
+	Mem61[ss:fp - 0x06 + 0x00:word16] = (DPB(ax_41, 0x00, 8) << 0x08) - 0x08;
+	selector ds_64;
+	fn0800_40BF(bp, ds_40, bArg00, wArg02, wArg04, out ds_64);
+	Mem71[ss:fp - 0x02 + 0x00:word16] = 0x00;
+	Mem74[ss:fp - 0x04 + 0x00:word16] = 0x00;
+	Mem76[ss:fp - 0x06 + 0x00:word16] = 0x1C;
+	Mem79[ss:fp - 0x08 + 0x00:word16] = Mem76[ds_64:10721:word16];
+	Mem82[ss:fp - 0x0A + 0x00:word16] = Mem79[ds_64:10719:word16];
+	word16 di_83;
+	selector ds_84;
+	fn0800_ACB3(bp, ds_64, wArg00, wArg02, wArg08, out di_83, out ds_84);
+	Mem90[ss:fp - 0x02 + 0x00:word16] = Mem82[ds_84:10721:word16];
+	Mem93[ss:fp - 0x04 + 0x00:word16] = Mem90[ds_84:10719:word16];
+	Mem96[ss:fp - 0x06 + 0x00:word16] = Mem93[ss:bp - 0x28 + 0x00:word16];
+	selector ds_97;
+	fn0800_40BF(bp, ds_84, bArg00, wArg02, wArg04, out ds_97);
+	Mem103[ss:fp - 0x02 + 0x00:word16] = Mem96[ds_97:10721:word16];
+	Mem106[ss:fp - 0x04 + 0x00:word16] = Mem103[ds_97:10719:word16];
+	Mem109[ss:fp - 0x06 + 0x00:word16] = Mem106[ss:bp - 0x2A + 0x00:word16];
+	selector ds_110;
+	fn0800_40BF(bp, ds_97, bArg00, wArg02, wArg04, out ds_110);
+	Mem117[ss:fp - 0x02 + 0x00:word16] = 0x00;
+	Mem120[ss:fp - 0x04 + 0x00:word16] = 0x00;
+	Mem122[ss:fp - 0x06 + 0x00:word16] = 0x0A;
+	Mem125[ss:fp - 0x08 + 0x00:word16] = Mem122[ds_110:10721:word16];
+	Mem128[ss:fp - 0x0A + 0x00:word16] = Mem125[ds_110:10719:word16];
+	word16 di_129;
+	selector ds_130;
+	fn0800_ACB3(bp, ds_110, wArg00, wArg02, wArg08, out di_129, out ds_130);
+	ui32 ax_cx_146 = SEQ(Mem128[ss:bp - 0x1E + 0x00:word16], Mem128[ss:bp - 0x20 + 0x00:word16] - 0x20);
+	word16 bx_138 = Mem128[ss:bp - 0x04 + 0x00:word16] + (Mem128[ss:(bp - 0x28) + 0x00:word16] << 0x04);
+	word16 cx_151 = (word16) (ax_cx_146 - 0x20) + Mem128[ss:(bp - 0x08) + 0x00:word16];
+	word16 dx_141 = Mem128[ss:bp - 0x02 + 0x00:word16] + (bx_138 <u 0x00);
+	word16 ax_155 = SLICE(ax_cx_146 - 0x20, word16, 16) + Mem128[ss:(bp - 0x06) + 0x00:word16] + (cx_151 <u 0x00);
+	if (dx_141 >=u ax_155 && (dx_141 >u ax_155 || bx_138 >u cx_151))
+	{
+		ui32 ax_cx_321 = SEQ(Mem128[ss:bp - 0x1E + 0x00:word16], Mem128[ss:bp - 0x20 + 0x00:word16] - 0x20);
+		word16 bx_314 = Mem128[ss:bp - 0x04 + 0x00:word16] + (Mem128[ss:(bp - 0x28) + 0x00:word16] << 0x04);
+		word16 cx_326 = (word16) (ax_cx_321 - 0x20) + Mem128[ss:(bp - 0x08) + 0x00:word16];
+		ui32 dx_bx_334 = SEQ(Mem128[ss:bp - 0x02 + 0x00:word16] + (bx_314 <u 0x00), bx_314 - cx_326) - SEQ((SLICE(ax_cx_321 - 0x20, word16, 16) + Mem128[ss:(bp - 0x06) + 0x00:word16]) + (cx_326 <u 0x00), cx_326);
+		word16 v42_337 = Mem128[ss:bp - 0x08 + 0x00:word16] + (word16) dx_bx_334;
+		Mem338[ss:bp - 0x08 + 0x00:word16] = v42_337;
+		Mem342[ss:bp - 0x06 + 0x00:word16] = Mem338[ss:bp - 0x06 + 0x00:word16] + SLICE(dx_bx_334, word16, 16) + (v42_337 <u 0x00);
+	}
+	word16 v44_174 = Mem128[ss:bp - 0x08 + 0x00:word16] + (0x10 - Mem128[ss:(bp - 0x08) + 0x00:word16] & 0x0F);
+	Mem175[ss:bp - 0x08 + 0x00:word16] = v44_174;
+	Mem179[ss:bp - 0x06 + 0x00:word16] = Mem175[ss:bp - 0x06 + 0x00:word16] + (v44_174 <u 0x00);
+	word16 dx_184;
+	word16 ax_185 = fn0800_8CAA(Mem179[ss:bp - 0x08 + 0x00:word16], 0x04, Mem179[ss:bp - 0x06 + 0x00:word16], wLoc02, out dx_184);
+	Mem186[ss:bp - 0x28 + 0x00:word16] = ax_185;
+	Mem189[ss:fp - 0x02 + 0x00:word16] = Mem186[ds_130:10721:word16];
+	Mem192[ss:fp - 0x04 + 0x00:word16] = Mem189[ds_130:10719:word16];
+	Mem194[ss:fp - 0x06 + 0x00:word16] = ax_185;
+	selector ds_195;
+	fn0800_40BF(bp, ds_130, bArg00, wArg02, wArg04, out ds_195);
+	if (Mem194[ss:bp - 0x2A + 0x00:word16] <u Mem194[ss:(bp - 0x28) + 0x00:word16])
+		Mem307[ss:bp - 0x2A + 0x00:word16] = Mem194[ss:bp - 0x28 + 0x00:word16];
+	Mem203[ss:fp - 0x02 + 0x00:word16] = Mem194[ds_195:10721:word16];
+	Mem206[ss:fp - 0x04 + 0x00:word16] = Mem203[ds_195:10719:word16];
+	Mem209[ss:fp - 0x06 + 0x00:word16] = Mem206[ss:bp - 0x2A + 0x00:word16];
+	selector ds_210;
+	fn0800_40BF(bp, ds_195, bArg00, wArg02, wArg04, out ds_210);
+	word16 ax_215 = Mem209[ss:bp - 0x04 + 0x00:word16] + Mem209[ds_210:0x4E88:word16];
+	ui32 dx_ax_220 = SEQ(Mem209[ss:bp - 0x02 + 0x00:word16] + Mem209[ds_210:20106:word16] + (ax_215 <u 0x00), ax_215 + 0x20);
+	word16 dx_227;
+	word16 ax_228 = fn0800_8CAA((word16) (dx_ax_220 + 0x20), 0x04, SLICE(dx_ax_220 + 0x20, word16, 16), wLoc02, out dx_227);
+	Mem229[ss:bp - 44 + 0x00:word16] = ax_228;
+	Mem232[ss:fp - 0x02 + 0x00:word16] = Mem229[ds_210:10721:word16];
+	Mem235[ss:fp - 0x04 + 0x00:word16] = Mem232[ds_210:10719:word16];
+	Mem237[ss:fp - 0x06 + 0x00:word16] = ax_228;
+	selector ds_238;
+	fn0800_40BF(bp, ds_210, bArg00, wArg02, wArg04, out ds_238);
+	Mem243[ss:bp - 0x2E + 0x00:word16] = Mem237[ss:bp - 0x1C + 0x00:word16] + 0x80;
+	if (Mem243[ds_238:10781:word16] != 0x00)
+		Mem299[ss:bp - 0x2E + 0x00:word16] = Mem243[ss:bp - 0x2E + 0x00:word16] + 0x0200;
+	else if (Mem243[ds_238:0x2A21:word16] == 0x01)
+		Mem304[ss:bp - 0x2E + 0x00:word16] = Mem243[ss:bp - 0x2E + 0x00:word16] + 0x0180;
+	Mem248[ss:fp - 0x02 + 0x00:word16] = Mem243[ds_238:10721:word16];
+	Mem251[ss:fp - 0x04 + 0x00:word16] = Mem248[ds_238:10719:word16];
+	Mem254[ss:fp - 0x06 + 0x00:word16] = Mem251[ss:bp - 0x2E + 0x00:word16];
+	selector ds_255;
+	fn0800_40BF(bp, ds_238, bArg00, wArg02, wArg04, out ds_255);
+	word16 bx_263 = Mem254[ds_255:0x2A07:word16] - Mem254[ss:(bp - 0x04) + 0x00:word16];
+	word16 bx_267 = bx_263 - (Mem254[ss:(bp - 0x26) + 0x00:word16] << 0x04);
+	if ((bx_267 | ((Mem254[ds_255:0x2A09:word16] - Mem254[ss:(bp - 0x02) + 0x00:word16]) - (bx_263 <u 0x00)) - (bx_267 <u 0x00)) == 0x00)
+		return;
+	else
+		return;
+}
+
+// 0800:669C: void fn0800_669C(Register word16 bp, Register selector ds)
+void fn0800_669C(word16 bp, selector ds)
+{
+	if (Mem0[ds:0x2A09:word16] <u 0x00 || Mem0[ds:0x2A09:word16] <=u 0x00 && Mem0[ds:0x2A07:word16] <=u ~0x0101)
+	{
+		word16 di_324 = 0x2206;
+		word16 si_323 = 17009;
+		word16 cx_325 = 0x04;
+		word16 dx_101 = 0x03;
+		if (false)
+			cx_325 = 0x03;
+		word16 ax_314 = 0x00;
+		byte Z_320 = cond(0x00);
+		byte C_321 = false;
+		if (cx_325 != 0x00)
+		{
+			byte SCZO_318 = cond(Mem0[ds:si_351 + 0x00:byte] - Mem0[ds:di_350 + 0x00:byte]);
+			Z_320 = SCZO_318;
+			C_321 = SCZO_318;
+			si_323 = si_351 + 0x01;
+			di_324 = di_350 + 0x01;
+			cx_325 = cx_325 - 0x01;
+			word16 di_350 = di_324;
+			word16 si_351 = si_323;
+			if (Mem0[ds:si_351 + 0x00:byte] != Mem0[ds:di_350 + 0x00:byte])
+				goto l0800_66D4;
+		}
+		if (!Z_320)
+		{
+			word16 ax_311 = 0x00 - C_321;
+			ax_314 = ax_311 - ~0x00 - (ax_311 <u 0x00);
+		}
+		word16 ax_104 = ax_314;
+		if (ax_314 != 0x00)
+		{
+			word16 di_231 = 17009;
+			word16 si_232 = 0x2206;
+			word16 cx_234 = 0x04;
+			dx_101 = ~0x00;
+			if (false)
+			{
+				cx_234 = 0x03;
+				dx_101 = 0x00;
+			}
+			word16 cx_248 = cx_234 >>u 0x01;
+			cx_255 = cx_248;
+			while (true)
+			{
+				word16 cx_255;
+				if (cx_255 == 0x00)
+					break;
+				Mem260[ds:di_231 + 0x00:word16] = Mem0[ds:si_232 + 0x00:word16];
+				si_232 = si_232 + 0x02;
+				di_231 = di_231 + 0x02;
+				cx_255 = cx_255 - 0x01;
+			}
+			word16 cx_265 = cx_255 * 0x02 + (cx_248 <u 0x00);
+			while (cx_265 != 0x00)
+			{
+				Mem273[ds:di_231 + 0x00:byte] = Mem0[ds:si_232 + 0x00:byte];
+				si_232 = si_232 + 0x01;
+				di_231 = di_231 + 0x01;
+				cx_265 = cx_265 - 0x01;
+			}
+			word16 cx_278 = dx_101;
+			while (cx_278 != 0x00)
+			{
+				Mem287[ds:di_231 + 0x00:byte] = 0x00;
+				di_231 = di_231 + 0x01;
+				cx_278 = cx_278 - 0x01;
+			}
+			fn0800_09A3(fp - 0x02, ds);
+			ax_104 = 17009;
+		}
+		Mem110[ss:fp - 0x0C + 0x00:word16] = Mem0[ds:10721:word16];
+		Mem114[ss:fp - 0x0E + 0x00:word16] = Mem110[ds:10719:word16];
+		Mem128[ss:fp - 0x10 + 0x00:word16] = 0x00;
+		Mem130[ss:fp - 0x12 + 0x00:word16] = (DPB(ax_104, 0x00, 8) << 0x08) + DPB(dx_101, 0x00, 8);
+		Mem132[ss:fp - 0x14 + 0x00:word16] = ds;
+		Mem135[ss:fp - 22 + 0x00:word16] = 0x2E77;
+		selector ds_141 = fn0800_4152(fp - 0x02, ds, wArg00, wArg02, wArg04, wArg08, wArg0A);
+		word16 bx_153 = Mem135[ds_141:0x2A07:word16];
+		ui32 dx_bx_159 = SEQ(Mem135[ds_141:0x2A09:word16] + (bx_153 <u 0x7700), bx_153 + 0x7740);
+		Mem164[ss:fp - 0x04 + 0x00:word16] = SLICE(dx_bx_159 + 0x40, word16, 16);
+		Mem165[ss:fp - 0x06 + 0x00:word16] = (word16) (dx_bx_159 + 0x40);
+		if (Mem165[ds_141:10781:word16] != 0x00)
+		{
+			word16 v25_211 = Mem165[ss:fp - 0x06 + 0x00:word16] + 0x0200;
+			Mem212[ss:fp - 0x06 + 0x00:word16] = v25_211;
+			Mem216[ss:fp - 0x04 + 0x00:word16] = Mem212[ss:fp - 0x04 + 0x00:word16] + (v25_211 <u 0x00);
+		}
+		else if (Mem165[ds_141:0x2A21:word16] == 0x01)
+		{
+			word16 v28_220 = Mem165[ss:fp - 0x06 + 0x00:word16] + 0x0180;
+			Mem221[ss:fp - 0x06 + 0x00:word16] = v28_220;
+			Mem225[ss:fp - 0x04 + 0x00:word16] = Mem221[ss:fp - 0x04 + 0x00:word16] + (v28_220 <u 0x00);
+		}
+		if (Mem165[ss:fp - 0x04 + 0x00:word16] <u 0x00 || Mem165[ss:(fp - 0x04) + 0x00:word16] <=u 0x00 && Mem165[ss:(fp - 0x06) + 0x00:word16] <=u ~0x0101)
+		{
+			Mem177[ss:fp - 0x0C + 0x00:word16] = Mem165[ds_141:0x2A09:word16];
+			Mem180[ss:fp - 0x0E + 0x00:word16] = Mem177[ds_141:0x2A07:word16];
+			Mem183[ss:fp - 0x10 + 0x00:word16] = Mem180[ds_141:0x2A09:word16];
+			Mem186[ss:fp - 0x12 + 0x00:word16] = Mem183[ds_141:0x2A07:word16];
+			fn0800_75EA(fp - 0x02, ds_141, wArg00, wArg02, wArg04, wArg06);
+			return;
+		}
+		else
+			return;
+	}
+	else
+		return;
+}
+
+// 0800:67BF: void fn0800_67BF(Register word16 bp, Register selector ds)
+void fn0800_67BF(word16 bp, selector ds)
+{
+	word16 bp_120 = fp - 0x02;
+	word16 ax_19 = (DPB(ax, 0x00, 8) << 0x08) + DPB(dx, 0x00, 8);
+	if (0x00 <u Mem0[ds:0x2A09:word16] || 0x00 == Mem0[ds:0x2A09:word16] && ax_19 <u Mem0[ds:0x2A07:word16])
+	{
+		selector ds_119;
+		word16 dx_116;
+		selector ds_77 = fn0800_4152(fp - 0x02, ds, 0x2E77, ds, ax_19, Mem0[ds:10719:word16], Mem0[ds:10721:word16]);
+		Mem82[ss:fp - 0x12 + 0x00:word16] = 0x01;
+		Mem87[ss:fp - 0x14 + 0x00:word16] = ~0x00;
+		Mem89[ss:fp - 22 + 0x00:word16] = ~0x11;
+		Mem92[ss:fp - 0x18 + 0x00:word16] = Mem89[ds_77:10721:word16];
+		Mem95[ss:fp - 0x1A + 0x00:word16] = Mem92[ds_77:10719:word16];
+		word16 di_99;
+		selector ds_100;
+		fn0800_ACB3(fp - 0x02, ds_77, wArg00, wArg02, wArg08, out di_99, out ds_100);
+		Mem106[ss:fp - 0x12 + 0x00:word16] = Mem95[ds_100:0x29E5:word16];
+		Mem109[ss:fp - 0x14 + 0x00:word16] = Mem106[ds_100:0x29E3:word16];
+		selector ds_110;
+		if (fn0800_3F0A(fp - 0x02, ds_100, wArg00, wArg02, out ds_110) != 0x601A)
+		{
+			Mem450[ss:fp - 0x12 + 0x00:word16] = Mem109[ds_110:10721:word16];
+			Mem453[ss:fp - 0x14 + 0x00:word16] = Mem450[ds_110:10719:word16];
+			Mem456[ss:fp - 22 + 0x00:word16] = Mem453[ds_110:0x2A09:word16];
+			Mem459[ss:fp - 0x18 + 0x00:word16] = Mem456[ds_110:0x2A07:word16];
+			word16 si_460;
+			selector ds_461;
+			fn0800_409C(fp - 0x02, ds_110, wArg02, wArg04, wArg06, out si_460, out ds_461);
+			Mem466[ss:fp - 0x12 + 0x00:word16] = 0x01;
+			Mem472[ss:fp - 0x14 + 0x00:word16] = 0x00;
+			Mem474[ss:fp - 22 + 0x00:word16] = 0x0E;
+			Mem477[ss:fp - 0x18 + 0x00:word16] = Mem474[ds_461:10721:word16];
+			Mem480[ss:fp - 0x1A + 0x00:word16] = Mem477[ds_461:10719:word16];
+			word16 di_481;
+			selector ds_482;
+			fn0800_ACB3(fp - 0x02, ds_461, wArg00, wArg02, wArg08, out di_481, out ds_482);
+			Mem488[ss:fp - 0x12 + 0x00:word16] = Mem480[ds_482:0x2A09:word16];
+			Mem491[ss:fp - 0x14 + 0x00:word16] = Mem488[ds_482:0x2A07:word16];
+			Mem494[ss:fp - 22 + 0x00:word16] = Mem491[ds_482:0x2A09:word16];
+			Mem497[ss:fp - 0x18 + 0x00:word16] = Mem494[ds_482:0x2A07:word16];
+			ds_119 = fn0800_75EA(fp - 0x02, ds_482, wArg00, wArg02, wArg04, wArg06);
+			word16 dx_503 = Mem497[ds_119:0x2A07:word16] - Mem497[ds_119:0x2A03:word16];
+			word16 dx_507 = dx_503 + Mem497[ds_119:0x4E88:word16];
+			ui32 ax_dx_512 = SEQ(Mem497[ds_119:0x2A09:word16] - Mem497[ds_119:0x2A05:word16] - (dx_503 <u 0x00) + Mem497[ds_119:20106:word16] + (dx_507 <u 0x00), dx_507 + 0x0E);
+			Mem518[ss:fp - 0x08 + 0x00:word16] = SLICE(ax_dx_512 + 0x0E, word16, 16);
+			dx_116 = (word16) (ax_dx_512 + 0x0E);
+			Mem519[ss:fp - 0x0A + 0x00:word16] = dx_116;
+		}
+		else
+		{
+			Mem522[ss:fp - 0x12 + 0x00:word16] = 0x01;
+			Mem528[ss:fp - 0x14 + 0x00:word16] = 0x00;
+			Mem530[ss:fp - 22 + 0x00:word16] = 0x02;
+			Mem533[ss:fp - 0x18 + 0x00:word16] = Mem530[ds_110:0x29E5:word16];
+			Mem536[ss:fp - 0x1A + 0x00:word16] = Mem533[ds_110:0x29E3:word16];
+			word16 di_537;
+			selector ds_538;
+			fn0800_ACB3(fp - 0x02, ds_110, wArg00, wArg02, wArg08, out di_537, out ds_538);
+			Mem546[ss:fp - 0x12 + 0x00:word16] = 0x00;
+			Mem548[ss:fp - 0x14 + 0x00:word16] = 0x10;
+			Mem551[ss:fp - 22 + 0x00:word16] = Mem548[ds_538:10721:word16];
+			Mem554[ss:fp - 0x18 + 0x00:word16] = Mem551[ds_538:10719:word16];
+			Mem557[ss:fp - 0x1A + 0x00:word16] = Mem554[ds_538:0x29E5:word16];
+			Mem560[ss:fp - 0x1C + 0x00:word16] = Mem557[ds_538:0x29E3:word16];
+			selector ds_562;
+			bp_120 = fn0800_3B0A(fp - 0x02, ds_538, wArg08, wArg0A, out ds_562);
+			Mem569[ss:fp - 0x12 + 0x00:word16] = 0x00;
+			Mem572[ss:fp - 0x14 + 0x00:word16] = 0x00;
+			Mem574[ss:fp - 22 + 0x00:word16] = 0x1A;
+			Mem577[ss:fp - 0x18 + 0x00:word16] = Mem574[ds_562:0x29E5:word16];
+			Mem580[ss:fp - 0x1A + 0x00:word16] = Mem577[ds_562:0x29E3:word16];
+			word16 di_581;
+			selector ds_582;
+			fn0800_ACB3(bp_120, ds_562, wArg00, wArg02, wArg08, out di_581, out ds_582);
+			Mem588[ss:fp - 0x12 + 0x00:word16] = Mem580[ds_582:10721:word16];
+			Mem591[ss:fp - 0x14 + 0x00:word16] = Mem588[ds_582:10719:word16];
+			Mem594[ss:fp - 22 + 0x00:word16] = Mem591[ds_582:0x29E5:word16];
+			Mem597[ss:fp - 0x18 + 0x00:word16] = Mem594[ds_582:0x29E3:word16];
+			word16 dx_598;
+			word16 si_599;
+			word16 di_600;
+			selector ds_601;
+			Mem606[ss:fp - 22 + 0x00:word16] = fn0800_3E27(bp_120, ds_582, wArg00, wArg02, out dx_598, out si_599, out di_600, out ds_601);
+			word16 si_607;
+			selector ds_608;
+			fn0800_401E(bp_120, ds_601, wArg00, wArg02, wArg04, out si_607, out ds_608);
+			ui32 ax_dx_614 = SEQ(Mem606[ds_608:0x2A09:word16], Mem606[ds_608:0x2A07:word16] - 0x1C);
+			Mem620[ss:fp - 0x12 + 0x00:word16] = SLICE(ax_dx_614 - 0x1C, word16, 16);
+			Mem622[ss:fp - 0x14 + 0x00:word16] = (word16) (ax_dx_614 - 0x1C);
+			word16 dx_624 = Mem622[ds_608:0x2A07:word16];
+			Mem632[ss:fp - 22 + 0x00:word16] = Mem622[ds_608:0x2A09:word16] - (dx_624 <u 0x1C);
+			Mem634[ss:fp - 0x18 + 0x00:word16] = dx_624 - 0x1C;
+			ds_119 = fn0800_75EA(bp_120, ds_608, wArg00, wArg02, wArg04, wArg06);
+			ui32 ax_dx_641 = SEQ(Mem634[ds_119:0x2A09:word16], Mem634[ds_119:0x2A07:word16] - 0x1C);
+			word16 dx_646 = (word16) (ax_dx_641 - 0x1C) - Mem634[ds_119:0x2A03:word16];
+			word16 dx_650 = dx_646 + Mem634[ds_119:0x4E88:word16];
+			Mem660[ss:bp_120 - 0x06 + 0x00:word16] = SLICE(ax_dx_641 - 0x1C, word16, 16) - Mem634[ds_119:0x2A05:word16] - (dx_646 <u 0x00) + Mem634[ds_119:20106:word16] + (dx_650 <u 0x00) + (dx_650 <u 0x0E);
+			Mem661[ss:bp_120 - 0x08 + 0x00:word16] = dx_650 + 0x0E;
+			dx_116 = dx_650 + 0x0E;
+		}
+		Mem124[ss:fp - 0x14 + 0x00:word16] = Mem109[ds_119:10721:word16];
+		Mem127[ss:fp - 22 + 0x00:word16] = Mem124[ds_119:10719:word16];
+		byte dl_129;
+		word16 si_130;
+		word16 ax_131 = fn0800_AD2F(ds_119, ptrArg00, wArg02, out dl_129, out si_130);
+		if ((ax_131 & 0x01) != 0x00)
+		{
+			Mem427[ss:fp - 0x14 + 0x00:word16] = Mem127[ds_119:10721:word16];
+			Mem430[ss:fp - 22 + 0x00:word16] = Mem427[ds_119:10719:word16];
+			Mem434[ss:fp - 0x18 + 0x00:word16] = DPB(ax_131 & 0x01, 0x90, 0);
+			word16 di_437;
+			fn0800_4047(bp_120, ds_119, bArg00, ptrArg02, wArg04, out di_437, out ds_119);
+			word16 v50_441 = Mem434[ss:bp_120 - 0x08 + 0x00:word16] + 0x01;
+			Mem442[ss:bp_120 - 0x08 + 0x00:word16] = v50_441;
+			Mem446[ss:bp_120 - 0x06 + 0x00:word16] = Mem442[ss:bp_120 - 0x06 + 0x00:word16] + (v50_441 <u 0x00);
+		}
+		Mem143[ss:fp - 0x14 + 0x00:word16] = Mem127[ds_119:10721:word16];
+		Mem146[ss:fp - 22 + 0x00:word16] = Mem143[ds_119:10719:word16];
+		Mem151[ss:fp - 0x18 + 0x00:word16] = 0x00;
+		Mem153[ss:fp - 0x1A + 0x00:word16] = 0x00;
+		word16 si_156;
+		selector ds_157;
+		fn0800_409C(bp_120, ds_119, wArg02, wArg04, wArg06, out si_156, out ds_157);
+		Mem163[ss:fp - 0x14 + 0x00:word16] = Mem153[ds_157:10721:word16];
+		Mem166[ss:fp - 22 + 0x00:word16] = Mem163[ds_157:10719:word16];
+		byte dl_167;
+		word16 si_168;
+		ui32 dx_ax_172 = SEQ(dx_116, fn0800_AD2F(ds_157, ptrArg00, wArg02, out dl_167, out si_168) + ~0x1F);
+		Mem177[ds_157:0x2A05:word16] = SLICE(dx_ax_172 + 0x00FFFFE0, word16, 16);
+		Mem178[ds_157:0x2A03:word16] = (word16) (dx_ax_172 + 0x00FFFFE0);
+		Mem183[ss:fp - 0x14 + 0x00:word16] = 0x00;
+		Mem186[ss:fp - 22 + 0x00:word16] = 0x00;
+		Mem188[ss:fp - 0x18 + 0x00:word16] = 0x02;
+		Mem191[ss:fp - 0x1A + 0x00:word16] = Mem188[ds_157:10721:word16];
+		Mem194[ss:fp - 0x1C + 0x00:word16] = Mem191[ds_157:10719:word16];
+		word16 di_195;
+		selector ds_196;
+		word16 ax_197 = fn0800_ACB3(bp_120, ds_157, wArg00, wArg02, wArg08, out di_195, out ds_196);
+		Mem202[ss:fp - 0x14 + 0x00:word16] = Mem194[ds_196:10721:word16];
+		Mem205[ss:fp - 22 + 0x00:word16] = Mem202[ds_196:10719:word16];
+		word16 di_206;
+		selector ds_207;
+		word16 dx_208 = fn0800_3F58(bp_120, ds_196, wArg00, wArg02, out di_206, out ds_207);
+		word16 v60_210 = Mem205[ss:bp_120 - 0x08 + 0x00:word16] - ax_197;
+		Mem211[ss:bp_120 - 0x08 + 0x00:word16] = v60_210;
+		Mem215[ss:bp_120 - 0x06 + 0x00:word16] = Mem211[ss:bp_120 - 0x06 + 0x00:word16] - dx_208 - (v60_210 <u 0x00);
+		Mem219[ss:fp - 0x14 + 0x00:word16] = Mem215[ds_207:10721:word16];
+		Mem222[ss:fp - 22 + 0x00:word16] = Mem219[ds_207:10719:word16];
+		Mem225[ss:fp - 0x18 + 0x00:word16] = Mem222[ds_207:0x2A05:word16];
+		Mem228[ss:fp - 0x1A + 0x00:word16] = Mem225[ds_207:0x2A03:word16];
+		word16 si_229;
+		selector ds_230;
+		fn0800_409C(bp_120, ds_207, wArg02, wArg04, wArg06, out si_229, out ds_230);
+		Mem238[ss:fp - 0x14 + 0x00:word16] = 0x00;
+		Mem240[ss:fp - 22 + 0x00:word16] = 0x00;
+		Mem242[ss:fp - 0x18 + 0x00:word16] = 0x00;
+		Mem245[ss:fp - 0x1A + 0x00:word16] = Mem242[ds_230:0x29E5:word16];
+		Mem248[ss:fp - 0x1C + 0x00:word16] = Mem245[ds_230:0x29E3:word16];
+		word16 di_249;
+		selector ds_250;
+		fn0800_ACB3(bp_120, ds_230, wArg00, wArg02, wArg08, out di_249, out ds_250);
+		Mem256[ss:fp - 0x14 + 0x00:word16] = Mem248[ds_250:0x29E5:word16];
+		Mem259[ss:fp - 22 + 0x00:word16] = Mem256[ds_250:0x29E3:word16];
+		word16 dx_260;
+		word16 si_261;
+		word16 di_262;
+		selector ds_263;
+		word16 ax_264 = fn0800_3E27(bp_120, ds_250, wArg00, wArg02, out dx_260, out si_261, out di_262, out ds_263);
+		if (ax_264 == 0x601A)
+		{
+			Mem327[ss:fp - 0x14 + 0x00:word16] = Mem259[ds_263:0x29E5:word16];
+			Mem330[ss:fp - 22 + 0x00:word16] = Mem327[ds_263:0x29E3:word16];
+			selector ds_331;
+			word16 dx_332 = fn0800_3E5D(bp_120, ds_263, wArg00, wArg02, out ds_331);
+			Mem336[ss:fp - 0x14 + 0x00:word16] = ax_264;
+			Mem338[ss:fp - 22 + 0x00:word16] = dx_332;
+			Mem341[ss:fp - 0x18 + 0x00:word16] = Mem338[ds_331:0x29E5:word16];
+			Mem344[ss:fp - 0x1A + 0x00:word16] = Mem341[ds_331:0x29E3:word16];
+			selector ds_345;
+			ui32 bx_cx_356 = SEQ(Mem344[ss:fp - 22 + 0x00:word16], Mem344[ss:fp - 0x14 + 0x00:word16] + ax_264) + SEQ(fn0800_3E5D(bp_120, ds_331, wArg00, wArg02, out ds_345), ax_264);
+			Mem360[ss:bp_120 - 0x02 + 0x00:word16] = SLICE(bx_cx_356, word16, 16);
+			Mem361[ss:bp_120 - 0x04 + 0x00:word16] = (word16) bx_cx_356;
+			Mem364[ss:fp - 0x14 + 0x00:word16] = Mem361[ds_345:0x29E5:word16];
+			Mem367[ss:fp - 22 + 0x00:word16] = Mem364[ds_345:0x29E3:word16];
+			Mem371[ss:bp_120 - 0x0A + 0x00:word16] = fn0800_3E5D(bp_120, ds_345, wArg00, wArg02, out ds_263);
+			Mem372[ss:bp_120 - 0x0C + 0x00:word16] = ax_264;
+			word16 dx_375 = Mem372[ss:bp_120 - 0x04 + 0x00:word16] + Mem372[ss:(bp_120 - 0x0C) + 0x00:word16];
+			word16 cx_385 = Mem372[ds_263:0x2A03:word16] + Mem372[ss:(bp_120 - 0x08) + 0x00:word16];
+			word16 ax_380 = Mem372[ss:bp_120 - 0x02 + 0x00:word16] + Mem372[ss:(bp_120 - 0x0A) + 0x00:word16] + (dx_375 <u 0x00);
+			word16 bx_389 = Mem372[ds_263:0x2A05:word16] + Mem372[ss:(bp_120 - 0x06) + 0x00:word16] + (cx_385 <u 0x00);
+			if (ax_380 >=u bx_389 && (ax_380 >u bx_389 || dx_375 >u cx_385))
+			{
+				word16 dx_399 = Mem372[ss:bp_120 - 0x04 + 0x00:word16] + Mem372[ss:(bp_120 - 0x0C) + 0x00:word16];
+				word16 cx_405 = Mem372[ds_263:0x2A03:word16] + Mem372[ss:(bp_120 - 0x08) + 0x00:word16];
+				ui32 ax_dx_413 = SEQ(Mem372[ss:bp_120 - 0x02 + 0x00:word16] + Mem372[ss:(bp_120 - 0x0A) + 0x00:word16] + (dx_399 <u 0x00), dx_399 - cx_405) - SEQ((Mem372[ds_263:0x2A05:word16] + Mem372[ss:(bp_120 - 0x06) + 0x00:word16]) + (cx_405 <u 0x00), cx_405);
+				word16 v79_416 = Mem372[ss:bp_120 - 0x08 + 0x00:word16] + (word16) ax_dx_413;
+				Mem417[ss:bp_120 - 0x08 + 0x00:word16] = v79_416;
+				Mem421[ss:bp_120 - 0x06 + 0x00:word16] = Mem417[ss:bp_120 - 0x06 + 0x00:word16] + SLICE(ax_dx_413, word16, 16) + (v79_416 <u 0x00);
+			}
+		}
+		Mem283[ss:fp - 0x14 + 0x00:word16] = 0x00;
+		Mem286[ss:fp - 22 + 0x00:word16] = 0x00;
+		Mem288[ss:fp - 0x18 + 0x00:word16] = 0x0A;
+		Mem291[ss:fp - 0x1A + 0x00:word16] = Mem288[ds_263:10721:word16];
+		Mem294[ss:fp - 0x1C + 0x00:word16] = Mem291[ds_263:10719:word16];
+		word16 di_295;
+		selector ds_296;
+		fn0800_ACB3(bp_120, ds_263, wArg00, wArg02, wArg08, out di_295, out ds_296);
+		Mem302[ss:fp - 0x14 + 0x00:word16] = Mem294[ds_296:10721:word16];
+		Mem305[ss:fp - 22 + 0x00:word16] = Mem302[ds_296:10719:word16];
+		Mem308[ss:fp - 0x18 + 0x00:word16] = Mem305[ss:bp_120 - 0x06 + 0x00:word16];
+		Mem311[ss:fp - 0x1A + 0x00:word16] = Mem308[ss:bp_120 - 0x08 + 0x00:word16];
+		word16 si_312;
+		selector ds_313;
+		fn0800_409C(bp_120, ds_296, wArg02, wArg04, wArg06, out si_312, out ds_313);
+		return;
+	}
+	else
+	{
+		fn0800_67EE(wLoc04);
+		return;
+	}
+}
+
+// 0800:67EE: void fn0800_67EE(Stack word16 wArg00)
+void fn0800_67EE(word16 wArg00)
+{
+	return;
+}
+
+// 0800:6AD4: Register selector fn0800_6AD4(Register word16 bp, Register selector ds)
 selector fn0800_6AD4(word16 bp, selector ds)
 {
 	word16 ax_22 = (DPB(ax, 0x00, 8) << 0x08) + DPB(dx, 0x00, 8);
@@ -7944,181 +10911,603 @@ selector fn0800_6AD4(word16 bp, selector ds)
 			Mem87[ss:fp - 0x20 + 0x00:word16] = Mem84[ds_61:10719:word16];
 			Mem93[ss:fp - 0x22 + 0x00:word16] = 0x00;
 			Mem95[ss:fp - 0x24 + 0x00:word16] = 1011;
-			word16 ax_106 = 0x00;
-			selector ds_105 = fn0800_409C(fp - 0x02, ds_61, wArg02, wArg04, wArg06);
+			word16 si_99;
+			selector ds_100;
+			fn0800_409C(fp - 0x02, ds_61, wArg02, wArg04, wArg06, out si_99, out ds_100);
+			word16 ax_108 = 0x00;
 			do
 			{
-				Mem110[ss:fp - 0x1E + 0x00:word16] = Mem95[ds_105:0x29E5:word16];
-				Mem113[ss:fp - 0x20 + 0x00:word16] = Mem110[ds_105:0x29E3:word16];
-				selector ds_115;
-				word16 dx_116 = fn0800_3E5D(fp - 0x02, ds_105, wArg00, wArg02, out ds_115);
-				Mem119[ss:fp - 0x08 + 0x00:word16] = dx_116;
-				Mem120[ss:fp - 0x0A + 0x00:word16] = ax_106;
-				Mem121[ss:fp - 0x04 + 0x00:word16] = dx_116;
-				Mem122[ss:fp - 0x06 + 0x00:word16] = ax_106;
-				Mem125[ss:fp - 0x1E + 0x00:word16] = Mem122[ds_115:10721:word16];
-				Mem128[ss:fp - 0x20 + 0x00:word16] = Mem125[ds_115:10719:word16];
-				Mem131[ss:fp - 0x22 + 0x00:word16] = Mem128[ss:fp - 0x04 + 0x00:word16];
-				Mem133[ss:fp - 0x24 + 0x00:word16] = ax_106;
-				ds_105 = fn0800_409C(fp - 0x02, ds_115, wArg02, wArg04, wArg06);
+				Mem112[ss:fp - 0x1E + 0x00:word16] = Mem95[ds_100:0x29E5:word16];
+				Mem115[ss:fp - 0x20 + 0x00:word16] = Mem112[ds_100:0x29E3:word16];
+				selector ds_117;
+				word16 dx_118 = fn0800_3E5D(fp - 0x02, ds_100, wArg00, wArg02, out ds_117);
+				Mem121[ss:fp - 0x08 + 0x00:word16] = dx_118;
+				Mem122[ss:fp - 0x0A + 0x00:word16] = ax_108;
+				Mem123[ss:fp - 0x04 + 0x00:word16] = dx_118;
+				Mem124[ss:fp - 0x06 + 0x00:word16] = ax_108;
+				Mem127[ss:fp - 0x1E + 0x00:word16] = Mem124[ds_117:10721:word16];
+				Mem130[ss:fp - 0x20 + 0x00:word16] = Mem127[ds_117:10719:word16];
+				Mem133[ss:fp - 0x22 + 0x00:word16] = Mem130[ss:fp - 0x04 + 0x00:word16];
+				Mem135[ss:fp - 0x24 + 0x00:word16] = ax_108;
+				word16 si_136;
+				fn0800_409C(fp - 0x02, ds_117, wArg02, wArg04, wArg06, out si_136, out ds_100);
 				while (true)
 				{
-					word16 ax_139 = Mem133[ss:fp - 0x0A + 0x00:word16];
-					word16 dx_140 = Mem133[ss:fp - 0x08 + 0x00:word16];
-					word16 v27_141 = Mem133[ss:fp - 0x0A + 0x00:word16] - 0x01;
-					Mem142[ss:fp - 0x0A + 0x00:word16] = v27_141;
-					Mem146[ss:fp - 0x08 + 0x00:word16] = Mem142[ss:fp - 0x08 + 0x00:word16] - (v27_141 <u 0x00);
-					word16 ax_147 = ax_139 | dx_140;
-					if (ax_147 == 0x00)
+					word16 ax_145 = Mem135[ss:fp - 0x0A + 0x00:word16];
+					word16 dx_146 = Mem135[ss:fp - 0x08 + 0x00:word16];
+					word16 v27_147 = Mem135[ss:fp - 0x0A + 0x00:word16] - 0x01;
+					Mem148[ss:fp - 0x0A + 0x00:word16] = v27_147;
+					Mem152[ss:fp - 0x08 + 0x00:word16] = Mem148[ss:fp - 0x08 + 0x00:word16] - (v27_147 <u 0x00);
+					word16 ax_153 = ax_145 | dx_146;
+					if (ax_153 == 0x00)
 						break;
-					Mem467[ss:fp - 0x1E + 0x00:word16] = Mem146[ds_105:10721:word16];
-					Mem470[ss:fp - 0x20 + 0x00:word16] = Mem467[ds_105:10719:word16];
-					Mem473[ss:fp - 0x22 + 0x00:word16] = Mem470[ds_105:0x29E5:word16];
-					Mem476[ss:fp - 0x24 + 0x00:word16] = Mem473[ds_105:0x29E3:word16];
-					selector ds_477;
-					Mem482[ss:fp - 0x22 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_105, wArg00, wArg02, out ds_477);
-					Mem484[ss:fp - 0x24 + 0x00:word16] = ax_147;
-					ds_105 = fn0800_409C(fp - 0x02, ds_477, wArg02, wArg04, wArg06);
+					Mem488[ss:fp - 0x1E + 0x00:word16] = Mem152[ds_100:10721:word16];
+					Mem491[ss:fp - 0x20 + 0x00:word16] = Mem488[ds_100:10719:word16];
+					Mem494[ss:fp - 0x22 + 0x00:word16] = Mem491[ds_100:0x29E5:word16];
+					Mem497[ss:fp - 0x24 + 0x00:word16] = Mem494[ds_100:0x29E3:word16];
+					selector ds_498;
+					Mem503[ss:fp - 0x22 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_100, wArg00, wArg02, out ds_498);
+					Mem505[ss:fp - 0x24 + 0x00:word16] = ax_153;
+					word16 si_506;
+					fn0800_409C(fp - 0x02, ds_498, wArg02, wArg04, wArg06, out si_506, out ds_100);
 				}
-				ax_106 = Mem146[ss:fp - 0x06 + 0x00:word16] | Mem146[ss:(fp - 0x04) + 0x00:word16];
-			} while (ax_106 != 0x00);
-			Mem158[ss:fp - 0x1E + 0x00:word16] = Mem146[ds_105:10721:word16];
-			Mem161[ss:fp - 0x20 + 0x00:word16] = Mem158[ds_105:10719:word16];
-			Mem164[ss:fp - 0x22 + 0x00:word16] = Mem161[ds_105:0x29E5:word16];
-			Mem167[ss:fp - 0x24 + 0x00:word16] = Mem164[ds_105:0x29E3:word16];
-			selector ds_168;
-			ui32 dx_ax_172 = SEQ(fn0800_3E5D(fp - 0x02, ds_105, wArg00, wArg02, out ds_168), ax_106 + 0x01);
-			Mem179[ss:fp - 0x22 + 0x00:word16] = SLICE(dx_ax_172 + 0x01, word16, 16);
-			word16 ax_175 = (word16) (dx_ax_172 + 0x01);
-			Mem181[ss:fp - 0x24 + 0x00:word16] = ax_175;
-			selector ds_182 = fn0800_409C(fp - 0x02, ds_168, wArg02, wArg04, wArg06);
-			Mem187[ss:fp - 0x1E + 0x00:word16] = Mem181[ds_182:0x29E5:word16];
-			Mem190[ss:fp - 0x20 + 0x00:word16] = Mem187[ds_182:0x29E3:word16];
-			selector ds_191;
-			Mem195[ss:fp - 0x0C + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_182, wArg00, wArg02, out ds_191);
-			Mem196[ss:fp - 0x0E + 0x00:word16] = ax_175;
-			Mem199[ss:fp - 0x1E + 0x00:word16] = Mem196[ds_191:0x29E5:word16];
-			Mem202[ss:fp - 0x20 + 0x00:word16] = Mem199[ds_191:0x29E3:word16];
-			selector ds_203;
-			Mem206[ss:fp - 0x10 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_191, wArg00, wArg02, out ds_203);
-			Mem207[ss:fp - 0x12 + 0x00:word16] = ax_175;
-			word16 dx_210 = Mem207[ss:fp - 0x12 + 0x00:word16] - Mem207[ss:(fp - 0x0E) + 0x00:word16];
-			ui32 ax_dx_215 = SEQ(Mem207[ss:fp - 0x10 + 0x00:word16] - Mem207[ss:(fp - 0x0C) + 0x00:word16] - (dx_210 <u 0x00), dx_210 + 0x01);
-			Mem221[ss:fp - 0x14 + 0x00:word16] = SLICE(ax_dx_215 + 0x01, word16, 16);
-			Mem222[ss:fp - 22 + 0x00:word16] = (word16) (ax_dx_215 + 0x01);
-			Mem225[ss:fp - 0x1E + 0x00:word16] = Mem222[ds_203:10721:word16];
-			Mem228[ss:fp - 0x20 + 0x00:word16] = Mem225[ds_203:10719:word16];
-			Mem231[ss:fp - 0x22 + 0x00:word16] = Mem228[ss:fp - 0x0C + 0x00:word16];
-			Mem234[ss:fp - 0x24 + 0x00:word16] = Mem231[ss:fp - 0x0E + 0x00:word16];
-			selector ds_235 = fn0800_409C(fp - 0x02, ds_203, wArg02, wArg04, wArg06);
-			Mem239[ss:fp - 0x1E + 0x00:word16] = Mem234[ds_235:10721:word16];
-			Mem242[ss:fp - 0x20 + 0x00:word16] = Mem239[ds_235:10719:word16];
-			ui32 ax_dx_246 = SEQ(Mem242[ss:fp - 0x10 + 0x00:word16], Mem242[ss:fp - 0x12 + 0x00:word16] + 0x01);
-			word16 ax_249 = SLICE(ax_dx_246 + 0x01, word16, 16);
-			Mem253[ss:fp - 0x22 + 0x00:word16] = ax_249;
-			word16 dx_250 = (word16) (ax_dx_246 + 0x01);
-			Mem255[ss:fp - 0x24 + 0x00:word16] = dx_250;
-			selector ds_256 = fn0800_409C(fp - 0x02, ds_235, wArg02, wArg04, wArg06);
-			Mem270[ss:fp - 0x04 + 0x00:word16] = 0x00;
-			word16 dx_265 = DPB(dx_250, 0x00, 8);
-			Mem271[ss:fp - 0x06 + 0x00:word16] = (DPB(ax_249, 0x00, 8) << 0x08) + dx_265 - 0x0C >>u 0x02;
-			Mem274[ss:fp - 0x1E + 0x00:word16] = Mem271[ds_256:10721:word16];
-			Mem277[ss:fp - 0x20 + 0x00:word16] = Mem274[ds_256:10719:word16];
-			Mem282[ss:fp - 0x22 + 0x00:word16] = 0x00;
-			Mem285[ss:fp - 0x24 + 0x00:word16] = Mem282[ss:fp - 0x06 + 0x00:word16];
-			selector ds_286 = fn0800_409C(fp - 0x02, ds_256, wArg02, wArg04, wArg06);
-			Mem291[ss:fp - 0x1E + 0x00:word16] = Mem285[ds_286:10721:word16];
-			Mem294[ss:fp - 0x20 + 0x00:word16] = Mem291[ds_286:10719:word16];
-			word16 si_296;
-			word16 ax_297 = fn0800_AD2F(ds_286, ptrArg00, wArg02, out si_296);
-			Mem300[ds_286:20110:word16] = dx_265;
-			Mem301[ds_286:20108:word16] = ax_297;
-			word16 dx_303 = Mem301[ss:fp - 22 + 0x00:word16];
-			Mem304[ss:fp - 0x04 + 0x00:word16] = Mem301[ss:fp - 0x14 + 0x00:word16];
-			Mem305[ss:fp - 0x06 + 0x00:word16] = dx_303;
+				ax_108 = Mem152[ss:fp - 0x06 + 0x00:word16] | Mem152[ss:(fp - 0x04) + 0x00:word16];
+			} while (ax_108 != 0x00);
+			Mem164[ss:fp - 0x1E + 0x00:word16] = Mem152[ds_100:10721:word16];
+			Mem167[ss:fp - 0x20 + 0x00:word16] = Mem164[ds_100:10719:word16];
+			Mem170[ss:fp - 0x22 + 0x00:word16] = Mem167[ds_100:0x29E5:word16];
+			Mem173[ss:fp - 0x24 + 0x00:word16] = Mem170[ds_100:0x29E3:word16];
+			selector ds_174;
+			ui32 dx_ax_178 = SEQ(fn0800_3E5D(fp - 0x02, ds_100, wArg00, wArg02, out ds_174), ax_108 + 0x01);
+			Mem185[ss:fp - 0x22 + 0x00:word16] = SLICE(dx_ax_178 + 0x01, word16, 16);
+			word16 ax_181 = (word16) (dx_ax_178 + 0x01);
+			Mem187[ss:fp - 0x24 + 0x00:word16] = ax_181;
+			word16 si_188;
+			selector ds_189;
+			fn0800_409C(fp - 0x02, ds_174, wArg02, wArg04, wArg06, out si_188, out ds_189);
+			Mem195[ss:fp - 0x1E + 0x00:word16] = Mem187[ds_189:0x29E5:word16];
+			Mem198[ss:fp - 0x20 + 0x00:word16] = Mem195[ds_189:0x29E3:word16];
+			selector ds_199;
+			Mem203[ss:fp - 0x0C + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_189, wArg00, wArg02, out ds_199);
+			Mem204[ss:fp - 0x0E + 0x00:word16] = ax_181;
+			Mem207[ss:fp - 0x1E + 0x00:word16] = Mem204[ds_199:0x29E5:word16];
+			Mem210[ss:fp - 0x20 + 0x00:word16] = Mem207[ds_199:0x29E3:word16];
+			selector ds_211;
+			Mem214[ss:fp - 0x10 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_199, wArg00, wArg02, out ds_211);
+			Mem215[ss:fp - 0x12 + 0x00:word16] = ax_181;
+			word16 dx_218 = Mem215[ss:fp - 0x12 + 0x00:word16] - Mem215[ss:(fp - 0x0E) + 0x00:word16];
+			ui32 ax_dx_223 = SEQ(Mem215[ss:fp - 0x10 + 0x00:word16] - Mem215[ss:(fp - 0x0C) + 0x00:word16] - (dx_218 <u 0x00), dx_218 + 0x01);
+			Mem229[ss:fp - 0x14 + 0x00:word16] = SLICE(ax_dx_223 + 0x01, word16, 16);
+			Mem230[ss:fp - 22 + 0x00:word16] = (word16) (ax_dx_223 + 0x01);
+			Mem233[ss:fp - 0x1E + 0x00:word16] = Mem230[ds_211:10721:word16];
+			Mem236[ss:fp - 0x20 + 0x00:word16] = Mem233[ds_211:10719:word16];
+			Mem239[ss:fp - 0x22 + 0x00:word16] = Mem236[ss:fp - 0x0C + 0x00:word16];
+			Mem242[ss:fp - 0x24 + 0x00:word16] = Mem239[ss:fp - 0x0E + 0x00:word16];
+			word16 si_243;
+			selector ds_244;
+			fn0800_409C(fp - 0x02, ds_211, wArg02, wArg04, wArg06, out si_243, out ds_244);
+			Mem249[ss:fp - 0x1E + 0x00:word16] = Mem242[ds_244:10721:word16];
+			Mem252[ss:fp - 0x20 + 0x00:word16] = Mem249[ds_244:10719:word16];
+			ui32 ax_dx_256 = SEQ(Mem252[ss:fp - 0x10 + 0x00:word16], Mem252[ss:fp - 0x12 + 0x00:word16] + 0x01);
+			word16 ax_259 = SLICE(ax_dx_256 + 0x01, word16, 16);
+			Mem263[ss:fp - 0x22 + 0x00:word16] = ax_259;
+			word16 dx_260 = (word16) (ax_dx_256 + 0x01);
+			Mem265[ss:fp - 0x24 + 0x00:word16] = dx_260;
+			word16 si_266;
+			selector ds_267;
+			fn0800_409C(fp - 0x02, ds_244, wArg02, wArg04, wArg06, out si_266, out ds_267);
+			Mem282[ss:fp - 0x04 + 0x00:word16] = 0x00;
+			word16 dx_277 = DPB(dx_260, 0x00, 8);
+			Mem283[ss:fp - 0x06 + 0x00:word16] = (DPB(ax_259, 0x00, 8) << 0x08) + dx_277 - 0x0C >>u 0x02;
+			Mem286[ss:fp - 0x1E + 0x00:word16] = Mem283[ds_267:10721:word16];
+			Mem289[ss:fp - 0x20 + 0x00:word16] = Mem286[ds_267:10719:word16];
+			Mem294[ss:fp - 0x22 + 0x00:word16] = 0x00;
+			Mem297[ss:fp - 0x24 + 0x00:word16] = Mem294[ss:fp - 0x06 + 0x00:word16];
+			word16 si_298;
+			selector ds_299;
+			word16 dx_301 = DPB(dx_277, fn0800_409C(fp - 0x02, ds_267, wArg02, wArg04, wArg06, out si_298, out ds_299), 0);
+			Mem306[ss:fp - 0x1E + 0x00:word16] = Mem297[ds_299:10721:word16];
+			Mem309[ss:fp - 0x20 + 0x00:word16] = Mem306[ds_299:10719:word16];
+			byte dl_311;
+			word16 si_312;
+			word16 ax_313 = fn0800_AD2F(ds_299, ptrArg00, wArg02, out dl_311, out si_312);
+			Mem316[ds_299:20110:word16] = dx_301;
+			Mem317[ds_299:20108:word16] = ax_313;
+			word16 dx_319 = Mem317[ss:fp - 22 + 0x00:word16];
+			Mem320[ss:fp - 0x04 + 0x00:word16] = Mem317[ss:fp - 0x14 + 0x00:word16];
+			Mem321[ss:fp - 0x06 + 0x00:word16] = dx_319;
 			while (true)
 			{
-				word16 ax_311 = Mem305[ss:fp - 0x06 + 0x00:word16] | Mem305[ss:(fp - 0x04) + 0x00:word16];
-				if (ax_311 == 0x00)
+				word16 ax_329 = Mem321[ss:fp - 0x06 + 0x00:word16] | Mem321[ss:(fp - 0x04) + 0x00:word16];
+				if (ax_329 == 0x00)
 					break;
-				Mem438[ss:fp - 0x1E + 0x00:word16] = Mem305[ds_286:10721:word16];
-				Mem441[ss:fp - 0x20 + 0x00:word16] = Mem438[ds_286:10719:word16];
-				Mem444[ss:fp - 0x22 + 0x00:word16] = Mem441[ds_286:0x29E5:word16];
-				Mem447[ss:fp - 0x24 + 0x00:word16] = Mem444[ds_286:0x29E3:word16];
-				selector ds_448;
-				dx_303 = fn0800_3E5D(fp - 0x02, ds_286, wArg00, wArg02, out ds_448);
-				Mem453[ss:fp - 0x22 + 0x00:word16] = dx_303;
-				Mem455[ss:fp - 0x24 + 0x00:word16] = ax_311;
-				ds_286 = fn0800_409C(fp - 0x02, ds_448, wArg02, wArg04, wArg06);
-				word16 v58_458 = Mem455[ss:fp - 0x06 + 0x00:word16] - 0x01;
-				Mem459[ss:fp - 0x06 + 0x00:word16] = v58_458;
-				Mem463[ss:fp - 0x04 + 0x00:word16] = Mem459[ss:fp - 0x04 + 0x00:word16] - (v58_458 <u 0x00);
+				Mem457[ss:fp - 0x1E + 0x00:word16] = Mem321[ds_299:10721:word16];
+				Mem460[ss:fp - 0x20 + 0x00:word16] = Mem457[ds_299:10719:word16];
+				Mem463[ss:fp - 0x22 + 0x00:word16] = Mem460[ds_299:0x29E5:word16];
+				Mem466[ss:fp - 0x24 + 0x00:word16] = Mem463[ds_299:0x29E3:word16];
+				selector ds_467;
+				dx_319 = fn0800_3E5D(fp - 0x02, ds_299, wArg00, wArg02, out ds_467);
+				Mem472[ss:fp - 0x22 + 0x00:word16] = dx_319;
+				Mem474[ss:fp - 0x24 + 0x00:word16] = ax_329;
+				word16 si_475;
+				fn0800_409C(fp - 0x02, ds_467, wArg02, wArg04, wArg06, out si_475, out ds_299);
+				word16 v58_479 = Mem474[ss:fp - 0x06 + 0x00:word16] - 0x01;
+				Mem480[ss:fp - 0x06 + 0x00:word16] = v58_479;
+				Mem484[ss:fp - 0x04 + 0x00:word16] = Mem480[ss:fp - 0x04 + 0x00:word16] - (v58_479 <u 0x00);
 			}
-			Mem317[ss:fp - 0x1E + 0x00:word16] = Mem305[ds_286:10721:word16];
-			Mem320[ss:fp - 0x20 + 0x00:word16] = Mem317[ds_286:10719:word16];
-			Mem334[ss:fp - 0x22 + 0x00:word16] = 0x00;
-			Mem336[ss:fp - 0x24 + 0x00:word16] = (DPB(ax_311, 0x00, 8) << 0x08) + DPB(dx_303, 0x00, 8);
-			Mem338[ss:fp - 0x26 + 0x00:word16] = ds_286;
-			Mem341[ss:fp - 0x28 + 0x00:word16] = 0x2E77;
-			selector ds_344 = fn0800_4152(ds_286, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0A);
-			Mem351[ss:fp - 0x1E + 0x00:word16] = Mem341[ds_344:0x29E5:word16];
-			Mem354[ss:fp - 0x20 + 0x00:word16] = Mem351[ds_344:0x29E3:word16];
-			word16 si_355;
-			word16 ax_356 = fn0800_AD2F(ds_344, ptrArg00, wArg02, out si_355);
-			if (0x00 >=u Mem354[ds_344:0x2A09:word16])
+			Mem335[ss:fp - 0x1E + 0x00:word16] = Mem321[ds_299:10721:word16];
+			Mem338[ss:fp - 0x20 + 0x00:word16] = Mem335[ds_299:10719:word16];
+			Mem352[ss:fp - 0x22 + 0x00:word16] = 0x00;
+			Mem354[ss:fp - 0x24 + 0x00:word16] = (DPB(ax_329, 0x00, 8) << 0x08) + DPB(dx_319, 0x00, 8);
+			Mem356[ss:fp - 0x26 + 0x00:word16] = ds_299;
+			Mem359[ss:fp - 0x28 + 0x00:word16] = 0x2E77;
+			selector ds_362 = fn0800_4152(fp - 0x02, ds_299, wArg00, wArg02, wArg04, wArg08, wArg0A);
+			Mem369[ss:fp - 0x1E + 0x00:word16] = Mem359[ds_362:0x29E5:word16];
+			Mem372[ss:fp - 0x20 + 0x00:word16] = Mem369[ds_362:0x29E3:word16];
+			byte dl_373;
+			word16 si_374;
+			word16 ax_375 = fn0800_AD2F(ds_362, ptrArg00, wArg02, out dl_373, out si_374);
+			if (0x00 >=u Mem372[ds_362:0x2A09:word16])
 			{
-				if (0x00 != Mem354[ds_344:0x2A09:word16] || ax_356 >=u Mem354[ds_344:0x2A07:word16])
-					return ds_344;
+				if (0x00 != Mem372[ds_362:0x2A09:word16] || ax_375 >=u Mem372[ds_362:0x2A07:word16])
+					return ds_362;
 			}
-			Mem369[ss:fp - 0x1E + 0x00:word16] = Mem354[ds_344:0x29E5:word16];
-			Mem372[ss:fp - 0x20 + 0x00:word16] = Mem369[ds_344:0x29E3:word16];
-			selector ds_373;
-			Mem376[ss:fp - 0x08 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_344, wArg00, wArg02, out ds_373);
-			Mem377[ss:fp - 0x0A + 0x00:word16] = ax_356;
-			word16 ax_378 = Mem377[ss:fp - 0x08 + 0x00:word16];
-			word16 dx_379 = Mem377[ss:fp - 0x0A + 0x00:word16];
-			Mem383[ss:fp - 0x1A + 0x00:word16] = dx_379;
-			Mem384[ss:fp - 0x18 + 0x00:word16] = ax_378 & 0x3FFF;
-			word16 cx_385 = 0x07;
-			word16 bx_387 = 28348;
-			if (Mem384[0x0800:bx_387 + 0x00:word16] == Mem384[ss:(fp - 0x0A) + 0x00:word16])
+			Mem388[ss:fp - 0x1E + 0x00:word16] = Mem372[ds_362:0x29E5:word16];
+			Mem391[ss:fp - 0x20 + 0x00:word16] = Mem388[ds_362:0x29E3:word16];
+			selector ds_392;
+			Mem395[ss:fp - 0x08 + 0x00:word16] = fn0800_3E5D(fp - 0x02, ds_362, wArg00, wArg02, out ds_392);
+			Mem396[ss:fp - 0x0A + 0x00:word16] = ax_375;
+			word16 ax_397 = Mem396[ss:fp - 0x08 + 0x00:word16];
+			word16 dx_398 = Mem396[ss:fp - 0x0A + 0x00:word16];
+			Mem402[ss:fp - 0x1A + 0x00:word16] = dx_398;
+			Mem403[ss:fp - 0x18 + 0x00:word16] = ax_397 & 0x3FFF;
+			word16 cx_404 = 0x07;
+			word16 bx_406 = 28348;
+			if (Mem403[0x0800:bx_406 + 0x00:word16] == Mem403[ss:(fp - 0x0A) + 0x00:word16])
 			{
-				word16 ax_405 = Mem384[0x0800:bx_387 + 0x0E:word16];
-				if (ax_405 == Mem384[ss:(fp - 0x18) + 0x00:word16])
+				word16 ax_424 = Mem403[0x0800:bx_406 + 0x0E:word16];
+				if (ax_424 == Mem403[ss:(fp - 0x18) + 0x00:word16])
 				{
-					word16 sp_408;
-					word16 bp_409;
-					selector ss_410;
-					byte SCZO_411;
-					word16 si_412;
-					byte al_413;
-					selector ds_414;
-					byte ah_415;
-					byte cl_416;
-					word16 ax_417;
-					byte dl_418;
-					byte dh_419;
-					word16 dx_420;
-					byte SZO_421;
-					byte C_422;
-					byte Z_423;
-					word16 cx_424;
-					word16 bx_425;
-					Mem384[0x0800:bx_387 + 0x1C:word16]();
-					return ds_414;
+					word16 sp_427;
+					word16 bp_428;
+					selector ss_429;
+					byte SCZO_430;
+					word16 si_431;
+					byte al_432;
+					selector ds_433;
+					byte ah_434;
+					byte cl_435;
+					word16 ax_436;
+					byte dl_437;
+					byte dh_438;
+					word16 dx_439;
+					byte SZO_440;
+					byte C_441;
+					byte Z_442;
+					word16 cx_443;
+					word16 bx_444;
+					Mem403[0x0800:bx_406 + 0x1C:word16]();
+					return ds_433;
 				}
 			}
-			bx_387 = bx_387 + 0x02;
-			cx_385 = cx_385 - 0x01;
-			if (cx_385 != 0x00)
+			bx_406 = bx_406 + 0x02;
+			cx_404 = cx_404 - 0x01;
+			if (cx_404 != 0x00)
 				goto l0800_6D0D;
-			return ds_373;
+			return ds_392;
 		}
 	}
 	else
 		return ds;
 }
 
+// 0800:6EE6: void fn0800_6EE6(Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06)
+void fn0800_6EE6(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
+{
+	word16 di_24;
+	fn0800_B2EF(ds, 0x2223, ds, out di_24);
+	return;
+}
+
+// 0800:73AC: void fn0800_73AC(Register word16 bp, Register selector ds)
+void fn0800_73AC(word16 bp, selector ds)
+{
+	selector ds_34 = fn0800_4152(bp, ds, 0x2E77, ds, (DPB(ax, 0x00, 8) << 0x08) + DPB(dx, 0x00, 8), Mem0[ds:10719:word16], Mem0[ds:10721:word16]);
+	Mem39[ss:fp - 0x02 + 0x00:word16] = 0x01;
+	Mem44[ss:fp - 0x04 + 0x00:word16] = ~0x00;
+	Mem46[ss:fp - 0x06 + 0x00:word16] = ~0x03;
+	Mem49[ss:fp - 0x08 + 0x00:word16] = Mem46[ds_34:10721:word16];
+	Mem52[ss:fp - 0x0A + 0x00:word16] = Mem49[ds_34:10719:word16];
+	word16 di_56;
+	selector ds_57;
+	fn0800_ACB3(bp, ds_34, wArg00, wArg02, wArg08, out di_56, out ds_57);
+	Mem63[ss:fp - 0x02 + 0x00:word16] = Mem52[ds_57:10721:word16];
+	Mem66[ss:fp - 0x04 + 0x00:word16] = Mem63[ds_57:10719:word16];
+	Mem69[ss:fp - 0x06 + 0x00:word16] = Mem66[ds_57:0x2A11:word16];
+	Mem72[ss:fp - 0x08 + 0x00:word16] = Mem69[ds_57:0x2A0F:word16];
+	word16 si_75;
+	selector ds_76;
+	fn0800_409C(bp, ds_57, wArg02, wArg04, wArg06, out si_75, out ds_76);
+	Mem82[ss:fp - 0x02 + 0x00:word16] = Mem72[ds_76:0x2A09:word16];
+	Mem85[ss:fp - 0x04 + 0x00:word16] = Mem82[ds_76:0x2A07:word16];
+	Mem88[ss:fp - 0x06 + 0x00:word16] = Mem85[ds_76:0x2A09:word16];
+	Mem91[ss:fp - 0x08 + 0x00:word16] = Mem88[ds_76:0x2A07:word16];
+	fn0800_75EA(bp, ds_76, wArg00, wArg02, wArg04, wArg06);
+	return;
+}
+
+// 0800:741D: void fn0800_741D(Register selector ds)
+void fn0800_741D(selector ds)
+{
+	fn0800_75C1(ds);
+	return;
+}
+
+// 0800:75C1: void fn0800_75C1(Register selector ds)
+void fn0800_75C1(selector ds)
+{
+fn0800_75C1_entry:
+	Mem6[ss:v3 - 0x02 + 0x00:word16] = Mem0[ds:0x29E5:word16]
+	goto l0800_75C1_thunk_fn0800_75C5
+l0800_75C1:
+l0800_75C1_thunk_fn0800_75C5:
+	fn0800_75C5(ds)
+	return
+fn0800_75C1_exit:
+}
+
+// 0800:75C5: void fn0800_75C5(Register selector ds)
+void fn0800_75C5(selector ds)
+{
+fn0800_75C5_entry:
+	goto l0800_75C5
+l0800_7427:
+	v11 = Mem0[ds:0x29E5:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v11
+	v12 = Mem0[ds:0x29E3:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v12
+	ax = fn0800_3E9A(bp, ds, ptrArg00, wArg02, out ds)
+	sp = sp + 0x04
+	ax = ax | ax
+	ax_dx = SEQ(ax, dx) (alias)
+	dx_ax = SEQ(dx, ax) (alias)
+	SZO = cond(ax)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_7449
+l0800_7439:
+	SCZO = cond(ax - 0x01)
+	Z = SCZO (alias)
+	branch Test(EQ,Z) l0800_7469
+l0800_743E:
+	SCZO = cond(ax - 0x03)
+	Z = SCZO (alias)
+	branch Test(NE,Z) l0800_7446
+l0800_7443:
+	si = 0x00
+	SZO = cond(0x00)
+	C = false
+	goto l0800_7588
+l0800_7446:
+	v20 = Mem0[ds:0x29E5:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v20
+	v21 = Mem0[ds:0x29E3:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v21
+	ax = fn0800_AD2F(ds, ptrArg00, wArg02, out dl, out si)
+	dx_ax = SEQ(dx, ax) (alias)
+	sp = sp + 0x04
+	bx = Mem0[ds:0x2A09:word16]
+	cx = Mem0[ds:0x2A07:word16]
+	cx = cx - ax
+	bx_cx = SEQ(bx, cx) (alias)
+	SCZO = cond(cx)
+	bx_cx = bx_cx - dx_ax
+	bx = SLICE(bx_cx, word16, 16) (alias)
+	cx = (word16) bx_cx (alias)
+	SCZO = cond(bx_cx)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = bx
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = cx
+	v24 = Mem0[ds:10721:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v24
+	v25 = Mem0[ds:10719:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v25
+	v26 = Mem0[ds:0x29E5:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v26
+	v27 = Mem0[ds:0x29E3:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v27
+	bp = fn0800_3B0A(bp, ds, wArg08, wArg0A, out ds)
+	sp = sp + 0x0C
+	SCZO = cond(sp)
+	fn0800_75C1(ds)
+	return
+l0800_7449:
+	v14 = Mem0[ds:10721:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v14
+	v15 = Mem0[ds:10719:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v15
+	v16 = Mem0[ds:0x29E5:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v16
+	v17 = Mem0[ds:0x29E3:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v17
+	ax = fn0800_3DCF(bp, ds, ptrArg00, wArg02, out dx, out di, out ds)
+	sp = sp + 0x04
+	SCZO = cond(sp)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	dl = fn0800_4047(bp, ds, bArg00, ptrArg02, wArg04, out di, out ds)
+	sp = sp + 0x06
+	SCZO = cond(sp)
+	fn0800_75C1(ds)
+	return
+l0800_7463_thunk_fn0800_75C1:
+l0800_7469:
+	v28 = Mem0[ds:10721:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v28
+	v29 = Mem0[ds:10719:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v29
+	v30 = Mem0[ds:0x29E5:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v30
+	v31 = Mem0[ds:0x29E3:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v31
+	dx = fn0800_3E5D(bp, ds, wArg00, wArg02, out ds)
+	sp = sp + 0x04
+	SCZO = cond(sp)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = dx
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	dl = fn0800_409C(bp, ds, wArg02, wArg04, wArg06, out si, out ds)
+	sp = sp + 0x08
+	SCZO = cond(sp)
+	v32 = Mem0[ds:0x29E5:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v32
+	v33 = Mem0[ds:0x29E3:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v33
+	ax = fn0800_3FAD(bp, ds, wArg00, wArg02, out si, out di, out ds)
+	sp = sp + 0x04
+	Mem0[ss:bp - 0x02 + 0x00:word16] = 0x00
+	Mem0[ss:bp - 0x04 + 0x00:word16] = ax
+	v35 = Mem0[ds:10721:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v35
+	v36 = Mem0[ds:10719:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v36
+	ax = 0x00
+	SZO = cond(0x00)
+	C = false
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x00
+	dl = fn0800_401E(bp, ds, wArg00, wArg02, wArg04, out si, out ds)
+	sp = sp + 0x06
+	SCZO = cond(sp)
+	v37 = Mem0[ss:bp - 0x02 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v37
+	v38 = Mem0[ss:bp - 0x04 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v38
+	v39 = Mem0[ss:bp - 0x02 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v39
+	v40 = Mem0[ss:bp - 0x04 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v40
+	ds = fn0800_75EA(bp, ds, wArg00, wArg02, wArg04, wArg06)
+	sp = sp + ~0x01
+	sp = sp + 0x08
+	ax = 0x01
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x01
+	ax = Mem0[ds:0x2A05:word16]
+	dx = Mem0[ds:0x2A03:word16]
+	dx = dx + 0x02
+	ax_dx = SEQ(ax, dx) (alias)
+	SCZO = cond(dx)
+	ax_dx = ax_dx + 0x02
+	ax = SLICE(ax_dx, word16, 16) (alias)
+	dx = (word16) ax_dx (alias)
+	ax = -ax
+	dx = -dx
+	C = dx == 0x00
+	ax = ax - 0x00 - C
+	ax_dx = SEQ(ax, dx) (alias)
+	SCZO = cond(ax_dx)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = dx
+	v41 = Mem0[ds:10721:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v41
+	v42 = Mem0[ds:10719:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v42
+	ax = fn0800_ACB3(bp, ds, wArg00, wArg02, wArg08, out di, out ds)
+	sp = sp + 0x0A
+	SCZO = cond(sp)
+	v43 = Mem0[ds:10721:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v43
+	v44 = Mem0[ds:10719:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v44
+	v45 = Mem0[ds:0x2A03:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v45
+	di = fn0800_40BF(bp, ds, bArg00, wArg02, wArg04, out ds)
+	sp = sp + 0x06
+	ax = Mem0[ds:0x2A05:word16]
+	dx = Mem0[ds:0x2A03:word16]
+	dx_ax = SEQ(dx, ax) (alias)
+	dl = (byte) dx (alias)
+	ax_dx = SEQ(ax, dx) (alias)
+	SCZO = cond(ax - Mem0[ss:(bp - 0x02) + 0x00:word16])
+	Z = SCZO (alias)
+	branch Test(NE,Z) l0800_754A
+l0800_7506:
+	SCZO = cond(dx - Mem0[ss:(bp - 0x04) + 0x00:word16])
+	Z = SCZO (alias)
+	branch Test(NE,Z) l0800_754A
+l0800_750B:
+	ax = 0x01
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x01
+	ax = Mem0[ss:bp - 0x02 + 0x00:word16]
+	dx = Mem0[ss:bp - 0x04 + 0x00:word16]
+	ax = -ax
+	dx = -dx
+	C = dx == 0x00
+	ax = ax - 0x00 - C
+	SCZO = cond(ax)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = dx
+	v46 = Mem0[ds:0x29E5:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v46
+	v47 = Mem0[ds:0x29E3:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v47
+	ax = fn0800_ACB3(bp, ds, wArg00, wArg02, wArg08, out di, out ds)
+	sp = sp + 0x0A
+	SCZO = cond(sp)
+	v48 = Mem0[ss:bp - 0x02 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v48
+	v49 = Mem0[ss:bp - 0x04 + 0x00:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v49
+	v50 = Mem0[ds:10721:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v50
+	v51 = Mem0[ds:10719:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v51
+	v52 = Mem0[ds:0x29E5:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v52
+	v53 = Mem0[ds:0x29E3:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v53
+	bp = fn0800_3B0A(bp, ds, wArg08, wArg0A, out ds)
+	sp = sp + 0x0C
+	SCZO = cond(sp)
+	fn0800_75C1(ds)
+	return
+l0800_7545_thunk_fn0800_75C1:
+l0800_754A:
+	ax = 0x01
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x01
+	v58 = Mem0[ds:0x2A05:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v58
+	v59 = Mem0[ds:0x2A03:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v59
+	v60 = Mem0[ds:10721:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v60
+	v61 = Mem0[ds:10719:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v61
+	ax = fn0800_ACB3(bp, ds, wArg00, wArg02, wArg08, out di, out ds)
+	sp = sp + 0x0A
+	SCZO = cond(sp)
+	fn0800_75C1(ds)
+	return
+l0800_7561_thunk_fn0800_75C1:
+l0800_7566:
+l0800_756A:
+	v54 = Mem0[ds:10721:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v54
+	v55 = Mem0[ds:10719:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v55
+	v56 = Mem0[ds:0x29E5:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v56
+	v57 = Mem0[ds:0x29E3:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v57
+	ax = fn0800_3DCF(bp, ds, ptrArg00, wArg02, out dx, out di, out ds)
+	sp = sp + 0x04
+	SCZO = cond(sp)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	dl = fn0800_4047(bp, ds, bArg00, ptrArg02, wArg04, out di, out ds)
+	sp = sp + 0x06
+	SCZO = cond(sp)
+	si = si + 0x01
+	SZO = cond(si)
+l0800_7588:
+	SCZO = cond(si - 0x03)
+	Z = SCZO (alias)
+	branch Test(NE,Z) l0800_756A
+l0800_758D:
+	fn0800_75C1(ds)
+	return
+l0800_758F:
+l0800_75BE_thunk_fn0800_75C1:
+l0800_75C5:
+	sp = fp
+	v4 = Mem0[ds:0x29E3:word16]
+	sp = fp - 0x02
+	wLoc02 = v4
+	ptrLoc02 = DPB(ptrLoc02, wLoc02, 0) (alias)
+	ax = fn0800_AD2F(ds, ptrLoc02, wArg00, out dl, out si)
+	ax_dx = SEQ(ax, dx) (alias)
+	dx_ax = SEQ(dx, ax) (alias)
+	sp = sp + 0x04
+	SCZO = cond(dx - Mem0[ds:0x2A09:word16])
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	branch Test(UGE,C) l0800_75D8
+	goto l0800_7427
+l0800_75D8:
+	branch Test(NE,Z) l0800_75E3
+l0800_75DA:
+	SCZO = cond(ax - Mem0[ds:0x2A07:word16])
+	C = SCZO (alias)
+	branch Test(UGE,C) l0800_75E3
+	goto l0800_7427
+l0800_75E3:
+	ax = 0x00
+	SZO = cond(0x00)
+	C = false
+	si = Mem0[ss:sp + 0x00:word16]
+	sp = bp
+	bp = Mem0[ss:sp + 0x00:word16]
+	sp = sp + 0x02
+	return
+fn0800_75C5_exit:
+}
+
+// 0800:75EA: Register selector fn0800_75EA(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08)
 selector fn0800_75EA(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08)
 {
 	Mem14[ds:0x4680:word16] = wArg04;
@@ -8130,6 +11519,7 @@ selector fn0800_75EA(word16 bp, selector ds, word16 wArg02, word16 wArg04, word1
 	ui32 ax_dx_26 = SEQ(wArg08, wArg06 - 0x12);
 	Mem31[ds:20102:word16] = SLICE(ax_dx_26 - 0x12, word16, 16);
 	Mem32[ds:20100:word16] = (word16) (ax_dx_26 - 0x12);
+	word16 bp_350 = fp - 0x02;
 	if (Mem32[ds:0x4680:word16] <=u 0x00)
 	{
 		if (Mem32[ds:0x4680:word16] != 0x00)
@@ -8137,952 +11527,1552 @@ selector fn0800_75EA(word16 bp, selector ds, word16 wArg02, word16 wArg04, word1
 		if (wArg02 <=u 0x12)
 			return ds;
 	}
-	Mem61[ds:11851:word16] = 0x00;
-	Mem62[ds:11849:word16] = 0x00;
-	Mem63[ds:18012:word16] = 0x00;
-	Mem64[ds:0x4668:word16] = 0x00;
-	Mem65[ds:0x4666:word16] = 0x00;
-	Mem66[ds:0x2A05:word16] = 0x00;
-	Mem67[ds:0x2A03:word16] = 0x00;
-	Mem68[ds:0x2A01:word16] = 0x00;
-	Mem69[ds:0x29FF:word16] = 0x00;
-	Mem70[ds:18044:word16] = 0x00;
-	Mem71[ds:0x467A:word16] = 0x00;
-	Mem72[ds:0x4674:word16] = 0x00;
-	Mem73[ds:0x4672:word16] = 0x00;
-	Mem74[ds:11843:word16] = 0x00;
-	Mem75[ds:11845:word16] = 0x00;
-	Mem76[ds:20098:word16] = 0x00;
-	Mem77[ds:20106:word16] = 0x00;
-	Mem78[ds:0x4E88:word16] = 0x00;
-	Mem79[ds:0x29F9:word16] = 0x00;
-	Mem80[ds:0x29F7:word16] = 0x00;
-	selector ds_87 = fn0800_4311(ds, 0x0F, 0x01);
-	Mem90[ss:fp - 22 + 0x00:word16] = 0x0F;
-	Mem91[ss:fp - 0x18 + 0x00:word16] = 0x01;
-	Mem94[ds_87:11891:word16] = 0x10;
-	Mem95[ds_87:11889:word16] = 0x00;
-	Mem99[ss:fp - 0x1C + 0x00:word16] = 0x01;
-	Mem101[ss:fp - 0x1E + 0x00:word16] = 0x10;
-	selector ds_103 = fn0800_4311(ds_87, wArg00, wArg02);
-	Mem106[ss:fp - 0x12 + 0x00:word16] = 0x10;
-	Mem107[ss:fp - 0x14 + 0x00:word16] = 0x01;
-	Mem110[ds_103:11833:word16] = 0x11;
-	Mem111[ds_103:11831:word16] = 0x00;
-	Mem115[ss:fp - 0x1C + 0x00:word16] = 0x01;
-	Mem117[ss:fp - 0x1E + 0x00:word16] = 0x10;
-	selector ds_118 = fn0800_4311(ds_103, wArg00, wArg02);
-	Mem121[ss:fp - 0x0E + 0x00:word16] = 0x10;
-	Mem122[ss:fp - 0x10 + 0x00:word16] = 0x01;
-	Mem125[ds_118:11829:word16] = 0x11;
-	Mem126[ds_118:0x2E33:word16] = 0x00;
-	Mem130[ss:fp - 0x1C + 0x00:word16] = 0x01;
-	Mem132[ss:fp - 0x1E + 0x00:word16] = 0x10;
-	selector ds_133 = fn0800_4311(ds_118, wArg00, wArg02);
-	Mem136[ss:fp - 0x0A + 0x00:word16] = 0x10;
-	Mem137[ss:fp - 0x0C + 0x00:word16] = 0x01;
-	Mem140[ds_133:11841:word16] = 0x11;
-	Mem141[ds_133:11839:word16] = 0x00;
-	Mem145[ss:fp - 0x1C + 0x00:word16] = 0x01;
-	Mem147[ss:fp - 0x1E + 0x00:word16] = 0x10;
-	selector ds_148 = fn0800_4311(ds_133, wArg00, wArg02);
-	Mem151[ss:fp - 0x06 + 0x00:word16] = 0x10;
-	Mem152[ss:fp - 0x08 + 0x00:word16] = 0x01;
-	Mem155[ds_148:11837:word16] = 0x11;
-	Mem156[ds_148:11835:word16] = 0x00;
-	fn0800_87F8(ds_148);
-	Mem159[ss:fp - 0x1C + 0x00:word16] = Mem156[ds_148:0x29E5:word16];
-	Mem162[ss:fp - 0x1E + 0x00:word16] = Mem159[ds_148:0x29E3:word16];
-	word16 si_164;
-	word16 ax_165 = fn0800_AD2F(ds_148, ptrArg00, wArg02, out si_164);
-	Mem168[ds_148:0x4664:word16] = 0x11;
-	Mem169[ds_148:18018:word16] = ax_165;
-	Mem172[ss:fp - 0x1C + 0x00:word16] = Mem169[ds_148:10721:word16];
-	Mem175[ss:fp - 0x1E + 0x00:word16] = Mem172[ds_148:10719:word16];
-	word16 si_176;
-	word16 ax_177 = fn0800_AD2F(ds_148, ptrArg00, wArg02, out si_176);
-	Mem179[ds_148:0x4660:word16] = 0x11;
-	Mem180[ds_148:18014:word16] = ax_177;
-	Mem183[ss:fp - 0x1C + 0x00:word16] = Mem180[ds_148:10721:word16];
-	Mem186[ss:fp - 0x1E + 0x00:word16] = Mem183[ds_148:10719:word16];
-	int32 dx_ax_191 = SEQ(0x11, (word16) (int32) Mem186[ds_148:0x2A21:word16] + 0x4300);
-	Mem198[ss:fp - 0x20 + 0x00:word16] = SLICE(dx_ax_191 + 0x524E4300, word16, 16);
-	Mem200[ss:fp - 0x22 + 0x00:word16] = (word16) (dx_ax_191 + 0x524E4300);
-	selector ds_201 = fn0800_409C(fp - 0x02, ds_148, wArg02, wArg04, wArg06);
-	Mem206[ss:fp - 0x1C + 0x00:word16] = Mem200[ds_201:10721:word16];
-	Mem209[ss:fp - 0x1E + 0x00:word16] = Mem206[ds_201:10719:word16];
-	Mem212[ss:fp - 0x20 + 0x00:word16] = Mem209[ds_201:0x4680:word16];
-	Mem215[ss:fp - 0x22 + 0x00:word16] = Mem212[ds_201:0x467E:word16];
-	selector ds_216 = fn0800_409C(fp - 0x02, ds_201, wArg02, wArg04, wArg06);
-	Mem220[ss:fp - 0x1C + 0x00:word16] = Mem215[ds_216:10721:word16];
-	Mem223[ss:fp - 0x1E + 0x00:word16] = Mem220[ds_216:10719:word16];
-	Mem228[ss:fp - 0x20 + 0x00:word16] = 0x00;
-	Mem230[ss:fp - 0x22 + 0x00:word16] = 0x00;
-	selector ds_231 = fn0800_409C(fp - 0x02, ds_216, wArg02, wArg04, wArg06);
-	Mem235[ss:fp - 0x1C + 0x00:word16] = Mem230[ds_231:10721:word16];
-	Mem238[ss:fp - 0x1E + 0x00:word16] = Mem235[ds_231:10719:word16];
-	Mem243[ss:fp - 0x20 + 0x00:word16] = 0x00;
-	selector ds_244 = fn0800_401E(fp - 0x02, ds_231, wArg00, wArg02, wArg04);
-	Mem248[ss:fp - 0x1C + 0x00:word16] = Mem243[ds_244:10721:word16];
-	Mem251[ss:fp - 0x1E + 0x00:word16] = Mem248[ds_244:10719:word16];
-	Mem256[ss:fp - 0x20 + 0x00:word16] = 0x00;
-	selector ds_257 = fn0800_401E(fp - 0x02, ds_244, wArg00, wArg02, wArg04);
-	Mem261[ss:fp - 0x1C + 0x00:word16] = Mem256[ds_257:10721:word16];
-	Mem264[ss:fp - 0x1E + 0x00:word16] = Mem261[ds_257:10719:word16];
-	Mem269[ss:fp - 0x20 + 0x00:word16] = 0x00;
-	selector ds_270 = fn0800_401E(fp - 0x02, ds_257, wArg00, wArg02, wArg04);
-	Mem274[ss:fp - 0x1C + 0x00:word16] = ds_270;
-	Mem277[ss:fp - 0x1E + 0x00:word16] = 0x2240;
-	word16 di_278;
-	fn0800_B2EF(ds_270, wArg00, wArg02, out di_278);
-	Mem282[ss:fp - 0x04 + 0x00:word16] = Mem277[ds_270:11855:word16];
-	Mem288[ss:fp - 0x1C + 0x00:word16] = 0x01;
-	word16 ax_283 = 0x01;
-	if (Mem288[ds_270:0x2A1F:word16] == 0x00)
-		ax_283 = 0x00;
-	Mem295[ss:fp - 0x1E + 0x00:word16] = ax_283;
-	selector ds_296 = fn0800_8465(ds_270, wArg00, wArg02);
-	Mem303[ss:fp - 0x1C + 0x00:word16] = 0x01;
-	word16 ax_298 = 0x01;
-	if (Mem303[ds_296:11855:word16] == 0x00)
-		ax_298 = 0x00;
-	Mem313[ss:fp - 0x1E + 0x00:word16] = ax_298;
-	selector ds_314 = fn0800_8465(ds_296, wArg00, wArg02);
-	if (Mem313[ds_314:0x2A23:word16] != 0x01 && Mem313[ds_314:11855:word16] != 0x00)
+	Mem69[ds:11851:word16] = 0x00;
+	Mem70[ds:11849:word16] = 0x00;
+	Mem71[ds:18012:word16] = 0x00;
+	Mem72[ds:0x4668:word16] = 0x00;
+	Mem73[ds:0x4666:word16] = 0x00;
+	Mem74[ds:0x2A05:word16] = 0x00;
+	Mem75[ds:0x2A03:word16] = 0x00;
+	Mem76[ds:0x2A01:word16] = 0x00;
+	Mem77[ds:0x29FF:word16] = 0x00;
+	Mem78[ds:18044:word16] = 0x00;
+	Mem79[ds:0x467A:word16] = 0x00;
+	Mem80[ds:0x4674:word16] = 0x00;
+	Mem81[ds:0x4672:word16] = 0x00;
+	Mem82[ds:11843:word16] = 0x00;
+	Mem83[ds:11845:word16] = 0x00;
+	Mem84[ds:20098:word16] = 0x00;
+	Mem85[ds:20106:word16] = 0x00;
+	Mem86[ds:0x4E88:word16] = 0x00;
+	Mem87[ds:0x29F9:word16] = 0x00;
+	Mem88[ds:0x29F7:word16] = 0x00;
+	fn0800_4311(0x01, 0x0F, ds, 0x0F, 0x01);
+	Mem101[ds:11891:word16] = 0x10;
+	Mem102[ds:11889:word16] = 0x00;
+	fn0800_4311(0x01, 0x10, ds, 0x10, 0x01);
+	Mem115[ds:11833:word16] = 0x11;
+	Mem116[ds:11831:word16] = 0x00;
+	fn0800_4311(0x01, 0x10, ds, 0x10, 0x01);
+	Mem129[ds:11829:word16] = 0x11;
+	Mem130[ds:0x2E33:word16] = 0x00;
+	fn0800_4311(0x01, 0x10, ds, 0x10, 0x01);
+	Mem143[ds:11841:word16] = 0x11;
+	Mem144[ds:11839:word16] = 0x00;
+	fn0800_4311(0x01, 0x10, ds, 0x10, 0x01);
+	Mem158[ds:11837:word16] = 0x11;
+	Mem159[ds:11835:word16] = 0x00;
+	fn0800_87F8(ds);
+	byte dl_168;
+	word16 si_169;
+	word16 ax_170 = fn0800_AD2F(ds, DPB(ptrLoc1E, Mem159[ds:0x29E3:word16], 0), Mem159[ds:0x29E5:word16], out dl_168, out si_169);
+	Mem173[ds:0x4664:word16] = 0x11;
+	Mem174[ds:18018:word16] = ax_170;
+	Mem177[ss:fp - 0x1C + 0x00:word16] = Mem174[ds:10721:word16];
+	Mem181[ss:fp - 0x1E + 0x00:word16] = Mem177[ds:10719:word16];
+	byte dl_183;
+	word16 si_184;
+	word16 ax_185 = fn0800_AD2F(ds, ptrArg00, wArg02, out dl_183, out si_184);
+	Mem187[ds:0x4660:word16] = 0x11;
+	Mem188[ds:18014:word16] = ax_185;
+	Mem191[ss:fp - 0x1C + 0x00:word16] = Mem188[ds:10721:word16];
+	Mem194[ss:fp - 0x1E + 0x00:word16] = Mem191[ds:10719:word16];
+	int32 dx_ax_199 = SEQ(0x11, (word16) (int32) Mem194[ds:0x2A21:word16] + 0x4300);
+	Mem206[ss:fp - 0x20 + 0x00:word16] = SLICE(dx_ax_199 + 0x524E4300, word16, 16);
+	Mem208[ss:fp - 0x22 + 0x00:word16] = (word16) (dx_ax_199 + 0x524E4300);
+	word16 si_209;
+	selector ds_210;
+	fn0800_409C(fp - 0x02, ds, wArg02, wArg04, wArg06, out si_209, out ds_210);
+	Mem216[ss:fp - 0x1C + 0x00:word16] = Mem208[ds_210:10721:word16];
+	Mem219[ss:fp - 0x1E + 0x00:word16] = Mem216[ds_210:10719:word16];
+	Mem222[ss:fp - 0x20 + 0x00:word16] = Mem219[ds_210:0x4680:word16];
+	Mem225[ss:fp - 0x22 + 0x00:word16] = Mem222[ds_210:0x467E:word16];
+	word16 si_226;
+	selector ds_227;
+	fn0800_409C(fp - 0x02, ds_210, wArg02, wArg04, wArg06, out si_226, out ds_227);
+	Mem232[ss:fp - 0x1C + 0x00:word16] = Mem225[ds_227:10721:word16];
+	Mem235[ss:fp - 0x1E + 0x00:word16] = Mem232[ds_227:10719:word16];
+	Mem240[ss:fp - 0x20 + 0x00:word16] = 0x00;
+	Mem242[ss:fp - 0x22 + 0x00:word16] = 0x00;
+	word16 si_243;
+	selector ds_244;
+	fn0800_409C(fp - 0x02, ds_227, wArg02, wArg04, wArg06, out si_243, out ds_244);
+	Mem249[ss:fp - 0x1C + 0x00:word16] = Mem242[ds_244:10721:word16];
+	Mem252[ss:fp - 0x1E + 0x00:word16] = Mem249[ds_244:10719:word16];
+	Mem257[ss:fp - 0x20 + 0x00:word16] = 0x00;
+	word16 si_259;
+	selector ds_260;
+	fn0800_401E(fp - 0x02, ds_244, wArg00, wArg02, wArg04, out si_259, out ds_260);
+	Mem265[ss:fp - 0x1C + 0x00:word16] = Mem257[ds_260:10721:word16];
+	Mem268[ss:fp - 0x1E + 0x00:word16] = Mem265[ds_260:10719:word16];
+	Mem273[ss:fp - 0x20 + 0x00:word16] = 0x00;
+	word16 si_274;
+	selector ds_275;
+	fn0800_401E(fp - 0x02, ds_260, wArg00, wArg02, wArg04, out si_274, out ds_275);
+	Mem280[ss:fp - 0x1C + 0x00:word16] = Mem273[ds_275:10721:word16];
+	Mem283[ss:fp - 0x1E + 0x00:word16] = Mem280[ds_275:10719:word16];
+	Mem288[ss:fp - 0x20 + 0x00:word16] = 0x00;
+	word16 si_289;
+	selector ds_290;
+	fn0800_401E(fp - 0x02, ds_275, wArg00, wArg02, wArg04, out si_289, out ds_290);
+	Mem295[ss:fp - 0x1C + 0x00:word16] = ds_290;
+	Mem298[ss:fp - 0x1E + 0x00:word16] = 0x2240;
+	word16 di_299;
+	fn0800_B2EF(ds_290, wArg00, wArg02, out di_299);
+	Mem303[ss:fp - 0x04 + 0x00:word16] = Mem298[ds_290:11855:word16];
+	Mem309[ss:fp - 0x1C + 0x00:word16] = 0x01;
+	word16 ax_304 = 0x01;
+	if (Mem309[ds_290:0x2A1F:word16] == 0x00)
+		ax_304 = 0x00;
+	Mem316[ss:fp - 0x1E + 0x00:word16] = ax_304;
+	selector ds_317 = fn0800_8465(ds_290, wArg00, wArg02);
+	Mem324[ss:fp - 0x1C + 0x00:word16] = 0x01;
+	word16 ax_319 = 0x01;
+	if (Mem324[ds_317:11855:word16] == 0x00)
+		ax_319 = 0x00;
+	Mem334[ss:fp - 0x1E + 0x00:word16] = ax_319;
+	selector ds_335 = fn0800_8465(ds_317, wArg00, wArg02);
+	if (Mem334[ds_335:0x2A23:word16] != 0x01 && Mem334[ds_335:11855:word16] != 0x00)
 	{
-		Mem634[ss:fp - 0x1C + 0x00:word16] = 0x10;
-		Mem637[ss:fp - 0x1E + 0x00:word16] = Mem634[ds_314:11855:word16];
-		ds_314 = fn0800_8465(ds_314, wArg00, wArg02);
+		Mem597[ss:fp - 0x1C + 0x00:word16] = 0x10;
+		Mem600[ss:fp - 0x1E + 0x00:word16] = Mem597[ds_335:11855:word16];
+		ds_335 = fn0800_8465(ds_335, wArg00, wArg02);
 	}
-	word16 ax_320 = Mem313[ds_314:0x2A21:word16];
-	if (ax_320 != 0x01)
+	word16 ax_341 = Mem334[ds_335:0x2A21:word16];
+	if (ax_341 != 0x01)
 	{
-		if (ax_320 == 0x02)
-			ds_314 = fn0800_7C78(fp - 0x02, ds_314);
+		if (ax_341 == 0x02)
+			ds_335 = fn0800_7C78(fp - 0x02, ds_335);
 	}
 	else
-		ds_314 = fn0800_7A02(fp - 0x02, ds_314);
-	word16 si_329 = 0x00;
-	while (Mem313[ds_314:20098:word16] != 0x00)
+		bp_350 = fn0800_7A02(ds_335, out ds_335);
+	word16 si_351 = 0x00;
+	while (Mem334[ds_335:20098:word16] != 0x00)
 	{
-		ax_320 = DPB(ax_320, Mem313[ds_314:si_329 + 18050:byte], 0);
-		Mem617[ss:fp - 0x1C + 0x00:word16] = ax_320;
-		word16 di_618;
-		si_329 = fn0800_8624(ds_314, bArg00, out di_618, out ds_314);
-		Mem624[ds_314:20098:word16] = Mem617[ds_314:20098:word16] - 0x01;
+		ax_341 = DPB(ax_341, Mem334[ds_335:si_351 + 18050:byte], 0);
+		Mem579[ss:fp - 0x1C + 0x00:word16] = ax_341;
+		word16 di_580;
+		si_351 = fn0800_8624(ds_335, bArg00, out di_580, out ds_335);
+		Mem586[ds_335:20098:word16] = Mem579[ds_335:20098:word16] - 0x01;
 	}
-	Mem344[ds_314:11855:word16] = Mem313[ss:fp - 0x04 + 0x00:word16];
-	word16 dx_347 = Mem344[ds_314:0x467E:word16] - Mem344[ds_314:0x2A03:word16];
-	word16 ax_351 = Mem344[ds_314:0x4680:word16] - Mem344[ds_314:0x2A05:word16] - (dx_347 <u 0x00);
-	if (ax_351 <=u Mem344[ds_314:20106:word16] && (ax_351 <u Mem344[ds_314:20106:word16] || dx_347 <u Mem344[ds_314:0x4E88:word16]))
+	Mem366[ds_335:11855:word16] = Mem334[ss:bp_350 - 0x02 + 0x00:word16];
+	word16 dx_369 = Mem366[ds_335:0x467E:word16] - Mem366[ds_335:0x2A03:word16];
+	word16 ax_373 = Mem366[ds_335:0x4680:word16] - Mem366[ds_335:0x2A05:word16] - (dx_369 <u 0x00);
+	if (ax_373 <=u Mem366[ds_335:20106:word16] && (ax_373 <u Mem366[ds_335:20106:word16] || dx_369 <u Mem366[ds_335:0x4E88:word16]))
 	{
-		dx_347 = Mem344[ds_314:0x467E:word16] - Mem344[ds_314:0x2A03:word16];
-		word16 ax_601 = Mem344[ds_314:0x4680:word16] - Mem344[ds_314:0x2A05:word16] - (dx_347 <u 0x00);
-		word16 v34_602 = Mem344[ds_314:0x4E88:word16] - dx_347;
-		Mem603[ds_314:0x4E88:word16] = v34_602;
-		Mem607[ds_314:20106:word16] = Mem603[ds_314:20106:word16] - ax_601 - (v34_602 <u 0x00);
+		dx_369 = Mem366[ds_335:0x467E:word16] - Mem366[ds_335:0x2A03:word16];
+		word16 ax_563 = Mem366[ds_335:0x4680:word16] - Mem366[ds_335:0x2A05:word16] - (dx_369 <u 0x00);
+		word16 v34_564 = Mem366[ds_335:0x4E88:word16] - dx_369;
+		Mem565[ds_335:0x4E88:word16] = v34_564;
+		Mem569[ds_335:20106:word16] = Mem565[ds_335:20106:word16] - ax_563 - (v34_564 <u 0x00);
 	}
 	else
 	{
-		Mem594[ds_314:20106:word16] = 0x00;
-		Mem595[ds_314:0x4E88:word16] = 0x00;
+		Mem556[ds_335:20106:word16] = 0x00;
+		Mem557[ds_335:0x4E88:word16] = 0x00;
 	}
-	if (Mem344[ds_314:0x2A21:word16] == 0x02)
+	if (Mem366[ds_335:0x2A21:word16] == 0x02)
 	{
-		word16 v39_585 = Mem344[ds_314:0x4E88:word16] + 0x02;
-		Mem586[ds_314:0x4E88:word16] = v39_585;
-		Mem590[ds_314:20106:word16] = Mem586[ds_314:20106:word16] + (v39_585 <u 0x00);
+		word16 v39_547 = Mem366[ds_335:0x4E88:word16] + 0x02;
+		Mem548[ds_335:0x4E88:word16] = v39_547;
+		Mem552[ds_335:20106:word16] = Mem548[ds_335:20106:word16] + (v39_547 <u 0x00);
 	}
-	Mem366[ss:fp - 0x1C + 0x00:word16] = Mem344[ds_314:10721:word16];
-	Mem369[ss:fp - 0x1E + 0x00:word16] = Mem366[ds_314:10719:word16];
-	word16 si_370;
-	word16 ax_373 = fn0800_AD2F(ds_314, ptrArg00, wArg02, out si_370) - Mem369[ds_314:18014:word16];
-	Mem377[ds_314:0x2A05:word16] = dx_347 - Mem369[ds_314:0x4660:word16] - (ax_373 <u 0x00);
-	Mem378[ds_314:0x2A03:word16] = ax_373;
-	Mem381[ss:fp - 0x1C + 0x00:word16] = 0x00;
-	ui32 ax_dx_385 = SEQ(Mem381[ds_314:0x4660:word16], Mem381[ds_314:18014:word16] + 0x08);
-	Mem392[ss:fp - 0x1E + 0x00:word16] = SLICE(ax_dx_385 + 0x08, word16, 16);
-	Mem394[ss:fp - 0x20 + 0x00:word16] = (word16) (ax_dx_385 + 0x08);
-	Mem397[ss:fp - 0x22 + 0x00:word16] = Mem394[ds_314:10721:word16];
-	Mem400[ss:fp - 0x24 + 0x00:word16] = Mem397[ds_314:10719:word16];
-	selector ds_401;
-	fn0800_ACB3(fp - 0x02, ds_314, ptrArg00, wArg02, wArg08, out ds_401);
-	Mem406[ss:fp - 0x1C + 0x00:word16] = Mem400[ds_401:10721:word16];
-	Mem409[ss:fp - 0x1E + 0x00:word16] = Mem406[ds_401:10719:word16];
-	ui32 ax_dx_413 = SEQ(Mem409[ds_401:0x2A05:word16], Mem409[ds_401:0x2A03:word16] - 0x12);
-	word16 ax_416 = SLICE(ax_dx_413 - 0x12, word16, 16);
-	Mem420[ss:fp - 0x20 + 0x00:word16] = ax_416;
-	Mem422[ss:fp - 0x22 + 0x00:word16] = (word16) (ax_dx_413 - 0x12);
-	selector ds_423 = fn0800_409C(fp - 0x02, ds_401, wArg02, wArg04, wArg06);
-	Mem428[ss:fp - 0x1C + 0x00:word16] = Mem422[ds_423:10721:word16];
-	Mem431[ss:fp - 0x1E + 0x00:word16] = Mem428[ds_423:10719:word16];
-	Mem434[ss:fp - 0x20 + 0x00:word16] = Mem431[ds_423:11851:word16];
-	selector ds_435 = fn0800_401E(fp - 0x02, ds_423, wArg00, wArg02, wArg04);
-	Mem440[ss:fp - 0x1C + 0x00:word16] = Mem434[ds_435:10721:word16];
-	Mem443[ss:fp - 0x1E + 0x00:word16] = Mem440[ds_435:10719:word16];
-	Mem446[ss:fp - 0x20 + 0x00:word16] = Mem443[ds_435:11849:word16];
-	selector ds_447 = fn0800_401E(fp - 0x02, ds_435, wArg00, wArg02, wArg04);
-	Mem452[ss:fp - 0x1C + 0x00:word16] = Mem446[ds_447:10721:word16];
-	Mem455[ss:fp - 0x1E + 0x00:word16] = Mem452[ds_447:10719:word16];
-	Mem459[ss:fp - 0x20 + 0x00:word16] = DPB(ax_416, Mem455[ds_447:0x4E88:byte], 0);
+	Mem388[ss:fp - 0x1C + 0x00:word16] = Mem366[ds_335:10721:word16];
+	Mem391[ss:fp - 0x1E + 0x00:word16] = Mem388[ds_335:10719:word16];
+	byte dl_392;
+	word16 si_393;
+	word16 ax_396 = fn0800_AD2F(ds_335, ptrArg00, wArg02, out dl_392, out si_393) - Mem391[ds_335:18014:word16];
+	Mem400[ds_335:0x2A05:word16] = dx_369 - Mem391[ds_335:0x4660:word16] - (ax_396 <u 0x00);
+	Mem401[ds_335:0x2A03:word16] = ax_396;
+	Mem404[ss:fp - 0x1C + 0x00:word16] = 0x00;
+	ui32 ax_dx_408 = SEQ(Mem404[ds_335:0x4660:word16], Mem404[ds_335:18014:word16] + 0x08);
+	Mem415[ss:fp - 0x1E + 0x00:word16] = SLICE(ax_dx_408 + 0x08, word16, 16);
+	Mem417[ss:fp - 0x20 + 0x00:word16] = (word16) (ax_dx_408 + 0x08);
+	Mem420[ss:fp - 0x22 + 0x00:word16] = Mem417[ds_335:10721:word16];
+	Mem423[ss:fp - 0x24 + 0x00:word16] = Mem420[ds_335:10719:word16];
+	word16 di_424;
+	selector ds_425;
+	fn0800_ACB3(bp_350, ds_335, wArg00, wArg02, wArg08, out di_424, out ds_425);
+	Mem430[ss:fp - 0x1C + 0x00:word16] = Mem423[ds_425:10721:word16];
+	Mem433[ss:fp - 0x1E + 0x00:word16] = Mem430[ds_425:10719:word16];
+	ui32 ax_dx_437 = SEQ(Mem433[ds_425:0x2A05:word16], Mem433[ds_425:0x2A03:word16] - 0x12);
+	word16 ax_440 = SLICE(ax_dx_437 - 0x12, word16, 16);
+	Mem444[ss:fp - 0x20 + 0x00:word16] = ax_440;
+	Mem446[ss:fp - 0x22 + 0x00:word16] = (word16) (ax_dx_437 - 0x12);
+	word16 si_447;
+	selector ds_448;
+	fn0800_409C(bp_350, ds_425, wArg02, wArg04, wArg06, out si_447, out ds_448);
+	Mem454[ss:fp - 0x1C + 0x00:word16] = Mem446[ds_448:10721:word16];
+	Mem457[ss:fp - 0x1E + 0x00:word16] = Mem454[ds_448:10719:word16];
+	Mem460[ss:fp - 0x20 + 0x00:word16] = Mem457[ds_448:11851:word16];
+	word16 si_461;
 	selector ds_462;
-	fn0800_4047(ds_447, bArg00, ptrArg02, wArg04, out ds_462);
-	Mem468[ss:fp - 0x1C + 0x00:word16] = Mem459[ds_462:10721:word16];
+	fn0800_401E(bp_350, ds_448, wArg00, wArg02, wArg04, out si_461, out ds_462);
+	Mem468[ss:fp - 0x1C + 0x00:word16] = Mem460[ds_462:10721:word16];
 	Mem471[ss:fp - 0x1E + 0x00:word16] = Mem468[ds_462:10719:word16];
-	Mem475[ss:fp - 0x20 + 0x00:word16] = DPB(ax_416, Mem471[ds_462:0x29F7:byte], 0);
+	Mem474[ss:fp - 0x20 + 0x00:word16] = Mem471[ds_462:11849:word16];
+	word16 si_475;
 	selector ds_476;
-	fn0800_4047(ds_462, bArg00, ptrArg02, wArg04, out ds_476);
-	Mem481[ss:fp - 0x1C + 0x00:word16] = 0x00;
-	word16 dx_484 = Mem481[ds_476:18014:word16] + Mem481[ds_476:0x2A03:word16];
-	Mem490[ss:fp - 0x1E + 0x00:word16] = Mem481[ds_476:0x4660:word16] + Mem481[ds_476:0x2A05:word16] + (dx_484 <u 0x00);
-	Mem492[ss:fp - 0x20 + 0x00:word16] = dx_484;
-	Mem495[ss:fp - 0x22 + 0x00:word16] = Mem492[ds_476:10721:word16];
-	Mem498[ss:fp - 0x24 + 0x00:word16] = Mem495[ds_476:10719:word16];
-	selector ds_499;
-	fn0800_ACB3(fp - 0x02, ds_476, ptrArg00, wArg02, wArg08, out ds_499);
-	Mem504[ss:fp - 0x1C + 0x00:word16] = 0x00;
-	word16 dx_507 = Mem504[ds_499:18018:word16] + Mem504[ds_499:0x467E:word16];
-	Mem513[ss:fp - 0x1E + 0x00:word16] = Mem504[ds_499:0x4664:word16] + Mem504[ds_499:0x4680:word16] + (dx_507 <u 0x00);
-	Mem515[ss:fp - 0x20 + 0x00:word16] = dx_507;
-	Mem518[ss:fp - 0x22 + 0x00:word16] = Mem515[ds_499:0x29E5:word16];
-	Mem521[ss:fp - 0x24 + 0x00:word16] = Mem518[ds_499:0x29E3:word16];
-	selector ds_522;
-	fn0800_ACB3(fp - 0x02, ds_499, ptrArg00, wArg02, wArg08, out ds_522);
-	Mem528[ss:fp - 0x1C + 0x00:word16] = Mem521[ss:fp - 22 + 0x00:word16];
-	Mem531[ss:fp - 0x1E + 0x00:word16] = Mem528[ss:fp - 0x18 + 0x00:word16];
+	fn0800_401E(bp_350, ds_462, wArg00, wArg02, wArg04, out si_475, out ds_476);
+	Mem482[ss:fp - 0x1C + 0x00:word16] = Mem474[ds_476:10721:word16];
+	Mem485[ss:fp - 0x1E + 0x00:word16] = Mem482[ds_476:10719:word16];
+	Mem489[ss:fp - 0x20 + 0x00:word16] = DPB(ax_440, Mem485[ds_476:0x4E88:byte], 0);
+	word16 di_492;
+	selector ds_493;
+	fn0800_4047(bp_350, ds_476, bArg00, ptrArg02, wArg04, out di_492, out ds_493);
+	Mem499[ss:fp - 0x1C + 0x00:word16] = Mem489[ds_493:10721:word16];
+	Mem502[ss:fp - 0x1E + 0x00:word16] = Mem499[ds_493:10719:word16];
+	Mem506[ss:fp - 0x20 + 0x00:word16] = DPB(ax_440, Mem502[ds_493:0x29F7:byte], 0);
+	word16 di_507;
+	selector ds_508;
+	fn0800_4047(bp_350, ds_493, bArg00, ptrArg02, wArg04, out di_507, out ds_508);
+	Mem513[ss:fp - 0x1C + 0x00:word16] = 0x00;
+	word16 dx_516 = Mem513[ds_508:18014:word16] + Mem513[ds_508:0x2A03:word16];
+	Mem522[ss:fp - 0x1E + 0x00:word16] = Mem513[ds_508:0x4660:word16] + Mem513[ds_508:0x2A05:word16] + (dx_516 <u 0x00);
+	Mem524[ss:fp - 0x20 + 0x00:word16] = dx_516;
+	Mem527[ss:fp - 0x22 + 0x00:word16] = Mem524[ds_508:10721:word16];
+	Mem530[ss:fp - 0x24 + 0x00:word16] = Mem527[ds_508:10719:word16];
+	word16 di_531;
 	selector ds_532;
-	fn0800_4346(ds_522, wArg00, wArg02, out ds_532);
-	Mem538[ss:fp - 0x1C + 0x00:word16] = Mem531[ss:fp - 0x12 + 0x00:word16];
-	Mem541[ss:fp - 0x1E + 0x00:word16] = Mem538[ss:fp - 0x14 + 0x00:word16];
-	selector ds_542;
-	fn0800_4346(ds_532, wArg00, wArg02, out ds_542);
-	Mem548[ss:fp - 0x1C + 0x00:word16] = Mem541[ss:fp - 0x0E + 0x00:word16];
-	Mem551[ss:fp - 0x1E + 0x00:word16] = Mem548[ss:fp - 0x10 + 0x00:word16];
-	selector ds_552;
-	fn0800_4346(ds_542, wArg00, wArg02, out ds_552);
-	Mem558[ss:fp - 0x1C + 0x00:word16] = Mem551[ss:fp - 0x0A + 0x00:word16];
-	Mem561[ss:fp - 0x1E + 0x00:word16] = Mem558[ss:fp - 0x0C + 0x00:word16];
-	selector ds_562;
-	fn0800_4346(ds_552, wArg00, wArg02, out ds_562);
-	Mem568[ss:fp - 0x1C + 0x00:word16] = Mem561[ss:fp - 0x06 + 0x00:word16];
-	Mem571[ss:fp - 0x1E + 0x00:word16] = Mem568[ss:fp - 0x08 + 0x00:word16];
-	fn0800_4346(ds_562, wArg00, wArg02, out ds);
-	Mem577[ss:fp - 0x1C + 0x00:word16] = ds;
-	Mem580[ss:fp - 0x1E + 0x00:word16] = 0x223C;
-	word16 di_581;
-	fn0800_B2EF(ds, wArg00, wArg02, out di_581);
-	return ds;
+	fn0800_ACB3(bp_350, ds_508, wArg00, wArg02, wArg08, out di_531, out ds_532);
+	Mem539[ss:fp - 0x1C + 0x00:word16] = 0x00;
+	word16 ax_540 = Mem539[ds_532:0x4664:word16];
+	word16 dx_542 = Mem539[ds_532:18018:word16];
+	return fn0800_799E(ax_540, dx_542, bp_350, ds_532);
 }
 
-selector fn0800_7A02(word16 bp, selector ds)
+// 0800:799E: Register selector fn0800_799E(Register word16 ax, Register word16 dx, Register word16 bp, Register selector ds)
+selector fn0800_799E(word16 ax, word16 dx, word16 bp, selector ds)
 {
-fn0800_7A02_entry:
-	goto l0800_7C1A
-l0800_7A02:
-l0800_7A19:
-	Mem35[ss:fp - 0x0A + 0x00:word16] = 0x10
-	Mem38[ss:fp - 0x0C + 0x00:word16] = ds
-	Mem41[ss:fp - 0x0E + 0x00:word16] = 10319
-	fn0800_43D4(wArg00, psegArg02, wArg04)
-	Mem49[ss:fp - 0x0A + 0x00:word16] = 0x10
-	Mem51[ss:fp - 0x0C + 0x00:word16] = ds
-	Mem54[ss:fp - 0x0E + 0x00:word16] = 10127
-	fn0800_43D4(wArg00, psegArg02, wArg04)
-	Mem59[ss:fp - 0x0A + 0x00:word16] = 0x10
-	Mem61[ss:fp - 0x0C + 0x00:word16] = ds
-	Mem64[ss:fp - 0x0E + 0x00:word16] = 10511
-	fn0800_43D4(wArg00, psegArg02, wArg04)
-	selector ds_67 = fn0800_7FDC(fp - 0x02, ds)
-	Mem72[ss:fp - 0x0A + 0x00:word16] = 0x00
-	Mem75[ss:fp - 0x0C + 0x00:word16] = Mem72[ss:fp - 0x04 + 0x00:word16]
-	Mem78[ss:fp - 0x0E + 0x00:word16] = Mem75[ss:fp - 0x06 + 0x00:word16]
-	Mem81[ss:fp - 0x10 + 0x00:word16] = Mem78[ds_67:0x29E5:word16]
-	Mem84[ss:fp - 0x12 + 0x00:word16] = Mem81[ds_67:0x29E3:word16]
-	selector ds_87
-	fn0800_ACB3(fp - 0x02, ds_67, ptrArg00, psegArg02, wArg08, out ds_87)
-	Mem93[ss:fp - 0x0A + 0x00:word16] = 0x10
-	Mem95[ss:fp - 0x0C + 0x00:word16] = ds_87
-	Mem98[ss:fp - 0x0E + 0x00:word16] = 10511
-	fn0800_441C(fp - 0x02, ds_87, ptrArg00, psegArg02, wArg04)
-	Mem103[ss:fp - 0x0A + 0x00:word16] = 0x10
-	Mem105[ss:fp - 0x0C + 0x00:word16] = ds_87
-	Mem108[ss:fp - 0x0E + 0x00:word16] = 10319
-	fn0800_441C(fp - 0x02, ds_87, ptrArg00, psegArg02, wArg04)
-	Mem113[ss:fp - 0x0A + 0x00:word16] = 0x10
-	Mem115[ss:fp - 0x0C + 0x00:word16] = ds_87
-	Mem118[ss:fp - 0x0E + 0x00:word16] = 10127
-	fn0800_441C(fp - 0x02, ds_87, ptrArg00, psegArg02, wArg04)
-	Mem123[ss:fp - 0x0A + 0x00:word16] = 0x10
-	Mem125[ss:fp - 0x0C + 0x00:word16] = ds_87
-	Mem128[ss:fp - 0x0E + 0x00:word16] = 10511
-	selector ds_129 = fn0800_83A1(fp - 0x02, ds_87, ptrArg00, wArg04)
-	Mem134[ss:fp - 0x0A + 0x00:word16] = 0x10
-	Mem136[ss:fp - 0x0C + 0x00:word16] = ds_129
-	Mem139[ss:fp - 0x0E + 0x00:word16] = 10319
-	selector ds_140 = fn0800_83A1(fp - 0x02, ds_129, ptrArg00, wArg04)
-	Mem145[ss:fp - 0x0A + 0x00:word16] = 0x10
-	Mem147[ss:fp - 0x0C + 0x00:word16] = ds_140
-	Mem150[ss:fp - 0x0E + 0x00:word16] = 10127
-	selector ds_151 = fn0800_83A1(fp - 0x02, ds_140, ptrArg00, wArg04)
-	Mem156[ss:fp - 0x0A + 0x00:word16] = 0x10
-	Mem159[ss:fp - 0x0C + 0x00:word16] = Mem156[ds_151:0x466A:word16]
-	ds = fn0800_8489(fp - 0x02, ds_151, wArg00)
-	goto l0800_7BC0
-l0800_7ACB:
-l0800_7AFB:
-	branch Mem218[ds:11845:word16] == 0x00 l0800_7B32
-	goto l0800_7B17
+	word16 di_23;
+	selector ds_24;
+	fn0800_ACB3(bp, ds, Mem0[ds:0x29E3:word16], Mem0[ds:0x29E5:word16], wArg00, out di_23, out ds_24);
+	Mem31[ss:fp + 0x00:word16] = Mem0[ss:bp - 0x14 + 0x00:word16];
+	Mem34[ss:fp - 0x02 + 0x00:word16] = Mem31[ss:bp - 22 + 0x00:word16];
+	selector ds_36;
+	fn0800_4346(ds_24, wArg00, wArg02, out ds_36);
+	Mem42[ss:fp + 0x00:word16] = Mem34[ss:bp - 0x10 + 0x00:word16];
+	Mem45[ss:fp - 0x02 + 0x00:word16] = Mem42[ss:bp - 0x12 + 0x00:word16];
+	selector ds_46;
+	fn0800_4346(ds_36, wArg00, wArg02, out ds_46);
+	Mem52[ss:fp + 0x00:word16] = Mem45[ss:bp - 0x0C + 0x00:word16];
+	Mem55[ss:fp - 0x02 + 0x00:word16] = Mem52[ss:bp - 0x0E + 0x00:word16];
+	selector ds_56;
+	fn0800_4346(ds_46, wArg00, wArg02, out ds_56);
+	Mem62[ss:fp + 0x00:word16] = Mem55[ss:bp - 0x08 + 0x00:word16];
+	Mem65[ss:fp - 0x02 + 0x00:word16] = Mem62[ss:bp - 0x0A + 0x00:word16];
+	selector ds_66;
+	fn0800_4346(ds_56, wArg00, wArg02, out ds_66);
+	Mem72[ss:fp + 0x00:word16] = Mem65[ss:bp - 0x04 + 0x00:word16];
+	Mem75[ss:fp - 0x02 + 0x00:word16] = Mem72[ss:bp - 0x06 + 0x00:word16];
+	selector ds_76;
+	fn0800_4346(ds_66, wArg00, wArg02, out ds_76);
+	Mem81[ss:fp + 0x00:word16] = ds_76;
+	Mem84[ss:fp - 0x02 + 0x00:word16] = 0x223C;
+	word16 di_85;
+	fn0800_B2EF(ds_76, wArg00, wArg02, out di_85);
+	return ds_76;
+}
+
+// 0800:7A02: Register word16 fn0800_7A02(Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_7A02(selector ds, ptr16 & dsOut)
+{
+	selector ds_17;
+	return fn0800_7C1A(fp - 0x02, ds, out ds_17);
+}
+
+// 0800:7B02: Register word16 fn0800_7B02(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_7B02(word16 bp, selector ds, ptr16 & dsOut)
+{
+fn0800_7B02_entry:
+	*dsOut = ds
+l0800_7B00_thunk_fn0800_7B02:
+	selector ds_15
+	return fn0800_7B02(bp, ds, out ds_15)
+l0800_7B02:
 l0800_7B04:
 	ds = fn0800_8359(ds)
-	al = al ^ Mem335[ds:11855:byte]
-	Mem344[ds:Mem335[ds:20098:word16] + 18050:byte] = al
-	Mem346[ds:20098:word16] = Mem344[ds:20098:word16] + 0x01
+	al = al ^ Mem27[ds:11855:byte]
+	Mem38[ds:Mem27[ds:20098:word16] + 18050:byte] = al
+	Mem40[ds:20098:word16] = Mem38[ds:20098:word16] + 0x01
 l0800_7B17:
-	word16 ax_333 = Mem218[ds:11847:word16]
-	Mem335[ds:11847:word16] = Mem218[ds:11847:word16] - 0x01
-	branch ax_333 != 0x00 l0800_7B04
-	goto l0800_7B3D
-l0800_7B24:
-	selector ds_361 = fn0800_8359(ds)
-	al = al ^ Mem356[ds_361:11855:byte]
-	Mem367[ss:fp - 0x0A + 0x00:word16] = DPB(ax_354, al, 0)
-	word16 di_369
-	fn0800_8624(ds_361, bArg00, out di_369, out ds)
-l0800_7B32:
-	word16 ax_354 = Mem218[ds:11847:word16]
-	Mem356[ds:11847:word16] = Mem218[ds:11847:word16] - 0x01
-	branch ax_354 != 0x00 l0800_7B24
-l0800_7B3D:
-	branch (Mem218[ds:11855:word16] & 0x01) == 0x00 l0800_7B52
-	branch (Mem218[ds:11855:word16] & 0x01) == 0x00 l0800_7B52
-l0800_7B45:
-	Mem320[ds:11855:word16] = Mem218[ds:11855:word16] >>u 0x01 | 0x8000
-	Mem326[ds:11855:word16] = Mem320[ds:11855:word16] >>u 0x01 | 0x8000
-	goto l0800_7B56
-l0800_7B52:
-	Mem328[ds:11855:word16] = Mem218[ds:11855:word16] >>u 0x01
-l0800_7B56:
-	branch (Mem218[ds:0x466A:word16] | Mem218[ds:0x466C:word16]) == 0x00 l0800_7BC0
-l0800_7B5F:
-	Mem238[ss:fp - 0x0A + 0x00:word16] = Mem218[ds:10717:word16]
-	Mem241[ss:fp - 0x0C + 0x00:word16] = Mem238[ds:10715:word16]
-	word16 si_242
-	word16 di_243
-	selector ds_244
-	word16 ax_245 = fn0800_3E27(fp - 0x02, ds, wArg00, psegArg02, out si_242, out di_243, out ds_244)
-	Mem248[ds_244:11817:word16] = ax_245
-	Mem251[ss:fp - 0x0A + 0x00:word16] = Mem248[ds_244:10717:word16]
-	Mem254[ss:fp - 0x0C + 0x00:word16] = Mem251[ds_244:10715:word16]
-	word16 si_255
-	word16 di_256
-	selector ds_257
-	word16 ax_258 = fn0800_3E27(fp - 0x02, ds_244, wArg00, psegArg02, out si_255, out di_256, out ds_257)
-	Mem261[ds_257:11819:word16] = ax_258
-	Mem263[ss:fp - 0x0A + 0x00:word16] = ds_257
-	Mem266[ss:fp - 0x0C + 0x00:word16] = 10319
-	Mem269[ss:fp - 0x0E + 0x00:word16] = Mem266[ds_257:11819:word16]
-	selector ds_270 = fn0800_8407(fp - 0x02, ds_257, wArg00, ptrArg02)
-	Mem274[ss:fp - 0x0A + 0x00:word16] = ds_270
-	Mem277[ss:fp - 0x0C + 0x00:word16] = 10127
-	Mem280[ss:fp - 0x0E + 0x00:word16] = Mem277[ds_270:11817:word16]
-	ds = fn0800_8407(fp - 0x02, ds_270, wArg00, ptrArg02)
-	Mem284[ds:11817:word16] = Mem280[ds:11817:word16] + 0x02
-	word16 v40_286 = Mem284[ds:0x467A:word16] + Mem284[ds:11817:word16]
-	Mem287[ds:0x467A:word16] = v40_286
-	Mem291[ds:18044:word16] = Mem287[ds:18044:word16] + (v40_286 <u 0x00)
-	goto l0800_7BB5
-l0800_7BB2:
-	ds = fn0800_8359(ds)
-l0800_7BB5:
-	word16 ax_294 = Mem291[ds:11817:word16]
-	Mem296[ds:11817:word16] = Mem291[ds:11817:word16] - 0x01
-	branch ax_294 != 0x00 l0800_7BB2
-l0800_7BC0:
-	word16 ax_169 = Mem159[ds:0x466A:word16]
-	word16 dx_170 = Mem159[ds:0x466C:word16]
-	word16 v18_171 = Mem159[ds:0x466A:word16] - 0x01
-	Mem172[ds:0x466A:word16] = v18_171
-	Mem176[ds:0x466C:word16] = Mem172[ds:0x466C:word16] - (v18_171 <u 0x00)
-	branch (ax_169 | dx_170) == 0x00 l0800_7BD8
-	word16 ax_180 = Mem176[ds:0x466A:word16]
-	word16 dx_181 = Mem176[ds:0x466C:word16]
-	word16 v46_182 = Mem176[ds:0x466A:word16] - 0x01
-	Mem183[ds:0x466A:word16] = v46_182
-	Mem187[ds:0x466C:word16] = Mem183[ds:0x466C:word16] - (v46_182 <u 0x00)
-	word16 ax_188 = ax_180 | dx_181
-	branch ax_188 == 0x00 l0800_7BD8
-l0800_7BD5:
-	Mem194[ss:fp - 0x0A + 0x00:word16] = Mem187[ds:10717:word16]
-	Mem197[ss:fp - 0x0C + 0x00:word16] = Mem194[ds:10715:word16]
-	word16 si_198
-	word16 di_199
-	selector ds_200
-	word16 ax_201 = fn0800_3E27(fp - 0x02, ds, wArg00, psegArg02, out si_198, out di_199, out ds_200)
-	Mem203[ds_200:11847:word16] = ax_201
-	word16 v25_204 = Mem203[ds_200:0x467A:word16] + ax_201
-	Mem205[ds_200:0x467A:word16] = v25_204
-	Mem209[ds_200:18044:word16] = Mem205[ds_200:18044:word16] + (v25_204 <u 0x00)
-	Mem212[ss:fp - 0x0A + 0x00:word16] = ds_200
-	Mem215[ss:fp - 0x0C + 0x00:word16] = 10511
-	Mem218[ss:fp - 0x0E + 0x00:word16] = Mem215[ds_200:11847:word16]
-	ds = fn0800_8407(fp - 0x02, ds_200, wArg00, ptrArg02)
-	branch Mem218[ds:11847:word16] == 0x00 l0800_7B56
-	goto l0800_7AFB
-l0800_7BD8:
-	branch Mem187[ds:11845:word16] != 0x00 l0800_7BFC
-l0800_7BDF:
-	word16 si_402 = 0x00
-	goto l0800_7BF5
-l0800_7BE3:
-	al = Mem187[ds:si_402 + 18050:byte]
-	ax_188 = DPB(ax_188, al, 0) (alias)
-	Mem421[ss:fp - 0x0A + 0x00:word16] = ax_188
-	word16 di_422
-	si_402 = fn0800_8624(ds, bArg00, out di_422, out ds)
-	Mem428[ds:20098:word16] = Mem421[ds:20098:word16] - 0x01
-l0800_7BF5:
-	branch Mem187[ds:20098:word16] != 0x00 l0800_7BE3
-l0800_7BFC:
-	word16 v29_383 = Mem187[ds:0x29F7:word16] + 0x01
-	Mem384[ds:0x29F7:word16] = v29_383
-	Mem388[ds:0x29F9:word16] = Mem384[ds:0x29F9:word16] + (v29_383 <u 0x00)
-	Mem392[ss:fp - 0x0A + 0x00:word16] = Mem388[ds:0x29E5:word16]
-	Mem395[ss:fp - 0x0C + 0x00:word16] = Mem392[ds:0x29E3:word16]
-	word16 si_396
-	word16 ax_397 = fn0800_AD2F(ds, ptrArg00, psegArg02, out si_396)
-	Mem400[ss:fp - 0x04 + 0x00:word16] = dx_181
-	Mem401[ss:fp - 0x06 + 0x00:word16] = ax_397
-l0800_7C1A:
-	word16 ax_26 = Mem0[ds:18044:word16]
-	word16 dx_27 = Mem0[ds:0x467A:word16]
-	branch ax_26 >=u Mem0[ds:0x4680:word16] l0800_7C2A
-	goto l0800_7A19
-l0800_7C2A:
-	branch ax_26 != Mem0[ds:0x4680:word16] || dx_27 >=u Mem0[ds:0x467E:word16] l0800_7C35
-	goto l0800_7A19
-l0800_7C2C:
-l0800_7C35:
-	Mem434[ds:11843:word16] = Mem0[ds:11843:word16] >>u 0x10 - Mem0[ds:11845:byte]
-	branch Mem434[ds:11845:word16] != 0x00 || Mem434[ds:20098:word16] != 0x00 l0800_7C4D
-	goto l0800_7C57
-l0800_7C46:
-l0800_7C4D:
-	Mem475[ss:fp - 0x0A + 0x00:word16] = DPB(ax_26, Mem434[ds:11843:byte], 0)
-	word16 di_476
-	fn0800_8624(ds, bArg00, out di_476, out ds)
-l0800_7C57:
-	branch Mem434[ds:11845:word16] >u 0x08 || Mem434[ds:20098:word16] != 0x00 l0800_7C65
-	goto l0800_7C73
-l0800_7C5E:
-l0800_7C65:
-	Mem463[ss:fp - 0x0A + 0x00:word16] = Mem434[ds:11843:word16] >>u 0x08
-	word16 di_464
-	fn0800_8624(ds, bArg00, out di_464, out ds)
-l0800_7C73:
-	return ds
-fn0800_7A02_exit:
+	word16 ax_25 = Mem0[ds:11847:word16]
+	Mem27[ds:11847:word16] = Mem0[ds:11847:word16] - 0x01
+	branch ax_25 != 0x00 l0800_7B04
+l0800_7B22:
+	selector ds_32
+	return fn0800_7B3D(bp, ds, out ds_32)
+l0800_7B22_thunk_fn0800_7B3D:
+	bp = fn0800_7B3D(bp, ds, out ds)
+	return bp
+fn0800_7B02_exit:
 }
 
+// 0800:7B3D: Register word16 fn0800_7B3D(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_7B3D(word16 bp, selector ds, ptr16 & dsOut)
+{
+	if ((Mem0[ds:11855:word16] & 0x01) != 0x00)
+		Mem26[ds:11855:word16] = Mem0[ds:11855:word16] >>u 0x01 | 0x8000;
+	else
+	{
+		Mem29[ds:11855:word16] = Mem0[ds:11855:word16] >>u 0x01;
+		selector ds_31;
+		return fn0800_7B3D(bp, ds, out ds_31);
+	}
+	word16 ax_17 = Mem0[ds:0x466A:word16];
+	selector ds_19;
+	return fn0800_7B59(ax_17, bp, ds, out ds_19);
+}
+
+// 0800:7B59: Register word16 fn0800_7B59(Register word16 ax, Register word16 bp, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_7B59(word16 ax, word16 bp, selector ds, ptr16 & dsOut)
+{
+	if ((ax | Mem0[ds:0x466C:word16]) == 0x00)
+	{
+		selector ds_100;
+		return fn0800_7BC0(bp, ds, out ds_100);
+	}
+	else
+	{
+		word16 dx_30;
+		word16 si_31;
+		word16 di_32;
+		selector ds_33;
+		word16 ax_34 = fn0800_3E27(bp, ds, Mem0[ds:10715:word16], Mem0[ds:10717:word16], out dx_30, out si_31, out di_32, out ds_33);
+		Mem37[ds_33:11817:word16] = ax_34;
+		Mem40[ss:fp - 0x02 + 0x00:word16] = Mem37[ds_33:10717:word16];
+		Mem44[ss:fp - 0x04 + 0x00:word16] = Mem40[ds_33:10715:word16];
+		word16 dx_47;
+		word16 si_48;
+		word16 di_49;
+		selector ds_50;
+		word16 ax_51 = fn0800_3E27(bp, ds_33, wArg00, wArg02, out dx_47, out si_48, out di_49, out ds_50);
+		Mem54[ds_50:11819:word16] = ax_51;
+		Mem56[ss:fp - 0x02 + 0x00:word16] = ds_50;
+		Mem59[ss:fp - 0x04 + 0x00:word16] = 10319;
+		Mem62[ss:fp - 0x06 + 0x00:word16] = Mem59[ds_50:11819:word16];
+		selector ds_64 = fn0800_8407(bp, ds_50, wArg00, ptrArg02);
+		Mem68[ss:fp - 0x02 + 0x00:word16] = ds_64;
+		Mem71[ss:fp - 0x04 + 0x00:word16] = 10127;
+		Mem74[ss:fp - 0x06 + 0x00:word16] = Mem71[ds_64:11817:word16];
+		selector ds_75 = fn0800_8407(bp, ds_64, wArg00, ptrArg02);
+		Mem78[ds_75:11817:word16] = Mem74[ds_75:11817:word16] + 0x02;
+		word16 v17_80 = Mem78[ds_75:0x467A:word16] + Mem78[ds_75:11817:word16];
+		Mem81[ds_75:0x467A:word16] = v17_80;
+		Mem85[ds_75:18044:word16] = Mem81[ds_75:18044:word16] + (v17_80 <u 0x00);
+		while (true)
+		{
+			word16 ax_88 = Mem85[ds_75:11817:word16];
+			Mem90[ds_75:11817:word16] = Mem85[ds_75:11817:word16] - 0x01;
+			if (ax_88 == 0x00)
+				break;
+			ds_75 = fn0800_8359(ds_75);
+		}
+		selector ds_95;
+		word16 bp_96 = fn0800_7BC0(bp, ds_75, out ds_95);
+		return bp_96;
+	}
+}
+
+// 0800:7BC0: Register word16 fn0800_7BC0(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_7BC0(word16 bp, selector ds, ptr16 & dsOut)
+{
+fn0800_7BC0_entry:
+	*dsOut = ds
+	word16 ax_4 = Mem0[ds:0x466A:word16]
+	word16 dx_5 = Mem0[ds:0x466C:word16]
+	word16 v6_6 = Mem0[ds:0x466A:word16] - 0x01
+	Mem7[ds:0x466A:word16] = v6_6
+	Mem11[ds:0x466C:word16] = Mem7[ds:0x466C:word16] - (v6_6 <u 0x00)
+	word16 ax_12 = ax_4 | dx_5
+	branch ax_12 == 0x00 l0800_7BD8
+	goto l0800_7BD5
+l0800_7ACB:
+l0800_7AF9_thunk_fn0800_7B3D:
+	selector ds_97
+	return fn0800_7B3D(bp, ds_48, out ds_97)
+l0800_7AFB:
+	branch Mem45[ds_48:11845:word16] == 0x00 l0800_7B32
+l0800_7B00_thunk_fn0800_7B02:
+	selector ds_67
+	return fn0800_7B02(bp, ds_48, out ds_67)
+l0800_7B24:
+	selector ds_84 = fn0800_8359(ds_48)
+	al = al ^ Mem77[ds_84:11855:byte]
+	Mem90[ss:fp - 0x02 + 0x00:word16] = DPB(ax_75, al, 0)
+	word16 di_92
+	fn0800_8624(ds_84, bArg00, out di_92, out ds_48)
+l0800_7B32:
+	word16 ax_75 = Mem45[ds_48:11847:word16]
+	Mem77[ds_48:11847:word16] = Mem45[ds_48:11847:word16] - 0x01
+	branch ax_75 != 0x00 l0800_7B24
+l0800_7B3B_thunk_fn0800_7B3D:
+	selector ds_82
+	return fn0800_7B3D(bp, ds_48, out ds_82)
+l0800_7BC0:
+l0800_7BD5:
+	word16 dx_23
+	word16 si_24
+	word16 di_25
+	selector ds_26
+	word16 ax_27 = fn0800_3E27(bp, ds, Mem11[ds:10715:word16], Mem11[ds:10717:word16], out dx_23, out si_24, out di_25, out ds_26)
+	Mem29[ds_26:11847:word16] = ax_27
+	word16 v15_30 = Mem29[ds_26:0x467A:word16] + ax_27
+	Mem31[ds_26:0x467A:word16] = v15_30
+	Mem35[ds_26:18044:word16] = Mem31[ds_26:18044:word16] + (v15_30 <u 0x00)
+	Mem38[ss:fp - 0x02 + 0x00:word16] = ds_26
+	Mem42[ss:fp - 0x04 + 0x00:word16] = 10511
+	Mem45[ss:fp - 0x06 + 0x00:word16] = Mem42[ds_26:11847:word16]
+	selector ds_48 = fn0800_8407(bp, ds_26, wArg00, ptrArg02)
+	branch Mem45[ds_48:11847:word16] == 0x00 l0800_7B56
+	goto l0800_7AFB
+l0800_7BD8:
+	branch Mem11[ds:11845:word16] != 0x00 l0800_7BFC
+l0800_7BDF:
+	word16 si_132 = 0x00
+	goto l0800_7BF5
+l0800_7BE3:
+	ax_12 = DPB(ax_12, Mem11[ds:si_132 + 18050:byte], 0) (alias)
+	Mem151[ss:fp - 0x02 + 0x00:word16] = ax_12
+	word16 di_152
+	si_132 = fn0800_8624(ds, bArg00, out di_152, out ds)
+	Mem158[ds:20098:word16] = Mem151[ds:20098:word16] - 0x01
+l0800_7BF5:
+	branch Mem11[ds:20098:word16] != 0x00 l0800_7BE3
+l0800_7BFC:
+	word16 v25_110 = Mem11[ds:0x29F7:word16] + 0x01
+	Mem111[ds:0x29F7:word16] = v25_110
+	Mem115[ds:0x29F9:word16] = Mem111[ds:0x29F9:word16] + (v25_110 <u 0x00)
+	Mem119[ss:fp - 0x02 + 0x00:word16] = Mem115[ds:0x29E5:word16]
+	Mem122[ss:fp - 0x04 + 0x00:word16] = Mem119[ds:0x29E3:word16]
+	byte dl_125
+	word16 si_126
+	word16 ax_127 = fn0800_AD2F(ds, ptrArg00, wArg02, out dl_125, out si_126)
+	Mem130[ss:bp - 0x02 + 0x00:word16] = dx_5
+	Mem131[ss:bp - 0x04 + 0x00:word16] = ax_127
+l0800_7C17_thunk_fn0800_7C1A:
+	bp = fn0800_7C1A(bp, ds, out ds)
+	return bp
+fn0800_7BC0_exit:
+}
+
+// 0800:7C1A: Register word16 fn0800_7C1A(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_7C1A(word16 bp, selector ds, ptr16 & dsOut)
+{
+	sp = fp;
+	ax = Mem0[ds:18044:word16];
+	dx = Mem0[ds:0x467A:word16];
+	SCZO = cond(ax - Mem0[ds:0x4680:word16]);
+	Z = SCZO;
+	SZO = SCZO;
+	C = SCZO;
+	CZ = SCZO;
+	if (Test(ULT,C))
+	{
+l0800_7A19:
+		ax = 0x10;
+		sp = fp - 0x02;
+		wLoc02 = 0x10;
+		sp = fp - 0x04;
+		wLoc04 = ds;
+		ax = 10319;
+		sp = fp - 0x06;
+		wLoc06 = 10319;
+		fn0800_43D4(wLoc06, wLoc04, wLoc02);
+		sp = fp;
+		SCZO = cond(fp);
+		ax = 0x10;
+		sp = fp - 0x02;
+		wLoc02 = 0x10;
+		sp = fp - 0x04;
+		wLoc04 = ds;
+		ax = 10127;
+		sp = fp - 0x06;
+		wLoc06 = 10127;
+		fn0800_43D4(wLoc06, wLoc04, wLoc02);
+		sp = fp;
+		SCZO = cond(fp);
+		ax = 0x10;
+		sp = fp - 0x02;
+		wLoc02 = 0x10;
+		sp = fp - 0x04;
+		wLoc04 = ds;
+		ax = 10511;
+		sp = fp - 0x06;
+		wLoc06 = 10511;
+		fn0800_43D4(wLoc06, wLoc04, wLoc02);
+		sp = fp;
+		SCZO = cond(fp);
+		bp = fn0800_7FDC(bp, ds, out ds);
+		sp = sp + ~0x01;
+		ax = 0x00;
+		SZO = cond(0x00);
+		C = false;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 0x00;
+		v12 = Mem0[ss:bp - 0x02 + 0x00:word16];
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = v12;
+		v13 = Mem0[ss:bp - 0x04 + 0x00:word16];
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = v13;
+		v14 = Mem0[ds:0x29E5:word16];
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = v14;
+		v15 = Mem0[ds:0x29E3:word16];
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = v15;
+		ax = fn0800_ACB3(bp, ds, wArg00, wArg02, wArg08, out di, out ds);
+		sp = sp + 0x0A;
+		SCZO = cond(sp);
+		ax = 0x10;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 0x10;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = ds;
+		ax = 10511;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 10511;
+		bp = fn0800_441C(si, di, ds, wArg00, wArg04, out si, out di);
+		sp = sp + 0x02;
+		sp = sp + 0x06;
+		SCZO = cond(sp);
+		ax = 0x10;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 0x10;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = ds;
+		ax = 10319;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 10319;
+		bp = fn0800_441C(si, di, ds, wArg00, wArg04, out si, out di);
+		sp = sp + 0x02;
+		sp = sp + 0x06;
+		SCZO = cond(sp);
+		ax = 0x10;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 0x10;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = ds;
+		ax = 10127;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 10127;
+		bp = fn0800_441C(si, di, ds, wArg00, wArg04, out si, out di);
+		sp = sp + 0x02;
+		sp = sp + 0x06;
+		SCZO = cond(sp);
+		ax = 0x10;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 0x10;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = ds;
+		ax = 10511;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 10511;
+		ds = fn0800_83A1(bp, ds, ptrArg00, wArg04);
+		sp = sp + 0x06;
+		SCZO = cond(sp);
+		ax = 0x10;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 0x10;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = ds;
+		ax = 10319;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 10319;
+		ds = fn0800_83A1(bp, ds, ptrArg00, wArg04);
+		sp = sp + 0x06;
+		SCZO = cond(sp);
+		ax = 0x10;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 0x10;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = ds;
+		ax = 10127;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 10127;
+		ds = fn0800_83A1(bp, ds, ptrArg00, wArg04);
+		sp = sp + 0x06;
+		SCZO = cond(sp);
+		ax = 0x10;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = 0x10;
+		v16 = Mem0[ds:0x466A:word16];
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = v16;
+		ds = fn0800_8489(bp, ds, wArg00);
+		sp = sp + 0x04;
+		SCZO = cond(sp);
+		bp = fn0800_7BC0(bp, ds, out ds);
+		return bp;
+	}
+	if (Test(EQ,Z))
+	{
+		SCZO = cond(dx - Mem0[ds:0x467E:word16]);
+		C = SCZO;
+		if (Test(ULT,C))
+			goto l0800_7A19;
+	}
+	cl = 0x10;
+	cl = 0x10 - Mem0[ds:11845:byte];
+	v20 = Mem0[ds:11843:word16] >>u cl;
+	Mem0[ds:11843:word16] = v20;
+	SCZO = cond(Mem0[ds:11845:word16] - 0x00);
+	Z = SCZO;
+	if (Test(EQ,Z))
+	{
+		SCZO = cond(Mem0[ds:20098:word16] - 0x00);
+		Z = SCZO;
+		if (Test(EQ,Z))
+		{
+l0800_7C57:
+			SCZO = cond(Mem0[ds:11845:word16] - 0x08);
+			CZ = SCZO;
+			if (Test(ULE,CZ))
+			{
+				SCZO = cond(Mem0[ds:20098:word16] - 0x00);
+				Z = SCZO;
+				if (Test(EQ,Z))
+				{
+l0800_7C73:
+					si = Mem0[ss:sp + 0x00:word16];
+					sp = bp;
+					bp = Mem0[ss:sp + 0x00:word16];
+					sp = sp + 0x02;
+					return bp;
+				}
+			}
+			ax = Mem0[ds:11843:word16];
+			cl = 0x08;
+			ax = ax >>u 0x08;
+			SCZO = cond(ax);
+			sp = sp - 0x02;
+			Mem0[ss:sp + 0x00:word16] = ax;
+			si = fn0800_8624(ds, bArg00, out di, out ds);
+			sp = sp + 0x02;
+			SCZO = cond(sp);
+			goto l0800_7C73;
+		}
+	}
+	al = Mem0[ds:11843:byte];
+	ax = DPB(ax, al, 0);
+	sp = fp - 0x02;
+	wLoc02 = ax;
+	bLoc02 = (byte) wLoc02;
+	si = fn0800_8624(ds, bLoc02, out di, out ds);
+	sp = sp + 0x02;
+	SCZO = cond(sp);
+	goto l0800_7C57;
+}
+
+// 0800:7C78: Register selector fn0800_7C78(Register word16 bp, Register selector ds)
 selector fn0800_7C78(word16 bp, selector ds)
 {
 fn0800_7C78_entry:
+	word16 bp_123 = fp - 0x02
+	word16 sp_29 = fp - 0x08
 	goto l0800_7E6D
 l0800_7C78:
 l0800_7C8F:
-	selector ds_37 = fn0800_7FDC(fp - 0x02, ds)
-	Mem42[ss:fp - 0x0A + 0x00:word16] = 0x00
-	Mem46[ss:fp - 0x0C + 0x00:word16] = Mem42[ss:fp - 0x04 + 0x00:word16]
-	Mem49[ss:fp - 0x0E + 0x00:word16] = Mem46[ss:fp - 0x06 + 0x00:word16]
-	Mem52[ss:fp - 0x10 + 0x00:word16] = Mem49[ds_37:0x29E5:word16]
-	Mem55[ss:fp - 0x12 + 0x00:word16] = Mem52[ds_37:0x29E3:word16]
-	selector ds_116
-	fn0800_ACB3(fp - 0x02, ds_37, ptrArg00, wArg02, wArg08, out ds_116)
+	selector ds_39
+	bp_123 = fn0800_7FDC(bp_123, ds, out ds_39)
+	word16 sp_41 = sp_29 + ~0x01
+	Mem46[ss:sp_41 - 0x02 + 0x00:word16] = 0x00
+	Mem50[ss:sp_41 - 0x04 + 0x00:word16] = Mem46[ss:bp_123 - 0x02 + 0x00:word16]
+	Mem53[ss:sp_41 - 0x06 + 0x00:word16] = Mem50[ss:bp_123 - 0x04 + 0x00:word16]
+	Mem56[ss:sp_41 - 0x08 + 0x00:word16] = Mem53[ds_39:0x29E5:word16]
+	Mem59[ss:sp_41 - 0x0A + 0x00:word16] = Mem56[ds_39:0x29E3:word16]
+	word16 di_63
+	selector ds_122
+	fn0800_ACB3(bp_123, ds_39, wArg00, wArg02, wArg08, out di_63, out ds_122)
+	word16 sp_125 = sp_41
 	goto l0800_7DCD
 l0800_7CAC:
 l0800_7CD9:
-	Mem125[ss:fp - 0x0A + 0x00:word16] = Mem115[ds_116:10717:word16]
-	Mem128[ss:fp - 0x0C + 0x00:word16] = Mem125[ds_116:10715:word16]
-	word16 si_129
-	word16 di_130
-	selector ds_131
-	word16 ax_132 = fn0800_3E27(fp - 0x02, ds_116, wArg00, wArg02, out si_129, out di_130, out ds_131)
-	Mem135[ds_131:11817:word16] = ax_132
-	Mem138[ss:fp - 0x0A + 0x00:word16] = Mem135[ds_131:10717:word16]
-	Mem141[ss:fp - 0x0C + 0x00:word16] = Mem138[ds_131:10715:word16]
-	word16 si_142
-	word16 di_143
-	selector ds_144
-	word16 ax_145 = fn0800_3E27(fp - 0x02, ds_131, wArg00, wArg02, out si_142, out di_143, out ds_144)
-	Mem147[ds_144:11819:word16] = ax_145
-	branch Mem147[ds_144:11817:word16] != 0x00 l0800_7D1D
+	Mem133[ss:sp_101 - 0x02 + 0x00:word16] = Mem121[ds_122:10717:word16]
+	Mem136[ss:sp_101 - 0x04 + 0x00:word16] = Mem133[ds_122:10715:word16]
+	word16 dx_137
+	word16 si_138
+	word16 di_139
+	selector ds_140
+	word16 ax_141 = fn0800_3E27(bp_123, ds_122, wArg00, wArg02, out dx_137, out si_138, out di_139, out ds_140)
+	Mem144[ds_140:11817:word16] = ax_141
+	Mem147[ss:sp_101 - 0x02 + 0x00:word16] = Mem144[ds_140:10717:word16]
+	Mem150[ss:sp_101 - 0x04 + 0x00:word16] = Mem147[ds_140:10715:word16]
+	word16 dx_151
+	word16 si_152
+	word16 di_153
+	selector ds_154
+	word16 ax_155 = fn0800_3E27(bp_123, ds_140, wArg00, wArg02, out dx_151, out si_152, out di_153, out ds_154)
+	Mem157[ds_154:11819:word16] = ax_155
+	branch Mem157[ds_154:11817:word16] != 0x00 l0800_7D1D
 l0800_7D02:
-	Mem180[ss:fp - 0x0A + 0x00:word16] = 0x03
-	Mem183[ss:fp - 0x0C + 0x00:word16] = 0x06
-	selector ds_185 = fn0800_854B(fp - 0x02, ds_144, bArg02)
-	Mem191[ss:fp - 0x0A + 0x00:word16] = DPB(0x06, Mem183[ds_185:11819:byte], 0)
-	word16 di_193
-	fn0800_8600(ds_185, bArg00, out di_193, out ds_116)
+	Mem190[ss:sp_101 - 0x02 + 0x00:word16] = 0x03
+	Mem193[ss:sp_101 - 0x04 + 0x00:word16] = 0x06
+	selector ds_195 = fn0800_854B(bp_123, ds_154, bArg02)
+	Mem201[ss:sp_101 - 0x02 + 0x00:word16] = DPB(0x06, Mem193[ds_195:11819:byte], 0)
+	word16 di_203
+	fn0800_8600(ds_195, bArg00, out di_203, out ds_122)
 	goto l0800_7DAC
 l0800_7D1D:
-	branch Mem147[ds_144:11817:word16] >=u 0x07 l0800_7D68
+	branch Mem157[ds_154:11817:word16] >=u 0x07 l0800_7D68
 l0800_7D24:
-	Mem205[ss:fp - 0x0A + 0x00:word16] = DPB(ax_145, 0x00, 8)
-	Mem210[ss:fp - 0x0C + 0x00:word16] = DPB(ax_145, 0x00, 8)
-	selector ds_211 = fn0800_854B(fp - 0x02, ds_144, bArg02)
-	Mem222[ss:fp - 0x0A + 0x00:word16] = DPB(ax_145, 0x00, 8)
-	word16 ax_225 = DPB(ax_145, 0x00, 8)
-	Mem227[ss:fp - 0x0C + 0x00:word16] = ax_225
-	selector ds_228 = fn0800_854B(fp - 0x02, ds_211, bArg02)
-	Mem236[ss:fp - 0x0A + 0x00:word16] = DPB(ax_225, Mem227[ds_228:11819:byte] & ~0x00, 0)
-	word16 di_237
-	fn0800_8600(ds_228, bArg00, out di_237, out ds_116)
+	Mem215[ss:sp_101 - 0x02 + 0x00:word16] = DPB(ax_155, 0x00, 8)
+	Mem220[ss:sp_101 - 0x04 + 0x00:word16] = DPB(ax_155, 0x00, 8)
+	selector ds_221 = fn0800_854B(bp_123, ds_154, bArg02)
+	Mem232[ss:sp_101 - 0x02 + 0x00:word16] = DPB(ax_155, 0x00, 8)
+	word16 ax_235 = DPB(ax_155, 0x00, 8)
+	Mem237[ss:sp_101 - 0x04 + 0x00:word16] = ax_235
+	selector ds_238 = fn0800_854B(bp_123, ds_221, bArg02)
+	Mem246[ss:sp_101 - 0x02 + 0x00:word16] = DPB(ax_235, Mem237[ds_238:11819:byte] & ~0x00, 0)
+	word16 di_247
+	fn0800_8600(ds_238, bArg00, out di_247, out ds_122)
 	goto l0800_7DAC
 l0800_7D68:
-	Mem244[ss:fp - 0x0A + 0x00:word16] = 0x04
-	Mem247[ss:fp - 0x0C + 0x00:word16] = 0x0F
-	selector ds_248 = fn0800_854B(fp - 0x02, ds_144, bArg02)
-	word16 ax_252 = DPB(0x0F, Mem247[ds_248:11817:byte] - 0x06, 0)
-	Mem255[ss:fp - 0x0A + 0x00:word16] = ax_252
-	word16 di_256
-	selector ds_257
-	fn0800_8600(ds_248, bArg00, out di_256, out ds_257)
-	Mem269[ss:fp - 0x0A + 0x00:word16] = DPB(ax_252, 0x00, 8)
-	word16 ax_272 = DPB(ax_252, 0x00, 8)
-	Mem274[ss:fp - 0x0C + 0x00:word16] = ax_272
-	selector ds_275 = fn0800_854B(fp - 0x02, ds_257, bArg02)
-	Mem283[ss:fp - 0x0A + 0x00:word16] = DPB(ax_272, Mem274[ds_275:11819:byte] & ~0x00, 0)
-	word16 di_284
-	fn0800_8600(ds_275, bArg00, out di_284, out ds_116)
+	Mem254[ss:sp_101 - 0x02 + 0x00:word16] = 0x04
+	Mem257[ss:sp_101 - 0x04 + 0x00:word16] = 0x0F
+	selector ds_258 = fn0800_854B(bp_123, ds_154, bArg02)
+	word16 ax_262 = DPB(0x0F, Mem257[ds_258:11817:byte] - 0x06, 0)
+	Mem265[ss:sp_101 - 0x02 + 0x00:word16] = ax_262
+	word16 di_266
+	selector ds_267
+	fn0800_8600(ds_258, bArg00, out di_266, out ds_267)
+	Mem279[ss:sp_101 - 0x02 + 0x00:word16] = DPB(ax_262, 0x00, 8)
+	word16 ax_282 = DPB(ax_262, 0x00, 8)
+	Mem284[ss:sp_101 - 0x04 + 0x00:word16] = ax_282
+	selector ds_285 = fn0800_854B(bp_123, ds_267, bArg02)
+	Mem293[ss:sp_101 - 0x02 + 0x00:word16] = DPB(ax_282, Mem284[ds_285:11819:byte] & ~0x00, 0)
+	word16 di_294
+	fn0800_8600(ds_285, bArg00, out di_294, out ds_122)
 l0800_7DAC:
-	Mem160[ds_116:11817:word16] = Mem147[ds_116:11817:word16] + 0x02
-	word16 v40_162 = Mem160[ds_116:0x467A:word16] + Mem160[ds_116:11817:word16]
-	Mem163[ds_116:0x467A:word16] = v40_162
-	Mem167[ds_116:18044:word16] = Mem163[ds_116:18044:word16] + (v40_162 <u 0x00)
+	Mem170[ds_122:11817:word16] = Mem157[ds_122:11817:word16] + 0x02
+	word16 v40_172 = Mem170[ds_122:0x467A:word16] + Mem170[ds_122:11817:word16]
+	Mem173[ds_122:0x467A:word16] = v40_172
+	Mem177[ds_122:18044:word16] = Mem173[ds_122:18044:word16] + (v40_172 <u 0x00)
+	sp_125 = sp_101
 	goto l0800_7DC2
 l0800_7DBF:
-	ds_116 = fn0800_8359(ds_116)
+	ds_122 = fn0800_8359(ds_122)
 l0800_7DC2:
-	word16 ax_170 = Mem167[ds_116:11817:word16]
-	Mem172[ds_116:11817:word16] = Mem167[ds_116:11817:word16] - 0x01
-	branch ax_170 != 0x00 l0800_7DBF
+	word16 ax_180 = Mem177[ds_122:11817:word16]
+	Mem182[ds_122:11817:word16] = Mem177[ds_122:11817:word16] - 0x01
+	branch ax_180 != 0x00 l0800_7DBF
 l0800_7DCD:
-	word16 ax_71 = Mem55[ds_116:0x466A:word16]
-	word16 dx_72 = Mem55[ds_116:0x466C:word16]
-	word16 v17_73 = Mem55[ds_116:0x466A:word16] - 0x01
-	Mem74[ds_116:0x466A:word16] = v17_73
-	Mem78[ds_116:0x466C:word16] = Mem74[ds_116:0x466C:word16] - (v17_73 <u 0x00)
-	branch (ax_71 | dx_72) == 0x00 l0800_7DE5
-	word16 ax_82 = Mem78[ds_116:0x466A:word16]
-	word16 dx_83 = Mem78[ds_116:0x466C:word16]
-	word16 v46_84 = Mem78[ds_116:0x466A:word16] - 0x01
-	Mem85[ds_116:0x466A:word16] = v46_84
-	Mem89[ds_116:0x466C:word16] = Mem85[ds_116:0x466C:word16] - (v46_84 <u 0x00)
-	branch (ax_82 | dx_83) == 0x00 l0800_7DE5
+	word16 ax_77 = Mem59[ds_122:0x466A:word16]
+	word16 dx_78 = Mem59[ds_122:0x466C:word16]
+	word16 v17_79 = Mem59[ds_122:0x466A:word16] - 0x01
+	Mem80[ds_122:0x466A:word16] = v17_79
+	Mem84[ds_122:0x466C:word16] = Mem80[ds_122:0x466C:word16] - (v17_79 <u 0x00)
+	branch (ax_77 | dx_78) == 0x00 l0800_7DE5
+	word16 ax_88 = Mem84[ds_122:0x466A:word16]
+	word16 dx_89 = Mem84[ds_122:0x466C:word16]
+	word16 v46_90 = Mem84[ds_122:0x466A:word16] - 0x01
+	Mem91[ds_122:0x466A:word16] = v46_90
+	Mem95[ds_122:0x466C:word16] = Mem91[ds_122:0x466C:word16] - (v46_90 <u 0x00)
+	branch (ax_88 | dx_89) == 0x00 l0800_7DE5
 l0800_7DE2:
-	Mem96[ss:fp - 0x0A + 0x00:word16] = Mem89[ds_116:10717:word16]
-	Mem99[ss:fp - 0x0C + 0x00:word16] = Mem96[ds_116:10715:word16]
-	word16 si_101
-	word16 di_102
-	selector ds_103
-	word16 ax_104 = fn0800_3E27(fp - 0x02, ds_116, wArg00, wArg02, out si_101, out di_102, out ds_103)
-	Mem106[ds_103:11847:word16] = ax_104
-	word16 v25_107 = Mem106[ds_103:0x467A:word16] + ax_104
-	Mem108[ds_103:0x467A:word16] = v25_107
-	Mem112[ds_103:18044:word16] = Mem108[ds_103:18044:word16] + (v25_107 <u 0x00)
-	Mem115[ss:fp - 0x0A + 0x00:word16] = ax_104
-	ds_116 = fn0800_7EAF(fp - 0x02, ds_103, wArg00)
-	branch (Mem115[ds_116:0x466A:word16] | Mem115[ds_116:0x466C:word16]) != 0x00 l0800_7CD9
+	word16 sp_101 = sp_125 - 0x02
+	Mem102[ss:sp_101 + 0x00:word16] = Mem95[ds_122:10717:word16]
+	Mem105[ss:sp_101 - 0x02 + 0x00:word16] = Mem102[ds_122:10715:word16]
+	word16 dx_106
+	word16 si_107
+	word16 di_108
+	selector ds_109
+	word16 ax_110 = fn0800_3E27(bp_123, ds_122, wArg00, wArg02, out dx_106, out si_107, out di_108, out ds_109)
+	Mem112[ds_109:11847:word16] = ax_110
+	word16 v25_113 = Mem112[ds_109:0x467A:word16] + ax_110
+	Mem114[ds_109:0x467A:word16] = v25_113
+	Mem118[ds_109:18044:word16] = Mem114[ds_109:18044:word16] + (v25_113 <u 0x00)
+	Mem121[ss:sp_101 + 0x00:word16] = ax_110
+	bp_123 = fn0800_7EAF(si_107, di_108, ds_109, wArg00, out ds_122)
+	sp_125 = sp_101
+	branch (Mem121[ds_122:0x466A:word16] | Mem121[ds_122:0x466C:word16]) != 0x00 l0800_7CD9
 	goto l0800_7DCD
 l0800_7DE5:
-	word16 ax_314
-	Mem291[ss:fp - 0x0A + 0x00:word16] = 0x04
-	Mem294[ss:fp - 0x0C + 0x00:word16] = 0x0F
-	selector ds_295 = fn0800_854B(fp - 0x02, ds_116, bArg02)
-	Mem301[ss:fp - 0x0A + 0x00:word16] = 0x00
-	word16 di_302
-	selector ds_303
-	fn0800_8600(ds_295, bArg00, out di_302, out ds_303)
-	word16 ax_306 = Mem301[ds_303:18044:word16]
-	word16 dx_307 = Mem301[ds_303:0x467A:word16]
-	branch ax_306 >u Mem301[ds_303:0x4680:word16] || ax_306 >=u Mem301[ds_303:0x4680:word16] && dx_307 >=u Mem301[ds_303:0x467E:word16] l0800_7E1E
+	word16 ax_325
+	word16 sp_300 = sp_125 - 0x02
+	Mem301[ss:sp_300 + 0x00:word16] = 0x04
+	Mem304[ss:sp_300 - 0x02 + 0x00:word16] = 0x0F
+	selector ds_305 = fn0800_854B(bp_123, ds_122, bArg02)
+	Mem311[ss:sp_300 + 0x00:word16] = 0x00
+	word16 di_312
+	selector ds_313
+	fn0800_8600(ds_305, bArg00, out di_312, out ds_313)
+	word16 ax_316 = Mem311[ds_313:18044:word16]
+	word16 dx_317 = Mem311[ds_313:0x467A:word16]
+	branch ax_316 >u Mem311[ds_313:0x4680:word16] || ax_316 >=u Mem311[ds_313:0x4680:word16] && dx_317 >=u Mem311[ds_313:0x467E:word16] l0800_7E1E
 	goto l0800_7E11
 l0800_7E09:
 l0800_7E0B:
 l0800_7E11:
-	Mem406[ss:fp - 0x0A + 0x00:word16] = 0x01
-	Mem408[ss:fp - 0x0C + 0x00:word16] = 0x01
-	ax_314 = 0x01
-	ds = fn0800_854B(fp - 0x02, ds_303, bArg02)
+	Mem420[ss:sp_300 + 0x00:word16] = 0x01
+	Mem422[ss:sp_300 - 0x02 + 0x00:word16] = 0x01
+	ax_325 = 0x01
+	ds = fn0800_854B(bp_123, ds_313, bArg02)
 	goto l0800_7E2B
 l0800_7E1E:
-	Mem394[ss:fp - 0x0A + 0x00:word16] = 0x01
-	Mem399[ss:fp - 0x0C + 0x00:word16] = 0x00
-	ax_314 = 0x00
-	ds = fn0800_854B(fp - 0x02, ds_303, bArg02)
+	Mem408[ss:sp_300 + 0x00:word16] = 0x01
+	Mem413[ss:sp_300 - 0x02 + 0x00:word16] = 0x00
+	ax_325 = 0x00
+	ds = fn0800_854B(bp_123, ds_313, bArg02)
 l0800_7E2B:
-	branch Mem301[ds:11845:word16] != 0x00 l0800_7E4F
+	branch Mem311[ds:11845:word16] != 0x00 l0800_7E4F
 l0800_7E32:
-	word16 si_364 = 0x00
+	word16 si_378 = 0x00
 	goto l0800_7E48
 l0800_7E36:
-	ax_314 = DPB(ax_314, Mem301[ds:si_364 + 18050:byte], 0) (alias)
-	Mem383[ss:fp - 0x0A + 0x00:word16] = ax_314
-	word16 di_384
-	si_364 = fn0800_8624(ds, bArg00, out di_384, out ds)
-	Mem390[ds:20098:word16] = Mem383[ds:20098:word16] - 0x01
+	ax_325 = DPB(ax_325, Mem311[ds:si_378 + 18050:byte], 0) (alias)
+	Mem397[ss:sp_125 - 0x02 + 0x00:word16] = ax_325
+	word16 di_398
+	si_378 = fn0800_8624(ds, bArg00, out di_398, out ds)
+	Mem404[ds:20098:word16] = Mem397[ds:20098:word16] - 0x01
 l0800_7E48:
-	branch Mem301[ds:20098:word16] != 0x00 l0800_7E36
+	branch Mem311[ds:20098:word16] != 0x00 l0800_7E36
 l0800_7E4F:
-	word16 v31_327 = Mem301[ds:0x29F7:word16] + 0x01
-	Mem328[ds:0x29F7:word16] = v31_327
-	Mem332[ds:0x29F9:word16] = Mem328[ds:0x29F9:word16] + (v31_327 <u 0x00)
-	Mem336[ss:fp - 0x0A + 0x00:word16] = Mem332[ds:0x29E5:word16]
-	Mem339[ss:fp - 0x0C + 0x00:word16] = Mem336[ds:0x29E3:word16]
-	word16 si_340
-	word16 ax_341 = fn0800_AD2F(ds, ptrArg00, wArg02, out si_340)
-	Mem343[ss:fp - 0x04 + 0x00:word16] = dx_307
-	Mem344[ss:fp - 0x06 + 0x00:word16] = ax_341
-	word16 v35_345 = Mem344[ds:0x29F7:word16] + 0x01
-	Mem346[ds:0x29F7:word16] = v35_345
-	Mem350[ds:0x29F9:word16] = Mem346[ds:0x29F9:word16] + (v35_345 <u 0x00)
-	Mem354[ss:fp - 0x0A + 0x00:word16] = Mem350[ds:0x29E5:word16]
-	Mem357[ss:fp - 0x0C + 0x00:word16] = Mem354[ds:0x29E3:word16]
-	word16 si_358
-	word16 ax_359 = fn0800_AD2F(ds, ptrArg00, wArg02, out si_358)
-	Mem362[ss:fp - 0x04 + 0x00:word16] = dx_307
-	Mem363[ss:fp - 0x06 + 0x00:word16] = ax_359
+	word16 v31_338 = Mem311[ds:0x29F7:word16] + 0x01
+	Mem339[ds:0x29F7:word16] = v31_338
+	Mem343[ds:0x29F9:word16] = Mem339[ds:0x29F9:word16] + (v31_338 <u 0x00)
+	word16 sp_346 = sp_125 - 0x02
+	Mem347[ss:sp_346 + 0x00:word16] = Mem343[ds:0x29E5:word16]
+	Mem350[ss:sp_346 - 0x02 + 0x00:word16] = Mem347[ds:0x29E3:word16]
+	byte dl_352
+	word16 si_353
+	word16 ax_354 = fn0800_AD2F(ds, ptrArg00, wArg02, out dl_352, out si_353)
+	Mem356[ss:bp_123 - 0x02 + 0x00:word16] = dx_317
+	Mem357[ss:bp_123 - 0x04 + 0x00:word16] = ax_354
+	word16 v35_358 = Mem357[ds:0x29F7:word16] + 0x01
+	Mem359[ds:0x29F7:word16] = v35_358
+	Mem363[ds:0x29F9:word16] = Mem359[ds:0x29F9:word16] + (v35_358 <u 0x00)
+	Mem367[ss:sp_346 + 0x00:word16] = Mem363[ds:0x29E5:word16]
+	Mem370[ss:sp_346 - 0x02 + 0x00:word16] = Mem367[ds:0x29E3:word16]
+	byte dl_371
+	word16 si_372
+	word16 ax_373 = fn0800_AD2F(ds, ptrArg00, wArg02, out dl_371, out si_372)
+	Mem376[ss:bp_123 - 0x02 + 0x00:word16] = dx_317
+	Mem377[ss:bp_123 - 0x04 + 0x00:word16] = ax_373
+	sp_29 = sp_346 + 0x02
 l0800_7E6D:
-	word16 ax_30 = Mem0[ds:18044:word16]
-	word16 dx_31 = Mem0[ds:0x467A:word16]
-	branch ax_30 >=u Mem0[ds:0x4680:word16] l0800_7E7D
+	word16 ax_31 = Mem0[ds:18044:word16]
+	word16 dx_32 = Mem0[ds:0x467A:word16]
+	branch ax_31 >=u Mem0[ds:0x4680:word16] l0800_7E7D
 	goto l0800_7C8F
 l0800_7E7D:
-	branch ax_30 != Mem0[ds:0x4680:word16] || dx_31 >=u Mem0[ds:0x467E:word16] l0800_7E88
+	branch ax_31 != Mem0[ds:0x4680:word16] || dx_32 >=u Mem0[ds:0x467E:word16] l0800_7E88
 	goto l0800_7C8F
 l0800_7E7F:
 l0800_7E88:
-	Mem418[ds:11843:word16] = Mem0[ds:11843:word16] << 0x08 - Mem0[ds:11845:byte]
-	branch Mem418[ds:11845:word16] != 0x00 || Mem418[ds:20098:word16] != 0x00 l0800_7EA0
+	Mem432[ds:11843:word16] = Mem0[ds:11843:word16] << 0x08 - Mem0[ds:11845:byte]
+	branch Mem432[ds:11845:word16] != 0x00 || Mem432[ds:20098:word16] != 0x00 l0800_7EA0
 	goto l0800_7EAA
 l0800_7E99:
 l0800_7EA0:
-	Mem436[ss:fp - 0x0A + 0x00:word16] = DPB(ax_30, Mem418[ds:11843:byte], 0)
-	word16 di_437
-	fn0800_8624(ds, bArg00, out di_437, out ds)
+	Mem450[ss:sp_29 - 0x02 + 0x00:word16] = DPB(ax_31, Mem432[ds:11843:byte], 0)
+	word16 di_451
+	fn0800_8624(ds, bArg00, out di_451, out ds)
 l0800_7EAA:
 	return ds
 fn0800_7C78_exit:
 }
 
-selector fn0800_7EAF(word16 bp, selector ds, word16 wArg02)
+// 0800:7EAF: Register word16 fn0800_7EAF(Register word16 si, Register word16 di, Register selector ds, Stack word16 wArg02, Register out ptr16 dsOut)
+word16 fn0800_7EAF(word16 si, word16 di, selector ds, word16 wArg02, ptr16 & dsOut)
 {
-	word16 si_13 = wArg02;
-	while (true)
-	{
-		word16 si_122 = si_13;
-		if (si_13 == 0x00)
-			break;
-		if (si_13 <u 0x0C)
-		{
-			while (true)
-			{
-				si_13 = si_122;
-				if (si_122 == 0x00)
-					break;
-				Mem44[ss:fp - 0x08 + 0x00:word16] = 0x01;
-				Mem51[ss:fp - 0x0A + 0x00:word16] = 0x00;
-				selector ds_56 = fn0800_8359(fn0800_854B(fp - 0x02, ds, bArg02));
-				al = Mem51[ds_56:11855:byte] ^ 0x00;
-				Mem62[ss:fp - 0x08 + 0x00:word16] = (word16) al;
-				word16 di_64;
-				word16 si_66 = fn0800_8600(ds_56, bArg00, out di_64, out ds);
-				if ((Mem62[ds:11855:word16] & 0x01) != 0x00)
-					Mem81[ds:11855:word16] = Mem62[ds:11855:word16] >>u 0x01 | 0x8000;
-				else
-					Mem83[ds:11855:word16] = Mem62[ds:11855:word16] >>u 0x01;
-				si_122 = si_66 - 0x01;
-			}
-		}
-		else
-		{
-			while ((si_122 & 0x03) != 0x00)
-			{
-				Mem209[ss:fp - 0x08 + 0x00:word16] = 0x01;
-				Mem215[ss:fp - 0x0A + 0x00:word16] = 0x00;
-				selector ds_219 = fn0800_8359(fn0800_854B(fp - 0x02, ds, bArg02));
-				al = Mem215[ds_219:11855:byte] ^ 0x00;
-				Mem225[ss:fp - 0x08 + 0x00:word16] = (word16) al;
-				word16 di_226;
-				word16 si_228 = fn0800_8600(ds_219, bArg00, out di_226, out ds);
-				if ((Mem225[ds:11855:word16] & 0x01) != 0x00)
-					Mem243[ds:11855:word16] = Mem225[ds:11855:word16] >>u 0x01 | 0x8000;
-				else
-					Mem245[ds:11855:word16] = Mem225[ds:11855:word16] >>u 0x01;
-				si_122 = si_228 - 0x01;
-			}
-			Mem97[ss:fp - 0x08 + 0x00:word16] = 0x05;
-			Mem100[ss:fp - 0x0A + 0x00:word16] = 0x17;
-			selector ds_101 = fn0800_854B(fp - 0x02, ds, bArg02);
-			if (si_122 >=u 0x48)
-			{
-				Mem107[ss:fp - 0x08 + 0x00:word16] = 0x04;
-				Mem110[ss:fp - 0x0A + 0x00:word16] = 0x0F;
-				word16 ax_108 = 0x0F;
-				ds = fn0800_854B(fp - 0x02, ds_101, bArg02);
-				word16 di_113 = 0x00;
-				while (di_113 != 0x48)
-				{
-					selector ds_143 = fn0800_8359(ds);
-					al = al ^ Mem110[ds_143:11855:byte];
-					ax_108 = DPB(ax_108, al, 0);
-					Mem149[ss:fp - 0x08 + 0x00:word16] = ax_108;
-					word16 di_150;
-					si_122 = fn0800_8600(ds_143, bArg00, out di_150, out ds);
-					di_113 = di_150 + 0x01;
-				}
-				if ((Mem110[ds:11855:word16] & 0x01) != 0x00)
-					Mem139[ds:11855:word16] = Mem110[ds:11855:word16] >>u 0x01 | 0x8000;
-				else
-					Mem141[ds:11855:word16] = Mem110[ds:11855:word16] >>u 0x01;
-				si_13 = si_122 - 0x48;
-			}
-			else
-			{
-				Mem159[ss:fp - 0x08 + 0x00:word16] = 0x04;
-				word16 ax_161 = si_122 - 0x0C;
-				Mem166[ss:fp - 0x0A + 0x00:word16] = ax_161 >>u 0x02;
-				word16 ax_163 = ax_161 >>u 0x02;
-				ds = fn0800_854B(fp - 0x02, ds_101, bArg02);
-				while (true)
-				{
-					si_13 = si_122;
-					if (si_122 == 0x00)
-						break;
-					selector ds_193 = fn0800_8359(ds);
-					al = al ^ Mem166[ds_193:11855:byte];
-					ax_163 = DPB(ax_163, al, 0);
-					Mem199[ss:fp - 0x08 + 0x00:word16] = ax_163;
-					word16 di_200;
-					si_122 = fn0800_8600(ds_193, bArg00, out di_200, out ds) - 0x01;
-				}
-				if ((Mem166[ds:11855:word16] & 0x01) != 0x00)
-					Mem189[ds:11855:word16] = Mem166[ds:11855:word16] >>u 0x01 | 0x8000;
-				else
-					Mem191[ds:11855:word16] = Mem166[ds:11855:word16] >>u 0x01;
-			}
-		}
-	}
-	return ds;
+	selector ds_16;
+	return fn0800_7FD1(fp - 0x02, wArg02, ds, wLoc08, di, si, out ds_16);
 }
 
-selector fn0800_7FDC(word16 bp, selector ds)
+// 0800:7EF6: Register word16 fn0800_7EF6(Register word16 bp, Register word16 si, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_7EF6(word16 bp, word16 si, selector ds, ptr16 & dsOut)
 {
-fn0800_7FDC_entry:
-	Mem7[ds:0x466C:word16] = 0x00
-	Mem9[ds:0x466A:word16] = 0x00
-	Mem10[ds:11847:word16] = 0x00
-	word16 dx_12 = Mem10[ds:0x2A0B:word16]
-	Mem13[ds:0x4670:word16] = Mem10[ds:0x2A0D:word16]
-	Mem14[ds:0x466E:word16] = dx_12
-	selector ds_41
-	fn0800_ACB3(fp - 0x02, ds, DPB(ptrLoc10, Mem14[ds:0x29E3:word16], 0), Mem14[ds:0x29E5:word16], 0x00, out ds_41)
-	Mem48[ss:fp - 0x08 + 0x00:word16] = 0x00
-	Mem51[ss:fp - 0x0A + 0x00:word16] = 0x00
-	Mem53[ss:fp - 0x0C + 0x00:word16] = 0x00
-	Mem56[ss:fp - 0x0E + 0x00:word16] = Mem53[ds_41:10717:word16]
-	Mem59[ss:fp - 0x10 + 0x00:word16] = Mem56[ds_41:10715:word16]
-	selector ds_309
-	fn0800_ACB3(fp - 0x02, ds_41, ptrArg00, wArg02, wArg08, out ds_309)
-	word16 bp_254 = fp - 0x02
-	goto l0800_82A1
-l0800_7FDC:
-l0800_8042:
-	word16 dx_166 = ~0x00 - Mem59[ds_309:11825:word16]
-	word16 dx_170 = dx_166 - Mem59[ds_309:0x4672:word16]
-	Mem174[ss:bp_254 - 0x02 + 0x00:word16] = 0x00 - (dx_166 <u 0x00) - Mem59[ds_309:0x4674:word16] - (dx_170 <u 0x00)
-	Mem175[ss:bp_254 - 0x04 + 0x00:word16] = dx_170
-	word16 ax_176 = Mem175[ds_309:18040:word16]
-	word16 dx_177 = Mem175[ds_309:0x4676:word16]
-	branch ax_176 >u Mem175[ss:(bp_254 - 0x02) + 0x00:word16] || ax_176 >=u Mem175[ss:(bp_254 - 0x02) + 0x00:word16] && dx_177 >=u Mem175[ss:(bp_254 - 0x04) + 0x00:word16] l0800_807C
-	goto l0800_806F
-l0800_8068:
-l0800_806A:
-l0800_806F:
-	word16 dx_499 = Mem175[ds_309:0x4676:word16]
-	Mem500[ss:bp_254 - 0x02 + 0x00:word16] = Mem175[ds_309:18040:word16]
-	Mem501[ss:bp_254 - 0x04 + 0x00:word16] = dx_499
-l0800_807C:
-	word16 dx_187 = Mem175[ds_309:11889:word16] + Mem175[ds_309:11825:word16]
-	Mem188[ds_309:11887:word16] = Mem175[ds_309:11891:word16]
-	Mem189[ds_309:11885:word16] = dx_187
-	Mem192[ss:fp - 0x08 + 0x00:word16] = Mem189[ds_309:0x29E5:word16]
-	Mem195[ss:fp - 0x0A + 0x00:word16] = Mem192[ds_309:0x29E3:word16]
-	Mem198[ss:fp - 0x0C + 0x00:word16] = Mem195[ss:bp_254 - 0x02 + 0x00:word16]
-	Mem201[ss:fp - 0x0E + 0x00:word16] = Mem198[ss:bp_254 - 0x04 + 0x00:word16]
-	word16 ax_203 = Mem201[ds_309:11885:word16] + Mem201[ds_309:0x4672:word16]
-	Mem207[ss:fp - 0x10 + 0x00:word16] = Mem201[ds_309:11891:word16]
-	Mem209[ss:fp - 0x12 + 0x00:word16] = ax_203
-	word16 di_213
-	selector ds_214
-	word16 si_215 = fn0800_4110(ds_309, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0A, out di_213, out ds_214)
-	word16 dx_218 = Mem209[ss:bp_254 - 0x04 + 0x00:word16]
-	word16 ax_217 = Mem209[ss:bp_254 - 0x02 + 0x00:word16]
-	word16 v27_219 = Mem209[ds_214:0x4676:word16] - dx_218
-	Mem220[ds_214:0x4676:word16] = v27_219
-	Mem224[ds_214:18040:word16] = Mem220[ds_214:18040:word16] - ax_217 - (v27_219 <u 0x00)
-	word16 v29_225 = Mem224[ds_214:0x4672:word16] + dx_218
-	Mem226[ds_214:0x4672:word16] = v29_225
-	Mem230[ds_214:0x4674:word16] = Mem226[ds_214:0x4674:word16] + ax_217 + (v29_225 <u 0x00)
-	word16 ax_231 = Mem230[ds_214:11887:word16]
-	word16 dx_233 = Mem230[ds_214:11885:word16] + Mem230[ds_214:0x4672:word16]
-	Mem234[ds_214:11879:word16] = ax_231
-	Mem235[ds_214:11877:word16] = dx_233
-	Mem236[ds_214:11883:word16] = ax_231
-	Mem237[ds_214:11881:word16] = dx_233
-	word16 ax_238 = Mem237[ds_214:0x4670:word16]
-	word16 dx_239 = Mem237[ds_214:0x466E:word16]
-	branch ax_238 <=u Mem237[ds_214:0x4674:word16] l0800_80ED
-	goto l0800_81E9
-l0800_80ED:
-	branch ax_238 <u Mem237[ds_214:0x4674:word16] || dx_239 <u Mem237[ds_214:0x4672:word16] l0800_80F8
-	goto l0800_81E9
-l0800_80EF:
-l0800_80F8:
-	word16 dx_490 = Mem237[ds_214:11885:word16] + Mem237[ds_214:0x466E:word16]
-	Mem492[ds_214:11879:word16] = Mem237[ds_214:11887:word16]
-	Mem493[ds_214:11877:word16] = dx_490
+	selector ds_8;
+	return fn0800_7EF8(bp, si, ds, out ds_8);
+}
+
+// 0800:7EF8: Register word16 fn0800_7EF8(Register word16 bp, Register word16 si, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_7EF8(word16 bp, word16 si, selector ds, ptr16 & dsOut)
+{
+	if (Z)
+	{
+		selector ds_49 = fn0800_8359(fn0800_854B(bp, ds, 0x01));
+		Mem56[ss:fp - 0x02 + 0x00:word16] = (word16) (Mem0[ds_49:11855:byte] ^ 0x00);
+		word16 di_59;
+		selector ds_60;
+		word16 si_61 = fn0800_8600(ds_49, bArg00, out di_59, out ds_60);
+		if ((Mem56[ds_60:11855:word16] & 0x01) != 0x00)
+			Mem78[ds_60:11855:word16] = Mem56[ds_60:11855:word16] >>u 0x01 | 0x8000;
+		else
+			Mem80[ds_60:11855:word16] = Mem56[ds_60:11855:word16] >>u 0x01;
+		selector ds_71;
+		return fn0800_7EF6(bp, si_61 - 0x01, ds_60, out ds_71);
+	}
+	else
+	{
+		selector ds_24;
+		return fn0800_7FD1(bp, si, ds, wLoc02, wArg00, wArg02, out ds_24);
+	}
+}
+
+// 0800:7F8D: Register word16 fn0800_7F8D(Register word16 bp, Register word16 si, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_7F8D(word16 bp, word16 si, selector ds, ptr16 & dsOut)
+{
+	selector ds_8;
+	return fn0800_7FD1(bp, si, ds, wLoc02, wArg00, wArg02, out ds_8);
+}
+
+// 0800:7FD1: Register word16 fn0800_7FD1(Register word16 bp, Register word16 si, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 dsOut)
+word16 fn0800_7FD1(word16 bp, word16 si, selector ds, word16 wArg00, word16 wArg02, word16 wArg04, ptr16 & dsOut)
+{
+fn0800_7FD1_entry:
+	goto l0800_7FD1
+l0800_7EBA:
+l0800_7EBF:
+	bp = fn0800_7EF6(bp, si, ds, out ds)
+	return bp
+l0800_7EFD:
+	ax = 0x01
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x01
+	ax = 0x00
+	al = (byte) ax (alias)
+	SZO = cond(0x00)
+	C = false
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x00
+	ds = fn0800_854B(bp, ds, bArg02)
+	sp = sp + 0x04
+	SCZO = cond(sp)
+	ds = fn0800_8359(ds)
+	al = al ^ Mem0[ds:11855:byte]
+	ax = DPB(ax, al, 0) (alias)
+	SZO = cond(al)
+	C = false
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	si = fn0800_8600(ds, bArg00, out di, out ds)
+	sp = sp + 0x02
+	SZO = cond(Mem0[ds:11855:word16] & 0x01)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_7F2D
+l0800_7F20:
+	ax = Mem0[ds:11855:word16]
+	ax = ax >>u 0x01
+	ax = ax | 0x8000
+	SZO = cond(ax)
+	C = false
+	Mem0[ds:11855:word16] = ax
+	goto l0800_7F31
+l0800_7F2D:
+	v16 = Mem0[ds:11855:word16] >>u 0x01
+	Mem0[ds:11855:word16] = v16
+	SCZO = cond(v16)
+l0800_7F31:
+	si = si - 0x01
+	SZO = cond(si)
+l0800_7F32:
+	SZO = cond(si & 0x03)
+	Z = SZO (alias)
+	C = false
+	branch Test(NE,Z) l0800_7EFD
+l0800_7F38:
+	ax = 0x05
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x05
+	ax = 0x17
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x17
+	ds = fn0800_854B(bp, ds, bArg02)
+	sp = sp + 0x04
+	SCZO = cond(si - 0x48)
+	C = SCZO (alias)
+	branch Test(ULT,C) l0800_7F8F
+l0800_7F4B:
+	ax = 0x04
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x04
+	ax = 0x0F
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x0F
+	ds = fn0800_854B(bp, ds, bArg02)
+	sp = sp + 0x04
+	di = 0x00
+	SZO = cond(0x00)
+	C = false
+	goto l0800_7F6C
+l0800_7F5D:
+	ds = fn0800_8359(ds)
+	al = al ^ Mem0[ds:11855:byte]
+	ax = DPB(ax, al, 0) (alias)
+	SZO = cond(al)
+	C = false
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	si = fn0800_8600(ds, bArg00, out di, out ds)
+	sp = sp + 0x02
+	SCZO = cond(sp)
+	di = di + 0x01
+	SZO = cond(di)
+l0800_7F6C:
+	SCZO = cond(di - 0x48)
+	Z = SCZO (alias)
+	branch Test(NE,Z) l0800_7F5D
+l0800_7F71:
+	SZO = cond(Mem0[ds:11855:word16] & 0x01)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_7F86
+l0800_7F79:
+	ax = Mem0[ds:11855:word16]
+	ax = ax >>u 0x01
+	ax = ax | 0x8000
+	SZO = cond(ax)
+	C = false
+	Mem0[ds:11855:word16] = ax
+	goto l0800_7F8A
+l0800_7F86:
+	v14 = Mem0[ds:11855:word16] >>u 0x01
+	Mem0[ds:11855:word16] = v14
+	SCZO = cond(v14)
+l0800_7F8A:
+	si = si - 0x48
+	SCZO = cond(si)
+	bp = fn0800_7F8D(bp, si, ds, out ds)
+	return bp
+l0800_7F8A_thunk_fn0800_7F8D:
+l0800_7F8F:
+	ax = 0x04
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x04
+	ax = si
+	ax = ax - 0x0C
+	ax = ax >>u 0x01
+	ax = ax >>u 0x01
+	SCZO = cond(ax)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	ds = fn0800_854B(bp, ds, bArg02)
+	sp = sp + 0x04
+	SCZO = cond(sp)
+	goto l0800_7FB4
+l0800_7FA5:
+	ds = fn0800_8359(ds)
+	al = al ^ Mem0[ds:11855:byte]
+	ax = DPB(ax, al, 0) (alias)
+	SZO = cond(al)
+	C = false
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	si = fn0800_8600(ds, bArg00, out di, out ds)
+	sp = sp + 0x02
+	SCZO = cond(sp)
+	si = si - 0x01
+	SZO = cond(si)
+l0800_7FB4:
+	si = si | si
+	SZO = cond(si)
+	Z = SZO (alias)
+	C = false
+	branch Test(NE,Z) l0800_7FA5
+l0800_7FB8:
+	SZO = cond(Mem0[ds:11855:word16] & 0x01)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_7FCD
+l0800_7FC0:
+	ax = Mem0[ds:11855:word16]
+	ax = ax >>u 0x01
+	ax = ax | 0x8000
+	SZO = cond(ax)
+	C = false
+	Mem0[ds:11855:word16] = ax
+	goto l0800_7FD1
+l0800_7FCD:
+	v15 = Mem0[ds:11855:word16] >>u 0x01
+	Mem0[ds:11855:word16] = v15
+	SCZO = cond(v15)
+l0800_7FD1:
+	sp = fp
+	si = si | si
+	SZO = cond(si)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_7FD8
+l0800_7FD5:
+	SCZO = cond(si - 0x0C)
+	C = SCZO (alias)
+	branch Test(UGE,C) l0800_7F32
+	goto l0800_7EBF
+l0800_7FD8:
+	di = wArg00
+	sp = fp + 0x02
+	si = wArg02
+	sp = fp + 0x04
+	bp = wArg04
+	sp = fp + 0x06
+	return bp
+fn0800_7FD1_exit:
+	use ds (=> dsOut)
+}
+
+// 0800:7FDC: Register word16 fn0800_7FDC(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_7FDC(word16 bp, selector ds, ptr16 & dsOut)
+{
+	Mem7[ds:0x466C:word16] = 0x00;
+	Mem9[ds:0x466A:word16] = 0x00;
+	Mem10[ds:11847:word16] = 0x00;
+	word16 dx_12 = Mem10[ds:0x2A0B:word16];
+	Mem13[ds:0x4670:word16] = Mem10[ds:0x2A0D:word16];
+	Mem14[ds:0x466E:word16] = dx_12;
+	word16 di_39;
+	selector ds_40;
+	fn0800_ACB3(fp - 0x02, ds, Mem14[ds:0x29E3:word16], Mem14[ds:0x29E5:word16], 0x00, out di_39, out ds_40);
+	Mem47[ss:fp - 0x08 + 0x00:word16] = 0x00;
+	Mem50[ss:fp - 0x0A + 0x00:word16] = 0x00;
+	Mem52[ss:fp - 0x0C + 0x00:word16] = 0x00;
+	Mem55[ss:fp - 0x0E + 0x00:word16] = Mem52[ds_40:10717:word16];
+	Mem58[ss:fp - 0x10 + 0x00:word16] = Mem55[ds_40:10715:word16];
+	word16 di_62;
+	selector ds_63;
+	fn0800_ACB3(fp - 0x02, ds_40, wArg00, wArg02, wArg08, out di_62, out ds_63);
+	selector ds_67;
+	return fn0800_82A1(fp - 0x02, ds_63, out ds_67);
+}
+
+// 0800:8197: Register word16 fn0800_8197(Register word16 bp, Register word16 si, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_8197(word16 bp, word16 si, selector ds, ptr16 & dsOut)
+{
+	fn0800_89A8(ds, wArg00);
+	Mem8[ds:11847:word16] = Mem0[ds:11847:word16] + 0x01;
+	Mem10[ds:18012:word16] = Mem8[ds:18012:word16] + 0x01;
+	selector ds_15;
+	return fn0800_81A5(bp, si, di, ds, out ds_15);
+}
+
+// 0800:81A5: Register word16 fn0800_81A5(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_81A5(word16 bp, word16 si, word16 di, selector ds, ptr16 & dsOut)
+{
+fn0800_81A5_entry:
+	*dsOut = ds
+	branch Mem0[ds:18012:word16] <u 0x0400 l0800_81E9
+	goto l0800_81AD
+l0800_8196_thunk_fn0800_8197:
+	selector ds_61
+	return fn0800_8197(bp_36, si_54, ds, out ds_61)
+l0800_81A5:
+l0800_81AB_thunk_fn0800_81E9:
+	bp = fn0800_81E9(bp, di, ds, out ds)
+	return bp
+l0800_81AD:
+	word16 v7_7 = Mem0[ds:0x4666:word16] + Mem0[ds:18012:word16]
+	Mem8[ds:0x4666:word16] = v7_7
+	Mem12[ds:0x4668:word16] = Mem8[ds:0x4668:word16] + (v7_7 <u 0x00)
+	word16 dx_25
+	fn0800_8F18(99, Mem12[ds:0x4668:word16], 0x00, Mem12[ds:0x4666:word16], out dx_25)
+	word16 dx_35
+	word16 bp_36
+	word16 si_37
+	word16 di_38
+	word16 ax_39 = fn0800_8BC2(bp, si, di, wLoc0A, out dx_35, out bp_36, out si_37, out di_38)
+	Mem42[ss:fp - 0x02 + 0x00:word16] = dx_35
+	Mem45[ss:fp - 0x04 + 0x00:word16] = ax_39
+	Mem47[ss:fp - 0x06 + 0x00:word16] = ds
+	Mem50[ss:fp - 0x08 + 0x00:word16] = 0x2244
+	word16 di_53
+	word16 si_54 = fn0800_B2EF(ds, wArg00, wArg02, out di_53)
+	Mem57[ds:18012:word16] = 0x00
+l0800_81E3_thunk_fn0800_81E9:
+	selector ds_63
+	return fn0800_81E9(bp_36, di_53, ds, out ds_63)
+fn0800_81A5_exit:
+}
+
+// 0800:81E9: Register word16 fn0800_81E9(Register word16 bp, Register word16 di, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_81E9(word16 bp, word16 di, selector ds, ptr16 & dsOut)
+{
+fn0800_81E9_entry:
 	goto l0800_81E9
 l0800_810D:
-	fn0800_8832(ds_214)
-	branch Mem237[ds_214:11817:word16] <u 0x02 l0800_8193
+	fn0800_8832(di, ds)
+	sp = sp + ~0x01
+	SCZO = cond(Mem0[ds:11817:word16] - 0x02)
+	C = SCZO (alias)
+	branch Test(ULT,C) l0800_8193
 l0800_8117:
-	branch Mem237[ds_214:11885:word16] + Mem237[ds_214:11817:word16] <=u Mem237[ds_214:11877:word16] l0800_813F
+	ax = Mem0[ds:11885:word16]
+	ax = ax + Mem0[ds:11817:word16]
+	SCZO = cond(ax - Mem0[ds:11877:word16])
+	CZ = SCZO (alias)
+	branch Test(ULE,CZ) l0800_813F
 l0800_8124:
-	branch (Mem237[ds_214:0x466A:word16] | Mem237[ds_214:0x466C:word16]) == 0x00 l0800_8130
+	ax = Mem0[ds:0x466A:word16]
+	ax = ax | Mem0[ds:0x466C:word16]
+	SZO = cond(ax)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_8130
 	goto l0800_8209
 l0800_8130:
-	Mem474[ds_214:11817:word16] = Mem237[ds_214:11877:word16] - Mem237[ds_214:11885:word16]
+	ax = Mem0[ds:11877:word16]
+	dx = 0x00
+	ax = ax - Mem0[ds:11885:word16]
+	SCZO = cond(ax)
+	C = SCZO (alias)
+	dx = 0x00 - C
+	SCZO = cond(dx)
+	Mem0[ds:11817:word16] = ax
 l0800_813F:
-	Mem412[ss:fp - 0x08 + 0x00:word16] = ds_214
-	Mem415[ss:fp - 0x0A + 0x00:word16] = 10511
-	Mem418[ss:fp - 0x0C + 0x00:word16] = Mem415[ds_214:11847:word16]
-	selector ds_419 = fn0800_831D(ds_214, wArg00, ptrArg02)
-	Mem422[ss:fp - 0x08 + 0x00:word16] = ds_419
-	Mem425[ss:fp - 0x0A + 0x00:word16] = 10127
-	Mem430[ss:fp - 0x0C + 0x00:word16] = Mem425[ds_419:11817:word16] - 0x02
-	selector ds_431 = fn0800_831D(ds_419, wArg00, ptrArg02)
-	Mem435[ss:fp - 0x08 + 0x00:word16] = ds_431
-	Mem438[ss:fp - 0x0A + 0x00:word16] = 10319
-	Mem443[ss:fp - 0x0C + 0x00:word16] = Mem438[ds_431:11819:word16] - 0x01
-	ds_214 = fn0800_831D(ds_431, wArg00, ptrArg02)
-	Mem449[ss:fp - 0x08 + 0x00:word16] = Mem443[ds_214:11817:word16]
-	fn0800_89A8(ds_214, wArg00)
-	word16 v40_451 = Mem449[ds_214:0x466A:word16] + 0x01
-	Mem452[ds_214:0x466A:word16] = v40_451
-	Mem456[ds_214:0x466C:word16] = Mem452[ds_214:0x466C:word16] + (v40_451 <u 0x00)
-	Mem457[ds_214:11847:word16] = 0x00
-	Mem460[ds_214:18012:word16] = Mem457[ds_214:18012:word16] + Mem457[ds_214:11817:word16]
-	goto l0800_81A5
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ds
+	ax = 10511
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 10511
+	v20 = Mem0[ds:11847:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v20
+	ds = fn0800_831D(ds, wArg00, ptrArg02)
+	sp = sp + 0x06
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ds
+	ax = 10127
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 10127
+	ax = Mem0[ds:11817:word16]
+	ax = ax - 0x02
+	SCZO = cond(ax)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	ds = fn0800_831D(ds, wArg00, ptrArg02)
+	sp = sp + 0x06
+	SCZO = cond(sp)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ds
+	ax = 10319
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 10319
+	ax = Mem0[ds:11819:word16]
+	ax = ax - 0x01
+	SZO = cond(ax)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	ds = fn0800_831D(ds, wArg00, ptrArg02)
+	sp = sp + 0x06
+	SCZO = cond(sp)
+	v21 = Mem0[ds:11817:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v21
+	fn0800_89A8(ds, wArg00)
+	sp = sp + 0x02
+	v22 = Mem0[ds:0x466A:word16] + 0x01
+	Mem0[ds:0x466A:word16] = v22
+	SCZO = cond(v22)
+	C = SCZO (alias)
+	v23 = Mem0[ds:0x466C:word16] + 0x00 + C
+	Mem0[ds:0x466C:word16] = v23
+	Mem0[ds:11847:word16] = 0x00
+	ax = Mem0[ds:11817:word16]
+	v24 = Mem0[ds:18012:word16] + ax
+	Mem0[ds:18012:word16] = v24
+	SCZO = cond(v24)
+	bp = fn0800_81A5(bp, si, di, ds, out ds)
+	return bp
+l0800_818D_thunk_fn0800_81A5:
 l0800_8193:
-	Mem477[ss:fp - 0x08 + 0x00:word16] = 0x01
-	fn0800_89A8(ds_214, wArg00)
-	Mem481[ds_214:11847:word16] = Mem477[ds_214:11847:word16] + 0x01
-	Mem483[ds_214:18012:word16] = Mem481[ds_214:18012:word16] + 0x01
-l0800_81A5:
-	branch Mem237[ds_214:18012:word16] <u 0x0400 l0800_81E9
-l0800_81AD:
-	word16 v45_361 = Mem237[ds_214:0x4666:word16] + Mem237[ds_214:18012:word16]
-	Mem362[ds_214:0x4666:word16] = v45_361
-	Mem366[ds_214:0x4668:word16] = Mem362[ds_214:0x4668:word16] + (v45_361 <u 0x00)
-	Mem369[ss:fp - 0x08 + 0x00:word16] = Mem366[ds_214:0x4680:word16]
-	Mem372[ss:fp - 0x0A + 0x00:word16] = Mem369[ds_214:0x467E:word16]
-	word16 dx_379
-	word16 ax_380 = fn0800_8F18(99, Mem372[ds_214:0x4668:word16], 0x00, Mem372[ds_214:0x4666:word16], out dx_379)
-	Mem382[ss:fp - 0x0C + 0x00:word16] = dx_379
-	Mem384[ss:fp - 0x0E + 0x00:word16] = ax_380
-	word16 dx_385
-	word16 si_387
-	word16 di_388
-	word16 ax_389 = fn0800_8BC2(bp_254, si_215, di_213, bp, out dx_385, out bp_254, out si_387, out di_388)
-	Mem392[ss:fp - 0x08 + 0x00:word16] = dx_385
-	Mem394[ss:fp - 0x0A + 0x00:word16] = ax_389
-	Mem396[ss:fp - 0x0C + 0x00:word16] = ds_214
-	Mem399[ss:fp - 0x0E + 0x00:word16] = 0x2244
-	si_215 = fn0800_B2EF(ds_214, wArg00, wArg02, out di_213)
-	Mem404[ds_214:18012:word16] = 0x00
+	ax = 0x01
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = 0x01
 l0800_81E9:
-	branch Mem237[ds_214:11877:word16] - 0x01 <=u Mem237[ds_214:11885:word16] l0800_8209
+	sp = fp
+	ax = Mem0[ds:11877:word16]
+	ax = ax - 0x01
+	SCZO = cond(ax - Mem0[ds:11885:word16])
+	CZ = SCZO (alias)
+	branch Test(ULE,CZ) l0800_8209
 l0800_81F3:
-	branch Mem237[ds_214:0x466C:word16] >=u 0x00 l0800_81FD
+	SCZO = cond(Mem0[ds:0x466C:word16] - 0x00)
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	CZ = SCZO (alias)
+	C = SCZO (alias)
+	branch Test(UGE,C) l0800_81FD
 	goto l0800_810D
 l0800_81FD:
-	branch Mem237[ds_214:0x466C:word16] != 0x00 || Mem237[ds_214:0x466A:word16] >=u ~0x01 l0800_8209
-	goto l0800_810D
+	branch Test(NE,Z) l0800_8209
 l0800_81FF:
+	SCZO = cond(Mem0[ds:0x466A:word16] - ~0x01)
+	C = SCZO (alias)
+	branch Test(UGE,C) l0800_8209
+	goto l0800_810D
 l0800_8209:
-	word16 ax_267 = Mem237[ds_214:11881:word16] - Mem237[ds_214:11885:word16]
-	Mem271[ds_214:0x4674:word16] = 0x00 - (ax_267 <u 0x00)
-	Mem272[ds_214:0x4672:word16] = ax_267
-	word16 ax_275 = Mem272[ds_214:11885:word16] - Mem272[ds_214:11889:word16]
-	word16 ax_279 = ax_275 - Mem272[ds_214:11825:word16]
-	Mem283[ss:bp_254 - 0x02 + 0x00:word16] = 0x00 - (ax_275 <u 0x00) - (ax_279 <u 0x00)
-	Mem284[ss:bp_254 - 0x04 + 0x00:word16] = ax_279
-	word16 ax_286 = Mem284[ds_214:11889:word16] + Mem284[ss:(bp_254 - 0x04) + 0x00:word16]
-	Mem297[ss:fp - 0x08 + 0x00:word16] = Mem284[ds_214:11885:word16] - ax_286 + Mem284[ds_214:0x4672:word16]
-	Mem300[ss:fp - 0x0A + 0x00:word16] = Mem297[ds_214:11891:word16]
-	Mem302[ss:fp - 0x0C + 0x00:word16] = ax_286
-	Mem305[ss:fp - 0x0E + 0x00:word16] = Mem302[ds_214:11891:word16]
-	Mem308[ss:fp - 0x10 + 0x00:word16] = Mem305[ds_214:11889:word16]
-	ds_309 = fn0800_B0F3(wArg00, wArg02, wArg04, wArg06, wArg08)
-	branch Mem308[ds_309:11877:word16] <u Mem308[ds_309:11881:word16] l0800_82B9
+	ax = Mem0[ds:11881:word16]
+	dx = 0x00
+	ax = ax - Mem0[ds:11885:word16]
+	SCZO = cond(ax)
+	C = SCZO (alias)
+	dx = 0x00 - C
+	Mem0[ds:0x4674:word16] = dx
+	Mem0[ds:0x4672:word16] = ax
+	ax = Mem0[ds:11885:word16]
+	dx = 0x00
+	ax = ax - Mem0[ds:11889:word16]
+	SCZO = cond(ax)
+	C = SCZO (alias)
+	dx = 0x00 - C
+	ax = ax - Mem0[ds:11825:word16]
+	SCZO = cond(ax)
+	C = SCZO (alias)
+	dx = dx - 0x00 - C
+	Mem0[ss:bp - 0x02 + 0x00:word16] = dx
+	Mem0[ss:bp - 0x04 + 0x00:word16] = ax
+	ax = Mem0[ds:11889:word16]
+	ax = ax + Mem0[ss:(bp - 0x04) + 0x00:word16]
+	cx = ax
+	dx = Mem0[ds:11885:word16]
+	bx = 0x00
+	dx = dx - ax
+	SCZO = cond(dx)
+	C = SCZO (alias)
+	bx = 0x00 - C
+	dx = dx + Mem0[ds:0x4672:word16]
+	SCZO = cond(dx)
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = dx
+	v15 = Mem0[ds:11891:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v15
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	v16 = Mem0[ds:11891:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v16
+	v17 = Mem0[ds:11889:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v17
+	si = fn0800_B0F3(wArg00, wArg02, wArg04, wArg06, wArg08, out di, out ds)
+	sp = sp + 0x0A
+	ax = Mem0[ds:11877:word16]
+	SCZO = cond(ax - Mem0[ds:11881:word16])
+	C = SCZO (alias)
+	branch Test(ULT,C) l0800_8267_thunk_fn0800_82B9
+	goto l0800_8269
+l0800_8267_thunk_fn0800_82B9:
+	bp = fn0800_82B9(ds, out ds)
+	return bp
 l0800_8269:
-	word16 dx_315 = Mem308[ds_309:11877:word16]
-	branch (Mem308[ds_309:11879:word16] != Mem308[ds_309:11883:word16] || (dx_315 != Mem308[ds_309:11881:word16] || (Mem308[ds_309:0x4676:word16] | Mem308[ds_309:18040:word16]) != 0x00)) && (Mem308[ds_309:0x466C:word16] != 0x00 || Mem308[ds_309:0x466A:word16] != ~0x01) l0800_8285
-	goto l0800_82B9
+	ax = Mem0[ds:11879:word16]
+	dx = Mem0[ds:11877:word16]
+	dx_ax = SEQ(dx, ax) (alias)
+	ax_dx = SEQ(ax, dx) (alias)
+	SCZO = cond(ax - Mem0[ds:11883:word16])
+	Z = SCZO (alias)
+	branch Test(NE,Z) l0800_8285
 l0800_8276:
+	SCZO = cond(dx - Mem0[ds:11881:word16])
+	Z = SCZO (alias)
+	branch Test(NE,Z) l0800_8285
 l0800_827C:
+	ax = Mem0[ds:0x4676:word16]
+	ax = ax | Mem0[ds:18040:word16]
+	SZO = cond(ax)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_8283_thunk_fn0800_82B9
+	goto l0800_8285
+l0800_8283_thunk_fn0800_82B9:
+	bp = fn0800_82B9(ds, out ds)
+	return bp
 l0800_8285:
+	SCZO = cond(Mem0[ds:0x466C:word16] - 0x00)
+	Z = SCZO (alias)
+	branch Test(NE,Z) l0800_8293
 l0800_828C:
+	SCZO = cond(Mem0[ds:0x466A:word16] - ~0x01)
+	Z = SCZO (alias)
+	branch Test(EQ,Z) l0800_8291_thunk_fn0800_82B9
+	goto l0800_8293
+l0800_8291_thunk_fn0800_82B9:
+	bp = fn0800_82B9(ds, out ds)
+	return bp
 l0800_8293:
-	word16 ax_326 = Mem308[ss:bp_254 - 0x02 + 0x00:word16]
-	word16 v36_328 = Mem308[ds_309:0x466E:word16] - Mem308[ss:(bp_254 - 0x04) + 0x00:word16]
-	Mem329[ds_309:0x466E:word16] = v36_328
-	Mem333[ds_309:0x4670:word16] = Mem329[ds_309:0x4670:word16] - ax_326 - (v36_328 <u 0x00)
-l0800_82A1:
-	branch (Mem59[ds_309:0x4676:word16] | Mem59[ds_309:18040:word16]) == 0x00 l0800_82AD
-	goto l0800_8042
-l0800_82AD:
-	branch (Mem59[ds_309:0x4672:word16] | Mem59[ds_309:0x4674:word16]) == 0x00 l0800_82B9
-	goto l0800_8042
-l0800_82B9:
-	word16 dx_102 = Mem59[ds_309:11877:word16]
-	branch Mem59[ds_309:11879:word16] != Mem59[ds_309:11883:word16] || (dx_102 != Mem59[ds_309:11881:word16] || ((Mem59[ds_309:0x4676:word16] | Mem59[ds_309:18040:word16]) != 0x00 || Mem59[ds_309:0x466C:word16] == 0x00 && Mem59[ds_309:0x466A:word16] == ~0x01)) l0800_82ED
-	goto l0800_82E3
-l0800_82C6:
-l0800_82CC:
-l0800_82D5:
-l0800_82DC:
-l0800_82E3:
-	Mem161[ds_309:11847:word16] = Mem59[ds_309:11847:word16] + Mem59[ds_309:0x4672:word16]
-l0800_82ED:
-	Mem109[ss:fp - 0x08 + 0x00:word16] = ds_309
-	Mem112[ss:fp - 0x0A + 0x00:word16] = 10511
-	Mem115[ss:fp - 0x0C + 0x00:word16] = Mem112[ds_309:11847:word16]
-	selector ds_118 = fn0800_831D(ds_309, wArg00, ptrArg02)
-	word16 v18_120 = Mem115[ds_118:0x466A:word16] + 0x01
-	Mem121[ds_118:0x466A:word16] = v18_120
-	Mem125[ds_118:0x466C:word16] = Mem121[ds_118:0x466C:word16] + (v18_120 <u 0x00)
-	Mem130[ss:fp - 0x08 + 0x00:word16] = 0x00
-	Mem132[ss:fp - 0x0A + 0x00:word16] = 0x00
-	Mem134[ss:fp - 0x0C + 0x00:word16] = 0x00
-	Mem137[ss:fp - 0x0E + 0x00:word16] = Mem134[ds_118:10717:word16]
-	Mem140[ss:fp - 0x10 + 0x00:word16] = Mem137[ds_118:10715:word16]
-	selector ds_141
-	fn0800_ACB3(bp_254, ds_118, ptrArg00, wArg02, wArg08, out ds_141)
-	return ds_141
-fn0800_7FDC_exit:
+	ax = Mem0[ss:bp - 0x02 + 0x00:word16]
+	dx = Mem0[ss:bp - 0x04 + 0x00:word16]
+	v18 = Mem0[ds:0x466E:word16] - dx
+	Mem0[ds:0x466E:word16] = v18
+	SCZO = cond(v18)
+	C = SCZO (alias)
+	v19 = Mem0[ds:0x4670:word16] - ax - C
+	Mem0[ds:0x4670:word16] = v19
+	SCZO = cond(v19)
+l0800_829D_thunk_fn0800_82A1:
+	bp = fn0800_82A1(bp, ds, out ds)
+	return bp
+fn0800_81E9_exit:
+	use ds (=> dsOut)
 }
 
+// 0800:82A1: Register word16 fn0800_82A1(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_82A1(word16 bp, selector ds, ptr16 & dsOut)
+{
+fn0800_82A1_entry:
+	goto l0800_82A1
+l0800_8042:
+	ax = 0x00
+	dx = ~0x00
+	dx = ~0x00 - Mem0[ds:11825:word16]
+	SCZO = cond(dx)
+	C = SCZO (alias)
+	ax = 0x00 - C
+	dx = dx - Mem0[ds:0x4672:word16]
+	SCZO = cond(dx)
+	C = SCZO (alias)
+	ax = ax - Mem0[ds:0x4674:word16] - C
+	Mem0[ss:bp - 0x02 + 0x00:word16] = ax
+	Mem0[ss:bp - 0x04 + 0x00:word16] = dx
+	ax = Mem0[ds:18040:word16]
+	dx = Mem0[ds:0x4676:word16]
+	ax_dx = SEQ(ax, dx) (alias)
+	SCZO = cond(ax - Mem0[ss:(bp - 0x02) + 0x00:word16])
+	C = SCZO (alias)
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	CZ = SCZO (alias)
+	branch Test(UGT,CZ) l0800_807C
+l0800_8068:
+	branch Test(ULT,C) l0800_806F
+l0800_806A:
+	SCZO = cond(dx - Mem0[ss:(bp - 0x04) + 0x00:word16])
+	C = SCZO (alias)
+	branch Test(UGE,C) l0800_807C
+l0800_806F:
+	ax = Mem0[ds:18040:word16]
+	dx = Mem0[ds:0x4676:word16]
+	Mem0[ss:bp - 0x02 + 0x00:word16] = ax
+	Mem0[ss:bp - 0x04 + 0x00:word16] = dx
+l0800_807C:
+	ax = Mem0[ds:11891:word16]
+	dx = Mem0[ds:11889:word16]
+	dx = dx + Mem0[ds:11825:word16]
+	Mem0[ds:11887:word16] = ax
+	Mem0[ds:11885:word16] = dx
+	v13 = Mem0[ds:0x29E5:word16]
+	sp = fp - 0x02
+	wLoc02 = v13
+	v14 = Mem0[ds:0x29E3:word16]
+	sp = fp - 0x04
+	wLoc04 = v14
+	v15 = Mem0[ss:bp - 0x02 + 0x00:word16]
+	sp = fp - 0x06
+	wLoc06 = v15
+	v16 = Mem0[ss:bp - 0x04 + 0x00:word16]
+	sp = fp - 0x08
+	wLoc08 = v16
+	ax = Mem0[ds:11885:word16]
+	ax = ax + Mem0[ds:0x4672:word16]
+	SCZO = cond(ax)
+	v17 = Mem0[ds:11891:word16]
+	sp = fp - 0x0A
+	wLoc0A = v17
+	sp = fp - 0x0C
+	wLoc0C = ax
+	si = fn0800_4110(bp, ds, wLoc0C, wLoc0A, wLoc08, wLoc04, wLoc02, out di, out ds)
+	sp = sp + 0x0C
+	ax = Mem0[ss:bp - 0x02 + 0x00:word16]
+	dx = Mem0[ss:bp - 0x04 + 0x00:word16]
+	v18 = Mem0[ds:0x4676:word16] - dx
+	Mem0[ds:0x4676:word16] = v18
+	SCZO = cond(v18)
+	C = SCZO (alias)
+	v19 = Mem0[ds:18040:word16] - ax - C
+	Mem0[ds:18040:word16] = v19
+	v20 = Mem0[ds:0x4672:word16] + dx
+	Mem0[ds:0x4672:word16] = v20
+	SCZO = cond(v20)
+	C = SCZO (alias)
+	v21 = Mem0[ds:0x4674:word16] + ax + C
+	Mem0[ds:0x4674:word16] = v21
+	ax = Mem0[ds:11887:word16]
+	dx = Mem0[ds:11885:word16]
+	dx = dx + Mem0[ds:0x4672:word16]
+	Mem0[ds:11879:word16] = ax
+	Mem0[ds:11877:word16] = dx
+	Mem0[ds:11883:word16] = ax
+	Mem0[ds:11881:word16] = dx
+	ax = Mem0[ds:0x4670:word16]
+	dx = Mem0[ds:0x466E:word16]
+	ax_dx = SEQ(ax, dx) (alias)
+	SCZO = cond(ax - Mem0[ds:0x4674:word16])
+	C = SCZO (alias)
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	CZ = SCZO (alias)
+	branch Test(ULE,CZ) l0800_80ED
+l0800_80EA:
+	bp = fn0800_81E9(bp, di, ds, out ds)
+	return bp
+l0800_80ED:
+	branch Test(ULT,C) l0800_80F8
+l0800_80EF:
+	SCZO = cond(dx - Mem0[ds:0x4672:word16])
+	C = SCZO (alias)
+	branch Test(ULT,C) l0800_80F8
+l0800_80F5:
+	bp = fn0800_81E9(bp, di, ds, out ds)
+	return bp
+l0800_80F8:
+	ax = Mem0[ds:11887:word16]
+	dx = Mem0[ds:11885:word16]
+	dx = dx + Mem0[ds:0x466E:word16]
+	SCZO = cond(dx)
+	Mem0[ds:11879:word16] = ax
+	Mem0[ds:11877:word16] = dx
+	bp = fn0800_81E9(bp, di, ds, out ds)
+	return bp
+l0800_8106_thunk_fn0800_81E9:
+l0800_82A1:
+	sp = fp
+	ax = Mem0[ds:0x4676:word16]
+	ax = ax | Mem0[ds:18040:word16]
+	SZO = cond(ax)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_82AD
+	goto l0800_8042
+l0800_82AD:
+	ax = Mem0[ds:0x4672:word16]
+	ax = ax | Mem0[ds:0x4674:word16]
+	SZO = cond(ax)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_82B4_thunk_fn0800_82B9
+	goto l0800_8042
+l0800_82B4_thunk_fn0800_82B9:
+	bp = fn0800_82B9(ds, out ds)
+	return bp
+fn0800_82A1_exit:
+	use ds (=> dsOut)
+}
+
+// 0800:82B9: Register word16 fn0800_82B9(Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_82B9(selector ds, ptr16 & dsOut)
+{
+	word16 dx_5 = Mem0[ds:11877:word16];
+	if (Mem0[ds:11879:word16] == Mem0[ds:11883:word16] && (dx_5 == Mem0[ds:11881:word16] && ((Mem0[ds:0x4676:word16] | Mem0[ds:18040:word16]) == 0x00 && (Mem0[ds:0x466C:word16] != 0x00 || Mem0[ds:0x466A:word16] != ~0x01))))
+		Mem69[ds:11847:word16] = Mem0[ds:11847:word16] + Mem0[ds:0x4672:word16];
+	selector ds_19 = fn0800_831D(ds, Mem0[ds:11847:word16], DPB(ptrLoc04, 10511, 0));
+	word16 v12_21 = Mem0[ds_19:0x466A:word16] + 0x01;
+	Mem22[ds_19:0x466A:word16] = v12_21;
+	Mem26[ds_19:0x466C:word16] = Mem22[ds_19:0x466C:word16] + (v12_21 <u 0x00);
+	Mem31[ss:fp - 0x02 + 0x00:word16] = 0x00;
+	Mem34[ss:fp - 0x04 + 0x00:word16] = 0x00;
+	Mem36[ss:fp - 0x06 + 0x00:word16] = 0x00;
+	Mem39[ss:fp - 0x08 + 0x00:word16] = Mem36[ds_19:10717:word16];
+	Mem42[ss:fp - 0x0A + 0x00:word16] = Mem39[ds_19:10715:word16];
+	word16 di_47;
+	selector ds_48;
+	fn0800_ACB3(bp, ds_19, wArg00, wArg02, wArg08, out di_47, out ds_48);
+	return Mem42[ss:bp + 0x00:word16];
+}
+
+// 0800:831D: Register selector fn0800_831D(Register selector ds, Stack word16 wArg02, Stack segptr32 ptrArg04)
 selector fn0800_831D(selector ds, word16 wArg02, segptr32 ptrArg04)
 {
 	word16 ax_13;
@@ -9095,22 +13085,28 @@ selector fn0800_831D(selector ds, word16 wArg02, segptr32 ptrArg04)
 	word16 v14_22 = Mem0[es_19:ax_16 + 0x02:word16] + 0x01;
 	Mem23[es_19:ax_16 + 0x02:word16] = v14_22;
 	Mem27[es_19:ax_16 + 0x04:word16] = Mem23[es_19:ax_16 + 0x04:word16] + (v14_22 <u 0x00);
-	return fn0800_401E(fp - 0x02, ds, wArg02, Mem27[ds:10715:word16], Mem27[ds:10717:word16]);
+	word16 si_38;
+	selector ds_39;
+	fn0800_401E(fp - 0x02, ds, wArg02, Mem27[ds:10715:word16], Mem27[ds:10717:word16], out si_38, out ds_39);
+	return ds_39;
 }
 
+// 0800:8359: Register selector fn0800_8359(Register selector ds)
 selector fn0800_8359(selector ds)
 {
-	word16 di_18;
-	selector ds_19;
-	word16 ax_20 = fn0800_3DCF(ds, DPB(ptrLoc08, Mem0[ds:0x29E3:word16], 0), Mem0[ds:0x29E5:word16], out di_18, out ds_19);
-	Mem23[ss:fp - 0x03 + 0x00:byte] = (byte) ax_20;
-	Mem37[ds_19:11851:word16] = SEQ(ds_19, 0x2A29)[(DPB(ax_20, 0x00, 8) & 0xFF) * 0x02] ^ Mem23[ds_19:11851:word16] >>u 0x08;
-	word16 v17_38 = Mem37[ds_19:0x29FF:word16] + 0x01;
-	Mem39[ds_19:0x29FF:word16] = v17_38;
-	Mem43[ds_19:0x2A01:word16] = Mem39[ds_19:0x2A01:word16] + (v17_38 <u 0x00);
-	return ds_19;
+	word16 dx_18;
+	word16 di_19;
+	selector ds_20;
+	word16 ax_21 = fn0800_3DCF(fp - 0x02, ds, DPB(ptrLoc08, Mem0[ds:0x29E3:word16], 0), Mem0[ds:0x29E5:word16], out dx_18, out di_19, out ds_20);
+	Mem24[ss:fp - 0x03 + 0x00:byte] = (byte) ax_21;
+	Mem38[ds_20:11851:word16] = SEQ(ds_20, 0x2A29)[(DPB(ax_21, 0x00, 8) & 0xFF) * 0x02] ^ Mem24[ds_20:11851:word16] >>u 0x08;
+	word16 v17_39 = Mem38[ds_20:0x29FF:word16] + 0x01;
+	Mem40[ds_20:0x29FF:word16] = v17_39;
+	Mem44[ds_20:0x2A01:word16] = Mem40[ds_20:0x2A01:word16] + (v17_39 <u 0x00);
+	return ds_20;
 }
 
+// 0800:83A1: Register selector fn0800_83A1(Register word16 bp, Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg06)
 selector fn0800_83A1(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg06)
 {
 	word16 di_101 = wArg06;
@@ -9139,6 +13135,7 @@ selector fn0800_83A1(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg06)
 	return ds_48;
 }
 
+// 0800:8407: Register selector fn0800_8407(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack segptr32 ptrArg04)
 selector fn0800_8407(word16 bp, selector ds, word16 wArg02, segptr32 ptrArg04)
 {
 	word16 ax_17;
@@ -9156,6 +13153,7 @@ selector fn0800_8407(word16 bp, selector ds, word16 wArg02, segptr32 ptrArg04)
 	return ds_36;
 }
 
+// 0800:8465: Register selector fn0800_8465(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 selector fn0800_8465(selector ds, word16 wArg02, word16 wArg04)
 {
 	if (Mem0[ds:0x2A21:word16] != 0x02)
@@ -9164,6 +13162,7 @@ selector fn0800_8465(selector ds, word16 wArg02, word16 wArg04)
 		return fn0800_854B(fp - 0x02, ds, (byte) wArg04);
 }
 
+// 0800:8489: Register selector fn0800_8489(Register word16 bp, Register selector ds, Stack word16 wArg02)
 selector fn0800_8489(word16 bp, selector ds, word16 wArg02)
 {
 	word16 di_13 = wArg02;
@@ -9217,6 +13216,7 @@ selector fn0800_8489(word16 bp, selector ds, word16 wArg02)
 	return ds;
 }
 
+// 0800:854B: Register selector fn0800_854B(Register word16 bp, Register selector ds, Stack byte bArg04)
 selector fn0800_854B(word16 bp, selector ds, byte bArg04)
 {
 	word16 di_128 = 0x01 << bArg04 - 0x01;
@@ -9265,6 +13265,7 @@ selector fn0800_854B(word16 bp, selector ds, byte bArg04)
 	return ds;
 }
 
+// 0800:8600: Register word16 fn0800_8600(Register selector ds, Stack byte bArg02, Register out ptr16 diOut, Register out ptr16 dsOut)
 word16 fn0800_8600(selector ds, byte bArg02, ptr16 & diOut, ptr16 & dsOut)
 {
 	*dsOut = ds;
@@ -9283,6 +13284,7 @@ word16 fn0800_8600(selector ds, byte bArg02, ptr16 & diOut, ptr16 & dsOut)
 	}
 }
 
+// 0800:8624: Register word16 fn0800_8624(Register selector ds, Stack byte bArg02, Register out ptr16 diOut, Register out ptr16 dsOut)
 word16 fn0800_8624(selector ds, byte bArg02, ptr16 & diOut, ptr16 & dsOut)
 {
 	*dsOut = ds;
@@ -9291,308 +13293,558 @@ word16 fn0800_8624(selector ds, byte bArg02, ptr16 & diOut, ptr16 & dsOut)
 	word16 dx_9 = Mem0[ds:0x2A03:word16];
 	if (ax_8 <=u Mem0[ds:20102:word16] && (ax_8 <u Mem0[ds:20102:word16] || dx_9 <u Mem0[ds:20100:word16]))
 	{
-		selector ds_59;
-		word16 di_60;
-		*diOut = fn0800_4047(ds, bArg02, DPB(ptrLoc06, Mem0[ds:10719:word16], 0), Mem0[ds:10721:word16], out ds_59);
-		Mem74[ds_59:11849:word16] = SEQ(ds_59, 0x2A29)[(DPB(DPB(ax_8, bArg02, 0), 0x00, 8) & 0xFF) * 0x02] ^ Mem0[ds_59:11849:word16] >>u 0x08;
-		word16 v18_75 = Mem74[ds_59:0x2A03:word16] + 0x01;
-		Mem76[ds_59:0x2A03:word16] = v18_75;
-		Mem80[ds_59:0x2A05:word16] = Mem76[ds_59:0x2A05:word16] + (v18_75 <u 0x00);
+		word16 di_61;
+		selector ds_62;
+		fn0800_4047(fp - 0x02, ds, bArg02, DPB(ptrLoc06, Mem0[ds:10719:word16], 0), Mem0[ds:10721:word16], out di_61, out ds_62);
+		Mem77[ds_62:11849:word16] = SEQ(ds_62, 0x2A29)[(DPB(DPB(ax_8, bArg02, 0), 0x00, 8) & 0xFF) * 0x02] ^ Mem0[ds_62:11849:word16] >>u 0x08;
+		word16 v18_78 = Mem77[ds_62:0x2A03:word16] + 0x01;
+		Mem79[ds_62:0x2A03:word16] = v18_78;
+		Mem83[ds_62:0x2A05:word16] = Mem79[ds_62:0x2A05:word16] + (v18_78 <u 0x00);
 	}
 	return si;
 }
 
+// 0800:867A: Register word16 fn0800_867A(Stack word16 wArg04, Stack selector psegArg06, Stack word16 wArg08, Stack selector psegArg0A, Register out ptr16 dsOut)
 word16 fn0800_867A(word16 wArg04, selector psegArg06, word16 wArg08, selector psegArg0A, ptr16 & dsOut)
 {
 	word16 si_26;
-	word16 bx_115 = DPB(bx, fn0800_87EF(wArg04 + 0x04, psegArg06, out si_26), 0);
-	byte al_41 = Mem0[psegArg06:si_26 + 0x0A:byte] * 0x02 + true;
-	selector ds_19 = psegArg06;
-	word16 di_128 = wArg08;
-	selector es_23 = psegArg0A;
-	word16 si_108 = si_26 + 11;
-	byte al_109 = al_41 * 0x02;
-	word16 ax_110 = DPB(ax, al_41 * 0x02, 0);
-l0800_8745:
-	al_109 = al_109 * 0x02;
-	byte SCZO_65 = cond(al_109);
-	ax_110 = DPB(ax_110, al_109, 0);
-	byte Z_528 = SCZO_65;
-	byte C_530 = SCZO_65;
-	if (al_109 >=u 0x00)
+	byte bl_28 = (byte) fn0800_87EF(wArg04 + 0x04, psegArg06, out si_26);
+	byte al_40 = Mem0[psegArg06:si_26 + 0x0A:byte] * 0x02 + true;
+	selector ds_44;
+	return fn0800_8745(al_40 * 0x02, bl_28, si_26 + 11, wArg08, psegArg0A, psegArg06, out ds_44);
+}
+
+// 0800:8688: void fn0800_8688(Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds)
+void fn0800_8688(word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds)
+{
+	word16 sp_1 = fp;
+	if (!SZO)
 	{
-		Mem522[es_23:di_128 + 0x00:byte] = Mem0[ds_19:si_108 + 0x00:byte];
-		byte SCZO_527 = cond(al_109 * 0x02);
-		si_108 = si_108 + 0x01 + 0x01;
-		di_128 = di_128 + 0x01 + 0x01;
-		al_109 = al_109 * 0x02;
-		ax_110 = DPB(ax_110, al_109 * 0x02, 0);
-		Z_528 = SCZO_527;
-		C_530 = SCZO_527;
-		if (al_109 * 0x02 >=u 0x00)
-			goto l0800_8744;
+		es = Mem0[ss:bp + 0x0C:selector];
+		bx = fn0800_87EF(si + 0x04, ds, out si);
+		bl = (byte) bx;
+		sp_1 = fp - 0x04;
 	}
-	if (!Z_528)
-	{
-l0800_8753:
-		byte al_102 = al_109 * 0x02;
-		word16 cx_117 = 0x02;
-		byte bh_438 = 0x00;
-		bx_115 = DPB(bx_115, 0x00, 8);
-		word16 ax_103 = DPB(ax_110, al_102, 0);
-		byte C_101 = cond(al_102);
-		if (al_102 == 0x00)
-		{
-			al_102 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + (al_102 <u 0x00);
-			si_108 = si_108 + 0x01;
-			ax_103 = DPB(ax_110, al_102, 0);
-			C_101 = cond(al_102);
-		}
-		if (!C_101)
-		{
-			al_109 = al_102 * 0x02;
-			ax_110 = DPB(ax_103, al_109, 0);
-			byte C_287 = cond(al_109);
-			if (al_109 == 0x00)
-			{
-				al_109 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + (al_109 <u 0x00);
-				si_108 = si_108 + 0x01;
-				ax_110 = DPB(ax_103, al_109, 0);
-				C_287 = cond(al_109);
-			}
-			if (C_287)
-			{
+	Mem15[ss:sp_1 - 0x02 + 0x00:word16] = bx;
+	word16 si_17 = si + 0x0A;
+	byte al_22 = Mem15[ds:si_17 + 0x00:byte] * 0x02 + true;
+	selector ds_28;
+	fn0800_8745(al_22 * 0x02, bl, si_17 + 0x01, di, es, ds, out ds_28);
+	return;
+}
+
+// 0800:8701: Register word16 fn0800_8701(Register byte al, Register word16 cx, Register byte bl, Register byte bh, Register word16 si, Register word16 di, Register selector es, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_8701(byte al, word16 cx, byte bl, byte bh, word16 si, word16 di, selector es, selector ds, ptr16 & dsOut)
+{
+fn0800_8701_entry:
+	def fp
+	def al
+	def si
+	def bh
+	def bx
+	def ds
+	def Mem0
+	def di
+	def cx
+	def es
+	def dsOut
+	def bl
+	def wArg00
+	def wArg02
+	def psegArg04
+	def wArg06
+	def wArg08
+	def wArg0A
+	sp_1 = fp
+	al_3 = al + al
+	SCZO_4 = cond(al_3)
+	Z_5 = SCZO_4 (alias)
+	SZO_6 = SCZO_4 (alias)
+	C_7 = SCZO_4 (alias)
+	branch al_3 == 0x00 l0800_86CE
+	goto l0800_8705
+l0800_86CE:
+	al_171 = Mem0[ds:si + 0x00:byte]
+	si_172 = si + 0x01
+	al_173 = al_171 + al_171 + (al_3 <u 0x00)
+	SCZO_174 = cond(al_173)
+	Z_175 = SCZO_174 (alias)
+	SZO_176 = SCZO_174 (alias)
+	C_177 = SCZO_174 (alias)
+	goto l0800_8705
+l0800_86D4:
+	al_164 = Mem0[ds:si_14 + 0x00:byte]
+	si_165 = si_14 + 0x01
+	al_166 = al_164 + al_164 + (al_46 <u 0x00)
+	SCZO_167 = cond(al_166)
+	Z_168 = SCZO_167 (alias)
+	SZO_169 = SCZO_167 (alias)
+	C_170 = SCZO_167 (alias)
+	goto l0800_870E
+l0800_86DA:
+	al_157 = Mem0[ds:si_53 + 0x00:byte]
+	si_158 = si_53 + 0x01
+	al_159 = al_157 + al_157 + (al_56 <u 0x00)
+	SCZO_160 = cond(al_159)
+	Z_161 = SCZO_160 (alias)
+	SZO_162 = SCZO_160 (alias)
+	C_163 = SCZO_160 (alias)
+	goto l0800_8714
+l0800_86E0:
+	al_98 = Mem0[ds:si_81 + 0x00:byte]
+	si_99 = si_81 + 0x01
+	al_100 = al_98 + al_98 + (al_82 <u 0x00)
+	SCZO_101 = cond(al_100)
+	Z_102 = SCZO_101 (alias)
+	SZO_103 = SCZO_101 (alias)
+	C_104 = SCZO_101 (alias)
+	goto l0800_8726
+l0800_86FF_thunk_fn0800_8701:
+	bp_97 = fn0800_8701(al_87, cx, bl, bh_92, si_91, di, es, ds, out ds_96)
+	return bp_97
+l0800_8701:
+l0800_8705:
+	al_9 = PHI(al_3, al_173)
+	Z_10 = PHI(Z_5, Z_175)
+	SZO_11 = PHI(SZO_6, SZO_176)
+	C_12 = PHI(C_7, C_177)
+	SCZO_13 = PHI(SCZO_4, SCZO_174)
+	si_14 = PHI(si, si_172)
+	branch C_12 l0800_8728
+l0800_8707:
+	al_46 = al_9 + al_9
+	SCZO_47 = cond(al_46)
+	Z_48 = SCZO_47 (alias)
+	SZO_49 = SCZO_47 (alias)
+	C_50 = SCZO_47 (alias)
+	branch al_46 == 0x00 l0800_86D4
+l0800_870E:
+	al_51 = PHI(al_46, al_166)
+	C_52 = PHI(C_50, C_170)
+	si_53 = PHI(si_14, si_165)
+	bh_54 = bh + bh + C_52
+	bx_55 = DPB(bx, bh_54, 8) (alias)
+	al_56 = al_51 + al_51
+	SCZO_57 = cond(al_56)
+	Z_58 = SCZO_57 (alias)
+	SZO_59 = SCZO_57 (alias)
+	C_60 = SCZO_57 (alias)
+	branch al_56 == 0x00 l0800_86DA
+l0800_8714:
+	al_61 = PHI(al_56, al_159)
+	Z_62 = PHI(Z_58, Z_161)
+	SZO_63 = PHI(SZO_59, SZO_162)
+	C_64 = PHI(C_60, C_163)
+	SCZO_65 = PHI(SCZO_57, SCZO_160)
+	si_66 = PHI(si_53, si_158)
+	branch C_64 l0800_8784
+l0800_8716:
+	bh_105 = bh_54 | bh_54
+	bx_106 = DPB(bx_55, bh_105, 8) (alias)
+	SZO_107 = cond(bh_105)
+	Z_108 = SZO_107 (alias)
+	C_109 = false
+	branch bh_105 != 0x00 l0800_8728
+l0800_871D:
+	bh_110 = bh_105 + 0x01
+	bx_111 = DPB(bx_106, bh_110, 8) (alias)
+	SZO_112 = cond(bh_110)
+l0800_8722:
+	al_78 = PHI(al_61, al_129)
+	bh_79 = PHI(bh_110, bh_122)
+	bx_80 = PHI(bx_111, bx_123)
+	si_81 = PHI(si_66, si_134)
+	al_82 = al_78 + al_78
+	SCZO_83 = cond(al_82)
+	Z_84 = SCZO_83 (alias)
+	SZO_85 = SCZO_83 (alias)
+	C_86 = SCZO_83 (alias)
+	branch al_82 == 0x00 l0800_86E0
+l0800_8726:
+	al_87 = PHI(al_100, al_82)
+	Z_88 = PHI(Z_102, Z_84)
+	SZO_89 = PHI(SZO_103, SZO_85)
+	C_90 = PHI(C_104, C_86)
+	si_91 = PHI(si_99, si_81)
+	bh_92 = bh_79 + bh_79 + C_90
+	bx_93 = DPB(bx_80, bh_92, 8) (alias)
+	SCZO_94 = cond(bh_92)
 l0800_8728:
-				bx_115 = DPB(bx_115, Mem0[ds_19:si_108 + 0x00:byte], 0);
-				__cli();
-				word16 si_121 = si_108 + 0x01;
-				word16 si_125 = di_128 - 0x01 - bx_115;
-				while (cx_117 != 0x00)
-				{
-					Mem132[es_23:di_128 + 0x00:byte] = Mem0[ds_19:si_125 + 0x00:byte];
-					si_125 = si_125 + 0x01;
-					di_128 = di_128 + 0x01;
-					cx_117 = cx_117 - 0x01;
-				}
-				__sti();
-				si_108 = si_121;
-				continue;
-			}
-			al_109 = al_109 * 0x02;
-			cx_117 = 0x03;
-			ax_110 = DPB(ax_110, al_109, 0);
-			byte C_302 = cond(al_109);
-			if (al_109 == 0x00)
+	al_17 = PHI(al_9, al_61, al_87, al_129)
+	Z_18 = PHI(Z_10, Z_108, Z_88, Z_130)
+	SZO_19 = PHI(SZO_11, SZO_107, SZO_89, SZO_131)
+	C_20 = PHI(C_12, C_109, C_90, C_132)
+	bh_21 = PHI(bh, bh_105, bh_92, bh_122)
+	bx_22 = PHI(bx, bx_106, bx_93, bx_123)
+	si_23 = PHI(si_14, si_66, si_91, si_134)
+	bl_26 = Mem0[ds:si_23 + 0x00:byte]
+	bx_27 = DPB(bx_22, bl_26, 0) (alias)
+	si_28 = si_23 + 0x01
+	bp_29 = si_28
+	si_31 = di
+	si_32 = si_31 - 0x01
+	si_33 = si_32 - bx_27
+	SCZO_34 = cond(si_33)
+	__cli()
+l0800_8733:
+	si_36 = PHI(si_33, si_42)
+	di_37 = PHI(di, di_43)
+	cx_38 = PHI(cx, cx_44)
+	branch cx_38 == 0x00 l0800_8736
+l0800_8733_1:
+	v16_39 = Mem0[ds:si_36 + 0x00:byte]
+	Mem40[es:di_37 + 0x00:byte] = v16_39
+	si_42 = si_36 + 0x01
+	di_43 = di_37 + 0x01
+	cx_44 = cx_38 - 0x01
+	goto l0800_8733
+l0800_8736:
+	__sti()
+	si_45 = bp_29
+l0800_8737_thunk_fn0800_8745:
+	bp = fn0800_8745(al, bl, si, di, es, ds, out ds)
+	return bp
+l0800_876A_thunk_fn0800_876B:
+	bp_142 = fn0800_876B(al_129, cx, bl, bh_122, si_134, di, es, ds, wArg00, wArg02, psegArg04, wArg06, wArg08, wArg0A, out ds_141)
+	return bp_142
+l0800_8784:
+	al_113 = al_61 + al_61
+	SCZO_114 = cond(al_113)
+	Z_115 = SCZO_114 (alias)
+	SZO_116 = SCZO_114 (alias)
+	C_117 = SCZO_114 (alias)
+	branch al_113 == 0x00 l0800_87AA
+l0800_878B:
+	al_118 = PHI(al_113, al_152)
+	C_119 = PHI(C_117, C_156)
+	si_120 = PHI(si_66, si_151)
+	bh_121 = bh_54 + bh_54 + C_119
+	bh_122 = bh_121 | 0x04
+	bx_123 = DPB(bx_55, bh_122, 8) (alias)
+	al_124 = al_118 + al_118
+	SCZO_125 = cond(al_124)
+	Z_126 = SCZO_125 (alias)
+	SZO_127 = SCZO_125 (alias)
+	C_128 = SCZO_125 (alias)
+	branch al_124 == 0x00 l0800_87AF
+l0800_8797:
+	al_129 = PHI(al_124, al_145)
+	Z_130 = PHI(Z_126, Z_147)
+	SZO_131 = PHI(SZO_127, SZO_148)
+	C_132 = PHI(C_128, C_149)
+	SCZO_133 = PHI(SCZO_125, SCZO_146)
+	si_134 = PHI(si_120, si_144)
+	branch C_132 l0800_8728
+l0800_8799:
+l0800_87AA:
+	al_150 = Mem0[ds:si_66 + 0x00:byte]
+	si_151 = si_66 + 0x01
+	al_152 = al_150 + al_150 + (al_113 <u 0x00)
+	SCZO_153 = cond(al_152)
+	Z_154 = SCZO_153 (alias)
+	SZO_155 = SCZO_153 (alias)
+	C_156 = SCZO_153 (alias)
+	goto l0800_878B
+l0800_87AF:
+	al_143 = Mem0[ds:si_120 + 0x00:byte]
+	si_144 = si_120 + 0x01
+	al_145 = al_143 + al_143 + (al_124 <u 0x00)
+	SCZO_146 = cond(al_145)
+	Z_147 = SCZO_146 (alias)
+	SZO_148 = SCZO_146 (alias)
+	C_149 = SCZO_146 (alias)
+	goto l0800_8797
+fn0800_8701_exit:
+	al_67 = PHI(al_87, al, al_129)
+	Z_68 = PHI(Z_88, Z, Z_130)
+	SZO_69 = PHI(SZO_89, SZO, SZO_131)
+	C_70 = PHI(C_90, C, C_132)
+	bh_71 = PHI(bh_92, bh, bh_122)
+	bx_72 = PHI(bx_93, bx, bx_123)
+	SCZO_73 = PHI(SCZO_94, SCZO, SCZO_133)
+	si_74 = PHI(si_91, si, si_134)
+	ds_75 = PHI(ds_96, ds, ds_141)
+	bp_76 = PHI(bp_97, bp, bp_142)
+	use ds_75 (=> dsOut)
+}
+
+// 0800:8745: Register word16 fn0800_8745(Register byte al, Register byte bl, Register word16 si, Register word16 di, Register selector es, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_8745(byte al, byte bl, word16 si, word16 di, selector es, selector ds, ptr16 & dsOut)
+{
+fn0800_8745_entry:
+	goto l0800_8745
+l0800_86A1:
+	al = Mem0[ds:si + 0x00:byte]
+	si = si + 0x01
+	al = al + al + C
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	goto l0800_86AD
+l0800_86A7:
+	cl = 0x04
+	cx = DPB(cx, cl, 0) (alias)
+l0800_86A9:
+	al = al + al
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	branch Test(EQ,Z) l0800_86A1
+l0800_86AD:
+	bh = bh + bh + C
+	bx = DPB(bx, bh, 8) (alias)
+	SCZO = cond(bh)
+	cx = cx - 0x01
+	cl = (byte) cx (alias)
+	branch cx != 0x00 l0800_86A9
+l0800_86B1:
+	cl = 0x03
+	cl = 0x03 + bh
+	cl = cl + cl
+	cx = DPB(cx, cl, 0) (alias)
+	SCZO = cond(cl)
+l0800_86B7:
+	branch cx == 0x00 l0800_86B9
+l0800_86B7_1:
+	v21 = Mem0[ds:si + 0x00:word16]
+	Mem0[es:di + 0x00:word16] = v21
+	si = si + 0x02
+	di = di + 0x02
+	cx = cx - 0x01
+	cl = (byte) cx (alias)
+	goto l0800_86B7
+l0800_86BC:
+	al = Mem0[ds:si + 0x00:byte]
+	si = si + 0x01
+	al = al + al + C
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	goto l0800_86EA
+l0800_86C2:
+	al = Mem0[ds:si + 0x00:byte]
+	si = si + 0x01
+	al = al + al + C
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	goto l0800_86F0
+l0800_86C8:
+	al = Mem0[ds:si + 0x00:byte]
+	si = si + 0x01
+	al = al + al + C
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	goto l0800_86F9
+l0800_86E6:
+	al = al + al
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	branch Test(EQ,Z) l0800_86BC
+l0800_86EA:
+	cl = 0x04 + C
+	cx = DPB(cx, cl, 0) (alias)
+	al = al + al
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	branch Test(EQ,Z) l0800_86C2
+l0800_86F0:
+	branch Test(UGE,C) l0800_8701
+	goto l0800_86F2
+l0800_86F0_thunk_fn0800_8701:
+	bp = fn0800_8701(al, cx, bl, bh, si, di, es, ds, out ds)
+	return bp
+l0800_86F2:
+	al = al + al
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	branch Test(EQ,Z) l0800_86C8
+l0800_86F9:
+	cx = cx - 0x01
+	cl = (byte) cx (alias)
+	cl = cl + cl + C
+	cx = DPB(cx, cl, 0) (alias)
+	SCZO = cond(cl - 0x09)
+	Z = SCZO (alias)
+	branch Test(EQ,Z) l0800_86A7
+l0800_86FF_thunk_fn0800_8701:
+	bp = fn0800_8701(al, cx, bl, bh, si, di, es, ds, out ds)
+	return bp
+l0800_873C:
+	al = Mem0[ds:si + 0x00:byte]
+	si = si + 0x01
+	al = al + al + C
+	SCZO = cond(al)
+	C = SCZO (alias)
+	branch Test(ULT,C) l0800_8753
+l0800_8744:
+	v22 = Mem0[ds:si + 0x00:byte]
+	Mem0[es:di + 0x00:byte] = v22
+	si = si + 0x01
+	di = di + 0x01
+l0800_8745:
+	sp = v3
+	al = al + al
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	branch Test(ULT,C) l0800_8751
+l0800_8749:
+	v9 = Mem0[ds:si + 0x00:byte]
+	Mem0[es:di + 0x00:byte] = v9
+	si = si + 0x01
+	di = di + 0x01
+	al = al + al
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	branch Test(UGE,C) l0800_8744
+l0800_8751:
+	branch Test(EQ,Z) l0800_873C
+l0800_8753:
+	cx = 0x02
+	cl = (byte) cx (alias)
+	bh = 0x00
+	bx = DPB(bx, bh, 8) (alias)
+	al = al + al
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	branch Test(EQ,Z) l0800_879B
+l0800_875F:
+	branch Test(UGE,C) l0800_86E6
+l0800_8761:
+	al = al + al
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	branch Test(EQ,Z) l0800_87A0
+l0800_8768:
+	branch Test(UGE,C) l0800_8728
+	goto l0800_876A
+l0800_8768_thunk_fn0800_8701:
+	bp = fn0800_8701(al, cx, bl, bh, si, di, es, ds, out ds)
+	return bp
+l0800_876A:
+	cx = 0x03
+	SZO = cond(0x03)
+l0800_879B:
+	al = Mem0[ds:si + 0x00:byte]
+	si = si + 0x01
+	al = al + al + C
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	goto l0800_875F
+l0800_87A0:
+	al = Mem0[ds:si + 0x00:byte]
+	si = si + 0x01
+	al = al + al + C
+	SCZO = cond(al)
+	Z = SCZO (alias)
+	SZO = SCZO (alias)
+	C = SCZO (alias)
+	goto l0800_8768
+fn0800_8745_exit:
+	use ds (=> dsOut)
+}
+
+// 0800:876B: Register word16 fn0800_876B(Register byte al, Register word16 cx, Register byte bl, Register byte bh, Register word16 si, Register word16 di, Register selector es, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Stack selector psegArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Register out ptr16 dsOut)
+word16 fn0800_876B(byte al, word16 cx, byte bl, byte bh, word16 si, word16 di, selector es, selector ds, word16 wArg00, word16 wArg02, selector psegArg04, word16 wArg06, word16 wArg08, word16 wArg0A, ptr16 & dsOut)
+{
+	byte al_10 = al * 0x02;
+	word16 ax_129 = DPB(ax, al * 0x02, 0);
+	byte C_13 = cond(al * 0x02);
+	if (al * 0x02 == 0x00)
+	{
+		al_10 = Mem0[ds:si + 0x00:byte] * 0x02 + (al * 0x02 <u 0x00);
+		si = si + 0x01;
+		ax_129 = DPB(ax, al_10, 0);
+		C_13 = cond(al_10);
+	}
+	if (C_13)
+	{
+		selector ds_122;
+		return fn0800_8701(al_10, cx, bl, bh, si, di, es, ds, out ds_122);
+	}
+	else
+	{
+		byte cl_38 = Mem0[ds:si + 0x00:byte];
+		word16 si_39 = si + 0x01;
+		word16 cx_42 = DPB(cx, cl_38, 0);
+		if (cl_38 == 0x00)
+		{
+			byte al_77 = (byte) ax_129;
+			word16 di_62 = (di & 0x0F) + 0x8000;
+			word16 ax_66 = es + (di >>u 0x04);
+			word16 si_115 = si_39 & 0x0F;
+			byte bl_72 = (byte) (si_39 >>u 0x04);
+			word16 ax_74 = ds + (si_39 >>u 0x04);
+			byte al_116 = al_77 * 0x02;
+			byte C_121 = cond(al_77 * 0x02);
+			if (al_77 * 0x02 == 0x00)
 			{
-				al_109 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + (al_109 <u 0x00);
-				si_108 = si_108 + 0x01;
-				ax_110 = DPB(ax_110, al_109, 0);
-				C_302 = cond(al_109);
+				al_116 = Mem0[ax_74:(si_39 & 0x0F) + 0x00:byte] * 0x02 + (al_77 * 0x02 <u 0x00);
+				si_115 = (si_39 & 0x0F) + 0x01;
+				C_121 = cond(al_116);
 			}
-			if (!C_302)
+			if (C_121)
 			{
-				byte cl_310 = Mem0[ds_19:si_108 + 0x00:byte];
-				si_108 = si_108 + 0x01;
-				word16 cx_313 = DPB(0x03, cl_310, 0);
-				if (cl_310 == 0x00)
-				{
-					word16 ax_336 = ds_19 + (si_108 >>u 0x04);
-					byte al_339 = (byte) ax_110;
-					di_128 = (di_128 & 0x0F) + 0x8000;
-					es_23 = es_23 + (di_128 >>u 0x04) - 0x0800;
-					si_108 = si_108 & 0x0F;
-					bx_115 = si_108 >>u 0x04;
-					ds_19 = ax_336;
-					al_109 = al_339 * 0x02;
-					ax_110 = DPB(ax_110, al_339 * 0x02, 0);
-					byte C_346 = cond(al_339 * 0x02);
-					if (al_339 * 0x02 == 0x00)
-					{
-						al_109 = Mem0[ax_336:(si_108 & 0x0F) + 0x00:byte] * 0x02 + (al_339 * 0x02 <u 0x00);
-						si_108 = (si_108 & 0x0F) + 0x01;
-						ax_110 = DPB(ax_110, al_109, 0);
-						C_346 = cond(al_109);
-					}
-					if (!C_346)
-						goto l0800_8745;
-					selector ds_359;
-					*dsOut = psegLoc0A;
-					return si;
-				}
-				cx_117 = cx_313 + 0x08;
+				selector ds_103;
+				*dsOut = psegArg04;
+				return wArg0A;
+			}
+			else
+			{
+				selector ds_92;
+				return fn0800_8745(al_116, bl_72, si_115, di_62, ax_66 - 0x0800, ax_74, out ds_92);
 			}
 		}
 		else
 		{
-			byte al_392 = al_102 * 0x02;
-			word16 ax_393 = DPB(ax_103, al_392, 0);
-			byte C_397 = cond(al_392);
-			if (al_392 == 0x00)
-			{
-				al_392 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + (al_392 <u 0x00);
-				si_108 = si_108 + 0x01;
-				ax_393 = DPB(ax_103, al_392, 0);
-				C_397 = cond(al_392);
-			}
-			al_109 = al_392 * 0x02;
-			cx_117 = DPB(0x02, C_397 + 0x04, 0);
-			ax_110 = DPB(ax_393, al_109, 0);
-			byte C_409 = cond(al_109);
-			if (al_109 == 0x00)
-			{
-				al_109 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + (al_109 <u 0x00);
-				si_108 = si_108 + 0x01;
-				ax_110 = DPB(ax_393, al_109, 0);
-				C_409 = cond(al_109);
-			}
-			if (!C_409)
-			{
-				al_109 = al_109 * 0x02;
-				ax_110 = DPB(ax_110, al_109, 0);
-				byte C_422 = cond(al_109);
-				if (al_109 == 0x00)
-				{
-					al_109 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + (al_109 <u 0x00);
-					si_108 = si_108 + 0x01;
-					ax_110 = DPB(ax_110, al_109, 0);
-					C_422 = cond(al_109);
-				}
-				byte cl_430 = (byte) (cx_117 - 0x01) * 0x02 + C_422;
-				cx_117 = DPB(cx_117 - 0x01, cl_430, 0);
-				if (cl_430 == 0x09)
-				{
-					word16 cx_435 = DPB(cx_117, 0x04, 0);
-					do
-					{
-						al_109 = al_109 * 0x02;
-						ax_110 = DPB(ax_110, al_109, 0);
-						byte C_448 = cond(al_109);
-						if (al_109 == 0x00)
-						{
-							al_109 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + (al_109 <u 0x00);
-							si_108 = si_108 + 0x01;
-							ax_110 = DPB(ax_110, al_109, 0);
-							C_448 = cond(al_109);
-						}
-						bh_438 = bh_438 * 0x02 + C_448;
-						bx_115 = DPB(bx_115, bh_438, 8);
-						cx_435 = cx_435 - 0x01;
-					} while (cx_435 != 0x00);
-					word16 cx_463 = DPB(cx_435, (bh_438 + 0x03) * 0x02, 0);
-					while (cx_463 != 0x00)
-					{
-						Mem470[es_23:di_128 + 0x00:word16] = Mem0[ds_19:si_108 + 0x00:word16];
-						si_108 = si_108 + 0x02;
-						di_128 = di_128 + 0x02;
-						cx_463 = cx_463 - 0x01;
-					}
-					continue;
-				}
-			}
+			selector ds_53;
+			return fn0800_8701(al_10, cx_42 + 0x08, bl, bh, si_39, di, es, ds, out ds_53);
 		}
-		al_109 = al_109 * 0x02;
-		ax_110 = DPB(ax_110, al_109, 0);
-		byte C_148 = cond(al_109);
-		if (al_109 == 0x00)
-		{
-			al_109 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + (al_109 <u 0x00);
-			si_108 = si_108 + 0x01;
-			ax_110 = DPB(ax_110, al_109, 0);
-			C_148 = cond(al_109);
-		}
-		if (!C_148)
-		{
-			byte al_156 = al_109 * 0x02;
-			word16 ax_157 = DPB(ax_110, al_156, 0);
-			byte C_161 = cond(al_156);
-			if (al_156 == 0x00)
-			{
-				al_156 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + (al_156 <u 0x00);
-				si_108 = si_108 + 0x01;
-				ax_157 = DPB(ax_110, al_156, 0);
-				C_161 = cond(al_156);
-			}
-			al_109 = al_156 * 0x02;
-			ax_110 = DPB(ax_157, al_109, 0);
-			byte C_173 = cond(al_109);
-			if (al_109 == 0x00)
-			{
-				al_109 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + (al_109 <u 0x00);
-				si_108 = si_108 + 0x01;
-				ax_110 = DPB(ax_157, al_109, 0);
-				C_173 = cond(al_109);
-			}
-			if (!C_173)
-			{
-				bx_115 = DPB(bx_115, C_161, 8);
-				if (C_161 != 0x00)
-					goto l0800_8728;
-				bx_115 = DPB(bx_115, C_161 + 0x01, 8);
-l0800_8722:
-				al_109 = al_109 * 0x02;
-				ax_110 = DPB(ax_110, al_109, 0);
-				if (al_109 == 0x00)
-				{
-					al_109 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + (al_109 <u 0x00);
-					si_108 = si_108 + 0x01;
-					ax_110 = DPB(ax_110, al_109, 0);
-				}
-				goto l0800_8728;
-			}
-			byte al_216 = al_109 * 0x02;
-			word16 ax_217 = DPB(ax_110, al_216, 0);
-			byte C_221 = cond(al_216);
-			if (al_216 == 0x00)
-			{
-				al_216 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + (al_216 <u 0x00);
-				si_108 = si_108 + 0x01;
-				ax_217 = DPB(ax_110, al_216, 0);
-				C_221 = cond(al_216);
-			}
-			al_109 = al_216 * 0x02;
-			bx_115 = DPB(bx_115, C_161 * 0x02 + C_221 | 0x04, 8);
-			ax_110 = DPB(ax_217, al_109, 0);
-			byte C_234 = cond(al_109);
-			if (al_109 == 0x00)
-			{
-				al_109 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + (al_109 <u 0x00);
-				si_108 = si_108 + 0x01;
-				ax_110 = DPB(ax_217, al_109, 0);
-				C_234 = cond(al_109);
-			}
-			if (!C_234)
-				goto l0800_8722;
-		}
-		goto l0800_8728;
 	}
-	al_109 = Mem0[ds_19:si_108 + 0x00:byte] * 0x02 + C_530;
-	si_108 = si_108 + 0x01;
-	ax_110 = DPB(ax_110, al_109, 0);
-	if (al_109 <u 0x00)
-		goto l0800_8753;
-l0800_8744:
-	Mem78[es_23:di_128 + 0x00:byte] = Mem0[ds_19:si_108 + 0x00:byte];
-	si_108 = si_108 + 0x00;
-	di_128 = di_128 + 0x00;
-	continue;
 }
 
-byte fn0800_87EF(word16 si, selector ds, ptr16 & siOut)
+// 0800:87EF: Register word16 fn0800_87EF(Register word16 si, Register selector ds, Register out ptr16 siOut)
+word16 fn0800_87EF(word16 si, selector ds, ptr16 & siOut)
 {
 	word16 si_4;
-	byte al_5 = fn0800_87F4(si, ds, out si_4);
-	word16 si_10;
-	fn0800_87F4(si_4, ds, out si_10);
-	return al_5;
+	word16 ax_5 = fn0800_87F4(si, ds, out si_4);
+	word16 si_7;
+	fn0800_87F4(si_4, ds, out si_7);
+	return ax_5;
 }
 
-byte fn0800_87F4(word16 si, selector ds, ptr16 & siOut)
+// 0800:87F4: Register word16 fn0800_87F4(Register word16 si, Register selector ds, Register out ptr16 siOut)
+word16 fn0800_87F4(word16 si, selector ds, ptr16 & siOut)
 {
+	word16 ax_5 = Mem0[ds:si + 0x00:word16];
 	word16 si_8;
 	*siOut = si + 0x02;
-	return Mem0[si + 0x01:byte];
+	return DPB(ax_5, (byte) ax_5, 8);
 }
 
+// 0800:87F8: void fn0800_87F8(Register selector ds)
 void fn0800_87F8(selector ds)
 {
 	ptr32 es_di_8 = Mem0[ds:11831:segptr32];
@@ -9643,36 +13895,47 @@ void fn0800_87F8(selector ds)
 	return;
 }
 
-void fn0800_8832(selector ds)
+// 0800:8832: void fn0800_8832(Register word16 di, Register selector ds)
+void fn0800_8832(word16 di, selector ds)
 {
 	fn0800_889A(ds);
-	if (Mem0[ds:11817:word16] >=u 0x02 && Mem0[ds:11877:word16] - Mem0[ds:11885:word16] >=u 0x03)
+	if (Mem0[ds:11817:word16] <u 0x02)
+		return;
+	else if (Mem0[ds:11877:word16] - Mem0[ds:11885:word16] <u 0x03)
+		return;
+	else
 	{
-		word16 ax_34 = Mem0[ds:11821:word16];
-		word16 si_32 = Mem0[ds:11817:word16];
-		word16 di_33 = Mem0[ds:11819:word16];
-		word16 ax_37 = ax_34 + 0x01;
-		if (ax_34 + 0x01 == Mem0[ds:11825:word16])
-			ax_37 = 0x00;
-		Mem42[ds:11821:word16] = ax_37;
-		Mem44[ds:11885:word16] = Mem42[ds:11885:word16] + 0x01;
-		fn0800_889A(ds);
-		Mem47[ds:11885:word16] = Mem44[ds:11885:word16] - 0x01;
-		Mem48[ds:11821:word16] = ax_34;
-		if (Mem48[ds:11817:word16] >u si_32)
-		{
-			Mem52[ds:11817:word16] = 0x01;
-			Mem53[ds:11819:word16] = 0x00;
-		}
-		else
-		{
-			Mem54[ds:11817:word16] = si_32;
-			Mem55[ds:11819:word16] = di_33;
-		}
+		fn0800_8858(ds, wLoc06, di);
+		return;
+	}
+}
+
+// 0800:8858: void fn0800_8858(Register selector ds, Stack word16 wArg00, Stack word16 wArg02)
+void fn0800_8858(selector ds, word16 wArg00, word16 wArg02)
+{
+	word16 ax_4 = Mem0[ds:11821:word16];
+	word16 ax_11 = ax_4 + 0x01;
+	if (ax_4 + 0x01 == Mem0[ds:11825:word16])
+		ax_11 = 0x00;
+	Mem13[ds:11821:word16] = ax_11;
+	Mem15[ds:11885:word16] = Mem13[ds:11885:word16] + 0x01;
+	fn0800_889A(ds);
+	Mem18[ds:11885:word16] = Mem15[ds:11885:word16] - 0x01;
+	Mem19[ds:11821:word16] = ax_4;
+	if (Mem19[ds:11817:word16] >u si)
+	{
+		Mem30[ds:11817:word16] = 0x01;
+		Mem31[ds:11819:word16] = 0x00;
+	}
+	else
+	{
+		Mem32[ds:11817:word16] = si;
+		Mem34[ds:11819:word16] = di;
 	}
 	return;
 }
 
+// 0800:889A: void fn0800_889A(Register selector ds)
 void fn0800_889A(selector ds)
 {
 	Mem9[ds:11819:word16] = 0x00;
@@ -9769,6 +14032,7 @@ void fn0800_889A(selector ds)
 	return;
 }
 
+// 0800:89A8: void fn0800_89A8(Register selector ds, Stack word16 wArg02)
 void fn0800_89A8(selector ds, word16 wArg02)
 {
 	word16 dx_11 = Mem0[ds:11825:word16];
@@ -9846,88 +14110,122 @@ l0800_89B1:
 	return;
 }
 
-byte fn0800_8B0D(byte al, word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & dsOut)
+// 0800:8ACF: void fn0800_8ACF(Register byte al, Register word16 cx, Register selector ds, Stack segptr32 ptrArg02, Stack segptr32 ptrArg06)
+void fn0800_8ACF(byte al, word16 cx, selector ds, segptr32 ptrArg02, segptr32 ptrArg06)
 {
+	msdos_unknown_2143();
+	word16 ax_12 = DPB(ax, 0x00, 0);
+	if (true)
+		Mem35[ptrArg06 + 0x00:word16] = cx;
+	else
+		fn0800_8D64(ds, ax_12);
+	return;
+}
+
+// 0800:8B0D: Register word16 fn0800_8B0D(Register byte al, Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 dsOut)
+word16 fn0800_8B0D(byte al, word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & dxOut, ptr16 & bxOut, ptr16 & dsOut)
+{
+	*bxOut = bx;
 	*dsOut = ds;
-	word16 sp_121 = fp - 0x04;
+	word16 sp_131 = fp - 0x04;
 	word16 si_11 = wArg06;
 	if (wArg06 == 0x00)
 	{
 		while (Mem0[ds:0x224E:word16] != 0x00)
 		{
-			Mem136[ds:0x224E:word16] = Mem0[ds:0x224E:word16] - 0x01;
-			word16 sp_140;
-			word16 bp_141;
-			selector ss_142;
-			word16 si_143;
-			byte SZO_144;
-			byte C_145;
-			byte Z_146;
-			byte SCZO_147;
-			word16 cx_150;
-			word16 bx_151;
-			byte dl_153;
-			SEQ(cs, SEQ(ds, 20118)[Mem136[ds:0x224E:word16] * 0x02])();
+			Mem147[ds:0x224E:word16] = Mem0[ds:0x224E:word16] - 0x01;
+			word16 sp_151;
+			word16 bp_152;
+			selector ss_153;
+			word16 si_154;
+			byte SZO_155;
+			byte C_156;
+			byte Z_157;
+			byte SCZO_158;
+			word16 cx_161;
+			word16 bx_162;
+			word16 ax_164;
+			word16 dx_165;
+			SEQ(cs, SEQ(ds, 20118)[Mem147[ds:0x224E:word16] * 0x02])();
 		}
-		fn0800_0150(al);
-		word16 bp_122;
-		byte SZO_125;
-		byte C_126;
-		byte Z_127;
-		byte SCZO_128;
-		word16 cx_131;
-		word16 bx_132;
-		byte al_133;
-		byte dl_134;
+		word16 bx_130 = fn0800_0150(al);
+		word16 bp_132;
+		byte SZO_135;
+		byte C_136;
+		byte Z_137;
+		byte SCZO_138;
+		word16 cx_141;
+		word16 bx_142;
+		byte al_143;
+		word16 ax_144;
+		word16 dx_145;
 		SEQ(cs, Mem0[ds:0x2352:word16])();
 	}
-	byte dl_104;
-	byte al_103 = fn0800_01B9(ds, out dl_104);
+	word16 dx_30;
+	word16 ax_110 = fn0800_01B9(ds, out dx_30);
 	fn0800_0163();
+	byte al_109 = (byte) ax_110;
 	if (wArg04 == 0x00)
 	{
 		if (si_11 == 0x00)
 		{
-			word16 sp_77;
-			word16 bp_78;
-			selector ss_79;
-			word16 si_80;
-			byte SZO_81;
-			byte C_82;
-			byte Z_83;
-			byte SCZO_84;
-			selector ds_85;
-			selector cs_86;
-			word16 cx_87;
-			word16 bx_88;
-			byte al_89;
-			byte dl_90;
+			word16 sp_82;
+			word16 bp_83;
+			selector ss_84;
+			word16 si_85;
+			byte SZO_86;
+			byte C_87;
+			byte Z_88;
+			byte SCZO_89;
+			selector ds_90;
+			selector cs_91;
+			word16 cx_92;
+			word16 bx_93;
+			byte al_94;
+			word16 ax_95;
+			word16 dx_96;
 			SEQ(cs, Mem0[ds:9044:word16])();
-			word16 bp_92;
-			word16 si_94;
-			byte SZO_95;
-			byte C_96;
-			byte Z_97;
-			byte SCZO_98;
-			selector ds_99;
-			selector cs_100;
-			word16 cx_101;
-			word16 bx_102;
-			SEQ(cs_86, Mem0[ds_85:0x2356:word16])();
+			word16 bp_98;
+			word16 si_100;
+			byte SZO_101;
+			byte C_102;
+			byte Z_103;
+			byte SCZO_104;
+			selector ds_105;
+			selector cs_106;
+			word16 cx_107;
+			word16 bx_108;
+			word16 dx_111;
+			SEQ(cs_91, Mem0[ds_90:0x2356:word16])();
 		}
-		Mem73[ss:sp_121 - 0x02 + 0x00:word16] = wArg02;
-		fn0800_0164(al_103, bArg00);
+		Mem78[ss:sp_131 - 0x02 + 0x00:word16] = wArg02;
+		fn0800_0164(al_109, bArg00);
 	}
-	return dl_104;
+	return ax_110;
 }
 
-byte fn0800_8B5A(selector ds, word16 wArg02, ptr16 & siOut, ptr16 & dsOut)
+// 0800:8B5A: Register word16 fn0800_8B5A(Register selector ds, Stack word16 wArg02, Register out ptr16 siOut, Register out ptr16 dsOut)
+word16 fn0800_8B5A(selector ds, word16 wArg02, ptr16 & siOut, ptr16 & dsOut)
 {
 	*siOut = si;
-	selector ds_19;
-	return fn0800_8B0D(0x00, fp - 0x02, ds, wArg02, 0x00, 0x00, out ds_19);
+	word16 dx_19;
+	word16 bx_20;
+	selector ds_21;
+	fn0800_8B0D(0x00, fp - 0x02, ds, wArg02, 0x00, 0x00, out dx_19, out bx_20, out ds_21);
+	return dx_19;
 }
 
+// 0800:8B69: Register word16 fn0800_8B69(Register selector ds, Stack word16 wArg02, Register out ptr16 bxOut, Register out ptr16 siOut, Register out ptr16 dsOut)
+word16 fn0800_8B69(selector ds, word16 wArg02, ptr16 & bxOut, ptr16 & siOut, ptr16 & dsOut)
+{
+	*siOut = si;
+	word16 dx_20;
+	word16 bx_21;
+	selector ds_22;
+	return fn0800_8B0D(0x00, fp - 0x02, ds, wArg02, 0x00, 0x01, out dx_20, out bx_21, out ds_22);
+}
+
+// 0800:8B95: void fn0800_8B95(Register byte al, Register byte dl, Stack segptr32 ptrArg02)
 void fn0800_8B95(byte al, byte dl, segptr32 ptrArg02)
 {
 	byte dh_7;
@@ -9938,6 +14236,7 @@ void fn0800_8B95(byte al, byte dl, segptr32 ptrArg02)
 	return;
 }
 
+// 0800:8BA8: void fn0800_8BA8(Register byte al, Register byte cl, Stack segptr32 ptrArg02)
 void fn0800_8BA8(byte al, byte cl, segptr32 ptrArg02)
 {
 	byte ch_7;
@@ -9948,6 +14247,7 @@ void fn0800_8BA8(byte al, byte cl, segptr32 ptrArg02)
 	return;
 }
 
+// 0800:8BBB: Register word16 fn0800_8BBB(Register word16 bp, Register word16 si, Register word16 di, Stack word16 wArg00, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut)
 word16 fn0800_8BBB(word16 bp, word16 si, word16 di, word16 wArg00, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut)
 {
 	word16 dx_16;
@@ -9957,6 +14257,7 @@ word16 fn0800_8BBB(word16 bp, word16 si, word16 di, word16 wArg00, ptr16 & dxOut
 	return fn0800_8BD8(0x00, bp, si, di, out dx_16, out bp_17, out si_18, out di_19);
 }
 
+// 0800:8BC2: Register word16 fn0800_8BC2(Register word16 bp, Register word16 si, Register word16 di, Stack word16 wArg00, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut)
 word16 fn0800_8BC2(word16 bp, word16 si, word16 di, word16 wArg00, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut)
 {
 	word16 dx_14;
@@ -9966,6 +14267,7 @@ word16 fn0800_8BC2(word16 bp, word16 si, word16 di, word16 wArg00, ptr16 & dxOut
 	return fn0800_8BD8(0x01, bp, si, di, out dx_14, out bp_15, out si_16, out di_17);
 }
 
+// 0800:8BCA: Register word16 fn0800_8BCA(Register word16 bp, Register word16 si, Register word16 di, Stack word16 wArg00, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut)
 word16 fn0800_8BCA(word16 bp, word16 si, word16 di, word16 wArg00, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut)
 {
 	word16 dx_14;
@@ -9975,6 +14277,7 @@ word16 fn0800_8BCA(word16 bp, word16 si, word16 di, word16 wArg00, ptr16 & dxOut
 	return fn0800_8BD8(0x02, bp, si, di, out dx_14, out bp_15, out si_16, out di_17);
 }
 
+// 0800:8BD8: Register word16 fn0800_8BD8(Register word16 cx, Register word16 bp, Register word16 si, Register word16 di, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut)
 word16 fn0800_8BD8(word16 cx, word16 bp, word16 si, word16 di, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut)
 {
 	Mem4[ss:v3 - 0x02 + 0x00:word16] = bp;
@@ -10063,6 +14366,7 @@ l0800_8C56:
 	goto l0800_8C56;
 }
 
+// 0800:8C69: Register word16 fn0800_8C69(Register word16 ax, Register byte cl, Register word16 dx, Stack word16 wArg00, Register out ptr16 dxOut)
 word16 fn0800_8C69(word16 ax, byte cl, word16 dx, word16 wArg00, ptr16 & dxOut)
 {
 	if (cl >=u 0x10)
@@ -10079,6 +14383,7 @@ word16 fn0800_8C69(word16 ax, byte cl, word16 dx, word16 wArg00, ptr16 & dxOut)
 	}
 }
 
+// 0800:8C8A: Register word16 fn0800_8C8A(Register word16 ax, Register byte cl, Register word16 dx, Stack word16 wArg00, Register out ptr16 dxOut)
 word16 fn0800_8C8A(word16 ax, byte cl, word16 dx, word16 wArg00, ptr16 & dxOut)
 {
 	if (cl >=u 0x10)
@@ -10096,6 +14401,7 @@ word16 fn0800_8C8A(word16 ax, byte cl, word16 dx, word16 wArg00, ptr16 & dxOut)
 	}
 }
 
+// 0800:8CAA: Register word16 fn0800_8CAA(Register word16 ax, Register byte cl, Register word16 dx, Stack word16 wArg00, Register out ptr16 dxOut)
 word16 fn0800_8CAA(word16 ax, byte cl, word16 dx, word16 wArg00, ptr16 & dxOut)
 {
 	if (cl >=u 0x10)
@@ -10112,6 +14418,7 @@ word16 fn0800_8CAA(word16 ax, byte cl, word16 dx, word16 wArg00, ptr16 & dxOut)
 	}
 }
 
+// 0800:8CCB: Register word16 fn0800_8CCB(Register word16 ax, Register word16 cx, Register word16 dx, Register word16 bx, Stack selector psegArg00, Register out ptr16 dxOut)
 word16 fn0800_8CCB(word16 ax, word16 cx, word16 dx, word16 bx, selector psegArg00, ptr16 & dxOut)
 {
 	byte cl_15 = (byte) cx;
@@ -10141,6 +14448,7 @@ word16 fn0800_8CCB(word16 ax, word16 cx, word16 dx, word16 bx, selector psegArg0
 	}
 }
 
+// 0800:8D2B: Register word16 fn0800_8D2B(Register selector ds, Stack word16 wArg02)
 word16 fn0800_8D2B(selector ds, word16 wArg02)
 {
 	word16 si_17;
@@ -10168,6 +14476,14 @@ l0800_8D3E:
 	goto l0800_8D58;
 }
 
+// 0800:8D64: void fn0800_8D64(Register selector ds, Stack word16 wArg02)
+void fn0800_8D64(selector ds, word16 wArg02)
+{
+	fn0800_8D2B(ds, wArg02);
+	return;
+}
+
+// 0800:8D76: void fn0800_8D76(Stack word16 wArg02)
 void fn0800_8D76(word16 wArg02)
 {
 	word16 dx_9;
@@ -10175,6 +14491,7 @@ void fn0800_8D76(word16 wArg02)
 	return;
 }
 
+// 0800:8D87: Register byte fn0800_8D87(Register word16 bp, Register word16 di, Register selector es, Stack selector psegArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack segptr32 ptrArg08, Stack word16 wArg0A, Stack word16 wArg0C, Stack word16 wArg0E)
 byte fn0800_8D87(word16 bp, word16 di, selector es, selector psegArg00, word16 wArg02, word16 wArg04, word16 wArg06, segptr32 ptrArg08, word16 wArg0A, word16 wArg0C, word16 wArg0E)
 {
 	word16 di_140 = (word16) ptrArg08;
@@ -10237,11 +14554,13 @@ l0800_8DD9:
 	goto l0800_8DD9;
 }
 
+// 0800:8E09: Register byte fn0800_8E09(Register word16 di, Register selector es, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06)
 byte fn0800_8E09(word16 di, selector es, word16 wArg02, word16 wArg04, word16 wArg06)
 {
 	return fn0800_8D87(fp - 0x02, di, es, psegLoc12, 0x61, 0x00, 0x0A, DPB(ptrLoc0A, wArg02, 0), wArg04, wArg06, 0x00);
 }
 
+// 0800:8E29: Register word16 fn0800_8E29(Register byte al, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack byte bArg08, Register out ptr16 dxOut)
 word16 fn0800_8E29(byte al, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, byte bArg08, ptr16 & dxOut)
 {
 	SEQ(ds, 0x24EA)[wArg02 * 0x02] = SEQ(ds, 0x24EA)[wArg02 * 0x02] & ~0x0200;
@@ -10258,6 +14577,7 @@ word16 fn0800_8E29(byte al, selector ds, word16 wArg02, word16 wArg04, word16 wA
 	return ax_18;
 }
 
+// 0800:8E52: Register word16 fn0800_8E52(Register byte al, Register selector ds, Stack segptr32 ptrArg02)
 word16 fn0800_8E52(byte al, selector ds, segptr32 ptrArg02)
 {
 	word16 ax_20;
@@ -10270,6 +14590,7 @@ word16 fn0800_8E52(byte al, selector ds, segptr32 ptrArg02)
 	return ax_20;
 }
 
+// 0800:8E6A: Register word16 fn0800_8E6A(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Register out ptr16 dxOut, Register out ptr16 silOut, Register out ptr16 diOut, Register out ptr16 dsOut)
 word16 fn0800_8E6A(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, ptr16 & dxOut, ptr16 & silOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	if ((wArg08 | wArg0A) == 0x00)
@@ -10303,6 +14624,7 @@ word16 fn0800_8E6A(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 
 	return Mem62[ss:fp + 0x08:word16];
 }
 
+// 0800:8F18: Register word16 fn0800_8F18(Register word16 ax, Register word16 cx, Register word16 dx, Register word16 bx, Register out ptr16 dxOut)
 word16 fn0800_8F18(word16 ax, word16 cx, word16 dx, word16 bx, ptr16 & dxOut)
 {
 	word16 ax_11 = dx;
@@ -10316,6 +14638,7 @@ word16 fn0800_8F18(word16 ax, word16 cx, word16 dx, word16 bx, ptr16 & dxOut)
 	return (word16) dx_ax_28;
 }
 
+// 0800:8F2F: FlagGroup byte fn0800_8F2F(Register word16 ax, Register word16 cx, Register word16 dx, Register word16 bx, Register out ptr16 dlOut)
 byte fn0800_8F2F(word16 ax, word16 cx, word16 dx, word16 bx, ptr16 & dlOut)
 {
 	word16 dx_11 = dx + (ax >>u 0x04);
@@ -10330,22 +14653,27 @@ byte fn0800_8F2F(word16 ax, word16 cx, word16 dx, word16 bx, ptr16 & dlOut)
 	return CZ_33;
 }
 
-word16 fn0800_8F50(byte al, selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg08)
+// 0800:8F50: Register word16 fn0800_8F50(Register byte al, Register selector ds, Stack word16 wArg02, Stack segptr32 ptrArg04, Stack word16 wArg08, Register out ptr16 dxOut)
+word16 fn0800_8F50(byte al, selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg08, ptr16 & dxOut)
 {
-	word16 wLoc04_30;
-	word16 ax_20;
+	*dxOut = dx;
+	word16 wLoc04_33;
+	word16 ax_21;
 	if ((SEQ(ds, 0x24EA)[wArg02 * 0x02] & 0x02) != 0x00)
-		wLoc04_30 = 0x05;
+		wLoc04_33 = 0x05;
 	else
 	{
-		if (!msdos_read_file(wArg02, wArg08, ptrArg04, out ax_20))
-			return ax_20;
-		wLoc04_30 = ax_20;
+		word16 dx_54 = (word16) ptrArg04;
+		*dxOut = dx_54;
+		if (!msdos_read_file(wArg02, wArg08, ptrArg04, out ax_21))
+			return ax_21;
+		wLoc04_33 = ax_21;
 	}
-	ax_20 = fn0800_8D2B(ds, wLoc04_30);
-	return ax_20;
+	ax_21 = fn0800_8D2B(ds, wLoc04_33);
+	return ax_21;
 }
 
+// 0800:8F7F: Register byte fn0800_8F7F(Register byte al, Register selector ds, Stack segptr32 ptrArg02)
 byte fn0800_8F7F(byte al, selector ds, segptr32 ptrArg02)
 {
 	word16 ax_11 = DPB(ax, 0x41, 8);
@@ -10355,6 +14683,1064 @@ byte fn0800_8F7F(byte al, selector ds, segptr32 ptrArg02)
 	return dl_16;
 }
 
+// 0800:8F97: void fn0800_8F97(Register word16 bx, Register word16 di, Register selector ds)
+void fn0800_8F97(word16 bx, word16 di, selector ds)
+{
+	fn0800_8FC8(bx, fp - 0x02, di, ds);
+	return;
+}
+
+// 0800:8FAB: Register word16 fn0800_8FAB(Register word16 bp, Register selector ds, Register out ptr16 esOut)
+word16 fn0800_8FAB(word16 bp, selector ds, ptr16 & esOut)
+{
+	ptr32 es_di_5 = Mem0[ss:bp + 0x10:segptr32];
+	word16 di_6 = (word16) es_di_5;
+	if ((Mem0[ss:bp - 0x01 + 0x00:byte] & 0x20) == 0x00)
+	{
+		word16 di_26 = Mem0[es_di_5 + 0x00:word16];
+		Mem33[ss:bp + 0x10:word16] = Mem0[ss:bp + 0x10:word16] + 0x02;
+		selector es_29;
+		*esOut = ds;
+		return di_26;
+	}
+	else
+	{
+		ptr32 es_di_19 = Mem0[ds:di_6 + 0x00:segptr32];
+		Mem23[ss:bp + 0x10:word16] = Mem0[ss:bp + 0x10:word16] + 0x04;
+		selector es_21;
+		*esOut = SLICE(es_di_19, selector, 16);
+		return (word16) es_di_19;
+	}
+}
+
+// 0800:8FC8: void fn0800_8FC8(Register word16 bx, Register word16 bp, Register word16 di, Register selector ds)
+void fn0800_8FC8(word16 bx, word16 bp, word16 di, selector ds)
+{
+fn0800_8FC8_entry:
+	def fp
+	def ss
+	def bp
+	def Mem0
+	def bx
+	def di
+	def ds
+	sp_1 = fp
+	si_5 = Mem0[ss:bp + 0x0C:word16]
+	fn0800_8FCB(bx, bp, si_5, di, ds)
+	return
+l0800_8FC8:
+l0800_8FC8:
+	si = Mem0[ss:bp + 0x0C:word16]
+	fn0800_8FCB(bx, bp, si, di, ds)
+	return
+l0800_8FC8_thunk_fn0800_8FCB:
+l0800_8FC8_thunk_fn0800_8FCB:
+fn0800_8FC8_exit:
+}
+
+// 0800:8FCB: void fn0800_8FCB(Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds)
+void fn0800_8FCB(word16 bx, word16 bp, word16 si, word16 di, selector ds)
+{
+fn0800_8FCB_entry:
+l0800_8FCB:
+	sp = v3
+	es = Mem0[ss:bp + 0x0E:selector]
+	al = Mem0[ds:si + 0x00:byte]
+	si = si + 0x01
+	al = al | al
+	ax = DPB(ax, al, 0) (alias)
+	SZO = cond(al)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_9042
+l0800_8FD4:
+	SCZO = cond(al - 0x25)
+	Z = SCZO (alias)
+	branch Test(EQ,Z) l0800_9045
+l0800_8FD8:
+	ax = (int16) al
+	v15 = ax
+	ax = di
+	di = v15
+	v17 = Mem0[ss:bp - 0x06 + 0x00:word16] + 0x01
+	Mem0[ss:bp - 0x06 + 0x00:word16] = v17
+	SZO = cond(v17)
+	v18 = Mem0[ss:bp + 0x0A:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v18
+	v19 = Mem0[ss:bp + 0x08:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v19
+	call SEQ(cs, Mem0[ss:bp + 0x04:word16]) (retsize: 2; depth: 2)
+		defs: al,ax,bh,bl,bp,bx,C,cs,cx,CZ,di,ds,es,S,SCZO,si,SO,sp,ss,SZO,Z
+	cx = Mem0[ss:sp + 0x00:word16]
+	sp = sp + 0x02
+	cx = Mem0[ss:sp + 0x00:word16]
+	sp = sp + 0x02
+	ax = ax | ax
+	al = (byte) ax (alias)
+	SZO = cond(ax)
+	SO = SZO (alias)
+	C = false
+	branch Test(LT,SO) l0800_9016
+l0800_8FEC:
+	ax = (int16) al
+	al = (byte) ax (alias)
+	di = di | di
+	SZO = cond(di)
+	S = SZO (alias)
+	C = false
+	branch Test(SG,S) l0800_902B
+l0800_8FF1:
+	SCZO = cond(Mem0[ds:di + 9596:byte] - 0x01)
+	Z = SCZO (alias)
+	branch Test(NE,Z) l0800_902B
+l0800_8FF8:
+	v24 = ax
+	ax = bx
+	al = (byte) ax (alias)
+	bx = v24
+	bl = (byte) bx (alias)
+	bh = SLICE(bx, byte, 8) (alias)
+	bl = bl | bl
+	bx = DPB(bx, bl, 0) (alias)
+	SZO = cond(bl)
+	S = SZO (alias)
+	C = false
+	branch Test(SG,S) l0800_9019
+l0800_8FFD:
+	SCZO = cond(Mem0[ds:bx + 9596:byte] - 0x01)
+	Z = SCZO (alias)
+	branch Test(NE,Z) l0800_9019
+l0800_9004:
+	v27 = Mem0[ss:bp - 0x06 + 0x00:word16] + 0x01
+	Mem0[ss:bp - 0x06 + 0x00:word16] = v27
+	SZO = cond(v27)
+	v28 = Mem0[ss:bp + 0x0A:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v28
+	v29 = Mem0[ss:bp + 0x08:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v29
+	call SEQ(cs, Mem0[ss:bp + 0x04:word16]) (retsize: 2; depth: 2)
+		defs: al,ax,bh,bl,bp,bx,C,cs,cx,CZ,di,ds,es,S,SCZO,si,SO,sp,ss,SZO,Z
+	cx = Mem0[ss:sp + 0x00:word16]
+	sp = sp + 0x02
+	cx = Mem0[ss:sp + 0x00:word16]
+	sp = sp + 0x02
+	ax = ax | ax
+	al = (byte) ax (alias)
+	SZO = cond(ax)
+	C = false
+	branch Test(GT,SZO) l0800_8FF8
+l0800_9016:
+	fn0800_93A6(bx, bp, si, di, ds)
+	return
+l0800_9016_thunk_fn0800_93A6:
+	fn0800_93A6(bx, bp, si, di, ds)
+	return
+l0800_9019:
+	v30 = Mem0[ss:bp + 0x0A:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v30
+	v31 = Mem0[ss:bp + 0x08:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v31
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = bx
+	call SEQ(cs, Mem0[ss:bp + 0x06:word16]) (retsize: 2; depth: 2)
+		defs: al,ax,bh,bl,bp,bx,C,cs,cx,CZ,di,ds,es,S,SCZO,si,SO,sp,ss,SZO,Z
+	sp = sp + 0x06
+	SCZO = cond(sp)
+	v32 = Mem0[ss:bp - 0x06 + 0x00:word16] - 0x01
+	Mem0[ss:bp - 0x06 + 0x00:word16] = v32
+	SZO = cond(v32)
+	goto l0800_8FCB
+l0800_902B:
+	SCZO = cond(ax - di)
+	Z = SCZO (alias)
+	branch Test(EQ,Z) l0800_8FCB
+l0800_902F:
+	v33 = Mem0[ss:bp + 0x0A:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v33
+	v34 = Mem0[ss:bp + 0x08:word16]
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = v34
+	sp = sp - 0x02
+	Mem0[ss:sp + 0x00:word16] = ax
+	call SEQ(cs, Mem0[ss:bp + 0x06:word16]) (retsize: 2; depth: 2)
+		defs: al,ax,bh,bl,bp,bx,C,cs,cx,CZ,di,ds,es,S,SCZO,si,SO,sp,ss,SZO,Z
+	sp = sp + 0x06
+	SCZO = cond(sp)
+	v35 = Mem0[ss:bp - 0x06 + 0x00:word16] - 0x01
+	Mem0[ss:bp - 0x06 + 0x00:word16] = v35
+	SZO = cond(v35)
+	fn0800_93A6(bx, bp, si, di, ds)
+	return
+l0800_903C_thunk_fn0800_93A6:
+l0800_9042:
+	fn0800_93A6(bx, bp, si, di, ds)
+	return
+l0800_9045:
+	Mem0[ss:bp - 0x0A + 0x00:word16] = ~0x00
+	es = Mem0[ss:bp + 0x0E:selector]
+	Mem0[ss:bp - 0x01 + 0x00:byte] = 0x20
+	al = Mem0[ds:si + 0x00:byte]
+	si = si + 0x01
+	ax = (int16) al
+	Mem0[ss:bp + 0x0C:word16] = si
+	v36 = ax
+	ax = di
+	di = v36
+	di = di | di
+	SZO = cond(di)
+	SO = SZO (alias)
+	C = false
+	branch Test(LT,SO) l0800_9075
+l0800_905C:
+	bl = Mem0[ds:di + 9596:byte]
+	bh = 0x00
+	bx = DPB(bx, bh, 8) (alias)
+	SCZO = cond(bx - 0x15)
+	CZ = SCZO (alias)
+	branch Test(ULE,CZ) l0800_906A
+l0800_9067:
+	fn0800_93A6(bx, bp, si, di, ds)
+	return
+l0800_9067_thunk_fn0800_93A6:
+	fn0800_93A6(bx, bp, si, di, ds)
+	return
+l0800_906A:
+	bx = bx << 0x01
+	bl = (byte) bx (alias)
+	bh = SLICE(bx, byte, 8) (alias)
+	SCZO = cond(bx)
+	switch (di) { l0800_93BE }
+	fn0800_93A6(bx, bp, si, di, ds)
+	return
+l0800_906C_thunk_fn0800_93A6:
+l0800_9075:
+	fn0800_93A6(bx, bp, si, di, ds)
+	return
+fn0800_8FCB_exit:
+}
+
+// 0800:90F2: void fn0800_90F2(Register word16 ax, Register word16 bx, Register word16 bp, Register selector ds)
+void fn0800_90F2(word16 ax, word16 bx, word16 bp, selector ds)
+{
+	word16 dx_22;
+	word16 bx_23;
+	word16 si_24;
+	word16 di_25;
+	word16 ax_26 = fn0800_94B0(ax, bx, ds, Mem0[ss:bp + 0x08:word16], wArg00, wArg02, wArg04, ptrArg06, ptrArg0A, out dx_22, out bx_23, out si_24, out di_25);
+	if (Mem0[ss:bp - 0x08 + 0x00:word16] <= 0x00)
+	{
+		if (Mem0[ss:bp - 0x08 + 0x00:word16] < 0x00)
+		{
+			fn0800_93A6(bx_23, bp, si_24, di_25, ds);
+			return;
+		}
+		else
+		{
+			fn0800_93BE(bx_23, bp, si_24, di_25, ds);
+			return;
+		}
+	}
+	else
+	{
+		if ((Mem0[ss:bp - 0x01 + 0x00:byte] & 0x01) == 0x00)
+		{
+			Mem52[ss:bp - 0x04 + 0x00:word16] = Mem0[ss:bp - 0x04 + 0x00:word16] + 0x01;
+			selector es_54;
+			word16 di_55 = fn0800_8FAB(bp, ds, out es_54);
+			Mem56[es_54:di_55 + 0x00:word16] = ax_26;
+			di_25 = di_55 + 0x02;
+			if ((Mem56[ss:bp - 0x01 + 0x00:byte] & 0x04) != 0x00)
+			{
+				Mem64[es_54:di_55 + 0x02:word16] = dx_22;
+				di_25 = di_55 + 0x04;
+			}
+		}
+		fn0800_8FC8(bx_23, bp, di_25, ds);
+		return;
+	}
+}
+
+// 0800:912A: void fn0800_912A(Register word16 ax, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds)
+void fn0800_912A(word16 ax, word16 bx, word16 bp, word16 si, word16 di, selector ds)
+{
+	fn0800_93C5(ax, bx, bp, si, di, ds);
+	return;
+}
+
+// 0800:9145: void fn0800_9145(Register word16 ax, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds)
+void fn0800_9145(word16 ax, word16 bx, word16 bp, word16 si, word16 di, selector ds)
+{
+	fn0800_93EF(ax, bx, bp, si, di, ds);
+	return;
+}
+
+// 0800:9169: void fn0800_9169(Register word16 ax, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds)
+void fn0800_9169(word16 ax, word16 bx, word16 bp, word16 si, word16 di, selector ds)
+{
+	fn0800_93EF(ax, bx, bp, si, di, ds);
+	return;
+}
+
+// 0800:920E: void fn0800_920E(Register word16 ax, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds)
+void fn0800_920E(word16 ax, word16 bx, word16 bp, word16 si, word16 di, selector ds)
+{
+	fn0800_93C5(ax, bx, bp, si, di, ds);
+	return;
+}
+
+// 0800:93A6: void fn0800_93A6(Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds)
+void fn0800_93A6(word16 bx, word16 bp, word16 si, word16 di, selector ds)
+{
+	word16 sp_15;
+	selector ss_16;
+	word16 bp_17;
+	word16 ax_18;
+	selector cs_19;
+	byte SCZO_20;
+	byte C_21;
+	selector es_22;
+	word16 di_23;
+	word16 si_24;
+	word16 bx_25;
+	selector ds_26;
+	SEQ(cs, Mem0[ss:bp + 0x06:word16])();
+	Mem31[ss_16:bp_17 - 0x04 + 0x00:word16] = Mem0[ss_16:bp_17 - 0x04 + 0x00:word16] - (Mem0[ss_16:(bp_17 - 0x04) + 0x00:word16] <u 0x01);
+	fn0800_8FCB(bx_25, bp_17, si_24, di_23, ds_26);
+	return;
+}
+
+// 0800:93BE: void fn0800_93BE(Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds)
+void fn0800_93BE(word16 bx, word16 bp, word16 si, word16 di, selector ds)
+{
+fn0800_93BE_entry:
+	fn0800_8FCB(bx, bp, si, di, ds)
+	return
+	def di
+	def si
+	def bp
+	def sp
+l0800_93BE:
+	sp = v3
+	es = Mem0[ss:sp + 0x00:selector]
+	sp = sp + 0x02
+	ax = Mem0[ss:bp - 0x04 + 0x00:word16]
+	di = Mem0[ss:sp + 0x00:word16]
+	sp = sp + 0x02
+	si = Mem0[ss:sp + 0x00:word16]
+	sp = bp
+	bp = Mem0[ss:sp + 0x00:word16]
+	sp = sp + 0x02
+	return
+l0800_9453:
+fn0800_93BE_exit:
+	di_4 = PHI(di, di)
+	si_5 = PHI(si, si)
+	bp_6 = PHI(bp, bp)
+	sp_7 = PHI(sp, sp)
+}
+
+// 0800:93C5: void fn0800_93C5(Register word16 ax, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds)
+void fn0800_93C5(word16 ax, word16 bx, word16 bp, word16 si, word16 di, selector ds)
+{
+l0800_93C5:
+	Mem8[ss:bp - 0x06 + 0x00:word16] = Mem0[ss:bp - 0x06 + 0x00:word16] + 0x01;
+	word16 sp_17;
+	byte SZO_20;
+	selector cs_21;
+	word16 cx_22;
+	word16 ax_23;
+	byte C_24;
+	byte al_25;
+	byte S_26;
+	word16 bx_27;
+	selector ds_28;
+	byte SCZO_29;
+	byte Z_30;
+	word16 si_31;
+	word16 di_32;
+	SEQ(cs, Mem8[ss:bp + 0x04:word16])();
+	byte al_38 = (byte) ax_23;
+	if (ax_23 <= 0x00)
+	{
+		if (ax_23 == 0x00)
+			break;
+		fn0800_93A6(bx_27, bp, si_31, di_32, ds_28);
+		return;
+	}
+	else
+	{
+		word16 ax_65 = DPB(ax_23, al_38, 0);
+		if (al_38 >= 0x00 && Mem8[ds_28:ax_65 + 9596:byte] == 0x01)
+			goto l0800_93C5;
+		word16 cx_62 = Mem8[ss:sp_17 + 0x04:word16];
+		fn0800_93E5(cx_62);
+		return;
+	}
+}
+
+// 0800:93E5: void fn0800_93E5(Register word16 cx)
+void fn0800_93E5(word16 cx)
+{
+	word16 sp_5;
+	word16 cx_6;
+	byte SCZO_7;
+	(cx + 0x03)();
+	return;
+}
+
+// 0800:93EF: void fn0800_93EF(Register word16 ax, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds)
+void fn0800_93EF(word16 ax, word16 bx, word16 bp, word16 si, word16 di, selector ds)
+{
+	word16 sp_1 = fp;
+	word16 dx_175 = 0x00;
+	word16 cx_161 = 0x04;
+	byte cl_146 = 0x04;
+	while (true)
+	{
+		word16 v8_38 = Mem0[ss:bp - 0x0A + 0x00:word16] - 0x01;
+		Mem39[ss:bp - 0x0A + 0x00:word16] = v8_38;
+		if (v8_38 < 0x00)
+			break;
+		word16 sp_108 = sp_1 - 0x02;
+		Mem109[ss:sp_108 + 0x00:word16] = dx_175;
+		Mem111[ss:sp_108 - 0x02 + 0x00:word16] = cx_161;
+		Mem113[ss:bp - 0x06 + 0x00:word16] = Mem111[ss:bp - 0x06 + 0x00:word16] + 0x01;
+		Mem117[ss:sp_108 - 0x04 + 0x00:word16] = Mem113[ss:bp + 0x0A:word16];
+		Mem120[ss:sp_108 - 0x06 + 0x00:word16] = Mem117[ss:bp + 0x08:word16];
+		word16 sp_121;
+		word16 dx_122;
+		byte SCZO_123;
+		word16 cx_124;
+		byte SZO_127;
+		byte SO_128;
+		word16 ax_130;
+		byte C_131;
+		byte cl_132;
+		byte ch_133;
+		byte al_134;
+		byte dl_135;
+		byte Z_136;
+		SEQ(cs, Mem120[ss:bp + 0x04:word16])();
+		word16 cx_145 = Mem120[ss:sp_121 + 0x04:word16];
+		cl_146 = (byte) cx_145;
+		word16 dx_148 = Mem120[ss:sp_121 + 0x06:word16];
+		sp_1 = sp_121 + 0x08;
+		byte al_152 = (byte) ax_130;
+		if (ax_130 <= 0x00)
+			break;
+		cl_146 = cl_146 - 0x01;
+		word16 cx_156 = DPB(cx_145, cl_146 - 0x01, 0);
+		if (cl_146 < 0x01)
+			break;
+		byte ch_160 = al_152 - 0x30;
+		cx_161 = DPB(cx_156, al_152 - 0x30, 8);
+		if (al_152 <u 0x30)
+			break;
+		if (al_152 >=u 0x3A)
+		{
+			byte ch_177 = al_152 - 0x41;
+			word16 cx_178 = DPB(cx_156, al_152 - 0x41, 8);
+			if (al_152 <u 0x41)
+				break;
+			if (al_152 >=u 0x47)
+			{
+				ch_177 = al_152 - 0x61;
+				cx_178 = DPB(cx_156, al_152 - 0x61, 8);
+				if (al_152 <u 0x61 || al_152 >=u 0x67)
+					break;
+			}
+			ch_160 = ch_177 + 0x0A;
+			cx_161 = DPB(cx_178, ch_160, 8);
+		}
+		dx_175 = DPB(dx_148 << 0x04, (byte) (dx_148 << 0x04) + ch_160, 0);
+	}
+	if (cl_146 == 0x04)
+	{
+		fn0800_93A6(bx, bp, si, di, ds);
+		return;
+	}
+	else
+	{
+		word16 sp_86;
+		word16 dx_87;
+		byte SCZO_88;
+		word16 cx_89;
+		word16 bp_90;
+		selector ss_91;
+		byte SZO_92;
+		byte SO_93;
+		selector cs_94;
+		word16 ax_95;
+		byte C_96;
+		byte cl_97;
+		byte ch_98;
+		byte al_99;
+		byte dl_100;
+		byte Z_101;
+		word16 bx_102;
+		word16 si_103;
+		word16 di_104;
+		selector ds_105;
+		(Mem39[ss:sp_1 + 0x00:word16] + 0x03)();
+		return;
+	}
+}
+
+// 0800:9485: FlagGroup byte fn0800_9485(Register byte cl, Register byte bl, Register out ptr16 blOut)
+byte fn0800_9485(byte cl, byte bl, ptr16 & blOut)
+{
+	byte C_13;
+	byte bl_29;
+	*blOut = bl - 0x30;
+	if (bl >=u 0x30)
+	{
+		if (bl <=u 0x39)
+		{
+l0800_94A2:
+			if (bl_29 <u cl)
+			{
+				C_13 = false;
+				return C_13;
+			}
+			goto l0800_94AD;
+		}
+		if (bl <=u 0x5A)
+			*blOut = bl - 55;
+		else
+			*blOut = bl - 0x57;
+		if (bl_29 >u 0x09)
+			goto l0800_94A2;
+	}
+l0800_94AD:
+	byte bl_20;
+	*blOut = (byte) bx;
+	C_13 = true;
+	return C_13;
+}
+
+// 0800:94B0: Register word16 fn0800_94B0(Register word16 ax, Register word16 bx, Register selector ds, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Stack word16 wArg0C, Stack segptr32 ptrArg0E, Stack segptr32 ptrArg12, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 siOut, Register out ptr16 diOut)
+word16 fn0800_94B0(word16 ax, word16 bx, selector ds, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, segptr32 ptrArg0E, segptr32 ptrArg12, ptr16 & dxOut, ptr16 & bxOut, ptr16 & siOut, ptr16 & diOut)
+{
+	word16 sp_1016 = fp - 0x0C;
+	byte bLoc03_1025 = 0x00;
+	word16 wLoc06_1033 = 0x00;
+	word16 wLoc08_131 = 0x01;
+	do
+	{
+		word16 ax_180;
+		word16 v8_21 = wLoc06_1033 + 0x01;
+		word16 sp_26 = sp_1016 - 0x02;
+		Mem27[ss:sp_26 + 0x00:word16] = wArg08;
+		Mem31[ss:sp_26 - 0x02 + 0x00:word16] = wArg06;
+		wLoc06_1033 = v8_21;
+		word16 sp_33;
+		word16 bp_34;
+		byte SCZO_36;
+		word16 si_37;
+		word16 di_38;
+		byte SZO_39;
+		selector cs_40;
+		word16 cx_41;
+		word16 ax_42;
+		byte C_43;
+		byte SO_44;
+		byte al_45;
+		word16 bx_46;
+		byte bl_47;
+		byte Z_48;
+		selector ds_49;
+		byte CZ_50;
+		byte cl_51;
+		selector es_52;
+		word16 dx_53;
+		byte dl_54;
+		byte dh_55;
+		byte ah_56;
+		SEQ(cs, Mem31[ss:fp + 0x02:word16])();
+		sp_1016 = sp_33 + 0x04;
+		word16 ax_1069 = ax_42;
+		byte al_64 = (byte) ax_42;
+		if (ax_42 < 0x00)
+			goto l0800_9549;
+		word16 ax_221 = (int16) al_64;
+		byte bl_230 = (byte) ax_221;
+	} while ((bl_230 & 0x80) != 0x00 || (Mem31[ds_49:ax_221 + 0x2251:byte] & 0x01) == 0x00);
+	ax_1069 = ax_221;
+	byte al_1072 = (byte) ax_221;
+	word16 wArg0C_1029 = wArg0C - 0x01;
+	if (wArg0C < 0x01)
+	{
+l0800_9550:
+		wLoc08_131 = 0x00;
+l0800_9555:
+		word16 sp_141 = sp_1016 - 0x02;
+		Mem142[ss:sp_141 + 0x00:word16] = wArg08;
+		Mem145[ss:sp_141 - 0x02 + 0x00:word16] = wArg06;
+		Mem147[ss:sp_141 - 0x04 + 0x00:word16] = ax_1069;
+		word16 sp_148;
+		word16 bp_149;
+		byte SCZO_151;
+		word16 si_152;
+		word16 di_153;
+		byte SZO_154;
+		selector cs_155;
+		word16 cx_156;
+		word16 ax_157;
+		byte C_158;
+		byte SO_159;
+		byte al_160;
+		word16 bx_161;
+		byte bl_162;
+		byte Z_163;
+		selector ds_164;
+		byte CZ_165;
+		byte cl_166;
+		selector es_167;
+		word16 dx_168;
+		byte dl_169;
+		byte dh_170;
+		byte ah_171;
+		SEQ(cs_40, Mem147[ss:bp_34 + 0x06:word16])();
+		sp_1016 = sp_148 + 0x06;
+		wLoc06_1033 = wLoc06_1033 - 0x01;
+		ax_180 = 0x00;
+		word16 dx_182;
+		*dxOut = 0x00;
+		goto l0800_9622;
+	}
+	word16 bp_1042;
+	selector cs_1048;
+	if (al_1072 != 0x2B)
+	{
+		cs_1048 = cs_40;
+		bp_1042 = bp_34;
+		if (al_1072 != 0x2D)
+			goto l0800_950F;
+		bLoc03_1025 = 0x01;
+	}
+	wArg0C_1029 = wArg0C - 0x02;
+	if (wArg0C < 0x02)
+		goto l0800_9550;
+	Mem1037[ss:sp_33 + 0x02:word16] = wArg08;
+	Mem1040[ss:sp_33 + 0x00:word16] = wArg06;
+	wLoc06_1033 = v8_21 + 0x01;
+	word16 sp_1041;
+	byte SCZO_1044;
+	word16 si_1045;
+	word16 di_1046;
+	byte SZO_1047;
+	word16 cx_1049;
+	word16 ax_1050;
+	byte C_1051;
+	byte SO_1052;
+	byte al_1053;
+	word16 bx_1054;
+	byte bl_1055;
+	byte Z_1056;
+	selector ds_1057;
+	byte CZ_1058;
+	byte cl_1059;
+	selector es_1060;
+	word16 dx_1061;
+	byte dl_1062;
+	byte dh_1063;
+	byte ah_1064;
+	SEQ(cs_40, Mem1040[ss:bp_34 + 0x04:word16])();
+	sp_1016 = sp_1041 + 0x04;
+	ax_1069 = ax_1050;
+	al_1072 = (byte) ax_1050;
+	if (ax_1050 < 0x00)
+	{
+l0800_9549:
+		wLoc08_131 = ~0x00;
+		goto l0800_9555;
+	}
+l0800_950F:
+	word16 ax_460;
+	word16 si_310 = 0x00;
+	word16 di_313 = 0x00;
+	byte cl_318 = (byte) wArg0A;
+	if (wArg0A != 0x00)
+	{
+		if (wArg0A >u 0x24 || cl_318 <u 0x02)
+			goto l0800_9550;
+		if (al_1072 == 0x30)
+		{
+			if (cl_318 != 0x10)
+				goto l0800_959C;
+			word16 v32_926 = wArg0C_1029 - 0x01;
+			wArg0C_1029 = v32_926;
+			if (v32_926 >= 0x00)
+			{
+				word16 sp_934 = sp_1016 - 0x02;
+				Mem935[ss:sp_934 + 0x00:word16] = wArg08;
+				Mem938[ss:sp_934 - 0x02 + 0x00:word16] = wArg06;
+				wLoc06_1033 = wLoc06_1033 + 0x01;
+				word16 sp_939;
+				byte SCZO_942;
+				byte SZO_945;
+				word16 cx_947;
+				byte C_949;
+				byte SO_950;
+				byte al_951;
+				word16 bx_952;
+				byte bl_953;
+				byte Z_954;
+				selector ds_955;
+				byte CZ_956;
+				byte cl_957;
+				selector es_958;
+				word16 dx_959;
+				byte dl_960;
+				byte dh_961;
+				byte ah_962;
+				SEQ(cs_1048, Mem938[ss:bp_1042 + 0x04:word16])();
+				sp_1016 = sp_939 + 0x04;
+				if (al_951 != 0x78 && al_951 != 88)
+					goto l0800_95C8;
+				goto l0800_959C;
+			}
+l0800_956B:
+			goto l0800_9612;
+		}
+	}
+	else
+	{
+		wArg0A = 0x0A;
+		if (al_1072 == 0x30)
+		{
+			word16 v87_975 = wArg0C_1029 - 0x01;
+			wArg0C_1029 = v87_975;
+			if (v87_975 >= 0x00)
+			{
+				word16 sp_983 = sp_1016 - 0x02;
+				Mem984[ss:sp_983 + 0x00:word16] = wArg08;
+				Mem987[ss:sp_983 - 0x02 + 0x00:word16] = wArg06;
+				wLoc06_1033 = wLoc06_1033 + 0x01;
+				word16 sp_988;
+				byte SCZO_991;
+				byte SZO_994;
+				word16 cx_996;
+				byte C_998;
+				byte SO_999;
+				byte al_1000;
+				word16 bx_1001;
+				byte bl_1002;
+				byte Z_1003;
+				selector ds_1004;
+				byte CZ_1005;
+				byte cl_1006;
+				selector es_1007;
+				word16 dx_1008;
+				byte dl_1009;
+				byte dh_1010;
+				byte ah_1011;
+				SEQ(cs_1048, Mem987[ss:bp_1042 + 0x04:word16])();
+				sp_1016 = sp_988 + 0x04;
+				wArg0A = 0x08;
+				if (al_1000 != 0x78 && al_1000 != 88)
+				{
+l0800_95C8:
+					byte cl_504 = (byte) wArg0A;
+					byte bl_509;
+					byte C_510 = fn0800_9485(cl_504, (byte) ax_460, out bl_509);
+					word16 ax_512 = ax_460;
+					if (!C_510)
+					{
+l0800_9602:
+						word16 sp_531 = sp_1016 - 0x02;
+						Mem532[ss:sp_531 + 0x00:word16] = wArg08;
+						Mem535[ss:sp_531 - 0x02 + 0x00:word16] = wArg06;
+						Mem537[ss:sp_531 - 0x04 + 0x00:word16] = ax_512;
+						word16 sp_538;
+						word16 bp_539;
+						selector ss_540;
+						byte SCZO_541;
+						word16 si_542;
+						word16 di_543;
+						byte SZO_544;
+						selector cs_545;
+						word16 cx_546;
+						word16 ax_547;
+						byte C_548;
+						byte SO_549;
+						byte al_550;
+						word16 bx_551;
+						byte bl_552;
+						byte Z_553;
+						selector ds_554;
+						byte CZ_555;
+						byte cl_556;
+						selector es_557;
+						word16 dx_558;
+						byte dl_559;
+						byte dh_560;
+						byte ah_561;
+						SEQ(cs_1048, Mem537[ss:bp_1042 + 0x06:word16])();
+						Mem569[ss_540:sp_538 + 0x04:word16] = wArg08;
+						Mem572[ss_540:sp_538 + 0x02:word16] = wArg06;
+						Mem574[ss_540:sp_538 + 0x00:word16] = ax_547;
+						word16 sp_575;
+						word16 bp_576;
+						selector ss_577;
+						byte SCZO_578;
+						word16 si_579;
+						word16 di_580;
+						byte SZO_581;
+						selector cs_582;
+						word16 cx_583;
+						word16 ax_584;
+						byte C_585;
+						byte SO_586;
+						byte al_587;
+						word16 bx_588;
+						byte bl_589;
+						byte Z_590;
+						selector ds_591;
+						byte CZ_592;
+						byte cl_593;
+						selector es_594;
+						word16 dx_595;
+						byte dl_596;
+						byte dh_597;
+						byte ah_598;
+						SEQ(cs_545, Mem574[ss_540:bp_539 + 0x06:word16])();
+						Mem606[ss_577:sp_575 + 0x04:word16] = wArg08;
+						Mem609[ss_577:sp_575 + 0x02:word16] = wArg06;
+						Mem611[ss_577:sp_575 + 0x00:word16] = ax_584;
+						word16 sp_612;
+						word16 bp_613;
+						byte SCZO_615;
+						byte SZO_618;
+						selector cs_619;
+						word16 cx_620;
+						word16 ax_621;
+						byte C_622;
+						byte SO_623;
+						byte al_624;
+						word16 bx_625;
+						byte bl_626;
+						byte Z_627;
+						selector ds_628;
+						byte CZ_629;
+						byte cl_630;
+						selector es_631;
+						word16 dx_632;
+						byte dl_633;
+						byte dh_634;
+						byte ah_635;
+						SEQ(cs_582, Mem611[ss_577:bp_576 + 0x06:word16])();
+						sp_1016 = sp_612 + 0x06;
+						wLoc06_1033 = wLoc06_1033 - 0x03;
+l0800_9612:
+						word16 dx_342;
+						*dxOut = di_313;
+						ax_180 = si_310;
+						if (bLoc03_1025 != 0x00)
+						{
+							ax_180 = -si_310;
+							word16 dx_362;
+							*dxOut = -di_313 - (ax_180 == 0x00);
+						}
+						goto l0800_9622;
+					}
+					int32 dx_ax_645 = wArg0A *u si_310;
+					ui32 di_si_652 = SEQ(di_313, ax_460 + (word16) dx_ax_645) + dx_ax_645;
+					di_313 = SLICE(di_si_652, word16, 16);
+					si_310 = (word16) di_si_652;
+					cs_662 = cs_1048;
+					bp_685 = bp_1042;
+					if (di_si_652 != 0x00)
+					{
+						do
+						{
+							selector cs_662;
+							word16 bp_685;
+							word16 v59_687 = wArg0C_1029 - 0x01;
+							wArg0C_1029 = v59_687 - 0x01;
+							if (v59_687 < 0x01)
+								goto l0800_9612;
+							word16 sp_699 = sp_1016 - 0x02;
+							Mem700[ss:sp_699 + 0x00:word16] = wArg08;
+							Mem703[ss:sp_699 - 0x02 + 0x00:word16] = wArg06;
+							word16 sp_704;
+							word16 bp_705;
+							selector ss_706;
+							byte SCZO_707;
+							word16 si_708;
+							word16 di_709;
+							byte SZO_710;
+							selector cs_711;
+							word16 cx_712;
+							word16 ax_713;
+							byte C_714;
+							byte SO_715;
+							byte al_716;
+							word16 bx_717;
+							byte bl_718;
+							byte Z_719;
+							selector ds_720;
+							byte CZ_721;
+							byte cl_722;
+							selector es_723;
+							word16 dx_724;
+							byte dl_725;
+							byte dh_726;
+							byte ah_727;
+							SEQ(cs_662, Mem703[ss:bp_685 + 0x04:word16])();
+							byte cl_733 = (byte) wArg0A;
+							word16 v60_695 = wLoc06_1033 + 0x01;
+							byte bl_738;
+							byte C_739 = fn0800_9485(cl_733, (byte) ax_713, out bl_738);
+							Mem748[ss_706:sp_704 + 0x02:word16] = wArg08;
+							Mem751[ss_706:sp_704 + 0x00:word16] = wArg06;
+							wLoc06_1033 = v60_695 + 0x01;
+							word16 sp_752;
+							byte SCZO_755;
+							word16 si_756;
+							word16 di_757;
+							byte SZO_758;
+							word16 cx_760;
+							word16 ax_761;
+							byte C_762;
+							byte SO_763;
+							byte al_764;
+							word16 bx_765;
+							byte bl_766;
+							byte Z_767;
+							selector ds_768;
+							byte CZ_769;
+							byte cl_770;
+							selector es_771;
+							word16 dx_772;
+							byte dl_773;
+							byte dh_774;
+							byte ah_775;
+							SEQ(cs_711, Mem751[ss_706:bp_705 + 0x04:word16])();
+							sp_1016 = sp_752 + 0x04;
+							ax_512 = ax_761;
+							byte bl_787;
+							if (!fn0800_9485((byte) wArg0A, (byte) ax_761, out bl_787))
+								goto l0800_9602;
+							int32 dx_ax_800 = wArg0A *u si_756;
+							word16 ax_801 = (word16) dx_ax_800;
+							ui32 ax_si_816 = SEQ(di_757, ax_761 + ax_801) + SEQ(SLICE(dx_ax_800, word16, 16), ax_801);
+							int32 dx_ax_810 = wArg0A *u di_757;
+							si_310 = (word16) ax_si_816;
+							di_313 = SLICE(ax_si_816, word16, 16);
+						} while (SLICE(dx_ax_810, byte, 16) + SLICE(dx_ax_810, byte, 24) + (ax_si_816 <u 0x00) != 0x00);
+						byte ah_841 = (bLoc03_1025 <u ~0x00) + ~0x00;
+						ax_180 = DPB(~0x00, ah_841, 8);
+						word16 dx_847;
+						*dxOut = (ah_841 <u 0x00) + 0x7FFF;
+						wLoc08_131 = 0x02;
+l0800_9622:
+						Mem106[ptrArg0E + 0x00:word16] = Mem31[ptrArg0E + 0x00:word16] + wLoc06_1033;
+						Mem114[ptrArg12 + 0x00:word16] = wLoc08_131;
+						word16 bx_112;
+						*bxOut = wLoc08_131;
+						word16 di_115;
+						*diOut = Mem114[ss:sp_1016 + 0x00:word16];
+						word16 si_119;
+						*siOut = Mem114[ss:sp_1016 + 0x02:word16];
+						return ax_180;
+					}
+l0800_95B5:
+					word16 v45_397 = wArg0C_1029 - 0x01;
+					wArg0C_1029 = v45_397 - 0x01;
+					if (v45_397 < 0x01)
+						goto l0800_9612;
+					word16 sp_409 = sp_1016 - 0x02;
+					Mem410[ss:sp_409 + 0x00:word16] = wArg08;
+					Mem413[ss:sp_409 - 0x02 + 0x00:word16] = wArg06;
+					word16 sp_414;
+					word16 bp_415;
+					selector ss_416;
+					byte SCZO_417;
+					word16 si_418;
+					word16 di_419;
+					byte SZO_420;
+					selector cs_421;
+					word16 cx_422;
+					word16 ax_423;
+					byte C_424;
+					byte SO_425;
+					byte al_426;
+					word16 bx_427;
+					byte bl_428;
+					byte Z_429;
+					selector ds_430;
+					byte CZ_431;
+					byte cl_432;
+					selector es_433;
+					word16 dx_434;
+					byte dl_435;
+					byte dh_436;
+					byte ah_437;
+					SEQ(cs_1048, Mem413[ss:bp_1042 + 0x04:word16])();
+					Mem447[ss_416:sp_414 + 0x02:word16] = wArg08;
+					Mem450[ss_416:sp_414 + 0x00:word16] = wArg06;
+					wLoc06_1033 = wLoc06_1033 + 0x02;
+					word16 sp_451;
+					byte SCZO_454;
+					byte SZO_457;
+					word16 cx_459;
+					byte C_461;
+					byte SO_462;
+					byte al_463;
+					word16 bx_464;
+					byte bl_465;
+					byte Z_466;
+					selector ds_467;
+					byte CZ_468;
+					byte cl_469;
+					selector es_470;
+					word16 dx_471;
+					byte dl_472;
+					byte dh_473;
+					byte ah_474;
+					SEQ(cs_421, Mem450[ss_416:bp_415 + 0x04:word16])();
+					sp_1016 = sp_451 + 0x04;
+					goto l0800_95C8;
+				}
+				wArg0A = 0x10;
+l0800_959C:
+				goto l0800_95B5;
+			}
+			goto l0800_956B;
+		}
+	}
+	byte bl_900;
+	if (!fn0800_9485(0x0A, (byte) ax_1069, out bl_900))
+	{
+		si_310 = ax_1069;
+		goto l0800_95B5;
+	}
+	goto l0800_9550;
+}
+
+// 0800:9652: void fn0800_9652(Register byte al, Stack segptr32 ptrArg02)
+void fn0800_9652(byte al, segptr32 ptrArg02)
+{
+	__syscall(33);
+	return;
+}
+
+// 0800:9667: void fn0800_9667(Register byte al, Stack segptr32 ptrArg02)
+void fn0800_9667(byte al, segptr32 ptrArg02)
+{
+	__syscall(33);
+	return;
+}
+
+// 0800:9764: Register word16 fn0800_9764(Register byte dl, Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Register out ptr16 dlOut, Register out ptr16 diOut, Register out ptr16 dsOut)
 word16 fn0800_9764(byte dl, selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dlOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	fn0800_8B95((byte) (fp - 0x06), dl, DPB(ptrLoc12, fp - 0x06, 0));
@@ -10373,12 +15759,14 @@ word16 fn0800_9764(byte dl, selector ds, segptr32 ptrArg02, word16 wArg04, ptr16
 	return ax_51;
 }
 
+// 0800:97B6: Register word16 fn0800_97B6(Register selector ds, Stack word16 wArg02, Register out ptr16 dxOut)
 word16 fn0800_97B6(selector ds, word16 wArg02, ptr16 & dxOut)
 {
 	word16 dx_23;
 	return fn0800_8E29(0x00, ds, wArg02, 0x00, 0x00, 0x01, out dx_23);
 }
 
+// 0800:97CC: Register byte fn0800_97CC(Register selector ds, Stack word16 wArg02, Register out ptr16 dlOut)
 byte fn0800_97CC(selector ds, word16 wArg02, ptr16 & dlOut)
 {
 	byte al_18;
@@ -10393,6 +15781,7 @@ byte fn0800_97CC(selector ds, word16 wArg02, ptr16 & dlOut)
 	return al_18;
 }
 
+// 0800:97F8: Register byte fn0800_97F8(Register byte al, Register selector ds, Stack segptr32 ptrArg02)
 byte fn0800_97F8(byte al, selector ds, segptr32 ptrArg02)
 {
 	word16 ax_11 = DPB(ax, 0x41, 8);
@@ -10402,6 +15791,35 @@ byte fn0800_97F8(byte al, selector ds, segptr32 ptrArg02)
 	return dl_16;
 }
 
+// 0800:9810: void fn0800_9810(Register byte dh, Register byte dl, Register word16 di, Register selector es)
+void fn0800_9810(byte dh, byte dl, word16 di, selector es)
+{
+	word16 di_6 = fn0800_9817(dh, di, es);
+	fn0800_9817(dl, di_6, es);
+	return;
+}
+
+// 0800:9817: Register word16 fn0800_9817(Register byte al, Register word16 di, Register selector es)
+word16 fn0800_9817(byte al, word16 di, selector es)
+{
+	word16 ax_3 = __aam(al);
+	byte al_4 = (byte) ax_3;
+	word16 di_11 = fn0800_9820(SLICE(ax_3, byte, 8), di, es);
+	return fn0800_9820(al_4, di_11, es);
+}
+
+// 0800:9820: Register word16 fn0800_9820(Register byte al, Register word16 di, Register selector es)
+word16 fn0800_9820(byte al, word16 di, selector es)
+{
+	byte al_4;
+	byte C_5 = __daa(al + 0x90, &al_4);
+	byte al_8;
+	__daa(al_4 + 0x40 + C_5, &al_8);
+	Mem10[es:di + 0x00:byte] = al_8;
+	return di + 0x01;
+}
+
+// 0800:9828: Register word16 fn0800_9828(Register selector ds, Stack segptr32 ptrArg04, Stack selector psegArg06, Register out ptr16 diOut)
 word16 fn0800_9828(selector ds, segptr32 ptrArg04, selector psegArg06, ptr16 & diOut)
 {
 	word16 sp_160 = fp - 0x9E;
@@ -10470,6 +15888,22 @@ l0800_9C82:
 	return Mem0[ss:sp_79 + 0x02:word16];
 }
 
+// 0800:9842: void fn0800_9842(Register word16 di, Register selector es)
+void fn0800_9842(word16 di, selector es)
+{
+	word16 cx_13 = ~0x00;
+	if (cx_13 != 0x00)
+	{
+		di = di_29 + 0x01;
+		cx_13 = cx_13 - 0x01;
+		word16 di_29 = di;
+		if (0x00 != Mem0[es:di_29 + 0x00:byte])
+			goto l0800_9848;
+	}
+	return;
+}
+
+// 0800:984F: Register word16 fn0800_984F(Register byte al, Register word16 bp, Register word16 di)
 word16 fn0800_984F(byte al, word16 bp, word16 di)
 {
 	Mem3[ss:di + 0x00:byte] = al;
@@ -10484,6 +15918,7 @@ word16 fn0800_984F(byte al, word16 bp, word16 di)
 	}
 }
 
+// 0800:9858: Register word16 fn0800_9858(Register word16 bp, Register word16 di)
 word16 fn0800_9858(word16 bp, word16 di)
 {
 	word16 sp_35;
@@ -10508,6 +15943,7 @@ word16 fn0800_9858(word16 bp, word16 di)
 	return bp_41 - 0x96;
 }
 
+// 0800:9CE6: Register word16 fn0800_9CE6(Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Register out ptr16 dxOut, Register out ptr16 diOut, Register out ptr16 esOut, Register out ptr16 dsOut)
 word16 fn0800_9CE6(word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & dxOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
 {
 	*diOut = di;
@@ -10520,6 +15956,7 @@ word16 fn0800_9CE6(word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, p
 	return wArg02 + ax_19;
 }
 
+// 0800:9D41: Register byte fn0800_9D41(Register word16 dx)
 byte fn0800_9D41(word16 dx)
 {
 	word16 wLoc02_11;
@@ -10551,6 +15988,7 @@ l0800_9D94:
 	goto l0800_9D94;
 }
 
+// 0800:9DA4: Register byte fn0800_9DA4(Register word16 dx)
 byte fn0800_9DA4(word16 dx)
 {
 	selector es_7 = Mem0[dx:0x02:selector];
@@ -10583,6 +16021,7 @@ byte fn0800_9DA4(word16 dx)
 		return dl;
 }
 
+// 0800:9E15: void fn0800_9E15(Register selector ds)
 void fn0800_9E15(selector ds)
 {
 	if (ds == Mem0[ds:0x06:word16])
@@ -10601,6 +16040,7 @@ void fn0800_9E15(selector ds)
 	}
 }
 
+// 0800:9E3E: void fn0800_9E3E(Register selector ds)
 void fn0800_9E3E(selector ds)
 {
 	word16 ax_3 = Mem0[0x0800:~0x62C6:word16];
@@ -10623,6 +16063,7 @@ void fn0800_9E3E(selector ds)
 	}
 }
 
+// 0800:9E75: Register byte fn0800_9E75(Register selector ds, Stack word16 wArg04, Register out ptr16 dsOut)
 byte fn0800_9E75(selector ds, word16 wArg04, ptr16 & dsOut)
 {
 	Mem13[0x0800:~0x62C4:word16] = ds;
@@ -10639,6 +16080,7 @@ byte fn0800_9E75(selector ds, word16 wArg04, ptr16 & dsOut)
 	return dl_17;
 }
 
+// 0800:9E9E: Register word16 fn0800_9E9E(Register word16 ax, Register word16 bp, Register out ptr16 dxOut)
 word16 fn0800_9E9E(word16 ax, word16 bp, ptr16 & dxOut)
 {
 	word16 dx_15;
@@ -10665,6 +16107,7 @@ word16 fn0800_9E9E(word16 ax, word16 bp, ptr16 & dxOut)
 	}
 }
 
+// 0800:9F02: Register word16 fn0800_9F02(Register word16 ax, Register word16 bp, Register out ptr16 dxOut)
 word16 fn0800_9F02(word16 ax, word16 bp, ptr16 & dxOut)
 {
 	selector ds_14 = Mem0[0x0800:~0x62C4:selector];
@@ -10693,6 +16136,7 @@ l0800_9F25:
 	return 0x00;
 }
 
+// 0800:9F5C: Register word16 fn0800_9F5C(Register word16 ax, Register word16 dx, Register selector ds, Register out ptr16 dxOut)
 word16 fn0800_9F5C(word16 ax, word16 dx, selector ds, ptr16 & dxOut)
 {
 	Mem8[ds:0x00:word16] = Mem0[ds:0x00:word16] - ax;
@@ -10704,159 +16148,181 @@ word16 fn0800_9F5C(word16 ax, word16 dx, selector ds, ptr16 & dxOut)
 	return 0x04;
 }
 
-word16 fn0800_9F7F(word16 bp, selector ds, word16 wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
+// 0800:9F7F: Register word16 fn0800_9F7F(Register selector ds, Stack word16 wArg02, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 dsOut)
+word16 fn0800_9F7F(selector ds, word16 wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
 {
-	*siOut = si;
-	*diOut = di;
-	word16 dx_12;
-	word16 bp_13;
-	selector ds_14;
-	return fn0800_9F92(wArg02, 0x00, fp - 0x02, ds, bp, out dx_12, out bp_13, out ds_14);
+	word16 dx_13;
+	word16 bp_14;
+	selector ds_15;
+	return fn0800_9F92(wArg02, 0x00, fp - 0x02, ds, wLoc04, out dx_13, out bp_14, out ds_15);
 }
 
-word16 fn0800_9F89(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
+// 0800:9F89: void fn0800_9F89(Stack word16 wArg02, Stack word16 wArg04)
+void fn0800_9F89(word16 wArg02, word16 wArg04)
 {
-	word16 dx_14;
-	word16 bp_15;
-	selector ds_16;
-	return fn0800_9F92(wArg02, wArg04, fp - 0x02, ds, bp, out dx_14, out bp_15, out ds_16);
+fn0800_9F89_entry:
+l0800_9F89:
+fn0800_9F89_exit:
 }
 
+// 0800:9F92: Register word16 fn0800_9F92(Register word16 ax, Register word16 dx, Register word16 bp, Register selector ds, Stack word16 wArg00, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 dsOut)
 word16 fn0800_9F92(word16 ax, word16 dx, word16 bp, selector ds, word16 wArg00, ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
 {
-fn0800_9F92_entry:
-	def fp
-	def ax
-	def dx
-	def si
-	def di
-	def ds
-	def dxOut
-	def bpOut
-	def dsOut
-	def bp
-	def wArg00
-	sp_1 = fp
-	cx_3 = ax
-	cx_5 = cx_3 | dx
-	SZO_6 = cond(cx_5)
-	Z_7 = SZO_6 (alias)
-	C_8 = false
-	sp_9 = fp - 0x02
-	wLoc02_11 = si
-	sp_12 = fp - 0x04
-	wLoc04_14 = di
-	Mem16[0x0800:~0x62C4:word16] = ds
-	branch cx_5 == 0x00 l0800_9FFD_in_fn0800_9F92
-	goto l0800_9F9D_thunk_fn0800_9F9F
-l0800_9F92:
-l0800_9F92:
-	cx = ax
-	cx = cx | dx
-	SZO = cond(cx)
-	Z = SZO (alias)
-	C = false
-	sp = sp - 0x02
-	Mem0[ss:sp + 0x00:word16] = si
-	sp = sp - 0x02
-	Mem0[ss:sp + 0x00:word16] = di
-	Mem0[0x0800:~0x62C4:word16] = ds
-	branch Test(EQ,Z) l0800_9FFD
-	goto l0800_9F9D_thunk_fn0800_9F9F
-l0800_9F9D_thunk_fn0800_9F9F:
-	ax_31 = fn0800_9F9F(ax, dx, bp, out dx_28, out bp_29, out ds_30)
-	return ax_31
-l0800_9F9D_thunk_fn0800_9F9F:
-	ax_35 = fn0800_9F9F(ax_31, dx_28, bp_29, out dx_32, out bp_33, out ds_34)
-	return ax_35
-l0800_9F9D_thunk_fn0800_9F9F:
-	ax = fn0800_9F9F(ax, dx, bp, out dx, out bp, out ds)
-	return ax
-l0800_9F9D_thunk_fn0800_9F9F:
-	ax = fn0800_9F9F(ax, dx, bp, out dx, out bp, out ds)
-	return ax
-l0800_9FFD_in_fn0800_9F92:
-	ds_36 = Mem16[0x0800:~0x62C4:selector]
-	di_37 = wLoc04_14
-	sp_38 = fp - 0x02
-	si_39 = wLoc02_11
-	sp_40 = fp
-	bp_42 = wArg00
-	sp_43 = fp + 0x02
-	return ax
-fn0800_9F92_exit:
-	di_17 = PHI(di_37, di, di, di, di)
-	si_18 = PHI(si_39, si, si, si, si)
-	sp_19 = PHI(sp_43, sp_12, sp_12, sp, sp)
-	dx_20 = PHI(dx, dx_28, dx_32, dx, dx)
-	bp_21 = PHI(bp_42, bp_29, bp_33, bp, bp)
-	ds_22 = PHI(ds_36, ds_30, ds_34, ds, ds)
-	ax_23 = PHI(ax, ax_31, ax_35, ax, ax)
-	use dx_20 (=> dxOut)
-	use bp_21 (=> bpOut)
-	use ds_22 (=> dsOut)
-}
-
-word16 fn0800_9F9F(word16 ax, word16 dx, word16 bp, ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
-{
-	word16 ax_105;
-	int32 dx_ax_5 = SEQ(dx, ax + 0x13);
-	word16 ax_8 = (word16) (dx_ax_5 + 0x13);
-	word16 dx_9 = SLICE(dx_ax_5 + 0x13, word16, 16);
-	if (dx_ax_5 >=u 0x13 && (dx_9 & ~0x0F) == 0x00)
+	*dxOut = dx;
+	*dsOut = ds;
+	*bpOut = bp;
+	Mem16[0x0800:~0x62C4:word16] = ds;
+	if ((ax | dx) != 0x00)
 	{
-		word16 ax_60 = DPB(ax_8 >>u 0x04, SLICE(ax_8 >>u 0x04, byte, 8) | (byte) (dx_9 << 0x04), 8);
-		if (Mem0[0x0800:40245:word16] != 0x00)
+		int32 dx_ax_54 = SEQ(dx, ax + 0x13);
+		word16 ax_57 = (word16) (dx_ax_54 + 0x13);
+		word16 dx_58 = SLICE(dx_ax_54 + 0x13, word16, 16);
+		if (dx_ax_54 >=u 0x13 && (dx_58 & ~0x0F) == 0x00)
 		{
-			word16 dx_67 = Mem0[0x0800:~0x62C6:word16];
-			word16 dx_68;
-			*dxOut = dx_67;
-			if (dx_67 != 0x00)
+			word16 ax_81 = DPB(ax_57 >>u 0x04, SLICE(ax_57 >>u 0x04, byte, 8) | (byte) (dx_58 << 0x04), 8);
+			if (Mem16[0x0800:40245:word16] != 0x00)
 			{
-				do
+				word16 dx_88 = Mem16[0x0800:~0x62C6:word16];
+				word16 dx_110;
+				*dxOut = dx_88;
+				if (dx_88 != 0x00)
 				{
-					if (Mem0[dx_68:0x00:word16] >=u ax_60)
+					do
 					{
-						if (Mem0[dx_68:0x00:word16] <=u ax_60)
+						if (Mem16[dx_110:0x00:word16] >=u ax_81)
 						{
-							fn0800_9E15(dx_68);
-							Mem104[dx_68:0x02:word16] = Mem0[dx_68:0x08:word16];
-							ax_105 = 0x04;
+							if (Mem16[dx_110:0x00:word16] <=u ax_81)
+							{
+								fn0800_9E15(dx_110);
+								Mem124[dx_110:0x02:word16] = Mem16[dx_110:0x08:word16];
+								ax = 0x04;
+							}
+							else
+							{
+								word16 dx_128;
+								ax = fn0800_9F5C(ax_81, dx_110, dx_110, out dx_128);
+							}
+							goto l0800_9FFD;
 						}
-						else
-						{
-							word16 dx_108;
-							ax_105 = fn0800_9F5C(ax_60, dx_68, dx_68, out dx_108);
-						}
-						goto l0800_9FFD;
-					}
-					dx_68 = Mem0[dx_68:0x06:word16];
-					*dxOut = dx_68;
-				} while (dx_68 != dx_67);
+						dx_110 = Mem16[dx_110:0x06:word16];
+						*dxOut = dx_110;
+					} while (dx_110 != dx_88);
+				}
+				word16 dx_104;
+				ax = fn0800_9F02(ax_81, bp, out dx_104);
 			}
-			word16 dx_84;
-			ax_105 = fn0800_9F02(ax_60, bp, out dx_84);
+			else
+			{
+				word16 dx_132;
+				ax = fn0800_9E9E(ax_81, bp, out dx_132);
+			}
 		}
 		else
 		{
-			word16 dx_112;
-			ax_105 = fn0800_9E9E(ax_60, bp, out dx_112);
+			ax = 0x00;
+			word16 dx_69;
+			*dxOut = 0x00;
 		}
+	}
+l0800_9FFD:
+	selector ds_36;
+	*dsOut = Mem16[0x0800:~0x62C4:selector];
+	word16 bp_42;
+	*bpOut = wArg00;
+	return ax;
+}
+
+// 0800:A006: void fn0800_A006(Register word16 dx, Register word16 bx)
+void fn0800_A006(word16 dx, word16 bx)
+{
+	fn0800_9F89(Mem0[0x0800:40255:word16], Mem0[0x0800:~0x62C2:word16]);
+	if (dx != 0x00)
+	{
+		selector ds_46 = Mem0[ss:fp - 0x02 + 0x00:selector];
+		Mem50[ss:fp - 0x02 + 0x00:word16] = dx;
+		Mem52[ss:fp - 0x04 + 0x00:word16] = ds_46;
+		Mem54[ss:fp - 0x06 + 0x00:word16] = bx;
+		word16 dx_55 = Mem54[ds_46:0x00:word16];
+		word16 di_60 = 0x04;
+		word16 si_61 = 0x04;
+		word16 cx_62 = 0x06;
+		while (cx_62 != 0x00)
+		{
+			Mem67[dx:di_60 + 0x00:word16] = Mem54[ds_46:si_61 + 0x00:word16];
+			si_61 = si_61 + 0x02;
+			di_60 = di_60 + 0x02;
+			cx_62 = cx_62 - 0x01;
+		}
+		word16 dx_121 = dx_55 - 0x01;
+		if (dx_55 != 0x01)
+		{
+			selector es_100 = dx + 0x01;
+			selector ds_102 = ds_46 + 0x01;
+			while (true)
+			{
+				word16 di_103 = 0x00;
+				word16 si_104 = 0x00;
+				word16 cx_105 = dx_121;
+				if (dx_121 >u 0x1000)
+					cx_105 = 0x1000;
+				word16 cx_111 = cx_105 << 0x03;
+				while (cx_111 != 0x00)
+				{
+					Mem117[es_100:di_103 + 0x00:word16] = Mem54[ds_102:si_104 + 0x00:word16];
+					si_104 = si_104 + 0x02;
+					di_103 = di_103 + 0x02;
+					cx_111 = cx_111 - 0x01;
+				}
+				dx_121 = dx_121 - 0x1000;
+				if (dx_121 <=u 0x00)
+					break;
+				es_100 = es_100 + 0x1000;
+				ds_102 = ds_102 + 0x1000;
+			}
+		}
+		selector ds_84;
+		fn0800_9E75(Mem54[0x0800:~0x62C4:selector], wArg02, out ds_84);
+		return;
+	}
+	else
+		return;
+}
+
+// 0800:A080: void fn0800_A080(Register word16 ax, Register word16 cx, Register word16 bx, Register selector ds)
+void fn0800_A080(word16 ax, word16 cx, word16 bx, selector ds)
+{
+	if (bx == Mem0[0x0800:40247:word16])
+	{
+		Mem58[bx:0x00:word16] = ax;
+		fn0800_A1D6(ds, 0x00, bx + ax);
+		return;
 	}
 	else
 	{
-		ax_105 = 0x00;
-		word16 dx_45;
-		*dxOut = 0x00;
+		word16 di_24 = bx + ax;
+		Mem29[di_24:0x00:word16] = cx - ax;
+		Mem30[di_24:0x02:word16] = bx;
+		Mem36[bx:0x00:word16] = ax;
+		word16 dx_38 = bx + cx;
+		if (Mem36[dx_38:0x02:word16] != 0x00)
+			Mem53[dx_38:0x02:word16] = di_24;
+		else
+			Mem54[dx_38:0x08:word16] = di_24;
+		selector ds_44;
+		fn0800_9E75(ds, di_24, out ds_44);
+		return;
 	}
-l0800_9FFD:
-	selector ds_28;
-	*dsOut = Mem0[0x0800:~0x62C4:selector];
-	word16 bp_34;
-	*bpOut = Mem0[ss:v3 + 0x04:word16];
-	return ax_105;
 }
 
+// 0800:A14B: void fn0800_A14B(Register byte al, Register word16 dx, Register word16 bp, Register word16 di, Register selector ds, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08)
+void fn0800_A14B(byte al, word16 dx, word16 bp, word16 di, selector ds, word16 wArg04, word16 wArg06, word16 wArg08)
+{
+	selector ds_14;
+	fn0800_9E75(ds, wArg02, out ds_14);
+	return;
+}
+
+// 0800:A162: Register word16 fn0800_A162(Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 dlOut)
 word16 fn0800_A162(selector ds, word16 wArg02, word16 wArg04, ptr16 & dlOut)
 {
 	word16 ax_35;
@@ -10889,12 +16355,14 @@ word16 fn0800_A162(selector ds, word16 wArg02, word16 wArg04, ptr16 & dlOut)
 	return ax_35;
 }
 
+// 0800:A1D6: Register byte fn0800_A1D6(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 byte fn0800_A1D6(selector ds, word16 wArg02, word16 wArg04)
 {
 	byte dl_15;
 	return dl_15;
 }
 
+// 0800:A215: Register word16 fn0800_A215(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 dxOut)
 word16 fn0800_A215(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 & dxOut)
 {
 	word16 ax_118;
@@ -10934,6 +16402,7 @@ word16 fn0800_A215(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 &
 	return ax_118;
 }
 
+// 0800:A2A3: Register word16 fn0800_A2A3(Register byte al, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack segptr32 ptrArg06, Stack word16 wArg0A)
 word16 fn0800_A2A3(byte al, selector ds, word16 wArg02, word16 wArg04, segptr32 ptrArg06, word16 wArg0A)
 {
 	msdos_unknown_2144();
@@ -10949,6 +16418,56 @@ word16 fn0800_A2A3(byte al, selector ds, word16 wArg02, word16 wArg04, segptr32 
 	return ax_16;
 }
 
+// 0800:A2CC: void fn0800_A2CC()
+void fn0800_A2CC()
+{
+	word16 sp_4;
+	selector ds_5;
+	Mem0[ds:9972:word16]();
+	return;
+}
+
+// 0800:A2D0: void fn0800_A2D0()
+void fn0800_A2D0()
+{
+	word16 sp_4;
+	selector ds_5;
+	Mem0[ds:0x26F6:word16]();
+	return;
+}
+
+// 0800:A2D4: void fn0800_A2D4()
+void fn0800_A2D4()
+{
+	word16 sp_4;
+	selector ds_5;
+	Mem0[ds:9976:word16]();
+	return;
+}
+
+// 0800:A2D8: void fn0800_A2D8()
+void fn0800_A2D8()
+{
+	word16 sp_4;
+	selector ds_5;
+	Mem0[ds:9978:word16]();
+	return;
+}
+
+// 0800:A36D: void fn0800_A36D(Register word16 ax, Register word16 cx, Register word16 dx, Register word16 bx, Register word16 si, Register word16 di, Register selector es, Register selector ds)
+void fn0800_A36D(word16 ax, word16 cx, word16 dx, word16 bx, word16 si, word16 di, selector es, selector ds)
+{
+	byte al_4 = (byte) ax;
+	if (ax != 0x00)
+		Mem62[es:di + 0x00:byte] = al_4;
+	if (cx != 0x00)
+	{
+		byte al_37 = Mem0[ds:si + 0x00:byte];
+	}
+	return;
+}
+
+// 0800:A401: Register word16 fn0800_A401(Register byte al, Register selector ds, Stack selector psegArg02, Stack word16 wArg04)
 word16 fn0800_A401(byte al, selector ds, selector psegArg02, word16 wArg04)
 {
 	word16 ax_17;
@@ -10964,6 +16483,7 @@ word16 fn0800_A401(byte al, selector ds, selector psegArg02, word16 wArg04)
 	return ax_17;
 }
 
+// 0800:A471: Register word16 fn0800_A471(Register byte bl, Register selector ds, Stack segptr32 ptrArg02, Register out ptr16 dxOut)
 word16 fn0800_A471(byte bl, selector ds, segptr32 ptrArg02, ptr16 & dxOut)
 {
 	selector es_19 = SLICE(ptrArg02, selector, 16);
@@ -11038,6 +16558,7 @@ l0800_A49E:
 	goto l0800_A4A2;
 }
 
+// 0800:A4F6: Register selector fn0800_A4F6(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06)
 selector fn0800_A4F6(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 {
 	word16 ax_24 = fn0800_A53C(0x00, ds, DPB(ptrLoc08, wArg02, 0), 0x00, bp);
@@ -11052,6 +16573,7 @@ selector fn0800_A4F6(word16 bp, selector ds, word16 wArg02, word16 wArg04, word1
 	return ds;
 }
 
+// 0800:A53C: Register word16 fn0800_A53C(Register byte al, Register selector ds, Stack segptr32 ptrArg02, Stack byte bArg06, Stack word16 wArg08)
 word16 fn0800_A53C(byte al, selector ds, segptr32 ptrArg02, byte bArg06, word16 wArg08)
 {
 	word16 ax_24;
@@ -11064,6 +16586,7 @@ word16 fn0800_A53C(byte al, selector ds, segptr32 ptrArg02, byte bArg06, word16 
 	return ax_24;
 }
 
+// 0800:A559: Register byte fn0800_A559(Register byte al, Register selector ds, Stack word16 wArg02, Register out ptr16 dlOut)
 byte fn0800_A559(byte al, selector ds, word16 wArg02, ptr16 & dlOut)
 {
 	byte al_18;
@@ -11079,6 +16602,7 @@ byte fn0800_A559(byte al, selector ds, word16 wArg02, ptr16 & dlOut)
 	return al_18;
 }
 
+// 0800:A57F: Register byte fn0800_A57F(Register byte al, Register selector ds, Stack word16 wArg02)
 byte fn0800_A57F(byte al, selector ds, word16 wArg02)
 {
 	byte al_15;
@@ -11093,38 +16617,44 @@ byte fn0800_A57F(byte al, selector ds, word16 wArg02)
 	return al_15;
 }
 
-word16 fn0800_A59D(selector ds, word16 wArg02)
+// 0800:A59D: Register word16 fn0800_A59D(Register selector ds, Stack word16 wArg02, Register out ptr16 dxOut)
+word16 fn0800_A59D(selector ds, word16 wArg02, ptr16 & dxOut)
 {
-	word16 wLoc08_107;
-	word16 ax_123;
+	*dxOut = dx;
+	word16 wLoc08_110;
+	word16 ax_126;
 	if (wArg02 >=u Mem0[ds:9448:word16])
 	{
-		wLoc08_107 = 0x06;
+		wLoc08_110 = 0x06;
 		goto l0800_A60D;
 	}
 	if ((SEQ(ds, 0x24EA)[wArg02 * 0x02] & 0x0200) != 0x00)
 	{
 l0800_A5BF:
-		ax_123 = 0x01;
-		return ax_123;
+		ax_126 = 0x01;
+		return ax_126;
 	}
-	word16 ax_103 = 0x4400;
-	word16 dx_91;
-	if (!msdos_ioctl_get_device_info(wArg02, out dx_91))
+	word16 ax_106 = 0x4400;
+	word16 dx_94;
+	if (!msdos_ioctl_get_device_info(wArg02, out dx_94))
 	{
 		if ((dl & 0x80) != 0x00)
 		{
 l0800_A608:
-			ax_123 = 0x00;
-			return ax_123;
+			ax_126 = 0x00;
+			return ax_126;
 		}
-		ax_103 = 0x4201;
+		ax_106 = 0x4201;
+		word16 dx_135;
+		*dxOut = 0x00;
 		if (!msdos_set_file_position(wArg02, 0x00, 0x01, 0x4201))
 		{
-			ax_103 = 0x4202;
+			ax_106 = 0x4202;
+			word16 dx_154 = 0x4201;
+			*dxOut = dx_154;
 			if (!msdos_set_file_position(wArg02, 0x00, 0x02, 0x4202))
 			{
-				ax_103 = 0x4200;
+				ax_106 = 0x4200;
 				if (!msdos_set_file_position(wArg02, 0x4201, 0x00, 0x42014200))
 				{
 					if (true && (false || true))
@@ -11134,184 +16664,212 @@ l0800_A608:
 			}
 		}
 	}
-	wLoc08_107 = ax_103;
+	wLoc08_110 = ax_106;
 l0800_A60D:
-	ax_123 = fn0800_8D2B(ds, wLoc08_107);
-	return ax_123;
+	ax_126 = fn0800_8D2B(ds, wLoc08_110);
+	return ax_126;
 }
 
+// 0800:A614: Register byte fn0800_A614(Register word16 bp, Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Register out ptr16 dlOut, Register out ptr16 diOut, Register out ptr16 dsOut)
 byte fn0800_A614(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dlOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	*diOut = di;
 	*dsOut = ds;
 	*dlOut = dl;
-	word16 si_152 = ~0x00;
+	word16 si_151 = ~0x00;
 	if (Mem0[ptrArg02 + 0x12:word16] == wArg02)
 	{
-		word16 bx_67 = (word16) ptrArg02;
+		word16 bx_61 = (word16) ptrArg02;
 		if (Mem0[ptrArg02 + 0x06:word16] != 0x00)
 		{
 			if (Mem0[ptrArg02 + 0x00:word16] < 0x00)
 			{
 				byte dl_190;
-				if (fn0800_A6B7(ds, DPB(ptrLoc08, bx_67, 0), wArg04, out dl_190, out ds) != 0x00)
-					return (byte) si_152;
+				byte sil_191;
+				word16 di_192;
+				if (fn0800_A6B7(ds, DPB(ptrLoc08, bx_61, 0), wArg04, out dl_190, out sil_191, out di_192, out ds) != 0x00)
+					return (byte) si_151;
 			}
-			if ((Mem0[ptrArg02 + 0x02:word16] & 0x04) != 0x00)
+			ptr32 es_bx_165 = Mem0[ss:fp + 0x02:segptr32];
+			if ((Mem0[es_bx_165 + 0x02:word16] & 0x04) != 0x00)
 			{
-				byte dl_177;
-				*dlOut = fn0800_9E75(ds, Mem0[ptrArg02 + 0x0A:word16], out ds);
+				Mem173[ss:fp - 0x06 + 0x00:word16] = Mem0[es_bx_165 + 0x0A:word16];
+				Mem176[ss:fp - 0x08 + 0x00:word16] = Mem173[es_bx_165 + 0x08:word16];
+				byte dl_178;
+				*dlOut = fn0800_9E75(ds, wArg02, out ds);
 			}
 		}
-		if (Mem0[ptrArg02 + 0x04:byte] >= 0x00)
+		ptr32 es_bx_79 = Mem0[ss:fp + 0x02:segptr32];
+		if (Mem0[es_bx_79 + 0x04:byte] >= 0x00)
 		{
-			word16 ax_143 = (int16) Mem0[ptrArg02 + 0x04:byte];
-			byte dl_147;
-			si_152 = DPB(ax_143, fn0800_A559((byte) ax_143, ds, ax_143, out dl_147), 0);
+			word16 ax_142 = (int16) Mem0[es_bx_79 + 0x04:byte];
+			Mem145[ss:fp - 0x06 + 0x00:word16] = ax_142;
+			byte dl_146;
+			si_151 = DPB(ax_142, fn0800_A559((byte) ax_142, ds, wArg00, out dl_146), 0);
 		}
-		Mem100[ptrArg02 + 0x02:word16] = 0x00;
-		Mem101[ptrArg02 + 0x06:word16] = 0x00;
-		Mem102[ptrArg02 + 0x00:word16] = 0x00;
-		Mem103[ptrArg02 + 0x04:byte] = ~0x00;
-		if (Mem103[ptrArg02 + 0x10:word16] != 0x00)
+		ptr32 es_bx_92 = Mem0[ss:fp + 0x02:segptr32];
+		Mem95[es_bx_92 + 0x02:word16] = 0x00;
+		Mem96[es_bx_92 + 0x06:word16] = 0x00;
+		Mem97[es_bx_92 + 0x00:word16] = 0x00;
+		Mem98[es_bx_92 + 0x04:byte] = ~0x00;
+		if (Mem98[es_bx_92 + 0x10:word16] != 0x00)
 		{
-			word16 dx_120;
-			byte sil_121;
-			word16 di_122;
-			selector ds_123;
-			word16 ax_124 = fn0800_8E6A(fp - 0x02, ds, Mem103[ptrArg02 + 0x10:word16], 0x00, 0x00, 0x00, 0x00, out dx_120, out sil_121, out di_122, out ds_123);
-			Mem128[ss:fp - 0x06 + 0x00:word16] = dx_120;
-			Mem130[ss:fp - 0x08 + 0x00:word16] = ax_124;
-			byte dl_132;
-			*dlOut = fn0800_97F8((byte) ax_124, ds_123, ptrArg00);
-			Mem141[Mem130[ss:fp + 0x02:segptr32] + 0x10:word16] = 0x00;
+			Mem105[ss:fp - 0x06 + 0x00:word16] = 0x00;
+			Mem107[ss:fp - 0x08 + 0x00:word16] = 0x00;
+			Mem109[ss:fp - 0x0A + 0x00:word16] = 0x00;
+			Mem111[ss:fp - 0x0C + 0x00:word16] = 0x00;
+			Mem114[ss:fp - 0x0E + 0x00:word16] = Mem111[es_bx_92 + 0x10:word16];
+			word16 dx_119;
+			byte sil_120;
+			word16 di_121;
+			selector ds_122;
+			word16 ax_123 = fn0800_8E6A(fp - 0x02, ds, wArg00, wArg02, wArg04, wArg06, wArg08, out dx_119, out sil_120, out di_121, out ds_122);
+			Mem127[ss:fp - 0x06 + 0x00:word16] = dx_119;
+			Mem129[ss:fp - 0x08 + 0x00:word16] = ax_123;
+			byte dl_131;
+			*dlOut = fn0800_97F8((byte) ax_123, ds_122, ptrArg00);
+			Mem140[Mem129[ss:fp + 0x02:segptr32] + 0x10:word16] = 0x00;
 		}
 	}
-	return (byte) si_152;
+	return (byte) si_151;
 }
 
-word16 fn0800_A6B7(selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dlOut, ptr16 & dsOut)
+// 0800:A6B7: Register word16 fn0800_A6B7(Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Register out ptr16 dlOut, Register out ptr16 silOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_A6B7(selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dlOut, ptr16 & silOut, ptr16 & diOut, ptr16 & dsOut)
 {
+	*diOut = di;
 	*dsOut = ds;
 	*dlOut = dl;
-	word16 ax_29;
+	word16 ax_104;
 	if ((wArg02 | wArg04) == 0x00)
 	{
-		selector ds_59;
-		byte dl_60;
-		*dlOut = fn0800_A877(ds, out ds_59);
+		selector ds_66;
+		byte dl_67;
+		*dlOut = fn0800_A877(fp - 0x02, ds, out ds_66);
 		goto l0800_A778;
 	}
 	if (Mem0[ptrArg02 + 0x12:word16] != wArg02)
 	{
 l0800_A6D5:
-		ax_29 = ~0x00;
-		return ax_29;
+		ax_104 = ~0x00;
+l0800_A77A:
+		byte sil_37;
+		*silOut = (byte) Mem0[ss:fp - 0x04 + 0x00:word16];
+		return ax_104;
 	}
 	if (Mem0[ptrArg02 + 0x00:word16] < 0x00)
 	{
-		word16 ax_137 = Mem0[ptrArg02 + 0x06:word16] + Mem0[ptrArg02 + 0x00:word16];
-		Mem141[ptrArg02 + 0x00:word16] = Mem0[ptrArg02 + 0x00:word16] - (ax_137 + 0x01);
-		word16 ax_145 = Mem141[ptrArg02 + 0x0A:word16];
-		word16 dx_146 = Mem141[ptrArg02 + 0x08:word16];
-		Mem148[ptrArg02 + 0x0E:word16] = ax_145;
-		Mem149[ptrArg02 + 0x0C:word16] = dx_146;
-		byte dl_158;
-		selector ds_159;
-		if (fn0800_C632(ds, (int16) Mem149[ptrArg02 + 0x04:byte], dx_146, ax_145, ax_137 + 0x01, out dl_158, out ds_159) != ax_137 + 0x01 && (Mem149[ptrArg02 + 0x02:word16] & 0x0200) == 0x00)
+		word16 ax_143 = Mem0[ptrArg02 + 0x06:word16] + Mem0[ptrArg02 + 0x00:word16];
+		Mem147[ptrArg02 + 0x00:word16] = Mem0[ptrArg02 + 0x00:word16] - (ax_143 + 0x01);
+		word16 ax_151 = Mem147[ptrArg02 + 0x0A:word16];
+		word16 dx_152 = Mem147[ptrArg02 + 0x08:word16];
+		Mem154[ptrArg02 + 0x0E:word16] = ax_151;
+		Mem155[ptrArg02 + 0x0C:word16] = dx_152;
+		byte dl_164;
+		selector ds_165;
+		if (fn0800_C632(ds, (int16) Mem155[ptrArg02 + 0x04:byte], dx_152, ax_151, ax_143 + 0x01, out dl_164, out ds_165) != ax_143 + 0x01)
 		{
-			Mem171[ptrArg02 + 0x02:word16] = Mem149[ptrArg02 + 0x02:word16] | 0x10;
-			goto l0800_A6D5;
+			ptr32 es_bx_170 = Mem155[ss:fp + 0x02:segptr32];
+			if ((Mem155[es_bx_170 + 0x02:word16] & 0x0200) == 0x00)
+			{
+				Mem177[es_bx_170 + 0x02:word16] = Mem155[es_bx_170 + 0x02:word16] | 0x10;
+				goto l0800_A6D5;
+			}
 		}
 		goto l0800_A778;
 	}
 	if ((Mem0[ptrArg02 + 0x02:word16] & 0x08) == 0x00)
 	{
-		byte dl_128;
+		byte dl_134;
 		*dlOut = (byte) (wArg02 + 0x05);
 		if (Mem0[ptrArg02 + 0x0E:word16] != wArg04 || Mem0[ptrArg02 + 0x0C:word16] != wArg02 + 0x05)
 		{
 l0800_A778:
-			ax_29 = 0x00;
-			return ax_29;
+			ax_104 = 0x00;
+			goto l0800_A77A;
 		}
 	}
-	Mem111[ptrArg02 + 0x00:word16] = 0x00;
-	byte dl_115;
+	Mem117[ptrArg02 + 0x00:word16] = 0x00;
+	byte dl_121;
 	*dlOut = (byte) (wArg02 + 0x05);
-	if (Mem111[ptrArg02 + 0x0E:word16] == wArg04 && Mem111[ptrArg02 + 0x0C:word16] == wArg02 + 0x05)
+	if (Mem117[ptrArg02 + 0x0E:word16] == wArg04 && Mem117[ptrArg02 + 0x0C:word16] == wArg02 + 0x05)
 	{
-		word16 dx_121 = Mem111[ptrArg02 + 0x08:word16];
-		Mem123[ptrArg02 + 0x0E:word16] = Mem111[ptrArg02 + 0x0A:word16];
-		Mem124[ptrArg02 + 0x0C:word16] = dx_121;
-		byte dl_122;
-		*dlOut = (byte) dx_121;
+		word16 dx_127 = Mem117[ptrArg02 + 0x08:word16];
+		Mem129[ptrArg02 + 0x0E:word16] = Mem117[ptrArg02 + 0x0A:word16];
+		Mem130[ptrArg02 + 0x0C:word16] = dx_127;
+		byte dl_128;
+		*dlOut = (byte) dx_127;
 	}
 	goto l0800_A778;
 }
 
-word16 fn0800_A77D(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, segptr32 ptrArg08, word16 wArg0A, ptr16 & dxOut, ptr16 & dsOut)
+// 0800:A77D: Register word16 fn0800_A77D(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Register out ptr16 dxOut, Register out ptr16 dsOut)
+word16 fn0800_A77D(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & dxOut, ptr16 & dsOut)
 {
 	*dsOut = ds;
-	word16 di_14 = wArg06;
+	word16 di_132 = wArg06;
 	word16 cx_15 = 0x00;
-	word16 wLoc06_170 = wArg02;
 	while (cx_15 != 0x0A)
 	{
-		di_14 = di_14 - 0x01;
-		if (di_14 <= 0x00)
+		di_132 = di_132 - 0x01;
+		if (di_132 <= 0x00)
 			break;
-		word16 ax_155;
-		word16 v17_146 = Mem0[ptrArg08 + 0x00:word16] - 0x01;
-		Mem147[ptrArg08 + 0x00:word16] = v17_146;
-		if (v17_146 >= 0x00)
+		word16 ax_144;
+		ptr32 es_bx_134 = Mem0[ss:fp + 0x08:segptr32];
+		word16 v17_137 = Mem0[es_bx_134 + 0x00:word16] - 0x01;
+		Mem138[es_bx_134 + 0x00:word16] = v17_137;
+		if (v17_137 >= 0x00)
 		{
-			word16 ax_172 = Mem147[ptrArg08 + 0x0E:word16];
-			Mem175[ptrArg08 + 0x0C:word16] = Mem147[ptrArg08 + 0x0C:word16] + 0x01;
-			ax_155 = DPB(ax_172, 0x00, 8);
+			word16 ax_162 = Mem138[es_bx_134 + 0x0E:word16];
+			Mem165[es_bx_134 + 0x0C:word16] = Mem138[es_bx_134 + 0x0C:word16] + 0x01;
+			ax_144 = DPB(ax_162, 0x00, 8);
 		}
 		else
 		{
-			ptrLoc0E = DPB(ptrLoc0E, wArg08, 0);
-			ax_155 = fn0800_AEC2(ds, ptrLoc0E, wArg0A, out ds);
+			Mem173[ss:fp - 0x0C + 0x00:word16] = Mem138[ss:fp + 0x0A:word16];
+			Mem176[ss:fp - 0x0E + 0x00:word16] = Mem173[ss:fp + 0x08:word16];
+			word16 dx_178;
+			ax_144 = fn0800_AEC2(ds, ptrArg00, wArg02, out dx_178, out di_132, out ds);
 		}
-		cx_15 = ax_155;
-		byte cl_162 = (byte) ax_155;
-		if (ax_155 == ~0x00)
+		cx_15 = ax_144;
+		byte cl_152 = (byte) ax_144;
+		if (ax_144 == ~0x00)
 			break;
-		Mem168[ptrLoc06 + 0x00:byte] = cl_162;
-		wLoc06_170 = wLoc06_170 + 0x01;
+		Mem158[Mem138[ss:fp - 0x06 + 0x00:segptr32] + 0x00:byte] = cl_152;
+		Mem160[ss:fp - 0x06 + 0x00:word16] = Mem158[ss:fp - 0x06 + 0x00:word16] + 0x01;
 	}
-	word16 ax_111;
+	word16 ax_103;
 	if (cx_15 == ~0x00)
 	{
-		if (wArg04 == wArg04)
+		word16 dx_117 = Mem0[ss:fp - 0x06 + 0x00:word16];
+		if (Mem0[ss:fp - 0x04 + 0x00:word16] == Mem0[ss:fp + 0x04:word16])
 		{
-			if (wLoc06_170 == wArg02)
+			if (dx_117 == Mem0[ss:fp + 0x02:word16])
 			{
-				word16 dx_134;
+				word16 dx_126;
 				*dxOut = 0x00;
-				ax_111 = 0x00;
-				return ax_111;
+				ax_103 = 0x00;
+				return ax_103;
 			}
 		}
 	}
-	Mem102[ptrLoc06 + 0x00:byte] = 0x00;
-	if ((Mem102[ptrArg08 + 0x02:word16] & 0x10) != 0x00)
+	Mem95[Mem0[ss:fp - 0x06 + 0x00:segptr32] + 0x00:byte] = 0x00;
+	if ((Mem95[Mem95[ss:fp + 0x08:segptr32] + 0x02:word16] & 0x10) != 0x00)
 	{
-		word16 dx_110;
+		word16 dx_102;
 		*dxOut = 0x00;
-		ax_111 = 0x00;
+		ax_103 = 0x00;
 	}
 	else
 	{
-		word16 dx_116;
-		*dxOut = wArg04;
-		ax_111 = wArg02;
+		word16 dx_108;
+		*dxOut = Mem95[ss:fp + 0x04:word16];
+		ax_103 = Mem95[ss:fp + 0x02:word16];
 	}
-	return ax_111;
+	return ax_103;
 }
 
+// 0800:A817: Register word16 fn0800_A817(Register byte al, Register selector ds, Stack segptr32 ptrArg02, Stack segptr32 ptrArg06, Stack word16 wArg0A, Register out ptr16 dlOut)
 word16 fn0800_A817(byte al, selector ds, segptr32 ptrArg02, segptr32 ptrArg06, word16 wArg0A, ptr16 & dlOut)
 {
 	word16 ax_54;
@@ -11330,50 +16888,48 @@ word16 fn0800_A817(byte al, selector ds, segptr32 ptrArg02, segptr32 ptrArg06, w
 	return ax_54;
 }
 
-byte fn0800_A84A(byte al, selector ds, segptr32 ptrArg02, ptr16 & axOut, ptr16 & dlOut)
+// 0800:A84A: Register word16 fn0800_A84A(Register byte al, Register selector ds, Stack segptr32 ptrArg02)
+word16 fn0800_A84A(byte al, selector ds, segptr32 ptrArg02)
 {
+	word16 ax_47;
 	word32 es_bx_9 = msdos_get_disk_transfer_area_address();
 	msdos_set_DTA(SLICE(ptrArg02, selector, 16), (word16) ptrArg02);
-	word16 bx_11 = (word16) es_bx_9;
 	bool C_23 = msdos_find_next_file();
-	msdos_set_DTA(SLICE(es_bx_9, selector, 16), bx_11);
+	msdos_set_DTA(SLICE(es_bx_9, selector, 16), (word16) es_bx_9);
 	word16 ax_22 = DPB(ax, 0x4F, 8);
-	byte dl_35;
-	*dlOut = (byte) bx_11;
 	if (!C_23)
-	{
-		word16 ax_60;
-		*axOut = 0x00;
-	}
+		ax_47 = 0x00;
 	else
-	{
-		word16 ax_68;
-		*axOut = fn0800_8D2B(ds, ax_22);
-	}
-	return C_23;
+		ax_47 = fn0800_8D2B(ds, ax_22);
+	return ax_47;
 }
 
-byte fn0800_A877(selector ds, ptr16 & dsOut)
+// 0800:A877: Register byte fn0800_A877(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
+byte fn0800_A877(word16 bp, selector ds, ptr16 & dsOut)
 {
 	*dsOut = ds;
 	word16 si_18 = Mem0[ds:9448:word16];
-	ds_37 = ds;
 	while (true)
 	{
-		selector ds_37;
 		si_18 = si_18 - 0x01;
 		if (si_18 == 0x00)
 			break;
-		word16 bx_60 = (word16) ptrLoc06;
-		if ((Mem0[ptrLoc06 + 0x02:word16] & 0x03) != 0x00)
+		ptr32 es_bx_54 = Mem0[ss:fp - 0x06 + 0x00:segptr32];
+		word16 bx_55 = (word16) es_bx_54;
+		if ((Mem0[es_bx_54 + 0x02:word16] & 0x03) != 0x00)
 		{
-			ptrLoc0E = DPB(ptrLoc0E, bx_60, 0);
-			fn0800_A6B7(ds_37, ptrLoc0E, ds, out dl, out ds_37);
+			Mem73[ss:fp - 0x0C + 0x00:word16] = Mem0[ss:fp - 0x04 + 0x00:word16];
+			Mem75[ss:fp - 0x0E + 0x00:word16] = bx_55;
+			byte sil_79;
+			word16 di_80;
+			fn0800_A6B7(ds, ptrArg00, wArg02, out dl, out sil_79, out di_80, out ds);
 		}
+		Mem69[ss:fp - 0x06 + 0x00:word16] = Mem0[ss:fp - 0x06 + 0x00:word16] + 0x14;
 	}
 	return dl;
 }
 
+// 0800:A8B7: Register word16 fn0800_A8B7(Register selector ds, Stack segptr32 ptrArg02, Stack segptr32 ptrArg06, Stack segptr32 ptrArg0A)
 word16 fn0800_A8B7(selector ds, segptr32 ptrArg02, segptr32 ptrArg06, segptr32 ptrArg0A)
 {
 	word16 dx_117;
@@ -11434,61 +16990,80 @@ l0800_A953:
 	return ax_150;
 }
 
-word16 fn0800_A96D(word16 bp, word16 si, word16 di, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, segptr32 ptrArg0C, word16 wArg0E, ptr16 & dxOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
+// 0800:A96D: Register word16 fn0800_A96D(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Stack segptr32 ptrArg0C, Register out ptr16 dxOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_A96D(word16 bp, word16 si, word16 di, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, segptr32 ptrArg0C, ptr16 & dxOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	*dsOut = ds;
 	*siOut = si;
 	*diOut = di;
-	word16 ax_197;
+	word16 ax_203;
 	word16 ax_34 = fn0800_A8B7(ds, DPB(ptrLoc12, fp - 0x06, 0), DPB(ptrLoc0E, fp - 0x04, 0), DPB(ptrLoc0A, wArg04, 0));
 	Mem40[ptrArg0C + 0x02:word16] = ax_34;
+	word16 bp_112 = fp - 0x02;
+	word16 sp_131 = fp - 0x06;
 	if (ax_34 == 0x00)
 	{
 l0800_A9B9:
-		Mem115[ptrArg0C + 0x04:byte] = ~0x00;
-		Mem116[ptrArg0C + 0x02:word16] = 0x00;
+		ptr32 es_bx_114 = Mem40[ss:bp_112 + 0x0E:segptr32];
+		Mem117[es_bx_114 + 0x04:byte] = ~0x00;
+		Mem118[es_bx_114 + 0x02:word16] = 0x00;
 		goto l0800_A9C7;
 	}
 	else
 	{
 		if (Mem40[ptrArg0C + 0x04:byte] < 0x00)
 		{
-			byte al_232 = fn0800_B140(si, di, ds, wArg08, wArg0A, wLoc04 | wArg02, wLoc06, out ds);
-			Mem237[ptrArg0C + 0x04:byte] = al_232;
-			if (al_232 < 0x00)
+			word16 si_236;
+			word16 di_237;
+			byte al_239 = fn0800_B140(si, di, ds, wArg08, wArg0A, wLoc04 | wArg02, wLoc06, out bp_112, out si_236, out di_237, out ds);
+			Mem245[Mem40[ss:bp_112 + 0x0E:segptr32] + 0x04:byte] = al_239;
+			sp_131 = fp - 0x04;
+			if (al_239 < 0x00)
 				goto l0800_A9B9;
 		}
-		fn0800_8D76((int16) Mem40[ptrArg0C + 0x04:byte]);
+		word16 sp_137 = sp_131 - 0x02;
+		Mem138[ss:sp_137 + 0x00:word16] = (int16) Mem40[Mem40[ss:bp_112 + 0x0E:segptr32] + 0x04:byte];
+		fn0800_8D76(wArg00);
 		if (0x00 != 0x00)
-			Mem209[ptrArg0C + 0x02:word16] = Mem40[ptrArg0C + 0x02:word16] | 0x0200;
-		word16 ax_148;
-		if ((Mem40[ptrArg0C + 0x02:word16] & 0x0200) != 0x00)
-			ax_148 = 0x01;
-		else
-			ax_148 = 0x00;
-		selector ds_168;
-		if (fn0800_BA89(fp - 0x02, ds, DPB(ptrLoc12, wArg0C, 0), wArg0E, ax_148, 0x0200, out ds_168) == 0x00)
 		{
-			Mem194[Mem40[ss:fp + 0x0C:segptr32] + 0x10:word16] = 0x00;
-			word16 dx_195;
-			*dxOut = Mem194[ss:fp + 0x0E:word16];
-			ax_197 = Mem194[ss:fp + 0x0C:word16];
-			return ax_197;
+			ptr32 es_bx_211 = Mem138[ss:bp_112 + 0x0E:segptr32];
+			Mem215[es_bx_211 + 0x02:word16] = Mem138[es_bx_211 + 0x02:word16] | 0x0200;
 		}
-		Mem177[ss:fp - 0x08 + 0x00:word16] = Mem40[ss:fp + 0x0E:word16];
-		Mem180[ss:fp - 0x0A + 0x00:word16] = Mem177[ss:fp + 0x0C:word16];
-		byte dl_183;
-		word16 di_184;
-		selector ds_185;
-		fn0800_A614(fp - 0x02, ds_168, ptrArg00, wArg02, out dl_183, out di_184, out ds_185);
+		word16 ax_155;
+		Mem148[ss:sp_137 + 0x00:word16] = 0x0200;
+		if ((Mem148[Mem148[ss:bp_112 + 0x0E:segptr32] + 0x02:word16] & 0x0200) != 0x00)
+			ax_155 = 0x01;
+		else
+			ax_155 = 0x00;
+		Mem158[ss:sp_137 - 0x02 + 0x00:word16] = ax_155;
+		Mem163[ss:sp_137 - 0x04 + 0x00:word16] = 0x00;
+		Mem165[ss:sp_137 - 0x06 + 0x00:word16] = 0x00;
+		Mem168[ss:sp_137 - 0x08 + 0x00:word16] = Mem165[ss:bp_112 + 0x10:word16];
+		Mem171[ss:sp_137 - 0x0A + 0x00:word16] = Mem168[ss:bp_112 + 0x0E:word16];
+		selector ds_176;
+		if (fn0800_BA89(bp_112, ds, ptrArg00, wArg02, wArg08, wArg0A, out ds_176) == 0x00)
+		{
+			Mem200[Mem171[ss:bp_112 + 0x0E:segptr32] + 0x10:word16] = 0x00;
+			word16 dx_201;
+			*dxOut = Mem200[ss:bp_112 + 0x10:word16];
+			ax_203 = Mem200[ss:bp_112 + 0x0E:word16];
+			return ax_203;
+		}
+		Mem185[ss:sp_137 + 0x00:word16] = Mem171[ss:bp_112 + 0x10:word16];
+		Mem188[ss:sp_137 - 0x02 + 0x00:word16] = Mem185[ss:bp_112 + 0x0E:word16];
+		byte dl_189;
+		word16 di_190;
+		selector ds_191;
+		fn0800_A614(bp_112, ds_176, ptrArg00, wArg02, out dl_189, out di_190, out ds_191);
 l0800_A9C7:
-		word16 dx_94;
+		word16 dx_93;
 		*dxOut = 0x00;
-		ax_197 = 0x00;
-		return ax_197;
+		ax_203 = 0x00;
+		return ax_203;
 	}
 }
 
+// 0800:AA34: Register word16 fn0800_AA34(Register selector ds, Register out ptr16 dxOut)
 word16 fn0800_AA34(selector ds, ptr16 & dxOut)
 {
 	word16 wLoc06_10 = 0x2358;
@@ -11514,6 +17089,7 @@ word16 fn0800_AA34(selector ds, ptr16 & dxOut)
 	return ax_43;
 }
 
+// 0800:AA7E: Register word16 fn0800_AA7E(Register word16 si, Register word16 di, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Register out ptr16 dxOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
 word16 fn0800_AA7E(word16 si, word16 di, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & dxOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	*dsOut = ds;
@@ -11534,122 +17110,136 @@ word16 fn0800_AA7E(word16 si, word16 di, selector ds, word16 wArg02, word16 wArg
 		word16 si_84;
 		word16 di_85;
 		selector ds_86;
-		ax_29 = fn0800_A96D(fp - 0x02, si, di, ds, 0x00, wArg06, wArg08, wArg02, wArg04, DPB(ptrLoc0A, ax_10, 0), dx_9, out dx_83, out si_84, out di_85, out ds_86);
+		ax_29 = fn0800_A96D(fp - 0x02, si, di, ds, 0x00, wArg06, wArg08, wArg02, wArg04, DPB(ptrLoc0A, ax_10, 0), out dx_83, out si_84, out di_85, out ds_86);
 	}
 	return ax_29;
 }
 
-word16 fn0800_AAB3(word16 dx, selector ds, segptr32 ptrArg02, word16 wArg04, word16 wArg06, segptr32 ptrArg08, word16 wArg0A, ptr16 & dsOut)
+// 0800:AAB3: Register word16 fn0800_AAB3(Register word16 dx, Register word16 bp, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_AAB3(word16 dx, word16 bp, selector ds, ptr16 & dsOut)
 {
 	*dsOut = ds;
 	do
 	{
-		if (wArg06 == 0x00)
-			return wArg06;
-		word16 ax_104;
-		word16 v10_94 = wArg06 + 0x01;
-		wArg06 = v10_94;
-		if (Mem0[ptrArg02 + 0x06:word16] >u v10_94)
-			ax_104 = v10_94;
+		if (Mem0[ss:fp + 0x06:word16] == 0x00)
+			return Mem0[ss:fp + 0x06:word16];
+		word16 ax_265;
+		Mem74[ss:fp + 0x06:word16] = Mem0[ss:fp + 0x06:word16] + 0x01;
+		if (Mem74[Mem74[ss:fp + 0x02:segptr32] + 0x06:word16] >u Mem74[ss:fp + 0x06:word16])
+			ax_265 = Mem74[ss:fp + 0x06:word16];
 		else
-			ax_104 = Mem0[ptrArg02 + 0x06:word16];
-		word16 di_107 = ax_104;
-		if ((Mem0[ptrArg02 + 0x02:word16] & 0x40) == 0x00 || (Mem0[ptrArg02 + 0x06:word16] == 0x00 || (Mem0[ptrArg02 + 0x06:word16] >=u v10_94 || Mem0[ptrArg02 + 0x00:word16] != 0x00)))
+			ax_265 = Mem74[Mem74[ss:fp + 0x02:segptr32] + 0x06:word16];
+		word16 di_123 = ax_265;
+		ptr32 es_bx_85 = Mem74[ss:fp + 0x02:segptr32];
+		if ((Mem74[es_bx_85 + 0x02:word16] & 0x40) == 0x00 || (Mem74[es_bx_85 + 0x06:word16] == 0x00 || (Mem74[es_bx_85 + 0x06:word16] >=u Mem74[ss:fp + 0x06:word16] || Mem74[es_bx_85 + 0x00:word16] != 0x00)))
 		{
 			while (true)
 			{
-				word16 v18_162 = wArg06 - 0x01;
-				wArg06 = v18_162;
-				if (v18_162 == 0x00)
+				Mem127[ss:fp + 0x06:word16] = Mem74[ss:fp + 0x06:word16] - 0x01;
+				if (Mem127[ss:fp + 0x06:word16] == 0x00)
 					break;
-				di_107 = di_107 - 0x01;
-				if (di_107 == 0x00)
+				di_123 = di_123 - 0x01;
+				if (di_123 == 0x00)
 					break;
-				word16 ax_206;
-				word16 v19_195 = Mem0[ptrArg02 + 0x00:word16] - 0x01;
-				Mem196[ptrArg02 + 0x00:word16] = v19_195;
-				if (v19_195 >= 0x00)
+				word16 ax_164;
+				ptr32 es_bx_153 = Mem127[ss:fp + 0x02:segptr32];
+				word16 v19_156 = Mem127[es_bx_153 + 0x00:word16] - 0x01;
+				Mem157[es_bx_153 + 0x00:word16] = v19_156;
+				if (v19_156 >= 0x00)
 				{
-					word16 ax_223 = Mem196[ptrArg02 + 0x0E:word16];
-					Mem226[ptrArg02 + 0x0C:word16] = Mem196[ptrArg02 + 0x0C:word16] + 0x01;
-					ax_206 = DPB(ax_223, 0x00, 8);
+					word16 ax_181 = Mem157[es_bx_153 + 0x0E:word16];
+					Mem184[es_bx_153 + 0x0C:word16] = Mem157[es_bx_153 + 0x0C:word16] + 0x01;
+					ax_164 = DPB(ax_181, 0x00, 8);
 				}
 				else
 				{
-					ptrLoc0A = DPB(ptrLoc0A, wArg02, 0);
-					ax_206 = fn0800_AEC2(ds, ptrLoc0A, wArg04, out ds);
+					Mem192[ss:fp - 0x08 + 0x00:word16] = Mem157[ss:fp + 0x04:word16];
+					Mem195[ss:fp - 0x0A + 0x00:word16] = Mem192[ss:fp + 0x02:word16];
+					word16 dx_198;
+					ax_164 = fn0800_AEC2(ds, ptrArg00, wArg02, out dx_198, out di_123, out ds);
 				}
-				dx = ax_206;
-				byte dl_212 = (byte) ax_206;
-				if (ax_206 == ~0x00)
+				dx = ax_164;
+				byte dl_171 = (byte) ax_164;
+				if (ax_164 == ~0x00)
 					break;
-				Mem219[ptrArg08 + 0x00:byte] = dl_212;
-				wArg08 = wArg08 + 0x01;
+				Mem177[Mem157[ss:fp + 0x08:segptr32] + 0x00:byte] = dl_171;
+				Mem179[ss:fp + 0x08:word16] = Mem177[ss:fp + 0x08:word16] + 0x01;
 			}
 			if (dx != ~0x00)
 				continue;
 			goto l0800_AB3D;
 		}
-		wArg06 = v10_94 - 0x01;
-		word16 di_258 = 0x00;
-		while (Mem0[ptrArg02 + 0x06:word16] <=u wArg06)
+		Mem216[ss:fp + 0x06:word16] = Mem74[ss:fp + 0x06:word16] - 0x01;
+		word16 di_217 = 0x00;
+		while (true)
 		{
-			di_258 = di_258 + Mem0[ptrArg02 + 0x06:word16];
-			wArg06 = wArg06 - Mem0[ptrArg02 + 0x06:word16];
+			ptr32 es_bx_221 = Mem216[ss:fp + 0x02:segptr32];
+			if (Mem216[es_bx_221 + 0x06:word16] >u Mem216[ss:fp + 0x06:word16])
+				break;
+			ptr32 es_bx_257 = Mem216[ss:fp + 0x02:segptr32];
+			di_217 = di_217 + Mem216[es_bx_257 + 0x06:word16];
+			Mem263[ss:fp + 0x06:word16] = Mem216[ss:fp + 0x06:word16] - Mem216[es_bx_257 + 0x06:word16];
 		}
-		word16 ax_280 = (int16) Mem0[ptrArg02 + 0x04:byte];
-		ptrLoc0C = DPB(ptrLoc0C, wArg08, 0);
-		word16 ax_284 = fn0800_8F50((byte) ax_280, ds, ax_280, ptrLoc0C, di_258);
-		dx = ax_284;
-		wArg08 = wArg08 + ax_284;
-	} while (ax_284 == di_258);
-	wArg06 = wArg06 + (di_258 - ax_284);
+		Mem228[ss:fp - 0x08 + 0x00:word16] = di_217;
+		Mem231[ss:fp - 0x0A + 0x00:word16] = Mem228[ss:fp + 0x0A:word16];
+		Mem234[ss:fp - 0x0C + 0x00:word16] = Mem231[ss:fp + 0x08:word16];
+		word16 ax_236 = (int16) Mem234[es_bx_221 + 0x04:byte];
+		Mem239[ss:fp - 0x0E + 0x00:word16] = ax_236;
+		word16 dx_243;
+		word16 ax_244 = fn0800_8F50((byte) ax_236, ds, wArg00, ptrArg02, wArg06, out dx_243);
+		Mem249[ss:fp + 0x08:word16] = Mem239[ss:fp + 0x08:word16] + ax_244;
+		dx = ax_244;
+	} while (ax_244 == di_217);
+	Mem255[ss:fp + 0x06:word16] = Mem249[ss:fp + 0x06:word16] + (di_217 - ax_244);
 l0800_AB3D:
-	Mem140[ptrArg02 + 0x02:word16] = Mem0[ptrArg02 + 0x02:word16] | 0x20;
-	return wArg06;
+	ptr32 es_bx_105 = Mem74[ss:fp + 0x02:segptr32];
+	Mem109[es_bx_105 + 0x02:word16] = Mem74[es_bx_105 + 0x02:word16] | 0x20;
+	return Mem0[ss:fp + 0x06:word16];
 }
 
+// 0800:ABA3: Register word16 fn0800_ABA3(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Stack word16 wArg0C, Register out ptr16 dsOut)
 word16 fn0800_ABA3(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, ptr16 & dsOut)
 {
 	*dsOut = ds;
-	word16 ax_116;
+	word16 ax_106;
 	if (wArg06 == 0x00)
-		ax_116 = 0x00;
+		ax_106 = 0x00;
 	else
 	{
-		word16 dx_100;
-		word16 ax_80 = fn0800_8F18(wArg08, 0x00, 0x00, wArg06, out dx_100);
-		if (dx_100 <=u 0x01 && (dx_100 <u 0x01 || true))
+		word16 dx_136;
+		fn0800_8F18(wArg08, 0x00, 0x00, wArg06, out dx_136);
+		if (dx_136 <=u 0x01 && (dx_136 <u 0x01 || true))
 		{
-			selector ds_174;
-			ax_116 = (uint16) ((uint32) (uint16) (ax_80 - fn0800_AAB3(dx_100, ds, DPB(ptrLoc14, wArg0A, 0), wArg0C, ax_80, DPB(ptrLoc0E, wArg02, 0), wArg04, out ds_174)) /u wArg06);
+			selector ds_162;
+			Mem168[ss:fp - 0x0C + 0x00:word16] = Mem0[ss:fp - 0x06 + 0x00:word16] - fn0800_AAB3(dx_136, fp - 0x02, ds, out ds_162);
+			ax_106 = (uint16) ((uint32) (uint16) Mem168[ss:fp - 0x0C + 0x00:word16] /u wArg06);
 		}
 		else
 		{
-			word16 si_101 = wArg08 + 0x01;
+			word16 si_85 = wArg08 + 0x01;
 			while (true)
 			{
-				word16 dx_150;
-				si_101 = si_101 - 0x01;
-				if (si_101 == 0x00)
+				si_85 = si_85 - 0x01;
+				if (si_85 == 0x00)
 					break;
-				Mem121[ss:fp - 0x0C + 0x00:word16] = wArg04;
-				Mem124[ss:fp - 0x0E + 0x00:word16] = wArg02;
-				Mem126[ss:fp - 0x10 + 0x00:word16] = wArg06;
-				Mem130[ss:fp - 0x12 + 0x00:word16] = wArg0C;
-				Mem134[ss:fp - 0x14 + 0x00:word16] = wArg0A;
-				if (fn0800_AAB3(dx_100, ds, ptrArg00, wArg02, wArg04, ptrArg06, wArg08, out ds) != 0x00)
+				Mem111[ss:fp - 0x0C + 0x00:word16] = Mem0[ss:fp + 0x04:word16];
+				Mem114[ss:fp - 0x0E + 0x00:word16] = Mem111[ss:fp + 0x02:word16];
+				Mem116[ss:fp - 0x10 + 0x00:word16] = wArg06;
+				Mem119[ss:fp - 0x12 + 0x00:word16] = Mem116[ss:fp + 0x0C:word16];
+				Mem122[ss:fp - 0x14 + 0x00:word16] = Mem119[ss:fp + 0x0A:word16];
+				if (fn0800_AAB3(dx_136, fp - 0x02, ds, out ds) != 0x00)
 					break;
-				wArg04 = dx_150;
-				wArg02 = fn0800_8CCB(wArg02, 0x00, wArg04, wArg06, bp, out dx_150);
-				dx_100 = dx_150;
+				word16 ax_137 = fn0800_8CCB(Mem122[ss:fp + 0x02:word16], 0x00, Mem122[ss:fp + 0x04:word16], wArg06, bp, out dx_136);
+				Mem139[ss:fp + 0x04:word16] = dx_136;
+				Mem140[ss:fp + 0x02:word16] = ax_137;
 			}
-			ax_116 = wArg08 - si_101;
+			ax_106 = Mem0[ss:fp + 0x08:word16] - si_85;
 		}
 	}
-	return ax_116;
+	return ax_106;
 }
 
+// 0800:AC31: Register word16 fn0800_AC31(Register word16 bp, Stack word16 wArg00, Stack segptr32 ptrArg02, Register out ptr16 bpOut, Register out ptr16 siOut)
 word16 fn0800_AC31(word16 bp, word16 wArg00, segptr32 ptrArg02, ptr16 & bpOut, ptr16 & siOut)
 {
 	word16 cx_101;
@@ -11695,49 +17285,56 @@ word16 fn0800_AC31(word16 bp, word16 wArg00, segptr32 ptrArg02, ptr16 & bpOut, p
 	return si;
 }
 
-word16 fn0800_ACB3(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg04, word16 wArg0A, ptr16 & dsOut)
+// 0800:ACB3: Register word16 fn0800_ACB3(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg0A, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_ACB3(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg0A, ptr16 & diOut, ptr16 & dsOut)
 {
-	word16 ax_110;
-	word16 bp_133 = fp - 0x02;
+	word16 ax_108;
+	word16 bp_129 = fp - 0x02;
 	word16 si_10 = wArg0A;
-	byte dl_22;
-	selector ds_23;
-	if (fn0800_A6B7(ds, DPB(ptrLoc08, wArg02, 0), wArg04, out dl_22, out ds_23) != 0x00)
-		ax_110 = ~0x00;
+	byte dl_23;
+	byte sil_24;
+	word16 di_25;
+	selector ds_26;
+	if (fn0800_A6B7(ds, DPB(ptrLoc08, wArg02, 0), wArg04, out dl_23, out sil_24, out di_25, out ds_26) != 0x00)
+		ax_108 = ~0x00;
 	else
 	{
 		if (wArg0A == 0x01)
 		{
-			word16 bx_122 = (word16) ptrArg02;
-			if (Mem0[ptrArg02 + 0x00:word16] > 0x00)
+			ptr32 es_bx_118 = Mem0[ss:fp + 0x02:segptr32];
+			word16 bx_119 = (word16) es_bx_118;
+			if (Mem0[es_bx_118 + 0x00:word16] > 0x00)
 			{
-				word16 ax_138 = (word16) (int32) fn0800_AC31(fp - 0x02, wLoc0A, DPB(ptrLoc08, bx_122, 0), out bp_133, out si_10);
-				Mem140[ss:bp_133 + 0x08:word16] = Mem0[ss:bp_133 + 0x08:word16] - ax_138;
-				Mem144[ss:bp_133 + 0x0A:word16] = v21;
+				Mem125[ss:fp - 0x06 + 0x00:word16] = Mem0[ss:fp + 0x04:word16];
+				Mem127[ss:fp - 0x08 + 0x00:word16] = bx_119;
+				word16 ax_134 = (word16) (int32) fn0800_AC31(fp - 0x02, bp, ptrArg00, out bp_129, out si_10);
+				Mem136[ss:bp_129 + 0x08:word16] = Mem127[ss:bp_129 + 0x08:word16] - ax_134;
+				Mem140[ss:bp_129 + 0x0A:word16] = v21;
 			}
 		}
-		ptr32 es_bx_74 = Mem0[ss:bp_133 + 0x04:segptr32];
-		Mem78[es_bx_74 + 0x02:word16] = Mem0[es_bx_74 + 0x02:word16] & ~0x01A0;
-		Mem81[es_bx_74 + 0x00:word16] = 0x00;
-		word16 dx_83 = Mem81[es_bx_74 + 0x08:word16];
-		Mem84[es_bx_74 + 0x0E:word16] = Mem81[es_bx_74 + 0x0A:word16];
-		Mem85[es_bx_74 + 0x0C:word16] = dx_83;
-		Mem87[ss:fp - 0x06 + 0x00:word16] = si_10;
-		Mem90[ss:fp - 0x08 + 0x00:word16] = Mem87[ss:bp_133 + 0x0A:word16];
-		Mem93[ss:fp - 0x0A + 0x00:word16] = Mem90[ss:bp_133 + 0x08:word16];
-		word16 ax_95 = (int16) Mem93[es_bx_74 + 0x04:byte];
-		Mem98[ss:fp - 0x0C + 0x00:word16] = ax_95;
-		word16 dx_101;
-		word16 ax_102 = fn0800_8E29((byte) ax_95, ds_23, wArg00, wArg02, wArg04, bArg06, out dx_101);
-		if (dx_101 == ~0x00 && ax_102 == ~0x00)
-			ax_110 = ~0x00;
+		ptr32 es_bx_72 = Mem0[ss:bp_129 + 0x04:segptr32];
+		Mem76[es_bx_72 + 0x02:word16] = Mem0[es_bx_72 + 0x02:word16] & ~0x01A0;
+		Mem79[es_bx_72 + 0x00:word16] = 0x00;
+		word16 dx_81 = Mem79[es_bx_72 + 0x08:word16];
+		Mem82[es_bx_72 + 0x0E:word16] = Mem79[es_bx_72 + 0x0A:word16];
+		Mem83[es_bx_72 + 0x0C:word16] = dx_81;
+		Mem85[ss:fp - 0x06 + 0x00:word16] = si_10;
+		Mem88[ss:fp - 0x08 + 0x00:word16] = Mem85[ss:bp_129 + 0x0A:word16];
+		Mem91[ss:fp - 0x0A + 0x00:word16] = Mem88[ss:bp_129 + 0x08:word16];
+		word16 ax_93 = (int16) Mem91[es_bx_72 + 0x04:byte];
+		Mem96[ss:fp - 0x0C + 0x00:word16] = ax_93;
+		word16 dx_99;
+		word16 ax_100 = fn0800_8E29((byte) ax_93, ds_26, wArg00, wArg02, wArg04, bArg06, out dx_99);
+		if (dx_99 == ~0x00 && ax_100 == ~0x00)
+			ax_108 = ~0x00;
 		else
-			ax_110 = 0x00;
+			ax_108 = 0x00;
 	}
-	return ax_110;
+	return ax_108;
 }
 
-word16 fn0800_AD2F(selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & siOut)
+// 0800:AD2F: Register word16 fn0800_AD2F(Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Register out ptr16 dlOut, Register out ptr16 siOut)
+word16 fn0800_AD2F(selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dlOut, ptr16 & siOut)
 {
 	*siOut = si;
 	word16 bp_39 = fp - 0x02;
@@ -11745,130 +17342,157 @@ word16 fn0800_AD2F(selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & siOut)
 	word16 ax_19 = fn0800_97B6(ds, (int16) Mem0[ptrArg02 + 0x04:byte], out dx_18);
 	if (dx_18 != ~0x00 || ax_19 != ~0x00)
 	{
-		word16 bx_51 = (word16) ptrArg02;
+		word16 bx_53 = (word16) ptrArg02;
 		if (Mem0[ptrArg02 + 0x00:word16] < 0x00)
 		{
-			word16 si_65;
-			int32 dx_ax_68 = (int32) fn0800_AC31(fp - 0x02, wLoc0C, DPB(ptrLoc0A, bx_51, 0), out bp_39, out si_65);
-			word16 v17_71 = Mem0[ss:bp_39 - 0x04 + 0x00:word16] + (word16) dx_ax_68;
-			Mem72[ss:bp_39 - 0x04 + 0x00:word16] = v17_71;
-			Mem76[ss:bp_39 - 0x02 + 0x00:word16] = Mem72[ss:bp_39 - 0x02 + 0x00:word16] + SLICE(dx_ax_68, word16, 16) + (v17_71 <u 0x00);
+			word16 si_67;
+			int32 dx_ax_70 = (int32) fn0800_AC31(fp - 0x02, wLoc0C, DPB(ptrLoc0A, bx_53, 0), out bp_39, out si_67);
+			word16 v17_73 = Mem0[ss:bp_39 - 0x04 + 0x00:word16] + (word16) dx_ax_70;
+			Mem74[ss:bp_39 - 0x04 + 0x00:word16] = v17_73;
+			Mem78[ss:bp_39 - 0x02 + 0x00:word16] = Mem74[ss:bp_39 - 0x02 + 0x00:word16] + SLICE(dx_ax_70, word16, 16) + (v17_73 <u 0x00);
 		}
 		else
 		{
-			word16 si_87;
-			int32 dx_ax_90 = (int32) fn0800_AC31(fp - 0x02, wLoc0C, DPB(ptrLoc0A, wArg02, 0), out bp_39, out si_87);
-			word16 v22_93 = Mem0[ss:bp_39 - 0x04 + 0x00:word16] - (word16) dx_ax_90;
-			Mem94[ss:bp_39 - 0x04 + 0x00:word16] = v22_93;
-			Mem98[ss:bp_39 - 0x02 + 0x00:word16] = Mem94[ss:bp_39 - 0x02 + 0x00:word16] - SLICE(dx_ax_90, word16, 16) - (v22_93 <u 0x00);
+			word16 si_89;
+			int32 dx_ax_92 = (int32) fn0800_AC31(fp - 0x02, wLoc0C, DPB(ptrLoc0A, wArg02, 0), out bp_39, out si_89);
+			word16 v22_95 = Mem0[ss:bp_39 - 0x04 + 0x00:word16] - (word16) dx_ax_92;
+			Mem96[ss:bp_39 - 0x04 + 0x00:word16] = v22_95;
+			Mem100[ss:bp_39 - 0x02 + 0x00:word16] = Mem96[ss:bp_39 - 0x02 + 0x00:word16] - SLICE(dx_ax_92, word16, 16) - (v22_95 <u 0x00);
 		}
 	}
+	byte dl_42;
+	*dlOut = (byte) Mem0[ss:bp_39 - 0x02 + 0x00:word16];
 	return Mem0[ss:bp_39 - 0x04 + 0x00:word16];
 }
 
+// 0800:AD85: Register word16 fn0800_AD85(Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Stack word16 wArg0C, Register out ptr16 dsOut)
 word16 fn0800_AD85(word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, ptr16 & dsOut)
 {
 	*dsOut = ds;
-	word16 ax_145;
+	word16 ax_134;
 	if (wArg06 != 0x00)
 	{
-		word16 dx_93;
-		word16 ax_94 = fn0800_8F18(wArg08, 0x00, 0x00, wArg06, out dx_93);
-		if (dx_93 <=u 0x01 && (dx_93 <u 0x01 || true))
+		word16 dx_85;
+		word16 ax_86 = fn0800_8F18(wArg08, 0x00, 0x00, wArg06, out dx_85);
+		if (dx_85 <=u 0x01 && (dx_85 <u 0x01 || true))
 		{
-			selector ds_181;
-			ax_145 = (uint16) ((uint32) (uint16) fn0800_B4BE(ds, DPB(ptrLoc14, wArg0A, 0), wArg0C, ax_94, DPB(ptrLoc0E, wArg02, 0), wArg04, out ds_181) /u wArg06);
-			return ax_145;
+			selector ds_171;
+			ax_134 = (uint16) ((uint32) (uint16) fn0800_B4BE(fp - 0x02, ds, DPB(ptrLoc14, wArg0A, 0), wArg0C, ax_86, wArg02, wArg04, out ds_171) /u wArg06);
+			return ax_134;
 		}
-		word16 si_105 = 0x00;
+		word16 si_104 = 0x00;
 		if (0x00 <u wArg08)
 		{
 			do
 			{
-				Mem118[ss:fp - 0x0C + 0x00:word16] = wArg04;
-				Mem121[ss:fp - 0x0E + 0x00:word16] = wArg02;
-				Mem123[ss:fp - 0x10 + 0x00:word16] = wArg06;
-				Mem127[ss:fp - 0x12 + 0x00:word16] = wArg0C;
-				Mem131[ss:fp - 0x14 + 0x00:word16] = wArg0A;
-				word16 ax_135 = fn0800_B4BE(ds, ptrArg00, wArg02, wArg04, ptrArg06, wArg08, out ds);
-				if (false || ax_135 != wArg06)
+				Mem108[ss:fp - 0x0C + 0x00:word16] = Mem0[ss:fp + 0x04:word16];
+				Mem111[ss:fp - 0x0E + 0x00:word16] = Mem108[ss:fp + 0x02:word16];
+				Mem113[ss:fp - 0x10 + 0x00:word16] = wArg06;
+				Mem116[ss:fp - 0x12 + 0x00:word16] = Mem113[ss:fp + 0x0C:word16];
+				Mem119[ss:fp - 0x14 + 0x00:word16] = Mem116[ss:fp + 0x0A:word16];
+				word16 ax_124 = fn0800_B4BE(fp - 0x02, ds, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds);
+				if (false || ax_124 != wArg06)
 				{
-					ax_145 = si_105;
-					return ax_145;
+					ax_134 = si_104;
+					return ax_134;
 				}
-				wArg04 = dx_155;
-				word16 dx_155;
-				wArg02 = fn0800_8CCB(wArg02, 0x00, wArg04, wArg06, bp, out dx_155);
-				si_105 = si_105 + 0x01;
-			} while (si_105 <u wArg08);
+				word16 dx_144;
+				word16 ax_145 = fn0800_8CCB(Mem119[ss:fp + 0x02:word16], 0x00, Mem119[ss:fp + 0x04:word16], wArg06, bp, out dx_144);
+				Mem146[ss:fp + 0x04:word16] = dx_144;
+				Mem147[ss:fp + 0x02:word16] = ax_145;
+				si_104 = si_104 + 0x01;
+			} while (si_104 <u Mem147[ss:fp + 0x08:word16]);
 		}
 	}
-	ax_145 = wArg08;
-	return ax_145;
+	ax_134 = Mem0[ss:fp + 0x08:word16];
+	return ax_134;
 }
 
-selector fn0800_AE10(selector ds)
+// 0800:AE10: Register word16 fn0800_AE10(Register word16 bp, Register selector ds, Register out ptr16 dsOut)
+word16 fn0800_AE10(word16 bp, selector ds, ptr16 & dsOut)
 {
+	*dsOut = ds;
 	word16 si_11 = 0x14;
-	ds_30 = ds;
 	while (true)
 	{
-		selector ds_30;
 		si_11 = si_11 - 0x01;
 		if (si_11 == 0x00)
 			break;
-		word16 bx_48 = (word16) ptrLoc06;
-		if ((Mem0[ptrLoc06 + 0x02:word16] & 0x0300) == 0x0300)
+		ptr32 es_bx_46 = Mem0[ss:fp - 0x06 + 0x00:segptr32];
+		word16 bx_47 = (word16) es_bx_46;
+		if ((Mem0[es_bx_46 + 0x02:word16] & 0x0300) == 0x0300)
 		{
-			ptrLoc0C = DPB(ptrLoc0C, bx_48, 0);
-			byte dl_72;
-			fn0800_A6B7(ds_30, ptrLoc0C, ds, out dl_72, out ds_30);
+			Mem65[ss:fp - 0x0A + 0x00:word16] = Mem0[ss:fp - 0x04 + 0x00:word16];
+			Mem67[ss:fp - 0x0C + 0x00:word16] = bx_47;
+			byte dl_70;
+			byte sil_71;
+			fn0800_A6B7(ds, ptrArg00, wArg02, out dl_70, out sil_71, out di, out ds);
 		}
+		Mem61[ss:fp - 0x06 + 0x00:word16] = Mem0[ss:fp - 0x06 + 0x00:word16] + 0x14;
 	}
-	return ds_30;
+	return di;
 }
 
-word16 fn0800_AE4C(selector ds, segptr32 ptrArg02, ptr16 & dsOut)
+// 0800:AE4C: Register word16 fn0800_AE4C(Register word16 bp, Register selector ds, Stack segptr32 ptrArg02, Register out ptr16 dxOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_AE4C(word16 bp, selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & diOut, ptr16 & dsOut)
 {
+	*diOut = di;
 	if ((Mem0[ptrArg02 + 0x02:word16] & 0x0200) != 0x00)
-		ds = fn0800_AE10(ds);
-	word16 ax_51;
-	word16 v11_19 = Mem0[ptrArg02 + 0x06:word16];
-	word16 ax_22 = Mem0[ptrArg02 + 0x0A:word16];
-	word16 dx_23 = Mem0[ptrArg02 + 0x08:word16];
-	Mem24[ptrArg02 + 0x0E:word16] = ax_22;
-	Mem25[ptrArg02 + 0x0C:word16] = dx_23;
-	selector ds_36;
-	word16 ax_37 = fn0800_B97F(ds, (int16) Mem25[ptrArg02 + 0x04:byte], DPB(ptrLoc08, dx_23, 0), ax_22, v11_19, out ds_36);
-	Mem42[ptrArg02 + 0x00:word16] = ax_37;
-	if (ax_37 > 0x00)
 	{
-		Mem59[ptrArg02 + 0x02:word16] = Mem42[ptrArg02 + 0x02:word16] & ~0x20;
-		ax_51 = 0x00;
+		word16 di_100;
+		*diOut = fn0800_AE10(fp - 0x02, ds, out ds);
+	}
+	word16 ax_56;
+	ptr32 es_bx_19 = Mem0[ss:fp + 0x02:segptr32];
+	Mem24[ss:fp - 0x04 + 0x00:word16] = Mem0[es_bx_19 + 0x06:word16];
+	word16 ax_25 = Mem24[es_bx_19 + 0x0A:word16];
+	word16 dx_26 = Mem24[es_bx_19 + 0x08:word16];
+	Mem27[es_bx_19 + 0x0E:word16] = ax_25;
+	Mem28[es_bx_19 + 0x0C:word16] = dx_26;
+	Mem30[ss:fp - 0x06 + 0x00:word16] = ax_25;
+	Mem32[ss:fp - 0x08 + 0x00:word16] = dx_26;
+	Mem36[ss:fp - 0x0A + 0x00:word16] = (int16) Mem32[es_bx_19 + 0x04:byte];
+	word16 dx_40;
+	selector ds_41;
+	word16 ax_42 = fn0800_B97F(ds, wArg00, ptrArg02, wArg04, wArg06, out dx_40, out ds_41);
+	ptr32 es_bx_44 = Mem36[ss:fp + 0x02:segptr32];
+	Mem47[es_bx_44 + 0x00:word16] = ax_42;
+	if (ax_42 > 0x00)
+	{
+		Mem66[es_bx_44 + 0x02:word16] = Mem47[es_bx_44 + 0x02:word16] & ~0x20;
+		ax_56 = 0x00;
 	}
 	else
 	{
-		if (Mem42[ptrArg02 + 0x00:word16] == 0x00)
-			Mem83[ptrArg02 + 0x02:word16] = Mem42[ptrArg02 + 0x02:word16] & 65151 | 0x20;
+		ptr32 es_bx_73 = Mem47[ss:fp + 0x02:segptr32];
+		if (Mem47[es_bx_73 + 0x00:word16] == 0x00)
+			Mem90[es_bx_73 + 0x02:word16] = Mem47[es_bx_73 + 0x02:word16] & 65151 | 0x20;
 		else
 		{
-			Mem87[ptrArg02 + 0x00:word16] = 0x00;
-			Mem89[ptrArg02 + 0x02:word16] = Mem87[ptrArg02 + 0x02:word16] | 0x10;
+			ptr32 es_bx_91 = Mem47[ss:fp + 0x02:segptr32];
+			Mem94[es_bx_91 + 0x00:word16] = 0x00;
+			Mem96[es_bx_91 + 0x02:word16] = Mem94[es_bx_91 + 0x02:word16] | 0x10;
 		}
-		ax_51 = ~0x00;
+		ax_56 = ~0x00;
 	}
-	return ax_51;
+	return ax_56;
 }
 
-word16 fn0800_AEC2(selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dsOut)
+// 0800:AEC2: Register word16 fn0800_AEC2(Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Register out ptr16 dxOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_AEC2(selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dxOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	Mem12[ptrArg02 + 0x00:word16] = Mem0[ptrArg02 + 0x00:word16] + 0x01;
-	selector ds_23;
-	return fn0800_AED6(ds, DPB(ptrLoc06, (word16) ptrArg02, 0), wArg04, out ds_23);
+	word16 dx_23;
+	word16 di_24;
+	selector ds_25;
+	return fn0800_AED6(fp - 0x02, ds, DPB(ptrLoc06, (word16) ptrArg02, 0), wArg04, out dx_23, out di_24, out ds_25);
 }
 
-word16 fn0800_AED6(selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dsOut)
+// 0800:AED6: Register word16 fn0800_AED6(Register word16 bp, Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Register out ptr16 dxOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_AED6(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dxOut, ptr16 & diOut, ptr16 & dsOut)
 {
+	*dxOut = dx;
+	*diOut = di;
 	*dsOut = ds;
 	word16 ax_100;
 	if ((wArg02 | wArg04) == 0x00)
@@ -11877,52 +17501,69 @@ l0800_AEE2:
 		ax_100 = ~0x00;
 		return ax_100;
 	}
-	word16 ax_122;
+	word16 ax_124;
 	if (Mem0[ptrArg02 + 0x00:word16] <= 0x00)
 	{
 		if (Mem0[ptrArg02 + 0x00:word16] < 0x00 || ((Mem0[ptrArg02 + 0x02:word16] & 0x0110) != 0x00 || (Mem0[ptrArg02 + 0x02:word16] & 0x01) == 0x00))
 		{
 l0800_AF7F:
-			Mem145[ptrArg02 + 0x02:word16] = Mem0[ptrArg02 + 0x02:word16] | 0x10;
-			Mem151[ptrArg02 + 0x02:word16] = Mem145[ptrArg02 + 0x02:word16] | 0x10;
+			ptr32 es_bx_140 = Mem0[ss:fp + 0x02:segptr32];
+			Mem144[es_bx_140 + 0x02:word16] = Mem0[es_bx_140 + 0x02:word16] | 0x10;
+			ptr32 es_bx_146 = Mem144[ss:fp + 0x02:segptr32];
+			Mem150[es_bx_146 + 0x02:word16] = Mem144[es_bx_146 + 0x02:word16] | 0x10;
 			goto l0800_AEE2;
 		}
-		Mem164[ptrArg02 + 0x02:word16] = Mem0[ptrArg02 + 0x02:word16] | 0x80;
-		word16 bx_161 = (word16) ptrArg02;
-		if (Mem164[ptrArg02 + 0x06:word16] == 0x00)
+		Mem163[ptrArg02 + 0x02:word16] = Mem0[ptrArg02 + 0x02:word16] | 0x80;
+		word16 bx_160 = (word16) ptrArg02;
+		if (Mem163[ptrArg02 + 0x06:word16] == 0x00)
 		{
 l0800_AF43:
-			if ((Mem164[ptrArg02 + 0x02:word16] & 0x0200) != 0x00)
-				ds = fn0800_AE10(ds);
-			ptrLoc0A = DPB(ptrLoc0A, 0x4EE4, 0);
-			word16 ax_215 = fn0800_B97F(ds, (int16) Mem164[ptrArg02 + 0x04:byte], ptrLoc0A, ds, 0x01, out ds);
-			if (ax_215 == 0x00)
+			if ((Mem163[Mem163[ss:fp + 0x02:segptr32] + 0x02:word16] & 0x0200) != 0x00)
 			{
-				if (fn0800_A59D(ds, (int16) Mem164[ptrArg02 + 0x04:byte]) != 0x01)
+				word16 di_263;
+				*diOut = fn0800_AE10(fp - 0x02, ds, out ds);
+			}
+			Mem199[ss:fp - 0x06 + 0x00:word16] = 0x01;
+			Mem201[ss:fp - 0x08 + 0x00:word16] = ds;
+			Mem204[ss:fp - 0x0A + 0x00:word16] = 0x4EE4;
+			Mem211[ss:fp - 0x0C + 0x00:word16] = (int16) Mem204[Mem204[ss:fp + 0x02:segptr32] + 0x04:byte];
+			word16 dx_214;
+			word16 ax_216 = fn0800_B97F(ds, wArg00, ptrArg02, wArg04, wArg06, out dx_214, out ds);
+			if (ax_216 == 0x00)
+			{
+				Mem228[ss:fp - 0x06 + 0x00:word16] = (int16) Mem211[Mem211[ss:fp + 0x02:segptr32] + 0x04:byte];
+				word16 dx_229;
+				if (fn0800_A59D(ds, wArg00, out dx_229) != 0x01)
 					goto l0800_AF7F;
-				Mem241[ptrArg02 + 0x02:word16] = Mem164[ptrArg02 + 0x02:word16] & 65151 | 0x20;
+				ptr32 es_bx_235 = Mem228[ss:fp + 0x02:segptr32];
+				Mem243[es_bx_235 + 0x02:word16] = Mem228[es_bx_235 + 0x02:word16] & 65151 | 0x20;
 				goto l0800_AEE2;
 			}
-			if (Mem164[ds:0x4EE4:byte] == 0x0D && (Mem164[ptrArg02 + 0x02:word16] & 0x40) == 0x00)
+			if (Mem211[ds:0x4EE4:byte] == 0x0D && (Mem211[Mem211[ss:fp + 0x02:segptr32] + 0x02:word16] & 0x40) == 0x00)
 				goto l0800_AF43;
-			Mem249[ptrArg02 + 0x02:word16] = Mem164[ptrArg02 + 0x02:word16] & ~0x20;
-			ax_122 = DPB(ax_215, Mem249[ds:0x4EE4:byte], 0);
+			ptr32 es_bx_247 = Mem211[ss:fp + 0x02:segptr32];
+			Mem251[es_bx_247 + 0x02:word16] = Mem211[es_bx_247 + 0x02:word16] & ~0x20;
+			ax_124 = DPB(ax_216, Mem251[ds:0x4EE4:byte], 0);
 l0800_AFBB:
-			ax_100 = DPB(ax_122, 0x00, 8);
+			ax_100 = DPB(ax_124, 0x00, 8);
 			return ax_100;
 		}
-		selector ds_174;
-		if (fn0800_AE4C(ds, DPB(ptrLoc08, bx_161, 0), out ds_174) != 0x00)
+		word16 dx_173;
+		word16 di_174;
+		selector ds_175;
+		if (fn0800_AE4C(fp - 0x02, ds, DPB(ptrLoc08, bx_160, 0), out dx_173, out di_174, out ds_175) != 0x00)
 			goto l0800_AEE2;
 	}
-	Mem114[ptrArg02 + 0x00:word16] = Mem0[ptrArg02 + 0x00:word16] - 0x01;
-	word16 ax_115 = Mem114[ptrArg02 + 0x0E:word16];
-	word16 si_116 = Mem114[ptrArg02 + 0x0C:word16];
-	Mem118[ptrArg02 + 0x0C:word16] = Mem114[ptrArg02 + 0x0C:word16] + 0x01;
-	ax_122 = DPB(ax_115, Mem118[ax_115:si_116 + 0x00:byte], 0);
+	ptr32 es_bx_112 = Mem0[ss:fp + 0x02:segptr32];
+	Mem116[es_bx_112 + 0x00:word16] = Mem0[es_bx_112 + 0x00:word16] - 0x01;
+	word16 ax_117 = Mem116[es_bx_112 + 0x0E:word16];
+	word16 si_118 = Mem116[es_bx_112 + 0x0C:word16];
+	Mem120[es_bx_112 + 0x0C:word16] = Mem116[es_bx_112 + 0x0C:word16] + 0x01;
+	ax_124 = DPB(ax_117, Mem120[ax_117:si_118 + 0x00:byte], 0);
 	goto l0800_AFBB;
 }
 
+// 0800:AFCB: Register word16 fn0800_AFCB(Register selector ds, Stack segptr32 ptrArg02, Register out ptr16 dxOut)
 word16 fn0800_AFCB(selector ds, segptr32 ptrArg02, ptr16 & dxOut)
 {
 	word16 ax_188;
@@ -11998,6 +17639,7 @@ word16 fn0800_AFCB(selector ds, segptr32 ptrArg02, ptr16 & dxOut)
 	return ax_188;
 }
 
+// 0800:B03B: Register selector fn0800_B03B(Stack segptr32 ptrArg02, Stack word16 wArg04, Stack segptr32 ptrArg06, Stack word16 wArg0A)
 selector fn0800_B03B(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06, word16 wArg0A)
 {
 	word16 di_16 = (word16) ptrArg02;
@@ -12017,6 +17659,7 @@ selector fn0800_B03B(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06, word16
 	return es_17;
 }
 
+// 0800:B05F: void fn0800_B05F(Stack segptr32 ptrArg02, Stack word16 wArg06, Stack byte bArg08)
 void fn0800_B05F(segptr32 ptrArg02, word16 wArg06, byte bArg08)
 {
 	word16 di_11 = (word16) ptrArg02;
@@ -12047,12 +17690,14 @@ void fn0800_B05F(segptr32 ptrArg02, word16 wArg06, byte bArg08)
 	return;
 }
 
+// 0800:B083: void fn0800_B083(Stack word16 wArg02, Stack word16 wArg04, Stack byte bArg06, Stack word16 wArg08)
 void fn0800_B083(word16 wArg02, word16 wArg04, byte bArg06, word16 wArg08)
 {
 	fn0800_B05F(DPB(ptrLoc0A, wArg02, 0), wArg08, bArg06);
 	return;
 }
 
+// 0800:B0A1: void fn0800_B0A1(Stack segptr32 ptrArg02, Stack word16 wArg04, Stack segptr32 ptrArg06, Stack word16 wArg08, Stack word16 wArg0A)
 void fn0800_B0A1(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06, word16 wArg08, word16 wArg0A)
 {
 	word16 ax_119;
@@ -12099,12 +17744,16 @@ void fn0800_B0A1(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06, word16 wAr
 	return;
 }
 
-selector fn0800_B0F3(word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A)
+// 0800:B0F3: Register word16 fn0800_B0F3(Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_B0F3(word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, ptr16 & diOut, ptr16 & dsOut)
 {
+	*diOut = di;
+	*dsOut = ds;
 	fn0800_B0A1(DPB(ptrLoc0C, wArg06, 0), wArg08, DPB(ptrLoc08, wArg02, 0), wArg04, wArg0A);
-	return ds;
+	return si;
 }
 
+// 0800:B113: void fn0800_B113(Register byte al, Register selector ds, Stack word16 wArg02, Stack segptr32 ptrArg04)
 void fn0800_B113(byte al, selector ds, word16 wArg02, segptr32 ptrArg04)
 {
 	word16 ax_18;
@@ -12113,6 +17762,7 @@ void fn0800_B113(byte al, selector ds, word16 wArg02, segptr32 ptrArg04)
 	return;
 }
 
+// 0800:B12E: void fn0800_B12E(Register byte al, Register selector ds, Stack word16 wArg02)
 void fn0800_B12E(byte al, selector ds, word16 wArg02)
 {
 	word16 ax_16;
@@ -12120,107 +17770,363 @@ void fn0800_B12E(byte al, selector ds, word16 wArg02)
 	return;
 }
 
-byte fn0800_B140(word16 si, word16 di, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & dsOut)
+// 0800:B140: Register byte fn0800_B140(Register word16 si, Register word16 di, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+byte fn0800_B140(word16 si, word16 di, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 {
-	*dsOut = ds;
-	word16 si_115 = wArg06;
-	if ((wArg06 & 0xC000) == 0x00)
-		si_115 = wArg06 | Mem0[ds:0x2512:word16] & 0xC000;
-	word16 di_114;
-	byte al_289;
-	word16 ax_163 = fn0800_A53C(0x00, ds, DPB(ptrLoc10, wArg02, 0), 0x00, di);
-	word16 wLoc04_158 = ax_163;
-	if ((si_115 & 0x0100) != 0x00)
-	{
-		word16 di_273 = wArg08 & Mem0[ds:9492:word16];
-		ax_163 = di_273;
-		if ((di_273 & 0x0180) == 0x00)
-			ax_163 = fn0800_8D2B(ds, 0x01);
-		word16 wLoc0C_287;
-		if (ax_163 == ~0x00)
-		{
-			if (Mem0[ds:9494:word16] != 0x02)
-			{
-				wLoc0C_287 = Mem0[ds:9494:word16];
-				goto l0800_B197;
-			}
-			byte al_303;
-			word16 ax_302;
-			if ((di_273 & 0x80) != 0x00)
-			{
-				ax_302 = 0x00;
-				al_303 = 0x00;
-			}
-			else
-			{
-				ax_302 = 0x01;
-				al_303 = 0x01;
-			}
-			wLoc04_158 = ax_302;
-			if ((si_115 & 0xF0) == 0x00)
-			{
-				fn0800_B113(al_303, ds, ax_302, DPB(ptrLoc0E, wArg02, 0));
-				di_114 = ~0x00;
-				if (true)
-					goto l0800_B298;
-l0800_B265:
-				if (di_114 >= 0x00)
-				{
-					word16 ax_125;
-					if ((si_115 & 0x0300) != 0x00)
-						ax_125 = 0x1000;
-					else
-						ax_125 = 0x00;
-					word16 ax_137;
-					word16 dx_129 = si_115 & ~0x0700 | ax_125;
-					if ((wLoc04_158 & 0x01) != 0x00)
-						ax_137 = 0x00;
-					else
-						ax_137 = 0x0100;
-					SEQ(ds, 0x24EA)[di_114 * 0x02] = dx_129 | ax_137;
-				}
-				goto l0800_B298;
-			}
-			ptrLoc0E = DPB(ptrLoc0E, wArg02, 0);
-			fn0800_B113(0x00, ds, 0x00, ptrLoc0E);
-			di_114 = ~0x00;
-			ax_163 = ~0x00;
-			if (true)
-			{
-l0800_B298:
-				al_289 = (byte) di_114;
-				return al_289;
-			}
-			fn0800_A57F(~0x00, ds, ~0x00);
-		}
-		else if ((si_115 & 0x0400) != 0x00)
-		{
-			wLoc0C_287 = 0x50;
+fn0800_B140_entry:
+	sp = fp
+	sp = fp - 0x02
+	wLoc02 = bp
+	bp = fp - 0x02
+	sp = fp - 0x06
+	sp = fp - 0x08
+	wLoc08 = si
+	sp = fp - 0x0A
+	wLoc0A = di
+	si = wArg06
+	di = wArg08
+	SZO = cond(si & 0xC000)
+	Z = SZO (alias)
+	C = false
+	branch Test(NE,Z) l0800_B15C
+	goto l0800_B154
+l0800_B140:
+l0800_B154:
+	ax = Mem0[ds:0x2512:word16]
+	ax = ax & 0xC000
+	si = si | ax
+	SZO = cond(si)
+	C = false
+l0800_B15C:
+	ax = 0x00
+	al = (byte) ax (alias)
+	SZO = cond(0x00)
+	C = false
+	sp = fp - 0x0C
+	wLoc0C = 0x00
+	bLoc0C = (byte) wLoc0C (alias)
+	v13 = wArg04
+	sp = fp - 0x0E
+	wLoc0E = v13
+	v14 = wArg02
+	sp = fp - 0x10
+	wLoc10 = v14
+	ptrLoc10 = DPB(ptrLoc10, wLoc10, 0) (alias)
+	ax = fn0800_A53C(al, ds, ptrLoc10, bLoc0C, wLoc0A)
+	sp = fp - 0x0A
+	wLoc04 = ax
+	SZO = cond(si & 0x0100)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_B1F2
+l0800_B174:
+	di = di & Mem0[ds:9492:word16]
+	ax = di
+	SZO = cond(ax & 0x0180)
+	Z = SZO (alias)
+	C = false
+	branch Test(NE,Z) l0800_B186
+l0800_B17F:
+	ax = 0x01
+	sp = fp - 0x0C
+	wLoc0C = 0x01
+	ax = fn0800_8D2B(ds, wLoc0C)
+	sp = fp - 0x0A
+l0800_B186:
+	SCZO = cond(wLoc04 - ~0x00)
+	Z = SCZO (alias)
+	branch Test(NE,Z) l0800_B1AF
+l0800_B18C:
+	SCZO = cond(Mem0[ds:9494:word16] - 0x02)
+	Z = SCZO (alias)
+	branch Test(EQ,Z) l0800_B19D
+l0800_B193:
+	v19 = Mem0[ds:9494:word16]
+	sp = fp - 0x0C
+	wLoc0C = v19
 l0800_B197:
-			al_289 = (byte) fn0800_8D2B(ds, wLoc0C_287);
-			return al_289;
-		}
-	}
-	fn0800_B2A0(ds, DPB(ptrLoc10, wArg02, 0), si_115);
-	di_114 = ax_163;
-	if (ax_163 >= 0x00)
-	{
-		word16 ax_194 = fn0800_A2A3(0x00, ds, ax_163, 0x00, ptrLoc0A, wLoc06);
-		byte al_195 = (byte) ax_194;
-		if ((ax_194 & 0x80) != 0x00)
-		{
-			si_115 = si_115 | 0x2000;
-			if ((si_115 & 0x8000) != 0x00)
-				fn0800_A2A3(0x01, ds, ax_163, 0x01, DPB(ptrLoc0E, ax_194 & 0xFF | 0x20, 0), di);
-		}
-		else if ((si_115 & 0x0200) != 0x00)
-			fn0800_B12E(al_195, ds, ax_163);
-		if ((wLoc04_158 & 0x01) != 0x00 && ((si_115 & 0x0100) != 0x00 && (si_115 & 0xF0) != 0x00))
-			fn0800_A53C(0x01, ds, DPB(ptrLoc12, wArg02, 0), 0x01, 0x01);
-	}
-	goto l0800_B265;
+	ax = fn0800_8D2B(ds, wLoc0C)
+	sp = fp - 0x0A
+	al = fn0800_B265(bp, si, di, ds, out bp, out si, out di, out ds)
+	ax = DPB(ax, al, 0) (alias)
+	return al
+l0800_B197_thunk_fn0800_B265:
+l0800_B19D:
+	SZO = cond(di & 0x80)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_B1A7
+l0800_B1A3:
+	ax = 0x00
+	al = (byte) ax (alias)
+	SZO = cond(0x00)
+	C = false
+	goto l0800_B1AA
+l0800_B1A7:
+	ax = 0x01
+	al = (byte) ax (alias)
+l0800_B1AA:
+	wLoc04 = ax
+	SZO = cond(si & 0xF0)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_B1DD
+	goto l0800_B1C1
+l0800_B1AF:
+	SZO = cond(si & 0x0400)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_B1F2
+l0800_B1B5:
+	ax = 0x50
+	sp = fp - 0x0C
+	wLoc0C = 0x50
+	goto l0800_B197
+l0800_B1BB:
+l0800_B1C1:
+	v24 = wArg04
+	sp = fp - 0x0C
+	wLoc0C = v24
+	v25 = wArg02
+	sp = fp - 0x0E
+	wLoc0E = v25
+	ptrLoc0E = DPB(ptrLoc0E, wLoc0E, 0) (alias)
+	ax = 0x00
+	al = (byte) ax (alias)
+	SZO = cond(0x00)
+	C = false
+	sp = fp - 0x10
+	wLoc10 = 0x00
+	fn0800_B113(al, ds, wLoc10, ptrLoc0E)
+	sp = fp - 0x0A
+	di = ~0x00
+	ax = ~0x00
+	al = (byte) ax (alias)
+	SZO = cond(~0x00)
+	SO = SZO (alias)
+	C = false
+	branch Test(GE,SO) l0800_B1D6
+l0800_B1D3:
+	al = fn0800_B265(bp, si, di, ds, out bp, out si, out di, out ds)
+	ax = DPB(ax, al, 0) (alias)
+	return al
+l0800_B1D6:
+	sp = fp - 0x0C
+	wLoc0C = ~0x00
+	al = fn0800_A57F(al, ds, wLoc0C)
+	cx = ~0x00
+	sp = fp - 0x0A
+	goto l0800_B1F2
+l0800_B1DD:
+	v26 = wArg04
+	sp = fp - 0x0C
+	wLoc0C = v26
+	v27 = wArg02
+	sp = fp - 0x0E
+	wLoc0E = v27
+	ptrLoc0E = DPB(ptrLoc0E, wLoc0E, 0) (alias)
+	v28 = wLoc04
+	sp = fp - 0x10
+	wLoc10 = v28
+	fn0800_B113(al, ds, wLoc10, ptrLoc0E)
+	sp = fp - 0x0A
+	di = ~0x00
+	ax = ~0x00
+	SZO = cond(~0x00)
+	SO = SZO (alias)
+	C = false
+	branch Test(GE,SO) l0800_B265
+	goto l0800_B1EF
+l0800_B1ED_thunk_fn0800_B265:
+	al = fn0800_B265(bp, si, di, ds, out bp, out si, out di, out ds)
+	ax = DPB(ax, al, 0) (alias)
+	return al
+l0800_B1EF:
+	al = fn0800_B265(bp, si, di, ds, out bp, out si, out di, out ds)
+	ax = DPB(ax, al, 0) (alias)
+	return al
+l0800_B1F2:
+	sp = fp - 0x0C
+	wLoc0C = si
+	v15 = wArg04
+	sp = fp - 0x0E
+	wLoc0E = v15
+	v16 = wArg02
+	sp = fp - 0x10
+	wLoc10 = v16
+	ptrLoc10 = DPB(ptrLoc10, wLoc10, 0) (alias)
+	fn0800_B2A0(ds, ptrLoc10, wLoc0C)
+	sp = fp - 0x0A
+	di = ax
+	ax = ax | ax
+	SZO = cond(ax)
+	SO = SZO (alias)
+	C = false
+	branch Test(LT,SO) l0800_B265
+	goto l0800_B205
+l0800_B203_thunk_fn0800_B265:
+	al = fn0800_B265(bp, si, di, ds, out bp, out si, out di, out ds)
+	ax = DPB(ax, al, 0) (alias)
+	return al
+l0800_B205:
+	ax = 0x00
+	al = (byte) ax (alias)
+	SZO = cond(0x00)
+	C = false
+	sp = fp - 0x0C
+	wLoc0C = 0x00
+	sp = fp - 0x0E
+	wLoc0E = di
+	ax = fn0800_A2A3(al, ds, wLoc0E, wLoc0C, ptrLoc0A, wLoc06)
+	al = (byte) ax (alias)
+	cx = wLoc0E
+	sp = fp - 0x0C
+	cx = 0x00
+	sp = fp - 0x0A
+	wLoc06 = ax
+	SZO = cond(ax & 0x80)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_B237
+l0800_B216:
+	si = si | 0x2000
+	SZO = cond(si & 0x8000)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_B241
+	goto l0800_B220
+l0800_B21E_thunk_fn0800_B241:
+	al = fn0800_B241(bp, si, di, ds, out bp, out si, out di, out ds)
+	ax = DPB(ax, al, 0) (alias)
+	return al
+l0800_B220:
+	ax = ax & 0xFF
+	ax = ax | 0x20
+	al = (byte) ax (alias)
+	SZO = cond(ax)
+	C = false
+	al = fn0800_B226(ax, bp, si, di, ds, out bp, out si, out di, out ds)
+	ax = DPB(ax, al, 0) (alias)
+	return al
+l0800_B223_thunk_fn0800_B226:
+l0800_B237:
+	SZO = cond(si & 0x0200)
+	Z = SZO (alias)
+	C = false
+	branch Test(EQ,Z) l0800_B241
+	goto l0800_B23D
+l0800_B23B_thunk_fn0800_B241:
+	al = fn0800_B241(bp, si, di, ds, out bp, out si, out di, out ds)
+	ax = DPB(ax, al, 0) (alias)
+	return al
+l0800_B23D:
+	sp = fp - 0x0C
+	wLoc0C = di
+	fn0800_B12E(al, ds, wLoc0C)
+	sp = fp - 0x0A
+	al = fn0800_B241(bp, si, di, ds, out bp, out si, out di, out ds)
+	ax = DPB(ax, al, 0) (alias)
+	return al
+l0800_B23E_thunk_fn0800_B241:
+fn0800_B140_exit:
+	use bp (=> bpOut)
+	use si (=> siOut)
+	use di (=> diOut)
+	use ds (=> dsOut)
 }
 
+// 0800:B226: Register byte fn0800_B226(Register word16 ax, Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+byte fn0800_B226(word16 ax, word16 bp, word16 si, word16 di, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
+{
+	fn0800_A2A3(0x01, ds, di, 0x01, DPB(ptrLoc04, ax, 0), wArg00);
+	word16 bp_26;
+	word16 si_27;
+	word16 di_28;
+	selector ds_29;
+	return fn0800_B241(bp, si, di, ds, out bp_26, out si_27, out di_28, out ds_29);
+}
+
+// 0800:B241: Register byte fn0800_B241(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+byte fn0800_B241(word16 bp, word16 si, word16 di, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
+{
+	if ((Mem0[ss:bp - 0x02 + 0x00:word16] & 0x01) == 0x00)
+	{
+		word16 bp_82;
+		word16 si_83;
+		word16 di_84;
+		selector ds_85;
+		return fn0800_B265(bp, si, di, ds, out bp_82, out si_83, out di_84, out ds_85);
+	}
+	else if ((si & 0x0100) == 0x00)
+	{
+		word16 bp_75;
+		word16 si_76;
+		word16 di_77;
+		selector ds_78;
+		return fn0800_B265(bp, si, di, ds, out bp_75, out si_76, out di_77, out ds_78);
+	}
+	else if ((si & 0xF0) == 0x00)
+	{
+		word16 bp_63;
+		word16 si_64;
+		word16 di_65;
+		selector ds_66;
+		return fn0800_B265(bp, si, di, ds, out bp_63, out si_64, out di_65, out ds_66);
+	}
+	else
+	{
+		fn0800_A53C(0x01, ds, DPB(ptrLoc08, Mem0[ss:bp + 0x04:word16], 0), 0x01, 0x01);
+		word16 bp_57;
+		word16 si_58;
+		word16 di_59;
+		selector ds_60;
+		return fn0800_B265(bp, si, di, ds, out bp_57, out si_58, out di_59, out ds_60);
+	}
+}
+
+// 0800:B25A: void fn0800_B25A(Register byte al, Register word16 bp, Register word16 si, Register word16 di, Register selector ds)
+void fn0800_B25A(byte al, word16 bp, word16 si, word16 di, selector ds)
+{
+	if (!CZ)
+		fn0800_A53C(al, ds, DPB(ptrLoc02, Mem0[ss:bp + 0x04:word16], 0), bArg02, wArg04);
+	word16 bp_16;
+	word16 si_17;
+	word16 di_18;
+	selector ds_19;
+	fn0800_B265(bp, si, di, ds, out bp_16, out si_17, out di_18, out ds_19);
+	return;
+}
+
+// 0800:B265: Register byte fn0800_B265(Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+byte fn0800_B265(word16 bp, word16 si, word16 di, selector ds, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
+{
+	*dsOut = ds;
+	if (di >= 0x00)
+	{
+		word16 ax_40;
+		if ((si & 0x0300) != 0x00)
+			ax_40 = 0x1000;
+		else
+			ax_40 = 0x00;
+		word16 ax_52;
+		word16 dx_44 = si & ~0x0700 | ax_40;
+		if ((Mem0[ss:bp - 0x02 + 0x00:word16] & 0x01) != 0x00)
+			ax_52 = 0x00;
+		else
+			ax_52 = 0x0100;
+		SEQ(ds, 0x24EA)[di * 0x02] = dx_44 | ax_52;
+	}
+	byte al_21 = (byte) di;
+	word16 di_24;
+	*diOut = Mem0[ss:fp + 0x00:word16];
+	word16 si_26;
+	*siOut = Mem0[ss:fp + 0x02:word16];
+	word16 bp_29;
+	*bpOut = Mem0[ss:bp + 0x00:word16];
+	return al_21;
+}
+
+// 0800:B2A0: void fn0800_B2A0(Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg06)
 void fn0800_B2A0(selector ds, segptr32 ptrArg02, word16 wArg06)
 {
 	byte al_17 = 0x01;
@@ -12238,201 +18144,258 @@ void fn0800_B2A0(selector ds, segptr32 ptrArg02, word16 wArg06)
 	return;
 }
 
+// 0800:B2EF: Register word16 fn0800_B2EF(Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 diOut)
 word16 fn0800_B2EF(selector ds, word16 wArg02, word16 wArg04, ptr16 & diOut)
 {
 	word16 di_28;
 	return fn0800_9828(ds, DPB(ptrLoc0C, wArg02, 0), wArg04, out di_28);
 }
 
-word16 fn0800_B30A(selector ds, byte bArg02, segptr32 ptrArg04, word16 wArg06, ptr16 & dsOut)
+// 0800:B30A: Register word16 fn0800_B30A(Register selector ds, Stack segptr32 ptrArg04, Register out ptr16 dlOut, Register out ptr16 bpOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_B30A(selector ds, segptr32 ptrArg04, ptr16 & dlOut, ptr16 & bpOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	Mem12[ptrArg04 + 0x00:word16] = Mem0[ptrArg04 + 0x00:word16] - 0x01;
-	selector ds_29;
-	return fn0800_B324(ds, (byte) (int16) bArg02, DPB(ptrLoc06, (word16) ptrArg04, 0), wArg06, out ds_29);
+	word16 bx_8 = (word16) ptrArg04;
+	byte dl_15;
+	word16 bp_16;
+	word16 di_17;
+	selector ds_18;
+	return fn0800_B313(bx_8, fp - 0x02, ds, out dl_15, out bp_16, out di_17, out ds_18);
 }
 
-word16 fn0800_B324(selector ds, byte bArg02, segptr32 ptrArg04, selector psegArg06, ptr16 & dsOut)
+// 0800:B313: Register word16 fn0800_B313(Register word16 bx, Register word16 bp, Register selector ds, Register out ptr16 dlOut, Register out ptr16 bpOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_B313(word16 bx, word16 bp, selector ds, ptr16 & dlOut, ptr16 & bpOut, ptr16 & diOut, ptr16 & dsOut)
+{
+	byte dl_19;
+	word16 di_20;
+	selector ds_21;
+	word16 ax_22 = fn0800_B324(bp, ds, (byte) (int16) Mem0[ss:bp + 0x04:byte], DPB(ptrLoc04, bx, 0), Mem0[ss:bp + 0x08:word16], out dl_19, out di_20, out ds_21);
+	word16 bp_26;
+	*bpOut = Mem0[ss:fp + 0x00:word16];
+	return ax_22;
+}
+
+// 0800:B324: Register word16 fn0800_B324(Register word16 bp, Register selector ds, Stack byte bArg02, Stack segptr32 ptrArg04, Stack selector psegArg06, Register out ptr16 dlOut, Register out ptr16 diOut, Register out ptr16 dsOut)
+word16 fn0800_B324(word16 bp, selector ds, byte bArg02, segptr32 ptrArg04, selector psegArg06, ptr16 & dlOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	*dsOut = ds;
-	word16 ax_133;
-	word16 ax_39;
+	*diOut = di;
+	*dlOut = dl;
+	word16 ax_104;
+	word16 ax_41;
 	Mem11[ds:0x4EE6:byte] = bArg02;
 	word16 bx_15 = (word16) ptrArg04;
 	if (Mem11[ptrArg04 + 0x00:word16] < ~0x00)
 	{
-		Mem93[ptrArg04 + 0x00:word16] = Mem11[ptrArg04 + 0x00:word16] + 0x01;
-		ax_133 = Mem93[ptrArg04 + 0x0E:word16];
-		word16 si_95 = Mem93[ptrArg04 + 0x0C:word16];
-		Mem97[ptrArg04 + 0x0C:word16] = Mem93[ptrArg04 + 0x0C:word16] + 0x01;
-		Mem100[ax_133:si_95 + 0x00:byte] = Mem97[ds:0x4EE6:byte];
-		if ((Mem100[psegArg06:bx_15 + 0x02:word16] & 0x08) == 0x00)
+		Mem103[ptrArg04 + 0x00:word16] = Mem11[ptrArg04 + 0x00:word16] + 0x01;
+		ax_104 = Mem103[ptrArg04 + 0x0E:word16];
+		word16 si_105 = Mem103[ptrArg04 + 0x0C:word16];
+		Mem107[ptrArg04 + 0x0C:word16] = Mem103[ptrArg04 + 0x0C:word16] + 0x01;
+		byte dl_108 = Mem107[ds:0x4EE6:byte];
+		*dlOut = dl_108;
+		Mem112[ax_104:si_105 + 0x00:byte] = dl_108;
+		if ((Mem112[psegArg06:bx_15 + 0x02:word16] & 0x08) == 0x00)
 			goto l0800_B4A3;
-		if (Mem100[ds:0x4EE6:byte] != 0x0A && Mem100[ds:0x4EE6:byte] != 0x0D)
+		if (Mem112[ds:0x4EE6:byte] != 0x0A && Mem112[ds:0x4EE6:byte] != 0x0D)
 			goto l0800_B4A3;
-		byte dl_126;
-		selector ds_127;
-		word16 ax_128 = fn0800_A6B7(ds, DPB(ptrLoc08, wArg04, 0), psegArg06, out dl_126, out ds_127);
-		ax_133 = ax_128;
-		if (ax_128 == 0x00)
+		byte dl_139;
+		byte sil_140;
+		word16 di_141;
+		selector ds_142;
+		word16 ax_143 = fn0800_A6B7(ds, DPB(ptrLoc08, wArg04, 0), psegArg06, out dl_139, out sil_140, out di_141, out ds_142);
+		ax_104 = ax_143;
+		if (ax_143 == 0x00)
 			goto l0800_B4A3;
 		goto l0800_B380;
 	}
 	if ((Mem11[ptrArg04 + 0x02:word16] & 0x90) != 0x00 || (Mem11[ptrArg04 + 0x02:word16] & 0x02) == 0x00)
 	{
 l0800_B39C:
-		Mem164[ptrArg04 + 0x02:word16] = Mem11[ptrArg04 + 0x02:word16] | 0x10;
+		Mem179[ptrArg04 + 0x02:word16] = Mem11[ptrArg04 + 0x02:word16] | 0x10;
 		goto l0800_B380;
 	}
-	Mem174[ptrArg04 + 0x02:word16] = Mem11[ptrArg04 + 0x02:word16] | 0x0100;
-	word16 bx_171 = (word16) ptrArg04;
-	if (Mem174[ptrArg04 + 0x06:word16] != 0x00)
+	Mem189[ptrArg04 + 0x02:word16] = Mem11[ptrArg04 + 0x02:word16] | 0x0100;
+	word16 bx_186 = (word16) ptrArg04;
+	if (Mem189[ptrArg04 + 0x06:word16] != 0x00)
 	{
-		if (Mem174[ptrArg04 + 0x00:word16] != 0x00)
+		if (Mem189[ptrArg04 + 0x00:word16] != 0x00)
 		{
-			ptrLoc08 = DPB(ptrLoc08, bx_171, 0);
-			byte dl_232;
-			if (fn0800_A6B7(ds, ptrLoc08, psegArg06, out dl_232, out ds) != 0x00)
+			byte dl_253;
+			byte sil_254;
+			word16 di_255;
+			if (fn0800_A6B7(ds, DPB(ptrLoc08, bx_186, 0), psegArg06, out dl_253, out sil_254, out di_255, out ds) != 0x00)
 				goto l0800_B380;
 		}
-		Mem191[ptrArg04 + 0x00:word16] = -Mem174[ptrArg04 + 0x06:word16];
-		ax_133 = Mem191[ptrArg04 + 0x0E:word16];
-		word16 si_193 = Mem191[ptrArg04 + 0x0C:word16];
-		Mem195[ptrArg04 + 0x0C:word16] = Mem191[ptrArg04 + 0x0C:word16] + 0x01;
-		Mem198[ax_133:si_193 + 0x00:byte] = Mem195[ds:0x4EE6:byte];
-		if ((Mem198[psegArg06:(word16) ptrArg04 + 0x02:word16] & 0x08) == 0x00)
+		ptr32 es_bx_203 = Mem189[ss:fp + 0x04:segptr32];
+		Mem208[es_bx_203 + 0x00:word16] = -Mem189[es_bx_203 + 0x06:word16];
+		ax_104 = Mem208[es_bx_203 + 0x0E:word16];
+		word16 si_210 = Mem208[es_bx_203 + 0x0C:word16];
+		Mem212[es_bx_203 + 0x0C:word16] = Mem208[es_bx_203 + 0x0C:word16] + 0x01;
+		byte dl_213 = Mem212[ds:0x4EE6:byte];
+		*dlOut = dl_213;
+		Mem216[ax_104:si_210 + 0x00:byte] = dl_213;
+		if ((Mem216[Mem216[ss:fp + 0x06:selector]:(word16) es_bx_203 + 0x02:word16] & 0x08) == 0x00)
 			goto l0800_B4A3;
-		if (Mem198[ds:0x4EE6:byte] != 0x0A && Mem198[ds:0x4EE6:byte] != 0x0D)
+		if (Mem216[ds:0x4EE6:byte] != 0x0A && Mem216[ds:0x4EE6:byte] != 0x0D)
 		{
 l0800_B4A3:
-			ax_39 = DPB(ax_133, 0x00, 8);
-			return ax_39;
+			ax_41 = DPB(ax_104, 0x00, 8);
+			return ax_41;
 		}
-		byte dl_213;
-		selector ds_214;
-		word16 ax_215 = fn0800_A6B7(ds, DPB(ptrLoc08, wArg04, 0), psegArg06, out dl_213, out ds_214);
-		ax_133 = ax_215;
-		if (ax_215 == 0x00)
+		Mem226[ss:fp - 0x06 + 0x00:word16] = Mem216[ss:fp + 0x06:word16];
+		Mem229[ss:fp - 0x08 + 0x00:word16] = Mem226[ss:fp + 0x04:word16];
+		byte dl_232;
+		byte sil_233;
+		word16 di_234;
+		selector ds_235;
+		word16 ax_236 = fn0800_A6B7(ds, ptrArg00, wArg02, out dl_232, out sil_233, out di_234, out ds_235);
+		ax_104 = ax_236;
+		if (ax_236 == 0x00)
 			goto l0800_B4A3;
 l0800_B380:
-		ax_39 = ~0x00;
-		return ax_39;
+		ax_41 = ~0x00;
+		return ax_41;
 	}
-	selector es_245 = SLICE(ptrArg04, selector, 16);
-	if ((SEQ(ds, 0x24EA)[(int16) Mem174[ptrArg04 + 0x04:byte] * 0x02] & 0x0800) != 0x00)
+	selector es_268 = SLICE(ptrArg04, selector, 16);
+	if ((SEQ(ds, 0x24EA)[(int16) Mem189[ptrArg04 + 0x04:byte] * 0x02] & 0x0800) != 0x00)
 	{
-		word16 ax_347 = (int16) Mem174[es_245:wArg04 + 0x04:byte];
-		word16 dx_351;
-		fn0800_8E29((byte) ax_347, ds, ax_347, 0x00, 0x00, 0x02, out dx_351);
+		word16 ax_370 = (int16) Mem189[es_268:wArg04 + 0x04:byte];
+		word16 dx_374;
+		fn0800_8E29((byte) ax_370, ds, ax_370, 0x00, 0x00, 0x02, out dx_374);
 	}
-	if (Mem174[ds:0x4EE6:byte] == 0x0A && (Mem174[ptrArg04 + 0x02:word16] & 0x40) == 0x00)
+	if (Mem189[ds:0x4EE6:byte] == 0x0A && (Mem189[ptrArg04 + 0x02:word16] & 0x40) == 0x00)
 	{
-		word16 ax_325 = (int16) Mem174[ptrArg04 + 0x04:byte];
+		word16 ax_348 = (int16) Mem189[ptrArg04 + 0x04:byte];
 		ptrLoc0A = DPB(ptrLoc0A, 9902, 0);
-		byte dl_329;
-		ax_133 = fn0800_C779((byte) ax_325, ds, ax_325, ptrLoc0A, 0x01, out dl_329);
-		if (ax_133 != 0x01)
+		byte dl_352;
+		ax_104 = fn0800_C779((byte) ax_348, ds, ax_348, ptrLoc0A, 0x01, out dl_352);
+		if (ax_104 != 0x01)
 		{
 l0800_B495:
-			if ((Mem174[ptrArg04 + 0x02:word16] & 0x0200) != 0x00)
+			if ((Mem189[ptrArg04 + 0x02:word16] & 0x0200) != 0x00)
 				goto l0800_B4A3;
 			goto l0800_B39C;
 		}
 	}
-	word16 ax_300 = (int16) Mem174[ptrArg04 + 0x04:byte];
-	byte dl_304;
-	ax_133 = fn0800_C779((byte) ax_300, ds, ax_300, DPB(ptrLoc0A, 0x4EE6, 0), 0x01, out dl_304);
-	if (ax_133 == 0x01)
+	word16 ax_323 = (int16) Mem189[ptrArg04 + 0x04:byte];
+	byte dl_327;
+	ax_104 = fn0800_C779((byte) ax_323, ds, ax_323, DPB(ptrLoc0A, 0x4EE6, 0), 0x01, out dl_327);
+	if (ax_104 == 0x01)
 		goto l0800_B4A3;
 	goto l0800_B495;
 }
 
-word16 fn0800_B4BE(selector ds, segptr32 ptrArg02, word16 wArg04, word16 wArg06, segptr32 ptrArg08, word16 wArg0A, ptr16 & dsOut)
+// 0800:B4BE: Register word16 fn0800_B4BE(Register word16 bp, Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Register out ptr16 dsOut)
+word16 fn0800_B4BE(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, ptr16 & dsOut)
 {
 	*dsOut = ds;
-	word16 ax_108;
-	word16 di_136 = wArg06;
+	word16 ax_106;
+	word16 bp_189 = fp - 0x02;
+	word16 di_122 = wArg06;
 	if ((Mem0[ptrArg02 + 0x02:word16] & 0x08) != 0x00)
 	{
 		do
 		{
-			di_136 = di_136 - 0x01;
-			if (di_136 == 0x00)
+			if (di_122 == 0x00)
 				goto l0800_B69D;
-			ptrLoc0C = DPB(ptrLoc0C, wArg02, 0);
-			selector ds_513 = ds;
-		} while (fn0800_B324(ds_513, (byte) (int16) Mem0[ptrArg08 + 0x00:byte], ptrLoc0C, wArg04, out ds) != ~0x00);
+			Mem143[ss:fp - 0x0A + 0x00:word16] = Mem0[ss:fp + 0x04:word16];
+			Mem146[ss:fp - 0x0C + 0x00:word16] = Mem143[ss:fp + 0x02:word16];
+			ptr32 es_bx_147 = Mem146[ss:fp + 0x08:segptr32];
+			Mem151[ss:fp + 0x08:word16] = Mem146[ss:fp + 0x08:word16] + 0x01;
+			Mem156[ss:fp - 0x0E + 0x00:word16] = (int16) Mem151[es_bx_147 + 0x00:byte];
+			selector ds_507 = ds;
+			byte dl_159;
+		} while (fn0800_B324(fp - 0x02, ds_507, bArg00, ptrArg02, wArg04, out dl_159, out di_122, out ds) != ~0x00);
 		goto l0800_B4F5;
 	}
-	word16 bx_178 = (word16) ptrArg02;
+	word16 bx_167 = (word16) ptrArg02;
 	if ((Mem0[ptrArg02 + 0x02:word16] & 0x40) == 0x00)
 	{
 		if (Mem0[ptrArg02 + 0x06:word16] != 0x00)
 		{
 			do
 			{
-				di_136 = di_136 - 0x01;
-				if (di_136 == 0x00)
+				di_122 = di_122 - 0x01;
+				if (di_122 == 0x00)
 					goto l0800_B69D;
-				word16 ax_232;
-				word16 v19_216 = Mem0[ptrArg02 + 0x00:word16] + 0x01;
-				Mem217[ptrArg02 + 0x00:word16] = v19_216;
-				if (v19_216 < 0x00)
+				word16 ax_210;
+				ptr32 es_bx_197 = Mem0[ss:bp_189 + 0x04:segptr32];
+				word16 v19_200 = Mem0[es_bx_197 + 0x00:word16] + 0x01;
+				Mem201[es_bx_197 + 0x00:word16] = v19_200;
+				if (v19_200 < 0x00)
 				{
-					word16 ax_239 = Mem217[ptrArg02 + 0x0E:word16];
-					word16 si_240 = Mem217[ptrArg02 + 0x0C:word16];
-					Mem242[ptrArg02 + 0x0C:word16] = Mem217[ptrArg02 + 0x0C:word16] + 0x01;
-					Mem251[ax_239:si_240 + 0x00:byte] = Mem242[ptrArg08 + 0x00:byte];
-					ax_232 = DPB(ax_239, 0x00, 8);
+					word16 ax_219 = Mem201[es_bx_197 + 0x0E:word16];
+					word16 si_220 = Mem201[es_bx_197 + 0x0C:word16];
+					Mem222[es_bx_197 + 0x0C:word16] = Mem201[es_bx_197 + 0x0C:word16] + 0x01;
+					ptr32 es_bx_223 = Mem222[ss:bp_189 + 0x0A:segptr32];
+					Mem227[ss:bp_189 + 0x0A:word16] = Mem222[ss:bp_189 + 0x0A:word16] + 0x01;
+					Mem231[ax_219:si_220 + 0x00:byte] = Mem227[es_bx_223 + 0x00:byte];
+					ax_210 = DPB(ax_219, 0x00, 8);
 				}
 				else
 				{
-					ptrLoc0C = DPB(ptrLoc0C, wArg02, 0);
-					ax_232 = fn0800_B30A(ds, Mem217[ptrArg08 + 0x00:byte], ptrLoc0C, wArg04, out ds);
+					Mem237[ss:fp - 0x0A + 0x00:word16] = Mem201[ss:bp_189 + 0x06:word16];
+					Mem240[ss:fp - 0x0C + 0x00:word16] = Mem237[ss:bp_189 + 0x04:word16];
+					ptr32 es_bx_241 = Mem240[ss:bp_189 + 0x0A:segptr32];
+					Mem245[ss:bp_189 + 0x0A:word16] = Mem240[ss:bp_189 + 0x0A:word16] + 0x01;
+					Mem250[ss:fp - 0x0E + 0x00:word16] = DPB(di_122, Mem245[es_bx_241 + 0x00:byte], 0);
+					byte dl_251;
+					ax_210 = fn0800_B30A(ds, ptrArg02, out dl_251, out bp_189, out di_122, out ds);
 				}
-			} while (ax_232 != ~0x00);
+			} while (ax_210 != ~0x00);
 			goto l0800_B4F5;
 		}
-		byte dl_295;
-		selector ds_296;
-		if (fn0800_C632(ds, (int16) Mem0[ptrArg02 + 0x04:byte], wArg08, wArg0A, wArg06, out dl_295, out ds_296) <u wArg06)
+		byte dl_277;
+		selector ds_278;
+		if (fn0800_C632(ds, (int16) Mem0[ptrArg02 + 0x04:byte], wArg08, wArg0A, wArg06, out dl_277, out ds_278) <u wArg06)
 			goto l0800_B4F5;
 	}
 	else if (Mem0[ptrArg02 + 0x06:word16] == 0x00)
 	{
-		selector es_305 = SLICE(ptrArg02, selector, 16);
+		selector es_287 = SLICE(ptrArg02, selector, 16);
 		if ((SEQ(ds, 0x24EA)[(int16) Mem0[ptrArg02 + 0x04:byte] * 0x02] & 0x0800) != 0x00)
 		{
-			word16 ax_352 = (int16) Mem0[es_305:wArg02 + 0x04:byte];
-			word16 dx_356;
-			fn0800_8E29((byte) ax_352, ds, ax_352, 0x00, 0x00, 0x02, out dx_356);
+			word16 ax_335 = (int16) Mem0[es_287:wArg02 + 0x04:byte];
+			word16 dx_339;
+			fn0800_8E29((byte) ax_335, ds, ax_335, 0x00, 0x00, 0x02, out dx_339);
 		}
-		word16 ax_330 = (int16) Mem0[ptrArg02 + 0x04:byte];
-		byte dl_334;
-		if (fn0800_C779((byte) ax_330, ds, ax_330, DPB(ptrLoc0E, wArg08, 0), wArg06, out dl_334) <u wArg06)
+		word16 ax_312 = (int16) Mem0[ptrArg02 + 0x04:byte];
+		byte dl_316;
+		if (fn0800_C779((byte) ax_312, ds, ax_312, DPB(ptrLoc0E, wArg08, 0), wArg06, out dl_316) <u wArg06)
 			goto l0800_B4F5;
 	}
 	else if (Mem0[ptrArg02 + 0x06:word16] <u wArg06)
 	{
 		if (Mem0[ptrArg02 + 0x00:word16] != 0x00)
 		{
-			byte dl_434;
-			if (fn0800_A6B7(ds, DPB(ptrLoc0C, bx_178, 0), wArg04, out dl_434, out ds) != 0x00)
+			byte dl_419;
+			byte sil_420;
+			if (fn0800_A6B7(ds, DPB(ptrLoc0C, bx_167, 0), wArg04, out dl_419, out sil_420, out di_122, out ds) != 0x00)
 				goto l0800_B4F5;
 		}
-		selector es_373 = SLICE(ptrArg02, selector, 16);
-		if ((SEQ(ds, 0x24EA)[(int16) Mem0[ptrArg02 + 0x04:byte] * 0x02] & 0x0800) != 0x00)
+		ptr32 es_bx_356 = Mem0[ss:fp + 0x02:segptr32];
+		selector es_358 = SLICE(es_bx_356, selector, 16);
+		if ((SEQ(ds, 0x24EA)[(int16) Mem0[es_bx_356 + 0x04:byte] * 0x02] & 0x0800) != 0x00)
 		{
-			word16 ax_420 = (int16) Mem0[es_373:wArg02 + 0x04:byte];
-			word16 dx_424;
-			fn0800_8E29((byte) ax_420, ds, ax_420, 0x00, 0x00, 0x02, out dx_424);
+			Mem394[ss:fp - 0x0A + 0x00:word16] = 0x02;
+			Mem399[ss:fp - 0x0C + 0x00:word16] = 0x00;
+			Mem401[ss:fp - 0x0E + 0x00:word16] = 0x00;
+			word16 ax_404 = (int16) Mem401[es_358:Mem401[ss:fp + 0x02:word16] + 0x04:byte];
+			Mem407[ss:fp - 0x10 + 0x00:word16] = ax_404;
+			word16 dx_409;
+			fn0800_8E29((byte) ax_404, ds, wArg00, wArg02, wArg04, bArg06, out dx_409);
 		}
-		word16 ax_398 = (int16) Mem0[ptrArg02 + 0x04:byte];
-		byte dl_402;
-		if (fn0800_C779((byte) ax_398, ds, ax_398, DPB(ptrLoc0E, wArg08, 0), wArg06, out dl_402) <u wArg06)
+		Mem371[ss:fp - 0x0A + 0x00:word16] = di_122;
+		Mem374[ss:fp - 0x0C + 0x00:word16] = Mem371[ss:fp + 0x0A:word16];
+		Mem377[ss:fp - 0x0E + 0x00:word16] = Mem374[ss:fp + 0x08:word16];
+		word16 ax_382 = (int16) Mem377[Mem377[ss:fp + 0x02:segptr32] + 0x04:byte];
+		Mem385[ss:fp - 0x10 + 0x00:word16] = ax_382;
+		byte dl_387;
+		if (fn0800_C779((byte) ax_382, ds, wArg00, ptrArg02, wArg06, out dl_387) <u di_122)
 		{
 l0800_B4F5:
-			ax_108 = 0x00;
-			return ax_108;
+			ax_106 = 0x00;
+			return ax_106;
 		}
 	}
 	else
@@ -12440,89 +18403,552 @@ l0800_B4F5:
 		if (Mem0[ptrArg02 + 0x00:word16] + wArg06 >= 0x00)
 		{
 			if (Mem0[ptrArg02 + 0x00:word16] == 0x00)
-				Mem494[ptrArg02 + 0x00:word16] = ~0x00 - Mem0[ptrArg02 + 0x06:word16];
+				Mem486[ptrArg02 + 0x00:word16] = ~0x00 - Mem0[ptrArg02 + 0x06:word16];
 			else
 			{
-				byte dl_502;
-				selector ds_503;
-				if (fn0800_A6B7(ds, DPB(ptrLoc0C, wArg02, 0), wArg04, out dl_502, out ds_503) != 0x00)
+				byte dl_494;
+				byte sil_495;
+				selector ds_497;
+				if (fn0800_A6B7(ds, DPB(ptrLoc0C, wArg02, 0), wArg04, out dl_494, out sil_495, out di_122, out ds_497) != 0x00)
 					goto l0800_B4F5;
 			}
 		}
-		fn0800_B03B(DPB(ptrLoc12, Mem0[ptrArg02 + 0x0C:word16], 0), Mem0[ptrArg02 + 0x0E:word16], DPB(ptrLoc0E, wArg08, 0), wArg06);
-		Mem485[ptrArg02 + 0x00:word16] = Mem0[ptrArg02 + 0x00:word16] + wArg06;
-		Mem487[ptrArg02 + 0x0C:word16] = Mem485[ptrArg02 + 0x0C:word16] + wArg06;
+		Mem452[ss:fp - 0x0A + 0x00:word16] = di_122;
+		Mem455[ss:fp - 0x0C + 0x00:word16] = Mem452[ss:fp + 0x0A:word16];
+		Mem458[ss:fp - 0x0E + 0x00:word16] = Mem455[ss:fp + 0x08:word16];
+		ptr32 es_bx_459 = Mem458[ss:fp + 0x02:segptr32];
+		Mem464[ss:fp - 0x10 + 0x00:word16] = Mem458[es_bx_459 + 0x0E:word16];
+		Mem467[ss:fp - 0x12 + 0x00:word16] = Mem464[es_bx_459 + 0x0C:word16];
+		fn0800_B03B(ptrArg00, wArg02, ptrArg04, wArg08);
+		ptr32 es_bx_472 = Mem467[ss:fp + 0x02:segptr32];
+		Mem477[es_bx_472 + 0x00:word16] = Mem467[es_bx_472 + 0x00:word16] + di_122;
+		Mem479[es_bx_472 + 0x0C:word16] = Mem477[es_bx_472 + 0x0C:word16] + di_122;
 	}
 l0800_B69D:
-	ax_108 = wArg06;
-	return ax_108;
+	ax_106 = Mem0[ss:bp_189 - 0x02 + 0x00:word16];
+	return ax_106;
 }
 
-word16 fn0800_B97F(selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg06, word16 wArg08, ptr16 & dsOut)
+// 0800:B6A8: Register word16 fn0800_B6A8(Register selector ds, Stack segptr32 ptrArg02, Stack segptr32 ptrArg06)
+word16 fn0800_B6A8(selector ds, segptr32 ptrArg02, segptr32 ptrArg06)
 {
-	*dsOut = ds;
-	word16 ax_128;
-	if (wArg02 >=u Mem0[ds:9448:word16])
-		ax_128 = fn0800_8D2B(ds, 0x06);
+	word16 ax_30;
+	word16 cx_17 = Mem0[ds:20200:word16];
+	word16 di_20 = (word16) ptrArg02;
+	selector es_21 = SLICE(ptrArg02, selector, 16);
+	selector ds_24 = SLICE(ptrArg06, selector, 16);
+	word16 si_25 = (word16) ptrArg06;
+	word16 cx_26 = cx_17 >>u 0x01;
+	if (cx_17 >>u 0x01 <u 0x00)
+	{
+		byte al_56 = Mem0[ptrArg02 + 0x00:byte];
+		Mem60[ptrArg02 + 0x00:byte] = Mem0[ptrArg06 + 0x00:byte];
+		Mem65[ptrArg06 + 0x00:byte] = al_56;
+		ax_30 = DPB(ax, al_56, 0);
+		si_25 = si_25 + 0x01;
+		di_20 = di_20 + 0x01;
+		if (cx_17 >>u 0x01 == 0x00)
+			return ax_30;
+	}
+	do
+	{
+		ax_30 = Mem0[es_21:di_20 + 0x00:word16];
+		Mem49[es_21:di_20 + 0x00:word16] = Mem0[ds_24:si_25 + 0x00:word16];
+		si_25 = si_25 + 0x02;
+		Mem54[ds_24:si_25 - 0x02 + 0x00:word16] = ax_30;
+		di_20 = di_20 + 0x02;
+		cx_26 = cx_26 - 0x01;
+	} while (cx_26 != 0x00);
+	return ax_30;
+}
+
+// 0800:B6D6: void fn0800_B6D6(Stack word16 wArg02)
+void fn0800_B6D6(word16 wArg02)
+{
+fn0800_B6D6_entry:
+l0800_B6D6:
+fn0800_B6D6_exit:
+}
+
+// 0800:B6E1: void fn0800_B6E1(Register word16 bp, Register word16 si, Register selector ds)
+void fn0800_B6E1(word16 bp, word16 si, selector ds)
+{
+	if (si >u 0x02)
+	{
+		word16 bx_94 = Mem0[ss:bp + 0x06:word16] + (word16) (Mem0[ds:20200:word16] *s (si - 0x01));
+		Mem95[ss:bp - 0x06 + 0x00:word16] = Mem0[ss:bp + 0x08:word16];
+		Mem96[ss:bp - 0x08 + 0x00:word16] = bx_94;
+		word16 ax_100 = (word16) (Mem96[ds:20200:word16] *s (si >>u 0x01));
+		word16 dx_101 = Mem96[ss:bp + 0x08:word16];
+		word16 bx_103 = Mem96[ss:bp + 0x06:word16] + ax_100;
+		Mem105[ss:bp - 0x02 + 0x00:word16] = dx_101;
+		Mem106[ss:bp - 0x04 + 0x00:word16] = bx_103;
+		word16 sp_119;
+		word16 si_120;
+		byte SCZO_121;
+		byte CZ_122;
+		byte Z_123;
+		word16 ax_124;
+		byte SZO_125;
+		selector ds_126;
+		word16 dx_127;
+		word16 bp_128;
+		selector ss_129;
+		word16 bx_130;
+		selector cs_131;
+		byte C_132;
+		SEQ(cs, Mem106[ds:20202:word16])();
+		if (ax_124 <= 0x00)
+		{
+			fn0800_B775(ax_124, bp_128, si_120, ds_126);
+			return;
+		}
+		else
+		{
+			Mem140[ss_129:sp_119 + 0x06:word16] = Mem106[ss_129:bp_128 - 0x02 + 0x00:word16];
+			fn0800_B769(bp_128, ds_126);
+			return;
+		}
+	}
+	else if (si == 0x02)
+	{
+		word16 ax_42 = Mem0[ss:bp + 0x08:word16];
+		word16 dx_44 = Mem0[ss:bp + 0x06:word16] + Mem0[ds:20200:word16];
+		Mem46[ss:bp - 0x06 + 0x00:word16] = ax_42;
+		Mem47[ss:bp - 0x08 + 0x00:word16] = dx_44;
+		word16 sp_58;
+		word16 si_59;
+		byte SCZO_60;
+		byte CZ_61;
+		byte Z_62;
+		word16 ax_63;
+		byte SZO_64;
+		selector ds_65;
+		word16 dx_66;
+		word16 bp_67;
+		selector ss_68;
+		word16 bx_69;
+		selector cs_70;
+		byte C_71;
+		SEQ(cs, Mem47[ds:20202:word16])();
+		if (ax_63 > 0x00)
+		{
+			Mem78[ss_68:sp_58 + 0x06:word16] = Mem47[ss_68:bp_67 + 0x08:word16];
+			Mem81[ss_68:sp_58 + 0x04:word16] = Mem78[ss_68:bp_67 + 0x06:word16];
+			Mem84[ss_68:sp_58 + 0x02:word16] = Mem81[ss_68:bp_67 - 0x06 + 0x00:word16];
+			Mem87[ss_68:sp_58 + 0x00:word16] = Mem84[ss_68:bp_67 - 0x08 + 0x00:word16];
+			fn0800_B720(bp_67, ds_65);
+			return;
+		}
+		else
+		{
+			fn0800_B956(bp_67, ax_42, wArg00);
+			return;
+		}
+	}
 	else
 	{
-		byte al_100 = (byte) (wArg08 + 0x01);
+		fn0800_B956(bp, wLoc02, wArg00);
+		return;
+	}
+}
+
+// 0800:B720: void fn0800_B720(Register word16 bp, Register selector ds)
+void fn0800_B720(word16 bp, selector ds)
+{
+fn0800_B720_entry:
+	def fp
+	def ds
+	def ptrArg00
+	def ptrArg04
+	def bp
+	def wArg00
+	def wArg02
+	sp_1 = fp
+	ax_5 = fn0800_B6A8(ds, ptrArg00, ptrArg04)
+	sp_6 = fp + 0x08
+	fn0800_B956(bp, wArg00, wArg02)
+	return
+l0800_B6DE_thunk_fn0800_B6E1:
+l0800_B720:
+l0800_B720:
+	fn0800_B6E1(bp, si, ds)
+	return
+l0800_B723_thunk_fn0800_B956:
+fn0800_B720_exit:
+}
+
+// 0800:B769: void fn0800_B769(Register word16 bp, Register selector ds)
+void fn0800_B769(word16 bp, selector ds)
+{
+	word16 ax_19 = fn0800_B6A8(ds, DPB(ptrLoc06, Mem0[ss:bp - 0x08 + 0x00:word16], 0), DPB(ptrLoc02, Mem0[ss:bp - 0x04 + 0x00:word16], 0));
+	fn0800_B775(ax_19, bp, si, ds);
+	return;
+}
+
+// 0800:B775: void fn0800_B775(Register word16 ax, Register word16 bp, Register word16 si, Register selector ds)
+void fn0800_B775(word16 ax, word16 bp, word16 si, selector ds)
+{
+	word16 sp_446;
+	word16 sp_118;
+	word16 sp_19;
+	byte SCZO_24;
+	word16 ax_25;
+	byte SZO_26;
+	byte C_27;
+	byte Z_29;
+	word16 dx_30;
+	word16 di_31;
+	byte SO_32;
+	selector cs_23;
+	selector ds_22;
+	selector ss_106;
+	word16 bp_105;
+	word16 si_28;
+	SEQ(cs, Mem0[ds:20202:word16])();
+	word16 v5_5 = Mem0[ss:bp + 0x08:word16];
+	if (ax_25 > 0x00)
+	{
+		Mem451[ss_106:sp_19 + 0x06:word16] = Mem0[ss_106:bp_105 - 0x02 + 0x00:word16];
+		Mem454[ss_106:sp_19 + 0x04:word16] = Mem451[ss_106:bp_105 - 0x04 + 0x00:word16];
+		Mem457[ss_106:sp_19 + 0x02:word16] = Mem454[ss_106:bp_105 + 0x08:word16];
+		Mem460[ss_106:sp_19 + 0x00:word16] = Mem457[ss_106:bp_105 + 0x06:word16];
+		sp_446 = sp_19;
+	}
+	else
+	{
+		Mem463[ss_106:sp_19 + 0x06:word16] = Mem0[ss_106:bp_105 - 0x06 + 0x00:word16];
+		Mem466[ss_106:sp_19 + 0x04:word16] = Mem463[ss_106:bp_105 - 0x08 + 0x00:word16];
+		Mem469[ss_106:sp_19 + 0x02:word16] = Mem466[ss_106:bp_105 + 0x08:word16];
+		Mem472[ss_106:sp_19 + 0x00:word16] = Mem469[ss_106:bp_105 + 0x06:word16];
+		word16 sp_473;
+		byte SCZO_478;
+		word16 ax_479;
+		byte SZO_480;
+		byte C_481;
+		byte Z_483;
+		word16 dx_484;
+		word16 di_485;
+		byte SO_486;
+		SEQ(cs_23, Mem472[ds_22:20202:word16])();
+		sp_118 = sp_473 + 0x08;
+		if (ax_479 <= 0x00)
+			goto l0800_B7C0;
+		Mem493[ss_106:sp_473 + 0x06:word16] = Mem472[ss_106:bp_105 + 0x08:word16];
+		Mem496[ss_106:sp_473 + 0x04:word16] = Mem493[ss_106:bp_105 + 0x06:word16];
+		Mem499[ss_106:sp_473 + 0x02:word16] = Mem496[ss_106:bp_105 - 0x06 + 0x00:word16];
+		Mem502[ss_106:sp_473 + 0x00:word16] = Mem499[ss_106:bp_105 - 0x08 + 0x00:word16];
+		sp_446 = sp_473;
+	}
+	fn0800_B6A8(ds_22, ptrArg00, ptrArg04);
+	sp_118 = sp_446 + 0x08;
+l0800_B7C0:
+	if (si_28 != 0x03)
+	{
+		word16 ax_79 = Mem0[ss_106:bp_105 + 0x08:word16];
+		word16 dx_81 = Mem0[ss_106:bp_105 + 0x06:word16] + Mem0[ds_22:20200:word16];
+		Mem84[ss_106:bp_105 - 0x0A + 0x00:word16] = ax_79;
+		Mem85[ss_106:bp_105 - 0x0C + 0x00:word16] = dx_81;
+		Mem86[ss_106:bp_105 - 0x02 + 0x00:word16] = ax_79;
+		Mem87[ss_106:bp_105 - 0x04 + 0x00:word16] = dx_81;
+l0800_B813:
+		word16 sp_93 = sp_118 - 0x02;
+		Mem94[ss_106:sp_93 + 0x00:word16] = Mem87[ss_106:bp_105 + 0x08:word16];
+		Mem97[ss_106:sp_93 - 0x02 + 0x00:word16] = Mem94[ss_106:bp_105 + 0x06:word16];
+		Mem100[ss_106:sp_93 - 0x04 + 0x00:word16] = Mem97[ss_106:bp_105 - 0x02 + 0x00:word16];
+		Mem103[ss_106:sp_93 - 0x06 + 0x00:word16] = Mem100[ss_106:bp_105 - 0x04 + 0x00:word16];
+		word16 sp_104;
+		selector ds_107;
+		selector cs_108;
+		byte SCZO_109;
+		word16 ax_110;
+		byte SZO_111;
+		byte C_112;
+		word16 si_113;
+		byte Z_114;
+		word16 dx_115;
+		word16 di_116;
+		byte SO_117;
+		SEQ(cs_23, Mem103[ds_22:20202:word16])();
+		sp_118 = sp_104 + 0x08;
+		if (ax_110 <= 0x00)
+		{
+			if (ax_110 == 0x00)
+			{
+				Mem418[ss_106:sp_104 + 0x06:word16] = Mem103[ss_106:bp_105 - 0x02 + 0x00:word16];
+				Mem421[ss_106:sp_104 + 0x04:word16] = Mem418[ss_106:bp_105 - 0x04 + 0x00:word16];
+				Mem424[ss_106:sp_104 + 0x02:word16] = Mem421[ss_106:bp_105 - 0x0A + 0x00:word16];
+				Mem427[ss_106:sp_104 + 0x00:word16] = Mem424[ss_106:bp_105 - 0x0C + 0x00:word16];
+				fn0800_B6A8(ds_107, ptrArg00, ptrArg04);
+				Mem432[ss_106:bp_105 - 0x0C + 0x00:word16] = Mem427[ss_106:bp_105 - 0x0C + 0x00:word16] + Mem427[ds_107:20200:word16];
+			}
+			sp_118 = sp_104 + 0x08;
+			if (Mem103[ss_106:bp_105 - 0x04 + 0x00:word16] >=u Mem103[ss_106:(bp_105 - 0x08) + 0x00:word16])
+				break;
+			Mem414[ss_106:bp_105 - 0x04 + 0x00:word16] = Mem103[ss_106:bp_105 - 0x04 + 0x00:word16] + Mem103[ds_107:20200:word16];
+			continue;
+		}
+		else
+		{
+			word16 ax_312 = Mem103[ss_106:bp_105 - 0x04 + 0x00:word16];
+			if (ax_312 <u Mem103[ss_106:(bp_105 - 0x08) + 0x00:word16])
+			{
+				do
+				{
+					word16 sp_339 = sp_118 - 0x02;
+					Mem340[ss_106:sp_339 + 0x00:word16] = Mem103[ss_106:bp_105 - 0x06 + 0x00:word16];
+					Mem343[ss_106:sp_339 - 0x02 + 0x00:word16] = Mem340[ss_106:bp_105 - 0x08 + 0x00:word16];
+					Mem346[ss_106:sp_339 - 0x04 + 0x00:word16] = Mem343[ss_106:bp_105 + 0x08:word16];
+					Mem349[ss_106:sp_339 - 0x06 + 0x00:word16] = Mem346[ss_106:bp_105 + 0x06:word16];
+					word16 sp_350;
+					selector ds_353;
+					selector cs_354;
+					byte SCZO_355;
+					word16 ax_356;
+					byte SZO_357;
+					byte C_358;
+					word16 si_359;
+					byte Z_360;
+					word16 dx_361;
+					word16 di_362;
+					byte SO_363;
+					SEQ(cs_108, Mem349[ds_107:20202:word16])();
+					sp_118 = sp_350 + 0x08;
+					if (ax_356 >= 0x00)
+					{
+						Mem380[ss_106:sp_350 + 0x06:word16] = Mem349[ss_106:bp_105 - 0x02 + 0x00:word16];
+						Mem383[ss_106:sp_350 + 0x04:word16] = Mem380[ss_106:bp_105 - 0x04 + 0x00:word16];
+						Mem386[ss_106:sp_350 + 0x02:word16] = Mem383[ss_106:bp_105 - 0x06 + 0x00:word16];
+						Mem389[ss_106:sp_350 + 0x00:word16] = Mem386[ss_106:bp_105 - 0x08 + 0x00:word16];
+						fn0800_B6A8(ds_353, ptrArg00, ptrArg04);
+						sp_118 = sp_350 + 0x08;
+						if (ax_356 != 0x00)
+						{
+							word16 ax_396 = Mem389[ds_353:20200:word16];
+							Mem398[ss_106:bp_105 - 0x04 + 0x00:word16] = Mem389[ss_106:bp_105 - 0x04 + 0x00:word16] + ax_396;
+							Mem400[ss_106:bp_105 - 0x08 + 0x00:word16] = Mem398[ss_106:bp_105 - 0x08 + 0x00:word16] - ax_396;
+						}
+						break;
+					}
+					Mem372[ss_106:bp_105 - 0x08 + 0x00:word16] = Mem349[ss_106:bp_105 - 0x08 + 0x00:word16] - Mem349[ds_353:20200:word16];
+				} while (Mem372[ss_106:bp_105 - 0x04 + 0x00:word16] <u Mem372[ss_106:(bp_105 - 0x08) + 0x00:word16]);
+			}
+			if (Mem103[ss_106:bp_105 - 0x04 + 0x00:word16] <u Mem103[ss_106:(bp_105 - 0x08) + 0x00:word16])
+				goto l0800_B813;
+			word16 sp_128 = sp_118 - 0x02;
+			Mem129[ss_106:sp_128 + 0x00:word16] = Mem103[ss_106:bp_105 + 0x08:word16];
+			Mem132[ss_106:sp_128 - 0x02 + 0x00:word16] = Mem129[ss_106:bp_105 + 0x06:word16];
+			Mem135[ss_106:sp_128 - 0x04 + 0x00:word16] = Mem132[ss_106:bp_105 - 0x02 + 0x00:word16];
+			Mem138[ss_106:sp_128 - 0x06 + 0x00:word16] = Mem135[ss_106:bp_105 - 0x04 + 0x00:word16];
+			word16 sp_139;
+			word16 bp_140;
+			selector ss_141;
+			selector ds_142;
+			selector cs_143;
+			byte SCZO_144;
+			word16 ax_145;
+			byte SZO_146;
+			byte C_147;
+			word16 si_148;
+			byte Z_149;
+			word16 dx_150;
+			word16 di_151;
+			byte SO_152;
+			SEQ(cs_108, Mem138[ds_107:20202:word16])();
+			Mem159[ss_141:sp_139 + 0x06:word16] = Mem138[ss_141:bp_140 + 0x08:word16];
+			Mem162[ss_141:sp_139 + 0x04:word16] = Mem159[ss_141:bp_140 + 0x06:word16];
+			Mem165[ss_141:sp_139 + 0x02:word16] = Mem162[ss_141:bp_140 - 0x02 + 0x00:word16];
+			Mem168[ss_141:sp_139 + 0x00:word16] = Mem165[ss_141:bp_140 - 0x04 + 0x00:word16];
+			word16 sp_169;
+			word16 bp_170;
+			selector ss_171;
+			selector ds_172;
+			selector cs_173;
+			byte SCZO_174;
+			word16 ax_175;
+			byte SZO_176;
+			byte C_177;
+			word16 si_178;
+			byte Z_179;
+			word16 dx_180;
+			word16 di_181;
+			byte SO_182;
+			SEQ(cs_143, Mem168[ds_142:20202:word16])();
+			if (ax_175 <= 0x00)
+			{
+				word16 dx_303 = Mem168[ss_171:bp_170 - 0x04 + 0x00:word16] + Mem168[ds_172:20200:word16];
+				Mem304[ss_171:bp_170 - 0x02 + 0x00:word16] = Mem168[ss_171:bp_170 - 0x02 + 0x00:word16];
+				Mem305[ss_171:bp_170 - 0x04 + 0x00:word16] = dx_303;
+				word16 dx_308 = Mem305[ss_171:bp_170 - 0x04 + 0x00:word16] + Mem305[ds_172:20200:word16];
+				Mem310[ss_171:bp_170 - 0x02 + 0x00:word16] = Mem305[ss_171:bp_170 - 0x02 + 0x00:word16];
+				Mem311[ss_171:bp_170 - 0x04 + 0x00:word16] = dx_308;
+			}
+			word16 dx_189 = Mem168[ss_171:bp_170 - 0x04 + 0x00:word16] - Mem168[ds_172:20200:word16];
+			Mem191[ss_171:bp_170 - 0x12 + 0x00:word16] = Mem168[ss_171:bp_170 - 0x02 + 0x00:word16];
+			Mem192[ss_171:bp_170 - 0x14 + 0x00:word16] = dx_189;
+			word16 dx_194 = Mem192[ss_171:bp_170 + 0x06:word16];
+			Mem195[ss_171:bp_170 - 0x0E + 0x00:word16] = Mem192[ss_171:bp_170 + 0x08:word16];
+			Mem196[ss_171:bp_170 - 0x10 + 0x00:word16] = dx_194;
+			while (Mem196[ss_171:bp_170 - 0x10 + 0x00:word16] <u Mem196[ss_171:(bp_170 - 0x0C) + 0x00:word16] && Mem196[ss_171:(bp_170 - 0x14) + 0x00:word16] >=u Mem196[ss_171:(bp_170 - 0x0C) + 0x00:word16])
+			{
+				Mem281[ss_171:sp_169 + 0x06:word16] = Mem196[ss_171:bp_170 - 0x0E + 0x00:word16];
+				Mem284[ss_171:sp_169 + 0x04:word16] = Mem281[ss_171:bp_170 - 0x10 + 0x00:word16];
+				Mem287[ss_171:sp_169 + 0x02:word16] = Mem284[ss_171:bp_170 - 0x12 + 0x00:word16];
+				Mem290[ss_171:sp_169 + 0x00:word16] = Mem287[ss_171:bp_170 - 0x14 + 0x00:word16];
+				fn0800_B6A8(ds_172, ptrArg00, ptrArg04);
+				word16 ax_295 = Mem290[ds_172:20200:word16];
+				Mem297[ss_171:bp_170 - 0x10 + 0x00:word16] = Mem290[ss_171:bp_170 - 0x10 + 0x00:word16] + ax_295;
+				Mem299[ss_171:bp_170 - 0x14 + 0x00:word16] = Mem297[ss_171:bp_170 - 0x14 + 0x00:word16] - ax_295;
+			}
+			Mem203[ss_171:sp_169 + 0x06:word16] = 0x00;
+			Mem206[ss_171:sp_169 + 0x04:word16] = Mem203[ds_172:20200:word16];
+			word16 ax_209 = Mem206[ss_171:bp_170 - 0x04 + 0x00:word16] - Mem206[ss_171:(bp_170 - 0x0C) + 0x00:word16];
+			Mem215[ss_171:sp_169 + 0x02:word16] = 0x00 - (ax_209 <u 0x00);
+			Mem217[ss_171:sp_169 + 0x00:word16] = ax_209;
+			word16 dx_218;
+			word16 bp_219;
+			word16 si_220;
+			word16 di_221;
+			word16 ax_222 = fn0800_8BBB(bp_170, si_178, di_181, v5_5, out dx_218, out bp_219, out si_220, out di_221);
+			Mem226[ss_171:sp_169 - 0x02 + 0x00:word16] = 0x00;
+			Mem229[ss_171:sp_169 - 0x04 + 0x00:word16] = Mem226[ds_172:20200:word16];
+			word16 dx_236 = Mem229[ss_171:bp_219 + 0x06:word16] + (word16) (Mem229[ds_172:20200:word16] *s si_220) - Mem229[ss_171:(bp_219 - 0x04) + 0x00:word16];
+			Mem242[ss_171:sp_169 - 0x06 + 0x00:word16] = 0x00 - (dx_236 <u 0x00);
+			Mem244[ss_171:sp_169 - 0x08 + 0x00:word16] = dx_236;
+			word16 dx_245;
+			word16 bp_246;
+			word16 si_247;
+			word16 di_248;
+			word16 ax_249 = fn0800_8BBB(bp_219, si_220, ax_222, v5_5, out dx_245, out bp_246, out si_247, out di_248);
+			if (ax_249 >=u di_248)
+			{
+				Mem266[ss_171:sp_169 - 0x0A + 0x00:word16] = Mem244[ss_171:bp_246 + 0x08:word16];
+				Mem269[ss_171:sp_169 - 0x0C + 0x00:word16] = Mem266[ss_171:bp_246 + 0x06:word16];
+				Mem271[ss_171:sp_169 - 0x0E + 0x00:word16] = di_248;
+				fn0800_B6D6(wArg00);
+				word16 dx_273 = Mem271[ss_171:bp_246 - 0x04 + 0x00:word16];
+				Mem274[ss_171:bp_246 + 0x08:word16] = Mem271[ss_171:bp_246 - 0x02 + 0x00:word16];
+				Mem275[ss_171:bp_246 + 0x06:word16] = dx_273;
+				fn0800_B6E1(bp_246, ax_249, ds_172);
+				return;
+			}
+			else
+			{
+				Mem256[ss_171:sp_169 - 0x0A + 0x00:word16] = Mem244[ss_171:bp_246 - 0x02 + 0x00:word16];
+				Mem259[ss_171:sp_169 - 0x0C + 0x00:word16] = Mem256[ss_171:bp_246 - 0x04 + 0x00:word16];
+				Mem261[ss_171:sp_169 - 0x0E + 0x00:word16] = ax_249;
+				fn0800_B6D6(wArg00);
+				fn0800_B6E1(bp_246, di_248, ds_172);
+				return;
+			}
+		}
+	}
+	else
+	{
+		word16 sp_68 = sp_118 - 0x02;
+		Mem69[ss_106:sp_68 + 0x00:word16] = Mem0[ss_106:bp_105 + 0x08:word16];
+		Mem72[ss_106:sp_68 - 0x02 + 0x00:word16] = Mem69[ss_106:bp_105 + 0x06:word16];
+		Mem75[ss_106:sp_68 - 0x04 + 0x00:word16] = Mem72[ss_106:bp_105 - 0x02 + 0x00:word16];
+		Mem78[ss_106:sp_68 - 0x06 + 0x00:word16] = Mem75[ss_106:bp_105 - 0x04 + 0x00:word16];
+		fn0800_B720(bp_105, ds_22);
+		return;
+	}
+}
+
+// 0800:B956: void fn0800_B956(Register word16 bp, Stack word16 wArg00, Stack word16 wArg02)
+void fn0800_B956(word16 bp, word16 wArg00, word16 wArg02)
+{
+	return;
+}
+
+// 0800:B95E: Register word16 fn0800_B95E(Register word16 bp, Register selector ds)
+word16 fn0800_B95E(word16 bp, selector ds)
+{
+	return fn0800_B95F(ds, wLoc04, wArg00, wArg02, wArg04, wArg06, wArg08);
+}
+
+// 0800:B95F: Register word16 fn0800_B95F(Register selector ds, Stack word16 wArg00, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Stack word16 wArg0C)
+word16 fn0800_B95F(selector ds, word16 wArg00, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C)
+{
+	Mem5[ds:20200:word16] = wArg0A;
+	if (wArg0A != 0x00)
+	{
+		Mem23[ds:20202:word16] = wArg0C;
+		fn0800_B6D6(wArg08);
+	}
+	return wArg00;
+}
+
+// 0800:B97F: Register word16 fn0800_B97F(Register selector ds, Stack word16 wArg02, Stack segptr32 ptrArg04, Stack word16 wArg06, Stack word16 wArg08, Register out ptr16 dxOut, Register out ptr16 dsOut)
+word16 fn0800_B97F(selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg06, word16 wArg08, ptr16 & dxOut, ptr16 & dsOut)
+{
+	*dsOut = ds;
+	*dxOut = dx;
+	word16 ax_130;
+	if (wArg02 >=u Mem0[ds:9448:word16])
+		ax_130 = fn0800_8D2B(ds, 0x06);
+	else
+	{
+		byte al_101 = (byte) (wArg08 + 0x01);
 		if (wArg08 >=u ~0x00 && (SEQ(ds, 0x24EA)[wArg02 * 0x02] & 0x0200) == 0x00)
 		{
 			do
 			{
 				ptrLoc10 = DPB(ptrLoc10, wArg04, 0);
-				word16 ax_118 = fn0800_8F50(al_100, ds, wArg02, ptrLoc10, wArg08);
-				if (ax_118 <u ~0x00 || (SEQ(ds, 0x24EA)[wArg02 * 0x02] & 0x4000) == 0x00)
+				word16 dx_119;
+				word16 ax_120 = fn0800_8F50(al_101, ds, wArg02, ptrLoc10, wArg08, out dx_119);
+				if (ax_120 <u ~0x00 || (SEQ(ds, 0x24EA)[wArg02 * 0x02] & 0x4000) == 0x00)
 				{
-					ax_128 = ax_118;
-					return ax_128;
+					ax_130 = ax_120;
+					return ax_130;
 				}
-				word16 si_138 = (word16) ptrArg04;
-				word16 cx_135 = ax_118;
-				selector es_139 = SLICE(ptrArg04, selector, 16);
-				word16 di_140 = si_138;
-				si_146 = si_138;
+				word16 si_140 = (word16) ptrArg04;
+				word16 cx_137 = ax_120;
+				selector es_141 = SLICE(ptrArg04, selector, 16);
+				word16 di_142 = si_140;
+				si_148 = si_140;
 				do
 				{
-					word16 si_146;
-					al_100 = Mem0[ds:si_146 + 0x00:byte];
-					si_146 = si_146 + 0x01;
-					if (al_100 == 0x1A)
+					word16 si_148;
+					al_101 = Mem0[ds:si_148 + 0x00:byte];
+					si_148 = si_148 + 0x01;
+					if (al_101 == 0x1A)
 					{
-						word16 cx_238 = -cx_135;
-						word16 ax_240 = 0x00 - (cx_238 == 0x00);
-						word16 dx_250;
-						fn0800_8E29((byte) ax_240, ds, wArg02, cx_238, ax_240, 0x01, out dx_250);
+						word16 cx_242 = -cx_137;
+						word16 ax_244 = 0x00 - (cx_242 == 0x00);
+						word16 dx_254;
+						fn0800_8E29((byte) ax_244, ds, wArg02, cx_242, ax_244, 0x01, out dx_254);
 						SEQ(ds, 0x24EA)[wArg02 * 0x02] = SEQ(ds, 0x24EA)[wArg02 * 0x02] | 0x0200;
 						goto l0800_BA41;
 					}
-					if (al_100 != 0x0D)
+					if (al_101 != 0x0D)
 					{
-						Mem197[es_139:di_140 + 0x00:byte] = al_100;
-						di_140 = di_140 + 0x01;
-						cx_135 = cx_135 - 0x01;
-						if (cx_135 == 0x00)
+						Mem200[es_141:di_142 + 0x00:byte] = al_101;
+						di_142 = di_142 + 0x01;
+						cx_137 = cx_137 - 0x01;
+						if (cx_137 == 0x00)
 							goto l0800_BA19;
 						continue;
 					}
-					cx_135 = cx_135 - 0x01;
-				} while (cx_135 != 0x00);
+					cx_137 = cx_137 - 0x01;
+				} while (cx_137 != 0x00);
 				ptrLoc14 = DPB(ptrLoc14, fp - 0x05, 0);
-				fn0800_8F50((byte) (fp - 0x05), ds, wArg02, ptrLoc14, 0x01);
-				Mem230[es_139:di_140 + 0x00:byte] = bLoc05;
-				al_100 = bLoc05;
-				di_140 = di_140 + 0x01;
-			} while (di_140 != si_138);
+				word16 dx_222;
+				fn0800_8F50((byte) (fp - 0x05), ds, wArg02, ptrLoc14, 0x01, out dx_222);
+				Mem234[es_141:di_142 + 0x00:byte] = bLoc05;
+				al_101 = bLoc05;
+				di_142 = di_142 + 0x01;
+			} while (di_142 != si_140);
 l0800_BA41:
-			ax_128 = di_140 - si_138;
+			ax_130 = di_142 - si_140;
 		}
 		else
-			ax_128 = 0x00;
+			ax_130 = 0x00;
 	}
-	return ax_128;
+	return ax_130;
 }
 
+// 0800:BA4A: Register word16 fn0800_BA4A(Register byte al, Register selector ds, Stack segptr32 ptrArg02, Stack segptr32 ptrArg06)
 word16 fn0800_BA4A(byte al, selector ds, segptr32 ptrArg02, segptr32 ptrArg06)
 {
 	word16 ax_26;
@@ -12534,90 +18960,146 @@ word16 fn0800_BA4A(byte al, selector ds, segptr32 ptrArg02, segptr32 ptrArg06)
 	return ax_26;
 }
 
+// 0800:BA67: Register selector fn0800_BA67(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 selector fn0800_BA67(selector ds, word16 wArg02, word16 wArg04)
 {
-	selector ds_26;
-	if (fn0800_ACB3(fp - 0x02, ds, DPB(ptrLoc0C, wArg02, 0), wArg04, 0x00, out ds_26) == 0x00)
+	word16 di_24;
+	selector ds_25;
+	if (fn0800_ACB3(fp - 0x02, ds, wArg02, wArg04, 0x00, out di_24, out ds_25) == 0x00)
 	{
-		ptr32 es_bx_45 = Mem0[ss:fp + 0x02:segptr32];
-		Mem49[es_bx_45 + 0x02:word16] = Mem0[es_bx_45 + 0x02:word16] & ~0x10;
+		ptr32 es_bx_44 = Mem0[ss:fp + 0x02:segptr32];
+		Mem48[es_bx_44 + 0x02:word16] = Mem0[es_bx_44 + 0x02:word16] & ~0x10;
 	}
-	return ds_26;
+	return ds_25;
 }
 
+// 0800:BA89: Register word16 fn0800_BA89(Register word16 bp, Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Stack word16 wArg0A, Stack word16 wArg0C, Register out ptr16 dsOut)
 word16 fn0800_BA89(word16 bp, selector ds, segptr32 ptrArg02, word16 wArg04, word16 wArg0A, word16 wArg0C, ptr16 & dsOut)
 {
 	*dsOut = ds;
-	word16 ax_149;
-	word16 bp_168 = fp - 0x02;
-	word16 di_13 = wArg0A;
+	word16 ax_145;
+	word16 bp_162 = fp - 0x02;
+	word16 di_105 = wArg0A;
 	if (Mem0[ptrArg02 + 0x12:word16] != wArg02 || (wArg0A > 0x02 || wArg0C >u 0x7FFF))
 	{
 l0800_BAAB:
-		ax_149 = ~0x00;
-		return ax_149;
+		ax_145 = ~0x00;
+		return ax_145;
 	}
 	else
 	{
 		if (Mem0[ds:0x26B2:word16] == 0x00 && wArg02 == 0x236C)
-			Mem250[ds:0x26B2:word16] = 0x01;
+			Mem243[ds:0x26B2:word16] = 0x01;
 		else if (Mem0[ds:9904:word16] == 0x00 && wArg02 == 0x2358)
-			Mem247[ds:9904:word16] = 0x01;
-		word16 bx_96 = (word16) ptrArg02;
+			Mem240[ds:9904:word16] = 0x01;
+		word16 bx_93 = (word16) ptrArg02;
 		if (Mem0[ptrArg02 + 0x00:word16] != 0x00)
-			fn0800_ACB3(fp - 0x02, ds, DPB(ptrLoc10, bx_96, 0), wArg04, 0x01, out ds);
-		ptr32 es_bx_110 = Mem0[ss:fp + 0x02:segptr32];
-		if ((Mem0[es_bx_110 + 0x02:word16] & 0x04) != 0x00)
+			fn0800_ACB3(fp - 0x02, ds, bx_93, wArg04, 0x01, out di_105, out ds);
+		ptr32 es_bx_107 = Mem0[ss:fp + 0x02:segptr32];
+		if ((Mem0[es_bx_107 + 0x02:word16] & 0x04) != 0x00)
 		{
-			Mem212[ss:fp - 0x08 + 0x00:word16] = Mem0[es_bx_110 + 0x0A:word16];
-			Mem215[ss:fp - 0x0A + 0x00:word16] = Mem212[es_bx_110 + 0x08:word16];
+			Mem205[ss:fp - 0x08 + 0x00:word16] = Mem0[es_bx_107 + 0x0A:word16];
+			Mem208[ss:fp - 0x0A + 0x00:word16] = Mem205[es_bx_107 + 0x08:word16];
 			fn0800_9E75(ds, wArg02, out ds);
 		}
-		ptr32 es_bx_120 = Mem0[ss:fp + 0x02:segptr32];
-		Mem124[es_bx_120 + 0x02:word16] = Mem0[es_bx_120 + 0x02:word16] & ~0x0C;
-		Mem126[es_bx_120 + 0x06:word16] = 0x00;
-		word16 ax_127 = Mem126[ss:fp + 0x04:word16];
-		word16 dx_128 = Mem126[ss:fp + 0x02:word16];
-		Mem130[es_bx_120 + 0x0A:word16] = ax_127;
-		Mem131[es_bx_120 + 0x08:word16] = dx_128 + 0x05;
-		Mem132[es_bx_120 + 0x0E:word16] = ax_127;
-		Mem133[es_bx_120 + 0x0C:word16] = dx_128 + 0x05;
-		if (wArg0A != 0x02)
+		ptr32 es_bx_117 = Mem0[ss:fp + 0x02:segptr32];
+		Mem121[es_bx_117 + 0x02:word16] = Mem0[es_bx_117 + 0x02:word16] & ~0x0C;
+		Mem123[es_bx_117 + 0x06:word16] = 0x00;
+		word16 ax_124 = Mem123[ss:fp + 0x04:word16];
+		word16 dx_125 = Mem123[ss:fp + 0x02:word16];
+		Mem127[es_bx_117 + 0x0A:word16] = ax_124;
+		Mem128[es_bx_117 + 0x08:word16] = dx_125 + 0x05;
+		Mem129[es_bx_117 + 0x0E:word16] = ax_124;
+		Mem130[es_bx_117 + 0x0C:word16] = dx_125 + 0x05;
+		if (di_105 != 0x02 && true)
 		{
-			word16 si_152 = wArg0C;
-			if (true)
+			Mem152[ds:0x2352:word16] = ~0x380F;
+			if ((Mem152[ss:fp + 0x06:word16] | Mem152[ss:fp + 0x08:word16]) == 0x00)
 			{
-				Mem156[ds:0x2352:word16] = ~0x380F;
-				if ((Mem156[ss:fp + 0x06:word16] | Mem156[ss:fp + 0x08:word16]) == 0x00)
-				{
-					Mem187[ss:fp - 0x08 + 0x00:word16] = wArg0C;
-					word16 dx_189;
-					selector ds_193;
-					word16 ax_194 = fn0800_9F7F(fp - 0x02, ds, wArg00, out dx_189, out bp_168, out si_152, out di_13, out ds_193);
-					Mem197[ss:bp_168 + 0x0A:word16] = dx_189;
-					Mem198[ss:bp_168 + 0x08:word16] = ax_194;
-					if ((ax_194 | dx_189) == 0x00)
-						goto l0800_BAAB;
-					ptr32 es_bx_203 = Mem198[ss:bp_168 + 0x04:segptr32];
-					Mem207[es_bx_203 + 0x02:word16] = Mem198[es_bx_203 + 0x02:word16] | 0x04;
-				}
-				ptr32 es_bx_170 = Mem156[ss:bp_168 + 0x04:segptr32];
-				word16 ax_173 = Mem156[ss:bp_168 + 0x0A:word16];
-				word16 dx_174 = Mem156[ss:bp_168 + 0x08:word16];
-				Mem175[es_bx_170 + 0x0E:word16] = ax_173;
-				Mem176[es_bx_170 + 0x0C:word16] = dx_174;
-				Mem177[es_bx_170 + 0x0A:word16] = ax_173;
-				Mem178[es_bx_170 + 0x08:word16] = dx_174;
-				Mem179[es_bx_170 + 0x06:word16] = si_152;
-				if (di_13 == 0x01)
-					Mem183[es_bx_170 + 0x02:word16] = Mem179[es_bx_170 + 0x02:word16] | 0x08;
+				Mem181[ss:fp - 0x08 + 0x00:word16] = wArg0C;
+				word16 dx_183;
+				selector ds_185;
+				word16 ax_186 = fn0800_9F7F(ds, wArg00, out dx_183, out bp_162, out ds_185);
+				Mem190[ss:bp_162 + 0x0A:word16] = dx_183;
+				Mem191[ss:bp_162 + 0x08:word16] = ax_186;
+				if ((ax_186 | dx_183) == 0x00)
+					goto l0800_BAAB;
+				ptr32 es_bx_196 = Mem191[ss:bp_162 + 0x04:segptr32];
+				Mem200[es_bx_196 + 0x02:word16] = Mem191[es_bx_196 + 0x02:word16] | 0x04;
 			}
+			ptr32 es_bx_164 = Mem152[ss:bp_162 + 0x04:segptr32];
+			word16 ax_167 = Mem152[ss:bp_162 + 0x0A:word16];
+			word16 dx_168 = Mem152[ss:bp_162 + 0x08:word16];
+			Mem169[es_bx_164 + 0x0E:word16] = ax_167;
+			Mem170[es_bx_164 + 0x0C:word16] = dx_168;
+			Mem171[es_bx_164 + 0x0A:word16] = ax_167;
+			Mem172[es_bx_164 + 0x08:word16] = dx_168;
+			Mem173[es_bx_164 + 0x06:word16] = wArg0C;
+			if (di_105 == 0x01)
+				Mem177[es_bx_164 + 0x02:word16] = Mem173[es_bx_164 + 0x02:word16] | 0x08;
 		}
-		ax_149 = 0x00;
-		return ax_149;
+		ax_145 = 0x00;
+		return ax_145;
 	}
 }
 
+// 0800:BB98: void fn0800_BB98(Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack segptr32 ptrArg08, Stack word16 wArg0A)
+void fn0800_BB98(word16 wArg02, word16 wArg04, word16 wArg06, segptr32 ptrArg08, word16 wArg0A)
+{
+	if ((wArg08 | wArg0A) != 0x00)
+	{
+		if (fn0800_BFC7(DPB(ptrLoc08, wArg04, 0), wArg06) >=u wArg02)
+		{
+			fn0800_C01E(DPB(ptrLoc0E, wArg08, 0), wArg0A, DPB(ptrLoc0A, wArg04, 0), wArg02);
+			Mem90[ptrArg08 + wArg02:byte] = 0x00;
+		}
+		else
+			fn0800_BF9E(DPB(ptrLoc0C, wArg08, 0), wArg0A, DPB(ptrLoc08, wArg04, 0));
+	}
+	return;
+}
+
+// 0800:BBE9: void fn0800_BBE9(Stack segptr32 ptrArg02)
+void fn0800_BBE9(segptr32 ptrArg02)
+{
+	if (Mem0[ptrArg02 - 0x01 + 0x00:byte] == 0x2E)
+		wArg02 = wArg02 - 0x01;
+	word16 v12_16 = wArg02 - 0x01;
+	selector es_22 = SLICE(DPB(ptrArg02, v12_16, 0), selector, 16);
+	byte al_23 = Mem0[es_22:v12_16 + 0x00:byte];
+	word16 ax_24 = (int16) al_23;
+	word16 cx_26 = 0x04;
+	word16 bx_27 = 48185;
+l0800_BC0F:
+	word16 ax_32 = Mem0[0x0800:bx_27 + 0x00:word16];
+	if (ax_32 == ax_24)
+	{
+		word16 sp_60;
+		word16 bp_61;
+		selector ss_62;
+		byte SCZO_63;
+		word16 bx_64;
+		selector es_65;
+		byte Z_66;
+		byte SZO_67;
+		byte al_68;
+		word16 ax_69;
+		word16 cx_70;
+		byte C_71;
+		Mem0[0x0800:bx_27 + 0x08:word16]();
+		return;
+	}
+	else
+	{
+		bx_27 = bx_27 + 0x02;
+		cx_26 = cx_26 - 0x01;
+		if (cx_26 != 0x00)
+			goto l0800_BC0F;
+		return;
+	}
+}
+
+// 0800:BC49: void fn0800_BC49(Stack segptr32 ptrArg02, Stack word16 wArg04, Stack segptr32 ptrArg06, Stack word16 wArg08, Stack segptr32 ptrArg0A, Stack word16 wArg0C, Stack segptr32 ptrArg0E, Stack word16 wArg10, Stack segptr32 ptrArg12, Stack word16 wArg14)
 void fn0800_BC49(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06, word16 wArg08, segptr32 ptrArg0A, word16 wArg0C, segptr32 ptrArg0E, word16 wArg10, segptr32 ptrArg12, word16 wArg14)
 {
 	if ((wArg06 | wArg08) != 0x00)
@@ -12685,12 +19167,14 @@ l0800_BCF5:
 	return;
 }
 
+// 0800:BE3B: void fn0800_BE3B(Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Stack word16 wArg0C, Stack word16 wArg0E, Stack word16 wArg10, Stack word16 wArg12, Stack word16 wArg14)
 void fn0800_BE3B(word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, word16 wArg0E, word16 wArg10, word16 wArg12, word16 wArg14)
 {
 	fn0800_BC49(DPB(ptrLoc16, wArg02, 0), wArg04, DPB(ptrLoc12, wArg06, 0), wArg08, DPB(ptrLoc0E, wArg0A, 0), wArg0C, DPB(ptrLoc0A, wArg0E, 0), wArg10, DPB(ptrLoc06, wArg12, 0), wArg14);
 	return;
 }
 
+// 0800:BEA2: Register word16 fn0800_BEA2(Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg06, Stack word16 wArg08, Register out ptr16 diOut)
 word16 fn0800_BEA2(selector ds, segptr32 ptrArg02, word16 wArg06, word16 wArg08, ptr16 & diOut)
 {
 	Mem10[ptrArg02 + 0x00:byte] = 0x00;
@@ -12698,6 +19182,14 @@ word16 fn0800_BEA2(selector ds, segptr32 ptrArg02, word16 wArg06, word16 wArg08,
 	return fn0800_9828(ds, DPB(ptrLoc0C, wArg06, 0), wArg08, out di_34);
 }
 
+// 0800:BF18: void fn0800_BF18(Register word16 bx, Register word16 di, Register selector ds, Stack word16 wArg06, Stack word16 wArg08)
+void fn0800_BF18(word16 bx, word16 di, selector ds, word16 wArg06, word16 wArg08)
+{
+	fn0800_8F97(bx, di, ds);
+	return;
+}
+
+// 0800:BF5F: void fn0800_BF5F(Stack segptr32 ptrArg02, Stack segptr32 ptrArg06)
 void fn0800_BF5F(segptr32 ptrArg02, segptr32 ptrArg06)
 {
 	word16 di_116 = (word16) ptrArg02;
@@ -12749,6 +19241,7 @@ void fn0800_BF5F(segptr32 ptrArg02, segptr32 ptrArg06)
 	return;
 }
 
+// 0800:BF9E: void fn0800_BF9E(Stack segptr32 ptrArg02, Stack word16 wArg04, Stack segptr32 ptrArg06)
 void fn0800_BF9E(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06)
 {
 	word16 di_15 = (word16) ptrArg06;
@@ -12776,6 +19269,7 @@ void fn0800_BF9E(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06)
 	return;
 }
 
+// 0800:BFC7: Register word16 fn0800_BFC7(Stack segptr32 ptrArg02, Stack word16 wArg04)
 word16 fn0800_BFC7(segptr32 ptrArg02, word16 wArg04)
 {
 	word16 di_11 = (word16) ptrArg02;
@@ -12797,6 +19291,7 @@ word16 fn0800_BFC7(segptr32 ptrArg02, word16 wArg04)
 	return ax_13;
 }
 
+// 0800:BFE6: Register word16 fn0800_BFE6(Stack segptr32 ptrArg02, Stack segptr32 ptrArg06, Stack word16 wArg0A)
 word16 fn0800_BFE6(segptr32 ptrArg02, segptr32 ptrArg06, word16 wArg0A)
 {
 	word16 di_17 = (word16) ptrArg06;
@@ -12836,6 +19331,7 @@ l0800_BFFE:
 	return ax_22;
 }
 
+// 0800:C01E: void fn0800_C01E(Stack segptr32 ptrArg02, Stack word16 wArg04, Stack segptr32 ptrArg06, Stack word16 wArg0A)
 void fn0800_C01E(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06, word16 wArg0A)
 {
 	word16 di_15 = (word16) ptrArg06;
@@ -12870,6 +19366,7 @@ void fn0800_C01E(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06, word16 wAr
 	return;
 }
 
+// 0800:C04F: Register word16 fn0800_C04F(Register selector ds, Stack segptr32 ptrArg02, Stack segptr32 ptrArg06, Register out ptr16 dxOut, Register out ptr16 diOut, Register out ptr16 dsOut)
 word16 fn0800_C04F(selector ds, segptr32 ptrArg02, segptr32 ptrArg06, ptr16 & dxOut, ptr16 & diOut, ptr16 & dsOut)
 {
 	selector ds_12;
@@ -12911,6 +19408,188 @@ word16 fn0800_C04F(selector ds, segptr32 ptrArg02, segptr32 ptrArg06, ptr16 & dx
 	return wLoc06_292 + ax_177 + (word16) (SEQ(dx_207, cx_226) + dx_ax_220);
 }
 
+// 0800:C177: void fn0800_C177(Register word16 bp, Register word16 si, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack segptr32 ptrArg0A)
+void fn0800_C177(word16 bp, word16 si, selector ds, word16 wArg02, word16 wArg04, segptr32 ptrArg0A)
+{
+	selector ds_7;
+	word16 di_8 = fn0800_C379(ds, out ds_7);
+	word16 v10_18 = wArg02 - (word16) (SEQ(Mem0[ds_7:9956:word16], Mem0[ds_7:0x26E2:word16] + 0xA600) + 315532800);
+	Mem30[ptrArg0A + 0x02:byte] = 0x00;
+	word16 dx_47;
+	word16 bp_48;
+	word16 si_49;
+	word16 di_50;
+	byte al_52 = (byte) fn0800_8BCA(fp - 0x02, si, di_8, wLoc0C, out dx_47, out bp_48, out si_49, out di_50);
+	Mem57[Mem30[ss:bp_48 + 0x0C:segptr32] + 0x03:byte] = al_52;
+	Mem63[ss:fp - 0x0C + 0x00:word16] = 0x00;
+	Mem65[ss:fp - 0x0E + 0x00:word16] = 0x3C;
+	Mem68[ss:fp - 0x10 + 0x00:word16] = Mem65[ss:bp_48 + 0x06:word16];
+	Mem71[ss:fp - 0x12 + 0x00:word16] = Mem68[ss:bp_48 + 0x04:word16];
+	word16 dx_72;
+	word16 bp_73;
+	word16 si_74;
+	word16 di_75;
+	word16 ax_76 = fn0800_8BBB(bp_48, si_49, di_50, bp, out dx_72, out bp_73, out si_74, out di_75);
+	Mem77[ss:bp_73 + 0x06:word16] = dx_72;
+	Mem78[ss:bp_73 + 0x04:word16] = ax_76;
+	Mem84[ss:fp - 0x14 + 0x00:word16] = 0x00;
+	Mem86[ss:fp - 22 + 0x00:word16] = 0x3C;
+	Mem89[ss:fp - 0x18 + 0x00:word16] = Mem86[ss:bp_73 + 0x06:word16];
+	Mem92[ss:fp - 0x1A + 0x00:word16] = Mem89[ss:bp_73 + 0x04:word16];
+	word16 dx_93;
+	word16 bp_94;
+	word16 si_95;
+	word16 di_96;
+	byte al_98 = (byte) fn0800_8BCA(bp_73, si_74, di_75, bp, out dx_93, out bp_94, out si_95, out di_96);
+	Mem102[Mem92[ss:bp_94 + 0x0C:segptr32] + 0x00:byte] = al_98;
+	Mem108[ss:fp - 0x1C + 0x00:word16] = 0x00;
+	Mem110[ss:fp - 0x1E + 0x00:word16] = 0x3C;
+	Mem113[ss:fp - 0x20 + 0x00:word16] = Mem110[ss:bp_94 + 0x06:word16];
+	Mem116[ss:fp - 0x22 + 0x00:word16] = Mem113[ss:bp_94 + 0x04:word16];
+	word16 dx_117;
+	word16 bp_118;
+	word16 si_119;
+	word16 di_120;
+	word16 ax_121 = fn0800_8BBB(bp_94, si_95, di_96, bp, out dx_117, out bp_118, out si_119, out di_120);
+	Mem122[ss:bp_118 + 0x06:word16] = dx_117;
+	Mem123[ss:bp_118 + 0x04:word16] = ax_121;
+	Mem129[ss:fp - 0x24 + 0x00:word16] = 0x00;
+	Mem131[ss:fp - 0x26 + 0x00:word16] = 0x88F8;
+	Mem134[ss:fp - 0x28 + 0x00:word16] = Mem131[ss:bp_118 + 0x06:word16];
+	Mem137[ss:fp - 0x2A + 0x00:word16] = Mem134[ss:bp_118 + 0x04:word16];
+	word16 dx_138;
+	word16 bp_139;
+	word16 si_140;
+	word16 di_141;
+	word16 ax_145 = (fn0800_8BBB(bp_118, si_119, di_120, bp, out dx_138, out bp_139, out si_140, out di_141) << 0x02) + 0x07BC;
+	Mem149[Mem137[ss:bp_139 + 0x08:segptr32] + 0x00:word16] = ax_145;
+	Mem155[ss:fp - 44 + 0x00:word16] = 0x00;
+	Mem157[ss:fp - 0x2E + 0x00:word16] = 0x88F8;
+	Mem160[ss:fp - 0x30 + 0x00:word16] = Mem157[ss:bp_139 + 0x06:word16];
+	Mem163[ss:fp - 0x32 + 0x00:word16] = Mem160[ss:bp_139 + 0x04:word16];
+	word16 dx_164;
+	word16 si_166;
+	word16 di_167;
+	word16 bp_165;
+	word16 ax_168 = fn0800_8BCA(bp_139, si_140, di_141, bp, out dx_164, out bp_165, out si_166, out di_167);
+	Mem169[ss:bp_165 + 0x06:word16] = dx_164;
+	Mem170[ss:bp_165 + 0x04:word16] = ax_168;
+	word16 sp_162 = fp - 0x32;
+	if (Mem170[ss:bp_165 + 0x06:word16] >= 0x00 && (Mem170[ss:bp_165 + 0x06:word16] != 0x00 || Mem170[ss:bp_165 + 0x04:word16] >=u 0x2250))
+	{
+		Mem437[ss:bp_165 + 0x04:word16] = Mem170[ss:bp_165 + 0x04:word16] - 0x2250;
+		Mem441[ss:bp_165 + 0x06:word16] = v32;
+		ptr32 es_bx_442 = Mem441[ss:bp_165 + 0x08:segptr32];
+		Mem446[es_bx_442 + 0x00:word16] = Mem441[es_bx_442 + 0x00:word16] + 0x01;
+		Mem452[ss:fp - 0x34 + 0x00:word16] = 0x00;
+		Mem454[ss:fp - 0x36 + 0x00:word16] = 0x2238;
+		Mem457[ss:fp - 0x38 + 0x00:word16] = Mem454[ss:bp_165 + 0x06:word16];
+		Mem460[ss:fp - 0x3A + 0x00:word16] = Mem457[ss:bp_165 + 0x04:word16];
+		word16 dx_461;
+		word16 bp_462;
+		word16 si_463;
+		word16 di_464;
+		word16 ax_465 = fn0800_8BBB(bp_165, si_166, di_167, bp, out dx_461, out bp_462, out si_463, out di_464);
+		ptr32 es_bx_466 = Mem460[ss:bp_462 + 0x08:segptr32];
+		Mem470[es_bx_466 + 0x00:word16] = Mem460[es_bx_466 + 0x00:word16] + ax_465;
+		Mem476[ss:fp - 0x3C + 0x00:word16] = 0x00;
+		Mem478[ss:fp - 0x3E + 0x00:word16] = 0x2238;
+		Mem481[ss:fp - 0x40 + 0x00:word16] = Mem478[ss:bp_462 + 0x06:word16];
+		Mem484[ss:fp - 66 + 0x00:word16] = Mem481[ss:bp_462 + 0x04:word16];
+		word16 dx_485;
+		word16 ax_489 = fn0800_8BCA(bp_462, si_463, di_464, bp, out dx_485, out bp_165, out si_166, out di_167);
+		Mem490[ss:bp_165 + 0x06:word16] = dx_485;
+		Mem491[ss:bp_165 + 0x04:word16] = ax_489;
+		sp_162 = fp - 66;
+	}
+	if (Mem170[ds_7:0x26E6:word16] != 0x00)
+	{
+		word16 sp_372 = sp_162 - 0x02;
+		Mem373[ss:sp_372 + 0x00:word16] = 0x00;
+		Mem375[ss:sp_372 - 0x02 + 0x00:word16] = 0x18;
+		Mem378[ss:sp_372 - 0x04 + 0x00:word16] = Mem375[ss:bp_165 + 0x06:word16];
+		Mem381[ss:sp_372 - 0x06 + 0x00:word16] = Mem378[ss:bp_165 + 0x04:word16];
+		word16 dx_382;
+		word16 bp_383;
+		word16 si_384;
+		word16 di_385;
+		Mem388[ss:sp_372 - 0x08 + 0x00:word16] = fn0800_8BCA(bp_165, si_166, di_167, bp, out dx_382, out bp_383, out si_384, out di_385);
+		Mem394[ss:sp_372 - 0x0A + 0x00:word16] = 0x00;
+		Mem396[ss:sp_372 - 0x0C + 0x00:word16] = 0x18;
+		Mem399[ss:sp_372 - 0x0E + 0x00:word16] = Mem396[ss:bp_383 + 0x06:word16];
+		Mem402[ss:sp_372 - 0x10 + 0x00:word16] = Mem399[ss:bp_383 + 0x04:word16];
+		word16 dx_403;
+		Mem409[ss:sp_372 - 0x12 + 0x00:word16] = fn0800_8BBB(bp_383, si_384, di_385, bp, out dx_403, out bp_165, out si_166, out di_167);
+		Mem412[ss:sp_372 - 0x14 + 0x00:word16] = 0x00;
+		Mem420[ss:sp_372 - 22 + 0x00:word16] = Mem412[Mem412[ss:bp_165 + 0x08:segptr32] + 0x00:word16] + 63566;
+		sp_162 = sp_372 - 0x0E;
+		if (fn0800_C553(ds_7, wArg00, v10_18, v11, bArg06) != 0x00)
+		{
+			Mem430[ss:bp_165 + 0x04:word16] = Mem420[ss:bp_165 + 0x04:word16] + 0x01;
+			Mem434[ss:bp_165 + 0x06:word16] = v44;
+		}
+	}
+	word16 sp_202 = sp_162 - 0x02;
+	Mem203[ss:sp_202 + 0x00:word16] = 0x00;
+	Mem205[ss:sp_202 - 0x02 + 0x00:word16] = 0x18;
+	Mem208[ss:sp_202 - 0x04 + 0x00:word16] = Mem205[ss:bp_165 + 0x06:word16];
+	Mem211[ss:sp_202 - 0x06 + 0x00:word16] = Mem208[ss:bp_165 + 0x04:word16];
+	word16 dx_212;
+	word16 bp_213;
+	word16 si_214;
+	word16 di_215;
+	byte al_217 = (byte) fn0800_8BCA(bp_165, si_166, di_167, bp, out dx_212, out bp_213, out si_214, out di_215);
+	Mem221[Mem211[ss:bp_213 + 0x0C:segptr32] + 0x01:byte] = al_217;
+	Mem227[ss:sp_202 - 0x08 + 0x00:word16] = 0x00;
+	Mem229[ss:sp_202 - 0x0A + 0x00:word16] = 0x18;
+	Mem232[ss:sp_202 - 0x0C + 0x00:word16] = Mem229[ss:bp_213 + 0x06:word16];
+	Mem235[ss:sp_202 - 0x0E + 0x00:word16] = Mem232[ss:bp_213 + 0x04:word16];
+	word16 dx_236;
+	word16 bp_237;
+	word16 si_238;
+	word16 di_239;
+	word16 ax_240 = fn0800_8BBB(bp_213, si_214, di_215, bp, out dx_236, out bp_237, out si_238, out di_239);
+	Mem241[ss:bp_237 + 0x06:word16] = dx_236;
+	Mem242[ss:bp_237 + 0x04:word16] = ax_240;
+	Mem244[ss:bp_237 + 0x04:word16] = Mem242[ss:bp_237 + 0x04:word16] + 0x01;
+	Mem248[ss:bp_237 + 0x06:word16] = v50;
+	if ((Mem248[Mem248[ss:bp_237 + 0x08:segptr32] + 0x00:word16] & 0x03) == 0x00)
+	{
+		if (Mem248[ss:bp_237 + 0x06:word16] >= 0x00 && (Mem248[ss:bp_237 + 0x06:word16] > 0x00 || Mem248[ss:bp_237 + 0x04:word16] >u 0x3C))
+		{
+			Mem360[ss:bp_237 + 0x04:word16] = Mem248[ss:bp_237 + 0x04:word16] - 0x01;
+			Mem364[ss:bp_237 + 0x06:word16] = v53;
+		}
+		else if (Mem248[ss:bp_237 + 0x06:word16] == 0x00 && Mem248[ss:bp_237 + 0x04:word16] == 0x3C)
+		{
+			ptr32 es_bx_352 = Mem248[ss:bp_237 + 0x08:segptr32];
+			Mem355[es_bx_352 + 0x03:byte] = 0x02;
+			Mem356[es_bx_352 + 0x02:byte] = 0x1D;
+			return;
+		}
+	}
+	Mem284[Mem248[ss:bp_237 + 0x08:segptr32] + 0x03:byte] = 0x00;
+	while (true)
+	{
+		int32 dx_ax_297 = (int32) (int16) Mem284[ds_7:(int16) Mem284[Mem284[ss:bp_237 + 0x08:segptr32] + 0x03:byte] + 9908:byte];
+		word16 ax_298 = (word16) dx_ax_297;
+		word16 dx_299 = SLICE(dx_ax_297, word16, 16);
+		if (dx_299 >= Mem284[ss:bp_237 + 0x06:word16] && (dx_299 != Mem284[ss:bp_237 + 0x06:word16] || ax_298 >=u Mem284[ss:bp_237 + 0x04:word16]))
+			break;
+		ptr32 es_bx_308 = Mem284[ss:bp_237 + 0x08:segptr32];
+		Mem319[ss:bp_237 + 0x04:word16] = Mem284[ss:bp_237 + 0x04:word16] - (word16) ((int32) ((int16) Mem284[ds_7:(int16) Mem284[es_bx_308 + 0x03:byte] + 9908:byte]));
+		Mem323[ss:bp_237 + 0x06:word16] = v57;
+		selector es_310 = SLICE(es_bx_308, selector, 16);
+		word16 bx_325 = Mem323[ss:bp_237 + 0x08:word16];
+		Mem327[es_310:bx_325 + 0x03:byte] = Mem323[es_310:bx_325 + 0x03:byte] + 0x01;
+	}
+	ptr32 es_bx_331 = Mem284[ss:bp_237 + 0x08:segptr32];
+	Mem335[es_bx_331 + 0x03:byte] = Mem284[es_bx_331 + 0x03:byte] + 0x01;
+	Mem338[es_bx_331 + 0x02:byte] = Mem335[ss:bp_237 + 0x04:byte];
+	return;
+}
+
+// 0800:C379: Register word16 fn0800_C379(Register selector ds, Register out ptr16 dsOut)
 word16 fn0800_C379(selector ds, ptr16 & dsOut)
 {
 	*dsOut = ds;
@@ -12976,6 +19655,7 @@ word16 fn0800_C379(selector ds, ptr16 & dsOut)
 	return di;
 }
 
+// 0800:C553: Register word16 fn0800_C553(Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack byte bArg08)
 word16 fn0800_C553(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, byte bArg08)
 {
 	if (wArg04 == 0x00)
@@ -13031,89 +19711,173 @@ l0800_C62B:
 	return ax_34;
 }
 
+// 0800:C632: Register word16 fn0800_C632(Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Register out ptr16 dlOut, Register out ptr16 dsOut)
 word16 fn0800_C632(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & dlOut, ptr16 & dsOut)
 {
 	*dsOut = ds;
 	*dlOut = dl;
-	word16 ax_124;
+	word16 ax_130;
 	if (wArg02 >=u Mem0[ds:9448:word16])
-		ax_124 = fn0800_8D2B(ds, 0x06);
+		ax_130 = fn0800_8D2B(ds, 0x06);
 	else
 	{
-		byte al_102 = (byte) (wArg08 + 0x01);
+		byte al_108 = (byte) (wArg08 + 0x01);
 		if (wArg08 <u ~0x00)
-			ax_124 = 0x00;
+			ax_130 = 0x00;
 		else
 		{
 			if ((SEQ(ds, 0x24EA)[wArg02 * 0x02] & 0x0800) != 0x00)
 			{
-				word16 dx_371;
-				al_102 = (byte) fn0800_8E29(0x00, ds, wArg02, 0x00, 0x00, 0x02, out dx_371);
+				word16 dx_164;
+				al_108 = (byte) fn0800_8E29(0x00, ds, wArg02, 0x00, 0x00, 0x02, out dx_164);
 			}
-			if ((SEQ(ds, 0x24EA)[wArg02 * 0x02] & 0x4000) == 0x00)
-			{
-				byte dl_123;
-				ax_124 = fn0800_C779(al_102, ds, wArg02, DPB(ptrLoc9A, wArg04, 0), wArg08, out dl_123);
-			}
-			else
+			if ((SEQ(ds, 0x24EA)[wArg02 * 0x02] & 0x4000) != 0x00)
 			{
 				SEQ(ds, 0x24EA)[wArg02 * 0x02] = SEQ(ds, 0x24EA)[wArg02 * 0x02] & ~0x0200;
-				word16 wLoc08_139 = wArg08;
-l0800_C727:
-				word16 wLoc06_165 = fp - 0x90;
-				if (wLoc08_139 == 0x00)
-				{
-					word16 si_313 = wLoc06_165 - (fp - 0x90);
-					byte dl_317;
-					*dlOut = (byte) (0x00 - (si_313 <u 0x00));
-					if (true)
-					{
-						byte dl_346;
-						word16 ax_347 = fn0800_C779((byte) (fp - 0x90), ds, wArg02, DPB(ptrLoc9A, fp - 0x90, 0), si_313, out dl_346);
-						byte dl_350;
-						*dlOut = (byte) ax_347;
-						if (ax_347 != si_313)
-						{
-							if (ax_347 != ~0x00)
-								goto l0800_C76A;
-							goto l0800_C71A;
-						}
-					}
-					ax_124 = wArg08;
-					return ax_124;
-				}
-				wLoc08_139 = wLoc08_139 - 0x01;
-				byte al_241 = Mem131[ptrLoc0E + 0x00:byte];
-				if (al_241 == 0x0A)
-				{
-					Mem306[ptrLoc06 + 0x00:byte] = 0x0D;
-					wLoc06_165 = wLoc06_165 + 0x01;
-				}
-				Mem251[ptrLoc06 + 0x00:byte] = al_241;
-				word16 v26_252 = wLoc06_165 + 0x01;
-				word16 dx_257 = v26_252 - (fp - 0x90);
-				wLoc06_165 = v26_252;
-				word16 bx_261 = 0x00 - (dx_257 <u 0x00);
-				if (bx_261 < 0x00 || bx_261 == 0x00 && dx_257 <u 0x80)
-					goto l0800_C731;
-				word16 si_273 = v26_252 - (fp - 0x90);
-				ptrLoc9A = DPB(ptrLoc9A, fp - 0x90, 0);
-				byte dl_288;
-				word16 ax_289 = fn0800_C779((byte) (fp - 0x90), ds, wArg02, ptrLoc9A, si_273, out dl_288);
-				byte dl_292;
-				*dlOut = (byte) ax_289;
-				if (ax_289 == si_273)
-					goto l0800_C727;
-				if (ax_289 != ~0x00)
-					;
-l0800_C71A:
-				ax_124 = ~0x00;
+				byte dl_146;
+				selector ds_147;
+				return fn0800_C727(fp - 0x02, wArg02, ds, out dl_146, out ds_147);
 			}
+			byte dl_129;
+			ax_130 = fn0800_C779(al_108, ds, wArg02, DPB(ptrLoc9A, wArg04, 0), wArg08, out dl_129);
 		}
 	}
-	return ax_124;
+	return ax_130;
 }
 
+// 0800:C6D7: Register word16 fn0800_C6D7(Register byte al, Register word16 bx, Register word16 bp, Register word16 di, Register selector es, Register selector ds, Register out ptr16 dlOut, Register out ptr16 dsOut)
+word16 fn0800_C6D7(byte al, word16 bx, word16 bp, word16 di, selector es, selector ds, ptr16 & dlOut, ptr16 & dsOut)
+{
+	*dsOut = ds;
+	Mem3[es:bx + 0x00:byte] = al;
+	Mem9[ss:bp - 0x04 + 0x00:word16] = Mem3[ss:bp - 0x04 + 0x00:word16] + 0x01;
+	word16 dx_13 = Mem9[ss:bp - 0x04 + 0x00:word16] - (bp - 0x8E);
+	word16 bx_17 = 0x00 - (dx_13 <u 0x00);
+	if (bx_17 < 0x00)
+	{
+		byte dl_102;
+		selector ds_103;
+		return fn0800_C731(bp, di, ds, wArg00, wArg02, out dl_102, out ds_103);
+	}
+	else if (bx_17 != 0x00 || dx_13 >=u 0x80)
+	{
+		word16 si_46 = Mem9[ss:bp - 0x04 + 0x00:word16] - (bp - 0x8E);
+		byte dl_64;
+		word16 ax_65 = fn0800_C779((byte) (bp - 0x8E), ds, di, DPB(ptrLoc06, bp - 0x8E, 0), si_46, out dl_64);
+		byte dl_68;
+		*dlOut = (byte) ax_65;
+		if (ax_65 == si_46)
+		{
+			byte dl_85;
+			selector ds_86;
+			return fn0800_C727(bp, di, ds, out dl_85, out ds_86);
+		}
+		else if (ax_65 != ~0x00)
+		{
+			word16 ax_80 = Mem9[ss:bp + 0x0A:word16] - Mem9[ss:(bp - 0x06) + 0x00:word16];
+			return fn0800_C76A(ax_80, ax_65, bp, si_46);
+		}
+		else
+		{
+			word16 bp_73;
+			return fn0800_C71A(bp, out bp_73);
+		}
+	}
+	else
+	{
+		byte dl_93;
+		selector ds_94;
+		return fn0800_C731(bp, di, ds, wArg00, wArg02, out dl_93, out ds_94);
+	}
+}
+
+// 0800:C71A: Register word16 fn0800_C71A(Register word16 bp, Register out ptr16 bpOut)
+word16 fn0800_C71A(word16 bp, ptr16 & bpOut)
+{
+	word16 bp_6;
+	*bpOut = fn0800_C76E(bp, wArg00, wArg02);
+	return ~0x00;
+}
+
+// 0800:C727: Register word16 fn0800_C727(Register word16 bp, Register word16 di, Register selector ds, Register out ptr16 dlOut, Register out ptr16 dsOut)
+word16 fn0800_C727(word16 bp, word16 di, selector ds, ptr16 & dlOut, ptr16 & dsOut)
+{
+	Mem5[ss:bp - 0x02 + 0x00:word16] = ss;
+	Mem6[ss:bp - 0x04 + 0x00:word16] = bp - 0x8E;
+	byte dl_11;
+	selector ds_12;
+	return fn0800_C731(bp, di, ds, wArg00, wArg02, out dl_11, out ds_12);
+}
+
+// 0800:C731: Register word16 fn0800_C731(Register word16 bp, Register word16 di, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Register out ptr16 dlOut, Register out ptr16 dsOut)
+word16 fn0800_C731(word16 bp, word16 di, selector ds, word16 wArg00, word16 wArg02, ptr16 & dlOut, ptr16 & dsOut)
+{
+	*dsOut = ds;
+	if (Mem0[ss:bp - 0x06 + 0x00:word16] == 0x00)
+	{
+		word16 si_75 = Mem0[ss:bp - 0x04 + 0x00:word16] - (bp - 0x8E);
+		byte dl_79;
+		*dlOut = (byte) (0x00 - (si_75 <u 0x00));
+		if (true)
+		{
+			byte dl_119;
+			word16 ax_120 = fn0800_C779((byte) (bp - 0x8E), ds, di, DPB(ptrLoc06, bp - 0x8E, 0), si_75, out dl_119);
+			byte dl_123 = (byte) ax_120;
+			*dlOut = dl_123;
+			if (ax_120 != si_75)
+			{
+				if (ax_120 == ~0x00)
+				{
+					word16 bp_132;
+					return fn0800_C71A(bp, out bp_132);
+				}
+				else
+				{
+					word16 ax_128 = Mem0[ss:bp + 0x0A:word16];
+					return fn0800_C76A(ax_128, ax_120, bp, si_75);
+				}
+			}
+		}
+		word16 ax_95 = Mem0[ss:bp + 0x0A:word16];
+		return ax_95;
+	}
+	else
+	{
+		Mem32[ss:bp - 0x06 + 0x00:word16] = Mem0[ss:bp - 0x06 + 0x00:word16] - 0x01;
+		ptr32 es_bx_33 = Mem32[ss:bp - 0x0C + 0x00:segptr32];
+		Mem37[ss:bp - 0x0C + 0x00:word16] = Mem32[ss:bp - 0x0C + 0x00:word16] + 0x01;
+		byte al_38 = Mem37[es_bx_33 + 0x00:byte];
+		Mem39[ss:bp - 0x07 + 0x00:byte] = al_38;
+		if (al_38 == 0x0A)
+		{
+			Mem68[Mem39[ss:bp - 0x04 + 0x00:segptr32] + 0x00:byte] = 0x0D;
+			Mem70[ss:bp - 0x04 + 0x00:word16] = Mem68[ss:bp - 0x04 + 0x00:word16] + 0x01;
+		}
+		ptr32 es_bx_44 = Mem39[ss:bp - 0x04 + 0x00:segptr32];
+		word16 bx_45 = (word16) es_bx_44;
+		selector es_46 = SLICE(es_bx_44, selector, 16);
+		byte al_47 = Mem39[ss:bp - 0x07 + 0x00:byte];
+		byte dl_52;
+		selector ds_53;
+		return fn0800_C6D7(al_47, bx_45, bp, di, es_46, ds, out dl_52, out ds_53);
+	}
+}
+
+// 0800:C76A: Register word16 fn0800_C76A(Register word16 ax, Register word16 dx, Register word16 bp, Register word16 si)
+word16 fn0800_C76A(word16 ax, word16 dx, word16 bp, word16 si)
+{
+	word16 ax_6 = ax + dx - si;
+	fn0800_C76E(bp, wArg00, wArg02);
+	return ax_6;
+}
+
+// 0800:C76E: Register word16 fn0800_C76E(Register word16 bp, Stack word16 wArg00, Stack word16 wArg02)
+word16 fn0800_C76E(word16 bp, word16 wArg00, word16 wArg02)
+{
+	return Mem0[ss:bp + 0x00:word16];
+}
+
+// 0800:C779: Register word16 fn0800_C779(Register byte al, Register selector ds, Stack word16 wArg02, Stack segptr32 ptrArg04, Stack word16 wArg08, Register out ptr16 dlOut)
 word16 fn0800_C779(byte al, selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg08, ptr16 & dlOut)
 {
 	*dlOut = dl;
@@ -13136,5 +19900,75 @@ word16 fn0800_C779(byte al, selector ds, word16 wArg02, segptr32 ptrArg04, word1
 	}
 	ax_23 = fn0800_8D2B(ds, wLoc04_36);
 	return ax_23;
+}
+
+// 1483:0ADB: void fn1483_0ADB()
+void fn1483_0ADB()
+{
+	return;
+}
+
+// 1483:1104: FpuStack real64 fn1483_1104(Register word16 ax, Register byte dl, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, FpuStack real64 rArg0, FpuStack real64 rArg1, FpuStack real64 rArg2)
+real64 fn1483_1104(word16 ax, byte dl, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, real64 rArg0, real64 rArg1, real64 rArg2)
+{
+	byte al_4 = (byte) (ax - 23959);
+	word16 sp_1 = fp;
+	word16 dx_23 = DPB(dx, 0x26, 8);
+	byte C_16 = cond(SEQ(al_4, __aam(al_4)) - 7691671);
+	while (true)
+	{
+		Mem40[ss:bp + 0x450F:word16] = Mem0[ss:bp + 0x450F:word16] + ~0x60A6 + C_16;
+		word16 sp_43 = sp_1 - 0x02;
+		Mem44[ss:sp_43 + 0x00:word16] = es;
+		dx_23 = DPB(dx_23, 0x34, 8);
+		Mem46[ss:bp + 0x5E + si:word16] = dx_23;
+		Mem49[ds:bx + 26462 + di:word16] = Mem46[ds:bx + 26462 + di:word16] - 0x7D;
+		Mem58[ss:sp_43 - 0x02 + 0x00:word16] = dx_23;
+		real64 rArg1_62 = rArg1 * lg2(rArg0 + 1.0);
+		ptr32 es_bx_73 = Mem58[ds:~0x60A6:segptr32];
+		rArg1 = scalbn(rArg1_62, rArg2);
+		word16 v27_83 = Mem58[ss:bp + 7876:word16] + bp;
+		Mem84[ss:bp + 7876:word16] = v27_83;
+		sp_1 = sp_43;
+		si = ~0x60A6;
+		es = SLICE(es_bx_73, selector, 16);
+		bx = (word16) es_bx_73;
+		di = 49092;
+		C_16 = cond(v27_83);
+	}
+}
+
+// 1483:14C4: void fn1483_14C4(Register byte al, Register word16 bx, Register word16 di, Register selector es, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg08, Stack word16 wArg0A, Stack word16 wArg0C, Stack word16 wArg0E, Stack word16 wArg10)
+void fn1483_14C4(byte al, word16 bx, word16 di, selector es, selector ds, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg08, word16 wArg0A, word16 wArg0C, word16 wArg0E, word16 wArg10)
+{
+	Mem2[ds:bx + 51265 + di:byte] = 0xF0;
+	Mem10[es:di + 0x00:byte] = (byte) (ax - di - C);
+	Mem38[ds:wArg00 + 0x47:word16] = ~0x6008;
+	Mem43[ds:wArg08 + 0x00:word16] = -Mem38[ds:wArg08 + 0x00:word16];
+	Mem45[ds:wArg08 + wArg00:word16] = Mem43[ds:wArg08 + wArg00:word16] >> (byte) wArg0C;
+	byte al_51 = Mem45[ds:811:byte];
+	Mem54[ds:wArg00 + 0x00:word16] = ss;
+	__aam(al_51);
+	__inw(0x94);
+	return;
+}
+
+// 1483:1C50: void fn1483_1C50(Register word16 dx)
+void fn1483_1C50(word16 dx)
+{
+	byte al_3 = __inb(dx);
+	word16 ax_5 = DPB(ax, al_3, 0);
+	word16 sp_6;
+	byte al_7;
+	word16 dx_8;
+	word16 ax_9;
+	ax_5();
+	return;
+}
+
+// 1483:1C95: void fn1483_1C95(Register word16 ax, Register word16 bp)
+void fn1483_1C95(word16 ax, word16 bp)
+{
+	return;
 }
 

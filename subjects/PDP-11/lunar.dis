@@ -1216,7 +1216,6 @@ l0978_thunk_fn097C:
 // DataOut: pc
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r1:0x2314 r0:<invalid> r2:<invalid> r5:<invalid> r4:<invalid> r3:<invalid>
-// Terminates process
 
 l0960:
 	pc = fn0B06(r3, r5_140, pc)
