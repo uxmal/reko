@@ -333,7 +333,6 @@ namespace Reko.Arch.X86
 
             // Reset the state of the currentInstruction
             this.currentDecodingContext.Reset();
-
             byte op;
             if (!rdr.TryReadByte(out op))
                 return null;

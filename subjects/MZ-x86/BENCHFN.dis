@@ -209,23 +209,24 @@ fn0800_01E2_entry:
 // DataOut: al si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16)
 
 l0800_01E2:
-	selector ds_5 = Mem0[0x0800:0x01F8:selector]
-	word16 bx_7 = fn0800_01DA(al, 0x001E, 0x0056, ds_5)
-	fn0800_0121()
-	Mem14[ds_5:bx_7 + si:byte] = Mem0[ds_5:bx_7 + si:byte] + 0x03
+// DataOut: al cx dx si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0800_01E6_thunk_fn0800_01E9:
+	fn0800_01E9(al, 0x001E, 0x0056, si)
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
+// SymbolicIn: sp:fp cx:0x001E dx:0x0056
 // Terminates process
 
 fn0800_01E2_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:sp - 0x0002 bp:<invalid> -2(fp):0x0003
+// SymbolicIn:
 
 
 

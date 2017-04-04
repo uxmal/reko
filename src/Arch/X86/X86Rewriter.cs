@@ -382,7 +382,7 @@ namespace Reko.Arch.X86
             Identifier idDst = dst as Identifier;
             if (idDst != null || (flags & CopyFlags.ForceBreak) == 0)
             {
-                m.Assign(dst, src);
+                AssignToRegister(idDst, src);
             }
             else
             {
@@ -400,6 +400,17 @@ namespace Reko.Arch.X86
             {
                 m.Assign(orw.FlagGroup(FlagM.CF), m.Eq0(dst));
             }
+        }
+
+        private void AssignToRegister(Identifier idDst, Expression src)
+        {
+            if (arch.WordWidth.BitSize == 64 && idDst.Storage.BitSize == 32)
+            {
+                var reg = (RegisterStorage)idDst.Storage;
+                idDst = frame.EnsureRegister(Registers.Gp64BitRegisters[reg.Number]);
+                src = m.Cast(PrimitiveType.UInt64, src);
+            }
+            m.Assign(idDst, src);
         }
 
         private Expression SrcOp(MachineOperand opSrc)

@@ -1532,5 +1532,15 @@ namespace Reko.UnitTests.Arch.Intel
                "0|L--|0000000140000000(4): 1 instructions",
                "1|L--|xmm0 = DPB(xmm0, (real64) xmm3, 0)");
         }
+
+        [Test(Description = "Intel and AMD state that if you set the low 32-bits of a register in 64-bit mode, they are zero extended.")]
+        public void X86rw_64bit_clearHighBits()
+        {
+            Run64bitTest(0x33, 0xC0);
+            AssertCode(
+               "0|L--|0000000140000000(2): 3 instructions",
+               "1|L--|rax = (uint64) (eax ^ eax)");
+
+        }
     }
 }

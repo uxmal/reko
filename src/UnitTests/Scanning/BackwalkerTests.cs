@@ -204,5 +204,18 @@ namespace Reko.UnitTests.Scanning
             bw.BackWalk(m.Block);
             Assert.AreEqual("v40", bw.IndexExpression.ToString());
         }
+
+        [Test]
+        public void BwLoadDirect()
+        {
+            var r1 = m.Reg32("r1", 1);
+            m.Assign(r1, m.LoadDw(Constant.Word32(0x00123400)));
+            var xfer = new RtlGoto(m.LoadDw(m.IAdd(Constant.Word32(0x00113300), m.IMul(r1, 8))), RtlClass.Transfer);
+
+            var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
+            Assert.IsTrue(bw.CanBackwalk());
+            var ops = bw.BackWalk(m.Block);
+            Assert.IsNull(ops, "Should have reported missing guard.");
+        }
     }
 }
