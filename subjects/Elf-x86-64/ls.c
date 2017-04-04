@@ -21,6 +21,762 @@ void _init()
 	return;
 }
 
+// 00000000004021A0: void fn00000000004021A0()
+void fn00000000004021A0()
+{
+fn00000000004021A0_entry:
+fn00000000004021A0_exit:
+}
+
+// 00000000004021B0: void fn00000000004021B0()
+void fn00000000004021B0()
+{
+fn00000000004021B0_entry:
+fn00000000004021B0_exit:
+}
+
+// 00000000004021C0: void fn00000000004021C0()
+void fn00000000004021C0()
+{
+fn00000000004021C0_entry:
+fn00000000004021C0_exit:
+}
+
+// 00000000004021D0: void fn00000000004021D0()
+void fn00000000004021D0()
+{
+fn00000000004021D0_entry:
+fn00000000004021D0_exit:
+}
+
+// 00000000004021E0: void fn00000000004021E0()
+void fn00000000004021E0()
+{
+fn00000000004021E0_entry:
+fn00000000004021E0_exit:
+}
+
+// 00000000004021F0: void free()
+void free()
+{
+fn00000000004021F0_entry:
+fn00000000004021F0_exit:
+}
+
+// 0000000000402200: void fn0000000000402200()
+void fn0000000000402200()
+{
+fn0000000000402200_entry:
+fn0000000000402200_exit:
+}
+
+// 0000000000402210: void fn0000000000402210()
+void fn0000000000402210()
+{
+fn0000000000402210_entry:
+fn0000000000402210_exit:
+}
+
+// 0000000000402220: void fn0000000000402220()
+void fn0000000000402220()
+{
+fn0000000000402220_entry:
+fn0000000000402220_exit:
+}
+
+// 0000000000402230: void fn0000000000402230()
+void fn0000000000402230()
+{
+fn0000000000402230_entry:
+fn0000000000402230_exit:
+}
+
+// 0000000000402240: void fn0000000000402240()
+void fn0000000000402240()
+{
+fn0000000000402240_entry:
+fn0000000000402240_exit:
+}
+
+// 0000000000402250: void fn0000000000402250()
+void fn0000000000402250()
+{
+fn0000000000402250_entry:
+fn0000000000402250_exit:
+}
+
+// 0000000000402260: void fn0000000000402260()
+void fn0000000000402260()
+{
+fn0000000000402260_entry:
+fn0000000000402260_exit:
+}
+
+// 0000000000402270: void fn0000000000402270()
+void fn0000000000402270()
+{
+fn0000000000402270_entry:
+fn0000000000402270_exit:
+}
+
+// 0000000000402280: void fn0000000000402280()
+void fn0000000000402280()
+{
+fn0000000000402280_entry:
+fn0000000000402280_exit:
+}
+
+// 0000000000402290: void fn0000000000402290()
+void fn0000000000402290()
+{
+fn0000000000402290_entry:
+fn0000000000402290_exit:
+}
+
+// 00000000004022A0: void fn00000000004022A0()
+void fn00000000004022A0()
+{
+fn00000000004022A0_entry:
+fn00000000004022A0_exit:
+}
+
+// 00000000004022B0: void fn00000000004022B0()
+void fn00000000004022B0()
+{
+fn00000000004022B0_entry:
+fn00000000004022B0_exit:
+}
+
+// 00000000004022C0: void fn00000000004022C0()
+void fn00000000004022C0()
+{
+fn00000000004022C0_entry:
+fn00000000004022C0_exit:
+}
+
+// 00000000004022D0: void fn00000000004022D0()
+void fn00000000004022D0()
+{
+fn00000000004022D0_entry:
+fn00000000004022D0_exit:
+}
+
+// 00000000004022E0: void fn00000000004022E0()
+void fn00000000004022E0()
+{
+fn00000000004022E0_entry:
+fn00000000004022E0_exit:
+}
+
+// 00000000004022F0: void fn00000000004022F0()
+void fn00000000004022F0()
+{
+fn00000000004022F0_entry:
+fn00000000004022F0_exit:
+}
+
+// 0000000000402300: void fn0000000000402300()
+void fn0000000000402300()
+{
+fn0000000000402300_entry:
+fn0000000000402300_exit:
+}
+
+// 0000000000402310: void fn0000000000402310()
+void fn0000000000402310()
+{
+fn0000000000402310_entry:
+fn0000000000402310_exit:
+}
+
+// 0000000000402320: void fn0000000000402320()
+void fn0000000000402320()
+{
+fn0000000000402320_entry:
+fn0000000000402320_exit:
+}
+
+// 0000000000402330: void fn0000000000402330()
+void fn0000000000402330()
+{
+fn0000000000402330_entry:
+fn0000000000402330_exit:
+}
+
+// 0000000000402340: void fn0000000000402340()
+void fn0000000000402340()
+{
+fn0000000000402340_entry:
+fn0000000000402340_exit:
+}
+
+// 0000000000402350: void fn0000000000402350()
+void fn0000000000402350()
+{
+fn0000000000402350_entry:
+fn0000000000402350_exit:
+}
+
+// 0000000000402360: void fn0000000000402360()
+void fn0000000000402360()
+{
+fn0000000000402360_entry:
+fn0000000000402360_exit:
+}
+
+// 0000000000402370: void fn0000000000402370()
+void fn0000000000402370()
+{
+fn0000000000402370_entry:
+fn0000000000402370_exit:
+}
+
+// 0000000000402380: void fn0000000000402380()
+void fn0000000000402380()
+{
+fn0000000000402380_entry:
+fn0000000000402380_exit:
+}
+
+// 0000000000402390: void fn0000000000402390()
+void fn0000000000402390()
+{
+fn0000000000402390_entry:
+fn0000000000402390_exit:
+}
+
+// 00000000004023A0: void fn00000000004023A0()
+void fn00000000004023A0()
+{
+fn00000000004023A0_entry:
+fn00000000004023A0_exit:
+}
+
+// 00000000004023B0: void fn00000000004023B0()
+void fn00000000004023B0()
+{
+fn00000000004023B0_entry:
+fn00000000004023B0_exit:
+}
+
+// 00000000004023C0: void fn00000000004023C0()
+void fn00000000004023C0()
+{
+fn00000000004023C0_entry:
+fn00000000004023C0_exit:
+}
+
+// 00000000004023D0: void fn00000000004023D0()
+void fn00000000004023D0()
+{
+fn00000000004023D0_entry:
+fn00000000004023D0_exit:
+}
+
+// 00000000004023E0: void fn00000000004023E0()
+void fn00000000004023E0()
+{
+fn00000000004023E0_entry:
+fn00000000004023E0_exit:
+}
+
+// 00000000004023F0: void fn00000000004023F0()
+void fn00000000004023F0()
+{
+fn00000000004023F0_entry:
+fn00000000004023F0_exit:
+}
+
+// 0000000000402400: void fn0000000000402400()
+void fn0000000000402400()
+{
+fn0000000000402400_entry:
+fn0000000000402400_exit:
+}
+
+// 0000000000402410: void fn0000000000402410()
+void fn0000000000402410()
+{
+fn0000000000402410_entry:
+fn0000000000402410_exit:
+}
+
+// 0000000000402420: void fn0000000000402420()
+void fn0000000000402420()
+{
+fn0000000000402420_entry:
+fn0000000000402420_exit:
+}
+
+// 0000000000402430: void fn0000000000402430()
+void fn0000000000402430()
+{
+fn0000000000402430_entry:
+fn0000000000402430_exit:
+}
+
+// 0000000000402440: void fn0000000000402440()
+void fn0000000000402440()
+{
+fn0000000000402440_entry:
+fn0000000000402440_exit:
+}
+
+// 0000000000402450: void fn0000000000402450()
+void fn0000000000402450()
+{
+fn0000000000402450_entry:
+fn0000000000402450_exit:
+}
+
+// 0000000000402460: void fn0000000000402460()
+void fn0000000000402460()
+{
+fn0000000000402460_entry:
+fn0000000000402460_exit:
+}
+
+// 0000000000402470: void fn0000000000402470()
+void fn0000000000402470()
+{
+fn0000000000402470_entry:
+fn0000000000402470_exit:
+}
+
+// 0000000000402480: void fn0000000000402480()
+void fn0000000000402480()
+{
+fn0000000000402480_entry:
+fn0000000000402480_exit:
+}
+
+// 0000000000402490: void fn0000000000402490()
+void fn0000000000402490()
+{
+fn0000000000402490_entry:
+fn0000000000402490_exit:
+}
+
+// 00000000004024A0: void fn00000000004024A0()
+void fn00000000004024A0()
+{
+fn00000000004024A0_entry:
+fn00000000004024A0_exit:
+}
+
+// 00000000004024B0: void fn00000000004024B0()
+void fn00000000004024B0()
+{
+fn00000000004024B0_entry:
+fn00000000004024B0_exit:
+}
+
+// 00000000004024C0: void fn00000000004024C0()
+void fn00000000004024C0()
+{
+fn00000000004024C0_entry:
+fn00000000004024C0_exit:
+}
+
+// 00000000004024D0: void fn00000000004024D0()
+void fn00000000004024D0()
+{
+fn00000000004024D0_entry:
+fn00000000004024D0_exit:
+}
+
+// 00000000004024E0: void fn00000000004024E0()
+void fn00000000004024E0()
+{
+fn00000000004024E0_entry:
+fn00000000004024E0_exit:
+}
+
+// 00000000004024F0: void fn00000000004024F0()
+void fn00000000004024F0()
+{
+fn00000000004024F0_entry:
+fn00000000004024F0_exit:
+}
+
+// 0000000000402500: void fn0000000000402500()
+void fn0000000000402500()
+{
+fn0000000000402500_entry:
+fn0000000000402500_exit:
+}
+
+// 0000000000402510: void fn0000000000402510()
+void fn0000000000402510()
+{
+fn0000000000402510_entry:
+fn0000000000402510_exit:
+}
+
+// 0000000000402520: void fn0000000000402520()
+void fn0000000000402520()
+{
+fn0000000000402520_entry:
+fn0000000000402520_exit:
+}
+
+// 0000000000402530: void fn0000000000402530()
+void fn0000000000402530()
+{
+fn0000000000402530_entry:
+fn0000000000402530_exit:
+}
+
+// 0000000000402540: void fn0000000000402540()
+void fn0000000000402540()
+{
+fn0000000000402540_entry:
+fn0000000000402540_exit:
+}
+
+// 0000000000402550: void fn0000000000402550()
+void fn0000000000402550()
+{
+fn0000000000402550_entry:
+fn0000000000402550_exit:
+}
+
+// 0000000000402560: void fn0000000000402560()
+void fn0000000000402560()
+{
+fn0000000000402560_entry:
+fn0000000000402560_exit:
+}
+
+// 0000000000402570: void fn0000000000402570()
+void fn0000000000402570()
+{
+fn0000000000402570_entry:
+fn0000000000402570_exit:
+}
+
+// 0000000000402580: void fn0000000000402580()
+void fn0000000000402580()
+{
+fn0000000000402580_entry:
+fn0000000000402580_exit:
+}
+
+// 0000000000402590: void fn0000000000402590()
+void fn0000000000402590()
+{
+fn0000000000402590_entry:
+fn0000000000402590_exit:
+}
+
+// 00000000004025A0: void fn00000000004025A0()
+void fn00000000004025A0()
+{
+fn00000000004025A0_entry:
+fn00000000004025A0_exit:
+}
+
+// 00000000004025B0: void fn00000000004025B0()
+void fn00000000004025B0()
+{
+fn00000000004025B0_entry:
+fn00000000004025B0_exit:
+}
+
+// 00000000004025C0: void fn00000000004025C0()
+void fn00000000004025C0()
+{
+fn00000000004025C0_entry:
+fn00000000004025C0_exit:
+}
+
+// 00000000004025D0: void fn00000000004025D0()
+void fn00000000004025D0()
+{
+fn00000000004025D0_entry:
+fn00000000004025D0_exit:
+}
+
+// 00000000004025E0: void fn00000000004025E0()
+void fn00000000004025E0()
+{
+fn00000000004025E0_entry:
+fn00000000004025E0_exit:
+}
+
+// 00000000004025F0: void fn00000000004025F0()
+void fn00000000004025F0()
+{
+fn00000000004025F0_entry:
+fn00000000004025F0_exit:
+}
+
+// 0000000000402600: void fn0000000000402600()
+void fn0000000000402600()
+{
+fn0000000000402600_entry:
+fn0000000000402600_exit:
+}
+
+// 0000000000402610: void fn0000000000402610()
+void fn0000000000402610()
+{
+fn0000000000402610_entry:
+fn0000000000402610_exit:
+}
+
+// 0000000000402620: void fn0000000000402620()
+void fn0000000000402620()
+{
+fn0000000000402620_entry:
+fn0000000000402620_exit:
+}
+
+// 0000000000402630: void fn0000000000402630()
+void fn0000000000402630()
+{
+fn0000000000402630_entry:
+fn0000000000402630_exit:
+}
+
+// 0000000000402640: void malloc()
+void malloc()
+{
+fn0000000000402640_entry:
+fn0000000000402640_exit:
+}
+
+// 0000000000402660: void fn0000000000402660()
+void fn0000000000402660()
+{
+fn0000000000402660_entry:
+fn0000000000402660_exit:
+}
+
+// 0000000000402670: void fn0000000000402670()
+void fn0000000000402670()
+{
+fn0000000000402670_entry:
+fn0000000000402670_exit:
+}
+
+// 0000000000402680: void fn0000000000402680()
+void fn0000000000402680()
+{
+fn0000000000402680_entry:
+fn0000000000402680_exit:
+}
+
+// 00000000004026A0: void fn00000000004026A0()
+void fn00000000004026A0()
+{
+fn00000000004026A0_entry:
+fn00000000004026A0_exit:
+}
+
+// 00000000004026B0: void fn00000000004026B0()
+void fn00000000004026B0()
+{
+fn00000000004026B0_entry:
+fn00000000004026B0_exit:
+}
+
+// 00000000004026C0: void fn00000000004026C0()
+void fn00000000004026C0()
+{
+fn00000000004026C0_entry:
+fn00000000004026C0_exit:
+}
+
+// 00000000004026D0: void fn00000000004026D0()
+void fn00000000004026D0()
+{
+fn00000000004026D0_entry:
+fn00000000004026D0_exit:
+}
+
+// 00000000004026E0: void fn00000000004026E0()
+void fn00000000004026E0()
+{
+fn00000000004026E0_entry:
+fn00000000004026E0_exit:
+}
+
+// 00000000004026F0: void fn00000000004026F0()
+void fn00000000004026F0()
+{
+fn00000000004026F0_entry:
+fn00000000004026F0_exit:
+}
+
+// 0000000000402700: void fn0000000000402700()
+void fn0000000000402700()
+{
+fn0000000000402700_entry:
+fn0000000000402700_exit:
+}
+
+// 0000000000402710: void fn0000000000402710()
+void fn0000000000402710()
+{
+fn0000000000402710_entry:
+fn0000000000402710_exit:
+}
+
+// 0000000000402720: void fn0000000000402720()
+void fn0000000000402720()
+{
+fn0000000000402720_entry:
+fn0000000000402720_exit:
+}
+
+// 0000000000402730: void fn0000000000402730()
+void fn0000000000402730()
+{
+fn0000000000402730_entry:
+fn0000000000402730_exit:
+}
+
+// 0000000000402740: void fn0000000000402740()
+void fn0000000000402740()
+{
+fn0000000000402740_entry:
+fn0000000000402740_exit:
+}
+
+// 0000000000402750: void fn0000000000402750()
+void fn0000000000402750()
+{
+fn0000000000402750_entry:
+fn0000000000402750_exit:
+}
+
+// 0000000000402760: void fn0000000000402760()
+void fn0000000000402760()
+{
+fn0000000000402760_entry:
+fn0000000000402760_exit:
+}
+
+// 0000000000402770: void fn0000000000402770()
+void fn0000000000402770()
+{
+fn0000000000402770_entry:
+fn0000000000402770_exit:
+}
+
+// 0000000000402780: void fn0000000000402780()
+void fn0000000000402780()
+{
+fn0000000000402780_entry:
+fn0000000000402780_exit:
+}
+
+// 00000000004027A0: void fn00000000004027A0()
+void fn00000000004027A0()
+{
+fn00000000004027A0_entry:
+fn00000000004027A0_exit:
+}
+
+// 00000000004027C0: void fn00000000004027C0()
+void fn00000000004027C0()
+{
+fn00000000004027C0_entry:
+fn00000000004027C0_exit:
+}
+
+// 00000000004027D0: void fn00000000004027D0()
+void fn00000000004027D0()
+{
+fn00000000004027D0_entry:
+fn00000000004027D0_exit:
+}
+
+// 00000000004027E0: void fn00000000004027E0()
+void fn00000000004027E0()
+{
+fn00000000004027E0_entry:
+fn00000000004027E0_exit:
+}
+
+// 00000000004027F0: void fn00000000004027F0()
+void fn00000000004027F0()
+{
+fn00000000004027F0_entry:
+fn00000000004027F0_exit:
+}
+
+// 0000000000402800: void fn0000000000402800()
+void fn0000000000402800()
+{
+fn0000000000402800_entry:
+fn0000000000402800_exit:
+}
+
+// 0000000000402810: void fn0000000000402810()
+void fn0000000000402810()
+{
+fn0000000000402810_entry:
+fn0000000000402810_exit:
+}
+
+// 0000000000402820: void fn0000000000402820()
+void fn0000000000402820()
+{
+fn0000000000402820_entry:
+fn0000000000402820_exit:
+}
+
+// 0000000000402830: void fn0000000000402830()
+void fn0000000000402830()
+{
+fn0000000000402830_entry:
+fn0000000000402830_exit:
+}
+
+// 0000000000402840: void fn0000000000402840()
+void fn0000000000402840()
+{
+fn0000000000402840_entry:
+fn0000000000402840_exit:
+}
+
+// 0000000000402850: void fn0000000000402850()
+void fn0000000000402850()
+{
+fn0000000000402850_entry:
+fn0000000000402850_exit:
+}
+
+// 0000000000402860: void fn0000000000402860()
+void fn0000000000402860()
+{
+fn0000000000402860_entry:
+fn0000000000402860_exit:
+}
+
+// 0000000000402870: void fn0000000000402870()
+void fn0000000000402870()
+{
+fn0000000000402870_entry:
+fn0000000000402870_exit:
+}
+
+// 0000000000402880: void fn0000000000402880()
+void fn0000000000402880()
+{
+fn0000000000402880_entry:
+fn0000000000402880_exit:
+}
+
+// 0000000000402890: void fn0000000000402890()
+void fn0000000000402890()
+{
+fn0000000000402890_entry:
+fn0000000000402890_exit:
+}
+
 // 0000000000404890: void fn0000000000404890(Register word64 rax, Register word64 rdx, Stack word64 qwArg00, Stack word32 dwArg04)
 void fn0000000000404890(word64 rax, word64 rdx, word64 qwArg00, word32 dwArg04)
 {
@@ -230,42 +986,38 @@ l0000000000404CB0:
 fn00000000004049E0_exit:
 }
 
-// 0000000000404CD0: Register word64 fn0000000000404CD0(Register word32 edi, Register out ptr64 esiOut)
-word64 fn0000000000404CD0(word32 edi, ptr64 & esiOut)
+// 0000000000404CD0: Register word64 fn0000000000404CD0(Register word32 edi)
+word64 fn0000000000404CD0(word32 edi)
 {
 	word64 rdi_5 = DPB(rdi, edi, 0);
-	word64 rsi_13 = 6398952[rdi_5 * 0x10];
-	word64 rax_39 = DPB(rax, 0x00, 0);
+	word64 rax_36 = DPB(rax, 0x00, 0);
 	word64 rdx_12 = 6398944[rdi_5 * 0x10];
-	word32 esi_14 = (word32) rsi_13;
-	*esiOut = esi_14;
+	word64 rsi_13 = 6398952[rdi_5 * 0x10];
 	if (rdx_12 != 0x00)
 	{
 		if (rdx_12 == 0x01)
 			return DPB(rax, Mem0[rsi_13 + 0x00:byte] != 0x30, 0);
-		byte Z_47 = cond(rdx_12 - 0x02);
-		rax_39 = DPB(rax, 0x01, 0);
+		byte Z_44 = cond(rdx_12 - 0x02);
+		rax_36 = DPB(rax, 0x01, 0);
 		if (rdx_12 == 0x02)
 		{
-			word64 rdi_52 = DPB(rdi_5 << 0x04, 0x00413733, 0);
-			word64 rcx_54 = DPB(rcx, 0x02, 0);
-			if (rcx_54 != 0x00)
+			word64 rdi_49 = DPB(rdi_5 << 0x04, 0x00413733, 0);
+			word64 rcx_51 = DPB(rcx, 0x02, 0);
+			if (rcx_51 != 0x00)
 			{
-				rsi_13 = rsi_93 + 0x01;
-				Z_47 = cond(Mem0[rsi_93 + 0x00:byte] - Mem0[rdi_94 + 0x00:byte]);
-				word32 esi_83;
-				*esiOut = (word32) rsi_13;
-				rdi_52 = rdi_94 + 0x01;
-				rcx_54 = rcx_54 - 0x01;
-				word64 rsi_93 = rsi_13;
-				word64 rdi_94 = rdi_52;
-				if (Mem0[rsi_93 + 0x00:byte] != Mem0[rdi_94 + 0x00:byte])
+				Z_44 = cond(Mem0[rsi_87 + 0x00:byte] - Mem0[rdi_88 + 0x00:byte]);
+				rsi_13 = rsi_87 + 0x01;
+				rdi_49 = rdi_88 + 0x01;
+				rcx_51 = rcx_51 - 0x01;
+				word64 rsi_87 = rsi_13;
+				word64 rdi_88 = rdi_49;
+				if (Mem0[rsi_87 + 0x00:byte] != Mem0[rdi_88 + 0x00:byte])
 					goto l0000000000404D0A;
 			}
-			return DPB(rax, Z_47, 0);
+			return DPB(rax, Z_44, 0);
 		}
 	}
-	return rax_39;
+	return rax_36;
 }
 
 // 0000000000404D20: Register word64 fn0000000000404D20(Register byte dl, Register word64 rsi, Register word64 rdi, Register word64 r11, Register out ptr64 rbpOut, Register out ptr64 r12Out, Register out ptr64 r13Out)
@@ -281,23 +1033,27 @@ word64 fn0000000000404D20(byte dl, word64 rsi, word64 rdi, word64 r11, ptr64 & r
 	word64 rbp_18 = rdi;
 	word64 rax_30 = DPB(rax_27, 0x00, 0);
 	if (rsi != 0x00)
-		rax_30 = fn0000000000410E30(rax_30, rsi, out rsp_26, out rbp_18);
-	Mem38[rax_27 + 0x08:word64] = rax_30;
-	word64 rax_40 = DPB(rax_30, 0x00, 0);
+	{
+		word64 rsi_78;
+		rax_30 = fn0000000000410E30(rax_30, rsi, out rsp_26, out rbp_18, out rsi_78);
+	}
+	Mem39[rax_27 + 0x08:word64] = rax_30;
+	word64 rax_41 = DPB(rax_30, 0x00, 0);
 	if (rbp_18 != 0x00)
 	{
-		word64 rbp_69;
-		rax_40 = fn0000000000410E30(rax_40, rbp_18, out rsp_26, out rbp_69);
+		word64 rbp_71;
+		word64 rsi_72;
+		rax_41 = fn0000000000410E30(rax_41, rbp_18, out rsp_26, out rbp_71, out rsi_72);
 	}
-	Mem48[rax_27 + 0x00:word64] = rax_40;
-	word64 rax_49 = Mem48[0x000000000061B190 + 0x00:word64];
-	Mem50[r11 + 0x10:byte] = r13b_7;
-	Mem52[0x000000000061B190 + 0x00:word64] = rax_27;
-	Mem53[rax_27 + 0x18:word64] = rax_49;
-	word64 rsp_60 = Mem53[rsp_26 + 0x18:word64];
-	word64 rbp_62;
-	*rbpOut = Mem53[rsp_60 + 0x08:word64];
-	return rsp_60 + 0x10;
+	Mem50[rax_27 + 0x00:word64] = rax_41;
+	word64 rax_51 = Mem50[0x000000000061B190 + 0x00:word64];
+	Mem52[r11 + 0x10:byte] = r13b_7;
+	Mem54[0x000000000061B190 + 0x00:word64] = rax_27;
+	Mem55[rax_27 + 0x18:word64] = rax_51;
+	word64 rsp_62 = Mem55[rsp_26 + 0x18:word64];
+	word64 rbp_64;
+	*rbpOut = Mem55[rsp_62 + 0x08:word64];
+	return rsp_62 + 0x10;
 }
 
 // 0000000000404D90: Register word64 fn0000000000404D90(Register word64 rdi)
@@ -351,119 +1107,95 @@ void fn0000000000404DD0()
 void fn0000000000404E80(word64 rsi, word64 r11, word64 r15)
 {
 	word64 rbx_10 = Mem0[0x000000000061B1B0 + 0x00:word64];
-	word64 rbp_106 = rbx_10;
+	word64 rbp_12 = rbx_10;
 	word64 rax_14 = (rbx_10 >>u 0x01) + rbx_10;
 	if (rax_14 >u Mem0[0x000000000061B1A0 + 0x00:word64])
 	{
 		free(Mem0[0x000000000061B1A8 + 0x00:word64]);
 		if (rbx_10 >u rax_14)
-			goto l0000000000404FF8;
-		word64 rsp_307;
-		word64 rax_308 = fn0000000000410C40(rsi, rbx_10 * 0x18, out rsp_307);
-		rbp_106 = Mem0[0x000000000061B1B0 + 0x00:word64];
-		Mem310[0x000000000061B1A8 + 0x00:word64] = rax_308;
-		Mem315[0x000000000061B1A0 + 0x00:word64] = rbp_106 * 0x03;
+		{
+			fn0000000000410E50();
+			fn0000000000402550();
+			return;
+		}
+		word64 rsp_254;
+		word64 rax_255 = fn0000000000410C40(rsi, rbx_10 * 0x18, out rsp_254);
+		rbp_12 = Mem0[0x000000000061B1B0 + 0x00:word64];
+		Mem257[0x000000000061B1A8 + 0x00:word64] = rax_255;
+		Mem262[0x000000000061B1A0 + 0x00:word64] = rbp_12 * 0x03;
 	}
-	if (rbp_106 != 0x00)
+	if (rbp_12 != 0x00)
 	{
-		word64 rax_277 = Mem0[0x000000000061B1A8 + 0x00:word64];
-		word64 rdx_281 = Mem0[0x000000000061B1C0 + 0x00:word64];
-		word64 rcx_283 = rax_277 + rbp_106 * 0x08;
+		word64 rax_227 = Mem0[0x000000000061B1A8 + 0x00:word64];
+		word64 rdx_231 = Mem0[0x000000000061B1C0 + 0x00:word64];
+		word64 rcx_233 = rax_227 + rbp_12 * 0x08;
 		do
 		{
-			Mem287[rax_277 + 0x00:word64] = rdx_281;
-			rax_277 = rax_277 + 0x08;
-			rdx_281 = rdx_281 + 0x00C0;
-		} while (rax_277 != rcx_283);
+			Mem237[rax_227 + 0x00:word64] = rdx_231;
+			rax_227 = rax_227 + 0x08;
+			rdx_231 = rdx_231 + 0x00C0;
+		} while (rax_227 != rcx_233);
 	}
-	if (Mem0[0x000000000061B148 + 0x00:word32] == ~0x00)
-		return;
-	word32 ecx_191;
-	word64 rdi_187;
-	word64 rsi_185;
-	word64 rsp_158;
-	word64 rbp_159;
-	word64 rbx_160;
-	byte SCZO_161;
-	word64 rax_162;
-	byte CZ_163;
-	byte SZO_164;
-	byte C_165;
-	byte Z_166;
-	word64 rdx_167;
-	word64 rcx_168;
-	word32 edi_169;
-	word32 eax_170;
-	word32 r8d_171;
-	word64 rsi_172;
-	word64 rdi_173;
-	word32 ecx_174;
-	word32 edx_176;
-	word16 ax_177;
-	byte al_178;
-	word32 esi_179;
-	word64 r11_180;
-	word64 r15_181;
-	word64 r8_175;
-	_setjmp();
-	if (eax_170 == 0x00)
+	if (Mem0[0x000000000061B148 + 0x00:word32] != ~0x00)
 	{
-		ecx_191 = Mem0[0x000000000061B148 + 0x00:word32];
-		rsi_185 = Mem0[0x000000000061B1B0 + 0x00:word64];
-		rdi_187 = Mem0[0x000000000061B1A8 + 0x00:word64];
-		goto l0000000000404F54;
-	}
-	word32 r8d_221 = Mem0[0x000000000061B148 + 0x00:word32];
-	r8_175 = DPB(r8_175, r8d_221, 0);
-	if (r8d_221 != 0x03)
-	{
-		rsi_185 = Mem0[0x000000000061B1B0 + 0x00:word64];
-		rdi_187 = Mem0[0x000000000061B1A8 + 0x00:word64];
-		if (rsi_185 != 0x00)
+		word32 ecx_141;
+		word64 rdi_137;
+		word64 rsi_135;
+		word64 rsp_108;
+		word64 rbp_109;
+		word64 rbx_110;
+		byte SCZO_111;
+		word64 rax_112;
+		byte CZ_113;
+		byte SZO_114;
+		byte C_115;
+		byte Z_116;
+		word64 rdx_117;
+		word64 rcx_118;
+		word32 edi_119;
+		word32 eax_120;
+		word32 r8d_121;
+		word64 rsi_122;
+		word64 rdi_123;
+		word32 ecx_124;
+		word32 edx_126;
+		word16 ax_127;
+		byte al_128;
+		word32 esi_129;
+		word64 r11_130;
+		word64 r15_131;
+		word64 r8_125;
+		_setjmp();
+		if (eax_120 != 0x00)
 		{
-			word64 rdx_244 = Mem0[0x000000000061B1C0 + 0x00:word64];
-			word64 rcx_246 = rdi_187 + rsi_185 * 0x08;
-			word64 rax_248 = rdi_187;
-			do
+			word32 r8d_171 = Mem0[0x000000000061B148 + 0x00:word32];
+			r8_125 = DPB(r8_125, r8d_171, 0);
+			if (r8d_171 == 0x03)
+				__assert_fail(DPB(rdi_123, 0x0041373F, 0), DPB(rsi_122, 4273974, 0), DPB(rdx_117, 0x0DDB, 0), DPB(rcx_118, 4271253, 0));
+			rsi_135 = Mem0[0x000000000061B1B0 + 0x00:word64];
+			rdi_137 = Mem0[0x000000000061B1A8 + 0x00:word64];
+			if (rsi_135 != 0x00)
 			{
-				Mem254[rax_248 + 0x00:word64] = rdx_244;
-				rax_248 = rax_248 + 0x08;
-				rdx_244 = rdx_244 + 0x00C0;
-			} while (rax_248 != rcx_246);
+				word64 rdx_194 = Mem0[0x000000000061B1C0 + 0x00:word64];
+				word64 rcx_196 = rdi_137 + rsi_135 * 0x08;
+				word64 rax_198 = rdi_137;
+				do
+				{
+					Mem204[rax_198 + 0x00:word64] = rdx_194;
+					rax_198 = rax_198 + 0x08;
+					rdx_194 = rdx_194 + 0x00C0;
+				} while (rax_198 != rcx_196);
+			}
+			ecx_141 = r8d_171;
 		}
-		ecx_191 = r8d_221;
-l0000000000404F54:
-		fn000000000040D690(rsi_185, rdi_187, DPB(r8_175, (word32) Mem0[0x000000000061B10C + 0x00:byte], 0), r11_180, r15_181);
-		return;
+		else
+		{
+			ecx_141 = Mem0[0x000000000061B148 + 0x00:word32];
+			rsi_135 = Mem0[0x000000000061B1B0 + 0x00:word64];
+			rdi_137 = Mem0[0x000000000061B1A8 + 0x00:word64];
+		}
+		fn000000000040D690(rsi_135, rdi_137, DPB(r8_125, (word32) Mem0[0x000000000061B10C + 0x00:byte], 0), r11_130, r15_131);
 	}
-	__assert_fail(DPB(rdi_173, 0x0041373F, 0), DPB(rsi_172, 4273974, 0), DPB(rdx_167, 0x0DDB, 0), DPB(rcx_168, 4271253, 0));
-l0000000000404FF8:
-	fn0000000000410E50();
-	word64 rsp_73;
-	word64 rbp_74;
-	word64 rbx_75;
-	byte SCZO_76;
-	word64 rax_77;
-	byte CZ_78;
-	byte SZO_79;
-	byte C_80;
-	byte Z_81;
-	word64 rdx_82;
-	word64 rcx_83;
-	word32 edi_84;
-	word32 eax_85;
-	word32 r8d_86;
-	word64 rsi_87;
-	word64 rdi_88;
-	word32 ecx_89;
-	word64 r8_90;
-	word32 edx_91;
-	word16 ax_92;
-	byte al_93;
-	word32 esi_94;
-	word64 r11_95;
-	word64 r15_96;
-	Mem0[0x000000000061A1F0 + 0x00:word32]();
 	return;
 }
 
@@ -490,31 +1222,31 @@ void fn0000000000405090(byte sil, word64 rdi, word64 r11)
 	word64 r13_117 = rdi;
 	if (rdi != 0x00 && Mem0[0x000000000061B1C8 + 0x00:word64] != 0x00)
 	{
-		word64 rbp_273;
-		word64 r12_274;
-		fn0000000000404D20(0x00, rdi, DPB(rdi, 0x00, 0), r11, out rbp_273, out r12_274, out r13_117);
+		word64 rbp_274;
+		word64 r12_275;
+		fn0000000000404D20(0x00, rdi, DPB(rdi, 0x00, 0), r11, out rbp_274, out r12_275, out r13_117);
 	}
 	word64 rbx_44 = Mem0[0x000000000061B1B0 + 0x00:word64];
 	if (rbx_44 == 0x00)
 	{
-		word64 rdx_207;
-		word64 rdi_196 = Mem0[0x000000000061B1B0 + 0x00:word64];
-		if (rdi_196 != 0x00)
+		word64 rdx_208;
+		word64 rdi_197 = Mem0[0x000000000061B1B0 + 0x00:word64];
+		if (rdi_197 != 0x00)
 		{
-			word64 rsi_229 = Mem0[0x000000000061B1A8 + 0x00:word64];
-			rdx_207 = DPB(rdx, 0x00, 0);
-			word64 rax_235 = DPB(rax, 0x00, 0);
+			word64 rsi_230 = Mem0[0x000000000061B1A8 + 0x00:word64];
+			rdx_208 = DPB(rdx, 0x00, 0);
+			word64 rax_236 = DPB(rax, 0x00, 0);
 			do
 			{
-				word64 rcx_241 = rsi_229[rax_235 * 0x08];
-				rsi_229[rdx_207 * 0x08] = rcx_241;
-				rax_235 = rax_235 + 0x01;
-				rdx_207 = rdx_207 + DPB(rcx_241, (word32) (Mem0[rcx_241 + 0xA0:word32] != 0x09), 0);
-			} while (rax_235 != rdi_196);
+				word64 rcx_242 = rsi_230[rax_236 * 0x08];
+				rsi_230[rdx_208 * 0x08] = rcx_242;
+				rax_236 = rax_236 + 0x01;
+				rdx_208 = rdx_208 + DPB(rcx_242, (word32) (Mem0[rcx_242 + 0xA0:word32] != 0x09), 0);
+			} while (rax_236 != rdi_197);
 		}
 		else
-			rdx_207 = DPB(rdx, 0x00, 0);
-		Mem214[0x000000000061B1B0 + 0x00:word64] = rdx_207;
+			rdx_208 = DPB(rdx, 0x00, 0);
+		Mem215[0x000000000061B1B0 + 0x00:word64] = rdx_208;
 		return;
 	}
 	word64 rax_71 = Mem0[0x000000000061B1A8 + 0x00:word64];
@@ -531,24 +1263,25 @@ l0000000000405100:
 	word64 r15_103 = Mem0[r13_117 + 0x00:word64];
 	if (r13_117 != 0x00)
 	{
-		rax = fn000000000040A390(r15_103);
+		word64 rsi_145;
+		rax = fn000000000040A390(r15_103, out rsi_145);
 		if (Mem0[rax + 0x00:byte] == 0x2E)
 		{
 			rdx = DPB(rdx, Mem0[rax + 0x01:byte] == 0x2E, 0);
-			word32 eax_186 = (word32) Mem0[rax + 0x01 + rdx:byte];
-			rax = DPB(rax, eax_186, 0);
-			byte al_188 = (byte) eax_186;
-			if (al_188 == 0x2F || al_188 == 0x00)
+			word32 eax_187 = (word32) Mem0[rax + 0x01 + rdx:byte];
+			rax = DPB(rax, eax_187, 0);
+			byte al_189 = (byte) eax_187;
+			if (al_189 == 0x2F || al_189 == 0x00)
 				goto l0000000000405100;
 		}
 		if (Mem0[r15_103 + 0x00:byte] != 0x2F)
 		{
 			rdx = DPB(rdx, 0x00, 0);
-			word64 rbp_166;
-			byte r14b_167;
-			rax = fn000000000040A610(rdx, r15_103, r13_117, out rbp_166, out r14b_167);
-			word64 r12_175;
-			fn0000000000404D20((byte) r14d_9, Mem0[rbp_166 + 0x08:word64], rax, r11, out rbp_116, out r12_175, out r13_117);
+			word64 rbp_167;
+			byte r14b_168;
+			rax = fn000000000040A610(rdx, r15_103, r13_117, out rbp_167, out r14b_168);
+			word64 r12_176;
+			fn0000000000404D20((byte) r14d_9, Mem0[rbp_167 + 0x08:word64], rax, r11, out rbp_116, out r12_176, out r13_117);
 			free(rax);
 			if (Mem0[rbp_116 + 0xA0:word32] != 0x09)
 				goto l0000000000405100;
@@ -651,575 +1384,570 @@ l0000000000405266:
 	return;
 }
 
-// 00000000004052D0: Register word64 fn00000000004052D0(Register word64 rdx, Register word32 ebx, Register word64 rsi, Register word64 r11, Register selector fs, Register out ptr64 rbxOut, Register out ptr64 r8Out, Register out ptr64 r9Out, Register out ptr64 r11Out, Register out ptr64 r12Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
-word64 fn00000000004052D0(word64 rdx, word32 ebx, word64 rsi, word64 r11, selector fs, ptr64 & rbxOut, ptr64 & r8Out, ptr64 & r9Out, ptr64 & r11Out, ptr64 & r12Out, ptr64 & r13Out, ptr64 & r14Out, ptr64 & r15Out)
+// 00000000004052D0: Register word64 fn00000000004052D0(Register word64 rdx, Register word32 ebx, Register word64 rbp, Register word64 rsi, Register word64 rdi, Register word64 r11, Register selector fs, Register out ptr64 rbxOut, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut, Register out ptr64 ediOut, Register out ptr64 r8Out, Register out ptr64 r9Out, Register out ptr64 r11Out, Register out ptr64 r12Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
+word64 fn00000000004052D0(word64 rdx, word32 ebx, word64 rbp, word64 rsi, word64 rdi, word64 r11, selector fs, ptr64 & rbxOut, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & rsiOut, ptr64 & ediOut, ptr64 & r8Out, ptr64 & r9Out, ptr64 & r11Out, ptr64 & r12Out, ptr64 & r13Out, ptr64 & r14Out, ptr64 & r15Out)
 {
 	word32 ebp_8 = (word32) (fp - 0x04);
+	word64 rsp_44;
 	word64 rdi_47;
 	word64 r9_49;
 	word64 r11_50;
 	word64 r13_52;
 	word64 r14_53;
 	word64 r15_54;
-	word64 r12_109;
-	word64 r8_106;
-	word64 rbp_118;
-	word64 rsp_119;
-	word64 rsi_116;
-	word64 rax_55 = fn000000000040E6F0(~0x00, rsi, ebx, ebp_8, DPB(rsi, 0x2000, 0), fp + ~0x2043, rdx, r11, fs, out rsp_119, out rbp_118, out rsi_116, out rdi_47, out r8_106, out r9_49, out r11_50, out r12_109, out r13_52, out r14_53, out r15_54);
-	Mem64[rbp_118 + ~0x2067:word64] = rbp_118 + ~0x203F;
-	word64 rbx_114 = rax_55;
+	word64 r12_106;
+	word64 r8_105;
+	word64 rbp_117;
+	word64 rsi_113;
+	word64 rax_55 = fn000000000040E6F0(~0x00, rsi, ebx, ebp_8, DPB(rsi, 0x2000, 0), fp + ~0x2043, rdx, r11, fs, out rsp_44, out rbp_117, out rsi_113, out rdi_47, out r8_105, out r9_49, out r11_50, out r12_106, out r13_52, out r14_53, out r15_54);
+	Mem64[rbp_117 + ~0x2067:word64] = rbp_117 + ~0x203F;
+	word64 rbx_111 = rax_55;
 	word32 ebx_57 = (word32) rax_55;
 	if (rax_55 >u 0x1FFF)
 	{
-		Mem893[rbp_118 + ~0x2067:word64] = rsp_119 - (rax_55 + 0x1F & ~0x0F) + 0x0F;
-		Mem895[rbp_118 + ~0x2067:word64] = Mem893[rbp_118 + ~0x2067:word64] & ~0x0F;
-		word64 rdi_903;
-		word64 r9_905;
-		word64 r11_906;
-		word64 r13_908;
-		word64 r14_909;
-		word64 r15_910;
-		fn000000000040E6F0(~0x00, r14_53, ebx_57, ebp_8, rax_55 + 0x01, Mem895[rbp_118 + ~0x2067:word64], r13_52, r11_50, fs, out rsp_119, out rbp_118, out rsi_116, out rdi_903, out r8_106, out r9_905, out r11_906, out r12_109, out r13_908, out r14_909, out r15_910);
+		Mem873[rbp_117 + ~0x2067:word64] = rsp_44 - (rax_55 + 0x1F & ~0x0F) + 0x0F;
+		Mem875[rbp_117 + ~0x2067:word64] = Mem873[rbp_117 + ~0x2067:word64] & ~0x0F;
+		word64 rsp_880;
+		word64 rdi_883;
+		word64 r9_885;
+		word64 r11_886;
+		word64 r13_888;
+		word64 r14_889;
+		word64 r15_890;
+		fn000000000040E6F0(~0x00, r14_53, ebx_57, ebp_8, rax_55 + 0x01, Mem875[rbp_117 + ~0x2067:word64], r13_52, r11_50, fs, out rsp_880, out rbp_117, out rsi_113, out rdi_883, out r8_105, out r9_885, out r11_886, out r12_106, out r13_888, out r14_889, out r15_890);
 	}
 	if (Mem64[0x000000000061B0F0 + 0x00:byte] == 0x00)
 	{
-		if (Mem64[rbp_118 + ~0x206F:word64] != 0x00)
+		if (Mem64[rbp_117 + ~0x206F:word64] != 0x00)
 		{
-			word64 rdx_297;
-			word64 rdi_298;
-			word64 r14_300;
-			word64 r13_301;
-			word32 esi_302;
-			byte SCZO_304;
-			word64 rcx_305;
-			word64 rax_306;
-			word32 eax_308;
-			byte SZO_309;
-			byte C_310;
-			byte CZ_311;
-			byte Z_312;
-			word32 edx_313;
-			word64 r12_314;
-			word32 r12d_315;
-			word16 dx_316;
-			word64 r15_317;
-			byte al_318;
-			byte SO_319;
-			byte dl_320;
-			word32 edi_321;
-			byte S_322;
-			word32 ecx_323;
-			byte cl_324;
-			word16 ax_325;
-			word32 ebx_326;
-			word64 r11_327;
-			word64 r9_328;
-			word32 ebp_329;
+			word64 rsp_273;
+			word64 rdx_276;
+			word64 rdi_277;
+			word64 r14_279;
+			word64 r13_280;
+			word32 esi_281;
+			byte SCZO_283;
+			word64 rcx_284;
+			word64 rax_285;
+			word32 eax_287;
+			byte SZO_288;
+			byte C_289;
+			byte CZ_290;
+			byte Z_291;
+			word32 edx_292;
+			word64 r12_293;
+			word32 r12d_294;
+			word16 dx_295;
+			word64 r15_296;
+			byte al_297;
+			byte SO_298;
+			byte dl_299;
+			word32 edi_300;
+			byte S_301;
+			word32 ecx_302;
+			byte cl_303;
+			word16 ax_304;
+			word32 ebx_305;
+			word64 r11_306;
+			word64 r9_307;
+			word32 ebp_308;
 			__ctype_get_mb_cur_max();
-			if (rax_306 >u 0x01)
+			if (rax_285 >u 0x01)
 			{
-				word32 ebx_338;
-				word64 r12_342;
-				word64 r13_343;
-				word64 r14_344;
-				word64 r15_345;
-				*r12Out = (int64) fn000000000040D240(0x00, rbx_114, Mem64[rbp_118 + ~0x2067:word64], fs, out ebx_338, out rsp_119, out rbp_118, out rsi_116, out r12_342, out r13_343, out r14_344, out r15_345);
+				word32 ebx_317;
+				word64 rsp_318;
+				word64 r12_321;
+				word64 r13_322;
+				word64 r14_323;
+				word64 r15_324;
+				*r12Out = (int64) (word32) fn000000000040D240(0x00, rbx_111, Mem64[rbp_117 + ~0x2067:word64], fs, out ebx_317, out rsp_318, out rbp_117, out rsi_113, out r12_321, out r13_322, out r14_323, out r15_324);
 			}
 			else
 			{
-				word64 r14_349 = Mem64[r13_301 + ~0x2067:word64];
-				*r14Out = r14_349;
-				word64 r13_350 = r14_349 + rbx_114;
-				*r13Out = r13_350;
-				if (r14_349 <u r13_350)
+				word64 r14_329 = Mem64[r13_280 + ~0x2067:word64];
+				*r14Out = r14_329;
+				word64 r13_330 = r14_329 + rbx_111;
+				*r13Out = r13_330;
+				if (r14_329 <u r13_330)
 				{
-					word64 rdi_357;
-					word64 r14_359;
-					word64 r13_360;
-					word32 esi_361;
-					byte SCZO_363;
-					word64 rcx_364;
-					word64 rax_365;
-					word32 eax_367;
-					byte SZO_368;
-					byte C_369;
-					byte CZ_370;
-					byte Z_371;
-					word32 edx_372;
-					word64 r12_373;
-					word32 r12d_374;
-					word16 dx_375;
-					word64 r15_376;
-					byte al_377;
-					byte SO_378;
-					byte dl_379;
-					word32 edi_380;
-					byte S_381;
-					word32 ecx_382;
-					byte cl_383;
-					word16 ax_384;
-					word32 ebx_385;
-					word64 r11_386;
-					word64 r9_387;
-					word32 ebp_388;
-					word64 rdx_356;
+					word64 rsp_333;
+					word64 rdi_337;
+					word64 r14_339;
+					word64 r13_340;
+					word32 esi_341;
+					byte SCZO_343;
+					word64 rcx_344;
+					word64 rax_345;
+					word32 eax_347;
+					byte SZO_348;
+					byte C_349;
+					byte CZ_350;
+					byte Z_351;
+					word32 edx_352;
+					word64 r12_353;
+					word32 r12d_354;
+					word16 dx_355;
+					word64 r15_356;
+					byte al_357;
+					byte SO_358;
+					byte dl_359;
+					word32 edi_360;
+					byte S_361;
+					word32 ecx_362;
+					byte cl_363;
+					word16 ax_364;
+					word32 ebx_365;
+					word64 r11_366;
+					word64 r9_367;
+					word32 ebp_368;
+					word64 rdx_336;
 					__ctype_b_loc();
-					r12_109 = DPB(r12_373, 0x00, 0);
-					word64 rcx_393 = Mem64[rax_365 + 0x00:word64];
-					word64 rax_396 = r14_359;
+					r12_106 = DPB(r12_353, 0x00, 0);
+					word64 rcx_373 = Mem64[rax_345 + 0x00:word64];
+					word64 rax_376 = r14_339;
 					do
 					{
-						rdx_356 = DPB(rdx_356, (word32) Mem64[rax_396 + 0x00:byte], 0);
-						r12_109 = r12_109 - ~0x00 - (((word16) ((word32) rcx_393[rdx_356 * 0x02]) & 0x4000) <u 0x01);
-						*r12Out = r12_109;
-						rax_396 = rax_396 + 0x01;
-					} while (rax_396 != r13_360);
+						rdx_336 = DPB(rdx_336, (word32) Mem64[rax_376 + 0x00:byte], 0);
+						r12_106 = r12_106 - ~0x00 - (((word16) ((word32) rcx_373[rdx_336 * 0x02]) & 0x4000) <u 0x01);
+						*r12Out = r12_106;
+						rax_376 = rax_376 + 0x01;
+					} while (rax_376 != r13_340);
 				}
 				else
-					*r12Out = DPB(r12_314, 0x00, 0);
+					*r12Out = DPB(r12_293, 0x00, 0);
 			}
 		}
 		goto l0000000000405379;
 	}
-	word64 rdx_425;
-	word64 r14_428;
-	word64 r13_429;
-	word32 esi_430;
-	byte SCZO_432;
-	word64 rcx_433;
-	word32 eax_436;
-	byte SZO_437;
-	byte C_438;
-	byte CZ_439;
-	byte Z_440;
-	word32 edx_441;
-	word64 r12_442;
-	word32 r12d_443;
-	word16 dx_444;
-	word64 r15_445;
-	byte al_446;
-	byte SO_447;
-	byte dl_448;
-	word32 edi_449;
-	byte S_450;
-	word32 ecx_451;
-	byte cl_452;
-	word16 ax_453;
-	word32 ebx_454;
-	word64 r11_455;
-	word64 r9_456;
-	word32 ebp_457;
-	word64 rax_434;
-	word64 rdi_426;
+	word64 rsp_402;
+	word64 rdx_405;
+	word64 r14_408;
+	word64 r13_409;
+	word32 esi_410;
+	byte SCZO_412;
+	word64 rcx_413;
+	word32 eax_416;
+	byte SZO_417;
+	byte C_418;
+	byte CZ_419;
+	byte Z_420;
+	word32 edx_421;
+	word64 r12_422;
+	word32 r12d_423;
+	word16 dx_424;
+	word64 r15_425;
+	byte al_426;
+	byte SO_427;
+	byte dl_428;
+	word32 edi_429;
+	byte S_430;
+	word32 ecx_431;
+	byte cl_432;
+	word16 ax_433;
+	word32 ebx_434;
+	word64 r11_435;
+	word64 r9_436;
+	word32 ebp_437;
+	word64 rax_414;
+	word64 rdi_406;
 	__ctype_get_mb_cur_max();
-	if (rax_434 >u 0x01)
+	if (rax_414 >u 0x01)
 	{
-		word64 r15_460 = Mem64[r13_429 + ~0x2067:word64];
-		*r15Out = r15_460;
-		word64 r13_461 = r15_460 + rbx_114;
-		*r13Out = r13_461;
-		if (r15_460 <u r13_461)
+		word64 r15_440 = Mem64[r13_409 + ~0x2067:word64];
+		*r15Out = r15_440;
+		word64 r13_441 = r15_440 + rbx_111;
+		*r13Out = r13_441;
+		if (r15_440 <u r13_441)
 		{
-			word64 rbx_464 = r15_460;
-			r12_109 = DPB(r12_442, 0x00, 0);
+			word64 rbx_444 = r15_440;
+			r12_106 = DPB(r12_422, 0x00, 0);
 l0000000000405440:
-			word32 eax_501 = (word32) Mem64[rdi_426 + 0x00:byte];
-			rax_434 = DPB(rax_434, eax_501, 0);
-			byte al_503 = (byte) eax_501;
-			if (al_503 <= 0x3F)
+			word32 eax_481 = (word32) Mem64[rdi_406 + 0x00:byte];
+			rax_414 = DPB(rax_414, eax_481, 0);
+			byte al_483 = (byte) eax_481;
+			if (al_483 <= 0x3F)
 			{
-				if (al_503 < 0x25 && (byte) (rax_434 - 0x20) >u 0x03)
+				if (al_483 < 0x25 && (byte) (rax_414 - 0x20) >u 0x03)
 				{
 l0000000000405460:
-					Mem550[rbp_118 + ~0x204F:word64] = 0x00;
+					Mem530[rbp_117 + ~0x204F:word64] = 0x00;
 					do
 					{
-						word64 rdx_565;
-						word64 r14_568;
-						word32 esi_570;
-						word64 rbx_571;
-						byte SCZO_572;
-						word64 rcx_573;
-						word32 eax_576;
-						byte SZO_577;
-						byte C_578;
-						byte CZ_579;
-						byte Z_580;
-						word32 edx_581;
-						word64 r12_582;
-						word32 r12d_583;
-						word16 dx_584;
-						word64 r15_585;
-						byte al_586;
-						byte SO_587;
-						byte dl_588;
-						word32 edi_589;
-						byte S_590;
-						word32 ecx_591;
-						byte cl_592;
-						word16 ax_593;
-						word32 ebx_594;
-						word64 r11_595;
-						word64 r9_596;
-						word32 ebp_597;
+						word64 rsp_542;
+						word64 rdx_545;
+						word64 r14_548;
+						word32 esi_550;
+						word64 rbx_551;
+						byte SCZO_552;
+						word64 rcx_553;
+						word32 eax_556;
+						byte SZO_557;
+						byte C_558;
+						byte CZ_559;
+						byte Z_560;
+						word32 edx_561;
+						word64 r12_562;
+						word32 r12d_563;
+						word16 dx_564;
+						word64 r15_565;
+						byte al_566;
+						byte SO_567;
+						byte dl_568;
+						word32 edi_569;
+						byte S_570;
+						word32 ecx_571;
+						byte cl_572;
+						word16 ax_573;
+						word32 ebx_574;
+						word64 r11_575;
+						word64 r9_576;
+						word32 ebp_577;
 						mbrtowc();
-						word64 r14_600 = rax_434;
-						*r14Out = r14_600;
-						if (rax_434 == ~0x00)
+						word64 r14_580 = rax_414;
+						*r14Out = r14_580;
+						if (rax_414 == ~0x00)
 						{
-							Mem738[rbx_571 + 0x00:byte] = 0x3F;
-							r15_460 = r15_585 + 0x01;
-							*r15Out = r15_460;
-							r12_109 = r12_582 + 0x01;
-							*r12Out = r12_109;
-							rbx_464 = rbx_571 + 0x01;
-							if (r15_585 + 0x01 >=u r13_461)
+							Mem718[rbx_551 + 0x00:byte] = 0x3F;
+							r15_440 = r15_565 + 0x01;
+							*r15Out = r15_440;
+							r12_106 = r12_562 + 0x01;
+							*r12Out = r12_106;
+							rbx_444 = rbx_551 + 0x01;
+							if (r15_565 + 0x01 >=u r13_441)
 								goto l0000000000405502;
 							goto l0000000000405440;
 						}
-						if (rax_434 == ~0x01)
+						if (rax_414 == ~0x01)
 						{
-							Mem730[rbx_571 + 0x00:byte] = 0x3F;
-							r15_460 = r13_461;
-							*r15Out = r15_460;
-							r12_109 = r12_582 + 0x01;
-							*r12Out = r12_109;
-							rbx_464 = rbx_571 + 0x01;
-							if (r13_461 >=u r13_461)
+							Mem710[rbx_551 + 0x00:byte] = 0x3F;
+							r15_440 = r13_441;
+							*r15Out = r15_440;
+							r12_106 = r12_562 + 0x01;
+							*r12Out = r12_106;
+							rbx_444 = rbx_551 + 0x01;
+							if (r13_441 >=u r13_441)
 								goto l0000000000405502;
 							goto l0000000000405440;
 						}
-						word64 rsp_612;
-						word64 rbp_613;
-						word64 r8_614;
-						word64 rdx_615;
-						word64 rdi_616;
-						word64 rsi_617;
-						word64 r14_618;
-						word64 r13_619;
-						word32 esi_620;
-						word64 rbx_621;
-						byte SCZO_622;
-						word64 rcx_623;
-						word64 rax_624;
-						selector fs_625;
-						word32 eax_626;
-						byte SZO_627;
-						byte C_628;
-						byte CZ_629;
-						byte Z_630;
-						word32 edx_631;
-						word64 r12_632;
-						word32 r12d_633;
-						word16 dx_634;
-						word64 r15_635;
-						byte al_636;
-						byte SO_637;
-						byte dl_638;
-						word32 edi_639;
-						byte S_640;
-						word32 ecx_641;
-						byte cl_642;
-						word16 ax_643;
-						word32 ebx_644;
-						word64 r11_645;
-						word64 r9_646;
-						word32 ebp_647;
+						word64 rsp_592;
+						word64 rbp_593;
+						word64 r8_594;
+						word64 rdx_595;
+						word64 rdi_596;
+						word64 rsi_597;
+						word64 r14_598;
+						word64 r13_599;
+						word32 esi_600;
+						word64 rbx_601;
+						byte SCZO_602;
+						word64 rcx_603;
+						word64 rax_604;
+						selector fs_605;
+						word32 eax_606;
+						byte SZO_607;
+						byte C_608;
+						byte CZ_609;
+						byte Z_610;
+						word32 edx_611;
+						word64 r12_612;
+						word32 r12d_613;
+						word16 dx_614;
+						word64 r15_615;
+						byte al_616;
+						byte SO_617;
+						byte dl_618;
+						word32 edi_619;
+						byte S_620;
+						word32 ecx_621;
+						byte cl_622;
+						word16 ax_623;
+						word32 ebx_624;
+						word64 r11_625;
+						word64 r9_626;
+						word32 ebp_627;
 						wcwidth();
 						if (true)
 						{
-							word64 rsi_694 = r15_635 + r14_618;
-							word64 rdx_696 = rbx_621;
-							r15_700 = r15_635;
+							word64 rsi_674 = r15_615 + r14_598;
+							word64 rdx_676 = rbx_601;
+							r15_680 = r15_615;
 							do
 							{
-								word64 r15_700;
-								rdx_696 = rdx_696 + 0x01;
-								Mem711[rdx_696 - 0x01 + 0x00:byte] = (byte) (word32) Mem550[rdi_616 - 0x01 + 0x00:byte];
-								r15_700 = r15_700 + 0x01;
-							} while (r15_700 != rsi_694);
+								word64 r15_680;
+								rdx_676 = rdx_676 + 0x01;
+								Mem691[rdx_676 - 0x01 + 0x00:byte] = (byte) (word32) Mem530[rdi_596 - 0x01 + 0x00:byte];
+								r15_680 = r15_680 + 0x01;
+							} while (r15_680 != rsi_674);
 						}
 						else
-							Mem721[rbx_621 + 0x00:byte] = 0x3F;
-						word64 rdx_656;
-						word64 r14_659;
-						word32 esi_661;
-						byte SCZO_663;
-						word64 rcx_664;
-						word32 eax_667;
-						byte SZO_668;
-						byte C_669;
-						byte CZ_670;
-						byte Z_671;
-						word32 edx_672;
-						word32 r12d_674;
-						word16 dx_675;
-						byte al_677;
-						byte SO_678;
-						byte dl_679;
-						word32 edi_680;
-						byte S_681;
-						word32 ecx_682;
-						byte cl_683;
-						word16 ax_684;
-						word32 ebx_685;
-						word64 r11_686;
-						word64 r9_687;
-						word32 ebp_688;
+							Mem701[rbx_601 + 0x00:byte] = 0x3F;
+						word64 rsp_633;
+						word64 rdx_636;
+						word64 r14_639;
+						word32 esi_641;
+						byte SCZO_643;
+						word64 rcx_644;
+						word32 eax_647;
+						byte SZO_648;
+						byte C_649;
+						byte CZ_650;
+						byte Z_651;
+						word32 edx_652;
+						word32 r12d_654;
+						word16 dx_655;
+						byte al_657;
+						byte SO_658;
+						byte dl_659;
+						word32 edi_660;
+						byte S_661;
+						word32 ecx_662;
+						byte cl_663;
+						word16 ax_664;
+						word32 ebx_665;
+						word64 r11_666;
+						word64 r9_667;
+						word32 ebp_668;
 						mbsinit();
-					} while (eax_667 == 0x00);
-					if (r15_460 >=u r13_461)
+					} while (eax_647 == 0x00);
+					if (r15_440 >=u r13_441)
 						break;
 					continue;
 				}
 			}
-			else if (al_503 < 0x41 || al_503 > 0x5F && (byte) (rax_434 - 0x61) >u 0x1D)
+			else if (al_483 < 0x41 || al_483 > 0x5F && (byte) (rax_414 - 0x61) >u 0x1D)
 				goto l0000000000405460;
-			Mem751[rbx_464 + 0x00:byte] = al_503;
-			word64 r15_750 = r15_460 + 0x01;
-			word64 r12_752 = r12_109 + 0x01;
-			word64 rbx_753 = rbx_464 + 0x01;
-			Mem757[rbx_753 + 0x00:byte] = al_503;
-			r15_460 = r15_750 + 0x01;
-			*r15Out = r15_460;
-			r12_109 = r12_752 + 0x01;
-			*r12Out = r12_109;
-			rbx_464 = rbx_753 + 0x01;
-			if (r15_750 + 0x01 <u r13_461)
+			Mem731[rbx_444 + 0x00:byte] = al_483;
+			word64 r15_730 = r15_440 + 0x01;
+			word64 r12_732 = r12_106 + 0x01;
+			word64 rbx_733 = rbx_444 + 0x01;
+			Mem737[rbx_733 + 0x00:byte] = al_483;
+			r15_440 = r15_730 + 0x01;
+			*r15Out = r15_440;
+			r12_106 = r12_732 + 0x01;
+			*r12Out = r12_106;
+			rbx_444 = rbx_733 + 0x01;
+			if (r15_730 + 0x01 <u r13_441)
 				goto l0000000000405440;
 l0000000000405502:
-			rbx_114 = rbx_464 - Mem64[rbp_118 + ~0x2067:word64];
+			rbx_111 = rbx_444 - Mem64[rbp_117 + ~0x2067:word64];
 		}
 		else
 		{
-			rbx_114 = DPB(rbx_114, 0x00, 0);
-			*r12Out = DPB(r12_442, 0x00, 0);
+			rbx_111 = DPB(rbx_111, 0x00, 0);
+			*r12Out = DPB(r12_422, 0x00, 0);
 		}
 	}
 	else
 	{
-		word64 r14_784 = Mem64[r13_429 + ~0x2067:word64];
-		*r14Out = r14_784;
-		word64 r12_785 = r14_784 + rbx_114;
-		if (r14_784 <u r12_785)
+		word64 r14_764 = Mem64[r13_409 + ~0x2067:word64];
+		*r14Out = r14_764;
+		word64 r12_765 = r14_764 + rbx_111;
+		if (r14_764 <u r12_765)
 		{
-			word64 rdx_828;
-			word64 rdi_829;
-			word64 r14_831;
-			word64 r13_832;
-			word32 esi_833;
-			byte SCZO_835;
-			word64 rcx_836;
-			word64 rax_837;
-			word32 eax_839;
-			byte SZO_840;
-			byte C_841;
-			byte CZ_842;
-			byte Z_843;
-			word32 edx_844;
-			word64 r12_845;
-			word32 r12d_846;
-			word16 dx_847;
-			word64 r15_848;
-			byte al_849;
-			byte SO_850;
-			byte dl_851;
-			word32 edi_852;
-			byte S_853;
-			word32 ecx_854;
-			byte cl_855;
-			word16 ax_856;
-			word32 ebx_857;
-			word64 r11_858;
-			word64 r9_859;
-			word32 ebp_860;
+			word64 rsp_805;
+			word64 rdx_808;
+			word64 rdi_809;
+			word64 r14_811;
+			word64 r13_812;
+			word32 esi_813;
+			byte SCZO_815;
+			word64 rcx_816;
+			word64 rax_817;
+			word32 eax_819;
+			byte SZO_820;
+			byte C_821;
+			byte CZ_822;
+			byte Z_823;
+			word32 edx_824;
+			word64 r12_825;
+			word32 r12d_826;
+			word16 dx_827;
+			word64 r15_828;
+			byte al_829;
+			byte SO_830;
+			byte dl_831;
+			word32 edi_832;
+			byte S_833;
+			word32 ecx_834;
+			byte cl_835;
+			word16 ax_836;
+			word32 ebx_837;
+			word64 r11_838;
+			word64 r9_839;
+			word32 ebp_840;
 			__ctype_b_loc();
-			word64 rdx_861 = r14_831;
+			word64 rdx_841 = r14_811;
 			do
 			{
-				rsi_116 = DPB(rsi_116, (word32) Mem64[rdx_861 + 0x00:byte], 0);
-				if (((Mem64[rax_837 + 0x00:word64] + 0x01)[rsi_116 * 0x02] & 0x40) == 0x00)
-					Mem883[rdx_861 + 0x00:byte] = 0x3F;
-				rdx_861 = rdx_861 + 0x01;
-			} while (rdx_861 != r12_845);
+				rsi_113 = DPB(rsi_113, (word32) Mem64[rdx_841 + 0x00:byte], 0);
+				if (((Mem64[rax_817 + 0x00:word64] + 0x01)[rsi_113 * 0x02] & 0x40) == 0x00)
+					Mem863[rdx_841 + 0x00:byte] = 0x3F;
+				rdx_841 = rdx_841 + 0x01;
+			} while (rdx_841 != r12_825);
 		}
-		*r12Out = rbx_114;
+		*r12Out = rbx_111;
 	}
 l0000000000405379:
-	word64 rcx_120 = Mem64[rbp_118 + ~0x2077:word64];
+	word64 rcx_120 = Mem64[rbp_117 + ~0x2077:word64];
 	if (rcx_120 != 0x00)
 	{
-		word64 rdx_251;
-		word64 rdi_252;
-		word64 r14_254;
-		word64 r13_255;
-		word32 esi_256;
-		byte SCZO_258;
-		word64 rcx_259;
-		word64 rax_260;
-		word32 eax_262;
-		byte SZO_263;
-		byte C_264;
-		byte CZ_265;
-		byte Z_266;
-		word32 edx_267;
-		word32 r12d_269;
-		word16 dx_270;
-		word64 r15_271;
-		byte al_272;
-		byte SO_273;
-		byte dl_274;
-		word32 edi_275;
-		byte S_276;
-		word32 ecx_277;
-		byte cl_278;
-		word16 ax_279;
-		word32 ebx_280;
-		word64 r11_281;
-		word64 r9_282;
-		word32 ebp_283;
+		word64 rsp_227;
+		word64 rdx_230;
+		word64 rdi_231;
+		word64 r14_233;
+		word64 r13_234;
+		word32 esi_235;
+		byte SCZO_237;
+		word64 rcx_238;
+		word64 rax_239;
+		word32 eax_241;
+		byte SZO_242;
+		byte C_243;
+		byte CZ_244;
+		byte Z_245;
+		word32 edx_246;
+		word32 r12d_248;
+		word16 dx_249;
+		word64 r15_250;
+		byte al_251;
+		byte SO_252;
+		byte dl_253;
+		word32 edi_254;
+		byte S_255;
+		word32 ecx_256;
+		byte cl_257;
+		word16 ax_258;
+		word32 ebx_259;
+		word64 r11_260;
+		word64 r9_261;
+		word32 ebp_262;
 		fwrite_unlocked();
 	}
-	if (Mem64[rbp_118 + ~0x206F:word64] != 0x00)
-		Mem243[r8_106 + 0x00:word64] = r12_109;
-	word64 rbx_165 = Mem64[rbp_118 - 0x38 + 0x00:word64] ^ Mem64[fs:0x28:word64];
+	if (Mem64[rbp_117 + ~0x206F:word64] != 0x00)
+		Mem222[r8_105 + 0x00:word64] = r12_106;
+	word64 rbx_165 = Mem64[rbp_117 - 0x38 + 0x00:word64] ^ Mem64[fs:0x28:word64];
+	*rbxOut = rbx_165;
 	if (rbx_165 != 0x00)
 	{
 		__stack_chk_fail();
-		word64 rsp_209 = rsp_119 - 0x04;
-		Mem210[rsp_209 + 0x00:word32] = rsp_119;
-		Mem212[rsp_209 - 0x04 + 0x00:word32] = rbp_118;
-		Mem214[rsp_209 - 0x08 + 0x00:word32] = rbx_165;
-		word64 rax_215 = Mem214[rsi_116 + 0x18:word64];
-		word64 rbp_219 = Mem214[rsi_116 + 0x10:word64];
-		word64 r12_222 = rax_215 - rbp_219;
-		word64 r12_225 = DPB(r12_222, (word32) r12_222 >>u 0x03, 0);
-		*r12Out = r12_225;
-		if (r12_225 == 0x00)
-		{
-			word64 rbx_236;
-			word64 rbp_237;
-			word64 rsi_238;
-			return fn000000000040564F(rax_215, rbp_219, rsi_116, r12_225, out rbx_236, out rbp_237, out rsi_238);
-		}
-		else
-		{
-			word64 rbx_229;
-			word64 rbp_230;
-			word64 rsi_231;
-			return fn000000000040564F(rax_215, rbp_219, rsi_116, r12_225, out rbx_229, out rbp_230, out rsi_231);
-		}
+		word64 rsp_213;
+		word64 rbp_214;
+		word64 rsi_215;
+		word32 edi_216;
+		word64 r12_217;
+		return fn0000000000405630(rsi_113, qwLoc04, out rsp_213, out rbp_214, out rsi_215, out edi_216, out r12_217);
 	}
 	else
 	{
-		word64 rbx_195;
-		*rbxOut = Mem64[rbp_118 - 0x28 + 0x00:word64];
-		return rbx_114;
+		word64 rsp_195 = rbp_117 - 0x28;
+		word64 rsp_199 = Mem64[rsp_195 + 0x08:word64];
+		word64 rbx_196;
+		*rbxOut = Mem64[rsp_195 + 0x00:word64];
+		word64 rsi_203;
+		*rsiOut = Mem64[rsp_199 + 0x10:word64];
+		word32 edi_207;
+		*ediOut = (word32) Mem64[rsp_199 + 0x18:word64];
+		word64 rbp_209;
+		*rbpOut = Mem64[rsp_199 + 0x20:word64];
+		word64 rsp_211;
+		*rspOut = rsp_199 + 0x28;
+		return rbx_111;
 	}
 }
 
-// 0000000000405630: void fn0000000000405630(Register word64 rsi, Stack word64 qwArg04)
-void fn0000000000405630(word64 rsi, word64 qwArg04)
+// 0000000000405630: Register word64 fn0000000000405630(Register word64 rsi, Stack word64 qwArg04, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut, Register out ptr64 ediOut, Register out ptr64 r12Out)
+word64 fn0000000000405630(word64 rsi, word64 qwArg04, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & rsiOut, ptr64 & ediOut, ptr64 & r12Out)
 {
+	*rsiOut = rsi;
+	*ediOut = edi;
 	word64 rax_13 = Mem0[rsi + 0x18:word64];
-	word64 rbp_14 = Mem0[rsi + 0x10:word64];
-	word64 r12_16 = rax_13 - rbp_14;
-	word64 r12_19 = DPB(r12_16, (word32) r12_16 >>u 0x03, 0);
-	if (r12_19 == 0x00)
-		return;
-	else
+	word64 rbp_15 = Mem0[rsi + 0x10:word64];
+	word64 r12_17 = rax_13 - rbp_15;
+	word64 r12_20 = DPB(r12_17, (word32) r12_17 >>u 0x03, 0);
+	*r12Out = r12_20;
+	if (r12_20 != 0x00)
 	{
-		word64 rbx_28;
-		word64 rbp_29;
-		word64 rsi_30;
-		word64 rax_31 = fn000000000040564F(rax_13, rbp_14, rsi, r12_19, out rbx_28, out rbp_29, out rsi_30);
-		return;
-	}
-}
-
-// 000000000040564F: Register word64 fn000000000040564F(Register word64 rax, Register word64 rbp, Register word64 rsi, Register word64 r12, Register out ptr64 rbxOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut)
-word64 fn000000000040564F(word64 rax, word64 rbp, word64 rsi, word64 r12, ptr64 & rbxOut, ptr64 & rbpOut, ptr64 & rsiOut)
-{
-	if (rax == rbp)
-		Mem139[rsi + 0x50:byte] = Mem0[rsi + 0x50:byte] | 0x02;
-	word64 rcx_10 = (int64) Mem0[rsi + 0x30:word32];
-	word32 edx_16 = ~(word32) rcx_10;
-	word64 rcx_14 = Mem0[rsi + 0x20:word64];
-	word64 rdx_18 = (int64) edx_16 & rax + rcx_10;
-	word64 rax_19 = Mem0[rsi + 0x08:word64];
-	Mem21[rsi + 0x18:word64] = rdx_18;
-	word64 rdx_23 = rdx_18 - rax_19;
-	if (rdx_23 > rcx_14 - rax_19)
-		Mem137[rsi + 0x18:word64] = rcx_14;
-	word64 rax_26 = Mem21[rsi + 0x18:word64];
-	Mem31[rsi + 0x10:word64] = rax_26;
-	word64 rsp_33;
-	word64 rbp_35;
-	byte SCZO_36;
-	byte Z_37;
-	word64 rcx_39;
-	word32 ecx_40;
-	word32 edx_41;
-	word64 rdx_42;
-	byte SZO_43;
-	byte C_44;
-	word32 ebx_46;
-	word32 eax_47;
-	word32 esi_48;
-	word32 edi_49;
-	word64 r12_51;
-	byte CZ_52;
-	word64 rdi_50;
-	word64 rsi_38;
-	word64 rax_34;
-	word64 rbx_45;
-	fputs_unlocked();
-	do
-	{
-		rsi_38 = DPB(rsi_38, 4274009, 0);
-		*rsiOut = rsi_38;
-		rdi_50 = DPB(rdi_50, 0x01, 0);
-		rbx_45 = rbx_45 + 0x01;
-		rax_34 = DPB(rax_34, __printf_chk(rdi_50, rsi_38), 0);
-	} while (r12_51 >u rbx_45);
-	word64 rdi_69 = Mem31[0x000000000061A610 + 0x00:word64];
-	word64 rax_71 = Mem31[rdi_69 + 0x28:word64];
-	if (rax_71 >=u Mem31[rdi_69 + 0x30:word64])
-	{
-		word64 rsp_117;
-		word64 rax_118;
-		word64 rbp_119;
-		byte SCZO_120;
-		byte Z_121;
-		word64 rsi_122;
+		if (rax_13 == rbp_15)
+			Mem189[rsi + 0x50:byte] = Mem0[rsi + 0x50:byte] | 0x02;
+		word64 rcx_89 = (int64) Mem0[rsi + 0x30:word32];
+		word32 edx_95 = ~(word32) rcx_89;
+		word64 rcx_93 = Mem0[rsi + 0x20:word64];
+		word64 rdx_97 = (int64) edx_95 & rax_13 + rcx_89;
+		word64 rax_98 = Mem0[rsi + 0x08:word64];
+		Mem100[rsi + 0x18:word64] = rdx_97;
+		word64 rdx_102 = rdx_97 - rax_98;
+		if (rdx_102 > rcx_93 - rax_98)
+			Mem187[rsi + 0x18:word64] = rcx_93;
+		word64 rax_105 = Mem100[rsi + 0x18:word64];
+		Mem110[rsi + 0x10:word64] = rax_105;
+		word64 rsp_112;
+		word64 rbp_113;
+		word64 r12_117;
+		byte SCZO_118;
+		word32 r12d_119;
+		byte SZO_120;
+		byte C_121;
+		byte Z_122;
 		word64 rcx_123;
-		word32 ecx_124;
-		word32 edx_125;
+		word32 edx_124;
+		word32 ecx_125;
 		word64 rdx_126;
-		byte SZO_127;
-		byte C_128;
-		word64 rbx_129;
-		word32 ebx_130;
-		word32 eax_131;
-		word32 esi_132;
-		word32 edi_133;
-		word64 rdi_134;
-		word64 r12_135;
-		byte CZ_136;
-		Mem31[0x000000000061A148 + 0x00:word32]();
-		return rax_118;
+		word32 ebx_127;
+		word32 eax_128;
+		word32 esi_129;
+		word32 edi_130;
+		byte CZ_132;
+		word64 rdi_131;
+		word64 rsi_116;
+		word64 rax_115;
+		word64 rbx_114;
+		fputs_unlocked();
+		do
+		{
+			rsi_116 = DPB(rsi_116, 4274009, 0);
+			*rsiOut = rsi_116;
+			rdi_131 = DPB(rdi_131, 0x01, 0);
+			rbx_114 = rbx_114 + 0x01;
+			rax_115 = DPB(rax_115, __printf_chk(rdi_131, rsi_116), 0);
+		} while (r12_117 >u rbx_114);
+		word64 rdi_149 = Mem110[0x000000000061A610 + 0x00:word64];
+		word32 edi_150 = (word32) rdi_149;
+		*ediOut = edi_150;
+		rax_13 = Mem110[rdi_149 + 0x28:word64];
+		if (rax_13 >=u Mem110[rdi_149 + 0x30:word64])
+		{
+			word64 rsp_166;
+			word64 rbp_167;
+			word64 rbx_168;
+			word64 rax_169;
+			word64 rsi_170;
+			word64 r12_171;
+			byte SCZO_172;
+			word32 r12d_173;
+			byte SZO_174;
+			byte C_175;
+			byte Z_176;
+			word64 rcx_177;
+			word32 edx_178;
+			word32 ecx_179;
+			word64 rdx_180;
+			word32 ebx_181;
+			word32 eax_182;
+			word32 esi_183;
+			word32 edi_184;
+			word64 rdi_185;
+			byte CZ_186;
+			Mem110[0x000000000061A148 + 0x00:word32]();
+			return rax_169;
+		}
+		Mem156[rdi_149 + 0x28:word64] = rax_13 + 0x01;
+		Mem157[rax_13 + 0x00:byte] = 0x0A;
 	}
-	else
-	{
-		Mem99[rdi_69 + 0x28:word64] = rax_71 + 0x01;
-		Mem100[rax_71 + 0x00:byte] = 0x0A;
-		word64 rbx_101;
-		*rbxOut = Mem100[rsp_33 + 0x00:word64];
-		word64 rbp_104;
-		*rbpOut = Mem100[rsp_33 + 0x08:word64];
-		return rax_71;
-	}
+	word64 rbp_81;
+	*rbpOut = fp;
+	word64 rsp_85;
+	*rspOut = qwArg04 + 0x08;
+	return rax_13;
 }
 
 // 0000000000405700: Register word64 fn0000000000405700(Register word64 rax, Register word32 edx, Register word64 rdi, Register selector fs, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r12Out, Register out ptr64 r13dOut, Register out ptr64 r14Out)
@@ -1228,8 +1956,8 @@ word64 fn0000000000405700(word64 rax, word32 edx, word64 rdi, selector fs, ptr64
 	*r13dOut = r13d;
 	*r14Out = r14;
 	*r12Out = r12;
-	word64 rbp_109;
-	word64 rsp_129 = fp - 0x10;
+	word64 rbp_110;
+	word64 rsp_13 = fp - 0x10;
 	if (rdi != 0x00)
 	{
 		word32 ebx_61;
@@ -1240,78 +1968,78 @@ word64 fn0000000000405700(word64 rax, word32 edx, word64 rdi, selector fs, ptr64
 		word64 r13_66;
 		word64 r14_67;
 		word64 r15_68;
-		word32 eax_69 = fn000000000040D420(rax, 0x00, rdi, fs, qwLoc18, out ebx_61, out rsp_62, out rbp_63, out rsi_64, out r12_65, out r13_66, out r14_67, out r15_68);
-		word32 ebx_71 = ebx_61 - eax_69;
-		word64 rbp_83;
-		word64 rdi_84;
-		word64 rbx_85;
-		word32 edx_87;
-		byte SCZO_88;
-		byte SZO_89;
-		byte C_90;
-		byte Z_91;
-		word32 esi_92;
-		word64 rsi_93;
-		word32 eax_94;
-		byte S_95;
-		word64 rax_96;
-		word64 rcx_97;
-		word64 rdx_98;
-		word32 edi_99;
-		selector fs_100;
-		word64 r12_101;
-		word32 r13d_102;
-		word64 r14_103;
-		word64 r13_104;
-		word64 r15_105;
-		word32 ebx_123;
+		word32 eax_70 = (word32) fn000000000040D420(rax, 0x00, rdi, fs, qwLoc18, out ebx_61, out rsp_62, out rbp_63, out rsi_64, out r12_65, out r13_66, out r14_67, out r15_68);
+		word32 ebx_72 = ebx_61 - eax_70;
+		word64 rbp_84;
+		word64 rdi_85;
+		word64 rbx_86;
+		word32 edx_88;
+		byte SCZO_89;
+		byte SZO_90;
+		byte C_91;
+		byte Z_92;
+		word32 esi_93;
+		word64 rsi_94;
+		word32 eax_95;
+		byte S_96;
+		word64 rax_97;
+		word64 rcx_98;
+		word64 rdx_99;
+		word32 edi_100;
+		selector fs_101;
+		word64 r12_102;
+		word32 r13d_103;
+		word64 r14_104;
+		word64 r13_105;
+		word64 r15_106;
+		word32 ebx_124;
 		fputs_unlocked();
-		rbp_109 = (int64) ebx_123 + DPB(rax_96, strlen(rbp_83), 0);
+		rbp_110 = (int64) ebx_124 + DPB(rax_97, strlen(rbp_84), 0);
 		do
 		{
-			word64 rdi_130 = Mem0[0x000000000061A610 + 0x00:word64];
-			word64 rcx_132 = Mem0[rdi_130 + 0x28:word64];
-			if (rcx_132 <u Mem0[rdi_130 + 0x30:word64])
+			word64 rdi_131 = Mem0[0x000000000061A610 + 0x00:word64];
+			word64 rcx_133 = Mem0[rdi_131 + 0x28:word64];
+			if (rcx_133 <u Mem0[rdi_131 + 0x30:word64])
 			{
-				Mem162[rdi_130 + 0x28:word64] = rcx_132 + 0x01;
-				Mem163[rcx_132 + 0x00:byte] = 0x20;
+				Mem163[rdi_131 + 0x28:word64] = rcx_133 + 0x01;
+				Mem164[rcx_133 + 0x00:byte] = 0x20;
 			}
 			else
 			{
-				word64 rdi_167;
-				word64 rbx_168;
-				word32 edx_170;
-				byte SCZO_171;
-				byte SZO_172;
-				byte C_173;
-				byte Z_174;
-				word32 esi_175;
-				word64 rsi_176;
-				word32 eax_177;
-				byte S_178;
-				word64 rax_179;
-				word64 rcx_180;
-				word64 rdx_181;
-				word32 edi_182;
-				selector fs_183;
-				word64 r12_184;
-				word32 r13d_185;
-				word64 r14_186;
-				word64 r13_187;
-				word64 r15_188;
+				word64 rdi_168;
+				word64 rbx_169;
+				word32 edx_171;
+				byte SCZO_172;
+				byte SZO_173;
+				byte C_174;
+				byte Z_175;
+				word32 esi_176;
+				word64 rsi_177;
+				word32 eax_178;
+				byte S_179;
+				word64 rax_180;
+				word64 rcx_181;
+				word64 rdx_182;
+				word32 edi_183;
+				selector fs_184;
+				word64 r12_185;
+				word32 r13d_186;
+				word64 r14_187;
+				word64 r13_188;
+				word64 r15_189;
 				__overflow();
 			}
-			ebx_123 = ebx_123 - 0x01;
-		} while (ebx_123 != ~0x00);
+			ebx_124 = ebx_124 - 0x01;
+		} while (ebx_124 != ~0x00);
 	}
 	else
 	{
-		rbp_109 = (int64) edx;
-		word64 rax_201 = DPB(rax, __printf_chk(DPB(rdi, 0x01, 0), DPB(rsi, 4274014, 0)), 0);
+		rbp_110 = (int64) edx;
+		word64 rax_202 = DPB(rax, __printf_chk(DPB(rdi, 0x01, 0), DPB(rsi, 4274014, 0)), 0);
 	}
-	word64 rax_39 = rbp_109 + 0x01 + Mem0[0x000000000061B018 + 0x00:word64];
+	word64 rax_39 = rbp_110 + 0x01 + Mem0[0x000000000061B018 + 0x00:word64];
 	Mem41[0x000000000061B018 + 0x00:word64] = rax_39;
-	word64 rsp_42 = rsp_129 + 0x08;
+	word64 rsp_42 = rsp_13 + 0x08;
 	word64 rbp_46;
 	*rbpOut = Mem41[rsp_42 + 0x08:word64];
 	word64 rsp_47;
@@ -1322,61 +2050,76 @@ word64 fn0000000000405700(word64 rax, word32 edx, word64 rdi, selector fs, ptr64
 // 00000000004057B0: Register word64 fn00000000004057B0(Register byte dl, Register word64 rsi, Register word32 edi, Register word64 r8, Register word64 r12, Register selector fs, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r12Out, Register out ptr64 r13dOut, Register out ptr64 r14Out)
 word64 fn00000000004057B0(byte dl, word64 rsi, word32 edi, word64 r8, word64 r12, selector fs, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & r12Out, ptr64 & r13dOut, ptr64 & r14Out)
 {
-	word64 rax_23 = DPB(rax, 4274020, 0);
+	word64 rax_25 = DPB(rax, 4274020, 0);
 	if (dl != 0x00)
 	{
-		rax_23 = DPB(rax, 0x00, 0);
+		rax_25 = DPB(rax, 0x00, 0);
 		if (Mem0[0x000000000061B145 + 0x00:byte] == 0x00)
 		{
-			word64 rsp_56;
-			word32 ebp_57;
-			rax_23 = fn000000000040C9B0(rsi, edi, r8, r12, out rsp_56, out ebp_57);
-			esi = Mem0[rsp_56 + 0x0C:word32];
+			word64 rsp_57;
+			word64 rbp_58;
+			word64 r12_59;
+			rax_25 = fn000000000040C9B0(rsi, edi, r8, r12, out rsp_57, out rbp_58, out r12_59);
+			esi = Mem0[rsp_57 + 0x0C:word32];
 		}
 	}
-	word64 rsp_36;
-	word64 rbp_37;
-	word64 r12_38;
-	word32 r13d_39;
-	word64 r14_40;
-	return fn0000000000405700(rax_23, esi, rax_23, fs, out rsp_36, out rbp_37, out r12_38, out r13d_39, out r14_40);
+	word64 rsp_38;
+	word64 rbp_39;
+	word64 r12_40;
+	word32 r13d_41;
+	word64 r14_42;
+	return fn0000000000405700(rax_25, esi, rax_25, fs, out rsp_38, out rbp_39, out r12_40, out r13d_41, out r14_42);
 }
 
-// 0000000000405810: void fn0000000000405810(Register word64 rdx, Register word32 ebp, Register word32 esi, Register word64 r11, Register selector fs)
-void fn0000000000405810(word64 rdx, word32 ebp, word32 esi, word64 r11, selector fs)
+// 0000000000405810: Register word64 fn0000000000405810(Register word64 rdx, Register word64 r11, Register selector fs, Register out ptr64 rbpOut, Register out ptr64 rsiOut, Register out ptr64 rdiOut, Register out ptr64 r12Out, Register out ptr64 r14Out, Register out ptr64 r15bOut)
+word64 fn0000000000405810(word64 rdx, word64 r11, selector fs, ptr64 & rbpOut, ptr64 & rsiOut, ptr64 & rdiOut, ptr64 & r12Out, ptr64 & r14Out, ptr64 & r15bOut)
 {
-	word32 ebx_17 = (word32) rsi;
-	byte r12b_21 = fn000000000040EAB0(ebx_17, ebp, rdx, r11, fs);
-	word64 rax_24 = __errno_location();
-	word64 rsp_33;
-	word32 r12d_34;
-	word32 edi_35;
-	word64 rdi_36;
-	word64 rdx_37;
-	word64 rbp_38;
-	word64 rbx_39;
-	word64 rsi_40;
-	word64 rax_41;
-	word32 esi_42;
-	byte SZO_43;
-	byte C_44;
-	word32 eax_45;
-	word64 rcx_46;
-	byte r12b_47;
-	byte Z_48;
-	word32 ebp_49;
-	word64 r11_50;
-	selector fs_51;
-	word32 ebx_52;
+	word64 rsp_22;
+	word64 rbp_23;
+	word64 r12_24;
+	word64 r14_25;
+	byte r15b_26;
+	word64 rbx_27 = fn000000000040EAB0(rdx, r11, fs, out rsp_22, out rbp_23, out r12_24, out r14_25, out r15b_26);
+	__errno_location();
+	word64 rsp_42;
+	word32 r12d_43;
+	word32 edi_44;
+	word64 rdi_45;
+	word64 rdx_46;
+	word64 rbp_47;
+	word64 rbx_48;
+	word64 rsi_49;
+	word32 esi_51;
+	byte SZO_52;
+	byte C_53;
+	word32 eax_54;
+	word64 rcx_55;
+	byte r12b_56;
+	byte Z_57;
+	word64 r11_58;
+	selector fs_59;
+	word64 r12_60;
+	word64 r14_61;
+	byte r15b_62;
+	word64 rax_50;
 	error();
-	if (r12b_47 != 0x00)
-		Mem73[0x000000000061B030 + 0x00:word32] = 0x02;
-	else if (Mem0[0x000000000061B030 + 0x00:word32] == 0x00)
+	if (r12b_56 != 0x00)
+		Mem91[0x000000000061B030 + 0x00:word32] = 0x02;
+	else
 	{
-		Mem82[0x000000000061B030 + 0x00:word32] = 0x01;
-		return;
+		word32 eax_92 = Mem0[0x000000000061B030 + 0x00:word32];
+		rax_50 = DPB(rax_50, eax_92, 0);
+		if (eax_92 == 0x00)
+		{
+			word64 rbp_99;
+			*rbpOut = Mem0[rsp_42 + 0x08:word64];
+			Mem101[0x000000000061B030 + 0x00:word32] = 0x01;
+			return rax_50;
+		}
 	}
-	return;
+	word64 rbp_87;
+	*rbpOut = Mem0[rsp_42 + 0x08:word64];
+	return rax_50;
 }
 
 // 0000000000405C20: Register byte fn0000000000405C20(Register word32 edx, Register word32 esi, Register byte dil, Register out ptr64 rsiOut)
@@ -1445,53 +2188,374 @@ byte fn0000000000405C20(word32 edx, word32 esi, byte dil, ptr64 & rsiOut)
 	return al_110;
 }
 
-// 0000000000405D00: Register word64 fn0000000000405D00(Register word32 edx, Register word32 esi, Register byte dil, Register out ptr64 rsiOut, Register out ptr64 rdiOut)
-word64 fn0000000000405D00(word32 edx, word32 esi, byte dil, ptr64 & rsiOut, ptr64 & rdiOut)
+// 0000000000405D00: Register byte fn0000000000405D00(Register word32 edx, Register word32 esi, Register byte dil, Register out ptr64 rspOut, Register out ptr64 rsiOut, Register out ptr64 rdiOut)
+byte fn0000000000405D00(word32 edx, word32 esi, byte dil, ptr64 & rspOut, ptr64 & rsiOut, ptr64 & rdiOut)
 {
 	word32 edi_6 = (word32) dil;
-	word64 rdi_8;
-	*rdiOut = DPB(rdi, edi_6, 0);
 	word64 rsi_12;
 	byte al_13 = fn0000000000405C20(edx, esi, (byte) edi_6, out rsi_12);
+	word64 rdi_8;
+	*rdiOut = DPB(rdi, edi_6, 0);
+	byte bl_21 = al_13;
 	if (al_13 != 0x00)
 	{
-		word64 rdi_47 = Mem0[0x000000000061A610 + 0x00:word64];
-		*rdiOut = rdi_47;
-		word64 rax_50 = Mem0[rdi_47 + 0x28:word64];
-		if (rax_50 <u Mem0[rdi_47 + 0x30:word64])
+		word64 rdi_50 = Mem0[0x000000000061A610 + 0x00:word64];
+		*rdiOut = rdi_50;
+		word64 rax_53 = Mem0[rdi_50 + 0x28:word64];
+		if (rax_53 <u Mem0[rdi_50 + 0x30:word64])
 		{
-			Mem76[rdi_47 + 0x28:word64] = rax_50 + 0x01;
-			Mem77[rax_50 + 0x00:byte] = al_13;
+			Mem79[rdi_50 + 0x28:word64] = rax_53 + 0x01;
+			Mem80[rax_53 + 0x00:byte] = al_13;
 		}
 		else
 		{
-			word64 rsp_80;
-			word64 rbx_81;
-			word32 edi_82;
-			byte dil_83;
-			byte al_84;
-			byte SZO_85;
-			byte C_86;
-			word32 ebx_87;
-			word32 eax_88;
-			byte Z_89;
-			word64 rdi_90;
-			word64 rax_91;
-			byte SCZO_92;
-			word64 rdx_93;
-			byte bl_94;
-			word32 esi_95;
-			word32 edx_96;
-			word64 rsi_97;
+			word64 rsp_83;
+			word64 rbx_84;
+			word32 edi_85;
+			byte dil_86;
+			byte al_87;
+			byte SZO_88;
+			byte C_89;
+			word32 ebx_90;
+			word32 eax_91;
+			byte Z_92;
+			word64 rdi_93;
+			word64 rax_94;
+			byte SCZO_95;
+			word64 rdx_96;
+			word32 esi_98;
+			word32 edx_99;
+			word64 rsi_100;
 			__overflow();
 		}
-		Mem73[0x000000000061B018 + 0x00:word64] = Mem0[0x000000000061B018 + 0x00:word64] + 0x01;
+		Mem76[0x000000000061B018 + 0x00:word64] = Mem0[0x000000000061B018 + 0x00:word64] + 0x01;
 	}
-	return fp + 0x04;
+	word64 rsp_45;
+	*rspOut = fp + 0x04;
+	return bl_21 != 0x00;
 }
 
-// 00000000004061B0: void fn00000000004061B0(Register word32 ebx, Register word32 ebp, Register word64 rsi, Register word32 edi, Register word64 r8, Register word32 r11d, Register word64 r12, Register word64 r14, Register selector fs)
-void fn00000000004061B0(word32 ebx, word32 ebp, word64 rsi, word32 edi, word64 r8, word32 r11d, word64 r12, word64 r14, selector fs)
+// 0000000000405D50: Register word64 fn0000000000405D50(Register word64 rdi, Register word64 r11, Register selector fs, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r9Out, Register out ptr64 r12bOut)
+word64 fn0000000000405D50(word64 rdi, word64 r11, selector fs, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & r9Out, ptr64 & r12bOut)
+{
+	*r12bOut = r12b;
+	word64 rdi_158;
+	word64 rbp_192 = rdi;
+	word32 ebp_7 = (word32) rdi;
+	word32 ebx_11 = 0x00;
+	word64 rbx_12 = DPB(rbx, 0x00, 0);
+	word64 rax_189 = DPB(Mem0[fs:0x28:word64], 0x00, 0);
+	rdi_158 = rdi;
+	if (Mem0[0x000000000061B114 + 0x00:byte] != 0x00)
+	{
+		if (Mem0[0x000000000061B150 + 0x00:word32] != 0x04)
+		{
+			word64 rbx_229 = (int64) Mem0[0x000000000061B178 + 0x00:word32];
+			rbx_12 = rbx_229 + 0x01;
+			ebx_11 = (word32) (rbx_229 + 0x01);
+			rdi_158 = rdi;
+		}
+		else
+		{
+			word64 r14_235;
+			word64 rax_236 = fn000000000040CD70(fp - 688, Mem0[rdi + 0x18:word64], out r14_235);
+			rax_189 = DPB(rax_236, strlen(rax_236), 0);
+			rdi_158 = rax_236;
+			rbx_12 = rax_189 + 0x01;
+			ebx_11 = (word32) (rax_189 + 0x01);
+		}
+	}
+	if (Mem0[0x000000000061B144 + 0x00:byte] != 0x00)
+	{
+		if (Mem0[0x000000000061B150 + 0x00:word32] != 0x04)
+			rax_189 = (int64) Mem0[0x000000000061B174 + 0x00:word32] + 0x01;
+		else
+		{
+			rax_189 = DPB(rax_189, 0x02, 0);
+			if (Mem0[rdi + 0xB0:byte] != 0x00)
+			{
+				word64 rsp_213;
+				word64 r8_215;
+				word64 r9_216;
+				word32 r14d_218;
+				word64 r15_219;
+				word64 rax_220 = fn000000000040BD70(DPB(rcx, 0x0200, 0), Mem0[0x000000000061B140 + 0x00:word32], rdi, fp - 688, Mem0[rdi + 0x50:word64], Mem0[0x000000000061B138 + 0x00:word64], fs, out rsp_213, out rbp_192, out r8_215, out r9_216, out r11, out r14d_218, out r15_219);
+				rdi_158 = rax_220;
+				rax_189 = DPB(rax_220, strlen(rax_220), 0) + 0x01;
+			}
+		}
+		rbx_12 = rbx_12 + rax_189;
+		ebx_11 = (word32) rbx_12;
+	}
+	if (Mem0[0x000000000061B17D + 0x00:byte] != 0x00)
+	{
+		word64 rax_159;
+		if (Mem0[0x000000000061B150 + 0x00:word32] != 0x04)
+			rax_159 = (int64) Mem0[0x000000000061B16C + 0x00:word32] + 0x01;
+		else
+		{
+			rdi_158 = Mem0[rbp_192 + 0xA8:word64];
+			rax_159 = DPB(rax_189, strlen(rdi_158), 0) + 0x01;
+		}
+		ebx_11 = (word32) (rbx_12 + rax_159);
+	}
+	word64 rbx_75;
+	word64 rsp_76;
+	word64 rbp_77;
+	word64 r8_80;
+	word64 r9_81;
+	word64 r11_82;
+	word64 r12_83;
+	word64 r13_84;
+	word64 r14_85;
+	word64 r15_86;
+	word32 edi_140;
+	word64 rsi_146;
+	word64 rax_87 = fn00000000004052D0(Mem0[0x000000000061B0E8 + 0x00:word64], ebx_11, rbp_192, Mem0[rbp_192 + 0x00:word64], DPB(rdi_158, 0x00, 0), r11, fs, out rbx_75, out rsp_76, out rbp_77, out rsi_146, out edi_140, out r8_80, out r9_81, out r11_82, out r12_83, out r13_84, out r14_85, out r15_86);
+	word64 rbx_102 = rbx_75 + Mem0[rsp_76 + 0x08:word64];
+	if (Mem0[0x000000000061B12C + 0x00:word32] != 0x00)
+	{
+		edi_140 = (word32) Mem0[rbp_77 + 0xB0:byte];
+		rbx_102 = rbx_102 + DPB(rax_87, (word32) (fn0000000000405C20(Mem0[rbp_77 + 0xA0:word32], Mem0[rbp_77 + 0x28:word32], (byte) edi_140, out rsi_146) != 0x00), 0);
+	}
+	if ((Mem0[rsp_76 + 0x02A8:word64] ^ Mem0[fs:0x28:word64]) != 0x00)
+	{
+		__stack_chk_fail();
+		word64 rsp_133;
+		word64 rbp_134;
+		word64 r9_135;
+		byte r12b_136;
+		return fn0000000000405ED0(ebp_7, rsi_146, edi_140, r8_80, r11_82, r14_85, fs, out rsp_133, out rbp_134, out r9_135, out r12b_136);
+	}
+	else
+	{
+		word64 rbp_129;
+		*rbpOut = Mem0[rsp_76 + 0x02C0:word64];
+		word64 rsp_131;
+		*rspOut = rsp_76 + 0x02C8;
+		return rbx_102;
+	}
+}
+
+// 0000000000405ED0: Register word64 fn0000000000405ED0(Register word32 ebp, Register word64 rsi, Register word32 edi, Register word64 r8, Register word64 r11, Register word64 r14, Register selector fs, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r9Out, Register out ptr64 r12bOut)
+word64 fn0000000000405ED0(word32 ebp, word64 rsi, word32 edi, word64 r8, word64 r11, word64 r14, selector fs, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & r9Out, ptr64 & r12bOut)
+{
+	*r9Out = r9;
+	word64 rdx_6 = Mem0[0x000000000061B1B0 + 0x00:word64];
+	word64 rax_8 = Mem0[0x000000000061B020 + 0x00:word64];
+	word128 rdx_rax_9 = SEQ(rdx_6, rax_8);
+	byte r12b_22;
+	*r12bOut = (byte) edi;
+	word64 r12_24 = DPB(r12, edi, 0);
+	word64 rsp_123 = fp - 0x14;
+	word64 rbx_184 = rdx_6;
+	word32 ebx_31 = (word32) rdx_6;
+	if (rax_8 <=u rdx_6)
+	{
+		rbx_184 = rax_8;
+		ebx_31 = (word32) rax_8;
+	}
+	word64 rsi_369;
+	word64 rax_116;
+	word64 r8_357;
+	word128 rdx_rax_209;
+	if (rbx_184 <=u Mem0[0x000000000061A660 + 0x00:word64])
+	{
+		rax_116 = DPB(rax_8, 0x00, 0);
+		rdx_rax_209 = DPB(rdx_rax_9, 0x00, 0);
+		r8_357 = rdx_6;
+		rsi_369 = Mem0[0x000000000061B028 + 0x00:word64];
+		if (rbx_184 == 0x00)
+			goto l0000000000406004;
+		goto l00000000004060E0;
+	}
+	word64 rdi_398 = Mem0[0x000000000061B028 + 0x00:word64];
+	word32 edi_399 = (word32) rdi_398;
+	if (rbx_184 >=u rax_8 >>u 0x01)
+	{
+		if (rax_8 >u rax_8 >>u 0x01)
+			goto l000000000040619D;
+		word64 rsp_534;
+		word64 rax_536 = fn0000000000410C90(rax_8 >>u 0x01, rax_8 * 0x18, rdi_398, out ebx_31, out rsp_534, out r8);
+		rbp = Mem0[0x000000000061B020 + 0x00:word64];
+		Mem539[0x000000000061B028 + 0x00:word64] = rax_536;
+		ebp = (word32) rbp;
+	}
+	else
+	{
+		r8 = 0x55555555;
+		if (rbx_184 >u rax_8)
+			goto l000000000040619D;
+		rbp = rbx_184 * 0x02;
+		word64 rsp_550;
+		Mem553[0x000000000061B028 + 0x00:word64] = fn0000000000410C90(rax_8 >>u 0x01, rbp + rbx_184 << 0x04, rdi_398, out ebx_31, out rsp_550, out r8);
+		ebp = (word32) rbp;
+	}
+	word64 rax_445 = Mem0[0x000000000061A660 + 0x00:word64];
+	word64 rdi_448 = rbp - rax_445;
+	rsi = rbp + 0x01 + rax_445;
+	edi_399 = (word32) rdi_448;
+	word64 rcx_451 = rsi *s rdi_448;
+	if (rbp <=u rsi)
+	{
+		word128 rdx_rax_458 = SEQ(rax_8 >>u 0x01, rcx_451);
+		word64 rdx_460 = (uint64) (rdx_rax_458 % rdi_448);
+		word64 rax_461 = (uint64) (rdx_rax_458 /u rdi_448);
+		if (rsi == rax_461)
+		{
+			r8 = 0xFFFFFFFF;
+			if (rcx_451 >>u 0x01 <=u rax_461)
+			{
+				word64 rax_474 = fn0000000000410C40(rsi, (rcx_451 >>u 0x01) * 0x08, out rsp_123);
+				word128 rdx_rax_475 = SEQ(rdx_460, rax_474);
+				rcx = Mem0[0x000000000061A660 + 0x00:word64];
+				if (rbp >u rcx)
+				{
+					word64 rsi_500 = Mem0[0x000000000061B028 + 0x00:word64];
+					rcx = rcx * 0x08 + 0x08;
+					word64 rdx_505 = rsi_500 + (rcx * 0x03) * 0x08 + 0x10;
+					word64 rsi_508 = rsi_500 + (rbp * 0x03) * 0x08;
+					do
+					{
+						Mem512[rdx_505 + 0x00:word64] = rax_474;
+						rdx_505 = rdx_505 + 0x18;
+						rax_474 = rax_474 + rcx;
+						rdx_rax_475 = SEQ(rdx_505, rax_474);
+						rcx = rcx + 0x08;
+					} while (rdx_505 != rsi_508);
+				}
+				Mem497[0x000000000061A660 + 0x00:word64] = rbp;
+				rax_116 = DPB(rax_474, 0x00, 0);
+				rdx_rax_209 = DPB(rdx_rax_475, 0x00, 0);
+				r8_357 = Mem497[0x000000000061B1B0 + 0x00:word64];
+				rsi_369 = Mem497[0x000000000061B028 + 0x00:word64];
+				if (rbx_184 == 0x00)
+				{
+l0000000000406004:
+					word64 rbp_212 = DPB(rbp, 0x00, 0);
+					if (r8_357 != 0x00)
+					{
+						do
+						{
+							word64 rbp_219;
+							byte r12b_221;
+							word64 r9_220;
+							rax_116 = fn0000000000405D50(Mem0[0x000000000061B1A8 + 0x00:word64][rbp_212 * 0x08], r11, fs, out rsp_123, out rbp_219, out r9_220, out r12b_221);
+							r11 = rax_116;
+							word64 r14_228 = Mem0[0x000000000061B1B0 + 0x00:word64];
+							if (rbx_184 != 0x00)
+							{
+								word64 r13_251 = Mem0[0x000000000061B0C8 + 0x00:word64];
+								word64 rsi_252 = Mem0[0x000000000061B028 + 0x00:word64] + 0x10;
+								rcx = DPB(rcx, 0x01, 0);
+								do
+								{
+									word64 r9_273 = r9_220 - 0x01;
+									*r9Out = r9_273 - 0x01;
+									if (Mem0[rsi_252 + 0x00:byte] != 0x00)
+									{
+										word64 rax_302;
+										word64 r10_301;
+										if (r12b_221 == 0x00)
+										{
+											word128 rdx_rax_334 = DPB(rdx_rax_209, 0x00, 64);
+											rax_302 = (uint64) (rdx_rax_334 /u rcx_566);
+											r10_301 = (uint64) (rdx_rax_334 % rcx_566);
+										}
+										else
+										{
+											word128 rdx_rax_343 = DPB(rdx_rax_209, 0x00, 64);
+											rax_302 = (uint64) (SEQ((uint64) (rdx_rax_343 % rcx_566), rbp_219) /u (uint64) (rdx_rax_343 /u rcx_566));
+											r10_301 = rax_302;
+										}
+										word64 rdx_308 = rax_116 + DPB(rax_302, r9_273 - 0x01 != r10_301, 0) * 0x02;
+										rax_116 = Mem0[rsi_252 + 0x00:word64] + r10_301 * 0x08;
+										rdx_rax_209 = SEQ(rdx_308, rax_116);
+										r9_220 = Mem0[rcx_566 + 0x00:word64];
+										*r9Out = r9_220;
+										if (rdx_308 >u r9_220)
+										{
+											Mem321[r14_228 + 0x08:word64] = Mem0[r14_228 + 0x08:word64] + (rdx_308 - r9_220);
+											Mem322[rax_116 + 0x00:word64] = rdx_308;
+											Mem325[rsi_252 + 0x00:byte] = Mem322[r14_228 + 0x08:word64] <u r13_251;
+										}
+									}
+									rsi_252 = rsi_252 + 0x18;
+									rcx = rcx_566 + 0x01;
+									word64 rcx_566 = rcx;
+								} while (rbx_184 <=u rcx_566);
+							}
+							rbp_212 = rbp_219 + 0x01;
+						} while (rbp_219 + 0x01 <u r14_228);
+					}
+					if (rbx_184 >u 0x01)
+					{
+						word64 rax_167 = rbx_184 * 0x03;
+						word64 rdx_165 = Mem0[0x000000000061B028 + 0x00:word64];
+						rax_116 = rax_167 << 0x03;
+						if ((rdx_165 - 0x18)[rax_167 * 0x08] == 0x00)
+						{
+							rax_116 = (rax_167 << 0x03) + rdx_165 + rdx_165;
+							do
+							{
+								word64 rbx_185 = rbx_184 - 0x01;
+								rbx_184 = rbx_185 - 0x01;
+								if (rbx_185 == 0x02)
+									goto l0000000000406164;
+								rax_116 = rax_116 - 0x18;
+							} while (Mem0[rax_116 - 0x18 + 0x00:byte] != 0x00);
+						}
+					}
+l0000000000406164:
+					word64 rbx_134 = Mem0[rsp_123 + 0x00:word64];
+					word64 rsp_138 = Mem0[rsp_123 + 0x10:word64];
+					return rax_116;
+					word64 rsp_152 = Mem0[rsp_138 + 0x28:word64];
+					word64 rbp_154;
+					*rbpOut = Mem0[rsp_152 + 0x08:word64];
+					word64 rsp_158;
+					*rspOut = rsp_152 + 0x18;
+					return rbx_134;
+				}
+l00000000004060E0:
+				while (true)
+				{
+					rcx = Mem0[rsi_369 + 0x10:word64];
+					Mem375[rsi_369 + 0x00:byte] = 0x01;
+					word64 rdi_371 = rax_116 + 0x01;
+					Mem377[rsi_369 + 0x08:word64] = rdi_371 * 0x03;
+					word64 rdx_379 = DPB(rdi_371 * 0x03, 0x00, 0);
+					do
+					{
+						rcx[rdx_379 * 0x08] = 0x03;
+						rdx_379 = rdx_379 + 0x01;
+						rdx_rax_209 = SEQ(rdx_379, rax_116);
+					} while (rdx_379 <=u rax_116);
+					rsi_369 = rsi_369 + 0x18;
+					if (rdi_371 == rbx_184)
+						break;
+					rax_116 = rdi_371;
+				}
+				goto l0000000000406004;
+			}
+		}
+	}
+l000000000040619D:
+	fn0000000000410E50();
+	word32 ebx_425;
+	word64 rsp_426;
+	word64 rbp_427;
+	word64 rsi_428;
+	word64 r8_429;
+	word64 r9_430;
+	word64 r12_431;
+	word64 r14_432;
+	word64 r15_433;
+	return fn00000000004061B0(ebx_31, ebp, rsi, edi_399, r8, r11d, r12_24, r14, fs, out ebx_425, out rsp_426, out rbp_427, out rsi_428, out r8_429, out r9_430, out r12_431, out r14_432, out r15_433);
+}
+
+// 00000000004061B0: Register word64 fn00000000004061B0(Register word32 ebx, Register word32 ebp, Register word64 rsi, Register word32 edi, Register word64 r8, Register word32 r11d, Register word64 r12, Register word64 r14, Register selector fs, Register out ptr64 ebxOut, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut, Register out ptr64 r8Out, Register out ptr64 r9Out, Register out ptr64 r12Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
+word64 fn00000000004061B0(word32 ebx, word32 ebp, word64 rsi, word32 edi, word64 r8, word32 r11d, word64 r12, word64 r14, selector fs, ptr64 & ebxOut, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & rsiOut, ptr64 & r8Out, ptr64 & r9Out, ptr64 & r12Out, ptr64 & r14Out, ptr64 & r15Out)
 {
 fn00000000004061B0_entry:
 	rsp = fp
@@ -1566,9 +2630,9 @@ l000000000040623D:
 	rsp = rsp + 0x08
 	rbp = Mem0[rsp + 0x00:word64]
 	rsp = rsp + 0x08
-	return
+	return rax
 l0000000000406248:
-	rax = fn000000000040C9B0(rsi, edi, r8, r12, out rsp, out ebp)
+	rax = fn000000000040C9B0(rsi, edi, r8, r12, out rsp, out rbp, out r12)
 	SZO = cond(rax & rax)
 	Z = SZO (alias)
 	C = false
@@ -1579,7 +2643,7 @@ l0000000000406259:
 	esi = 0x00
 	SZO = cond(0x00)
 	C = false
-	eax = fn000000000040D420(rax, esi, rdi, fs, qwLoc08, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15)
+	rax = fn000000000040D420(rax, esi, rdi, fs, qwLoc08, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15)
 	edx = 0x00
 	SZO = cond(eax & eax)
 	C = false
@@ -1616,7 +2680,7 @@ l00000000004062A5:
 	eax = 0x01
 	branch Test(EQ,Z) l00000000004062B8
 l00000000004062AE:
-	return
+	return rax
 l00000000004062B8:
 	rsi = Mem0[rdi + 0x00:word64]
 	rdi = Mem0[rcx + 0x00:word64]
@@ -1647,7 +2711,7 @@ l00000000004062C8:
 	branch Test(NE,Z) l00000000004062A1
 l00000000004062CC:
 	eax = ~0x00
-	return
+	return rax
 l000000000040A7D0:
 l000000000040A7F1:
 	edx = (word32) Mem0[rbx + 0x00:byte]
@@ -1693,7 +2757,7 @@ l000000000040A838:
 	rsp = rsp + 0x08
 	rsi = Mem0[rsp + 0x00:word64]
 	rsp = rsp + 0x08
-	return
+	return rax
 l000000000040A848:
 	SZO = cond(esi & esi)
 	C = false
@@ -1719,11 +2783,11 @@ l000000000040A877:
 	rdi = rsp
 	Mem0[rsp + 0x00:word64] = rbx
 	Mem0[rsp + 0x08:word64] = rbp
-	rax = fn000000000040A730(rdi, r14d)
+	rax = fn000000000040A730(rdi, r14d, out r9)
 	rdi = rsp + 0x08
 	r14 = rax
 	r12 = r14
-	rax = fn000000000040A730(rdi, r14d)
+	rax = fn000000000040A730(rdi, r14d, out r9)
 	SZO = cond(r14 & r14)
 	C = false
 	branch Test(NE,Z) l000000000040A8A0
@@ -1844,7 +2908,7 @@ l000000000040A9B4:
 	rsp = rsp + 0x08
 	rsi = Mem0[rsp + 0x00:word64]
 	rsp = rsp + 0x08
-	return
+	return rax
 l000000000040A9D0:
 	r8 = r8 + 0x01
 	SCZO = cond(r8)
@@ -1980,6 +3044,15 @@ l000000000040AB1F:
 	C = false
 	goto l000000000040A961
 fn00000000004061B0_exit:
+	use ebx (=> ebxOut)
+	use rsp (=> rspOut)
+	use rbp (=> rbpOut)
+	use rsi (=> rsiOut)
+	use r8 (=> r8Out)
+	use r9 (=> r9Out)
+	use r12 (=> r12Out)
+	use r14 (=> r14Out)
+	use r15 (=> r15Out)
 }
 
 // 0000000000406400: void fn0000000000406400()
@@ -1989,36 +3062,35 @@ void fn0000000000406400()
 	{
 		fn0000000000406440(DPB(rdi, 6398944, 0));
 		fn0000000000406440(DPB(rdi, 6398992, 0));
-		word64 rdi_23 = DPB(rdi, 6398960, 0);
-		fn0000000000406440(rdi_23);
+		word64 rdi_19 = DPB(rdi, 6398960, 0);
+		fn0000000000406440(rdi_19);
 		return;
 	}
 	else
 	{
-		word64 rdi_12 = DPB(rdi, 0x0061A400, 0);
-		fn0000000000406440(rdi_12);
+		word64 rdi_11 = DPB(rdi, 0x0061A400, 0);
+		fn0000000000406440(rdi_11);
 		return;
 	}
 }
 
-// 0000000000406440: Register word32 fn0000000000406440(Register word64 rdi)
-word32 fn0000000000406440(word64 rdi)
+// 0000000000406440: void fn0000000000406440(Register word64 rdi)
+void fn0000000000406440(word64 rdi)
 {
 	if (Mem0[0x000000000061B128 + 0x00:byte] == 0x00)
 	{
-		Mem26[0x000000000061B128 + 0x00:byte] = 0x01;
+		Mem24[0x000000000061B128 + 0x00:byte] = 0x01;
 		fn0000000000406400();
 	}
-	word64 rsp_17;
-	byte SCZO_18;
-	byte Z_19;
-	word64 rsi_20;
-	word64 rdi_21;
-	word64 rcx_22;
-	word32 edx_23;
-	word32 esi_24;
+	word64 rsp_16;
+	byte SCZO_17;
+	byte Z_18;
+	word64 rsi_19;
+	word64 rdi_20;
+	word64 rcx_21;
+	word32 edx_22;
 	Mem0[0x000000000061A2A8 + 0x00:word32]();
-	return esi_24;
+	return;
 }
 
 // 0000000000406490: Register word64 fn0000000000406490()
@@ -2107,271 +3179,261 @@ word64 fn0000000000406490()
 // 0000000000406540: Register word64 fn0000000000406540(Register word64 rcx, Register word64 rdx, Register byte sil, Register word64 rdi, Register word64 r11, Register word32 r14d, Register word64 r15, Register selector fs, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut, Register out ptr64 rdiOut, Register out ptr64 r8Out, Register out ptr64 r9Out, Register out ptr64 r11Out, Register out ptr64 r12Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
 word64 fn0000000000406540(word64 rcx, word64 rdx, byte sil, word64 rdi, word64 r11, word32 r14d, word64 r15, selector fs, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & rsiOut, ptr64 & rdiOut, ptr64 & r8Out, ptr64 & r9Out, ptr64 & r11Out, ptr64 & r12Out, ptr64 & r13Out, ptr64 & r14Out, ptr64 & r15Out)
 {
-	word32 r15d_484;
-	byte r15b_481;
-	word32 edx_465;
-	word32 r14d_485;
-	word64 rbp_417;
-	word64 rbp_18 = rdi;
+	word32 r15d_485;
+	byte r15b_482;
+	word32 edx_466;
+	word32 r14d_486;
+	word64 rbp_170 = rdi;
 	word64 rbx_24 = rdx;
-	word32 ebx_170 = (word32) rdx;
+	word32 ebx_169 = (word32) rdx;
 	word64 rdx_32 = Mem0[rdi + 0x00:word64];
-	word64 r12_166 = Mem0[r15 + 0x08:word64];
+	word64 r12_165 = Mem0[r15 + 0x08:word64];
 	if (sil != 0x00)
 	{
 		if (Mem0[0x000000000061B129 + 0x00:byte] == 0x00)
 			goto l00000000004066FF;
-		r14d_485 = (word32) Mem0[rcx + 177:byte];
-		r15d_484 = Mem0[rcx + 0xA4:word32];
-		r14b = (byte) r14d_485;
-		r15b_481 = (byte) r15d_484;
+		r14d_486 = (word32) Mem0[rcx + 177:byte];
+		r15d_485 = Mem0[rcx + 0xA4:word32];
+		r14b = (byte) r14d_486;
+		r15b_482 = (byte) r15d_485;
 		if (r14b == 0x00)
 		{
-			word32 esi_854;
-			rax = fn0000000000404CD0(0x0C, out esi_854);
-			edx_465 = 0x0C;
+			rax = fn0000000000404CD0(0x0C);
+			edx_466 = 0x0C;
 			rdx_32 = DPB(rdx_32, 0x0C, 0);
 			if ((byte) rax != 0x00)
 				goto l00000000004066B0;
 		}
 l00000000004065B0:
-		word64 rax_505;
+		word64 rax_506;
 		if (Mem0[rdi + 0xB0:byte] == 0x00)
 		{
-			word32 eax_617 = Mem0[rdi + 0xA0:word32];
-			rax_505 = DPB(rax, eax_617, 0);
-			edx_465 = 4271200[rax_505 * 0x04];
-			if (edx_465 == 0x05)
+			word32 eax_616 = Mem0[rdi + 0xA0:word32];
+			rax_506 = DPB(rax, eax_616, 0);
+			edx_466 = 4271200[rax_506 * 0x04];
+			if (edx_466 == 0x05)
 				goto l00000000004065CF;
-			r14b = (byte) (r14d_485 & DPB(eax_617, edx_465 == 0x07, 0));
+			r14b = (byte) (r14d_486 & DPB(eax_616, edx_466 == 0x07, 0));
 		}
 		else
 		{
-			word32 eax_637 = r15d_484 & 0xF000;
-			if (eax_637 == 0x8000)
+			word32 eax_636 = r15d_485 & 0xF000;
+			if (eax_636 == 0x8000)
 			{
-				if ((r15d_484 & 0x0800) != 0x00)
+				if ((r15d_485 & 0x0800) != 0x00 && (byte) fn0000000000404CD0(0x10) != 0x00)
 				{
-					word32 esi_821;
-					if ((byte) fn0000000000404CD0(0x10, out esi_821) != 0x00)
-					{
-						edx_465 = 0x10;
-						goto l00000000004066B0;
-					}
-				}
-				if ((r15d_484 & 0x0400) != 0x00)
-				{
-					word32 esi_810;
-					if ((byte) fn0000000000404CD0(0x11, out esi_810) != 0x00)
-					{
-						edx_465 = 0x11;
-						goto l00000000004066B0;
-					}
-				}
-				word32 esi_753;
-				rax_505 = fn0000000000404CD0(0x15, out esi_753);
-				if ((byte) rax_505 != 0x00 && Mem0[rdi + 0xB8:byte] != 0x00)
-				{
-					edx_465 = 0x15;
+					edx_466 = 0x10;
 					goto l00000000004066B0;
 				}
-				if ((r15d_484 & 0x49) != 0x00)
+				if ((r15d_485 & 0x0400) != 0x00 && (byte) fn0000000000404CD0(0x11) != 0x00)
 				{
-					word32 esi_791;
-					rax_505 = fn0000000000404CD0(0x0E, out esi_791);
-					if ((byte) rax_505 != 0x00)
+					edx_466 = 0x11;
+					goto l00000000004066B0;
+				}
+				rax_506 = fn0000000000404CD0(0x15);
+				if ((byte) rax_506 != 0x00 && Mem0[rdi + 0xB8:byte] != 0x00)
+				{
+					edx_466 = 0x15;
+					goto l00000000004066B0;
+				}
+				if ((r15d_485 & 0x49) != 0x00)
+				{
+					rax_506 = fn0000000000404CD0(0x0E);
+					if ((byte) rax_506 != 0x00)
 					{
-						edx_465 = 0x0E;
+						edx_466 = 0x0E;
 						goto l00000000004066B0;
 					}
 				}
 				if (Mem0[rdi + 0x20:word64] >u 0x01)
 				{
-					word32 esi_778;
-					rax_505 = fn0000000000404CD0(22, out esi_778);
-					if ((byte) rax_505 != 0x00)
+					rax_506 = fn0000000000404CD0(22);
+					if ((byte) rax_506 != 0x00)
 					{
-						edx_465 = 22;
+						edx_466 = 22;
 						goto l00000000004066B0;
 					}
 				}
 l00000000004065CF:
-				word64 rax_509 = DPB(rax_505, strlen(r12_166), 0);
-				rdi = r12_166;
-				rbp_18 = Mem0[0x000000000061B120 + 0x00:word64];
-				r14b = (byte) rax_509;
-				word64 r15_518 = r12_166 + rax_509;
-				if (rbp_18 != 0x00)
+				word64 rax_509 = DPB(rax_506, strlen(r12_165), 0);
+				rbp_170 = Mem0[0x000000000061B120 + 0x00:word64];
+				rdi = r12_165;
+				r14b = (byte) strlen(r12_165);
+				word64 r15_518 = r12_165 + rax_509;
+				if (rbp_170 != 0x00)
 				{
 					rax_545 = rax_509;
 l00000000004065F0:
 					word64 rax_545;
-					word64 rdx_550 = Mem0[rbp_18 + 0x00:word64];
+					word64 rdx_550 = Mem0[rbp_170 + 0x00:word64];
 					if (rax_509 >=u rdx_550)
 					{
-						word64 rsi_567 = Mem0[rbp_18 + 0x08:word64];
+						word64 rsi_567 = Mem0[rbp_170 + 0x08:word64];
 						rdi = r15_518 - rdx_550;
 						rax_545 = DPB(rax_545, strncmp(rdi, rsi_567, rdx_550), 0);
 						if (strncmp(rdi, rsi_567, rdx_550) == 0x00)
 						{
-							if (rbp_18 == 0x00)
+							if (rbp_170 == 0x00)
 								break;
-							rbp_417 = rbp_18 + 0x10;
+							rbp_170 = rbp_170 + 0x10;
 							goto l00000000004066C0;
 						}
 					}
-					rbp_18 = Mem0[rbp_18 + 0x20:word64];
-					if (rbp_18 != 0x00)
+					rbp_170 = Mem0[rbp_170 + 0x20:word64];
+					if (rbp_170 != 0x00)
 						goto l00000000004065F0;
 				}
-				edx_465 = 0x05;
+				edx_466 = 0x05;
 l00000000004066B0:
-				rbp_417 = (DPB(rbp_18, edx_465, 0) << 0x04) + 6398944;
+				rbp_170 = (DPB(rbp_170, edx_466, 0) << 0x04) + 6398944;
 l00000000004066C0:
-				word64 rdi_425 = DPB(rdi, 0x04, 0);
-				if (Mem0[rbp_417 + 0x08:word64] != 0x00)
+				word64 rdi_433 = DPB(rdi, 0x04, 0);
+				if (Mem0[rbp_170 + 0x08:word64] != 0x00)
 				{
-					word32 esi_426;
-					if ((byte) fn0000000000404CD0(0x04, out esi_426) != 0x00)
+					if ((byte) fn0000000000404CD0(0x04) != 0x00)
 					{
 						fn0000000000406440(DPB(rdi, 6398944, 0));
-						rdi_425 = DPB(rdi, 6398960, 0);
-						fn0000000000406440(rdi_425);
+						rdi_433 = DPB(rdi, 6398960, 0);
+						fn0000000000406440(rdi_433);
 					}
-					fn0000000000406440(DPB(rdi_425, 6398944, 0));
-					fn0000000000406440(rbp_417);
-					fn0000000000406440(DPB(rbp_417, 6398960, 0));
+					fn0000000000406440(DPB(rdi_433, 6398944, 0));
+					fn0000000000406440(rbp_170);
+					fn0000000000406440(DPB(rbp_170, 6398960, 0));
 				}
 				else
-				{
-					word32 esi_448;
-					fn0000000000404CD0(0x04, out esi_448);
-				}
+					fn0000000000404CD0(0x04);
 l00000000004066FF:
-				word64 rdi_176;
-				word64 rbp_197;
-				word64 rdx_191;
-				word64 r13_186;
+				word64 rdi_174;
+				word64 rbp_200;
+				word64 rdx_194;
+				word64 r13_189;
 				if (rdx != 0x00)
 				{
 					if (Mem0[0x000000000061B130 + 0x00:byte] != 0x00)
 					{
-						word64 rax_290 = Mem0[rdx + 0x18:word64];
-						if (Mem0[rdx + 0x20:word64] <u rax_290 + 0x08)
+						word64 rax_293 = Mem0[rdx + 0x18:word64];
+						if (Mem0[rdx + 0x20:word64] <u rax_293 + 0x08)
 						{
-							word64 rsp_341;
-							word64 rdi_342;
-							word64 rsi_343;
-							word64 rbp_344;
-							word64 r13_345;
-							word64 rcx_346;
-							word64 rdx_348;
-							byte SCZO_349;
-							byte sil_350;
-							byte SZO_351;
-							byte C_352;
-							word64 r15_354;
-							byte Z_355;
-							word32 r14d_356;
-							word64 rax_357;
-							word32 r15d_358;
-							word32 esi_359;
-							word32 ecx_360;
-							word32 eax_361;
-							word32 edx_362;
-							word64 r14_363;
-							word32 ebp_365;
-							word32 edi_366;
-							byte al_367;
-							byte dl_368;
-							byte r15b_369;
-							byte CZ_370;
-							word64 r8_373;
-							word64 r9_374;
+							word64 rsp_344;
+							word64 rdi_345;
+							word64 rsi_346;
+							word64 r13_348;
+							word64 rcx_349;
+							word64 rdx_351;
+							byte SCZO_352;
+							byte sil_353;
+							byte SZO_354;
+							byte C_355;
+							word64 r15_357;
+							byte Z_358;
+							word32 r14d_359;
+							word64 rax_360;
+							word32 r15d_361;
+							word32 esi_362;
+							word32 ecx_363;
+							word32 eax_364;
+							word32 edx_365;
+							word64 r14_366;
+							word32 ebp_368;
+							word32 edi_369;
+							byte al_370;
+							byte dl_371;
+							byte r15b_372;
+							byte CZ_373;
+							word64 r8_376;
+							word64 r9_377;
 							_obstack_newchunk();
-							rax_290 = Mem0[rbx_24 + 0x18:word64];
+							rax_293 = Mem0[rbx_24 + 0x18:word64];
 						}
-						Mem335[rax_290 + 0x00:word64] = Mem0[0x000000000061B018 + 0x00:word64];
-						Mem337[rbx_24 + 0x18:word64] = Mem335[rbx_24 + 0x18:word64] + 0x08;
+						Mem338[rax_293 + 0x00:word64] = Mem0[0x000000000061B018 + 0x00:word64];
+						Mem340[rbx_24 + 0x18:word64] = Mem338[rbx_24 + 0x18:word64] + 0x08;
 					}
-					rdi_176 = Mem0[0x000000000061A610 + 0x00:word64];
-					word64 r8_182;
-					word64 r9_183;
-					word64 r11_184;
-					word64 r12_185;
-					word64 r14_187;
-					word64 r15_188;
-					word64 rbx_181;
-					word64 rax_189 = fn00000000004052D0(Mem0[0x000000000061B0E8 + 0x00:word64], ebx_170, r12_166, r11, fs, out rbx_181, out r8_182, out r9_183, out r11_184, out r12_185, out r13_186, out r14_187, out r15_188);
-					rdx_191 = rax_189 + Mem0[0x000000000061B018 + 0x00:word64];
-					Mem199[0x000000000061B018 + 0x00:word64] = rdx_191;
-					rbp_197 = rax_189;
+					rdi_174 = Mem0[0x000000000061A610 + 0x00:word64];
+					word64 rsp_181;
+					word64 rbp_182;
+					word64 rsi_183;
+					word32 edi_184;
+					word64 r8_185;
+					word64 r9_186;
+					word64 r11_187;
+					word64 r12_188;
+					word64 r14_190;
+					word64 r15_191;
+					word64 rbx_180;
+					word64 rax_192 = fn00000000004052D0(Mem0[0x000000000061B0E8 + 0x00:word64], ebx_169, rbp_170, r12_165, rdi_174, r11, fs, out rbx_180, out rsp_181, out rbp_182, out rsi_183, out edi_184, out r8_185, out r9_186, out r11_187, out r12_188, out r13_189, out r14_190, out r15_191);
+					rdx_194 = rax_192 + Mem0[0x000000000061B018 + 0x00:word64];
+					Mem202[0x000000000061B018 + 0x00:word64] = rdx_194;
+					rbp_200 = rax_192;
 					if (Mem0[0x000000000061B130 + 0x00:byte] != 0x00)
 					{
-						word64 rax_200 = Mem199[rbx_181 + 0x18:word64];
-						if (Mem199[rbx_181 + 0x20:word64] <u rax_200 + 0x08)
+						word64 rax_203 = Mem202[rbx_180 + 0x18:word64];
+						if (Mem202[rbx_180 + 0x20:word64] <u rax_203 + 0x08)
 						{
-							word64 rsp_248;
-							word64 rsi_250;
-							word64 rcx_253;
-							word64 rdx_255;
-							byte SCZO_256;
-							byte sil_257;
-							byte SZO_258;
-							byte C_259;
-							word64 r12_260;
-							word64 r15_261;
-							byte Z_262;
-							word32 r14d_263;
-							word64 rax_264;
-							word32 r15d_265;
-							word32 esi_266;
-							word32 ecx_267;
-							word32 eax_268;
-							word32 edx_269;
-							word64 r14_270;
-							word32 ebp_272;
-							word32 edi_273;
-							byte al_274;
-							byte dl_275;
-							byte r15b_276;
-							byte CZ_277;
-							word64 r11_278;
-							selector fs_279;
-							word64 r8_280;
-							word64 r9_281;
-							word32 ebx_282;
+							word64 rsp_251;
+							word64 rsi_253;
+							word64 rcx_256;
+							word64 rdx_258;
+							byte SCZO_259;
+							byte sil_260;
+							byte SZO_261;
+							byte C_262;
+							word64 r12_263;
+							word64 r15_264;
+							byte Z_265;
+							word32 r14d_266;
+							word64 rax_267;
+							word32 r15d_268;
+							word32 esi_269;
+							word32 ecx_270;
+							word32 eax_271;
+							word32 edx_272;
+							word64 r14_273;
+							word32 ebp_275;
+							word32 edi_276;
+							byte al_277;
+							byte dl_278;
+							byte r15b_279;
+							byte CZ_280;
+							word64 r11_281;
+							selector fs_282;
+							word64 r8_283;
+							word64 r9_284;
+							word32 ebx_285;
 							_obstack_newchunk();
-							rax_200 = Mem199[rbx_181 + 0x18:word64];
-							rdx_191 = Mem199[0x000000000061B018 + 0x00:word64];
+							rax_203 = Mem202[rbx_180 + 0x18:word64];
+							rdx_194 = Mem202[0x000000000061B018 + 0x00:word64];
 						}
-						Mem242[rax_200 + 0x00:word64] = rdx_191;
-						Mem244[rbx_181 + 0x18:word64] = Mem242[rbx_181 + 0x18:word64] + 0x08;
+						Mem245[rax_203 + 0x00:word64] = rdx_194;
+						Mem247[rbx_180 + 0x18:word64] = Mem245[rbx_180 + 0x18:word64] + 0x08;
 					}
 				}
 				else
 				{
-					rdx_191 = Mem0[0x000000000061B0E8 + 0x00:word64];
-					rdi_176 = Mem0[0x000000000061A610 + 0x00:word64];
-					word64 rbx_386;
-					word64 r8_387;
-					word64 r9_388;
-					word64 r11_389;
-					word64 r12_390;
-					word64 r14_392;
-					word64 r15_393;
-					word64 rax_394 = fn00000000004052D0(rdx_191, ebx_170, r12_166, r11, fs, out rbx_386, out r8_387, out r9_388, out r11_389, out r12_390, out r13_186, out r14_392, out r15_393);
-					Mem398[0x000000000061B018 + 0x00:word64] = Mem0[0x000000000061B018 + 0x00:word64] + rax_394;
-					rbp_197 = rax_394;
+					rdx_194 = Mem0[0x000000000061B0E8 + 0x00:word64];
+					rdi_174 = Mem0[0x000000000061A610 + 0x00:word64];
+					word64 rbx_390;
+					word64 rsp_391;
+					word64 rbp_392;
+					word64 rsi_393;
+					word32 edi_394;
+					word64 r8_395;
+					word64 r9_396;
+					word64 r11_397;
+					word64 r12_398;
+					word64 r14_400;
+					word64 r15_401;
+					word64 rax_402 = fn00000000004052D0(rdx_194, ebx_169, rbp_170, r12_165, rdi_174, r11, fs, out rbx_390, out rsp_391, out rbp_392, out rsi_393, out edi_394, out r8_395, out r9_396, out r11_397, out r12_398, out r13_189, out r14_400, out r15_401);
+					Mem406[0x000000000061B018 + 0x00:word64] = Mem0[0x000000000061B018 + 0x00:word64] + rax_402;
+					rbp_200 = rax_402;
 				}
 				word64 rsp_96 = fn0000000000406490();
 				if (r14b != 0x00)
 				{
 					fn0000000000406400();
 					word64 rcx_136 = Mem0[0x000000000061B0C8 + 0x00:word64];
-					word128 rdx_rax_139 = SEQ(rdx_191, r13_186);
-					if ((uint64) (rdx_rax_139 /u rcx_136) != (uint64) (SEQ((uint64) (rdx_rax_139 % rcx_136), (rbp_197 - 0x01) + r13_186) /u rcx_136))
-						fn0000000000406440(DPB(rdi_176, 0x0061A550, 0));
+					word128 rdx_rax_139 = SEQ(rdx_194, r13_189);
+					if ((uint64) (rdx_rax_139 /u rcx_136) != (uint64) (SEQ((uint64) (rdx_rax_139 % rcx_136), (rbp_200 - 0x01) + r13_189) /u rcx_136))
+						fn0000000000406440(DPB(rdi_174, 0x0061A550, 0));
 				}
 				word64 rsp_113 = Mem0[rsp_96 + 0x18:word64];
 				word64 rbp_115;
@@ -2384,101 +3446,94 @@ l00000000004066FF:
 				*rspOut = rsp_113 + 0x20;
 				return Mem0[rsp_96 + 0x08:word64];
 			}
-			if (eax_637 == 0x4000)
+			if (eax_636 == 0x4000)
 			{
-				if ((r15d_484 & 0x0202) == 0x0202)
+				if ((r15d_485 & 0x0202) == 0x0202)
 				{
-					edx_465 = 0x14;
-					word32 esi_732;
-					if ((byte) fn0000000000404CD0(0x14, out esi_732) != 0x00)
+					edx_466 = 0x14;
+					if ((byte) fn0000000000404CD0(0x14) != 0x00)
 						goto l00000000004066B0;
 				}
-				if ((r15b_481 & 0x02) != 0x00)
+				if ((r15b_482 & 0x02) != 0x00)
 				{
-					edx_465 = 0x13;
-					word32 esi_721;
-					if ((byte) fn0000000000404CD0(0x13, out esi_721) != 0x00)
+					edx_466 = 0x13;
+					if ((byte) fn0000000000404CD0(0x13) != 0x00)
 						goto l00000000004066B0;
 				}
-				edx_465 = 0x06;
-				if ((r15d_484 & 0x0200) != 0x00)
-				{
-					word32 esi_708;
-					edx_465 = (0x00 - ((byte) fn0000000000404CD0(0x12, out esi_708) <u 0x01) & ~0x0B) + 0x12;
-				}
+				edx_466 = 0x06;
+				if ((r15d_485 & 0x0200) != 0x00)
+					edx_466 = (0x00 - ((byte) fn0000000000404CD0(0x12) <u 0x01) & ~0x0B) + 0x12;
 				goto l00000000004066B0;
 			}
-			if (eax_637 != 0xA000)
+			if (eax_636 != 0xA000)
 			{
-				edx_465 = 0x08;
-				if (eax_637 != 0x1000)
+				edx_466 = 0x08;
+				if (eax_636 != 0x1000)
 				{
-					edx_465 = 0x09;
-					if (eax_637 != 0xC000)
+					edx_466 = 0x09;
+					if (eax_636 != 0xC000)
 					{
-						edx_465 = 0x0A;
-						if (eax_637 != 0x6000)
+						edx_466 = 0x0A;
+						if (eax_636 != 0x6000)
 						{
-							word64 rdx_669 = DPB(rdx_32, eax_637 != 0x2000, 0);
-							edx_465 = rdx_669 + 11 + rdx_669;
+							word64 rdx_668 = DPB(rdx_32, eax_636 != 0x2000, 0);
+							edx_466 = rdx_668 + 11 + rdx_668;
 						}
 					}
 				}
 				goto l00000000004066B0;
 			}
-			edx_465 = 0x07;
+			edx_466 = 0x07;
 		}
 		if (r14b != 0x00)
 		{
-			edx_465 = 0x0D;
+			edx_466 = 0x0D;
 			if (Mem0[0x000000000061B198 + 0x00:byte] == 0x00)
-			{
-				word32 esi_605;
-				edx_465 = (0x00 - ((byte) fn0000000000404CD0(0x0D, out esi_605) <u 0x01) & ~0x05) + 0x0D;
-			}
+				edx_466 = (0x00 - ((byte) fn0000000000404CD0(0x0D) <u 0x01) & ~0x05) + 0x0D;
 		}
 		goto l00000000004066B0;
 	}
 	if (Mem0[0x000000000061B129 + 0x00:byte] == 0x00)
 	{
-		r12_166 = rdx_32;
+		r12_165 = rdx_32;
 		goto l00000000004066FF;
 	}
 	if (Mem0[0x000000000061B198 + 0x00:byte] != 0x00)
 	{
 		if (Mem0[rdi + 177:byte] != 0x00)
 		{
-			r15d_484 = Mem0[rcx + 0xA4:word32];
-			r15b_481 = (byte) r15d_484;
+			r15d_485 = Mem0[rcx + 0xA4:word32];
+			r15b_482 = (byte) r15d_485;
 			goto l00000000004069F7;
 		}
 		r14d = 0x00;
 	}
 	else
 		r14d = (word32) Mem0[rcx + 177:byte];
-	r15d_484 = Mem0[rcx + 0x28:word32];
-	r15b_481 = (byte) r15d_484;
+	r15d_485 = Mem0[rcx + 0x28:word32];
+	r15b_482 = (byte) r15d_485;
 l00000000004069F7:
-	r14d_485 = r14d ^ 0x01;
-	r14b = (byte) r14d_485;
-	r12_166 = rdx_32;
+	r14d_486 = r14d ^ 0x01;
+	r14b = (byte) r14d_486;
+	r12_165 = rdx_32;
 	goto l00000000004065B0;
 }
 
-// 0000000000406A30: Register word32 fn0000000000406A30()
-word32 fn0000000000406A30()
+// 0000000000406A30: void fn0000000000406A30()
+void fn0000000000406A30()
 {
 	if (Mem0[0x000000000061B129 + 0x00:byte] != 0x00)
 	{
-		if ((byte) fn0000000000404CD0(0x04, out esi) != 0x00)
+		if ((byte) fn0000000000404CD0(0x04) != 0x00)
 		{
 			fn0000000000406440(DPB(rdi, 6398944, 0));
 			fn0000000000406440(DPB(rdi, 6399008, 0));
-			word64 rdi_49 = DPB(rdi, 6398960, 0);
-			return fn0000000000406440(rdi_49);
+			word64 rdi_43 = DPB(rdi, 6398960, 0);
+			fn0000000000406440(rdi_43);
+			return;
 		}
 	}
-	return esi;
+	return;
 }
 
 // 0000000000406A80: Register word64 fn0000000000406A80(Register word64 rdx, Register word64 rsi, Register word64 rdi, Register word32 r11d, Register word64 r14, Register byte r15b, Register selector fs, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r8Out, Register out ptr64 r9Out, Register out ptr64 r11Out, Register out ptr64 r12Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
@@ -2486,75 +3541,75 @@ word64 fn0000000000406A80(word64 rdx, word64 rsi, word64 rdi, word32 r11d, word6
 {
 	word64 r12_14 = rdi;
 	word32 ebp_19 = (word32) rdx;
-	word64 rbx_204 = rsi;
-	word64 rsp_196 = fp - 292;
-	word64 rax_136 = DPB(Mem0[fs:0x28:word64], 0x00, 0);
+	word64 rbx_203 = rsi;
+	word64 rsp_195 = fp - 292;
+	word64 rax_135 = DPB(Mem0[fs:0x28:word64], 0x00, 0);
 	if (Mem0[0x000000000061A748 + 0x00:word64] != 0x00)
 	{
 		rsi = DPB(rsi, 4274022, 0);
-		rax_136 = strstr(rsi, rsi);
-		r14 = rax_136;
-		if (rax_136 != 0x00)
+		rax_135 = strstr(rsi, rsi);
+		r14 = rax_135;
+		if (rax_135 != 0x00)
 		{
-			rax_136 = DPB(rax_136, strlen(rsi), 0);
-			if (rax_136 <=u 101)
+			rax_135 = DPB(rax_135, strlen(rsi), 0);
+			if (rax_135 <=u 101)
 			{
-				word64 rsp_160;
-				word64 rsi_161;
-				word64 rbp_162;
-				word32 r13d_163;
-				word32 ecx_164;
-				word64 r12_165;
-				word64 rdi_166;
-				word64 rdx_167;
-				word64 rbx_168;
-				byte SCZO_169;
-				word64 rax_170;
-				selector fs_171;
-				word32 eax_172;
-				byte SZO_173;
-				byte C_174;
-				byte Z_175;
-				word32 esi_176;
-				word64 r14_177;
-				byte CZ_178;
-				word32 r8d_179;
-				word64 rcx_180;
-				word32 r9d_181;
-				word32 r11d_182;
-				byte r15b_183;
-				word64 r8_184;
-				word64 r9_185;
-				word64 r11_186;
-				word64 r13_187;
-				word64 r15_188;
-				word32 ebp_189;
+				word64 rsp_159;
+				word64 rsi_160;
+				word64 rbp_161;
+				word32 r13d_162;
+				word32 ecx_163;
+				word64 r12_164;
+				word64 rdi_165;
+				word64 rdx_166;
+				word64 rbx_167;
+				byte SCZO_168;
+				word64 rax_169;
+				selector fs_170;
+				word32 eax_171;
+				byte SZO_172;
+				byte C_173;
+				byte Z_174;
+				word32 esi_175;
+				word64 r14_176;
+				byte CZ_177;
+				word32 r8d_178;
+				word64 rcx_179;
+				word32 r9d_180;
+				word32 r11d_181;
+				byte r15b_182;
+				word64 r8_183;
+				word64 r9_184;
+				word64 r11_185;
+				word64 r13_186;
+				word64 r15_187;
+				word32 ebp_188;
 				__mempcpy_chk();
-				word64 rsi_197;
-				word64 rbp_198;
-				word32 r13d_199;
-				word32 ecx_200;
-				word64 rdi_202;
-				word64 rdx_203;
-				byte SCZO_205;
-				word64 rax_206;
-				word32 eax_208;
-				byte SZO_209;
-				byte C_210;
-				byte Z_211;
-				word32 esi_212;
-				byte CZ_214;
-				word32 r8d_215;
-				word64 rcx_216;
-				word32 r9d_217;
-				word64 r8_220;
-				word64 r9_221;
-				word64 r11_222;
-				word64 r13_223;
-				word64 r15_224;
+				word64 rsi_196;
+				word64 rbp_197;
+				word32 r13d_198;
+				word32 ecx_199;
+				word64 rdi_201;
+				word64 rdx_202;
+				byte SCZO_204;
+				word64 rax_205;
+				word32 eax_207;
+				byte SZO_208;
+				byte C_209;
+				byte Z_210;
+				word32 esi_211;
+				byte CZ_213;
+				word32 r8d_214;
+				word64 rcx_215;
+				word32 r9d_216;
+				word64 r8_219;
+				word64 r9_220;
+				word64 r11_221;
+				word64 r13_222;
+				word64 r15_223;
 				stpcpy();
-				rsi = rsi_197 + 0x02;
-				rax_136 = strcpy(rax_206, rsi_197 + 0x02);
+				rsi = rsi_196 + 0x02;
+				rax_135 = strcpy(rax_205, rsi_196 + 0x02);
 			}
 		}
 	}
@@ -2568,25 +3623,24 @@ word64 fn0000000000406A80(word64 rdx, word64 rsi, word64 rdi, word32 r11d, word6
 	word64 r13_74;
 	word64 r14_75;
 	word64 r15_76;
-	word64 rax_77 = fn0000000000410600(rax_136, rbx_204, ebp_19, DPB(rsi, 1001, 0), r12_14, 0x00, r11d, r14, r15b, fs, out rbp_67, out esi_68, out rdi_69, out r8_70, out r9_71, out r11_72, out r12_73, out r13_74, out r14_75, out r15_76);
-	if ((Mem0[rsp_196 + 0x0108:word64] ^ Mem0[fs:0x28:word64]) != 0x00)
+	word64 rax_77 = fn0000000000410600(rax_135, rbx_203, ebp_19, DPB(rsi, 1001, 0), r12_14, 0x00, r11d, r14, r15b, fs, out rbp_67, out esi_68, out rdi_69, out r8_70, out r9_71, out r11_72, out r12_73, out r13_74, out r14_75, out r15_76);
+	if ((Mem0[rsp_195 + 0x0108:word64] ^ Mem0[fs:0x28:word64]) != 0x00)
 	{
 		__stack_chk_fail();
-		word64 rbx_121;
-		word64 rsp_122;
-		word64 rbp_123;
-		word64 r8_124;
-		word64 r9_125;
-		word64 r11_126;
-		word64 r12_127;
-		word64 r13_128;
-		word64 r14_129;
-		word64 r15_130;
-		return fn0000000000406B70(rbp_67, esi_68, rdi_69, r11_72, r14_75, fs, out rbx_121, out rsp_122, out rbp_123, out r8_124, out r9_125, out r11_126, out r12_127, out r13_128, out r14_129, out r15_130);
+		word64 rsp_121;
+		word64 rbp_122;
+		word64 r8_123;
+		word64 r9_124;
+		word64 r11_125;
+		word64 r12_126;
+		word64 r13_127;
+		word64 r14_128;
+		word64 r15_129;
+		return fn0000000000406B70(rbp_67, esi_68, rdi_69, r11_72, r14_75, fs, out rsp_121, out rbp_122, out r8_123, out r9_124, out r11_125, out r12_126, out r13_127, out r14_128, out r15_129);
 	}
 	else
 	{
-		word64 rsp_114 = Mem0[rsp_196 + 288:word64];
+		word64 rsp_114 = Mem0[rsp_195 + 288:word64];
 		word64 rbp_116;
 		*rbpOut = Mem0[rsp_114 + 0x08:word64];
 		word64 rsp_120;
@@ -2595,8 +3649,8 @@ word64 fn0000000000406A80(word64 rdx, word64 rsi, word64 rdi, word32 r11d, word6
 	}
 }
 
-// 0000000000406B70: Register word64 fn0000000000406B70(Register word64 rbp, Register word32 esi, Register word64 rdi, Register word64 r11, Register word64 r14, Register selector fs, Register out ptr64 rbxOut, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r8Out, Register out ptr64 r9Out, Register out ptr64 r11Out, Register out ptr64 r12Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
-word64 fn0000000000406B70(word64 rbp, word32 esi, word64 rdi, word64 r11, word64 r14, selector fs, ptr64 & rbxOut, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & r8Out, ptr64 & r9Out, ptr64 & r11Out, ptr64 & r12Out, ptr64 & r13Out, ptr64 & r14Out, ptr64 & r15Out)
+// 0000000000406B70: Register word64 fn0000000000406B70(Register word64 rbp, Register word32 esi, Register word64 rdi, Register word64 r11, Register word64 r14, Register selector fs, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r8Out, Register out ptr64 r9Out, Register out ptr64 r11Out, Register out ptr64 r12Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
+word64 fn0000000000406B70(word64 rbp, word32 esi, word64 rdi, word64 r11, word64 r14, selector fs, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & r8Out, ptr64 & r9Out, ptr64 & r11Out, ptr64 & r12Out, ptr64 & r13Out, ptr64 & r14Out, ptr64 & r15Out)
 {
 	rsp = fp;
 	rsp = fp - 0x04;
@@ -2818,7 +3872,7 @@ l0000000000406C8F:
 								edi = eax;
 								Mem0[rsp + 0x18:word64] = rsi;
 								Mem0[rsp + 0x10:word32] = edx;
-								rax = fn000000000040CB40(rax, rsi, edi, r8, r12, out rsp);
+								rax = fn000000000040CB40(rax, rsi, edi, r8, r12, out rbx, out rsp, out rbp, out r12);
 								rsi = Mem0[rsp + 0x18:word64];
 								rdi = rax;
 								edx = Mem0[rsp + 0x10:word32];
@@ -2972,7 +4026,7 @@ l0000000000406F86:
 											C = false;
 											rsi = rax;
 											Mem0[rsp + 0x10:word64] = r9;
-											eax = fn000000000040D240(edx, rsi, rdi, fs, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15);
+											rax = fn000000000040D240(edx, rsi, rdi, fs, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15);
 											r9 = Mem0[rsp + 0x10:word64];
 											Mem0[0x000000000061A3C4 + 0x00:word32] = eax;
 											r8d = eax;
@@ -3027,7 +4081,7 @@ l0000000000406FBC:
 										{
 											edi = (word32) Mem0[rbx + 0xB0:byte];
 											esi = Mem0[rbx + 0x28:word32];
-											rsp = fn0000000000405D00(edx, esi, dil, out rsi, out rdi);
+											al = fn0000000000405D00(edx, esi, dil, out rsp, out rsi, out rdi);
 										}
 									}
 									else
@@ -3058,7 +4112,7 @@ l0000000000406FBC:
 												SZO = cond(0x00);
 												C = false;
 												edi = 0x01;
-												rsp = fn0000000000405D00(edx, esi, dil, out rsi, out rdi);
+												al = fn0000000000405D00(edx, esi, dil, out rsp, out rsi, out rdi);
 											}
 										}
 									}
@@ -3220,14 +4274,14 @@ l0000000000406F3B:
 						rsi = rsp + 0x70;
 						edx = Mem0[0x000000000061B134 + 0x00:word32];
 						ecx = 0x01;
-						rax = fn000000000040BD70(rcx, edx, rbp, rsi, rdi, r8, fs, out rsp, out rbp, out r9, out r11);
+						rax = fn000000000040BD70(rcx, edx, rbp, rsi, rdi, r8, fs, out rsp, out rbp, out r8, out r9, out r11, out r14d, out r15);
 						r14 = rax;
 						rdi = Mem0[rbx + 0x40:word64];
 						r8 = Mem0[0x000000000061A560 + 0x00:word64];
 						rsi = rsp + 0x70;
 						edx = Mem0[0x000000000061B134 + 0x00:word32];
 						ecx = 0x01;
-						rax = fn000000000040BD70(rcx, edx, rbp, rsi, rdi, r8, fs, out rsp, out rbp, out r9, out r11);
+						rax = fn000000000040BD70(rcx, edx, rbp, rsi, rdi, r8, fs, out rsp, out rbp, out r8, out r9, out r11, out r14d, out r15);
 						r14 = rax;
 					}
 					else
@@ -3237,7 +4291,7 @@ l0000000000406F3B:
 					SZO = cond(0x00);
 					C = false;
 					rdi = r14;
-					eax = fn000000000040D420(rax, esi, rdi, fs, qwLoc08, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15);
+					rax = fn000000000040D420(rax, esi, rdi, fs, qwLoc08, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15);
 					r13d = r13d - eax;
 					SZO = cond(r13d & r13d);
 					eax = r13d;
@@ -3246,7 +4300,7 @@ l0000000000406F3B:
 					SZO = cond(0x00);
 					C = false;
 					rdi = r14;
-					eax = fn000000000040D420(rax, esi, rdi, fs, qwLoc08, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15);
+					rax = fn000000000040D420(rax, esi, rdi, fs, qwLoc08, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15);
 					r13d = r13d - eax;
 					SZO = cond(r13d & r13d);
 					C = false;
@@ -3294,7 +4348,7 @@ l0000000000406F3B:
 					rsi = fp - 4704;
 					edx = Mem0[0x000000000061B140 + 0x00:word32];
 					ecx = 0x0200;
-					rax = fn000000000040BD70(rcx, edx, rbp, rsi, rdi, r8, fs, out rsp, out rbp, out r9, out r11);
+					rax = fn000000000040BD70(rcx, edx, rbp, rsi, rdi, r8, fs, out rsp, out rbp, out r8, out r9, out r11, out r14d, out r15);
 					r14 = rax;
 				}
 				r15d = Mem0[0x000000000061B174 + 0x00:word32];
@@ -3302,7 +4356,7 @@ l0000000000406F3B:
 				SZO = cond(0x00);
 				C = false;
 				rdi = r14;
-				eax = fn000000000040D420(rax, esi, rdi, fs, qwLoc08, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15);
+				rax = fn000000000040D420(rax, esi, rdi, fs, qwLoc08, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15);
 				r15d = r15d - eax;
 				SZO = cond(r15d & r15d);
 				C = false;
@@ -3356,60 +4410,1338 @@ l0000000000406BC7:
 	goto l0000000000406E70;
 }
 
-// 00000000004079F0: void fn00000000004079F0(Register word64 rbp, Register word64 rsi, Register word64 r11, Register word64 r14, Register selector fs)
-void fn00000000004079F0(word64 rbp, word64 rsi, word64 r11, word64 r14, selector fs)
+// 0000000000407870: void fn0000000000407870(Register word64 rsi, Register word64 rdi, Register word64 r11, Register word32 r14d, Register word64 r15, Register selector fs)
+void fn0000000000407870(word64 rsi, word64 rdi, word64 r11, word32 r14d, word64 r15, selector fs)
 {
-	if (Mem0[0x000000000061B150 + 0x00:word32] <=u 0x04)
+	word64 rsi_170;
+	word64 rdi_169;
+	word64 rax_15 = Mem0[fs:0x28:word64];
+	fn0000000000406A30();
+	word64 rbp_172 = rsi;
+	rdi_169 = rdi;
+	rsi_170 = rsi;
+	if (Mem0[0x000000000061B114 + 0x00:byte] != 0x00)
 	{
-		word64 rbx_136 = DPB(rbx, 0x00, 0);
-		if (Mem0[0x000000000061B1B0 + 0x00:word64] != 0x00)
+		word64 rsi_212;
+		word64 rdi_211;
+		rdi_211 = rdi;
+		rsi_212 = rsi;
+		if (Mem0[rdi + 0xB0:byte] != 0x00)
 		{
+			rdi_211 = Mem0[rdi + 0x18:word64];
+			rsi_212 = rsi;
+			if (rdi_211 != 0x00)
+			{
+				word64 r14_238;
+				rax_15 = fn000000000040CD70(fp - 688, rdi_211, out r14_238);
+				rsi_212 = fp - 688;
+				rcx = rax_15;
+			}
+		}
+		rsi_170 = DPB(rsi_212, 4274041, 0);
+		rdi_169 = DPB(rdi_211, 0x01, 0);
+		rax_15 = DPB(rax_15, __printf_chk(rdi_169, rsi_170), 0);
+	}
+	if (Mem0[0x000000000061B144 + 0x00:byte] != 0x00)
+	{
+		if (Mem0[rdi + 0xB0:byte] != 0x00)
+		{
+			rdi_169 = Mem0[rdi + 0x50:word64];
+			rsi_170 = fp - 688;
+			word64 rsp_195;
+			word64 r8_197;
+			word64 r9_198;
+			rax_15 = fn000000000040BD70(DPB(rcx, 0x0200, 0), Mem0[0x000000000061B140 + 0x00:word32], rsi, fp - 688, rdi_169, Mem0[0x000000000061B138 + 0x00:word64], fs, out rsp_195, out rbp_172, out r8_197, out r9_198, out r11, out r14d, out r15);
+		}
+		rsi_170 = DPB(rsi_170, 4274041, 0);
+		rdi_169 = DPB(rdi_169, 0x01, 0);
+		rax_15 = DPB(rax_15, __printf_chk(rdi_169, rsi_170), 0);
+	}
+	if (Mem0[0x000000000061B17D + 0x00:byte] != 0x00)
+	{
+		word64 rax_157 = DPB(rax_15, __printf_chk(DPB(rdi_169, 0x01, 0), DPB(rsi_170, 4274041, 0)), 0);
+	}
+	word64 rbp_87;
+	word64 rsi_88;
+	word64 rdi_89;
+	word64 r8_90;
+	word64 r9_91;
+	word64 r11_92;
+	word64 r12_93;
+	word64 r13_94;
+	word64 r14_95;
+	word64 r15_96;
+	word64 rsp_113;
+	word64 rbx_97 = fn0000000000406540(rbp_172, DPB(rdx, 0x00, 0), 0x00, rdi, r11, r14d, r15, fs, out rsp_113, out rbp_87, out rsi_88, out rdi_89, out r8_90, out r9_91, out r11_92, out r12_93, out r13_94, out r14_95, out r15_96);
+	if (Mem0[0x000000000061B12C + 0x00:word32] != 0x00)
+	{
+		word64 rsi_137;
+		word64 rdi_138;
+		fn0000000000405D00(Mem0[rbx_97 + 0xA0:word32], Mem0[rbx_97 + 0x28:word32], (byte) (word32) Mem0[rbx_97 + 0xB0:byte], out rsp_113, out rsi_137, out rdi_138);
+	}
+	if ((Mem0[rsp_113 + 664:word64] ^ Mem0[fs:0x28:word64]) != 0x00)
+	{
+		__stack_chk_fail();
+		fn00000000004079F0();
+		return;
+	}
+	else
+		return;
+}
+
+// 00000000004079F0: void fn00000000004079F0()
+void fn00000000004079F0()
+{
+	if (Mem0[0x000000000061B150 + 0x00:word32] >u 0x04)
+		return;
+}
+
+// 0000000000407EA0: void fn0000000000407EA0(Register word64 rcx, Register word32 edx, Register word64 rbp, Register word64 rsi, Register word64 rdi, Register word64 r8, Register word64 r11, Register word64 r14, Register word64 r15, Register selector fs)
+void fn0000000000407EA0(word64 rcx, word32 edx, word64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r11, word64 r14, word64 r15, selector fs)
+{
+	rsp = fp;
+	rsp = fp - 0x04;
+	dwLoc04 = rbp;
+	rbp = fp - 0x04;
+	rsp = fp - 0x08;
+	dwLoc08 = rdi;
+	rsp = fp - 0x0C;
+	dwLoc0C = rsi;
+	rsp = fp - 0x10;
+	dwLoc10 = fp - 0x04;
+	r13d = esi;
+	v8 = fp - 0x10;
+	rsp = fp - 0x14;
+	dwLoc14 = fp - 0x10;
+	rsp = fp - 0x18;
+	dwLoc18 = rbx;
+	rbx = rdi;
+	rsp = fp - 0x0390;
+	dwLoc0388 = edx;
+	rdx = rcx;
+	rax = Mem0[fs:0x28:word64];
+	qwLoc3C = rax;
+	eax = 0x00;
+	rax = DPB(rax, eax, 0);
+	rcx = Mem0[0x000000000061B1B0 + 0x00:word64];
+	ecx = (word32) rcx;
+	cl = (byte) rcx;
+	SCZO = cond(rcx - Mem0[0x000000000061B1B8 + 0x00:word64]);
+	Z = SCZO;
+	r9 = Mem0[0x000000000061B1C0 + 0x00:word64];
+	r9d = (word32) r9;
+	r9w = (word16) r9;
+	if (Test(EQ,Z))
+	{
+		r8 = 0xAAAAAAAA;
+		rdi = Mem0[0x000000000061B1C0 + 0x00:word64];
+		SCZO = cond(rcx - rax);
+		if (Test(UGT,CZ))
+			goto l0000000000408C7B;
+		rsi = rcx + rcx * 0x02;
+		qwLoc0394 = rdx;
+		rsi = rsi << 0x07;
+		SCZO = cond(rsi);
+		rax = fn0000000000410C90(rdx, rsi, rdi, out ebx, out rsp, out r8);
+		v28 = Mem0[0x000000000061B1B8 + 0x00:word64] << 0x01;
+		Mem0[0x000000000061B1B8 + 0x00:word64] = v28;
+		SCZO = cond(v28);
+		Mem0[0x000000000061B1C0 + 0x00:word64] = rax;
+		r9 = rax;
+		rcx = Mem0[0x000000000061B1B0 + 0x00:word64];
+		rdx = qwLoc0394;
+	}
+	rcx = rcx + rcx * 0x02;
+	esi = 0xC0;
+	rcx = rcx << 0x06;
+	r14 = r9 + rcx;
+	SZO = cond(r14b & 0x01);
+	C = false;
+	rdi = r14;
+	if (Test(NE,Z))
+	{
+		Mem0[rsi + 0x00:byte] = 0x00;
+		rdi = rsi + 0x01;
+		sil = 191;
+	}
+	SZO = cond(dil & 0x02);
+	C = false;
+	if (Test(EQ,Z))
+	{
+		SZO = cond(dil & 0x04);
+		C = false;
+		if (Test(EQ,Z))
+			goto l0000000000407F1F;
+	}
+	else
+	{
+		r9d = 0x00;
+		rdi = rdi + 0x02;
+		esi = esi - 0x02;
+		Mem0[r15 - 0x02 + 0x00:word16] = r9w;
+		SZO = cond(dil & 0x04);
+		C = false;
+		if (Test(EQ,Z))
+			goto l0000000000407F1F;
+	}
+	Mem0[rdi + 0x00:word32] = 0x00;
+	esi = esi - 0x04;
+	rdi = rdi + 0x04;
+	SCZO = cond(rdi);
+l0000000000407F1F:
+	ecx = esi;
+	eax = 0x00;
+	ecx = ecx >>u 0x03;
+	SZO = cond(sil & 0x04);
+	C = false;
+	while (rcx != 0x00)
+	{
+		Mem0[rdi + 0x00:word64] = rax;
+		rdi = rdi + 0x08;
+		rcx = rcx - 0x01;
+	}
+	if (Test(EQ,Z))
+	{
+		SZO = cond(sil & 0x02);
+		C = false;
+		if (Test(EQ,Z))
+		{
+l0000000000407F3D:
+			esi = esi & 0x01;
+			SZO = cond(esi);
+			C = false;
+			if (Test(EQ,Z))
+				goto l0000000000407F46;
+l0000000000408338:
+			Mem0[rdi + 0x00:byte] = 0x00;
+l0000000000407F46:
+			SCZO = cond(bLoc0388 - 0x00);
+			Mem0[rsi + 0x18:word64] = 0x00;
+			Mem0[r14 + 0xA0:word32] = r13d;
+			if (Test(NE,Z))
+			{
+l0000000000407F62:
+				ecx = Mem0[0x000000000061B110 + 0x00:word32];
+				goto l0000000000407F68;
+			}
+			SCZO = cond(Mem0[0x000000000061B0C1 + 0x00:byte] - 0x00);
+			if (Test(NE,Z))
+				goto l0000000000407F62;
+			SCZO = cond(r13d - 0x03);
+			if (Test(EQ,Z))
+			{
+				SCZO = cond(Mem0[0x000000000061B129 + 0x00:byte] - 0x00);
+				if (Test(NE,Z))
+				{
+					edi = 0x13;
+					qwLoc0394 = rdx;
+					rax = fn0000000000404CD0(edi);
+					SZO = cond(al & al);
+					C = false;
+					rdx = qwLoc0394;
+					if (Test(NE,Z))
+						goto l0000000000407F62;
+					edi = 0x12;
+					rax = fn0000000000404CD0(edi);
+					SZO = cond(al & al);
+					C = false;
+					rdx = qwLoc0394;
+					if (Test(NE,Z))
+						goto l0000000000407F62;
+					edi = 0x14;
+					rax = fn0000000000404CD0(edi);
+					SZO = cond(al & al);
+					C = false;
+					rdx = qwLoc0394;
+					if (Test(NE,Z))
+						goto l0000000000407F62;
+				}
+			}
+			eax = (word32) Mem0[0x000000000061B114 + 0x00:byte];
+			SZO = cond(al & al);
+			C = false;
+			if (Test(EQ,Z))
+			{
+				SCZO = cond(Mem0[0x000000000061B0C0 + 0x00:byte] - 0x00);
+				if (Test(EQ,Z))
+					goto l0000000000408825;
+			}
+			SZO = cond(r13d & r13d);
+			C = false;
+			sil = Test(EQ,Z);
+			if (Test(NE,Z))
+			{
+				SCZO = cond(r13d - 0x06);
+				if (Test(NE,Z))
+					goto l0000000000408280;
+			}
+			ecx = Mem0[0x000000000061B110 + 0x00:word32];
+			SCZO = cond(ecx - 0x05);
+			if (Test(NE,Z))
+			{
+				SCZO = cond(Mem0[0x000000000061B198 + 0x00:byte] - 0x00);
+				if (Test(EQ,Z))
+				{
+					SCZO = cond(Mem0[0x000000000061B115 + 0x00:byte] - 0x00);
+					if (Test(EQ,Z))
+					{
+l0000000000408280:
+						SZO = cond(al & al);
+						C = false;
+						if (Test(NE,Z))
+							goto l0000000000407F62;
+						SCZO = cond(Mem0[0x000000000061B0C0 + 0x00:byte] - 0x00);
+						if (Test(NE,Z))
+						{
+							SZO = cond(sil & sil);
+							C = false;
+							if (Test(EQ,Z))
+							{
+								r12d = 0x00;
+								SCZO = cond(r13d - 0x05);
+								if (Test(NE,Z))
+									goto l00000000004081E1;
+								SCZO = cond(Mem0[0x000000000061B12C + 0x00:word32] - 0x03);
+								if (Test(NE,Z))
+								{
+									SCZO = cond(Mem0[0x000000000061B129 + 0x00:byte] - 0x00);
+									if (Test(EQ,Z))
+										goto l00000000004081E1;
+									edi = 0x0E;
+									qwLoc0394 = rdx;
+									rax = fn0000000000404CD0(edi);
+									SZO = cond(al & al);
+									C = false;
+									rdx = qwLoc0394;
+									if (Test(EQ,Z))
+									{
+										edi = 0x10;
+										rax = fn0000000000404CD0(edi);
+										SZO = cond(al & al);
+										C = false;
+										rdx = qwLoc0394;
+										if (Test(EQ,Z))
+										{
+											edi = 0x11;
+											rax = fn0000000000404CD0(edi);
+											SZO = cond(al & al);
+											C = false;
+											rdx = qwLoc0394;
+											if (Test(EQ,Z))
+											{
+												edi = 0x15;
+												rax = fn0000000000404CD0(edi);
+												SZO = cond(al & al);
+												C = false;
+												rdx = qwLoc0394;
+												if (Test(EQ,Z))
+													goto l00000000004081E1;
+											}
+										}
+									}
+								}
+							}
+							goto l0000000000407F62;
+						}
+l0000000000408825:
+						r12d = 0x00;
+						SZO = cond(0x00);
+						C = false;
+						goto l00000000004081E1;
+					}
+				}
+			}
+			else
+				ecx = 0x05;
+l0000000000407F68:
+			esi = (word32) Mem0[rbx + 0x00:byte];
+			r12 = rbx;
+			SCZO = cond(sil - 0x2F);
+			if (Test(EQ,Z))
+			{
+l0000000000407F81:
+				SCZO = cond(ecx - 0x03);
+				if (Test(UGE,C))
+				{
+					SCZO = cond(ecx - 0x04);
+					if (Test(UGT,CZ))
+					{
+						SCZO = cond(ecx - 0x05);
+						if (Test(EQ,Z))
+						{
+							r15 = r14 + 0x10;
+							rsi = r12;
+							edi = 0x01;
+							rdx = r15;
+							__xstat();
+							edx = eax;
+							esi = 0x01;
+							SZO = cond(edx & edx);
+							C = false;
+							if (Test(NE,Z))
+								goto l0000000000407FB1;
+							goto l0000000000408019;
+						}
+					}
+					else
+					{
+						SCZO = cond(bLoc0388 - 0x00);
+						if (Test(NE,Z))
+						{
+							r15 = r14 + 0x10;
+							rsi = r12;
+							edi = 0x01;
+							dwLoc0394 = ecx;
+							rdx = r15;
+							__xstat();
+							ecx = dwLoc0394;
+							edx = eax;
+							esi = 0x01;
+							SCZO = cond(ecx - 0x03);
+							if (Test(EQ,Z))
+								goto l0000000000408015;
+							SZO = cond(eax & eax);
+							C = false;
+							if (Test(NS,S))
+							{
+								eax = Mem0[rsi + 0x28:word32];
+								eax = eax & 0xF000;
+								SCZO = cond(eax - 0x4000);
+								al = Test(NE,Z);
+							}
+							else
+							{
+								dwLoc0394 = eax;
+								rax = __errno_location();
+								SCZO = cond(Mem0[rax + 0x00:word32] - 0x02);
+								edx = dwLoc0394;
+								al = Test(EQ,Z);
+							}
+							SZO = cond(al & al);
+							C = false;
+							esi = 0x01;
+							if (Test(EQ,Z))
+							{
+l0000000000408015:
+								SZO = cond(edx & edx);
+								C = false;
+								if (Test(NE,Z))
+								{
+l0000000000407FB1:
+									edi = 0x00;
+									edx = 0x05;
+									esi = 0x00413783;
+									rax = dcgettext(rdi, rsi, rdx);
+									r15d = Mem0[r13 - 900 + 0x00:word32];
+									rdx = r12;
+									rsi = rax;
+									r12d = 0x00;
+									SZO = cond(0x00);
+									C = false;
+									edi = (word32) r15b;
+									rax = fn0000000000405810(rdx, r11, fs, out rbp, out rsi, out rdi, out r12, out r14, out r15b);
+									SZO = cond(r15b & r15b);
+									C = false;
+									if (Test(NE,Z))
+										goto l00000000004081F4;
+									goto l00000000004081E1;
+								}
+l0000000000408019:
+								SCZO = cond(r13d - 0x05);
+								Mem0[rsi + 0xB0:byte] = 0x01;
+								SCZO = cond(r13d - 0x05);
+								Mem0[rsi + 0xB0:byte] = 0x01;
+								if (Test(NE,Z))
+								{
+									eax = Mem0[rsi + 0x28:word32];
+									eax = eax & 0xF000;
+									SCZO = cond(eax - 0x8000);
+									eax = Mem0[rsi + 0x28:word32];
+									eax = eax & 0xF000;
+									SCZO = cond(eax - 0x8000);
+									if (Test(NE,Z))
+									{
+l000000000040803F:
+										ecx = Mem0[0x000000000061B150 + 0x00:word32];
+										SZO = cond(ecx & ecx);
+										ecx = Mem0[0x000000000061B150 + 0x00:word32];
+										SZO = cond(ecx & ecx);
+										C = false;
+										if (Test(NE,Z))
+										{
+											SCZO = cond(Mem0[0x000000000061B17D + 0x00:byte] - 0x00);
+											SCZO = cond(Mem0[0x000000000061B17D + 0x00:byte] - 0x00);
+											if (Test(EQ,Z))
+												goto l00000000004080EF;
+										}
+										rax = Mem0[0x000000000061A670 + 0x00:word64];
+										SCZO = cond(Mem0[rsi + 0x10:word64] - rax);
+										dwLoc0394 = edx;
+										rax = Mem0[0x000000000061A670 + 0x00:word64];
+										SCZO = cond(Mem0[rsi + 0x10:word64] - rax);
+										dwLoc0394 = edx;
+										if (Test(EQ,Z))
+										{
+											rax = __errno_location();
+											r13d = 0x00;
+											SZO = cond(0x00);
+											C = false;
+											Mem0[rax + 0x00:word32] = 0x5F;
+											edx = dwLoc0394;
+											Mem0[rsi + 0xA8:word64] = 6399338;
+											goto l00000000004080AA;
+										}
+										SZO = cond(sil & sil);
+										rsi = rsi + 0xA8;
+										SZO = cond(sil & sil);
+										C = false;
+										rdi = r12;
+										rsi = rsi + 0xA8;
+										if (Test(NE,Z))
+										{
+											eax = fn0000000000411820(eax, rsi);
+											SZO = cond(eax & eax);
+											C = false;
+											edx = dwLoc0394;
+											eax = fn0000000000411820(eax, rsi);
+											SZO = cond(eax & eax);
+											C = false;
+											edx = dwLoc0394;
+											if (Test(NS,S))
+											{
+l0000000000408093:
+												rdi = Mem0[rsi + 0xA8:word64];
+												esi = 4274097;
+												rdi = Mem0[rsi + 0xA8:word64];
+												esi = 4274097;
+												ecx = 0x0A;
+												if (rcx != 0x00)
+												{
+													SCZO = cond(Mem0[rsi + 0x00:byte] - Mem0[rdi + 0x00:byte]);
+													rsi = rsi + 0x01;
+													rdi = rdi + 0x01;
+													rcx = rcx - 0x01;
+													if (Test(NE,Z))
+														goto l00000000004080A4;
+												}
+												r13b = Test(NE,Z);
+												goto l00000000004080AA;
+											}
+										}
+										else
+										{
+											eax = fn0000000000411840(eax, rsi);
+											SZO = cond(eax & eax);
+											C = false;
+											edx = dwLoc0394;
+											if (Test(NS,S))
+												goto l0000000000408093;
+										}
+										dwLoc0394 = edx;
+										rax = __errno_location();
+										eax = Mem0[rax + 0x00:word32];
+										edx = dwLoc0394;
+										SCZO = cond(eax - 22);
+										dwLoc0394 = edx;
+										rax = __errno_location();
+										eax = Mem0[rax + 0x00:word32];
+										edx = dwLoc0394;
+										SCZO = cond(eax - 22);
+										if (Test(NE,Z))
+										{
+											SCZO = cond(eax - 0x26);
+											SCZO = cond(eax - 0x26);
+											if (Test(NE,Z))
+											{
+												SCZO = cond(eax - 0x5F);
+												if (Test(NE,Z))
+												{
+l0000000000408497:
+													SCZO = cond(eax - 0x5F);
+													Mem0[rsi + 0xA8:word64] = 6399338;
+													if (Test(NE,Z))
+													{
+														SCZO = cond(eax - 0x3D);
+														if (Test(NE,Z))
+														{
+															Mem0[rsi + 0xB4:word32] = 0x00;
+															goto l00000000004084BF;
+														}
+													}
+													r13d = 0x00;
+													SZO = cond(0x00);
+													C = false;
+l00000000004080AA:
+													eax = Mem0[0x000000000061B150 + 0x00:word32];
+													SZO = cond(eax & eax);
+													C = false;
+													if (Test(EQ,Z))
+													{
+														rax = Mem0[0x000000000061A668 + 0x00:word64];
+														SCZO = cond(Mem0[rsi + 0x10:word64] - rax);
+														if (Test(NE,Z))
+														{
+															dwLoc038C = edx;
+															rax = __errno_location();
+															rsi = r15;
+															Mem0[rax + 0x00:word32] = 0x00;
+															rdi = r12;
+															qwLoc0394 = rax;
+															rax = fn0000000000409CC0(rsi);
+															SZO = cond(eax & eax);
+															C = false;
+															ecx = 0x01;
+															r8 = Mem0[r13 - 0x0390 + 0x00:word64];
+															edx = dwLoc038C;
+															if (Test(LE,SZO))
+															{
+																edx = Mem0[rax + 0x00:word32];
+																SCZO = cond(edx - 22);
+																if (Test(NE,Z))
+																{
+																	SCZO = cond(edx - 0x26);
+																	if (Test(NE,Z))
+																	{
+																		SCZO = cond(edx - 0x5F);
+																		if (Test(NE,Z))
+																		{
+																			eax = eax >>u 0x1F;
+																			SCZO = cond(eax);
+																			edx = eax;
+																			goto l00000000004080B8;
+																		}
+																	}
+																}
+																rdx = Mem0[rsi + 0x10:word64];
+																eax = eax >>u 0x1F;
+																ecx = 0x00;
+																SZO = cond(0x00);
+																C = false;
+																Mem0[0x000000000061A668 + 0x00:word64] = rdx;
+																edx = eax;
+															}
+														}
+														else
+														{
+															dwLoc0394 = edx;
+															rax = __errno_location();
+															ecx = 0x00;
+															SZO = cond(0x00);
+															C = false;
+															Mem0[rax + 0x00:word32] = 0x5F;
+															edx = dwLoc0394;
+														}
+l00000000004080BA:
+														esi = ecx;
+														eax = 0x00;
+														sil = sil | r13b;
+														SZO = cond(sil);
+														C = false;
+														if (Test(NE,Z))
+														{
+															ecx = ecx ^ 0x01;
+															r13b = r13b & cl;
+															SZO = cond(r13b);
+															C = false;
+															eax = r13d;
+															if (Test(NE,Z))
+																esi = r13d;
+															eax = eax << 0x1F;
+															eax = eax >> 0x1F;
+															eax = eax + 0x02;
+															SCZO = cond(eax);
+														}
+														v46 = Mem0[0x000000000061B17C + 0x00:byte] | sil;
+														Mem0[0x000000000061B17C + 0x00:byte] = v46;
+														SZO = cond(Mem0[0x000000000061B17C + 0x00:byte]);
+														SZO = cond(edx & edx);
+														C = false;
+														Mem0[rsi + 0xB4:word32] = eax;
+														if (Test(EQ,Z))
+														{
+l00000000004080EF:
+															eax = Mem0[rsi + 0x28:word32];
+															eax = eax & 0xF000;
+															SCZO = cond(eax - 0xA000);
+															if (Test(NE,Z))
+																goto l0000000000408103;
+															goto l0000000000408500;
+														}
+l00000000004084BF:
+														rdi = r12;
+														rbx = fn000000000040EAB0(rdi, r11, fs, out rsp, out rbp, out r12, out r14, out r15b);
+														r13 = rax;
+														rax = __errno_location();
+														esi = Mem0[rax + 0x00:word32];
+														edi = 0x00;
+														eax = 0x00;
+														SZO = cond(0x00);
+														C = false;
+														rcx = r13;
+														edx = 4283988;
+														error();
+														eax = Mem0[rsi + 0x28:word32];
+														eax = eax & 0xF000;
+														SCZO = cond(eax - 0xA000);
+														if (Test(NE,Z))
+															goto l0000000000408103;
+l0000000000408500:
+														r13d = Mem0[0x000000000061B150 + 0x00:word32];
+														SZO = cond(r13d & r13d);
+														C = false;
+														if (Test(NE,Z))
+														{
+															SCZO = cond(Mem0[0x000000000061B115 + 0x00:byte] - 0x00);
+															if (Test(EQ,Z))
+																goto l000000000040862A;
+														}
+														rsi = Mem0[rsi + 0x40:word64];
+														rdi = r12;
+														rax = fn0000000000409D20(rsi, out rbp, out rsi, out r11, out r12, out r14);
+														SZO = cond(rax & rax);
+														C = false;
+														r13 = rax;
+														Mem0[rsi + 0x08:word64] = rax;
+														if (Test(EQ,Z))
+														{
+															edi = 0x00;
+															SZO = cond(0x00);
+															C = false;
+															edx = 0x05;
+															esi = 0x00413794;
+															rax = dcgettext(rdi, rsi, rdx);
+															edi = (word32) Mem0[rbp - 900 + 0x00:byte];
+															rdx = r12;
+															rsi = rax;
+															rax = fn0000000000405810(rdx, r11, fs, out rbp, out rsi, out rdi, out r12, out r14, out r15b);
+															r13 = Mem0[r14 + 0x08:word64];
+															SZO = cond(r13 & r13);
+															C = false;
+															if (Test(EQ,Z))
+																goto l0000000000408607;
+														}
+														SCZO = cond(Mem0[rbp + 0x00:byte] - 0x2F);
+														if (Test(NE,Z))
+														{
+															rdi = r12;
+															rax = fn000000000040A2B0(rdi, qwLoc08, qwArg08, qwArg10, out rbx, out rbp, out rsi);
+															SZO = cond(rax & rax);
+															C = false;
+															r15 = rax;
+															rdi = r13;
+															if (Test(NE,Z))
+															{
+																rax = DPB(rax, strlen(rdi), 0);
+																rdi = r15 + 0x02 + rax;
+																rax = fn0000000000410C40(rsi, rdi, out rsp);
+																rcx = rax;
+																eax = 0x00;
+																SCZO = cond(Mem0[r12 - 0x01 + r15:byte] - 0x2F);
+																rdi = rcx;
+																rsi = r12;
+																Mem0[rbp - 0x0390 + 0x00:word64] = rcx;
+																al = Test(NE,Z);
+																r15 = r15 + rax;
+																SCZO = cond(r15);
+																rdx = r15;
+																stpncpy();
+																rsi = r13;
+																rdi = rax;
+																rax = strcpy(rdi, rsi);
+																rcx = Mem0[rbp - 0x0390 + 0x00:word64];
+																r13 = rcx;
+															}
+															else
+															{
+																rax = fn0000000000410E30(rax, rdi, out rsp, out rbp, out rsi);
+																r13 = rax;
+															}
+														}
+														else
+														{
+															rdi = r13;
+															rax = fn0000000000410E30(rax, rdi, out rsp, out rbp, out rsi);
+															r13 = rax;
+														}
+														SZO = cond(r13 & r13);
+														C = false;
+														if (Test(NE,Z))
+														{
+															SCZO = cond(Mem0[0x000000000061B12C + 0x00:word32] - 0x01);
+															if (Test(ULE,CZ))
+															{
+																SCZO = cond(Mem0[0x000000000061B115 + 0x00:byte] - 0x00);
+																if (Test(EQ,Z))
+																	goto l0000000000408607;
+															}
+															rdx = rbp - 0x0380;
+															rsi = r13;
+															edi = 0x01;
+															__xstat();
+															SZO = cond(eax & eax);
+															C = false;
+															if (Test(EQ,Z))
+															{
+																SCZO = cond(Mem0[rbp - 900 + 0x00:byte] - 0x00);
+																Mem0[rsi + 177:byte] = 0x01;
+																eax = Mem0[rbp - 0x0368 + 0x00:word32];
+																if (Test(EQ,Z))
+																{
+l0000000000408600:
+																	Mem0[rsi + 0xA4:word32] = eax;
+																	goto l0000000000408607;
+																}
+																edx = Mem0[0x000000000061B150 + 0x00:word32];
+																SZO = cond(edx & edx);
+																C = false;
+																if (Test(EQ,Z))
+																	goto l0000000000408600;
+																edx = eax;
+																edx = edx & 0xF000;
+																SCZO = cond(edx - 0x4000);
+																if (Test(NE,Z))
+																	goto l0000000000408600;
+															}
+														}
+l0000000000408607:
+														rdi = r13;
+														free(rdi);
+														eax = Mem0[rsi + 0x28:word32];
+														eax = eax & 0xF000;
+														SCZO = cond(eax - 0xA000);
+														if (Test(EQ,Z))
+														{
+															r13d = Mem0[0x000000000061B150 + 0x00:word32];
+l000000000040862A:
+															Mem0[rsi + 0xA0:word32] = 0x06;
+l0000000000408120:
+															SZO = cond(r13d & r13d);
+															C = false;
+															r12 = Mem0[r14 + 0x50:word64];
+															if (Test(NE,Z))
+															{
+																SCZO = cond(Mem0[0x000000000061B144 + 0x00:byte] - 0x00);
+																if (Test(EQ,Z))
+																	goto l00000000004081A8;
+															}
+															r8 = Mem0[0x000000000061B138 + 0x00:word64];
+															edx = Mem0[0x000000000061B140 + 0x00:word32];
+															r15 = r13 - 0x02D0;
+															ecx = 0x0200;
+															rdi = r12;
+															rsi = r15;
+															rax = fn000000000040BD70(rcx, edx, rbp, rsi, rdi, r8, fs, out rsp, out rbp, out r8, out r9, out r11, out r14d, out r15);
+															esi = 0x00;
+															SZO = cond(0x00);
+															C = false;
+															rdi = rax;
+															rax = fn000000000040D420(rax, esi, rdi, fs, qwLoc08, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15);
+															SCZO = cond(eax - Mem0[0x000000000061B174 + 0x00:word32]);
+															if (Test(GT,SZO))
+																Mem0[0x000000000061B174 + 0x00:word32] = eax;
+															r13d = Mem0[0x000000000061B150 + 0x00:word32];
+															SZO = cond(r13d & r13d);
+															C = false;
+															if (Test(NE,Z))
+															{
+l00000000004081A8:
+																SCZO = cond(Mem0[0x000000000061B17D + 0x00:byte] - 0x00);
+																if (Test(NE,Z))
+																{
+																	rdi = Mem0[rsi + 0xA8:word64];
+																	rax = DPB(rax, strlen(rdi), 0);
+																	SCZO = cond(eax - Mem0[0x000000000061B16C + 0x00:word32]);
+																	if (Test(GT,SZO))
+																	{
+																		SZO = cond(r13d & r13d);
+																		C = false;
+																		Mem0[0x000000000061B16C + 0x00:word32] = eax;
+																		if (Test(NE,Z))
+																			goto l00000000004081D2;
+l000000000040873F:
+																		rdi = Mem0[rsi + 0x20:word64];
+																		rsi = rbp - 0x02F0;
+																		rax = fn000000000040CD70(rsi, rdi, out r14);
+																		rdi = rax;
+																		rax = DPB(rax, strlen(rdi), 0);
+																		SCZO = cond(eax - Mem0[0x000000000061B170 + 0x00:word32]);
+																		rdi = Mem0[rsi + 0x20:word64];
+																		rsi = rbp - 0x02F0;
+																		rax = fn000000000040CD70(rsi, rdi, out r14);
+																		rdi = rax;
+																		rax = DPB(rax, strlen(rdi), 0);
+																		SCZO = cond(eax - Mem0[0x000000000061B170 + 0x00:word32]);
+																		if (Test(GT,SZO))
+																		{
+																			Mem0[0x000000000061B170 + 0x00:word32] = eax;
+																			Mem0[0x000000000061B170 + 0x00:word32] = eax;
+																		}
+																		eax = Mem0[rsi + 0x28:word32];
+																		eax = eax & 0xB000;
+																		SCZO = cond(eax - 0x2000);
+																		if (Test(EQ,Z))
+																		{
+																			rax = Mem0[rsi + 0x38:word64];
+																			r15 = r13 - 0x02D0;
+																			rsi = r15;
+																			rdi = rax;
+																			rax = rax >>u 0x08;
+																			rdi = rdi >>u 0x20;
+																			eax = eax & 0x0FFF;
+																			edi = edi & ~0x0FFF;
+																			edi = edi | eax;
+																			SZO = cond(edi);
+																			C = false;
+																			rax = fn000000000040CD70(rsi, rdi, out r14);
+																			rdi = rax;
+																			rax = DPB(rax, strlen(rdi), 0);
+																			SCZO = cond(eax - Mem0[0x000000000061B15C + 0x00:word32]);
+																			if (Test(GT,SZO))
+																				Mem0[0x000000000061B15C + 0x00:word32] = eax;
+																			rax = Mem0[rsi + 0x38:word64];
+																			rsi = r15;
+																			rdi = rax;
+																			eax = (word32) al;
+																			rdi = rdi >>u 0x0C;
+																			dil = dil & 0x00;
+																			edi = edi | eax;
+																			SZO = cond(edi);
+																			C = false;
+																			rax = fn000000000040CD70(rsi, rdi, out r14);
+																			rdi = rax;
+																			rax = DPB(rax, strlen(rdi), 0);
+																			edx = Mem0[0x000000000061B158 + 0x00:word32];
+																			SCZO = cond(eax - edx);
+																			if (Test(GT,SZO))
+																			{
+																				Mem0[0x000000000061B158 + 0x00:word32] = eax;
+																				edx = eax;
+																			}
+																			eax = Mem0[0x000000000061B15C + 0x00:word32];
+																			eax = rdx + 0x02 + rax;
+																			SCZO = cond(eax - Mem0[0x000000000061B154 + 0x00:word32]);
+																			if (Test(LE,SZO))
+																			{
+l00000000004081D2:
+																				eax = (word32) Mem0[0x000000000061B114 + 0x00:byte];
+																				SZO = cond(al & al);
+																				C = false;
+																				if (Test(NE,Z))
+																				{
+																					rdi = Mem0[rsi + 0x18:word64];
+																					rsi = rbp - 0x02D0;
+																					rax = fn000000000040CD70(rsi, rdi, out r14);
+																					rdi = rax;
+																					rax = DPB(rax, strlen(rdi), 0);
+																					SCZO = cond(eax - Mem0[0x000000000061B178 + 0x00:word32]);
+																					if (Test(GT,SZO))
+																						Mem0[0x000000000061B178 + 0x00:word32] = eax;
+																				}
+l00000000004081E1:
+																				rdi = rbx;
+																				rax = fn0000000000410E30(rax, rdi, out rsp, out rbp, out rsi);
+																				v43 = Mem0[0x000000000061B1B0 + 0x00:word64] + 0x01;
+																				Mem0[0x000000000061B1B0 + 0x00:word64] = v43;
+																				SCZO = cond(v43);
+																				Mem0[rsi + 0x00:word64] = rax;
+																				rdi = rbx;
+																				rax = fn0000000000410E30(rax, rdi, out rsp, out rbp, out rsi);
+																				v47 = Mem0[0x000000000061B1B0 + 0x00:word64] + 0x01;
+																				Mem0[0x000000000061B1B0 + 0x00:word64] = v47;
+																				SCZO = cond(v47);
+																				Mem0[rsi + 0x00:word64] = rax;
+l00000000004081F4:
+																				rbx = Mem0[rbp - 0x38 + 0x00:word64];
+																				rbx = rbx ^ Mem0[fs:0x28:word64];
+																				SZO = cond(rbx);
+																				C = false;
+																				rax = r12;
+																				if (Test(EQ,Z))
+																				{
+																					rsp = rbp - 0x28;
+																					rbx = Mem0[rsp + 0x00:word64];
+																					rsp = rsp + 0x08;
+																					rsp = Mem0[rsp + 0x00:word64];
+																					rsp = rsp + 0x08;
+																					rbp = Mem0[rsp + 0x00:word64];
+																					rsp = rsp + 0x08;
+																					rsi = Mem0[rsp + 0x00:word64];
+																					rsp = rsp + 0x08;
+																					rdi = Mem0[rsp + 0x00:word64];
+																					rsp = rsp + 0x08;
+																					rbp = Mem0[rsp + 0x00:word64];
+																					rsp = rsp + 0x08;
+																					return;
+																				}
+																				__stack_chk_fail();
+l0000000000408C7B:
+																				fn0000000000410E50();
+																				eax = Mem0[rdi + 0xA0:word32];
+																				r8d = Mem0[r14 + 0xA0:word32];
+																				SCZO = cond(eax - 0x09);
+																				cl = Test(EQ,Z);
+																				SCZO = cond(eax - 0x03);
+																				al = Test(EQ,Z);
+																				SCZO = cond(r8d - 0x09);
+																				dl = Test(EQ,Z);
+																				SCZO = cond(r8d - 0x03);
+																				r8b = Test(EQ,Z);
+																				edx = edx | r8d;
+																				al = al | cl;
+																				SZO = cond(al);
+																				C = false;
+																				if (Test(NE,Z))
+																				{
+																					SZO = cond(dl & dl);
+																					C = false;
+																					if (Test(EQ,Z))
+																						goto l0000000000408CF0;
+																				}
+																				SZO = cond(al & al);
+																				C = false;
+																				if (Test(EQ,Z))
+																				{
+																					SZO = cond(dl & dl);
+																					C = false;
+																					eax = 0x01;
+																					if (Test(NE,Z))
+																						return;
+																				}
+																				rcx = Mem0[rsi + 0x68:word64];
+																				SCZO = cond(Mem0[rdi + 0x68:word64] - rcx);
+																				rax = Mem0[rdi + 0x70:word64];
+																				rdx = Mem0[rsi + 0x70:word64];
+																				if (Test(LE,SZO))
+																				{
+																					if (Test(LT,SO))
+																					{
+																						eax = 0x01;
+																						return;
+																					}
+																					else
+																					{
+																						edx = edx - eax;
+																						SCZO = cond(edx);
+																						if (Test(NE,Z))
+																						{
+																							eax = edx;
+																							return;
+																						}
+																						else
+																						{
+																							rsi = Mem0[rsi + 0x00:word64];
+																							rdi = Mem0[rdi + 0x00:word64];
+																							fn0000000000405020(qwArg00);
+																							return;
+																						}
+																					}
+																				}
+l0000000000408CF0:
+																				eax = ~0x00;
+																				return;
+																			}
+																		}
+																		else
+																		{
+																			rdi = Mem0[rsi + 0x40:word64];
+																			r8 = Mem0[0x000000000061A560 + 0x00:word64];
+																			rsi = rbp - 0x02D0;
+																			edx = Mem0[0x000000000061B134 + 0x00:word32];
+																			ecx = 0x01;
+																			rax = fn000000000040BD70(rcx, edx, rbp, rsi, rdi, r8, fs, out rsp, out rbp, out r8, out r9, out r11, out r14d, out r15);
+																			esi = 0x00;
+																			SZO = cond(0x00);
+																			C = false;
+																			rdi = rax;
+																			rax = fn000000000040D420(rax, esi, rdi, fs, qwLoc08, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15);
+																			SCZO = cond(eax - Mem0[0x000000000061B154 + 0x00:word32]);
+																			if (Test(LE,SZO))
+																				goto l00000000004081D2;
+																		}
+																		Mem0[0x000000000061B154 + 0x00:word32] = eax;
+																		goto l00000000004081D2;
+																	}
+																}
+																SZO = cond(r13d & r13d);
+																C = false;
+																if (Test(NE,Z))
+																	goto l00000000004081D2;
+																goto l000000000040873F;
+															}
+															SCZO = cond(Mem0[0x000000000061A569 + 0x00:byte] - 0x00);
+															if (Test(NE,Z))
+															{
+																edi = Mem0[rsi + 44:word32];
+																rax = fn00000000004061B0(ebx, ebp, rsi, edi, r8, r11d, r12, r14, fs, out ebx, out rsp, out rbp, out rsi, out r8, out r9, out r12, out r14, out r15);
+																SCZO = cond(eax - Mem0[0x000000000061B168 + 0x00:word32]);
+																if (Test(GT,SZO))
+																	Mem0[0x000000000061B168 + 0x00:word32] = eax;
+															}
+															SCZO = cond(Mem0[0x000000000061A568 + 0x00:byte] - 0x00);
+															if (Test(EQ,Z))
+															{
+l0000000000408194:
+																SCZO = cond(Mem0[0x000000000061B146 + 0x00:byte] - 0x00);
+																if (Test(NE,Z))
+																{
+																	edi = Mem0[rsi + 44:word32];
+																	rax = fn00000000004061B0(ebx, ebp, rsi, edi, r8, r11d, r12, r14, fs, out ebx, out rsp, out rbp, out rsi, out r8, out r9, out r12, out r14, out r15);
+																	SCZO = cond(eax - Mem0[0x000000000061B160 + 0x00:word32]);
+																	if (Test(GT,SZO))
+																		Mem0[0x000000000061B160 + 0x00:word32] = eax;
+																}
+																r13d = Mem0[0x000000000061B150 + 0x00:word32];
+																goto l00000000004081A8;
+															}
+															SCZO = cond(Mem0[0x000000000061B145 + 0x00:byte] - 0x00);
+															r13d = Mem0[r14 + 0x30:word32];
+															if (Test(EQ,Z))
+															{
+																edi = r13d;
+																rax = fn000000000040CB40(rax, rsi, edi, r8, r12, out rbx, out rsp, out rbp, out r12);
+																SZO = cond(rax & rax);
+																C = false;
+																rdi = rax;
+																if (Test(NE,Z))
+																{
+																	esi = 0x00;
+																	SZO = cond(0x00);
+																	C = false;
+																	rax = fn000000000040D420(rax, esi, rdi, fs, qwLoc08, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15);
+																	edx = 0x00;
+																	SZO = cond(eax & eax);
+																	C = false;
+																	if (Test(NS,S))
+																		edx = eax;
+l0000000000408AF5:
+																	SCZO = cond(Mem0[0x000000000061B164 + 0x00:word32] - edx);
+																	if (Test(LT,SO))
+																		Mem0[0x000000000061B164 + 0x00:word32] = edx;
+																	goto l0000000000408194;
+																}
+															}
+															edx = 0x15;
+															r8d = r13d;
+															ecx = 4274010;
+															esi = 0x01;
+															rdi = r15;
+															eax = 0x00;
+															SZO = cond(0x00);
+															C = false;
+															rax = DPB(rax, __sprintf_chk(rdi, rsi, rdx, rcx), 0);
+															rdx = r15;
+															do
+															{
+																ecx = Mem0[rdx + 0x00:word32];
+																rdx = rdx + 0x04;
+																eax = rcx + ~0x01010100;
+																ecx = ~ecx;
+																eax = eax & ecx;
+																eax = eax & 0x80808080;
+																SZO = cond(eax);
+																C = false;
+															} while (Test(EQ,Z));
+															ecx = eax;
+															ecx = ecx >>u 0x10;
+															SZO = cond(eax & 0x8080);
+															C = false;
+															if (Test(EQ,Z))
+																eax = ecx;
+															rcx = rdx + 0x02;
+															if (Test(EQ,Z))
+																rdx = rcx;
+															al = al + al;
+															SCZO = cond(al);
+															rdx = rdx - 0x03 - C;
+															edx = edx - r15d;
+															SCZO = cond(edx);
+															goto l0000000000408AF5;
+														}
+l0000000000408103:
+														SCZO = cond(eax - 0x4000);
+														if (Test(NE,Z))
+														{
+															r13d = Mem0[0x000000000061B150 + 0x00:word32];
+															Mem0[rsi + 0xA0:word32] = 0x05;
+															goto l0000000000408120;
+														}
+														SCZO = cond(Mem0[rbp - 900 + 0x00:byte] - 0x00);
+														if (Test(NE,Z))
+														{
+															SCZO = cond(Mem0[0x000000000061B10D + 0x00:byte] - 0x00);
+															if (Test(EQ,Z))
+															{
+																Mem0[rsi + 0xA0:word32] = 0x09;
+																r13d = Mem0[0x000000000061B150 + 0x00:word32];
+																goto l0000000000408120;
+															}
+														}
+														Mem0[rsi + 0xA0:word32] = 0x03;
+														r13d = Mem0[0x000000000061B150 + 0x00:word32];
+														goto l0000000000408120;
+													}
+													else
+													{
+l00000000004080B8:
+														ecx = 0x00;
+														SZO = cond(0x00);
+														C = false;
+														goto l00000000004080BA;
+													}
+												}
+											}
+										}
+										rcx = Mem0[rsi + 0x10:word64];
+										Mem0[0x000000000061A670 + 0x00:word64] = rcx;
+										rcx = Mem0[rsi + 0x10:word64];
+										Mem0[0x000000000061A670 + 0x00:word64] = rcx;
+										goto l0000000000408497;
+									}
+								}
+								SCZO = cond(Mem0[0x000000000061B129 + 0x00:byte] - 0x00);
+								if (Test(NE,Z))
+								{
+									edi = 0x15;
+									dwLoc038C = esi;
+									dwLoc0394 = edx;
+									rax = fn0000000000404CD0(edi);
+									SZO = cond(al & al);
+									C = false;
+									edx = dwLoc0394;
+									esi = dwLoc038C;
+									if (Test(NE,Z))
+									{
+										r13 = Mem0[r14 + 0x10:word64];
+										SCZO = cond(r13 - Mem0[0x000000000061A678 + 0x00:word64]);
+										if (Test(NE,Z))
+										{
+											dwLoc038C = esi;
+											dwLoc0394 = edx;
+											rax = __errno_location();
+											esi = dwLoc038C;
+											edx = dwLoc0394;
+											Mem0[rax + 0x00:word32] = 0x5F;
+											Mem0[0x000000000061A678 + 0x00:word64] = r13;
+										}
+										else
+										{
+											rax = __errno_location();
+											edx = dwLoc0394;
+											Mem0[rax + 0x00:word32] = 0x5F;
+											esi = dwLoc038C;
+										}
+										Mem0[rsi + 0xB8:byte] = 0x00;
+									}
+								}
+								goto l000000000040803F;
+							}
+l0000000000408001:
+							rdx = r15;
+							rsi = r12;
+							edi = 0x01;
+							__lxstat();
+							esi = 0x00;
+							SZO = cond(0x00);
+							C = false;
+							edx = eax;
+							goto l0000000000408015;
+						}
+					}
+				}
+				r15 = r14 + 0x10;
+				goto l0000000000408001;
+			}
+			r15d = (word32) Mem0[0xAAAAAAA9:byte];
+			SZO = cond(r15b & r15b);
+			C = false;
+			if (Test(EQ,Z))
+				goto l0000000000407F81;
+			rdi = rbx;
+			dwLoc0398 = ecx;
+			dwLoc038C = esi;
+			qwLoc0394 = rdx;
+			rax = DPB(rax, strlen(rdi), 0);
+			rdx = qwLoc0394;
+			r12 = rax;
+			rdi = rdx;
+			rax = DPB(rax, strlen(rdi), 0);
+			rax = r12 + 0x20 + rax;
+			rdx = qwLoc0394;
+			esi = dwLoc038C;
+			ecx = dwLoc0398;
+			rax = rax & ~0x0F;
+			rsp = rsp - rax;
+			rax = rsp + 0x0F;
+			rax = rax & ~0x0F;
+			SCZO = cond(r15b - 0x2E);
+			r12 = rax;
+			if (Test(EQ,Z))
+			{
+				SCZO = cond(Mem0[rdx + 0x01:byte] - 0x00);
+				if (Test(EQ,Z))
+					goto l0000000000408705;
+			}
+			rsi = rdx;
 			do
 			{
-				word64 rsp_98;
-				word64 r8_100;
-				word64 r9_101;
-				word64 r12_103;
-				word64 r13_104;
-				word64 r15_106;
-				word64 rbx_129;
-				fn0000000000406B70(rbp, fn0000000000406A30(), Mem0[0x000000000061B1A8 + 0x00:word64][rbx_136 * 0x08], r11, r14, fs, out rbx_129, out rsp_98, out rbp, out r8_100, out r9_101, out r11, out r12_103, out r13_104, out r14, out r15_106);
-				word64 rdi_108 = Mem0[0x000000000061A610 + 0x00:word64];
-				word64 rax_109 = Mem0[rdi_108 + 0x28:word64];
-				if (rax_109 <u Mem0[rdi_108 + 0x30:word64])
+				rax = rax + 0x01;
+				rsi = rsi + 0x01;
+				Mem0[r8 - 0x01 + 0x00:byte] = r15b;
+				r15d = (word32) Mem0[r14 + 0x00:byte];
+				SZO = cond(r15b & r15b);
+				C = false;
+			} while (Test(NE,Z));
+			SCZO = cond(rdx - rsi);
+			rdi = rax;
+			if (Test(ULT,C))
+			{
+				SCZO = cond(Mem0[rsi - 0x01 + 0x00:byte] - 0x2F);
+				if (Test(NE,Z))
 				{
-					Mem155[rdi_108 + 0x28:word64] = rax_109 + 0x01;
-					Mem156[rax_109 + 0x00:byte] = 0x0A;
+					rax = rax + 0x01;
+					SCZO = cond(rax);
+					Mem0[rdi + 0x00:byte] = 0x2F;
 				}
-				else
+			}
+			esi = (word32) Mem0[rbx + 0x00:byte];
+l0000000000408705:
+			SZO = cond(sil & sil);
+			C = false;
+			if (Test(NE,Z))
+			{
+				rdx = rbx;
+				do
 				{
-					word64 rsp_158;
-					byte SCZO_159;
-					byte CZ_160;
-					word64 rdi_161;
-					word64 rsi_162;
-					word32 eax_165;
-					word64 rax_166;
-					bcuiposr0 None_167;
-					word32 ebx_168;
-					byte SZO_169;
-					byte C_170;
-					byte Z_171;
-					word64 rdx_172;
-					word32 esi_173;
-					word64 r8_177;
-					word64 r9_178;
-					word64 r12_179;
-					word64 r13_180;
-					word64 r15_181;
-					__overflow();
-				}
-				Mem135[0x000000000061B018 + 0x00:word64] = Mem0[0x000000000061B018 + 0x00:word64] + 0x01;
-				rbx_136 = rbx_129 + 0x01;
-			} while (Mem135[0x000000000061B1B0 + 0x00:word64] >u rbx_136);
+					rax = rax + 0x01;
+					rdx = rdx + 0x01;
+					Mem0[rax - 0x01 + 0x00:byte] = sil;
+					esi = (word32) Mem0[rdx + 0x00:byte];
+					SZO = cond(sil & sil);
+					C = false;
+				} while (Test(NE,Z));
+			}
+			Mem0[rax + 0x00:byte] = 0x00;
+			goto l0000000000407F81;
 		}
 	}
-	return;
+	else
+	{
+		Mem0[rdi + 0x00:word32] = 0x00;
+		rdi = rdi + 0x04;
+		SZO = cond(sil & 0x02);
+		C = false;
+		if (Test(EQ,Z))
+			goto l0000000000407F3D;
+	}
+	r8d = 0x00;
+	rdi = rdi + 0x02;
+	Mem0[r15 - 0x02 + 0x00:word16] = r8w;
+	esi = esi & 0x01;
+	SZO = cond(esi);
+	C = false;
+	if (Test(EQ,Z))
+		goto l0000000000407F46;
+	goto l0000000000408338;
 }
 
 // 0000000000409750: void fn0000000000409750(Register word32 edi)
@@ -3955,79 +6287,81 @@ void fn0000000000409750(word32 edi)
 		word32 ecx_820;
 		fputs_unlocked();
 		word64 rdi_821 = Mem0[0x000000000061B200 + 0x00:word64];
-		word64 rax_822 = fn000000000040A390(rdi_821);
-		word64 rax_830 = dcgettext(DPB(rdi_821, 0x00, 0), DPB(rsi_816, 4274107, 0), DPB(rdx_817, 0x05, 0));
-		word64 rax_837 = DPB(rax_830, __printf_chk(DPB(rdi_821, 0x01, 0), rax_830), 0);
-		word64 rax_844 = dcgettext(DPB(rdi_821, 0x00, 0), DPB(rax_830, 4274152, 0), DPB(rax_822, 0x05, 0));
-		word64 rax_851 = DPB(rax_844, __printf_chk(DPB(rdi_821, 0x01, 0), rax_844), 0);
-		word64 rdx_854 = DPB(rax_822, 0x05, 0);
-		word64 rax_861 = dcgettext(DPB(rdi_821, 0x00, 0), DPB(rax_844, 4282928, 0), rdx_854);
-		word64 rsp_865;
-		word64 rbp_866;
-		word32 edx_867;
-		word64 rbx_868;
-		word32 ebx_869;
-		word32 edi_870;
-		byte SCZO_871;
-		byte SZO_872;
-		byte C_873;
-		byte Z_874;
-		word32 esi_875;
-		word64 rax_876;
-		word64 rdi_877;
-		word64 rsi_878;
-		word64 rdx_879;
-		word64 rcx_880;
-		word32 eax_881;
-		word32 ecx_882;
+		word64 rsi_822;
+		word64 rax_823 = fn000000000040A390(rdi_821, out rsi_822);
+		word64 rax_831 = dcgettext(DPB(rdi_821, 0x00, 0), DPB(rsi_822, 4274107, 0), DPB(rdx_817, 0x05, 0));
+		word64 rax_838 = DPB(rax_831, __printf_chk(DPB(rdi_821, 0x01, 0), rax_831), 0);
+		word64 rax_845 = dcgettext(DPB(rdi_821, 0x00, 0), DPB(rax_831, 4274152, 0), DPB(rax_823, 0x05, 0));
+		word64 rax_852 = DPB(rax_845, __printf_chk(DPB(rdi_821, 0x01, 0), rax_845), 0);
+		word64 rdx_855 = DPB(rax_823, 0x05, 0);
+		word64 rax_862 = dcgettext(DPB(rdi_821, 0x00, 0), DPB(rax_845, 4282928, 0), rdx_855);
+		word64 rsp_866;
+		word64 rbp_867;
+		word32 edx_868;
+		word64 rbx_869;
+		word32 ebx_870;
+		word32 edi_871;
+		byte SCZO_872;
+		byte SZO_873;
+		byte C_874;
+		byte Z_875;
+		word32 esi_876;
+		word64 rax_877;
+		word64 rdi_878;
+		word64 rsi_879;
+		word64 rdx_880;
+		word64 rcx_881;
+		word32 eax_882;
+		word32 ecx_883;
 		fputs_unlocked();
-		word64 rsp_887;
-		word64 rbp_888;
-		word32 edx_889;
-		word64 rbx_890;
-		word32 edi_892;
-		byte SCZO_893;
-		byte SZO_894;
-		byte C_895;
-		byte Z_896;
-		word32 esi_897;
-		word64 rax_898;
-		word64 rdi_899;
-		word64 rcx_902;
-		word32 eax_903;
-		word32 ecx_904;
-		word64 rdx_901;
-		word64 rsi_900;
+		word64 rsp_888;
+		word64 rbp_889;
+		word32 edx_890;
+		word64 rbx_891;
+		word32 edi_893;
+		byte SCZO_894;
+		byte SZO_895;
+		byte C_896;
+		byte Z_897;
+		word32 esi_898;
+		word64 rax_899;
+		word64 rdi_900;
+		word64 rsi_901;
+		word64 rcx_903;
+		word32 eax_904;
+		word32 ecx_905;
+		word64 rdx_902;
 		setlocale();
-		if (rax_898 != 0x00)
+		if (rax_899 != 0x00)
 		{
-			rdx_901 = DPB(rdx_901, 0x03, 0);
-			rsi_900 = DPB(rsi_900, 0x0041380A, 0);
-			word64 rax_935 = DPB(rax_898, strncmp(rax_898, rsi_900, rdx_901), 0);
-			if (strncmp(rax_898, rsi_900, rdx_901) != 0x00)
+			rdx_902 = DPB(rdx_902, 0x03, 0);
+			word64 rsi_934 = DPB(rsi_901, 0x0041380A, 0);
+			word64 rax_936 = DPB(rax_899, strncmp(rax_899, rsi_934, rdx_902), 0);
+			if (strncmp(rax_899, rsi_934, rdx_902) != 0x00)
 			{
-				word64 rdi_940 = Mem0[0x000000000061B200 + 0x00:word64];
-				word64 rax_941 = fn000000000040A390(rdi_940);
-				word64 rax_949 = dcgettext(DPB(rdi_940, 0x00, 0), DPB(rsi_900, 4282992, 0), DPB(rdx_901, 0x05, 0));
-				rdx_901 = rax_941;
-				rsi_900 = rax_949;
-				word64 rax_958 = DPB(rax_949, __printf_chk(DPB(rdi_940, 0x01, 0), rax_949), 0);
+				word64 rdi_941 = Mem0[0x000000000061B200 + 0x00:word64];
+				word64 rsi_942;
+				word64 rax_943 = fn000000000040A390(rdi_941, out rsi_942);
+				word64 rax_951 = dcgettext(DPB(rdi_941, 0x00, 0), DPB(rsi_942, 4282992, 0), DPB(rdx_902, 0x05, 0));
+				rdx_902 = rax_943;
+				word64 rax_960 = DPB(rax_951, __printf_chk(DPB(rdi_941, 0x01, 0), rax_951), 0);
 			}
 		}
 		word64 rdi_911 = Mem0[0x000000000061B200 + 0x00:word64];
-		fn000000000040A390(rdi_911);
-		word64 rax_920 = dcgettext(DPB(rdi_911, 0x00, 0), DPB(rsi_900, 4283064, 0), DPB(rdx_901, 0x05, 0));
+		word64 rsi_912;
+		fn000000000040A390(rdi_911, out rsi_912);
+		word64 rax_921 = dcgettext(DPB(rdi_911, 0x00, 0), DPB(rsi_912, 4283064, 0), DPB(rdx_902, 0x05, 0));
 		rdi_36 = DPB(rdi_911, 0x01, 0);
-		word64 rax_929 = DPB(rax_920, __printf_chk(rdi_36, rax_920), 0);
+		word64 rax_930 = DPB(rax_921, __printf_chk(rdi_36, rax_921), 0);
 	}
 	exit(DPB(rdi_36, ebx_12, 0));
 }
 
-// 0000000000409CC0: void fn0000000000409CC0(Register word64 rsi)
-void fn0000000000409CC0(word64 rsi)
+// 0000000000409CC0: Register word64 fn0000000000409CC0(Register word64 rsi)
+word64 fn0000000000409CC0(word64 rsi)
 {
 	if ((Mem0[rsi + 0x18:word32] & 0xF000) == 0xA000)
-		return;
+		return DPB(rax, 0x00, 0);
 	else
 	{
 		word64 rsp_26;
@@ -4038,77 +6372,112 @@ void fn0000000000409CC0(word64 rsi)
 		byte SCZO_31;
 		byte Z_32;
 		byte S_33;
-		word64 rax_34;
 		byte al_35;
+		word64 rax_34;
 		acl_extended_file();
 		if (eax_27 < 0x00)
 		{
-			word32 eax_47 = Mem0[__errno_location() + 0x00:word32];
+			word64 rax_46 = __errno_location();
+			word32 eax_47 = Mem0[rax_46 + 0x00:word32];
 			if (eax_47 == 0x5F || (eax_47 == 0x26 || eax_47 == 22))
-				return;
+				return DPB(rax_46, 0x00, 0);
+			rax_34 = DPB(rax_46, -(word32) (eax_47 != 0x10), 0);
 		}
-		return;
+		return rax_34;
 	}
 }
 
-// 0000000000409D20: void fn0000000000409D20(Register word64 rsi)
-void fn0000000000409D20(word64 rsi)
+// 0000000000409D20: Register word64 fn0000000000409D20(Register word64 rsi, Register out ptr64 rbpOut, Register out ptr64 rsiOut, Register out ptr64 r11Out, Register out ptr64 r12Out, Register out ptr64 r14Out)
+word64 fn0000000000409D20(word64 rsi, ptr64 & rbpOut, ptr64 & rsiOut, ptr64 & r11Out, ptr64 & r12Out, ptr64 & r14Out)
 {
-	word64 rbx_152 = DPB(rbx, 0x0401, 0);
+	*r12Out = r12;
+	*r11Out = r11;
+	word64 r14_11;
+	*r14Out = 0xFFFFFFFF;
+	word64 rbx_158 = DPB(rbx, 0x0401, 0);
 	if (rsi <=u 0x0400)
-		rbx_152 = rsi + 0x01;
-	if (malloc(rbx_152) != 0x00)
+		rbx_158 = rsi + 0x01;
+l0000000000409D60:
+	word64 rax_139;
+	word64 rax_131 = malloc(rbx_158);
+	if (rax_131 != 0x00)
 	{
 l0000000000409D70:
-		word64 rsp_144;
-		word64 rdi_145;
-		word64 rsi_146;
-		word64 rax_147;
-		word64 r15_148;
-		word64 r14_149;
-		word64 rbp_150;
-		word64 r13_151;
-		word32 ebx_153;
-		byte SCZO_154;
-		byte CZ_155;
-		byte SZO_156;
-		byte C_157;
-		byte Z_158;
-		word64 rdx_159;
-		word64 r12_160;
-		byte S_161;
-		word32 eax_162;
-		word32 edx_163;
-		word64 r11_164;
+		word64 rsp_150;
+		word64 rdi_151;
+		word64 rsi_152;
+		word64 rax_153;
+		word64 r15_154;
+		word64 r14_155;
+		word64 rbp_156;
+		word64 r13_157;
+		word32 ebx_159;
+		byte SCZO_160;
+		byte CZ_161;
+		byte SZO_162;
+		byte C_163;
+		byte Z_164;
+		word64 rdx_165;
+		word64 r12_166;
+		byte S_167;
+		word32 eax_168;
+		word32 edx_169;
+		word64 r11_170;
 		readlink();
-		if (rax_147 < 0x00)
+		word64 r12_174 = rax_153;
+		*r12Out = r12_174;
+		if (rax_153 < 0x00)
 		{
-			word64 rax_225 = __errno_location();
-			word32 edx_227 = Mem0[rax_225 + 0x00:word32];
-			if (edx_227 != 0x22)
+			word64 rax_233 = __errno_location();
+			word32 edx_235 = Mem0[rax_233 + 0x00:word32];
+			if (edx_235 != 0x22)
 			{
-				free(rbp_150);
-				Mem236[rax_225 + 0x00:word32] = edx_227;
-				return;
+				free(rbp_156);
+				Mem244[rax_233 + 0x00:word32] = edx_235;
+				rax_139 = DPB(rax_233, 0x00, 0);
+				goto l0000000000409DAD;
 			}
 		}
-		if (rbx_152 >u rax_147)
+		if (rbx_158 >u rax_153)
 		{
-			Mem209[rbp_150 + 0x00:byte] = 0x00;
-			return;
+			Mem216[rbp_156 + 0x00:byte] = 0x00;
+			word64 rbp_227;
+			*rbpOut = Mem216[qwLoc08 + 0x08:word64];
+			word64 rsi_229;
+			*rsiOut = Mem216[qwLoc08 + 0x10:word64];
+			return rbp_156;
 		}
-		free(rbp_150);
-		if (rbx_152 >u 0xFFFFFFFF)
+		free(rbp_156);
+		if (rbx_158 >u 0xFFFFFFFF)
 		{
-			if (rbx_152 <=u 0xFFFFFFFE)
+			if (rbx_158 >u 0xFFFFFFFE)
+			{
+				word64 rax_197 = __errno_location();
+				Mem198[rax_197 + 0x00:word32] = 0x0C;
+				word64 rbp_210;
+				*rbpOut = Mem198[qwLoc08 + 0x08:word64];
+				word64 rsi_212;
+				*rsiOut = Mem198[qwLoc08 + 0x10:word64];
+				return DPB(rax_197, 0x00, 0);
+			}
+			else
+			{
+				word64 r11_196;
+				*r11Out = 0xFFFFFFFF;
 				goto l0000000000409D60;
-			Mem192[__errno_location() + 0x00:word32] = 0x0C;
-			return;
+			}
 		}
-		if (malloc(rbx_152 * 0x02) != 0x00)
+		rax_131 = malloc(rbx_158 * 0x02);
+		if (rax_131 != 0x00)
 			goto l0000000000409D70;
 	}
-	return;
+	rax_139 = DPB(rax_131, 0x00, 0);
+l0000000000409DAD:
+	word64 rbp_114;
+	*rbpOut = Mem0[qwLoc08 + 0x08:word64];
+	word64 rsi_116;
+	*rsiOut = Mem0[qwLoc08 + 0x10:word64];
+	return rax_139;
 }
 
 // 0000000000409E50: Register word64 fn0000000000409E50(Register word64 rax, Register word64 rcx, Register word64 rdx, Register word64 rsi, Register word64 rdi, Register out ptr64 rspOut, Register out ptr64 ebpOut, Register out ptr64 r12Out, Register out ptr64 r14Out)
@@ -4189,166 +6558,143 @@ l0000000000409F3B:
 	goto l0000000000409F3B;
 }
 
-// 0000000000409F80: Register word64 fn0000000000409F80(Register word64 rdx, Register word32 esi, Register word64 rdi, Register word64 r11, Register selector fs, Register out ptr64 rbpOut, Register out ptr64 r11Out, Register out ptr64 r15Out)
-word64 fn0000000000409F80(word64 rdx, word32 esi, word64 rdi, word64 r11, selector fs, ptr64 & rbpOut, ptr64 & r11Out, ptr64 & r15Out)
+// 0000000000409F80: Register word64 fn0000000000409F80(Register word64 rdx, Register word64 rdi, Register word64 r11, Register selector fs, Register out ptr64 rbpOut, Register out ptr64 r11Out, Register out ptr64 r15Out)
+word64 fn0000000000409F80(word64 rdx, word64 rdi, word64 r11, selector fs, ptr64 & rbpOut, ptr64 & r11Out, ptr64 & r15Out)
 {
+	word64 rdi_22;
 	word64 rdx_9 = DPB(rdx, 0x05, 0);
-	word32 ebp_15 = (word32) rdi;
-	word32 ebx_21 = (word32) rsi;
 	if (rdx != ~0x00)
-		dcgettext(DPB(rdi, 0x00, 0), DPB(rsi, 4283928, 0), rdx_9);
+	{
+		rdi_22 = DPB(rdi, 0x00, 0);
+		dcgettext(rdi_22, DPB(rsi, 4283928, 0), rdx_9);
+	}
 	else
-		dcgettext(DPB(rdi, 0x00, 0), DPB(rsi, 0x00415DFD, 0), rdx_9);
-	word64 r11_29;
-	word64 rbx_30 = fn000000000040EBF0(ebx_21, ebp_15, rdi, 0x01, r11, fs, out r11_29);
-	word64 r11_37;
-	word64 r15_38;
-	fn000000000040E970(rbx_30, 0x06, 0x00, r11_29, fs, out r11_37, out r15_38);
-	word64 rsp_57;
-	word64 rdx_58;
-	byte SCZO_59;
-	word32 edx_60;
-	word64 rbp_61;
-	word64 rdi_62;
-	word64 rbx_63;
-	word64 rsi_64;
-	byte Z_65;
-	word32 esi_66;
-	word32 edi_67;
-	byte SZO_68;
-	byte C_69;
-	word64 rax_70;
-	word64 r12_71;
-	word64 r8_72;
-	word64 rcx_73;
-	word32 eax_74;
-	word64 r11_75;
-	selector fs_76;
-	word64 r15_77;
-	word32 ebx_78;
-	word32 ebp_79;
+	{
+		rdi_22 = DPB(rdi, 0x00, 0);
+		dcgettext(rdi_22, DPB(rsi, 0x00415DFD, 0), rdx_9);
+	}
+	word64 rdi_25 = DPB(rdi_22, 0x01, 0);
+	word64 r11_28;
+	word64 rbx_29 = fn000000000040EBF0(rdi, rdi_25, r11, fs, out r11_28);
+	word64 r11_36;
+	word64 r15_37;
+	fn000000000040E970(rbx_29, 0x06, 0x00, r11_28, fs, out r11_36, out r15_37);
+	word64 rsp_54;
+	word64 rdx_55;
+	byte SCZO_56;
+	word32 edx_57;
+	word64 rbp_58;
+	word64 rdi_59;
+	word64 rbx_60;
+	word64 rsi_61;
+	byte Z_62;
+	word32 esi_63;
+	word32 edi_64;
+	byte SZO_65;
+	byte C_66;
+	word64 rax_67;
+	word64 r12_68;
+	word64 r8_69;
+	word64 rcx_70;
+	word32 eax_71;
+	word64 r11_72;
+	selector fs_73;
+	word64 r15_74;
 	Mem0[0x000000000061A300 + 0x00:word32]();
-	return rbx_63;
+	return rbx_60;
 }
 
 // 000000000040A000: Register word64 fn000000000040A000(Register word64 rdx, Register word64 rsi, Register word64 rdi, Register word64 r11, Register selector fs)
 word64 fn000000000040A000(word64 rdx, word64 rsi, word64 rdi, word64 r11, selector fs)
 {
 	word64 rdx_20 = DPB(rdx, 0x05, 0);
-	word64 rax_36 = dcgettext(DPB(rdi, 0x00, 0), DPB(rsi, 0x00415E35, 0), rdx_20);
-	word64 rsp_44;
-	word64 rdi_45;
-	word64 r15_46;
-	word32 edi_47;
-	byte SZO_48;
-	byte C_49;
-	word32 r14d_51;
-	word32 edx_55;
-	word32 esi_56;
-	byte SCZO_58;
-	word32 ebx_60;
-	word64 r12_61;
-	byte Z_62;
-	word32 eax_64;
-	word64 rcx_65;
-	selector fs_67;
-	word32 ebp_199;
-	word64 r11_200;
-	word64 r14_203;
-	word64 r13_209;
-	word64 rbx_214;
-	word64 rbp_215;
-	word64 rax_206;
-	word64 rdx_212;
-	word64 rsi_216;
+	word64 rax_35 = dcgettext(DPB(rdi, 0x00, 0), DPB(rsi, 0x00415E35, 0), rdx_20);
+	word64 rsp_43;
+	word64 rdi_44;
+	word64 r15_45;
+	word32 edi_46;
+	byte SZO_47;
+	byte C_48;
+	word32 r14d_50;
+	word32 edx_54;
+	word32 esi_55;
+	byte SCZO_57;
+	word32 ebx_59;
+	word64 r12_60;
+	byte Z_61;
+	word32 eax_63;
+	word64 rcx_64;
+	selector fs_66;
+	word64 r11_154;
+	word64 r13_155;
+	word64 r14_156;
+	word64 rbx_167;
+	word64 rbp_168;
+	word64 rax_162;
+	word64 rdx_165;
+	word64 rsi_169;
 	fputs_unlocked();
-	word64 r12_204 = Mem0[r15_46 + 0x00:word64];
-	if (r12_204 != 0x00)
+	word64 r12_161 = Mem0[r15_45 + 0x00:word64];
+	if (r12_161 != 0x00)
 	{
 		do
 		{
-			if (rbx_214 != 0x00)
+			if (rbx_167 != 0x00)
 			{
-				word64 rax_258 = DPB(rax_206, memcmp(r14_203, rbp_215, r13_209), 0);
-				rax_206 = DPB(rax_206, memcmp(r14_203, rbp_215, r13_209), 0);
-				rdx_212 = r13_209;
-				rsi_216 = rbp_215;
-				if (memcmp(r14_203, rbp_215, r13_209) == 0x00)
+				word64 rax_209 = DPB(rax_162, memcmp(r14_156, rbp_168, r13_155), 0);
+				rax_162 = DPB(rax_162, memcmp(r14_156, rbp_168, r13_155), 0);
+				rdx_165 = r13_155;
+				rsi_169 = rbp_168;
+				if (memcmp(r14_156, rbp_168, r13_155) == 0x00)
 				{
-					word64 rbp_276;
-					word64 r11_277;
-					word64 r13_278;
-					word64 r14_279;
-					word64 r15_280;
-					word64 rbx_281 = fn000000000040EC10((word32) (rbx_214 + 0x01), (word32) (rbp_215 + r13_209), r12_204, r11_200, fs_67, out rbp_276, out r11_277, out r13_278, out r14_279, out r15_280);
-					word64 rax_290 = DPB(rax_206, __fprintf_chk(Mem0[0x000000000061A650 + 0x00:word64], DPB(rbp_215, 0x01, 0), DPB(r13_209, 0x00415E52, 0)), 0);
-					word64 r12_291 = r15_280[rbx_281 * 0x08];
-					ebp_199 = (word32) (rbp_276 + r13_278);
-					word64 r15_304;
-					rbx_214 = fn000000000040EC10((word32) (rbx_281 + 0x01), ebp_199, r12_291, r11_277, fs_67, out rbp_215, out r11_200, out r13_209, out r14_203, out r15_304);
-					rdx_212 = DPB(r13_209, 0x00415E52, 0);
-					rsi_216 = DPB(rbp_215, 0x01, 0);
-					rax_206 = DPB(rax_206, __fprintf_chk(Mem0[0x000000000061A650 + 0x00:word64], rsi_216, rdx_212), 0);
-					r12_204 = r15_304[rbx_214 * 0x08];
-					if (r12_204 == 0x00)
+					word64 rbp_225;
+					word64 r11_226;
+					word64 r13_227;
+					word64 r14_228;
+					word64 r15_229;
+					word64 rbx_230 = fn000000000040EC10(r12_161, r11_154, fs_66, out rbp_225, out r11_226, out r13_227, out r14_228, out r15_229);
+					word64 rax_239 = DPB(rax_162, __fprintf_chk(Mem0[0x000000000061A650 + 0x00:word64], DPB(rbp_168, 0x01, 0), DPB(r13_155, 0x00415E52, 0)), 0);
+					word64 r12_240 = r15_229[rbx_230 * 0x08];
+					word64 r15_251;
+					rbx_167 = fn000000000040EC10(r12_240, r11_226, fs_66, out rbp_168, out r11_154, out r13_155, out r14_156, out r15_251);
+					rdx_165 = DPB(r13_155, 0x00415E52, 0);
+					rsi_169 = DPB(rbp_168, 0x01, 0);
+					rax_162 = DPB(rax_162, __fprintf_chk(Mem0[0x000000000061A650 + 0x00:word64], rsi_169, rdx_165), 0);
+					r12_161 = r15_251[rbx_167 * 0x08];
+					if (r12_161 == 0x00)
 						break;
 					continue;
 				}
 			}
-			word64 rbp_232;
-			word64 r15_236;
-			rbx_214 = fn000000000040EC10((word32) (rbx_214 + 0x01), ebp_199, r12_204, r11_200, fs_67, out rbp_232, out r11_200, out r13_209, out r14_203, out r15_236);
-			rdx_212 = DPB(rdx_212, 0x00415E4A, 0);
-			rsi_216 = DPB(rsi_216, 0x01, 0);
-			rbp_215 = rbp_232 + r13_209;
-			rax_206 = DPB(rax_206, __fprintf_chk(Mem0[0x000000000061A650 + 0x00:word64], rsi_216, rdx_212), 0);
-			ebp_199 = (word32) rbp_215;
-			r12_204 = r15_236[rbx_214 * 0x08];
-		} while (r12_204 == 0x00);
+			word64 rbp_184;
+			word64 r15_188;
+			rbx_167 = fn000000000040EC10(r12_161, r11_154, fs_66, out rbp_184, out r11_154, out r13_155, out r14_156, out r15_188);
+			rdx_165 = DPB(rdx_165, 0x00415E4A, 0);
+			rsi_169 = DPB(rsi_169, 0x01, 0);
+			rax_162 = DPB(rax_162, __fprintf_chk(Mem0[0x000000000061A650 + 0x00:word64], rsi_169, rdx_165), 0);
+			rbp_168 = rbp_184 + r13_155;
+			r12_161 = r15_188[rbx_167 * 0x08];
+		} while (r12_161 == 0x00);
 	}
-	word64 rdi_90 = Mem0[0x000000000061A650 + 0x00:word64];
-	word64 rdi_94 = Mem0[0x000000000061A650 + 0x00:word64];
-	word64 rax_96 = Mem0[rdi_94 + 0x28:word64];
-	if (rax_96 >=u Mem0[rdi_94 + 0x30:word64])
+	word64 rdi_87 = Mem0[0x000000000061A650 + 0x00:word64];
+	word64 rdi_91 = Mem0[0x000000000061A650 + 0x00:word64];
+	word64 rax_93 = Mem0[rdi_91 + 0x28:word64];
+	if (rax_93 >=u Mem0[rdi_91 + 0x30:word64])
 	{
-		word64 rsp_174;
-		word64 rdi_175;
-		word64 r15_176;
-		word32 edi_177;
-		byte SZO_178;
-		byte C_179;
-		word64 rsi_180;
-		word32 r14d_181;
-		word64 rbp_182;
-		word64 r13_183;
-		word64 rdx_184;
-		word32 edx_185;
-		word32 esi_186;
-		word64 rbx_187;
-		byte SCZO_188;
-		word64 rax_189;
-		word32 ebx_190;
-		word64 r12_191;
-		byte Z_192;
-		word64 r14_193;
-		word32 eax_194;
-		word64 rcx_195;
-		word64 r11_196;
-		selector fs_197;
-		word32 ebp_198;
-		Mem0[0x000000000061A148 + 0x00:word32]();
-		return rsp_174;
+		word64 rsp_145 = Mem0[rsp_43 + 0x18:word64];
+		fn0000000000402400();
+		return rsp_145 + 0x20;
 	}
 	else
 	{
-		Mem126[rdi_94 + 0x28:word64] = rax_96 + 0x01;
-		Mem127[rax_96 + 0x00:byte] = 0x0A;
-		word64 rsp_133 = Mem127[rsp_44 + 0x18:word64];
-		word64 rdi_139 = Mem127[rsp_133 + 0x18:word64];
-		return rsp_133 + 0x20;
-		Mem142[rdi_139 + 0x28:word64] = rax_96 + 0x01;
-		Mem143[rax_96 + 0x00:byte] = 0x0A;
-		return Mem143[rsp_133 + 0x38:word64] + 0x20;
+		Mem106[rdi_91 + 0x28:word64] = rax_93 + 0x01;
+		Mem107[rax_93 + 0x00:byte] = 0x0A;
+		word64 rsp_113 = Mem107[rsp_43 + 0x18:word64];
+		word64 rdi_119 = Mem107[rsp_113 + 0x18:word64];
+		return rsp_113 + 0x20;
+		Mem122[rdi_119 + 0x28:word64] = rax_93 + 0x01;
+		Mem123[rax_93 + 0x00:byte] = 0x0A;
+		return Mem123[rsp_113 + 0x38:word64] + 0x20;
 	}
 }
 
@@ -4362,105 +6708,115 @@ void fn000000000040A120(word64 rax, word64 rcx, word64 rdx, word64 rsi, word64 r
 	word64 rax_41 = fn0000000000409E50(rax, r8, rcx, rdx, rsi, out rsp_37, out ebp_38, out r12_39, out r14_40);
 	if (rax_41 < 0x00)
 	{
-		word32 esi_84 = (word32) r12_39;
-		word64 rbp_86;
-		word64 r11_87;
-		word64 r15_88;
-		word64 rbx_89 = fn0000000000409F80(rax_41, esi_84, r14_40, r11, fs, out rbp_86, out r11_87, out r15_88);
-		word64 rsp_93 = fn000000000040A000(r15_88, rbp_86, rbx_89, r11_87, fs);
-		word64 rsp_94;
-		word64 rdi_95;
-		word64 r15_96;
-		word64 r8_97;
-		word64 rsi_98;
-		word64 r14_99;
-		word64 rbp_100;
-		word64 r13_101;
-		word64 r9_102;
-		word64 r12_103;
-		word64 rcx_104;
-		word64 rbx_105;
-		word64 rdx_106;
-		byte SCZO_107;
-		word64 rax_108;
-		byte SZO_109;
-		byte C_110;
-		byte S_111;
-		word32 r13d_112;
-		word64 r11_113;
-		selector fs_114;
-		word32 ebp_115;
-		word32 esi_116;
+		word64 rbp_83;
+		word64 r11_84;
+		word64 r15_85;
+		word64 rbx_86 = fn0000000000409F80(rax_41, r14_40, r11, fs, out rbp_83, out r11_84, out r15_85);
+		word64 rsp_90 = fn000000000040A000(r15_85, rbp_83, rbx_86, r11_84, fs);
+		word64 rsp_91;
+		word64 rdi_92;
+		word64 r15_93;
+		word64 r8_94;
+		word64 rsi_95;
+		word64 r14_96;
+		word64 rbp_97;
+		word64 r13_98;
+		word64 r9_99;
+		word64 r12_100;
+		word64 rcx_101;
+		word64 rbx_102;
+		word64 rdx_103;
+		byte SCZO_104;
+		word64 rax_105;
+		byte SZO_106;
+		byte C_107;
+		byte S_108;
+		word32 r13d_109;
+		word64 r11_110;
+		selector fs_111;
+		word32 ebp_112;
 		r13d();
 	}
 	return;
 }
 
-// 000000000040A2B0: void fn000000000040A2B0(Register word64 rdi, Stack word64 qwArg00, Stack word64 qwArg10, Stack word64 qwArg18)
-void fn000000000040A2B0(word64 rdi, word64 qwArg00, word64 qwArg10, word64 qwArg18)
+// 000000000040A2B0: Register word64 fn000000000040A2B0(Register word64 rdi, Stack word64 qwArg00, Stack word64 qwArg10, Stack word64 qwArg18, Register out ptr64 rbxOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut)
+word64 fn000000000040A2B0(word64 rdi, word64 qwArg00, word64 qwArg10, word64 qwArg18, ptr64 & rbxOut, ptr64 & rbpOut, ptr64 & rsiOut)
 {
+	word64 rdx_26;
 	word64 rbp_16 = DPB(rbp, Mem0[rdi + 0x00:byte] == 0x2F, 0);
-	word64 rax_18 = fn000000000040A390(rdi);
-	word64 rcx_20 = rax_18 - rdi;
-	if (rcx_20 >u rbp_16)
+	word64 rsi_18;
+	word64 rax_19 = fn000000000040A390(rdi, out rsi_18);
+	word64 rcx_21 = rax_19 - rdi;
+	if (rcx_21 >u rbp_16)
 	{
-		word64 rdx_48 = rcx_20 - 0x01;
-		if (Mem0[rax_18 - 0x01 + 0x00:byte] == 0x2F)
+		rdx_26 = rcx_21 - 0x01;
+		if (Mem0[rax_19 - 0x01 + 0x00:byte] == 0x2F)
 		{
-			while (rbp_16 <u rdx_48)
+			while (rbp_16 <u rdx_26)
 			{
-				word64 rax_56 = rdx_48 - 0x01;
-				if (Mem0[rdi - 0x01 + rdx_48:byte] != 0x2F)
-					return;
-				rdx_48 = rax_56;
+				rax_19 = rdx_26 - 0x01;
+				if (Mem0[rdi - 0x01 + rdx_26:byte] != 0x2F)
+					return rax_19;
+				rdx_26 = rax_19;
 			}
-			return;
-			return;
+			return rax_19;
+			word64 rbx_39;
+			*rbxOut = qwArg10;
+			word64 rbp_42;
+			*rbpOut = qwArg18;
+			return rdx_26;
 		}
 	}
-	return;
+	rdx_26 = rcx_21;
+	return rax_19;
 }
 
-// 000000000040A390: Register word64 fn000000000040A390(Register word64 rdi)
-word64 fn000000000040A390(word64 rdi)
+// 000000000040A390: Register word64 fn000000000040A390(Register word64 rdi, Register out ptr64 rsiOut)
+word64 fn000000000040A390(word64 rdi, ptr64 & rsiOut)
 {
-	word32 edx_13 = (word32) Mem0[rdi + 0x00:byte];
-	word64 rax_12 = rdi;
-	if ((byte) edx_13 == 0x2F)
+	word32 edx_101 = (word32) Mem0[rdi + 0x00:byte];
+	word64 rax_100 = rdi;
+	if ((byte) edx_101 == 0x2F)
 	{
 		do
 		{
-			rax_12 = rax_12 + 0x01;
-			edx_13 = (word32) Mem0[rax_12 + 0x00:byte];
-		} while ((byte) edx_13 == 0x2F);
+			rax_100 = rax_100 + 0x01;
+			edx_101 = (word32) Mem0[rax_100 + 0x00:byte];
+		} while ((byte) edx_101 == 0x2F);
 	}
 	byte sil_17 = 0x00;
-	word64 rdx_18 = rax_12;
-	if ((byte) edx_13 == 0x00)
-		return rax_12;
+	word64 rsi_19 = DPB(rsi, 0x00, 0);
+	*rsiOut = rsi_19;
+	word64 rdx_20 = rax_100;
+	if ((byte) edx_101 == 0x00)
+		return rax_100;
 	else
 	{
 l000000000040A3C0:
-		rdx_18 = rdx_18 + 0x01;
-		byte cl_45 = (byte) (word32) Mem0[rdx_18 + 0x00:byte];
-		if (cl_45 != 0x00)
+		rdx_20 = rdx_20 + 0x01;
+		byte cl_50 = (byte) (word32) Mem0[rdx_20 + 0x00:byte];
+		if (cl_50 != 0x00)
 		{
 			do
 			{
-				if (cl_45 == 0x2F)
+				if (cl_50 == 0x2F)
 				{
 					sil_17 = 0x01;
+					*rsiOut = DPB(rsi_19, 0x01, 0);
 					goto l000000000040A3C0;
 				}
 				if (sil_17 == 0x00)
 					goto l000000000040A3C0;
-				rdx_18 = rdx_18 + 0x01;
-				rax_12 = rdx_18;
-				cl_45 = (byte) (word32) Mem0[rdx_18 + 0x00:byte];
+				rdx_20 = rdx_20 + 0x01;
+				rax_100 = rdx_20;
+				cl_50 = (byte) (word32) Mem0[rdx_20 + 0x00:byte];
 				sil_17 = 0x00;
-			} while (cl_45 != 0x00);
+				rsi_19 = DPB(rsi_19, 0x00, 0);
+				*rsiOut = rsi_19;
+			} while (cl_50 != 0x00);
 		}
-		return rax_12;
+		return rax_100;
 	}
 }
 
@@ -4586,151 +6942,155 @@ word64 fn000000000040A610(word64 rdx, word64 rsi, word64 rdi, ptr64 & rbpOut, pt
 // 000000000040A630: Register word64 fn000000000040A630(Register word64 rdx, Register word64 rsi, Register word64 rdi, Register out ptr64 rdxOut, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut, Register out ptr64 rdiOut, Register out ptr64 r14bOut)
 word64 fn000000000040A630(word64 rdx, word64 rsi, word64 rdi, ptr64 & rdxOut, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & rsiOut, ptr64 & rdiOut, ptr64 & r14bOut)
 {
-	word64 rax_29 = fn000000000040A390(rdi);
-	word64 rsp_129;
-	word64 rax_33 = fn000000000040A400(rax_29, rax_29, out rsp_129);
-	word64 rdx_37 = rax_29 - rdi;
-	*rdxOut = rdx_37;
-	Mem42[rsp_129 + 0x00:word64] = rdx_37 + rax_33;
+	word64 rsi_29;
+	word64 rax_30 = fn000000000040A390(rdi, out rsi_29);
+	word64 rsp_130;
+	word64 rax_34 = fn000000000040A400(rax_30, rax_30, out rsp_130);
+	word64 rdx_38 = rax_30 - rdi;
+	*rdxOut = rdx_38;
+	Mem43[rsp_130 + 0x00:word64] = rdx_38 + rax_34;
 	byte r14b_11;
 	*r14bOut = 0x00;
 	word64 r14_13 = DPB(r14, 0x00, 0);
-	if (rax_33 != 0x00)
+	if (rax_34 != 0x00)
 	{
-		byte r14b_178 = Mem42[rax_29 - 0x01 + rax_33:byte] != 0x2F;
-		*r14bOut = r14b_178;
-		r14_13 = DPB(r14, r14b_178, 0);
+		byte r14b_179 = Mem43[rax_30 - 0x01 + rax_34:byte] != 0x2F;
+		*r14bOut = r14b_179;
+		r14_13 = DPB(r14, r14b_179, 0);
 	}
-	word64 rbx_168 = rsi + 0x01;
-	if (Mem42[rsi + 0x00:byte] == 0x2F)
+	word64 rbx_169 = rsi + 0x01;
+	if (Mem43[rsi + 0x00:byte] == 0x2F)
 	{
 		do
 		{
-			rbx_168 = rbx_168 + 0x00;
-			if (Mem42[rbx_168 + 0x00:byte] != 0x2F)
+			rbx_169 = rbx_169 + 0x00;
+			if (Mem43[rbx_169 + 0x00:byte] != 0x2F)
 				goto l000000000040A682;
-			rbx_168 = rbx_168 + 0x01;
-		} while (Mem42[rbx_168 + 0x01:byte] != 0x2F);
+			rbx_169 = rbx_169 + 0x01;
+		} while (Mem43[rbx_169 + 0x01:byte] != 0x2F);
 	}
 l000000000040A682:
-	word64 rax_150;
-	word64 rax_52 = DPB(rax_33, strlen(rbx_168), 0);
-	word64 rcx_53 = Mem42[rsp_129 + 0x00:word64];
-	Mem54[rsp_129 + 0x08:word64] = rax_52;
-	word64 rax_57 = malloc(rcx_53 + 0x01 + r14_13 + rax_52);
-	if (rax_57 != 0x00)
+	word64 rax_151;
+	word64 rax_53 = DPB(rax_34, strlen(rbx_169), 0);
+	word64 rcx_54 = Mem43[rsp_130 + 0x00:word64];
+	Mem55[rsp_130 + 0x08:word64] = rax_53;
+	word64 rax_58 = malloc(rcx_54 + 0x01 + r14_13 + rax_53);
+	if (rax_58 != 0x00)
 	{
-		word64 rsp_102;
-		word64 rdi_103;
-		word64 r15_104;
-		word64 rdx_105;
-		word64 rsi_106;
-		word32 r14d_107;
-		byte SZO_108;
-		byte C_109;
-		word64 rbp_110;
-		word64 r12_111;
-		word64 rbx_112;
-		byte SCZO_113;
-		word64 rax_114;
-		byte Z_115;
-		byte r14b_116;
-		word64 rcx_117;
-		word64 r14_118;
-		word64 r13_119;
-		word32 eax_120;
-		byte al_121;
+		word64 rsp_103;
+		word64 rdi_104;
+		word64 r15_105;
+		word64 rdx_106;
+		word64 rsi_107;
+		word32 r14d_108;
+		byte SZO_109;
+		byte C_110;
+		word64 rbp_111;
+		word64 r12_112;
+		word64 rbx_113;
+		byte SCZO_114;
+		word64 rax_115;
+		byte Z_116;
+		byte r14b_117;
+		word64 rcx_118;
+		word64 r14_119;
+		word64 r13_120;
+		word32 eax_121;
+		byte al_122;
 		mempcpy();
-		Mem125[rax_114 + 0x00:byte] = 0x2F;
-		word64 rdi_126 = rax_114 + r14_118;
-		if (r15_104 != 0x00)
-			Mem162[rdi_126 + 0x00:word64] = rdi_126 - DPB(rax_114, Mem125[rbp_110 + 0x00:byte] == 0x2F, 0);
-		word64 rdi_130;
-		word64 r15_131;
-		word64 rdx_132;
-		word64 rsi_133;
-		word32 r14d_134;
-		byte SZO_135;
-		byte C_136;
-		word64 rbp_137;
-		word64 r12_138;
-		word64 rbx_139;
-		byte SCZO_140;
-		word64 rax_141;
-		byte Z_142;
-		byte r14b_143;
-		word64 rcx_144;
-		word64 r14_145;
-		word64 r13_146;
-		word32 eax_147;
-		byte al_148;
+		Mem126[rax_115 + 0x00:byte] = 0x2F;
+		word64 rdi_127 = rax_115 + r14_119;
+		if (r15_105 != 0x00)
+			Mem163[rdi_127 + 0x00:word64] = rdi_127 - DPB(rax_115, Mem126[rbp_111 + 0x00:byte] == 0x2F, 0);
+		word64 rdi_131;
+		word64 r15_132;
+		word64 rdx_133;
+		word64 rsi_134;
+		word32 r14d_135;
+		byte SZO_136;
+		byte C_137;
+		word64 rbp_138;
+		word64 r12_139;
+		word64 rbx_140;
+		byte SCZO_141;
+		word64 rax_142;
+		byte Z_143;
+		byte r14b_144;
+		word64 rcx_145;
+		word64 r14_146;
+		word64 r13_147;
+		word32 eax_148;
+		byte al_149;
 		mempcpy();
-		Mem149[rax_141 + 0x00:byte] = 0x00;
-		rax_150 = r13_146;
+		Mem150[rax_142 + 0x00:byte] = 0x00;
+		rax_151 = r13_147;
 	}
 	else
-		rax_150 = DPB(rax_57, 0x00, 0);
-	word64 rsp_85 = Mem54[rsp_129 + 0x28:word64];
-	word64 rbp_87;
-	*rbpOut = Mem54[rsp_85 + 0x08:word64];
-	word64 rsi_89;
-	*rsiOut = Mem54[rsp_85 + 0x10:word64];
-	word64 rdi_91;
-	*rdiOut = Mem54[rsp_85 + 0x18:word64];
-	word64 rsp_92;
-	*rspOut = rsp_85 + 0x20;
-	return rax_150;
+		rax_151 = DPB(rax_58, 0x00, 0);
+	word64 rsp_86 = Mem55[rsp_130 + 0x28:word64];
+	word64 rbp_88;
+	*rbpOut = Mem55[rsp_86 + 0x08:word64];
+	word64 rsi_90;
+	*rsiOut = Mem55[rsp_86 + 0x10:word64];
+	word64 rdi_92;
+	*rdiOut = Mem55[rsp_86 + 0x18:word64];
+	word64 rsp_93;
+	*rspOut = rsp_86 + 0x20;
+	return rax_151;
 }
 
-// 000000000040A730: Register word64 fn000000000040A730(Register word64 rdi, Register word32 r14d)
-word64 fn000000000040A730(word64 rdi, word32 r14d)
+// 000000000040A730: Register word64 fn000000000040A730(Register word64 rdi, Register word32 r14d, Register out ptr64 r9Out)
+word64 fn000000000040A730(word64 rdi, word32 r14d, ptr64 & r9Out)
 {
-	word64 rdx_120 = Mem0[rdi + 0x00:word64];
-	byte cl_123 = (byte) (word32) Mem0[rdx_120 + 0x00:byte];
-	if (cl_123 == 0x00)
+	*r9Out = r9;
+	word64 rdx_128 = Mem0[rdi + 0x00:word64];
+	byte cl_131 = (byte) (word32) Mem0[rdx_128 + 0x00:byte];
+	if (cl_131 == 0x00)
 		return DPB(rax, 0x00, 0);
-	byte r8b_136 = 0x00;
-	word64 rax_130 = DPB(rax, 0x00, 0);
-	word64 r10_33 = DPB(r10, 0x00, 0);
-	if (r8b_136 == 0x00)
+	byte r8b_144 = 0x00;
+	word64 rax_138 = DPB(rax, 0x00, 0);
+	word64 r10_35 = DPB(r10, 0x00, 0);
+	if (r8b_144 == 0x00)
 	{
-		if (cl_123 == 0x2E)
+		if (cl_131 == 0x2E)
 		{
-			if (rax_130 == 0x00)
-				rax_130 = rdx_120;
-			rax_130 = DPB(rax_130, 0x01, 0);
+			if (rax_138 == 0x00)
+				rax_138 = rdx_128;
+			rax_138 = DPB(rax_138, 0x01, 0);
 l000000000040A768:
-			rdx_120 = rdx_120 + 0x01;
-			Mem79[rdi + 0x00:word64] = rdx_120;
-			cl_123 = (byte) (word32) Mem79[rdx_120 + 0x00:byte];
-			if (cl_123 != 0x00)
+			rdx_128 = rdx_128 + 0x01;
+			Mem85[rdi + 0x00:word64] = rdx_128;
+			cl_131 = (byte) (word32) Mem85[rdx_128 + 0x00:byte];
+			if (cl_131 != 0x00)
 				goto l000000000040A776;
-			return rax_130;
+			return rax_138;
 		}
-		word32 esi_102 = (int32) cl_123;
+		word32 esi_109 = (int32) cl_131;
+		r9 = DPB(r9, r14 - 0x30, 0);
+		*r9Out = r9;
 		if (r14 <=u 0x39)
 			goto l000000000040A768;
-		word32 esi_107 = (esi_102 & ~0x20) - 0x41;
-		if ((esi_107 & ~0x20) <=u 0x5A)
+		word32 esi_115 = (esi_109 & ~0x20) - 0x41;
+		if ((esi_115 & ~0x20) <=u 0x5A)
 		{
-			word64 rdx_114 = rdx_120 + 0x01;
-			Mem115[rdi + 0x00:word64] = rdx_114;
-			Mem121[rdi + 0x00:word64] = rdx_114 + 0x01;
-			rdx_120 = rdx_114 + 0x01;
-			cl_123 = (byte) (word32) Mem121[rdx_114 + 0x01:byte];
-			if (cl_123 == 0x00)
-				return rax_130;
+			word64 rdx_122 = rdx_128 + 0x01;
+			Mem123[rdi + 0x00:word64] = rdx_122;
+			Mem129[rdi + 0x00:word64] = rdx_122 + 0x01;
+			rdx_128 = rdx_122 + 0x01;
+			cl_131 = (byte) (word32) Mem129[rdx_122 + 0x01:byte];
+			if (cl_131 == 0x00)
+				return rax_138;
 			continue;
 		}
 	}
 	else
 	{
-		r8b_136 = 0x00;
-		if (((int32) cl_123 & ~0x20) <=u 0x5A)
+		r8b_144 = 0x00;
+		if (((int32) cl_131 & ~0x20) <=u 0x5A)
 			goto l000000000040A768;
 	}
-	if (cl_123 != 0x7E)
-		rax_130 = r10_33;
+	if (cl_131 != 0x7E)
+		rax_138 = r10_35;
 	goto l000000000040A768;
 }
 
@@ -5214,474 +7574,2111 @@ void fn000000000040BB90(word64 rax, word64 rsi, word64 rdi, word64 r8, word64 r1
 	return;
 }
 
-// 000000000040BD70: Register word64 fn000000000040BD70(Register word64 rcx, Register word32 edx, Register word64 rbp, Register word64 rsi, Register word64 rdi, Register word64 r8, Register selector fs, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r9Out, Register out ptr64 r11Out)
-word64 fn000000000040BD70(word64 rcx, word32 edx, word64 rbp, word64 rsi, word64 rdi, word64 r8, selector fs, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & r9Out, ptr64 & r11Out)
+// 000000000040BD70: Register word64 fn000000000040BD70(Register word64 rcx, Register word32 edx, Register word64 rbp, Register word64 rsi, Register word64 rdi, Register word64 r8, Register selector fs, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r8Out, Register out ptr64 r9Out, Register out ptr64 r11Out, Register out ptr64 r14dOut, Register out ptr64 r15Out)
+word64 fn000000000040BD70(word64 rcx, word32 edx, word64 rbp, word64 rsi, word64 rdi, word64 r8, selector fs, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & r8Out, ptr64 & r9Out, ptr64 & r11Out, ptr64 & r14dOut, ptr64 & r15Out)
 {
-	word32 eax_45 = 0x00 - ((edx & 0x20) <u 0x01);
-	word64 rcx_39 = Mem0[fs:0x28:word64];
-	word64 rsp_55;
-	word64 rdi_56;
-	word32 eax_57;
-	word32 edx_58;
-	byte SZO_59;
-	byte C_60;
-	word64 rbp_63;
-	word64 r12_64;
-	word64 rbx_65;
-	byte SCZO_67;
-	word64 r8_68;
-	word32 ecx_70;
-	word64 r15_71;
-	word64 r13_72;
-	word64 rax_73;
-	word64 r11_74;
-	word64 rdx_75;
-	byte CZ_76;
-	byte Z_77;
-	byte S_78;
-	word32 ebx_79;
-	word64 r10_80;
-	word32 edi_81;
-	byte cl_82;
-	word32 r9d_83;
-	word32 esi_84;
-	word32 r12d_85;
-	word32 r14d_86;
-	byte al_87;
-	byte dl_88;
-	byte sil_89;
-	byte dil_90;
-	word64 r9_91;
-	word32 r10d_92;
-	byte r10b_93;
-	word32 r15d_94;
-	selector fs_156;
-	word64 r14_166;
-	word64 rcx_1213;
-	word64 rsi_1248;
-	localeconv();
-	word64 r15_123 = Mem0[r8_68 + 0x00:word64];
-	word64 rax_99 = DPB(rax_73, strlen(r15_123), 0);
-	word32 v20_52 = (eax_45 & ~0x17) + 0x0400;
-	word64 r11_101 = rax_99;
-	word64 r13_102 = Mem0[rax_73 + 0x08:word64];
-	word64 rdx_105 = DPB(rdx_75, 0x01, 0);
-	word64 rax_117 = DPB(rax_99 - 0x01, 0x00413990, 0);
-	if (rax_99 >=u 0x11)
-		r11_101 = rdx_105;
-	if (rax_99 >=u 0x11)
-		r15_123 = rax_117;
-	word64 r13_1295;
-	word64 rax_130 = DPB(rax_117, 0x00416919, 0);
-	word128 rdx_rax_131 = DPB(rdx_rax, 0x00416919, 0);
-	r13_1295 = r13_102;
-	if (DPB(rax_117, strlen(r13_102), 0) >=u 0x11)
-		r13_1295 = rax_130;
-	word64 rcx_1032;
-	word32 ecx_1031;
-	word64 r10_1006;
-	word32 edi_1023;
-	word32 ebx_1037;
-	word64 rdi_1024;
-	word128 rdx_rax_1019;
-	word64 r12_163;
-	word64 rax_1018;
-	word64 rax_171;
-	word64 qwLocB8_140 = r14_166;
-	if (r8 <=u rbx_65)
-	{
-		word128 rdx_rax_1202 = SEQ(rdx_105, rbx_65);
-		word64 rax_1205 = (uint64) (rdx_rax_1202 /u r8);
-		word64 rdx_1204 = (uint64) (rdx_rax_1202 % r8);
-		rcx_1213 = rax_1205;
-		if (rdx_1204 != 0x00)
-			goto l000000000040BE59;
-		r10_1006 = rax_1205 *s r12_64;
-		rdx_rax_1019 = SEQ(rdx_1204, r10_1006);
-		rax_1018 = (uint64) (rdx_rax_1019 /u rax_1205);
-		if (rax_1018 == r12_64)
-		{
-			ecx_1031 = 0x00;
-			rcx_1032 = DPB(rax_1205, 0x00, 0);
-			edi_1023 = 0x00;
-			rdi_1024 = DPB(r13_102, 0x00, 0);
-			goto l000000000040C12D;
-		}
-	}
-	else
-	{
-		if (rbx_65 == 0x00)
-			goto l000000000040BE59;
-		word128 rdx_rax_1241 = DPB(rdx_rax_131, 0x00, 64);
-		word64 rax_1244 = (uint64) (rdx_rax_1241 /u rbx_65);
-		word64 rdx_1243 = (uint64) (rdx_rax_1241 % rbx_65);
-		rsi_1248 = rax_1244;
-		if (rdx_1243 == 0x00)
-		{
-			word128 rdx_rax_1253 = SEQ(rdx_1243, r12_64);
-			word64 rdx_1255 = (uint64) (rdx_rax_1253 % rax_1244);
-			word128 rdx_rax_1263 = SEQ(rdx_1255, rdx_1255 * 0x05 * 0x02);
-			rax_1018 = (uint64) (rdx_rax_1263 /u rax_1244);
-			word64 rdx_1265 = (uint64) (rdx_rax_1263 % rax_1244);
-			word32 eax_1267 = (word32) rax_1018;
-			r10_1006 = (uint64) (rdx_rax_1253 /u rax_1244);
-			rdx_rax_1019 = SEQ(rdx_1265 * 0x02, rax_1018);
-			edi_1023 = eax_1267;
-			rdi_1024 = DPB(rdx_1255 * 0x05, eax_1267, 0);
-			if (rax_1244 >u rdx_1265 * 0x02)
-			{
-				byte cl_1286 = rdx_1265 * 0x02 != 0x00;
-				rcx_1032 = DPB(rcx_1213, cl_1286, 0);
-				ecx_1031 = (word32) cl_1286;
-			}
-			else
-			{
-				word32 ecx_1290 = ~(0x00 - (rax_1244 <u rdx_1265 * 0x02));
-				ecx_1031 = ecx_1290 + 0x03;
-				rcx_1032 = DPB(rcx_1213, ecx_1290 + 0x03, 0);
-			}
-l000000000040C12D:
-			word64 r8_1044 = r14_166;
-			ebx_1037 = ~0x00;
-			if ((edx & 0x10) == 0x00)
-			{
-l000000000040C530:
-				byte al_813;
-				word64 rax_811;
-				word64 r11_779;
-				*r11Out = r11_101;
-				if ((edx & 0x03) != 0x01)
-				{
-					rax_811 = DPB(rax_1018, 0x00, 0);
-					al_813 = 0x00;
-					if ((edx & 0x03) == 0x00)
-					{
-						word32 ecx_919 = ecx_1031 + edi_1023;
-						rcx_1032 = DPB(rcx_1032, ecx_919, 0);
-						al_813 = ecx_919 > 0x00;
-						rax_811 = DPB(rax_1018, ecx_919 > 0x00, 0);
-					}
-				}
-				else
-				{
-					rcx_1032 = (int64) ecx_1031;
-					word64 rax_936 = DPB(r10_1006, (word32) r10_1006 & 0x01, 0) + rcx_1032;
-					word32 edi_941 = edi_1023 + (word32) (rax_936 != 0x00);
-					al_813 = edi_941 > 0x05;
-					rax_811 = DPB(rax_936, edi_941 > 0x05, 0);
-				}
-				if (al_813 != 0x00)
-				{
-					r10_1006 = r10_1006 + 0x01;
-					if ((edx & 0x10) != 0x00)
-					{
-						word64 rax_881 = DPB(rax_811, v20_52, 0);
-						if (rax_881 == r10_1006 && ebx_1037 != 0x08)
-						{
-							ebx_1037 = ebx_1037 + 0x01;
-							if ((bLocB0 & 0x08) == 0x00)
-							{
-								Mem898[rax_881 - 0x02 + 0x00:byte] = 0x30;
-								r8_1044 = memcpy(rax_881 - 0x01 - r11_101, r15_123, r11_101);
-							}
-						}
-					}
-				}
-				r12_163 = r8_1044;
-				word64 r9_842;
-				*r9Out = 0xCCCCCCCD;
-				do
-				{
-					word64 rdx_850 = SLICE(rcx_1032 *u r10_1006, word64, 64);
-					word64 rax_852 = (rdx_850 >>u 0x03) + (rdx_850 >>u 0x03) * 0x04;
-					r12_163 = r12_163 - 0x01;
-					Mem865[r12_163 + 0x00:byte] = (byte) ((word32) (r10_1006 - rax_852 * 0x02) + 0x30);
-					rax_171 = rax_852 * 0x02;
-					r10_1006 = rdx_850 >>u 0x03;
-				} while (rdx_850 >>u 0x03 != 0x00);
-				goto l000000000040C237;
-			}
-			word64 rsi_950 = DPB(rsi_1248, v20_52, 0);
-			if (r10_1006 <u rsi_950)
-			{
-				r8_1044 = r14_166;
-				ebx_1037 = 0x00;
-				goto l000000000040C530;
-			}
-			ebx_1037 = 0x00;
-l000000000040C17D:
-			word128 rdx_rax_972 = DPB(rdx_rax_1019, 0x00, 64);
-			word64 rdx_974 = (uint64) (rdx_rax_972 % rsi_950);
-			word64 edx_eax_982 = (uint64) (uint32) (rdi_1024 + DPB((uint64) (rdx_rax_972 /u rsi_950), rdx_974 * 0x05, 0) * 0x02);
-			word32 r14d_990 = DPB(rdi_1024, ecx_1031 >> 0x01, 0) + DPB(rdx_974, (uint32) (edx_eax_982 % v20_52), 0) * 0x02;
-			word64 rdi_992 = DPB(rdi_1024, (uint32) (edx_eax_982 /u v20_52), 0);
-			word32 ecx_993 = ecx_1031 + r14d_990;
-			word128 rdx_rax_998 = DPB(rdx_rax_1019, 0x00, 64);
-			word64 rdx_1000 = (uint64) (rdx_rax_998 % rsi_950);
-			word64 rax_1001 = (uint64) (rdx_rax_998 /u rsi_950);
-			word64 edx_eax_1010 = (uint64) (uint32) (rdi_992 + DPB(rax_1001, rdx_1000 * 0x05, 0) * 0x02);
-			word32 edx_1015 = (uint32) (edx_eax_1010 % v20_52);
-			word32 eax_1017 = (uint32) (edx_eax_1010 /u v20_52);
-			word32 r14d_1022 = DPB(rdi_1024, ecx_993 >> 0x01, 0) + DPB(rdx_1000, edx_1015, 0) * 0x02;
-			r10_1006 = rax_1001;
-			rax_1018 = DPB(rax_1001, eax_1017, 0);
-			rdx_rax_1019 = DPB(rdx_rax_998, eax_1017, 0);
-			edi_1023 = eax_1017;
-			rdi_1024 = DPB(rdi_1024, eax_1017, 0);
-			word32 ecx_1026 = ecx_993 + r14d_1022;
-			if (v20_52 <=u r14d_1022)
-			{
-				word32 ecx_1183 = ~(0x00 - (v20_52 <u ~(0x00 - (v20_52 <u ecx_1026)) + 0x03));
-				ecx_1031 = ecx_1183 + 0x03;
-				rcx_1032 = DPB(rcx_1032, ecx_1183 + 0x03, 0);
-			}
-			else
-			{
-				ecx_1031 = (word32) (ecx_1026 != 0x00);
-				rcx_1032 = DPB(rcx_1032, ecx_1031, 0);
-			}
-			ebx_1037 = ebx_1037 + 0x01;
-			if (rsi_950 <=u rax_1001)
-			{
-				if (ebx_1037 != 0x08)
-					goto l000000000040C17D;
-				r8_1044 = r14_166;
-				goto l000000000040C530;
-			}
-			if (rax_1001 >u 0x09)
-				break;
-			byte dl_1058;
-			if ((edx & 0x03) != 0x01)
-				dl_1058 = (byte) (DPB(edx_1015, ecx_1031 > 0x00, 0) & DPB(v20_52, (edx & 0x03) == 0x00, 0));
-			else
-				dl_1058 = (eax_1017 & 0x01) + ecx_1031 > 0x02;
-			if (dl_1058 != 0x00)
-			{
-				edi_1023 = rax_1018 + 0x01;
-				if (rax_1018 != ~0x08)
-					goto l000000000040C4DB;
-				r10_1006 = rax_1001 + 0x01;
-				if (rax_1001 == ~0x08)
-				{
-					r8_1044 = r14_166;
-					ecx_1031 = 0x00;
-					rcx_1032 = DPB(rcx_1032, 0x00, 0);
-					edi_1023 = 0x00;
-					goto l000000000040C530;
-				}
-				ecx_1031 = 0x00;
-				rcx_1032 = DPB(rcx_1032, 0x00, 0);
-			}
-			else if (eax_1017 != 0x00)
-				goto l000000000040C4DB;
-			if ((bLocB0 & 0x08) != 0x00)
-			{
-				r8_1044 = r14_166;
-				edi_1023 = 0x00;
-				goto l000000000040C530;
-			}
-			edi_1023 = 0x00;
-l000000000040C4DB:
-			Mem1077[rsi + 0x0287:byte] = (byte) (edi_1023 + 0x30);
-			rax_1018 = memcpy(rax_1001 + 0x0287 - r11_101, r15_123, r11_101);
-			r8_1044 = rax_1018;
-			ecx_1031 = 0x00;
-			rcx_1032 = DPB(rcx_1032, 0x00, 0);
-			edi_1023 = 0x00;
-			goto l000000000040C530;
-		}
-	}
+fn000000000040BD70_entry:
+	def fp
+	def rdi
+	def edx
+	def rsi
+	def rbp
+	def rbx
+	def rcx
+	def r8
+	def fs
+	def Mem0
+	def rax
+	def rdx_rax
+	def bLocB0
+	def qwLoc18
+	def qwLoc10
+	def qwLoc08
+	def rspOut
+	def rbpOut
+	def r8Out
+	def r9Out
+	def r11Out
+	def r14dOut
+	def r15Out
+	def dwLoc74
+	def qwLoc90
+	def qwLoc98
+	def rLoc4
+	def wLoc6A
+	def wLoc6C
+	def rLoc90
+	def rLoc3
+	def rLoc2
+	def qwLoc68
+	def rLoc1
+	def rLocD0
+	rsp_1 = fp
+	rsp_2 = fp - 0x04
+	dwLoc04_4 = rdi
+	eax_6 = edx
+	eax_7 = eax_6 & 0x03
+	rsp_8 = fp - 0x08
+	dwLoc08_10 = rsi
+	r14_11 = rsi
+	r14d_12 = (word32) r14_11 (alias)
+	rsp_13 = fp - 0x0C
+	dwLoc0C_15 = rbp
+	v11_16 = fp - 0x0C
+	rsp_17 = fp - 0x10
+	dwLoc10_18 = fp - 0x0C
+	r12_19 = rdi
+	r12d_20 = (word32) r12_19 (alias)
+	rsp_21 = fp - 0x14
+	dwLoc14_22 = rbp
+	rsp_23 = fp - 0x18
+	dwLoc18_25 = rbx
+	rbx_27 = rcx
+	ebx_28 = (word32) rbx_27 (alias)
+	rsp_29 = fp - 0xD0
+	dwLoc98_30 = eax_7
+	eax_31 = edx
+	qwLocA0_32 = rsi
+	eax_33 = eax_31 & 0x20
+	dwLocB0_34 = edx
+	qwLocA8_36 = r8
+	rcx_39 = Mem0[fs:0x28:word64]
+	qwLoc28_40 = rcx_39
+	ecx_41 = 0x00
+	SCZO_42 = cond(eax_33 - 0x01)
+	C_43 = SCZO_42 (alias)
+	dwLoc78_44 = eax_33
+	eax_45 = 0x00 - (eax_33 <u 0x01)
+	rax_47 = DPB(rax, eax_45, 0) (alias)
+	dwLocAC_48 = eax_45
+	v19_49 = dwLocAC_48 & ~0x17
+	dwLocAC_50 = v19_49
+	SZO_51 = cond(dwLocAC_50)
+	v20_52 = dwLocAC_50 + 0x0400
+	dwLocAC_53 = v20_52
+	SCZO_54 = cond(v20_52)
+	call localeconv (retsize: 8; depth: 216)
+		uses: C_43,dwLoc04_4,dwLoc08_10,dwLoc0C_15,dwLoc10_18,dwLoc14_22,dwLoc18_25,dwLoc78_44,dwLoc98_30,dwLocAC_53,dwLocB0_34,eax_45,ebx_28,ecx_41,edx,fs,qwLoc28_40,qwLocA0_32,qwLocA8_36,r12_19,r12d_20,r14_11,r14d_12,r8,rax_47,rbp,rbx_27,rcx_39,rdi,rsi,rsp_29,SCZO_54,SZO_51
+		defs: ah_88,al_91,ax_89,C_60,cl_82,CZ_76,CZP_86,dil_94,dl_92,eax_57,ebx_79,ecx_70,edi_81,edx_58,esi_84,fs_69,P_90,r10_80,r10b_98,r10d_97,r11_74,r12_64,r12d_85,r13_72,r14_62,r14d_87,r15_71,r15d_96,r8_68,r9_95,r9d_83,rax_73,rbp_63,rbx_65,rcx_66,rdi_56,rdx_75,rsi_61,rsp_55,S_78,SCZO_67,sil_93,SZO_59,Z_77
+	r15_99 = Mem0[r8_68 + 0x00:word64]
+	r15d_100 = (word32) r15_99 (alias)
+	r13_101 = rax_73
+	rdi_102 = r15_99
+	rax_103 = DPB(rax_73, strlen(rdi_102), 0)
+	rbp_104 = Mem0[rbp_63 + 0x10:word64]
+	r11_105 = rax_103
+	r13_106 = Mem0[r13_101 + 0x08:word64]
+	rax_107 = rax_103 - 0x01
+	edx_108 = 0x01
+	rdx_109 = DPB(rdx_75, edx_108, 0) (alias)
+	dl_110 = (byte) edx_108 (alias)
+	SCZO_111 = cond(rax_107 - 0x10)
+	C_112 = SCZO_111 (alias)
+	SZO_113 = SCZO_111 (alias)
+	Z_114 = SCZO_111 (alias)
+	CZ_115 = SCZO_111 (alias)
+	S_116 = SCZO_111 (alias)
+	CZP_117 = SCZO_111 (alias)
+	rdi_118 = r13_106
+	edi_119 = (word32) rdi_118 (alias)
+	dil_120 = (byte) rdi_118 (alias)
+	eax_121 = 0x00413990
+	rax_122 = DPB(rax_107, eax_121, 0) (alias)
+	rdx_rax_124 = DPB(rdx_rax, eax_121, 0) (alias)
+	edx_eax_125 = SEQ(edx_108, eax_121) (alias)
+	ah_126 = SLICE(eax_121, byte, 8) (alias)
+	ax_127 = (word16) eax_121 (alias)
+	al_128 = (byte) eax_121 (alias)
+	branch rax_107 <u 0x10 l000000000040BE0A
+	goto l000000000040BE06_1
+l000000000040BD70:
+l000000000040BE06_1:
+	r11_1928 = rdx_109
+l000000000040BE0A:
+	r11_129 = PHI(r11_105, r11_1928)
+	branch rax_107 <u 0x10 l000000000040BE0E
+l000000000040BE0A_2:
+	r15_1926 = rax_122
+	r15d_1927 = (word32) r15_1926 (alias)
+l000000000040BE0E:
+	r15_130 = PHI(r15_99, r15_1926)
+	r15d_131 = PHI(r15d_100, r15d_1927)
+	qwLoc80_132 = r11_129
+	rax_133 = DPB(rax_122, strlen(rdi_118), 0)
+	SCZO_134 = cond(rax_133 - 0x11)
+	C_135 = SCZO_134 (alias)
+	eax_136 = 0x00416919
+	rax_137 = DPB(rax_133, eax_136, 0) (alias)
+	rdx_rax_138 = DPB(rdx_rax_124, eax_136, 0) (alias)
+	edx_eax_139 = SEQ(edx_108, eax_136) (alias)
+	ah_140 = SLICE(eax_136, byte, 8) (alias)
+	ax_141 = (word16) eax_136 (alias)
+	al_142 = (byte) eax_136 (alias)
+	r11_143 = qwLoc80_132
+	branch rax_133 <u 0x11 l000000000040BE2A
+l000000000040BE26_3:
+	r13_1925 = rax_137
+l000000000040BE2A:
+	r13_144 = PHI(r13_106, r13_1925)
+	rax_145 = r14_62
+	rdx_rax_146 = SEQ(rdx_109, rax_145) (alias)
+	edx_eax_147 = rax_145 (alias)
+	r8_148 = r8_68 + 0x0288
+	SCZO_149 = cond(qwLocA8_36 - rbx_65)
+	CZ_150 = SCZO_149 (alias)
+	qwLocB8_151 = rax_145
+	branch qwLocA8_36 >u rbx_65 l000000000040C0E0
+l000000000040BE43:
+	edx_1817 = 0x00
+	rax_1818 = rbx_65
+	rdx_rax_1819 = SEQ(rdx_109, rax_1818) (alias)
+	v28_1820 = rdx_rax_1819
+	rdx_1821 = (uint64) (v28_1820 % qwLocA8_36)
+	edx_1822 = (word32) rdx_1821 (alias)
+	dl_1823 = (byte) rdx_1821 (alias)
+	rax_1824 = (uint64) (v28_1820 /u qwLocA8_36)
+	eax_1825 = (word32) rax_1824 (alias)
+	rdx_rax_1826 = SEQ(rdx_1821, rax_1824) (alias)
+	edx_eax_1827 = rax_1824 (alias)
+	ah_1828 = SLICE(rax_1824, byte, 8) (alias)
+	ax_1829 = (word16) rax_1824 (alias)
+	al_1830 = (byte) rax_1824 (alias)
+	SZO_1831 = cond(rdx_1821 & rdx_1821)
+	Z_1832 = SZO_1831 (alias)
+	C_1833 = false
+	rcx_1834 = rax_1824
+	ecx_1835 = (word32) rcx_1834 (alias)
+	cl_1836 = (byte) rcx_1834 (alias)
+	branch Test(EQ,Z_1832) l000000000040C2F0
 l000000000040BE59:
-	if (r12_64 >= 0x00)
-	{
-		if (rbx_65 >= 0x00)
-			goto l000000000040BE7D;
-	}
-	else if (rbx_65 >= 0x00)
-		goto l000000000040BE7D;
+	r10b_632 = PHI(r10b_98, r10b_98, r10b_98, r10b_1841)
+	r10d_633 = PHI(r10d_97, r10d_97, r10d_97, r10d_1840)
+	sil_634 = PHI(sil_93, sil_93, sil_1878, sil_93)
+	esi_635 = PHI(esi_84, esi_84, esi_1879, esi_84)
+	r10_636 = PHI(r10_80, r10_80, r10_80, r10_1839)
+	ecx_637 = PHI(ecx_1835, ecx_70, ecx_70, ecx_1835)
+	rcx_638 = PHI(rcx_1834, rcx_66, rcx_66, rcx_1834)
+	cl_639 = PHI(cl_1836, cl_82, cl_82, cl_1836)
+	Z_640 = PHI(Z_1832, Z_1862, Z_1875, Z_1852)
+	rax_641 = PHI(rax_1824, rax_145, rax_1871, rax_1848)
+	eax_642 = PHI(eax_1825, eax_136, eax_136, eax_1825)
+	ah_643 = PHI(ah_1828, ah_140, ah_140, ah_1828)
+	ax_644 = PHI(ax_1829, ax_141, ax_141, ax_1829)
+	al_645 = PHI(al_1830, al_142, al_142, al_1830)
+	rdx_646 = PHI(rdx_1821, rdx_109, rdx_1868, rdx_1845)
+	edx_647 = PHI(edx_1822, edx_108, edx_1869, edx_1846)
+	rdx_rax_648 = PHI(rdx_rax_1826, rdx_rax_146, rdx_rax_1872, rdx_rax_1849)
+	edx_eax_649 = PHI(edx_eax_1827, edx_eax_147, edx_eax_1873, edx_eax_1850)
+	dl_650 = PHI(dl_1823, dl_110, dl_1870, dl_1847)
+	SCZO_651 = PHI(SCZO_149, SCZO_149, SCZO_149, SCZO_1851)
+	rsi_652 = PHI(rsi_61, rsi_61, rsi_1877, rsi_61)
+	qwLoc68_653 = r12_64
+	SZO_654 = cond(r12_64 & r12_64)
+	S_655 = SZO_654 (alias)
+	C_656 = false
+	rLoc1_657 = (real64) qwLoc68_653
+	branch (r12_64 & r12_64) < 0x00 l000000000040C5F0
+l000000000040BE6B:
+	qwLoc68_1326 = rbx_65
+	SZO_1327 = cond(rbx_65 & rbx_65)
+	S_1328 = SZO_1327 (alias)
+	C_1329 = false
+	rLoc2_1330 = (real64) qwLoc68_1326
+	branch Test(SG,S_1328) l000000000040C608
 l000000000040BE7D:
-	if ((bLocB0 & 0x10) != 0x00)
-		;
-	if ((edx & 0x03) != 0x01)
-		;
-	word64 rcx_642 = DPB(rcx_1213, 4284184, 0);
-	word64 rax_653 = DPB(r8, __sprintf_chk(rsi, DPB(rsi_1248, 0x01, 0), ~0x00, rcx_642), 0);
-	word64 rax_657 = DPB(r8, strlen(rsi), 0);
-	word64 rsp_677;
-	word64 rdi_678;
-	word32 eax_679;
-	word32 edx_680;
-	byte SZO_681;
-	byte C_682;
-	word64 rsi_683;
-	word64 rbp_685;
-	word64 rbx_687;
-	word64 rcx_688;
-	byte SCZO_689;
-	word64 r8_690;
-	word32 ecx_692;
-	word64 r15_693;
-	word64 r11_696;
-	word64 rdx_697;
-	byte CZ_698;
-	byte Z_699;
-	byte S_700;
-	word64 r10_702;
-	word32 edi_703;
-	byte cl_704;
-	word32 r9d_705;
-	word32 esi_706;
-	word32 r12d_707;
-	word32 r14d_708;
-	byte al_709;
-	byte dl_710;
-	byte sil_711;
-	byte dil_712;
-	word64 r9_713;
-	word32 r10d_714;
-	byte r10b_715;
-	word32 r15d_716;
-	memmove();
+	rLoc2_658 = PHI(rLoc2_1330, rLoc2_1336, rLoc2_1325)
+	rLoc1_659 = PHI(rLoc1_657, rLoc1_1331, rLoc1_1321)
+	rax_660 = qwLocA8_36
+	rdx_rax_661 = SEQ(rdx_646, rax_660) (alias)
+	edx_eax_662 = rax_660 (alias)
+	qwLoc68_663 = rax_660
+	SZO_664 = cond(rax_660 & rax_660)
+	S_665 = SZO_664 (alias)
+	C_666 = false
+	rLoc3_667 = (real64) qwLoc68_663
+	branch (rax_660 & rax_660) < 0x00 l000000000040C5E0
+l000000000040BE94:
+	rLoc3_668 = PHI(rLoc3_667, rLoc3_1318)
+	SZO_669 = cond(bLocB0 & 0x10)
+	Z_670 = SZO_669 (alias)
+	C_671 = false
+	rLoc2_672 = rLoc2_658 / rLoc3_668
+	rLoc1_673 = rLoc1_659 * rLoc2_672
+	branch (bLocB0 & 0x10) == 0x00 l000000000040C1B8
+l000000000040BEA3:
+	rLoc2_746 = (real64) dwLocAC_53
+	ebx_747 = 0x00
+	rbx_748 = DPB(rbx_65, ebx_747, 0) (alias)
+	SZO_749 = cond(0x00)
+	C_750 = false
+	rLoc3_751 = rLoc3_668
+	goto l000000000040BEB4
+l000000000040BEB0:
+	rLoc3_1145 = rLoc4_765
+	v70_1146 = rLoc3_1145
+	rLoc3_1147 = rLoc1_766
+	rLoc1_1148 = v70_1146
+l000000000040BEB4:
+	rLoc4_753 = PHI(rLoc4, rLoc4_765)
+	rLoc3_754 = PHI(rLoc3_751, rLoc3_1147)
+	rLoc1_755 = PHI(rLoc1_673, rLoc1_1148)
+	ebx_756 = PHI(ebx_747, ebx_760)
+	Z_757 = PHI(Z_670, Z_1142)
+	rbx_758 = PHI(rbx_748, rbx_761)
+	rLoc4_759 = rLoc4_753
+	ebx_760 = ebx_756 + 0x01
+	rbx_761 = DPB(rbx_758, ebx_760, 0) (alias)
+	SCZO_762 = cond(ebx_760)
+	rLoc4_763 = rLoc4_759 * rLoc2_746
+	v45_764 = rLoc4_763
+	rLoc4_765 = rLoc1_755
+	rLoc1_766 = v45_764
+	CZP_767 = cond(rLoc4_765 - rLoc1_766)
+	C_768 = CZP_767 (alias)
+	branch rLoc4_765 <u rLoc1_766 l000000000040BED0
+l000000000040BEC1:
+	SCZO_1141 = cond(ebx_760 - 0x08)
+	Z_1142 = SCZO_1141 (alias)
+	branch Test(NE,Z_1142) l000000000040BEB0
+l000000000040BEC6:
+	rLoc2_1143 = rLoc4_765
+	rLoc1_1144 = rLoc3_754
+	goto l000000000040BED4
+l000000000040BED0:
+	rLoc2_1149 = rLoc4_765
+	rLoc1_1150 = rLoc3_754
+l000000000040BED4:
+	rLoc2_769 = PHI(rLoc2_1143, rLoc2_1149)
+	rLoc1_770 = PHI(rLoc1_1144, rLoc1_1150)
+	rLoc1_771 = rLoc2_769 / rLoc1_770
+	SCZO_772 = cond(dwLoc98_30 - 0x01)
+	Z_773 = SCZO_772 (alias)
+	rLoc2_774 = rLoc2_769
+	branch dwLoc98_30 == 0x01 l000000000040BF70
+l000000000040BEE3:
+	rLoc2_1015 = rLoc2_774
+	rLoc2_1016 = (real64) Mem0[0x0000000000415F90 + 0x00:real80]
+	CZP_1017 = cond(rLoc2_1016 - rLoc1_771)
+	CZ_1018 = CZP_1017 (alias)
+	branch Test(ULE,CZ_1018) l000000000040C498
+l000000000040BEF3:
+	rLoc2_1019 = (real64) Mem0[0x0000000000415F0C + 0x00:real32]
+	v51_1020 = rLoc2_1019
+	rLoc2_1021 = rLoc1_771
+	rLoc1_1022 = v51_1020
+	CZP_1023 = cond(rLoc2_1021 - rLoc1_1022)
+	C_1024 = CZP_1023 (alias)
+	branch Test(UGE,C_1024) l000000000040C660
+l000000000040BF03:
+	rLoc1_1095 = rLoc2_1021
+	wLoc6A_1096 = __fstcw()
+	eax_1097 = (word32) wLoc6A_1096
+	ah_1098 = SLICE(eax_1097, byte, 8) (alias)
+	ah_1099 = ah_1098 | 0x0C
+	ax_1100 = DPB(ax_644, ah_1099, 8) (alias)
+	SZO_1101 = cond(ah_1099)
+	C_1102 = false
+	wLoc6C_1103 = ax_1100
+	rLoc2_1104 = rLoc2_1021
+	__fldcw(wLoc6C_1103)
+	qwLoc68_1105 = (int64) rLoc2_1104
+	__fldcw(wLoc6A_1096)
+	rax_1106 = qwLoc68_1105
+	eax_1107 = (word32) rax_1106 (alias)
+	rdx_rax_1108 = SEQ(rdx_646, rax_1106) (alias)
+	edx_eax_1109 = rax_1106 (alias)
+	ah_1110 = SLICE(rax_1106, byte, 8) (alias)
+	ax_1111 = (word16) rax_1106 (alias)
+	al_1112 = (byte) rax_1106 (alias)
+l000000000040BF29:
+	wLoc6A_1025 = PHI(wLoc6A_1096, wLoc6A_1113)
+	wLoc6C_1026 = PHI(wLoc6C_1103, wLoc6C_1123)
+	rLoc2_1027 = PHI(rLoc2_1104, rLoc2_1118)
+	qwLoc68_1028 = PHI(qwLoc68_1105, qwLoc68_1124)
+	rLoc1_1029 = PHI(rLoc1_1095, rLoc1_1119)
+	r10_1030 = PHI(r10_636, r10_1120)
+	rax_1031 = PHI(rax_1106, rax_1126)
+	eax_1032 = PHI(eax_1107, eax_1127)
+	ah_1033 = PHI(ah_1110, ah_1130)
+	ax_1034 = PHI(ax_1111, ax_1131)
+	al_1035 = PHI(al_1112, al_1132)
+	rdx_rax_1036 = PHI(rdx_rax_1108, rdx_rax_1128)
+	ecx_1037 = dwLoc98_30
+	edx_1038 = 0x00
+	rdx_1039 = DPB(rdx_646, edx_1038, 0) (alias)
+	rdx_rax_1040 = DPB(rdx_rax_1036, edx_1038, 64) (alias)
+	edx_eax_1041 = SEQ(edx_1038, eax_1032) (alias)
+	dl_1042 = (byte) edx_1038 (alias)
+	SZO_1043 = cond(ecx_1037 & ecx_1037)
+	Z_1044 = SZO_1043 (alias)
+	C_1045 = false
+	branch Test(NE,Z_1044) l000000000040BF55
+l000000000040BF33:
+	qwLoc68_1070 = rax_1031
+	SZO_1071 = cond(rax_1031 & rax_1031)
+	S_1072 = SZO_1071 (alias)
+	C_1073 = false
+	rLoc2_1074 = (real64) qwLoc68_1070
+	branch Test(SG,S_1072) l000000000040C77D
+l000000000040BF45:
+	rLoc2_1075 = PHI(rLoc2_1074, rLoc2_1094)
+	ecx_1076 = 0x00
+	SZO_1077 = cond(0x00)
+	edx_1078 = 0x01
+	rdx_1079 = DPB(rdx_1039, edx_1078, 0) (alias)
+	rdx_rax_1080 = DPB(rdx_rax_1040, edx_1078, 64) (alias)
+	edx_eax_1081 = SEQ(edx_1078, eax_1032) (alias)
+	dl_1082 = (byte) edx_1078 (alias)
+	CZP_1083 = cond(rLoc2_1075 - rLoc1_1029)
+	Z_1084 = CZP_1083 (alias)
+	P_1085 = CZP_1083 (alias)
+	cl_1086 = Test(PE,P_1085)
+	rcx_1087 = DPB(rcx_638, cl_1086, 0) (alias)
+	ecx_1088 = DPB(ecx_1076, cl_1086, 0) (alias)
+	branch Test(NE,Z_1084) l000000000040BF55
+l000000000040BF51_1:
+	rdx_1089 = rcx_1087
+	edx_1090 = (word32) rdx_1089 (alias)
+	rdx_rax_1091 = SEQ(rdx_1089, rax_1031) (alias)
+	edx_eax_1092 = rdx_1089 (alias)
+	dl_1093 = (byte) rdx_1089 (alias)
+l000000000040BF55:
+	P_1046 = PHI(P_1085, P_1085, P_90)
+	CZP_1047 = PHI(CZP_1083, CZP_1083, CZP_1023)
+	ecx_1048 = PHI(ecx_1088, ecx_1088, ecx_1037)
+	rcx_1049 = PHI(rcx_1087, rcx_1087, rcx_638)
+	cl_1050 = PHI(cl_1086, cl_1086, cl_639)
+	Z_1051 = PHI(Z_1084, Z_1084, Z_1044)
+	rdx_1052 = PHI(rdx_1079, rdx_1089, rdx_1039)
+	edx_1053 = PHI(edx_1078, edx_1090, edx_1038)
+	rdx_rax_1054 = PHI(rdx_rax_1080, rdx_rax_1091, rdx_rax_1040)
+	edx_eax_1055 = PHI(edx_eax_1081, edx_eax_1092, edx_eax_1041)
+	dl_1056 = PHI(dl_1082, dl_1093, dl_1042)
+	rax_1057 = rax_1031 + rdx_1052
+	qwLoc68_1058 = rax_1057
+	SZO_1059 = cond(rax_1057 & rax_1057)
+	S_1060 = SZO_1059 (alias)
+	C_1061 = false
+	rLoc2_1062 = (real64) qwLoc68_1058
+	branch Test(SG,S_1060) l000000000040C758
+l000000000040BF6A:
+	v55_1063 = rLoc2_1062
+	rLoc2_1064 = rLoc1_1029
+	rLoc1_1065 = v55_1063
+	goto l000000000040BF72
+l000000000040BF70:
+	v68_1138 = rLoc2_774
+	rLoc2_1139 = rLoc1_771
+	rLoc1_1140 = v68_1138
+l000000000040BF72:
+	wLoc6A_775 = PHI(wLoc6A_1025, wLoc6A_1025, wLoc6A, wLoc6A)
+	wLoc6C_776 = PHI(wLoc6C_1026, wLoc6C_1026, wLoc6C, wLoc6C)
+	rLoc2_777 = PHI(rLoc2_1064, rLoc2_1068, rLoc2_1135, rLoc2_1139)
+	qwLoc68_778 = PHI(qwLoc68_1058, qwLoc68_1058, qwLoc68_663, qwLoc68_663)
+	rLoc1_779 = PHI(rLoc1_1065, rLoc1_1069, rLoc1_771, rLoc1_1140)
+	P_780 = PHI(P_1046, P_1046, P_90, P_90)
+	CZP_781 = PHI(CZP_1047, CZP_1047, CZP_1017, CZP_767)
+	r10_782 = PHI(r10_1030, r10_1030, r10_636, r10_636)
+	S_783 = PHI(S_1060, S_1060, S_665, S_665)
+	rcx_784 = PHI(rcx_1049, rcx_1049, rcx_638, rcx_638)
+	cl_785 = PHI(cl_1050, cl_1050, cl_639, cl_639)
+	C_786 = PHI(C_1061, C_1061, C_768, C_768)
+	rax_787 = PHI(rax_1057, rax_1057, rax_660, rax_660)
+	r14_788 = qwLocA0_32
+	rdx_789 = ~0x00
+	ecx_790 = 0x00415F1E
+	rcx_791 = DPB(rcx_784, ecx_790, 0) (alias)
+	esi_792 = 0x01
+	rsi_793 = DPB(rsi_652, esi_792, 0) (alias)
+	eax_794 = 0x00
+	rax_795 = DPB(rax_787, eax_794, 0) (alias)
+	qwLoc80_796 = r11_143
+	rdi_797 = r14_788
+	rLoc90_798 = (real80) rLoc2_777
+	rLocD0_799 = (real80) rLoc1_779
+	rax_800 = DPB(rax_795, __sprintf_chk(rdi_797, rsi_793, ~0x00, rcx_791), 0)
+	rdi_801 = r14_788
+	rax_802 = DPB(rax_800, strlen(rdi_801), 0)
+	r11_803 = qwLoc80_796
+	edx_804 = dwLoc78_44
+	rdx_805 = DPB(rdx_789, edx_804, 0) (alias)
+	dl_806 = (byte) edx_804 (alias)
+	r15_807 = rax_802
+	r15d_808 = (word32) r15_807 (alias)
+	eax_809 = 0x00
+	rLoc1_810 = (real64) rLoc90_798
+	SZO_811 = cond(edx_804 & edx_804)
+	Z_812 = SZO_811 (alias)
+	r14_813 = r11_803 + 0x01
+	r14d_814 = (word32) r14_813 (alias)
+	al_815 = (edx_804 & edx_804) == 0x00
+	rax_816 = DPB(rax_802, al_815, 0) (alias)
+	rax_817 = r14_813 + 0x01 + rax_816
+	eax_818 = (word32) rax_817 (alias)
+	rdx_rax_819 = SEQ(rdx_805, rax_817) (alias)
+	edx_eax_820 = rax_817 (alias)
+	ah_821 = SLICE(rax_817, byte, 8) (alias)
+	ax_822 = (word16) rax_817 (alias)
+	al_823 = (byte) rax_817 (alias)
+	SCZO_824 = cond(r15_807 - rax_817)
+	CZ_825 = SCZO_824 (alias)
+	branch r15_807 >u rax_817 l000000000040BFF0
+l000000000040BFCB:
+	SZO_1001 = cond(bLocB0 & 0x08)
+	Z_1002 = SZO_1001 (alias)
+	C_1003 = false
+	branch Test(EQ,Z_1002) l000000000040C208
+l000000000040BFD6:
+	rax_1004 = qwLocA0_32
+	eax_1005 = (word32) rax_1004 (alias)
+	rdx_rax_1006 = SEQ(rdx_805, rax_1004) (alias)
+	edx_eax_1007 = rax_1004 (alias)
+	ah_1008 = SLICE(rax_1004, byte, 8) (alias)
+	ax_1009 = (word16) rax_1004 (alias)
+	al_1010 = (byte) rax_1004 (alias)
+	SCZO_1011 = cond(Mem0[rax_1004 - 0x01 + r15_807:byte] - 0x30)
+	Z_1012 = SCZO_1011 (alias)
+	branch Test(NE,Z_1012) l000000000040C210
+l000000000040BFF0:
+	SZO_826 = PHI(SZO_811, SZO_1001)
+	C_827 = PHI(C_786, C_1003)
+	rax_828 = PHI(rax_817, rax_1004)
+	eax_829 = PHI(eax_818, eax_1005)
+	ah_830 = PHI(ah_821, ah_1008)
+	ax_831 = PHI(ax_822, ax_1009)
+	al_832 = PHI(al_823, al_1010)
+	rdx_rax_833 = PHI(rdx_rax_819, rdx_rax_1006)
+	edx_eax_834 = PHI(edx_eax_820, edx_eax_1007)
+	SCZO_835 = cond(dwLoc98_30 - 0x01)
+	Z_836 = SCZO_835 (alias)
+	rLoc1_837 = rLoc1_810 * Mem0[0x0000000000415F84 + 0x00:real32]
+	branch dwLoc98_30 == 0x01 l000000000040C0A0
+l000000000040C001:
+	rLoc2_880 = (real64) Mem0[0x0000000000415F90 + 0x00:real80]
+	CZP_881 = cond(rLoc2_880 - rLoc1_837)
+	CZ_882 = CZP_881 (alias)
+	branch rLoc2_880 <=u rLoc1_837 l000000000040C0A0
+l000000000040C00F:
+	rLoc2_883 = (real64) Mem0[0x0000000000415F0C + 0x00:real32]
+	v60_884 = rLoc2_883
+	rLoc2_885 = rLoc1_837
+	rLoc1_886 = v60_884
+	CZP_887 = cond(rLoc2_885 - rLoc1_886)
+	C_888 = CZP_887 (alias)
+	branch rLoc2_885 >=u rLoc1_886 l000000000040C720
+l000000000040C01F:
+	rLoc1_961 = rLoc2_885
+	wLoc6A_962 = __fstcw()
+	eax_963 = (word32) wLoc6A_962
+	ah_964 = SLICE(eax_963, byte, 8) (alias)
+	ah_965 = ah_964 | 0x0C
+	ax_966 = DPB(ax_831, ah_965, 8) (alias)
+	SZO_967 = cond(ah_965)
+	C_968 = false
+	wLoc6C_969 = ax_966
+	rLoc2_970 = rLoc2_885
+	__fldcw(wLoc6C_969)
+	qwLoc68_971 = (int64) rLoc2_970
+	__fldcw(wLoc6A_962)
+	rax_972 = qwLoc68_971
+	eax_973 = (word32) rax_972 (alias)
+	rdx_rax_974 = SEQ(rdx_805, rax_972) (alias)
+	edx_eax_975 = rax_972 (alias)
+	ah_976 = SLICE(rax_972, byte, 8) (alias)
+	ax_977 = (word16) rax_972 (alias)
+	al_978 = (byte) rax_972 (alias)
+l000000000040C045:
+	wLoc6A_889 = PHI(wLoc6A_962, wLoc6A_979)
+	wLoc6C_890 = PHI(wLoc6C_969, wLoc6C_989)
+	rLoc2_891 = PHI(rLoc2_970, rLoc2_984)
+	qwLoc68_892 = PHI(qwLoc68_971, qwLoc68_990)
+	rLoc1_893 = PHI(rLoc1_961, rLoc1_985)
+	r10_894 = PHI(r10_782, r10_986)
+	rax_895 = PHI(rax_972, rax_992)
+	eax_896 = PHI(eax_973, eax_993)
+	ah_897 = PHI(ah_976, ah_996)
+	ax_898 = PHI(ax_977, ax_997)
+	al_899 = PHI(al_978, al_998)
+	rdx_rax_900 = PHI(rdx_rax_974, rdx_rax_994)
+	r14d_901 = dwLoc98_30
+	edx_902 = 0x00
+	rdx_903 = DPB(rdx_805, edx_902, 0) (alias)
+	rdx_rax_904 = DPB(rdx_rax_900, edx_902, 64) (alias)
+	edx_eax_905 = SEQ(edx_902, eax_896) (alias)
+	dl_906 = (byte) edx_902 (alias)
+	SZO_907 = cond(r14d_901 & r14d_901)
+	Z_908 = SZO_907 (alias)
+	C_909 = false
+	branch (r14d_901 & r14d_901) != 0x00 l000000000040C080
+l000000000040C051:
+	qwLoc68_929 = rax_895
+	SZO_930 = cond(rax_895 & rax_895)
+	S_931 = SZO_930 (alias)
+	C_932 = false
+	rLoc2_933 = (real64) qwLoc68_929
+	branch (rax_895 & rax_895) < 0x00 l000000000040C79E
+l000000000040C063:
+	rLoc2_934 = PHI(rLoc2_933, rLoc2_959)
+	ecx_935 = 0x00
+	SZO_936 = cond(0x00)
+	edx_937 = 0x01
+	rdx_938 = DPB(rdx_903, edx_937, 0) (alias)
+	rdx_rax_939 = DPB(rdx_rax_904, edx_937, 64) (alias)
+	edx_eax_940 = SEQ(edx_937, eax_896) (alias)
+	dl_941 = (byte) edx_937 (alias)
+	CZP_942 = cond(rLoc2_934 - rLoc1_893)
+	Z_943 = CZP_942 (alias)
+	P_944 = CZP_942 (alias)
+	rLoc1_945 = rLoc1_893
+	cl_946 = Test(PE,P_944)
+	rcx_947 = DPB(rcx_791, cl_946, 0) (alias)
+	ecx_948 = DPB(ecx_935, cl_946, 0) (alias)
+	branch rLoc2_934 != rLoc1_893 l000000000040C075
+l000000000040C071_1:
+	rdx_954 = rcx_947
+	edx_955 = (word32) rdx_954 (alias)
+	rdx_rax_956 = SEQ(rdx_954, rax_895) (alias)
+	edx_eax_957 = rdx_954 (alias)
+	dl_958 = (byte) rdx_954 (alias)
+l000000000040C075:
+	rdx_949 = PHI(rdx_938, rdx_954)
+	edx_950 = PHI(edx_937, edx_955)
+	rdx_rax_951 = PHI(rdx_rax_939, rdx_rax_956)
+	edx_eax_952 = PHI(edx_eax_940, edx_eax_957)
+	dl_953 = PHI(dl_941, dl_958)
+	goto l000000000040C082
+l000000000040C080:
+	rLoc1_960 = rLoc1_893
+l000000000040C082:
+	rLoc2_910 = PHI(rLoc2_934, rLoc2_891)
+	P_911 = PHI(P_944, P_780)
+	CZP_912 = PHI(CZP_942, CZP_887)
+	ecx_913 = PHI(ecx_948, ecx_790)
+	rcx_914 = PHI(rcx_947, rcx_791)
+	cl_915 = PHI(cl_946, cl_785)
+	Z_916 = PHI(Z_943, Z_908)
+	rdx_917 = PHI(rdx_949, rdx_903)
+	edx_918 = PHI(edx_950, edx_902)
+	rdx_rax_919 = PHI(rdx_rax_951, rdx_rax_904)
+	edx_eax_920 = PHI(edx_eax_952, edx_eax_905)
+	dl_921 = PHI(dl_953, dl_906)
+	rax_922 = rax_895 + rdx_917
+	qwLoc68_923 = rax_922
+	SZO_924 = cond(rax_922 & rax_922)
+	S_925 = SZO_924 (alias)
+	C_926 = false
+	rLoc1_927 = (real64) qwLoc68_923
+	branch (rax_922 & rax_922) >= 0x00 l000000000040C0A0
+l000000000040C093:
+	rLoc1_928 = rLoc1_927 + Mem0[0x0000000000415F08 + 0x00:real32]
+l000000000040C0A0:
+	wLoc6A_838 = PHI(wLoc6A_775, wLoc6A_775, wLoc6A_889, wLoc6A_889)
+	wLoc6C_839 = PHI(wLoc6C_776, wLoc6C_776, wLoc6C_890, wLoc6C_890)
+	rLoc2_840 = PHI(rLoc2_777, rLoc2_880, rLoc2_910, rLoc2_910)
+	qwLoc68_841 = PHI(qwLoc68_778, qwLoc68_778, qwLoc68_923, qwLoc68_923)
+	rLoc1_842 = PHI(rLoc1_837, rLoc1_837, rLoc1_927, rLoc1_928)
+	P_843 = PHI(P_780, P_780, P_911, P_911)
+	CZP_844 = PHI(CZP_781, CZP_881, CZP_912, CZP_912)
+	r10_845 = PHI(r10_782, r10_782, r10_894, r10_894)
+	S_846 = PHI(S_783, S_783, S_925, S_925)
+	CZ_847 = PHI(CZ_825, CZ_882, CZ_882, CZ_882)
+	rcx_848 = PHI(rcx_791, rcx_791, rcx_914, rcx_914)
+	cl_849 = PHI(cl_785, cl_785, cl_915, cl_915)
+	Z_850 = PHI(Z_836, Z_836, Z_916, Z_916)
+	rax_851 = PHI(rax_828, rax_828, rax_922, rax_922)
+	edx_852 = PHI(edx_804, edx_804, edx_918, edx_918)
+	dl_853 = PHI(dl_806, dl_806, dl_921, dl_921)
+	rLoc1_854 = rLoc1_842 / Mem0[0x0000000000415F84 + 0x00:real32]
+	r14_855 = qwLocA0_32
+	ecx_856 = 4284184
+	rcx_857 = DPB(rcx_848, ecx_856, 0) (alias)
+	rdx_858 = ~0x00
+	esi_859 = 0x01
+	rsi_860 = DPB(rsi_793, esi_859, 0) (alias)
+	eax_861 = 0x00
+	rax_862 = DPB(rax_851, eax_861, 0) (alias)
+	rdi_863 = r14_855
+	rLocD0_864 = (real80) rLoc1_854
+	rax_865 = DPB(rax_862, __sprintf_chk(rdi_863, rsi_860, ~0x00, rcx_857), 0)
+	rdi_866 = r14_855
+	r14d_867 = 0x00
+	r14_868 = DPB(r14_855, r14d_867, 0) (alias)
+	SZO_869 = cond(0x00)
+	C_870 = false
+	rax_871 = DPB(rax_865, strlen(rdi_866), 0)
+	eax_872 = (word32) rax_871 (alias)
+	rdx_rax_873 = SEQ(rdx_858, rax_871) (alias)
+	edx_eax_874 = rax_871 (alias)
+	ah_875 = SLICE(rax_871, byte, 8) (alias)
+	ax_876 = (word16) rax_871 (alias)
+	al_877 = (byte) rax_871 (alias)
+	r15_878 = rax_871
+	r15d_879 = (word32) r15_878 (alias)
+	goto l000000000040C218
+l000000000040C0E0:
+	SZO_1861 = cond(rbx_65 & rbx_65)
+	Z_1862 = SZO_1861 (alias)
+	C_1863 = false
+	branch Test(EQ,Z_1862) l000000000040BE59
+l000000000040C0E9:
+	rax_1864 = qwLocA8_36
+	edx_1865 = 0x00
+	rdx_rax_1866 = DPB(rdx_rax_146, edx_1865, 64) (alias)
+	v35_1867 = rdx_rax_1866
+	rdx_1868 = (uint64) (v35_1867 % rbx_65)
+	edx_1869 = (word32) rdx_1868 (alias)
+	dl_1870 = (byte) rdx_1868 (alias)
+	rax_1871 = (uint64) (v35_1867 /u rbx_65)
+	rdx_rax_1872 = SEQ(rdx_1868, rax_1871) (alias)
+	edx_eax_1873 = rax_1871 (alias)
+	SZO_1874 = cond(rdx_1868 & rdx_1868)
+	Z_1875 = SZO_1874 (alias)
+	C_1876 = false
+	rsi_1877 = rax_1871
+	sil_1878 = (byte) rsi_1877 (alias)
+	esi_1879 = (word32) rsi_1877 (alias)
+	branch Test(NE,Z_1875) l000000000040BE59
+l000000000040C0FF:
+	edx_1880 = 0x00
+	rax_1881 = r12_64
+	rdx_rax_1882 = SEQ(rdx_1868, rax_1881) (alias)
+	v36_1883 = rdx_rax_1882
+	rdx_1884 = (uint64) (v36_1883 % rsi_1877)
+	rax_1885 = (uint64) (v36_1883 /u rsi_1877)
+	rdi_1886 = rdx_1884 + rdx_1884 * 0x04
+	r10_1887 = rax_1885
+	r10d_1888 = (word32) r10_1887 (alias)
+	r10b_1889 = (byte) r10_1887 (alias)
+	edx_1890 = 0x00
+	rax_1891 = rdi_1886 + rdi_1886
+	rdx_rax_1892 = SEQ(rdx_1884, rax_1891) (alias)
+	v38_1893 = rdx_rax_1892
+	rdx_1894 = (uint64) (v38_1893 % rsi_1877)
+	rax_1895 = (uint64) (v38_1893 /u rsi_1877)
+	eax_1896 = (word32) rax_1895 (alias)
+	rdx_1897 = rdx_1894 + rdx_1894
+	edx_1898 = (word32) rdx_1897 (alias)
+	rdx_rax_1899 = SEQ(rdx_1897, rax_1895) (alias)
+	edx_eax_1900 = rdx_1897 (alias)
+	dl_1901 = (byte) rdx_1897 (alias)
+	edi_1902 = eax_1896
+	rdi_1903 = DPB(rdi_1886, edi_1902, 0) (alias)
+	dil_1904 = (byte) edi_1902 (alias)
+	SCZO_1905 = cond(rsi_1877 - rdx_1897)
+	C_1906 = SCZO_1905 (alias)
+	SZO_1907 = SCZO_1905 (alias)
+	Z_1908 = SCZO_1905 (alias)
+	CZ_1909 = SCZO_1905 (alias)
+	S_1910 = SCZO_1905 (alias)
+	CZP_1911 = SCZO_1905 (alias)
+	branch Test(ULE,CZ_1909) l000000000040C6E0
+l000000000040C125:
+	ecx_1912 = 0x00
+	SZO_1913 = cond(rdx_1897 & rdx_1897)
+	Z_1914 = SZO_1913 (alias)
+	C_1915 = false
+	cl_1916 = Test(NE,Z_1914)
+	rcx_1917 = DPB(rcx_66, cl_1916, 0) (alias)
+	ecx_1918 = DPB(ecx_1912, cl_1916, 0) (alias)
+l000000000040C12D:
+	r10b_1337 = PHI(r10b_1889, r10b_1889, r10b_1841)
+	r10d_1338 = PHI(r10d_1888, r10d_1888, r10d_1840)
+	dil_1339 = PHI(dil_1904, dil_1904, dil_1858)
+	sil_1340 = PHI(sil_1878, sil_1878, sil_93)
+	CZP_1341 = PHI(CZP_1911, CZP_1911, CZP_117)
+	esi_1342 = PHI(esi_1879, esi_1879, esi_84)
+	edi_1343 = PHI(edi_1902, edi_1902, edi_1856)
+	r10_1344 = PHI(r10_1887, r10_1887, r10_1839)
+	S_1345 = PHI(S_1910, S_1910, S_116)
+	CZ_1346 = PHI(CZ_1909, CZ_1909, CZ_150)
+	ecx_1347 = PHI(ecx_1918, ecx_1921, ecx_1853)
+	rcx_1348 = PHI(rcx_1917, rcx_1922, rcx_1854)
+	cl_1349 = PHI(cl_1916, cl_1923, cl_1855)
+	rax_1350 = PHI(rax_1895, rax_1895, rax_1848)
+	eax_1351 = PHI(eax_1896, eax_1896, eax_1825)
+	ah_1352 = PHI(ah_140, ah_140, ah_1828)
+	ax_1353 = PHI(ax_141, ax_141, ax_1829)
+	al_1354 = PHI(al_142, al_142, al_1830)
+	rdx_1355 = PHI(rdx_1897, rdx_1897, rdx_1845)
+	edx_1356 = PHI(edx_1898, edx_1898, edx_1846)
+	rdx_rax_1357 = PHI(rdx_rax_1899, rdx_rax_1899, rdx_rax_1849)
+	edx_eax_1358 = PHI(edx_eax_1900, edx_eax_1900, edx_eax_1850)
+	dl_1359 = PHI(dl_1901, dl_1901, dl_1847)
+	SCZO_1360 = PHI(SCZO_1905, SCZO_1924, SCZO_1851)
+	rsi_1361 = PHI(rsi_1877, rsi_1877, rsi_61)
+	rdi_1362 = PHI(rdi_1903, rdi_1903, rdi_1857)
+	r9d_1363 = dwLocB0_34
+	r8_1364 = qwLocB8_151
+	ebx_1365 = ~0x00
+	rbx_1366 = DPB(rbx_65, ebx_1365, 0) (alias)
+	r9d_1367 = r9d_1363 & 0x10
+	r9_1368 = DPB(r9_95, r9d_1367, 0) (alias)
+	SZO_1369 = cond(r9d_1367)
+	Z_1370 = SZO_1369 (alias)
+	C_1371 = false
+	branch Test(EQ,Z_1370) l000000000040C530
+l000000000040C146:
+	esi_1565 = dwLocAC_53
+	rsi_1566 = DPB(rsi_1361, esi_1565, 0) (alias)
+	sil_1567 = (byte) esi_1565 (alias)
+	SCZO_1568 = cond(r10_1344 - rsi_1566)
+	C_1569 = SCZO_1568 (alias)
+	branch Test(ULT,C_1569) l000000000040C710
+l000000000040C153:
+	ebx_1570 = 0x00
+	rbx_1571 = DPB(rbx_1366, ebx_1570, 0) (alias)
+	SZO_1572 = cond(0x00)
+	C_1573 = false
+	r12d_1574 = dwLocAC_53
+	r12_1575 = DPB(r12_64, r12d_1574, 0) (alias)
+	goto l000000000040C17D
+l000000000040C160:
+	SZO_1805 = cond(ecx_1646 & ecx_1646)
+	Z_1806 = SZO_1805 (alias)
+	C_1807 = false
+	cl_1808 = Test(NE,Z_1806)
+	ecx_1809 = (word32) cl_1808
+	rcx_1810 = DPB(rcx_1647, ecx_1809, 0) (alias)
+	cl_1811 = (byte) ecx_1809 (alias)
+l000000000040C168:
+	ecx_1651 = PHI(ecx_1801, ecx_1809)
+	rcx_1652 = PHI(rcx_1802, rcx_1810)
+	cl_1653 = PHI(cl_1803, cl_1811)
+	SZO_1654 = PHI(SZO_1581, SZO_1805)
+	Z_1655 = PHI(Z_1582, Z_1806)
+	C_1656 = PHI(C_1798, C_1807)
+	ebx_1657 = ebx_1578 + 0x01
+	rbx_1658 = DPB(rbx_1585, ebx_1657, 0) (alias)
+	SCZO_1659 = cond(rsi_1566 - r8_1619)
+	CZ_1660 = SCZO_1659 (alias)
+	branch Test(UGT,CZ_1660) l000000000040C49F
+l000000000040C174:
+	SCZO_1665 = cond(ebx_1657 - 0x08)
+	Z_1666 = SCZO_1665 (alias)
+	branch Test(EQ,Z_1666) l000000000040C768
+l000000000040C17D:
+	r10_1576 = PHI(r10_1344, r10_1623)
+	r14_1577 = PHI(r14_62, r14_1642)
+	ebx_1578 = PHI(ebx_1570, ebx_1657)
+	ecx_1579 = PHI(ecx_1347, ecx_1651)
+	rcx_1580 = PHI(rcx_1348, rcx_1652)
+	SZO_1581 = PHI(SZO_1572, SZO_1654)
+	Z_1582 = PHI(Z_1370, Z_1666)
+	C_1583 = PHI(C_1573, C_1656)
+	rdx_rax_1584 = PHI(rdx_rax_1357, rdx_rax_1636)
+	rbx_1585 = PHI(rbx_1571, rbx_1658)
+	rdi_1586 = PHI(rdi_1362, rdi_1644)
+	rax_1587 = r10_1576
+	edx_1588 = 0x00
+	rdx_rax_1589 = DPB(rdx_rax_1584, edx_1588, 64) (alias)
+	v48_1590 = rdx_rax_1589
+	rdx_1591 = (uint64) (v48_1590 % rsi_1566)
+	rax_1592 = (uint64) (v48_1590 /u rsi_1566)
+	r8_1593 = rax_1592
+	eax_1594 = rdx_1591 + rdx_1591 * 0x04
+	rax_1595 = DPB(rax_1592, eax_1594, 0) (alias)
+	edx_1596 = 0x00
+	r10_1597 = r8_1593
+	eax_1598 = rdi_1586 + rax_1595 * 0x02
+	edx_eax_1599 = SEQ(edx_1596, eax_1598) (alias)
+	edi_1600 = ecx_1579
+	edi_1601 = edi_1600 >> 0x01
+	rdi_1602 = DPB(rdi_1586, edi_1601, 0) (alias)
+	v50_1603 = edx_eax_1599
+	edx_1604 = (uint32) (v50_1603 % r12d_1574)
+	rdx_1605 = DPB(rdx_1591, edx_1604, 0) (alias)
+	eax_1606 = (uint32) (v50_1603 /u r12d_1574)
+	r14d_1607 = rdi_1602 + rdx_1605 * 0x02
+	edi_1608 = eax_1606
+	rdi_1609 = DPB(rdi_1602, edi_1608, 0) (alias)
+	ecx_1610 = ecx_1579 + r14d_1607
+	SCZO_1611 = cond(r12d_1574 - r14d_1607)
+	CZ_1612 = SCZO_1611 (alias)
+	branch Test(UGT,CZ_1612) l000000000040C160
+	rax_1613 = r10_1597
+	edx_1614 = 0x00
+	rdx_rax_1615 = DPB(rdx_rax_1589, edx_1614, 64) (alias)
+	v56_1616 = rdx_rax_1615
+	rdx_1617 = (uint64) (v56_1616 % rsi_1566)
+	rax_1618 = (uint64) (v56_1616 /u rsi_1566)
+	r8_1619 = rax_1618
+	eax_1620 = rdx_1617 + rdx_1617 * 0x04
+	rax_1621 = DPB(rax_1618, eax_1620, 0) (alias)
+	edx_1622 = 0x00
+	r10_1623 = r8_1619
+	r10d_1624 = (word32) r10_1623 (alias)
+	r10b_1625 = (byte) r10_1623 (alias)
+	eax_1626 = rdi_1609 + rax_1621 * 0x02
+	edx_eax_1627 = SEQ(edx_1622, eax_1626) (alias)
+	edi_1628 = ecx_1610
+	edi_1629 = edi_1628 >> 0x01
+	rdi_1630 = DPB(rdi_1609, edi_1629, 0) (alias)
+	v57_1631 = edx_eax_1627
+	edx_1632 = (uint32) (v57_1631 % r12d_1574)
+	rdx_1633 = DPB(rdx_1617, edx_1632, 0) (alias)
+	eax_1634 = (uint32) (v57_1631 /u r12d_1574)
+	rax_1635 = DPB(rax_1621, eax_1634, 0) (alias)
+	rdx_rax_1636 = DPB(rdx_rax_1615, eax_1634, 0) (alias)
+	edx_eax_1637 = SEQ(edx_1632, eax_1634) (alias)
+	ah_1638 = SLICE(eax_1634, byte, 8) (alias)
+	ax_1639 = (word16) eax_1634 (alias)
+	al_1640 = (byte) eax_1634 (alias)
+	r14d_1641 = rdi_1630 + rdx_1633 * 0x02
+	r14_1642 = DPB(r14_1577, r14d_1641, 0) (alias)
+	edi_1643 = eax_1634
+	rdi_1644 = DPB(rdi_1630, edi_1643, 0) (alias)
+	dil_1645 = (byte) edi_1643 (alias)
+	ecx_1646 = ecx_1610 + r14d_1641
+	rcx_1647 = DPB(rcx_1580, ecx_1646, 0) (alias)
+	cl_1648 = (byte) ecx_1646 (alias)
+	SCZO_1649 = cond(r12d_1574 - r14d_1641)
+	CZ_1650 = SCZO_1649 (alias)
+	branch Test(UGT,CZ_1650) l000000000040C160
+l000000000040C1A8:
+	SCZO_1792 = cond(r12d_1574 - ecx_1646)
+	C_1793 = SCZO_1792 (alias)
+	ecx_1794 = 0x00 - C_1793
+	ecx_1795 = ~ecx_1794
+	ecx_1796 = ecx_1795 + 0x03
+	SCZO_1797 = cond(r12d_1574 - ecx_1796)
+	C_1798 = SCZO_1797 (alias)
+	ecx_1799 = 0x00 - C_1798
+	ecx_1800 = ~ecx_1799
+	ecx_1801 = ecx_1800 + 0x03
+	rcx_1802 = DPB(rcx_1647, ecx_1801, 0) (alias)
+	cl_1803 = (byte) ecx_1801 (alias)
+	SCZO_1804 = cond(ecx_1801)
+	goto l000000000040C168
+l000000000040C1B8:
+	SCZO_1151 = cond(dwLoc98_30 - 0x01)
+	Z_1152 = SCZO_1151 (alias)
+	branch Test(EQ,Z_1152) l000000000040C1CD
+l000000000040C1BF:
+	rLoc2_1197 = (real64) Mem0[0x0000000000415F90 + 0x00:real80]
+	CZP_1198 = cond(rLoc2_1197 - rLoc1_673)
+	CZ_1199 = CZP_1198 (alias)
+	branch Test(UGT,CZ_1199) l000000000040C408
+l000000000040C1CD:
+	wLoc6A_1153 = PHI(wLoc6A, wLoc6A, wLoc6A_1206, wLoc6A_1206)
+	wLoc6C_1154 = PHI(wLoc6C, wLoc6C, wLoc6C_1207, wLoc6C_1207)
+	rLoc2_1155 = PHI(rLoc2_672, rLoc2_1197, rLoc2_1227, rLoc2_1227)
+	qwLoc68_1156 = PHI(qwLoc68_663, qwLoc68_663, qwLoc68_1240, qwLoc68_1240)
+	rLoc1_1157 = PHI(rLoc1_673, rLoc1_673, rLoc1_1244, rLoc1_1245)
+	P_1158 = PHI(P_90, P_90, P_1228, P_1228)
+	CZP_1159 = PHI(CZP_117, CZP_1198, CZP_1229, CZP_1229)
+	r10_1160 = PHI(r10_636, r10_636, r10_1211, r10_1211)
+	S_1161 = PHI(S_665, S_665, S_1242, S_1242)
+	CZ_1162 = PHI(CZ_150, CZ_1199, CZ_1199, CZ_1199)
+	rcx_1163 = PHI(rcx_638, rcx_638, rcx_1231, rcx_1231)
+	cl_1164 = PHI(cl_639, cl_639, cl_1232, cl_1232)
+	Z_1165 = PHI(Z_1152, Z_1152, Z_1233, Z_1233)
+	rax_1166 = PHI(rax_660, rax_660, rax_1239, rax_1239)
+	edx_1167 = PHI(edx_647, edx_647, edx_1235, edx_1235)
+	dl_1168 = PHI(dl_650, dl_650, dl_1238, dl_1238)
+	rLocD0_1169 = (real80) rLoc1_1157
+	rbx_1170 = qwLocA0_32
+	ecx_1171 = 4284184
+	rcx_1172 = DPB(rcx_1163, ecx_1171, 0) (alias)
+	rdx_1173 = ~0x00
+	esi_1174 = 0x01
+	rsi_1175 = DPB(rsi_652, esi_1174, 0) (alias)
+	eax_1176 = 0x00
+	rax_1177 = DPB(rax_1166, eax_1176, 0) (alias)
+	r14d_1178 = 0x00
+	r14_1179 = DPB(r14_62, r14d_1178, 0) (alias)
+	SZO_1180 = cond(0x00)
+	C_1181 = false
+	rdi_1182 = rbx_1170
+	rax_1183 = DPB(rax_1177, __sprintf_chk(rdi_1182, rsi_1175, ~0x00, rcx_1172), 0)
+	rdi_1184 = rbx_1170
+	ebx_1185 = ~0x00
+	rbx_1186 = DPB(rbx_1170, ebx_1185, 0) (alias)
+	rax_1187 = DPB(rax_1183, strlen(rdi_1184), 0)
+	eax_1188 = (word32) rax_1187 (alias)
+	rdx_rax_1189 = SEQ(rdx_1173, rax_1187) (alias)
+	edx_eax_1190 = rax_1187 (alias)
+	ah_1191 = SLICE(rax_1187, byte, 8) (alias)
+	ax_1192 = (word16) rax_1187 (alias)
+	al_1193 = (byte) rax_1187 (alias)
+	r15_1194 = rax_1187
+	r15d_1195 = (word32) r15_1194 (alias)
+	goto l000000000040C218
+l000000000040C208:
+	rLoc1_1014 = rLoc1_810
+	goto l000000000040C218
+l000000000040C210:
+	rLoc1_1013 = rLoc1_810
+l000000000040C218:
+	rLoc4_674 = PHI(rLoc4, rLoc4_765, rLoc4_765, rLoc4_765)
+	rLoc3_675 = PHI(rLoc3_668, rLoc3_754, rLoc3_754, rLoc3_754)
+	qwLoc80_676 = PHI(qwLoc80_132, qwLoc80_796, qwLoc80_796, qwLoc80_796)
+	rLoc90_677 = PHI(rLoc90, rLoc90_798, rLoc90_798, rLoc90_798)
+	wLoc6A_678 = PHI(wLoc6A_1153, wLoc6A_775, wLoc6A_775, wLoc6A_838)
+	wLoc6C_679 = PHI(wLoc6C_1154, wLoc6C_776, wLoc6C_776, wLoc6C_839)
+	rLoc2_680 = PHI(rLoc2_1155, rLoc2_777, rLoc2_777, rLoc2_840)
+	qwLoc68_681 = PHI(qwLoc68_1156, qwLoc68_778, qwLoc68_778, qwLoc68_841)
+	rLoc1_682 = PHI(rLoc1_1157, rLoc1_1013, rLoc1_1014, rLoc1_854)
+	rLocD0_683 = PHI(rLocD0_1169, rLocD0_799, rLocD0_799, rLocD0_864)
+	r15_684 = PHI(r15_1194, r15_807, r15_807, r15_878)
+	r14_685 = PHI(r14_1179, r14_813, r14_813, r14_868)
+	rax_686 = PHI(rax_1187, rax_1004, rax_817, rax_871)
+	r12_687 = qwLocB8_151
+	rsi_688 = qwLocA0_32
+	rdx_689 = r15_684
+	rdx_rax_690 = SEQ(rdx_689, rax_686) (alias)
+	edx_eax_691 = rdx_689 (alias)
+	r12_692 = r12_687 - r15_684
+	r12d_693 = (word32) r12_692 (alias)
+	r15_694 = r15_684 - r14_685
+	r15d_695 = (word32) r15_694 (alias)
+	SCZO_696 = cond(r15_694)
+	rdi_697 = r12_692
+	call memmove (retsize: 8; depth: 216)
+		uses: ah_643,al_645,ax_644,bLocB0,C_671,cl_639,CZ_150,CZP_117,dil_120,dl_650,dwLoc04_4,dwLoc08_10,dwLoc0C_15,dwLoc10_18,dwLoc14_22,dwLoc18_25,dwLoc74,dwLoc78_44,dwLoc98_30,dwLocAC_53,dwLocB0_34,eax_642,ebx_79,ecx_637,edi_119,edx_647,esi_635,fs_69,P_90,qwLoc08,qwLoc10,qwLoc18,qwLoc28_40,qwLoc68_681,qwLoc80_676,qwLoc90,qwLoc98,qwLocA0_32,qwLocA8_36,qwLocB8_151,r10_636,r10b_632,r10d_633,r11_143,r12_692,r12d_693,r13_144,r14_685,r14d_87,r15_694,r15d_695,r8_148,r9_95,r9d_83,rax_686,rbp_104,rbx_65,rcx_638,rdi_697,rdx_689,rLoc90_677,rLocD0_683,rsi_688,rsp_55,S_665,SCZO_696,sil_634,SZO_669,wLoc6A_678,wLoc6C_679,Z_670
+		defs: ah_734,al_737,ax_735,C_706,cl_728,CZ_722,CZP_732,dil_740,dl_738,eax_703,ebx_725,ecx_716,edi_727,edx_704,esi_730,fs_715,P_736,r10_726,r10b_744,r10d_743,r11_720,r12_710,r12d_731,r13_718,r14_708,r14d_733,r15_717,r15d_742,r8_714,r9_741,r9d_729,rax_719,rbp_709,rbx_711,rcx_712,rdi_702,rdx_721,rsi_707,rsp_701,S_724,SCZO_713,sil_739,SZO_705,Z_723
+	r8_745 = r12_710 + r15_717
 l000000000040C237:
-	if ((bLocB0 & 0x04) != 0x00)
-	{
-		word64 rax_465 = DPB(rax_171, strlen(r13_1295), 0);
-		word64 rsp_471;
-		word64 rdi_472;
-		word32 eax_473;
-		word32 edx_474;
-		byte SZO_475;
-		byte C_476;
-		word64 rsi_477;
-		word64 r12_480;
-		word64 rbx_481;
-		word64 rcx_482;
-		byte SCZO_483;
-		word64 r8_484;
-		word32 ecx_486;
-		word64 r13_488;
-		word64 rax_489;
-		word64 r11_490;
-		word64 rdx_491;
-		byte CZ_492;
-		byte Z_493;
-		byte S_494;
-		word64 r10_496;
-		word32 edi_497;
-		byte cl_498;
-		word32 r9d_499;
-		word32 esi_500;
-		word32 r12d_501;
-		word32 r14d_502;
-		byte al_503;
-		byte dl_504;
-		byte sil_505;
-		byte dil_506;
-		word64 r9_507;
-		word32 r10d_508;
-		byte r10b_509;
-		word32 r15d_510;
-		word64 rbp_479;
-		word64 r15_487;
-		__memcpy_chk();
-		word64 r9_511 = r12_480 + r14_166;
-		while (true)
-		{
-			byte dl_536 = (byte) (word32) Mem0[rbp_479 + 0x00:byte];
-			if (dl_536 != 0x00)
-			{
-				r15_487 = DPB(r15_487, (word32) dl_536, 0);
-				if (dl_536 >u 0x7E)
-					r15_487 = r14_166;
-				rbp_479 = rbp_479 + 0x01;
-			}
-			if (r15_487 >u r14_166)
-				r15_487 = r14_166;
-			r14_166 = r14_166 - r15_487;
-			rax_171 = memcpy(r9_511 - r15_487, fp - 0x60 + r14_166, r15_487);
-			word64 r9_562;
-			*r9Out = rax_171;
-			if (r14_166 == 0x00)
-				break;
-			r9_511 = memcpy(rax_171 - rax_465, r13_488, rax_465);
-		}
-		r12_163 = rax_171;
-	}
-	word64 rdx_254;
-	word32 eax_245;
-	if ((bLocB0 & 0x80) == 0x00)
-	{
-l000000000040C2BA:
-		word64 rdi_275 = rcx_39 ^ Mem0[fs_156:0x28:word64];
-		Mem279[qwLocB8_140 + 0x00:byte] = 0x00;
-		eax_245 = (word32) r12_163;
-		if (rdi_275 == 0x00)
-		{
-			word64 rbp_296;
-			*rbpOut = Mem279[qwLoc08 + 0x08:word64];
-			word64 rsp_301;
-			*rspOut = qwLoc08 + 0x20;
-			return r12_163;
-		}
-		__stack_chk_fail();
-l000000000040C7EB:
-		rdx_254 = qwLocB8_140;
-		goto l000000000040C29A;
-	}
-	if (ebx_1037 == ~0x00)
-	{
-		if (r8 >u 0x01)
-		{
-			word64 r14_431 = DPB(r14_166, v20_52, 0);
-			ebx_1037 = 0x01;
-			word64 rax_435 = DPB(rax_171, 0x01, 0);
-			do
-			{
-				rax_435 = rax_435 *s r14_431;
-				if (r8 <=u rax_435)
-					goto l000000000040C252;
-				ebx_1037 = ebx_1037 + 0x01;
-			} while (ebx_1037 != 0x08);
-		}
-		else
-			ebx_1037 = 0x00;
-	}
+	dwLoc74_152 = PHI(dwLoc74, dwLoc74_1372)
+	qwLoc90_153 = PHI(qwLoc90, qwLoc90_1373)
+	rLoc4_154 = PHI(rLoc4_674, rLoc4)
+	rLoc3_155 = PHI(rLoc3_675, rLoc3)
+	qwLoc80_156 = PHI(qwLoc80_676, qwLoc80_1374)
+	rLoc90_157 = PHI(rLoc90_677, rLoc90)
+	wLoc6A_158 = PHI(wLoc6A_678, wLoc6A)
+	wLoc6C_159 = PHI(wLoc6C_679, wLoc6C)
+	rLoc2_160 = PHI(rLoc2_680, rLoc2)
+	qwLoc68_161 = PHI(qwLoc68_681, qwLoc68)
+	rLoc1_162 = PHI(rLoc1_682, rLoc1)
+	rLocD0_163 = PHI(rLocD0_683, rLocD0)
+	qwLoc98_164 = PHI(qwLoc98, qwLoc98_1427)
+	r10b_165 = PHI(r10b_744, r10b_1479)
+	r10d_166 = PHI(r10d_743, r10d_1478)
+	dil_167 = PHI(dil_740, dil_1377)
+	sil_168 = PHI(sil_739, sil_1378)
+	P_169 = PHI(P_736, P_90)
+	CZP_170 = PHI(CZP_732, CZP_1341)
+	esi_171 = PHI(esi_730, esi_1412)
+	edi_172 = PHI(edi_727, edi_1413)
+	r10_173 = PHI(r10_726, r10_1477)
+	S_174 = PHI(S_724, S_1345)
+	r11_175 = PHI(r11_720, r11_1382)
+	fs_176 = PHI(fs_715, fs_69)
+	r8_177 = PHI(r8_745, r8_1431)
+	r13_178 = PHI(r13_718, r13_144)
+	r15_179 = PHI(r15_717, r15_130)
+	r15d_180 = PHI(r15d_742, r15d_131)
+	r9_181 = PHI(r9_741, r9_1451)
+	r9d_182 = PHI(r9d_729, r9d_1452)
+	r12_183 = PHI(r12_710, r12_1456)
+	r12d_184 = PHI(r12d_731, r12d_1457)
+	r14d_185 = PHI(r14d_733, r14d_1388)
+	r14_186 = PHI(r14_708, r14_1389)
+	CZ_187 = PHI(CZ_722, CZ_1390)
+	ebx_188 = PHI(ebx_725, ebx_1432)
+	ecx_189 = PHI(ecx_716, ecx_1414)
+	rcx_190 = PHI(rcx_712, rcx_1415)
+	cl_191 = PHI(cl_728, cl_1416)
+	rax_192 = PHI(rax_719, rax_1462)
+	eax_193 = PHI(eax_703, eax_1463)
+	ah_194 = PHI(ah_734, ah_1466)
+	ax_195 = PHI(ax_735, ax_1467)
+	al_196 = PHI(al_737, al_1468)
+	rdx_197 = PHI(rdx_721, rdx_1460)
+	edx_198 = PHI(edx_704, edx_1442)
+	rdx_rax_199 = PHI(rdx_rax_690, rdx_rax_1464)
+	edx_eax_200 = PHI(edx_eax_691, edx_eax_1465)
+	dl_201 = PHI(dl_738, dl_1406)
+	SCZO_202 = PHI(SCZO_713, SCZO_1445)
+	rbx_203 = PHI(rbx_711, rbx_1446)
+	rbp_204 = PHI(rbp_709, rbp_104)
+	rsi_205 = PHI(rsi_707, rsi_1447)
+	rdi_206 = PHI(rdi_702, rdi_1448)
+	rsp_207 = PHI(rsp_701, rsp_55)
+	SZO_209 = cond(bLocB0 & 0x04)
+	Z_210 = SZO_209 (alias)
+	C_211 = false
+	branch (bLocB0 & 0x04) != 0x00 l000000000040C318
+l000000000040C242:
+	qwLoc98_212 = PHI(qwLoc98_508, qwLoc98_164)
+	r10b_213 = PHI(r10b_552, r10b_165)
+	r10d_214 = PHI(r10d_551, r10d_166)
+	dil_215 = PHI(dil_548, dil_167)
+	sil_216 = PHI(sil_547, sil_168)
+	P_217 = PHI(P_544, P_169)
+	CZP_218 = PHI(CZP_540, CZP_170)
+	esi_219 = PHI(esi_538, esi_171)
+	edi_220 = PHI(edi_535, edi_172)
+	r10_221 = PHI(r10_534, r10_173)
+	S_222 = PHI(S_532, S_174)
+	r11_223 = PHI(r11_528, r11_175)
+	fs_224 = PHI(fs_523, fs_176)
+	r8_225 = PHI(r8_522, r8_177)
+	r13_226 = PHI(r13_557, r13_178)
+	r15_227 = PHI(r15_590, r15_179)
+	r15d_228 = PHI(r15d_591, r15d_180)
+	r9_229 = PHI(r9_608, r9_181)
+	r9d_230 = PHI(r9d_609, r9d_182)
+	r12_231 = PHI(r12_610, r12_183)
+	r12d_232 = PHI(r12d_611, r12d_184)
+	r14d_233 = PHI(r14d_593, r14d_185)
+	r14_234 = PHI(r14_592, r14_186)
+	CZ_235 = PHI(CZ_588, CZ_187)
+	ebx_236 = PHI(ebx_533, ebx_188)
+	ecx_237 = PHI(ecx_524, ecx_189)
+	rcx_238 = PHI(rcx_520, rcx_190)
+	cl_239 = PHI(cl_536, cl_191)
+	rax_240 = PHI(rax_598, rax_192)
+	eax_241 = PHI(eax_599, eax_193)
+	ah_242 = PHI(ah_602, ah_194)
+	ax_243 = PHI(ax_603, ax_195)
+	al_244 = PHI(al_604, al_196)
+	rdx_245 = PHI(rdx_595, rdx_197)
+	edx_246 = PHI(edx_576, edx_198)
+	rdx_rax_247 = PHI(rdx_rax_600, rdx_rax_199)
+	edx_eax_248 = PHI(edx_eax_601, edx_eax_200)
+	dl_249 = PHI(dl_580, dl_201)
+	SCZO_250 = PHI(SCZO_587, SCZO_202)
+	rbx_251 = PHI(rbx_519, rbx_203)
+	rbp_252 = PHI(rbp_586, rbp_204)
+	rsi_253 = PHI(rsi_596, rsi_205)
+	rdi_254 = PHI(rdi_597, rdi_206)
+	rsp_255 = PHI(rsp_509, rsp_207)
+	SZO_256 = cond(bLocB0 & 0x80)
+	Z_257 = SZO_256 (alias)
+	C_258 = false
+	branch (bLocB0 & 0x80) == 0x00 l000000000040C2BA
+l000000000040C249:
+	SCZO_390 = cond(ebx_236 - ~0x00)
+	Z_391 = SCZO_390 (alias)
+	branch ebx_236 == ~0x00 l000000000040C618
 l000000000040C252:
-	eax_245 = edx & 0x0100;
-	if ((ebx_1037 | edx & 0x0100) == 0x00)
-		goto l000000000040C2BA;
-	if ((bLocB0 & 0x40) != 0x00)
-	{
-		Mem421[rsi + 0x0288:byte] = 0x20;
-		qwLocB8_140 = rsi + 0x0289;
-	}
-	if (ebx_1037 == 0x00)
-		goto l000000000040C7EB;
-	byte cl_403;
-	rdx_254 = qwLocB8_140 + 0x01;
-	if ((edx & 0x20) == 0x00)
-	{
-		cl_403 = 0x6B;
-		if (ebx_1037 == 0x01)
-			goto l000000000040C293;
-	}
-	cl_403 = (byte) (word32) Mem0[(int64) ebx_1037 + 4284280:byte];
+	r14d_392 = PHI(r14d_233, r14d_464, r14d_464, r14d_233)
+	r14_393 = PHI(r14_234, r14_465, r14_465, r14_234)
+	CZ_394 = PHI(CZ_235, CZ_487, CZ_487, CZ_463)
+	ebx_395 = PHI(ebx_236, ebx_475, ebx_488, ebx_492)
+	rax_396 = PHI(rax_240, rax_479, rax_479, rax_240)
+	rdx_397 = PHI(rdx_245, rdx_457, rdx_457, rdx_457)
+	edx_398 = PHI(edx_246, edx_458, edx_458, edx_458)
+	rdx_rax_399 = PHI(rdx_rax_247, rdx_rax_481, rdx_rax_481, rdx_rax_459)
+	dl_400 = PHI(dl_249, dl_461, dl_461, dl_461)
+	SCZO_401 = PHI(SCZO_390, SCZO_486, SCZO_490, SCZO_462)
+	rbx_402 = PHI(rbx_251, rbx_478, rbx_489, rbx_493)
+	eax_403 = dwLocB0_34
+	ecx_404 = ebx_395
+	eax_405 = eax_403 & 0x0100
+	rax_406 = DPB(rax_396, eax_405, 0) (alias)
+	rdx_rax_407 = DPB(rdx_rax_399, eax_405, 0) (alias)
+	edx_eax_408 = SEQ(edx_398, eax_405) (alias)
+	ah_409 = SLICE(eax_405, byte, 8) (alias)
+	ax_410 = (word16) eax_405 (alias)
+	al_411 = (byte) eax_405 (alias)
+	ecx_412 = ecx_404 | eax_405
+	SZO_413 = cond(ecx_412)
+	Z_414 = SZO_413 (alias)
+	C_415 = false
+	branch ecx_412 == 0x00 l000000000040C2BA
+l000000000040C261:
+	SZO_416 = cond(bLocB0 & 0x40)
+	Z_417 = SZO_416 (alias)
+	C_418 = false
+	branch (bLocB0 & 0x40) != 0x00 l000000000040C3E8
+l000000000040C26C:
+	rcx_419 = PHI(rcx_238, rcx_453)
+	qwLocB8_420 = PHI(qwLocB8_151, qwLocB8_456)
+	rsi_421 = PHI(rsi_253, rsi_454)
+	SZO_422 = cond(ebx_395 & ebx_395)
+	Z_423 = SZO_422 (alias)
+	C_424 = false
+	branch (ebx_395 & ebx_395) == 0x00 l000000000040C7EB
+l000000000040C274:
+	rcx_425 = qwLocB8_420
+	rdx_426 = rcx_425 + 0x01
+	edx_427 = (word32) rdx_426 (alias)
+	rdx_rax_428 = SEQ(rdx_426, rax_406) (alias)
+	edx_eax_429 = rdx_426 (alias)
+	dl_430 = (byte) rdx_426 (alias)
+	ecx_431 = dwLoc78_44
+	SZO_432 = cond(ecx_431 & ecx_431)
+	Z_433 = SZO_432 (alias)
+	C_434 = false
+	branch (ecx_431 & ecx_431) == 0x00 l000000000040C3D0
+l000000000040C289:
+	Z_442 = PHI(Z_433, Z_449)
+	SCZO_443 = PHI(SCZO_401, SCZO_448)
+	rcx_444 = (int64) ebx_395
+	ecx_445 = (word32) Mem0[rcx_444 + 4284280:byte]
+	rcx_446 = DPB(rcx_444, ecx_445, 0) (alias)
+	cl_447 = (byte) ecx_445 (alias)
 l000000000040C293:
-	Mem407[qwLocB8_140 + 0x00:byte] = cl_403;
+	ecx_435 = PHI(ecx_445, ecx_450)
+	rcx_436 = PHI(rcx_446, rcx_451)
+	cl_437 = PHI(cl_447, cl_452)
+	Z_438 = PHI(Z_442, Z_449)
+	SCZO_439 = PHI(SCZO_443, SCZO_448)
+	rdi_440 = qwLocB8_420
+	Mem441[rdi_440 + 0x00:byte] = cl_437
 l000000000040C29A:
-	if (eax_245 != 0x00)
-	{
-		if ((edx & 0x20) != 0x00 && ebx_1037 != 0x00)
-		{
-			Mem350[rdx_254 + 0x00:byte] = 0x69;
-			rdx_254 = rdx_254 + 0x01;
-		}
-		Mem345[rdx_254 + 0x00:byte] = 66;
-		qwLocB8_140 = rdx_254 + 0x01;
-	}
-	else
-		qwLocB8_140 = rdx_254;
-	goto l000000000040C2BA;
+	r14d_336 = PHI(r14d_392, r14d_259)
+	r14_337 = PHI(r14_393, r14_260)
+	CZ_338 = PHI(CZ_394, CZ_261)
+	ebx_339 = PHI(ebx_395, ebx_262)
+	ecx_340 = PHI(ecx_435, ecx_263)
+	rcx_341 = PHI(rcx_436, rcx_264)
+	cl_342 = PHI(cl_437, cl_265)
+	qwLocB8_343 = PHI(qwLocB8_420, qwLocB8_266)
+	rax_344 = PHI(rax_406, rax_270)
+	eax_345 = PHI(eax_405, eax_271)
+	ah_346 = PHI(ah_409, ah_272)
+	ax_347 = PHI(ax_410, ax_273)
+	al_348 = PHI(al_411, al_274)
+	rdx_349 = PHI(rdx_426, rdx_279)
+	edx_350 = PHI(edx_427, edx_280)
+	rdx_rax_351 = PHI(rdx_rax_428, rdx_rax_281)
+	edx_eax_352 = PHI(edx_eax_429, edx_eax_282)
+	dl_353 = PHI(dl_430, dl_283)
+	SCZO_354 = PHI(SCZO_439, SCZO_275)
+	rbx_355 = PHI(rbx_402, rbx_276)
+	rsi_356 = PHI(rsi_421, rsi_277)
+	rdi_357 = PHI(rdi_440, rdi_278)
+	SZO_358 = cond(eax_345 & eax_345)
+	Z_359 = SZO_358 (alias)
+	C_360 = false
+	branch (eax_345 & eax_345) == 0x00 l000000000040C7F5
+l000000000040C2A2:
+	eax_361 = dwLoc78_44
+	rdx_rax_362 = DPB(rdx_rax_351, eax_361, 0) (alias)
+	edx_eax_363 = SEQ(edx_350, eax_361) (alias)
+	SZO_364 = cond(eax_361 & eax_361)
+	Z_365 = SZO_364 (alias)
+	C_366 = false
+	branch (eax_361 & eax_361) != 0x00 l000000000040C3B8
+l000000000040C2AE:
+	SZO_367 = PHI(SZO_364, SZO_379, SZO_379)
+	Z_368 = PHI(Z_365, Z_380, Z_380)
+	C_369 = PHI(C_366, C_381, C_381)
+	rdx_370 = PHI(rdx_349, rdx_349, rdx_383)
+	edx_371 = PHI(edx_350, edx_350, edx_384)
+	rdx_rax_372 = PHI(rdx_rax_362, rdx_rax_362, rdx_rax_385)
+	edx_eax_373 = PHI(edx_eax_363, edx_eax_363, edx_eax_386)
+	dl_374 = PHI(dl_353, dl_353, dl_387)
+	SCZO_375 = PHI(SCZO_354, SCZO_354, SCZO_388)
+	rax_376 = rdx_370 + 0x01
+	Mem377[rdx_370 + 0x00:byte] = 66
+	qwLocB8_378 = rax_376
+l000000000040C2BA:
+	r14d_284 = PHI(r14d_233, r14d_392, r14d_336, r14d_336)
+	r14_285 = PHI(r14_234, r14_393, r14_337, r14_337)
+	CZ_286 = PHI(CZ_235, CZ_394, CZ_338, CZ_338)
+	ebx_287 = PHI(ebx_236, ebx_395, ebx_339, ebx_339)
+	ecx_288 = PHI(ecx_237, ecx_412, ecx_340, ecx_340)
+	rcx_289 = PHI(rcx_238, rcx_238, rcx_341, rcx_341)
+	cl_290 = PHI(cl_239, cl_239, cl_342, cl_342)
+	qwLocB8_291 = PHI(qwLocB8_151, qwLocB8_151, qwLocB8_378, qwLocB8_389)
+	rdx_292 = PHI(rdx_245, rdx_397, rdx_370, rdx_349)
+	edx_293 = PHI(edx_246, edx_398, edx_371, edx_350)
+	dl_294 = PHI(dl_249, dl_400, dl_374, dl_353)
+	SCZO_295 = PHI(SCZO_250, SCZO_401, SCZO_375, SCZO_354)
+	rbx_296 = PHI(rbx_251, rbx_402, rbx_355, rbx_355)
+	rsi_297 = PHI(rsi_253, rsi_253, rsi_356, rsi_356)
+	rax_298 = qwLocB8_291
+	rdi_299 = qwLoc28_40
+	rdi_300 = rdi_299 ^ Mem0[fs_224:0x28:word64]
+	SZO_301 = cond(rdi_300)
+	Z_302 = SZO_301 (alias)
+	C_303 = false
+	Mem304[rax_298 + 0x00:byte] = 0x00
+	rax_305 = r12_231
+	eax_306 = (word32) rax_305 (alias)
+	rdx_rax_307 = SEQ(rdx_292, rax_305) (alias)
+	edx_eax_308 = rax_305 (alias)
+	ah_309 = SLICE(rax_305, byte, 8) (alias)
+	ax_310 = (word16) rax_305 (alias)
+	al_311 = (byte) rax_305 (alias)
+	branch rdi_300 != 0x00 l000000000040C7E6
+l000000000040C2DC:
+	rsp_312 = fp - 0x18
+	SCZO_313 = cond(fp - 0x18)
+	rbx_315 = qwLoc18
+	rsp_316 = fp - 0x10
+	rbp_318 = qwLoc10
+	rsp_319 = fp - 0x08
+	rsp_321 = qwLoc08
+	rsp_322 = rsp_321 + 0x08
+	rbp_323 = Mem304[rsp_322 + 0x00:word64]
+	rsp_324 = rsp_322 + 0x08
+	rsi_325 = Mem304[rsp_324 + 0x00:word64]
+	rsp_326 = rsp_324 + 0x08
+	rdi_327 = Mem304[rsp_326 + 0x00:word64]
+	rsp_328 = rsp_326 + 0x08
+	return rax_305
+l000000000040C2F0:
+	r10_1837 = rax_1824
+	edx_1838 = 0x00
+	r10_1839 = r10_1837 *s r12_64
+	r10d_1840 = (word32) r10_1839 (alias)
+	r10b_1841 = (byte) r10_1839 (alias)
+	rax_1842 = r10_1839
+	rdx_rax_1843 = SEQ(rdx_1821, rax_1842) (alias)
+	v74_1844 = rdx_rax_1843
+	rdx_1845 = (uint64) (v74_1844 % rcx_1834)
+	edx_1846 = (word32) rdx_1845 (alias)
+	dl_1847 = (byte) rdx_1845 (alias)
+	rax_1848 = (uint64) (v74_1844 /u rcx_1834)
+	rdx_rax_1849 = SEQ(rdx_1845, rax_1848) (alias)
+	edx_eax_1850 = rax_1848 (alias)
+	SCZO_1851 = cond(rax_1848 - r12_64)
+	Z_1852 = SCZO_1851 (alias)
+	branch Test(NE,Z_1852) l000000000040BE59
+l000000000040C308:
+	ecx_1853 = 0x00
+	rcx_1854 = DPB(rcx_1834, ecx_1853, 0) (alias)
+	cl_1855 = (byte) ecx_1853 (alias)
+	edi_1856 = 0x00
+	rdi_1857 = DPB(rdi_118, edi_1856, 0) (alias)
+	dil_1858 = (byte) edi_1856 (alias)
+	SZO_1859 = cond(0x00)
+	C_1860 = false
+	goto l000000000040C12D
+l000000000040C318:
+	r8_496 = r8_177 - r12_183
+	SCZO_497 = cond(r8_496)
+	rdi_498 = r13_178
+	r15_499 = ~0x00
+	r15d_500 = (word32) r15_499 (alias)
+	r14_501 = r8_496
+	r14d_502 = (word32) r14_501 (alias)
+	rax_503 = DPB(rax_192, strlen(rdi_498), 0)
+	rdi_504 = fp - 0x60
+	rsi_505 = r12_183
+	ecx_506 = 0x29
+	rdx_507 = r14_501
+	qwLoc98_508 = rax_503
+	call __memcpy_chk (retsize: 8; depth: 216)
+		uses: ah_194,al_196,ax_195,bLocB0,C_211,cl_191,CZ_187,CZP_170,dil_167,dl_201,dwLoc04_4,dwLoc08_10,dwLoc0C_15,dwLoc10_18,dwLoc14_22,dwLoc18_25,dwLoc74_152,dwLoc78_44,dwLoc98_30,dwLocAC_53,dwLocB0_34,eax_193,ebx_188,ecx_506,edi_172,edx_198,esi_171,fs_176,P_169,qwLoc08,qwLoc10,qwLoc18,qwLoc28_40,qwLoc68_161,qwLoc80_156,qwLoc90_153,qwLoc98_508,qwLocA0_32,qwLocA8_36,qwLocB8_151,r10_173,r10b_165,r10d_166,r11_175,r12_183,r12d_184,r13_178,r14_501,r14d_502,r15_499,r15d_500,r8_496,r9_181,r9d_182,rax_503,rbp_204,rbx_203,rcx_190,rdi_504,rdx_507,rLoc90_157,rLocD0_163,rsi_505,rsp_207,S_174,SCZO_497,sil_168,SZO_209,wLoc6A_158,wLoc6C_159,Z_210
+		defs: ah_542,al_545,ax_543,C_514,cl_536,CZ_530,CZP_540,dil_548,dl_546,eax_511,ebx_533,ecx_524,edi_535,edx_512,esi_538,fs_523,P_544,r10_534,r10b_552,r10d_551,r11_528,r12_518,r12d_539,r13_526,r14_516,r14d_541,r15_525,r15d_550,r8_522,r9_549,r9d_537,rax_527,rbp_517,rbx_519,rcx_520,rdi_510,rdx_529,rsi_515,rsp_509,S_532,SCZO_521,sil_547,SZO_513,Z_531
+	r9_553 = r12_518 + r14_516
+	r9d_554 = (word32) r9_553 (alias)
+	r12_555 = r13_526
+	r12d_556 = (word32) r12_555 (alias)
+	r13_557 = qwLoc98_508
+	goto l000000000040C36C
+l000000000040C358:
+	r9_612 = r9_608 - r13_557
+	SCZO_613 = cond(r9_612)
+	rdx_614 = r13_557
+	rsi_615 = r12_555
+	rdi_616 = r9_612
+	rax_617 = memcpy(rdi_616, rsi_615, rdx_614)
+	r9_618 = rax_617
+	r9d_619 = (word32) r9_618 (alias)
+l000000000040C36C:
+	r15_558 = PHI(r15_525, r15_590)
+	r15d_559 = PHI(r15d_550, r15d_591)
+	r9_560 = PHI(r9_553, r9_618)
+	r9d_561 = PHI(r9d_554, r9d_619)
+	r14d_562 = PHI(r14d_541, r14d_593)
+	r14_563 = PHI(r14_516, r14_592)
+	CZ_564 = PHI(CZ_530, CZ_588)
+	rax_565 = PHI(rax_527, rax_617)
+	eax_566 = PHI(eax_511, eax_599)
+	ah_567 = PHI(ah_542, ah_602)
+	ax_568 = PHI(ax_543, ax_603)
+	al_569 = PHI(al_545, al_604)
+	rdx_570 = PHI(rdx_529, rdx_614)
+	rdx_rax_571 = PHI(rdx_rax_199, rdx_rax_600)
+	SCZO_572 = PHI(SCZO_521, SCZO_613)
+	rbp_573 = PHI(rbp_517, rbp_586)
+	rsi_574 = PHI(rsi_515, rsi_615)
+	rdi_575 = PHI(rdi_510, rdi_616)
+	edx_576 = (word32) Mem0[rbp_573 + 0x00:byte]
+	rdx_577 = DPB(rdx_570, edx_576, 0) (alias)
+	rdx_rax_578 = DPB(rdx_rax_571, edx_576, 64) (alias)
+	edx_eax_579 = SEQ(edx_576, eax_566) (alias)
+	dl_580 = (byte) edx_576 (alias)
+	SZO_581 = cond(dl_580 & dl_580)
+	Z_582 = SZO_581 (alias)
+	C_583 = false
+	branch (dl_580 & dl_580) == 0x00 l000000000040C383
+l000000000040C374:
+	SCZO_622 = cond(dl_580 - 0x7E)
+	CZ_623 = SCZO_622 (alias)
+	r15d_624 = (word32) dl_580
+	r15_625 = DPB(r15_558, r15d_624, 0) (alias)
+	branch dl_580 <=u 0x7E l000000000040C37F
+l000000000040C37B_1:
+	r15_630 = r14_563
+	r15d_631 = (word32) r15_630 (alias)
+l000000000040C37F:
+	r15_626 = PHI(r15_625, r15_630)
+	r15d_627 = PHI(r15d_624, r15d_631)
+	rbp_628 = rbp_573 + 0x01
+	SCZO_629 = cond(rbp_628)
+l000000000040C383:
+	r15_584 = PHI(r15_558, r15_626)
+	r15d_585 = PHI(r15d_559, r15d_627)
+	rbp_586 = PHI(rbp_573, rbp_628)
+	SCZO_587 = cond(r15_584 - r14_563)
+	CZ_588 = SCZO_587 (alias)
+	rax_589 = fp - 0x60
+	branch r15_584 <=u r14_563 l000000000040C38F
+l000000000040C38B_1:
+	r15_620 = r14_563
+	r15d_621 = (word32) r15_620 (alias)
+l000000000040C38F:
+	r15_590 = PHI(r15_584, r15_620)
+	r15d_591 = PHI(r15d_585, r15d_621)
+	r14_592 = r14_563 - r15_590
+	r14d_593 = (word32) r14_592 (alias)
+	r9_594 = r9_560 - r15_590
+	rdx_595 = r15_590
+	rsi_596 = fp - 0x60 + r14_592
+	rdi_597 = r9_594
+	rax_598 = memcpy(rdi_597, rsi_596, rdx_595)
+	eax_599 = (word32) rax_598 (alias)
+	rdx_rax_600 = SEQ(rdx_595, rax_598) (alias)
+	edx_eax_601 = rax_598 (alias)
+	ah_602 = SLICE(rax_598, byte, 8) (alias)
+	ax_603 = (word16) rax_598 (alias)
+	al_604 = (byte) rax_598 (alias)
+	SZO_605 = cond(r14_592 & r14_592)
+	Z_606 = SZO_605 (alias)
+	C_607 = false
+	r9_608 = rax_598
+	r9d_609 = (word32) r9_608 (alias)
+	branch (r14_592 & r14_592) != 0x00 l000000000040C358
+l000000000040C3AC:
+	r12_610 = rax_598
+	r12d_611 = (word32) r12_610 (alias)
+	goto l000000000040C242
+l000000000040C3B8:
+	SZO_379 = cond(ebx_339 & ebx_339)
+	Z_380 = SZO_379 (alias)
+	C_381 = false
+	branch (ebx_339 & ebx_339) == 0x00 l000000000040C2AE
+l000000000040C3C0:
+	Mem382[rdx_349 + 0x00:byte] = 0x69
+	rdx_383 = rdx_349 + 0x01
+	edx_384 = (word32) rdx_383 (alias)
+	rdx_rax_385 = SEQ(rdx_383, rax_344) (alias)
+	edx_eax_386 = rdx_383 (alias)
+	dl_387 = (byte) rdx_383 (alias)
+	SCZO_388 = cond(rdx_383)
+	goto l000000000040C2AE
+l000000000040C3D0:
+	SCZO_448 = cond(ebx_395 - 0x01)
+	Z_449 = SCZO_448 (alias)
+	ecx_450 = 0x6B
+	rcx_451 = DPB(rcx_425, ecx_450, 0) (alias)
+	cl_452 = (byte) ecx_450 (alias)
+	branch ebx_395 != 0x01 l000000000040C289
+	goto l000000000040C293
+l000000000040C3E8:
+	rcx_453 = qwLocA0_32
+	rsi_454 = rcx_453 + 0x0289
+	Mem455[rcx_453 + 0x0288:byte] = 0x20
+	qwLocB8_456 = rsi_454
+	goto l000000000040C26C
+l000000000040C408:
+	rLoc2_1200 = (real64) Mem0[0x0000000000415F0C + 0x00:real32]
+	v69_1201 = rLoc2_1200
+	rLoc2_1202 = rLoc1_673
+	rLoc1_1203 = v69_1201
+	CZP_1204 = cond(rLoc2_1202 - rLoc1_1203)
+	C_1205 = CZP_1204 (alias)
+	branch Test(UGE,C_1205) l000000000040C6A0
+l000000000040C418:
+	rLoc1_1278 = rLoc2_1202
+	wLoc6A_1279 = __fstcw()
+	eax_1280 = (word32) wLoc6A_1279
+	ah_1281 = SLICE(eax_1280, byte, 8) (alias)
+	ah_1282 = ah_1281 | 0x0C
+	ax_1283 = DPB(ax_644, ah_1282, 8) (alias)
+	SZO_1284 = cond(ah_1282)
+	C_1285 = false
+	wLoc6C_1286 = ax_1283
+	rLoc2_1287 = rLoc2_1202
+	__fldcw(wLoc6C_1286)
+	qwLoc68_1288 = (int64) rLoc2_1287
+	__fldcw(wLoc6A_1279)
+	rax_1289 = qwLoc68_1288
+	eax_1290 = (word32) rax_1289 (alias)
+	rdx_rax_1291 = SEQ(rdx_646, rax_1289) (alias)
+	edx_eax_1292 = rax_1289 (alias)
+	ah_1293 = SLICE(rax_1289, byte, 8) (alias)
+	ax_1294 = (word16) rax_1289 (alias)
+	al_1295 = (byte) rax_1289 (alias)
+l000000000040C43E:
+	wLoc6A_1206 = PHI(wLoc6A_1279, wLoc6A_1296)
+	wLoc6C_1207 = PHI(wLoc6C_1286, wLoc6C_1306)
+	rLoc2_1208 = PHI(rLoc2_1287, rLoc2_1301)
+	qwLoc68_1209 = PHI(qwLoc68_1288, qwLoc68_1307)
+	rLoc1_1210 = PHI(rLoc1_1278, rLoc1_1302)
+	r10_1211 = PHI(r10_636, r10_1303)
+	rax_1212 = PHI(rax_1289, rax_1309)
+	eax_1213 = PHI(eax_1290, eax_1310)
+	ah_1214 = PHI(ah_1293, ah_1313)
+	ax_1215 = PHI(ax_1294, ax_1314)
+	al_1216 = PHI(al_1295, al_1315)
+	rdx_rax_1217 = PHI(rdx_rax_1291, rdx_rax_1311)
+	esi_1218 = dwLoc98_30
+	edx_1219 = 0x00
+	rdx_1220 = DPB(rdx_646, edx_1219, 0) (alias)
+	rdx_rax_1221 = DPB(rdx_rax_1217, edx_1219, 64) (alias)
+	edx_eax_1222 = SEQ(edx_1219, eax_1213) (alias)
+	dl_1223 = (byte) edx_1219 (alias)
+	SZO_1224 = cond(esi_1218 & esi_1218)
+	Z_1225 = SZO_1224 (alias)
+	C_1226 = false
+	branch Test(NE,Z_1225) l000000000040C470
+l000000000040C448:
+	qwLoc68_1246 = rax_1212
+	SZO_1247 = cond(rax_1212 & rax_1212)
+	S_1248 = SZO_1247 (alias)
+	C_1249 = false
+	rLoc2_1250 = (real64) qwLoc68_1246
+	branch Test(SG,S_1248) l000000000040C772
+l000000000040C45A:
+	rLoc2_1251 = PHI(rLoc2_1250, rLoc2_1276)
+	ecx_1252 = 0x00
+	SZO_1253 = cond(0x00)
+	edx_1254 = 0x01
+	rdx_1255 = DPB(rdx_1220, edx_1254, 0) (alias)
+	rdx_rax_1256 = DPB(rdx_rax_1221, edx_1254, 64) (alias)
+	edx_eax_1257 = SEQ(edx_1254, eax_1213) (alias)
+	dl_1258 = (byte) edx_1254 (alias)
+	CZP_1259 = cond(rLoc2_1251 - rLoc1_1210)
+	Z_1260 = CZP_1259 (alias)
+	P_1261 = CZP_1259 (alias)
+	rLoc1_1262 = rLoc1_1210
+	cl_1263 = Test(PE,P_1261)
+	rcx_1264 = DPB(rcx_638, cl_1263, 0) (alias)
+	ecx_1265 = DPB(ecx_1252, cl_1263, 0) (alias)
+	branch Test(NE,Z_1260) l000000000040C46C
+l000000000040C468_1:
+	rdx_1271 = rcx_1264
+	edx_1272 = (word32) rdx_1271 (alias)
+	rdx_rax_1273 = SEQ(rdx_1271, rax_1212) (alias)
+	edx_eax_1274 = rdx_1271 (alias)
+	dl_1275 = (byte) rdx_1271 (alias)
+l000000000040C46C:
+	rdx_1266 = PHI(rdx_1255, rdx_1271)
+	edx_1267 = PHI(edx_1254, edx_1272)
+	rdx_rax_1268 = PHI(rdx_rax_1256, rdx_rax_1273)
+	edx_eax_1269 = PHI(edx_eax_1257, edx_eax_1274)
+	dl_1270 = PHI(dl_1258, dl_1275)
+	goto l000000000040C472
+l000000000040C470:
+	rLoc1_1277 = rLoc1_1210
+l000000000040C472:
+	rLoc2_1227 = PHI(rLoc2_1251, rLoc2_1208)
+	P_1228 = PHI(P_1261, P_90)
+	CZP_1229 = PHI(CZP_1259, CZP_1204)
+	ecx_1230 = PHI(ecx_1265, ecx_637)
+	rcx_1231 = PHI(rcx_1264, rcx_638)
+	cl_1232 = PHI(cl_1263, cl_639)
+	Z_1233 = PHI(Z_1260, Z_1225)
+	rdx_1234 = PHI(rdx_1266, rdx_1220)
+	edx_1235 = PHI(edx_1267, edx_1219)
+	rdx_rax_1236 = PHI(rdx_rax_1268, rdx_rax_1221)
+	edx_eax_1237 = PHI(edx_eax_1269, edx_eax_1222)
+	dl_1238 = PHI(dl_1270, dl_1223)
+	rax_1239 = rax_1212 + rdx_1234
+	qwLoc68_1240 = rax_1239
+	SZO_1241 = cond(rax_1239 & rax_1239)
+	S_1242 = SZO_1241 (alias)
+	C_1243 = false
+	rLoc1_1244 = (real64) qwLoc68_1240
+	branch Test(NS,S_1242) l000000000040C1CD
+l000000000040C487:
+	rLoc1_1245 = rLoc1_1244 + Mem0[0x0000000000415F08 + 0x00:real32]
+	goto l000000000040C1CD
+l000000000040C498:
+	rLoc2_1135 = rLoc2_1016
+	goto l000000000040BF72
+l000000000040C49F:
+	SCZO_1667 = cond(r8_1619 - 0x09)
+	CZ_1668 = SCZO_1667 (alias)
+	branch Test(UGT,CZ_1668) l000000000040C768
+l000000000040C4A9:
+	SCZO_1669 = cond(dwLoc98_30 - 0x01)
+	Z_1670 = SCZO_1669 (alias)
+	branch Test(EQ,Z_1670) l000000000040C7B0
+l000000000040C4B4:
+	r12d_1767 = dwLoc98_30
+	SZO_1768 = cond(ecx_1651 & ecx_1651)
+	dl_1769 = Test(GT,SZO_1768)
+	edx_1770 = DPB(edx_1632, dl_1769, 0) (alias)
+	SZO_1771 = cond(r12d_1767 & r12d_1767)
+	Z_1772 = SZO_1771 (alias)
+	sil_1773 = Test(EQ,Z_1772)
+	esi_1774 = DPB(esi_1565, sil_1773, 0) (alias)
+	edx_1775 = edx_1770 & esi_1774
+	rdx_1776 = DPB(rdx_1633, edx_1775, 0) (alias)
+	rdx_rax_1777 = DPB(rdx_rax_1636, edx_1775, 64) (alias)
+	edx_eax_1778 = SEQ(edx_1775, eax_1634) (alias)
+	dl_1779 = (byte) edx_1775 (alias)
+	SZO_1780 = cond(edx_1775)
+	C_1781 = false
+l000000000040C4C7:
+	sil_1671 = PHI(sil_1773, sil_1567)
+	esi_1672 = PHI(esi_1774, esi_1565)
+	r12d_1673 = PHI(r12d_1767, r12d_1574)
+	rdx_1674 = PHI(rdx_1776, rdx_1789)
+	edx_1675 = PHI(edx_1775, edx_1788)
+	rdx_rax_1676 = PHI(rdx_rax_1777, rdx_rax_1790)
+	edx_eax_1677 = PHI(edx_eax_1778, edx_eax_1791)
+	dl_1678 = PHI(dl_1779, dl_1787)
+	SCZO_1679 = PHI(SCZO_1669, SCZO_1785)
+	SZO_1680 = cond(dl_1678 & dl_1678)
+	Z_1681 = SZO_1680 (alias)
+	C_1682 = false
+	branch Test(EQ,Z_1681) l000000000040C788
+l000000000040C4CF:
+	edi_1740 = rax_1635 + 0x01
+	rdi_1741 = DPB(rdi_1644, edi_1740, 0) (alias)
+	dil_1742 = (byte) edi_1740 (alias)
+	SCZO_1743 = cond(edi_1740 - 0x0A)
+	Z_1744 = SCZO_1743 (alias)
+	branch Test(EQ,Z_1744) l000000000040C7CE
+l000000000040C4DB:
+	edi_1683 = PHI(edi_1740, edi_1643, edi_1729)
+	r10_1684 = PHI(r10_1623, r10_1623, r10_1720)
+	rcx_1685 = PHI(rcx_1652, rcx_1652, rcx_1722)
+	Z_1686 = PHI(Z_1744, Z_1765, Z_1727)
+	SCZO_1687 = PHI(SCZO_1743, SCZO_1679, SCZO_1724)
+	rax_1688 = qwLocA0_32
+	edi_1689 = edi_1683 + 0x30
+	dil_1690 = (byte) edi_1689 (alias)
+	rdx_1691 = r11_143
+	rsi_1692 = r15_130
+	dwLoc74_1693 = r9d_1367
+	qwLoc90_1694 = r10_1684
+	qwLoc80_1695 = r11_143
+	r8_1696 = r8_1619 + 0x0287
+	Mem1697[rax_1688 + 0x0287:byte] = dil_1690
+	r8_1698 = r8_1696 - r11_143
+	rdi_1699 = r8_1698
+	rax_1700 = memcpy(rdi_1699, rsi_1692, rdx_1691)
+	r11_1701 = qwLoc80_1695
+	r10_1702 = qwLoc90_1694
+	r10d_1703 = (word32) r10_1702 (alias)
+	r10b_1704 = (byte) r10_1702 (alias)
+	r8_1705 = rax_1700
+	r9d_1706 = dwLoc74_1693
+	r9_1707 = DPB(r9_1368, r9d_1706, 0) (alias)
+	ecx_1708 = 0x00
+	rcx_1709 = DPB(rcx_1685, ecx_1708, 0) (alias)
+	cl_1710 = (byte) ecx_1708 (alias)
+	edi_1711 = 0x00
+	rdi_1712 = DPB(rdi_1699, edi_1711, 0) (alias)
+	dil_1713 = (byte) edi_1711 (alias)
+	SZO_1714 = cond(0x00)
+	C_1715 = false
+l000000000040C530:
+	dwLoc74_1372 = PHI(dwLoc74, dwLoc74, dwLoc74_1693, dwLoc74, dwLoc74, dwLoc74)
+	qwLoc90_1373 = PHI(qwLoc90, qwLoc90, qwLoc90_1694, qwLoc90, qwLoc90, qwLoc90)
+	qwLoc80_1374 = PHI(qwLoc80_132, qwLoc80_132, qwLoc80_1695, qwLoc80_132, qwLoc80_132, qwLoc80_132)
+	r10b_1375 = PHI(r10b_1337, r10b_1625, r10b_1704, r10b_1747, r10b_1716, r10b_1337)
+	r10d_1376 = PHI(r10d_1338, r10d_1624, r10d_1703, r10d_1746, r10d_1717, r10d_1338)
+	dil_1377 = PHI(dil_1339, dil_1645, dil_1713, dil_1756, dil_1737, dil_1339)
+	sil_1378 = PHI(sil_1340, sil_1567, sil_1671, sil_1671, sil_1671, sil_1567)
+	esi_1379 = PHI(esi_1342, esi_1565, esi_1672, esi_1672, esi_1672, esi_1565)
+	edi_1380 = PHI(edi_1343, edi_1643, edi_1711, edi_1754, edi_1735, edi_1343)
+	r10_1381 = PHI(r10_1344, r10_1623, r10_1702, r10_1745, r10_1720, r10_1344)
+	r11_1382 = PHI(r11_143, r11_143, r11_1701, r11_143, r11_143, r11_143)
+	r8_1383 = PHI(r8_1364, r8_1664, r8_1705, r8_1750, r8_1734, r8_1812)
+	r9_1384 = PHI(r9_1368, r9_1368, r9_1707, r9_1368, r9_1368, r9_1368)
+	r9d_1385 = PHI(r9d_1367, r9d_1367, r9d_1706, r9d_1367, r9d_1367, r9d_1367)
+	r12_1386 = PHI(r12_64, r12_1575, r12_1575, r12_1575, r12_1575, r12_64)
+	r12d_1387 = PHI(r12d_85, r12d_1574, r12d_1673, r12d_1673, r12d_1673, r12d_85)
+	r14d_1388 = PHI(r14d_87, r14d_1641, r14d_1641, r14d_1641, r14d_1641, r14d_87)
+	r14_1389 = PHI(r14_62, r14_1642, r14_1642, r14_1642, r14_1642, r14_62)
+	CZ_1390 = PHI(CZ_1346, CZ_1661, CZ_1668, CZ_1668, CZ_1668, CZ_1346)
+	ebx_1391 = PHI(ebx_1365, ebx_1657, ebx_1657, ebx_1657, ebx_1657, ebx_1813)
+	ecx_1392 = PHI(ecx_1347, ecx_1651, ecx_1708, ecx_1751, ecx_1721, ecx_1347)
+	rcx_1393 = PHI(rcx_1348, rcx_1652, rcx_1709, rcx_1752, rcx_1722, rcx_1348)
+	cl_1394 = PHI(cl_1349, cl_1653, cl_1710, cl_1753, cl_1723, cl_1349)
+	SZO_1395 = PHI(SZO_1369, SZO_1654, SZO_1714, SZO_1757, SZO_1738, SZO_1815)
+	C_1396 = PHI(C_1371, C_1656, C_1715, C_1758, C_1739, C_1816)
+	rax_1397 = PHI(rax_1350, rax_1635, rax_1700, rax_1635, rax_1635, rax_1350)
+	eax_1398 = PHI(eax_1351, eax_1634, eax_1634, eax_1634, eax_1634, eax_1351)
+	ah_1399 = PHI(ah_1352, ah_1638, ah_1638, ah_1638, ah_1638, ah_1352)
+	ax_1400 = PHI(ax_1353, ax_1639, ax_1639, ax_1639, ax_1639, ax_1353)
+	al_1401 = PHI(al_1354, al_1640, al_1640, al_1640, al_1640, al_1354)
+	rdx_1402 = PHI(rdx_1355, rdx_1633, rdx_1691, rdx_1674, rdx_1674, rdx_1355)
+	edx_1403 = PHI(edx_1356, edx_1632, edx_1675, edx_1675, edx_1675, edx_1356)
+	rdx_rax_1404 = PHI(rdx_rax_1357, rdx_rax_1636, rdx_rax_1676, rdx_rax_1676, rdx_rax_1676, rdx_rax_1357)
+	edx_eax_1405 = PHI(edx_eax_1358, edx_eax_1637, edx_eax_1677, edx_eax_1677, edx_eax_1677, edx_eax_1358)
+	dl_1406 = PHI(dl_1359, dl_1359, dl_1678, dl_1678, dl_1678, dl_1359)
+	rbx_1407 = PHI(rbx_1366, rbx_1658, rbx_1658, rbx_1658, rbx_1658, rbx_1814)
+	rsi_1408 = PHI(rsi_1361, rsi_1566, rsi_1692, rsi_1566, rsi_1566, rsi_1566)
+	rdi_1409 = PHI(rdi_1362, rdi_1644, rdi_1712, rdi_1755, rdi_1736, rdi_1362)
+	SCZO_1410 = cond(dwLoc98_30 - 0x01)
+	Z_1411 = SCZO_1410 (alias)
+	branch Test(EQ,Z_1411) l000000000040C6F0
+l000000000040C53B:
+	esi_1523 = dwLoc98_30
+	eax_1524 = 0x00
+	rax_1525 = DPB(rax_1397, eax_1524, 0) (alias)
+	rdx_rax_1526 = DPB(rdx_rax_1404, eax_1524, 0) (alias)
+	edx_eax_1527 = SEQ(edx_1403, eax_1524) (alias)
+	ax_1528 = (word16) eax_1524 (alias)
+	al_1529 = (byte) eax_1524 (alias)
+	SZO_1530 = cond(esi_1523 & esi_1523)
+	Z_1531 = SZO_1530 (alias)
+	C_1532 = false
+	branch Test(NE,Z_1531) l000000000040C54C
+l000000000040C545:
+	ecx_1533 = ecx_1392 + edi_1380
+	rcx_1534 = DPB(rcx_1393, ecx_1533, 0) (alias)
+	cl_1535 = (byte) ecx_1533 (alias)
+	SZO_1536 = cond(ecx_1533 & ecx_1533)
+	C_1537 = false
+	al_1538 = Test(GT,SZO_1536)
+	eax_1539 = DPB(eax_1524, al_1538, 0) (alias)
+	rax_1540 = DPB(rax_1525, al_1538, 0) (alias)
+	rdx_rax_1541 = DPB(rdx_rax_1526, al_1538, 0) (alias)
+	edx_eax_1542 = DPB(edx_eax_1527, al_1538, 0) (alias)
+	ax_1543 = DPB(ax_1528, al_1538, 0) (alias)
+l000000000040C54C:
+	esi_1412 = PHI(esi_1523, esi_1523, esi_1379)
+	edi_1413 = PHI(edi_1380, edi_1380, edi_1556)
+	ecx_1414 = PHI(ecx_1392, ecx_1533, ecx_1547)
+	rcx_1415 = PHI(rcx_1393, rcx_1534, rcx_1546)
+	cl_1416 = PHI(cl_1394, cl_1535, cl_1548)
+	rax_1417 = PHI(rax_1525, rax_1540, rax_1561)
+	eax_1418 = PHI(eax_1524, eax_1539, eax_1560)
+	ax_1419 = PHI(ax_1528, ax_1543, ax_1564)
+	al_1420 = PHI(al_1529, al_1538, al_1559)
+	rdx_rax_1421 = PHI(rdx_rax_1526, rdx_rax_1541, rdx_rax_1562)
+	edx_eax_1422 = PHI(edx_eax_1527, edx_eax_1542, edx_eax_1563)
+	SCZO_1423 = PHI(SCZO_1410, SCZO_1410, SCZO_1557)
+	SZO_1424 = cond(al_1420 & al_1420)
+	Z_1425 = SZO_1424 (alias)
+	C_1426 = false
+	branch Test(EQ,Z_1425) l000000000040C5A0
+l000000000040C550:
+	r10_1485 = r10_1381 + 0x01
+	r10d_1486 = (word32) r10_1485 (alias)
+	r10b_1487 = (byte) r10_1485 (alias)
+	SZO_1488 = cond(r9d_1385 & r9d_1385)
+	Z_1489 = SZO_1488 (alias)
+	C_1490 = false
+	branch Test(EQ,Z_1489) l000000000040C5A0
+l000000000040C559:
+	eax_1491 = dwLocAC_53
+	rax_1492 = DPB(rax_1417, eax_1491, 0) (alias)
+	rdx_rax_1493 = DPB(rdx_rax_1421, eax_1491, 0) (alias)
+	edx_eax_1494 = SEQ(edx_1403, eax_1491) (alias)
+	ah_1495 = SLICE(eax_1491, byte, 8) (alias)
+	ax_1496 = (word16) eax_1491 (alias)
+	al_1497 = (byte) eax_1491 (alias)
+	SCZO_1498 = cond(rax_1492 - r10_1485)
+	Z_1499 = SCZO_1498 (alias)
+	branch Test(NE,Z_1499) l000000000040C5A0
+l000000000040C562:
+	SCZO_1500 = cond(ebx_1391 - 0x08)
+	Z_1501 = SCZO_1500 (alias)
+	branch Test(EQ,Z_1501) l000000000040C5A0
+l000000000040C567:
+	ebx_1502 = ebx_1391 + 0x01
+	rbx_1503 = DPB(rbx_1407, ebx_1502, 0) (alias)
+	SZO_1504 = cond(bLocB0 & 0x08)
+	Z_1505 = SZO_1504 (alias)
+	C_1506 = false
+	edx_1507 = 0x01
+	rdx_rax_1508 = DPB(rdx_rax_1493, edx_1507, 64) (alias)
+	edx_eax_1509 = SEQ(edx_1507, eax_1491) (alias)
+	branch Test(NE,Z_1505) l000000000040C5A0
+l000000000040C577:
+	rax_1510 = rax_1492 - 0x01
+	Mem1511[rax_1510 - 0x01 + 0x00:byte] = 0x30
+	rdx_1512 = r11_1382
+	rsi_1513 = r15_130
+	qwLoc98_1514 = r10_1485
+	rax_1515 = rax_1510 - r11_1382
+	SCZO_1516 = cond(rax_1515)
+	rdi_1517 = rax_1515
+	rax_1518 = memcpy(rdi_1517, rsi_1513, rdx_1512)
+	r10_1519 = qwLoc98_1514
+	r10d_1520 = (word32) r10_1519 (alias)
+	r10b_1521 = (byte) r10_1519 (alias)
+	r8_1522 = rax_1518
+l000000000040C5A0:
+	qwLoc98_1427 = PHI(qwLoc98, qwLoc98, qwLoc98, qwLoc98, qwLoc98, qwLoc98_1514)
+	r10b_1428 = PHI(r10b_1375, r10b_1487, r10b_1487, r10b_1487, r10b_1487, r10b_1521)
+	r10d_1429 = PHI(r10d_1376, r10d_1486, r10d_1486, r10d_1486, r10d_1486, r10d_1520)
+	r10_1430 = PHI(r10_1381, r10_1485, r10_1485, r10_1485, r10_1485, r10_1519)
+	r8_1431 = PHI(r8_1383, r8_1383, r8_1383, r8_1383, r8_1383, r8_1522)
+	ebx_1432 = PHI(ebx_1391, ebx_1391, ebx_1391, ebx_1391, ebx_1502, ebx_1502)
+	SZO_1433 = PHI(SZO_1424, SZO_1488, SZO_1488, SZO_1488, SZO_1504, SZO_1504)
+	Z_1434 = PHI(Z_1425, Z_1489, Z_1499, Z_1501, Z_1505, Z_1505)
+	C_1435 = PHI(C_1426, C_1490, C_1490, C_1490, C_1506, C_1506)
+	rax_1436 = PHI(rax_1417, rax_1417, rax_1492, rax_1492, rax_1492, rax_1518)
+	eax_1437 = PHI(eax_1418, eax_1418, eax_1491, eax_1491, eax_1491, eax_1491)
+	ah_1438 = PHI(ah_1399, ah_1399, ah_1495, ah_1495, ah_1495, ah_1495)
+	ax_1439 = PHI(ax_1419, ax_1419, ax_1496, ax_1496, ax_1496, ax_1496)
+	al_1440 = PHI(al_1420, al_1420, al_1497, al_1497, al_1497, al_1497)
+	rdx_1441 = PHI(rdx_1402, rdx_1402, rdx_1402, rdx_1402, rdx_1402, rdx_1512)
+	edx_1442 = PHI(edx_1403, edx_1403, edx_1403, edx_1403, edx_1507, edx_1507)
+	rdx_rax_1443 = PHI(rdx_rax_1421, rdx_rax_1421, rdx_rax_1493, rdx_rax_1493, rdx_rax_1508, rdx_rax_1508)
+	edx_eax_1444 = PHI(edx_eax_1422, edx_eax_1422, edx_eax_1494, edx_eax_1494, edx_eax_1509, edx_eax_1509)
+	SCZO_1445 = PHI(SCZO_1423, SCZO_1423, SCZO_1498, SCZO_1500, SCZO_1500, SCZO_1516)
+	rbx_1446 = PHI(rbx_1407, rbx_1407, rbx_1407, rbx_1407, rbx_1503, rbx_1503)
+	rsi_1447 = PHI(rsi_1408, rsi_1408, rsi_1408, rsi_1408, rsi_1408, rsi_1513)
+	rdi_1448 = PHI(rdi_1409, rdi_1409, rdi_1409, rdi_1409, rdi_1409, rdi_1517)
+	r12_1449 = r8_1431
+	r12d_1450 = (word32) r12_1449 (alias)
+	r9_1451 = 0xCCCCCCCD
+	r9d_1452 = (word32) r9_1451 (alias)
+l000000000040C5B0:
+	r10_1453 = PHI(r10_1430, r10_1477)
+	r12_1454 = PHI(r12_1449, r12_1456)
+	rax_1455 = r10_1453
+	r12_1456 = r12_1454 - 0x01
+	r12d_1457 = (word32) r12_1456 (alias)
+	rdx_rax_1458 = rcx_1415 *u rax_1455
+	rdx_1459 = SLICE(rdx_rax_1458, word64, 64) (alias)
+	rdx_1460 = rdx_1459 >>u 0x03
+	rax_1461 = rdx_1460 + rdx_1460 * 0x04
+	rax_1462 = rax_1461 + rax_1461
+	eax_1463 = (word32) rax_1462 (alias)
+	rdx_rax_1464 = SEQ(rdx_1460, rax_1462) (alias)
+	edx_eax_1465 = rax_1462 (alias)
+	ah_1466 = SLICE(rax_1462, byte, 8) (alias)
+	ax_1467 = (word16) rax_1462 (alias)
+	al_1468 = (byte) rax_1462 (alias)
+	r10_1469 = r10_1453 - rax_1462
+	r10d_1470 = (word32) r10_1469 (alias)
+	r10d_1471 = r10d_1470 + 0x30
+	r10b_1472 = (byte) r10d_1471 (alias)
+	SZO_1473 = cond(rdx_1460 & rdx_1460)
+	Z_1474 = SZO_1473 (alias)
+	C_1475 = false
+	Mem1476[r12_1456 + 0x00:byte] = r10b_1472
+	r10_1477 = rdx_1460
+	r10d_1478 = (word32) r10_1477 (alias)
+	r10b_1479 = (byte) r10_1477 (alias)
+	branch Test(NE,Z_1474) l000000000040C5B0
+	goto l000000000040C237
+l000000000040C5E0:
+	rLoc3_1318 = rLoc3_667 + Mem0[0x0000000000415F08 + 0x00:real32]
+	goto l000000000040BE94
+l000000000040C5F0:
+	rLoc1_1331 = rLoc1_657 + Mem0[0x0000000000415F08 + 0x00:real32]
+	qwLoc68_1332 = rbx_65
+	SZO_1333 = cond(rbx_65 & rbx_65)
+	S_1334 = SZO_1333 (alias)
+	C_1335 = false
+	rLoc2_1336 = (real64) qwLoc68_1332
+	branch Test(NS,S_1334) l000000000040BE7D
+l000000000040C608:
+	rLoc2_1319 = PHI(rLoc2_1330, rLoc2_1336)
+	qwLoc68_1320 = PHI(qwLoc68_1326, qwLoc68_1332)
+	rLoc1_1321 = PHI(rLoc1_657, rLoc1_1331)
+	S_1322 = PHI(S_1328, S_1334)
+	SZO_1323 = PHI(SZO_1327, SZO_1333)
+	C_1324 = PHI(C_1329, C_1335)
+	rLoc2_1325 = rLoc2_1319 + Mem0[0x0000000000415F08 + 0x00:real32]
+	goto l000000000040BE7D
+l000000000040C618:
+	rdx_457 = qwLocA8_36
+	edx_458 = (word32) rdx_457 (alias)
+	rdx_rax_459 = SEQ(rdx_457, rax_240) (alias)
+	edx_eax_460 = rdx_457 (alias)
+	dl_461 = (byte) rdx_457 (alias)
+	SCZO_462 = cond(rdx_457 - 0x01)
+	CZ_463 = SCZO_462 (alias)
+	branch rdx_457 <=u 0x01 l000000000040C7A9
+l000000000040C627:
+	r14d_464 = dwLocAC_53
+	r14_465 = DPB(r14_234, r14d_464, 0) (alias)
+	ebx_466 = 0x01
+	rbx_467 = DPB(rbx_251, ebx_466, 0) (alias)
+	eax_468 = 0x01
+	rax_469 = DPB(rax_240, eax_468, 0) (alias)
+	rdx_rax_470 = DPB(rdx_rax_459, eax_468, 0) (alias)
+	edx_eax_471 = SEQ(edx_458, eax_468) (alias)
+	ah_472 = SLICE(eax_468, byte, 8) (alias)
+	ax_473 = (word16) eax_468 (alias)
+	al_474 = (byte) eax_468 (alias)
+l000000000040C640:
+	ebx_475 = PHI(ebx_466, ebx_488)
+	Z_476 = PHI(Z_391, Z_491)
+	rax_477 = PHI(rax_469, rax_479)
+	rbx_478 = PHI(rbx_467, rbx_489)
+	rax_479 = rax_477 *s r14_465
+	eax_480 = (word32) rax_479 (alias)
+	rdx_rax_481 = SEQ(rdx_457, rax_479) (alias)
+	edx_eax_482 = rax_479 (alias)
+	ah_483 = SLICE(rax_479, byte, 8) (alias)
+	ax_484 = (word16) rax_479 (alias)
+	al_485 = (byte) rax_479 (alias)
+	SCZO_486 = cond(rdx_457 - rax_479)
+	CZ_487 = SCZO_486 (alias)
+	branch rdx_457 <=u rax_479 l000000000040C252
+l000000000040C64D:
+	ebx_488 = ebx_475 + 0x01
+	rbx_489 = DPB(rbx_478, ebx_488, 0) (alias)
+	SCZO_490 = cond(ebx_488 - 0x08)
+	Z_491 = SCZO_490 (alias)
+	branch ebx_488 != 0x08 l000000000040C640
+	goto l000000000040C252
+l000000000040C660:
+	wLoc6A_1113 = __fstcw()
+	eax_1114 = (word32) wLoc6A_1113
+	ah_1115 = SLICE(eax_1114, byte, 8) (alias)
+	rLoc2_1116 = rLoc2_1021 - rLoc1_1022
+	v58_1117 = rLoc2_1116
+	rLoc2_1118 = rLoc1_1022
+	rLoc1_1119 = v58_1117
+	r10_1120 = 0x00
+	ah_1121 = ah_1115 | 0x0C
+	ax_1122 = DPB(ax_644, ah_1121, 8) (alias)
+	wLoc6C_1123 = ax_1122
+	__fldcw(wLoc6C_1123)
+	qwLoc68_1124 = (int64) rLoc2_1118
+	__fldcw(wLoc6A_1113)
+	rax_1125 = qwLoc68_1124
+	rax_1126 = rax_1125 ^ rdx_646
+	eax_1127 = (word32) rax_1126 (alias)
+	rdx_rax_1128 = SEQ(rdx_646, rax_1126) (alias)
+	edx_eax_1129 = rax_1126 (alias)
+	ah_1130 = SLICE(rax_1126, byte, 8) (alias)
+	ax_1131 = (word16) rax_1126 (alias)
+	al_1132 = (byte) rax_1126 (alias)
+	SZO_1133 = cond(rax_1126)
+	C_1134 = false
+	goto l000000000040BF29
+l000000000040C6A0:
+	wLoc6A_1296 = __fstcw()
+	eax_1297 = (word32) wLoc6A_1296
+	ah_1298 = SLICE(eax_1297, byte, 8) (alias)
+	rLoc2_1299 = rLoc2_1202 - rLoc1_1203
+	v71_1300 = rLoc2_1299
+	rLoc2_1301 = rLoc1_1203
+	rLoc1_1302 = v71_1300
+	r10_1303 = 0x00
+	ah_1304 = ah_1298 | 0x0C
+	ax_1305 = DPB(ax_644, ah_1304, 8) (alias)
+	wLoc6C_1306 = ax_1305
+	__fldcw(wLoc6C_1306)
+	qwLoc68_1307 = (int64) rLoc2_1301
+	__fldcw(wLoc6A_1296)
+	rax_1308 = qwLoc68_1307
+	rax_1309 = rax_1308 ^ rdx_646
+	eax_1310 = (word32) rax_1309 (alias)
+	rdx_rax_1311 = SEQ(rdx_646, rax_1309) (alias)
+	edx_eax_1312 = rax_1309 (alias)
+	ah_1313 = SLICE(rax_1309, byte, 8) (alias)
+	ax_1314 = (word16) rax_1309 (alias)
+	al_1315 = (byte) rax_1309 (alias)
+	SZO_1316 = cond(rax_1309)
+	C_1317 = false
+	goto l000000000040C43E
+l000000000040C6E0:
+	ecx_1919 = 0x00 - C_1906
+	ecx_1920 = ~ecx_1919
+	ecx_1921 = ecx_1920 + 0x03
+	rcx_1922 = DPB(rcx_66, ecx_1921, 0) (alias)
+	cl_1923 = (byte) ecx_1921 (alias)
+	SCZO_1924 = cond(ecx_1921)
+	goto l000000000040C12D
+l000000000040C6F0:
+	rax_1544 = r10_1381
+	eax_1545 = (word32) rax_1544 (alias)
+	rcx_1546 = (int64) ecx_1392
+	ecx_1547 = (word32) rcx_1546 (alias)
+	cl_1548 = (byte) rcx_1546 (alias)
+	eax_1549 = eax_1545 & 0x01
+	rax_1550 = DPB(rax_1544, eax_1549, 0) (alias)
+	rax_1551 = rax_1550 + rcx_1546
+	SCZO_1552 = cond(rax_1551)
+	Z_1553 = SCZO_1552 (alias)
+	al_1554 = Test(NE,Z_1553)
+	eax_1555 = (word32) al_1554
+	edi_1556 = edi_1380 + eax_1555
+	SCZO_1557 = cond(edi_1556 - 0x05)
+	SZO_1558 = SCZO_1557 (alias)
+	al_1559 = Test(GT,SZO_1558)
+	eax_1560 = DPB(eax_1555, al_1559, 0) (alias)
+	rax_1561 = DPB(rax_1551, al_1559, 0) (alias)
+	rdx_rax_1562 = DPB(rdx_rax_1404, al_1559, 0) (alias)
+	edx_eax_1563 = DPB(edx_eax_1405, al_1559, 0) (alias)
+	ax_1564 = DPB(ax_1400, al_1559, 0) (alias)
+	goto l000000000040C54C
+l000000000040C710:
+	r8_1812 = qwLocB8_151
+	ebx_1813 = 0x00
+	rbx_1814 = DPB(rbx_1366, ebx_1813, 0) (alias)
+	SZO_1815 = cond(0x00)
+	C_1816 = false
+	goto l000000000040C530
+l000000000040C720:
+	wLoc6A_979 = __fstcw()
+	eax_980 = (word32) wLoc6A_979
+	ah_981 = SLICE(eax_980, byte, 8) (alias)
+	rLoc2_982 = rLoc2_885 - rLoc1_886
+	v64_983 = rLoc2_982
+	rLoc2_984 = rLoc1_886
+	rLoc1_985 = v64_983
+	r10_986 = 0x00
+	ah_987 = ah_981 | 0x0C
+	ax_988 = DPB(ax_831, ah_987, 8) (alias)
+	wLoc6C_989 = ax_988
+	__fldcw(wLoc6C_989)
+	qwLoc68_990 = (int64) rLoc2_984
+	__fldcw(wLoc6A_979)
+	rax_991 = qwLoc68_990
+	rax_992 = rax_991 ^ rdx_805
+	eax_993 = (word32) rax_992 (alias)
+	rdx_rax_994 = SEQ(rdx_805, rax_992) (alias)
+	edx_eax_995 = rax_992 (alias)
+	ah_996 = SLICE(rax_992, byte, 8) (alias)
+	ax_997 = (word16) rax_992 (alias)
+	al_998 = (byte) rax_992 (alias)
+	SZO_999 = cond(rax_992)
+	C_1000 = false
+	goto l000000000040C045
+l000000000040C758:
+	rLoc2_1066 = rLoc2_1062 + Mem0[0x0000000000415F08 + 0x00:real32]
+	v66_1067 = rLoc2_1066
+	rLoc2_1068 = rLoc1_1029
+	rLoc1_1069 = v66_1067
+	goto l000000000040BF72
+l000000000040C768:
+	CZ_1661 = PHI(CZ_1660, CZ_1668)
+	Z_1662 = PHI(Z_1666, Z_1655)
+	SCZO_1663 = PHI(SCZO_1665, SCZO_1667)
+	r8_1664 = qwLocB8_151
+	goto l000000000040C530
+l000000000040C772:
+	rLoc2_1276 = rLoc2_1250 + Mem0[0x0000000000415F08 + 0x00:real32]
+	goto l000000000040C45A
+l000000000040C77D:
+	rLoc2_1094 = rLoc2_1074 + Mem0[0x0000000000415F08 + 0x00:real32]
+	goto l000000000040BF45
+l000000000040C788:
+	SZO_1764 = cond(eax_1634 & eax_1634)
+	Z_1765 = SZO_1764 (alias)
+	C_1766 = false
+	branch Test(NE,Z_1765) l000000000040C4DB
+l000000000040C790:
+	r10b_1716 = PHI(r10b_1625, r10b_1747)
+	r10d_1717 = PHI(r10d_1624, r10d_1746)
+	dil_1718 = PHI(dil_1645, dil_1742)
+	edi_1719 = PHI(edi_1643, edi_1740)
+	r10_1720 = PHI(r10_1623, r10_1745)
+	ecx_1721 = PHI(ecx_1651, ecx_1759)
+	rcx_1722 = PHI(rcx_1652, rcx_1760)
+	cl_1723 = PHI(cl_1653, cl_1761)
+	SCZO_1724 = PHI(SCZO_1679, SCZO_1748)
+	rdi_1725 = PHI(rdi_1644, rdi_1741)
+	SZO_1726 = cond(bLocB0 & 0x08)
+	Z_1727 = SZO_1726 (alias)
+	C_1728 = false
+	branch Test(NE,Z_1727) l000000000040C7C2
+l000000000040C797:
+	edi_1729 = 0x00
+	rdi_1730 = DPB(rdi_1725, edi_1729, 0) (alias)
+	dil_1731 = (byte) edi_1729 (alias)
+	SZO_1732 = cond(0x00)
+	C_1733 = false
+	goto l000000000040C4DB
+l000000000040C79E:
+	rLoc2_959 = rLoc2_933 + Mem0[0x0000000000415F08 + 0x00:real32]
+	goto l000000000040C063
+l000000000040C7A9:
+	ebx_492 = 0x00
+	rbx_493 = DPB(rbx_251, ebx_492, 0) (alias)
+	SZO_494 = cond(0x00)
+	C_495 = false
+	goto l000000000040C252
+l000000000040C7B0:
+	edx_1782 = eax_1634
+	edx_1783 = edx_1782 & 0x01
+	edx_1784 = edx_1783 + ecx_1651
+	SCZO_1785 = cond(edx_1784 - 0x02)
+	SZO_1786 = SCZO_1785 (alias)
+	dl_1787 = Test(GT,SZO_1786)
+	edx_1788 = DPB(edx_1784, dl_1787, 0) (alias)
+	rdx_1789 = DPB(rdx_1633, dl_1787, 0) (alias)
+	rdx_rax_1790 = DPB(rdx_rax_1636, dl_1787, 64) (alias)
+	edx_eax_1791 = DPB(edx_eax_1637, dl_1787, 32) (alias)
+	goto l000000000040C4C7
+l000000000040C7C2:
+	r8_1734 = qwLocB8_151
+	edi_1735 = 0x00
+	rdi_1736 = DPB(rdi_1725, edi_1735, 0) (alias)
+	dil_1737 = (byte) edi_1735 (alias)
+	SZO_1738 = cond(0x00)
+	C_1739 = false
+	goto l000000000040C530
+l000000000040C7CE:
+	r10_1745 = r8_1619 + 0x01
+	r10d_1746 = (word32) r10_1745 (alias)
+	r10b_1747 = (byte) r10_1745 (alias)
+	SCZO_1748 = cond(r10_1745 - 0x0A)
+	Z_1749 = SCZO_1748 (alias)
+	branch Test(NE,Z_1749) l000000000040C7FF
+l000000000040C7D8:
+	r8_1750 = qwLocB8_151
+	ecx_1751 = 0x00
+	rcx_1752 = DPB(rcx_1652, ecx_1751, 0) (alias)
+	cl_1753 = (byte) ecx_1751 (alias)
+	edi_1754 = 0x00
+	rdi_1755 = DPB(rdi_1741, edi_1754, 0) (alias)
+	dil_1756 = (byte) edi_1754 (alias)
+	SZO_1757 = cond(0x00)
+	C_1758 = false
+	goto l000000000040C530
+l000000000040C7E6:
+	__stack_chk_fail()
+l000000000040C7EB:
+	r14d_259 = PHI(r14d_392, r14d_284)
+	r14_260 = PHI(r14_393, r14_285)
+	CZ_261 = PHI(CZ_394, CZ_286)
+	ebx_262 = PHI(ebx_395, ebx_287)
+	ecx_263 = PHI(ecx_412, ecx_288)
+	rcx_264 = PHI(rcx_419, rcx_289)
+	cl_265 = PHI(cl_239, cl_290)
+	qwLocB8_266 = PHI(qwLocB8_420, qwLocB8_291)
+	SZO_267 = PHI(SZO_422, SZO_301)
+	Z_268 = PHI(Z_423, Z_302)
+	C_269 = PHI(C_424, C_303)
+	rax_270 = PHI(rax_406, rax_305)
+	eax_271 = PHI(eax_405, eax_306)
+	ah_272 = PHI(ah_409, ah_309)
+	ax_273 = PHI(ax_410, ax_310)
+	al_274 = PHI(al_411, al_311)
+	SCZO_275 = PHI(SCZO_401, SCZO_295)
+	rbx_276 = PHI(rbx_402, rbx_296)
+	rsi_277 = PHI(rsi_421, rsi_297)
+	rdi_278 = PHI(rdi_254, rdi_300)
+	rdx_279 = qwLocB8_266
+	edx_280 = (word32) rdx_279 (alias)
+	rdx_rax_281 = SEQ(rdx_279, rax_270) (alias)
+	edx_eax_282 = rdx_279 (alias)
+	dl_283 = (byte) rdx_279 (alias)
+	goto l000000000040C29A
+l000000000040C7F5:
+	qwLocB8_389 = rdx_349
+	goto l000000000040C2BA
+l000000000040C7FF:
+	ecx_1759 = 0x00
+	rcx_1760 = DPB(rcx_1652, ecx_1759, 0) (alias)
+	cl_1761 = (byte) ecx_1759 (alias)
+	SZO_1762 = cond(0x00)
+	C_1763 = false
+	goto l000000000040C790
+fn000000000040BD70_exit:
+	use rsp_328 (=> rspOut)
+	use rbp_323 (=> rbpOut)
+	use r8_225 (=> r8Out)
+	use r9_229 (=> r9Out)
+	use r11_223 (=> r11Out)
+	use r14d_284 (=> r14dOut)
+	use r15_227 (=> r15Out)
 }
 
 // 000000000040C810: void fn000000000040C810(Register word64 rax, Register word64 rdx, Register word64 rdi, Register word64 r8)
@@ -5704,12 +9701,12 @@ void fn000000000040C810(word64 rax, word64 rdx, word64 rdi, word64 r8)
 			if (rax == 0x00)
 			{
 				rdi_100 = DPB(rdi, 4284206, 0);
-				word64 rdx_270 = 0x00 - (getenv(rdi_100) <u 0x01);
-				word64 rdx_276 = DPB(rdx_270, (word32) rdx_270 & 0x0200, 0);
-				Mem280[rdx + 0x00:word64] = rdx_276 + 0x0200;
+				word64 rdx_269 = 0x00 - (getenv(rdi_100) <u 0x01);
+				word64 rdx_275 = DPB(rdx_269, (word32) rdx_269 & 0x0200, 0);
+				Mem279[rdx + 0x00:word64] = rdx_275 + 0x0200;
 				ebp_136 = 0x00;
 				rbp_105 = DPB(rbp, 0x00, 0);
-				rdx_150 = rdx_276 + 0x0200;
+				rdx_150 = rdx_275 + 0x0200;
 				goto l000000000040C864;
 			}
 		}
@@ -5734,8 +9731,8 @@ void fn000000000040C810(word64 rax, word64 rdx, word64 rdi, word64 r8)
 	word64 r8_167;
 	if (fn0000000000411360(0x00, rsp_135 + 0x08, rbx_119, r8, out rsp_165, out rbp_105, out r8_167, out r12_11) != 0x00)
 	{
-		Mem239[rbp_105 + 0x00:word32] = 0x00;
-		rdx_150 = Mem239[r12_11 + 0x00:word64];
+		Mem238[rbp_105 + 0x00:word32] = 0x00;
+		rdx_150 = Mem238[r12_11 + 0x00:word64];
 l000000000040C86A:
 		if (rdx_150 == 0x00)
 		{
@@ -5746,18 +9743,18 @@ l000000000040C86A:
 	}
 	if ((byte) ((word32) Mem0[rbx_119 + 0x00:byte] - 0x30) >u 0x09)
 	{
-		word64 rdx_194 = Mem0[rsp_165 + 0x10:word64];
-		if (rbx_119 != rdx_194)
+		word64 rdx_193 = Mem0[rsp_165 + 0x08:word64];
+		if (rbx_119 != rdx_193)
 		{
 			do
 			{
-				word64 rbx_225 = rbx_119 + 0x01;
-				rbx_119 = rbx_225 + 0x01;
-				if ((byte) ((word32) Mem0[rbx_225 + 0x01:byte] - 0x30) <=u 0x09)
+				word64 rbx_224 = rbx_119 + 0x01;
+				rbx_119 = rbx_224 + 0x01;
+				if ((byte) ((word32) Mem0[rbx_224 + 0x01:byte] - 0x30) <=u 0x09)
 					goto l000000000040C907;
-			} while (rbx_225 + 0x01 == rdx_194);
+			} while (rbx_224 + 0x01 == rdx_193);
 		}
-		if (Mem0[rdx_194 - 0x01 + 0x00:byte] != 66)
+		if (Mem0[rdx_193 - 0x01 + 0x00:byte] != 66)
 		{
 			rbp_105 = DPB(rbp_105, 0x84, 0);
 			ebp_136 = DPB(ebp_136, 0x84, 0);
@@ -5766,7 +9763,7 @@ l000000000040C86A:
 		{
 			ebp_136 = ebp_136 | 0x0180;
 			rbp_105 = DPB(rbp_105, ebp_136 | 0x0180, 0);
-			if (Mem0[rdx_194 - 0x02 + 0x00:byte] != 0x69)
+			if (Mem0[rdx_193 - 0x02 + 0x00:byte] != 0x69)
 				goto l000000000040C907;
 		}
 		ebp_136 = ebp_136 | 0x20;
@@ -5779,40 +9776,42 @@ l000000000040C864:
 	goto l000000000040C86A;
 }
 
-// 000000000040C9B0: Register word64 fn000000000040C9B0(Register word64 rsi, Register word32 edi, Register word64 r8, Register word64 r12, Register out ptr64 rspOut, Register out ptr64 ebpOut)
-word64 fn000000000040C9B0(word64 rsi, word32 edi, word64 r8, word64 r12, ptr64 & rspOut, ptr64 & ebpOut)
+// 000000000040C9B0: Register word64 fn000000000040C9B0(Register word64 rsi, Register word32 edi, Register word64 r8, Register word64 r12, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r12Out)
+word64 fn000000000040C9B0(word64 rsi, word32 edi, word64 r8, word64 r12, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & r12Out)
 {
+	*r12Out = r12;
 	word64 rsp_11 = fp - 0x0C;
-	word64 rbx_102 = Mem0[0x000000000061B1F8 + 0x00:word64];
-	if (rbx_102 != 0x00)
+	word64 rbx_103 = Mem0[0x000000000061B1F8 + 0x00:word64];
+	if (rbx_103 != 0x00)
 	{
 		do
 		{
-			if (Mem0[rbx_102 + 0x00:word32] == edi)
+			if (Mem0[rbx_103 + 0x00:word32] == edi)
 				goto l000000000040C9D5;
-			rbx_102 = Mem0[rbx_102 + 0x08:word64];
-		} while (rbx_102 == 0x00);
+			rbx_103 = Mem0[rbx_103 + 0x08:word64];
+		} while (rbx_103 == 0x00);
 	}
-	word64 rax_65 = getpwuid(DPB(rdi, edi, 0));
-	word64 rdi_71 = DPB(rdi, 0x11, 0);
-	if (rax_65 != 0x00)
+	word64 rax_66 = getpwuid(DPB(rdi, edi, 0));
+	word64 rdi_72 = DPB(rdi, 0x11, 0);
+	if (rax_66 != 0x00)
 	{
 		r12 = Mem0[r8 + 0x00:word64];
-		rdi_71 = DPB(rax_65, strlen(r12), 0) + 0x11;
+		*r12Out = r12;
+		rdi_72 = DPB(rax_66, strlen(r12), 0) + 0x11;
 	}
-	word64 rax_78 = fn0000000000410C40(rsi, rdi_71, out rsp_11);
-	Mem80[rax_78 + 0x00:word32] = edi;
-	strcpy(rax_78 + 0x10, r12);
-	rax = Mem80[0x000000000061B1F8 + 0x00:word64];
-	Mem85[0x000000000061B1F8 + 0x00:word64] = rax_78;
-	Mem86[rax_78 + 0x08:word64] = rax;
-	rbx_102 = rax_78;
+	word64 rax_79 = fn0000000000410C40(rsi, rdi_72, out rsp_11);
+	Mem81[rax_79 + 0x00:word32] = edi;
+	strcpy(rax_79 + 0x10, r12);
+	rax = Mem81[0x000000000061B1F8 + 0x00:word64];
+	Mem86[0x000000000061B1F8 + 0x00:word64] = rax_79;
+	Mem87[rax_79 + 0x08:word64] = rax;
+	rbx_103 = rax_79;
 l000000000040C9D5:
 	word64 rbx_32 = Mem0[rsp_11 + 0x00:word64];
 	word64 rsp_36 = Mem0[rsp_11 + 0x10:word64];
 	word64 rax_39 = DPB(rax, 0x00, 0);
-	word32 ebp_46;
-	*ebpOut = (word32) Mem0[rsp_36 + 0x10:word64];
+	word64 rbp_45;
+	*rbpOut = Mem0[rsp_36 + 0x10:word64];
 	word64 rsp_49;
 	*rspOut = Mem0[rsp_36 + 0x18:word64] + 0x08;
 	if (Mem0[rbx_32 + 0x10:byte] != 0x00)
@@ -5821,63 +9820,69 @@ l000000000040C9D5:
 	return rax_39;
 }
 
-// 000000000040CB40: Register word64 fn000000000040CB40(Register word64 rax, Register word64 rsi, Register word32 edi, Register word64 r8, Register word64 r12, Register out ptr64 rspOut)
-word64 fn000000000040CB40(word64 rax, word64 rsi, word32 edi, word64 r8, word64 r12, ptr64 & rspOut)
+// 000000000040CB40: Register word64 fn000000000040CB40(Register word64 rax, Register word64 rsi, Register word32 edi, Register word64 r8, Register word64 r12, Register out ptr64 rbxOut, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r12Out)
+word64 fn000000000040CB40(word64 rax, word64 rsi, word32 edi, word64 r8, word64 r12, ptr64 & rbxOut, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & r12Out)
 {
-	word64 rbx_111;
+	*r12Out = r12;
+	word64 rbx_102;
 	word64 rsp_11 = fp - 0x0C;
 	word64 rbx_16 = Mem0[0x000000000061B1E8 + 0x00:word64];
-	rbx_111 = rbx_16;
+	rbx_102 = rbx_16;
 	if (rbx_16 != 0x00)
 	{
 		do
 		{
-			if (Mem0[rbx_111 + 0x00:word32] == edi)
+			if (Mem0[rbx_102 + 0x00:word32] == edi)
 				goto l000000000040CB65;
-			rbx_111 = Mem0[rbx_111 + 0x08:word64];
-		} while (rbx_111 == 0x00);
+			rbx_102 = Mem0[rbx_102 + 0x08:word64];
+		} while (rbx_102 == 0x00);
 	}
-	word64 rsp_69;
-	word64 rbp_70;
-	word32 ebp_71;
-	word32 edi_72;
-	word64 rbx_73;
-	byte SZO_74;
-	byte C_75;
-	byte Z_76;
-	byte SCZO_77;
-	word32 eax_78;
-	word64 rdx_79;
-	word64 rax_80;
-	word32 esp_81;
-	word64 r8_83;
-	word64 rdi_84;
-	word64 rsi_85;
-	word64 r12_104;
+	word64 rsp_72;
+	word64 rbp_73;
+	word32 ebp_74;
+	word32 edi_75;
+	word64 rbx_76;
+	byte SZO_77;
+	byte C_78;
+	byte Z_79;
+	byte SCZO_80;
+	word32 eax_81;
+	word64 rdx_82;
+	word64 rax_83;
+	word32 esp_84;
+	word64 r8_86;
+	word64 rdi_87;
+	word64 rsi_88;
+	word64 r12_107;
 	getgrgid();
-	word64 rdi_107 = DPB(rdi_84, 0x11, 0);
-	if (rax_80 != 0x00)
+	word64 rdi_110 = DPB(rdi_87, 0x11, 0);
+	if (rax_83 != 0x00)
 	{
-		r12_104 = Mem0[r8_83 + 0x00:word64];
-		rdi_107 = DPB(rax_80, strlen(r12_104), 0) + 0x11;
+		r12_107 = Mem0[r8_86 + 0x00:word64];
+		*r12Out = r12_107;
+		rdi_110 = DPB(rax_83, strlen(r12_107), 0) + 0x11;
 	}
-	word64 rax_95 = fn0000000000410C40(rsi_85, rdi_107, out rsp_11);
-	Mem97[rax_95 + 0x00:word32] = ebp_71;
-	strcpy(rax_95 + 0x10, r12_104);
-	rax = Mem97[0x000000000061B1E8 + 0x00:word64];
-	Mem102[0x000000000061B1E8 + 0x00:word64] = rax_95;
-	Mem103[rax_95 + 0x08:word64] = rax;
-	rbx_111 = rax_95;
+	word64 rax_98 = fn0000000000410C40(rsi_88, rdi_110, out rsp_11);
+	Mem100[rax_98 + 0x00:word32] = ebp_74;
+	strcpy(rax_98 + 0x10, r12_107);
+	rax = Mem100[0x000000000061B1E8 + 0x00:word64];
+	Mem105[0x000000000061B1E8 + 0x00:word64] = rax_98;
+	Mem106[rax_98 + 0x08:word64] = rax;
+	rbx_102 = rax_98;
 l000000000040CB65:
-	word64 rbx_34 = Mem0[rsp_11 + 0x00:word64];
-	word64 rsp_38 = Mem0[rsp_11 + 0x10:word64];
-	word64 rax_41 = DPB(rax, 0x00, 0);
+	word64 rbx_33 = Mem0[rsp_11 + 0x00:word64];
+	word64 rsp_37 = Mem0[rsp_11 + 0x10:word64];
+	word64 rax_40 = DPB(rax, 0x00, 0);
+	word64 rbx_44;
+	*rbxOut = Mem0[rsp_37 + 0x08:word64];
+	word64 rbp_46;
+	*rbpOut = Mem0[rsp_37 + 0x10:word64];
 	word64 rsp_50;
-	*rspOut = Mem0[rsp_38 + 0x18:word64] + 0x08;
-	if (Mem0[rbx_34 + 0x10:byte] != 0x00)
-		rax_41 = rbx_34 + 0x10;
-	return rax_41;
-	return rax_41;
+	*rspOut = Mem0[rsp_37 + 0x18:word64] + 0x08;
+	if (Mem0[rbx_33 + 0x10:byte] != 0x00)
+		rax_40 = rbx_33 + 0x10;
+	return rax_40;
+	return rax_40;
 }
 
 // 000000000040CCD0: Register word64 fn000000000040CCD0(Register word64 rsi, Register word64 rdi, Register out ptr64 r14Out)
@@ -6499,8 +10504,8 @@ l000000000040CEFF:
 	goto l000000000040CE08;
 }
 
-// 000000000040D240: Register word32 fn000000000040D240(Register word32 edx, Register word64 rsi, Register word64 rdi, Register selector fs, Register out ptr64 ebxOut, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut, Register out ptr64 r12Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
-word32 fn000000000040D240(word32 edx, word64 rsi, word64 rdi, selector fs, ptr64 & ebxOut, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & rsiOut, ptr64 & r12Out, ptr64 & r13Out, ptr64 & r14Out, ptr64 & r15Out)
+// 000000000040D240: Register word64 fn000000000040D240(Register word32 edx, Register word64 rsi, Register word64 rdi, Register selector fs, Register out ptr64 ebxOut, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut, Register out ptr64 r12Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
+word64 fn000000000040D240(word32 edx, word64 rsi, word64 rdi, selector fs, ptr64 & ebxOut, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & rsiOut, ptr64 & r12Out, ptr64 & r13Out, ptr64 & r14Out, ptr64 & r15Out)
 {
 fn000000000040D240_entry:
 	def fp
@@ -6606,8 +10611,8 @@ l000000000040D29B:
 	r13_335 = PHI(r13_235, r13_235, r13_235, r13_235, r13_415)
 	r14_336 = PHI(r14_236, r14_236, r14_236, r14_236, r14_437)
 	r15_337 = PHI(r15_237, r15_237, r15_237, r15_237, r15_438)
-	eax_338 = PHI(eax_250, eax_682, eax_250, eax_689, eax_420)
-	rax_339 = PHI(rax_251, rax_683, rax_251, rax_690, rax_419)
+	rax_338 = PHI(rax_251, rax_683, rax_251, rax_690, rax_419)
+	eax_339 = PHI(eax_250, eax_682, eax_250, eax_689, eax_420)
 	al_340 = PHI(al_252, al_684, al_252, al_691, al_426)
 	rbx_341 = PHI(rbx_239, rbx_239, rbx_239, rbx_239, rbx_441)
 	ebx_342 = PHI(ebx_240, ebx_240, ebx_240, ebx_240, ebx_442)
@@ -6640,8 +10645,8 @@ l000000000040D2A3:
 	r13_303 = PHI(r13_335, r13_539)
 	r14_304 = PHI(r14_336, r14_561)
 	r15_305 = PHI(r15_337, r15_562)
-	eax_306 = PHI(eax_338, eax_544)
-	rax_307 = PHI(rax_339, rax_543)
+	rax_306 = PHI(rax_338, rax_543)
+	eax_307 = PHI(eax_339, eax_544)
 	al_308 = PHI(al_340, al_550)
 	rbx_309 = PHI(rbx_341, rbx_540)
 	ebx_310 = PHI(ebx_342, ebx_559)
@@ -6673,7 +10678,7 @@ l000000000040D2AC:
 	r13_235 = PHI(r13_41, r13_303, r13_415)
 	r14_236 = PHI(r14_216, r14_304, r14_437)
 	r15_237 = PHI(r15_214, r15_305, r15_438)
-	rax_238 = PHI(rax_45, rax_307, rax_419)
+	rax_238 = PHI(rax_45, rax_306, rax_419)
 	rbx_239 = PHI(rbx_42, rbx_309, rbx_441)
 	ebx_240 = PHI(ebx_61, ebx_310, ebx_442)
 	rbp_241 = PHI(rbp_40, rbp_311, rbp_662)
@@ -6722,8 +10727,8 @@ l000000000040D2C3:
 	SO_352 = PHI(SO_673, SO_673, SO_688)
 	CZ_353 = PHI(CZ_231, CZ_686, CZ_693)
 	SZO_354 = PHI(SZO_254, SZO_677, SZO_254)
-	eax_355 = PHI(eax_250, eax_682, eax_689)
-	rax_356 = PHI(rax_251, rax_683, rax_690)
+	rax_355 = PHI(rax_251, rax_683, rax_690)
+	eax_356 = PHI(eax_250, eax_682, eax_689)
 	al_357 = PHI(al_252, al_684, al_691)
 	SCZO_358 = PHI(SCZO_672, SCZO_685, SCZO_692)
 	qwLoc30_359 = 0x00
@@ -6763,7 +10768,7 @@ l000000000040D2F4:
 	SCZO_367 = cond(rdx_366)
 	rsi_368 = rbp_362
 	call mbrtowc (retsize: 8; depth: 72)
-		uses: al_357,C_233,CZ_353,dh_220,dwLoc04_4,dwLoc08_11,dwLoc0C_14,dwLoc10_18,dwLoc14_20,dwLoc18_24,eax_355,ebx_240,edi_222,edx_230,esi_243,fs_228,qwLoc08,qwLoc10,qwLoc18,qwLoc28_29,qwLoc30_360,r12_234,r12d_226,r13_361,r14_236,r14d_227,r15_237,r15d_229,rax_356,rbp_362,rbx_239,rcx_364,rdi_365,rdx_366,rsi_368,rsp_245,S_221,SCZO_367,SO_352,SZO_354,Z_232
+		uses: al_357,C_233,CZ_353,dh_220,dwLoc04_4,dwLoc08_11,dwLoc0C_14,dwLoc10_18,dwLoc14_20,dwLoc18_24,eax_356,ebx_240,edi_222,edx_230,esi_243,fs_228,qwLoc08,qwLoc10,qwLoc18,qwLoc28_29,qwLoc30_360,r12_234,r12d_226,r13_361,r14_236,r14d_227,r15_237,r15d_229,rax_355,rbp_362,rbx_239,rcx_364,rdi_365,rdx_366,rsi_368,rsp_245,S_221,SCZO_367,SO_352,SZO_354,Z_232
 		defs: al_386,C_382,CZ_383,dh_394,eax_380,ebx_395,edi_391,edx_371,esi_393,fs_378,r12_396,r12d_385,r13_375,r14_397,r14d_384,r15_398,r15d_372,rax_379,rbp_374,rbx_376,rcx_389,rdi_370,rdx_388,rsi_373,rsp_369,S_392,SCZO_377,SO_387,SZO_381,Z_390
 	SCZO_399 = cond(rax_379 - ~0x00)
 	Z_400 = SCZO_399 (alias)
@@ -6894,7 +10899,7 @@ l000000000040D369:
 	r13_186 = PHI(r13_702, r13_500, r13_415, r13_415)
 	r14_187 = PHI(r14_724, r14_522, r14_437, r14_437)
 	r15_188 = PHI(r15_725, r15_523, r15_438, r15_438)
-	rax_189 = PHI(rax_737, rax_504, rax_419, rax_419)
+	rax_189 = PHI(rax_736, rax_504, rax_419, rax_419)
 	SCZO_190 = PHI(SCZO_739, SCZO_502, SCZO_445, SCZO_439)
 	rbx_191 = PHI(rbx_703, rbx_501, rbx_441, rbx_441)
 	ebx_192 = PHI(ebx_722, ebx_520, ebx_442, ebx_442)
@@ -6926,24 +10931,24 @@ l000000000040D379:
 	C_734 = false
 	goto l000000000040D398
 l000000000040D390:
-	eax_772 = eax_736 + 0x01
-	rax_773 = DPB(rax_737, eax_772, 0) (alias)
+	eax_772 = eax_737 + 0x01
+	rax_773 = DPB(rax_736, eax_772, 0) (alias)
 	al_774 = (byte) eax_772 (alias)
 	SCZO_775 = cond(eax_772)
 l000000000040D393:
 	edx_757 = PHI(edx_784, edx_765)
 	SZO_758 = PHI(SZO_785, SZO_766)
 	C_759 = PHI(C_787, C_767)
-	eax_760 = PHI(eax_736, eax_772)
-	rax_761 = PHI(rax_737, rax_773)
+	rax_760 = PHI(rax_736, rax_773)
+	eax_761 = PHI(eax_737, eax_772)
 	al_762 = PHI(al_738, al_774)
 	SCZO_763 = cond(rbp_748 - r13_702)
 	Z_764 = SCZO_763 (alias)
 	branch rbp_748 == r13_702 l000000000040D3C5
 l000000000040D398:
 	rdx_735 = PHI(rdx_715, rdx_752)
-	eax_736 = PHI(eax_728, eax_760)
-	rax_737 = PHI(rax_729, rax_761)
+	rax_736 = PHI(rax_729, rax_760)
+	eax_737 = PHI(eax_728, eax_761)
 	al_738 = PHI(al_730, al_762)
 	SCZO_739 = PHI(SCZO_704, SCZO_763)
 	rbp_740 = PHI(rbp_701, rbp_748)
@@ -6987,12 +10992,12 @@ l000000000040D3B2:
 	edx_765 = PHI(edx_751, edx_784)
 	SZO_766 = PHI(SZO_754, SZO_785)
 	C_767 = PHI(C_756, C_787)
-	SCZO_768 = cond(eax_736 - 0x7FFFFFFF)
+	SCZO_768 = cond(eax_737 - 0x7FFFFFFF)
 	Z_769 = SCZO_768 (alias)
-	branch eax_736 != 0x7FFFFFFF l000000000040D390
-	SCZO_770 = cond(eax_736 - 0x7FFFFFFF)
+	branch eax_737 != 0x7FFFFFFF l000000000040D390
+	SCZO_770 = cond(eax_737 - 0x7FFFFFFF)
 	Z_771 = SCZO_770 (alias)
-	branch eax_736 != 0x7FFFFFFF l000000000040D390
+	branch eax_737 != 0x7FFFFFFF l000000000040D390
 l000000000040D3C0:
 	qwLoc30_137 = PHI(qwLoc30, qwLoc30_360, qwLoc30_360)
 	dh_138 = PHI(dh_753, dh_632, dh_519)
@@ -7014,7 +11019,7 @@ l000000000040D3C0:
 	r13_154 = PHI(r13_702, r13_613, r13_500)
 	r14_155 = PHI(r14_724, r14_635, r14_522)
 	r15_156 = PHI(r15_725, r15_636, r15_523)
-	rax_157 = PHI(rax_737, rax_617, rax_504)
+	rax_157 = PHI(rax_736, rax_617, rax_504)
 	SCZO_158 = PHI(SCZO_770, SCZO_642, SCZO_650)
 	rbx_159 = PHI(rbx_703, rbx_614, rbx_501)
 	ebx_160 = PHI(ebx_722, ebx_633, ebx_520)
@@ -7044,8 +11049,8 @@ l000000000040D3C5:
 	r13_81 = PHI(r13_154, r13_272, r13_186, r13_702, r13_41)
 	r14_82 = PHI(r14_155, r14_273, r14_187, r14_724, r14_63)
 	r15_83 = PHI(r15_156, r15_274, r15_188, r15_725, r15_64)
-	eax_84 = PHI(eax_166, eax_284, eax_198, eax_760, eax_202)
-	rax_85 = PHI(rax_167, rax_285, rax_199, rax_761, rax_203)
+	rax_84 = PHI(rax_167, rax_285, rax_199, rax_760, rax_203)
+	eax_85 = PHI(eax_166, eax_284, eax_198, eax_761, eax_202)
 	al_86 = PHI(al_168, al_286, al_200, al_762, al_204)
 	SCZO_87 = PHI(SCZO_158, SCZO_276, SCZO_190, SCZO_763, SCZO_201)
 	rbx_88 = PHI(rbx_159, rbx_277, rbx_191, rbx_703, rbx_42)
@@ -7077,7 +11082,7 @@ l000000000040D3D5:
 	rsp_115 = rsp_112 + 0x08
 	rdi_116 = Mem0[rsp_115 + 0x00:word64]
 	rsp_117 = rsp_115 + 0x08
-	return eax_84
+	return rax_84
 l000000000040D3E8:
 	SZO_659 = cond(r15d_412 & r15d_412)
 	Z_660 = SZO_659 (alias)
@@ -7111,7 +11116,7 @@ l000000000040D401:
 	r13_272 = PHI(r13_303, r13_415)
 	r14_273 = PHI(r14_304, r14_437)
 	r15_274 = PHI(r15_305, r15_438)
-	rax_275 = PHI(rax_307, rax_419)
+	rax_275 = PHI(rax_306, rax_419)
 	SCZO_276 = PHI(SCZO_316, SCZO_665)
 	rbx_277 = PHI(rbx_309, rbx_441)
 	ebx_278 = PHI(ebx_310, ebx_442)
@@ -7135,17 +11140,17 @@ l000000000040D406:
 l000000000040D40A:
 	__stack_chk_fail()
 l000000000040D40A_thunk_fn000000000040D420:
-	eax = fn000000000040D420(rax, esi, rdi, fs, qwLoc48, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15)
-	rax = DPB(rax, eax, 0) (alias)
-	al = (byte) eax (alias)
-	return eax
+	rax = fn000000000040D420(rax, esi, rdi, fs, qwLoc48, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15)
+	eax = (word32) rax (alias)
+	al = (byte) rax (alias)
+	return rax
 fn000000000040D240_exit:
 	r12_118 = PHI(r12_80, r12)
 	r13_119 = PHI(r13_81, r13)
 	r14_120 = PHI(r14_82, r14)
 	r15_121 = PHI(r15_83, r15)
-	eax_122 = PHI(eax_84, eax)
-	rax_123 = PHI(rax_85, rax)
+	rax_122 = PHI(rax_84, rax)
+	eax_123 = PHI(eax_85, eax)
 	al_124 = PHI(al_86, al)
 	ebx_125 = PHI(ebx_103, ebx)
 	rbp_126 = PHI(rbp_111, rbp)
@@ -7161,8 +11166,8 @@ fn000000000040D240_exit:
 	use r15_121 (=> r15Out)
 }
 
-// 000000000040D420: Register word32 fn000000000040D420(Register word64 rax, Register word32 esi, Register word64 rdi, Register selector fs, Stack word64 qwArg00, Register out ptr64 ebxOut, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut, Register out ptr64 r12Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
-word32 fn000000000040D420(word64 rax, word32 esi, word64 rdi, selector fs, word64 qwArg00, ptr64 & ebxOut, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & rsiOut, ptr64 & r12Out, ptr64 & r13Out, ptr64 & r14Out, ptr64 & r15Out)
+// 000000000040D420: Register word64 fn000000000040D420(Register word64 rax, Register word32 esi, Register word64 rdi, Register selector fs, Stack word64 qwArg00, Register out ptr64 ebxOut, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut, Register out ptr64 r12Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
+word64 fn000000000040D420(word64 rax, word32 esi, word64 rdi, selector fs, word64 qwArg00, ptr64 & ebxOut, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & rsiOut, ptr64 & r12Out, ptr64 & r13Out, ptr64 & r14Out, ptr64 & r15Out)
 {
 	rsp = fp;
 	rsp = fp - 0x04;
@@ -7187,10 +11192,10 @@ word32 fn000000000040D420(word64 rax, word32 esi, word64 rdi, selector fs, word6
 	rsp = fp + 0x08;
 	rsi = rax;
 	esi = (word32) rsi;
-	eax = fn000000000040D240(edx, rsi, rdi, fs, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15);
-	rax = DPB(rax, eax, 0);
-	al = (byte) eax;
-	return eax;
+	rax = fn000000000040D240(edx, rsi, rdi, fs, out ebx, out rsp, out rbp, out rsi, out r12, out r13, out r14, out r15);
+	eax = (word32) rax;
+	al = (byte) rax;
+	return rax;
 }
 
 // 000000000040D450: Register word32 fn000000000040D450(Register word32 eax, Register word64 rsi, Register word64 rdi, Register word64 r8, Register word64 r11, Register word64 r15, Register out ptr64 rspOut, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
@@ -7223,7 +11228,6 @@ fn000000000040D450_entry:
 	qwLoc38 = rdx
 	branch Test(UGT,CZ) l000000000040D490
 	goto l000000000040D473
-l00000000004025C0_in_fn000000000040D450:
 l000000000040D450:
 l000000000040D473:
 	branch Test(EQ,Z) l000000000040D660
@@ -7371,8 +11375,9 @@ l000000000040D5F0:
 	rdx = 0x00 + r15 * 0x08
 	rdi = Mem0[rsp + 0x00:word64]
 	rsp = rsp + 0x08
-	call Mem0[0x000000000061A228 + 0x00:word32] (retsize: 4; depth: 4)
+	fn00000000004025C0()
 	return eax
+l000000000040D620_thunk_fn00000000004025C0:
 l000000000040D625:
 	rax = Mem0[rsp + 0x08:word64]
 	Mem0[rsp + 0x10:word64] = r14
@@ -8228,120 +12233,109 @@ l000000000040E423:
 fn000000000040D8A0_exit:
 }
 
-// 000000000040E450: Register word64 fn000000000040E450(Register word64 rcx, Register word64 rdx, Register word32 ebx, Register word32 ebp, Register word64 rsi, Register word32 edi, Register word64 r11, Register selector fs, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r11Out, Register out ptr64 r12bOut, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
-word64 fn000000000040E450(word64 rcx, word64 rdx, word32 ebx, word32 ebp, word64 rsi, word32 edi, word64 r11, selector fs, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & r11Out, ptr64 & r12bOut, ptr64 & r13Out, ptr64 & r14Out, ptr64 & r15Out)
+// 000000000040E450: Register word64 fn000000000040E450(Register word64 rcx, Register word64 rdx, Register word64 rsi, Register word64 rdi, Register word64 r11, Register selector fs, Register out ptr64 rbpOut, Register out ptr64 r11Out, Register out ptr64 r12Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
+word64 fn000000000040E450(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word64 r11, selector fs, ptr64 & rbpOut, ptr64 & r11Out, ptr64 & r12Out, ptr64 & r13Out, ptr64 & r14Out, ptr64 & r15Out)
 {
-fn000000000040E450_entry:
-l000000000040E450:
-	Mem4[v3 - 0x04 + 0x00:word32] = rdi
-	Mem10[v3 - 0x08 + 0x00:word32] = rsi
-	Mem13[v3 - 0x0C + 0x00:word32] = rbp
-	Mem16[v3 - 0x10 + 0x00:word32] = v3 - 0x0C
-	Mem18[v3 - 0x14 + 0x00:word32] = rbp
-	Mem21[v3 - 0x18 + 0x00:word32] = rbx
-	Mem26[v3 - 0x40 + 0x00:word64] = rsi
-	Mem28[v3 - 0x38 + 0x00:word64] = rdx
-	word32 eax_31 = Mem28[__errno_location() + 0x00:word32]
-	word64 r12_192 = Mem28[0x000000000061A5D8 + 0x00:word64]
-	Mem37[v3 - 44 + 0x00:word32] = eax_31
-	word64 r15_6 = (int64) edi
-	word32 r15d_7 = (word32) r15_6
-	word64 rsp_195 = v3 - 0x60
-	branch r15d_7 < 0x00 l000000000040E5F7
-l000000000040E48C:
-	branch r15d_7 <u Mem37[0x000000000061A5F0 + 0x00:word32] l000000000040E4FA
-l000000000040E495:
-	word64 rdi_194
-	word64 r14_183 = DPB(r14, rdi + 0x01, 0)
-	word64 rsi_185 = r14_183 << 0x04
-	branch r12_192 != 6399456 l000000000040E5E0
-l000000000040E4B0:
-	word64 rax_213 = fn0000000000410C90(rdx, r14_183 << 0x04, DPB(rdi, 0x00, 0), out rsp_195)
-	rsi_185 = Mem37[0x000000000061A5E0 + 0x00:word64]
-	rdi_194 = Mem37[0x000000000061A5E8 + 0x00:word64]
-	Mem218[0x000000000061A5D8 + 0x00:word64] = rax_213
-	Mem219[rax_213 + 0x00:word64] = rsi_185
-	Mem220[rax_213 + 0x08:word64] = rdi_194
-	r12_192 = rax_213
-l000000000040E4D6:
-	word64 rdi_197 = DPB(rdi_194, Mem37[0x000000000061A5F0 + 0x00:word32], 0)
-	memset((rdi_197 << 0x04) + r12_192, DPB(rsi_185, 0x00, 0), r14_183 - rdi_197 << 0x04)
-	Mem207[0x000000000061A5F0 + 0x00:word32] = rdi + 0x01
-l000000000040E4FA:
-	word64 r12_51 = r12_192 + (r15_6 << 0x04)
-	word32 ebp_50 = Mem37[rcx + 0x04:word32]
-	word32 r8d_54 = Mem37[r11 + 0x00:word32]
-	word64 r11_59 = Mem37[r12_51 + 0x00:word64]
-	word64 r14_60 = Mem37[r12_51 + 0x08:word64]
-	Mem62[rsp_195 + 0x10:word64] = Mem37[rcx + 0x30:word64]
-	word64 rax_63 = Mem62[rcx + 0x28:word64]
-	word64 rcx_68 = Mem62[rsp_195 + 0x28:word64]
-	word64 rdx_69 = Mem62[rsp_195 + 0x20:word64]
-	Mem74[rsp_195 + 0x00:word64] = r11 + 0x08
-	Mem76[rsp_195 + 0x08:word64] = rax_63
-	Mem77[rsp_195 + 0x38:word64] = r11_59
-	word64 r8_84
-	word64 r9_85
-	word64 r11_86
-	word64 r12_87
-	word64 r13_88
-	word64 r14_89
-	word64 r15_90
-	word64 rbp_110
-	word64 rsp_111
-	word64 rax_91 = fn000000000040D8A0(rcx_68, rdx_69, r11_59, r14_60, r8d_54, ebp_50 | 0x01, fs, qwArg18, qwArg20, qwArg28, out rsp_111, out rbp_110, out r8_84, out r9_85, out r11_86, out r12_87, out r13_88, out r14_89, out r15_90)
-	byte r12b_52
-	*r12bOut = (byte) r12_51
-	word64 r11_93 = Mem77[rsp_111 + 0x38:word64]
-	*r11Out = r11_93
-	branch r11_93 >u rax_91 l000000000040E5BF
-l000000000040E554:
-	Mem142[r12_87 + 0x00:word64] = rax_91 + 0x01
-	word64 rsi_138 = rax_91 + 0x01
-	branch r14_89 == 0x0061B220 l000000000040E577
-l000000000040E565:
-	Mem176[rsp_111 + 0x38:word64] = rax_91 + 0x01
-	free(r14_89)
-	rsi_138 = Mem176[rsp_111 + 0x38:word64]
-l000000000040E577:
-	Mem146[rsp_111 + 0x38:word64] = rsi_138
-	word64 rsp_147
-	word64 rax_148 = fn0000000000410C40(rsi_138, rsi_138, out rsp_147)
-	Mem149[r12_87 + 0x08:word64] = rax_148
-	word32 r8d_153 = Mem149[r11_93 + 0x00:word32]
-	word64 rcx_155 = Mem149[rsp_147 + 0x28:word64]
-	word64 rdx_158 = Mem149[rsp_147 + 0x20:word64]
-	word64 rsi_159 = Mem149[rsp_147 + 0x38:word64]
-	Mem161[rsp_147 + 0x10:word64] = Mem149[rcx + 0x30:word64]
-	word64 rax_162 = Mem161[rcx + 0x28:word64]
-	Mem163[rsp_147 + 0x00:word64] = r15_90
-	Mem164[rsp_147 + 0x08:word64] = rax_162
-	word64 r8_167
-	word64 r9_168
-	word64 r11_169
-	word64 r12_170
-	word64 r13_171
-	word64 r14_172
-	word64 r15_173
-	fn000000000040D8A0(rcx_155, rdx_158, rsi_159, rax_148, r8d_153, ebp_50 | 0x01, fs, qwArg18, qwArg20, qwArg28, out rsp_111, out rbp_110, out r8_167, out r9_168, out r11_169, out r12_170, out r13_171, out r14_172, out r15_173)
-l000000000040E5BF:
-	Mem113[rbp_110 + 0x00:word32] = Mem77[rsp_111 + 0x34:word32]
-	word64 rsp_114 = rsp_111 + 0x48
-	word64 rsp_122 = Mem113[rsp_114 + 0x10:word64]
-	word64 rbp_124
-	*rbpOut = Mem113[rsp_122 + 0x08:word64]
-	word64 rsp_130
-	*rspOut = rsp_122 + 0x20
-	return Mem113[rsp_114 + 0x00:word64]
-l000000000040E5E0:
-	word64 rax_223 = fn0000000000410C90(rdx, r14_183 << 0x04, r12_192, out rsp_195)
-	Mem226[0x000000000061A5D8 + 0x00:word64] = rax_223
-	rdi_194 = r12_192
-	r12_192 = rax_223
-	goto l000000000040E4D6
-l000000000040E5F7:
-	abort()
-fn000000000040E450_exit:
+	word64 r15_6 = (int64) edi;
+	__errno_location();
+	word32 r15d_7 = (word32) r15_6;
+	word64 rsp_195 = fp - 0x60;
+	word64 r12_192 = Mem0[0x000000000061A5D8 + 0x00:word64];
+	if (r15d_7 < 0x00)
+		abort();
+	else
+	{
+		if (r15d_7 >=u Mem0[0x000000000061A5F0 + 0x00:word32])
+		{
+			word64 rdi_194;
+			word64 r14_182 = DPB(r14, rdi + 0x01, 0);
+			word64 rsi_184 = r14_182 << 0x04;
+			if (r12_192 == 6399456)
+			{
+				word32 ebx_212;
+				word64 r8_214;
+				word64 rax_215 = fn0000000000410C90(rdx, r14_182 << 0x04, DPB(rdi, 0x00, 0), out ebx_212, out rsp_195, out r8_214);
+				rsi_184 = Mem0[0x000000000061A5E0 + 0x00:word64];
+				rdi_194 = Mem0[0x000000000061A5E8 + 0x00:word64];
+				Mem219[0x000000000061A5D8 + 0x00:word64] = rax_215;
+				Mem220[rax_215 + 0x00:word64] = rsi_184;
+				Mem221[rax_215 + 0x08:word64] = rdi_194;
+				r12_192 = rax_215;
+			}
+			else
+			{
+				word32 ebx_223;
+				word64 r8_225;
+				word64 rax_226 = fn0000000000410C90(rdx, r14_182 << 0x04, r12_192, out ebx_223, out rsp_195, out r8_225);
+				Mem228[0x000000000061A5D8 + 0x00:word64] = rax_226;
+				rdi_194 = r12_192;
+				r12_192 = rax_226;
+			}
+			word64 rdi_197 = DPB(rdi_194, Mem0[0x000000000061A5F0 + 0x00:word32], 0);
+			memset((rdi_197 << 0x04) + r12_192, DPB(rsi_184, 0x00, 0), r14_182 - rdi_197 << 0x04);
+			Mem207[0x000000000061A5F0 + 0x00:word32] = rdi + 0x01;
+		}
+		word64 r12_54 = r12_192 + (r15_6 << 0x04);
+		word32 ebp_53 = Mem0[rcx + 0x04:word32];
+		word32 r8d_56 = Mem0[r11 + 0x00:word32];
+		word64 r11_60 = Mem0[r12_54 + 0x00:word64];
+		word64 r14_61 = Mem0[r12_54 + 0x08:word64];
+		Mem63[rsp_195 + 0x10:word64] = Mem0[rcx + 0x30:word64];
+		word64 rax_64 = Mem63[rcx + 0x28:word64];
+		word64 rcx_69 = Mem63[rsp_195 + 0x28:word64];
+		word64 rdx_70 = Mem63[rsp_195 + 0x20:word64];
+		Mem75[rsp_195 + 0x00:word64] = r11 + 0x08;
+		Mem77[rsp_195 + 0x08:word64] = rax_64;
+		Mem78[rsp_195 + 0x38:word64] = r11_60;
+		word64 r8_85;
+		word64 r9_86;
+		word64 r11_87;
+		word64 r12_88;
+		word64 r13_89;
+		word64 r14_90;
+		word64 r15_91;
+		word64 rbp_111;
+		word64 rsp_112;
+		word64 rax_92 = fn000000000040D8A0(rcx_69, rdx_70, r11_60, r14_61, r8d_56, ebp_53 | 0x01, fs, qwArg18, qwArg20, qwArg28, out rsp_112, out rbp_111, out r8_85, out r9_86, out r11_87, out r12_88, out r13_89, out r14_90, out r15_91);
+		word64 r11_94 = Mem78[rsp_112 + 0x38:word64];
+		*r11Out = r11_94;
+		if (r11_94 <=u rax_92)
+		{
+			Mem141[r12_88 + 0x00:word64] = rax_92 + 0x01;
+			word64 rsi_137 = rax_92 + 0x01;
+			if (r14_90 != 0x0061B220)
+			{
+				Mem175[rsp_112 + 0x38:word64] = rax_92 + 0x01;
+				free(r14_90);
+				rsi_137 = Mem175[rsp_112 + 0x38:word64];
+			}
+			Mem145[rsp_112 + 0x38:word64] = rsi_137;
+			word64 rsp_146;
+			word64 rax_147 = fn0000000000410C40(rsi_137, rsi_137, out rsp_146);
+			Mem148[r12_88 + 0x08:word64] = rax_147;
+			word32 r8d_152 = Mem148[r11_94 + 0x00:word32];
+			word64 rcx_154 = Mem148[rsp_146 + 0x28:word64];
+			word64 rdx_157 = Mem148[rsp_146 + 0x20:word64];
+			word64 rsi_158 = Mem148[rsp_146 + 0x38:word64];
+			Mem160[rsp_146 + 0x10:word64] = Mem148[rcx + 0x30:word64];
+			word64 rax_161 = Mem160[rcx + 0x28:word64];
+			Mem162[rsp_146 + 0x00:word64] = r15_91;
+			Mem163[rsp_146 + 0x08:word64] = rax_161;
+			word64 r8_166;
+			word64 r9_167;
+			word64 r11_168;
+			word64 r12_169;
+			word64 r13_170;
+			word64 r14_171;
+			word64 r15_172;
+			fn000000000040D8A0(rcx_154, rdx_157, rsi_158, rax_147, r8d_152, ebp_53 | 0x01, fs, qwArg18, qwArg20, qwArg28, out rsp_112, out rbp_111, out r8_166, out r9_167, out r11_168, out r12_169, out r13_170, out r14_171, out r15_172);
+		}
+		Mem114[rbp_111 + 0x00:word32] = Mem78[rsp_112 + 0x34:word32];
+		word64 rsp_122 = Mem114[rsp_112 + 88:word64];
+		word64 rbp_124;
+		*rbpOut = Mem114[rsp_122 + 0x08:word64];
+		return rsp_122 + 0x20;
+	}
 }
 
 // 000000000040E600: void fn000000000040E600(Register word64 rdi, Register word64 r8, Register word64 r11)
@@ -8351,8 +12345,9 @@ void fn000000000040E600(word64 rdi, word64 r8, word64 r11)
 	word32 r12d_16 = Mem0[r8 + 0x00:word32];
 	word64 rsp_26;
 	word64 rbp_27;
-	fn0000000000410E00(DPB(rsi, 0x38, 0), out rsp_26, out rbp_27);
-	Mem29[r11 + 0x00:word32] = r12d_16;
+	word64 rsi_28;
+	fn0000000000410E00(DPB(rsi, 0x38, 0), out rsp_26, out rbp_27, out rsi_28);
+	Mem30[r11 + 0x00:word32] = r12d_16;
 	return;
 }
 
@@ -8430,18 +12425,18 @@ word64 fn000000000040E6F0(word64 rcx, word64 rdx, word32 ebx, word32 ebp, word64
 	return rax_71;
 }
 
-// 000000000040E930: void fn000000000040E930(Register word32 ebx, Register word32 ebp, Register word64 rdi, Register word64 r11, Register selector fs)
-void fn000000000040E930(word32 ebx, word32 ebp, word64 rdi, word64 r11, selector fs)
+// 000000000040E930: void fn000000000040E930(Register word64 rdi, Register word64 r11, Register selector fs)
+void fn000000000040E930(word64 rdi, word64 r11, selector fs)
 {
 	word64 rcx_6 = DPB(rcx, 6402848, 0);
-	word64 rsp_16;
-	word64 rbp_17;
-	word64 r11_18;
-	byte r12b_19;
-	word64 r13_20;
-	word64 r14_21;
-	word64 r15_22;
-	fn000000000040E450(rcx_6, ~0x00, ebx, ebp, rdi, 0x00, r11, fs, out rsp_16, out rbp_17, out r11_18, out r12b_19, out r13_20, out r14_21, out r15_22);
+	word64 rdi_9 = DPB(rdi, 0x00, 0);
+	word64 rbp_14;
+	word64 r11_15;
+	word64 r12_16;
+	word64 r13_17;
+	word64 r14_18;
+	word64 r15_19;
+	fn000000000040E450(rcx_6, ~0x00, rdi, rdi_9, r11, fs, out rbp_14, out r11_15, out r12_16, out r13_17, out r14_18, out r15_19);
 	return;
 }
 
@@ -8449,60 +12444,60 @@ void fn000000000040E930(word32 ebx, word32 ebp, word64 rdi, word64 r11, selector
 word64 fn000000000040E970(word64 rdx, word32 esi, word32 edi, word64 r11, selector fs, ptr64 & r11Out, ptr64 & r15Out)
 {
 	fn000000000040D740(esi, fp - 0x50);
-	word64 rsp_23;
-	word64 rbp_24;
-	word64 r11_25;
-	byte r12b_26;
-	word64 r13_27;
-	word64 r14_28;
-	word64 r15_29;
-	fn000000000040E450(fp - 0x50, ~0x00, edi, (word32) rdx, rdx, edi, r11, fs, out rsp_23, out rbp_24, out r11_25, out r12b_26, out r13_27, out r14_28, out r15_29);
-	return rsp_23 + 88;
+	word64 rbp_23;
+	word64 r11_24;
+	word64 r12_25;
+	word64 r13_26;
+	word64 r14_27;
+	word64 r15_28;
+	return fn000000000040E450(fp - 0x50, ~0x00, rdx, DPB(fp - 0x50, edi, 0), r11, fs, out rbp_23, out r11_24, out r12_25, out r13_26, out r14_27, out r15_28) + 0x60;
 }
 
-// 000000000040EAB0: Register byte fn000000000040EAB0(Register word32 ebx, Register word32 ebp, Register word64 rdi, Register word64 r11, Register selector fs)
-byte fn000000000040EAB0(word32 ebx, word32 ebp, word64 rdi, word64 r11, selector fs)
+// 000000000040EAB0: Register word64 fn000000000040EAB0(Register word64 rdi, Register word64 r11, Register selector fs, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r12Out, Register out ptr64 r14Out, Register out ptr64 r15bOut)
+word64 fn000000000040EAB0(word64 rdi, word64 r11, selector fs, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & r12Out, ptr64 & r14Out, ptr64 & r15bOut)
 {
+	*r15bOut = r15b;
 	word64 r8_14 = DPB(r8, 0x01, 0);
-	word32 r9d_30 = (fp - 0x40)[r8_14 * 0x04];
-	(fp - 0x40)[r8_14 * 0x04] = ((r9d_30 >>u 0x1A ^ 0x01) & 0x01) << 0x1A ^ r9d_30;
-	word64 rsp_48;
-	word64 rbp_49;
-	word64 r11_50;
-	byte r12b_51;
-	word64 r13_52;
-	word64 r14_53;
-	word64 r15_54;
-	fn000000000040E450(fp - 0x48, ~0x00, ebx, ebp, rdi, 0x00, r11, fs, out rsp_48, out rbp_49, out r11_50, out r12b_51, out r13_52, out r14_53, out r15_54);
-	return r12b_51;
+	word32 r9d_31 = (fp - 0x40)[r8_14 * 0x04];
+	(fp - 0x40)[r8_14 * 0x04] = ((r9d_31 >>u 0x1A ^ 0x01) & 0x01) << 0x1A ^ r9d_31;
+	word64 rbp_47;
+	word64 r11_48;
+	word64 r12_49;
+	word64 r13_50;
+	word64 r14_51;
+	word64 r15_52;
+	word64 rsp_55;
+	*rspOut = fn000000000040E450(fp - 0x48, ~0x00, rdi, DPB(rdi, 0x00, 0), r11, fs, out rbp_47, out r11_48, out r12_49, out r13_50, out r14_51, out r15_52) + 0x50;
+	return rbx;
 }
 
-// 000000000040EBF0: Register word64 fn000000000040EBF0(Register word32 ebx, Register word32 ebp, Register word64 rsi, Register word32 edi, Register word64 r11, Register selector fs, Register out ptr64 r11Out)
-word64 fn000000000040EBF0(word32 ebx, word32 ebp, word64 rsi, word32 edi, word64 r11, selector fs, ptr64 & r11Out)
+// 000000000040EBF0: Register word64 fn000000000040EBF0(Register word64 rsi, Register word64 rdi, Register word64 r11, Register selector fs, Register out ptr64 r11Out)
+word64 fn000000000040EBF0(word64 rsi, word64 rdi, word64 r11, selector fs, ptr64 & r11Out)
 {
 	word64 rcx_4 = DPB(rcx, 6399392, 0);
-	word64 rsp_12;
-	word64 rbp_13;
-	word64 r11_14;
-	byte r12b_15;
-	word64 r13_16;
-	word64 r14_17;
-	word64 r15_18;
-	return fn000000000040E450(rcx_4, ~0x00, ebx, ebp, rsi, edi, r11, fs, out rsp_12, out rbp_13, out r11_14, out r12b_15, out r13_16, out r14_17, out r15_18);
+	word64 rbp_10;
+	word64 r11_11;
+	word64 r12_12;
+	word64 r13_13;
+	word64 r14_14;
+	word64 r15_15;
+	fn000000000040E450(rcx_4, ~0x00, rsi, rdi, r11, fs, out rbp_10, out r11_11, out r12_12, out r13_13, out r14_14, out r15_15);
+	return rbx;
 }
 
-// 000000000040EC10: Register word64 fn000000000040EC10(Register word32 ebx, Register word32 ebp, Register word64 rdi, Register word64 r11, Register selector fs, Register out ptr64 rbpOut, Register out ptr64 r11Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
-word64 fn000000000040EC10(word32 ebx, word32 ebp, word64 rdi, word64 r11, selector fs, ptr64 & rbpOut, ptr64 & r11Out, ptr64 & r13Out, ptr64 & r14Out, ptr64 & r15Out)
+// 000000000040EC10: Register word64 fn000000000040EC10(Register word64 rdi, Register word64 r11, Register selector fs, Register out ptr64 rbpOut, Register out ptr64 r11Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)
+word64 fn000000000040EC10(word64 rdi, word64 r11, selector fs, ptr64 & rbpOut, ptr64 & r11Out, ptr64 & r13Out, ptr64 & r14Out, ptr64 & r15Out)
 {
 	word64 rcx_7 = DPB(rcx, 6399392, 0);
-	word64 rsp_17;
-	word64 rbp_18;
-	word64 r11_19;
-	byte r12b_20;
-	word64 r13_21;
-	word64 r14_22;
-	word64 r15_23;
-	return fn000000000040E450(rcx_7, ~0x00, ebx, ebp, rdi, 0x00, r11, fs, out rsp_17, out rbp_18, out r11_19, out r12b_20, out r13_21, out r14_22, out r15_23);
+	word64 rdi_10 = DPB(rdi, 0x00, 0);
+	word64 rbp_15;
+	word64 r11_16;
+	word64 r12_17;
+	word64 r13_18;
+	word64 r14_19;
+	word64 r15_20;
+	fn000000000040E450(rcx_7, ~0x00, rdi, rdi_10, r11, fs, out rbp_15, out r11_16, out r12_17, out r13_18, out r14_19, out r15_20);
+	return rbx;
 }
 
 // 000000000040EC30: Register word64 fn000000000040EC30(Register word64 rax, Register word64 rdx, Register word64 rsi, Register word64 rdi, Stack word64 qwArg04, Register out ptr64 rspOut, Register out ptr64 ebpOut, Register out ptr64 r12Out)
@@ -9154,107 +13149,115 @@ word64 fn0000000000410C40(word64 rsi, word64 rdi, ptr64 & rspOut)
 	return rax_15;
 }
 
-// 0000000000410C90: Register word64 fn0000000000410C90(Register word64 rdx, Register word64 rsi, Register word64 rdi, Register out ptr64 rspOut)
-word64 fn0000000000410C90(word64 rdx, word64 rsi, word64 rdi, ptr64 & rspOut)
+// 0000000000410C90: Register word64 fn0000000000410C90(Register word64 rdx, Register word64 rsi, Register word64 rdi, Register out ptr64 ebxOut, Register out ptr64 rspOut, Register out ptr64 r8Out)
+word64 fn0000000000410C90(word64 rdx, word64 rsi, word64 rdi, ptr64 & ebxOut, ptr64 & rspOut, ptr64 & r8Out)
 {
+	*r8Out = r8;
 	if (rsi == 0x00 && rdi != 0x00)
 	{
 		free(rdi);
-		word64 rsp_237;
+		word32 ebx_244;
+		*ebxOut = (word32) qwLoc04;
+		word64 rsp_245;
 		*rspOut = fp + 0x04;
 		return DPB(rax, 0x00, 0);
 	}
 	else
 	{
-		word64 rax_62 = realloc(rdi, rsi);
-		word128 rdx_rax_63 = SEQ(rdx, rax_62);
-		if (rax_62 != 0x00 || rsi == 0x00)
+		word64 rax_66 = realloc(rdi, rsi);
+		word128 rdx_rax_67 = SEQ(rdx, rax_66);
+		if (rax_66 != 0x00 || rsi == 0x00)
 		{
-			word64 rsp_73;
+			word32 ebx_77;
+			*ebxOut = (word32) qwLoc04;
+			word64 rsp_78;
 			*rspOut = fp + 0x04;
-			return rax_62;
+			return rax_66;
 		}
 		fn0000000000410E50();
-		word128 rdx_rax_82 = DPB(rdx_rax_63, 0x00, 64);
-		rdx = (uint64) (rdx_rax_82 % rdx);
-		rax = (uint64) (rdx_rax_82 /u rdx);
-		word128 rdx_rax_87 = SEQ(rdx, rax);
+		word128 rdx_rax_87 = DPB(rdx_rax_67, 0x00, 64);
+		rdx = (uint64) (rdx_rax_87 % rdx);
+		rax = (uint64) (rdx_rax_87 /u rdx);
+		word128 rdx_rax_92 = SEQ(rdx, rax);
 		if (rax <u rsi)
 		{
-			Mem95[fp - 0x08 + 0x00:word32] = rax;
+			Mem100[fp - 0x08 + 0x00:word32] = rax;
 			fn0000000000410E50();
-			word64 r8_103 = rdx;
-			word64 rcx_100 = Mem95[rsi + 0x00:word64];
+			word64 r8_104;
+			*r8Out = rdx;
+			word64 rcx_105 = Mem100[rsi + 0x00:word64];
 			if (rdi != 0x00)
 			{
-				word128 rdx_rax_121 = DPB(rdx_rax_87, 0x00, 64);
-				r8_103 = 0xAAAAAAAA;
-				rdx = (uint64) (rdx_rax_121 % 0xAAAAAAAA);
-				word64 rax_126 = (uint64) (rdx_rax_121 /u 0xAAAAAAAA);
-				if (rcx_100 >=u rax_126)
+				word128 rdx_rax_126 = DPB(rdx_rax_92, 0x00, 64);
+				r8_104 = 0xAAAAAAAA;
+				*r8Out = r8_104;
+				rdx = (uint64) (rdx_rax_126 % 0xAAAAAAAA);
+				word64 rax_131 = (uint64) (rdx_rax_126 /u 0xAAAAAAAA);
+				if (rcx_105 >=u rax_131)
 				{
-					Mem139[fp - 0x0C + 0x00:word32] = rax_126;
+					Mem144[fp - 0x0C + 0x00:word32] = rax_131;
 					fn0000000000410E50();
-					rax = Mem139[rsi + 0x00:word64];
+					rax = Mem144[rsi + 0x00:word64];
 					if (rdi == 0x00)
 					{
 						rdx = DPB(rdx, 0x80, 0);
 						if (rax == 0x00)
 							rax = rdx;
-						Mem202[rsi + 0x00:word64] = rax;
+						Mem209[rsi + 0x00:word64] = rax;
 						rsi = rax;
 						continue;
 					}
 					if (rax >u rdx)
 					{
-						Mem159[fp - 0x10 + 0x00:word32] = rax;
+						Mem164[fp - 0x10 + 0x00:word32] = rax;
 						fn0000000000410E50();
-						Mem161[fp - 0x14 + 0x00:word32] = rsi;
-						word64 rsp_163;
-						word64 rax_164 = fn0000000000410C40(rsi, rdi, out rsp_163);
-						word64 rsp_174;
-						word64 rsi_175;
-						byte SZO_176;
-						byte C_177;
-						word64 rbx_178;
-						byte Z_179;
-						word64 rax_180;
-						word64 rdi_181;
-						word32 eax_182;
-						word64 rcx_183;
-						word64 rdx_184;
-						word32 edx_185;
-						byte SCZO_186;
-						word64 r8_187;
-						word32 ecx_188;
-						byte cl_189;
-						word64 r10_190;
-						byte CZ_191;
-						word32 esi_192;
-						Mem161[0x000000000061A188 + 0x00:word32]();
-						return rax_180;
+						Mem166[fp - 0x14 + 0x00:word32] = rsi;
+						word64 rsp_168;
+						word64 rax_169 = fn0000000000410C40(rsi, rdi, out rsp_168);
+						word64 rsp_180;
+						word64 rsi_181;
+						byte SZO_182;
+						byte C_183;
+						word64 rbx_184;
+						byte Z_185;
+						word64 rax_186;
+						word64 rdi_187;
+						word32 eax_188;
+						word64 rcx_189;
+						word64 rdx_190;
+						word32 edx_191;
+						byte SCZO_192;
+						word64 r8_193;
+						word32 ecx_194;
+						byte cl_195;
+						word64 r10_196;
+						byte CZ_197;
+						word32 esi_198;
+						word32 ebx_199;
+						Mem166[0x000000000061A188 + 0x00:word32]();
+						return rax_186;
 					}
 					else
 					{
 						rdx = rax + 0x01 >>u 0x01;
 						rax = rax + rdx;
-						Mem155[rsi + 0x00:word64] = rax;
+						Mem160[rsi + 0x00:word64] = rax;
 						rsi = rax;
 						continue;
 					}
 				}
-				rax = rcx_100 + 0x01 >>u 0x01;
-				rcx_100 = rcx_100 + rax;
+				rax = rcx_105 + 0x01 >>u 0x01;
+				rcx_105 = rcx_105 + rax;
 			}
-			else if (rcx_100 == 0x00)
+			else if (rcx_105 == 0x00)
 			{
-				word128 rdx_rax_213 = DPB(rdx_rax_87, 0x80, 0);
-				rax = (uint64) (rdx_rax_213 /u rdx);
-				rdx = (uint64) (rdx_rax_213 % rdx);
-				rcx_100 = DPB(rcx_100, rax == 0x00, 0) + rax;
+				word128 rdx_rax_220 = DPB(rdx_rax_92, 0x80, 0);
+				rax = (uint64) (rdx_rax_220 /u rdx);
+				rdx = (uint64) (rdx_rax_220 % rdx);
+				rcx_105 = DPB(rcx_105, rax == 0x00, 0) + rax;
 			}
-			Mem115[rsi + 0x00:word64] = rcx_100;
-			rsi = rcx_100 *s r8_103;
+			Mem120[rsi + 0x00:word64] = rcx_105;
+			rsi = rcx_105 *s r8_104;
 			continue;
 		}
 		else
@@ -9265,8 +13268,8 @@ word64 fn0000000000410C90(word64 rdx, word64 rsi, word64 rdi, ptr64 & rspOut)
 	}
 }
 
-// 0000000000410E00: Register word64 fn0000000000410E00(Register word64 rsi, Register out ptr64 rspOut, Register out ptr64 rbpOut)
-word64 fn0000000000410E00(word64 rsi, ptr64 & rspOut, ptr64 & rbpOut)
+// 0000000000410E00: Register word64 fn0000000000410E00(Register word64 rsi, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut)
+word64 fn0000000000410E00(word64 rsi, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & rsiOut)
 {
 	word64 rsp_15;
 	word64 rax_16 = fn0000000000410C40(rsi, rsi, out rsp_15);
@@ -9282,13 +13285,14 @@ word64 fn0000000000410E00(word64 rsi, ptr64 & rspOut, ptr64 & rbpOut)
 	return rax_34;
 }
 
-// 0000000000410E30: Register word64 fn0000000000410E30(Register word64 rax, Register word64 rdi, Register out ptr64 rspOut, Register out ptr64 rbpOut)
-word64 fn0000000000410E30(word64 rax, word64 rdi, ptr64 & rspOut, ptr64 & rbpOut)
+// 0000000000410E30: Register word64 fn0000000000410E30(Register word64 rax, Register word64 rdi, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut)
+word64 fn0000000000410E30(word64 rax, word64 rdi, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & rsiOut)
 {
 	word64 rax_10 = DPB(rax, strlen(rdi), 0);
 	word64 rsp_15;
 	word64 rbp_16;
-	return fn0000000000410E00(rax_10 + 0x01, out rsp_15, out rbp_16);
+	word64 rsi_17;
+	return fn0000000000410E00(rax_10 + 0x01, out rsp_15, out rbp_16, out rsi_17);
 }
 
 // 0000000000410E50: void fn0000000000410E50()
@@ -9323,364 +13327,360 @@ fn0000000000410E90_entry:
 	goto l0000000000410EAA
 l0000000000410E90:
 l0000000000410EAA:
-	word64 rsp_91
-	word64 rdi_92
-	word64 rsi_93
-	word32 r14d_94
-	word32 edx_95
-	word64 rbp_96
-	word64 rbx_97
-	byte SCZO_98
-	byte CZ_99
-	word64 rax_100
-	word64 r15_101
-	byte SZO_102
-	byte C_103
-	word64 r13_104
-	word64 rcx_105
-	word64 r12_106
-	word64 r8_107
-	byte Z_108
-	word32 ebx_109
-	word64 rdx_110
-	word32 ecx_111
-	word32 esi_112
-	word32 edi_113
-	word32 r9d_114
-	word32 eax_117
-	word64 r14_118
-	word32 ebp_119
-	byte dl_120
-	byte al_121
-	word32 r8d_122
-	byte S_123
-	byte cl_124
-	word64 r9_116
-	byte bl_1071
+	word64 rsp_39
+	word64 rdi_40
+	word64 rsi_41
+	word32 r14d_42
+	word32 edx_43
+	word64 rbp_44
+	word64 rbx_45
+	byte SCZO_46
+	byte CZ_47
+	word64 rax_48
+	word64 r15_49
+	byte SZO_50
+	byte C_51
+	word64 r13_52
+	word64 rcx_53
+	word64 r12_54
+	word64 r8_55
+	byte Z_56
+	word32 ebx_57
+	word64 rdx_58
+	word32 ecx_59
+	word32 esi_60
+	word32 edi_61
+	word32 r9d_62
+	word32 eax_65
+	word64 r14_66
+	word32 ebp_67
+	byte dl_68
+	byte al_69
+	word32 r8d_70
+	byte S_71
+	byte cl_72
+	word64 r9_64
+	byte bl_1058
 	call __ctype_b_loc (retsize: 8; depth: 72)
-		uses: al,bl_75,C_67,cl,CZ_23,dl,dwLoc04_4,dwLoc08_7,dwLoc0C_12,dwLoc10_15,dwLoc14_17,dwLoc18_20,dwLoc38,eax,ebp_63,ebx_73,ecx,edi,edx,esi,qwLoc38,r12_71,r13_69,r14,r14d_9,r15_64,r8,r8d,r9,r9d,rax_61,rbp_62,rbx_74,rcx,rdi,rdx,rsi,rsp_21,S,SCZO_22,SZO_65,Z_66
-		defs: al_121,bl_115,C_103,cl_124,CZ_99,dl_120,eax_117,ebp_119,ebx_109,ecx_111,edi_113,edx_95,esi_112,r12_106,r13_104,r14_118,r14d_94,r15_101,r8_107,r8d_122,r9_116,r9d_114,rax_100,rbp_96,rbx_97,rcx_105,rdi_92,rdx_110,rsi_93,rsp_91,S_123,SCZO_98,SZO_102,Z_108
-	word64 rax_1064 = rbp_96
+		uses: bl_38,C_30,CZ_23,dwLoc04_4,dwLoc08_7,dwLoc0C_12,dwLoc10_15,dwLoc14_17,dwLoc18_20,ebp_26,ebx_36,edx,r12_34,r13_32,r14d_9,r15_27,r8,rax_24,rbp_25,rbx_37,rcx,rdi,rsi,rsp_21,SCZO_22,SZO_28,Z_29
+		defs: al_69,bl_63,C_51,cl_72,CZ_47,dl_68,eax_65,ebp_67,ebx_57,ecx_59,edi_61,edx_43,esi_60,r12_54,r13_52,r14_66,r14d_42,r15_49,r8_55,r8d_70,r9_64,r9d_62,rax_48,rbp_44,rbx_45,rcx_53,rdi_40,rdx_58,rsi_41,rsp_39,S_71,SCZO_46,SZO_50,Z_56
+	word64 rax_1051 = rbp_44
 	goto l0000000000410EDF
 l0000000000410EC2:
 l0000000000410ED8:
-	rax_1064 = rax_1064 + 0x01
-	bl_1071 = (byte) (word32) Mem0[rax_1064 + 0x00:byte] (alias)
+	rax_1051 = rax_1051 + 0x01
+	bl_1058 = (byte) (word32) Mem0[rax_1051 + 0x00:byte] (alias)
 l0000000000410EDF:
-	word32 r9d_142 = (word32) bl_1071
-	r9_116 = DPB(r9_116, r9d_142, 0) (alias)
-	branch ((qwLoc28 + 0x01)[r9_116 * 0x02] & 0x20) != 0x00 l0000000000410ED8
+	word32 r9d_90 = (word32) bl_1058
+	r9_64 = DPB(r9_64, r9d_90, 0) (alias)
+	branch ((qwLoc28 + 0x01)[r9_64 * 0x02] & 0x20) != 0x00 l0000000000410ED8
 l0000000000410EEB:
-	branch bl_1071 != 0x2D l0000000000410F08
+	branch bl_1058 != 0x2D l0000000000410F08
 l0000000000410EF0:
 l0000000000410EF5:
 	return
 l0000000000410F08:
-	word64 rbp_1006
-	word32 ebp_1004
-	word64 rsi_1018
-	word64 rdx_1026
-	word32 edx_1025
-	word64 rax_234 = __errno_location()
-	Mem236[rax_234 + 0x00:word32] = 0x00
-	word64 rsp_241
-	word64 rdi_242
-	word64 rsi_243
-	word32 r14d_244
-	word32 edx_245
-	word64 rbp_246
-	word64 rbx_247
-	byte SCZO_248
-	byte CZ_249
-	word64 rax_250
-	word64 r15_251
-	byte SZO_252
-	byte C_253
-	word64 r13_254
-	word64 rcx_255
-	word64 r12_256
-	word64 r8_257
-	byte Z_258
-	word32 ebx_259
-	word64 rdx_260
-	word32 ecx_261
-	word32 esi_262
-	word32 edi_263
-	word32 r9d_264
-	byte bl_265
-	word64 r9_266
-	word32 eax_267
-	word64 r14_268
-	word32 ebp_269
-	byte dl_270
-	byte al_271
-	word32 r8d_272
-	byte S_273
-	byte cl_274
+	word64 rbp_1017
+	word32 ebp_1016
+	word64 rsi_1005
+	word64 rdx_1013
+	word32 edx_1012
+	word64 rax_221 = __errno_location()
+	Mem223[rax_221 + 0x00:word32] = 0x00
+	word64 rsp_228
+	word64 rdi_229
+	word64 rsi_230
+	word32 r14d_231
+	word32 edx_232
+	word64 rbp_233
+	word64 rbx_234
+	byte SCZO_235
+	byte CZ_236
+	word64 rax_237
+	word64 r15_238
+	byte SZO_239
+	byte C_240
+	word64 r13_241
+	word64 rcx_242
+	word64 r12_243
+	word64 r8_244
+	byte Z_245
+	word32 ebx_246
+	word64 rdx_247
+	word32 ecx_248
+	word32 esi_249
+	word32 edi_250
+	word32 r9d_251
+	byte bl_252
+	word64 r9_253
+	word32 eax_254
+	word64 r14_255
+	word32 ebp_256
+	byte dl_257
+	byte al_258
+	word32 r8d_259
+	byte S_260
+	byte cl_261
 	call strtoul (retsize: 8; depth: 72)
-		uses: al_138,bl_135,C_146,cl_124,CZ_99,dl_128,dwLoc04_4,dwLoc08_7,dwLoc0C_12,dwLoc10_15,dwLoc14_17,dwLoc18_20,dwLoc38,eax_139,ebp_119,ebx_134,ecx_111,edi_113,edx_235,esi_238,qwLoc08,qwLoc10,qwLoc18,qwLoc28,qwLoc38_240,r12_106,r13_104,r14_118,r14d_94,r15_101,r8_107,r8d_122,r9_143,r9d_142,rax_234,rbp_96,rbx_141,rcx_105,rdi_239,rdx_126,rsi_237,rsp_91,S_123,SCZO_147,SZO_144,Z_148
-		defs: al_271,bl_265,C_253,cl_274,CZ_249,dl_270,eax_267,ebp_269,ebx_259,ecx_261,edi_263,edx_245,esi_262,r12_256,r13_254,r14_268,r14d_244,r15_251,r8_257,r8d_272,r9_266,r9d_264,rax_250,rbp_246,rbx_247,rcx_255,rdi_242,rdx_260,rsi_243,rsp_241,S_273,SCZO_248,SZO_252,Z_258
-	word64 r14_275 = Mem236[r15_251 + 0x00:word64]
-	word64 rbx_1054 = rax_250
-	branch r14_275 == rbp_246 l0000000000410FE7
+		uses: al_86,bl_83,C_94,cl_72,CZ_47,dl_76,dwLoc04_4,dwLoc08_7,dwLoc0C_12,dwLoc10_15,dwLoc14_17,dwLoc18_20,dwLoc38,eax_87,ebp_67,ebx_82,ecx_59,edi_61,edx_222,esi_225,qwLoc08,qwLoc10,qwLoc18,qwLoc28,qwLoc38_227,r12_54,r13_52,r14_66,r14d_42,r15_49,r8_55,r8d_70,r9_91,r9d_90,rax_221,rbp_44,rbx_89,rcx_53,rdi_226,rdx_74,rsi_224,rsp_39,S_71,SCZO_95,SZO_92,Z_96
+		defs: al_258,bl_252,C_240,cl_261,CZ_236,dl_257,eax_254,ebp_256,ebx_246,ecx_248,edi_250,edx_232,esi_249,r12_243,r13_241,r14_255,r14d_231,r15_238,r8_244,r8d_259,r9_253,r9d_251,rax_237,rbp_233,rbx_234,rcx_242,rdi_229,rdx_247,rsi_230,rsp_228,S_260,SCZO_235,SZO_239,Z_245
+	word64 r14_262 = Mem223[r15_238 + 0x00:word64]
+	word64 rbx_1041 = rax_237
+	branch r14_262 == rbp_233 l0000000000410FE7
 l0000000000410F3A:
-	word32 eax_997 = Mem236[rax_234 + 0x00:word32]
-	branch eax_997 != 0x00 l0000000000410F68
+	word32 eax_984 = Mem223[rax_221 + 0x00:word32]
+	branch eax_984 != 0x00 l0000000000410F68
 l0000000000410F40:
-	ebp_1004 = 0x00
-	rbp_1006 = DPB(rbp_246, 0x00, 0) (alias)
+	ebp_1016 = 0x00
+	rbp_1017 = DPB(rbp_233, 0x00, 0) (alias)
 l0000000000410F42:
-	branch r12_256 == 0x00 l0000000000410F4F
+	branch r12_243 == 0x00 l0000000000410F4F
 l0000000000410F47:
-	word32 edx_1010 = (word32) Mem236[rsi_243 + 0x00:byte]
-	byte dl_1013 = (byte) edx_1010
-	branch dl_1013 != 0x00 l0000000000410F78
+	word32 edx_997 = (word32) Mem223[rsi_230 + 0x00:byte]
+	byte dl_1000 = (byte) edx_997
+	branch dl_1000 != 0x00 l0000000000410F78
 l0000000000410F4F:
-	Mem310[rbp_1006 + 0x00:word64] = rbx_1054
+	Mem297[rbp_1017 + 0x00:word64] = rbx_1041
 	return
 l0000000000410F68:
-	ebp_1004 = 0x01
-	rbp_1006 = DPB(rbp_246, 0x01, 0) (alias)
-	branch eax_997 != 0x22 l0000000000410EF0
+	ebp_1016 = 0x01
+	rbp_1017 = DPB(rbp_233, 0x01, 0) (alias)
+	branch eax_984 != 0x22 l0000000000410EF0
 	goto l0000000000410F42
 l0000000000410F78:
-	rsi_1018 = DPB(rsi_243, (int32) dl_1013, 0) (alias)
-	edx_1025 = edx_1010
-	rdx_1026 = DPB(rdx_260, edx_1010, 0) (alias)
-	branch strchr(r12_256, rsi_1018) == 0x00 l0000000000411028
+	rsi_1005 = DPB(rsi_230, (int32) dl_1000, 0) (alias)
+	edx_1012 = edx_997
+	rdx_1013 = DPB(rdx_247, edx_997, 0) (alias)
+	branch strchr(r12_243, rsi_1005) == 0x00 l0000000000411028
 l0000000000410F94:
-	word32 eax_383
-	word64 rax_379
-	word32 ecx_376
-	word64 rsi_365 = DPB(rsi_1018, 0x30, 0)
-	word64 rax_368 = strchr(r12_256, rsi_365)
-	branch rax_368 == 0x00 l0000000000410FCB
+	word32 eax_370
+	word64 rax_366
+	word32 ecx_363
+	word64 rsi_352 = DPB(rsi_1005, 0x30, 0)
+	word64 rax_355 = strchr(r12_243, rsi_352)
+	branch rax_355 == 0x00 l0000000000410FCB
 l0000000000410FAE:
-	word32 eax_966 = (word32) Mem236[rsi_365 + 0x01:byte]
-	rax_368 = DPB(rax_368, eax_966, 0) (alias)
-	byte al_969 = (byte) eax_966
-	branch al_969 == 0x44 l0000000000411262
+	word32 eax_953 = (word32) Mem223[rsi_352 + 0x01:byte]
+	rax_355 = DPB(rax_355, eax_953, 0) (alias)
+	byte al_956 = (byte) eax_953
+	branch al_956 == 0x44 l0000000000411262
 l0000000000410FBB:
-	branch al_969 == 0x69 l000000000041124A
+	branch al_956 == 0x69 l000000000041124A
 l0000000000410FC3:
-	branch al_969 == 66 l0000000000411262
+	branch al_956 == 66 l0000000000411262
 l0000000000410FCB:
-	ecx_376 = 0x01
-	eax_383 = 0x0400
-	rax_379 = DPB(rax_368, 0x0400, 0) (alias)
+	ecx_363 = 0x01
+	eax_370 = 0x0400
+	rax_366 = DPB(rax_355, 0x0400, 0) (alias)
 l0000000000410FD5:
-	byte dl_387 = (byte) (edx_1025 - 66)
-	branch dl_387 >u 0x35 l0000000000411028
+	byte dl_374 = (byte) (edx_1012 - 66)
+	branch dl_374 >u 0x35 l0000000000411028
 l0000000000410FDD:
-	word64 rdi_597
-	word32 edx_401
-	word64 rdx_391 = DPB(rdx_1026, (word32) dl_387, 0)
-	switch (rdx_391) { l0000000000411201 l0000000000411028 l0000000000411028 l00000000004111C2 l0000000000411028 l000000000041121B l0000000000411028 l0000000000411028 l0000000000411028 l000000000041119E l0000000000411028 l000000000041116B l0000000000411028 l0000000000411028 l000000000041112C l0000000000411028 l0000000000411028 l0000000000411028 l00000000004110F9 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l00000000004110BA l000000000041107F l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411064 l0000000000411036 l0000000000411028 l0000000000411028 l0000000000411028 l000000000041121B l0000000000411028 l0000000000411028 l0000000000411028 l000000000041119E l0000000000411028 l000000000041116B l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l00000000004110F9 l0000000000411028 l0000000000411028 l0000000000411054 }
+	word64 rdi_584
+	word32 edx_388
+	word64 rdx_378 = DPB(rdx_1013, (word32) dl_374, 0)
+	switch (rdx_378) { l0000000000411201 l0000000000411028 l0000000000411028 l00000000004111C2 l0000000000411028 l000000000041121B l0000000000411028 l0000000000411028 l0000000000411028 l000000000041119E l0000000000411028 l000000000041116B l0000000000411028 l0000000000411028 l000000000041112C l0000000000411028 l0000000000411028 l0000000000411028 l00000000004110F9 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l00000000004110BA l000000000041107F l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411064 l0000000000411036 l0000000000411028 l0000000000411028 l0000000000411028 l000000000041121B l0000000000411028 l0000000000411028 l0000000000411028 l000000000041119E l0000000000411028 l000000000041116B l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l0000000000411028 l00000000004110F9 l0000000000411028 l0000000000411028 l0000000000411054 }
 l0000000000410FE7:
-	branch r12_256 == 0x00 l0000000000410EF0
+	branch r12_243 == 0x00 l0000000000410EF0
 l0000000000410FF0:
-	word32 edx_1040 = (word32) Mem236[rbp_246 + 0x00:byte]
-	byte dl_1043 = (byte) edx_1040
-	branch dl_1043 == 0x00 l0000000000410EF0
+	word32 edx_1027 = (word32) Mem223[rbp_233 + 0x00:byte]
+	byte dl_1030 = (byte) edx_1027
+	branch dl_1030 == 0x00 l0000000000410EF0
 l0000000000410FFC:
-	rsi_1018 = DPB(rsi_243, (int32) dl_1043, 0) (alias)
-	ebp_1004 = 0x00
-	rbp_1006 = DPB(rbp_246, 0x00, 0) (alias)
-	rbx_1054 = DPB(rax_250, 0x01, 0) (alias)
-	edx_1025 = edx_1040
-	rdx_1026 = DPB(rdx_260, edx_1040, 0) (alias)
-	branch strchr(r12_256, rsi_1018) != 0x00 l0000000000410F94
+	rsi_1005 = DPB(rsi_230, (int32) dl_1030, 0) (alias)
+	ebp_1016 = 0x00
+	rbp_1017 = DPB(rbp_233, 0x00, 0) (alias)
+	rbx_1041 = DPB(rax_237, 0x01, 0) (alias)
+	edx_1012 = edx_1027
+	rdx_1013 = DPB(rdx_247, edx_1027, 0) (alias)
+	branch strchr(r12_243, rsi_1005) != 0x00 l0000000000410F94
 	goto l0000000000410EF0
 l0000000000411028:
-	Mem348[rbp_1006 + 0x00:word64] = rbx_1054
+	Mem335[rbp_1017 + 0x00:word64] = rbx_1041
 	goto l0000000000410EF5
 l0000000000411036:
-	edx_401 = 0x00
+	edx_388 = 0x00
 l0000000000411038:
-	Mem420[r15_251 + 0x00:word64] = r14_275 + (int64) ecx_376
-	word32 ebp_411 = ebp_1004 | edx_401
-	rbp_1006 = DPB(rbp_1006, ebp_411, 0) (alias)
-	branch Mem420[rsi_365 + 0x00:byte] == 0x00 l000000000041104F
+	Mem407[r15_238 + 0x00:word64] = r14_262 + (int64) ecx_363
+	word32 ebp_398 = ebp_1016 | edx_388
+	rbp_1017 = DPB(rbp_1017, ebp_398, 0) (alias)
+	branch Mem407[rsi_352 + 0x00:byte] == 0x00 l000000000041104F
 l000000000041104C_1:
-	rbp_1006 = DPB(rbp_1006, ebp_411 | 0x02, 0) (alias)
+	rbp_1017 = DPB(rbp_1017, ebp_398 | 0x02, 0) (alias)
 l000000000041104F:
 	goto l0000000000410F4F
 l0000000000411054:
-	branch rbx_1054 < 0x00 l0000000000411283
+	branch rbx_1041 < 0x00 l0000000000411283
 l000000000041105D:
-	rbx_1054 = rbx_1054 * 0x02
-	edx_401 = 0x00
+	rbx_1041 = rbx_1041 * 0x02
+	edx_388 = 0x00
 	goto l0000000000411038
 l0000000000411064:
-	branch rbx_1054 >u rax_379 l0000000000411283
+	branch rbx_1041 >u rax_366 l0000000000411283
 l0000000000411077:
-	rbx_1054 = rbx_1054 << 0x09
-	edx_401 = 0x00
+	rbx_1041 = rbx_1041 << 0x09
+	edx_388 = 0x00
 	goto l0000000000411038
 l000000000041107F:
-	word64 rdi_857 = (int64) eax_383
-	word64 rax_864 = (uint64) (SEQ(rdx_391, ~0x00) /u rdi_857)
-	word32 esi_867 = 0x07
-	rsi_365 = DPB(rsi_1018, 0x07, 0) (alias)
+	word64 rdi_844 = (int64) eax_370
+	word64 rax_851 = (uint64) (SEQ(rdx_378, ~0x00) /u rdi_844)
+	word32 esi_854 = 0x07
+	rsi_352 = DPB(rsi_1005, 0x07, 0) (alias)
 	goto l00000000004110A6
 l0000000000411097:
-	rbx_1054 = rbx_1054 *s rdi_857
+	rbx_1041 = rbx_1041 *s rdi_844
 l000000000041109E:
-	esi_867 = esi_867 - 0x01
-	edx_401 = 0x00
-	rsi_365 = DPB(rsi_365, esi_867, 0) (alias)
-	branch esi_867 == 0x00 l0000000000411038
+	esi_854 = esi_854 - 0x01
+	edx_388 = 0x00
+	rsi_352 = DPB(rsi_352, esi_854, 0) (alias)
+	branch esi_854 == 0x00 l0000000000411038
 l00000000004110A6:
-	branch rax_864 >=u rbx_1054 l0000000000411097
-	branch rax_864 >=u rbx_1054 l0000000000411097
+	branch rax_851 >=u rbx_1041 l0000000000411097
+	branch rax_851 >=u rbx_1041 l0000000000411097
 l00000000004110AB:
-	rbx_1054 = ~0x00
-	rax_864 = DPB(rax_864, 0x01, 0) (alias)
+	rbx_1041 = ~0x00
+	rax_851 = DPB(rax_851, 0x01, 0) (alias)
 	goto l000000000041109E
 l00000000004110BA:
-	word64 rdi_789 = (int64) eax_383
-	word64 rax_796 = (uint64) (SEQ(rdx_391, ~0x00) /u rdi_789)
-	word32 esi_799 = 0x08
-	rsi_365 = DPB(rsi_1018, 0x08, 0) (alias)
+	word64 rdi_776 = (int64) eax_370
+	word64 rax_783 = (uint64) (SEQ(rdx_378, ~0x00) /u rdi_776)
+	word32 esi_786 = 0x08
+	rsi_352 = DPB(rsi_1005, 0x08, 0) (alias)
 	goto l00000000004110E5
 l00000000004110D2:
-	rbx_1054 = rbx_1054 *s rdi_789
+	rbx_1041 = rbx_1041 *s rdi_776
 l00000000004110D9:
-	esi_799 = esi_799 - 0x01
-	edx_401 = 0x00
-	rsi_365 = DPB(rsi_365, esi_799, 0) (alias)
-	branch esi_799 == 0x00 l0000000000411038
+	esi_786 = esi_786 - 0x01
+	edx_388 = 0x00
+	rsi_352 = DPB(rsi_352, esi_786, 0) (alias)
+	branch esi_786 == 0x00 l0000000000411038
 l00000000004110E5:
-	branch rax_796 >=u rbx_1054 l00000000004110D2
-	branch rax_796 >=u rbx_1054 l00000000004110D2
+	branch rax_783 >=u rbx_1041 l00000000004110D2
+	branch rax_783 >=u rbx_1041 l00000000004110D2
 l00000000004110EA:
-	rbx_1054 = ~0x00
-	rax_796 = DPB(rax_796, 0x01, 0) (alias)
+	rbx_1041 = ~0x00
+	rax_783 = DPB(rax_783, 0x01, 0) (alias)
 	goto l00000000004110D9
 l00000000004110F9:
-	rsi_365 = (int64) eax_383
-	word64 rax_730 = (uint64) (SEQ(rdx_391, ~0x00) /u rsi_365)
-	word32 edi_733 = 0x04
+	rsi_352 = (int64) eax_370
+	word64 rax_717 = (uint64) (SEQ(rdx_378, ~0x00) /u rsi_352)
+	word32 edi_720 = 0x04
 l000000000041110F:
-	branch rax_730 <u rbx_1054 l0000000000411271
+	branch rax_717 <u rbx_1041 l0000000000411271
 l0000000000411118:
-	rbx_1054 = rbx_1054 *s rsi_365
+	rbx_1041 = rbx_1041 *s rsi_352
 l000000000041111F:
-	edx_401 = 0x00
-	edi_733 = edi_733 - 0x01
-	branch edi_733 != 0x00 l000000000041110F
+	edx_388 = 0x00
+	edi_720 = edi_720 - 0x01
+	branch edi_720 != 0x00 l000000000041110F
 	goto l0000000000411038
 l000000000041112C:
-	rsi_365 = (int64) eax_383
-	word64 rax_662 = (uint64) (SEQ(rdx_391, ~0x00) /u rsi_365)
-	word32 edi_665 = 0x05
+	rsi_352 = (int64) eax_370
+	word64 rax_649 = (uint64) (SEQ(rdx_378, ~0x00) /u rsi_352)
+	word32 edi_652 = 0x05
 	goto l0000000000411157
 l0000000000411144:
-	rbx_1054 = rbx_1054 *s rsi_365
+	rbx_1041 = rbx_1041 *s rsi_352
 l000000000041114B:
-	edx_401 = 0x00
-	edi_665 = edi_665 - 0x01
-	branch edi_665 == 0x00 l0000000000411038
+	edx_388 = 0x00
+	edi_652 = edi_652 - 0x01
+	branch edi_652 == 0x00 l0000000000411038
 l0000000000411157:
-	branch rax_662 >=u rbx_1054 l0000000000411144
-	branch rax_662 >=u rbx_1054 l0000000000411144
+	branch rax_649 >=u rbx_1041 l0000000000411144
+	branch rax_649 >=u rbx_1041 l0000000000411144
 l000000000041115C:
-	rbx_1054 = ~0x00
-	rax_662 = DPB(rax_662, 0x01, 0) (alias)
+	rbx_1041 = ~0x00
+	rax_649 = DPB(rax_649, 0x01, 0) (alias)
 	goto l000000000041114B
 l000000000041116B:
-	rdi_597 = (int64) eax_383
-	rsi_365 = ~0x00
-	word64 rax_635 = (uint64) (SEQ(rdx_391, ~0x00) /u rdi_597)
-	branch rbx_1054 >u rax_635 l00000000004112A3
+	rdi_584 = (int64) eax_370
+	rsi_352 = ~0x00
+	word64 rax_622 = (uint64) (SEQ(rdx_378, ~0x00) /u rdi_584)
+	branch rbx_1041 >u rax_622 l00000000004112A3
 l0000000000411186:
-	rbx_1054 = rbx_1054 *s rdi_597
-	branch rax_635 <u rbx_1054 l00000000004112A3
+	rbx_1041 = rbx_1041 *s rdi_584
+	branch rax_622 <u rbx_1041 l00000000004112A3
 l0000000000411193:
-	rsi_365 = ~0x00
-	rbx_1054 = rbx_1054 *s rdi_597
-	edx_401 = 0x00
+	rsi_352 = ~0x00
+	rbx_1041 = rbx_1041 *s rdi_584
+	edx_388 = 0x00
 	goto l0000000000411038
 l000000000041119E:
-	rdi_597 = (int64) eax_383
-	rsi_365 = ~0x00
-	branch rbx_1054 <=u (uint64) (SEQ(rdx_391, ~0x00) /u rdi_597) l0000000000411193
+	rdi_584 = (int64) eax_370
+	rsi_352 = ~0x00
+	branch rbx_1041 <=u (uint64) (SEQ(rdx_378, ~0x00) /u rdi_584) l0000000000411193
 l00000000004111B5:
-	rbx_1054 = ~0x00
-	edx_401 = 0x01
+	rbx_1041 = ~0x00
+	edx_388 = 0x01
 	goto l0000000000411038
 l00000000004111C2:
-	word64 rdi_452 = (int64) eax_383
-	word64 rax_459 = (uint64) (SEQ(rdx_391, ~0x00) /u rdi_452)
-	word32 esi_462 = 0x06
-	rsi_365 = DPB(rsi_1018, 0x06, 0) (alias)
+	word64 rdi_439 = (int64) eax_370
+	word64 rax_446 = (uint64) (SEQ(rdx_378, ~0x00) /u rdi_439)
+	word32 esi_449 = 0x06
+	rsi_352 = DPB(rsi_1005, 0x06, 0) (alias)
 	goto l00000000004111ED
 l00000000004111DA:
-	rbx_1054 = rbx_1054 *s rdi_452
+	rbx_1041 = rbx_1041 *s rdi_439
 l00000000004111E1:
-	esi_462 = esi_462 - 0x01
-	edx_401 = 0x00
-	rsi_365 = DPB(rsi_365, esi_462, 0) (alias)
-	branch esi_462 == 0x00 l0000000000411038
+	esi_449 = esi_449 - 0x01
+	edx_388 = 0x00
+	rsi_352 = DPB(rsi_352, esi_449, 0) (alias)
+	branch esi_449 == 0x00 l0000000000411038
 l00000000004111ED:
-	branch rax_459 >=u rbx_1054 l00000000004111DA
-	branch rax_459 >=u rbx_1054 l00000000004111DA
+	branch rax_446 >=u rbx_1041 l00000000004111DA
+	branch rax_446 >=u rbx_1041 l00000000004111DA
 l00000000004111F2:
-	rbx_1054 = ~0x00
-	rax_459 = DPB(rax_459, 0x01, 0) (alias)
+	rbx_1041 = ~0x00
+	rax_446 = DPB(rax_446, 0x01, 0) (alias)
 	goto l00000000004111E1
 l0000000000411201:
-	branch rbx_1054 >u rax_379 l0000000000411283
+	branch rbx_1041 >u rax_366 l0000000000411283
 l0000000000411210:
-	rbx_1054 = rbx_1054 << 0x0A
-	edx_401 = 0x00
+	rbx_1041 = rbx_1041 << 0x0A
+	edx_388 = 0x00
 	goto l0000000000411038
 l000000000041121B:
-	rsi_365 = (int64) eax_383
-	word64 rax_527 = (uint64) (SEQ(rdx_391, ~0x00) /u rsi_365)
-	word32 edi_530 = 0x03
+	rsi_352 = (int64) eax_370
+	word64 rax_514 = (uint64) (SEQ(rdx_378, ~0x00) /u rsi_352)
+	word32 edi_517 = 0x03
 l0000000000411231:
-	branch rax_527 <u rbx_1054 l0000000000411294
+	branch rax_514 <u rbx_1041 l0000000000411294
 l0000000000411236:
-	rbx_1054 = rbx_1054 *s rsi_365
+	rbx_1041 = rbx_1041 *s rsi_352
 l000000000041123D:
-	edx_401 = 0x00
-	edi_530 = edi_530 - 0x01
-	branch edi_530 != 0x00 l0000000000411231
+	edx_388 = 0x00
+	edi_517 = edi_517 - 0x01
+	branch edi_517 != 0x00 l0000000000411231
 	goto l0000000000411038
 l000000000041124A:
-	word64 rcx_993 = DPB(rax_234, Mem236[rsi_365 + 0x02:byte] == 66, 0)
-	eax_383 = 0x0400
-	rax_379 = DPB(rax_368, 0x0400, 0) (alias)
-	ecx_376 = rcx_993 + 0x01 + rcx_993
+	word64 rcx_980 = DPB(rax_221, Mem223[rsi_352 + 0x02:byte] == 66, 0)
+	eax_370 = 0x0400
+	rax_366 = DPB(rax_355, 0x0400, 0) (alias)
+	ecx_363 = rcx_980 + 0x01 + rcx_980
 	goto l0000000000410FD5
 l0000000000411262:
-	ecx_376 = 0x02
-	eax_383 = 1000
-	rax_379 = DPB(rax_368, 1000, 0) (alias)
+	ecx_363 = 0x02
+	eax_370 = 1000
+	rax_366 = DPB(rax_355, 1000, 0) (alias)
 	goto l0000000000410FD5
 l0000000000411271:
-	rbx_1054 = ~0x00
-	rax_730 = DPB(rax_730, 0x01, 0) (alias)
+	rbx_1041 = ~0x00
+	rax_717 = DPB(rax_717, 0x01, 0) (alias)
 	goto l000000000041111F
 l0000000000411283:
-	rbx_1054 = ~0x00
-	edx_401 = 0x01
+	rbx_1041 = ~0x00
+	edx_388 = 0x01
 	goto l0000000000411038
 l0000000000411294:
-	rbx_1054 = ~0x00
-	rax_527 = DPB(rax_527, 0x01, 0) (alias)
+	rbx_1041 = ~0x00
+	rax_514 = DPB(rax_514, 0x01, 0) (alias)
 	goto l000000000041123D
 l00000000004112A3:
-	edx_401 = 0x01
-	rbx_1054 = ~0x00
+	edx_388 = 0x01
+	rbx_1041 = ~0x00
 	goto l0000000000411038
 l00000000004112B0:
-	word64 rcx_1074 = DPB(rcx, 4287944, 0)
-	__assert_fail(DPB(rdi, 4287472, 0), DPB(rsi, 0x00416BE0, 0), DPB(rdx, 0x60, 0), rcx_1074)
-	fn00000000004112D0(rcx_1074, 0x00416BE0, 4287472)
-	return
-l00000000004112C9_thunk_fn00000000004112D0:
+	__assert_fail(DPB(rdi, 4287472, 0), DPB(rsi, 0x00416BE0, 0), DPB(rdx, 0x60, 0), DPB(rcx, 4287944, 0))
 fn0000000000410E90_exit:
 }
 
@@ -9745,456 +13745,443 @@ l000000000041132F:
 word32 fn0000000000411360(word32 edx, word64 rsi, word64 rdi, word64 r8, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & r8Out, ptr64 & r12Out)
 {
 fn0000000000411360_entry:
-	*rbpOut = rbp
-	*r8Out = r8
-	*r12Out = r12
 	branch edx >u 0x24 l0000000000411788
 	goto l000000000041137A
 l0000000000411360:
 l000000000041137A:
-	word64 rsp_95
-	word64 rdi_96
-	word64 rsi_97
-	word32 r14d_98
-	word32 edx_99
-	word64 rbp_100
-	word64 rbx_101
-	byte SCZO_102
-	byte CZ_103
-	word64 rax_104
-	word64 r15_105
-	byte SZO_106
-	byte C_107
-	word64 r13_108
-	word64 rcx_109
-	word64 r12_110
-	word64 r8_111
-	byte Z_112
-	word32 ebx_113
-	word64 rdx_114
-	word32 ecx_115
-	word32 esi_116
-	word32 edi_117
-	word32 r9d_118
-	word32 eax_121
-	word64 r14_122
-	word32 ebp_123
-	byte dl_124
-	byte al_125
-	word32 r8d_126
-	byte S_127
-	byte cl_128
-	word64 r9_120
-	byte bl_1108
+	word64 rsp_39
+	word64 rdi_40
+	word64 rsi_41
+	word32 r14d_42
+	word32 edx_43
+	word64 rbp_44
+	word64 rbx_45
+	byte SCZO_46
+	byte CZ_47
+	word64 rax_48
+	word64 r15_49
+	byte SZO_50
+	byte C_51
+	word64 r13_52
+	word64 rcx_53
+	word64 r12_54
+	word64 r8_55
+	byte Z_56
+	word32 ebx_57
+	word64 rdx_58
+	word32 ecx_59
+	word32 esi_60
+	word32 edi_61
+	word32 r9d_62
+	word32 eax_65
+	word64 r14_66
+	word32 ebp_67
+	byte dl_68
+	byte al_69
+	word32 r8d_70
+	byte S_71
+	byte cl_72
+	word64 r9_64
+	byte bl_1095
 	call __ctype_b_loc (retsize: 8; depth: 72)
-		uses: al,bl_79,C_71,cl,CZ_23,dl,dwLoc04_4,dwLoc08_7,dwLoc0C_12,dwLoc10_15,dwLoc14_17,dwLoc18_20,dwLoc38,eax,ebp_67,ebx_77,ecx,edi,edx,esi,qwLoc38,r12_75,r13_73,r14,r14d_9,r15_68,r8,r8d,r9,r9d,rax_65,rbp_66,rbx_78,rcx,rdi,rdx,rsi,rsp_21,S,SCZO_22,SZO_69,Z_70
-		defs: al_125,bl_119,C_107,cl_128,CZ_103,dl_124,eax_121,ebp_123,ebx_113,ecx_115,edi_117,edx_99,esi_116,r12_110,r13_108,r14_122,r14d_98,r15_105,r8_111,r8d_126,r9_120,r9d_118,rax_104,rbp_100,rbx_101,rcx_109,rdi_96,rdx_114,rsi_97,rsp_95,S_127,SCZO_102,SZO_106,Z_112
-	word64 rax_1101 = rbp_100
+		uses: bl_38,C_30,CZ_23,dwLoc04_4,dwLoc08_7,dwLoc0C_12,dwLoc10_15,dwLoc14_17,dwLoc18_20,ebp_26,ebx_36,edx,r12_34,r13_32,r14d_9,r15_27,r8,rax_24,rbp_25,rbx_37,rcx,rdi,rsi,rsp_21,SCZO_22,SZO_28,Z_29
+		defs: al_69,bl_63,C_51,cl_72,CZ_47,dl_68,eax_65,ebp_67,ebx_57,ecx_59,edi_61,edx_43,esi_60,r12_54,r13_52,r14_66,r14d_42,r15_49,r8_55,r8d_70,r9_64,r9d_62,rax_48,rbp_44,rbx_45,rcx_53,rdi_40,rdx_58,rsi_41,rsp_39,S_71,SCZO_46,SZO_50,Z_56
+	word64 rax_1088 = rbp_44
 	goto l00000000004113AF
 l0000000000411392:
 l00000000004113A8:
-	rax_1101 = rax_1101 + 0x01
-	bl_1108 = (byte) (word32) Mem0[rax_1101 + 0x00:byte] (alias)
+	rax_1088 = rax_1088 + 0x01
+	bl_1095 = (byte) (word32) Mem0[rax_1088 + 0x00:byte] (alias)
 l00000000004113AF:
-	word32 r9d_146 = (word32) bl_1108
-	r9_120 = DPB(r9_120, r9d_146, 0) (alias)
-	branch ((qwLoc28 + 0x01)[r9_120 * 0x02] & 0x20) != 0x00 l00000000004113A8
+	word32 r9d_90 = (word32) bl_1095
+	r9_64 = DPB(r9_64, r9d_90, 0) (alias)
+	branch ((qwLoc28 + 0x01)[r9_64 * 0x02] & 0x20) != 0x00 l00000000004113A8
 l00000000004113BB:
-	word32 eax_179
-	branch bl_1108 != 0x2D l00000000004113D8
+	word32 eax_166
+	branch bl_1095 != 0x2D l00000000004113D8
 l00000000004113C0:
-	eax_179 = 0x04
+	eax_166 = 0x04
 l00000000004113C5:
-	word64 rbp_194
+	word64 rbp_181
 	*rbpOut = Mem0[qwLoc08 + 0x08:word64]
-	word64 rsp_200
-	*rspOut = qwLoc08 + 0x20
-	return eax_179
+	return eax_166
 l00000000004113D8:
-	word32 ebp_1043
-	word64 rbp_1042
-	word64 rsi_1055
-	word64 rdx_1063
-	word32 edx_1062
-	word64 rax_240 = __errno_location()
-	Mem248[rax_240 + 0x00:word32] = 0x00
-	word64 rsp_253
-	word64 rdi_254
-	word64 rsi_255
-	word32 r14d_256
-	word32 edx_257
-	word64 rbp_258
-	word64 rbx_259
-	byte SCZO_260
-	byte CZ_261
-	word64 rax_262
-	word64 r15_263
-	byte SZO_264
-	byte C_265
-	word64 r13_266
-	word64 rcx_267
-	word64 r12_268
-	word64 r8_269
-	byte Z_270
-	word32 ebx_271
-	word64 rdx_272
-	word32 ecx_273
-	word32 esi_274
-	word32 edi_275
-	word32 r9d_276
-	byte bl_277
-	word64 r9_278
-	word32 eax_279
-	word64 r14_280
-	word32 ebp_281
-	byte dl_282
-	byte al_283
-	word32 r8d_284
-	byte S_285
-	byte cl_286
+	word32 ebp_1030
+	word64 rbp_1029
+	word64 rsi_1042
+	word64 rdx_1050
+	word32 edx_1049
+	word64 rax_227 = __errno_location()
+	Mem235[rax_227 + 0x00:word32] = 0x00
+	word64 rsp_240
+	word64 rdi_241
+	word64 rsi_242
+	word32 r14d_243
+	word32 edx_244
+	word64 rbp_245
+	word64 rbx_246
+	byte SCZO_247
+	byte CZ_248
+	word64 rax_249
+	word64 r15_250
+	byte SZO_251
+	byte C_252
+	word64 r13_253
+	word64 rcx_254
+	word64 r12_255
+	word64 r8_256
+	byte Z_257
+	word32 ebx_258
+	word64 rdx_259
+	word32 ecx_260
+	word32 esi_261
+	word32 edi_262
+	word32 r9d_263
+	byte bl_264
+	word64 r9_265
+	word32 eax_266
+	word64 r14_267
+	word32 ebp_268
+	byte dl_269
+	byte al_270
+	word32 r8d_271
+	byte S_272
+	byte cl_273
 	call __strtoul_internal (retsize: 8; depth: 72)
-		uses: al_242,bl_139,C_245,cl_128,CZ_103,dl_132,dwLoc04_4,dwLoc08_7,dwLoc0C_12,dwLoc10_15,dwLoc14_17,dwLoc18_20,dwLoc38,eax_241,ebp_123,ebx_138,ecx_243,edi_117,edx_246,esi_250,qwLoc08,qwLoc10,qwLoc18,qwLoc28,qwLoc38_252,r12_110,r13_108,r14_122,r14d_98,r15_105,r8_111,r8d_126,r9_147,r9d_146,rax_240,rbp_100,rbx_145,rcx_109,rdi_251,rdx_130,rsi_249,rsp_95,S_127,SCZO_151,SZO_244,Z_152
-		defs: al_283,bl_277,C_265,cl_286,CZ_261,dl_282,eax_279,ebp_281,ebx_271,ecx_273,edi_275,edx_257,esi_274,r12_268,r13_266,r14_280,r14d_256,r15_263,r8_269,r8d_284,r9_278,r9d_276,rax_262,rbp_258,rbx_259,rcx_267,rdi_254,rdx_272,rsi_255,rsp_253,S_285,SCZO_260,SZO_264,Z_270
-	word64 r14_287 = Mem248[r15_263 + 0x00:word64]
-	word64 rbx_1091 = rax_262
-	word64 r8_292 = rax_240
-	*r8Out = r8_292
-	branch r14_287 == rbp_258 l00000000004114BF
+		uses: al_229,bl_83,C_232,cl_72,CZ_47,dl_76,dwLoc04_4,dwLoc08_7,dwLoc0C_12,dwLoc10_15,dwLoc14_17,dwLoc18_20,dwLoc38,eax_228,ebp_67,ebx_82,ecx_230,edi_61,edx_233,esi_237,qwLoc08,qwLoc10,qwLoc18,qwLoc28,qwLoc38_239,r12_54,r13_52,r14_66,r14d_42,r15_49,r8_55,r8d_70,r9_91,r9d_90,rax_227,rbp_44,rbx_89,rcx_53,rdi_238,rdx_74,rsi_236,rsp_39,S_71,SCZO_95,SZO_231,Z_96
+		defs: al_270,bl_264,C_252,cl_273,CZ_248,dl_269,eax_266,ebp_268,ebx_258,ecx_260,edi_262,edx_244,esi_261,r12_255,r13_253,r14_267,r14d_243,r15_250,r8_256,r8d_271,r9_265,r9d_263,rax_249,rbp_245,rbx_246,rcx_254,rdi_241,rdx_259,rsi_242,rsp_240,S_272,SCZO_247,SZO_251,Z_257
+	word64 r14_274 = Mem235[r15_250 + 0x00:word64]
+	word64 rbx_1078 = rax_249
+	word64 r8_279 = rax_227
+	*r8Out = r8_279
+	branch r14_274 == rbp_245 l00000000004114BF
 l000000000041140C:
-	word32 eax_1034 = Mem248[rax_262 + 0x00:word32]
-	branch eax_1034 != 0x00 l0000000000411440
+	word32 eax_1021 = Mem235[rax_249 + 0x00:word32]
+	branch eax_1021 != 0x00 l0000000000411440
 l0000000000411413:
-	ebp_1043 = 0x00
-	rbp_1042 = DPB(rbp_258, 0x00, 0) (alias)
+	ebp_1030 = 0x00
+	rbp_1029 = DPB(rbp_245, 0x00, 0) (alias)
 l0000000000411415:
-	branch r12_268 == 0x00 l0000000000411422
+	branch r12_255 == 0x00 l0000000000411422
 l000000000041141A:
-	word32 edx_1047 = (word32) Mem248[rsi_255 + 0x00:byte]
-	byte dl_1050 = (byte) edx_1047
-	branch dl_1050 != 0x00 l0000000000411450
+	word32 edx_1034 = (word32) Mem235[rsi_242 + 0x00:byte]
+	byte dl_1037 = (byte) edx_1034
+	branch dl_1037 != 0x00 l0000000000411450
 l0000000000411422:
-	Mem320[rbp_1042 + 0x00:word64] = rbx_1091
-	word64 rbp_333
-	*rbpOut = Mem320[qwLoc08 + 0x08:word64]
-	word64 rsp_339
-	*rspOut = qwLoc08 + 0x20
-	return ebp_1043
+	Mem307[rbp_1029 + 0x00:word64] = rbx_1078
+	word64 rbp_320
+	*rbpOut = Mem307[qwLoc08 + 0x08:word64]
+	return ebp_1030
 l0000000000411440:
-	ebp_1043 = 0x01
-	rbp_1042 = DPB(rbp_258, 0x01, 0) (alias)
-	branch eax_1034 != 0x22 l00000000004113C0
+	ebp_1030 = 0x01
+	rbp_1029 = DPB(rbp_245, 0x01, 0) (alias)
+	branch eax_1021 != 0x22 l00000000004113C0
 	goto l0000000000411415
 l0000000000411450:
-	rsi_1055 = DPB(rsi_255, (int32) dl_1050, 0) (alias)
-	edx_1062 = edx_1047
-	rdx_1063 = DPB(rdx_272, edx_1047, 0) (alias)
-	branch strchr(r12_268, rsi_1055) == 0x00 l0000000000411500
+	rsi_1042 = DPB(rsi_242, (int32) dl_1037, 0) (alias)
+	edx_1049 = edx_1034
+	rdx_1050 = DPB(rdx_259, edx_1034, 0) (alias)
+	branch strchr(r12_255, rsi_1042) == 0x00 l0000000000411500
 l000000000041146C:
-	word64 rax_1000
-	word32 eax_1014
-	word32 ecx_1011
-	word64 rsi_381 = DPB(rsi_1055, 0x30, 0)
-	word64 rax_1004 = strchr(r12_268, rsi_381)
-	branch rax_1004 == 0x00 l00000000004114A3
+	word64 rax_1002
+	word32 eax_1001
+	word32 ecx_1018
+	word64 rsi_368 = DPB(rsi_1042, 0x30, 0)
+	word64 rax_371 = strchr(r12_255, rsi_368)
+	branch rax_371 == 0x00 l00000000004114A3
 l0000000000411486:
-	word32 eax_1003 = (word32) Mem248[rsi_381 + 0x01:byte]
-	rax_1004 = DPB(rax_1004, eax_1003, 0) (alias)
-	byte al_1006 = (byte) eax_1003
-	branch al_1006 == 0x44 l000000000041173A
+	word32 eax_990 = (word32) Mem235[rsi_368 + 0x01:byte]
+	rax_371 = DPB(rax_371, eax_990, 0) (alias)
+	byte al_993 = (byte) eax_990
+	branch al_993 == 0x44 l000000000041173A
 l0000000000411493:
-	branch al_1006 == 0x69 l0000000000411722
+	branch al_993 == 0x69 l0000000000411722
 l000000000041149B:
-	branch al_1006 == 66 l000000000041173A
+	branch al_993 == 66 l000000000041173A
 l00000000004114A3:
-	ecx_1011 = 0x01
-	eax_1014 = 0x0400
-	rax_1000 = DPB(rax_1004, 0x0400, 0) (alias)
+	ecx_1018 = 0x01
+	eax_1001 = 0x0400
+	rax_1002 = DPB(rax_371, 0x0400, 0) (alias)
 l00000000004114AD:
-	byte dl_403 = (byte) (edx_1062 - 66)
-	branch dl_403 >u 0x35 l0000000000411500
+	byte dl_390 = (byte) (edx_1049 - 66)
+	branch dl_390 >u 0x35 l0000000000411500
 l00000000004114B5:
-	word64 rdi_621
-	word32 edx_417
-	word64 rdx_407 = DPB(rdx_1063, (word32) dl_403, 0)
-	switch (rdx_407) { l00000000004116D9 l0000000000411500 l0000000000411500 l000000000041169A l0000000000411500 l00000000004116F3 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411676 l0000000000411500 l0000000000411643 l0000000000411500 l0000000000411500 l0000000000411604 l0000000000411500 l0000000000411500 l0000000000411500 l00000000004115D1 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411592 l0000000000411557 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l000000000041153C l000000000041150E l0000000000411500 l0000000000411500 l0000000000411500 l00000000004116F3 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411676 l0000000000411500 l0000000000411643 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l00000000004115D1 l0000000000411500 l0000000000411500 l000000000041152C }
+	word64 rdi_608
+	word32 edx_404
+	word64 rdx_394 = DPB(rdx_1050, (word32) dl_390, 0)
+	switch (rdx_394) { l00000000004116D9 l0000000000411500 l0000000000411500 l000000000041169A l0000000000411500 l00000000004116F3 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411676 l0000000000411500 l0000000000411643 l0000000000411500 l0000000000411500 l0000000000411604 l0000000000411500 l0000000000411500 l0000000000411500 l00000000004115D1 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411592 l0000000000411557 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l000000000041153C l000000000041150E l0000000000411500 l0000000000411500 l0000000000411500 l00000000004116F3 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411676 l0000000000411500 l0000000000411643 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l0000000000411500 l00000000004115D1 l0000000000411500 l0000000000411500 l000000000041152C }
 l00000000004114BF:
-	branch r12_268 == 0x00 l00000000004113C0
+	branch r12_255 == 0x00 l00000000004113C0
 l00000000004114C8:
-	word32 edx_1077 = (word32) Mem248[rbp_258 + 0x00:byte]
-	byte dl_1080 = (byte) edx_1077
-	branch dl_1080 == 0x00 l00000000004113C0
+	word32 edx_1064 = (word32) Mem235[rbp_245 + 0x00:byte]
+	byte dl_1067 = (byte) edx_1064
+	branch dl_1067 == 0x00 l00000000004113C0
 l00000000004114D4:
-	rsi_1055 = DPB(rsi_255, (int32) dl_1080, 0) (alias)
-	ebp_1043 = 0x00
-	rbp_1042 = DPB(rbp_258, 0x00, 0) (alias)
-	rbx_1091 = DPB(rax_262, 0x01, 0) (alias)
-	edx_1062 = edx_1077
-	rdx_1063 = DPB(rdx_272, edx_1077, 0) (alias)
-	branch strchr(r12_268, rsi_1055) != 0x00 l000000000041146C
+	rsi_1042 = DPB(rsi_242, (int32) dl_1067, 0) (alias)
+	ebp_1030 = 0x00
+	rbp_1029 = DPB(rbp_245, 0x00, 0) (alias)
+	rbx_1078 = DPB(rax_249, 0x01, 0) (alias)
+	edx_1049 = edx_1064
+	rdx_1050 = DPB(rdx_259, edx_1064, 0) (alias)
+	branch strchr(r12_255, rsi_1042) != 0x00 l000000000041146C
 	goto l00000000004113C0
 l0000000000411500:
-	Mem361[rbp_1042 + 0x00:word64] = rbx_1091
-	eax_179 = ebp_1043 | 0x02
+	Mem348[rbp_1029 + 0x00:word64] = rbx_1078
+	eax_166 = ebp_1030 | 0x02
 	goto l00000000004113C5
 l000000000041150E:
-	edx_417 = 0x00
+	edx_404 = 0x00
 l0000000000411510:
-	Mem436[r15_263 + 0x00:word64] = r14_287 + (int64) ecx_1011
-	ebp_1043 = ebp_1043 | edx_417
-	rbp_1042 = DPB(rbp_1042, ebp_1043, 0) (alias)
-	branch Mem436[rsi_381 + 0x00:byte] == 0x00 l0000000000411527
+	Mem423[r15_250 + 0x00:word64] = r14_274 + (int64) ecx_1018
+	ebp_1030 = ebp_1030 | edx_404
+	rbp_1029 = DPB(rbp_1029, ebp_1030, 0) (alias)
+	branch Mem423[rsi_368 + 0x00:byte] == 0x00 l0000000000411527
 l0000000000411524_1:
-	ebp_1043 = ebp_1043 | 0x02
-	rbp_1042 = DPB(rbp_1042, ebp_1043 | 0x02, 0) (alias)
+	ebp_1030 = ebp_1030 | 0x02
+	rbp_1029 = DPB(rbp_1029, ebp_1030 | 0x02, 0) (alias)
 l0000000000411527:
 	goto l0000000000411422
 l000000000041152C:
-	branch rbx_1091 < 0x00 l000000000041175B
+	branch rbx_1078 < 0x00 l000000000041175B
 l0000000000411535:
-	rbx_1091 = rbx_1091 * 0x02
-	edx_417 = 0x00
+	rbx_1078 = rbx_1078 * 0x02
+	edx_404 = 0x00
 	goto l0000000000411510
 l000000000041153C:
-	word64 r8_961 = 0xFFFFFFFF
-	*r8Out = r8_961
-	branch rbx_1091 >u rax_1000 l000000000041175B
+	word64 r8_948 = 0xFFFFFFFF
+	*r8Out = r8_948
+	branch rbx_1078 >u rax_1002 l000000000041175B
 l000000000041154F:
-	rbx_1091 = rbx_1091 << 0x09
-	edx_417 = 0x00
+	rbx_1078 = rbx_1078 << 0x09
+	edx_404 = 0x00
 	goto l0000000000411510
 l0000000000411557:
-	word64 rdi_890 = (int64) eax_1014
-	word64 rax_897 = (uint64) (SEQ(rdx_407, ~0x00) /u rdi_890)
-	word32 esi_900 = 0x07
-	rsi_381 = DPB(rsi_1055, 0x07, 0) (alias)
+	word64 rdi_877 = (int64) eax_1001
+	word64 rax_884 = (uint64) (SEQ(rdx_394, ~0x00) /u rdi_877)
+	word32 esi_887 = 0x07
+	rsi_368 = DPB(rsi_1042, 0x07, 0) (alias)
 	goto l000000000041157E
 l000000000041156F:
-	rbx_1091 = rbx_1091 *s rdi_890
-	*r8Out = DPB(r8_292, 0x00, 0)
+	rbx_1078 = rbx_1078 *s rdi_877
+	*r8Out = DPB(r8_279, 0x00, 0)
 l0000000000411576:
-	esi_900 = esi_900 - 0x01
-	edx_417 = 0x00
-	rsi_381 = DPB(rsi_381, esi_900, 0) (alias)
-	branch esi_900 == 0x00 l0000000000411510
+	esi_887 = esi_887 - 0x01
+	edx_404 = 0x00
+	rsi_368 = DPB(rsi_368, esi_887, 0) (alias)
+	branch esi_887 == 0x00 l0000000000411510
 l000000000041157E:
-	branch rax_897 >=u rbx_1091 l000000000041156F
-	branch rax_897 >=u rbx_1091 l000000000041156F
+	branch rax_884 >=u rbx_1078 l000000000041156F
+	branch rax_884 >=u rbx_1078 l000000000041156F
 l0000000000411583:
-	rbx_1091 = ~0x00
-	rax_897 = DPB(rax_897, 0x01, 0) (alias)
+	rbx_1078 = ~0x00
+	rax_884 = DPB(rax_884, 0x01, 0) (alias)
 	goto l0000000000411576
 l0000000000411592:
-	word64 rdi_819 = (int64) eax_1014
-	word64 rax_826 = (uint64) (SEQ(rdx_407, ~0x00) /u rdi_819)
-	word32 esi_829 = 0x08
-	rsi_381 = DPB(rsi_1055, 0x08, 0) (alias)
+	word64 rdi_806 = (int64) eax_1001
+	word64 rax_813 = (uint64) (SEQ(rdx_394, ~0x00) /u rdi_806)
+	word32 esi_816 = 0x08
+	rsi_368 = DPB(rsi_1042, 0x08, 0) (alias)
 	goto l00000000004115BD
 l00000000004115AA:
-	rbx_1091 = rbx_1091 *s rdi_819
-	*r8Out = DPB(r8_292, 0x00, 0)
+	rbx_1078 = rbx_1078 *s rdi_806
+	*r8Out = DPB(r8_279, 0x00, 0)
 l00000000004115B1:
-	esi_829 = esi_829 - 0x01
-	edx_417 = 0x00
-	rsi_381 = DPB(rsi_381, esi_829, 0) (alias)
-	branch esi_829 == 0x00 l0000000000411510
+	esi_816 = esi_816 - 0x01
+	edx_404 = 0x00
+	rsi_368 = DPB(rsi_368, esi_816, 0) (alias)
+	branch esi_816 == 0x00 l0000000000411510
 l00000000004115BD:
-	branch rax_826 >=u rbx_1091 l00000000004115AA
-	branch rax_826 >=u rbx_1091 l00000000004115AA
+	branch rax_813 >=u rbx_1078 l00000000004115AA
+	branch rax_813 >=u rbx_1078 l00000000004115AA
 l00000000004115C2:
-	rbx_1091 = ~0x00
-	rax_826 = DPB(rax_826, 0x01, 0) (alias)
+	rbx_1078 = ~0x00
+	rax_813 = DPB(rax_813, 0x01, 0) (alias)
 	goto l00000000004115B1
 l00000000004115D1:
-	rsi_381 = (int64) eax_1014
-	word64 rax_757 = (uint64) (SEQ(rdx_407, ~0x00) /u rsi_381)
-	word32 edi_760 = 0x04
+	rsi_368 = (int64) eax_1001
+	word64 rax_744 = (uint64) (SEQ(rdx_394, ~0x00) /u rsi_368)
+	word32 edi_747 = 0x04
 l00000000004115E7:
-	branch rax_757 <u rbx_1091 l0000000000411749
+	branch rax_744 <u rbx_1078 l0000000000411749
 l00000000004115F0:
-	rbx_1091 = rbx_1091 *s rsi_381
-	*r8Out = DPB(r8_292, 0x00, 0)
+	rbx_1078 = rbx_1078 *s rsi_368
+	*r8Out = DPB(r8_279, 0x00, 0)
 l00000000004115F7:
-	edx_417 = 0x00
-	edi_760 = edi_760 - 0x01
-	branch edi_760 != 0x00 l00000000004115E7
+	edx_404 = 0x00
+	edi_747 = edi_747 - 0x01
+	branch edi_747 != 0x00 l00000000004115E7
 	goto l0000000000411510
 l0000000000411604:
-	rsi_381 = (int64) eax_1014
-	word64 rax_686 = (uint64) (SEQ(rdx_407, ~0x00) /u rsi_381)
-	word32 edi_689 = 0x05
+	rsi_368 = (int64) eax_1001
+	word64 rax_673 = (uint64) (SEQ(rdx_394, ~0x00) /u rsi_368)
+	word32 edi_676 = 0x05
 	goto l000000000041162F
 l000000000041161C:
-	rbx_1091 = rbx_1091 *s rsi_381
-	*r8Out = DPB(r8_292, 0x00, 0)
+	rbx_1078 = rbx_1078 *s rsi_368
+	*r8Out = DPB(r8_279, 0x00, 0)
 l0000000000411623:
-	edx_417 = 0x00
-	edi_689 = edi_689 - 0x01
-	branch edi_689 == 0x00 l0000000000411510
+	edx_404 = 0x00
+	edi_676 = edi_676 - 0x01
+	branch edi_676 == 0x00 l0000000000411510
 l000000000041162F:
-	branch rax_686 >=u rbx_1091 l000000000041161C
-	branch rax_686 >=u rbx_1091 l000000000041161C
+	branch rax_673 >=u rbx_1078 l000000000041161C
+	branch rax_673 >=u rbx_1078 l000000000041161C
 l0000000000411634:
-	rbx_1091 = ~0x00
-	rax_686 = DPB(rax_686, 0x01, 0) (alias)
+	rbx_1078 = ~0x00
+	rax_673 = DPB(rax_673, 0x01, 0) (alias)
 	goto l0000000000411623
 l0000000000411643:
-	rdi_621 = (int64) eax_1014
-	rsi_381 = ~0x00
-	word64 rax_659 = (uint64) (SEQ(rdx_407, ~0x00) /u rdi_621)
-	branch rbx_1091 >u rax_659 l000000000041177B
+	rdi_608 = (int64) eax_1001
+	rsi_368 = ~0x00
+	word64 rax_646 = (uint64) (SEQ(rdx_394, ~0x00) /u rdi_608)
+	branch rbx_1078 >u rax_646 l000000000041177B
 l000000000041165E:
-	rbx_1091 = rbx_1091 *s rdi_621
-	branch rax_659 <u rbx_1091 l000000000041177B
+	rbx_1078 = rbx_1078 *s rdi_608
+	branch rax_646 <u rbx_1078 l000000000041177B
 l000000000041166B:
-	rsi_381 = ~0x00
-	rbx_1091 = rbx_1091 *s rdi_621
-	edx_417 = 0x00
+	rsi_368 = ~0x00
+	rbx_1078 = rbx_1078 *s rdi_608
+	edx_404 = 0x00
 	goto l0000000000411510
 l0000000000411676:
-	rdi_621 = (int64) eax_1014
-	rsi_381 = ~0x00
-	branch rbx_1091 <=u (uint64) (SEQ(rdx_407, ~0x00) /u rdi_621) l000000000041166B
+	rdi_608 = (int64) eax_1001
+	rsi_368 = ~0x00
+	branch rbx_1078 <=u (uint64) (SEQ(rdx_394, ~0x00) /u rdi_608) l000000000041166B
 l000000000041168D:
-	rbx_1091 = ~0x00
-	edx_417 = 0x01
+	rbx_1078 = ~0x00
+	edx_404 = 0x01
 	goto l0000000000411510
 l000000000041169A:
-	word64 rdi_470 = (int64) eax_1014
-	word64 rax_477 = (uint64) (SEQ(rdx_407, ~0x00) /u rdi_470)
-	word32 esi_480 = 0x06
-	rsi_381 = DPB(rsi_1055, 0x06, 0) (alias)
+	word64 rdi_457 = (int64) eax_1001
+	word64 rax_464 = (uint64) (SEQ(rdx_394, ~0x00) /u rdi_457)
+	word32 esi_467 = 0x06
+	rsi_368 = DPB(rsi_1042, 0x06, 0) (alias)
 	goto l00000000004116C5
 l00000000004116B2:
-	rbx_1091 = rbx_1091 *s rdi_470
-	*r8Out = DPB(r8_292, 0x00, 0)
+	rbx_1078 = rbx_1078 *s rdi_457
+	*r8Out = DPB(r8_279, 0x00, 0)
 l00000000004116B9:
-	esi_480 = esi_480 - 0x01
-	edx_417 = 0x00
-	rsi_381 = DPB(rsi_381, esi_480, 0) (alias)
-	branch esi_480 == 0x00 l0000000000411510
+	esi_467 = esi_467 - 0x01
+	edx_404 = 0x00
+	rsi_368 = DPB(rsi_368, esi_467, 0) (alias)
+	branch esi_467 == 0x00 l0000000000411510
 l00000000004116C5:
-	branch rax_477 >=u rbx_1091 l00000000004116B2
-	branch rax_477 >=u rbx_1091 l00000000004116B2
+	branch rax_464 >=u rbx_1078 l00000000004116B2
+	branch rax_464 >=u rbx_1078 l00000000004116B2
 l00000000004116CA:
-	rbx_1091 = ~0x00
-	rax_477 = DPB(rax_477, 0x01, 0) (alias)
+	rbx_1078 = ~0x00
+	rax_464 = DPB(rax_464, 0x01, 0) (alias)
 	goto l00000000004116B9
 l00000000004116D9:
-	word64 r8_457
+	word64 r8_444
 	*r8Out = 0xFFFFFFFF
-	branch rbx_1091 >u rax_1000 l000000000041175B
+	branch rbx_1078 >u rax_1002 l000000000041175B
 l00000000004116E8:
-	rbx_1091 = rbx_1091 << 0x0A
-	edx_417 = 0x00
+	rbx_1078 = rbx_1078 << 0x0A
+	edx_404 = 0x00
 	goto l0000000000411510
 l00000000004116F3:
-	rsi_381 = (int64) eax_1014
-	word64 rax_548 = (uint64) (SEQ(rdx_407, ~0x00) /u rsi_381)
-	word32 edi_551 = 0x03
+	rsi_368 = (int64) eax_1001
+	word64 rax_535 = (uint64) (SEQ(rdx_394, ~0x00) /u rsi_368)
+	word32 edi_538 = 0x03
 l0000000000411709:
-	branch rax_548 <u rbx_1091 l000000000041176C
+	branch rax_535 <u rbx_1078 l000000000041176C
 l000000000041170E:
-	rbx_1091 = rbx_1091 *s rsi_381
-	*r8Out = DPB(r8_292, 0x00, 0)
+	rbx_1078 = rbx_1078 *s rsi_368
+	*r8Out = DPB(r8_279, 0x00, 0)
 l0000000000411715:
-	edx_417 = 0x00
-	edi_551 = edi_551 - 0x01
-	branch edi_551 != 0x00 l0000000000411709
+	edx_404 = 0x00
+	edi_538 = edi_538 - 0x01
+	branch edi_538 != 0x00 l0000000000411709
 	goto l0000000000411510
 l0000000000411722:
-	word64 rcx_1030 = DPB(rcx_267, Mem248[rsi_381 + 0x02:byte] == 66, 0)
-	eax_1014 = 0x0400
-	rax_1000 = DPB(rax_1004, 0x0400, 0) (alias)
-	ecx_1011 = rcx_1030 + 0x01 + rcx_1030
+	word64 rcx_1017 = DPB(rcx_254, Mem235[rsi_368 + 0x02:byte] == 66, 0)
+	eax_1001 = 0x0400
+	rax_1002 = DPB(rax_371, 0x0400, 0) (alias)
+	ecx_1018 = rcx_1017 + 0x01 + rcx_1017
 	goto l00000000004114AD
 l000000000041173A:
-	ecx_1011 = 0x02
-	eax_1014 = 1000
-	rax_1000 = DPB(rax_1004, 1000, 0) (alias)
+	ecx_1018 = 0x02
+	eax_1001 = 1000
+	rax_1002 = DPB(rax_371, 1000, 0) (alias)
 	goto l00000000004114AD
 l0000000000411749:
-	rbx_1091 = ~0x00
-	rax_757 = DPB(rax_757, 0x01, 0) (alias)
+	rbx_1078 = ~0x00
+	rax_744 = DPB(rax_744, 0x01, 0) (alias)
 	goto l00000000004115F7
 l000000000041175B:
-	rbx_1091 = ~0x00
-	edx_417 = 0x01
+	rbx_1078 = ~0x00
+	edx_404 = 0x01
 	goto l0000000000411510
 l000000000041176C:
-	rbx_1091 = ~0x00
-	rax_548 = DPB(rax_548, 0x01, 0) (alias)
+	rbx_1078 = ~0x00
+	rax_535 = DPB(rax_535, 0x01, 0) (alias)
 	goto l0000000000411715
 l000000000041177B:
-	edx_417 = 0x01
-	rbx_1091 = ~0x00
+	edx_404 = 0x01
+	rbx_1078 = ~0x00
 	goto l0000000000411510
 l0000000000411788:
-	word64 rsi_1115 = DPB(rsi, 0x00416BE0, 0)
-	__assert_fail(DPB(rdi, 4287472, 0), rsi_1115, DPB(rdx, 0x60, 0), DPB(rcx, 4288488, 0))
-	word64 rsp_1118
-	return fn00000000004117B0(rsi_1115, 4287472, out rsp_1118)
-l00000000004117AB_thunk_fn00000000004117B0:
+	__assert_fail(DPB(rdi, 4287472, 0), DPB(rsi, 0x00416BE0, 0), DPB(rdx, 0x60, 0), DPB(rcx, 4288488, 0))
 fn0000000000411360_exit:
 }
 
-// 00000000004117B0: Register word32 fn00000000004117B0(Register word64 rsi, Register word32 edi, Register out ptr64 rspOut)
-word32 fn00000000004117B0(word64 rsi, word32 edi, ptr64 & rspOut)
+// 00000000004117B0: Register word32 fn00000000004117B0(Register word64 rsi, Register word32 edi)
+word32 fn00000000004117B0(word64 rsi, word32 edi)
 {
 	word32 eax_16;
-	word64 rsp_18 = v3 - 0x08;
 	if (edi != 0x00)
 	{
-		byte Z_24 = cond(edi - 0x0A);
+		byte Z_22 = cond(edi - 0x0A);
 		eax_16 = edi;
 		if (edi == 0x0A)
 		{
-			word64 rdx_35 = Mem0[rsi + 0x00:word64];
-			word64 rdi_37 = DPB(rdi, 4274097, 0);
-			word64 rcx_39 = DPB(rcx, 0x0A, 0);
-			word64 rsi_40 = rdx_35;
-			if (rcx_39 != 0x00)
+			word64 rdx_33 = Mem0[rsi + 0x00:word64];
+			word64 rdi_35 = DPB(rdi, 4274097, 0);
+			word64 rcx_37 = DPB(rcx, 0x0A, 0);
+			word64 rsi_38 = rdx_33;
+			if (rcx_37 != 0x00)
 			{
-				Z_24 = cond(Mem0[rsi_91 + 0x00:byte] - Mem0[rdi_90 + 0x00:byte]);
-				rsi_40 = rsi_91 + 0x01;
-				rdi_37 = rdi_90 + 0x01;
-				rcx_39 = rcx_39 - 0x01;
-				word64 rdi_90 = rdi_37;
-				word64 rsi_91 = rsi_40;
-				if (Mem0[rsi_91 + 0x00:byte] != Mem0[rdi_90 + 0x00:byte])
+				Z_22 = cond(Mem0[rsi_89 + 0x00:byte] - Mem0[rdi_88 + 0x00:byte]);
+				rsi_38 = rsi_89 + 0x01;
+				rdi_35 = rdi_88 + 0x01;
+				rcx_37 = rcx_37 - 0x01;
+				word64 rdi_88 = rdi_35;
+				word64 rsi_89 = rsi_38;
+				if (Mem0[rsi_89 + 0x00:byte] != Mem0[rdi_88 + 0x00:byte])
 					goto l00000000004117D8;
 			}
-			if (!Z_24)
+			if (!Z_22)
 			{
-				byte SCZO_61;
-				word32 edi_62;
-				byte SZO_63;
-				byte C_64;
-				byte Z_65;
-				word32 eax_66;
-				word64 rsi_67;
-				word64 rdx_68;
-				word32 ecx_69;
-				word64 rcx_70;
-				word64 rdi_71;
-				word64 rax_72;
+				word64 rsp_58;
+				byte SCZO_59;
+				word32 edi_60;
+				byte SZO_61;
+				byte C_62;
+				byte Z_63;
+				word32 eax_64;
+				word64 rsi_65;
+				word64 rdx_66;
+				word32 ecx_67;
+				word64 rcx_68;
+				word64 rdi_69;
+				word64 rax_70;
 				freecon();
-				Mem74[__errno_location() + 0x00:word32] = 0x3D;
+				Mem72[__errno_location() + 0x00:word32] = 0x3D;
 				eax_16 = ~0x00;
 			}
 		}
 	}
 	else
 	{
-		Mem87[__errno_location() + 0x00:word32] = 0x5F;
+		Mem85[__errno_location() + 0x00:word32] = 0x5F;
 		eax_16 = ~0x00;
 	}
-	word64 rsp_19;
-	*rspOut = rsp_18 + 0x08;
 	return eax_16;
 }
 
-// 0000000000411820: void fn0000000000411820(Register word32 eax, Register word64 rsi)
-void fn0000000000411820(word32 eax, word64 rsi)
+// 0000000000411820: Register word32 fn0000000000411820(Register word32 eax, Register word64 rsi)
+word32 fn0000000000411820(word32 eax, word64 rsi)
 {
 	word64 rsp_9;
 	word64 rbx_10;
@@ -10202,13 +14189,11 @@ void fn0000000000411820(word32 eax, word64 rsi)
 	word32 edi_12;
 	word32 eax_13;
 	getfilecon();
-	word64 rsp_18;
-	fn00000000004117B0(rbx_10, eax_13, out rsp_18);
-	return;
+	return fn00000000004117B0(rbx_10, eax_13);
 }
 
-// 0000000000411840: void fn0000000000411840(Register word32 eax, Register word64 rsi)
-void fn0000000000411840(word32 eax, word64 rsi)
+// 0000000000411840: Register word32 fn0000000000411840(Register word32 eax, Register word64 rsi)
+word32 fn0000000000411840(word32 eax, word64 rsi)
 {
 	word64 rsp_9;
 	word64 rbx_10;
@@ -10225,9 +14210,7 @@ void fn0000000000411840(word32 eax, word64 rsi)
 	word64 rcx_21;
 	word64 rdi_22;
 	lgetfilecon();
-	word64 rsp_28;
-	fn00000000004117B0(rbx_10, eax_13, out rsp_28);
-	return;
+	return fn00000000004117B0(rbx_10, eax_13);
 }
 
 // 0000000000411880: void fn0000000000411880(Register word64 rax, Register word64 rdi, Register word64 r8, Register word64 r13)

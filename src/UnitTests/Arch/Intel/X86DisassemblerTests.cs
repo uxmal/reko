@@ -120,6 +120,12 @@ namespace Reko.UnitTests.Arch.Intel
                 false);
         }
 
+        private void AssertCode16(string sExp, params byte[] bytes)
+        {
+            var instr = Disassemble16(bytes);
+            Assert.AreEqual(sExp, instr.ToString());
+        }
+
         private void AssertCode32(string sExp, params byte[] bytes)
         {
             var instr = Disassemble32(bytes);
@@ -855,6 +861,12 @@ movzx	ax,byte ptr [bp+04]
             AssertCode64("movupd\txmm0,[rbp-20]", 0x66, 0x0F, 0x10, 0x45, 0xE0);
             AssertCode64("movss\txmm0,dword ptr [rbp-20]", 0xF3, 0x0F, 0x10, 0x45, 0xE0);
             AssertCode64("movsd\txmm0,double ptr [rbp-20]", 0xF2, 0x0F, 0x10, 0x45, 0xE0);
+        }
+
+        [Test]
+        public void X86dis_movups_16bit()
+        {
+            AssertCode16("movups\txmm7,xmm3", 0x0F, 0x10, 0xFB);
         }
     }
 }

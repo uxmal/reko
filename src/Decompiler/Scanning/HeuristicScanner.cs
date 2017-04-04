@@ -138,12 +138,6 @@ namespace Reko.Scanning
 
         public ScanResults ScanImage(ScanResults sr)
         {
-            // Break up the image map along known procedure boundaries
-            foreach (var addr in sr.KnownProcedures)
-            {
-                program.ImageMap.AddItem(addr, new ImageMapItem());
-            }
-
             // At this point, we have some entries in the image map
             // that are data, and unscanned ranges in betweeen. We
             // have hopefully a bunch of procedure addresses to
@@ -177,6 +171,7 @@ namespace Reko.Scanning
             // Remove blocks that fall off the end of the segment
             // or into data.
             Probe(sr);
+            dasm.Dump("After shingle scan graph built");
             var deadNodes = dasm.RemoveBadInstructionsFromGraph();
             dasm.BuildIcfg(deadNodes);
             Probe(sr);
@@ -212,7 +207,7 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         private void Probe(ScanResults sr)
         {
-            var p = sr.ICFG.Nodes.FirstOrDefault(n => n.Address.ToString().EndsWith("0800:0164"));
+            var p = sr.ICFG.Nodes.FirstOrDefault(n => n.Address.ToString().EndsWith("149E"));
             if (p == null)
                 sr.ToString();
             var i = sr.Instructions.Keys.FirstOrDefault(n => n.ToString().EndsWith("0800:0164"));

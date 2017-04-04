@@ -176,7 +176,8 @@ namespace Reko.UnitTests.Scanning
             var frame = program.Architecture.CreateFrame();
             this.sr = new ScanResults
             {
-                Instructions = new SortedList<Address, RtlInstructionCluster>()
+                Instructions = new SortedList<Address, RtlInstructionCluster>(),
+                KnownProcedures = new HashSet<Address>(),
             };
             this.sh = new ShingledScanner(program, host, frame, sr, dev);
         }

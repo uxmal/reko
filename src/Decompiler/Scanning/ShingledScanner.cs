@@ -139,6 +139,7 @@ namespace Reko.Scanning
             {
                 ICFG = this.icfg,
                 DirectlyCalledAddresses = possiblePointerTargetTallies,
+                KnownProcedures = sr.KnownProcedures,
             };
         }
 
@@ -387,6 +388,14 @@ namespace Reko.Scanning
                         addFallthroughEdgeDeferred = false;
                     }
 
+                    if (sr.DirectlyCalledAddresses.Keys.Contains(addrInstrEnd) ||
+                        sr.KnownProcedures.Contains(addrInstrEnd))
+                    {
+                        // If control falls into what looks like a procedure, don't
+                        // add an edge.
+                        addFallthroughEdge = false;
+                        endBlockNow = true;
+                    }
                     if (addFallthroughEdge)
                     {
                         edges.Add(Tuple.Create(block, addrInstrEnd));
@@ -439,7 +448,11 @@ namespace Reko.Scanning
                 {
                     continue;
                 }
-                icb.Blocks.AddEdge(from, to);
+                if (!sr.KnownProcedures.Contains(edge.Item2) &&
+                    !sr.DirectlyCalledAddresses.ContainsKey(edge.Item2))
+                {
+                    icb.Blocks.AddEdge(from, to);
+                }
             }
         }
 

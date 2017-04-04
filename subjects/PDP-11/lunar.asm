@@ -1330,8 +1330,17 @@ fn0D3C proc
 	mov	#F0A0,(r5)+
 	clr	(r5)+
 	jmp	@000A(sp)
-0D66                   B6 13 0C 00 84 15 84 15 81 15       ..........
-0D70 80 15 83 15 82 15 87 00                         ........       
+
+;; fn0D66: 0D66
+fn0D66 proc
+	mov	@sp,000C(sp)
+	mov	(sp)+,r4
+	mov	(sp)+,r4
+	mov	(sp)+,r1
+	mov	(sp)+,r0
+	mov	(sp)+,r3
+	mov	(sp)+,r2
+	rts	pc
 
 ;; fn0D78: 0D78
 fn0D78 proc

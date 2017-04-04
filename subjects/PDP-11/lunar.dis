@@ -2323,6 +2323,33 @@ fn0D3C_exit:
 
 
 
+void fn0D66(word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: NZV r0 r1 r2 r3 r4 sp
+// Preserved:
+// Stack args: Stack +000A(16)
+fn0D66_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +000A(16)
+
+l0D66:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0D66_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 0x000C r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> 12(fp):<invalid>
+
+
+
 word16 fn0D78(word16 r4, word16 r5, word16 wArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 

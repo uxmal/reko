@@ -4,6 +4,7 @@
 
 #include "pySample.h"
 
+word32 g_dwFFFFFFFF;
 Eq_284 g_t10002098 = null;
 Eq_285 g_t1000209C = null;
 Eq_229 g_t100020A0 = null;

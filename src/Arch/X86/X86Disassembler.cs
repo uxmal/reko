@@ -1229,7 +1229,7 @@ namespace Reko.Arch.X86
 					offsetWidth = PrimitiveType.Word16;
 					break;
 				case 3:
-					return new RegisterOperand(RegFromBitsRexB(rm, dataWidth, GpRegFromBits));
+					return new RegisterOperand(RegFromBitsRexB(rm, dataWidth, regFn));
 				}
 			}
 			else 

@@ -324,6 +324,106 @@ BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 	return fn10001388(lpReserved, dwReason, ebx, esi, edi);
 }
 
+// 100015CF: Register word32 fn100015CF(Register (ptr Eq_173) ebx, Register ptr32 esi, Register word32 edi)
+word32 fn100015CF( * ebx, ptr32 esi, word32 edi)
+{
+	Eq_761 eax_133;
+	struct Eq_401 * ebp_10 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10002210, 0x14);
+	*(fp - 0x0C) = (void **) globals->ptr100033B4;
+	word32 * eax_16 = _decode_pointer(*(fp - 0x0C));
+	*(ebp_10 - 0x1C) = eax_16;
+	if (eax_16 == (word32 *) ~0x00)
+	{
+		*(fp - 0x0C) = ebp_10->dw0008;
+		eax_133 = _onexit(*(fp - 0x0C));
+	}
+	else
+	{
+		*(fp - 0x0C) = 0x08;
+		ptr32 esp_47;
+		word32 esi_48;
+		word32 eax_49;
+		word32 ecx_50;
+		struct Eq_800 * ebp_51;
+		byte SCZO_52;
+		byte Z_53;
+		byte SZO_54;
+		byte C_55;
+		word32 ebx_56;
+		word32 edi_57;
+		lock();
+		*(ebp_51 - 0x04) = *(ebp_51 - 0x04) & 0x00;
+		*(esp_47 - 0x04) = (void **) globals->ptr100033B4;
+		*(ebp_51 - 0x1C) = _decode_pointer(*(esp_47 - 0x04));
+		*(esp_47 - 0x08) = (void **) globals->ptr100033B0;
+		*(ebp_51 - 0x20) = _decode_pointer(*(esp_47 - 0x08));
+		*(esp_47 - 0x0C) = ebp_51 - 0x20;
+		*(esp_47 - 0x10) = ebp_51 - 0x1C;
+		*(esp_47 - 0x14) = ebp_51->dw0008;
+		ptr32 esp_84;
+		word32 esi_85;
+		word32 eax_86;
+		word32 ecx_87;
+		ptr32 ebp_88;
+		byte SCZO_89;
+		byte Z_90;
+		byte SZO_91;
+		byte C_92;
+		word32 ebx_93;
+		word32 edi_94;
+		_dllonexit();
+		*(ebp_88 - 0x24) = eax_86;
+		*(esp_84 - 0x08) = *(ebp_88 - 0x1C);
+		ptr32 esp_101;
+		word32 esi_102;
+		void * eax_103;
+		word32 ecx_104;
+		ptr32 ebp_105;
+		byte SCZO_106;
+		byte Z_107;
+		byte SZO_108;
+		byte C_109;
+		word32 ebx_110;
+		word32 edi_111;
+		encode_pointer();
+		globals->ptr100033B4 = eax_103;
+		*(esp_101 - 0x08) = *(ebp_105 - 0x20);
+		word32 esp_117;
+		word32 esi_118;
+		void * eax_119;
+		word32 ecx_120;
+		byte SCZO_122;
+		byte Z_123;
+		byte SZO_124;
+		byte C_125;
+		word32 ebx_126;
+		word32 edi_127;
+		encode_pointer();
+		globals->ptr100033B0 = eax_119;
+		*(ebp_10 - 0x04) = ~0x01;
+		fn10001665();
+		eax_133 = (Eq_761) *(ebp_10 - 0x24);
+	}
+	fn1000182D(ebp_10, 0x14, dwArg00, dwArg04, dwArg08, dwArg0C);
+	return eax_133;
+}
+
+// 10001665: void fn10001665()
+void fn10001665()
+{
+	word32 esp_4;
+	word32 ecx_5;
+	unlock();
+	return;
+}
+
+// 1000166E: void fn1000166E(Register (ptr Eq_173) ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg04)
+void fn1000166E( * ebx, ptr32 esi, word32 edi, word32 dwArg04)
+{
+	fn100015CF(ebx, esi, edi);
+	return;
+}
+
 // 10001680: void fn10001680()
 void fn10001680()
 {
@@ -356,20 +456,20 @@ word32 fn100016D0(word32 dwArg04)
 {
 	if (dwArg04->w0000 == 23117)
 	{
-		struct Eq_785 * eax_21 = dwArg04 + dwArg04->dw003C / 0x0040;
+		struct Eq_1021 * eax_21 = dwArg04 + dwArg04->dw003C / 0x0040;
 		if (eax_21->dw0000 == 0x4550)
 			return (word32) (eax_21->w0018 == 0x010B);
 	}
 	return 0x00;
 }
 
-// 10001700: Register (ptr Eq_802) fn10001700(Stack word32 dwArg04, Stack word32 dwArg08)
-Eq_802 * fn10001700(word32 dwArg04, word32 dwArg08)
+// 10001700: Register (ptr Eq_1038) fn10001700(Stack word32 dwArg04, Stack word32 dwArg08)
+Eq_1038 * fn10001700(word32 dwArg04, word32 dwArg08)
 {
-	struct Eq_805 * ecx_6 = dwArg04 + dwArg04->dw003C / 0x0040;
+	struct Eq_1041 * ecx_6 = dwArg04 + dwArg04->dw003C / 0x0040;
 	uint32 esi_14 = (word32) ecx_6->w0006;
 	uint32 edx_15 = 0x00;
-	struct Eq_802 * eax_22 = &(ecx_6 + ((word32) ecx_6->w0014 + 0x18) / 22)->w0006 + 0x03;
+	struct Eq_1038 * eax_22 = &(ecx_6 + ((word32) ecx_6->w0014 + 0x18) / 22)->w0006 + 0x03;
 	if (true)
 	{
 		do
@@ -396,7 +496,7 @@ ui32 fn10001742( * ebx, ptr32 esi, word32 edi, ptr32 & ediOut)
 	{
 		*(fp - 0x0C) = ebp_10->dw0008 - 0x10000000;
 		*(fp - 0x10) = 0x10000000;
-		struct Eq_902 * eax_54 = fn10001700(dwArg00, dwArg04);
+		struct Eq_1138 * eax_54 = fn10001700(dwArg00, dwArg04);
 		if (eax_54 != null)
 		{
 			eax_31 = ~(eax_54->dw0024 >> 0x1F) & 0x01;
@@ -410,6 +510,13 @@ l100017A8:
 	*(ebp_10 - 0x04) = ~0x01;
 	eax_31 = 0x00;
 	goto l100017A8;
+}
+
+// 100017AE: void fn100017AE()
+void fn100017AE()
+{
+fn100017AE_entry:
+fn100017AE_exit:
 }
 
 // 100017B4: void fn100017B4()
