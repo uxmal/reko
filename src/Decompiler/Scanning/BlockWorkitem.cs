@@ -103,11 +103,20 @@ namespace Reko.Scanning
             while (rtlStream.MoveNext())
             {
                 this.ric = rtlStream.Current;
+                if (ric.Address.ToString().EndsWith(":3D5A"))//$DEBUG
+                    ric.ToString();
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;  // Fell off the end of this block.
                 if (!ProcessRtlCluster(ric))
                     break;
-                var blNext = FallenThroughNextBlock(ric.Address + ric.Length);
+                var addrInstrEnd = ric.Address + ric.Length;
+                var blNext = FallenThroughNextProcedure(ric.Address, addrInstrEnd);
+                if (blNext != null)
+                {
+                    EnsureEdge(blockCur.Procedure, blockCur, blNext);
+                    return;
+                }
+                blNext = FallenThroughNextBlock(addrInstrEnd);
                 if (blNext != null)
                 {
                     EnsureEdge(blockCur.Procedure, blockCur, blNext);
@@ -149,9 +158,22 @@ namespace Reko.Scanning
             }
         }
 
+        private Block FallenThroughNextProcedure(Address addrInstr, Address addrTo)
+        {
+            Procedure procOther;
+            if (program.Procedures.TryGetValue(addrTo, out procOther) &&
+                procOther != blockCur.Procedure)
+            {
+                // Fell into another procedure. 
+                var block = scanner.CreateCallRetThunk(addrInstr, blockCur.Procedure, procOther);
+                return block;
+            }
+            return null;
+        }
+
         /// <summary>
         /// Checks to see if the scanning process has wandered off
-        /// into another, previously existing basic block.
+        /// into another, previously existing basic block or procedure.
         /// </summary>
         /// <param name="addr"></param>
         /// <returns>The block we fell into or null if we remained in the 

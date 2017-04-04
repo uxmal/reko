@@ -798,5 +798,24 @@ testProc_exit:
             Assert.AreEqual("r2 = 0x00001147", block.Statements[2].Instruction.ToString());
             Assert.AreEqual("Mem0[0x00112204:word32] = r1", block.Statements[3].Instruction.ToString());
         }
+
+        [Test(Description = "If we fall into another procedure (that may not yet have been processed), we should generate an call-ret sequence")]
+        public void BwiFallIntoOtherProcedure()
+        {
+            var addrStart = Address.Ptr32(0x00100000);
+            var blockCallRet = new Block(proc, "callRetStub");
+            trace.Add(m => { m.Assign(m.LoadDw(m.Word32(0x00123400)), m.Word32(1)); });
+            scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            scanner.Stub(s => s.FindContainingBlock(addrStart)).IgnoreArguments().Return(block);
+            scanner.Expect(s => s.CreateCallRetThunk(null, null, null)).IgnoreArguments().Return(blockCallRet);
+            program.Procedures.Add(addrStart + 4, Procedure.Create(addrStart + 4, new Frame(PrimitiveType.Pointer32)));
+            mr.ReplayAll();
+
+            var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));
+            wi.Process();
+
+            Assert.AreEqual("Mem0[0x00123400:word32] = 0x00000001", block.Statements[0].Instruction.ToString());
+            mr.VerifyAll();
+        }
     }
 }

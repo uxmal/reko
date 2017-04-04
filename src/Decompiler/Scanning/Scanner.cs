@@ -154,7 +154,7 @@ namespace Reko.Scanning
             imageMap.TerminateItem(addr);
         }
 
-        private void TerminateAnyBlockAt(Address addr)
+        public void TerminateAnyBlockAt(Address addr)
         {
             var block = FindContainingBlock(addr);
             if (block != null)
@@ -1045,8 +1045,10 @@ namespace Reko.Scanning
                 // Procedure construction into SSA construction.
                 foreach (var rtlProc in procs)
                 {
-                    EnsureProcedure(rtlProc.Entry.Address, null);
-                    EnqueueProcedure(rtlProc.Entry.Address);
+                    var addrProc = rtlProc.Entry.Address;
+                    TerminateAnyBlockAt(addrProc);
+                    EnsureProcedure(addrProc, null);
+                    EnqueueProcedure(addrProc);
                 }
                 ProcessQueue();
             }
