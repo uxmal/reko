@@ -531,6 +531,7 @@ namespace Reko.Arch.Arm
                     Class = rtlc
                 };
             }
+            instrs.Dispose();
         }
 
         private void NotImplementedYet()
