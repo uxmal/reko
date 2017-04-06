@@ -680,6 +680,8 @@ namespace Reko.Arch.Arm
                     ea = baseReg;
                 }
                 return m.Load(SizeFromLoadStore(instr), ea);
+            case ArmInstructionOperandType.FloatingPoint:
+                return Constant.Real64(op.FloatingPointValue.Value);
             }
             throw new NotImplementedException(op.Type.ToString());
         }
