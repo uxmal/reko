@@ -206,6 +206,7 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void BwLoadDirect()
         {
             var r1 = m.Reg32("r1", 1);
@@ -237,15 +238,10 @@ namespace Reko.UnitTests.Scanning
             var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
             Assert.IsTrue(bw.CanBackwalk());
             var ops = bw.BackWalk(m.Block);
-            Assert.AreEqual(-3, ops.Count);
+            Assert.AreEqual(3, ops.Count);
+            Assert.AreEqual("cmp 120", ops[0].ToString());
+            Assert.AreEqual("branch UGT", ops[1].ToString());
+            Assert.AreEqual("* 8", ops[2].ToString());
         }
-
-        //movzx eax,byte ptr[rax]
-        //cmp al,78
-        //ja  0000000000404C90
-
-        //l0000000000404B35:
-        //movzx ecx, al
-        //   jmp dword ptr[00411F40 + rcx * 8]
     }
 }
