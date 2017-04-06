@@ -333,7 +333,6 @@ namespace Reko.Arch.X86
 
             // Reset the state of the currentInstruction
             this.currentDecodingContext.Reset();
-
             byte op;
             if (!rdr.TryReadByte(out op))
                 return null;
@@ -993,7 +992,10 @@ namespace Reko.Arch.X86
                     break;
                 case 'J':		// Relative ("near") jump.
                     width = OperandWidth(strFormat[i++]);
-                    long jOffset = rdr.ReadLeSigned(width);
+                    Constant cOffset;
+                    if (!rdr.TryRead(width, out cOffset))
+                        return null;
+                    long jOffset = cOffset.ToInt64();
                     ulong uAddr = (ulong) ((long)rdr.Address.Offset + jOffset);
                     if (defaultAddressWidth.BitSize == 64)      //$REVIEW: not too keen on the switch statement here.
                         pOperand = AddressOperand.Ptr64(uAddr);
@@ -1127,10 +1129,18 @@ namespace Reko.Arch.X86
                 switch (fmt[i++])
                 {
                 case 's': return PrimitiveType.Word128;
+                case 'd': return PrimitiveType.Word128;
                 default: throw new NotImplementedException(string.Format("Unknown operand width p{0}", fmt[i-1]));
                 }
             case 'q':
                 return PrimitiveType.Word64;
+            case 's':
+                switch (fmt[i++])
+                {
+                case 's': return PrimitiveType.Real32;
+                case 'd': return PrimitiveType.Real64;
+                default: throw new NotImplementedException(string.Format("Unknown operand width s{0}", fmt[i - 1]));
+                }
             case 'x':
                 return defaultDataWidth != dataWidth
                     ? PrimitiveType.Word128
@@ -1218,7 +1228,7 @@ namespace Reko.Arch.X86
 					offsetWidth = PrimitiveType.Word16;
 					break;
 				case 3:
-					return new RegisterOperand(RegFromBitsRexB(rm, dataWidth, GpRegFromBits));
+					return new RegisterOperand(RegFromBitsRexB(rm, dataWidth, regFn));
 				}
 			}
 			else 

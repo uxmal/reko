@@ -29,10 +29,15 @@ namespace Reko.Scanning
 {
     public class HeuristicProcedure
     {
-        public DirectedGraph<HeuristicBlock> Cfg = new DiGraph<HeuristicBlock>();
+        public DiGraph<RtlBlock> Cfg = new DiGraph<RtlBlock>();
         public Frame Frame;
 
         public Address BeginAddress;
         public Address EndAddress;
+
+        public bool IsValidAddress(Address addr)
+        {
+            return this.BeginAddress <= addr && addr < this.EndAddress;
+        }
     }
 }

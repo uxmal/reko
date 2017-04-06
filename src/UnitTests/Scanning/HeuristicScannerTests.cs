@@ -29,30 +29,39 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
     public class HeuristicScannerTests : HeuristicTestBase
     {
+        private ScanResults sr;
+
         [SetUp]
         public override void Setup()
         {
             base.Setup();
         }
 
+        private void When_ScanImage()
+        {
+            var hsc = new HeuristicScanner(null, program, host, eventListener);
+            this.sr = hsc.ScanImage();
+        }
+
         [Test]
         public void HSC_x86_FindCallOpcode()
         {
             Given_Image32(
-                0x001000, 
+                0x001000,
                 "E8 03 00 00  00 00 00 00 " +
                 "C3");
             Given_x86_32();
             Given_RewriterHost();
             mr.ReplayAll();
 
-            var hsc = new HeuristicScanner(program, host, eventListener);
+            var hsc = new HeuristicScanner(null, program, host, eventListener);
             var addr = hsc.FindCallOpcodes(segment.MemoryArea, new Address[] {
                 Address.Ptr32(0x1008)
             }).ToList();
@@ -78,7 +87,7 @@ namespace Reko.UnitTests.Scanning
                 Architecture = new X86ArchitectureFlat32(),
             };
 #else
-            Given_Image32(0x001000, 
+            Given_Image32(0x001000,
                 "E8 0B 00 00 00 E8 07 00 " +
                 "00 00 C3 00 00 00 00 00 " +
                 "C3 C3 ");                                     // 1010, 1011
@@ -89,7 +98,7 @@ namespace Reko.UnitTests.Scanning
 
             Assert.AreEqual(18, segment.MemoryArea.Length);
 
-            var hsc = new HeuristicScanner(program, host, eventListener);
+            var hsc = new HeuristicScanner(null, program, host, eventListener);
             var linAddrs = hsc.FindCallOpcodes(segment.MemoryArea, new Address[]{
                 Address.Ptr32(0x1010),
                 Address.Ptr32(0x1011)}).ToList();
@@ -109,7 +118,7 @@ namespace Reko.UnitTests.Scanning
             Given_RewriterHost();
             mr.ReplayAll();
 
-            var hsc = new HeuristicScanner(program, host, eventListener);
+            var hsc = new HeuristicScanner(null, program, host, eventListener);
             var linAddrs = hsc.FindCallOpcodes(segment.MemoryArea, new Address[] {
                 Address.SegPtr(0x0C00, 0)}).ToList();
 
@@ -120,13 +129,13 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void HSC_x86_16bitFarCall()
         {
-            Given_ImageSeg(0xC00, 0, 
+            Given_ImageSeg(0xC00, 0,
                "C3 90 9A 00 00 00 0C C3 ");
             Given_x86_16();
             Given_RewriterHost();
             mr.ReplayAll();
 
-            var hsc = new HeuristicScanner(program, host, eventListener);
+            var hsc = new HeuristicScanner(null, program, host, eventListener);
 
             var linAddrs = hsc.FindCallOpcodes(segment.MemoryArea, new Address[] {
                 Address.SegPtr(0x0C00, 0)}).ToList();
@@ -154,7 +163,7 @@ namespace Reko.UnitTests.Scanning
             var host = mr.Stub<IRewriterHost>();
             mr.ReplayAll();
 
-            var hsc = new HeuristicScanner(program, host, eventListener);
+            var hsc = new HeuristicScanner(null, program, host, eventListener);
             var linAddrs = hsc.FindCallOpcodes(segment.MemoryArea, new Address[] {
                 Address.Ptr32(0x1000),
             }).ToList();
@@ -172,7 +181,7 @@ namespace Reko.UnitTests.Scanning
             var host = mr.Stub<IRewriterHost>();
             mr.ReplayAll();
 
-            var hsc = new HeuristicScanner(program, host, eventListener);
+            var hsc = new HeuristicScanner(null, program, host, eventListener);
             var r = hsc.FindUnscannedRanges();
             var ranges = hsc.FindPossibleFunctions(r).ToArray();
             Assert.AreEqual(0x10003, ranges[0].Item1.ToLinear());
@@ -187,20 +196,23 @@ namespace Reko.UnitTests.Scanning
             Given_Image32(
                 0x10000,
                 TrickyProc);
+            program.SegmentMap.AddSegment(
+                new ImageSegment(
+                    "code",
+                    new MemoryArea(Address.Ptr32(0x11750008), new byte[0x10]),
+                    AccessMode.ReadExecute));
             Given_x86_32();
             Given_RewriterHost();
-            host.Stub(h => h.GetImportedProcedure(null, null))
-                .IgnoreArguments()
-                .Return(null);
+            Given_NoImportedProcedures();
             mr.ReplayAll();
 
             var segment = program.SegmentMap.Segments.Values.First();
-            var hsc = new HeuristicScanner(program, host, eventListener);
+            var hsc = new HeuristicScanner(null, program, host, eventListener);
             var proc = hsc.DisassembleProcedure(
                 segment.MemoryArea.BaseAddress,
                 segment.MemoryArea.BaseAddress + segment.ContentSize);
             var sExp =
-                #region Expected
+            #region Expected
  @"l00010000:  // pred:
     push ebp
 l00010001:  // pred: l00010000
@@ -264,6 +276,75 @@ l0001001D:  // pred:
 ";
             #endregion
             AssertBlocks(sExp, proc.Cfg);
+        }
+
+        [Test(Description = "The NOP sled ends up running into data, so it can't be valid.")]
+        public void HPSC_ScanImage_FallIntoData()
+        {
+            Given_Image32(0x0010000, "90 90 90 90 00 00 00 00");
+            Given_x86_32();
+            Given_DataBlob(0x0010004, PrimitiveType.Int32, "c3 c3 c3 c3");
+            Given_RewriterHost();
+            Given_NoImportedProcedures();
+            mr.ReplayAll();
+
+            When_ScanImage();
+
+            AssertBlocks("", sr.ICFG);
+        }
+
+        [Test(Description = "The NOP sled ends with a ret instruction, so it's valid.")]
+        public void HPSC_ScanImage_NopSled()
+        {
+            Given_Image32(0x0010000, "90 90 90 c3 00 00 00 00");
+            Given_x86_32();
+            Given_RewriterHost();
+            Given_NoImportedProcedures();
+            mr.ReplayAll();
+
+            When_ScanImage();
+
+            var sExp =
+            #region Expected
+@"l00010000:  // pred:
+    nop 
+    nop 
+    nop 
+    ret 
+";
+            #endregion
+            AssertBlocks(sExp, sr.ICFG);
+        }
+
+        [Test]
+        public void HSC_ScanImage_FallIntoCalledProcedure()
+        {
+            Given_Image32(0x001000,
+                "33 C0" +                   // xor eax,eax
+                "e8 05 00 00 00" +          // call fn100C
+                "a1 01 00 00 00" +          // mov eax,1; fall through to fn100C
+                "AB" +                      // stosb
+                "c3");                      // ret
+            Given_x86_32();
+            Given_RewriterHost();
+            Given_NoImportedProcedures();
+            mr.ReplayAll();
+
+            When_ScanImage();
+
+            var sExp =
+            #region Expected
+@"l00001000:  // pred:
+    xor eax,eax
+    call 0000100C
+l00001007:  // pred: l00001000
+    mov eax,[00000001]
+l0000100C:  // pred:
+    stosd 
+    ret 
+";
+            #endregion
+            AssertBlocks(sExp, sr.ICFG);
         }
     }
 }

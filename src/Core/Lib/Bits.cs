@@ -35,6 +35,11 @@ namespace Reko.Core.Lib
             return w != 0 && (w & (w - 1)) == 0;
         }
 
+        public static bool IsEvenPowerOfTwo(int n)
+        {
+            return n != 0 && (n & (n - 1)) == 0;
+        }
+
         /// <summary>
         /// Sign-extend the <paramref name="b"/>-bit number 
         /// <paramref name="w"/>.
@@ -49,6 +54,11 @@ namespace Reko.Core.Lib
             w = w & ((1U << b) - 1);  // (Skip this if bits in x above position b are already zero.)
             r = (w ^ m) - m;
             return r;
+        }
+
+        public static ulong Mask(int lsb, int bitsize)
+        {
+            return ((1ul << bitsize) - 1) << lsb;
         }
 
         public static int BitCount(ulong u)

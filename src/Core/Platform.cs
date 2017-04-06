@@ -41,6 +41,7 @@ namespace Reko.Core
     /// </summary>
     public interface IPlatform
     {
+        string Name { get; }
         IProcessorArchitecture Architecture { get; }
         string DefaultCallingConvention { get; }
         Encoding DefaultTextEncoding { get; set; }
@@ -53,7 +54,6 @@ namespace Reko.Core
         /// available in the MemoryMap.
         /// </summary>
         MemoryMap_v1 MemoryMap { get; set; }
-        string Name { get; }
         string PlatformIdentifier { get; }
         PrimitiveType PointerType { get; }
 
@@ -64,6 +64,13 @@ namespace Reko.Core
         IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         TypeLibrary CreateMetadata();
+
+        /// <summary>
+        /// Creates an empty SegmentMap based on the absolute memory map. It is 
+        /// the caller's responsibility to fill in the MemoryArea properties
+        /// of each resulting ImageSegment.
+        /// </summary>
+        /// <returns></returns>
         SegmentMap CreateAbsoluteMemoryMap();
 
         /// <summary>
@@ -116,6 +123,8 @@ namespace Reko.Core
 
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
+        DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr);
+
         string FormatProcedureName(Program program, Procedure proc);
 
         /// <summary>
@@ -330,6 +339,11 @@ namespace Reko.Core
         }
 
         public abstract SystemService FindService(int vector, ProcessorState state);
+
+        public virtual DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr)
+        {
+            return null;
+        }
 
         public virtual SystemService FindService(RtlInstruction rtl, ProcessorState state)
         {

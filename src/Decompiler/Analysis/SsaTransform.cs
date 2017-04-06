@@ -1136,7 +1136,7 @@ namespace Reko.Analysis
                 {
                     int offset = stgFrom.OffsetOf(stgTo);
                     if (offset > 0)
-                        e = new Slice(id.DataType, sidFrom.Identifier, (uint)offset);
+                        e = new Slice(id.DataType, sidFrom.Identifier, offset);
                     else
                         e = new Cast(id.DataType, sidFrom.Identifier);
                     sidUse = aliasFrom.SsaId;
@@ -1531,7 +1531,7 @@ namespace Reko.Analysis
                     // No merge needed, since all bits used 
                     // are defined by sidDef.
                     int offset = Bits.Log2(this.flagMask);
-                    e = new Slice(PrimitiveType.Bool, sidDef.Identifier, (uint)offset);
+                    e = new Slice(PrimitiveType.Bool, sidDef.Identifier, offset);
                     sidUse = sidDef;
                     var ass = new AliasAssignment(id, e);
                     var sidAlias = InsertAfterDefinition(sidDef.DefStatement, ass);

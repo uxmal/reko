@@ -146,27 +146,21 @@ namespace Reko.Gui.Windows
             var dataItemNodes = mixedCodeDataModel.GetDataItemNodes();
 
             this.nodeByAddress = new SortedList<Address, MixedCodeDataModel.DataItemNode>();
-
             foreach (var dataItemNode in dataItemNodes)
             {
                 var curAddr = dataItemNode.StartAddress;
 
                 bool nodeCreated = false;
-
                 ImageMapItem item;
                 Procedure proc = dataItemNode.Proc;
                 if (ShowItem(dataItemNode))
                 {
                     if (proc != null)
                     {
-                        var tsf = new TextSpanFormatter();
-                        var fmt = new AbsynCodeFormatter(tsf);
-                        fmt.InnerFormatter.UseTabs = false;
-                        fmt.Write(proc);
+                        var model = new ProcedureCodeModel(proc);
                         //$TODO: make spacing between globals / procedures user adjustable
-                        tsf.WriteLine("");
-                        tsf.WriteLine("");
-                        nestedTextModel.Nodes.Add(tsf.GetModel());
+                        model.NumEmptyLinesAfter = 2;
+                        nestedTextModel.Nodes.Add(model);
                         nodeCreated = true;
                     }
                     else if (program.ImageMap.TryFindItem(curAddr, out item) &&

@@ -55,6 +55,10 @@ namespace Reko.Core.Rtl
         }
 
         public Expression Condition { get; private set; }
+
+        /// <summary>
+        /// The conditionally executed RTL instruction.
+        /// </summary>
         public RtlInstruction Instruction { get; private set; }
 
         protected override void WriteInner(TextWriter writer)

@@ -866,6 +866,7 @@ proc1_exit:
                 var esi = m.Reg32("esi", 6);
                 m.Assign(sz, m.Cond(m.And(esi, esi)));
                 m.Assign(c, Constant.False());
+                m.Alias(cz, c);
                 m.Assign(al, m.Test(ConditionCode.ULE, cz));
                 m.Return();
             });

@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+            public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
             {
                 throw new NotImplementedException();
             }

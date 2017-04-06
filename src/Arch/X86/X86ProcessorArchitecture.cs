@@ -172,7 +172,7 @@ namespace Reko.Arch.X86
 			return new X86State(this);
 		}
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }

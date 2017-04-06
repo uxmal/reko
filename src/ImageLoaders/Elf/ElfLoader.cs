@@ -205,13 +205,23 @@ namespace Reko.ImageLoaders.Elf
                 ? symSection.Address + sym.Value
                 : platform.MakeAddressFromLinear(sym.Value);
 
+            var dt = GetSymbolDataType(sym);
             return new ImageSymbol(addr)
             {
                 Type = st,
                 Name = sym.Name,
                 Size = (uint)sym.Size,     //$REVIEW: is int32 a problem? Could such large objects (like arrays) exist?
+                DataType = dt,
                 ProcessorState = Architecture.CreateProcessorState()
             };
+        }
+
+        private DataType GetSymbolDataType(ElfSymbol sym)
+        {
+            if (sym.Type == ElfSymbolType.STT_FUNC)
+                return new FunctionType();
+            else
+                return new UnknownType();
         }
 
         public IPlatform LoadPlatform(byte osAbi, IProcessorArchitecture arch)
@@ -881,6 +891,12 @@ namespace Reko.ImageLoaders.Elf
             return new RelocationResults(entryPoints, symbols);
         }
 
+        /// <summary>
+        /// Locates the GOT and populates the provided <paramref name="symbols"/> collection
+        /// with entries found in the GOT.
+        /// </summary>
+        /// <param name="program"></param>
+        /// <param name="symbols"></param>
         public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
         {
             // Locate the GOT
@@ -888,11 +904,15 @@ namespace Reko.ImageLoaders.Elf
             // information.
             var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
             if (got == null)
+            {
                 return;
+            }
 
             var rdr = program.CreateImageReader(got.Address);
             while (rdr.Address < got.EndAddress)
             {
+                // Read a 64-bit value and see if it corresponds
+                // to the address of a symbol.
                 var addrGot = rdr.Address;
                 ulong uAddrSym;
                 if (!rdr.TryReadUInt64(out uAddrSym))

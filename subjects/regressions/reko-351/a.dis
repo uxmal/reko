@@ -65,7 +65,7 @@ void register_tm_clones()
 // LiveOut:
 // Trashed: CVZNX a0 d0
 // Preserved: a6 a7
-register_tm_clones_entry:
+fn800000AE_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -127,7 +127,7 @@ l800000E0:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 d0:<invalid> a0:00000000 -12(fp):80002724 -8(fp):<invalid> -4(fp):a6
 
-register_tm_clones_exit:
+fn800000AE_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 d0:<invalid> a0:00000000 -12(fp):80002724 -8(fp):<invalid> -4(fp):a6
@@ -141,7 +141,7 @@ void __do_global_dtors_aux(word32 d2)
 // LiveOut:
 // Trashed: CVZNX a0 d0 d1
 // Preserved: a2 a6 a7 d2
-__do_global_dtors_aux_entry:
+fn800000E4_entry:
 // DataOut: d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -166,7 +166,7 @@ l800000F4:
 l80000114:
 	word32 d0_102 = d0_100 + 0x00000001
 	Mem105[0x80002726:word32] = d0_102
-	word32 a0_107 = Mem105[a2_101 + d0_102 * 2:word32]
+	word32 a0_107 = Mem105[a2_101 + d0_102 * 4:word32]
 	word32 a7_108
 	word32 a6_109
 	byte CVZN_111
@@ -234,7 +234,7 @@ l8000014C:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:0x00000003 d2:0x00000000 a0:00000000 d1:6 -16(fp):8000065C -12(fp):d2 -8(fp):a2 -4(fp):a6
 
-__do_global_dtors_aux_exit:
+fn800000E4_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 d2:d2 a2:a2 d0:0x00000003 a0:00000000 d1:6 -16(fp):8000065C -12(fp):d2 -8(fp):a2 -4(fp):a6
@@ -248,7 +248,7 @@ void call___do_global_dtors_aux()
 // LiveOut:
 // Trashed:
 // Preserved: a6 a7
-call___do_global_dtors_aux_entry:
+fn80000158_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -260,7 +260,7 @@ l80000158:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 
-call___do_global_dtors_aux_exit:
+fn80000158_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 -4(fp):a6
@@ -274,7 +274,7 @@ void frame_dummy()
 // LiveOut:
 // Trashed: CVZNX a0 a1 d0
 // Preserved: a6 a7
-frame_dummy_entry:
+fn80000160_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -288,21 +288,18 @@ l80000160:
 // LocalsOut: fp(32)
 
 l8000016E:
-	word32 a7_83
-	word32 a6_84
-	word32 a0_85
-	byte ZN_86
-	byte C_87
-	byte V_88
-	byte Z_89
-	word32 a1_90
-	byte CVZN_91
-	word32 d0_92
-	byte CVZNX_93
-	byte N_94
+	word32 a7_71
+	word32 a6_72
+	word32 a0_73
+	byte ZN_74
+	byte C_75
+	byte V_76
+	byte Z_77
+	word32 a1_78
+	byte CVZN_79
 	call null (retsize: 4; depth: 16)
-		uses: a0_7,a1,a6_5,a7_81,C_10,CVZN,CVZNX,d0,dwLoc04_4,dwLoc08_80,dwLoc0C_82,N,V_11,Z_9,ZN_8
-		defs: a0_85,a1_90,a6_84,a7_83,C_87,CVZN_91,CVZNX_93,d0_92,N_94,V_88,Z_89,ZN_86
+		uses: a0_7,a1,a6_5,a7_69,C_10,CVZN,dwLoc04_4,dwLoc08_68,dwLoc0C_70,V_11,Z_9,ZN_8
+		defs: a0_73,a1_78,a6_72,a7_71,C_75,CVZN_79,V_76,Z_77,ZN_74
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 a0:00000000 -4(fp):a6
@@ -323,26 +320,23 @@ l8000018E:
 // LocalsOut: fp(32)
 
 l80000198:
-	word32 a7_64
-	word32 a6_65
-	word32 a0_66
-	byte ZN_67
-	byte C_68
-	byte V_69
-	byte Z_70
-	word32 a1_71
-	byte CVZN_72
-	word32 d0_73
-	byte CVZNX_74
-	byte N_75
+	word32 a7_55
+	word32 a6_56
+	word32 a0_57
+	byte ZN_58
+	byte C_59
+	byte V_60
+	byte Z_61
+	word32 a1_62
+	byte CVZN_63
 	call null (retsize: 4; depth: 12)
-		uses: a0_28,a1_55,a6_26,a7_60,C_58,CVZN_63,CVZNX_22,d0_23,dwLoc04_4,dwLoc08_62,dwLoc0C_19,N_21,V_59,Z_57,ZN_56
-		defs: a0_66,a1_71,a6_65,a7_64,C_68,CVZN_72,CVZNX_74,d0_73,N_75,V_69,Z_70,ZN_67
+		uses: a0_22,a1_46,a6_20,a7_51,C_49,CVZN_54,dwLoc04_4,dwLoc08_53,dwLoc0C_16,V_50,Z_48,ZN_47
+		defs: a0_57,a1_62,a6_56,a7_55,C_59,CVZN_63,V_60,Z_61,ZN_58
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 a0:8000271C a1:00000000 -12(fp):8000065C -8(fp):8000272A -4(fp):a6
 
-l8000019E_thunk_register_tm_clones:
+l800001A0_thunk_register_tm_clones:
 	register_tm_clones()
 	return
 // DataOut:
@@ -354,14 +348,14 @@ l80000188:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 a0:8000271C a1:00000000 -12(fp):8000065C -8(fp):8000272A -4(fp):a6
 
-l80000188_thunk_register_tm_clones:
+l8000018A_thunk_register_tm_clones:
 	register_tm_clones()
 	return
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 a0:8000271C a1:00000000 -12(fp):8000065C -8(fp):8000272A -4(fp):a6
 
-frame_dummy_exit:
+fn80000160_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 a0:<invalid> d0:<invalid> a1:00000000 -12(fp):8000065C -8(fp):<invalid> -4(fp):a6
@@ -375,7 +369,7 @@ void call_frame_dummy()
 // LiveOut:
 // Trashed:
 // Preserved: a6 a7
-call_frame_dummy_entry:
+fn800001A4_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -387,7 +381,7 @@ l800001A4:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 
-call_frame_dummy_exit:
+fn800001A4_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 -4(fp):a6
@@ -402,7 +396,7 @@ void sine_taylor(real64 rArg04)
 // Trashed: CVZN d0 d1 fp0 fp1 fpsr
 // Preserved: a6 a7
 // Stack args: Stack +0004(80)
-_Z11sine_taylord_entry:
+fn800001AC_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -414,107 +408,105 @@ l800001AC:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 
-_Z11sine_taylord_exit:
+fn800001AC_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 fp0:(real80) SEQ(SLICE((real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0), word32, 32), (word32) (real64) ((real80) (real64) ((real80) (real64) ((real80) SEQ(SLICE((real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0), word32, 32), (word32) (real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0)) + (real64) (((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 110.0) * (real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) / 362880.0)) + (real64) (((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 42.0) * (real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) / 120.0)) + (real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 6.0) * rArg04))) fpsr:<invalid> fp1:(real80) (real64) ((real80) SEQ(SLICE((real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0), word32, 32), (word32) (real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0)) + (real64) (((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 110.0) * (real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) / 362880.0)) + (real64) (((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 42.0) * (real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) / 120.0) d0:(word32) (real64) ((real80) (real64) ((real80) (real64) ((real80) SEQ(SLICE((real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0), word32, 32), (word32) (real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0)) + (real64) (((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 110.0) * (real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) / 362880.0)) + (real64) (((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 42.0) * (real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) / 120.0)) + (real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 6.0) * rArg04)) d1:SLICE((real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0), word32, 32) -92(fp):(word32) (real64) ((real80) (real64) ((real80) (real64) ((real80) SEQ(SLICE((real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0), word32, 32), (word32) (real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0)) + (real64) (((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 110.0) * (real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) / 362880.0)) + (real64) (((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 42.0) * (real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) / 120.0)) + (real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 6.0) * rArg04)) -88(fp):SLICE((real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0), word32, 32) -84(fp):(real64) ((real80) (real64) ((real80) (real64) ((real80) SEQ(SLICE((real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0), word32, 32), (word32) (real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0)) + (real64) (((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 110.0) * (real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) / 362880.0)) + (real64) (((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 42.0) * (real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) / 120.0)) + (real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 6.0) * rArg04)) -80(fp):SLICE((real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0), word32, 32) -76(fp):(real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 210.0) * (real64) ((real80) ((real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 6227020800.0) -68(fp):(real64) ((real80) (real64) ((real80) (real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) -60(fp):(real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 110.0) * (real64) ((real80) ((real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04)))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 362880.0) -52(fp):(real64) ((real80) (real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) -44(fp):(real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 42.0) * (real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) / 120.0) -36(fp):(real64) ((real80) rArg04 * (real64) ((real80) ((real64) ((real80) rArg04 * rArg04)) * (real64) ((real80) rArg04 * rArg04))) -28(fp):(real64) ((100.0 - (real80) ((real64) ((real80) rArg04 * rArg04)) / 6.0) * rArg04) -20(fp):(real64) ((real80) (real64) ((real80) rArg04 * rArg04) * (real64) ((real80) rArg04 * rArg04)) -12(fp):(real64) ((real80) rArg04 * rArg04) -4(fp):a6 4(fp):rArg04
 
 
 
-word32 _ZL9factoriali(word32 dwArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+void factorial(int32 dwArg04)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut: d0
+// LiveOut:
 // Trashed: CVZNX d0
 // Preserved: a6 a7
 // Stack args: Stack +0004(32)
-_ZL9factoriali_entry:
-// DataOut: fp2
+fn8000033C_entry:
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Stack +0004(32)
 
 l8000033C:
-	word32 dwLoc0C_15 = 1
-	word32 dwLoc08_12 = 2
-// DataOut: fp2
+	word32 dwLoc08_15 = 2
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Local -0008(32) Local -000C(32) Stack +0004(32)
 
 l8000034C:
-	branch dwLoc08_12 - dwArg04 > 0x00000000 l8000036A
-// DataOut: fp2
+	branch dwLoc08_15 - dwArg04 > 0x00000000 l8000036A
+// DataOut:
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 d0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 d0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):a6 4(fp):dwArg04
 // LocalsOut: fp(32) Local -0008(32) Local -000C(32) Stack +0004(32)
 
 l8000036A:
-	return dwLoc0C_15
-// DataOut: d0 fp2
+	return
+// DataOut:
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 d0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 d0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):a6 4(fp):dwArg04
 
-_ZL9factoriali_exit:
-// DataOut: d0
+fn8000033C_exit:
+// DataOut:
 // DataOut (flags): 
-// SymbolicIn: a7:fp a6:a6 d0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp a6:a6 d0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):a6 4(fp):dwArg04
 
 l80000356:
-	dwLoc0C_15 = dwLoc0C_15 *s dwLoc08_12
-	dwLoc08_12 = dwLoc08_12 + 0x00000001
-// DataOut: fp2
+	dwLoc08_15 = dwLoc08_15 + 0x00000001
+// DataOut:
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 d0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 d0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):a6 4(fp):dwArg04
 // LocalsOut: fp(32) Local -0008(32) Local -000C(32) Stack +0004(32)
 
 
 
-real80 _ZL7pow_intdi(real64 rArg04, word32 dwArg0C)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+void pow_int(real64 rArg04, int32 dwArg0C)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut: fp0
+// LiveOut:
 // Trashed: CVZNX d0 d1 fp0 fpsr
 // Preserved: a6 a7
 // Stack args: Stack +0004(64) Stack +000C(32)
-_ZL7pow_intdi_entry:
+fn80000372_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Stack +0004(64) Stack +000C(32)
 
 l80000372:
-	word32 dwLoc08_10 = 0x00000000
+	word32 dwLoc08_16 = 0x00000000
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Local -0008(32) Local -0010(32) Stack +0004(64) Stack +000C(32)
 
 l80000386:
-	branch dwLoc08_10 - dwArg0C >= 0x00000000 l800003A8
+	branch dwLoc08_16 - dwArg0C >= 0x00000000 l800003A8
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000010 a6:fp - 0x00000004 d0:<invalid> fp0:<invalid> fpsr:<invalid> -16(fp):<invalid> -12(fp):0x00000000 -8(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp - 0x00000010 a6:fp - 0x00000004 d0:<invalid> fp0:<invalid> fpsr:<invalid> -16(fp):<invalid> -12(fp):0x00000000 -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
 // LocalsOut: fp(32) Local -0008(32) Local -0010(32) Stack +0004(64) Stack +000C(32)
 
 l800003A8:
-	return (real80) DPB(rLoc18, 0x3FF00000, 0)
-// DataOut: fp0
-// DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000010 a6:fp - 0x00000004 d0:<invalid> fp0:<invalid> fpsr:<invalid> -16(fp):<invalid> -12(fp):0x00000000 -8(fp):<invalid> -4(fp):a6
-
-_ZL7pow_intdi_exit:
-// DataOut: fp0
-// DataOut (flags): 
-// SymbolicIn: a7:fp a6:a6 d0:<invalid> d1:0x00000000 fp0:<invalid> fpsr:<invalid> -24(fp):<invalid> -20(fp):0x00000000 -16(fp):<invalid> -12(fp):0x00000000 -8(fp):<invalid> -4(fp):a6
-
-l80000390:
-	dwLoc08_10 = dwLoc08_10 + 0x00000001
+	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000010 a6:fp - 0x00000004 d0:<invalid> fp0:<invalid> fpsr:<invalid> -16(fp):<invalid> -12(fp):0x00000000 -8(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp - 0x00000010 a6:fp - 0x00000004 d0:<invalid> fp0:<invalid> fpsr:<invalid> -16(fp):<invalid> -12(fp):0x00000000 -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
+
+fn80000372_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: a7:fp a6:a6 d0:<invalid> d1:0x00000000 fp0:<invalid> fpsr:<invalid> -24(fp):<invalid> -20(fp):0x00000000 -16(fp):<invalid> -12(fp):0x00000000 -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
+
+l80000390:
+	dwLoc08_16 = dwLoc08_16 + 0x00000001
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x00000010 a6:fp - 0x00000004 d0:<invalid> fp0:<invalid> fpsr:<invalid> -16(fp):<invalid> -12(fp):0x00000000 -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
 // LocalsOut: fp(32) Local -0008(32) Local -0010(32) Stack +0004(64) Stack +000C(32)
 
 
@@ -522,76 +514,76 @@ l80000390:
 void sine_taylor(real64 rArg04, int32 dwArg0C)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  fp0
 // LiveOut:
 // Trashed: CVZNX d0 d1 fp0 fp1 fp2 fpsr
 // Preserved: a6 a7
-// Stack args: Stack +0004(80) Stack +0008(32) Stack +000C(32)
-_Z11sine_taylordi_entry:
-// DataOut:
+// Stack args: Stack +0004(80) Stack +000C(32)
+fn800003BC_entry:
+// DataOut: fp0
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(80) Stack +0008(32) Stack +000C(32)
+// LocalsOut: fp(32) Stack +0004(80) Stack +000C(32)
 
 l800003BC:
 	word32 dwArg04_5 = (word32) rArg04
 	word32 dwLoc08_24 = 3
-// DataOut:
+// DataOut: fp0
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -0008(32) Local -0010(80) Stack +0004(32) Stack +0008(32) Stack +000C(32)
+// LocalsOut: fp(32) Local -0008(32) Local -0010(80) Stack +0004(32) Stack +000C(32)
 
 l800003D6:
 	branch dwLoc08_24 - dwArg0C > 0x00000000 l80000428
-// DataOut:
+// DataOut: d0 fp0
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> d1:0x00000000 -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
-// LocalsOut: fp(32) Local -0008(32) Local -0010(80) Stack +0004(32) Stack +0008(32) Stack +000C(32)
+// SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
+// LocalsOut: fp(32) Local -0008(32) Local -0010(80) Stack +0004(32) Stack +000C(32)
 
 l80000428:
-	word32 dwLoc08_108 = 5
-// DataOut:
+	word32 dwLoc08_104 = 5
+// DataOut: fp0
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> d1:0x00000000 -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
-// LocalsOut: fp(80) Local -0008(32) Local -0010(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
+// SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
+// LocalsOut: fp(80) Local -0008(32) Local -0010(32) Stack +0004(32) Stack +000C(32)
 
 l8000042E:
-	branch dwLoc08_108 - dwArg0C > 0x00000000 l80000480
-// DataOut:
+	branch dwLoc08_104 - dwArg0C > 0x00000000 l80000480
+// DataOut: d0 fp0
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> d1:0x00000000 -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
-// LocalsOut: fp(80) Local -0008(32) Local -0010(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
+// SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
+// LocalsOut: fp(80) Local -0008(32) Local -0010(32) Stack +0004(32) Stack +000C(32)
 
 l80000480:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> d1:0x00000000 -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
+// SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
 
-_Z11sine_taylordi_exit:
+fn800003BC_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 d0:<invalid> d1:SLICE(rArg04, word32, 32) fp0:<invalid> fpsr:<invalid> fp2:<invalid> fp1:<invalid> -40(fp):(word32) rArg04 -36(fp):<invalid> -32(fp):SLICE(rArg04, word32, 32) -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
 
 l80000438:
 	rLoc28 = DPB(rLoc28, dwArg04_5, 0) (alias)
-	_ZL7pow_intdi(rLoc28, dwLoc08_108)
-	_ZL9factoriali(dwLoc08_108)
-	dwLoc08_108 = dwLoc08_108 + 0x00000004
-// DataOut:
+	pow_int(rLoc28, dwLoc08_104)
+	factorial(dwLoc08_104)
+	dwLoc08_104 = dwLoc08_104 + 0x00000004
+// DataOut: fp0
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> d1:0x00000000 -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
-// LocalsOut: fp(80) Local -0008(32) Local -0010(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
+// SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
+// LocalsOut: fp(80) Local -0008(32) Local -0010(32) Stack +0004(32) Stack +000C(32)
 
 l800003E0:
 	rLoc28 = DPB(rLoc28, dwArg04_5, 0) (alias)
-	_ZL7pow_intdi(rLoc28, dwLoc08_24)
-	_ZL9factoriali(dwLoc08_24)
+	pow_int(rLoc28, dwLoc08_24)
+	factorial(dwLoc08_24)
 	dwLoc08_24 = dwLoc08_24 + 0x00000004
-// DataOut:
+// DataOut: fp0
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> d1:0x00000000 -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
-// LocalsOut: fp(32) Local -0008(32) Local -0010(80) Stack +0004(32) Stack +0008(32) Stack +000C(32)
+// SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
+// LocalsOut: fp(32) Local -0008(32) Local -0010(80) Stack +0004(32) Stack +000C(32)
 
 
 
@@ -602,7 +594,7 @@ void main()
 // LiveOut:
 // Trashed: CVZNX d0
 // Preserved: a6 a7
-main_entry:
+fn8000049A_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -616,7 +608,7 @@ l8000049A:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 
-main_exit:
+fn8000049A_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 d0:0x00000000 -28(fp):0x40091EB8 -24(fp):0x51EB851F -20(fp):0x3F689374 -16(fp):0xBC6A7EFA -12(fp):fp - 0x00000008 -4(fp):a6
@@ -631,7 +623,7 @@ void _sin(real64 rArg04, real64 rArg0C, int32 & tArg14)
 // Trashed: CVZNX a0 d0 d1 fp0 fp1 fpsr
 // Preserved: a6 a7
 // Stack args: Stack +0004(80) Stack +000C(64) Stack +0014(32)
-_Z4_sinddRi_entry:
+fn800004DE_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -659,7 +651,7 @@ l8000060E:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000028 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> d0:<invalid> fp1:<invalid> a0:tArg14 -40(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):0x00000000 -20(fp):<invalid> -16(fp):0x00000000 -12(fp):<invalid> -8(fp):SLICE(rArg04, word32, 32) -4(fp):a6 4(fp):rArg04 12(fp):rArg0C 20(fp):tArg14
 
-_Z4_sinddRi_exit:
+fn800004DE_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 fp0:<invalid> fpsr:<invalid> d0:<invalid> d1:0x00000000 fp1:<invalid> a0:tArg14 -48(fp):<invalid> -44(fp):0x00000000 -40(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):0x00000000 -20(fp):<invalid> -16(fp):0x00000000 -12(fp):<invalid> -8(fp):SLICE(rArg04, word32, 32) -4(fp):a6 4(fp):rArg04 12(fp):rArg0C 20(fp):tArg14
@@ -684,7 +676,7 @@ void __do_global_ctors_aux()
 // LiveOut:
 // Trashed: CVZN a0 d0
 // Preserved: a2 a6 a7
-__do_global_ctors_aux_entry:
+fn80000624_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -721,7 +713,7 @@ l80000646:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000008 a6:fp - 0x00000004 a0:<invalid> a2:<invalid> d0:-1 -8(fp):a2 -4(fp):a6
 
-__do_global_ctors_aux_exit:
+fn80000624_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 a0:<invalid> a2:a2 d0:-1 -8(fp):a2 -4(fp):a6
@@ -735,7 +727,7 @@ void call___do_global_ctors_aux()
 // LiveOut:
 // Trashed:
 // Preserved: a6 a7
-call___do_global_ctors_aux_entry:
+fn8000064E_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -747,7 +739,7 @@ l8000064E:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 
-call___do_global_ctors_aux_exit:
+fn8000064E_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 -4(fp):a6

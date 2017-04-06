@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Arch.Intel
             var dasm = new X86Disassembler(
                 ProcessorMode.Protected64,
                 rdr,
-                PrimitiveType.Word32, 
+                PrimitiveType.Word32,
                 PrimitiveType.Word64,
                 true);
             return dasm.First();
@@ -118,6 +118,12 @@ namespace Reko.UnitTests.Arch.Intel
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 false);
+        }
+
+        private void AssertCode16(string sExp, params byte[] bytes)
+        {
+            var instr = Disassemble16(bytes);
+            Assert.AreEqual(sExp, instr.ToString());
         }
 
         private void AssertCode32(string sExp, params byte[] bytes)
@@ -256,7 +262,7 @@ movzx	ax,byte ptr [bp+04]
             var lr = asm.AssembleFragment(
                 Address.Ptr32(0x01001000),
 
-                "db 0xf2, 0x0f, 0x70, 0x00, 0x00\r\n" + 
+                "db 0xf2, 0x0f, 0x70, 0x00, 0x00\r\n" +
                 "db 0xf3, 0x0f, 0x70, 0x00, 0x00\r\n");
 
             /* Before (incorrect):
@@ -368,7 +374,7 @@ movzx	ax,byte ptr [bp+04]
             EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
             X86Disassembler dasm = new X86Disassembler(
                 ProcessorMode.Protected32,
-                rdr, 
+                rdr,
                 PrimitiveType.Word32,
                 PrimitiveType.Word32,
                 false);
@@ -777,15 +783,15 @@ movzx	ax,byte ptr [bp+04]
                 "scasb\r\n" +
                 "scasw\r\n" +
                 "scasd\r\n" +
-                
+
                 "cmpsb\r\n" +
                 "cmpsw\r\n" +
                 "cmpsd\r\n" +
-                
+
                 "lodsb\r\n" +
                 "lodsw\r\n" +
                 "lodsd\r\n" +
-                
+
                 "stosb\r\n" +
                 "stosw\r\n" +
                 "stosd\r\n");
@@ -835,5 +841,33 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("movups\t[rsp+20],xmm0", 0x0F, 0x11, 0x44, 0x24, 0x20);
         }
+
+        [Test]
+        public void X86dis_fucomi()
+        {
+            AssertCode32("fucomi\tst(0),st(3)", 0xDB, 0xEB);
+        }
+
+        [Test]
+        public void X86dis_fucomip()
+        {
+            AssertCode32("fucomip\tst(0),st(1)", 0xDF, 0xE9);
+        }
+
+        [Test]
+        public void X86dis_movups()
+        {
+            AssertCode64("movups\txmm0,[rbp-20]", 0x0F, 0x10, 0x45, 0xE0);
+            AssertCode64("movupd\txmm0,[rbp-20]", 0x66, 0x0F, 0x10, 0x45, 0xE0);
+            AssertCode64("movss\txmm0,dword ptr [rbp-20]", 0xF3, 0x0F, 0x10, 0x45, 0xE0);
+            AssertCode64("movsd\txmm0,double ptr [rbp-20]", 0xF2, 0x0F, 0x10, 0x45, 0xE0);
+        }
+
+        [Test]
+        public void X86dis_movups_16bit()
+        {
+            AssertCode16("movups\txmm7,xmm3", 0x0F, 0x10, 0xFB);
+        }
     }
 }
+

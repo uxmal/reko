@@ -32,10 +32,12 @@ namespace Reko.Core.Expressions
 	{
 		private byte offset;			// Bit-offset of value
 
-		public Slice(DataType dt, Expression i, uint bitOffset) : base(dt)
+		public Slice(DataType dt, Expression i, int bitOffset) : base(dt)
 		{
 			if (bitOffset > 255)
 				throw new ArgumentOutOfRangeException("bitOffset", "Offset is too large.");
+            if (bitOffset < 0)
+                throw new ArgumentOutOfRangeException("bitOffset", "Offset must be non-negative.");
 			Expression = i; offset = (byte) bitOffset;
 		}
 

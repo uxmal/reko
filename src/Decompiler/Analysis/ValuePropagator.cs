@@ -203,6 +203,21 @@ namespace Reko.Analysis
                 this.ci = ci;
             }
 
+            public Identifier CreateTemporary(DataType dt)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Identifier CreateTemporary(string name, DataType dt)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Identifier EnsureFlagGroup(FlagGroupStorage grf)
+            {
+                throw new NotImplementedException();
+            }
+
             public Identifier EnsureFlagGroup(FlagRegister flagRegister, uint flagGroupBits, string name, DataType dataType)
             {
                 throw new NotImplementedException();

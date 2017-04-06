@@ -101,52 +101,52 @@ namespace Reko.Arch.X86
                     {
                         // call $+5,pop<reg> idiom
                         dasm.MoveNext();
-                        emitter.Assign(
+                        m.Assign(
                             orw.AluRegister(reg),
                             addr);
-                        ric.Length += 1;
+                        this.len += 1;
                         return;
                     }
                 }
-                emitter.Call(addr, (byte) opsize.Size);
-                ric.Class = RtlClass.Transfer;
+                m.Call(addr, (byte) opsize.Size);
             }
             else
             {
                 var target = SrcOp(callTarget);
                 if (target.DataType.Size == 2)
-                    target = emitter.Seq(orw.AluRegister(Registers.cs), target);
-                emitter.Call(target, (byte) opsize.Size);
-                ric.Class = RtlClass.Transfer;
+                    target = m.Seq(orw.AluRegister(Registers.cs), target);
+                m.Call(target, (byte) opsize.Size);
             }
+            rtlc = RtlClass.Transfer | RtlClass.Call;
         }
 
         private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)
         {
-            ric.Class = RtlClass.ConditionalTransfer;
-            emitter.Branch(CreateTestCondition(cc, instrCur.code), OperandAsCodeAddress(op1), RtlClass.ConditionalTransfer);
+            rtlc = RtlClass.ConditionalTransfer;
+            m.Branch(CreateTestCondition(cc, instrCur.code), OperandAsCodeAddress(op1), RtlClass.ConditionalTransfer);
         }
 
         private void RewriteInt()
         {
-            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, SrcOp(instrCur.op1)));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, SrcOp(instrCur.op1)));
+            rtlc = RtlClass.Call | RtlClass.Transfer;
         }
 
         private void RewriteInto()
         {
-            emitter.If(
-                emitter.Test(ConditionCode.OV, orw.FlagGroup(FlagM.OF)),
+            m.If(
+                m.Test(ConditionCode.OV, orw.FlagGroup(FlagM.OF)),
                 new RtlSideEffect(
                     host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.Byte(4))));
         }
 
         private void RewriteJcxz()
         {
-            emitter.Branch(
-                emitter.Eq0(orw.AluRegister(Registers.ecx, instrCur.dataWidth)),
+            m.Branch(
+                m.Eq0(orw.AluRegister(Registers.ecx, instrCur.dataWidth)),
                 OperandAsCodeAddress(instrCur.op1),
                 RtlClass.ConditionalTransfer);
-            ric.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
         }
 
         private void RewriteJmp()
@@ -156,38 +156,38 @@ namespace Reko.Arch.X86
                 PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", VoidType.Instance, 0);
                 reboot.Characteristics = new Core.Serialization.ProcedureCharacteristics();
                 reboot.Characteristics.Terminates = true;
-                emitter.SideEffect(PseudoProc(reboot, VoidType.Instance));
+                m.SideEffect(PseudoProc(reboot, VoidType.Instance));
 				return;
 			}
 
-            ric.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
 			if (instrCur.op1 is ImmediateOperand)
 			{
 				Address addr = OperandAsCodeAddress(instrCur.op1);
-                emitter.Goto(addr);
+                m.Goto(addr);
 				return;
 			}
-            emitter.Goto(SrcOp(instrCur.op1));
+            m.Goto(SrcOp(instrCur.op1));
         }
 
         private void RewriteLoop(FlagM useFlags, ConditionCode cc)
         {
-            Identifier cx = orw.AluRegister(Registers.ecx, instrCur.dataWidth);
-            emitter.Assign(cx, emitter.ISub(cx, 1));
+            Identifier cx = orw.AluRegister(Registers.rcx, instrCur.dataWidth);
+            m.Assign(cx, m.ISub(cx, 1));
             if (useFlags != 0)
             {
-                emitter.Branch(
-                    emitter.Cand(
-                        emitter.Test(cc, orw.FlagGroup(useFlags)),
-                        emitter.Ne0(cx)),
+                m.Branch(
+                    m.Cand(
+                        m.Test(cc, orw.FlagGroup(useFlags)),
+                        m.Ne0(cx)),
                     OperandAsCodeAddress(instrCur.op1),
                     RtlClass.ConditionalTransfer);
-                ric.Class = RtlClass.ConditionalTransfer;
+                rtlc = RtlClass.ConditionalTransfer;
             }
             else
             {
-                emitter.Branch(emitter.Ne0(cx), OperandAsCodeAddress(instrCur.op1), RtlClass.ConditionalTransfer);
-                ric.Class = RtlClass.ConditionalTransfer;
+                m.Branch(m.Ne0(cx), OperandAsCodeAddress(instrCur.op1), RtlClass.ConditionalTransfer);
+                rtlc = RtlClass.ConditionalTransfer;
             }
         }
 
@@ -209,11 +209,11 @@ namespace Reko.Arch.X86
             var regCX = orw.AluRegister(Registers.rcx, instrCur.addrWidth);
             dasm.MoveNext();
             instrCur = dasm.Current;
-            ric.Length += (byte) instrCur.Length;
-            emitter.BranchInMiddleOfInstruction(emitter.Eq0(regCX), instrCur.Address + instrCur.Length, RtlClass.ConditionalTransfer);
+            this.len += instrCur.Length;
+            m.BranchInMiddleOfInstruction(m.Eq0(regCX), instrCur.Address + instrCur.Length, RtlClass.ConditionalTransfer);
             if (!RewriteStringInstruction())
                 return;
-            emitter.Assign(regCX, emitter.ISub(regCX, 1));
+            m.Assign(regCX, m.ISub(regCX, 1));
 
             switch (instrCur.code)
             {
@@ -225,32 +225,32 @@ namespace Reko.Arch.X86
                     var cc = (instrCur.code == Opcode.repne)
                         ? ConditionCode.NE
                         : ConditionCode.EQ;
-                    emitter.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)).Invert(), topOfLoop, RtlClass.ConditionalTransfer);
+                    m.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)).Invert(), topOfLoop, RtlClass.ConditionalTransfer);
                     break;
                 }
             default:
-                emitter.Goto(topOfLoop);
+                m.Goto(topOfLoop);
                 break;
             }
         }
 
         public void RewriteRet()
         {
-            emitter.Return(
+            m.Return(
                 this.arch.WordWidth.Size + (instrCur.code == Opcode.retf ? Registers.cs.DataType.Size : 0),
                 instrCur.Operands == 1 ? ((ImmediateOperand)instrCur.op1).Value.ToInt32() : 0);
-            ric.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
         }
 
         public void RewriteIret()
         {
             RewritePop(
                 orw.FlagGroup(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), instrCur.dataWidth);
-            emitter.Return(
+            m.Return(
                 Registers.cs.DataType.Size +
                 arch.WordWidth.Size, 
                 0);
-            ric.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
         }
 
         /// <summary>

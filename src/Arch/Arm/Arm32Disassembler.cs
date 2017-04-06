@@ -36,7 +36,7 @@ namespace Reko.Arch.Arm
             this.stream = dasm.DisassembleStream(
                 rdr.Bytes, 
                 (int)rdr.Offset, 
-                (long)rdr.Address.ToLinear() - rdr.Offset)
+                (long)rdr.Address.ToLinear())
                 .GetEnumerator();
         }
 

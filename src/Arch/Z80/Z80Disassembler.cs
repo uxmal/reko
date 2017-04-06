@@ -52,19 +52,34 @@ namespace Reko.Arch.Z80
             {
                 Address = addr,
             };
-            var op = rdr.ReadByte();
+            byte op;
+            if (!rdr.TryReadByte(out op))
+                return Invalid(addr);
+            
             var opRef = oprecs[op];
             this.IndexRegister = null;
             instr = opRef.Decode(this, op, "");
+            if (instr == null)
+                return Invalid(addr);
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
             return instr;
+        }
+
+        private Z80Instruction Invalid(Address addr)
+        {
+            return new Z80Instruction
+            {
+                Address = addr,
+                Code = Opcode.illegal,
+            };
         }
 
         public Z80Instruction DecodeOperands(Opcode opcode, byte op, string fmt)
         {
             var ops = new MachineOperand[2];
             var iOp = 0;
+            ushort us;
             for (int i = 0; i < fmt.Length; ++i)
             {
                 if (fmt[i] == ',')
@@ -77,7 +92,9 @@ namespace Reko.Arch.Z80
                     ops[iOp++] = new RegisterOperand(Registers.a);
                     break;
                 case 'A':       // Absolute memory address.
-                    ops[iOp++] = AddressOperand.Ptr16(rdr.ReadLeUInt16());
+                    if (!rdr.TryReadLeUInt16(out us))
+                        return null;
+                    ops[iOp++] = AddressOperand.Ptr16(us);
                     break;
                 case 'R':       // register encoded in bits 0..2 of op.
                     ops[iOp++] = new RegisterOperand(ByteRegister(op));
@@ -107,7 +124,10 @@ namespace Reko.Arch.Z80
                     ops[iOp++] = DirectOperand(PrimitiveType.Byte, OperandSize(fmt[i++]));
                     break;
                 case 'I':
-                    ops[iOp++] = new ImmediateOperand(rdr.ReadLe(OperandSize(fmt[i++])));
+                    Constant imm;
+                    if (!rdr.TryReadLe(OperandSize(fmt[i++]), out imm))
+                        return null;
+                    ops[iOp++] = new ImmediateOperand(imm);
                     break;
                 case 'W':
                     ops[iOp++] = new RegisterOperand(WordRegister(fmt[i++]));

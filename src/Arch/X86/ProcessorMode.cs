@@ -64,7 +64,7 @@ namespace Reko.Arch.X86
 
         public abstract X86Disassembler CreateDisassembler(EndianImageReader rdr, X86Options options);
 
-        public abstract OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, Frame frame, IRewriterHost host);
+        public abstract OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host);
 
         public abstract Address CreateSegmentedAddress(ushort seg, uint offset);
 
@@ -140,7 +140,7 @@ namespace Reko.Arch.X86
             return dasm;
         }
 
-        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, Frame frame, IRewriterHost host)
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host)
         {
             return new OperandRewriter16(arch, m, frame, host);
         }
@@ -184,7 +184,7 @@ namespace Reko.Arch.X86
             return new X86RealModePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
-        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, Frame frame, IRewriterHost host)
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host)
         {
             return new OperandRewriter16(arch, m, frame, host);
         }
@@ -247,7 +247,7 @@ namespace Reko.Arch.X86
             return new X86Disassembler(this, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
         }
 
-        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, Frame frame, IRewriterHost host)
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host)
         {
             return new OperandRewriter32(arch, m, frame, host);
         }
@@ -307,7 +307,7 @@ namespace Reko.Arch.X86
             return new X86Disassembler(this, rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
         }
 
-        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, Frame frame, IRewriterHost host)
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host)
         {
             return new OperandRewriter64(arch, m, frame, host);
         }

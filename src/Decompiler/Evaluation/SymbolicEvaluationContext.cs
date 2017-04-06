@@ -169,7 +169,7 @@ namespace Reko.Evaluation
                 {
                     var value2 = StackState[offset2];
                     if (offset2 + value2.DataType.Size > offset)
-                        return new Slice(accessDataType, StackState[offset2], (uint)((offset - offset2) * 8));
+                        return new Slice(accessDataType, StackState[offset2], ((offset - offset2) * 8));
                 }
             }
             return Constant.Invalid;

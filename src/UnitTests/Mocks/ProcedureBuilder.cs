@@ -25,6 +25,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -134,18 +135,31 @@ namespace Reko.UnitTests.Mocks
 
         public CallInstruction Call(ProcedureBase callee, int retSizeOnStack)
         {
-            ProcedureConstant c = new ProcedureConstant(PrimitiveType.Pointer32, callee);
-            CallInstruction ci = new CallInstruction(c, new CallSite(retSizeOnStack, 0));  
+            var c = new ProcedureConstant(PrimitiveType.Pointer32, callee);
+            var ci = new CallInstruction(c, new CallSite(retSizeOnStack, 0));  
             Emit(ci);
             return ci;
         }
 
         public CallInstruction Call(Expression e, int retSizeOnstack)
         {
-            CallInstruction ci = new CallInstruction(e, new CallSite(retSizeOnstack, 0));
+            var ci = new CallInstruction(e, new CallSite(retSizeOnstack, 0));
             Emit(ci);
             return ci;
         }
+
+        public Statement Call(
+            Expression e,
+            int retSizeOnstack,
+            IEnumerable<Identifier> uses,
+            IEnumerable<Identifier> definitions)
+        {
+            var ci = new CallInstruction(e, new CallSite(retSizeOnstack, 0));
+            ci.Uses.UnionWith(uses.Select(u => new CallBinding(u.Storage, u)));
+            ci.Definitions.UnionWith(definitions.Select(d => new CallBinding(d.Storage, d)));
+            return Emit(ci);
+        }
+
 
         public void Compare(string flags, Expression a, Expression b)
         {
@@ -279,6 +293,7 @@ namespace Reko.UnitTests.Mocks
             TerminateBlock();
             lastBlock = null;
         }
+
         public override void Return(Expression exp)
         {
             base.Return(exp);

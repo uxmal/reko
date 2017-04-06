@@ -4,6 +4,7 @@
 
 #include "MATRIXMU.h"
 
+// 00001000: void fn00001000(Register int32 d0, Register (ptr byte) a0)
 void fn00001000(int32 d0, byte * a0)
 {
 	struct Eq_4 * a6_8 = *(struct Eq_4 **) 0x04;
@@ -56,7 +57,7 @@ void fn00001000(int32 d0, byte * a0)
 			d0_112->dw0000 = d0_107 + 0x11;
 			int32 d4_123 = d4_457 - 0x01;
 			d0_112->dw000C = d4_123;
-			d0_112->ptr0008 = d0_112->dw000C + 0x01 + d0_105 / 0x0010;
+			d0_112->ptr0008 = &d0_112->dw000C + 0x01 + d0_105 / 0x0010;
 			Mem131[0x00:word32] = 0x00;
 			struct Eq_67 * d0_132 = d0_19->ptr00AC;
 			d0_132->ptr0000 = d0_107 + 0x11;
@@ -104,7 +105,7 @@ l000011F8:
 			int32 d0_226 = (int32) null[d0_217].b0000;
 			Mem227[a0_225 + d0_226:byte] = 0x00;
 			d0_132->ptr0010 = a0_225;
-			word32 * a6_230 = &d0_132->ptr0010;
+			word32 * a6_230 = (char *) &d0_132->ptr0010 + 0x04;
 			int32 d3_231 = 0x01;
 			struct Eq_239 * a0_233 = a0 + d2_235;
 l000010DA:
@@ -224,13 +225,15 @@ l00001202:
 	return;
 }
 
+// 00001214: void fn00001214(Register (ptr Eq_25) a3)
 void fn00001214(Eq_25 * a3)
 {
-	WaitPort(a3 + 0x005C);
-	GetMsg(a3 + 0x005C);
+	WaitPort((char *) &a3->dw003A + 0x0022);
+	GetMsg((char *) &a3->dw003A + 0x0022);
 	return;
 }
 
+// 0000126C: void fn0000126C(Register (ptr Eq_31) a2)
 void fn0000126C(Eq_31 * a2)
 {
 	Forbid();
@@ -238,12 +241,14 @@ void fn0000126C(Eq_31 * a2)
 	return;
 }
 
+// 00001278: void fn00001278(Stack word32 dwArg04)
 void fn00001278(word32 dwArg04)
 {
 	fn0000127C(dwArg04);
 	return;
 }
 
+// 0000127C: void fn0000127C(Register int32 d2)
 void fn0000127C(int32 d2)
 {
 	ptr32 a7_3 = globals->ptr1494;
@@ -258,6 +263,7 @@ void fn0000127C(int32 d2)
 	return;
 }
 
+// 000012D0: void fn000012D0(Stack word32 dwArg04)
 void fn000012D0(word32 dwArg04)
 {
 	Eq_600 a3_11[] = (Eq_600 (*)[]) 0x14D0;
@@ -276,7 +282,7 @@ void fn000012D0(word32 dwArg04)
 			do
 			{
 				int32 d0_55 = d2_49 << 0x02;
-				Eq_600 a2_57 = a3_11[d0_55].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00].a0000[0x00];
+				Eq_600 a2_57 = (&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&a3_11[d0_55].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00];
 				word32 a7_59;
 				word32 a2_61;
 				word32 d2_62;
@@ -296,6 +302,7 @@ void fn000012D0(word32 dwArg04)
 	return;
 }
 
+// 0000131C: void fn0000131C(Stack int32 dwArg04)
 void fn0000131C(int32 dwArg04)
 {
 	if (*(word32 *) 0x14C4 == 0x00)
@@ -325,6 +332,7 @@ void fn0000131C(int32 dwArg04)
 	return;
 }
 
+// 00001354: void fn00001354(Stack int32 dwArg04, Stack (ptr Eq_67) dwArg08)
 void fn00001354(int32 dwArg04, Eq_67 * dwArg08)
 {
 	<anonymous> ** a3_45 = (<anonymous> **) 0x14CC;
@@ -348,6 +356,7 @@ void fn00001354(int32 dwArg04, Eq_67 * dwArg08)
 	return;
 }
 
+// 00001390: void fn00001390(Stack ptr32 dwArg04, Stack ptr32 dwArg08, Stack ptr32 dwArg0C)
 void fn00001390(ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C)
 {
 	int32 d4_32 = 0x00;
@@ -366,9 +375,9 @@ void fn00001390(ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C)
 				uint32 d5_128 = __swap(d0_122) * (word16) d1_123;
 				word32 d0_135 = d0_122 * (word16) d1_123 + DPB(__swap(DPB(d5_128, (word16) d5_128 + (word16) (__swap(d1_123) * (word16) d0_122), 0)), 0x00, 0);
 				uint32 d5_141 = __swap(0x0014) * (word16) d4_32;
-				word32 d0_152 = *((word16) d4_32 * 0x0014);
+				word32 d0_152 = d0_135 + (dwArg0C + ((word32) ((word16) d4_32 * 0x0014) + DPB(__swap(DPB(d5_141, (word16) d5_141 + (word16) (__swap(d4_32) * 0x14), 0)), 0x00, 0)))[d3_67];
 				uint32 d5_158 = __swap(0x0014) * (word16) d4_32;
-				*((word16) d4_32 * 0x0014) = d0_152;
+				(dwArg0C + ((word32) ((word16) d4_32 * 0x0014) + DPB(__swap(DPB(d5_158, (word16) d5_158 + (word16) (__swap(d4_32) * 0x14), 0)), 0x00, 0)))[d3_67] = d0_152;
 				d2_171 = d2_171 + 0x01;
 			}
 			d3_67 = d3_67 + 0x01;
@@ -378,6 +387,7 @@ void fn00001390(ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C)
 	return;
 }
 
+// 00001468: void fn00001468()
 void fn00001468()
 {
 	fn00001390(fp + ~0xEF, fp + ~0x9F, fp + -0x0050);

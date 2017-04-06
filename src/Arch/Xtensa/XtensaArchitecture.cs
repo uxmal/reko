@@ -175,7 +175,7 @@ namespace Reko.Arch.Xtensa
             return new XtensaProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             return new XtensaRewriter(this, rdr, state, frame, host);
         }

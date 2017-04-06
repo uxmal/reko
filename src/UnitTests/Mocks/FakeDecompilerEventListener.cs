@@ -52,6 +52,17 @@ namespace Reko.UnitTests.Mocks
             Debug.WriteLine(lastDiagnostic);
         }
 
+        public void Info(ICodeLocation location, string message)
+        {
+            AddDiagnostic(location, new WarningDiagnostic(message));
+        }
+
+        public void Info(ICodeLocation location, string message, params object[] args)
+        {
+            Warn(location, string.Format(message, args));
+        }
+
+
         public void Warn(ICodeLocation location, string message)
         {
             AddDiagnostic(location, new WarningDiagnostic(message));

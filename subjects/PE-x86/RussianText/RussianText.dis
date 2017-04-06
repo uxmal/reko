@@ -1,27 +1,22 @@
-void _GetExceptDLLinfo(word32 dwArg04)
+void _GetExceptDLLinfo()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  fs
 // LiveOut:
 // Trashed: SCZO ah al ax dh dl dx eax edx rax rdx
-// Preserved: ebp ebx esp
-// Stack args: Stack +0004(32)
+// Preserved: esp
 __GetExceptDLLinfo_entry:
 // DataOut: fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0004(32)
 
 l00401071:
 // DataOut: fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0004(32)
 
-l004011FC:
-	Mem14[0x004020F8:word32] = fn00401158() + 0x0000001C
-	Mem15[dwArg04:word32] = 0x82727349
-	Mem16[dwArg04 + 0x00000004:word32] = 0x004020E4
+l00401071_thunk_fn004011FC:
+	fn004011FC(dwArg00)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -30,7 +25,100 @@ l004011FC:
 __GetExceptDLLinfo_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp ebp:ebp ebx:ebx eax:<invalid> edx:<invalid> -8(fp):ebx -4(fp):ebp
+// SymbolicIn: esp:fp eax:<invalid> edx:<invalid>
+
+
+
+void fn00401084()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: bh bl bx ebx esp rbx rsp sp spl
+// Preserved:
+fn00401084_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l00401084:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+fn00401084_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000028 ebx:0xBCB05000 -40(fp):0x00000BAD -36(fp):0xBCB05000 -32(fp):edi -28(fp):esi -24(fp):ebp -20(fp):fp -16(fp):ebx -12(fp):edx -8(fp):ecx -4(fp):eax
+
+
+
+void fn0040110B(word32 eax)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  eax
+// LiveOut:
+// Trashed: SCZO ah al ax eax esp rax rsp sp spl
+// Preserved: eax
+fn0040110B_entry:
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l0040110B:
+	branch Mem0[0x0040208B:word32] <u 0x00000000 l0040113C
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l00401114:
+	word32 esp_19
+	byte SCZO_20
+	byte C_21
+	word32 eax_22
+	byte SZO_23
+	byte Z_24
+	call __CRTL_TLS_GetValue (retsize: 4; depth: 8)
+		uses: C_4,dwLoc04_18,eax,esp_17,SCZO_3,SZO,Z
+		defs: C_21,eax_22,esp_19,SCZO_20,SZO_23,Z_24
+	branch eax_22 == 0x00000000 l0040113C
+// DataOut: eax esp
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+l00401123:
+	Mem31[fp + 0xFFFFFFF4:word32] = eax_22
+	Mem33[fp + 0xFFFFFFF0:word32] = 0x00000008
+	Mem36[fp + 0xFFFFFFEC:word32] = GetProcessHeap()
+	word32 eax_37 = HeapFree(Mem36[fp + 0xFFFFFFEC:HANDLE], Mem36[fp + 0xFFFFFFF0:DWORD], Mem36[fp + 0xFFFFFFF4:LPVOID])
+	Mem41[fp + 0xFFFFFFF4:word32] = Mem36[0x0040208B:word32]
+	word32 esp_42
+	byte SCZO_43
+	byte C_44
+	word32 eax_45
+	byte SZO_46
+	byte Z_47
+	call __CRTL_TLS_ExitThread (retsize: 4; depth: 4)
+		uses: C_29,dwLoc04_18,eax_37,esp_40,SCZO_20,SZO_27,Z_28
+		defs: C_44,eax_45,esp_42,SCZO_43,SZO_46,Z_47
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> eax:eax -4(fp):<invalid>
+
+l0040113C:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> eax:<invalid> -4(fp):<invalid>
+
+fn0040110B_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> eax:<invalid> -4(fp):<invalid>
 
 
 
@@ -48,7 +136,7 @@ fn00401158_entry:
 
 l00401158:
 	return Mem0[Mem0[fs:0x002C:word32] + Mem0[0x0040208B:word32] * 0x00000004:word32]
-// DataOut: eax ebx
+// DataOut: eax ebx fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp
 
@@ -91,6 +179,503 @@ main_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:<invalid> ecx:<invalid> eax:0x00000000 -8(fp):0x004020A4 -4(fp):ebp 4(fp):argc 8(fp):argv
+
+
+
+void fn0040117C()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: esp
+fn0040117C_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+l0040117C:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+fn0040117C_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn00401180()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: esp
+fn00401180_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+l00401180:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+fn00401180_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn004011B0(word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  fs
+// LiveOut:
+// Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh dl dx eax ebp ebx ecx edx esp rax rbp rbx rcx rdx rsp sp spl
+// Preserved:
+// Stack args: Stack +0004(32)
+fn004011B0_entry:
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -0018(32) Stack +0004(32)
+
+l004011B0:
+	branch dwArg04 != 0x00000000 l004011D7
+// DataOut: ebx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -0018(32)
+
+l004011C6:
+	branch dwArg04 != 0x00000000 l004011D7
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 0x00000004 ebx:<invalid> al:<invalid> eax:eax & 0x00000001 -16(fp):ebx -4(fp):ebp
+// LocalsOut: fp(32) Local -0018(32)
+
+l004011CA:
+	fn004011FC(fp - 0x0000000C)
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 0x00000004 ebx:<invalid> al:<invalid> eax:eax & 0x00000001 -16(fp):ebx -4(fp):ebp
+// LocalsOut: fp(32)
+
+l004011D7:
+	fn00401158()
+	word32 esp_31
+	word32 ebp_32
+	byte SCZO_33
+	word32 ebx_34
+	byte SZO_35
+	byte C_36
+	byte al_37
+	byte Z_38
+	word32 eax_39
+	word32 edx_40
+	word32 ecx_41
+	call memcpy (retsize: 4; depth: 32)
+		uses: al_14,C_20,dwLoc04_4,dwLoc10_9,dwLoc14_23,dwLoc18_25,dwLoc1C_30,eax_27,ebp_5,ebx_21,esp_29,SCZO_28,SZO_18,Z_19
+		defs: al_37,C_36,eax_39,ebp_32,ebx_34,ecx_41,edx_40,esp_31,SCZO_33,SZO_35,Z_38
+	word32 esp_45
+	word32 ebp_46
+	byte SCZO_47
+	word32 ebx_48
+	byte SZO_49
+	byte C_50
+	byte al_51
+	byte Z_52
+	word32 eax_53
+	word32 edx_54
+	word32 ecx_55
+	call _InitTermAndUnexPtrs$qv (retsize: 4; depth: 24)
+		uses: al_37,C_36,dwLoc04_4,dwLoc10_9,dwLoc14_23,dwLoc18_25,dwLoc1C_30,eax_39,ebp_32,ebx_34,ecx_41,edx_40,esp_43,SCZO_44,SZO_35,Z_38
+		defs: al_51,C_50,eax_53,ebp_46,ebx_48,ecx_55,edx_54,esp_45,SCZO_47,SZO_49,Z_52
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 0x00000004 ebx:<invalid> al:<invalid> eax:<invalid> edx:<invalid> ecx:fp - 0x0000000C -20(fp):fp - 0x0000000C -16(fp):ebx -4(fp):ebp
+
+fn004011B0_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> ebx:<invalid> al:<invalid> eax:<invalid> edx:<invalid> ecx:<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):0x0000009C -16(fp):ebx -4(fp):ebp
+
+
+
+void fn004011FC(word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  fs
+// LiveOut:
+// Trashed: SCZO ah al ax dh dl dx eax edx rax rdx
+// Preserved: ebp ebx esp
+// Stack args: Stack +0004(32)
+fn004011FC_entry:
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(32)
+
+l004011FC:
+	Mem14[0x004020F8:word32] = fn00401158() + 0x0000001C
+	Mem15[dwArg04:word32] = 0x82727349
+	Mem16[dwArg04 + 0x00000004:word32] = 0x004020E4
+	return
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+fn004011FC_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebp:ebp ebx:ebx eax:<invalid> edx:<invalid> -8(fp):ebx -4(fp):ebp
+
+
+
+void fn0040124C()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0040124C_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0040124C_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn00401252()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00401252_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401252_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn00401258()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00401258_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401258_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn0040125E()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0040125E_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0040125E_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn00401264()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00401264_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401264_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn0040126C()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0040126C_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0040126C_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn00401272()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00401272_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401272_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn00401278()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00401278_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401278_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn0040127E()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0040127E_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0040127E_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn00401284()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00401284_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401284_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn0040128A()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0040128A_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0040128A_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn00401290()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00401290_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401290_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn00401296()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00401296_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401296_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn004012AE()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn004012AE_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn004012AE_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn004012D8()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn004012D8_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn004012D8_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn004012EA()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn004012EA_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn004012EA_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn004012F0()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn004012F0_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn004012F0_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
 
 
 

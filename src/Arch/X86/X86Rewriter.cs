@@ -41,12 +41,14 @@ namespace Reko.Arch.X86
     {
         private IRewriterHost host;
         private IntelArchitecture arch;
-        private Frame frame;
+        private IStorageBinder frame;
         private LookaheadEnumerator<X86Instruction> dasm;
-        private RtlEmitter emitter;
+        private RtlEmitter m;
         private OperandRewriter orw;
         private X86Instruction instrCur;
-        private RtlInstructionCluster ric;
+        private RtlClass rtlc;
+        private int len;
+        private List<RtlInstruction> rtlInstructions;
         private X86State state;
 
         public X86Rewriter(
@@ -54,7 +56,7 @@ namespace Reko.Arch.X86
             IRewriterHost host,
             X86State state,
             EndianImageReader rdr,
-            Frame frame)
+            IStorageBinder frame)
         {
             if (host == null)
                 throw new ArgumentNullException("host");
@@ -74,10 +76,12 @@ namespace Reko.Arch.X86
             while (dasm.MoveNext())
             {
                 instrCur = dasm.Current;
-                ric = new RtlInstructionCluster(instrCur.Address, instrCur.Length);
-                ric.Class = RtlClass.Linear;
-                emitter = new RtlEmitter(ric.Instructions);
-                orw = arch.ProcessorMode.CreateOperandRewriter(arch, emitter, frame, host);
+                var addr = instrCur.Address;
+                this.len = instrCur.Length;
+                this.rtlInstructions = new List<RtlInstruction>();
+                this.rtlc = RtlClass.Linear;
+                m = new RtlEmitter(rtlInstructions);
+                orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, frame, host);
                 switch (instrCur.code)
                 {
                 default:
@@ -85,12 +89,12 @@ namespace Reko.Arch.X86
                         instrCur.Address,
                         "Rewriting x86 opcode '{0}' is not supported yet.",
                         instrCur.code);
-                case Opcode.illegal: ric.Class = 0; emitter.Invalid(); break;
+                case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
                 case Opcode.aaa: RewriteAaa(); break;
                 case Opcode.aad: RewriteAad(); break;
                 case Opcode.aam: RewriteAam(); break;
                 case Opcode.aas: RewriteAas(); break;
-                case Opcode.adc: RewriteAdcSbb(emitter.IAdd); break;
+                case Opcode.adc: RewriteAdcSbb(m.IAdd); break;
                 case Opcode.add: RewriteAddSub(Operator.IAdd); break;
                 case Opcode.and: RewriteLogical(Operator.And); break;
                 case Opcode.arpl: RewriteArpl(); break;
@@ -105,7 +109,7 @@ namespace Reko.Arch.X86
                 case Opcode.clc: RewriteSetFlag(FlagM.CF, Constant.False()); break;
                 case Opcode.cld: RewriteSetFlag(FlagM.DF, Constant.False()); break;
                 case Opcode.cli: RewriteCli(); break;
-                case Opcode.cmc: emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Not(orw.FlagGroup(FlagM.CF))); break;
+                case Opcode.cmc: m.Assign(orw.FlagGroup(FlagM.CF), m.Not(orw.FlagGroup(FlagM.CF))); break;
                 case Opcode.cmova: RewriteConditionalMove(ConditionCode.UGT, instrCur.op1, instrCur.op2); break;
                 case Opcode.cmovbe: RewriteConditionalMove(ConditionCode.ULE, instrCur.op1, instrCur.op2); break;
                 case Opcode.cmovc: RewriteConditionalMove(ConditionCode.ULT, instrCur.op1, instrCur.op2); break;
@@ -128,15 +132,16 @@ namespace Reko.Arch.X86
                 case Opcode.cmpsb: RewriteStringInstruction(); break;
                 case Opcode.cpuid: RewriteCpuid(); break;
                 case Opcode.cvttsd2si: RewriteCvttsd2si(); break;
+                case Opcode.cvttps2pi: RewriteCvttps2pi(); break;
                 case Opcode.cwd: RewriteCwd(); break;
                 case Opcode.daa: EmitDaaDas("__daa"); break;
                 case Opcode.das: EmitDaaDas("__das"); break;
                 case Opcode.dec: RewriteIncDec(-1); break;
-                case Opcode.div: RewriteDivide(emitter.UDiv, Domain.UnsignedInt); break;
+                case Opcode.div: RewriteDivide(m.UDiv, Domain.UnsignedInt); break;
                 case Opcode.enter: RewriteEnter(); break;
                 case Opcode.fabs: RewriteFabs(); break;
-                case Opcode.fadd: EmitCommonFpuInstruction(emitter.FAdd, false, false); break;
-                case Opcode.faddp: EmitCommonFpuInstruction(emitter.FAdd, false, true); break;
+                case Opcode.fadd: EmitCommonFpuInstruction(m.FAdd, false, false); break;
+                case Opcode.faddp: EmitCommonFpuInstruction(m.FAdd, false, true); break;
                 case Opcode.fbld: RewriteFbld(); break;
                 case Opcode.fbstp: RewriteFbstp(); break;
                 case Opcode.fchs: EmitFchs(); break;
@@ -146,19 +151,19 @@ namespace Reko.Arch.X86
                 case Opcode.fcompp: RewriteFcom(2); break;
                 case Opcode.fcos: RewriteFUnary("cos"); break;
                 case Opcode.fdecstp: RewriteFdecstp(); break;
-                case Opcode.fdiv: EmitCommonFpuInstruction(emitter.FDiv, false, false); break;
-                case Opcode.fdivp: EmitCommonFpuInstruction(emitter.FDiv, false, true); break;
+                case Opcode.fdiv: EmitCommonFpuInstruction(m.FDiv, false, false); break;
+                case Opcode.fdivp: EmitCommonFpuInstruction(m.FDiv, false, true); break;
                 case Opcode.ffree: RewriteFfree(); break;
-                case Opcode.fiadd: EmitCommonFpuInstruction(emitter.FAdd, false, false, PrimitiveType.Real64); break;
+                case Opcode.fiadd: EmitCommonFpuInstruction(m.FAdd, false, false, PrimitiveType.Real64); break;
                 case Opcode.ficom: RewriteFicom(false); break;
                 case Opcode.ficomp: RewriteFicom(true); break;
-                case Opcode.fimul: EmitCommonFpuInstruction(emitter.FMul, false, false, PrimitiveType.Real64); break;
-                case Opcode.fisub: EmitCommonFpuInstruction(emitter.FSub, false, false, PrimitiveType.Real64); break;
-                case Opcode.fisubr: EmitCommonFpuInstruction(emitter.FSub, true, false, PrimitiveType.Real64); break;
-                case Opcode.fidiv: EmitCommonFpuInstruction(emitter.FDiv, false, false, PrimitiveType.Real64); break;
-                case Opcode.fidivr: EmitCommonFpuInstruction(emitter.FDiv, true, false, PrimitiveType.Real64); break;
-                case Opcode.fdivr: EmitCommonFpuInstruction(emitter.FDiv, true, false); break;
-                case Opcode.fdivrp: EmitCommonFpuInstruction(emitter.FDiv, true, true); break;
+                case Opcode.fimul: EmitCommonFpuInstruction(m.FMul, false, false, PrimitiveType.Real64); break;
+                case Opcode.fisub: EmitCommonFpuInstruction(m.FSub, false, false, PrimitiveType.Real64); break;
+                case Opcode.fisubr: EmitCommonFpuInstruction(m.FSub, true, false, PrimitiveType.Real64); break;
+                case Opcode.fidiv: EmitCommonFpuInstruction(m.FDiv, false, false, PrimitiveType.Real64); break;
+                case Opcode.fidivr: EmitCommonFpuInstruction(m.FDiv, true, false, PrimitiveType.Real64); break;
+                case Opcode.fdivr: EmitCommonFpuInstruction(m.FDiv, true, false); break;
+                case Opcode.fdivrp: EmitCommonFpuInstruction(m.FDiv, true, true); break;
                 case Opcode.fild: RewriteFild(); break;
                 case Opcode.fincstp: RewriteFincstp(); break;
                 case Opcode.fist: RewriteFist(false); break;
@@ -171,8 +176,8 @@ namespace Reko.Arch.X86
                 case Opcode.fldln2: RewriteFldConst(Constant.Ln2()); break;
                 case Opcode.fldpi: RewriteFldConst(Constant.Pi()); break;
                 case Opcode.fldz: RewriteFldConst(0.0); break;
-                case Opcode.fmul: EmitCommonFpuInstruction(emitter.FMul, false, false); break;
-                case Opcode.fmulp: EmitCommonFpuInstruction(emitter.FMul, false, true); break;
+                case Opcode.fmul: EmitCommonFpuInstruction(m.FMul, false, false); break;
+                case Opcode.fmulp: EmitCommonFpuInstruction(m.FMul, false, true); break;
                 case Opcode.fpatan: RewriteFpatan(); break;
                 case Opcode.fprem: RewriteFprem(); break;
                 case Opcode.frndint: RewriteFUnary("__rndint"); break;
@@ -187,17 +192,20 @@ namespace Reko.Arch.X86
                 case Opcode.fstcw: RewriterFstcw(); break;
                 case Opcode.fstp: RewriteFst(true); break;
                 case Opcode.fstsw: RewriteFstsw(); break;
-                case Opcode.fsub: EmitCommonFpuInstruction(emitter.FSub, false, false); break;
-                case Opcode.fsubp: EmitCommonFpuInstruction(emitter.FSub, false, true); break;
-                case Opcode.fsubr: EmitCommonFpuInstruction(emitter.FSub, true, false); break;
-                case Opcode.fsubrp: EmitCommonFpuInstruction(emitter.FSub, true, true); break;
+                case Opcode.fsub: EmitCommonFpuInstruction(m.FSub, false, false); break;
+                case Opcode.fsubp: EmitCommonFpuInstruction(m.FSub, false, true); break;
+                case Opcode.fsubr: EmitCommonFpuInstruction(m.FSub, true, false); break;
+                case Opcode.fsubrp: EmitCommonFpuInstruction(m.FSub, true, true); break;
                 case Opcode.ftst: RewriteFtst(); break;
+                case Opcode.fucomi: RewrteFucomi(false); break;
+                case Opcode.fucomip: RewrteFucomi(true); break;
                 case Opcode.fucompp: RewriteFcom(2); break;
                 case Opcode.fxam: RewriteFxam(); break;
                 case Opcode.fxch: RewriteExchange(); break;
                 case Opcode.fyl2x: RewriteFyl2x(); break;
+                case Opcode.fyl2xp1: RewriteFyl2xp1(); break;
                 case Opcode.hlt: RewriteHlt(); break;
-                case Opcode.idiv: RewriteDivide(emitter.SDiv, Domain.SignedInt); break;
+                case Opcode.idiv: RewriteDivide(m.SDiv, Domain.SignedInt); break;
                 case Opcode.@in: RewriteIn(); break;
                 case Opcode.imul: RewriteMultiply(Operator.SMul, Domain.SignedInt); break;
                 case Opcode.inc: RewriteIncDec(1); break;
@@ -242,15 +250,19 @@ namespace Reko.Arch.X86
                 case Opcode.movaps: RewriteMov(); break;
                 case Opcode.movd: RewriteMovzx(); break;
                 case Opcode.movdqa: RewriteMov(); break;
+                case Opcode.movlhps: RewriteMovlhps(); break;
                 case Opcode.movq: RewriteMov(); break;
                 case Opcode.movs: RewriteStringInstruction(); break;
                 case Opcode.movsb: RewriteStringInstruction(); break;
+                case Opcode.movsd: RewriteMovssd(PrimitiveType.Real64); break;
+                case Opcode.movss: RewriteMovssd(PrimitiveType.Real32); break;
                 case Opcode.movsx: RewriteMovsx(); break;
                 case Opcode.movups: RewriteMov(); break;
+                case Opcode.movupd: RewriteMov(); break;
                 case Opcode.movzx: RewriteMovzx(); break;
                 case Opcode.mul: RewriteMultiply(Operator.UMul, Domain.UnsignedInt); break;
                 case Opcode.neg: RewriteNeg(); break;
-                case Opcode.nop: emitter.Nop(); break;
+                case Opcode.nop: m.Nop(); break;
                 case Opcode.not: RewriteNot(); break;
                 case Opcode.or: RewriteLogical(BinaryOperator.Or); break;
                 case Opcode.@out: RewriteOut(); break;
@@ -277,9 +289,9 @@ namespace Reko.Arch.X86
                 case Opcode.repne: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.retf: RewriteRet(); break;
-                case Opcode.sahf: emitter.Assign(orw.FlagGroup(X86Instruction.DefCc(instrCur.code)), orw.AluRegister(Registers.ah)); break;
+                case Opcode.sahf: m.Assign(orw.FlagGroup(X86Instruction.DefCc(instrCur.code)), orw.AluRegister(Registers.ah)); break;
                 case Opcode.sar: RewriteBinOp(Operator.Sar); break;
-                case Opcode.sbb: RewriteAdcSbb(emitter.ISub); break;
+                case Opcode.sbb: RewriteAdcSbb(m.ISub); break;
                 case Opcode.scas: RewriteStringInstruction(); break;
                 case Opcode.scasb: RewriteStringInstruction(); break;
                 case Opcode.seta: RewriteSet(ConditionCode.UGT); break;
@@ -318,7 +330,10 @@ namespace Reko.Arch.X86
                 case Opcode.BOR_exp: RewriteFUnary("exp"); break;
                 case Opcode.BOR_ln: RewriteFUnary("log"); break;
                 }
-                yield return ric;
+                yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())
+                {
+                    Class = rtlc
+                };
             }
         }
 
@@ -331,7 +346,7 @@ namespace Reko.Arch.X86
                     ppp.Arity,
                     args.Length));
 
-            return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
+            return m.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -368,14 +383,14 @@ namespace Reko.Arch.X86
             Identifier idDst = dst as Identifier;
             if (idDst != null || (flags & CopyFlags.ForceBreak) == 0)
             {
-                emitter.Assign(dst, src);
+                AssignToRegister(idDst, src);
             }
             else
             {
                 Identifier tmp = frame.CreateTemporary(opDst.Width);
-                emitter.Assign(tmp, src);
+                m.Assign(tmp, src);
                 var ea = orw.CreateMemoryAccess(instrCur, (MemoryOperand)opDst, state);
-                emitter.Assign(ea, tmp);
+                m.Assign(ea, tmp);
                 dst = tmp;
             }
             if ((flags & CopyFlags.EmitCc) != 0)
@@ -384,8 +399,19 @@ namespace Reko.Arch.X86
             }
             if ((flags & CopyFlags.SetCfIf0) != 0)
             {
-                emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Eq0(dst));
+                m.Assign(orw.FlagGroup(FlagM.CF), m.Eq0(dst));
             }
+        }
+
+        private void AssignToRegister(Identifier idDst, Expression src)
+        {
+            if (arch.WordWidth.BitSize == 64 && idDst.Storage.BitSize == 32)
+            {
+                var reg = (RegisterStorage)idDst.Storage;
+                idDst = frame.EnsureRegister(Registers.Gp64BitRegisters[reg.Number]);
+                src = m.Cast(PrimitiveType.UInt64, src);
+            }
+            m.Assign(idDst, src);
         }
 
         private Expression SrcOp(MachineOperand opSrc)

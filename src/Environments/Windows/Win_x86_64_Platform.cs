@@ -140,7 +140,7 @@ namespace Reko.Environments.Windows
                 Architecture.CreateProcessorState(),
                 Architecture.CreateFrame(), host);
             var rtlc = rw.FirstOrDefault();
-            if (rtlc == null || rtlc.Instructions.Count == 0)
+            if (rtlc == null || rtlc.Instructions.Length == 0)
                 return null;
             var jump = rtlc.Instructions[0] as RtlGoto;
             if (jump == null)

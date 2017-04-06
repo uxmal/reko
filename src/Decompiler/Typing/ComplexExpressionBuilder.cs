@@ -101,6 +101,46 @@ namespace Reko.Typing
             return exp;
         }
 
+        /// <summary>
+        /// Return fallback expression. This is something like
+        ///    (char *)exp + offset + index
+        /// It used when we could not build appropriate C-like expression.
+        /// e.g. if data type of expression is (int *) and offset is 2 we
+        /// could not generate array access as size of (int *) is 4 (on x86).
+        /// Returning just expression will cause to lose offset. So best way is
+        /// returning '(char *)expression + offset'
+        /// </summary>
+        private Expression FallbackExpression()
+        {
+            if (offset == 0 && index == null)
+                return expComplex;
+            var e = CreateAddressOf(expComplex);
+            DataType dt;
+            if (enclosingPtr != null)
+                dt = new Pointer(PrimitiveType.Char, enclosingPtr.Size);
+            else
+                dt = PrimitiveType.CreateWord(e.DataType.Size);
+            e = new Cast(dt, e);
+            var eOffset = CreateOffsetExpression(offset, index);
+            var op = Operator.IAdd;
+            var cOffset = eOffset as Constant;
+            if (cOffset != null && cOffset.IsNegative)
+            {
+                op = Operator.ISub;
+                eOffset = cOffset.Negate();
+            }
+            return new BinaryExpression(op, e.DataType, e, eOffset);
+        }
+
+        private Expression CreateAddressOf(Expression e)
+        {
+            if (!dereferenceGenerated)
+                return e;
+
+            dereferenceGenerated = false;
+            return new UnaryExpression(Operator.AddrOf, dtComplex, e);
+        }
+
         public Expression VisitArray(ArrayType at)
         {
             int i = (int)(offset / at.ElementType.Size);
@@ -122,7 +162,7 @@ namespace Reko.Typing
 
         public Expression VisitCode(CodeType c)
         {
-            return expComplex;
+            return FallbackExpression();
         }
 
         public Expression VisitEnum(EnumType e)
@@ -160,7 +200,7 @@ namespace Reko.Typing
         {
             if (enclosingPtr != null)
             {
-                return expComplex;
+                return FallbackExpression();
             }
             var pointee = ptr.Pointee;
             var origPtr = dtComplexOrig.ResolveAs<Pointer>();
@@ -190,7 +230,7 @@ namespace Reko.Typing
             {
                 // We're not in a pointer context.
                 expComplex.DataType = dtComplex;
-                return expComplex;
+                return FallbackExpression();
             }
             if (offset == 0 || pt.Size > 0 && offset % pt.Size == 0)
             {
@@ -218,7 +258,7 @@ namespace Reko.Typing
                     return CreateArrayAccess(pt, enclosingPtr, offset / pt.Size, index);
                 }
             }
-            throw new NotImplementedException();
+            return FallbackExpression();
         }
 
 
@@ -261,7 +301,7 @@ namespace Reko.Typing
             }
             StructureField field = str.Fields.LowerBound(this.offset);
             if (field == null)
-                throw new TypeInferenceException("Expected structure type {0} to have a field at offset {1} ({1:X}).", str.Name, offset);
+                return FallbackExpression();
 
             dtComplex = field.DataType;
             dtComplexOrig = field.DataType.ResolveAs<DataType>();
@@ -288,7 +328,7 @@ namespace Reko.Typing
             if (alt == null)
             {
                 Debug.Print("Unable to find {0} in {1} (offset {2}).", dtComplexOrig, ut, offset);          //$diagnostic service
-                return expComplex;
+                return FallbackExpression();
             }
 
             dtComplex = alt.DataType;
@@ -306,51 +346,45 @@ namespace Reko.Typing
 
         public Expression VisitUnknownType(UnknownType ut)
         {
-            return expComplex;
+            return FallbackExpression();
         }
 
         public Expression VisitVoidType(VoidType voidType)
         {
-            throw new NotImplementedException();
+            return FallbackExpression();
         }
 
         private Expression CreateArrayAccess(DataType dtPointee, DataType dtPointer, int offset, Expression arrayIndex)
         {
             if (offset == 0 && arrayIndex == null && !dereferenced)
                 return expComplex;
-            arrayIndex = CreateArrayIndexExpression(offset, arrayIndex);
+            var e = CreateAddressOf(expComplex);
+            arrayIndex = CreateOffsetExpression(offset, arrayIndex);
             if (dereferenced)
             {
                 enclosingPtr = null;
                 dereferenceGenerated = true;
-                return new ArrayAccess(dtPointee, expComplex, arrayIndex);
+                return new ArrayAccess(dtPointee, e, arrayIndex);
             }
             else
             {
                 // Could generate &a[index] here, but 
                 // a + index is more idiomatic C/C++
                 dereferenceGenerated = false;
-                return new BinaryExpression(Operator.IAdd, dtPointer, expComplex, arrayIndex);
+                return new BinaryExpression(Operator.IAdd, dtPointer, e, arrayIndex);
             }
         }
 
-        Expression CreateArrayIndexExpression(int offset, Expression arrayIndex)
+        Expression CreateOffsetExpression(int offset, Expression index)
         {
-            BinaryOperator op = offset < 0 ? Operator.ISub : Operator.IAdd;
+            if (index == null)
+                return Constant.Int32(offset); //$REVIEW: forcing 32-bit ints;
+            if (offset == 0)
+                return index;
+            var op = offset < 0 ? Operator.ISub : Operator.IAdd;
             offset = Math.Abs(offset);
-            Constant cOffset = Constant.Int32(offset); //$REVIEW: forcing 32-bit ints
-            if (arrayIndex != null)
-            {
-                if (offset != 0)
-                {
-                    return new BinaryExpression(op, arrayIndex.DataType, arrayIndex, cOffset);
-                }
-            }
-            else
-            {
-                return cOffset;
-            }
-            return arrayIndex;
+            var cOffset = Constant.Int32(offset); //$REVIEW: forcing 32-bit ints
+            return new BinaryExpression(op, index.DataType, index, cOffset);
         }
 
         private Expression CreateDereference(DataType dt, Expression e)

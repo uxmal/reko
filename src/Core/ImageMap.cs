@@ -285,7 +285,8 @@ namespace Reko.Core
 	/// </summary>
 	public class ImageMapItem
 	{
-		public uint Size;
+        private uint _size;
+        public uint Size { get { return _size; } set { if ((int)value < 0) throw new ArgumentException(); _size = value; } }
         public string Name;
         public DataType DataType;
 

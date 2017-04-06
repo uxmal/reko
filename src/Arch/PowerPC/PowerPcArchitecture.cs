@@ -303,7 +303,7 @@ namespace Reko.Arch.PowerPC
             return "crX";
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             return new PowerPcRewriter(this, rdr, frame, host);
         }

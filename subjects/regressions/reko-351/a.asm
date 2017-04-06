@@ -77,7 +77,7 @@ l800000F4:
 l80000114:
 	addq.l	#$01,d0
 	move.l	d0,$80002726
-	movea.l	(a2,d0*2),a0
+	movea.l	(a2,d0*4),a0
 	jsr.l	(a0)
 	move.l	$80002726,d0
 	cmp.l	d0,d2
@@ -221,8 +221,8 @@ sine_taylor proc
 	unlk	a6
 	rts	
 
-;; _ZL9factoriali: 8000033C
-_ZL9factoriali proc
+;; factorial: 8000033C
+factorial proc
 	link	a6,#$FFF8
 	moveq	#$+01,d0
 	move.l	d0,$-0008(a6)
@@ -246,8 +246,8 @@ l8000036A:
 	unlk	a6
 	rts	
 
-;; _ZL7pow_intdi: 80000372
-_ZL7pow_intdi proc
+;; pow_int: 80000372
+pow_int proc
 	link	a6,#$FFF4
 	move.l	#$3FF00000,$-000C(a6)
 	clr.l	$-0008(a6)

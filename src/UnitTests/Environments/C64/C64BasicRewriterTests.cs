@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Environments.C64
             get { throw new NotImplementedException(); }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             var addr = Address.Ptr16(10);
             var image = new MemoryArea(addr, new byte[1]);

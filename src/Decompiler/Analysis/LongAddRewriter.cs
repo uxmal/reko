@@ -563,7 +563,7 @@ namespace Reko.Analysis
                 sidDstLo.DefStatement = stmCastLo;
 
                 var sidDstHi = GetSsaIdentifierOf(hiCandidate.Dst);
-                var slice = new Slice(hiCandidate.Dst.DataType, dst, (uint)loCandidate.Dst.DataType.BitSize);
+                var slice = new Slice(hiCandidate.Dst.DataType, dst, loCandidate.Dst.DataType.BitSize);
                 var stmSliceHi = stmts.Insert(iStm++, linAddr, new Assignment(
                     sidDstHi.Identifier, slice));
                 var stmDeadHi = sidDstHi.DefStatement;

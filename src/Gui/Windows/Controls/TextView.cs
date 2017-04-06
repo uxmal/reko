@@ -343,18 +343,8 @@ namespace Reko.Gui.Windows.Controls
 
         public void SelectAll()
         {
-            anchorPos = new TextPointer
-            {
-                Line = model.StartPosition,
-                Span = 0,
-                Character = 0
-            };
-            cursorPos = new TextPointer
-            {
-                Line = model.EndPosition,
-                Span = 0,
-                Character = 0
-            };
+            anchorPos = new TextPointer(model.StartPosition, 0, 0);
+            cursorPos = new TextPointer(model.EndPosition, 0, 0);
             Invalidate();
         }
 
@@ -445,12 +435,7 @@ namespace Reko.Gui.Windows.Controls
         private TextViewModel model;
         protected virtual void OnModelChanged(EventArgs e)
         {
-            this.cursorPos = new TextPointer
-            {
-                Line = model.CurrentPosition,
-                Span = 0,
-                Character = 0
-            };
+            this.cursorPos = new TextPointer(model.CurrentPosition, 0, 0);
             this.anchorPos = cursorPos;
             ChangeLayout();
             UpdateScrollbar();

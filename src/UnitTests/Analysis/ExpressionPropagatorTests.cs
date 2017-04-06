@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Analysis
                 var r1 = m.Register("r1");
 
                 m.Assign(r1, m.Word32(0x42));
-                m.Emit(new CallInstruction(r1, new CallSite(4, 0)));
+                m.Call(r1, 4);
                 m.Return();
             });
 
