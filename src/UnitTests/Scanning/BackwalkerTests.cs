@@ -217,5 +217,35 @@ namespace Reko.UnitTests.Scanning
             var ops = bw.BackWalk(m.Block);
             Assert.IsNull(ops, "Should have reported missing guard.");
         }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void BwZeroExtend()
+        {
+            var rax = m.Reg64("rax", 0);
+            var eax = m.Reg32("eax", 0);
+            var al = m.Reg8("al", 0);
+            var ecx = m.Reg32("ecx", 1);
+            var CZ = m.Flags("CZ");
+
+            m.Assign(eax, m.LoadB(rax));
+            m.Assign(CZ, m.Cond(m.ISub(al, 0x78)));
+            m.BranchIf(m.Test(ConditionCode.UGT, CZ), "ldefault");
+            m.Assign(ecx, m.Cast(PrimitiveType.Word32, al));
+            var xfer = new RtlGoto(m.LoadDw(m.IAdd(Constant.Word32(0x00411F40), m.IMul(ecx, 8))), RtlClass.Transfer);
+
+            var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
+            Assert.IsTrue(bw.CanBackwalk());
+            var ops = bw.BackWalk(m.Block);
+            Assert.AreEqual(-3, ops.Count);
+        }
+
+        //movzx eax,byte ptr[rax]
+        //cmp al,78
+        //ja  0000000000404C90
+
+        //l0000000000404B35:
+        //movzx ecx, al
+        //   jmp dword ptr[00411F40 + rcx * 8]
     }
 }

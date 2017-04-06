@@ -142,6 +142,13 @@ Win32CrtStartup_entry:
 Win32CrtStartup_exit:
 }
 
+// 004015DE: void fn004015DE()
+void fn004015DE()
+{
+fn004015DE_entry:
+fn004015DE_exit:
+}
+
 // 004015E4: Register word32 fn004015E4(Register word32 ebx, Register word32 esi, Register word32 edi)
 word32 fn004015E4(word32 ebx, word32 esi, word32 edi)
 {
@@ -269,6 +276,13 @@ void fn00401695()
 	return;
 }
 
+// 004016DE: void fn004016DE()
+void fn004016DE()
+{
+fn004016DE_entry:
+fn004016DE_exit:
+}
+
 // 004016F0: Register word32 fn004016F0(Stack word32 dwArg04)
 word32 fn004016F0(word32 dwArg04)
 {
@@ -323,6 +337,20 @@ l004017C8:
 	}
 	*(ebp_10 - 0x04) = ~0x01;
 	goto l004017C8;
+}
+
+// 004017CE: void fn004017CE()
+void fn004017CE()
+{
+fn004017CE_entry:
+fn004017CE_exit:
+}
+
+// 004017D4: void fn004017D4()
+void fn004017D4()
+{
+fn004017D4_entry:
+fn004017D4_exit:
 }
 
 // 004017DC: Register ptr32 fn004017DC(Register word32 ebx, Register word32 esi, Register word32 edi, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08)
@@ -395,5 +423,54 @@ void fn00401884()
 		globals->dw403014 = ~esi_68;
 	}
 	return;
+}
+
+// 00401918: void fn00401918()
+void fn00401918()
+{
+fn00401918_entry:
+fn00401918_exit:
+}
+
+// 0040191E: void fn0040191E()
+void fn0040191E()
+{
+fn0040191E_entry:
+fn0040191E_exit:
+}
+
+// 00401924: void fn00401924()
+void fn00401924()
+{
+fn00401924_entry:
+fn00401924_exit:
+}
+
+// 0040193A: void fn0040193A()
+void fn0040193A()
+{
+fn0040193A_entry:
+fn0040193A_exit:
+}
+
+// 00401940: void fn00401940()
+void fn00401940()
+{
+fn00401940_entry:
+fn00401940_exit:
+}
+
+// 00401946: void fn00401946()
+void fn00401946()
+{
+fn00401946_entry:
+fn00401946_exit:
+}
+
+// 00401A50: void fn00401A50()
+void fn00401A50()
+{
+fn00401A50_entry:
+fn00401A50_exit:
 }
 

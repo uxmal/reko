@@ -292,6 +292,7 @@ namespace Reko.UnitTests.Mocks
             TerminateBlock();
             lastBlock = null;
         }
+
         public override void Return(Expression exp)
         {
             base.Return(exp);
@@ -324,6 +325,11 @@ namespace Reko.UnitTests.Mocks
                 lastBlock = Block;
                 Block = null;
             }
+        }
+
+        public Identifier Reg64(string name, int number)
+        {
+            return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word64));
         }
 
         public Identifier Reg32(string name, int number)

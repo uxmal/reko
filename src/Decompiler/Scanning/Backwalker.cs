@@ -121,7 +121,7 @@ namespace Reko.Scanning
             {
                 var assSrc = ass.Item2.Accept(eval);
                 var assDst = ass.Item1;
-                var regSrc = RegisterOf(assSrc as Identifier);
+                var regSrc = RegisterOf(assSrc);
                 var binSrc = assSrc as BinaryExpression;
                 if (binSrc != null)
                 {

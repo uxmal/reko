@@ -506,6 +506,26 @@ Win32CrtStartup_entry:
 
 
 
+void fn004015DE()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn004015DE_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn004015DE_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
 word32 fn004015E4(word32 ebx, word32 esi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
@@ -752,6 +772,26 @@ fn00401695_exit:
 
 
 
+void fn004016DE()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn004016DE_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn004016DE_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
 word32 fn004016F0(word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
@@ -930,6 +970,46 @@ fn00401762_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> edx:<invalid> ecx:<invalid> eax:<invalid> edi:<invalid> esi:<invalid> ebx:<invalid> ebp:<invalid> cl:<invalid> -16(fp):0x00400000 -12(fp):<invalid> -8(fp):0x004021A8 -4(fp):0x00000008
+
+
+
+void fn004017CE()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn004017CE_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn004017CE_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn004017D4()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn004017D4_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn004017D4_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
 
 
 
@@ -1159,6 +1239,146 @@ fn00401884_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp ebp:ebp eax:<invalid> edi:edi ebx:ebx esi:esi -36(fp):fp - 0x00000014 -32(fp):esi -28(fp):edi -24(fp):ebx -12(fp):<invalid> -8(fp):<invalid> -4(fp):ebp
+
+
+
+void fn00401918()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00401918_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401918_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn0040191E()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0040191E_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0040191E_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn00401924()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00401924_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401924_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn0040193A()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0040193A_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0040193A_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn00401940()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00401940_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401940_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn00401946()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00401946_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401946_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+
+
+void fn00401A50()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00401A50_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00401A50_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
 
 
 

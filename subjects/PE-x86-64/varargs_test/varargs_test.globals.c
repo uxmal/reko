@@ -4,11 +4,10 @@
 
 #include "varargs_test.h"
 
-struct Eq_1577 * g_ptrE66CFADE;
 <anonymous> * g_ptr40002028;
 <anonymous> * g_ptr40002058;
 <anonymous> * g_ptr40002068;
-union Eq_384 g_u40002098;
+union Eq_387 g_u40002098;
 <anonymous> * g_ptr40002190;
 PVFV g_t400021A0;
 PVFV g_t400021B0;
@@ -27,8 +26,8 @@ word32 g_dw40003040;
 word32 g_dw40003044;
 word64 g_qw40003050;
 word32 g_dw40003058;
-word64 g_a40003060[];
-struct Eq_779 g_t400030E0;
+word64 g_qw40003060;
+struct Eq_789 g_t400030E0;
 word64 g_qw40003160;
 ptr64 g_ptr40003178;
 word64 g_qw400031D8;
@@ -40,5 +39,5 @@ word128 g_ow400035D8;
 real64 g_r400035E8;
 byte g_b400035F0;
 ui32 g_dw40003610;
-ui32 g_dw40003614;
+word32 g_dw40003614;
 

@@ -775,6 +775,8 @@ namespace Reko.Scanning
             }
             else
             {
+                if (addrSwitch.ToLinear() == 0x000000000040D935)    //$DEBUG
+                    addrSwitch.ToString();
                 var bw = new Backwalker<Block,Instruction>(new BackwalkerHost(this), xfer, eval);
                 if (!bw.CanBackwalk())
                     return false;
