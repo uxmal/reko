@@ -524,6 +524,7 @@ namespace Reko.Arch.Arm
                 }
                 yield return ric;
             }
+            instrs.Dispose();
         }
 
         private void NotImplementedYet()
