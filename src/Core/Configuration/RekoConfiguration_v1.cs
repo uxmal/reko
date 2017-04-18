@@ -53,6 +53,10 @@ namespace Reko.Core.Configuration
         [XmlArrayItem("Assembler")]
         public Assembler_v1[] Assemblers;
 
+        [XmlArray("SymbolSources")]
+        [XmlArrayItem("SymbolSource")]
+        public SymbolSource_v1[] SymbolSources;
+
         [XmlElement("UiPreferences")]
         public RekoUiPreferences UiPreferences;
     }
@@ -286,4 +290,20 @@ namespace Reko.Core.Configuration
         [XmlElement("Mask")]
         public string Mask;
     }
+
+    public class SymbolSource_v1
+    {
+        [XmlAttribute("Name")]
+        public string Name;
+
+        [XmlAttribute("Description")]
+        public string Description;
+
+        [XmlAttribute("Type")]
+        public string Type;
+
+        [XmlAttribute("Extension")]
+        public string Extension;
+    }
 }
+ 

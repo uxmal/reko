@@ -198,6 +198,7 @@
     <Compile Include="Configuration\RawFileElement.cs" />
     <Compile Include="Configuration\RekoConfiguration_v1.cs" />
     <Compile Include="Configuration\SignatureFileElement.cs" />
+    <Compile Include="Configuration\SymbolSource.cs" />
     <Compile Include="Configuration\TypeLibraryElement.cs" />
     <Compile Include="Configuration\UiPreferencesConfiguration.cs" />
     <Compile Include="Configuration\UiStyleElement.cs" />

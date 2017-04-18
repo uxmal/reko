@@ -18,27 +18,21 @@
  */
 #endregion
 
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Reko.Core;
 
-namespace Reko.Core
+namespace Reko.Loading
 {
-    public interface ISymbolSource
+    public class SymbolLoadingService : ISymbolLoadingService
     {
-        /// <summary>
-        /// Determines whether symbols can be loaded from the file specified by
-        /// <paramref name="filename" />.
-        /// </summary>
-        /// <returns></returns>
-        bool CanLoad(string filename, byte[] fileContents);
-
-        /// <summary>
-        /// Retrieves all symbols from the loaded symbol source.
-        /// </summary>
-        /// <returns></returns>
-        List<ImageSymbol> GetAllSymbols();
+        public ISymbolSource GetSymbolSource(string filename)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

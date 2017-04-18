@@ -24,21 +24,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Core
+namespace Reko.Core.Configuration
 {
-    public interface ISymbolSource
+    public interface SymbolSource
     {
-        /// <summary>
-        /// Determines whether symbols can be loaded from the file specified by
-        /// <paramref name="filename" />.
-        /// </summary>
-        /// <returns></returns>
-        bool CanLoad(string filename, byte[] fileContents);
+        string Description { get; }
+        string Name { get; }
+        string TypeName { get; }
+    }
 
-        /// <summary>
-        /// Retrieves all symbols from the loaded symbol source.
-        /// </summary>
-        /// <returns></returns>
-        List<ImageSymbol> GetAllSymbols();
+    public class SymbolSourceDefinition : SymbolSource
+    {
+        public string Description { get; internal set; }
+        public string Extension { get; internal set; }
+        public string Name { get; internal set; }
+        public string TypeName { get; internal set; }
     }
 }

@@ -307,6 +307,12 @@
       <DependentUpon>JumpTableDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\JumpTableInteractor.cs" />
+    <Compile Include="Windows\Forms\SymbolSourceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\SymbolSourceDialog.Designer.cs">
+      <DependentUpon>SymbolSourceDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\TextEncodingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -643,6 +649,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\SearchDialog.resx">
       <DependentUpon>SearchDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\SymbolSourceDialog.resx">
+      <DependentUpon>SymbolSourceDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\TextEncodingDialog.resx">
       <DependentUpon>TextEncodingDialog.cs</DependentUpon>
