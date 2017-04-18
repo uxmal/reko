@@ -18,24 +18,30 @@
  */
 #endregion
 
+using Reko.Gui.Controls;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Drawing;
 
-namespace Reko.Gui.Controls
+namespace Reko.Gui.Windows
 {
-    public interface IListBox : IControl
+    public class ListViewWrapper : IListView
     {
-        event EventHandler SelectedIndexChanged;
+        private ListView list;
 
-        object DataSource { get; set; }
-        IList Items { get; }
-        int SelectedIndex { get; set; }
-        object SelectedItem { get; set; }
+        public ListViewWrapper(ListView list)
+        {
+            this.list = list;
+        }
 
-        void AddItems(IEnumerable items);
+        public Color BackColor { get { return list.BackColor; } set { list.BackColor = value;  } }
+
+        public bool Enabled { get { return list.Enabled; } set { list.Enabled = value; } }
+
+        public Color ForeColor { get { return list.ForeColor; } set { list.ForeColor = value; } }
     }
 }

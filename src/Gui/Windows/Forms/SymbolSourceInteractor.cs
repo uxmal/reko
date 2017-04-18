@@ -18,24 +18,38 @@
  */
 #endregion
 
+using Reko.Gui.Forms;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core;
+using System.Threading.Tasks;
 
-namespace Reko.Gui.Controls
+namespace Reko.Gui.Windows.Forms
 {
-    public interface IListBox : IControl
+    public class SymbolSourceInteractor
     {
-        event EventHandler SelectedIndexChanged;
+        private SymbolSourceDialog dlg;
 
-        object DataSource { get; set; }
-        IList Items { get; }
-        int SelectedIndex { get; set; }
-        object SelectedItem { get; set; }
+        public void Attach(SymbolSourceDialog dlg)
+        {
+            this.dlg = dlg;
+            this.dlg.Load += Dlg_Load;
+        }
 
-        void AddItems(IEnumerable items);
+        private void Dlg_Load(object sender, EventArgs e)
+        {
+            EnableControls();
+        }
+
+        private void EnableControls()
+        {
+            dlg.SymbolSourceList.Enabled = false;
+            dlg.SymbolSourceClasses.Enabled = false;
+            dlg.AssemblyFile.Enabled = false;
+            dlg.BrowseAssemblyFile.Enabled = false;
+            dlg.OkButton.Enabled = false;
+            dlg.SymbolSourceClasses.Enabled = false;
+        }
     }
 }

@@ -19,23 +19,14 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Controls
 {
-    public interface IListBox : IControl
+    public interface IListView : IControl
     {
-        event EventHandler SelectedIndexChanged;
-
-        object DataSource { get; set; }
-        IList Items { get; }
-        int SelectedIndex { get; set; }
-        object SelectedItem { get; set; }
-
-        void AddItems(IEnumerable items);
     }
 }

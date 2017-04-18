@@ -102,6 +102,7 @@
     <Compile Include="Environments\Windows\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Fragments\FCmpFragment.cs" />
     <Compile Include="Gui\Design\ProgramDesignerTests.cs" />
+    <Compile Include="Gui\Windows\Forms\SymbolSourceInteractorTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
     <Compile Include="Loading\SymbolLoadingServiceTests.cs" />
     <Compile Include="Mocks\FakeTypeDeserializer.cs" />

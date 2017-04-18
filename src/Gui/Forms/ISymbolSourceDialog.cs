@@ -18,24 +18,25 @@
  */
 #endregion
 
+using Reko.Gui.Controls;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core;
+using System.Threading.Tasks;
 
-namespace Reko.Gui.Controls
+namespace Reko.Gui.Forms
 {
-    public interface IListBox : IControl
+    public interface ISymbolSourceDialog : IDialog
     {
-        event EventHandler SelectedIndexChanged;
+        IServiceProvider Services { get; }
 
-        object DataSource { get; set; }
-        IList Items { get; }
-        int SelectedIndex { get; set; }
-        object SelectedItem { get; set; }
-
-        void AddItems(IEnumerable items);
+        ITextBox AssemblyFile { get; }
+        IButton BrowseAssemblyFile { get; }
+        IButton OkButton { get; }
+        IButton BrowseSymbolFile { get; }
+        ITextBox SymbolFileUrl { get; }
+        IListBox SymbolSourceClasses { get; }
+        IControl SymbolSourceList { get; }
     }
 }
