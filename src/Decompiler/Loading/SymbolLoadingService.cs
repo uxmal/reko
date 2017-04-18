@@ -25,12 +25,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Configuration;
 
 namespace Reko.Loading
 {
     public class SymbolLoadingService : ISymbolLoadingService
     {
         public ISymbolSource GetSymbolSource(string filename)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<SymbolSourceDefinition> GetSymbolSources()
         {
             throw new NotImplementedException();
         }

@@ -19,11 +19,13 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core.Services;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Forms;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,11 +38,15 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     {
         private SymbolSourceDialog dlg;
         private MockRepository mr;
+        private ServiceContainer sc;
+        private ISymbolLoadingService symLdrSvc;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
+            sc = new ServiceContainer();
+            symLdrSvc = mr.StrictMock<ISymbolLoadingService>();
         }
 
         [TearDown]

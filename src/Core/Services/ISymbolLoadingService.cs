@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,5 +30,7 @@ namespace Reko.Core.Services
     public interface ISymbolLoadingService
     {
         ISymbolSource GetSymbolSource(string filename);
+
+        List<SymbolSourceDefinition> GetSymbolSources();
     }
 }
