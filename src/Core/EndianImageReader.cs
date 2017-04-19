@@ -21,6 +21,12 @@ namespace Reko.Core
 		protected EndianImageReader(byte[] img, ulong off) : base(img, off) { }
 		protected EndianImageReader(byte[] img) : this(img, 0) { }
 
+        /// <summary>
+        /// Create a new EndianImageReader with the same endianness as this one.
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
 		public abstract EndianImageReader CreateNew(byte[] bytes, ulong offset);
 		public abstract EndianImageReader CreateNew(MemoryArea image, Address addr);
 

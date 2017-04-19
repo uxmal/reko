@@ -35,6 +35,12 @@ namespace Reko.Gui.Windows.Forms
         {
             this.dlg = dlg;
             this.dlg.Load += Dlg_Load;
+            this.dlg.SymbolFileUrl.LostFocus += SymbolFileUrl_LostFocus;
+        }
+
+        private void SymbolFileUrl_LostFocus(object sender, EventArgs e)
+        {
+            EnableControls();
         }
 
         private void Dlg_Load(object sender, EventArgs e)
@@ -44,7 +50,7 @@ namespace Reko.Gui.Windows.Forms
 
         private void EnableControls()
         {
-            dlg.SymbolSourceList.Enabled = false;
+            dlg.SymbolSourceList.Enabled = dlg.SymbolFileUrl.Text.Length > 0;
             dlg.SymbolSourceClasses.Enabled = false;
             dlg.AssemblyFile.Enabled = false;
             dlg.BrowseAssemblyFile.Enabled = false;

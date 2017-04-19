@@ -69,6 +69,16 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Assert.IsFalse(dlg.SymbolSourceClasses.Enabled);
         }
 
+        [Test]
+        public void SymSrcDlg_FocusLeftSymbolFile()
+        {
+            When_CreateDlg();
+            dlg.SymbolFileUrl.Text = "foo.sym";
+            dlg.BrowseSymbolFile.Focus();
+
+            Assert.IsTrue(dlg.SymbolSourceList.Enabled);
+        }
+
         private void When_CreateDlg()
         {
             dlg = new SymbolSourceDialog();

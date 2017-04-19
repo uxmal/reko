@@ -41,22 +41,30 @@ namespace Reko.Loading
         public ISymbolSource GetSymbolSource(string filename)
         {
             var cfgSvc = services.RequireService<IConfigurationService>();
-            var eventListener = services.RequireService<DecompilerEventListener>();
             var fsSvc = services.RequireService<IFileSystemService>();
             var bytes = fsSvc.ReadAllBytes(filename);
             foreach (var symSrcDef in cfgSvc.GetSymbolSources())
             {
-                var type = Type.GetType(symSrcDef.TypeName, false);
-                if (type == null)
-                {
-                    eventListener.Error(new NullCodeLocation(""), "Symbol source {0} in the Reko configuration failed to load.");
-                    continue;
-                }
-                var symSrc = (ISymbolSource) Activator.CreateInstance(type);
-                if (symSrc.CanLoad(filename, bytes))
-                {
+                var symSrc = LoadSymbolSource(symSrcDef, bytes, filename);
+                if (symSrc != null)
                     return symSrc;
-                }
+            }
+            return null;
+        }
+
+        public ISymbolSource LoadSymbolSource(SymbolSource symSrcDef, byte [] bytes, string filename)
+        {
+            var type = Type.GetType(symSrcDef.TypeName, false);
+            if (type == null)
+            {
+                var eventListener = services.RequireService<DecompilerEventListener>();
+                eventListener.Error(new NullCodeLocation(""), "Symbol source {0} in the Reko configuration failed to load.", symSrcDef.Name);
+                return null;
+            }
+            var symSrc = (ISymbolSource)Activator.CreateInstance(type);
+            if (symSrc.CanLoad(filename, bytes))
+            {
+                return symSrc;
             }
             return null;
         }

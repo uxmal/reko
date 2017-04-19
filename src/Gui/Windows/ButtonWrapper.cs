@@ -43,6 +43,11 @@ namespace Reko.Gui.Windows
             button.PerformClick();
         }
 
+        public void Focus()
+        {
+            button.Focus();
+        }
+
         public event EventHandler Click
         {
             add { button.Click += value; }

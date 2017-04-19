@@ -38,6 +38,11 @@ namespace Reko.Gui.Windows
 
         public bool Enabled { get { return btn.Enabled; } set { btn.Enabled = value; } }
 
+        public void Focus()
+        {
+            btn.Owner.Focus();
+        }
+
         public void PerformClick()
         {
             btn.PerformClick();
