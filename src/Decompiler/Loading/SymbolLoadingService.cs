@@ -31,9 +31,34 @@ namespace Reko.Loading
 {
     public class SymbolLoadingService : ISymbolLoadingService
     {
+        private IServiceProvider services;
+
+        public SymbolLoadingService(IServiceProvider services)
+        {
+            this.services = services;
+        }
+
         public ISymbolSource GetSymbolSource(string filename)
         {
-            throw new NotImplementedException();
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            var eventListener = services.RequireService<DecompilerEventListener>();
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var bytes = fsSvc.ReadAllBytes(filename);
+            foreach (var symSrcDef in cfgSvc.GetSymbolSources())
+            {
+                var type = Type.GetType(symSrcDef.TypeName, false);
+                if (type == null)
+                {
+                    eventListener.Error(new NullCodeLocation(""), "Symbol source {0} in the Reko configuration failed to load.");
+                    continue;
+                }
+                var symSrc = (ISymbolSource) Activator.CreateInstance(type);
+                if (symSrc.CanLoad(filename, bytes))
+                {
+                    return symSrc;
+                }
+            }
+            return null;
         }
 
         public List<SymbolSourceDefinition> GetSymbolSources()
