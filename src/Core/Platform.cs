@@ -109,7 +109,7 @@ namespace Reko.Core
         /// <returns></returns>
         string GetPrimitiveTypeName(PrimitiveType t, string language);
 
-        ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host);
+        ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> instrs, IRewriterHost host);
 
         /// <summary>
         /// Given an executable entry point, find the location of the "main" program,
@@ -362,7 +362,10 @@ namespace Reko.Core
         /// </summary>
         /// <param name="imageReader"></param>
         /// <returns></returns>
-        public abstract ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host);
+        public virtual ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> instrs, IRewriterHost host)
+        {
+            return null;
+        }
 
         public virtual Address MakeAddressFromConstant(Constant c)
         {
@@ -524,11 +527,6 @@ namespace Reko.Core
             case CBasicType.Int64: return 8;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
-        }
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            // No trampolines are supported.
-            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

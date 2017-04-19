@@ -690,7 +690,9 @@ namespace Reko.Scanning
         public ProcedureBase GetTrampoline(Address addr)
         {
             var rdr = Program.CreateImageReader(addr);
-            var target = Program.Platform.GetTrampolineDestination(rdr, this);
+            var arch = Program.Architecture;
+            var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(), arch.CreateFrame(), this);
+            var target = Program.Platform.GetTrampolineDestination(rw, this);
             return target;
         }
 

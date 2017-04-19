@@ -114,12 +114,8 @@ namespace Reko.Environments.SysV
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader rdr, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> rw, IRewriterHost host)
         {
-            var rw = Architecture.CreateRewriter(
-                rdr,
-                Architecture.CreateProcessorState(),
-                Architecture.CreateFrame(), host);
             var rtlc = rw.FirstOrDefault();
             if (rtlc == null || rtlc.Instructions.Length == 0)
                 return null;
