@@ -163,11 +163,6 @@ namespace Reko.Core
             return dst;
         }
 
-        public int Read(byte[] buffer, int offset, int length)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Reads a chunk of bytes and interprets it in Little-Endian mode.
         /// </summary>
@@ -428,7 +423,7 @@ namespace Reko.Core
             return ab;
         }
 
-		internal int Read(byte[] buffer, int offset, int count)
+		public int Read(byte[] buffer, int offset, int count)
 		{
 			int bytesRead = (int)Math.Min(count, offEnd - offset);
 			Array.Copy(bytes, offset, buffer, 0, bytesRead);
