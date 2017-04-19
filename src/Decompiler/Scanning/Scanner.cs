@@ -690,7 +690,9 @@ namespace Reko.Scanning
         public ProcedureBase GetTrampoline(Address addr)
         {
             var rdr = Program.CreateImageReader(addr);
-            var target = Program.Platform.GetTrampolineDestination(rdr, this);
+            var arch = Program.Architecture;
+            var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(), arch.CreateFrame(), this);
+            var target = Program.Platform.GetTrampolineDestination(rw, this);
             return target;
         }
 
@@ -1040,6 +1042,12 @@ namespace Reko.Scanning
                 // Procedure construction into SSA construction.
                 foreach (var rtlProc in procs)
                 {
+                    var trampoline = Program.Platform.GetTrampolineDestination(rtlProc.Entry.Instructions, this);
+                    if (trampoline != null)
+                    {
+                        //$REVIEW: consider adding known trampolines to Program.
+                        continue;
+                    }
                     var addrProc = rtlProc.Entry.Address;
                     TerminateAnyBlockAt(addrProc);
                     EnsureProcedure(addrProc, null);

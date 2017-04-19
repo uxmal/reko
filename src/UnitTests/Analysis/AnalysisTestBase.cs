@@ -28,6 +28,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Output;
+using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -380,7 +381,7 @@ namespace Reko.UnitTests.Analysis
                          StackDelta = 4,
                      }));
             platform.Stub(p => p.GetTrampolineDestination(
-                Arg<EndianImageReader>.Is.NotNull,
+                Arg<IEnumerable<RtlInstructionCluster>>.Is.NotNull,
                 Arg<IRewriterHost>.Is.NotNull))
                 .Return(null);
 

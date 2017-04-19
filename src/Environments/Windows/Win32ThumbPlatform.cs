@@ -175,11 +175,6 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            return null;
-        }
-
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();

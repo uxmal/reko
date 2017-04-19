@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using CapstoneArmInstruction = Gee.External.Capstone.Instruction<Gee.External.Capstone.Arm.ArmInstruction, Gee.External.Capstone.Arm.ArmRegister, Gee.External.Capstone.Arm.ArmInstructionGroup, Gee.External.Capstone.Arm.ArmInstructionDetail>;
 using Opcode = Gee.External.Capstone.Arm.ArmInstruction;
@@ -189,6 +190,8 @@ namespace Reko.Arch.Arm
             return true;
         }
 
+        private static readonly char[] nosuffixRequired = new[] { '.', 'E', 'e' };
+
         public void Write(ArmInstructionOperand op, MachineInstructionWriter writer)
         {
             switch (op.Type)
@@ -227,6 +230,12 @@ namespace Reko.Arch.Arm
                 break;
             case ArmInstructionOperandType.SetEnd:
                 writer.Write(op.SetEndValue.ToString().ToLowerInvariant());
+                break;
+            case ArmInstructionOperandType.FloatingPoint:
+                var f = op.FloatingPointValue.Value.ToString("g", CultureInfo.InvariantCulture);
+                if (f.IndexOfAny(nosuffixRequired) < 0)
+                    f += ".0";
+                writer.Write("#{0}", f);
                 break;
             default:
                 throw new NotImplementedException(string.Format(

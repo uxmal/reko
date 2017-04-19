@@ -92,11 +92,6 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            return null;
-        }
-
         public override void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter m)
         {
             m.Assign(proc.Frame.EnsureRegister(Registers.Top), 0);
