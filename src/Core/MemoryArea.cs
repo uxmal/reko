@@ -1,4 +1,4 @@
-#region License
+ï»¿#region License
 /* 
  * Copyright (C) 1999-2017 John Källén.
  *
@@ -88,6 +88,17 @@ namespace Reko.Core
         {
             return new LeImageReader(this, offset);
         }
+
+		public BeImageWriter CreateBeWriter(ulong offset)
+		{
+			return new BeImageWriter(this, offset);
+		}
+
+		public LeImageWriter CreateLeWriter(ulong offset)
+		{
+			return new LeImageWriter(this, offset);
+		}
+
 
         [Obsolete]
         public SegmentMap CreateImageMap()

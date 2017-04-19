@@ -1,4 +1,4 @@
-#region License
+ï»¿#region License
 /* 
  * Copyright (C) 1999-2017 John Källén.
  *
@@ -21,6 +21,7 @@
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
+using System.IO;
 using System.Text;
 
 namespace Reko.Core
@@ -39,6 +40,14 @@ namespace Reko.Core
 		protected long offEnd;
 		protected long off;
 		protected Address addrStart;
+
+		public MemoryArea Image
+		{
+			get
+			{
+				return image;
+			}
+		}
 
 		protected ImageReader(MemoryArea img, Address addr)
         {
@@ -391,9 +400,20 @@ namespace Reko.Core
         public long PeekBeInt64(uint offset) { return (long)MemoryArea.ReadBeUInt64(bytes, off); }
 
 
-        public void Seek(int offset)
+        public long Seek(long offset, SeekOrigin origin = SeekOrigin.Current)
         {
-            off = off + offset;
+			switch (origin) {
+				case SeekOrigin.Begin:
+					off = offStart + offset;
+					break;
+				case SeekOrigin.Current:
+					off += offset;
+					break;
+				case SeekOrigin.End:
+					off = offEnd + offset;
+					break;
+			}
+			return off;
         }
 
         public byte[] ReadToEnd()
@@ -403,5 +423,11 @@ namespace Reko.Core
             return ab;
         }
 
-    }
+		internal int Read(byte[] buffer, int offset, int count)
+		{
+			int bytesRead = (int)Math.Min(count, offEnd - offset);
+			Array.Copy(bytes, offset, buffer, 0, bytesRead);
+			return bytesRead;
+		}
+	}
 }
