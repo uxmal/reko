@@ -102,5 +102,10 @@ namespace Reko.WindowsItp
                     new UiStyleElement { Name = UiStyles.CodeComment, ForeColor="#00C000" },
                 };
         }
+
+        public ICollection<SymbolSource> GetSymbolSources()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

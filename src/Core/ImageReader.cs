@@ -163,6 +163,11 @@ namespace Reko.Core
             return dst;
         }
 
+        public int Read(byte[] buffer, int offset, int length)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Reads a chunk of bytes and interprets it in Little-Endian mode.
         /// </summary>

@@ -43,9 +43,9 @@ namespace Reko.Core.Configuration
          ICollection<SignatureFile> GetSignatureFiles();
          ICollection<AssemblerElement> GetAssemblers();
          ICollection<RawFileElement> GetRawFiles();
-
          OperatingEnvironment GetEnvironment(string envName);
          IProcessorArchitecture GetArchitecture(string archLabel);
+         ICollection<SymbolSource> GetSymbolSources();
          Assembler GetAssembler(string assemblerName);
          RawFileElement GetRawFile(string rawFileFormat);
 
@@ -285,6 +285,11 @@ namespace Reko.Core.Configuration
         public virtual ICollection<Architecture> GetArchitectures()
         {
             return architectures;
+        }
+
+        public virtual ICollection<SymbolSource> GetSymbolSources()
+        {
+            return symSources;
         }
 
         public virtual ICollection<OperatingEnvironment> GetEnvironments()

@@ -35,9 +35,9 @@ namespace Reko.Core.Configuration
 
     public class SymbolSourceDefinition : SymbolSource
     {
-        public string Description { get; internal set; }
-        public string Extension { get; internal set; }
-        public string Name { get; internal set; }
-        public string TypeName { get; internal set; }
+        public string Description { get;  set; }
+        public string Extension { get;  set; }
+        public string Name { get;  set; }
+        public string TypeName { get;  set; }
     }
 }
