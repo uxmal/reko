@@ -3823,8 +3823,8 @@ fn0AF6: error: An error occurred while rewriting procedure to high-level languag
 === VCExeSample.dcproject
 === varargs_test.exe
 *** varargs_test.exe
-00000001400015AC: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
 0000000140001E70: warning: Unable to resolve imported reference api-ms-win-crt-runtime-l1-1-0.dll!terminate.
+00000001400015AC: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
 0000000140001E70: warning: Unable to resolve imported reference api-ms-win-crt-runtime-l1-1-0.dll!terminate.
 0000000140001A14: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
 00000001400011C8: warning: Procedure fn0000000140001E9C previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.

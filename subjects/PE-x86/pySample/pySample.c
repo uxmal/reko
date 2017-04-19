@@ -512,34 +512,6 @@ l100017A8:
 	goto l100017A8;
 }
 
-// 100017AE: void fn100017AE()
-void fn100017AE()
-{
-fn100017AE_entry:
-fn100017AE_exit:
-}
-
-// 100017B4: void fn100017B4()
-void fn100017B4()
-{
-fn100017B4_entry:
-fn100017B4_exit:
-}
-
-// 100017BA: void fn100017BA()
-void fn100017BA()
-{
-fn100017BA_entry:
-fn100017BA_exit:
-}
-
-// 100017C0: void fn100017C0()
-void fn100017C0()
-{
-fn100017C0_entry:
-fn100017C0_exit:
-}
-
 // 100017C6: Register word32 fn100017C6(Stack word32 dwArg04, Stack word32 dwArg08)
 word32 fn100017C6(word32 dwArg04, word32 dwArg08)
 {
@@ -589,47 +561,5 @@ void fn10001864()
 		globals->dw10003004 = ~esi_68;
 	}
 	return;
-}
-
-// 100018F8: void fn100018F8()
-void fn100018F8()
-{
-fn100018F8_entry:
-fn100018F8_exit:
-}
-
-// 100018FE: void fn100018FE()
-void fn100018FE()
-{
-fn100018FE_entry:
-fn100018FE_exit:
-}
-
-// 10001904: void fn10001904()
-void fn10001904()
-{
-fn10001904_entry:
-fn10001904_exit:
-}
-
-// 1000190A: void fn1000190A()
-void fn1000190A()
-{
-fn1000190A_entry:
-fn1000190A_exit:
-}
-
-// 10001910: void fn10001910()
-void fn10001910()
-{
-fn10001910_entry:
-fn10001910_exit:
-}
-
-// 10001916: void fn10001916()
-void fn10001916()
-{
-fn10001916_entry:
-fn10001916_exit:
 }
 

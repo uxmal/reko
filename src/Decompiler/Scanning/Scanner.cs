@@ -1047,6 +1047,12 @@ namespace Reko.Scanning
                 // Procedure construction into SSA construction.
                 foreach (var rtlProc in procs)
                 {
+                    var trampoline = Program.Platform.GetTrampolineDestination(rtlProc.Entry.Instructions, this);
+                    if (trampoline != null)
+                    {
+                        //$REVIEW: consider adding known trampolines to Program.
+                        continue;
+                    }
                     var addrProc = rtlProc.Entry.Address;
                     TerminateAnyBlockAt(addrProc);
                     EnsureProcedure(addrProc, null);
