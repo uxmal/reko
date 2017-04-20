@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,6 +88,17 @@ namespace Reko.Core
         {
             return new LeImageReader(this, offset);
         }
+
+		public BeImageWriter CreateBeWriter(ulong offset)
+		{
+			return new BeImageWriter(this, offset);
+		}
+
+		public LeImageWriter CreateLeWriter(ulong offset)
+		{
+			return new LeImageWriter(this, offset);
+		}
+
 
         [Obsolete]
         public SegmentMap CreateImageMap()

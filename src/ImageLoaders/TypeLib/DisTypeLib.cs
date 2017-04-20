@@ -1,4 +1,4 @@
-//いいいいいいいいいいいいいいいいいいい
+//造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造
 //	"DisTypeLib.bas"
 
 //This code is based on code from the ReactOS
@@ -16,7 +16,7 @@
 //to help learn more about its format.
 
 //This file is GPL 2008, by TheirCorp
-//いいいいいいいいいいいいいいいいいいい
+//造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造
 
 namespace Decompiler.TypeLib
 {
@@ -24,7 +24,7 @@ namespace Decompiler.TypeLib
     {
 
 
-//いいいいいいいいいいいいいいいいいいい
+//造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造
 
 //%Debug		= 1 //enable/disable debugging code
 const int Study		= 1 ; // enable/disable code to help study the format
@@ -45,7 +45,7 @@ public void zz()
 
 #endif
 
-//いいいいいいいいいいいいいいいいいいい
+//造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造
 
 public const string Caption = "TheirCorp's Type Library Dumper";
 
@@ -63,7 +63,7 @@ Macro fo = 10 // output file's number
 Global ghDlg		As Dword
 Global LocalPath	As String   // local path
 
-//いいいいいいいいいいいいいいいいいいい
+//造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造
 
 Declare Function GetDroppedFile(ByVal hDrop As Long, fs As String) As Long
 Declare Function ProcessFile(fs As String) As Long
@@ -71,10 +71,10 @@ Declare CallBack Function ShowDlgProc()
 Declare Sub UpdateLog(ps As String)
 Declare Function DisSltg(cs As String) As Dword
 
-//いいいいいいいいいいいいいいいいいいい
+//造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造
 
 
-//いいいいいいいいいいいいいいいいいいい
+//造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造
 
 Declare Function GetResource( _
 	cs As String,       _
@@ -92,7 +92,7 @@ Declare Function tlString(cs As String, SegDir As MSFT_SegDir, ByVal offs As Lon
 Declare Function DisFunction(cs As String, SegDir As MSFT_SegDir, ByVal pBase As Dword, ByVal nFunc As Long, ByVal nProp As Long) As Long
 Declare Function DisTypeLib(cs As String) As Dword
 
-//いいいいいいいいいいいいいいいいいいい
+//造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造
 
 Sub UpdateLog(ps As String)
 Static ct   As Long
@@ -133,7 +133,7 @@ Static ts   As String
 
 End Sub // UpdateLog
 
-//いいいいいいいいいいいいいいいいいいい
+//造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造
 //returns %true, if any files were received
 Function GetDroppedFile(ByVal hDrop As Long, fs As String) As Long
 Local ct  As Dword
@@ -150,7 +150,7 @@ Local az  As Asciiz * %MAX_PATH
 
 End Function
 
-//いいいいいいいいいいいいいいいいいいい
+//造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造
 //expects "fs" to contain the path and name
 //of either a PE or TLB format file
 //It determines which type it is automatically
@@ -196,7 +196,7 @@ string ls	;
 
 End Function // ProcessFile
 
-//いいいいいいいいいいいいいいいいいいい
+//造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造
 
 CallBack Function ShowDlgProc()
 Local  fs   As String
@@ -239,7 +239,7 @@ Local  fs   As String
 
 End Function
 
-//いいいいいいいいいいいいいいいいいいい
+//造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造
 
 Function PBMain() As Long
 Local lRslt As Long
@@ -298,5 +298,5 @@ Local lRslt As Long
 
 End Function
 
-//いいいいいいいいいいいいいいいいいいい
+//造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造造
 

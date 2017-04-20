@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Reko.Typing
 	/// <remarks>
 	/// <para>
 	/// Much of the type inference code in this namespace was inspired by the master's thesis
-	/// "Entwicklung eines Typanalysesystem für einen Decompiler", 2004, by Raimar Falke.
+	/// "Entwicklung eines Typanalysesystem fÃ¼r einen Decompiler", 2004, by Raimar Falke.
 	/// </para>
 	/// </remarks>
 	public class DataTypeBuilder : ITraitHandler
