@@ -105,6 +105,7 @@ namespace Reko.Core
 
 		public ImageReader(byte[] img) : this(img, 0) { }
 
+        // Factory methods 
 		public LeImageReader CreateLeReader()
         {
             return new LeImageReader(bytes, (ulong)off)
@@ -114,6 +115,16 @@ namespace Reko.Core
                 offStart = this.offStart,
                 offEnd = this.offEnd,
             };
+        }
+
+        public BinaryReader CreateBinaryReader()
+        {
+            return new BinaryReader(new MemoryStream(this.Bytes));
+        }
+
+        public BinaryReader CreateBinaryImageReader()
+        {
+            return new BinaryReader(new ImageStream(this.Image));
         }
 
         public Address Address { get { return addrStart + (off - offStart); } }

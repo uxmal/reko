@@ -33,8 +33,8 @@ namespace Reko.Arch.Mos6502
     // 65816 = http://www.zophar.net/fileuploads/2/10538ivwiu/65816info.txt
     public class Disassembler : DisassemblerBase<Instruction>
     {
-        EndianImageReader rdr;
-        Instruction instr;
+        private EndianImageReader rdr;
+        private Instruction instr;
 
         public Disassembler(EndianImageReader rdr)
         {

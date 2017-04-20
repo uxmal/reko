@@ -46,7 +46,7 @@ namespace Reko.Arch.Mos6502
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new Disassembler(imageReader.Clone());
+            return new Disassembler((LeImageReader)imageReader);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
@@ -86,7 +86,7 @@ namespace Reko.Arch.Mos6502
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new Rewriter(this, rdr.Clone(), state, frame, host);
+            return new Rewriter(this, rdr, state, frame, host);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
