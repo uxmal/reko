@@ -399,21 +399,21 @@ namespace Reko.Core
         public long PeekLeInt64(uint offset) { return (long)MemoryArea.ReadLeUInt64(bytes, off); }
         public long PeekBeInt64(uint offset) { return (long)MemoryArea.ReadBeUInt64(bytes, off); }
 
-
         public long Seek(long offset, SeekOrigin origin = SeekOrigin.Current)
         {
-			switch (origin) {
-				case SeekOrigin.Begin:
-					off = offStart + offset;
-					break;
-				case SeekOrigin.Current:
-					off += offset;
-					break;
-				case SeekOrigin.End:
-					off = offEnd + offset;
-					break;
-			}
-			return off;
+            switch (origin)
+            {
+            case SeekOrigin.Begin:
+                off = offStart + offset;
+                break;
+            case SeekOrigin.Current:
+                off += offset;
+                break;
+            case SeekOrigin.End:
+                off = offEnd + offset;
+                break;
+            }
+            return off;
         }
 
         public byte[] ReadToEnd()
