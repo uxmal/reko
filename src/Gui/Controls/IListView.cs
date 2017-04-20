@@ -28,5 +28,6 @@ namespace Reko.Gui.Controls
 {
     public interface IListView : IControl
     {
+        object DataSource { get; set; }
     }
 }

@@ -37,6 +37,7 @@ namespace Reko.Gui.Forms
         IButton BrowseSymbolFile { get; }
         ITextBox SymbolFileUrl { get; }
         IListBox SymbolSourceClasses { get; }
-        IControl SymbolSourceList { get; }
+        IListView SymbolSourceList { get; }
+        ICheckBox CustomSourceCheckbox { get; }
     }
 }

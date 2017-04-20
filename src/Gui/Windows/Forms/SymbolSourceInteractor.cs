@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
@@ -36,6 +38,15 @@ namespace Reko.Gui.Windows.Forms
             this.dlg = dlg;
             this.dlg.Load += Dlg_Load;
             this.dlg.SymbolFileUrl.LostFocus += SymbolFileUrl_LostFocus;
+            this.dlg.CustomSourceCheckbox.CheckedChanged += CustomSourceCheckbox_CheckedChanged;
+
+        }
+
+ 
+        private void Dlg_Load(object sender, EventArgs e)
+        {
+            PopulateSymbolSources();
+            EnableControls();
         }
 
         private void SymbolFileUrl_LostFocus(object sender, EventArgs e)
@@ -43,17 +54,32 @@ namespace Reko.Gui.Windows.Forms
             EnableControls();
         }
 
-        private void Dlg_Load(object sender, EventArgs e)
+        private void CustomSourceCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             EnableControls();
         }
 
+
+        private void PopulateSymbolSources()
+        {
+            var cfgSvc = dlg.Services.RequireService<IConfigurationService>();
+            var items = cfgSvc.GetSymbolSources();
+            //dlg.SymbolSourceList.DataSource = 
+            dlg.SymbolSourceList.DataSource = (object)items
+                .Select(ss => new string[] { ss.Name, ss.Description });
+        }
+
         private void EnableControls()
         {
-            dlg.SymbolSourceList.Enabled = dlg.SymbolFileUrl.Text.Length > 0;
-            dlg.SymbolSourceClasses.Enabled = false;
-            dlg.AssemblyFile.Enabled = false;
-            dlg.BrowseAssemblyFile.Enabled = false;
+            dlg.SymbolSourceList.Enabled =
+                dlg.SymbolFileUrl.Text.Length > 0 &&
+                !dlg.CustomSourceCheckbox.Checked;
+            dlg.SymbolSourceClasses.Enabled = 
+                dlg.CustomSourceCheckbox.Checked;
+            dlg.AssemblyFile.Enabled = 
+                dlg.CustomSourceCheckbox.Checked;
+            dlg.BrowseAssemblyFile.Enabled = 
+                dlg.CustomSourceCheckbox.Checked;
             dlg.OkButton.Enabled = false;
             dlg.SymbolSourceClasses.Enabled = false;
         }

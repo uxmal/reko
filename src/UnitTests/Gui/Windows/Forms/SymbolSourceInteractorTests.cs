@@ -19,6 +19,8 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Forms;
@@ -40,6 +42,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private MockRepository mr;
         private ServiceContainer sc;
         private ISymbolLoadingService symLdrSvc;
+        private IConfigurationService cfgSvc;
 
         [SetUp]
         public void Setup()
@@ -47,6 +50,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr = new MockRepository();
             sc = new ServiceContainer();
             symLdrSvc = mr.StrictMock<ISymbolLoadingService>();
+            cfgSvc = mr.Stub<IConfigurationService>();
+            cfgSvc.Stub(c => c.GetSymbolSources()).Return(new List<SymbolSource>());
+
+            sc.AddService<IConfigurationService>(cfgSvc);
         }
 
         [TearDown]
@@ -60,6 +67,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         [Test]
         public void SymSrcDlg_Load()
         {
+            mr.ReplayAll();
+
             When_CreateDlg();
 
             Assert.IsFalse(dlg.SymbolSourceList.Enabled);
@@ -72,6 +81,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         [Test]
         public void SymSrcDlg_FocusLeftSymbolFile()
         {
+            mr.ReplayAll();
+
             When_CreateDlg();
             dlg.SymbolFileUrl.Text = "foo.sym";
             dlg.BrowseSymbolFile.Focus();
@@ -82,6 +93,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private void When_CreateDlg()
         {
             dlg = new SymbolSourceDialog();
+            dlg.Services = sc;
             dlg.Show();
         }
     }

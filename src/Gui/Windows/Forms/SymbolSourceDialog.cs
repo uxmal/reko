@@ -45,11 +45,12 @@ namespace Reko.Gui.Windows.Forms
             BrowseSymbolFile = new ButtonWrapper(btnSymbolFile);
             SymbolSourceClasses = new ListboxWrapper(listClasses);
             SymbolSourceList = new ListViewWrapper(listSources);
+            CustomSourceCheckbox = new CheckBoxWrapper(chkCustomSource);
 
             new SymbolSourceInteractor().Attach(this);
         }
 
-        public IServiceProvider Services { get; internal set; }
+        public IServiceProvider Services { get; set; }
 
         public ITextBox AssemblyFile { get; private set; }
         public IButton BrowseAssemblyFile { get; private set; }
@@ -57,6 +58,7 @@ namespace Reko.Gui.Windows.Forms
         public IButton OkButton { get; private set; }
         public ITextBox SymbolFileUrl { get; private set; }
         public IListBox SymbolSourceClasses { get; private set; }
-        public IControl SymbolSourceList { get; private set; }
+        public IListView SymbolSourceList { get; private set; }
+        public ICheckBox CustomSourceCheckbox { get; private set; }
     }
 }

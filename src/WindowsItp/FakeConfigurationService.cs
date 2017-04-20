@@ -105,7 +105,11 @@ namespace Reko.WindowsItp
 
         public ICollection<SymbolSource> GetSymbolSources()
         {
-            throw new NotImplementedException();
+            return new List<SymbolSource>
+            {
+                new SymbolSourceDefinition { Name = "Bobsym", Description="BOB symbol loader", TypeName="BobSymSource,Bob" },
+                new SymbolSourceDefinition { Name = "PDB", Description="PDB", TypeName="PDBSymSource,PDBLoader" }
+            };
         }
     }
 }

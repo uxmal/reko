@@ -26,6 +26,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Collections;
 
 namespace Reko.Gui.Windows
 {
@@ -43,5 +44,19 @@ namespace Reko.Gui.Windows
         public bool Enabled { get { return list.Enabled; } set { list.Enabled = value; } }
 
         public Color ForeColor { get { return list.ForeColor; } set { list.ForeColor = value; } }
+
+        public object DataSource
+        {
+            get { throw new NotImplementedException();  }
+            set
+            {
+                list.Items.Clear();
+                foreach (string[] strs in (IEnumerable)value)
+                {
+                    var item = new ListViewItem(strs);
+                    list.Items.Add(item);
+                } 
+            }
+        }
     }
 }

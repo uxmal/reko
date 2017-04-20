@@ -261,5 +261,15 @@ namespace Reko.WindowsItp
             }
             this.procDlg.Show();
         }
+
+        private void symbolSourcesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var sc = new ServiceContainer();
+            var cfgSvc = new FakeConfigurationService();
+            sc.AddService<IConfigurationService>(cfgSvc);
+            var dlg = new SymbolSourceDialog();
+            dlg.Services = sc;
+            dlg.ShowDialog(this);
+        }
     }
 }
