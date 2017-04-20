@@ -203,7 +203,7 @@
     <Compile Include="Configuration\TypeLibraryElement.cs" />
     <Compile Include="Configuration\UiPreferencesConfiguration.cs" />
     <Compile Include="Configuration\UiStyleElement.cs" />
-    <Compile Include="Endianess.cs" />
+    <Compile Include="Endianness.cs" />
     <Compile Include="EndianImageReader.cs" />
     <Compile Include="EnumerableEx.cs" />
     <Compile Include="EvaluationContext.cs" />
