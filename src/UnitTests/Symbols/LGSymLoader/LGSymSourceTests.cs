@@ -42,15 +42,14 @@ namespace Reko.UnitTests.Symbols.LGSymLoader
             MakeLeFile(
                 LGSymSource.SYM_MAGIC,
                 0u,
-                (1u * 12) + 8u + 13u,
+                (1u * 12) + 4u + 13u,
                 1u,
-                13u + 8u,
+                13u + 4u,
 
                 0x00123400u,
                 0x00123458u,
                 0u,
 
-                0u,
                 0u,
 
                 "My_procedure\0");

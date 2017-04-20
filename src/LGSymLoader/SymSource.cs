@@ -65,6 +65,7 @@ namespace Reko.Symbols.LGSymLoader
 		private readonly MemoryMappedFile mf;
 		private readonly Stream stream;
 		private readonly BinaryReader rdr;
+        private long filesize;
 		private SymHeader hdr;
 
 		private UInt32 n_dwarf_lst;
@@ -80,6 +81,7 @@ namespace Reko.Symbols.LGSymLoader
         {
 			mf = MemoryMappedFile.CreateFromFile(filename, FileMode.Open);
 			stream = mf.CreateViewStream();
+            this.filesize = new FileInfo(filename).Length;
 			rdr = new BinaryReader(stream);
 		}
 
@@ -87,6 +89,7 @@ namespace Reko.Symbols.LGSymLoader
         {
             stream = stm;
             rdr = new BinaryReader(stm);
+            this.filesize = stm.Length;
         }
 
         public void Dispose()
@@ -105,7 +108,7 @@ namespace Reko.Symbols.LGSymLoader
 					return false;
 
                 var expected = hdr.size + Marshal.SizeOf(hdr);
-                if (expected != stream.Length)
+                if (expected != this.filesize)
 					return false;
 
 				if ((hdr.tail_size + Marshal.SizeOf(typeof(SymEntry)) * hdr.n_symbols) != hdr.size)
@@ -151,7 +154,7 @@ namespace Reko.Symbols.LGSymLoader
 					offset += dwarf_data_size;
 				}
 
-				sym_names_offset = stream.Position; //$REVIEW was offset, but we read a word to get has_dwarf.
+                sym_names_offset = offset;
 				return true;
 
 			} catch {
