@@ -189,6 +189,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void StrFactorial()
         {
             RunTest("Fragments/factorial.asm", "Structure/StrFactorial.txt");

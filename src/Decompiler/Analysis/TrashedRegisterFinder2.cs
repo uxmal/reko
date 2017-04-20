@@ -286,10 +286,11 @@ namespace Reko.Analysis
             ProcedureConstant callee;
             if (!call.Callee.As(out callee))
             {
+                // Indirect function call, we don't know whether it's valid across the call.
                 return inv;
             }
 
-            // Call defined this identifier. If it's not in our SCC group we
+            // Call defined this identifier. If the callee is not in our SCC group we
             // can rely on the procedureflow information.
             if (!sccGroup.Any(s => s.SsaState.Procedure == callee.Procedure))
             {

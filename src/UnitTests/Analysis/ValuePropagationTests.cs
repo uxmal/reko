@@ -381,11 +381,10 @@ namespace Reko.UnitTests.Analysis
         [Category(Categories.UnitTests)]
 		public void VpCopyPropagate()
 		{
-            var m = new SsaProcedureBuilder();
-			Identifier x = m.Reg32("x", 0);
-			Identifier y = m.Reg32("y", 1);
-			Identifier z = m.Reg32("z", 2);
-			Identifier w = m.Reg32("w", 3);
+			Identifier x = Reg32("x");
+			Identifier y = Reg32("y");
+			Identifier z = Reg32("z");
+			Identifier w = Reg32("w");
             m.Assign(x, m.LoadDw(m.Word32(0x10004000)));
             m.Assign(y, x);
             m.Assign(z, m.IAdd(y, 2));
@@ -402,25 +401,24 @@ namespace Reko.UnitTests.Analysis
                 new ProgramDataFlow());
             sst.Transform();
             var stms = m.Procedure.EntryBlock.Succ[0].Statements;
-			Assert.AreEqual("x_2 = Mem0[0x10004000:word32]", stms[0].ToString());
+			Assert.AreEqual("x_2 = Mem4[0x10004000:word32]", stms[0].ToString());
 			Assert.AreEqual("y_3 = x_2", stms[1].ToString());
 			Assert.AreEqual("z_4 = y_3 + 0x00000002", stms[2].ToString());
 			Assert.AreEqual("w_5 = y_3", stms[3].ToString());
-            //Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "x_1").Uses));
-            //Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "y_2").Uses));
-            //Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "z_3").Uses));
-            //Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "w_4").Uses));
+            m.Ssa.Dump(true);
 
 
             ValuePropagator vp = new ValuePropagator(arch, sst.SsaState, listener);
             stms.ForEach(s => vp.Transform(s));
 
-			Assert.AreEqual("x_2 = Mem0[0x10004000:word32]", stms[0].ToString());
+			Assert.AreEqual("x_2 = Mem4[0x10004000:word32]", stms[0].ToString());
 			Assert.AreEqual("y_3 = x_2", stms[1].ToString());
 			Assert.AreEqual("z_4 = x_2 + 0x00000002", stms[2].ToString());
 			Assert.AreEqual("w_5 = x_2", stms[3].ToString());
 
-            Assert.AreEqual(3, m.Ssa.Identifiers.Single(i => i.Identifier.Name == "x_2").Uses.Count);
+            m.Ssa.Dump(true);
+
+            Assert.AreEqual(3, m.Ssa.Identifiers.Single(i => i.Identifier.Name == "x").Uses.Count);
 			Assert.AreEqual(0, m.Ssa.Identifiers.Single(i => i.Identifier.Name == "y_3").Uses.Count);
 		}
 
