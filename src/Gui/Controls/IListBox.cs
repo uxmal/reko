@@ -33,6 +33,7 @@ namespace Reko.Gui.Controls
 
         object DataSource { get; set; }
         IList Items { get; }
+        ICollection SelectedItems { get; }
         int SelectedIndex { get; set; }
         object SelectedItem { get; set; }
 

@@ -30,11 +30,11 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.listSources = new System.Windows.Forms.ListView();
+            this.colName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colExtension = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.colName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chkCustomSource = new System.Windows.Forms.CheckBox();
             this.txtAssembly = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -64,11 +64,17 @@
             this.colDescription,
             this.colExtension});
             this.listSources.Location = new System.Drawing.Point(12, 88);
+            this.listSources.MultiSelect = false;
             this.listSources.Name = "listSources";
             this.listSources.Size = new System.Drawing.Size(602, 168);
             this.listSources.TabIndex = 3;
             this.listSources.UseCompatibleStateImageBehavior = false;
             this.listSources.View = System.Windows.Forms.View.Details;
+            // 
+            // colName
+            // 
+            this.colName.DisplayIndex = 2;
+            this.colName.Text = "Name";
             // 
             // colDescription
             // 
@@ -103,11 +109,6 @@
             this.btnCancel.TabIndex = 8;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            // 
-            // colName
-            // 
-            this.colName.DisplayIndex = 2;
-            this.colName.Text = "Name";
             // 
             // chkCustomSource
             // 

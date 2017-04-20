@@ -58,5 +58,8 @@ namespace Reko.Gui.Windows
                 } 
             }
         }
+
+        public ICollection SelectedItems { get { return list.SelectedItems; } }
+        public T GetTagOf<T>(object item) { return (T)((ListViewItem)item).Tag; }
     }
 }

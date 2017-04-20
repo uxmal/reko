@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,5 +30,6 @@ namespace Reko.Gui.Controls
     public interface IListView : IControl
     {
         object DataSource { get; set; }
+        ICollection SelectedItems { get; }
     }
 }

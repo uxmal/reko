@@ -20,10 +20,12 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
 using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,6 +34,8 @@ namespace Reko.Gui.Windows.Forms
     public class SymbolSourceInteractor
     {
         private SymbolSourceDialog dlg;
+        private IFileSystemService fsSvc;
+        private IDecompilerShellUiService uiSvc;
 
         public void Attach(SymbolSourceDialog dlg)
         {
@@ -39,12 +43,15 @@ namespace Reko.Gui.Windows.Forms
             this.dlg.Load += Dlg_Load;
             this.dlg.SymbolFileUrl.LostFocus += SymbolFileUrl_LostFocus;
             this.dlg.CustomSourceCheckbox.CheckedChanged += CustomSourceCheckbox_CheckedChanged;
-
+            this.dlg.AssemblyFile.TextChanged += AssemblyFile_TextChanged;
+            this.dlg.BrowseAssemblyFile.Click += BrowseAssemblyFile_Click;
         }
 
- 
+       
         private void Dlg_Load(object sender, EventArgs e)
         {
+            this.fsSvc = dlg.Services.RequireService<IFileSystemService>();
+            this.uiSvc = dlg.Services.RequireService<IDecompilerShellUiService>();
             PopulateSymbolSources();
             EnableControls();
         }
@@ -59,6 +66,57 @@ namespace Reko.Gui.Windows.Forms
             EnableControls();
         }
 
+        private void AssemblyFile_TextChanged(object sender, EventArgs e)
+        {
+            var asmFilename = dlg.AssemblyFile.Text;
+            if (asmFilename.Length == 0)
+            {
+                dlg.SymbolSourceClasses.Items.Clear();
+                return;
+            }
+            if (!fsSvc.FileExists(asmFilename))
+            {
+                return;
+            }
+            dlg.SymbolSourceClasses.Items.Clear();
+            dlg.SymbolSourceClasses.Items.Add("Loading...");
+            dlg.Update();
+
+            var symClasses = LoadCompatibleClassesFromAssembly(asmFilename, typeof(ISymbolSource));
+
+            dlg.SymbolSourceClasses.Items.Clear();
+            foreach (var symClass in symClasses)
+            {
+                dlg.SymbolSourceClasses.Items.Add(symClass);
+            }
+        }
+
+        private void BrowseAssemblyFile_Click(object sender, EventArgs e)
+        {
+            var newFile = uiSvc.ShowOpenFileDialog(dlg.AssemblyFile.Text);
+            if (newFile != null)
+            {
+                dlg.AssemblyFile.Text = newFile;
+            }
+        }
+
+
+        private object[] LoadCompatibleClassesFromAssembly(string asmFilename, Type type)
+        {
+            try
+            {
+                var ass = Assembly.LoadFrom(asmFilename);
+                var typeNames = ass.DefinedTypes
+                    .Where(t => t.ImplementedInterfaces.Contains(type))
+                    .Select(t => t.AssemblyQualifiedName)
+                    .ToArray();
+                return typeNames;
+            }
+            catch
+            {
+                return new object[0];
+            }
+        }
 
         private void PopulateSymbolSources()
         {
@@ -74,14 +132,23 @@ namespace Reko.Gui.Windows.Forms
             dlg.SymbolSourceList.Enabled =
                 dlg.SymbolFileUrl.Text.Length > 0 &&
                 !dlg.CustomSourceCheckbox.Checked;
-            dlg.SymbolSourceClasses.Enabled = 
+            dlg.SymbolSourceClasses.Enabled =
                 dlg.CustomSourceCheckbox.Checked;
-            dlg.AssemblyFile.Enabled = 
+            dlg.AssemblyFile.Enabled =
                 dlg.CustomSourceCheckbox.Checked;
-            dlg.BrowseAssemblyFile.Enabled = 
+            dlg.BrowseAssemblyFile.Enabled =
                 dlg.CustomSourceCheckbox.Checked;
-            dlg.OkButton.Enabled = false;
-            dlg.SymbolSourceClasses.Enabled = false;
+            dlg.SymbolSourceClasses.Enabled =
+                dlg.CustomSourceCheckbox.Checked;
+
+            dlg.OkButton.Enabled =
+                dlg.SymbolSourceList.Enabled &&
+                dlg.SymbolSourceList.SelectedItems.Count == 1
+                ||
+                dlg.SymbolSourceClasses.Enabled &&
+                dlg.SymbolSourceClasses.SelectedItems.Count == 1;
+
+
         }
     }
 }

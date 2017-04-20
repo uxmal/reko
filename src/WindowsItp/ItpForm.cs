@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
 using Reko.Environments.Windows;
 using Reko.Gui;
 using Reko.Gui.Windows.Controls;
@@ -266,7 +267,11 @@ namespace Reko.WindowsItp
         {
             var sc = new ServiceContainer();
             var cfgSvc = new FakeConfigurationService();
+            var fsSvc = new FileSystemServiceImpl();
+            var uiSvc = new FakeDecompilerShellUiService(this);
             sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<IFileSystemService>(fsSvc);
+            sc.AddService<IDecompilerShellUiService>(uiSvc);
             var dlg = new SymbolSourceDialog();
             dlg.Services = sc;
             dlg.ShowDialog(this);
