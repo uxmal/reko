@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Core
 {
-    public interface ISymbolSource
+    public interface ISymbolSource : IDisposable
     {
         /// <summary>
         /// Determines whether symbols can be loaded from the file specified by
