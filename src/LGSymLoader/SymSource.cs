@@ -63,7 +63,7 @@ namespace Reko.Symbols.LGSymLoader
 	{
 		public const UInt32 SYM_MAGIC = 0xB12791EE;
 		private readonly MemoryMappedFile mf;
-		private readonly MemoryMappedViewStream stream;
+		private readonly Stream stream;
 		private readonly BinaryReader rdr;
 		private SymHeader hdr;
 
@@ -76,19 +76,36 @@ namespace Reko.Symbols.LGSymLoader
 		private long dwarf_data_offset;
 		private long sym_names_offset;
 
-		public LGSymSource(string filename) {
+		public LGSymSource(string filename)
+        {
 			mf = MemoryMappedFile.CreateFromFile(filename, FileMode.Open);
 			stream = mf.CreateViewStream();
 			rdr = new BinaryReader(stream);
 		}
 
-		public bool CanLoad(string filename, byte[] fileContents = null) {
+        public LGSymSource(Stream stm)
+        {
+            stream = stm;
+            rdr = new BinaryReader(stm);
+        }
+
+        public void Dispose()
+        {
+            if (stream != null)
+                stream.Dispose();
+            if (mf != null)
+                mf.Dispose();
+        }
+
+		public bool CanLoad(string filename, byte[] fileContents = null)
+        {
 			try {
 				hdr = new StructureReader<SymHeader>(rdr).Read();
 				if (hdr.magic != SYM_MAGIC)
 					return false;
 
-				if ((hdr.size + Marshal.SizeOf(hdr)) != new FileInfo(filename).Length)
+                var expected = hdr.size + Marshal.SizeOf(hdr);
+                if (expected != stream.Length)
 					return false;
 
 				if ((hdr.tail_size + Marshal.SizeOf(typeof(SymEntry)) * hdr.n_symbols) != hdr.size)
@@ -134,7 +151,7 @@ namespace Reko.Symbols.LGSymLoader
 					offset += dwarf_data_size;
 				}
 
-				sym_names_offset = offset;
+				sym_names_offset = stream.Position; //$REVIEW was offset, but we read a word to get has_dwarf.
 				return true;
 
 			} catch {
@@ -143,7 +160,7 @@ namespace Reko.Symbols.LGSymLoader
 		}
 
 		public List<ImageSymbol> GetAllSymbols() {
-			List<ImageSymbol> symbols = new List<ImageSymbol>();
+			var symbols = new List<ImageSymbol>();
 			for(uint i=0; i<hdr.n_symbols; i++)
 			{
 				rdr.BaseStream.Seek(syms_offset + Marshal.SizeOf(typeof(SymEntry)) * i, SeekOrigin.Begin);

@@ -87,6 +87,10 @@ namespace Reko.UnitTests.Loading
                 return true;
             }
 
+            public void Dispose()
+            {
+            }
+
             public List<ImageSymbol> GetAllSymbols()
             {
                 return new List<ImageSymbol>

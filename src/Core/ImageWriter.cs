@@ -185,8 +185,10 @@ namespace Reko.Core
 
         public ImageWriter WriteLeUInt32(uint ui)
         {
-            WriteLeUInt32((uint) Position, ui);
-            Position += 4;
+            WriteByte((byte)ui);
+            WriteByte((byte)(ui >> 8));
+            WriteByte((byte)(ui >> 16));
+            WriteByte((byte)(ui >> 24));
             return this;
         }
 
