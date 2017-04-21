@@ -207,13 +207,6 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         private void Probe(ScanResults sr)
         {
-            var p = sr.ICFG.Nodes.FirstOrDefault(n => n.Address.ToString().EndsWith("149E"));
-            if (p == null)
-                sr.ToString();
-            var i = sr.Instructions.Keys.FirstOrDefault(n => n.ToString().EndsWith("0800:0164"));
-            sr.ToString();
-            //var q = sr.ICFG.Nodes.FirstOrDefault(n => n.Address.ToString().EndsWith("93DC"));
-            //if (!sr.ICFG.ContainsEdge(p, q))
         }
 
         private HashSet<Address> FindKnownProcedures()
