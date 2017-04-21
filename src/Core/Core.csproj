@@ -238,6 +238,8 @@
     <Compile Include="Analysis\IVarargsFormatParser.cs" />
     <Compile Include="IStorageBinder.cs" />
     <Compile Include="Lib\ArticulationPointFinder.cs" />
+    <Compile Include="Lib\Dijkstra.cs" />
+    <Compile Include="Lib\FibonacciHeap.cs" />
     <Compile Include="Lib\LTDominatorGraph.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />

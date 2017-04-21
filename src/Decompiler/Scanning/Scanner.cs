@@ -1045,14 +1045,8 @@ namespace Reko.Scanning
                 // 
                 // When this gets merged into analyis-development phase, fold 
                 // Procedure construction into SSA construction.
-                foreach (var rtlProc in procs)
+                foreach (var rtlProc in procs.Where(p => FilterRtlProcedure(p)))
                 {
-                    var trampoline = Program.Platform.GetTrampolineDestination(rtlProc.Entry.Instructions, this);
-                    if (trampoline != null)
-                    {
-                        //$REVIEW: consider adding known trampolines to Program.
-                        continue;
-                    }
                     var addrProc = rtlProc.Entry.Address;
                     TerminateAnyBlockAt(addrProc);
                     EnsureProcedure(addrProc, null);
@@ -1060,6 +1054,31 @@ namespace Reko.Scanning
                 }
                 ProcessQueue();
             }
+        }
+
+        /// <summary>
+        /// Determines whether or not an RtlProcedure should be fed into the later stages of 
+        /// the scanner.
+        /// </summary>
+        /// <param name="rtlProc"></param>
+        /// <returns></returns>
+        public bool FilterRtlProcedure(RtlProcedure rtlProc)
+        {
+            var addrRtlProc = rtlProc.Entry.Address;
+            var trampoline = Program.Platform.GetTrampolineDestination(rtlProc.Entry.Instructions, this);
+            if (trampoline != null)
+            {
+                //$REVIEW: consider adding known trampolines to Program. Then, when code calls or 
+                // jumps to a trampoline, we don't have to call IPlatform.GetTrampolineDestination again.
+                return false;
+            }
+
+            Procedure_v1 sProc;
+            if (Program.User.Procedures.TryGetValue(addrRtlProc, out sProc))
+            {
+                return sProc.Decompile;
+            }
+            return true;
         }
 
         /// <summary>
