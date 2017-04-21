@@ -75,7 +75,8 @@ namespace Reko.Arch.Mips
                 case Opcode.and:
                 case Opcode.andi:
                     RewriteAnd(instr); break;
-                case Opcode.bc1f: RewriteBc1f(instr, false); break;
+                case Opcode.bc1f: RewriteBranchConditional1(instr, false); break;
+                case Opcode.bc1t: RewriteBranchConditional1(instr, true); break;
                 case Opcode.beq:
                     RewriteBranch(instr, emitter.Eq, false); break;
                 case Opcode.beql:
