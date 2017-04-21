@@ -921,6 +921,8 @@ namespace Reko.Arch.X86
 
         private X86Instruction DecodeOperands(Opcode opcode, byte op, string strFormat)
         {
+            if (strFormat == null)
+                return null;
             MachineOperand pOperand;
             PrimitiveType width = null;
             PrimitiveType iWidth = dataWidth;

@@ -84,10 +84,11 @@ namespace Reko.Arch.X86
                 switch (instrCur.code)
                 {
                 default:
-                    throw new AddressCorrelatedException(
-                        instrCur.Address,
+                    host.Warn(
+                        dasm.Current.Address,
                         "Rewriting x86 opcode '{0}' is not supported yet.",
                         instrCur.code);
+                    goto case Opcode.illegal;
                 case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
                 case Opcode.aaa: RewriteAaa(); break;
                 case Opcode.aad: RewriteAad(); break;
