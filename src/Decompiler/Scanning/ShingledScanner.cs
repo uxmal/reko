@@ -274,6 +274,21 @@ namespace Reko.Scanning
         // or into data.
         public HashSet<Address> RemoveBadInstructionsFromGraph()
         {
+            // Use only for debugging the bad paths.
+            //var d = Dijkstra<Address>.ShortestPath(G, bad, (u, v) => 1.0);
+            //Action<Address> DumpPath = (addr) =>
+            //{
+            //    Debug.Print("Path from {0}", addr);
+            //    var path = d.GetPath(addr);
+            //    path.Reverse();
+            //    foreach (var a in path)
+            //    {
+            //        Debug.Print("  {0}", a);
+            //    }
+            //};
+            //DumpPath(Address.SegPtr(0x0800, 0));
+
+
             // Find all places that are reachable from "bad" addresses.
             // By transitivity, they must also be be bad.
             var deadNodes = new HashSet<Address>();
@@ -281,13 +296,20 @@ namespace Reko.Scanning
             {
                 if (a != bad)
                 {
-                    sr.Instructions.Remove(a);
                     deadNodes.Add(a);
-
-                    // Destination can't be a call destination.
-                    sr.DirectlyCalledAddresses.Remove(a);
                 }
             }
+
+            var oldinstrs = sr.Instructions;
+            sr.Instructions = oldinstrs
+                .Where(o => !deadNodes.Contains(o.Key))
+                .ToSortedList(o => o.Key, o => o.Value);
+
+            var oldDirectCalls = sr.DirectlyCalledAddresses;
+            sr.DirectlyCalledAddresses = oldDirectCalls
+                .Where(o => !deadNodes.Contains(o.Key))
+                .ToDictionary(o => o.Key, o => o.Value);
+
             return deadNodes;
         }
 
