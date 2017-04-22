@@ -14,14 +14,15 @@ namespace Reko.Core.NativeInterface
 		private NativeSymbolSourceProvider prv;
 		private readonly ILibraryLoader loader;
 
+		private const string SYM_NAME = "gSymProvider";
+
 		public NativeSymbolSource(string libPath, ILibraryLoader ldr)
 		{
 			loader = ldr;
 			handle = loader.LoadLibrary(libPath);
 
-			IntPtr gSymProvider = loader.GetSymbol(handle, "gSymProvider");
+			IntPtr gSymProvider = loader.GetSymbol(handle, SYM_NAME);
 			prv = (NativeSymbolSourceProvider)Marshal.PtrToStructure(gSymProvider, typeof(NativeSymbolSourceProvider));
-
 		}
 
 		public bool CanLoad(string filename, byte[] fileContents)
