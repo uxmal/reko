@@ -443,7 +443,40 @@ enum class Opcode
 
 enum class ArmInstructionOperandType
 {
-	Immediate
+	Immediate,
+	CImmediate,
+	PImmediate,
+	Register,
+	Memory,
+	SysRegister,
+};
+
+enum class ArmRegister
+{
+	R0,
+	R1,
+	R2,
+	R3,
+
+	SP,
+	LR,
+	PC,
+
+	CPSR,
+};
+
+enum class ArmShifterType
+{
+	ASR,
+	LSL,
+	LSR,
+	ROR,
+	RRX,
+	ASR_REG,
+	LSL_REG,
+	LSR_REG,
+	ROR_REG,
+	RRX_REG,
 };
 
 enum class ArmCodeCondition
@@ -466,20 +499,55 @@ enum class ArmCodeCondition
 	AL = 15
 };
 
+enum class ArmCpsMode
+{
+	ID
+
+};
+
+enum class ArmVectorDataType
+{
+	I32,
+};
+
 class ArmInstructionOperand
 {
 public:
 	ArmInstructionOperandType Type;
+	ArmRegister RegisterValue;
+	ArmRegister SysRegisterValue;
+	uint32_t ImmediateValue;
+	bool IsSubtracted;
+	struct {
+		ArmRegister BaseRegister;
+		int32_t Displacement;
+		int32_t IndexRegisterScale;
+	} MemoryValue;
+	struct 
+	{
+		ArmShifterType Type;
+		int Value;
+	} Shifter;
 };
 
 class ArmInstruction
 {
 public:
+	unsigned int Address;
 	Opcode Id;
+	const char * Mnemonic;
 
 	struct {
 		bool UpdateFlags;
+		ArmCodeCondition CodeCondition;
+		ArmCpsMode CpsMode;
+		const ArmInstructionOperand * Operands;
+		int Length;
+		ArmVectorDataType VectorDataType;
+		bool WriteBack;
 	} ArchitectureDetail;
+
+	bool IsLastOperand(const ArmInstructionOperand & op) { return false; }
 };
 
 

@@ -6,7 +6,7 @@
 #include "reko.h"
 #include "ArmRewriter.h"
 
-IRewriter * CreateRewriter(void * rawBytes, int length, IRtlEmitter * m, IRewriterHost * host)
+IRewriter * CreateRewriter(void * rawBytes, int length, IRtlEmitter * m, IFrame * frame, IRewriterHost * host)
 {
-	return new ArmRewriter(rawBytes, length, m, host);
+	return new ArmRewriter(rawBytes, length, m, frame, host);
 }

@@ -26,3 +26,7 @@ TestResults
 **/x64/Release
 /subjects/**/Debug
 /subjects/**/Release
+/src/Arch/ArmNative/Debug
+/src/Arch/ArmNative/Release
+/src/Debug
+/src/Release

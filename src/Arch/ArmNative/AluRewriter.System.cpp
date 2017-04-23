@@ -18,71 +18,67 @@
 
 #include "stdafx.h"
 #include "reko.h"
+#include "arm.h"
 #include "ArmRewriter.h"
 
-using Gee.External.Capstone.Arm;
-using Reko.Core.Expressions;
-using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Reko.Arch.Arm
-{
-	public partial class ArmRewriter
-{
-	private void RewriteCps()
+	void ArmRewriter::RewriteCps()
 	{
-		if (instr.ArchitectureDetail.CpsMode == ArmCpsMode.ID)
+		if (instr.ArchitectureDetail.CpsMode == ArmCpsMode::ID)
 		{
-			m.SideEffect(host.PseudoProcedure("__cps_id", VoidType.Instance));
+			m.SideEffect(host.PseudoProcedure("__cps_id", PrimitiveType::Void));
 			return;
 		}
 		NotImplementedYet();
 	}
 
-	private void RewriteDmb()
+	void ArmRewriter::RewriteDmb()
 	{
-		var memBarrier = instr.ArchitectureDetail.MemoryBarrier.ToString().ToLowerInvariant();
-		var name = "__dmb_" + memBarrier;
+		//$TODO
+		/*
+		auto memBarrier = instr.ArchitectureDetail.MemoryBarrier.ToString().ToLowerInvariant();
+		auto name = "__dmb_" + memBarrier;
 		m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
+		*/
 	}
 
-	private void RewriteMcr()
+	void ArmRewriter::RewriteMcr()
 	{
+		//$TODO
+		/*
 		m.SideEffect(host.PseudoProcedure(
 			"__mcr",
-			VoidType.Instance,
+			PrimitiveType::Void,
 			instr.ArchitectureDetail.Operands
 			.Select(o = > Operand(o))
 			.ToArray()));
+			*/
 	}
 
-	private void RewriteMrc()
+	void ArmRewriter::RewriteMrc()
 	{
-		var ops = instr.ArchitectureDetail.Operands
+		//$TODO
+/*
+		auto ops = instr.ArchitectureDetail.Operands
 			.Select(o = > Operand(o))
 			.ToList();
-		var regDst = ops.OfType<Identifier>().SingleOrDefault();
+		auto regDst = ops.OfType<Identifier>().SingleOrDefault();
 		ops.Remove(regDst);
 		m.Assign(regDst, host.PseudoProcedure(
 			"__mrc",
-			PrimitiveType.Word32,
+			PrimitiveType::Word32,
 			ops.ToArray()));
+			*/
 	}
 
-	private void RewriteMrs()
+	void ArmRewriter::RewriteMrs()
 	{
 		ConditionalSkip();
-		m.Assign(Operand(Dst), host.PseudoProcedure("__mrs", PrimitiveType.Word32, Operand(Src1)));
+		m.Assign(Operand(Dst()), host.PseudoProcedure("__mrs", PrimitiveType::Word32, Operand(Src1())));
 	}
 
-	private void RewriteMsr()
+	void ArmRewriter::RewriteMsr()
 	{
 		ConditionalSkip();
-		m.SideEffect(host.PseudoProcedure("__msr", PrimitiveType.Word32, Operand(Dst), Operand(Src1)));
+		m.SideEffect(host.PseudoProcedure("__msr", PrimitiveType::Word32, Operand(Dst()), Operand(Src1())));
 	}
-}
-}
+

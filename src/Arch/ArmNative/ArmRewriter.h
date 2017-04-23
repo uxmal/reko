@@ -1,6 +1,13 @@
 #pragma once
 
+typedef IExpression * (IRewriter::*UnaryOpEmitter)(IExpression *);
 typedef IExpression * (IRewriter::*BinOpEmitter)(IExpression *, IExpression *);
+
+enum class FlagM
+{
+	CF, VF, ZF, NF,
+};
+FlagM operator | (FlagM a, FlagM b) { return (FlagM)((int)a | (int)b); }
 
 class ArmRewriter : public IRewriter
 {
@@ -20,12 +27,33 @@ public:
 	virtual void Next() override;
 
 private:
+	void AddConditional(void(*mkInstr)());
+	void ConditionalSkip();
+	void ConditionalAssign(IExpression * dst, IExpression * src);
+	IExpression * FlagGroup(FlagM bits, const char * name, PrimitiveType type);
+	ArmCodeCondition Invert(ArmCodeCondition);
+	//IExpression * Operand(const ArmInstructionOperand & op);
+	void NotImplementedYet();
+	void MaybeUpdateFlags(IExpression * opDst);
+	void MaybePostOperand(const ArmInstructionOperand & op);
+	IExpression * MaybeShiftOperand(IExpression * exp, ArmInstructionOperand op);
+	IExpression * Operand(const ArmInstructionOperand & op);
+	IExpression * Reg(int reg) { return frame.EnsureRegister(reg); }
+	IExpression * Reg(ArmRegister reg) { return frame.EnsureRegister((int)reg); }
+
+	PrimitiveType SizeFromLoadStore();
+	IExpression * TestCond(ArmCodeCondition cond);
+	const char * ArmRewriter::VectorElementType();
+
+	const ArmInstructionOperand & Dst() { return instr.ArchitectureDetail.Operands[0]; }
+	const ArmInstructionOperand & Src1() { return instr.ArchitectureDetail.Operands[1]; }
+	const ArmInstructionOperand & Src2() { return instr.ArchitectureDetail.Operands[2]; }
+	const ArmInstructionOperand & Src3() { return instr.ArchitectureDetail.Operands[3]; }
 	void RewriteStrd();
 	void RewriteTeq();
 	void RewriteTst();
 	void RewriteUmlal();
-	void RewriteUnaryOp();
-	void RewriteAdcSbc(BinOpEmitter * fn);
+	void RewriteAdcSbc(BinOpEmitter fn);
 	void RewriteB(bool link);
 	void RewriteBfc();
 	void RewriteBfi();
@@ -37,6 +65,7 @@ private:
 	void RewriteCps();
 	void RewriteDmb();
 	void RewriteLdm(int);
+	void RewriteLdm(IExpression  * dst, const ArmInstructionOperand * range, int length, int offset, bool writeback);
 	void RewriteLdr(PrimitiveType);
 	void RewriteLdrd();
 	void RewriteMcr();
@@ -57,22 +86,13 @@ private:
 	void RewriteStmib();
 	void RewriteStr(PrimitiveType);
 	void RewriteSvc();
+	void RewriteUnaryOp(UnaryOpEmitter);
 	void RewriteUbfx();
 	void RewriteVldmia();
 	void RewriteVmov();
 	void RewriteVstmia();
 	void RewriteXtab(PrimitiveType);
 	void RewriteXtb(PrimitiveType);
-
-	void ConditionalSkip();
-	IExpression * Operand(const ArmInstructionOperand & op);
-	void NotImplementedYet();
-	void MaybeUpdateFlags(IExpression * opDst);
-
-	const ArmInstructionOperand & Dst();
-	const ArmInstructionOperand & Src1();
-	const ArmInstructionOperand & Src2();
-	const ArmInstructionOperand & Src3();
 
 private:
 	IRtlEmitter & m;

@@ -412,12 +412,12 @@ void ArmRewriter::Next()
 	case Opcode::MRS: RewriteMrs(); break;
 	case Opcode::MSR: RewriteMsr(); break;
 	case Opcode::MUL: RewriteBinOp(m.IMul, instr.ArchitectureDetail.UpdateFlags); break;
-	case Opcode::MVN: RewriteUnaryOp(Operator.Not); break;
+	case Opcode::MVN: RewriteUnaryOp(m.Not); break;
 	case Opcode::ORR: RewriteBinOp(m.Or, false); break;
 	case Opcode::POP: RewritePop(); break;
 	case Opcode::PUSH: RewritePush(); break;
 	case Opcode::REV: RewriteRev(); break;
-	case Opcode::RSB: RewriteRevBinOp(Operator.ISub, instr.ArchitectureDetail.UpdateFlags); break;
+	case Opcode::RSB: RewriteRevBinOp(m.ISub, instr.ArchitectureDetail.UpdateFlags); break;
 	case Opcode::SBC: RewriteAdcSbc(m.ISub); break;
 	case Opcode::SBFX: RewriteSbfx(); break;
 	case Opcode::SMULBB: RewriteMulbb(false, false, PrimitiveType::Int16, m.SMul); break;
@@ -454,11 +454,11 @@ void ArmRewriter::Next()
 
 void ArmRewriter::NotImplementedYet()
 {
-	host->Error(
-		instr->Address,
-		string.Format(
-			"Rewriting ARM opcode '{0}' is not supported yet.",
-			instr.Mnemonic));
+	char buf[200];	//$TODO: hello buffer overflow!
+	::snprintf(buf, sizeof(buf), "Rewriting ARM opcode '%s' is not supported yet.", instr.Mnemonic);
+	host.Error(
+		instr.Address,
+		buf);
 	m.Invalid();
 }
 
@@ -466,57 +466,61 @@ void ArmRewriter::MaybeUpdateFlags(IExpression * opDst)
 {
 	if (instr.ArchitectureDetail.UpdateFlags)
 	{
-		m.Assign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType::Byte), m.Cond(opDst));
+		m.Assign(frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte), m.Cond(opDst));
 	}
 }
 
 void ArmRewriter::RewriteB(bool link)
 {
 	IExpression * dst;
+	bool dstIsAddress;
 	if (Dst().Type == ArmInstructionOperandType::Immediate)
 	{
-		dst = m.Ptr32((uint)Dst().ImmediateValue.Value);
+		dst = m.Ptr32(Dst().ImmediateValue);
+		dstIsAddress = true;
 	}
 	else
 	{
-		dst = Operand(Dst);
+		dst = Operand(Dst());
+		dstIsAddress = false;
 	}
 	if (link)
 	{
-		ric.Class = RtlClass.Transfer;
-		if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
+		m.SetRtlClass(RtlClass::Transfer);
+		if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition::AL)
 		{
 			m.Call(dst, 0);
 		}
 		else
 		{
-			m.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlCall(dst, 0, RtlClass.Transfer));
+			//$TODO: conditional code.
+			//m.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlCall(dst, 0, RtlClass::Transfer));
 		}
 	}
 	else
 	{
-		if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
+		if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition::AL)
 		{
-			ric.Class = RtlClass.Transfer;
+			m.SetRtlClass(RtlClass::Transfer);
 			m.Goto(dst);
 		}
 		else
 		{
-			ric.Class = RtlClass.ConditionalTransfer;
-			auto addr = dst as Address;
-			if (addr != null)
+			m.SetRtlClass(RtlClass::ConditionalTransfer);
+			if (dstIsAddress)
 			{
-				m.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), addr, RtlClass.ConditionalTransfer);
+				m.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), dst, RtlClass::ConditionalTransfer);
 			}
 			else
 			{
-				m.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlGoto(dst, RtlClass.ConditionalTransfer));
+				//$TODO: conditional code
+				//m.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlGoto(dst, RtlClass::ConditionalTransfer));
 			}
 		}
 	}
 }
 
-void ArmRewriter::AddConditional(RtlInstruction rtlInstr)
+void ArmRewriter::AddConditional(void (*mkInstr)())
 {
 	//if (instr.ArchitectureDetail.CodeCondition != ArmCodeCondition.AL)
 	//{
@@ -525,14 +529,14 @@ void ArmRewriter::AddConditional(RtlInstruction rtlInstr)
 	//ric.Instructions.Add(rtlInstr);
 }
 
-void ArmRewriter::ConditionalAssign(Expression dst, Expression src)
+void ArmRewriter::ConditionalAssign(IExpression * dst, IExpression * src)
 {
-	RtlInstruction rtlInstr = new RtlAssignment(dst, src);
-	if (instr.ArchitectureDetail.CodeCondition != ArmCodeCondition.AL)
+	/*RtlInstruction rtlInstr = new RtlAssignment(dst, src);
+	if (instr.ArchitectureDetail.CodeCondition != ArmCodeCondition::AL)
 	{
 		rtlInstr = new RtlIf(TestCond(instr.ArchitectureDetail.CodeCondition), rtlInstr);
 	}
-	ric.Instructions.Add(rtlInstr);
+	ric.Instructions.Add(rtlInstr);*/
 }
 
 // If a conditional ARM instruction is encountered, generate an IL
@@ -540,12 +544,34 @@ void ArmRewriter::ConditionalAssign(Expression dst, Expression src)
 void ArmRewriter::ConditionalSkip()
 {
 	auto cc = instr.ArchitectureDetail.CodeCondition;
-	if (cc == ArmCodeCondition.AL)
+	if (cc == ArmCodeCondition::AL)
 		return; // never skip!
 	m.BranchInMiddleOfInstruction(
-		TestCond(cc).Invert(),
-		Address.Ptr32((uint)instr.Address + 4),
-		RtlClass.ConditionalTransfer);
+		TestCond(Invert(cc)),
+		m.Ptr32(instr.Address + 4),
+		RtlClass::ConditionalTransfer);
+}
+
+ArmCodeCondition ArmRewriter::Invert(ArmCodeCondition cc)
+{
+	switch (cc)
+	{
+	case ArmCodeCondition::EQ: return ArmCodeCondition::NE;
+	case ArmCodeCondition::NE: return ArmCodeCondition::EQ;
+	case ArmCodeCondition::HS: return ArmCodeCondition::LO;
+	case ArmCodeCondition::LO: return ArmCodeCondition::HS;
+	case ArmCodeCondition::MI: return ArmCodeCondition::PL;
+	case ArmCodeCondition::PL: return ArmCodeCondition::MI;
+	case ArmCodeCondition::VS: return ArmCodeCondition::VC;
+	case ArmCodeCondition::VC: return ArmCodeCondition::VS;
+	case ArmCodeCondition::HI: return ArmCodeCondition::LS;
+	case ArmCodeCondition::LS: return ArmCodeCondition::HI;
+	case ArmCodeCondition::GE: return ArmCodeCondition::LT;
+	case ArmCodeCondition::LT: return ArmCodeCondition::GE;
+	case ArmCodeCondition::GT: return ArmCodeCondition::LE;
+	case ArmCodeCondition::LE: return ArmCodeCondition::GT;
+	case ArmCodeCondition::AL: return ArmCodeCondition::Invalid;
+	}
 }
 
 IExpression * ArmRewriter::Operand(const ArmInstructionOperand & op)
@@ -553,99 +579,97 @@ IExpression * ArmRewriter::Operand(const ArmInstructionOperand & op)
 	switch (op.Type)
 	{
 	case ArmInstructionOperandType::Register:
-		auto reg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value]);
+	{
+		auto reg = frame.EnsureRegister((int)op.RegisterValue);
 		return MaybeShiftOperand(reg, op);
+	}
 	case ArmInstructionOperandType::SysRegister:
-		auto sysreg = frame.EnsureRegister(A32Registers.SysRegisterByCapstoneID[op.SysRegisterValue.Value]);
+	{
+		auto sysreg = frame.EnsureRegister((int)op.SysRegisterValue);
 		return sysreg;
-	case ArmInstructionOperandType.Immediate:
-		return Constant.Word32(op.ImmediateValue.Value);
+	}
+	case ArmInstructionOperandType::Immediate:
+		return m.Word32(op.ImmediateValue);
 	case ArmInstructionOperandType::CImmediate:
 	case ArmInstructionOperandType::PImmediate:
-		return Constant.Byte((byte)op.ImmediateValue.Value);
+		return m.Byte((uint8_t)op.ImmediateValue);
 	case ArmInstructionOperandType::Memory:
+	{
 		auto baseReg = Reg(op.MemoryValue.BaseRegister);
 		auto ea = baseReg;
-		if (op.MemoryValue.BaseRegister
-			== ArmRegister.PC)  // PC-relative address
+		if (op.MemoryValue.BaseRegister == ArmRegister::PC)
 		{
+			// PC-relative address
 			if (op.MemoryValue.Displacement != 0)
 			{
-				auto dst = (uint)((int)instrs.Current.Address.ToUInt32() + op.MemoryValue.Displacement) + 8u;
-				return m.Load(SizeFromLoadStore(instr), Address.Ptr32(dst));
+				auto dst = (uint32_t)((int32_t)instr.Address + op.MemoryValue.Displacement) + 8u;
+				return m.Mem(SizeFromLoadStore(), m.Ptr32(dst));
 			}
 		}
-		if (op.MemoryValue.Displacement != 0 && instrs.Current.IsLastOperand(op))
+		if (op.MemoryValue.Displacement != 0 && instr.IsLastOperand(op))
 		{
-			auto offset = Constant.Int32(op.MemoryValue.Displacement);
+			auto offset = m.Int32(op.MemoryValue.Displacement);
 			ea = op.MemoryValue.IndexRegisterScale < 0
 				? m.ISub(ea, offset)
 				: m.IAdd(ea, offset);
 		}
-		if (instrs.Current.IsLastOperand(op) && instr.ArchitectureDetail.WriteBack)
+		if (instr.IsLastOperand(op) && instr.ArchitectureDetail.WriteBack)
 		{
 			m.Assign(baseReg, ea);
 			ea = baseReg;
 		}
-		return m.Load(SizeFromLoadStore(instr), ea);
+		return m.Mem(SizeFromLoadStore(), ea);
 	}
-	throw new NotImplementedException(op.Type.ToString());
+	}
+	//$TODO
+	//throw new NotImplementedException(op.Type.ToString());
 }
 
-private DataType SizeFromLoadStore(CapstoneArmInstruction instr)
+PrimitiveType ArmRewriter::SizeFromLoadStore()
 {
 	switch (instr.Id)
 	{
-	case Opcode.LDR: return BaseType::Word32;
-	case Opcode.LDRB: return BaseType::Byte;
-	case Opcode.LDRD: return BaseType::Word64;
-	case Opcode.LDRH: return BaseType::Word16;
-	case Opcode.LDRSB: return BaseType::SByte;
-	case Opcode.LDRSH: return BaseType::Int16;
-	case Opcode.STR: return BaseType::Word32;
-	case Opcode.STRB: return BaseType::Byte;
-	case Opcode.STRD: return BaseType::Word64;
-	case Opcode.STRH: return BaseType::Word16;
+	case Opcode::LDR: return PrimitiveType::Word32;
+	case Opcode::LDRB: return PrimitiveType::Byte;
+	case Opcode::LDRD: return PrimitiveType::Word64;
+	case Opcode::LDRH: return PrimitiveType::Word16;
+	case Opcode::LDRSB: return PrimitiveType::SByte;
+	case Opcode::LDRSH: return PrimitiveType::Int16;
+	case Opcode::STR: return PrimitiveType::Word32;
+	case Opcode::STRB: return PrimitiveType::Byte;
+	case Opcode::STRD: return PrimitiveType::Word64;
+	case Opcode::STRH: return PrimitiveType::Word16;
 	}
-	throw new NotImplementedException(instr.Id.ToString());
+	//assert(false && instr.Id.ToString());
 }
 
-private Identifier Reg(int nReg)
-{
-	return frame.EnsureRegister(A32Registers.RegisterByCapstoneID[(ArmRegister)nReg]);
-}
 
-private Identifier Reg(ArmRegister reg)
-{
-	return frame.EnsureRegister(A32Registers.RegisterByCapstoneID[reg]);
-}
-
-private Expression MaybeShiftOperand(Expression exp, ArmInstructionOperand op)
+IExpression * ArmRewriter::MaybeShiftOperand(IExpression * exp, ArmInstructionOperand op)
 {
 	switch (op.Shifter.Type)
 	{
-	case ArmShifterType.ASR: return m.Sar(exp, op.Shifter.Value);
-	case ArmShifterType.LSL: return m.Shl(exp, op.Shifter.Value);
-	case ArmShifterType.LSR: return m.Shr(exp, op.Shifter.Value);
-	case ArmShifterType.ROR: return host.PseudoProcedure(PseudoProcedure.Ror, BaseType::Word32, exp, Constant.Int32(op.Shifter.Value));
-	case ArmShifterType.RRX: return host.PseudoProcedure("rrx", BaseType::Word32, exp, Constant.Int32(op.Shifter.Value));
-	case ArmShifterType.ASR_REG: return m.Sar(exp, Reg(op.Shifter.Value));
-	case ArmShifterType.LSL_REG: return m.Shl(exp, Reg(op.Shifter.Value));
-	case ArmShifterType.LSR_REG: return m.Shr(exp, Reg(op.Shifter.Value));
-	case ArmShifterType.ROR_REG: return host.PseudoProcedure(PseudoProcedure.Ror, BaseType::Word32, exp, Reg(op.Shifter.Value));
-	case ArmShifterType.RRX_REG: return host.PseudoProcedure("rrx", BaseType::Word32, exp, Reg(op.Shifter.Value));
+	case ArmShifterType::ASR: return m.Sar(exp, op.Shifter.Value);
+	case ArmShifterType::LSL: return m.Shl(exp, op.Shifter.Value);
+	case ArmShifterType::LSR: return m.Shr(exp, op.Shifter.Value);
+	case ArmShifterType::ROR: return m.Ror(exp, m.Int32(op.Shifter.Value));
+	case ArmShifterType::RRX: return m.Rrc(exp, m.Int32(op.Shifter.Value));
+	case ArmShifterType::ASR_REG: return m.Sar(exp, Reg(op.Shifter.Value));
+	case ArmShifterType::LSL_REG: return m.Shl(exp, Reg(op.Shifter.Value));
+	case ArmShifterType::LSR_REG: return m.Shr(exp, Reg(op.Shifter.Value));
+	case ArmShifterType::ROR_REG: return m.Ror(exp, Reg(op.Shifter.Value));
+	case ArmShifterType::RRX_REG: return m.Rrc(exp, Reg(op.Shifter.Value));
 	default: return exp;
 	}
 }
 
-private void MaybePostOperand(ArmInstructionOperand op)
+void ArmRewriter::MaybePostOperand(const ArmInstructionOperand & op)
 {
-	if (instrs.Current.IsLastOperand(op))
+	if (instr.IsLastOperand(op))
 		return;
-	if (op.Type != ArmInstructionOperandType.Memory)
+	if (op.Type != ArmInstructionOperandType::Memory)
 		return;
-	auto lastOp = instr.ArchitectureDetail.Operands[instr.ArchitectureDetail.Operands.Length - 1];
-	Expression baseReg = Reg(op.MemoryValue.BaseRegister);
+	auto lastOp = instr.ArchitectureDetail.Operands[instr.ArchitectureDetail.Length - 1];
+	auto baseReg = Reg(op.MemoryValue.BaseRegister);
 	auto offset = Operand(lastOp);
 	auto ea = lastOp.IsSubtracted
 		? m.ISub(baseReg, offset)
@@ -665,49 +689,50 @@ private void MaybePostOperand(ArmInstructionOperand op)
 #endif
 }
 
-IExpression * TestCond(ArmCodeCondition cond)
+IExpression * ArmRewriter::TestCond(ArmCodeCondition cond)
 {
 	switch (cond)
 	{
-	default:
-		throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
-	case ArmCodeCondition.HS:
-		return m.Test(ConditionCode.UGE, FlagGroup(FlagM.CF, "C", BaseType::Byte));
-	case ArmCodeCondition.LO:
-		return m.Test(ConditionCode.ULT, FlagGroup(FlagM.CF, "C", BaseType::Byte));
-	case ArmCodeCondition.EQ:
-		return m.Test(ConditionCode.EQ, FlagGroup(FlagM.ZF, "Z", BaseType::Byte));
-	case ArmCodeCondition.GE:
-		return m.Test(ConditionCode.GE, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", BaseType::Byte));
-	case ArmCodeCondition.GT:
-		return m.Test(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", BaseType::Byte));
-	case ArmCodeCondition.HI:
-		return m.Test(ConditionCode.UGT, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", BaseType::Byte));
-	case ArmCodeCondition.LE:
-		return m.Test(ConditionCode.LE, FlagGroup(FlagM.ZF | FlagM.CF | FlagM.VF, "NZV", BaseType::Byte));
-	case ArmCodeCondition.LS:
-		return m.Test(ConditionCode.ULE, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", BaseType::Byte));
-	case ArmCodeCondition.LT:
-		return m.Test(ConditionCode.LT, FlagGroup(FlagM.NF | FlagM.VF, "NV", BaseType::Byte));
-	case ArmCodeCondition.MI:
-		return m.Test(ConditionCode.LT, FlagGroup(FlagM.NF, "N", BaseType::Byte));
-	case ArmCodeCondition.PL:
-		return m.Test(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF, "NZ", BaseType::Byte));
-	case ArmCodeCondition.NE:
-		return m.Test(ConditionCode.NE, FlagGroup(FlagM.ZF, "Z", BaseType::Byte));
-	case ArmCodeCondition.VS:
-		return m.Test(ConditionCode.OV, FlagGroup(FlagM.VF, "V", BaseType::Byte));
+	//default:
+	//	throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
+	case ArmCodeCondition::HS:
+		return m.Test(ConditionCode::UGE, FlagGroup(FlagM::CF, "C", PrimitiveType::Byte));
+	case ArmCodeCondition::LO:
+		return m.Test(ConditionCode::ULT, FlagGroup(FlagM::CF, "C", PrimitiveType::Byte));
+	case ArmCodeCondition::EQ:
+		return m.Test(ConditionCode::EQ, FlagGroup(FlagM::ZF, "Z", PrimitiveType::Byte));
+	case ArmCodeCondition::GE:
+		return m.Test(ConditionCode::GE, FlagGroup(FlagM::NF | FlagM::ZF | FlagM::VF, "NZV", PrimitiveType::Byte));
+	case ArmCodeCondition::GT:
+		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF | FlagM::VF, "NZV", PrimitiveType::Byte));
+	case ArmCodeCondition::HI:
+		return m.Test(ConditionCode::UGT, FlagGroup(FlagM::ZF | FlagM::CF, "ZC", PrimitiveType::Byte));
+	case ArmCodeCondition::LE:
+		return m.Test(ConditionCode::LE, FlagGroup(FlagM::ZF | FlagM::CF | FlagM::VF, "NZV", PrimitiveType::Byte));
+	case ArmCodeCondition::LS:
+		return m.Test(ConditionCode::ULE, FlagGroup(FlagM::ZF | FlagM::CF, "ZC", PrimitiveType::Byte));
+	case ArmCodeCondition::LT:
+		return m.Test(ConditionCode::LT, FlagGroup(FlagM::NF | FlagM::VF, "NV", PrimitiveType::Byte));
+	case ArmCodeCondition::MI:
+		return m.Test(ConditionCode::LT, FlagGroup(FlagM::NF, "N", PrimitiveType::Byte));
+	case ArmCodeCondition::PL:
+		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF, "NZ", PrimitiveType::Byte));
+	case ArmCodeCondition::NE:
+		return m.Test(ConditionCode::NE, FlagGroup(FlagM::ZF, "Z", PrimitiveType::Byte));
+	case ArmCodeCondition::VS:
+		return m.Test(ConditionCode::OV, FlagGroup(FlagM::VF, "V", PrimitiveType::Byte));
 	}
 }
 
-private Identifier FlagGroup(FlagM bits, string name, BaseType::type)
+IExpression * ArmRewriter::FlagGroup(FlagM bits, const char * name, PrimitiveType type)
 {
-	return frame.EnsureFlagGroup(A32Registers.cpsr, (uint)bits, name, type);
+	return frame.EnsureFlagGroup((int)ArmRegister::CPSR, (int) bits, name, type);
 }
 
-private void ArmRewriter::RewriteSvc()
+void ArmRewriter::RewriteSvc()
 {
-	m.SideEffect(m.Fn(
-		host.EnsurePseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 2),
-		Operand(Dst)));
+	//$TODO
+	//m.SideEffect(m.Fn(
+	//	host.EnsurePseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 2),
+	//	Operand(Dst)));
 }
