@@ -29,7 +29,7 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr)
 	auto opSrc2 = this->Operand(Src2());
 	// We do not take the trouble of widening the CF to the word size
 	// to simplify code analysis in later stages. 
-	auto c = host->EnsureFlagGroup(ARM_REG_CPSR, (int)FlagM::CF, "C", PrimitiveType::Bool);
+	auto c = host->EnsureFlagGroup(ARM_REG_CPSR, (int)FlagM::CF, "C", BaseType::Bool);
 	ConditionalAssign(
 		opDst,
 		(m.*opr)(
@@ -86,7 +86,7 @@ void ArmRewriter::RewriteRev()
 	auto opSrc = this->Operand(Src1());
 	ConditionalAssign(
 		opDst,
-		host->PseudoProcedure("__rev", PrimitiveType::Word32, opSrc));
+		host->PseudoProcedure("__rev", BaseType::Word32, opSrc));
 }
 
 void ArmRewriter::RewriteRevBinOp(BinOpEmitter op, bool setflags)
@@ -127,7 +127,7 @@ void ArmRewriter::RewriteClz()
 
 	ConditionalAssign(
 		opDst,
-		host->PseudoProcedure("__clz", PrimitiveType::Int32, opSrc));
+		host->PseudoProcedure("__clz", BaseType::Int32, opSrc));
 }
 
 void ArmRewriter::RewriteCmn()
@@ -168,7 +168,7 @@ void ArmRewriter::RewriteTst()
 		m.Cond(m.And(opDst, opSrc)));
 }
 
-void ArmRewriter::RewriteLdr(PrimitiveType size)
+void ArmRewriter::RewriteLdr(BaseType size)
 {
 	auto opSrc = this->Operand(Src1());
 	auto opDst = this->Operand(Dst());
@@ -189,13 +189,13 @@ void ArmRewriter::RewriteLdrd()
 	auto ops = instr->detail->arm.operands;
 	auto regLo = (int)ops[0].reg;
 	auto regHi = (int)ops[1].reg;
-	auto opDst = host->EnsureSequence(regHi, regLo, PrimitiveType::Word64);
+	auto opDst = host->EnsureSequence(regHi, regLo, BaseType::Word64);
 	auto opSrc = this->Operand(ops[2]);
 	m.Assign(opDst, opSrc);
 	MaybePostOperand(ops[2]);
 }
 
-void ArmRewriter::RewriteStr(PrimitiveType size)
+void ArmRewriter::RewriteStr(BaseType size)
 {
 	auto opSrc = this->Operand(Dst());
 	auto opDst = this->Operand(Src1());
@@ -208,7 +208,7 @@ void ArmRewriter::RewriteStrd()
 	auto ops = instr->detail->arm.operands;
 	auto regLo = (int)ops[0].reg;
 	auto regHi = (int)ops[1].reg;
-	auto opSrc = host->EnsureSequence(regHi, regLo, PrimitiveType::Word64);
+	auto opSrc = host->EnsureSequence(regHi, regLo, BaseType::Word64);
 	auto opDst = this->Operand(ops[2]);
 	m.Assign(opDst, opSrc);
 	MaybePostOperand(ops[2]);
@@ -296,7 +296,7 @@ void ArmRewriter::RewriteLdm(HExpr dst, const cs_arm_op * range, int length, int
 	*/
 }
 
-void ArmRewriter::RewriteMulbb(bool hiLeft, bool hiRight, PrimitiveType dtMultiplicand, BinOpEmitter mul)
+void ArmRewriter::RewriteMulbb(bool hiLeft, bool hiRight, BaseType dtMultiplicand, BinOpEmitter mul)
 {
 	if (hiLeft || hiRight)
 	{
@@ -309,7 +309,7 @@ void ArmRewriter::RewriteMulbb(bool hiLeft, bool hiRight, PrimitiveType dtMultip
 	m.Assign(opDst, (m.*mul)(opLeft, opRight));
 }
 
-void ArmRewriter::RewriteMull(PrimitiveType dtResult, BinOpEmitter op)
+void ArmRewriter::RewriteMull(BaseType dtResult, BinOpEmitter op)
 {
 	auto ops = instr->detail->arm.operands;
 	auto regLo = (int)ops[0].reg;
@@ -355,7 +355,7 @@ void ArmRewriter::RewriteSbfx()
 {
 	auto dst = this->Operand(Dst());
 	auto src = m.Cast(
-		PrimitiveType::Int32,
+		BaseType::Int32,
 		m.Slice(
 			this->Operand(Src1()),
 			Src2().imm,
@@ -429,7 +429,7 @@ void ArmRewriter::RewriteUbfx()
 {
 	auto dst = this->Operand(Dst());
 	auto src = m.Cast(
-		PrimitiveType::UInt32,
+		BaseType::UInt32,
 		m.Slice(
 			this->Operand(Src1()),
 			Src2().imm,
@@ -442,7 +442,7 @@ void ArmRewriter::RewriteUmlal()
 	auto dst = host->EnsureSequence(
 		(int)Src1().reg,
 		(int)Dst().reg,
-		PrimitiveType::Word64);
+		BaseType::Word64);
 	auto left = this->Operand(Src2());
 	auto right = this->Operand(Src3());
 	ConditionalSkip();
@@ -450,7 +450,7 @@ void ArmRewriter::RewriteUmlal()
 	MaybeUpdateFlags(dst);
 }
 
-void ArmRewriter::RewriteXtab(PrimitiveType dt)
+void ArmRewriter::RewriteXtab(BaseType dt)
 {
 	auto dst = this->Operand(Dst());
 	auto src = host->EnsureRegister((int)Src2().reg);
@@ -463,7 +463,7 @@ void ArmRewriter::RewriteXtab(PrimitiveType dt)
 	m.Assign(dst, m.IAdd(this->Operand(Src1()), src));
 }
 
-void ArmRewriter::RewriteXtb(PrimitiveType dt)
+void ArmRewriter::RewriteXtb(BaseType dt)
 {
 	auto dst = this->Operand(Dst());
 	auto src = host->EnsureRegister((int)Src1().reg);

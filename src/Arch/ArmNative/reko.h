@@ -1,6 +1,8 @@
 #pragma once
 
-enum class PrimitiveType
+// Most of these definitions should be generated from the C# side.
+
+enum class BaseType
 {
 	Void, 
 	
@@ -69,7 +71,7 @@ enum class TestCondition
 // built, so we can represent them as an opaque handle.
 typedef void * HExpr;
 
-class IRtlEmitter : IUnknown
+class IRtlNativeEmitter : IUnknown
 {
 public:
 	virtual void STDAPICALLTYPE Assign(HExpr dst, HExpr src) = 0;
@@ -85,7 +87,7 @@ public:
 
 	virtual HExpr STDAPICALLTYPE And(HExpr a, HExpr b) = 0;
 	virtual HExpr STDAPICALLTYPE And(HExpr a, int n) = 0;
-	virtual HExpr STDAPICALLTYPE Cast(PrimitiveType type, HExpr a) = 0;
+	virtual HExpr STDAPICALLTYPE Cast(BaseType type, HExpr a) = 0;
 	virtual HExpr STDAPICALLTYPE Comp(HExpr a) = 0;
 	virtual HExpr STDAPICALLTYPE Cond(HExpr a) = 0;
 	virtual HExpr STDAPICALLTYPE Dpb(HExpr dst, HExpr src, int32_t pos) = 0;
@@ -96,7 +98,7 @@ public:
 	virtual HExpr STDAPICALLTYPE IMul(HExpr a, int n) = 0;
 	virtual HExpr STDAPICALLTYPE ISub(HExpr a, HExpr b) = 0;
 	virtual HExpr STDAPICALLTYPE ISub(HExpr a, int n) = 0;
-	virtual HExpr STDAPICALLTYPE Mem(PrimitiveType dt, HExpr ea) = 0;
+	virtual HExpr STDAPICALLTYPE Mem(BaseType dt, HExpr ea) = 0;
 	virtual HExpr STDAPICALLTYPE Mem8(HExpr ea) = 0;
 	virtual HExpr STDAPICALLTYPE Mem16(HExpr ea) = 0;
 	virtual HExpr STDAPICALLTYPE Mem32(HExpr ea) = 0;
@@ -144,10 +146,10 @@ class INativeRewriterHost: public IUnknown
 {
 public:
 	virtual HExpr STDAPICALLTYPE EnsureRegister(int reg) = 0;
-	virtual HExpr STDAPICALLTYPE EnsureSequence(int regHi, int regLo, PrimitiveType size) = 0;
-	virtual HExpr STDAPICALLTYPE EnsureFlagGroup(int baseReg, int bitmask, const char * name, PrimitiveType size) = 0;
-	virtual HExpr STDAPICALLTYPE CreateTemporary(PrimitiveType size) = 0;
+	virtual HExpr STDAPICALLTYPE EnsureSequence(int regHi, int regLo, BaseType size) = 0;
+	virtual HExpr STDAPICALLTYPE EnsureFlagGroup(int baseReg, int bitmask, const char * name, BaseType size) = 0;
+	virtual HExpr STDAPICALLTYPE CreateTemporary(BaseType size) = 0;
 
 	virtual void STDAPICALLTYPE Error(uint64_t uAddress, const char * error) = 0;
-	virtual HExpr STDAPICALLTYPE PseudoProcedure(const char *name, PrimitiveType retType, /* args */...) = 0;
+	virtual HExpr STDAPICALLTYPE PseudoProcedure(const char *name, BaseType retType, /* args */...) = 0;
 };

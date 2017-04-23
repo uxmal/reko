@@ -1,4 +1,25 @@
-﻿using Reko.Core;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2017 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Reko.Core;
+using Reko.Core.NativeInterface;
 using Reko.Core.Rtl;
 using System;
 using System.Collections;
@@ -10,60 +31,12 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm
 {
-    public enum BaseType
-    {
-        Void,
-
-        Bool,
-
-        Byte,
-        SByte,
-        Char8,
-
-        Int16,
-        UInt16,
-        Ptr16,
-        Word16,
-
-        Int32,
-        UInt32,
-        Ptr32,
-        Word32,
-
-        Int64,
-        UInt64,
-        Ptr64,
-        Word64,
-
-        Real32,
-        Real64,
-    }
-
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    [Guid("12506D0F-1C67-4828-9601-96F8ED4D162D")]
-    public interface INativeRewriter
-    {
-        void Next();
-    }
-
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    [Guid("56E6600F-619E-441F-A2C3-A37F07BA0DA0")]
-    [ComVisible(true)]
-    public interface INativeRewriterHost
-    {
-        [PreserveSig] int EnsureRegister(int reg);
-        //int EnsureSequence(int regHi, int regLo, BaseType size);
-        //int EnsureFlagGroup(int baseReg, int bitmask, string name, BaseType size);
-        //int CreateTemporary(int /*BaseType*/ size);
-        //void Error(ulong uAddress, string error);
-        //int PseudoProcedure(string name, BaseType x);
-    }
-
     public class ArmRewriterNew : IEnumerable<RtlInstructionCluster>
     {
         private byte[] bytes;
         private int offset;
         private Address addr;
+
 
         public ArmRewriterNew(byte[] bytes, int offset, Address addr)
         {
@@ -93,15 +66,17 @@ namespace Reko.Arch.Arm
                 this.bytes = bytes;
                 this.hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
 
+                var rtlEmitter = new RtlNativeEmitter();
+                var oRtlEmitter = Marshal.GetIUnknownForObject(rtlEmitter);
+                IntPtr iRtlEmitter;
+                var hr = Marshal.QueryInterface(oRtlEmitter, ref IID_INativeRewriterHost, out iRtlEmitter);
 
+                var host = new ArmNativeRewriterHost();
+                var oHost = Marshal.GetIUnknownForObject(host);
+                IntPtr iHost;
+                hr = Marshal.QueryInterface(oHost, ref IID_INativeRewriterHost, out iHost);
 
-                var host = new ArmNativeHost();
-                var factory = Marshal.GetIUnknownForObject(host);
-                var iid = new Guid("56E6600F-619E-441F-A2C3-A37F07BA0DA0");
-                IntPtr ifac;
-                var hr = Marshal.QueryInterface(factory, ref iid, out ifac);
-
-                this.native = CreateNativeRewriter(hBytes.AddrOfPinnedObject(), bytes.Length, IntPtr.Zero, ifac);
+                this.native = CreateNativeRewriter(hBytes.AddrOfPinnedObject(), bytes.Length, iRtlEmitter, iHost);
             }
 
             public RtlInstructionCluster Current { get; private set; }
@@ -128,42 +103,23 @@ namespace Reko.Arch.Arm
             }
         }
 
+        static ArmRewriterNew()
+        {
+            IID_INativeRewriterHost = typeof(INativeRewriterHost)
+                .GetCustomAttributes(typeof(GuidAttribute), false)
+                .Select(a => new Guid(((GuidAttribute)a).Value))
+                .First();
+            IID_IRtlEmitter = typeof(IRtlNativeEmitter)
+                .GetCustomAttributes(typeof(GuidAttribute), false)
+                .Select(a => new Guid(((GuidAttribute)a).Value))
+                .First();
+        }
+
+        private static  Guid IID_INativeRewriterHost;
+        private static  Guid IID_IRtlEmitter;
+
+
         [DllImport("ArmNative.dll",CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateRewriter")]
         public static extern INativeRewriter CreateNativeRewriter(IntPtr rawbytes, int length, IntPtr rtlEmitter, IntPtr host);
-    }
-
-    [ComVisible(true)]
-    [ClassInterface(ClassInterfaceType.None)]
-    class ArmNativeHost : MarshalByRefObject, INativeRewriterHost
-    {
-        public int CreateTemporary(int /*BaseType*/ size)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int EnsureFlagGroup(int baseReg, int bitmask, string name, BaseType size)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int EnsureRegister(int reg)
-        {
-            return 42;
-        }
-
-        public int EnsureSequence(int regHi, int regLo, BaseType size)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Error(ulong uAddress, string error)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int PseudoProcedure(string name, BaseType x)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

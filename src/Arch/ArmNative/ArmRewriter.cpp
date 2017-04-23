@@ -8,7 +8,7 @@ void Dump(const char * fmt, ...);
 ArmRewriter::ArmRewriter(
 	const uint8_t * rawBytes,
 	size_t length,
-	IRtlEmitter * emitter,
+	IRtlNativeEmitter * emitter,
 	INativeRewriterHost * host)
 :
 	rawBytes(rawBytes),
@@ -444,10 +444,10 @@ STDMETHODIMP ArmRewriter::Next()
 		NotImplementedYet();
 		break;
 
-	case ARM_INS_ADC: RewriteAdcSbc(&IRtlEmitter::IAdd); break;
-	case ARM_INS_ADD: RewriteBinOp(&IRtlEmitter::IAdd, instr->detail->arm.update_flags); break;
-	case ARM_INS_AND: RewriteBinOp(&IRtlEmitter::And, instr->detail->arm.update_flags); break;
-	case ARM_INS_EOR: RewriteBinOp(&IRtlEmitter::Xor, instr->detail->arm.update_flags); break;
+	case ARM_INS_ADC: RewriteAdcSbc(&IRtlNativeEmitter::IAdd); break;
+	case ARM_INS_ADD: RewriteBinOp(&IRtlNativeEmitter::IAdd, instr->detail->arm.update_flags); break;
+	case ARM_INS_AND: RewriteBinOp(&IRtlNativeEmitter::And, instr->detail->arm.update_flags); break;
+	case ARM_INS_EOR: RewriteBinOp(&IRtlNativeEmitter::Xor, instr->detail->arm.update_flags); break;
 	case ARM_INS_B: RewriteB(false); break;
 	case ARM_INS_BFC: RewriteBfc(); break;
 	case ARM_INS_BFI: RewriteBfi(); break;
@@ -460,58 +460,58 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_CMP: RewriteCmp(); break;
 	case ARM_INS_CPS: RewriteCps(); break;
 	case ARM_INS_DMB: RewriteDmb(); break;
-	case ARM_INS_LDR: RewriteLdr(PrimitiveType::Word32); break;
-	case ARM_INS_LDRB: RewriteLdr(PrimitiveType::Byte); break;
-	case ARM_INS_LDRH: RewriteLdr(PrimitiveType::UInt16); break;
-	case ARM_INS_LDRSB: RewriteLdr(PrimitiveType::SByte); break;
-	case ARM_INS_LDRSH: RewriteLdr(PrimitiveType::Int16); break;
+	case ARM_INS_LDR: RewriteLdr(BaseType::Word32); break;
+	case ARM_INS_LDRB: RewriteLdr(BaseType::Byte); break;
+	case ARM_INS_LDRH: RewriteLdr(BaseType::UInt16); break;
+	case ARM_INS_LDRSB: RewriteLdr(BaseType::SByte); break;
+	case ARM_INS_LDRSH: RewriteLdr(BaseType::Int16); break;
 	case ARM_INS_LDRD: RewriteLdrd(); break;
 	case ARM_INS_LDM: RewriteLdm(0); break;
 	case ARM_INS_LDMDB: RewriteLdm(0); break;
 	case ARM_INS_LDMIB: RewriteLdm(4); break;
 	case ARM_INS_NOP: m.Nop(); break;
 	case ARM_INS_MCR: RewriteMcr(); break;
-	case ARM_INS_MLA: RewriteMultiplyAccumulate(&IRtlEmitter::IAdd); break;
-	case ARM_INS_MLS: RewriteMultiplyAccumulate(&IRtlEmitter::ISub); break;
+	case ARM_INS_MLA: RewriteMultiplyAccumulate(&IRtlNativeEmitter::IAdd); break;
+	case ARM_INS_MLS: RewriteMultiplyAccumulate(&IRtlNativeEmitter::ISub); break;
 	case ARM_INS_MOV: RewriteMov(); break;
 	case ARM_INS_MOVT: RewriteMovt(); break;
 	case ARM_INS_MOVW: RewriteMov(); break;
 	case ARM_INS_MRC: RewriteMrc(); break;
 	case ARM_INS_MRS: RewriteMrs(); break;
 	case ARM_INS_MSR: RewriteMsr(); break;
-	case ARM_INS_MUL: RewriteBinOp(&IRtlEmitter::IMul, instr->detail->arm.update_flags); break;
-	case ARM_INS_MVN: RewriteUnaryOp(&IRtlEmitter::Not); break;
-	case ARM_INS_ORR: RewriteBinOp(&IRtlEmitter::Or, false); break;
+	case ARM_INS_MUL: RewriteBinOp(&IRtlNativeEmitter::IMul, instr->detail->arm.update_flags); break;
+	case ARM_INS_MVN: RewriteUnaryOp(&IRtlNativeEmitter::Not); break;
+	case ARM_INS_ORR: RewriteBinOp(&IRtlNativeEmitter::Or, false); break;
 	case ARM_INS_POP: RewritePop(); break;
 	case ARM_INS_PUSH: RewritePush(); break;
 	case ARM_INS_REV: RewriteRev(); break;
-	case ARM_INS_RSB: RewriteRevBinOp(&IRtlEmitter::ISub, instr->detail->arm.update_flags); break;
-	case ARM_INS_SBC: RewriteAdcSbc(&IRtlEmitter::ISub); break;
+	case ARM_INS_RSB: RewriteRevBinOp(&IRtlNativeEmitter::ISub, instr->detail->arm.update_flags); break;
+	case ARM_INS_SBC: RewriteAdcSbc(&IRtlNativeEmitter::ISub); break;
 	case ARM_INS_SBFX: RewriteSbfx(); break;
-	case ARM_INS_SMULBB: RewriteMulbb(false, false, PrimitiveType::Int16, &IRtlEmitter::SMul); break;
-	case ARM_INS_SMULL: RewriteMull(PrimitiveType::Int64, &IRtlEmitter::SMul); break;
+	case ARM_INS_SMULBB: RewriteMulbb(false, false, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMULL: RewriteMull(BaseType::Int64, &IRtlNativeEmitter::SMul); break;
 	case ARM_INS_STM: RewriteStm(); break;
 	case ARM_INS_STMDB: RewriteStm(); break;
 	case ARM_INS_STMIB: RewriteStmib(); break;
-	case ARM_INS_STR: RewriteStr(PrimitiveType::Word32); break;
-	case ARM_INS_STRB: RewriteStr(PrimitiveType::Byte); break;
+	case ARM_INS_STR: RewriteStr(BaseType::Word32); break;
+	case ARM_INS_STRB: RewriteStr(BaseType::Byte); break;
 	case ARM_INS_STRD: RewriteStrd(); break;
-	case ARM_INS_STRH: RewriteStr(PrimitiveType::UInt16); break;
-	case ARM_INS_SUB: RewriteBinOp(&IRtlEmitter::ISub, instr->detail->arm.update_flags); break;
+	case ARM_INS_STRH: RewriteStr(BaseType::UInt16); break;
+	case ARM_INS_SUB: RewriteBinOp(&IRtlNativeEmitter::ISub, instr->detail->arm.update_flags); break;
 	case ARM_INS_SVC: RewriteSvc(); break;
-	case ARM_INS_SXTAB: RewriteXtab(PrimitiveType::SByte); break;
-	case ARM_INS_SXTAH: RewriteXtab(PrimitiveType::Int16); break;
-	case ARM_INS_SXTB: RewriteXtb(PrimitiveType::SByte); break;
-	case ARM_INS_SXTH: RewriteXtb(PrimitiveType::Int16); break;
+	case ARM_INS_SXTAB: RewriteXtab(BaseType::SByte); break;
+	case ARM_INS_SXTAH: RewriteXtab(BaseType::Int16); break;
+	case ARM_INS_SXTB: RewriteXtb(BaseType::SByte); break;
+	case ARM_INS_SXTH: RewriteXtb(BaseType::Int16); break;
 	case ARM_INS_TEQ: RewriteTeq(); break;
 	case ARM_INS_TST: RewriteTst(); break;
 	case ARM_INS_UBFX: RewriteUbfx(); break;
 	case ARM_INS_UMLAL: RewriteUmlal(); break;
-	case ARM_INS_UMULL: RewriteMull(PrimitiveType::UInt64, &IRtlEmitter::UMul); break;
-	case ARM_INS_UXTAB: RewriteXtab(PrimitiveType::Byte); break;
-	case ARM_INS_UXTAH: RewriteXtab(PrimitiveType::UInt16); break;
-	case ARM_INS_UXTB: RewriteXtb(PrimitiveType::Byte); break;
-	case ARM_INS_UXTH: RewriteXtb(PrimitiveType::UInt16); break;
+	case ARM_INS_UMULL: RewriteMull(BaseType::UInt64, &IRtlNativeEmitter::UMul); break;
+	case ARM_INS_UXTAB: RewriteXtab(BaseType::Byte); break;
+	case ARM_INS_UXTAH: RewriteXtab(BaseType::UInt16); break;
+	case ARM_INS_UXTB: RewriteXtb(BaseType::Byte); break;
+	case ARM_INS_UXTH: RewriteXtb(BaseType::UInt16); break;
 
 	case ARM_INS_VLDMIA: RewriteVldmia(); break;
 	case ARM_INS_VMOV: RewriteVmov(); break;
@@ -533,7 +533,7 @@ void ArmRewriter::NotImplementedYet()
 
 HExpr ArmRewriter::NZCV()
 {
-	return host->EnsureFlagGroup((int)ARM_REG_CPSR, 0x1111, "NZCV", PrimitiveType::Byte);
+	return host->EnsureFlagGroup((int)ARM_REG_CPSR, 0x1111, "NZCV", BaseType::Byte);
 }
 
 void ArmRewriter::MaybeUpdateFlags(HExpr opDst)
@@ -706,23 +706,23 @@ HExpr ArmRewriter::Operand(const cs_arm_op & op)
 	return 0;
 }
 
-PrimitiveType ArmRewriter::SizeFromLoadStore()
+BaseType ArmRewriter::SizeFromLoadStore()
 {
 	switch (instr->id)
 	{
-	case ARM_INS_LDR: return PrimitiveType::Word32;
-	case ARM_INS_LDRB: return PrimitiveType::Byte;
-	case ARM_INS_LDRD: return PrimitiveType::Word64;
-	case ARM_INS_LDRH: return PrimitiveType::Word16;
-	case ARM_INS_LDRSB: return PrimitiveType::SByte;
-	case ARM_INS_LDRSH: return PrimitiveType::Int16;
-	case ARM_INS_STR: return PrimitiveType::Word32;
-	case ARM_INS_STRB: return PrimitiveType::Byte;
-	case ARM_INS_STRD: return PrimitiveType::Word64;
-	case ARM_INS_STRH: return PrimitiveType::Word16;
+	case ARM_INS_LDR: return BaseType::Word32;
+	case ARM_INS_LDRB: return BaseType::Byte;
+	case ARM_INS_LDRD: return BaseType::Word64;
+	case ARM_INS_LDRH: return BaseType::Word16;
+	case ARM_INS_LDRSB: return BaseType::SByte;
+	case ARM_INS_LDRSH: return BaseType::Int16;
+	case ARM_INS_STR: return BaseType::Word32;
+	case ARM_INS_STRB: return BaseType::Byte;
+	case ARM_INS_STRD: return BaseType::Word64;
+	case ARM_INS_STRH: return BaseType::Word16;
 	}
 	//assert(false && instr->Id.ToString());
-	return PrimitiveType::Void;
+	return BaseType::Void;
 }
 
 
@@ -778,36 +778,36 @@ HExpr ArmRewriter::TestCond(arm_cc cond)
 	//default:
 	//	throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
 	case ARM_CC_HS:
-		return m.Test(ConditionCode::UGE, FlagGroup(FlagM::CF, "C", PrimitiveType::Byte));
+		return m.Test(ConditionCode::UGE, FlagGroup(FlagM::CF, "C", BaseType::Byte));
 	case ARM_CC_LO:
-		return m.Test(ConditionCode::ULT, FlagGroup(FlagM::CF, "C", PrimitiveType::Byte));
+		return m.Test(ConditionCode::ULT, FlagGroup(FlagM::CF, "C", BaseType::Byte));
 	case ARM_CC_EQ:
-		return m.Test(ConditionCode::EQ, FlagGroup(FlagM::ZF, "Z", PrimitiveType::Byte));
+		return m.Test(ConditionCode::EQ, FlagGroup(FlagM::ZF, "Z", BaseType::Byte));
 	case ARM_CC_GE:
-		return m.Test(ConditionCode::GE, FlagGroup(FlagM::NF | FlagM::ZF | FlagM::VF, "NZV", PrimitiveType::Byte));
+		return m.Test(ConditionCode::GE, FlagGroup(FlagM::NF | FlagM::ZF | FlagM::VF, "NZV", BaseType::Byte));
 	case ARM_CC_GT:
-		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF | FlagM::VF, "NZV", PrimitiveType::Byte));
+		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF | FlagM::VF, "NZV", BaseType::Byte));
 	case ARM_CC_HI:
-		return m.Test(ConditionCode::UGT, FlagGroup(FlagM::ZF | FlagM::CF, "ZC", PrimitiveType::Byte));
+		return m.Test(ConditionCode::UGT, FlagGroup(FlagM::ZF | FlagM::CF, "ZC", BaseType::Byte));
 	case ARM_CC_LE:
-		return m.Test(ConditionCode::LE, FlagGroup(FlagM::ZF | FlagM::CF | FlagM::VF, "NZV", PrimitiveType::Byte));
+		return m.Test(ConditionCode::LE, FlagGroup(FlagM::ZF | FlagM::CF | FlagM::VF, "NZV", BaseType::Byte));
 	case ARM_CC_LS:
-		return m.Test(ConditionCode::ULE, FlagGroup(FlagM::ZF | FlagM::CF, "ZC", PrimitiveType::Byte));
+		return m.Test(ConditionCode::ULE, FlagGroup(FlagM::ZF | FlagM::CF, "ZC", BaseType::Byte));
 	case ARM_CC_LT:
-		return m.Test(ConditionCode::LT, FlagGroup(FlagM::NF | FlagM::VF, "NV", PrimitiveType::Byte));
+		return m.Test(ConditionCode::LT, FlagGroup(FlagM::NF | FlagM::VF, "NV", BaseType::Byte));
 	case ARM_CC_MI:
-		return m.Test(ConditionCode::LT, FlagGroup(FlagM::NF, "N", PrimitiveType::Byte));
+		return m.Test(ConditionCode::LT, FlagGroup(FlagM::NF, "N", BaseType::Byte));
 	case ARM_CC_PL:
-		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF, "NZ", PrimitiveType::Byte));
+		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF, "NZ", BaseType::Byte));
 	case ARM_CC_NE:
-		return m.Test(ConditionCode::NE, FlagGroup(FlagM::ZF, "Z", PrimitiveType::Byte));
+		return m.Test(ConditionCode::NE, FlagGroup(FlagM::ZF, "Z", BaseType::Byte));
 	case ARM_CC_VS:
-		return m.Test(ConditionCode::OV, FlagGroup(FlagM::VF, "V", PrimitiveType::Byte));
+		return m.Test(ConditionCode::OV, FlagGroup(FlagM::VF, "V", BaseType::Byte));
 	}
 	return 0;
 }
 
-HExpr ArmRewriter::FlagGroup(FlagM bits, const char * name, PrimitiveType type)
+HExpr ArmRewriter::FlagGroup(FlagM bits, const char * name, BaseType type)
 {
 	return host->EnsureFlagGroup(ARM_REG_CPSR, (int) bits, name, type);
 }

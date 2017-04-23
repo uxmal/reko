@@ -1,7 +1,7 @@
 #pragma once
 
-typedef HExpr (IRtlEmitter::*UnaryOpEmitter)(HExpr);
-typedef HExpr (IRtlEmitter::*BinOpEmitter)(HExpr, HExpr);
+typedef HExpr (STDAPICALLTYPE IRtlNativeEmitter::*UnaryOpEmitter)(HExpr);
+typedef HExpr (STDAPICALLTYPE IRtlNativeEmitter::*BinOpEmitter)(HExpr, HExpr);
 
 enum class FlagM
 {
@@ -15,7 +15,7 @@ public:
 	ArmRewriter(
 		const uint8_t * rawBytes,
 		size_t length,
-		IRtlEmitter * emitter,
+		IRtlNativeEmitter * emitter,
 		INativeRewriterHost * host);
 
 	STDMETHOD(QueryInterface)(REFIID iid, void ** ppvOut);
@@ -28,7 +28,7 @@ private:
 	void AddConditional(void(*mkInstr)());
 	void ConditionalSkip();
 	void ConditionalAssign(HExpr dst, HExpr src);
-	HExpr FlagGroup(FlagM bits, const char * name, PrimitiveType type);
+	HExpr FlagGroup(FlagM bits, const char * name, BaseType type);
 	arm_cc Invert(arm_cc);
 	bool IsLastOperand(const cs_arm_op & op);
 	//HExpr Operand(const ArmInstructionOperand & op);
@@ -45,7 +45,7 @@ private:
 		return host->EnsureRegister((int)reg);
 	}
 
-	PrimitiveType SizeFromLoadStore();
+	BaseType SizeFromLoadStore();
 	HExpr TestCond(arm_cc cond);
 	const char * ArmRewriter::VectorElementType();
 
@@ -71,7 +71,7 @@ private:
 	void RewriteDmb();
 	void RewriteLdm(int);
 	void RewriteLdm(HExpr dst, const cs_arm_op * range, int length, int offset, bool writeback);
-	void RewriteLdr(PrimitiveType);
+	void RewriteLdr(BaseType);
 	void RewriteLdrd();
 	void RewriteMcr();
 	void RewriteMov();
@@ -79,8 +79,8 @@ private:
 	void RewriteMrc();
 	void RewriteMrs();
 	void RewriteMsr();
-	void RewriteMulbb(bool, bool, PrimitiveType, BinOpEmitter);
-	void RewriteMull(PrimitiveType, BinOpEmitter);
+	void RewriteMulbb(bool, bool, BaseType, BinOpEmitter);
+	void RewriteMull(BaseType, BinOpEmitter);
 	void RewriteMultiplyAccumulate(BinOpEmitter);
 	void RewritePop();
 	void RewritePush();
@@ -89,20 +89,20 @@ private:
 	void RewriteSbfx();
 	void RewriteStm();
 	void RewriteStmib();
-	void RewriteStr(PrimitiveType);
+	void RewriteStr(BaseType);
 	void RewriteSvc();
 	void RewriteUnaryOp(UnaryOpEmitter);
 	void RewriteUbfx();
 	void RewriteVldmia();
 	void RewriteVmov();
 	void RewriteVstmia();
-	void RewriteXtab(PrimitiveType);
-	void RewriteXtb(PrimitiveType);
+	void RewriteXtab(BaseType);
+	void RewriteXtb(BaseType);
 
 private:
 	ULONG cRef;	// COM ref count.
 
-	IRtlEmitter & m;
+	IRtlNativeEmitter & m;
 	INativeRewriterHost * host;
 	cs_insn * instr;
 	const uint8_t * rawBytes;

@@ -24,7 +24,7 @@ void ArmRewriter::RewriteCps()
 {
 	if (instr->detail->arm.cps_mode == ARM_CPSMODE_ID)
 	{
-		m.SideEffect(host->PseudoProcedure("__cps_id", PrimitiveType::Void));
+		m.SideEffect(host->PseudoProcedure("__cps_id", BaseType::Void));
 		return;
 	}
 	NotImplementedYet();
@@ -72,12 +72,12 @@ void ArmRewriter::RewriteMrc()
 void ArmRewriter::RewriteMrs()
 {
 	ConditionalSkip();
-	m.Assign(Operand(Dst()), host->PseudoProcedure("__mrs", PrimitiveType::Word32, Operand(Src1())));
+	m.Assign(Operand(Dst()), host->PseudoProcedure("__mrs", BaseType::Word32, Operand(Src1())));
 }
 
 void ArmRewriter::RewriteMsr()
 {
 	ConditionalSkip();
-	m.SideEffect(host->PseudoProcedure("__msr", PrimitiveType::Word32, Operand(Dst()), Operand(Src1())));
+	m.SideEffect(host->PseudoProcedure("__msr", BaseType::Word32, Operand(Dst()), Operand(Src1())));
 }
 
