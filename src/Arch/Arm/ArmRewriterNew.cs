@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm
 {
-    public interface IRewriter
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("12506D0F-1C67-4828-9601-96F8ED4D162D")]
+    public interface INativeRewriter
     {
-
+        void Next();
     }
 
     public class ArmRewriterNew : IEnumerable<RtlInstructionCluster>
@@ -23,6 +25,9 @@ namespace Reko.Arch.Arm
 
         public ArmRewriterNew(byte[] bytes, int offset, Address addr)
         {
+            this.bytes = bytes;
+            this.offset = offset;
+            this.addr = addr;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -37,7 +42,7 @@ namespace Reko.Arch.Arm
 
         public class Enumerator : IEnumerator<RtlInstructionCluster>
         {
-            private IntPtr native;
+            private INativeRewriter native;
             private byte[] bytes;
             private GCHandle hBytes;
 
@@ -46,7 +51,7 @@ namespace Reko.Arch.Arm
                 this.bytes = bytes;
                 this.hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
 
-                this.native = CreateNativeRewriter(IntPtr.Zero, 3, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                this.native = CreateNativeRewriter(hBytes.AddrOfPinnedObject(), bytes.Length, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
             }
 
             public RtlInstructionCluster Current { get; private set; }
@@ -63,7 +68,7 @@ namespace Reko.Arch.Arm
 
             public bool MoveNext()
             {
-                //native.Next();
+                native.Next();
                 return false;
             }
 
@@ -74,6 +79,6 @@ namespace Reko.Arch.Arm
         }
 
         [DllImport("ArmNative.dll",CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateRewriter")]
-        public static extern IntPtr CreateNativeRewriter(IntPtr rawbytes, int length, IntPtr rtlEmitter, IntPtr frame, IntPtr host);
+        public static extern INativeRewriter CreateNativeRewriter(IntPtr rawbytes, int length, IntPtr rtlEmitter, IntPtr frame, IntPtr host);
     }
 }

@@ -3,29 +3,80 @@
 
 #include "ArmRewriter.h"
 
+void Dump(const char * fmt, ...);
+
 ArmRewriter::ArmRewriter(
-	void * rawBytes,
-	int length,
+	const uint8_t * rawBytes,
+	size_t length,
 	IRtlEmitter * emitter,
 	IFrame * frame,
 	IRewriterHost * host)
 :
+	rawBytes(rawBytes),
+	length(length),
 	m(*emitter),
 	host(*host),
-	frame(*frame)
+	frame(*frame),
+	cRef(0),
+	instr(nullptr)
 {
-	auto hcap = ::LoadLibrary(L"cs_open");
+	auto hcap = ::LoadLibraryW(L"cs_open");
 	::GetProcAddress(hcap, "cs_open");
-	csh hcapstone;
-	cs_open(CS_ARCH_ARM, CS_MODE_ARM, &hcapstone); 
-	cs_option(hcapstone, CS_OPT_DETAIL, CS_OPT_ON);
+	Dump(".ctor: %08x", this);
+	auto ec = cs_open(CS_ARCH_ARM, CS_MODE_ARM, &hcapstone); 
+	ec = cs_option(hcapstone, CS_OPT_DETAIL, CS_OPT_ON);
+	this->instr = cs_malloc(hcapstone);
 }
 
-void ArmRewriter::Next()
+// {12506D0F-1C67-4828-9601-96F8ED4D162D}
+static const IID IID_INativeRewriter =
+{ 0x12506d0f, 0x1c67, 0x4828,{ 0x96, 0x1, 0x96, 0xf8, 0xed, 0x4d, 0x16, 0x2d } };
+
+void Dump(const char * fmt, ...)
 {
-	uint64_t addr;
-	cs_disasm_iter(0, 0, 0, &addr, &instr);
-	switch (instr.id)
+	char buf[300];
+	va_list args;
+	va_start(args, fmt);
+	vsnprintf(buf, _countof(buf), fmt, args);
+	::strcat_s(buf, "\r\n");
+	::OutputDebugStringA(buf);
+}
+
+STDMETHODIMP ArmRewriter::QueryInterface(REFIID riid, void ** ppvOut)
+{
+	Dump("QI: %08x %d", this, cRef);
+	*ppvOut = nullptr;
+	if (riid == IID_IUnknown || riid == IID_INativeRewriter)
+	{
+		AddRef();
+		*ppvOut = this;
+		return S_OK;
+	}
+	return E_NOINTERFACE;
+}
+
+STDMETHODIMP_(ULONG) ArmRewriter::AddRef()
+{
+	Dump("AddRef: %08x %d", this, cRef +1);
+	return ++this->cRef;
+}
+
+STDMETHODIMP_(ULONG) ArmRewriter::Release()
+{
+	Dump("Release: %08x %d", this, cRef - 1);
+	if (--this->cRef > 0)
+		return this->cRef;
+	Dump("Release: %08x destroyed", this);
+	delete this;
+	return 0;
+}
+
+STDMETHODIMP ArmRewriter::Next()
+{
+	Dump("Next: %08x", this);
+	uint64_t addr = 0x00123400;
+	bool f = cs_disasm_iter(hcapstone, &rawBytes, &length, &addr, this->instr);
+	switch (instr->id)
 	{
 	default:
 
@@ -396,9 +447,9 @@ void ArmRewriter::Next()
 		break;
 
 	case ARM_INS_ADC: RewriteAdcSbc(&IRtlEmitter::IAdd); break;
-	case ARM_INS_ADD: RewriteBinOp(&IRtlEmitter::IAdd, instr.detail->arm.update_flags); break;
-	case ARM_INS_AND: RewriteBinOp(&IRtlEmitter::And, instr.detail->arm.update_flags); break;
-	case ARM_INS_EOR: RewriteBinOp(&IRtlEmitter::Xor, instr.detail->arm.update_flags); break;
+	case ARM_INS_ADD: RewriteBinOp(&IRtlEmitter::IAdd, instr->detail->arm.update_flags); break;
+	case ARM_INS_AND: RewriteBinOp(&IRtlEmitter::And, instr->detail->arm.update_flags); break;
+	case ARM_INS_EOR: RewriteBinOp(&IRtlEmitter::Xor, instr->detail->arm.update_flags); break;
 	case ARM_INS_B: RewriteB(false); break;
 	case ARM_INS_BFC: RewriteBfc(); break;
 	case ARM_INS_BFI: RewriteBfi(); break;
@@ -430,13 +481,13 @@ void ArmRewriter::Next()
 	case ARM_INS_MRC: RewriteMrc(); break;
 	case ARM_INS_MRS: RewriteMrs(); break;
 	case ARM_INS_MSR: RewriteMsr(); break;
-	case ARM_INS_MUL: RewriteBinOp(&IRtlEmitter::IMul, instr.detail->arm.update_flags); break;
+	case ARM_INS_MUL: RewriteBinOp(&IRtlEmitter::IMul, instr->detail->arm.update_flags); break;
 	case ARM_INS_MVN: RewriteUnaryOp(&IRtlEmitter::Not); break;
 	case ARM_INS_ORR: RewriteBinOp(&IRtlEmitter::Or, false); break;
 	case ARM_INS_POP: RewritePop(); break;
 	case ARM_INS_PUSH: RewritePush(); break;
 	case ARM_INS_REV: RewriteRev(); break;
-	case ARM_INS_RSB: RewriteRevBinOp(&IRtlEmitter::ISub, instr.detail->arm.update_flags); break;
+	case ARM_INS_RSB: RewriteRevBinOp(&IRtlEmitter::ISub, instr->detail->arm.update_flags); break;
 	case ARM_INS_SBC: RewriteAdcSbc(&IRtlEmitter::ISub); break;
 	case ARM_INS_SBFX: RewriteSbfx(); break;
 	case ARM_INS_SMULBB: RewriteMulbb(false, false, PrimitiveType::Int16, &IRtlEmitter::SMul); break;
@@ -448,7 +499,7 @@ void ArmRewriter::Next()
 	case ARM_INS_STRB: RewriteStr(PrimitiveType::Byte); break;
 	case ARM_INS_STRD: RewriteStrd(); break;
 	case ARM_INS_STRH: RewriteStr(PrimitiveType::UInt16); break;
-	case ARM_INS_SUB: RewriteBinOp(&IRtlEmitter::ISub, instr.detail->arm.update_flags); break;
+	case ARM_INS_SUB: RewriteBinOp(&IRtlEmitter::ISub, instr->detail->arm.update_flags); break;
 	case ARM_INS_SVC: RewriteSvc(); break;
 	case ARM_INS_SXTAB: RewriteXtab(PrimitiveType::SByte); break;
 	case ARM_INS_SXTAH: RewriteXtab(PrimitiveType::Int16); break;
@@ -469,14 +520,15 @@ void ArmRewriter::Next()
 	case ARM_INS_VSTMIA: RewriteVstmia(); break;
 
 	}
+	return S_OK;
 }
 
 void ArmRewriter::NotImplementedYet()
 {
 	char buf[200];	//$TODO: hello buffer overflow!
-	::snprintf(buf, sizeof(buf), "Rewriting ARM opcode '%s' is not supported yet.", instr.mnemonic);
+	::snprintf(buf, sizeof(buf), "Rewriting ARM opcode '%s' is not supported yet.", instr->mnemonic);
 	host.Error(
-		instr.address,
+		instr->address,
 		buf);
 	m.Invalid();
 }
@@ -488,7 +540,7 @@ IExpression * ArmRewriter::NZCV()
 
 void ArmRewriter::MaybeUpdateFlags(IExpression * opDst)
 {
-	if (instr.detail->arm.update_flags)
+	if (instr->detail->arm.update_flags)
 	{
 		m.Assign(NZCV(), m.Cond(opDst));
 	}
@@ -511,19 +563,19 @@ void ArmRewriter::RewriteB(bool link)
 	if (link)
 	{
 		m.SetRtlClass(RtlClass::Transfer);
-		if (instr.detail->arm.cc == ARM_CC_AL)
+		if (instr->detail->arm.cc == ARM_CC_AL)
 		{
 			m.Call(dst, 0);
 		}
 		else
 		{
 			//$TODO: conditional code.
-			//m.If(TestCond(instr.detail->arm.CodeCondition), new RtlCall(dst, 0, RtlClass::Transfer));
+			//m.If(TestCond(instr->detail->arm.CodeCondition), new RtlCall(dst, 0, RtlClass::Transfer));
 		}
 	}
 	else
 	{
-		if (instr.detail->arm.cc == ARM_CC_AL)
+		if (instr->detail->arm.cc == ARM_CC_AL)
 		{
 			m.SetRtlClass(RtlClass::Transfer);
 			m.Goto(dst);
@@ -533,12 +585,12 @@ void ArmRewriter::RewriteB(bool link)
 			m.SetRtlClass(RtlClass::ConditionalTransfer);
 			if (dstIsAddress)
 			{
-				m.Branch(TestCond(instr.detail->arm.cc), dst, RtlClass::ConditionalTransfer);
+				m.Branch(TestCond(instr->detail->arm.cc), dst, RtlClass::ConditionalTransfer);
 			}
 			else
 			{
 				//$TODO: conditional code
-				//m.If(TestCond(instr.detail->arm.CodeCondition), new RtlGoto(dst, RtlClass::ConditionalTransfer));
+				//m.If(TestCond(instr->detail->arm.CodeCondition), new RtlGoto(dst, RtlClass::ConditionalTransfer));
 			}
 		}
 	}
@@ -546,9 +598,9 @@ void ArmRewriter::RewriteB(bool link)
 
 void ArmRewriter::AddConditional(void (*mkInstr)())
 {
-	//if (instr.detail->arm.CodeCondition != ArmCodeCondition.AL)
+	//if (instr->detail->arm.CodeCondition != ArmCodeCondition.AL)
 	//{
-	//	rtlInstr = new RtlIf(TestCond(instr.detail->arm.CodeCondition), rtlInstr);
+	//	rtlInstr = new RtlIf(TestCond(instr->detail->arm.CodeCondition), rtlInstr);
 	//}
 	//ric.Instructions.Add(rtlInstr);
 }
@@ -556,9 +608,9 @@ void ArmRewriter::AddConditional(void (*mkInstr)())
 void ArmRewriter::ConditionalAssign(IExpression * dst, IExpression * src)
 {
 	/*RtlInstruction rtlInstr = new RtlAssignment(dst, src);
-	if (instr.detail->arm.CodeCondition != ArmCodeCondition::AL)
+	if (instr->detail->arm.CodeCondition != ArmCodeCondition::AL)
 	{
-		rtlInstr = new RtlIf(TestCond(instr.detail->arm.CodeCondition), rtlInstr);
+		rtlInstr = new RtlIf(TestCond(instr->detail->arm.CodeCondition), rtlInstr);
 	}
 	ric.Instructions.Add(rtlInstr);*/
 }
@@ -567,12 +619,12 @@ void ArmRewriter::ConditionalAssign(IExpression * dst, IExpression * src)
 // instruction to skip the remainder of the instruction cluster.
 void ArmRewriter::ConditionalSkip()
 {
-	auto cc = instr.detail->arm.cc;
+	auto cc = instr->detail->arm.cc;
 	if (cc == ARM_CC_AL)
 		return; // never skip!
 	m.BranchInMiddleOfInstruction(
 		TestCond(Invert(cc)),
-		m.Ptr32(static_cast<uint32_t>(instr.address) + 4),
+		m.Ptr32(static_cast<uint32_t>(instr->address) + 4),
 		RtlClass::ConditionalTransfer);
 }
 
@@ -601,7 +653,7 @@ arm_cc ArmRewriter::Invert(arm_cc cc)
 
 bool ArmRewriter::IsLastOperand(const cs_arm_op & op)
 {
-	return &op == &instr.detail->arm.operands[instr.detail->arm.op_count - 1];
+	return &op == &instr->detail->arm.operands[instr->detail->arm.op_count - 1];
 }
 
 IExpression * ArmRewriter::Operand(const cs_arm_op & op)
@@ -632,7 +684,7 @@ IExpression * ArmRewriter::Operand(const cs_arm_op & op)
 			// PC-relative address
 			if (op.mem.disp != 0)
 			{
-				auto dst = (uint32_t)((int32_t)instr.address + op.mem.disp) + 8u;
+				auto dst = (uint32_t)((int32_t)instr->address + op.mem.disp) + 8u;
 				return m.Mem(SizeFromLoadStore(), m.Ptr32(dst));
 			}
 		}
@@ -643,7 +695,7 @@ IExpression * ArmRewriter::Operand(const cs_arm_op & op)
 				? m.ISub(ea, offset)
 				: m.IAdd(ea, offset);
 		}
-		if (IsLastOperand(op) && instr.detail->arm.writeback)
+		if (IsLastOperand(op) && instr->detail->arm.writeback)
 		{
 			m.Assign(baseReg, ea);
 			ea = baseReg;
@@ -658,7 +710,7 @@ IExpression * ArmRewriter::Operand(const cs_arm_op & op)
 
 PrimitiveType ArmRewriter::SizeFromLoadStore()
 {
-	switch (instr.id)
+	switch (instr->id)
 	{
 	case ARM_INS_LDR: return PrimitiveType::Word32;
 	case ARM_INS_LDRB: return PrimitiveType::Byte;
@@ -671,7 +723,7 @@ PrimitiveType ArmRewriter::SizeFromLoadStore()
 	case ARM_INS_STRD: return PrimitiveType::Word64;
 	case ARM_INS_STRH: return PrimitiveType::Word16;
 	}
-	//assert(false && instr.Id.ToString());
+	//assert(false && instr->Id.ToString());
 	return PrimitiveType::Void;
 }
 
@@ -700,7 +752,7 @@ void ArmRewriter::MaybePostOperand(const cs_arm_op & op)
 		return;
 	if (op.type != ARM_OP_MEM)
 		return;
-	auto lastOp = instr.detail->arm.operands[instr.detail->arm.op_count - 1];
+	auto lastOp = instr->detail->arm.operands[instr->detail->arm.op_count - 1];
 	auto baseReg = Reg(op.mem.base);
 	auto offset = Operand(lastOp);
 	auto ea = lastOp.subtracted

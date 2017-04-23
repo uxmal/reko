@@ -27,7 +27,7 @@ void ArmRewriter::RewriteVldmia()
 	/*
 	auto rSrc = this->Operand(Dst());
 	auto offset = 0;
-	for (auto r : instr.detail->arm.Operands.Skip(1))
+	for (auto r : instr->detail->arm.Operands.Skip(1))
 	{
 		auto dst = this->Operand(r);
 		IExpression * ea =
@@ -37,7 +37,7 @@ void ArmRewriter::RewriteVldmia()
 		m.Assign(dst, m.Mem(dst.DataType, ea));
 		offset += dst.DataType.Size;
 	}
-	if (instr.detail->arm.WriteBack)
+	if (instr->detail->arm.WriteBack)
 	{
 		m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
 	}
@@ -64,7 +64,7 @@ void ArmRewriter::RewriteVstmia()
 	/*
 	auto rSrc = this->Operand(Dst());
 	int offset = 0;
-	for (auto r : instr.detail->arm.Operands.Skip(1))
+	for (auto r : instr->detail->arm.Operands.Skip(1))
 	{
 		auto dst = this->Operand(r);
 		IExpression * ea =
@@ -74,7 +74,7 @@ void ArmRewriter::RewriteVstmia()
 		m.Assign(m.Mem(dst.DataType, ea), dst);
 		offset += dst.DataType.Size;
 	}
-	if (instr.detail->arm.WriteBack)
+	if (instr->detail->arm.WriteBack)
 	{
 		m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
 	}
@@ -83,7 +83,7 @@ void ArmRewriter::RewriteVstmia()
 
 const char * ArmRewriter::VectorElementType()
 {
-	switch (instr.detail->arm.vector_size)
+	switch (instr->detail->arm.vector_size)
 	{
 	case ARM_VECTORDATA_I32: return "i32";
 	default: NotImplementedYet(); return "(NYI)";

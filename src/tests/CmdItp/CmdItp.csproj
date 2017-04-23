@@ -53,6 +53,10 @@
       <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
       <Name>Arm</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

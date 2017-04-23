@@ -7,7 +7,7 @@
 
 extern "C" {
 	__declspec(dllexport)
-		IRewriter * __cdecl CreateRewriter(void * rawBytes, int length, IRtlEmitter * m, IFrame * frame, IRewriterHost * host)
+		INativeRewriter * __cdecl CreateRewriter(const uint8_t * rawBytes, int length, IRtlEmitter * m, IFrame * frame, IRewriterHost * host)
 	{
 		return new ArmRewriter(rawBytes, length, m, frame, host);
 	}

@@ -9,16 +9,21 @@ enum class FlagM
 };
 inline FlagM operator | (FlagM a, FlagM b) { return (FlagM)((int)a | (int)b); }
 
-class ArmRewriter : public IRewriter
+class ArmRewriter : public INativeRewriter
 {
 public:
 	ArmRewriter(
-		void * rawBytes,
-		int length,
+		const uint8_t * rawBytes,
+		size_t length,
 		IRtlEmitter * emitter,
 		IFrame * frame,
 		IRewriterHost * host);
-	virtual void Next() override;
+
+	STDMETHOD(QueryInterface)(REFIID iid, void ** ppvOut);
+	STDMETHOD_(ULONG, AddRef)();
+	STDMETHOD_(ULONG, Release)();
+
+	STDMETHOD(Next)();
 
 private:
 	void AddConditional(void(*mkInstr)());
@@ -41,10 +46,10 @@ private:
 	IExpression * TestCond(arm_cc cond);
 	const char * ArmRewriter::VectorElementType();
 
-	const cs_arm_op & Dst() { return instr.detail->arm.operands[0]; }
-	const cs_arm_op & Src1() { return instr.detail->arm.operands[1]; }
-	const cs_arm_op & Src2() { return instr.detail->arm.operands[2]; }
-	const cs_arm_op & Src3() { return instr.detail->arm.operands[3]; }
+	const cs_arm_op & Dst() { return instr->detail->arm.operands[0]; }
+	const cs_arm_op & Src1() { return instr->detail->arm.operands[1]; }
+	const cs_arm_op & Src2() { return instr->detail->arm.operands[2]; }
+	const cs_arm_op & Src3() { return instr->detail->arm.operands[3]; }
 
 	void RewriteStrd();
 	void RewriteTeq();
@@ -92,8 +97,13 @@ private:
 	void RewriteXtb(PrimitiveType);
 
 private:
+	ULONG cRef;	// COM ref count.
+
 	IRtlEmitter & m;
 	IRewriterHost & host;
 	IFrame & frame;
-	cs_insn instr;
+	cs_insn * instr;
+	const uint8_t * rawBytes;
+	size_t length;
+	csh hcapstone;
 };

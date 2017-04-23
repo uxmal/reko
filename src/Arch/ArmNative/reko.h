@@ -144,10 +144,10 @@ public:
 	virtual IExpression * Word64(uint64_t) = 0;
 };
 
-class IRewriter
+class INativeRewriter : public IUnknown
 {
 public:
-	virtual void Next() = 0;
+	virtual STDMETHODIMP Next() = 0;
 };
 
 class IRewriterHost

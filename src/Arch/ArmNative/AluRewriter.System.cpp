@@ -22,7 +22,7 @@
 
 void ArmRewriter::RewriteCps()
 {
-	if (instr.detail->arm.cps_mode == ARM_CPSMODE_ID)
+	if (instr->detail->arm.cps_mode == ARM_CPSMODE_ID)
 	{
 		m.SideEffect(host.PseudoProcedure("__cps_id", PrimitiveType::Void));
 		return;
@@ -34,7 +34,7 @@ void ArmRewriter::RewriteDmb()
 {
 	//$TODO
 	/*
-	auto memBarrier = instr.detail->arm.MemoryBarrier.ToString().ToLowerInvariant();
+	auto memBarrier = instr->detail->arm.MemoryBarrier.ToString().ToLowerInvariant();
 	auto name = "__dmb_" + memBarrier;
 	m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
 	*/
@@ -47,7 +47,7 @@ void ArmRewriter::RewriteMcr()
 	m.SideEffect(host.PseudoProcedure(
 		"__mcr",
 		PrimitiveType::Void,
-		instr.detail->arm.Operands
+		instr->detail->arm.Operands
 		.Select(o = > Operand(o))
 		.ToArray()));
 		*/
@@ -57,7 +57,7 @@ void ArmRewriter::RewriteMrc()
 {
 	//$TODO
 /*
-	auto ops = instr.detail->arm.Operands
+	auto ops = instr->detail->arm.Operands
 		.Select(o = > Operand(o))
 		.ToList();
 	auto regDst = ops.OfType<Identifier>().SingleOrDefault();

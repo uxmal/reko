@@ -13,7 +13,8 @@
 
 #include <stdio.h>
 #include <stdint.h>
-//#include <objbase.h>
+#include <objbase.h>
+#include <stdarg.h>
 
 #include "../../../external/Capstone/X86/include/capstone.h"
 
