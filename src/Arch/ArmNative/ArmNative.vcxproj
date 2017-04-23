@@ -146,7 +146,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="arm.h" />
     <ClInclude Include="ArmRewriter.h" />
     <ClInclude Include="reko.h" />
     <ClInclude Include="stdafx.h" />

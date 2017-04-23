@@ -2,8 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "arm.h"
-
 #include "reko.h"
 #include "ArmRewriter.h"
 

@@ -18,12 +18,11 @@
 
 #include "stdafx.h"
 #include "reko.h"
-#include "arm.h"
 #include "ArmRewriter.h"
 
 	void ArmRewriter::RewriteCps()
 	{
-		if (instr.ArchitectureDetail.CpsMode == ArmCpsMode::ID)
+		if (instr.detail->arm.cps_mode == ARM_CPSMODE_ID)
 		{
 			m.SideEffect(host.PseudoProcedure("__cps_id", PrimitiveType::Void));
 			return;
@@ -35,7 +34,7 @@
 	{
 		//$TODO
 		/*
-		auto memBarrier = instr.ArchitectureDetail.MemoryBarrier.ToString().ToLowerInvariant();
+		auto memBarrier = instr.detail->arm.MemoryBarrier.ToString().ToLowerInvariant();
 		auto name = "__dmb_" + memBarrier;
 		m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
 		*/
@@ -48,7 +47,7 @@
 		m.SideEffect(host.PseudoProcedure(
 			"__mcr",
 			PrimitiveType::Void,
-			instr.ArchitectureDetail.Operands
+			instr.detail->arm.Operands
 			.Select(o = > Operand(o))
 			.ToArray()));
 			*/
@@ -58,7 +57,7 @@
 	{
 		//$TODO
 /*
-		auto ops = instr.ArchitectureDetail.Operands
+		auto ops = instr.detail->arm.Operands
 			.Select(o = > Operand(o))
 			.ToList();
 		auto regDst = ops.OfType<Identifier>().SingleOrDefault();

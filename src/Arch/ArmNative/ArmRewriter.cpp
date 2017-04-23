@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "reko.h"
-#include "arm.h"
 
 #include "ArmRewriter.h"
 
@@ -22,449 +21,450 @@ frame(*frame)
 
 void ArmRewriter::Next()
 {
-	//this->instr = dasm->Next();
-	switch (instr.Id)
+	uint64_t addr;
+	cs_disasm_iter(0, 0, 0, &addr, &instr);
+	switch (instr.id)
 	{
 	default:
 
-	case Opcode::ADR:
-	case Opcode::AESD:
-	case Opcode::AESE:
-	case Opcode::AESIMC:
-	case Opcode::AESMC:
-	case Opcode::BKPT:
-	case Opcode::BXJ:
-	case Opcode::CDP:
-	case Opcode::CDP2:
-	case Opcode::CLREX:
-	case Opcode::CRC32B:
-	case Opcode::CRC32CB:
-	case Opcode::CRC32CH:
-	case Opcode::CRC32CW:
-	case Opcode::CRC32H:
-	case Opcode::CRC32W:
-	case Opcode::DBG:
-	case Opcode::DSB:
-	case Opcode::FLDMDBX:
-	case Opcode::FLDMIAX:
-	case Opcode::VMRS:
-	case Opcode::FSTMDBX:
-	case Opcode::FSTMIAX:
-	case Opcode::HINT:
-	case Opcode::HLT:
-	case Opcode::ISB:
-	case Opcode::LDA:
-	case Opcode::LDAB:
-	case Opcode::LDAEX:
-	case Opcode::LDAEXB:
-	case Opcode::LDAEXD:
-	case Opcode::LDAEXH:
-	case Opcode::LDAH:
-	case Opcode::LDC2L:
-	case Opcode::LDC2:
-	case Opcode::LDCL:
-	case Opcode::LDC:
-	case Opcode::LDMDA:
-	case Opcode::LDRBT:
-	case Opcode::LDREX:
-	case Opcode::LDREXB:
-	case Opcode::LDREXD:
-	case Opcode::LDREXH:
-	case Opcode::LDRHT:
-	case Opcode::LDRSBT:
-	case Opcode::LDRSHT:
-	case Opcode::LDRT:
-	case Opcode::MCR2:
-	case Opcode::MCRR:
-	case Opcode::MCRR2:
-	case Opcode::MRC2:
-	case Opcode::MRRC:
-	case Opcode::MRRC2:
-	case Opcode::PKHBT:
-	case Opcode::PKHTB:
-	case Opcode::PLDW:
-	case Opcode::PLD:
-	case Opcode::PLI:
-	case Opcode::QADD:
-	case Opcode::QADD16:
-	case Opcode::QADD8:
-	case Opcode::QASX:
-	case Opcode::QDADD:
-	case Opcode::QDSUB:
-	case Opcode::QSAX:
-	case Opcode::QSUB:
-	case Opcode::QSUB16:
-	case Opcode::QSUB8:
-	case Opcode::RBIT:
-	case Opcode::REV16:
-	case Opcode::REVSH:
-	case Opcode::RFEDA:
-	case Opcode::RFEDB:
-	case Opcode::RFEIA:
-	case Opcode::RFEIB:
-	case Opcode::RSC:
-	case Opcode::SADD16:
-	case Opcode::SADD8:
-	case Opcode::SASX:
-	case Opcode::SDIV:
-	case Opcode::SEL:
-	case Opcode::SETEND:
-	case Opcode::SHA1C:
-	case Opcode::SHA1H:
-	case Opcode::SHA1M:
-	case Opcode::SHA1P:
-	case Opcode::SHA1SU0:
-	case Opcode::SHA1SU1:
-	case Opcode::SHA256H:
-	case Opcode::SHA256H2:
-	case Opcode::SHA256SU0:
-	case Opcode::SHA256SU1:
-	case Opcode::SHADD16:
-	case Opcode::SHADD8:
-	case Opcode::SHASX:
-	case Opcode::SHSAX:
-	case Opcode::SHSUB16:
-	case Opcode::SHSUB8:
-	case Opcode::SMC:
-	case Opcode::SMLABB:
-	case Opcode::SMLABT:
-	case Opcode::SMLAD:
-	case Opcode::SMLADX:
-	case Opcode::SMLAL:
-	case Opcode::SMLALBB:
-	case Opcode::SMLALBT:
-	case Opcode::SMLALD:
-	case Opcode::SMLALDX:
-	case Opcode::SMLALTB:
-	case Opcode::SMLALTT:
-	case Opcode::SMLATB:
-	case Opcode::SMLATT:
-	case Opcode::SMLAWB:
-	case Opcode::SMLAWT:
-	case Opcode::SMLSD:
-	case Opcode::SMLSDX:
-	case Opcode::SMLSLD:
-	case Opcode::SMLSLDX:
-	case Opcode::SMMLA:
-	case Opcode::SMMLAR:
-	case Opcode::SMMLS:
-	case Opcode::SMMLSR:
-	case Opcode::SMMUL:
-	case Opcode::SMMULR:
-	case Opcode::SMUAD:
-	case Opcode::SMUADX:
-	case Opcode::SMULBT:
-	case Opcode::SMULTB:
-	case Opcode::SMULTT:
-	case Opcode::SMULWB:
-	case Opcode::SMULWT:
-	case Opcode::SMUSD:
-	case Opcode::SMUSDX:
-	case Opcode::SRSDA:
-	case Opcode::SRSDB:
-	case Opcode::SRSIA:
-	case Opcode::SRSIB:
-	case Opcode::SSAT:
-	case Opcode::SSAT16:
-	case Opcode::SSAX:
-	case Opcode::SSUB16:
-	case Opcode::SSUB8:
-	case Opcode::STC2L:
-	case Opcode::STC2:
-	case Opcode::STCL:
-	case Opcode::STC:
-	case Opcode::STL:
-	case Opcode::STLB:
-	case Opcode::STLEX:
-	case Opcode::STLEXB:
-	case Opcode::STLEXD:
-	case Opcode::STLEXH:
-	case Opcode::STLH:
-	case Opcode::STMDA:
-	case Opcode::STRBT:
-	case Opcode::STREX:
-	case Opcode::STREXB:
-	case Opcode::STREXD:
-	case Opcode::STREXH:
-	case Opcode::STRHT:
-	case Opcode::STRT:
-	case Opcode::SWP:
-	case Opcode::SWPB:
-	case Opcode::SXTAB16:
-	case Opcode::SXTB16:
-	case Opcode::TRAP:
-	case Opcode::UADD16:
-	case Opcode::UADD8:
-	case Opcode::UASX:
-	case Opcode::UDF:
-	case Opcode::UDIV:
-	case Opcode::UHADD16:
-	case Opcode::UHADD8:
-	case Opcode::UHASX:
-	case Opcode::UHSAX:
-	case Opcode::UHSUB16:
-	case Opcode::UHSUB8:
-	case Opcode::UMAAL:
-	case Opcode::UQADD16:
-	case Opcode::UQADD8:
-	case Opcode::UQASX:
-	case Opcode::UQSAX:
-	case Opcode::UQSUB16:
-	case Opcode::UQSUB8:
-	case Opcode::USAD8:
-	case Opcode::USADA8:
-	case Opcode::USAT:
-	case Opcode::USAT16:
-	case Opcode::USAX:
-	case Opcode::USUB16:
-	case Opcode::USUB8:
-	case Opcode::UXTAB16:
-	case Opcode::UXTB16:
-	case Opcode::VABAL:
-	case Opcode::VABA:
-	case Opcode::VABDL:
-	case Opcode::VABD:
-	case Opcode::VABS:
-	case Opcode::VACGE:
-	case Opcode::VACGT:
-	case Opcode::VADD:
-	case Opcode::VADDHN:
-	case Opcode::VADDL:
-	case Opcode::VADDW:
-	case Opcode::VAND:
-	case Opcode::VBIC:
-	case Opcode::VBIF:
-	case Opcode::VBIT:
-	case Opcode::VBSL:
-	case Opcode::VCEQ:
-	case Opcode::VCGE:
-	case Opcode::VCGT:
-	case Opcode::VCLE:
-	case Opcode::VCLS:
-	case Opcode::VCLT:
-	case Opcode::VCLZ:
-	case Opcode::VCMP:
-	case Opcode::VCMPE:
-	case Opcode::VCNT:
-	case Opcode::VCVTA:
-	case Opcode::VCVTB:
-	case Opcode::VCVT:
-	case Opcode::VCVTM:
-	case Opcode::VCVTN:
-	case Opcode::VCVTP:
-	case Opcode::VCVTT:
-	case Opcode::VDIV:
-	case Opcode::VDUP:
-	case Opcode::VEOR:
-	case Opcode::VEXT:
-	case Opcode::VFMA:
-	case Opcode::VFMS:
-	case Opcode::VFNMA:
-	case Opcode::VFNMS:
-	case Opcode::VHADD:
-	case Opcode::VHSUB:
-	case Opcode::VLD1:
-	case Opcode::VLD2:
-	case Opcode::VLD3:
-	case Opcode::VLD4:
-	case Opcode::VLDMDB:
-	case Opcode::VLDR:
-	case Opcode::VMAXNM:
-	case Opcode::VMAX:
-	case Opcode::VMINNM:
-	case Opcode::VMIN:
-	case Opcode::VMLA:
-	case Opcode::VMLAL:
-	case Opcode::VMLS:
-	case Opcode::VMLSL:
-	case Opcode::VMOVL:
-	case Opcode::VMOVN:
-	case Opcode::VMSR:
-	case Opcode::VMUL:
-	case Opcode::VMULL:
-	case Opcode::VMVN:
-	case Opcode::VNEG:
-	case Opcode::VNMLA:
-	case Opcode::VNMLS:
-	case Opcode::VNMUL:
-	case Opcode::VORN:
-	case Opcode::VORR:
-	case Opcode::VPADAL:
-	case Opcode::VPADDL:
-	case Opcode::VPADD:
-	case Opcode::VPMAX:
-	case Opcode::VPMIN:
-	case Opcode::VQABS:
-	case Opcode::VQADD:
-	case Opcode::VQDMLAL:
-	case Opcode::VQDMLSL:
-	case Opcode::VQDMULH:
-	case Opcode::VQDMULL:
-	case Opcode::VQMOVUN:
-	case Opcode::VQMOVN:
-	case Opcode::VQNEG:
-	case Opcode::VQRDMULH:
-	case Opcode::VQRSHL:
-	case Opcode::VQRSHRN:
-	case Opcode::VQRSHRUN:
-	case Opcode::VQSHL:
-	case Opcode::VQSHLU:
-	case Opcode::VQSHRN:
-	case Opcode::VQSHRUN:
-	case Opcode::VQSUB:
-	case Opcode::VRADDHN:
-	case Opcode::VRECPE:
-	case Opcode::VRECPS:
-	case Opcode::VREV16:
-	case Opcode::VREV32:
-	case Opcode::VREV64:
-	case Opcode::VRHADD:
-	case Opcode::VRINTA:
-	case Opcode::VRINTM:
-	case Opcode::VRINTN:
-	case Opcode::VRINTP:
-	case Opcode::VRINTR:
-	case Opcode::VRINTX:
-	case Opcode::VRINTZ:
-	case Opcode::VRSHL:
-	case Opcode::VRSHRN:
-	case Opcode::VRSHR:
-	case Opcode::VRSQRTE:
-	case Opcode::VRSQRTS:
-	case Opcode::VRSRA:
-	case Opcode::VRSUBHN:
-	case Opcode::VSELEQ:
-	case Opcode::VSELGE:
-	case Opcode::VSELGT:
-	case Opcode::VSELVS:
-	case Opcode::VSHLL:
-	case Opcode::VSHL:
-	case Opcode::VSHRN:
-	case Opcode::VSHR:
-	case Opcode::VSLI:
-	case Opcode::VSQRT:
-	case Opcode::VSRA:
-	case Opcode::VSRI:
-	case Opcode::VST1:
-	case Opcode::VST2:
-	case Opcode::VST3:
-	case Opcode::VST4:
-	case Opcode::VSTMDB:
-	case Opcode::VSTR:
-	case Opcode::VSUB:
-	case Opcode::VSUBHN:
-	case Opcode::VSUBL:
-	case Opcode::VSUBW:
-	case Opcode::VSWP:
-	case Opcode::VTBL:
-	case Opcode::VTBX:
-	case Opcode::VCVTR:
-	case Opcode::VTRN:
-	case Opcode::VTST:
-	case Opcode::VUZP:
-	case Opcode::VZIP:
-	case Opcode::ADDW:
-	case Opcode::ASR:
-	case Opcode::DCPS1:
-	case Opcode::DCPS2:
-	case Opcode::DCPS3:
-	case Opcode::IT:
-	case Opcode::LSL:
-	case Opcode::LSR:
-	case Opcode::ASRS:
-	case Opcode::LSRS:
-	case Opcode::ORN:
-	case Opcode::ROR:
-	case Opcode::RRX:
-	case Opcode::SUBS:
-	case Opcode::SUBW:
-	case Opcode::TBB:
-	case Opcode::TBH:
-	case Opcode::CBNZ:
-	case Opcode::CBZ:
-	case Opcode::MOVS:
-	case Opcode::YIELD:
-	case Opcode::WFE:
-	case Opcode::WFI:
-	case Opcode::SEV:
-	case Opcode::SEVL:
-	case Opcode::VPUSH:
-	case Opcode::VPOP:
+	case ARM_INS_ADR:
+	case ARM_INS_AESD:
+	case ARM_INS_AESE:
+	case ARM_INS_AESIMC:
+	case ARM_INS_AESMC:
+	case ARM_INS_BKPT:
+	case ARM_INS_BXJ:
+	case ARM_INS_CDP:
+	case ARM_INS_CDP2:
+	case ARM_INS_CLREX:
+	case ARM_INS_CRC32B:
+	case ARM_INS_CRC32CB:
+	case ARM_INS_CRC32CH:
+	case ARM_INS_CRC32CW:
+	case ARM_INS_CRC32H:
+	case ARM_INS_CRC32W:
+	case ARM_INS_DBG:
+	case ARM_INS_DSB:
+	case ARM_INS_FLDMDBX:
+	case ARM_INS_FLDMIAX:
+	case ARM_INS_VMRS:
+	case ARM_INS_FSTMDBX:
+	case ARM_INS_FSTMIAX:
+	case ARM_INS_HINT:
+	case ARM_INS_HLT:
+	case ARM_INS_ISB:
+	case ARM_INS_LDA:
+	case ARM_INS_LDAB:
+	case ARM_INS_LDAEX:
+	case ARM_INS_LDAEXB:
+	case ARM_INS_LDAEXD:
+	case ARM_INS_LDAEXH:
+	case ARM_INS_LDAH:
+	case ARM_INS_LDC2L:
+	case ARM_INS_LDC2:
+	case ARM_INS_LDCL:
+	case ARM_INS_LDC:
+	case ARM_INS_LDMDA:
+	case ARM_INS_LDRBT:
+	case ARM_INS_LDREX:
+	case ARM_INS_LDREXB:
+	case ARM_INS_LDREXD:
+	case ARM_INS_LDREXH:
+	case ARM_INS_LDRHT:
+	case ARM_INS_LDRSBT:
+	case ARM_INS_LDRSHT:
+	case ARM_INS_LDRT:
+	case ARM_INS_MCR2:
+	case ARM_INS_MCRR:
+	case ARM_INS_MCRR2:
+	case ARM_INS_MRC2:
+	case ARM_INS_MRRC:
+	case ARM_INS_MRRC2:
+	case ARM_INS_PKHBT:
+	case ARM_INS_PKHTB:
+	case ARM_INS_PLDW:
+	case ARM_INS_PLD:
+	case ARM_INS_PLI:
+	case ARM_INS_QADD:
+	case ARM_INS_QADD16:
+	case ARM_INS_QADD8:
+	case ARM_INS_QASX:
+	case ARM_INS_QDADD:
+	case ARM_INS_QDSUB:
+	case ARM_INS_QSAX:
+	case ARM_INS_QSUB:
+	case ARM_INS_QSUB16:
+	case ARM_INS_QSUB8:
+	case ARM_INS_RBIT:
+	case ARM_INS_REV16:
+	case ARM_INS_REVSH:
+	case ARM_INS_RFEDA:
+	case ARM_INS_RFEDB:
+	case ARM_INS_RFEIA:
+	case ARM_INS_RFEIB:
+	case ARM_INS_RSC:
+	case ARM_INS_SADD16:
+	case ARM_INS_SADD8:
+	case ARM_INS_SASX:
+	case ARM_INS_SDIV:
+	case ARM_INS_SEL:
+	case ARM_INS_SETEND:
+	case ARM_INS_SHA1C:
+	case ARM_INS_SHA1H:
+	case ARM_INS_SHA1M:
+	case ARM_INS_SHA1P:
+	case ARM_INS_SHA1SU0:
+	case ARM_INS_SHA1SU1:
+	case ARM_INS_SHA256H:
+	case ARM_INS_SHA256H2:
+	case ARM_INS_SHA256SU0:
+	case ARM_INS_SHA256SU1:
+	case ARM_INS_SHADD16:
+	case ARM_INS_SHADD8:
+	case ARM_INS_SHASX:
+	case ARM_INS_SHSAX:
+	case ARM_INS_SHSUB16:
+	case ARM_INS_SHSUB8:
+	case ARM_INS_SMC:
+	case ARM_INS_SMLABB:
+	case ARM_INS_SMLABT:
+	case ARM_INS_SMLAD:
+	case ARM_INS_SMLADX:
+	case ARM_INS_SMLAL:
+	case ARM_INS_SMLALBB:
+	case ARM_INS_SMLALBT:
+	case ARM_INS_SMLALD:
+	case ARM_INS_SMLALDX:
+	case ARM_INS_SMLALTB:
+	case ARM_INS_SMLALTT:
+	case ARM_INS_SMLATB:
+	case ARM_INS_SMLATT:
+	case ARM_INS_SMLAWB:
+	case ARM_INS_SMLAWT:
+	case ARM_INS_SMLSD:
+	case ARM_INS_SMLSDX:
+	case ARM_INS_SMLSLD:
+	case ARM_INS_SMLSLDX:
+	case ARM_INS_SMMLA:
+	case ARM_INS_SMMLAR:
+	case ARM_INS_SMMLS:
+	case ARM_INS_SMMLSR:
+	case ARM_INS_SMMUL:
+	case ARM_INS_SMMULR:
+	case ARM_INS_SMUAD:
+	case ARM_INS_SMUADX:
+	case ARM_INS_SMULBT:
+	case ARM_INS_SMULTB:
+	case ARM_INS_SMULTT:
+	case ARM_INS_SMULWB:
+	case ARM_INS_SMULWT:
+	case ARM_INS_SMUSD:
+	case ARM_INS_SMUSDX:
+	case ARM_INS_SRSDA:
+	case ARM_INS_SRSDB:
+	case ARM_INS_SRSIA:
+	case ARM_INS_SRSIB:
+	case ARM_INS_SSAT:
+	case ARM_INS_SSAT16:
+	case ARM_INS_SSAX:
+	case ARM_INS_SSUB16:
+	case ARM_INS_SSUB8:
+	case ARM_INS_STC2L:
+	case ARM_INS_STC2:
+	case ARM_INS_STCL:
+	case ARM_INS_STC:
+	case ARM_INS_STL:
+	case ARM_INS_STLB:
+	case ARM_INS_STLEX:
+	case ARM_INS_STLEXB:
+	case ARM_INS_STLEXD:
+	case ARM_INS_STLEXH:
+	case ARM_INS_STLH:
+	case ARM_INS_STMDA:
+	case ARM_INS_STRBT:
+	case ARM_INS_STREX:
+	case ARM_INS_STREXB:
+	case ARM_INS_STREXD:
+	case ARM_INS_STREXH:
+	case ARM_INS_STRHT:
+	case ARM_INS_STRT:
+	case ARM_INS_SWP:
+	case ARM_INS_SWPB:
+	case ARM_INS_SXTAB16:
+	case ARM_INS_SXTB16:
+	case ARM_INS_TRAP:
+	case ARM_INS_UADD16:
+	case ARM_INS_UADD8:
+	case ARM_INS_UASX:
+	case ARM_INS_UDF:
+	case ARM_INS_UDIV:
+	case ARM_INS_UHADD16:
+	case ARM_INS_UHADD8:
+	case ARM_INS_UHASX:
+	case ARM_INS_UHSAX:
+	case ARM_INS_UHSUB16:
+	case ARM_INS_UHSUB8:
+	case ARM_INS_UMAAL:
+	case ARM_INS_UQADD16:
+	case ARM_INS_UQADD8:
+	case ARM_INS_UQASX:
+	case ARM_INS_UQSAX:
+	case ARM_INS_UQSUB16:
+	case ARM_INS_UQSUB8:
+	case ARM_INS_USAD8:
+	case ARM_INS_USADA8:
+	case ARM_INS_USAT:
+	case ARM_INS_USAT16:
+	case ARM_INS_USAX:
+	case ARM_INS_USUB16:
+	case ARM_INS_USUB8:
+	case ARM_INS_UXTAB16:
+	case ARM_INS_UXTB16:
+	case ARM_INS_VABAL:
+	case ARM_INS_VABA:
+	case ARM_INS_VABDL:
+	case ARM_INS_VABD:
+	case ARM_INS_VABS:
+	case ARM_INS_VACGE:
+	case ARM_INS_VACGT:
+	case ARM_INS_VADD:
+	case ARM_INS_VADDHN:
+	case ARM_INS_VADDL:
+	case ARM_INS_VADDW:
+	case ARM_INS_VAND:
+	case ARM_INS_VBIC:
+	case ARM_INS_VBIF:
+	case ARM_INS_VBIT:
+	case ARM_INS_VBSL:
+	case ARM_INS_VCEQ:
+	case ARM_INS_VCGE:
+	case ARM_INS_VCGT:
+	case ARM_INS_VCLE:
+	case ARM_INS_VCLS:
+	case ARM_INS_VCLT:
+	case ARM_INS_VCLZ:
+	case ARM_INS_VCMP:
+	case ARM_INS_VCMPE:
+	case ARM_INS_VCNT:
+	case ARM_INS_VCVTA:
+	case ARM_INS_VCVTB:
+	case ARM_INS_VCVT:
+	case ARM_INS_VCVTM:
+	case ARM_INS_VCVTN:
+	case ARM_INS_VCVTP:
+	case ARM_INS_VCVTT:
+	case ARM_INS_VDIV:
+	case ARM_INS_VDUP:
+	case ARM_INS_VEOR:
+	case ARM_INS_VEXT:
+	case ARM_INS_VFMA:
+	case ARM_INS_VFMS:
+	case ARM_INS_VFNMA:
+	case ARM_INS_VFNMS:
+	case ARM_INS_VHADD:
+	case ARM_INS_VHSUB:
+	case ARM_INS_VLD1:
+	case ARM_INS_VLD2:
+	case ARM_INS_VLD3:
+	case ARM_INS_VLD4:
+	case ARM_INS_VLDMDB:
+	case ARM_INS_VLDR:
+	case ARM_INS_VMAXNM:
+	case ARM_INS_VMAX:
+	case ARM_INS_VMINNM:
+	case ARM_INS_VMIN:
+	case ARM_INS_VMLA:
+	case ARM_INS_VMLAL:
+	case ARM_INS_VMLS:
+	case ARM_INS_VMLSL:
+	case ARM_INS_VMOVL:
+	case ARM_INS_VMOVN:
+	case ARM_INS_VMSR:
+	case ARM_INS_VMUL:
+	case ARM_INS_VMULL:
+	case ARM_INS_VMVN:
+	case ARM_INS_VNEG:
+	case ARM_INS_VNMLA:
+	case ARM_INS_VNMLS:
+	case ARM_INS_VNMUL:
+	case ARM_INS_VORN:
+	case ARM_INS_VORR:
+	case ARM_INS_VPADAL:
+	case ARM_INS_VPADDL:
+	case ARM_INS_VPADD:
+	case ARM_INS_VPMAX:
+	case ARM_INS_VPMIN:
+	case ARM_INS_VQABS:
+	case ARM_INS_VQADD:
+	case ARM_INS_VQDMLAL:
+	case ARM_INS_VQDMLSL:
+	case ARM_INS_VQDMULH:
+	case ARM_INS_VQDMULL:
+	case ARM_INS_VQMOVUN:
+	case ARM_INS_VQMOVN:
+	case ARM_INS_VQNEG:
+	case ARM_INS_VQRDMULH:
+	case ARM_INS_VQRSHL:
+	case ARM_INS_VQRSHRN:
+	case ARM_INS_VQRSHRUN:
+	case ARM_INS_VQSHL:
+	case ARM_INS_VQSHLU:
+	case ARM_INS_VQSHRN:
+	case ARM_INS_VQSHRUN:
+	case ARM_INS_VQSUB:
+	case ARM_INS_VRADDHN:
+	case ARM_INS_VRECPE:
+	case ARM_INS_VRECPS:
+	case ARM_INS_VREV16:
+	case ARM_INS_VREV32:
+	case ARM_INS_VREV64:
+	case ARM_INS_VRHADD:
+	case ARM_INS_VRINTA:
+	case ARM_INS_VRINTM:
+	case ARM_INS_VRINTN:
+	case ARM_INS_VRINTP:
+	case ARM_INS_VRINTR:
+	case ARM_INS_VRINTX:
+	case ARM_INS_VRINTZ:
+	case ARM_INS_VRSHL:
+	case ARM_INS_VRSHRN:
+	case ARM_INS_VRSHR:
+	case ARM_INS_VRSQRTE:
+	case ARM_INS_VRSQRTS:
+	case ARM_INS_VRSRA:
+	case ARM_INS_VRSUBHN:
+	case ARM_INS_VSELEQ:
+	case ARM_INS_VSELGE:
+	case ARM_INS_VSELGT:
+	case ARM_INS_VSELVS:
+	case ARM_INS_VSHLL:
+	case ARM_INS_VSHL:
+	case ARM_INS_VSHRN:
+	case ARM_INS_VSHR:
+	case ARM_INS_VSLI:
+	case ARM_INS_VSQRT:
+	case ARM_INS_VSRA:
+	case ARM_INS_VSRI:
+	case ARM_INS_VST1:
+	case ARM_INS_VST2:
+	case ARM_INS_VST3:
+	case ARM_INS_VST4:
+	case ARM_INS_VSTMDB:
+	case ARM_INS_VSTR:
+	case ARM_INS_VSUB:
+	case ARM_INS_VSUBHN:
+	case ARM_INS_VSUBL:
+	case ARM_INS_VSUBW:
+	case ARM_INS_VSWP:
+	case ARM_INS_VTBL:
+	case ARM_INS_VTBX:
+	case ARM_INS_VCVTR:
+	case ARM_INS_VTRN:
+	case ARM_INS_VTST:
+	case ARM_INS_VUZP:
+	case ARM_INS_VZIP:
+	case ARM_INS_ADDW:
+	case ARM_INS_ASR:
+	case ARM_INS_DCPS1:
+	case ARM_INS_DCPS2:
+	case ARM_INS_DCPS3:
+	case ARM_INS_IT:
+	case ARM_INS_LSL:
+	case ARM_INS_LSR:
+	case ARM_INS_ASRS:
+	case ARM_INS_LSRS:
+	case ARM_INS_ORN:
+	case ARM_INS_ROR:
+	case ARM_INS_RRX:
+	case ARM_INS_SUBS:
+	case ARM_INS_SUBW:
+	case ARM_INS_TBB:
+	case ARM_INS_TBH:
+	case ARM_INS_CBNZ:
+	case ARM_INS_CBZ:
+	case ARM_INS_MOVS:
+	case ARM_INS_YIELD:
+	case ARM_INS_WFE:
+	case ARM_INS_WFI:
+	case ARM_INS_SEV:
+	case ARM_INS_SEVL:
+	case ARM_INS_VPUSH:
+	case ARM_INS_VPOP:
 		NotImplementedYet();
 		break;
 
-	case Opcode::ADC: RewriteAdcSbc(&IRtlEmitter::IAdd); break;
-	case Opcode::ADD: RewriteBinOp(&IRtlEmitter::IAdd, instr.ArchitectureDetail.UpdateFlags); break;
-	case Opcode::AND: RewriteBinOp(&IRtlEmitter::And, instr.ArchitectureDetail.UpdateFlags); break;
-	case Opcode::EOR: RewriteBinOp(&IRtlEmitter::Xor, instr.ArchitectureDetail.UpdateFlags); break;
-	case Opcode::B: RewriteB(false); break;
-	case Opcode::BFC: RewriteBfc(); break;
-	case Opcode::BFI: RewriteBfi(); break;
-	case Opcode::BIC: RewriteBic(); break;
-	case Opcode::BL: RewriteB(true); break;
-	case Opcode::BLX: RewriteB(true); break;
-	case Opcode::BX: RewriteB(false); break;
-	case Opcode::CLZ: RewriteClz(); break;
-	case Opcode::CMN: RewriteCmn(); break;
-	case Opcode::CMP: RewriteCmp(); break;
-	case Opcode::CPS: RewriteCps(); break;
-	case Opcode::DMB: RewriteDmb(); break;
-	case Opcode::LDR: RewriteLdr(PrimitiveType::Word32); break;
-	case Opcode::LDRB: RewriteLdr(PrimitiveType::Byte); break;
-	case Opcode::LDRH: RewriteLdr(PrimitiveType::UInt16); break;
-	case Opcode::LDRSB: RewriteLdr(PrimitiveType::SByte); break;
-	case Opcode::LDRSH: RewriteLdr(PrimitiveType::Int16); break;
-	case Opcode::LDRD: RewriteLdrd(); break;
-	case Opcode::LDM: RewriteLdm(0); break;
-	case Opcode::LDMDB: RewriteLdm(0); break;
-	case Opcode::LDMIB: RewriteLdm(4); break;
-	case Opcode::NOP: m.Nop(); break;
-	case Opcode::MCR: RewriteMcr(); break;
-	case Opcode::MLA: RewriteMultiplyAccumulate(&IRtlEmitter::IAdd); break;
-	case Opcode::MLS: RewriteMultiplyAccumulate(&IRtlEmitter::ISub); break;
-	case Opcode::MOV: RewriteMov(); break;
-	case Opcode::MOVT: RewriteMovt(); break;
-	case Opcode::MOVW: RewriteMov(); break;
-	case Opcode::MRC: RewriteMrc(); break;
-	case Opcode::MRS: RewriteMrs(); break;
-	case Opcode::MSR: RewriteMsr(); break;
-	case Opcode::MUL: RewriteBinOp(&IRtlEmitter::IMul, instr.ArchitectureDetail.UpdateFlags); break;
-	case Opcode::MVN: RewriteUnaryOp(&IRtlEmitter::Not); break;
-	case Opcode::ORR: RewriteBinOp(&IRtlEmitter::Or, false); break;
-	case Opcode::POP: RewritePop(); break;
-	case Opcode::PUSH: RewritePush(); break;
-	case Opcode::REV: RewriteRev(); break;
-	case Opcode::RSB: RewriteRevBinOp(&IRtlEmitter::ISub, instr.ArchitectureDetail.UpdateFlags); break;
-	case Opcode::SBC: RewriteAdcSbc(&IRtlEmitter::ISub); break;
-	case Opcode::SBFX: RewriteSbfx(); break;
-	case Opcode::SMULBB: RewriteMulbb(false, false, PrimitiveType::Int16, &IRtlEmitter::SMul); break;
-	case Opcode::SMULL: RewriteMull(PrimitiveType::Int64, &IRtlEmitter::SMul); break;
-	case Opcode::STM: RewriteStm(); break;
-	case Opcode::STMDB: RewriteStm(); break;
-	case Opcode::STMIB: RewriteStmib(); break;
-	case Opcode::STR: RewriteStr(PrimitiveType::Word32); break;
-	case Opcode::STRB: RewriteStr(PrimitiveType::Byte); break;
-	case Opcode::STRD: RewriteStrd(); break;
-	case Opcode::STRH: RewriteStr(PrimitiveType::UInt16); break;
-	case Opcode::SUB: RewriteBinOp(&IRtlEmitter::ISub, instr.ArchitectureDetail.UpdateFlags); break;
-	case Opcode::SVC: RewriteSvc(); break;
-	case Opcode::SXTAB: RewriteXtab(PrimitiveType::SByte); break;
-	case Opcode::SXTAH: RewriteXtab(PrimitiveType::Int16); break;
-	case Opcode::SXTB: RewriteXtb(PrimitiveType::SByte); break;
-	case Opcode::SXTH: RewriteXtb(PrimitiveType::Int16); break;
-	case Opcode::TEQ: RewriteTeq(); break;
-	case Opcode::TST: RewriteTst(); break;
-	case Opcode::UBFX: RewriteUbfx(); break;
-	case Opcode::UMLAL: RewriteUmlal(); break;
-	case Opcode::UMULL: RewriteMull(PrimitiveType::UInt64, &IRtlEmitter::UMul); break;
-	case Opcode::UXTAB: RewriteXtab(PrimitiveType::Byte); break;
-	case Opcode::UXTAH: RewriteXtab(PrimitiveType::UInt16); break;
-	case Opcode::UXTB: RewriteXtb(PrimitiveType::Byte); break;
-	case Opcode::UXTH: RewriteXtb(PrimitiveType::UInt16); break;
+	case ARM_INS_ADC: RewriteAdcSbc(&IRtlEmitter::IAdd); break;
+	case ARM_INS_ADD: RewriteBinOp(&IRtlEmitter::IAdd, instr.detail->arm.update_flags); break;
+	case ARM_INS_AND: RewriteBinOp(&IRtlEmitter::And, instr.detail->arm.update_flags); break;
+	case ARM_INS_EOR: RewriteBinOp(&IRtlEmitter::Xor, instr.detail->arm.update_flags); break;
+	case ARM_INS_B: RewriteB(false); break;
+	case ARM_INS_BFC: RewriteBfc(); break;
+	case ARM_INS_BFI: RewriteBfi(); break;
+	case ARM_INS_BIC: RewriteBic(); break;
+	case ARM_INS_BL: RewriteB(true); break;
+	case ARM_INS_BLX: RewriteB(true); break;
+	case ARM_INS_BX: RewriteB(false); break;
+	case ARM_INS_CLZ: RewriteClz(); break;
+	case ARM_INS_CMN: RewriteCmn(); break;
+	case ARM_INS_CMP: RewriteCmp(); break;
+	case ARM_INS_CPS: RewriteCps(); break;
+	case ARM_INS_DMB: RewriteDmb(); break;
+	case ARM_INS_LDR: RewriteLdr(PrimitiveType::Word32); break;
+	case ARM_INS_LDRB: RewriteLdr(PrimitiveType::Byte); break;
+	case ARM_INS_LDRH: RewriteLdr(PrimitiveType::UInt16); break;
+	case ARM_INS_LDRSB: RewriteLdr(PrimitiveType::SByte); break;
+	case ARM_INS_LDRSH: RewriteLdr(PrimitiveType::Int16); break;
+	case ARM_INS_LDRD: RewriteLdrd(); break;
+	case ARM_INS_LDM: RewriteLdm(0); break;
+	case ARM_INS_LDMDB: RewriteLdm(0); break;
+	case ARM_INS_LDMIB: RewriteLdm(4); break;
+	case ARM_INS_NOP: m.Nop(); break;
+	case ARM_INS_MCR: RewriteMcr(); break;
+	case ARM_INS_MLA: RewriteMultiplyAccumulate(&IRtlEmitter::IAdd); break;
+	case ARM_INS_MLS: RewriteMultiplyAccumulate(&IRtlEmitter::ISub); break;
+	case ARM_INS_MOV: RewriteMov(); break;
+	case ARM_INS_MOVT: RewriteMovt(); break;
+	case ARM_INS_MOVW: RewriteMov(); break;
+	case ARM_INS_MRC: RewriteMrc(); break;
+	case ARM_INS_MRS: RewriteMrs(); break;
+	case ARM_INS_MSR: RewriteMsr(); break;
+	case ARM_INS_MUL: RewriteBinOp(&IRtlEmitter::IMul, instr.detail->arm.update_flags); break;
+	case ARM_INS_MVN: RewriteUnaryOp(&IRtlEmitter::Not); break;
+	case ARM_INS_ORR: RewriteBinOp(&IRtlEmitter::Or, false); break;
+	case ARM_INS_POP: RewritePop(); break;
+	case ARM_INS_PUSH: RewritePush(); break;
+	case ARM_INS_REV: RewriteRev(); break;
+	case ARM_INS_RSB: RewriteRevBinOp(&IRtlEmitter::ISub, instr.detail->arm.update_flags); break;
+	case ARM_INS_SBC: RewriteAdcSbc(&IRtlEmitter::ISub); break;
+	case ARM_INS_SBFX: RewriteSbfx(); break;
+	case ARM_INS_SMULBB: RewriteMulbb(false, false, PrimitiveType::Int16, &IRtlEmitter::SMul); break;
+	case ARM_INS_SMULL: RewriteMull(PrimitiveType::Int64, &IRtlEmitter::SMul); break;
+	case ARM_INS_STM: RewriteStm(); break;
+	case ARM_INS_STMDB: RewriteStm(); break;
+	case ARM_INS_STMIB: RewriteStmib(); break;
+	case ARM_INS_STR: RewriteStr(PrimitiveType::Word32); break;
+	case ARM_INS_STRB: RewriteStr(PrimitiveType::Byte); break;
+	case ARM_INS_STRD: RewriteStrd(); break;
+	case ARM_INS_STRH: RewriteStr(PrimitiveType::UInt16); break;
+	case ARM_INS_SUB: RewriteBinOp(&IRtlEmitter::ISub, instr.detail->arm.update_flags); break;
+	case ARM_INS_SVC: RewriteSvc(); break;
+	case ARM_INS_SXTAB: RewriteXtab(PrimitiveType::SByte); break;
+	case ARM_INS_SXTAH: RewriteXtab(PrimitiveType::Int16); break;
+	case ARM_INS_SXTB: RewriteXtb(PrimitiveType::SByte); break;
+	case ARM_INS_SXTH: RewriteXtb(PrimitiveType::Int16); break;
+	case ARM_INS_TEQ: RewriteTeq(); break;
+	case ARM_INS_TST: RewriteTst(); break;
+	case ARM_INS_UBFX: RewriteUbfx(); break;
+	case ARM_INS_UMLAL: RewriteUmlal(); break;
+	case ARM_INS_UMULL: RewriteMull(PrimitiveType::UInt64, &IRtlEmitter::UMul); break;
+	case ARM_INS_UXTAB: RewriteXtab(PrimitiveType::Byte); break;
+	case ARM_INS_UXTAH: RewriteXtab(PrimitiveType::UInt16); break;
+	case ARM_INS_UXTB: RewriteXtb(PrimitiveType::Byte); break;
+	case ARM_INS_UXTH: RewriteXtb(PrimitiveType::UInt16); break;
 
-	case Opcode::VLDMIA: RewriteVldmia(); break;
-	case Opcode::VMOV: RewriteVmov(); break;
-	case Opcode::VSTMIA: RewriteVstmia(); break;
+	case ARM_INS_VLDMIA: RewriteVldmia(); break;
+	case ARM_INS_VMOV: RewriteVmov(); break;
+	case ARM_INS_VSTMIA: RewriteVstmia(); break;
 
 	}
 }
@@ -472,18 +472,23 @@ void ArmRewriter::Next()
 void ArmRewriter::NotImplementedYet()
 {
 	char buf[200];	//$TODO: hello buffer overflow!
-	::snprintf(buf, sizeof(buf), "Rewriting ARM opcode '%s' is not supported yet.", instr.Mnemonic);
+	::snprintf(buf, sizeof(buf), "Rewriting ARM opcode '%s' is not supported yet.", instr.mnemonic);
 	host.Error(
-		instr.Address,
+		instr.address,
 		buf);
 	m.Invalid();
 }
 
+IExpression * ArmRewriter::NZCV()
+{
+	return frame.EnsureFlagGroup((int)ARM_REG_CPSR, 0x1111, "NZCV", PrimitiveType::Byte);
+}
+
 void ArmRewriter::MaybeUpdateFlags(IExpression * opDst)
 {
-	if (instr.ArchitectureDetail.UpdateFlags)
+	if (instr.detail->arm.update_flags)
 	{
-		m.Assign(frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte), m.Cond(opDst));
+		m.Assign(NZCV(), m.Cond(opDst));
 	}
 }
 
@@ -491,9 +496,9 @@ void ArmRewriter::RewriteB(bool link)
 {
 	IExpression * dst;
 	bool dstIsAddress;
-	if (Dst().Type == ArmInstructionOperandType::Immediate)
+	if (Dst().type == ARM_OP_IMM)
 	{
-		dst = m.Ptr32(Dst().ImmediateValue);
+		dst = m.Ptr32(Dst().imm);
 		dstIsAddress = true;
 	}
 	else
@@ -504,19 +509,19 @@ void ArmRewriter::RewriteB(bool link)
 	if (link)
 	{
 		m.SetRtlClass(RtlClass::Transfer);
-		if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition::AL)
+		if (instr.detail->arm.cc == ARM_CC_AL)
 		{
 			m.Call(dst, 0);
 		}
 		else
 		{
 			//$TODO: conditional code.
-			//m.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlCall(dst, 0, RtlClass::Transfer));
+			//m.If(TestCond(instr.detail->arm.CodeCondition), new RtlCall(dst, 0, RtlClass::Transfer));
 		}
 	}
 	else
 	{
-		if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition::AL)
+		if (instr.detail->arm.cc == ARM_CC_AL)
 		{
 			m.SetRtlClass(RtlClass::Transfer);
 			m.Goto(dst);
@@ -526,12 +531,12 @@ void ArmRewriter::RewriteB(bool link)
 			m.SetRtlClass(RtlClass::ConditionalTransfer);
 			if (dstIsAddress)
 			{
-				m.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), dst, RtlClass::ConditionalTransfer);
+				m.Branch(TestCond(instr.detail->arm.cc), dst, RtlClass::ConditionalTransfer);
 			}
 			else
 			{
 				//$TODO: conditional code
-				//m.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlGoto(dst, RtlClass::ConditionalTransfer));
+				//m.If(TestCond(instr.detail->arm.CodeCondition), new RtlGoto(dst, RtlClass::ConditionalTransfer));
 			}
 		}
 	}
@@ -539,9 +544,9 @@ void ArmRewriter::RewriteB(bool link)
 
 void ArmRewriter::AddConditional(void (*mkInstr)())
 {
-	//if (instr.ArchitectureDetail.CodeCondition != ArmCodeCondition.AL)
+	//if (instr.detail->arm.CodeCondition != ArmCodeCondition.AL)
 	//{
-	//	rtlInstr = new RtlIf(TestCond(instr.ArchitectureDetail.CodeCondition), rtlInstr);
+	//	rtlInstr = new RtlIf(TestCond(instr.detail->arm.CodeCondition), rtlInstr);
 	//}
 	//ric.Instructions.Add(rtlInstr);
 }
@@ -549,9 +554,9 @@ void ArmRewriter::AddConditional(void (*mkInstr)())
 void ArmRewriter::ConditionalAssign(IExpression * dst, IExpression * src)
 {
 	/*RtlInstruction rtlInstr = new RtlAssignment(dst, src);
-	if (instr.ArchitectureDetail.CodeCondition != ArmCodeCondition::AL)
+	if (instr.detail->arm.CodeCondition != ArmCodeCondition::AL)
 	{
-		rtlInstr = new RtlIf(TestCond(instr.ArchitectureDetail.CodeCondition), rtlInstr);
+		rtlInstr = new RtlIf(TestCond(instr.detail->arm.CodeCondition), rtlInstr);
 	}
 	ric.Instructions.Add(rtlInstr);*/
 }
@@ -560,78 +565,83 @@ void ArmRewriter::ConditionalAssign(IExpression * dst, IExpression * src)
 // instruction to skip the remainder of the instruction cluster.
 void ArmRewriter::ConditionalSkip()
 {
-	auto cc = instr.ArchitectureDetail.CodeCondition;
-	if (cc == ArmCodeCondition::AL)
+	auto cc = instr.detail->arm.cc;
+	if (cc == ARM_CC_AL)
 		return; // never skip!
 	m.BranchInMiddleOfInstruction(
 		TestCond(Invert(cc)),
-		m.Ptr32(instr.Address + 4),
+		m.Ptr32(instr.address + 4),
 		RtlClass::ConditionalTransfer);
 }
 
-ArmCodeCondition ArmRewriter::Invert(ArmCodeCondition cc)
+arm_cc ArmRewriter::Invert(arm_cc cc)
 {
 	switch (cc)
 	{
-	case ArmCodeCondition::EQ: return ArmCodeCondition::NE;
-	case ArmCodeCondition::NE: return ArmCodeCondition::EQ;
-	case ArmCodeCondition::HS: return ArmCodeCondition::LO;
-	case ArmCodeCondition::LO: return ArmCodeCondition::HS;
-	case ArmCodeCondition::MI: return ArmCodeCondition::PL;
-	case ArmCodeCondition::PL: return ArmCodeCondition::MI;
-	case ArmCodeCondition::VS: return ArmCodeCondition::VC;
-	case ArmCodeCondition::VC: return ArmCodeCondition::VS;
-	case ArmCodeCondition::HI: return ArmCodeCondition::LS;
-	case ArmCodeCondition::LS: return ArmCodeCondition::HI;
-	case ArmCodeCondition::GE: return ArmCodeCondition::LT;
-	case ArmCodeCondition::LT: return ArmCodeCondition::GE;
-	case ArmCodeCondition::GT: return ArmCodeCondition::LE;
-	case ArmCodeCondition::LE: return ArmCodeCondition::GT;
-	case ArmCodeCondition::AL: return ArmCodeCondition::Invalid;
+	case ARM_CC_EQ: return ARM_CC_NE;
+	case ARM_CC_NE: return ARM_CC_EQ;
+	case ARM_CC_HS: return ARM_CC_LO;
+	case ARM_CC_LO: return ARM_CC_HS;
+	case ARM_CC_MI: return ARM_CC_PL;
+	case ARM_CC_PL: return ARM_CC_MI;
+	case ARM_CC_VS: return ARM_CC_VC;
+	case ARM_CC_VC: return ARM_CC_VS;
+	case ARM_CC_HI: return ARM_CC_LS;
+	case ARM_CC_LS: return ARM_CC_HI;
+	case ARM_CC_GE: return ARM_CC_LT;
+	case ARM_CC_LT: return ARM_CC_GE;
+	case ARM_CC_GT: return ARM_CC_LE;
+	case ARM_CC_LE: return ARM_CC_GT;
+	case ARM_CC_AL: return ARM_CC_INVALID;
 	}
-	return ArmCodeCondition::Invalid;
+	return ARM_CC_INVALID;
 }
 
-IExpression * ArmRewriter::Operand(const ArmInstructionOperand & op)
+bool ArmRewriter::IsLastOperand(const cs_arm_op & op)
 {
-	switch (op.Type)
+	return &op == &instr.detail->arm.operands[instr.detail->arm.op_count - 1];
+}
+
+IExpression * ArmRewriter::Operand(const cs_arm_op & op)
+{
+	switch (op.type)
 	{
-	case ArmInstructionOperandType::Register:
+	case ARM_OP_REG:
 	{
-		auto reg = frame.EnsureRegister((int)op.RegisterValue);
+		auto reg = frame.EnsureRegister(op.reg);
 		return MaybeShiftOperand(reg, op);
 	}
-	case ArmInstructionOperandType::SysRegister:
+	case ARM_OP_SYSREG:
 	{
-		auto sysreg = frame.EnsureRegister((int)op.SysRegisterValue);
+		auto sysreg = frame.EnsureRegister(op.reg);
 		return sysreg;
 	}
-	case ArmInstructionOperandType::Immediate:
-		return m.Word32(op.ImmediateValue);
-	case ArmInstructionOperandType::CImmediate:
-	case ArmInstructionOperandType::PImmediate:
-		return m.Byte((uint8_t)op.ImmediateValue);
-	case ArmInstructionOperandType::Memory:
+	case ARM_OP_IMM:
+		return m.Word32(op.imm);
+	case ARM_OP_CIMM:
+	case ARM_OP_PIMM:
+		return m.Byte((uint8_t)op.imm);
+	case ARM_OP_MEM:
 	{
-		auto baseReg = Reg(op.MemoryValue.BaseRegister);
+		auto baseReg = Reg(op.mem.base);
 		auto ea = baseReg;
-		if (op.MemoryValue.BaseRegister == ArmRegister::PC)
+		if (op.mem.base == ARM_REG_PC)
 		{
 			// PC-relative address
-			if (op.MemoryValue.Displacement != 0)
+			if (op.mem.disp != 0)
 			{
-				auto dst = (uint32_t)((int32_t)instr.Address + op.MemoryValue.Displacement) + 8u;
+				auto dst = (uint32_t)((int32_t)instr.address + op.mem.disp) + 8u;
 				return m.Mem(SizeFromLoadStore(), m.Ptr32(dst));
 			}
 		}
-		if (op.MemoryValue.Displacement != 0 && instr.IsLastOperand(op))
+		if (op.mem.disp != 0 && IsLastOperand(op))
 		{
-			auto offset = m.Int32(op.MemoryValue.Displacement);
-			ea = op.MemoryValue.IndexRegisterScale < 0
+			auto offset = m.Int32(op.mem.disp);
+			ea = op.mem.scale < 0
 				? m.ISub(ea, offset)
 				: m.IAdd(ea, offset);
 		}
-		if (instr.IsLastOperand(op) && instr.ArchitectureDetail.WriteBack)
+		if (IsLastOperand(op) && instr.detail->arm.writeback)
 		{
 			m.Assign(baseReg, ea);
 			ea = baseReg;
@@ -646,52 +656,52 @@ IExpression * ArmRewriter::Operand(const ArmInstructionOperand & op)
 
 PrimitiveType ArmRewriter::SizeFromLoadStore()
 {
-	switch (instr.Id)
+	switch (instr.id)
 	{
-	case Opcode::LDR: return PrimitiveType::Word32;
-	case Opcode::LDRB: return PrimitiveType::Byte;
-	case Opcode::LDRD: return PrimitiveType::Word64;
-	case Opcode::LDRH: return PrimitiveType::Word16;
-	case Opcode::LDRSB: return PrimitiveType::SByte;
-	case Opcode::LDRSH: return PrimitiveType::Int16;
-	case Opcode::STR: return PrimitiveType::Word32;
-	case Opcode::STRB: return PrimitiveType::Byte;
-	case Opcode::STRD: return PrimitiveType::Word64;
-	case Opcode::STRH: return PrimitiveType::Word16;
+	case ARM_INS_LDR: return PrimitiveType::Word32;
+	case ARM_INS_LDRB: return PrimitiveType::Byte;
+	case ARM_INS_LDRD: return PrimitiveType::Word64;
+	case ARM_INS_LDRH: return PrimitiveType::Word16;
+	case ARM_INS_LDRSB: return PrimitiveType::SByte;
+	case ARM_INS_LDRSH: return PrimitiveType::Int16;
+	case ARM_INS_STR: return PrimitiveType::Word32;
+	case ARM_INS_STRB: return PrimitiveType::Byte;
+	case ARM_INS_STRD: return PrimitiveType::Word64;
+	case ARM_INS_STRH: return PrimitiveType::Word16;
 	}
 	//assert(false && instr.Id.ToString());
 	return PrimitiveType::Void;
 }
 
 
-IExpression * ArmRewriter::MaybeShiftOperand(IExpression * exp, ArmInstructionOperand op)
+IExpression * ArmRewriter::MaybeShiftOperand(IExpression * exp, const cs_arm_op & op)
 {
-	switch (op.Shifter.Type)
+	switch (op.shift.type)
 	{
-	case ArmShifterType::ASR: return m.Sar(exp, op.Shifter.Value);
-	case ArmShifterType::LSL: return m.Shl(exp, op.Shifter.Value);
-	case ArmShifterType::LSR: return m.Shr(exp, op.Shifter.Value);
-	case ArmShifterType::ROR: return m.Ror(exp, m.Int32(op.Shifter.Value));
-	case ArmShifterType::RRX: return m.Rrc(exp, m.Int32(op.Shifter.Value));
-	case ArmShifterType::ASR_REG: return m.Sar(exp, Reg(op.Shifter.Value));
-	case ArmShifterType::LSL_REG: return m.Shl(exp, Reg(op.Shifter.Value));
-	case ArmShifterType::LSR_REG: return m.Shr(exp, Reg(op.Shifter.Value));
-	case ArmShifterType::ROR_REG: return m.Ror(exp, Reg(op.Shifter.Value));
-	case ArmShifterType::RRX_REG: return m.Rrc(exp, Reg(op.Shifter.Value));
+	case ARM_SFT_ASR: return m.Sar(exp, op.shift.value);
+	case ARM_SFT_LSL: return m.Shl(exp, op.shift.value);
+	case ARM_SFT_LSR: return m.Shr(exp, op.shift.value);
+	case ARM_SFT_ROR: return m.Ror(exp, m.Int32(op.shift.value));
+	case ARM_SFT_RRX: return m.Rrc(exp, m.Int32(op.shift.value));
+	case ARM_SFT_ASR_REG: return m.Sar(exp, Reg(op.shift.value));
+	case ARM_SFT_LSL_REG: return m.Shl(exp, Reg(op.shift.value));
+	case ARM_SFT_LSR_REG: return m.Shr(exp, Reg(op.shift.value));
+	case ARM_SFT_ROR_REG: return m.Ror(exp, Reg(op.shift.value));
+	case ARM_SFT_RRX_REG: return m.Rrc(exp, Reg(op.shift.value));
 	default: return exp;
 	}
 }
 
-void ArmRewriter::MaybePostOperand(const ArmInstructionOperand & op)
+void ArmRewriter::MaybePostOperand(const cs_arm_op & op)
 {
-	if (instr.IsLastOperand(op))
+	if (IsLastOperand(op))
 		return;
-	if (op.Type != ArmInstructionOperandType::Memory)
+	if (op.type != ARM_OP_MEM)
 		return;
-	auto lastOp = instr.ArchitectureDetail.Operands[instr.ArchitectureDetail.Length - 1];
-	auto baseReg = Reg(op.MemoryValue.BaseRegister);
+	auto lastOp = instr.detail->arm.operands[instr.detail->arm.op_count - 1];
+	auto baseReg = Reg(op.mem.base);
 	auto offset = Operand(lastOp);
-	auto ea = lastOp.IsSubtracted
+	auto ea = lastOp.subtracted
 		? m.ISub(baseReg, offset)
 		: m.IAdd(baseReg, offset);
 	m.Assign(baseReg, ea);
@@ -709,37 +719,37 @@ void ArmRewriter::MaybePostOperand(const ArmInstructionOperand & op)
 #endif
 }
 
-IExpression * ArmRewriter::TestCond(ArmCodeCondition cond)
+IExpression * ArmRewriter::TestCond(arm_cc cond)
 {
 	switch (cond)
 	{
 	//default:
 	//	throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
-	case ArmCodeCondition::HS:
+	case ARM_CC_HS:
 		return m.Test(ConditionCode::UGE, FlagGroup(FlagM::CF, "C", PrimitiveType::Byte));
-	case ArmCodeCondition::LO:
+	case ARM_CC_LO:
 		return m.Test(ConditionCode::ULT, FlagGroup(FlagM::CF, "C", PrimitiveType::Byte));
-	case ArmCodeCondition::EQ:
+	case ARM_CC_EQ:
 		return m.Test(ConditionCode::EQ, FlagGroup(FlagM::ZF, "Z", PrimitiveType::Byte));
-	case ArmCodeCondition::GE:
+	case ARM_CC_GE:
 		return m.Test(ConditionCode::GE, FlagGroup(FlagM::NF | FlagM::ZF | FlagM::VF, "NZV", PrimitiveType::Byte));
-	case ArmCodeCondition::GT:
+	case ARM_CC_GT:
 		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF | FlagM::VF, "NZV", PrimitiveType::Byte));
-	case ArmCodeCondition::HI:
+	case ARM_CC_HI:
 		return m.Test(ConditionCode::UGT, FlagGroup(FlagM::ZF | FlagM::CF, "ZC", PrimitiveType::Byte));
-	case ArmCodeCondition::LE:
+	case ARM_CC_LE:
 		return m.Test(ConditionCode::LE, FlagGroup(FlagM::ZF | FlagM::CF | FlagM::VF, "NZV", PrimitiveType::Byte));
-	case ArmCodeCondition::LS:
+	case ARM_CC_LS:
 		return m.Test(ConditionCode::ULE, FlagGroup(FlagM::ZF | FlagM::CF, "ZC", PrimitiveType::Byte));
-	case ArmCodeCondition::LT:
+	case ARM_CC_LT:
 		return m.Test(ConditionCode::LT, FlagGroup(FlagM::NF | FlagM::VF, "NV", PrimitiveType::Byte));
-	case ArmCodeCondition::MI:
+	case ARM_CC_MI:
 		return m.Test(ConditionCode::LT, FlagGroup(FlagM::NF, "N", PrimitiveType::Byte));
-	case ArmCodeCondition::PL:
+	case ARM_CC_PL:
 		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF, "NZ", PrimitiveType::Byte));
-	case ArmCodeCondition::NE:
+	case ARM_CC_NE:
 		return m.Test(ConditionCode::NE, FlagGroup(FlagM::ZF, "Z", PrimitiveType::Byte));
-	case ArmCodeCondition::VS:
+	case ARM_CC_VS:
 		return m.Test(ConditionCode::OV, FlagGroup(FlagM::VF, "V", PrimitiveType::Byte));
 	}
 	return 0;
@@ -747,7 +757,7 @@ IExpression * ArmRewriter::TestCond(ArmCodeCondition cond)
 
 IExpression * ArmRewriter::FlagGroup(FlagM bits, const char * name, PrimitiveType type)
 {
-	return frame.EnsureFlagGroup((int)ArmRegister::CPSR, (int) bits, name, type);
+	return frame.EnsureFlagGroup(ARM_REG_CPSR, (int) bits, name, type);
 }
 
 void ArmRewriter::RewriteSvc()

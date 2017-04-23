@@ -25,24 +25,27 @@ private:
 	void ConditionalSkip();
 	void ConditionalAssign(IExpression * dst, IExpression * src);
 	IExpression * FlagGroup(FlagM bits, const char * name, PrimitiveType type);
-	ArmCodeCondition Invert(ArmCodeCondition);
+	arm_cc Invert(arm_cc);
+	bool IsLastOperand(const cs_arm_op & op);
 	//IExpression * Operand(const ArmInstructionOperand & op);
 	void NotImplementedYet();
 	void MaybeUpdateFlags(IExpression * opDst);
-	void MaybePostOperand(const ArmInstructionOperand & op);
-	IExpression * MaybeShiftOperand(IExpression * exp, ArmInstructionOperand op);
-	IExpression * Operand(const ArmInstructionOperand & op);
+	void MaybePostOperand(const cs_arm_op & op);
+	IExpression * MaybeShiftOperand(IExpression * exp, const cs_arm_op & op);
+	IExpression * NZCV();
+	IExpression * Operand(const cs_arm_op & op);
 	IExpression * Reg(int reg) { return frame.EnsureRegister(reg); }
-	IExpression * Reg(ArmRegister reg) { return frame.EnsureRegister((int)reg); }
+	IExpression * Reg(arm_reg reg) { return frame.EnsureRegister((int)reg); }
 
 	PrimitiveType SizeFromLoadStore();
-	IExpression * TestCond(ArmCodeCondition cond);
+	IExpression * TestCond(arm_cc cond);
 	const char * ArmRewriter::VectorElementType();
 
-	const ArmInstructionOperand & Dst() { return instr.ArchitectureDetail.Operands[0]; }
-	const ArmInstructionOperand & Src1() { return instr.ArchitectureDetail.Operands[1]; }
-	const ArmInstructionOperand & Src2() { return instr.ArchitectureDetail.Operands[2]; }
-	const ArmInstructionOperand & Src3() { return instr.ArchitectureDetail.Operands[3]; }
+	const cs_arm_op & Dst() { return instr.detail->arm.operands[0]; }
+	const cs_arm_op & Src1() { return instr.detail->arm.operands[1]; }
+	const cs_arm_op & Src2() { return instr.detail->arm.operands[2]; }
+	const cs_arm_op & Src3() { return instr.detail->arm.operands[3]; }
+
 	void RewriteStrd();
 	void RewriteTeq();
 	void RewriteTst();
@@ -59,7 +62,7 @@ private:
 	void RewriteCps();
 	void RewriteDmb();
 	void RewriteLdm(int);
-	void RewriteLdm(IExpression  * dst, const ArmInstructionOperand * range, int length, int offset, bool writeback);
+	void RewriteLdm(IExpression  * dst, const cs_arm_op * range, int length, int offset, bool writeback);
 	void RewriteLdr(PrimitiveType);
 	void RewriteLdrd();
 	void RewriteMcr();
@@ -92,5 +95,5 @@ private:
 	IRtlEmitter & m;
 	IRewriterHost & host;
 	IFrame & frame;
-	ArmInstruction instr;
+	cs_insn instr;
 };

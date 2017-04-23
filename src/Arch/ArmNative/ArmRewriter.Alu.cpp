@@ -18,7 +18,6 @@
 
 #include "stdafx.h"
 #include "reko.h"
-#include "arm.h"
 
 #include "ArmRewriter.h"
 
@@ -30,7 +29,7 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr)
 		auto opSrc2 = this->Operand(Src2());
 		// We do not take the trouble of widening the CF to the word size
 		// to simplify code analysis in later stages. 
-		auto c = frame.EnsureFlagGroup((int)ArmRegister::CPSR, (int)FlagM::CF, "C", PrimitiveType::Bool);
+		auto c = frame.EnsureFlagGroup(ARM_REG_CPSR, (int)FlagM::CF, "C", PrimitiveType::Bool);
 		ConditionalAssign(
 			opDst,
 			(m.*opr)(
@@ -48,8 +47,8 @@ public:
 	void ArmRewriter::RewriteBfc()
 	{
 		auto opDst = this->Operand(Dst());
-		auto lsb = instr.ArchitectureDetail.Operands[1].ImmediateValue;
-		auto bitsize = instr.ArchitectureDetail.Operands[2].ImmediateValue;
+		auto lsb = instr.detail->arm.operands[1].imm;
+		auto bitsize = instr.detail->arm.operands[2].imm;
 		ConditionalSkip();
 		m.Assign(opDst, m.And(opDst, ~Bits::Mask(lsb, bitsize)));
 	}
@@ -61,8 +60,8 @@ public:
 		//$TODO
 		/*
 		auto tmp = frame.CreateTemporary(opDst.DataType);
-		auto lsb = instr.ArchitectureDetail.Operands[2].ImmediateValue;
-		auto bitsize = instr.ArchitectureDetail.Operands[3].ImmediateValue;
+		auto lsb = instr.detail->arm.operands[2].imm;
+		auto bitsize = instr.detail->arm.operands[3].imm;
 		ConditionalSkip();
 		m.Assign(tmp, m.Slice(opSrc, 0, bitsize));
 		m.Assign(opDst, m.Dpb(opDst, tmp, lsb));
@@ -77,7 +76,7 @@ public:
 		ConditionalAssign(opDst, (m.*op)(opSrc1, opSrc2));
 		if (setflags)
 		{
-			ConditionalAssign(frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte), m.Cond(opDst));
+			ConditionalAssign(NZCV(), m.Cond(opDst));
 		}
 	}
 
@@ -98,7 +97,7 @@ public:
 		ConditionalAssign(opDst, (m.*op)(opSrc1, opSrc2));
 		if (setflags)
 		{
-			ConditionalAssign(frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte), m.Cond(opDst));
+			ConditionalAssign(NZCV(), m.Cond(opDst));
 		}
 	}
 
@@ -107,9 +106,9 @@ public:
 		auto opDst = this->Operand(Dst());
 		auto opSrc = this->Operand(Src1());
 		ConditionalAssign(opDst, (m.*op)(opSrc));
-		if (instr.ArchitectureDetail.UpdateFlags)
+		if (instr.detail->arm.update_flags)
 		{
-			ConditionalAssign(frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte), m.Cond(opDst));
+			ConditionalAssign(NZCV(), m.Cond(opDst));
 		}
 	}
 
@@ -136,7 +135,7 @@ public:
 		auto opDst = this->Operand(Dst());
 		auto opSrc = this->Operand(Src1());
 		ConditionalAssign(
-			frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte),
+			NZCV(),
 			m.Cond(
 				m.IAdd(opDst, opSrc)));
 	}
@@ -146,7 +145,7 @@ public:
 		auto opDst = this->Operand(Dst());
 		auto opSrc = this->Operand(Src1());
 		ConditionalAssign(
-			frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte),
+			NZCV(),
 			m.Cond(
 				m.ISub(opDst, opSrc)));
 	}
@@ -156,7 +155,7 @@ public:
 		auto opDst = this->Operand(Dst());
 		auto opSrc = this->Operand(Src1());
 		m.Assign(
-			frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte),
+			NZCV(),
 			m.Cond(m.Xor(opDst, opSrc)));
 	}
 
@@ -165,7 +164,7 @@ public:
 		auto opDst = this->Operand(Dst());
 		auto opSrc = this->Operand(Src1());
 		m.Assign(
-			frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte),
+			NZCV(),
 			m.Cond(m.And(opDst, opSrc)));
 	}
 
@@ -173,8 +172,8 @@ public:
 	{
 		auto opSrc = this->Operand(Src1());
 		auto opDst = this->Operand(Dst());
-		auto rDst = Dst().RegisterValue;
-		if (rDst == ArmRegister::PC)
+		auto rDst = Dst().reg;
+		if (rDst == ARM_REG_PC)
 		{
 			// Assignment to PC is the same as a jump
 			m.SetRtlClass(RtlClass::Transfer);
@@ -187,9 +186,9 @@ public:
 
 	void ArmRewriter::RewriteLdrd()
 	{
-		auto ops = instr.ArchitectureDetail.Operands;
-		auto regLo = (int)ops[0].RegisterValue;
-		auto regHi = (int)ops[1].RegisterValue;
+		auto ops = instr.detail->arm.operands;
+		auto regLo = (int)ops[0].reg;
+		auto regHi = (int)ops[1].reg;
 		auto opDst = frame.EnsureSequence(regHi, regLo, PrimitiveType::Word64);
 		auto opSrc = this->Operand(ops[2]);
 		m.Assign(opDst, opSrc);
@@ -206,9 +205,9 @@ public:
 
 	void ArmRewriter::RewriteStrd()
 	{
-		auto ops = instr.ArchitectureDetail.Operands;
-		auto regLo = (int)ops[0].RegisterValue;
-		auto regHi = (int)ops[1].RegisterValue;
+		auto ops = instr.detail->arm.operands;
+		auto regLo = (int)ops[0].reg;
+		auto regHi = (int)ops[1].reg;
 		auto opSrc = frame.EnsureSequence(regHi, regLo, PrimitiveType::Word64);
 		auto opDst = this->Operand(ops[2]);
 		m.Assign(opDst, opSrc);
@@ -222,18 +221,18 @@ public:
 		auto opSrc2 = this->Operand(Src2());
 		auto opSrc3 = this->Operand(Src3());
 		ConditionalAssign(opDst, (m.*op)(opSrc3, m.IMul(opSrc1, opSrc2)));
-		if (instr.ArchitectureDetail.UpdateFlags)
+		if (instr.detail->arm.update_flags)
 		{
-			ConditionalAssign(frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte), m.Cond(opDst));
+			ConditionalAssign(NZCV(), m.Cond(opDst));
 		}
 	}
 
 	void ArmRewriter::RewriteMov()
 	{
-		if (Dst().Type == ArmInstructionOperandType::Register && Dst().RegisterValue == ArmRegister::PC)
+		if (Dst().type == ARM_OP_REG && Dst().reg == ARM_REG_PC)
 		{
 			m.SetRtlClass(RtlClass::Transfer);
-			if (Src1().Type == ArmInstructionOperandType::Register && Src1().RegisterValue == ArmRegister::LR)
+			if (Src1().type == ARM_OP_REG && Src1().reg == ARM_REG_LR)
 			{
 				//$TODO:
 				//AddConditional([]() => { m.RtlReturn(0, 0, RtlClass.Transfer);));
@@ -252,7 +251,7 @@ public:
 	void ArmRewriter::RewriteMovt()
 	{
 		auto opDst = Operand(Dst());
-		auto iSrc = Src1().ImmediateValue;
+		auto iSrc = Src1().imm;
 		auto opSrc = m.Dpb(opDst, m.Word16((uint16_t)iSrc), 16);
 		ConditionalAssign(opDst, opSrc);
 	}
@@ -260,12 +259,12 @@ public:
 	void ArmRewriter::RewriteLdm(int initialOffset)
 	{
 		auto dst = this->Operand(Dst());
-		auto range = instr.ArchitectureDetail.Operands + 1;
-		int count = instr.ArchitectureDetail.Length - 1;
-		RewriteLdm(dst, range, count, initialOffset, instr.ArchitectureDetail.WriteBack);
+		auto range = instr.detail->arm.operands + 1;
+		int count = instr.detail->arm.op_count - 1;
+		RewriteLdm(dst, range, count, initialOffset, instr.detail->arm.writeback);
 	}
 
-	void ArmRewriter::RewriteLdm(IExpression  * dst, const ArmInstructionOperand * range, int length, int offset, bool writeback)
+	void ArmRewriter::RewriteLdm(IExpression  * dst, const cs_arm_op * range, int length, int offset, bool writeback)
 	{
 		ConditionalSkip();
 		bool pcRestored = false;
@@ -275,13 +274,13 @@ public:
 			IExpression * ea = offset != 0
 				? m.IAdd(dst, m.Int32(offset))
 				: dst;
-			if (r.RegisterValue.Value == ArmRegister::PC)
+			if (r.reg.Value == ARM_REG_PC)
 			{
 				pcRestored = true;
 			}
 			else
 			{
-				auto dstReg = frame.EnsureRegister(r.RegisterValue);
+				auto dstReg = frame.EnsureRegister(r.reg);
 				m.Assign(dstReg, m.Mem32(ea));
 			}
 			offset += 4;
@@ -312,25 +311,25 @@ public:
 
 	void ArmRewriter::RewriteMull(PrimitiveType dtResult, BinOpEmitter op)
 	{
-		auto ops = instr.ArchitectureDetail.Operands;
-		auto regLo = (int)ops[0].RegisterValue;
-		auto regHi = (int)ops[1].RegisterValue;
+		auto ops = instr.detail->arm.operands;
+		auto regLo = (int)ops[0].reg;
+		auto regHi = (int)ops[1].reg;
 
 		auto opDst = frame.EnsureSequence(regHi, regLo, dtResult);
 		auto opSrc1 = this->Operand(Src3());
 		auto opSrc2 = this->Operand(Src2());
 		ConditionalAssign(opDst, (m.*op)(opSrc1, opSrc2));
-		if (instr.ArchitectureDetail.UpdateFlags)
+		if (instr.detail->arm.update_flags)
 		{
-			ConditionalAssign(frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte), m.Cond(opDst));
+			ConditionalAssign(NZCV(), m.Cond(opDst));
 		}
 	}
 
 	void ArmRewriter::RewritePop()
 	{
-		auto sp = Reg(ArmRegister::SP);
+		auto sp = Reg(ARM_REG_SP);
 		//$TODO
-		//RewriteLdm(sp, instr.ArchitectureDetail.Operands, 0, true);
+		//RewriteLdm(sp, instr.detail->arm.operands, 0, true);
 	}
 
 	void ArmRewriter::RewritePush()
@@ -339,12 +338,12 @@ public:
 		/*
 		int offset = 0;
 		auto dst = frame.EnsureRegister(A32Registers.sp);
-		foreach(auto op in instr.ArchitectureDetail.Operands)
+		foreach(auto op in instr.detail->arm.operands)
 		{
 			Expression ea = offset != 0
 				? m.ISub(dst, offset)
 				: (Expression)dst;
-			auto reg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value]);
+			auto reg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[op.reg.Value]);
 			m.Assign(m.LoadDw(ea), reg);
 			offset += reg.DataType.Size;
 		}
@@ -359,8 +358,8 @@ public:
 			PrimitiveType::Int32,
 			m.Slice(
 				this->Operand(Src1()),
-				Src2().ImmediateValue,
-				Src3().ImmediateValue));
+				Src2().imm,
+				Src3().imm));
 		ConditionalAssign(dst, src);
 	}
 
@@ -369,18 +368,18 @@ public:
 		auto dst = this->Operand(Dst());
 		//$TODO
 		/*
-		auto range = instr.ArchitectureDetail.Operands.Skip(1);
+		auto range = instr.detail->arm.operands.Skip(1);
 		int offset = 0;
 		foreach(auto r in range)
 		{
 			Expression ea = offset != 0
 				? m.ISub(dst, offset)
 				: (Expression)dst;
-			auto srcReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.RegisterValue.Value]);
+			auto srcReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.reg.Value]);
 			m.Assign(m.LoadDw(ea), srcReg);
 			offset += srcReg.DataType.Size;
 		}
-		if (offset != 0 && instr.ArchitectureDetail.WriteBack)
+		if (offset != 0 && instr.detail->arm.WriteBack)
 		{
 			m.Assign(dst, m.ISub(dst, offset));
 		}
@@ -392,16 +391,16 @@ public:
 		//$TODO
 		/*
 		auto dst = this->Operand(Dst());
-		auto range = instr.ArchitectureDetail.Operands.Skip(1);
+		auto range = instr.detail->arm.operands.Skip(1);
 		int offset = 4;
 		foreach(auto r in range)
 		{
 			Expression ea = m.IAdd(dst, Constant.Int32(offset));
-			auto srcReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.RegisterValue.Value]);
+			auto srcReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.reg.Value]);
 			m.Assign(m.LoadDw(ea), srcReg);
 			offset += 4;
 		}
-		if (offset != 4 && instr.ArchitectureDetail.WriteBack)
+		if (offset != 4 && instr.detail->arm.WriteBack)
 		{
 			m.Assign(dst, m.IAdd(dst, Constant.Int32(offset)));
 		}
@@ -433,16 +432,16 @@ public:
 			PrimitiveType::UInt32,
 			m.Slice(
 				this->Operand(Src1()),
-				Src2().ImmediateValue,
-				Src3().ImmediateValue));
+				Src2().imm,
+				Src3().imm));
 		ConditionalAssign(dst, src);
 	}
 
 	void ArmRewriter::RewriteUmlal()
 	{
 		auto dst = frame.EnsureSequence(
-			(int)Src1().RegisterValue,
-			(int)Dst().RegisterValue,
+			(int)Src1().reg,
+			(int)Dst().reg,
 			PrimitiveType::Word64);
 		auto left = this->Operand(Src2());
 		auto right = this->Operand(Src3());
@@ -454,10 +453,10 @@ public:
 	void ArmRewriter::RewriteXtab(PrimitiveType dt)
 	{
 		auto dst = this->Operand(Dst());
-		auto src = frame.EnsureRegister((int)Src2().RegisterValue);
-		if (Src2().Shifter.Type == ArmShifterType::ROR)
+		auto src = frame.EnsureRegister((int)Src2().reg);
+		if (Src2().shift.type == ARM_SFT_ROR)
 		{
-			src = m.Shr(src, Src2().Shifter.Value);
+			src = m.Shr(src, Src2().shift.value);
 		}
 		src = m.Cast(dt, src);
 		ConditionalSkip();
@@ -467,10 +466,10 @@ public:
 	void ArmRewriter::RewriteXtb(PrimitiveType dt)
 	{
 		auto dst = this->Operand(Dst());
-		auto src = frame.EnsureRegister((int)Src1().RegisterValue);
-		if (Src1().Shifter.Type == ArmShifterType::ROR)
+		auto src = frame.EnsureRegister((int)Src1().reg);
+		if (Src1().shift.type == ARM_SFT_ROR)
 		{
-			src = m.Shr(src, Src1().Shifter.Value);
+			src = m.Shr(src, Src1().shift.value);
 		}
 		src = m.Cast(dt, src);
 		ConditionalSkip();
