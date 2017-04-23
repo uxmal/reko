@@ -69,16 +69,6 @@ class IExpression
 {
 };
 
-class IFrame
-{
-public:
-	virtual IExpression * CreateTemporary(PrimitiveType size) = 0;
-	virtual IExpression * EnsureRegister(int reg) = 0;
-	virtual IExpression * EnsureSequence(int regHi, int regLo, PrimitiveType size) = 0;
-	virtual IExpression * EnsureFlagGroup(int baseReg, int bitmask, const char * name, PrimitiveType size) = 0;
-
-};
-
 class IRtlEmitter
 {
 public:
@@ -150,9 +140,14 @@ public:
 	virtual STDMETHODIMP Next() = 0;
 };
 
-class IRewriterHost
+class INativeRewriterHost: public IUnknown
 {
 public:
-	virtual void Error(uint64_t uAddress, const char * error) = 0;
-	virtual IExpression * PseudoProcedure(const char *name, PrimitiveType retType, /* args */...) = 0;
+	virtual IExpression * STDAPICALLTYPE EnsureRegister(int reg) = 0;
+	virtual IExpression * STDAPICALLTYPE EnsureSequence(int regHi, int regLo, PrimitiveType size) = 0;
+	virtual IExpression * STDAPICALLTYPE EnsureFlagGroup(int baseReg, int bitmask, const char * name, PrimitiveType size) = 0;
+	virtual IExpression * STDAPICALLTYPE CreateTemporary(PrimitiveType size) = 0;
+
+	virtual void STDAPICALLTYPE Error(uint64_t uAddress, const char * error) = 0;
+	virtual IExpression * STDAPICALLTYPE PseudoProcedure(const char *name, PrimitiveType retType, /* args */...) = 0;
 };

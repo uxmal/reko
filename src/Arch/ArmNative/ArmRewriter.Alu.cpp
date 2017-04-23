@@ -29,7 +29,7 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr)
 	auto opSrc2 = this->Operand(Src2());
 	// We do not take the trouble of widening the CF to the word size
 	// to simplify code analysis in later stages. 
-	auto c = frame.EnsureFlagGroup(ARM_REG_CPSR, (int)FlagM::CF, "C", PrimitiveType::Bool);
+	auto c = host->EnsureFlagGroup(ARM_REG_CPSR, (int)FlagM::CF, "C", PrimitiveType::Bool);
 	ConditionalAssign(
 		opDst,
 		(m.*opr)(
@@ -59,7 +59,7 @@ void ArmRewriter::RewriteBfi()
 	auto opSrc = this->Operand(Src1());
 	//$TODO
 	/*
-	auto tmp = frame.CreateTemporary(opDst.DataType);
+	auto tmp = host->CreateTemporary(opDst.DataType);
 	auto lsb = instr->detail->arm.operands[2].imm;
 	auto bitsize = instr->detail->arm.operands[3].imm;
 	ConditionalSkip();
@@ -86,7 +86,7 @@ void ArmRewriter::RewriteRev()
 	auto opSrc = this->Operand(Src1());
 	ConditionalAssign(
 		opDst,
-		host.PseudoProcedure("__rev", PrimitiveType::Word32, opSrc));
+		host->PseudoProcedure("__rev", PrimitiveType::Word32, opSrc));
 }
 
 void ArmRewriter::RewriteRevBinOp(BinOpEmitter op, bool setflags)
@@ -127,7 +127,7 @@ void ArmRewriter::RewriteClz()
 
 	ConditionalAssign(
 		opDst,
-		host.PseudoProcedure("__clz", PrimitiveType::Int32, opSrc));
+		host->PseudoProcedure("__clz", PrimitiveType::Int32, opSrc));
 }
 
 void ArmRewriter::RewriteCmn()
@@ -189,7 +189,7 @@ void ArmRewriter::RewriteLdrd()
 	auto ops = instr->detail->arm.operands;
 	auto regLo = (int)ops[0].reg;
 	auto regHi = (int)ops[1].reg;
-	auto opDst = frame.EnsureSequence(regHi, regLo, PrimitiveType::Word64);
+	auto opDst = host->EnsureSequence(regHi, regLo, PrimitiveType::Word64);
 	auto opSrc = this->Operand(ops[2]);
 	m.Assign(opDst, opSrc);
 	MaybePostOperand(ops[2]);
@@ -208,7 +208,7 @@ void ArmRewriter::RewriteStrd()
 	auto ops = instr->detail->arm.operands;
 	auto regLo = (int)ops[0].reg;
 	auto regHi = (int)ops[1].reg;
-	auto opSrc = frame.EnsureSequence(regHi, regLo, PrimitiveType::Word64);
+	auto opSrc = host->EnsureSequence(regHi, regLo, PrimitiveType::Word64);
 	auto opDst = this->Operand(ops[2]);
 	m.Assign(opDst, opSrc);
 	MaybePostOperand(ops[2]);
@@ -280,7 +280,7 @@ void ArmRewriter::RewriteLdm(IExpression  * dst, const cs_arm_op * range, int le
 		}
 		else
 		{
-			auto dstReg = frame.EnsureRegister(r.reg);
+			auto dstReg = host->EnsureRegister(r.reg);
 			m.Assign(dstReg, m.Mem32(ea));
 		}
 		offset += 4;
@@ -315,7 +315,7 @@ void ArmRewriter::RewriteMull(PrimitiveType dtResult, BinOpEmitter op)
 	auto regLo = (int)ops[0].reg;
 	auto regHi = (int)ops[1].reg;
 
-	auto opDst = frame.EnsureSequence(regHi, regLo, dtResult);
+	auto opDst = host->EnsureSequence(regHi, regLo, dtResult);
 	auto opSrc1 = this->Operand(Src3());
 	auto opSrc2 = this->Operand(Src2());
 	ConditionalAssign(opDst, (m.*op)(opSrc1, opSrc2));
@@ -337,13 +337,13 @@ void ArmRewriter::RewritePush()
 	//$TODO:
 	/*
 	int offset = 0;
-	auto dst = frame.EnsureRegister(A32Registers.sp);
+	auto dst = host->EnsureRegister(A32Registers.sp);
 	foreach(auto op in instr->detail->arm.operands)
 	{
 		Expression ea = offset != 0
 			? m.ISub(dst, offset)
 			: (Expression)dst;
-		auto reg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[op.reg.Value]);
+		auto reg = host->EnsureRegister(A32Registers.RegisterByCapstoneID[op.reg.Value]);
 		m.Assign(m.LoadDw(ea), reg);
 		offset += reg.DataType.Size;
 	}
@@ -375,7 +375,7 @@ void ArmRewriter::RewriteStm()
 		Expression ea = offset != 0
 			? m.ISub(dst, offset)
 			: (Expression)dst;
-		auto srcReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.reg.Value]);
+		auto srcReg = host->EnsureRegister(A32Registers.RegisterByCapstoneID[r.reg.Value]);
 		m.Assign(m.LoadDw(ea), srcReg);
 		offset += srcReg.DataType.Size;
 	}
@@ -396,7 +396,7 @@ void ArmRewriter::RewriteStmib()
 	foreach(auto r in range)
 	{
 		Expression ea = m.IAdd(dst, Constant.Int32(offset));
-		auto srcReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.reg.Value]);
+		auto srcReg = host->EnsureRegister(A32Registers.RegisterByCapstoneID[r.reg.Value]);
 		m.Assign(m.LoadDw(ea), srcReg);
 		offset += 4;
 	}
@@ -405,12 +405,12 @@ void ArmRewriter::RewriteStmib()
 		m.Assign(dst, m.IAdd(dst, Constant.Int32(offset)));
 	}
 #if NYI
-	auto dst = frame.EnsureRegister(((RegisterOperand)Dst()).Register);
+	auto dst = host->EnsureRegister(((RegisterOperand)Dst()).Register);
 	auto range = (RegisterRangeOperand)Src1();
 	int offset = 0;
 	foreach(auto r in range.GetRegisters())
 	{
-		auto srcReg = frame.EnsureRegister(arch.GetRegister(r));
+		auto srcReg = host->EnsureRegister(arch.GetRegister(r));
 		offset += srcReg.DataType.Size;
 		Expression ea = offset != 0
 			? emitter.ISub(dst, offset)
@@ -439,7 +439,7 @@ void ArmRewriter::RewriteUbfx()
 
 void ArmRewriter::RewriteUmlal()
 {
-	auto dst = frame.EnsureSequence(
+	auto dst = host->EnsureSequence(
 		(int)Src1().reg,
 		(int)Dst().reg,
 		PrimitiveType::Word64);
@@ -453,7 +453,7 @@ void ArmRewriter::RewriteUmlal()
 void ArmRewriter::RewriteXtab(PrimitiveType dt)
 {
 	auto dst = this->Operand(Dst());
-	auto src = frame.EnsureRegister((int)Src2().reg);
+	auto src = host->EnsureRegister((int)Src2().reg);
 	if (Src2().shift.type == ARM_SFT_ROR)
 	{
 		src = m.Shr(src, Src2().shift.value);
@@ -466,7 +466,7 @@ void ArmRewriter::RewriteXtab(PrimitiveType dt)
 void ArmRewriter::RewriteXtb(PrimitiveType dt)
 {
 	auto dst = this->Operand(Dst());
-	auto src = frame.EnsureRegister((int)Src1().reg);
+	auto src = host->EnsureRegister((int)Src1().reg);
 	if (Src1().shift.type == ARM_SFT_ROR)
 	{
 		src = m.Shr(src, Src1().shift.value);

@@ -16,8 +16,7 @@ public:
 		const uint8_t * rawBytes,
 		size_t length,
 		IRtlEmitter * emitter,
-		IFrame * frame,
-		IRewriterHost * host);
+		INativeRewriterHost * host);
 
 	STDMETHOD(QueryInterface)(REFIID iid, void ** ppvOut);
 	STDMETHOD_(ULONG, AddRef)();
@@ -39,8 +38,13 @@ private:
 	IExpression * MaybeShiftOperand(IExpression * exp, const cs_arm_op & op);
 	IExpression * NZCV();
 	IExpression * Operand(const cs_arm_op & op);
-	IExpression * Reg(int reg) { return frame.EnsureRegister(reg); }
-	IExpression * Reg(arm_reg reg) { return frame.EnsureRegister((int)reg); }
+	IExpression * Reg(int reg) { 
+	auto ret = host->EnsureRegister(reg);
+	return reinterpret_cast<IExpression *>(ret);
+	}
+	IExpression * Reg(arm_reg reg) { 
+		return host->EnsureRegister((int)reg);
+	}
 
 	PrimitiveType SizeFromLoadStore();
 	IExpression * TestCond(arm_cc cond);
@@ -100,8 +104,7 @@ private:
 	ULONG cRef;	// COM ref count.
 
 	IRtlEmitter & m;
-	IRewriterHost & host;
-	IFrame & frame;
+	INativeRewriterHost * host;
 	cs_insn * instr;
 	const uint8_t * rawBytes;
 	size_t length;

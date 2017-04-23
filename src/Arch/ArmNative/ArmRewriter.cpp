@@ -9,14 +9,12 @@ ArmRewriter::ArmRewriter(
 	const uint8_t * rawBytes,
 	size_t length,
 	IRtlEmitter * emitter,
-	IFrame * frame,
-	IRewriterHost * host)
+	INativeRewriterHost * host)
 :
 	rawBytes(rawBytes),
 	length(length),
 	m(*emitter),
-	host(*host),
-	frame(*frame),
+	host(host),
 	cRef(0),
 	instr(nullptr)
 {
@@ -527,7 +525,7 @@ void ArmRewriter::NotImplementedYet()
 {
 	char buf[200];	//$TODO: hello buffer overflow!
 	::snprintf(buf, sizeof(buf), "Rewriting ARM opcode '%s' is not supported yet.", instr->mnemonic);
-	host.Error(
+	host->Error(
 		instr->address,
 		buf);
 	m.Invalid();
@@ -535,7 +533,7 @@ void ArmRewriter::NotImplementedYet()
 
 IExpression * ArmRewriter::NZCV()
 {
-	return frame.EnsureFlagGroup((int)ARM_REG_CPSR, 0x1111, "NZCV", PrimitiveType::Byte);
+	return host->EnsureFlagGroup((int)ARM_REG_CPSR, 0x1111, "NZCV", PrimitiveType::Byte);
 }
 
 void ArmRewriter::MaybeUpdateFlags(IExpression * opDst)
@@ -662,12 +660,12 @@ IExpression * ArmRewriter::Operand(const cs_arm_op & op)
 	{
 	case ARM_OP_REG:
 	{
-		auto reg = frame.EnsureRegister(op.reg);
+		auto reg = host->EnsureRegister(op.reg);
 		return MaybeShiftOperand(reg, op);
 	}
 	case ARM_OP_SYSREG:
 	{
-		auto sysreg = frame.EnsureRegister(op.reg);
+		auto sysreg = host->EnsureRegister(op.reg);
 		return sysreg;
 	}
 	case ARM_OP_IMM:
@@ -764,7 +762,7 @@ void ArmRewriter::MaybePostOperand(const cs_arm_op & op)
 		return;
 	if (memOp.Preindexed)
 		return;
-	Expression baseReg = frame.EnsureRegister(memOp.Base);
+	Expression baseReg = host->EnsureRegister(memOp.Base);
 	auto offset = Operand(memOp.Offset);
 	auto ea = memOp.Subtract
 		? emitter.ISub(baseReg, offset)
@@ -811,13 +809,13 @@ IExpression * ArmRewriter::TestCond(arm_cc cond)
 
 IExpression * ArmRewriter::FlagGroup(FlagM bits, const char * name, PrimitiveType type)
 {
-	return frame.EnsureFlagGroup(ARM_REG_CPSR, (int) bits, name, type);
+	return host->EnsureFlagGroup(ARM_REG_CPSR, (int) bits, name, type);
 }
 
 void ArmRewriter::RewriteSvc()
 {
 	//$TODO
 	//m.SideEffect(m.Fn(
-	//	host.EnsurePseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 2),
+	//	host->EnsurePseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 2),
 	//	Operand(Dst)));
 }
