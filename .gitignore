@@ -22,7 +22,7 @@ TestResults
 # MSVC build directories
 **/x86/Debug
 **/x86/Release
-**/x86/Debug
+**/x64/Debug
 **/x64/Release
 /subjects/**/Debug
 /subjects/**/Release

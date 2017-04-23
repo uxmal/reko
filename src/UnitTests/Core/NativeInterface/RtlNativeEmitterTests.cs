@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Core.NativeInterface
         public void Setup()
         {
             this.rtlc = new RtlInstructionCluster(Address.Ptr32(0x00123400), 4);
-            this.m = new RtlNativeEmitter(new RtlEmitter(null));
+            this.m = new RtlNativeEmitter(new RtlEmitter(rtlc.Instructions));
         }
 
         [Test]
@@ -63,6 +63,27 @@ namespace Reko.UnitTests.Core.NativeInterface
             var mem = (MemoryAccess)m.GetExpression(hExp);
             var ea = (Address)mem.EffectiveAddress;
             Assert.AreEqual("00123400", ea.ToString());
+        }
+
+        [Test]
+        [Ignore("Not implemented yet")]
+        [Category("integrationDevelopment")]
+        public void Rtlne_Assign_ForgotSetRtlClass()
+        {
+            var hDst = m.Mem16(m.Ptr32(0x00123400));
+            var hSrc = m.UInt16(0x5678);
+            m.Assign(hDst, hSrc);
+            try
+            {
+                var rtlc = m.Extract();
+                Assert.Fail("Expected an exception because we forgot to set the RtlClass of the expression");
+            }
+            catch (InvalidOperationException)
+            {
+                return;
+            }
+
+
         }
     }
 }
