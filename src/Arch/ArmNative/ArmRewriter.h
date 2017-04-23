@@ -17,13 +17,7 @@ public:
 		int length,
 		IRtlEmitter * emitter,
 		IFrame * frame,
-		IRewriterHost * host)
-		: m(*emitter), 
-		  host(*host),
-		  frame(*frame)
-	{
-	}
-
+		IRewriterHost * host);
 	virtual void Next() override;
 
 private:

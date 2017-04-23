@@ -15,4 +15,6 @@
 #include <stdint.h>
 
 
+#include "../../../external/Capstone/X86/include/capstone.h"
+
 // TODO: reference additional headers your program requires here

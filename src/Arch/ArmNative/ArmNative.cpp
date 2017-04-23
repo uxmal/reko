@@ -7,7 +7,10 @@
 #include "reko.h"
 #include "ArmRewriter.h"
 
-IRewriter * CreateRewriter(void * rawBytes, int length, IRtlEmitter * m, IFrame * frame, IRewriterHost * host)
-{
-	return new ArmRewriter(rawBytes, length, m, frame, host);
+extern "C" {
+	__declspec(dllexport)
+		IRewriter * __cdecl CreateRewriter(void * rawBytes, int length, IRtlEmitter * m, IFrame * frame, IRewriterHost * host)
+	{
+		return new ArmRewriter(rawBytes, length, m, frame, host);
+	}
 }

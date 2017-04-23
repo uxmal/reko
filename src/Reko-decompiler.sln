@@ -358,6 +358,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M68kAssembler", "Assemblers
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ArmNative", "Arch\ArmNative\ArmNative.vcxproj", "{812947D3-7B26-4536-AB23-CD26BF6CA416}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdItp", "tests\CmdItp\CmdItp.csproj", "{1567D181-6270-4472-8891-4999A0674B8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -2444,6 +2446,42 @@ Global
 		{812947D3-7B26-4536-AB23-CD26BF6CA416}.TravisRelease|x64.Build.0 = Release|x64
 		{812947D3-7B26-4536-AB23-CD26BF6CA416}.TravisRelease|x86.ActiveCfg = Release|Win32
 		{812947D3-7B26-4536-AB23-CD26BF6CA416}.TravisRelease|x86.Build.0 = Release|Win32
+		{1567D181-6270-4472-8891-4999A0674B8B}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Debug|.NET.Build.0 = Debug|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Debug|Win32.Build.0 = Debug|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Debug|x64.Build.0 = Debug|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Debug|x86.Build.0 = Debug|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Release|.NET.ActiveCfg = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Release|.NET.Build.0 = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Release|Win32.ActiveCfg = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Release|Win32.Build.0 = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Release|x64.ActiveCfg = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Release|x64.Build.0 = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Release|x86.ActiveCfg = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.Release|x86.Build.0 = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.TravisRelease|.NET.ActiveCfg = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.TravisRelease|.NET.Build.0 = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.TravisRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.TravisRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.TravisRelease|Win32.ActiveCfg = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.TravisRelease|Win32.Build.0 = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.TravisRelease|x64.ActiveCfg = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.TravisRelease|x64.Build.0 = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.TravisRelease|x86.ActiveCfg = Release|Any CPU
+		{1567D181-6270-4472-8891-4999A0674B8B}.TravisRelease|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2511,6 +2549,7 @@ Global
 		{72641087-68D2-41E7-9B29-BC9D4213940A} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
 		{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC} = {4663BBB9-AF99-4C57-A355-5D7814284BB1}
 		{812947D3-7B26-4536-AB23-CD26BF6CA416} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
+		{1567D181-6270-4472-8891-4999A0674B8B} = {3F38B136-C309-4B62-8496-931723F16706}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Drivers\MonoDecompiler\MonoDecompiler.csproj

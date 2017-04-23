@@ -1,7 +1,24 @@
 #include "stdafx.h"
 #include "reko.h"
 #include "arm.h"
+
 #include "ArmRewriter.h"
+
+ArmRewriter::ArmRewriter(
+	void * rawBytes,
+	int length,
+	IRtlEmitter * emitter,
+	IFrame * frame,
+	IRewriterHost * host)
+: m(*emitter),
+host(*host),
+frame(*frame)
+{
+	auto hcap = ::LoadLibrary(L"cs_open");
+	::GetProcAddress(hcap, "cs_open");
+	csh hcapstone;
+	cs_open(CS_ARCH_ARM, CS_MODE_ARM, &hcapstone); 
+}
 
 void ArmRewriter::Next()
 {
