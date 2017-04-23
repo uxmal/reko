@@ -33,11 +33,17 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr)
 		auto c = frame.EnsureFlagGroup((int)ArmRegister::CPSR, (int)FlagM::CF, "C", PrimitiveType::Bool);
 		ConditionalAssign(
 			opDst,
-			m.*opr(
+			(m.*opr)(
 				(m.*opr)(opSrc1, opSrc2),
 				c));
 		MaybeUpdateFlags(opDst);
 	}
+
+class Bits
+{
+public:
+	static uint32_t Mask(int, int) { return 0; }
+};
 
 	void ArmRewriter::RewriteBfc()
 	{
@@ -45,7 +51,7 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr)
 		auto lsb = instr.ArchitectureDetail.Operands[1].ImmediateValue;
 		auto bitsize = instr.ArchitectureDetail.Operands[2].ImmediateValue;
 		ConditionalSkip();
-		m.Assign(opDst, m.And(opDst, (uint32_t)~Bits::Mask(lsb, bitsize)));
+		m.Assign(opDst, m.And(opDst, ~Bits::Mask(lsb, bitsize)));
 	}
 
 	void ArmRewriter::RewriteBfi()
@@ -68,7 +74,7 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr)
 		auto opDst = this->Operand(Dst());
 		auto opSrc1 = this->Operand(Src1());
 		auto opSrc2 = this->Operand(Src2());
-		ConditionalAssign(opDst, (&m).op(opSrc1, opSrc2));
+		ConditionalAssign(opDst, (m.*op)(opSrc1, opSrc2));
 		if (setflags)
 		{
 			ConditionalAssign(frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte), m.Cond(opDst));
@@ -89,7 +95,7 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr)
 		auto opDst = this->Operand(Dst());
 		auto opSrc1 = this->Operand(Src1());
 		auto opSrc2 = this->Operand(Src2());
-		ConditionalAssign(opDst, op(opSrc1, opSrc2));
+		ConditionalAssign(opDst, (m.*op)(opSrc1, opSrc2));
 		if (setflags)
 		{
 			ConditionalAssign(frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte), m.Cond(opDst));
@@ -100,7 +106,7 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr)
 	{
 		auto opDst = this->Operand(Dst());
 		auto opSrc = this->Operand(Src1());
-		ConditionalAssign(opDst, op(opSrc));
+		ConditionalAssign(opDst, (m.*op)(opSrc));
 		if (instr.ArchitectureDetail.UpdateFlags)
 		{
 			ConditionalAssign(frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte), m.Cond(opDst));
@@ -215,7 +221,7 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr)
 		auto opSrc1 = this->Operand(Src1());
 		auto opSrc2 = this->Operand(Src2());
 		auto opSrc3 = this->Operand(Src3());
-		ConditionalAssign(opDst, op(opSrc3, m.IMul(opSrc1, opSrc2)));
+		ConditionalAssign(opDst, (m.*op)(opSrc3, m.IMul(opSrc1, opSrc2)));
 		if (instr.ArchitectureDetail.UpdateFlags)
 		{
 			ConditionalAssign(frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte), m.Cond(opDst));
@@ -301,7 +307,7 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr)
 		auto opDst = this->Operand(Dst());
 		auto opLeft = m.Cast(dtMultiplicand, this->Operand(Src1()));
 		auto opRight = m.Cast(dtMultiplicand, this->Operand(Src2()));
-		m.Assign(opDst, mul(opLeft, opRight));
+		m.Assign(opDst, (m.*mul)(opLeft, opRight));
 	}
 
 	void ArmRewriter::RewriteMull(PrimitiveType dtResult, BinOpEmitter op)
@@ -313,7 +319,7 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr)
 		auto opDst = frame.EnsureSequence(regHi, regLo, dtResult);
 		auto opSrc1 = this->Operand(Src3());
 		auto opSrc2 = this->Operand(Src2());
-		ConditionalAssign(opDst, op(opSrc1, opSrc2));
+		ConditionalAssign(opDst, (m.*op)(opSrc1, opSrc2));
 		if (instr.ArchitectureDetail.UpdateFlags)
 		{
 			ConditionalAssign(frame.EnsureFlagGroup((int)ArmRegister::CPSR, 0x1111, "NZCV", PrimitiveType::Byte), m.Cond(opDst));

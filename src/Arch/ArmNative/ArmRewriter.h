@@ -1,13 +1,13 @@
 #pragma once
 
-typedef IExpression * (IRewriter::*UnaryOpEmitter)(IExpression *);
-typedef IExpression * (IRewriter::*BinOpEmitter)(IExpression *, IExpression *);
+typedef IExpression * (IRtlEmitter::*UnaryOpEmitter)(IExpression *);
+typedef IExpression * (IRtlEmitter::*BinOpEmitter)(IExpression *, IExpression *);
 
 enum class FlagM
 {
 	CF, VF, ZF, NF,
 };
-FlagM operator | (FlagM a, FlagM b) { return (FlagM)((int)a | (int)b); }
+inline FlagM operator | (FlagM a, FlagM b) { return (FlagM)((int)a | (int)b); }
 
 class ArmRewriter : public IRewriter
 {

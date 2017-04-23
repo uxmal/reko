@@ -376,10 +376,10 @@ void ArmRewriter::Next()
 		NotImplementedYet();
 		break;
 
-	case Opcode::ADC: RewriteAdcSbc(m.IAdd); break;
-	case Opcode::ADD: RewriteBinOp(m.IAdd, instr.ArchitectureDetail.UpdateFlags); break;
-	case Opcode::AND: RewriteBinOp(m.And, instr.ArchitectureDetail.UpdateFlags); break;
-	case Opcode::EOR: RewriteBinOp(m.Xor, instr.ArchitectureDetail.UpdateFlags); break;
+	case Opcode::ADC: RewriteAdcSbc(&IRtlEmitter::IAdd); break;
+	case Opcode::ADD: RewriteBinOp(&IRtlEmitter::IAdd, instr.ArchitectureDetail.UpdateFlags); break;
+	case Opcode::AND: RewriteBinOp(&IRtlEmitter::And, instr.ArchitectureDetail.UpdateFlags); break;
+	case Opcode::EOR: RewriteBinOp(&IRtlEmitter::Xor, instr.ArchitectureDetail.UpdateFlags); break;
 	case Opcode::B: RewriteB(false); break;
 	case Opcode::BFC: RewriteBfc(); break;
 	case Opcode::BFI: RewriteBfi(); break;
@@ -403,25 +403,25 @@ void ArmRewriter::Next()
 	case Opcode::LDMIB: RewriteLdm(4); break;
 	case Opcode::NOP: m.Nop(); break;
 	case Opcode::MCR: RewriteMcr(); break;
-	case Opcode::MLA: RewriteMultiplyAccumulate(m.IAdd); break;
-	case Opcode::MLS: RewriteMultiplyAccumulate(m.ISub); break;
+	case Opcode::MLA: RewriteMultiplyAccumulate(&IRtlEmitter::IAdd); break;
+	case Opcode::MLS: RewriteMultiplyAccumulate(&IRtlEmitter::ISub); break;
 	case Opcode::MOV: RewriteMov(); break;
 	case Opcode::MOVT: RewriteMovt(); break;
 	case Opcode::MOVW: RewriteMov(); break;
 	case Opcode::MRC: RewriteMrc(); break;
 	case Opcode::MRS: RewriteMrs(); break;
 	case Opcode::MSR: RewriteMsr(); break;
-	case Opcode::MUL: RewriteBinOp(m.IMul, instr.ArchitectureDetail.UpdateFlags); break;
-	case Opcode::MVN: RewriteUnaryOp(m.Not); break;
-	case Opcode::ORR: RewriteBinOp(m.Or, false); break;
+	case Opcode::MUL: RewriteBinOp(&IRtlEmitter::IMul, instr.ArchitectureDetail.UpdateFlags); break;
+	case Opcode::MVN: RewriteUnaryOp(&IRtlEmitter::Not); break;
+	case Opcode::ORR: RewriteBinOp(&IRtlEmitter::Or, false); break;
 	case Opcode::POP: RewritePop(); break;
 	case Opcode::PUSH: RewritePush(); break;
 	case Opcode::REV: RewriteRev(); break;
-	case Opcode::RSB: RewriteRevBinOp(m.ISub, instr.ArchitectureDetail.UpdateFlags); break;
-	case Opcode::SBC: RewriteAdcSbc(m.ISub); break;
+	case Opcode::RSB: RewriteRevBinOp(&IRtlEmitter::ISub, instr.ArchitectureDetail.UpdateFlags); break;
+	case Opcode::SBC: RewriteAdcSbc(&IRtlEmitter::ISub); break;
 	case Opcode::SBFX: RewriteSbfx(); break;
-	case Opcode::SMULBB: RewriteMulbb(false, false, PrimitiveType::Int16, m.SMul); break;
-	case Opcode::SMULL: RewriteMull(PrimitiveType::Int64, m.SMul); break;
+	case Opcode::SMULBB: RewriteMulbb(false, false, PrimitiveType::Int16, &IRtlEmitter::SMul); break;
+	case Opcode::SMULL: RewriteMull(PrimitiveType::Int64, &IRtlEmitter::SMul); break;
 	case Opcode::STM: RewriteStm(); break;
 	case Opcode::STMDB: RewriteStm(); break;
 	case Opcode::STMIB: RewriteStmib(); break;
@@ -429,7 +429,7 @@ void ArmRewriter::Next()
 	case Opcode::STRB: RewriteStr(PrimitiveType::Byte); break;
 	case Opcode::STRD: RewriteStrd(); break;
 	case Opcode::STRH: RewriteStr(PrimitiveType::UInt16); break;
-	case Opcode::SUB: RewriteBinOp(m.ISub, instr.ArchitectureDetail.UpdateFlags); break;
+	case Opcode::SUB: RewriteBinOp(&IRtlEmitter::ISub, instr.ArchitectureDetail.UpdateFlags); break;
 	case Opcode::SVC: RewriteSvc(); break;
 	case Opcode::SXTAB: RewriteXtab(PrimitiveType::SByte); break;
 	case Opcode::SXTAH: RewriteXtab(PrimitiveType::Int16); break;
@@ -439,7 +439,7 @@ void ArmRewriter::Next()
 	case Opcode::TST: RewriteTst(); break;
 	case Opcode::UBFX: RewriteUbfx(); break;
 	case Opcode::UMLAL: RewriteUmlal(); break;
-	case Opcode::UMULL: RewriteMull(PrimitiveType::UInt64, m.UMul); break;
+	case Opcode::UMULL: RewriteMull(PrimitiveType::UInt64, &IRtlEmitter::UMul); break;
 	case Opcode::UXTAB: RewriteXtab(PrimitiveType::Byte); break;
 	case Opcode::UXTAH: RewriteXtab(PrimitiveType::UInt16); break;
 	case Opcode::UXTB: RewriteXtb(PrimitiveType::Byte); break;
@@ -572,6 +572,7 @@ ArmCodeCondition ArmRewriter::Invert(ArmCodeCondition cc)
 	case ArmCodeCondition::LE: return ArmCodeCondition::GT;
 	case ArmCodeCondition::AL: return ArmCodeCondition::Invalid;
 	}
+	return ArmCodeCondition::Invalid;
 }
 
 IExpression * ArmRewriter::Operand(const ArmInstructionOperand & op)
@@ -623,6 +624,7 @@ IExpression * ArmRewriter::Operand(const ArmInstructionOperand & op)
 	}
 	//$TODO
 	//throw new NotImplementedException(op.Type.ToString());
+	return 0;
 }
 
 PrimitiveType ArmRewriter::SizeFromLoadStore()
@@ -641,6 +643,7 @@ PrimitiveType ArmRewriter::SizeFromLoadStore()
 	case Opcode::STRH: return PrimitiveType::Word16;
 	}
 	//assert(false && instr.Id.ToString());
+	return PrimitiveType::Void;
 }
 
 
@@ -722,6 +725,7 @@ IExpression * ArmRewriter::TestCond(ArmCodeCondition cond)
 	case ArmCodeCondition::VS:
 		return m.Test(ConditionCode::OV, FlagGroup(FlagM::VF, "V", PrimitiveType::Byte));
 	}
+	return 0;
 }
 
 IExpression * ArmRewriter::FlagGroup(FlagM bits, const char * name, PrimitiveType type)
