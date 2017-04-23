@@ -33,12 +33,34 @@ namespace Reko.Core.NativeInterface
     [ClassInterface(ClassInterfaceType.None)]
     public class RtlNativeEmitter : IRtlNativeEmitter
     {
-        private RtlInstructionCluster rtlc;
+        private RtlEmitter m;
+        private List<Expression> handles;
 
-        public RtlNativeEmitter(RtlInstructionCluster rtlc)
+        public RtlNativeEmitter()
         {
-            this.rtlc = rtlc;
+            this.handles = new List<Expression>();
         }
+
+        public RtlNativeEmitter(RtlEmitter m)
+        {
+            this.m = m;
+            this.handles = new List<Expression>();
+        }
+
+
+        public Expression GetExpression(HExpr hExp)
+        {
+            return handles[(int)hExp];
+        }
+
+        private HExpr MapToHandle(Expression exp)
+        {
+            var hExp = (HExpr)handles.Count;
+            handles.Add(exp);
+            return hExp;
+        }
+
+        #region Factory methods
 
         public HExpr And(HExpr a, int n)
         {
@@ -54,6 +76,7 @@ namespace Reko.Core.NativeInterface
         {
             throw new NotImplementedException();
         }
+
 
         public void Branch(HExpr exp, HExpr dst, RtlClass rtlClass)
         {
@@ -120,6 +143,11 @@ namespace Reko.Core.NativeInterface
             throw new NotImplementedException();
         }
 
+        public RtlInstructionCluster Extract()
+        {
+            throw new NotImplementedException();
+        }
+
         public HExpr IMul(HExpr a, HExpr b)
         {
             throw new NotImplementedException();
@@ -132,7 +160,7 @@ namespace Reko.Core.NativeInterface
 
         public HExpr Int32(int i)
         {
-            throw new NotImplementedException();
+            return MapToHandle(Constant.Int32(i));
         }
 
         public HExpr Int64(long l)
@@ -160,6 +188,11 @@ namespace Reko.Core.NativeInterface
             throw new NotImplementedException();
         }
 
+        public HExpr Mem8(HExpr ea)
+        {
+            throw new NotImplementedException();
+        }
+
         public HExpr Mem16(HExpr ea)
         {
             throw new NotImplementedException();
@@ -167,7 +200,7 @@ namespace Reko.Core.NativeInterface
 
         public HExpr Mem32(HExpr ea)
         {
-            throw new NotImplementedException();
+            return MapToHandle(m.LoadDw(GetExpression(ea)));
         }
 
         public HExpr Mem64(HExpr ea)
@@ -175,10 +208,6 @@ namespace Reko.Core.NativeInterface
             throw new NotImplementedException();
         }
 
-        public HExpr Mem8(HExpr ea)
-        {
-            throw new NotImplementedException();
-        }
 
         public void Nop()
         {
@@ -200,12 +229,12 @@ namespace Reko.Core.NativeInterface
             throw new NotImplementedException();
         }
 
-        public HExpr Ptr32(int p)
+        public HExpr Ptr32(uint p)
         {
-            throw new NotImplementedException();
+            return MapToHandle(Address.Ptr32(p));
         }
 
-        public HExpr Ptr64(long p)
+        public HExpr Ptr64(ulong p)
         {
             throw new NotImplementedException();
         }
@@ -329,5 +358,7 @@ namespace Reko.Core.NativeInterface
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

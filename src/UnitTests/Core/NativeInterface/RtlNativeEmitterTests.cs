@@ -20,8 +20,10 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.NativeInterface;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +42,27 @@ namespace Reko.UnitTests.Core.NativeInterface
         public void Setup()
         {
             this.rtlc = new RtlInstructionCluster(Address.Ptr32(0x00123400), 4);
+            this.m = new RtlNativeEmitter(new RtlEmitter(null));
         }
 
+        [Test]
+        public void Rtlne_Int32()
+        {
+            var hExp = m.Int32(42);
+
+            var c = (Constant) m.GetExpression(hExp);
+            Assert.AreEqual(PrimitiveType.Int32, c.DataType);
+            Assert.AreEqual(42, c.ToInt32());
+        }
+
+        [Test]
+        public void Rtlne_Mem32()
+        {
+            var hExp = m.Mem32(m.Ptr32(0x00123400));
+
+            var mem = (MemoryAccess)m.GetExpression(hExp);
+            var ea = (Address)mem.EffectiveAddress;
+            Assert.AreEqual("00123400", ea.ToString());
+        }
     }
 }

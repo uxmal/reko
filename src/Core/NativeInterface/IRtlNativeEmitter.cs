@@ -87,8 +87,8 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr Int32(int i);
         [PreserveSig] HExpr Int64(long l);
         [PreserveSig] HExpr Ptr16(ushort p);
-        [PreserveSig] HExpr Ptr32(int p);
-        [PreserveSig] HExpr Ptr64(long p);
+        [PreserveSig] HExpr Ptr32(uint p);
+        [PreserveSig] HExpr Ptr64(ulong p);
         [PreserveSig] HExpr UInt16(ushort us);
         [PreserveSig] HExpr UInt32(uint u);
         [PreserveSig] HExpr UInt64(ulong ul);

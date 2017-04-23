@@ -60,13 +60,14 @@ namespace Reko.Arch.Arm
             private INativeRewriter native;
             private byte[] bytes;
             private GCHandle hBytes;
+            private RtlNativeEmitter rtlEmitter;
 
             public Enumerator(byte[] bytes, int offset, ulong addr)
             {
                 this.bytes = bytes;
                 this.hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
 
-                var rtlEmitter = new RtlNativeEmitter();
+                this.rtlEmitter = new RtlNativeEmitter();
                 var oRtlEmitter = Marshal.GetIUnknownForObject(rtlEmitter);
                 IntPtr iRtlEmitter;
                 var hr = Marshal.QueryInterface(oRtlEmitter, ref IID_INativeRewriterHost, out iRtlEmitter);
@@ -94,6 +95,7 @@ namespace Reko.Arch.Arm
             public bool MoveNext()
             {
                 native.Next();
+                this.Current = this.rtlEmitter.Extract();
                 return false;
             }
 
