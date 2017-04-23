@@ -20,64 +20,64 @@
 #include "reko.h"
 #include "ArmRewriter.h"
 
-	void ArmRewriter::RewriteCps()
+void ArmRewriter::RewriteCps()
+{
+	if (instr.detail->arm.cps_mode == ARM_CPSMODE_ID)
 	{
-		if (instr.detail->arm.cps_mode == ARM_CPSMODE_ID)
-		{
-			m.SideEffect(host.PseudoProcedure("__cps_id", PrimitiveType::Void));
-			return;
-		}
-		NotImplementedYet();
+		m.SideEffect(host.PseudoProcedure("__cps_id", PrimitiveType::Void));
+		return;
 	}
+	NotImplementedYet();
+}
 
-	void ArmRewriter::RewriteDmb()
-	{
-		//$TODO
-		/*
-		auto memBarrier = instr.detail->arm.MemoryBarrier.ToString().ToLowerInvariant();
-		auto name = "__dmb_" + memBarrier;
-		m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
+void ArmRewriter::RewriteDmb()
+{
+	//$TODO
+	/*
+	auto memBarrier = instr.detail->arm.MemoryBarrier.ToString().ToLowerInvariant();
+	auto name = "__dmb_" + memBarrier;
+	m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
+	*/
+}
+
+void ArmRewriter::RewriteMcr()
+{
+	//$TODO
+	/*
+	m.SideEffect(host.PseudoProcedure(
+		"__mcr",
+		PrimitiveType::Void,
+		instr.detail->arm.Operands
+		.Select(o = > Operand(o))
+		.ToArray()));
 		*/
-	}
+}
 
-	void ArmRewriter::RewriteMcr()
-	{
-		//$TODO
-		/*
-		m.SideEffect(host.PseudoProcedure(
-			"__mcr",
-			PrimitiveType::Void,
-			instr.detail->arm.Operands
-			.Select(o = > Operand(o))
-			.ToArray()));
-			*/
-	}
-
-	void ArmRewriter::RewriteMrc()
-	{
-		//$TODO
+void ArmRewriter::RewriteMrc()
+{
+	//$TODO
 /*
-		auto ops = instr.detail->arm.Operands
-			.Select(o = > Operand(o))
-			.ToList();
-		auto regDst = ops.OfType<Identifier>().SingleOrDefault();
-		ops.Remove(regDst);
-		m.Assign(regDst, host.PseudoProcedure(
-			"__mrc",
-			PrimitiveType::Word32,
-			ops.ToArray()));
-			*/
-	}
+	auto ops = instr.detail->arm.Operands
+		.Select(o = > Operand(o))
+		.ToList();
+	auto regDst = ops.OfType<Identifier>().SingleOrDefault();
+	ops.Remove(regDst);
+	m.Assign(regDst, host.PseudoProcedure(
+		"__mrc",
+		PrimitiveType::Word32,
+		ops.ToArray()));
+		*/
+}
 
-	void ArmRewriter::RewriteMrs()
-	{
-		ConditionalSkip();
-		m.Assign(Operand(Dst()), host.PseudoProcedure("__mrs", PrimitiveType::Word32, Operand(Src1())));
-	}
+void ArmRewriter::RewriteMrs()
+{
+	ConditionalSkip();
+	m.Assign(Operand(Dst()), host.PseudoProcedure("__mrs", PrimitiveType::Word32, Operand(Src1())));
+}
 
-	void ArmRewriter::RewriteMsr()
-	{
-		ConditionalSkip();
-		m.SideEffect(host.PseudoProcedure("__msr", PrimitiveType::Word32, Operand(Dst()), Operand(Src1())));
-	}
+void ArmRewriter::RewriteMsr()
+{
+	ConditionalSkip();
+	m.SideEffect(host.PseudoProcedure("__msr", PrimitiveType::Word32, Operand(Dst()), Operand(Src1())));
+}
 

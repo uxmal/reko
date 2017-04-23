@@ -20,73 +20,73 @@
 #include "reko.h"
 #include "ArmRewriter.h"
 
-	void ArmRewriter::RewriteVldmia()
+void ArmRewriter::RewriteVldmia()
+{
+	ConditionalSkip();
+	//$TODO:
+	/*
+	auto rSrc = this->Operand(Dst());
+	auto offset = 0;
+	for (auto r : instr.detail->arm.Operands.Skip(1))
 	{
-		ConditionalSkip();
-		//$TODO:
-		/*
-		auto rSrc = this->Operand(Dst());
-		auto offset = 0;
-		for (auto r : instr.detail->arm.Operands.Skip(1))
-		{
-			auto dst = this->Operand(r);
-			IExpression * ea =
-				offset != 0
-				? m.IAdd(rSrc, m.Int32(offset))
-				: rSrc;
-			m.Assign(dst, m.Mem(dst.DataType, ea));
-			offset += dst.DataType.Size;
-		}
-		if (instr.detail->arm.WriteBack)
-		{
-			m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
-		}
+		auto dst = this->Operand(r);
+		IExpression * ea =
+			offset != 0
+			? m.IAdd(rSrc, m.Int32(offset))
+			: rSrc;
+		m.Assign(dst, m.Mem(dst.DataType, ea));
+		offset += dst.DataType.Size;
+	}
+	if (instr.detail->arm.WriteBack)
+	{
+		m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
+	}
+	*/
+}
+
+void ArmRewriter::RewriteVmov()
+{
+	ConditionalSkip();
+	//$TODO
+	/*
+	auto dst = this->Operand(Dst);
+	auto src = this->Operand(Src1);
+	auto fname = "__vmov_" + VectorElementType();
+	m.Assign(dst,
+		host.PseudoProcedure(fname, dst.DataType, src));
 		*/
-	}
+}
 
-	void ArmRewriter::RewriteVmov()
+void ArmRewriter::RewriteVstmia()
+{
+	ConditionalSkip();
+	//$TODO
+	/*
+	auto rSrc = this->Operand(Dst());
+	int offset = 0;
+	for (auto r : instr.detail->arm.Operands.Skip(1))
 	{
-		ConditionalSkip();
-		//$TODO
-		/*
-		auto dst = this->Operand(Dst);
-		auto src = this->Operand(Src1);
-		auto fname = "__vmov_" + VectorElementType();
-		m.Assign(dst,
-			host.PseudoProcedure(fname, dst.DataType, src));
-			*/
+		auto dst = this->Operand(r);
+		IExpression * ea =
+			offset != 0
+			? m.IAdd(rSrc, m.Int32(offset))
+			: rSrc;
+		m.Assign(m.Mem(dst.DataType, ea), dst);
+		offset += dst.DataType.Size;
 	}
+	if (instr.detail->arm.WriteBack)
+	{
+		m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
+	}
+	*/
+}
 
-	void ArmRewriter::RewriteVstmia()
+const char * ArmRewriter::VectorElementType()
+{
+	switch (instr.detail->arm.vector_size)
 	{
-		ConditionalSkip();
-		//$TODO
-		/*
-		auto rSrc = this->Operand(Dst());
-		int offset = 0;
-		for (auto r : instr.detail->arm.Operands.Skip(1))
-		{
-			auto dst = this->Operand(r);
-			IExpression * ea =
-				offset != 0
-				? m.IAdd(rSrc, m.Int32(offset))
-				: rSrc;
-			m.Assign(m.Mem(dst.DataType, ea), dst);
-			offset += dst.DataType.Size;
-		}
-		if (instr.detail->arm.WriteBack)
-		{
-			m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
-		}
-		*/
+	case ARM_VECTORDATA_I32: return "i32";
+	default: NotImplementedYet(); return "(NYI)";
 	}
-
-	const char * ArmRewriter::VectorElementType()
-	{
-		switch (instr.detail->arm.vector_size)
-		{
-		case ARM_VECTORDATA_I32: return "i32";
-		default: NotImplementedYet(); return "(NYI)";
-		}
-	}
+}
 

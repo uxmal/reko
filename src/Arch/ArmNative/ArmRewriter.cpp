@@ -9,14 +9,16 @@ ArmRewriter::ArmRewriter(
 	IRtlEmitter * emitter,
 	IFrame * frame,
 	IRewriterHost * host)
-: m(*emitter),
-host(*host),
-frame(*frame)
+:
+	m(*emitter),
+	host(*host),
+	frame(*frame)
 {
 	auto hcap = ::LoadLibrary(L"cs_open");
 	::GetProcAddress(hcap, "cs_open");
 	csh hcapstone;
 	cs_open(CS_ARCH_ARM, CS_MODE_ARM, &hcapstone); 
+	cs_option(hcapstone, CS_OPT_DETAIL, CS_OPT_ON);
 }
 
 void ArmRewriter::Next()
@@ -570,7 +572,7 @@ void ArmRewriter::ConditionalSkip()
 		return; // never skip!
 	m.BranchInMiddleOfInstruction(
 		TestCond(Invert(cc)),
-		m.Ptr32(instr.address + 4),
+		m.Ptr32(static_cast<uint32_t>(instr.address) + 4),
 		RtlClass::ConditionalTransfer);
 }
 
