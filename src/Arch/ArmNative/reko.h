@@ -65,73 +65,73 @@ enum class TestCondition
 
 };
 
-class IExpression
-{
-};
+// The C++ side never really looks at the object in the Rtl tree being 
+// built, so we can represent them as an opaque handle.
+typedef void * HExpr;
 
-class IRtlEmitter
+class IRtlEmitter : IUnknown
 {
 public:
-	virtual void Assign(IExpression * dst, IExpression * src) = 0;
-	virtual void Branch(IExpression * exp, IExpression * dst, RtlClass rtlClass) = 0;
-	virtual void BranchInMiddleOfInstruction(IExpression * exp, IExpression * dst, RtlClass) = 0;
-	virtual void Call(IExpression * dst, int bytesOnStack) = 0;
-	virtual void Goto(IExpression * dst) = 0;
-	virtual void Invalid() = 0;
-	virtual void Nop()=0;
-	virtual void Return(int, int) = 0;
-	virtual void SetRtlClass(RtlClass) = 0;
-	virtual void SideEffect(IExpression *) = 0;
+	virtual void STDAPICALLTYPE Assign(HExpr dst, HExpr src) = 0;
+	virtual void STDAPICALLTYPE Branch(HExpr exp, HExpr dst, RtlClass rtlClass) = 0;
+	virtual void STDAPICALLTYPE BranchInMiddleOfInstruction(HExpr exp, HExpr dst, RtlClass) = 0;
+	virtual void STDAPICALLTYPE Call(HExpr dst, int bytesOnStack) = 0;
+	virtual void STDAPICALLTYPE Goto(HExpr dst) = 0;
+	virtual void STDAPICALLTYPE Invalid() = 0;
+	virtual void STDAPICALLTYPE Nop()=0;
+	virtual void STDAPICALLTYPE Return(int, int) = 0;
+	virtual void STDAPICALLTYPE SetRtlClass(RtlClass) = 0;
+	virtual void STDAPICALLTYPE SideEffect(HExpr) = 0;
 
-	virtual IExpression * And(IExpression *a, IExpression * b) = 0;
-	virtual IExpression * And(IExpression *a, int n) = 0;
-	virtual IExpression * Cast(PrimitiveType type, IExpression *a) = 0;
-	virtual IExpression * Comp(IExpression *a) = 0;
-	virtual IExpression * Cond(IExpression *a) = 0;
-	virtual IExpression * Dpb(IExpression *dst, IExpression* src, int32_t pos) = 0;
-	virtual IExpression * IAdc(IExpression * a, IExpression * b, IExpression * c) = 0;
-	virtual IExpression * IAdd(IExpression * a, IExpression * b) = 0;
-	virtual IExpression * IAdd(IExpression * a, int n) = 0;
-	virtual IExpression * IMul(IExpression * a, IExpression * b) = 0;
-	virtual IExpression * IMul(IExpression * a, int n) = 0;
-	virtual IExpression * ISub(IExpression * a, IExpression * b) = 0;
-	virtual IExpression * ISub(IExpression * a, int n) = 0;
-	virtual IExpression * Mem(PrimitiveType dt, IExpression * ea) = 0;
-	virtual IExpression * Mem8(IExpression * ea) = 0;
-	virtual IExpression * Mem16(IExpression * ea) = 0;
-	virtual IExpression * Mem32(IExpression * ea) = 0;
-	virtual IExpression * Mem64(IExpression * ea) = 0;
-	virtual IExpression * Not(IExpression * a) = 0;
-	virtual IExpression * Or(IExpression *a, IExpression *b) = 0;
-	virtual IExpression * Ror(IExpression * a, IExpression *b) = 0;
-	virtual IExpression * Ror(IExpression * a, int n) = 0;
-	virtual IExpression * Rrc(IExpression * a, IExpression *b) = 0;
-	virtual IExpression * Rrc(IExpression * a, int n) = 0;
-	virtual IExpression * Sar(IExpression * a, IExpression *b) = 0;
-	virtual IExpression * Sar(IExpression * a, int n) = 0;
-	virtual IExpression * Slice(IExpression *a, int32_t pos, int32_t bits) = 0;
-	virtual IExpression * Shl(IExpression * a, IExpression *b) = 0;
-	virtual IExpression * Shl(IExpression * a, int n) = 0;
-	virtual IExpression * Shr(IExpression * a, IExpression *b) = 0;
-	virtual IExpression * Shr(IExpression * a, int n) = 0;
-	virtual IExpression * Test(ConditionCode cc, IExpression * exp) = 0;
-	virtual IExpression * SMul(IExpression * a, IExpression * b) = 0;
-	virtual IExpression * UMul(IExpression * a, IExpression * b) = 0;
-	virtual IExpression * Xor(IExpression *a, IExpression *b) = 0;
+	virtual HExpr STDAPICALLTYPE And(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE And(HExpr a, int n) = 0;
+	virtual HExpr STDAPICALLTYPE Cast(PrimitiveType type, HExpr a) = 0;
+	virtual HExpr STDAPICALLTYPE Comp(HExpr a) = 0;
+	virtual HExpr STDAPICALLTYPE Cond(HExpr a) = 0;
+	virtual HExpr STDAPICALLTYPE Dpb(HExpr dst, HExpr src, int32_t pos) = 0;
+	virtual HExpr STDAPICALLTYPE IAdc(HExpr a, HExpr b, HExpr c) = 0;
+	virtual HExpr STDAPICALLTYPE IAdd(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE IAdd(HExpr a, int n) = 0;
+	virtual HExpr STDAPICALLTYPE IMul(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE IMul(HExpr a, int n) = 0;
+	virtual HExpr STDAPICALLTYPE ISub(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE ISub(HExpr a, int n) = 0;
+	virtual HExpr STDAPICALLTYPE Mem(PrimitiveType dt, HExpr ea) = 0;
+	virtual HExpr STDAPICALLTYPE Mem8(HExpr ea) = 0;
+	virtual HExpr STDAPICALLTYPE Mem16(HExpr ea) = 0;
+	virtual HExpr STDAPICALLTYPE Mem32(HExpr ea) = 0;
+	virtual HExpr STDAPICALLTYPE Mem64(HExpr ea) = 0;
+	virtual HExpr STDAPICALLTYPE Not(HExpr a) = 0;
+	virtual HExpr STDAPICALLTYPE Or(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE Ror(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE Ror(HExpr a, int n) = 0;
+	virtual HExpr STDAPICALLTYPE Rrc(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE Rrc(HExpr a, int n) = 0;
+	virtual HExpr STDAPICALLTYPE Sar(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE Sar(HExpr a, int n) = 0;
+	virtual HExpr STDAPICALLTYPE Slice(HExpr a, int32_t pos, int32_t bits) = 0;
+	virtual HExpr STDAPICALLTYPE Shl(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE Shl(HExpr a, int n) = 0;
+	virtual HExpr STDAPICALLTYPE Shr(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE Shr(HExpr a, int n) = 0;
+	virtual HExpr STDAPICALLTYPE Test(ConditionCode cc, HExpr exp) = 0;
+	virtual HExpr STDAPICALLTYPE SMul(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE UMul(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE Xor(HExpr a, HExpr b) = 0;
 
-	virtual IExpression * Byte(uint8_t) = 0;
-	virtual IExpression * Int16(int16_t) = 0;
-	virtual IExpression * Int32(int32_t) = 0;
-	virtual IExpression * Int64(int64_t) = 0;
-	virtual IExpression * Ptr16(uint16_t) = 0;
-	virtual IExpression * Ptr32(uint32_t) = 0;
-	virtual IExpression * Ptr64(uint64_t) = 0;
-	virtual IExpression * UInt16(uint16_t) = 0;
-	virtual IExpression * UInt32(uint32_t) = 0;
-	virtual IExpression * UInt64(uint64_t) = 0;
-	virtual IExpression * Word16(uint16_t) = 0;
-	virtual IExpression * Word32(uint32_t) = 0;
-	virtual IExpression * Word64(uint64_t) = 0;
+	virtual HExpr STDAPICALLTYPE Byte(uint8_t) = 0;
+	virtual HExpr STDAPICALLTYPE Int16(int16_t) = 0;
+	virtual HExpr STDAPICALLTYPE Int32(int32_t) = 0;
+	virtual HExpr STDAPICALLTYPE Int64(int64_t) = 0;
+	virtual HExpr STDAPICALLTYPE Ptr16(uint16_t) = 0;
+	virtual HExpr STDAPICALLTYPE Ptr32(uint32_t) = 0;
+	virtual HExpr STDAPICALLTYPE Ptr64(uint64_t) = 0;
+	virtual HExpr STDAPICALLTYPE UInt16(uint16_t) = 0;
+	virtual HExpr STDAPICALLTYPE UInt32(uint32_t) = 0;
+	virtual HExpr STDAPICALLTYPE UInt64(uint64_t) = 0;
+	virtual HExpr STDAPICALLTYPE Word16(uint16_t) = 0;
+	virtual HExpr STDAPICALLTYPE Word32(uint32_t) = 0;
+	virtual HExpr STDAPICALLTYPE Word64(uint64_t) = 0;
 };
 
 class INativeRewriter : public IUnknown
@@ -143,11 +143,11 @@ public:
 class INativeRewriterHost: public IUnknown
 {
 public:
-	virtual IExpression * STDAPICALLTYPE EnsureRegister(int reg) = 0;
-	virtual IExpression * STDAPICALLTYPE EnsureSequence(int regHi, int regLo, PrimitiveType size) = 0;
-	virtual IExpression * STDAPICALLTYPE EnsureFlagGroup(int baseReg, int bitmask, const char * name, PrimitiveType size) = 0;
-	virtual IExpression * STDAPICALLTYPE CreateTemporary(PrimitiveType size) = 0;
+	virtual HExpr STDAPICALLTYPE EnsureRegister(int reg) = 0;
+	virtual HExpr STDAPICALLTYPE EnsureSequence(int regHi, int regLo, PrimitiveType size) = 0;
+	virtual HExpr STDAPICALLTYPE EnsureFlagGroup(int baseReg, int bitmask, const char * name, PrimitiveType size) = 0;
+	virtual HExpr STDAPICALLTYPE CreateTemporary(PrimitiveType size) = 0;
 
 	virtual void STDAPICALLTYPE Error(uint64_t uAddress, const char * error) = 0;
-	virtual IExpression * STDAPICALLTYPE PseudoProcedure(const char *name, PrimitiveType retType, /* args */...) = 0;
+	virtual HExpr STDAPICALLTYPE PseudoProcedure(const char *name, PrimitiveType retType, /* args */...) = 0;
 };

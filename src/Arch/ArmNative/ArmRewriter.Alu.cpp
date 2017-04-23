@@ -264,14 +264,14 @@ void ArmRewriter::RewriteLdm(int initialOffset)
 	RewriteLdm(dst, range, count, initialOffset, instr->detail->arm.writeback);
 }
 
-void ArmRewriter::RewriteLdm(IExpression  * dst, const cs_arm_op * range, int length, int offset, bool writeback)
+void ArmRewriter::RewriteLdm(HExpr dst, const cs_arm_op * range, int length, int offset, bool writeback)
 {
 	ConditionalSkip();
 	bool pcRestored = false;
 	/*
 	for (auto r : range)
 	{
-		IExpression * ea = offset != 0
+		HExpr ea = offset != 0
 			? m.IAdd(dst, m.Int32(offset))
 			: dst;
 		if (r.reg.Value == ARM_REG_PC)
@@ -280,7 +280,7 @@ void ArmRewriter::RewriteLdm(IExpression  * dst, const cs_arm_op * range, int le
 		}
 		else
 		{
-			auto dstReg = host->EnsureRegister(r.reg);
+			auto dstReg = Reg(r.reg);
 			m.Assign(dstReg, m.Mem32(ea));
 		}
 		offset += 4;
@@ -337,13 +337,13 @@ void ArmRewriter::RewritePush()
 	//$TODO:
 	/*
 	int offset = 0;
-	auto dst = host->EnsureRegister(A32Registers.sp);
+	auto dst = Reg(ARM_REG_SP);
 	foreach(auto op in instr->detail->arm.operands)
 	{
 		Expression ea = offset != 0
 			? m.ISub(dst, offset)
 			: (Expression)dst;
-		auto reg = host->EnsureRegister(A32Registers.RegisterByCapstoneID[op.reg.Value]);
+		auto reg = Reg(op.reg));
 		m.Assign(m.LoadDw(ea), reg);
 		offset += reg.DataType.Size;
 	}
@@ -396,7 +396,7 @@ void ArmRewriter::RewriteStmib()
 	foreach(auto r in range)
 	{
 		Expression ea = m.IAdd(dst, Constant.Int32(offset));
-		auto srcReg = host->EnsureRegister(A32Registers.RegisterByCapstoneID[r.reg.Value]);
+		auto srcReg = Reg(r.reg);
 		m.Assign(m.LoadDw(ea), srcReg);
 		offset += 4;
 	}

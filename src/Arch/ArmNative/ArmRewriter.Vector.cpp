@@ -30,7 +30,7 @@ void ArmRewriter::RewriteVldmia()
 	for (auto r : instr->detail->arm.Operands.Skip(1))
 	{
 		auto dst = this->Operand(r);
-		IExpression * ea =
+		HExpr ea =
 			offset != 0
 			? m.IAdd(rSrc, m.Int32(offset))
 			: rSrc;
@@ -67,7 +67,7 @@ void ArmRewriter::RewriteVstmia()
 	for (auto r : instr->detail->arm.Operands.Skip(1))
 	{
 		auto dst = this->Operand(r);
-		IExpression * ea =
+		HExpr ea =
 			offset != 0
 			? m.IAdd(rSrc, m.Int32(offset))
 			: rSrc;

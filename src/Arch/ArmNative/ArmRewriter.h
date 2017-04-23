@@ -1,7 +1,7 @@
 #pragma once
 
-typedef IExpression * (IRtlEmitter::*UnaryOpEmitter)(IExpression *);
-typedef IExpression * (IRtlEmitter::*BinOpEmitter)(IExpression *, IExpression *);
+typedef HExpr (IRtlEmitter::*UnaryOpEmitter)(HExpr);
+typedef HExpr (IRtlEmitter::*BinOpEmitter)(HExpr, HExpr);
 
 enum class FlagM
 {
@@ -27,27 +27,26 @@ public:
 private:
 	void AddConditional(void(*mkInstr)());
 	void ConditionalSkip();
-	void ConditionalAssign(IExpression * dst, IExpression * src);
-	IExpression * FlagGroup(FlagM bits, const char * name, PrimitiveType type);
+	void ConditionalAssign(HExpr dst, HExpr src);
+	HExpr FlagGroup(FlagM bits, const char * name, PrimitiveType type);
 	arm_cc Invert(arm_cc);
 	bool IsLastOperand(const cs_arm_op & op);
-	//IExpression * Operand(const ArmInstructionOperand & op);
+	//HExpr Operand(const ArmInstructionOperand & op);
 	void NotImplementedYet();
-	void MaybeUpdateFlags(IExpression * opDst);
+	void MaybeUpdateFlags(HExpr opDst);
 	void MaybePostOperand(const cs_arm_op & op);
-	IExpression * MaybeShiftOperand(IExpression * exp, const cs_arm_op & op);
-	IExpression * NZCV();
-	IExpression * Operand(const cs_arm_op & op);
-	IExpression * Reg(int reg) { 
-	auto ret = host->EnsureRegister(reg);
-	return reinterpret_cast<IExpression *>(ret);
+	HExpr MaybeShiftOperand(HExpr exp, const cs_arm_op & op);
+	HExpr NZCV();
+	HExpr Operand(const cs_arm_op & op);
+	HExpr Reg(int reg) { 
+		return host->EnsureRegister(reg);
 	}
-	IExpression * Reg(arm_reg reg) { 
+	HExpr Reg(arm_reg reg) { 
 		return host->EnsureRegister((int)reg);
 	}
 
 	PrimitiveType SizeFromLoadStore();
-	IExpression * TestCond(arm_cc cond);
+	HExpr TestCond(arm_cc cond);
 	const char * ArmRewriter::VectorElementType();
 
 	const cs_arm_op & Dst() { return instr->detail->arm.operands[0]; }
@@ -71,7 +70,7 @@ private:
 	void RewriteCps();
 	void RewriteDmb();
 	void RewriteLdm(int);
-	void RewriteLdm(IExpression  * dst, const cs_arm_op * range, int length, int offset, bool writeback);
+	void RewriteLdm(HExpr dst, const cs_arm_op * range, int length, int offset, bool writeback);
 	void RewriteLdr(PrimitiveType);
 	void RewriteLdrd();
 	void RewriteMcr();

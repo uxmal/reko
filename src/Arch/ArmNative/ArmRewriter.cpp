@@ -531,12 +531,12 @@ void ArmRewriter::NotImplementedYet()
 	m.Invalid();
 }
 
-IExpression * ArmRewriter::NZCV()
+HExpr ArmRewriter::NZCV()
 {
 	return host->EnsureFlagGroup((int)ARM_REG_CPSR, 0x1111, "NZCV", PrimitiveType::Byte);
 }
 
-void ArmRewriter::MaybeUpdateFlags(IExpression * opDst)
+void ArmRewriter::MaybeUpdateFlags(HExpr opDst)
 {
 	if (instr->detail->arm.update_flags)
 	{
@@ -546,7 +546,7 @@ void ArmRewriter::MaybeUpdateFlags(IExpression * opDst)
 
 void ArmRewriter::RewriteB(bool link)
 {
-	IExpression * dst;
+	HExpr dst;
 	bool dstIsAddress;
 	if (Dst().type == ARM_OP_IMM)
 	{
@@ -603,7 +603,7 @@ void ArmRewriter::AddConditional(void (*mkInstr)())
 	//ric.Instructions.Add(rtlInstr);
 }
 
-void ArmRewriter::ConditionalAssign(IExpression * dst, IExpression * src)
+void ArmRewriter::ConditionalAssign(HExpr dst, HExpr src)
 {
 	/*RtlInstruction rtlInstr = new RtlAssignment(dst, src);
 	if (instr->detail->arm.CodeCondition != ArmCodeCondition::AL)
@@ -654,7 +654,7 @@ bool ArmRewriter::IsLastOperand(const cs_arm_op & op)
 	return &op == &instr->detail->arm.operands[instr->detail->arm.op_count - 1];
 }
 
-IExpression * ArmRewriter::Operand(const cs_arm_op & op)
+HExpr ArmRewriter::Operand(const cs_arm_op & op)
 {
 	switch (op.type)
 	{
@@ -726,7 +726,7 @@ PrimitiveType ArmRewriter::SizeFromLoadStore()
 }
 
 
-IExpression * ArmRewriter::MaybeShiftOperand(IExpression * exp, const cs_arm_op & op)
+HExpr ArmRewriter::MaybeShiftOperand(HExpr exp, const cs_arm_op & op)
 {
 	switch (op.shift.type)
 	{
@@ -771,7 +771,7 @@ void ArmRewriter::MaybePostOperand(const cs_arm_op & op)
 #endif
 }
 
-IExpression * ArmRewriter::TestCond(arm_cc cond)
+HExpr ArmRewriter::TestCond(arm_cc cond)
 {
 	switch (cond)
 	{
@@ -807,7 +807,7 @@ IExpression * ArmRewriter::TestCond(arm_cc cond)
 	return 0;
 }
 
-IExpression * ArmRewriter::FlagGroup(FlagM bits, const char * name, PrimitiveType type)
+HExpr ArmRewriter::FlagGroup(FlagM bits, const char * name, PrimitiveType type)
 {
 	return host->EnsureFlagGroup(ARM_REG_CPSR, (int) bits, name, type);
 }
