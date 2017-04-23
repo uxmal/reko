@@ -59,6 +59,8 @@ namespace Reko.Arch.X86
                 d == "__thiscall" ||
                 d == "pascal")
                 sig.StackDelta += StackOffset;
+            if (ssig.StackDelta != 0)
+                sig.StackDelta = ssig.StackDelta;
             sig.FpuStackDelta = FpuStackOffset;
             sig.ReturnAddressOnStack = Architecture.PointerType.Size;   //$BUG: x86 real mode?
         }
