@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Core.NativeInterface
         public void Setup()
         {
             this.rtlc = new RtlInstructionCluster(Address.Ptr32(0x00123400), 4);
-            this.m = new RtlNativeEmitter(new RtlEmitter(rtlc.Instructions));
+            this.m = new RtlNativeEmitter(new RtlEmitter(rtlc.Instructions), null);
         }
 
         private void AssertInstructions(string sExp, RtlInstructionCluster rtlc)

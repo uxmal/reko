@@ -52,7 +52,7 @@ namespace Reko.Arch.Arm
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
 
         public class Enumerator : IEnumerator<RtlInstructionCluster>
@@ -72,7 +72,7 @@ namespace Reko.Arch.Arm
 
                 this.m = new RtlEmitter(new List<RtlInstruction>());
 
-                this.rtlEmitter = new RtlNativeEmitter(m);
+                this.rtlEmitter = new RtlNativeEmitter(m, outer.host);
                 this.host = new ArmNativeRewriterHost(outer.frame, outer.host, rtlEmitter);
 
                 var iRtlEmitter = GetCOMInterface(rtlEmitter, IID_IRtlEmitter);
@@ -108,9 +108,10 @@ namespace Reko.Arch.Arm
             public bool MoveNext()
             {
                 m.Instructions = new List<RtlInstruction>();
-                native.Next();
+                if (native.Next() == 1)
+                    return false;
                 this.Current = this.rtlEmitter.ExtractCluster();
-                return false;
+                return true;
             }
 
             public void Reset()
@@ -125,8 +126,8 @@ namespace Reko.Arch.Arm
             IID_IRtlEmitter = typeof(IRtlNativeEmitter).GUID;
         }
 
-        private static  Guid IID_INativeRewriterHost;
-        private static  Guid IID_IRtlEmitter;
+        private static Guid IID_INativeRewriterHost;
+        private static Guid IID_IRtlEmitter;
         private Frame frame;
         private IRewriterHost host;
 

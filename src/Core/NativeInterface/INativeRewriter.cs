@@ -31,7 +31,7 @@ namespace Reko.Core.NativeInterface
     [Guid("12506D0F-1C67-4828-9601-96F8ED4D162D")]
     public interface INativeRewriter
     {
-        void Next();
+        [PreserveSig] int Next();
     }
 
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -41,7 +41,7 @@ namespace Reko.Core.NativeInterface
     {
         [PreserveSig] HExpr EnsureRegister(int reg);
         [PreserveSig] HExpr EnsureSequence(int regHi, int regLo, BaseType size);
-        [PreserveSig] HExpr EnsureFlagGroup(int baseReg, int bitmask, string name, BaseType size);
+        [PreserveSig] HExpr EnsureFlagGroup(int baseReg, int bitmask, [MarshalAs(UnmanagedType.LPStr)] string name, BaseType size);
         [PreserveSig] HExpr CreateTemporary(BaseType size);
         [PreserveSig] void Error(ulong uAddress, string error);
         [PreserveSig] HExpr PseudoProcedure(string name, BaseType x);//$TODO: incomplete.

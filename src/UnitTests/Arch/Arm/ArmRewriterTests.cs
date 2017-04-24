@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
-            return new ArmRewriter(arch, new LeImageReader(image, 0), new ArmProcessorState(arch), frame, host);
+            return new ArmRewriterNew(arch, new LeImageReader(image, 0), new ArmProcessorState(arch), frame, host);
         }
 
         private void BuildTest(params string[] bitStrings)

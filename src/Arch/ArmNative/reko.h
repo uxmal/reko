@@ -57,15 +57,15 @@ enum class ConditionCode
 
 enum class RtlClass
 {
-	Linear,
-	Transfer,
-	ConditionalTransfer,
+	Linear = 1,
+	Transfer = 2,
+	Conditional = 4,
+	Delay = 8,
+	Annul = 16,
+	Invalid = 32,
+	ConditionalTransfer = Conditional | Transfer,
 };
 
-enum class TestCondition
-{
-
-};
 
 // The C++ side never really looks at the object in the Rtl tree being 
 // built, so we can represent them as an opaque handle.
@@ -86,18 +86,14 @@ public:
 	virtual void STDAPICALLTYPE SideEffect(HExpr) = 0;
 
 	virtual HExpr STDAPICALLTYPE And(HExpr a, HExpr b) = 0;
-	virtual HExpr STDAPICALLTYPE And(HExpr a, int n) = 0;
 	virtual HExpr STDAPICALLTYPE Cast(BaseType type, HExpr a) = 0;
 	virtual HExpr STDAPICALLTYPE Comp(HExpr a) = 0;
 	virtual HExpr STDAPICALLTYPE Cond(HExpr a) = 0;
 	virtual HExpr STDAPICALLTYPE Dpb(HExpr dst, HExpr src, int32_t pos) = 0;
 	virtual HExpr STDAPICALLTYPE IAdc(HExpr a, HExpr b, HExpr c) = 0;
 	virtual HExpr STDAPICALLTYPE IAdd(HExpr a, HExpr b) = 0;
-	virtual HExpr STDAPICALLTYPE IAdd(HExpr a, int n) = 0;
 	virtual HExpr STDAPICALLTYPE IMul(HExpr a, HExpr b) = 0;
-	virtual HExpr STDAPICALLTYPE IMul(HExpr a, int n) = 0;
 	virtual HExpr STDAPICALLTYPE ISub(HExpr a, HExpr b) = 0;
-	virtual HExpr STDAPICALLTYPE ISub(HExpr a, int n) = 0;
 	virtual HExpr STDAPICALLTYPE Mem(BaseType dt, HExpr ea) = 0;
 	virtual HExpr STDAPICALLTYPE Mem8(HExpr ea) = 0;
 	virtual HExpr STDAPICALLTYPE Mem16(HExpr ea) = 0;
@@ -106,16 +102,11 @@ public:
 	virtual HExpr STDAPICALLTYPE Not(HExpr a) = 0;
 	virtual HExpr STDAPICALLTYPE Or(HExpr a, HExpr b) = 0;
 	virtual HExpr STDAPICALLTYPE Ror(HExpr a, HExpr b) = 0;
-	virtual HExpr STDAPICALLTYPE Ror(HExpr a, int n) = 0;
 	virtual HExpr STDAPICALLTYPE Rrc(HExpr a, HExpr b) = 0;
-	virtual HExpr STDAPICALLTYPE Rrc(HExpr a, int n) = 0;
 	virtual HExpr STDAPICALLTYPE Sar(HExpr a, HExpr b) = 0;
-	virtual HExpr STDAPICALLTYPE Sar(HExpr a, int n) = 0;
 	virtual HExpr STDAPICALLTYPE Slice(HExpr a, int32_t pos, int32_t bits) = 0;
 	virtual HExpr STDAPICALLTYPE Shl(HExpr a, HExpr b) = 0;
-	virtual HExpr STDAPICALLTYPE Shl(HExpr a, int n) = 0;
 	virtual HExpr STDAPICALLTYPE Shr(HExpr a, HExpr b) = 0;
-	virtual HExpr STDAPICALLTYPE Shr(HExpr a, int n) = 0;
 	virtual HExpr STDAPICALLTYPE Test(ConditionCode cc, HExpr exp) = 0;
 	virtual HExpr STDAPICALLTYPE SMul(HExpr a, HExpr b) = 0;
 	virtual HExpr STDAPICALLTYPE UMul(HExpr a, HExpr b) = 0;

@@ -30,7 +30,7 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr)
 	// We do not take the trouble of widening the CF to the word size
 	// to simplify code analysis in later stages. 
 	auto c = host->EnsureFlagGroup(ARM_REG_CPSR, (int)FlagM::CF, "C", BaseType::Bool);
-	ConditionalAssign(
+	m.Assign(
 		opDst,
 		(m.*opr)(
 			(m.*opr)(opSrc1, opSrc2),
@@ -50,7 +50,7 @@ void ArmRewriter::RewriteBfc()
 	auto lsb = instr->detail->arm.operands[1].imm;
 	auto bitsize = instr->detail->arm.operands[2].imm;
 	ConditionalSkip();
-	m.Assign(opDst, m.And(opDst, ~Bits::Mask(lsb, bitsize)));
+	m.Assign(opDst, m.And(opDst, m.UInt32(~Bits::Mask(lsb, bitsize))));
 }
 
 void ArmRewriter::RewriteBfi()
@@ -183,7 +183,7 @@ void ArmRewriter::RewriteLdr(BaseType size)
 	{
 		// Assignment to PC is the same as a jump
 		m.Goto(opSrc);
-		m.FinishCluster(RtlClass::Transfer,address,instr->size);
+		rtlClass = RtlClass::Transfer;
 		return;
 	}
 	m.Assign(opDst, opSrc);
@@ -269,28 +269,28 @@ void ArmRewriter::RewriteMovt()
 void ArmRewriter::RewriteLdm(int initialOffset)
 {
 	auto dst = this->Operand(Dst());
-	auto range = instr->detail->arm.operands + 1;
-	int count = instr->detail->arm.op_count - 1;
-	RewriteLdm(dst, range, count, initialOffset, instr->detail->arm.writeback);
+	auto ops = &instr->detail->arm.operands[0];
+	auto begin = ops + 1;
+	auto end = ops + instr->detail->arm.op_count;
+	RewriteLdm(dst, begin, end, 0, instr->detail->arm.writeback);
 }
 
-void ArmRewriter::RewriteLdm(HExpr dst, const cs_arm_op * range, int length, int offset, bool writeback)
+void ArmRewriter::RewriteLdm(HExpr dst, const cs_arm_op * begin, const cs_arm_op * end, int offset, bool writeback)
 {
 	ConditionalSkip();
 	bool pcRestored = false;
-	/*
-	for (auto r : range)
+	for (auto r = begin; r != end; ++r)
 	{
 		HExpr ea = offset != 0
 			? m.IAdd(dst, m.Int32(offset))
 			: dst;
-		if (r.reg.Value == ARM_REG_PC)
+		if (r->reg == ARM_REG_PC)
 		{
 			pcRestored = true;
 		}
 		else
 		{
-			auto dstReg = Reg(r.reg);
+			auto dstReg = Reg(r->reg);
 			m.Assign(dstReg, m.Mem32(ea));
 		}
 		offset += 4;
@@ -303,7 +303,6 @@ void ArmRewriter::RewriteLdm(HExpr dst, const cs_arm_op * range, int length, int
 	{
 		m.Return(0, 0);
 	}
-	*/
 }
 
 void ArmRewriter::RewriteMulbb(bool hiLeft, bool hiRight, BaseType dtMultiplicand, BinOpEmitter mul)
@@ -338,8 +337,10 @@ void ArmRewriter::RewriteMull(BaseType dtResult, BinOpEmitter op)
 void ArmRewriter::RewritePop()
 {
 	auto sp = Reg(ARM_REG_SP);
-	//$TODO
-	//RewriteLdm(sp, instr->detail->arm.operands, 0, true);
+	auto op = &instr->detail->arm.operands[0];
+	auto begin = op;
+	auto end = op + instr->detail->arm.op_count;
+	RewriteLdm(sp, begin, end, 0, true);
 }
 
 void ArmRewriter::RewritePush()
@@ -466,7 +467,7 @@ void ArmRewriter::RewriteXtab(BaseType dt)
 	auto src = host->EnsureRegister((int)Src2().reg);
 	if (Src2().shift.type == ARM_SFT_ROR)
 	{
-		src = m.Shr(src, Src2().shift.value);
+		src = m.Shr(src, m.Int32(Src2().shift.value));
 	}
 	src = m.Cast(dt, src);
 	ConditionalSkip();
@@ -479,7 +480,7 @@ void ArmRewriter::RewriteXtb(BaseType dt)
 	auto src = host->EnsureRegister((int)Src1().reg);
 	if (Src1().shift.type == ARM_SFT_ROR)
 	{
-		src = m.Shr(src, Src1().shift.value);
+		src = m.Shr(src, m.Int32(Src1().shift.value));
 	}
 	src = m.Cast(dt, src);
 	ConditionalSkip();

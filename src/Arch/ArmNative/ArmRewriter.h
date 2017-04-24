@@ -5,7 +5,10 @@ typedef HExpr (STDAPICALLTYPE IRtlNativeEmitter::*BinOpEmitter)(HExpr, HExpr);
 
 enum class FlagM
 {
-	CF, VF, ZF, NF,
+	NF = 8,
+	ZF = 4,
+	CF = 2,
+	VF = 1
 };
 inline FlagM operator | (FlagM a, FlagM b) { return (FlagM)((int)a | (int)b); }
 
@@ -71,7 +74,7 @@ private:
 	void RewriteCps();
 	void RewriteDmb();
 	void RewriteLdm(int);
-	void RewriteLdm(HExpr dst, const cs_arm_op * range, int length, int offset, bool writeback);
+	void RewriteLdm(HExpr dst, const cs_arm_op * begin, const cs_arm_op * end, int offset, bool writeback);
 	void RewriteLdr(BaseType);
 	void RewriteLdrd();
 	void RewriteMcr();

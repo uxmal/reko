@@ -76,7 +76,15 @@ STDMETHODIMP ArmRewriter::Next()
 	Dump("Next: %08x", this);
 	if (available == 0)
 		return S_FALSE;			// No more work to do.
+	auto addrInstr = address;
 	bool f = cs_disasm_iter(hcapstone, &rawBytes, &available, &address, instr);
+	if (!f)
+	{
+		// Failed to disassemble the instruction because it was invalid.
+		m.Invalid();
+		m.FinishCluster(RtlClass::Invalid, addrInstr, 4);
+		return S_OK;
+	}
 	// Most instructions are linear.
 	rtlClass = RtlClass::Linear;
 	
@@ -86,7 +94,6 @@ STDMETHODIMP ArmRewriter::Next()
 	switch (instr->id)
 	{
 	default:
-
 	case ARM_INS_ADR:
 	case ARM_INS_AESD:
 	case ARM_INS_AESE:
@@ -527,7 +534,7 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VSTMIA: RewriteVstmia(); break;
 
 	}
-	m.FinishCluster(rtlClass, address, instr->size);
+	m.FinishCluster(rtlClass, addrInstr, instr->size);
 	return S_OK;
 }
 
@@ -543,7 +550,7 @@ void ArmRewriter::NotImplementedYet()
 
 HExpr ArmRewriter::NZCV()
 {
-	return host->EnsureFlagGroup((int)ARM_REG_CPSR, 0x1111, "NZCV", BaseType::Byte);
+	return host->EnsureFlagGroup((int)ARM_REG_CPSR, 0xF, "NZCV", BaseType::Byte);
 }
 
 void ArmRewriter::MaybeUpdateFlags(HExpr opDst)
@@ -713,7 +720,7 @@ HExpr ArmRewriter::Operand(const cs_arm_op & op)
 	}
 	//$TODO
 	//throw new NotImplementedException(op.Type.ToString());
-	return 0;
+	return HExpr();
 }
 
 BaseType ArmRewriter::SizeFromLoadStore()
@@ -740,9 +747,9 @@ HExpr ArmRewriter::MaybeShiftOperand(HExpr exp, const cs_arm_op & op)
 {
 	switch (op.shift.type)
 	{
-	case ARM_SFT_ASR: return m.Sar(exp, op.shift.value);
-	case ARM_SFT_LSL: return m.Shl(exp, op.shift.value);
-	case ARM_SFT_LSR: return m.Shr(exp, op.shift.value);
+	case ARM_SFT_ASR: return m.Sar(exp, m.Int32(op.shift.value));
+	case ARM_SFT_LSL: return m.Shl(exp, m.Int32(op.shift.value));
+	case ARM_SFT_LSR: return m.Shr(exp, m.Int32(op.shift.value));
 	case ARM_SFT_ROR: return m.Ror(exp, m.Int32(op.shift.value));
 	case ARM_SFT_RRX: return m.Rrc(exp, m.Int32(op.shift.value));
 	case ARM_SFT_ASR_REG: return m.Sar(exp, Reg(op.shift.value));
@@ -814,7 +821,7 @@ HExpr ArmRewriter::TestCond(arm_cc cond)
 	case ARM_CC_VS:
 		return m.Test(ConditionCode::OV, FlagGroup(FlagM::VF, "V", BaseType::Byte));
 	}
-	return 0;
+	return HExpr();
 }
 
 HExpr ArmRewriter::FlagGroup(FlagM bits, const char * name, BaseType type)

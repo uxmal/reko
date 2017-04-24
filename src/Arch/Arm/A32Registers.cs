@@ -51,7 +51,8 @@ namespace Reko.Arch.Arm
 
         public static readonly RegisterStorage[] GpRegs;
 
-        public static readonly FlagRegister fpscr = new FlagRegister("fpscr", 30, PrimitiveType.Word32);
+        public static readonly FlagRegister fpscr = new FlagRegister("fpscr", 29, PrimitiveType.Word32);
+        public static readonly FlagRegister apsr = new FlagRegister("cpsr", 30, PrimitiveType.Word32);
         public static readonly FlagRegister cpsr = new FlagRegister("cpsr", 31, PrimitiveType.Word32);
 
         public static readonly RegisterStorage q0 =  new RegisterStorage("q0" , 32, 0, PrimitiveType.Word128) ;
@@ -266,9 +267,10 @@ namespace Reko.Arch.Arm
                   { capstone_arm_reg.ARM_REG_S30,      s30 },
                   { capstone_arm_reg.ARM_REG_S31,      s31 },
 
-                  { capstone_arm_reg.ARM_REG_APSR, cpsr },
-                  { capstone_arm_reg.ARM_REG_APSR_NZCV, cpsr },
-                  { capstone_arm_reg.ARM_REG_FPSCR, fpscr },
+                  { capstone_arm_reg.ARM_REG_APSR,      apsr },
+                  { capstone_arm_reg.ARM_REG_APSR_NZCV, apsr },
+                  { capstone_arm_reg.ARM_REG_CPSR,      cpsr },
+                  { capstone_arm_reg.ARM_REG_FPSCR,     fpscr },
             };
 
             RegisterByCapstoneID = new Dictionary<ArmRegister, RegisterStorage>
@@ -373,8 +375,9 @@ namespace Reko.Arch.Arm
                   { ArmRegister.S30,      s30 },
                   { ArmRegister.S31,      s31 },
 
-                  { ArmRegister.APSR, cpsr },
-                  { ArmRegister.APSR_NZCV, cpsr },
+                  { ArmRegister.APSR, apsr },
+                  { ArmRegister.APSR_NZCV, apsr },
+                  { ArmRegister.CPSR, cpsr },
                   { ArmRegister.FPSCR, fpscr },
             };
 
