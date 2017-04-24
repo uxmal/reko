@@ -43,7 +43,7 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] void Invalid();
         [PreserveSig] void Nop();
         [PreserveSig] void Return(int x, int y);
-        [PreserveSig] void SetRtlClass(RtlClass rtlClass);
+        [PreserveSig] void FinishCluster(RtlClass rtlClass, ulong address, int mcLength);
         [PreserveSig] void SideEffect(HExpr exp);
 
         [PreserveSig] HExpr And(HExpr a, HExpr b);

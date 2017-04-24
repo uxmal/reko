@@ -33,21 +33,21 @@ namespace Reko.Arch.Arm
 {
     public class ArmRewriterNew : IEnumerable<RtlInstructionCluster>
     {
-        private byte[] bytes;
-        private int offset;
-        private Address addr;
+        private EndianImageReader rdr;
 
-
-        public ArmRewriterNew(byte[] bytes, int offset, Address addr)
+        public ArmRewriterNew(Arm32ProcessorArchitecture arch, EndianImageReader rdr, ArmProcessorState state, Frame frame, IRewriterHost host)
         {
-            this.bytes = bytes;
-            this.offset = offset;
-            this.addr = addr;
+            this.rdr = rdr;
+            this.frame = frame;
+            this.host = host;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            return new Enumerator(bytes, offset, addr.ToLinear());
+            var bytes = rdr.Bytes;
+            var offset = (int)rdr.Offset;
+            var addr = rdr.Address.ToLinear();
+            return new Enumerator(this);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -61,31 +61,44 @@ namespace Reko.Arch.Arm
             private byte[] bytes;
             private GCHandle hBytes;
             private RtlNativeEmitter rtlEmitter;
+            private RtlEmitter m;
+            private ArmNativeRewriterHost host;
 
-            public Enumerator(byte[] bytes, int offset, ulong addr)
+            public Enumerator(ArmRewriterNew outer)
             {
-                this.bytes = bytes;
+                this.bytes = outer.rdr.Bytes;
+                ulong addr = outer.rdr.Address.ToLinear();
                 this.hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
 
-                this.rtlEmitter = new RtlNativeEmitter();
-                var oRtlEmitter = Marshal.GetIUnknownForObject(rtlEmitter);
-                IntPtr iRtlEmitter;
-                var hr = Marshal.QueryInterface(oRtlEmitter, ref IID_INativeRewriterHost, out iRtlEmitter);
+                this.m = new RtlEmitter(new List<RtlInstruction>());
 
-                var host = new ArmNativeRewriterHost();
-                var oHost = Marshal.GetIUnknownForObject(host);
-                IntPtr iHost;
-                hr = Marshal.QueryInterface(oHost, ref IID_INativeRewriterHost, out iHost);
+                this.rtlEmitter = new RtlNativeEmitter(m);
+                this.host = new ArmNativeRewriterHost(outer.frame, outer.host, rtlEmitter);
 
-                this.native = CreateNativeRewriter(hBytes.AddrOfPinnedObject(), bytes.Length, iRtlEmitter, iHost);
+                var iRtlEmitter = GetCOMInterface(rtlEmitter, IID_IRtlEmitter);
+                var iHost = GetCOMInterface(host, IID_INativeRewriterHost);
+                this.native = CreateNativeRewriter(hBytes.AddrOfPinnedObject(), bytes.Length, (int)outer.rdr.Offset, addr, iRtlEmitter, iHost);
             }
 
             public RtlInstructionCluster Current { get; private set; }
 
             object IEnumerator.Current { get { return Current; } }
 
+            private IntPtr GetCOMInterface(object o, Guid iid)
+            {
+                var iUnknown = Marshal.GetIUnknownForObject(o);
+                IntPtr intf;
+                var hr2 = Marshal.QueryInterface(iUnknown, ref iid, out intf);
+                return intf;
+            }
+
+
             public void Dispose()
             {
+                if (this.native != null)
+                {
+                    //$TODO: make sure it gets destroyed.
+                }
                 if (this.hBytes != null && this.hBytes.IsAllocated)
                 {
                     this.hBytes.Free();
@@ -94,8 +107,9 @@ namespace Reko.Arch.Arm
 
             public bool MoveNext()
             {
+                m.Instructions = new List<RtlInstruction>();
                 native.Next();
-                this.Current = this.rtlEmitter.Extract();
+                this.Current = this.rtlEmitter.ExtractCluster();
                 return false;
             }
 
@@ -107,21 +121,16 @@ namespace Reko.Arch.Arm
 
         static ArmRewriterNew()
         {
-            IID_INativeRewriterHost = typeof(INativeRewriterHost)
-                .GetCustomAttributes(typeof(GuidAttribute), false)
-                .Select(a => new Guid(((GuidAttribute)a).Value))
-                .First();
-            IID_IRtlEmitter = typeof(IRtlNativeEmitter)
-                .GetCustomAttributes(typeof(GuidAttribute), false)
-                .Select(a => new Guid(((GuidAttribute)a).Value))
-                .First();
+            IID_INativeRewriterHost = typeof(INativeRewriterHost).GUID;
+            IID_IRtlEmitter = typeof(IRtlNativeEmitter).GUID;
         }
 
         private static  Guid IID_INativeRewriterHost;
         private static  Guid IID_IRtlEmitter;
+        private Frame frame;
+        private IRewriterHost host;
 
-
-        [DllImport("ArmNative.dll",CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateRewriter")]
-        public static extern INativeRewriter CreateNativeRewriter(IntPtr rawbytes, int length, IntPtr rtlEmitter, IntPtr host);
+        [DllImport("ArmNative.dll",CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateNativeRewriter")]
+        public static extern INativeRewriter CreateNativeRewriter(IntPtr rawbytes, int length, int offset, ulong address, IntPtr rtlEmitter, IntPtr host);
     }
 }

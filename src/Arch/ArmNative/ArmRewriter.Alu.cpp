@@ -55,17 +55,14 @@ void ArmRewriter::RewriteBfc()
 
 void ArmRewriter::RewriteBfi()
 {
+	ConditionalSkip();
 	auto opDst = this->Operand(Dst());
 	auto opSrc = this->Operand(Src1());
-	//$TODO
-	/*
-	auto tmp = host->CreateTemporary(opDst.DataType);
+	auto tmp = host->CreateTemporary(BaseType::Word32);
 	auto lsb = instr->detail->arm.operands[2].imm;
 	auto bitsize = instr->detail->arm.operands[3].imm;
-	ConditionalSkip();
 	m.Assign(tmp, m.Slice(opSrc, 0, bitsize));
 	m.Assign(opDst, m.Dpb(opDst, tmp, lsb));
-	*/
 }
 
 void ArmRewriter::RewriteBinOp(BinOpEmitter op, bool setflags)
@@ -82,22 +79,24 @@ void ArmRewriter::RewriteBinOp(BinOpEmitter op, bool setflags)
 
 void ArmRewriter::RewriteRev()
 {
+	ConditionalSkip();
 	auto opDst = this->Operand(Dst());
 	auto opSrc = this->Operand(Src1());
-	ConditionalAssign(
+	m.Assign(
 		opDst,
 		host->PseudoProcedure("__rev", BaseType::Word32, opSrc));
 }
 
 void ArmRewriter::RewriteRevBinOp(BinOpEmitter op, bool setflags)
 {
+	ConditionalSkip();
 	auto opDst = this->Operand(Dst());
 	auto opSrc1 = this->Operand(Src1());
 	auto opSrc2 = this->Operand(Src2());
-	ConditionalAssign(opDst, (m.*op)(opSrc1, opSrc2));
+	m.Assign(opDst, (m.*op)(opSrc1, opSrc2));
 	if (setflags)
 	{
-		ConditionalAssign(NZCV(), m.Cond(opDst));
+		m.Assign(NZCV(), m.Cond(opDst));
 	}
 }
 
@@ -114,27 +113,30 @@ void ArmRewriter::RewriteUnaryOp(UnaryOpEmitter op)
 
 void ArmRewriter::RewriteBic()
 {
+	ConditionalSkip();
 	auto opDst = this->Operand(Dst());
 	auto opSrc1 = this->Operand(Src1());
 	auto opSrc2 = this->Operand(Src2());
-	ConditionalAssign(opDst, m.And(opSrc1, m.Comp(opSrc2)));
+	m.Assign(opDst, m.And(opSrc1, m.Comp(opSrc2)));
 }
 
 void ArmRewriter::RewriteClz()
 {
+	ConditionalSkip();
 	auto opDst = this->Operand(Dst());
 	auto opSrc = this->Operand(Src1());
 
-	ConditionalAssign(
+	m.Assign(
 		opDst,
 		host->PseudoProcedure("__clz", BaseType::Int32, opSrc));
 }
 
 void ArmRewriter::RewriteCmn()
 {
+	ConditionalSkip();
 	auto opDst = this->Operand(Dst());
 	auto opSrc = this->Operand(Src1());
-	ConditionalAssign(
+	m.Assign(
 		NZCV(),
 		m.Cond(
 			m.IAdd(opDst, opSrc)));
@@ -142,9 +144,10 @@ void ArmRewriter::RewriteCmn()
 
 void ArmRewriter::RewriteCmp()
 {
+	ConditionalSkip();
 	auto opDst = this->Operand(Dst());
 	auto opSrc = this->Operand(Src1());
-	ConditionalAssign(
+	m.Assign(
 		NZCV(),
 		m.Cond(
 			m.ISub(opDst, opSrc)));
@@ -152,6 +155,7 @@ void ArmRewriter::RewriteCmp()
 
 void ArmRewriter::RewriteTeq()
 {
+	ConditionalSkip();
 	auto opDst = this->Operand(Dst());
 	auto opSrc = this->Operand(Src1());
 	m.Assign(
@@ -161,6 +165,7 @@ void ArmRewriter::RewriteTeq()
 
 void ArmRewriter::RewriteTst()
 {
+	ConditionalSkip();
 	auto opDst = this->Operand(Dst());
 	auto opSrc = this->Operand(Src1());
 	m.Assign(
@@ -170,14 +175,15 @@ void ArmRewriter::RewriteTst()
 
 void ArmRewriter::RewriteLdr(BaseType size)
 {
+	ConditionalSkip();
 	auto opSrc = this->Operand(Src1());
 	auto opDst = this->Operand(Dst());
 	auto rDst = Dst().reg;
 	if (rDst == ARM_REG_PC)
 	{
 		// Assignment to PC is the same as a jump
-		m.SetRtlClass(RtlClass::Transfer);
 		m.Goto(opSrc);
+		m.FinishCluster(RtlClass::Transfer,address,instr->size);
 		return;
 	}
 	m.Assign(opDst, opSrc);
@@ -186,6 +192,7 @@ void ArmRewriter::RewriteLdr(BaseType size)
 
 void ArmRewriter::RewriteLdrd()
 {
+	ConditionalSkip();
 	auto ops = instr->detail->arm.operands;
 	auto regLo = (int)ops[0].reg;
 	auto regHi = (int)ops[1].reg;
@@ -197,6 +204,7 @@ void ArmRewriter::RewriteLdrd()
 
 void ArmRewriter::RewriteStr(BaseType size)
 {
+	ConditionalSkip();
 	auto opSrc = this->Operand(Dst());
 	auto opDst = this->Operand(Src1());
 	m.Assign(opDst, opSrc);
@@ -205,6 +213,7 @@ void ArmRewriter::RewriteStr(BaseType size)
 
 void ArmRewriter::RewriteStrd()
 {
+	ConditionalSkip();
 	auto ops = instr->detail->arm.operands;
 	auto regLo = (int)ops[0].reg;
 	auto regHi = (int)ops[1].reg;
@@ -216,14 +225,15 @@ void ArmRewriter::RewriteStrd()
 
 void ArmRewriter::RewriteMultiplyAccumulate(BinOpEmitter op)
 {
+	ConditionalSkip();
 	auto opDst = this->Operand(Dst());
 	auto opSrc1 = this->Operand(Src1());
 	auto opSrc2 = this->Operand(Src2());
 	auto opSrc3 = this->Operand(Src3());
-	ConditionalAssign(opDst, (m.*op)(opSrc3, m.IMul(opSrc1, opSrc2)));
+	m.Assign(opDst, (m.*op)(opSrc3, m.IMul(opSrc1, opSrc2)));
 	if (instr->detail->arm.update_flags)
 	{
-		ConditionalAssign(NZCV(), m.Cond(opDst));
+		m.Assign(NZCV(), m.Cond(opDst));
 	}
 }
 
@@ -231,7 +241,6 @@ void ArmRewriter::RewriteMov()
 {
 	if (Dst().type == ARM_OP_REG && Dst().reg == ARM_REG_PC)
 	{
-		m.SetRtlClass(RtlClass::Transfer);
 		if (Src1().type == ARM_OP_REG && Src1().reg == ARM_REG_LR)
 		{
 			//$TODO:
@@ -241,6 +250,7 @@ void ArmRewriter::RewriteMov()
 		{
 			//AddConditional(new RtlGoto(Operand(Src1()), RtlClass.Transfer));
 		}
+		m.FinishCluster(RtlClass::Transfer, address, instr->size);
 		return;
 	}
 	auto opDst = Operand(Dst());

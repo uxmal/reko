@@ -30,42 +30,77 @@ using System.Threading;
 
 namespace Reko.Core.NativeInterface
 {
+    /// <summary>
+    /// This class exposes the IRtlNativeEmitter interface so that native code
+    /// can call the factory methods to build sequences of RTL instructions 
+    /// that are the result of translating a machine code instruction.
+    /// </summary>
+    /// <remarks>
+    /// Once the instructions have been added, the (native) caller calls 
+    /// FinishCluster() and returns control to the .NET side. Finally, the 
+    /// completed cluster is extracted with ExtractCluster
+    /// </remarks>
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
     public class RtlNativeEmitter : IRtlNativeEmitter
     {
         private RtlEmitter m;
         private List<Expression> handles;
-        private List<RtlInstruction> instrs;
         private Address address;
-        private int instrLength;
         private RtlClass rtlClass;
-
-        public RtlNativeEmitter()
-        {
-            this.handles = new List<Expression>();
-            this.instrs = new List<RtlInstruction>();
-            this.address = null;
-        }
+        private int instrLength;
 
         public RtlNativeEmitter(RtlEmitter m)
         {
             this.m = m;
             this.handles = new List<Expression>();
+            this.address = null;
+            this.rtlClass = RtlClass.Invalid;
+            this.instrLength = 0;
         }
 
+        //$TODO: arch-specific: IProcessorARchitecture?
+        public virtual Address CreateAddress(ulong linear)
+        {
+            return Address.Ptr32((uint)linear);
+        }
 
+        /// <summary>
+        /// Retrieves the expression ofa particular handle.
+        /// </summary>
+        /// <param name="hExp"></param>
+        /// <returns></returns>
         public Expression GetExpression(HExpr hExp)
         {
             return handles[(int)hExp];
         }
 
-        private HExpr MapToHandle(Expression exp)
+        /// <summary>
+        /// Creates a handle for the given expression.
+        /// </summary>
+        /// <param name="exp"></param>
+        /// <returns></returns>
+        public HExpr MapToHandle(Expression exp)
         {
             var hExp = (HExpr)handles.Count;
             handles.Add(exp);
             return hExp;
         }
+
+        public RtlInstructionCluster ExtractCluster()
+        {
+            if (this.address == null || this.instrLength == 0)
+                throw new InvalidOperationException();
+
+            var rtlc = new RtlInstructionCluster(address, instrLength, m.Instructions);
+            rtlc.Class = this.rtlClass;
+
+            address = null;
+            instrLength = 0;
+
+            return rtlc;
+        }
+
 
         #region Factory methods
 
@@ -83,6 +118,17 @@ namespace Reko.Core.NativeInterface
         {
             throw new NotImplementedException();
         }
+
+        public void Call(HExpr dst, int bytesOnStack)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Goto(HExpr dst)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Invalid()
         {
             throw new NotImplementedException();
@@ -90,7 +136,25 @@ namespace Reko.Core.NativeInterface
 
         public void Nop()
         {
+            m.Nop();
+        }
+
+        public void Return(int x, int y)
+        {
             throw new NotImplementedException();
+        }
+
+        public void SideEffect(HExpr exp)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FinishCluster(RtlClass rtlClass, ulong address, int mcLength)
+        {
+            this.address = CreateAddress(address);
+            this.rtlClass = rtlClass;
+            this.instrLength = mcLength;
+            this.handles.Clear();
         }
 
         public HExpr And(HExpr a, int n)
@@ -99,18 +163,6 @@ namespace Reko.Core.NativeInterface
         }
 
         public HExpr And(HExpr a, HExpr b)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-        public HExpr Byte(byte b)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Call(HExpr dst, int bytesOnStack)
         {
             throw new NotImplementedException();
         }
@@ -135,11 +187,6 @@ namespace Reko.Core.NativeInterface
             throw new NotImplementedException();
         }
 
-        public void Goto(HExpr dst)
-        {
-            throw new NotImplementedException();
-        }
-
         public HExpr IAdc(HExpr a, HExpr b, HExpr c)
         {
             throw new NotImplementedException();
@@ -147,12 +194,12 @@ namespace Reko.Core.NativeInterface
 
         public HExpr IAdd(HExpr a, int n)
         {
-            throw new NotImplementedException();
+            return MapToHandle(m.IAdd(GetExpression(a), n));
         }
 
         public HExpr IAdd(HExpr a, HExpr b)
         {
-            throw new NotImplementedException();
+            return MapToHandle(m.IAdd(GetExpression(a), GetExpression(b)));
         }
 
         public HExpr IMul(HExpr a, int n)
@@ -160,40 +207,10 @@ namespace Reko.Core.NativeInterface
             throw new NotImplementedException();
         }
 
-        public RtlInstructionCluster Extract()
-        {
-            if (this.address == null)
-                throw new InvalidOperationException();
-            if (this.instrLength == 0)
-                throw new InvalidOperationException();
-
-            var rtlc = new RtlInstructionCluster(address, instrLength, this.instrs);
-            rtlc.Class = this.rtlClass;
-            throw new NotImplementedException();
-
-        }
-
         public HExpr IMul(HExpr a, HExpr b)
         {
             throw new NotImplementedException();
         }
-
-        public HExpr Int16(short s)
-        {
-            throw new NotImplementedException();
-        }
-
-        public HExpr Int32(int i)
-        {
-            return MapToHandle(Constant.Int32(i));
-        }
-
-        public HExpr Int64(long l)
-        {
-            throw new NotImplementedException();
-        }
-
-
 
         public HExpr ISub(HExpr a, int n)
         {
@@ -240,26 +257,6 @@ namespace Reko.Core.NativeInterface
             throw new NotImplementedException();
         }
 
-        public HExpr Ptr16(ushort p)
-        {
-            throw new NotImplementedException();
-        }
-
-        public HExpr Ptr32(uint p)
-        {
-            return MapToHandle(Address.Ptr32(p));
-        }
-
-        public HExpr Ptr64(ulong p)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Return(int x, int y)
-        {
-            throw new NotImplementedException();
-        }
-
         public HExpr Ror(HExpr a, int n)
         {
             throw new NotImplementedException();
@@ -289,12 +286,7 @@ namespace Reko.Core.NativeInterface
         {
             throw new NotImplementedException();
         }
-
-        public void SetRtlClass(RtlClass rtlClass)
-        {
-            throw new NotImplementedException();
-        }
-
+ 
         public HExpr Shl(HExpr a, int n)
         {
             throw new NotImplementedException();
@@ -315,11 +307,6 @@ namespace Reko.Core.NativeInterface
             throw new NotImplementedException();
         }
 
-        public void SideEffect(HExpr exp)
-        {
-            throw new NotImplementedException();
-        }
-
         public HExpr Slice(HExpr a, int pos, int bits)
         {
             throw new NotImplementedException();
@@ -331,6 +318,57 @@ namespace Reko.Core.NativeInterface
         }
 
         public HExpr Test(ConditionCode cc, HExpr exp)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HExpr UMul(HExpr a, HExpr b)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HExpr Xor(HExpr a, HExpr b)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+
+
+
+
+        public HExpr Byte(byte b)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HExpr Int16(short s)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HExpr Int32(int i)
+        {
+            return MapToHandle(Constant.Int32(i));
+        }
+
+        public HExpr Int64(long l)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HExpr Ptr16(ushort p)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HExpr Ptr32(uint p)
+        {
+            return MapToHandle(Address.Ptr32(p));
+        }
+
+        public HExpr Ptr64(ulong p)
         {
             throw new NotImplementedException();
         }
@@ -350,11 +388,6 @@ namespace Reko.Core.NativeInterface
             throw new NotImplementedException();
         }
 
-        public HExpr UMul(HExpr a, HExpr b)
-        {
-            throw new NotImplementedException();
-        }
-
         public HExpr Word16(ushort us)
         {
             throw new NotImplementedException();
@@ -370,10 +403,6 @@ namespace Reko.Core.NativeInterface
             throw new NotImplementedException();
         }
 
-        public HExpr Xor(HExpr a, HExpr b)
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion
     }

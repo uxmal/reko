@@ -82,7 +82,7 @@ public:
 	virtual void STDAPICALLTYPE Invalid() = 0;
 	virtual void STDAPICALLTYPE Nop()=0;
 	virtual void STDAPICALLTYPE Return(int, int) = 0;
-	virtual void STDAPICALLTYPE SetRtlClass(RtlClass) = 0;
+	virtual void STDAPICALLTYPE FinishCluster(RtlClass rtlClass, uint64_t address, int32_t mcLength) = 0;
 	virtual void STDAPICALLTYPE SideEffect(HExpr) = 0;
 
 	virtual HExpr STDAPICALLTYPE And(HExpr a, HExpr b) = 0;

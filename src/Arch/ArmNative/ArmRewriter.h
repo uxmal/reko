@@ -15,6 +15,7 @@ public:
 	ArmRewriter(
 		const uint8_t * rawBytes,
 		size_t length,
+		uint64_t address,
 		IRtlNativeEmitter * emitter,
 		INativeRewriterHost * host);
 
@@ -102,10 +103,12 @@ private:
 private:
 	ULONG cRef;	// COM ref count.
 
+	csh hcapstone;
 	IRtlNativeEmitter & m;
 	INativeRewriterHost * host;
 	cs_insn * instr;
 	const uint8_t * rawBytes;
-	size_t length;
-	csh hcapstone;
+	size_t available;			// Available bytes left past rawBytes
+	uint64_t address;
+	RtlClass rtlClass;
 };

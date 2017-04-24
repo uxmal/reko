@@ -7,15 +7,17 @@ void Dump(const char * fmt, ...);
 
 ArmRewriter::ArmRewriter(
 	const uint8_t * rawBytes,
-	size_t length,
+	size_t availableBytes,
+	uint64_t address,
 	IRtlNativeEmitter * emitter,
 	INativeRewriterHost * host)
 :
 	rawBytes(rawBytes),
-	length(length),
+	available(availableBytes),
+	address(address),
 	m(*emitter),
 	host(host),
-	cRef(0),
+	cRef(1),
 	instr(nullptr)
 {
 	auto hcap = ::LoadLibraryW(L"cs_open");
@@ -72,8 +74,15 @@ STDMETHODIMP_(ULONG) ArmRewriter::Release()
 STDMETHODIMP ArmRewriter::Next()
 {
 	Dump("Next: %08x", this);
-	uint64_t addr = 0x00123400;
-	bool f = cs_disasm_iter(hcapstone, &rawBytes, &length, &addr, this->instr);
+	if (available == 0)
+		return S_FALSE;			// No more work to do.
+	bool f = cs_disasm_iter(hcapstone, &rawBytes, &available, &address, instr);
+	// Most instructions are linear.
+	rtlClass = RtlClass::Linear;
+	
+	// Most instructions have a conditional mode of operation.
+	//$TODO: make sure non-conditional instructions are handled correctly here.
+	ConditionalSkip();	
 	switch (instr->id)
 	{
 	default:
@@ -518,6 +527,7 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VSTMIA: RewriteVstmia(); break;
 
 	}
+	m.FinishCluster(rtlClass, address, instr->size);
 	return S_OK;
 }
 
@@ -560,10 +570,10 @@ void ArmRewriter::RewriteB(bool link)
 	}
 	if (link)
 	{
-		m.SetRtlClass(RtlClass::Transfer);
 		if (instr->detail->arm.cc == ARM_CC_AL)
 		{
 			m.Call(dst, 0);
+			m.FinishCluster(RtlClass::Transfer, address, instr->size);
 		}
 		else
 		{
@@ -575,12 +585,11 @@ void ArmRewriter::RewriteB(bool link)
 	{
 		if (instr->detail->arm.cc == ARM_CC_AL)
 		{
-			m.SetRtlClass(RtlClass::Transfer);
 			m.Goto(dst);
+			m.FinishCluster(RtlClass::Transfer, address, instr->size);
 		}
 		else
 		{
-			m.SetRtlClass(RtlClass::ConditionalTransfer);
 			if (dstIsAddress)
 			{
 				m.Branch(TestCond(instr->detail->arm.cc), dst, RtlClass::ConditionalTransfer);
@@ -590,6 +599,7 @@ void ArmRewriter::RewriteB(bool link)
 				//$TODO: conditional code
 				//m.If(TestCond(instr->detail->arm.CodeCondition), new RtlGoto(dst, RtlClass::ConditionalTransfer));
 			}
+			m.FinishCluster(RtlClass::ConditionalTransfer, address, instr->size);
 		}
 	}
 }

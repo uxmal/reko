@@ -7,8 +7,14 @@
 
 extern "C" {
 	__declspec(dllexport)
-		INativeRewriter * __cdecl CreateRewriter(const uint8_t * rawBytes, int length, IRtlNativeEmitter * m, INativeRewriterHost * host)
+		INativeRewriter * __cdecl CreateNativeRewriter(
+			const uint8_t * rawBytes,
+			uint32_t length,	
+			uint32_t offset, 
+			uint64_t address, 
+			IRtlNativeEmitter * m,
+			INativeRewriterHost * host)
 	{
-		return new ArmRewriter(rawBytes, length, m, host);
+		return new ArmRewriter(rawBytes + offset, length - offset, address, m, host);
 	}
 }
