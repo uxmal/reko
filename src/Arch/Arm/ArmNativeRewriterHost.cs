@@ -19,7 +19,9 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.NativeInterface;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,9 +84,11 @@ namespace Reko.Arch.Arm
             host.Error(m.CreateAddress(uAddress), error);
         }
 
-        public HExpr PseudoProcedure(string name, BaseType x)
+        public HExpr EnsurePseudoProcedure(string name, BaseType dt, int arity)
         {
-            throw new NotImplementedException();
+            var exp = host.EnsurePseudoProcedure(name, Interop.DataTypes[dt], arity);
+            var pc = new ProcedureConstant(PrimitiveType.Pointer32, exp);
+            return m.MapToHandle(pc);
         }
     }
 }

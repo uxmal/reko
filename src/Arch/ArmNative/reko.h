@@ -125,6 +125,9 @@ public:
 	virtual HExpr STDAPICALLTYPE Word16(uint16_t) = 0;
 	virtual HExpr STDAPICALLTYPE Word32(uint32_t) = 0;
 	virtual HExpr STDAPICALLTYPE Word64(uint64_t) = 0;
+
+	virtual void STDAPICALLTYPE AddArg(HExpr a) = 0;
+	virtual HExpr STDAPICALLTYPE Fn(HExpr fn) = 0;
 };
 
 class INativeRewriter : public IUnknown
@@ -142,5 +145,5 @@ public:
 	virtual HExpr STDAPICALLTYPE CreateTemporary(BaseType size) = 0;
 
 	virtual void STDAPICALLTYPE Error(uint64_t uAddress, const char * error) = 0;
-	virtual HExpr STDAPICALLTYPE PseudoProcedure(const char *name, BaseType retType, /* args */...) = 0;
+	virtual HExpr STDAPICALLTYPE EnsurePseudoProcedure(const char *name, BaseType retType, int arity) = 0;
 };

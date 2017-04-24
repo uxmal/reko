@@ -48,6 +48,7 @@ namespace Reko.Core.NativeInterface
         private RtlEmitter m;
         private IRewriterHost host;
         private List<Expression> handles;
+        private List<Expression> args;
         private Address address;
         private RtlClass rtlClass;
         private int instrLength;
@@ -57,6 +58,7 @@ namespace Reko.Core.NativeInterface
             this.m = m;
             this.host = host;
             this.handles = new List<Expression>();
+            this.args = new List<Expression>();
             this.address = null;
             this.rtlClass = RtlClass.Invalid;
             this.instrLength = 0;
@@ -69,7 +71,7 @@ namespace Reko.Core.NativeInterface
         }
 
         /// <summary>
-        /// Retrieves the expression ofa particular handle.
+        /// Retrieves the expression of a particular handle.
         /// </summary>
         /// <param name="hExp"></param>
         /// <returns></returns>
@@ -363,6 +365,23 @@ namespace Reko.Core.NativeInterface
         public HExpr Word64(ulong ul)
         {
             return MapToHandle(Constant.Word64(ul));
+        }
+
+        public void AddArg(HExpr a)
+        {
+            this.args.Add(GetExpression(a));
+        }
+
+        /// <summary>
+        /// Pops all the args and makes an Application instance.
+        /// </summary>
+        /// <param name="fn"></param>
+        /// <returns></returns>
+        public HExpr Fn(HExpr fn)
+        {
+            var appl = m.Fn(GetExpression(fn), this.args.ToArray());
+            this.args.Clear();
+            return MapToHandle(appl);
         }
 
         #endregion

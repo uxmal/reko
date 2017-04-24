@@ -30,7 +30,7 @@ public:
 
 private:
 	void AddConditional(void(*mkInstr)());
-	void ConditionalSkip();
+	void ConditionalSkip(bool force);
 	void ConditionalAssign(HExpr dst, HExpr src);
 	HExpr FlagGroup(FlagM bits, const char * name, BaseType type);
 	arm_cc Invert(arm_cc);
@@ -40,6 +40,7 @@ private:
 	void MaybeUpdateFlags(HExpr opDst);
 	void MaybePostOperand(const cs_arm_op & op);
 	HExpr MaybeShiftOperand(HExpr exp, const cs_arm_op & op);
+	const char * MemBarrierName(arm_mem_barrier barrier);
 	HExpr NZCV();
 	HExpr Operand(const cs_arm_op & op);
 	HExpr Reg(int reg) { 
@@ -51,8 +52,8 @@ private:
 
 	BaseType SizeFromLoadStore();
 	HExpr TestCond(arm_cc cond);
-	const char * ArmRewriter::VectorElementType();
-
+	const char * VectorElementType();
+	BaseType VectorElementDataType();
 	const cs_arm_op & Dst() { return instr->detail->arm.operands[0]; }
 	const cs_arm_op & Src1() { return instr->detail->arm.operands[1]; }
 	const cs_arm_op & Src2() { return instr->detail->arm.operands[2]; }

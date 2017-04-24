@@ -90,7 +90,7 @@ STDMETHODIMP ArmRewriter::Next()
 	
 	// Most instructions have a conditional mode of operation.
 	//$TODO: make sure non-conditional instructions are handled correctly here.
-	ConditionalSkip();	
+	ConditionalSkip(false);	
 	switch (instr->id)
 	{
 	default:
@@ -577,36 +577,36 @@ void ArmRewriter::RewriteB(bool link)
 	}
 	if (link)
 	{
+		rtlClass = RtlClass::Transfer;
 		if (instr->detail->arm.cc == ARM_CC_AL)
 		{
 			m.Call(dst, 0);
-			m.FinishCluster(RtlClass::Transfer, address, instr->size);
 		}
 		else
 		{
-			//$TODO: conditional code.
-			//m.If(TestCond(instr->detail->arm.CodeCondition), new RtlCall(dst, 0, RtlClass::Transfer));
+			rtlClass = RtlClass::ConditionalTransfer;
+			m.Call(dst, 0);
 		}
 	}
 	else
 	{
 		if (instr->detail->arm.cc == ARM_CC_AL)
 		{
+			rtlClass = RtlClass::Transfer;
 			m.Goto(dst);
-			m.FinishCluster(RtlClass::Transfer, address, instr->size);
 		}
 		else
 		{
+			rtlClass = RtlClass::ConditionalTransfer;
 			if (dstIsAddress)
 			{
 				m.Branch(TestCond(instr->detail->arm.cc), dst, RtlClass::ConditionalTransfer);
 			}
 			else
 			{
-				//$TODO: conditional code
-				//m.If(TestCond(instr->detail->arm.CodeCondition), new RtlGoto(dst, RtlClass::ConditionalTransfer));
+				ConditionalSkip(true);
+				m.Goto(dst);
 			}
-			m.FinishCluster(RtlClass::ConditionalTransfer, address, instr->size);
 		}
 	}
 }
@@ -632,11 +632,19 @@ void ArmRewriter::ConditionalAssign(HExpr dst, HExpr src)
 
 // If a conditional ARM instruction is encountered, generate an IL
 // instruction to skip the remainder of the instruction cluster.
-void ArmRewriter::ConditionalSkip()
+void ArmRewriter::ConditionalSkip(bool force)
 {
 	auto cc = instr->detail->arm.cc;
-	if (cc == ARM_CC_AL)
-		return; // never skip!
+	if (!force)
+	{
+		if (cc == ARM_CC_AL)
+			return; // never skip!
+		if (instr->id == ARM_INS_B)
+		{
+			// These instructions handle the branching themselves.
+			return;
+		}
+	}
 	m.BranchInMiddleOfInstruction(
 		TestCond(Invert(cc)),
 		m.Ptr32(static_cast<uint32_t>(instr->address) + 4),

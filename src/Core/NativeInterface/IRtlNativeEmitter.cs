@@ -86,5 +86,9 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr Word16(ushort us);
         [PreserveSig] HExpr Word32(uint u);
         [PreserveSig] HExpr Word64(ulong ul);
+
+        // Add args to the "argument buffer".
+        [PreserveSig] void AddArg(HExpr a);
+    	[PreserveSig] HExpr Fn(HExpr fn);
     }
 }

@@ -22,63 +22,57 @@
 
 void ArmRewriter::RewriteVldmia()
 {
-	ConditionalSkip();
-	//$TODO:
-	/*
 	auto rSrc = this->Operand(Dst());
 	auto offset = 0;
-	for (auto r : instr->detail->arm.Operands.Skip(1))
+	auto begin = &instr->detail->arm.operands[0];
+	auto end = begin + instr->detail->arm.op_count - 1;
+	for (auto r = begin; r != end; ++r)
 	{
-		auto dst = this->Operand(r);
+		auto dst = this->Operand(*r);
 		HExpr ea =
 			offset != 0
 			? m.IAdd(rSrc, m.Int32(offset))
 			: rSrc;
-		m.Assign(dst, m.Mem(dst.DataType, ea));
-		offset += dst.DataType.Size;
+		//m.Assign(dst, m.Mem(dst->DataType, ea));
+		//offset += dst.DataType.Size;
 	}
-	if (instr->detail->arm.WriteBack)
+	if (instr->detail->arm.writeback)
 	{
 		m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
 	}
-	*/
 }
 
 void ArmRewriter::RewriteVmov()
 {
-	ConditionalSkip();
-	//$TODO
-	/*
-	auto dst = this->Operand(Dst);
-	auto src = this->Operand(Src1);
-	auto fname = "__vmov_" + VectorElementType();
-	m.Assign(dst,
-		host.PseudoProcedure(fname, dst.DataType, src));
-		*/
+	auto dst = this->Operand(Dst());
+	auto src = this->Operand(Src1());
+	char fname[200];
+	snprintf(fname, sizeof(fname), "__vmov_%s", VectorElementType());
+	auto dt = VectorElementDataType();
+	//m.Assign(dst,
+	//	host->PseudoProcedure(fname, dst.DataType, src));
 }
 
 void ArmRewriter::RewriteVstmia()
 {
-	ConditionalSkip();
-	//$TODO
-	/*
 	auto rSrc = this->Operand(Dst());
 	int offset = 0;
-	for (auto r : instr->detail->arm.Operands.Skip(1))
+	auto begin = &instr->detail->arm.operands[0];
+	auto end = begin + instr->detail->arm.op_count - 1;
+	for (auto r = begin; r != end; ++r)
 	{
-		auto dst = this->Operand(r);
+		auto dst = this->Operand(*r);
 		HExpr ea =
 			offset != 0
 			? m.IAdd(rSrc, m.Int32(offset))
 			: rSrc;
-		m.Assign(m.Mem(dst.DataType, ea), dst);
-		offset += dst.DataType.Size;
+		//m.Assign(m.Mem(dst.DataType, ea), dst);
+		//offset += dst.DataType.Size;
 	}
-	if (instr->detail->arm.WriteBack)
+	if (instr->detail->arm.writeback)
 	{
 		m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
 	}
-	*/
 }
 
 const char * ArmRewriter::VectorElementType()
@@ -89,4 +83,14 @@ const char * ArmRewriter::VectorElementType()
 	default: NotImplementedYet(); return "(NYI)";
 	}
 }
+
+BaseType ArmRewriter::VectorElementDataType()
+{
+	switch (instr->detail->arm.vector_size)
+	{
+	case ARM_VECTORDATA_I32: return BaseType::Int32;
+	default: NotImplementedYet(); return BaseType::Void;
+	}
+}
+
 

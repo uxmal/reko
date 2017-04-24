@@ -125,5 +125,30 @@ Mem0[0x00123400:word16] = Mem0[0x00123400:word16] + 0x5678
 ";
             AssertInstructions(sExp, rtlc);
         }
+
+        [Test]
+        public void Rtlne_AddArgsToFn()
+        {
+            var hArg1 = m.Int16(3);
+            var hArg2 = m.Int16(4);
+            var hArg3 = m.Int16(5);
+            var fn = m.MapToHandle(
+                new ProcedureConstant(
+                    PrimitiveType.Pointer32,
+                    new ExternalProcedure("RightTriangle", new FunctionType())));
+
+            m.AddArg(hArg1);
+            m.AddArg(hArg2);
+            m.AddArg(hArg3);
+            m.SideEffect(m.Fn(fn));
+
+            m.FinishCluster(RtlClass.Linear, 0x00111100, 4);
+            var rtlc = m.ExtractCluster();
+            var sExp =
+@"00111100(4):
+RightTriangle(3, 4, 5)
+";
+            AssertInstructions(sExp, rtlc);
+        }
     }
 }

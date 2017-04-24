@@ -127,7 +127,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmRw_lsl()
         {
-            BuildTest(0xE1a00200);  // mov\tr0,r0,lsl #4
+            BuildTest(0xE1A00200);  // mov\tr0,r0,lsl #4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r0 = r0 << 0x04");
