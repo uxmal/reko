@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CallRewriter = Reko.Core.CallRewriter;
 using FpuStackStorage = Reko.Core.FpuStackStorage;
-using Frame = Reko.Core.Frame;
+using IStorageBinder = Reko.Core.IStorageBinder;
 using Identifier = Reko.Core.Expressions.Identifier;
 using OutArgumentStorage = Reko.Core.OutArgumentStorage;
 using PrimtiveType = Reko.Core.Types.PrimitiveType;
@@ -34,6 +34,7 @@ using RegisterStorage = Reko.Core.RegisterStorage;
 using SignatureBuilder = Reko.Core.SignatureBuilder;
 using StackArgumentStorage = Reko.Core.StackArgumentStorage;
 using UseInstruction = Reko.Core.Code.UseInstruction;
+using Reko.Core;
 
 namespace Reko.Analysis
 {

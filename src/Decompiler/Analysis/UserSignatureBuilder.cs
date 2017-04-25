@@ -74,7 +74,14 @@ namespace Reko.Analysis
                     if (sig != null)
                     {
                         proc.Name = sProc.Name;
-                        ApplySignatureToProcedure(addr, sig, proc);
+                        if (userProc.Decompile)
+                        {
+                            ApplySignatureToProcedure(addr, sig, proc);
+                        }
+                        else
+                        {
+                            proc.Signature = sig;
+                        }
                         return true;
                     }
                 }
@@ -100,7 +107,6 @@ namespace Reko.Analysis
         public void ApplySignatureToProcedure(Address addr, FunctionType sig, Procedure proc)
         {
             proc.Signature = sig;
-
             int i = 0;
             var stmts = proc.EntryBlock.Succ[0].Statements;
             var linAddr = addr.ToLinear();

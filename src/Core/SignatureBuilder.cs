@@ -47,7 +47,7 @@ namespace Reko.Core
 			args = new List<Identifier>();
 		}
 
-		public void AddFlagGroupReturnValue(uint bitMask, Frame frame)
+		public void AddFlagGroupReturnValue(uint bitMask, IStorageBinder frame)
 		{
 			PrimitiveType dt = Bits.IsSingleBitSet(bitMask) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var grf = arch.GetFlagGroup(bitMask);

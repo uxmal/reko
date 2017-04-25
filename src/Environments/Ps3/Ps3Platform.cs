@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -98,18 +99,19 @@ namespace Reko.Environments.Ps3
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader rdr, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> rdr, IRewriterHost host)
         {
-            var dasm = new PowerPcDisassembler(
-                (PowerPcArchitecture64) Architecture,
-                rdr,
-                PrimitiveType.Word64);
-            PowerPcInstruction instr;
+            var dasm = rdr.Take(8).ToArray();
+            if (dasm.Length < 8)
+                return null;
+             
             ImmediateOperand immOp;
             MemoryOperand memOp;
 
+            throw new NotImplementedException();
+            /*
             //addi r12,r0,0000
-            instr = dasm.DisassembleInstruction();
+            instr = dasm[0].Instructions[0];
             if (instr.Opcode != Opcode.addi)
                 return null;
 
@@ -160,6 +162,7 @@ namespace Reko.Environments.Ps3
             rdr.Offset = rdr.Offset + offset;
             var aFn = rdr.ReadUInt32();
             return null;
+            */
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

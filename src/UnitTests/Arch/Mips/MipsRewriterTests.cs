@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Arch.Mips
             return image;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             return new MipsRewriter(arch, dasm, frame, host);
         }
@@ -220,7 +220,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_beq()
         {
             AssertCode(0x10300005,
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|if (r1 == r16) branch 00100018");
         }
 
@@ -292,7 +292,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_br()
         {
             AssertCode(0x1000ffc2,  // b loc_00026e0
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|goto 000FFF0C");
         }
 
@@ -424,6 +424,23 @@ namespace Reko.UnitTests.Arch.Mips
             RunTest("011111 00000 00111 11101 00000 111011");   // OS-specific, thread local pointer on Linux
             AssertCode( "0|L--|00100000(4): 1 instructions",
                         "1|L--|r7 = __read_hardware_register(0x1D)");
+        }
+
+        [Test]
+        public void MipsRw_movz()
+        {
+            RunTest("000000 00011 01001 01010 00000 001010");    // movz
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|if (r9 == 0x00000000) r10 = r3");
+        }
+
+        [Test]
+        public void MipsRw_sd()
+        {
+            AssertCode(0xFC444444,                              // sd
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r2 + 0x00004444:word64] = r4");
         }
     }
 }

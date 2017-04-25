@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Arch.Intel
             get { return baseAddr; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             return arch.CreateRewriter(
                 new LeImageReader(image, 0),
@@ -190,8 +190,12 @@ namespace Reko.UnitTests.Arch.Intel
                 throw new NotImplementedException();
             }
 
+            public void Error(Address address, string format, params object[] args)
+            {
+                throw new NotImplementedException();
+            }
 
-            public void Error(Address address, string message)
+            public void Warn(Address address, string format, params object[] args)
             {
                 throw new NotImplementedException();
             }
@@ -493,7 +497,7 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                 "0|L--|0C00:0000(3): 1 instructions",
                 "1|L--|ax = 0x4C00",
-                "2|L--|0C00:0003(2): 1 instructions",
+                "2|T--|0C00:0003(2): 1 instructions",
                 "3|L--|__syscall(0x21)");
         }
 
@@ -772,7 +776,7 @@ namespace Reko.UnitTests.Arch.Intel
         private RtlInstruction SingleInstruction(IEnumerator<RtlInstructionCluster> e)
         {
             Assert.IsTrue(e.MoveNext());
-            Assert.AreEqual(1, e.Current.Instructions.Count);
+            Assert.AreEqual(1, e.Current.Instructions.Length);
             var instr = e.Current.Instructions[0];
             return instr;
         }
@@ -1069,7 +1073,7 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Hlt();
             });
             AssertCode(
-                "0|L--|10000000(1): 1 instructions",
+                "0|H--|10000000(1): 1 instructions",
                 "1|L--|__hlt()");
         }
 
@@ -1418,15 +1422,6 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86rw_movups()
-        {
-            Run64bitTest(0x0F, 0x11, 0x44, 0x24, 0x20); // "movups\t[rsp+20],xmm0", 
-            AssertCode(
-                  "0|L--|0000000140000000(5): 1 instructions",
-                  "1|L--|Mem0[rsp + 0x0000000000000020:word128] = xmm0");
-        }
-
-        [Test]
         public void X86rw_idiv()
         {
             Run32bitTest(0xF7, 0x7C, 0x24, 0x04);       // idiv [esp+04]
@@ -1436,6 +1431,116 @@ namespace Reko.UnitTests.Arch.Intel
                   "2|L--|edx = (int32) (v5 % Mem0[esp + 0x00000004:word32])",
                   "3|L--|eax = (int32) (v5 / Mem0[esp + 0x00000004:word32])",
                   "4|L--|SCZO = cond(eax)");
+        }
+
+        [Test]
+        public void X86rw_long_nop()
+        {
+            Run32bitTest(0x66, 0x0f, 0x1f, 0x44, 0x00, 0x00); // nop WORD PTR[eax + eax*1 + 0x0]
+            AssertCode(
+                "0|L--|10000000(6): 1 instructions",
+                "1|L--|nop");
+        }
+
+        [Test]
+        public void X86rw_movlhps()
+        {
+            Run32bitTest(0x0F, 0x16, 0xF3);
+            AssertCode(
+                "0|L--|10000000(3): 2 instructions",
+                "1|L--|xmm6[2] = xmm3[0]",
+                "2|L--|xmm6[3] = xmm3[1]");
+        }
+
+        [Test]
+        public void X86rw_fyl2xp1()
+        {
+            Run16bitTest(0xD9, 0xF9);
+            AssertCode(
+                "0|L--|0C00:0000(2): 2 instructions",
+                "1|L--|rArg1 = rArg1 * lg2(rArg0 + 1.0)",
+                "2|L--|FPUF = cond(rArg1)");
+        }
+
+        [Test]
+        public void X86rw_fucomi()
+        {
+            Run32bitTest(0xDB, 0xEB);  // fucomi\tst(0),st(3)
+            AssertCode(
+               "0|L--|10000000(2): 1 instructions",
+               "1|L--|CZP = cond(rArg0 - rArg3)");
+        }
+
+        [Test]
+        public void X86rw_fucomip()
+        {
+            Run32bitTest(0xDF, 0xE9);   // fucomip\tst(0),st(1)
+            AssertCode(
+               "0|L--|10000000(2): 1 instructions",
+               "1|L--|CZP = cond(rArg0 - rArg1)");
+        }
+
+        [Test]
+        public void X86rw_movups()
+        {
+            Run64bitTest(0x0F, 0x10, 0x45, 0xE0);   // movups xmm0,XMMWORD PTR[rbp - 0x20]
+            AssertCode(
+               "0|L--|0000000140000000(4): 1 instructions",
+               "1|L--|xmm0 = Mem0[rbp - 0x0000000000000020:word128]");
+
+            Run64bitTest(0x66, 0x0F, 0x10, 0x45, 0xE0);   // movupd xmm0,XMMWORD PTR[rbp - 0x20]
+            AssertCode(
+               "0|L--|0000000140000000(5): 1 instructions",
+               "1|L--|xmm0 = Mem0[rbp - 0x0000000000000020:word128]");
+
+            Run64bitTest(0x0F, 0x11, 0x44, 0x24, 0x20); // movups\t[rsp+20],xmm0, 
+            AssertCode(
+                  "0|L--|0000000140000000(5): 1 instructions",
+                  "1|L--|Mem0[rsp + 0x0000000000000020:word128] = xmm0");
+        }
+
+        [Test]
+        public void X86rw_movss()
+        {
+            Run64bitTest(0xF3, 0x0F, 0x10, 0x45, 0xE0);   // movss xmm0,dword PTR[rbp - 0x20]
+            AssertCode(
+               "0|L--|0000000140000000(5): 1 instructions",
+               "1|L--|xmm0 = DPB(xmm0, Mem0[rbp - 0x0000000000000020:real32], 0)");
+            Run64bitTest(0xF3, 0x0F, 0x11, 0x45, 0xE0);   // movss dword PTR[rbp - 0x20], xmm0,
+            AssertCode(
+               "0|L--|0000000140000000(5): 1 instructions",
+               "1|L--|Mem0[rbp - 0x0000000000000020:real32] = (real32) xmm0");
+            Run64bitTest(0xF3, 0x0F, 0x10, 0xC3);         // movss xmm0, xmm3,
+            AssertCode(
+               "0|L--|0000000140000000(4): 1 instructions",
+               "1|L--|xmm0 = DPB(xmm0, (real32) xmm3, 0)");
+        }
+
+        [Test]
+        public void X86rw_movsd()
+        {
+            Run64bitTest(0xF2, 0x0F, 0x10, 0x45, 0xE0);   // movsd xmm0,dword PTR[rbp - 0x20]
+            AssertCode(
+               "0|L--|0000000140000000(5): 1 instructions",
+               "1|L--|xmm0 = DPB(xmm0, Mem0[rbp - 0x0000000000000020:real64], 0)");
+            Run64bitTest(0xF2, 0x0F, 0x11, 0x45, 0xE0);   // movsd dword PTR[rbp - 0x20], xmm0,
+            AssertCode(
+               "0|L--|0000000140000000(5): 1 instructions",
+               "1|L--|Mem0[rbp - 0x0000000000000020:real64] = (real64) xmm0");
+            Run64bitTest(0xF2, 0x0F, 0x10, 0xC3);   // movsd xmm0, xmm3,
+            AssertCode(
+               "0|L--|0000000140000000(4): 1 instructions",
+               "1|L--|xmm0 = DPB(xmm0, (real64) xmm3, 0)");
+        }
+
+        [Test(Description = "Intel and AMD state that if you set the low 32-bits of a register in 64-bit mode, they are zero extended.")]
+        public void X86rw_64bit_clearHighBits()
+        {
+            Run64bitTest(0x33, 0xC0);
+            AssertCode(
+               "0|L--|0000000140000000(2): 3 instructions",
+               "1|L--|rax = (uint64) (eax ^ eax)");
+
         }
     }
 }

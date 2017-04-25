@@ -87,6 +87,7 @@
     <Compile Include="Arch\Avr\Avr8ArchitectureTests.cs" />
     <Compile Include="Arch\Avr\Avr8DisassemblerTests.cs" />
     <Compile Include="Arch\Avr\Avr8RewriterTests.cs" />
+    <Compile Include="Arch\Pdp11\Pdp11InstructionComparerTests.cs" />
     <Compile Include="Arch\RiscV\RiscVDisassemblerTests.cs" />
     <Compile Include="Arch\RiscV\RiscVRewriterTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaDisassemblerTests.cs" />
@@ -512,6 +513,7 @@
     <Compile Include="Scanning\HeuristicTestBase.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\InterProceduralJumpTests.cs" />
+    <Compile Include="Scanning\ProcedureDetectorTests.cs" />
     <Compile Include="Scanning\Scanner.M68kTests.cs" />
     <Compile Include="Scanning\ScannerTestPrograms.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />

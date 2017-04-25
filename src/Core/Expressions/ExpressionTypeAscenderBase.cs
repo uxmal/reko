@@ -415,7 +415,8 @@ namespace Reko.Core.Expressions
 
         public DataType VisitTestCondition(TestCondition tc)
         {
-            throw new NotImplementedException();
+            tc.Expression.Accept(this);
+            return RecordDataType(PrimitiveType.Bool, tc);
         }
 
         public DataType VisitUnaryExpression(UnaryExpression unary)

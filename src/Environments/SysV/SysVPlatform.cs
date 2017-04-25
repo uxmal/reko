@@ -93,7 +93,7 @@ namespace Reko.Environments.SysV
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)
@@ -114,14 +114,10 @@ namespace Reko.Environments.SysV
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader rdr, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> rw, IRewriterHost host)
         {
-            var rw = Architecture.CreateRewriter(
-                rdr,
-                Architecture.CreateProcessorState(),
-                Architecture.CreateFrame(), host);
             var rtlc = rw.FirstOrDefault();
-            if (rtlc == null || rtlc.Instructions.Count == 0)
+            if (rtlc == null || rtlc.Instructions.Length == 0)
                 return null;
 
             // Match x86 pattern.

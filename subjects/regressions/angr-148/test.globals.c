@@ -10,8 +10,9 @@ Eq_31 g_t400550 = Unexpected function type (fn void ())
 ;
 Eq_32 g_t4005C0 = Unexpected function type (fn void ())
 ;
-Eq_218 g_a600E10[] = 
+union Eq_188 g_u600E10 = 
 	{
+		0x00400500
 	};
 word64 g_qw600E20 = 0x0000000000000000;
 word64 g_qw600FF8 = 0x0000000000000000;

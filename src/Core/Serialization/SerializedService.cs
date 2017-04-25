@@ -31,10 +31,17 @@ namespace Reko.Core.Serialization
 		}
 
         /// <summary>
-        /// Describes what registers must be set at what values to call this system call.
+        /// If non-null, specifies the address of a dispatcher function.
+        /// </summary>
+        [XmlAttribute("address")]
+        public string Address;
+
+        /// <summary>
+        /// Describes what registers must be set at what values to call this
+        /// system call.
         /// </summary>
 		[XmlElement("syscallinfo")]
-		public SerializedSyscallInfo SyscallInfo;
+		public SyscallInfo_v1 SyscallInfo;
 
 		public SystemService Build(IPlatform platform, TypeLibrary library)
 		{
@@ -71,7 +78,7 @@ namespace Reko.Core.Serialization
 		}
 	}
 
-	public class SerializedSyscallInfo
+	public class SyscallInfo_v1
 	{
 		[XmlElement("vector")]
 		public string Vector;

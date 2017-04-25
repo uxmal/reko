@@ -28,20 +28,26 @@ using System.Text;
 
 namespace Reko.Scanning
 {
-    public class HeuristicBlock
+    /// <summary>
+    /// A basic block of RTL clusters.
+    /// </summary>
+    public class RtlBlock
     {
-        public HeuristicBlock(Address address, string name)
+        public RtlBlock(Address address, string name)
         {
             this.Address = address;
-            this.Name = name; // +"-" + (++cntr);
-            this.Instructions = new List<MachineInstruction>();
+            this.Name = name; 
+            this.Instructions = new List<RtlInstructionCluster>();
             this.IsValid = true;
         }
 
         public Address Address { get; private set; }
         public string Name { get; private set; }
-        public List<MachineInstruction> Instructions { get; private set; }
+        public List<RtlInstructionCluster> Instructions { get; private set; }
         public bool IsValid { get; set; }
+
+        // True if this block has been identifierd as a shared exit block
+        public bool IsSharedExitBlock { get; set; }
 
         public Address GetEndAddress()
         {

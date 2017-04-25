@@ -828,7 +828,7 @@ ProcedureBuilder_exit:
 
             arch.Stub(a => a.CreateStackAccess(null, 0, null))
                 .IgnoreArguments()
-                .Do(new Func<Frame, int, DataType, Expression>((f, off, dt) => m.Load(dt, m.IAdd(sp, off))));
+                .Do(new Func<IStorageBinder, int, DataType, Expression>((f, off, dt) => m.Load(dt, m.IAdd(sp, off))));
             mr.ReplayAll();
 
             var ssa = RunTest(m);

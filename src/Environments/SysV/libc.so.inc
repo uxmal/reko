@@ -27,6 +27,7 @@ struct passwd {
 struct stat
 {
 };
+typedef int pid_t;
 
 int __libc_start_main(int (*main) (int, char **, char **), int argc, char ** ubp_av, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end));
 int scanf(char * format, ...);
@@ -141,3 +142,13 @@ uid_t getuid(void);
 uid_t geteuid(void);
 struct passwd *getpwuid(uid_t uid);
 int putchar(int ch);
+int fputs_unlocked(const char *s, FILE *stream);
+void *memmove(void *dest, const void *src, size_t n);
+void *mempcpy(void *dest, const void *src, size_t n);
+unsigned long int strtoul(const char *nptr, char **endptr, int base);
+int tcsetpgrp(int fd, pid_t pgrp);
+char * textdomain (const char * domainname);
+int ungetc(int c, FILE *stream);
+size_t wcstombs(char *dest, const wchar_t *src, size_t n);
+int wcswidth(const wchar_t *s, size_t n);
+int wcwidth(wchar_t c);

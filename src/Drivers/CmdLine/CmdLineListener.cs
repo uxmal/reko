@@ -62,6 +62,16 @@ namespace Reko.CmdLine
                 d.Message);
         }
 
+        public void Info(ICodeLocation location, string message)
+        {
+            Console.Out.WriteLine("{0}: {1}", location.Text, message);
+        }
+
+        public void Info(ICodeLocation location, string message, params object[] args)
+        {
+            Info(location, string.Format(message, args));
+        }
+
         public void Warn(ICodeLocation location, string message)
         {
             Console.Out.WriteLine("{0}: warning: {1}", location.Text, message);

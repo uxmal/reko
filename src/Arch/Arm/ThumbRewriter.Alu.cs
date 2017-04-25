@@ -36,17 +36,17 @@ namespace Reko.Arch.Arm
         {
             var dst = RewriteOp(ops[0]);
             var src = instrs.Current.Address + 4 + ops[1].ImmediateValue.Value;
-            emitter.Assign(dst, src);
+            m.Assign(dst, src);
         }
 
         private void RewriteAnd()
         {
             var dst = RewriteOp(ops[0]);
             var src = RewriteOp(ops[1]);
-            emitter.Assign(dst, emitter.And(dst, src));
+            m.Assign(dst, m.And(dst, src));
             if (instr.ArchitectureDetail.UpdateFlags)
-                emitter.Assign(FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF, "NZC", PrimitiveType.Byte),
-                    emitter.Cond(dst));
+                m.Assign(FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF, "NZC", PrimitiveType.Byte),
+                    m.Cond(dst));
         }
 
     
@@ -55,14 +55,14 @@ namespace Reko.Arch.Arm
             var dst = RewriteOp(ops[0]);
             var src1 = RewriteOp(ops[1]);
             var src2 = RewriteOp(ops[2]);
-            emitter.Assign(dst, emitter.And(src1, emitter.Comp(src2)));
+            m.Assign(dst, m.And(src1, m.Comp(src2)));
         }
 
         private void RewriteBinop(Func<Expression, Expression, Expression> op)
         {
             var dst = RewriteOp(ops[0]);
             var src = RewriteOp(ops[1]);
-            emitter.Assign(dst, op(dst, src));
+            m.Assign(dst, op(dst, src));
         }
 
         private void RewriteCmp()
@@ -70,13 +70,13 @@ namespace Reko.Arch.Arm
             var dst = RewriteOp(ops[0]);
             var src = RewriteOp(ops[1]);
             var flags = frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte);
-            emitter.Assign(flags, emitter.Cond(
-                emitter.ISub(dst, src)));
+            m.Assign(flags, m.Cond(
+                m.ISub(dst, src)));
         }
 
         private void RewriteDmb()
         {
-            emitter.SideEffect(host.PseudoProcedure(
+            m.SideEffect(host.PseudoProcedure(
                 "__dmb",
                 VoidType.Instance,
                 Constant.String(
@@ -88,10 +88,10 @@ namespace Reko.Arch.Arm
         {
             var dst = RewriteOp(ops[0]);
             var src = RewriteOp(ops[1]);
-            emitter.Assign(dst, emitter.Xor(dst, src));
+            m.Assign(dst, m.Xor(dst, src));
             if (instr.ArchitectureDetail.UpdateFlags)
-                emitter.Assign(FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF, "NZC", PrimitiveType.Byte),
-                    emitter.Cond(dst));
+                m.Assign(FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF, "NZC", PrimitiveType.Byte),
+                    m.Cond(dst));
         }
 
      
@@ -106,21 +106,21 @@ namespace Reko.Arch.Arm
                 Expression baseReg = GetReg(mem.BaseRegister);
                 Expression ea = EffectiveAddress(mem);
                 Predicate(itStateCondition, baseReg, ea);
-                src = emitter.Load(dtSrc, ea);
+                src = m.Load(dtSrc, ea);
             }
             else
             {
                 src = RewriteOp(ops[1], dtSrc);
             }
             if (dtDst != dtSrc)
-                src = emitter.Cast(dtDst, src);
+                src = m.Cast(dtDst, src);
             if (ops.Length == 3)
             {
                 // Post-index operand.
                 var tmp = frame.CreateTemporary(dtDst);
                 var baseReg = GetReg(ops[1].MemoryValue.BaseRegister);
                 Predicate(itStateCondition, tmp, src);
-                Predicate(itStateCondition, baseReg, emitter.IAdd(baseReg, RewriteOp(ops[2])));
+                Predicate(itStateCondition, baseReg, m.IAdd(baseReg, RewriteOp(ops[2])));
                 src = tmp;
             }
             Predicate(itStateCondition, dst, src);
@@ -128,7 +128,7 @@ namespace Reko.Arch.Arm
 
         private void RewriteLdrex()
         {
-            emitter.SideEffect(host.PseudoProcedure(
+            m.SideEffect(host.PseudoProcedure(
                 "__ldrex",
                 VoidType.Instance,
                 Constant.String(
@@ -141,10 +141,10 @@ namespace Reko.Arch.Arm
             var dst = RewriteOp(ops[0]);
             var src1 = RewriteOp(ops[1]);
             var src2 = RewriteOp(ops[2]);
-            emitter.Assign(dst, ctor(src1, src2));
+            m.Assign(dst, ctor(src1, src2));
             if (instr.ArchitectureDetail.UpdateFlags)
             {
-                emitter.Assign(frame.EnsureFlagGroup(A32Registers.cpsr, 0xF, "NZCV", PrimitiveType.Byte), emitter.Cond(dst));
+                m.Assign(frame.EnsureFlagGroup(A32Registers.cpsr, 0xF, "NZCV", PrimitiveType.Byte), m.Cond(dst));
             }
         }
 
@@ -159,19 +159,19 @@ namespace Reko.Arch.Arm
         {
             var dst = GetReg(ops[0].RegisterValue.Value);
             var src = Constant.Word16((ushort)ops[1].ImmediateValue.Value);
-            emitter.Assign(dst, emitter.Dpb(dst, src, 16));
+            m.Assign(dst, m.Dpb(dst, src, 16));
         }
 
         private void RewriteMovw()
         {
             var dst = GetReg(ops[0].RegisterValue.Value);
             var src = Constant.Word32((ushort)ops[1].ImmediateValue.Value);
-            emitter.Assign(dst, src);
+            m.Assign(dst, src);
         }
 
         private void RewriteMrc()
         {
-            emitter.SideEffect(host.PseudoProcedure(
+            m.SideEffect(host.PseudoProcedure(
                 "__mrc",
                 VoidType.Instance,
                 Constant.String(
@@ -182,20 +182,20 @@ namespace Reko.Arch.Arm
         private void RewriteMvn()
         {
             var dst = RewriteOp(ops[0]);
-            emitter.Assign(dst, emitter.Comp(RewriteOp(ops[1], PrimitiveType.UInt32)));
+            m.Assign(dst, m.Comp(RewriteOp(ops[1], PrimitiveType.UInt32)));
         }
 
         private void RewritePop()
         {
             var sp = frame.EnsureRegister(A32Registers.sp);
-            emitter.Assign(sp, emitter.IAdd(sp, Constant.Int32(ops.Length * 4)));
+            m.Assign(sp, m.IAdd(sp, Constant.Int32(ops.Length * 4)));
             int offset = ops.Length * 4;
             foreach (var op in ops.OrderByDescending(o => o.RegisterValue.Value))
             {
                 Predicate(
                     ArmCodeCondition.AL,
                     GetReg(op.RegisterValue.Value),
-                    emitter.LoadDw(emitter.ISub(sp, Constant.Int32(offset))));
+                    m.LoadDw(m.ISub(sp, Constant.Int32(offset))));
                 offset -= 4;
             }
         }
@@ -203,13 +203,13 @@ namespace Reko.Arch.Arm
         private void RewritePush()
         {
             var sp = frame.EnsureRegister(A32Registers.sp);
-            emitter.Assign(sp, emitter.ISub(sp, Constant.Int32( ops.Length * 4)));
+            m.Assign(sp, m.ISub(sp, Constant.Int32( ops.Length * 4)));
             int offset = 0;
             foreach (var op in ops.OrderByDescending(o => o.RegisterValue.Value))
             {
                 Predicate(
                     ArmCodeCondition.AL,
-                    emitter.LoadDw(emitter.IAdd(sp, Constant.Int32(offset))),
+                    m.LoadDw(m.IAdd(sp, Constant.Int32(offset))),
                     GetReg(op.RegisterValue.Value));
                 offset += 4;
             }
@@ -220,7 +220,7 @@ namespace Reko.Arch.Arm
             var dst = RewriteOp(ops[0]);
             var src1 = RewriteOp(ops[2]);    // _R_everse subtract/
             var src2 = RewriteOp(ops[1]);
-            emitter.Assign(dst, emitter.ISub(src1, src2));
+            m.Assign(dst, m.ISub(src1, src2));
         }
 
         private void RewriteStm()
@@ -229,14 +229,14 @@ namespace Reko.Arch.Arm
             int offset = 0;
             foreach (var op in ops.Skip(1).OrderBy(o => o.RegisterValue.Value))
             {
-                emitter.Assign(
-                    emitter.LoadDw(emitter.IAdd(ptr, Constant.Int32(offset))),
+                m.Assign(
+                    m.LoadDw(m.IAdd(ptr, Constant.Int32(offset))),
                     GetReg(op.RegisterValue.Value));
                 offset += 4;
             }
             if (instr.ArchitectureDetail.WriteBack)
             {
-                emitter.Assign(ptr, emitter.IAdd(ptr, Constant.Int32(offset)));
+                m.Assign(ptr, m.IAdd(ptr, Constant.Int32(offset)));
             }
         }
 
@@ -244,7 +244,7 @@ namespace Reko.Arch.Arm
         {
             var src = RewriteOp(ops[0]);
             if (dtDst.Size < PrimitiveType.Word32.Size)
-                src = emitter.Cast(dtDst, src);
+                src = m.Cast(dtDst, src);
             var dst = RewriteOp(ops[1], dtDst);
             var mem = ops[1].MemoryValue;
             if (ops.Length == 2 && instr.ArchitectureDetail.WriteBack)
@@ -253,7 +253,7 @@ namespace Reko.Arch.Arm
                 Expression baseReg = GetReg(mem.BaseRegister);
                 Expression ea = EffectiveAddress(mem);
                 Predicate(itStateCondition, baseReg, ea);
-                dst = emitter.Load(dtDst, baseReg);
+                dst = m.Load(dtDst, baseReg);
             }
             else
             {
@@ -263,13 +263,13 @@ namespace Reko.Arch.Arm
             if (ops.Length == 3)
             {
                 var baseReg = GetReg(mem.BaseRegister);
-                Predicate(itStateCondition, baseReg, emitter.IAdd(baseReg, RewriteOp(ops[2])));
+                Predicate(itStateCondition, baseReg, m.IAdd(baseReg, RewriteOp(ops[2])));
             }
         }
 
         private void RewriteStrex()
         {
-            emitter.SideEffect(host.PseudoProcedure(
+            m.SideEffect(host.PseudoProcedure(
                 "__strex",
                 VoidType.Instance,
                 Constant.String(
@@ -283,7 +283,7 @@ namespace Reko.Arch.Arm
             var dst = RewriteOp(ops[0]);
             var src1 = RewriteOp(ops[1]);
             var src2 = RewriteOp(ops[2]);
-            Predicate(itStateCondition, new RtlAssignment(dst, emitter.IAdd(src1, src2)));
+            Predicate(itStateCondition, new RtlAssignment(dst, m.IAdd(src1, src2)));
         }
 
         private void RewriteSubw()
@@ -291,16 +291,16 @@ namespace Reko.Arch.Arm
             var dst = RewriteOp(ops[0]);
             var src1 = RewriteOp(ops[1]);
             var src2 = RewriteOp(ops[2]);
-            Predicate(itStateCondition, new RtlAssignment(dst, emitter.ISub(src1, src2)));
+            Predicate(itStateCondition, new RtlAssignment(dst, m.ISub(src1, src2)));
         }
 
         private void RewriteTst()
         {
             var dst = RewriteOp(ops[0]);
             var src = RewriteOp(ops[1], PrimitiveType.UInt32);
-            emitter.Assign(
+            m.Assign(
                 FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF, "NZC", PrimitiveType.Byte),
-                emitter.Cond(emitter.And(dst, src)));
+                m.Cond(m.And(dst, src)));
         }
 
         private void RewriteUxth()
@@ -310,9 +310,9 @@ namespace Reko.Arch.Arm
             Predicate(
                 itStateCondition,
                 dst,
-                emitter.Cast(
+                m.Cast(
                     PrimitiveType.UInt32,
-                    emitter.Cast(
+                    m.Cast(
                         PrimitiveType.UInt16,
                         src)));
         }

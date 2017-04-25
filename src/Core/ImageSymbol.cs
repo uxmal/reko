@@ -116,7 +116,7 @@ namespace Reko.Core
     public enum SymbolType
     {
         Unknown,            // Unknown type
-        Code,               // executable code
+        Code,               // executable code, but not the entry point of a procedure.
         Data,               // non-executable data
         Procedure,          // Something that is called.
         ExternalProcedure   // A procedure outside of the binary

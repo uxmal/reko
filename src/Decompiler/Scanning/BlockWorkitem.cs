@@ -103,11 +103,20 @@ namespace Reko.Scanning
             while (rtlStream.MoveNext())
             {
                 this.ric = rtlStream.Current;
+                if (ric.Address.ToString().EndsWith(":3D5A"))//$DEBUG
+                    ric.ToString();
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;  // Fell off the end of this block.
                 if (!ProcessRtlCluster(ric))
                     break;
-                var blNext = FallenThroughNextBlock(ric.Address + ric.Length);
+                var addrInstrEnd = ric.Address + ric.Length;
+                var blNext = FallenThroughNextProcedure(ric.Address, addrInstrEnd);
+                if (blNext != null)
+                {
+                    EnsureEdge(blockCur.Procedure, blockCur, blNext);
+                    return;
+                }
+                blNext = FallenThroughNextBlock(addrInstrEnd);
                 if (blNext != null)
                 {
                     EnsureEdge(blockCur.Procedure, blockCur, blNext);
@@ -149,9 +158,22 @@ namespace Reko.Scanning
             }
         }
 
+        private Block FallenThroughNextProcedure(Address addrInstr, Address addrTo)
+        {
+            Procedure procOther;
+            if (program.Procedures.TryGetValue(addrTo, out procOther) &&
+                procOther != blockCur.Procedure)
+            {
+                // Fell into another procedure. 
+                var block = scanner.CreateCallRetThunk(addrInstr, blockCur.Procedure, procOther);
+                return block;
+            }
+            return null;
+        }
+
         /// <summary>
         /// Checks to see if the scanning process has wandered off
-        /// into another, previously existing basic block.
+        /// into another, previously existing basic block or procedure.
         /// </summary>
         /// <param name="addr"></param>
         /// <returns>The block we fell into or null if we remained in the 
@@ -255,7 +277,7 @@ namespace Reko.Scanning
             }
             var fallthruAddress = ric.Address + ric.Length;
 
-            var blockThen = BlockFromAddress(ric.Address, b.Target, proc, state.Clone());
+            var blockThen = BlockFromAddress(ric.Address, (Address) b.Target, proc, state.Clone());
 
             var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
             var branchingBlock = blockCur.IsSynthesized
@@ -263,7 +285,7 @@ namespace Reko.Scanning
                 : scanner.FindContainingBlock(ric.Address);
 
             if ((b.Class & RtlClass.Delay) != 0 &&
-                ricDelayed.Instructions.Count > 0)
+                ricDelayed.Instructions.Length > 0)
             {
                 // Introduce stubs for the delay slot, but only
                 // if the delay slot isn't empty.
@@ -472,7 +494,7 @@ namespace Reko.Scanning
                 EmitCall(procCallee, sig, chr, site);
                 return OnAfterCall(sig, chr);
             }
-            sig = scanner.GetCallSignatureAtAddress(ric.Address);
+            sig = GetCallSignatureAtAddress(ric.Address);
             if (sig != null)
             {
                 EmitCall(call.Target, sig, chr, site);
@@ -604,6 +626,14 @@ namespace Reko.Scanning
                 }
             }
             return true;
+        }
+
+        private FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
+        {
+            UserCallData call = null;
+            if (!program.User.Calls.TryGetValue(addrCallInstruction, out call))
+                return null;
+            return call.Signature;
         }
 
         public bool VisitReturn(RtlReturn ret)
@@ -745,7 +775,9 @@ namespace Reko.Scanning
             }
             else
             {
-                var bw = new Backwalker(new BackwalkerHost(this), xfer, eval);
+                if (addrSwitch.ToLinear() == 0x000000000040D935)    //$DEBUG
+                    addrSwitch.ToString();
+                var bw = new Backwalker<Block,Instruction>(new BackwalkerHost(this), xfer, eval);
                 if (!bw.CanBackwalk())
                     return false;
                 var bwops = bw.BackWalk(blockCur);
@@ -762,7 +794,7 @@ namespace Reko.Scanning
                 vector = builder.BuildAux(bw, addrSwitch, state);
                 if (vector.Count == 0)
                 {
-                    var rdr = scanner.CreateReader(bw.VectorAddress);
+                    var rdr = program.CreateImageReader(bw.VectorAddress);
                     if (!rdr.IsValid)
                         return false;
                     // Can't determine the size of the table, but surely it has one entry?
@@ -780,6 +812,9 @@ namespace Reko.Scanning
                     }
                     var nav = listener.CreateJumpTableNavigator(program, addrSwitch, bw.VectorAddress, bw.Stride);
                     listener.Warn(nav, msg);
+                    if (vector.Count == 0)
+                        return false;
+
                 }
                 imgVector = new ImageMapVectorTable(
                     bw.VectorAddress,
@@ -1033,9 +1068,9 @@ namespace Reko.Scanning
             return svc;
         }
 
-        private class BackwalkerHost : IBackWalkHost
+        private class BackwalkerHost : IBackWalkHost<Block, Instruction>
         {
-            private IScanner scanner;
+            private IScannerQueue scanner;
             private SegmentMap segmentMap;
             private IPlatform platform;
             private IProcessorArchitecture arch;
@@ -1046,6 +1081,22 @@ namespace Reko.Scanning
                 this.segmentMap = item.program.SegmentMap;
                 this.arch = item.program.Architecture;
                 this.platform = item.program.Platform;
+            }
+
+            public Tuple<Expression,Expression> AsAssignment(Instruction instr)
+            {
+                var ass = instr as Assignment;
+                if (ass == null)
+                    return null;
+                return Tuple.Create((Expression)ass.Dst, ass.Src);
+            }
+
+            public Expression AsBranch(Instruction instr)
+            {
+                var bra = instr as Branch;
+                if (bra == null)
+                    return null;
+                return bra.Condition;
             }
 
             public AddressRange GetSinglePredecessorAddressRange(Address block)
@@ -1068,6 +1119,11 @@ namespace Reko.Scanning
                 return arch.GetSubregister(reg, offset, width);
             }
 
+            public bool IsStackRegister(Storage stg)
+            {
+                return stg == arch.StackRegister;
+            }
+
             public bool IsValidAddress(Address addr)
             {
                 return segmentMap.IsValidAddress(addr);
@@ -1081,6 +1137,11 @@ namespace Reko.Scanning
             public Address MakeSegmentedAddress(Constant seg, Constant off)
             {
                 return arch.MakeSegmentedAddress(seg, off);
+            }
+
+            public IEnumerable<Instruction> GetReversedBlockInstructions(Block block)
+            {
+                return block.Statements.Select(s => s.Instruction).Reverse();
             }
         }
     }

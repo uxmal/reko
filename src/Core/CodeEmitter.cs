@@ -112,11 +112,6 @@ namespace Reko.Core
             return Emit(s);
         }
 
-        public Statement Store(DataType size, Expression ea, Expression src)
-        {
-            Store s = new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, size), src);
-            return Emit(s);
-        }
 
         public Statement SegStore(Expression basePtr, Expression ea, Expression src)
         {

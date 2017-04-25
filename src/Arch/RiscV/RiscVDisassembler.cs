@@ -93,6 +93,11 @@ namespace Reko.Arch.RiscV
                     if (ops.Count > 2)
                     {
                         instr.op3 = ops[2];
+
+                        if (ops.Count > 3)
+                        {
+                            instr.op4 = ops[3];
+                        }
                     }
                 }
             }
@@ -142,6 +147,7 @@ namespace Reko.Arch.RiscV
             {
             case '1': pos = 15; break;
             case '2': pos = 20; break;
+            case '3': pos = 27; break;
             case 'd': pos = 7; break;
             default: throw new InvalidOperationException();
             }
@@ -502,7 +508,7 @@ namespace Reko.Arch.RiscV
                 new WOpRec(Opcode.invalid, ""),
 
                 // 10
-                new WOpRec(Opcode.invalid, ""),
+                new FpuOpRec(Opcode.fmadd_s, "Fd,F1,F2,F3"),
                 new WOpRec(Opcode.invalid, ""),
                 new WOpRec(Opcode.invalid, ""),
                 new WOpRec(Opcode.invalid, ""),

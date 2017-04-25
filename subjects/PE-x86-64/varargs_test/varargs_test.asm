@@ -588,22 +588,18 @@ l0000000140001698:
 	xor	r8,rdx
 	mov	[r13-20],r8
 	mov	[r13-18],r8
-	illegal	
-	loopne	0000000140001710
-	mov	[rbp-10],eax
-	illegal	
-	lock	
+	movups	xmm0,[rbp-20]
+	mov	[r13-10],r8
+	movsd	xmm1,double ptr [rbp-10]
 	movups	[rip+00001EED],xmm0
 	mov	[r13-20],r8
 	mov	[r13-18],r8
-	illegal	
-	loopne	000000014000172C
-	mov	[rbp-10],eax
-	movups	[rip+00001EE5],xmm1
-	illegal	
-	lock	
+	movups	xmm0,[rbp-20]
+	mov	[r13-10],r8
+	movsd	double ptr [rip+00001EE5],xmm1
+	movsd	xmm1,double ptr [rbp-10]
 	movups	[rip+00001EE1],xmm0
-	movups	[rip+00001EE9],xmm1
+	movsd	double ptr [rip+00001EE9],xmm1
 
 l00000001400016FF:
 	mov	rbx,[rsp+50]

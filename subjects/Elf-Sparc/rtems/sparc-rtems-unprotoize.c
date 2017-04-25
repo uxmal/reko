@@ -4,6 +4,7 @@
 
 #include "sparc-rtems-unprotoize.h"
 
+// 00011498: void _start(Register word32 g1, Register word32 o7, Stack word32 dwArg40)
 void _start(word32 g1, word32 o7, word32 dwArg40)
 {
 	if (g1 == 0x00)
@@ -18,11 +19,13 @@ void _start(word32 g1, word32 o7, word32 dwArg40)
 		atexit();
 }
 
+// 0001150C: Register word32 fn0001150C(Register word32 o7, Register word32 l7)
 word32 fn0001150C(word32 o7, word32 l7)
 {
 	return o7 + l7;
 }
 
+// 00011514: void __do_global_dtors_aux(Register word32 o7)
 void __do_global_dtors_aux(word32 o7)
 {
 	word32 l7_114 = fn0001150C(o7, 0x00016660);
@@ -70,11 +73,13 @@ void __do_global_dtors_aux(word32 o7)
 	return;
 }
 
+// 000115CC: void fini_dummy()
 void fini_dummy()
 {
 	return;
 }
 
+// 000115D8: void frame_dummy(Register word32 o7)
 void frame_dummy(word32 o7)
 {
 	if (Mem0[fn0001150C(o7, 0x0001659C) + 0x18:word32] == 0x00)
@@ -83,23 +88,27 @@ void frame_dummy(word32 o7)
 		fn00027C98();
 }
 
+// 00011620: void init_dummy()
 void init_dummy()
 {
 	return;
 }
 
+// 0001162C: void notice(Register word32 o0, Stack word32 dwArg48, Stack word32 dwArg4C, Stack word32 dwArg50, Stack word32 dwArg54, Stack word32 dwArg58)
 void notice(word32 o0, word32 dwArg48, word32 dwArg4C, word32 dwArg50, word32 dwArg54, word32 dwArg58)
 {
 	vfprintf();
 	return;
 }
 
+// 00011660: void xstrerror(Register word32 o0)
 void xstrerror(word32 o0)
 {
 	strerror();
 	return;
 }
 
+// 00011674: void xmalloc(Register word32 o0)
 void xmalloc(word32 o0)
 {
 	malloc();
@@ -112,6 +121,7 @@ void xmalloc(word32 o0)
 	}
 }
 
+// 000116B0: void xrealloc(Register word32 o0, Register word32 o1)
 void xrealloc(word32 o0, word32 o1)
 {
 	bool Z_24;
@@ -134,6 +144,7 @@ void xrealloc(word32 o0, word32 o1)
 	}
 }
 
+// 00011708: Register word32 xfree(Register word32 o0, Register out ptr32 i1Out, Register out ptr32 i2Out, Register out ptr32 i3Out, Register out ptr32 i6Out)
 word32 xfree(word32 o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i3Out, ptr32 & i6Out)
 {
 	word32 i1_6;
@@ -150,6 +161,7 @@ word32 xfree(word32 o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i3Out, ptr32 & i6O
 		free();
 }
 
+// 00011728: void savestring(Register word32 o0, Register word32 o1)
 void savestring(word32 o0, word32 o1)
 {
 	xmalloc(o1 + 0x01);
@@ -157,6 +169,7 @@ void savestring(word32 o0, word32 o1)
 	return;
 }
 
+// 0001174C: void savestring2(Register word32 o0, Register word32 o1, Register word32 o2, Register word32 o3)
 void savestring2(word32 o0, word32 o1, word32 o2, word32 o3)
 {
 	xmalloc(o1 + o3 + 0x01);
@@ -165,12 +178,14 @@ void savestring2(word32 o0, word32 o1, word32 o2, word32 o3)
 	return;
 }
 
+// 00011780: void fancy_abort()
 void fancy_abort()
 {
 	notice(94408, dwLoc28, dwLoc24, dwLoc20, dwLoc1C, dwLoc18);
 	exit();
 }
 
+// 000117A0: void dupnstr(Register word32 o0, Register word32 o1)
 void dupnstr(word32 o0, word32 o1)
 {
 	xmalloc(o1 + 0x01);
@@ -179,6 +194,7 @@ void dupnstr(word32 o0, word32 o1)
 	return;
 }
 
+// 000117CC: Register word32 substr(Register word32 o0, Register word32 o1)
 word32 substr(word32 o0, word32 o1)
 {
 	word32 g2_4 = (int32) Mem0[o0 + 0x00:int8];
@@ -207,9 +223,10 @@ word32 substr(word32 o0, word32 o1)
 	return o0;
 }
 
+// 00011828: Register word32 safe_read(Register word32 o0, Register word32 o1, Register word32 o2, Register out ptr32 l0Out, Register out ptr32 l2Out, Register out ptr32 i0Out, Register out ptr32 i1Out, Register out ptr32 i2Out, Register out ptr32 i3Out)
 word32 safe_read(word32 o0, word32 o1, word32 o2, ptr32 & l0Out, ptr32 & l2Out, ptr32 & i0Out, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i3Out)
 {
-safe_read_entry:
+fn00011828_entry:
 l00011828:
 	word32 i1_23
 	*i1Out = o1
@@ -265,9 +282,10 @@ l0001187C:
 	*i0Out = o2 - l0_20
 l00011880:
 	return i0_42
-safe_read_exit:
+fn00011828_exit:
 }
 
+// 00011888: void safe_write(Register word32 o0, Register word32 o1, Register word32 o2, Register word32 o3)
 void safe_write(word32 o0, word32 o1, word32 o2, word32 o3)
 {
 	word32 i2_47 = o2;
@@ -295,6 +313,7 @@ void safe_write(word32 o0, word32 o1, word32 o2, word32 o3)
 	return;
 }
 
+// 00011914: void save_pointers()
 void save_pointers()
 {
 	word32 o1_6 = Mem0[0x00028210:word32];
@@ -303,6 +322,7 @@ void save_pointers()
 	return;
 }
 
+// 00011938: void restore_pointers()
 void restore_pointers()
 {
 	word32 o1_6 = Mem0[0x0002B290:word32];
@@ -311,6 +331,7 @@ void restore_pointers()
 	return;
 }
 
+// 0001195C: Register word32 is_id_char(Register word32 o0)
 word32 is_id_char(word32 o0)
 {
 	word32 g2_14;
@@ -327,74 +348,50 @@ word32 is_id_char(word32 o0)
 	return g2_14;
 }
 
+// 00011998: void usage()
 void usage()
 {
 	notice(0x00017108, dwLoc28, dwLoc24, dwLoc20, dwLoc1C, dwLoc18);
 	exit();
-	if ((int32) Mem0[33:int8] == 0x2F)
-	{
-		word32 i0_49;
-		fn000119E0(0x00027C00, 33, out i0_49);
-		return;
-	}
-	else
-	{
-		fn000119D0(0x00027C00, 33);
-		return;
-	}
 }
 
+// 000119BC: Register word32 in_system_include_dir(Register word32 o0)
 word32 in_system_include_dir(word32 o0)
 {
-	if ((int32) Mem0[o0 + 0x00:int8] == 0x2F)
+	word32 i0_29;
+	if ((int32) Mem0[o0 + 0x00:int8] != 0x2F)
 	{
-		word32 i0_28;
-		return fn000119E0(0x00027C00, o0, out i0_28);
+		abort();
+l000119D8:
+		i0_29 = 0x01;
 	}
 	else
 	{
-		fn000119D0(0x00027C00, o0);
-		return 0x00027C00;
-	}
-}
-
-void fn000119D0(word32 o0, word32 i0)
-{
-	abort();
-	word32 i0_4;
-	fn000119E0(o0, i0, out i0_4);
-	return;
-}
-
-word32 fn000119E0(word32 o0, word32 i0, ptr32 & i0Out)
-{
-	word32 i0_13;
-	if (Mem0[o0 + 0x02D0:word32] != 0x00)
-	{
-		word32 l1_39 = o0 | 0x02D0;
-		do
+		if (Mem0[163536:word32] != 0x00)
 		{
-			strlen();
-			strncmp();
-			if (i0 == 0x00)
+			word32 l1_64 = 163536;
+			do
 			{
-				word32 o0_58 = Mem0[l1_39 + 0x00:word32];
 				strlen();
-				if ((int32) Mem0[i0 + o0_58:int8] == 0x2F)
+				strncmp();
+				if (o0 == 0x00)
 				{
-					*i0Out = 0x01;
-					return i0_13;
+					word32 o0_82 = Mem0[l1_64 + 0x00:word32];
+					strlen();
+					if ((int32) Mem0[o0 + o0_82:int8] == 0x2F)
+						goto l000119D8;
+					l1_64 = l1_64 + 0x10;
 				}
-				l1_39 = l1_39 + 0x10;
-			}
-			else
-				l1_39 = l1_39 + 0x10;
-		} while (Mem0[l1_39 + 0x00:word32] != 0x00);
+				else
+					l1_64 = l1_64 + 0x10;
+			} while (Mem0[l1_64 + 0x00:word32] != 0x00);
+		}
+		i0_29 = 0x00;
 	}
-	*i0Out = 0x00;
-	return i0_13;
+	return i0_29;
 }
 
+// 00011A4C: Register word32 needs_to_be_converted(Register word32 o0)
 word32 needs_to_be_converted(word32 o0)
 {
 	word32 o0_13;
@@ -419,6 +416,7 @@ word32 needs_to_be_converted(word32 o0)
 	return o0_13;
 }
 
+// 00011A88: Register word32 directory_specified_p(Register word32 o0)
 word32 directory_specified_p(word32 o0)
 {
 	word32 i0_100;
@@ -469,6 +467,7 @@ l00011B1C:
 	return i0_100;
 }
 
+// 00011B40: void file_excluded_p(Register word32 o0)
 void file_excluded_p(word32 o0)
 {
 	strlen();
@@ -495,6 +494,7 @@ void file_excluded_p(word32 o0)
 	return;
 }
 
+// 00011BC8: void string_list_cons(Register word32 o0, Register word32 o1)
 void string_list_cons(word32 o0, word32 o1)
 {
 	xmalloc(0x08);
@@ -503,6 +503,7 @@ void string_list_cons(word32 o0, word32 o1)
 	return;
 }
 
+// 00011BE4: Register word32 visit_each_hash_node(Register word32 o0)
 word32 visit_each_hash_node(word32 o0)
 {
 	word32 i0_4 = o0;
@@ -550,6 +551,7 @@ word32 visit_each_hash_node(word32 o0)
 	return l0;
 }
 
+// 00011C3C: void add_symbol(Register word32 o0, Register word32 o1)
 void add_symbol(word32 o0, word32 o1)
 {
 	Mem20[o0 + 0x00:word32] = 0x00;
@@ -560,6 +562,7 @@ void add_symbol(word32 o0, word32 o1)
 	return;
 }
 
+// 00011C6C: void lookup(Register word32 o0, Register word32 o1)
 void lookup(word32 o0, word32 o1)
 {
 	word32 o3_25 = 0x00;
@@ -611,6 +614,7 @@ l00011D1C:
 	return;
 }
 
+// 00011D3C: void free_def_dec(Register word32 o0)
 void free_def_dec(word32 o0)
 {
 	word32 i1_21;
@@ -625,9 +629,10 @@ void free_def_dec(word32 o0)
 	return;
 }
 
+// 00011D58: Register word32 unexpand_if_needed(Register word32 o0, Register out ptr32 l0Out, Register out ptr32 l6Out, Register out ptr32 i2Out)
 word32 unexpand_if_needed(word32 o0, ptr32 & l0Out, ptr32 & l6Out, ptr32 & i2Out)
 {
-unexpand_if_needed_entry:
+fn00011D58_entry:
 	*l0Out = l0
 	word32 i0_111 = o0
 	word32 i2_6
@@ -783,12 +788,13 @@ l00011F14:
 l00011F1C:
 l00011F2C:
 	return i0_62
-unexpand_if_needed_exit:
+fn00011D58_exit:
 }
 
+// 00011F34: void abspath(Register word32 o0, Register word32 o1)
 void abspath(word32 o0, word32 o1)
 {
-abspath_entry:
+fn00011F34_entry:
 	word32 i0_22 = o0
 	branch o0 != 0x00 l00011F34_ds_t
 	goto l00011F34_ds_f
@@ -977,9 +983,10 @@ l00012130:
 l00012138:
 	savestring(sp_29 + 0x60, o2_121 - (sp_29 + 0x60))
 	return
-abspath_exit:
+fn00011F34_exit:
 }
 
+// 0001214C: void shortpath(Register word32 o0, Register word32 o1)
 void shortpath(word32 o0, word32 o1)
 {
 	word32 l0_164 = Mem0[0x0002B270:word32];
@@ -1094,6 +1101,7 @@ l000122B8:
 	goto l00012238;
 }
 
+// 00012304: void find_file(Register word32 o0, Register word32 o1)
 void find_file(word32 o0, word32 o1)
 {
 	lookup(164416, o0);
@@ -1124,12 +1132,14 @@ l000123B4:
 	goto l000123B4;
 }
 
+// 000123D0: void aux_info_corrupted()
 void aux_info_corrupted()
 {
 	notice(0x00017190, dwLoc28, dwLoc24, dwLoc20, dwLoc1C, dwLoc18);
 	exit();
 }
 
+// 000123F8: Register word32 check_aux_info(Register word32 o0, Register out ptr32 i1Out, Register out ptr32 i3Out, Register out ptr32 i6Out)
 word32 check_aux_info(word32 o0, ptr32 & i1Out, ptr32 & i3Out, ptr32 & i6Out)
 {
 	word32 i1_6;
@@ -1144,9 +1154,10 @@ word32 check_aux_info(word32 o0, ptr32 & i1Out, ptr32 & i3Out, ptr32 & i6Out)
 		aux_info_corrupted();
 }
 
+// 00012418: Register word32 find_corresponding_lparen(Register word32 o0)
 word32 find_corresponding_lparen(word32 o0)
 {
-find_corresponding_lparen_entry:
+fn00012418_entry:
 	word32 o0_14 = o0 + ~0x00 + ~0x00
 	word32 g3_13 = 0x01
 	word32 g2_19 = (int32) Mem0[o0 + ~0x00:int8]
@@ -1180,9 +1191,10 @@ l00012448_ds_t:
 	goto l00012424
 l00012454:
 	return o0_14 + 0x01
-find_corresponding_lparen_exit:
+fn00012418_exit:
 }
 
+// 0001245C: void referenced_file_is_newer(Register word32 o0)
 void referenced_file_is_newer(word32 o0)
 {
 	word32 l1_56;
@@ -1214,9 +1226,10 @@ void referenced_file_is_newer(word32 o0)
 	return;
 }
 
+// 0001251C: void save_def_or_dec(Register word32 o0)
 void save_def_or_dec(word32 o0)
 {
-save_def_or_dec_entry:
+fn0001251C_entry:
 	xmalloc(44)
 	word32 i1_28
 	word32 i3_29
@@ -1552,9 +1565,10 @@ l00012AC0:
 l00012ACC:
 l00012B5C:
 	return
-save_def_or_dec_exit:
+fn0001251C_exit:
 }
 
+// 00012B64: void munge_compile_params(Register word32 o0, Register word32 o3)
 void munge_compile_params(word32 o0, word32 o3)
 {
 	strlen();
@@ -1632,6 +1646,7 @@ l00012D00:
 	return;
 }
 
+// 00012E2C: void gen_aux_info_file(Register word32 o0, Register word32 o3)
 void gen_aux_info_file(word32 o0, word32 o3)
 {
 	if (Mem0[0x00027F44:word32] == 0x00)
@@ -1665,9 +1680,10 @@ void gen_aux_info_file(word32 o0, word32 o3)
 		notice(94800, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
 }
 
+// 00013034: void process_aux_info_file(Register word32 o0, Register word32 o2, Register word32 o3)
 void process_aux_info_file(word32 o0, word32 o2, word32 o3)
 {
-process_aux_info_file_entry:
+fn00013034_entry:
 	strlen()
 	word32 o0_22 = o0 + 0x0A & ~0x07
 	strcpy()
@@ -1736,7 +1752,7 @@ l0001311C_ds_f:
 l00013130:
 l00013150:
 	stat()
-	branch sp_23 != ~0x60 l00013150_ds_t
+	branch sp_23 != 0x61 l00013150_ds_t
 l00013150_ds_f:
 	l2_135 = Mem0[0x0002B760:word32]
 	l0_137 = 0x00017328
@@ -1783,7 +1799,7 @@ l00013218:
 	word32 l0_188
 	word32 l2_186
 	open()
-	branch sp_23 != ~0x60 l00013218_ds_t
+	branch sp_23 != 0x61 l00013218_ds_t
 l00013218_ds_f:
 	l2_186 = Mem0[0x0002B760:word32]
 	l0_188 = 0x00017358
@@ -1847,7 +1863,7 @@ l00013350_ds_t:
 	goto l000133B4
 l00013358:
 	unlink()
-	branch sp_23 != ~0x60 l00013358_ds_t
+	branch sp_23 != 0x61 l00013358_ds_t
 	goto l0001336C
 l00013358_ds_t:
 	o0_261 = (int32) Mem208[l0_160 + 0x01:int8]
@@ -1945,7 +1961,7 @@ l000134BC:
 	branch i1_382 == 0x00 l000134BC_ds_t
 l000134BC_ds_f:
 	unlink()
-	branch sp_23 == ~0x60 l000134D8_ds_t
+	branch sp_23 == 0x61 l000134D8_ds_t
 	goto l000134D8_ds_f
 l000134BC_ds_t:
 	l2_30 = 0x01
@@ -2020,9 +2036,10 @@ l000135A8:
 	xfree(0x00, out i1_325, out i2_326, out i3_327, out i6_328)
 l000135B8:
 	return
-process_aux_info_file_exit:
+fn00013034_exit:
 }
 
+// 000135C0: void reverse_def_dec_list(Register word32 o0)
 void reverse_def_dec_list(word32 o0)
 {
 	word32 o1_4 = Mem0[o0 + 0x08:word32];
@@ -2050,6 +2067,7 @@ void reverse_def_dec_list(word32 o0)
 	return;
 }
 
+// 0001360C: Register word32 identify_lineno(Register word32 o0)
 word32 identify_lineno(word32 o0)
 {
 	word32 o0_11;
@@ -2073,6 +2091,7 @@ word32 identify_lineno(word32 o0)
 	return o0_11;
 }
 
+// 0001364C: void declare_source_confusing(Register word32 o0)
 void declare_source_confusing(word32 o0)
 {
 	if (Mem0[0x00027F2C:word32] == 0x00)
@@ -2092,6 +2111,7 @@ void declare_source_confusing(word32 o0)
 	longjmp();
 }
 
+// 000136E0: Register word32 check_source(Register word32 o0, Register word32 o1, Register out ptr32 i1Out, Register out ptr32 i2Out, Register out ptr32 i6Out)
 word32 check_source(word32 o0, word32 o1, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 {
 	word32 i1_6;
@@ -2106,6 +2126,7 @@ word32 check_source(word32 o0, word32 o1, ptr32 & i1Out, ptr32 & i2Out, ptr32 & 
 		declare_source_confusing(o1);
 }
 
+// 00013700: void seek_to_line(Register word32 o0)
 void seek_to_line(word32 o0)
 {
 	word32 i0_105 = o0;
@@ -2154,6 +2175,7 @@ void seek_to_line(word32 o0)
 		abort();
 }
 
+// 000137AC: Register word32 forward_to_next_token_char(Register word32 o0)
 word32 forward_to_next_token_char(word32 o0)
 {
 	word32 i0_19 = o0 + 0x01;
@@ -2174,6 +2196,7 @@ word32 forward_to_next_token_char(word32 o0)
 	return i0_19;
 }
 
+// 00013808: void output_bytes(Register word32 o0, Register word32 o1)
 void output_bytes(word32 o0, word32 o1)
 {
 	word32 l0_23 = Mem0[0x00028200:word32];
@@ -2193,6 +2216,7 @@ void output_bytes(word32 o0, word32 o1)
 	return;
 }
 
+// 0001388C: void output_string(Register word32 o0)
 void output_string(word32 o0)
 {
 	strlen();
@@ -2200,6 +2224,7 @@ void output_string(word32 o0)
 	return;
 }
 
+// 000138AC: Register word32 output_up_to(Register word32 o0, Register out ptr32 i1Out, Register out ptr32 i2Out)
 word32 output_up_to(word32 o0, ptr32 & i1Out, ptr32 & i2Out)
 {
 	word32 o2_23 = Mem0[0x000281E0:word32];
@@ -2217,6 +2242,7 @@ word32 output_up_to(word32 o0, ptr32 & i1Out, ptr32 & i2Out)
 	return o0;
 }
 
+// 000138F0: Register word32 other_variable_style_function(Register word32 o0, Register out ptr32 i1Out, Register out ptr32 i6Out)
 word32 other_variable_style_function(word32 o0, ptr32 & i1Out, ptr32 & i6Out)
 {
 	word32 i1_6;
@@ -2226,6 +2252,7 @@ word32 other_variable_style_function(word32 o0, ptr32 & i1Out, ptr32 & i6Out)
 	return 0x00 - substr(o0, 95336) <u 0x00;
 }
 
+// 00013914: void edit_fn_declaration(Register word32 o0, Stack word32 dwArg44, Stack word32 dwArg48)
 void edit_fn_declaration(word32 o0, word32 dwArg44, word32 dwArg48)
 {
 	strlen();
@@ -2241,9 +2268,10 @@ void edit_fn_declaration(word32 o0, word32 dwArg44, word32 dwArg48)
 	}
 }
 
+// 00013B68: Register word32 edit_formals_lists(Register word32 o0, Register out ptr32 l1Out, Register out ptr32 i1Out, Register out ptr32 i2Out)
 word32 edit_formals_lists(word32 o0, ptr32 & l1Out, ptr32 & i1Out, ptr32 & i2Out)
 {
-edit_formals_lists_entry:
+fn00013B68_entry:
 	word32 l1_19 = o0 + ~0x00
 	word32 l0_20 = 0x01
 	word32 o0_23 = (int32) Mem0[o0 + ~0x00:int8]
@@ -2438,9 +2466,10 @@ l00013DF4:
 	i0_112 = 0x00
 l00013DFC:
 	return i0_112
-edit_formals_lists_exit:
+fn00013B68_exit:
 }
 
+// 00013E04: Register word32 find_rightmost_formals_list(Register word32 o0, Register out ptr32 i6Out)
 word32 find_rightmost_formals_list(word32 o0, ptr32 & i6Out)
 {
 	word32 i0_134 = o0 + ~0x00;
@@ -2492,6 +2521,7 @@ word32 find_rightmost_formals_list(word32 o0, ptr32 & i6Out)
 	return check_source(0x01 - (0x00 - ((int32) Mem0[o0_39 + 0x00:int8] ^ 0x7B) <u 0x00), o0_39, out i1_47, out i2_48, out i6_49);
 }
 
+// 00013EDC: void edit_fn_definition(Register word32 o0, Register word32 o1, Stack word32 dwArg44, Stack word32 dwArg48)
 void edit_fn_definition(word32 o0, word32 o1, word32 dwArg44, word32 dwArg48)
 {
 	save_pointers();
@@ -2526,6 +2556,7 @@ void edit_fn_definition(word32 o0, word32 o1, word32 dwArg44, word32 dwArg48)
 	return;
 }
 
+// 000140B4: void do_cleaning(Register word32 o0, Register word32 o1)
 void do_cleaning(word32 o0, word32 o1)
 {
 	word32 i0_4 = o0;
@@ -2548,9 +2579,10 @@ void do_cleaning(word32 o0, word32 o1)
 	}
 }
 
+// 00014518: Register word32 careful_find_l_paren(Register word32 o0, Register out ptr32 spOut, Register out ptr32 i6Out)
 word32 careful_find_l_paren(word32 o0, ptr32 & spOut, ptr32 & i6Out)
 {
-careful_find_l_paren_entry:
+fn00014518_entry:
 	word32 i0_19 = o0 + ~0x00
 	word32 l0_20 = 0x01
 	word32 o0_23 = (int32) Mem0[o0 + ~0x00:int8]
@@ -2591,12 +2623,13 @@ l00014570:
 	word32 sp_57
 	*spOut = i6_46
 	return i0_19 + 0x01
-careful_find_l_paren_exit:
+fn00014518_exit:
 }
 
+// 00014578: void scan_for_missed_items(Stack word32 dwArg44)
 void scan_for_missed_items(word32 dwArg44)
 {
-scan_for_missed_items_entry:
+fn00014578_entry:
 	word32 o1_21 = Mem0[0x000281C0:word32]
 	word32 o0_23 = Mem0[0x000281D0:word32]
 	Mem29[164144:word32] = o1_21 + ~0x00
@@ -2776,9 +2809,10 @@ l00014854_ds_t:
 l00014870:
 	return
 	return
-scan_for_missed_items_exit:
+fn00014578_exit:
 }
 
+// 00014878: void edit_file(Register word32 o0)
 void edit_file(word32 o0)
 {
 	word32 i0_20 = Mem0[o0 + 0x08:word32];
@@ -2798,13 +2832,14 @@ void edit_file(word32 o0)
 			if (in_system_include_dir(Mem45[0x00028180:word32]) == 0x00)
 			{
 				shortpath(0x00, Mem45[0x00028180:word32]);
-				notice(0x00017600, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
+				notice(0x00017600, dwLocB0, dwLocAC, dwLocA8, dwLocA4, dwLocA0);
 			}
 		}
 	}
 	return;
 }
 
+// 00014E24: void do_processing(Register word32 o3)
 void do_processing(word32 o3)
 {
 	word32 o0_23 = Mem0[0x00028160:word32];
@@ -2826,9 +2861,10 @@ void do_processing(word32 o3)
 	return;
 }
 
+// 00014EA4: void main(Register word32 o1, Stack word32 dwArg44, Stack word32 dwArg48)
 void main(word32 o1, word32 dwArg44, word32 dwArg48)
 {
-main_entry:
+fn00014EA4_entry:
 	word32 o0_21 = Mem0[o1 + 0x00:word32]
 	strrchr()
 	word32 o2_231 = o0_21 + 0x01
@@ -2947,9 +2983,10 @@ l000151C4:
 l000151E4:
 l00015200:
 l00015204:
-main_exit:
+fn00014EA4_exit:
 }
 
+// 000152B8: Register word32 getpwd()
 word32 getpwd()
 {
 	if (Mem0[0x0002B2A0:word32] == 0x00)
@@ -3016,6 +3053,7 @@ word32 getpwd()
 	return fp;
 }
 
+// 000153C4: void _obstack_begin(Register word32 o0, Register word32 o1, Register word32 o2, Register word32 o3, Register word32 o4)
 void _obstack_begin(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4)
 {
 	word32 i1_156 = o1;
@@ -3124,6 +3162,7 @@ void _obstack_begin(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4)
 	}
 }
 
+// 00015488: void _obstack_begin_1(Register word32 o0, Register word32 o1, Register word32 o2, Register word32 o3, Register word32 o4, Register word32 o5)
 void _obstack_begin_1(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, word32 o5)
 {
 	word32 i1_157 = o1;
@@ -3233,6 +3272,7 @@ void _obstack_begin_1(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, wor
 	}
 }
 
+// 00015550: void _obstack_newchunk(Register word32 o0, Register word32 o1)
 void _obstack_newchunk(word32 o0, word32 o1)
 {
 	word32 l2_22 = Mem0[o0 + 0x0C:word32] - Mem0[o0 + 0x08:word32];
@@ -3456,6 +3496,7 @@ void _obstack_newchunk(word32 o0, word32 o1)
 	return;
 }
 
+// 000156F0: void _obstack_allocated_p(Register word32 o0, Register word32 o1)
 void _obstack_allocated_p(word32 o0, word32 o1)
 {
 	word32 g3_28 = Mem0[o0 + 0x04:word32];
@@ -3479,176 +3520,369 @@ void _obstack_allocated_p(word32 o0, word32 o1)
 	}
 }
 
+// 00015724: void _obstack_free(Register word32 o0, Register word32 o1)
 void _obstack_free(word32 o0, word32 o1)
 {
-	word32 i0_117 = o0;
-	word32 i1_119 = o1;
-	word32 o3_109 = Mem0[o0 + 0x04:word32];
-	while (o3_109 != 0x00)
-	{
-		word32 g0_77 = o3_109 - i1_119;
-		word32 o0_170;
-		if (g0_77 <u 0x00)
-		{
-			if (Mem0[o3_109 + 0x00:word32] - i1_119 >=u 0x00)
-				break;
-			o0_170 = Mem0[i0_117 + 0x0028:word32];
-		}
-		else
-			o0_170 = Mem0[i0_117 + 0x0028:word32];
-		word32 o1_101;
-		word32 l0_137;
-		if (o0_170 < 0x00)
-		{
-			word32 o2_112 = Mem0[i0_117 + 0x0020:word32];
-			word32 sp_116;
-			word32 o0_118;
-			word32 o1_120;
-			word32 i2_121;
-			word32 o2_122;
-			word32 i3_123;
-			word32 o3_124;
-			word32 i4_125;
-			word32 o4_126;
-			word32 i5_127;
-			word32 o5_128;
-			word32 i6_129;
-			word32 i7_130;
-			word32 o7_131;
-			word32 g0_132;
-			byte NZVC_133;
-			bool Z_134;
-			bool C_135;
-			byte NV_136;
-			o2_112();
-			o1_101 = Mem0[i0_117 + 0x0028:word32];
-		}
-		else
-		{
-			word32 o1_140 = Mem0[i0_117 + 0x0020:word32];
-			word32 sp_143;
-			word32 o0_145;
-			word32 o1_147;
-			word32 i2_148;
-			word32 o2_149;
-			word32 i3_150;
-			word32 o3_151;
-			word32 i4_152;
-			word32 o4_153;
-			word32 i5_154;
-			word32 o5_155;
-			word32 i6_156;
-			word32 i7_157;
-			word32 o7_158;
-			word32 g0_159;
-			byte NZVC_160;
-			bool Z_161;
-			bool C_162;
-			byte NV_163;
-			o1_140();
-			o1_101 = Mem0[i0_117 + 0x0028:word32];
-		}
-		Mem110[i0_117 + 0x0028:word32] = o1_101 | 0x40000000;
-		o3_109 = l0_137;
-	}
-	if (o3_109 != 0x00)
-	{
-		Mem67[i0_117 + 0x08:word32] = i1_119;
-		Mem68[i0_117 + 0x0C:word32] = i1_119;
-		word32 o0_69 = Mem68[o3_109 + 0x00:word32];
-		Mem70[i0_117 + 0x04:word32] = o3_109;
-		Mem71[i0_117 + 0x0010:word32] = o0_69;
-	}
-	else if (i1_119 != 0x00)
-		abort();
+	word32 o3_20 = Mem0[o0 + 0x04:word32];
+	word32 o3_21;
+	fn00015774(o3_20, o0, o1, out o3_21);
 	return;
 }
 
+// 00015730: FlagGroup bool fn00015730(Register word32 o0, Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
+bool fn00015730(word32 o0, word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
+{
+	sp = fp;
+	g0 = o0 - 0x00;
+	NZVC = cond(g0);
+	NV = NZVC;
+	if (Test(LT,NV))
+	{
+		l0 = Mem0[o3 + 0x04:word32];
+		o2 = Mem0[i0 + 0x0020:word32];
+		o1 = 0x00 | o3;
+		o7 = 0x00015744;
+		o0 = Mem0[i0 + 0x0024:word32];
+		(o2 + 0x00)();
+		o1 = Mem0[i0 + 0x0028:word32];
+	}
+	else
+	{
+		l0 = Mem0[o3 + 0x04:word32];
+		o1 = Mem0[i0 + 0x0020:word32];
+		o7 = 0x00015758;
+		o0 = 0x00 | o3;
+		(o1 + 0x00)();
+		o1 = Mem0[i0 + 0x0028:word32];
+	}
+	o0 = 0x40000000;
+	o1 = o1 | 0x40000000;
+	o3 = 0x00 | l0;
+	Mem0[i0 + 0x0028:word32] = o1;
+	C = fn00015774(o3, i0, i1, out o3);
+	NZVC = C;
+	return C;
+}
+
+// 00015774: FlagGroup bool fn00015774(Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
+bool fn00015774(word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
+{
+fn00015774_entry:
+	def fp
+	def o3
+	def o3Out
+	def i1
+	def i0
+	sp_1 = fp
+	g0_3 = o3 - 0x00
+	NZVC_4 = cond(g0_3)
+	Z_5 = NZVC_4 (alias)
+	branch g0_3 == 0x00 l00015774_ds_t
+	goto l00015774_ds_f
+l00015764_ds_f:
+	g0 = o3 - i1
+	NZVC = cond(g0)
+	Z = NZVC (alias)
+	C = NZVC (alias)
+	C = fn00015780(o3, i0, i1, out o3)
+	NZVC = C (alias)
+	return C
+l00015764_ds_t:
+	g0 = o3 - i1
+	NZVC = cond(g0)
+	C = fn00015798(o3, i0, i1, out o3)
+	NZVC = C (alias)
+	return C
+l00015774:
+l00015774:
+	g0 = o3 - 0x00
+	NZVC = cond(g0)
+	Z = NZVC (alias)
+	branch Test(EQ,Z) l00015764_ds_t
+	goto l00015764_ds_f
+l00015774_ds_f:
+	g0_13 = o3 - i1
+	NZVC_14 = cond(g0_13)
+	Z_15 = NZVC_14 (alias)
+	C_16 = NZVC_14 (alias)
+	C_19 = fn00015780(o3, i0, i1, out o3_18)
+	NZVC_20 = C_19 (alias)
+	return C_19
+l00015774_ds_t:
+	g0_24 = o3 - i1
+	NZVC_25 = cond(g0_24)
+	C_27 = fn00015798(o3, i0, i1, out o3_26)
+	NZVC_28 = C_27 (alias)
+	return C_27
+l0001577C_thunk_fn00015780:
+l0001577C_thunk_fn00015780:
+	C_22 = fn00015780(o3_18, i0, i1, out o3_21)
+	NZVC_23 = C_22 (alias)
+	return C_22
+l0001577C_thunk_fn00015780:
+l0001577C_thunk_fn00015798:
+l0001577C_thunk_fn00015798:
+fn00015774_exit:
+	g0_6 = PHI(g0_24, g0_13, g0_13, g0, g0)
+	Z_7 = PHI(Z_5, Z_15, Z_15, Z, Z)
+	o3_8 = PHI(o3_26, o3_18, o3_21, o3, o3)
+	C_9 = PHI(C_27, C_19, C_22, C, C)
+	NZVC_10 = PHI(NZVC_28, NZVC_20, NZVC_23, NZVC, NZVC)
+	use o3_8 (=> o3Out)
+}
+
+// 00015780: FlagGroup bool fn00015780(Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
+bool fn00015780(word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
+{
+fn00015780_entry:
+	def v3
+	def C
+	def o3
+	def Mem0
+	def i1
+	def i0
+	def o3Out
+	sp_1 = v3
+	branch C l00015780_ds_t
+	goto l00015788
+l00015780:
+l00015780_ds_t:
+	o0_19 = Mem0[i0 + 0x0028:word32]
+l00015784_thunk_fn00015730:
+	C = fn00015730(o0, o3, i0, i1, out o3)
+	NZVC = C (alias)
+	return C
+l00015788:
+	o0_5 = Mem0[o3 + 0x00:word32]
+	g0_7 = o0_5 - i1
+	NZVC_8 = cond(g0_7)
+	C_9 = NZVC_8 (alias)
+	branch g0_7 <u 0x00 l00015788_ds_t
+	goto l00015790_thunk_fn00015798
+l00015788_ds_t:
+	o0_18 = Mem0[i0 + 0x0028:word32]
+	goto l00015794_thunk_fn00015730
+l00015790_thunk_fn00015798:
+	C_12 = fn00015798(o3, i0, i1, out o3_11)
+	NZVC_13 = C_12 (alias)
+	return C_12
+l00015794_thunk_fn00015730:
+	C = fn00015730(o0, o3, i0, i1, out o3)
+	NZVC = C (alias)
+	return C
+fn00015780_exit:
+	o3_14 = PHI(o3_11, o3, o3)
+	C_15 = PHI(C_12, C, C)
+	NZVC_16 = PHI(NZVC_13, NZVC, NZVC)
+	use o3_14 (=> o3Out)
+}
+
+// 00015798: FlagGroup bool fn00015798(Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
+bool fn00015798(word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
+{
+	bool C_30;
+	if (o3 != 0x00)
+	{
+		C_30 = cond(i1);
+		Mem31[i0 + 0x08:word32] = i1;
+		Mem32[i0 + 0x0C:word32] = i1;
+		word32 o0_33 = Mem32[o3 + 0x00:word32];
+		Mem34[i0 + 0x04:word32] = o3;
+		Mem35[i0 + 0x0010:word32] = o0_33;
+	}
+	else
+	{
+		C_30 = cond(i1);
+		if (i1 != 0x00)
+			abort();
+	}
+	word32 o3_17;
+	*o3Out = i3;
+	return C_30;
+}
+
+// 000157D4: void obstack_free(Register word32 o0, Register word32 o1)
 void obstack_free(word32 o0, word32 o1)
 {
-	word32 i0_117 = o0;
-	word32 i1_119 = o1;
-	word32 o3_109 = Mem0[o0 + 0x04:word32];
-	while (o3_109 != 0x00)
-	{
-		word32 g0_77 = o3_109 - i1_119;
-		word32 o0_170;
-		if (g0_77 <u 0x00)
-		{
-			if (Mem0[o3_109 + 0x00:word32] - i1_119 >=u 0x00)
-				break;
-			o0_170 = Mem0[i0_117 + 0x0028:word32];
-		}
-		else
-			o0_170 = Mem0[i0_117 + 0x0028:word32];
-		word32 o1_101;
-		word32 l0_137;
-		if (o0_170 < 0x00)
-		{
-			word32 o2_112 = Mem0[i0_117 + 0x0020:word32];
-			word32 sp_116;
-			word32 o0_118;
-			word32 o1_120;
-			word32 i2_121;
-			word32 o2_122;
-			word32 i3_123;
-			word32 o3_124;
-			word32 i4_125;
-			word32 o4_126;
-			word32 i5_127;
-			word32 o5_128;
-			word32 i6_129;
-			word32 i7_130;
-			word32 o7_131;
-			word32 g0_132;
-			byte NZVC_133;
-			bool Z_134;
-			bool C_135;
-			byte NV_136;
-			o2_112();
-			o1_101 = Mem0[i0_117 + 0x0028:word32];
-		}
-		else
-		{
-			word32 o1_140 = Mem0[i0_117 + 0x0020:word32];
-			word32 sp_143;
-			word32 o0_145;
-			word32 o1_147;
-			word32 i2_148;
-			word32 o2_149;
-			word32 i3_150;
-			word32 o3_151;
-			word32 i4_152;
-			word32 o4_153;
-			word32 i5_154;
-			word32 o5_155;
-			word32 i6_156;
-			word32 i7_157;
-			word32 o7_158;
-			word32 g0_159;
-			byte NZVC_160;
-			bool Z_161;
-			bool C_162;
-			byte NV_163;
-			o1_140();
-			o1_101 = Mem0[i0_117 + 0x0028:word32];
-		}
-		Mem110[i0_117 + 0x0028:word32] = o1_101 | 0x40000000;
-		o3_109 = l0_137;
-	}
-	if (o3_109 != 0x00)
-	{
-		Mem67[i0_117 + 0x08:word32] = i1_119;
-		Mem68[i0_117 + 0x0C:word32] = i1_119;
-		word32 o0_69 = Mem68[o3_109 + 0x00:word32];
-		Mem70[i0_117 + 0x04:word32] = o3_109;
-		Mem71[i0_117 + 0x0010:word32] = o0_69;
-	}
-	else if (i1_119 != 0x00)
-		abort();
+	word32 o3_20 = Mem0[o0 + 0x04:word32];
+	word32 o3_21;
+	fn00015824(o3_20, o0, o1, out o3_21);
 	return;
 }
 
+// 000157E0: FlagGroup bool fn000157E0(Register word32 o0, Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
+bool fn000157E0(word32 o0, word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
+{
+	sp = fp;
+	g0 = o0 - 0x00;
+	NZVC = cond(g0);
+	NV = NZVC;
+	if (Test(LT,NV))
+	{
+		l0 = Mem0[o3 + 0x04:word32];
+		o2 = Mem0[i0 + 0x0020:word32];
+		o1 = 0x00 | o3;
+		o7 = 0x000157F4;
+		o0 = Mem0[i0 + 0x0024:word32];
+		(o2 + 0x00)();
+		o1 = Mem0[i0 + 0x0028:word32];
+	}
+	else
+	{
+		l0 = Mem0[o3 + 0x04:word32];
+		o1 = Mem0[i0 + 0x0020:word32];
+		o7 = 0x00015808;
+		o0 = 0x00 | o3;
+		(o1 + 0x00)();
+		o1 = Mem0[i0 + 0x0028:word32];
+	}
+	o0 = 0x40000000;
+	o1 = o1 | 0x40000000;
+	o3 = 0x00 | l0;
+	Mem0[i0 + 0x0028:word32] = o1;
+	C = fn00015824(o3, i0, i1, out o3);
+	NZVC = C;
+	return C;
+}
+
+// 00015824: FlagGroup bool fn00015824(Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
+bool fn00015824(word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
+{
+fn00015824_entry:
+	def fp
+	def o3
+	def o3Out
+	def i1
+	def i0
+	sp_1 = fp
+	g0_3 = o3 - 0x00
+	NZVC_4 = cond(g0_3)
+	Z_5 = NZVC_4 (alias)
+	branch g0_3 == 0x00 l00015824_ds_t
+	goto l00015824_ds_f
+l00015814_ds_f:
+	g0 = o3 - i1
+	NZVC = cond(g0)
+	Z = NZVC (alias)
+	C = NZVC (alias)
+	C = fn00015830(o3, i0, i1, out o3)
+	NZVC = C (alias)
+	return C
+l00015814_ds_t:
+	g0 = o3 - i1
+	NZVC = cond(g0)
+	C = fn00015848(o3, i0, i1, out o3)
+	NZVC = C (alias)
+	return C
+l00015824:
+l00015824:
+	g0 = o3 - 0x00
+	NZVC = cond(g0)
+	Z = NZVC (alias)
+	branch Test(EQ,Z) l00015814_ds_t
+	goto l00015814_ds_f
+l00015824_ds_f:
+	g0_13 = o3 - i1
+	NZVC_14 = cond(g0_13)
+	Z_15 = NZVC_14 (alias)
+	C_16 = NZVC_14 (alias)
+	C_19 = fn00015830(o3, i0, i1, out o3_18)
+	NZVC_20 = C_19 (alias)
+	return C_19
+l00015824_ds_t:
+	g0_24 = o3 - i1
+	NZVC_25 = cond(g0_24)
+	C_27 = fn00015848(o3, i0, i1, out o3_26)
+	NZVC_28 = C_27 (alias)
+	return C_27
+l0001582C_thunk_fn00015830:
+l0001582C_thunk_fn00015830:
+	C_22 = fn00015830(o3_18, i0, i1, out o3_21)
+	NZVC_23 = C_22 (alias)
+	return C_22
+l0001582C_thunk_fn00015830:
+l0001582C_thunk_fn00015848:
+l0001582C_thunk_fn00015848:
+fn00015824_exit:
+	g0_6 = PHI(g0_24, g0_13, g0_13, g0, g0)
+	Z_7 = PHI(Z_5, Z_15, Z_15, Z, Z)
+	o3_8 = PHI(o3_26, o3_18, o3_21, o3, o3)
+	C_9 = PHI(C_27, C_19, C_22, C, C)
+	NZVC_10 = PHI(NZVC_28, NZVC_20, NZVC_23, NZVC, NZVC)
+	use o3_8 (=> o3Out)
+}
+
+// 00015830: FlagGroup bool fn00015830(Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
+bool fn00015830(word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
+{
+fn00015830_entry:
+	def v3
+	def C
+	def o3
+	def Mem0
+	def i1
+	def i0
+	def o3Out
+	sp_1 = v3
+	branch C l00015830_ds_t
+	goto l00015838
+l00015830:
+l00015830_ds_t:
+	o0_19 = Mem0[i0 + 0x0028:word32]
+l00015834_thunk_fn000157E0:
+	C = fn000157E0(o0, o3, i0, i1, out o3)
+	NZVC = C (alias)
+	return C
+l00015838:
+	o0_5 = Mem0[o3 + 0x00:word32]
+	g0_7 = o0_5 - i1
+	NZVC_8 = cond(g0_7)
+	C_9 = NZVC_8 (alias)
+	branch g0_7 <u 0x00 l00015838_ds_t
+	goto l00015840_thunk_fn00015848
+l00015838_ds_t:
+	o0_18 = Mem0[i0 + 0x0028:word32]
+	goto l00015844_thunk_fn000157E0
+l00015840_thunk_fn00015848:
+	C_12 = fn00015848(o3, i0, i1, out o3_11)
+	NZVC_13 = C_12 (alias)
+	return C_12
+l00015844_thunk_fn000157E0:
+	C = fn000157E0(o0, o3, i0, i1, out o3)
+	NZVC = C (alias)
+	return C
+fn00015830_exit:
+	o3_14 = PHI(o3_11, o3, o3)
+	C_15 = PHI(C_12, C, C)
+	NZVC_16 = PHI(NZVC_13, NZVC, NZVC)
+	use o3_14 (=> o3Out)
+}
+
+// 00015848: FlagGroup bool fn00015848(Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
+bool fn00015848(word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
+{
+	bool C_30;
+	if (o3 != 0x00)
+	{
+		C_30 = cond(i1);
+		Mem31[i0 + 0x08:word32] = i1;
+		Mem32[i0 + 0x0C:word32] = i1;
+		word32 o0_33 = Mem32[o3 + 0x00:word32];
+		Mem34[i0 + 0x04:word32] = o3;
+		Mem35[i0 + 0x0010:word32] = o0_33;
+	}
+	else
+	{
+		C_30 = cond(i1);
+		if (i1 != 0x00)
+			abort();
+	}
+	word32 o3_17;
+	*o3Out = i3;
+	return C_30;
+}
+
+// 00015884: void _obstack_memory_used(Register word32 o0)
 void _obstack_memory_used(word32 o0)
 {
 	word32 g3_15 = Mem0[o0 + 0x04:word32];
@@ -3661,12 +3895,14 @@ void _obstack_memory_used(word32 o0)
 	return;
 }
 
+// 000158B4: void print_and_abort()
 void print_and_abort()
 {
 	fputs();
 	exit();
 }
 
+// 000158D8: Register word32 try(Register word32 o0, Register word32 o1, Register out ptr32 i2Out, Register out ptr32 i3Out, Register out ptr32 i6Out)
 word32 try(word32 o0, word32 o1, ptr32 & i2Out, ptr32 & i3Out, ptr32 & i6Out)
 {
 	word32 i0_25 = o0;
@@ -3691,6 +3927,7 @@ word32 try(word32 o0, word32 o1, ptr32 & i2Out, ptr32 & i3Out, ptr32 & i6Out)
 	return i0_25;
 }
 
+// 00015918: void choose_temp_base()
 void choose_temp_base()
 {
 	getenv();
@@ -3756,6 +3993,7 @@ l00015A04:
 	goto l00015A04;
 }
 
+// 00015A7C: void make_temp_file(Register word32 o0)
 void make_temp_file(word32 o0)
 {
 	getenv();
@@ -3821,7 +4059,7 @@ void make_temp_file(word32 o0)
 	{
 		Mem112[o3_88 + 0x08:byte] = (byte) o1_108;
 		mkstemps(o0_77 + 0x0A, l2_141);
-		if (o0_77 != ~0x0A)
+		if (o0_77 != 11)
 		{
 			close();
 			if (o0_77 == 0x0A)
@@ -3839,6 +4077,7 @@ void make_temp_file(word32 o0)
 	}
 }
 
+// 00015C24: Register word32 my_index(Register word32 o0, Register word32 o1)
 word32 my_index(word32 o0, word32 o1)
 {
 	word32 g2_28 = (int32) Mem0[o0 + 0x00:int8];
@@ -3854,9 +4093,10 @@ word32 my_index(word32 o0, word32 o1)
 	return o0;
 }
 
+// 00015C60: Register word32 exchange(Register word32 o0, Register out ptr32 i2Out, Register out ptr32 i4Out, Register out ptr32 i5Out, Register out ptr32 i6Out)
 word32 exchange(word32 o0, ptr32 & i2Out, ptr32 & i4Out, ptr32 & i5Out, ptr32 & i6Out)
 {
-exchange_entry:
+fn00015C60_entry:
 	word32 g2_180
 	word32 g1_17 = Mem0[0x0002B300:word32]
 	word32 i5_112 = Mem0[0x00028068:word32]
@@ -3966,9 +4206,10 @@ l00015D44:
 	Mem40[0x0002B2F0:word32] = Mem0[0x0002B2F0:word32] + (g2_180 - Mem0[0x0002B300:word32])
 	Mem41[0x0002B300:word32] = g2_180
 	return i1_115
-exchange_exit:
+fn00015C60_exit:
 }
 
+// 00015D64: void _getopt_initialize(Register word32 o2)
 void _getopt_initialize(word32 o2)
 {
 	word32 o2_19 = Mem0[0x00028068:word32];
@@ -3989,9 +4230,10 @@ void _getopt_initialize(word32 o2)
 	return;
 }
 
+// 00015E04: Register word32 _getopt_internal(Register word32 o1, Register word32 o2, Register word32 o3, Register word32 o4, Register word32 o5, Stack word32 dwArg44, Stack word32 dwArg50, Register out ptr32 l0Out, Register out ptr32 l6Out, Register out ptr32 l7Out, Register out ptr32 i6Out)
 word32 _getopt_internal(word32 o1, word32 o2, word32 o3, word32 o4, word32 o5, word32 dwArg44, word32 dwArg50, ptr32 & l0Out, ptr32 & l6Out, ptr32 & l7Out, ptr32 & i6Out)
 {
-_getopt_internal_entry:
+fn00015E04_entry:
 	*l7Out = l7
 	word32 o2_21 = Mem0[0x00028068:word32]
 	Mem26[0x00028064:word32] = 0x00
@@ -4870,9 +5112,10 @@ l00016974:
 	i0_1062 = i0_218 >> 0x18
 l00016978:
 	return i0_1062
-_getopt_internal_exit:
+fn00015E04_exit:
 }
 
+// 00016980: void getopt(Register word32 o0, Register word32 o1, Register word32 o2)
 void getopt(word32 o0, word32 o1, word32 o2)
 {
 	word32 l0_27;
@@ -4883,6 +5126,7 @@ void getopt(word32 o0, word32 o1, word32 o2)
 	return;
 }
 
+// 000169A8: Register word32 getopt_long(Register word32 o0, Register word32 o1, Register word32 o2, Register word32 o3, Register word32 o4, Register out ptr32 l6Out, Register out ptr32 l7Out, Register out ptr32 i6Out)
 word32 getopt_long(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, ptr32 & l6Out, ptr32 & l7Out, ptr32 & i6Out)
 {
 	word32 l0_27;
@@ -4893,6 +5137,7 @@ word32 getopt_long(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, ptr32 
 	return l0_27;
 }
 
+// 000169D0: void getopt_long_only(Register word32 o0, Register word32 o1, Register word32 o2, Register word32 o3, Register word32 o4)
 void getopt_long_only(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4)
 {
 	word32 l0_27;
@@ -4903,9 +5148,10 @@ void getopt_long_only(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4)
 	return;
 }
 
+// 000169F8: void pexecute(Stack word32 dwArg44, Stack word32 dwArg48, Stack word32 dwArg4C, Stack word32 dwArg54, Stack word32 dwArg58, Stack word32 dwArg5C)
 void pexecute(word32 dwArg44, word32 dwArg48, word32 dwArg4C, word32 dwArg54, word32 dwArg58, word32 dwArg5C)
 {
-pexecute_entry:
+fn000169F8_entry:
 	sp = fp
 	v3 = fp + ~0x8F
 	i0 = o0
@@ -5189,15 +5435,17 @@ l00016C24:
 	sp = i6
 	o7 = i7
 	return
-pexecute_exit:
+fn000169F8_exit:
 }
 
+// 00016C2C: void pwait(Register word32 o1)
 void pwait(word32 o1)
 {
 	wait();
 	return;
 }
 
+// 00016C40: void mkstemps(Register word32 o0, Register word32 o1)
 void mkstemps(word32 o0, word32 o1)
 {
 	strlen();
@@ -5252,11 +5500,13 @@ void mkstemps(word32 o0, word32 o1)
 	return;
 }
 
+// 00016E64: Register word32 fn00016E64(Register word32 o7, Register word32 l7)
 word32 fn00016E64(word32 o7, word32 l7)
 {
 	return o7 + l7;
 }
 
+// 00016E6C: Register word32 __do_global_ctors_aux(Register word32 o7)
 word32 __do_global_ctors_aux(word32 o7)
 {
 	word32 l0_30;
@@ -5297,289 +5547,337 @@ word32 __do_global_ctors_aux(word32 o7)
 	return l0_30;
 }
 
+// 00016EBC: void init_dummy()
 void init_dummy()
 {
 	return;
 }
 
+// 00016EC8: Register word32 _init(Register word32 o7)
 word32 _init(word32 o7)
 {
 	frame_dummy(o7);
 	return __do_global_ctors_aux(o7);
 }
 
+// 00016EE4: void _fini(Register word32 o7)
 void _fini(word32 o7)
 {
 	__do_global_dtors_aux(o7);
 	return;
 }
 
+// 00027C38: void _PROCEDURE_LINKAGE_TABLE_()
 void _PROCEDURE_LINKAGE_TABLE_()
 {
-_PROCEDURE_LINKAGE_TABLE__entry:
+fn00027C38_entry:
 l00027C38:
 l00027C38:
-_PROCEDURE_LINKAGE_TABLE__exit:
+fn00027C38_exit:
 }
 
+// 00027C68: void atexit()
 void atexit()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027C74: void exit()
 void exit()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027C80: void _exit()
 void _exit()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027C8C: void fn00027C8C()
 void fn00027C8C()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027C98: void fn00027C98()
 void fn00027C98()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027CA4: void vfprintf()
 void vfprintf()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027CB0: void strerror()
 void strerror()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027CBC: void malloc()
 void malloc()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027CC8: void realloc()
 void realloc()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027CD4: void free()
 void free()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027CE0: void strcpy()
 void strcpy()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027CEC: void strncpy()
 void strncpy()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027CF8: void read()
 void read()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027D04: void write()
 void write()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027D10: void abort()
 void abort()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027D1C: void strlen()
 void strlen()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027D28: void strncmp()
 void strncmp()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027D34: void strcmp()
 void strcmp()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027D40: void stat()
 void stat()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027D4C: void atoi()
 void atoi()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027D58: void memcpy()
 void memcpy()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027D64: void fprintf()
 void fprintf()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027D70: void strcat()
 void strcat()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027D7C: void access()
 void access()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027D88: void open()
 void open()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027D94: void close()
 void close()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027DA0: void unlink()
 void unlink()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027DAC: void strrchr()
 void strrchr()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027DB8: void longjmp()
 void longjmp()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027DC4: void setjmp()
 void setjmp()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027E00: void setlocale()
 void setlocale()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027E0C: void getenv()
 void getenv()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027E18: void getcwd()
 void getcwd()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027E24: void fputs()
 void fputs()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027E30: void mktemp()
 void mktemp()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027E54: void pipe()
 void pipe()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027E60: void sleep()
 void sleep()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027E6C: void vfork()
 void vfork()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027E78: void dup()
 void dup()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027E84: void wait()
 void wait()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027E90: void gettimeofday()
 void gettimeofday()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027E9C: void getpid()
 void getpid()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027EA8: void __urem64()
 void __urem64()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;
 }
 
+// 00027EB4: void __udiv64()
 void __udiv64()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
