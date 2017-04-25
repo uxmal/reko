@@ -257,6 +257,10 @@
     <Compile Include="NativeInterface\NativeSymbolSource.cs" />
     <Compile Include="NativeInterface\PosixLibraryLoader.cs" />
     <Compile Include="NativeInterface\WindowsLibraryLoader.cs" />
+    <Compile Include="NativeInterface\BaseType.cs" />
+    <Compile Include="NativeInterface\INativeRewriter.cs" />
+    <Compile Include="NativeInterface\IRtlNativeEmitter.cs" />
+    <Compile Include="NativeInterface\RtlNativeEmitter.cs" />
     <Compile Include="Operators\FNegOperator.cs" />
     <Compile Include="Output\CTypeReferenceFormatter.cs" />
     <Compile Include="Rational.cs" />
