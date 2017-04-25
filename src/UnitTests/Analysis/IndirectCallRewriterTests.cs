@@ -17,12 +17,13 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
+
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -36,6 +37,13 @@ namespace Reko.UnitTests.Analysis
     {
         private string CSignature;
         private IDictionary<string, DataType> types;
+        SsaProcedureBuilder m;
+
+        [SetUp]
+        public void Setup()
+        {
+            m = new SsaProcedureBuilder();
+        }
 
         private void Given_CSignature(string CSignature)
         {
@@ -72,6 +80,14 @@ namespace Reko.UnitTests.Analysis
                 StackDelta = stackDelta,
             };
             return Ptr32(ft);
+        }
+
+        private DataType RefFnPtr32(
+            string name,
+            Identifier returnValue,
+            params Identifier[] parameters)
+        {
+            return new TypeReference(name, FnPtr32(returnValue, parameters));
         }
 
         private Identifier VoidId()
@@ -218,6 +234,21 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
+        public void RunIndirectCallRewriter()
+        {
+            var eventListener = new FakeDecompilerEventListener();
+            var program = new Program
+            {
+                Architecture = m.Architecture,
+            };
+            var icrw = new IndirectCallRewriter(
+                program,
+                m.Ssa,
+                eventListener);
+            icrw.Rewrite();
+            m.Ssa.CheckUses(s => Assert.Fail(s));
+        }
+
         [Test]
         public void Icrw_NoArguments()
         {
@@ -286,6 +317,22 @@ namespace Reko.UnitTests.Analysis
             RunFileTest(
                 "Fragments/icrw/indirect_call_two_arguments.asm",
                 "Analysis/IcrwTwoArgumentsNoFuncs.txt");
+        }
+
+        [Test]
+        public void Icrw_TypeReferenceToFunc()
+        {
+            var a = m.Reg32("a");
+            var b = m.Reg32("b");
+            var fn = m.Reg32("fn");
+            fn.DataType = RefFnPtr32("FnPtr", a, b);
+            var uses = new Identifier[] { b };
+            var defines = new Identifier[] { a };
+            var callStm = m.Call(fn, 4, uses, defines);
+
+            RunIndirectCallRewriter();
+
+            Assert.AreEqual("a = fn(b)", callStm.Instruction.ToString());
         }
     }
 }
