@@ -136,6 +136,7 @@ class INativeRewriter : public IUnknown
 {
 public:
 	virtual STDMETHODIMP Next() = 0;
+	virtual int32_t STDAPICALLTYPE  GetCount() = 0; //$DEBUG: used to track object leaks.
 };
 
 class INativeRewriterHost: public IUnknown

@@ -32,6 +32,7 @@ namespace Reko.Core.NativeInterface
     public interface INativeRewriter
     {
         [PreserveSig] int Next();
+        [PreserveSig] int GetCount();  //$DEBUG: used to track object leaks.
     }
 
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]

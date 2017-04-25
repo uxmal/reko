@@ -26,6 +26,7 @@ ArmRewriter::ArmRewriter(
 	auto ec = cs_open(CS_ARCH_ARM, CS_MODE_ARM, &hcapstone); 
 	ec = cs_option(hcapstone, CS_OPT_DETAIL, CS_OPT_ON);
 	this->instr = cs_malloc(hcapstone);
+	++s_count;
 }
 
 // {12506D0F-1C67-4828-9601-96F8ED4D162D}
@@ -67,6 +68,7 @@ STDMETHODIMP_(ULONG) ArmRewriter::Release()
 	if (--this->cRef > 0)
 		return this->cRef;
 	Dump("Release: %08x destroyed", this);
+	--s_count;
 	delete this;
 	return 0;
 }
@@ -975,3 +977,10 @@ const int ArmRewriter::type_sizes[] =
 	4,						// Real32,
 	8,						// Real64,
 };
+
+int32_t ArmRewriter::GetCount()
+{
+	return s_count;
+}
+
+int ArmRewriter::s_count = 0;

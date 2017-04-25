@@ -93,7 +93,7 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame, host);
+            return new ArmRewriterNew(this, rdr, (ArmProcessorState)state, frame, host);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

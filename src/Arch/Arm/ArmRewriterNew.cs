@@ -62,9 +62,11 @@ namespace Reko.Arch.Arm
             private INativeRewriter native;
             private byte[] bytes;
             private GCHandle hBytes;
-            private RtlNativeEmitter rtlEmitter;
             private RtlEmitter m;
+            private RtlNativeEmitter rtlEmitter;
             private ArmNativeRewriterHost host;
+            private IntPtr iRtlEmitter;
+            private IntPtr iHost;
 
             public Enumerator(ArmRewriterNew outer)
             {
@@ -77,8 +79,8 @@ namespace Reko.Arch.Arm
                 this.rtlEmitter = new RtlNativeEmitter(m, outer.host);
                 this.host = new ArmNativeRewriterHost(outer.frame, outer.host, rtlEmitter);
 
-                var iRtlEmitter = GetCOMInterface(rtlEmitter, IID_IRtlEmitter);
-                var iHost = GetCOMInterface(host, IID_INativeRewriterHost);
+                this.iRtlEmitter = GetCOMInterface(rtlEmitter, IID_IRtlEmitter);
+                this.iHost = GetCOMInterface(host, IID_INativeRewriterHost);
                 this.native = CreateNativeRewriter(hBytes.AddrOfPinnedObject(), bytes.Length, (int)outer.rdr.Offset, addr, iRtlEmitter, iHost);
             }
 
@@ -94,13 +96,22 @@ namespace Reko.Arch.Arm
                 return intf;
             }
 
-
             public void Dispose()
             {
                 if (this.native != null)
                 {
-                    //$TODO: make sure it gets destroyed.
+                    int n = native.GetCount();
+                    Marshal.ReleaseComObject(this.native);
+                    this.native = null;
                 }
+                if (iHost != null)
+                {
+                    Marshal.Release(iHost);
+                }
+                if (iRtlEmitter != null)
+                { 
+                Marshal.Release(iRtlEmitter);
+            }
                 if (this.hBytes != null && this.hBytes.IsAllocated)
                 {
                     this.hBytes.Free();
@@ -110,6 +121,7 @@ namespace Reko.Arch.Arm
             public bool MoveNext()
             {
                 m.Instructions = new List<RtlInstruction>();
+                int n = native.GetCount();
                 if (native.Next() == 1)
                     return false;
                 this.Current = this.rtlEmitter.ExtractCluster();

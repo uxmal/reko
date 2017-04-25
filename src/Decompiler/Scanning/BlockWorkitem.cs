@@ -111,9 +111,10 @@ namespace Reko.Scanning
                 if (blNext != null)
                 {
                     EnsureEdge(blockCur.Procedure, blockCur, blNext);
-                    return;
+                    break;
                 }
             }
+            rtlStream.Dispose();
         }
 
         private bool ProcessRtlCluster(RtlInstructionCluster ric)

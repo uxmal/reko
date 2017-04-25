@@ -27,6 +27,7 @@ public:
 	STDMETHOD_(ULONG, Release)();
 
 	STDMETHOD(Next)();
+	int32_t STDMETHODCALLTYPE GetCount();
 
 private:
 	void AddConditional(void(*mkInstr)());
@@ -116,4 +117,5 @@ private:
 
 	static const BaseType register_types[];
 	static const int type_sizes[];
+	static int s_count;			//$DEBUG: tracking number of "live" objects 
 };
