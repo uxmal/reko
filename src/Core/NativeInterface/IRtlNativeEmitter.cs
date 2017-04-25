@@ -43,22 +43,18 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] void Invalid();
         [PreserveSig] void Nop();
         [PreserveSig] void Return(int x, int y);
-        [PreserveSig] void SetRtlClass(RtlClass rtlClass);
+        [PreserveSig] void FinishCluster(RtlClass rtlClass, ulong address, int mcLength);
         [PreserveSig] void SideEffect(HExpr exp);
 
         [PreserveSig] HExpr And(HExpr a, HExpr b);
-        [PreserveSig] HExpr And(HExpr a, int n);
         [PreserveSig] HExpr Cast(BaseType type, HExpr a);
         [PreserveSig] HExpr Comp(HExpr a);
         [PreserveSig] HExpr Cond(HExpr a);
         [PreserveSig] HExpr Dpb(HExpr dst, HExpr src, int pos);
         [PreserveSig] HExpr IAdc(HExpr a, HExpr b, HExpr c);
         [PreserveSig] HExpr IAdd(HExpr a, HExpr b);
-        [PreserveSig] HExpr IAdd(HExpr a, int n);
         [PreserveSig] HExpr IMul(HExpr a, HExpr b);
-        [PreserveSig] HExpr IMul(HExpr a, int n);
         [PreserveSig] HExpr ISub(HExpr a, HExpr b);
-        [PreserveSig] HExpr ISub(HExpr a, int n);
         [PreserveSig] HExpr Mem(BaseType dt, HExpr ea);
         [PreserveSig] HExpr Mem8(HExpr ea);
         [PreserveSig] HExpr Mem16(HExpr ea);
@@ -67,16 +63,11 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr Not(HExpr a);
         [PreserveSig] HExpr Or(HExpr a, HExpr b);
         [PreserveSig] HExpr Ror(HExpr a, HExpr b);
-        [PreserveSig] HExpr Ror(HExpr a, int n);
         [PreserveSig] HExpr Rrc(HExpr a, HExpr b);
-        [PreserveSig] HExpr Rrc(HExpr a, int n);
         [PreserveSig] HExpr Sar(HExpr a, HExpr b);
-        [PreserveSig] HExpr Sar(HExpr a, int n);
         [PreserveSig] HExpr Slice(HExpr a, int pos, int bits);
         [PreserveSig] HExpr Shl(HExpr a, HExpr b);
-        [PreserveSig] HExpr Shl(HExpr a, int n);
         [PreserveSig] HExpr Shr(HExpr a, HExpr b);
-        [PreserveSig] HExpr Shr(HExpr a, int n);
         [PreserveSig] HExpr Test(Core.Expressions.ConditionCode cc, HExpr exp);
         [PreserveSig] HExpr SMul(HExpr a, HExpr b);
         [PreserveSig] HExpr UMul(HExpr a, HExpr b);
@@ -95,5 +86,9 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr Word16(ushort us);
         [PreserveSig] HExpr Word32(uint u);
         [PreserveSig] HExpr Word64(ulong ul);
+
+        // Add args to the "argument buffer".
+        [PreserveSig] void AddArg(HExpr a);
+    	[PreserveSig] HExpr Fn(HExpr fn);
     }
 }

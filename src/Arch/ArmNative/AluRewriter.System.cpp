@@ -24,7 +24,7 @@ void ArmRewriter::RewriteCps()
 {
 	if (instr->detail->arm.cps_mode == ARM_CPSMODE_ID)
 	{
-		m.SideEffect(host->PseudoProcedure("__cps_id", BaseType::Void));
+		m.SideEffect(m.Fn(host->EnsurePseudoProcedure("__cps_id", BaseType::Void, 1)));
 		return;
 	}
 	NotImplementedYet();
@@ -32,12 +32,10 @@ void ArmRewriter::RewriteCps()
 
 void ArmRewriter::RewriteDmb()
 {
-	//$TODO
-	/*
-	auto memBarrier = instr->detail->arm.MemoryBarrier.ToString().ToLowerInvariant();
-	auto name = "__dmb_" + memBarrier;
-	m.SideEffect(host->PseudoProcedure(name, VoidType.Instance));
-	*/
+	auto memBarrier = MemBarrierName(instr->detail->arm.mem_barrier);
+	char name[100];
+	snprintf(name, sizeof(name), "__dmb_%s", memBarrier);
+	m.SideEffect(m.Fn(host->EnsurePseudoProcedure(name, BaseType::Void, 1)));
 }
 
 void ArmRewriter::RewriteMcr()
@@ -71,13 +69,21 @@ void ArmRewriter::RewriteMrc()
 
 void ArmRewriter::RewriteMrs()
 {
-	ConditionalSkip();
-	m.Assign(Operand(Dst()), host->PseudoProcedure("__mrs", BaseType::Word32, Operand(Src1())));
+	auto ppp = host->EnsurePseudoProcedure("__mrs", BaseType::Word32, 1);
+	m.AddArg(Operand(Src1()));
+	m.Assign(Operand(Dst()), m.Fn(ppp));
 }
 
 void ArmRewriter::RewriteMsr()
 {
-	ConditionalSkip();
-	m.SideEffect(host->PseudoProcedure("__msr", BaseType::Word32, Operand(Dst()), Operand(Src1())));
+	auto ppp = host->EnsurePseudoProcedure("__msr", BaseType::Word32, 2);
+	m.AddArg(Operand(Dst()));
+	m.AddArg(Operand(Src1()));
+	m.SideEffect(m.Fn(ppp));
 }
 
+const char * ArmRewriter::MemBarrierName(arm_mem_barrier barrier)
+{
+	return "NOT_IMPLEMENTED";
+
+}

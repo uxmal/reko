@@ -34,7 +34,6 @@ namespace Reko.Arch.Arm
     {
         private void RewriteVldmia()
         {
-            ConditionalSkip();
             var rSrc = this.Operand(Dst);
             var offset = 0;
             foreach (var r in instr.ArchitectureDetail.Operands.Skip(1))
@@ -55,7 +54,6 @@ namespace Reko.Arch.Arm
 
         private void RewriteVmov()
         {
-            ConditionalSkip();
             var dst = this.Operand(Dst);
             var src = this.Operand(Src1);
             var fname = "__vmov_" + VectorElementType();
@@ -65,8 +63,6 @@ namespace Reko.Arch.Arm
 
         private void RewriteVstmia()
         {
-            ConditionalSkip();
-
             var rSrc = this.Operand(Dst);
             var offset = 0;
             foreach (var r in instr.ArchitectureDetail.Operands.Skip(1))

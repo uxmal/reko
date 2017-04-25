@@ -7,15 +7,17 @@ void Dump(const char * fmt, ...);
 
 ArmRewriter::ArmRewriter(
 	const uint8_t * rawBytes,
-	size_t length,
+	size_t availableBytes,
+	uint64_t address,
 	IRtlNativeEmitter * emitter,
 	INativeRewriterHost * host)
 :
 	rawBytes(rawBytes),
-	length(length),
+	available(availableBytes),
+	address(address),
 	m(*emitter),
 	host(host),
-	cRef(0),
+	cRef(1),
 	instr(nullptr)
 {
 	auto hcap = ::LoadLibraryW(L"cs_open");
@@ -72,12 +74,26 @@ STDMETHODIMP_(ULONG) ArmRewriter::Release()
 STDMETHODIMP ArmRewriter::Next()
 {
 	Dump("Next: %08x", this);
-	uint64_t addr = 0x00123400;
-	bool f = cs_disasm_iter(hcapstone, &rawBytes, &length, &addr, this->instr);
+	if (available == 0)
+		return S_FALSE;			// No more work to do.
+	auto addrInstr = address;
+	bool f = cs_disasm_iter(hcapstone, &rawBytes, &available, &address, instr);
+	if (!f)
+	{
+		// Failed to disassemble the instruction because it was invalid.
+		m.Invalid();
+		m.FinishCluster(RtlClass::Invalid, addrInstr, 4);
+		return S_OK;
+	}
+	// Most instructions are linear.
+	rtlClass = RtlClass::Linear;
+	
+	// Most instructions have a conditional mode of operation.
+	//$TODO: make sure non-conditional instructions are handled correctly here.
+	ConditionalSkip(false);	
 	switch (instr->id)
 	{
 	default:
-
 	case ARM_INS_ADR:
 	case ARM_INS_AESD:
 	case ARM_INS_AESE:
@@ -518,6 +534,7 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VSTMIA: RewriteVstmia(); break;
 
 	}
+	m.FinishCluster(rtlClass, addrInstr, instr->size);
 	return S_OK;
 }
 
@@ -533,7 +550,7 @@ void ArmRewriter::NotImplementedYet()
 
 HExpr ArmRewriter::NZCV()
 {
-	return host->EnsureFlagGroup((int)ARM_REG_CPSR, 0x1111, "NZCV", BaseType::Byte);
+	return host->EnsureFlagGroup((int)ARM_REG_CPSR, 0xF, "NZCV", BaseType::Byte);
 }
 
 void ArmRewriter::MaybeUpdateFlags(HExpr opDst)
@@ -560,35 +577,35 @@ void ArmRewriter::RewriteB(bool link)
 	}
 	if (link)
 	{
-		m.SetRtlClass(RtlClass::Transfer);
+		rtlClass = RtlClass::Transfer;
 		if (instr->detail->arm.cc == ARM_CC_AL)
 		{
 			m.Call(dst, 0);
 		}
 		else
 		{
-			//$TODO: conditional code.
-			//m.If(TestCond(instr->detail->arm.CodeCondition), new RtlCall(dst, 0, RtlClass::Transfer));
+			rtlClass = RtlClass::ConditionalTransfer;
+			m.Call(dst, 0);
 		}
 	}
 	else
 	{
 		if (instr->detail->arm.cc == ARM_CC_AL)
 		{
-			m.SetRtlClass(RtlClass::Transfer);
+			rtlClass = RtlClass::Transfer;
 			m.Goto(dst);
 		}
 		else
 		{
-			m.SetRtlClass(RtlClass::ConditionalTransfer);
+			rtlClass = RtlClass::ConditionalTransfer;
 			if (dstIsAddress)
 			{
 				m.Branch(TestCond(instr->detail->arm.cc), dst, RtlClass::ConditionalTransfer);
 			}
 			else
 			{
-				//$TODO: conditional code
-				//m.If(TestCond(instr->detail->arm.CodeCondition), new RtlGoto(dst, RtlClass::ConditionalTransfer));
+				ConditionalSkip(true);
+				m.Goto(dst);
 			}
 		}
 	}
@@ -615,11 +632,19 @@ void ArmRewriter::ConditionalAssign(HExpr dst, HExpr src)
 
 // If a conditional ARM instruction is encountered, generate an IL
 // instruction to skip the remainder of the instruction cluster.
-void ArmRewriter::ConditionalSkip()
+void ArmRewriter::ConditionalSkip(bool force)
 {
 	auto cc = instr->detail->arm.cc;
-	if (cc == ARM_CC_AL)
-		return; // never skip!
+	if (!force)
+	{
+		if (cc == ARM_CC_AL)
+			return; // never skip!
+		if (instr->id == ARM_INS_B)
+		{
+			// These instructions handle the branching themselves.
+			return;
+		}
+	}
 	m.BranchInMiddleOfInstruction(
 		TestCond(Invert(cc)),
 		m.Ptr32(static_cast<uint32_t>(instr->address) + 4),
@@ -703,7 +728,7 @@ HExpr ArmRewriter::Operand(const cs_arm_op & op)
 	}
 	//$TODO
 	//throw new NotImplementedException(op.Type.ToString());
-	return 0;
+	return HExpr();
 }
 
 BaseType ArmRewriter::SizeFromLoadStore()
@@ -730,9 +755,9 @@ HExpr ArmRewriter::MaybeShiftOperand(HExpr exp, const cs_arm_op & op)
 {
 	switch (op.shift.type)
 	{
-	case ARM_SFT_ASR: return m.Sar(exp, op.shift.value);
-	case ARM_SFT_LSL: return m.Shl(exp, op.shift.value);
-	case ARM_SFT_LSR: return m.Shr(exp, op.shift.value);
+	case ARM_SFT_ASR: return m.Sar(exp, m.Int32(op.shift.value));
+	case ARM_SFT_LSL: return m.Shl(exp, m.Int32(op.shift.value));
+	case ARM_SFT_LSR: return m.Shr(exp, m.Int32(op.shift.value));
 	case ARM_SFT_ROR: return m.Ror(exp, m.Int32(op.shift.value));
 	case ARM_SFT_RRX: return m.Rrc(exp, m.Int32(op.shift.value));
 	case ARM_SFT_ASR_REG: return m.Sar(exp, Reg(op.shift.value));
@@ -804,7 +829,7 @@ HExpr ArmRewriter::TestCond(arm_cc cond)
 	case ARM_CC_VS:
 		return m.Test(ConditionCode::OV, FlagGroup(FlagM::VF, "V", BaseType::Byte));
 	}
-	return 0;
+	return HExpr();
 }
 
 HExpr ArmRewriter::FlagGroup(FlagM bits, const char * name, BaseType type)

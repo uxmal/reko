@@ -26,6 +26,8 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +44,18 @@ namespace Reko.UnitTests.Core.NativeInterface
         public void Setup()
         {
             this.rtlc = new RtlInstructionCluster(Address.Ptr32(0x00123400), 4);
-            this.m = new RtlNativeEmitter(new RtlEmitter(rtlc.Instructions));
+            this.m = new RtlNativeEmitter(new RtlEmitter(rtlc.Instructions), null);
+        }
+
+        private void AssertInstructions(string sExp, RtlInstructionCluster rtlc)
+        {
+            var sw = new StringWriter();
+            rtlc.Write(sw);
+            if (sw.ToString() != sExp)
+            {
+                Debug.Print(sw.ToString());
+            }
+            Assert.AreEqual(sExp, sw.ToString());
         }
 
         [Test]
@@ -66,8 +79,6 @@ namespace Reko.UnitTests.Core.NativeInterface
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
-        [Category("integrationDevelopment")]
         public void Rtlne_Assign_ForgotSetRtlClass()
         {
             var hDst = m.Mem16(m.Ptr32(0x00123400));
@@ -75,15 +86,69 @@ namespace Reko.UnitTests.Core.NativeInterface
             m.Assign(hDst, hSrc);
             try
             {
-                var rtlc = m.Extract();
+                var rtlc = m.ExtractCluster();
                 Assert.Fail("Expected an exception because we forgot to set the RtlClass of the expression");
             }
             catch (InvalidOperationException)
             {
                 return;
             }
+        }
 
+        [Test]
+        public void Rtlne_Assign()
+        {
+            var hDst = m.Mem16(m.Ptr32(0x00123400));
+            var hSrc = m.UInt16(0x5678);
+            m.Assign(hDst, hSrc);
+            m.FinishCluster(RtlClass.Linear, 0x00111100, 4);
+            var rtlc = m.ExtractCluster();
+            var sExp = 
+@"00111100(4):
+Mem0[0x00123400:word16] = 0x5678
+";
+            AssertInstructions(sExp, rtlc);
+        }
 
+        [Test]
+        public void Rtlne_AssignBinExp()
+        {
+            var hDst = m.Mem16(m.Ptr32(0x00123400));
+            var hLeft = m.Mem16(m.Ptr32(0x00123400));
+            var hRight = m.UInt16(0x5678);
+            m.Assign(hDst, m.IAdd(hLeft,hRight));
+            m.FinishCluster(RtlClass.Linear, 0x00111100, 4);
+            var rtlc = m.ExtractCluster();
+            var sExp =
+@"00111100(4):
+Mem0[0x00123400:word16] = Mem0[0x00123400:word16] + 0x5678
+";
+            AssertInstructions(sExp, rtlc);
+        }
+
+        [Test]
+        public void Rtlne_AddArgsToFn()
+        {
+            var hArg1 = m.Int16(3);
+            var hArg2 = m.Int16(4);
+            var hArg3 = m.Int16(5);
+            var fn = m.MapToHandle(
+                new ProcedureConstant(
+                    PrimitiveType.Pointer32,
+                    new ExternalProcedure("RightTriangle", new FunctionType())));
+
+            m.AddArg(hArg1);
+            m.AddArg(hArg2);
+            m.AddArg(hArg3);
+            m.SideEffect(m.Fn(fn));
+
+            m.FinishCluster(RtlClass.Linear, 0x00111100, 4);
+            var rtlc = m.ExtractCluster();
+            var sExp =
+@"00111100(4):
+RightTriangle(3, 4, 5)
+";
+            AssertInstructions(sExp, rtlc);
         }
     }
 }

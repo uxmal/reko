@@ -5,7 +5,10 @@ typedef HExpr (STDAPICALLTYPE IRtlNativeEmitter::*BinOpEmitter)(HExpr, HExpr);
 
 enum class FlagM
 {
-	CF, VF, ZF, NF,
+	NF = 8,
+	ZF = 4,
+	CF = 2,
+	VF = 1
 };
 inline FlagM operator | (FlagM a, FlagM b) { return (FlagM)((int)a | (int)b); }
 
@@ -15,6 +18,7 @@ public:
 	ArmRewriter(
 		const uint8_t * rawBytes,
 		size_t length,
+		uint64_t address,
 		IRtlNativeEmitter * emitter,
 		INativeRewriterHost * host);
 
@@ -26,7 +30,7 @@ public:
 
 private:
 	void AddConditional(void(*mkInstr)());
-	void ConditionalSkip();
+	void ConditionalSkip(bool force);
 	void ConditionalAssign(HExpr dst, HExpr src);
 	HExpr FlagGroup(FlagM bits, const char * name, BaseType type);
 	arm_cc Invert(arm_cc);
@@ -36,6 +40,7 @@ private:
 	void MaybeUpdateFlags(HExpr opDst);
 	void MaybePostOperand(const cs_arm_op & op);
 	HExpr MaybeShiftOperand(HExpr exp, const cs_arm_op & op);
+	const char * MemBarrierName(arm_mem_barrier barrier);
 	HExpr NZCV();
 	HExpr Operand(const cs_arm_op & op);
 	HExpr Reg(int reg) { 
@@ -47,8 +52,8 @@ private:
 
 	BaseType SizeFromLoadStore();
 	HExpr TestCond(arm_cc cond);
-	const char * ArmRewriter::VectorElementType();
-
+	const char * VectorElementType();
+	BaseType VectorElementDataType();
 	const cs_arm_op & Dst() { return instr->detail->arm.operands[0]; }
 	const cs_arm_op & Src1() { return instr->detail->arm.operands[1]; }
 	const cs_arm_op & Src2() { return instr->detail->arm.operands[2]; }
@@ -70,7 +75,7 @@ private:
 	void RewriteCps();
 	void RewriteDmb();
 	void RewriteLdm(int);
-	void RewriteLdm(HExpr dst, const cs_arm_op * range, int length, int offset, bool writeback);
+	void RewriteLdm(HExpr dst, const cs_arm_op * begin, const cs_arm_op * end, int offset, bool writeback);
 	void RewriteLdr(BaseType);
 	void RewriteLdrd();
 	void RewriteMcr();
@@ -102,10 +107,12 @@ private:
 private:
 	ULONG cRef;	// COM ref count.
 
+	csh hcapstone;
 	IRtlNativeEmitter & m;
 	INativeRewriterHost * host;
 	cs_insn * instr;
 	const uint8_t * rawBytes;
-	size_t length;
-	csh hcapstone;
+	size_t available;			// Available bytes left past rawBytes
+	uint64_t address;
+	RtlClass rtlClass;
 };

@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
-            return new ArmRewriter(arch, new LeImageReader(image, 0), new ArmProcessorState(arch), frame, host);
+            return new ArmRewriterNew(arch, new LeImageReader(image, 0), new ArmProcessorState(arch), frame, host);
         }
 
         private void BuildTest(params string[] bitStrings)
@@ -127,7 +127,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmRw_lsl()
         {
-            BuildTest(0xE1a00200);  // mov\tr0,r0,lsl #4
+            BuildTest(0xE1A00200);  // mov\tr0,r0,lsl #4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r0 = r0 << 0x04");

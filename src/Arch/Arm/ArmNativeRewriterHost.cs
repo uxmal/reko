@@ -18,7 +18,10 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.NativeInterface;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,34 +35,60 @@ namespace Reko.Arch.Arm
     [ClassInterface(ClassInterfaceType.None)]
     public class ArmNativeRewriterHost : MarshalByRefObject, INativeRewriterHost
     {
-        public int CreateTemporary(BaseType size)
+        private Frame frame;
+        private IRewriterHost host;
+        private RtlNativeEmitter m;
+
+        public ArmNativeRewriterHost(Frame frame, IRewriterHost host, RtlNativeEmitter m)
         {
-            throw new NotImplementedException();
+            this.frame = frame;
+            this.host = host;
+            this.m = m;
         }
 
-        public int EnsureFlagGroup(int baseReg, int bitmask, string name, BaseType size)
+        public virtual RegisterStorage GetRegister(int reg)
         {
-            throw new NotImplementedException();
+            return A32Registers.RegisterByCapstoneIDNew[(capstone_arm_reg)reg];
         }
 
-        public int EnsureRegister(int reg)
+        public HExpr CreateTemporary(BaseType size)
         {
-            throw new NotImplementedException();
+            var id = frame.CreateTemporary(Interop.DataTypes[size]);
+            return m.MapToHandle(id);
         }
 
-        public int EnsureSequence(int regHi, int regLo, BaseType size)
+        public HExpr EnsureFlagGroup(int baseReg, int bitmask, string name, BaseType size)
         {
-            throw new NotImplementedException();
+            var reg = A32Registers.RegisterByCapstoneIDNew[(capstone_arm_reg)baseReg];
+            var id = frame.EnsureFlagGroup((FlagRegister)reg, (uint)bitmask, name, Interop.DataTypes[size]);
+            return m.MapToHandle(id);
+        }
+
+        public HExpr EnsureRegister(int reg)
+        {
+            var r = GetRegister(reg);
+            var id = frame.EnsureRegister(r);
+            return m.MapToHandle(id);
+        }
+
+        public HExpr EnsureSequence(int regHi, int regLo, BaseType size)
+        {
+            var hi = A32Registers.RegisterByCapstoneIDNew[(capstone_arm_reg)regHi];
+            var lo = A32Registers.RegisterByCapstoneIDNew[(capstone_arm_reg)regLo];
+            var id = frame.EnsureSequence(hi, lo, Interop.DataTypes[size]);
+            return m.MapToHandle(id);
         }
 
         public void Error(ulong uAddress, string error)
         {
-            throw new NotImplementedException();
+            host.Error(m.CreateAddress(uAddress), error);
         }
 
-        public int PseudoProcedure(string name, BaseType x)
+        public HExpr EnsurePseudoProcedure(string name, BaseType dt, int arity)
         {
-            throw new NotImplementedException();
+            var exp = host.EnsurePseudoProcedure(name, Interop.DataTypes[dt], arity);
+            var pc = new ProcedureConstant(PrimitiveType.Pointer32, exp);
+            return m.MapToHandle(pc);
         }
     }
 }

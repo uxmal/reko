@@ -109,6 +109,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiPrototype", "UiPrototype\UiPrototype.csproj", "{D4EA1BCE-B797-4249-BCE0-77B7CA6FC776}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{6528DBD9-8129-48D8-AA21-C169F1679646}"
+	ProjectSection(ProjectDependencies) = postProject
+		{812947D3-7B26-4536-AB23-CD26BF6CA416} = {812947D3-7B26-4536-AB23-CD26BF6CA416}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installers", "Installers", "{2426E4D6-D2C7-4F06-B54C-5CFEA0804F02}"
 EndProject

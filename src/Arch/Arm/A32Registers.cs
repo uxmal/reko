@@ -51,7 +51,8 @@ namespace Reko.Arch.Arm
 
         public static readonly RegisterStorage[] GpRegs;
 
-        public static readonly FlagRegister fpscr = new FlagRegister("fpscr", 30, PrimitiveType.Word32);
+        public static readonly FlagRegister fpscr = new FlagRegister("fpscr", 29, PrimitiveType.Word32);
+        public static readonly FlagRegister apsr = new FlagRegister("cpsr", 30, PrimitiveType.Word32);
         public static readonly FlagRegister cpsr = new FlagRegister("cpsr", 31, PrimitiveType.Word32);
 
         public static readonly RegisterStorage q0 =  new RegisterStorage("q0" , 32, 0, PrimitiveType.Word128) ;
@@ -137,6 +138,7 @@ namespace Reko.Arch.Arm
         public static readonly RegisterStorage s30 = new RegisterStorage("s30", 39, 64, PrimitiveType.Word64);
         public static readonly RegisterStorage s31 = new RegisterStorage("s31", 39, 96, PrimitiveType.Word64);
 
+        public static readonly Dictionary<capstone_arm_reg, RegisterStorage> RegisterByCapstoneIDNew;
         public static readonly Dictionary<ArmRegister, RegisterStorage> RegisterByCapstoneID;
         public static readonly Dictionary<ArmSysRegister, RegisterStorage> SysRegisterByCapstoneID;
 
@@ -161,6 +163,114 @@ namespace Reko.Arch.Arm
                     sp, 
                     lr, 
                     pc, 
+            };
+
+            RegisterByCapstoneIDNew = new Dictionary<capstone_arm_reg, RegisterStorage>
+            {
+                  { capstone_arm_reg.ARM_REG_R0  ,     r0  },
+                  { capstone_arm_reg.ARM_REG_R1  ,     r1  },
+                  { capstone_arm_reg.ARM_REG_R2  ,     r2  },
+                  { capstone_arm_reg.ARM_REG_R3  ,     r3  },
+                  { capstone_arm_reg.ARM_REG_R4  ,     r4  },
+                  { capstone_arm_reg.ARM_REG_R5  ,     r5  },
+                  { capstone_arm_reg.ARM_REG_R6  ,     r6  },
+                  { capstone_arm_reg.ARM_REG_R7  ,     r7  },
+                  { capstone_arm_reg.ARM_REG_R8  ,     r8  },
+                  { capstone_arm_reg.ARM_REG_R9  ,     r9  },
+                  { capstone_arm_reg.ARM_REG_R10 ,     r10 },
+                  { capstone_arm_reg.ARM_REG_R11 ,     r11 },
+                  { capstone_arm_reg.ARM_REG_IP  ,     ip  },
+                  { capstone_arm_reg.ARM_REG_SP  ,     sp  },
+                  { capstone_arm_reg.ARM_REG_LR  ,     lr  },
+                  { capstone_arm_reg.ARM_REG_PC  ,     pc  },
+
+                  { capstone_arm_reg.ARM_REG_Q0  ,     q0  },
+                  { capstone_arm_reg.ARM_REG_Q1  ,     q1  },
+                  { capstone_arm_reg.ARM_REG_Q2  ,     q2  },
+                  { capstone_arm_reg.ARM_REG_Q3  ,     q3  },
+                  { capstone_arm_reg.ARM_REG_Q4  ,     q4  },
+                  { capstone_arm_reg.ARM_REG_Q5  ,     q5  },
+                  { capstone_arm_reg.ARM_REG_Q6  ,     q6  },
+                  { capstone_arm_reg.ARM_REG_Q7  ,     q7  },
+                  { capstone_arm_reg.ARM_REG_Q8  ,     q8  },
+                  { capstone_arm_reg.ARM_REG_Q9  ,     q9  },
+                  { capstone_arm_reg.ARM_REG_Q10 ,     q10 },
+                  { capstone_arm_reg.ARM_REG_Q11 ,     q11 },
+                  { capstone_arm_reg.ARM_REG_Q12 ,     q12  },
+                  { capstone_arm_reg.ARM_REG_Q13 ,     q13 },
+                  { capstone_arm_reg.ARM_REG_Q14 ,     q14  },
+                  { capstone_arm_reg.ARM_REG_Q15,      q15  },
+
+                  { capstone_arm_reg.ARM_REG_D0 ,      d0 },
+                  { capstone_arm_reg.ARM_REG_D1 ,      d1 },
+                  { capstone_arm_reg.ARM_REG_D2 ,      d2 },
+                  { capstone_arm_reg.ARM_REG_D3 ,      d3 },
+                  { capstone_arm_reg.ARM_REG_D4 ,      d4 },
+                  { capstone_arm_reg.ARM_REG_D5 ,      d5 },
+                  { capstone_arm_reg.ARM_REG_D6 ,      d6 },
+                  { capstone_arm_reg.ARM_REG_D7 ,      d7 },
+                  { capstone_arm_reg.ARM_REG_D8 ,      d8 },
+                  { capstone_arm_reg.ARM_REG_D9 ,      d9 },
+                  { capstone_arm_reg.ARM_REG_D10,      d10 },
+                  { capstone_arm_reg.ARM_REG_D11,      d11 },
+                  { capstone_arm_reg.ARM_REG_D12,      d12 },
+                  { capstone_arm_reg.ARM_REG_D13,      d13 },
+                  { capstone_arm_reg.ARM_REG_D14,      d14 },
+                  { capstone_arm_reg.ARM_REG_D15,      d15 },
+                  { capstone_arm_reg.ARM_REG_D16,      d16 },
+                  { capstone_arm_reg.ARM_REG_D17,      d17 },
+                  { capstone_arm_reg.ARM_REG_D18,      d18 },
+                  { capstone_arm_reg.ARM_REG_D19,      d19 },
+                  { capstone_arm_reg.ARM_REG_D20,      d20 },
+                  { capstone_arm_reg.ARM_REG_D21,      d21 },
+                  { capstone_arm_reg.ARM_REG_D22,      d22 },
+                  { capstone_arm_reg.ARM_REG_D23,      d23 },
+                  { capstone_arm_reg.ARM_REG_D24,      d24 },
+                  { capstone_arm_reg.ARM_REG_D25,      d25 },
+                  { capstone_arm_reg.ARM_REG_D26,      d26 },
+                  { capstone_arm_reg.ARM_REG_D27,      d27 },
+                  { capstone_arm_reg.ARM_REG_D28,      d28 },
+                  { capstone_arm_reg.ARM_REG_D29,      d29 },
+                  { capstone_arm_reg.ARM_REG_D30,      d30 },
+                  { capstone_arm_reg.ARM_REG_D31,      d31 },
+
+                  { capstone_arm_reg.ARM_REG_S0 ,      s0 },
+                  { capstone_arm_reg.ARM_REG_S1 ,      s1 },
+                  { capstone_arm_reg.ARM_REG_S2 ,      s2 },
+                  { capstone_arm_reg.ARM_REG_S3 ,      s3 },
+                  { capstone_arm_reg.ARM_REG_S4 ,      s4 },
+                  { capstone_arm_reg.ARM_REG_S5 ,      s5 },
+                  { capstone_arm_reg.ARM_REG_S6 ,      s6 },
+                  { capstone_arm_reg.ARM_REG_S7 ,      s7 },
+                  { capstone_arm_reg.ARM_REG_S8 ,      s8 },
+                  { capstone_arm_reg.ARM_REG_S9 ,      s9 },
+                  { capstone_arm_reg.ARM_REG_S10,      s10 },
+                  { capstone_arm_reg.ARM_REG_S11,      s11 },
+                  { capstone_arm_reg.ARM_REG_S12,      s12 },
+                  { capstone_arm_reg.ARM_REG_S13,      s13 },
+                  { capstone_arm_reg.ARM_REG_S14,      s14 },
+                  { capstone_arm_reg.ARM_REG_S15,      s15 },
+                  { capstone_arm_reg.ARM_REG_S16,      s16 },
+                  { capstone_arm_reg.ARM_REG_S17,      s17 },
+                  { capstone_arm_reg.ARM_REG_S18,      s18 },
+                  { capstone_arm_reg.ARM_REG_S19,      s19 },
+                  { capstone_arm_reg.ARM_REG_S20,      s20 },
+                  { capstone_arm_reg.ARM_REG_S21,      s21 },
+                  { capstone_arm_reg.ARM_REG_S22,      s22 },
+                  { capstone_arm_reg.ARM_REG_S23,      s23 },
+                  { capstone_arm_reg.ARM_REG_S24,      s24 },
+                  { capstone_arm_reg.ARM_REG_S25,      s25 },
+                  { capstone_arm_reg.ARM_REG_S26,      s26 },
+                  { capstone_arm_reg.ARM_REG_S27,      s27 },
+                  { capstone_arm_reg.ARM_REG_S28,      s28 },
+                  { capstone_arm_reg.ARM_REG_S29,      s29 },
+                  { capstone_arm_reg.ARM_REG_S30,      s30 },
+                  { capstone_arm_reg.ARM_REG_S31,      s31 },
+
+                  { capstone_arm_reg.ARM_REG_APSR,      apsr },
+                  { capstone_arm_reg.ARM_REG_APSR_NZCV, apsr },
+                  { capstone_arm_reg.ARM_REG_CPSR,      cpsr },
+                  { capstone_arm_reg.ARM_REG_FPSCR,     fpscr },
             };
 
             RegisterByCapstoneID = new Dictionary<ArmRegister, RegisterStorage>
@@ -265,8 +375,9 @@ namespace Reko.Arch.Arm
                   { ArmRegister.S30,      s30 },
                   { ArmRegister.S31,      s31 },
 
-                  { ArmRegister.APSR, cpsr },
-                  { ArmRegister.APSR_NZCV, cpsr },
+                  { ArmRegister.APSR, apsr },
+                  { ArmRegister.APSR_NZCV, apsr },
+                  { ArmRegister.CPSR, cpsr },
                   { ArmRegister.FPSCR, fpscr },
             };
 
@@ -274,6 +385,7 @@ namespace Reko.Arch.Arm
             {
                 { ArmSysRegister.CPSR_C, cpsr },
             };
+
 
             RegistersByName = new Dictionary<string, RegisterStorage>(StringComparer.InvariantCultureIgnoreCase)
             {
@@ -367,4 +479,135 @@ namespace Reko.Arch.Arm
         CF = 2,
         VF = 1
     }
+
+    // The ARM register as they appear in the Capstone arm.h header file. Obviously
+    // if that file changes this will need to change too. Unit test will catch this
+    // change.
+    public enum capstone_arm_reg
+    {
+        ARM_REG_INVALID = 0,
+        ARM_REG_APSR,
+        ARM_REG_APSR_NZCV,
+        ARM_REG_CPSR,
+        ARM_REG_FPEXC,
+        ARM_REG_FPINST,
+        ARM_REG_FPSCR,
+        ARM_REG_FPSCR_NZCV,
+        ARM_REG_FPSID,
+        ARM_REG_ITSTATE,
+        ARM_REG_LR,
+        ARM_REG_PC,
+        ARM_REG_SP,
+        ARM_REG_SPSR,
+        ARM_REG_D0,
+        ARM_REG_D1,
+        ARM_REG_D2,
+        ARM_REG_D3,
+        ARM_REG_D4,
+        ARM_REG_D5,
+        ARM_REG_D6,
+        ARM_REG_D7,
+        ARM_REG_D8,
+        ARM_REG_D9,
+        ARM_REG_D10,
+        ARM_REG_D11,
+        ARM_REG_D12,
+        ARM_REG_D13,
+        ARM_REG_D14,
+        ARM_REG_D15,
+        ARM_REG_D16,
+        ARM_REG_D17,
+        ARM_REG_D18,
+        ARM_REG_D19,
+        ARM_REG_D20,
+        ARM_REG_D21,
+        ARM_REG_D22,
+        ARM_REG_D23,
+        ARM_REG_D24,
+        ARM_REG_D25,
+        ARM_REG_D26,
+        ARM_REG_D27,
+        ARM_REG_D28,
+        ARM_REG_D29,
+        ARM_REG_D30,
+        ARM_REG_D31,
+        ARM_REG_FPINST2,
+        ARM_REG_MVFR0,
+        ARM_REG_MVFR1,
+        ARM_REG_MVFR2,
+        ARM_REG_Q0,
+        ARM_REG_Q1,
+        ARM_REG_Q2,
+        ARM_REG_Q3,
+        ARM_REG_Q4,
+        ARM_REG_Q5,
+        ARM_REG_Q6,
+        ARM_REG_Q7,
+        ARM_REG_Q8,
+        ARM_REG_Q9,
+        ARM_REG_Q10,
+        ARM_REG_Q11,
+        ARM_REG_Q12,
+        ARM_REG_Q13,
+        ARM_REG_Q14,
+        ARM_REG_Q15,
+        ARM_REG_R0,
+        ARM_REG_R1,
+        ARM_REG_R2,
+        ARM_REG_R3,
+        ARM_REG_R4,
+        ARM_REG_R5,
+        ARM_REG_R6,
+        ARM_REG_R7,
+        ARM_REG_R8,
+        ARM_REG_R9,
+        ARM_REG_R10,
+        ARM_REG_R11,
+        ARM_REG_R12,
+        ARM_REG_S0,
+        ARM_REG_S1,
+        ARM_REG_S2,
+        ARM_REG_S3,
+        ARM_REG_S4,
+        ARM_REG_S5,
+        ARM_REG_S6,
+        ARM_REG_S7,
+        ARM_REG_S8,
+        ARM_REG_S9,
+        ARM_REG_S10,
+        ARM_REG_S11,
+        ARM_REG_S12,
+        ARM_REG_S13,
+        ARM_REG_S14,
+        ARM_REG_S15,
+        ARM_REG_S16,
+        ARM_REG_S17,
+        ARM_REG_S18,
+        ARM_REG_S19,
+        ARM_REG_S20,
+        ARM_REG_S21,
+        ARM_REG_S22,
+        ARM_REG_S23,
+        ARM_REG_S24,
+        ARM_REG_S25,
+        ARM_REG_S26,
+        ARM_REG_S27,
+        ARM_REG_S28,
+        ARM_REG_S29,
+        ARM_REG_S30,
+        ARM_REG_S31,
+
+        ARM_REG_ENDING,     // <-- mark the end of the list or registers
+
+        //> alias registers
+        ARM_REG_R13 = ARM_REG_SP,
+        ARM_REG_R14 = ARM_REG_LR,
+        ARM_REG_R15 = ARM_REG_PC,
+
+        ARM_REG_SB = ARM_REG_R9,
+        ARM_REG_SL = ARM_REG_R10,
+        ARM_REG_FP = ARM_REG_R11,
+        ARM_REG_IP = ARM_REG_R12,
+    }
+
 }
