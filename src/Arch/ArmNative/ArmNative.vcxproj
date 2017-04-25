@@ -153,7 +153,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AluRewriter.System.cpp" />
+    <ClCompile Include="ArmRewriter.System.cpp" />
     <ClCompile Include="ArmNative.cpp" />
     <ClCompile Include="ArmRewriter.Alu.cpp" />
     <ClCompile Include="ArmRewriter.cpp" />

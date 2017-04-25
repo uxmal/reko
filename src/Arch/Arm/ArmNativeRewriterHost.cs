@@ -51,6 +51,12 @@ namespace Reko.Arch.Arm
             return A32Registers.RegisterByCapstoneIDNew[(capstone_arm_reg)reg];
         }
 
+        public virtual RegisterStorage GetSysRegister(int sysreg)
+        {
+            var s = (capstone_arm_reg)sysreg;
+            return A32Registers.SysRegisterByCapstoneIDNew[(capstone_arm_sysreg)sysreg];
+        }
+
         public HExpr CreateTemporary(BaseType size)
         {
             var id = frame.CreateTemporary(Interop.DataTypes[size]);
@@ -64,9 +70,13 @@ namespace Reko.Arch.Arm
             return m.MapToHandle(id);
         }
 
-        public HExpr EnsureRegister(int reg)
+        public HExpr EnsureRegister(int regKind, int reg)
         {
-            var r = GetRegister(reg);
+            RegisterStorage r;
+            if (regKind == 0)   // standard register
+                r = GetRegister(reg);
+            else 
+                r = GetSysRegister(reg);
             var id = frame.EnsureRegister(r);
             return m.MapToHandle(id);
         }

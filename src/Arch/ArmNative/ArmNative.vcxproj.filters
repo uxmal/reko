@@ -44,10 +44,10 @@
     <ClCompile Include="ArmRewriter.Alu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AluRewriter.System.cpp">
+    <ClCompile Include="ArmRewriter.Vector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ArmRewriter.Vector.cpp">
+    <ClCompile Include="ArmRewriter.System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

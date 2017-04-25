@@ -344,14 +344,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_ldrsb_indexed()
         {
             var instr = Disassemble32(0xE19120D3);
-            Assert.AreEqual("ldrsb\tr2,[r1,r3]", instr.ToString());
+            Assert.AreEqual("ldrsb\tr2,[r1,-r3]", instr.ToString());
         }
 
         [Test]
         public void ArmDasm_ldrsb_negativeIndex()
         {
             var instr = Disassemble32(0xE11120D3);
-            Assert.AreEqual("ldrsb\tr2,[r1,-r3]", instr.ToString());
+            Assert.AreEqual("ldrsb\tr2,[r1,r3]", instr.ToString());
         }
 
         [Test]

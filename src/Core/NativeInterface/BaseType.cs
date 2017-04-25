@@ -51,6 +51,8 @@ namespace Reko.Core.NativeInterface
         Ptr64,
         Word64,
 
+        Word128,
+
         Real32,
         Real64,
     }

@@ -54,6 +54,8 @@ namespace Reko.Core.NativeInterface
             { BaseType.Ptr64, PrimitiveType.Pointer64 },
             { BaseType.Word64, PrimitiveType.Word64 },
 
+            { BaseType.Word128, PrimitiveType.Word128 },
+
             { BaseType.Real32, PrimitiveType.Real32 },
             { BaseType.Real64, PrimitiveType.Real64 },
         };

@@ -27,6 +27,8 @@ enum class BaseType
 	Ptr64,
 	Word64,
 
+	Word128,
+
 	Real32,
 	Real64,
 };
@@ -139,7 +141,7 @@ public:
 class INativeRewriterHost: public IUnknown
 {
 public:
-	virtual HExpr STDAPICALLTYPE EnsureRegister(int reg) = 0;
+	virtual HExpr STDAPICALLTYPE EnsureRegister(int reg_kind, int reg) = 0;
 	virtual HExpr STDAPICALLTYPE EnsureSequence(int regHi, int regLo, BaseType size) = 0;
 	virtual HExpr STDAPICALLTYPE EnsureFlagGroup(int baseReg, int bitmask, const char * name, BaseType size) = 0;
 	virtual HExpr STDAPICALLTYPE CreateTemporary(BaseType size) = 0;

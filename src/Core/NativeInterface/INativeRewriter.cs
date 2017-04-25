@@ -39,11 +39,11 @@ namespace Reko.Core.NativeInterface
     [ComVisible(true)]
     public interface INativeRewriterHost
     {
-        [PreserveSig] HExpr EnsureRegister(int reg);
+        [PreserveSig] HExpr EnsureRegister(int regKind, int reg);
         [PreserveSig] HExpr EnsureSequence(int regHi, int regLo, BaseType size);
         [PreserveSig] HExpr EnsureFlagGroup(int baseReg, int bitmask, [MarshalAs(UnmanagedType.LPStr)] string name, BaseType size);
         [PreserveSig] HExpr CreateTemporary(BaseType size);
-        [PreserveSig] void Error(ulong uAddress, string error);
+        [PreserveSig] void Error(ulong uAddress, [MarshalAs(UnmanagedType.LPStr)] string error);
         [PreserveSig] HExpr EnsurePseudoProcedure([MarshalAs(UnmanagedType.LPStr)] string name, BaseType dt, int arity);
     }
 }

@@ -24,7 +24,7 @@ void ArmRewriter::RewriteVldmia()
 {
 	auto rSrc = this->Operand(Dst());
 	auto offset = 0;
-	auto begin = &instr->detail->arm.operands[0];
+	auto begin = &instr->detail->arm.operands[1];
 	auto end = begin + instr->detail->arm.op_count - 1;
 	for (auto r = begin; r != end; ++r)
 	{
@@ -33,8 +33,9 @@ void ArmRewriter::RewriteVldmia()
 			offset != 0
 			? m.IAdd(rSrc, m.Int32(offset))
 			: rSrc;
-		//m.Assign(dst, m.Mem(dst->DataType, ea));
-		//offset += dst.DataType.Size;
+		auto dt = register_types[r->reg];
+		m.Assign(dst, m.Mem(register_types[r->reg], ea));
+		offset += type_sizes[(int)dt];
 	}
 	if (instr->detail->arm.writeback)
 	{
@@ -46,18 +47,19 @@ void ArmRewriter::RewriteVmov()
 {
 	auto dst = this->Operand(Dst());
 	auto src = this->Operand(Src1());
+	auto dt = VectorElementDataType();
 	char fname[200];
 	snprintf(fname, sizeof(fname), "__vmov_%s", VectorElementType());
-	auto dt = VectorElementDataType();
-	//m.Assign(dst,
-	//	host->PseudoProcedure(fname, dst.DataType, src));
+	auto ppp = host->EnsurePseudoProcedure(fname, register_types[Dst().reg], 1);
+	m.AddArg(src);
+	m.Assign(dst, m.Fn(ppp));
 }
 
 void ArmRewriter::RewriteVstmia()
 {
 	auto rSrc = this->Operand(Dst());
 	int offset = 0;
-	auto begin = &instr->detail->arm.operands[0];
+	auto begin = &instr->detail->arm.operands[1];
 	auto end = begin + instr->detail->arm.op_count - 1;
 	for (auto r = begin; r != end; ++r)
 	{
@@ -66,8 +68,9 @@ void ArmRewriter::RewriteVstmia()
 			offset != 0
 			? m.IAdd(rSrc, m.Int32(offset))
 			: rSrc;
-		//m.Assign(m.Mem(dst.DataType, ea), dst);
-		//offset += dst.DataType.Size;
+		auto dt = register_types[r->reg];
+		m.Assign(m.Mem(dt, ea), dst);
+		offset += type_sizes[(int)dt];
 	}
 	if (instr->detail->arm.writeback)
 	{
@@ -77,7 +80,7 @@ void ArmRewriter::RewriteVstmia()
 
 const char * ArmRewriter::VectorElementType()
 {
-	switch (instr->detail->arm.vector_size)
+	switch (instr->detail->arm.vector_data)
 	{
 	case ARM_VECTORDATA_I32: return "i32";
 	default: NotImplementedYet(); return "(NYI)";
@@ -86,7 +89,7 @@ const char * ArmRewriter::VectorElementType()
 
 BaseType ArmRewriter::VectorElementDataType()
 {
-	switch (instr->detail->arm.vector_size)
+	switch (instr->detail->arm.vector_data)
 	{
 	case ARM_VECTORDATA_I32: return BaseType::Int32;
 	default: NotImplementedYet(); return BaseType::Void;
