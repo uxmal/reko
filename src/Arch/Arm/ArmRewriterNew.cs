@@ -34,8 +34,10 @@ namespace Reko.Arch.Arm
     public class ArmRewriterNew : IEnumerable<RtlInstructionCluster>
     {
         private EndianImageReader rdr;
+        private IStorageBinder frame;
+        private IRewriterHost host;
 
-        public ArmRewriterNew(Arm32ProcessorArchitecture arch, EndianImageReader rdr, ArmProcessorState state, Frame frame, IRewriterHost host)
+        public ArmRewriterNew(Arm32ProcessorArchitecture arch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.rdr = rdr;
             this.frame = frame;
@@ -128,8 +130,6 @@ namespace Reko.Arch.Arm
 
         private static Guid IID_INativeRewriterHost;
         private static Guid IID_IRtlEmitter;
-        private Frame frame;
-        private IRewriterHost host;
 
         [DllImport("ArmNative.dll",CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateNativeRewriter")]
         public static extern INativeRewriter CreateNativeRewriter(IntPtr rawbytes, int length, int offset, ulong address, IntPtr rtlEmitter, IntPtr host);

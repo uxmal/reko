@@ -97,7 +97,7 @@ namespace Reko.Core.NativeInterface
             if (this.address == null || this.instrLength == 0)
                 throw new InvalidOperationException();
 
-            var rtlc = new RtlInstructionCluster(address, instrLength, m.Instructions);
+            var rtlc = new RtlInstructionCluster(address, instrLength, m.Instructions.ToArray());
             rtlc.Class = this.rtlClass;
 
             address = null;

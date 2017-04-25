@@ -35,11 +35,11 @@ namespace Reko.Arch.Arm
     [ClassInterface(ClassInterfaceType.None)]
     public class ArmNativeRewriterHost : MarshalByRefObject, INativeRewriterHost
     {
-        private Frame frame;
+        private IStorageBinder frame;
         private IRewriterHost host;
         private RtlNativeEmitter m;
 
-        public ArmNativeRewriterHost(Frame frame, IRewriterHost host, RtlNativeEmitter m)
+        public ArmNativeRewriterHost(IStorageBinder frame, IRewriterHost host, RtlNativeEmitter m)
         {
             this.frame = frame;
             this.host = host;

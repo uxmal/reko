@@ -85,13 +85,13 @@ namespace Reko.Core.Rtl
         /// <param name="rtlClass"></param>
         public RtlEmitter Call(Expression target, byte retSize)
         {
-            Instructions.Add(new RtlCall(target, retSize, RtlClass.Transfer));
+            Instructions.Add(new RtlCall(target, retSize, RtlClass.Transfer | RtlClass.Call));
             return this;
         }
 
         public RtlEmitter CallD(Expression target, byte retSize)
         {
-            Instructions.Add(new RtlCall(target, retSize, RtlClass.Transfer|RtlClass.Delay));
+            Instructions.Add(new RtlCall(target, retSize, RtlClass.Transfer | RtlClass.Call | RtlClass.Delay));
             return this;
         }
 

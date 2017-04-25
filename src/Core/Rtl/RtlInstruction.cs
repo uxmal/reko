@@ -113,13 +113,6 @@ namespace Reko.Core.Rtl
             this.Instructions = new List<RtlInstruction>(instrs);
         }
 
-        public RtlInstructionCluster(Address addr, int instrLength, List<RtlInstruction> instrs)
-        {
-            this.Address = addr;
-            this.Length = (byte)instrLength;
-            this.Instructions = instrs;
-        }
-
         /// <summary>
         /// The address of the original machine instruction.
         /// </summary>

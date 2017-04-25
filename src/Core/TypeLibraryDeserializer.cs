@@ -201,8 +201,18 @@ namespace Reko.Core
             DataType dt;
             if (pointer.DataType == null)
                 dt = new UnknownType();
-            else 
-                dt = pointer.DataType.Accept(this);
+            else
+            {
+                try
+                {
+                    dt = pointer.DataType.Accept(this);
+                }
+                catch
+                {
+                    Debug.Print("** Dropping exception on floor ***********");
+                    dt = new UnknownType(platform.PointerType.Size);
+                }
+            }
             return new Pointer(dt, platform.PointerType.Size);
         }
 
