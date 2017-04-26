@@ -37,9 +37,9 @@ namespace Reko.Arch.Arm
     {
         private IStorageBinder frame;
         private IRewriterHost host;
-        private RtlNativeEmitter m;
+        private NativeRtlEmitter m;
 
-        public ArmNativeRewriterHost(IStorageBinder frame, IRewriterHost host, RtlNativeEmitter m)
+        public ArmNativeRewriterHost(IStorageBinder frame, IRewriterHost host, NativeRtlEmitter m)
         {
             this.frame = frame;
             this.host = host;

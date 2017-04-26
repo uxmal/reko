@@ -9,7 +9,7 @@ ArmRewriter::ArmRewriter(
 	const uint8_t * rawBytes,
 	size_t availableBytes,
 	uint64_t address,
-	IRtlNativeEmitter * emitter,
+	INativeRtlEmitter * emitter,
 	INativeRewriterHost * host)
 :
 	rawBytes(rawBytes),
@@ -431,10 +431,10 @@ STDMETHODIMP ArmRewriter::Next()
 		NotImplementedYet();
 		break;
 
-	case ARM_INS_ADC: RewriteAdcSbc(&IRtlNativeEmitter::IAdd, false); break;
-	case ARM_INS_ADD: RewriteBinOp(&IRtlNativeEmitter::IAdd, instr->detail->arm.update_flags); break;
-	case ARM_INS_AND: RewriteBinOp(&IRtlNativeEmitter::And, instr->detail->arm.update_flags); break;
-	case ARM_INS_EOR: RewriteBinOp(&IRtlNativeEmitter::Xor, instr->detail->arm.update_flags); break;
+	case ARM_INS_ADC: RewriteAdcSbc(&INativeRtlEmitter::IAdd, false); break;
+	case ARM_INS_ADD: RewriteBinOp(&INativeRtlEmitter::IAdd, instr->detail->arm.update_flags); break;
+	case ARM_INS_AND: RewriteBinOp(&INativeRtlEmitter::And, instr->detail->arm.update_flags); break;
+	case ARM_INS_EOR: RewriteBinOp(&INativeRtlEmitter::Xor, instr->detail->arm.update_flags); break;
 	case ARM_INS_B: RewriteB(false); break;
 	case ARM_INS_BFC: RewriteBfc(); break;
 	case ARM_INS_BFI: RewriteBfi(); break;
@@ -459,50 +459,50 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_LDRSH: RewriteLdr(BaseType::Int16); break;
 	case ARM_INS_LDRSHT: RewriteLdr(BaseType::Int16); break;
 	case ARM_INS_LDRD: RewriteLdrd(); break;
-	case ARM_INS_LDM: RewriteLdm(0, &IRtlNativeEmitter::IAdd); break;
-	case ARM_INS_LDMDA: RewriteLdm(0, &IRtlNativeEmitter::ISub); break;
-	case ARM_INS_LDMDB: RewriteLdm(-4, &IRtlNativeEmitter::ISub); break;
-	case ARM_INS_LDMIB: RewriteLdm(4, &IRtlNativeEmitter::IAdd); break;
+	case ARM_INS_LDM: RewriteLdm(0, &INativeRtlEmitter::IAdd); break;
+	case ARM_INS_LDMDA: RewriteLdm(0, &INativeRtlEmitter::ISub); break;
+	case ARM_INS_LDMDB: RewriteLdm(-4, &INativeRtlEmitter::ISub); break;
+	case ARM_INS_LDMIB: RewriteLdm(4, &INativeRtlEmitter::IAdd); break;
 	case ARM_INS_NOP: m.Nop(); break;
 	case ARM_INS_MCR: RewriteMcr(); break;
-	case ARM_INS_MLA: RewriteMultiplyAccumulate(&IRtlNativeEmitter::IAdd); break;
-	case ARM_INS_MLS: RewriteMultiplyAccumulate(&IRtlNativeEmitter::ISub); break;
+	case ARM_INS_MLA: RewriteMultiplyAccumulate(&INativeRtlEmitter::IAdd); break;
+	case ARM_INS_MLS: RewriteMultiplyAccumulate(&INativeRtlEmitter::ISub); break;
 	case ARM_INS_MOV: RewriteMov(); break;
 	case ARM_INS_MOVT: RewriteMovt(); break;
 	case ARM_INS_MOVW: RewriteMov(); break;
 	case ARM_INS_MRC: RewriteMrc(); break;
 	case ARM_INS_MRS: RewriteMrs(); break;
 	case ARM_INS_MSR: RewriteMsr(); break;
-	case ARM_INS_MUL: RewriteBinOp(&IRtlNativeEmitter::IMul, instr->detail->arm.update_flags); break;
-	case ARM_INS_MVN: RewriteUnaryOp(&IRtlNativeEmitter::Not); break;
-	case ARM_INS_ORR: RewriteBinOp(&IRtlNativeEmitter::Or, false); break;
-	case ARM_INS_QADD: RewriteQAddSub(&IRtlNativeEmitter::IAdd); break;
-	case ARM_INS_QDADD: RewriteQDAddSub(&IRtlNativeEmitter::IAdd); break;
-	case ARM_INS_QDSUB: RewriteQDAddSub(&IRtlNativeEmitter::ISub); break;
-	case ARM_INS_QSUB: RewriteQAddSub(&IRtlNativeEmitter::ISub); break;
+	case ARM_INS_MUL: RewriteBinOp(&INativeRtlEmitter::IMul, instr->detail->arm.update_flags); break;
+	case ARM_INS_MVN: RewriteUnaryOp(&INativeRtlEmitter::Not); break;
+	case ARM_INS_ORR: RewriteBinOp(&INativeRtlEmitter::Or, false); break;
+	case ARM_INS_QADD: RewriteQAddSub(&INativeRtlEmitter::IAdd); break;
+	case ARM_INS_QDADD: RewriteQDAddSub(&INativeRtlEmitter::IAdd); break;
+	case ARM_INS_QDSUB: RewriteQDAddSub(&INativeRtlEmitter::ISub); break;
+	case ARM_INS_QSUB: RewriteQAddSub(&INativeRtlEmitter::ISub); break;
 	case ARM_INS_POP: RewritePop(); break;
 	case ARM_INS_PUSH: RewritePush(); break;
 	case ARM_INS_REV: RewriteRev(); break;
-	case ARM_INS_RSB: RewriteRevBinOp(&IRtlNativeEmitter::ISub, instr->detail->arm.update_flags); break;
-	case ARM_INS_RSC: RewriteAdcSbc(&IRtlNativeEmitter::ISub, true); break;
-	case ARM_INS_SBC: RewriteAdcSbc(&IRtlNativeEmitter::ISub, false); break;
+	case ARM_INS_RSB: RewriteRevBinOp(&INativeRtlEmitter::ISub, instr->detail->arm.update_flags); break;
+	case ARM_INS_RSC: RewriteAdcSbc(&INativeRtlEmitter::ISub, true); break;
+	case ARM_INS_SBC: RewriteAdcSbc(&INativeRtlEmitter::ISub, false); break;
 	case ARM_INS_SBFX: RewriteSbfx(); break;
-	case ARM_INS_SMLABB: RewriteMla(false, false, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
-	case ARM_INS_SMLABT: RewriteMla(false, true, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
-	case ARM_INS_SMLALBB: RewriteMlal(false, false, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
-	case ARM_INS_SMLALBT: RewriteMlal(false, true, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMLABB: RewriteMla(false, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_SMLABT: RewriteMla(false, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_SMLALBB: RewriteMlal(false, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_SMLALBT: RewriteMlal(false, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLAL: RewriteSmlal(); break;
-	case ARM_INS_SMLATB: RewriteMla(true, false, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
-	case ARM_INS_SMLATT: RewriteMla(true, true, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMLATB: RewriteMla(true, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_SMLATT: RewriteMla(true, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLAWB: RewriteSmlaw(false); break;
 	case ARM_INS_SMLAWT: RewriteSmlaw(true); break;
-	case ARM_INS_SMULBB: RewriteMulbb(false, false, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
-	case ARM_INS_SMULBT: RewriteMulbb(false, true, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMULBB: RewriteMulbb(false, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_SMULBT: RewriteMulbb(false, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULWB: RewriteMulw(false); break;
 	case ARM_INS_SMULWT: RewriteMulw(true); break;
-	case ARM_INS_SMULTB: RewriteMulbb(true, false, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
-	case ARM_INS_SMULTT: RewriteMulbb(true, true, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
-	case ARM_INS_SMULL: RewriteMull(BaseType::Int64, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMULTB: RewriteMulbb(true, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_SMULTT: RewriteMulbb(true, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_SMULL: RewriteMull(BaseType::Int64, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_STM: RewriteStm(0, true); break;
 	case ARM_INS_STMDB: RewriteStm(-4, false); break;
 	case ARM_INS_STMDA: RewriteStm(0, false); break;
@@ -512,7 +512,7 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_STRD: RewriteStrd(); break;
 	case ARM_INS_STRH: RewriteStr(BaseType::UInt16); break;
 	case ARM_INS_STRHT: RewriteStr(BaseType::UInt16); break;
-	case ARM_INS_SUB: RewriteBinOp(&IRtlNativeEmitter::ISub, instr->detail->arm.update_flags); break;
+	case ARM_INS_SUB: RewriteBinOp(&INativeRtlEmitter::ISub, instr->detail->arm.update_flags); break;
 	case ARM_INS_SVC: RewriteSvc(); break;
 	case ARM_INS_SXTAB: RewriteXtab(BaseType::SByte); break;
 	case ARM_INS_SXTAH: RewriteXtab(BaseType::Int16); break;
@@ -522,7 +522,7 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_TST: RewriteTst(); break;
 	case ARM_INS_UBFX: RewriteUbfx(); break;
 	case ARM_INS_UMLAL: RewriteUmlal(); break;
-	case ARM_INS_UMULL: RewriteMull(BaseType::UInt64, &IRtlNativeEmitter::UMul); break;
+	case ARM_INS_UMULL: RewriteMull(BaseType::UInt64, &INativeRtlEmitter::UMul); break;
 	case ARM_INS_UXTAB: RewriteXtab(BaseType::Byte); break;
 	case ARM_INS_UXTAH: RewriteXtab(BaseType::UInt16); break;
 	case ARM_INS_UXTB: RewriteXtb(BaseType::Byte); break;

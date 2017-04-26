@@ -64,7 +64,7 @@ namespace Reko.Arch.Arm
             private byte[] bytes;
             private GCHandle hBytes;
             private RtlEmitter m;
-            private RtlNativeEmitter rtlEmitter;
+            private NativeRtlEmitter rtlEmitter;
             private ArmNativeRewriterHost host;
             private IntPtr iRtlEmitter;
             private IntPtr iHost;
@@ -78,7 +78,7 @@ namespace Reko.Arch.Arm
 
                 this.m = new RtlEmitter(new List<RtlInstruction>());
 
-                this.rtlEmitter = new RtlNativeEmitter(m, outer.host);
+                this.rtlEmitter = new NativeRtlEmitter(m, outer.host);
                 this.host = new ArmNativeRewriterHost(outer.frame, outer.host, rtlEmitter);
 
                 this.iRtlEmitter = GetCOMInterface(rtlEmitter, IID_IRtlEmitter);
@@ -139,7 +139,7 @@ namespace Reko.Arch.Arm
         static ArmRewriterNew()
         {
             IID_INativeRewriterHost = typeof(INativeRewriterHost).GUID;
-            IID_IRtlEmitter = typeof(IRtlNativeEmitter).GUID;
+            IID_IRtlEmitter = typeof(INativeRtlEmitter).GUID;
         }
 
         private static Guid IID_INativeRewriterHost;

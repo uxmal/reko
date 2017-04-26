@@ -1,7 +1,7 @@
 #pragma once
 
-typedef HExpr (STDAPICALLTYPE IRtlNativeEmitter::*UnaryOpEmitter)(HExpr);
-typedef HExpr (STDAPICALLTYPE IRtlNativeEmitter::*BinOpEmitter)(HExpr, HExpr);
+typedef HExpr (STDAPICALLTYPE INativeRtlEmitter::*UnaryOpEmitter)(HExpr);
+typedef HExpr (STDAPICALLTYPE INativeRtlEmitter::*BinOpEmitter)(HExpr, HExpr);
 
 enum class FlagM
 {
@@ -19,7 +19,7 @@ public:
 		const uint8_t * rawBytes,
 		size_t length,
 		uint64_t address,
-		IRtlNativeEmitter * emitter,
+		INativeRtlEmitter * emitter,
 		INativeRewriterHost * host);
 
 	STDMETHOD(QueryInterface)(REFIID iid, void ** ppvOut);
@@ -113,7 +113,7 @@ private:
 	ULONG cRef;	// COM ref count.
 
 	csh hcapstone;
-	IRtlNativeEmitter & m;
+	INativeRtlEmitter & m;
 	INativeRewriterHost * host;
 	cs_insn * instr;
 	const uint8_t * rawBytes;

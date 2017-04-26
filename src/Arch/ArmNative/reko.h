@@ -69,11 +69,11 @@ enum class RtlClass
 };
 
 
-// The C++ side never really looks at the object in the Rtl tree being 
+// The C++ side never really looks at the objects in the Rtl tree being 
 // built, so we can represent them as an opaque handle.
 typedef void * HExpr;
 
-class IRtlNativeEmitter : IUnknown
+class INativeRtlEmitter : IUnknown
 {
 public:
 	virtual void STDAPICALLTYPE Assign(HExpr dst, HExpr src) = 0;

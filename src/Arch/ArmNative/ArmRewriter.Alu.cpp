@@ -347,7 +347,7 @@ void ArmRewriter::RewriteMull(BaseType dtResult, BinOpEmitter op)
 void ArmRewriter::RewritePop()
 {
 	auto sp = Reg(ARM_REG_SP);
-	RewriteLdm(sp, 0, 0, &IRtlNativeEmitter::IAdd, true);
+	RewriteLdm(sp, 0, 0, &INativeRtlEmitter::IAdd, true);
 }
 
 void ArmRewriter::RewritePush()

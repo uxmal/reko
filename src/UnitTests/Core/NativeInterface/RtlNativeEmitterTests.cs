@@ -35,18 +35,18 @@ using System.Threading.Tasks;
 namespace Reko.UnitTests.Core.NativeInterface
 {
     [TestFixture]
-    public class RtlNativeEmitterTests
+    public class NativeRtlEmitterTests
     {
         private List<RtlInstruction> instrs;
         private RtlInstructionCluster rtlc;
-        private RtlNativeEmitter m;
+        private NativeRtlEmitter m;
 
         [SetUp]
         public void Setup()
         {
             this.instrs = new List<RtlInstruction>();
             this.rtlc = new RtlInstructionCluster(Address.Ptr32(0x00123400), 4);
-            this.m = new RtlNativeEmitter(new RtlEmitter(instrs), null);
+            this.m = new NativeRtlEmitter(new RtlEmitter(instrs), null);
         }
 
         private void AssertInstructions(string sExp, RtlInstructionCluster rtlc)

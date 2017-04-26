@@ -12,7 +12,7 @@ extern "C" {
 			uint32_t length,	
 			uint32_t offset, 
 			uint64_t address, 
-			IRtlNativeEmitter * m,
+			INativeRtlEmitter * m,
 			INativeRewriterHost * host)
 	{
 		return new ArmRewriter(rawBytes + offset, length - offset, address, m, host);

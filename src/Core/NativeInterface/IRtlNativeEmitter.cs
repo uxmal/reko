@@ -33,7 +33,7 @@ namespace Reko.Core.NativeInterface
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("412E748A-3181-4DBE-AD2A-AE23B5ECEAC2")]
     [ComVisible(true)]
-    public interface IRtlNativeEmitter
+    public interface INativeRtlEmitter
     {
         [PreserveSig] void Assign(HExpr dst, HExpr src);
         [PreserveSig] void Branch(HExpr exp, HExpr dst, RtlClass rtlClass);

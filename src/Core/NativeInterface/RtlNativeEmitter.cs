@@ -32,7 +32,7 @@ using Reko.Core.Types;
 namespace Reko.Core.NativeInterface
 {
     /// <summary>
-    /// This class exposes the IRtlNativeEmitter interface so that native code
+    /// This class exposes the INativeRtlEmitter interface so that native code
     /// can call the factory methods to build sequences of RTL instructions 
     /// that are the result of translating a machine code instruction.
     /// </summary>
@@ -43,7 +43,7 @@ namespace Reko.Core.NativeInterface
     /// </remarks>
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
-    public class RtlNativeEmitter : IRtlNativeEmitter
+    public class NativeRtlEmitter : INativeRtlEmitter
     {
         private RtlEmitter m;
         private IRewriterHost host;
@@ -53,7 +53,7 @@ namespace Reko.Core.NativeInterface
         private RtlClass rtlClass;
         private int instrLength;
 
-        public RtlNativeEmitter(RtlEmitter m, IRewriterHost host)
+        public NativeRtlEmitter(RtlEmitter m, IRewriterHost host)
         {
             this.m = m;
             this.host = host;
