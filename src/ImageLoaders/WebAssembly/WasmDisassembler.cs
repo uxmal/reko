@@ -42,7 +42,7 @@ namespace Reko.ImageLoaders.WebAssembly
         public override WasmInstruction DisassembleInstruction()
         {
             byte b;
-            if(!rdr.TryReadByte(out b))
+            if (!rdr.TryReadByte(out b))
             {
                 return null;
             }

@@ -32,7 +32,7 @@ using Reko.ImageLoaders.WebAssembly;
 namespace Reko.UnitTests.ImageLoaders.WebAssembly
 {
     [TestFixture]
-    public class WasmRewriterTests : Reko.UnitTests.Arch.RewriterTestBase
+    public class WasmRewriterTests : Arch.RewriterTestBase
     {
         private MemoryArea mem;
         private Address addr = Address.Ptr32(0x00123400);

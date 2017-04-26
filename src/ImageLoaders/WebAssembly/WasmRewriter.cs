@@ -83,6 +83,5 @@ namespace Reko.ImageLoaders.WebAssembly
             m.Assign(tmp, ((ImmediateOperand)instr.Operands[0]).Value);
             Push(tmp);
         }
-
     }
 }

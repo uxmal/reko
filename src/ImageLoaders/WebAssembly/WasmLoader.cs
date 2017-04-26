@@ -459,18 +459,20 @@ namespace Reko.ImageLoaders.WebAssembly
             uint count;
             if (!rdr.TryReadVarUInt32(out count))
                 return null;
-            var funcBodies = new List<byte[]>();
+            var funcBodies = new List<Tuple<int,int,byte[]>>();
             for (int i = 0; i < count; ++i)
             {
                 uint len;
                 if (!rdr.TryReadVarUInt32(out len))
                     return null;
+                var start = (int)rdr.Offset;
+                var end = start + (int) len;
                 var codeBytes = rdr.ReadBytes(len);
-                funcBodies.Add(codeBytes);
+                funcBodies.Add(Tuple.Create(start, end, codeBytes));
             }
             return new CodeSection
             {
-                FunctionBodies = funcBodies,
+                Functions = funcBodies,
             };
         }
 
@@ -738,7 +740,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
     public class CodeSection : Section
     {
-        public List<byte[]> FunctionBodies;
+        public List<Tuple<int, int, byte[]>> Functions;
 
         public override string ToString()
         {
@@ -749,6 +751,7 @@ namespace Reko.ImageLoaders.WebAssembly
     public class DataSection : Section
     {
         public List<DataSegment> Segments;
+        public List<int> FunctionBodyOffsets;
     }
 
     public class DataSegment

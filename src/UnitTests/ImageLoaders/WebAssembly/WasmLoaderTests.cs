@@ -185,15 +185,36 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             var bytes = new byte[]
             {
                 0x0A, 0x08,
-                0x01,
+                0x01,           // 1 function body
                     0x06, 0x00, 0x41, 0x10, 0x10, 0x00, 0x0B
             };
             Create_Loader();
             var rdr = new WasmImageReader(bytes);
             var section = ldr.LoadSection(rdr);
             var codes = (CodeSection)section;
-            Assert.AreEqual(1, codes.FunctionBodies.Count);
-            Assert.AreEqual(new byte[] { 0x00, 0x41, 0x10, 0x10, 0x00, 0x0B }, codes.FunctionBodies[0]);
+            Assert.AreEqual(1, codes.Functions.Count);
+            Assert.AreEqual(new byte[] { 0x00, 0x41, 0x10, 0x10, 0x00, 0x0B }, codes.Functions[0].Item3);
+        }
+
+        [Test]
+        public void WasmLdr_LoadCodeSection_2_fns()
+        {
+            var bytes = new byte[]
+            {
+                0x0A, 0x0C,
+                0x02,           // 1 function body
+                    0x06,
+                        0x00, 0x41, 0x10, 0x10, 0x00, 0x0B,
+                    0x03,
+                        0x01, 0x02, 0x03,
+
+            };
+            Create_Loader();
+            var rdr = new WasmImageReader(bytes);
+            var section = ldr.LoadSection(rdr);
+            var codes = (CodeSection)section;
+            Assert.AreEqual(2, codes.Functions.Count);
+            Assert.AreEqual(new byte[] { 0x00, 0x41, 0x10, 0x10, 0x00, 0x0B }, codes.Functions[0].Item3);
         }
 
         [Test]

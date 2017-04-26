@@ -27,6 +27,10 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
+    /// <summary>
+    /// Extends the LeImageReader class to provide functions for reading WASM
+    /// formatted integers.
+    /// </summary>
     public class WasmImageReader : LeImageReader
     {
         public WasmImageReader(byte[] bytes) : base(bytes)

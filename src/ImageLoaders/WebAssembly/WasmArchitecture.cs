@@ -47,27 +47,27 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, off);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addr);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addrBegin, addrEnd);
         }
 
         public override ImageWriter CreateImageWriter()
         {
-            throw new NotImplementedException();
+            return new LeImageWriter();
         }
 
         public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -87,7 +87,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new WasmRewriter(this, rdr, frame);
         }
 
         public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
