@@ -21,11 +21,17 @@
 
 #include "ArmRewriter.h"
 
-void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr)
+void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr, bool reverse)
 {
 	auto opDst = this->Operand(Dst());
 	auto opSrc1 = this->Operand(Src1());
 	auto opSrc2 = this->Operand(Src2());
+	if (reverse)
+	{
+		auto tmp = opSrc1;
+		opSrc1 = opSrc2;
+		opSrc2 = tmp;
+	}
 	// We do not take the trouble of widening the CF to the word size
 	// to simplify code analysis in later stages. 
 	auto c = host->EnsureFlagGroup(ARM_REG_CPSR, (int)FlagM::CF, "C", BaseType::Bool);
@@ -354,6 +360,27 @@ void ArmRewriter::RewriteSbfx()
 			Src2().imm,
 			Src3().imm));
 	m.Assign(dst, src);
+}
+
+void ArmRewriter::RewriteSmlaw(bool highPart)
+{
+	auto dst = this->Operand(Dst());
+	auto fac1 = this->Operand(Src1());
+	auto fac2 = this->Operand(Src2());
+	if (highPart)
+	{
+		fac2 = m.Cast(BaseType::Int16, m.Sar(fac2, m.Int32(16)));
+	}
+	else
+	{
+		fac2 = m.Cast(BaseType::Int16, fac2);
+	}
+	auto acc = this->Operand(Src3());
+	m.Assign(dst, m.IAdd(
+		m.Sar(
+			m.SMul(fac1, fac2),
+			m.Int32(16)),
+		acc));
 }
 
 void ArmRewriter::RewriteStm()

@@ -62,7 +62,7 @@ private:
 	void RewriteTeq();
 	void RewriteTst();
 	void RewriteUmlal();
-	void RewriteAdcSbc(BinOpEmitter fn);
+	void RewriteAdcSbc(BinOpEmitter fn, bool reverse);
 	void RewriteB(bool link);
 	void RewriteBfc();
 	void RewriteBfi();
@@ -91,6 +91,7 @@ private:
 	void RewriteRev();
 	void RewriteRevBinOp(BinOpEmitter, bool setflags);
 	void RewriteSbfx();
+	void RewriteSmlaw(bool highPart);
 	void RewriteStm();
 	void RewriteStmib();
 	void RewriteStr(BaseType);

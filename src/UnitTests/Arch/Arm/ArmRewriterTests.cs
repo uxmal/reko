@@ -672,5 +672,32 @@ means
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|call 001059B4 (0)");
         }
+
+        [Test]
+        [Ignore(Categories.Capstone)]
+        public void ArmRw_rsc()
+        {
+            // Capstone incorrectly disassembles this as setting the S flag.
+            BuildTest(0x00E050CC); // rsceq asr r5,r0,ip, asr #1
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100004",
+                "2|L--|r5 = (ip >> 1) - r0 - C",
+                "3|L--|r5 = ip - r0");
+        }
+
+        [Test]
+        public void ArmRw_smlawt()
+        {
+            BuildTest(0x012D06CC); // smlawteq sp,ip,r6,r0
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100004",
+                "2|L--|sp = (ip *s (int16) (r6 >> 16) >> 16) + r0");
+            //74 EC 0A 01 ????
+            //﻿90 41 E0 00 smlaleqr4,r0,r0,r1
+            // B0 44 E0 00 strhteqr4,[r0],#&40
+            //﻿ A8 5B 2E 01 smulwbeqlr,r8,fp
+        }
     }
 }
