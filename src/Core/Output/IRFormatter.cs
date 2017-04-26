@@ -17,54 +17,36 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
-
-using NUnit.Framework;
-using Reko.Core.Output;
-using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Core.Output
+namespace Reko.Core.Output
 {
-    [TestFixture]
-    public class LlvmFormatterTests
+    public class IRFormatter
     {
-        private void RunTest(string sExp, string procName, Action<ProcedureBuilder> fn)
+        private TextWriter w;
+
+        public IRFormatter(TextWriter w)
         {
-            var pb = new ProcedureBuilder(procName);
-            fn(pb);
-
-            var sw = new StringWriter();
-            var llvm = new LlvmFormatter(sw);
-            llvm.WriteProcedure(pb.Procedure);
-
-            var sActual = sw.ToString();
-            if (sActual != sExp)
-            {
-                Debug.Print(sActual);
-                Assert.AreEqual(sExp, sActual);
-            }
+            this.w = w;
         }
 
-        [Test]
-        public void LlvmFmt_EmptyProc()
+        public void WriteProgram(Program program)
         {
-            var sExp =
-@"define void @empty() {
-empty_entry:
-l1:
-    ret void
-}
-";
-            RunTest(sExp, "empty", m =>
+            w.WriteLine("// reko-IR");
+            foreach (var proc in program.Procedures.Values)
             {
-                m.Return();
-            });
+
+            }
+        }
+        public void WriteProcedure(Procedure procedure)
+        {
+            var pd = new ProcedureFormatter(procedure, new CodeFormatter(new TextFormatter(w)));
+            pd.WriteProcedureBlocks();
         }
     }
 }

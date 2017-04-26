@@ -32,7 +32,7 @@ using System.Threading.Tasks;
 namespace Reko.UnitTests.Core.Output
 {
     [TestFixture]
-    public class LlvmFormatterTests
+    public class IRFormatterTests
     {
         private void RunTest(string sExp, string procName, Action<ProcedureBuilder> fn)
         {
@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Core.Output
             fn(pb);
 
             var sw = new StringWriter();
-            var llvm = new LlvmFormatter(sw);
+            var llvm = new IRFormatter(sw);
             llvm.WriteProcedure(pb.Procedure);
 
             var sActual = sw.ToString();
@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        public void LlvmFmt_EmptyProc()
+        public void IrFmt_EmptyProc()
         {
             var sExp =
 @"define void @empty() {

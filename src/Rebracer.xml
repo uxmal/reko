@@ -165,7 +165,7 @@
         <PropertyValue name="PreserveCommentIndentation">false</PropertyValue>
         <PropertyValue name="PreserveInitListSpace">true</PropertyValue>
         <PropertyValue name="PreserveParameterIndentation">false</PropertyValue>
-        <PropertyValue name="RefactorScope">2</PropertyValue>
+        <PropertyValue name="RefactorScope">1</PropertyValue>
         <PropertyValue name="RemoveSpaceBeforeSemicolon">true</PropertyValue>
         <PropertyValue name="RenameRenameComments">false</PropertyValue>
         <PropertyValue name="RenameRenameInactive">false</PropertyValue>

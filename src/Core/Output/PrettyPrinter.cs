@@ -1,4 +1,4 @@
-﻿#region License
+﻿    #region License
 /* 
  * Copyright (C) 1999-2017 John Källén.
  *
@@ -118,6 +118,12 @@ namespace Reko.Core.Output
                 EnqueueToken(new NewlineToken(output));
                 PrintBuffer(buffer.Count);
             }
+        }
+
+        public void PrintString(string s)
+        {
+            foreach (var c in s)
+                PrintCharacter(c);
         }
 
         public void PrintCharacter(char ch)

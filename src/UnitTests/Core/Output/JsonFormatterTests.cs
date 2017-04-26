@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
 using Reko.Core.Output;
 using Reko.UnitTests.Mocks;
 using System;
@@ -32,7 +33,7 @@ using System.Threading.Tasks;
 namespace Reko.UnitTests.Core.Output
 {
     [TestFixture]
-    public class LlvmFormatterTests
+    public class JsonFormatterTests
     {
         private void RunTest(string sExp, string procName, Action<ProcedureBuilder> fn)
         {
@@ -40,8 +41,9 @@ namespace Reko.UnitTests.Core.Output
             fn(pb);
 
             var sw = new StringWriter();
-            var llvm = new LlvmFormatter(sw);
-            llvm.WriteProcedure(pb.Procedure);
+            var llvm = new JsonFormatter(sw);
+            llvm.WriteProcedure(new KeyValuePair<Address, Procedure>(Address.Ptr32(0x123400), pb.Procedure));
+            llvm.Flush();
 
             var sActual = sw.ToString();
             if (sActual != sExp)
@@ -52,13 +54,24 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        public void LlvmFmt_EmptyProc()
+        public void JsonFmt_EmptyProc()
         {
             var sExp =
-@"define void @empty() {
-empty_entry:
-l1:
-    ret void
+@"{ 
+        name: 'empty'
+        blocks: [
+            { 
+                'name': 'empty_entry'
+                'succ': 'l1'
+            },
+            {
+                'name': 'l1',
+                'stms': [
+                    [ 'ret' ]
+                 ]
+            }
+        ]
+     }
 }
 ";
             RunTest(sExp, "empty", m =>
@@ -66,5 +79,6 @@ l1:
                 m.Return();
             });
         }
+
     }
 }

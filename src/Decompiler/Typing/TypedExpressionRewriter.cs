@@ -65,7 +65,6 @@ namespace Reko.Typing
                 {
                     if (eventListener.IsCanceled())
                         return;
-                    Debug.Print("{0:X8} {1}", stm.LinearAddress, stm.Instruction);
                     try
                     {
                         stm.Instruction = stm.Instruction.Accept(this);
