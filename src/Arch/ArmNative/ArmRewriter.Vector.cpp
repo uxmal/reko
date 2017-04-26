@@ -20,6 +20,25 @@
 #include "reko.h"
 #include "ArmRewriter.h"
 
+void ArmRewriter::RewriteVabs()
+{
+	//auto dst = Operand(Dst());
+	//auto src = Operand(Src1());
+	//auto elemType = VectorElementDataType();
+	//auto elemSize = type_sizes[(int)elemType];
+	//auto vecSize = type_sizes[(int)register_types[Src1().reg]];
+	//auto vecType = m.Array(elemType, vecsize / elemSize);
+	//
+	//char fnName[30];
+	//snprintf(fnName, sizeof(fnName), "__vabs_%s", VectorElementType());
+	//host->Param(vecType);
+	//host->Param(vecType);
+	//auto vabs = host->EnsurePseudoProcedure(fnName, vecType);
+	//m.AddArg(src);
+	//m.Assign(dst, m.Fn(vec))
+	m.Invalid();
+}
+
 void ArmRewriter::RewriteVldmia()
 {
 	auto rSrc = this->Operand(Dst());

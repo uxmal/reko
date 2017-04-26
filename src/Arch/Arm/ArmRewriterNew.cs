@@ -24,6 +24,7 @@ using Reko.Core.Rtl;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -67,6 +68,7 @@ namespace Reko.Arch.Arm
             private ArmNativeRewriterHost host;
             private IntPtr iRtlEmitter;
             private IntPtr iHost;
+            private long offset;
 
             public Enumerator(ArmRewriterNew outer)
             {

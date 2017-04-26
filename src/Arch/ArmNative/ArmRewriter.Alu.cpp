@@ -257,16 +257,16 @@ void ArmRewriter::RewriteMovt()
 	m.Assign(opDst, opSrc);
 }
 
-void ArmRewriter::RewriteLdm(int initialOffset)
+void ArmRewriter::RewriteLdm(int initialOffset, BinOpEmitter op)
 {
 	auto dst = this->Operand(Dst());
 	auto ops = &instr->detail->arm.operands[0];
 	auto begin = ops + 1;
 	auto end = ops + instr->detail->arm.op_count;
-	RewriteLdm(dst, 1, initialOffset, instr->detail->arm.writeback);
+	RewriteLdm(dst, 1, initialOffset, op, instr->detail->arm.writeback);
 }
 
-void ArmRewriter::RewriteLdm(HExpr dst, int skip, int offset, bool writeback)
+void ArmRewriter::RewriteLdm(HExpr dst, int skip, int offset, BinOpEmitter op, bool writeback)
 {
 	bool pcRestored = false;
 	auto begin = &instr->detail->arm.operands[skip];
@@ -274,7 +274,7 @@ void ArmRewriter::RewriteLdm(HExpr dst, int skip, int offset, bool writeback)
 	for (auto r = begin; r != end; ++r)
 	{
 		HExpr ea = offset != 0
-			? m.IAdd(dst, m.Int32(offset))
+			? (m.*op)(dst, m.Int32(offset))
 			: dst;
 		if (r->reg == ARM_REG_PC)
 		{
@@ -297,17 +297,35 @@ void ArmRewriter::RewriteLdm(HExpr dst, int skip, int offset, bool writeback)
 	}
 }
 
-void ArmRewriter::RewriteMulbb(bool hiLeft, bool hiRight, BaseType dtMultiplicand, BinOpEmitter mul)
+void ArmRewriter::RewriteMla(bool hiLeft, bool hiRight, BaseType dt, BinOpEmitter op)
 {
-	if (hiLeft || hiRight)
-	{
-		NotImplementedYet();
-		return;
-	}
-	auto opDst = this->Operand(Dst());
-	auto opLeft = m.Cast(dtMultiplicand, this->Operand(Src1()));
-	auto opRight = m.Cast(dtMultiplicand, this->Operand(Src2()));
-	m.Assign(opDst, (m.*mul)(opLeft, opRight));
+	auto dst = Operand(Dst());
+
+	auto left = Operand(Src1());
+	left = hiLeft ? m.Sar(left, m.Int32(16)) : left;
+	left = m.Cast(dt, left);
+
+	auto right = Operand(Src2());
+	right = hiRight ? m.Sar(right, m.Int32(16)) : right;
+	right = m.Cast(dt, right);
+
+	m.Assign(dst, m.IAdd((m.*op)(left, right), Operand(Src3())));
+	m.Assign(Q(), m.Cond(dst));
+}
+
+void ArmRewriter::RewriteMulbb(bool hiLeft, bool hiRight, BaseType dt, BinOpEmitter mul)
+{
+	auto dst = Operand(Dst());
+
+	auto left = Operand(Src1());
+	left = hiLeft ? m.Sar(left, m.Int32(16)) : left;
+	left = m.Cast(dt, left);
+
+	auto right = Operand(Src2());
+	right = hiRight ? m.Sar(right, m.Int32(16)) : right;
+	right = m.Cast(dt, right);
+
+	m.Assign(dst, (m.*mul)(left, right));
 }
 
 void ArmRewriter::RewriteMull(BaseType dtResult, BinOpEmitter op)
@@ -329,7 +347,7 @@ void ArmRewriter::RewriteMull(BaseType dtResult, BinOpEmitter op)
 void ArmRewriter::RewritePop()
 {
 	auto sp = Reg(ARM_REG_SP);
-	RewriteLdm(sp, 0, 0, true);
+	RewriteLdm(sp, 0, 0, &IRtlNativeEmitter::IAdd, true);
 }
 
 void ArmRewriter::RewritePush()
@@ -350,6 +368,37 @@ void ArmRewriter::RewritePush()
 	m.Assign(dst, m.ISub(dst, m.Int32(offset)));
 }
 
+void ArmRewriter::RewriteQAddSub(BinOpEmitter op)
+{
+	auto dst = Operand(Dst());
+	auto src1 = Operand(Src1());
+	auto src2 = Operand(Src2());
+	auto sum = (m.*op)(src1, src2);
+	auto sat = host->EnsurePseudoProcedure("__signed_sat_32", BaseType::Int32, 1);
+	m.AddArg(sum);
+	m.Assign(dst, m.Fn(sat));
+	m.Assign(
+		Q(),
+		m.Cond(dst));
+}
+
+void ArmRewriter::RewriteQDAddSub(BinOpEmitter op)
+{
+	auto sat = host->EnsurePseudoProcedure("__signed_sat_32", BaseType::Int32, 1);
+	auto dst = Operand(Dst());
+	auto src1 = m.SMul(Operand(Src1()), m.Int32(2));
+	m.AddArg(src1);
+	src1 = m.Fn(sat);
+	auto src2 = Operand(Src2());
+	auto sum = (m.*op)(src2, src1);
+	m.AddArg(sum);
+	m.Assign(dst, m.Fn(sat));
+	m.Assign(
+		host->EnsureFlagGroup((int)ARM_REG_CPSR, 0x10, "Q", BaseType::Bool),
+		m.Cond(dst));
+}
+
+
 void ArmRewriter::RewriteSbfx()
 {
 	auto dst = this->Operand(Dst());
@@ -362,19 +411,38 @@ void ArmRewriter::RewriteSbfx()
 	m.Assign(dst, src);
 }
 
+
+void ArmRewriter::RewriteSmlal()
+{
+	auto dst = host->EnsureSequence(Dst().reg, Src1().reg, BaseType::Int64);
+	auto fac1 = Operand(Src2());
+	auto fac2 = Operand(Src3());
+	m.Assign(dst, m.IAdd(m.SMul(fac1, fac2), dst));
+}
+
+void ArmRewriter::RewriteMlal(bool hiLeft, bool hiRight, BaseType dt, BinOpEmitter op)
+{
+	auto dst = host->EnsureSequence(Dst().reg, Src1().reg, BaseType::Int64);
+
+	auto left = Operand(Src2());
+	left = hiLeft ? m.Sar(left, m.Int32(16)) : left;
+	left = m.Cast(dt, left);
+
+	auto right = Operand(Src3());
+	right = hiRight ? m.Sar(right, m.Int32(16)) : right;
+	right = m.Cast(dt, right);
+
+	m.Assign(dst, m.IAdd((m.*op)(left, right), dst));
+}
+
+
 void ArmRewriter::RewriteSmlaw(bool highPart)
 {
 	auto dst = this->Operand(Dst());
 	auto fac1 = this->Operand(Src1());
 	auto fac2 = this->Operand(Src2());
-	if (highPart)
-	{
-		fac2 = m.Cast(BaseType::Int16, m.Sar(fac2, m.Int32(16)));
-	}
-	else
-	{
-		fac2 = m.Cast(BaseType::Int16, fac2);
-	}
+	fac2 = m.Cast(BaseType::Int16, highPart ? m.Sar(fac2, m.Int32(16)) : fac2);
+	
 	auto acc = this->Operand(Src3());
 	m.Assign(dst, m.IAdd(
 		m.Sar(
@@ -383,24 +451,45 @@ void ArmRewriter::RewriteSmlaw(bool highPart)
 		acc));
 }
 
-void ArmRewriter::RewriteStm()
+void ArmRewriter::RewriteMulw(bool highPart)
+{
+	auto dst = this->Operand(Dst());
+	auto fac1 = this->Operand(Src1());
+	auto fac2 = this->Operand(Src2());
+	fac2 = m.Cast(BaseType::Int16, highPart ? m.Sar(fac2, m.Int32(16)) : fac2);
+	m.Assign(dst, m.Sar(
+		m.SMul(fac1, fac2),
+		m.Int32(16)));
+}
+
+
+void ArmRewriter::RewriteStm(int offset, bool inc)
 {
 	auto dst = this->Operand(Dst());
 	auto begin = &instr->detail->arm.operands[1];	// Skip the dst register
 	auto end = begin + instr->detail->arm.op_count - 1;
-	int offset = 0;
+	auto increment = inc ? 4 : -4;
 	for (auto r = begin; r != end; ++r)
 	{
-		auto ea = offset != 0
-			? m.ISub(dst, m.Int32(offset))
+		auto ea = offset > 0
+			? m.IAdd(dst, m.Int32(offset))
+			: offset < 0
+			? m.ISub(dst, m.Int32(abs(offset)))
 			: dst;
 		auto srcReg = Reg(r->reg);
 		m.Assign(m.Mem32(ea), srcReg);
-		offset += 4;
+		offset += increment;
 	}
-	if (offset != 0 && instr->detail->arm.writeback)
+	if (instr->detail->arm.writeback)
 	{
-		m.Assign(dst, m.ISub(dst, m.Int32(offset)));
+		if (offset > 0)
+		{
+			m.Assign(dst, m.IAdd(dst, m.Int32(offset)));
+		}
+		else if (offset < 0)
+		{
+			m.Assign(dst, m.ISub(dst, m.Int32(abs(offset))));
+		}
 	}
 }
 

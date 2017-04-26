@@ -103,7 +103,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_AESMC:
 	case ARM_INS_BKPT:
 	case ARM_INS_BXJ:
-	case ARM_INS_CDP:
 	case ARM_INS_CDP2:
 	case ARM_INS_CLREX:
 	case ARM_INS_CRC32B:
@@ -133,16 +132,10 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_LDC2:
 	case ARM_INS_LDCL:
 	case ARM_INS_LDC:
-	case ARM_INS_LDMDA:
-	case ARM_INS_LDRBT:
 	case ARM_INS_LDREX:
 	case ARM_INS_LDREXB:
 	case ARM_INS_LDREXD:
 	case ARM_INS_LDREXH:
-	case ARM_INS_LDRHT:
-	case ARM_INS_LDRSBT:
-	case ARM_INS_LDRSHT:
-	case ARM_INS_LDRT:
 	case ARM_INS_MCR2:
 	case ARM_INS_MCRR:
 	case ARM_INS_MCRR2:
@@ -154,14 +147,10 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_PLDW:
 	case ARM_INS_PLD:
 	case ARM_INS_PLI:
-	case ARM_INS_QADD:
 	case ARM_INS_QADD16:
 	case ARM_INS_QADD8:
 	case ARM_INS_QASX:
-	case ARM_INS_QDADD:
-	case ARM_INS_QDSUB:
 	case ARM_INS_QSAX:
-	case ARM_INS_QSUB:
 	case ARM_INS_QSUB16:
 	case ARM_INS_QSUB8:
 	case ARM_INS_RBIT:
@@ -194,20 +183,10 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_SHSUB16:
 	case ARM_INS_SHSUB8:
 	case ARM_INS_SMC:
-	case ARM_INS_SMLABB:
-	case ARM_INS_SMLABT:
 	case ARM_INS_SMLAD:
 	case ARM_INS_SMLADX:
-	case ARM_INS_SMLAL:
-	case ARM_INS_SMLALBB:
-	case ARM_INS_SMLALBT:
 	case ARM_INS_SMLALD:
 	case ARM_INS_SMLALDX:
-	case ARM_INS_SMLALTB:
-	case ARM_INS_SMLALTT:
-	case ARM_INS_SMLATB:
-	case ARM_INS_SMLATT:
-	case ARM_INS_SMLAWB:
 	case ARM_INS_SMLSD:
 	case ARM_INS_SMLSDX:
 	case ARM_INS_SMLSLD:
@@ -220,11 +199,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_SMMULR:
 	case ARM_INS_SMUAD:
 	case ARM_INS_SMUADX:
-	case ARM_INS_SMULBT:
-	case ARM_INS_SMULTB:
-	case ARM_INS_SMULTT:
-	case ARM_INS_SMULWB:
-	case ARM_INS_SMULWT:
 	case ARM_INS_SMUSD:
 	case ARM_INS_SMUSDX:
 	case ARM_INS_SRSDA:
@@ -247,13 +221,11 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_STLEXD:
 	case ARM_INS_STLEXH:
 	case ARM_INS_STLH:
-	case ARM_INS_STMDA:
 	case ARM_INS_STRBT:
 	case ARM_INS_STREX:
 	case ARM_INS_STREXB:
 	case ARM_INS_STREXD:
 	case ARM_INS_STREXH:
-	case ARM_INS_STRHT:
 	case ARM_INS_STRT:
 	case ARM_INS_SWP:
 	case ARM_INS_SWPB:
@@ -291,7 +263,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VABA:
 	case ARM_INS_VABDL:
 	case ARM_INS_VABD:
-	case ARM_INS_VABS:
 	case ARM_INS_VACGE:
 	case ARM_INS_VACGT:
 	case ARM_INS_VADD:
@@ -471,20 +442,27 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_BL: RewriteB(true); break;
 	case ARM_INS_BLX: RewriteB(true); break;
 	case ARM_INS_BX: RewriteB(false); break;
+	case ARM_INS_CDP: RewriteCdp(); break;
 	case ARM_INS_CLZ: RewriteClz(); break;
 	case ARM_INS_CMN: RewriteCmn(); break;
 	case ARM_INS_CMP: RewriteCmp(); break;
 	case ARM_INS_CPS: RewriteCps(); break;
 	case ARM_INS_DMB: RewriteDmb(); break;
 	case ARM_INS_LDR: RewriteLdr(BaseType::Word32); break;
+	case ARM_INS_LDRT: RewriteLdr(BaseType::Word32); break;
 	case ARM_INS_LDRB: RewriteLdr(BaseType::Byte); break;
+	case ARM_INS_LDRBT: RewriteLdr(BaseType::Byte); break;
 	case ARM_INS_LDRH: RewriteLdr(BaseType::UInt16); break;
+	case ARM_INS_LDRHT: RewriteLdr(BaseType::UInt16); break;
 	case ARM_INS_LDRSB: RewriteLdr(BaseType::SByte); break;
+	case ARM_INS_LDRSBT: RewriteLdr(BaseType::SByte); break;
 	case ARM_INS_LDRSH: RewriteLdr(BaseType::Int16); break;
+	case ARM_INS_LDRSHT: RewriteLdr(BaseType::Int16); break;
 	case ARM_INS_LDRD: RewriteLdrd(); break;
-	case ARM_INS_LDM: RewriteLdm(0); break;
-	case ARM_INS_LDMDB: RewriteLdm(0); break;
-	case ARM_INS_LDMIB: RewriteLdm(4); break;
+	case ARM_INS_LDM: RewriteLdm(0, &IRtlNativeEmitter::IAdd); break;
+	case ARM_INS_LDMDA: RewriteLdm(0, &IRtlNativeEmitter::ISub); break;
+	case ARM_INS_LDMDB: RewriteLdm(-4, &IRtlNativeEmitter::ISub); break;
+	case ARM_INS_LDMIB: RewriteLdm(4, &IRtlNativeEmitter::IAdd); break;
 	case ARM_INS_NOP: m.Nop(); break;
 	case ARM_INS_MCR: RewriteMcr(); break;
 	case ARM_INS_MLA: RewriteMultiplyAccumulate(&IRtlNativeEmitter::IAdd); break;
@@ -498,6 +476,10 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_MUL: RewriteBinOp(&IRtlNativeEmitter::IMul, instr->detail->arm.update_flags); break;
 	case ARM_INS_MVN: RewriteUnaryOp(&IRtlNativeEmitter::Not); break;
 	case ARM_INS_ORR: RewriteBinOp(&IRtlNativeEmitter::Or, false); break;
+	case ARM_INS_QADD: RewriteQAddSub(&IRtlNativeEmitter::IAdd); break;
+	case ARM_INS_QDADD: RewriteQDAddSub(&IRtlNativeEmitter::IAdd); break;
+	case ARM_INS_QDSUB: RewriteQDAddSub(&IRtlNativeEmitter::ISub); break;
+	case ARM_INS_QSUB: RewriteQAddSub(&IRtlNativeEmitter::ISub); break;
 	case ARM_INS_POP: RewritePop(); break;
 	case ARM_INS_PUSH: RewritePush(); break;
 	case ARM_INS_REV: RewriteRev(); break;
@@ -505,16 +487,31 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_RSC: RewriteAdcSbc(&IRtlNativeEmitter::ISub, true); break;
 	case ARM_INS_SBC: RewriteAdcSbc(&IRtlNativeEmitter::ISub, false); break;
 	case ARM_INS_SBFX: RewriteSbfx(); break;
+	case ARM_INS_SMLABB: RewriteMla(false, false, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMLABT: RewriteMla(false, true, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMLALBB: RewriteMlal(false, false, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMLALBT: RewriteMlal(false, true, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMLAL: RewriteSmlal(); break;
+	case ARM_INS_SMLATB: RewriteMla(true, false, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMLATT: RewriteMla(true, true, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMLAWB: RewriteSmlaw(false); break;
 	case ARM_INS_SMLAWT: RewriteSmlaw(true); break;
 	case ARM_INS_SMULBB: RewriteMulbb(false, false, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMULBT: RewriteMulbb(false, true, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMULWB: RewriteMulw(false); break;
+	case ARM_INS_SMULWT: RewriteMulw(true); break;
+	case ARM_INS_SMULTB: RewriteMulbb(true, false, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
+	case ARM_INS_SMULTT: RewriteMulbb(true, true, BaseType::Int16, &IRtlNativeEmitter::SMul); break;
 	case ARM_INS_SMULL: RewriteMull(BaseType::Int64, &IRtlNativeEmitter::SMul); break;
-	case ARM_INS_STM: RewriteStm(); break;
-	case ARM_INS_STMDB: RewriteStm(); break;
-	case ARM_INS_STMIB: RewriteStmib(); break;
+	case ARM_INS_STM: RewriteStm(0, true); break;
+	case ARM_INS_STMDB: RewriteStm(-4, false); break;
+	case ARM_INS_STMDA: RewriteStm(0, false); break;
+	case ARM_INS_STMIB: RewriteStm(4, true); break;
 	case ARM_INS_STR: RewriteStr(BaseType::Word32); break;
 	case ARM_INS_STRB: RewriteStr(BaseType::Byte); break;
 	case ARM_INS_STRD: RewriteStrd(); break;
 	case ARM_INS_STRH: RewriteStr(BaseType::UInt16); break;
+	case ARM_INS_STRHT: RewriteStr(BaseType::UInt16); break;
 	case ARM_INS_SUB: RewriteBinOp(&IRtlNativeEmitter::ISub, instr->detail->arm.update_flags); break;
 	case ARM_INS_SVC: RewriteSvc(); break;
 	case ARM_INS_SXTAB: RewriteXtab(BaseType::SByte); break;
@@ -531,6 +528,7 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_UXTB: RewriteXtb(BaseType::Byte); break;
 	case ARM_INS_UXTH: RewriteXtb(BaseType::UInt16); break;
 
+	case ARM_INS_VABS: RewriteVabs(); break;
 	case ARM_INS_VLDMIA: RewriteVldmia(); break;
 	case ARM_INS_VMOV: RewriteVmov(); break;
 	case ARM_INS_VSTMIA: RewriteVstmia(); break;
@@ -544,6 +542,7 @@ void ArmRewriter::NotImplementedYet()
 {
 	char buf[200];	//$TODO: hello buffer overflow!
 	::snprintf(buf, sizeof(buf), "Rewriting ARM opcode '%s' is not supported yet.", instr->mnemonic);
+	EmitUnitTest();
 	host->Error(
 		instr->address,
 		buf);
@@ -553,6 +552,11 @@ void ArmRewriter::NotImplementedYet()
 HExpr ArmRewriter::NZCV()
 {
 	return host->EnsureFlagGroup((int)ARM_REG_CPSR, 0xF, "NZCV", BaseType::Byte);
+}
+
+HExpr ArmRewriter::Q()
+{
+	return host->EnsureFlagGroup((int)ARM_REG_CPSR, 0x10, "Q", BaseType::Bool);
 }
 
 void ArmRewriter::MaybeUpdateFlags(HExpr opDst)
@@ -714,7 +718,6 @@ HExpr ArmRewriter::Operand(const cs_arm_op & op)
 	}
 	}
 	//$TODO
-	//throw new NotImplementedException(op.Type.ToString());
 	return HExpr();
 }
 
@@ -723,15 +726,23 @@ BaseType ArmRewriter::SizeFromLoadStore()
 	switch (instr->id)
 	{
 	case ARM_INS_LDR: return BaseType::Word32;
+	case ARM_INS_LDRT: return BaseType::Word32;
 	case ARM_INS_LDRB: return BaseType::Byte;
+	case ARM_INS_LDRBT: return BaseType::Byte;
 	case ARM_INS_LDRD: return BaseType::Word64;
 	case ARM_INS_LDRH: return BaseType::Word16;
+	case ARM_INS_LDRHT: return BaseType::Word16;
 	case ARM_INS_LDRSB: return BaseType::SByte;
+	case ARM_INS_LDRSBT: return BaseType::SByte;
 	case ARM_INS_LDRSH: return BaseType::Int16;
+	case ARM_INS_LDRSHT: return BaseType::Int16;
 	case ARM_INS_STR: return BaseType::Word32;
+	case ARM_INS_STRT: return BaseType::Word32;
 	case ARM_INS_STRB: return BaseType::Byte;
+	case ARM_INS_STRBT: return BaseType::Byte;
 	case ARM_INS_STRD: return BaseType::Word64;
 	case ARM_INS_STRH: return BaseType::Word16;
+	case ARM_INS_STRHT: return BaseType::Word16;
 	}
 	//assert(false && instr->Id.ToString());
 	return BaseType::Void;
@@ -831,6 +842,36 @@ void ArmRewriter::RewriteSvc()
 	//	host->EnsurePseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 2),
 	//	Operand(Dst)));
 }
+
+#if _DEBUG
+void ArmRewriter::EmitUnitTest()
+{
+	if (opcode_seen[instr->id])
+		return;
+	opcode_seen[instr->id] = 1;
+
+	//var r2 = rdr.Clone();
+	//r2.Offset -= dasm.Current.Length;
+	auto bytes = &instr->bytes[0];
+	wchar_t buf[256];
+	::OutputDebugString(L"        [Test]\r\n");
+	wsprintfW(buf,      L"        public void ArmRw_%S()\r\n", instr->mnemonic );
+	::OutputDebugString(buf);
+	::OutputDebugString(L"        {\r\n");
+	wsprintfW(buf,      L"            BuildTest(0x%02x%02x%02x%02x);\t// %S %S\r\n",
+		bytes[3], bytes[2], bytes[1], bytes[0],
+		instr->mnemonic, instr->op_str);
+	::OutputDebugString(buf);
+	::OutputDebugString(L"            AssertCode(");
+	::OutputDebugString(L"                \"0|L--|00100000(4): 1 instructions\",\r\n");
+	::OutputDebugString(L"                \"1|L--|@@@\");\r\n");
+	::OutputDebugString(L"        }\r\n");
+	::OutputDebugString(L"\r\n");
+}
+
+int ArmRewriter::opcode_seen[ARM_INS_ENDING];
+#endif
+
 
 const BaseType ArmRewriter::register_types[] =
 {

@@ -42,12 +42,9 @@ private:
 	const char * MemBarrierName(arm_mem_barrier barrier);
 	HExpr NZCV();
 	HExpr Operand(const cs_arm_op & op);
-	HExpr Reg(int reg) { 
-		return host->EnsureRegister(0, reg);
-	}
-	HExpr Reg(arm_reg reg) { 
-		return host->EnsureRegister(0, (int)reg);
-	}
+	HExpr Q();
+	HExpr Reg(int reg) { return host->EnsureRegister(0, reg); }
+	HExpr Reg(arm_reg reg) {  return host->EnsureRegister(0, (int)reg); }
 
 	BaseType SizeFromLoadStore();
 	HExpr TestCond(arm_cc cond);
@@ -68,16 +65,19 @@ private:
 	void RewriteBfi();
 	void RewriteBic();
 	void RewriteBinOp(BinOpEmitter fn, bool updateFlags);
+	void RewriteCdp();
 	void RewriteClz();
 	void RewriteCmn();
 	void RewriteCmp();
 	void RewriteCps();
 	void RewriteDmb();
-	void RewriteLdm(int);
-	void RewriteLdm(HExpr dst, int skip_ops, int offset, bool writeback);
+	void RewriteLdm(int offset, BinOpEmitter);
+	void RewriteLdm(HExpr dst, int skip_ops, int offset, BinOpEmitter, bool writeback);
 	void RewriteLdr(BaseType);
 	void RewriteLdrd();
 	void RewriteMcr();
+	void RewriteMla(bool hiLeft, bool hiRight, BaseType, BinOpEmitter);
+	void RewriteMlal(bool hiLeft, bool hiRight, BaseType, BinOpEmitter);
 	void RewriteMov();
 	void RewriteMovt();
 	void RewriteMrc();
@@ -85,19 +85,24 @@ private:
 	void RewriteMsr();
 	void RewriteMulbb(bool, bool, BaseType, BinOpEmitter);
 	void RewriteMull(BaseType, BinOpEmitter);
+	void RewriteMulw(bool);
 	void RewriteMultiplyAccumulate(BinOpEmitter);
 	void RewritePop();
 	void RewritePush();
+	void RewriteQAddSub(BinOpEmitter);
+	void RewriteQDAddSub(BinOpEmitter);
 	void RewriteRev();
 	void RewriteRevBinOp(BinOpEmitter, bool setflags);
 	void RewriteSbfx();
+	void RewriteSmlal();
 	void RewriteSmlaw(bool highPart);
-	void RewriteStm();
+	void RewriteStm(int offset, bool incr);
 	void RewriteStmib();
 	void RewriteStr(BaseType);
 	void RewriteSvc();
 	void RewriteUnaryOp(UnaryOpEmitter);
 	void RewriteUbfx();
+	void RewriteVabs(); 
 	void RewriteVldmia();
 	void RewriteVmov();
 	void RewriteVstmia();
@@ -119,4 +124,9 @@ private:
 	static const BaseType register_types[];
 	static const int type_sizes[];
 	static int s_count;			//$DEBUG: tracking number of "live" objects 
+
+#if _DEBUG
+	void EmitUnitTest();
+	static int opcode_seen[];
+#endif
 };
