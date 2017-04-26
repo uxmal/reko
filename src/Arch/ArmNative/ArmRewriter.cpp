@@ -26,6 +26,7 @@ ArmRewriter::ArmRewriter(
 	auto ec = cs_open(CS_ARCH_ARM, CS_MODE_ARM, &hcapstone); 
 	ec = cs_option(hcapstone, CS_OPT_DETAIL, CS_OPT_ON);
 	this->instr = cs_malloc(hcapstone);
+	++s_count;
 }
 
 // {12506D0F-1C67-4828-9601-96F8ED4D162D}
@@ -67,6 +68,7 @@ STDMETHODIMP_(ULONG) ArmRewriter::Release()
 	if (--this->cRef > 0)
 		return this->cRef;
 	Dump("Release: %08x destroyed", this);
+	--s_count;
 	delete this;
 	return 0;
 }
@@ -585,6 +587,7 @@ void ArmRewriter::RewriteB(bool link)
 		else
 		{
 			rtlClass = RtlClass::ConditionalTransfer;
+			ConditionalSkip(true);
 			m.Call(dst, 0);
 		}
 	}
@@ -611,25 +614,6 @@ void ArmRewriter::RewriteB(bool link)
 	}
 }
 
-void ArmRewriter::AddConditional(void (*mkInstr)())
-{
-	//if (instr->detail->arm.CodeCondition != ArmCodeCondition.AL)
-	//{
-	//	rtlInstr = new RtlIf(TestCond(instr->detail->arm.CodeCondition), rtlInstr);
-	//}
-	//ric.Instructions.Add(rtlInstr);
-}
-
-void ArmRewriter::ConditionalAssign(HExpr dst, HExpr src)
-{
-	/*RtlInstruction rtlInstr = new RtlAssignment(dst, src);
-	if (instr->detail->arm.CodeCondition != ArmCodeCondition::AL)
-	{
-		rtlInstr = new RtlIf(TestCond(instr->detail->arm.CodeCondition), rtlInstr);
-	}
-	ric.Instructions.Add(rtlInstr);*/
-}
-
 // If a conditional ARM instruction is encountered, generate an IL
 // instruction to skip the remainder of the instruction cluster.
 void ArmRewriter::ConditionalSkip(bool force)
@@ -639,7 +623,10 @@ void ArmRewriter::ConditionalSkip(bool force)
 	{
 		if (cc == ARM_CC_AL)
 			return; // never skip!
-		if (instr->id == ARM_INS_B)
+		if (instr->id == ARM_INS_B ||
+			instr->id == ARM_INS_BL ||
+			instr->id == ARM_INS_BLX ||
+			instr->id == ARM_INS_BX)
 		{
 			// These instructions handle the branching themselves.
 			return;
@@ -685,12 +672,12 @@ HExpr ArmRewriter::Operand(const cs_arm_op & op)
 	{
 	case ARM_OP_REG:
 	{
-		auto reg = host->EnsureRegister(op.reg);
+		auto reg = Reg(op.reg);
 		return MaybeShiftOperand(reg, op);
 	}
 	case ARM_OP_SYSREG:
 	{
-		auto sysreg = host->EnsureRegister(op.reg);
+		auto sysreg = host->EnsureRegister(1, op.reg);
 		return sysreg;
 	}
 	case ARM_OP_IMM:
@@ -844,3 +831,156 @@ void ArmRewriter::RewriteSvc()
 	//	host->EnsurePseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 2),
 	//	Operand(Dst)));
 }
+
+const BaseType ArmRewriter::register_types[] =
+{
+	BaseType::Void,			// ARM_REG_INVALID = 0,
+	BaseType::Word32,		// ARM_REG_APSR,
+	BaseType::Word32,		// ARM_REG_APSR_NZCV,
+	BaseType::Word32,		// ARM_REG_CPSR,
+	BaseType::Word32,		// ARM_REG_FPEXC,
+	BaseType::Word32,		// ARM_REG_FPINST,
+	BaseType::Word32,		// ARM_REG_FPSCR,
+	BaseType::Word32,		// ARM_REG_FPSCR_NZCV,
+	BaseType::Word32,		// ARM_REG_FPSID,
+	BaseType::Word32,		// ARM_REG_ITSTATE,
+	BaseType::Word32,		// ARM_REG_LR,
+	BaseType::Word32,		// ARM_REG_PC,
+	BaseType::Word32,		// ARM_REG_SP,
+	BaseType::Word32,		// ARM_REG_SPSR,
+	BaseType::Word64,		// ARM_REG_D0,
+	BaseType::Word64,		// ARM_REG_D1,
+	BaseType::Word64,		// ARM_REG_D2,
+	BaseType::Word64,		// ARM_REG_D3,
+	BaseType::Word64,		// ARM_REG_D4,
+	BaseType::Word64,		// ARM_REG_D5,
+	BaseType::Word64,		// ARM_REG_D6,
+	BaseType::Word64,		// ARM_REG_D7,
+	BaseType::Word64,		// ARM_REG_D8,
+	BaseType::Word64,		// ARM_REG_D9,
+	BaseType::Word64,		// ARM_REG_D10,
+	BaseType::Word64,		// ARM_REG_D11,
+	BaseType::Word64,		// ARM_REG_D12,
+	BaseType::Word64,		// ARM_REG_D13,
+	BaseType::Word64,		// ARM_REG_D14,
+	BaseType::Word64,		// ARM_REG_D15,
+	BaseType::Word64,		// ARM_REG_D16,
+	BaseType::Word64,		// ARM_REG_D17,
+	BaseType::Word64,		// ARM_REG_D18,
+	BaseType::Word64,		// ARM_REG_D19,
+	BaseType::Word64,		// ARM_REG_D20,
+	BaseType::Word64,		// ARM_REG_D21,
+	BaseType::Word64,		// ARM_REG_D22,
+	BaseType::Word64,		// ARM_REG_D23,
+	BaseType::Word64,		// ARM_REG_D24,
+	BaseType::Word64,		// ARM_REG_D25,
+	BaseType::Word64,		// ARM_REG_D26,
+	BaseType::Word64,		// ARM_REG_D27,
+	BaseType::Word64,		// ARM_REG_D28,
+	BaseType::Word64,		// ARM_REG_D29,
+	BaseType::Word64,		// ARM_REG_D30,
+	BaseType::Word64,		// ARM_REG_D31,
+	BaseType::Word32,		// ARM_REG_FPINST2,
+	BaseType::Word32,		// ARM_REG_MVFR0,
+	BaseType::Word32,		// ARM_REG_MVFR1,
+	BaseType::Word32,		// ARM_REG_MVFR2,
+	BaseType::Word128,		// ARM_REG_Q0,
+	BaseType::Word128,		// ARM_REG_Q1,
+	BaseType::Word128,		// ARM_REG_Q2,
+	BaseType::Word128,		// ARM_REG_Q3,
+	BaseType::Word128,		// ARM_REG_Q4,
+	BaseType::Word128,		// ARM_REG_Q5,
+	BaseType::Word128,		// ARM_REG_Q6,
+	BaseType::Word128,		// ARM_REG_Q7,
+	BaseType::Word128,		// ARM_REG_Q8,
+	BaseType::Word128,		// ARM_REG_Q9,
+	BaseType::Word128,		// ARM_REG_Q10,
+	BaseType::Word128,		// ARM_REG_Q11,
+	BaseType::Word128,		// ARM_REG_Q12,
+	BaseType::Word128,		// ARM_REG_Q13,
+	BaseType::Word128,		// ARM_REG_Q14,
+	BaseType::Word128,		// ARM_REG_Q15,
+	BaseType::Word32,		// ARM_REG_R0,
+	BaseType::Word32,		// ARM_REG_R1,
+	BaseType::Word32,		// ARM_REG_R2,
+	BaseType::Word32,		// ARM_REG_R3,
+	BaseType::Word32,		// ARM_REG_R4,
+	BaseType::Word32,		// ARM_REG_R5,
+	BaseType::Word32,		// ARM_REG_R6,
+	BaseType::Word32,		// ARM_REG_R7,
+	BaseType::Word32,		// ARM_REG_R8,
+	BaseType::Word32,		// ARM_REG_R9,
+	BaseType::Word32,		// ARM_REG_R10,
+	BaseType::Word32,		// ARM_REG_R11,
+	BaseType::Word32,		// ARM_REG_R12,
+	BaseType::Word32,		// ARM_REG_S0,
+	BaseType::Word32,		// ARM_REG_S1,
+	BaseType::Word32,		// ARM_REG_S2,
+	BaseType::Word32,		// ARM_REG_S3,
+	BaseType::Word32,		// ARM_REG_S4,
+	BaseType::Word32,		// ARM_REG_S5,
+	BaseType::Word32,		// ARM_REG_S6,
+	BaseType::Word32,		// ARM_REG_S7,
+	BaseType::Word32,		// ARM_REG_S8,
+	BaseType::Word32,		// ARM_REG_S9,
+	BaseType::Word32,		// ARM_REG_S10,
+	BaseType::Word32,		// ARM_REG_S11,
+	BaseType::Word32,		// ARM_REG_S12,
+	BaseType::Word32,		// ARM_REG_S13,
+	BaseType::Word32,		// ARM_REG_S14,
+	BaseType::Word32,		// ARM_REG_S15,
+	BaseType::Word32,		// ARM_REG_S16,
+	BaseType::Word32,		// ARM_REG_S17,
+	BaseType::Word32,		// ARM_REG_S18,
+	BaseType::Word32,		// ARM_REG_S19,
+	BaseType::Word32,		// ARM_REG_S20,
+	BaseType::Word32,		// ARM_REG_S21,
+	BaseType::Word32,		// ARM_REG_S22,
+	BaseType::Word32,		// ARM_REG_S23,
+	BaseType::Word32,		// ARM_REG_S24,
+	BaseType::Word32,		// ARM_REG_S25,
+	BaseType::Word32,		// ARM_REG_S26,
+	BaseType::Word32,		// ARM_REG_S27,
+	BaseType::Word32,		// ARM_REG_S28,
+	BaseType::Word32,		// ARM_REG_S29,
+	BaseType::Word32,		// ARM_REG_S30,
+	BaseType::Word32,		// ARM_REG_S31,
+};
+
+const int ArmRewriter::type_sizes[] = 
+{
+	0,						// Void,
+
+	1,						// Bool,
+
+	1,						// Byte,
+	1,						// SByte,
+	1,						// Char8,
+
+	2,						// Int16,
+	2,						// UInt16,
+	2,						// Ptr16,
+	2,						// Word16,
+
+	4,						// Int32,
+	4,						// UInt32,
+	4,						// Ptr32,
+	4,						// Word32,
+
+	8,						// Int64,
+	8,						// UInt64,
+	8,						// Ptr64,
+	8,						// Word64,
+ 
+	16,						// Word128,
+
+	4,						// Real32,
+	8,						// Real64,
+};
+
+int32_t ArmRewriter::GetCount()
+{
+	return s_count;
+}
+
+int ArmRewriter::s_count = 0;

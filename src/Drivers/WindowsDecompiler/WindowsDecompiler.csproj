@@ -173,6 +173,8 @@
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
     <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
+    <Architectures Include="$(SolutionDir)$(Configuration)\ArmNative.dll" />
+    <Architectures Include="$(SolutionDir)$(Configuration)\ArmNative.pdb" />
     <Architectures Include="$(SolutionDir)Arch\Avr\$(OutDir)Reko.Arch.Avr.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k.Design\$(OutDir)Reko.Arch.M68k.Design.*" />
@@ -218,11 +220,11 @@
     <Libraries Include="$(SolutionDir)Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
     <Libraries Include="$(SolutionDir)Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
     <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
-    <Message Importance="high" Text="@(DecompilerMetadata)" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying ImageLoaders @(ImageLoaders) to $(TargetDir)" />
     <Copy SourceFiles="@(ImageLoaders)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />

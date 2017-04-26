@@ -27,15 +27,14 @@ public:
 	STDMETHOD_(ULONG, Release)();
 
 	STDMETHOD(Next)();
+	int32_t STDMETHODCALLTYPE GetCount();
 
 private:
 	void AddConditional(void(*mkInstr)());
 	void ConditionalSkip(bool force);
-	void ConditionalAssign(HExpr dst, HExpr src);
 	HExpr FlagGroup(FlagM bits, const char * name, BaseType type);
 	arm_cc Invert(arm_cc);
 	bool IsLastOperand(const cs_arm_op & op);
-	//HExpr Operand(const ArmInstructionOperand & op);
 	void NotImplementedYet();
 	void MaybeUpdateFlags(HExpr opDst);
 	void MaybePostOperand(const cs_arm_op & op);
@@ -44,10 +43,10 @@ private:
 	HExpr NZCV();
 	HExpr Operand(const cs_arm_op & op);
 	HExpr Reg(int reg) { 
-		return host->EnsureRegister(reg);
+		return host->EnsureRegister(0, reg);
 	}
 	HExpr Reg(arm_reg reg) { 
-		return host->EnsureRegister((int)reg);
+		return host->EnsureRegister(0, (int)reg);
 	}
 
 	BaseType SizeFromLoadStore();
@@ -75,7 +74,7 @@ private:
 	void RewriteCps();
 	void RewriteDmb();
 	void RewriteLdm(int);
-	void RewriteLdm(HExpr dst, const cs_arm_op * begin, const cs_arm_op * end, int offset, bool writeback);
+	void RewriteLdm(HExpr dst, int skip_ops, int offset, bool writeback);
 	void RewriteLdr(BaseType);
 	void RewriteLdrd();
 	void RewriteMcr();
@@ -115,4 +114,8 @@ private:
 	size_t available;			// Available bytes left past rawBytes
 	uint64_t address;
 	RtlClass rtlClass;
+
+	static const BaseType register_types[];
+	static const int type_sizes[];
+	static int s_count;			//$DEBUG: tracking number of "live" objects 
 };

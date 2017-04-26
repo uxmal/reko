@@ -26,8 +26,11 @@ namespace Reko.Core.Types
 {
 	public class UnknownType : DataType
 	{
-		public UnknownType()
+        private int size;
+
+		public UnknownType(int size = 0)
 		{
+            this.size = 0;
 		}
 
         public override void Accept(IDataTypeVisitor v)
@@ -47,7 +50,7 @@ namespace Reko.Core.Types
 
 		public override int Size
 		{
-			get { return 0; }
+			get { return size; }
 			set { ThrowBadSize(); }
 		}
 	}

@@ -139,6 +139,7 @@ namespace Reko.Arch.Arm
         public static readonly RegisterStorage s31 = new RegisterStorage("s31", 39, 96, PrimitiveType.Word64);
 
         public static readonly Dictionary<capstone_arm_reg, RegisterStorage> RegisterByCapstoneIDNew;
+        public static readonly Dictionary<capstone_arm_sysreg, RegisterStorage> SysRegisterByCapstoneIDNew;
         public static readonly Dictionary<ArmRegister, RegisterStorage> RegisterByCapstoneID;
         public static readonly Dictionary<ArmSysRegister, RegisterStorage> SysRegisterByCapstoneID;
 
@@ -381,6 +382,11 @@ namespace Reko.Arch.Arm
                   { ArmRegister.FPSCR, fpscr },
             };
 
+            SysRegisterByCapstoneIDNew  = new Dictionary<capstone_arm_sysreg, RegisterStorage>
+            {
+                { capstone_arm_sysreg.ARM_SYSREG_CPSR_C, cpsr }
+            };
+
             SysRegisterByCapstoneID = new Dictionary<ArmSysRegister, RegisterStorage>
             {
                 { ArmSysRegister.CPSR_C, cpsr },
@@ -609,5 +615,54 @@ namespace Reko.Arch.Arm
         ARM_REG_FP = ARM_REG_R11,
         ARM_REG_IP = ARM_REG_R12,
     }
+
+    public enum capstone_arm_sysreg
+    {
+        //> Special registers for MSR
+        ARM_SYSREG_INVALID = 0,
+
+        // SPSR* registers can be OR combined
+        ARM_SYSREG_SPSR_C = 1,
+        ARM_SYSREG_SPSR_X = 2,
+        ARM_SYSREG_SPSR_S = 4,
+        ARM_SYSREG_SPSR_F = 8,
+
+        // CPSR* registers can be OR combined
+        ARM_SYSREG_CPSR_C = 16,
+        ARM_SYSREG_CPSR_X = 32,
+        ARM_SYSREG_CPSR_S = 64,
+        ARM_SYSREG_CPSR_F = 128,
+
+        // independent registers
+        ARM_SYSREG_APSR = 256,
+        ARM_SYSREG_APSR_G,
+        ARM_SYSREG_APSR_NZCVQ,
+        ARM_SYSREG_APSR_NZCVQG,
+
+        ARM_SYSREG_IAPSR,
+        ARM_SYSREG_IAPSR_G,
+        ARM_SYSREG_IAPSR_NZCVQG,
+
+        ARM_SYSREG_EAPSR,
+        ARM_SYSREG_EAPSR_G,
+        ARM_SYSREG_EAPSR_NZCVQG,
+
+        ARM_SYSREG_XPSR,
+        ARM_SYSREG_XPSR_G,
+        ARM_SYSREG_XPSR_NZCVQG,
+
+        ARM_SYSREG_IPSR,
+        ARM_SYSREG_EPSR,
+        ARM_SYSREG_IEPSR,
+
+        ARM_SYSREG_MSP,
+        ARM_SYSREG_PSP,
+        ARM_SYSREG_PRIMASK,
+        ARM_SYSREG_BASEPRI,
+        ARM_SYSREG_BASEPRI_MAX,
+        ARM_SYSREG_FAULTMASK,
+        ARM_SYSREG_CONTROL,
+    }
+
 
 }

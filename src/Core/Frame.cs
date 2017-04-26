@@ -62,7 +62,7 @@ namespace Reko.Core
     /// considered to be at offset 0.</para>
 	/// <para>In addition, support has to be provided for architectures that have separate FPU stacks.</para>
 	/// </remarks>
-	public class Frame
+	public class Frame : IStorageBinder
 	{
 		private List<Identifier> identifiers;	// Identifiers for each access.
 		
@@ -446,5 +446,15 @@ namespace Reko.Core
 				text.WriteLine("// Frame escapes");
 			text.WriteLine("// return address size: {0}", ReturnAddressSize);
 		}
+    }
+
+    //$TODO: remove thise once merged with Scanning-development branch
+
+    public interface IStorageBinder
+    {
+        Identifier CreateTemporary(DataType dataType);
+        Identifier EnsureFlagGroup(FlagRegister reg, uint bitmask, string name, DataType dataType);
+        Identifier EnsureRegister(RegisterStorage reg);
+        Identifier EnsureSequence(Storage hi, Storage lo, DataType dataType);
     }
 }

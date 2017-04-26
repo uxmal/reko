@@ -40,31 +40,39 @@ void ArmRewriter::RewriteDmb()
 
 void ArmRewriter::RewriteMcr()
 {
-	//$TODO
-	/*
-	m.SideEffect(host->PseudoProcedure(
-		"__mcr",
-		PrimitiveType::Void,
-		instr->detail->arm.Operands
-		.Select(o = > Operand(o))
-		.ToArray()));
-		*/
+	auto begin = &instr->detail->arm.operands[0];
+	auto end = begin + instr->detail->arm.op_count;
+	int cArgs = 0;
+	for (auto op = begin; op != end; ++op)
+	{
+		m.AddArg(Operand(*op));
+		++cArgs;
+	}
+	auto ppp = host->EnsurePseudoProcedure("__mcr", BaseType::Void, cArgs);
+	m.SideEffect(m.Fn(ppp));
 }
 
 void ArmRewriter::RewriteMrc()
 {
-	//$TODO
-/*
-	auto ops = instr->detail->arm.Operands
-		.Select(o = > Operand(o))
-		.ToList();
-	auto regDst = ops.OfType<Identifier>().SingleOrDefault();
-	ops.Remove(regDst);
-	m.Assign(regDst, host->PseudoProcedure(
-		"__mrc",
-		PrimitiveType::Word32,
-		ops.ToArray()));
-		*/
+	auto begin = &instr->detail->arm.operands[0];
+	auto end = begin + instr->detail->arm.op_count;
+	int cArgs = 0;
+	HExpr regDst = HExpr(-1);
+	for (auto op = begin; op != end; ++op)
+	{
+		auto a = Operand(*op);
+		if (cArgs == 2)
+		{
+			regDst = a;
+		}
+		else
+		{
+			m.AddArg(a);
+		}
+		++cArgs;
+	}
+	auto ppp = host->EnsurePseudoProcedure("__mrc", BaseType::Void, cArgs-1);
+	m.Assign(regDst, m.Fn(ppp));
 }
 
 void ArmRewriter::RewriteMrs()
@@ -84,6 +92,26 @@ void ArmRewriter::RewriteMsr()
 
 const char * ArmRewriter::MemBarrierName(arm_mem_barrier barrier)
 {
+	switch (barrier)
+	{
+		//case ARM_MB_INVALID = 0,
+		//case 	ARM_MB_RESERVED_0,
+	case 	ARM_MB_OSHLD: return "oshld";
+	case 	ARM_MB_OSHST: return "oshst";
+	case 	ARM_MB_OSH: return "osh";
+		//case 	ARM_MB_RESERVED_4,
+	case 	ARM_MB_NSHLD: return "nshld";
+	case 	ARM_MB_NSHST: return "nshst";
+	case 	ARM_MB_NSH: return "nsh";
+		//case 	ARM_MB_RESERVED_8,
+	case 	ARM_MB_ISHLD: return "ishld";
+	case 	ARM_MB_ISHST: return "ishst";
+	case 	ARM_MB_ISH: return "ish";
+		//case 	ARM_MB_RESERVED_12,
+	case 	ARM_MB_LD: return "ld";
+	case 	ARM_MB_ST: return "st";
+	case 	ARM_MB_SY: return "sy";
+	}
 	return "NOT_IMPLEMENTED";
 
 }
