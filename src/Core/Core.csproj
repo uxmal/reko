@@ -244,6 +244,7 @@
     <Compile Include="Lib\UbjsonWriter.cs" />
     <Compile Include="Lib\WildPatternMatcher.cs" />
     <Compile Include="Operators\FNegOperator.cs" />
+    <Compile Include="Output\LlvmFormatter.cs" />
     <Compile Include="Output\CTypeReferenceFormatter.cs" />
     <Compile Include="Rational.cs" />
     <Compile Include="SegmentMap.cs" />

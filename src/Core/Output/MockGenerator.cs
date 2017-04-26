@@ -31,7 +31,7 @@ using System.Text;
 namespace Reko.Core.Output
 {
     /// <summary>
-    /// Generates source code from Reko.Code that can be fed back into
+    /// Generates C# source code from Reko.Code that can be fed back into
     /// ProcedureBuilder.
     /// </summary>
     /// <remarks>
