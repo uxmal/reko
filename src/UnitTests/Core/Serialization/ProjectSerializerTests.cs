@@ -30,6 +30,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Xml;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -223,8 +224,32 @@ namespace Reko.UnitTests.Core.Serialization
                     new AssemblerFile_v3 { Filename="foo.asm", Assembler="x86-att" }
                 }
             };
-            var xw = new FilteringXmlWriter(new StringWriter());
+            var sw =  new StringWriter();
+            var xw = new FilteringXmlWriter(sw);
+            xw.Formatting = Formatting.Indented;
             new ProjectSaver(sc).Save(sp, xw);
+            var sExp =
+            #region Expected
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
+  <input>
+    <filename>foo.exe</filename>
+    <user>
+      <heuristic name=""shingle"" />
+    </user>
+  </input>
+  <asm>
+    <filename>foo.asm</filename>
+    <assembler>x86-att</assembler>
+  </asm>
+</project>";
+            #endregion
+            var sActual = sw.ToString();
+            if (sExp != sActual)
+            {
+                Debug.Print(sActual);
+                Assert.AreEqual(sExp, sActual);
+            }
         }
     }
 }

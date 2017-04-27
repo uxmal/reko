@@ -80,6 +80,7 @@ namespace Reko.Core.Serialization
                         .Where(uc => uc != null)
                         .ToList(),
                     IndirectJumps = program.User.IndirectJumps.Select(SerializeIndirectJump).ToList(),
+                    SymbolSources = program.User.SymbolSources.Select(SerializeSymbolSource).ToList(),
                     JumpTables = program.User.JumpTables.Select(SerializeJumpTable).ToList(),
                     GlobalData = program.User.Globals
                         .Select(de => new GlobalDataItem_v2
@@ -160,6 +161,17 @@ namespace Reko.Core.Serialization
                 InstructionAddress = de.Key.ToString(),
                 TableAddress = de.Value.Address.ToString(),
                 IndexRegister = de.Value.IndexRegister.Name,
+            };
+        }
+
+        private SymbolSource_v4 SerializeSymbolSource(SymbolSourceReference symRef)
+        {
+            return new SymbolSource_v4
+            {
+                Name = symRef.Name,
+                TypeName = symRef.TypeName,
+                AssemblyFileName = symRef.AssemblyName,
+                SourceUrl = symRef.SymbolSourceUrl
             };
         }
 

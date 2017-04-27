@@ -107,6 +107,7 @@ namespace Reko.Core.Serialization
             Annotations = new List<Annotation_v3>();
             Calls = new List<SerializedCall_v1>();
             IndirectJumps = new List<IndirectJump_v4>();
+            SymbolSources = new List<SymbolSource_v4>();
         }
 
         [XmlElement("address")]
@@ -142,6 +143,9 @@ namespace Reko.Core.Serialization
         [XmlElement("jumpTable")]
         public List<JumpTable_v4> JumpTables;
 
+        [XmlElement("symbolsource")]
+        public List<SymbolSource_v4> SymbolSources;
+        
         [XmlElement("annotation")]
         public List<Annotation_v3> Annotations;
 
@@ -190,5 +194,20 @@ namespace Reko.Core.Serialization
 
         [XmlAttribute("idxReg")]
         public string IndexRegister;
+    }
+
+    public class SymbolSource_v4
+    {
+        [XmlAttribute("name")]
+        public string Name;
+
+        [XmlAttribute("type")]
+        public string TypeName;
+
+        [XmlAttribute("assembly")]
+        public string AssemblyFileName;
+
+        [XmlAttribute("sourceurl")]
+        public string SourceUrl;
     }
 }

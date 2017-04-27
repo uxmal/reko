@@ -281,6 +281,16 @@ namespace Reko.UnitTests.Core.Serialization
                             JumpTables =
                             {
                                 { jumpTable.Address, jumpTable }
+                            },
+                            SymbolSources =
+                            {
+                                new SymbolSourceReference
+                                {
+                                     Name = "SymLoader",
+                                     TypeName = "Foo.Bar.SymLoader",
+                                     AssemblyName = "foo.dll",
+                                     SymbolSourceUrl = "http://foo.bar",
+                                }
                             }
                         }
                     }

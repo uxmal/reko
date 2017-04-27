@@ -56,6 +56,7 @@ namespace Reko.Core
         public SortedList<Address, UserIndirectJump> IndirectJumps { get; set; }
         public SortedList<Address, ImageMapVectorTable> JumpTables { get; set; }
         public List<Annotation> Annotations { get; set; }
+        public List<SymbolSourceReference> SymbolSources { get; set; }
 
         /// <summary>
         /// A script to run after the image is loaded.
