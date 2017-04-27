@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Loading
         [Test]
         public void SymLoaderSvc_Load()
         {
-            cfgSvc.Expect(c => c.GetSymbolSources()).Return(new List<SymbolSource>
+            cfgSvc.Expect(c => c.GetSymbolSources()).Return(new List<SymbolSourceDefinition>
             {
                 new SymbolSourceDefinition
                 {

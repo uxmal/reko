@@ -45,9 +45,14 @@ namespace Reko.Gui.Windows.Forms
             this.dlg.CustomSourceCheckbox.CheckedChanged += CustomSourceCheckbox_CheckedChanged;
             this.dlg.AssemblyFile.TextChanged += AssemblyFile_TextChanged;
             this.dlg.BrowseAssemblyFile.Click += BrowseAssemblyFile_Click;
+            this.dlg.SymbolSourceClasses.SelectedIndexChanged += SymbolSourceClasses_SelectedIndexChanged;
         }
 
-       
+        private void SymbolSourceClasses_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            EnableControls();
+        }
+
         private void Dlg_Load(object sender, EventArgs e)
         {
             this.fsSvc = dlg.Services.RequireService<IFileSystemService>();
@@ -100,7 +105,6 @@ namespace Reko.Gui.Windows.Forms
             }
         }
 
-
         private object[] LoadCompatibleClassesFromAssembly(string asmFilename, Type type)
         {
             try
@@ -108,7 +112,7 @@ namespace Reko.Gui.Windows.Forms
                 var ass = Assembly.LoadFrom(asmFilename);
                 var typeNames = ass.DefinedTypes
                     .Where(t => t.ImplementedInterfaces.Contains(type))
-                    .Select(t => t.AssemblyQualifiedName)
+                    .Select(t => t.FullName)
                     .ToArray();
                 return typeNames;
             }
@@ -122,7 +126,6 @@ namespace Reko.Gui.Windows.Forms
         {
             var cfgSvc = dlg.Services.RequireService<IConfigurationService>();
             var items = cfgSvc.GetSymbolSources();
-            //dlg.SymbolSourceList.DataSource = 
             dlg.SymbolSourceList.DataSource = (object)items
                 .Select(ss => new string[] { ss.Name, ss.Description });
         }

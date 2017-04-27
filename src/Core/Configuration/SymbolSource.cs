@@ -26,18 +26,11 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.Configuration
 {
-    public interface SymbolSource
+    public class SymbolSourceDefinition
     {
-        string Description { get; }
-        string Name { get; }
-        string TypeName { get; }
-    }
-
-    public class SymbolSourceDefinition : SymbolSource
-    {
-        public string Description { get;  set; }
-        public string Extension { get;  set; }
-        public string Name { get;  set; }
-        public string TypeName { get;  set; }
+        public string Description { get; set; }
+        public string Extension { get; set; }
+        public string Name { get; set; }
+        public string TypeName { get; set; }
     }
 }

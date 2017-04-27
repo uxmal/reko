@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using System;
@@ -38,10 +40,10 @@ namespace Reko.Gui.Windows.Forms
         {
             InitializeComponent();
 
+            SymbolFileUrl = new TextBoxWrapper(txtSymbolFile);
             AssemblyFile = new TextBoxWrapper(txtAssembly);
             BrowseAssemblyFile = new ButtonWrapper(btnPickAssembly);
             OkButton = new ButtonWrapper(btnOk);
-            SymbolFileUrl = new TextBoxWrapper(txtSymbolFile);
             BrowseSymbolFile = new ButtonWrapper(btnSymbolFile);
             SymbolSourceClasses = new ListboxWrapper(listClasses);
             SymbolSourceList = new ListViewWrapper(listSources);
@@ -51,6 +53,27 @@ namespace Reko.Gui.Windows.Forms
         }
 
         public IServiceProvider Services { get; set; }
+        public SymbolSourceReference GetSymbolSource()
+        {
+            var name = listSources.SelectedItems
+                .OfType<ListViewItem>()
+                .Select(l => ((SymbolSourceDefinition)l.Tag).Name)
+                .FirstOrDefault();
+            var assName = txtAssembly.Text;
+            var typeName = (string)listClasses.SelectedItem;
+            return new SymbolSourceReference
+            {
+                SymbolSourceUrl = txtSymbolFile.Text,
+                Name = name,
+                AssemblyName = assName,
+                TypeName = typeName,
+            };
+        }
+
+        private void foo(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
         public ITextBox AssemblyFile { get; private set; }
         public IButton BrowseAssemblyFile { get; private set; }

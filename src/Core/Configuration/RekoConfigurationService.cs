@@ -45,19 +45,20 @@ namespace Reko.Core.Configuration
          ICollection<RawFileElement> GetRawFiles();
          OperatingEnvironment GetEnvironment(string envName);
          IProcessorArchitecture GetArchitecture(string archLabel);
-         ICollection<SymbolSource> GetSymbolSources();
+         ICollection<SymbolSourceDefinition> GetSymbolSources();
          Assembler GetAssembler(string assemblerName);
          RawFileElement GetRawFile(string rawFileFormat);
 
          IEnumerable<UiStyle> GetDefaultPreferences ();
+        SymbolSourceDefinition GetSymbolSource(string name);
 
-         /// <summary>
-         /// Given a relative path with respect to the installation directory, 
-         /// returns the absolute path.
-         /// </summary>
-         /// <param name="path"></param>
-         /// <returns></returns>
-         string GetInstallationRelativePath(params string [] pathComponents);
+        /// <summary>
+        /// Given a relative path with respect to the installation directory, 
+        /// returns the absolute path.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        string GetInstallationRelativePath(params string [] pathComponents);
     }
 
     public class RekoConfigurationService : IConfigurationService
@@ -67,7 +68,7 @@ namespace Reko.Core.Configuration
         private List<Architecture> architectures;
         private List<OperatingEnvironment> opEnvs;
         private List<AssemblerElement> asms;
-        private List<SymbolSource> symSources;
+        private List<SymbolSourceDefinition> symSources;
         private List<RawFileElement> rawFiles;
         private UiPreferencesConfiguration uiPreferences;
 
@@ -151,7 +152,7 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private SymbolSource LoadSymbolSource(SymbolSource_v1 sSymSrc)
+        private SymbolSourceDefinition LoadSymbolSource(SymbolSource_v1 sSymSrc)
         {
             return new SymbolSourceDefinition
             {
@@ -287,9 +288,14 @@ namespace Reko.Core.Configuration
             return architectures;
         }
 
-        public virtual ICollection<SymbolSource> GetSymbolSources()
+        public virtual ICollection<SymbolSourceDefinition> GetSymbolSources()
         {
             return symSources;
+        }
+
+        public virtual SymbolSourceDefinition GetSymbolSource(string name)
+        {
+            return symSources.FirstOrDefault(s => s.Name == name);
         }
 
         public virtual ICollection<OperatingEnvironment> GetEnvironments()

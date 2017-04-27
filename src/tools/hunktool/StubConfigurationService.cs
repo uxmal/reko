@@ -101,7 +101,12 @@ namespace hunktool
             throw new NotImplementedException();
         }
 
-        public ICollection<SymbolSource> GetSymbolSources()
+        public SymbolSourceDefinition GetSymbolSource(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<SymbolSourceDefinition> GetSymbolSources()
         {
             throw new NotImplementedException();
         }

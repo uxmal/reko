@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             sc = new ServiceContainer();
             symLdrSvc = mr.StrictMock<ISymbolLoadingService>();
             cfgSvc = mr.Stub<IConfigurationService>();
-            cfgSvc.Stub(c => c.GetSymbolSources()).Return(new List<SymbolSource>());
+            cfgSvc.Stub(c => c.GetSymbolSources()).Return(new List<SymbolSourceDefinition>());
 
             sc.AddService<IConfigurationService>(cfgSvc);
         }

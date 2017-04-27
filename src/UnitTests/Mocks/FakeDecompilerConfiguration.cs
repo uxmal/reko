@@ -91,7 +91,12 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public ICollection<SymbolSource> GetSymbolSources()
+        public ICollection<SymbolSourceDefinition> GetSymbolSources()
+        {
+            throw new NotImplementedException();
+        }
+
+        public SymbolSourceDefinition GetSymbolSource(string name)
         {
             throw new NotImplementedException();
         }
