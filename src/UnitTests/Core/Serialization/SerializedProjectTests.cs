@@ -500,7 +500,17 @@ namespace Reko.UnitTests.Core.Serialization
                             {
                                 new RegisterValue_v2 { Address="00443210", Register="eax", Value="42" },
                                 new RegisterValue_v2 { Address="00443210", Register="ecx", Value="10" },
-                            }
+                            },
+                            SymbolSources =
+                            {
+                                new SymbolSource_v4
+                                {
+                                    Name = "pdb",
+                                    TypeName = "Reko.PdbLoader",
+                                    AssemblyFileName = "../PdbLoader.dll",
+                                    SourceUrl = "c:\foo.bar"
+                                }
+                            },
                         }
                     }
                 }
@@ -525,10 +535,18 @@ namespace Reko.UnitTests.Core.Serialization
 
             var ploader = new ProjectLoader(sc, loader, listener);
             var project = ploader.LoadProject("c:\\tmp\\foo\\bar.proj", sProject);
-            Assert.IsTrue(project.Programs[0].User.Heuristics.Contains("HeuristicScanning"));
-            Assert.AreEqual("windows-1251", project.Programs[0].User.TextEncoding.WebName);
-            Assert.AreEqual(1, project.Programs[0].User.RegisterValues.Count);
-            Assert.AreEqual(2, project.Programs[0].User.RegisterValues[Address.Ptr32(0x00443210)].Count);
+
+            var user = project.Programs[0].User;
+            Assert.IsTrue(user.Heuristics.Contains("HeuristicScanning"));
+            Assert.AreEqual("windows-1251", user.TextEncoding.WebName);
+            Assert.AreEqual(1, user.RegisterValues.Count);
+            Assert.AreEqual(2, user.RegisterValues[Address.Ptr32(0x00443210)].Count);
+
+            Assert.AreEqual(1, user.SymbolSources.Count);
+            Assert.AreEqual("pdb", user.SymbolSources[0].Name);
+            Assert.AreEqual("Reko.PdbLoader", user.SymbolSources[0].TypeName);
+            Assert.AreEqual("../PdbLoader.dll",user.SymbolSources[0].AssemblyName);
+            Assert.AreEqual("c:\foo.bar", user.SymbolSources[0].SymbolSourceUrl);
         }
 
         [Test]

@@ -43,6 +43,7 @@ namespace Reko.Core
             this.Annotations = new List<Annotation>();
             this.TextEncoding = Encoding.ASCII;
             this.RegisterValues = new SortedList<Address, List<UserRegisterValue>>();
+            this.SymbolSources = new List<SymbolSourceReference>();
         }
 
         // 'Oracular' information provided by the user.

@@ -405,6 +405,12 @@ namespace Reko.Core.Serialization
                     .Where(ij => ij != null)
                     .ToSortedList(k => k.Item1, v => v.Item2);
             }
+            if (user.SymbolSources != null)
+            {
+                program.User.SymbolSources = sUser.SymbolSources
+                    .Select(ss => LoadSymbolSource_v4(ss, program))
+                    .ToList();
+            }
         }
 
         private SortedList<Address, List<UserRegisterValue>> LoadRegisterValues(
@@ -496,6 +502,17 @@ namespace Reko.Core.Serialization
                 Table = table,
                 IndexRegister = reg,
             });
+        }
+
+        private SymbolSourceReference LoadSymbolSource_v4(SymbolSource_v4 sSrc, Program program)
+        {
+            return new SymbolSourceReference
+            {
+                 Name = sSrc.Name,
+                 TypeName = sSrc.TypeName,
+                 AssemblyName = sSrc.AssemblyFileName,
+                 SymbolSourceUrl = sSrc.SourceUrl
+            };
         }
 
         public void LoadUserData(UserData_v3 sUser, Program program, UserData user)
