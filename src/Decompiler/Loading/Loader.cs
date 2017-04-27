@@ -115,10 +115,7 @@ namespace Reko.Loading
             var program = imgLoader.Load(addrLoad);
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(program, addrLoad);
-            foreach (var sym in relocations.Symbols.Values)
-            {
-                program.ImageSymbols[sym.Address] = sym;
-            }
+            program.AddSymbols(relocations.Symbols.Values);
             foreach (var ep in relocations.EntryPoints)
             {
                 program.EntryPoints[ep.Address] = ep;

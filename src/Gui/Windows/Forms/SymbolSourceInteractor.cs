@@ -44,9 +44,11 @@ namespace Reko.Gui.Windows.Forms
             this.dlg.SymbolFileUrl.LostFocus += SymbolFileUrl_LostFocus;
             this.dlg.CustomSourceCheckbox.CheckedChanged += CustomSourceCheckbox_CheckedChanged;
             this.dlg.AssemblyFile.TextChanged += AssemblyFile_TextChanged;
+            this.dlg.BrowseSymbolFile.Click += BrowseSymbolFile_Click;
             this.dlg.BrowseAssemblyFile.Click += BrowseAssemblyFile_Click;
             this.dlg.SymbolSourceClasses.SelectedIndexChanged += SymbolSourceClasses_SelectedIndexChanged;
         }
+
 
         private void SymbolSourceClasses_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -93,6 +95,15 @@ namespace Reko.Gui.Windows.Forms
             foreach (var symClass in symClasses)
             {
                 dlg.SymbolSourceClasses.Items.Add(symClass);
+            }
+        }
+
+        private void BrowseSymbolFile_Click(object sender, EventArgs e)
+        {
+            var newFile = uiSvc.ShowOpenFileDialog(dlg.SymbolFileUrl.Text);
+            if (newFile != null)
+            {
+                dlg.SymbolFileUrl.Text = newFile;
             }
         }
 
@@ -150,8 +161,6 @@ namespace Reko.Gui.Windows.Forms
                 ||
                 dlg.SymbolSourceClasses.Enabled &&
                 dlg.SymbolSourceClasses.SelectedItems.Count == 1;
-
-
         }
     }
 }

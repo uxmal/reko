@@ -215,7 +215,7 @@ namespace Reko.Core
         /// </remarks>
         public Dictionary<Address, ExternalProcedure> InterceptedCalls { get; private set; }
 
-        //$REVIEW: shouldnt these belong in Procedure?
+        //$REVIEW: shouldn't these belong in Procedure?
         public Dictionary<Identifier, LinearInductionVariable> InductionVariables { get; private set; }
 
         /// <summary>
@@ -496,11 +496,11 @@ namespace Reko.Core
         /// this Program instance.
         /// </summary>
         /// <param name="symbols"></param>
-        public void AddSymbols(List<ImageSymbol> symbols)
+        public void AddSymbols(IEnumerable<ImageSymbol> symbols)
         {
             foreach (var symbol in symbols)
             {
-                this.ImageSymbols.Add(symbol.Address, symbol);
+                this.ImageSymbols[symbol.Address] = symbol;
             }
         }
     }

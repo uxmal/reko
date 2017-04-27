@@ -50,6 +50,7 @@ namespace Reko.Gui.Design
                 var des = new ImportDesigner(program);
                 Host.AddComponent(program, des);
             }
+            Host.AddComponents(program, program.User.SymbolSources);
             Host.AddComponent(program, program.Resources);
             SetTreeNodeProperties(program);
         }
@@ -116,6 +117,9 @@ namespace Reko.Gui.Design
                     return true;
                 var symbols = symSource.GetAllSymbols();
                 program.AddSymbols(symbols);
+                program.User.SymbolSources.Add(ssRef);
+                Host.AddComponent(program, ssRef);
+
             }
             return true;
         }

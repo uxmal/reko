@@ -18,22 +18,22 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Core
+namespace Reko.Gui.Design
 {
-    [Designer("Reko.Gui.Design.SymbolSourceReferenceDesigner,Reko.Gui")]
-    public class SymbolSourceReference
+    public class SymbolSourceReferenceDesigner : TreeNodeDesigner
     {
-        public string SymbolSourceUrl;
-
-        public string Name;
-        public string TypeName;
-        public string AssemblyName;
+        public override void Initialize(object obj)
+        {
+            var ssRef = (SymbolSourceReference)obj;
+            this.TreeNode.Text = ssRef.SymbolSourceUrl;
+            this.TreeNode.ImageName = "SymbolSource.ico";
+        }
     }
 }

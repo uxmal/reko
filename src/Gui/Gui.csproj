@@ -129,6 +129,7 @@
     <Compile Include="Design\PlatformDesigner.cs" />
     <Compile Include="Design\ProgramResourceGroupDesigner.cs" />
     <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
+    <Compile Include="Design\SymbolSourceReferenceDesigner.cs" />
     <Compile Include="Forms\CallSiteInteractor.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
     <Compile Include="Forms\IDeclarationForm.cs" />
@@ -543,6 +544,7 @@
     <Content Include="Images\Delete.ico" />
     <Content Include="Images\DiscardableSection.ico" />
     <None Include="Images\Error.ico" />
+    <Content Include="Images\SymbolSource.ico" />
     <Content Include="Images\UserEntryProcedure.ico" />
     <Content Include="Images\error.png" />
     <Content Include="Images\FinishDecompilation.ico" />

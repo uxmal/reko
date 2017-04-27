@@ -28,6 +28,7 @@ using Reko.Gui.Design;
 using Reko.Gui.Forms;
 using Rhino.Mocks;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
