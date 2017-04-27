@@ -82,6 +82,10 @@ namespace Reko.UnitTests.Loading
 
         public class BobLoader : ISymbolSource
         {
+            public BobLoader(string filename)
+            {
+            }
+
             public bool CanLoad(string filename, byte[] fileContents)
             {
                 return true;

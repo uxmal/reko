@@ -109,10 +109,5 @@ namespace Reko.Loading
             }
             return null;
         }
-
-        public List<SymbolSourceDefinition> GetSymbolSources()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

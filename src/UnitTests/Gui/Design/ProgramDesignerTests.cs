@@ -25,6 +25,7 @@ using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Design;
+using Reko.Gui.Forms;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Reko.UnitTests.Gui.Design
 {
@@ -47,24 +49,33 @@ namespace Reko.UnitTests.Gui.Design
         private CommandID cmdidLoadSymbols;
         private ServiceContainer sc;
         private ISymbolLoadingService slSvc;
+        private IDialogFactory dlgFactory;
         private ISymbolSource symSrc;
+        private ISymbolSourceDialog dlg;
+        private IFileSystemService fsSvc;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
             this.sc = new ServiceContainer();
-            this.node = mr.StrictMock<ITreeNode>();
-            this.host = mr.StrictMock<ITreeNodeDesignerHost>();
+            this.node = mr.Stub<ITreeNode>();
+            this.host = mr.Stub<ITreeNodeDesignerHost>();
             this.uiSvc = mr.StrictMock<IDecompilerShellUiService>();
             this.cmdidLoadSymbols = new CommandID(CmdSets.GuidReko, CmdIds.LoadSymbols);
             this.slSvc = mr.StrictMock<ISymbolLoadingService>();
             this.symSrc = mr.StrictMock<ISymbolSource>();
+            this.dlgFactory = mr.StrictMock<IDialogFactory>();
+            this.dlg = mr.StrictMock<ISymbolSourceDialog>();
+            this.fsSvc = mr.StrictMock<IFileSystemService>();
 
             // Add services to the Service container (which in the real program is the Reko "main window")
             this.sc.AddService<ISymbolLoadingService>(slSvc);
             this.sc.AddService<IDecompilerShellUiService>(uiSvc);
+            this.sc.AddService<IDialogFactory>(dlgFactory);
+            this.sc.AddService<IFileSystemService>(fsSvc);
         }
+
         /*
          * I have a binary with no debugging symbols, but i prepared a C/C++ header 
          * containing structs, enums, typedefs and externs (with function prototypes).
@@ -84,19 +95,29 @@ namespace Reko.UnitTests.Gui.Design
         }
 
         [Test]
-        public void ProgDes_CHeader_ShowOpenFileDialog()
+        public void ProgDes_CHeader_ShowDialog()
         {
             Given_Program_NoSymbols();
-            Expect_OpenFileDialog();
-            Expect_CallsToSymbolService();
             mr.ReplayAll();
+            Expect_SymbolSourceDialog();
+            Expect_CallsToSymbolService();
 
             When_User_Selects_LoadSymbols();
+
+            Expect_Program_HasImageSymbols();
+            mr.VerifyAll();
+        }
+
+        private void Expect_Program_HasImageSymbols()
+        {
+            Assert.AreEqual(1, program.ImageSymbols.Count);
+            Assert.AreEqual("my_procedure", program.ImageSymbols.Values.First().Name);
         }
 
         private void Expect_CallsToSymbolService()
         {
-            slSvc.Expect(s => s.GetSymbolSource("foo.h")).Return(symSrc);
+            slSvc.Expect(s => s.GetSymbolSource(
+                Arg<SymbolSourceReference>.Is.NotNull)).Return(symSrc);
             symSrc.Expect(s => s.GetAllSymbols()).Return(new List<ImageSymbol>
             {
                 new ImageSymbol(Address.Ptr32(0x00112240))
@@ -108,6 +129,7 @@ namespace Reko.UnitTests.Gui.Design
                     }
                 }
             });
+
         }
 
         private void When_User_Selects_LoadSymbols()
@@ -116,9 +138,16 @@ namespace Reko.UnitTests.Gui.Design
             Assert.IsTrue(result, "Expected command handler to be implemented");
         }
 
-        private void Expect_OpenFileDialog()
+        private void Expect_SymbolSourceDialog()
         {
-            uiSvc.Expect(u => u.ShowOpenFileDialog(null)).IgnoreArguments().Return("foo.h");
+            dlgFactory.Expect(d => d.CreateSymbolSourceDialog()).Return(dlg);
+            uiSvc.Expect(u => u.ShowModalDialog(dlg)).IgnoreArguments().Return(DialogResult.OK);
+            dlg.Expect(d => d.Dispose());
+            dlg.Expect(d => d.GetSymbolSource()).Return(new SymbolSourceReference
+            {
+                Name = "PDB",
+                SymbolSourceUrl = "foo.pdb"
+            });
         }
 
         private void Expect_MenuItem_LoadSymbols_Enabled()

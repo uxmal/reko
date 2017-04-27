@@ -27,6 +27,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Reko.Gui.Design
 {
@@ -100,17 +101,22 @@ namespace Reko.Gui.Design
         private bool LoadSymbols()
         {
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
-            var filename = uiSvc.ShowOpenFileDialog("");
-            if (filename == null)
+            var dlgFactory = Services.RequireService<IDialogFactory>();
+            using (var dlg = dlgFactory.CreateSymbolSourceDialog())
             {
-                // user canceled.
-                return true;
+                if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
+                {
+                    return true;
+                }
+
+                var symService = Services.RequireService<ISymbolLoadingService>();
+                var ssRef = dlg.GetSymbolSource();
+                var symSource = symService.GetSymbolSource(ssRef);
+                if (symSource == null)
+                    return true;
+                var symbols = symSource.GetAllSymbols();
+                program.AddSymbols(symbols);
             }
-
-            var symService = Services.RequireService<ISymbolLoadingService>();
-            var symSource = symService.GetSymbolSource(filename);
-            var symbols = symSource.GetAllSymbols();
-
             return true;
         }
     }

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace Reko.Gui.Forms
     public interface ISymbolSourceDialog : IDialog
     {
         IServiceProvider Services { get; }
+        SymbolSourceReference GetSymbolSource();
 
         ITextBox AssemblyFile { get; }
         IButton BrowseAssemblyFile { get; }

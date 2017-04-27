@@ -105,6 +105,7 @@ namespace Reko.Core
         /// </summary>
         public CallGraph CallGraph { get; private set; }
 
+      
         /// <summary>
         /// Represents a _pointer_ to a structure that contains all the 
         /// global variables of the program. 
@@ -489,9 +490,22 @@ namespace Reko.Core
             GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
             BuildImageMap();
         }
-    } 
 
-	public class VectorUse
+        /// <summary>
+        /// Add the provided <paramref name="symbols"/> to the symbols of 
+        /// this Program instance.
+        /// </summary>
+        /// <param name="symbols"></param>
+        public void AddSymbols(List<ImageSymbol> symbols)
+        {
+            foreach (var symbol in symbols)
+            {
+                this.ImageSymbols.Add(symbol.Address, symbol);
+            }
+        }
+    }
+
+    public class VectorUse
 	{
 		public Address TableAddress;
 		public RegisterStorage IndexRegister;
