@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.Lib
 {
+
+    //        https://github.com/bjornharrtell/pggraph/blob/master/dijkstra.sql
+    // calculates shortest path from startnode to endnode
+    // returns destination with total cost and concatenated id's describing the path (array would be better I think)
+
     class LinqAlgorithms
     {
         public class MinPath
@@ -14,24 +19,24 @@ namespace Reko.Core.Lib
             public int distance;
             public string path;
         }
-        public List
-        https://github.com/bjornharrtell/pggraph/blob/master/dijkstra.sql
-// calculates shortest path from startnode to endnode
-// returns destination with total cost and concatenated id's describing the path (array would be better I think)
 
-List<MinPath> dijkstra(startnode int, endnode int)
-{ 
-    rowcount int;
-    currentfromnode int;
-    currentestimate int;
-    // Create a temporary table for storing the estimates as the algorithm runs
-    CREATE TEMP TABLE nodeestimate
+class nodeestimate_t
     (
         id int PRIMARY KEY,      // The Node Id
         estimate int NOT NULL,   // What is the distance to this node, so far?
         predecessor int NULL,    // The node we came from to get to this node with this distance.
         done boolean NOT NULL    // Are we done with this node yet (is the estimate the final distance)?
-    ) ON COMMIT DROP;
+    ) 
+
+List<MinPath> dijkstra(startnode int, endnode int)
+{ 
+            /*
+    rowcount int;
+    currentfromnode int;
+    currentestimate int;
+    // Create a temporary table for storing the estimates as the algorithm runs
+    var nodeestimage = new Dictionary<int, nodeestimate_t>
+    CREATE TEMP TABLE xxx ON COMMIT DROP;
 
     // Fill the temporary table with initial data
     INSERT INTO nodeestimate(id, estimate, predecessor, done)
@@ -94,6 +99,41 @@ List<MinPath> dijkstra(startnode int, endnode int)
     ) SELECT cte.id, cte.distance, cte.path FROM BacktraceCTE cte
         WHERE cte.id = endnode OR endnode IS NULL // This kind of where clause can potentially produce
         ORDER BY cte.id;                          // a bad execution plan, but I use it for simplicity here.
+        */
 }
+
+        // http://www.drmaciver.com/2008/11/computing-connected-graph-components-via-sql/
+        void scc()
+        {
+            create table items(
+                    id int primary key,
+                    component_id int
+            );
+            create table links(
+                first int references items(id),
+                second int references items(id)
+            );
+
+            for (;;)
+            { 
+            create table if not exists components_to_merge(
+                        component1 int,
+                        component2 int);
+
+            insert into components_to_merge
+            select distinct t1.component_id c1, t2.component_id c2 
+            from links
+            join items t1 on links.first = t1.id join items t2 on links.second = t2.id where t1.component_id != t2.component_id
+            insert into components_to_merge
+            select component2, component1 
+            from components_to_merge; //ensure symmetricity
+            if (components_to_merge.Count == 0)
+                break;
+            update items 
+                join(select component1 source, min(component2) target
+                from components_to_merge group by source) new_components on new_components.source = component_id 
+            set
+                items.component_id = least(items.component_id, target);
+        }
     }
 }
