@@ -209,7 +209,10 @@ while 1=1 begin
 	if (select count(*) from #components_to_merge) = 0 break
 
 	update block
-	set block.component_id = case when block.component_id < target then block.component_id else target end 
+	set block.component_id = case when block.component_id < target
+		 then block.component_id 
+		 else target
+		 end 
 	from #blocks block
 	inner join 
 		(select
