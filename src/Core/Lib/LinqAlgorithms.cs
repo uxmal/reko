@@ -110,7 +110,13 @@ AS(
         {
             public long id; // PK
             public long component_id;
+
+            public override string ToString()
+            {
+                return string.Format("c: {0}, n: {1}", component_id, id);
+            }
         }
+
         public class Link
         {
             public long first;
@@ -119,6 +125,7 @@ AS(
 
         public static void scc(Dictionary<long, Item> items, IEnumerable<Link> links)
         {
+            int iteration = 0;
             for (;;)
             {
                 var components_to_merge =
@@ -129,17 +136,12 @@ AS(
                      select Tuple.Create(t1.component_id, t2.component_id))
                         .Distinct()
                         .ToList();
-                //insert into components_to_merge
 
                 //select component2, component1 
                 //from components_to_merge; //ensure symmetricity
                 if (components_to_merge.Count == 0)
                 {
-                    Debug.Print("{0}", string.Join(Environment.NewLine,
-                        items.Values.OrderBy(v => v.component_id)
-                            .ThenBy(v => v.id)
-                            .Select(v => string.Format(
-                                "c: {0}, n: {1}", v.component_id, v.id))));
+                    DumpComponents(items);
                     return;
                 }
 
@@ -149,15 +151,28 @@ AS(
                      join new_components in (
                          from cm in components_to_merge
                          group cm by cm.Item1 into g
-                         select new { source = g.Key, target = g.Min(i => i.Item2) }
-                         ) on item.component_id equals new_components.source
+                         select new { source = g.Key, target = g.Min(i => i.Item2) })
+                         on item.component_id equals new_components.source
                      group new { item, new_components } by item.id into gg
                      select new { id = gg.Key, target = gg.Min(i => i.new_components.target) }).ToList();
                 foreach (var u in updates)
                 {
                     items[u.id].component_id = u.target;
                 }
+                Debug.Print("Iteration {0}", iteration);
+                DumpComponents(items);
+                ++iteration;
+
             }
+        }
+
+        private static void DumpComponents(Dictionary<long, Item> items)
+        {
+            Debug.Print("{0}", string.Join(Environment.NewLine,
+                items.Values.OrderBy(v => v.component_id)
+                    .ThenBy(v => v.id)
+                    .Select(v => string.Format(
+                        "c: {0}, n: {1}", v.component_id, v.id))));
         }
     }
 }

@@ -48,5 +48,27 @@ namespace Reko.UnitTests.Core.Lib
 
             LinqAlgorithms.scc(items, links);
         }
+
+        [Test]
+        public void LinqWcc2()
+        {
+            var items =
+                Enumerable.Range(1, 8)
+                .ToDictionary(k => (long)k, v => new Item { id = v, component_id = v });
+
+            var links = new List<Link>
+            {
+                new Link { first = 4, second = 5 },
+                new Link { first = 5, second = 6 },
+                new Link { first = 1, second = 2 },
+                new Link { first = 2, second = 4 },
+                new Link { first = 3, second = 4 },
+            };
+
+
+            LinqAlgorithms.scc(items, links);
+        }
     }
+    /*
+    */
 }

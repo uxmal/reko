@@ -426,6 +426,9 @@
     </Content>
     <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_IA64.xml" />
     <Content Include="Loading\Signatures\PLATFORM_INDEPENDENT.xml" />
+    <Content Include="Scanning\scanner_in_sql.sql">
+      <SubType>Component</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

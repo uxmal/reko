@@ -160,6 +160,14 @@ namespace Reko.Scanning
             return map;
         }
 
+        public class Edge
+        {
+            public ulong lin_from;
+            public ulong lin_to;
+        }
+
+        private List<Edge> edges;
+
         /// <summary>
         /// Disassemble every byte of a range of addresses, marking those 
         /// addresses that likely are code as MaybeCode, everything else as
@@ -179,7 +187,7 @@ namespace Reko.Scanning
         {
             var cbAlloc = addrEnd - addrStart;
             var y = new byte[cbAlloc];
-
+            this.edges = new List<Edge>();
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
             var delaySlot = RtlClass.None;
@@ -561,9 +569,10 @@ namespace Reko.Scanning
 
         private void AddEdge(DiGraph<Address> g, Address from, Address to)
         {
-            g.AddNode(from);
-            g.AddNode(to);
-            g.AddEdge(from, to);
+            this.edges.Add(new Edge { lin_from = from.ToLinear(), lin_to = from.ToLinear() });
+            //g.AddNode(from);
+            //g.AddNode(to);
+            //g.AddEdge(from, to);
         }
 
         private bool IsExecutable(Address address)
