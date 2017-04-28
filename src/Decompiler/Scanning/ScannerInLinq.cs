@@ -8,212 +8,221 @@ namespace Reko.Scanning
 {
     class ScannerInLinq
     {
-        /*
-        -- change @binary_size to simulate a large executable
-        declare @binary_size bigint = 10
-        declare @offset bigint = 40000
+        // change @binary_size to simulate a large executable
+        private const int binary_size = 10;
+        private Dictionary<long, instr> the_instrs;
+        private List<link> the_links;
 
-        drop table #excluded_edges
-        drop table #new_blocks
-        drop table #new_bad
-        drop table #blocks
-        drop table #links
-        drop table #instrs
-        drop table #components_to_merge
+        private class instr
+        {
+            public long addr; // primary key not null,
+            public int size;
+            public char type;
+            public long block_id;
+            public int pred;
+            public int succ;
+        }
 
-        create table #instrs(
-            addr bigint primary key not null,
-            [size] int not null,
-            type varchar(1),
-            block_id bigint,
-            pred int default 0,
-            succ int default 0
-        )
+        private class link
+        {
+            public long first;
+            public long second;
 
-        -- links betweeen instructions
-        create table #links(
-            first bigint,
-            second bigint
-        )
+            public override bool Equals(object obj)
+            {
+                var that = obj as link;
+                if (that == null)
+                    return false;
+                return that.first == this.first && that.second == this.second;
+            }
 
-        -- basic blocks
-        create table #blocks(
-            id bigint primary key,
-            component_id bigint default 0
-        )	
-        create table #excluded_edges(
-            first bigint,
-            second bigint,
-            PRIMARY KEY (first,second)
-        )
+            public override int GetHashCode()
+            {
+                return first.GetHashCode() ^ 13 * second.GetHashCode();
+            }
+        }
 
-        -- The following are work tables
+        private class block
+        {
+            public long id;
+            public long component_id;
+        }
 
-        -- newly discovered bad instructions
-        create table #new_bad(
-            addr bigint
-        )
+        private class new_block
+        {
+            public long addr;
+            public long addrFrom;
+            public long block_id;
+        }
 
-        -- newly discovered instrctions that need to be added to basic blocks.
-        create table #new_blocks(
-            addr bigint,
-            addrFrom bigint,
-            block_id bigint
-        )
+        public void Doit()
+        {
+            the_instrs = new Dictionary<long, instr>();
+            // links betweeen instructions
+            the_links = new List<link>();
+            // basic blocks
+            var the_blocks = new Dictionary<long, block>();
 
-        -- componenets that need to be merged
-        create table  #components_to_merge(
-            component1 bigint, 
-            component2 bigint);
+            var the_excluded_edges = new List<link>();
 
-        -- Create a simulated program ----------------------------------------------------
+            // The following are work tables
 
-        declare @end bigint = @offset + @binary_size
-        while @offset < @end
-        begin
+            // newly discovered bad instructions
+            var new_bad = new HashSet<long>();
+            // newly discovered instrctions that need to be added to basic blocks.
+            var new_blocks = new List<new_block>();
+            // componenets that need to be merged
+            var components_to_merge = new List<link>();
 
-            insert into #instrs(addr, [size], [type]) VALUES (1 + @offset, 1, 'l')
-            insert into #links values (1 + @offset,  2 + @offset)
+        // Create a simulated program ----------------------------------------------------
 
-            INSERT INTo #instrs(addr, size,  type) VALUES (2 + @offset, 1, 'l')
-            insert into #links values (2 + @offset,  4 + @offset)
+        long @offset = 40000;
+        long @end = @offset + @binary_size;
+            while (@offset < @end)
+            {
+                AddInstr(1 + @offset, 1, 'l'); ;
+                AddLink(1 + @offset, 2 + @offset);
 
-            INSERT INTo #instrs(addr, size,  type) VALUES (3 + @offset, 1, 'C') -- Capital 'C' means this was called by someone.
-            insert into #links values (3 + @offset,  4 + @offset)
+                AddInstr(2 + @offset, 1, 'l'); ;
+                AddLink(2 + @offset, 4 + @offset);
 
-            INSERT INTo #instrs(addr, size,  type) VALUES (4 + @offset, 1, 'c')
-            insert into #links values (4 + @offset,  5 + @offset)
-            insert into #links values (4 + @offset,  6 + @offset)
+                AddInstr(3 + @offset, 1, 'C'); ; // Capital 'C' means this was called by someone.
+                AddLink(3 + @offset, 4 + @offset);
 
-            INSERT INTo #instrs(addr, size,  type) VALUES (5 + @offset, 1, 'l')
-            insert into #links values (5 + @offset,  6 + @offset)
+                AddInstr(4 + @offset, 1, 'c');
+                AddLink(4 + @offset, 5 + @offset);
+                AddLink(4 + @offset, 6 + @offset);
 
-            INSERT INTo #instrs(addr, size,  type) VALUES (6 + @offset,  1, 'x')
-            insert into #links values (6 + @offset,  2 + @offset)
-            insert into #links values (6 + @offset,  7 + @offset)
+                AddInstr(5 + @offset, 1, 'l');
+                AddLink(5 + @offset, 6 + @offset);
 
-            INSERT INTo #instrs(addr, size,  type) VALUES (7 + @offset, 1, 'l')
-            insert into #links values (7 + @offset,  8 + @offset)
+                AddInstr(6 + @offset, 1, 'x');
+                AddLink(6 + @offset, 2 + @offset);
+                AddLink(6 + @offset, 7 + @offset);
 
-            INSERT INTo #instrs(addr, size,  type) VALUES (8 + @offset, 1, 'l')
-            insert into #links values (8 + @offset,  9 + @offset)
+                AddInstr(7 + @offset, 1, 'l');
+                AddLink(7 + @offset, 8 + @offset);
 
-            INSERT INTo #instrs(addr, size,  type) VALUES (9 + @offset,  1, 'l')
-            insert into #links values (9 + @offset, 10 + @offset)
+                AddInstr(8 + @offset, 1, 'l');
+                AddLink(8 + @offset, 9 + @offset);
 
-            INSERT INTo #instrs(addr, size,  type) VALUES (10 + @offset,  1, 'l')
+                AddInstr(9 + @offset, 1, 'l');
+                AddLink(9 + @offset, 10 + @offset);
 
-            set @offset = @offset + 20
+                AddInstr(10 + @offset, 1, 'l');
 
-        end
+                @offset = @offset + 20;
+    
+        }
 
-        -- Find transitive closure of bad instructions ------------------------
+        // Find transitive closure of bad instructions ------------------------
 
-        while 1=1 begin
+        for (; ;)
+            {
 
-            delete from #new_bad
-            insert into #new_bad
+                new_bad = 
+            insert into new_bad
             select pred.addr
-            from #instrs item
-            inner join #links on item.addr = #links.second
-            inner join #instrs pred on #links.first = pred.addr
+            from the_instrs item
+            inner join the_links on item.addr = the_links.second
+            inner join the_instrs pred on the_links.first = pred.addr
             where item.type = 'x' and pred.type <> 'x'
-            insert into #new_bad
+            insert into new_bad
             select succ.addr
-            from #instrs item
-            inner join #links on item.addr = #links.first
-            inner join #instrs succ on #links.second = succ.addr
+            from the_instrs item
+            inner join the_links on item.addr = the_links.first
+            inner join the_instrs succ on the_links.second = succ.addr
             where item.type = 'x' and succ.type <> 'x'
 
-        if (select count(*)from #new_bad) = 0 break
+        if (select count(*)from new_bad) = 0 break
 
         update a
         set type = 'x'
-        from #instrs as a
-        join #new_bad on a.addr = #new_bad.addr
+        from the_instrs as a
+        join new_bad on a.addr = new_bad.addr
 
         end
 
-        -- Compute all basic blocks -----------------------------------------------
+        // Compute all basic blocks -----------------------------------------------
 
-        -- count the # of predecessors and successors for each instr
+        // count the # of predecessors and successors for each instr
         update instr
         set 
             pred = coalesce(target.incoming, 0),
             succ = coalesce(target2.leaving, 0)
-        from #instrs instr
+        from the_instrs instr
         left join 
             (select second as addr, count(first) incoming
-            from #links
+            from the_links
             group by second) as target
             on instr.addr = target.addr
         left join 
             (select first as addr, count(second) leaving
-            from #links
+            from the_links
             group by first) 
             as target2
             on instr.addr = target2.addr
 
-        update #instrs 
+        update the_instrs 
         set  block_id = addr
 
         while 1=1 begin
-            -- find all instructions succ that have a single predecessor pred
-            -- such that pred has succ as its single successor and they 
-            -- are consecutive in memory.
+            // find all instructions succ that have a single predecessor pred
+            // such that pred has succ as its single successor and they 
+            // are consecutive in memory.
 
-            delete from #new_blocks
-            insert into #new_blocks
+            delete from new_blocks
+            insert into new_blocks
             select succ.addr, pred.addr, pred.block_id
-            from #links 
-            join #instrs pred on #links.first = pred.addr
-            join #instrs succ on #links.second = succ.addr
+            from the_links 
+            join the_instrs pred on the_links.first = pred.addr
+            join the_instrs succ on the_links.second = succ.addr
             where pred.succ = 1 and succ.pred = 1 and
                   pred.addr + pred.size = succ.addr and
                   pred.block_id <> succ.block_id
 
-            if (select count (*) from #new_blocks) = 0
+            if (select count (*) from new_blocks) = 0
                 break
 
             update instr
             set
                 block_id = b.block_id
-            from #instrs instr
-            join #new_blocks b on instr.addr = b.addr 
+            from the_instrs instr
+            join new_blocks b on instr.addr = b.addr 
 
 
             insert into #excluded_edges
             select b.addrFrom, b.addr
-            from #new_blocks b
+            from new_blocks b
             left join #excluded_edges ex on b.addrFrom = ex.first and b.addr = ex.second
             where ex.first is null
         end
 
-        -- Build global block graph
-        delete from #blocks
-        insert into #blocks
-        select distinct block_id, block_id from #instrs
+        // Build global block graph
+        delete from the_blocks
+        insert into the_blocks
+        select distinct block_id, block_id from the_instrs
 
-        delete link from #links link
+        delete link from the_links link
         inner join #excluded_edges ex on link.first = ex.first and link.second = ex.second
 
-        -- Compute all weakly connected components -------------------------------------------------
+        // Compute all weakly connected components -------------------------------------------------
 
-        -- initialize components
-        update #blocks
+        // initialize components
+        update the_blocks
         set component_id = id
 
         while 1=1 begin
 
-        -- Find all links that connect instructions that have different components
+        // Find all links that connect instructions that have different components
             delete from #components_to_merge
             insert into #components_to_merge
             select distinct t1.component_id c1, t2.component_id c2
-            from #links 
-            join #blocks t1 on #links.first = t1.id 
-            join #blocks t2 on #links.second = t2.id
+            from the_links 
+            join the_blocks t1 on the_links.first = t1.id 
+            join the_blocks t2 on the_links.second = t2.id
             where t1.component_id != t2.component_id
-            -- ensure symmetricity (only for WCC, SCC should remove this)
+            // ensure symmetricity (only for WCC, SCC should remove this)
             insert into #components_to_merge
             select component2, component1 from #components_to_merge; 
 
@@ -221,7 +230,7 @@ namespace Reko.Scanning
 
         update block
         set block.component_id = case when block.component_id < target then block.component_id else target end 
-        from #blocks block
+        from the_blocks block
         inner join 
             (select
                 b.component1 as source, 
@@ -231,9 +240,24 @@ namespace Reko.Scanning
                 on block.component_id = new_components.source
         end
 
-        select top 300 'I' as Instrs, * from #instrs
-        select top 300 'L' as Links, * from #links
-        select top 300 'B' as Blocks, * from #blocks
+        select top 300 'I' as Instrs, * from the_instrs
+        select top 300 'L' as Links, * from the_links
+        select top 300 'B' as Blocks, * from the_blocks
          */
     }
-}
+
+        private void AddInstr(long addr, int size, char type)
+        {
+            the_instrs.Add(addr, new instr
+            {
+                addr = addr,
+                size = size,
+                type = type
+            });
+        }
+
+        private void AddLink(long from, long to)
+        {
+            the_links.Add(new link { first = from, second = to });
+        }
+    }
