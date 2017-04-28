@@ -208,16 +208,16 @@ while 1=1 begin
 
 	if (select count(*) from #components_to_merge) = 0 break
 
-update block
-set block.component_id = case when block.component_id < target then block.component_id else target end 
-from #blocks block
-inner join 
-	(select
-		b.component1 as source, 
-		min(b.component2) as [target]
-	from #components_to_merge b
-	group by b.component1) as new_components 
-	    on block.component_id = new_components.source
+	update block
+	set block.component_id = case when block.component_id < target then block.component_id else target end 
+	from #blocks block
+	inner join 
+		(select
+			b.component1 as source, 
+			min(b.component2) as [target]
+		from #components_to_merge b
+		group by b.component1) as new_components 
+			on block.component_id = new_components.source
 end
 
 select top 300 'I' as Instrs, * from #instrs

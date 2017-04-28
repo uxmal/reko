@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
-    class ScannerInLinq
+    public class ScannerInLinq
     {
         // change @binary_size to simulate a large executable
-        private const int binary_size = 10;
+        //private const int binary_size = 10;
         private Dictionary<long, instr> the_instrs;
         private List<link> the_links;
 
@@ -50,34 +51,28 @@ namespace Reko.Scanning
 
         private class new_block
         {
-            public long addr;
-            public long addrFrom;
+            public link edge;
             public long block_id;
         }
 
         public void Doit()
         {
+            int binary_size = 10;
             the_instrs = new Dictionary<long, instr>();
             // links betweeen instructions
             the_links = new List<link>();
-            // basic blocks
-            var the_blocks = new Dictionary<long, block>();
 
-            var the_excluded_edges = new List<link>();
+            var the_excluded_edges = new HashSet<link>();
 
             // The following are work tables
 
             // newly discovered bad instructions
             var new_bad = new HashSet<long>();
-            // newly discovered instrctions that need to be added to basic blocks.
-            var new_blocks = new List<new_block>();
-            // componenets that need to be merged
-            var components_to_merge = new List<link>();
 
-        // Create a simulated program ----------------------------------------------------
+            // Create a simulated program ----------------------------------------------------
 
-        long @offset = 40000;
-        long @end = @offset + @binary_size;
+            long @offset = 0x40000;
+            long @end = @offset + @binary_size;
             while (@offset < @end)
             {
                 AddInstr(1 + @offset, 1, 'l'); ;
@@ -112,139 +107,148 @@ namespace Reko.Scanning
                 AddInstr(10 + @offset, 1, 'l');
 
                 @offset = @offset + 20;
-    
-        }
 
-        // Find transitive closure of bad instructions ------------------------
+            }
 
-        for (; ;)
+            // Find transitive closure of bad instructions ------------------------
+
+            for (;;)
             {
 
-                new_bad = 
-            insert into new_bad
-            select pred.addr
-            from the_instrs item
-            inner join the_links on item.addr = the_links.second
-            inner join the_instrs pred on the_links.first = pred.addr
-            where item.type = 'x' and pred.type <> 'x'
-            insert into new_bad
-            select succ.addr
-            from the_instrs item
-            inner join the_links on item.addr = the_links.first
-            inner join the_instrs succ on the_links.second = succ.addr
-            where item.type = 'x' and succ.type <> 'x'
+                new_bad = new HashSet<long>(
+                    (from item in the_instrs.Values
+                     join link in the_links on item.addr equals link.second
+                     join pred in the_instrs.Values on link.first equals pred.addr
+                     where item.type == 'x' && pred.type != 'x'
+                     select pred.addr).Concat(
+                    from item in the_instrs.Values
+                    join link in the_links on item.addr equals link.first
+                    join succ in the_instrs.Values on link.second equals succ.addr
+                    where item.type == 'x' && succ.type != 'x'
+                    select succ.addr));
+                if (new_bad.Count == 0)
+                    break;
 
-        if (select count(*)from new_bad) = 0 break
+                foreach (var n in new_bad)
+                {
+                    the_instrs[n].type = 'x';
+                }
+            }
 
-        update a
-        set type = 'x'
-        from the_instrs as a
-        join new_bad on a.addr = new_bad.addr
+            // Compute all basic blocks -----------------------------------------------
 
-        end
+            // count the # of predecessors and successors for each instr
 
-        // Compute all basic blocks -----------------------------------------------
+            Dump(the_instrs.Values);
+            foreach (var cSucc in
+                    from link in this.the_links
+                    group link by link.first into g
+                    select new { addr = g.Key, Count = g.Count() })
+            {
+                the_instrs[cSucc.addr].succ = cSucc.Count;
+            }
+            foreach (var cPred in
+                    from link in this.the_links
+                    group link by link.second into g
+                    select new { addr = g.Key, Count = g.Count() })
+            {
+                the_instrs[cPred.addr].pred = cPred.Count;
+            }
+            Dump(the_instrs.Values);
+            Dump(the_links);
 
-        // count the # of predecessors and successors for each instr
-        update instr
-        set 
-            pred = coalesce(target.incoming, 0),
-            succ = coalesce(target2.leaving, 0)
-        from the_instrs instr
-        left join 
-            (select second as addr, count(first) incoming
-            from the_links
-            group by second) as target
-            on instr.addr = target.addr
-        left join 
-            (select first as addr, count(second) leaving
-            from the_links
-            group by first) 
-            as target2
-            on instr.addr = target2.addr
+            while (true)
+            {
+                // find all instructions succ that have a single predecessor pred
+                // such that pred has succ as its single successor and they 
+                // are consecutive in memory.
 
-        update the_instrs 
-        set  block_id = addr
+                // newly discovered instrctions that need to be added to basic blocks.
+                var new_blocks =
+                    (from link in the_links
+                     join pred in the_instrs.Values on link.first equals pred.addr
+                     join succ in the_instrs.Values on link.second equals succ.addr
+                     where pred.succ == 1 && succ.pred == 1  &&
+                         pred.addr + pred.size == succ.addr &&
+                         pred.block_id != succ.block_id
+                     select new new_block { edge = new link { first = pred.addr, second = succ.addr }, block_id = pred.block_id })
+                     .ToList();
+                if (new_blocks.Count == 0)
+                    break;
+                Dump(new_blocks);
 
-        while 1=1 begin
-            // find all instructions succ that have a single predecessor pred
-            // such that pred has succ as its single successor and they 
-            // are consecutive in memory.
+                foreach (var b in new_blocks)
+                {
+                    the_instrs[b.edge.second].block_id = b.block_id;
+                    if (!the_excluded_edges.Contains(b.edge))
+                    {
+                        the_excluded_edges.Add(b.edge);
+                    }
+                }
+            }
 
-            delete from new_blocks
-            insert into new_blocks
-            select succ.addr, pred.addr, pred.block_id
-            from the_links 
-            join the_instrs pred on the_links.first = pred.addr
-            join the_instrs succ on the_links.second = succ.addr
-            where pred.succ = 1 and succ.pred = 1 and
-                  pred.addr + pred.size = succ.addr and
-                  pred.block_id <> succ.block_id
+            // Build global block graph
+            var the_blocks =
+                     the_instrs
+                     .Select(i => i.Value.block_id)
+                     .Distinct()
+                     .ToDictionary(k => k, v => new block { id = v, component_id = v });
+            the_links = the_links
+                .Where(l => !the_excluded_edges.Contains(l))
+                .ToList();
 
-            if (select count (*) from new_blocks) = 0
-                break
+            // Compute all weakly connected components -------------------------------------------------
 
-            update instr
-            set
-                block_id = b.block_id
-            from the_instrs instr
-            join new_blocks b on instr.addr = b.addr 
+            while (true)
+            {
 
+                // Find all links that connect instructions that have different components
+                var components_to_merge =
+                (from link in the_links
+                 join t1 in the_blocks.Values on link.first equals t1.id
+                 join t2 in the_blocks.Values on link.second equals t2.id
+                 where t1.component_id != t2.component_id
+                 select new link { first = t1.component_id, second = t2.component_id })
+                .Distinct()
+                .ToList();
+                // ensure symmetricity (only for WCC, SCC should remove this)
+                //insert into #components_to_merge
+                //select component2, component1 from #components_to_merge).ToList(); 
 
-            insert into #excluded_edges
-            select b.addrFrom, b.addr
-            from new_blocks b
-            left join #excluded_edges ex on b.addrFrom = ex.first and b.addr = ex.second
-            where ex.first is null
-        end
+                if (components_to_merge.Count == 0)
+                    break;
 
-        // Build global block graph
-        delete from the_blocks
-        insert into the_blocks
-        select distinct block_id, block_id from the_instrs
+            }
+            //select top 300 'I' as Instrs, * from the_instrs
+            //select top 300 'L' as Links, * from the_links
+            //select top 300 'B' as Blocks, * from the_blocks
 
-        delete link from the_links link
-        inner join #excluded_edges ex on link.first = ex.first and link.second = ex.second
+        }
 
-        // Compute all weakly connected components -------------------------------------------------
+        private void Dump(IEnumerable<link> edges)
+        {
+            foreach (var link in edges)
+            {
+                Debug.Print("[{0:X8} -> {1:X8}]", link.first, link.second);
+            }
+        }
 
-        // initialize components
-        update the_blocks
-        set component_id = id
+        private void Dump(IEnumerable<new_block> new_blocks)
+        {
+            foreach (var b in new_blocks)
+            {
+                Debug.Print("[{0:X8} -> {1:X8}] {2:X8}", b.edge.first, b.edge.second, b.block_id);
+            }
+        }
 
-        while 1=1 begin
-
-        // Find all links that connect instructions that have different components
-            delete from #components_to_merge
-            insert into #components_to_merge
-            select distinct t1.component_id c1, t2.component_id c2
-            from the_links 
-            join the_blocks t1 on the_links.first = t1.id 
-            join the_blocks t2 on the_links.second = t2.id
-            where t1.component_id != t2.component_id
-            // ensure symmetricity (only for WCC, SCC should remove this)
-            insert into #components_to_merge
-            select component2, component1 from #components_to_merge; 
-
-            if (select count(*) from #components_to_merge) = 0 break
-
-        update block
-        set block.component_id = case when block.component_id < target then block.component_id else target end 
-        from the_blocks block
-        inner join 
-            (select
-                b.component1 as source, 
-                min(b.component2) as [target]
-            from #components_to_merge b
-            group by b.component1) as new_components 
-                on block.component_id = new_components.source
-        end
-
-        select top 300 'I' as Instrs, * from the_instrs
-        select top 300 'L' as Links, * from the_links
-        select top 300 'B' as Blocks, * from the_blocks
-         */
-    }
+        private void Dump(IEnumerable<instr> blocks)
+        {
+            foreach (var i in blocks)
+            {
+                Debug.Print("{0:X8} {1} {2} {3:X8} {4,2} {5,2}]",
+                    i.addr, i.size, i.type, i.block_id, i.pred, i.succ);
+            }
+        }
 
         private void AddInstr(long addr, int size, char type)
         {
@@ -252,7 +256,8 @@ namespace Reko.Scanning
             {
                 addr = addr,
                 size = size,
-                type = type
+                type = type,
+                block_id = addr,
             });
         }
 
@@ -261,3 +266,5 @@ namespace Reko.Scanning
             the_links.Add(new link { first = from, second = to });
         }
     }
+
+}
