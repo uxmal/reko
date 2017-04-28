@@ -103,30 +103,35 @@ List<MinPath> dijkstra(startnode int, endnode int)
 }
 
         // http://www.drmaciver.com/2008/11/computing-connected-graph-components-via-sql/
-        void scc()
+
+        class Item
         {
-            create table items(
-                    id int primary key,
-                    component_id int
-            );
-            create table links(
-                first int references items(id),
-                second int references items(id)
-            );
+            public long id; // PK
+            public int component_id;
+        }
 
+        class Link
+        {
+            public long first;
+            public long second;
+        }
+
+        void scc(IQueryable<Item> items, IQueryable<Link> links)
+        {
             for (;;)
-            { 
-            create table if not exists components_to_merge(
-                        component1 int,
-                        component2 int);
+            {
+                var components_to_merge = new List<Tuple<int, int>>();
+                components_to_merge.Add(
+                    from link in links
+                    join t1 in items on link.first equals t1.id
+                    join t2 in items on link.secondequals equals t2.id
+                    where t1.component_id != t2.component_id
+                    select Tuple.Create(t1.component_id, t2.component_id));
 
-            insert into components_to_merge
-            select distinct t1.component_id c1, t2.component_id c2 
-            from links
-            join items t1 on links.first = t1.id join items t2 on links.second = t2.id where t1.component_id != t2.component_id
-            insert into components_to_merge
-            select component2, component1 
-            from components_to_merge; //ensure symmetricity
+            //insert into components_to_merge
+
+            //select component2, component1 
+            //from components_to_merge; //ensure symmetricity
             if (components_to_merge.Count == 0)
                 break;
             update items 
