@@ -413,33 +413,6 @@ namespace Reko
                 eventListener.ShowStatus("Rewriting reachable machine code.");
                 scanner = CreateScanner(program);
                 scanner.ScanImage();
-
-                if (program.User.Heuristics.Contains("HeuristicScanning"))
-                {
-                    //eventListener.ShowStatus("Finding machine code using heuristics.");
-                    //scanner.ScanImageHeuristically();
-                }
-                if (program.User.Heuristics.Contains("Shingle heuristic"))
-                {
-                    eventListener.ShowStatus("Shingle scanning");
-                    var sr = new ScanResults();
-                    var sb = program.Architecture.CreateFrame();
-                    var sh = new ShingledScanner(program,(IRewriterHost)scanner, sb, sr, eventListener);
-                    var watch = new Stopwatch();
-                    watch.Start();
-                    var procs = sh.Scan();
-                    var pprocs = procs.ToList();
-                    watch.Stop();
-                    Debug.Print(
-                        "Elapsed time: {0} msec for {1} procs",
-                        watch.ElapsedMilliseconds,
-                        pprocs.Count);
-
-                    foreach (var addr in procs)
-                    {
-                        scanner.ScanProcedure(addr.Key, null, program.Architecture.CreateProcessorState());
-                    }
-                }
                 eventListener.ShowStatus("Finished rewriting reachable machine code.");
             }
             finally

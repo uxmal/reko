@@ -79,42 +79,6 @@ namespace Reko.Scanning
             }
         }
 
-        /// Plan of attack:
-        /// In each unscanned "hole", look for signatures of procedure entries.
-        /// These are procedure entry candidates. 
-        /// Scan each of the procedure entry candidates heuristically.
-        /// 
-        /// Next scan all executable code segments for:
-        ///  - calls that reach those candidates
-        ///  - jmps to those candidates
-        ///  - pointers to those candidates.
-        /// Each time we find a call, we increase the score of the candidate.
-        /// At the end we have a list of scored candidates.
-        public ScanResults ScanImageHeuristically()
-        {
-            var sw = new Stopwatch();
-            sw.Start();
-            var list = new List<RtlBlock>();
-            var ranges = FindUnscannedRanges();
-            var fnRanges = FindPossibleFunctions(ranges).ToList();
-            int n = 0;
-            var icfg = new DiGraph<RtlBlock>();
-            var sr = new ScanResults { ICFG = icfg };
-            foreach (var range in fnRanges)
-            {
-                var hproc = DisassembleProcedure(range.Item1, range.Item2);
-                var hps = new HeuristicProcedureScanner(program, sr, program.SegmentMap.IsValidAddress, host);
-                hps.BlockConflictResolution(hproc.BeginAddress);
-                DumpBlocks(hproc.Cfg.Nodes);
-                hps.GapResolution();
-                // TODO: add all guessed code to image map -- clearly labelled.
-                AddBlocks(hproc);
-                eventListener.ShowProgress("Estimating procedures", n, fnRanges.Count);
-                ++n;
-            }
-            return sr;
-        }
-
         /// <summary>
         /// Assumes that an initial recursive scan has been performed,
         /// potentially leaving "islands" of unscanned data and code in the 

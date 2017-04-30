@@ -62,10 +62,6 @@ namespace Reko.Scanning
         private IStorageBinder storageBinder;
         private DecompilerEventListener eventListener;
         private DiGraph<Address> G;
-        private Dictionary<Address, int> possiblePointerTargetTallies;
-        private HashSet<Address> indirectCalls;
-        private HashSet<Address> indirectJumps;
-        private DiGraph<RtlBlock> icfg;
         private readonly Address bad;
 
         public ShingledScanner(Program program, IRewriterHost host, IStorageBinder storageBinder, ScanResults sr, DecompilerEventListener eventListener)
@@ -78,10 +74,6 @@ namespace Reko.Scanning
             this.sr.TransferTargets = new HashSet<Address>();
             this.sr.DirectlyCalledAddresses = new Dictionary<Address,int>();
             this.sr.Instructions = new SortedList<Address, RtlInstructionCluster>();
-            this.possiblePointerTargetTallies = new Dictionary<Address, int>();
-            this.indirectCalls = new HashSet<Address>();
-            this.indirectJumps = new HashSet<Address>();
-            this.icfg = new DiGraph<RtlBlock>();
             this.G = new DiGraph<Address>();
             this.bad = program.Platform.MakeAddressFromLinear(~0ul);
             G.AddNode(bad);
@@ -136,8 +128,8 @@ namespace Reko.Scanning
             }
             return new ScanResults
             {
-                ICFG = this.icfg,
-                DirectlyCalledAddresses = possiblePointerTargetTallies,
+                ICFG = new DiGraph<RtlBlock>(),
+                DirectlyCalledAddresses = this.sr.DirectlyCalledAddresses,
                 KnownProcedures = sr.KnownProcedures,
             };
         }
@@ -247,11 +239,11 @@ namespace Reko.Scanning
                         {
                             if ((i.Class & RtlClass.Call) != 0)
                             {
-                                this.indirectCalls.Add(i.Address);
+                                this.sr.IndirectCalls.Add(i.Address);
                             }
                             else
                             {
-                                this.indirectJumps.Add(i.Address);
+                                this.sr.IndirectJumps.Add(i.Address);
                             }
                         }
                     }
@@ -531,9 +523,9 @@ namespace Reko.Scanning
                         int hits = targetMap[segPointee][segOffset];
                         targetMap[segPointee][segOffset] = hits + 1;
 
-                        if (!this.possiblePointerTargetTallies.TryGetValue(pointer, out hits))
+                        if (!this.sr.DirectlyCalledAddresses.TryGetValue(pointer, out hits))
                             hits = 0;
-                        this.possiblePointerTargetTallies[pointer] = hits + 1;
+                        this.sr.DirectlyCalledAddresses[pointer] = hits + 1;
                     }
                 }
             }

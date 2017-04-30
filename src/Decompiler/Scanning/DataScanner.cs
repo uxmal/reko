@@ -104,6 +104,5 @@ namespace Reko.Scanning
             var nav = listener.CreateAddressNavigator(Program, addr);
             listener.Error(nav, message, args);
         }
-
     }
 }

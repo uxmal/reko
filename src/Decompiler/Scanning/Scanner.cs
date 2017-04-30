@@ -989,7 +989,7 @@ namespace Reko.Scanning
         /// </summary>
         public override void ScanImage()
         {
-            // Find all blobs of data, and potentially pointers
+            // Find all blobs of data, and potentially pointers to code.
             ScanDataItems();
 
             // Now scan the executable parts of the image, to find all 

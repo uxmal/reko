@@ -40,6 +40,8 @@ namespace Reko.Scanning
         public ScanResults()
         {
             this.Edges = new List<Edge>();
+            this.IndirectCalls = new HashSet<Address>();
+            this.IndirectJumps = new HashSet<Address>();
         }
 
         /// <summary>
