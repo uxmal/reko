@@ -37,12 +37,19 @@ namespace Reko.Scanning
     /// </summary>
     public class ScanResults
     {
-        public ScanResults() { }
+        public ScanResults()
+        {
+            this.Edges = new List<Edge>();
+        }
+
         /// <summary>
         /// All the discovered machine instructions, rewritten into RTL
         /// instruction clusters.
         /// </summary>
         public SortedList<Address, RtlInstructionCluster> Instructions;
+
+        public List<Edge> Edges;
+
 
         /// <summary>
         /// Interprocedural control flow graph, consisting of all
@@ -142,6 +149,28 @@ namespace Reko.Scanning
                     .OrderBy(n => n.Address)
                     .Select(n => n.Address)));
             }
+        }
+
+        public virtual void AddInstruction(RtlInstructionCluster i)
+        {
+            this.Instructions.Add(i.Address, i);
+        }
+
+        public virtual void AddEdge(DiGraph<Address> g, Address from, Address to)
+        {
+#if LinQ
+            this.edges.Add(new Edge { lin_from = from.ToLinear(), lin_to = from.ToLinear() });
+#else
+            g.AddNode(from);
+            g.AddNode(to);
+            g.AddEdge(from, to);
+#endif
+        }
+
+        public class Edge
+        {
+            public ulong lin_from;
+            public ulong lin_to;
         }
     }
 }

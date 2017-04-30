@@ -62,11 +62,11 @@ namespace Reko.Scanning
         private IStorageBinder storageBinder;
         private DecompilerEventListener eventListener;
         private DiGraph<Address> G;
-        private readonly Address bad;
         private Dictionary<Address, int> possiblePointerTargetTallies;
         private HashSet<Address> indirectCalls;
         private HashSet<Address> indirectJumps;
         private DiGraph<RtlBlock> icfg;
+        private readonly Address bad;
 
         public ShingledScanner(Program program, IRewriterHost host, IStorageBinder storageBinder, ScanResults sr, DecompilerEventListener eventListener)
         {
@@ -75,7 +75,6 @@ namespace Reko.Scanning
             this.storageBinder = storageBinder;
             this.sr = sr;
             this.eventListener = eventListener;
-            this.bad = program.Platform.MakeAddressFromLinear(~0ul);
             this.sr.TransferTargets = new HashSet<Address>();
             this.sr.DirectlyCalledAddresses = new Dictionary<Address,int>();
             this.sr.Instructions = new SortedList<Address, RtlInstructionCluster>();
@@ -84,8 +83,8 @@ namespace Reko.Scanning
             this.indirectJumps = new HashSet<Address>();
             this.icfg = new DiGraph<RtlBlock>();
             this.G = new DiGraph<Address>();
+            this.bad = program.Platform.MakeAddressFromLinear(~0ul);
             G.AddNode(bad);
-
         }
 
         /// <summary>
@@ -160,14 +159,6 @@ namespace Reko.Scanning
             return map;
         }
 
-        public class Edge
-        {
-            public ulong lin_from;
-            public ulong lin_to;
-        }
-
-        private List<Edge> edges;
-
         /// <summary>
         /// Disassemble every byte of a range of addresses, marking those 
         /// addresses that likely are code as MaybeCode, everything else as
@@ -175,7 +166,7 @@ namespace Reko.Scanning
         /// up.
         /// </summary>
         /// <remarks>
-        /// The plan is to disassemble every location of the segment, building
+        /// The plan is to disassemble every location of the range, building
         /// a reverse control graph. Any jump to an illegal address or any
         /// invalid instruction will result in an edge from "bad" to that 
         /// instruction.
@@ -187,7 +178,6 @@ namespace Reko.Scanning
         {
             var cbAlloc = addrEnd - addrStart;
             var y = new byte[cbAlloc];
-            this.edges = new List<Edge>();
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
             var delaySlot = RtlClass.None;
@@ -199,14 +189,14 @@ namespace Reko.Scanning
                 var dasm = GetRewriter(addr, rewriterPool);
                 if (!dasm.MoveNext())
                 {
-                    AddEdge(G, bad, addr);
+                    sr.AddEdge(G, bad, addr);
                     continue;
                 }
                 var i = dasm.Current;
 
                 if (IsInvalid(mem, i))
                 {
-                    AddEdge(G, bad, i.Address);
+                    sr.AddEdge(G, bad, i.Address);
                     delaySlot = RtlClass.None;
                     y[a] = Data;
                 }
@@ -219,12 +209,12 @@ namespace Reko.Scanning
                             if (a + i.Length < y.Length)
                             {
                                 // Still inside the segment.
-                                AddEdge(G, i.Address + i.Length, i.Address);
+                                sr.AddEdge(G, i.Address + i.Length, i.Address);
                             }
                             else
                             {
                                 // Fell off segment, i must be a bad instruction.
-                                AddEdge(G, bad, i.Address);
+                                sr.AddEdge(G, bad, i.Address);
                                 y[a] = Data;
                             }
                         }
@@ -237,7 +227,7 @@ namespace Reko.Scanning
                             if (IsExecutable(addrDest))
                             {
                                 // call / jump destination is executable
-                                AddEdge(G, addrDest, i.Address);
+                                sr.AddEdge(G, addrDest, i.Address);
                                 if ((i.Class & RtlClass.Call) != 0)
                                 {
                                     int callTally;
@@ -249,7 +239,7 @@ namespace Reko.Scanning
                             else
                             {
                                 // Jump to data / hyperspace.
-                                AddEdge(G, bad, i.Address);
+                                sr.AddEdge(G, bad, i.Address);
                                 y[a] = Data;
                             }
                         }
@@ -271,7 +261,7 @@ namespace Reko.Scanning
                 }
                 if (y[a] == MaybeCode)
                 {
-                    sr.Instructions.Add(i.Address, i);
+                    sr.AddInstruction(i);
                 }
                 eventListener.ShowProgress("Shingle scanning", sr.Instructions.Count, (int)workToDo);
             }
@@ -567,13 +557,6 @@ namespace Reko.Scanning
             }
         }
 
-        private void AddEdge(DiGraph<Address> g, Address from, Address to)
-        {
-            this.edges.Add(new Edge { lin_from = from.ToLinear(), lin_to = from.ToLinear() });
-            //g.AddNode(from);
-            //g.AddNode(to);
-            //g.AddEdge(from, to);
-        }
 
         private bool IsExecutable(Address address)
         {

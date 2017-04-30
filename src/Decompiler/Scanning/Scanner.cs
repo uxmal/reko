@@ -830,15 +830,6 @@ namespace Reko.Scanning
             ProcessQueue();
         }
 
-        /// <summary>
-        /// Uses the HeuristicScanner to try to located code heuristically.
-        /// </summary>
-        public void ScanImageHeuristically()
-        {
-            var heuristicScanner = new HeuristicScanner(Services, Program, this, eventListener);
-            heuristicScanner.ScanImageHeuristically();
-        }
-
         [Conditional("DEBUG")]
         private void Dump(string title, IEnumerable<Block> blocks)
         {

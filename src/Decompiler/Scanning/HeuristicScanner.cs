@@ -513,11 +513,6 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        void IScanner.ScanImageHeuristically()
-        {
-            throw new NotImplementedException();
-        }
-
         void IScanner.ScanImage()
         {
             this.ScanImage();
