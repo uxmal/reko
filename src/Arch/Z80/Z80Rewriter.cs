@@ -69,7 +69,10 @@ namespace Reko.Arch.Z80
                 case Opcode.call: RewriteCall(dasm.Current); break;
                 case Opcode.ccf: RewriteCcf(); break;
                 case Opcode.cp: RewriteCp(); break;
-                case Opcode.cpir: RewriteCpir(); break;
+                case Opcode.cpd: RewriteCp(emitter.ISub, false);  break;
+                case Opcode.cpdr:RewriteCp(emitter.ISub, true);   break;
+                case Opcode.cpi: RewriteCp(emitter.IAdd, false);  break;
+                case Opcode.cpir:RewriteCp(emitter.IAdd, true);   break;
                 case Opcode.cpl: RewriteCpl(); break;
                 case Opcode.di: RewriteDi(); break;
                 case Opcode.daa: RewriteDaa(); break;
@@ -80,7 +83,10 @@ namespace Reko.Arch.Z80
                 case Opcode.exx: RewriteExx(); break;
                 case Opcode.hlt: emitter.SideEffect(host.PseudoProcedure("__hlt", VoidType.Instance)); break;
                 case Opcode.@in: RewriteIn(); break;
-                case Opcode.ini: RewriteIni(); break;
+                case Opcode.ind:  RewriteIn(emitter.ISub, false); break;
+                case Opcode.indr: RewriteIn(emitter.ISub, true); break;
+                case Opcode.ini: RewriteIn(emitter.IAdd, false); break;
+                case Opcode.inir: RewriteIn(emitter.IAdd, true); break;
                 case Opcode.im:
                     emitter.SideEffect(host.PseudoProcedure("__im", VoidType.Instance, RewriteOp(dasm.Current.Op1)));
                     break;
@@ -122,13 +128,7 @@ namespace Reko.Arch.Z80
                 case Opcode.xor: RewriteXor(); break;
 
                 //$TODO: Not implemented yet; feel free to implement these!
-        case Opcode.cpd: goto default;
-        case Opcode.cpdr: goto default;
-        case Opcode.cpi: goto default;
         case Opcode.ex_af: goto default;
-        case Opcode.ind: goto default;
-        case Opcode.indr: goto default;
-        case Opcode.inir: goto default;
         case Opcode.otdr: goto default;
         case Opcode.otir: goto default;
         case Opcode.outd: goto default;
@@ -337,7 +337,7 @@ namespace Reko.Arch.Z80
                 emitter.ISub(a, b));
         }
 
-        private void RewriteCpir()
+        private void RewriteCp(Func<Expression , Expression, Expression> incDec, bool repeat)
         {
             var addr = dasm.Current.Address;
             var a = frame.EnsureRegister(Registers.a);
@@ -345,10 +345,13 @@ namespace Reko.Arch.Z80
             var hl = frame.EnsureRegister(Registers.hl);
             var z = FlagGroup(FlagM.ZF);
             emitter.Assign(z, emitter.Cond(emitter.ISub(a, emitter.LoadB(hl))));
-            emitter.Assign(hl, emitter.IAdd(hl, 1));
+            emitter.Assign(hl, incDec(hl, emitter.Int16(1)));
             emitter.Assign(bc, emitter.ISub(bc, 1));
-            emitter.BranchInMiddleOfInstruction(emitter.Eq0(bc), addr + dasm.Current.Length, RtlClass.ConditionalTransfer);
-            emitter.Branch(emitter.Test(ConditionCode.NE, z), addr, RtlClass.ConditionalTransfer);
+            if (repeat)
+            {
+                emitter.BranchInMiddleOfInstruction(emitter.Eq0(bc), addr + dasm.Current.Length, RtlClass.ConditionalTransfer);
+                emitter.Branch(emitter.Test(ConditionCode.NE, z), addr, RtlClass.ConditionalTransfer);
+            }
         }
 
         private void RewriteCpl()
@@ -530,7 +533,7 @@ namespace Reko.Arch.Z80
             emitter.Assign(dst, host.PseudoProcedure("__in", PrimitiveType.Byte, src));
         }
 
-        private void RewriteIni()
+        private void RewriteIn(Func<Expression,Expression,Expression> incDec, bool repeat)
         {
             var hl = frame.EnsureRegister(Registers.hl);
             var c = frame.EnsureRegister(Registers.c);
@@ -539,9 +542,13 @@ namespace Reko.Arch.Z80
             emitter.Assign(
                 emitter.LoadB(hl),
                 host.PseudoProcedure("__in", PrimitiveType.Byte, c));
-            emitter.Assign(hl, emitter.IAdd(hl, 1));
+            emitter.Assign(hl, incDec(hl, emitter.Int16(1)));
             emitter.Assign(b, emitter.ISub(b, 1));
             emitter.Assign(Z, emitter.Cond(b));
+            if (repeat)
+            {
+                emitter.Branch(emitter.Ne0(b), rtlc.Address, RtlClass.ConditionalTransfer);
+            }
         }
 
         private void RewriteOut()
