@@ -106,14 +106,14 @@ namespace Reko.ImageLoaders.MzExe
 			rdr.ReadLeUInt32();	// base ordinal
 			int nExports = rdr.ReadLeInt32();
 			int nNames = rdr.ReadLeInt32();
-			if (nExports != nNames)
-				throw new BadImageFormatException("Unexpected discrepancy in PE image.");
 			uint rvaApfn = rdr.ReadLeUInt32();
 			uint rvaNames = rdr.ReadLeUInt32();
 
 			EndianImageReader rdrAddrs = imgLoaded.CreateLeReader(rvaApfn);
-			EndianImageReader rdrNames = imgLoaded.CreateLeReader(rvaNames);
-			for (int i = 0; i < nNames; ++i)
+            EndianImageReader rdrNames = nNames != 0
+                ? imgLoaded.CreateLeReader(rvaNames)
+                : null;
+			for (int i = 0; i < nExports; ++i)
 			{
                 ImageSymbol ep = LoadEntryPoint(addrLoad, rdrAddrs, rdrNames);
 				if (imageMap.IsExecutableAddress(ep.Address))
@@ -127,14 +127,18 @@ namespace Reko.ImageLoaders.MzExe
         private ImageSymbol LoadEntryPoint(Address addrLoad, EndianImageReader rdrAddrs, EndianImageReader rdrNames)
         {
             uint rvaAddr = rdrAddrs.ReadLeUInt32();
-            int iNameMin = rdrNames.ReadLeInt32();
-            int j;
-            for (j = iNameMin; imgLoaded.Bytes[j] != 0; ++j)
-                ;
-            char[] chars = Encoding.ASCII.GetChars(imgLoaded.Bytes, iNameMin, j - iNameMin);
+            string name = null;
+            if (rdrNames != null)
+            {
+                int iNameMin = rdrNames.ReadLeInt32();
+                int j;
+                for (j = iNameMin; imgLoaded.Bytes[j] != 0; ++j)
+                    ;
+                name = Encoding.ASCII.GetString(imgLoaded.Bytes, iNameMin, j - iNameMin);
+            }
             return new ImageSymbol(addrLoad + rvaAddr)
             {
-                Name = new string(chars),
+                Name = name,
                 ProcessorState = arch.CreateProcessorState(),
                 Type = SymbolType.Procedure,
             };
