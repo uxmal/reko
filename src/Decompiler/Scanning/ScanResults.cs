@@ -90,7 +90,9 @@ namespace Reko.Scanning
         /// or because they were jumped to from different procedures.
         /// This is a key end result of the scanning stage.
         /// </summary>
-        public List<RtlProcedure> Procedures { get; internal set; }
+        public List<RtlProcedure> Procedures { get;  set; }
+        public SortedList<long, instr> FlatInstructions { get;  set; }
+        public List<link> FlatEdges { get; set; }
 
         /// <summary>
         /// Tally of occurrences of bitpatterns that look like addresses,
@@ -153,20 +155,38 @@ namespace Reko.Scanning
             }
         }
 
-        public virtual void AddInstruction(RtlInstructionCluster i)
+        public class instr
         {
-            this.Instructions.Add(i.Address, i);
+            public long addr; // primary key not null,
+            public int size;
+            public ushort type;
+            public long block_id;
+            public int pred;
+            public int succ;
         }
 
-        public virtual void AddEdge(DiGraph<Address> g, Address from, Address to)
+        public class link
         {
-#if LinQ
-            this.edges.Add(new Edge { lin_from = from.ToLinear(), lin_to = from.ToLinear() });
-#else
-            g.AddNode(from);
-            g.AddNode(to);
-            g.AddEdge(from, to);
-#endif
+            public long first;
+            public long second;
+
+            public override bool Equals(object obj)
+            {
+                var that = obj as link;
+                if (that == null)
+                    return false;
+                return that.first == this.first && that.second == this.second;
+            }
+
+            public override int GetHashCode()
+            {
+                return first.GetHashCode() ^ 13 * second.GetHashCode();
+            }
+
+            public override string ToString()
+            {
+                return string.Format("[{0:X8} -> {1:X8}]", first, second);
+            }
         }
 
         public class Edge
