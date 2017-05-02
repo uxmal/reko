@@ -262,5 +262,32 @@ namespace Reko.UnitTests.Arch.Z80
                 "1|L--|a = a << 0x01",
                 "2|L--|SZPC = cond(a)");
         }
+
+        [Test]
+        public void Z80rw_inir()
+        {
+            BuildTest(0xED, 0xB2);
+            AssertCode(
+                "0|L--|0100(2): 5 instructions",
+                "1|L--|Mem0[hl:byte] = __in(c)",
+                "2|L--|hl = hl + 0x0001",
+                "3|L--|b = b - 0x01",
+                "4|L--|Z = cond(b)",
+                "5|T--|if (b != 0x00) branch 0100");
+        }
+
+
+        [Test]
+        public void Z80rw_cpdr()
+        {
+            BuildTest(0xED, 0xB9);
+            AssertCode(
+                "0|L--|0100(2): 5 instructions",
+                "1|L--|Z = cond(a - Mem0[hl:byte])",
+                "2|L--|hl = hl - 0x0001",
+                "3|L--|bc = bc - 0x0001",
+                "4|T--|if (bc == 0x0000) branch 0102",
+                "5|T--|if (Test(NE,Z)) branch 0100");
+        }
     }
 }
