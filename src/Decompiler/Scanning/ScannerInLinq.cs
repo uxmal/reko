@@ -36,12 +36,6 @@ namespace Reko.Scanning
             public long component_id;
         }
 
-        private class new_block
-        {
-            public link edge;
-            public long block_id;
-        }
-
         public void CollectStatistics(int binary_size)
         {
             // warm up cache
@@ -146,7 +140,7 @@ namespace Reko.Scanning
 
             var the_blocks = BuildBasicBlocks(sr);
 
-            FindInvalidBlocks(sr, the_blocks);
+            the_blocks = RemoveInvalidBlocks(sr, the_blocks);
 
             BuildWeaklyConnectedComponents(the_blocks);
 
@@ -253,28 +247,17 @@ namespace Reko.Scanning
                 }
             }
             Debug.Print("comp: {0}",
+                string.Join("\r\n      ",
                 from b in the_blocks.Values
                 group b by b.component_id into g
                 orderby g.Key
-                select string.Format("{0:X8}:{1}", g.Key, g.Count()));
+                select string.Format("{0:X8}:{1}", g.Key, g.Count())));
         }
 
         public Dictionary<long, block> BuildBasicBlocks(ScanResults sr)
         {
-            Debug.Print("{0}", 
-                string.Join("\r\n", 
-                    from instr in sr.FlatInstructions.Values
-                join e in sr.FlatEdges on instr.addr equals e.first into es
-                from e in new[] { string.Join(", ", es.Select(ee => string.Format("{0:X8}", ee.second))) }
-                where 0x0001B0D7 <= instr.addr && instr.addr <= 0x0001B0E8
-                orderby instr.addr
-                select string.Format(
-                    "{0:X8} {1} {2} {3}",
-                        instr.addr,
-                        instr.size,
-                        (char) (instr.type + 'A'),
-                        e)));
-            
+            //DumpInstructions(sr);
+
             // Compute all basic blocks -----------------------------------------------
 
             // count and save the # of predecessors and successors for each instr
@@ -321,7 +304,7 @@ namespace Reko.Scanning
                      .Select(i => i.Value.block_id)
                      .Distinct()
                      .ToDictionary(k => k, v => new block { id = v, component_id = v });
-            DumpBlocks(sr, the_blocks);
+            //DumpBlocks(sr, the_blocks);
 
             sr.FlatEdges = 
                 (from link in sr.FlatEdges
@@ -330,11 +313,11 @@ namespace Reko.Scanning
                 select new link { first = f.block_id, second = link.second })
                 .Distinct()
                 .ToList();
-            DumpBlocks(sr, the_blocks);
+           // DumpBlocks(sr, the_blocks);
             return the_blocks;
         }
 
-        public HashSet<long> FindInvalidBlocks(ScanResults sr, Dictionary<long, block> blocks)
+        public Dictionary<long, block> RemoveInvalidBlocks(ScanResults sr, Dictionary<long, block> blocks)
         {
             // Find transitive closure of bad instructions ------------------------
 
@@ -343,22 +326,19 @@ namespace Reko.Scanning
                  where i.type == (ushort)RtlClass.Invalid
                  select i.block_id).ToHashSet();
             var new_bad = bad_blocks;
-            var succs = sr.FlatEdges.ToLookup(e => e.first);
             var preds = sr.FlatEdges.ToLookup(e => e.second);
-            Debug.Print("Bad {0}",
-                string.Join(
-                    "\r\n      ",
-                    bad_blocks
-                        .OrderBy(x => x)
-                        .Select(x => string.Format("{0:X8}", x))));
+            //Debug.Print("Bad {0}",
+            //    string.Join(
+            //        "\r\n      ",
+            //        bad_blocks
+            //            .OrderBy(x => x)
+            //            .Select(x => string.Format("{0:X8}", x))));
             for (;;)
             {
                 // Find all blocks that are reachable from blocks
                 // that already are known to be "bad"
                 new_bad =
-                    new_bad.SelectMany(bad => succs[bad]).Select(l => l.second)
-                    .Concat(
-                        new_bad.SelectMany(bad => preds[bad]).Select(l => l.first))
+                    new_bad.SelectMany(bad => preds[bad]).Select(l => l.first)
                     .Where(bad => !bad_blocks.Contains(bad))
                         .ToHashSet();
 
@@ -375,8 +355,34 @@ namespace Reko.Scanning
                 bad_blocks.UnionWith(new_bad);
             }
             Debug.Print("Bad blocks: {0} of {1}", bad_blocks.Count, blocks.Count);
-            DumpBadBlocks(sr, blocks, sr.FlatEdges, bad_blocks);
-            return bad_blocks;
+            //DumpBadBlocks(sr, blocks, sr.FlatEdges, bad_blocks);
+
+            // Remove edges to bad blocks and bad blocks.
+            sr.FlatEdges = sr.FlatEdges
+                .Where(e => !bad_blocks.Contains(e.second))
+                .ToList();
+            blocks = blocks.Values
+                .Where(b => !bad_blocks.Contains(b.id))
+                .ToDictionary(k => k.id);
+
+            return blocks;
+        }
+
+
+        void DumpInstructions(ScanResults sr)
+        {
+            Debug.WriteLine(
+                string.Join("\r\n",
+                    from instr in sr.FlatInstructions.Values
+                    join e in sr.FlatEdges on instr.addr equals e.first into es
+                    from e in new[] { string.Join(", ", es.Select(ee => string.Format("{0:X8}", ee.second))) }
+                    orderby instr.addr
+                    select string.Format(
+                        "{0:X8} {1} {2} {3}",
+                            instr.addr,
+                            instr.size,
+                            (char)(instr.type + 'A'),
+                            e)));
         }
 
         private void DumpBlocks(ScanResults sr, Dictionary<long, block> blocks)
@@ -412,15 +418,21 @@ namespace Reko.Scanning
                 "{0}",
                 string.Join(Environment.NewLine,
                 from b in blocks.Values
+                join i in (
+                     from ii in sr.FlatInstructions.Values
+                     group ii by ii.block_id into g
+                     select new { block_id = g.Key, max = g.Max(iii => iii.size + iii.addr) })
+                     on b.id equals i.block_id
                 join e in edges on b.id equals e.first into es
                 from e in new[] { string.Join(", ", es.Select(ee => string.Format("{0:X8}", ee.second))) }
                 orderby b.id
                 select string.Format(
-                    "{0:X8} {1} {2}",
+                    "{0:X8}-{1:X8} {2} ({3}): {4}",
                         b.id,
+                        i.max,
                         bad_blocks.Contains(b.id) ? "*" : " ",
+                        i.max - b.id,
                         e)));
-
         }
 
         [Conditional("DEBUG")]
@@ -438,15 +450,6 @@ namespace Reko.Scanning
             foreach (var link in edges)
             {
                 Debug.Print("[{0:X8} -> {1:X8}]", link.first, link.second);
-            }
-        }
-
-        [Conditional("DEBUG")]
-        private void Dump(IEnumerable<new_block> new_blocks)
-        {
-            foreach (var b in new_blocks)
-            {
-                Debug.Print("[{0:X8} -> {1:X8}] {2:X8}", b.edge.first, b.edge.second, b.block_id);
             }
         }
 

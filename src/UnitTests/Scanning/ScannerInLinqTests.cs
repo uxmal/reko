@@ -82,6 +82,17 @@ namespace Reko.UnitTests.Scanning
             Link(addr, b);
         }
 
+        private void Bad(int addr, int len)
+        {
+            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            {
+                addr = addr,
+                size = len,
+                block_id = addr,
+                type = (ushort)RtlClass.Invalid,
+            });
+        }
+
         private void End(int addr, int len)
         {
             sr.FlatInstructions.Add(addr, new ScanResults.instr
@@ -100,14 +111,11 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_OverlappingLinearTraces()
         {
-            Inst(100, 2, RtlClass.Linear);
-            Link(100, 102);
-            Inst(101, 2, RtlClass.Linear);
-            Link(101, 103);
-            Inst(102, 2, RtlClass.Linear);
-            Link(102, 104);
-            Inst(103, 2, RtlClass.Invalid);
-            Inst(104, 2, RtlClass.Transfer);
+            Lin(0x100, 2, 0x102);
+            Lin(0x101, 2, 0x103);
+            Lin(0x102, 2, 0x104);
+            Bad(0x103, 2);
+            End(0x104, 2);
         }
 
         private void CreateScanner()
@@ -134,9 +142,15 @@ namespace Reko.UnitTests.Scanning
 
             CreateScanner();
             var blocks = siq.BuildBasicBlocks(sr);
-            var bad_blocks = siq.FindInvalidBlocks(sr, blocks);
+            blocks = siq.RemoveInvalidBlocks(sr, blocks);
 
-            Assert.AreEqual(-3, bad_blocks.Count);
+            var sExp =
+            #region Expected
+@"00000100-00000106 (6): 
+";
+            #endregion
+
+            AssertBlocks(sExp, blocks);
         }
 
         [Test]
