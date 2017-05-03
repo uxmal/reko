@@ -23,6 +23,8 @@ using Reko.Core.Rtl;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +35,7 @@ namespace Reko.UnitTests.Scanning
     public class ScannerInLinqTests
     {
         private ScanResults sr;
+        private ScannerInLinq siq;
 
         [SetUp]
         public void Setup()
@@ -53,13 +56,49 @@ namespace Reko.UnitTests.Scanning
             });
         }
 
+        private void Lin(int addr, int len, int next)
+        {
+            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            {
+                addr = addr,
+                size = len,
+                block_id = addr,
+                type = (ushort)RtlClass.Linear
+            });
+            Link(addr, next);
+        }
+
+
+        private void Bra(int addr, int len, int a, int b)
+        {
+            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            {
+                addr = addr,
+                size = len,
+                block_id = addr,
+                type = (ushort)RtlClass.Linear
+            });
+            Link(addr, a);
+            Link(addr, b);
+        }
+
+        private void End(int addr, int len)
+        {
+            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            {
+                addr = addr,
+                size = len,
+                block_id = addr,
+                type = (ushort)RtlClass.Transfer,
+            });
+        }
+
         private void Link(int addrFrom ,int addrTo)
         {
             sr.FlatEdges.Add(new ScanResults.link { first = addrFrom, second = addrTo });
         }
 
-        [Test]
-        public void Siq_Blocks()
+        private void Given_OverlappingLinearTraces()
         {
             Inst(100, 2, RtlClass.Linear);
             Link(100, 102);
@@ -69,11 +108,76 @@ namespace Reko.UnitTests.Scanning
             Link(102, 104);
             Inst(103, 2, RtlClass.Invalid);
             Inst(104, 2, RtlClass.Transfer);
+        }
 
-            var siq = new ScannerInLinq(null, null, null, null);
-            var blocks =siq.BuildBasicBlocks(sr);
+        private void CreateScanner()
+        {
+            this.siq = new ScannerInLinq(null, null, null, null);
+        }
+
+
+        [Test]
+        public void Siq_Blocks()
+        {
+            Given_OverlappingLinearTraces();
+
+            CreateScanner();
+            var blocks = siq.BuildBasicBlocks(sr);
 
             Assert.AreEqual(2, blocks.Count);
+        }
+
+        [Test]
+        public void Siq_InvalidBlocks()
+        {
+            Given_OverlappingLinearTraces();
+
+            CreateScanner();
+            var blocks = siq.BuildBasicBlocks(sr);
+            var bad_blocks = siq.FindInvalidBlocks(sr, blocks);
+
+            Assert.AreEqual(-3, bad_blocks.Count);
+        }
+
+        [Test]
+        public void Siq_ShingledBlocks()
+        {
+            Lin(0x0001B0D7, 2, 0x0001B0D9);
+            Lin(0x0001B0D8, 6, 0x0001B0DE);
+            Lin(0x0001B0D9, 1, 0x0001B0DA);
+            Lin(0x0001B0DA, 1, 0x0001B0DB);
+            Bra(0x0001B0DB, 2, 0x0001B0DD, 0x0001B0DE);
+
+            Lin(0x0001B0DC, 2, 0x0001B0DE);
+            Lin(0x0001B0DD, 1, 0x0001B0DE);
+
+            End(0x0001B0DE, 2);
+
+            CreateScanner();
+            var blocks = siq.BuildBasicBlocks(sr);
+            var sExp =
+            #region Expected
+@"0001B0D7-0001B0DD (6): 0001B0DD, 0001B0DE
+0001B0D8-0001B0DE (6): 0001B0DE
+0001B0DC-0001B0DE (2): 0001B0DE
+0001B0DD-0001B0DE (1): 0001B0DE
+0001B0DE-0001B0E0 (2): 
+";
+            #endregion
+            AssertBlocks(sExp, blocks);
+        }
+
+        private void AssertBlocks(string sExp, Dictionary<long, ScannerInLinq.block> blocks)
+        {
+            var sw = new StringWriter();
+            this.siq.DumpBlocks(sr, blocks, sw.WriteLine);
+            var sActual = sw.ToString();
+            if (sExp != sActual)
+            {
+                Debug.WriteLine("* Failed AssertBlocks ***");
+                Debug.Write(sActual);
+                Assert.AreEqual(sExp, sActual);
+            }
         }
     }
 }

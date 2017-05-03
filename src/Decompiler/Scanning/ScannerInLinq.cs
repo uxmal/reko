@@ -144,18 +144,9 @@ namespace Reko.Scanning
                 return null;
             }
 
-            Dictionary<long, block> the_blocks = BuildBasicBlocks(sr);
+            var the_blocks = BuildBasicBlocks(sr);
 
-            // Find all links that don't point to the beginning of a block.
-            Debug.Print("Broken links {0}",
-                (from l in sr.FlatEdges
-                join b in the_blocks.Values on l.first equals b.id into bs
-                from b in bs.DefaultIfEmpty()
-                where b == null
-                select l).Count());
-
-
-            FindInvalidInstructionClosure();
+            FindInvalidBlocks(sr, the_blocks);
 
             BuildWeaklyConnectedComponents(the_blocks);
 
@@ -261,10 +252,29 @@ namespace Reko.Scanning
                     bc.block.component_id = Math.Min(bc.block.component_id, bc.target);
                 }
             }
+            Debug.Print("comp: {0}",
+                from b in the_blocks.Values
+                group b by b.component_id into g
+                orderby g.Key
+                select string.Format("{0:X8}:{1}", g.Key, g.Count()));
         }
 
         public Dictionary<long, block> BuildBasicBlocks(ScanResults sr)
         {
+            Debug.Print("{0}", 
+                string.Join("\r\n", 
+                    from instr in sr.FlatInstructions.Values
+                join e in sr.FlatEdges on instr.addr equals e.first into es
+                from e in new[] { string.Join(", ", es.Select(ee => string.Format("{0:X8}", ee.second))) }
+                where 0x0001B0D7 <= instr.addr && instr.addr <= 0x0001B0E8
+                orderby instr.addr
+                select string.Format(
+                    "{0:X8} {1} {2} {3}",
+                        instr.addr,
+                        instr.size,
+                        (char) (instr.type + 'A'),
+                        e)));
+            
             // Compute all basic blocks -----------------------------------------------
 
             // count and save the # of predecessors and successors for each instr
@@ -301,6 +311,7 @@ namespace Reko.Scanning
                 if (instr.succ == 1 && succ.pred == 1)
                 {
                     succ.block_id = instr.block_id;
+                    the_excluded_edges.Add(new link { first = instr.addr, second = succ.addr });
                 }
             }
 
@@ -310,49 +321,106 @@ namespace Reko.Scanning
                      .Select(i => i.Value.block_id)
                      .Distinct()
                      .ToDictionary(k => k, v => new block { id = v, component_id = v });
+            DumpBlocks(sr, the_blocks);
+
             sr.FlatEdges = 
                 (from link in sr.FlatEdges
                 join f in sr.FlatInstructions.Values on link.first equals f.addr
-                join t in sr.FlatInstructions.Values on link.second equals t.addr
-                select new link { first = f.block_id, second = t.block_id })
+                where !the_excluded_edges.Contains(link)
+                select new link { first = f.block_id, second = link.second })
+                .Distinct()
                 .ToList();
+            DumpBlocks(sr, the_blocks);
             return the_blocks;
         }
 
-        private void FindInvalidInstructionClosure()
+        public HashSet<long> FindInvalidBlocks(ScanResults sr, Dictionary<long, block> blocks)
         {
             // Find transitive closure of bad instructions ------------------------
 
-            var linBad = (long) program.Platform.MakeAddressFromLinear(~0UL).ToLinear();
-            foreach (var e in sr.FlatEdges.Where(e => e.second == linBad))
-            {
-                sr.FlatInstructions[e.first].type = (ushort)RtlClass.Invalid;
-            }
+            var bad_blocks =
+                (from i in sr.FlatInstructions.Values
+                 where i.type == (ushort)RtlClass.Invalid
+                 select i.block_id).ToHashSet();
+            var new_bad = bad_blocks;
+            var succs = sr.FlatEdges.ToLookup(e => e.first);
+            var preds = sr.FlatEdges.ToLookup(e => e.second);
+            Debug.Print("Bad {0}",
+                string.Join(
+                    "\r\n      ",
+                    bad_blocks
+                        .OrderBy(x => x)
+                        .Select(x => string.Format("{0:X8}", x))));
             for (;;)
             {
-                // Find all instructions that are reachable from instructions
+                // Find all blocks that are reachable from blocks
                 // that already are known to be "bad"
-                var new_bad = new HashSet<long>(
-                    (from item in sr.FlatInstructions.Values
-                     join link in sr.FlatEdges on item.addr equals link.second
-                     join pred in sr.FlatInstructions.Values on link.first equals pred.addr
-                     where item.type == (ushort)RtlClass.Invalid && pred.type != (ushort)RtlClass.Invalid
-                     select pred.addr).Concat(
-                    from item in sr.FlatInstructions.Values
-                    join link in sr.FlatEdges on item.addr equals link.first
-                    join succ in sr.FlatInstructions.Values on link.second equals succ.addr
-                    where item.type == (ushort)RtlClass.Invalid && succ.type != (ushort)RtlClass.Invalid
-                    select succ.addr));
+                new_bad =
+                    new_bad.SelectMany(bad => succs[bad]).Select(l => l.second)
+                    .Concat(
+                        new_bad.SelectMany(bad => preds[bad]).Select(l => l.first))
+                    .Where(bad => !bad_blocks.Contains(bad))
+                        .ToHashSet();
 
                 if (new_bad.Count == 0)
                     break;
 
-                foreach (var n in new_bad)
-                {
-                    sr.FlatInstructions[n].type = (ushort)RtlClass.Invalid;
-                }
+                //Debug.Print("new {0}",
+                //    string.Join(
+                //        "\r\n      ",
+                //        bad_blocks
+                //            .OrderBy(x => x)
+                //            .Select(x => string.Format("{0:X8}", x))));
+
+                bad_blocks.UnionWith(new_bad);
             }
-            Debug.Print("Bad instrs: {0} of {1}", sr.FlatInstructions.Values.Where(v => v.type == (ushort)RtlClass.Invalid), sr.FlatInstructions.Count);
+            Debug.Print("Bad blocks: {0} of {1}", bad_blocks.Count, blocks.Count);
+            DumpBadBlocks(sr, blocks, sr.FlatEdges, bad_blocks);
+            return bad_blocks;
+        }
+
+        private void DumpBlocks(ScanResults sr, Dictionary<long, block> blocks)
+        {
+            DumpBlocks(sr, blocks, s => Debug.WriteLine(s));
+        }
+
+        // Writes the start and end addresses, size, and successor edge of each block, 
+        public void DumpBlocks(ScanResults sr, Dictionary<long, block> blocks, Action<string> writeLine)
+        {
+            writeLine(
+               string.Join(Environment.NewLine,
+               from b in blocks.Values
+               join i in (
+                    from ii in sr.FlatInstructions.Values
+                    group ii by ii.block_id into g
+                    select new { block_id = g.Key, max = g.Max(iii => iii.size + iii.addr) })
+                    on b.id equals i.block_id
+               join e in sr.FlatEdges on b.id equals e.first into es
+               from e in new[] { string.Join(", ", es.Select(ee => string.Format("{0:X8}", ee.second))) }
+               orderby b.id
+               select string.Format(
+                   "{0:X8}-{1:X8} ({2}): {3}",
+                       b.id,
+                       i.max,
+                       i.max - b.id,
+                       e)));
+        }
+
+        private void DumpBadBlocks(ScanResults sr, Dictionary<long, block> blocks, IEnumerable<link> edges, HashSet<long> bad_blocks)
+        {
+            Debug.Print(
+                "{0}",
+                string.Join(Environment.NewLine,
+                from b in blocks.Values
+                join e in edges on b.id equals e.first into es
+                from e in new[] { string.Join(", ", es.Select(ee => string.Format("{0:X8}", ee.second))) }
+                orderby b.id
+                select string.Format(
+                    "{0:X8} {1} {2}",
+                        b.id,
+                        bad_blocks.Contains(b.id) ? "*" : " ",
+                        e)));
+
         }
 
         [Conditional("DEBUG")]

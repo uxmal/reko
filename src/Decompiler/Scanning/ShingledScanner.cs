@@ -226,13 +226,17 @@ namespace Reko.Scanning
                             if (IsExecutable(addrDest))
                             {
                                 // call / jump destination is executable
-                                AddEdge(G, addrDest, i.Address);
                                 if ((i.Class & RtlClass.Call) != 0)
                                 {
+                                    // Don't add edges to other procedures.
                                     int callTally;
                                     if (!this.sr.DirectlyCalledAddresses.TryGetValue(addrDest, out callTally))
                                         callTally = 0;
                                     this.sr.DirectlyCalledAddresses[addrDest] = callTally + 1;
+                                }
+                                else
+                                {
+                                    AddEdge(G, addrDest, i.Address);
                                 }
                             }
                             else
