@@ -195,7 +195,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 throw new NotImplementedException();
             }
 
-            public override void Render(MachineInstructionWriter writer)
+            public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
             {
                 writer.WriteOpcode("opcode.l");
             }

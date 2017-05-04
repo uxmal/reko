@@ -210,7 +210,7 @@ namespace Reko.Arch.Pdp11
             case AddressMode.Absolute:
                 return Address.Ptr16(memOp.EffectiveAddress);
             case AddressMode.AutoIncr:
-                m.Assign(tmp, m.Load(op.Width, m.Load(PrimitiveType.Ptr16, r)));
+                m.Assign(tmp, m.Load(PrimitiveType.Ptr16, r));
                 m.Assign(r, m.IAdd(r, memOp.Width.Size));
                 break;
             case AddressMode.AutoIncrDef:
@@ -321,11 +321,21 @@ namespace Reko.Arch.Pdp11
                             m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
                     }
                 case AddressMode.IndexedDef:
+                    if (memOp.Register == Registers.pc)
+                    {
+                        var addr = this.dasm.Current.Address + this.dasm.Current.Length + memOp.EffectiveAddress;
+                        m.Assign(tmp, m.Load(PrimitiveType.Ptr16, addr));
+                        m.Assign(tmp, m.Load(memOp.Width, tmp));
+                        return tmp;
+                    }
+                    else
+                    {
                     return m.Load(
                         this.dasm.Current.DataWidth,
                         m.Load(
                             PrimitiveType.Ptr16,
                             m.IAdd(r, Constant.Word16(memOp.EffectiveAddress))));
+                }
                 }
                 return tmp;
             }
@@ -416,13 +426,10 @@ namespace Reko.Arch.Pdp11
                 case AddressMode.Indexed:
                     if (r.Storage == Registers.pc)
                     {
-                        var addr = dasm.Current.Address + dasm.Current.Length;
-                        m.Assign(
-                           tmp,
-                           gen(m.Load(dasm.Current.DataWidth, addr)));
+                        var addr = dasm.Current.Address + dasm.Current.Length + memOp.EffectiveAddress;
                         m.Assign(
                             m.Load(dasm.Current.DataWidth, addr),
-                            tmp);
+                            gen(src));
                     }
                     else
                     {
@@ -439,13 +446,13 @@ namespace Reko.Arch.Pdp11
                     if (r.Storage == Registers.pc)
                     {
                         //$REVIEW: what if there are two of these?
-                        var addr = dasm.Current.Address + dasm.Current.Length;
+                        var addr = dasm.Current.Address + dasm.Current.Length + memOp.EffectiveAddress;
                         m.Assign(
                             tmp,
-                            gen(m.Load(dasm.Current.DataWidth, addr)));
+                            m.Load(PrimitiveType.Ptr16, addr));
                         m.Assign(
-                            m.Load(dasm.Current.DataWidth, addr),
-                            tmp);
+                            m.Load(dasm.Current.DataWidth, tmp),
+                            gen(src));
                     }
                     else
                     {

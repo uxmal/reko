@@ -58,7 +58,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (code == Opcode.illegal && op1 != null && writer.Platform != null)
             {
@@ -85,11 +85,11 @@ namespace Reko.Arch.M68k
             writer.Tab();
             if (op1 != null)
             {
-                op1.Write(false, writer);
+                op1.Write(writer, options);
                 if (op2 != null)
                 {
                     writer.Write(',');
-                    op2.Write(false, writer);
+                    op2.Write(writer, options);
                 }
             }
         }

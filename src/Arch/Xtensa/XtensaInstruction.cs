@@ -69,7 +69,7 @@ namespace Reko.Arch.Xtensa
             throw new NotImplementedException();
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string instrName;
             if (!instrNames.TryGetValue(Opcode, out instrName))
@@ -84,7 +84,7 @@ namespace Reko.Arch.Xtensa
                 foreach (var op in this.Operands)
                 {
                     writer.Write(sep);
-                    op.Write(false, writer);
+                    op.Write(writer, options);
                     sep = ",";
                 }
             }

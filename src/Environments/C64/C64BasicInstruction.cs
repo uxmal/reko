@@ -59,7 +59,7 @@ namespace Reko.Environments.C64
             }
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.Write("{0} ", Address.ToLinear());
             bool inString = false;
