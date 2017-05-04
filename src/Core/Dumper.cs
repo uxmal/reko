@@ -265,16 +265,33 @@ namespace Reko.Core
             return true;
         }
 
-        private void DumpTypedData(SegmentMap map, ImageMapItem item, Formatter stm)
+        private void DumpTypedData(SegmentMap map, ImageMapItem item, Formatter w)
         {
             ImageSegment segment;
             if (!map.TryFindSegment(item.Address, out segment) || segment.MemoryArea == null)
                 return;
-            stm.Write(Block.GenerateName(item.Address));
-            stm.Write("\t");
+            WriteLabel(item.Address, w);
 
             var rdr = arch.CreateImageReader(segment.MemoryArea, item.Address);
-            item.DataType.Accept(new TypedDataDumper(rdr, item.Size, stm));
+            item.DataType.Accept(new TypedDataDumper(rdr, item.Size, w));
+        }
+
+        private void WriteLabel(Address addr, Formatter w)
+        {
+            ImageSymbol sym;
+            if (program.ImageSymbols.TryGetValue(addr, out sym) &&
+             !string.IsNullOrEmpty(sym.Name))
+            {
+                w.Write(sym.Name);
+                w.Write("\t\t; {0}",addr);
+
+                w.WriteLine();
+            }
+            else
+            {
+                w.Write(Block.GenerateName(addr));
+            }
+            w.Write("\t");
         }
 
         public void WriteByteRange(MemoryArea image, Address begin, Address addrEnd, InstrWriter writer)

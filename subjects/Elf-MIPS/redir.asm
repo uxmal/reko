@@ -12462,112 +12462,175 @@ _fini proc
 10000870 00 00 00 00 80 00 00 00 10 00 00 00 00 40 00 00 .............@..
 10000880 00 41 00 00 00 00 00 00 00 00 00 00 00 40 06 00 .A...........@..
 10000890 00 40 05 F0                                     .@..           
-l10000894	dd	0x00409680
-l10000898	dd	0x00403840
+__pack_d_GOT		; 10000894
+	dd	0x00409680
+client_check_activ_GOT		; 10000898
+	dd	0x00403840
 1000089C                                     00 40 05 E0             .@..
 100008A0 10 00 0A AC 08 11 F2 60                         .......`       
-l100008A8	dd	0x004076A8
-l100008AC	dd	0x00402C1C
-l100008B0	dd	0x0040720C
-l100008B4	dd	0x00404CF0
+slist_destroy_GOT		; 100008A8
+	dd	0x004076A8
+get_a_line_GOT		; 100008AC
+	dd	0x00402C1C
+slist_add_GOT		; 100008B0
+	dd	0x0040720C
+request_get_host_GOT		; 100008B4
+	dd	0x00404CF0
 100008B8                         00 40 05 D0                     .@..   
-l100008BC	dd	0x004036BC
+client_close_GOT		; 100008BC
+	dd	0x004036BC
 100008C0 10 00 00 14 00 40 05 C0 00 40 05 B0 00 40 05 A0 .....@...@...@..
-l100008D0	dd	0x004066E8
+open_log_GOT		; 100008D0
+	dd	0x004066E8
 100008D4             00 40 05 90 00 40 05 80                 .@...@..   
-l100008DC	dd	0x00403794
-l100008E0	dd	0x004074AC
-l100008E4	dd	0x00403A1C
-l100008E8	dd	0x00404C5C
-l100008EC	dd	0x004048DC
+client_destroy_GOT		; 100008DC
+	dd	0x00403794
+slist_delete_GOT		; 100008E0
+	dd	0x004074AC
+open_destination_GOT		; 100008E4
+	dd	0x00403A1C
+get_version_GOT		; 100008E8
+	dd	0x00404C5C
+request_add_lines_GOT		; 100008EC
+	dd	0x004048DC
 100008F0 00 40 05 70 10 00 00 18 00 40 05 60 10 00 08 10 .@.p.....@.`....
 10000900 00 40 05 50 00 40 05 40                         .@.P.@.@       
-l10000908	dd	0x00403C00
+clist_new_GOT		; 10000908
+	dd	0x00403C00
 1000090C                                     10 00 00 20             ... 
 10000910 00 40 05 30 00 00 01 C4                         .@.0....       
-l10000918	dd	0x00403CBC
+clist_add_GOT		; 10000918
+	dd	0x00403CBC
 1000091C                                     00 40 05 20             .@. 
-l10000920	dd	0x00409CB0
+_fini_GOT		; 10000920
+	dd	0x00409CB0
 10000924             00 40 A8 C0                             .@..       
-l10000928	dd	0x00404070
-l1000092C	dd	0x00404108
+clist_close_all_GOT		; 10000928
+	dd	0x00404070
+clist_destroy_all_GOT		; 1000092C
+	dd	0x00404108
 10000930 00 40 05 10 00 40 05 00                         .@...@..       
-l10000938	dd	0x00401B70
+client_new_GOT		; 10000938
+	dd	0x00401B70
 1000093C                                     00 40 04 F0             .@..
-l10000940	dd	0x00404BC8
+get_uri_GOT		; 10000940
+	dd	0x00404BC8
 10000944             00 40 04 E0                             .@..       
-l10000948	dd	0x004007B0
+handle_stop_GOT		; 10000948
+	dd	0x004007B0
 1000094C                                     00 40 04 D0             .@..
 10000950 00 40 04 C0                                     .@..           
-l10000954	dd	0x00404458
-l10000958	dd	0x004031DC
+request_save_line_GOT		; 10000954
+	dd	0x00404458
+client_copy_reply_GOT		; 10000958
+	dd	0x004031DC
 1000095C                                     00 40 A8 B0             .@..
 10000960 00 40 04 B0                                     .@..           
-l10000964	dd	0x00402244
-l10000968	dd	0x00402E44
+client_parse_request_GOT		; 10000964
+	dd	0x00402244
+client_read_request_GOT		; 10000968
+	dd	0x00402E44
 1000096C                                     00 40 04 A0             .@..
-l10000970	dd	0x0040730C
-l10000974	dd	0x00406FF8
-l10000978	dd	0x00409A90
-l1000097C	dd	0x00404378
+slist_remove_GOT		; 10000970
+	dd	0x0040730C
+server_close_GOT		; 10000974
+	dd	0x00406FF8
+__fpcmp_parts_d_GOT		; 10000978
+	dd	0x00409A90
+request_parse_line_GOT		; 1000097C
+	dd	0x00404378
 10000980 00 40 04 90                                     .@..           
-l10000984	dd	0x00407568
+slist_close_all_GOT		; 10000984
+	dd	0x00407568
 10000988                         00 40 04 80 00 40 04 70         .@...@.p
-l10000990	dd	0x004041B0
+clist_destroy_GOT		; 10000990
+	dd	0x004041B0
 10000994             00 40 04 60                             .@.`       
-l10000998	dd	0x00404B34
+get_method_GOT		; 10000998
+	dd	0x00404B34
 1000099C                                     00 40 04 50             .@.P
 100009A0 00 40 04 40                                     .@.@           
-l100009A4	dd	0x00403140
-l100009A8	dd	0x004054D0
-l100009AC	dd	0x004093E0
-l100009B0	dd	0x00402EF8
+client_parse_reply_GOT		; 100009A4
+	dd	0x00403140
+properties_load_GOT		; 100009A8
+	dd	0x004054D0
+__pack_f_GOT		; 100009AC
+	dd	0x004093E0
+client_send_request_GOT		; 100009B0
+	dd	0x00402EF8
 100009B4             08 11 F2 60 00 40 04 30 00 40 04 20     ...`.@.0.@. 
 100009C0 00 40 04 10 00 40 04 00 10 00 07 E0             .@...@......   
-l100009CC	dd	0x00407150
-l100009D0	dd	0x004021A0
+slist_new_GOT		; 100009CC
+	dd	0x00407150
+client_copy_request_GOT		; 100009D0
+	dd	0x004021A0
 100009D4             00 40 03 F0 00 40 03 E0                 .@...@..   
-l100009DC	dd	0x00409540
-l100009E0	dd	0x00402A60
+__unpack_f_GOT		; 100009DC
+	dd	0x00409540
+add_to_request_GOT		; 100009E0
+	dd	0x00402A60
 100009E4             00 40 03 D0                             .@..       
-l100009E8	dd	0x004001BC
-l100009EC	dd	0x00406610
+_init_GOT		; 100009E8
+	dd	0x004001BC
+print_log_GOT		; 100009EC
+	dd	0x00406610
 100009F0 00 40 03 C0 00 40 03 B0 00 40 03 A0             .@...@...@..   
-l100009FC	dd	0x00404FC0
-l10000A00	dd	0x0040708C
-l10000A04	dd	0x00407600
-l10000A08	dd	0x00406BF0
+request_get_content_length_GOT		; 100009FC
+	dd	0x00404FC0
+server_destroy_GOT		; 10000A00
+	dd	0x0040708C
+slist_destroy_all_GOT		; 10000A04
+	dd	0x00407600
+server_new_GOT		; 10000A08
+	dd	0x00406BF0
 10000A0C                                     00 40 03 90             .@..
-l10000A10	dd	0x00409930
-l10000A14	dd	0x00403FF8
+__unpack_d_GOT		; 10000A10
+	dd	0x00409930
+clist_delete_GOT		; 10000A14
+	dd	0x00403FF8
 10000A18                         00 40 03 80 00 40 03 70         .@...@.p
 10000A20 10 00 0A A8                                     ....           
-l10000A24	dd	0x0040083C
+handle_log_rotate_GOT		; 10000A24
+	dd	0x0040083C
 10000A28                         10 00 00 1C 00 40 03 60         .....@.`
 10000A30 00 40 03 50 00 40 03 40                         .@.P.@.@       
-l10000A38	dd	0x004046C4
+request_make_url_GOT		; 10000A38
+	dd	0x004046C4
 10000A3C                                     00 40 03 30             .@.0
 10000A40 10 00 00 24                                     ...$           
-l10000A44	dd	0x00403DBC
+clist_remove_GOT		; 10000A44
+	dd	0x00403DBC
 10000A48                         00 40 03 20 00 40 03 10         .@. .@..
-l10000A50	dd	0x0040307C
+client_read_reply_GOT		; 10000A50
+	dd	0x0040307C
 10000A54             00 40 03 00                             .@..       
-l10000A58	dd	0x00402028
-l10000A5C	dd	0x00405CD0
+client_prepare_connect_GOT		; 10000A58
+	dd	0x00402028
+properties_parse_command_line_GOT		; 10000A5C
+	dd	0x00405CD0
 10000A60 10 00 00 10                                     ....           
-l10000A64	dd	0x00409630
-l10000A68	dd	0x004092D0
+__make_fp_GOT		; 10000A64
+	dd	0x00409630
+__make_dp_GOT		; 10000A68
+	dd	0x004092D0
 10000A6C                                     00 00 00 00             ....
-l10000A70	dd	0x00406848
+log_rotate_GOT		; 10000A70
+	dd	0x00406848
 10000A74             00 40 02 F0 00 40 02 E0 00 40 02 D0     .@...@...@..
-l10000A80	dd	0x00405328
-l10000A84	dd	0x00406D4C
+request_destroy_GOT		; 10000A80
+	dd	0x00405328
+server_open_GOT		; 10000A84
+	dd	0x00406D4C
 10000A88                         00 40 02 C0 00 40 02 B0         .@...@..
 10000A90 00 40 02 A0                                     .@..           
-l10000A94	dd	0x00404240
-l10000A98	dd	0x00403318
-l10000A9C	dd	0x0040628C
-l10000AA0	dd	0x00405264
+request_new_GOT		; 10000A94
+	dd	0x00404240
+client_check_reply_http_GOT		; 10000A98
+	dd	0x00403318
+properties_print_usage_GOT		; 10000A9C
+	dd	0x0040628C
+is_a_method_GOT		; 10000AA0
+	dd	0x00405264
 10000AA4             00 40 02 90                             .@..       
 ;;; Segment .sbss (10000AA8)
 10000AA8                         00 00 00 00                     ....   
