@@ -35,17 +35,19 @@ namespace Reko.Core
 	/// </summary>
 	public class Dumper
 	{
+        private Program program;
         private IProcessorArchitecture arch;
 
-		public Dumper(IProcessorArchitecture arch)
+		public Dumper(Program program)
 		{
-            this.arch = arch;
+            this.program = program;
+            this.arch = program.Architecture;
 		}
 
         public bool ShowAddresses { get; set; }
         public bool ShowCodeBytes { get; set; }
 
-        public void Dump(Program program, Formatter formatter)
+        public void Dump(Formatter formatter)
         {
             var map = program.SegmentMap;
             var mappedItems =
@@ -67,13 +69,13 @@ namespace Reko.Core
                 {
                     foreach (var item in g.Items)
                     {
-                        DumpItem(program, g.Key, item, formatter);
+                        DumpItem(g.Key, item, formatter);
                     }
                 }
             }
         }
 
-        private void DumpItem(Program program, ImageSegment segment, ImageMapItem i, Formatter formatter)
+        private void DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter)
         {
             ImageMapBlock block = i as ImageMapBlock;
             if (block != null)
