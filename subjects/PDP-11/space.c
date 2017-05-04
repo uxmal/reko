@@ -537,7 +537,7 @@ cui16 * * fn0FA2(Eq_494 * r0, cui16 * * r2, word16 wArg00, word16 wArg02, ptr16 
 	bool C_77;
 	bool Z_78;
 	word16 r0_79;
-	(*ptrArg06)();
+	ptrArg06();
 	return r2_71;
 }
 
@@ -578,7 +578,7 @@ Eq_216 * fn1CF8(Eq_216 * r3)
 	return r3 - 0x02;
 }
 
-void fn1DAE(word16 r4, Eq_1305 * pc, real64 ac4)
+void fn1DAE(word16 r4, Eq_1302 * pc, real64 ac4)
 {
 fn1DAE_entry:
 	Eq_889 r2_3
@@ -732,7 +732,7 @@ l1FE4:
 	globals->w54EA = 0x18
 	*globals->w5426 = *globals->w5426 + 0x01
 	globals->w54D8 = 0x01
-	Eq_2284 r4_377 = 0x0A
+	Eq_2281 r4_377 = 0x0A
 	word16 * r5_378 = globals->a5450
 l201E:
 	*globals->w5426 = 0x41
@@ -992,9 +992,9 @@ l2428:
 fn1DAE_exit:
 }
 
-void fn2438(ci16 r0, Eq_2284 r4, word16 * r5, real64 ac4)
+void fn2438(ci16 r0, Eq_2281 r4, word16 * r5, real64 ac4)
 {
-	**(r4 - 0x02) = (union Eq_3961 **) (int32) ac4;
+	**(r4 - 0x02) = (union Eq_3958 **) (int32) ac4;
 	ptr16 r5_16;
 	Eq_889 r2_114;
 	Eq_519 r4_116;
@@ -1082,7 +1082,7 @@ void fn2438(ci16 r0, Eq_2284 r4, word16 * r5, real64 ac4)
 		globals->w56A2 = 0x00;
 		*globals->w5426 = *globals->w5426 + 0x01;
 		globals->w56A4 = 0x01;
-		struct Eq_4407 * r5_205 = globals->a550A;
+		struct Eq_4404 * r5_205 = globals->a550A;
 		do
 		{
 			*globals->w5426 = 0x18;
@@ -1091,7 +1091,7 @@ void fn2438(ci16 r0, Eq_2284 r4, word16 * r5, real64 ac4)
 				*globals->w5426 = 0x1A;
 				r0_1000 = (struct Eq_494 *) r5_205[0x00007FFF];
 				*globals->w5426 = *globals->w5426 + 0x01;
-				r5_205[0x00007FFF] = (struct Eq_4407) r5_205->w0000;
+				r5_205[0x00007FFF] = (struct Eq_4404) r5_205->w0000;
 				*globals->w5426 = *globals->w5426 + 0x01;
 				r5_205->w0000 = r0_1000;
 				*globals->w5426 = *globals->w5426 + 0x01;
@@ -1104,7 +1104,7 @@ void fn2438(ci16 r0, Eq_2284 r4, word16 * r5, real64 ac4)
 				do
 				{
 					*globals->w5426 = 0x1F;
-					struct Eq_4546 * r2_1384 = (char *) *r3_1002 + globals->w56A2;
+					struct Eq_4543 * r2_1384 = (char *) *r3_1002 + globals->w56A2;
 					*r4_1374 = r2_1384->b551D;
 					*globals->w5426 = *globals->w5426 + 0x01;
 					r2_1384->b551D = r2_1384->b551E;

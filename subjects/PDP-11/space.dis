@@ -1100,19 +1100,19 @@ word16 fn0FA2(word16 r0, word16 r2, word16 wArg00, word16 wArg02, ptr16 ptrArg04
 // LiveOut: r2 r3 sp
 // Trashed: NZVC r0 r2 r3 sp
 // Preserved:
-// Stack args: Stack +0000(16) Stack +0002(16) Stack +0004(16) Stack +0006(16)
+// Stack args: Stack +0000(16) Stack +0002(16) Stack +0004(16)
 fn0FA2_entry:
 // DataOut: ac4 pc r0 r2 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Stack +0000(16) Stack +0002(16) Stack +0004(16) Stack +0006(16) v29(16) v44(16) v8(16)
+// LocalsOut: fp(16) Stack +0000(16) Stack +0002(16) Stack +0004(16) v29(16) v44(16) v8(16)
 
 l0FA2:
 	Mem5[Mem5[r2 - 0x0002:ptr16]:word16] = Mem0[r2 - 0x0002:word16]
 // DataOut: ac4 pc r0 r2 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Stack +0000(16) Stack +0002(16) Stack +0004(16) Stack +0006(16) v29(16) v44(16)
+// LocalsOut: fp(16) Stack +0000(16) Stack +0002(16) Stack +0004(16) v29(16) v44(16)
 
 l0FB2:
 	word16 r3_18 = Mem5[0x5424:word16]
@@ -1121,14 +1121,14 @@ l0FB2:
 // DataOut: ac4 pc r0 r2 r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r2:r2 - 0x0002 -2(fp):0x1020
-// LocalsOut: fp(16) Stack +0000(16) Stack +0002(16) Stack +0004(16) Stack +0006(16) v29(16) v44(16)
+// LocalsOut: fp(16) Stack +0000(16) Stack +0002(16) Stack +0004(16) v29(16) v44(16)
 
 l0FCA:
 	__syscall(0x899A)
 // DataOut: ac4 pc r0 r2 r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0004 r2:r2 - 0x0002 r3:<invalid> -6(fp):fp + 0x0008 -4(fp):r3 -2(fp):0x1020
-// LocalsOut: fp(16) Stack +0000(16) Stack +0002(16) Stack +0004(16) Stack +0006(16) v29(16) v44(16)
+// LocalsOut: fp(16) Stack +0000(16) Stack +0002(16) Stack +0004(16) v29(16) v44(16)
 
 l0FCC:
 	Mem28[r3_18 + 0x0014:word16] = 0x1020
@@ -1146,7 +1146,7 @@ l0FCC:
 // DataOut: ac4 pc r2 r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0004 r2:r2 - 0x0002 r3:<invalid> -6(fp):fp + 0x0008 -4(fp):r3 -2(fp):0x1020
-// LocalsOut: fp(16) Stack +0006(16)
+// LocalsOut: fp(16)
 
 l1AA0:
 	word16 sp_70
@@ -1159,7 +1159,7 @@ l1AA0:
 	bool C_77
 	bool Z_78
 	word16 r0_79
-	call Mem63[ptrArg06:word16] (retsize: 4; FPU: 2;)
+	call ptrArg06 (retsize: 4; FPU: 2;)
 		uses: C_38,NZ_65,NZVC_59,r0_47,r2_3,r3_48,sp_69,V_66,wLoc02_7,wLoc04_13,wLoc06_17,Z_25
 		defs: C_77,NZ_72,NZVC_75,pc_76,r0_79,r2_71,r3_74,sp_70,V_73,Z_78
 	return r2_71
