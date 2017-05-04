@@ -37,6 +37,8 @@ namespace Reko.Arch.Arm
 {
     public class Arm32ProcessorArchitecture : ProcessorArchitecture
     {
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public Arm32ProcessorArchitecture()
         {
             InstructionBitSize = 32;
@@ -44,6 +46,7 @@ namespace Reko.Arch.Arm
             PointerType = PrimitiveType.Pointer32;
             WordWidth = PrimitiveType.Word32;
             StackRegister = A32Registers.sp;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         #region IProcessorArchitecture Members
@@ -150,7 +153,10 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            throw new NotImplementedException();
+            if (offset == 0 || (ulong) width != reg.BitSize)
+                return null;
+            else
+                return reg;
         }
 
         public override Address MakeAddressFromConstant(Constant c)
@@ -165,9 +171,17 @@ namespace Reko.Arch.Arm
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
-        }
+            FlagGroupStorage f;
+            if (flagGroups.TryGetValue(grf, out f))
+            {
+                return f;
+            }
 
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(A32Registers.cpsr, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
+        }
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();

@@ -212,7 +212,7 @@ namespace Reko.Analysis
 
             public bool VisitSlice(Slice slice)
             {
-                throw new NotImplementedException();
+                return slice.Expression.Accept(this);
             }
 
             public bool VisitTestCondition(TestCondition tc)

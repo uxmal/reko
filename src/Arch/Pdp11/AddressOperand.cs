@@ -38,7 +38,7 @@ namespace Reko.Arch.Pdp11
             Address = a;
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string s;
             if (base.Width.Size == 2)

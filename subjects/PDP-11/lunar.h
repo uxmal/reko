@@ -481,7 +481,7 @@ Eq_3217: (struct "Eq_3217" (0 Eq_3267 t0000) (1 byte b0001))
 	T_3315 (in r1_27 : (ptr Eq_3217))
 	T_3318 (in r1 : (ptr Eq_3217))
 	T_3323 (in r1 + 0x0002 : word16)
-	T_3325 (in fn1658(r1->b0001 + 1, r3_25, wLoc02_14, out r3_26) : word16)
+	T_3325 (in fn1658(&r1->b0001 + 1, r3_25, wLoc02_14, out r3_26) : word16)
 	T_3328 (in r1_35 : (ptr Eq_3217))
 	T_3332 (in fn1658(r1_27, r3_26, wLoc02_14, out r3_28) : word16)
 	T_3338 (in fn1658(fn1658(r1_27, r3_26, wLoc02_14, out r3_28), (r2_24 << 1) + 0x2814, wLoc02_14, out r3_34) : word16)
@@ -3331,7 +3331,7 @@ T_699: (in out r3_149 : ptr16)
   Class: Eq_294
   DataType: Eq_294
   OrigDataType: ptr16
-T_700: (in fn126C(0x0258, r3_50 < null, r3_50, out r3_149) : word16)
+T_700: (in fn126C(0x0258, (byte) (r3_50 < null) + r2_46, r3_50, out r3_149) : word16)
   Class: Eq_2
   DataType: (ptr word16)
   OrigDataType: word16
@@ -3699,7 +3699,7 @@ T_791: (in out r3_122 : ptr16)
   Class: Eq_294
   DataType: Eq_294
   OrigDataType: ptr16
-T_792: (in fn126C(0x0258, r3_117 < null, r3_117, out r3_122) : word16)
+T_792: (in fn126C(0x0258, (byte) (r3_117 < null) + r2_113, r3_117, out r3_122) : word16)
   Class: Eq_2
   DataType: (ptr word16)
   OrigDataType: word16
@@ -3943,7 +3943,7 @@ T_852: (in out r3_38 : ptr16)
   Class: Eq_294
   DataType: Eq_294
   OrigDataType: ptr16
-T_853: (in fn126C(0x003C, r3_33 < null, r3_33, out r3_38) : word16)
+T_853: (in fn126C(0x003C, (byte) (r3_33 < null) + r2_29, r3_33, out r3_38) : word16)
   Class: Eq_2
   DataType: (ptr word16)
   OrigDataType: word16
@@ -11871,7 +11871,7 @@ T_2834: (in r2_35 + C_37 : word16)
   Class: Eq_2834
   DataType: word16
   OrigDataType: word16
-T_2835: (in -C_37 : word16)
+T_2835: (in -((word16) C_37 + r2_35) : word16)
   Class: Eq_2816
   DataType: word16
   OrigDataType: word16
@@ -13427,7 +13427,7 @@ T_3223: (in Mem45[r4_20 + 0x1696:word16] + 0x000A : word16)
   Class: Eq_3217
   DataType: (ptr Eq_3217)
   OrigDataType: ptr16
-T_3224: (in fn1674(r3_46, Mem45[r4_20 + 0x1696:word16] + 0x000A, pc) : void)
+T_3224: (in fn1674(r3_46, (word16) r4_20[2891] + 10, pc) : void)
   Class: Eq_3224
   DataType: void
   OrigDataType: void
@@ -13831,7 +13831,7 @@ T_3324: (in out r3_26 : ptr16)
   Class: Eq_3321
   DataType: ptr16
   OrigDataType: ptr16
-T_3325: (in fn1658(r1->b0001 + 1, r3_25, wLoc02_14, out r3_26) : word16)
+T_3325: (in fn1658(&r1->b0001 + 1, r3_25, wLoc02_14, out r3_26) : word16)
   Class: Eq_3217
   DataType: (ptr Eq_3217)
   OrigDataType: word16

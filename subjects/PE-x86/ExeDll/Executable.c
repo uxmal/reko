@@ -206,7 +206,7 @@ l00401177:
 		esp_133->dwFFFFFFF4 = *edi_145;
 		esp_133->dwFFFFFFF0 = *esi_144;
 		Eq_86 eax_158 = fn00401000(out ebp_12);
-		ptr32 esp_159 = &esp_133->tFFFFFFF8;
+		ptr32 esp_159 = (char *) &esp_133->tFFFFFFF8 + 0x04;
 		Eq_86 esi_161 = eax_158;
 		byte al_162 = fn0040188F();
 		if (al_162 == 0x00)
@@ -252,7 +252,7 @@ Eq_548 * fn004013FB(word32 dwArg04, ptr32 dwArg08)
 {
 	struct Eq_548 * eax_26;
 	struct Eq_552 * ecx_13 = dwArg04 + dwArg04->dw003C / 0x0040;
-	struct Eq_548 * edx_16 = ecx_13->w0014 + 0x02 + (word32) ecx_13->w0014 / 22;
+	struct Eq_548 * edx_16 = &ecx_13->w0014 + 0x02 + (word32) ecx_13->w0014 / 22;
 	struct Eq_548 * esi_19 = edx_16 + (word32) ecx_13->w0006;
 	if (edx_16 != esi_19)
 	{

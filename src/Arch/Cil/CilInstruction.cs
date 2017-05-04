@@ -51,7 +51,7 @@ namespace Reko.Arch.Cil
             throw new NotImplementedException();
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             try
             {

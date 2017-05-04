@@ -572,7 +572,7 @@ l0000000000400670:
 	byte C_70
 	byte Z_71
 	word32 ebx_72
-	call Mem0[0x0000000000600DF8 + rbx_47 * 0x00000008:word32] (retsize: 4; depth: 60)
+	call Mem0[0x0000000000600DF8 + rbx_47 * 0x0000000000000008:word32] (retsize: 4; depth: 60)
 		uses: C_49,ebx_46,edi_55,qwLoc08_13,qwLoc10_11,qwLoc18_9,qwLoc20_5,qwLoc28_3,qwLoc30_15,r12_7,r13,r13d_50,r14_51,r15_52,rbp_22,rbx_47,rdx_53,rsi_54,rsp_16,SCZO_23,SZO_48,Z_27
 		defs: C_70,ebx_72,edi_66,r12_59,r13_60,r13d_65,r14_61,r15_62,rbp_58,rbx_63,rdx_68,rsi_67,rsp_57,SCZO_64,SZO_69,Z_71
 	branch rbx_63 + 0x0000000000000001 != rbp_58 l0000000000400670

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,10 @@ namespace Reko.Core.Machine
         /// you test for that before dereferencing.
         /// </summary>
         IPlatform Platform { get;  }
+        /// <summary>
+        /// The address of the current instruction.
+        /// </summary>
+        Address Address { get; set; }
 
         void WriteOpcode(string opcode);
         void WriteAddress(string formattedAddress, Address addr);
@@ -44,6 +49,14 @@ namespace Reko.Core.Machine
         void Write(uint n);
         void Write(string s);
         void Write(string fmt, params object[] parms);
+    }
+
+    [Flags]
+    public enum MachineInstructionWriterOptions
+    {
+        None = 0,
+        ExplicitOperandSize = 1,
+        ResolvePcRelativeAddress = 2,
     }
 
     /// <summary>
@@ -56,7 +69,8 @@ namespace Reko.Core.Machine
         public StringRenderer() { sb = new StringBuilder(); }
         public StringRenderer(IPlatform platform) { sb = new StringBuilder(); this.Platform = platform; }
 
-        public IPlatform Platform { get;private set; }
+        public IPlatform Platform { get; private set; }
+        public Address Address { get; set; }
 
         public void WriteOpcode(string opcode)
         {

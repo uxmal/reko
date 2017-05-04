@@ -46,6 +46,7 @@ namespace Reko.Gui.Windows
         }
 
         public IPlatform Platform { get; private set; }
+        public Address Address { get; set; }
 
         public void WriteOpcode(string opcode)
         {

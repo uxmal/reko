@@ -37,7 +37,7 @@ namespace Reko.Arch.Vax
         internal bool AutoIncrement;
         internal RegisterStorage Index;
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (Offset != null)
             {
