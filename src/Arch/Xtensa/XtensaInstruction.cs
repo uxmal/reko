@@ -84,7 +84,7 @@ namespace Reko.Arch.Xtensa
                 foreach (var op in this.Operands)
                 {
                     writer.Write(sep);
-                    op.Write(false, writer);
+                    op.Write(writer, options);
                     sep = ",";
                 }
             }

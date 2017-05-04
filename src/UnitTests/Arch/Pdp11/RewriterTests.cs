@@ -455,5 +455,32 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "0|T--|0200(4): 1 instructions",
                 "1|T--|goto Mem0[r1 + 0x02CC:ptr16]");
         }
+
+        [Test]
+        public void Pdp11Rw_clr_pcrel_deferred()
+        {
+            BuildTest(0x0A3F, 0x0010);      // clr @0010(pc)
+            AssertCode(
+                "0|L--|0200(4): 6 instructions",
+                "1|L--|v3 = Mem0[0x0214:word16]",
+                "2|L--|Mem0[v3:word16] = 0x0000",
+                "3|L--|C = false",
+                "4|L--|V = false",
+                "5|L--|N = false",
+                "6|L--|Z = true");
+        }
+
+        [Test]
+        public void Pdp11Rw_clr_pcrel()
+        {
+            BuildTest(0x0A37, 0x0010);      // clr\t0010(pc)
+            AssertCode(
+                "0|L--|0200(4): 5 instructions",
+                "1|L--|Mem0[0x0214:word16] = 0x0000",
+                "2|L--|C = false",
+                "3|L--|V = false",
+                "4|L--|N = false",
+                "5|L--|Z = true");
+        }
     }
 }

@@ -67,7 +67,7 @@ namespace Reko.Arch.M68k
             return visitor.Visit(this);
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             //@base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
             //outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;

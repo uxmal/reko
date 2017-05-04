@@ -78,7 +78,7 @@ namespace Reko.Arch.Vax
                 sep = true;
                 if (op is ImmediateOperand)
                     writer.Write('#');
-                op.Write(false, writer);
+                op.Write(writer, options);
             }
         }
 

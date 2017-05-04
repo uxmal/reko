@@ -85,11 +85,11 @@ namespace Reko.Arch.M68k
             writer.Tab();
             if (op1 != null)
             {
-                op1.Write(false, writer);
+                op1.Write(writer, options);
                 if (op2 != null)
                 {
                     writer.Write(',');
-                    op2.Write(false, writer);
+                    op2.Write(writer, options);
                 }
             }
         }

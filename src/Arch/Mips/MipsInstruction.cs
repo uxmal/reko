@@ -73,15 +73,15 @@ namespace Reko.Arch.Mips
             if (op1 != null)
             {
                 writer.Tab();
-                op1.Write(true, writer);
+                op1.Write(writer, options);
                 if (op2 != null)
                 {
                     writer.Write(',');
-                    op2.Write(true, writer);
+                    op2.Write(writer, options);
                     if (op3 != null)
                     {
                         writer.Write(',');
-                        op3.Write(true, writer);
+                        op3.Write(writer, options);
                     }
                 }
             }

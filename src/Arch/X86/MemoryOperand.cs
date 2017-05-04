@@ -76,9 +76,9 @@ namespace Reko.Arch.X86
             get { return Offset.IsValid && Base == RegisterStorage.None && Index == RegisterStorage.None; }
 		}
 
-		public override void Write(bool fExplicit, MachineInstructionWriter writer)
-		{
-			if (fExplicit)
+		public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+			if ((options & MachineInstructionWriterOptions.ExplicitOperandSize) != 0)
 			{
 				string s;
 				if (Width == PrimitiveType.Byte)

@@ -260,6 +260,8 @@ namespace Reko.Core
                 }
             }
             writer.Write("\t");
+            writer.Address = addrBegin;
+            writer.Address = instr.Address;
             instr.Render(writer, MachineInstructionWriterOptions.None);
             writer.WriteLine();
             return true;
@@ -313,6 +315,7 @@ namespace Reko.Core
             }
 
             public IPlatform Platform { get; private set; }
+            public Address Address { get; set; }
 
             public void Tab()
             {

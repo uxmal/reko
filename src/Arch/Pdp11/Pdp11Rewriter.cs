@@ -378,13 +378,10 @@ namespace Reko.Arch.Pdp11
                 case AddressMode.Indexed:
                     if (r.Storage == Registers.pc)
                     {
-                        var addr = instrs.Current.Address + instrs.Current.Length;
-                        m.Assign(
-                           tmp,
-                           gen(m.Load(instrs.Current.DataWidth, addr)));
+                        var addr = instrs.Current.Address + instrs.Current.Length + memOp.EffectiveAddress;
                         m.Assign(
                             m.Load(instrs.Current.DataWidth, addr),
-                            tmp);
+                            gen(src));
                     }
                     else
                     {
@@ -401,13 +398,13 @@ namespace Reko.Arch.Pdp11
                     if (r.Storage == Registers.pc)
                     {
                         //$REVIEW: what if there are two of these?
-                        var addr = instrs.Current.Address + instrs.Current.Length;
+                        var addr = instrs.Current.Address + instrs.Current.Length + memOp.EffectiveAddress;
                         m.Assign(
                             tmp,
-                            gen(m.Load(instrs.Current.DataWidth, addr)));
+                            m.Load(instrs.Current.DataWidth, addr));
                         m.Assign(
-                            m.Load(instrs.Current.DataWidth, addr),
-                            tmp);
+                            m.Load(instrs.Current.DataWidth, tmp),
+                            gen(src));
                     }
                     else
                         throw new NotImplementedException();

@@ -61,7 +61,7 @@ namespace Reko.Arch.Mos6502
             if (Operand != null)
             {
                 writer.Tab();
-                Operand.Write(true, writer);
+                Operand.Write(writer, options);
             }
         }
 

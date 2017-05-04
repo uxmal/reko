@@ -76,6 +76,7 @@ namespace Reko.Core.Machine
         public sealed override string ToString()
         {
             var renderer = new StringRenderer();
+            renderer.Address = Address;
             this.Render(renderer, MachineInstructionWriterOptions.None);
             return renderer.ToString();
         }
@@ -83,6 +84,7 @@ namespace Reko.Core.Machine
         public string ToString(IPlatform platform)
         {
             var renderer = new StringRenderer(platform);
+            renderer.Address = Address;
             this.Render(renderer, MachineInstructionWriterOptions.None);
             return renderer.ToString();
         }
