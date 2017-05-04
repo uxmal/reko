@@ -120,7 +120,7 @@ word16 g_a5450[] =
 byte g_a5464[] = 
 	{
 	};
-word16 g_w54BA = 0x0000;
+ui16 * g_ptr54BA = null;
 word16 g_w54BC = 0x0000;
 word16 g_w54C2 = 0x0000;
 word16 g_w54C4 = 0x0000;
@@ -150,6 +150,7 @@ word16 g_w54F4 = 0x0000;
 word16 g_w54F6 = 0x0000;
 word16 g_w54FA = 0x0000;
 word16 g_w54FC = 0x0000;
+word16 * g_ptr5508 = null;
 struct Eq_494 * g_a550A[] = 
 	{
 	};

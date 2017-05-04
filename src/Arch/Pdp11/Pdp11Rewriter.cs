@@ -289,11 +289,21 @@ namespace Reko.Arch.Pdp11
                             m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
                     }
                 case AddressMode.IndexedDef:
-                    return m.Load(
-                        this.instrs.Current.DataWidth,
-                        m.Load(
-                            PrimitiveType.Ptr16,
-                            m.IAdd(r, Constant.Word16(memOp.EffectiveAddress))));
+                    if (memOp.Register == Registers.pc)
+                    {
+                        var addr = rtlCluster.Address + rtlCluster.Length + memOp.EffectiveAddress;
+                        m.Assign(tmp, m.Load(PrimitiveType.Ptr16, addr));
+                        m.Assign(tmp, m.Load(memOp.Width, tmp));
+                        return tmp;
+                    }
+                    else
+                    {
+                        return m.Load(
+                            this.instrs.Current.DataWidth,
+                            m.Load(
+                                PrimitiveType.Ptr16,
+                                m.IAdd(r, Constant.Word16(memOp.EffectiveAddress))));
+                    }
                 }
                 return tmp;
             }
@@ -401,7 +411,7 @@ namespace Reko.Arch.Pdp11
                         var addr = instrs.Current.Address + instrs.Current.Length + memOp.EffectiveAddress;
                         m.Assign(
                             tmp,
-                            m.Load(instrs.Current.DataWidth, addr));
+                            m.Load(PrimitiveType.Ptr16, addr));
                         m.Assign(
                             m.Load(instrs.Current.DataWidth, tmp),
                             gen(src));
