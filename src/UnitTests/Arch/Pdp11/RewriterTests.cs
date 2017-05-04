@@ -315,13 +315,12 @@ namespace Reko.UnitTests.Arch.Pdp11
         }
 
         [Test]
-        [Ignore]
         public void Pdp11Rw_PostIncrDef()
         {
-            BuildTest(0x0BE4); // jmp @(r4)+
+            BuildTest(0x0054); // jmp @(r4)+
             AssertCode(
                  "0|T--|0200(2): 3 instructions",
-                 "1|L--|v3 = Mem0[r4:word16]",
+                 "1|L--|v3 = Mem0[r4:ptr16]",
                  "2|L--|r4 = r4 + 0x0002",
                  "3|T--|goto v3");
         }

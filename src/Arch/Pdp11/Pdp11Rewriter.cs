@@ -178,7 +178,7 @@ namespace Reko.Arch.Pdp11
             case AddressMode.Absolute:
                 return Address.Ptr16(memOp.EffectiveAddress);
             case AddressMode.AutoIncr:
-                m.Assign(tmp, m.Load(op.Width, m.Load(PrimitiveType.Ptr16, r)));
+                m.Assign(tmp, m.Load(PrimitiveType.Ptr16, r));
                 m.Assign(r, m.IAdd(r, memOp.Width.Size));
                 break;
             case AddressMode.AutoIncrDef:
