@@ -146,8 +146,7 @@ namespace Reko.Scanning
             // or into data.
             Probe(sr);
             shsc.Dump("After shingle scan graph built");
-            var deadNodes = shsc.RemoveBadInstructionsFromGraph();
-            BuildIcfg(the_blocks);
+            sr.ICFG = BuildIcfg(the_blocks);
             Probe(sr);
             sr.Dump("After shingle scan");
 
@@ -268,7 +267,6 @@ namespace Reko.Scanning
                 if (sr.FlatInstructions.TryGetValue(cSucc.addr, out instr))
                     instr.succ = cSucc.Count;
             }
-            Debug.Print("succ: {0}", sr.FlatInstructions.Values.Count(v => v.succ > 0));
             foreach (var cPred in
                     from link in sr.FlatEdges
                     group link by link.second into g
@@ -366,8 +364,23 @@ namespace Reko.Scanning
             return blocks;
         }
 
-        public void BuildIcfg(Dictionary<Address, block> blocks)
+        public DiGraph<RtlBlock> BuildIcfg(Dictionary<Address, block> blocks)
         {
+            var icfg = new DiGraph<RtlBlock>();
+            var map = new Dictionary<Address, RtlBlock>();
+            foreach (var block in blocks.Values)
+            {
+                var rtlBlock = new RtlBlock(block.id, "l" + block.id);
+                map.Add(block.id, rtlBlock);
+                icfg.AddNode(rtlBlock);
+            }
+            foreach (var edge in sr.FlatEdges)
+            {
+                var from = map[edge.first];
+                var to = map[edge.second];
+                icfg.AddEdge(from, to);
+            }
+            return icfg;
         }
 
         void DumpInstructions(ScanResults sr)
