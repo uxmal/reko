@@ -54,21 +54,21 @@ namespace Reko.Arch.Tlcs
             throw new NotImplementedException();
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Opcode.ToString());
             if (op1 != null)
             {
                 writer.Tab();
-                op1.Write(false, writer);
+                op1.Write(writer, options);
                 if (op2 != null)
                 {
                     writer.Write(",");
-                    op2.Write(false, writer);
+                    op2.Write(writer, options);
                     if (op3 != null)
                     {
                         writer.Write(",");
-                        op3.Write(false, writer);
+                        op3.Write(writer, options);
                     }
                 }
             }

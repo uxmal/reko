@@ -102,7 +102,7 @@ namespace Reko.Arch.Tlcs
             };
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.Write('(');
             if (Base != null)

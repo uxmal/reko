@@ -36,7 +36,7 @@ namespace Reko.Arch.Tlcs
             this.Code = cc;
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.Write(Code.ToString());
         }
