@@ -32,8 +32,8 @@ namespace Reko.Scanning
 
         public class block
         {
-            public long id;
-            public long component_id;
+            public Address id;
+            public Address component_id;
         }
 
         public void CollectStatistics(int binary_size)
@@ -56,7 +56,7 @@ namespace Reko.Scanning
         #region Simulate binary
         public void SimulateBinary(int binary_size)
         {
-            sr.FlatInstructions = new SortedList<long, instr>();
+            sr.FlatInstructions = new SortedList<Address, instr>();
             // links betweeen instructions
             sr.FlatEdges = new List<link>();
 
@@ -142,14 +142,12 @@ namespace Reko.Scanning
 
             the_blocks = RemoveInvalidBlocks(sr, the_blocks);
 
-            BuildWeaklyConnectedComponents(the_blocks);
-
             // Remove blocks that fall off the end of the segment
             // or into data.
             Probe(sr);
             shsc.Dump("After shingle scan graph built");
             var deadNodes = shsc.RemoveBadInstructionsFromGraph();
-            shsc.BuildIcfg(deadNodes);
+            BuildIcfg(the_blocks);
             Probe(sr);
             sr.Dump("After shingle scan");
 
@@ -243,7 +241,7 @@ namespace Reko.Scanning
                         }) on bb.component_id equals cc.source
                      select new { block = bb, target = cc.target }))
                 {
-                    bc.block.component_id = Math.Min(bc.block.component_id, bc.target);
+                    bc.block.component_id = Address.Min(bc.block.component_id, bc.target);
                 }
             }
             Debug.Print("comp: {0}",
@@ -254,7 +252,7 @@ namespace Reko.Scanning
                 select string.Format("{0:X8}:{1}", g.Key, g.Count())));
         }
 
-        public Dictionary<long, block> BuildBasicBlocks(ScanResults sr)
+        public Dictionary<Address, block> BuildBasicBlocks(ScanResults sr)
         {
             //DumpInstructions(sr);
 
@@ -317,7 +315,7 @@ namespace Reko.Scanning
             return the_blocks;
         }
 
-        public Dictionary<long, block> RemoveInvalidBlocks(ScanResults sr, Dictionary<long, block> blocks)
+        public Dictionary<Address, block> RemoveInvalidBlocks(ScanResults sr, Dictionary<Address, block> blocks)
         {
             // Find transitive closure of bad instructions ------------------------
 
@@ -368,6 +366,9 @@ namespace Reko.Scanning
             return blocks;
         }
 
+        public void BuildIcfg(Dictionary<Address, block> blocks)
+        {
+        }
 
         void DumpInstructions(ScanResults sr)
         {
@@ -385,13 +386,13 @@ namespace Reko.Scanning
                             e)));
         }
 
-        private void DumpBlocks(ScanResults sr, Dictionary<long, block> blocks)
+        private void DumpBlocks(ScanResults sr, Dictionary<Address, block> blocks)
         {
             DumpBlocks(sr, blocks, s => Debug.WriteLine(s));
         }
 
         // Writes the start and end addresses, size, and successor edge of each block, 
-        public void DumpBlocks(ScanResults sr, Dictionary<long, block> blocks, Action<string> writeLine)
+        public void DumpBlocks(ScanResults sr, Dictionary<Address, block> blocks, Action<string> writeLine)
         {
             writeLine(
                string.Join(Environment.NewLine,
@@ -399,7 +400,7 @@ namespace Reko.Scanning
                join i in (
                     from ii in sr.FlatInstructions.Values
                     group ii by ii.block_id into g
-                    select new { block_id = g.Key, max = g.Max(iii => iii.size + iii.addr) })
+                    select new { block_id = g.Key, max = g.Max(iii => iii.addr.ToLinear() + (uint) iii.size ) })
                     on b.id equals i.block_id
                join e in sr.FlatEdges on b.id equals e.first into es
                from e in new[] { string.Join(", ", es.Select(ee => string.Format("{0:X8}", ee.second))) }
@@ -407,12 +408,12 @@ namespace Reko.Scanning
                select string.Format(
                    "{0:X8}-{1:X8} ({2}): {3}",
                        b.id,
-                       i.max,
-                       i.max - b.id,
+                       b.id + (i.max - b.id.ToLinear()),
+                       i.max - b.id.ToLinear(),
                        e)));
         }
 
-        private void DumpBadBlocks(ScanResults sr, Dictionary<long, block> blocks, IEnumerable<link> edges, HashSet<long> bad_blocks)
+        private void DumpBadBlocks(ScanResults sr, Dictionary<long, block> blocks, IEnumerable<link> edges, HashSet<Address> bad_blocks)
         {
             Debug.Print(
                 "{0}",
@@ -421,7 +422,7 @@ namespace Reko.Scanning
                 join i in (
                      from ii in sr.FlatInstructions.Values
                      group ii by ii.block_id into g
-                     select new { block_id = g.Key, max = g.Max(iii => iii.size + iii.addr) })
+                     select new { block_id = g.Key, max = g.Max(iii => iii.addr.ToLinear()  + (uint) iii.size) })
                      on b.id equals i.block_id
                 join e in edges on b.id equals e.first into es
                 from e in new[] { string.Join(", ", es.Select(ee => string.Format("{0:X8}", ee.second))) }
@@ -429,9 +430,9 @@ namespace Reko.Scanning
                 select string.Format(
                     "{0:X8}-{1:X8} {2} ({3}): {4}",
                         b.id,
-                        i.max,
+                        b.id + (i.max  - b.id.ToLinear()),
                         bad_blocks.Contains(b.id) ? "*" : " ",
-                        i.max - b.id,
+                        i.max - b.id.ToLinear(),
                         e)));
         }
 
@@ -464,8 +465,9 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private void AddInstr(long addr, int size, char type)
+        private void AddInstr(long uAddr, int size, char type)
         {
+            var addr = Address.Ptr32((uint)uAddr);
             sr.FlatInstructions.Add(addr, new instr
             {
                 addr = addr,
@@ -478,7 +480,10 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         private void AddLink(long from, long to)
         {
-            sr.FlatEdges.Add(new link { first = from, second = to });
+            var f = Address.Ptr32((uint)from);
+            var t = Address.Ptr32((uint)to);
+
+            sr.FlatEdges.Add(new link { first = f, second = t });
         }
 
     }

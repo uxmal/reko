@@ -91,7 +91,7 @@ namespace Reko.Scanning
         /// This is a key end result of the scanning stage.
         /// </summary>
         public List<RtlProcedure> Procedures { get;  set; }
-        public SortedList<long, instr> FlatInstructions { get;  set; }
+        public SortedList<Address, instr> FlatInstructions { get;  set; }
         public List<link> FlatEdges { get; set; }
 
         /// <summary>
@@ -157,18 +157,18 @@ namespace Reko.Scanning
 
         public class instr
         {
-            public long addr; // primary key not null,
+            public Address addr;
             public int size;
             public ushort type;
-            public long block_id;
+            public Address block_id;
             public int pred;
             public int succ;
         }
 
         public class link
         {
-            public long first;
-            public long second;
+            public Address first;
+            public Address second;
 
             public override bool Equals(object obj)
             {

@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
 using Reko.Core.Rtl;
 using Reko.Scanning;
 using System;
@@ -41,12 +42,13 @@ namespace Reko.UnitTests.Scanning
         public void Setup()
         {
             this.sr = new ScanResults();
-            this.sr.FlatInstructions = new SortedList<long, ScanResults.instr>();
+            this.sr.FlatInstructions = new SortedList<Address, ScanResults.instr>();
             this.sr.FlatEdges = new List<ScanResults.link>();
         }
 
-        private void Inst(int addr, int len, RtlClass rtlc)
+        private void Inst(int uAddr, int len, RtlClass rtlc)
         {
+            var addr = Address.Ptr32((uint)uAddr);
             sr.FlatInstructions.Add(addr, new ScanResults.instr
             {
                 addr = addr,
@@ -56,8 +58,9 @@ namespace Reko.UnitTests.Scanning
             });
         }
 
-        private void Lin(int addr, int len, int next)
+        private void Lin(int uAddr, int len, int next)
         {
+            var addr = Address.Ptr32((uint)uAddr);
             sr.FlatInstructions.Add(addr, new ScanResults.instr
             {
                 addr = addr,
@@ -68,9 +71,9 @@ namespace Reko.UnitTests.Scanning
             Link(addr, next);
         }
 
-
-        private void Bra(int addr, int len, int a, int b)
+        private void Bra(int uAddr, int len, int a, int b)
         {
+            var addr = Address.Ptr32((uint)uAddr);
             sr.FlatInstructions.Add(addr, new ScanResults.instr
             {
                 addr = addr,
@@ -82,8 +85,9 @@ namespace Reko.UnitTests.Scanning
             Link(addr, b);
         }
 
-        private void Bad(int addr, int len)
+        private void Bad(int uAddr, int len)
         {
+            var addr = Address.Ptr32((uint)uAddr);
             sr.FlatInstructions.Add(addr, new ScanResults.instr
             {
                 addr = addr,
@@ -93,8 +97,9 @@ namespace Reko.UnitTests.Scanning
             });
         }
 
-        private void End(int addr, int len)
+        private void End(int uAddr, int len)
         {
+            var addr = Address.Ptr32((uint)uAddr);
             sr.FlatInstructions.Add(addr, new ScanResults.instr
             {
                 addr = addr,
@@ -104,8 +109,9 @@ namespace Reko.UnitTests.Scanning
             });
         }
 
-        private void Link(int addrFrom ,int addrTo)
+        private void Link(Address addrFrom ,int uAddrTo)
         {
+            var addrTo = Address.Ptr32((uint)uAddrTo);
             sr.FlatEdges.Add(new ScanResults.link { first = addrFrom, second = addrTo });
         }
 
@@ -181,7 +187,7 @@ namespace Reko.UnitTests.Scanning
             AssertBlocks(sExp, blocks);
         }
 
-        private void AssertBlocks(string sExp, Dictionary<long, ScannerInLinq.block> blocks)
+        private void AssertBlocks(string sExp, Dictionary<Address, ScannerInLinq.block> blocks)
         {
             var sw = new StringWriter();
             this.siq.DumpBlocks(sr, blocks, sw.WriteLine);

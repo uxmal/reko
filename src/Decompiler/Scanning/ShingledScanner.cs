@@ -75,7 +75,7 @@ namespace Reko.Scanning
             this.sr.TransferTargets = new HashSet<Address>();
             this.sr.DirectlyCalledAddresses = new Dictionary<Address,int>();
             this.sr.Instructions = new SortedList<Address, RtlInstructionCluster>();
-            this.sr.FlatInstructions = new SortedList<long, ScanResults.instr>();
+            this.sr.FlatInstructions = new SortedList<Address, ScanResults.instr>();
             this.sr.FlatEdges = new List<ScanResults.link>();
             this.G = new DiGraph<Address>();
             this.Bad = program.Platform.MakeAddressFromLinear(~0ul);
@@ -277,13 +277,12 @@ namespace Reko.Scanning
         public void AddInstruction(RtlInstructionCluster i)
         {
             //sr.Instructions.Add(i.Address, i);
-            var linAddr = (long)i.Address.ToLinear();
-            sr.FlatInstructions.Add(linAddr, new ScanResults.instr
+            sr.FlatInstructions.Add(i.Address, new ScanResults.instr
             {
-                addr = linAddr,
+                addr = i.Address,
                 size = i.Length,
                 type = (ushort)i.Class,
-                block_id = linAddr,
+                block_id = i.Address,
                 pred = 0,
                 succ = 0,
             });
@@ -293,14 +292,10 @@ namespace Reko.Scanning
         public void AddEdge(DiGraph<Address> g, Address from, Address to)
         {
 #if !not_LinQ
-            var ff = (long)from.ToLinear();
-            var tt = (long)to.ToLinear();
-            if (tt < 0)
-                tt.ToString();
             sr.FlatEdges.Add(new ScanResults.link
             {
-                first = tt,
-                second = ff,
+                first = from,
+                second = to,
             });
 #else
         g.AddNode(from);
