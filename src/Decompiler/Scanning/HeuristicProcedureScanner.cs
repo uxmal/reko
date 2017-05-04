@@ -177,15 +177,13 @@ namespace Reko.Scanning
         /// <param name="valid"></param>
         private void RemoveBlocksConflictingWithValidBlocks(HashSet<RtlBlock> valid)
         {
-            foreach (var n in blocks.Nodes.Where(nn => !valid.Contains(nn)).ToList())
+            var nodes = blocks.Nodes.Where(nn => !valid.Contains(nn)).ToHashSet();
+            foreach (var cc in
+                (from c in conflicts
+                 where nodes.Contains(c.Item1) && valid.Contains(c.Item2)
+                 select c))
             {
-                foreach (var v in valid)
-                {
-                    if (conflicts.Contains(Tuple.Create(n, v)))
-                    {
-                        RemoveBlockFromGraph(n);
-                    }
-                }
+                RemoveBlockFromGraph(cc.Item1);
             }
         }
 
