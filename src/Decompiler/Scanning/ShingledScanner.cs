@@ -283,6 +283,7 @@ namespace Reko.Scanning
                 size = i.Length,
                 type = (ushort)i.Class,
                 block_id = i.Address,
+                rtl = i,
                 pred = 0,
                 succ = 0,
             });
@@ -292,10 +293,12 @@ namespace Reko.Scanning
         public void AddEdge(DiGraph<Address> g, Address from, Address to)
         {
 #if !not_LinQ
+            if (from == Bad)
+                return;
             sr.FlatEdges.Add(new ScanResults.link
             {
-                first = from,
-                second = to,
+                first = to,
+                second = from,
             });
 #else
         g.AddNode(from);

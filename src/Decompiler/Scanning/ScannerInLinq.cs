@@ -1,10 +1,30 @@
-﻿using System;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2017 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
@@ -114,7 +134,7 @@ namespace Reko.Scanning
             // break up the unscanned ranges.
 
             var ranges = FindUnscannedRanges();
-            var frame = program.Architecture.CreateFrame();
+            var frame = new StorageBinder();
             var shsc = new ShingledScanner(this.program, this.scanner, frame, sr, this.eventListener);
             bool unscanned = false;
             foreach (var range in ranges)
@@ -368,16 +388,26 @@ namespace Reko.Scanning
         {
             var icfg = new DiGraph<RtlBlock>();
             var map = new Dictionary<Address, RtlBlock>();
-            foreach (var block in blocks.Values)
+            var rtlBlocks =
+                from b in blocks.Values
+                join i in sr.FlatInstructions.Values on b.id equals i.block_id into instrs
+                orderby b.id
+                select new RtlBlock(b.id, b.id.GenerateName("l", ""))
+                {
+                    Instructions = instrs.Select(x => x.rtl).ToList()
+                };
+
+            foreach (var rtlBlock in rtlBlocks)
             {
-                var rtlBlock = new RtlBlock(block.id, "l" + block.id);
-                map.Add(block.id, rtlBlock);
+                map[rtlBlock.Address] = rtlBlock;
                 icfg.AddNode(rtlBlock);
             }
             foreach (var edge in sr.FlatEdges)
             {
-                var from = map[edge.first];
-                var to = map[edge.second];
+                RtlBlock from, to;
+                if (!map.TryGetValue(edge.first, out from) ||
+                    !map.TryGetValue(edge.second, out to))
+                    continue;
                 icfg.AddEdge(from, to);
             }
             return icfg;

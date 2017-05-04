@@ -43,7 +43,7 @@ namespace Reko.Scanning
 
         public Address Address { get; private set; }
         public string Name { get; private set; }
-        public List<RtlInstructionCluster> Instructions { get; private set; }
+        public List<RtlInstructionCluster> Instructions { get; set; }
         public bool IsValid { get; set; }
 
         // True if this block has been identifierd as a shared exit block
