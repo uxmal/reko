@@ -518,6 +518,7 @@
     <Compile Include="Scanning\ScannerTestPrograms.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Scanning\ShingledScannerTests.cs" />
+    <Compile Include="Scanning\StorageBinderTests.cs" />
     <Compile Include="Scanning\StringFinderTests.cs" />
     <Compile Include="Scanning\VarargsFormatScannerTests.cs" />
     <Compile Include="Scanning\VectorBuilderTests.cs" />
