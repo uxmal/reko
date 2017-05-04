@@ -108,7 +108,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             var op = string.Format("{0}{1}", 
                 opcode,

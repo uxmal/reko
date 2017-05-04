@@ -65,7 +65,7 @@ namespace Reko.Arch.Z80
                 return null;
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (Code == Opcode.ex_af)
             {

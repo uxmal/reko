@@ -69,7 +69,7 @@ namespace Reko.Arch.Xtensa
             throw new NotImplementedException();
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string instrName;
             if (!instrNames.TryGetValue(Opcode, out instrName))

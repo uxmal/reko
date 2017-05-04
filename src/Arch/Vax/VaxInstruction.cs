@@ -66,7 +66,7 @@ namespace Reko.Arch.Vax
             return Operands[i];
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(this.Opcode.ToString());
             writer.Tab();

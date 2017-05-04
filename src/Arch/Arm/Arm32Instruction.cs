@@ -98,7 +98,7 @@ namespace Reko.Arch.Arm
             return null;
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (instruction == null)
             {

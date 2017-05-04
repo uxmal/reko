@@ -67,7 +67,7 @@ namespace Reko.Arch.Mips
             }
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(GetOpcodeString(opcode));
             if (op1 != null)

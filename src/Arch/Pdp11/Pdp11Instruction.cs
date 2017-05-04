@@ -62,7 +62,7 @@ namespace Reko.Arch.Pdp11
             }
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Opcode.ToString());
             if (op1 != null)

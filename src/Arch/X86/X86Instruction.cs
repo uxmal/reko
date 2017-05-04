@@ -112,7 +112,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
 			// Get opcode. 
 

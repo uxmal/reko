@@ -58,7 +58,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (code == Opcode.illegal && op1 != null && writer.Platform != null)
             {

@@ -73,7 +73,7 @@ namespace Reko.Arch.Sparc
             }
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(
                 string.Format("{0}{1}",

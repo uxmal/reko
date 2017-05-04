@@ -260,7 +260,7 @@ namespace Reko.Core
                 }
             }
             writer.Write("\t");
-            instr.Render(writer);
+            instr.Render(writer, MachineInstructionWriterOptions.None);
             writer.WriteLine();
             return true;
         }

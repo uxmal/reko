@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,12 @@ namespace Reko.Core.Machine
         void Write(uint n);
         void Write(string s);
         void Write(string fmt, params object[] parms);
+    }
+
+    public enum MachineInstructionWriterOptions
+    {
+        None = 0,
+        ResolvePcRelativeAddress = 1,
     }
 
     /// <summary>
