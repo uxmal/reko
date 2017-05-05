@@ -315,7 +315,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         public void Tlcs900_dis_bs1x()
         {
             AssertCode("bs1f\ta,hl", "DB0E");
-            AssertCode("bs1b\ta,hl", "DB0F");   
+            AssertCode("bs1b\ta,hl", "DB0F");
         }
 
         [Test]

@@ -64,7 +64,7 @@ namespace Reko.Arch.Tlcs
             var co = instr.op1 as ConditionOperand;
             if (co != null)
             {
-            rtlc.Class = RtlClass.ConditionalTransfer;
+                rtlc.Class = RtlClass.ConditionalTransfer;
                 var test = GenerateTestExpression(co, false);
                 var dst = RewriteSrc(instr.op2);
                 var addr = dst as Address;
@@ -82,6 +82,21 @@ namespace Reko.Arch.Tlcs
                 rtlc.Class = RtlClass.Transfer;
                 var dst = RewriteSrc(instr.op1);
                 m.Goto(dst);
+            }
+        }
+
+        private void RewriteRet()
+        {
+            var co = instr.op1 as ConditionOperand;
+            if (co != null)
+            {
+                EmitUnitTest("Tlcs900_rw_", "00010000");
+                Invalid();
+            }
+            else
+            {
+                rtlc.Class = RtlClass.Transfer;
+                m.Return(4, 0);
             }
         }
     }

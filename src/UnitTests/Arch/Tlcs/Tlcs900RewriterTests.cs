@@ -155,5 +155,72 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "1|L--|b = __daa(b)",
                 "2|L--|SZHVC = cond(b)");
         }
+
+        [Test]
+        public void Tlcs900_rw_calr()
+        {
+            RewriteCode("1E8005");    // calr 10583
+            AssertCode(
+                "0|T--|00010000(3): 1 instructions",
+                "1|T--|call 00010583 (4)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_cp()
+        {
+            RewriteCode("C1916F3F00"); // cp(00006F91),00
+            AssertCode(
+                "0|L--|00010000(5): 3 instructions",
+                "1|L--|v2 = Mem0[0x00006F91:byte]",
+                "2|L--|N = true",
+                "3|L--|SZHVC = cond(v2 - 0x00)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_jr()
+        {
+            RewriteCode("6E09");	// jr	NZ,0020061C
+            AssertCode(
+                "0|T--|00010000(2): 1 instructions",
+                "1|T--|if (Test(NE,Z)) branch 0001000B");
+        }
+
+        [Test]
+        public void Tlcs900_rw_set()
+        {
+            RewriteCode("F1866FBE");	// set	06,(00006F86)
+            AssertCode(
+                "0|L--|00010000(4): 2 instructions",
+                "1|L--|v2 = Mem0[0x00006F86:word32] | 1 << 0x06",
+                "2|L--|Mem0[0x00006F86:word32] = v2");
+        }
+
+        [Test]
+        public void Tlcs900_rw_res()
+        {
+            RewriteCode("F1836FB3");	// res	03,(00006F83)
+            AssertCode(
+                "0|L--|00010000(4): 2 instructions",
+                "1|L--|v2 = Mem0[0x00006F83:word32] & ~(1 << 0x03)",
+                "2|L--|Mem0[0x00006F83:word32] = v2");
+        }
+
+        [Test]
+        public void Tlcs900_rw_ret()
+        {
+            RewriteCode("0E");	// ret
+            AssertCode(
+                "0|T--|00010000(1): 1 instructions",
+                "1|T--|return (4,0)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_lda()
+        {
+            RewriteCode("F240002034");	// lda	xix,(00200040)
+            AssertCode(
+                "0|L--|00010000(5): 1 instructions",
+                "1|L--|xix = 00200040");
+        }
     }
 }

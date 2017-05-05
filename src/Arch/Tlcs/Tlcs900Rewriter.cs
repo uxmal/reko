@@ -25,6 +25,7 @@ using Reko.Core.Rtl;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Opcode = Reko.Arch.Tlcs.Tlcs900Opcode;
@@ -34,7 +35,7 @@ namespace Reko.Arch.Tlcs
     public partial class Tlcs900Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private Tlcs900Architecture arch;
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private ProcessorState state;
         private Frame frame;
         private IRewriterHost host;
@@ -43,7 +44,7 @@ namespace Reko.Arch.Tlcs
         private RtlEmitter m;
         private Tlcs900Instruction instr;
 
-        public Tlcs900Rewriter(Tlcs900Architecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public Tlcs900Rewriter(Tlcs900Architecture arch, EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;
@@ -64,26 +65,41 @@ namespace Reko.Arch.Tlcs
                 switch (instr.Opcode)
                 {
                 default:
+                    EmitUnitTest("Tlcs900_rw_", "00010000");
+                    Invalid();
+                    break;
                 case Opcode.invalid:
-                    host.Error(
-                       instr.Address,
-                       string.Format(
-                           "Rewriting of TLCS-900 instruction '{0}' not implemented yet.",
-                           instr.Opcode));
-                    rtlc.Class = RtlClass.Invalid;
-                    m.Invalid();
+                    Invalid();
                     break;
                 case Opcode.add: RewriteBinOp(m.IAdd, "***V0*"); break;
                 case Opcode.call: RewriteCall(); break;
+                case Opcode.calr: RewriteCall(); break;
+                case Opcode.cp: RewriteCp("SZHV1C"); break;
                 case Opcode.daa: RewriteDaa("****-*"); break;
                 case Opcode.djnz: RewriteDjnz(); break;
                 case Opcode.inc: RewriteIncDec(m.IAdd, "****0-"); break;
+                case Opcode.lda: RewriteLda(); break;
                 case Opcode.jp: RewriteJp(); break;
+                case Opcode.jr: RewriteJp(); break;
                 case Opcode.ld: RewriteLd(); break;
+                case Opcode.res: RewriteRes(); break;
+                case Opcode.ret: RewriteRet(); break;
+                case Opcode.set: RewriteSet(); break;
                 case Opcode.sub: RewriteBinOp(m.ISub, "***V1*"); break;
                 }
                 yield return rtlc;
             }
+        }
+
+        private void Invalid()
+        {
+            host.Error(
+               instr.Address,
+               string.Format(
+                   "Rewriting of TLCS-900 instruction '{0}' not implemented yet.",
+                   instr.Opcode));
+            rtlc.Class = RtlClass.Invalid;
+            m.Invalid();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -111,27 +127,39 @@ namespace Reko.Arch.Tlcs
             var mem = op as MemoryOperand;
             if (mem != null)
             {
-                Expression ea;
-                if (mem.Base != null)
-                {
-                    if (mem.Increment < 0)
-                        throw new NotImplementedException("predec");
-                    ea = frame.EnsureRegister(mem.Base);
-                    if (mem.Offset != null)
-                    {
-                        ea = m.IAdd(ea, mem.Offset);
-                    }
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+                Expression ea = RewriteSrcEa(mem);
                 var tmp = frame.CreateTemporary(mem.Width);
                 m.Assign(tmp, m.Load(mem.Width, ea));
                 return tmp;
             }
 
             throw new NotImplementedException(op.GetType().Name);
+        }
+
+        /// <summary>
+        /// Rewrites the effective address of a memory load.
+        /// </summary>
+        /// <param name="mem"></param>
+        /// <returns></returns>
+        private Expression RewriteSrcEa(MemoryOperand mem)
+        {
+            Expression ea;
+            if (mem.Base != null)
+            {
+                if (mem.Increment < 0)
+                    throw new NotImplementedException("predec");
+                ea = frame.EnsureRegister(mem.Base);
+                if (mem.Offset != null)
+                {
+                    ea = m.IAdd(ea, mem.Offset);
+                }
+            }
+            else
+            {
+                ea = arch.MakeAddressFromConstant(mem.Offset);
+            }
+
+            return ea;
         }
 
         private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression, Expression> fn)
@@ -155,25 +183,24 @@ namespace Reko.Arch.Tlcs
                 if (mem.Base != null)
                 {
                     ea = frame.EnsureRegister(mem.Base);
-                    if (mem.Increment < 0)
-                    {
-                        m.Assign(ea, m.ISub(ea, mem.Width.Size));
-                    }
-                    var load = m.Load(mem.Width, ea);
-                    var tmp = frame.CreateTemporary(ea.DataType);
-                    m.Assign(tmp, fn(load, src));
-                    m.Assign(m.Load(mem.Width, ea), tmp);
-                    if (mem.Increment > 0)
-                    {
-                        m.Assign(ea, m.IAdd(ea, mem.Width.Size));
-                    }
-                    return tmp;
                 }
                 else
                 {
-                    throw new NotImplementedException(op.ToString());
+                    ea = arch.MakeAddressFromConstant(mem.Offset);
                 }
-
+                if (mem.Increment < 0)
+                {
+                    m.Assign(ea, m.ISub(ea, mem.Width.Size));
+                }
+                var load = m.Load(mem.Width, ea);
+                var tmp = frame.CreateTemporary(ea.DataType);
+                m.Assign(tmp, fn(load, src));
+                m.Assign(m.Load(mem.Width, ea), tmp);
+                if (mem.Increment > 0)
+                {
+                    m.Assign(ea, m.IAdd(ea, mem.Width.Size));
+                }
+                return tmp;
             }
             throw new NotImplementedException(op.GetType().Name);
         }
@@ -187,6 +214,11 @@ namespace Reko.Arch.Tlcs
                 switch (c)
                 {
                 case '*':
+                case 'S':
+                case 'Z':
+                case 'H':
+                case 'N':
+                case 'C':
                 case 'V':
                 case 'P':
                     grf |= mask;
@@ -238,6 +270,31 @@ namespace Reko.Arch.Tlcs
             return m.Test(
                 cc,
                 frame.EnsureFlagGroup(arch.GetFlagGroup(flags)));
+        }
+
+        [Conditional("DEBUG")]
+        private void EmitUnitTest(string prefix, string sAddr)
+        {
+            //if (seen.Contains(dasm.Current.Opcode))
+            //    return;
+            //seen.Add(dasm.Current.Opcode);
+
+            var r2 = rdr.Clone();
+            r2.Offset -= dasm.Current.Length;
+            var bytes = r2.ReadBytes(dasm.Current.Length);
+            Debug.WriteLine("        [Test]");
+            Debug.WriteLine("        public void {0}{1}()", prefix, dasm.Current.Opcode);
+            Debug.WriteLine("        {");
+            Debug.Write("            BuildTest(");
+            Debug.Write(string.Join(
+                ", ",
+                bytes.Select(b => string.Format("0x{0:X2}", (int)b))));
+            Debug.WriteLine(");\t// " + dasm.Current.ToString());
+            Debug.WriteLine("            AssertCode(");
+            Debug.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", sAddr, bytes.Length);
+            Debug.WriteLine("                \"1|L--|@@@\");");
+            Debug.WriteLine("        }");
+            Debug.WriteLine("");
         }
     }
 }

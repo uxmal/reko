@@ -150,17 +150,23 @@ namespace Reko.Arch.Tlcs
             byte r;
             Constant c;
             byte o8;
-
+            int incCode;
             switch (fmt[0])
             {
             case '+': // Predecrement
                 if (!rdr.TryReadByte(out r))
+                    return null;
+                incCode = r & 3;
+                if (incCode >= incDecSize.Length)
                     return null;
                 op = MemoryOperand.PostIncrement(Size(fmt[1]), incDecSize[r & 3], Reg('x', (r >> 2) & 0x3F));
                 SetSize(fmt[1]);
                 return op;
             case '-':
                 if (!rdr.TryReadByte(out r))
+                    return null;
+                incCode = r & 3;
+                if (incCode >= incDecSize.Length)
                     return null;
                 op = MemoryOperand.PreDecrement(Size(fmt[1]), incDecSize[r & 3], Reg('x', (r >> 2) & 0x3F));
                 SetSize(fmt[1]);

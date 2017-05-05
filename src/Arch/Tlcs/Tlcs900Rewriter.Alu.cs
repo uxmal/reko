@@ -36,6 +36,13 @@ namespace Reko.Arch.Tlcs
             EmitCc(dst, flags);
         }
 
+        private void RewriteCp(string flags)
+        {
+            var op1 = RewriteSrc(this.instr.op1);
+            var op2 = RewriteSrc(this.instr.op2);
+            EmitCc(m.ISub(op1, op2), flags);
+        }
+
         private void RewriteDaa(string flags)
         {
             var src = RewriteSrc(this.instr.op1);
@@ -55,6 +62,37 @@ namespace Reko.Arch.Tlcs
         {
             var src = RewriteSrc(this.instr.op2);
             var dst = RewriteDst(this.instr.op1, src, (d, s) => s);
+        }
+
+        private void RewriteLda()
+        {
+            var src = RewriteSrcEa((MemoryOperand) this.instr.op2);
+            var dst = RewriteDst(this.instr.op1, src, (d, s) => s);
+        }
+
+        private void RewriteRes()
+        {
+            var op1 = RewriteSrc(this.instr.op1);
+            var op2 = RewriteDst(this.instr.op2,
+                op1,
+                (a, b) => m.And(
+                    a,
+                    m.Comp(
+                        m.Shl(m.Const(
+                            PrimitiveType.Create(Domain.SignedInt, op1.DataType.Size),
+                            1), b))));
+        }
+
+        private void RewriteSet()
+        {
+            var op1 = RewriteSrc(this.instr.op1);
+            var op2 = RewriteDst(this.instr.op2,
+                op1,
+                (a, b) => m.Or(
+                    a,
+                    m.Shl(m.Const(
+                        PrimitiveType.Create(Domain.SignedInt, op1.DataType.Size),
+                        1), b)));
         }
     }
 }
