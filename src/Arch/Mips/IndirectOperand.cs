@@ -41,7 +41,7 @@ namespace Reko.Arch.Mips
             this.Base = baseReg;
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string fmt;
             int offset;

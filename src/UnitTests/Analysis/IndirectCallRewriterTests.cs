@@ -18,16 +18,17 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.IO;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Reko.UnitTests.Analysis
@@ -37,17 +38,27 @@ namespace Reko.UnitTests.Analysis
     {
         private FunctionType sig;
         private IDictionary<string, DataType> types;
+        SsaProcedureBuilder m;
         private Identifier eax;
         private Identifier ecx;
         private Identifier esp;
 
-        [SetUp]
-        public void Setup()
+        public IndirectCallRewriterTests()
         {
-            types = new Dictionary<string, DataType>();
             this.eax = new Identifier("eax", PrimitiveType.Word32, new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
             this.ecx = new Identifier("ecx", PrimitiveType.Word32, new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
             this.esp = new Identifier("esp", PrimitiveType.Word32, new RegisterStorage("esp", 5, 0, PrimitiveType.Word32));
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            m = new SsaProcedureBuilder();
+        }
+
+        private void Given_CSignature(string CSignature)
+        {
+            types = new Dictionary<string, DataType>();
         }
 
         private void indirect_call_no_arguments(ProcedureBuilder m)
@@ -135,6 +146,14 @@ namespace Reko.UnitTests.Analysis
                 StackDelta = stackDelta,
             };
             return Ptr32(ft);
+        }
+
+        private DataType RefFnPtr32(
+            string name,
+            Identifier returnValue,
+            params Identifier[] parameters)
+        {
+            return new TypeReference(name, FnPtr32(returnValue, parameters));
         }
 
         private Identifier VoidId()
@@ -258,6 +277,21 @@ namespace Reko.UnitTests.Analysis
             fut.WriteLine();
         }
 
+        public void RunIndirectCallRewriter()
+        {
+            var eventListener = new FakeDecompilerEventListener();
+            var program = new Program
+            {
+                Architecture = m.Architecture,
+            };
+            var icrw = new IndirectCallRewriter(
+                program,
+                m.Ssa,
+                eventListener);
+            icrw.Rewrite();
+            m.Ssa.CheckUses(s => Assert.Fail(s));
+        }
+
         [Test]
         public void Icrw_NoArguments()
         {
@@ -306,5 +340,21 @@ namespace Reko.UnitTests.Analysis
             Given_Signature(TestStrNoFuncs());
             RunFileTest("Analysis/IcrwTwoArgumentsNoFuncs.txt", indirect_call_two_arguments);
         }
+
+        [Test]
+        public void Icrw_TypeReferenceToFunc()
+        {
+            var a = m.Reg32("a");
+            var b = m.Reg32("b");
+            var fn = m.Reg32("fn");
+            fn.DataType = RefFnPtr32("FnPtr", a, b);
+            var uses = new Identifier[] { b };
+            var defines = new Identifier[] { a };
+            var callStm = m.Call(fn, 4, uses, defines);
+
+            RunIndirectCallRewriter();
+
+            Assert.AreEqual("a = fn(b)", callStm.Instruction.ToString());
+    }
     }
 }

@@ -57,7 +57,7 @@ namespace Reko.Core.Machine
             return ulInstr <= ulAddr && ulAddr < ulInstr + (uint)Length;
         }
 
-        public virtual void Render(MachineInstructionWriter writer)
+        public virtual void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
         }
 
@@ -76,14 +76,16 @@ namespace Reko.Core.Machine
         public sealed override string ToString()
         {
             var renderer = new StringRenderer();
-            this.Render(renderer);
+            renderer.Address = Address;
+            this.Render(renderer, MachineInstructionWriterOptions.None);
             return renderer.ToString();
         }
 
         public string ToString(IPlatform platform)
         {
             var renderer = new StringRenderer(platform);
-            this.Render(renderer);
+            renderer.Address = Address;
+            this.Render(renderer, MachineInstructionWriterOptions.None);
             return renderer.ToString();
         }
     }

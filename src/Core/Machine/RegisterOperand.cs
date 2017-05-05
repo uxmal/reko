@@ -44,7 +44,7 @@ namespace Reko.Core.Machine
             get { return reg; }
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.Write(reg.ToString());
         }

@@ -1522,6 +1522,16 @@ namespace Reko.UnitTests.Arch.Intel
                "1|L--|xmm0 = DPB(xmm0, (real32) xmm3, 0)");
         }
 
+        [Test(Description = "Regression reported by @mewmew")]
+        public void X86rw_regression1()
+        {
+            Run32bitTest(0xDB, 0x7C, 0x47, 0x83);       // fstp [esi-0x7D + eax*2]
+            AssertCode(
+                "0|L--|10000000(4): 2 instructions",
+                "1|L--|Mem0[edi - 0x0000007D + eax * 0x00000002:real80] = (real80) ST[Top:real64]",
+                "2|L--|Top = Top + 1");
+        }
+
         [Test]
         public void X86rw_movsd()
         {

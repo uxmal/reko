@@ -139,8 +139,8 @@ namespace Reko
         {
             if (wr == null || program.Architecture == null)
                 return;
-            Dumper dump = new Dumper(program.Architecture);
-            dump.Dump(program, wr);
+            Dumper dump = new Dumper(program);
+            dump.Dump(wr);
         }
 
         private void EmitProgram(Program program, DataFlowAnalysis dfa, TextWriter output)

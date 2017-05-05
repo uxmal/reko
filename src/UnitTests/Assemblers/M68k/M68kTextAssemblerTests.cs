@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Assemblers.M68k
 
             using (FileUnitTester fut = new FileUnitTester(outputFile))
             {
-                Dumper dumper = new Dumper(program.Architecture);
+                Dumper dumper = new Dumper(program);
                 dumper.ShowAddresses = true;
                 dumper.ShowCodeBytes = true;
                 var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
