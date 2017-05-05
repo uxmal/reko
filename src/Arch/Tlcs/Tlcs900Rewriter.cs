@@ -66,13 +66,14 @@ namespace Reko.Arch.Tlcs
                 switch (instr.Opcode)
                 {
                 default:
-                    EmitUnitTest("Tlcs900_rw_", "00010000");
+                    EmitUnitTest();
                     Invalid();
                     break;
                 case Opcode.invalid:
                     Invalid();
                     break;
                 case Opcode.add: RewriteBinOp(m.IAdd, "***V0*"); break;
+                case Opcode.and: RewriteBinOp(m.And, "**1*00"); break;
                 case Opcode.call: RewriteCall(); break;
                 case Opcode.calr: RewriteCall(); break;
                 case Opcode.cp: RewriteCp("SZHV1C"); break;
@@ -86,9 +87,12 @@ namespace Reko.Arch.Tlcs
                 case Opcode.ld: RewriteLd(); break;
                 case Opcode.ldir: RewriteLdir(PrimitiveType.Byte, "--000-"); break;
                 case Opcode.ldirw: RewriteLdir(PrimitiveType.Word16, "--000-"); break;
+                case Opcode.pop: RewritePop(); break;
+                case Opcode.push: RewritePush(); break;
                 case Opcode.res: RewriteRes(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.set: RewriteSet(); break;
+                case Opcode.sll: RewriteSll("**0*0*"); break;
                 case Opcode.sub: RewriteBinOp(m.ISub, "***V1*"); break;
                 }
                 yield return rtlc;
@@ -274,6 +278,13 @@ namespace Reko.Arch.Tlcs
             return m.Test(
                 cc,
                 frame.EnsureFlagGroup(arch.GetFlagGroup(flags)));
+        }
+
+        [Conditional("DEBUG")]
+        private void EmitUnitTest()
+        {
+            EmitUnitTest("Tlcs900_rw_", "00010000");
+
         }
 
         [Conditional("DEBUG")]

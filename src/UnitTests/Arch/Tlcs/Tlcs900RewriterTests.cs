@@ -265,5 +265,50 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|__ei(0x00)");
         }
+
+        [Test]
+        public void Tlcs900_rw_push()
+        {
+            RewriteCode("38");	// push	xwa
+            AssertCode(
+                "0|L--|00010000(1): 2 instructions",
+                "1|L--|xsp = xsp - 0x00000004",
+                "2|L--|Mem0[xsp:word32] = xwa");
+        }
+
+        [Test]
+        public void Tlcs900_rw_sll()
+        {
+            RewriteCode("CCEE01");	// sll	01,d
+            AssertCode(
+                "0|L--|00010000(3): 4 instructions",
+                "1|L--|d = d << 0x01",
+                "2|L--|H = false",
+                "3|L--|N = false",
+                "4|L--|SZVC = cond(d)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_pop()
+        {
+            RewriteCode("58");	// pop	xwa
+            AssertCode(
+                "0|L--|00010000(1): 2 instructions",
+                "1|L--|xwa = Mem0[xsp:word32]",
+                "2|L--|xsp = xsp + 0x00000004");
+        }
+
+        [Test]
+        public void Tlcs900_rw_and()
+        {
+            RewriteCode("C9CCF0");	// and	a,F0
+            AssertCode(
+                "0|L--|00010000(3): 5 instructions",
+                "1|L--|a = a & 0xF0",
+                "2|L--|H = true",
+                "3|L--|N = false",
+                "4|L--|C = false",
+                "5|L--|SZV = cond(a)");
+        }
     }
 }

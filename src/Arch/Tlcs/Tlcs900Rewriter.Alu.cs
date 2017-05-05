@@ -65,6 +65,12 @@ namespace Reko.Arch.Tlcs
             var dst = RewriteDst(this.instr.op1, src, (d, s) => s);
         }
 
+        private void RewriteLda()
+        {
+            var src = RewriteSrcEa((MemoryOperand)this.instr.op2);
+            var dst = RewriteDst(this.instr.op1, src, (d, s) => s);
+        }
+
         private void RewriteLdir(PrimitiveType dt, string flags)
         {
             if (instr.op1 != null || instr.op2 != null)
@@ -86,10 +92,20 @@ namespace Reko.Arch.Tlcs
             EmitCc(null, flags);
         }
 
-        private void RewriteLda()
+        private void RewritePop()
         {
-            var src = RewriteSrcEa((MemoryOperand) this.instr.op2);
-            var dst = RewriteDst(this.instr.op1, src, (d, s) => s);
+            var xsp = frame.EnsureRegister(Tlcs900Registers.xsp);
+            var op = m.Load(instr.op1.Width, xsp);
+            RewriteDst(instr.op1, op, (a, b) => b);
+            m.Assign(xsp, m.IAdd(xsp, m.Int32(instr.op1.Width.Size)));
+        }
+
+        private void RewritePush()
+        {
+            var op = RewriteSrc(instr.op1);
+            var xsp = frame.EnsureRegister(Tlcs900Registers.xsp);
+            m.Assign(xsp, m.ISub(xsp, m.Int32(op.DataType.Size)));
+            m.Assign(m.Load(op.DataType, xsp), op);
         }
 
         private void RewriteRes()
@@ -115,6 +131,19 @@ namespace Reko.Arch.Tlcs
                     m.Shl(m.Const(
                         PrimitiveType.Create(Domain.SignedInt, op1.DataType.Size),
                         1), b)));
+        }
+
+        private void RewriteSll(string flags)
+        {
+            if (instr.op2 == null)
+            {
+                EmitUnitTest();
+                Invalid();
+                return;
+            }
+            var op1 = RewriteSrc(this.instr.op1);
+            var op2 = RewriteDst(this.instr.op2, op1, m.Shl);
+            EmitCc(op2, flags);
         }
     }
 }

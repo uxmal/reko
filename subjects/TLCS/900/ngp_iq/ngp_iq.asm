@@ -331,11 +331,15 @@ l00200361:
 fn002004F2 proc
 	push	xwa
 	ld	(00004004),00
+
+l002004F8:
 	ld	a,(00007600)
 	ld	a,(00007600)
 	ld	a,(00004004)
 	cp	a,w
 	jr	NZ,002004F8
+
+l00200508:
 	pop	xwa
 	ret
 	push	xhl
