@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Arch.Tlcs
+namespace Reko.Arch.Tlcs.Tlcs900
 {
     public partial class Tlcs900Rewriter
     {

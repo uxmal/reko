@@ -26,9 +26,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Opcode = Reko.Arch.Tlcs.Tlcs900Opcode;
+using Opcode = Reko.Arch.Tlcs.Tlcs900.Tlcs900Opcode;
 
-namespace Reko.Arch.Tlcs
+namespace Reko.Arch.Tlcs.Tlcs900
 {
     /// <summary>
     /// Disassembler for the 32-bit Toshiba TLCS-900 processor.

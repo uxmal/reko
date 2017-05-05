@@ -29,9 +29,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Opcode = Reko.Arch.Tlcs.Tlcs900Opcode;
+using Opcode = Reko.Arch.Tlcs.Tlcs900.Tlcs900Opcode;
 
-namespace Reko.Arch.Tlcs
+namespace Reko.Arch.Tlcs.Tlcs900
 {
     public partial class Tlcs900Rewriter : IEnumerable<RtlInstructionCluster>
     {

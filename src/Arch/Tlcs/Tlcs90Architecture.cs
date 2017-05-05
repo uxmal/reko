@@ -23,12 +23,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using Reko.Core.Lib;
-using Registers = Reko.Arch.Tlcs.Tlcs900.Tlcs900Registers;
+using Reko.Arch.Tlcs.Tlcs90;
 
 namespace Reko.Arch.Tlcs
 {
@@ -36,21 +36,11 @@ namespace Reko.Arch.Tlcs
     /// Architecture definition for the 32-bit Toshiba TLCS-900
     /// processor.
     /// </summary>
-    // https://toshiba.semicon-storage.com/product/micro/900H1_CPU_BOOK_CP3_CPU_en.pdf
-    public class Tlcs900Architecture : ProcessorArchitecture
+    public class Tlcs90Architecture : ProcessorArchitecture
     {
-        public Tlcs900Architecture()
-        {
-            this.InstructionBitSize = 8;        // Instruction alignment, really.
-            this.FramePointerType = PrimitiveType.Pointer32;
-            this.PointerType = PrimitiveType.Pointer32;
-            this.WordWidth = PrimitiveType.Word32;
-            this.StackRegister = Registers.xsp;
-        }
-
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new Tlcs900.Tlcs900Disassembler(this, rdr);
+            return new Tlcs90Disassembler(this, rdr);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
@@ -70,12 +60,12 @@ namespace Reko.Arch.Tlcs
 
         public override ImageWriter CreateImageWriter()
         {
-            throw new NotImplementedException();
+            return new LeImageWriter();
         }
 
         public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -90,12 +80,12 @@ namespace Reko.Arch.Tlcs
 
         public override ProcessorState CreateProcessorState()
         {
-            return new Tlcs900ProcessorState(this);
+            throw new NotImplementedException();
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new Tlcs900.Tlcs900Rewriter(this, rdr, state, frame, host);
+            return new Tlcs90Rewriter(this, rdr, state, frame, host);
         }
 
         public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
@@ -105,33 +95,12 @@ namespace Reko.Arch.Tlcs
 
         public override FlagGroupStorage GetFlagGroup(string name)
         {
-            uint grf = 0;
-            foreach (var c in name)
-            {
-                switch (c)
-                {
-                case 'S': grf |= Registers.S.FlagGroupBits; break;
-                case 'Z': grf |= Registers.Z.FlagGroupBits; break;
-                case 'H': grf |= Registers.H.FlagGroupBits; break;
-                case 'V': grf |= Registers.V.FlagGroupBits; break;
-                case 'N': grf |= Registers.N.FlagGroupBits; break;
-                case 'C': grf |= Registers.C.FlagGroupBits; break;
-                }
-            }
-            return GetFlagGroup(grf);
+            throw new NotImplementedException();
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            foreach (FlagGroupStorage f in Registers.flagBits)
-            {
-                if (f.FlagGroupBits == grf)
-                    return f;
-            }
-
-            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.sr, grf, GrfToString(grf), dt);
-            return fl;
+            throw new NotImplementedException();
         }
 
         public override SortedList<string, int> GetOpcodeNames()
@@ -161,18 +130,12 @@ namespace Reko.Arch.Tlcs
 
         public override string GrfToString(uint grf)
         {
-            StringBuilder s = new StringBuilder();
-            foreach (var freg in Registers.flagBits)
-            {
-                if ((freg.FlagGroupBits & grf) != 0)
-                    s.Append(freg.Name);
-            }
-            return s.ToString();
+            throw new NotImplementedException();
         }
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            return Address.Ptr32(c.ToUInt32());
+            throw new NotImplementedException();
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
@@ -187,7 +150,7 @@ namespace Reko.Arch.Tlcs
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            return Address.TryParse32(txtAddr, out addr);
+            throw new NotImplementedException();
         }
     }
 }

@@ -18,21 +18,42 @@
  */
 #endregion
 
-using Reko.Core.Types;
+using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
+using Reko.Core;
 
-namespace Reko.Arch.Tlcs.Tlcs900
+namespace Reko.Arch.Tlcs.Tlcs90
 {
-    public partial class Tlcs900Rewriter
+    public class Tlcs90Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private void RewriteEi()
+        private Frame frame;
+        private IRewriterHost host;
+        private EndianImageReader rdr;
+        private ProcessorState state;
+        private Tlcs90Architecture tlcs90Architecture;
+
+        public Tlcs90Rewriter(Tlcs90Architecture tlcs90Architecture, EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            var ppp = host.PseudoProcedure("__ei", VoidType.Instance, RewriteSrc(instr.op1));
-            m.SideEffect(ppp);
+            this.tlcs90Architecture = tlcs90Architecture;
+            this.rdr = rdr;
+            this.state = state;
+            this.frame = frame;
+            this.host = host;
+        }
+
+        public IEnumerator<RtlInstructionCluster> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

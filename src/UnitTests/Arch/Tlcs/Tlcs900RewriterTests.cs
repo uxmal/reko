@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.Tlcs;
+using Reko.Arch.Tlcs.Tlcs900;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Rtl;

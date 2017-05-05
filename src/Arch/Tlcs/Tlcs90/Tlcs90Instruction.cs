@@ -23,25 +23,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Opcode = Reko.Arch.Tlcs.Tlcs900.Tlcs900Opcode;
+using System.Threading.Tasks;
 
-namespace Reko.Arch.Tlcs.Tlcs900
+namespace Reko.Arch.Tlcs.Tlcs90
 {
-    public class Tlcs900Instruction : MachineInstruction
+    public class Tlcs90Instruction : MachineInstruction
     {
-        public override InstructionClass InstructionClass
+        public Opcode Opcode { get; set; }
+
+        public override InstructionClass InstructionClass 
         {
             get { return InstructionClass.Linear; }
         }
 
-        public Opcode Opcode;
-        public MachineOperand op1;
-        public MachineOperand op2;
-        public MachineOperand op3;
-
-        public override bool IsValid 
+        public override bool IsValid
         {
-            get { return Opcode != Opcode.invalid; }
+            get { return Opcode == Opcode.invalid; }
         }
 
         public override int OpcodeAsInteger
@@ -57,21 +54,6 @@ namespace Reko.Arch.Tlcs.Tlcs900
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Opcode.ToString());
-            if (op1 != null)
-            {
-                writer.Tab();
-                op1.Write(writer, options);
-                if (op2 != null)
-                {
-                    writer.Write(",");
-                    op2.Write(writer, options);
-                    if (op3 != null)
-                    {
-                        writer.Write(",");
-                        op3.Write(writer, options);
-                    }
-                }
-            }
         }
     }
 }

@@ -18,21 +18,17 @@
  */
 #endregion
 
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.Tlcs.Tlcs900
+namespace Reko.Arch.Tlcs.Tlcs90
 {
-    public partial class Tlcs900Rewriter
+    public enum Opcode
     {
-        private void RewriteEi()
-        {
-            var ppp = host.PseudoProcedure("__ei", VoidType.Instance, RewriteSrc(instr.op1));
-            m.SideEffect(ppp);
-        }
+        invalid,
+        nop
     }
 }

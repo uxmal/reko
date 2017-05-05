@@ -18,15 +18,47 @@
  */
 #endregion
 
+using Reko.Arch.Tlcs.Tlcs90;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Reko.Core;
+using Reko.Arch.Tlcs;
+using NUnit.Framework;
 
 namespace Reko.UnitTests.Arch.Tlcs
 {
     public class Tlcs90DisassemblerTests : DisassemblerTestBase<Tlcs90Instruction>
     {
+        private Tlcs90Architecture arch = new Tlcs90Architecture();
+
+        public override IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+        }
+
+        public override Address LoadAddress
+        {
+            get { return Address.Ptr16(0x0000); }
+        }
+
+        protected override ImageWriter CreateImageWriter(byte[] bytes)
+        {
+            return new LeImageWriter(bytes);
+        }
+
+        private void AssertCode(string sExp, string hexBytes)
+        {
+            var i = DisassembleHexBytes(hexBytes);
+            Assert.AreEqual(sExp, i.ToString());
+        }
+
+        [Test]
+        public void Tlcs90_dis_nop()
+        {
+            AssertCode("nop", "00");
+        }
     }
 }
