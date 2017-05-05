@@ -38,6 +38,15 @@ namespace Reko.Arch.Tlcs
     /// </summary>
     public class Tlcs90Architecture : ProcessorArchitecture
     {
+        public Tlcs90Architecture()
+        {
+            base.InstructionBitSize = 8;
+            this.FramePointerType = PrimitiveType.Pointer32;
+            this.PointerType = PrimitiveType.Pointer32;
+            this.WordWidth = PrimitiveType.Word32;
+            this.StackRegister = Registers.sp;
+        }
+
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Tlcs90Disassembler(this, rdr);
@@ -150,7 +159,7 @@ namespace Reko.Arch.Tlcs
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse16(txtAddr, out addr);
         }
     }
 }
