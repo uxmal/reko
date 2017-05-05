@@ -310,5 +310,26 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "4|L--|C = false",
                 "5|L--|SZV = cond(a)");
         }
+
+        [Test]
+        public void Tlcs900_rw_mul()
+        {
+            RewriteCode("D9084000");	// mul	bc,0040
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|bc = bc *u 0x0040");
+        }
+
+        [Test]
+        public void Tlcs900_rw_srl()
+        {
+            RewriteCode("C9EF04");	// srl	04,a
+            AssertCode(
+                "0|L--|00010000(3): 4 instructions",
+                "1|L--|a = a >>u 0x04",
+                "2|L--|H = false",
+                "3|L--|N = false",
+                "4|L--|SZVC = cond(a)");
+        }
     }
 }

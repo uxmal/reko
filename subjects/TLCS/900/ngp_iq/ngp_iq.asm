@@ -342,6 +342,9 @@ l002004F8:
 l00200508:
 	pop	xwa
 	ret
+
+;; fn0020050A: 0020050A
+fn0020050A proc
 	push	xhl
 	push	xde
 	push	xbc
@@ -397,13 +400,21 @@ fn00200557 proc
 	mul	bc,0040
 	add	xde,xbc
 	ld	b,13
+
+l00200579:
 	ld	a,(xhl)
 	cp	a,00
 	jr	Z,0020059E
+
+l0020057F:
 	inc	00000001,xhl
 	cp	a,5B
 	jr	C,00200589
+
+l00200586:
 	add	a,E0
+
+l00200589:
 	ld	w,00
 	add	wa,0009
 	add	w,(00004002)
@@ -412,21 +423,13 @@ fn00200557 proc
 	ld	(xde),w
 	inc	00000001,xde
 	djnz	b,00200579
+
+l0020059E:
 	pop	xde
 	pop	xhl
 	ret
-	push	xwa
-	push	xhl
-	push	xde
-	ld	a,w
-	ld	w,d
-	call	00200532
-	pop	xde
-	pop	xhl
-	pop	xwa
-	ld	w,d
-	add	h,02
-	jp	00200532
+002005A1    38 3B 3A C8 89 CC 88 1D 32 05 20 5A 5B 58 CC  8;:.....2. Z[X.
+002005B0 88 CE C8 02 1B 32 05 20                         .....2.        
 
 ;; fn002005B8: 002005B8
 fn002005B8 proc

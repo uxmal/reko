@@ -133,7 +133,7 @@ namespace Reko.Arch.Tlcs
                         1), b)));
         }
 
-        private void RewriteSll(string flags)
+        private void RewriteShift(Func<Expression,Expression, Expression> shift, string flags)
         {
             if (instr.op2 == null)
             {
@@ -142,7 +142,7 @@ namespace Reko.Arch.Tlcs
                 return;
             }
             var op1 = RewriteSrc(this.instr.op1);
-            var op2 = RewriteDst(this.instr.op2, op1, m.Shl);
+            var op2 = RewriteDst(this.instr.op2, op1, shift);
             EmitCc(op2, flags);
         }
     }

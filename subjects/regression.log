@@ -2391,4 +2391,79 @@ fn0800_9F92: error: An error occurred while rewriting procedure to high-level la
 === int16.dll
 === flags
 === flags3
+=== --arch
+*** --arch
+error: An error occurred during decompilation. System.ApplicationException: Unknown architecture tlcs
+   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 148
+
+=== --arch
+*** --arch
+error: An error occurred during decompilation. System.ApplicationException: Unknown architecture tlcs
+   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 148
+
+=== NGP_IQ.NGP
+*** NGP_IQ.NGP
+002001AF: error: Error while analyzing trashed registers.
+    The method or operation is not implemented.
+       at Reko.Environments.NeoGeo.PocketPlatform.CreateTrashedRegisters() in D:\dev\uxmal\reko\master\src\Environments\NeoGeo\PocketPlatform.cs:line 57
+   at Reko.Analysis.TrashedRegisterFinder.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 378
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.ProcessBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 181
+002001AF: error: Error while analyzing trashed registers.
+    The method or operation is not implemented.
+       at Reko.Environments.NeoGeo.PocketPlatform.CreateTrashedRegisters() in D:\dev\uxmal\reko\master\src\Environments\NeoGeo\PocketPlatform.cs:line 57
+   at Reko.Analysis.TrashedRegisterFinder.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 378
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.ProcessBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 181
+00200261: error: Error while analyzing trashed registers.
+    The method or operation is not implemented.
+       at Reko.Environments.NeoGeo.PocketPlatform.CreateTrashedRegisters() in D:\dev\uxmal\reko\master\src\Environments\NeoGeo\PocketPlatform.cs:line 57
+   at Reko.Analysis.TrashedRegisterFinder.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 378
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.ProcessBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 181
+00200261: error: Error while analyzing trashed registers.
+    The method or operation is not implemented.
+       at Reko.Environments.NeoGeo.PocketPlatform.CreateTrashedRegisters() in D:\dev\uxmal\reko\master\src\Environments\NeoGeo\PocketPlatform.cs:line 57
+   at Reko.Analysis.TrashedRegisterFinder.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 378
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.ProcessBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 181
+00200315: error: Error while analyzing trashed registers.
+    The method or operation is not implemented.
+       at Reko.Environments.NeoGeo.PocketPlatform.CreateTrashedRegisters() in D:\dev\uxmal\reko\master\src\Environments\NeoGeo\PocketPlatform.cs:line 57
+   at Reko.Analysis.TrashedRegisterFinder.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 378
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.ProcessBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 181
+00200315: error: Error while analyzing trashed registers.
+    The method or operation is not implemented.
+       at Reko.Environments.NeoGeo.PocketPlatform.CreateTrashedRegisters() in D:\dev\uxmal\reko\master\src\Environments\NeoGeo\PocketPlatform.cs:line 57
+   at Reko.Analysis.TrashedRegisterFinder.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 378
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.ProcessBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 181
+002001AF: error: An error occurred while processing instruction at address 002001AF.
+    The method or operation is not implemented.
+       at Reko.Environments.NeoGeo.PocketPlatform.CreateTrashedRegisters() in D:\dev\uxmal\reko\master\src\Environments\NeoGeo\PocketPlatform.cs:line 57
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 128
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+00200261: error: An error occurred while processing instruction at address 00200261.
+    The method or operation is not implemented.
+       at Reko.Environments.NeoGeo.PocketPlatform.CreateTrashedRegisters() in D:\dev\uxmal\reko\master\src\Environments\NeoGeo\PocketPlatform.cs:line 57
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 128
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+00200315: error: An error occurred while processing instruction at address 00200315.
+    The method or operation is not implemented.
+       at Reko.Environments.NeoGeo.PocketPlatform.CreateTrashedRegisters() in D:\dev\uxmal\reko\master\src\Environments\NeoGeo\PocketPlatform.cs:line 57
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 128
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+error: An error occurred during decompilation. System.NotImplementedException: The method or operation is not implemented.
+   at Reko.Arch.Tlcs.Tlcs900Architecture.GetRegisters() in D:\dev\uxmal\reko\master\src\Arch\Tlcs\Tlcs900Architecture.cs:line 159
+   at Reko.Analysis.RegisterLiveness.ByPassState.InitializeBlockFlow(Block block, ProgramDataFlow flow, Boolean isExitBlock) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\RegisterLiveness.cs:line 739
+   at Reko.Analysis.RegisterLiveness.set_CurrentState(State value) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\RegisterLiveness.cs:line 631
+   at Reko.Analysis.RegisterLiveness.Compute(Program p, ProgramDataFlow procFlow, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\RegisterLiveness.cs:line 77
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 217
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 129
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 131
+
 === unzip.dcproject

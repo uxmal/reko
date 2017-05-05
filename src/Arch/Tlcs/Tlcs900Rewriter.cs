@@ -87,12 +87,14 @@ namespace Reko.Arch.Tlcs
                 case Opcode.ld: RewriteLd(); break;
                 case Opcode.ldir: RewriteLdir(PrimitiveType.Byte, "--000-"); break;
                 case Opcode.ldirw: RewriteLdir(PrimitiveType.Word16, "--000-"); break;
+                case Opcode.mul: RewriteBinOp(m.UMul, ""); break;
                 case Opcode.pop: RewritePop(); break;
                 case Opcode.push: RewritePush(); break;
                 case Opcode.res: RewriteRes(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.set: RewriteSet(); break;
-                case Opcode.sll: RewriteSll("**0*0*"); break;
+                case Opcode.sll: RewriteShift(m.Shl,"**0*0*"); break;
+                case Opcode.srl: RewriteShift(m.Shr, "**0*0*"); break;
                 case Opcode.sub: RewriteBinOp(m.ISub, "***V1*"); break;
                 }
                 yield return rtlc;
