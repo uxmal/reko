@@ -1,0 +1,10 @@
+// fn00200089
+// Return size: 0
+void fn00200089()
+fn00200089_entry:
+	// succ:  l00200089
+l00200089:
+	xsp = fp
+fn00200089_exit:
+
+
