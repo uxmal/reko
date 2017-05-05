@@ -381,25 +381,18 @@ namespace Reko.UnitTests.Analysis
         [Category(Categories.UnitTests)]
 		public void VpCopyPropagate()
 		{
-			Identifier x = Reg32("x");
-			Identifier y = Reg32("y");
-			Identifier z = Reg32("z");
-			Identifier w = Reg32("w");
-            m.Assign(x, m.LoadDw(m.Word32(0x10004000)));
-            m.Assign(y, x);
-            m.Assign(z, m.IAdd(y, 2));
-            m.Assign(w, y);
+			Identifier x_2 = Reg32("x_2");
+			Identifier y_3 = Reg32("y_3");
+			Identifier z_4 = Reg32("z_4");
+			Identifier w_5 = Reg32("w_5");
+            m.Assign(x_2, m.LoadDw(m.Word32(0x10004000)));
+            m.Assign(y_3, x_2);
+            m.Assign(z_4, m.IAdd(y_3, 2));
+            m.Assign(w_5, y_3);
 
             var importResolver = mr.Stub<IImportResolver>();
             importResolver.Replay();
 
-            var sst = new SsaTransform(
-                program,
-                m.Procedure, 
-                new HashSet<Procedure>(),
-                importResolver, 
-                new ProgramDataFlow());
-            sst.Transform();
             var stms = m.Procedure.EntryBlock.Succ[0].Statements;
 			Assert.AreEqual("x_2 = Mem4[0x10004000:word32]", stms[0].ToString());
 			Assert.AreEqual("y_3 = x_2", stms[1].ToString());
@@ -407,9 +400,7 @@ namespace Reko.UnitTests.Analysis
 			Assert.AreEqual("w_5 = y_3", stms[3].ToString());
             m.Ssa.Dump(true);
 
-
-            ValuePropagator vp = new ValuePropagator(arch, sst.SsaState, listener);
-            stms.ForEach(s => vp.Transform(s));
+            RunValuePropagator();
 
 			Assert.AreEqual("x_2 = Mem4[0x10004000:word32]", stms[0].ToString());
 			Assert.AreEqual("y_3 = x_2", stms[1].ToString());
@@ -418,8 +409,8 @@ namespace Reko.UnitTests.Analysis
 
             m.Ssa.Dump(true);
 
-            Assert.AreEqual(3, m.Ssa.Identifiers.Single(i => i.Identifier.Name == "x").Uses.Count);
 			Assert.AreEqual(0, m.Ssa.Identifiers.Single(i => i.Identifier.Name == "y_3").Uses.Count);
+            Assert.AreEqual(3, m.Ssa.Identifiers.Single(i => i.Identifier.Name == "x_2").Uses.Count);
 		}
 
 		[Test]
