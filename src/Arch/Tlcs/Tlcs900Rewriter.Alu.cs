@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -62,6 +63,27 @@ namespace Reko.Arch.Tlcs
         {
             var src = RewriteSrc(this.instr.op2);
             var dst = RewriteDst(this.instr.op1, src, (d, s) => s);
+        }
+
+        private void RewriteLdir(PrimitiveType dt, string flags)
+        {
+            if (instr.op1 != null || instr.op2 != null)
+            {
+                EmitUnitTest("Tlcs900_rw_", "00010000");
+                Invalid();
+                return;
+            }
+            var tmp = frame.CreateTemporary(dt);
+            var src = frame.EnsureRegister(Tlcs900Registers.xhl);
+            var dst = frame.EnsureRegister(Tlcs900Registers.xde);
+            var cnt = frame.EnsureRegister(Tlcs900Registers.bc);
+            m.Assign(tmp, m.Load(dt, src));
+            m.Assign(m.Load(dt, dst), tmp);
+            m.Assign(src, m.IAdd(src, m.Int32(dt.Size)));
+            m.Assign(dst, m.IAdd(dst, m.Int32(dt.Size)));
+            m.Assign(cnt, m.ISub(cnt, m.Int16(1)));
+            m.Branch(m.Ne0(cnt), instr.Address, RtlClass.ConditionalTransfer);
+            EmitCc(null, flags);
         }
 
         private void RewriteLda()

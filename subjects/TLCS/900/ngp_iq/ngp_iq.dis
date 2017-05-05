@@ -8,11 +8,48 @@ l00200089:
 	call fn0020060C (retsize: 4;)
 	v3 = Mem0[0x00006F86:word32] | 1 << 0x06
 	Mem0[0x00006F86:word32] = v3
+	xix = 0x00200040
+	xiy = 0x00006FB8
+	b = 0x12
+	// succ:  l0020009B
+l0020009B:
+	v7 = Mem0[xix:word32]
+	xwa = v7
+	v9 = xwa
+	Mem0[xiy:word32] = v9
+	xiy = xiy + 0x00000004
+	b = b - 0x01
+	branch b != 0x00 l0020009B
+	// succ:  l002000A4 l0020009B
+l002000A4:
+	v10 = 0x00
+	Mem0[0x00008002:byte] = v10
+	v11 = 0x00
+	Mem0[0x00008003:byte] = v11
+	v12 = 0xA0
+	Mem0[0x00008004:byte] = v12
+	v13 = 0x98
+	Mem0[0x00008005:byte] = v13
+	wa = 0x0000
+	xhl = 0x0000A000
+	bc = 0x0200
+	// succ:  l002000C2
+l002000C2:
+	v17 = wa
+	Mem0[xhl:word16] = v17
+	xhl = xhl + 0x00000002
+	bc = bc - 0x0001
+	branch bc != 0x0000 l002000C2
+	// succ:  l002000C8 l002000C2
+l002000C8:
+	bc = 0x0250
+	xde = 0x0000A400
+	xhl = 0x0020061D
 fn00200089_exit:
 
 
 // fn0020060C
-// Return size: 0
+// Return size: 4
 void fn0020060C()
 fn0020060C_entry:
 	// succ:  l0020060C
@@ -24,7 +61,14 @@ l0020060C:
 	branch Test(NE,Z) l0020061C
 	// succ:  l00200613 l0020061C
 l00200613:
+	v7 = Mem0[0x00006F83:word32] & ~(1 << 0x03)
+	Mem0[0x00006F83:word32] = v7
+	v8 = 0x00
+	Mem0[0x00006DA0:byte] = v8
+	// succ:  l0020061C
 l0020061C:
+	return
+	// succ:  fn0020060C_exit
 fn0020060C_exit:
 
 

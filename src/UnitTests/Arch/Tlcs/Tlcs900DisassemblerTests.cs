@@ -324,5 +324,12 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("push\t0E", "090E");
             AssertCode("push\t1234", "0B3412");
         }
+
+        [Test]
+        public void Tlcs900_dis_ldir()
+        {
+            AssertCode("ldirw", "9311");
+            AssertCode("ldir",  "8311");
+        }
     }
 }

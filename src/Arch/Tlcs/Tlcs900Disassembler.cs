@@ -541,6 +541,17 @@ namespace Reko.Arch.Tlcs
             }
         }
 
+        private class LdirOpRec : OpRecBase
+        {
+            public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
+            {
+                if (dasm.opSize == 'w')
+                    return dasm.Decode(b, Opcode.ldirw, "");
+                else 
+                    return dasm.Decode(b, Opcode.ldir, "");
+            }
+        }
+
         private static int[] imm3Const = new int[8]
         {
             8, 1, 2, 3, 4, 5, 6, 7,

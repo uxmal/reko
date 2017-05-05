@@ -54,7 +54,7 @@ namespace Reko.Arch.Tlcs
             new OpRec(Opcode.invalid, ""),
             // 10
             new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new LdirOpRec(),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 

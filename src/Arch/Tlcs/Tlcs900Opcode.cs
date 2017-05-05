@@ -66,6 +66,7 @@ namespace Reko.Arch.Tlcs
         ldf,
         ldi,
         ldir,
+        ldirw,
         link,
         mdec1,
         mdec2,

@@ -83,7 +83,6 @@ namespace Reko.Arch.Tlcs
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetInstructionPointer(Address addr)

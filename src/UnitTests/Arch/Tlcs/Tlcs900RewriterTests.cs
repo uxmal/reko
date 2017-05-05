@@ -222,5 +222,39 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|L--|00010000(5): 1 instructions",
                 "1|L--|xix = 00200040");
         }
+
+        [Test]
+        public void Tlcs900_rw_ldir()
+        {
+            RewriteCode("8311");    // ldirw
+            AssertCode(
+                "0|L--|00010000(2): 9 instructions",
+                "1|L--|v2 = Mem0[xhl:byte]",
+                "2|L--|Mem0[xde:byte] = v2",
+                "3|L--|xhl = xhl + 0x00000001",
+                "4|L--|xde = xde + 0x00000001",
+                "5|L--|bc = bc - 0x0001",
+                "6|T--|if (bc != 0x0000) branch 00010000",
+                "7|L--|H = false",
+                "8|L--|V = false",
+                "9|L--|N = false");
+        }
+
+        [Test]
+        public void Tlcs900_rw_ldirw()
+        {
+            RewriteCode("9311");	// ldirw
+            AssertCode(
+                "0|L--|00010000(2): 9 instructions",
+                "1|L--|v2 = Mem0[xhl:word16]",
+                "2|L--|Mem0[xde:word16] = v2",
+                "3|L--|xhl = xhl + 0x00000002",
+                "4|L--|xde = xde + 0x00000002",
+                "5|L--|bc = bc - 0x0001",
+                "6|T--|if (bc != 0x0000) branch 00010000",
+                "7|L--|H = false",
+                "8|L--|V = false",
+                "9|L--|N = false");
+        }
     }
 }

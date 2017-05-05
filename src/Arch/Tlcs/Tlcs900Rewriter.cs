@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -82,6 +83,8 @@ namespace Reko.Arch.Tlcs
                 case Opcode.jp: RewriteJp(); break;
                 case Opcode.jr: RewriteJp(); break;
                 case Opcode.ld: RewriteLd(); break;
+                case Opcode.ldir: RewriteLdir(PrimitiveType.Byte, "--000-"); break;
+                case Opcode.ldirw: RewriteLdir(PrimitiveType.Word16, "--000-"); break;
                 case Opcode.res: RewriteRes(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.set: RewriteSet(); break;
