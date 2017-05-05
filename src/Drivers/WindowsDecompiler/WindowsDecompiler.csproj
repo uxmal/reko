@@ -161,6 +161,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\NeoGeo\NeoGeoPocket.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />

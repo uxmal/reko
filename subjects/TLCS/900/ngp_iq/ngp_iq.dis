@@ -5,6 +5,26 @@ fn00200089_entry:
 	// succ:  l00200089
 l00200089:
 	xsp = fp
+	call fn0020060C (retsize: 4;)
+	v3 = Mem0[0x00006F86:word32] | 1 << 0x06
+	Mem0[0x00006F86:word32] = v3
 fn00200089_exit:
+
+
+// fn0020060C
+// Return size: 0
+void fn0020060C()
+fn0020060C_entry:
+	// succ:  l0020060C
+l0020060C:
+	xsp = fp
+	v3 = Mem0[0x00006F91:byte]
+	N = true
+	SZHVC = cond(v3 - 0x00)
+	branch Test(NE,Z) l0020061C
+	// succ:  l00200613 l0020061C
+l00200613:
+l0020061C:
+fn0020060C_exit:
 
 
