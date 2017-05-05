@@ -205,6 +205,7 @@
     <Environments Include="$(ProjectDir)..\..\Environments\MacOS\$(OutDir)Reko.Environments.MacOS.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Msdos\$(OutDir)Reko.Environments.Msdos.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Msdos.Design\$(OutDir)Reko.Environments.Msdos.Design.*" />
+    <Environments Include="$(ProjectDir)..\..\Environments\NeoGeo\$(OutDir)Reko.Environments.NeoGeo.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\RT11\$(OutDir)Reko.Environments.RT11.*" />

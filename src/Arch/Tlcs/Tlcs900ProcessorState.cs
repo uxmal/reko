@@ -32,10 +32,21 @@ namespace Reko.Arch.Tlcs
     public class Tlcs900ProcessorState : ProcessorState
     {
         private Tlcs900Architecture arch;
+        private uint[] regs;
+        private bool[] valid;
 
         public Tlcs900ProcessorState(Tlcs900Architecture arch)
         {
             this.arch = arch;
+            this.regs = new uint[32];
+            this.valid = new bool[32];
+        }
+
+        public Tlcs900ProcessorState(Tlcs900ProcessorState that)
+        {
+            this.arch = that.arch;
+            this.regs = (uint[])that.regs.Clone();
+            this.valid = (bool[])that.valid.Clone();
         }
 
         public override IProcessorArchitecture Architecture
@@ -45,13 +56,16 @@ namespace Reko.Arch.Tlcs
 
         public override ProcessorState Clone()
         {
-            var that = new Tlcs900ProcessorState(arch);
+            var that = new Tlcs900ProcessorState(this);
             return that;
         }
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new NotImplementedException();
+            if (valid[r.Number])
+                return Constant.Create(r.DataType, regs[r.Number]);
+            else
+                return Constant.Invalid;
         }
 
         public override void OnAfterCall(FunctionType sigCallee)
@@ -66,7 +80,6 @@ namespace Reko.Arch.Tlcs
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
@@ -76,12 +89,20 @@ namespace Reko.Arch.Tlcs
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new NotImplementedException();
+            if (v.IsValid)
+            {
+                valid[r.Number] = true;
+                regs[r.Number] = v.ToUInt32();
+            }
+            else
+            {
+                valid[(int)r.Number] = false;
+                regs[r.Number] = 0xDDDDDDDD;
+            }
         }
     }
 }

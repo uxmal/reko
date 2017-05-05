@@ -64,10 +64,15 @@ namespace Reko.Arch.Tlcs
                 switch (instr.Opcode)
                 {
                 default:
-                    throw new AddressCorrelatedException(
+                case Opcode.invalid:
+                    host.Error(
                        instr.Address,
-                       "Rewriting of TLCS-900 instruction '{0}' not implemented yet.",
-                       instr.Opcode);
+                       string.Format(
+                           "Rewriting of TLCS-900 instruction '{0}' not implemented yet.",
+                           instr.Opcode));
+                    rtlc.Class = RtlClass.Invalid;
+                    m.Invalid();
+                    break;
                 case Opcode.add: RewriteBinOp(m.IAdd, "***V0*"); break;
                 case Opcode.call: RewriteCall(); break;
                 case Opcode.daa: RewriteDaa("****-*"); break;
