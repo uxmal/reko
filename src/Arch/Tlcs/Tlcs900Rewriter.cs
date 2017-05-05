@@ -78,6 +78,7 @@ namespace Reko.Arch.Tlcs
                 case Opcode.cp: RewriteCp("SZHV1C"); break;
                 case Opcode.daa: RewriteDaa("****-*"); break;
                 case Opcode.djnz: RewriteDjnz(); break;
+                case Opcode.ei: RewriteEi(); break;
                 case Opcode.inc: RewriteIncDec(m.IAdd, "****0-"); break;
                 case Opcode.lda: RewriteLda(); break;
                 case Opcode.jp: RewriteJp(); break;

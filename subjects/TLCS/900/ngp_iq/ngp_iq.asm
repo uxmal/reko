@@ -39,73 +39,69 @@ l002000C8:
 	ld	bc,0250
 	ld	xde,0000A400
 	ld	xhl,0020061D
+
+l002000D5:
 	ldirw
+
+l002000D7:
 	call	002005B8
 	ei	00
 	ld	bc,0010
 	ld	xde,00008300
 	ld	xhl,00200ABD
+
+l002000EA:
 	ldirw
+
+l002000EC:
 	ld	(000083E0),33
 	ld	(000083E1),07
 	ld	(00008118),80
 	jr	00200111
-	push	iz
-	pop	bc
-	jr	NZ,00200174
-	jr	OV,00207676
-	jr	ULE,0020017A
-	jr	GE,00200177
-	jr	NZ,0020012A
-	invalid
-	jr	MI,00207673
-	jr	MI,0020013E
-	nop
+002000FD                                        2E 49 6E              .In
+00200100 73 74 72 75 63 74 69 6F 6E 20 51 75 65 75 65 2E struction Queue.
+00200110 00                                              .              
+
+l00200111:
 	ld	xhl,002000FD
 	ld	d,04
 	ld	c,01
 	ld	b,00
 	call	00200557
 	jr	00200136
-	push	iz
-	ld	w,20
-	ld	w,54
-	jr	MI,0020019C
-	jr	OV,0020544C
-	jr	MI,00207598
-	jr	MI,00200151
-	ld	w,20
-	ld	w,2E
-	nop
+00200122       2E 20 20 20 54 65 73 74 20 53 75 69 74 65   .   Test Suite
+00200130 20 20 20 20 2E 00                                   ..         
+
+l00200136:
 	ld	xhl,00200122
 	ld	d,04
 	ld	c,01
 	ld	b,01
 	call	00200557
 	jr	00200154
-	invalid
-	jr	MI,002076B0
-	jr	MI,0020016D
-	jr	NV,002001B4
-	jr	NZ,002001B8
-	jr	OV,002001BC
+00200147                      51 75 65 75 65 20 6C 65 6E        Queue len
+00200150 67 74 68 00                                     gth.           
+
+l00200154:
 	ld	xhl,00200147
 	ld	d,04
 	ld	c,02
 	ld	b,04
 	call	00200557
 	jr	0020016E
-	ld	xiy,63657078
-	jr	OV,002065D2
-	nop
+00200165                45 78 70 65 63 74 65 64 00            Expected. 
+
+l0020016E:
 	ld	xhl,00200165
 	ld	d,02
 	ld	c,04
 	ld	b,05
 	call	00200557
 	jr	00200186
-	ld	xbc,61757463
-	jr	NV,00200186
+0020017F                                              41                A
+00200180 63 74 75 61 6C 00                               ctual.         
+
+l00200186:
 	ld	xhl,0020017F
 	ld	d,02
 	ld	c,04
@@ -114,11 +110,17 @@ l002000C8:
 	ld	xde,00007000
 	ld	xhl,00200363
 	ld	bc,012F
+
+l002001A2:
 	ldir
+
+l002001A4:
 	ld	w,01
 	call	002004F2
 	ld	xwa,00007000
 	call	T,(xwa)
+
+l002001B1:
 	ld	hl,0D06
 	ld	a,(00004003)
 	ld	w,04
@@ -129,49 +131,54 @@ l002000C8:
 	call	00200532
 	cp	(00004003),04
 	jr	NZ,002001E6
+
+l002001D0:
 	jr	002001D5
-	pop	sp
-	pop	hl
-	nop
+002001D2       4F 4B 00                                    OK.          
+
+l002001D5:
 	ld	xhl,002001D2
 	ld	d,01
 	ld	c,0F
 	ld	b,04
 	call	00200557
 	jr	002001FB
+
+l002001E6:
 	jr	002001EC
-	pop	iz
-	pop	sp
-	pop	hl
-	nop
+002001E8                         4E 4F 4B 00                     NOK.   
+
+l002001EC:
 	ld	xhl,002001E8
 	ld	d,03
 	ld	c,0F
 	ld	b,04
 	call	00200557
+
+l002001FB:
 	jr	00200206
-	pop	iz
-	jr	NC,00200220
-	jr	Z,0020026E
-	jr	MI,00206A78
-	nop
+002001FD                                        4E 6F 20              No 
+00200200 66 6C 75 73 68 00                               flush.         
+
+l00200206:
 	ld	xhl,002001FD
 	ld	d,04
 	ld	c,02
 	ld	b,08
 	call	00200557
 	jr	00200220
-	ld	xiy,63657078
-	jr	OV,00206684
-	nop
+00200217                      45 78 70 65 63 74 65 64 00        Expected.
+
+l00200220:
 	ld	xhl,00200217
 	ld	d,02
 	ld	c,04
 	ld	b,09
 	call	00200557
 	jr	00200238
-	ld	xbc,61757463
-	jr	NV,00200238
+00200231    41 63 74 75 61 6C 00                          Actual.       
+
+l00200238:
 	ld	xhl,00200231
 	ld	d,02
 	ld	c,04
@@ -180,11 +187,17 @@ l002000C8:
 	ld	xde,00007000
 	ld	xhl,00200492
 	ld	bc,0023
+
+l00200254:
 	ldir
+
+l00200256:
 	ld	w,01
 	call	002004F2
 	ld	xwa,00007000
 	call	T,(xwa)
+
+l00200263:
 	ld	hl,0D0A
 	ld	a,(00004003)
 	ld	w,04
@@ -195,50 +208,55 @@ l002000C8:
 	call	00200532
 	cp	(00004003),01
 	jr	NZ,00200298
+
+l00200282:
 	jr	00200287
-	pop	sp
-	pop	hl
-	nop
+00200284             4F 4B 00                                OK.        
+
+l00200287:
 	ld	xhl,00200284
 	ld	d,01
 	ld	c,0F
 	ld	b,08
 	call	00200557
 	jr	002002AD
+
+l00200298:
 	jr	0020029E
-	pop	iz
-	pop	sp
-	pop	hl
-	nop
+0020029A                               4E 4F 4B 00                 NOK. 
+
+l0020029E:
 	ld	xhl,0020029A
 	ld	d,03
 	ld	c,0F
 	ld	b,08
 	call	00200557
+
+l002002AD:
 	jr	002002BA
-	pop	ix
-	jr	NC,00200320
-	jr	C,002002D4
-	jr	GE,00200324
-	jr	ULE,0020752D
-	nop
+002002AF                                              4C                L
+002002B0 6F 6E 67 20 69 6E 73 74 72 00                   ong instr.     
+
+l002002BA:
 	ld	xhl,002002AF
 	ld	d,04
 	ld	c,02
 	ld	b,0C
 	call	00200557
 	jr	002002D4
-	ld	xiy,63657078
-	jr	OV,00206738
-	nop
+002002CB                                  45 78 70 65 63            Expec
+002002D0 74 65 64 00                                     ted.           
+
+l002002D4:
 	ld	xhl,002002CB
 	ld	d,02
 	ld	c,04
 	ld	b,0D
 	call	00200557
 	jr	002002EC
-	ld	xbc,61757463
-	jr	NV,002002EC
+002002E5                41 63 74 75 61 6C 00                  Actual.   
+
+l002002EC:
 	ld	xhl,002002E5
 	ld	d,02
 	ld	c,04
@@ -247,11 +265,17 @@ l002000C8:
 	ld	xde,00007000
 	ld	xhl,002004B5
 	ld	bc,002B
+
+l00200308:
 	ldir
+
+l0020030A:
 	ld	w,01
 	call	002004F2
 	ld	xwa,00007000
 	call	T,(xwa)
+
+l00200317:
 	ld	hl,0D0E
 	ld	a,(00004003)
 	ld	w,04
@@ -262,343 +286,49 @@ l002000C8:
 	call	00200532
 	cp	(00004003),00
 	jr	NZ,0020034C
+
+l00200336:
 	jr	0020033B
-	pop	sp
-	pop	hl
-	nop
+00200338                         4F 4B 00                        OK.    
+
+l0020033B:
 	ld	xhl,00200338
 	ld	d,01
 	ld	c,0F
 	ld	b,0C
 	call	00200557
 	jr	00200361
+
+l0020034C:
 	jr	00200352
-	pop	iz
-	pop	sp
-	pop	hl
-	nop
+0020034E                                           4E 4F               NO
+00200350 4B 00                                           K.             
+
+l00200352:
 	ld	xhl,0020034E
 	ld	d,03
 	ld	c,0F
 	ld	b,0C
 	call	00200557
+
+l00200361:
 	jr	00200361
-	ldf	00
-	invalid
-	rcf
-	sub	(xbc-0x37),xwa
-	ld	b,00
-	ld	c,0C
-	ld	xde,00007019
-	add	a,a
-	jr	NZ,00200486
-	jr	0020037A
-	ld	(xde),c
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	ld	(xde),00
-	inc	01,b
-	inc	00000001,xde
-	jr	00200373
-	ldf	00
-	dec	01,b
-	add	b,02
-	ld	(00004003),b
-	ret
-	ldf	00
-	invalid
-	rcf
-	ld	xwa,(xbc-0x39)
-	sub	(xde-0x37),xwa
-	ld	xde,00007019
-	ld	bc,0C0C
-	rcf
-	jr	002004A7
-	ld	(xde),bc
-	jr	C,002004AB
-	nop
-	nop
-	nop
-	ld	(00004003),a
-	ldf	00
-	ret
-	ldf	00
-	invalid
-	rcf
-	ld	xwa,(xbc-0x39)
-	ex	(xde-0x39),xwa
-	sub	(xhl-0x37),xwa
-	ld	(00007400),0C0C
-	ld	(00007500),0C0C
-	jr	002004D0
-	invalid
-	nop
-	jr	OV,002004D8
-	nop
-	ld	(00004003),a
-	ldf	00
-	ret
-	cp	(00006F85),00
-	jp	Z,(002000DD)
-	invalid
-	ld	bc,1EA8
-	halt
-	invalid
-	jr	002004F0
+00200363          17 00 C7 10 A9 C9 A8 CA A8 23 0C 42 19    .........#.B.
+00200370 70 00 00 C9 81 7E 0E 01 68 00 B2 43 00 00 00 00 p....~..h..C....
+00200380 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+; ...
+00200470 00 00 00 00 00 00 00 00 00 00 00 00 B2 00 00 CA ................
+00200480 61 EA 61 78 ED FE 17 00 CA 69 CA C8 02 F1 03 40 a.ax.....i.....@
+00200490 42 0E 17 00 C7 10 A9 C7 20 AA C9 A8 42 19 70 00 B....... ...B.p.
+002004A0 00 31 0C 0C 10 68 00 B2 51 67 00 00 00 00 F1 03 .1...h..Qg......
+002004B0 40 41 17 00 0E 17 00 C7 10 A9 C7 20 AA C7 30 AB @A......... ..0.
+002004C0 C9 A8 F1 00 74 02 0C 0C F1 00 75 02 0C 0C 68 00 ....t.....u...h.
+002004D0 F1 21 70 16 00 74 00 00 00 F1 03 40 41 17 00 0E .!p..t.....@A...
+002004E0 C1 85 6F 3F 00 F2 DD 00 20 D6 C7 31 A8 1E 05 01 ..o?.... ..1....
+002004F0 68 FE                                           h.             
+
+;; fn002004F2: 002004F2
+fn002004F2 proc
 	push	xwa
 	ld	(00004004),00
 	ld	a,(00007600)
@@ -626,6 +356,9 @@ l002000C8:
 	pop	xde
 	pop	xhl
 	ret
+
+;; fn00200532: 00200532
+fn00200532 proc
 	push	xhl
 	push	xbc
 	push	xwa
@@ -643,6 +376,9 @@ l002000C8:
 	pop	xbc
 	pop	xhl
 	ret
+
+;; fn00200557: 00200557
+fn00200557 proc
 	push	xhl
 	push	xde
 	sll	01,d
@@ -687,40 +423,33 @@ l002000C8:
 	ld	w,d
 	add	h,02
 	jp	00200532
+
+;; fn002005B8: 002005B8
+fn002005B8 proc
 	ld	xbc,00009000
 	ld	hl,04C0
+
+l002005C0:
 	ld	(xbc),00
 	add	xbc,00000001
 	sub	hl,0001
 	jr	NZ,002005C0
+
+l002005CF:
 	ld	xbc,00009800
 	ld	hl,04C0
+
+l002005D7:
 	ld	(xbc),00
 	add	xbc,00000001
 	sub	hl,0001
 	jr	NZ,002005D7
+
+l002005E6:
 	ret
-	push	xwa
-	push	xbc
-	push	xde
-	invalid
-	jr	NC,0020063B
-	inc	01,(00004004)
-	pop	xde
-	pop	xbc
-	pop	xwa
-	reti
-	push	sr
-	ldf	03
-	push	xix
-	add	w,w
-	add	w,w
-	ld	xix,00FFFE00
-	ld	xix,(xwa+a)
-	call	T,(xix)
-	pop	xix
-	pop	sr
-	ret
+002005E7                      38 39 3A 08 6F 4E C1 04 40        89:.oN..@
+002005F0 61 5A 59 58 07 02 17 03 3C C8 80 C8 80 44 00 FE aZYX....<....D..
+00200600 FF 00 E3 03 F0 E1 24 B4 E8 5C 03 0E             ......$..\..   
 
 ;; fn0020060C: 0020060C
 fn0020060C proc

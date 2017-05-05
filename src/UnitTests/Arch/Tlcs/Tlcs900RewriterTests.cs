@@ -256,5 +256,14 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "8|L--|V = false",
                 "9|L--|N = false");
         }
+
+        [Test]
+        public void Tlcs900_rw_ei()
+        {
+            RewriteCode("0600");	// ei	00
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|__ei(0x00)");
+        }
     }
 }
