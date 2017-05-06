@@ -28,7 +28,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Arch.Tlcs.Tlcs900
+namespace Reko.Arch.Tlcs.Tlcs90
 {
     public class MemoryOperand : MachineOperand
     {
@@ -94,11 +94,11 @@ namespace Reko.Arch.Tlcs.Tlcs900
             };
         }
 
-        public static MachineOperand Absolute(PrimitiveType size, uint uAddr)
+        public static MachineOperand Absolute(PrimitiveType size, ushort uAddr)
         {
             return new MemoryOperand(size)
             {
-                Offset = Constant.Word32(uAddr)
+                Offset = Constant.Word16(uAddr)
             };
         }
 
@@ -141,7 +141,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
             else
             {
-                var addr = Address.Ptr32(Offset.ToUInt32());
+                var addr = Address.Ptr16(Offset.ToUInt16());
                 writer.WriteAddress(addr.ToString(), addr);
             }
             writer.Write(')');
@@ -151,9 +151,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             if (-0x80 <= off && off < 0x80)
                 return "{0:X2}";
-            if (-0x8000 <= off && off < 0x8000)
-                return "{0:X4}";
-            return "{0:X8}";
+            return "{0:X4}";
         }
     }
 }

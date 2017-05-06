@@ -40,13 +40,13 @@ namespace Reko.Arch.Tlcs
         public static readonly RegisterStorage sp = new RegisterStorage("sp", 10, 0, PrimitiveType.Word16);
         public static readonly RegisterStorage pc = new RegisterStorage("pc", 11, 0, PrimitiveType.Word16);
 
-        public static readonly RegisterStorage a = new RegisterStorage("af", 0, 8, PrimitiveType.Word16);
-        public static readonly RegisterStorage b = new RegisterStorage("bc", 1, 8, PrimitiveType.Word16);
-        public static readonly RegisterStorage c = new RegisterStorage("bc", 1, 0, PrimitiveType.Word16);
-        public static readonly RegisterStorage d = new RegisterStorage("de", 2, 8, PrimitiveType.Word16);
-        public static readonly RegisterStorage e = new RegisterStorage("de", 2, 0, PrimitiveType.Word16);
-        public static readonly RegisterStorage h = new RegisterStorage("hl", 3, 8, PrimitiveType.Word16);
-        public static readonly RegisterStorage l = new RegisterStorage("hl", 3, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage a = new RegisterStorage("a", 0, 8, PrimitiveType.Word16);
+        public static readonly RegisterStorage b = new RegisterStorage("b", 1, 8, PrimitiveType.Word16);
+        public static readonly RegisterStorage c = new RegisterStorage("c", 1, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage d = new RegisterStorage("d", 2, 8, PrimitiveType.Word16);
+        public static readonly RegisterStorage e = new RegisterStorage("e", 2, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage h = new RegisterStorage("h", 3, 8, PrimitiveType.Word16);
+        public static readonly RegisterStorage l = new RegisterStorage("l", 3, 0, PrimitiveType.Word16);
         public static readonly RegisterStorage ix = new RegisterStorage("ix", 8, 0, PrimitiveType.Word16);
         public static readonly RegisterStorage iy = new RegisterStorage("iy", 9, 0, PrimitiveType.Word16);
 
@@ -59,6 +59,11 @@ namespace Reko.Arch.Tlcs
         public static readonly FlagGroupStorage V = new FlagGroupStorage(f, (uint)FlagM.VF, "V", PrimitiveType.Bool);
         public static readonly FlagGroupStorage N = new FlagGroupStorage(f, (uint)FlagM.NF, "N", PrimitiveType.Bool);
         public static readonly FlagGroupStorage C = new FlagGroupStorage(f, (uint)FlagM.CF, "C", PrimitiveType.Bool);
+
+        public static RegisterStorage[] byteRegs = new[]
+        {
+            b, c, d, e, h, l, a
+        };
 
         public static FlagGroupStorage[] flagBits = new[]
         {

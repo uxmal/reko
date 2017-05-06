@@ -101,6 +101,11 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
         }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         private void Invalid()
         {
             host.Error(
@@ -110,11 +115,6 @@ namespace Reko.Arch.Tlcs.Tlcs900
                    instr.Opcode));
             rtlc.Class = RtlClass.Invalid;
             m.Invalid();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         private Expression RewriteSrc(MachineOperand op)

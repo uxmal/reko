@@ -89,7 +89,7 @@ namespace Reko.Arch.Tlcs
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new Tlcs90State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)

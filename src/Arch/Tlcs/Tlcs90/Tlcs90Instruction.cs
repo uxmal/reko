@@ -29,6 +29,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
 {
     public class Tlcs90Instruction : MachineInstruction
     {
+        internal MachineOperand op1;
+        internal MachineOperand op2;
+
         public Opcode Opcode { get; set; }
 
         public override InstructionClass InstructionClass 
@@ -54,6 +57,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Opcode.ToString());
+            if (op1 == null)
+                return;
+            writer.Tab();
+            op1.Write(writer, options);
+            if (op2 == null)
+                return;
+            writer.Write(",");
+            op2.Write(writer, options);
         }
     }
 }

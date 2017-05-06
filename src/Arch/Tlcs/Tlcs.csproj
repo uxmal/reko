@@ -53,9 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConditionOperand.cs" />
-    <Compile Include="MemoryOperand.cs" />
+    <Compile Include="Tlcs900\ConditionOperand.cs" />
+    <Compile Include="Tlcs900\MemoryOperand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tlcs90\T90Rewriter.Control.cs" />
+    <Compile Include="Tlcs90\Tlcs90State.cs" />
+    <Compile Include="Tlcs90\MemoryOperand.cs" />
     <Compile Include="Tlcs90\Registers.cs" />
     <Compile Include="Tlcs900\Tlcs900Rewriter.Alu.cs" />
     <Compile Include="Tlcs900Architecture.cs" />
@@ -73,6 +76,9 @@
     <Compile Include="Tlcs90Architecture.cs" />
     <Compile Include="Tlcs90\Opcode.cs" />
     <Compile Include="Tlcs90\Tlcs90Disassembler.cs" />
+    <Compile Include="Tlcs90\Tlcs90Disassembler.dst.cs" />
+    <Compile Include="Tlcs90\Tlcs90Disassembler.reg.cs" />
+    <Compile Include="Tlcs90\Tlcs90Disassembler.src.cs" />
     <Compile Include="Tlcs90\Tlcs90Instruction.cs" />
     <Compile Include="Tlcs90\Tlcs90Rewriter.cs" />
   </ItemGroup>

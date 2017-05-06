@@ -18,63 +18,23 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
 
 namespace Reko.Arch.Tlcs.Tlcs90
 {
-    public enum Opcode
+    public partial class Tlcs90Rewriter 
     {
-        invalid,
-        nop,
-        ld,
-        ret,
-        incx,
-        halt,
-        di,
-        ei,
-        ex,
-        cpl,
-        add,
-        ldar,
-        mul,
-        div,
-        neg,
-        push,
-        pop,
-        adc,
-        sub,
-        sbc,
-        and,
-        xor,
-        or,
-        cp,
-        inc,
-        dec,
-        rrc,
-        rl,
-        rr,
-        sra,
-        sla,
-        sll,
-        srl,
-        bit,
-        res,
-        set,
-        jr,
-        djnz,
-        rcf,
-        scf,
-        ccf,
-        decx,
-        jp,
-        call,
-        callr,
-        exx,
-        daa,
-        ldw
+        private void RewriteJp()
+        {
+            if (instr.op2 != null)
+            {
+                EmitUnitTest();
+                Invalid();
+                return;
+            }
+            rtlc.Class = RtlClass.Transfer;
+            m.Goto(((AddressOperand)instr.op1).Address);
+        }
     }
 }

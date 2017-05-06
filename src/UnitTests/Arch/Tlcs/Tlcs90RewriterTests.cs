@@ -18,59 +18,64 @@
  */
 #endregion
 
+using NUnit.Framework;
+using Reko.Arch.Tlcs;
 using Reko.Arch.Tlcs.Tlcs90;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Reko.Core;
-using Reko.Arch.Tlcs;
-using NUnit.Framework;
 
 namespace Reko.UnitTests.Arch.Tlcs
 {
-    public class Tlcs90DisassemblerTests : DisassemblerTestBase<Tlcs90Instruction>
+    [TestFixture]
+    public class Tlcs90RewriterTests : RewriterTestBase
     {
         private Tlcs90Architecture arch = new Tlcs90Architecture();
+        private Address baseAddr = Address.Ptr16(0x0100);
+        private Tlcs90State state;
+        private MemoryArea image;
 
         public override IProcessorArchitecture Architecture
         {
             get { return arch; }
         }
 
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        {
+            return new Tlcs90Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
+        }
+
         public override Address LoadAddress
         {
-            get { return Address.Ptr16(0x0000); }
+            get { return baseAddr; }
         }
 
-        protected override ImageWriter CreateImageWriter(byte[] bytes)
+        protected override MemoryArea RewriteCode(string hexBytes)
         {
-            return new LeImageWriter(bytes);
+            var bytes = OperatingEnvironmentElement.LoadHexBytes(hexBytes)
+                .ToArray();
+            this.image = new MemoryArea(LoadAddress, bytes);
+            return image;
         }
 
-        private void AssertCode(string sExp, string hexBytes)
-        {
-            var i = DisassembleHexBytes(hexBytes);
-            Assert.AreEqual(sExp, i.ToString());
-        }
 
-        [Test]
-        public void Tlcs90_dis_nop()
+        [SetUp]
+        public void Setup()
         {
-            AssertCode("nop", "00");
-        }
-
-        [Test]
-        public void Tlcs90_dst()
-        {
-            AssertCode("ld\t(0000),a", "eb000026");
+            state = (Tlcs90State)arch.CreateProcessorState();
         }
 
         [Test]
-        public void Tlcs90_jp()
+        public void Tlcs90_rw_jp()
         {
-            AssertCode("jp\t0100", "1a0001");
+            RewriteCode("1A0001");	// jp	0100
+            AssertCode(
+                "0|T--|0100(3): 1 instructions",
+                "1|T--|goto 0100");
         }
     }
 }
