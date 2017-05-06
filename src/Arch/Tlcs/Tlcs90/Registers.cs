@@ -41,7 +41,6 @@ namespace Reko.Arch.Tlcs
         public static readonly RegisterStorage pc = new RegisterStorage("pc", 11, 0, PrimitiveType.Word16);
 
         public static readonly RegisterStorage a = new RegisterStorage("af", 0, 8, PrimitiveType.Word16);
-        public static readonly RegisterStorage f = new RegisterStorage("af", 0, 0, PrimitiveType.Word16);
         public static readonly RegisterStorage b = new RegisterStorage("bc", 1, 8, PrimitiveType.Word16);
         public static readonly RegisterStorage c = new RegisterStorage("bc", 1, 0, PrimitiveType.Word16);
         public static readonly RegisterStorage d = new RegisterStorage("de", 2, 8, PrimitiveType.Word16);
@@ -51,6 +50,32 @@ namespace Reko.Arch.Tlcs
         public static readonly RegisterStorage ix = new RegisterStorage("ix", 8, 0, PrimitiveType.Word16);
         public static readonly RegisterStorage iy = new RegisterStorage("iy", 9, 0, PrimitiveType.Word16);
 
+        public static readonly FlagRegister f = new FlagRegister("f", 0 ,PrimitiveType.Byte);
 
+        public static readonly FlagGroupStorage S = new FlagGroupStorage(f, (uint)FlagM.SF, "S", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage Z = new FlagGroupStorage(f, (uint)FlagM.ZF, "Z", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage H = new FlagGroupStorage(f, (uint)FlagM.HF, "H", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage X = new FlagGroupStorage(f, (uint)FlagM.XF, "X", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage V = new FlagGroupStorage(f, (uint)FlagM.VF, "V", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage N = new FlagGroupStorage(f, (uint)FlagM.NF, "N", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage C = new FlagGroupStorage(f, (uint)FlagM.CF, "C", PrimitiveType.Bool);
+
+        public static FlagGroupStorage[] flagBits = new[]
+        {
+            S, Z, H, X, V, N, C
+        };
+
+    }
+
+    public enum FlagM
+    {
+        SF = 128,
+        ZF = 64,
+
+        HF = 16,
+        XF = 8,
+        VF = 4,
+        NF = 2,
+        CF = 1
     }
 }

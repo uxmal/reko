@@ -45,7 +45,7 @@ namespace Reko.Arch.Tlcs
             this.FramePointerType = PrimitiveType.Pointer32;
             this.PointerType = PrimitiveType.Pointer32;
             this.WordWidth = PrimitiveType.Word32;
-            this.StackRegister = Registers.xsp;
+            this.StackRegister = Registers.sp;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -130,7 +130,7 @@ namespace Reko.Arch.Tlcs
             }
 
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.sr, grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(Registers.f, grf, GrfToString(grf), dt);
             return fl;
         }
 
