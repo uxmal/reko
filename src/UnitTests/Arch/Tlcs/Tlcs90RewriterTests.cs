@@ -77,5 +77,26 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|T--|0100(3): 1 instructions",
                 "1|T--|goto 0100");
         }
+
+        [Test]
+        public void Tlcs90_rw_ld()
+        {
+            RewriteCode("EB002026");	// ld	(2000),a
+            AssertCode(
+                "0|L--|0100(4): 2 instructions",
+                "1|L--|v3 = a",
+                "2|L--|Mem0[0x2000:byte] = v3");
+        }
+
+        [Test]
+        public void Tlcs90_rw_pop()
+        {
+            RewriteCode("58");	// pop	bc
+            AssertCode(
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|bc = Mem0[sp:word16]",
+                "2|L--|sp = sp + 0x0002");
+
+        }
     }
 }

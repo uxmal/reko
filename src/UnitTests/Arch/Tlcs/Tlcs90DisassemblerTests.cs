@@ -68,9 +68,21 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        public void Tlcs90_jp()
+        public void Tlcs90_dis_jp()
         {
             AssertCode("jp\t0100", "1a0001");
+        }
+
+        [Test]
+        public void Tlcs90_dis_pop_bc()
+        {
+            AssertCode("pop\tbc", "58");
+        }
+
+        [Test]
+        public void Tlcs90_dis_ld_n()
+        {
+            AssertCode("ld\t(FF42),a", "2F42");
         }
     }
 }

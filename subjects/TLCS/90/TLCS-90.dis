@@ -1,0 +1,14 @@
+// fn0000
+// Return size: 0
+void fn0000()
+fn0000_entry:
+	// succ:  l0000
+l0000:
+	sp = fp
+	// succ:  l0100
+l0100:
+	v4 = a
+	Mem0[null:byte] = v4
+fn0000_exit:
+
+

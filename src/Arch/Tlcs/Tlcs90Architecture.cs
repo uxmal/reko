@@ -144,7 +144,7 @@ namespace Reko.Arch.Tlcs
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            return Address.Ptr16(c.ToUInt16());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

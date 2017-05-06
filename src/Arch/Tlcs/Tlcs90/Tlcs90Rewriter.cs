@@ -27,6 +27,8 @@ using System.Threading.Tasks;
 using System.Collections;
 using Reko.Core;
 using System.Diagnostics;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
 
 namespace Reko.Arch.Tlcs.Tlcs90
 {
@@ -70,7 +72,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     Invalid();
                     break;
                 case Opcode.jp: RewriteJp(); break;
+                case Opcode.ld: RewriteLd(); break;
                 case Opcode.nop: m.Nop(); break;
+                case Opcode.pop: RewritePop(); break;
                 }
                 yield return rtlc;
             }
@@ -92,12 +96,80 @@ namespace Reko.Arch.Tlcs.Tlcs90
             m.Invalid();
         }
 
+        private Expression RewriteSrc(MachineOperand op)
+        {
+            var reg = op as RegisterOperand;
+            if (reg != null)
+            {
+                return frame.EnsureRegister(reg.Register);
+            }
+            var addr = op as AddressOperand;
+            if (addr != null)
+            {
+                return addr.Address;
+            }
+            var imm = op as ImmediateOperand;
+            if (imm != null)
+            {
+                return imm.Value;
+            }
+            var mem = op as MemoryOperand;
+            if (mem != null)
+            {
+                Expression ea;
+                if (mem.Base != null)
+                    throw new NotImplementedException();
+                else
+                {
+                    ea = arch.MakeAddressFromConstant(mem.Offset);
+                }
+                var tmp = frame.CreateTemporary(mem.Width);
+                m.Assign(tmp, m.Load(mem.Width, ea));
+                return tmp;
+            }
+
+            throw new NotImplementedException(op.GetType().Name);
+        }
+
+        private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression, Expression> fn)
+        {
+            var reg = op as RegisterOperand;
+            if (reg != null)
+            {
+                var id = frame.EnsureIdentifier(reg.Register);
+                m.Assign(id, fn(id, src));
+                return id;
+            }
+            var addr = op as AddressOperand;
+            if (addr != null)
+            {
+                return addr.Address;
+            }
+            var mem = op as MemoryOperand;
+            if (mem != null)
+            {
+                Expression ea;
+                if (mem.Base != null)
+                {
+                    ea = frame.EnsureRegister(mem.Base);
+                }
+                else
+                {
+                    ea = arch.MakeAddressFromConstant(mem.Offset);
+                }
+                var load = m.Load(mem.Width, ea);
+                var tmp = frame.CreateTemporary(ea.DataType);
+                m.Assign(tmp, fn(load, src));
+                m.Assign(m.Load(mem.Width, ea), tmp);
+                return tmp;
+            }
+            throw new NotImplementedException(op.GetType().Name);
+        }
 
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
             EmitUnitTest("Tlcs90_rw_");
-
         }
 
         [Conditional("DEBUG")]
@@ -113,13 +185,13 @@ namespace Reko.Arch.Tlcs.Tlcs90
             Debug.WriteLine("        [Test]");
             Debug.WriteLine("        public void {0}{1}()", prefix, dasm.Current.Opcode);
             Debug.WriteLine("        {");
-            Debug.Write("            BuildTest(");
+            Debug.Write("            RewriteCode(\"");
             Debug.Write(string.Join(
                 ", ",
-                bytes.Select(b => string.Format("0x{0:X2}", (int)b))));
-            Debug.WriteLine(");\t// " + dasm.Current.ToString());
+                bytes.Select(b => string.Format("{0:X2}", (int)b))));
+            Debug.WriteLine("\");\t// " + dasm.Current.ToString());
             Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", dasm.Current.Address, bytes.Length);
+            Debug.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", instr.Address, bytes.Length);
             Debug.WriteLine("                \"1|L--|@@@\");");
             Debug.WriteLine("        }");
             Debug.WriteLine("");

@@ -69,18 +69,31 @@ namespace Reko.Arch.Tlcs.Tlcs90
             var ops = new MachineOperand[2];
             Constant c;
             PrimitiveType size;
+
             for (int i = 0; i < format.Length; ++i)
             {
                 switch (format[i])
                 {
                 case ',':
                     continue;
+                case 'a':
+                    ops[op] = new RegisterOperand(Registers.a);
+                    break;
+                case 'B':
+                    ops[op] = new RegisterOperand(Registers.bc);
+                    break;
+                case 'D':
+                    ops[op] = new RegisterOperand(Registers.de);
+                    break;
                 case 'I':
                     // Immediate value
                     size = GetSize(format[++i]);
                     if (!rdr.TryReadLe(size, out c))
                         return null;
                     ops[op] = new ImmediateOperand(c);
+                    break;
+                case 'H':
+                    ops[op] = new RegisterOperand(Registers.hl);
                     break;
                 case 'J':
                     // Absolute jump.
@@ -89,8 +102,19 @@ namespace Reko.Arch.Tlcs.Tlcs90
                         return null;
                     ops[op] = AddressOperand.Ptr16(c.ToUInt16());
                     break;
-                case 'H':
-                    ops[op] = new RegisterOperand(Registers.hl);
+                case 'M':
+                    size = GetSize(format[++i]);
+                    ushort absAddr;
+                    if (!rdr.TryReadLeUInt16(out absAddr))
+                        return null;
+                    ops[op] = MemoryOperand.Absolute(size, absAddr);
+                    break;
+                case 'm':
+                    size = GetSize(format[++i]);
+                    byte pageAddr;
+                    if (!rdr.TryReadByte(out pageAddr))
+                        return null;
+                    ops[op] = MemoryOperand.Absolute(size, (ushort)(0xFF00|pageAddr));
                     break;
                 case 'S':
                     ops[op] = new RegisterOperand(Registers.sp);
@@ -216,6 +240,49 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
             public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
             {
+                Tlcs90Instruction instr;
+                MachineOperand operand;
+                switch (format[0])
+                {
+                case 'M':
+                    ushort absAddr;
+                    if (!dasm.rdr.TryReadLeUInt16(out absAddr))
+                        return null;
+                    if (!dasm.rdr.TryReadByte(out b))
+                        return null;
+                    instr = srcEncodings[b].Decode(b, dasm);
+                    if (instr == null)
+                        return null;
+
+                    operand = MemoryOperand.Absolute(dasm.dataWidth, absAddr);
+                    if (dasm.backPatchOp == 0)
+                        instr.op1 = operand;
+                    else if (dasm.backPatchOp == 1)
+                        instr.op2 = operand;
+                    else
+                        return null;
+                    return instr;
+                case 'm':
+                    byte pageAddr;
+                    if (!dasm.rdr.TryReadByte(out pageAddr))
+                        return null;
+                    if (!dasm.rdr.TryReadByte(out b))
+                        return null;
+                    instr = srcEncodings[b].Decode(b, dasm);
+                    if (instr == null)
+                        return null;
+
+                    operand = MemoryOperand.Absolute(dasm.dataWidth, (ushort)(0xFF00u | pageAddr));
+                    if (dasm.backPatchOp == 0)
+                        instr.op1 = operand;
+                    else if (dasm.backPatchOp == 1)
+                        instr.op2 = operand;
+                    else
+                        return null;
+                    return instr;
+
+                default: throw new NotImplementedException(string.Format("Tlcs-90: src {0}", format));
+                }
                 throw new NotImplementedException();
             }
         }
@@ -231,7 +298,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.incx, "Mw"),
+            new OpRec(Opcode.incx, "mw"),
 
             new OpRec(Opcode.ex, "D,H"),
             new OpRec(Opcode.ex, "A,@"),
@@ -241,7 +308,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.rcf, ""),
             new OpRec(Opcode.scf, ""),
             new OpRec(Opcode.ccf, ""),
-            new OpRec(Opcode.decx, "M"),
+            new OpRec(Opcode.decx, "mw"),
 
             // 10
             new OpRec(Opcode.cpl, "a"),
@@ -273,7 +340,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.ld, "a,r"),
             new OpRec(Opcode.ld, "a,r"),
             new OpRec(Opcode.ld, "a,r"),
-            new OpRec(Opcode.ld, "a,Mb"),
+            new OpRec(Opcode.ld, "a,mb"),
 
             new OpRec(Opcode.ld, "r,a"),
             new OpRec(Opcode.ld, "r,a"),
@@ -283,7 +350,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.ld, "r,a"),
             new OpRec(Opcode.ld, "r,a"),
             new OpRec(Opcode.ld, "r,a"),
-            new OpRec(Opcode.ld, "Mb,a"),
+            new OpRec(Opcode.ld, "mb,a"),
 
             // 30
             new OpRec(Opcode.ld, "r,Ib"),
@@ -294,7 +361,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.ld, "r,Ib"),
             new OpRec(Opcode.ld, "r,Ib"),
             new OpRec(Opcode.ld, "r,Ib"),
-            new OpRec(Opcode.ld, "M,Ib"),
+            new OpRec(Opcode.ld, "Mb,Ib"),
 
             new OpRec(Opcode.ld, "B,Iw"),
             new OpRec(Opcode.ld, "D,Iw"),
@@ -349,15 +416,15 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.invalid, ""),
 
             // 60
-            new OpRec(Opcode.add, "a,Mb"),
-            new OpRec(Opcode.adc, "a,Mb"),
-            new OpRec(Opcode.sub, "a,Mb"),
-            new OpRec(Opcode.sbc, "a,Mb"),
+            new OpRec(Opcode.add, "a,mb"),
+            new OpRec(Opcode.adc, "a,mb"),
+            new OpRec(Opcode.sub, "a,mb"),
+            new OpRec(Opcode.sbc, "a,mb"),
 
-            new OpRec(Opcode.and, "a,Mb"),
-            new OpRec(Opcode.xor, "a,Mb"),
-            new OpRec(Opcode.or,  "a,Mb"),
-            new OpRec(Opcode.cp,  "a,Mb"),
+            new OpRec(Opcode.and, "a,mb"),
+            new OpRec(Opcode.xor, "a,mb"),
+            new OpRec(Opcode.or,  "a,mb"),
+            new OpRec(Opcode.cp,  "a,mb"),
 
             new OpRec(Opcode.add, "a,Ib"),
             new OpRec(Opcode.adc, "a,Ib"),
@@ -399,7 +466,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.inc, "r"),
             new OpRec(Opcode.inc, "r"),
             new OpRec(Opcode.inc, "r"),
-            new OpRec(Opcode.inc, "Mb"),
+            new OpRec(Opcode.inc, "mb"),
 
             new OpRec(Opcode.dec, "r"),
             new OpRec(Opcode.dec, "r"),
@@ -409,7 +476,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.dec, "r"),
             new OpRec(Opcode.dec, "r"),
             new OpRec(Opcode.dec, "r"),
-            new OpRec(Opcode.dec, "Mb"),
+            new OpRec(Opcode.dec, "mb"),
 
             // 90
             new OpRec(Opcode.inc, "B"),
@@ -443,36 +510,36 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.sll, ""),
             new OpRec(Opcode.srl, ""),
 
-            new OpRec(Opcode.bit, "i,Mb"),
-            new OpRec(Opcode.bit, "i,Mb"),
-            new OpRec(Opcode.bit, "i,Mb"),
-            new OpRec(Opcode.bit, "i,Mb"),
+            new OpRec(Opcode.bit, "i,mw"),
+            new OpRec(Opcode.bit, "i,mw"),
+            new OpRec(Opcode.bit, "i,mw"),
+            new OpRec(Opcode.bit, "i,mw"),
 
-            new OpRec(Opcode.bit, "i,Mb"),
-            new OpRec(Opcode.bit, "i,Mb"),
-            new OpRec(Opcode.bit, "i,Mb"),
-            new OpRec(Opcode.bit, "i,Mb"),
+            new OpRec(Opcode.bit, "i,mw"),
+            new OpRec(Opcode.bit, "i,mw"),
+            new OpRec(Opcode.bit, "i,mw"),
+            new OpRec(Opcode.bit, "i,mw"),
 
             // B0
-            new OpRec(Opcode.res, "i,Mb"),
-            new OpRec(Opcode.res, "i,Mb"),
-            new OpRec(Opcode.res, "i,Mb"),
-            new OpRec(Opcode.res, "i,Mb"),
+            new OpRec(Opcode.res, "i,mw"),
+            new OpRec(Opcode.res, "i,mw"),
+            new OpRec(Opcode.res, "i,mw"),
+            new OpRec(Opcode.res, "i,mw"),
 
-            new OpRec(Opcode.res, "i,Mb"),
-            new OpRec(Opcode.res, "i,Mb"),
-            new OpRec(Opcode.res, "i,Mb"),
-            new OpRec(Opcode.res, "i,Mb"),
+            new OpRec(Opcode.res, "i,mw"),
+            new OpRec(Opcode.res, "i,mw"),
+            new OpRec(Opcode.res, "i,mw"),
+            new OpRec(Opcode.res, "i,mw"),
 
-            new OpRec(Opcode.set, "i,Mb"),
-            new OpRec(Opcode.set, "i,Mb"),
-            new OpRec(Opcode.set, "i,Mb"),
-            new OpRec(Opcode.set, "i,Mb"),
+            new OpRec(Opcode.set, "i,mw"),
+            new OpRec(Opcode.set, "i,mw"),
+            new OpRec(Opcode.set, "i,mw"),
+            new OpRec(Opcode.set, "i,mw"),
 
-            new OpRec(Opcode.set, "i,Mb"),
-            new OpRec(Opcode.set, "i,Mb"),
-            new OpRec(Opcode.set, "i,Mb"),
-            new OpRec(Opcode.set, "i,Mb"),
+            new OpRec(Opcode.set, "i,mw"),
+            new OpRec(Opcode.set, "i,mw"),
+            new OpRec(Opcode.set, "i,mw"),
+            new OpRec(Opcode.set, "i,mw"),
 
             // C0
             new OpRec(Opcode.jr, "c,jb"),
