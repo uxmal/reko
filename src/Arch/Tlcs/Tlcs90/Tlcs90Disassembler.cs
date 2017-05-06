@@ -92,6 +92,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
                         return null;
                     ops[op] = new ImmediateOperand(c);
                     break;
+                case 'i': // immediate value from opcode bits
+                    ops[op] = ImmediateOperand.Byte((byte)(b & 0x7));
+                    break;
                 case 'H':
                     ops[op] = new RegisterOperand(Registers.hl);
                     break;
@@ -204,28 +207,53 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
             public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
             {
+                RegisterStorage baseReg = null;
+                ushort? absAddr = null;
+                sbyte? offset = null;
                 switch (format[0])
                 {
                 case 'M':
-                    ushort absAddr;
-                    if (!dasm.rdr.TryReadLeUInt16(out absAddr))
+                    ushort a;
+                    if (!dasm.rdr.TryReadLeUInt16(out a))
                         return null;
-                    if (!dasm.rdr.TryReadByte(out b))
+                    absAddr = a;
+                    break;
+                case 'm':
+                    byte bb;
+                    if (!dasm.rdr.TryReadByte(out bb))
                         return null;
-                    var instr = dstEncodings[b].Decode(b, dasm);
-                    if (instr == null)
-                        return null;
-                    
-                    var operand = MemoryOperand.Absolute(dasm.dataWidth, absAddr);
-                    if (dasm.backPatchOp == 0)
-                        instr.op1 = operand;
-                    else if (dasm.backPatchOp == 1)
-                        instr.op2 = operand;
-                    else
-                        return null;
-                    return instr;
+                    absAddr = (ushort)(0xFF00 | bb);
+                    break;
+                case 'B': baseReg = Registers.bc; break;
+                case 'D': baseReg = Registers.de; break;
+                case 'H': baseReg = Registers.hl; break;
+                case 'X': baseReg = Registers.ix; break;
+                case 'Y': baseReg = Registers.iy; break;
+                case 'S': baseReg = Registers.sp; break;
+                default: throw new NotImplementedException(string.Format("Tlcs-90: dst {0}", format));
                 }
-                throw new NotImplementedException();
+                if (!dasm.rdr.TryReadByte(out b))
+                    return null;
+                var instr = dstEncodings[b].Decode(b, dasm);
+                if (instr == null)
+                    return null;
+
+                var operand = new MemoryOperand(dasm.dataWidth)
+                {
+                    Base = baseReg,
+                    Offset = absAddr.HasValue
+                        ? Constant.UInt16(absAddr.Value)
+                        : offset.HasValue
+                            ? Constant.SByte(offset.Value)
+                            : null,
+                };
+                if (dasm.backPatchOp == 0)
+                    instr.op1 = operand;
+                else if (dasm.backPatchOp == 1)
+                    instr.op2 = operand;
+                else
+                    return null;
+                return instr;
             }
         }
 

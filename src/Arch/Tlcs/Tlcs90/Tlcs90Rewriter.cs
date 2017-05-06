@@ -75,6 +75,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 case Opcode.ld: RewriteLd(); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.pop: RewritePop(); break;
+                case Opcode.ret: RewriteRet(); break;
                 }
                 yield return rtlc;
             }

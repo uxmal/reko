@@ -96,7 +96,15 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|L--|0100(1): 2 instructions",
                 "1|L--|bc = Mem0[sp:word16]",
                 "2|L--|sp = sp + 0x0002");
+        }
 
+        [Test]
+        public void Tlcs90_rw_ret()
+        {
+            RewriteCode("1E");	// ret
+            AssertCode(
+                "0|T--|0100(1): 1 instructions",
+                "1|T--|return (2,0)");
         }
     }
 }

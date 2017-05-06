@@ -28,5 +28,16 @@ l0100:
 	invalid
 	invalid
 	invalid
-Encoding 'a' not implemented yet.
+	ld	(FFED),a
+	invalid
+	ld	(iy),a
+	ld	(FFED),b
+	pop	bc
+	ret
+	ld	a,(FFEB)
+	ld	(FFBE),a
+	set	01,(FFBF)
+	ret	B0
+	set	07,(FF37)
+Encoding 'c' not implemented yet.
 

@@ -36,5 +36,17 @@ namespace Reko.Arch.Tlcs.Tlcs90
             rtlc.Class = RtlClass.Transfer;
             m.Goto(((AddressOperand)instr.op1).Address);
         }
+
+        private void RewriteRet()
+        {
+            if (instr.op2 != null)
+            {
+                EmitUnitTest();
+                Invalid();
+                return;
+            }
+            rtlc.Class = RtlClass.Transfer;
+            m.Return(2, 0);
+        }
     }
 }

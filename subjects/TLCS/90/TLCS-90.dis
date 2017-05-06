@@ -9,6 +9,8 @@ l0000:
 l0100:
 	v4 = a
 	Mem0[null:byte] = v4
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
 fn0000_exit:
 
 

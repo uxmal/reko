@@ -84,5 +84,11 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("ld\t(FF42),a", "2F42");
         }
+
+        [Test]
+        public void Tlcs90_dis_ret()
+        {
+            AssertCode("ret", "1E");
+        }
     }
 }

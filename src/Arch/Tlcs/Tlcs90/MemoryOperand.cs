@@ -37,7 +37,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         public Constant Offset;
         public int Increment;
 
-        private MemoryOperand(PrimitiveType size) : base(size)
+        public MemoryOperand(PrimitiveType size) : base(size)
         {
         }
 
