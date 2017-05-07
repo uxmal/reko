@@ -89,5 +89,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
         rlc,
         rld,
         rrd,
+        incw,
+        decw,
+        swi,
     }
 }

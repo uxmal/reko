@@ -145,13 +145,22 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("ldw\t(FF3A),2233", "3F3A3322");
         }
 
-        /*
-FE 59
-F9 66
-FE 59
-FC 3E
-F4 E5
-F0 DC 2E
-DA*/
+        [Test]
+        public void Tlcs90_dis_src_eh()
+        {
+            AssertCode("ld\tbc,(hl+a)", "F348");
+        }
+
+        [Test]
+        public void Tlcs90_dis_f4_e0_26()
+        {
+            AssertCode("ld\t(ix-0x20),a", "F4E026");
+        }
+
+        [Test]
+        public void Tlcs90_dis_f0_de_af()
+        {
+            AssertCode("bit\t07,(ix-0x22)", "F0DEAF");
+        }
     }
 }

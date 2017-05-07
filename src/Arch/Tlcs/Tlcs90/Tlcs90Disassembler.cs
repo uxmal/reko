@@ -83,6 +83,10 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     this.dataWidth = PrimitiveType.Byte;
                     ops[op] = new RegisterOperand(Registers.a);
                     break;
+                case '@':
+                    this.dataWidth = PrimitiveType.Word16;
+                    ops[op] = new RegisterOperand(Registers.af_);
+                    break;
                 case 'A':
                     this.dataWidth = PrimitiveType.Word16;
                     ops[op] = new RegisterOperand(Registers.af);
@@ -238,7 +242,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 if (!dasm.rdr.TryReadByte(out b))
                     return null;
                 dasm.byteReg = new RegisterOperand(regByte);
-                dasm.wordReg = new RegisterOperand(regWord);
+                if (regWord != null)
+                    dasm.wordReg = new RegisterOperand(regWord);
                 return regEncodings[b].Decode(b, dasm);
             }
         }
@@ -255,6 +260,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
             {
                 RegisterStorage baseReg = null;
+                RegisterStorage idxReg = null;
                 ushort? absAddr = null;
                 Constant offset = null;
                 switch (format[0])
@@ -283,9 +289,15 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     case 'S': baseReg = Registers.sp;  break;
                     case 'X': baseReg = Registers.ix;  break;
                     case 'Y': baseReg = Registers.ix;  break;
+                    case 'H': baseReg = Registers.hl; idxReg = Registers.a;  break;
                     default: throw new NotImplementedException(string.Format("Tlcs-90: dst {0}", format));
                     }
-                    offset = Constant.SByte((sbyte)b);
+                    if (idxReg == null)
+                    {
+                        if (!dasm.rdr.TryReadByte(out b))
+                            return null;
+                        offset = Constant.SByte((sbyte)b);
+                    }
                     break;
                 default: throw new NotImplementedException(string.Format("Tlcs-90: dst {0}", format));
                 }
@@ -331,16 +343,20 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 switch (format[0])
                 {
                 case 'E':
-                    if (!dasm.rdr.TryReadByte(out b))
-                        return null;
                     switch (format[1])
                     {
                     case 'S': baseReg = Registers.sp; break;
                     case 'X': baseReg = Registers.ix; break;
                     case 'Y': baseReg = Registers.iy; break;
+                    case 'H': baseReg = Registers.hl; idxReg = Registers.a;  break;
                     default: throw new NotImplementedException(string.Format("Tlcs-90: src {0}", format));
                     };
-                    offset = Constant.SByte((sbyte)b);
+                    if (idxReg == null)
+                    {
+                        if (!dasm.rdr.TryReadByte(out b))
+                            return null;
+                        offset = Constant.SByte((sbyte)b);
+                    }
                     break;
                 case 'B': baseReg = Registers.bc; break;
                 case 'D': baseReg = Registers.de; break;
@@ -412,8 +428,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
             // 10
             new OpRec(Opcode.cpl, "a"),
             new OpRec(Opcode.neg, "a"),
-            new OpRec(Opcode.mul, "H,n"),
-            new OpRec(Opcode.div, "H,n"),
+            new OpRec(Opcode.mul, "H,Ib"),
+            new OpRec(Opcode.div, "H,Ib"),
 
             new OpRec(Opcode.add, "X,Iw"),
             new OpRec(Opcode.add, "Y,Iw"),
@@ -586,7 +602,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.inc, "X"),
             new OpRec(Opcode.inc, "Y"),
             new OpRec(Opcode.inc, "A"),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.incw, "mw"),
 
             new OpRec(Opcode.dec, "B"),
             new OpRec(Opcode.dec, "D"),
@@ -596,7 +612,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.dec, "X"),
             new OpRec(Opcode.dec, "Y"),
             new OpRec(Opcode.dec, "A"),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.decw, "mw"),
 
             // A0
             new OpRec(Opcode.rrc, ""),
@@ -722,7 +738,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new RegOpRec(Registers.h, Registers.ix),
             new RegOpRec(Registers.l, Registers.iy),
             new RegOpRec(Registers.a, Registers.sp),
-            new OpRec(Opcode.invalid, "?"),     //$TODO: unclear in docs
+            new OpRec(Opcode.swi, ""), 
         };
         private Address addr;
 
