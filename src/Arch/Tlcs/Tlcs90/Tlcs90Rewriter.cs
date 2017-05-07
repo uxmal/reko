@@ -69,12 +69,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     Invalid();
                     break;
                 case Opcode.invalid:
+                    EmitUnitTest();
                     Invalid();
                     break;
                 case Opcode.jp: RewriteJp(); break;
                 case Opcode.ld: RewriteLd(); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.pop: RewritePop(); break;
+                case Opcode.push: RewritePush(); break;
                 case Opcode.ret: RewriteRet(); break;
                 }
                 yield return rtlc;

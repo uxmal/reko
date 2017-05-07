@@ -11,6 +11,122 @@ globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct "Globals"))
+T_2: (in v4_6 : (ptr byte))
+  Class: Eq_2
+  DataType: (ptr byte)
+  OrigDataType: (ptr (struct (0 T_26 t0000)))
+T_3: (in 0000 : ptr16)
+  Class: Eq_3
+  DataType: (ptr (ptr byte))
+  OrigDataType: (ptr (struct (0 T_6 t0000)))
+T_4: (in 0x0000 : word16)
+  Class: Eq_4
+  DataType: word16
+  OrigDataType: word16
+T_5: (in null + 0x0000 : word16)
+  Class: Eq_5
+  DataType: ptr16
+  OrigDataType: ptr16
+T_6: (in Mem0[null + 0x0000:word16] : word16)
+  Class: Eq_2
+  DataType: (ptr byte)
+  OrigDataType: word16
+T_7: (in v6_8 : byte)
+  Class: Eq_7
+  DataType: byte
+  OrigDataType: byte
+T_8: (in FFED : ptr16)
+  Class: Eq_8
+  DataType: (ptr byte)
+  OrigDataType: (ptr (struct (0 T_11 t0000)))
+T_9: (in 0x0000 : word16)
+  Class: Eq_9
+  DataType: word16
+  OrigDataType: word16
+T_10: (in 0xFFED + 0x0000 : word16)
+  Class: Eq_10
+  DataType: ptr16
+  OrigDataType: ptr16
+T_11: (in Mem0[0xFFED + 0x0000:byte] : byte)
+  Class: Eq_7
+  DataType: byte
+  OrigDataType: byte
+T_12: (in 0000 : ptr16)
+  Class: Eq_12
+  DataType: (ptr byte)
+  OrigDataType: (ptr (struct (0 T_15 t0000)))
+T_13: (in 0x0000 : word16)
+  Class: Eq_13
+  DataType: word16
+  OrigDataType: word16
+T_14: (in null + 0x0000 : word16)
+  Class: Eq_14
+  DataType: ptr16
+  OrigDataType: ptr16
+T_15: (in Mem0[null + 0x0000:byte] : byte)
+  Class: Eq_15
+  DataType: byte
+  OrigDataType: byte
+T_16: (in FFED : ptr16)
+  Class: Eq_16
+  DataType: (ptr byte)
+  OrigDataType: (ptr (struct (0 T_19 t0000)))
+T_17: (in 0x0000 : word16)
+  Class: Eq_17
+  DataType: word16
+  OrigDataType: word16
+T_18: (in 0xFFED + 0x0000 : word16)
+  Class: Eq_18
+  DataType: ptr16
+  OrigDataType: ptr16
+T_19: (in Mem13[0xFFED + 0x0000:byte] : byte)
+  Class: Eq_15
+  DataType: byte
+  OrigDataType: byte
+T_20: (in 0000 : ptr16)
+  Class: Eq_20
+  DataType: (ptr byte)
+  OrigDataType: (ptr (struct (0 T_23 t0000)))
+T_21: (in 0x0000 : word16)
+  Class: Eq_21
+  DataType: word16
+  OrigDataType: word16
+T_22: (in null + 0x0000 : word16)
+  Class: Eq_22
+  DataType: ptr16
+  OrigDataType: ptr16
+T_23: (in Mem13[null + 0x0000:byte] : byte)
+  Class: Eq_23
+  DataType: byte
+  OrigDataType: byte
+T_24: (in 0x0000 : word16)
+  Class: Eq_24
+  DataType: word16
+  OrigDataType: word16
+T_25: (in v4_6 + 0x0000 : word16)
+  Class: Eq_25
+  DataType: word16
+  OrigDataType: word16
+T_26: (in Mem17[v4_6 + 0x0000:byte] : byte)
+  Class: Eq_23
+  DataType: byte
+  OrigDataType: byte
+T_27: (in FFED : ptr16)
+  Class: Eq_27
+  DataType: (ptr byte)
+  OrigDataType: (ptr (struct (0 T_30 t0000)))
+T_28: (in 0x0000 : word16)
+  Class: Eq_28
+  DataType: word16
+  OrigDataType: word16
+T_29: (in 0xFFED + 0x0000 : word16)
+  Class: Eq_29
+  DataType: ptr16
+  OrigDataType: ptr16
+T_30: (in Mem19[0xFFED + 0x0000:byte] : byte)
+  Class: Eq_7
+  DataType: byte
+  OrigDataType: byte
 */
 typedef struct Globals {
 } Eq_1;

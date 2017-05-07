@@ -52,7 +52,28 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 
-            // 00
+            // 10
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.mul, "H,g"),
+            new OpRec(Opcode.div, "H,g"),
+
+            new OpRec(Opcode.add, "X,G"),
+            new OpRec(Opcode.add, "Y,G"),
+            new OpRec(Opcode.add, "S,G"),
+            new OpRec(Opcode.invalid, ""),
+
+            new OpRec(Opcode.tset, "i,g"),
+            new OpRec(Opcode.tset, "i,g"),
+            new OpRec(Opcode.tset, "i,g"),
+            new OpRec(Opcode.tset, "i,g"),
+
+            new OpRec(Opcode.tset, "i,g"),
+            new OpRec(Opcode.tset, "i,g"),
+            new OpRec(Opcode.tset, "i,g"),
+            new OpRec(Opcode.tset, "i,g"),
+
+            // 20
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -73,7 +94,28 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 
-            // 00
+            // 30
+            new OpRec(Opcode.ld, "r,g"),
+            new OpRec(Opcode.ld, "r,g"),
+            new OpRec(Opcode.ld, "r,g"),
+            new OpRec(Opcode.ld, "r,g"),
+
+            new OpRec(Opcode.ld, "r,g"),
+            new OpRec(Opcode.ld, "r,g"),
+            new OpRec(Opcode.ld, "r,g"),
+            new OpRec(Opcode.invalid, ""),
+
+            new OpRec(Opcode.ld, "B,G"),
+            new OpRec(Opcode.ld, "D,G"),
+            new OpRec(Opcode.ld, "H,G"),
+            new OpRec(Opcode.invalid, ""),
+
+            new OpRec(Opcode.ld, "X,G"),
+            new OpRec(Opcode.ld, "Y,G"),
+            new OpRec(Opcode.ld, "S,G"),
+            new OpRec(Opcode.invalid, ""),
+
+            // 40
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -94,7 +136,70 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 
-            // 00
+            // 50
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+
+            new OpRec(Opcode.ldi, ""),
+            new OpRec(Opcode.ldir, ""),
+            new OpRec(Opcode.ldd, ""),
+            new OpRec(Opcode.lddr, ""),
+
+            new OpRec(Opcode.cpi, ""),
+            new OpRec(Opcode.cpir, ""),
+            new OpRec(Opcode.cpd, ""),
+            new OpRec(Opcode.cpdr, ""),
+
+            // 60
+            new OpRec(Opcode.add, "a,g"),
+            new OpRec(Opcode.adc, "a,g"),
+            new OpRec(Opcode.sub, "a,g"),
+            new OpRec(Opcode.sbc, "a,g"),
+
+            new OpRec(Opcode.and, "a,g"),
+            new OpRec(Opcode.xor, "a,g"),
+            new OpRec(Opcode.or,  "a,g"),
+            new OpRec(Opcode.cp,  "a,g"),
+
+            new OpRec(Opcode.add, "g,Ib"),
+            new OpRec(Opcode.adc, "g,Ib"),
+            new OpRec(Opcode.sub, "g,Ib"),
+            new OpRec(Opcode.sbc, "g,Ib"),
+
+            new OpRec(Opcode.and, "g,Ib"),
+            new OpRec(Opcode.xor, "g,Ib"),
+            new OpRec(Opcode.or,  "g,Ib"),
+            new OpRec(Opcode.cp,  "g,Ib"),
+
+            // 70
+            new OpRec(Opcode.add, "H,G"),
+            new OpRec(Opcode.adc, "H,G"),
+            new OpRec(Opcode.sub, "H,G"),
+            new OpRec(Opcode.sbc, "H,G"),
+
+            new OpRec(Opcode.and, "H,G"),
+            new OpRec(Opcode.xor, "H,G"),
+            new OpRec(Opcode.or,  "H,G"),
+            new OpRec(Opcode.cp,  "H,G"),
+
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+
+            // 80
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -115,7 +220,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 
-            // 00
+            // 90
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -136,7 +241,49 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 
-            // 00
+            // A0
+            new OpRec(Opcode.rlc, "g"),
+            new OpRec(Opcode.rrc, "g"),
+            new OpRec(Opcode.rl, "g"),
+            new OpRec(Opcode.rr, "g"),
+
+            new OpRec(Opcode.sla, "g"),
+            new OpRec(Opcode.sra, "g"),
+            new OpRec(Opcode.sll, "g"),
+            new OpRec(Opcode.srl, "g"),
+
+            new OpRec(Opcode.bit, "i,g"),
+            new OpRec(Opcode.bit, "i,g"),
+            new OpRec(Opcode.bit, "i,g"),
+            new OpRec(Opcode.bit, "i,g"),
+
+            new OpRec(Opcode.bit, "i,g"),
+            new OpRec(Opcode.bit, "i,g"),
+            new OpRec(Opcode.bit, "i,g"),
+            new OpRec(Opcode.bit, "i,g"),
+
+            // B0
+            new OpRec(Opcode.res, "i,g"),
+            new OpRec(Opcode.res, "i,g"),
+            new OpRec(Opcode.res, "i,g"),
+            new OpRec(Opcode.res, "i,g"),
+
+            new OpRec(Opcode.res, "i,g"),
+            new OpRec(Opcode.res, "i,g"),
+            new OpRec(Opcode.res, "i,g"),
+            new OpRec(Opcode.res, "i,g"),
+
+            new OpRec(Opcode.set, "i,g"),
+            new OpRec(Opcode.set, "i,g"),
+            new OpRec(Opcode.set, "i,g"),
+            new OpRec(Opcode.set, "i,g"),
+
+            new OpRec(Opcode.set, "i,g"),
+            new OpRec(Opcode.set, "i,g"),
+            new OpRec(Opcode.set, "i,g"),
+            new OpRec(Opcode.set, "i,g"),
+
+            // C0
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -157,173 +304,26 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 
-            // 00
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            // D0
+            new OpRec(Opcode.ret, "c"),
+            new OpRec(Opcode.ret, "c"),
+            new OpRec(Opcode.ret, "c"),
+            new OpRec(Opcode.ret, "c"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.ret, "c"),
+            new OpRec(Opcode.ret, "c"),
+            new OpRec(Opcode.ret, "c"),
+            new OpRec(Opcode.ret, "c"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.ret, ""),
+            new OpRec(Opcode.ret, "c"),
+            new OpRec(Opcode.ret, "c"),
+            new OpRec(Opcode.ret, "c"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            // 00
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            // 00
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            // 00
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            // 00
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            // 00
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            // 00
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            // 00
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.ret, "c"),
+            new OpRec(Opcode.ret, "c"),
+            new OpRec(Opcode.ret, "c"),
+            new OpRec(Opcode.ret, "c"),
 
             // 00
             new OpRec(Opcode.invalid, ""),

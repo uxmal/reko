@@ -106,5 +106,25 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|T--|0100(1): 1 instructions",
                 "1|T--|return (2,0)");
         }
+
+        [Test]
+        public void Tlcs90_rw_push()
+        {
+            RewriteCode("50");	// push	bc
+            AssertCode(
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|sp = sp - 0x0002",
+                "2|L--|Mem0[sp:word16] = bc");
+        }
+
+        [Test]
+        public void Tlcs90_rw_ld_iy_nn()
+        {
+            RewriteCode("E300404D");    // ld\tiy,(4000)
+            AssertCode(
+                "0|L--|0100(4): 2 instructions",
+                "1|L--|v2 = Mem0[0x4000:word16]",
+                "2|L--|iy = v2");
+        }
     }
 }

@@ -90,5 +90,68 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("ret", "1E");
         }
+
+        [Test]
+        public void Tlcs90_dis_add_a_sp()
+        {
+            AssertCode("add\ta,(sp+0x04)", "F20460");
+        }
+
+        [Test]
+        public void Tlcs90_dis_jr()
+        {
+            AssertCode("jr\tZ,FFF0", "C6F0");
+        }
+
+        [Test]
+        public void Tlcs90_dis_push_af()
+        {
+            AssertCode("push\taf", "56");
+        }
+
+        [Test]
+        public void Tlcs90_dis_ld_iy_nn()
+        {
+            AssertCode("ld\tiy,(4000)", "E300404D");
+        }
+
+        [Test]
+        public void Tlcs90_dis_ld_b_n()
+        {
+            AssertCode("ld\tb,(FFED)", "E7ED28");
+        }
+
+        [Test]
+        public void Tlcs90_dis_ld_a_nn()
+        {
+            AssertCode("ld\ta,(4000)", "E300402E");
+        }
+
+        [Test]
+        public void Tlcs90_add_hl_sp()
+        {
+            AssertCode("add\thl,sp", "FE70");
+        }
+
+        [Test]
+        public void Tlcs90_dis_ld_pg_ib()
+        {
+            AssertCode("ld\t(FF3A),33", "373A33");
+        }
+
+        [Test]
+        public void Tlcs90_dis_ld_pd_iw()
+        {
+            AssertCode("ldw\t(FF3A),2233", "3F3A3322");
+        }
+
+        /*
+FE 59
+F9 66
+FE 59
+FC 3E
+F4 E5
+F0 DC 2E
+DA*/
     }
 }

@@ -1,16 +1,31 @@
-// fn0000
-// Return size: 0
-void fn0000()
-fn0000_entry:
-	// succ:  l0000
-l0000:
-	sp = fp
-	// succ:  l0100
-l0100:
-	v4 = a
-	Mem0[null:byte] = v4
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-fn0000_exit:
+void fn0106()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: a b iy
+// Preserved: bc sp
+fn0106_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l0106:
+	word16 v4_6 = Mem0[null:word16]
+	byte v6_8 = Mem0[0xFFED:byte]
+	Mem13[0xFFED:byte] = Mem0[null:byte]
+	Mem17[v4_6:byte] = Mem13[null:byte]
+	Mem19[0xFFED:byte] = v6_8
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0106_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp iy:<invalid> b:<invalid> a:<invalid> bc:bc -2(fp):bc
+
 
 

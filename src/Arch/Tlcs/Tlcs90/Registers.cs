@@ -70,6 +70,12 @@ namespace Reko.Arch.Tlcs
             S, Z, H, X, V, N, C
         };
 
+        public static RegisterStorage[] allRegs = new[]
+        {
+            bc, de, hl, ix, iy, sp,
+            a, b, c, d, e, f, h, l,
+        };
+
     }
 
     public enum FlagM

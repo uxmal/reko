@@ -134,12 +134,18 @@ namespace Reko.Arch.Tlcs
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return Registers.allRegs;
         }
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            var s = new StringBuilder();
+            foreach (var freg in Registers.flagBits)
+            {
+                if ((freg.FlagGroupBits & grf) != 0)
+                    s.Append(freg.Name);
+            }
+            return s.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c)

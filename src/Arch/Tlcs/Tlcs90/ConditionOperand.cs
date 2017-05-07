@@ -18,36 +18,48 @@
  */
 #endregion
 
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.Arch.Tlcs.Tlcs90
+namespace Reko.Arch.Tlcs
 {
-    partial class Tlcs90Rewriter
+    public class ConditionOperand : MachineOperand
     {
-        private void RewriteLd()
+        public CondCode Code;
+
+        public ConditionOperand(CondCode cc) : base(PrimitiveType.Byte)
         {
-            var src = RewriteSrc(instr.op2);
-            var dst = RewriteDst(instr.op1, src, (a, b) => b);
+            this.Code = cc;
         }
 
-        private void RewritePop()
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var sp = frame.EnsureRegister(Registers.sp);
-            var src = RewriteSrc(instr.op1);
-            m.Assign(src, m.LoadW(sp));
-            m.Assign(sp, m.IAdd(sp, m.Int16((short)src.DataType.Size)));
+            writer.Write(Code.ToString());
         }
+    }
 
-        private void RewritePush()
-        {
-            var sp = frame.EnsureRegister(Registers.sp);
-            var src = RewriteSrc(instr.op1);
-            m.Assign(sp, m.ISub(sp, m.Int16((short)src.DataType.Size)));
-            m.Assign(m.LoadW(sp), src);
-        }
+    public enum CondCode
+    {
+        F,
+        LT,
+        LE,
+        ULE,
+        OV,
+        M,
+        Z,
+        C,
+
+        T,
+        GE,
+        GT,
+        UGT,
+        NV,
+        P,
+        NZ,
+        NC
     }
 }

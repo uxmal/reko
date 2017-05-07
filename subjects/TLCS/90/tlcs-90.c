@@ -4,3 +4,13 @@
 
 #include "tlcs-90.h"
 
+void fn0106()
+{
+	byte * v4_6 = null + 0x00;
+	byte v6_8 = *(byte *) ~0x12;
+	*(byte *) ~0x12 = (byte) (null + 0x00);
+	*v4_6 = (byte) (null + 0x00);
+	*(byte *) ~0x12 = v6_8;
+	return;
+}
+
