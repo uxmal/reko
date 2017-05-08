@@ -59,6 +59,10 @@ namespace Reko.Arch.Tlcs.Tlcs900
             this.opDst = null;
             this.opSize = '\0';
             var instr = opRecs[b].Decode(b, this);
+            if (instr == null)
+            {
+                instr = new Tlcs900Instruction { Address = this.addr, Opcode = Opcode.invalid };
+            }
             instr.Length = (int)(rdr.Address - instr.Address);
             return instr;
         }
@@ -82,6 +86,9 @@ namespace Reko.Arch.Tlcs.Tlcs900
                     if (cc == CondCode.T)
                         continue;
                     op = new ConditionOperand(cc);
+                    break;
+                case 'A':
+                    op = new RegisterOperand(Tlcs900Registers.a);
                     break;
                 case '3': // Immediate encoded in low 3 bits
                     var c = Constant.Create(Size(fmt[1]), imm3Const[b & 7]);
@@ -253,7 +260,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                     return op;
                 default:
                     throw new FormatException(string.Format(
-                        "Unknown format {0] decoding bytes {1:X2}{2:X2}.",
+                        "Unknown format {0} decoding bytes {1:X2}{2:X2}.",
                             fmt[0], (int)b, (int)m));
                 }
                 SetSize(fmt[1]);
@@ -377,6 +384,16 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
         }
 
+        private RegisterOperand ExtraRegister(byte b, string width)
+        {
+            switch (b)
+            {
+            case 0x31: return new RegisterOperand(Tlcs900Registers.w);
+            case 0xE6: return new RegisterOperand(Tlcs900Registers.bc);
+            }
+            return null;
+        }
+
 
         public abstract class OpRecBase
         {
@@ -414,6 +431,29 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 dasm.opSrc = dasm.DecodeOperand(b, this.fmt);
                 if (dasm.opSrc == null || !dasm.rdr.TryReadByte(out b))
                     return dasm.Decode(b, Opcode.invalid, "");
+                return regOpRecs[b].Decode(b, dasm);
+            }
+        }
+
+        private class ExtraRegOprec :OpRecBase
+        {
+            private string width;
+
+            public ExtraRegOprec(string width)
+            {
+                this.width = width;
+            }
+
+            public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
+            {
+                if (!dasm.rdr.TryReadByte(out b))
+                    return null;
+                dasm.opSize = width[0];
+                dasm.opSrc = dasm.ExtraRegister(b, width);
+                if (dasm.opSrc == null)
+                    return null;
+                if (!dasm.rdr.TryReadByte(out b))
+                    return null;
                 return regOpRecs[b].Decode(b, dasm);
             }
         }
@@ -812,7 +852,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             new MemOpRec("-b"),
             new MemOpRec("+b"),
             new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new ExtraRegOprec("b"),
 
             new RegOpRec("rb"),
             new RegOpRec("rb"),
@@ -832,7 +872,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             new MemOpRec("-w"),
             new MemOpRec("+w"),
             new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new ExtraRegOprec("w"),
 
             new RegOpRec("rw"),
             new RegOpRec("rw"),
@@ -852,7 +892,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             new MemOpRec("-x"),
             new MemOpRec("+x"),
             new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new ExtraRegOprec("l"),
 
             new RegOpRec("rx"),
             new RegOpRec("rx"),

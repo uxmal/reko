@@ -21,7 +21,7 @@
 using Reko.Core;
 using Reko.Core.Types;
 
-namespace Reko.Arch.Tlcs
+namespace Reko.Arch.Tlcs.Tlcs90
 {
     public static class Registers
     {

@@ -332,5 +332,89 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "3|L--|N = false",
                 "4|L--|SZVC = cond(a)");
         }
+
+        [Test]
+        public void Tlcs900_rw_dec()
+        {
+            RewriteCode("C869");	// dec	01,w
+            AssertCode(
+                "0|L--|00010000(2): 3 instructions",
+                "1|L--|w = w - 0x01",
+                "2|L--|N = true",
+                "3|L--|SZHV = cond(w)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_bit()
+        {
+            RewriteCode("C93302");	// bit	02,c
+            AssertCode(
+                "0|L--|00010000(3): 3 instructions",
+                "1|L--|Z = (c & 1 << 0x02) == 0x00",
+                "2|L--|H = true",
+                "3|L--|N = false");
+        }
+
+        [Test]
+        public void Tlcs900_rw_div()
+        {
+            RewriteCode("D90A0A00");	// div	bc,000A
+            AssertCode(
+                "0|L--|00010000(4): 4 instructions",
+                "1|L--|v2 = bc",
+                "2|L--|c = v2 /u 0x000A",
+                "3|L--|b = v2 % 0x000A",
+                "4|L--|V = cond(c)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_rcf()
+        {
+            RewriteCode("10");	// rcf
+            AssertCode(
+                "0|L--|00010000(1): 1 instructions",
+                "1|L--|C = false");
+        }
+
+        [Test]
+        public void Tlcs900_rw_scf()
+        {
+            RewriteCode("11");	// scf
+            AssertCode(
+                "0|L--|00010000(1): 1 instructions",
+                "1|L--|C = true");
+        }
+
+        [Test]
+        public void Tlcs900_rw_or()
+        {
+            RewriteCode("CAE0");	// or	w,b
+            AssertCode(
+                "0|L--|00010000(2): 5 instructions",
+                "1|L--|w = w | b",
+                "2|L--|H = false",
+                "3|L--|N = false",
+                "4|L--|C = false",
+                "5|L--|SZV = cond(w)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_push_a()
+        {
+            RewriteCode("14");	// push a
+            AssertCode(
+                "0|L--|00010000(1): 2 instructions",
+                "1|L--|xsp = xsp - 0x00000001",
+                "2|L--|Mem0[xsp:byte] = a");
+        }
+
+        [Test]
+        public void Tlcs900_rw_ld_r3()
+        {
+            RewriteCode("D7E6A8");
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|bc = 0x0000");
+        }
     }
 }

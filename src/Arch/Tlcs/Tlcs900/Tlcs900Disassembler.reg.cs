@@ -93,12 +93,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             // 30
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.res, "Ib,Rz"),
+            new OpRec(Opcode.set, "Ib,Rz"),
+            new OpRec(Opcode.chg, "Ib,Rz"),
+            new OpRec(Opcode.bit, "Ib,Rz"),
 
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.tset, "Ib,Rz"),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),

@@ -159,6 +159,18 @@ namespace Reko.Arch.Tlcs
             throw new NotImplementedException();
         }
 
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            Dictionary<int, RegisterStorage> subs;
+            if (!Registers.Subregisters.TryGetValue(reg, out subs))
+                return null;
+            int key = (width << 4) | offset;
+            RegisterStorage subreg;
+            if (!subs.TryGetValue(key, out subreg))
+                return null;
+            return subreg;
+        }
+
         public override string GrfToString(uint grf)
         {
             StringBuilder s = new StringBuilder();

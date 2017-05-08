@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -37,6 +38,16 @@ namespace Reko.Arch.Tlcs.Tlcs900
             EmitCc(dst, flags);
         }
 
+        private void RewriteBit()
+        {
+            var Z = frame.EnsureFlagGroup(Tlcs900Registers.Z);
+            var bit = RewriteSrc(this.instr.op1);
+            var dst = RewriteSrc(this.instr.op2);
+            m.Assign(Z, m.Eq0(m.And(dst, m.Shl(m.Int8(1), bit))));
+            m.Assign(frame.EnsureFlagGroup(Tlcs900Registers.H), Constant.True());
+            m.Assign(frame.EnsureFlagGroup(Tlcs900Registers.N), Constant.False());
+        }
+
         private void RewriteCp(string flags)
         {
             var op1 = RewriteSrc(this.instr.op1);
@@ -50,6 +61,19 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var fn = host.PseudoProcedure("__daa", PrimitiveType.Byte, src);
             m.Assign(src, fn);
             EmitCc(src, flags);
+        }
+
+        private void RewriteDiv(Func<Expression, Expression, Expression> fn, string flags)
+        {
+            var reg = ((RegisterOperand)this.instr.op1).Register;
+            var op2 = RewriteSrc(this.instr.op2);
+            var tmp = frame.CreateTemporary(reg.DataType);
+            var quo = frame.EnsureRegister(arch.GetSubregister(reg, 0, 8));
+            var rem = frame.EnsureRegister(arch.GetSubregister(reg, 8, 8));
+            m.Assign(tmp, frame.EnsureRegister(reg));
+            m.Assign(quo, fn(tmp, op2));
+            m.Assign(rem, m.Remainder(tmp, op2));
+            EmitCc(quo, flags);
         }
 
         private void RewriteIncDec(Func<Expression, Expression, Expression> fn, string flags)
@@ -108,6 +132,11 @@ namespace Reko.Arch.Tlcs.Tlcs900
             m.Assign(m.Load(op.DataType, xsp), op);
         }
 
+        private void RewriteRcf()
+        {
+            m.Assign(frame.EnsureFlagGroup(Tlcs900Registers.C), Constant.False());
+        }
+
         private void RewriteRes()
         {
             var op1 = RewriteSrc(this.instr.op1);
@@ -119,6 +148,11 @@ namespace Reko.Arch.Tlcs.Tlcs900
                         m.Shl(m.Const(
                             PrimitiveType.Create(Domain.SignedInt, op1.DataType.Size),
                             1), b))));
+        }
+
+        private void RewriteScf()
+        {
+            m.Assign(frame.EnsureFlagGroup(Tlcs900Registers.C), Constant.True());
         }
 
         private void RewriteSet()

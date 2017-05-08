@@ -60,6 +60,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         public static readonly FlagRegister f = new FlagRegister("f", 8, PrimitiveType.Byte);
 
         internal static RegisterStorage[] regs;
+        internal static Dictionary<RegisterStorage, Dictionary<int, RegisterStorage>> Subregisters;
 
         public static readonly FlagGroupStorage S = new FlagGroupStorage(sr, 32, "S", PrimitiveType.Bool);
         public static readonly FlagGroupStorage Z = new FlagGroupStorage(sr, 16, "Z", PrimitiveType.Bool);
@@ -103,6 +104,94 @@ namespace Reko.Arch.Tlcs.Tlcs900
                     e,
                     h,
                     l,
+            };
+
+            Subregisters = new Dictionary<RegisterStorage, Dictionary<int, RegisterStorage>>()
+            {
+                {
+                    xwa, new Dictionary<int, RegisterStorage>
+                    {
+                        { 0x100, wa },
+                        { 0x080, a  },
+                        { 0x088, w }
+                    }
+                },
+                {
+                    xbc, new Dictionary<int, RegisterStorage>
+                    {
+                        { 0x100, bc },
+                        { 0x080, c  },
+                        { 0x088, b }
+                    }
+                },
+                {
+                    xde, new Dictionary<int, RegisterStorage>
+                    {
+                        { 0x100, de },
+                        { 0x080, e  },
+                        { 0x088, d }
+                    }
+                },
+                {
+                    xhl, new Dictionary<int, RegisterStorage>
+                    {
+                        { 0x100, hl },
+                        { 0x080, l  },
+                        { 0x088, h }
+                    }
+                },
+                {
+                    xix, new Dictionary<int, RegisterStorage>
+                    {
+                        { 0x100, ix },
+                    }
+                },
+                {
+                    xiy, new Dictionary<int, RegisterStorage>
+                    {
+                        { 0x100, iy },
+                    }
+                },
+                {
+                    xiz, new Dictionary<int, RegisterStorage>
+                    {
+                        { 0x100, iz },
+                    }
+                },
+                {
+                    xsp, new Dictionary<int, RegisterStorage>
+                    {
+                        { 0x100, sp },
+                    }
+                },
+               {
+                    wa, new Dictionary<int, RegisterStorage>
+                    {
+                        { 0x080, a  },
+                        { 0x088, w }
+                    }
+                },
+                {
+                    bc, new Dictionary<int, RegisterStorage>
+                    {
+                        { 0x080, c  },
+                        { 0x088, b }
+                    }
+                },
+                {
+                    de, new Dictionary<int, RegisterStorage>
+                    {
+                        { 0x080, e  },
+                        { 0x088, d }
+                    }
+                },
+                {
+                    hl, new Dictionary<int, RegisterStorage>
+                    {
+                        { 0x080, l  },
+                        { 0x088, h }
+                    }
+                },
             };
         }
     }
