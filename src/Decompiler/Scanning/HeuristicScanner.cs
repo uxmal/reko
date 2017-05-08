@@ -79,27 +79,6 @@ namespace Reko.Scanning
             }
         }
 
-        /// <summary>
-        /// Assumes that an initial recursive scan has been performed,
-        /// potentially leaving "islands" of unscanned data and code in the 
-        /// ImageMap.
-        /// </summary>
-        /// <returns>If there were any unscanned blocks, a ScanResults object.
-        /// If no unscanned blocks were found, returns null.</returns>
-        public ScanResults ScanImage()
-        {
-            //$TODO: scan user datas - may yield procedure addresses
-            //$TODO: scan image symbols
-
-            var sr = new ScanResults
-            {
-                KnownProcedures = FindKnownProcedures(),
-                ICFG = new DiGraph<RtlBlock>(),
-                DirectlyCalledAddresses = new Dictionary<Address, int>()
-            };
-            return ScanImage(sr);
-        }
-
         public ScanResults ScanImage(ScanResults sr)
         {
             // At this point, we have some entries in the image map
@@ -479,7 +458,7 @@ namespace Reko.Scanning
 
         void IScanner.ScanImage()
         {
-            this.ScanImage();
+            throw new NotImplementedException();
         }
 
         void IScannerQueue.EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint)

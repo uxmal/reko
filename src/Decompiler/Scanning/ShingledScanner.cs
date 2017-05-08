@@ -367,7 +367,7 @@ namespace Reko.Scanning
                 program.CreateImageReader(addr), 
                 arch.CreateProcessorState(),
                 storageBinder,
-                host);
+                this.host);
             return rw.GetEnumerator();
         }
 

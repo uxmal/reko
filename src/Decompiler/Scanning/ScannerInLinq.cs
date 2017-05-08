@@ -38,15 +38,15 @@ namespace Reko.Scanning
         //private const int binary_size = 10;
         private IServiceProvider services;
         private Program program;
-        private Scanner scanner;
+        private IRewriterHost host;
         private DecompilerEventListener eventListener;
         private ScanResults sr;
 
-        public ScannerInLinq(IServiceProvider services, Program program, Scanner scanner, DecompilerEventListener eventListener)
+        public ScannerInLinq(IServiceProvider services, Program program, IRewriterHost host, DecompilerEventListener eventListener)
         {
             this.services = services;
             this.program = program;
-            this.scanner = scanner;
+            this.host = host;
             this.eventListener = eventListener;
         }
 
@@ -133,30 +133,8 @@ namespace Reko.Scanning
             // have hopefully a bunch of procedure addresses to
             // break up the unscanned ranges.
 
-            var ranges = FindUnscannedRanges();
-            var frame = new StorageBinder();
-            var shsc = new ShingledScanner(this.program, this.scanner, frame, sr, this.eventListener);
-            bool unscanned = false;
-            foreach (var range in ranges)
-            {
-                unscanned = true;
-                try
-                {
-                    shsc.ScanRange(range.Item1,
-                        range.Item2,
-                        range.Item3,
-                        range.Item3.ToLinear() - range.Item2.ToLinear());
-                }
-                catch (AddressCorrelatedException aex)
-                {
-                    scanner.Error(aex.Address, aex.Message);
-                }
-            }
-            if (!unscanned)
-            {
-                // No unscanned blocks were found.
-                return null;
-            }
+            if (ScanInstructions(sr) == null)
+                return sr;
 
             var the_blocks = BuildBasicBlocks(sr);
 
@@ -165,7 +143,6 @@ namespace Reko.Scanning
             // Remove blocks that fall off the end of the segment
             // or into data.
             Probe(sr);
-            shsc.Dump("After shingle scan graph built");
             sr.ICFG = BuildIcfg(the_blocks);
             Probe(sr);
             sr.Dump("After shingle scan");
@@ -180,7 +157,7 @@ namespace Reko.Scanning
                 program,
                 sr,
                 program.SegmentMap.IsValidAddress,
-                scanner);
+                host);
             //RemoveInvalidBlocks(sr);
             Probe(sr);
             hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
@@ -189,6 +166,36 @@ namespace Reko.Scanning
             var pd = new ProcedureDetector(program, sr, this.eventListener);
             var procs = pd.DetectProcedures();
             sr.Procedures = procs;
+            return sr;
+        }
+
+        public ScanResults ScanInstructions(ScanResults sr)
+        {
+            var ranges = FindUnscannedRanges();
+            var frame = new StorageBinder();
+            var shsc = new ShingledScanner(this.program, this.host, frame, sr, this.eventListener);
+            bool unscanned = false;
+            foreach (var range in ranges)
+            {
+                unscanned = true;
+                try
+                {
+                    shsc.ScanRange(range.Item1,
+                        range.Item2,
+                        range.Item3,
+                        range.Item3.ToLinear() - range.Item2.ToLinear());
+                }
+                catch (AddressCorrelatedException aex)
+                {
+                    host.Error(aex.Address, aex.Message);
+                }
+            }
+            if (!unscanned)
+            {
+                // No unscanned blocks were found.
+                return null;
+            }
+            shsc.Dump("After shingle scan graph built");
             return sr;
         }
 

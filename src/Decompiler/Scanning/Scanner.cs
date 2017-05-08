@@ -1020,11 +1020,7 @@ namespace Reko.Scanning
                 sr.KnownProcedures.Add(sym.Address);
             }
 
-#if !NOT_EXPERIMENTAL
             var hsc = new ScannerInLinq(Services, Program, this, eventListener);
-#else
-            var hsc = new HeuristicScanner(Services, Program, this, eventListener);
-#endif
             sr = hsc.ScanImage(sr);
             if (sr != null)
             {

@@ -402,6 +402,14 @@ namespace Reko.Scanning
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
+                if (!program.SegmentMap.IsValidAddress(addrTarget))
+                {
+                    var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
+                    GenerateCallToOutsideProcedure(jmpSite, addrTarget);
+                    Emit(new ReturnInstruction());
+                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    return false;
+                }
                 var blockTarget = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
                 var blockSource = blockCur.IsSynthesized
                     ? blockCur
@@ -458,15 +466,7 @@ namespace Reko.Scanning
             {
                 if (!program.SegmentMap.IsValidAddress(addr))
                 {
-                    scanner.Warn(ric.Address, "Call target address {0} is invalid.", addr);
-                    sig = new FunctionType();
-                    EmitCall(
-                        CreateProcedureConstant(
-                            new ExternalProcedure(Procedure.GenerateName(addr), sig)),
-                        sig,
-                        chr,
-                        site);
-                    return OnAfterCall(sig, chr);
+                    return GenerateCallToOutsideProcedure(site, addr);
                 }
 
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
@@ -536,6 +536,20 @@ namespace Reko.Scanning
             var ic = new CallInstruction(call.Target, site);
             Emit(ic);
             sig = GuessProcedureSignature(ic);
+            return OnAfterCall(sig, chr);
+        }
+
+        private bool GenerateCallToOutsideProcedure(CallSite site, Address addr)
+        {
+            scanner.Warn(ric.Address, "Call target address {0} is invalid.", addr);
+            var sig = new FunctionType();
+            ProcedureCharacteristics chr = null;
+            EmitCall(
+                CreateProcedureConstant(
+                    new ExternalProcedure(Procedure.GenerateName(addr), sig)),
+                sig,
+                chr,
+                site);
             return OnAfterCall(sig, chr);
         }
 

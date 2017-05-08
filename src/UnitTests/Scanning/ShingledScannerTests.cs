@@ -217,18 +217,7 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(new byte[] { 1, 1, 1, 0, }, TakeEach(scseg, 4));
         }
 
-        [Test]
-        public void Shsc_Overlapping()
-        {
-            // At offset 0, we have 0x33, 0xC0, garbage.
-            // At offset 1, we have rol al,0x90, ret.
-            Given_x86_Image(0x33, 0xC0, 0xC0, 0x90, 0xc3);
-            Given_Scanner();
-            var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
-            sh.RemoveBadInstructionsFromGraph();
-            AssertValidInstructions(new byte[] { 0, 1, 0, 1, 1 }, seg.Address);
-        }
+  
 
         [Test]
         public void Shsc_FindPossiblePointersToCode()
@@ -322,28 +311,6 @@ namespace Reko.UnitTests.Scanning
                     0, 0, 0, 0, 0
                 },
                 scseg);
-        }
-
-        [Test(Description ="Calls to functions that turn out to be bad should also be bad")]
-        public void Shsc_BadCall()
-        {
-            // "It was a bad call, Ripley; it was a bad call."
-            // "'Bad call'?! Those people are *dead*, Burke!"
-            Given_x86_Image(
-                0x90, 0xC3,                                     // nop ret, should be OK
-                0x55, 0xE8, 0x01, 0x00, 0x00, 0x00, 0xC3,       // call to beyond ret
-                0x50, 0x00);                                    // push eax and then bad instruction
-            Given_Scanner();
-
-            var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = this.sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
-            this.sh.RemoveBadInstructionsFromGraph();
-            AssertValidInstructions(new byte[]
-                {
-                    1, 1,
-                    0, 0, 1, 0, 1, 0, 1,
-                    0, 0
-                }, seg.Address);
         }
 
         private void AssertValidInstructions(byte[] expected, Address addrBase)
@@ -442,70 +409,6 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
-        public void Shsc_Regression_0001()
-        {
-            Given_x86_Image(
-                0x55,
-                0x8B, 0xEC,
-                0x81, 0xEC, 0x68, 0x01, 0x00, 0x00,
-                0x53,
-                0x56,
-                0x57,
-                0x8D, 0xBD, 0x98, 0xFE, 0xFF, 0xFF,
-                0xB9, 0x5A, 0x00, 0x00, 0x00,
-                0xC3,
-                0xC3,
-                0xC3);
-            Given_Scanner();
-            var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
-            var dead = sh.RemoveBadInstructionsFromGraph();
-            var blocks = sh.BuildIcfg(dead);
-            var sExp =
-                "00010000 - 00010003" + nl +
-                "00010002 - 00010003" + nl +
-                "00010003 - 00010009" + nl +
-                "00010004 - 0001000A" + nl +
-                "00010006 - 0001000B" + nl +
-                "00010007 - 00010009" + nl +
-                "00010009 - 0001000A" + nl +
-                "0001000A - 0001000B" + nl +
-                "0001000B - 00010012" + nl +
-                "0001000D - 00010012" + nl +
-                "00010012 - 00010017" + nl +
-                "00010013 - 00010019" + nl +
-                "00010015 - 00010017" + nl +
-                "00010017 - 00010018" + nl +
-                "00010019 - 0001001A" + nl;
-            Assert.AreEqual(sExp, DumpBlocks(blocks));
-        }
-
-        [Test]
-        public void Shsc_Branch()
-        {
-            Given_x86_Image(
-                0xEB, 0x02,
-                0xC3,
-                0x00,
-                0xA1, 0x00, 0x00, 0x00, 0x00,
-                0xC3);
-            Given_Scanner();
-            var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
-            var dead = sh.RemoveBadInstructionsFromGraph();
-            var blocks = sh.BuildIcfg(dead);
-
-            var sExp =
-                "00010000 - 00010002" + nl +
-                "00010001 - 00010009" + nl +
-                "00010002 - 00010003" + nl +
-                "00010004 - 00010009" + nl +
-                "00010005 - 00010009" + nl +
-                "00010009 - 0001000A" + nl;
-            Assert.AreEqual(sExp, DumpBlocks(blocks));
-        }
-
-        [Test]
         public void Shsc_Results()
         {
             Given_x86_Image(m =>
@@ -521,31 +424,8 @@ namespace Reko.UnitTests.Scanning
             Given_Scanner();
             var sr = sh.ScanNew();
             Dump(sr);
-        } 
-        
-        [Test]
-        public void Shsc_Terminate()
-        {
-            Given_x86_Image(m =>
-            {
-                m.Hlt();
-                m.Mov(m.eax, 0);
-                m.Ret();
-            });
-            Given_Scanner();
-            host.Stub(h => h.EnsurePseudoProcedure(
-                Arg<string>.Is.Equal("__hlt"),
-                Arg<DataType>.Is.NotNull,
-                Arg<int>.Is.Equal(0))).
-                Return(new PseudoProcedure("__hlt", VoidType.Instance, 0));
+        }
 
-            var sr = sh.ScanNew();
-            sr.ICFG = sh.BuildIcfg(new HashSet<Address>());
-
-            var from = sr.ICFG.Nodes.Single(n => n.Address == Address.Ptr32(0x00100000));
-            var to = sr.ICFG.Nodes.Single(n => n.Address == Address.Ptr32(0x00100001));
-            Assert.IsFalse(sr.ICFG.ContainsEdge(from, to));
-        }  
     }
 }
 

@@ -19,9 +19,14 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Arch.X86;
+using Reko.Assemblers.x86;
 using Reko.Core;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using Reko.Scanning;
+using Reko.UnitTests.Mocks;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -35,15 +40,62 @@ namespace Reko.UnitTests.Scanning
     [TestFixture]
     public class ScannerInLinqTests
     {
+        private MockRepository mr;
         private ScanResults sr;
         private ScannerInLinq siq;
+        private Program program;
+        private string nl = Environment.NewLine;
+        private RelocationDictionary rd;
+        private IRewriterHost host;
+        private FakeDecompilerEventListener eventListener;
 
         [SetUp]
         public void Setup()
         {
+            this.mr = new MockRepository();
+            this.host = mr.Stub<IRewriterHost>();
             this.sr = new ScanResults();
             this.sr.FlatInstructions = new SortedList<Address, ScanResults.instr>();
             this.sr.FlatEdges = new List<ScanResults.link>();
+            this.eventListener = new FakeDecompilerEventListener();
+        }
+
+        private void Given_x86_Image(params byte[] bytes)
+        {
+            var image = new MemoryArea(
+                Address.Ptr32(0x10000),
+                bytes);
+            this.rd = image.Relocations;
+            var arch = new X86ArchitectureFlat32();
+            CreateProgram(image, arch);
+        }
+
+        private void Given_x86_Image(Action<X86Assembler> asm)
+        {
+            var addrBase = Address.Ptr32(0x100000);
+            var entry = new ImageSymbol(addrBase) { Type = SymbolType.Procedure };
+            var arch = new X86ArchitectureFlat32();
+            var m = new X86Assembler(null, new DefaultPlatform(null, arch), addrBase, new List<ImageSymbol> { entry });
+            asm(m);
+            this.program = m.GetImage();
+        }
+
+        private void CreateProgram(MemoryArea mem, IProcessorArchitecture arch)
+        {
+            var segmentMap = new SegmentMap(mem.BaseAddress);
+            var seg = segmentMap.AddSegment(new ImageSegment(
+                ".text",
+                mem,
+                AccessMode.ReadExecute)
+            {
+                Size = (uint)mem.Bytes.Length
+            });
+            seg.Access = AccessMode.ReadExecute;
+            var platform = new DefaultPlatform(null, arch);
+            program = new Program(
+                segmentMap,
+                arch,
+                platform);
         }
 
         private void Inst(int uAddr, int len, RtlClass rtlc)
@@ -126,9 +178,8 @@ namespace Reko.UnitTests.Scanning
 
         private void CreateScanner()
         {
-            this.siq = new ScannerInLinq(null, null, null, null);
+            this.siq = new ScannerInLinq(null, program, host, eventListener);
         }
-
 
         [Test]
         public void Siq_Blocks()
@@ -199,5 +250,92 @@ namespace Reko.UnitTests.Scanning
                 Assert.AreEqual(sExp, sActual);
             }
         }
+
+        [Test]
+        public void Siq_Overlapping()
+        {
+            // At offset 0, we have 0x33, 0xC0, garbage.
+            // At offset 1, we have rol al,0x90, ret.
+            Lin(0x00010000, 2, 0x00010002);
+            Lin(0x00010001, 3, 0x00010004);
+            Bad(0x00010002, 3);
+            End(0x00010004, 1);
+            CreateScanner();
+            var blocks = siq.BuildBasicBlocks(sr);
+            blocks = siq.RemoveInvalidBlocks(sr, blocks);
+            var sExp =
+            #region Expected
+@"00010001-00010005 (4): 
+";
+            #endregion
+            AssertBlocks(sExp, blocks);
+        }
+
+        [Test]
+        public void Siq_Regression_0001()
+        {
+            Given_x86_Image(
+                0x55,
+                0x8B, 0xEC,
+                0x81, 0xEC, 0x68, 0x01, 0x00, 0x00,
+                0x53,
+                0x56,
+                0x57,
+                0x8D, 0xBD, 0x98, 0xFE, 0xFF, 0xFF,
+                0xB9, 0x5A, 0x00, 0x00, 0x00,
+                0xC3,
+                0xC3,
+                0xC3);
+            CreateScanner();
+            var seg = program.SegmentMap.Segments.Values.First();
+            var scseg = siq.ScanInstructions(sr);
+            var blocks = siq.BuildBasicBlocks(sr);
+            blocks = siq.RemoveInvalidBlocks(sr, blocks);
+            var sExp =
+                "00010000-00010003 (3): 00010003" + nl +
+                "00010002-00010003 (1): 00010003" + nl +
+                "00010003-00010009 (6): 00010009" + nl +
+                "00010004-0001000A (6): 0001000A" + nl +
+                "00010006-0001000B (5): 0001000B" + nl +
+                "00010007-00010009 (2): 00010009" + nl +
+                "00010009-0001000A (1): 0001000A" + nl +
+                "0001000A-0001000B (1): 0001000B" + nl +
+                "0001000B-00010012 (7): 00010012" + nl +
+                "0001000D-00010012 (5): 00010012" + nl +
+                "00010012-00010017 (5): 00010017" + nl +
+                "00010013-00010019 (6): " + nl +
+                "00010015-00010017 (2): 00010017" + nl +
+                "00010017-00010018 (1): " + nl +
+                "00010019-0001001A (1): " + nl;
+            AssertBlocks(sExp, blocks);
+        }
+
+        [Test]
+        public void Siq_Terminate()
+        {
+            Given_x86_Image(m =>
+            {
+                m.Hlt();
+                m.Mov(m.eax, 0);
+                m.Ret();
+            });
+            CreateScanner();
+            host.Stub(h => h.EnsurePseudoProcedure(
+                Arg<string>.Is.Equal("__hlt"),
+                Arg<DataType>.Is.NotNull,
+                Arg<int>.Is.Equal(0))).
+                Return(new PseudoProcedure("__hlt", VoidType.Instance, 0));
+            mr.ReplayAll();
+
+            var sr = new ScanResults();
+            siq.ScanInstructions(sr);
+            var blocks = siq.BuildBasicBlocks(sr);
+            blocks = siq.RemoveInvalidBlocks(sr, blocks);
+
+            var from = blocks.Values.Single(n => n.id == Address.Ptr32(0x00100000));
+            var to = blocks.Values.Single(n => n.id == Address.Ptr32(0x00100001));
+            Assert.IsFalse(sr.FlatEdges.Any(e => e.first == from.id && e.second ==to.id));
+        }
+
     }
 }
