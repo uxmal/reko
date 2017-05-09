@@ -54,6 +54,7 @@ namespace Reko.Scanning
         {
             public Address id;
             public Address component_id;
+            internal instr[] instrs;
         }
 
         public void CollectStatistics(int binary_size)
@@ -158,7 +159,6 @@ namespace Reko.Scanning
                 sr,
                 program.SegmentMap.IsValidAddress,
                 host);
-            //RemoveInvalidBlocks(sr);
             Probe(sr);
             hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
             Probe(sr);
@@ -251,7 +251,6 @@ namespace Reko.Scanning
                     .Distinct()
                     .ToList();
 
-
                 if (components_to_merge.Count == 0)
                     break;
 
@@ -280,17 +279,14 @@ namespace Reko.Scanning
 
         public Dictionary<Address, block> BuildBasicBlocks(ScanResults sr)
         {
-            //DumpInstructions(sr);
-
-            // Compute all basic blocks -----------------------------------------------
-
-            // count and save the # of predecessors and successors for each instr
+            // Count and save the # of predecessors and successors for each
+            // instruction.
             foreach (var cSucc in
                     from link in sr.FlatEdges
                     group link by link.first into g
                     select new { addr = g.Key, Count = g.Count() })
             {
-                ScanResults.instr instr;
+                instr instr;
                 if (sr.FlatInstructions.TryGetValue(cSucc.addr, out instr))
                     instr.succ = cSucc.Count;
             }
@@ -299,11 +295,10 @@ namespace Reko.Scanning
                     group link by link.second into g
                     select new { addr = g.Key, Count = g.Count() })
             {
-                ScanResults.instr instr;
+                instr instr;
                 if (sr.FlatInstructions.TryGetValue(cPred.addr, out instr))
                     instr.pred = cPred.Count;
             }
-            // This set contains all links between instructions and their immediate successors
 
             var the_excluded_edges = new HashSet<link>();
 
@@ -323,11 +318,14 @@ namespace Reko.Scanning
 
             // Build global block graph
             var the_blocks =
-                     sr.FlatInstructions
-                     .Select(i => i.Value.block_id)
-                     .Distinct()
-                     .ToDictionary(k => k, v => new block { id = v, component_id = v });
-            //DumpBlocks(sr, the_blocks);
+                (from i in sr.FlatInstructions.Values
+                 group i by i.block_id into g
+                 select new block
+                 {
+                     id = g.Key,
+                     instrs = g.OrderBy(ii => ii.addr).ToArray()
+                 })
+                .ToDictionary(b => b.id);
 
             sr.FlatEdges = 
                 (from link in sr.FlatEdges
@@ -342,7 +340,7 @@ namespace Reko.Scanning
 
         public Dictionary<Address, block> RemoveInvalidBlocks(ScanResults sr, Dictionary<Address, block> blocks)
         {
-            // Find transitive closure of bad instructions ------------------------
+            // Find transitive closure of bad instructions 
 
             var bad_blocks =
                 (from i in sr.FlatInstructions.Values
@@ -359,11 +357,17 @@ namespace Reko.Scanning
             for (;;)
             {
                 // Find all blocks that are reachable from blocks
-                // that already are known to be "bad"
-                new_bad =
-                    new_bad.SelectMany(bad => preds[bad]).Select(l => l.first)
-                    .Where(bad => !bad_blocks.Contains(bad))
-                        .ToHashSet();
+                // that already are known to be "bad", but that don't
+                // end in a call.
+                //$TODO: delay slots. @#$#@
+                new_bad = new_bad
+                    .SelectMany(bad => preds[bad])
+                    .Where(l => 
+                        !bad_blocks.Contains(l.first)
+                        &&
+                        !BlockEndsWithCall(blocks[l.first]))
+                    .Select(l => l.first)
+                    .ToHashSet();
 
                 if (new_bad.Count == 0)
                     break;
@@ -389,6 +393,16 @@ namespace Reko.Scanning
                 .ToDictionary(k => k.id);
 
             return blocks;
+        }
+
+        private bool BlockEndsWithCall(block block)
+        {
+            int len = block.instrs.Length;
+            if (len < 1)
+                return false;
+            if (block.instrs[len - 1].type == (uint)(RtlClass.Call | RtlClass.Transfer))
+                return true;
+            return false;
         }
 
         public DiGraph<RtlBlock> BuildIcfg(Dictionary<Address, block> blocks)

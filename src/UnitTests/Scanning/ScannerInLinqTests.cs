@@ -123,6 +123,19 @@ namespace Reko.UnitTests.Scanning
             Link(addr, next);
         }
 
+        private void Call(int uAddr, int len, int next)
+        {
+            var addr = Address.Ptr32((uint)uAddr);
+            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            {
+                addr = addr,
+                size = len,
+                block_id = addr,
+                type = (ushort)(RtlClass.Transfer|RtlClass.Call)
+            });
+            Link(addr, next);
+        }
+
         private void Bra(int uAddr, int len, int a, int b)
         {
             var addr = Address.Ptr32((uint)uAddr);
@@ -337,5 +350,47 @@ namespace Reko.UnitTests.Scanning
             Assert.IsFalse(sr.FlatEdges.Any(e => e.first == from.id && e.second ==to.id));
         }
 
+        [Test(Description = "Stop tracing invalid blocks at call boundaries")]
+        public void Siq_Call_TerminatesBlock()
+        {
+            Lin(0x1000, 3, 0x1003);
+            Lin(0x1003, 2, 0x1005);
+            Call(0x1005, 5, 0x100A);
+            End(0x100A, 1);
+            mr.ReplayAll();
+
+            CreateScanner();
+            var blocks = siq.BuildBasicBlocks(sr);
+            blocks = siq.RemoveInvalidBlocks(sr, blocks);
+
+            var sExp =
+            #region Expected
+@"00001000-0000100A (10): 0000100A
+0000100A-0000100B (1): 
+";
+            #endregion
+            AssertBlocks(sExp, blocks);
+        }
+
+        [Test(Description = "Stop tracing invalid blocks at call boundaries")]
+        public void Siq_CallThen_Invalid()
+        {
+            Lin(0x1000, 3, 0x1003);
+            Lin(0x1003, 2, 0x1005);
+            Call(0x1005, 5, 0x100A);
+            Bad(0x100A, 1);
+            mr.ReplayAll();
+
+            CreateScanner();
+            var blocks = siq.BuildBasicBlocks(sr);
+            blocks = siq.RemoveInvalidBlocks(sr, blocks);
+
+            var sExp =
+            #region Expected
+@"00001000-0000100A (10): 
+";
+            #endregion
+            AssertBlocks(sExp, blocks);
+        }
     }
 }
