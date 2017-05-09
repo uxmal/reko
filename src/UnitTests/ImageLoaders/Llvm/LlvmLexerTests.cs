@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.ImageLoaders.LLVM;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -55,23 +56,115 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             Assert.AreEqual(TokenType.Comment, tok.Type);
             Assert.AreEqual(" hello", tok.Value);
         }
+
+        [Test]
+        public void LLLex_reserved()
+        {
+            CreateLexer("  source_filename");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.source_filename, tok.Type);
+        }
+
+        [Test]
+        public void LLLex_string()
+        {
+            CreateLexer("\"foo.cpp\"");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.String, tok.Type);
+            Assert.AreEqual("foo.cpp", tok.Value);
+        }
+
+        [Test]
+        public void LLLex_local_id()
+        {
+            CreateLexer("%0");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.LocalId, tok.Type);
+            Assert.AreEqual("0", tok.Value);
+        }
+
+        [Test]
+        public void LLLex_global_id()
+        {
+            CreateLexer("@foo");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.GlobalId, tok.Type);
+            Assert.AreEqual("foo", tok.Value);
+        }
+
+        [Test]
+        public void LLLex_equal_sign()
+        {
+            CreateLexer("   = ");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.EQ, tok.Type);
+        }
+
+        [Test]
+        public void LLLex_char_array()
+        {
+            CreateLexer("c\"zero\\00\"");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.COMMA, tok.Type);
+            Assert.AreEqual("zero\\00", tok.Value);
+        }
+
+
+        [Test]
+        public void LLLex_comma()
+        {
+            CreateLexer(",");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.COMMA, tok.Type);
+        }
+
+        [Test]
+        public void LLLex_hash()
+        {
+            CreateLexer("#");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.HASH, tok.Type);
+        }
+
+        [Test]
+        public void LLLex_number_0()
+        {
+            CreateLexer("0");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.Integer, tok.Type);
+            Assert.AreEqual("0", tok.Value);
+        }
+
+        [Test]
+        public void LLLex_number_0xAA()
+        {
+            CreateLexer("0xAA");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.HexInteger, tok.Type);
+            Assert.AreEqual("AA", tok.Value);
+        }
+
+        [Test]
+        public void LLLex_number_ellipsis()
+        {
+            CreateLexer("...");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.ELLIPSIS, tok.Type);
+        }
+
+        [Test]
+        public void LLLexx()
+        {
+            using (var rdr = File.OpenText("d:/dev/uxmal/reko/master/subjects/llvm/foo/foo_mem2reg_strip.ll"))
+            {
+                this.lex = new LLVMLexer(rdr);
+                Token tok;
+                do
+                {
+                    tok = lex.GetToken();
+                    //Debug.Print("{0,-15} {1}", tok.Type, tok.Value);
+                } while (tok.Type != TokenType.EOF);
+            }
+        }
     }
-/*
-; clang -emit-llvm -S -o foo.ll foo.cpp
-
-; ModuleID = 'foo.cpp'
-source_filename = "foo.cpp"
-target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
-target triple = "x86_64-unknown-linux-gnu"
-
-%struct._IO_FILE = type { i32, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, %struct._IO_marker*, %struct._IO_FILE*, i32, i32, i64, i16, i8, [1 x i8], i8*, i64, i8*, i8*, i8*, i8*, i64, i32, [20 x i8] }
-%struct._IO_marker = type { %struct._IO_marker*, %struct._IO_FILE*, i32 }
-%struct.node = type { %struct.node*, i32 }
-%class.number = type { i32, i32 }
-%struct.variant = type { i32, %union.anon }
-%union.anon = type { i8* }
-
-@.str = private unnamed_addr constant [5 x i8] c"zero\00", align 1
-@.str.1 = private unnamed_addr constant [4 x i8] c"one\00", align 1
-*/
 }

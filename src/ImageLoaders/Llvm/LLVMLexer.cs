@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -30,11 +31,13 @@ namespace Reko.ImageLoaders.LLVM
     public class LLVMLexer
     {
         private TextReader rdr;
+        private StringBuilder sb;
 
         public LLVMLexer(TextReader rdr)
         {
             this.rdr = rdr;
             this.LineNumber = 1;
+
         }
 
         public int LineNumber { get; private set; }
@@ -42,17 +45,27 @@ namespace Reko.ImageLoaders.LLVM
         private enum State
         {
             Start,
-            Comment
+            Comment,
+            Reserved,
+            String,
+            Id,
+            c,
+            CharArray,
+            Zero,
+            Decimal,
+            Hex,
+            Dot1,
+            Dot2,
         }
 
         public Token GetToken()
         {
+            sb = null;
             var st = State.Start;
-            StringBuilder sb = null;
             EatWs();
             for (;;)
             {
-                int c = rdr.Read();
+                int c = rdr.Peek();
                 char ch = (char)c;
                 switch (st)
                 {
@@ -60,8 +73,35 @@ namespace Reko.ImageLoaders.LLVM
                     switch (c)
                     {
                     case -1: return new Token(TokenType.EOF);
-                    case ';': sb = new StringBuilder(); st = State.Comment; break;
+                    case '"': rdr.Read(); sb = new StringBuilder(); st = State.String; break;
+                    case ';': rdr.Read(); sb = new StringBuilder(); st = State.Comment; break;
+                    case '@':
+                    case '%': rdr.Read();  sb = new StringBuilder(); sb.Append(ch); st = State.Id; break;
+                    case '=': rdr.Read(); return Tok(TokenType.EQ); 
+                    case '(': rdr.Read(); return Tok(TokenType.LPAREN); 
+                    case '[': rdr.Read(); return Tok(TokenType.LBRACKET);
+                    case '{': rdr.Read(); return Tok(TokenType.LBRACE);
+                    case ')': rdr.Read(); return Tok(TokenType.RPAREN); 
+                    case ']': rdr.Read(); return Tok(TokenType.RBRACKET);
+                    case '}': rdr.Read(); return Tok(TokenType.RBRACE);
+                    case '*': rdr.Read(); return Tok(TokenType.STAR);
+                    case ',': rdr.Read(); return Tok(TokenType.COMMA);
+                    case '#': rdr.Read(); return Tok(TokenType.HASH);
+                    case 'c': rdr.Read(); st = State.c; break;
+                    case '0': rdr.Read(); sb = new StringBuilder(); sb.Append(ch); st = State.Zero; break;
+                    case '.': rdr.Read(); st = State.Dot1; break;
+                    case '!': rdr.Read(); return Tok(TokenType.BANG); break;
                     default:
+                        if (char.IsLetter(ch) || ch == '_')
+                        {
+                            rdr.Read();
+                            sb = new StringBuilder(); sb.Append(ch); st = State.Reserved; break;
+                        }
+                        if (char.IsDigit(ch))
+                        {
+                            rdr.Read();
+                            sb = new StringBuilder(); sb.Append(ch); st = State.Decimal; break;
+                        }
                         throw new FormatException(
                             string.Format("Unexpected character '{0}' (U+{1:X4}) on line {2}.",
                                 ch, c, LineNumber));
@@ -76,15 +116,177 @@ namespace Reko.ImageLoaders.LLVM
                         EatWs();
                         return Tok(TokenType.Comment, sb);
                     default:
+                        rdr.Read();
                         sb.Append(ch);
                         break;
+                    }
+                    break;
+                case State.Reserved:
+                    switch (c)
+                    {
+                    case -1: return ReservedWord(sb);
+                    default:
+                        if (char.IsLetterOrDigit(ch) || ch == '_')
+                        {
+                            rdr.Read();
+                            sb.Append(ch);
+                            break;
+                        }
+                        else
+                        {
+                            return ReservedWord(sb);
+                        }
+                    }
+                    break;
+                case State.String:
+                    switch (c)
+                    {
+                    case -1: throw new FormatException("Unterminated string.");
+                    case '"': rdr.Read(); return Tok(TokenType.String, sb);
+                    default: rdr.Read(); sb.Append(ch); break;
+                    }
+                    break;
+                case State.Id:
+                    switch(c)
+                    {
+                    case -1: return Identifier(sb);
+                    case '-':
+                    case '_':
+                    case '.':
+                    case '$':
+                        rdr.Read(); sb.Append(ch); break;
+                    default:
+                        if (char.IsLetterOrDigit(ch))
+                        {
+                            rdr.Read(); sb.Append(ch); break;
+                        }
+                        return Identifier(sb);
+                    }
+                    break;
+                case State.c:
+                    switch (c)
+                    {
+                    case -1: return ReservedWord("c");
+                    case '"': rdr.Read(); sb = new StringBuilder(); st = State.CharArray; break;
+                    default:
+                        rdr.Read();
+                        sb = new StringBuilder();
+                        sb.Append('c');
+                        sb.Append(ch);
+                        st = State.Reserved;
+                        break;
+                    }
+                    break;
+                case State.CharArray:
+                    switch (c)
+                    {
+                    case -1: throw new FormatException("Unterminated character array.");
+                    case '"': rdr.Read(); return Tok(TokenType.COMMA, sb);
+                    default: rdr.Read(); sb.Append(ch); break;
+                    }
+                    break;
+                case State.Zero:
+                    switch (c)
+                    {
+                    case -1: return Tok(TokenType.Integer, sb);
+                    case 'x':
+                    case 'X':
+                        rdr.Read(); sb.Clear(); st = State.Hex; break;
+                    default:
+                        if (char.IsDigit(ch))
+                        {
+                            rdr.Read(); sb.Append(ch); break;
+                        }
+                        else
+                        {
+                            return Tok(TokenType.Integer, sb);
+                        }
+                    }
+                    break;
+                case State.Decimal:
+                    switch (c)
+                    {
+                    case -1: return Tok(TokenType.Integer, sb);
+                    default:
+                        if (char.IsDigit(ch))
+                        {
+                            rdr.Read(); sb.Append(ch); break;
+                        }
+                        else
+                        {
+                            return Tok(TokenType.Integer, sb);
+                        }
+                    }
+                    break;
+                case State.Hex:
+                    switch (c)
+                    {
+                    case -1: return Tok(TokenType.HexInteger, sb);
+                    default:
+                        if ("0123456789abcdefABCDEF".IndexOf(ch) >= 0)
+                        {
+                            rdr.Read(); sb.Append(ch); break;
+                        }
+                        else
+                        {
+                            return Tok(TokenType.HexInteger, sb);
+                        }
+                    }
+                    break;
+                case State.Dot1:
+                    switch (c)
+                    {
+                    case -1: return Tok(TokenType.DOT);
+                    case '.':rdr.Read(); st = State.Dot2; break;
+                    default: return Tok(TokenType.DOT);
+                    }
+                    break;
+                case State.Dot2:
+                    switch (c)
+                    {
+                    case '.': rdr.Read(); return Tok(TokenType.ELLIPSIS);
+                    default: Unexpected(".."); break;
                     }
                     break;
                 }
             }
         }
 
-        private Token Tok(TokenType type, StringBuilder sb)
+        private void Unexpected(string un)
+        {
+            throw new FormatException(string.Format("Unexpected string '{0}' on line {1}.", un, LineNumber));
+        }
+
+        private Token Identifier(StringBuilder sb)
+        {
+            if (sb.Length < 2)
+            {
+                throw new FormatException("Invalid identifier.");
+            }
+            var type = sb[0] == '@'
+                ? TokenType.GlobalId
+                : TokenType.LocalId;
+            return new Token(type, sb.ToString(1, sb.Length - 1));
+        }
+
+        private Token ReservedWord(string s)
+        {
+            return new Token(reservedWords[s]);
+        }
+
+        private Token ReservedWord(StringBuilder sb)
+        {
+            TokenType type;
+            if (!reservedWords.TryGetValue(sb.ToString(), out type))
+            {
+                //throw new FormatException(string.Format("Unknown reserved word '{0}'.", sb.ToString()));
+                Debug.Print("Unknown reserved word '{0}'.", sb.ToString());
+                return new Token(TokenType.String, sb.ToString());
+            }
+            return new Token(reservedWords[sb.ToString()]);
+        }
+
+        private Token Tok(TokenType type, StringBuilder sb = null)
         {
             return new Token(type, 
                 sb != null ? sb.ToString() : null);
@@ -104,5 +306,59 @@ namespace Reko.ImageLoaders.LLVM
             }
             return true;
         }
+
+        static Dictionary<string, TokenType> reservedWords = new Dictionary<string, TokenType>
+        {
+            { "add", TokenType.add },
+            { "align", TokenType.align },
+            { "alloca", TokenType.alloca },
+            { "and", TokenType.and },
+            { "attributes", TokenType.attributes },
+            { "bitcast", TokenType.bitcast },
+            { "br", TokenType.br },
+            { "call", TokenType.call },
+            { "constant", TokenType.constant },
+            { "datalayout", TokenType.datalayout },
+            { "declare", TokenType.declare },
+            { "define", TokenType.define },
+            { "dereferenceable", TokenType.dereferenceable },
+            { "external", TokenType.external },
+            { "extractvalue", TokenType.extractvalue },
+            { "false", TokenType.@false },
+            { "getelementptr", TokenType.getelementptr },
+            { "global", TokenType.global },
+            { "i1", TokenType.i1 },
+            { "i8", TokenType.i8 },
+            { "i16", TokenType.i16 },
+            { "i32", TokenType.i32 },
+            { "i64", TokenType.i64 },
+            { "icmp", TokenType.icmp },
+            { "ident", TokenType.ident },
+            { "inbounds", TokenType.inbounds },
+            { "inttoptr", TokenType.inttoptr },
+            { "label", TokenType.label },
+            { "load", TokenType.load },
+            { "llvm", TokenType.llvm },
+            { "ne", TokenType.ne },
+            { "null", TokenType.@null },
+            { "private", TokenType.@private },
+            { "noinline", TokenType.noinline },
+            { "nounwind", TokenType.nounwind },
+            { "nsw", TokenType.nsw },
+            { "phi", TokenType.phi },
+            { "ret", TokenType.ret },
+            { "source_filename", TokenType.source_filename },
+            { "store", TokenType.store },
+            { "sub", TokenType.sub },
+            { "switch", TokenType.@switch },
+            { "target", TokenType.target },
+            { "to", TokenType.to },
+            { "triple", TokenType.triple },
+            { "type", TokenType.type },
+            { "unnamed_addr", TokenType.unnamed_addr },
+            { "uwtable", TokenType.uwtable },
+            { "void", TokenType.@void },
+            { "x", TokenType.x },
+        };
     }
 }
