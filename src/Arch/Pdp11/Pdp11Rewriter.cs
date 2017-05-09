@@ -68,9 +68,10 @@ namespace Reko.Arch.Pdp11
                         instr.Address,
                         "Rewriting of PDP-11 instruction {0} not supported yet.", 
                         instr.Opcode);
+                    rtlc = RtlClass.Invalid;
                     m.Invalid();
                     break;
-                case Opcode.illegal: m.Invalid(); break;
+                case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
                 case Opcode.adc: RewriteAdcSbc(m.IAdd); break;
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.addb: RewriteAdd(); break;
