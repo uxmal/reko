@@ -193,7 +193,7 @@ namespace Reko.UnitTests.Arch.Z80
             BuildTest(0xDD, 0xBE, 0x08);
             AssertCode(
                 "0|L--|0100(3): 1 instructions",
-                "1|L--|SZPC = a - Mem0[ix + 0x0008:byte]");
+                "1|L--|SZPC = cond(a - Mem0[ix + 0x0008:byte])");
         }
 
         [Test]

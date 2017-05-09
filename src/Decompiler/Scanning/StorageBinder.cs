@@ -109,6 +109,8 @@ namespace Reko.Scanning
         public Identifier EnsureRegister(RegisterStorage reg)
         {
             Identifier id;
+            if (reg == null)
+                return null;
             if (regs.TryGetValue(reg, out id))
                 return id;
             id = new Identifier(reg.Name, reg.DataType, reg);

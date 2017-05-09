@@ -338,7 +338,7 @@ namespace Reko.Arch.Z80
             var b = this.RewriteOp(dasm.Current.Op2);
             m.Assign(
                 FlagGroup(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.PF),
-                m.ISub(a, b));
+                m.Cond(m.ISub(a, b)));
         }
 
         private void RewriteCpir()
