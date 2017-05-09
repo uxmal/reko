@@ -546,7 +546,7 @@ namespace Reko.Arch.X86
         private void RewriteLeave()
         {
             var sp = orw.AluRegister(arch.StackRegister);
-            var bp = orw.AluRegister(arch.GetPart(Registers.ebp, arch.StackRegister.DataType));
+            var bp = orw.AluRegister(arch.GetPart(Registers.rbp, arch.StackRegister.DataType));
             m.Assign(sp, bp);
             m.Assign(bp, orw.StackAccess(sp, bp.DataType));
             m.Assign(sp, m.IAdd(sp, bp.DataType.Size));
@@ -1033,7 +1033,7 @@ namespace Reko.Arch.X86
         private void RewriteXlat()
         {
             var al = orw.AluRegister(Registers.al);
-            var bx = orw.AluRegister(Registers.ebx, instrCur.addrWidth);
+            var bx = orw.AluRegister(Registers.rbx, instrCur.addrWidth);
             var offsetType = PrimitiveType.Create(Domain.UnsignedInt, bx.DataType.Size); 
             m.Assign(
                 al,
