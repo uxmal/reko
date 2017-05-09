@@ -155,6 +155,7 @@ l00010009:  // pred: l00010008
         }
 
         [Test]
+        [Ignore("This code will be obsolete soon")]
         public void HPSC_TrickyProc()
         {
             Given_Image32(0x0010000, TrickyProc);
