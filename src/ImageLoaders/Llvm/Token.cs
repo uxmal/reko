@@ -28,34 +28,38 @@ namespace Reko.ImageLoaders.LLVM
 {
     public class Token
     {
-        public Token(TokenType type)
+        public Token(int line, TokenType type)
         {
+            this.LineNumber = line;
             this.Type = type;
         }
 
-
-        public Token(TokenType type, string value)
+        public Token(int line, TokenType type, string value)
         {
+            this.LineNumber = line;
             this.Type = type;
             this.Value = value;
         }
 
-        public TokenType Type { get; set; }
-        public string  Value { get; set; }
+        public int LineNumber { get; private set; }
+        public TokenType Type { get; private set; }
+        public string  Value { get; private set; }
     }
 
     public enum TokenType
     {
         EOF,
-        COMMA,
+        CharArray,
         Comment,
         GlobalId,
         LocalId,
         HexInteger,
         Integer,
+        IntType,
         String,
 
         BANG,
+        COMMA,
         DOT,
         ELLIPSIS,
         EQ,
@@ -94,6 +98,7 @@ namespace Reko.ImageLoaders.LLVM
         icmp,
         ident,
         inbounds,
+        inrange,
         inttoptr,
         label,
         load,
@@ -101,6 +106,7 @@ namespace Reko.ImageLoaders.LLVM
         ne,
         @null,
         @private,
+        nocapture,
         noinline,
         nounwind,
         nsw,

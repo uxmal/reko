@@ -56,12 +56,14 @@ namespace Reko.ImageLoaders.LLVM
             Hex,
             Dot1,
             Dot2,
+            i,
         }
 
         public Token GetToken()
         {
             sb = null;
             var st = State.Start;
+            this.lineStart = LineNumber;
             EatWs();
             for (;;)
             {
@@ -72,7 +74,7 @@ namespace Reko.ImageLoaders.LLVM
                 case State.Start:
                     switch (c)
                     {
-                    case -1: return new Token(TokenType.EOF);
+                    case -1: return new Token(lineStart, TokenType.EOF);
                     case '"': rdr.Read(); sb = new StringBuilder(); st = State.String; break;
                     case ';': rdr.Read(); sb = new StringBuilder(); st = State.Comment; break;
                     case '@':
@@ -88,9 +90,10 @@ namespace Reko.ImageLoaders.LLVM
                     case ',': rdr.Read(); return Tok(TokenType.COMMA);
                     case '#': rdr.Read(); return Tok(TokenType.HASH);
                     case 'c': rdr.Read(); st = State.c; break;
+                    case 'i': rdr.Read(); sb = new StringBuilder(); sb.Append(ch); st = State.i; break;
                     case '0': rdr.Read(); sb = new StringBuilder(); sb.Append(ch); st = State.Zero; break;
                     case '.': rdr.Read(); st = State.Dot1; break;
-                    case '!': rdr.Read(); return Tok(TokenType.BANG); break;
+                    case '!': rdr.Read(); return Tok(TokenType.BANG);
                     default:
                         if (char.IsLetter(ch) || ch == '_')
                         {
@@ -177,11 +180,34 @@ namespace Reko.ImageLoaders.LLVM
                         break;
                     }
                     break;
+                case State.i:
+                    switch (c)
+                    {
+                    case -1: return Tok(TokenType.IntType, sb);
+                    default:
+                        if (char.IsDigit(ch))
+                        {
+                            rdr.Read();
+                            sb.Append(ch);
+                        }
+                        else if (char.IsLetter(ch) || ch == '_')
+                        {
+                            rdr.Read();
+                            sb.Append(ch);
+                            st = State.Reserved;
+                        }
+                        else
+                        {
+                            return Tok(TokenType.IntType, sb);
+                        }
+                        break;
+                    }
+                    break;
                 case State.CharArray:
                     switch (c)
                     {
                     case -1: throw new FormatException("Unterminated character array.");
-                    case '"': rdr.Read(); return Tok(TokenType.COMMA, sb);
+                    case '"': rdr.Read(); return Tok(TokenType.CharArray, sb);
                     default: rdr.Read(); sb.Append(ch); break;
                     }
                     break;
@@ -266,12 +292,12 @@ namespace Reko.ImageLoaders.LLVM
             var type = sb[0] == '@'
                 ? TokenType.GlobalId
                 : TokenType.LocalId;
-            return new Token(type, sb.ToString(1, sb.Length - 1));
+            return new Token(this.lineStart, type, sb.ToString(1, sb.Length - 1));
         }
 
         private Token ReservedWord(string s)
         {
-            return new Token(reservedWords[s]);
+            return new Token(this.lineStart, reservedWords[s]);
         }
 
         private Token ReservedWord(StringBuilder sb)
@@ -281,14 +307,14 @@ namespace Reko.ImageLoaders.LLVM
             {
                 //throw new FormatException(string.Format("Unknown reserved word '{0}'.", sb.ToString()));
                 Debug.Print("Unknown reserved word '{0}'.", sb.ToString());
-                return new Token(TokenType.String, sb.ToString());
+                return new Token(this.lineStart,TokenType.String, sb.ToString());
             }
-            return new Token(reservedWords[sb.ToString()]);
+            return new Token(this.lineStart, reservedWords[sb.ToString()]);
         }
 
         private Token Tok(TokenType type, StringBuilder sb = null)
         {
-            return new Token(type, 
+            return new Token(lineStart, type, 
                 sb != null ? sb.ToString() : null);
         }
 
@@ -335,6 +361,7 @@ namespace Reko.ImageLoaders.LLVM
             { "icmp", TokenType.icmp },
             { "ident", TokenType.ident },
             { "inbounds", TokenType.inbounds },
+            { "inrange", TokenType.inrange },
             { "inttoptr", TokenType.inttoptr },
             { "label", TokenType.label },
             { "load", TokenType.load },
@@ -342,6 +369,7 @@ namespace Reko.ImageLoaders.LLVM
             { "ne", TokenType.ne },
             { "null", TokenType.@null },
             { "private", TokenType.@private },
+            { "nocapture", TokenType.nocapture},
             { "noinline", TokenType.noinline },
             { "nounwind", TokenType.nounwind },
             { "nsw", TokenType.nsw },
@@ -360,5 +388,6 @@ namespace Reko.ImageLoaders.LLVM
             { "void", TokenType.@void },
             { "x", TokenType.x },
         };
+        private int lineStart;
     }
 }
