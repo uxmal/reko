@@ -29,7 +29,7 @@ namespace Reko.Scanning
     /// <summary>
     /// Binds storages to identifiers.
     /// </summary>
-    public class StorageBinder : IStorageBinder
+    public class StorageBinder : IStorageBinder, StorageVisitor<Identifier>
     {
         //$TODO: In analysis-development, storages have GetHashCode() and 
         // Equals() implementations.
@@ -103,7 +103,7 @@ namespace Reko.Scanning
 
         public Identifier EnsureIdentifier(Storage stg)
         {
-            throw new NotImplementedException();
+            return stg.Accept(this);
         }
 
         public Identifier EnsureRegister(RegisterStorage reg)
@@ -142,5 +142,54 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
+        Identifier StorageVisitor<Identifier>.VisitFlagGroupStorage(FlagGroupStorage grf)
+        {
+            return EnsureFlagGroup(grf);
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitFlagRegister(FlagRegister freg)
+        {
+            return EnsureRegister(freg);
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitFpuStackStorage(FpuStackStorage fpu)
+        {
+            throw new NotImplementedException();
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitMemoryStorage(MemoryStorage global)
+        {
+            throw new NotImplementedException();
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitStackLocalStorage(StackLocalStorage local)
+        {
+            throw new NotImplementedException();
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitOutArgumentStorage(OutArgumentStorage arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitRegisterStorage(RegisterStorage reg)
+        {
+            return reg.Accept(this);
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitSequenceStorage(SequenceStorage seq)
+        {
+            return seq.Accept(this);
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitStackArgumentStorage(StackArgumentStorage stack)
+        {
+            throw new NotImplementedException();
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitTemporaryStorage(TemporaryStorage temp)
+        {
+            return temp.Accept(this);
+        }
     }
 }
