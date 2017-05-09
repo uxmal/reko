@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Loaders.LLVM
+namespace Reko.ImageLoaders.LLVM
 {
-    class LLVMLoader
+    public class LLVMLoader
     {
     }
 }

@@ -26,7 +26,27 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.LLVM
 {
-    class LLVMParser
+    public class Token
     {
+        public Token(TokenType type)
+        {
+            this.Type = type;
+        }
+
+
+        public Token(TokenType type, string value)
+        {
+            this.Type = type;
+            this.Value = value;
+        }
+
+        public TokenType Type { get; set; }
+        public string  Value { get; set; }
+    }
+
+    public enum TokenType
+    {
+        EOF,
+        Comment,
     }
 }

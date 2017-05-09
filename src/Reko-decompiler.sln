@@ -356,7 +356,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelHex", "ImageLoaders\In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M68kAssembler", "Assemblers\M68k\M68kAssembler.csproj", "{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLVM", "Llvm\LLVM.csproj", "{9292F9E7-2CE7-470D-B5F0-72D775720BC0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLVM", "ImageLoaders\Llvm\LLVM.csproj", "{9292F9E7-2CE7-470D-B5F0-72D775720BC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

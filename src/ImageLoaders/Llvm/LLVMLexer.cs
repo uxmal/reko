@@ -20,13 +20,89 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Loaders.LLVM
+namespace Reko.ImageLoaders.LLVM
 {
-    class LLVMLexer
+    public class LLVMLexer
     {
+        private TextReader rdr;
+
+        public LLVMLexer(TextReader rdr)
+        {
+            this.rdr = rdr;
+            this.LineNumber = 1;
+        }
+
+        public int LineNumber { get; private set; }
+
+        private enum State
+        {
+            Start,
+            Comment
+        }
+
+        public Token GetToken()
+        {
+            var st = State.Start;
+            StringBuilder sb = null;
+            EatWs();
+            for (;;)
+            {
+                int c = rdr.Read();
+                char ch = (char)c;
+                switch (st)
+                {
+                case State.Start:
+                    switch (c)
+                    {
+                    case -1: return new Token(TokenType.EOF);
+                    case ';': sb = new StringBuilder(); st = State.Comment; break;
+                    default:
+                        throw new FormatException(
+                            string.Format("Unexpected character '{0}' (U+{1:X4}) on line {2}.",
+                                ch, c, LineNumber));
+                    }
+                    break;
+                case State.Comment:
+                    switch (c)
+                    {
+                    case -1: return Tok(TokenType.Comment, sb);
+                    case '\r':
+                    case '\n':
+                        EatWs();
+                        return Tok(TokenType.Comment, sb);
+                    default:
+                        sb.Append(ch);
+                        break;
+                    }
+                    break;
+                }
+            }
+        }
+
+        private Token Tok(TokenType type, StringBuilder sb)
+        {
+            return new Token(type, 
+                sb != null ? sb.ToString() : null);
+        }
+
+        private bool EatWs()
+        {
+            if (rdr == null)
+                return false;
+            int ch = rdr.Peek();
+            while (ch >= 0 && Char.IsWhiteSpace((char)ch))
+            {
+                if (ch == '\n')
+                    ++LineNumber;
+                rdr.Read();
+                ch = rdr.Peek();
+            }
+            return true;
+        }
     }
 }

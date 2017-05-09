@@ -64,7 +64,7 @@ namespace Reko.Core.IRFormat
             var st = State.Initial;
             var sb = new StringBuilder();
             for (;;)
-            { 
+            {
                 int c = rdr.Read();
                 char ch = (char)c;
                 switch (st)
@@ -83,18 +83,21 @@ namespace Reko.Core.IRFormat
                     }
                 default:
                     return Unexpected(c);
+                }
             }
         }
+
         // 0x00
         // -123
         // +0.32p3
         // c"..."
         // w"...."
         // 
-    }
+
 
         private Token Unexpected(int c)
         {
             throw new NotImplementedException();
         }
     }
+}
