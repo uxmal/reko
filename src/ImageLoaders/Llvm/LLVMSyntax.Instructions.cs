@@ -17,6 +17,26 @@ namespace Reko.ImageLoaders.LLVM
     }
 
 
+    public class BitcastInstruction : OtherInstruction
+    {
+        public LLVMType TypeFrom;
+        public Value Value;
+        public LLVMType TypeTo;
+
+        public override void Write(Formatter w)
+        {
+            Result.Write(w);
+            w.Write(" = ");
+            TypeFrom.Write(w);
+            w.Write(' ');
+            Value.Write(w);
+            w.Write(' ');
+            w.WriteKeyword("to");
+            w.Write(' ');
+            TypeTo.Write(w);
+        }
+    }
+
     public class BrInstr : Terminator
     {
         public LLVMType Type;
@@ -110,6 +130,30 @@ namespace Reko.ImageLoaders.LLVM
         public override void Write(Formatter w)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    public class Extractvalue : MemoryInstruction
+    {
+        public LocalId Result;
+        public LLVMType AggregateType;
+        public Value Value;
+        public List<int> Indices;
+
+        public override void Write(Formatter w)
+        {
+            Result.Write(w);
+            w.Write(" = ");
+            w.WriteKeyword("extractvalue");
+            w.Write(" ");
+            AggregateType.Write(w);
+            w.Write(' ');
+            Value.Write(w);
+            foreach (var idx in Indices)
+            {
+                w.Write(", ");
+                w.Write(idx);
+            }
         }
     }
 

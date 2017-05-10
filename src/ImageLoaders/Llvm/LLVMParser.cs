@@ -364,17 +364,19 @@ namespace Reko.ImageLoaders.LLVM
 
         private Instruction ParseAssignment()
         {
-            var local = ParseLocalId();
+            var result = ParseLocalId();
             Expect(TokenType.EQ);
 
             var tok = Peek();
             switch (tok.Type)
             {
-            case TokenType.getelementptr: return ParseGetElementPtr(local);
-            case TokenType.alloca: return ParseAlloca(local);
-            case TokenType.icmp: return ParseIcmp(local);
-            case TokenType.load: return ParseLoad(local);
-            case TokenType.phi: return ParsePhi(local);
+            case TokenType.getelementptr: return ParseGetElementPtr(result);
+            case TokenType.alloca: return ParseAlloca(result);
+            case TokenType.bitcast: return ParseBitcast(result);
+            case TokenType.extractvalue: return ParseExtractvalue(result);
+            case TokenType.icmp: return ParseIcmp(result);
+            case TokenType.load: return ParseLoad(result);
+            case TokenType.phi: return ParsePhi(result);
             default: Unexpected(tok); return null;
             }
         }

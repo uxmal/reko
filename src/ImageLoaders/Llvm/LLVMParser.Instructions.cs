@@ -57,6 +57,22 @@ namespace Reko.ImageLoaders.LLVM
             };
         }
 
+        private Instruction ParseBitcast(LocalId result)
+        {
+            Expect(TokenType.bitcast);
+            var typeFrom = ParseType();
+            var value = ParseValue();
+            Expect(TokenType.to);
+            var typeTo = ParseType();
+            return new BitcastInstruction
+            {
+                Result = result,
+                TypeFrom = typeFrom,
+                Value = value,
+                TypeTo = typeTo,
+            };
+        }
+
         private Instruction ParseCall()
         {
             //$TODO: tail
@@ -72,7 +88,28 @@ namespace Reko.ImageLoaders.LLVM
             };
         }
 
-        private Instruction ParseGetElementPtr(LocalId local)
+        private Instruction ParseExtractvalue(LocalId result)
+        {
+            Expect(TokenType.extractvalue);
+            var aggregateType = ParseType();
+            var val = ParseValue();
+            var indices = new List<int>();
+            Expect(TokenType.COMMA);
+            do
+            {
+                var idx = Convert.ToInt32(ParseInteger().Value);
+                indices.Add(idx);
+            } while (PeekAndDiscard(TokenType.COMMA));
+            return new Extractvalue
+            {
+                Result = result,
+                AggregateType = aggregateType,
+                Value = val,
+                Indices = indices,
+            };
+        }
+
+        private Instruction ParseGetElementPtr(LocalId result)
         {
             Expect(TokenType.getelementptr);
             PeekAndDiscard(TokenType.inbounds);	//$REVIEW: use this?
@@ -90,7 +127,7 @@ namespace Reko.ImageLoaders.LLVM
             }
             return new  GetElementPtr
             {
-                Result = local,
+                Result = result,
                 BaseType = baseType,
                 PtrType = ptrType,
                 PtrValue = ptrVal,
