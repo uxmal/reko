@@ -13,9 +13,61 @@ namespace Reko.ImageLoaders.LLVM
 
     public abstract class Terminator : Instruction
     {
-
     }
 
+    public abstract class MemoryInstruction : Instruction
+    {
+    }
+
+    public abstract class OtherInstruction : Instruction
+    {
+        public LocalId Result;
+    }
+
+
+    public class Binary : Instruction
+    {
+        public LocalId Result;
+        public TokenType Operator;
+        public LLVMType Type;
+        public Value Left;
+        public Value Right;
+
+        public override void Write(Formatter w)
+        {
+            Result.Write(w);
+            w.Write(" = ");
+            w.Write(Operator.ToString());
+            w.Write(" ");
+            Type.Write(w);
+            w.Write(" ");
+            Left.Write(w);
+            w.Write(", ");
+            Right.Write(w);
+        }
+    }
+
+    public class BitwiseBinary : Instruction
+    {
+        public LocalId Result;
+        public TokenType Operator;
+        public LLVMType Type;
+        public Value Left;
+        public Value Right;
+
+        public override void Write(Formatter w)
+        {
+            Result.Write(w);
+            w.Write(" = ");
+            w.Write(Operator.ToString());
+            w.Write(" ");
+            Type.Write(w);
+            w.Write(" ");
+            Left.Write(w);
+            w.Write(", ");
+            Right.Write(w);
+        }
+    }
 
     public class BitcastInstruction : OtherInstruction
     {
@@ -189,7 +241,6 @@ namespace Reko.ImageLoaders.LLVM
 
     public class IcmpInstruction : OtherInstruction
     {
-        public LocalId Result;
         public TokenType ConditionCode;
         public LLVMType Type;
         public Value Op1;
@@ -264,11 +315,12 @@ namespace Reko.ImageLoaders.LLVM
 
     public class Store : MemoryInstruction
     {
-        internal int Alignment;
-        internal Value Dst;
-        internal LLVMType DstType;
-        internal Value Src;
-        internal LLVMType SrcType;
+        public bool Volatile;
+        public int Alignment;
+        public Value Dst;
+        public LLVMType DstType;
+        public Value Src;
+        public LLVMType SrcType;
 
         public override void Write(Formatter w)
         {

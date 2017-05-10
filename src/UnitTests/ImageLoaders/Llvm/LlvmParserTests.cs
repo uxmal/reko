@@ -161,7 +161,15 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             RunInstrTest();
         }
 
-    [Test(Description = "Sample taken from http://llvm.org/docs/LangRef.html#module-structure")]
+        [Test]
+        public void LLParser_pfn()
+        {
+            llir = "%pfn = type void (i32) *";
+            sExp = "%pfn = type void (i32)*" + nl;
+            RunModuleTest();
+        }
+
+        [Test(Description = "Sample taken from http://llvm.org/docs/LangRef.html#module-structure")]
         public void LLParser_Module()
         {
             llir =

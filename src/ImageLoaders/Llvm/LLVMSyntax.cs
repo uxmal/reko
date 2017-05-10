@@ -218,20 +218,8 @@ namespace Reko.ImageLoaders.LLVM
         }
     }
 
-
-
-    public abstract class MemoryInstruction : Instruction
-    {
-    }
-
-    public abstract class OtherInstruction : Instruction
-    {
-        public LocalId Result;
-    }
-
     public abstract class Value : LLVMSyntax
     {
-
     }
 
     public class Constant : Value

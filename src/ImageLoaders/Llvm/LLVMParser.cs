@@ -370,13 +370,16 @@ namespace Reko.ImageLoaders.LLVM
             var tok = Peek();
             switch (tok.Type)
             {
-            case TokenType.getelementptr: return ParseGetElementPtr(result);
             case TokenType.alloca: return ParseAlloca(result);
+            case TokenType.and: return ParseBinBitOp(result);
             case TokenType.bitcast: return ParseBitcast(result);
             case TokenType.extractvalue: return ParseExtractvalue(result);
+            case TokenType.getelementptr: return ParseGetElementPtr(result);
             case TokenType.icmp: return ParseIcmp(result);
             case TokenType.load: return ParseLoad(result);
             case TokenType.phi: return ParsePhi(result);
+            case TokenType.sub: return ParseBinOp(result);
+
             default: Unexpected(tok); return null;
             }
         }
@@ -463,6 +466,27 @@ namespace Reko.ImageLoaders.LLVM
                 {
                     type = new LLVMPointer(type);
                 }
+                else if (PeekAndDiscard(TokenType.LPAREN))
+                {
+                    var args = new List<LLVMArgument>();
+                    if (Peek().Type != TokenType.RPAREN)
+                    {
+                        var argType = ParseType();
+                        args.Add(new LLVMArgument { Type = argType });
+                        while (PeekAndDiscard(TokenType.COMMA))
+                        {
+                            argType = ParseType();
+                            args.Add(new LLVMArgument { Type = argType });
+                        }
+                    }
+                    Expect(TokenType.RPAREN);
+                    var fnType = new LLVMFunctionType
+                    {
+                        ReturnType = type,
+                        Arguments = args,
+                    };
+                    type = fnType;
+                }
                 else
                     return type;
             }
@@ -481,6 +505,9 @@ namespace Reko.ImageLoaders.LLVM
             var tok = Peek();
             switch (tok.Type)
             {
+            case TokenType.@void:
+                Expect(TokenType.@void);
+                return LLVMType.Void;
             case TokenType.IntType:
                 return LLVMType.GetBaseType(Get().Value);
             case TokenType.LocalId:

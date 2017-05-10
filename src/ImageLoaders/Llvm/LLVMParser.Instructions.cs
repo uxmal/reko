@@ -57,6 +57,41 @@ namespace Reko.ImageLoaders.LLVM
             };
         }
 
+        private Instruction ParseBinBitOp(LocalId result)
+        {
+            var op = Get().Type;
+            var type = ParseType();
+            var op1 = ParseValue();
+            Expect(TokenType.COMMA);
+            var op2 = ParseValue();
+            return new BitwiseBinary
+            {
+                Result = result,
+                Operator = op,
+                Type = type,
+                Left = op1,
+                Right = op2,
+            };
+
+        }
+
+        private Instruction ParseBinOp(LocalId result)
+        {
+            var op = Get().Type;
+            var type = ParseType();
+            var op1 = ParseValue();
+            Expect(TokenType.COMMA);
+            var op2 = ParseValue();
+            return new Binary
+            {
+                Result = result,
+                Operator = op,
+                Type = type,
+                Left = op1,
+                Right = op2,
+            };
+        }
+
         private Instruction ParseBitcast(LocalId result)
         {
             Expect(TokenType.bitcast);
@@ -239,6 +274,7 @@ namespace Reko.ImageLoaders.LLVM
                 DstType = dstType,
                 Src = src,
                 SrcType = srcType,
+                Volatile = @volatile,
                 Alignment = alignment
             };
         }

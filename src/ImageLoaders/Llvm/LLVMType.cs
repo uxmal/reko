@@ -47,10 +47,17 @@ namespace Reko.ImageLoaders.LLVM
             }
             throw new NotImplementedException();
         }
+       
+        static LLVMType()
+        {
+            Void = new LLVMBaseType("void", Domain.Void, 0);
+        }
+
     }
 
     public enum Domain
     {
+        Void,
         Integral,
         Real,
     }
@@ -150,7 +157,21 @@ namespace Reko.ImageLoaders.LLVM
 
         public override void Write(Formatter w)
         {
-            throw new NotImplementedException();
+            ReturnType.Write(w);
+            w.Write(" (");
+            var sep = "";
+            foreach (var arg in Arguments)
+            {
+                w.Write(sep);
+                sep = ", ";
+                arg.Type.Write(w);
+                if (arg.name != null)
+                {
+                    w.Write(" ");
+                    w.Write(arg.name);
+                }
+            }
+            w.Write(")");
         }
     }
 

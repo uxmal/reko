@@ -7,15 +7,6 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.LLVM
 {
-    public abstract class Binary : Value
-    {
-    }
-
-    public abstract class BitwiseBinary : Value
-    {
-
-    }
-
     public class GetElementPtrExpr : Value
     {
         public bool Inbounds;
