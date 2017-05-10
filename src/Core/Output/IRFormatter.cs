@@ -46,6 +46,7 @@ namespace Reko.Core.Output
 
         public void WriteProcedure(Procedure procedure)
         {
+            //@"define void @empty() {
             var pd = new ProcedureFormatter(procedure, new CodeFormatter(new TextFormatter(w)));
             pd.WriteProcedureBlocks();
         }

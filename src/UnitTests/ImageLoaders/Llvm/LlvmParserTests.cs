@@ -169,6 +169,46 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             RunModuleTest();
         }
 
+        [Test]
+        public void LLParser_inttoptr()
+        {
+            llir = "%28 = inttoptr i64 %17 to i64 (%class.number*)*";
+            sExp = "%28 = inttoptr i64 %17 to i64 (%class.number*)*";
+            RunInstrTest();
+        }
+
+        [Test]
+        public void LLParser_call()
+        {
+            llir = "%31 = call i64 %30(i64* %16)";
+            sExp = "%31 = call i64 %30(i64* %16)";
+            RunInstrTest();
+        }
+
+        [Test]
+        public void LLParser_add()
+        {
+            llir = "%2 = add nuw nsw i32 %1, 4";
+            sExp = "%2 = add nuw nsw i32 %1, 4";
+            RunInstrTest();
+        }
+
+        [Test]
+        public void LLParser_printf()
+        {
+            llir = "%17 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.16, i32 0, i32 0), i8* %16)";
+            sExp = "%17 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.16, i32 0, i32 0), i8* %16)";
+            RunInstrTest();
+        }
+
+        [Test]
+        public void LLParser_metadata()
+        {
+            llir = "!llvm.ident = !{!0}";
+            sExp = "";
+            RunModuleTest();
+        }
+
         [Test(Description = "Sample taken from http://llvm.org/docs/LangRef.html#module-structure")]
         public void LLParser_Module()
         {
@@ -200,18 +240,6 @@ define i32 @main() {
 }
 ";
             RunModuleTest();
-        }
-
-        [Test]
-        public void LLParser_DoIt()
-        {
-            using (var rdr = File.OpenText("d:/dev/uxmal/reko/master/subjects/llvm/foo/foo.ll"))
-            {
-                var parser = new LLVMParser(new LLVMLexer(rdr));
-                var module = parser.ParseModule();
-                var fmt = new TextFormatter(Console.Out);
-                module.Write(fmt);
-            }
         }
     }
 }

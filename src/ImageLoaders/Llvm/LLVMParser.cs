@@ -90,6 +90,12 @@ namespace Reko.ImageLoaders.LLVM
                 case TokenType.target:
                     ParseTarget();
                     break;
+                case TokenType.attributes:
+                    ParseAttributes();
+                    break;
+                case TokenType.BANG:
+                    ParseMetadata();
+                    break;
                 default:
                     Unexpected(peekTok);
                     break;
@@ -185,6 +191,13 @@ namespace Reko.ImageLoaders.LLVM
         private ModuleEntry ParseFunctionDefinition()
         {
             Expect(TokenType.define);
+            if (PeekAndDiscard(TokenType.dereferenceable))
+            {
+                //$REVIEW: no use for this.
+                Expect(TokenType.LPAREN);
+                Expect(TokenType.Integer);
+                Expect(TokenType.RPAREN);
+            }
             var retType = ParseType();
             var name = Expect(TokenType.GlobalId);
             var args = ParseParameterList();
@@ -252,12 +265,27 @@ namespace Reko.ImageLoaders.LLVM
 
         private LLVMArgument ParseParameter()
         {
-            var type = ParseType();
-            PeekAndDiscard(TokenType.nocapture); //$REVIEW: don't care
-            return new LLVMArgument
+            if (PeekAndDiscard(TokenType.ELLIPSIS))
             {
-                Type = type,
-            };
+                return new LLVMArgument { name = "..." };
+            }
+            var type = ParseType();
+            for (;;)
+            {
+                if (PeekAndDiscard(TokenType.nocapture))
+                {
+                    //$REVIEW: don't care
+                } else if (PeekAndDiscard(TokenType.dereferenceable))
+                {
+                    Expect(TokenType.LPAREN);
+                    Expect(TokenType.Integer);
+                    Expect(TokenType.RPAREN);
+                }
+                else
+                {
+                    return new LLVMArgument { Type = type };
+                }
+            }
         }
 
         private void ParseFunctionAttributes()
@@ -344,6 +372,44 @@ namespace Reko.ImageLoaders.LLVM
             Expect(TokenType.String);
         }
 
+        private void ParseAttributes()
+        {
+            //$REVIEW: we don't care about these attributes do we?
+            Expect(TokenType.attributes);
+            Expect(TokenType.HASH);
+            Expect(TokenType.Integer);
+            Expect(TokenType.EQ);
+            Expect(TokenType.LBRACE);
+            while (!PeekAndDiscard(TokenType.RBRACE))
+            {
+                Get();      // just throw everything away.
+            }
+        }
+
+        // !0 = !{ ... }
+        // !foo.bar = !{ ... }
+        private void ParseMetadata()
+        {
+            Expect(TokenType.BANG);
+            if (!PeekAndDiscard(TokenType.Integer))
+            {
+                if (PeekAndDiscard(TokenType.String))
+                {
+                    while (PeekAndDiscard(TokenType.DOT) &&
+                           PeekAndDiscard(TokenType.String))
+                    {
+                    }
+                }
+            }
+            Expect(TokenType.EQ);
+            Expect(TokenType.BANG);
+            Expect(TokenType.LBRACE);
+            while (!PeekAndDiscard(TokenType.RBRACE))
+            {
+                Get();
+            }
+        }
+
         public Instruction ParseInstruction()
         {
             var tok = Peek();
@@ -352,7 +418,7 @@ namespace Reko.ImageLoaders.LLVM
             switch(tok.Type)
             {
             case TokenType.br: return ParseBr();
-            case TokenType.call: return ParseCall();
+            case TokenType.call: return ParseCall(null);
             case TokenType.ret: return ParseRet();
             case TokenType.store: return ParseStore();
             case TokenType.@switch: return ParseSwitch();
@@ -371,15 +437,17 @@ namespace Reko.ImageLoaders.LLVM
             switch (tok.Type)
             {
             case TokenType.alloca: return ParseAlloca(result);
+            case TokenType.add: return ParseBinBitOp(result);
             case TokenType.and: return ParseBinBitOp(result);
             case TokenType.bitcast: return ParseBitcast(result);
+            case TokenType.call: return ParseCall(result);
             case TokenType.extractvalue: return ParseExtractvalue(result);
             case TokenType.getelementptr: return ParseGetElementPtr(result);
             case TokenType.icmp: return ParseIcmp(result);
+            case TokenType.inttoptr: return ParseInttoptr(result);
             case TokenType.load: return ParseLoad(result);
             case TokenType.phi: return ParsePhi(result);
             case TokenType.sub: return ParseBinOp(result);
-
             default: Unexpected(tok); return null;
             }
         }
@@ -475,6 +543,11 @@ namespace Reko.ImageLoaders.LLVM
                         args.Add(new LLVMArgument { Type = argType });
                         while (PeekAndDiscard(TokenType.COMMA))
                         {
+                            if (PeekAndDiscard(TokenType.ELLIPSIS))
+                            {
+                                args.Add(new LLVMArgument { name = "..." });
+                                break;
+                            }
                             argType = ParseType();
                             args.Add(new LLVMArgument { Type = argType });
                         }

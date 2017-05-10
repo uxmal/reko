@@ -60,6 +60,8 @@ namespace Reko.ImageLoaders.LLVM
         private Instruction ParseBinBitOp(LocalId result)
         {
             var op = Get().Type;
+            var nuw = PeekAndDiscard(TokenType.nuw);
+            var nsw = PeekAndDiscard(TokenType.nsw);
             var type = ParseType();
             var op1 = ParseValue();
             Expect(TokenType.COMMA);
@@ -68,11 +70,12 @@ namespace Reko.ImageLoaders.LLVM
             {
                 Result = result,
                 Operator = op,
+                NoUnsignedWrap = nuw,
+                NoSignedWrap = nsw,
                 Type = type,
                 Left = op1,
                 Right = op2,
             };
-
         }
 
         private Instruction ParseBinOp(LocalId result)
@@ -108,7 +111,7 @@ namespace Reko.ImageLoaders.LLVM
             };
         }
 
-        private Instruction ParseCall()
+        private Instruction ParseCall(LocalId result)
         {
             //$TODO: tail
             Expect(TokenType.call);
@@ -117,6 +120,7 @@ namespace Reko.ImageLoaders.LLVM
             var args = ParseArgumentList();
             return new LLVMCall
             {
+                Result = result,
                 FnType = ret,
                 FnPtr = fnPtr,
                 Arguments = args,
@@ -201,6 +205,22 @@ namespace Reko.ImageLoaders.LLVM
                 Type = type,
                 Op1 = op1,
                 Op2 = op2,
+            };
+        }
+
+        private Instruction ParseInttoptr(LocalId result)
+        {
+            Expect(TokenType.inttoptr);
+            var fromType = ParseType();
+            var value = ParseValue();
+            Expect(TokenType.to);
+            var toType = ParseType();
+            return new Inttoptr
+            {
+                Result = result,
+                FromType = fromType,
+                Value = value,
+                ToType = toType
             };
         }
 

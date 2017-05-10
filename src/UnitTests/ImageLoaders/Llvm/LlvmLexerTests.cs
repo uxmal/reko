@@ -105,10 +105,9 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
         {
             CreateLexer("c\"zero\\00\"");
             var tok = lex.GetToken();
-            Assert.AreEqual(TokenType.COMMA, tok.Type);
+            Assert.AreEqual(TokenType.CharArray, tok.Type);
             Assert.AreEqual("zero\\00", tok.Value);
         }
-
 
         [Test]
         public void LLLex_comma()
@@ -150,21 +149,6 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             CreateLexer("...");
             var tok = lex.GetToken();
             Assert.AreEqual(TokenType.ELLIPSIS, tok.Type);
-        }
-
-        [Test]
-        public void LLLexx()
-        {
-            using (var rdr = File.OpenText("d:/dev/uxmal/reko/master/subjects/llvm/foo/foo_mem2reg_strip.ll"))
-            {
-                this.lex = new LLVMLexer(rdr);
-                Token tok;
-                do
-                {
-                    tok = lex.GetToken();
-                    //Debug.Print("{0,-15} {1}", tok.Type, tok.Value);
-                } while (tok.Type != TokenType.EOF);
-            }
         }
     }
 }

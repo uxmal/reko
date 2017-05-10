@@ -151,10 +151,16 @@ namespace Reko.ImageLoaders.LLVM
             {
                 w.Write(sep);
                 sep = ", ";
-                arg.Type.Write(w);
-                if (arg.name != null)
+                if (arg.Type != null)
                 {
-                    w.Write(" ");
+                    arg.Type.Write(w);
+                    if (arg.name != null)
+                    {
+                        w.Write(" ");
+                        w.Write(arg.name);
+                    }
+                } else
+                {
                     w.Write(arg.name);
                 }
             }

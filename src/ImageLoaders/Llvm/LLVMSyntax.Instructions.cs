@@ -29,6 +29,8 @@ namespace Reko.ImageLoaders.LLVM
     {
         public LocalId Result;
         public TokenType Operator;
+        public bool NoUnsignedWrap;
+        public bool NoSignedWrap;
         public LLVMType Type;
         public Value Left;
         public Value Right;
@@ -39,6 +41,16 @@ namespace Reko.ImageLoaders.LLVM
             w.Write(" = ");
             w.Write(Operator.ToString());
             w.Write(" ");
+            if (NoUnsignedWrap)
+            {
+                w.WriteKeyword("nuw");
+                w.Write(' ');
+            }
+            if (NoSignedWrap)
+            {
+                w.WriteKeyword("nsw");
+                w.Write(' ');
+            }
             Type.Write(w);
             w.Write(" ");
             Left.Write(w);
@@ -51,6 +63,8 @@ namespace Reko.ImageLoaders.LLVM
     {
         public LocalId Result;
         public TokenType Operator;
+        public bool NoUnsignedWrap;
+        public bool NoSignedWrap;
         public LLVMType Type;
         public Value Left;
         public Value Right;
@@ -61,6 +75,16 @@ namespace Reko.ImageLoaders.LLVM
             w.Write(" = ");
             w.Write(Operator.ToString());
             w.Write(" ");
+            if (NoUnsignedWrap)
+            {
+                w.WriteKeyword("nuw");
+                w.Write(' ');
+            }
+            if (NoSignedWrap)
+            {
+                w.WriteKeyword("nsw");
+                w.Write(' ');
+            }
             Type.Write(w);
             w.Write(" ");
             Left.Write(w);
@@ -181,7 +205,24 @@ namespace Reko.ImageLoaders.LLVM
 
         public override void Write(Formatter w)
         {
-            throw new NotImplementedException();
+            Result.Write(w);
+            w.Write(" = ");
+            w.WriteKeyword("alloca");
+            w.Write(' ');
+            Type.Write(w);
+            if (ElCountType != null && ElementCount != null)
+            {
+                w.Write(", ");
+                Type.Write(w);
+                w.Write(' ');
+                ElementCount.Write(w);
+            }
+            if (Alignment != 0)
+            {
+                w.Write(", ");
+                w.WriteKeyword("align");
+                w.Write(Alignment);
+            }
         }
     }
 
@@ -253,6 +294,28 @@ namespace Reko.ImageLoaders.LLVM
         }
     }
 
+    public class Inttoptr : OtherInstruction
+    {
+        public LLVMType FromType;
+        public Value Value;
+        public LLVMType ToType;
+
+        public override void Write(Formatter w)
+        {
+            Result.Write(w);
+            w.Write(" = ");
+            w.WriteKeyword("inttoptr");
+            w.Write(" ");
+            FromType.Write(w);
+            w.Write(" ");
+            Value.Write(w);
+            w.Write(" ");
+            w.WriteKeyword("to");
+            w.Write(" ");
+            ToType.Write(w);
+        }
+    }
+
     public class LLVMCall : OtherInstruction
     {
         public List<Tuple<LLVMType,Value>> Arguments;
@@ -263,7 +326,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             if (Result != null)
             {
-                w.Write("%{0}", Result);
+                Result.Write(w);
                 w.Write(" = ");
             }
             w.WriteKeyword("call");

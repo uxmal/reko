@@ -33,6 +33,7 @@ using System.Threading.Tasks;
 namespace Reko.UnitTests.Core.Output
 {
     [TestFixture]
+    [Ignore("Wait and see if LLVM is good enough.")]
     public class JsonFormatterTests
     {
         private void RunTest(string sExp, string procName, Action<ProcedureBuilder> fn)
