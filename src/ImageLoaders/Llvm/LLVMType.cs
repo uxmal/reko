@@ -74,6 +74,21 @@ namespace Reko.ImageLoaders.LLVM
         }
     }
 
+    public class TypeReference : LLVMType
+    {
+        public LocalId TypeName;
+
+        public TypeReference(LocalId name)
+        {
+            this.TypeName = name;
+        }
+
+        public override void Write(Formatter w)
+        {
+            TypeName.Write(w);
+        }
+    }
+
     public class LLVMPointer : LLVMType
     {
         public LLVMType Pointee;
@@ -106,6 +121,24 @@ namespace Reko.ImageLoaders.LLVM
             w.Write("[{0} x ", Length);
             ElementType.Write(w);
             w.Write("]");
+        }
+    }
+
+    public class StructureType : LLVMType
+    {
+        public List<LLVMType> Fields;
+
+        public override void Write(Formatter w)
+        {
+            w.Write("{ ");
+            var sep = "";
+            foreach (var field in Fields)
+            {
+                w.Write(sep);
+                sep = ", ";
+                field.Write(w);
+            }
+            w.Write(" }");
         }
     }
 

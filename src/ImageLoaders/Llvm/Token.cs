@@ -72,6 +72,17 @@ namespace Reko.ImageLoaders.LLVM
         RBRACKET,
         STAR,
 
+        eq,
+        ne,
+        ugt,
+        uge,
+        ult,
+        ule,
+        sgt,
+        sge,
+        slt,
+        sle,
+
         add,
         align,
         alloca,
@@ -103,7 +114,6 @@ namespace Reko.ImageLoaders.LLVM
         label,
         load,
         llvm,
-        ne,
         @null,
         @private,
         nocapture,
@@ -123,6 +133,8 @@ namespace Reko.ImageLoaders.LLVM
         unnamed_addr,
         uwtable,
         @void,
+        @volatile,
         x,
+
     }
 }

@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core.Output;
 using Reko.ImageLoaders.LLVM;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
     {
         private string llir;
         private string sExp;
+        private readonly string nl = Environment.NewLine;
 
         public void Setup()
         {
@@ -57,7 +59,6 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             var type = parser.ParseType();
             Assert.AreEqual(sExp, type.ToString());
         }
-
 
         private void RunModuleTest()
         {
@@ -83,7 +84,84 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             RunTypeTest();
         }
 
-        [Test(Description = "Sample taken from http://llvm.org/docs/LangRef.html#module-structure")]
+        [Test]
+        public void LLParser_localtypedef()
+        {
+            llir = "%point = type { i32, i32 }";
+            sExp = "%point = type { i32, i32 }" + nl;
+            RunModuleTest();
+        }
+
+        [Test]
+        public void LLParser_recursive_type()
+        {
+            llir = "%tree = type { i32, %tree, %tree }";
+            sExp = "%tree = type { i32, %tree, %tree }" + nl;
+            RunModuleTest();
+        }
+
+        [Test] 
+        public void LLParser_global_constant()
+        {
+            llir = "@.str = private unnamed_addr constant [5 x i8] c\"zero\\00\", align 1";
+            sExp = "@.str = private unnamed_addr constant [5 x i8] c\"zero\\00\", align 1" + nl;
+            RunModuleTest();
+        }
+
+        [Test]
+        public void LLParser_external_global()
+        {
+            llir = "@stderr = external global %struct._IO_FILE*, align 8";
+            sExp = "@stderr = external global %struct._IO_FILE*, align 8" + nl;
+            RunModuleTest();
+        }
+
+        [Test]
+        public void LLParser_store()
+        {
+            llir = "store i32 %0, i32* %3, align 4";
+            sExp = "store i32 %0, i32* %3, align 4";
+            RunInstrTest();
+        }
+
+        [Test]
+        public void LLParser_load()
+        {
+            llir = "%4 = load i32, i32* %3, align 4";
+            sExp = "%4 = load i32, i32* %3, align 4";
+            RunInstrTest();
+        }
+
+        [Test]
+        public void LLParser_switch()
+        {
+            llir = "switch i32 %4, label %9 [ i32 0, label %5 i32 1, label %6 i32 2, label %7 ]";
+            sExp =
+                "switch i32 %4, label %9 [" + nl +
+                "    i32 0, label %5" + nl +
+                "    i32 1, label %6" + nl +
+                "    i32 2, label %7" + nl +
+                "]";
+            RunInstrTest();
+        }
+
+        [Test]
+        public void LLParser_getelementptr_expr()
+        {
+            llir = "store i8*getelementptr inbounds([5 x i8], [5 x i8]* @.str, i32 0, i32 0), i8** %2, align 8";
+            sExp = "store i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str, i32 0, i32 0), i8** %2, align 8";
+            RunInstrTest();
+        }
+
+        [Test]
+        public void LLParser_phi()
+        {
+            llir = "%15 = phi i1 [ false, %5 ], [ %13, %8 ]";
+            sExp = "%15 = phi i1 [false, %5], [%13, %8]";
+            RunInstrTest();
+        }
+
+    [Test(Description = "Sample taken from http://llvm.org/docs/LangRef.html#module-structure")]
         public void LLParser_Module()
         {
             llir =
@@ -116,5 +194,16 @@ define i32 @main() {
             RunModuleTest();
         }
 
+        [Test]
+        public void LLParser_DoIt()
+        {
+            using (var rdr = File.OpenText("d:/dev/uxmal/reko/master/subjects/llvm/foo/foo.ll"))
+            {
+                var parser = new LLVMParser(new LLVMLexer(rdr));
+                var module = parser.ParseModule();
+                var fmt = new TextFormatter(Console.Out);
+                module.Write(fmt);
+            }
+        }
     }
 }

@@ -335,6 +335,17 @@ namespace Reko.ImageLoaders.LLVM
 
         static Dictionary<string, TokenType> reservedWords = new Dictionary<string, TokenType>
         {
+            { "eq", TokenType.eq },
+            { "ne", TokenType.ne },
+            { "ugt", TokenType.ugt },
+            { "uge", TokenType.uge },
+            { "ult", TokenType.ult },
+            { "ule", TokenType.ule },
+            { "sgt", TokenType.sgt },
+            { "sge", TokenType.sge },
+            { "slt", TokenType.slt },
+            { "sle", TokenType.sle },
+
             { "add", TokenType.add },
             { "align", TokenType.align },
             { "alloca", TokenType.alloca },
@@ -366,7 +377,6 @@ namespace Reko.ImageLoaders.LLVM
             { "label", TokenType.label },
             { "load", TokenType.load },
             { "llvm", TokenType.llvm },
-            { "ne", TokenType.ne },
             { "null", TokenType.@null },
             { "private", TokenType.@private },
             { "nocapture", TokenType.nocapture},
@@ -386,6 +396,7 @@ namespace Reko.ImageLoaders.LLVM
             { "unnamed_addr", TokenType.unnamed_addr },
             { "uwtable", TokenType.uwtable },
             { "void", TokenType.@void },
+            { "volatile", TokenType.@volatile },
             { "x", TokenType.x },
         };
         private int lineStart;

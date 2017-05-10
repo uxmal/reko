@@ -28,6 +28,35 @@ namespace Reko.ImageLoaders.LLVM
 {
     public partial class LLVMParser
     {
+        private Instruction ParseAlloca(LocalId result)
+        {
+            Expect(TokenType.alloca);
+            LLVMType type = ParseType();
+            LLVMType elcType = null;
+            Value elc = null;
+            int alignment = 0;
+            while (PeekAndDiscard(TokenType.COMMA))
+            {
+                if (Type_FIRST.Contains(Peek().Type))
+                {
+                    elcType = ParseType();
+                    elc = ParseValue();
+                }
+                else if (PeekAndDiscard(TokenType.align))
+                {
+                    alignment = int.Parse(Expect(TokenType.Integer));
+                }
+            }
+            return new Alloca
+            {
+                Result = result,
+                Type = type,
+                ElCountType = elcType,
+                ElementCount = elc,
+                Alignment = alignment,
+            };
+        }
+
         private Instruction ParseCall()
         {
             //$TODO: tail
@@ -43,7 +72,7 @@ namespace Reko.ImageLoaders.LLVM
             };
         }
 
-        private Instruction ParseGetElementPtr(string local)
+        private Instruction ParseGetElementPtr(LocalId local)
         {
             Expect(TokenType.getelementptr);
             PeekAndDiscard(TokenType.inbounds);	//$REVIEW: use this?
@@ -59,7 +88,7 @@ namespace Reko.ImageLoaders.LLVM
                 var idxVal = ParseValue();
                 indices.Add(Tuple.Create(type, idxVal));
             }
-            return new GetElementPtr
+            return new  GetElementPtr
             {
                 Result = local,
                 BaseType = baseType,
@@ -68,5 +97,173 @@ namespace Reko.ImageLoaders.LLVM
                 Indices = indices,
             };
         }
+
+        private static HashSet<TokenType> conditionCodes = new HashSet<TokenType>
+        {
+           TokenType.eq,
+           TokenType.ne,
+           TokenType.ugt,
+           TokenType.uge,
+           TokenType.ult,
+           TokenType.ule,
+           TokenType.sgt,
+           TokenType.sge,
+           TokenType.slt,
+           TokenType.sle,
+        };
+
+        private Instruction ParseIcmp(LocalId result)
+        {
+            Expect(TokenType.icmp);
+            var cc = Get();
+            if (!conditionCodes.Contains(cc.Type))
+                Unexpected(cc);
+            var type = ParseType();
+            var op1 = ParseValue();
+            Expect(TokenType.COMMA);
+            var op2 = ParseValue();
+            return new IcmpInstruction
+            {
+                Result = result,
+                ConditionCode = cc.Type,
+                Type = type,
+                Op1 = op1,
+                Op2 = op2,
+            };
+        }
+
+        private Instruction ParseLoad(LocalId result)
+        {
+            Expect(TokenType.load);
+            var dstType = ParseType();
+            Expect(TokenType.COMMA);
+
+            var srcType = ParseType();
+            var src = ParseValue();
+            int alignment = 0;
+            if (PeekAndDiscard(TokenType.COMMA))
+            {
+                Expect(TokenType.align);
+                alignment = (int)ParseInteger().Value;
+            }
+            return new Load
+            {
+                DstType = dstType,
+                Dst = result,
+                SrcType = srcType,
+                Src = src,
+                Alignment = alignment
+            };
+        }
+
+        private Instruction ParseRet()
+        {
+            Expect(TokenType.ret);
+            if (PeekAndDiscard(TokenType.@void))
+            {
+                return new RetInstr
+                {
+                    Type = LLVMType.Void,
+                };
+            }
+            var type = ParseType();
+            var val = ParseValue();
+            return new RetInstr
+            {
+                Type = type,
+                Value = val,
+            };
+        }
+
+        private Instruction ParseStore()
+        {
+            Expect(TokenType.store);
+            bool @volatile = false;
+            int alignment = 0;
+            if (PeekAndDiscard(TokenType.@volatile))
+            {
+                @volatile = true;
+            }
+            var srcType = ParseType();
+            var src = ParseValue();
+            Expect(TokenType.COMMA);
+            var dstType = ParseType();
+            var dst = ParseValue();
+            if (PeekAndDiscard(TokenType.COMMA))
+            {
+                if (PeekAndDiscard(TokenType.align))
+                {
+                    alignment = (int)ParseInteger().Value;
+                }
+            }
+            return new Store
+            {
+                Dst = dst,
+                DstType = dstType,
+                Src = src,
+                SrcType = srcType,
+                Alignment = alignment
+            };
+        }
+
+        private Terminator ParseSwitch()
+        {
+            Expect(TokenType.@switch);
+            var type = ParseType();
+            var val = ParseValue();
+            Expect(TokenType.COMMA);
+            Expect(TokenType.label);
+            var defDest = ParseLocalId();
+            Expect(TokenType.LBRACKET);
+            var destinations = new List<Tuple<LLVMType, Value, LocalId>>();
+            while (!PeekAndDiscard(TokenType.RBRACKET))
+            {
+                var caseType = ParseType();
+                var caseVal = ParseValue();
+                Expect(TokenType.COMMA);
+                Expect(TokenType.label);
+                var dest = ParseLocalId();
+                destinations.Add(Tuple.Create(caseType, caseVal, dest));
+            }
+            return new Switch
+            {
+                Type = type,
+                Value = val,
+                Default = defDest,
+                Destinations = destinations
+            };
+        }
+        
+        private PhiInstruction ParsePhi(LocalId result)
+        {
+            Expect(TokenType.phi);
+            //sExp = "%15 = phi i1 [false, %5], [%13, %8]";
+            var type = ParseType();
+            var args = new List<Tuple<Value, LocalId>>();
+            Expect(TokenType.LBRACKET);
+            var value = ParseValue();
+            Expect(TokenType.COMMA);
+            var label = ParseLocalId();
+            Expect(TokenType.RBRACKET);
+            var arg = Tuple.Create(value, label);
+            args.Add(arg);
+            while (PeekAndDiscard(TokenType.COMMA))
+            {
+                Expect(TokenType.LBRACKET);
+                value = ParseValue();
+                Expect(TokenType.COMMA);
+                label = ParseLocalId();
+                Expect(TokenType.RBRACKET);
+                arg = Tuple.Create(value, label);
+                args.Add(arg);
+            }
+            return new PhiInstruction
+            {
+                Result = result,
+                Type = type,
+                Arguments = args,
+            };
+        }
+
     }
 }

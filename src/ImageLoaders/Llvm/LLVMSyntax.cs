@@ -53,6 +53,7 @@ namespace Reko.ImageLoaders.LLVM
                 if (sep)
                     w.WriteLine();
                 entry.Write(w);
+                w.WriteLine();
                 sep = true;
             }
         }
@@ -61,6 +62,21 @@ namespace Reko.ImageLoaders.LLVM
     public abstract class ModuleEntry : LLVMSyntax
     {
 
+    }
+
+    public class TypeDefinition : ModuleEntry
+    {
+        public LocalId Name;
+        public LLVMType Type;
+
+        public override void Write(Formatter w)
+        {
+            Name.Write(w);
+            w.Write(" = ");
+            w.WriteKeyword("type");
+            w.Write(" ");
+            Type.Write(w);
+        }
     }
 
     public class GlobalDefinition : ModuleEntry
@@ -98,15 +114,22 @@ namespace Reko.ImageLoaders.LLVM
             if (constant)
             {
                 w.WriteKeyword("constant");
-                w.Write(' ');
             }
+            else
+            {
+                w.WriteKeyword("global");
+            }
+            w.Write(' ');
             Type.Write(w);
             if (Initializer != null)
             {
                 w.Write(' ');
                 Initializer.Write(w);
             }
-            w.WriteLine();
+            if (Alignment != 0)
+            {
+                w.Write(", align {0}", Alignment);
+            }
         }
     }
 
@@ -136,7 +159,6 @@ namespace Reko.ImageLoaders.LLVM
                 }
             }
             w.Write(')');
-            w.WriteLine();
         }
     }
 
@@ -192,77 +214,19 @@ namespace Reko.ImageLoaders.LLVM
                 w.WriteLine();
             }
             w.Indentation -= 4;
-            w.WriteLine("}");
+            w.Write("}");
         }
     }
 
-    public abstract class Instruction : LLVMSyntax
-    {
-    }
 
-    public abstract class Terminator : Instruction
-    {
-
-    }
-
-    public class BrInstr : Terminator
-    {
-        public Value Cond;
-        public Value IfTrue;
-        public Value IfFalse;
-
-        public override void Write(Formatter w)
-        {
-            w.WriteKeyword("br");
-            w.Write(' ');
-            if (Cond == null)
-            {
-                w.WriteKeyword("label");
-                w.Write(' ');
-                IfTrue.Write(w);
-            }
-        }
-    }
-
-    public class RetInstr : Terminator
-    {
-        public LLVMType Type;
-        public Value Value;
-
-        public override void Write(Formatter w)
-        {
-            w.WriteKeyword("ret");
-            w.Write(" ");
-            if (this.Type == LLVMType.Void)
-            {
-                w.WriteKeyword("void");
-            }
-            else
-            {
-                Type.Write(w);
-                w.Write(' ');
-                Value.Write(w);
-            }
-        }
-    }
-
-    public abstract class Binary : Instruction
-    {
-    }
-
-    public abstract class BitwiseBinary :Instruction
-    {
-
-    }
 
     public abstract class MemoryInstruction : Instruction
     {
-
     }
 
     public abstract class OtherInstruction : Instruction
     {
-
+        public LocalId Result;
     }
 
     public abstract class Value : LLVMSyntax
@@ -281,6 +245,16 @@ namespace Reko.ImageLoaders.LLVM
 
         public override void Write(Formatter w)
         {
+            if (Value == null)
+            {
+                w.WriteKeyword("null");
+                return;
+            }
+            if (Value is bool)
+            {
+                w.Write((bool)Value ? "true" : "false");
+                return;
+            }
             if (Value is Int32)
             {
                 w.Write("{0}", Value);
@@ -304,7 +278,7 @@ namespace Reko.ImageLoaders.LLVM
                 w.Write("\"");
                 return;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException(Value.GetType().FullName);
         }
     }
 

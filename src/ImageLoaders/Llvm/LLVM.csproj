@@ -40,10 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LLVMParser.Expr.cs" />
     <Compile Include="LLVMSyntax.cs" />
     <Compile Include="LLVMLexer.cs" />
     <Compile Include="LLVMLoader.cs" />
     <Compile Include="LLVMParser.cs" />
+    <Compile Include="LLVMSyntax.Expr.cs" />
     <Compile Include="LLVMSyntax.Instructions.cs" />
     <Compile Include="LLVMType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

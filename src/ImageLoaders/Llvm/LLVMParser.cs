@@ -68,6 +68,10 @@ namespace Reko.ImageLoaders.LLVM
                     {
                         Entries = entries,
                     };
+                case TokenType.LocalId:
+                    var ldef = ParseLocalDefinition();
+                    entries.Add(ldef);
+                    break;
                 case TokenType.GlobalId:
                     var gdef = ParseGlobalDefinition();
                     entries.Add(gdef);
@@ -80,11 +84,26 @@ namespace Reko.ImageLoaders.LLVM
                     var def = ParseFunctionDefinition();
                     entries.Add(def);
                     break;
+                case TokenType.source_filename:
+                    ParseSourceFilename();
+                    break;
+                case TokenType.target:
+                    ParseTarget();
+                    break;
                 default:
                     Unexpected(peekTok);
                     break;
                 }
             }
+        }
+
+        private TypeDefinition ParseLocalDefinition()
+        {
+            var name = ParseLocalId();
+            Expect(TokenType.EQ);
+            Expect(TokenType.type);
+            var type = ParseType();
+            return new TypeDefinition { Name = name, Type = type };
         }
 
         private GlobalDefinition ParseGlobalDefinition()
@@ -93,9 +112,13 @@ namespace Reko.ImageLoaders.LLVM
             Expect(TokenType.EQ);
             bool unnamed_addr = false;
             string visibility = null;
+            int align = 0;      // 0 = no aligmnent specified.
             if (PeekAndDiscard(TokenType.@private))
             {
                 visibility = "private";
+            } else if (PeekAndDiscard(TokenType.external))
+            {
+                visibility = "external";
             }
             if (PeekAndDiscard(TokenType.unnamed_addr))
             {
@@ -103,20 +126,30 @@ namespace Reko.ImageLoaders.LLVM
             }
             if (PeekAndDiscard(TokenType.global))
             {
-                global = true;
                 var type = ParseType();
+                if (PeekAndDiscard(TokenType.COMMA))
+                {
+                    Expect(TokenType.align);
+                    align = int.Parse(Expect(TokenType.Integer));
+                };
                 return new GlobalDefinition
                 {
                     Name = name,
                     Type = type,
                     unnamed_addr = unnamed_addr,
                     Visibility = visibility,
+                    Alignment = align,
                 };
             }
             if (PeekAndDiscard(TokenType.constant))
             {
                 var type = ParseType();
                 var value = ParseConstant();
+                if (PeekAndDiscard(TokenType.COMMA))
+                {
+                    Expect(TokenType.align);
+                    align = int.Parse(Expect(TokenType.Integer));
+                }
                 return new GlobalDefinition
                 {
                     Name = name,
@@ -125,6 +158,7 @@ namespace Reko.ImageLoaders.LLVM
                     unnamed_addr = unnamed_addr,
                     Visibility = visibility,
                     Initializer = value,
+                    Alignment = align,
                 };
             }
             throw new NotImplementedException();
@@ -196,12 +230,19 @@ namespace Reko.ImageLoaders.LLVM
             if (Peek().Type != TokenType.RPAREN)
             {
                 var type = ParseType();
-                var val = ParseValue();
+                Value val = null; 
+                if (Value_FIRST.Contains(Peek().Type))
+                {
+                    val = ParseValue();
+                }
                 args.Add(Tuple.Create(type, val));
                 while (PeekAndDiscard(TokenType.COMMA))
                 {
                     type = ParseType();
-                    val = ParseValue();
+                    if (Value_FIRST.Contains(Peek().Type))
+                    {
+                        val = ParseValue();
+                    }
                     args.Add(Tuple.Create(type, val));
                 }
             }
@@ -221,7 +262,24 @@ namespace Reko.ImageLoaders.LLVM
 
         private void ParseFunctionAttributes()
         {
-            PeekAndDiscard(TokenType.nounwind); //$REVIEW: don't care
+            //$REVIEW: currently we just discard these since they
+            // seem mostly apply to transformations from IR => MC,
+            // while Reko is all about MC => IR => source code.
+            for (;;)
+            {
+                switch (Peek().Type)
+                {
+                case TokenType.nounwind:
+                    Expect(TokenType.nounwind);
+                    break;
+                case TokenType.HASH:
+                    Expect(TokenType.HASH);
+                    Expect(TokenType.Integer);
+                    break;
+                default:
+                    return;
+                }
+            }
         }
 
         private Value ParseConstant()
@@ -270,14 +328,34 @@ namespace Reko.ImageLoaders.LLVM
             return true;
         }
 
+        private void ParseSourceFilename()
+        {
+            Expect(TokenType.source_filename);
+            Expect(TokenType.EQ);
+            Expect(TokenType.String);
+        }
+
+        private void ParseTarget()
+        {
+            Expect(TokenType.target);
+            PeekAndDiscard(TokenType.datalayout);
+            PeekAndDiscard(TokenType.triple);
+            Expect(TokenType.EQ);
+            Expect(TokenType.String);
+        }
+
         public Instruction ParseInstruction()
         {
             var tok = Peek();
+            if (tok.LineNumber == 146)
+                tok.ToString();
             switch(tok.Type)
             {
             case TokenType.br: return ParseBr();
             case TokenType.call: return ParseCall();
             case TokenType.ret: return ParseRet();
+            case TokenType.store: return ParseStore();
+            case TokenType.@switch: return ParseSwitch();
             case TokenType.LocalId: return ParseAssignment();
             default: Unexpected(tok); break;
             }
@@ -286,20 +364,43 @@ namespace Reko.ImageLoaders.LLVM
 
         private Instruction ParseAssignment()
         {
-            var local = Expect(TokenType.LocalId);
+            var local = ParseLocalId();
             Expect(TokenType.EQ);
 
-            switch (Peek().Type)
+            var tok = Peek();
+            switch (tok.Type)
             {
             case TokenType.getelementptr: return ParseGetElementPtr(local);
-            default: throw new NotImplementedException();
+            case TokenType.alloca: return ParseAlloca(local);
+            case TokenType.icmp: return ParseIcmp(local);
+            case TokenType.load: return ParseLoad(local);
+            case TokenType.phi: return ParsePhi(local);
+            default: Unexpected(tok); return null;
             }
         }
 
         private Instruction ParseBr()
         {
             Expect(TokenType.br);
-            if (PeekAndDiscard(TokenType.label))
+            if (!PeekAndDiscard(TokenType.label))
+            {
+                var type = ParseType();
+                var cond = ParseValue();
+                Expect(TokenType.COMMA);
+                Expect(TokenType.label);
+                var destTrue = ParseLocalId();
+                Expect(TokenType.COMMA);
+                Expect(TokenType.label);
+                var destFalse = ParseLocalId();
+                return new BrInstr
+                {
+                    Type = type,
+                    Cond = cond,
+                    IfTrue = destTrue,
+                    IfFalse = destFalse,
+                };
+            }
+            else 
             {
                 var dest = ParseLocalId();
                 return new BrInstr
@@ -310,6 +411,14 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
+        private static HashSet<TokenType> Value_FIRST = new HashSet<TokenType>
+        {
+            TokenType.LocalId,
+            TokenType.GlobalId,
+            TokenType.Integer,
+            TokenType.getelementptr
+        };
+
         private Value ParseValue()
         {
             switch (Peek().Type)
@@ -317,6 +426,9 @@ namespace Reko.ImageLoaders.LLVM
             case TokenType.LocalId: return ParseLocalId();
             case TokenType.GlobalId: return ParseGlobalId();
             case TokenType.Integer: return ParseInteger();
+            case TokenType.@false: Expect(TokenType.@false); return new Constant(false);
+            case TokenType.getelementptr: return ParseGetElementPtrExpr();
+            case TokenType.@null: Expect(TokenType.@null); return new Constant(null);
             }
             Unexpected(Peek());
             return null;
@@ -340,46 +452,63 @@ namespace Reko.ImageLoaders.LLVM
             return new Constant(int.Parse(n));
         }
 
-        private Instruction ParseRet()
-        {
-            Expect(TokenType.ret);
-            if (PeekAndDiscard(TokenType.@void))
-            {
-                return new RetInstr
-                {
-                    Type = LLVMType.Void,
-                };
-            }
-            var type = ParseType();
-            var val = ParseValue();
-            return new RetInstr
-            {
-                Type = type,
-                Value = val,
-            };
-        }
-
         public LLVMType ParseType()
         {
-            LLVMType type = null;
+            LLVMType type = ParseTypeCore();
             for (;;)
             {
-                switch (Peek().Type)
-                {
-                case TokenType.IntType:
-                    type = LLVMType.GetBaseType(Get().Value);
-                    break;
-                case TokenType.LBRACKET:
-                    type = ParseArray();
-                    break;
-                default:
-                    return type;
-                }
                 if (PeekAndDiscard(TokenType.STAR))
                 {
                     type = new LLVMPointer(type);
                 }
+                else
+                    return type;
             }
+        }
+
+        private static HashSet<TokenType> Type_FIRST = new HashSet<TokenType>
+        {
+            TokenType.IntType,
+            TokenType.LocalId,
+            TokenType.LBRACE,
+            TokenType.LBRACKET,
+        };
+
+        private LLVMType ParseTypeCore()
+        {
+            var tok = Peek();
+            switch (tok.Type)
+            {
+            case TokenType.IntType:
+                return LLVMType.GetBaseType(Get().Value);
+            case TokenType.LocalId:
+                var typeName = ParseLocalId();
+                return new TypeReference(typeName);
+            case TokenType.LBRACE:
+                return ParseStruct();
+            case TokenType.LBRACKET:
+                return ParseArray();
+            default:
+                Unexpected(tok);
+                return null;
+            }
+        }
+
+        private LLVMType ParseStruct()
+        {
+            Expect(TokenType.LBRACE);
+            var fields = new List<LLVMType>();
+            fields.Add(ParseType());
+            while (PeekAndDiscard(TokenType.COMMA))
+            {
+                var field = ParseType();
+                fields.Add(field);
+            }
+            Expect(TokenType.RBRACE);
+            return new StructureType
+            {
+                Fields = fields
+            };
         }
 
         private LLVMArrayType ParseArray()
@@ -435,8 +564,8 @@ namespace Reko.ImageLoaders.LLVM
         private void Unexpected(Token tok)
         {
             throw new FormatException(
-                string.Format("Unexpected token '{0}' {1}.",
-                tok.Type, tok.Value));
+                string.Format("Unexpected token '{0}' {1} on line {2}.",
+                tok.Type, tok.Value, tok.LineNumber));
         }
     }
 }

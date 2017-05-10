@@ -43,6 +43,7 @@ namespace Reko.Core.Output
 
             }
         }
+
         public void WriteProcedure(Procedure procedure)
         {
             var pd = new ProcedureFormatter(procedure, new CodeFormatter(new TextFormatter(w)));
