@@ -247,6 +247,7 @@
     <Compile Include="Operators\FNegOperator.cs" />
     <Compile Include="Output\CTypeReferenceFormatter.cs" />
     <Compile Include="Rational.cs" />
+    <Compile Include="Rtl\RtlIf.cs" />
     <Compile Include="SegmentMap.cs" />
     <Compile Include="Serialization\ArgumentDeserializer.cs" />
     <Compile Include="Serialization\GlobalDataItem_v2.cs" />
@@ -302,7 +303,6 @@
     <Compile Include="Rtl\RtlCall.cs" />
     <Compile Include="Rtl\RtlEmitter.cs" />
     <Compile Include="Rtl\RtlGoto.cs" />
-    <Compile Include="Rtl\RtlIf.cs" />
     <Compile Include="Rtl\RtlInstruction.cs" />
     <Compile Include="Rtl\RtlInstructionMatcher.cs" />
     <Compile Include="Rtl\RtlInstructionVisitor.cs" />

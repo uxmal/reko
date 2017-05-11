@@ -357,8 +357,9 @@ namespace Reko.UnitTests.Arch.Sparc
                     Constant.Word32(0x19)));
             BuildTest(0x91D02999);  // ta\t%g1,0x00000019"
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|---|if (true) __syscall(0x00000019)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (false) branch 00100004",
+                "2|L--|__syscall(0x00000019)");
         }
 
         [Test]

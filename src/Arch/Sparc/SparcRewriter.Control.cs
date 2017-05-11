@@ -100,13 +100,15 @@ namespace Reko.Arch.Sparc
             //$REVIEW: does a SPARC trap instruction have a delay slot?
             var src1 = RewriteOp(instrCur.Op1, true);
             var src2 = RewriteOp(instrCur.Op2, true);
-            emitter.If(
-                cond,
-                new RtlSideEffect(
-                    host.PseudoProcedure(
-                        PseudoProcedure.Syscall, 
-                        VoidType.Instance, 
-                        SimplifySum(src1, src2))));
+            emitter.BranchInMiddleOfInstruction(
+                cond.Invert(),
+                instrCur.Address + instrCur.Length,
+                RtlClass.ConditionalTransfer);
+            emitter.SideEffect(
+                host.PseudoProcedure(
+                    PseudoProcedure.Syscall, 
+                    VoidType.Instance, 
+                    SimplifySum(src1, src2)));
         }
     }
 }

@@ -1130,8 +1130,9 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Run32bitTest(0x0F, 0x44, 0xC8);
             AssertCode(
-                "0|L--|10000000(3): 1 instructions",
-                "1|L--|if (Test(EQ,Z)) ecx = eax");
+                "0|L--|10000000(3): 2 instructions",
+                "1|T--|if (Test(NE,Z)) branch 10000003",
+                "2|L--|ecx = eax");
         }
 
         [Test]

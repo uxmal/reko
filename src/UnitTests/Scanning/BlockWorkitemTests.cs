@@ -353,56 +353,6 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
-        public void Bwi_RtlIf()
-        {
-            var followBlock = proc.AddBlock("l00100004");
-            using (mr.Record())
-            {
-                arch.Stub(a => a.GetRegister(1)).Return((RegisterStorage)r1.Storage);
-                arch.Stub(a => a.GetRegister(2)).Return((RegisterStorage)r2.Storage);
-                arch.Stub(a => a.StackRegister).Return((RegisterStorage)r1.Storage);
-                scanner.Stub(s => s.FindContainingBlock(
-                    Arg<Address>.Matches(a => a.ToLinear() == 0x00100000))).Return(block);
-                scanner.Stub(s => s.FindContainingBlock(
-                    Arg<Address>.Matches(a => a.ToLinear() == 0x00100004))).Return(followBlock);
-                scanner.Stub(s => s.Warn(null, null)).IgnoreArguments().WhenCalled(m =>
-                {
-                    var d = (Diagnostic)m.Arguments[1];
-                    Debug.Print("{0}: {1}", d.GetType().Name, d.Message);
-                });
-                scanner.Stub(s => s.EnqueueJumpTarget(
-                    Arg<Address>.Is.NotNull,
-                    Arg<Address>.Matches(a => a.ToLinear() == 0x00100004),
-                    Arg<Procedure>.Is.NotNull,
-                    Arg<ProcessorState>.Is.Anything)).Return(followBlock);
-
-                scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
-            }
-            trace.Add(m => m.If(new TestCondition(ConditionCode.GE, grf), new RtlAssignment(r2, r1)));
-            var wi = CreateWorkItem(Address.Ptr32(0x00100000), new FakeProcessorState(arch));
-            wi.Process();
-
-            var sw = new StringWriter();
-            mr.VerifyAll();
-            proc.Write(false, sw);
-            var sExp =
-@"// testProc
-// Return size: 0
-void testProc()
-testProc_entry:
-l00100000:
-	branch Test(LT,SCZ) l00100004
-	// succ:  l00100000_1 l00100004
-l00100000_1:
-	r2 = r1
-	// succ:  l00100004
-l00100004:
-testProc_exit:
-";
-            Assert.AreEqual(sExp, sw.ToString());
-        }
-
-        [Test]
         public void Bwi_CallProcedureWithSignature()
         {
             var proc2 = new Procedure("fn2000", new Frame(PrimitiveType.Pointer32));
