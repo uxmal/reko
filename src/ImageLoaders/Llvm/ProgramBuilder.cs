@@ -31,7 +31,6 @@ namespace Reko.ImageLoaders.LLVM
     public class ProgramBuilder
     {
         private PrimitiveType framePointerSize;
-        private Block block;
 
         public ProgramBuilder(PrimitiveType framePointerSize)
         {
@@ -41,7 +40,6 @@ namespace Reko.ImageLoaders.LLVM
 
         public Dictionary<FunctionDefinition, ProcedureBuilder> Functions { get; private set; }
         public Dictionary<LocalId, DataType> Types { get; private set;}
-    
 
         public Program MakeProgram()
         {
@@ -84,7 +82,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public Reko.Core.Types.FunctionType TranslateSignature(
             LLVMType retType, 
-            List<LLVMArgument> parameters, 
+            List<LLVMParameter> parameters, 
             ProcedureBuilder state)
         {
             var rt = TranslateType(retType);
@@ -152,6 +150,11 @@ namespace Reko.ImageLoaders.LLVM
             {
                 var dt = type.Accept(new TypeTranslator(framePointerSize.Size));
                 return IrConstant.Create(dt, Convert.ToInt64(c.Value));
+            }
+            var local = value as LocalId;
+            if (local != null)
+            {
+
             }
             throw new NotImplementedException();
         }

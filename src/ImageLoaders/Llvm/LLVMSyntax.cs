@@ -174,10 +174,10 @@ namespace Reko.ImageLoaders.LLVM
         public string visibility;
         public string DLLStorageClass;
         public string cconv;
-        public string ret_attrs;
+        public ParameterAttributes ret_attrs;
         public LLVMType ResultType;
         public string FunctionName;
-        public List<LLVMArgument> Parameters;
+        public List<LLVMParameter> Parameters;
         public List<Instruction> Instructions;
 
         public bool unnamed_addr;
@@ -194,6 +194,11 @@ namespace Reko.ImageLoaders.LLVM
         {
             w.WriteKeyword("define");
             w.Write(' ');
+            if (ret_attrs != null)
+            {
+                ret_attrs.Write(w);
+                w.Write(' ');
+            }
             ResultType.Write(w);
             w.Write(' ');
             w.Write("@" + FunctionName);
@@ -208,6 +213,11 @@ namespace Reko.ImageLoaders.LLVM
                 {
                     w.Write(' ');
                     w.Write('%' + param.name);
+                }
+                if (param.attrs != null)
+                {
+                    w.Write(' ');
+                    param.attrs.Write(w);
                 }
             }
             w.Write(')');

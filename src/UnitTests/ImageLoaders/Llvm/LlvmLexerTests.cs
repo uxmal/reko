@@ -150,5 +150,14 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             var tok = lex.GetToken();
             Assert.AreEqual(TokenType.ELLIPSIS, tok.Type);
         }
+
+        [Test]
+        public void LLLex_negative_integer()
+        {
+            CreateLexer("-1");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.Integer, tok.Type);
+            Assert.AreEqual("-1", tok.Value);
+        }
     }
 }

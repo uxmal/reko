@@ -57,6 +57,7 @@ namespace Reko.ImageLoaders.LLVM
             Dot1,
             Dot2,
             i,
+            Minus,
         }
 
         public Token GetToken()
@@ -92,6 +93,7 @@ namespace Reko.ImageLoaders.LLVM
                     case 'c': rdr.Read(); st = State.c; break;
                     case 'i': rdr.Read(); sb = new StringBuilder(); sb.Append(ch); st = State.i; break;
                     case '0': rdr.Read(); sb = new StringBuilder(); sb.Append(ch); st = State.Zero; break;
+                    case '-': rdr.Read(); st = State.Minus; break;
                     case '.': rdr.Read(); st = State.Dot1; break;
                     case '!': rdr.Read(); return Tok(TokenType.BANG);
                     default:
@@ -274,6 +276,17 @@ namespace Reko.ImageLoaders.LLVM
                     default: Unexpected(".."); break;
                     }
                     break;
+                case State.Minus:
+                    if (char.IsDigit(ch))
+                    {
+                        rdr.Read();
+                        sb = new StringBuilder();
+                        sb.Append('-');
+                        sb.Append(ch);
+                        return Tok(TokenType.Integer, sb);
+                    }
+                    Unexpected("-");
+                    break;
                 }
             }
         }
@@ -354,6 +367,7 @@ namespace Reko.ImageLoaders.LLVM
             { "bitcast", TokenType.bitcast },
             { "br", TokenType.br },
             { "call", TokenType.call },
+            { "common", TokenType.common },
             { "constant", TokenType.constant },
             { "datalayout", TokenType.datalayout },
             { "declare", TokenType.declare },
@@ -375,15 +389,20 @@ namespace Reko.ImageLoaders.LLVM
             { "inttoptr", TokenType.inttoptr },
             { "label", TokenType.label },
             { "load", TokenType.load },
-            { "null", TokenType.@null },
-            { "private", TokenType.@private },
-            { "nocapture", TokenType.nocapture},
+            { "mul", TokenType.mul },
+            { "noalias", TokenType.noalias },
+            { "nocapture", TokenType.nocapture },
             { "noinline", TokenType.noinline },
             { "nounwind", TokenType.nounwind },
             { "nsw", TokenType.nsw },
+            { "null", TokenType.@null },
             { "nuw", TokenType.nuw },
             { "phi", TokenType.phi },
+            { "private", TokenType.@private },
             { "ret", TokenType.ret },
+            { "select", TokenType.select },
+            { "sext", TokenType.sext },
+            { "signext", TokenType.signext },
             { "source_filename", TokenType.source_filename },
             { "store", TokenType.store },
             { "sub", TokenType.sub },
@@ -391,12 +410,17 @@ namespace Reko.ImageLoaders.LLVM
             { "target", TokenType.target },
             { "to", TokenType.to },
             { "triple", TokenType.triple },
+            { "true", TokenType.@true },
+            { "trunc", TokenType.trunc },
             { "type", TokenType.type },
             { "unnamed_addr", TokenType.unnamed_addr },
             { "uwtable", TokenType.uwtable },
             { "void", TokenType.@void },
             { "volatile", TokenType.@volatile },
             { "x", TokenType.x },
+            { "xor", TokenType.xor },
+            { "zeroext", TokenType.zeroext },
+            { "zext", TokenType.zext }
         };
         private int lineStart;
     }

@@ -180,7 +180,8 @@ namespace Reko.ImageLoaders.LLVM
     {
         public string Convention;
         public LLVMType ReturnType;
-        public List<LLVMArgument> Parameters;
+        public ParameterAttributes ret_attrs;
+        public List<LLVMParameter> Parameters;
 
         public override T Accept<T>(LLVMTypeVisitor<T> visitor)
         {
@@ -214,10 +215,11 @@ namespace Reko.ImageLoaders.LLVM
         }
     }
 
-    public class LLVMArgument : LLVMSyntax
+    public class LLVMParameter : LLVMSyntax
     {
         public LLVMType Type; // [parameter Attrs]
         public string name;
+        public ParameterAttributes attrs;
 
         public override void Write(Formatter w)
         {
@@ -226,6 +228,34 @@ namespace Reko.ImageLoaders.LLVM
                 return;
             w.Write(' ');
             w.Write(name);
+        }
+    }
+
+    public class ParameterAttributes
+    {
+        public bool signext;
+        public bool zeroext;
+        public bool noalias;
+
+        public void Write(Formatter w)
+        {
+            var sep = "";
+            if (signext)
+            {
+                w.WriteKeyword("signext");
+                sep = " ";
+            }
+            else if (zeroext)
+            {
+                w.WriteKeyword("zeroext");
+                sep = " ";
+            }
+            if (noalias)
+            {
+                w.Write(sep);
+                w.WriteKeyword("noalias");
+                sep = " ";
+            }
         }
     }
 

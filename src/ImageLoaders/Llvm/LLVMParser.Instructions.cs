@@ -81,6 +81,8 @@ namespace Reko.ImageLoaders.LLVM
         private Instruction ParseBinOp(LocalId result)
         {
             var op = Get().Type;
+            var nuw = PeekAndDiscard(TokenType.nuw);
+            var nsw = PeekAndDiscard(TokenType.nsw);
             var type = ParseType();
             var op1 = ParseValue();
             Expect(TokenType.COMMA);
@@ -89,21 +91,24 @@ namespace Reko.ImageLoaders.LLVM
             {
                 Result = result,
                 Operator = op,
+                NoUnsignedWrap = nuw,
+                NoSignedWrap = nsw,
                 Type = type,
                 Left = op1,
                 Right = op2,
             };
         }
 
-        private Instruction ParseBitcast(LocalId result)
+        private Instruction ParseConversion(LocalId result)
         {
-            Expect(TokenType.bitcast);
+            var op = Get().Type;
             var typeFrom = ParseType();
             var value = ParseValue();
             Expect(TokenType.to);
             var typeTo = ParseType();
-            return new BitcastInstruction
+            return new Conversion
             {
+                Operator = op,
                 Result = result,
                 TypeFrom = typeFrom,
                 Value = value,
@@ -115,12 +120,15 @@ namespace Reko.ImageLoaders.LLVM
         {
             //$TODO: tail
             Expect(TokenType.call);
+            var attrs = ParseParameterAttributes();
             var ret = ParseType();
             var fnPtr = ParseValue();
             var args = ParseArgumentList();
+            ParseFunctionAttributes();
             return new LLVMCall
             {
                 Result = result,
+                res_attrs = attrs,
                 FnType = ret,
                 FnPtr = fnPtr,
                 Arguments = args,
@@ -164,7 +172,7 @@ namespace Reko.ImageLoaders.LLVM
                 var idxVal = ParseValue();
                 indices.Add(Tuple.Create(type, idxVal));
             }
-            return new  GetElementPtr
+            return new GetElementPtr
             {
                 Result = result,
                 BaseType = baseType,
@@ -215,12 +223,13 @@ namespace Reko.ImageLoaders.LLVM
             var value = ParseValue();
             Expect(TokenType.to);
             var toType = ParseType();
-            return new Inttoptr
+            return new Conversion
             {
+                Operator = TokenType.inttoptr,
                 Result = result,
-                FromType = fromType,
+                TypeFrom = fromType,
                 Value = value,
-                ToType = toType
+                TypeTo = toType
             };
         }
 
@@ -326,7 +335,7 @@ namespace Reko.ImageLoaders.LLVM
                 Destinations = destinations
             };
         }
-        
+
         private PhiInstruction ParsePhi(LocalId result)
         {
             Expect(TokenType.phi);
@@ -358,5 +367,27 @@ namespace Reko.ImageLoaders.LLVM
             };
         }
 
+        private Select ParseSelect(LocalId result)
+        {
+            Expect(TokenType.select);
+            var condType = ParseType();
+            var cond = ParseValue();
+            Expect(TokenType.COMMA);
+            var trueType = ParseType();
+            var trueValue = ParseValue();
+            Expect(TokenType.COMMA);
+            var falseType = ParseType();
+            var falseValue = ParseValue();
+            return new Select
+            {
+                Result = result,
+                CondType = condType,
+                Cond = cond,
+                TrueType = trueType,
+                TrueValue = trueValue,
+                FalseType = falseType,
+                FalseValue = falseValue,
+            };
+        }
     }
 }

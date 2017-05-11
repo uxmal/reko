@@ -130,9 +130,18 @@ namespace Reko.ImageLoaders.LLVM
             {
                 unnamed_addr = true;
             }
+            if (PeekAndDiscard(TokenType.common))
+            {
+                // Not used yet.
+            }
             if (PeekAndDiscard(TokenType.global))
             {
                 var type = ParseType();
+                Value value = null;
+                if (Value_FIRST.Contains(Peek().Type))
+                {
+                    value = ParseValue();
+                }
                 if (PeekAndDiscard(TokenType.COMMA))
                 {
                     Expect(TokenType.align);
@@ -142,12 +151,13 @@ namespace Reko.ImageLoaders.LLVM
                 {
                     Name = name,
                     Type = type,
+                    Initializer = value,
                     unnamed_addr = unnamed_addr,
                     Visibility = visibility,
                     Alignment = align,
                 };
             }
-            if (PeekAndDiscard(TokenType.constant))
+            else if (PeekAndDiscard(TokenType.constant))
             {
                 var type = ParseType();
                 var value = ParseConstant();
@@ -167,12 +177,14 @@ namespace Reko.ImageLoaders.LLVM
                     Alignment = align,
                 };
             }
-            throw new NotImplementedException();
+            Unexpected(Peek());
+            return null;
         }
 
         private ModuleEntry ParseDeclaration()
         {
             Expect(TokenType.declare);
+            var attrs = ParseParameterAttributes();
             var retType = ParseType();
             var name = Expect(TokenType.GlobalId);
             var args = ParseParameterList();
@@ -183,6 +195,7 @@ namespace Reko.ImageLoaders.LLVM
                 Type = new LLVMFunctionType
                 {
                     ReturnType = retType,
+                    ret_attrs = attrs,
                     Parameters = args
                 }
             };
@@ -198,6 +211,7 @@ namespace Reko.ImageLoaders.LLVM
                 Expect(TokenType.Integer);
                 Expect(TokenType.RPAREN);
             }
+            var parAttrs = ParseParameterAttributes();
             var retType = ParseType();
             var name = Expect(TokenType.GlobalId);
             var args = ParseParameterList();
@@ -213,14 +227,15 @@ namespace Reko.ImageLoaders.LLVM
             {
                 FunctionName = name,
                 ResultType = retType,
+                ret_attrs = parAttrs,
                 Parameters = args,
                 Instructions = instrs,
             };
         }
 
-        private List<LLVMArgument> ParseParameterList()
+        private List<LLVMParameter> ParseParameterList()
         {
-            var @params = new List<LLVMArgument>();
+            var @params = new List<LLVMParameter>();
             Expect(TokenType.LPAREN);
             if (Peek().Type != TokenType.RPAREN)
             {
@@ -236,54 +251,85 @@ namespace Reko.ImageLoaders.LLVM
             return @params;
         }
 
-        private List<Tuple<LLVMType, Value>> ParseArgumentList()
+        private List<Argument> ParseArgumentList()
         {
-            var args = new List<Tuple<LLVMType, Value>>();
+            var args = new List<Argument>();
             Expect(TokenType.LPAREN);
             if (Peek().Type != TokenType.RPAREN)
             {
-                var type = ParseType();
-                Value val = null; 
-                if (Value_FIRST.Contains(Peek().Type))
-                {
-                    val = ParseValue();
-                }
-                args.Add(Tuple.Create(type, val));
+                var arg = ParseArgument();
+                args.Add(arg);
                 while (PeekAndDiscard(TokenType.COMMA))
                 {
-                    type = ParseType();
-                    if (Value_FIRST.Contains(Peek().Type))
-                    {
-                        val = ParseValue();
-                    }
-                    args.Add(Tuple.Create(type, val));
+                    arg = ParseArgument();
+                    args.Add(arg);
                 }
             }
             Expect(TokenType.RPAREN);
             return args;
         }
 
-        private LLVMArgument ParseParameter()
+        private Argument ParseArgument()
+        {
+            LLVMType type = ParseType();
+            Value val = null;
+            var attrs = ParseParameterAttributes();
+            if (Value_FIRST.Contains(Peek().Type))
+            {
+                val = ParseValue();
+            }
+            var arg = new Argument
+            {
+                Type = type,
+                Value = val,
+                Attributes = attrs
+            };
+            return arg;
+        }
+
+        private LLVMParameter ParseParameter()
         {
             if (PeekAndDiscard(TokenType.ELLIPSIS))
             {
-                return new LLVMArgument { name = "..." };
+                return new LLVMParameter { name = "..." };
             }
             var type = ParseType();
-            for (;;)
+            var attrs = ParseParameterAttributes();
+            return new LLVMParameter {
+                Type = type,
+                attrs = attrs,
+            };
+        }
+
+        private ParameterAttributes ParseParameterAttributes()
+        {
+            bool zeroext = false;
+            bool signext = false;
+            bool attrs = false;
+            bool noalias = false;
+            while (true)
             {
-                if (PeekAndDiscard(TokenType.nocapture))
+                switch (Peek().Type)
                 {
-                    //$REVIEW: don't care
-                } else if (PeekAndDiscard(TokenType.dereferenceable))
-                {
+                case TokenType.signext: Get(); attrs = true; signext = true; break;
+                case TokenType.zeroext: Get(); attrs = true; zeroext = true; break;
+                case TokenType.noalias: Get(); attrs = true; noalias = true; break;
+                case TokenType.nocapture: Get(); break;
+                case TokenType.dereferenceable:
+                    Get();
                     Expect(TokenType.LPAREN);
                     Expect(TokenType.Integer);
                     Expect(TokenType.RPAREN);
-                }
-                else
-                {
-                    return new LLVMArgument { Type = type };
+                    break;
+                default:
+                    if (!attrs)
+                        return null;
+                    return new ParameterAttributes
+                    {
+                        signext = signext,
+                        zeroext = zeroext,
+                        noalias = noalias
+                    };
                 }
             }
         }
@@ -439,15 +485,21 @@ namespace Reko.ImageLoaders.LLVM
             case TokenType.alloca: return ParseAlloca(result);
             case TokenType.add: return ParseBinBitOp(result);
             case TokenType.and: return ParseBinBitOp(result);
-            case TokenType.bitcast: return ParseBitcast(result);
+            case TokenType.bitcast: return ParseConversion(result);
             case TokenType.call: return ParseCall(result);
             case TokenType.extractvalue: return ParseExtractvalue(result);
             case TokenType.getelementptr: return ParseGetElementPtr(result);
             case TokenType.icmp: return ParseIcmp(result);
             case TokenType.inttoptr: return ParseInttoptr(result);
             case TokenType.load: return ParseLoad(result);
+            case TokenType.mul: return ParseBinBitOp(result);
             case TokenType.phi: return ParsePhi(result);
+            case TokenType.sext: return ParseConversion(result);
+            case TokenType.select: return ParseSelect(result);
             case TokenType.sub: return ParseBinOp(result);
+            case TokenType.trunc: return ParseConversion(result);
+            case TokenType.xor: return ParseBinOp(result);
+            case TokenType.zext: return ParseConversion(result);
             default: Unexpected(tok); return null;
             }
         }
@@ -489,7 +541,10 @@ namespace Reko.ImageLoaders.LLVM
             TokenType.LocalId,
             TokenType.GlobalId,
             TokenType.Integer,
-            TokenType.getelementptr
+            TokenType.@false,
+            TokenType.getelementptr,
+            TokenType.@null,
+            TokenType.@true,
         };
 
         private Value ParseValue()
@@ -502,6 +557,7 @@ namespace Reko.ImageLoaders.LLVM
             case TokenType.@false: Expect(TokenType.@false); return new Constant(false);
             case TokenType.getelementptr: return ParseGetElementPtrExpr();
             case TokenType.@null: Expect(TokenType.@null); return new Constant(null);
+            case TokenType.@true: Expect(TokenType.@true); return new Constant(true);
             }
             Unexpected(Peek());
             return null;
@@ -536,20 +592,20 @@ namespace Reko.ImageLoaders.LLVM
                 }
                 else if (PeekAndDiscard(TokenType.LPAREN))
                 {
-                    var args = new List<LLVMArgument>();
+                    var args = new List<LLVMParameter>();
                     if (Peek().Type != TokenType.RPAREN)
                     {
                         var argType = ParseType();
-                        args.Add(new LLVMArgument { Type = argType });
+                        args.Add(new LLVMParameter { Type = argType });
                         while (PeekAndDiscard(TokenType.COMMA))
                         {
                             if (PeekAndDiscard(TokenType.ELLIPSIS))
                             {
-                                args.Add(new LLVMArgument { name = "..." });
+                                args.Add(new LLVMParameter { name = "..." });
                                 break;
                             }
                             argType = ParseType();
-                            args.Add(new LLVMArgument { Type = argType });
+                            args.Add(new LLVMParameter { Type = argType });
                         }
                     }
                     Expect(TokenType.RPAREN);

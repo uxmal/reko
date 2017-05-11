@@ -54,7 +54,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
                 Assert.AreEqual(sExp, sActual);
             }
         }
-        
+
         [Test]
         public void LLPB_ReturnVoid()
         {
@@ -88,6 +88,34 @@ foo_exit:
             var fn = Func(
                 "define i32 @foo(i8*,i32) {",
                 "   ret i32 3",
+                "}");
+
+            var pb = new ProgramBuilder(PrimitiveType.Pointer32);
+            pb.RegisterFunction(fn);
+            pb.TranslateFunction(fn);
+
+            var proc = pb.Functions.Values.First().Procedure;
+            var sExp =
+@"// foo
+// Return size: 0
+word32 foo(byte * %0, word32 %1)
+foo_entry:
+	// succ:  l2
+l2:
+	return 0x00000003
+	// succ:  foo_exit
+foo_exit:
+";
+            AssertProc(sExp, proc);
+        }
+
+        [Test]
+        public void LLPB_Add()
+        {
+            var fn = Func(
+                "define i32 @foo(i32) {",
+                "   %2 = add i32 %0, 3",
+                "   ret i332 %2",
                 "}");
 
             var pb = new ProgramBuilder(PrimitiveType.Pointer32);

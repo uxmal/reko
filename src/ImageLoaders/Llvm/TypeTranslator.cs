@@ -67,7 +67,7 @@ namespace Reko.ImageLoaders.LLVM
             return TranslateFn(fn.ReturnType, fn.Parameters, new StorageBinder());
         }
 
-        private DataType TranslateFn(LLVMType retType, List<LLVMArgument> parameters, IStorageBinder binder)
+        private DataType TranslateFn(LLVMType retType, List<LLVMParameter> parameters, IStorageBinder binder)
         {
             var rt = retType.Accept(this);
             var sigRet = binder.CreateTemporary("", rt);

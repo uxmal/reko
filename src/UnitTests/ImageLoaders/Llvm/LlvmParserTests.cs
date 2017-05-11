@@ -109,6 +109,14 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
         }
 
         [Test]
+        public void LLParser_global_initialized()
+        {
+            llir = "@ptr_size = global i32 4, align 4";
+            sExp = "@ptr_size = global i32 4, align 4" + nl;
+            RunModuleTest();
+        }
+
+        [Test]
         public void LLParser_external_global()
         {
             llir = "@stderr = external global %struct._IO_FILE*, align 8";
@@ -209,6 +217,62 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             RunModuleTest();
         }
 
+        [Test]
+        public void LLParser_parameter_attributes()
+        {
+            llir =
+@"define zeroext i1 @prev_char(i8 signext) #0 {
+    ret i1 false
+}";
+            sExp =
+@"define zeroext i1 @prev_char(i8 signext) {
+    ret i1 false
+}
+";
+            RunModuleTest();
+        }
+
+        [Test]
+        public void LLParser_sext()
+        {
+            llir = "%2 = sext i8 %1 to i32";
+            sExp = "%2 = sext i8 %1 to i32";
+            RunInstrTest();
+        }
+
+        [Test]
+        public void LLParser_call_ret_signext()
+        {
+            llir = "%8 = call signext i8 @next_char()";
+            sExp = "%8 = call signext i8 @next_char()";
+            RunInstrTest();
+        }
+
+        [Test]
+        public void LLParser_call_param_signext()
+        {
+            llir = "%35 = call zeroext i1 @prev_char(i8 signext 47)";
+            sExp = "%35 = call zeroext i1 @prev_char(i8 signext 47)";
+            RunInstrTest();
+        }
+
+        [Test]
+        public void LLParser_select()
+        {
+            llir = "%10 = select i1 %9, i32 1, i32 0";
+            sExp = "%10 = select i1 %9, i32 1, i32 0";
+            RunInstrTest();
+        }
+
+        [Test]
+        public void LLParser_call_true_argument()
+        {
+            llir = "call void @branch(i1 zeroext true)";
+            sExp = "call void @branch(i1 zeroext true)";
+            RunInstrTest();
+
+        }
+
         [Test(Description = "Sample taken from http://llvm.org/docs/LangRef.html#module-structure")]
         public void LLParser_Module()
         {
@@ -240,6 +304,16 @@ define i32 @main() {
 }
 ";
             RunModuleTest();
+        }
+
+        [Test]
+        public void LLPB_Parse()
+        {
+            using (var rdr = File.OpenText(@"D:\dev\uxmal\reko\LLVM\more_llvm\more_llvm\mini-c\cc.ll"))
+            {
+                var parser = new LLVMParser(new LLVMLexer(rdr));
+                parser.ParseModule();
+            }
         }
     }
 }

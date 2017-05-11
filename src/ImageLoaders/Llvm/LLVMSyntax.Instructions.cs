@@ -114,26 +114,6 @@ namespace Reko.ImageLoaders.LLVM
         }
     }
 
-    public class BitcastInstruction : OtherInstruction
-    {
-        public LLVMType TypeFrom;
-        public Value Value;
-        public LLVMType TypeTo;
-
-        public override void Write(Formatter w)
-        {
-            Result.Write(w);
-            w.Write(" = ");
-            TypeFrom.Write(w);
-            w.Write(' ');
-            Value.Write(w);
-            w.Write(' ');
-            w.WriteKeyword("to");
-            w.Write(' ');
-            TypeTo.Write(w);
-        }
-    }
-
     public class BrInstr : Terminator
     {
         public LLVMType Type;
@@ -312,31 +292,10 @@ namespace Reko.ImageLoaders.LLVM
         }
     }
 
-    public class Inttoptr : OtherInstruction
-    {
-        public LLVMType FromType;
-        public Value Value;
-        public LLVMType ToType;
-
-        public override void Write(Formatter w)
-        {
-            Result.Write(w);
-            w.Write(" = ");
-            w.WriteKeyword("inttoptr");
-            w.Write(" ");
-            FromType.Write(w);
-            w.Write(" ");
-            Value.Write(w);
-            w.Write(" ");
-            w.WriteKeyword("to");
-            w.Write(" ");
-            ToType.Write(w);
-        }
-    }
-
     public class LLVMCall : OtherInstruction
     {
-        public List<Tuple<LLVMType,Value>> Arguments;
+        public List<Argument> Arguments;
+        public ParameterAttributes res_attrs;
         public LLVMType FnType;
         public Value FnPtr;
 
@@ -349,6 +308,11 @@ namespace Reko.ImageLoaders.LLVM
             }
             w.WriteKeyword("call");
             w.Write(" ");
+            if (res_attrs != null)
+            {
+                res_attrs.Write(w);
+                w.Write(' ');
+            }
             FnType.Write(w);
             w.Write(" ");
             FnPtr.Write(w);
@@ -358,12 +322,24 @@ namespace Reko.ImageLoaders.LLVM
             {
                 w.Write(sep);
                 sep = ", ";
-                arg.Item1.Write(w);
+                arg.Type.Write(w);
                 w.Write(" ");
-                arg.Item2.Write(w);
+                if (arg.Attributes != null)
+                {
+                    arg.Attributes.Write(w);
+                    w.Write(" ");
+                }
+                arg.Value.Write(w);
             }
             w.Write(")");
         }
+    }
+
+    public class Argument
+    {
+        public LLVMType Type;
+        public Value Value;
+        public ParameterAttributes Attributes;
     }
 
     public class Load : MemoryInstruction
@@ -391,6 +367,58 @@ namespace Reko.ImageLoaders.LLVM
                 w.WriteKeyword("align");
                 w.Write(" {0}", Alignment);
             }
+        }
+    }
+
+    public class Conversion : OtherInstruction
+    {
+        public TokenType Operator;
+        public LLVMType TypeFrom;
+        public Value Value;
+        public LLVMType TypeTo;
+
+        public override void Write(Formatter w)
+        {
+            Result.Write(w);
+            w.Write(" = ");
+            w.WriteKeyword(Operator.ToString());
+            w.Write(' ');
+            TypeFrom.Write(w);
+            w.Write(' ');
+            Value.Write(w);
+            w.Write(' ');
+            w.WriteKeyword("to");
+            w.Write(' ');
+            TypeTo.Write(w);
+        }
+    }
+
+    public class Select : OtherInstruction
+    {
+        public LLVMType CondType;
+        public Value Cond;
+        public LLVMType TrueType;
+        public Value TrueValue;
+        public LLVMType FalseType;
+        public Value FalseValue;
+
+        public override void Write(Formatter w)
+        {
+            Result.Write(w);
+            w.Write(" = ");
+            w.WriteKeyword("select");
+            w.Write(" ");
+            CondType.Write(w);
+            w.Write(" ");
+            Cond.Write(w);
+            w.Write(", ");
+            TrueType.Write(w);
+            w.Write(" ");
+            TrueValue.Write(w);
+            w.Write(", ");
+            FalseType.Write(w);
+            w.Write(" ");
+            FalseValue.Write(w);
         }
     }
 
