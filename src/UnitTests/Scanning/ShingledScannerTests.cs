@@ -88,6 +88,17 @@ namespace Reko.UnitTests.Scanning
             Debug.WriteLine(sw.ToString());
         }
 
+        private string DumpBlocks(DiGraph<RtlBlock> blocks)
+        {
+            var sb = new StringBuilder();
+            foreach (var block in blocks.Nodes.OrderBy(b => b.Address))
+            {
+                sb.AppendFormat("{0} - {1}", block.Address, block.GetEndAddress());
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
+
         private void Given_Mips_Image(params uint[] words)
         {
             var image = new MemoryArea(
@@ -217,8 +228,6 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(new byte[] { 1, 1, 1, 0, }, TakeEach(scseg, 4));
         }
 
-  
-
         [Test]
         public void Shsc_FindPossiblePointersToCode()
         {
@@ -344,16 +353,6 @@ namespace Reko.UnitTests.Scanning
             }
         }
 
-        private string DumpBlocks(DiGraph<RtlBlock> blocks)
-        {
-            var sb = new StringBuilder();
-            foreach (var block in blocks.Nodes.OrderBy(b => b.Address))
-            {
-                sb.AppendFormat("{0} - {1}", block.Address, block.GetEndAddress());
-                sb.AppendLine();
-            }
-            return sb.ToString();
-        }
 
         [Test]
         public void Shsc_BuildBlock()
