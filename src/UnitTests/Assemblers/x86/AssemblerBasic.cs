@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Assemblers.x86
 
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				Dumper dumper = new Dumper(program.Architecture);
+				Dumper dumper = new Dumper(program);
 				dumper.ShowAddresses = true;
 				dumper.ShowCodeBytes = true;
                 foreach (var segment in program.SegmentMap.Segments.Values)
@@ -139,7 +139,7 @@ hello	endp
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsFragment.txt"))
 			{
 				var arch = new X86ArchitectureReal();
-				var d = new Dumper(arch);
+				var d = new Dumper(program);
 				d.DumpData(program.SegmentMap, segment.Address, segment.ContentSize, new TextFormatter(fut.TextWriter));
 				fut.AssertFilesEqual();
 			}
@@ -247,7 +247,7 @@ foo		endp
             }
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsCarryInstructions.txt"))
 			{
-				Dumper dump = new Dumper(arch);
+				Dumper dump = new Dumper(program);
                 var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
 				dump.DumpData(program.SegmentMap, mem.BaseAddress, mem.Length, new TextFormatter(fut.TextWriter));
 				fut.AssertFilesEqual();
@@ -380,7 +380,7 @@ foo		endp
             }
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				Dumper dump = new Dumper(asm.Architecture);
+				Dumper dump = new Dumper(program);
                 var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
                 var formatter = new TextFormatter(fut.TextWriter);
 				dump.DumpData(program.SegmentMap, mem.BaseAddress, mem.Bytes.Length, formatter);

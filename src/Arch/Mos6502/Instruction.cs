@@ -55,13 +55,13 @@ namespace Reko.Arch.Mos6502
             return i == 0 ? Operand : null;
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Code.ToString());
             if (Operand != null)
             {
                 writer.Tab();
-                Operand.Write(true, writer);
+                Operand.Write(writer, options);
             }
         }
 

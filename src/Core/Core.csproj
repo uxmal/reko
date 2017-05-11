@@ -606,6 +606,7 @@
     <Compile Include="Services\IUnpackerService.cs" />
     <Compile Include="SignatureBuilder.cs" />
     <Compile Include="StatementCorrelatedException.cs" />
+    <Compile Include="StorageBinder.cs" />
     <Compile Include="StructureReader.cs" />
     <Compile Include="TypedDataDumper.cs" />
     <Compile Include="TypeLibrary.cs">

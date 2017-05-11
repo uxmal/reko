@@ -36,6 +36,7 @@ namespace Reko.Core
     {
         public Address ReferenceAddress;
         public string ModuleName;
+        public string EntryName;
 
         public ImportReference(Address addr, string moduleName)
         {
@@ -58,6 +59,7 @@ namespace Reko.Core
             : base(addr, moduleName)
         {
             this.ImportName = importName;
+            this.EntryName = importName;
         }
 
         public override int CompareTo(ImportReference that)
@@ -131,6 +133,7 @@ namespace Reko.Core
             : base(addr, moduleName)
         {
             this.Ordinal = ordinal;
+            this.EntryName = string.Format("{0}_{1}", moduleName, ordinal);
         }
 
         public override int CompareTo(ImportReference that)

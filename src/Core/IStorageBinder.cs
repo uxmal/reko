@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2017 John Källén.
  *
@@ -18,35 +18,29 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core.Types;
 
-namespace Reko.Core.Machine
+namespace Reko.Core
 {
     /// <summary>
-    /// Represents a register operand of a <code>MachineInstruction</code>. Most
-    /// modern architectures support this.
+    /// Objects implementing this interface know how to bind a storage
+    /// location to an identifier.
     /// </summary>
-    public class RegisterOperand : MachineOperand
+    public interface IStorageBinder
     {
-        private RegisterStorage reg;
-
-        public RegisterOperand(RegisterStorage reg) :
-            base(reg.DataType)
-        {
-            this.reg = reg;
-        }
-
-        public RegisterStorage Register
-        {
-            get { return reg; }
-        }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.Write(reg.ToString());
-        }
+        Identifier EnsureIdentifier(Storage stg);
+        Identifier EnsureRegister(RegisterStorage stgForeign);
+        Identifier EnsureFlagGroup(FlagGroupStorage grf);
+        Identifier EnsureFlagGroup(FlagRegister flagRegister, uint flagGroupBits, string name, DataType dataType);
+        Identifier EnsureFpuStackVariable(int v, DataType dataType);
+        Identifier EnsureSequence(Storage head, Storage tail, DataType dataType);
+        Identifier EnsureStackVariable(int offset, DataType dataType);
+        Identifier CreateTemporary(DataType dt);
+        Identifier CreateTemporary(string name, DataType dt);
     }
 }

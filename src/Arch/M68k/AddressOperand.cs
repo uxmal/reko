@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace Reko.Arch.M68k
             return visitor.Visit(this);
         }
 
-        public override void Write(bool fExplicit, Core.Machine.MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteAddress(string.Format("${0:X8}", Address.Offset), Address);
         }

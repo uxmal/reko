@@ -178,7 +178,7 @@ namespace Reko.Arch.Pdp11
             case AddressMode.Absolute:
                 return Address.Ptr16(memOp.EffectiveAddress);
             case AddressMode.AutoIncr:
-                m.Assign(tmp, m.Load(op.Width, m.Load(PrimitiveType.Ptr16, r)));
+                m.Assign(tmp, m.Load(PrimitiveType.Ptr16, r));
                 m.Assign(r, m.IAdd(r, memOp.Width.Size));
                 break;
             case AddressMode.AutoIncrDef:
@@ -289,11 +289,21 @@ namespace Reko.Arch.Pdp11
                             m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
                     }
                 case AddressMode.IndexedDef:
-                    return m.Load(
-                        this.instrs.Current.DataWidth,
-                        m.Load(
-                            PrimitiveType.Ptr16,
-                            m.IAdd(r, Constant.Word16(memOp.EffectiveAddress))));
+                    if (memOp.Register == Registers.pc)
+                    {
+                        var addr = rtlCluster.Address + rtlCluster.Length + memOp.EffectiveAddress;
+                        m.Assign(tmp, m.Load(PrimitiveType.Ptr16, addr));
+                        m.Assign(tmp, m.Load(memOp.Width, tmp));
+                        return tmp;
+                    }
+                    else
+                    {
+                        return m.Load(
+                            this.instrs.Current.DataWidth,
+                            m.Load(
+                                PrimitiveType.Ptr16,
+                                m.IAdd(r, Constant.Word16(memOp.EffectiveAddress))));
+                    }
                 }
                 return tmp;
             }
@@ -378,13 +388,10 @@ namespace Reko.Arch.Pdp11
                 case AddressMode.Indexed:
                     if (r.Storage == Registers.pc)
                     {
-                        var addr = instrs.Current.Address + instrs.Current.Length;
-                        m.Assign(
-                           tmp,
-                           gen(m.Load(instrs.Current.DataWidth, addr)));
+                        var addr = instrs.Current.Address + instrs.Current.Length + memOp.EffectiveAddress;
                         m.Assign(
                             m.Load(instrs.Current.DataWidth, addr),
-                            tmp);
+                            gen(src));
                     }
                     else
                     {
@@ -401,13 +408,13 @@ namespace Reko.Arch.Pdp11
                     if (r.Storage == Registers.pc)
                     {
                         //$REVIEW: what if there are two of these?
-                        var addr = instrs.Current.Address + instrs.Current.Length;
+                        var addr = instrs.Current.Address + instrs.Current.Length + memOp.EffectiveAddress;
                         m.Assign(
                             tmp,
-                            gen(m.Load(instrs.Current.DataWidth, addr)));
+                            m.Load(PrimitiveType.Ptr16, addr));
                         m.Assign(
-                            m.Load(instrs.Current.DataWidth, addr),
-                            tmp);
+                            m.Load(instrs.Current.DataWidth, tmp),
+                            gen(src));
                     }
                     else
                         throw new NotImplementedException();
