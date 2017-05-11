@@ -240,6 +240,7 @@
     <Compile Include="IRFormat\IRFormatParser.cs" />
     <Compile Include="IRFormat\IRProcedureBuilder.cs" />
     <Compile Include="IRFormat\IRToken.cs" />
+    <Compile Include="IStorageBinder.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />
     <Compile Include="Lib\SuffixArray.cs" />

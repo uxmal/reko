@@ -37,6 +37,7 @@ namespace Reko.ImageLoaders.LLVM
         }
 
         public Dictionary<FunctionDefinition, FunctionDefinitionState> Functions { get; private set; }
+        public Dictionary<LocalId, DataType> Types { get; private set;}
     
 
         public Program MakeProgram()
@@ -80,7 +81,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public void RegisterTypeDefinition(TypeDefinition tydef)
         {
-            Types.Add(tydef.Name, tydef.Type.Accept(new TypeTranslator());
+            Types.Add(tydef.Name, tydef.Type.Accept(new TypeTranslator(framePointerSize.Size)));
         }
 
         public Reko.Core.Types.FunctionType TranslateSignature(
@@ -89,7 +90,7 @@ namespace Reko.ImageLoaders.LLVM
             FunctionDefinitionState state)
         {
             var rt = TranslateType(retType);
-            var sigReg = state.Procedure.Frame.CreateTemporary(rt);
+            var sigRet = state.Procedure.Frame.CreateTemporary(rt);
             var sigParameters = new List<Identifier>();
             foreach (var param in parameters)
             {
@@ -105,7 +106,7 @@ namespace Reko.ImageLoaders.LLVM
                     sigParameters.Add(id);
                 }
             }
-            return new FunctionType(rt, sigParameters.ToArray());
+            return new FunctionType(sigRet, sigParameters.ToArray());
         }
 
         private DataType TranslateType(LLVMType type)

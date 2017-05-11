@@ -52,7 +52,7 @@ namespace Reko.ImageLoaders.LLVM
             var rdr = new StreamReader(new MemoryStream(RawImage), Encoding.UTF8);
             var parser = new LLVMParser(new LLVMLexer(rdr));
             var module = parser.ParseModule();
-            var builder = new ProgramBuilder();
+            var builder = new ProgramBuilder(Core.Types.PrimitiveType.Pointer64);   //$BUGBUG: obtain pointer size from LLVM!
             var program = BuildProgram(module, builder);
             return program; 
         }

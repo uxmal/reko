@@ -183,7 +183,7 @@ namespace Reko.ImageLoaders.LLVM
                 Type = new LLVMFunctionType
                 {
                     ReturnType = retType,
-                    Arguments = args
+                    Parameters = args
                 }
             };
         }
@@ -556,7 +556,7 @@ namespace Reko.ImageLoaders.LLVM
                     var fnType = new LLVMFunctionType
                     {
                         ReturnType = type,
-                        Arguments = args,
+                        Parameters = args,
                     };
                     type = fnType;
                 }

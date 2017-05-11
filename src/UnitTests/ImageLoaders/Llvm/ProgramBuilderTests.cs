@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core.Types;
 using Reko.ImageLoaders.LLVM;
 using System;
 using System.Collections.Generic;
@@ -48,11 +49,11 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
                 "   ret void",
                 "}");
 
-            var pb = new ProgramBuilder();
+            var pb = new ProgramBuilder(PrimitiveType.Pointer32);
             pb.RegisterFunction(instr);
 
-            var proc = pb.Procedures.Values.First();
-            Assert.AreEqual("@@@", proc.Signature.ToString(proc.Name));
+            var proc = pb.Functions.Values.First().Procedure;
+            Assert.AreEqual("word32 foo(byte *, word32)", proc.Signature.ToString(proc.Name));
         }
     }
 }

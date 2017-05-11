@@ -180,7 +180,7 @@ namespace Reko.ImageLoaders.LLVM
     {
         public string Convention;
         public LLVMType ReturnType;
-        public List<LLVMArgument> Arguments;
+        public List<LLVMArgument> Parameters;
 
         public override T Accept<T>(LLVMTypeVisitor<T> visitor)
         {
@@ -192,7 +192,7 @@ namespace Reko.ImageLoaders.LLVM
             ReturnType.Write(w);
             w.Write(" (");
             var sep = "";
-            foreach (var arg in Arguments)
+            foreach (var arg in Parameters)
             {
                 w.Write(sep);
                 sep = ", ";

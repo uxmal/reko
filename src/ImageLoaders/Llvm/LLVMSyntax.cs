@@ -147,7 +147,7 @@ namespace Reko.ImageLoaders.LLVM
             w.Write("@" + Name);
             w.Write('(');
             var sep = "";
-            foreach (var arg in Type.Arguments)
+            foreach (var arg in Type.Parameters)
             {
                 w.Write(sep);
                 sep = ", ";
