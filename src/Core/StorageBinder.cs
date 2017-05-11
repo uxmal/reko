@@ -106,6 +106,11 @@ namespace Reko.Core
             throw new NotImplementedException();
         }
 
+        public Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer)
+        {
+            throw new NotImplementedException();
+        }
+
         public Identifier EnsureRegister(RegisterStorage reg)
         {
             Identifier id;
