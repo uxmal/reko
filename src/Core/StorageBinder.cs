@@ -24,7 +24,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Scanning
+namespace Reko.Core
 {
     /// <summary>
     /// Binds storages to identifiers.
