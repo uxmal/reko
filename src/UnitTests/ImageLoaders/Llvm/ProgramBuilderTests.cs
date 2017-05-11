@@ -19,10 +19,12 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
 using Reko.Core.Types;
 using Reko.ImageLoaders.LLVM;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -41,19 +43,40 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             return fn;
         }
 
+        private void AssertProc(string sExp, Procedure proc)
+        {
+            var sw = new StringWriter();
+            proc.Write(false, sw);
+            var sActual = sw.ToString();
+            if (sExp != sActual)
+            {
+                Debug.Print(sActual);
+                Assert.AreEqual(sExp, sActual);
+            }
+        }
+        
         [Test]
         public void LLPB_RegisterSignature()
         {
-            var instr = Func(
+            var fn = Func(
                 "define i32 @foo(i8*,i32) {",
                 "   ret void",
                 "}");
 
             var pb = new ProgramBuilder(PrimitiveType.Pointer32);
-            pb.RegisterFunction(instr);
+            pb.RegisterFunction(fn);
+            pb.TranslateFunction(fn);
 
             var proc = pb.Functions.Values.First().Procedure;
-            Assert.AreEqual("word32 foo(byte *, word32)", proc.Signature.ToString(proc.Name));
+            var sExp =
+@"// foo
+// Return size: 0
+word32 foo(byte * %0, word32 %1)
+foo_entry:
+    // succ:  %2
+foo_exit:
+";
+            AssertProc(sExp, proc);
         }
     }
 }

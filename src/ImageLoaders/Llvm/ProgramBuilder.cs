@@ -29,6 +29,7 @@ namespace Reko.ImageLoaders.LLVM
     public class ProgramBuilder
     {
         private PrimitiveType framePointerSize;
+        private Block block;
 
         public ProgramBuilder(PrimitiveType framePointerSize)
         {
@@ -101,7 +102,7 @@ namespace Reko.ImageLoaders.LLVM
                 else
                 {
                     var pt = TranslateType(param.Type);
-                    var name = state.NextTemp();
+                    var name = "%" + state.NextTemp();
                     var id = state.Procedure.Frame.CreateTemporary(name, pt);
                     sigParameters.Add(id);
                 }
@@ -111,39 +112,34 @@ namespace Reko.ImageLoaders.LLVM
 
         private DataType TranslateType(LLVMType type)
         {
-            var b = type as LLVMBaseType;
-            if (b != null)
-            {
-                switch (b.Domain)
-                {
-                case Domain.Void: return VoidType.Instance;
-                case Domain.Integral: return PrimitiveType.CreateWord(b.BitSize / 8);
-                default: throw new NotImplementedException();
-                }
-            }
-            throw new NotImplementedException();
+            var xlat = new TypeTranslator(this.framePointerSize.Size);
+            return type.Accept(xlat);
         }
 
         public void TranslateFunction(FunctionDefinition fn)
         {
             var state = Functions[fn];
+            var proc = state.Procedure;
             var sig = TranslateSignature(fn.ResultType, fn.Parameters, state);
+            proc.Signature = sig;
 
             var labels = new Dictionary<string, Block>();
-            var block = new Block(state.Procedure, state.NextTemp());
+            this.block = new Block(proc, "%" + state.NextTemp());
             labels.Add(block.Name, block);
+            proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             foreach (var instr in fn.Instructions)
             {
-                if (instr is Terminator)
-                {
-
-                }
+                TranslateInstruction(instr);
             }
         }
 
 
         public void TranslateInstruction(Instruction instr)
         {
+            var ret = instr as RetInstr;
+            if (ret != null)
+            {
+            }
         }
 
 
@@ -153,9 +149,11 @@ namespace Reko.ImageLoaders.LLVM
             public int TempCounter;
             public Dictionary<string, Identifier> TmpToIdentifier;
 
-            internal string NextTemp()
+            public string NextTemp()
             {
-                throw new NotImplementedException();
+                var name = TempCounter.ToString();
+                ++TempCounter;
+                return name;
             }
         }
     }
