@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2017 John Källén.
  *
@@ -38,6 +38,7 @@ namespace Reko.Core
         Identifier EnsureFlagGroup(FlagGroupStorage grf);
         Identifier EnsureFlagGroup(FlagRegister flagRegister, uint flagGroupBits, string name, DataType dataType);
         Identifier EnsureFpuStackVariable(int v, DataType dataType);
+        Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer);
         Identifier EnsureSequence(Storage head, Storage tail, DataType dataType);
         Identifier EnsureStackVariable(int offset, DataType dataType);
         Identifier CreateTemporary(DataType dt);

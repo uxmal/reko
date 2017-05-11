@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_fstsw_ax_40_je()
+        public void X86Rw_fstsw_ax_40_jne()
         {
             BuildTest(m =>
             {
@@ -116,6 +116,23 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|SCZO = FPUF",
                 "2|T--|if (Test(EQ,FPUF)) branch 00010000"
                 );            
+        }
+
+        [Test]
+        public void X86Rw_fstsw_ax_01_je()
+        {
+            BuildTest(m =>
+            {
+                m.Label("foo");
+                m.Fstsw(m.ax);
+                m.Test(m.ah, 0x01);
+                m.Jz("foo");
+            });
+            AssertCode(
+                "0|L--|00010000(8): 2 instructions",
+                "1|L--|SCZO = FPUF",
+                "2|T--|if (Test(GE,FPUF)) branch 00010000"
+                );
         }
     }
 }

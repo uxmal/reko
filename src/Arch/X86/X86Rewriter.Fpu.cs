@@ -412,6 +412,7 @@ namespace Reko.Arch.X86
                 case Opcode.jz:
                     if (mask == 0x40) { Branch(ConditionCode.NE, nextInstr.op1); return true; }
                     if (mask == 0x41) { Branch(ConditionCode.GT, nextInstr.op1); return true; }
+                    if (mask == 0x01) { Branch(ConditionCode.GE, nextInstr.op1); return true; }
                     break;
                 case Opcode.jnz:
                     if (mask == 0x40) { Branch(ConditionCode.EQ, nextInstr.op1); return true; }
@@ -420,7 +421,7 @@ namespace Reko.Arch.X86
                     break;
                 }
 
-                return false;
+                throw new AddressCorrelatedException(nextInstr.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, nextInstr.code);
             }
             return false;
         }

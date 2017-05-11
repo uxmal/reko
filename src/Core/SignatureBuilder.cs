@@ -37,12 +37,12 @@ namespace Reko.Core
 	{
 		private List<Identifier> args;
 		private Identifier ret = null;
-		private Procedure proc;
+		private IStorageBinder binder;
 		private IProcessorArchitecture arch;
 
-		public SignatureBuilder(Procedure proc, IProcessorArchitecture arch)
+		public SignatureBuilder(IStorageBinder binder, IProcessorArchitecture arch)
 		{
-			this.proc = proc;
+			this.binder = binder;
 			this.arch = arch;
 			args = new List<Identifier>();
 		}
@@ -56,12 +56,12 @@ namespace Reko.Core
 
 		public void AddFpuStackArgument(int x, Identifier id)
 		{
-			AddInParam(proc.Frame.EnsureFpuStackVariable(x, id.DataType));
+			AddInParam(binder.EnsureFpuStackVariable(x, id.DataType));
 		}
 
 		public void AddRegisterArgument(RegisterStorage reg)
 		{
-			AddInParam(proc.Frame.EnsureRegister(reg));
+			AddInParam(binder.EnsureRegister(reg));
 		}
 
         public void AddOutParam(Identifier idOrig)
@@ -75,7 +75,7 @@ namespace Reko.Core
                 //$REVIEW: out arguments are weird, as they are synthetic. It's possible that 
                 // future versions of reko will opt to model multiple values return from functions
                 // explicitly instead of using destructive updates of this kind.
-                var arg = proc.Frame.EnsureOutArgument(idOrig, PrimitiveType.Create(Domain.Pointer, arch.FramePointerType.Size));
+                var arg = binder.EnsureOutArgument(idOrig, PrimitiveType.Create(Domain.Pointer, arch.FramePointerType.Size));
                 args.Add(arg);
             }
         }
