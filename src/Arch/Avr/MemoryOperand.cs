@@ -37,7 +37,7 @@ namespace Reko.Arch.Avr
         {
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (PreDecrement)
             {

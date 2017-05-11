@@ -226,7 +226,13 @@ namespace Reko.Arch.Arm
             if (cond == ArmCodeCondition.AL)
                 emitter.Emit(instr);
             else
-                emitter.If(TestCond(cond), instr);
+            {
+                emitter.BranchInMiddleOfInstruction(
+                    TestCond(cond).Invert(),
+                    Address.Ptr32((uint)(this.instr.Address + this.instr.Bytes.Length)),
+                    RtlClass.ConditionalTransfer);
+                emitter.Emit(instr);
+            }
         }
 
         private void Predicate(ArmCodeCondition cond, Expression dst, Expression src)
@@ -242,10 +248,7 @@ namespace Reko.Arch.Arm
             {
                 instr = new RtlAssignment(dst, src);
             }
-            if (cond == ArmCodeCondition.AL)
-                emitter.Emit(instr);
-            else
-                emitter.If(TestCond(cond), instr);
+            Predicate(cond, instr);
         }
     }
 }

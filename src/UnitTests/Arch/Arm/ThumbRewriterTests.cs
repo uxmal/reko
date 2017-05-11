@@ -6094,10 +6094,11 @@ namespace Reko.UnitTests.Arch.Arm
                 0x4632,     // movcc       r2,r6
                 0x4632);   // mov       r2,r6
             AssertCode(
-                "0|L--|00100002(2): 1 instructions",
-                "1|L--|if (Test(ULT,C)) r2 = r6",
-                "2|L--|00100004(2): 1 instructions",
-                "3|L--|r2 = r6");
+                "0|L--|00100002(2): 2 instructions",
+                "1|T--|if (Test(UGE,C)) branch 00100004",
+                "2|L--|r2 = r6",
+                "3|L--|00100004(2): 1 instructions",
+                "4|L--|r2 = r6");
         }
 
         [Test]

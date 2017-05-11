@@ -447,14 +447,4 @@ namespace Reko.Core
 			text.WriteLine("// return address size: {0}", ReturnAddressSize);
 		}
     }
-
-    //$TODO: remove thise once merged with Scanning-development branch
-
-    public interface IStorageBinder
-    {
-        Identifier CreateTemporary(DataType dataType);
-        Identifier EnsureFlagGroup(FlagRegister reg, uint bitmask, string name, DataType dataType);
-        Identifier EnsureRegister(RegisterStorage reg);
-        Identifier EnsureSequence(Storage hi, Storage lo, DataType dataType);
-    }
 }

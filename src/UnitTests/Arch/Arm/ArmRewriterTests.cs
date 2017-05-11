@@ -926,7 +926,8 @@ means
         public void ArmRw_vpop()
         {
             BuildTest(0xecbd8b04);  // vpop {d8, d9}
-            AssertCode("0|L--|00100000(4): 1 instructions",
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|@@@");
         }
 
@@ -1117,10 +1118,8 @@ means
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (Test(UGE,C)) branch 00100004",
-                "2|L--|@@@");
+                "2|L--|__cdp(0x00, 0x00000002, 0x00, 0x00, 0x00, 0x00000000)");
         }
-
-
 
         [Test]
         public void ArmRw_vpadd_i32()
@@ -1194,15 +1193,14 @@ means
                 "0|L--|00100000(4): 10 instructions",
                 "1|T--|if (Test(GE,NZV)) branch 00100004",
                 "2|L--|r0 = Mem0[r1:word32]",
-                "2|L--|r2 = Mem0[r1 - 4:word32]",
-                "2|L--|r7 = Mem0[r1 - 8:word32]",
-                "2|L--|r8 = Mem0[r1 - 12:word32]",
-                "2|L--|sb = Mem0[r1 - 16:word32]",
-                "2|L--|fp = Mem0[r1 - 20:word32]",
-                "2|L--|sp = Mem0[r1 - 24:word32]",
-                "2|L--|lr = Mem0[r1 - 28:word32]",
-                "2|L--|v33 = Mem[r1 - 32:word32]",
-                "2|L--|goto v33");
+                "3|L--|r2 = Mem0[r1 - 4:word32]",
+                "4|L--|r7 = Mem0[r1 - 8:word32]",
+                "5|L--|r8 = Mem0[r1 - 12:word32]",
+                "6|L--|r9 = Mem0[r1 - 16:word32]",
+                "7|L--|fp = Mem0[r1 - 20:word32]",
+                "8|L--|sp = Mem0[r1 - 24:word32]",
+                "9|L--|lr = Mem0[r1 - 28:word32]",
+                "10|L--|return (0,0)");
         }
 
         [Test]
@@ -1310,7 +1308,7 @@ means
         {
             BuildTest(0x46247800);  // strt r7, [r4], -r0, lsl #16
             AssertCode(
-                "0|L--|E0100000(4): 1 instructions",
+                "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem[r4:word32] = r7");
         }
 

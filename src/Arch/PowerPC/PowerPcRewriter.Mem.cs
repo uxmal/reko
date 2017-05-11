@@ -322,12 +322,14 @@ namespace Reko.Arch.PowerPC
                 string.Format("Unsupported trap operand {0:X2}.", c.ToInt32()));
             }
             cluster.Class = RtlClass.Linear;
-            emitter.If(
-                op(ra, rb),
-                new RtlSideEffect(
-                    host.PseudoProcedure(
-                        "__trap",
-                        VoidType.Instance)));
+            emitter.BranchInMiddleOfInstruction(
+                op(ra, rb).Invert(),
+                instr.Address + instr.Length,
+                RtlClass.ConditionalTransfer);
+            emitter.SideEffect(
+                host.PseudoProcedure(
+                    "__trap",
+                    VoidType.Instance));
 
         }
     }

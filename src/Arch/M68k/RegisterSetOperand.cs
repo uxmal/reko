@@ -56,7 +56,7 @@ namespace Reko.Arch.M68k
             return new RegisterSetOperand((ushort) v, width);
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             uint bitSet = BitSet;
             WriteRegisterSet(

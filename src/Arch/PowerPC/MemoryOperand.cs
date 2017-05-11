@@ -40,7 +40,7 @@ namespace Reko.Arch.PowerPC
         public RegisterStorage BaseRegister { get; private set; }
         public Constant Offset { get; private set; } 
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.Write(string.Format("{0}({1})", Offset, BaseRegister));
         }

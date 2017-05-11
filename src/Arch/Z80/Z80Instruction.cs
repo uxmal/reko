@@ -65,7 +65,7 @@ namespace Reko.Arch.Z80
                 return null;
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (Code == Opcode.ex_af)
             {
@@ -78,11 +78,11 @@ namespace Reko.Arch.Z80
             if (Op1 != null)
             {
                 writer.Tab();
-                Op1.Write(true, writer);
+                Op1.Write(writer, options);
                 if (Op2 != null)
                 {
                     writer.Write(",");
-                    Op2.Write(true, writer);
+                    Op2.Write(writer, options);
                 }
             }
         }

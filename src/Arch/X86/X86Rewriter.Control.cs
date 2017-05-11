@@ -134,10 +134,12 @@ namespace Reko.Arch.X86
 
         private void RewriteInto()
         {
-            emitter.If(
-                emitter.Test(ConditionCode.OV, orw.FlagGroup(FlagM.OF)),
-                new RtlSideEffect(
-                    host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.Byte(4))));
+            emitter.BranchInMiddleOfInstruction(
+                emitter.Test(ConditionCode.NO, orw.FlagGroup(FlagM.OF)),
+                instrCur.Address + instrCur.Length,
+                RtlClass.ConditionalTransfer);
+            emitter.SideEffect(
+                    host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.Byte(4)));
         }
 
         private void RewriteJcxz()

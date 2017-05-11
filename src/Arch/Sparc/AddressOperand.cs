@@ -38,7 +38,7 @@ namespace Reko.Arch.Sparc
             this.Address = address;
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteAddress(Address.ToString(), Address);
         }

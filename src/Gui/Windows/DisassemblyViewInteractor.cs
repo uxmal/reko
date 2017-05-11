@@ -84,8 +84,7 @@ namespace Reko.Gui.Windows
                     lines = 1;
                 using (var writer = new StringWriter())
                 {
-                    var arch = program.Architecture;
-                    var dumper = new Dumper(arch);
+                    var dumper = new Dumper(program);
                     dumper.ShowAddresses = true;
                     dumper.ShowCodeBytes = true;
                     ImageSegment segment;

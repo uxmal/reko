@@ -112,7 +112,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
 			// Get opcode. 
 
@@ -151,19 +151,22 @@ namespace Reko.Arch.X86
 			writer.WriteOpcode(s);
 			writer.Tab();
 
-			bool fExplicit = NeedsExplicitMemorySize();
+            if (NeedsExplicitMemorySize())
+            {
+                options |= MachineInstructionWriterOptions.ExplicitOperandSize;
+            }
 
 			if (Operands >= 1)
 			{
-				op1.Write(fExplicit, writer);
+				op1.Write(writer, options);
 				if (Operands >= 2)
 				{
 					writer.Write(',');
-					op2.Write(fExplicit, writer);
+					op2.Write(writer, options);
 					if (Operands >= 3)
 					{
 						writer.Write(",");
-						op3.Write(fExplicit, writer);
+						op3.Write(writer, options);
 					}
 				}
 			}
