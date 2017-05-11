@@ -188,7 +188,7 @@ namespace Reko.ImageLoaders.LLVM
             };
         }
 
-        private ModuleEntry ParseFunctionDefinition()
+        public FunctionDefinition ParseFunctionDefinition()
         {
             Expect(TokenType.define);
             if (PeekAndDiscard(TokenType.dereferenceable))

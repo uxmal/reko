@@ -305,8 +305,4 @@ namespace Reko.ImageLoaders.LLVM
             w.Write("@{0}", Name);
         }
     }
-
-    public abstract class InitializerConstant : Value
-    {
-    }
 }

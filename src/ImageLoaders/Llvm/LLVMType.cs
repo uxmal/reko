@@ -26,6 +26,8 @@ namespace Reko.ImageLoaders.LLVM
 {
     public abstract class LLVMType : LLVMSyntax
     {
+        public abstract T Accept<T>(LLVMTypeVisitor<T> visitor);
+
         private static Dictionary<int, LLVMBaseType> intTypes = new Dictionary<int, LLVMBaseType>
         {
         };
@@ -52,7 +54,6 @@ namespace Reko.ImageLoaders.LLVM
         {
             Void = new LLVMBaseType("void", Domain.Void, 0);
         }
-
     }
 
     public enum Domain
@@ -75,6 +76,11 @@ namespace Reko.ImageLoaders.LLVM
             this.BitSize = bitSize;
         }
 
+        public override T Accept<T>(LLVMTypeVisitor<T> visitor)
+        {
+            return visitor.VisitBaseType(this);
+        }
+
         public override void Write(Formatter w)
         {
             w.Write(Name);
@@ -90,6 +96,11 @@ namespace Reko.ImageLoaders.LLVM
             this.TypeName = name;
         }
 
+        public override T Accept<T>(LLVMTypeVisitor<T> visitor)
+        {
+            return visitor.VisitTypeReference(this);
+        }
+
         public override void Write(Formatter w)
         {
             TypeName.Write(w);
@@ -103,6 +114,11 @@ namespace Reko.ImageLoaders.LLVM
         public LLVMPointer(LLVMType pointee)
         {
             this.Pointee = pointee;
+        }
+
+        public override T Accept<T>(LLVMTypeVisitor<T> visitor)
+        {
+            return visitor.VisitPointer(this);
         }
 
         public override void Write(Formatter w)
@@ -123,17 +139,28 @@ namespace Reko.ImageLoaders.LLVM
             this.ElementType = elType;
         }
 
+        public override T Accept<T>(LLVMTypeVisitor<T> visitor)
+        {
+            return visitor.VisitArray(this);
+        }
+    
         public override void Write(Formatter w)
         {
             w.Write("[{0} x ", Length);
             ElementType.Write(w);
             w.Write("]");
         }
+
     }
 
     public class StructureType : LLVMType
     {
         public List<LLVMType> Fields;
+
+        public override T Accept<T>(LLVMTypeVisitor<T> visitor)
+        {
+            return visitor.VisitStructure(this);
+        }
 
         public override void Write(Formatter w)
         {
@@ -154,6 +181,11 @@ namespace Reko.ImageLoaders.LLVM
         public string Convention;
         public LLVMType ReturnType;
         public List<LLVMArgument> Arguments;
+
+        public override T Accept<T>(LLVMTypeVisitor<T> visitor)
+        {
+            return visitor.VisitFunction(this);
+        }
 
         public override void Write(Formatter w)
         {
@@ -195,5 +227,15 @@ namespace Reko.ImageLoaders.LLVM
             w.Write(' ');
             w.Write(name);
         }
+    }
+
+    public interface LLVMTypeVisitor<T>
+    {
+        T VisitArray(LLVMArrayType a);
+        T VisitBaseType(LLVMBaseType b);
+        T VisitFunction(LLVMFunctionType fn);
+        T VisitPointer(LLVMPointer p);
+        T VisitStructure(StructureType s);
+        T VisitTypeReference(TypeReference typeref);
     }
 }

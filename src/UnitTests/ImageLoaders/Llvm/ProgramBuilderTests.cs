@@ -18,45 +18,41 @@
  */
 #endregion
 
-using Reko.Core.Output;
+using NUnit.Framework;
+using Reko.ImageLoaders.LLVM;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.ImageLoaders.LLVM
+namespace Reko.UnitTests.ImageLoaders.Llvm
 {
-    public class GetElementPtrExpr : Value
+    [TestFixture]
+    public class ProgramBuilderTests
     {
-        public bool Inbounds;
-        public LLVMType BaseType;
-        public LLVMType PointerType;
-        public Value Pointer;
-        public List<Tuple<LLVMType, Value>> Indices;
-
-        public override void Write(Formatter w)
+        private FunctionDefinition Func(params string[] lines)
         {
-            w.WriteKeyword("getelementptr");
-            if (Inbounds)
-            {
-                w.Write(' ');
-                w.WriteKeyword("inbounds");
-            }
-            w.Write(" (");
-            BaseType.Write(w);
-            w.Write(", ");
-            PointerType.Write(w);
-            w.Write(' ');
-            Pointer.Write(w);
-            foreach (var index in Indices)
-            {
-                w.Write(", ");
-                index.Item1.Write(w);
-                w.Write(' ');
-                index.Item2.Write(w);
-            }
-            w.Write(")");
+            var parser = new LLVMParser(new LLVMLexer(new StringReader(
+                string.Join(Environment.NewLine, lines))));
+            var fn = parser.ParseFunctionDefinition();
+            return fn;
+        }
+
+        [Test]
+        public void LLPB_RegisterSignature()
+        {
+            var instr = Func(
+                "define i32 @foo(i8*,i32) {",
+                "   ret void",
+                "}");
+
+            var pb = new ProgramBuilder();
+            pb.RegisterFunction(instr);
+
+            var proc = pb.Procedures.Values.First();
+            Assert.AreEqual("@@@", proc.Signature.ToString(proc.Name));
         }
     }
 }
