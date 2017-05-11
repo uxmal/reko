@@ -139,7 +139,7 @@ namespace Reko.Analysis
 				return;
 
             var allLiveOut = flow.LiveOut;
-			var sb = new SignatureBuilder(proc, platform.Architecture);
+			var sb = new SignatureBuilder(proc.Frame, platform.Architecture);
             var frame = proc.Frame;
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
 

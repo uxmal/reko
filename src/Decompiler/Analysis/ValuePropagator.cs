@@ -240,6 +240,11 @@ namespace Reko.Analysis
                     .First();
             }
 
+            public Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer)
+            {
+                throw new NotImplementedException();
+            }
+
             public Identifier EnsureRegister(RegisterStorage reg)
             {
                 return ci.Uses
