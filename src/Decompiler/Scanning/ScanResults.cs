@@ -37,12 +37,21 @@ namespace Reko.Scanning
     /// </summary>
     public class ScanResults
     {
-        public ScanResults() { }
+        public ScanResults()
+        {
+            this.Edges = new List<Edge>();
+            this.IndirectCalls = new HashSet<Address>();
+            this.IndirectJumps = new HashSet<Address>();
+        }
+
         /// <summary>
         /// All the discovered machine instructions, rewritten into RTL
         /// instruction clusters.
         /// </summary>
         public SortedList<Address, RtlInstructionCluster> Instructions;
+
+        public List<Edge> Edges;
+
 
         /// <summary>
         /// Interprocedural control flow graph, consisting of all
@@ -81,7 +90,9 @@ namespace Reko.Scanning
         /// or because they were jumped to from different procedures.
         /// This is a key end result of the scanning stage.
         /// </summary>
-        public List<RtlProcedure> Procedures { get; internal set; }
+        public List<RtlProcedure> Procedures { get;  set; }
+        public SortedList<Address, instr> FlatInstructions { get;  set; }
+        public List<link> FlatEdges { get; set; }
 
         /// <summary>
         /// Tally of occurrences of bitpatterns that look like addresses,
@@ -142,6 +153,47 @@ namespace Reko.Scanning
                     .OrderBy(n => n.Address)
                     .Select(n => n.Address)));
             }
+        }
+
+        public class instr
+        {
+            public Address addr;
+            public int size;
+            public ushort type;
+            public Address block_id;
+            public int pred;
+            public int succ;
+            internal RtlInstructionCluster rtl;
+        }
+
+        public class link
+        {
+            public Address first;
+            public Address second;
+
+            public override bool Equals(object obj)
+            {
+                var that = obj as link;
+                if (that == null)
+                    return false;
+                return that.first == this.first && that.second == this.second;
+            }
+
+            public override int GetHashCode()
+            {
+                return first.GetHashCode() ^ 13 * second.GetHashCode();
+            }
+
+            public override string ToString()
+            {
+                return string.Format("[{0:X8} -> {1:X8}]", first, second);
+            }
+        }
+
+        public class Edge
+        {
+            public ulong lin_from;
+            public ulong lin_to;
         }
     }
 }

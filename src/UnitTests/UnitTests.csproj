@@ -95,6 +95,7 @@
     <Compile Include="Core\Analysis\PyArgFormatParserTests.cs" />
     <Compile Include="Core\Analysis\ScanfFormatParserTests.cs" />
     <Compile Include="Core\DumperTests.cs" />
+    <Compile Include="Core\Lib\LinqAlgorithmTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
     <Compile Include="Environments\SysV\Arm32ProcedureSerializerTests.cs" />
@@ -509,12 +510,12 @@
     <Compile Include="Scanning\Fragments\RtlEvenOdd.cs" />
     <Compile Include="Scanning\GlobalDataWorkItemTests.cs" />
     <Compile Include="Scanning\HeuristicProcedureScannerTests.cs" />
-    <Compile Include="Scanning\HeuristicScannerTests.cs" />
     <Compile Include="Scanning\HeuristicTestBase.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\InterProceduralJumpTests.cs" />
     <Compile Include="Scanning\ProcedureDetectorTests.cs" />
     <Compile Include="Scanning\Scanner.M68kTests.cs" />
+    <Compile Include="Scanning\ScannerInLinqTests.cs" />
     <Compile Include="Scanning\ScannerTestPrograms.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Scanning\ShingledScannerTests.cs" />

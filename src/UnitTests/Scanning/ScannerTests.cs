@@ -427,7 +427,7 @@ fn0C00_0000_exit:
         {
             var scanner = CreateScanner(0x1000, 0x1000);
             var m = new ProcedureBuilder(arch, "fn1000");
-            m.Assign(m.Register("ax"), m.Register("bx"));
+            m.Assign(m.Register("r0"), m.Register("r1"));
 
             var block = m.Block;
             Assert.IsFalse(scanner.IsLinearReturning(block));

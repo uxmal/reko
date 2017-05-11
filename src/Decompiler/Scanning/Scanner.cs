@@ -830,15 +830,6 @@ namespace Reko.Scanning
             ProcessQueue();
         }
 
-        /// <summary>
-        /// Uses the HeuristicScanner to try to located code heuristically.
-        /// </summary>
-        public void ScanImageHeuristically()
-        {
-            var heuristicScanner = new HeuristicScanner(Services, Program, this, eventListener);
-            heuristicScanner.ScanImageHeuristically();
-        }
-
         [Conditional("DEBUG")]
         private void Dump(string title, IEnumerable<Block> blocks)
         {
@@ -998,7 +989,7 @@ namespace Reko.Scanning
         /// </summary>
         public override void ScanImage()
         {
-            // Find all blobs of data, and potentially pointers
+            // Find all blobs of data, and potentially pointers to code.
             ScanDataItems();
 
             // Now scan the executable parts of the image, to find all 
@@ -1029,7 +1020,7 @@ namespace Reko.Scanning
                 sr.KnownProcedures.Add(sym.Address);
             }
 
-            var hsc = new HeuristicScanner(Services, Program, this, eventListener);
+            var hsc = new ScannerInLinq(Services, Program, this, eventListener);
             sr = hsc.ScanImage(sr);
             if (sr != null)
             {

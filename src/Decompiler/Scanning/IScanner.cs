@@ -43,7 +43,6 @@ namespace Reko.Scanning
         IServiceProvider Services { get; }
 
         void ScanImage();
-        void ScanImageHeuristically();
 
         ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
 

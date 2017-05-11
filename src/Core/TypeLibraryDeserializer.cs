@@ -201,8 +201,18 @@ namespace Reko.Core
             DataType dt;
             if (pointer.DataType == null)
                 dt = new UnknownType();
-            else 
-                dt = pointer.DataType.Accept(this);
+            else
+            {
+                try
+                {
+                    //$TODO: remove the try-catch when done.
+                    dt = pointer.DataType.Accept(this);
+                }
+                catch
+                {
+                    dt = new UnknownType();
+                }
+            }
             return new Pointer(dt, platform.PointerType.Size);
         }
 

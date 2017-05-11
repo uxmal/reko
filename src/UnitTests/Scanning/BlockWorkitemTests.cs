@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Scanning
             trace.Add(m =>
             {
                 m.Assign(r0, m.Word32(3));
-                m.Goto(Address.Ptr32(0x4000));
+                m.Goto(Address.Ptr32(0x104000));
             });
 
             Block next = block.Procedure.AddBlock("next");
@@ -767,5 +767,27 @@ testProc_exit:
             Assert.AreEqual("Mem0[0x00123400:word32] = 0x00000001", block.Statements[0].Instruction.ToString());
             mr.VerifyAll();
         }
+
+        [Test(Description = "Jumping to an address off the address space should warn and emit ExternalProcedure")]
+        public void BwiJumpExternalProcedure()
+        {
+            var addrStart = Address.Ptr32(0x00100000);
+            var blockCallRet = new Block(proc, "jmpOut");
+            trace.Add(m => { m.Goto(Address.Ptr32(0x00123400)); });
+            scanner.Stub(x => x.TerminateBlock(null, null)).IgnoreArguments();
+            scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            scanner.Stub(s => s.FindContainingBlock(addrStart)).IgnoreArguments().Return(block);
+            scanner.Expect(s => s.Warn(null, null, null)).IgnoreArguments();
+            program.Procedures.Add(addrStart + 4, Procedure.Create(addrStart + 4, new Frame(PrimitiveType.Pointer32)));
+            mr.ReplayAll();
+
+            var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));
+            wi.Process();
+
+            Assert.AreEqual("call fn00123400 (retsize: 4;)", block.Statements[0].Instruction.ToString());
+            Assert.AreEqual("return", block.Statements[1].Instruction.ToString());
+            mr.VerifyAll();
+        }
+
     }
 }

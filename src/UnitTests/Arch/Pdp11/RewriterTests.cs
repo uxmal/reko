@@ -31,7 +31,7 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Pdp11
 {
     [TestFixture]
-    class RewriterTests : RewriterTestBase
+    public class RewriterTests : RewriterTestBase
     {
         private Pdp11Architecture arch = new Pdp11Architecture();
         private MemoryArea image;
@@ -605,6 +605,15 @@ namespace Reko.UnitTests.Arch.Pdp11
             AssertCode(
                "0|T--|0200(4): 1 instructions",
                "1|T--|call 04DC (2)");
+        }
+
+        [Test]
+        public void Pdp11Rw_jmp_deferred()
+        {
+            BuildTest(0x005F, 0x00DC);  // jmp @#00DC
+            AssertCode(
+               "0|T--|0200(4): 1 instructions",
+               "1|T--|goto 00DC");
         }
     }
 }
