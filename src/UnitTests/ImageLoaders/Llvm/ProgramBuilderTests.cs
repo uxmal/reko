@@ -56,7 +56,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
         }
         
         [Test]
-        public void LLPB_RegisterSignature()
+        public void LLPB_ReturnVoid()
         {
             var fn = Func(
                 "define i32 @foo(i8*,i32) {",
@@ -76,6 +76,33 @@ foo_entry:
 	// succ:  l2
 l2:
 	return
+	// succ:  foo_exit
+foo_exit:
+";
+            AssertProc(sExp, proc);
+        }
+
+        [Test]
+        public void LLPB_ReturnConst()
+        {
+            var fn = Func(
+                "define i32 @foo(i8*,i32) {",
+                "   ret i32 3",
+                "}");
+
+            var pb = new ProgramBuilder(PrimitiveType.Pointer32);
+            pb.RegisterFunction(fn);
+            pb.TranslateFunction(fn);
+
+            var proc = pb.Functions.Values.First().Procedure;
+            var sExp =
+@"// foo
+// Return size: 0
+word32 foo(byte * %0, word32 %1)
+foo_entry:
+	// succ:  l2
+l2:
+	return 0x00000003
 	// succ:  foo_exit
 foo_exit:
 ";

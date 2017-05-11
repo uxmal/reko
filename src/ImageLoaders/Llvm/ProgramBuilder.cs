@@ -22,7 +22,9 @@ using System;
 using Reko.Core;
 using System.Collections.Generic;
 using Reko.Core.Types;
+using Expression = Reko.Core.Expressions.Expression;
 using Identifier = Reko.Core.Expressions.Identifier;
+using IrConstant = Reko.Core.Expressions.Constant;
 
 namespace Reko.ImageLoaders.LLVM
 {
@@ -135,7 +137,23 @@ namespace Reko.ImageLoaders.LLVM
                 {
                     m.Return();
                 }
+                else
+                {
+                    var e = MakeValueExpression(ret.Value, ret.Type);
+                    m.Return(e);
+                }
             }
+        }
+
+        private Expression MakeValueExpression(Value value, LLVMType type)
+        {
+            var c = value as Constant;
+            if (c != null)
+            {
+                var dt = type.Accept(new TypeTranslator(framePointerSize.Size));
+                return IrConstant.Create(dt, Convert.ToInt64(c.Value));
+            }
+            throw new NotImplementedException();
         }
 
     }

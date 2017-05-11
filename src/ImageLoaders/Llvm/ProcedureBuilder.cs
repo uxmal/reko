@@ -72,6 +72,14 @@ namespace Reko.ImageLoaders.LLVM
             lastBlock = null;
         }
 
+        public override void Return(Expression exp)
+        {
+            base.Return(exp);
+            Procedure.ControlGraph.AddEdge(block, Procedure.ExitBlock);
+            TerminateBlock();
+            lastBlock = null;
+        }
+
         public Block Label(string name)
         {
             TerminateBlock();
