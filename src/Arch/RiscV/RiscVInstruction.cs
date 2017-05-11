@@ -91,7 +91,7 @@ namespace Reko.Arch.RiscV
             return null;
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string name;
             if (!opcodeNames.TryGetValue(opcode, out name))

@@ -62,22 +62,25 @@ namespace Reko.Arch.Pdp11
             }
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Opcode.ToString());
             if (op1 != null)
             {
                 writer.Tab();
-                OpToString(op1, writer);
+                OpToString(op1, options, writer);
                 if (op2 != null)
                 {
                     writer.Write(",");
-                    OpToString(op2, writer);
+                    OpToString(op2, options, writer);
                 }
             }
         }
 
-        private void OpToString(MachineOperand op, MachineInstructionWriter writer)
+        private void OpToString(
+            MachineOperand op,
+            MachineInstructionWriterOptions options,
+            MachineInstructionWriter writer)
         {
             if (op is ImmediateOperand)
             {
@@ -85,7 +88,7 @@ namespace Reko.Arch.Pdp11
             }
             else
             {
-                writer.Write(op.ToString());
+                op.Write(writer, options);
             }
         }
 

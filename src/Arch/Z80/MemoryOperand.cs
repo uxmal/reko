@@ -50,7 +50,7 @@ namespace Reko.Arch.Z80
             this.Offset = Constant.SByte(offset);
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (Base != null)
             {

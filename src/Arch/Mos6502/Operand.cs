@@ -40,7 +40,7 @@ namespace Reko.Arch.Mos6502
         {
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             int o = Offset != null ? Offset.ToUInt16() : 0;
             string fmt;

@@ -48,7 +48,7 @@ namespace Reko.Arch.Pdp11
         public bool PostInc { get; set; }
         public ushort EffectiveAddress { get; set; }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string fmt;
             switch (Mode)
@@ -58,10 +58,34 @@ namespace Reko.Arch.Pdp11
             case AddressMode.AutoIncrDef: fmt = "@({0})+"; break;
             case AddressMode.AutoDecr: fmt = "-({0})"; break;
             case AddressMode.AutoDecrDef: fmt = "@-({0})"; break;
-            case AddressMode.Indexed: fmt = "{1:X4}({0})"; break;
-            case AddressMode.IndexedDef: fmt = "@{1:X4}({0})"; break;
+            case AddressMode.Indexed:
+                if (Register == Registers.pc &&
+                    (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                {
+                    var ea = writer.Address + 4 + EffectiveAddress;
+                    writer.WriteAddress("@#" + ea.ToString(), ea);
+                    return;
+                }
+                fmt = "{1:X4}({0})";
+                break;
+            case AddressMode.IndexedDef:
+                if (Register == Registers.pc &&
+                    (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                {
+                    writer.Write("@(");
+                    var ea = writer.Address + 4 + EffectiveAddress;
+                    writer.WriteAddress(ea.ToString(), ea);
+                    writer.Write(")");
+                    return;
+                }
+                fmt = "@{1:X4}({0})";
+                break;
             //case AddressMode.Immediate : fmt = "#{1:X4}"; break;
-            case AddressMode.Absolute: fmt = "@#{1:X4}"; break;
+            case AddressMode.Absolute:
+                writer.WriteAddress(
+                    string.Format("@#{0:X4}", EffectiveAddress),
+                    Address.Ptr16(EffectiveAddress));
+                return;
             default: throw new NotImplementedException(string.Format("Unknown mode {0}.", Mode));
             }
             writer.Write(string.Format(fmt, Register, EffectiveAddress));

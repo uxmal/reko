@@ -35,7 +35,7 @@ namespace Reko.Arch.X86
         {
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.Write("far");
             writer.Write(" ");

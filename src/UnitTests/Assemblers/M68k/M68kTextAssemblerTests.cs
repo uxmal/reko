@@ -54,26 +54,26 @@ namespace Reko.UnitTests.Assemblers.M68k
             RenderResult(prog, outputFile);
         }
 
-        private void RenderResult(Program prog, string outputFile)
+        private void RenderResult(Program program, string outputFile)
         {
             foreach (var item in asm.ImportReferences)
             {
-                prog.ImportReferences.Add(item.Key, item.Value);
+                program.ImportReferences.Add(item.Key, item.Value);
             }
 
             using (FileUnitTester fut = new FileUnitTester(outputFile))
             {
-                Dumper dumper = new Dumper(prog.Architecture);
+                Dumper dumper = new Dumper(program);
                 dumper.ShowAddresses = true;
                 dumper.ShowCodeBytes = true;
-                var mem = prog.SegmentMap.Segments.Values.First().MemoryArea;
+                var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
                 var formatter = new TextFormatter(fut.TextWriter);
-                dumper.DumpData(prog.SegmentMap, mem.BaseAddress, mem.Bytes.Length, formatter);
+                dumper.DumpData(program.SegmentMap, mem.BaseAddress, mem.Bytes.Length, formatter);
                 fut.TextWriter.WriteLine();
-                dumper.DumpAssembler(prog.SegmentMap, mem.BaseAddress, mem.EndAddress, formatter);
-                if (prog.ImportReferences.Count > 0)
+                dumper.DumpAssembler(program.SegmentMap, mem.BaseAddress, mem.EndAddress, formatter);
+                if (program.ImportReferences.Count > 0)
                 {
-                    var list = new SortedList<Address, ImportReference>(prog.ImportReferences);
+                    var list = new SortedList<Address, ImportReference>(program.ImportReferences);
                     foreach (var de in list)
                     {
                         fut.TextWriter.WriteLine("{0}: {1}", de, de.Value);
