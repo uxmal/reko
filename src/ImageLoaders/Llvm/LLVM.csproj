@@ -48,6 +48,7 @@
     <Compile Include="LLVMSyntax.Expr.cs" />
     <Compile Include="LLVMSyntax.Instructions.cs" />
     <Compile Include="LLVMType.cs" />
+    <Compile Include="ProcedureBuilder.cs" />
     <Compile Include="ProgramBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Token.cs" />

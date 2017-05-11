@@ -34,10 +34,10 @@ namespace Reko.ImageLoaders.LLVM
         public ProgramBuilder(PrimitiveType framePointerSize)
         {
             this.framePointerSize = framePointerSize;
-            this.Functions = new Dictionary<FunctionDefinition, FunctionDefinitionState>();
+            this.Functions = new Dictionary<FunctionDefinition, ProcedureBuilder>();
         }
 
-        public Dictionary<FunctionDefinition, FunctionDefinitionState> Functions { get; private set; }
+        public Dictionary<FunctionDefinition, ProcedureBuilder> Functions { get; private set; }
         public Dictionary<LocalId, DataType> Types { get; private set;}
     
 
@@ -71,13 +71,8 @@ namespace Reko.ImageLoaders.LLVM
         public void RegisterFunction(FunctionDefinition fn)
         {
             var proc = new Procedure(fn.FunctionName, new Frame(framePointerSize));
-            var state = new FunctionDefinitionState
-            {
-                Procedure = proc,
-                TempCounter = 0,
-                TmpToIdentifier = new Dictionary<string, Identifier>(),
-            };
-            Functions.Add(fn, state);
+            var builder = new ProcedureBuilder(proc);
+            Functions.Add(fn, builder);
         }
 
         public void RegisterTypeDefinition(TypeDefinition tydef)
@@ -88,7 +83,7 @@ namespace Reko.ImageLoaders.LLVM
         public Reko.Core.Types.FunctionType TranslateSignature(
             LLVMType retType, 
             List<LLVMArgument> parameters, 
-            FunctionDefinitionState state)
+            ProcedureBuilder state)
         {
             var rt = TranslateType(retType);
             var sigRet = state.Procedure.Frame.CreateTemporary(rt);
@@ -124,15 +119,13 @@ namespace Reko.ImageLoaders.LLVM
             proc.Signature = sig;
 
             var labels = new Dictionary<string, Block>();
-            this.block = new Block(proc, "%" + state.NextTemp());
-            labels.Add(block.Name, block);
-            proc.ControlGraph.AddEdge(proc.EntryBlock, block);
+            var pb = new ProcedureBuilder(proc);
+            pb.Label(state.NextTemp());
             foreach (var instr in fn.Instructions)
             {
                 TranslateInstruction(instr);
             }
         }
-
 
         public void TranslateInstruction(Instruction instr)
         {
@@ -142,19 +135,5 @@ namespace Reko.ImageLoaders.LLVM
             }
         }
 
-
-        public class FunctionDefinitionState
-        {
-            public Procedure Procedure;
-            public int TempCounter;
-            public Dictionary<string, Identifier> TmpToIdentifier;
-
-            public string NextTemp()
-            {
-                var name = TempCounter.ToString();
-                ++TempCounter;
-                return name;
-            }
-        }
     }
 }

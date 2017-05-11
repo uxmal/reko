@@ -73,7 +73,8 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
 // Return size: 0
 word32 foo(byte * %0, word32 %1)
 foo_entry:
-    // succ:  %2
+	// succ:  l2
+l2:
 foo_exit:
 ";
             AssertProc(sExp, proc);
