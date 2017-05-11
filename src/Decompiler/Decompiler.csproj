@@ -300,7 +300,6 @@
     <Compile Include="Scanning\ScannerBase.cs" />
     <Compile Include="Scanning\ScanResults.cs" />
     <Compile Include="Scanning\ShingledScanner.cs" />
-    <Compile Include="Scanning\StorageBinder.cs" />
     <Compile Include="Scanning\StringFinder.cs" />
     <Compile Include="Scanning\StringSearch.cs" />
     <Compile Include="Scanning\KmpStringSearch.cs" />
