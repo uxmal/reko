@@ -75,6 +75,8 @@ word32 foo(byte * %0, word32 %1)
 foo_entry:
 	// succ:  l2
 l2:
+	return
+	// succ:  foo_exit
 foo_exit:
 ";
             AssertProc(sExp, proc);

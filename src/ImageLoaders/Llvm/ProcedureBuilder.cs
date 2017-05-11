@@ -36,6 +36,7 @@ namespace Reko.ImageLoaders.LLVM
         private Block branchBlock;
         private int tmpCounter;
         private Dictionary<string, Identifier> tmpToIdentifier;
+        private ulong linearAddress;
 
         public ProcedureBuilder(Procedure proc)
         {
@@ -53,12 +54,22 @@ namespace Reko.ImageLoaders.LLVM
 
         public override Statement Emit(IrInstruction instr)
         {
-            throw new NotImplementedException();
+            EnsureBlock(null);
+            block.Statements.Add(linearAddress++, instr);
+            return block.Statements.Last;
         }
 
         public override Identifier Register(int i)
         {
             throw new NotImplementedException();
+        }
+
+        public override void Return()
+        {
+            base.Return();
+            Procedure.ControlGraph.AddEdge(block, Procedure.ExitBlock);
+            TerminateBlock();
+            lastBlock = null;
         }
 
         public Block Label(string name)
@@ -85,7 +96,7 @@ namespace Reko.ImageLoaders.LLVM
 
             if (name == null)
             {
-                name = string.Format("l{0}", ++tmpCounter);
+                name = NextTemp();
             }
             block = BlockOf(name);
             if (proc.EntryBlock.Succ.Count == 0)

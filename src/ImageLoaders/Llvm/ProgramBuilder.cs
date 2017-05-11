@@ -113,25 +113,28 @@ namespace Reko.ImageLoaders.LLVM
 
         public void TranslateFunction(FunctionDefinition fn)
         {
-            var state = Functions[fn];
-            var proc = state.Procedure;
-            var sig = TranslateSignature(fn.ResultType, fn.Parameters, state);
+            var m = Functions[fn];
+            var proc = m.Procedure;
+            var sig = TranslateSignature(fn.ResultType, fn.Parameters, m);
             proc.Signature = sig;
 
             var labels = new Dictionary<string, Block>();
             var pb = new ProcedureBuilder(proc);
-            pb.Label(state.NextTemp());
             foreach (var instr in fn.Instructions)
             {
-                TranslateInstruction(instr);
+                TranslateInstruction(instr, m);
             }
         }
 
-        public void TranslateInstruction(Instruction instr)
+        public void TranslateInstruction(Instruction instr, ProcedureBuilder m)
         {
             var ret = instr as RetInstr;
             if (ret != null)
             {
+                if (ret.Value == null)
+                {
+                    m.Return();
+                }
             }
         }
 
