@@ -855,8 +855,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCrw_beqlr()
         {
             AssertCode(0x4d9e0020, // beqlr\tcr7");
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (Test(EQ,cr7)) return (0,0)");
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(NE,cr7)) branch 00100004",
+                "2|T--|return (0,0)");
         }
 
         [Test]
@@ -890,8 +891,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCrw_blelr()
         {
             AssertCode(0x4c9d0020, //"blelr\tcr7");
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (Test(LE,cr7)) return (0,0)");
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(GT,cr7)) branch 00100004",
+                "2|T--|return (0,0)");
         }
 
         [Test]
@@ -990,17 +992,19 @@ namespace Reko.UnitTests.Arch.PowerPC
                         "1|L--|ctr = ctr - 0x00000001",
                         "2|T--|if (ctr != 0x00000000) branch 000FFEF8");
             AssertCode(0x4220fef9, //"bdnzl\t$000FFEF8");
-                        "0|T--|00100000(4): 2 instructions",
+                        "0|T--|00100000(4): 3 instructions",
                         "1|L--|ctr = ctr - 0x00000001",
-                        "2|T--|if (ctr != 0x00000000) call 000FFEF8 (0)");
+                        "2|T--|if (ctr == 0x00000000) branch 00100004",
+                        "3|T--|call 000FFEF8 (0)");
             AssertCode(0x4240fef8, //"bdz\t$000FFEF8");
                         "0|T--|00100000(4): 2 instructions",
                         "1|L--|ctr = ctr - 0x00000001",
                         "2|T--|if (ctr == 0x00000000) branch 000FFEF8");
             AssertCode(0x4260fef9, //"bdzl\t$000FFEF8");
-                        "0|T--|00100000(4): 2 instructions",
+                        "0|T--|00100000(4): 3 instructions",
                         "1|L--|ctr = ctr - 0x00000001",
-                        "2|T--|if (ctr == 0x00000000) call 000FFEF8 (0)");
+                        "2|T--|if (ctr != 0x00000000) branch 00100004",
+                        "3|T--|call 000FFEF8 (0)");
             //AssertCode(0x4280fef8//, "bc+    20,lt,0xffffffffffffff24	 ");
             AssertCode(0x4300fef8, //"bdnz\t$000FFEF8");
                         "0|T--|00100000(4): 2 instructions",
@@ -1050,8 +1054,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCRw_bnelr()
         {
             AssertCode(0x4c820020, // bnelr	
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (Test(NE,cr0)) return (0,0)");
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(EQ,cr0)) branch 00100004",
+                "2|T--|return (0,0)");
         }
 
         [Test]
@@ -1224,20 +1229,25 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCrw_tw()
         {
             AssertCode(0x7c201008, //"twlgt   r0,r2");
-                "0|L--|00100000(4): 1 instructions",
-                "1|---|if (r0 >u r2) __trap()");
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (r0 <=u r2) branch 00100004",
+                "2|L--|__trap()");
             AssertCode(0x7c401008, //"twllt   r0,r2");
-                 "0|L--|00100000(4): 1 instructions",
-                 "1|---|if (r0 <u r2) __trap()");
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (r0 >=u r2) branch 00100004",
+                "2|L--|__trap()");
             AssertCode(0x7c801008, //"tweq    r0,r2");
-                 "0|L--|00100000(4): 1 instructions",
-                 "1|---|if (r0 == r2) __trap()");
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (r0 != r2) branch 00100004",
+                "2|L--|__trap()");
             AssertCode(0x7d001008, //"twgt    r0,r2");
-                 "0|L--|00100000(4): 1 instructions",
-                 "1|---|if (r0 > r2) __trap()");
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (r0 <= r2) branch 00100004",
+                "2|L--|__trap()");
             AssertCode(0x7e001008, //"twlt    r0,r2");
-                "0|L--|00100000(4): 1 instructions",
-                "1|---|if (r0 < r2) __trap()");
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (r0 >= r2) branch 00100004",
+                "2|L--|__trap()");
         }
 
         [Test]
@@ -1323,8 +1333,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCrw_bgtlr()
         {
             AssertCode(0x4D9D0020, // bgtlrcr7
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (Test(GT,cr7)) return (0,0)");
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(LE,cr7)) branch 00100004",
+                "2|T--|return (0,0)");
         }
 
         [Test]

@@ -24,7 +24,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Scanning
+namespace Reko.Core
 {
     /// <summary>
     /// Binds storages to identifiers.
@@ -102,6 +102,11 @@ namespace Reko.Scanning
         }
 
         public Identifier EnsureIdentifier(Storage stg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer)
         {
             throw new NotImplementedException();
         }

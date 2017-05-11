@@ -324,8 +324,9 @@ namespace Reko.UnitTests.Arch.Xtensa
             // movnez\ta2,a5,a3",
             Rewrite(0x932530);
             AssertCode(
-                "0|L--|00010000(3): 1 instructions",
-                "1|L--|if (a3 != 0x00000000) a2 = a5");
+                "0|L--|00010000(3): 2 instructions",
+                "1|T--|if (a3 == 0x00000000) branch 00010003",
+                "2|L--|a2 = a5");
         }
 
         [Test]
@@ -656,8 +657,9 @@ namespace Reko.UnitTests.Arch.Xtensa
             // movgez\ta4,a5,a3
             Rewrite(0xb34530);
             AssertCode(
-              "0|L--|00010000(3): 1 instructions",
-              "1|L--|if (a3 >= 0x00000000) a4 = a5");
+              "0|L--|00010000(3): 2 instructions",
+              "1|T--|if (a3 < 0x00000000) branch 00010003",
+              "2|L--|a4 = a5");
         }
 
         [Test]
@@ -878,8 +880,9 @@ namespace Reko.UnitTests.Arch.Xtensa
             // moveqz.s\tf15,f12,a0
             Rewrite(0x8bfc00);
             AssertCode(
-                "0|L--|00010000(3): 1 instructions",
-                "1|L--|if (a0 == 0x00000000) f15 = f12");
+                "0|L--|00010000(3): 2 instructions",
+                "1|T--|if (a0 != 0x00000000) branch 00010003",
+                "2|L--|f15 = f12");
         }
 
         [Test]

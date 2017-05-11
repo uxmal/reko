@@ -197,9 +197,11 @@ namespace Reko.Arch.Xtensa
             var dst = RewriteOp(this.instr.Operands[0]);
             var src = RewriteOp(this.instr.Operands[1]);
             var cond = RewriteOp(this.instr.Operands[2]);
-            m.If(
-                fn(cond, Constant.Zero(cond.DataType)),
-                new RtlAssignment(dst, src));
+            m.BranchInMiddleOfInstruction(
+                fn(cond, Constant.Zero(cond.DataType)).Invert(),
+                instr.Address + instr.Length,
+                RtlClass.ConditionalTransfer);
+            m.Assign(dst, src);
         }
 
         private void RewriteMovi_n()
