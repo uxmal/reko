@@ -71,7 +71,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             var sExp =
 @"// foo
 // Return size: 0
-word32 foo(byte * %0, word32 %1)
+word32 foo(byte * arg0, word32 arg1)
 foo_entry:
 	// succ:  l2
 l2:
@@ -98,7 +98,7 @@ foo_exit:
             var sExp =
 @"// foo
 // Return size: 0
-word32 foo(byte * %0, word32 %1)
+word32 foo(byte * arg0, word32 arg1)
 foo_entry:
 	// succ:  l2
 l2:
@@ -126,11 +126,12 @@ foo_exit:
             var sExp =
 @"// foo
 // Return size: 0
-word32 foo(byte * %0, word32 %1)
+word32 foo(word32 arg0)
 foo_entry:
-	// succ:  l2
-l2:
-	return 0x00000003
+	// succ:  l1
+l1:
+	loc2 = arg0 + 0x00000003
+	return loc2
 	// succ:  foo_exit
 foo_exit:
 ";

@@ -35,14 +35,14 @@ namespace Reko.ImageLoaders.LLVM
         private Block lastBlock;
         private Block branchBlock;
         private int tmpCounter;
-        private Dictionary<string, Identifier> tmpToIdentifier;
+        private Dictionary<string, Identifier> llvmNametoId;
         private ulong linearAddress;
 
         public ProcedureBuilder(Procedure proc)
         {
             this.proc = proc;
             this.labelMap = new Dictionary<string, Block>();
-            this.tmpToIdentifier = new Dictionary<string, Identifier>();
+            this.llvmNametoId = new Dictionary<string, Identifier>();
         }
 
         public override Frame Frame
@@ -97,7 +97,7 @@ namespace Reko.ImageLoaders.LLVM
             return b;
         }
 
-        private Block EnsureBlock(string name)
+        public Block EnsureBlock(string name)
         {
             if (block != null)
                 return block;
@@ -129,6 +129,19 @@ namespace Reko.ImageLoaders.LLVM
             return block;
         }
 
+        public Identifier CreateLocalId(string prefix, DataType pt)
+        {
+            var llvmLocalName = NextTemp();
+            var id = Procedure.Frame.CreateTemporary(prefix + llvmLocalName, pt);
+            llvmNametoId.Add(llvmLocalName, id);
+            return id;
+        }
+
+        public Identifier GetLocalId(string llvLocalName)
+        {
+            return llvmNametoId[llvLocalName];
+        }
+    
         public string NextTemp()
         {
             var name = tmpCounter.ToString();

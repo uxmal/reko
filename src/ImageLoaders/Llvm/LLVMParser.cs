@@ -505,7 +505,7 @@ namespace Reko.ImageLoaders.LLVM
             switch (tok.Type)
             {
             case TokenType.alloca: return ParseAlloca(result);
-            case TokenType.add: return ParseBinBitOp(result);
+            case TokenType.add: return ParseBinOp(result);
             case TokenType.and: return ParseBinBitOp(result);
             case TokenType.ashr: return ParseBinBitOp(result);
             case TokenType.bitcast: return ParseConversion(result);

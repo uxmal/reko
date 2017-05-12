@@ -83,10 +83,10 @@ namespace Reko.ImageLoaders.LLVM
         public Reko.Core.Types.FunctionType TranslateSignature(
             LLVMType retType, 
             List<LLVMParameter> parameters, 
-            ProcedureBuilder state)
+            ProcedureBuilder m)
         {
             var rt = TranslateType(retType);
-            var sigRet = state.Procedure.Frame.CreateTemporary(rt);
+            var sigRet = m.Procedure.Frame.CreateTemporary(rt);
             var sigParameters = new List<Identifier>();
             foreach (var param in parameters)
             {
@@ -96,9 +96,9 @@ namespace Reko.ImageLoaders.LLVM
                 }
                 else
                 {
+                    var prefix = "arg";
                     var pt = TranslateType(param.Type);
-                    var name = "%" + state.NextTemp();
-                    var id = state.Procedure.Frame.CreateTemporary(name, pt);
+                    var id = m.CreateLocalId(prefix, pt);
                     sigParameters.Add(id);
                 }
             }
@@ -118,7 +118,7 @@ namespace Reko.ImageLoaders.LLVM
             var sig = TranslateSignature(fn.ResultType, fn.Parameters, m);
             proc.Signature = sig;
 
-            var labels = new Dictionary<string, Block>();
+            m.EnsureBlock(null);
             var pb = new ProcedureBuilder(proc);
             foreach (var instr in fn.Instructions)
             {
@@ -137,13 +137,32 @@ namespace Reko.ImageLoaders.LLVM
                 }
                 else
                 {
-                    var e = MakeValueExpression(ret.Value, ret.Type);
+                    var e = MakeValueExpression(ret.Value, m, ret.Type);
                     m.Return(e);
                 }
+                return;
             }
+            var bin = instr as Binary;
+            if (bin != null)
+            {
+                var left = MakeValueExpression(bin.Left, m, bin.Type);
+                var right = MakeValueExpression(bin.Right, m, bin.Type);
+                var type = TranslateType(bin.Type);
+                var dst = m.CreateLocalId("loc", type);
+                Func<Expression,Expression,Expression> fn;
+                switch (bin.Operator)
+                {
+                default:
+                    throw new NotImplementedException(string.Format("TranlateInstruction({0})", bin.Operator));
+                case TokenType.add: fn = m.IAdd; break;
+                }
+                m.Assign(dst, fn(left, right));
+                return;
+            }
+            throw new NotImplementedException(string.Format("TranlateInstruction({0})", instr.GetType().Name));
         }
 
-        private Expression MakeValueExpression(Value value, LLVMType type)
+        private Expression MakeValueExpression(Value value, ProcedureBuilder m, LLVMType type)
         {
             var c = value as Constant;
             if (c != null)
@@ -154,9 +173,9 @@ namespace Reko.ImageLoaders.LLVM
             var local = value as LocalId;
             if (local != null)
             {
-
+                return m.GetLocalId(local.Name);
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException(string.Format("MakeValueExpression: {0}", value.ToString() ?? "(null)"));
         }
 
     }

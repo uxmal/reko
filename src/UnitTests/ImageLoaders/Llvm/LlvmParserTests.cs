@@ -327,7 +327,6 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             RunInstrTest();
         }
 
-
         [Test]
         public void LLParser_fmul()
         {
@@ -367,16 +366,6 @@ define i32 @main() {
 }
 ";
             RunModuleTest();
-        }
-
-        [Test]
-        public void LLPB_Parse()
-        {
-            using (var rdr = File.OpenText(@"D:\dev\uxmal\reko\LLVM\more_llvm\more_llvm\c4\c4.ll"))
-            {
-                var parser = new LLVMParser(new LLVMLexer(rdr));
-                parser.ParseModule();
-            }
         }
     }
 }
