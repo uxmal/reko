@@ -29,6 +29,7 @@ namespace Reko.ImageLoaders.LLVM
 {
     public abstract class Instruction : LLVMSyntax
     {
+        public abstract T Accept<T>(InstructionVisitor<T> visitor);
     }
 
     public abstract class Terminator : Instruction
@@ -55,6 +56,11 @@ namespace Reko.ImageLoaders.LLVM
         public LLVMType Type;
         public Value Left;
         public Value Right;
+
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitBinary(this);
+        }
 
         public override void Write(Formatter w)
         {
@@ -90,6 +96,11 @@ namespace Reko.ImageLoaders.LLVM
         public Value Left;
         public Value Right;
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitBitwiseBinary(this);
+        }
+
         public override void Write(Formatter w)
         {
             Result.Write(w);
@@ -120,6 +131,11 @@ namespace Reko.ImageLoaders.LLVM
         public Value Cond;
         public LocalId IfTrue;
         public LocalId IfFalse;
+
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitBr(this);
+        }
 
         public override void Write(Formatter w)
         {
@@ -153,6 +169,11 @@ namespace Reko.ImageLoaders.LLVM
         public LLVMType Type;
         public List<Tuple<Value, LocalId>> Arguments;
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitPhi(this);
+        }
+
         public override void Write(Formatter w)
         {
             Result.Write(w);
@@ -179,6 +200,11 @@ namespace Reko.ImageLoaders.LLVM
         public LLVMType Type;
         public Value Value;
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitRet(this);
+        }
+
         public override void Write(Formatter w)
         {
             w.WriteKeyword("ret");
@@ -202,6 +228,11 @@ namespace Reko.ImageLoaders.LLVM
         public LLVMType ElCountType;
         public Value ElementCount;
         public int Alignment;
+
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitAlloca(this);
+        }
 
         public override void Write(Formatter w)
         {
@@ -232,6 +263,11 @@ namespace Reko.ImageLoaders.LLVM
         public Value Value;
         public List<int> Indices;
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitExtractvalue(this);
+        }
+
         public override void Write(Formatter w)
         {
             Result.Write(w);
@@ -256,6 +292,11 @@ namespace Reko.ImageLoaders.LLVM
         public LLVMType BaseType;
         public LLVMType PtrType;
         public Value PtrValue;
+
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitGetelementptr(this);
+        }
 
         public override void Write(Formatter w)
         {
@@ -286,6 +327,11 @@ namespace Reko.ImageLoaders.LLVM
         public Value Op1;
         public Value Op2;
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitCmp(this);
+        }
+
         public override void Write(Formatter w)
         {
             Result.Write(w);
@@ -308,6 +354,11 @@ namespace Reko.ImageLoaders.LLVM
         public ParameterAttributes res_attrs;
         public LLVMType FnType;
         public Value FnPtr;
+
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitCall(this);
+        }
 
         public override void Write(Formatter w)
         {
@@ -356,6 +407,11 @@ namespace Reko.ImageLoaders.LLVM
     {
         public TokenType Type;
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitFence(this);
+        }
+
         public override void Write(Formatter w)
         {
             w.WriteKeyword("fence");
@@ -371,6 +427,11 @@ namespace Reko.ImageLoaders.LLVM
         public LLVMType SrcType;
         public Value Src;
         public int Alignment;
+
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitLoad(this);
+        }
 
         public override void Write(Formatter w)
         {
@@ -399,6 +460,11 @@ namespace Reko.ImageLoaders.LLVM
         public Value Value;
         public LLVMType TypeTo;
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitConversion(this);
+        }
+
         public override void Write(Formatter w)
         {
             Result.Write(w);
@@ -423,6 +489,11 @@ namespace Reko.ImageLoaders.LLVM
         public Value TrueValue;
         public LLVMType FalseType;
         public Value FalseValue;
+
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitSelect(this);
+        }
 
         public override void Write(Formatter w)
         {
@@ -453,6 +524,11 @@ namespace Reko.ImageLoaders.LLVM
         public Value Src;
         public LLVMType SrcType;
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitStore(this);
+        }
+
         public override void Write(Formatter w)
         {
             w.WriteKeyword("store");
@@ -480,6 +556,11 @@ namespace Reko.ImageLoaders.LLVM
         public Value Value;
         public LocalId Default;
         public List<Tuple<LLVMType, Value, LocalId>> Destinations;
+
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitSwitch(this);
+        }
 
         public override void Write(Formatter w)
         {
@@ -511,6 +592,11 @@ namespace Reko.ImageLoaders.LLVM
 
     public class Unreachable : Terminator
     {
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitUnreachable(this);
+        }
+
         public override void Write(Formatter w)
         {
             w.WriteKeyword("unreachable");
