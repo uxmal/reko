@@ -84,12 +84,32 @@ namespace Reko.ImageLoaders.LLVM
                 m.Goto(br.IfTrue.Name);
                 return 0;
             }
-            throw new NotImplementedException(string.Format("TranslateBr({0})", br));
+            m.Branch(null, br.IfTrue.Name, br.IfFalse.Name);
+            return 0;
         }
 
         public int VisitCall(LLVMCall call)
         {
-            throw new NotImplementedException();
+            var args = new List<Expression>();
+            foreach (var arg in call.Arguments)
+            {
+                var type = builder.TranslateType(arg.Type);
+                var irArg = MakeValueExpression(arg.Value, m, type);
+                args.Add(irArg);
+            }
+            var retType = builder.TranslateType(call.FnType);
+            var fn = MakeValueExpression(call.FnPtr, m, null);
+            var app = m.Fn(fn, retType, args.ToArray());
+            if (call.Result != null)
+            {
+                var dst = m.CreateLocalId("loc", retType);
+                m.Assign(dst, app);
+            }
+            else
+            {
+                m.SideEffect(app);
+            }
+            return 0;
         }
 
         public int VisitCmp(CmpInstruction cmp)
@@ -194,7 +214,12 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitStore(Store store)
         {
-            throw new NotImplementedException();
+            var dstType = builder.TranslateType(store.DstType);
+            var srcType = builder.TranslateType(store.SrcType);
+            var src = MakeValueExpression(store.Src, m, srcType);
+            var ea = MakeValueExpression(store.Dst, m, dstType);
+            m.Store(ea, src);
+            return 0;
         }
 
         public int VisitSwitch(Switch sw)

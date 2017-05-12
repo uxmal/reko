@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using IrInstruction = Reko.Core.Code.Instruction;
+using Branch = Reko.Core.Code.Branch;
 
 namespace Reko.ImageLoaders.LLVM
 {
@@ -94,6 +95,19 @@ namespace Reko.ImageLoaders.LLVM
             Block blockTo = BlockOf(name);
             Procedure.ControlGraph.AddEdge(this.block, blockTo);
             this.block = null;
+        }
+
+        public void Branch(Expression expr, string labelTrue, string labelFalse)
+        {
+            Block b = EnsureBlock(null);
+            var trueBlock = BlockOf(labelTrue);
+            var falseBlock = BlockOf(labelFalse);
+            TerminateBlock();
+
+            var stm = new Statement(0, new Branch(expr, branchBlock), b);
+            b.Statements.Add(stm);
+            proc.ControlGraph.AddEdge(b, falseBlock);
+            proc.ControlGraph.AddEdge(b, trueBlock);
         }
 
         private Block BlockOf(string label)
@@ -166,6 +180,7 @@ namespace Reko.ImageLoaders.LLVM
                 lastBlock = this.block;
                 this.block = null;
             }
+            EnsureBlock(null);
         }
 
         public Identifier AllocateStackVariable(DataType type, int count)

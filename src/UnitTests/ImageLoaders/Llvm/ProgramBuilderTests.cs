@@ -148,6 +148,8 @@ foo_exit:
         public void LLPB_Branches()
         {
             Global("curch", PrimitiveType.Char);
+            Global("curln", PrimitiveType.Int32);
+            Global("input", PrimitiveType.Pointer32);
 
             var proc = RunFuncTest(
 @"define signext i8 @next_char() #0 {
