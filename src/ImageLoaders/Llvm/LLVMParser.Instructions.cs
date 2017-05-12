@@ -230,6 +230,7 @@ namespace Reko.ImageLoaders.LLVM
             return new CmpInstruction
             {
                 Result = result,
+                Operator = TokenType.icmp,
                 ConditionCode = cc.Type,
                 Type = type,
                 Op1 = op1,

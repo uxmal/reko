@@ -241,6 +241,7 @@ namespace Reko.ImageLoaders.LLVM
             if (cmp != null)
             {
                 TranslateCmp(cmp, m);
+                return;
             }
             throw new NotImplementedException(string.Format("TranslateInstruction({0})", instr.GetType().Name));
         }
@@ -277,9 +278,10 @@ namespace Reko.ImageLoaders.LLVM
                 {
                 default:
                     throw new NotImplementedException(string.Format("TranslateCmp({0})", cmp.ConditionCode));
+                case TokenType.eq: fn = m.Eq; break;
                 }
             }
-            else
+            else if (cmp.Operator == TokenType.fcmp)
             {
                 switch (cmp.ConditionCode)
                 {
@@ -287,6 +289,9 @@ namespace Reko.ImageLoaders.LLVM
                     throw new NotImplementedException(string.Format("TranslateCmp({0})", cmp.ConditionCode));
                 }
             }
+            else
+                throw new NotImplementedException(string.Format("TranslateCmp({0})", cmp.Operator));
+
             m.Assign(dst, fn(op1, op2));
         }
 
