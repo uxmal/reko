@@ -84,7 +84,8 @@ namespace Reko.ImageLoaders.LLVM
                 m.Goto(br.IfTrue.Name);
                 return 0;
             }
-            m.Branch(null, br.IfTrue.Name, br.IfFalse.Name);
+            var cond = MakeValueExpression(br.Cond, m, builder.TranslateType(br.Type));
+            m.Branch(cond, br.IfTrue.Name, br.IfFalse.Name);
             return 0;
         }
 
@@ -126,6 +127,7 @@ namespace Reko.ImageLoaders.LLVM
                 default:
                     throw new NotImplementedException(string.Format("TranslateCmp({0})", cmp.ConditionCode));
                 case TokenType.eq: fn = m.Eq; break;
+                case TokenType.ne: fn = m.Ne; break;
                 }
             }
             else if (cmp.Operator == TokenType.fcmp)
@@ -158,6 +160,9 @@ namespace Reko.ImageLoaders.LLVM
                 dstType = PrimitiveType.Create(IrDomain.SignedInt, dstType.Size);
                 e = m.Cast(dstType, src);
                 break;
+            case TokenType.trunc:
+                e = m.Cast(dstType, src);
+                break;
             }
             m.Assign(dst, e);
             return 0;
@@ -175,7 +180,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitGetelementptr(GetElementPtr get)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(get.ToString());
         }
 
         public int VisitLoad(Load load)
@@ -183,8 +188,8 @@ namespace Reko.ImageLoaders.LLVM
             var dstType = builder.TranslateType(load.DstType);
             var srcType = builder.TranslateType(load.SrcType);
             var ea = MakeValueExpression(load.Src, m, srcType);
-            var dst = m.CreateLocalId("loc", srcType);
-            m.Assign(dst, m.Load(dst.DataType, ea));
+            var dst = m.CreateLocalId("loc", dstType);
+            m.Assign(dst, m.Load(dstType, ea));
             return 0;
         }
 

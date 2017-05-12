@@ -34,8 +34,8 @@ namespace Reko.ImageLoaders.LLVM
         private Procedure proc;
         private Block block;
         private Dictionary<string, Block> labelMap;
+        private Dictionary<string, Block> deferredBlocks;
         private Block lastBlock;
-        private Block branchBlock;
         private int tmpCounter;
         private Dictionary<string, Identifier> llvmNametoId;
         private ulong linearAddress;
@@ -45,6 +45,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             this.proc = proc;
             this.labelMap = new Dictionary<string, Block>();
+            this.deferredBlocks = new Dictionary<string, Block>();
             this.llvmNametoId = new Dictionary<string, Identifier>();
         }
 
@@ -92,31 +93,44 @@ namespace Reko.ImageLoaders.LLVM
         public void Goto(string name)
         {
             EnsureBlock(null);
-            Block blockTo = BlockOf(name);
+            Block blockTo = BlockOf(name, true);
             Procedure.ControlGraph.AddEdge(this.block, blockTo);
-            this.block = null;
+            TerminateBlock();
+            EnsureBlock(null);
         }
 
         public void Branch(Expression expr, string labelTrue, string labelFalse)
         {
             Block b = EnsureBlock(null);
-            var trueBlock = BlockOf(labelTrue);
-            var falseBlock = BlockOf(labelFalse);
             TerminateBlock();
-
-            var stm = new Statement(0, new Branch(expr, branchBlock), b);
+            EnsureBlock(null);
+            var trueBlock = BlockOf(labelTrue, true);
+            var falseBlock = BlockOf(labelFalse, true);
+            var stm = new Statement(0, new Branch(expr, trueBlock), b);
             b.Statements.Add(stm);
             proc.ControlGraph.AddEdge(b, falseBlock);
             proc.ControlGraph.AddEdge(b, trueBlock);
         }
 
-        private Block BlockOf(string label)
+        private Block BlockOf(string label, bool defer)
         {
             Block b;
+            if (deferredBlocks.TryGetValue(label, out b))
+            {
+                if (!defer)
+                {
+                    deferredBlocks.Remove(label);
+                    labelMap.Add(label, b);
+                }
+                return b;
+            }
             if (!labelMap.TryGetValue(label, out b))
             {
                 b = proc.AddBlock("l" + label);
-                labelMap.Add(label, b);
+                if (defer)
+                    deferredBlocks.Add(label, b);
+                else
+                    labelMap.Add(label, b);
             }
             return b;
         }
@@ -130,25 +144,10 @@ namespace Reko.ImageLoaders.LLVM
             {
                 name = NextTemp();
             }
-            block = BlockOf(name);
+            block = BlockOf(name, false);
             if (proc.EntryBlock.Succ.Count == 0)
             {
                 proc.ControlGraph.AddEdge(proc.EntryBlock, block);
-            }
-
-            if (lastBlock != null)
-            {
-                if (branchBlock != null)
-                {
-                    proc.ControlGraph.AddEdge(lastBlock, block);
-                    proc.ControlGraph.AddEdge(lastBlock, branchBlock);
-                    branchBlock = null;
-                }
-                else
-                {
-                    proc.ControlGraph.AddEdge(lastBlock, block);
-                }
-                lastBlock = null;
             }
             return block;
         }
@@ -180,7 +179,6 @@ namespace Reko.ImageLoaders.LLVM
                 lastBlock = this.block;
                 this.block = null;
             }
-            EnsureBlock(null);
         }
 
         public Identifier AllocateStackVariable(DataType type, int count)

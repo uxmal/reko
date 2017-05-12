@@ -150,7 +150,7 @@ foo_exit:
             Global("curch", PrimitiveType.Char);
             Global("curln", PrimitiveType.Int32);
             Global("input", PrimitiveType.Pointer32);
-
+            Global("fgetc", PrimitiveType.Pointer32);
             var proc = RunFuncTest(
 @"define signext i8 @next_char() #0 {
   %1 = load i8, i8* @curch, align 1
@@ -158,7 +158,7 @@ foo_exit:
   %3 = icmp eq i32 %2, 10
   br i1 %3, label %4, label %7
 
-; <label>:4:                                      ; preds = %0
+ ; <label>:4:                                      ; preds = %0
   %5 = load i32, i32* @curln, align 4
   %6 = add nsw i32 %5, 1
   store i32 %6, i32* @curln, align 4
@@ -176,31 +176,32 @@ foo_exit:
 // Return size: 0
 byte next_char()
 next_char_entry:
-    // succ:  l0
-    loc1 = Mem0[curch:byte]
-    loc2 = (int32) loc1
-    loc3 = loc2 == 10
-    if (loc3) branch l4
-    goto l7
-    // succ:  l7, l4
+	// succ:  l0
+l0:
+	loc1 = Mem0[curch:byte]
+	loc2 = (int32) loc1
+	loc3 = loc2 == 0x0000000A
+	branch loc3 l4
+	goto l7
+	// succ:  l7 l4
 l4:
-    loc5 = Mem0[curln:word32]
-    loc6 = loc5 + 1
-    Mem0[curln:word32] = loc6
-    goto l7
-    // succ:  l7
+	loc5 = Mem0[curln:word32]
+	loc6 = loc5 + 0x00000001
+	Mem0[curln:word32] = loc6
+	// succ:  l7
 l7:
-    loc8 = Mem[input:struct._IO_FILE]
-    loc9 = fgetc(loc8)
-    loc10 = (byte) loc9
-    Mem0[curch:byte] = loc10
-    return loc10
-    // succ:  next_char_exit
+	loc8 = Mem0[input:(ptr struct._IO_FILE)]
+	loc9 = fgetc(loc8)
+	loc10 = (byte) loc9
+	Mem0[curch:byte] = loc10
+	return loc10
+	// succ:  next_char_exit
 next_char_exit:
 ";
             AssertProc(sExp, proc);
         }
 
+        [Ignore("Only works on @uxmal's machine right now")]
         [Test]
         public void LLPB_File()
         {
