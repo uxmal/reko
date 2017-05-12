@@ -33,6 +33,8 @@ namespace Reko.ImageLoaders.LLVM
         };
 
         public static LLVMType Void { get; internal set; }
+        public static LLVMType Double { get; internal set; }
+        public static LLVMType X86_fp80 { get; internal set; }
 
         public static LLVMType GetBaseType(string sType)
         {
@@ -53,6 +55,8 @@ namespace Reko.ImageLoaders.LLVM
         static LLVMType()
         {
             Void = new LLVMBaseType("void", Domain.Void, 0);
+            Double = new LLVMBaseType("double", Domain.Real, 64);
+            X86_fp80 = new LLVMBaseType("x86_fp80", Domain.Real, 80);
         }
     }
 
@@ -164,15 +168,19 @@ namespace Reko.ImageLoaders.LLVM
 
         public override void Write(Formatter w)
         {
-            w.Write("{ ");
-            var sep = "";
-            foreach (var field in Fields)
+            w.Write("{");
+            if (Fields.Count > 0)
             {
-                w.Write(sep);
-                sep = ", ";
-                field.Write(w);
+                var sep = " ";
+                foreach (var field in Fields)
+                {
+                    w.Write(sep);
+                    sep = ", ";
+                    field.Write(w);
+                }
+                w.Write(" ");
             }
-            w.Write(" }");
+            w.Write("}");
         }
     }
 

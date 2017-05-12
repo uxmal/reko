@@ -154,10 +154,37 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
         [Test]
         public void LLLex_negative_integer()
         {
-            CreateLexer("-1");
+            CreateLexer("-108");
             var tok = lex.GetToken();
             Assert.AreEqual(TokenType.Integer, tok.Type);
-            Assert.AreEqual("-1", tok.Value);
+            Assert.AreEqual("-108", tok.Value);
+        }
+
+        [Test]
+        public void LLLex_x86_80_literal()
+        {
+            CreateLexer("0xK3fff8000000000000001");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.X86_fp80_Literal, tok.Type);
+            Assert.AreEqual("3fff8000000000000001", tok.Value);
+        }
+
+        [Test]
+        public void LLLex_double_literal()
+        {
+            CreateLexer("5.000000e-01");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.DoubleLiteral, tok.Type);
+            Assert.AreEqual("5.000000e-01", tok.Value);
+        }
+
+        [Test]
+        public void LLLex_double_literal2()
+        {
+            CreateLexer("5.0e+01");
+            var tok = lex.GetToken();
+            Assert.AreEqual(TokenType.DoubleLiteral, tok.Type);
+            Assert.AreEqual("5.0e+01", tok.Value);
         }
     }
 }

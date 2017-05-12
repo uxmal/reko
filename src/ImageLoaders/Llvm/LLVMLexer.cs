@@ -53,11 +53,18 @@ namespace Reko.ImageLoaders.LLVM
             CharArray,
             Zero,
             Decimal,
+            HexStart,
             Hex,
             Dot1,
             Dot2,
             i,
             Minus,
+            X86Fp_80Start,
+            X86Fp_80,
+            RealDecimal,
+            RealExponentStart,
+            RealExponent,
+            RealExponentSign,
         }
 
         public Token GetToken()
@@ -79,12 +86,12 @@ namespace Reko.ImageLoaders.LLVM
                     case '"': rdr.Read(); sb = new StringBuilder(); st = State.String; break;
                     case ';': rdr.Read(); sb = new StringBuilder(); st = State.Comment; break;
                     case '@':
-                    case '%': rdr.Read();  sb = new StringBuilder(); sb.Append(ch); st = State.Id; break;
-                    case '=': rdr.Read(); return Tok(TokenType.EQ); 
-                    case '(': rdr.Read(); return Tok(TokenType.LPAREN); 
+                    case '%': rdr.Read(); sb = new StringBuilder(); sb.Append(ch); st = State.Id; break;
+                    case '=': rdr.Read(); return Tok(TokenType.EQ);
+                    case '(': rdr.Read(); return Tok(TokenType.LPAREN);
                     case '[': rdr.Read(); return Tok(TokenType.LBRACKET);
                     case '{': rdr.Read(); return Tok(TokenType.LBRACE);
-                    case ')': rdr.Read(); return Tok(TokenType.RPAREN); 
+                    case ')': rdr.Read(); return Tok(TokenType.RPAREN);
                     case ']': rdr.Read(); return Tok(TokenType.RBRACKET);
                     case '}': rdr.Read(); return Tok(TokenType.RBRACE);
                     case '*': rdr.Read(); return Tok(TokenType.STAR);
@@ -152,7 +159,7 @@ namespace Reko.ImageLoaders.LLVM
                     }
                     break;
                 case State.Id:
-                    switch(c)
+                    switch (c)
                     {
                     case -1: return Identifier(sb);
                     case '-':
@@ -219,7 +226,9 @@ namespace Reko.ImageLoaders.LLVM
                     case -1: return Tok(TokenType.Integer, sb);
                     case 'x':
                     case 'X':
-                        rdr.Read(); sb.Clear(); st = State.Hex; break;
+                        rdr.Read(); sb.Clear(); st = State.HexStart; break;
+                    case '.':
+                        rdr.Read(); sb.Append(ch); st = State.RealDecimal; break;
                     default:
                         if (char.IsDigit(ch))
                         {
@@ -235,6 +244,7 @@ namespace Reko.ImageLoaders.LLVM
                     switch (c)
                     {
                     case -1: return Tok(TokenType.Integer, sb);
+                    case '.': rdr.Read(); sb.Append(ch); st = State.RealDecimal; break;
                     default:
                         if (char.IsDigit(ch))
                         {
@@ -246,14 +256,15 @@ namespace Reko.ImageLoaders.LLVM
                         }
                     }
                     break;
-                case State.Hex:
+                case State.HexStart:
                     switch (c)
                     {
-                    case -1: return Tok(TokenType.HexInteger, sb);
+                    case -1: Unexpected("0x"); break;
+                    case 'K': rdr.Read(); sb = new StringBuilder(); st = State.X86Fp_80Start; break;
                     default:
-                        if ("0123456789abcdefABCDEF".IndexOf(ch) >= 0)
+                        if (IsHexDigit(ch))
                         {
-                            rdr.Read(); sb.Append(ch); break;
+                            rdr.Read(); sb.Append(ch); st = State.Hex; break;
                         }
                         else
                         {
@@ -261,11 +272,101 @@ namespace Reko.ImageLoaders.LLVM
                         }
                     }
                     break;
+                case State.Hex:
+                    if (c == -1 || !IsHexDigit(ch))
+                    {
+                        return Tok(TokenType.HexInteger, sb);
+                    }
+                    else
+                    {
+                        rdr.Read(); sb.Append(ch);
+                    }
+                    break;
+                case State.X86Fp_80Start:
+                    if (c == -1 || !IsHexDigit(ch))
+                    {
+                        Unexpected("0xK");
+                    }
+                    else
+                    {
+                        rdr.Read(); sb.Append(ch); st = State.X86Fp_80; break;
+                    }
+                    break;
+                case State.X86Fp_80:
+                    if (c == -1 || !IsHexDigit(ch))
+                    {
+                        return Tok(TokenType.X86_fp80_Literal, sb);
+                    }
+                    else
+                    {
+                        rdr.Read(); sb.Append(ch);
+                    }
+                    break;
+                case State.RealDecimal:
+                    switch (c)
+                    {
+                    case -1: return Tok(TokenType.DoubleLiteral, sb);
+                    case 'e':
+                    case 'E': rdr.Read(); sb.Append(ch); st = State.RealExponentStart; break;
+                    default:
+                        if (char.IsDigit(ch))
+                        {
+                            rdr.Read(); sb.Append(ch); break;
+                        }
+                        else
+                        {
+                            return Tok(TokenType.DoubleLiteral, sb);
+                        }
+                    }
+                    break;
+                case State.RealExponentStart:
+                    switch (c)
+                    {
+                    case -1: Unexpected("e"); break;
+                    case '+': case '-': rdr.Read(); sb.Append(ch); st = State.RealExponentSign; break;
+                    default:
+                        if (!char.IsDigit(ch))
+                        {
+                            Unexpected("e");
+                        }
+                        else
+                        {
+                            rdr.Read(); sb.Append(ch); st = State.RealExponent; break;
+                        }
+                        break;
+                    }
+                    break;
+                case State.RealExponentSign:
+                    switch (c)
+                    {
+                    case -1: Unexpected("e-"); break;
+                    default:
+                        if (!char.IsDigit(ch))
+                        {
+                            Unexpected("e-");
+                        }
+                        else
+                        {
+                            rdr.Read(); sb.Append(ch); st = State.RealExponent;
+                        }
+                        break;
+                    }
+                    break;
+                case State.RealExponent:
+                    if (c == -1 || !char.IsDigit(ch))
+                    {
+                        return Tok(TokenType.DoubleLiteral, sb);
+                    }
+                    else
+                    {
+                        rdr.Read(); sb.Append(ch);
+                    }
+                    break;
                 case State.Dot1:
                     switch (c)
                     {
                     case -1: return Tok(TokenType.DOT);
-                    case '.':rdr.Read(); st = State.Dot2; break;
+                    case '.': rdr.Read(); st = State.Dot2; break;
                     default: return Tok(TokenType.DOT);
                     }
                     break;
@@ -283,12 +384,18 @@ namespace Reko.ImageLoaders.LLVM
                         sb = new StringBuilder();
                         sb.Append('-');
                         sb.Append(ch);
-                        return Tok(TokenType.Integer, sb);
+                        st = State.Decimal;
+                        break;
                     }
                     Unexpected("-");
                     break;
                 }
             }
+        }
+
+        private static bool IsHexDigit(char ch)
+        {
+            return "0123456789abcdefABCDEF".IndexOf(ch) >= 0;
         }
 
         private void Unexpected(string un)
@@ -358,11 +465,22 @@ namespace Reko.ImageLoaders.LLVM
             { "sge", TokenType.sge },
             { "slt", TokenType.slt },
             { "sle", TokenType.sle },
+            { "oeq", TokenType.oeq },
+            { "ogt", TokenType.ogt },
+            { "oge", TokenType.oge },
+            { "olt", TokenType.olt },
+            { "ole", TokenType.ole },
+            { "one", TokenType.one },
+            { "ord", TokenType.ord },
+            { "ueq", TokenType.ueq },
+            { "une", TokenType.une },
+            { "uno", TokenType.uno },
 
             { "add", TokenType.add },
             { "align", TokenType.align },
             { "alloca", TokenType.alloca },
             { "and", TokenType.and },
+            { "ashr", TokenType.ashr },
             { "attributes", TokenType.attributes },
             { "bitcast", TokenType.bitcast },
             { "br", TokenType.br },
@@ -373,9 +491,21 @@ namespace Reko.ImageLoaders.LLVM
             { "declare", TokenType.declare },
             { "define", TokenType.define },
             { "dereferenceable", TokenType.dereferenceable },
+            { "double", TokenType.@double },
+            { "exact", TokenType.exact },
             { "external", TokenType.external },
             { "extractvalue", TokenType.extractvalue },
             { "false", TokenType.@false },
+            { "fadd", TokenType.fadd },
+            { "fcmp", TokenType.fcmp },
+            { "fdiv", TokenType.fdiv },
+            { "fence", TokenType.fence },
+            { "fmul", TokenType.fmul },
+            { "fpext", TokenType.fpext },
+            { "fptosi", TokenType.fptosi },
+            { "fptoui", TokenType.fptoui },
+            { "fptrunc", TokenType.fptrunc },
+            { "fsub", TokenType.fsub },
             { "getelementptr", TokenType.getelementptr },
             { "global", TokenType.global },
             { "i1", TokenType.i1 },
@@ -386,9 +516,11 @@ namespace Reko.ImageLoaders.LLVM
             { "icmp", TokenType.icmp },
             { "inbounds", TokenType.inbounds },
             { "inrange", TokenType.inrange },
+            { "internal", TokenType.@internal },
             { "inttoptr", TokenType.inttoptr },
             { "label", TokenType.label },
             { "load", TokenType.load },
+            { "lshr", TokenType.lshr },
             { "mul", TokenType.mul },
             { "noalias", TokenType.noalias },
             { "nocapture", TokenType.nocapture },
@@ -397,13 +529,22 @@ namespace Reko.ImageLoaders.LLVM
             { "nsw", TokenType.nsw },
             { "null", TokenType.@null },
             { "nuw", TokenType.nuw },
+            { "opaque", TokenType.opaque },
+            { "or", TokenType.or },
             { "phi", TokenType.phi },
+            { "ptrtoint", TokenType.ptrtoint },
             { "private", TokenType.@private },
+            { "readonly", TokenType.@readonly },
             { "ret", TokenType.ret },
+            { "sdiv", TokenType.sdiv },
             { "select", TokenType.select },
+            { "seq_cst", TokenType.seq_cst },
             { "sext", TokenType.sext },
+            { "shl", TokenType.shl },
             { "signext", TokenType.signext },
+            { "sitofp", TokenType.sitofp },
             { "source_filename", TokenType.source_filename },
+            { "srem", TokenType.srem },
             { "store", TokenType.store },
             { "sub", TokenType.sub },
             { "switch", TokenType.@switch },
@@ -413,13 +554,18 @@ namespace Reko.ImageLoaders.LLVM
             { "true", TokenType.@true },
             { "trunc", TokenType.trunc },
             { "type", TokenType.type },
+            { "udiv", TokenType.udiv },
             { "unnamed_addr", TokenType.unnamed_addr },
+            { "urem", TokenType.urem },
             { "uwtable", TokenType.uwtable },
             { "void", TokenType.@void },
             { "volatile", TokenType.@volatile },
+            { "writeonly", TokenType.writeonly },
             { "x", TokenType.x },
+            { "x86_fp80", TokenType.x86_fp80 },
             { "xor", TokenType.xor },
             { "zeroext", TokenType.zeroext },
+            { "zeroinitializer", TokenType.zeroinitializer },
             { "zext", TokenType.zext }
         };
         private int lineStart;

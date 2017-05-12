@@ -278,8 +278,9 @@ namespace Reko.ImageLoaders.LLVM
         }
     }
 
-    public class IcmpInstruction : OtherInstruction
+    public class CmpInstruction : OtherInstruction
     {
+        public TokenType Operator;
         public TokenType ConditionCode;
         public LLVMType Type;
         public Value Op1;
@@ -287,8 +288,17 @@ namespace Reko.ImageLoaders.LLVM
 
         public override void Write(Formatter w)
         {
-            w.WriteKeyword("icmp");
+            Result.Write(w);
+            w.Write(" = ");
+            w.WriteKeyword(Operator.ToString());
             w.Write(' ');
+            w.WriteKeyword(ConditionCode.ToString());
+            w.Write(' ');
+            Type.Write(w);
+            w.Write(' ');
+            Op1.Write(w);
+            w.Write(", ");
+            Op2.Write(w);
         }
     }
 
@@ -340,6 +350,18 @@ namespace Reko.ImageLoaders.LLVM
         public LLVMType Type;
         public Value Value;
         public ParameterAttributes Attributes;
+    }
+
+    public class Fence : MemoryInstruction
+    {
+        public TokenType Type;
+
+        public override void Write(Formatter w)
+        {
+            w.WriteKeyword("fence");
+            w.Write(' ');
+            w.WriteKeyword(Type.ToString());
+        }
     }
 
     public class Load : MemoryInstruction

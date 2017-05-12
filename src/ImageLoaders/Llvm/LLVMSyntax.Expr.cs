@@ -27,6 +27,25 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.LLVM
 {
+    public class ConversionExpr : Value
+    {
+        public TokenType Operator;
+        public TypedValue Value;
+        public LLVMType Type;
+
+        public override void Write(Formatter w)
+        {
+            w.WriteKeyword(Operator.ToString());
+            w.Write(" (");
+            Value.Write(w);
+            w.Write(' ');
+            w.WriteKeyword("to");
+            w.Write(' ');
+            Type.Write(w);
+            w.Write(")");
+        }
+    }
+
     public class GetElementPtrExpr : Value
     {
         public bool Inbounds;

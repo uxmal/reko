@@ -108,8 +108,19 @@ namespace Reko.ImageLoaders.LLVM
             var name = ParseLocalId();
             Expect(TokenType.EQ);
             Expect(TokenType.type);
-            var type = ParseType();
-            return new TypeDefinition { Name = name, Type = type };
+            LLVMType type;
+            bool opaque;
+            if (PeekAndDiscard(TokenType.opaque))
+            {
+                opaque = true;
+                type = null;
+            }
+            else
+            {
+                opaque = false;
+                type = ParseType();
+            }
+            return new TypeDefinition { Name = name, Type = type, Opaque = opaque };
         }
 
         private GlobalDefinition ParseGlobalDefinition()
@@ -130,7 +141,7 @@ namespace Reko.ImageLoaders.LLVM
             {
                 unnamed_addr = true;
             }
-            if (PeekAndDiscard(TokenType.common))
+            if (PeekAndDiscard(TokenType.common) || PeekAndDiscard(TokenType.@internal))
             {
                 // Not used yet.
             }
@@ -160,7 +171,7 @@ namespace Reko.ImageLoaders.LLVM
             else if (PeekAndDiscard(TokenType.constant))
             {
                 var type = ParseType();
-                var value = ParseConstant();
+                var value = ParseValue();
                 if (PeekAndDiscard(TokenType.COMMA))
                 {
                     Expect(TokenType.align);
@@ -204,6 +215,9 @@ namespace Reko.ImageLoaders.LLVM
         public FunctionDefinition ParseFunctionDefinition()
         {
             Expect(TokenType.define);
+            if (PeekAndDiscard(TokenType.@internal))
+            {
+            }
             if (PeekAndDiscard(TokenType.dereferenceable))
             {
                 //$REVIEW: no use for this.
@@ -315,6 +329,8 @@ namespace Reko.ImageLoaders.LLVM
                 case TokenType.zeroext: Get(); attrs = true; zeroext = true; break;
                 case TokenType.noalias: Get(); attrs = true; noalias = true; break;
                 case TokenType.nocapture: Get(); break;
+                case TokenType.@readonly: Get(); break;
+                case TokenType.writeonly: Get(); break;
                 case TokenType.dereferenceable:
                     Get();
                     Expect(TokenType.LPAREN);
@@ -356,38 +372,42 @@ namespace Reko.ImageLoaders.LLVM
             }
         }
 
-        private Value ParseConstant()
+        private AggregateValue ParseAggregateValue()
         {
-            switch (Peek().Type)
+            var values = new List<TypedValue>();
+            Expect(TokenType.LBRACE);
+            if (Peek().Type != TokenType.RBRACE)
             {
-            case TokenType.CharArray:
-                var cha = Get().Value;
-                var bytes = new List<byte>();
-                for (int i = 0; i < cha.Length; ++i)
+                var tv = ParseTypedValue();
+                values.Add(tv);
+                while (PeekAndDiscard(TokenType.COMMA))
                 {
-                    if (cha[i] == '\\')
-                    {
-                        byte hi = 0, lo = 0;
-                        if (i + 2 < cha.Length &&
-                            TryParseHexDigit(cha[i + 1], out hi) &&
-                            TryParseHexDigit(cha[i + 2], out lo))
-                        {
-                            bytes.Add((byte)((hi << 4) | lo));
-                            i += 2;
-                        }
-                        else
-                        {
-                            throw new NotImplementedException();
-                        }
-                    }
-                    else
-                    {
-                        bytes.Add((byte)cha[i]);
-                    }
+                    tv = ParseTypedValue();
+                    values.Add(tv);
                 }
-                return new Constant(bytes.ToArray());
             }
-            throw new NotImplementedException();
+            Expect(TokenType.RBRACE);
+            return new AggregateValue { Values = values.ToArray() };
+        }
+
+        private ArrayValue ParseArrayValue()
+        {
+            var values = new List<Tuple<LLVMType,Value>>();
+            Expect(TokenType.LBRACKET);
+            if (Peek().Type != TokenType.RBRACKET)
+            {
+                var type = ParseType();
+                var value = ParseValue();
+                values.Add(Tuple.Create(type, value));
+                while (PeekAndDiscard(TokenType.COMMA))
+                {
+                    type = ParseType();
+                    value = ParseValue();
+                    values.Add(Tuple.Create(type, value));
+                }
+            }
+            Expect(TokenType.RBRACKET);
+            return new ArrayValue { Values = values.ToArray() };
         }
 
         private bool TryParseHexDigit(char c, out byte b)
@@ -465,6 +485,7 @@ namespace Reko.ImageLoaders.LLVM
             {
             case TokenType.br: return ParseBr();
             case TokenType.call: return ParseCall(null);
+            case TokenType.fence: return ParseFence();
             case TokenType.ret: return ParseRet();
             case TokenType.store: return ParseStore();
             case TokenType.@switch: return ParseSwitch();
@@ -485,20 +506,39 @@ namespace Reko.ImageLoaders.LLVM
             case TokenType.alloca: return ParseAlloca(result);
             case TokenType.add: return ParseBinBitOp(result);
             case TokenType.and: return ParseBinBitOp(result);
+            case TokenType.ashr: return ParseBinBitOp(result);
             case TokenType.bitcast: return ParseConversion(result);
             case TokenType.call: return ParseCall(result);
             case TokenType.extractvalue: return ParseExtractvalue(result);
+            case TokenType.fadd: return ParseBinOp(result);
+            case TokenType.fcmp: return ParseFcmp(result);
+            case TokenType.fdiv: return ParseBinOp(result);
+            case TokenType.fmul: return ParseBinOp(result);
+            case TokenType.fsub: return ParseBinOp(result);
+            case TokenType.fpext: return ParseConversion(result);
+            case TokenType.fptosi: return ParseConversion(result);
+            case TokenType.fptoui: return ParseConversion(result);
+            case TokenType.fptrunc: return ParseConversion(result);
             case TokenType.getelementptr: return ParseGetElementPtr(result);
             case TokenType.icmp: return ParseIcmp(result);
-            case TokenType.inttoptr: return ParseInttoptr(result);
+            case TokenType.inttoptr: return ParseConversion(result);
             case TokenType.load: return ParseLoad(result);
+            case TokenType.lshr: return ParseBinBitOp(result);
             case TokenType.mul: return ParseBinBitOp(result);
+            case TokenType.or: return ParseBinBitOp(result);
             case TokenType.phi: return ParsePhi(result);
+            case TokenType.ptrtoint: return ParseConversion(result);
+            case TokenType.sdiv: return ParseBinOp(result);
             case TokenType.sext: return ParseConversion(result);
+            case TokenType.shl: return ParseBinBitOp(result);
             case TokenType.select: return ParseSelect(result);
+            case TokenType.sitofp: return ParseConversion(result);
+            case TokenType.srem: return ParseBinOp(result);
             case TokenType.sub: return ParseBinOp(result);
             case TokenType.trunc: return ParseConversion(result);
-            case TokenType.xor: return ParseBinOp(result);
+            case TokenType.udiv: return ParseBinOp(result);
+            case TokenType.urem: return ParseBinOp(result);
+            case TokenType.xor: return ParseBinBitOp(result);
             case TokenType.zext: return ParseConversion(result);
             default: Unexpected(tok); return null;
             }
@@ -536,31 +576,90 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
+        private TypedValue ParseTypedValue()
+        {
+            var type = ParseType();
+            var val = ParseValue();
+            return new TypedValue { Type = type, Value = val };
+        }
+
         private static HashSet<TokenType> Value_FIRST = new HashSet<TokenType>
         {
+            TokenType.LBRACE,
+            TokenType.LBRACKET,
+            TokenType.CharArray,
+            TokenType.DoubleLiteral,
             TokenType.LocalId,
             TokenType.GlobalId,
+            TokenType.HexInteger,
             TokenType.Integer,
+            TokenType.bitcast,
             TokenType.@false,
             TokenType.getelementptr,
+            TokenType.inttoptr,
             TokenType.@null,
             TokenType.@true,
+            TokenType.zeroinitializer,
         };
 
         private Value ParseValue()
         {
             switch (Peek().Type)
             {
+            case TokenType.LBRACE: return ParseAggregateValue();
+            case TokenType.LBRACKET: return ParseArrayValue();
+            case TokenType.CharArray: return ParseCharArray();
+            case TokenType.DoubleLiteral: return ParseLiteral();
             case TokenType.LocalId: return ParseLocalId();
             case TokenType.GlobalId: return ParseGlobalId();
+            case TokenType.HexInteger: return ParseLiteral();
             case TokenType.Integer: return ParseInteger();
+            case TokenType.X86_fp80_Literal: return ParseLiteral();
             case TokenType.@false: Expect(TokenType.@false); return new Constant(false);
+            case TokenType.bitcast: return ParseConversionExpr();
             case TokenType.getelementptr: return ParseGetElementPtrExpr();
+            case TokenType.inttoptr: return ParseConversionExpr();
             case TokenType.@null: Expect(TokenType.@null); return new Constant(null);
             case TokenType.@true: Expect(TokenType.@true); return new Constant(true);
+            case TokenType.zeroinitializer: Expect(TokenType.zeroinitializer); return new Constant(TokenType.zeroinitializer);
             }
             Unexpected(Peek());
             return null;
+        }
+
+        private Literal ParseLiteral()
+        {
+            var literal = Get();
+            return new Literal { Type = literal.Type, Value = literal.Value };
+        }
+
+        private Value ParseCharArray()
+        {
+            var cha = Get().Value;
+            var bytes = new List<byte>();
+            for (int i = 0; i < cha.Length; ++i)
+            {
+                if (cha[i] == '\\')
+                {
+                    byte hi = 0, lo = 0;
+                    if (i + 2 < cha.Length &&
+                        TryParseHexDigit(cha[i + 1], out hi) &&
+                        TryParseHexDigit(cha[i + 2], out lo))
+                    {
+                        bytes.Add((byte)((hi << 4) | lo));
+                        i += 2;
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+                else
+                {
+                    bytes.Add((byte)cha[i]);
+                }
+            }
+            return new Constant(bytes.ToArray());
         }
 
         private LocalId ParseLocalId()
@@ -578,7 +677,7 @@ namespace Reko.ImageLoaders.LLVM
         private Constant ParseInteger()
         {
             var n = Expect(TokenType.Integer);
-            return new Constant(int.Parse(n));
+            return new Constant(long.Parse(n));
         }
 
         public LLVMType ParseType()
@@ -623,7 +722,9 @@ namespace Reko.ImageLoaders.LLVM
 
         private static HashSet<TokenType> Type_FIRST = new HashSet<TokenType>
         {
+            TokenType.@void,
             TokenType.IntType,
+            TokenType.@double,
             TokenType.LocalId,
             TokenType.LBRACE,
             TokenType.LBRACKET,
@@ -639,6 +740,12 @@ namespace Reko.ImageLoaders.LLVM
                 return LLVMType.Void;
             case TokenType.IntType:
                 return LLVMType.GetBaseType(Get().Value);
+            case TokenType.@double:
+                Expect(TokenType.@double);
+                return LLVMType.Double;
+            case TokenType.x86_fp80:
+                Expect(TokenType.x86_fp80);
+                return LLVMType.X86_fp80;
             case TokenType.LocalId:
                 var typeName = ParseLocalId();
                 return new TypeReference(typeName);
@@ -656,11 +763,14 @@ namespace Reko.ImageLoaders.LLVM
         {
             Expect(TokenType.LBRACE);
             var fields = new List<LLVMType>();
-            fields.Add(ParseType());
-            while (PeekAndDiscard(TokenType.COMMA))
+            if (Peek().Type != TokenType.RBRACE)
             {
-                var field = ParseType();
-                fields.Add(field);
+                fields.Add(ParseType());
+                while (PeekAndDiscard(TokenType.COMMA))
+                {
+                    var field = ParseType();
+                    fields.Add(field);
+                }
             }
             Expect(TokenType.RBRACE);
             return new StructureType

@@ -68,6 +68,7 @@ namespace Reko.ImageLoaders.LLVM
     {
         public LocalId Name;
         public LLVMType Type;
+        public bool Opaque;
 
         public override void Write(Formatter w)
         {
@@ -75,7 +76,14 @@ namespace Reko.ImageLoaders.LLVM
             w.Write(" = ");
             w.WriteKeyword("type");
             w.Write(" ");
-            Type.Write(w);
+            if (Opaque)
+            {
+                w.WriteKeyword("opaque");
+            }
+            else
+            {
+                Type.Write(w); 
+            }
         }
     }
 
@@ -238,6 +246,7 @@ namespace Reko.ImageLoaders.LLVM
     {
     }
 
+    
     public class Constant : Value
     {
         public readonly object Value;
@@ -259,7 +268,7 @@ namespace Reko.ImageLoaders.LLVM
                 w.Write((bool)Value ? "true" : "false");
                 return;
             }
-            if (Value is Int32)
+            if (Value is int || Value is long)
             {
                 w.Write("{0}", Value);
                 return;
@@ -283,6 +292,60 @@ namespace Reko.ImageLoaders.LLVM
                 return;
             }
             throw new NotImplementedException(Value.GetType().FullName);
+        }
+    }
+
+    public class Literal : Value
+    {
+        public TokenType Type;
+        public string Value;
+
+        public override void Write(Formatter w)
+        {
+            switch (Type)
+            {
+            case TokenType.DoubleLiteral: w.Write(Value); break;
+            case TokenType.X86_fp80_Literal: w.Write("0xK{0}", Value); break;
+            default: throw new NotImplementedException(Type.ToString());
+            }
+        }
+    }
+
+    public class AggregateValue : Value
+    {
+        public TypedValue[] Values;
+
+        public override void Write(Formatter w)
+        {
+            w.Write('{');
+            var sep = "";
+            foreach (var value in Values)
+            {
+                w.Write(sep);
+                sep = ", ";
+                value.Write(w);
+            }
+            w.Write('}');
+        }
+    }
+
+    public class ArrayValue : Value
+    {
+        public Tuple<LLVMType,Value> [] Values;
+
+        public override void Write(Formatter w)
+        {
+            w.Write('[');
+            var sep = "";
+            foreach (var value in Values)
+            {
+                w.Write(sep);
+                sep = ", ";
+                value.Item1.Write(w);
+                w.Write(" ");
+                value.Item2.Write(w);
+            }
+            w.Write(']');
         }
     }
 
@@ -313,6 +376,19 @@ namespace Reko.ImageLoaders.LLVM
         public override void Write(Formatter w)
         {
             w.Write("@{0}", Name);
+        }
+    }
+
+    public class TypedValue : LLVMSyntax
+    {
+        public LLVMType Type;
+        public Value Value;
+
+        public override void Write(Formatter w)
+        {
+            Type.Write(w);
+            w.Write(' ');
+            Value.Write(w);
         }
     }
 }

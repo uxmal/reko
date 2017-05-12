@@ -28,6 +28,22 @@ namespace Reko.ImageLoaders.LLVM
 {
     public partial class LLVMParser
     {
+        private ConversionExpr ParseConversionExpr()
+        {
+            var op = Get().Type;
+            Expect(TokenType.LPAREN);
+            var value = ParseTypedValue();
+            Expect(TokenType.to);
+            var type = ParseType();
+            Expect(TokenType.RPAREN);
+            return new ConversionExpr
+            {
+                Operator = op,
+                Value = value,
+                Type = type,
+            };
+        }
+
         private Value ParseGetElementPtrExpr()
         {
             Expect(TokenType.getelementptr);

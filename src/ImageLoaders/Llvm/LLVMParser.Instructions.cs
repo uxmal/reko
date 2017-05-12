@@ -83,6 +83,7 @@ namespace Reko.ImageLoaders.LLVM
             var op = Get().Type;
             var nuw = PeekAndDiscard(TokenType.nuw);
             var nsw = PeekAndDiscard(TokenType.nsw);
+            var exa = PeekAndDiscard(TokenType.exact);
             var type = ParseType();
             var op1 = ParseValue();
             Expect(TokenType.COMMA);
@@ -156,6 +157,8 @@ namespace Reko.ImageLoaders.LLVM
             };
         }
 
+      
+
         private Instruction ParseGetElementPtr(LocalId result)
         {
             Expect(TokenType.getelementptr);
@@ -196,6 +199,24 @@ namespace Reko.ImageLoaders.LLVM
            TokenType.sle,
         };
 
+        private static HashSet<TokenType> fconditionCodes = new HashSet<TokenType>
+        {
+            TokenType.oeq,
+            TokenType.ogt,
+            TokenType.oge,
+            TokenType.olt,
+            TokenType.ole,
+            TokenType.one,
+            TokenType.ord,
+            TokenType.ueq,
+            TokenType.ugt,
+            TokenType.uge,
+            TokenType.ult,
+            TokenType.ule,
+            TokenType.une,
+            TokenType.uno,
+        };
+
         private Instruction ParseIcmp(LocalId result)
         {
             Expect(TokenType.icmp);
@@ -206,7 +227,7 @@ namespace Reko.ImageLoaders.LLVM
             var op1 = ParseValue();
             Expect(TokenType.COMMA);
             var op2 = ParseValue();
-            return new IcmpInstruction
+            return new CmpInstruction
             {
                 Result = result,
                 ConditionCode = cc.Type,
@@ -216,26 +237,40 @@ namespace Reko.ImageLoaders.LLVM
             };
         }
 
-        private Instruction ParseInttoptr(LocalId result)
+        private Instruction ParseFcmp(LocalId result)
         {
-            Expect(TokenType.inttoptr);
-            var fromType = ParseType();
-            var value = ParseValue();
-            Expect(TokenType.to);
-            var toType = ParseType();
-            return new Conversion
+            Expect(TokenType.fcmp);
+            var cc = Get();
+            if (!fconditionCodes.Contains(cc.Type))
+                Unexpected(cc);
+            var type = ParseType();
+            var op1 = ParseValue();
+            Expect(TokenType.COMMA);
+            var op2 = ParseValue();
+            return new CmpInstruction
             {
-                Operator = TokenType.inttoptr,
                 Result = result,
-                TypeFrom = fromType,
-                Value = value,
-                TypeTo = toType
+                Operator = TokenType.fcmp,
+                ConditionCode = cc.Type,
+                Type = type,
+                Op1 = op1,
+                Op2 = op2,
             };
+        }
+
+        private Instruction ParseFence()
+        {
+            Expect(TokenType.fence);
+            Expect(TokenType.seq_cst);
+            return new Fence { Type = TokenType.seq_cst };
         }
 
         private Instruction ParseLoad(LocalId result)
         {
             Expect(TokenType.load);
+            if (PeekAndDiscard(TokenType.@volatile))
+            {
+            }
             var dstType = ParseType();
             Expect(TokenType.COMMA);
 
@@ -245,7 +280,7 @@ namespace Reko.ImageLoaders.LLVM
             if (PeekAndDiscard(TokenType.COMMA))
             {
                 Expect(TokenType.align);
-                alignment = (int)ParseInteger().Value;
+                alignment = Convert.ToInt32(ParseInteger().Value);
             }
             return new Load
             {
@@ -260,15 +295,12 @@ namespace Reko.ImageLoaders.LLVM
         private Instruction ParseRet()
         {
             Expect(TokenType.ret);
-            if (PeekAndDiscard(TokenType.@void))
-            {
-                return new RetInstr
-                {
-                    Type = LLVMType.Void,
-                };
-            }
             var type = ParseType();
-            var val = ParseValue();
+            Value val = null;
+            if (type != LLVMType.Void)
+            {
+                val = ParseValue();
+            }
             return new RetInstr
             {
                 Type = type,
@@ -294,7 +326,7 @@ namespace Reko.ImageLoaders.LLVM
             {
                 if (PeekAndDiscard(TokenType.align))
                 {
-                    alignment = (int)ParseInteger().Value;
+                    alignment = Convert.ToInt32(ParseInteger().Value);
                 }
             }
             return new Store

@@ -270,7 +270,70 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             llir = "call void @branch(i1 zeroext true)";
             sExp = "call void @branch(i1 zeroext true)";
             RunInstrTest();
+        }
 
+        [Test]
+        public void LLParser_opaque_type()
+        {
+            llir = "%ccache = type opaque";
+            sExp = "%ccache = type opaque" + nl;
+            RunModuleTest();
+        }
+
+        [Test]
+        public void LLParser_empty_struct()
+        {
+            llir = "{}";
+            sExp = "{}";
+            RunTypeTest();
+        }
+
+        [Test]
+        public void LLParser_struct_literal()
+        {
+            llir = "@var = global %var_t {i32 1, i64 -108}";
+            sExp = "@var = global %var_t {i32 1, i64 -108}" + nl;
+            RunModuleTest();
+        }
+
+        [Test]
+        public void LLParser_bitcast_expr()
+        {
+            llir = "store void ()* (i8*, i8*)* bitcast (i8* (i8*, i8*)* @dlsym to void ()* (i8*, i8*)*), void ()* (i8*, i8*)** %7, align 8";
+            sExp = "store void ()* (i8*, i8*)* bitcast (i8* (i8*, i8*)* @dlsym to void ()* (i8*, i8*)*), void ()* (i8*, i8*)** %7, align 8";
+            RunInstrTest();
+        }
+
+        [Test]
+        public void LLParser_funcdef_internal()
+        {
+            llir =
+@"define internal void @frob(i8*) {
+    ret void
+}";
+            sExp =
+@"define void @frob(i8*) {
+    ret void
+}
+";
+            RunModuleTest();
+        }
+
+        [Test]
+        public void LLParser_fcmp()
+        {
+            llir = "%761 = fcmp olt x86_fp80 %760, 0xK00000000000000000000";
+            sExp = "%761 = fcmp olt x86_fp80 %760, 0xK00000000000000000000";
+            RunInstrTest();
+        }
+
+
+        [Test]
+        public void LLParser_fmul()
+        {
+            llir = "%797 = fmul double %796, 1.000000e-01";
+            sExp = "%797 = fmul double %796, 1.000000e-01";
+            RunInstrTest();
         }
 
         [Test(Description = "Sample taken from http://llvm.org/docs/LangRef.html#module-structure")]
@@ -309,7 +372,7 @@ define i32 @main() {
         [Test]
         public void LLPB_Parse()
         {
-            using (var rdr = File.OpenText(@"D:\dev\uxmal\reko\LLVM\more_llvm\more_llvm\mini-c\cc.ll"))
+            using (var rdr = File.OpenText(@"D:\dev\uxmal\reko\LLVM\more_llvm\more_llvm\sqlite\sqlite.ll"))
             {
                 var parser = new LLVMParser(new LLVMLexer(rdr));
                 parser.ParseModule();
