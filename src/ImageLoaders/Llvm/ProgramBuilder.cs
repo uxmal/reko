@@ -159,7 +159,7 @@ namespace Reko.ImageLoaders.LLVM
             return new FunctionType(sigRet, sigParameters.ToArray());
         }
 
-        private DataType TranslateType(LLVMType type)
+        public DataType TranslateType(LLVMType type)
         {
             var xlat = new TypeTranslator(this.framePointerSize.Size);
             return type.Accept(xlat);
@@ -173,181 +173,11 @@ namespace Reko.ImageLoaders.LLVM
             proc.Signature = sig;
 
             m.EnsureBlock(null);
-            var pb = new ProcedureBuilder(proc);
+            var xlat = new LLVMInstructionTranslator(this, m);
             foreach (var instr in fn.Instructions)
             {
-                TranslateInstruction(instr, m);
+                instr.Accept(xlat);
             }
         }
-
-        public void TranslateInstruction(Instruction instr, ProcedureBuilder m)
-        {
-            var ret = instr as RetInstr;
-            if (ret != null)
-            {
-                if (ret.Value == null)
-                {
-                    m.Return();
-                }
-                else
-                {
-                    var e = MakeValueExpression(ret.Value, m, TranslateType(ret.Type));
-                    m.Return(e);
-                }
-                return;
-            }
-            var bin = instr as Binary;
-            if (bin != null)
-            {
-                var type = TranslateType(bin.Type);
-                var left = MakeValueExpression(bin.Left, m,   type);
-                var right = MakeValueExpression(bin.Right, m, type);
-                var dst = m.CreateLocalId("loc", type);
-                Func<Expression,Expression,Expression> fn;
-                switch (bin.Operator)
-                {
-                default:
-                    throw new NotImplementedException(string.Format("TranslateInstruction({0})", bin.Operator));
-                case TokenType.add: fn = m.IAdd; break;
-                }
-                m.Assign(dst, fn(left, right));
-                return;
-            }
-            var load = instr as Load;
-            if (load != null)
-            {
-                TranslateLoad(load, m);
-                return;
-            }
-            var alloca = instr as Alloca;
-            if (alloca != null)
-            {
-                TranslateAlloca(alloca, m);
-                return;
-            }
-            var conv = instr as Conversion;
-            if (conv != null)
-            {
-                TranslateConversion(conv, m);
-                return;
-            }
-            var br = instr as BrInstr;
-            if (br != null)
-            {
-                TranslateBr(br, m);
-                return;
-            }
-            var cmp = instr as CmpInstruction;
-            if (cmp != null)
-            {
-                TranslateCmp(cmp, m);
-                return;
-            }
-            throw new NotImplementedException(string.Format("TranslateInstruction({0})", instr.GetType().Name));
-        }
-
-        private void TranslateConversion(Conversion conv, ProcedureBuilder m)
-        {
-            var dstType = TranslateType(conv.TypeTo);
-            var srcType = TranslateType(conv.TypeFrom);
-            var src =  MakeValueExpression(conv.Value, m, srcType);
-            var dst = m.CreateLocalId("loc", dstType);
-            Expression e;
-            switch (conv.Operator)
-            {
-            default:
-                throw new NotImplementedException(string.Format("TranslateConversion({0})", conv.Operator));
-            case TokenType.sext:
-                dstType = PrimitiveType.Create(IrDomain.SignedInt, dstType.Size);
-                e = m.Cast(dstType, src);
-                break;
-            }
-            m.Assign(dst, e);
-        }
-
-        private void TranslateCmp(CmpInstruction cmp, ProcedureBuilder m)
-        {
-            var srcType = TranslateType(cmp.Type);
-            var op1 = MakeValueExpression(cmp.Op1, m, srcType);
-            var op2 = MakeValueExpression(cmp.Op2, m, srcType);
-            var dst = m.CreateLocalId("loc", PrimitiveType.Bool);
-            Func<Expression,Expression,Expression> fn;
-            if (cmp.Operator == TokenType.icmp)
-            {
-                switch (cmp.ConditionCode)
-                {
-                default:
-                    throw new NotImplementedException(string.Format("TranslateCmp({0})", cmp.ConditionCode));
-                case TokenType.eq: fn = m.Eq; break;
-                }
-            }
-            else if (cmp.Operator == TokenType.fcmp)
-            {
-                switch (cmp.ConditionCode)
-                {
-                default:
-                    throw new NotImplementedException(string.Format("TranslateCmp({0})", cmp.ConditionCode));
-                }
-            }
-            else
-                throw new NotImplementedException(string.Format("TranslateCmp({0})", cmp.Operator));
-
-            m.Assign(dst, fn(op1, op2));
-        }
-
-        private void TranslateLoad(Load load, ProcedureBuilder m)
-        {
-            var dstType = TranslateType(load.DstType);
-            var srcType = TranslateType(load.SrcType);
-            var ea = MakeValueExpression(load.Src, m, srcType);
-            var dst = m.CreateLocalId("loc", srcType);
-            m.Assign(dst, m.Load(dst.DataType, ea));
-        }
-
-        private void TranslateBr(BrInstr br, ProcedureBuilder m)
-        {
-            if (br.Cond == null)
-            {
-                m.Goto(br.IfTrue.Name);
-                return;
-
-            }
-            throw new NotImplementedException(string.Format("TranslateBr({0})", br));
-
-        }
-
-        private void TranslateAlloca(Alloca alloca, ProcedureBuilder m)
-        {
-            var type = TranslateType(alloca.Type);
-            int count = 1;
-            if (alloca.ElementCount != null)
-            {
-                throw new NotImplementedException();
-            }
-            var stk = m.AllocateStackVariable(type, count);
-            var dst = m.CreateLocalId("loc", type);
-            m.Assign(dst, m.AddrOf(stk));
-        }
-
-        private Expression MakeValueExpression(Value value, ProcedureBuilder m, DataType dt)
-        {
-            var c = value as Constant;
-            if (c != null)
-            {
-                return IrConstant.Create(dt, Convert.ToInt64(c.Value));
-            }
-            var local = value as LocalId;
-            if (local != null)
-            {
-                return m.GetLocalId(local.Name);
-            }
-            var global = value as GlobalId;
-            if (global != null)
-            {
-                return Globals[global.Name];
-            }
-            throw new NotImplementedException(string.Format("MakeValueExpression: {0}", value.ToString() ?? "(null)"));
-        }
-
     }
 }
