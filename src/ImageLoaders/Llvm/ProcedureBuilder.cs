@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using IrInstruction = Reko.Core.Code.Instruction;
 
 namespace Reko.ImageLoaders.LLVM
@@ -37,6 +38,7 @@ namespace Reko.ImageLoaders.LLVM
         private int tmpCounter;
         private Dictionary<string, Identifier> llvmNametoId;
         private ulong linearAddress;
+        private int stackOffset;
 
         public ProcedureBuilder(Procedure proc)
         {
@@ -84,6 +86,14 @@ namespace Reko.ImageLoaders.LLVM
         {
             TerminateBlock();
             return EnsureBlock(name);
+        }
+
+        public void Goto(string name)
+        {
+            EnsureBlock(null);
+            Block blockTo = BlockOf(name);
+            Procedure.ControlGraph.AddEdge(this.block, blockTo);
+            this.block = null;
         }
 
         private Block BlockOf(string label)
@@ -156,6 +166,15 @@ namespace Reko.ImageLoaders.LLVM
                 lastBlock = this.block;
                 this.block = null;
             }
+        }
+
+        public Identifier AllocateStackVariable(DataType type, int count)
+        {
+            var bytes = type.Size * count;
+            Debug.Assert(bytes > 0);
+            this.stackOffset -= bytes;
+            var stk = Frame.EnsureStackLocal(stackOffset, type);
+            return stk;
         }
     }
 }

@@ -140,7 +140,7 @@ namespace Reko.Core
 		{
             string name = "v" + identifiers.Count;
 			Identifier id = new Identifier(name, dt,
-                new TemporaryStorage(name, identifiers.Count, (PrimitiveType) dt));
+                new TemporaryStorage(name, identifiers.Count, dt));
 			identifiers.Add(id);
 			return id;
 		}

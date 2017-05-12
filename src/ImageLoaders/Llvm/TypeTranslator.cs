@@ -53,7 +53,10 @@ namespace Reko.ImageLoaders.LLVM
             switch (b.Domain)
             {
             case Domain.Integral:
-                return PrimitiveType.CreateWord(b.BitSize / 8);
+                if (b.BitSize == 1)
+                    return PrimitiveType.Bool;
+                else 
+                    return PrimitiveType.CreateWord(b.BitSize / 8);
             case Domain.Real:
                 return PrimitiveType.Create(Core.Types.Domain.Real, b.BitSize / 8);
             case Domain.Void:
@@ -76,7 +79,9 @@ namespace Reko.ImageLoaders.LLVM
             {
                 if (param.name == "...")
                 {
-                    throw new NotImplementedException("Varargs");
+                    var dt = new UnknownType();
+                    var id = binder.CreateTemporary("...", dt);
+                    sigParameters.Add(id);
                 }
                 else
                 {

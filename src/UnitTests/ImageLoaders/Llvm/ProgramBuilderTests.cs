@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.ImageLoaders.LLVM;
 using System;
@@ -35,12 +36,32 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
     [TestFixture]
     public class ProgramBuilderTests
     {
-        private FunctionDefinition Func(params string[] lines)
+        private Dictionary<string, Identifier> globals;
+
+        [SetUp]
+        public void Setup()
         {
-            var parser = new LLVMParser(new LLVMLexer(new StringReader(
-                string.Join(Environment.NewLine, lines))));
+            this.globals = new Dictionary<string, Identifier>();
+        }
+
+        public void Global(string name, DataType dt)
+        {
+            globals.Add(name, new Identifier(name, dt, new MemoryStorage()));
+        }
+
+        private Procedure RunFuncTest(params string[] lines)
+        {
+            var parser = new LLVMParser(new StringReader(
+                string.Join(Environment.NewLine, lines)));
             var fn = parser.ParseFunctionDefinition();
-            return fn;
+            var pb = new ProgramBuilder(PrimitiveType.Pointer32);
+            foreach (var de in globals)
+            {
+                pb.Globals.Add(de.Key, de.Value);
+            }
+            var proc = pb.RegisterFunction(fn);
+            pb.TranslateFunction(fn);
+            return proc;
         }
 
         private void AssertProc(string sExp, Procedure proc)
@@ -58,16 +79,10 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
         [Test]
         public void LLPB_ReturnVoid()
         {
-            var fn = Func(
+            var proc = RunFuncTest(
                 "define i32 @foo(i8*,i32) {",
                 "   ret void",
                 "}");
-
-            var pb = new ProgramBuilder(PrimitiveType.Pointer32);
-            pb.RegisterFunction(fn);
-            pb.TranslateFunction(fn);
-
-            var proc = pb.Functions.Values.First().Procedure;
             var sExp =
 @"// foo
 // Return size: 0
@@ -85,16 +100,11 @@ foo_exit:
         [Test]
         public void LLPB_ReturnConst()
         {
-            var fn = Func(
+            var proc = RunFuncTest(
                 "define i32 @foo(i8*,i32) {",
                 "   ret i32 3",
                 "}");
 
-            var pb = new ProgramBuilder(PrimitiveType.Pointer32);
-            pb.RegisterFunction(fn);
-            pb.TranslateFunction(fn);
-
-            var proc = pb.Functions.Values.First().Procedure;
             var sExp =
 @"// foo
 // Return size: 0
@@ -109,20 +119,16 @@ foo_exit:
             AssertProc(sExp, proc);
         }
 
+
+
         [Test]
         public void LLPB_Add()
         {
-            var fn = Func(
+            var proc = RunFuncTest(
                 "define i32 @foo(i32) {",
                 "   %2 = add i32 %0, 3",
-                "   ret i332 %2",
+                "   ret i32 %2",
                 "}");
-
-            var pb = new ProgramBuilder(PrimitiveType.Pointer32);
-            pb.RegisterFunction(fn);
-            pb.TranslateFunction(fn);
-
-            var proc = pb.Functions.Values.First().Procedure;
             var sExp =
 @"// foo
 // Return size: 0
@@ -136,6 +142,73 @@ l1:
 foo_exit:
 ";
             AssertProc(sExp, proc);
+        }
+
+        [Test]
+        public void LLPB_Branches()
+        {
+            Global("curch", PrimitiveType.Char);
+
+            var proc = RunFuncTest(
+@"define signext i8 @next_char() #0 {
+  %1 = load i8, i8* @curch, align 1
+  %2 = sext i8 %1 to i32
+  %3 = icmp eq i32 %2, 10
+  br i1 %3, label %4, label %7
+
+; <label>:4:                                      ; preds = %0
+  %5 = load i32, i32* @curln, align 4
+  %6 = add nsw i32 %5, 1
+  store i32 %6, i32* @curln, align 4
+  br label %7
+
+; <label>:7:                                      ; preds = %4, %0
+  %8 = load %struct._IO_FILE*, %struct._IO_FILE** @input, align 8
+  %9 = call i32 @fgetc(%struct._IO_FILE* %8)
+  %10 = trunc i32 %9 to i8
+  store i8 %10, i8* @curch, align 1
+  ret i8 %10
+}");
+            var sExp =
+@"// next_char
+// Return size: 0
+byte next_char()
+next_char_entry:
+    // succ:  l0
+    loc1 = Mem0[curch:byte]
+    loc2 = (int32) loc1
+    loc3 = loc2 == 10
+    if (loc3) branch l4
+    goto l7
+    // succ:  l7, l4
+l4:
+    loc5 = Mem0[curln:word32]
+    loc6 = loc5 + 1
+    Mem0[curln:word32] = loc6
+    goto l7
+    // succ:  l7
+l7:
+    loc8 = Mem[input:struct._IO_FILE]
+    loc9 = fgetc(loc8)
+    loc10 = (byte) loc9
+    Mem0[curch:byte] = loc10
+    return loc10
+    // succ:  next_char_exit
+next_char_exit:
+";
+            AssertProc(sExp, proc);
+        }
+
+        [Test]
+        public void LLPB_File()
+        {
+            using (var rdr = File.OpenText(@"D:\dev\uxmal\reko\LLVM\more_llvm\more_llvm\c4\c4.ll"))
+            {
+                var parser = new LLVMParser(new LLVMLexer(rdr));
+                var module = parser.ParseModule();
+                var pb = new ProgramBuilder(PrimitiveType.Pointer32);
+                Program program = pb.BuildProgram(module);
+            }
         }
     }
 }

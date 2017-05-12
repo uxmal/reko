@@ -53,28 +53,13 @@ namespace Reko.ImageLoaders.LLVM
             var parser = new LLVMParser(new LLVMLexer(rdr));
             var module = parser.ParseModule();
             var builder = new ProgramBuilder(Core.Types.PrimitiveType.Pointer64);   //$BUGBUG: obtain pointer size from LLVM!
-            var program = BuildProgram(module, builder);
+            var program = builder.BuildProgram(module);
             return program; 
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             throw new NotImplementedException();
-        }
-
-        public Program BuildProgram(Module module, ProgramBuilder builder)
-        {
-            foreach (var entry in module.Entries)
-            {
-                builder.RegisterEntry(entry);
-            }
-
-            foreach (var entry in module.Entries)
-            {
-                builder.TranslateEntry(entry);
-            }
-
-            return builder.MakeProgram();
         }
     }
 }

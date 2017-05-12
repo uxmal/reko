@@ -118,8 +118,8 @@ namespace Reko.ImageLoaders.LLVM
     {
         public LLVMType Type;
         public Value Cond;
-        public Value IfTrue;
-        public Value IfFalse;
+        public LocalId IfTrue;
+        public LocalId IfFalse;
 
         public override void Write(Formatter w)
         {

@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,11 @@ namespace Reko.ImageLoaders.LLVM
     {
         private CommentFilter lex;
         private Token peekTok;
+
+        public LLVMParser(TextReader rdr)
+        {
+            this.lex = new CommentFilter(new LLVMLexer(rdr));
+        }
 
         public LLVMParser(LLVMLexer lexer)
         {
