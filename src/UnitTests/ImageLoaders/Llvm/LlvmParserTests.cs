@@ -372,7 +372,7 @@ define i32 @main() {
         [Test]
         public void LLPB_Parse()
         {
-            using (var rdr = File.OpenText(@"D:\dev\uxmal\reko\LLVM\more_llvm\more_llvm\sqlite\sqlite.ll"))
+            using (var rdr = File.OpenText(@"D:\dev\uxmal\reko\LLVM\more_llvm\more_llvm\c4\c4.ll"))
             {
                 var parser = new LLVMParser(new LLVMLexer(rdr));
                 parser.ParseModule();

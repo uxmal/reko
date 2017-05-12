@@ -489,6 +489,7 @@ namespace Reko.ImageLoaders.LLVM
             case TokenType.ret: return ParseRet();
             case TokenType.store: return ParseStore();
             case TokenType.@switch: return ParseSwitch();
+            case TokenType.unreachable: return ParseUnreachable();
             case TokenType.LocalId: return ParseAssignment();
             default: Unexpected(tok); break;
             }

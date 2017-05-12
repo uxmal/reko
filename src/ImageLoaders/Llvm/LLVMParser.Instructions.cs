@@ -368,6 +368,12 @@ namespace Reko.ImageLoaders.LLVM
             };
         }
 
+        private Terminator ParseUnreachable()
+        {
+            Expect(TokenType.unreachable);
+            return new Unreachable();
+        }
+
         private PhiInstruction ParsePhi(LocalId result)
         {
             Expect(TokenType.phi);

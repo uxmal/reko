@@ -506,9 +506,15 @@ namespace Reko.ImageLoaders.LLVM
                 w.WriteLine();
             }
             w.Write("]");
-
         }
     }
 
+    public class Unreachable : Terminator
+    {
+        public override void Write(Formatter w)
+        {
+            w.WriteKeyword("unreachable");
+        }
+    }
 
 }
