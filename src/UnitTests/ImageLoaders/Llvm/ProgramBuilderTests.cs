@@ -201,6 +201,33 @@ next_char_exit:
             AssertProc(sExp, proc);
         }
 
+        [Test]
+        public void LLPB_GetElementPtr()
+        {
+            Global("puts", PrimitiveType.Pointer32);
+            Global("msg", new Pointer(new ArrayType(PrimitiveType.Char, 13), 4));
+            var proc = RunFuncTest( 
+@"define i32 @foo() { 
+  ; Convert [13 x i8]* to i8  *...
+  %1 = getelementptr [13 x i8], [13 x i8]* @msg, i64 0, i64 0
+
+  call i32 @puts(i8* %1)
+  ret i32 0
+}");
+            var sExp =
+@"// foo
+// Return size: 0
+word32 foo()
+foo_entry:
+    // succ:  l1
+    %1 = &(*msg)[0];
+    puts(%1)
+    return 0x00000000
+";
+            AssertProc(sExp, proc);
+
+        }
+
         [Ignore("Only works on @uxmal's machine right now")]
         [Test]
         public void LLPB_File()
