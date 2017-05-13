@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,42 @@
  */
 #endregion
 
+using NUnit.Framework;
+using Reko.Arch.SuperH;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.Arch.SuperH
+namespace Reko.UnitTests.Arch.Tlcs
 {
-    public class SuperHDisassembler : DisassemblerBase<SuperHInstruction>
+    [TestFixture]
+    public class SuperHDisassemblerTests : DisassemblerTestBase<SuperHInstruction>
     {
-        private EndianImageReader rdr;
+        private SuperHArchitecture arch;
 
-        public SuperHDisassembler(EndianImageReader rdr)
+        public SuperHDisassemblerTests()
         {
-            this.rdr = rdr;
+            this.arch = new SuperHArchitecture();
         }
 
-        public override SuperHInstruction DisassembleInstruction()
+        public override IProcessorArchitecture Architecture
         {
-            throw new NotImplementedException();
+            get { return arch; }
+        }
+
+        public override Address LoadAddress { get { return Address.Ptr32(0x00010000); } }
+
+        protected override ImageWriter CreateImageWriter(byte[] bytes)
+        {
+            return new LeImageWriter(bytes);
+        }
+
+        private void AssertCode(string sExp, string hexBytes)
+        {
+            var i = DisassembleHexBytes(hexBytes);
+            Assert.AreEqual(sExp, i.ToString());
         }
     }
 }

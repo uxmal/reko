@@ -19,32 +19,14 @@
 #endregion
 
 using System;
-using Reko.Core.Machine;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Arch.SuperH
 {
-    public class SuperHInstruction : MachineInstruction
+    public class Registers
     {
-        public override InstructionClass InstructionClass
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override bool IsValid
-        {
-            get { return Opcode == Opcode.invalid; }
-        }
-
-        public Opcode Opcode { get; set; }
-
-        public override int OpcodeAsInteger
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override MachineOperand GetOperand(int i)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

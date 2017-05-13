@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Registers.cs" />
     <Compile Include="SuperHArchitecture.cs" />
     <Compile Include="SuperHDisassembler.cs" />
     <Compile Include="SuperHInstruction.cs" />
