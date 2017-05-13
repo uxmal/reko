@@ -20,6 +20,7 @@
 
 using System;
 using Reko.Core.Machine;
+using System.Collections.Generic;
 
 namespace Reko.Arch.SuperH
 {
@@ -50,9 +51,18 @@ namespace Reko.Arch.SuperH
             throw new NotImplementedException();
         }
 
+        private static Dictionary<Opcode, string> opcodes = new Dictionary<Opcode, string>
+        {
+            { Opcode.and_b, "and.b" },
+            { Opcode.bf_s, "bf/s" },
+        };
+
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            string sOpcode;
+            if (!opcodes.TryGetValue(Opcode, out sOpcode))
+                sOpcode = Opcode.ToString();
+            writer.WriteOpcode(sOpcode);
             if (op1 == null)
                 return;
             writer.Tab();
@@ -65,12 +75,6 @@ namespace Reko.Arch.SuperH
 
         private void Render(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var regOp = op as RegisterOperand;
-            if (regOp != null)
-            {
-                writer.Write(regOp.Register.Name);
-                return;
-            }
             var immOp = op as ImmediateOperand;
             if (immOp != null)
             {
@@ -78,7 +82,7 @@ namespace Reko.Arch.SuperH
                 immOp.Write(writer, options);
                 return;
             }
-            throw new NotImplementedException();
+            op.Write(writer, options);
         }
     }
 }

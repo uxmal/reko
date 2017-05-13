@@ -57,9 +57,82 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        public void SHDis_mov_imm_rn()
+        public void SHDis_add_imm_rn()
         {
             AssertCode("add\t#FF,r3", "73FF");
         }
+
+        [Test]
+        public void SHDis_add_rm_rn()
+        {
+            AssertCode("add\tr4,r2", "324C");
+        }
+
+        [Test]
+        public void SHDis_addc_rm_rn()
+        {
+            AssertCode("addc\tr4,r2", "324E");
+        }
+
+        [Test]
+        public void SHDis_addv_rm_rn()
+        {
+            AssertCode("addv\tr4,r2", "324F");
+        }
+
+        [Test]
+        public void SHDis_and_rm_rn()
+        {
+            AssertCode("and\tr4,r3", "2349");
+        }
+
+        [Test]
+        public void SHDis_and_imm_r0()
+        {
+            AssertCode("and\t#F0,r0", "C9F0");
+        }
+
+        [Test]
+        public void SHDis_and_b_imm_r0()
+        {
+            AssertCode("and.b\t#F0,@(r0,gbr)", "CDF0");
+        }
+
+        [Test]
+        public void SHDis_bf()
+        {
+            AssertCode("bf\t0000FFE4", "8BF0");
+        }
+
+        [Test]
+        public void SHDis_bf_s()
+        {
+            AssertCode("bf/s\t0000FFE4", "8FF0");
+        }
+
+        [Test]
+        public void SHDis_bra()
+        {
+            AssertCode("bra\t0000FFE4", "AFF0");
+        }
+
+        [Test]
+        public void SHDis_braf_reg()
+        {
+            AssertCode("braf\tr1", "0123");
+        }
+
+        [Test]
+        public void SHDis_brk()
+        {
+            AssertCode("brk", "003B");
+        }
+
+        [Test]
+        public void SHDis_bsr()
+        {
+            AssertCode("bsr\t0000FFE4", "BFF0");
+        }
     }
 }
+

@@ -30,5 +30,15 @@ namespace Reko.Arch.SuperH
     {
         invalid,
         add,
+        addc,
+        addv,
+        and,
+        and_b,
+        bf,
+        bf_s,
+        bra,
+        braf,
+        brk,
+        bsr,
     }
 }
