@@ -133,6 +133,42 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("bsr\t0000FFE4", "BFF0");
         }
+
+        [Test]
+        public void SHDis_bsrf()
+        {
+            AssertCode("bsrf\tr1", "0103");
+        }
+
+        [Test]
+        public void SHDis_bt()
+        {
+            AssertCode("bt\t0000FFE4", "89F0");
+        }
+
+        [Test]
+        public void SHDis_bt_s()
+        {
+            AssertCode("bt/s\t0000FFE4", "8DF0");
+        }
+
+        [Test]
+        public void SHDis_clrmac()
+        {
+            AssertCode("clrmac", "0028");
+        }
+
+        [Test]
+        public void SHDis_cmpeq()
+        {
+            AssertCode("cmp/eq\tr4,r5", "3540");
+        }
+
+        [Test]
+        public void SHDis_cmpeq_imm()
+        {
+            AssertCode("cmp/eq\t#F0,r0", "88F0");
+        }
     }
 }
 

@@ -188,8 +188,12 @@ namespace Reko.Arch.SuperH
         {
             new Oprec8Bits(0, new Dictionary<int, OprecBase>
             {
+                { 0x03, new Oprec(Opcode.bsrf, "r1") },
+                { 0x04, new Oprec(Opcode.clrt, "") },
                 { 0x23, new Oprec(Opcode.braf, "r1") },
+                { 0x28, new Oprec(Opcode.clrmac, "") },
                 { 0x3B, new Oprec(Opcode.brk, "") },
+                { 0x48, new Oprec(Opcode.clrs, "") },
             }),
             new Oprec(Opcode.invalid, ""),
             new Oprec4Bits(0, new OprecBase[]
@@ -209,22 +213,23 @@ namespace Reko.Arch.SuperH
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
 
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.cmp_str, "r2,r1"),
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
             }),
+            // 3...
             new Oprec4Bits(0, new OprecBase[]
             {
+                new Oprec(Opcode.cmp_eq, "r2,r1"),
                 new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.cmp_hs, "r2,r1"),
+                new Oprec(Opcode.cmp_ge, "r2,r1"),
 
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.cmp_hi, "r2,r1"),
+                new Oprec(Opcode.cmp_gt, "r2,r1"),
 
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
@@ -237,7 +242,12 @@ namespace Reko.Arch.SuperH
                 new Oprec(Opcode.addv, "r2,r1"),
             }),
 
-            new Oprec(Opcode.invalid, ""),
+            // 4...
+            new Oprec8Bits(0, new Dictionary<int, OprecBase>
+            {
+                { 0x15, new Oprec(Opcode.cmp_pl, "r1") },
+                { 0x11, new Oprec(Opcode.cmp_pz, "r1") },
+            }),
             new Oprec(Opcode.invalid, ""),
             new Oprec(Opcode.invalid, ""),
             new Oprec(Opcode.add, "I,r1"),
@@ -254,13 +264,13 @@ namespace Reko.Arch.SuperH
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
 
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.cmp_eq, "I,R0"),
+                new Oprec(Opcode.bt, "j"),
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.bf, "j"),
 
                 new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.bt_s, "j"),
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.bf_s, "j"),
             }),

@@ -55,6 +55,15 @@ namespace Reko.Arch.SuperH
         {
             { Opcode.and_b, "and.b" },
             { Opcode.bf_s, "bf/s" },
+            { Opcode.bt_s, "bt/s" },
+            { Opcode.cmp_eq, "cmp/eq" },
+            { Opcode.cmp_ge, "cmp/ge" },
+            { Opcode.cmp_gt, "cmp/gt" },
+            { Opcode.cmp_hi, "cmp/hi" },
+            { Opcode.cmp_hs, "cmp/hs" },
+            { Opcode.cmp_pl, "cmp/pl" },
+            { Opcode.cmp_pz, "cmp/pz" },
+            { Opcode.cmp_str, "cmp/str" },
         };
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
