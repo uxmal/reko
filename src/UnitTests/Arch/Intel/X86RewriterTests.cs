@@ -1447,5 +1447,14 @@ namespace Reko.UnitTests.Arch.Intel
                 "0|L--|10000000(4): 1 instructions",
                 "1|L--|Mem0[edi - 0x0000007D + eax * 0x00000002:real80] = (real80) rArg0");
         }
+
+        [Test]
+        public void X86rw_fdivr()
+        {
+            Run32bitTest(0xDC, 0x3D, 0x78, 0x56, 0x34, 0x12); // fdivr [12345678]
+            AssertCode(
+                "0|L--|10000000(6): 1 instructions",
+                "1|L--|rArg0 = Mem0[0x12345678:real64] / rArg0");
+        }
     }
 }
