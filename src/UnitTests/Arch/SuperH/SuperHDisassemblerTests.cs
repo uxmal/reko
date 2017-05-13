@@ -55,5 +55,11 @@ namespace Reko.UnitTests.Arch.Tlcs
             var i = DisassembleHexBytes(hexBytes);
             Assert.AreEqual(sExp, i.ToString());
         }
+
+        [Test]
+        public void SHDis_mov_imm_rn()
+        {
+            AssertCode("add\t#FF,r3", "73FF");
+        }
     }
 }

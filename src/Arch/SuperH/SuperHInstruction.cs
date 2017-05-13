@@ -37,6 +37,9 @@ namespace Reko.Arch.SuperH
 
         public Opcode Opcode { get; set; }
 
+        public MachineOperand op1 { get; set; }
+        public MachineOperand op2 { get; set; }
+
         public override int OpcodeAsInteger
         {
             get { throw new NotImplementedException(); }
@@ -44,6 +47,37 @@ namespace Reko.Arch.SuperH
 
         public override MachineOperand GetOperand(int i)
         {
+            throw new NotImplementedException();
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Opcode.ToString());
+            if (op1 == null)
+                return;
+            writer.Tab();
+            Render(op1, writer, options);
+            if (op2 == null)
+                return;
+            writer.Write(',');
+            Render(op2, writer, options);
+        }
+
+        private void Render(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            var regOp = op as RegisterOperand;
+            if (regOp != null)
+            {
+                writer.Write(regOp.Register.Name);
+                return;
+            }
+            var immOp = op as ImmediateOperand;
+            if (immOp != null)
+            {
+                writer.Write('#');
+                immOp.Write(writer, options);
+                return;
+            }
             throw new NotImplementedException();
         }
     }

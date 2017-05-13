@@ -29,5 +29,6 @@ namespace Reko.Arch.SuperH
     public enum Opcode
     {
         invalid,
+        add,
     }
 }

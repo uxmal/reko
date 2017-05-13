@@ -33,6 +33,11 @@ namespace Reko.Arch.SuperH
 {
     public class SuperHArchitecture : ProcessorArchitecture
     {
+        public SuperHArchitecture()
+        {
+            this.FramePointerType = PrimitiveType.Pointer32;
+        }
+
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new SuperHDisassembler(rdr);
@@ -40,27 +45,28 @@ namespace Reko.Arch.SuperH
 
         public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
         {
-            throw new NotImplementedException();
+            //$TOOD: SH-4 can be big- and little-endian.
+            return new BeImageReader(img, off);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new BeImageReader(img, addr);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            throw new NotImplementedException();
+            return new BeImageReader(img, addrBegin, addrEnd);
         }
 
         public override ImageWriter CreateImageWriter()
         {
-            throw new NotImplementedException();
+            return new BeImageWriter();
         }
 
         public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new BeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
