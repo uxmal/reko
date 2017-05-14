@@ -59,268 +59,266 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void SHDis_add_imm_rn()
         {
-            AssertCode("add\t#FF,r3", "73FF");
+            AssertCode("add\t#FF,r3", "FF73");
         }
 
         [Test]
         public void SHDis_add_rm_rn()
         {
-            AssertCode("add\tr4,r2", "324C");
+            AssertCode("add\tr4,r2", "4C32");
         }
 
         [Test]
         public void SHDis_addc_rm_rn()
         {
-            AssertCode("addc\tr4,r2", "324E");
+            AssertCode("addc\tr4,r2", "4E32");
         }
 
         [Test]
         public void SHDis_addv_rm_rn()
         {
-            AssertCode("addv\tr4,r2", "324F");
+            AssertCode("addv\tr4,r2", "4F32");
         }
 
         [Test]
         public void SHDis_and_rm_rn()
         {
-            AssertCode("and\tr4,r3", "2349");
+            AssertCode("and\tr4,r3", "4923");
         }
 
         [Test]
         public void SHDis_and_imm_r0()
         {
-            AssertCode("and\t#F0,r0", "C9F0");
+            AssertCode("and\t#F0,r0", "F0C9");
         }
 
         [Test]
         public void SHDis_and_b_imm_r0()
         {
-            AssertCode("and.b\t#F0,@(r0,gbr)", "CDF0");
+            AssertCode("and.b\t#F0,@(r0,gbr)", "F0CD");
         }
 
         [Test]
         public void SHDis_bf()
         {
-            AssertCode("bf\t0000FFE4", "8BF0");
+            AssertCode("bf\t0000FFE4", "F08B");
         }
 
         [Test]
         public void SHDis_bf_s()
         {
-            AssertCode("bf/s\t0000FFE4", "8FF0");
+            AssertCode("bf/s\t0000FFE4", "F08F");
         }
 
         [Test]
         public void SHDis_bra()
         {
-            AssertCode("bra\t0000FFE4", "AFF0");
+            AssertCode("bra\t0000FFE4", "F0AF");
         }
 
         [Test]
         public void SHDis_braf_reg()
         {
-            AssertCode("braf\tr1", "0123");
+            AssertCode("braf\tr1", "2301");
         }
 
         [Test]
         public void SHDis_brk()
         {
-            AssertCode("brk", "003B");
+            AssertCode("brk", "3B00");
         }
 
         [Test]
         public void SHDis_bsr()
         {
-            AssertCode("bsr\t0000FFE4", "BFF0");
+            AssertCode("bsr\t0000FFE4", "F0BF");
         }
 
         [Test]
         public void SHDis_bsrf()
         {
-            AssertCode("bsrf\tr1", "0103");
+            AssertCode("bsrf\tr1", "0301");
         }
 
         [Test]
         public void SHDis_bt()
         {
-            AssertCode("bt\t0000FFE4", "89F0");
+            AssertCode("bt\t0000FFE4", "F089");
         }
 
         [Test]
         public void SHDis_bt_s()
         {
-            AssertCode("bt/s\t0000FFE4", "8DF0");
+            AssertCode("bt/s\t0000FFE4", "F08D");
         }
 
         [Test]
         public void SHDis_clrmac()
         {
-            AssertCode("clrmac", "0028");
+            AssertCode("clrmac", "2800");
         }
 
         [Test]
         public void SHDis_cmpeq()
         {
-            AssertCode("cmp/eq\tr4,r5", "3540");
+            AssertCode("cmp/eq\tr4,r5", "4035");
         }
 
         [Test]
         public void SHDis_cmpeq_imm()
         {
-            AssertCode("cmp/eq\t#F0,r0", "88F0");
+            AssertCode("cmp/eq\t#F0,r0", "F088");
         }
 
         [Test]
         public void SHDis_div0s()
         {
-            AssertCode("div0s\tr4,r3", "2347");
+            AssertCode("div0s\tr4,r3", "4723");
         }
 
         [Test]
         public void SHDis_div0u()
         {
-            AssertCode("div0u", "0019");
+            AssertCode("div0u", "1900");
         }
 
         [Test]
         public void SHDis_div1()
         {
-            AssertCode("div1\tr4,r3", "3344");
+            AssertCode("div1\tr4,r3", "4433");
         }
 
         [Test]
         public void SHDis_dmuls_l()
         {
-            AssertCode("dmuls.l\tr4,r3", "334D");
+            AssertCode("dmuls.l\tr4,r3", "4D33");
         }
 
         [Test]
         public void SHDis_dt()
         {
-            AssertCode("dt\tr15", "4F10");
+            AssertCode("dt\tr15", "104F");
         }
 
         [Test]
         public void SHDis_exts_b()
         {
-            AssertCode("exts.b\tr15,r14", "6EFE");
+            AssertCode("exts.b\tr15,r14", "FE6E");
         }
 
         [Test]
         public void SHDis_exts_w()
         {
-            AssertCode("exts.w\tr15,r14", "6EFF");
+            AssertCode("exts.w\tr15,r14", "FF6E");
         }
 
         [Test]
         public void SHDis_extu_b()
         {
-            AssertCode("extu.b\tr15,r14", "6EFC");
+            AssertCode("extu.b\tr15,r14", "FC6E");
         }
 
         [Test]
         public void SHDis_extu_w()
         {
-            AssertCode("extu.w\tr15,r14", "6EFD");
+            AssertCode("extu.w\tr15,r14", "FD6E");
         }
 
         [Test]
         public void SHDis_fabs_dr()
         {
-            AssertCode("fabs\tdr14", "FE5D");
+            AssertCode("fabs\tdr14", "5DFE");
         }
 
         [Test]
         public void SHDis_fabs_fr()
         {
-            AssertCode("fabs\tfr15", "FF5D");
+            AssertCode("fabs\tfr15", "5DFF");
         }
 
         [Test]
         public void SHDis_fadd_dr()
         {
-            AssertCode("fadd\tdr12,dr14", "FEC0");
+            AssertCode("fadd\tdr12,dr14", "C0FE");
         }
 
         [Test]
         public void SHDis_fadd_fr()
         {
-            AssertCode("fadd\tfr12,fr15", "FFC0");
+            AssertCode("fadd\tfr12,fr15", "C0FF");
         }
 
         [Test]
         public void SHDis_fcmp_eq_dr()
         {
-            AssertCode("fcmp/eq\tdr12,dr14", "FEC4");
+            AssertCode("fcmp/eq\tdr12,dr14", "C4FE");
         }
 
         [Test]
         public void SHDis_fcmp_eq_fr()
         {
-            AssertCode("fcmp/eq\tfr12,fr15", "FFC4");
+            AssertCode("fcmp/eq\tfr12,fr15", "C4FF");
         }
 
         [Test]
         public void SHDis_fcmp_gt_dr()
         {
-            AssertCode("fcmp/gt\tdr12,dr14", "FEC5");
+            AssertCode("fcmp/gt\tdr12,dr14", "C5FE");
         }
 
         [Test]
         public void SHDis_fcmp_gt_fr()
         {
-            AssertCode("fcmp/gt\tfr12,fr15", "FFC5");
+            AssertCode("fcmp/gt\tfr12,fr15", "C5FF");
         }
 
         [Test]
         public void SHDis_fcnvds()
         {
-            AssertCode("fcnvds\tdr14,fpul", "FEBD");
+            AssertCode("fcnvds\tdr14,fpul", "BDFE");
         }
 
         [Test]
         public void SHDis_fcnvsd()
         {
-            AssertCode("fcnvsd\tfpul,dr14", "FEAD");
+            AssertCode("fcnvsd\tfpul,dr14", "ADFE");
         }
 
         [Test]
         public void SHDis_fdiv_dr()
         {
-            AssertCode("fdiv\tdr12,dr14", "FEC3");
+            AssertCode("fdiv\tdr12,dr14", "C3FE");
         }
 
         [Test]
         public void SHDis_fdiv_fr()
         {
-            AssertCode("fdiv\tfr12,fr15", "FFC3");
+            AssertCode("fdiv\tfr12,fr15", "C3FF");
         }
 
         [Test]
         public void SHDis_fipr()
         {
-            AssertCode("fipr\tfv8,fv12", "FEED");
+            AssertCode("fipr\tfv8,fv12", "EDFE");
         }
 
         [Test]
         public void SHDis_flds()
         {
-            AssertCode("flds\tfr8,fpul", "F81D");
+            AssertCode("flds\tfr8,fpul", "1DF8");
         }
 
         [Test]
         public void SHDis_fldi0()
         {
-            AssertCode("fldi0\tfr8", "F88D");
+            AssertCode("fldi0\tfr8", "8DF8");
         }
 
         [Test]
         public void SHDis_fldi1()
         {
-            AssertCode("fldi1\tfr8", "F89D");
+            AssertCode("fldi1\tfr8", "9DF8");
         }
-
-
     }
 }
 
