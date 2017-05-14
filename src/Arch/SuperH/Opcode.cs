@@ -54,5 +54,15 @@ namespace Reko.Arch.SuperH
         cmp_pl,
         cmp_pz,
         cmp_str,
+        div0s,
+        div0u,
+        div1,
+        dmuls_l,
+        dmulu_l,
+        dt,
+        exts_b,
+        exts_w,
+        extu_b,
+        extu_w,
     }
 }

@@ -169,6 +169,60 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("cmp/eq\t#F0,r0", "88F0");
         }
+
+        [Test]
+        public void SHDis_div0s()
+        {
+            AssertCode("div0s\tr4,r3", "2347");
+        }
+
+        [Test]
+        public void SHDis_div0u()
+        {
+            AssertCode("div0u", "0019");
+        }
+
+        [Test]
+        public void SHDis_div1()
+        {
+            AssertCode("div1\tr4,r3", "3344");
+        }
+
+        [Test]
+        public void SHDis_dmuls_l()
+        {
+            AssertCode("dmuls.l\tr4,r3", "334D");
+        }
+
+        [Test]
+        public void SHDis_dt()
+        {
+            AssertCode("dt\tr15", "4F10");
+        }
+
+        [Test]
+        public void SHDis_exts_b()
+        {
+            AssertCode("exts.b\tr15,r14", "6EFE");
+        }
+
+        [Test]
+        public void SHDis_exts_w()
+        {
+            AssertCode("exts.w\tr15,r14", "6EFF");
+        }
+
+        [Test]
+        public void SHDis_extu_b()
+        {
+            AssertCode("extu.b\tr15,r14", "6EFC");
+        }
+
+        [Test]
+        public void SHDis_extu_w()
+        {
+            AssertCode("extu.w\tr15,r14", "6EFD");
+        }
     }
 }
 

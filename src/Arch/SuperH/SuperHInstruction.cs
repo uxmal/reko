@@ -64,6 +64,11 @@ namespace Reko.Arch.SuperH
             { Opcode.cmp_pl, "cmp/pl" },
             { Opcode.cmp_pz, "cmp/pz" },
             { Opcode.cmp_str, "cmp/str" },
+            { Opcode.dmuls_l, "dmuls.l" },
+            { Opcode.exts_b, "exts.b" },
+            { Opcode.exts_w, "exts.w" },
+            { Opcode.extu_b, "extu.b" },
+            { Opcode.extu_w, "extu.w" },
         };
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
