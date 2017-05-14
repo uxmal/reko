@@ -31,11 +31,16 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.SuperH
 {
+    // NetBSD for dreamcast? http://ftp.netbsd.org/pub/pkgsrc/packages/NetBSD/dreamcast/7.0/All/
     public class SuperHArchitecture : ProcessorArchitecture
     {
         public SuperHArchitecture()
         {
             this.FramePointerType = PrimitiveType.Pointer32;
+            this.InstructionBitSize = 16;
+            this.PointerType = PrimitiveType.Pointer32;
+            this.WordWidth = PrimitiveType.Word32;
+            // No architecture-defined stack register -- defined by platform.
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -46,27 +51,27 @@ namespace Reko.Arch.SuperH
         public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
         {
             //$TOOD: SH-4 can be big- and little-endian.
-            return new BeImageReader(img, off);
+            return new LeImageReader(img, off);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            return new BeImageReader(img, addr);
+            return new LeImageReader(img, addr);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            return new BeImageReader(img, addrBegin, addrEnd);
+            return new LeImageReader(img, addrBegin, addrEnd);
         }
 
         public override ImageWriter CreateImageWriter()
         {
-            return new BeImageWriter();
+            return new LeImageWriter();
         }
 
         public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
         {
-            return new BeImageWriter(img, addr);
+            return new LeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -81,7 +86,7 @@ namespace Reko.Arch.SuperH
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new SuperHState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
@@ -151,7 +156,7 @@ namespace Reko.Arch.SuperH
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
     }
 }
