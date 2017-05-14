@@ -64,5 +64,16 @@ namespace Reko.Arch.SuperH
         exts_w,
         extu_b,
         extu_w,
+        fabs,
+        fadd,
+        fcmp_eq,
+        fcmp_gt,
+        fcnvds,
+        fcnvsd,
+        fdiv,
+        fipr,
+        flds,
+        fldi0,
+        fldi1
     }
 }

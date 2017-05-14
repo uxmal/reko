@@ -60,12 +60,28 @@ namespace Reko.Arch.SuperH
                 {
                 case ',':
                     continue;
+                case 'd':
+                    ops[iop] = DfpRegister(format[++i], uInstr);
+                    break;
+                case 'f':
+                    ops[iop] = FpRegister(format[++i], uInstr);
+                    break;
                 case 'r':
                     ops[iop] = Register(format[++i], uInstr);
+                    break;
+                case 'v':
+                    ops[iop] = VfpRegister(format[++i], uInstr);
                     break;
                 case 'I':
                     ops[iop] = ImmediateOperand.Byte((byte)uInstr);
                     break;
+                case 'F':
+                    if (format[++i] == 'U')
+                    {
+                        ops[iop] = new RegisterOperand(Registers.fpul);
+                        break;
+                    }
+                    goto default;
                 case 'G':
                     ops[iop] = MemoryOperand.GbrIndexedIndirect(GetWidth(format[++i]));
                     break;
@@ -91,6 +107,7 @@ namespace Reko.Arch.SuperH
                 op2 = ops[1],
             };
         }
+
 
         private PrimitiveType GetWidth(char w)
         {
@@ -119,10 +136,29 @@ namespace Reko.Arch.SuperH
                 return null;
             }
         }
+
         private RegisterOperand Register(char r, ushort uInstr)
         {
             var reg = (uInstr >> 4 * ('3' - r)) & 0xF;
             return new RegisterOperand(Registers.gpregs[reg]);
+        }
+
+        private RegisterOperand FpRegister(char r, ushort uInstr)
+        {
+            var reg = (uInstr >> 4 * ('3' - r)) & 0xF;
+            return new RegisterOperand(Registers.fpregs[reg]);
+        }
+
+        private MachineOperand DfpRegister(char r, ushort uInstr)
+        {
+            var reg = (uInstr >> (1 + 4 * ('3' - r))) & 0x7;
+            return new RegisterOperand(Registers.dfpregs[reg]);
+        }
+
+        private MachineOperand VfpRegister(char r, ushort uInstr)
+        {
+            var reg = (uInstr >> (8 + 2 * ('2' - r))) & 0x3;
+            return new RegisterOperand(Registers.vfpregs[reg]);
         }
 
         private abstract class OprecBase
@@ -164,21 +200,24 @@ namespace Reko.Arch.SuperH
             }
         }
 
-        private class Oprec8Bits : OprecBase
+        private class OprecField : OprecBase
         {
             private int shift;
+            private int bitcount;
             private Dictionary<int, OprecBase> oprecs;
 
-            public Oprec8Bits(int shift, Dictionary<int, OprecBase> oprecs)
+            public OprecField(int shift, int bitcount, Dictionary<int, OprecBase> oprecs)
             {
                 this.shift = shift;
+                this.bitcount = bitcount;
                 this.oprecs = oprecs;
             }
 
             public override SuperHInstruction Decode(SuperHDisassembler dasm, ushort uInstr)
             {
                 OprecBase or;
-                if (!oprecs.TryGetValue((uInstr >> shift) & 0xFF, out or))
+                var mask = (1 << bitcount) - 1;
+                if (!oprecs.TryGetValue((uInstr >> shift) & mask, out or))
                     return dasm.Decode(uInstr, Opcode.invalid, "");
                 return or.Decode(dasm, uInstr);
             }
@@ -187,7 +226,7 @@ namespace Reko.Arch.SuperH
         private static OprecBase[] oprecs = new OprecBase[]
         {
             // 0...
-            new Oprec8Bits(0, new Dictionary<int, OprecBase>
+            new OprecField(0, 8, new Dictionary<int, OprecBase>
             {
                 { 0x03, new Oprec(Opcode.bsrf, "r1") },
                 { 0x04, new Oprec(Opcode.clrt, "") },
@@ -246,7 +285,7 @@ namespace Reko.Arch.SuperH
             }),
 
             // 4...
-            new Oprec8Bits(0, new Dictionary<int, OprecBase>
+            new OprecField(0, 8, new Dictionary<int, OprecBase>
             {
                 { 0x15, new Oprec(Opcode.cmp_pl, "r1") },
                 { 0x10, new Oprec(Opcode.dt, "r1") },
@@ -329,9 +368,55 @@ namespace Reko.Arch.SuperH
             }),
             new Oprec(Opcode.invalid, ""),
             new Oprec(Opcode.invalid, ""),
-            new Oprec(Opcode.invalid, ""),
-
-
+            // F...
+            new OprecField(0, 5, new Dictionary<int, OprecBase>
+            {
+                { 0x0, new OprecField(8, 1, new Dictionary<int, OprecBase>
+                    {
+                        { 0, new Oprec(Opcode.fadd, "d2,d1") },
+                        { 1, new Oprec(Opcode.fadd, "f2,f1") }
+                    })
+                },
+                { 0x3, new OprecField(8, 1, new Dictionary<int, OprecBase>
+                    {
+                        { 0, new Oprec(Opcode.fdiv, "d2,d1") },
+                        { 1, new Oprec(Opcode.fdiv, "f2,f1") }
+                    })
+                },
+                { 0x4, new OprecField(8, 1, new Dictionary<int, OprecBase>
+                    {
+                        { 0, new Oprec(Opcode.fcmp_eq, "d2,d1") },
+                        { 1, new Oprec(Opcode.fcmp_eq, "f2,f1") }
+                    })
+                },
+                { 0x5, new OprecField(8, 1, new Dictionary<int, OprecBase>
+                    {
+                        { 0, new Oprec(Opcode.fcmp_gt, "d2,d1") },
+                        { 1, new Oprec(Opcode.fcmp_gt, "f2,f1") }
+                    })
+                },
+                { 0xD, new OprecField(4, 5, new Dictionary<int, OprecBase>
+                    {
+                        { 0x08, new Oprec(Opcode.fldi0, "f1") },
+                        { 0x0A, new Oprec(Opcode.fcnvsd, "FU,d1") },
+                        { 0x0E, new Oprec(Opcode.fipr, "v2,v1") },
+                        { 0x18, new Oprec(Opcode.fldi0, "f1") },
+                        { 0x1E, new Oprec(Opcode.fipr, "v2,v1") },
+                    })
+                },
+                { 0x1D, new OprecField(4, 5, new Dictionary<int, OprecBase>
+                    {
+                        { 0x01, new Oprec(Opcode.flds, "f1,FU") },
+                        { 0x05, new Oprec(Opcode.fabs, "d1") },
+                        { 0x09, new Oprec(Opcode.fldi1, "f1") },
+                        { 0x0A, new Oprec(Opcode.fcnvsd, "FU,d1") },
+                        { 0x0B, new Oprec(Opcode.fcnvds, "d1,FU") },
+                        { 0x11, new Oprec(Opcode.flds, "f1,FU") },
+                        { 0x15, new Oprec(Opcode.fabs, "f1") },
+                        { 0x19, new Oprec(Opcode.fldi1, "f1") },
+                    })
+                },
+            })
         };
     }
 }

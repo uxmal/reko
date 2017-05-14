@@ -50,6 +50,43 @@ namespace Reko.Arch.SuperH
         public static RegisterStorage r14 = new RegisterStorage("r14", 14, 14, PrimitiveType.Word32);
         public static RegisterStorage r15 = new RegisterStorage("r15", 15, 15, PrimitiveType.Word32);
 
+        public static RegisterStorage fr0 = new RegisterStorage("fr0", 16, 0x000, PrimitiveType.Word32);
+        public static RegisterStorage fr1 = new RegisterStorage("fr1", 16, 0x020, PrimitiveType.Word32);
+        public static RegisterStorage fr2 = new RegisterStorage("fr2", 16, 0x040, PrimitiveType.Word32);
+        public static RegisterStorage fr3 = new RegisterStorage("fr3", 16, 0x060, PrimitiveType.Word32);
+
+        public static RegisterStorage fr4 = new RegisterStorage("fr4", 16, 0x080, PrimitiveType.Word32);
+        public static RegisterStorage fr5 = new RegisterStorage("fr5", 16, 0x0A0, PrimitiveType.Word32);
+        public static RegisterStorage fr6 = new RegisterStorage("fr6", 16, 0x0C0, PrimitiveType.Word32);
+        public static RegisterStorage fr7 = new RegisterStorage("fr7", 16, 0x0E0, PrimitiveType.Word32);
+
+        public static RegisterStorage fr8 = new RegisterStorage("fr8", 16,   0x100, PrimitiveType.Word32);
+        public static RegisterStorage fr9 = new RegisterStorage("fr9", 16,   0x120, PrimitiveType.Word32);
+        public static RegisterStorage fr10 = new RegisterStorage("fr10", 16, 0x140, PrimitiveType.Word32);
+        public static RegisterStorage fr11 = new RegisterStorage("fr11", 16, 0x160, PrimitiveType.Word32);
+
+        public static RegisterStorage fr12 = new RegisterStorage("fr12", 16, 0x180, PrimitiveType.Word32);
+        public static RegisterStorage fr13 = new RegisterStorage("fr13", 16, 0x1A0, PrimitiveType.Word32);
+        public static RegisterStorage fr14 = new RegisterStorage("fr14", 16, 0x1C0, PrimitiveType.Word32);
+        public static RegisterStorage fr15 = new RegisterStorage("fr15", 16, 0x1E0, PrimitiveType.Word32);
+
+        public static RegisterStorage dr0 = new RegisterStorage("dr0", 16, 0x000, PrimitiveType.Word64);
+        public static RegisterStorage dr2 = new RegisterStorage("dr2", 16, 0x040, PrimitiveType.Word64);
+        public static RegisterStorage dr4 = new RegisterStorage("dr4", 16, 0x080, PrimitiveType.Word64);
+        public static RegisterStorage dr6 = new RegisterStorage("dr6", 16, 0x0C0, PrimitiveType.Word64);
+
+        public static RegisterStorage dr8 = new RegisterStorage("dr8",   16, 0x100, PrimitiveType.Word64);
+        public static RegisterStorage dr10 = new RegisterStorage("dr10", 16, 0x140, PrimitiveType.Word64);
+        public static RegisterStorage dr12 = new RegisterStorage("dr12", 16, 0x180, PrimitiveType.Word64);
+        public static RegisterStorage dr14 = new RegisterStorage("dr14", 16, 0x1C0, PrimitiveType.Word64);
+
+        public static RegisterStorage fv0 = new RegisterStorage("fv0", 16, 0x080, PrimitiveType.Word128);
+        public static RegisterStorage fv4 = new RegisterStorage("fv4", 16, 0x100, PrimitiveType.Word128);
+        public static RegisterStorage fv8 = new RegisterStorage("fv8", 16, 0x180, PrimitiveType.Word128);
+        public static RegisterStorage fv12 = new RegisterStorage("fv12", 16, 0x000, PrimitiveType.Word128);
+
+        public static RegisterStorage fpul = new RegisterStorage("fpul", 17, 0, PrimitiveType.Word32);
+
         public static RegisterStorage[] gpregs = new[]
         {
              r0,
@@ -73,5 +110,37 @@ namespace Reko.Arch.SuperH
              r15 ,
         };
 
+        public static RegisterStorage[] fpregs = new[]
+        {
+             fr0,
+             fr1,
+             fr2,
+             fr3,
+
+             fr4,
+             fr5,
+             fr6,
+             fr7,
+
+             fr8 ,
+             fr9 ,
+             fr10,
+             fr11,
+
+             fr12 ,
+             fr13 ,
+             fr14 ,
+             fr15 ,
+        };
+
+        public static RegisterStorage[] dfpregs = new[]
+        {
+            dr0, dr2, dr4, dr6, dr8, dr10, dr12, dr14
+        };
+
+        public static RegisterStorage[] vfpregs = new[]
+        {
+            fv0, fv4, fv8, fv12,
+        };
     }
 }

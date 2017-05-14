@@ -223,6 +223,104 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("extu.w\tr15,r14", "6EFD");
         }
+
+        [Test]
+        public void SHDis_fabs_dr()
+        {
+            AssertCode("fabs\tdr14", "FE5D");
+        }
+
+        [Test]
+        public void SHDis_fabs_fr()
+        {
+            AssertCode("fabs\tfr15", "FF5D");
+        }
+
+        [Test]
+        public void SHDis_fadd_dr()
+        {
+            AssertCode("fadd\tdr12,dr14", "FEC0");
+        }
+
+        [Test]
+        public void SHDis_fadd_fr()
+        {
+            AssertCode("fadd\tfr12,fr15", "FFC0");
+        }
+
+        [Test]
+        public void SHDis_fcmp_eq_dr()
+        {
+            AssertCode("fcmp/eq\tdr12,dr14", "FEC4");
+        }
+
+        [Test]
+        public void SHDis_fcmp_eq_fr()
+        {
+            AssertCode("fcmp/eq\tfr12,fr15", "FFC4");
+        }
+
+        [Test]
+        public void SHDis_fcmp_gt_dr()
+        {
+            AssertCode("fcmp/gt\tdr12,dr14", "FEC5");
+        }
+
+        [Test]
+        public void SHDis_fcmp_gt_fr()
+        {
+            AssertCode("fcmp/gt\tfr12,fr15", "FFC5");
+        }
+
+        [Test]
+        public void SHDis_fcnvds()
+        {
+            AssertCode("fcnvds\tdr14,fpul", "FEBD");
+        }
+
+        [Test]
+        public void SHDis_fcnvsd()
+        {
+            AssertCode("fcnvsd\tfpul,dr14", "FEAD");
+        }
+
+        [Test]
+        public void SHDis_fdiv_dr()
+        {
+            AssertCode("fdiv\tdr12,dr14", "FEC3");
+        }
+
+        [Test]
+        public void SHDis_fdiv_fr()
+        {
+            AssertCode("fdiv\tfr12,fr15", "FFC3");
+        }
+
+        [Test]
+        public void SHDis_fipr()
+        {
+            AssertCode("fipr\tfv8,fv12", "FEED");
+        }
+
+        [Test]
+        public void SHDis_flds()
+        {
+            AssertCode("flds\tfr8,fpul", "F81D");
+        }
+
+        [Test]
+        public void SHDis_fldi0()
+        {
+            AssertCode("fldi0\tfr8", "F88D");
+        }
+
+        [Test]
+        public void SHDis_fldi1()
+        {
+            AssertCode("fldi1\tfr8", "F89D");
+        }
+
+
     }
 }
 
