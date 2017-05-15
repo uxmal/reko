@@ -71,6 +71,10 @@ namespace Reko.Arch.SuperH
             { Opcode.extu_w, "extu.w" },
             { Opcode.fcmp_eq, "fcmp/eq" },
             { Opcode.fcmp_gt, "fcmp/gt" },
+            { Opcode.mov_b, "mov.b" },
+            { Opcode.mov_l, "mov.l" },
+            { Opcode.mov_w, "mov.w" },
+            { Opcode.sts_l, "sts.l" },
         };
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)

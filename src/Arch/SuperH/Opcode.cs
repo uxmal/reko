@@ -74,6 +74,15 @@ namespace Reko.Arch.SuperH
         fipr,
         flds,
         fldi0,
-        fldi1
+        fldi1,
+        mov,
+        mov_b,
+        mov_w,
+        mov_l,
+        nop,
+        rts,
+        jmp,
+        sts_l,
+        tst,
     }
 }

@@ -319,6 +319,72 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("fldi1\tfr8", "9DF8");
         }
+
+        [Test]
+        public void SHDis_jmp_r()
+        {
+            AssertCode("jmp\t@r0", "2B40");
+        }
+
+        [Test]
+        public void SHDis_mov_l_predec()
+        {
+            AssertCode("mov.l\tr8,@-r15", "862F");
+        }
+
+        [Test]
+        public void SHDis_mov_l_disp_pc()
+        {
+            AssertCode("mov.l\t@(02,pc),r0", "02D0");
+        }
+
+        [Test]
+        public void SHDis_mov_r_r()
+        {
+            AssertCode("mov\tr7,r4", "7364");
+        }
+
+        [Test]
+        public void SHDis_nop()
+        {
+            AssertCode("nop", "0900");
+        }
+
+        [Test]
+        public void SHDis_rts()
+        {
+            AssertCode("rts", "0B00");
+        }
+
+        [Test]
+        public void SHDis_sts_l_pr_predec()
+        {
+            AssertCode("sts.l\tpr,@-r15", "224F");
+        }
+
+        [Test]
+        public void SHDis_tst_r_r()
+        {
+            AssertCode("tst\tr6,r6", "6826");
+        }
+
+        [Test]
+        public void SHDis_mov_I_r()
+        {
+            AssertCode("mov\t#FF,r1", "FFE1");
+        }
+
+        /*﻿       02 D0 invalid
+        0040268E 73 64 invalid
+        00402690 83 65 invalid
+        00402692 2B 40 invalid
+        00402694 93 66 invalid
+        00402698 9C 26 cmp/strr9,r6
+        0040269A 40 00 invalid
+        0040269C 86 2F invalid
+        0040269E 3E C7 invalid
+        004026A0 96 2F invalid
+         */
     }
 }
 

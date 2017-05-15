@@ -86,6 +86,7 @@ namespace Reko.Arch.SuperH
         public static RegisterStorage fv12 = new RegisterStorage("fv12", 16, 0x000, PrimitiveType.Word128);
 
         public static RegisterStorage fpul = new RegisterStorage("fpul", 17, 0, PrimitiveType.Word32);
+        public static RegisterStorage pr = new RegisterStorage("pr", 18, 0, PrimitiveType.Word32);
 
         public static RegisterStorage[] gpregs = new[]
         {
