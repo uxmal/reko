@@ -281,12 +281,14 @@ namespace Reko.Arch.SuperH
                         { 0x1, new Oprec(Opcode.div0u, "") },
                     })
                 },
-                { 0x0B, new OprecField(4, 4, new Dictionary<int, OprecBase>
+                { 0xB, new OprecField(4, 4, new Dictionary<int, OprecBase>
                     {
                         { 0x0, new Oprec(Opcode.rts, "") },
                         { 0x3, new Oprec(Opcode.brk, "") },
                     })
                 },
+                { 0xC, new Oprec(Opcode.mov_b, "X2b,r1") },
+                { 0xD, new Oprec(Opcode.mov_w, "X2w,r1") },
                 { 0xE, new Oprec(Opcode.mov_l, "X2l,r1") }
             }),
             new Oprec(Opcode.mov_l, "r2,D1l"),
@@ -382,8 +384,8 @@ namespace Reko.Arch.SuperH
 
             // 8...
             new Oprec4Bits(8, new OprecBase[] {
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.mov_b, "R0,D2b"),
+                new Oprec(Opcode.mov_w, "R0,D2w"),
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
 
@@ -421,8 +423,8 @@ namespace Reko.Arch.SuperH
 
                 new Oprec(Opcode.tst, "I,R0"),
                 new Oprec(Opcode.and, "I,R0"),
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.xor, "I,R0"),
+                new Oprec(Opcode.or, "I,R0"),
 
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.and_b, "I,Gb"),

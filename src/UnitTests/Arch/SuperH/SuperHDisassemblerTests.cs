@@ -445,6 +445,12 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("tst\tr6,r6", "6826");
         }
+
+/*
+014C
+402C
+405C
+*/
     }
 }
 
