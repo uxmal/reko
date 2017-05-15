@@ -56,6 +56,7 @@
     <Compile Include="SuperHArchitecture.cs" />
     <Compile Include="SuperHDisassembler.cs" />
     <Compile Include="SuperHInstruction.cs" />
+    <Compile Include="SuperHRewriter.cs" />
     <Compile Include="SuperHState.cs" />
   </ItemGroup>
   <ItemGroup>
