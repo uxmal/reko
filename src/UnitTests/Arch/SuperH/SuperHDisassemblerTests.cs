@@ -327,6 +327,18 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void SHDis_lds_l_pr()
+        {
+            AssertCode("lds.l\t@r15+,pr", "264F");
+        }
+
+        [Test]
+        public void SHDis_mov_I_r()
+        {
+            AssertCode("mov\t#FF,r1", "FFE1");
+        }
+
+        [Test]
         public void SHDis_mov_l_predec()
         {
             AssertCode("mov.l\tr8,@-r15", "862F");
@@ -335,7 +347,25 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void SHDis_mov_l_disp_pc()
         {
-            AssertCode("mov.l\t@(02,pc),r0", "02D0");
+            AssertCode("mov.l\t@(08,pc),r0", "02D0");
+        }
+
+        [Test]
+        public void SHDis_mov_l_indexed_r()
+        {
+            AssertCode("mov.l\t@(r0,r12),r1", "CE 01");
+        }
+
+        [Test]
+        public void SHDis_mov_l_r_indexed()
+        {
+            AssertCode("mov.l\t@(8,r6),r2", "62 52");
+        }
+
+        [Test]
+        public void SHDis_mov_l_indirect_r()
+        {
+            AssertCode("mov.l\t@r1,r2", "12 62");
         }
 
         [Test]
@@ -345,9 +375,45 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void SHDis_mov_w_indirect_r()
+        {
+            AssertCode("mov.w\tr0,@(r0,r0)", "0500");
+        }
+
+        [Test]
+        public void SHDis_mov()
+        {
+            AssertCode("mov.l\t@r8+,r9", "8669");
+        }
+
+        [Test]
+        public void SHDis_mov_w_pc()
+        {
+            AssertCode("mov.w\t@(66,pc),r0", "3390");
+        }
+
+        [Test]
+        public void SHDis_mova()
+        {
+            AssertCode("mova\t@(F8,pc),r0", "3E C7");
+        }
+
+        [Test]
         public void SHDis_nop()
         {
             AssertCode("nop", "0900");
+        }
+
+        [Test]
+        public void SHDis_neg()
+        {
+            AssertCode("neg\tr0,r0", "0B60");
+        }
+
+        [Test]
+        public void SHDis_not()
+        {
+            AssertCode("not\tr9,r0", "9760");
         }
 
         [Test]
@@ -357,9 +423,21 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void SHDis_shll2()
+        {
+            AssertCode("shll2\tr0", "0840");
+        }
+
+        [Test]
         public void SHDis_sts_l_pr_predec()
         {
             AssertCode("sts.l\tpr,@-r15", "224F");
+        }
+
+        [Test]
+        public void SHDis_tst_imm()
+        {
+            AssertCode("tst\t#01,r0", "01C8");
         }
 
         [Test]
@@ -367,24 +445,6 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("tst\tr6,r6", "6826");
         }
-
-        [Test]
-        public void SHDis_mov_I_r()
-        {
-            AssertCode("mov\t#FF,r1", "FFE1");
-        }
-
-        /*﻿       02 D0 invalid
-        0040268E 73 64 invalid
-        00402690 83 65 invalid
-        00402692 2B 40 invalid
-        00402694 93 66 invalid
-        00402698 9C 26 cmp/strr9,r6
-        0040269A 40 00 invalid
-        0040269C 86 2F invalid
-        0040269E 3E C7 invalid
-        004026A0 96 2F invalid
-         */
     }
 }
 

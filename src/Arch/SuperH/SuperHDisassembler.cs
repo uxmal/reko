@@ -55,6 +55,7 @@ namespace Reko.Arch.SuperH
             var ops = new MachineOperand[2];
             int iop = 0;
             RegisterStorage reg;
+            PrimitiveType width;
             for (int i = 0; i < format.Length; ++i)
             {
                 switch (format[i])
@@ -64,6 +65,10 @@ namespace Reko.Arch.SuperH
                 case '-': // predecrement
                     reg = Register(format[++i], uInstr);
                     ops[iop] = MemoryOperand.IndirectPreDecr(GetWidth(format[++i]), reg);
+                    break;
+                case '+': // postdecrement
+                    reg = Register(format[++i], uInstr);
+                    ops[iop] = MemoryOperand.IndirectPostIncr(GetWidth(format[++i]), reg);
                     break;
                 case 'd':
                     ops[iop] = DfpRegister(format[++i], uInstr);
@@ -96,10 +101,16 @@ namespace Reko.Arch.SuperH
                     break;
                 case 'D':   // indirect with displacement
                     reg = Register(format[++i], uInstr);
-                    ops[iop] = MemoryOperand.IndirectDisplacement(GetWidth(format[++i]), reg, (byte)uInstr);
+                    width = GetWidth(format[++i]);
+                    ops[iop] = MemoryOperand.IndirectDisplacement(width, reg, (uInstr & 0xF) * width.Size);
+                    break;
+                case 'X':   // indirect indexed
+                    reg = Register(format[++i], uInstr);
+                    ops[iop] = MemoryOperand.IndexedIndirect(GetWidth(format[++i]), reg);
                     break;
                 case 'P':   // PC-relative with displacement
-                    ops[i] = MemoryOperand.PcRelativeDisplacement(GetWidth(format[++i]), (byte)uInstr);
+                    width = GetWidth(format[++i]);
+                    ops[iop] = MemoryOperand.PcRelativeDisplacement(width, width.Size * (byte)uInstr);
                     break;
                 case 'R':
                     ++i;
@@ -138,7 +149,7 @@ namespace Reko.Arch.SuperH
             else if (w == 'l')
                 return PrimitiveType.Word32;
             else 
-                throw new NotImplementedException();
+                throw new NotImplementedException(string.Format("{0}", w));
         }
 
         public static uint? HexDigit(char digit)
@@ -246,24 +257,44 @@ namespace Reko.Arch.SuperH
         private static OprecBase[] oprecs = new OprecBase[]
         {
             // 0...
-            new OprecField(0, 8, new Dictionary<int, OprecBase>
+            new OprecField(0, 4, new Dictionary<int, OprecBase>
             {
-                { 0x03, new Oprec(Opcode.bsrf, "r1") },
-                { 0x04, new Oprec(Opcode.clrt, "") },
-                { 0x09, new Oprec(Opcode.nop, "") },
-                { 0x0B, new Oprec(Opcode.rts, "") },
-                { 0x19, new Oprec(Opcode.div0u, "") },
-                { 0x23, new Oprec(Opcode.braf, "r1") },
-                { 0x28, new Oprec(Opcode.clrmac, "") },
-                { 0x3B, new Oprec(Opcode.brk, "") },
-                { 0x48, new Oprec(Opcode.clrs, "") },
+                { 0x03, new OprecField(4, 4, new Dictionary<int, OprecBase>
+                    {
+                        { 0x0, new Oprec( Opcode.bsrf, "r1") },
+                        { 0x2, new Oprec(Opcode.braf, "r1") },
+                    })
+                },
+                { 0x4, new Oprec(Opcode.mov_b, "r2,X1b") },
+                { 0x5, new Oprec(Opcode.mov_w, "r2,X1w") },
+                { 0x6, new Oprec(Opcode.mov_l, "r2,X1l") },
+                { 0x8, new OprecField(4, 4, new Dictionary<int, OprecBase>
+                    {
+                        { 0x0, new Oprec(Opcode.clrt, "") },
+                        { 0x2, new Oprec(Opcode.clrmac, "") },
+                        { 0x4, new Oprec(Opcode.clrs, "") },
+                    })
+                },
+                { 0x09, new OprecField(4, 4, new Dictionary<int, OprecBase>
+                    {
+                        { 0x0, new Oprec(Opcode.nop, "") },
+                        { 0x1, new Oprec(Opcode.div0u, "") },
+                    })
+                },
+                { 0x0B, new OprecField(4, 4, new Dictionary<int, OprecBase>
+                    {
+                        { 0x0, new Oprec(Opcode.rts, "") },
+                        { 0x3, new Oprec(Opcode.brk, "") },
+                    })
+                },
+                { 0xE, new Oprec(Opcode.mov_l, "X2l,r1") }
             }),
             new Oprec(Opcode.mov_l, "r2,D1l"),
             // 2...
             new Oprec4Bits(0, new OprecBase[]
             {
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.mov_b, "r2,@1b"),
+                new Oprec(Opcode.mov_w, "r2,@1w"),
                 new Oprec(Opcode.mov_l, "r2,@1l"),
                 new Oprec(Opcode.invalid, ""),
 
@@ -274,8 +305,8 @@ namespace Reko.Arch.SuperH
 
                 new Oprec(Opcode.tst, "r2,r1"),
                 new Oprec(Opcode.and, "r2,r1"),
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.xor, "r2,r1"),
+                new Oprec(Opcode.or, "r2,r1"),
 
                 new Oprec(Opcode.cmp_str, "r2,r1"),
                 new Oprec(Opcode.invalid, ""),
@@ -295,7 +326,7 @@ namespace Reko.Arch.SuperH
                 new Oprec(Opcode.cmp_hi, "r2,r1"),
                 new Oprec(Opcode.cmp_gt, "r2,r1"),
 
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.sub, "r2,r1"),
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
@@ -309,30 +340,38 @@ namespace Reko.Arch.SuperH
             // 4...
             new OprecField(0, 8, new Dictionary<int, OprecBase>
             {
-                { 0x15, new Oprec(Opcode.cmp_pl, "r1") },
+                { 0x00, new Oprec(Opcode.shll, "r1") },
+                { 0x01, new Oprec(Opcode.shlr, "r1") },
+                { 0x08, new Oprec(Opcode.shll2, "r1") },
+                { 0x09, new Oprec(Opcode.shlr, "r1") },
+                { 0x0B, new Oprec(Opcode.jsr, "@1l") },
                 { 0x10, new Oprec(Opcode.dt, "r1") },
                 { 0x11, new Oprec(Opcode.cmp_pz, "r1") },
+                { 0x15, new Oprec(Opcode.cmp_pl, "r1") },
+                { 0x18, new Oprec(Opcode.shll8, "r1") },
+                { 0x19, new Oprec(Opcode.shlr8, "r1") },
                 { 0x22, new Oprec(Opcode.sts_l, "RP,-1l") },
+                { 0x26, new Oprec(Opcode.lds_l, "+1l,RP") },
                 { 0x2B, new Oprec(Opcode.jmp, "@1l") },
             }),
-            new Oprec(Opcode.invalid, ""),
+            new Oprec(Opcode.mov_l, "D2l,r1"),
             // 6...
             new Oprec4Bits(0, new[]
             {
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.mov_b, "@2b,r1"),
+                new Oprec(Opcode.mov_w, "@2w,r1"),
+                new Oprec(Opcode.mov_l, "@2l,r1"),
                 new Oprec(Opcode.mov, "r2,r1"),
 
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.mov_b, "+2b,r1"),
+                new Oprec(Opcode.mov_w, "+2w,r1"),
+                new Oprec(Opcode.mov_l, "+2l,r1"),
+                new Oprec(Opcode.not, "r2,r1"),
 
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.neg, "r2,r1"),
 
                 new Oprec(Opcode.extu_b, "r2,r1"),
                 new Oprec(Opcode.extu_w, "r2,r1"),
@@ -348,8 +387,8 @@ namespace Reko.Arch.SuperH
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
 
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.mov_b, "D2b,R0"),
+                new Oprec(Opcode.mov_w, "D2w,R0"),
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
 
@@ -363,11 +402,11 @@ namespace Reko.Arch.SuperH
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.bf_s, "j"),
             }),
-            new Oprec(Opcode.invalid, ""),
+            new Oprec(Opcode.mov_w, "Pw,r1"),
             new Oprec(Opcode.bra, "J"),
             new Oprec(Opcode.bsr, "J"),
 
-            // 0C
+            // C...
             new Oprec4Bits(8, new OprecBase[]
             {
                 new Oprec(Opcode.invalid, ""),
@@ -378,9 +417,9 @@ namespace Reko.Arch.SuperH
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.mova, "Pl,R0"),
 
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.tst, "I,R0"),
                 new Oprec(Opcode.and, "I,R0"),
                 new Oprec(Opcode.invalid, ""),
                 new Oprec(Opcode.invalid, ""),
