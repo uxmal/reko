@@ -91,7 +91,7 @@ namespace Reko.Arch.SuperH
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new SuperHRewriter(rdr, (SuperHState)state, frame, host);
+            return new SuperHRewriter(this, rdr, (SuperHState)state, frame, host);
         }
 
         public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)

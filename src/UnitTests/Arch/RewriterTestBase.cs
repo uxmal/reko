@@ -38,6 +38,12 @@ namespace Reko.UnitTests.Arch
             instructions = RewriteCode(words);
         }
 
+        protected virtual MemoryArea RewriteCode(string hexBytes)
+        {
+            Assert.Fail();
+            return null;
+        }
+
         protected virtual MemoryArea RewriteCode(uint [] words)
         {
             Assert.Fail();

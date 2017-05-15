@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     public class Tlcs900RewriterTests : RewriterTestBase
     {
         private SuperHArchitecture arch = new SuperHArchitecture();
-        private Address baseAddr = Address.Ptr32(0x0010000);
+        private Address baseAddr = Address.Ptr32(0x00100000);
         private SuperHState state;
         private MemoryArea image;
 
@@ -70,391 +70,650 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void SHRw_add_imm_rn()
         {
-            AssertCode("add\t#FF,r3", "FF73");
+            RewriteCode("FF73"); // add\t#FF,r3
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r3 = r3 + 0xFFFFFFFF");
         }
 
         [Test]
         public void SHRw_add_rm_rn()
         {
-            AssertCode("add\tr4,r2", "4C32");
+            RewriteCode("4C32"); // add\tr4,r2
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_addc_rm_rn()
         {
-            AssertCode("addc\tr4,r2", "4E32");
+            RewriteCode("4E32"); // addc\tr4,r2
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_addv_rm_rn()
         {
-            AssertCode("addv\tr4,r2", "4F32");
+            RewriteCode("4F32"); // addv\tr4,r2
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_and_rm_rn()
         {
-            AssertCode("and\tr4,r3", "4923");
+            RewriteCode("4923"); // and\tr4,r3
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_and_imm_r0()
         {
-            AssertCode("and\t#F0,r0", "F0C9");
+            RewriteCode("F0C9"); // and\t#F0,r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_and_b_imm_r0()
         {
-            AssertCode("and.b\t#F0,@(r0,gbr)", "F0CD");
+            RewriteCode("F0CD"); // and.b\t#F0,@(r0,gbr)
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_bf()
         {
-            AssertCode("bf\t0000FFE4", "F08B");
+            RewriteCode("F08B"); // bf\t0000FFE4
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_bf_s()
         {
-            AssertCode("bf/s\t0000FFE4", "F08F");
+            RewriteCode("F08F"); // bf/s\t0000FFE4
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_bra()
         {
-            AssertCode("bra\t0000FFE4", "F0AF");
+            RewriteCode("F0AF"); // bra\t0000FFE4
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_braf_reg()
         {
-            AssertCode("braf\tr1", "2301");
+            RewriteCode("2301"); // braf\tr1
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_brk()
         {
-            AssertCode("brk", "3B00");
+            RewriteCode("3B00"); // brk
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_bsr()
         {
-            AssertCode("bsr\t0000FFE4", "F0BF");
+            RewriteCode("F0BF"); // bsr\t0000FFE4
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_bsrf()
         {
-            AssertCode("bsrf\tr1", "0301");
+            RewriteCode("0301"); // bsrf\tr1
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_bt()
         {
-            AssertCode("bt\t0000FFE4", "F089");
+            RewriteCode("F089"); // bt\t0000FFE4
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_bt_s()
         {
-            AssertCode("bt/s\t0000FFE4", "F08D");
+            RewriteCode("F08D"); // bt/s\t0000FFE4
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_clrmac()
         {
-            AssertCode("clrmac", "2800");
+            RewriteCode("2800"); // clrmac
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_cmpeq()
         {
-            AssertCode("cmp/eq\tr4,r5", "4035");
+            RewriteCode("4035"); // cmp/eq\tr4,r5
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_cmpeq_imm()
         {
-            AssertCode("cmp/eq\t#F0,r0", "F088");
+            RewriteCode("F088"); // cmp/eq\t#F0,r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_div0s()
         {
-            AssertCode("div0s\tr4,r3", "4723");
+            RewriteCode("4723"); // div0s\tr4,r3
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_div0u()
         {
-            AssertCode("div0u", "1900");
+            RewriteCode("1900"); // div0u
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_div1()
         {
-            AssertCode("div1\tr4,r3", "4433");
+            RewriteCode("4433"); // div1\tr4,r3
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_dmuls_l()
         {
-            AssertCode("dmuls.l\tr4,r3", "4D33");
+            RewriteCode("4D33"); // dmuls.l\tr4,r3
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_dt()
         {
-            AssertCode("dt\tr15", "104F");
+            RewriteCode("104F"); // dt\tr15
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_exts_b()
         {
-            AssertCode("exts.b\tr15,r14", "FE6E");
+            RewriteCode("FE6E"); // exts.b\tr15,r14
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_exts_w()
         {
-            AssertCode("exts.w\tr15,r14", "FF6E");
+            RewriteCode("FF6E"); // exts.w\tr15,r14
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_extu_b()
         {
-            AssertCode("extu.b\tr15,r14", "FC6E");
+            RewriteCode("FC6E"); // extu.b\tr15,r14
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_extu_w()
         {
-            AssertCode("extu.w\tr15,r14", "FD6E");
+            RewriteCode("FD6E"); // extu.w\tr15,r14
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fabs_dr()
         {
-            AssertCode("fabs\tdr14", "5DFE");
+            RewriteCode("5DFE"); // fabs\tdr14
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fabs_fr()
         {
-            AssertCode("fabs\tfr15", "5DFF");
+            RewriteCode("5DFF"); // fabs\tfr15
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fadd_dr()
         {
-            AssertCode("fadd\tdr12,dr14", "C0FE");
+            RewriteCode("C0FE"); // fadd\tdr12,dr14
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fadd_fr()
         {
-            AssertCode("fadd\tfr12,fr15", "C0FF");
+            RewriteCode("C0FF"); // fadd\tfr12,fr15
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fcmp_eq_dr()
         {
-            AssertCode("fcmp/eq\tdr12,dr14", "C4FE");
+            RewriteCode("C4FE"); // fcmp/eq\tdr12,dr14
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fcmp_eq_fr()
         {
-            AssertCode("fcmp/eq\tfr12,fr15", "C4FF");
+            RewriteCode("C4FF"); // fcmp/eq\tfr12,fr15
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fcmp_gt_dr()
         {
-            AssertCode("fcmp/gt\tdr12,dr14", "C5FE");
+            RewriteCode("C5FE"); // fcmp/gt\tdr12,dr14
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fcmp_gt_fr()
         {
-            AssertCode("fcmp/gt\tfr12,fr15", "C5FF");
+            RewriteCode("C5FF"); // fcmp/gt\tfr12,fr15
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fcnvds()
         {
-            AssertCode("fcnvds\tdr14,fpul", "BDFE");
+            RewriteCode("BDFE"); // fcnvds\tdr14,fpul
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fcnvsd()
         {
-            AssertCode("fcnvsd\tfpul,dr14", "ADFE");
+            RewriteCode("ADFE"); // fcnvsd\tfpul,dr14
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fdiv_dr()
         {
-            AssertCode("fdiv\tdr12,dr14", "C3FE");
+            RewriteCode("C3FE"); // fdiv\tdr12,dr14
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fdiv_fr()
         {
-            AssertCode("fdiv\tfr12,fr15", "C3FF");
+            RewriteCode("C3FF"); // fdiv\tfr12,fr15
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fipr()
         {
-            AssertCode("fipr\tfv8,fv12", "EDFE");
+            RewriteCode("EDFE"); // fipr\tfv8,fv12
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_flds()
         {
-            AssertCode("flds\tfr8,fpul", "1DF8");
+            RewriteCode("1DF8"); // flds\tfr8,fpul
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fldi0()
         {
-            AssertCode("fldi0\tfr8", "8DF8");
+            RewriteCode("8DF8"); // fldi0\tfr8
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_fldi1()
         {
-            AssertCode("fldi1\tfr8", "9DF8");
+            RewriteCode("9DF8"); // fldi1\tfr8
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_jmp_r()
         {
-            AssertCode("jmp\t@r0", "2B40");
+            RewriteCode("2B40"); // jmp\t@r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_lds_l_pr()
         {
-            AssertCode("lds.l\t@r15+,pr", "264F");
+            RewriteCode("264F"); // lds.l\t@r15+,pr
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_mov_I_r()
         {
-            AssertCode("mov\t#FF,r1", "FFE1");
+            RewriteCode("FFE1"); // mov\t#FF,r1
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_mov_l_predec()
         {
-            AssertCode("mov.l\tr8,@-r15", "862F");
+            RewriteCode("862F"); // mov.l\tr8,@-r15
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_mov_l_disp_pc()
         {
-            AssertCode("mov.l\t@(08,pc),r0", "02D0");
+            RewriteCode("02D0"); // mov.l\t@(08,pc),r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_mov_l_indexed_r()
         {
-            AssertCode("mov.l\t@(r0,r12),r1", "CE 01");
+            RewriteCode("CE 01"); // mov.l\t@(r0,r12),r1
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_mov_l_r_indexed()
         {
-            AssertCode("mov.l\t@(8,r6),r2", "62 52");
+            RewriteCode("62 52"); // mov.l\t@(8,r6),r2
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_mov_l_indirect_r()
         {
-            AssertCode("mov.l\t@r1,r2", "12 62");
+            RewriteCode("12 62"); // mov.l\t@r1,r2
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_mov_r_r()
         {
-            AssertCode("mov\tr7,r4", "7364");
+            RewriteCode("7364"); // mov\tr7,r4
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_mov_w_indirect_r()
         {
-            AssertCode("mov.w\tr0,@(r0,r0)", "0500");
+            RewriteCode("0500"); // mov.w\tr0,@(r0,r0)
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_mov()
         {
-            AssertCode("mov.l\t@r8+,r9", "8669");
+            RewriteCode("8669"); // mov.l\t@r8+,r9
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_mov_w_pc()
         {
-            AssertCode("mov.w\t@(66,pc),r0", "3390");
+            RewriteCode("3390"); // mov.w\t@(66,pc),r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_mova()
         {
-            AssertCode("mova\t@(F8,pc),r0", "3E C7");
+            RewriteCode("3E C7"); // mova\t@(F8,pc),r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_nop()
         {
-            AssertCode("nop", "0900");
+            RewriteCode("0900"); // nop
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_neg()
         {
-            AssertCode("neg\tr0,r0", "0B60");
+            RewriteCode("0B60"); // neg\tr0,r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_not()
         {
-            AssertCode("not\tr9,r0", "9760");
+            RewriteCode("9760"); // not\tr9,r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_rts()
         {
-            AssertCode("rts", "0B00");
+            RewriteCode("0B00"); // rts
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_shll2()
         {
-            AssertCode("shll2\tr0", "0840");
+            RewriteCode("0840"); // shll2\tr0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_sts_l_pr_predec()
         {
-            AssertCode("sts.l\tpr,@-r15", "224F");
+            RewriteCode("224F"); // sts.l\tpr,@-r15
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_tst_imm()
         {
-            AssertCode("tst\t#01,r0", "01C8");
+            RewriteCode("01C8"); // tst\t#01,r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         [Test]
         public void SHRw_tst_r_r()
         {
-            AssertCode("tst\tr6,r6", "6826");
+            RewriteCode("6826"); // tst\tr6,r6
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+
         }
 
         /*

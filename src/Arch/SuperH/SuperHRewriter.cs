@@ -26,6 +26,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 using Reko.Core;
+using System.Diagnostics;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
 
 namespace Reko.Arch.SuperH
 {
@@ -35,6 +38,7 @@ namespace Reko.Arch.SuperH
         private IStorageBinder binder;
         private IRewriterHost host;
         private SuperHState state;
+        private EndianImageReader rdr;
         private IEnumerator<SuperHInstruction> dasm;
         private SuperHInstruction instr;
         private RtlEmitter m;
@@ -43,6 +47,7 @@ namespace Reko.Arch.SuperH
         public SuperHRewriter(SuperHArchitecture arch, EndianImageReader rdr, SuperHState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
+            this.rdr = rdr;
             this.state = state;
             this.binder = binder;
             this.host = host;
@@ -55,12 +60,14 @@ namespace Reko.Arch.SuperH
             {
                 this.instr = dasm.Current;
                 this.rtlc = new RtlInstructionCluster(instr.Address, instr.Length);
+                this.m = new RtlEmitter(rtlc.Instructions);
                 switch (instr.Opcode)
                 {
                 case Opcode.invalid:
                 default:
                     Invalid();
                     break;
+                case Opcode.add: RewriteBinOp(m.IAdd, n => (sbyte)n); break;
                 }
                 yield return rtlc;
             }
@@ -73,7 +80,73 @@ namespace Reko.Arch.SuperH
 
         private void Invalid()
         {
+            EmitUnitTest();
+            host.Error(
+                dasm.Current.Address,
+                string.Format(
+                    "Rewriting of SuperH instruction {0} not implemented yet.",
+                dasm.Current.Opcode));
 
+            rtlc = new RtlInstructionCluster(this.rtlc.Address, this.rtlc.Length);
+            rtlc.Instructions.Add(new RtlInvalid());
         }
+
+        [Conditional("DEBUG")]
+        private void EmitUnitTest()
+        {
+            //if (seen.Contains(dasm.Current.Opcode))
+            //    return;
+            //seen.Add(dasm.Current.Opcode);
+
+            var r2 = rdr.Clone();
+            r2.Offset -= dasm.Current.Length;
+            var bytes = r2.ReadBytes(dasm.Current.Length);
+            Debug.WriteLine("        [Test]");
+            Debug.WriteLine("        public void SHRw_" + dasm.Current.Opcode + "()");
+            Debug.WriteLine("        {");
+            Debug.Write("            BuildTest(");
+            Debug.Write(string.Join(
+                ", ",
+                bytes.Select(b => string.Format("0x{0:X2}", (int)b))));
+            Debug.WriteLine(");\t// " + dasm.Current.ToString());
+            Debug.WriteLine("            AssertCode(");
+            Debug.WriteLine("                \"0|L--|00100000(2): 1 instructions\",");
+            Debug.WriteLine("                \"1|L--|@@@\");");
+            Debug.WriteLine("        }");
+            Debug.WriteLine("");
+        }
+
+        private Expression SrcOp(MachineOperand op, Func<int, int> immediateFn)
+        {
+            var immOp = op as ImmediateOperand;
+            if (immOp != null)
+            {
+                return Constant.Word32(immediateFn(immOp.Value.ToInt32()));
+            }
+            throw new NotImplementedException();
+        }
+
+        private Expression DstOp(MachineOperand op, Expression src, Func<Expression, Expression, Expression> fn)
+        {
+            var regOp = op as RegisterOperand;
+            if (regOp != null)
+            {
+                var id = binder.EnsureRegister(regOp.Register);
+                m.Assign(id, fn(id, src));
+                return id;
+            }
+            throw new NotImplementedException();
+        }
+
+        private void RewriteBinOp(
+            Func<Expression, Expression, Expression> fn,
+            Func<int, int> immediateFn)
+        {
+            rtlc.Class = RtlClass.Linear;
+            var src = SrcOp(instr.op1, immediateFn);
+            var dst = DstOp(instr.op2, src, fn);
+        }
+
+     
     }
 }
