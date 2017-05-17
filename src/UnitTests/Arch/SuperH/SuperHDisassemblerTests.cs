@@ -399,6 +399,12 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void SHDis_mul_l()
+        {
+            AssertCode("mul.l\tr1,r5", "1705");
+        }
+
+        [Test]
         public void SHDis_nop()
         {
             AssertCode("nop", "0900");

@@ -268,6 +268,7 @@ namespace Reko.Arch.SuperH
                 { 0x4, new Oprec(Opcode.mov_b, "r2,X1b") },
                 { 0x5, new Oprec(Opcode.mov_w, "r2,X1w") },
                 { 0x6, new Oprec(Opcode.mov_l, "r2,X1l") },
+                { 0x7, new Oprec(Opcode.mul_l, "r2,r1") },
                 { 0x8, new OprecField(4, 4, new Dictionary<int, OprecBase>
                     {
                         { 0x0, new Oprec(Opcode.clrt, "") },
@@ -275,10 +276,11 @@ namespace Reko.Arch.SuperH
                         { 0x4, new Oprec(Opcode.clrs, "") },
                     })
                 },
-                { 0x09, new OprecField(4, 4, new Dictionary<int, OprecBase>
+                { 0x9, new OprecField(4, 4, new Dictionary<int, OprecBase>
                     {
                         { 0x0, new Oprec(Opcode.nop, "") },
                         { 0x1, new Oprec(Opcode.div0u, "") },
+                        { 0x2, new Oprec(Opcode.movt, "r1") },
                     })
                 },
                 { 0xB, new OprecField(4, 4, new Dictionary<int, OprecBase>

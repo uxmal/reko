@@ -87,6 +87,14 @@ namespace Reko.Arch.SuperH
 
         public static RegisterStorage fpul = new RegisterStorage("fpul", 17, 0, PrimitiveType.Word32);
         public static RegisterStorage pr = new RegisterStorage("pr", 18, 0, PrimitiveType.Word32);
+        public static RegisterStorage gbr = new RegisterStorage("gbr", 19, 0, PrimitiveType.Word32);
+        public static RegisterStorage mac = new RegisterStorage("mac", 20, 0, PrimitiveType.Word64);
+        public static RegisterStorage macl = new RegisterStorage("macl", 20, 0, PrimitiveType.Word32);
+        public static RegisterStorage mach = new RegisterStorage("mach", 20, 32, PrimitiveType.Word32);
+
+        public static FlagRegister sr = new FlagRegister("sr", 21, PrimitiveType.Word32);
+
+        public static FlagGroupStorage T = new FlagGroupStorage(sr, 1, "T", PrimitiveType.Bool);
 
         public static RegisterStorage[] gpregs = new[]
         {

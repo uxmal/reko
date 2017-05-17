@@ -52,32 +52,27 @@ namespace Reko.Arch.SuperH
 
         public override void OnAfterCall(FunctionType sigCallee)
         {
-            throw new NotImplementedException();
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new NotImplementedException();
+            return new CallSite(0, 0);
         }
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new NotImplementedException();
         }
     }
 }

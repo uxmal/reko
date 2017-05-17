@@ -41,15 +41,15 @@ namespace Reko.Arch.SuperH
         {
         }
 
-        public static MemoryOperand Indirect(PrimitiveType w, Reg r)                     { return new MemoryOperand(w) { mode = AddressingMode.Indirect, reg = r }; }
-        public static MemoryOperand IndirectPostIncr(PrimitiveType w, Reg r)             { return new MemoryOperand(w) { mode = AddressingMode.IndirectPostIncr, reg = r }; }
-        public static MemoryOperand IndirectPreDecr(PrimitiveType w, Reg r)              { return new MemoryOperand(w) { mode = AddressingMode.IndirectPreDecr, reg = r }; }
+        public static MemoryOperand Indirect(PrimitiveType w, Reg r)                    { return new MemoryOperand(w) { mode = AddressingMode.Indirect, reg = r }; }
+        public static MemoryOperand IndirectPostIncr(PrimitiveType w, Reg r)            { return new MemoryOperand(w) { mode = AddressingMode.IndirectPostIncr, reg = r }; }
+        public static MemoryOperand IndirectPreDecr(PrimitiveType w, Reg r)             { return new MemoryOperand(w) { mode = AddressingMode.IndirectPreDecr, reg = r }; }
         public static MemoryOperand IndirectDisplacement(PrimitiveType w, Reg r, int d) { return new MemoryOperand(w) { mode = AddressingMode.IndirectDisplacement, reg = r, disp = d }; }
-        public static MemoryOperand IndexedIndirect(PrimitiveType w, Reg r)              { return new MemoryOperand(w) { mode = AddressingMode.IndexedIndirect, reg = r }; }
+        public static MemoryOperand IndexedIndirect(PrimitiveType w, Reg r)             { return new MemoryOperand(w) { mode = AddressingMode.IndexedIndirect, reg = r }; }
         public static MemoryOperand GbrIndirectDisplacement(PrimitiveType w, int d)     { return new MemoryOperand(w) { mode = AddressingMode.GbrIndirectDisplacement, disp = d }; }
-        public static MemoryOperand GbrIndexedIndirect(PrimitiveType w)                  { return new MemoryOperand(w) { mode = AddressingMode.GbrIndexedIndirect }; }
+        public static MemoryOperand GbrIndexedIndirect(PrimitiveType w)                 { return new MemoryOperand(w) { mode = AddressingMode.GbrIndexedIndirect }; }
         public static MemoryOperand PcRelativeDisplacement(PrimitiveType w, int d)      { return new MemoryOperand(w) { mode = AddressingMode.PcRelativeDisplacement, disp = d }; }
-        public static MemoryOperand PcRelative(PrimitiveType w, int d)                   { return new MemoryOperand(w) { mode = AddressingMode.PcRelative, disp = d }; }
+        public static MemoryOperand PcRelative(PrimitiveType w, int d)                  { return new MemoryOperand(w) { mode = AddressingMode.PcRelative, disp = d }; }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

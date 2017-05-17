@@ -75,6 +75,7 @@ namespace Reko.Arch.SuperH
             { Opcode.mov_b, "mov.b" },
             { Opcode.mov_l, "mov.l" },
             { Opcode.mov_w, "mov.w" },
+            { Opcode.mul_l, "mul.l" },
             { Opcode.sts_l, "sts.l" },
         };
 

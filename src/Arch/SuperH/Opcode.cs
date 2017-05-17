@@ -83,6 +83,8 @@ namespace Reko.Arch.SuperH
         mov_w,
         mov_l,
         mova,
+        movt,
+        mul_l,
         neg,
         nop,
         not,

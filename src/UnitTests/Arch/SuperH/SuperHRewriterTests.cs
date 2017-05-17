@@ -31,7 +31,7 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Tlcs
 {
     [TestFixture]
-    public class Tlcs900RewriterTests : RewriterTestBase
+    public class SuperHRewriterTests : RewriterTestBase
     {
         private SuperHArchitecture arch = new SuperHArchitecture();
         private Address baseAddr = Address.Ptr32(0x00100000);
@@ -82,8 +82,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("4C32"); // add\tr4,r2
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|r2 = r2 + r4");
         }
 
         [Test]
@@ -92,8 +91,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("4E32"); // addc\tr4,r2
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|r2 = r2 + r4 + T");
         }
 
         [Test]
@@ -101,9 +99,9 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("4F32"); // addv\tr4,r2
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|r2 = r2 + r4",
+                "2|L--|T = Test(OV,r2)");
         }
 
         [Test]
@@ -112,7 +110,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("4923"); // and\tr4,r3
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r3 = r3 & r4");
 
         }
 
@@ -122,7 +120,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("F0C9"); // and\t#F0,r0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r0 = r0 & 0x000000F0");
 
         }
 
@@ -131,29 +129,27 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("F0CD"); // and.b\t#F0,@(r0,gbr)
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|v2 = Mem0[r0 + gbr:byte]",
+                "2|L--|Mem0[r0 + gbr:byte] = v2 & 0x000000F0");
         }
 
         [Test]
         public void SHRw_bf()
         {
-            RewriteCode("F08B"); // bf\t0000FFE4
+            RewriteCode("F08B"); // bf\t000FFFE4
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (!T) branch 000FFFE4");
         }
 
         [Test]
         public void SHRw_bf_s()
         {
-            RewriteCode("F08F"); // bf/s\t0000FFE4
+            RewriteCode("F08F"); // bf/s\t000FFFE4
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+               "0|TD-|00100000(2): 1 instructions",
+               "1|TD-|if (!T) branch 000FFFE4");
         }
 
         [Test]
@@ -161,9 +157,8 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("F0AF"); // bra\t0000FFE4
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|TD-|00100000(2): 1 instructions",
+                "1|TD-|goto 000FFFE4");
         }
 
         [Test]
@@ -171,9 +166,8 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("2301"); // braf\tr1
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|TD-|00100000(2): 1 instructions",
+                "1|TD-|goto 0x00100004 + r1");
         }
 
         [Test]
@@ -182,8 +176,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("3B00"); // brk
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|__brk()");
         }
 
         [Test]
@@ -191,9 +184,8 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("F0BF"); // bsr\t0000FFE4
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|TD-|00100000(2): 1 instructions",
+                "1|TD-|call 000FFFE4 (0)");
         }
 
         [Test]
@@ -201,9 +193,8 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("0301"); // bsrf\tr1
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|TD-|00100000(2): 1 instructions",
+                "1|TD-|call 0x00100004 + r1 (0)");
         }
 
         [Test]
@@ -211,9 +202,8 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("F089"); // bt\t0000FFE4
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (T) branch 000FFFE4");
         }
 
         [Test]
@@ -221,9 +211,8 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("F08D"); // bt/s\t0000FFE4
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|TD-|00100000(2): 1 instructions",
+                "1|TD-|if (T) branch 000FFFE4");
         }
 
         [Test]
@@ -232,8 +221,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("2800"); // clrmac
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|mac = 0x0000000000000000");
         }
 
         [Test]
@@ -242,8 +230,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("4035"); // cmp/eq\tr4,r5
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|T = r5 == r4");
         }
 
         [Test]
@@ -252,38 +239,37 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("F088"); // cmp/eq\t#F0,r0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|T = r0 == 0xFFFFFFF0");
         }
 
         [Test]
+        [Ignore("Wait until encountering this in real code")]
         public void SHRw_div0s()
         {
             RewriteCode("4723"); // div0s\tr4,r3
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
-
         }
 
         [Test]
+        [Ignore("Wait until encountering this in real code")]
         public void SHRw_div0u()
         {
             RewriteCode("1900"); // div0u
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
-
         }
 
         [Test]
+        [Ignore("Wait until encountering this in real code")]
         public void SHRw_div1()
         {
             RewriteCode("4433"); // div1\tr4,r3
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
-
         }
 
         [Test]
@@ -292,8 +278,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("4D33"); // dmuls.l\tr4,r3
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|mac = r3 *s r4");
         }
 
         [Test]
@@ -301,9 +286,9 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("104F"); // dt\tr15
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|r15 = r15 - 0x00000001",
+                "2|L--|T = r15 == 0x00000000");
         }
 
         [Test]
@@ -312,8 +297,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("FE6E"); // exts.b\tr15,r14
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|r14 = (int8) r15");
         }
 
         [Test]
@@ -322,8 +306,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("FF6E"); // exts.w\tr15,r14
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|r14 = (int16) r15");
         }
 
         [Test]
@@ -332,8 +315,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("FC6E"); // extu.b\tr15,r14
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|r14 = (byte) r15");
         }
 
         [Test]
@@ -342,7 +324,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("FD6E"); // extu.w\tr15,r14
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r14 = (uint16) r15");
 
         }
 
@@ -352,8 +334,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("5DFE"); // fabs\tdr14
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|dr14 = fabs(dr14)");
         }
 
         [Test]
@@ -362,8 +343,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("5DFF"); // fabs\tfr15
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|fr15 = fabs(fr15)");
         }
 
         [Test]
@@ -372,8 +352,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("C0FE"); // fadd\tdr12,dr14
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|dr14 = dr14 + dr12");
         }
 
         [Test]
@@ -382,8 +361,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("C0FF"); // fadd\tfr12,fr15
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|fr15 = fr15 + fr12");
         }
 
         [Test]
@@ -392,8 +370,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("C4FE"); // fcmp/eq\tdr12,dr14
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|T = dr14 == dr12");
         }
 
         [Test]
@@ -402,8 +379,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("C4FF"); // fcmp/eq\tfr12,fr15
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|T = fr15 == fr12");
         }
 
         [Test]
@@ -412,8 +388,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("C5FE"); // fcmp/gt\tdr12,dr14
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|T = dr14 > dr12");
         }
 
         [Test]
@@ -422,8 +397,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("C5FF"); // fcmp/gt\tfr12,fr15
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|T = fr15 > fr12");
         }
 
         [Test]
@@ -432,8 +406,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("BDFE"); // fcnvds\tdr14,fpul
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|fpul = (real32) dr14");
         }
 
         [Test]
@@ -442,8 +415,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("ADFE"); // fcnvsd\tfpul,dr14
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|dr14 = (real64) fpul");
         }
 
         [Test]
@@ -452,8 +424,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("C3FE"); // fdiv\tdr12,dr14
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|dr14 = dr14 / dr12");
         }
 
         [Test]
@@ -462,18 +433,17 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("C3FF"); // fdiv\tfr12,fr15
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|fr15 = fr15 / fr12");
         }
 
         [Test]
+        [Ignore("Wait until encountering this in real code")]
         public void SHRw_fipr()
         {
             RewriteCode("EDFE"); // fipr\tfv8,fv12
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
-
         }
 
         [Test]
@@ -482,8 +452,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("1DF8"); // flds\tfr8,fpul
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|fpul = fr8");
         }
 
         [Test]
@@ -492,8 +461,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("8DF8"); // fldi0\tfr8
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|fr8 = 0.0F");
         }
 
         [Test]
@@ -502,8 +470,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("9DF8"); // fldi1\tfr8
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|fr8 = 1.0F");
         }
 
         [Test]
@@ -511,9 +478,8 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("2B40"); // jmp\t@r0
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|TD-|00100000(2): 1 instructions",
+                "1|TD-|goto r0");
         }
 
         [Test]
@@ -521,9 +487,10 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("264F"); // lds.l\t@r15+,pr
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|L--|00100000(2): 3 instructions",
+                "1|L--|v2 = Mem0[r15:word32]",
+                "2|L--|r15 = r15 + 4",
+                "3|L--|pr = v2");
         }
 
         [Test]
@@ -532,8 +499,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("FFE1"); // mov\t#FF,r1
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|r1 = 0xFFFFFFFF");
         }
 
         [Test]
@@ -541,9 +507,9 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("862F"); // mov.l\tr8,@-r15
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|r15 = r15 - 4",
+                "2|L--|Mem0[r15:word32] = r8");
         }
 
         [Test]
@@ -552,8 +518,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("02D0"); // mov.l\t@(08,pc),r0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|r0 = Mem0[0x0010000C:word32]");
         }
 
         [Test]
@@ -562,8 +527,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("CE 01"); // mov.l\t@(r0,r12),r1
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|r1 = Mem0[r0 + r12:word32]");
         }
 
         [Test]
@@ -572,7 +536,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("62 52"); // mov.l\t@(8,r6),r2
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r2 = Mem0[r6 + 8:word32]");
 
         }
 
@@ -582,7 +546,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("12 62"); // mov.l\t@r1,r2
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r2 = Mem0[r1:word32]");
 
         }
 
@@ -592,7 +556,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("7364"); // mov\tr7,r4
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r4 = r7");
 
         }
 
@@ -602,8 +566,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("0500"); // mov.w\tr0,@(r0,r0)
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|Mem0[r0 + r0:word16] = r0");
         }
 
         [Test]
@@ -611,9 +574,10 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("8669"); // mov.l\t@r8+,r9
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|L--|00100000(2): 3 instructions",
+                "1|L--|v2 = Mem0[r8:word32]",
+                "2|L--|r8 = r8 + 4",
+                "3|L--|r9 = v2");
         }
 
         [Test]
@@ -622,8 +586,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("3390"); // mov.w\t@(66,pc),r0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|r0 = Mem0[0x0010006A:word16]");
         }
 
         [Test]
@@ -632,8 +595,16 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("3E C7"); // mova\t@(F8,pc),r0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r0 = 001000FC");
+        }
 
+        [Test]
+        public void SHRw_movt()
+        {
+            RewriteCode("29 00"); // movt\tr0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = (int32) T");
         }
 
         [Test]
@@ -642,8 +613,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("0900"); // nop
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|nop");
         }
 
         [Test]
@@ -652,8 +622,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("0B60"); // neg\tr0,r0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|r0 = -r0");
         }
 
         [Test]
@@ -662,8 +631,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("9760"); // not\tr9,r0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|r0 = ~r9");
         }
 
         [Test]
@@ -671,9 +639,8 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("0B00"); // rts
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|TD-|00100000(2): 1 instructions",
+                "1|T--|return (0,0)");
         }
 
         [Test]
@@ -682,8 +649,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("0840"); // shll2\tr0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|r0 = r0 << 2");
         }
 
         [Test]
@@ -691,9 +657,9 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("224F"); // sts.l\tpr,@-r15
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|r15 = r15 - 4",
+                "2|L--|Mem0[r15:word32] = pr");
         }
 
         [Test]
@@ -702,8 +668,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("01C8"); // tst\t#01,r0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|T = (r0 & 0x00000001) == 0x00000000");
         }
 
         [Test]
@@ -712,15 +677,8 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("6826"); // tst\tr6,r6
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-
+                "1|L--|T = (r6 & r6) == 0x00000000");
         }
-
-        /*
-        014C
-        402C
-        405C
-        */
     }
 }
 
