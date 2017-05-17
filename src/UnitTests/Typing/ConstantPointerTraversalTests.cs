@@ -35,8 +35,6 @@ namespace Reko.UnitTests.Typing
     {
         private MockRepository mr;
         private MemoryArea mem;
-        private Expression globals;
-        private TypeVariable globals_t;
         private StructureType globalStruct;
         private EquivalenceClass eqLink;
         private IProcessorArchitecture arch;

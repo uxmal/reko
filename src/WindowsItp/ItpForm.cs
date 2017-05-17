@@ -199,7 +199,7 @@ namespace Reko.WindowsItp
             ldr.Argument = @"D:\dev\jkl\dec\halsten\decompiler_paq\upx\upx_ultimate.txt";
             var addr = ldr.PreferredBaseAddress;
             var program = ldr.Load(addr);
-            var rr = ldr.Relocate(program, addr);
+            ldr.Relocate(program, addr);
         }
 
         private void assumeRegistesToolStripMenuItem_Click(object sender, EventArgs e)
