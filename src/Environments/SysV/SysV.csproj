@@ -60,6 +60,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RiscVProcedureSerializer.cs" />
     <Compile Include="SparcProcedureSerializer.cs" />
+    <Compile Include="SuperHProcedureSerializer.cs" />
     <Compile Include="X86ProcedureSerializer.cs" />
     <Compile Include="X86_64ProcedureSerializer.cs" />
     <Compile Include="XtensaProcedureSerializer.cs" />

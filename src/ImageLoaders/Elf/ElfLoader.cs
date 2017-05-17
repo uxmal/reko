@@ -171,6 +171,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             case ElfMachine.EM_AVR: arch = "avr8"; break;
             case ElfMachine.EM_RISCV: arch = "risc-v"; break;
+            case ElfMachine.EM_SH: arch = "superH"; break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
@@ -1076,6 +1077,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_XTENSA: return new XtensaRelocator(this);
             case ElfMachine.EM_68K: return new M68kRelocator(this);
             case ElfMachine.EM_AVR: return new AvrRelocator(this);
+            case ElfMachine.EM_SH: return new SuperHRelocator(this);
             }
             return base.CreateRelocator(machine);
         }

@@ -182,6 +182,7 @@
     <Architectures Include="$(SolutionDir)Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
     <Architectures Include="$(SolutionDir)Arch\RiscV\$(OutDir)Reko.Arch.RiscV.*" />
     <Architectures Include="$(SolutionDir)Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
+    <Architectures Include="$(SolutionDir)Arch\SuperH\$(OutDir)Reko.Arch.SuperH.*" />
     <Architectures Include="$(SolutionDir)Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
     <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.*" />
     <Architectures Include="$(SolutionDir)Arch\X86.Design\$(OutDir)Reko.Arch.X86.Design.*" />
@@ -203,6 +204,7 @@
     <Environments Include="$(SolutionDir)Environments\AmigaOS.Design\$(OutDir)Reko.Environments.AmigaOS.Design.*" />
     <Environments Include="$(SolutionDir)Environments\C64\$(OutDir)Reko.Environments.C64.*" />
     <Environments Include="$(SolutionDir)Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />
+    <Environments Include="$(SolutionDir)Environments\Dreamcast\$(OutDir)Reko.Environments.Dreamcast.*" />
     <Environments Include="$(SolutionDir)Environments\MacOS\$(OutDir)Reko.Environments.MacOS.*" />
     <Environments Include="$(SolutionDir)Environments\Msdos\$(OutDir)Reko.Environments.Msdos.*" />
     <Environments Include="$(SolutionDir)Environments\Msdos.Design\$(OutDir)Reko.Environments.Msdos.Design.*" />

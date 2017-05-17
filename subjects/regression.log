@@ -2140,10 +2140,28 @@ fn0D3C: error: An error occurred while rewriting procedure to high-level languag
 === varargs_test.exe
 *** varargs_test.exe
 0000000140001A14: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
+0000000140001E46: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_thread_local_exe_atexit_callback.
+0000000140001E34: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argv.
+0000000140001E2E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argc.
+0000000140001E0A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_get_initial_narrow_environment.
+0000000140001168: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__acrt_iob_func.
+0000000140001187: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__stdio_common_vfprintf.
+00000001400010F5: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__acrt_iob_func.
+0000000140001114: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__stdio_common_vfscanf.
 00000001400015AC: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
+0000000140001E3A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_cexit.
+0000000140001E5E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
+0000000140001E5E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
+0000000140001DEC: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_seh_filter_exe.
 0000000140001E70: warning: Unable to resolve imported reference api-ms-win-crt-runtime-l1-1-0.dll!terminate.
+0000000140001E6A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_crt_atexit.
+0000000140001E64: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_onexit_function.
 00000001400011C8: warning: Procedure fn00000001400011B0 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 000000014000143D: warning: Procedure Win32CrtStartup previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0000000140001DF2: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_set_app_type.
+0000000140001DFE: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_configure_narrow_argv.
+0000000140001E4C: warning: Unable to guess parameters of api-ms-win-crt-locale-l1-1-0.dll!_configthreadlocale.
+0000000140001E04: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_narrow_environment.
 0000000140001475: error: An error occurred while processing instruction at address 0000000140001475.
     Expected stack depth to be negative.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158

@@ -177,6 +177,7 @@ namespace Reko.Core.Rtl
             return Constant.Create(dataType, p);
         }
 
+        [Obsolete("RtlIf is going away soon", false)]
         public RtlEmitter If(Expression test, RtlInstruction rtl)
         {
             instrs.Add(new RtlIf(test, rtl));

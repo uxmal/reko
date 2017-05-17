@@ -102,8 +102,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest("1100 00 1 0010 0 0010 0001 0000 00000100");
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|if (Test(GT,NZV)) r1 = r2 - 0x00000004");
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (Test(LE,NZV)) branch 00100004",
+                "2|L--|r1 = r2 - 0x00000004");
         }
 
         [Test]
@@ -152,8 +153,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xBB000330);  // bllt
             AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (Test(LT,NV)) call 00100CC8 (0)");
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(GE,NV)) branch 00100004",
+                "2|T--|call 00100CC8 (0)");
         }
 
         [Test]
@@ -286,8 +288,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0x212FFF1E);
             AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (Test(UGE,C)) goto lr");
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(ULT,C)) branch 00100004",
+                "2|T--|goto lr");
         }
 
         [Test]

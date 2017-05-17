@@ -60,7 +60,7 @@ namespace Reko.Core
 
         public T Read()
         {
-			return this.BytesToStruct<T>(this.reader);
+			return this.BytesToStruct(this.reader);
         }
 
         private int GetAlignment(FieldInfo f)
@@ -115,7 +115,7 @@ namespace Reko.Core
 			}
 		}
 
-		private byte[] StructToBytes<T>(T data) {
+		private byte[] StructToBytes(T data) {
 			byte[] rawData = new byte[Marshal.SizeOf(data)];
 			GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
 			try {
@@ -130,12 +130,12 @@ namespace Reko.Core
 			return rawData;
 		}
 
-		private T BytesToStruct<T>(ImageReader reader) {
+		private T BytesToStruct(ImageReader reader) {
 			byte[] bytes = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
-			return this.BytesToStruct<T>(bytes);
+			return this.BytesToStruct(bytes);
 		}
 
-		private T BytesToStruct<T>(byte[] rawData) {
+		private T BytesToStruct(byte[] rawData) {
 			T result = default(T);
 
 			RespectEndianness(typeof(T), rawData);

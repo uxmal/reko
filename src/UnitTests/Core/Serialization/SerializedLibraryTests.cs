@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Core.Serialization
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-			Assert.AreEqual(33, lib.Procedures.Count);
+			Assert.AreEqual(45, lib.Procedures.Count);
 		}
 
         [Test(Description = "Validates that the realmodeintservices file (in format 1) can be read properly")]
