@@ -2638,7 +2638,7 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1750 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 				__strdup();
 				*s1_167 = a0_220;
 			}
-			if ((word64) ((real32) a0_175->r0034 = (real32) ((real32) 0x00)) == 0x00)
+			if ((word64) ((real32) a0_175->r0034 == (real32) ((real32) 0x00)) == 0x00)
 				__asprintf_chk();
 		}
 		<anonymous> * t1_197 = gp_181->ptrFFFFF848;
@@ -2924,7 +2924,7 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 				__strdup();
 				*s2_176 = a0_231;
 			}
-			if ((word64) ((real32) a0_184->r0034 = (real32) ((real32) 0x00)) == 0x00)
+			if ((word64) ((real32) a0_184->r0034 == (real32) ((real32) 0x00)) == 0x00)
 				__asprintf_chk();
 		}
 		<anonymous> * t1_207 = gp_190->ptrFFFFF848;

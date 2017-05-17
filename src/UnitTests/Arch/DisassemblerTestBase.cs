@@ -54,6 +54,13 @@ namespace Reko.UnitTests.Arch
             return Disassemble(img);
         }
 
+        protected TInstruction DisassembleHexBytes(string hexBytes)
+        {
+            var img = new MemoryArea(LoadAddress, new byte[256]);
+            byte[] instr = ParseHexPattern(hexBytes);
+            return DisassembleBytes(instr);
+        }
+
         public TInstruction Disassemble(MemoryArea img)
         {
             var dasm = Architecture.CreateDisassembler(Architecture.CreateImageReader(img, 0U));

@@ -1137,8 +1137,9 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Run32bitTest(0x0F, 0x44, 0xC8);
             AssertCode(
-                "0|L--|10000000(3): 1 instructions",
-                "1|L--|if (Test(EQ,Z)) ecx = eax");
+                "0|L--|10000000(3): 2 instructions",
+                "1|T--|if (Test(NE,Z)) branch 10000003",
+                "2|L--|ecx = eax");
         }
 
         [Test]
@@ -1556,7 +1557,15 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                "0|L--|0000000140000000(2): 3 instructions",
                "1|L--|rax = (uint64) (eax ^ eax)");
+        }
 
+        [Test]
+        public void X86rw_fdivr()
+        {
+            Run32bitTest(0xDC, 0x3D, 0x78, 0x56, 0x34, 0x12); // fdivr [12345678]
+            AssertCode(
+                "0|L--|10000000(6): 1 instructions",
+                "1|L--|ST[Top:real64] = Mem0[0x12345678:real64] / ST[Top:real64]");
         }
     }
 }

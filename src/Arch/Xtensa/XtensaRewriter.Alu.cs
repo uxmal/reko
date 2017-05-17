@@ -38,11 +38,11 @@ namespace Reko.Arch.Xtensa
             var dst = RewriteOp(this.instr.Operands[0]);
             if (src2.IsNegative)
             {
-                m.Assign(dst, m.ISub(src1, src2.Negate()));
+                emitter.Assign(dst, emitter.ISub(src1, src2.Negate()));
             }
             else
             {
-                m.Assign(dst, m.IAdd(src1, src2));
+                emitter.Assign(dst, emitter.IAdd(src1, src2));
             }
         }
 
@@ -52,7 +52,7 @@ namespace Reko.Arch.Xtensa
             var src2 = RewriteOp(this.instr.Operands[2]);
             var dst = RewriteOp(this.instr.Operands[0]);
 
-            m.Assign(dst, m.IAdd(src2, m.IMul(src1, scale)));
+            emitter.Assign(dst, emitter.IAdd(src2, emitter.IMul(src1, scale)));
         }
 
         private void RewriteSubx(int scale)
@@ -61,7 +61,7 @@ namespace Reko.Arch.Xtensa
             var src2 = RewriteOp(this.instr.Operands[2]);
             var dst = RewriteOp(this.instr.Operands[0]);
 
-            m.Assign(dst, m.ISub(m.IMul(src1, scale), src2));
+            emitter.Assign(dst, emitter.ISub(emitter.IMul(src1, scale), src2));
         }
 
         private void RewriteBinOp(Func<Expression, Expression, Expression> fn)
@@ -69,7 +69,7 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(dasm.Current.Operands[1]);
             var src2 = RewriteOp(dasm.Current.Operands[2]);
             var dst = RewriteOp(dasm.Current.Operands[0]);
-            m.Assign(dst, fn(src1, src2));
+            emitter.Assign(dst, fn(src1, src2));
         }
 
         private void RewritePseudoFn(string name)
@@ -78,7 +78,7 @@ namespace Reko.Arch.Xtensa
                 .Select(o => RewriteOp(o))
                 .ToArray();
             var dst = RewriteOp(dasm.Current.Operands[0]);
-            m.Assign(dst, host.PseudoProcedure(name, dst.DataType, aSrc));
+            emitter.Assign(dst, host.PseudoProcedure(name, dst.DataType, aSrc));
         }
 
         private void RewritePseudoProc(string name)
@@ -86,14 +86,14 @@ namespace Reko.Arch.Xtensa
             var aSrc = instr.Operands
                 .Select(o => RewriteOp(o))
                 .ToArray();
-            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance, aSrc));
+            emitter.SideEffect(host.PseudoProcedure(name, VoidType.Instance, aSrc));
         }
 
         private void RewriteCopy()
         {
             var src = RewriteOp(this.instr.Operands[1]);
             var dst = RewriteOp(this.instr.Operands[0]);
-            m.Assign(dst, src);
+            emitter.Assign(dst, src);
         }
 
         private void RewriteExtui()
@@ -107,15 +107,15 @@ namespace Reko.Arch.Xtensa
             if (sh.IsZero)
                 shifted = src;
             else
-                shifted = m.Shr(src, sh);
-            m.Assign(
+                shifted = emitter.Shr(src, sh);
+            emitter.Assign(
                 dst,
-                m.And(shifted, mask));
+                emitter.And(shifted, mask));
         }
 
         private void RewriteNop()
         {
-            m.Nop();
+            emitter.Nop();
         }
 
         private void RewriteOr()
@@ -123,7 +123,7 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(dasm.Current.Operands[1]);
             var src2 = RewriteOp(dasm.Current.Operands[2]);
             var dst = RewriteOp(dasm.Current.Operands[0]);
-            m.Assign(dst, m.Or(src1, src2));
+            emitter.Assign(dst, emitter.Or(src1, src2));
         }
 
         private void RewriteL32i()
@@ -131,10 +131,10 @@ namespace Reko.Arch.Xtensa
             var dst = RewriteOp(this.instr.Operands[0]);
             var offset = Constant.UInt32(
                         ((ImmediateOperand)dasm.Current.Operands[2]).Value.ToUInt32());
-            m.Assign(
+            emitter.Assign(
                 dst,
-                m.LoadDw(
-                    m.IAdd(
+                emitter.LoadDw(
+                    emitter.IAdd(
                         RewriteOp(dasm.Current.Operands[1]),
                         offset)));
         }
@@ -143,15 +143,15 @@ namespace Reko.Arch.Xtensa
         {
             var dst = RewriteOp(this.instr.Operands[0]);
             var tmp = frame.CreateTemporary(dt);
-            m.Assign(
+            emitter.Assign(
                 tmp,
-                m.Load(
+                emitter.Load(
                     dt,
-                    m.IAdd(
+                    emitter.IAdd(
                         RewriteOp(instr.Operands[1]),
                         Constant.UInt32(
                         ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32()))));
-            m.Assign(dst, m.Cast(PrimitiveType.Int32, tmp));
+            emitter.Assign(dst, emitter.Cast(PrimitiveType.Int32, tmp));
         }
 
         private void RewriteLsiu()
@@ -168,12 +168,12 @@ namespace Reko.Arch.Xtensa
             else
             {
                 ea = frame.CreateTemporary(a.DataType);
-                m.Assign(ea, m.IAdd(a, off));
+                emitter.Assign(ea, emitter.IAdd(a, off));
             }
-            m.Assign(dst, m.Load(PrimitiveType.Real32, ea));
+            emitter.Assign(dst, emitter.Load(PrimitiveType.Real32, ea));
             if (!off.IsZero)
             { 
-                m.Assign(a, ea);
+                emitter.Assign(a, ea);
             }
         }
 
@@ -181,15 +181,15 @@ namespace Reko.Arch.Xtensa
         {
             var dst = RewriteOp(this.instr.Operands[0]);
             var tmp = frame.CreateTemporary(dt);
-            m.Assign(
+            emitter.Assign(
                 tmp,
-                m.Load(
+                emitter.Load(
                     dt,
-                    m.IAdd(
+                    emitter.IAdd(
                         RewriteOp(instr.Operands[1]),
                         Constant.UInt32(
                         ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32()))));
-            m.Assign(dst, m.Cast(PrimitiveType.UInt32, tmp));
+            emitter.Assign(dst, emitter.Cast(PrimitiveType.UInt32, tmp));
         }
 
         private void RewriteMovcc(Func<Expression,Expression,Expression> fn)
@@ -197,9 +197,11 @@ namespace Reko.Arch.Xtensa
             var dst = RewriteOp(this.instr.Operands[0]);
             var src = RewriteOp(this.instr.Operands[1]);
             var cond = RewriteOp(this.instr.Operands[2]);
-            m.If(
-                fn(cond, Constant.Zero(cond.DataType)),
-                new RtlAssignment(dst, src));
+            emitter.BranchInMiddleOfInstruction(
+                fn(cond, Constant.Zero(cond.DataType)).Invert(),
+                instr.Address + instr.Length,
+                RtlClass.ConditionalTransfer);
+            emitter.Assign(dst, src);
         }
 
         private void RewriteMovi_n()
@@ -207,7 +209,7 @@ namespace Reko.Arch.Xtensa
             var dst = RewriteOp(this.instr.Operands[0]);
             var src = Constant.Int32(
                 ((ImmediateOperand)this.instr.Operands[1]).Value.ToInt32());
-            m.Assign(dst, src);
+            emitter.Assign(dst, src);
         }
 
         private void RewriteMul16(Func<Expression, Expression, Expression> mul, Domain dom)
@@ -217,9 +219,9 @@ namespace Reko.Arch.Xtensa
             var dst = RewriteOp(instr.Operands[0]);
             var tmp1 = frame.CreateTemporary(PrimitiveType.Create(dom, 2));
             var tmp2 = frame.CreateTemporary(PrimitiveType.Create(dom, 2));
-            m.Assign(tmp1, m.Cast(tmp1.DataType, src1));
-            m.Assign(tmp2, m.Cast(tmp2.DataType, src2));
-            m.Assign(dst, mul(tmp1, tmp2));
+            emitter.Assign(tmp1, emitter.Cast(tmp1.DataType, src1));
+            emitter.Assign(tmp2, emitter.Cast(tmp2.DataType, src2));
+            emitter.Assign(dst, mul(tmp1, tmp2));
         }
 
         private void RewriteSi(DataType dt)
@@ -230,10 +232,10 @@ namespace Reko.Arch.Xtensa
                         ((ImmediateOperand)dasm.Current.Operands[2]).Value.ToUInt32());
             if (!off.IsZero)
             {
-                ea = m.IAdd(ea, off);
+                ea = emitter.IAdd(ea, off);
             }
-            m.Assign(
-                m.Load(dt, ea),
+            emitter.Assign(
+                emitter.Load(dt, ea),
                 src);
         }
 
@@ -244,7 +246,7 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(dasm.Current.Operands[1]);
             var sa = frame.EnsureRegister(Registers.SAR);
             var dst = RewriteOp(dasm.Current.Operands[0]);
-            m.Assign(dst, fn(src1, sa));
+            emitter.Assign(dst, fn(src1, sa));
         }
 
         private void RewriteShiftI(Func<Expression,Expression,Expression> fn)
@@ -252,7 +254,7 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(dasm.Current.Operands[1]);
             var src2 = RewriteSimm(dasm.Current.Operands[2]);
             var dst = RewriteOp(dasm.Current.Operands[0]);
-            m.Assign(dst, fn(src1, src2));
+            emitter.Assign(dst, fn(src1, src2));
         }
 
         private void RewriteSrc()
@@ -265,37 +267,37 @@ namespace Reko.Arch.Xtensa
                 src1.Storage, 
                 src2.Storage, 
                 PrimitiveType.CreateWord(src1.DataType.Size + src2.DataType.Size));
-            m.Assign(
+            emitter.Assign(
                 dst,
-                m.Cast(dst.DataType, m.Shr(cat, sa)));
+                emitter.Cast(dst.DataType, emitter.Shr(cat, sa)));
         }
 
         private void RewriteSsa()
         {
             var src = RewriteOp(instr.Operands[0]);
             var dst = frame.EnsureRegister(Registers.SAR);
-            m.Assign(dst, src);
+            emitter.Assign(dst, src);
         }
 
         private void RewriteSsl()
         {
             var src = RewriteOp(instr.Operands[0]);
             var dst = frame.EnsureRegister(Registers.SAR);
-            m.Assign(dst, m.ISub(Constant.Create(src.DataType, 32), src));
+            emitter.Assign(dst, emitter.ISub(Constant.Create(src.DataType, 32), src));
         }
 
         private void RewriteSsa8l()
         {
             var src = RewriteOp(instr.Operands[0]);
             var dst = frame.EnsureRegister(Registers.SAR);
-            m.Assign(dst, m.IMul(src, 8));
+            emitter.Assign(dst, emitter.IMul(src, 8));
         }
 
         private void RewriteUnaryOp(Func<Expression, Expression> fn)
         {
             var src = RewriteOp(dasm.Current.Operands[1]);
             var dst = RewriteOp(dasm.Current.Operands[0]);
-            m.Assign(dst, fn(src));
+            emitter.Assign(dst, fn(src));
         }
 
     }

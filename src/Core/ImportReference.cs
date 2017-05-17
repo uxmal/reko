@@ -107,7 +107,11 @@ namespace Reko.Core
             // Can we guess at the signature?
             ep = platform.SignatureFromName(ImportName);
             if (ep != null)
+            {
+                if (!ep.Signature.ParametersValid)
+                    ctx.Warn("Unable to guess parameters of {0}.", this);
                 return ep;
+            }
             
             ctx.Warn("Unable to resolve imported reference {0}.", this);
             return new ExternalProcedure(this.ToString(), null);

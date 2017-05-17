@@ -86,15 +86,19 @@ namespace Reko.Arch.PowerPC
             }
             if (toLinkRegister)
             {
+                m.BranchInMiddleOfInstruction(
+                    m.Test(cc, cr).Invert(),
+                    instr.Address + instr.Length,
+                    RtlClass.ConditionalTransfer);
                 var dst = frame.EnsureRegister(arch.lr);
                 if (updateLinkregister)
                 {
                     rtlc |= RtlClass.Call;
-                    m.If(m.Test(cc, cr), new RtlCall(dst, 0, RtlClass.Call|RtlClass.Transfer));
+                    m.Call(dst, 0);
                 }
                 else
                 {
-                    m.If(m.Test(cc, cr), new RtlReturn(0, 0, RtlClass.Transfer));
+                    m.Return(0, 0);
                 }
             }
             else
@@ -103,7 +107,11 @@ namespace Reko.Arch.PowerPC
                 if (updateLinkregister)
                 {
                     rtlc |= RtlClass.Call;
-                    m.If(m.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
+                    m.BranchInMiddleOfInstruction(
+                        m.Test(cc, cr).Invert(),
+                        instr.Address + instr.Length,
+                        RtlClass.ConditionalTransfer);
+                    m.Call(dst, 0);
                 }
                 else
                 {
@@ -156,9 +164,11 @@ namespace Reko.Arch.PowerPC
             m.Assign(ctr, m.ISub(ctr, 1));
             if (updateLinkRegister)
             {
-                m.If(
-                    cond,
-                    new RtlCall(dest, 0, RtlClass.ConditionalTransfer));
+                m.BranchInMiddleOfInstruction(
+                    cond.Invert(),
+                    instr.Address + instr.Length,
+                    RtlClass.ConditionalTransfer);
+                m.Call(dest, 0);
             }
             else
             {
