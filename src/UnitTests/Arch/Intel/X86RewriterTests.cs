@@ -1527,6 +1527,15 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
+        public void X86rw_fdivr()
+        {
+            Run32bitTest(0xDC, 0x3D, 0x78, 0x56, 0x34, 0x12); // fdivr [12345678]
+            AssertCode(
+                "0|L--|10000000(6): 1 instructions",
+                "1|L--|rArg0 = Mem0[0x12345678:real64] / rArg0");
+        }
+
+        [Test]
         public void X86rw_movsd()
         {
             Run64bitTest(0xF2, 0x0F, 0x10, 0x45, 0xE0);   // movsd xmm0,dword PTR[rbp - 0x20]

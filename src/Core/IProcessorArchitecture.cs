@@ -171,7 +171,8 @@ namespace Reko.Core
         Address MakeAddressFromConstant(Constant c);
 
         /// <summary>
-        /// Provide user options to enable overriding of behaviors.
+        /// The dictionary contains options that were loaded from the config file or the executable image. These can be used
+        /// to customize the properties of the processor.
         /// </summary>
         /// <param name="options"></param>
         void LoadUserOptions(Dictionary<string, object> options);

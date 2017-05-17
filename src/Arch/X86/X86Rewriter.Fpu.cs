@@ -56,18 +56,12 @@ namespace Reko.Arch.X86
                 {
                     // implicit st(0) operand.
                     Identifier opLeft = FpuRegister(0);
-                    Expression opRight = SrcOp(instrCur.op1);
-                    if (fReversed)
-                    {
-                        EmitCopy(
-                            instrCur.op1, 
-                            op(opRight, MaybeCast(cast, opLeft)),
-                            CopyFlags.ForceBreak);
-                    }
-                    else
-                    {
-                        m.Assign(opLeft, op(opLeft, MaybeCast(cast, opRight)));
-                    }
+                    Expression opRight = MaybeCast(cast, SrcOp(instrCur.op1));
+                    m.Assign(
+                        opLeft,
+                        op(
+                            fReversed ? opRight : opLeft,
+                            fReversed ? opLeft : opRight));
                     break;
                 }
             case 2:
