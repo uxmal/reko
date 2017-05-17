@@ -89,6 +89,8 @@
     <Compile Include="Arch\Avr\Avr8RewriterTests.cs" />
     <Compile Include="Arch\RiscV\RiscVDisassemblerTests.cs" />
     <Compile Include="Arch\RiscV\RiscVRewriterTests.cs" />
+    <Compile Include="Arch\SuperH\SuperHDisassemblerTests.cs" />
+    <Compile Include="Arch\SuperH\SuperHRewriterTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaDisassemblerTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaRewriterTests.cs" />
     <Compile Include="Core\Analysis\PyArgFormatParserTests.cs" />
@@ -622,6 +624,10 @@
     <ProjectReference Include="..\Arch\Sparc\Sparc.csproj">
       <Project>{454D9734-EDF3-4646-8C7F-8449C68EB826}</Project>
       <Name>Sparc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\SuperH\SuperH.csproj">
+      <Project>{fc3aa408-b2b1-4b40-b29d-9ebb46aa8b33}</Project>
+      <Name>SuperH</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Vax\Vax.csproj">
       <Project>{82777964-b370-431a-ac97-733c594c02b5}</Project>

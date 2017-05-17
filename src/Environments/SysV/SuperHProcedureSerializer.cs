@@ -18,41 +18,31 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Types;
-using Reko.Core.Rtl;
-using NUnit.Framework;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Reko.Core;
+using Reko.Core.Types;
 
-namespace Reko.UnitTests.Arch
+namespace Reko.Environments.SysV
 {
-    public abstract class RewriterTestBase : ArchTestBase
+    public class SuperHProcedureSerializer : ProcedureSerializer
     {
-        private MemoryArea instructions;
-
-        public void Rewrite(params uint [] words)
+        public SuperHProcedureSerializer(IProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention) : base(arch, typeLoader, defaultConvention)
         {
-            instructions = RewriteCode(words);
         }
 
-        protected virtual MemoryArea RewriteCode(string hexBytes)
+        public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
         {
-            Assert.Fail();
-            return null;
+            return new FunctionType();
         }
 
-        protected virtual MemoryArea RewriteCode(uint [] words)
+        public override Storage GetReturnRegister(Argument_v1 sArg, int bitSize)
         {
-            Assert.Fail();
-            return null;
-        }
-
-        protected virtual IRewriterHost CreateHost()
-        {
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

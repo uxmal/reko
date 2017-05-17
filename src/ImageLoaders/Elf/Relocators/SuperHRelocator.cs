@@ -18,41 +18,29 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Types;
-using Reko.Core.Rtl;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Reko.Core;
 
-namespace Reko.UnitTests.Arch
+namespace Reko.ImageLoaders.Elf.Relocators
 {
-    public abstract class RewriterTestBase : ArchTestBase
+    public class SuperHRelocator : ElfRelocator32
     {
-        private MemoryArea instructions;
-
-        public void Rewrite(params uint [] words)
+        public SuperHRelocator(ElfLoader32 loader) : base(loader)
         {
-            instructions = RewriteCode(words);
         }
 
-        protected virtual MemoryArea RewriteCode(string hexBytes)
+        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)
         {
-            Assert.Fail();
-            return null;
+            return;
         }
 
-        protected virtual MemoryArea RewriteCode(uint [] words)
+        public override string RelocationTypeToString(uint type)
         {
-            Assert.Fail();
-            return null;
-        }
-
-        protected virtual IRewriterHost CreateHost()
-        {
-            return null;
+            return string.Format("{0:X4}-???", type);
         }
     }
 }
