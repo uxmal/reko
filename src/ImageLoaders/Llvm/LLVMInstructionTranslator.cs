@@ -70,6 +70,8 @@ namespace Reko.ImageLoaders.LLVM
             case TokenType.add: fn = m.IAdd; break;
             case TokenType.sub: fn = m.ISub; break;
             case TokenType.mul: fn = m.IMul; break;
+            case TokenType.sdiv: fn = m.SDiv; break;
+            case TokenType.srem: fn = m.Remainder; break;
             }
             m.Assign(dst, fn(left, right));
             return 0;
@@ -87,8 +89,10 @@ namespace Reko.ImageLoaders.LLVM
             default:
                 throw new NotImplementedException(string.Format("VisitBitwiseBinary({0})", bit.Operator));
             case TokenType.and: fn = m.And; break;
+            case TokenType.ashr: fn = m.Sar; break;
             case TokenType.shl: fn = m.Shl; break;
-
+            case TokenType.or: fn = m.Or; break;
+            case TokenType.xor: fn = m.Xor; break;
             }
             m.Assign(dst, fn(left, right));
             return 0;
@@ -180,13 +184,20 @@ namespace Reko.ImageLoaders.LLVM
             switch (conv.Operator)
             {
             default:
-                throw new NotImplementedException(string.Format("TranslateConversion({0})", conv.Operator));
+                throw new NotImplementedException(string.Format("TranslateConversion({0},{1},{2})", conv.Operator, srcType, dstType));
+            case TokenType.bitcast:     // reinterpret_cast
+                e = m.Cast(dstType, src);
+                break;
             case TokenType.inttoptr:
                 dstType = PrimitiveType.Create(IrDomain.Pointer, srcType.Size);
                 e = m.Cast(dstType, src);
                 break;
             case TokenType.sext:
                 dstType = PrimitiveType.Create(IrDomain.SignedInt, dstType.Size);
+                e = m.Cast(dstType, src);
+                break;
+            case TokenType.zext:
+                dstType = PrimitiveType.Create(IrDomain.UnsignedInt, dstType.Size);
                 e = m.Cast(dstType, src);
                 break;
             case TokenType.ptrtoint:
@@ -263,6 +274,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitLoad(Load load)
         {
+            m.EnsureBlock(null);
             var dstType = builder.TranslateType(load.DstType);
             var srcType = builder.TranslateType(load.SrcType);
             var ea = MakeValueExpression(load.Src, srcType);
@@ -328,15 +340,26 @@ namespace Reko.ImageLoaders.LLVM
         public int VisitUnreachable(Unreachable unreachable)
         {
             //$REVIEW: no equivalent in Reko. Does it matter?
+            m.TerminateBlock();
             return 0;
         }
 
-        private Expression MakeValueExpression(Value value,  DataType dt)
+        private Expression MakeValueExpression(Value value, DataType dt)
         {
             var c = value as Constant;
             if (c != null)
             {
-                return IrConstant.Create(dt, Convert.ToInt64(c.Value));
+                if (c.Value == null)
+                {
+                    var w = PrimitiveType.CreateWord(dt.Size);
+                    var v = IrConstant.Create(w, 0);
+                    v.DataType = w;
+                    return v;
+                }
+                else
+                {
+                    return IrConstant.Create(dt, Convert.ToInt64(c.Value));
+                }
             }
             var local = value as LocalId;
             if (local != null)

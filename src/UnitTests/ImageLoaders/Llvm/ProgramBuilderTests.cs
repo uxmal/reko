@@ -231,7 +231,7 @@ foo_exit:
 
         }
 
-        [Ignore("Only works on @uxmal's machine right now")]
+        //[Ignore("Only works on @uxmal's machine right now")]
         [Test]
         public void LLPB_File()
         {

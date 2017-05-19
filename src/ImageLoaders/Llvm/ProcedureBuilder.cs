@@ -172,7 +172,7 @@ namespace Reko.ImageLoaders.LLVM
             return name;
         }
 
-        private void TerminateBlock()
+        public void TerminateBlock()
         {
             if (this.block != null)
             {

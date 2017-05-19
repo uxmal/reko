@@ -39,11 +39,11 @@ namespace Reko.ImageLoaders.LLVM
             this.framePointerSize = framePointerSize;
             this.program = new Program();
             this.Functions = new Dictionary<FunctionDefinition, ProcedureBuilder>();
-            this.Globals = new Dictionary<string, Identifier>();
+            this.Globals = new Dictionary<string, Expression>();
         }
 
         public Dictionary<FunctionDefinition, ProcedureBuilder> Functions { get; private set; }
-        public Dictionary<string, Identifier> Globals { get; private set; }
+        public Dictionary<string, Expression> Globals { get; private set; }
         public Dictionary<LocalId, DataType> Types { get; private set;}
 
         public Program BuildProgram(Module module)
@@ -75,6 +75,9 @@ namespace Reko.ImageLoaders.LLVM
             {
                 var proc = RegisterFunction(fn);
                 program.Procedures.Add(addr, proc);
+                this.Globals[fn.FunctionName] = new Core.Expressions.ProcedureConstant(
+                    new Pointer(proc.Signature, framePointerSize.Size),
+                    proc);
                 return addr + 1;
             }
             var tydec = entry as TypeDefinition;
