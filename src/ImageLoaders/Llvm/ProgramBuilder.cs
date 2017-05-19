@@ -130,6 +130,12 @@ namespace Reko.ImageLoaders.LLVM
                 TranslateFunction(fn);
                 return;
             }
+            var decl = entry as Declaration;
+            if (decl != null)
+            {
+                //$TODO
+                return;
+            }
             throw new NotImplementedException(string.Format("TranslateEntry({0})", entry.GetType()));
         }
 

@@ -221,7 +221,7 @@ word32 foo()
 foo_entry:
 	// succ:  l0
 l0:
-	loc1 = &(*msg)[0]
+	loc1 = &(*msg)[0x0000000000000000]
 	puts(loc1)
 	return 0x00000000
 	// succ:  foo_exit

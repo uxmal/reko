@@ -531,7 +531,7 @@ namespace Reko.ImageLoaders.LLVM
             case TokenType.inttoptr: return ParseConversion(result);
             case TokenType.load: return ParseLoad(result);
             case TokenType.lshr: return ParseBinBitOp(result);
-            case TokenType.mul: return ParseBinBitOp(result);
+            case TokenType.mul: return ParseBinOp(result);
             case TokenType.or: return ParseBinBitOp(result);
             case TokenType.phi: return ParsePhi(result);
             case TokenType.ptrtoint: return ParseConversion(result);

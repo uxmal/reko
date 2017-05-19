@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
@@ -58,8 +59,8 @@ namespace Reko.ImageLoaders.LLVM
         public int VisitBinary(Binary bin)
         {
             var type = builder.TranslateType(bin.Type);
-            var left = MakeValueExpression(bin.Left, m, type);
-            var right = MakeValueExpression(bin.Right, m, type);
+            var left = MakeValueExpression(bin.Left, type);
+            var right = MakeValueExpression(bin.Right, type);
             var dst = m.CreateLocalId("loc", type);
             Func<Expression, Expression, Expression> fn;
             switch (bin.Operator)
@@ -67,6 +68,8 @@ namespace Reko.ImageLoaders.LLVM
             default:
                 throw new NotImplementedException(string.Format("TranslateInstruction({0})", bin.Operator));
             case TokenType.add: fn = m.IAdd; break;
+            case TokenType.sub: fn = m.ISub; break;
+            case TokenType.mul: fn = m.IMul; break;
             }
             m.Assign(dst, fn(left, right));
             return 0;
@@ -74,7 +77,21 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitBitwiseBinary(BitwiseBinary bit)
         {
-            throw new NotImplementedException();
+            var type = builder.TranslateType(bit.Type);
+            var left = MakeValueExpression(bit.Left, type);
+            var right = MakeValueExpression(bit.Right, type);
+            var dst = m.CreateLocalId("loc", type);
+            Func<Expression, Expression, Expression> fn;
+            switch (bit.Operator)
+            {
+            default:
+                throw new NotImplementedException(string.Format("VisitBitwiseBinary({0})", bit.Operator));
+            case TokenType.and: fn = m.And; break;
+            case TokenType.shl: fn = m.Shl; break;
+
+            }
+            m.Assign(dst, fn(left, right));
+            return 0;
         }
 
         public int VisitBr(BrInstr br)
@@ -84,7 +101,7 @@ namespace Reko.ImageLoaders.LLVM
                 m.Goto(br.IfTrue.Name);
                 return 0;
             }
-            var cond = MakeValueExpression(br.Cond, m, builder.TranslateType(br.Type));
+            var cond = MakeValueExpression(br.Cond, builder.TranslateType(br.Type));
             m.Branch(cond, br.IfTrue.Name, br.IfFalse.Name);
             return 0;
         }
@@ -95,11 +112,11 @@ namespace Reko.ImageLoaders.LLVM
             foreach (var arg in call.Arguments)
             {
                 var type = builder.TranslateType(arg.Type);
-                var irArg = MakeValueExpression(arg.Value, m, type);
+                var irArg = MakeValueExpression(arg.Value, type);
                 args.Add(irArg);
             }
             var retType = builder.TranslateType(call.FnType);
-            var fn = MakeValueExpression(call.FnPtr, m, null);
+            var fn = MakeValueExpression(call.FnPtr, null);
             var app = m.Fn(fn, retType, args.ToArray());
             if (call.Result != null)
             {
@@ -116,8 +133,8 @@ namespace Reko.ImageLoaders.LLVM
         public int VisitCmp(CmpInstruction cmp)
         {
             var srcType = builder.TranslateType(cmp.Type);
-            var op1 = MakeValueExpression(cmp.Op1, m, srcType);
-            var op2 = MakeValueExpression(cmp.Op2, m, srcType);
+            var op1 = MakeValueExpression(cmp.Op1, srcType);
+            var op2 = MakeValueExpression(cmp.Op2, srcType);
             var dst = m.CreateLocalId("loc", PrimitiveType.Bool);
             Func<Expression, Expression, Expression> fn;
             if (cmp.Operator == TokenType.icmp)
@@ -128,6 +145,14 @@ namespace Reko.ImageLoaders.LLVM
                     throw new NotImplementedException(string.Format("TranslateCmp({0})", cmp.ConditionCode));
                 case TokenType.eq: fn = m.Eq; break;
                 case TokenType.ne: fn = m.Ne; break;
+                case TokenType.sge: fn = m.Ge; break;
+                case TokenType.sgt: fn = m.Gt; break;
+                case TokenType.sle: fn = m.Le; break;
+                case TokenType.slt: fn = m.Lt; break;
+                case TokenType.uge: fn = m.Uge; break;
+                case TokenType.ugt: fn = m.Ugt; break;
+                case TokenType.ule: fn = m.Ule; break;
+                case TokenType.ult: fn = m.Ult; break;
                 }
             }
             else if (cmp.Operator == TokenType.fcmp)
@@ -149,17 +174,22 @@ namespace Reko.ImageLoaders.LLVM
         {
             var dstType = builder.TranslateType(conv.TypeTo);
             var srcType = builder.TranslateType(conv.TypeFrom);
-            var src = MakeValueExpression(conv.Value, m, srcType);
+            var src = MakeValueExpression(conv.Value, srcType);
             var dst = m.CreateLocalId("loc", dstType);
             Expression e;
             switch (conv.Operator)
             {
             default:
                 throw new NotImplementedException(string.Format("TranslateConversion({0})", conv.Operator));
+            case TokenType.inttoptr:
+                dstType = PrimitiveType.Create(IrDomain.Pointer, srcType.Size);
+                e = m.Cast(dstType, src);
+                break;
             case TokenType.sext:
                 dstType = PrimitiveType.Create(IrDomain.SignedInt, dstType.Size);
                 e = m.Cast(dstType, src);
                 break;
+            case TokenType.ptrtoint:
             case TokenType.trunc:
                 e = m.Cast(dstType, src);
                 break;
@@ -180,21 +210,39 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitGetelementptr(GetElementPtr get)
         {
-            var type = builder.TranslateType(get.PtrType);
-            Expression e = MakeValueExpression(get.PtrValue, m, type);
-            foreach (var index in get.Indices)
+            var e = GetElementPtr(get.PtrType, get.PtrValue, get.Indices);
+            var dst = m.CreateLocalId("loc", VoidType.Instance);
+            m.Assign(dst, m.AddrOf(e));
+            return 0;
+        }
+
+        private Expression GetElementPtr(
+            LLVMType ptrType, 
+            Value ptrValue, 
+            List<Tuple<LLVMType, Value>> indices)
+        {
+            var type = builder.TranslateType(ptrType);
+            var e = MakeValueExpression(ptrValue, type);
+            foreach (var index in indices)
             {
-                var idx = Convert.ToInt64(((Constant)index.Item2).Value);
-                var ptr = type as Pointer;
-                if(ptr != null)
+                long? idx = null;
+                var dt = builder.TranslateType(index.Item1);
+                var i = MakeValueExpression(index.Item2, dt);
+                var con = i as IrConstant;
+                if (con != null)
                 {
-                    if (idx == 0)
+                    idx = Convert.ToInt64(con.ToInt64());
+                }
+                var ptr = type as Pointer;
+                if (ptr != null)
+                {
+                    if (idx.HasValue && idx.Value == 0)
                     {
                         e = m.Deref(e);
                     }
                     else
                     {
-                        e = m.Array(ptr.Pointee, e, IrConstant.Int32((int)idx));
+                        e = m.Array(ptr.Pointee, e, i);
                     }
                     e.DataType = ptr.Pointee;
                     type = ptr.Pointee;
@@ -203,22 +251,21 @@ namespace Reko.ImageLoaders.LLVM
                 var a = type as ArrayType;
                 if (a != null)
                 {
-                    e = m.Array(a.ElementType, e, IrConstant.Int32((int)idx));
+                    e = m.Array(a.ElementType, e, i);
                     e.DataType = a.ElementType;
                     type = a.ElementType;
                     continue;
                 }
+                throw new NotImplementedException(index.Item1.ToString());
             }
-            var dst = m.CreateLocalId("loc", VoidType.Instance);
-            m.Assign(dst, m.AddrOf(e));
-            return 0;
+            return e;
         }
 
         public int VisitLoad(Load load)
         {
             var dstType = builder.TranslateType(load.DstType);
             var srcType = builder.TranslateType(load.SrcType);
-            var ea = MakeValueExpression(load.Src, m, srcType);
+            var ea = MakeValueExpression(load.Src, srcType);
             var dst = m.CreateLocalId("loc", dstType);
             m.Assign(dst, m.Load(dstType, ea));
             return 0;
@@ -226,7 +273,10 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitPhi(PhiInstruction phi)
         {
-            throw new NotImplementedException();
+            var dstType = builder.TranslateType(phi.Type);
+            var dst = m.CreateLocalId("loc", dstType);
+            m.SideEffect(new Identifier(phi.ToString(), new UnknownType(), new MemoryStorage()));
+            return 0;
         }
 
         public int VisitRet(RetInstr ret)
@@ -237,7 +287,7 @@ namespace Reko.ImageLoaders.LLVM
             }
             else
             {
-                var e = MakeValueExpression(ret.Value, m, builder.TranslateType(ret.Type));
+                var e = MakeValueExpression(ret.Value, builder.TranslateType(ret.Type));
                 m.Return(e);
             }
             return 0;
@@ -245,15 +295,27 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitSelect(Select select)
         {
-            throw new NotImplementedException();
+            var condType = builder.TranslateType(select.CondType);
+            var condExp = MakeValueExpression(select.Cond, condType);
+
+            var trueType = builder.TranslateType(select.TrueType);
+            var trueExp = MakeValueExpression(select.TrueValue, trueType);
+
+            var falseType = builder.TranslateType(select.FalseType);
+            var falseExp = MakeValueExpression(select.FalseValue, falseType);
+
+            var dst = m.CreateLocalId("loc", trueType);
+            m.Assign(dst, m.Conditional(trueType, condExp, trueExp, falseExp));
+
+            return 0;
         }
 
         public int VisitStore(Store store)
         {
             var dstType = builder.TranslateType(store.DstType);
             var srcType = builder.TranslateType(store.SrcType);
-            var src = MakeValueExpression(store.Src, m, srcType);
-            var ea = MakeValueExpression(store.Dst, m, dstType);
+            var src = MakeValueExpression(store.Src, srcType);
+            var ea = MakeValueExpression(store.Dst, dstType);
             m.Store(ea, src);
             return 0;
         }
@@ -265,10 +327,11 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitUnreachable(Unreachable unreachable)
         {
-            throw new NotImplementedException();
+            //$REVIEW: no equivalent in Reko. Does it matter?
+            return 0;
         }
 
-        private Expression MakeValueExpression(Value value, ProcedureBuilder m, DataType dt)
+        private Expression MakeValueExpression(Value value,  DataType dt)
         {
             var c = value as Constant;
             if (c != null)
@@ -285,8 +348,12 @@ namespace Reko.ImageLoaders.LLVM
             {
                 return builder.Globals[global.Name];
             }
+            var get = value as GetElementPtrExpr;
+            if (get != null)
+            {
+                return GetElementPtr(get.PointerType, get.Pointer, get.Indices);
+            }
             throw new NotImplementedException(string.Format("MakeValueExpression: {0}", value.ToString() ?? "(null)"));
         }
-
     }
 }

@@ -96,6 +96,11 @@ namespace Reko.Core.Expressions
             return new ConditionOf(expr);
         }
 
+        public ConditionalExpression Conditional(DataType dt, Expression cond, Expression th, Expression el)
+        {
+            return new ConditionalExpression(dt, cond, th, el);
+        }
+
         /// <summary>
         /// Short-circuiting 'or' ('&&' in C family of languages)
         /// </summary>

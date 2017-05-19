@@ -133,6 +133,11 @@ namespace Reko.Analysis
                 return cast.Expression.Accept(this);
             }
 
+            public bool VisitConditionalExpression(ConditionalExpression cond)
+            {
+                throw new NotImplementedException();
+            }
+
             public bool VisitConditionOf(ConditionOf cof)
             {
                 return cof.Expression.Accept(this);

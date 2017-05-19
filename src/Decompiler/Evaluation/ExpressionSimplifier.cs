@@ -388,6 +388,11 @@ namespace Reko.Evaluation
             return cast;
         }
 
+        public virtual Expression VisitConditionalExpression(ConditionalExpression c)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Expression VisitConditionOf(ConditionOf c)
         {
             var e = c.Expression.Accept(this);

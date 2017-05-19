@@ -309,6 +309,11 @@ namespace Reko.Core.Output
             throw new NotImplementedException();
         }
 
+        void IExpressionVisitor.VisitConditionalExpression(ConditionalExpression cond)
+        {
+            throw new NotImplementedException();
+        }
+
         void IExpressionVisitor.VisitConditionOf(ConditionOf cof)
         {
             throw new NotImplementedException();
