@@ -798,8 +798,9 @@ means
         {
             BuildTest(0xE10c6ca0);	// smlatb ip, r0, ip, r6
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|ip = (int16) (r0 >> 16) *s (int16) ip + r6",
+                "2|L--|Q = cond(ip)");
         }
 
         [Test]
@@ -855,7 +856,7 @@ means
             BuildTest(0xedcd0b29);	// vstr d16, [sp, #0xa4]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp + 0x000000A4:real64] = d16");
+                "1|L--|Mem0[sp + 164:real64] = d16");
         }
 
         [Test]
@@ -891,7 +892,7 @@ means
             BuildTest(0xee102b90);	// vmov.32 r2, d16[0]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r2 = d16");
         }
 
         [Test]
@@ -1200,7 +1201,7 @@ means
                 "7|L--|fp = Mem0[r1 - 20:word32]",
                 "8|L--|sp = Mem0[r1 - 24:word32]",
                 "9|L--|lr = Mem0[r1 - 28:word32]",
-                "10|L--|return (0,0)");
+                "10|T--|return (0,0)");
         }
 
         [Test]
@@ -1262,8 +1263,10 @@ means
         {
             BuildTest(0x010bdae4);  // smlatteq fp, r4, sl, sp
             AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|fp = (int16) (r4 >> 16) *s (int16) (sl >> 16) + sp");
+                "0|L--|00100000(4): 3 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100004",
+                "2|L--|fp = (int16) (r4 >> 16) *s (int16) (sl >> 16) + sp",
+                "3|L--|Q = cond(fp)");
         }
 
         [Test]
@@ -1281,8 +1284,9 @@ means
         {
             BuildTest(0x014090c0);  // smlalbt sb, r0, r0, r0
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|sb_r0 = r0 *s r0 + sb_r0");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|sb_r0 = r0 *s r0 + sb_r0",
+                "2|L--|Q = cond(sb)");
         }
 
         [Test]

@@ -95,6 +95,7 @@
     <Compile Include="Relocators\PpcRelocator.cs" />
     <Compile Include="Relocators\RiscVRelocator.cs" />
     <Compile Include="Relocators\SparcRelocator.cs" />
+    <Compile Include="Relocators\SuperHRelocator.cs" />
     <Compile Include="Relocators\x86Relocator.cs" />
     <Compile Include="Relocators\x86_64Relocator.cs" />
     <Compile Include="Relocators\XtensaRelocator.cs" />

@@ -269,7 +269,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VADDHN:
 	case ARM_INS_VADDL:
 	case ARM_INS_VADDW:
-	case ARM_INS_VAND:
 	case ARM_INS_VBIC:
 	case ARM_INS_VBIF:
 	case ARM_INS_VBIT:
@@ -380,7 +379,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VSHRN:
 	case ARM_INS_VSHR:
 	case ARM_INS_VSLI:
-	case ARM_INS_VSQRT:
 	case ARM_INS_VSRA:
 	case ARM_INS_VSRI:
 	case ARM_INS_VST1:
@@ -388,7 +386,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VST3:
 	case ARM_INS_VST4:
 	case ARM_INS_VSTMDB:
-	case ARM_INS_VSTR:
 	case ARM_INS_VSUB:
 	case ARM_INS_VSUBHN:
 	case ARM_INS_VSUBL:
@@ -529,10 +526,12 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_UXTH: RewriteXtb(BaseType::UInt16); break;
 
 	case ARM_INS_VABS: RewriteVabs(); break;
+	case ARM_INS_VAND: RewriteVecBinOp(&INativeRtlEmitter::And); break;
 	case ARM_INS_VLDMIA: RewriteVldmia(); break;
 	case ARM_INS_VMOV: RewriteVmov(); break;
 	case ARM_INS_VSTMIA: RewriteVstmia(); break;
-
+	case ARM_INS_VSQRT: RewriteVsqrt(); break;
+	case ARM_INS_VSTR: RewriteVstr(); break;
 	}
 	m.FinishCluster(rtlClass, addrInstr, instr->size);
 	return S_OK;

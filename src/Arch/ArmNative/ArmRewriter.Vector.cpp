@@ -39,6 +39,15 @@ void ArmRewriter::RewriteVabs()
 	m.Invalid();
 }
 
+void ArmRewriter::RewriteVecBinOp(BinOpEmitter fn)
+{
+	auto src1 = Operand(Src1());
+	auto src2 = Operand(Src2());
+	auto dst = Operand(Dst());
+	m.Assign(dst, (m.*fn)(src1, src2));
+
+}
+
 void ArmRewriter::RewriteVldmia()
 {
 	auto rSrc = this->Operand(Dst());
@@ -66,12 +75,19 @@ void ArmRewriter::RewriteVmov()
 {
 	auto dst = this->Operand(Dst());
 	auto src = this->Operand(Src1());
-	auto dt = VectorElementDataType();
-	char fname[200];
-	snprintf(fname, sizeof(fname), "__vmov_%s", VectorElementType());
-	auto ppp = host->EnsurePseudoProcedure(fname, register_types[Dst().reg], 1);
-	m.AddArg(src);
-	m.Assign(dst, m.Fn(ppp));
+	if (instr->detail->arm.vector_data != ARM_VECTORDATA_INVALID)
+	{
+		auto dt = VectorElementDataType();
+		char fname[200];
+		snprintf(fname, sizeof(fname), "__vmov_%s", VectorElementType());
+		auto ppp = host->EnsurePseudoProcedure(fname, register_types[Dst().reg], 1);
+		m.AddArg(src);
+		m.Assign(dst, m.Fn(ppp));
+	}
+	else
+	{
+		m.Assign(dst, src);
+	}
 }
 
 void ArmRewriter::RewriteVstmia()
@@ -95,6 +111,25 @@ void ArmRewriter::RewriteVstmia()
 	{
 		m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
 	}
+}
+
+void ArmRewriter::RewriteVsqrt()
+{
+	auto fnname = instr->detail->arm.vector_data == ARM_VECTORDATA_F32 ? "sqrtf" : "sqrt";
+	auto dt = instr->detail->arm.vector_data == ARM_VECTORDATA_F32 ? BaseType::Real32 : BaseType::Real64;
+	auto src = this->Operand(Src1());
+	auto dst = this->Operand(Dst());
+	auto ppp = host->EnsurePseudoProcedure(fnname, dt, 1);
+	m.AddArg(src);
+	m.Assign(dst, m.Fn(ppp));
+}
+
+void ArmRewriter::RewriteVstr()
+{
+	auto src = this->Operand(Dst());
+	auto dst = this->Operand(Src1());
+	m.Assign(dst, src);
+
 }
 
 const char * ArmRewriter::VectorElementType()

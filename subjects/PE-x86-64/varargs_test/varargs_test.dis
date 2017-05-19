@@ -316,9 +316,9 @@ l00000001400011D4:
 // LocalsOut: Local -0004(64)
 
 l0000000140001279:
-	word64 rcx_164
-	byte bl_165
-	fn0000000140001974(0x00000007, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_164, out bl_165)
+	word64 rcx_149
+	byte bl_150
+	fn0000000140001974(0x00000007, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_149, out bl_150)
 	int3()
 // DataOut:
 // DataOut (flags): 
@@ -378,23 +378,7 @@ l000000014000122E:
 // SymbolicIn: rsp:<invalid> ecx:<invalid> eax:<invalid> rax:<invalid> rbx:<invalid> rcx:<invalid> rbp:<invalid> ebx:<invalid> rsi:<invalid> r8:<invalid> rdx:<invalid> al:<invalid> edx:<invalid> r8d:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbx
 
 l000000014000123C:
-	word64 rsp_147
-	word64 rbx_148
-	byte SCZO_149
-	word32 ecx_150
-	word32 eax_151
-	word64 rax_152
-	byte al_153
-	byte SZO_154
-	byte C_155
-	byte Z_156
-	word64 rcx_157
-	word64 r8_158
-	word64 r13_159
-	byte bl_160
-	call _setusermatherr (retsize: 8; depth: 8)
-		uses: al_80,bl_87,C_95,dwLoc04_4,dwLoc2C,eax_92,ecx_77,qwLoc04,qwLoc2C,r13_86,r8_85,rax_79,rbx_75,rcx_146,rsp_88,SCZO_76,SZO_93,Z_94
-		defs: al_153,bl_160,C_155,eax_151,ecx_150,r13_159,r8_158,rax_152,rbx_148,rcx_157,rsp_147,SCZO_149,SZO_154,Z_156
+	__setusermatherr(0x0000000140001ABC)
 // DataOut: rsp
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> ecx:<invalid> eax:<invalid> rax:<invalid> rbx:<invalid> rcx:<invalid> al:<invalid> rbp:<invalid> ebx:<invalid> rsi:<invalid> r8:<invalid> rdx:<invalid> edx:<invalid> r8d:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbx

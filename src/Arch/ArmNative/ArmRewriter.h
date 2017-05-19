@@ -103,9 +103,12 @@ private:
 	void RewriteUnaryOp(UnaryOpEmitter);
 	void RewriteUbfx();
 	void RewriteVabs(); 
+	void RewriteVecBinOp(BinOpEmitter);
 	void RewriteVldmia();
 	void RewriteVmov();
 	void RewriteVstmia();
+	void RewriteVsqrt();
+	void RewriteVstr();
 	void RewriteXtab(BaseType);
 	void RewriteXtb(BaseType);
 
