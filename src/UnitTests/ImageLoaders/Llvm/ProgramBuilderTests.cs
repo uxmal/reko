@@ -219,10 +219,13 @@ next_char_exit:
 // Return size: 0
 word32 foo()
 foo_entry:
-    // succ:  l1
-    %1 = &(*msg)[0];
-    puts(%1)
-    return 0x00000000
+	// succ:  l0
+l0:
+	loc1 = &(*msg)[0]
+	puts(loc1)
+	return 0x00000000
+	// succ:  foo_exit
+foo_exit:
 ";
             AssertProc(sExp, proc);
 

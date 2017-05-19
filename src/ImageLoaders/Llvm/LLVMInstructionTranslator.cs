@@ -180,7 +180,38 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitGetelementptr(GetElementPtr get)
         {
-            throw new NotImplementedException(get.ToString());
+            var type = builder.TranslateType(get.PtrType);
+            Expression e = MakeValueExpression(get.PtrValue, m, type);
+            foreach (var index in get.Indices)
+            {
+                var idx = Convert.ToInt64(((Constant)index.Item2).Value);
+                var ptr = type as Pointer;
+                if(ptr != null)
+                {
+                    if (idx == 0)
+                    {
+                        e = m.Deref(e);
+                    }
+                    else
+                    {
+                        e = m.Array(ptr.Pointee, e, IrConstant.Int32((int)idx));
+                    }
+                    e.DataType = ptr.Pointee;
+                    type = ptr.Pointee;
+                    continue;
+                }
+                var a = type as ArrayType;
+                if (a != null)
+                {
+                    e = m.Array(a.ElementType, e, IrConstant.Int32((int)idx));
+                    e.DataType = a.ElementType;
+                    type = a.ElementType;
+                    continue;
+                }
+            }
+            var dst = m.CreateLocalId("loc", VoidType.Instance);
+            m.Assign(dst, m.AddrOf(e));
+            return 0;
         }
 
         public int VisitLoad(Load load)
