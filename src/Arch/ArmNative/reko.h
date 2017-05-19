@@ -96,6 +96,10 @@ public:
 	virtual HExpr STDAPICALLTYPE IAdd(HExpr a, HExpr b) = 0;
 	virtual HExpr STDAPICALLTYPE IMul(HExpr a, HExpr b) = 0;
 	virtual HExpr STDAPICALLTYPE ISub(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE FAdd(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE FSub(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE FMul(HExpr a, HExpr b) = 0;
+	virtual HExpr STDAPICALLTYPE FDiv(HExpr a, HExpr b) = 0;
 	virtual HExpr STDAPICALLTYPE Mem(BaseType dt, HExpr ea) = 0;
 	virtual HExpr STDAPICALLTYPE Mem8(HExpr ea) = 0;
 	virtual HExpr STDAPICALLTYPE Mem16(HExpr ea) = 0;

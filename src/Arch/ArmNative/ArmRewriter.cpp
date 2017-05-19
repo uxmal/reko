@@ -221,12 +221,10 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_STLEXD:
 	case ARM_INS_STLEXH:
 	case ARM_INS_STLH:
-	case ARM_INS_STRBT:
 	case ARM_INS_STREX:
 	case ARM_INS_STREXB:
 	case ARM_INS_STREXD:
 	case ARM_INS_STREXH:
-	case ARM_INS_STRT:
 	case ARM_INS_SWP:
 	case ARM_INS_SWPB:
 	case ARM_INS_SXTAB16:
@@ -280,7 +278,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VCLS:
 	case ARM_INS_VCLT:
 	case ARM_INS_VCLZ:
-	case ARM_INS_VCMP:
 	case ARM_INS_VCMPE:
 	case ARM_INS_VCNT:
 	case ARM_INS_VCVTA:
@@ -290,9 +287,7 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VCVTN:
 	case ARM_INS_VCVTP:
 	case ARM_INS_VCVTT:
-	case ARM_INS_VDIV:
 	case ARM_INS_VDUP:
-	case ARM_INS_VEOR:
 	case ARM_INS_VEXT:
 	case ARM_INS_VFMA:
 	case ARM_INS_VFMS:
@@ -305,7 +300,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VLD3:
 	case ARM_INS_VLD4:
 	case ARM_INS_VLDMDB:
-	case ARM_INS_VLDR:
 	case ARM_INS_VMAXNM:
 	case ARM_INS_VMAX:
 	case ARM_INS_VMINNM:
@@ -488,6 +482,8 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_SMLABT: RewriteMla(false, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLALBB: RewriteMlal(false, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLALBT: RewriteMlal(false, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_SMLALTB: RewriteMlal(true, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_SMLALTT: RewriteMlal(true, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLAL: RewriteSmlal(); break;
 	case ARM_INS_SMLATB: RewriteMla(true, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLATT: RewriteMla(true, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
@@ -506,9 +502,11 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_STMIB: RewriteStm(4, true); break;
 	case ARM_INS_STR: RewriteStr(BaseType::Word32); break;
 	case ARM_INS_STRB: RewriteStr(BaseType::Byte); break;
+	case ARM_INS_STRBT: RewriteStr(BaseType::Byte); break;
 	case ARM_INS_STRD: RewriteStrd(); break;
 	case ARM_INS_STRH: RewriteStr(BaseType::UInt16); break;
 	case ARM_INS_STRHT: RewriteStr(BaseType::UInt16); break;
+	case ARM_INS_STRT: RewriteStr(BaseType::Word32); break;
 	case ARM_INS_SUB: RewriteBinOp(&INativeRtlEmitter::ISub, instr->detail->arm.update_flags); break;
 	case ARM_INS_SVC: RewriteSvc(); break;
 	case ARM_INS_SXTAB: RewriteXtab(BaseType::SByte); break;
@@ -527,7 +525,11 @@ STDMETHODIMP ArmRewriter::Next()
 
 	case ARM_INS_VABS: RewriteVabs(); break;
 	case ARM_INS_VAND: RewriteVecBinOp(&INativeRtlEmitter::And); break;
+	case ARM_INS_VCMP: RewriteVcmp(); break;
+	case ARM_INS_VDIV: RewriteVecBinOp(&INativeRtlEmitter::FDiv); break;
+	case ARM_INS_VEOR: RewriteVecBinOp(&INativeRtlEmitter::Xor); break;
 	case ARM_INS_VLDMIA: RewriteVldmia(); break;
+	case ARM_INS_VLDR: RewriteVldr(); break;
 	case ARM_INS_VMOV: RewriteVmov(); break;
 	case ARM_INS_VSTMIA: RewriteVstmia(); break;
 	case ARM_INS_VSQRT: RewriteVsqrt(); break;
@@ -742,6 +744,8 @@ BaseType ArmRewriter::SizeFromLoadStore()
 	case ARM_INS_STRD: return BaseType::Word64;
 	case ARM_INS_STRH: return BaseType::Word16;
 	case ARM_INS_STRHT: return BaseType::Word16;
+	case ARM_INS_VLDR: return register_types[instr->detail->arm.operands[0].reg];
+	case ARM_INS_VSTR: return register_types[instr->detail->arm.operands[0].reg];
 	}
 	//assert(false && instr->Id.ToString());
 	return BaseType::Void;

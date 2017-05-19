@@ -55,6 +55,10 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr IAdd(HExpr a, HExpr b);
         [PreserveSig] HExpr IMul(HExpr a, HExpr b);
         [PreserveSig] HExpr ISub(HExpr a, HExpr b);
+        [PreserveSig] HExpr FAdd(HExpr a, HExpr b);
+        [PreserveSig] HExpr FSub(HExpr a, HExpr b);
+        [PreserveSig] HExpr FMul(HExpr a, HExpr b);
+        [PreserveSig] HExpr FDiv(HExpr a, HExpr b);
         [PreserveSig] HExpr Mem(BaseType dt, HExpr ea);
         [PreserveSig] HExpr Mem8(HExpr ea);
         [PreserveSig] HExpr Mem16(HExpr ea);

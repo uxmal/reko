@@ -207,6 +207,27 @@ namespace Reko.Core.NativeInterface
             return MapToHandle(m.ISub(GetExpression(a), GetExpression(b)));
         }
 
+        public HExpr FAdd(HExpr a, HExpr b)
+        {
+            return MapToHandle(m.FAdd(GetExpression(a), GetExpression(b)));
+        }
+
+        public HExpr FSub(HExpr a, HExpr b)
+        {
+            return MapToHandle(m.FSub(GetExpression(a), GetExpression(b)));
+        }
+
+        public HExpr FMul(HExpr a, HExpr b)
+        {
+            return MapToHandle(m.FMul(GetExpression(a), GetExpression(b)));
+        }
+
+        public HExpr FDiv(HExpr a, HExpr b)
+        {
+            return MapToHandle(m.FDiv(GetExpression(a), GetExpression(b)));
+        }
+
+
         public HExpr Mem(BaseType dt, HExpr ea)
         {
             return MapToHandle(m.Load(Interop.DataTypes[dt], GetExpression(ea)));

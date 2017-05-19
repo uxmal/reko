@@ -22,20 +22,20 @@
 
 void ArmRewriter::RewriteVabs()
 {
-	//auto dst = Operand(Dst());
-	//auto src = Operand(Src1());
-	//auto elemType = VectorElementDataType();
-	//auto elemSize = type_sizes[(int)elemType];
-	//auto vecSize = type_sizes[(int)register_types[Src1().reg]];
-	//auto vecType = m.Array(elemType, vecsize / elemSize);
-	//
-	//char fnName[30];
-	//snprintf(fnName, sizeof(fnName), "__vabs_%s", VectorElementType());
-	//host->Param(vecType);
-	//host->Param(vecType);
-	//auto vabs = host->EnsurePseudoProcedure(fnName, vecType);
-	//m.AddArg(src);
-	//m.Assign(dst, m.Fn(vec))
+	/*	auto dst = Operand(Dst());/*
+	auto src = Operand(Src1());
+	auto elemType = VectorElementDataType();
+	auto elemSize = type_sizes[(int)elemType];
+	auto vecSize = type_sizes[(int)register_types[Src1().reg]];
+	auto vecType = m.Array(elemType, vecsize / elemSize);
+	
+	char fnName[30];
+	snprintf(fnName, sizeof(fnName), "__vabs_%s", VectorElementType());
+	host->Param(vecType);
+	host->Param(vecType);
+	auto vabs = host->EnsurePseudoProcedure(fnName, vecType);
+	m.AddArg(src);
+	m.Assign(dst, m.Fn(vec))*/
 	m.Invalid();
 }
 
@@ -45,7 +45,14 @@ void ArmRewriter::RewriteVecBinOp(BinOpEmitter fn)
 	auto src2 = Operand(Src2());
 	auto dst = Operand(Dst());
 	m.Assign(dst, (m.*fn)(src1, src2));
+}
 
+void ArmRewriter::RewriteVcmp()
+{
+	auto src1 = Operand(Dst());
+	auto src2 = Operand(Src1());
+	auto fpscr = host->EnsureFlagGroup((int)ARM_REG_FPSCR, 0xF0000000, "NZCV", BaseType::Word32);
+	m.Assign(fpscr, m.Cond(m.FSub(src1, src2)));
 }
 
 void ArmRewriter::RewriteVldmia()
@@ -69,6 +76,13 @@ void ArmRewriter::RewriteVldmia()
 	{
 		m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
 	}
+}
+
+void ArmRewriter::RewriteVldr()
+{
+	auto dst = this->Operand(Dst());
+	auto src = this->Operand(Src1());
+	m.Assign(dst, src);
 }
 
 void ArmRewriter::RewriteVmov()
@@ -129,7 +143,6 @@ void ArmRewriter::RewriteVstr()
 	auto src = this->Operand(Dst());
 	auto dst = this->Operand(Src1());
 	m.Assign(dst, src);
-
 }
 
 const char * ArmRewriter::VectorElementType()

@@ -104,7 +104,9 @@ private:
 	void RewriteUbfx();
 	void RewriteVabs(); 
 	void RewriteVecBinOp(BinOpEmitter);
+	void RewriteVcmp();
 	void RewriteVldmia();
+	void RewriteVldr();
 	void RewriteVmov();
 	void RewriteVstmia();
 	void RewriteVsqrt();

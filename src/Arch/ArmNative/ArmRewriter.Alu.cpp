@@ -200,6 +200,10 @@ void ArmRewriter::RewriteStr(BaseType size)
 {
 	auto opSrc = this->Operand(Dst());
 	auto opDst = this->Operand(Src1());
+	if (size != BaseType::Word32)
+	{
+		opSrc = m.Cast(size, opSrc);
+	}
 	m.Assign(opDst, opSrc);
 	MaybePostOperand(Src1());
 }
