@@ -246,8 +246,10 @@
     <Compile Include="Lib\WildPatternMatcher.cs" />
     <Compile Include="NativeInterface\BaseType.cs" />
     <Compile Include="NativeInterface\INativeRewriter.cs" />
+    <Compile Include="NativeInterface\INativeTypeFactory.cs" />
     <Compile Include="NativeInterface\Interop.cs" />
     <Compile Include="NativeInterface\IRtlNativeEmitter.cs" />
+    <Compile Include="NativeInterface\NativeTypeFactory.cs" />
     <Compile Include="NativeInterface\RtlNativeEmitter.cs" />
     <Compile Include="Operators\FNegOperator.cs" />
     <Compile Include="Output\CTypeReferenceFormatter.cs" />
