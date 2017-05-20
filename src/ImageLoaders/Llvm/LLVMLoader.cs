@@ -59,7 +59,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            throw new NotImplementedException();
+            return new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>());
         }
     }
 }
