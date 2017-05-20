@@ -228,7 +228,48 @@ l0:
 foo_exit:
 ";
             AssertProc(sExp, proc);
+        }
 
+        [Test]
+        public void LLPB_Phi()
+        {
+            var proc = RunFuncTest(
+@"define i32 @foo() {
+    %1 = load i32, i32* 0x00123400
+    %2 = icmp eq i32 %1, 4
+    br i1 %2, label %5, label %3 
+    %4 = add i32 %1, 9
+    br label %7
+    %6 = add i32 %1, -1
+    br label %7
+    %8 = phi i32 [ %4, %3], [%6, %5]
+    ret i32 %8
+}");
+            var sExp =
+@"// foo
+// Return size: 0
+word32 foo()
+foo_entry:
+	// succ:  l0
+l0:
+	loc1 = Mem0[0x00123400:word32]
+	loc2 = loc1 == 0x00000004
+	branch loc2 l5
+	// succ:  l3 l5
+l3:
+	loc4 = loc1 + 0x00000009
+	goto l7
+	// succ:  l7
+l5:
+	loc6 = loc1 + 0xFFFFFFFF
+	// succ:  l7
+l7:
+	loc8 = PHI(loc4, loc6)
+	return loc8
+	// succ:  foo_exit
+foo_exit:
+";
+            AssertProc(sExp, proc);
         }
 
         //[Ignore("Only works on @uxmal's machine right now")]

@@ -28,6 +28,7 @@ using System.Text;
 using System.Threading.Tasks;
 using IrConstant = Reko.Core.Expressions.Constant;
 using IrDomain = Reko.Core.Types.Domain;
+using PhiAssignment = Reko.Core.Code.PhiAssignment;
 
 namespace Reko.ImageLoaders.LLVM
 {
@@ -35,11 +36,13 @@ namespace Reko.ImageLoaders.LLVM
     {
         private ProgramBuilder builder;
         private ProcedureBuilder m;
+        private Dictionary<Statement, PhiInstruction> unresolvedPhis;
 
         public LLVMInstructionTranslator(ProgramBuilder builder, ProcedureBuilder m)
         {
             this.builder = builder;
             this.m = m;
+            this.unresolvedPhis = new Dictionary<Statement, PhiInstruction>();
         }
 
         public int VisitAlloca(Alloca alloca)
@@ -285,10 +288,29 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitPhi(PhiInstruction phi)
         {
+            m.EnsureBlock(null);
             var dstType = builder.TranslateType(phi.Type);
             var dst = m.CreateLocalId("loc", dstType);
-            m.SideEffect(new Identifier(phi.ToString(), new UnknownType(), new MemoryStorage()));
+            var stm = m.Phi(dst);
+            unresolvedPhis.Add(stm, phi);
             return 0;
+        }
+
+        public void ResolvePhis()
+        {
+            foreach (var de in unresolvedPhis)
+            {
+                var args = new Expression[de.Value.Arguments.Count];
+                var block = de.Key.Block;
+                var type = builder.TranslateType(de.Value.Type);
+                foreach (var arg in de.Value.Arguments)
+                {
+                    var val = MakeValueExpression(arg.Item1, type);
+                    args[block.Pred.IndexOf(m.BlockOf(arg.Item2.Name, false))] = val;
+                }
+                var phi = (PhiAssignment)de.Key.Instruction;
+                phi.Src = new PhiFunction(type, args);
+            }
         }
 
         public int VisitRet(RetInstr ret)
@@ -361,6 +383,21 @@ namespace Reko.ImageLoaders.LLVM
                     return IrConstant.Create(dt, Convert.ToInt64(c.Value));
                 }
             }
+            var l = value as Literal;
+            if (l != null)
+            {
+                if (l.Type == TokenType.HexInteger)
+                {
+                    var ptr = dt as Pointer;
+                    var val = Convert.ToInt64(l.Value, 16);
+                    if (ptr != null)
+                    {
+                        return Address.Create(ptr, (ulong)val);
+                    }
+                    return IrConstant.Create(dt, val);
+                }
+                throw new NotImplementedException();
+            }
             var local = value as LocalId;
             if (local != null)
             {
@@ -376,7 +413,7 @@ namespace Reko.ImageLoaders.LLVM
             {
                 return GetElementPtr(get.PointerType, get.Pointer, get.Indices);
             }
-            throw new NotImplementedException(string.Format("MakeValueExpression: {0}", value.ToString() ?? "(null)"));
+            throw new NotImplementedException(string.Format("MakeValueExpression: {0} {1}", value.GetType().Name, value.ToString() ?? "(null)"));
         }
     }
 }

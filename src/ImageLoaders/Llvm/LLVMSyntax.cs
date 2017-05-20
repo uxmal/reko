@@ -304,6 +304,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             switch (Type)
             {
+            case TokenType.HexInteger: w.Write("0x{0}", Value); break;
             case TokenType.DoubleLiteral: w.Write(Value); break;
             case TokenType.X86_fp80_Literal: w.Write("0xK{0}", Value); break;
             default: throw new NotImplementedException(Type.ToString());

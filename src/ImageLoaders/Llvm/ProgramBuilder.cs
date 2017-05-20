@@ -187,6 +187,7 @@ namespace Reko.ImageLoaders.LLVM
             {
                 instr.Accept(xlat);
             }
+            xlat.ResolvePhis();
         }
     }
 }

@@ -112,7 +112,7 @@ namespace Reko.ImageLoaders.LLVM
             proc.ControlGraph.AddEdge(b, trueBlock);
         }
 
-        private Block BlockOf(string label, bool defer)
+        public Block BlockOf(string label, bool defer)
         {
             Block b;
             if (deferredBlocks.TryGetValue(label, out b))
