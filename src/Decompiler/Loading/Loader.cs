@@ -113,6 +113,14 @@ namespace Reko.Loading
             }
 
             var program = imgLoader.Load(addrLoad);
+
+            // Sanity check of the 'Needs' properties.
+            if (program.NeedsScanning && !program.NeedsSsaTransform)
+                throw new InvalidOperationException(
+                    "A programming error has been detected. " +
+                    "Image loader {0} has set the program.NeedsScanning " +
+                    "and program.NeedsSsaTransform to inconsistent values");
+
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(program, addrLoad);
             foreach (var sym in relocations.Symbols.Values)
@@ -127,6 +135,16 @@ namespace Reko.Loading
             return program;
         }
 
+
+        /// <summary>
+        /// Loads a Program from a flat image where all the metadata has been 
+        /// supplied by the user in <paramref name="details"/>.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="image"></param>
+        /// <param name="addrLoad"></param>
+        /// <param name="details"></param>
+        /// <returns></returns>
         public Program LoadRawImage(string filename, byte[] image, Address addrLoad, LoadDetails details)
         { 
             var arch = cfgSvc.GetArchitecture(details.ArchitectureName);

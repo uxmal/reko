@@ -263,7 +263,7 @@ namespace Reko.Gui.Forms
             }
             catch (Exception ex)
             {
-                Debug.Print("Caught exeption: {0}\r\n{1}", ex.Message, ex.StackTrace);
+                Debug.Print("Caught exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
                 uiSvc.ShowError(ex, "Couldn't open file '{0}'.", file);
             }
         }
