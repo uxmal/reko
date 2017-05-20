@@ -54,6 +54,9 @@ namespace Reko.ImageLoaders.LLVM
             var module = parser.ParseModule();
             var builder = new ProgramBuilder(Core.Types.PrimitiveType.Pointer64);   //$BUGBUG: obtain pointer size from LLVM!
             var program = builder.BuildProgram(module);
+            program.NeedsScanning = false;
+            program.NeedsSsaTransform = false;
+            program.Platform = new DefaultPlatform(Services, null);
             return program; 
         }
 

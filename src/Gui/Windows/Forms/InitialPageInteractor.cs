@@ -71,9 +71,10 @@ namespace Reko.Gui.Windows.Forms
                     status.Status = CanAdvance 
                         ? MenuStatus.Visible | MenuStatus.Enabled
                         : MenuStatus.Visible;
-                    text.Text = Resources.ScanBinaries;
+                    text.Text = NeedsScanning() 
+                        ? Resources.ScanBinaries 
+                        : Resources.AnalyzeDataflow;
                     return true;
-
                 }
             }
             return base.QueryStatus(cmdId, status, text);
@@ -162,6 +163,14 @@ namespace Reko.Gui.Windows.Forms
             browserSvc.Load(Decompiler.Project);
             ShowLowLevelWindow();
             return false;
+        }
+
+        private bool NeedsScanning()
+        {
+            return
+                Decompiler != null &&
+                Decompiler.Project != null &&
+                Decompiler.Project.Programs.Any(p => p.NeedsScanning);
         }
     }
 }

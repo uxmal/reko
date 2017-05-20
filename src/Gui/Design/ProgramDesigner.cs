@@ -56,10 +56,14 @@ namespace Reko.Gui.Design
         {
             TreeNode.Text = program.Name;
             TreeNode.ImageName = "Binary.ico";
-            TreeNode.ToolTipText = string.Format("{0}{1}{2}",
-                program.Filename != null ? program.Filename : "(No file name)",
-                Environment.NewLine,
-                program.ImageMap.BaseAddress);
+            var sb = new StringBuilder();
+            sb.Append(program.Filename != null ? program.Filename : "(No file name)");
+            if (program.NeedsScanning)
+            {
+                sb.AppendLine();
+                sb.Append(program.ImageMap.BaseAddress.ToString());
+            }
+            TreeNode.ToolTipText = sb.ToString();
         }
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

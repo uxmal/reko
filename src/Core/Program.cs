@@ -372,6 +372,8 @@ namespace Reko.Core
         /// </summary>
         public void BuildImageMap()
         {
+            if (!this.NeedsScanning)
+                return;
             this.ImageMap = SegmentMap.CreateImageMap();
             foreach (var sym in this.ImageSymbols.Values.Where(
                 s => s.Type == SymbolType.Data && s.Size != 0))
