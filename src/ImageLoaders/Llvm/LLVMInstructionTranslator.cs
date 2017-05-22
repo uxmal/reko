@@ -282,7 +282,7 @@ namespace Reko.ImageLoaders.LLVM
             var srcType = builder.TranslateType(load.SrcType);
             var ea = MakeValueExpression(load.Src, srcType);
             var dst = m.CreateLocalId("loc", dstType);
-            m.Assign(dst, m.Load(dstType, ea));
+            m.Assign(dst, m.Deref(ea));
             return 0;
         }
 
@@ -350,7 +350,7 @@ namespace Reko.ImageLoaders.LLVM
             var srcType = builder.TranslateType(store.SrcType);
             var src = MakeValueExpression(store.Src, srcType);
             var ea = MakeValueExpression(store.Dst, dstType);
-            m.Store(ea, src);
+            m.Emit(new Core.Code.Store(m.Deref(ea), src));
             return 0;
         }
 

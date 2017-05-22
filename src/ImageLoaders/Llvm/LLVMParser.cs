@@ -62,8 +62,10 @@ namespace Reko.ImageLoaders.LLVM
                 }
             }
         }
+
         public Module ParseModule()
         {
+            var targets = new List<TargetSpecification>();
             var entries = new List<ModuleEntry>();
             while (true)
             {
@@ -72,6 +74,7 @@ namespace Reko.ImageLoaders.LLVM
                 case TokenType.EOF:
                     return new Module
                     {
+                        Targets = targets,
                         Entries = entries,
                     };
                 case TokenType.LocalId:
@@ -94,7 +97,8 @@ namespace Reko.ImageLoaders.LLVM
                     ParseSourceFilename();
                     break;
                 case TokenType.target:
-                    ParseTarget();
+                    var target = ParseTarget();
+                    targets.Add(target);
                     break;
                 case TokenType.attributes:
                     ParseAttributes();
@@ -435,13 +439,17 @@ namespace Reko.ImageLoaders.LLVM
             Expect(TokenType.String);
         }
 
-        private void ParseTarget()
+        private TargetSpecification ParseTarget()
         {
             Expect(TokenType.target);
-            PeekAndDiscard(TokenType.datalayout);
-            PeekAndDiscard(TokenType.triple);
+            var tok = Get();
             Expect(TokenType.EQ);
-            Expect(TokenType.String);
+            var spec = Expect(TokenType.String);
+            return new TargetSpecification
+            {
+                Type = tok.Type,
+                Specification = spec,
+            };
         }
 
         private void ParseAttributes()

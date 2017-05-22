@@ -178,22 +178,22 @@ byte next_char()
 next_char_entry:
 	// succ:  l0
 l0:
-	loc1 = Mem0[curch:byte]
+	loc1 = *curch
 	loc2 = (int32) loc1
 	loc3 = loc2 == 0x0000000A
 	branch loc3 l4
 	goto l7
 	// succ:  l7 l4
 l4:
-	loc5 = Mem0[curln:word32]
+	loc5 = *curln
 	loc6 = loc5 + 0x00000001
-	Mem0[curln:word32] = loc6
+	*curln = loc6
 	// succ:  l7
 l7:
-	loc8 = Mem0[input:(ptr struct._IO_FILE)]
+	loc8 = *input
 	loc9 = fgetc(loc8)
 	loc10 = (byte) loc9
-	Mem0[curch:byte] = loc10
+	*curch = loc10
 	return loc10
 	// succ:  next_char_exit
 next_char_exit:
@@ -252,7 +252,7 @@ word32 foo()
 foo_entry:
 	// succ:  l0
 l0:
-	loc1 = Mem0[0x00123400:word32]
+	loc1 = *0x00123400
 	loc2 = loc1 == 0x00000004
 	branch loc2 l5
 	// succ:  l3 l5

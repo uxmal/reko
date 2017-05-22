@@ -335,6 +335,14 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             RunInstrTest();
         }
 
+        [Test]
+        public void LLParser_target_datalayout()
+        {
+            llir = "target datalayout = \"layout spec\"";
+            sExp = "target datalayout = \"layout spec\"" + nl;
+            RunModuleTest();
+        }
+
         [Test(Description = "Sample taken from http://llvm.org/docs/LangRef.html#module-structure")]
         public void LLParser_Module()
         {

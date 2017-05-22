@@ -863,6 +863,16 @@ namespace Reko.Analysis
                 return a;
             }
 
+            public override Instruction TransformDeclaration(Declaration decl)
+            {
+                if (decl.Expression != null)
+                {
+                    decl.Expression = decl.Expression.Accept(this);
+                }
+                decl.Identifier = Def(decl.Identifier, decl.Expression);
+                return decl;
+            }
+
             public override Instruction TransformPhiAssignment(PhiAssignment phi)
             {
                 phi.Src = (PhiFunction)phi.Src.Accept(this);

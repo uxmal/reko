@@ -41,6 +41,7 @@ namespace Reko.ImageLoaders.LLVM
 
     public class Module : LLVMSyntax
     {
+        public List<TargetSpecification> Targets;
         // Each module consists of functions, global variables, and symbol 
         // table entries
         public List<ModuleEntry> Entries;
@@ -48,6 +49,13 @@ namespace Reko.ImageLoaders.LLVM
         public override void Write(Formatter w)
         {
             bool sep = false;
+            foreach (var target in Targets)
+            {
+                target.Write(w);
+                w.WriteLine();
+            }
+
+            sep = false;
             foreach (var entry in Entries)
             {
                 if (sep)
@@ -56,6 +64,23 @@ namespace Reko.ImageLoaders.LLVM
                 w.WriteLine();
                 sep = true;
             }
+        }
+    }
+
+    public class TargetSpecification : LLVMSyntax
+    {
+        public TokenType Type;
+        public string Specification;
+
+        public override void Write(Formatter w)
+        {
+            w.WriteKeyword("target");
+            w.Write(" ");
+            w.WriteKeyword(Type.ToString());
+            w.Write(" = ");
+            w.Write("\"");
+            w.Write(Specification);
+            w.Write("\"");
         }
     }
 
