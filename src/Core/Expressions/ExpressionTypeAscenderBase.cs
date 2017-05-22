@@ -257,6 +257,11 @@ namespace Reko.Core.Expressions
             return cast.DataType;
         }
 
+        public DataType VisitConditionalExpression(ConditionalExpression cond)
+        {
+            throw new NotImplementedException();
+        }
+
         public DataType VisitConditionOf(ConditionOf cof)
         {
             cof.Expression.Accept(this);

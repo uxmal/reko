@@ -456,7 +456,12 @@ namespace Reko.Typing
 			return handler.DataTypeTrait(cast, cast.DataType);
 		}
 
-		public DataType VisitConditionOf(ConditionOf cof)
+        public DataType VisitConditionalExpression(ConditionalExpression c)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataType VisitConditionOf(ConditionOf cof)
 		{
 			cof.Expression.Accept(this);
 			return handler.DataTypeTrait(cof, cof.DataType);

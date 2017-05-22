@@ -427,6 +427,11 @@ namespace Reko.Typing
             return false;
         }
 
+        public bool VisitConditionalExpression(ConditionalExpression c, TypeVariable tv)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool VisitConditionOf(ConditionOf cof, TypeVariable tv)
         {
             MeetDataType(cof, cof.DataType);

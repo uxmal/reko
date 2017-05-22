@@ -54,7 +54,8 @@ namespace Reko.Core.Output
 		private const int PrecedenceDereference = 2;
 		private const int PrecedenceMemberPointerSelector = 3;
 		private const int PrecedenceCase = 2;
-		private const int PrecedenceLeast = 20;
+        private const int PrecedenceConditional = 14;
+        private const int PrecedenceLeast = 20;
 
         private TypeGraphWriter typeWriter;
 
@@ -204,7 +205,18 @@ namespace Reko.Core.Output
 			ResetPresedence(prec);
 		}
 
-		public void VisitConditionOf(ConditionOf cond)
+        public void VisitConditionalExpression(ConditionalExpression cond)
+        {
+            int prec = SetPrecedence(PrecedenceConditional);
+            cond.Condition.Accept(this);
+            writer.Write(" ? ");
+            cond.ThenExp.Accept(this);
+            writer.Write(" : ");
+            cond.FalseExp.Accept(this);
+            ResetPresedence(prec);
+        }
+
+        public void VisitConditionOf(ConditionOf cond)
 		{
 			writer.Write("cond(");
 			WriteExpression(cond.Expression);

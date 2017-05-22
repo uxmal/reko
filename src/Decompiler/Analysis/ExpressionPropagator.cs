@@ -339,6 +339,11 @@ namespace Reko.Analysis
             return SimplifyExpression(new Cast(cast.DataType, e.PropagatedExpression));
         }
 
+        public Result VisitConditionalExpression(ConditionalExpression cond)
+        {
+            throw new NotImplementedException();
+        }
+
         public Result VisitConditionOf(ConditionOf cof)
         {
             var e = cof.Expression.Accept(this);

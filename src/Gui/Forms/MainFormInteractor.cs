@@ -67,7 +67,6 @@ namespace Reko.Gui.Forms
         private ILoadedPageInteractor pageLoaded;
         private IAnalyzedPageInteractor pageAnalyzed;
         private IFinalPageInteractor pageFinal;
-        private Dictionary<IPhasePageInteractor, IPhasePageInteractor> nextPage;
 
         private MruList mru;
         private DecompilerMenus dm;
@@ -85,7 +84,6 @@ namespace Reko.Gui.Forms
             this.mru = new MruList(MaxMruItems);
             this.mru.Load(MruListFile);
             this.sc = services.RequireService<IServiceContainer>();
-            this.nextPage = new Dictionary<IPhasePageInteractor, IPhasePageInteractor>();
             this.CancellationTokenSource = new CancellationTokenSource();
         }
 
@@ -98,10 +96,6 @@ namespace Reko.Gui.Forms
             pageLoaded = svcFactory.CreateLoadedPageInteractor();
             pageAnalyzed = new AnalyzedPageInteractorImpl(sc);
             pageFinal = new FinalPageInteractor(sc);
-
-            nextPage[pageInitial] = pageLoaded;
-            nextPage[pageLoaded] = pageAnalyzed;
-            nextPage[pageAnalyzed] = pageFinal;
         }
 
         public virtual IDecompiler CreateDecompiler(ILoader ldr)
@@ -263,7 +257,7 @@ namespace Reko.Gui.Forms
             }
             catch (Exception ex)
             {
-                Debug.Print("Caught exeption: {0}\r\n{1}", ex.Message, ex.StackTrace);
+                Debug.Print("Caught exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
                 uiSvc.ShowError(ex, "Couldn't open file '{0}'.", file);
             }
         }
@@ -470,8 +464,9 @@ namespace Reko.Gui.Forms
         {
             try
             {
-                IPhasePageInteractor next;
-                if (nextPage.TryGetValue(CurrentPhase, out next))
+                IPhasePageInteractor next = NextPage(CurrentPhase);
+
+                if (next != null)
                 {
                     SwitchInteractor(next);
                 }
@@ -483,6 +478,24 @@ namespace Reko.Gui.Forms
             workerDlgSvc.FinishBackgroundWork();
         }
 
+        private IPhasePageInteractor NextPage(IPhasePageInteractor phase)
+        {
+            IPhasePageInteractor next = null;
+            if (phase == pageInitial)
+            {
+                next = pageLoaded;
+            }
+            else if (phase == pageLoaded)
+            {
+                next = pageAnalyzed;
+            }
+            else if (phase == pageAnalyzed)
+            {
+                next = pageFinal;
+            }
+            return next;
+        }
+
         public void FinishDecompilation()
         {
             try
@@ -490,9 +503,11 @@ namespace Reko.Gui.Forms
                 IPhasePageInteractor prev = CurrentPhase;
                 workerDlgSvc.StartBackgroundWork("Finishing decompilation.", delegate()
                 {
-                    IPhasePageInteractor next;
-                    while (nextPage.TryGetValue(prev, out next))
+                    for (;;)
                     {
+                        var next = NextPage(prev);
+                        if (next == null)
+                            break;
                         next.PerformWork(workerDlgSvc);
                         prev = next;
                     }
