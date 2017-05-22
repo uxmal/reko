@@ -296,7 +296,7 @@ foo_exit:
             AssertProc(sExp, proc);
         }
 
-        //[Ignore("Only works on @uxmal's machine right now")]
+        [Ignore("Only works on @uxmal's machine right now")]
         [Test]
         public void LLPB_File()
         {
