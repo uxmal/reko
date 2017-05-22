@@ -20,11 +20,14 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.ImageLoaders.LLVM;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -36,12 +39,26 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
     [TestFixture]
     public class ProgramBuilderTests
     {
+        private MockRepository mr;
         private Dictionary<string, Identifier> globals;
+        private ServiceContainer sc;
+        private IProcessorArchitecture arch;
 
         [SetUp]
         public void Setup()
         {
+            this.mr = new MockRepository();
             this.globals = new Dictionary<string, Identifier>();
+            this.sc = new ServiceContainer();
+            this.arch = mr.Stub<IProcessorArchitecture>();
+            this.arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
+            var cfgSvc = mr.Stub<IConfigurationService>();
+            var openv = mr.Stub<OperatingEnvironment>();
+            cfgSvc.Stub(c => c.GetArchitecture("x86-protected-64")).Return(arch);
+            cfgSvc.Stub(c => c.GetEnvironment("elf-neutral")).Return(openv);
+            openv.Stub(o => o.Load(sc, arch)).Return(new DefaultPlatform(sc, arch));
+
+            sc.AddService<IConfigurationService>(cfgSvc);
         }
 
         public void Global(string name, DataType dt)
@@ -51,10 +68,17 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
 
         private Procedure RunFuncTest(params string[] lines)
         {
+            var program = new Program
+            {
+                Platform = new DefaultPlatform(sc, arch),
+            };
+            
             var parser = new LLVMParser(new StringReader(
                 string.Join(Environment.NewLine, lines)));
             var fn = parser.ParseFunctionDefinition();
-            var pb = new ProgramBuilder(PrimitiveType.Pointer32);
+            mr.ReplayAll();
+
+            var pb = new ProgramBuilder(sc, program);
             foreach (var de in globals)
             {
                 pb.Globals.Add(de.Key, de.Value);
@@ -278,10 +302,14 @@ foo_exit:
         {
             using (var rdr = File.OpenText(@"D:\dev\uxmal\reko\LLVM\more_llvm\more_llvm\c4\c4.ll"))
             {
+
                 var parser = new LLVMParser(new LLVMLexer(rdr));
                 var module = parser.ParseModule();
-                var pb = new ProgramBuilder(PrimitiveType.Pointer32);
-                Program program = pb.BuildProgram(module);
+                var program = new Program();
+                mr.ReplayAll();
+
+                var pb = new ProgramBuilder(sc, program);
+                program = pb.BuildProgram(module);
             }
         }
     }

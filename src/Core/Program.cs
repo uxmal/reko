@@ -68,6 +68,8 @@ namespace Reko.Core
             this.NeedsScanning = true;
             // Most binary images are not in SSA form.
             this.NeedsSsaTransform = true;
+            // Most binary images have no type information.
+            this.NeedsTypeReconstruction = true;
         }
 
         public Program(SegmentMap segmentMap, IProcessorArchitecture arch, IPlatform platform) : this()
@@ -167,6 +169,13 @@ namespace Reko.Core
         /// </remarks>
         [DefaultValue(true)]
         public bool NeedsSsaTransform { get; set; }
+
+        /// <summary>
+        /// Some image formats have detailed type information that makes Reko's
+        /// type inference unnecessary.
+        /// </summary>
+        [DefaultValue(true)]
+        public bool NeedsTypeReconstruction { get; set; }
 
         private void EnsureGlobals()
         {

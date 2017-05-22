@@ -26,20 +26,23 @@ using Expression = Reko.Core.Expressions.Expression;
 using Identifier = Reko.Core.Expressions.Identifier;
 using IrConstant = Reko.Core.Expressions.Constant;
 using IrDomain = Reko.Core.Types.Domain;
+using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.LLVM
 {
     public class ProgramBuilder
     {
-        private PrimitiveType framePointerSize;
+        private IServiceProvider services;
         private Program program;
+        private IConfigurationService cfgSvc;
 
-        public ProgramBuilder(PrimitiveType framePointerSize)
+        public ProgramBuilder(IServiceProvider services, Program program)
         {
-            this.framePointerSize = framePointerSize;
-            this.program = new Program();
+            this.services = services;
+            this.program = program;
             this.Functions = new Dictionary<FunctionDefinition, ProcedureBuilder>();
             this.Globals = new Dictionary<string, Expression>();
+            this.cfgSvc = services.RequireService<IConfigurationService>();
         }
 
         public Dictionary<FunctionDefinition, ProcedureBuilder> Functions { get; private set; }
@@ -48,7 +51,8 @@ namespace Reko.ImageLoaders.LLVM
 
         public Program BuildProgram(Module module)
         {
-            var address = Address.Create(framePointerSize, 0x1000);
+            DetermineTargetInformation(module.Targets);
+            var address = Address.Create(program.Platform.PointerType, 0x1000);
             foreach (var entry in module.Entries)
             {
                 address = RegisterEntry(entry, address);
@@ -60,6 +64,63 @@ namespace Reko.ImageLoaders.LLVM
             }
             return program;
         }
+
+        public void DetermineTargetInformation(List<TargetSpecification> targets)
+        {
+            IProcessorArchitecture arch = null;
+            IPlatform platform = null;
+            foreach (var target in targets)
+            {
+                var segs = target.Specification.Split('-');
+                switch (target.Type)
+                {
+                case TokenType.datalayout:
+                    break;
+                case TokenType.triple:
+                    arch = LoadArchitecture(segs[0]);
+                    // vendor = segs[1];
+                    platform = LoadPlatform(arch, segs[2]);
+                    break;
+                }
+            }
+            if (platform == null)
+                platform = new DefaultPlatform(services, arch);
+            this.program = new Program
+            {
+                Architecture = arch,
+                Platform = platform,
+                // No segment map.
+            };
+        }
+
+        private IProcessorArchitecture LoadArchitecture(string llvmArchName)
+        {
+            string archName = null;
+            switch (llvmArchName)
+            {
+            case "x86_64": archName = "x86-protected-64"; break;
+            default:
+                throw new NotImplementedException(string.Format(
+                    "Support for LLVM type {0} not supported yet.",
+                    llvmArchName));
+            }
+            return cfgSvc.GetArchitecture(archName);
+        }
+
+        private IPlatform LoadPlatform(IProcessorArchitecture arch, string llvmPlatformName)
+        {
+            string platformName = null;
+            switch (llvmPlatformName)
+            {
+            case "linux": platformName = "elf-neutral"; break;
+            default:
+                return new DefaultPlatform(services, arch);
+            }
+            var el = cfgSvc.GetEnvironment(platformName);
+            var platform = el.Load(services, arch);
+            return platform;
+        }
+        
 
         public Address RegisterEntry(ModuleEntry entry, Address addr)
         {
@@ -76,7 +137,7 @@ namespace Reko.ImageLoaders.LLVM
                 var proc = RegisterFunction(fn);
                 program.Procedures.Add(addr, proc);
                 this.Globals[fn.FunctionName] = new Core.Expressions.ProcedureConstant(
-                    new Pointer(proc.Signature, framePointerSize.Size),
+                    new Pointer(proc.Signature, program.Platform.PointerType.Size),
                     proc);
                 return addr + 1;
             }
@@ -112,7 +173,7 @@ namespace Reko.ImageLoaders.LLVM
         
         public Procedure RegisterFunction(FunctionDefinition fn)
         {
-            var proc = new Procedure(fn.FunctionName, new Frame(framePointerSize));
+            var proc = new Procedure(fn.FunctionName, new Frame(program.Platform.PointerType));
             var builder = new ProcedureBuilder(proc);
             Functions.Add(fn, builder);
             return proc;
@@ -120,7 +181,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public void RegisterTypeDefinition(TypeDefinition tydef)
         {
-            Types.Add(tydef.Name, tydef.Type.Accept(new TypeTranslator(framePointerSize.Size)));
+            Types.Add(tydef.Name, tydef.Type.Accept(new TypeTranslator(program.Platform.PointerType.Size)));
         }
 
         public void TranslateEntry(ModuleEntry entry)
@@ -170,7 +231,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public DataType TranslateType(LLVMType type)
         {
-            var xlat = new TypeTranslator(this.framePointerSize.Size);
+            var xlat = new TypeTranslator(program.Platform.PointerType.Size);
             return type.Accept(xlat);
         }
 
@@ -193,7 +254,7 @@ namespace Reko.ImageLoaders.LLVM
             // there is no need for addresses anymore. Here, we synthesize 
             // a fake address for each procedure.
             var addr = Address.Create(
-                framePointerSize,
+                program.Platform.PointerType,
                 0x0010000 + (ulong)(program.Procedures.Count + 1) * 0x100);
             program.Procedures.Add(addr, m.Procedure);
         }

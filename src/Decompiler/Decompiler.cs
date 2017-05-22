@@ -302,7 +302,7 @@ namespace Reko
 		/// <param name="ivs"></param>
         public void ReconstructTypes()
         {
-            foreach (var program in Project.Programs)
+            foreach (var program in Project.Programs.Where(p => p.NeedsTypeReconstruction))
             {
                 TypeAnalyzer analyzer = new TypeAnalyzer(eventListener);
                 try
