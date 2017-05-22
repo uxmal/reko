@@ -51,10 +51,17 @@ namespace Reko.Typing
             this.platform = program.Platform;
             this.store = program.TypeStore;
             this.globals = program.Globals;
-            this.mpSelectorToSegId = program.SegmentMap.Segments.Values
-                .Where(s => s.Identifier != null && s.Address.Selector.HasValue)
-                .ToDictionary(s => s.Address.Selector.Value, s => s.Identifier);
-		}
+            if (program.SegmentMap != null)
+            {
+                this.mpSelectorToSegId = program.SegmentMap.Segments.Values
+                    .Where(s => s.Identifier != null && s.Address.Selector.HasValue)
+                    .ToDictionary(s => s.Address.Selector.Value, s => s.Identifier);
+            }
+            else
+            {
+                this.mpSelectorToSegId = new Dictionary<ushort, Identifier>();
+            }
+        }
 
         /// <summary>
         /// Rewrites a machine word constant depending on its data type.

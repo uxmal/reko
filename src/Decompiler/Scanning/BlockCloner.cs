@@ -198,6 +198,11 @@ namespace Reko.Scanning
             return new Cast(cast.DataType, cast.Expression.Accept(this));
         }
 
+        public Expression VisitConditionalExpression(ConditionalExpression c)
+        {
+            throw new NotImplementedException();
+        }
+
         public Expression VisitConditionOf(ConditionOf cof)
         {
             return new ConditionOf(cof.Expression.Accept(this));

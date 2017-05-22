@@ -292,6 +292,7 @@ namespace Reko.UnitTests.Mocks
             TerminateBlock();
             lastBlock = null;
         }
+
         public override void Return(Expression exp)
         {
             base.Return(exp);

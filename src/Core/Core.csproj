@@ -210,6 +210,7 @@
     <Compile Include="Expressions\ArrayAccess.cs" />
     <Compile Include="Expressions\BinaryExpression.cs" />
     <Compile Include="Expressions\Cast.cs" />
+    <Compile Include="Expressions\ConditionalExpression.cs" />
     <Compile Include="Expressions\ConditionCode.cs" />
     <Compile Include="Expressions\ConditionOf.cs" />
     <Compile Include="Expressions\Constant.cs" />
@@ -236,6 +237,10 @@
     <Compile Include="ImageReader.cs" />
     <Compile Include="ImageSymbol.cs" />
     <Compile Include="Analysis\IVarargsFormatParser.cs" />
+    <Compile Include="IRFormat\IRFormatLexer.cs" />
+    <Compile Include="IRFormat\IRFormatParser.cs" />
+    <Compile Include="IRFormat\IRProcedureBuilder.cs" />
+    <Compile Include="IRFormat\IRToken.cs" />
     <Compile Include="IStorageBinder.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />
@@ -245,6 +250,10 @@
     <Compile Include="Lib\UbjsonWriter.cs" />
     <Compile Include="Lib\WildPatternMatcher.cs" />
     <Compile Include="Operators\FNegOperator.cs" />
+    <Compile Include="Output\IRFormatter.cs" />
+    <Compile Include="Output\JsonFormatter.cs" />
+    <Compile Include="Output\JsonWriter.cs" />
+    <Compile Include="Output\LlvmFormatter.cs" />
     <Compile Include="Output\CTypeReferenceFormatter.cs" />
     <Compile Include="Rational.cs" />
     <Compile Include="Rtl\RtlIf.cs" />
