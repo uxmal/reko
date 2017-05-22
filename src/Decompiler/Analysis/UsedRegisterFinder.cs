@@ -235,6 +235,11 @@ namespace Reko.Analysis
             return new BitRange(n.Lsb, Math.Min(n.Msb, cast.DataType.BitSize));
         }
 
+        public BitRange VisitConditionalExpression(ConditionalExpression c)
+        {
+            throw new NotImplementedException();
+        }
+
         public BitRange VisitConditionOf(ConditionOf cof)
         {
             return cof.Expression.Accept(this);

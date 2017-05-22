@@ -101,11 +101,6 @@ namespace Reko.Core
             return id;
         }
 
-        public Identifier EnsureIdentifier(Storage stg)
-        {
-            throw new NotImplementedException();
-        }
-
         public Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer)
         {
             throw new NotImplementedException();

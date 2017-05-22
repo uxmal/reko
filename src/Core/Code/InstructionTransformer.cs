@@ -166,6 +166,14 @@ namespace Reko.Core.Code
 			return cast;
 		}
 
+        public virtual Expression VisitConditionalExpression(ConditionalExpression cond)
+        {
+            var c = cond.Condition.Accept(this);
+            var i = cond.ThenExp.Accept(this);
+            var e = cond.FalseExp.Accept(this);
+            return new ConditionalExpression(cond.DataType, c, i, e);
+        }
+
 		public Expression VisitConditionOf(ConditionOf cof)
 		{
 			cof.Expression = cof.Expression.Accept(this);
@@ -231,7 +239,7 @@ namespace Reko.Core.Code
 		{
 			for (int i = 0; i < phi.Arguments.Length; ++i)
 			{
-				phi.Arguments[i] = phi.Accept(this);
+				phi.Arguments[i] = phi.Arguments[i].Accept(this);
 			}
 			return phi;
 		}

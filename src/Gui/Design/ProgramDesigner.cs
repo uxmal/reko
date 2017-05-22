@@ -43,6 +43,10 @@ namespace Reko.Gui.Design
                 Host.AddComponent(program, program.Platform);
             if (program.ImageMap != null)
                 Host.AddComponents(program, program.SegmentMap.Segments.Values);
+            else if (!program.NeedsScanning)
+            {
+                Host.AddComponents(program, program.Procedures.Select(MakeProcedureDesigner));
+            }
             if (program.ImportReferences.Count > 0)
             {
                 var des = new ImportDesigner(program);
@@ -52,14 +56,24 @@ namespace Reko.Gui.Design
             SetTreeNodeProperties(program);
         }
 
+        private ProcedureDesigner MakeProcedureDesigner(KeyValuePair<Address,Procedure> p)
+        {
+            var des = new ProcedureDesigner(program, p.Value, null, p.Key, false);
+            return des;
+        }
+
         public void SetTreeNodeProperties(Program program)
         {
             TreeNode.Text = program.Name;
             TreeNode.ImageName = "Binary.ico";
-            TreeNode.ToolTipText = string.Format("{0}{1}{2}",
-                program.Filename != null ? program.Filename : "(No file name)",
-                Environment.NewLine,
-                program.ImageMap.BaseAddress);
+            var sb = new StringBuilder();
+            sb.Append(program.Filename != null ? program.Filename : "(No file name)");
+            if (program.NeedsScanning)
+            {
+                sb.AppendLine();
+                sb.Append(program.ImageMap.BaseAddress.ToString());
+            }
+            TreeNode.ToolTipText = sb.ToString();
         }
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

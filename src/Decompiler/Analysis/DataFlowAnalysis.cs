@@ -291,49 +291,59 @@ namespace Reko.Analysis
         /// <returns>The SsaTransform for the procedure.</returns>
         public SsaTransform ConvertToSsa(Procedure proc)
         {
-            // Transform the procedure to SSA state. When encountering 'call'
-            // instructions, they can be to functions already visited. If so,
-            // they have a "ProcedureFlow" associated with them. If they have
-            // not been visited, or are computed destinations  (e.g. vtables)
-            // they will have no "ProcedureFlow" associated with them yet, in
-            // which case the the SSA treats the call as a "hell node".
-            var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
-            var ssa = sst.Transform();
-
-            // Propagate condition codes and registers. At the end, the hope
-            // is that all statements like (x86) mem[esp_42+4] will have been
-            // converted to mem[fp - 30]. We also hope that procedure constants
-            // kept in registers are propagated to the corresponding call
-            // sites.
-            var cce = new ConditionCodeEliminator(ssa, program.Platform);
-            cce.Transform();
-            var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
-            vp.Transform();
-
-            // Now compute SSA for the stack-based variables as well. That is:
-            // mem[fp - 30] becomes wLoc30, while 
-            // mem[fp + 30] becomes wArg30.
-            // This allows us to compute the dataflow of this procedure.
-            sst.RenameFrameAccesses = true;
-            sst.Transform();
-
-            var icrw = new IndirectCallRewriter(program, ssa, eventListener);
-            while (!eventListener.IsCanceled() && icrw.Rewrite())
+            if (program.NeedsSsaTransform)
             {
+                // Transform the procedure to SSA state. When encountering 'call'
+                // instructions, they can be to functions already visited. If so,
+                // they have a "ProcedureFlow" associated with them. If they have
+                // not been visited, or are computed destinations  (e.g. vtables)
+                // they will have no "ProcedureFlow" associated with them yet, in
+                // which case the the SSA treats the call as a "hell node".
+                var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
+                var ssa = sst.Transform();
+
+                // Propagate condition codes and registers. At the end, the hope
+                // is that all statements like (x86) mem[esp_42+4] will have been
+                // converted to mem[fp - 30]. We also hope that procedure constants
+                // kept in registers are propagated to the corresponding call
+                // sites.
+                var cce = new ConditionCodeEliminator(ssa, program.Platform);
+                cce.Transform();
+                var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
                 vp.Transform();
+
+                // Now compute SSA for the stack-based variables as well. That is:
+                // mem[fp - 30] becomes wLoc30, while 
+                // mem[fp + 30] becomes wArg30.
+                // This allows us to compute the dataflow of this procedure.
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
+
+                var icrw = new IndirectCallRewriter(program, ssa, eventListener);
+                while (!eventListener.IsCanceled() && icrw.Rewrite())
+                {
+                    vp.Transform();
+                    sst.RenameFrameAccesses = true;
+                    sst.Transform();
+                }
+
+                // By placing use statements in the exit block, we will collect
+                // reaching definitions in the use statements.
+                sst.AddUsesToExitBlock();
+                sst.RemoveDeadSsaIdentifiers();
+
+                // Propagate those newly created stack-based identifiers.
+                vp.Transform();
+
+                return sst;
             }
+            else
+            {
+                // We are assuming phi functions are already generated.
+                var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
 
-            // By placing use statements in the exit block, we will collect
-            // reaching definitions in the use statements.
-            sst.AddUsesToExitBlock();
-            sst.RemoveDeadSsaIdentifiers();
-
-            // Propagate those newly created stack-based identifiers.
-            vp.Transform();
-
-            return sst;
+                return sst;
+            }
         }
 	}
 }

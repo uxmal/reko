@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Types;
+using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,14 +37,24 @@ namespace Reko.Gui.Windows
         {
         }
 
-        public void DisplayProcedure(Program program, Procedure proc)
+        public void DisplayProcedure(Program program, Procedure proc, bool mixedMode)
         {
             if (proc == null)
                 return;
-            var pane = new CombinedCodeViewInteractor();
-            var windowType = typeof(CombinedCodeViewInteractor).Name;
-            var frame = ShowWindow(windowType, proc.Name, proc, pane);
-            ((CombinedCodeViewInteractor)frame.Pane).DisplayProcedure(program, proc);
+            if (mixedMode)
+            {
+                var pane = new CombinedCodeViewInteractor();
+                var windowType = typeof(CombinedCodeViewInteractor).Name;
+                var frame = ShowWindow(windowType, proc.Name, proc, pane);
+                ((CombinedCodeViewInteractor)frame.Pane).DisplayProcedure(program, proc);
+            }
+            else
+            {
+                var pane = new CodeViewInteractor();
+                var windowType = typeof(CombinedCodeViewInteractor).Name;
+                var frame = ShowWindow(windowType, proc.Name, proc, pane);
+                ((CodeViewInteractor)frame.Pane).DisplayProcedure(program, proc);
+            }
         }
 
         public void DisplayStatement(Program program, Statement stm)

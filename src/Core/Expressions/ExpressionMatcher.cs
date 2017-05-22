@@ -156,6 +156,18 @@ namespace Reko.Core.Expressions
                 Match(castP.Expression, cast.Expression);
         }
 
+        bool ExpressionVisitor<bool>.VisitConditionalExpression(ConditionalExpression cond)
+        {
+            var condP = p as ConditionalExpression;
+            if (condP == null)
+                return false;
+            if (!Match(condP.Condition, cond.Condition))
+                return false;
+            if (!Match(condP.ThenExp, cond.ThenExp))
+                return false;
+            return Match(condP.FalseExp, cond.FalseExp);
+        }
+
         bool ExpressionVisitor<bool>.VisitConditionOf(ConditionOf cof)
         {
             var condP = p as ConditionOf;

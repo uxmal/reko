@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Gui
             var decSvc = AddService<IDecompilerService>();
             var dec = mr.StrictMock<IDecompiler>();
 
-            cvs.Stub(c => c.DisplayProcedure(null, null)).IgnoreArguments();
+            cvs.Stub(c => c.DisplayProcedure(null, null, true)).IgnoreArguments();
             mvs.Expect(s => s.ShowMemoryAtAddress(
                 Arg<Program>.Is.NotNull,
                 Arg<Address>.Is.Equal(Address.Ptr32(0x4234))));

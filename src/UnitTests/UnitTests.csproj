@@ -102,6 +102,10 @@
     <Compile Include="Core\Analysis\ScanfFormatParserTests.cs" />
     <Compile Include="Core\BitRangeTests.cs" />
     <Compile Include="Core\DumperTests.cs" />
+    <Compile Include="Core\IRFormat\IRParserTests.cs" />
+    <Compile Include="Core\Output\IRFormatterTests.cs" />
+    <Compile Include="Core\Output\JsonFormatterTests.cs" />
+    <Compile Include="Core\Output\LlvmFormatterTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Core\Expressions\ExpressionTreeTests.cs" />
     <Compile Include="Core\Lib\IntervalTreeTests.cs" />
@@ -114,6 +118,9 @@
     <Compile Include="Fragments\DpbFragment.cs" />
     <Compile Include="Fragments\FCmpFragment.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
+    <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />
+    <Compile Include="ImageLoaders\Llvm\LlvmParserTests.cs" />
+    <Compile Include="ImageLoaders\Llvm\ProgramBuilderTests.cs" />
     <Compile Include="Mocks\FakeTypeDeserializer.cs" />
     <Compile Include="Core\Analysis\PyBuildValueFormatParserTests.cs" />
     <Compile Include="Mocks\SsaProcedureBuilder.cs" />
@@ -731,6 +738,10 @@
     <ProjectReference Include="..\ImageLoaders\IntelHex\IntelHex.csproj">
       <Project>{72641087-68D2-41E7-9B29-BC9D4213940A}</Project>
       <Name>IntelHex</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\Llvm\LLVM.csproj">
+      <Project>{9292f9e7-2ce7-470d-b5f0-72d775720bc0}</Project>
+      <Name>LLVM</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\MachO\MachO.csproj">
       <Project>{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}</Project>

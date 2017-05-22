@@ -39,7 +39,7 @@ namespace Reko.Arch.M68k
         {
             rtlc = RtlClass.ConditionalTransfer;
             m.Branch(
-                m.Test(cc, binder.EnsureIdentifier(Registers.fpsr)),
+                m.Test(cc, binder.EnsureRegister(Registers.fpsr)),
                 ((M68kAddressOperand)di.op1).Address,
                 RtlClass.ConditionalTransfer);
         }
@@ -48,7 +48,7 @@ namespace Reko.Arch.M68k
         {
             rtlc = RtlClass.ConditionalTransfer;
             m.Branch(fnTest(
-                binder.EnsureIdentifier(Registers.fpsr)),
+                binder.EnsureRegister(Registers.fpsr)),
                 ((M68kAddressOperand)di.op1).Address,
                 RtlClass.ConditionalTransfer);
         }
@@ -62,13 +62,13 @@ namespace Reko.Arch.M68k
                 EmitInvalid();
                 return;
             }
-            m.Assign(binder.EnsureIdentifier(Registers.fpsr), m.Cond(opDst));
+            m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(opDst));
         }
 
         private void RewriteFUnaryOp(Func<Expression, Expression> unaryOpGen)
         {
             var op = orw.RewriteUnary(di.op1, di.Address, di.dataWidth, unaryOpGen);
-            m.Assign(binder.EnsureIdentifier(Registers.fpsr), m.Cond(op));
+            m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(op));
         }
 
         private void RewriteFcmp()
@@ -77,7 +77,7 @@ namespace Reko.Arch.M68k
             var opDst = orw.RewriteSrc(di.op2, di.Address);
             var tmp = binder.CreateTemporary(opDst.DataType);
             m.Assign(
-                binder.EnsureIdentifier(Registers.fpsr), 
+                binder.EnsureRegister(Registers.fpsr), 
                 m.Cond(m.FSub(opDst, opSrc)));
         }
 
@@ -90,7 +90,7 @@ namespace Reko.Arch.M68k
                 EmitInvalid();
                 return;
             }
-            m.Assign(binder.EnsureIdentifier(Registers.fpsr), m.Cond(opDst));
+            m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(opDst));
         }
 
         private void RewriteFmovecr()
@@ -110,7 +110,7 @@ namespace Reko.Arch.M68k
             }
             var dst = orw.RewriteSrc(di.op2, di.Address);
             m.Assign(dst, src);
-            m.Assign(binder.EnsureIdentifier(Registers.fpsr), m.Cond(dst));
+            m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(dst));
         }
 
         private Expression MaybeCastFpuArgs(Expression src, Expression dst)

@@ -146,5 +146,21 @@ namespace Reko.UnitTests.Evaluation
             var expr = m.LoadDw(m.IAdd(Address.Ptr32(0x00123400), 0x56));
             Assert.AreEqual("Mem0[0x00123456:word32]", expr.Accept(simplifier).ToString());
         }
+
+        [Test]
+        public void Exs_ConditionalTrue()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Conditional(PrimitiveType.Word32, Constant.True(), Constant.Word32(1), Constant.Word32(0));
+            Assert.AreEqual("0x00000001", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_ConditionalFalse()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Conditional(PrimitiveType.Word32, Constant.False(), Constant.Word32(1), Constant.Word32(0));
+            Assert.AreEqual("0x00000000", expr.Accept(simplifier).ToString());
+        }
     }
 }

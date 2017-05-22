@@ -887,6 +887,87 @@ namespace Reko.Analysis
 #endif
         }
 
+        class SimpleTransformer : InstructionTransformer
+        {
+            private SsaState ssa;
+            private Statement stmCur;
+
+            public SimpleTransformer(SsaState ssa)
+            {
+                this.ssa = ssa;
+            }
+
+            public void Transform()
+            {
+                var sig = ssa.Procedure.Signature;
+                for (int i = 0; i < sig.Parameters.Length; ++i)
+                {
+                    sig.Parameters[i] = Def(sig.Parameters[i], null);
+                }
+                foreach (var stm in ssa.Procedure.Statements)
+                {
+                    this.stmCur = stm;
+                    stm.Instruction = stm.Instruction.Accept(this);
+                }
+            }
+
+            public override Instruction TransformAssignment(Assignment a)
+            {
+                a.Src = a.Src.Accept(this);
+                a.Dst = Def(a.Dst, a.Src);
+                return a;
+            }
+
+            public override Instruction TransformDeclaration(Declaration decl)
+            {
+                if (decl.Expression != null)
+                {
+                    decl.Expression = decl.Expression.Accept(this);
+                }
+                decl.Identifier = Def(decl.Identifier, decl.Expression);
+                return decl;
+            }
+
+            public override Instruction TransformPhiAssignment(PhiAssignment phi)
+            {
+                phi.Src = (PhiFunction)phi.Src.Accept(this);
+                phi.Dst = Def(phi.Dst, phi.Src);
+                return phi;
+            }
+
+            public override Expression VisitIdentifier(Identifier id)
+            {
+                return Use(id);
+            }
+
+            private Identifier Use(Identifier idOld)
+            {
+                SsaIdentifier sid;
+                if (!ssa.Identifiers.TryGetValue(idOld, out sid))
+                {
+                    sid = new SsaIdentifier(idOld, idOld, stmCur, null, false);
+                    ssa.Identifiers.Add(idOld, sid);
+                }
+                ssa.Identifiers[idOld].Uses.Add(stmCur);
+                return idOld;
+            }
+
+            private Identifier Def(Identifier idOld, Expression expr)
+            {
+                SsaIdentifier sid;
+                if (ssa.Identifiers.TryGetValue(idOld, out sid))
+                {
+                    sid.DefExpression = expr;
+                }
+                else
+                {
+                    sid = new SsaIdentifier(idOld, idOld, stmCur, expr, false);
+                    ssa.Identifiers.Add(idOld, sid);
+                }
+                return idOld;
+            }
+        }
+
         public class AliasState
         {
             public SsaIdentifier SsaId;        // The id that actually was modified.

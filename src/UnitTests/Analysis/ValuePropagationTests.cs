@@ -936,7 +936,7 @@ ProcedureBuilder_exit:
 
             arch.Stub(a => a.CreateStackAccess(null, 0, null))
                 .IgnoreArguments()
-                .Do(new Func<IStorageBinder, int, DataType, Expression>((f, off, dt) => m.Load(dt, m.IAdd(f.EnsureIdentifier(sp.Storage), off))));
+                .Do(new Func<IStorageBinder, int, DataType, Expression>((f, off, dt) => m.Load(dt, m.IAdd(f.EnsureRegister((RegisterStorage)sp.Storage), off))));
             arch.Stub(s => s.CreateFrameApplicationBuilder(null, null, null)).IgnoreArguments().Do(
                 new Func<IStorageBinder, CallSite, Expression, FrameApplicationBuilder>(
                 (frame, site, c) => new FrameApplicationBuilder(arch, frame, site, c, false)));

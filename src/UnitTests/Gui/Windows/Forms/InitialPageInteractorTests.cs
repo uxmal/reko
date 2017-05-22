@@ -175,6 +175,24 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
+        [Test]
+        public void Ipi_NextPhaseButton_ScanningNotNeeded()
+        {
+            program.NeedsScanning = false;
+            dec.Stub(d => d.Load("foo.exe")).Return(false);
+            dec.Stub(d => d.Project).Return(project);
+            browserSvc.Stub(b => b.Load(project));
+            mr.ReplayAll();
+
+            i.OpenBinary("foo.exe");
+
+            var status = new CommandStatus();
+            var text = new CommandText();
+            Assert.IsTrue(i.QueryStatus(new CommandID(CmdSets.GuidReko, CmdIds.ActionNextPhase), status, text));
+            Assert.AreEqual("A&nalyze dataflow", text.Text);
+            mr.VerifyAll();
+        }
+
         //$REFACTOR: copied from LoadedPageInteractor, should
         // push to base class or utility class.
         private MenuStatus QueryStatus(int cmdId)

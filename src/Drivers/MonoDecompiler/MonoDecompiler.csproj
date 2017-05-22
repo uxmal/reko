@@ -196,6 +196,7 @@
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\Elf\$(OutDir)Reko.ImageLoaders.Elf.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\Hunk\$(OutDir)Reko.ImageLoaders.Hunk.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\IntelHex\$(OutDir)Reko.ImageLoaders.IntelHex.*" />
+    <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\Llvm\$(OutDir)Reko.ImageLoaders.LLVM.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\OdbgScript\$(OutDir)Reko.ImageLoaders.OdbgScript.*" />
     <ImageLoaders Include="$(Projectdir)..\..\ImageLoaders\VmsExe\$(OutDir)Reko.ImageLoaders.VmsExe.*" />

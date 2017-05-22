@@ -78,7 +78,10 @@ namespace Reko.Gui.Windows.Forms
 
         public override void EnterPage()
         {
-            memSvc.ViewImage(Decompiler.Project.Programs.First());
+            if (Decompiler.Project.Programs.Any(p => p.NeedsScanning))
+            {
+                memSvc.ViewImage(Decompiler.Project.Programs.First());
+            }
             Services.RequireService<IProjectBrowserService>().Reload();
         }
 
