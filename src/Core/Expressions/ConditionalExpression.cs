@@ -56,12 +56,12 @@ namespace Reko.Core.Expressions
 
         public override T Accept<T>(ExpressionVisitor<T> visitor)
         {
-            throw new NotImplementedException();
+            return visitor.VisitConditionalExpression(this);
         }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context)
         {
-            throw new NotImplementedException();
+            return visitor.VisitConditionalExpression(this ,context);
         }
 
         public override Expression CloneExpression()

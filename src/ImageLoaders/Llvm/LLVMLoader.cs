@@ -41,7 +41,6 @@ namespace Reko.ImageLoaders.LLVM
                 //$TODO: obvious bug; should look at the exe size first.
                 return Address.Ptr64(0x400000);
             }
-
             set
             {
             }
@@ -52,11 +51,16 @@ namespace Reko.ImageLoaders.LLVM
             var rdr = new StreamReader(new MemoryStream(RawImage), Encoding.UTF8);
             var parser = new LLVMParser(new LLVMLexer(rdr));
             var module = parser.ParseModule();
-            var builder = new ProgramBuilder(Core.Types.PrimitiveType.Pointer64);   //$BUGBUG: obtain pointer size from LLVM!
+            var ptrType = Core.Types.PrimitiveType.Pointer64;
+            var builder = new ProgramBuilder(ptrType);   //$BUGBUG: obtain pointer size from LLVM!
             var program = builder.BuildProgram(module);
             program.NeedsScanning = false;
             program.NeedsSsaTransform = false;
-            program.Platform = new DefaultPlatform(Services, null);
+            program.Platform = new LLVMPlatform(Services)
+            {
+                PointerType = ptrType,
+                FramePointerType = ptrType,
+            };
             return program; 
         }
 

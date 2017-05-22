@@ -170,8 +170,8 @@ namespace Reko.Core
 
         private void EnsureGlobals()
         {
-            if (Architecture == null)
-                throw new InvalidOperationException("The program's Architecture property must be set before accessing the Globals property.");
+            if (Platform == null)
+                throw new InvalidOperationException("The program's Platform property must be set before accessing the Globals property.");
             var ptrGlobals = TypeFactory.CreatePointer(GlobalFields, Platform.PointerType.Size);
             globals = new Identifier("globals", ptrGlobals, new MemoryStorage());
         }

@@ -43,6 +43,10 @@ namespace Reko.Gui.Design
                 Host.AddComponent(program, program.Platform);
             if (program.ImageMap != null)
                 Host.AddComponents(program, program.SegmentMap.Segments.Values);
+            else if (!program.NeedsScanning)
+            {
+                Host.AddComponents(program, program.Procedures.Select(MakeProcedureDesigner));
+            }
             if (program.ImportReferences.Count > 0)
             {
                 var des = new ImportDesigner(program);
@@ -50,6 +54,12 @@ namespace Reko.Gui.Design
             }
             Host.AddComponent(program, program.Resources);
             SetTreeNodeProperties(program);
+        }
+
+        private ProcedureDesigner MakeProcedureDesigner(KeyValuePair<Address,Procedure> p)
+        {
+            var des = new ProcedureDesigner(program, p.Value, null, p.Key, false);
+            return des;
         }
 
         public void SetTreeNodeProperties(Program program)

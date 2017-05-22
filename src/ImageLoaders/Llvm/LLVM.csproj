@@ -43,6 +43,7 @@
     <Compile Include="InstructionVisitor.cs" />
     <Compile Include="LLVMInstructionTranslator.cs" />
     <Compile Include="LLVMParser.Expr.cs" />
+    <Compile Include="LLVMPlatform.cs" />
     <Compile Include="LLVMSyntax.cs" />
     <Compile Include="LLVMLexer.cs" />
     <Compile Include="LLVMLoader.cs" />

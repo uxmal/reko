@@ -109,9 +109,9 @@ namespace Reko.Analysis
 			Identifier idDst = (Identifier) phi.Dst;
 			for (int i = 0; i < phi.Src.Arguments.Length; ++i)
 			{
-				Identifier id = (Identifier) phi.Src.Arguments[i];
+                Identifier id = phi.Src.Arguments[i] as Identifier;
 				Block pred = stm.Block.Pred[i];
-				if (idDst != id)
+				if (id != null && idDst != id)
 				{
 					if (IsLiveAtCopyPoint(idDst, pred))
 					{

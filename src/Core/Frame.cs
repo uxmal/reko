@@ -126,6 +126,9 @@ namespace Reko.Core
             var st = stgForeign as StackStorage;
             if (st != null)
                 return EnsureStackVariable(st.StackOffset, st.DataType);
+            var tmp = stgForeign as TemporaryStorage;
+            if (tmp != null)
+                return CreateTemporary(tmp.Name, tmp.DataType);
             throw new NotImplementedException(string.Format(
                 "Unsupported storage {0}.",
                 stgForeign != null ? stgForeign.ToString() : "(null)"));

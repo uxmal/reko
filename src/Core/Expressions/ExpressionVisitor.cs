@@ -90,6 +90,7 @@ namespace Reko.Core.Expressions
         T VisitArrayAccess(ArrayAccess acc, C ctx);
         T VisitBinaryExpression(BinaryExpression binExp, C ctx);
         T VisitCast(Cast cast, C ctx);
+        T VisitConditionalExpression(ConditionalExpression c, C context);
         T VisitConditionOf(ConditionOf cof, C ctx);
         T VisitConstant(Constant c, C ctx);
         T VisitDepositBits(DepositBits d, C ctx);

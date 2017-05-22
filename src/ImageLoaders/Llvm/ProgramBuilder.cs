@@ -188,6 +188,14 @@ namespace Reko.ImageLoaders.LLVM
                 instr.Accept(xlat);
             }
             xlat.ResolvePhis();
+
+            //$TODO: this is hacky; after all procedures have been identified
+            // there is no need for addresses anymore. Here, we synthesize 
+            // a fake address for each procedure.
+            var addr = Address.Create(
+                framePointerSize,
+                0x0010000 + (ulong)(program.Procedures.Count + 1) * 0x100);
+            program.Procedures.Add(addr, m.Procedure);
         }
     }
 }

@@ -235,7 +235,7 @@ namespace Reko.Core.Code
 		{
 			for (int i = 0; i < phi.Arguments.Length; ++i)
 			{
-				phi.Arguments[i] = phi.Accept(this);
+				phi.Arguments[i] = phi.Arguments[i].Accept(this);
 			}
 			return phi;
 		}
