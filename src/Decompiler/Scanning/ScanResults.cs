@@ -52,7 +52,6 @@ namespace Reko.Scanning
 
         public List<Edge> Edges;
 
-
         /// <summary>
         /// Interprocedural control flow graph, consisting of all
         /// direct calls and jumps. Each edge goes from a jump or a call

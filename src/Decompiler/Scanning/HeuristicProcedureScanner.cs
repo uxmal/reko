@@ -177,13 +177,23 @@ namespace Reko.Scanning
         /// <param name="valid"></param>
         private void RemoveBlocksConflictingWithValidBlocks(HashSet<RtlBlock> valid)
         {
+            // `nodes` are all blocks that weren't reachable by DFS.
             var nodes = blocks.Nodes.Where(nn => !valid.Contains(nn)).ToHashSet();
             foreach (var cc in
                 (from c in conflicts
                  where nodes.Contains(c.Item1) && valid.Contains(c.Item2)
-                 select c))
+                 select c.Item1))
             {
-                RemoveBlockFromGraph(cc.Item1);
+                nodes.Remove(cc);
+                RemoveBlockFromGraph(cc);
+            }
+            foreach (var cc in 
+                (from c in conflicts
+                 where nodes.Contains(c.Item2) && valid.Contains(c.Item1)
+                 select c.Item2))
+            {
+                nodes.Remove(cc);
+                RemoveBlockFromGraph(cc);
             }
         }
 

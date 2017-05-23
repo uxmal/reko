@@ -309,7 +309,9 @@ namespace Reko.Scanning
                 ScanResults.instr succ;
                 if (!sr.FlatInstructions.TryGetValue(instr.addr + instr.size, out succ))
                     continue;
-                if (instr.succ == 1 && succ.pred == 1)
+                if (instr.succ == 1 && succ.pred == 1 &&
+                    !sr.KnownProcedures.Contains(succ.addr) &&
+                    !sr.DirectlyCalledAddresses.ContainsKey(succ.addr))
                 {
                     succ.block_id = instr.block_id;
                     the_excluded_edges.Add(new link { first = instr.addr, second = succ.addr });
@@ -326,7 +328,6 @@ namespace Reko.Scanning
                      instrs = g.OrderBy(ii => ii.addr).ToArray()
                  })
                 .ToDictionary(b => b.id);
-
             sr.FlatEdges = 
                 (from link in sr.FlatEdges
                 join f in sr.FlatInstructions.Values on link.first equals f.addr
@@ -334,7 +335,6 @@ namespace Reko.Scanning
                 select new link { first = f.block_id, second = link.second })
                 .Distinct()
                 .ToList();
-           // DumpBlocks(sr, the_blocks);
             return the_blocks;
         }
 

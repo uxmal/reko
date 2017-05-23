@@ -57,6 +57,8 @@ namespace Reko.UnitTests.Scanning
             this.sr = new ScanResults();
             this.sr.FlatInstructions = new SortedList<Address, ScanResults.instr>();
             this.sr.FlatEdges = new List<ScanResults.link>();
+            this.sr.KnownProcedures = new HashSet<Address>();
+            this.sr.DirectlyCalledAddresses = new Dictionary<Address, int>();
             this.eventListener = new FakeDecompilerEventListener();
         }
 
@@ -340,7 +342,6 @@ namespace Reko.UnitTests.Scanning
                 Return(new PseudoProcedure("__hlt", VoidType.Instance, 0));
             mr.ReplayAll();
 
-            var sr = new ScanResults();
             siq.ScanInstructions(sr);
             var blocks = siq.BuildBasicBlocks(sr);
             blocks = siq.RemoveInvalidBlocks(sr, blocks);
@@ -391,6 +392,25 @@ namespace Reko.UnitTests.Scanning
 ";
             #endregion
             AssertBlocks(sExp, blocks);
+        }
+
+        [Test(Description = "Don't make blocks containing a possible call target")]
+        public void Siq_calltargetinBlock()
+        {
+            Lin(0x1000, 3, 0x1003);
+            Lin(0x1003, 5, 0x1008);
+            Lin(0x1008, 4, 0x100C);
+            End(0x100C, 4);
+            mr.ReplayAll();
+
+            CreateScanner();
+            sr.KnownProcedures = new HashSet<Address>();
+            sr.DirectlyCalledAddresses = new Dictionary<Address, int>
+            {
+                { Address.Ptr32(0x1008), 2 }
+            };
+            var blocks = siq.BuildBasicBlocks(sr);
+            Assert.IsTrue(blocks.ContainsKey(Address.Ptr32(0x1008)));
         }
     }
 }
