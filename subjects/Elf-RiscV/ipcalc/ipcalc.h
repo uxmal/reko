@@ -17874,11 +17874,11 @@ T_4016: (in (real32) (real32) 0x0000000000000000 : real32)
   Class: Eq_4013
   DataType: real32
   OrigDataType: real32
-T_4017: (in (real32) a0_175->r0034 = (real32) ((real32) 0x0000000000000000) : bool)
+T_4017: (in (real32) a0_175->r0034 == (real32) ((real32) 0x0000000000000000) : bool)
   Class: Eq_4017
   DataType: bool
   OrigDataType: bool
-T_4018: (in (word64) ((real32) a0_175->r0034 = (real32) ((real32) 0x0000000000000000)) : word64)
+T_4018: (in (word64) ((real32) a0_175->r0034 == (real32) ((real32) 0x0000000000000000)) : word64)
   Class: Eq_4018
   DataType: word64
   OrigDataType: word64
@@ -17886,7 +17886,7 @@ T_4019: (in 0x0000000000000000 : word64)
   Class: Eq_4018
   DataType: word64
   OrigDataType: word64
-T_4020: (in (word64) ((real32) a0_175->r0034 = (real32) ((real32) 0x0000000000000000)) == 0x0000000000000000 : bool)
+T_4020: (in (word64) ((real32) a0_175->r0034 == (real32) ((real32) 0x0000000000000000)) == 0x0000000000000000 : bool)
   Class: Eq_4020
   DataType: bool
   OrigDataType: bool
@@ -19158,11 +19158,11 @@ T_4337: (in (real32) (real32) 0x0000000000000000 : real32)
   Class: Eq_4334
   DataType: real32
   OrigDataType: real32
-T_4338: (in (real32) a0_184->r0034 = (real32) ((real32) 0x0000000000000000) : bool)
+T_4338: (in (real32) a0_184->r0034 == (real32) ((real32) 0x0000000000000000) : bool)
   Class: Eq_4338
   DataType: bool
   OrigDataType: bool
-T_4339: (in (word64) ((real32) a0_184->r0034 = (real32) ((real32) 0x0000000000000000)) : word64)
+T_4339: (in (word64) ((real32) a0_184->r0034 == (real32) ((real32) 0x0000000000000000)) : word64)
   Class: Eq_4339
   DataType: word64
   OrigDataType: word64
@@ -19170,7 +19170,7 @@ T_4340: (in 0x0000000000000000 : word64)
   Class: Eq_4339
   DataType: word64
   OrigDataType: word64
-T_4341: (in (word64) ((real32) a0_184->r0034 = (real32) ((real32) 0x0000000000000000)) == 0x0000000000000000 : bool)
+T_4341: (in (word64) ((real32) a0_184->r0034 == (real32) ((real32) 0x0000000000000000)) == 0x0000000000000000 : bool)
   Class: Eq_4341
   DataType: bool
   OrigDataType: bool
