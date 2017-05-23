@@ -96,6 +96,8 @@ namespace Reko.Arch.X86
                 case Opcode.aas: RewriteAas(); break;
                 case Opcode.adc: RewriteAdcSbb(m.IAdd); break;
                 case Opcode.add: RewriteAddSub(Operator.IAdd); break;
+                case Opcode.addss: RewriteAddScalar(PrimitiveType.Real32); break;
+                case Opcode.addsd: RewriteAddScalar(PrimitiveType.Real32); break;
                 case Opcode.and: RewriteLogical(Operator.And); break;
                 case Opcode.arpl: RewriteArpl(); break;
                 case Opcode.bound: RewriteBound(); break;

@@ -1578,5 +1578,15 @@ namespace Reko.UnitTests.Arch.Intel
                "0|L--|0000000140000000(8): 1 instructions",
                "1|L--|CZP = cond((real64) xmm0 - Mem0[0x000000014000B135:real64])");
         }
+
+        [Test]
+        public void X86rw_addss()
+        {
+            Run64bitTest(0xF3, 0x0F, 0x58, 0x0D, 0xFB, 0xB0, 0x00, 0x00);
+            AssertCode( //addss\txmm1,dword ptr [rip+0000B0FB]
+               "0|L--|0000000140000000(8): 2 instructions",
+               "1|L--|v3 = (real32) xmm1 + Mem0[0x000000014000B103:real32]",
+               "2|L--|xmm1 = DPB(xmm1, v3, 0)");
+        }
     }
 }

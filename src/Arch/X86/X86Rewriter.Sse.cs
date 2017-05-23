@@ -32,6 +32,14 @@ namespace Reko.Arch.X86
 {
     public partial class X86Rewriter
     {
+        private void RewriteAddScalar(PrimitiveType size)
+        {
+            var xmm = SrcOp(instrCur.op1);
+            var tmp = frame.CreateTemporary(size);
+            m.Assign(tmp, m.FAdd(m.Cast(size,xmm), SrcOp(instrCur.op2)));
+            m.Assign(xmm, m.Dpb(xmm, tmp, 0));
+        }
+
         private void RewriteComis(PrimitiveType size)
         {
             var grf = frame.EnsureFlagGroup(arch.GetFlagGroup("ZCP"));

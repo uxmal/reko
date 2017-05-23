@@ -972,6 +972,11 @@ namespace Reko.Arch.X86
                         return null;
                     pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, GpRegFromBits));
                     break;
+                case 'H':       // reg
+                    //$TODO: VEX form not implemented yet, skip over for now.
+                    while (strFormat[i] != ',')
+                        ++i;
+                    continue;
                 case 'P':		// MMX register operand specified by the reg field of the modRM byte.
                     width = OperandWidth(strFormat[i++]);
                     if (!TryEnsureModRM(out modRm))
