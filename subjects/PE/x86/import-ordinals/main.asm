@@ -511,6 +511,16 @@ l004015BA:
 l004015C3:
 	call	004019C6
 	ret	
+004015C9                            55 8B EC E8 C7 05 00          U......
+004015D0 00 85 C0 74 0F 80 7D 08 00 75 09 33 C0 B9 38 33 ...t..}..u.3..83
+004015E0 40 00 87 01 5D C3 55 8B EC 80 3D 54 33 40 00 00 @...].U...=T3@..
+004015F0 74 06 80 7D 0C 00 75 12 FF 75 08 E8 46 06 00 00 t..}..u..u..F...
+00401600 FF 75 08 E8 3E 06 00 00 59 59 B0 01 5D C3 55 8B .u..>...YY..].U.
+00401610 EC A1 04 30 40 00 8B C8 33 05 3C 33 40 00 83 E1 ...0@...3.<3@...
+00401620 1F FF 75 08 D3 C8 83 F8 FF 75 07 E8 FE 05 00 00 ..u......u......
+00401630 EB 0B 68 3C 33 40 00 E8 EC 05 00 00 59 F7 D8 59 ..h<3@......Y..Y
+00401640 1B C0 F7 D0 23 45 08 5D C3 55 8B EC FF 75 08 E8 ....#E.].U...u..
+00401650 BA FF FF FF F7 D8 59 1B C0 F7 D8 48 5D C3       ......Y....H]. 
 
 ;; fn004015C9: 004015C9
 fn004015C9 proc
@@ -1185,58 +1195,103 @@ fn00401C46 proc
 	mov	al,01
 	ret	
 ;;; Segment .rdata (00402000)
-l00402000	dd	0x00002AA8
-l00402004	dd	0x00002A94
-l00402008	dd	0x00002A7E
-l0040200C	dd	0x00002A64
-l00402010	dd	0x000029BC
-l00402014	dd	0x000029DA
-l00402018	dd	0x000029EE
-l0040201C	dd	0x000029A0
-l00402020	dd	0x00002A4E
-l00402024	dd	0x00002A38
-l00402028	dd	0x00002A1E
-l0040202C	dd	0x00002A02
+__imp__GetModuleHandleW		; 00402000
+	dd	0x00002AA8
+__imp__IsDebuggerPresent		; 00402004
+	dd	0x00002A94
+__imp__InitializeSListHead		; 00402008
+	dd	0x00002A7E
+__imp__GetSystemTimeAsFileTime		; 0040200C
+	dd	0x00002A64
+__imp__SetUnhandledExceptionFilter		; 00402010
+	dd	0x000029BC
+__imp__GetCurrentProcess		; 00402014
+	dd	0x000029DA
+__imp__TerminateProcess		; 00402018
+	dd	0x000029EE
+__imp__UnhandledExceptionFilter		; 0040201C
+	dd	0x000029A0
+__imp__GetCurrentThreadId		; 00402020
+	dd	0x00002A4E
+__imp__GetCurrentProcessId		; 00402024
+	dd	0x00002A38
+__imp__QueryPerformanceCounter		; 00402028
+	dd	0x00002A1E
+__imp__IsProcessorFeaturePresent		; 0040202C
+	dd	0x00002A02
 00402030 00 00 00 00                                     ....           
-l00402034	dd	0x000026D8
-l00402038	dd	0x000026E2
+__imp__memset		; 00402034
+	dd	0x000026D8
+__imp___except_handler4_common		; 00402038
+	dd	0x000026E2
 0040203C                                     00 00 00 00             ....
-l00402040	dd	0x0000287A
+__imp___set_new_mode		; 00402040
+	dd	0x0000287A
 00402044             00 00 00 00                             ....       
-l00402048	dd	0x00002864
+__imp___configthreadlocale		; 00402048
+	dd	0x00002864
 0040204C                                     00 00 00 00             ....
-l00402050	dd	0x0000275C
+__imp____setusermatherr		; 00402050
+	dd	0x0000275C
 00402054             00 00 00 00                             ....       
-l00402058	dd	0x00002814
-l0040205C	dd	0x00002822
-l00402060	dd	0x0000282C
-l00402064	dd	0x00002836
-l00402068	dd	0x00002806
-l0040206C	dd	0x000027DA
-l00402070	dd	0x0000274C
-l00402074	dd	0x000027F0
-l00402078	dd	0x0000289A
-l0040207C	dd	0x000028B6
-l00402080	dd	0x000028D2
-l00402084	dd	0x000028E0
-l00402088	dd	0x000028F0
-l0040208C	dd	0x00002770
-l00402090	dd	0x000027E8
-l00402094	dd	0x000027CE
-l00402098	dd	0x000027AC
-l0040209C	dd	0x0000278A
-l004020A0	dd	0x0000273A
+__imp____p___argv		; 00402058
+	dd	0x00002814
+__imp___cexit		; 0040205C
+	dd	0x00002822
+__imp___c_exit		; 00402060
+	dd	0x0000282C
+__imp___register_thread_local_exe_atexit_callback		; 00402064
+	dd	0x00002836
+__imp____p___argc		; 00402068
+	dd	0x00002806
+__imp___initterm_e		; 0040206C
+	dd	0x000027DA
+__imp___set_app_type		; 00402070
+	dd	0x0000274C
+__imp___exit		; 00402074
+	dd	0x000027F0
+__imp___initialize_onexit_table		; 00402078
+	dd	0x0000289A
+__imp___register_onexit_function		; 0040207C
+	dd	0x000028B6
+__imp___crt_atexit		; 00402080
+	dd	0x000028D2
+__imp___controlfp_s		; 00402084
+	dd	0x000028E0
+__imp__terminate		; 00402088
+	dd	0x000028F0
+__imp___configure_narrow_argv		; 0040208C
+	dd	0x00002770
+__imp__exit		; 00402090
+	dd	0x000027E8
+__imp___initterm		; 00402094
+	dd	0x000027CE
+__imp___get_initial_narrow_environment		; 00402098
+	dd	0x000027AC
+__imp___initialize_narrow_environment		; 0040209C
+	dd	0x0000278A
+__imp___seh_filter_exe		; 004020A0
+	dd	0x0000273A
 004020A4             00 00 00 00                             ....       
-l004020A8	dd	0x000027F8
-l004020AC	dd	0x0000288A
-l004020B0	dd	0x00002720
-l004020B4	dd	0x0000270E
+__imp___set_fmode		; 004020A8
+	dd	0x000027F8
+__imp____p__commode		; 004020AC
+	dd	0x0000288A
+__imp____stdio_common_vfprintf		; 004020B0
+	dd	0x00002720
+__imp____acrt_iob_func		; 004020B4
+	dd	0x0000270E
 004020B8                         00 00 00 00                     ....   
-l004020BC	dd	0x80000001
-l004020C0	dd	0x80000002
-l004020C4	dd	0x80000004
-l004020C8	dd	0x80000003
-l004020CC	dd	0x8000000B
+__imp__driver.dll_1		; 004020BC
+	dd	0x80000001
+__imp__driver.dll_2		; 004020C0
+	dd	0x80000002
+__imp__driver.dll_4		; 004020C4
+	dd	0x80000004
+__imp__driver.dll_3		; 004020C8
+	dd	0x80000003
+__imp__driver.dll_11		; 004020CC
+	dd	0x8000000B
 004020D0 00 00 00 00 31 17 40 00 00 00 00 00 48 11 40 00 ....1.@.....H.@.
 004020E0 00 00 00 00 00 00 00 00 9C 10 40 00 40 11 40 00 ..........@.@.@.
 004020F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
