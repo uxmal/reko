@@ -282,6 +282,8 @@ namespace Reko.Arch.X86
         syscall,
         sysret,
         test,
+        ucomiss,
+        ucomisd,
         wait,
         xadd,
         xchg,

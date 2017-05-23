@@ -1559,7 +1559,24 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                "0|L--|0000000140000000(2): 3 instructions",
                "1|L--|rax = (uint64) (eax ^ eax)");
+        }
 
+        [Test]
+        public void X86rw_ucomiss()
+        {
+            Run64bitTest(0x0F, 0x2E, 0x05, 0x2D, 0xB1, 0x00, 0x00);
+            AssertCode( // ucomiss\txmm0,dword ptr [rip+0000B12D]
+               "0|L--|0000000140000000(7): 1 instructions",
+               "1|L--|CZP = cond((real32) xmm0 - Mem0[0x000000014000B134:real32])");
+        }
+
+        [Test]
+        public void X86rw_ucomisd()
+        {
+            Run64bitTest(0x66, 0x0F, 0x2E, 0x05, 0x2D, 0xB1, 0x00, 0x00);
+            AssertCode( // ucomisd\txmm0,qword ptr [rip+0000B12D]
+               "0|L--|0000000140000000(8): 1 instructions",
+               "1|L--|CZP = cond((real64) xmm0 - Mem0[0x000000014000B135:real64])");
         }
     }
 }

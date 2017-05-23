@@ -320,6 +320,8 @@ namespace Reko.Arch.X86
                 case Opcode.stos: RewriteStringInstruction(); break;
                 case Opcode.stosb: RewriteStringInstruction(); break;
                 case Opcode.sub: RewriteAddSub(BinaryOperator.ISub); break;
+                case Opcode.ucomiss: RewriteComis(PrimitiveType.Real32); break;
+                case Opcode.ucomisd: RewriteComis(PrimitiveType.Real64); break;
                 case Opcode.test: RewriteTest(); break;
                 case Opcode.wait: RewriteWait(); break;
                 case Opcode.xadd: RewriteXadd(); break;

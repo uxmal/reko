@@ -868,6 +868,18 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode16("movups\txmm7,xmm3", 0x0F, 0x10, 0xFB);
         }
+
+        [Test]
+        public void X86dis_ucomiss()
+        {
+            AssertCode64("ucomiss\txmm0,dword ptr [rip+0000B12D]", 0x0F, 0x2E, 0x05, 0x2D, 0xB1, 0x00, 0x00);
+        }
+
+        [Test]
+        public void X86dis_ucomisd()
+        {
+            AssertCode64("ucomisd\txmm0,double ptr [rip+0000B12D]", 0x66, 0x0F, 0x2E, 0x05, 0x2D, 0xB1, 0x00, 0x00);
+        }
     }
 }
 

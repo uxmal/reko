@@ -104,7 +104,9 @@ namespace Reko.Arch.X86
                     Opcode.cvttss2si, "Gd,Wq",
                     Opcode.cvttsd2si, "Gd,Wq"),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new PrefixedOpRec(
+                    Opcode.ucomiss, "Vss,Wss",
+                    Opcode.ucomisd, "Vsd,Wsd"),
 				new SingleByteOpRec(Opcode.illegal),
 
 				// 30

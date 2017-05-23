@@ -32,6 +32,14 @@ namespace Reko.Arch.X86
 {
     public partial class X86Rewriter
     {
+        private void RewriteComis(PrimitiveType size)
+        {
+            var grf = frame.EnsureFlagGroup(arch.GetFlagGroup("ZCP"));
+            m.Assign(grf, m.Cond(m.FSub(
+                m.Cast(size, SrcOp(instrCur.op1)),
+                SrcOp(instrCur.op2))));
+        }
+
         private void RewriteCvttsd2si()
         {
             instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
