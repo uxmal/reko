@@ -234,7 +234,7 @@ namespace Reko.Arch.X86
                 }
             }
 
-            internal bool RepetitionPrefixF2
+            internal bool F2Prefix
             {
                 get
                 {
@@ -249,7 +249,7 @@ namespace Reko.Arch.X86
                     this.repetitionPrefixF2 = value;
                 }
             }
-            internal bool RepetitionPrefixF3
+            internal bool F3Prefix
             {
                 get
                 {
@@ -742,14 +742,10 @@ namespace Reko.Arch.X86
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
-                if (disasm.rdr.PeekByte(0) == 0x0F)
-                {
-                    disasm.currentDecodingContext.RepetitionPrefixF2 = true;
-                    if (!disasm.rdr.TryReadByte(out op))
-                        return null;
-                    return s_aOpRec[op].Decode(disasm, op, opFormat);
-                }
-                return disasm.DecodeOperands(Opcode.repne, 0xF2, opFormat);
+                disasm.currentDecodingContext.F2Prefix = true;
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                return s_aOpRec[op].Decode(disasm, op, opFormat);
             }
         }
 
@@ -758,19 +754,15 @@ namespace Reko.Arch.X86
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 byte b = disasm.rdr.PeekByte(0);
-                if (b == 0x0F)
-                {
-                    disasm.currentDecodingContext.RepetitionPrefixF3 = true;
-                    if (!disasm.rdr.TryReadByte(out op))
-                        return null;
-                    return s_aOpRec[op].Decode(disasm, op, opFormat);
-                }
                 if (b == 0xC3)
                 {
                     op = disasm.rdr.ReadByte();
                     return s_aOpRec[b].Decode(disasm, op, opFormat);
                 }
-                return disasm.DecodeOperands(Opcode.rep, 0xF3, opFormat);
+                disasm.currentDecodingContext.F3Prefix = true;
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                return s_aOpRec[op].Decode(disasm, op, opFormat);
             }
         }
 
@@ -856,10 +848,18 @@ namespace Reko.Arch.X86
 
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
-                if (disasm.currentDecodingContext.RepetitionPrefixF2)
-                    return disasm.DecodeOperands(this.opF2, op, opF2Fmt);
-                else if (disasm.currentDecodingContext.RepetitionPrefixF3)
-                    return disasm.DecodeOperands(this.opF3, op, opF3Fmt);
+                if (disasm.currentDecodingContext.F2Prefix)
+                {
+                    var instr = disasm.DecodeOperands(this.opF2, op, opF2Fmt);
+                    instr.repPrefix = 0;
+                    return instr;
+                }
+                else if (disasm.currentDecodingContext.F3Prefix)
+                {
+                    var instr = disasm.DecodeOperands(this.opF3, op, opF3Fmt);
+                    instr.repPrefix = 0;
+                    return instr;
+                }
                 else if (disasm.currentDecodingContext.SizeOverridePrefix)
                 {
                     if (disasm.isRegisterExtensionEnabled && disasm.currentDecodingContext.RegisterExtension.FlagWideValue)
@@ -1075,7 +1075,11 @@ namespace Reko.Arch.X86
                     ops.Add(pOperand);
                 }
             }
-            return new X86Instruction(opcode, iWidth, addressWidth, ops.ToArray());
+            return new X86Instruction(opcode, iWidth, addressWidth, ops.ToArray())
+            {
+                repPrefix = this.currentDecodingContext.F2Prefix ? 2 :
+                            this.currentDecodingContext.F3Prefix ? 3 : 0
+            };
         }
 
 		/// <summary>

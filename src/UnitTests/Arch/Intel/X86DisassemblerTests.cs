@@ -357,7 +357,7 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
-        public void X86Dis_Bswap()
+        public void X86Dis_bswap()
         {
             var instr = Disassemble32(0x0F, 0xC8); ;		// bswap eax
             Assert.AreEqual("bswap\teax", instr.ToString());
@@ -885,6 +885,12 @@ movzx	ax,byte ptr [bp+04]
         public void X86dis_addss()
         {
             AssertCode64("addss\txmm1,dword ptr [rip+0000B0FB]", 0xF3, 0x0F, 0x58, 0x0D, 0xFB, 0xB0, 0x00, 0x00);
+        }
+
+        [Test]
+        public void X86dis_cvtsi2ss()
+        {
+            AssertCode64("cvtsi2ss\txmm0,rax", 0xF3, 0x48, 0x0F, 0x2A, 0xC0);
         }
     }
 }

@@ -40,6 +40,7 @@ namespace Reko.Arch.X86
         private static Dictionary<Opcode, InstructionClass> classOf;
 
 		public Opcode code;		// Opcode of the instruction.
+        public int repPrefix;           // 0 = no prefix, 2 = repnz, 3 = repz
 		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	// width of the address mode.	// TODO: belongs in MemoryOperand
 		public MachineOperand op1;
@@ -114,9 +115,20 @@ namespace Reko.Arch.X86
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-			// Get opcode. 
+            if (repPrefix == 3)
+            {
+                writer.WriteOpcode("rep");
+                writer.Write(' ');
+            }
+            else if (repPrefix == 2)
+            {
+                writer.WriteOpcode("repnz");
+                writer.Write(' ');
+            }
 
-			string s = code.ToString();
+            // Get opcode. 
+
+            string s = code.ToString();
 			switch (code)
 			{
 			case Opcode.cwd:

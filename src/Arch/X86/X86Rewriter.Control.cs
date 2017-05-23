@@ -193,49 +193,6 @@ namespace Reko.Arch.X86
             }
         }
 
-
-        ///<summary>
-        /// Converts a rep [string instruction] into a loop: 
-        /// <code>
-        /// while ([e]cx != 0)
-        ///		[string instruction]
-        ///		--ecx;
-        ///		if (zF)				; only cmps[b] and scas[b]
-        ///			goto follow;
-        /// follow: ...	
-        /// </code>
-        ///</summary>
-        private void RewriteRep()
-        {
-            var topOfLoop = instrCur.Address;
-            var regCX = orw.AluRegister(Registers.rcx, instrCur.addrWidth);
-            dasm.MoveNext();
-            instrCur = dasm.Current;
-            this.len += instrCur.Length;
-            m.BranchInMiddleOfInstruction(m.Eq0(regCX), instrCur.Address + instrCur.Length, RtlClass.ConditionalTransfer);
-            if (!RewriteStringInstruction())
-                return;
-            m.Assign(regCX, m.ISub(regCX, 1));
-
-            switch (instrCur.code)
-            {
-            case Opcode.cmps:
-            case Opcode.cmpsb:
-            case Opcode.scas:
-            case Opcode.scasb:
-                {
-                    var cc = (instrCur.code == Opcode.repne)
-                        ? ConditionCode.NE
-                        : ConditionCode.EQ;
-                    m.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)).Invert(), topOfLoop, RtlClass.ConditionalTransfer);
-                    break;
-                }
-            default:
-                m.Goto(topOfLoop);
-                break;
-            }
-        }
-
         public void RewriteRet()
         {
             m.Return(

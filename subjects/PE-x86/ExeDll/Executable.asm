@@ -677,7 +677,11 @@ fn004016FF proc
 fn00401703 proc
 	mov	eax,00004000
 	ret	
-00401709                            33 C0 C3                      3..   
+
+;; fn00401709: 00401709
+fn00401709 proc
+	xor	eax,eax
+	ret	
 
 ;; fn0040170C: 0040170C
 fn0040170C proc

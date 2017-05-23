@@ -1588,5 +1588,25 @@ namespace Reko.UnitTests.Arch.Intel
                "1|L--|v3 = (real32) xmm1 + Mem0[0x000000014000B103:real32]",
                "2|L--|xmm1 = DPB(xmm1, v3, 0)");
         }
+
+        [Test]
+        public void X86rw_subss()
+        {
+            Run64bitTest(0xF3, 0x0F, 0x5C, 0xCD);
+            AssertCode(     // subss\txmm1,dword ptr [rip+0000B0FB]
+               "0|L--|0000000140000000(4): 2 instructions",
+               "1|L--|v3 = (real32) xmm1 - xmm5",
+               "2|L--|xmm1 = DPB(xmm1, v3, 0)");
+        }
+
+        [Test]
+        public void X86rw_cvtsi2ss()
+        {
+            Run64bitTest(0xF3, 0x48, 0x0F, 0x2A, 0xC0);
+            AssertCode(     // "cvtsi2ss\txmm0,rax", 
+               "0|L--|0000000140000000(5): 2 instructions",
+               "1|L--|v4 = (real32) rax",
+               "2|L--|xmm0 = DPB(xmm0, v4, 0)");
+        }
     }
 }

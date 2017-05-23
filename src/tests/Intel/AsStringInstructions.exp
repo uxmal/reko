@@ -18,7 +18,6 @@
 0B00:0026 8B 0E 00 04     	mov	cx,[0400]
 0B00:002A B0 00           	mov	al,00
 0B00:002C 8B 3E 02 04     	mov	di,[0402]
-0B00:0030 F3              	rep	
-0B00:0031 AE              	scasb	
+0B00:0030 F3 AE           	rep scasb	
 0B00:0032 89 3E 04 04     	mov	[0404],di
 0B00:0036 C3              	ret	

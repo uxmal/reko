@@ -96,7 +96,11 @@ namespace Reko.Arch.X86
 
                 new SingleByteOpRec(Opcode.movaps, "Vps,Wps"),
                 new SingleByteOpRec(Opcode.illegal),
-                new SingleByteOpRec(Opcode.illegal),
+                new PrefixedOpRec(
+                    Opcode.cvtpi2ps, "Vps,Qpi",
+                    Opcode.cvtpi2pd, "Vpd,Qpi",
+                    Opcode.cvtsi2ss, "Vss,Hss,Ey",
+                    Opcode.cvtsi2sd, "Vsd,Hsd,Ey"),
                 new SingleByteOpRec(Opcode.illegal),
                 new PrefixedOpRec(
                     Opcode.cvttps2pi, "Pq,Wq",
@@ -165,7 +169,11 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new PrefixedOpRec(
+                    Opcode.subps, "Vps,Hps,Wps",
+                    Opcode.subpd, "Vpd,Hpd,Wpd",
+                    Opcode.subss, "Vss,Hss,Wss",
+                    Opcode.subsd, "Vsd,Hsd,Wsd"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
