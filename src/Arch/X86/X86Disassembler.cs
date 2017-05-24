@@ -961,7 +961,7 @@ namespace Reko.Arch.X86
                         return null;
                     break;
                 case 'Q':		// memory or register MMX operand specified by mod & r/m fields.
-                    width = OperandWidth(strFormat[i++]);
+                    width = SseOperandWidth(strFormat, ref i);
                     pOperand = DecodeModRM(width, this.currentDecodingContext.SegmentOverride, MmxRegFromBits);
                     if (pOperand == null)
                         return null;
@@ -978,7 +978,7 @@ namespace Reko.Arch.X86
                         ++i;
                     continue;
                 case 'P':		// MMX register operand specified by the reg field of the modRM byte.
-                    width = OperandWidth(strFormat[i++]);
+                    width = SseOperandWidth(strFormat, ref i);
                     if (!TryEnsureModRM(out modRm))
                         return null;
                     pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, MmxRegFromBits));
@@ -1136,11 +1136,14 @@ namespace Reko.Arch.X86
         {
             switch (fmt[i++])
             {
+            case 'd':
+                return PrimitiveType.Word32;
             case 'p':
                 switch (fmt[i++])
                 {
-                case 's': return PrimitiveType.Word128;
-                case 'd': return PrimitiveType.Word128;
+                case 'd': return PrimitiveType.Word128; //$TODO: this should be array[2] of double32
+                case 'i': return PrimitiveType.Word128; //$TODO: this should be array[4] of int32
+                case 's': return PrimitiveType.Word128; //$TODO: this should be array[4] of real32
                 default: throw new NotImplementedException(string.Format("Unknown operand width p{0}", fmt[i-1]));
                 }
             case 'q':
@@ -1148,8 +1151,9 @@ namespace Reko.Arch.X86
             case 's':
                 switch (fmt[i++])
                 {
-                case 's': return PrimitiveType.Real32;
                 case 'd': return PrimitiveType.Real64;
+                case 'i': return PrimitiveType.Int32;
+                case 's': return PrimitiveType.Real32;
                 default: throw new NotImplementedException(string.Format("Unknown operand width s{0}", fmt[i - 1]));
                 }
             case 'x':

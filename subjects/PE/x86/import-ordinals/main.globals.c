@@ -4,14 +4,14 @@
 
 #include "main.h"
 
-Eq_777 g_t5A4D;
+Eq_764 g_t5A4D;
 word16 g_w400000;
-struct Eq_777 * g_ptr40003C;
+struct Eq_764 * g_ptr40003C;
 LONG g_t4018DB(struct _EXCEPTION_POINTERS * ExceptionInfo) = Unexpected function type (fn LONG ((ptr (struct "_EXCEPTION_POINTERS"))))
 ;
 <anonymous> * g_ptr4020D4 = fn00401731;
-Eq_167 g_t4020E0 = null;
-Eq_167 g_t4020F0 = null;
+Eq_165 g_t4020E0 = null;
+Eq_165 g_t4020F0 = null;
 word32 g_dw4024FC = 0x00000000;
 ui32 g_dw403000 = 0x44BF19B1;
 ui32 g_dw403004 = 0xBB40E64E;

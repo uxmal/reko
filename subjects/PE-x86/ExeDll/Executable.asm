@@ -944,8 +944,7 @@ fn00401980 proc
 	mov	[ebp-08],eax
 	lea	eax,[ebp-10]
 	mov	fs:[00000000],eax
-	repne	
-	ret	
+	repne ret	
 
 ;; fn004019C6: 004019C6
 fn004019C6 proc
@@ -959,22 +958,10 @@ fn004019C6 proc
 	mov	esp,ebp
 	pop	ebp
 	push	ecx
-	repne	
-	ret	
-
-l004019DB:
-	push	ebp
-	mov	ebp,esp
-	push	dword ptr [ebp+14]
-	push	dword ptr [ebp+10]
-	push	dword ptr [ebp+0C]
-	push	dword ptr [ebp+08]
-	push	00401090
-	push	00403004
-	call	00401BAC
-	add	esp,18
-	pop	ebp
-	ret	
+	repne ret	
+004019DB                                  55 8B EC FF 75            U...u
+004019E0 14 FF 75 10 FF 75 0C FF 75 08 68 90 10 40 00 68 ..u..u..u.h..@.h
+004019F0 04 30 40 00 E8 B3 01 00 00 83 C4 18 5D C3       .0@.........]. 
 
 ;; fn004019FE: 004019FE
 fn004019FE proc

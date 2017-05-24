@@ -180,10 +180,10 @@ namespace Reko.Arch.X86
 					
 				// 60
 				new PrefixedOpRec(
-                    Opcode.punpcklbw, "Pp,Qd",
+                    Opcode.punpcklbw, "Pq,Qd",
                     Opcode.punpcklbw, "Vx,Wx"),
 				new PrefixedOpRec(
-                    Opcode.punpcklwd, "Pp,Qd",
+                    Opcode.punpcklwd, "Pq,Qd",
                     Opcode.punpcklwd, "Vx,Wx"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),

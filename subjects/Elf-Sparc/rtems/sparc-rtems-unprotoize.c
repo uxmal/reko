@@ -353,42 +353,71 @@ void usage()
 {
 	notice(0x00017108, dwLoc28, dwLoc24, dwLoc20, dwLoc1C, dwLoc18);
 	exit();
+	if ((int32) Mem0[33:int8] == 0x2F)
+	{
+		word32 i0_49;
+		fn000119E0(0x00027C00, 33, out i0_49);
+		return;
+	}
+	else
+	{
+		fn000119D0(0x00027C00, 33);
+		return;
+	}
 }
 
 // 000119BC: Register word32 in_system_include_dir(Register word32 o0)
 word32 in_system_include_dir(word32 o0)
 {
-	word32 i0_29;
-	if ((int32) Mem0[o0 + 0x00:int8] != 0x2F)
+	if ((int32) Mem0[o0 + 0x00:int8] == 0x2F)
 	{
-		abort();
-l000119D8:
-		i0_29 = 0x01;
+		word32 i0_28;
+		return fn000119E0(0x00027C00, o0, out i0_28);
 	}
 	else
 	{
-		if (Mem0[163536:word32] != 0x00)
-		{
-			word32 l1_64 = 163536;
-			do
-			{
-				strlen();
-				strncmp();
-				if (o0 == 0x00)
-				{
-					word32 o0_82 = Mem0[l1_64 + 0x00:word32];
-					strlen();
-					if ((int32) Mem0[o0 + o0_82:int8] == 0x2F)
-						goto l000119D8;
-					l1_64 = l1_64 + 0x10;
-				}
-				else
-					l1_64 = l1_64 + 0x10;
-			} while (Mem0[l1_64 + 0x00:word32] != 0x00);
-		}
-		i0_29 = 0x00;
+		fn000119D0(0x00027C00, o0);
+		return 0x00027C00;
 	}
-	return i0_29;
+}
+
+// 000119D0: void fn000119D0(Register word32 o0, Register word32 i0)
+void fn000119D0(word32 o0, word32 i0)
+{
+	abort();
+	word32 i0_4;
+	fn000119E0(o0, i0, out i0_4);
+	return;
+}
+
+// 000119E0: Register word32 fn000119E0(Register word32 o0, Register word32 i0, Register out ptr32 i0Out)
+word32 fn000119E0(word32 o0, word32 i0, ptr32 & i0Out)
+{
+	word32 i0_13;
+	if (Mem0[o0 + 0x02D0:word32] != 0x00)
+	{
+		word32 l1_39 = o0 | 0x02D0;
+		do
+		{
+			strlen();
+			strncmp();
+			if (i0 == 0x00)
+			{
+				word32 o0_58 = Mem0[l1_39 + 0x00:word32];
+				strlen();
+				if ((int32) Mem0[i0 + o0_58:int8] == 0x2F)
+				{
+					*i0Out = 0x01;
+					return i0_13;
+				}
+				l1_39 = l1_39 + 0x10;
+			}
+			else
+				l1_39 = l1_39 + 0x10;
+		} while (Mem0[l1_39 + 0x00:word32] != 0x00);
+	}
+	*i0Out = 0x00;
+	return i0_13;
 }
 
 // 00011A4C: Register word32 needs_to_be_converted(Register word32 o0)
@@ -2832,7 +2861,7 @@ void edit_file(word32 o0)
 			if (in_system_include_dir(Mem45[0x00028180:word32]) == 0x00)
 			{
 				shortpath(0x00, Mem45[0x00028180:word32]);
-				notice(0x00017600, dwLocB0, dwLocAC, dwLocA8, dwLocA4, dwLocA0);
+				notice(0x00017600, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
 			}
 		}
 	}
@@ -3523,363 +3552,173 @@ void _obstack_allocated_p(word32 o0, word32 o1)
 // 00015724: void _obstack_free(Register word32 o0, Register word32 o1)
 void _obstack_free(word32 o0, word32 o1)
 {
-	word32 o3_20 = Mem0[o0 + 0x04:word32];
-	word32 o3_21;
-	fn00015774(o3_20, o0, o1, out o3_21);
+	word32 i0_117 = o0;
+	word32 i1_119 = o1;
+	word32 o3_109 = Mem0[o0 + 0x04:word32];
+	while (o3_109 != 0x00)
+	{
+		word32 g0_77 = o3_109 - i1_119;
+		word32 o0_170;
+		if (g0_77 <u 0x00)
+		{
+			if (Mem0[o3_109 + 0x00:word32] - i1_119 >=u 0x00)
+				break;
+			o0_170 = Mem0[i0_117 + 0x0028:word32];
+		}
+		else
+			o0_170 = Mem0[i0_117 + 0x0028:word32];
+		word32 o1_101;
+		word32 l0_137;
+		if (o0_170 < 0x00)
+		{
+			word32 o2_112 = Mem0[i0_117 + 0x0020:word32];
+			word32 sp_116;
+			word32 o0_118;
+			word32 o1_120;
+			word32 i2_121;
+			word32 o2_122;
+			word32 i3_123;
+			word32 o3_124;
+			word32 i4_125;
+			word32 o4_126;
+			word32 i5_127;
+			word32 o5_128;
+			word32 i6_129;
+			word32 i7_130;
+			word32 o7_131;
+			word32 g0_132;
+			byte NZVC_133;
+			bool Z_134;
+			bool C_135;
+			byte NV_136;
+			o2_112();
+			o1_101 = Mem0[i0_117 + 0x0028:word32];
+		}
+		else
+		{
+			word32 o1_140 = Mem0[i0_117 + 0x0020:word32];
+			word32 sp_143;
+			word32 o0_145;
+			word32 o1_147;
+			word32 i2_148;
+			word32 o2_149;
+			word32 i3_150;
+			word32 o3_151;
+			word32 i4_152;
+			word32 o4_153;
+			word32 i5_154;
+			word32 o5_155;
+			word32 i6_156;
+			word32 i7_157;
+			word32 o7_158;
+			word32 g0_159;
+			byte NZVC_160;
+			bool Z_161;
+			bool C_162;
+			byte NV_163;
+			o1_140();
+			o1_101 = Mem0[i0_117 + 0x0028:word32];
+		}
+		Mem110[i0_117 + 0x0028:word32] = o1_101 | 0x40000000;
+		o3_109 = l0_137;
+	}
+	if (o3_109 != 0x00)
+	{
+		Mem67[i0_117 + 0x08:word32] = i1_119;
+		Mem68[i0_117 + 0x0C:word32] = i1_119;
+		word32 o0_69 = Mem68[o3_109 + 0x00:word32];
+		Mem70[i0_117 + 0x04:word32] = o3_109;
+		Mem71[i0_117 + 0x0010:word32] = o0_69;
+	}
+	else if (i1_119 != 0x00)
+		abort();
 	return;
-}
-
-// 00015730: FlagGroup bool fn00015730(Register word32 o0, Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
-bool fn00015730(word32 o0, word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
-{
-	sp = fp;
-	g0 = o0 - 0x00;
-	NZVC = cond(g0);
-	NV = NZVC;
-	if (Test(LT,NV))
-	{
-		l0 = Mem0[o3 + 0x04:word32];
-		o2 = Mem0[i0 + 0x0020:word32];
-		o1 = 0x00 | o3;
-		o7 = 0x00015744;
-		o0 = Mem0[i0 + 0x0024:word32];
-		(o2 + 0x00)();
-		o1 = Mem0[i0 + 0x0028:word32];
-	}
-	else
-	{
-		l0 = Mem0[o3 + 0x04:word32];
-		o1 = Mem0[i0 + 0x0020:word32];
-		o7 = 0x00015758;
-		o0 = 0x00 | o3;
-		(o1 + 0x00)();
-		o1 = Mem0[i0 + 0x0028:word32];
-	}
-	o0 = 0x40000000;
-	o1 = o1 | 0x40000000;
-	o3 = 0x00 | l0;
-	Mem0[i0 + 0x0028:word32] = o1;
-	C = fn00015774(o3, i0, i1, out o3);
-	NZVC = C;
-	return C;
-}
-
-// 00015774: FlagGroup bool fn00015774(Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
-bool fn00015774(word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
-{
-fn00015774_entry:
-	def fp
-	def o3
-	def o3Out
-	def i1
-	def i0
-	sp_1 = fp
-	g0_3 = o3 - 0x00
-	NZVC_4 = cond(g0_3)
-	Z_5 = NZVC_4 (alias)
-	branch g0_3 == 0x00 l00015774_ds_t
-	goto l00015774_ds_f
-l00015764_ds_f:
-	g0 = o3 - i1
-	NZVC = cond(g0)
-	Z = NZVC (alias)
-	C = NZVC (alias)
-	C = fn00015780(o3, i0, i1, out o3)
-	NZVC = C (alias)
-	return C
-l00015764_ds_t:
-	g0 = o3 - i1
-	NZVC = cond(g0)
-	C = fn00015798(o3, i0, i1, out o3)
-	NZVC = C (alias)
-	return C
-l00015774:
-l00015774:
-	g0 = o3 - 0x00
-	NZVC = cond(g0)
-	Z = NZVC (alias)
-	branch Test(EQ,Z) l00015764_ds_t
-	goto l00015764_ds_f
-l00015774_ds_f:
-	g0_13 = o3 - i1
-	NZVC_14 = cond(g0_13)
-	Z_15 = NZVC_14 (alias)
-	C_16 = NZVC_14 (alias)
-	C_19 = fn00015780(o3, i0, i1, out o3_18)
-	NZVC_20 = C_19 (alias)
-	return C_19
-l00015774_ds_t:
-	g0_24 = o3 - i1
-	NZVC_25 = cond(g0_24)
-	C_27 = fn00015798(o3, i0, i1, out o3_26)
-	NZVC_28 = C_27 (alias)
-	return C_27
-l0001577C_thunk_fn00015780:
-l0001577C_thunk_fn00015780:
-	C_22 = fn00015780(o3_18, i0, i1, out o3_21)
-	NZVC_23 = C_22 (alias)
-	return C_22
-l0001577C_thunk_fn00015780:
-l0001577C_thunk_fn00015798:
-l0001577C_thunk_fn00015798:
-fn00015774_exit:
-	g0_6 = PHI(g0_24, g0_13, g0_13, g0, g0)
-	Z_7 = PHI(Z_5, Z_15, Z_15, Z, Z)
-	o3_8 = PHI(o3_26, o3_18, o3_21, o3, o3)
-	C_9 = PHI(C_27, C_19, C_22, C, C)
-	NZVC_10 = PHI(NZVC_28, NZVC_20, NZVC_23, NZVC, NZVC)
-	use o3_8 (=> o3Out)
-}
-
-// 00015780: FlagGroup bool fn00015780(Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
-bool fn00015780(word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
-{
-fn00015780_entry:
-	def v3
-	def C
-	def o3
-	def Mem0
-	def i1
-	def i0
-	def o3Out
-	sp_1 = v3
-	branch C l00015780_ds_t
-	goto l00015788
-l00015780:
-l00015780_ds_t:
-	o0_19 = Mem0[i0 + 0x0028:word32]
-l00015784_thunk_fn00015730:
-	C = fn00015730(o0, o3, i0, i1, out o3)
-	NZVC = C (alias)
-	return C
-l00015788:
-	o0_5 = Mem0[o3 + 0x00:word32]
-	g0_7 = o0_5 - i1
-	NZVC_8 = cond(g0_7)
-	C_9 = NZVC_8 (alias)
-	branch g0_7 <u 0x00 l00015788_ds_t
-	goto l00015790_thunk_fn00015798
-l00015788_ds_t:
-	o0_18 = Mem0[i0 + 0x0028:word32]
-	goto l00015794_thunk_fn00015730
-l00015790_thunk_fn00015798:
-	C_12 = fn00015798(o3, i0, i1, out o3_11)
-	NZVC_13 = C_12 (alias)
-	return C_12
-l00015794_thunk_fn00015730:
-	C = fn00015730(o0, o3, i0, i1, out o3)
-	NZVC = C (alias)
-	return C
-fn00015780_exit:
-	o3_14 = PHI(o3_11, o3, o3)
-	C_15 = PHI(C_12, C, C)
-	NZVC_16 = PHI(NZVC_13, NZVC, NZVC)
-	use o3_14 (=> o3Out)
-}
-
-// 00015798: FlagGroup bool fn00015798(Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
-bool fn00015798(word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
-{
-	bool C_30;
-	if (o3 != 0x00)
-	{
-		C_30 = cond(i1);
-		Mem31[i0 + 0x08:word32] = i1;
-		Mem32[i0 + 0x0C:word32] = i1;
-		word32 o0_33 = Mem32[o3 + 0x00:word32];
-		Mem34[i0 + 0x04:word32] = o3;
-		Mem35[i0 + 0x0010:word32] = o0_33;
-	}
-	else
-	{
-		C_30 = cond(i1);
-		if (i1 != 0x00)
-			abort();
-	}
-	word32 o3_17;
-	*o3Out = i3;
-	return C_30;
 }
 
 // 000157D4: void obstack_free(Register word32 o0, Register word32 o1)
 void obstack_free(word32 o0, word32 o1)
 {
-	word32 o3_20 = Mem0[o0 + 0x04:word32];
-	word32 o3_21;
-	fn00015824(o3_20, o0, o1, out o3_21);
+	word32 i0_117 = o0;
+	word32 i1_119 = o1;
+	word32 o3_109 = Mem0[o0 + 0x04:word32];
+	while (o3_109 != 0x00)
+	{
+		word32 g0_77 = o3_109 - i1_119;
+		word32 o0_170;
+		if (g0_77 <u 0x00)
+		{
+			if (Mem0[o3_109 + 0x00:word32] - i1_119 >=u 0x00)
+				break;
+			o0_170 = Mem0[i0_117 + 0x0028:word32];
+		}
+		else
+			o0_170 = Mem0[i0_117 + 0x0028:word32];
+		word32 o1_101;
+		word32 l0_137;
+		if (o0_170 < 0x00)
+		{
+			word32 o2_112 = Mem0[i0_117 + 0x0020:word32];
+			word32 sp_116;
+			word32 o0_118;
+			word32 o1_120;
+			word32 i2_121;
+			word32 o2_122;
+			word32 i3_123;
+			word32 o3_124;
+			word32 i4_125;
+			word32 o4_126;
+			word32 i5_127;
+			word32 o5_128;
+			word32 i6_129;
+			word32 i7_130;
+			word32 o7_131;
+			word32 g0_132;
+			byte NZVC_133;
+			bool Z_134;
+			bool C_135;
+			byte NV_136;
+			o2_112();
+			o1_101 = Mem0[i0_117 + 0x0028:word32];
+		}
+		else
+		{
+			word32 o1_140 = Mem0[i0_117 + 0x0020:word32];
+			word32 sp_143;
+			word32 o0_145;
+			word32 o1_147;
+			word32 i2_148;
+			word32 o2_149;
+			word32 i3_150;
+			word32 o3_151;
+			word32 i4_152;
+			word32 o4_153;
+			word32 i5_154;
+			word32 o5_155;
+			word32 i6_156;
+			word32 i7_157;
+			word32 o7_158;
+			word32 g0_159;
+			byte NZVC_160;
+			bool Z_161;
+			bool C_162;
+			byte NV_163;
+			o1_140();
+			o1_101 = Mem0[i0_117 + 0x0028:word32];
+		}
+		Mem110[i0_117 + 0x0028:word32] = o1_101 | 0x40000000;
+		o3_109 = l0_137;
+	}
+	if (o3_109 != 0x00)
+	{
+		Mem67[i0_117 + 0x08:word32] = i1_119;
+		Mem68[i0_117 + 0x0C:word32] = i1_119;
+		word32 o0_69 = Mem68[o3_109 + 0x00:word32];
+		Mem70[i0_117 + 0x04:word32] = o3_109;
+		Mem71[i0_117 + 0x0010:word32] = o0_69;
+	}
+	else if (i1_119 != 0x00)
+		abort();
 	return;
-}
-
-// 000157E0: FlagGroup bool fn000157E0(Register word32 o0, Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
-bool fn000157E0(word32 o0, word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
-{
-	sp = fp;
-	g0 = o0 - 0x00;
-	NZVC = cond(g0);
-	NV = NZVC;
-	if (Test(LT,NV))
-	{
-		l0 = Mem0[o3 + 0x04:word32];
-		o2 = Mem0[i0 + 0x0020:word32];
-		o1 = 0x00 | o3;
-		o7 = 0x000157F4;
-		o0 = Mem0[i0 + 0x0024:word32];
-		(o2 + 0x00)();
-		o1 = Mem0[i0 + 0x0028:word32];
-	}
-	else
-	{
-		l0 = Mem0[o3 + 0x04:word32];
-		o1 = Mem0[i0 + 0x0020:word32];
-		o7 = 0x00015808;
-		o0 = 0x00 | o3;
-		(o1 + 0x00)();
-		o1 = Mem0[i0 + 0x0028:word32];
-	}
-	o0 = 0x40000000;
-	o1 = o1 | 0x40000000;
-	o3 = 0x00 | l0;
-	Mem0[i0 + 0x0028:word32] = o1;
-	C = fn00015824(o3, i0, i1, out o3);
-	NZVC = C;
-	return C;
-}
-
-// 00015824: FlagGroup bool fn00015824(Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
-bool fn00015824(word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
-{
-fn00015824_entry:
-	def fp
-	def o3
-	def o3Out
-	def i1
-	def i0
-	sp_1 = fp
-	g0_3 = o3 - 0x00
-	NZVC_4 = cond(g0_3)
-	Z_5 = NZVC_4 (alias)
-	branch g0_3 == 0x00 l00015824_ds_t
-	goto l00015824_ds_f
-l00015814_ds_f:
-	g0 = o3 - i1
-	NZVC = cond(g0)
-	Z = NZVC (alias)
-	C = NZVC (alias)
-	C = fn00015830(o3, i0, i1, out o3)
-	NZVC = C (alias)
-	return C
-l00015814_ds_t:
-	g0 = o3 - i1
-	NZVC = cond(g0)
-	C = fn00015848(o3, i0, i1, out o3)
-	NZVC = C (alias)
-	return C
-l00015824:
-l00015824:
-	g0 = o3 - 0x00
-	NZVC = cond(g0)
-	Z = NZVC (alias)
-	branch Test(EQ,Z) l00015814_ds_t
-	goto l00015814_ds_f
-l00015824_ds_f:
-	g0_13 = o3 - i1
-	NZVC_14 = cond(g0_13)
-	Z_15 = NZVC_14 (alias)
-	C_16 = NZVC_14 (alias)
-	C_19 = fn00015830(o3, i0, i1, out o3_18)
-	NZVC_20 = C_19 (alias)
-	return C_19
-l00015824_ds_t:
-	g0_24 = o3 - i1
-	NZVC_25 = cond(g0_24)
-	C_27 = fn00015848(o3, i0, i1, out o3_26)
-	NZVC_28 = C_27 (alias)
-	return C_27
-l0001582C_thunk_fn00015830:
-l0001582C_thunk_fn00015830:
-	C_22 = fn00015830(o3_18, i0, i1, out o3_21)
-	NZVC_23 = C_22 (alias)
-	return C_22
-l0001582C_thunk_fn00015830:
-l0001582C_thunk_fn00015848:
-l0001582C_thunk_fn00015848:
-fn00015824_exit:
-	g0_6 = PHI(g0_24, g0_13, g0_13, g0, g0)
-	Z_7 = PHI(Z_5, Z_15, Z_15, Z, Z)
-	o3_8 = PHI(o3_26, o3_18, o3_21, o3, o3)
-	C_9 = PHI(C_27, C_19, C_22, C, C)
-	NZVC_10 = PHI(NZVC_28, NZVC_20, NZVC_23, NZVC, NZVC)
-	use o3_8 (=> o3Out)
-}
-
-// 00015830: FlagGroup bool fn00015830(Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
-bool fn00015830(word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
-{
-fn00015830_entry:
-	def v3
-	def C
-	def o3
-	def Mem0
-	def i1
-	def i0
-	def o3Out
-	sp_1 = v3
-	branch C l00015830_ds_t
-	goto l00015838
-l00015830:
-l00015830_ds_t:
-	o0_19 = Mem0[i0 + 0x0028:word32]
-l00015834_thunk_fn000157E0:
-	C = fn000157E0(o0, o3, i0, i1, out o3)
-	NZVC = C (alias)
-	return C
-l00015838:
-	o0_5 = Mem0[o3 + 0x00:word32]
-	g0_7 = o0_5 - i1
-	NZVC_8 = cond(g0_7)
-	C_9 = NZVC_8 (alias)
-	branch g0_7 <u 0x00 l00015838_ds_t
-	goto l00015840_thunk_fn00015848
-l00015838_ds_t:
-	o0_18 = Mem0[i0 + 0x0028:word32]
-	goto l00015844_thunk_fn000157E0
-l00015840_thunk_fn00015848:
-	C_12 = fn00015848(o3, i0, i1, out o3_11)
-	NZVC_13 = C_12 (alias)
-	return C_12
-l00015844_thunk_fn000157E0:
-	C = fn000157E0(o0, o3, i0, i1, out o3)
-	NZVC = C (alias)
-	return C
-fn00015830_exit:
-	o3_14 = PHI(o3_11, o3, o3)
-	C_15 = PHI(C_12, C, C)
-	NZVC_16 = PHI(NZVC_13, NZVC, NZVC)
-	use o3_14 (=> o3Out)
-}
-
-// 00015848: FlagGroup bool fn00015848(Register word32 o3, Register word32 i0, Register word32 i1, Register out ptr32 o3Out)
-bool fn00015848(word32 o3, word32 i0, word32 i1, ptr32 & o3Out)
-{
-	bool C_30;
-	if (o3 != 0x00)
-	{
-		C_30 = cond(i1);
-		Mem31[i0 + 0x08:word32] = i1;
-		Mem32[i0 + 0x0C:word32] = i1;
-		word32 o0_33 = Mem32[o3 + 0x00:word32];
-		Mem34[i0 + 0x04:word32] = o3;
-		Mem35[i0 + 0x0010:word32] = o0_33;
-	}
-	else
-	{
-		C_30 = cond(i1);
-		if (i1 != 0x00)
-			abort();
-	}
-	word32 o3_17;
-	*o3Out = i3;
-	return C_30;
 }
 
 // 00015884: void _obstack_memory_used(Register word32 o0)

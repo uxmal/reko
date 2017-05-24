@@ -708,7 +708,8 @@ l07E0:
 fn07E6 proc
 	add	r0,r2
 
-l07E8:
+;; fn07E8: 07E8
+fn07E8 proc
 	clr	r0
 	br	07FE
 07EC                                     02 60 C0 15             .`..
@@ -1193,7 +1194,8 @@ fn0E92 proc
 	tst	0074(r3)
 	bne	0EDA
 
-l0EA2:
+;; fn0EA2: 0EA2
+fn0EA2 proc
 	mov	r4,0002(sp)
 	br	0EDA
 
@@ -2095,6 +2097,9 @@ fn171E proc
 	mov	r2,@0012(r0)
 	inc	@0012(r0)
 	dec	r2
+
+;; fn172C: 172C
+fn172C proc
 	mov	0014(r0),r3
 	clr	r1
 	mov	r5,-(sp)
