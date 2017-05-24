@@ -249,9 +249,9 @@ namespace Reko.ImageLoaders.MachO
 
                     switch (cmd & ~LC_REQ_DYLD)
                     {
-                    //case LC_SEGMENT:
-                    //    parseSegmentCommand<segment_command, section>();
-                    //    break;
+                    case LC_SEGMENT:
+                        parseSegmentCommand32(imageMap);
+                        break;
                     case LC_SEGMENT_64:
                         parseSegmentCommand64(imageMap);
                         break;
@@ -284,13 +284,40 @@ namespace Reko.ImageLoaders.MachO
                 return new String(chars, 0, i);
             }
 
+            void parseSegmentCommand32(SegmentMap imageMap)
+            {
+                var segname = ReadSegmentName();
+                uint vmaddr;
+                uint vmsize;
+                uint fileoff;
+                uint filesize;
+                uint maxprot;
+                uint initprot;
+                uint nsects;
+                uint flags;
+                if (!rdr.TryReadUInt32(out vmaddr) ||
+                    !rdr.TryReadUInt32(out vmsize) ||
+                    !rdr.TryReadUInt32(out fileoff) ||
+                    !rdr.TryReadUInt32(out filesize) ||
+                    !rdr.TryReadUInt32(out maxprot) ||
+                    !rdr.TryReadUInt32(out initprot) ||
+                    !rdr.TryReadUInt32(out nsects) ||
+                    !rdr.TryReadUInt32(out flags))
+                {
+                    throw new BadImageFormatException("Could not read segment command.");
+                }
+                Debug.Print("Found segment '{0}' with {1} sections.", segname, nsects);
+
+                for (uint i = 0; i < nsects; ++i)
+                {
+                    Debug.Print("Parsing section number {0}.", i);
+                    parseSection32(initprot, imageMap);
+                }
+            }
+
             void parseSegmentCommand64(SegmentMap imageMap)
             {
-                var abSegname = rdr.ReadBytes(16);
-                var cChars = Array.IndexOf<byte>(abSegname, 0);
-                if (cChars == -1)
-                    cChars = 16;
-                string segname = Encoding.ASCII.GetString(abSegname, 0, cChars);
+                string segname = ReadSegmentName();
                 ulong vmaddr;
                 ulong vmsize;
                 ulong fileoff;
@@ -317,6 +344,16 @@ namespace Reko.ImageLoaders.MachO
                     Debug.Print("Parsing section number {0}.", i);
                     parseSection64(initprot, imageMap);
                 }
+            }
+
+            private string ReadSegmentName()
+            {
+                var abSegname = rdr.ReadBytes(16);
+                var cChars = Array.IndexOf<byte>(abSegname, 0);
+                if (cChars == -1)
+                    cChars = 16;
+                string segname = Encoding.ASCII.GetString(abSegname, 0, cChars);
+                return segname;
             }
 
             void parseFunctionStarts(EndianImageReader rdr)
@@ -349,6 +386,80 @@ namespace Reko.ImageLoaders.MachO
             const uint VM_PROT_READ = 0x01;
             const uint VM_PROT_WRITE = 0x02;
             const uint VM_PROT_EXECUTE = 0x04;
+
+            void parseSection32(uint protection, SegmentMap segmentMap)
+            {
+                var abSectname = rdr.ReadBytes(16);
+                var abSegname = rdr.ReadBytes(16);
+
+                uint addr;
+                uint size;
+                uint offset;
+                uint align;
+                uint reloff;
+                uint nreloc;
+                uint flags;
+                uint reserved1;
+                uint reserved2;
+                uint reserved3;
+
+                if (!rdr.TryReadUInt32(out addr) ||
+                    !rdr.TryReadUInt32(out size) ||
+                    !rdr.TryReadUInt32(out offset) ||
+                    !rdr.TryReadUInt32(out align) ||
+                    !rdr.TryReadUInt32(out reloff) ||
+                    !rdr.TryReadUInt32(out nreloc) ||
+                    !rdr.TryReadUInt32(out flags) ||
+                    !rdr.TryReadUInt32(out reserved1) ||
+                    !rdr.TryReadUInt32(out reserved2))
+                {
+                    throw new BadImageFormatException("Could not read Mach-O section.");
+                }
+
+                var sectionName = GetAsciizString(abSectname);
+                var segmentName = GetAsciizString(abSegname);
+
+                Debug.Print("Found section '{0}' in segment '{1}, addr = 0x{2:X}, size = 0x{3:X}.",
+                        sectionName,
+                        segmentName,
+                        addr,
+                        size);
+
+                AccessMode am = 0;
+                if ((protection & VM_PROT_READ) != 0)
+                    am |= AccessMode.Read;
+                if ((protection & VM_PROT_WRITE) != 0)
+                    am |= AccessMode.Write;
+                if ((protection & VM_PROT_EXECUTE) != 0)
+                    am |= AccessMode.Execute;
+
+                var bytes = rdr.CreateNew(this.ldr.RawImage, offset);
+                var mem = new MemoryArea(
+                    Address.Ptr32(addr),
+                    bytes.ReadBytes((uint)size));
+                var imageSection = new ImageSegment(
+                    string.Format("{0},{1}", segmentName, sectionName),
+                    mem,
+                    am);
+
+                //imageSection.setBss((section.flags & SECTION_TYPE) == S_ZEROFILL);
+
+                //if (!imageSection.isBss()) {
+                //    auto pos = source_->pos();
+                //    if (!source_->seek(section.offset)) {
+                //        throw ParseError("Could not seek to the beginning of the section's content.");
+                //    }
+                //    auto bytes = source_->read(section.size);
+                //    if (checked_cast<uint>(bytes.size()) != section.size) {
+                //        log_.warning("Could not read all the section's content.");
+                //    } else {
+                //        imageSection->setContent(std::move(bytes));
+                //    }
+                //    source_->seek(pos);
+                //}
+
+                segmentMap.AddSegment(imageSection);
+            }
 
             void parseSection64(uint protection, SegmentMap segmentMap)
             {
