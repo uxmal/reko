@@ -1,0 +1,804 @@
+void fn00200089(word16 de, word32 xsp)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  de xsp
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00200089_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00200089_entry:
+// DataOut: de xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00200089:
+	fn0020060C()
+	Mem6[0x00006F86:word32] = Mem0[0x00006F86:word32] | 0x40
+	word32 xsp_3 = DPB(xsp, fp, 0)
+	word32 xiy_14 = 0x00006FB8
+	byte b_15 = 0x12
+// DataOut: b de xix xiy xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0020009B:
+	Mem21[xiy_14:word32] = Mem6[0x00200040:word32]
+	xiy_14 = xiy_14 + 0x00000004
+	b_15 = b_15 - 0x01
+	branch b_15 != 0x00 l0020009B
+// DataOut: b de xix xiy xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid>
+
+l002000A4:
+	Mem27[0x00008002:byte] = 0x00
+	Mem29[0x00008003:byte] = 0x00
+	Mem31[0x00008004:byte] = 0xA0
+	Mem33[0x00008005:byte] = 0x98
+	word32 xhl_38 = 0x0000A000
+	word16 bc_40 = 0x0200
+// DataOut: bc de wa xhl xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid>
+
+l002000C2:
+	Mem48[xhl_38:word16] = 0x0000
+	xhl_38 = xhl_38 + 0x00000002
+	bc_40 = bc_40 - 0x0001
+	branch bc_40 != 0x0000 l002000C2
+// DataOut: bc de wa xhl xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:0x0000 xhl:<invalid> bc:<invalid>
+
+l002000C8:
+	word16 bc_55 = 0x0250
+	word32 xde_59 = 0x0000A400
+	word32 xhl_62 = 0x0020061D
+// DataOut: bc de wa xde xhl xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:0x0000 xhl:<invalid> bc:<invalid>
+
+l002000D5:
+	Mem69[xde_59:word16] = Mem48[xhl_62:word16]
+	xhl_62 = xhl_62 + 0x00000002
+	xde_59 = xde_59 + 0x00000002
+	bc_55 = bc_55 - 0x0001
+	branch bc_55 != 0x0000 l002000D5
+// DataOut: bc de wa xde xhl xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:0x0000 xhl:<invalid> bc:<invalid> xde:<invalid>
+
+l002000D7:
+	word32 xbc_82 = fn002005B8()
+	__ei(0x00)
+	word16 bc_103 = 0x0010
+	word32 xbc_106 = DPB(xbc_82, 0x0010, 0)
+	word32 xde_100 = 0x00008300
+	word32 xhl_90 = 0x00200ABD
+// DataOut: bc de wa xbc xde xhl xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:0x0000 xhl:<invalid> bc:<invalid> xde:<invalid>
+
+l002000EA:
+	Mem97[xde_100:word16] = Mem69[xhl_90:word16]
+	bc_103 = bc_103 - 0x0001
+	xhl_90 = xhl_90 + 0x00000002
+	xde_100 = xde_100 + 0x00000002
+	xbc_106 = DPB(xbc_106, bc_103, 0) (alias)
+	branch bc_103 != 0x0000 l002000EA
+// DataOut: bc de wa xbc xde xhl xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:0x0000 xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid>
+
+l002000EC:
+	Mem111[0x000083E0:byte] = 0x33
+	Mem113[0x000083E1:byte] = 0x07
+	Mem115[0x00008118:byte] = 0x80
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:0x0000 xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid>
+
+l00200111:
+	word16 bc_124
+	word32 xde_125
+	word32 xsp_126
+	word16 wa_128 = (word16) fn00200557(0x0000, DPB(xbc_106, 0x00, 8), DPB(xde_100, 0x04, 8), 0x002000FD, xsp_3, out bc_124, out xde_125, out xsp_126)
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:0x0000 xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid>
+
+l00200136:
+	word16 bc_139
+	word32 xde_140
+	word32 xsp_141
+	word16 wa_143 = (word16) fn00200557(wa_128, DPB(xbc_106, 0x01, 8), DPB(xde_125, 0x04, 8), 0x00200122, xsp_126, out bc_139, out xde_140, out xsp_141)
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:0x00FD d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid>
+
+l00200154:
+	word16 bc_154
+	word32 xde_155
+	word32 xsp_156
+	word16 wa_158 = (word16) fn00200557(wa_143, DPB(xbc_106, 0x04, 8), DPB(xde_140, 0x04, 8), 0x00200147, xsp_141, out bc_154, out xde_155, out xsp_156)
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:0x0122 d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid>
+
+l0020016E:
+	word16 bc_169
+	word32 xde_170
+	word32 xsp_171
+	word16 wa_173 = (word16) fn00200557(wa_158, DPB(xbc_106, 0x05, 8), DPB(xde_155, 0x02, 8), 0x00200165, xsp_156, out bc_169, out xde_170, out xsp_171)
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:0x0147 d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid>
+
+l00200186:
+	word32 xbc_182 = DPB(xbc_106, 0x06, 8)
+	word16 bc_183
+	word32 xde_184
+	word32 xsp_185
+	word32 xwa_186 = fn00200557(wa_173, xbc_182, DPB(xde_170, 0x02, 8), 0x0020017F, xsp_171, out bc_183, out xde_184, out xsp_185)
+	word32 xde_190 = 0x00007000
+	word32 xhl_193 = 0x00200363
+	word16 bc_195 = 0x012F
+	word32 xbc_198 = DPB(xbc_182, 0x012F, 0)
+// DataOut: bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:0x0165 d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid>
+
+l002001A2:
+	Mem204[xde_190:byte] = Mem115[xhl_193:byte]
+	bc_195 = bc_195 - 0x0001
+	xhl_193 = xhl_193 + 0x00000001
+	xde_190 = xde_190 + 0x00000001
+	xbc_198 = DPB(xbc_198, bc_195, 0) (alias)
+	branch bc_195 != 0x0000 l002001A2
+// DataOut: bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid>
+
+l002001A4:
+	word32 xsp_219 = fn002004F2(DPB(xwa_186, 0x01, 8), xsp_185)
+	word32 xwa_221 = 0x00007000
+	branch false l002001B1
+// DataOut: bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid>
+
+l002001AF_1:
+	word16 sp_678
+	word32 xix_679
+	word32 xiy_680
+	byte b_681
+	word16 wa_683
+	word16 bc_685
+	bool H_687
+	bool V_688
+	bool N_689
+	byte d_690
+	byte c_691
+	byte w_692
+	word16 hl_693
+	byte a_694
+	byte SZHVC_695
+	bool Z_696
+	word16 de_697
+	call Mem204[0x00007000:word32] (retsize: 4; depth: 4)
+		uses: a_224,b_211,bc_210,c_212,d_208,de_209,H_214,hl_206,N_216,sp_220,SZHVC,V_215,w_223,wa_222,xbc_213,xde_207,xhl_205,xix_7,xiy_22,xsp_219,xwa_221,Z
+		defs: a_694,b_681,bc_685,c_691,d_690,de_697,H_687,hl_693,N_689,sp_678,SZHVC_695,V_688,w_692,wa_683,xbc_699,xde_686,xhl_684,xix_679,xiy_680,xsp_698,xwa_682,Z_696
+// DataOut: bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:0x00007000 wa:0x7000 xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:0x00 w:0x70
+
+l002001B1:
+	word32 xsp_279
+	word32 xde_278
+	word32 xbc_276
+	word16 wa_269
+	word32 xbc_246
+	word32 xde_247
+	word32 xhl_248
+	word32 xsp_249
+	word32 xwa_255 = DPB(fn00200532(DPB(xwa_221, 0x04, 8), xbc_198, xde_190, DPB(xhl_193, 0x0D06, 0), xsp_219, out xbc_246, out xde_247, out xhl_248, out xsp_249), 0x04, 8)
+	word32 xbc_256
+	word32 xde_257
+	word32 xhl_258
+	word32 xsp_259
+	word16 wa_261 = (word16) fn00200532(xwa_255, xbc_246, xde_247, DPB(xhl_248, 0x0D05, 0), xsp_249, out xbc_256, out xde_257, out xhl_258, out xsp_259)
+	branch Mem204[0x00004003:byte] != 0x04 l002001E6
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:0x00007000 wa:0x7000 xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:0x00 w:0x70
+
+l002001E6:
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:0x04 h:<invalid> de:<invalid>
+
+l002001EC:
+	xbc_276 = DPB(xbc_256, 0x04, 8) (alias)
+	word16 bc_668
+	wa_269 = (word16) fn00200557(wa_261, xbc_276, DPB(xde_257, 0x03, 8), 0x002001E8, xsp_259, out bc_668, out xde_278, out xsp_279) (alias)
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:0x04 h:<invalid> de:<invalid>
+
+l002001D0:
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:0x04 h:<invalid> de:<invalid>
+
+l002001D5:
+	xbc_276 = DPB(xbc_256, 0x04, 8) (alias)
+	word16 bc_653
+	wa_269 = (word16) fn00200557(wa_261, xbc_276, DPB(xde_257, 0x01, 8), 0x002001D2, xsp_259, out bc_653, out xde_278, out xsp_279) (alias)
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:0x04 h:<invalid> de:<invalid>
+
+l002001FB:
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid> h:0x01 de:<invalid>
+
+l00200206:
+	word16 bc_289
+	word32 xde_290
+	word32 xsp_291
+	word16 wa_293 = (word16) fn00200557(wa_269, DPB(xbc_276, 0x08, 8), DPB(xde_278, 0x04, 8), 0x002001FD, xsp_279, out bc_289, out xde_290, out xsp_291)
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid> h:0x01 de:<invalid>
+
+l00200220:
+	word16 bc_304
+	word32 xde_305
+	word32 xsp_306
+	word16 wa_308 = (word16) fn00200557(wa_293, DPB(xbc_276, 0x09, 8), DPB(xde_290, 0x02, 8), 0x00200217, xsp_291, out bc_304, out xde_305, out xsp_306)
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:0x01FD d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid> h:0x01 de:<invalid>
+
+l00200238:
+	word32 xbc_317 = DPB(xbc_276, 0x0A, 8)
+	word16 bc_318
+	word32 xde_319
+	word32 xsp_320
+	word32 xwa_321 = fn00200557(wa_308, xbc_317, DPB(xde_305, 0x02, 8), 0x00200231, xsp_306, out bc_318, out xde_319, out xsp_320)
+	word32 xde_325 = 0x00007000
+	word32 xhl_328 = 0x00200492
+	word16 bc_330 = 0x0023
+	word32 xbc_333 = DPB(xbc_317, 0x0023, 0)
+// DataOut: bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:0x0217 d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid> h:0x02 de:<invalid>
+
+l00200254:
+	Mem339[xde_325:byte] = Mem204[xhl_328:byte]
+	bc_330 = bc_330 - 0x0001
+	xhl_328 = xhl_328 + 0x00000001
+	xde_325 = xde_325 + 0x00000001
+	xbc_333 = DPB(xbc_333, bc_330, 0) (alias)
+	branch bc_330 != 0x0000 l00200254
+// DataOut: bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid> h:<invalid> de:<invalid>
+
+l00200256:
+	word32 xsp_354 = fn002004F2(DPB(xwa_321, 0x01, 8), xsp_320)
+	word32 xwa_356 = 0x00007000
+	branch false l00200263
+// DataOut: bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid> h:<invalid> de:<invalid>
+
+l00200261_1:
+	word16 sp_623
+	word32 xix_624
+	word32 xiy_625
+	byte b_626
+	word16 wa_628
+	word16 bc_630
+	bool H_632
+	bool V_633
+	bool N_634
+	byte d_635
+	byte c_636
+	byte w_637
+	word16 hl_638
+	byte a_639
+	byte SZHVC_640
+	bool Z_641
+	word16 de_642
+	call Mem339[0x00007000:word32] (retsize: 4; depth: 4)
+		uses: a_359,b_346,bc_345,c_347,d_343,de_344,H_349,hl_341,N_351,sp_355,SZHVC_266,V_350,w_358,wa_357,xbc_348,xde_342,xhl_340,xix_229,xiy_228,xsp_354,xwa_356,Z_267
+		defs: a_639,b_626,bc_630,c_636,d_635,de_642,H_632,hl_638,N_634,sp_623,SZHVC_640,V_633,w_637,wa_628,xbc_644,xde_631,xhl_629,xix_624,xiy_625,xsp_643,xwa_627,Z_641
+// DataOut: bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:0x00007000 wa:0x7000 xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:0x00 w:0x70 h:<invalid> de:<invalid>
+
+l00200263:
+	word32 xsp_414
+	word32 xde_413
+	word32 xbc_411
+	word16 wa_404
+	word32 xbc_381
+	word32 xde_382
+	word32 xhl_383
+	word32 xsp_384
+	word32 xwa_390 = DPB(fn00200532(DPB(xwa_356, 0x04, 8), xbc_333, xde_325, DPB(xhl_328, 0x0D0A, 0), xsp_354, out xbc_381, out xde_382, out xhl_383, out xsp_384), 0x04, 8)
+	word32 xbc_391
+	word32 xde_392
+	word32 xhl_393
+	word32 xsp_394
+	word16 wa_396 = (word16) fn00200532(xwa_390, xbc_381, xde_382, DPB(xhl_383, 0x0D09, 0), xsp_384, out xbc_391, out xde_392, out xhl_393, out xsp_394)
+	branch Mem339[0x00004003:byte] != 0x01 l00200298
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:0x00007000 wa:0x7000 xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:0x00 w:0x70 h:<invalid> de:<invalid>
+
+l00200298:
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:0x04 h:<invalid> de:<invalid>
+
+l0020029E:
+	xbc_411 = DPB(xbc_391, 0x08, 8) (alias)
+	word16 bc_615
+	wa_404 = (word16) fn00200557(wa_396, xbc_411, DPB(xde_392, 0x03, 8), 0x0020029A, xsp_394, out bc_615, out xde_413, out xsp_414) (alias)
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:0x04 h:<invalid> de:<invalid>
+
+l00200282:
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:0x04 h:<invalid> de:<invalid>
+
+l00200287:
+	xbc_411 = DPB(xbc_391, 0x08, 8) (alias)
+	word16 bc_600
+	wa_404 = (word16) fn00200557(wa_396, xbc_411, DPB(xde_392, 0x01, 8), 0x00200284, xsp_394, out bc_600, out xde_413, out xsp_414) (alias)
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:0x04 h:<invalid> de:<invalid>
+
+l002002AD:
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid> h:0x02 de:<invalid>
+
+l002002BA:
+	word16 bc_424
+	word32 xde_425
+	word32 xsp_426
+	word16 wa_428 = (word16) fn00200557(wa_404, DPB(xbc_411, 0x0C, 8), DPB(xde_413, 0x04, 8), 0x002002AF, xsp_414, out bc_424, out xde_425, out xsp_426)
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid> h:0x02 de:<invalid>
+
+l002002D4:
+	word16 bc_439
+	word32 xde_440
+	word32 xsp_441
+	word16 wa_443 = (word16) fn00200557(wa_428, DPB(xbc_411, 0x0D, 8), DPB(xde_425, 0x02, 8), 0x002002CB, xsp_426, out bc_439, out xde_440, out xsp_441)
+// DataOut: bc de wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:0x02AF d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid> h:0x02 de:<invalid>
+
+l002002EC:
+	word32 xbc_452 = DPB(xbc_411, 0x0E, 8)
+	word16 bc_453
+	word32 xde_454
+	word32 xsp_455
+	word32 xwa_456 = fn00200557(wa_443, xbc_452, DPB(xde_440, 0x02, 8), 0x002002E5, xsp_441, out bc_453, out xde_454, out xsp_455)
+	word32 xde_460 = 0x00007000
+	word32 xhl_463 = 0x002004B5
+	word16 bc_465 = 0x002B
+	word32 xbc_468 = DPB(xbc_452, 0x002B, 0)
+// DataOut: bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:0x02CB d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid> h:0x02 de:<invalid>
+
+l00200308:
+	Mem474[xde_460:byte] = Mem339[xhl_463:byte]
+	bc_465 = bc_465 - 0x0001
+	xhl_463 = xhl_463 + 0x00000001
+	xde_460 = xde_460 + 0x00000001
+	xbc_468 = DPB(xbc_468, bc_465, 0) (alias)
+	branch bc_465 != 0x0000 l00200308
+// DataOut: bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid> h:<invalid> de:<invalid>
+
+l0020030A:
+	word32 xsp_489 = fn002004F2(DPB(xwa_456, 0x01, 8), xsp_455)
+	word32 xwa_491 = 0x00007000
+	branch false l00200317
+// DataOut: bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid> h:<invalid> de:<invalid>
+
+l00200315_1:
+	word16 sp_570
+	word32 xix_571
+	word32 xiy_572
+	byte b_573
+	word16 wa_575
+	word16 bc_577
+	bool H_579
+	bool V_580
+	bool N_581
+	byte d_582
+	byte c_583
+	byte w_584
+	word16 hl_585
+	byte a_586
+	byte SZHVC_587
+	bool Z_588
+	word16 de_589
+	call Mem474[0x00007000:word32] (retsize: 4; depth: 4)
+		uses: a_494,b_481,bc_480,c_482,d_478,de_479,H_484,hl_476,N_486,sp_490,SZHVC_401,V_485,w_493,wa_492,xbc_483,xde_477,xhl_475,xix_364,xiy_363,xsp_489,xwa_491,Z_402
+		defs: a_586,b_573,bc_577,c_583,d_582,de_589,H_579,hl_585,N_581,sp_570,SZHVC_587,V_580,w_584,wa_575,xbc_591,xde_578,xhl_576,xix_571,xiy_572,xsp_590,xwa_574,Z_588
+// DataOut: bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:0x00007000 wa:0x7000 xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:0x00 w:0x70 h:<invalid> de:<invalid>
+
+l00200317:
+	word32 xbc_516
+	word32 xde_517
+	word32 xhl_518
+	word32 xsp_519
+	word32 xwa_525 = DPB(fn00200532(DPB(xwa_491, 0x04, 8), xbc_468, xde_460, DPB(xhl_463, 0x0D0E, 0), xsp_489, out xbc_516, out xde_517, out xhl_518, out xsp_519), 0x04, 8)
+	word32 xbc_526
+	word32 xde_527
+	word32 xhl_528
+	word32 xsp_529
+	word16 wa_531 = (word16) fn00200532(xwa_525, xbc_516, xde_517, DPB(xhl_518, 0x0D0D, 0), xsp_519, out xbc_526, out xde_527, out xhl_528, out xsp_529)
+	branch Mem474[0x00004003:byte] != 0x00 l0020034C
+// DataOut: bc wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:0x00007000 wa:0x7000 xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:0x00 w:0x70 h:<invalid> de:<invalid>
+
+l0020034C:
+// DataOut: bc wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:0x04 h:<invalid> de:<invalid>
+
+l00200352:
+	word16 bc_565
+	word32 xde_566
+	word32 xsp_567
+	fn00200557(wa_531, DPB(xbc_526, 0x0C, 8), DPB(xde_527, 0x03, 8), 0x0020034E, xsp_529, out bc_565, out xde_566, out xsp_567)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:0x04 h:<invalid> de:<invalid>
+
+l00200336:
+// DataOut: bc wa xbc xde xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:0x04 h:<invalid> de:<invalid>
+
+l0020033B:
+	word16 bc_554
+	word32 xde_555
+	word32 xsp_556
+	fn00200557(wa_531, DPB(xbc_526, 0x0C, 8), DPB(xde_527, 0x01, 8), 0x00200338, xsp_529, out bc_554, out xde_555, out xsp_556)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:0x04 h:<invalid> de:<invalid>
+
+l00200361:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xix:00200040 xiy:<invalid> b:<invalid> xwa:<invalid> wa:<invalid> xhl:<invalid> bc:<invalid> xde:<invalid> xbc:<invalid> hl:<invalid> d:<invalid> c:<invalid> xsp:<invalid> a:<invalid> w:<invalid> h:0x03 de:<invalid>
+
+
+
+word32 fn002004F2(word32 xwa, word32 xsp)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  w xsp xwa
+// LiveOut: xsp
+// Trashed: SZHVNC a sp xsp xwa
+// Preserved:
+fn002004F2_entry:
+// DataOut: bc de w wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l002004F2:
+	word32 xsp_3 = DPB(xsp, fp, 0)
+	Mem7[xsp_3 - 0x00000004:word32] = xwa
+	Mem9[0x00004004:byte] = 0x00
+// DataOut: bc de w wa xbc xde xhl xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l002004F8:
+	branch Mem9[0x00004004:byte] != w l002004F8
+// DataOut: bc de w wa xbc xde xhl xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xsp:xsp - 0x00000004 a:<invalid>
+
+l00200508:
+	return xsp_3
+// DataOut: bc de wa xbc xde xhl xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xsp:xsp - 0x00000004 a:<invalid>
+
+fn002004F2_exit:
+// DataOut: xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xsp:xsp - 0x00000004 a:<invalid> xwa:<invalid>
+
+
+
+word32 fn0020050A(byte w, byte a, word32 xbc, word32 xde, word32 xhl, word32 xsp, ptr32 & xdeOut, ptr32 & xhlOut, ptr32 & xspOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a bc de hl w xbc xde xhl xsp
+// LiveOut: bc c de h hl xbc xde xhl xsp
+// Trashed: SZHVNC b bc c de h hl sp xbc xde xhl xsp
+// Preserved:
+fn0020050A_entry:
+// DataOut: a bc de h hl w wa xbc xde xhl xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0020050A:
+	word32 xsp_3 = DPB(xsp, fp, 0)
+	Mem6[xsp_3 - 0x00000004:word32] = xhl
+	Mem9[xsp_3 - 0x00000008:word32] = xde
+	Mem12[xsp_3 - 0x0000000C:word32] = xbc
+	word32 xde_27 = DPB(0x00009800, DPB(bc, 0x00, 8) *u 0x0002 + 0x9800 + DPB(hl, 0x00, 8) *u 0x0040, 0)
+	Mem30[xde_27:byte] = a
+	Mem36[xde_27 + 0x00000001:byte] = w
+	word32 xde_42
+	*xdeOut = Mem36[xsp_3 - 0x00000008:word32]
+	word32 xhl_45
+	*xhlOut = Mem36[xsp_3 - 0x00000004:word32]
+	word32 xsp_48
+	*xspOut = xsp_3
+	return Mem36[xsp_3 - 0x0000000C:word32]
+// DataOut: bc c de h hl w wa xbc xde xhl xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0020050A_exit:
+// DataOut: bc c de h hl xbc xde xhl xsp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xsp:xsp - 0x000000C4 xde:<invalid> c:<invalid> b:<invalid> bc:<invalid> de:<invalid> h:<invalid> hl:<invalid> xbc:<invalid> xhl:<invalid>
+
+
+
+word32 fn00200532(word32 xwa, word32 xbc, word32 xde, word32 xhl, word32 xsp, ptr32 & xbcOut, ptr32 & xdeOut, ptr32 & xhlOut, ptr32 & xspOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a bc de hl w xbc xde xhl xsp xwa
+// LiveOut: bc de xbc xde xhl xsp xwa
+// Trashed: SZHVNC a b bc c de h hl sp xbc xde xhl xsp xwa
+// Preserved:
+fn00200532_entry:
+// DataOut: a bc de hl w wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00200532:
+	word32 xsp_3 = DPB(xsp, fp, 0)
+	Mem6[xsp_3 - 0x00000004:word32] = xhl
+	Mem9[xsp_3 - 0x00000008:word32] = xbc
+	Mem12[xsp_3 - 0x0000000C:word32] = xwa
+	word32 xde_23
+	word32 xhl_24
+	word32 xsp_25
+	word32 xbc_26 = fn0020050A(w, ((a & 0xF0) >>u 0x04) + 0x40, DPB(xbc, a, 0), xde, xhl, xsp_3 - 0x0000000C, out xde_23, out xhl_24, out xsp_25)
+	word32 xde_36
+	word32 xhl_37
+	word32 xsp_38
+	fn0020050A(w, ((byte) xbc_26 & 0x0F) + 0x40, xbc_26, xde_23, DPB(xhl_24, h + 0x01, 8), xsp_25, out xde_36, out xhl_37, out xsp_38)
+	word32 xbc_44
+	*xbcOut = Mem12[xsp_38 + 0x00000004:word32]
+	word32 xhl_47
+	*xhlOut = Mem12[xsp_38 + 0x00000008:word32]
+	word32 xsp_49
+	*xspOut = xsp_38 + 0x0000000C
+	return Mem12[xsp_38:word32]
+// DataOut: bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn00200532_exit:
+// DataOut: bc de xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xsp:<invalid> c:<invalid> a:<invalid> h:<invalid> xwa:<invalid> xbc:<invalid> xhl:<invalid> xde:<invalid> b:<invalid> bc:<invalid> de:<invalid> hl:<invalid>
+
+
+
+word32 fn00200557(word16 wa, word32 xbc, word32 xde, word32 xhl, word32 xsp, ptr32 & bcOut, ptr32 & xdeOut, ptr32 & xspOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  bc c d wa xbc xde xhl xsp
+// LiveOut: bc wa xde xsp xwa
+// Trashed: SZHVNC a b bc c d sp w wa xde xhl xsp xwa
+// Preserved:
+fn00200557_entry:
+// DataOut: bc c d de wa xbc xde xhl xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00200557:
+	word32 xsp_3 = DPB(xsp, fp, 0)
+	Mem6[xsp_3 - 0x00000004:word32] = xhl
+	Mem10[xsp_3 - 0x00000008:word32] = xde
+	Mem14[0x00004002:byte] = d << 0x01
+	word16 bc_29 = DPB(bc, 0x00, 8)
+	word32 xwa_112 = (word32) (c * 0x02)
+	word16 wa_23 = DPB(wa, c * 0x02, 0)
+	word32 xde_104 = xwa_112 + 0x00009800 + DPB(xbc, bc_29 *u 0x0040, 0)
+	byte b_108 = 0x13
+	word16 bc_109
+	*bcOut = DPB(bc_29 *u 0x0040, 0x13, 8)
+// DataOut: b bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00200579:
+	byte v18_52 = Mem14[xhl:byte]
+	xwa_112 = DPB(xwa_112, v18_52, 0) (alias)
+	word16 wa_113 = DPB(wa_23, v18_52, 0)
+	branch v18_52 == 0x00 l0020059E
+// DataOut: a b bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xsp:xsp - 0x0000000C d:<invalid> xde:<invalid> xwa:<invalid> a:<invalid> c:<invalid> b:<invalid> bc:<invalid> xhl:<invalid> w:<invalid> wa:<invalid>
+
+l0020057F:
+	xhl = xhl + 0x00000001
+	branch v18_52 <u 0x5B l00200589
+// DataOut: a b bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xsp:xsp - 0x0000000C d:<invalid> xde:<invalid> xwa:<invalid> a:<invalid> c:<invalid> b:<invalid> bc:<invalid> xhl:<invalid> w:<invalid> wa:<invalid>
+
+l00200586:
+	xwa_112 = DPB(xwa_112, v18_52 + 0xE0, 0) (alias)
+	wa_113 = DPB(wa_23, v18_52 + 0xE0, 0) (alias)
+// DataOut: a b bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xsp:xsp - 0x0000000C d:<invalid> xde:<invalid> xwa:<invalid> a:<invalid> c:<invalid> b:<invalid> bc:<invalid> xhl:<invalid> w:<invalid> wa:<invalid>
+
+l00200589:
+	word16 wa_90 = DPB(wa_113, 0x00, 8)
+	byte w_95 = SLICE(wa_90 + 0x0009, byte, 8) + Mem14[0x00004002:byte]
+	Mem100[xde_104:byte] = (byte) (wa_90 + 0x0009)
+	word32 xde_101 = xde_104 + 0x00000001
+	Mem103[xde_101:byte] = w_95
+	b_108 = b_108 - 0x01
+	xwa_112 = DPB(xwa_112, w_95, 8) (alias)
+	wa_23 = DPB(wa_90 + 0x0009, w_95, 8) (alias)
+	xde_104 = xde_101 + 0x00000001
+	*bcOut = DPB(bc_109, b_108, 8)
+	branch b_108 != 0x00 l00200579
+// DataOut: b bc de wa xbc xde xhl xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xsp:xsp - 0x0000000C d:<invalid> xde:<invalid> xwa:<invalid> a:<invalid> c:<invalid> b:<invalid> bc:<invalid> xhl:<invalid> w:<invalid> wa:<invalid>
+
+l0020059E:
+	return xwa_112
+	word32 xde_74
+	*xdeOut = Mem14[xsp_3:word32]
+	word32 xsp_78
+	*xspOut = xsp_3 + 0x00000008
+	return xwa_112
+// DataOut: bc de wa xbc xde xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xsp:xsp - 0x0000000C d:<invalid> xde:<invalid> xwa:<invalid> a:<invalid> c:<invalid> b:<invalid> bc:<invalid> xhl:<invalid> w:<invalid> wa:<invalid>
+
+fn00200557_exit:
+// DataOut: bc wa xde xsp xwa
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> xsp:xsp - 0x00000084 d:<invalid> xde:<invalid> xwa:<invalid> a:<invalid> c:<invalid> b:<invalid> bc:<invalid> xhl:<invalid> w:<invalid> wa:<invalid>
+
+
+
+word32 fn002005B8()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: xbc
+// Trashed: SZHVNC hl xbc
+// Preserved: sp
+fn002005B8_entry:
+// DataOut: de wa xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l002005B8:
+	word32 xbc_2 = 0x00009000
+	word16 hl_3 = 0x04C0
+// DataOut: de hl wa xbc xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l002005C0:
+	Mem7[xbc_2:byte] = 0x00
+	xbc_2 = xbc_2 + 0x00000001
+	hl_3 = hl_3 - 0x0001
+	branch hl_3 != 0x0000 l002005C0
+// DataOut: de hl wa xbc xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp xbc:<invalid> hl:<invalid>
+
+l002005CF:
+	word32 xbc_13 = 0x00009800
+	word16 hl_14 = 0x04C0
+// DataOut: de hl wa xbc xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp xbc:<invalid> hl:<invalid>
+
+l002005D7:
+	Mem18[xbc_13:byte] = 0x00
+	xbc_13 = xbc_13 + 0x00000001
+	hl_14 = hl_14 - 0x0001
+	branch hl_14 != 0x0000 l002005D7
+// DataOut: de hl wa xbc xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp xbc:<invalid> hl:<invalid>
+
+l002005E6:
+	return xbc_13
+// DataOut: de wa xbc xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp xbc:<invalid> hl:<invalid>
+
+fn002005B8_exit:
+// DataOut: xbc
+// DataOut (flags): 
+// SymbolicIn: sp:fp xbc:<invalid> hl:<invalid>
+
+
+
+void fn0020060C()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZHVNC
+// Preserved: sp
+fn0020060C_entry:
+// DataOut: de xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0020060C:
+	branch Mem0[0x00006F91:byte] != 0x00 l0020061C
+// DataOut: de xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00200613:
+	Mem8[0x00006F83:word32] = Mem0[0x00006F83:word32] & ~0x08
+	Mem10[0x00006DA0:byte] = 0x00
+// DataOut: de xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0020061C:
+	return
+// DataOut: de xsp
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0020060C_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+
+

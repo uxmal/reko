@@ -1,0 +1,303 @@
+Technical data found while creating a neogeo pocket color emulator
+
+Hardware:
+	Main CPU - TLCS-900H (based on the TMP95CS64F package)
+	Sound CPU - Z80
+	Graphics - ????
+	RAM - unsure, guessing that there's only 12 KB of RAM
+
+
+Memory map:
+
+000000 - 0008A0  Cpu internal RAM
+004000 - 006FFF  Cpu external RAM
+007000 - 007FFF  Sound Area
+008000 - 00????  Graphics Area
+200000 - 2FFFFF  ROM Area
+FF0000 - FFFFFF  Cpu internal ROM (BIOS)
+
+
+
+
+Cpu internal RAM
+
+This seems the hold the standard 160 bytes of special purpose registers that
+most 900H packages seem to have. But there also seem to be a few extra addresses
+added to control the sound CPU (the Z80): 0x00B8 (word), 0x00BA (byte), 0x00BC
+(byte). Writing AAAA to address 0x00B8 seems to be used to disable the Z80, and
+writing 5555 to 0x00B8 turns it back on (complete reset of the Z80). When 0xFF is
+writen to 0x00BC and 0x00 is returned in 0x00BC the sound system should be operating
+correctly.
+
+
+
+
+Cpu external RAM
+
+This is the main ram of the system the area 004000 - 006BFF is available for use by
+the user (the roms). 006C00 - 006FFF is reserved for use by the system.
+6F82: controller status byte ?
+	bit 4: button A
+6F85:	bit 7	(kofr2)
+	bit 6	(kofr2)
+6F86:	bit 6	(kofr2)
+6F87: ?
+6F91: bit 4: 0 = neogeo pocket
+             1 = neogeo pocket color
+Starting at address 006FB8 we find a table with pointers to interrupt handlers or 00000000's.
+It seems like, in case of an interrupt, first some BIOS is being executed and when there
+is a rom interrupt handler, then that handler is called. The interrupts are:
+006FB8 - interrupt 00 - unknown
+006FBC - interrupt 01 - unknown
+006FC0 - interrupt 02 - unknown
+006FC4 - interrupt 03 - unknown
+006FC8 - interrupt 04 - unknown
+006FCC - interrupt 05 - main interrupt for the system, cause and frequency unknown
+006FD0 - interrupt 06 - unknown
+006FD4 - interrupt 07 - timer 0 interrupt
+006FD8 - interrupt 08 - unknown
+006FDC - interrupt 09 - unknown
+006FE0 - interrupt 0A - unknown
+006FE4 - interrupt 0B - Serial channel 1 receive interrupt
+006FE8 - interrupt 0C - Serial channel 1 send interrupt
+006FEC - interrupt 0D - unknown
+006FF0 - interrupt 0E - unknown
+006FF4 - interrupt 0F - unknown
+006FF8 - interrupt 10 - unknown
+006FFC - interrupt 11 - unknown
+
+
+
+
+Sound Area
+
+This just 4 KB of RAM to which both the TLCS-900H and the Z80 have access. While booting the
+TLCS-900H writes Z80 code into this area and then restarts the Z80. Address 0x007000 in the
+TLCS-900H memory map corresponds to address 0x0000 in the Z80 memory map. The sound chip itself
+is connected via addresses 0x4000 and 0x4001 to the Z80. The Z80 program is mainly driven by NMI
+interrupts, at ech interrupt the Z80 writes an increasing number to output port 0xFF.
+
+
+
+Graphics Area
+
+Don't have much facts about the graphics area yet, just some sub areas. Need some more work to make
+out how data is stored and what is what.
+
+008000			- registers?
+008000			-
+008002			- window upper left x
+008003			- window upper left y
+008004			- window size x
+008005			- window size y
+008009			- Mslug1st checks the value of this register against 7E and 80 (counter?)
+008012			-
+008020			-
+008021			-
+008030			-
+008032			-
+008033			-
+008034			-
+008035			-
+008100 - 008117	- palette configuration data for neogeo pocket (b/w)
+008118			- palette configuration register?
+008200 - 00827F	- sprite palette table
+008280 - 0082FF	- front plane palette table
+008300 - 00837F	- back plane palette table
+0083E0			- background color (?)
+0083FE			- ???
+008800 - 0088FF	- Sprites? (4 bytes for each sprite, init: 0000 F0F0 ?), word-byte-byte?)
+			- pattern number indicator, x, y
+008C00 - 008FFF	- Sprites palette numbers
+009000 - 0097FF	- Virtual 256x256 screen (front frame)
+009800 - 0098FF	- Virtual 256x256 screen (back frame)
+00A000 - 00BFFF (?)	- Pattern table
+
+
+ROM Area
+
+Not much to say..just a plain ROM Area. Only thing that seems odd is address 20001F. That address
+gets checked and used several times in the code. Meaning of it unknown as of yet.
+200000 - 20001B	- License information
+20001C - 20001E	- Initial program counter
+20001F			- Weird address
+200020 - 200021	- Game number
+			- Known game numbers:
+				0020	- Puzzle Bobble Mini
+				0021	- Metal Slug 1st Mission
+				0023	- King of Fighters R2
+				0027	- Master of Shyougi
+				0030	- Samurai Shodown 2 (Japan?)
+				0038	- Crush Roller
+				0039	- Neo Cup 98
+				0053	- Biomotor Unitron
+200022			- one unknown byte
+200023			- 10 - neogeo pocket color rom
+200024 - 20002F	- Game name
+200030 - 20003F	- 00's
+200040			- Start of real ROM data
+
+
+CPU Internal ROM
+
+This 64KB memory region holds the neogeo pocket color BIOS. And thus will be very hard
+to get dumped. At address 0xFFFE00 we find the interrupt vector table. There seems to be
+a special kind of table to call general purpose BIOS functions at 0xFFFE00. Another way
+BIOS calls seem to be performed is through a software interrupt (SWI 1). In the latter
+case the parameters are loaded into register bank #3.
+
+Bios calls in the jump table at FFFE00:
+FFFE00 (00)	parameters:
+		output:
+FFFE04 (01)	parameters:	RB3, RC3
+		output:	None
+		RB3 = 00,  RC3 == 00  (Samsho2j)
+FFFE08 (02)	parameters:	XHL3
+		output:	None
+		XHL3 = 00006486  (samsho2j)
+FFFE0C (03)	parameters:
+		output:
+FFFE10 (04)	parameters:
+		output:
+FFFE14 (05)	parameters:	RA3
+		output:	None
+		RA3 = 03  (samsho2j)
+FFFE18 (06)	parameters:
+		output:
+FFFE1C (07)	parameters:
+		output:
+FFFE20 (08)	parameters:
+		output:
+FFFE24 (09)	parameters:
+		output:
+FFFE28 (0A)	parameters:
+		output:
+FFFE2C (0B)	parameters:
+		output:
+FFFE30 (0C)	parameters:
+		output:
+FFFE34 (0D)	parameters:
+		output:
+FFFE38 (0E)	parameters:
+		output:
+FFFE3C (0F)	parameters:
+		output:
+FFFE40 (10)	parameters:	None
+		output:	None
+		(samsho2j)
+		link cable communication setup?
+FFFE44 (11)	parameters:	None
+		output:	None
+		called after sending one or more through the link cable; end sequence kinda command
+		maybe something like a flush command to flush the bios internal sends buffer
+FFFE48 (12)	parameters:	None
+		output:	None
+		(samsho2j)
+		link cable communication setup?
+FFFE4C (13)	parameters:	RB3
+		output:	None
+		RB3 = variable  (samsho2j)
+		sends a byte (RB3) through the link cable to another device/ngpc
+FFFE50 (14)	parameters:
+		output:
+FFFE54 (15)	parameters:	None
+		output:	None
+		(samsho2j)
+		link cable communication setup?
+FFFE58 (16)	parameters:	None
+		output:	None
+		setup code?
+FFFE5C (17)	parameters:	None
+		output:	RWA3
+		returns in RWA3 the number of bytes waiting in the send queue
+		fakebios has to ensure that always 0000 is returned
+FFFE60 (18)	parameters:	None
+		output:	RWA3
+		returns in RWA3 the number of bytes waiting in the receive queue
+		fakebios has to ensure that always 0000 is returned
+FFFE64 (19)	parameters:
+		output:
+FFFE68 (1A)	parameters:
+		output:
+FFFE6C (1B)	parameters:
+		output:
+FFFE70 (1C)	parameters:
+		output:
+FFFE74 (1D)	parameters:
+		output:
+FFFE78 (1E)	parameters:
+		output:
+FFFE7C (1F)	parameters:
+		output:
+FFFE80 (20)	parameters:
+		output:
+FFFE84 (21)	parameters:
+		output:
+FFFE88 (22)	parameters:
+		output:
+FFFE8C (23)	parameters:
+		output:
+FFFE90 (24)	parameters:
+		output:
+FFFE94 (25)	parameters:
+		output:
+FFFE98 (26)	parameters:
+		output:
+FFFE9C (27)	parameters:
+		output:
+FFFEA0 (28)	parameters:
+		output:
+FFFEA4 (29)	parameters:
+		output:
+FFFEA8 (2A)	parameters:
+		output:
+FFFEAC (2B)	parameters:
+		output:
+FFFEB0 (2C)	parameters:
+		output:
+FFFEB4 (2D)	parameters:
+		output:
+FFFEB8 (2E)	parameters:
+		output:
+FFFEBC (2F)	parameters:
+		output:
+FFFEC0 (30)	parameters:
+		output:
+FFFEC4 (31)	parameters:
+		output:
+FFFEC8 (32)	parameters:
+		output:
+FFFECC (33)	parameters:
+		output:
+FFFED0 (34)	parameters:
+		output:
+FFFED4 (35)	parameters:
+		output:
+FFFED8 (36)	parameters:
+		output:
+FFFEDC (37)	parameters:
+		output:
+FFFEE0 (38)	parameters:
+		output:
+FFFEE4 (39)	parameters:
+		output:
+FFFEE8 (3A)	parameters:
+		output:
+FFFEEC (3B)	parameters:
+		output:
+FFFEF0 (3C)	parameters:
+		output:
+FFFEF4 (3D)	parameters:
+		output:
+FFFEF8 (3E)	parameters:
+		output:
+FFFEFC	 (3F)	parameters:
+		output:
+
+
+Bios calls made through SWI 1:
+RW3 = 01, RB3 = 00, RC3 = 00  (mslug1st)
+RW3 = 04, RB3 = 03, RC3 = 02  (mslug1st)
+
+
+

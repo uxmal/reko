@@ -2416,4 +2416,6 @@ fn0800_9F92: error: An error occurred while rewriting procedure to high-level la
 === int16.dll
 === flags
 === flags3
+=== --arch
+=== NGP_IQ.NGP
 === unzip.dcproject
