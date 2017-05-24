@@ -92,6 +92,10 @@
     <Compile Include="Arch\RiscV\RiscVRewriterTests.cs" />
     <Compile Include="Arch\SuperH\SuperHDisassemblerTests.cs" />
     <Compile Include="Arch\SuperH\SuperHRewriterTests.cs" />
+    <Compile Include="Arch\Tlcs\Tlcs900DisassemblerTests.cs" />
+    <Compile Include="Arch\Tlcs\Tlcs900RewriterTests.cs" />
+    <Compile Include="Arch\Tlcs\Tlcs90DisassemblerTests.cs" />
+    <Compile Include="Arch\Tlcs\Tlcs90RewriterTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaDisassemblerTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaRewriterTests.cs" />
     <Compile Include="Core\Analysis\PyArgFormatParserTests.cs" />
@@ -639,6 +643,10 @@
     <ProjectReference Include="..\Arch\SuperH\SuperH.csproj">
       <Project>{fc3aa408-b2b1-4b40-b29d-9ebb46aa8b33}</Project>
       <Name>SuperH</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Tlcs\Tlcs.csproj">
+      <Project>{B15C2937-0FB8-4F3B-8B84-BEE861DC841B}</Project>
+      <Name>Tlcs</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Vax\Vax.csproj">
       <Project>{82777964-b370-431a-ac97-733c594c02b5}</Project>

@@ -296,6 +296,14 @@ namespace Reko.Core
             return u;
         }
 
+        public bool TryReadLeInt16(out short i16)
+        {
+            if (!MemoryArea.TryReadLeInt16(this.bytes, (uint)off, out i16))
+                return false;
+            off += 2;
+            return true;
+        }
+
         public bool TryReadLeInt32(out int i32)
         {
             if (!MemoryArea.TryReadLeInt32(this.bytes, (uint)off, out i32))

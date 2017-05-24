@@ -4659,6 +4659,8 @@ fn1483_0D3F: error: An error occurred while rewriting procedure to high-level la
 === int16.dll
 === flags
 === flags3
+=== --arch
+=== NGP_IQ.NGP
 === unzip.dcproject
 *** unzip.dcproject
 000012B8: error: Instruction acbd	#8.0,r5,(sp),00007C18 too complex to rewrite.
