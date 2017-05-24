@@ -202,7 +202,6 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         public void Probe(ScanResults sr)
         {
-
         }
 
         /// <summary>
@@ -409,7 +408,7 @@ namespace Reko.Scanning
         {
             var icfg = new DiGraph<RtlBlock>();
             var map = new Dictionary<Address, RtlBlock>();
-            var rtlBlocks =
+            var rtlBlocks = 
                 from b in blocks.Values
                 join i in sr.FlatInstructions.Values on b.id equals i.block_id into instrs
                 orderby b.id

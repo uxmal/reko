@@ -217,48 +217,39 @@ fn00000001400011B0_entry:
 // SymbolicIn: rsp:fp
 
 l00000001400011B0:
-	branch rcx == 0x0000000000000000 l00000001400011BA
-// DataOut: eax rcx sil
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-l00000001400011B7_1:
+	branch rcx != Mem0[0x0000000140003000:word64] l00000001400011CC
 // DataOut: eax rcx sil
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
 l00000001400011BA:
-	word64 rcx_6 = __rol(rcx, 0x10)
-	branch rcx_6 == 0x0000000000000000 l00000001400011C6
+	word64 rcx_26 = __rol(rcx, 0x10)
+	branch ((word16) rcx_26 & 0xFFFF) != 0x0000 l00000001400011C8
 // DataOut: eax rcx sil
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
-l00000001400011C3_1:
-// DataOut: eax rcx sil
-// DataOut (flags): 
-// SymbolicIn: rsp:fp rcx:<invalid>
-
-l00000001400011C6:
-	branch rcx_6 == 0x0000000000000000 l00000001400011C8
-// DataOut: eax rcx sil
-// DataOut (flags): 
-// SymbolicIn: rsp:fp rcx:<invalid>
-
 l00000001400011C8:
-	__ror(rcx_6, 0x10)
+	__ror(rcx_26, 0x10)
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp rcx:<invalid>
 
-l00000001400011C8_thunk_fn000000014000147C:
-	byte sil_21
-	return fn000000014000147C(qwArg08, out sil_21)
+l00000001400011CC:
+	byte sil_23
+	return fn000000014000147C(qwArg08, out sil_23)
 // DataOut: eax sil
 // DataOut (flags): 
 // SymbolicIn: rsp:fp rcx:<invalid>
 
-l00000001400011C6_1:
+l00000001400011CC_thunk_fn000000014000147C:
+	eax = fn000000014000147C(qwArg08, out sil)
+	return eax
+// DataOut: eax sil
+// DataOut (flags): 
+// SymbolicIn: rsp:<invalid> rcx:<invalid> eax:<invalid> rax:0x0000000000000008 rdx:<invalid> rbx:<invalid> rsi:<invalid> r8:<invalid> r9:<invalid>
+
+l00000001400011C6:
 	return eax
 // DataOut: eax sil
 // DataOut (flags): 

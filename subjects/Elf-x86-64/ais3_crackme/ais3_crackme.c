@@ -172,7 +172,7 @@ void main(word64 rax, Eq_243 * rsi, word32 edi)
 {
 	if (edi != 0x02)
 	{
-		word64 rax_27 = DPB(rax, puts("You need to enter the secret key!"), 0);
+		word64 rax_26 = DPB(rax, puts("You need to enter the secret key!"), 0);
 	}
 	else
 	{

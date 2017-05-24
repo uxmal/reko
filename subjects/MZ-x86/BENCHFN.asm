@@ -337,8 +337,7 @@ l0800_0363:
 	xor	al,al
 
 l0800_036D:
-	repne	
-	scasb	
+	repne scasb	
 
 l0800_036F:
 	jcxz	03E7
@@ -369,8 +368,7 @@ fn0800_038D proc
 	dec	cx
 
 l0800_0393:
-	rep	
-	movsb	
+	rep movsb	
 
 l0800_0395:
 	xor	al,al
@@ -513,8 +511,7 @@ l0800_0430:
 	cld	
 
 l0800_043A:
-	rep	
-	movsb	
+	rep movsb	
 
 l0800_043C:
 	pop	ds
@@ -541,8 +538,7 @@ l0800_045C:
 	add	bx,02
 
 l0800_0461:
-	repne	
-	scasb	
+	repne scasb	
 
 l0800_0463:
 	cmp	es:[di],al
@@ -2265,8 +2261,7 @@ fn0800_108C proc
 	xor	al,al
 
 l0800_1092:
-	repne	
-	scasb	
+	repne scasb	
 
 l0800_1094:
 	not	cx

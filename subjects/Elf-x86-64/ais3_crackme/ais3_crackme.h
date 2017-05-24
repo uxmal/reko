@@ -1098,7 +1098,7 @@ T_256: (in (word32) rax_37 == 0x00000000 : bool)
   Class: Eq_256
   DataType: bool
   OrigDataType: bool
-T_257: (in rax_27 : word64)
+T_257: (in rax_26 : word64)
   Class: Eq_257
   DataType: word64
   OrigDataType: word64

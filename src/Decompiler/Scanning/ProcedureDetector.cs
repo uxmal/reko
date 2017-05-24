@@ -317,12 +317,13 @@ namespace Reko.Scanning
                 }
             }
 
+            //$REVIEW: the heuristic of returning the nodes with zero predecessor
+            // yields a lot of false positives. Consider using "possible pointers"
+            // as a discriminator.
             // If one or more nodes were the destination of a direct call,
             // use those as entries.
             if (cluster.Entries.Count > 0)
                 return true;
-            //$REVIEW: the heuristic of returning the nodes with zero predecessor
-            // yields a lot of false positives.
             /*
              *            return false;
 

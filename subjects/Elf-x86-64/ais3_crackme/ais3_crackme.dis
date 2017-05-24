@@ -499,8 +499,8 @@ void main(word64 rax, word64 rsi, word32 edi)
 
 // MayUse:  edi rax rsi
 // LiveOut:
-// Trashed: SCZO ah al ax bp bpl ch cl cx dh di dil dl dx eax ebp ecx edi edx esi esp rax rbp rcx rdi rdx rsi rsp si sil sp spl
-// Preserved:
+// Trashed: SCZO ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi esp rax rcx rdi rdx rsi rsp si sil sp spl
+// Preserved: rbp
 fn00000000004005C5_entry:
 // DataOut: edi rax rsi
 // DataOut (flags): 
@@ -512,7 +512,7 @@ l00000000004005C5:
 // DataOut: rax
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: Local -0014(64)
+// LocalsOut: fp(64) Local -0014(64)
 
 l00000000004005EB:
 	word64 rax_37 = verify(Mem0[rsi + 0x0000000000000008:word64])
@@ -520,29 +520,34 @@ l00000000004005EB:
 // DataOut: rax
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000014 rbp:fp - 0x0000000000000004 -20(fp):rsi -8(fp):edi -4(fp):rbp
+// LocalsOut: fp(64)
 
 l000000000040060E:
 	word64 rax_47 = DPB(rax_37, puts(0x0000000000400718), 0)
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rbp:fp - 0x0000000000000004 rax:<invalid> rdi:<invalid> rdx:<invalid> eax:<invalid> al:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:<invalid> ax:<invalid> -20(fp):rsi -8(fp):edi -4(fp):rbp
+// LocalsOut: fp(64)
 
 l0000000000400602:
 	word64 rax_45 = DPB(rax_37, puts(0x00000000004006F0), 0)
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rbp:fp - 0x0000000000000004 rax:<invalid> rdi:<invalid> rdx:<invalid> eax:<invalid> al:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:<invalid> ax:<invalid> -20(fp):rsi -8(fp):edi -4(fp):rbp
+// LocalsOut: fp(64)
 
 l0000000000400618:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rbp:fp - 0x0000000000000004 rax:<invalid> rdi:<invalid> rdx:<invalid> eax:<invalid> al:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:<invalid> ax:<invalid> -20(fp):rsi -8(fp):edi -4(fp):rbp
+// LocalsOut: fp(64)
 
 l00000000004005DA:
-	word64 rax_27 = DPB(rax, puts(0x00000000004006C8), 0)
+	word64 rax_26 = DPB(rax, puts(0x00000000004006C8), 0)
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000014 rbp:fp - 0x0000000000000004 -20(fp):rsi -8(fp):edi -4(fp):rbp
+// LocalsOut: fp(64)
 
 l000000000040061D:
 	return
@@ -553,7 +558,7 @@ l000000000040061D:
 fn00000000004005C5_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:Mem0 rbp:fp - 0x0000000000000004 rdi:<invalid> rax:<invalid> rdx:<invalid> eax:0x00000000 al:0x00 edx:<invalid> rcx:<invalid> esi:<invalid> rsi:<invalid> ax:0x0000 -20(fp):rsi -8(fp):edi -4(fp):rbp
+// SymbolicIn: rsp:fp + 0x0000000000000004 rbp:rbp rdi:<invalid> rax:<invalid> rdx:<invalid> eax:0x00000000 al:0x00 edx:<invalid> rcx:<invalid> esi:<invalid> rsi:<invalid> ax:0x0000 -20(fp):rsi -8(fp):edi -4(fp):rbp
 
 
 

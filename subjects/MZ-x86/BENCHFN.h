@@ -3968,7 +3968,7 @@ T_593: (in Mem6[es_43:di_88 + 0x0000:byte] : byte)
   Class: Eq_590
   DataType: byte
   OrigDataType: byte
-T_594: (in 0x00 != es_43->*di_88 : bool)
+T_594: (in 0x00 == es_43->*di_88 : bool)
   Class: Eq_594
   DataType: bool
   OrigDataType: bool
@@ -5268,7 +5268,7 @@ T_918: (in Mem100[ds:di_105 + 0x0000:byte] : byte)
   Class: Eq_915
   DataType: byte
   OrigDataType: byte
-T_919: (in 0x00 != ds->*di_105 : bool)
+T_919: (in 0x00 == ds->*di_105 : bool)
   Class: Eq_919
   DataType: bool
   OrigDataType: bool
@@ -11808,7 +11808,7 @@ T_2553: (in Mem0[es:di_29 + 0x0000:byte] : byte)
   Class: Eq_2550
   DataType: byte
   OrigDataType: byte
-T_2554: (in 0x00 != es->*di_29 : bool)
+T_2554: (in 0x00 == es->*di_29 : bool)
   Class: Eq_2554
   DataType: bool
   OrigDataType: bool

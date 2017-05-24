@@ -4,6 +4,8 @@
 
 #include "lunar.h"
 
+word16 g_w0004 = 0x0200;
+word16 g_w0006 = 0x00E0;
 union Eq_2 g_u0044 = 
 	{
 		L'\x00'
@@ -75,10 +77,10 @@ word16 g_w0F70 = 0x0A9F;
 <anonymous> * g_a0FEC[] = 
 	{
 	};
-struct Eq_4185 * g_a168C[] = 
+struct Eq_4192 * g_a168C[] = 
 	{
 	};
-struct Eq_4190 * g_a1696[] = 
+struct Eq_4197 * g_a1696[] = 
 	{
 	};
 word16 g_a182A[] = 
@@ -90,7 +92,7 @@ wchar_t g_w1830 = L'\x00';
 word16 g_w1832 = 0x0000;
 cui16 g_w1834 = 0x0000;
 word16 g_w25AA = 0x0000;
-Eq_4210 g_t25B8 = 
+Eq_4217 g_t25B8 = 
 	{
 		
 		{
@@ -109,7 +111,7 @@ word16 g_w27A8 = 0x0000;
 byte g_a27B0[] = 
 	{
 	};
-Eq_4260 g_t2814 = 
+Eq_4267 g_t2814 = 
 	{
 		0x30
 	};
@@ -119,7 +121,7 @@ Eq_2 g_a28F0[] =
 Eq_2 g_a28F2[] = 
 	{
 	};
-Eq_4394 g_a28F8[] = 
+Eq_4490 g_a28F8[] = 
 	{
 	};
 word16 g_w34B4 = 0x0000;

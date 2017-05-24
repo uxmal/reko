@@ -312,7 +312,7 @@ void fn0800_0336(byte al, Eq_533 * ds, word16 wArg00)
 			di_62 = di_88 + 0x01;
 			cl_63 = (byte) cx_64;
 			byte Eq_535::* di_88 = di_62;
-			if (0x00 != es_43->*di_88)
+			if (0x00 == es_43->*di_88)
 				goto l0800_036D;
 		}
 		if (cx_64 == 0x00)
@@ -528,7 +528,7 @@ void fn0800_0421(Eq_182 si, Eq_423 * ds)
 				{
 					di_105 = (union Eq_858 Eq_423::*) ((char *) di_105 + 0x01);
 					cx_106 = cx_106 - 0x01;
-					if (0x00 != ds->*di_105)
+					if (0x00 == ds->*di_105)
 						goto l0800_0461;
 				}
 			} while (ds->*di_105 != 0x00);
@@ -1283,7 +1283,7 @@ void fn0800_108C(byte Eq_2542::*di, Eq_2542 * es)
 		di = di_29 + 0x01;
 		cx_13 = cx_13 - 0x01;
 		byte Eq_2542::* di_29 = di;
-		if (0x00 != es->*di_29)
+		if (0x00 == es->*di_29)
 			goto l0800_1092;
 	}
 	return;

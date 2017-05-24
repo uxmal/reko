@@ -110,21 +110,20 @@ fn0000000140001140 proc
 ;; fn00000001400011B0: 00000001400011B0
 fn00000001400011B0 proc
 	cmp	rcx,[rip+00001E49]
-	repne	
-	jnz	00000001400011CC
+	repne jnz	00000001400011CC
 
 l00000001400011BA:
 	rol	rcx,10
 	test	cx,FFFF
-	repne	
-	jnz	00000001400011C8
+	repne jnz	00000001400011C8
 
 l00000001400011C6:
-	repne	
-	ret	
+	repne ret	
 
 l00000001400011C8:
 	ror	rcx,10
+
+l00000001400011CC:
 	jmp	000000014000147C
 00000001400011D1    CC CC CC                                      ...           
 

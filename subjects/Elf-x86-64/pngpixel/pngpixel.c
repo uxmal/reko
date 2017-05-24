@@ -923,9 +923,9 @@ l000000000040175D:
 l0000000000401772:
 	__stack_chk_fail()
 l0000000000401777:
-	rsp = Mem0
-	Mem0 = Mem0[rsp + 0x00:<unknown>]
-	rsp = rsp + 0x00
+	rsp = fp - 0x04
+	rbp = qwLoc04
+	rsp = fp + 0x04
 	return
 fn00000000004012F9_exit:
 }

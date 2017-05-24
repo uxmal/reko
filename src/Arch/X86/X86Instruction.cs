@@ -122,7 +122,7 @@ namespace Reko.Arch.X86
             }
             else if (repPrefix == 2)
             {
-                writer.WriteOpcode("repnz");
+                writer.WriteOpcode("repne");
                 writer.Write(' ');
             }
 

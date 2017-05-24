@@ -725,7 +725,7 @@ l0800_036D_1:
 	di_62 = di_88 + 0x0001
 	cl_63 = (byte) cx_64 (alias)
 	word16 di_88 = di_62
-	branch 0x00 != Mem6[es_43:di_88:byte] l0800_036D
+	branch 0x00 == Mem6[es_43:di_88:byte] l0800_036D
 // DataOut: al bp bx cl cx di dx es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0x0002 es:<invalid> si:<invalid> ah:<invalid> al:<invalid> ax:<invalid> bp:<invalid> dx:0x0081 bx:bx + 0x0002 cx:<invalid> di:<invalid> cl:<invalid>
@@ -1196,7 +1196,7 @@ l0800_0461:
 l0800_0461_1:
 	di_105 = di_105 + 0x0001
 	cx_106 = cx_106 - 0x0001
-	branch 0x00 != Mem100[ds:di_105:byte] l0800_0461
+	branch 0x00 == Mem100[ds:di_105:byte] l0800_0461
 // DataOut: al ax bx cx di ds es
 // DataOut (flags): 
 // SymbolicIn: sp:fp cx:<invalid> di:<invalid> ax:<invalid> es:ds ds:ds si:<invalid> bx:<invalid> dx:<invalid> -4(fp):<invalid> -2(fp):ds
@@ -3844,7 +3844,7 @@ l0800_1092_1:
 	di = di_29 + 0x0001
 	cx_13 = cx_13 - 0x0001
 	word16 di_29 = di
-	branch 0x00 != Mem0[es:di_29:byte] l0800_1092
+	branch 0x00 == Mem0[es:di_29:byte] l0800_1092
 // DataOut: cx di es
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 cx:<invalid> al:0x00 di:<invalid> -2(fp):di
