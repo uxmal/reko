@@ -1,2 +1,2 @@
-SZC_3 = cond(r1 - 0x00000002): cond(r1 - 0x00000002)
-C_4 = SZC_3: cond(r1 - 0x00000002)
+SZC_3 = cond(r1 - 2): cond(r1 - 2)
+C_4 = SZC_3: cond(r1 - 2)

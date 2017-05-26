@@ -736,7 +736,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|T--|0100(2): 2 instructions",
                 "1|L--|v3 = Mem0[hl:ptr16]",
-                "2|L--|goto v3");
+                "2|T--|goto v3");
         }
 
         [Test]

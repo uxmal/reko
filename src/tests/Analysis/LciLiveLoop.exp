@@ -11,7 +11,7 @@ l1:
 	// succ:  LiveLoopMock_exit
 loop:
 	i_1 = PHI(i, i_3)
-	i_3 = i_5 + 0x00000001
+	i_3 = i_5 + 1
 	i_5 = i_1
 	branch Mem0[i_3:byte] != 0 loop
 	goto l1

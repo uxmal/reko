@@ -458,6 +458,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        [Ignore(Categories.Regressions)]
         public void Tlcs900_rw_rrd()
         {
             RewriteCode("C007123456"); // rrd
@@ -514,6 +515,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        [Ignore(Categories.Regressions)]
         public void Tlcs900_rw_sbc()
         {
             RewriteCode("C8CB"); // sbc

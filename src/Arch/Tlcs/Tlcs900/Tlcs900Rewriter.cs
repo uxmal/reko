@@ -66,6 +66,11 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 switch (instr.Opcode)
                 {
                 default:
+                    host.Error(
+                       instr.Address,
+                       string.Format(
+                           "Rewriting of TLCS-900 instruction '{0}' not implemented yet.",
+                           instr.Opcode));
                     EmitUnitTest();
                     Invalid();
                     break;
@@ -133,11 +138,6 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void Invalid()
         {
-            host.Error(
-               instr.Address,
-               string.Format(
-                   "Rewriting of TLCS-900 instruction '{0}' not implemented yet.",
-                   instr.Opcode));
             rtlc = RtlClass.Invalid;
             m.Invalid();
         }

@@ -8,12 +8,12 @@ void ReturnMock()
 ReturnMock_entry:
 	// succ:  l1
 l1:
-	branch r1 == 0x00000000 zero
+	branch r1 == 0 zero
 	// succ:  l2 zero
 l2:
-	return 0x00000000
+	return 0
 	// succ:  ReturnMock_exit
 zero:
-	return 0x00000001
+	return 1
 	// succ:  ReturnMock_exit
 ReturnMock_exit:

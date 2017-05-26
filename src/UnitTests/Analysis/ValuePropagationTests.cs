@@ -522,11 +522,11 @@ namespace Reko.UnitTests.Analysis
 				Local16("dx");
 				var edx = Local32("edx");
 
-				Assign(edx, Int32(0x0AAA00AA));
-				Assign(edx, Dpb(edx, Int8(0x55), 8));
-				Store(Int32(0x1000000), edx);
+				Assign(edx, Word32(0x0AAA00AA));
+				Assign(edx, Dpb(edx, Byte(0x55), 8));
+				Store(Word32(0x1000000), edx);
 
-				Assign(edx, Int32(0));
+				Assign(edx, Word32(0));
                 Assign(edx, Dpb(edx, dl, 0));
 				Return(edx);
 			}

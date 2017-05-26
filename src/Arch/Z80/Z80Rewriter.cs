@@ -350,7 +350,7 @@ namespace Reko.Arch.Z80
             var z = FlagGroup(FlagM.ZF);
             m.Assign(z, m.Cond(m.ISub(a, m.LoadB(hl))));
             m.Assign(hl, incDec(hl, m.Int16(1)));
-            m.Assign(bc, m.ISub(bc, 1));
+            m.Assign(bc, m.ISub(bc, m.Int16(1)));
             if (repeat)
             {
                 m.BranchInMiddleOfInstruction(m.Eq0(bc), addr + dasm.Current.Length, RtlClass.ConditionalTransfer);
