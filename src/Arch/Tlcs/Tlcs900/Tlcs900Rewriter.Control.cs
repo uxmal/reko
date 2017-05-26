@@ -91,8 +91,11 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var co = instr.op1 as ConditionOperand;
             if (co != null)
             {
-                EmitUnitTest("Tlcs900_rw_", "00010000");
-                Invalid();
+                rtlc = RtlClass.ConditionalTransfer;
+
+                var test = GenerateTestExpression(co, true);
+                m.Branch(test, instr.Address + instr.Length, RtlClass.ConditionalTransfer);
+                m.Return(4, 0);
             }
             else
             {

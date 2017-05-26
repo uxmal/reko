@@ -4661,6 +4661,13 @@ fn1483_0D3F: error: An error occurred while rewriting procedure to high-level la
 === flags3
 === --arch
 === NGP_IQ.NGP
+*** NGP_IQ.NGP
+002000F2: error: Rewriting of TLCS-900 instruction 'rrd' not implemented yet.
+0020061D: warning: Expected sizes of arrays to have been determined by now
+00200ABD: warning: Expected sizes of arrays to have been determined by now
+0020061D: warning: Expected sizes of arrays to have been determined by now
+00200ABD: warning: Expected sizes of arrays to have been determined by now
+
 === unzip.dcproject
 *** unzip.dcproject
 000012B8: error: Instruction acbd	#8.0,r5,(sp),00007C18 too complex to rewrite.

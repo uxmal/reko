@@ -77,6 +77,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 case Opcode.invalid:
                     Invalid();
                     break;
+                case Opcode.adc: RewriteAdcSbc(m.IAdd, "****0*"); break;
                 case Opcode.add: RewriteBinOp(m.IAdd, "***V0*"); break;
                 case Opcode.and: RewriteBinOp(m.And, "**1*00"); break;
                 case Opcode.bit: RewriteBit(); break;
@@ -115,8 +116,11 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.retd: RewriteRetd(); break;
                 case Opcode.reti: RewriteReti(); break;
-                case Opcode.set: RewriteSet(); break;
+                case Opcode.sbc: RewriteAdcSbc(m.ISub, "****1*"); break;
+                case Opcode.scc: RewriteScc(); break;
                 case Opcode.scf: RewriteScf(); break;
+                case Opcode.set: RewriteSet(); break;
+                case Opcode.sla: RewriteShift(m.Shl,"**0*0*"); break;
                 case Opcode.sll: RewriteShift(m.Shl,"**0*0*"); break;
                 case Opcode.srl: RewriteShift(m.Shr, "**0*0*"); break;
                 case Opcode.sub: RewriteBinOp(m.ISub, "***V1*"); break;

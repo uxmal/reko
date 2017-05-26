@@ -32,6 +32,14 @@ namespace Reko.Arch.Tlcs.Tlcs900
 {
     public partial class Tlcs900Rewriter
     {
+        private void RewriteAdcSbc(Func<Expression, Expression, Expression> fn, string flags)
+        {
+            var c = binder.EnsureFlagGroup(Registers.C);
+            var src = RewriteSrc(this.instr.op2);
+            var dst = RewriteDst(this.instr.op1, src, (d, s) => fn(fn(d, s), c));
+            EmitCc(dst, flags);
+        }
+
         private void RewriteBinOp(Func<Expression, Expression, Expression> fn, string flags)
         {
             var src = RewriteSrc(this.instr.op2);
@@ -191,6 +199,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
                             1), b))));
         }
 
+        private void RewriteScc()
+        {
+            var test = GenerateTestExpression((ConditionOperand)instr.op1, false);
+            m.Assign(RewriteSrc(instr.op2), test);
+        }
+
         private void RewriteScf()
         {
             m.Assign(binder.EnsureFlagGroup(Tlcs900Registers.C), Constant.True());
@@ -210,15 +224,19 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteShift(Func<Expression,Expression, Expression> shift, string flags)
         {
+            Expression value;
             if (instr.op2 == null)
             {
-                EmitUnitTest();
-                Invalid();
-                return;
+                var amt = Constant.SByte(1);
+                value = RewriteDst(this.instr.op1, amt, shift);
+
             }
-            var op1 = RewriteSrc(this.instr.op1);
-            var op2 = RewriteDst(this.instr.op2, op1, shift);
-            EmitCc(op2, flags);
+            else
+            {
+                var op1 = RewriteSrc(this.instr.op1);
+                value = RewriteDst(this.instr.op2, op1, shift);
+            }
+            EmitCc(value, flags);
         }
 
         private void RewriteZcf()

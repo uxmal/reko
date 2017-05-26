@@ -458,16 +458,6 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        [Ignore(Categories.Regressions)]
-        public void Tlcs900_rw_rrd()
-        {
-            RewriteCode("C007123456"); // rrd
-            AssertCode(
-                "0|L--|00010000(4): 4 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void Tlcs900_rw_decf()
         {
             RewriteCode("0D"); // decf
@@ -512,16 +502,6 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|00010000(1): 1 instructions",
                 "1|L--|__incf()");
-        }
-
-        [Test]
-        [Ignore(Categories.Regressions)]
-        public void Tlcs900_rw_sbc()
-        {
-            RewriteCode("C8CB"); // sbc
-            AssertCode(
-                "0|L--|00010000(2): 2 instructions",
-                "1|L--|@@@");
         }
 
         [Test]
@@ -585,6 +565,92 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "3|L--|N = false",
                 "4|L--|C = false",
                 "5|L--|SZV = cond(xiz)");
+        }
+
+        [Test]
+        [Ignore("This is probably best left as an instrinsic.")]
+        public void Tlcs900_rw_rrd()
+        {
+            RewriteCode("E1830007");	// rrd	a,(00000083)
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void Tlcs900_rw_sll_mem()
+        {
+            RewriteCode("817E");	// sll	(xbc)
+            AssertCode(
+                "0|L--|00010000(2): 5 instructions",
+                "1|L--|v3 = Mem0[xbc:byte] << 1",
+                "2|L--|Mem0[xbc:byte] = v3",
+                "3|L--|H = false",
+                "4|L--|N = false",
+                "5|L--|SZVC = cond(v3)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_sbc()
+        {
+            RewriteCode("82B2");	// sbc	b,(xde)
+            AssertCode(
+                "0|L--|00010000(2): 4 instructions",
+                "1|L--|v4 = Mem0[xde:byte]",
+                "2|L--|b = b - v4 - C",
+                "3|L--|N = true",
+                "4|L--|SZHVC = cond(b)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_sbc_mem()
+        {
+            RewriteCode("C004B1");	// sbc	a,(00000004)
+            AssertCode(
+                "0|L--|00010000(3): 4 instructions",
+                "1|L--|v3 = Mem0[0x00000004:byte]",
+                "2|L--|a = a - v3 - C",
+                "3|L--|N = true",
+                "4|L--|SZHVC = cond(a)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_ret_cc()
+        {
+            RewriteCode("B3F1");	// ret	LT
+            AssertCode(
+                "0|T--|00010000(2): 2 instructions",
+                "1|T--|if (Test(GE,SV)) branch 00010002",
+                "2|T--|return (4,0)");
+        }
+
+        public void Tlcs900_rw_sla()
+        {
+            RewriteCode("CFFC");	// sla	a,l
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void Tlcs900_rw_sla_r()
+        {
+            RewriteCode("CCFC");	// sla	a,d
+            AssertCode(
+                "0|L--|00010000(2): 4 instructions",
+                "1|L--|d = d << a",
+                "2|L--|H = false",
+                "3|L--|N = false",
+                "4|L--|SZVC = cond(d)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_scc()
+        {
+            RewriteCode("DD77");	// scc	C,iy
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|iy = Test(ULT,Z)");
         }
     }
 }
