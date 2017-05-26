@@ -44,9 +44,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            return new Tlcs900Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
+            return new Tlcs900Rewriter(arch, new LeImageReader(image, 0), state, binder, host);
         }
 
         public override Address LoadAddress
@@ -232,9 +232,9 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|L--|00010000(2): 9 instructions",
                 "1|L--|v2 = Mem0[xhl:byte]",
                 "2|L--|Mem0[xde:byte] = v2",
-                "3|L--|xhl = xhl + 0x00000001",
-                "4|L--|xde = xde + 0x00000001",
-                "5|L--|bc = bc - 0x0001",
+                "3|L--|xhl = xhl + 1",
+                "4|L--|xde = xde + 1",
+                "5|L--|bc = bc - 1",
                 "6|T--|if (bc != 0x0000) branch 00010000",
                 "7|L--|H = false",
                 "8|L--|V = false",
@@ -249,9 +249,9 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|L--|00010000(2): 9 instructions",
                 "1|L--|v2 = Mem0[xhl:word16]",
                 "2|L--|Mem0[xde:word16] = v2",
-                "3|L--|xhl = xhl + 0x00000002",
-                "4|L--|xde = xde + 0x00000002",
-                "5|L--|bc = bc - 0x0001",
+                "3|L--|xhl = xhl + 2",
+                "4|L--|xde = xde + 2",
+                "5|L--|bc = bc - 1",
                 "6|T--|if (bc != 0x0000) branch 00010000",
                 "7|L--|H = false",
                 "8|L--|V = false",
@@ -273,7 +273,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("38");	// push	xwa
             AssertCode(
                 "0|L--|00010000(1): 2 instructions",
-                "1|L--|xsp = xsp - 0x00000004",
+                "1|L--|xsp = xsp - 4",
                 "2|L--|Mem0[xsp:word32] = xwa");
         }
 
@@ -296,7 +296,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|00010000(1): 2 instructions",
                 "1|L--|xwa = Mem0[xsp:word32]",
-                "2|L--|xsp = xsp + 0x00000004");
+                "2|L--|xsp = xsp + 4");
         }
 
         [Test]
@@ -318,7 +318,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("D9084000");	// mul	bc,0040
             AssertCode(
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|bc = bc *u 0x0040");
+                "1|L--|xbc = bc *u 0x0040");
         }
 
         [Test]
@@ -361,9 +361,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("D90A0A00");	// div	bc,000A
             AssertCode(
                 "0|L--|00010000(4): 4 instructions",
-                "1|L--|v2 = bc",
-                "2|L--|c = v2 /u 0x000A",
-                "3|L--|b = v2 % 0x000A",
+                "1|L--|v3 = xbc",
+                "2|L--|c = v3 /u 0x000A",
+                "3|L--|b = v3 % 0x000A",
                 "4|L--|V = cond(c)");
         }
 
@@ -404,7 +404,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("14");	// push a
             AssertCode(
                 "0|L--|00010000(1): 2 instructions",
-                "1|L--|xsp = xsp - 0x00000001",
+                "1|L--|xsp = xsp - 1",
                 "2|L--|Mem0[xsp:byte] = a");
         }
 
@@ -415,6 +415,174 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
                 "1|L--|bc = 0x0000");
+        }
+
+        [Test]
+        public void Tlcs900_rw_halt()
+        {
+            RewriteCode("D7E6A8");
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|bc = 0x0000");
+        }
+
+        [Test]
+        public void Tlcs900_rw_reti()
+        {
+            RewriteCode("07"); // reti
+            AssertCode(
+                "0|T--|00010000(1): 3 instructions",
+                "1|L--|sr = Mem0[xsp:word16]",
+                "2|L--|xsp = xsp + 2",
+                "3|T--|return (4,0)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_ccf()
+        {
+            RewriteCode("12"); // ccf
+            AssertCode(
+                "0|L--|00010000(1): 1 instructions",
+                "1|L--|C = !C");
+        }
+
+        [Test]
+        public void Tlcs900_rw_swi()
+        {
+            RewriteCode("FA"); // swi
+            AssertCode(
+                "0|L--|00010000(1): 3 instructions",
+                "1|L--|xsp = xsp - 2",
+                "2|L--|Mem0[xsp:word16] = sr",
+                "3|T--|call 00FFFF08 (4)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_rrd()
+        {
+            RewriteCode("C007123456"); // rrd
+            AssertCode(
+                "0|L--|00010000(4): 4 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void Tlcs900_rw_decf()
+        {
+            RewriteCode("0D"); // decf
+            AssertCode(
+                "0|L--|00010000(1): 1 instructions",
+                "1|L--|__decf()");
+        }
+
+        [Test]
+        public void Tlcs900_rw_ex()
+        {
+            RewriteCode("E8B9"); // ex
+            AssertCode(
+                "0|L--|00010000(2): 3 instructions",
+                "1|L--|v4 = xbc",
+                "2|L--|xbc = xwa",
+                "3|L--|xwa = v4");
+        }
+
+        [Test]
+        public void Tlcs900_rw_retd()
+        {
+            RewriteCode("0F0400"); // retd
+            AssertCode(
+                "0|T--|00010000(3): 1 instructions",
+                "1|T--|return (4,4)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_ldf()
+        {
+            RewriteCode("1703"); // ldf
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|__ldf(0x03)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_incf()
+        {
+            RewriteCode("0C"); // incf
+            AssertCode(
+                "0|L--|00010000(1): 1 instructions",
+                "1|L--|__incf()");
+        }
+
+        [Test]
+        public void Tlcs900_rw_sbc()
+        {
+            RewriteCode("C8CB"); // sbc
+            AssertCode(
+                "0|L--|00010000(2): 2 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void Tlcs900_rw_bs1b()
+        {
+            RewriteCode("D80F"); // bs1b
+            AssertCode(
+                "0|L--|00010000(2): 2 instructions",
+                "1|L--|a = __bs1b(wa)",
+                "2|L--|V = wa == 0x0000");
+        }
+
+        [Test]
+        public void Tlcs900_rw_zcf()
+        {
+            RewriteCode("13"); // zcf
+            AssertCode(
+                "0|L--|00010000(1): 2 instructions",
+                "1|L--|C = !Z",
+                "2|L--|N = false");
+        }
+
+        [Test]
+        public void Tlcs900_rw_divs()
+        {
+            RewriteCode("D85B"); // divs
+            AssertCode(
+                "0|L--|00010000(2): 4 instructions",
+                "1|L--|v4 = xhl",
+                "2|L--|l = v4 / wa",
+                "3|L--|h = v4 % wa",
+                "4|L--|V = cond(l)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_muls()
+        {
+            RewriteCode("DE4A"); // muls
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|xde = de *s iz");
+        }
+
+        [Test]
+        public void Tlcs900_rw_chg()
+        {
+            RewriteCode("DE32C6"); // chg
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|de = de ^ 0x0040");
+        }
+
+        [Test]
+        public void Tlcs900_rw_xor()
+        {
+            RewriteCode("EECD12345678"); // xor
+            AssertCode(
+                "0|L--|00010000(6): 5 instructions",
+                "1|L--|xiz = xiz ^ 0x78563412",
+                "2|L--|H = false",
+                "3|L--|N = false",
+                "4|L--|C = false",
+                "5|L--|SZV = cond(xiz)");
         }
     }
 }

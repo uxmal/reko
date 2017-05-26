@@ -355,7 +355,7 @@ namespace Reko.Arch.Z80
             {
                 m.BranchInMiddleOfInstruction(m.Eq0(bc), addr + dasm.Current.Length, RtlClass.ConditionalTransfer);
                 m.Branch(m.Test(ConditionCode.NE, z), addr, RtlClass.ConditionalTransfer);
-        }
+           }
         }
 
         private void RewriteCpl()

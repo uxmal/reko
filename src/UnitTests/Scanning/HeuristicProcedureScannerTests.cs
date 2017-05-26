@@ -36,7 +36,6 @@ namespace Reko.UnitTests.Scanning
     public class HeuristicProcedureScannerTests : HeuristicTestBase
     {
         private HeuristicProcedure proc;
-        private ScanResults sr;
 
         [SetUp]
         public override void Setup()
