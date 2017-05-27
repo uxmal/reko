@@ -105,11 +105,11 @@ namespace Reko.Scanning
         private HashSet<RtlBlock> TraceReachableBlocks(IEnumerable<Address> procstarts)
         {
             var reachable = new HashSet<RtlBlock>();
+            var mpAddrToBlock = blocks.Nodes.ToDictionary(k => k.Address);
             foreach (var addrProcStart in procstarts)
             {
-                //$PERF: slow! need a map (address => block)
-                var entry = blocks.Nodes.Where(b => b.Address == addrProcStart).FirstOrDefault();
-                if (entry != null)
+                RtlBlock entry;
+                if (mpAddrToBlock.TryGetValue(addrProcStart ,out entry))
                 {
                     var r = new DfsIterator<RtlBlock>(blocks).PreOrder(entry).ToHashSet();
                     reachable.UnionWith(r);
