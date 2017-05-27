@@ -1064,11 +1064,11 @@ namespace Reko.Scanning
                 return false;
             }
 
-            //Procedure_v1 sProc;
-            //if (Program.User.Procedures.TryGetValue(addrRtlProc, out sProc))
-            //{
-            //    return sProc.Decompile;
-            //}
+            Procedure_v1 sProc;
+            if (Program.User.Procedures.TryGetValue(addrRtlProc, out sProc))
+            {
+                return sProc.Decompile;
+            }
             return true;
         }
 
