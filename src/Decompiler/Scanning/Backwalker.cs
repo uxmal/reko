@@ -78,7 +78,7 @@ namespace Reko.Scanning
         /// </summary>
         public RegisterStorage Index { get; private set; }
         public Expression IndexExpression { get; set; }
-        public Identifier UsedFlagIdentifier { get; set; } 
+        public Identifier UsedFlagIdentifier { get; set; }
         public int Stride { get; private set; }
         public Address VectorAddress { get; private set; }
         public List<BackwalkOperation> Operations { get; private set; }
@@ -162,9 +162,9 @@ namespace Reko.Scanning
                         }
                     }
                     if (Index != null &&
-                        binSrc.Operator == Operator.Xor && 
-                        binSrc.Left == assDst && 
-                        binSrc.Right == assDst && 
+                        binSrc.Operator == Operator.Xor &&
+                        binSrc.Left == assDst &&
+                        binSrc.Right == assDst &&
                         RegisterOf(assDst) == host.GetSubregister(Index, 8, 8))
                     {
                         Operations.Add(new BackwalkOperation(BackwalkOperator.and, 0xFF));
@@ -191,7 +191,8 @@ namespace Reko.Scanning
                     if ((grfDef & grfUse) == 0)
                         return true;
                     var binCmp = cof.Expression as BinaryExpression;
-                    if (binCmp != null && 
+                    binCmp = NegateRight(binCmp);
+                    if (binCmp != null &&
                         (binCmp.Operator is ISubOperator ||
                          binCmp.Operator is USubOperator))
                     {
@@ -228,8 +229,8 @@ namespace Reko.Scanning
                     src = castSrc.Expression;
                 var memSrc = src as MemoryAccess;
                 var regDst = RegisterOf(assDst);
-                if (memSrc != null && 
-                    (regDst == Index || 
+                if (memSrc != null &&
+                    (regDst == Index ||
                      (Index != null && regDst != null && regDst.Name != "None" && regDst.IsSubRegisterOf(Index))))
                 {
                     // R = Mem[xxx]
@@ -257,7 +258,7 @@ namespace Reko.Scanning
                     {
                         var mOff = memOffset.ToInt32();
                         if (mOff > 0x200)
-                        { 
+                        {
                             Operations.Add(new BackwalkDereference(memOffset.ToInt32(), scale));
                             Index = baseReg;
                             return true;
@@ -307,6 +308,22 @@ namespace Reko.Scanning
 
             Debug.WriteLine("Backwalking not supported: " + instr);
             return true;
+        }
+
+        private BinaryExpression NegateRight(BinaryExpression bin)
+        {
+            Constant cRight;
+            if (bin != null &&
+                (bin.Operator == Operator.IAdd) &&
+                bin.Right.As(out cRight))
+            {
+                return new BinaryExpression(
+                    Operator.ISub,
+                    bin.Left.DataType,
+                    bin.Left,
+                    cRight.Negate());
+            }
+            return bin;
         }
 
         private RegisterStorage RegisterOf(Expression e)
@@ -532,7 +549,7 @@ namespace Reko.Scanning
                         add ? BackwalkOperator.add : BackwalkOperator.sub,
                         immSrc.ToInt32()));
                 }
-				return regIdx;
+				return ropSrc;
 			}
 			else
 				return null;
