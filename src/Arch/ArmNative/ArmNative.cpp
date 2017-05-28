@@ -2,12 +2,13 @@
 //
 
 #include "stdafx.h"
+#include "types.h"
 #include "reko.h"
 #include "ArmRewriter.h"
 
 extern "C" {
 	
-	INativeRewriter * DLLEXPORT 
+	DLLEXPORT INativeRewriter *
 		CreateNativeRewriter(
 			const uint8_t * rawBytes,
 			uint32_t length,	
