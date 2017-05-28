@@ -5,16 +5,21 @@
 
 #pragma once
 
-#include "targetver.h"
+// #include "targetver.h"
 
-#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+#if _WINDOWS
+# define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 // Windows Header Files:
-#include <windows.h>
+# include <windows.h>
 
-#include <stdio.h>
-#include <stdint.h>
-#include <objbase.h>
-#include <stdarg.h>
+# include <stdio.h>
+# include <stdint.h>
+# include <objbase.h>
+# include <stdarg.h>
+#else
+# include <cstring>
+# include "types.h"
+#endif
 
 #include "../../../external/Capstone/X86/include/capstone.h"
 

@@ -6,8 +6,9 @@
 #include "ArmRewriter.h"
 
 extern "C" {
-	__declspec(dllexport)
-		INativeRewriter * __cdecl CreateNativeRewriter(
+	
+	INativeRewriter * DLLEXPORT 
+		CreateNativeRewriter(
 			const uint8_t * rawBytes,
 			uint32_t length,	
 			uint32_t offset, 

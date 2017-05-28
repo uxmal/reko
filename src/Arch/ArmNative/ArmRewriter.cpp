@@ -20,8 +20,6 @@ ArmRewriter::ArmRewriter(
 	cRef(1),
 	instr(nullptr)
 {
-	auto hcap = ::LoadLibraryW(L"cs_open");
-	::GetProcAddress(hcap, "cs_open");
 	Dump(".ctor: %08x", this);
 	auto ec = cs_open(CS_ARCH_ARM, CS_MODE_ARM, &hcapstone); 
 	ec = cs_option(hcapstone, CS_OPT_DETAIL, CS_OPT_ON);
@@ -35,12 +33,14 @@ static const IID IID_INativeRewriter =
 
 void Dump(const char * fmt, ...)
 {
+#if _WINDOWS
 	char buf[300];
 	va_list args;
 	va_start(args, fmt);
 	vsnprintf(buf, _countof(buf), fmt, args);
 	::strcat_s(buf, "\r\n");
 	::OutputDebugStringA(buf);
+#endif
 }
 
 STDMETHODIMP ArmRewriter::QueryInterface(REFIID riid, void ** ppvOut)
@@ -56,13 +56,13 @@ STDMETHODIMP ArmRewriter::QueryInterface(REFIID riid, void ** ppvOut)
 	return E_NOINTERFACE;
 }
 
-STDMETHODIMP_(ULONG) ArmRewriter::AddRef()
+ULONG STDMETHODCALLTYPE ArmRewriter::AddRef()
 {
 	Dump("AddRef: %08x %d", this, cRef +1);
 	return ++this->cRef;
 }
 
-STDMETHODIMP_(ULONG) ArmRewriter::Release()
+ULONG STDMETHODCALLTYPE ArmRewriter::Release()
 {
 	Dump("Release: %08x %d", this, cRef - 1);
 	if (--this->cRef > 0)
