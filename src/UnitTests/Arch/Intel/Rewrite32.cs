@@ -136,6 +136,12 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
         [Test]
+        public void RwSwitchReg00001()
+        {
+            RunTest("Fragments/switch_reg00001.asm", "Intel/RwSwitchReg00001.txt");
+        }
+
+        [Test]
         public void RwNotFoundImport()
         {
             RunTest("Fragments/import32/not_found_import.asm", "Intel/RwNotFoundImport.txt");
