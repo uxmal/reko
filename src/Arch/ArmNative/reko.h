@@ -71,7 +71,7 @@ enum class RtlClass
 
 // The C++ side never really looks at the objects in the Rtl tree being 
 // built, so we can represent them as an opaque handle.
-typedef void * HExpr;
+enum HExpr { };
 
 class INativeRtlEmitter : IUnknown
 {
