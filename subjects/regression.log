@@ -4659,7 +4659,7 @@ fn1483_0D3F: error: An error occurred while rewriting procedure to high-level la
 === int16.dll
 === flags
 === flags3
-=== --arch
+=== TLCS-90.corpus
 === NGP_IQ.NGP
 *** NGP_IQ.NGP
 002000F2: error: Rewriting of TLCS-900 instruction 'rrd' not implemented yet.
