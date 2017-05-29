@@ -11,6 +11,8 @@
 #define STDAPICALLTYPE
 #define STDMETHODCALLTYPE
 #define STDMETHODIMP int
+#define STDMETHOD(name) HRESULT STDMETHODCALLTYPE name
+#define STDMETHOD_(type,name) type STDMETHODCALLTYPE name
 #define DLLEXPORT
 
 typedef unsigned long UINT;
