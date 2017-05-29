@@ -97,6 +97,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\SuperH\SuperH.csproj">
+      <Name>SuperH</Name>
+      <Project>{fc3aa408-b2b1-4b40-b29d-9ebb46aa8b33}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Vax\Vax.csproj">
       <Name>Vax</Name>
       <Project>{82777964-b370-431a-ac97-733c594c02b5}</Project>
@@ -132,6 +140,14 @@
     <ProjectReference Include="..\Arch\Z80\Z80.csproj">
       <Name>Z80</Name>
       <Project>{66a00ab2-6964-4815-9140-f28fee48e6d6}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Assemblers\M68k\M68kAssembler.csproj">
+      <Name>M68kAssembler</Name>
+      <Project>{fd6ad906-bed1-4ac1-a7c5-0a04cca2d7dc}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
