@@ -724,7 +724,7 @@ means
             BuildTest(0xE10ea598);	// swp sl, r8, [lr]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|sl = std::atomic_exchange<word32>(lr, r8)");
+                "1|L--|r10 = std::atomic_exchange<int32_t>(r8, Mem0[lr:word32])");
         }
 
         [Test]
@@ -883,7 +883,7 @@ means
             BuildTest(0xf2f068e2);	// vext.64 q11, q8, q9, #1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q11 = __vext_64(q8, q9, 1)");
+                "1|L--|q11 = __vext(q8, q9, 0x00000001)");
         }
 
         [Test]
@@ -919,8 +919,10 @@ means
         {
             BuildTest(0xed2d8b04);  // vpush {d8, d9}
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|sp = sp - 16",
+                "2|L--|Mem0[sp:word64] = d8",
+                "3|L--|Mem0[sp + 8:word64] = d9");
         }
 
         [Test]
@@ -928,8 +930,10 @@ means
         {
             BuildTest(0xecbd8b04);  // vpop {d8, d9}
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|d8 = Mem0[sp:word64]",
+                "2|L--|d9 = Mem0[sp + 8:word64]",
+                "3|L--|sp = sp + 16");
         }
 
         [Test]
@@ -938,7 +942,7 @@ means
             BuildTest(0xee711be0);  // vsub.f64 d17, d17, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d17 = __vsub_f64(d17 - d16)");
+                "1|L--|d17 = __vsub_f64(d17, d16)");
         }
 
         [Test]
@@ -947,7 +951,7 @@ means
             BuildTest(0xee611ba0);  // vmul.f64 d17, d17, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d17 = __vmul_f64(d17, d16)");
         }
 
         [Test]
@@ -965,7 +969,7 @@ means
             BuildTest(0xeeb49ae7);  // vcmpe.f32 s18, s15
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|FPSCR = cond(s18 - s15)");
+                "1|L--|NZCV = cond(s18 - s15)");
         }
 
         [Test]
@@ -974,7 +978,7 @@ means
             BuildTest(0xeef1fa10);  // vmrs apsr_nzcv, fpscr
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|APSR = FPSCR");
+                "1|L--|cpsr = fpscr");
         }
 
         [Test]
@@ -983,7 +987,7 @@ means
             BuildTest(0xee567a87);  // vnmls.f32 s15, s13, s14
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|s15 = __vnmls_f32(s13, s14)");
         }
 
         [Test]
@@ -992,7 +996,7 @@ means
             BuildTest(0xee476a86);  // vmla.f32 s13, s15, s12
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|s13 = __vmla_f32(s15, s12)");
         }
 
         [Test]
@@ -1012,7 +1016,7 @@ means
             BuildTest(0xf26006e2);  // vmax.s32 q8, q8, q9
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|q8 = __vmax_s32(q8, q9)");
         }
 
         [Test]
@@ -1021,7 +1025,7 @@ means
             BuildTest(0xf2600aa0);  // vpmax.s32 d16, d16, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d16 = __vpmax_s32(d16, d16)");
         }
 
         [Test]
@@ -1030,7 +1034,7 @@ means
             BuildTest(0xf26021b0);  // vorr d18, d16, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d18 = d16 | d16");
         }
 
         [Test]
@@ -1039,15 +1043,16 @@ means
             BuildTest(0xf26446f0);  // vmin.s32 q10, q10, q8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|q10 = __vmin_s32(q10, q8)");
         }
 
         [Test]
         public void ArmRw_vpmin_s32()
         {
             BuildTest(0xf2644ab4);  // vpmin.s32 d20, d20, d20
-            AssertCode("0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d20 = __vpmin_s32(d20, d20)");
         }
 
         [Test]
@@ -1100,7 +1105,7 @@ means
             BuildTest(0xeef10b60);  // vneg.f64 d16, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d16 = __vneg_f64(d16)");
         }
 
         [Test]
@@ -1109,7 +1114,7 @@ means
             BuildTest(0xee680b60);  // vnmul.f64 d16, d8, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d16 = __vnmul_f64(d8, d16)");
         }
 
         [Test]
@@ -1144,11 +1149,12 @@ means
         [Test]
         public void ArmRw_stcl()
         {
-            BuildTest(0xEccccccd);  // stcl p12, c12, [ip], {0xcd}
+            BuildTest(0xECCCCCCD);  // stcl p12, c12, [ip], {0xcd}
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|__stcl(pl2, c12, Mem[ip + 0x0CD:word32])",
-                "2|L--|ip = ip + 0xCD");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|__stcl(0x0C, 0x0C, Mem0[ip:void])",
+                "2|L--|Mem0[0x0C:word32] = sp",
+                "3|L--|Mem0[0x0C + 4:word32] = ip");
         }
 
         [Test]
@@ -1166,7 +1172,7 @@ means
             BuildTest(0xf2c04077);  // vmvn.i32 q10, #7
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|q10 = __vmvn_imm_i32(0x00000007)");
         }
 
         [Test]
@@ -1175,7 +1181,7 @@ means
             BuildTest(0xf36424e2);  // vshl.u32 q9, q9, q10
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|q9 = __vshl_u32(q9, q10)");
         }
 
         [Test]
@@ -1184,7 +1190,7 @@ means
             BuildTest(0xee017be0);  // vmls.f64 d7, d17, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d7 = __vmls_f64(d17, d16)");
         }
 
         [Test]
@@ -1253,10 +1259,12 @@ means
         [Test]
         public void ArmRw_umaal()
         {
-            BuildTest(0x3040a590);  // umaal sl, r0, r0, r5
+            BuildTest(0xE040a590);  // umaal sl, r0, r0, r5
             AssertCode(
-                "0|L--|00100000(4): 4 instructions",
-                "1|L--|sl_r0 = r0 *u r5 + sl + r0");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v2 = r0 *u r5",
+                "2|L--|v2 = v2 + (uint64) r0",
+                "3|L--|r0_r10 = v2 + (uint64) r10");
         }
 
         [Test]
@@ -1295,7 +1303,7 @@ means
             BuildTest(0xE1409190);  // swpb sb, r0, [r0]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|sb = std::atomic_exchange<byte>(r0, r0)");
+                "1|L--|r9 = std::atomic_exchange<byte>(r0, Mem0[r0:byte])");
         }
 
         [Test]

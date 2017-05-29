@@ -117,7 +117,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_DSB:
 	case ARM_INS_FLDMDBX:
 	case ARM_INS_FLDMIAX:
-	case ARM_INS_VMRS:
 	case ARM_INS_FSTMDBX:
 	case ARM_INS_FSTMIAX:
 	case ARM_INS_HINT:
@@ -214,7 +213,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_SSUB8:
 	case ARM_INS_STC2L:
 	case ARM_INS_STC2:
-	case ARM_INS_STCL:
 	case ARM_INS_STC:
 	case ARM_INS_STL:
 	case ARM_INS_STLB:
@@ -227,8 +225,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_STREXB:
 	case ARM_INS_STREXD:
 	case ARM_INS_STREXH:
-	case ARM_INS_SWP:
-	case ARM_INS_SWPB:
 	case ARM_INS_SXTAB16:
 	case ARM_INS_SXTB16:
 	case ARM_INS_TRAP:
@@ -264,7 +260,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VABD:
 	case ARM_INS_VACGE:
 	case ARM_INS_VACGT:
-	case ARM_INS_VADD:
 	case ARM_INS_VADDHN:
 	case ARM_INS_VADDL:
 	case ARM_INS_VADDW:
@@ -279,16 +274,13 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VCLS:
 	case ARM_INS_VCLT:
 	case ARM_INS_VCLZ:
-	case ARM_INS_VCMPE:
 	case ARM_INS_VCNT:
 	case ARM_INS_VCVTA:
 	case ARM_INS_VCVTB:
-	case ARM_INS_VCVT:
 	case ARM_INS_VCVTM:
 	case ARM_INS_VCVTN:
 	case ARM_INS_VCVTP:
 	case ARM_INS_VCVTT:
-	case ARM_INS_VEXT:
 	case ARM_INS_VFMA:
 	case ARM_INS_VFMS:
 	case ARM_INS_VFNMA:
@@ -301,30 +293,16 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VLD4:
 	case ARM_INS_VLDMDB:
 	case ARM_INS_VMAXNM:
-	case ARM_INS_VMAX:
 	case ARM_INS_VMINNM:
-	case ARM_INS_VMIN:
-	case ARM_INS_VMLA:
 	case ARM_INS_VMLAL:
-	case ARM_INS_VMLS:
 	case ARM_INS_VMLSL:
 	case ARM_INS_VMOVL:
 	case ARM_INS_VMOVN:
 	case ARM_INS_VMSR:
-	case ARM_INS_VMUL:
 	case ARM_INS_VMULL:
-	case ARM_INS_VMVN:
-	case ARM_INS_VNEG:
-	case ARM_INS_VNMLA:
-	case ARM_INS_VNMLS:
-	case ARM_INS_VNMUL:
 	case ARM_INS_VORN:
-	case ARM_INS_VORR:
 	case ARM_INS_VPADAL:
 	case ARM_INS_VPADDL:
-	case ARM_INS_VPADD:
-	case ARM_INS_VPMAX:
-	case ARM_INS_VPMIN:
 	case ARM_INS_VQABS:
 	case ARM_INS_VQADD:
 	case ARM_INS_VQDMLAL:
@@ -369,7 +347,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VSELGT:
 	case ARM_INS_VSELVS:
 	case ARM_INS_VSHLL:
-	case ARM_INS_VSHL:
 	case ARM_INS_VSHRN:
 	case ARM_INS_VSHR:
 	case ARM_INS_VSLI:
@@ -380,7 +357,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VST3:
 	case ARM_INS_VST4:
 	case ARM_INS_VSTMDB:
-	case ARM_INS_VSUB:
 	case ARM_INS_VSUBHN:
 	case ARM_INS_VSUBL:
 	case ARM_INS_VSUBW:
@@ -417,8 +393,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_WFI:
 	case ARM_INS_SEV:
 	case ARM_INS_SEVL:
-	case ARM_INS_VPUSH:
-	case ARM_INS_VPOP:
 		NotImplementedYet();
 		break;
 
@@ -496,6 +470,7 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_SMULTB: RewriteMulbb(true, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULTT: RewriteMulbb(true, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULL: RewriteMull(BaseType::Int64, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_STCL: RewriteStcl();
 	case ARM_INS_STM: RewriteStm(0, true); break;
 	case ARM_INS_STMDB: RewriteStm(-4, false); break;
 	case ARM_INS_STMDA: RewriteStm(0, false); break;
@@ -509,6 +484,8 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_STRT: RewriteStr(BaseType::Word32); break;
 	case ARM_INS_SUB: RewriteBinOp(&INativeRtlEmitter::ISub, instr->detail->arm.update_flags); break;
 	case ARM_INS_SVC: RewriteSvc(); break;
+	case ARM_INS_SWP: RewriteSwp(BaseType::Word32); break;
+	case ARM_INS_SWPB: RewriteSwp(BaseType::Byte); break;
 	case ARM_INS_SXTAB: RewriteXtab(BaseType::SByte); break;
 	case ARM_INS_SXTAH: RewriteXtab(BaseType::Int16); break;
 	case ARM_INS_SXTB: RewriteXtb(BaseType::SByte); break;
@@ -524,18 +501,42 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_UXTB: RewriteXtb(BaseType::Byte); break;
 	case ARM_INS_UXTH: RewriteXtb(BaseType::UInt16); break;
 
-	case ARM_INS_VABS: RewriteVabs(); break;
+	case ARM_INS_VABS: RewriteVectorUnaryOp("__vabs_%s"); break;
+	case ARM_INS_VADD: RewriteVectorBinOp("__vadd_%s"); break;
 	case ARM_INS_VAND: RewriteVecBinOp(&INativeRtlEmitter::And); break;
 	case ARM_INS_VCMP: RewriteVcmp(); break;
+	case ARM_INS_VCMPE: RewriteVcmp(); break;
+	case ARM_INS_VCVT: RewriteVcvt(); break;
 	case ARM_INS_VDIV: RewriteVecBinOp(&INativeRtlEmitter::FDiv); break;
 	case ARM_INS_VDUP: RewriteVdup(); break;
 	case ARM_INS_VEOR: RewriteVecBinOp(&INativeRtlEmitter::Xor); break;
+	case ARM_INS_VEXT: RewriteVext(); break;
 	case ARM_INS_VLDMIA: RewriteVldmia(); break;
 	case ARM_INS_VLDR: RewriteVldr(); break;
+	case ARM_INS_VMAX: RewriteVectorBinOp("__vmax_%s"); break;
+	case ARM_INS_VMIN: RewriteVectorBinOp("__vmin_%s"); break;
 	case ARM_INS_VMOV: RewriteVmov(); break;
+	case ARM_INS_VMLA: RewriteVectorBinOp("__vmla_%s"); break;
+	case ARM_INS_VMLS: RewriteVectorBinOp("__vmls_%s"); break;
+	case ARM_INS_VMRS: RewriteVmrs(); break;
+	case ARM_INS_VMVN: RewriteVmvn(); break;
+	case ARM_INS_VMUL: RewriteVectorBinOp("__vmul_%s"); break;
+	case ARM_INS_VORR: RewriteVecBinOp(&INativeRtlEmitter::Or); break;
+	case ARM_INS_VNEG: RewriteVectorUnaryOp("__vneg_%s"); break;
+	case ARM_INS_VNMLA: RewriteVectorBinOp("__vnmla_%s"); break;
+	case ARM_INS_VNMLS: RewriteVectorBinOp("__vnmls_%s"); break;
+	case ARM_INS_VNMUL: RewriteVectorBinOp("__vnmul_%s"); break;
+	case ARM_INS_VPADD: RewriteVectorBinOp("__vpadd_%s"); break;
+	case ARM_INS_VPMAX: RewriteVectorBinOp("__vpmax_%s"); break;
+	case ARM_INS_VPMIN: RewriteVectorBinOp("__vpmin_%s"); break;
+	case ARM_INS_VPOP: RewriteVpop(); break;
+	case ARM_INS_VPUSH: RewriteVpush(); break;
 	case ARM_INS_VSTMIA: RewriteVstmia(); break;
 	case ARM_INS_VSQRT: RewriteVsqrt(); break;
+	case ARM_INS_VSHL: RewriteVectorBinOp("__vshl_%s"); break;
 	case ARM_INS_VSTR: RewriteVstr(); break;
+	case ARM_INS_VSUB:  RewriteVectorBinOp("__vsub_%s"); break;
+
 	}
 	m.FinishCluster(rtlClass, addrInstr, instr->size);
 	return S_OK;
@@ -746,6 +747,8 @@ BaseType ArmRewriter::SizeFromLoadStore()
 	case ARM_INS_STRD: return BaseType::Word64;
 	case ARM_INS_STRH: return BaseType::Word16;
 	case ARM_INS_STRHT: return BaseType::Word16;
+	case ARM_INS_SWP: return BaseType::Word32;
+	case ARM_INS_SWPB: return BaseType::Byte;
 	case ARM_INS_VLDR: return register_types[instr->detail->arm.operands[0].reg];
 	case ARM_INS_VSTR: return register_types[instr->detail->arm.operands[0].reg];
 	}
@@ -846,6 +849,24 @@ void ArmRewriter::RewriteSvc()
 	//m.SideEffect(m.Fn(
 	//	host->EnsurePseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 2),
 	//	Operand(Dst)));
+}
+
+void ArmRewriter::RewriteSwp(BaseType type)
+{
+	const char * fnName;
+	if (type == BaseType::Byte)
+	{
+		fnName = "std::atomic_exchange<byte>";
+	}
+	else
+	{
+		fnName = "std::atomic_exchange<int32_t>";
+	}
+	auto intrinsic = host->EnsurePseudoProcedure(fnName, type, 2);
+	auto dst = Operand(Dst());
+	m.AddArg(Operand(Src1()));
+	m.AddArg(Operand(Src2()));
+	m.Assign(dst, m.Fn(intrinsic));
 }
 
 #if _DEBUG

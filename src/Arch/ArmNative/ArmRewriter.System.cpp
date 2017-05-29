@@ -103,6 +103,15 @@ void ArmRewriter::RewriteMsr()
 	m.SideEffect(m.Fn(ppp));
 }
 
+void ArmRewriter::RewriteStcl()
+{
+	auto intrinsic = host->EnsurePseudoProcedure("__stcl", BaseType::Word32, 2);
+	m.AddArg(Operand(Dst()));
+	m.AddArg(Operand(Src1()));
+	m.AddArg(Operand(Src2()));
+	m.SideEffect(m.Fn(intrinsic));
+}
+
 const char * ArmRewriter::MemBarrierName(arm_mem_barrier barrier)
 {
 	switch (barrier)
