@@ -138,6 +138,21 @@ void ArmRewriter::RewriteVsqrt()
 	m.Assign(dst, m.Fn(ppp));
 }
 
+void ArmRewriter::RewriteVdup()
+{
+	auto src = this->Operand(Src1());
+	auto dst = this->Operand(Dst());
+	ntf.AddRef();
+	auto dstType = register_types[Dst().reg];
+	auto celem = type_sizes[(int)dstType] / (instr->detail->arm.vector_size / 8);
+	auto arrType = ntf.ArrayOf((HExpr)register_types[Src1().reg], celem);
+	char fnName[20];
+	snprintf(fnName, sizeof(fnName), "__vdup_%d", instr->detail->arm.vector_size);
+	auto intrinsic = host->EnsurePseudoProcedure(fnName, (BaseType) (int)arrType, 1);
+	m.AddArg(src);
+	m.Assign(dst, m.Fn(intrinsic));
+}
+
 void ArmRewriter::RewriteVstr()
 {
 	auto src = this->Operand(Dst());

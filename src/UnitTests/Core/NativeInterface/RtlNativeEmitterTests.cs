@@ -40,13 +40,15 @@ namespace Reko.UnitTests.Core.NativeInterface
         private List<RtlInstruction> instrs;
         private RtlInstructionCluster rtlc;
         private NativeRtlEmitter m;
+        private NativeTypeFactory ntf;
 
         [SetUp]
         public void Setup()
         {
             this.instrs = new List<RtlInstruction>();
             this.rtlc = new RtlInstructionCluster(Address.Ptr32(0x00123400), 4);
-            this.m = new NativeRtlEmitter(new RtlEmitter(instrs), null);
+            this.ntf = new NativeTypeFactory();
+            this.m = new NativeRtlEmitter(new RtlEmitter(instrs), ntf, null);
         }
 
         private void AssertInstructions(string sExp, RtlInstructionCluster rtlc)

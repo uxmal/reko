@@ -46,6 +46,7 @@ namespace Reko.Core.NativeInterface
     public class NativeRtlEmitter : INativeRtlEmitter
     {
         private RtlEmitter m;
+        private NativeTypeFactory ntf;
         private IRewriterHost host;
         private List<Expression> handles;
         private List<Expression> args;
@@ -53,9 +54,10 @@ namespace Reko.Core.NativeInterface
         private RtlClass rtlClass;
         private int instrLength;
 
-        public NativeRtlEmitter(RtlEmitter m, IRewriterHost host)
+        public NativeRtlEmitter(RtlEmitter m, NativeTypeFactory ntf, IRewriterHost host)
         {
             this.m = m;
+            this.ntf = ntf;
             this.host = host;
             this.handles = new List<Expression>();
             this.args = new List<Expression>();

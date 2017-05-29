@@ -64,9 +64,11 @@ namespace Reko.Arch.Arm
             private byte[] bytes;
             private GCHandle hBytes;
             private RtlEmitter m;
+            private NativeTypeFactory ntf;
             private NativeRtlEmitter rtlEmitter;
             private ArmNativeRewriterHost host;
             private IntPtr iRtlEmitter;
+            private IntPtr iNtf;
             private IntPtr iHost;
             private long offset;
 
@@ -77,13 +79,14 @@ namespace Reko.Arch.Arm
                 this.hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
 
                 this.m = new RtlEmitter(new List<RtlInstruction>());
-
-                this.rtlEmitter = new NativeRtlEmitter(m, outer.host);
-                this.host = new ArmNativeRewriterHost(outer.frame, outer.host, rtlEmitter);
+                this.ntf = new NativeTypeFactory();
+                this.rtlEmitter = new NativeRtlEmitter(m, ntf, outer.host);
+                this.host = new ArmNativeRewriterHost(outer.frame, outer.host, this.ntf, rtlEmitter);
 
                 this.iRtlEmitter = GetCOMInterface(rtlEmitter, IID_IRtlEmitter);
+                this.iNtf = GetCOMInterface(ntf, IID_INativeTypeFactory);
                 this.iHost = GetCOMInterface(host, IID_INativeRewriterHost);
-                this.native = CreateNativeRewriter(hBytes.AddrOfPinnedObject(), bytes.Length, (int)outer.rdr.Offset, addr, iRtlEmitter, iHost);
+                this.native = CreateNativeRewriter(hBytes.AddrOfPinnedObject(), bytes.Length, (int)outer.rdr.Offset, addr, iRtlEmitter, iNtf, iHost);
             }
 
             public RtlInstructionCluster Current { get; private set; }
@@ -110,10 +113,14 @@ namespace Reko.Arch.Arm
                 {
                     Marshal.Release(iHost);
                 }
+                if (iNtf != null)
+                {
+                    Marshal.Release(iNtf);
+                }
                 if (iRtlEmitter != null)
                 { 
-                Marshal.Release(iRtlEmitter);
-            }
+                   Marshal.Release(iRtlEmitter);
+                }
                 if (this.hBytes != null && this.hBytes.IsAllocated)
                 {
                     this.hBytes.Free();
@@ -139,13 +146,15 @@ namespace Reko.Arch.Arm
         static ArmRewriterNew()
         {
             IID_INativeRewriterHost = typeof(INativeRewriterHost).GUID;
+            IID_INativeTypeFactory = typeof(INativeTypeFactory).GUID;
             IID_IRtlEmitter = typeof(INativeRtlEmitter).GUID;
         }
 
         private static Guid IID_INativeRewriterHost;
         private static Guid IID_IRtlEmitter;
+        private static Guid IID_INativeTypeFactory;
 
         [DllImport("ArmNative.dll",CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateNativeRewriter")]
-        public static extern INativeRewriter CreateNativeRewriter(IntPtr rawbytes, int length, int offset, ulong address, IntPtr rtlEmitter, IntPtr host);
+        public static extern INativeRewriter CreateNativeRewriter(IntPtr rawbytes, int length, int offset, ulong address, IntPtr rtlEmitter, IntPtr typeFactory, IntPtr host);
     }
 }

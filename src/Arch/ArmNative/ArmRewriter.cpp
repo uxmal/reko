@@ -10,12 +10,14 @@ ArmRewriter::ArmRewriter(
 	size_t availableBytes,
 	uint64_t address,
 	INativeRtlEmitter * emitter,
+	INativeTypeFactory * ntf,
 	INativeRewriterHost * host)
 :
 	rawBytes(rawBytes),
 	available(availableBytes),
 	address(address),
 	m(*emitter),
+	ntf(*ntf),
 	host(host),
 	cRef(1),
 	instr(nullptr)
@@ -241,7 +243,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_UHSAX:
 	case ARM_INS_UHSUB16:
 	case ARM_INS_UHSUB8:
-	case ARM_INS_UMAAL:
 	case ARM_INS_UQADD16:
 	case ARM_INS_UQADD8:
 	case ARM_INS_UQASX:
@@ -287,7 +288,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VCVTN:
 	case ARM_INS_VCVTP:
 	case ARM_INS_VCVTT:
-	case ARM_INS_VDUP:
 	case ARM_INS_VEXT:
 	case ARM_INS_VFMA:
 	case ARM_INS_VFMS:
@@ -516,6 +516,7 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_TEQ: RewriteTeq(); break;
 	case ARM_INS_TST: RewriteTst(); break;
 	case ARM_INS_UBFX: RewriteUbfx(); break;
+	case ARM_INS_UMAAL: RewriteUmaal(); break;
 	case ARM_INS_UMLAL: RewriteUmlal(); break;
 	case ARM_INS_UMULL: RewriteMull(BaseType::UInt64, &INativeRtlEmitter::UMul); break;
 	case ARM_INS_UXTAB: RewriteXtab(BaseType::Byte); break;
@@ -527,6 +528,7 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_VAND: RewriteVecBinOp(&INativeRtlEmitter::And); break;
 	case ARM_INS_VCMP: RewriteVcmp(); break;
 	case ARM_INS_VDIV: RewriteVecBinOp(&INativeRtlEmitter::FDiv); break;
+	case ARM_INS_VDUP: RewriteVdup(); break;
 	case ARM_INS_VEOR: RewriteVecBinOp(&INativeRtlEmitter::Xor); break;
 	case ARM_INS_VLDMIA: RewriteVldmia(); break;
 	case ARM_INS_VLDR: RewriteVldr(); break;

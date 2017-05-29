@@ -136,6 +136,23 @@ public:
 	virtual HExpr STDAPICALLTYPE Fn(HExpr fn) = 0;
 };
 
+class INativeTypeFactory : public IUnknown
+{
+public:
+	virtual HExpr STDAPICALLTYPE ArrayOf(HExpr dt, int32_t length) = 0;
+
+	virtual HExpr STDAPICALLTYPE PtrTo(HExpr dt, int32_t byte_size) = 0;
+
+	virtual void STDAPICALLTYPE BeginStruct(HExpr dt, int32_t byte_size) = 0;
+	virtual void STDAPICALLTYPE Field(HExpr dt, int32_t offset, const char * name) = 0;
+	virtual HExpr STDAPICALLTYPE EndStruct() = 0;
+
+	virtual void STDAPICALLTYPE BeginFunc(HExpr dt, int32_t byte_size) = 0;
+	virtual void STDAPICALLTYPE Parameter(HExpr dt, const char * name) = 0;
+	virtual HExpr STDAPICALLTYPE EndFunc() = 0;
+};
+
+
 class INativeRewriter : public IUnknown
 {
 public:
@@ -153,4 +170,8 @@ public:
 
 	virtual void STDAPICALLTYPE Error(uint64_t uAddress, const char * error) = 0;
 	virtual HExpr STDAPICALLTYPE EnsurePseudoProcedure(const char *name, BaseType retType, int arity) = 0;
+
+	// Type factory methods.
+
+
 };

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2017 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,30 +18,37 @@
  */
 #endregion
 
+using NUnit.Framework;
+using Reko.Core.NativeInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Core.NativeInterface
+namespace Reko.UnitTests.Core.NativeInterface
 {
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    [Guid("22D115E1-E432-4FD1-86D6-F42225063768")]
-    [ComVisible(true)]
-    public interface INativeTypeFactory
+    [TestFixture]
+    public class NativeTypeFactoryTests
     {
-        [PreserveSig] HExpr ArrayOf(HExpr dt, int length);
+        [Test]
+        public void Ntf_array_i32()
+        {
+            var ntf = new NativeTypeFactory();
+            var a = ntf.ArrayOf((HExpr)BaseType.Int32, 4);
+            var arr = ntf.GetRekoType(a);
 
-        [PreserveSig] HExpr PtrTo(HExpr dt, int byte_size);
+            Assert.AreEqual("(arr int32 4)", arr.ToString());
+        }
 
-        [PreserveSig] void BeginStruct(HExpr dt, int byte_size);
-        [PreserveSig] void Field(HExpr dt, int offset, [MarshalAs(UnmanagedType.LPStr)]  string name);
-        [PreserveSig] HExpr EndStruct();
+        [Test]
+        public void Ntf_array_i32_again()
+        {
+            var ntf = new NativeTypeFactory();
+            var a1 = ntf.ArrayOf((HExpr)BaseType.Int32, 4);
 
-        [PreserveSig] void BeginFunc(HExpr dt, int byte_size);
-        [PreserveSig] void Parameter(HExpr dt, [MarshalAs(UnmanagedType.LPStr)] string name);
-        [PreserveSig] HExpr EndFunc();
+            var a2 = ntf.ArrayOf((HExpr)BaseType.Int32, 4);
+            Assert.AreEqual(a1, a2, "expected to get the same handle for the same type");
+        }
     }
 }

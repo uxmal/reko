@@ -1253,9 +1253,9 @@ means
         [Test]
         public void ArmRw_umaal()
         {
-            BuildTest(0xE040a590);  // umaal sl, r0, r0, r5
+            BuildTest(0x3040a590);  // umaal sl, r0, r0, r5
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
+                "0|L--|00100000(4): 4 instructions",
                 "1|L--|sl_r0 = r0 *u r5 + sl + r0");
         }
 
@@ -1314,7 +1314,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|Mem0[r4:word32] = r7",
-                "2|L--|Mem[r4:word32] = r7");
+                "2|L--|r4 = r4 - (r0 << 16)");
         }
 
         [Test]

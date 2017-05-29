@@ -20,6 +20,7 @@ public:
 		size_t length,
 		uint64_t address,
 		INativeRtlEmitter * emitter,
+		INativeTypeFactory * ntf,
 		INativeRewriterHost * host);
 
 	STDMETHOD(QueryInterface)(REFIID iid, void ** ppvOut);
@@ -102,9 +103,11 @@ private:
 	void RewriteSvc();
 	void RewriteUnaryOp(UnaryOpEmitter);
 	void RewriteUbfx();
+	void RewriteUmaal();
 	void RewriteVabs(); 
 	void RewriteVecBinOp(BinOpEmitter);
 	void RewriteVcmp();
+	void RewriteVdup();
 	void RewriteVldmia();
 	void RewriteVldr();
 	void RewriteVmov();
@@ -119,6 +122,7 @@ private:
 
 	csh hcapstone;
 	INativeRtlEmitter & m;
+	INativeTypeFactory & ntf;
 	INativeRewriterHost * host;
 	cs_insn * instr;
 	const uint8_t * rawBytes;

@@ -22,12 +22,15 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
-    public class NativeTypeFactory : INativeTypeFactory
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.None)]
+    public class NativeTypeFactory : MarshalByRefObject, INativeTypeFactory
     {
         private SortedList<DataType,HExpr> handles;
         private SortedList<HExpr, DataType> types;
@@ -44,6 +47,11 @@ namespace Reko.Core.NativeInterface
             }
         }
 
+        public DataType GetRekoType(HExpr a)
+        {
+            return types[a];
+        }
+
         private HExpr MapToHandle(DataType dt)
         {
             HExpr h;
@@ -52,6 +60,7 @@ namespace Reko.Core.NativeInterface
             ++counter;
             h = (HExpr)(handles.Count + counter);
             handles.Add(dt, h);
+            types.Add(h, dt);
             return h;
         }
 

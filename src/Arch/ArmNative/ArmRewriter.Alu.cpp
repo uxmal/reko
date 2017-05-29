@@ -528,6 +528,22 @@ void ArmRewriter::RewriteUbfx()
 	m.Assign(dst, src);
 }
 
+void ArmRewriter::RewriteUmaal()
+{
+	auto tmp = host->CreateTemporary(BaseType::UInt64);
+	auto lo = Operand(Dst());
+	auto hi = Operand(Src1());
+	auto rn = Operand(Src2());
+	auto rm = Operand(Src3());
+	auto dst = host->EnsureSequence(
+		(int)Src1().reg,
+		(int)Dst().reg,
+		BaseType::UInt64);
+	m.Assign(tmp, m.UMul(rn, rm));
+	m.Assign(tmp, m.IAdd(tmp, m.Cast(BaseType::UInt64, hi)));
+	m.Assign(dst, m.IAdd(tmp, m.Cast(BaseType::UInt64, lo)));
+}
+
 void ArmRewriter::RewriteUmlal()
 {
 	auto dst = host->EnsureSequence(

@@ -37,12 +37,14 @@ namespace Reko.Arch.Arm
     {
         private IStorageBinder frame;
         private IRewriterHost host;
+        private NativeTypeFactory ntf;
         private NativeRtlEmitter m;
 
-        public ArmNativeRewriterHost(IStorageBinder frame, IRewriterHost host, NativeRtlEmitter m)
+        public ArmNativeRewriterHost(IStorageBinder frame, IRewriterHost host, NativeTypeFactory ntf, NativeRtlEmitter m)
         {
             this.frame = frame;
             this.host = host;
+            this.ntf = ntf;
             this.m = m;
         }
 
@@ -96,7 +98,7 @@ namespace Reko.Arch.Arm
 
         public HExpr EnsurePseudoProcedure(string name, BaseType dt, int arity)
         {
-            var exp = host.EnsurePseudoProcedure(name, Interop.DataTypes[dt], arity);
+            var exp = host.EnsurePseudoProcedure(name, ntf.GetRekoType((HExpr) dt), arity);
             var pc = new ProcedureConstant(PrimitiveType.Pointer32, exp);
             return m.MapToHandle(pc);
         }

@@ -43,7 +43,7 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr EnsureRegister(int regKind, int reg);
         [PreserveSig] HExpr EnsureSequence(int regHi, int regLo, BaseType size);
         [PreserveSig] HExpr EnsureFlagGroup(int baseReg, int bitmask, [MarshalAs(UnmanagedType.LPStr)] string name, BaseType size);
-        [PreserveSig] HExpr CreateTemporary(BaseType size);
+        [PreserveSig] HExpr CreateTemporary(BaseType type);
         [PreserveSig] void Error(ulong uAddress, [MarshalAs(UnmanagedType.LPStr)] string error);
         [PreserveSig] HExpr EnsurePseudoProcedure([MarshalAs(UnmanagedType.LPStr)] string name, BaseType dt, int arity);
     }
