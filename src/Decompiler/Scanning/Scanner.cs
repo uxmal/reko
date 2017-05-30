@@ -1043,7 +1043,10 @@ namespace Reko.Scanning
             foreach (Procedure_v1 up in Program.User.Procedures.Values)
             {
                 var addr = EnqueueUserProcedure(up);
-                sr.KnownProcedures.Add(addr);
+                if (addr != null)
+                {
+                    sr.KnownProcedures.Add(addr);
+                }
             }
             foreach (ImageSymbol ep in Program.EntryPoints.Values)
             {
