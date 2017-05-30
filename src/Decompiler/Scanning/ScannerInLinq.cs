@@ -105,8 +105,7 @@ namespace Reko.Scanning
         {
             this.sr = sr;
 
-            //sr.WatchedAddresses.Add(Address.Ptr16(0x0608));  
-            //sr.WatchedAddresses.Add(Address.SegPtr(0x0800, 0x176));
+            sr.WatchedAddresses.Add(Address.Ptr32(0x00401084));
 
             // At this point, we have some entries in the image map
             // that are data, and unscanned ranges in betweeen. We
@@ -150,7 +149,8 @@ namespace Reko.Scanning
 
         public ScanResults ScanInstructions(ScanResults sr)
         {
-            var ranges = FindUnscannedRanges();
+            var ranges = FindUnscannedRanges().ToList();
+            DumpRanges(ranges);
             var frame = new StorageBinder();
             var shsc = new ShingledScanner(this.program, this.host, frame, sr, this.eventListener);
             bool unscanned = false;
@@ -176,6 +176,15 @@ namespace Reko.Scanning
             }
             shsc.Dump("After shingle scan graph built");
             return sr;
+        }
+
+        [Conditional("DEBUG")]
+        private void DumpRanges(List<Tuple<MemoryArea, Address, Address>> ranges)
+        {
+            foreach (var range in ranges)
+            {
+                Debug.Print("{0} - {1}", range.Item2, range.Item3);
+            }
         }
 
         [Conditional("DEBUG")]

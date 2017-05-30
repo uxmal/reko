@@ -555,10 +555,37 @@ l068A:
 
 l06A0:
 	rts	pc
-06A2       F7 0B 66 08 16 03 C5 1D 5A 08 F5 8B F0 0E   ..f.....Z.....
-06B0 0F 02 C0 1D 60 08 17 20 08 00 0C 87 C0 65 02 00 ....`.. .....e..
-06C0 35 90 F0 0E F5 95 18 00 F3 0E 37 0A 3E 08 02 01 5.........7.>...
-06D0 C5 0A EC 04 87 00                               ......         
+
+;; fn06A2: 06A2
+fn06A2 proc
+	tst	0866(pc)
+	beq	06D4
+
+l06A8:
+	mov	085A(pc),r5
+
+l06AC:
+	tst	0EF0(r5)
+	bne	06D0
+
+l06B2:
+	mov	0860(pc),r0
+	cmp	r0,#0008
+	bcs	06D4
+
+l06BC:
+	add	#0002,r0
+	movb	r0,0EF0(r5)
+	movb	#0018,0EF3(r5)
+	clr	083E(pc)
+	br	06D4
+
+l06D0:
+	dec	r5
+	bge	06AC
+
+l06D4:
+	rts	pc
 
 ;; fn06D6: 06D6
 fn06D6 proc

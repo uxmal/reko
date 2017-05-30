@@ -7,7 +7,7 @@
 // 00401071: void _GetExceptDLLinfo()
 void _GetExceptDLLinfo()
 {
-	fn004011FC(dwArg00);
+	fn004011FC(dwArg04);
 	return;
 }
 
@@ -82,32 +82,41 @@ void fn00401180()
 // 004011B0: void fn004011B0(Stack word32 dwArg04)
 void fn004011B0(word32 dwArg04)
 {
+	ptr32 esp_24 = fp + ~0x0F;
+	word32 ebx_11 = dwArg04;
 	if (dwArg04 == 0x00 && dwArg04 == 0x00)
+	{
 		fn004011FC(fp - 0x0C);
-	fn00401158();
-	word32 esp_31;
-	word32 ebp_32;
-	byte SCZO_33;
-	word32 ebx_34;
-	byte SZO_35;
-	byte C_36;
-	byte al_37;
-	byte Z_38;
-	word32 eax_39;
-	word32 edx_40;
-	word32 ecx_41;
+		esp_24 = fp + ~0x0B;
+		ebx_11 = dwLoc08;
+	}
+	word32 * esp_25 = esp_24 - 0x04;
+	*esp_25 = 0x9C;
+	*(esp_25 - 0x04) = ebx_11;
+	*(esp_25 - 0x08) = fn00401158();
+	word32 esp_34;
+	word32 ebp_35;
+	byte SCZO_36;
+	word32 ebx_37;
+	byte SZO_38;
+	byte C_39;
+	byte al_40;
+	byte Z_41;
+	word32 eax_42;
+	word32 edx_43;
+	word32 ecx_44;
 	memcpy();
-	word32 esp_45;
-	word32 ebp_46;
-	byte SCZO_47;
-	word32 ebx_48;
-	byte SZO_49;
-	byte C_50;
-	byte al_51;
-	byte Z_52;
-	word32 eax_53;
-	word32 edx_54;
-	word32 ecx_55;
+	word32 esp_48;
+	word32 ebp_49;
+	byte SCZO_50;
+	word32 ebx_51;
+	byte SZO_52;
+	byte C_53;
+	byte al_54;
+	byte Z_55;
+	word32 eax_56;
+	word32 edx_57;
+	word32 ecx_58;
 	_InitTermAndUnexPtrs$qv();
 	return;
 }
