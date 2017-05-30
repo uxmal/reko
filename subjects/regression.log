@@ -170,19 +170,68 @@
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-error: An error occurred during decompilation. System.ArgumentException: Unknown node call fn0387 (retsize: 2; depth: 2).
-   at Reko.Core.Lib.DirectedGraphImpl`1.CreateEdgeCollectionCore(T o, Boolean fSuccessors) in D:\dev\uxmal\reko\master\src\Core\Lib\DirectedGraphImpl.cs:line 160
-   at Reko.Core.Lib.DirectedGraphImpl`1.Successors(T node) in D:\dev\uxmal\reko\master\src\Core\Lib\DirectedGraphImpl.cs:line 234
-   at Reko.Core.CallGraph.Callees(Statement stm) in D:\dev\uxmal\reko\master\src\Core\CallGraph.cs:line 72
-   at Reko.Analysis.RegisterLiveness.PropagateToCalleeExitBlocks(Statement stm) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\RegisterLiveness.cs:line 338
-   at Reko.Analysis.RegisterLiveness.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\RegisterLiveness.cs:line 540
-   at Reko.Core.Code.CallInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 71
-   at Reko.Analysis.RegisterLiveness.ProcessBlock(BlockFlow item) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\RegisterLiveness.cs:line 218
-   at Reko.Analysis.RegisterLiveness.ProcessWorklist() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\RegisterLiveness.cs:line 186
-   at Reko.Analysis.RegisterLiveness.Compute(Program p, ProgramDataFlow procFlow, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\RegisterLiveness.cs:line 90
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 232
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 131
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 137
+fn082F: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 385
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
+   at Reko.Core.Code.InstructionVisitorBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 244
+   at Reko.Core.Expressions.TestCondition.Accept(IExpressionVisitor visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 66
+   at Reko.Core.Code.InstructionVisitorBase.VisitBranch(Branch b) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 74
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Analysis.SsaTransform.LocateDefinedVariables.LocateDefs(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 283
+   at Reko.Analysis.SsaTransform.LocateAllDefinedVariables(Dictionary`2[] defOrig) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 107
+   at Reko.Analysis.SsaTransform.PlacePhiFunctions() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 135
+   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 216
+   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn092A: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
+   at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 145
+   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
+   at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 113
+   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 97
+fn082F: error: An error occurred while rewriting procedure to high-level language.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 208
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+fn08FD: error: An error occurred while rewriting procedure to high-level language.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 208
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+fn092A: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+fn0930: error: An error occurred while rewriting procedure to high-level language.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 208
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+fn0BE4: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+fn106E: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+fn1229: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+fn130B: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
 === redir
 *** redir

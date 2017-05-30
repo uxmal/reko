@@ -2077,8 +2077,7 @@ fn1055 proc
 	call	05CE
 	call	0387
 
-;; fn105E: 105E
-fn105E proc
+l105E:
 	ld	a,(16A8)
 	add	a,5F
 	sub	a,5B
@@ -2098,12 +2097,14 @@ fn106E proc
 	rra
 	jp	nc,1081
 
-l1078:
+;; fn1078: 1078
+fn1078 proc
 	call	045B
 	ld	(16A8),a
 	jp	105E
 
-l1081:
+;; fn1081: 1081
+fn1081 proc
 	call	045B
 	ld	(16A8),a
 
@@ -2369,7 +2370,8 @@ fn1229 proc
 	cp	a,00
 	jp	z,125E
 
-l123C:
+;; fn123C: 123C
+fn123C proc
 	ld	c,3E
 	call	056B
 	ld	c,20
@@ -2512,7 +2514,8 @@ l12F7:
 fn130B proc
 	jp	nc,1311
 
-l130E:
+;; fn130E: 130E
+fn130E proc
 	call	1229
 
 l1311:
