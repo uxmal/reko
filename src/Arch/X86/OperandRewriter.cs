@@ -197,7 +197,7 @@ namespace Reko.Arch.X86
                 eIndex = AluRegister(mem.Index);
                 if (mem.Scale != 0 && mem.Scale != 1)
                 {
-                    eIndex = m.IMul(eIndex, Constant.Create(mem.Width, mem.Scale));
+                    eIndex = m.IMul(eIndex, Constant.Create(mem.Index.DataType, mem.Scale));
                 }
                 expr = m.IAdd(expr, eIndex);
             }

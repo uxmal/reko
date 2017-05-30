@@ -108,7 +108,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             var op = string.Format("{0}{1}", 
                 opcode,
@@ -117,23 +117,23 @@ namespace Reko.Arch.PowerPC
             if (op1 != null)
             {
                 writer.Tab();
-                op1.Write(true, writer);
+                op1.Write(writer, options);
                 if (op2 != null)
                 {
                     writer.Write(',');
-                    op2.Write(true, writer);
+                    op2.Write(writer, options);
                     if (op3 != null)
                     {
                         writer.Write(',');
-                        op3.Write(true, writer);
+                        op3.Write(writer, options);
                         if (op4 != null)
                         {
                             writer.Write(",");
-                            op4.Write(true, writer);
+                            op4.Write(writer, options);
                             if (op5 != null)
                             {
                                 writer.Write(",");
-                                op5.Write(true, writer);
+                                op5.Write(writer, options);
                             }
                         }
                     }
@@ -223,7 +223,7 @@ namespace Reko.Arch.PowerPC
             Address = a;
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteAddress("$" + Address.ToString(), Address);
         }
@@ -238,7 +238,7 @@ namespace Reko.Arch.PowerPC
             this.condition = condition;
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (condition > 3)
                 writer.Write("cr{0}+", condition >> 2);

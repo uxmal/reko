@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core
@@ -34,84 +35,98 @@ namespace Reko.Core
 	/// </summary>
 	public class Dumper
 	{
+        private Program program;
         private IProcessorArchitecture arch;
 
-		public Dumper(IProcessorArchitecture arch)
+		public Dumper(Program program)
 		{
-            this.arch = arch;
+            this.program = program;
+            this.arch = program.Architecture;
 		}
 
         public bool ShowAddresses { get; set; }
         public bool ShowCodeBytes { get; set; }
 
-        public void Dump(Program program, Formatter formatter)
+        public void Dump(Formatter formatter)
         {
             var map = program.SegmentMap;
-            ImageSegment segment = null;
-            foreach (ImageMapItem i in program.ImageMap.Items.Values)
+            var mappedItems =
+                from seg in map.Segments.Values
+                from item in program.ImageMap.Items.Values
+                where seg.IsInRange(item.Address)
+                group new { seg, item } by seg into g
+                orderby g.Key.Address
+                select new { g.Key, Items = g.Select(gg => gg.item) }; 
+
+            foreach (var g in mappedItems)
             {
-                if (!map.IsValidAddress(i.Address))
-                    continue;
-                ImageSegment seg;
-                if (!map.TryFindSegment(i.Address, out seg))
-                    continue;
-                if (seg != segment)
+                formatter.WriteLine(";;; Segment {0} ({1})", g.Key.Name, g.Key.Address);
+                if (g.Key.Designer != null)
                 {
-                    segment = seg;
-                    formatter.WriteLine(";;; Segment {0} ({1})", seg.Name, seg.Address);
-                }
-
-                ImageMapBlock block = i as ImageMapBlock;
-                if (block != null)
-                {
-                    formatter.WriteLine();
-                    Procedure proc;
-                    if (program.Procedures.TryGetValue(block.Address, out proc))
-                    {
-                        formatter.WriteComment(string.Format(
-                            ";; {0}: {1}", proc.Name, block.Address));
-                        formatter.WriteLine();
-
-                        formatter.Write(proc.Name);
-                        formatter.Write(" ");
-                        formatter.Write("proc");
-                        formatter.WriteLine();
-                    }
-                    else
-                    {
-                        formatter.Write(block.Block.Name);
-                        formatter.Write(":");
-                        formatter.WriteLine();
-                    }
-                    DumpAssembler(program.SegmentMap, block.Address, block.Address + block.Size, formatter);
-                    continue;
-                }
-
-                ImageMapVectorTable table = i as ImageMapVectorTable;
-                if (table != null)
-                {
-                    formatter.WriteLine(";; Code vector at {0} ({1} bytes)",
-                        table.Address, table.Size);
-                    foreach (Address addr in table.Addresses)
-                    {
-                        formatter.WriteLine("\t{0}", addr != null ? addr.ToString() : "-- null --");
-                    }
-                    DumpData(program.SegmentMap, i.Address, i.Size, formatter);
+                    g.Key.Designer.Render(g.Key, program, new AsmCommentFormatter(formatter));
                 }
                 else
                 {
-                    var segLast = segment.Address + segment.Size;
-                    var size = segLast - i.Address;
-                    size = Math.Min(i.Size, size);
-                    if (i.DataType == null || i.DataType is UnknownType ||
-                        i.DataType is CodeType)
+                    foreach (var item in g.Items)
                     {
-                        DumpData(program.SegmentMap, i.Address, size, formatter);
+                        DumpItem(g.Key, item, formatter);
                     }
-                    else
-                    {
-                        DumpTypedData(program.SegmentMap, i, formatter);
-                    }
+                }
+            }
+        }
+
+        private void DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter)
+        {
+            ImageMapBlock block = i as ImageMapBlock;
+            if (block != null)
+            {
+                formatter.WriteLine();
+                Procedure proc;
+                if (program.Procedures.TryGetValue(block.Address, out proc))
+                {
+                    formatter.WriteComment(string.Format(
+                        ";; {0}: {1}", proc.Name, block.Address));
+                    formatter.WriteLine();
+
+                    formatter.Write(proc.Name);
+                    formatter.Write(" ");
+                    formatter.Write("proc");
+                    formatter.WriteLine();
+                }
+                else
+                {
+                    formatter.Write(block.Block.Name);
+                    formatter.Write(":");
+                    formatter.WriteLine();
+                }
+                DumpAssembler(program.SegmentMap, block.Address, block.Address + block.Size, formatter);
+                return;
+            }
+
+            ImageMapVectorTable table = i as ImageMapVectorTable;
+            if (table != null)
+            {
+                formatter.WriteLine(";; Code vector at {0} ({1} bytes)",
+                    table.Address, table.Size);
+                foreach (Address addr in table.Addresses)
+                {
+                    formatter.WriteLine("\t{0}", addr != null ? addr.ToString() : "-- null --");
+                }
+                DumpData(program.SegmentMap, i.Address, i.Size, formatter);
+            }
+            else
+            {
+                var segLast = segment.Address + segment.Size;
+                var size = segLast - i.Address;
+                size = Math.Min(i.Size, size);
+                if (i.DataType == null || i.DataType is UnknownType ||
+                    i.DataType is CodeType)
+                {
+                    DumpData(program.SegmentMap, i.Address, size, formatter);
+                }
+                else
+                {
+                    DumpTypedData(program.SegmentMap, i, formatter);
                 }
             }
         }
@@ -245,21 +260,40 @@ namespace Reko.Core
                 }
             }
             writer.Write("\t");
-            instr.Render(writer);
+            writer.Address = addrBegin;
+            writer.Address = instr.Address;
+            instr.Render(writer, MachineInstructionWriterOptions.None);
             writer.WriteLine();
             return true;
         }
 
-        private void DumpTypedData(SegmentMap map, ImageMapItem item, Formatter stm)
+        private void DumpTypedData(SegmentMap map, ImageMapItem item, Formatter w)
         {
             ImageSegment segment;
             if (!map.TryFindSegment(item.Address, out segment) || segment.MemoryArea == null)
                 return;
-            stm.Write(Block.GenerateName(item.Address));
-            stm.Write("\t");
+            WriteLabel(item.Address, w);
 
             var rdr = arch.CreateImageReader(segment.MemoryArea, item.Address);
-            item.DataType.Accept(new TypedDataDumper(rdr, item.Size, stm));
+            item.DataType.Accept(new TypedDataDumper(rdr, item.Size, w));
+        }
+
+        private void WriteLabel(Address addr, Formatter w)
+        {
+            ImageSymbol sym;
+            if (program.ImageSymbols.TryGetValue(addr, out sym) &&
+             !string.IsNullOrEmpty(sym.Name))
+            {
+                w.Write(sym.Name);
+                w.Write("\t\t; {0}",addr);
+
+                w.WriteLine();
+            }
+            else
+            {
+                w.Write(Block.GenerateName(addr));
+            }
+            w.Write("\t");
         }
 
         public void WriteByteRange(MemoryArea image, Address begin, Address addrEnd, InstrWriter writer)
@@ -281,6 +315,7 @@ namespace Reko.Core
             }
 
             public IPlatform Platform { get; private set; }
+            public Address Address { get; set; }
 
             public void Tab()
             {
@@ -320,6 +355,96 @@ namespace Reko.Core
             public void WriteLine()
             {
                 formatter.WriteLine();
+            }
+        }
+
+        class AsmCommentFormatter : Formatter
+        {
+            private Formatter w;
+            private bool needPrefix;
+
+            public AsmCommentFormatter(Formatter w)
+            {
+                this.w = w;
+                this.needPrefix = true;
+            }
+
+            public override void Terminate()
+            {
+                WritePrefix();
+                w.Terminate();
+            }
+
+            public override Formatter Write(char ch)
+            {
+                WritePrefix();
+                return w.Write(ch);
+            }
+
+            public override void Write(string s)
+            {
+                WritePrefix();
+                w.Write(s);
+            }
+
+            public override void Write(string format, params object[] arguments)
+            {
+                WritePrefix();
+                w.Write(format, arguments);
+            }
+
+            public override void WriteComment(string comment)
+            {
+                WritePrefix();
+                w.WriteComment(comment);
+            }
+
+            public override void WriteHyperlink(string text, object href)
+            {
+                WritePrefix();
+                w.WriteHyperlink(text, href);
+            }
+
+            public override void WriteKeyword(string keyword)
+            {
+                WritePrefix();
+                w.WriteKeyword(keyword);
+            }
+
+            public override void WriteLine()
+            {
+                WritePrefix();
+                w.WriteLine();
+                needPrefix = true;
+            }
+
+            public override void WriteLine(string s)
+            {
+                WritePrefix();
+                w.WriteLine(s);
+                needPrefix = true;
+            }
+
+            public override void WriteLine(string format, params object[] arguments)
+            {
+                WritePrefix();
+                w.WriteLine(format, arguments);
+                needPrefix = true;
+            }
+
+            public override void WriteType(string typeName, DataType dt)
+            {
+                WritePrefix();
+                w.WriteType(typeName, dt);
+            }
+
+            private void WritePrefix()
+            {
+                if (needPrefix)
+                {
+                    w.Write("; ");
+                    needPrefix = false;
+                }
             }
         }
     }

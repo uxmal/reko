@@ -21,21 +21,39 @@
 using Reko.Arch.Pdp11;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Output;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Reko.UnitTests.Arch.Pdp11
 {
     [TestFixture]   
     public class DisassemblerTests
     {
+        private MachineInstructionWriterOptions options;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.options = MachineInstructionWriterOptions.None;
+        }
+
         private void RunTest(string expected, params ushort[] words)
         {
             var instr = RunTest(words);
-            Assert.AreEqual(expected, instr.ToString());
+            var r = new StringRenderer();
+            r.Address = instr.Address;
+            instr.Render(r, options);
+            Assert.AreEqual(expected, r.ToString());
+        }
+
+        private void Given_ResolvePcRelativeAddress()
+        {
+            this.options = MachineInstructionWriterOptions.ResolvePcRelativeAddress;
         }
 
         private MachineInstruction RunTest(params ushort [] words)
@@ -195,6 +213,26 @@ namespace Reko.UnitTests.Arch.Pdp11
         public void Pdp11dis_f()
         {
             RunTest("stcdi\tac4,@-(r4)", 0xFBAC);
+        }
+
+        [Test]
+        public void Pdp11dis_clr_pcrel_deferred()
+        {
+            RunTest("clr\t@0010(pc)", 0x0A3F, 0x0010);
+        }
+
+        [Test]
+        public void Pdp11dis_clr_pcrel_deferred_resolveAddress()
+        {
+            Given_ResolvePcRelativeAddress();
+            RunTest("clr\t@(0214)", 0x0A3F, 0x0010);
+        }
+
+        [Test]
+        public void Pdp11dis_clr_pcrel_resolveAddress()
+        {
+            Given_ResolvePcRelativeAddress();
+            RunTest("clr\t@#0214", 0x0A37, 0x0010);
         }
     }
 }

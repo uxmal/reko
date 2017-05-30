@@ -49,6 +49,10 @@ namespace Reko.Core
             return GetEnumerator();
         }
 
+        /// <summary>
+        /// Disassemble a single instruction. Return null if the end of the reader has been reached
+        /// </summary>
+        /// <returns></returns>
         public abstract TInstr DisassembleInstruction();
 
         public void Dispose()

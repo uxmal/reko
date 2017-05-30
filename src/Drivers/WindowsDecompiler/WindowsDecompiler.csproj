@@ -161,6 +161,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\NeoGeo\NeoGeoPocket.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
@@ -182,6 +183,8 @@
     <Architectures Include="$(SolutionDir)Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
     <Architectures Include="$(SolutionDir)Arch\RiscV\$(OutDir)Reko.Arch.RiscV.*" />
     <Architectures Include="$(SolutionDir)Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
+    <Architectures Include="$(SolutionDir)Arch\SuperH\$(OutDir)Reko.Arch.SuperH.*" />
+    <Architectures Include="$(SolutionDir)Arch\Tlcs\$(OutDir)Reko.Arch.Tlcs.*" />
     <Architectures Include="$(SolutionDir)Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
     <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.*" />
     <Architectures Include="$(SolutionDir)Arch\X86.Design\$(OutDir)Reko.Arch.X86.Design.*" />
@@ -195,6 +198,7 @@
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\$(OutDir)Reko.ImageLoaders.Elf.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Reko.ImageLoaders.Hunk.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\IntelHex\$(OutDir)Reko.ImageLoaders.IntelHex.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Llvm\$(OutDir)Reko.ImageLoaders.LLVM.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\$(OutDir)Reko.ImageLoaders.OdbgScript.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\$(OutDir)Reko.ImageLoaders.VmsExe.*" />
@@ -202,9 +206,11 @@
     <Environments Include="$(SolutionDir)Environments\AmigaOS.Design\$(OutDir)Reko.Environments.AmigaOS.Design.*" />
     <Environments Include="$(SolutionDir)Environments\C64\$(OutDir)Reko.Environments.C64.*" />
     <Environments Include="$(SolutionDir)Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />
+    <Environments Include="$(SolutionDir)Environments\Dreamcast\$(OutDir)Reko.Environments.Dreamcast.*" />
     <Environments Include="$(SolutionDir)Environments\MacOS\$(OutDir)Reko.Environments.MacOS.*" />
     <Environments Include="$(SolutionDir)Environments\Msdos\$(OutDir)Reko.Environments.Msdos.*" />
     <Environments Include="$(SolutionDir)Environments\Msdos.Design\$(OutDir)Reko.Environments.Msdos.Design.*" />
+    <Environments Include="$(SolutionDir)Environments\NeoGeo\$(OutDir)Reko.Environments.NeoGeo.*" />
     <Environments Include="$(SolutionDir)Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
     <Environments Include="$(SolutionDir)Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
     <Environments Include="$(SolutionDir)Environments\RT11\$(OutDir)Reko.Environments.RT11.*" />

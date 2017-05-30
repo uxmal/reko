@@ -1130,8 +1130,9 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Run32bitTest(0x0F, 0x44, 0xC8);
             AssertCode(
-                "0|L--|10000000(3): 1 instructions",
-                "1|L--|if (Test(EQ,Z)) ecx = eax");
+                "0|L--|10000000(3): 2 instructions",
+                "1|T--|if (Test(NE,Z)) branch 10000003",
+                "2|L--|ecx = eax");
         }
 
         [Test]
@@ -1431,11 +1432,29 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Run32bitTest(0xF7, 0x7C, 0x24, 0x04);       // idiv [esp+04]
             AssertCode(
-                  "0|L--|10000000(4): 4 instructions",
-                  "1|L--|v5 = edx_eax",
-                  "2|L--|edx = (int32) (v5 % Mem0[esp + 0x00000004:word32])",
-                  "3|L--|eax = (int32) (v5 / Mem0[esp + 0x00000004:word32])",
-                  "4|L--|SCZO = cond(eax)");
+                "0|L--|10000000(4): 4 instructions",
+                "1|L--|v5 = edx_eax",
+                "2|L--|edx = (int32) (v5 % Mem0[esp + 0x00000004:word32])",
+                "3|L--|eax = (int32) (v5 / Mem0[esp + 0x00000004:word32])",
+                "4|L--|SCZO = cond(eax)");
+        }
+
+        [Test(Description = "Regression reported by @mewmew")]
+        public void X86rw_regression1()
+        {
+            Run32bitTest(0xDB, 0x7C, 0x47, 0x83);       // fst [esi-0x7D + eax*2]
+            AssertCode(
+                "0|L--|10000000(4): 1 instructions",
+                "1|L--|Mem0[edi - 0x0000007D + eax * 0x00000002:real80] = (real80) rArg0");
+        }
+
+        [Test]
+        public void X86rw_fdivr()
+        {
+            Run32bitTest(0xDC, 0x3D, 0x78, 0x56, 0x34, 0x12); // fdivr [12345678]
+            AssertCode(
+                "0|L--|10000000(6): 1 instructions",
+                "1|L--|rArg0 = Mem0[0x12345678:real64] / rArg0");
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Reko.Gui
         {
             var codeSvc = sp.GetService<ICodeViewerService>();
             if (codeSvc != null)
-                codeSvc.DisplayProcedure(program, Procedure);
+                codeSvc.DisplayProcedure(program, Procedure, program.NeedsScanning);
         }
         #endregion
 

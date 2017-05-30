@@ -73,7 +73,8 @@ def execute_command_file(dir, scr_name):
         if len(exe_and_args) <= 1:
             continue
         exe_and_args[0] = reko_cmdline
-        execute_command(exe_and_args, exe_and_args[1])
+        # Assumes the binary's name is the last item on the command line.
+        execute_command(exe_and_args, exe_and_args[-1])
 
 def execute_command(exe_and_args, pname):
     if sys.platform == "linux2":

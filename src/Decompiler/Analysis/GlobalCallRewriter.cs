@@ -138,7 +138,7 @@ namespace Reko.Analysis
 			if (proc.Signature != null && proc.Signature.ParametersValid)
 				return;
 
-			var sb = new SignatureBuilder(proc, Program.Architecture);
+			var sb = new SignatureBuilder(proc.Frame, Program.Architecture);
 			var frame = proc.Frame;
 			if (flow.grfLiveOut != 0)
 			{

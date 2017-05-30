@@ -126,8 +126,10 @@ namespace Reko
                 eventListener.ShowStatus("Performing interprocedural analysis.");
                 var ir = new ImportResolver(project, program, eventListener);
                 var dfa = new DataFlowAnalysis(program, ir, eventListener);
-                dfa.UntangleProcedures();
-
+                if (program.NeedsSsaTransform)
+                {
+                    dfa.UntangleProcedures();
+                }
                 dfa.BuildExpressionTrees();
                 host.WriteIntermediateCode(program, writer => { EmitProgram(program, dfa, writer); });
             }
@@ -138,8 +140,8 @@ namespace Reko
         {
             if (wr == null || program.Architecture == null)
                 return;
-            Dumper dump = new Dumper(program.Architecture);
-            dump.Dump(program, wr);
+            Dumper dump = new Dumper(program);
+            dump.Dump(wr);
         }
 
         private void EmitProgram(Program program, DataFlowAnalysis dfa, TextWriter output)
@@ -148,7 +150,7 @@ namespace Reko
                 return;
             foreach (Procedure proc in program.Procedures.Values)
             {
-                if (dfa != null)
+                if (program.NeedsSsaTransform && dfa != null)
                 {
                     ProcedureFlow flow = dfa.ProgramDataFlow[proc];
                     TextFormatter f = new TextFormatter(output);
@@ -164,7 +166,8 @@ namespace Reko
                     {
                         if (block == null)
                             continue;
-                        block.Write(output); output.Flush();
+                        block.Write(output);
+
                         BlockFlow bf = dfa.ProgramDataFlow[block];
                         if (bf != null)
                         {
@@ -299,7 +302,7 @@ namespace Reko
 		/// <param name="ivs"></param>
         public void ReconstructTypes()
         {
-            foreach (var program in Project.Programs)
+            foreach (var program in Project.Programs.Where(p => p.NeedsTypeReconstruction))
             {
                 TypeAnalyzer analyzer = new TypeAnalyzer(eventListener);
                 try
@@ -407,6 +410,8 @@ namespace Reko
 
         private void ScanProgram(Program program)
         {
+            if (!program.NeedsScanning)
+                return;
             try
             {
                 eventListener.ShowStatus("Rewriting reachable machine code.");

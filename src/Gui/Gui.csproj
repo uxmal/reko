@@ -226,6 +226,7 @@
     <Compile Include="Windows\CheckBoxWrapper.cs" />
     <Compile Include="Windows\CfgGraphGenerator.cs" />
     <Compile Include="Windows\CodeViewerServiceImpl.cs" />
+    <Compile Include="Windows\CodeViewInteractor.cs" />
     <Compile Include="Windows\CombinedCodeViewInteractor.cs" />
     <Compile Include="Windows\ComboBoxWrapper.cs" />
     <Compile Include="Windows\Controls\ByteMapView.cs">

@@ -96,6 +96,22 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\SuperH\SuperH.csproj">
+      <Name>SuperH</Name>
+      <Project>{fc3aa408-b2b1-4b40-b29d-9ebb46aa8b33}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Tlcs\Tlcs.csproj">
+      <Name>Tlcs</Name>
+      <Project>{b15c2937-0fb8-4f3b-8b84-bee861dc841b}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Vax\Vax.csproj">
       <Name>Vax</Name>
       <Project>{82777964-b370-431a-ac97-733c594c02b5}</Project>
@@ -219,6 +235,14 @@
     <ProjectReference Include="..\Environments\Cpm\Cpm.csproj">
       <Name>Cpm</Name>
       <Project>{a1376626-5207-41a9-a77b-11ddb9f534d1}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\Dreamcast\Dreamcast.csproj">
+      <Name>Dreamcast</Name>
+      <Project>{908b208a-becc-42ad-8253-a167ec40b20b}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

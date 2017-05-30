@@ -139,7 +139,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             codeViewSvc.Stub(s => s.DisplayProcedure(
                 Arg<Program>.Is.Anything,
-                Arg<Procedure>.Matches(proc => proc.Name == "foo_proc")));
+                Arg<Procedure>.Matches(proc => proc.Name == "foo_proc"),
+                Arg<bool>.Is.Equal(true)));
             mr.ReplayAll();
 
             Given_Interactor();

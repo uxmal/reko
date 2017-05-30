@@ -90,8 +90,8 @@ namespace Reko.UnitTests.Arch.Intel
 			DoRewriteFile("Fragments/multiple/calltables.asm");
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwCallTable.txt"))
 			{
-				Dumper dump = new Dumper(program.Architecture);
-				dump.Dump(program, new TextFormatter(fut.TextWriter));
+				Dumper dump = new Dumper(program);
+				dump.Dump(new TextFormatter(fut.TextWriter));
 				fut.TextWriter.WriteLine();
 				program.CallGraph.Write(fut.TextWriter);
 

@@ -564,14 +564,14 @@ namespace Reko.Arch.Arm
             if (link)
             {
                 ric.Class = RtlClass.Transfer;
-                if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
+                if (instr.ArchitectureDetail.CodeCondition != ArmCodeCondition.AL)
                 {
-                    m.Call(dst, 0);
+                    m.BranchInMiddleOfInstruction(
+                        TestCond(instr.ArchitectureDetail.CodeCondition).Invert(),
+                        Address.Ptr32((uint)(instr.Address + instr.Bytes.Length)),
+                        RtlClass.ConditionalTransfer);
                 }
-                else
-                {
-                    m.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlCall(dst, 0, RtlClass.Transfer));
-                }
+                m.Call(dst, 0);
             }
             else
             {
@@ -590,7 +590,11 @@ namespace Reko.Arch.Arm
                     }
                     else
                     {
-                        m.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlGoto(dst, RtlClass.ConditionalTransfer));
+                        m.BranchInMiddleOfInstruction(
+                            TestCond(instr.ArchitectureDetail.CodeCondition).Invert(),
+                            Address.Ptr32((uint)(instr.Address + instr.Bytes.Length)),
+                            RtlClass.ConditionalTransfer);
+                        m.Goto(dst, RtlClass.Transfer);
                     }
                 }
             }
@@ -605,19 +609,18 @@ namespace Reko.Arch.Arm
         {
             if (instr.ArchitectureDetail.CodeCondition != ArmCodeCondition.AL)
             {
-                rtlInstr = new RtlIf(TestCond(instr.ArchitectureDetail.CodeCondition), rtlInstr);
+                m.BranchInMiddleOfInstruction(
+                    TestCond(instr.ArchitectureDetail.CodeCondition).Invert(),
+                    Address.Ptr32((uint)(instr.Address + instr.Bytes.Length)),
+                    RtlClass.ConditionalTransfer);
             }
-            ric.Instructions.Add(rtlInstr);
+            m.Emit(rtlInstr);
         }
 
         private void ConditionalAssign(Expression dst, Expression src)
         {
             RtlInstruction rtlInstr = new RtlAssignment(dst, src);
-            if (instr.ArchitectureDetail.CodeCondition != ArmCodeCondition.AL)
-            {
-                rtlInstr = new RtlIf(TestCond(instr.ArchitectureDetail.CodeCondition), rtlInstr);
-            }
-            ric.Instructions.Add(rtlInstr);
+            AddConditional(rtlInstr);
         }
 
         // If a conditional ARM instruction is encountered, generate an IL

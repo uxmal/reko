@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Environments.Msdos
             Given_Procedure();
             var ax = proc.Frame.EnsureRegister(Registers.ax);
             var arg06 = proc.Frame.EnsureStackArgument(6, PrimitiveType.Word16);
-            var sb = new SignatureBuilder(proc, arch);
+            var sb = new SignatureBuilder(proc.Frame, arch);
             sb.AddOutParam(ax);
             sb.AddInParam(arg06);
             var sig = sb.BuildSignature();
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Environments.Msdos
             Given_Procedure();
             var dx_ax = proc.Frame.EnsureSequence(Registers.dx, Registers.ax, PrimitiveType.Word32);
             var arg06 = proc.Frame.EnsureStackArgument(6, PrimitiveType.Word16);
-            var sb = new SignatureBuilder(proc, arch);
+            var sb = new SignatureBuilder(proc.Frame, arch);
             sb.AddOutParam(dx_ax);
             sb.AddInParam(arg06);
             var sig = sb.BuildSignature();

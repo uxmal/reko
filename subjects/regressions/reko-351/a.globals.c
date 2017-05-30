@@ -5,7 +5,7 @@
 #include "a.h"
 
 <anonymous> * g_ptr8000270C = &g_tFFFFFFFF;
-Eq_322 g_a80002714[] = 
+Eq_324 g_a80002714[] = 
 	{
 	};
 word32 g_dw8000271C = 0x00000000;

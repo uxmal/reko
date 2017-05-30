@@ -164,6 +164,7 @@
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\NeoGeo\NeoGeoPocket.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SegaGenesis\SegaGenesis.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SysV\lp32.xml" />
@@ -184,6 +185,8 @@
     <Architectures Include="$(ProjectDir)..\..\Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\RiscV\$(OutDir)Reko.Arch.RiscV.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
+    <Architectures Include="$(ProjectDir)..\..\Arch\SuperH\$(OutDir)Reko.Arch.SuperH.*" />
+    <Architectures Include="$(ProjectDir)..\..\Arch\Tlcs\$(OutDir)Reko.Arch.Tlcs.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\X86\$(OutDir)Reko.Arch.X86.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Xtensa\$(OutDir)Reko.Arch.Xtensa.*" />
@@ -195,15 +198,18 @@
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\Elf\$(OutDir)Reko.ImageLoaders.Elf.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\Hunk\$(OutDir)Reko.ImageLoaders.Hunk.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\IntelHex\$(OutDir)Reko.ImageLoaders.IntelHex.*" />
+    <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\Llvm\$(OutDir)Reko.ImageLoaders.LLVM.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\OdbgScript\$(OutDir)Reko.ImageLoaders.OdbgScript.*" />
     <ImageLoaders Include="$(Projectdir)..\..\ImageLoaders\VmsExe\$(OutDir)Reko.ImageLoaders.VmsExe.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\AmigaOS\$(OutDir)Reko.Environments.AmigaOS.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\C64\$(OutDir)Reko.Environments.C64.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />
+    <Environments Include="$(ProjectDir)..\..\Environments\Dreamcast\$(OutDir)Reko.Environments.Dreamcast.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\MacOS\$(OutDir)Reko.Environments.MacOS.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Msdos\$(OutDir)Reko.Environments.Msdos.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Msdos.Design\$(OutDir)Reko.Environments.Msdos.Design.*" />
+    <Environments Include="$(ProjectDir)..\..\Environments\NeoGeo\$(OutDir)Reko.Environments.NeoGeo.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\RT11\$(OutDir)Reko.Environments.RT11.*" />

@@ -40,7 +40,7 @@ namespace Reko.Arch.Sparc
             this.Offset = offset;
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.Write("[%{0}", Base.Name);
             if (!Offset.IsNegative)
@@ -63,7 +63,7 @@ namespace Reko.Arch.Sparc
             this.Index = r2;
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.Write("[%{0}+%{1}]", Base, Index);
         }

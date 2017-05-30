@@ -265,10 +265,14 @@ namespace Reko.Arch.X86
 
         private void RewriteConditionalMove(ConditionCode cc, MachineOperand dst, MachineOperand src)
         {
+            var test = CreateTestCondition(cc, instrCur.code).Invert();
+            emitter.BranchInMiddleOfInstruction(
+                test,
+                instrCur.Address + instrCur.Length,
+                RtlClass.ConditionalTransfer);
             var opSrc = SrcOp(src);
             var opDst = SrcOp(dst);
-            var test = CreateTestCondition(cc, instrCur.code);
-            emitter.If(test, new RtlAssignment(opDst, opSrc));
+            emitter.Assign(opDst, opSrc);
         }
 
         private void RewriteCmp()

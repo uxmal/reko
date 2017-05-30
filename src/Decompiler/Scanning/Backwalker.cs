@@ -33,24 +33,24 @@ using System.Linq;
 
 namespace Reko.Scanning
 {
-	/// <summary>
-	/// Walks code backwards to find "dominating" comparisons against constants,
-	/// which may provide vector table limits.
-	/// </summary>
+    /// <summary>
+    /// Walks code backwards to find "dominating" comparisons against constants,
+    /// which may provide vector table limits.
+    /// </summary>
     /// <remarks>
     /// This is a godawful hack; a proper range analysis would be much
     /// better. Have a spare few months?
     /// </remarks>
-	public class Backwalker
-	{
+    public class Backwalker
+    {
         private IBackWalkHost host;
         private ExpressionSimplifier eval;
         private Identifier UsedAsFlag;
 
         private static TraceSwitch trace = new TraceSwitch("BackWalker", "Traces the progress backward instruction walking");
 
-		public Backwalker(IBackWalkHost host, RtlTransfer xfer, ExpressionSimplifier eval)
-		{
+        public Backwalker(IBackWalkHost host, RtlTransfer xfer, ExpressionSimplifier eval)
+        {
             this.host = host;
             this.eval = eval;
             var target = xfer.Target;
@@ -77,7 +77,7 @@ namespace Reko.Scanning
         /// </summary>
         public RegisterStorage Index { get; private set; }
         public Expression IndexExpression { get; set; }
-        public Identifier UsedFlagIdentifier { get; set; } 
+        public Identifier UsedFlagIdentifier { get; set; }
         public int Stride { get; private set; }
         public Address VectorAddress { get; private set; }
         public List<BackwalkOperation> Operations { get; private set; }
@@ -160,9 +160,9 @@ namespace Reko.Scanning
                         }
                     }
                     if (Index != null &&
-                        binSrc.Operator == Operator.Xor && 
-                        binSrc.Left == ass.Dst && 
-                        binSrc.Right == ass.Dst && 
+                        binSrc.Operator == Operator.Xor &&
+                        binSrc.Left == ass.Dst &&
+                        binSrc.Right == ass.Dst &&
                         RegisterOf(ass.Dst) == host.GetSubregister(Index, 8, 8))
                     {
                         Operations.Add(new BackwalkOperation(BackwalkOperator.and, 0xFF));
@@ -189,11 +189,12 @@ namespace Reko.Scanning
                     if ((grfDef & grfUse) == 0)
                         return true;
                     var binCmp = cof.Expression as BinaryExpression;
-                    if (binCmp != null && 
+                    binCmp = NegateRight(binCmp);
+                    if (binCmp != null &&
                         (binCmp.Operator is ISubOperator ||
                          binCmp.Operator is USubOperator))
                     {
-                        var idLeft = RegisterOf(binCmp.Left  as Identifier);
+                        var idLeft = RegisterOf(binCmp.Left as Identifier);
                         if (idLeft != null &&
                             (idLeft == Index || idLeft == host.GetSubregister(Index, 0, 8)) ||
                            (IndexExpression != null && IndexExpression.ToString() == idLeft.ToString()))    //$HACK: sleazy, but we don't appear to have an expression comparer
@@ -226,8 +227,8 @@ namespace Reko.Scanning
                     src = castSrc.Expression;
                 var memSrc = src as MemoryAccess;
                 var regDst = RegisterOf(ass.Dst);
-                if (memSrc != null && 
-                    (regDst == Index || 
+                if (memSrc != null &&
+                    (regDst == Index ||
                      (Index != null && regDst != null && regDst.Name != "None" && regDst.IsSubRegisterOf(Index))))
                 {
                     // R = Mem[xxx]
@@ -255,7 +256,7 @@ namespace Reko.Scanning
                     {
                         var mOff = memOffset.ToInt32();
                         if (mOff > 0x200)
-                        { 
+                        {
                             Operations.Add(new BackwalkDereference(memOffset.ToInt32(), scale));
                             Index = baseReg;
                             return true;
@@ -305,6 +306,22 @@ namespace Reko.Scanning
 
             Debug.WriteLine("Backwalking not supported: " + instr);
             return true;
+        }
+
+        private BinaryExpression NegateRight(BinaryExpression bin)
+        {
+            Constant cRight;
+            if (bin != null &&
+                (bin.Operator == Operator.IAdd) &&
+                bin.Right.As(out cRight))
+            {
+                return new BinaryExpression(
+                    Operator.ISub,
+                    bin.Left.DataType,
+                    bin.Left,
+                    cRight.Negate());
+            }
+            return bin;
         }
 
         private RegisterStorage RegisterOf(Expression e)
@@ -528,7 +545,7 @@ namespace Reko.Scanning
                         add ? BackwalkOperator.add : BackwalkOperator.sub,
                         immSrc.ToInt32()));
                 }
-				return regIdx;
+				return ropSrc;
 			}
 			else
 				return null;

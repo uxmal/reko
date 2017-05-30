@@ -29,6 +29,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Windows.Forms
 {
@@ -70,9 +71,10 @@ namespace Reko.Gui.Windows.Forms
                     status.Status = CanAdvance 
                         ? MenuStatus.Visible | MenuStatus.Enabled
                         : MenuStatus.Visible;
-                    text.Text = Resources.ScanBinaries;
+                    text.Text = NeedsScanning() 
+                        ? Resources.ScanBinaries 
+                        : Resources.AnalyzeDataflow;
                     return true;
-
                 }
             }
             return base.QueryStatus(cmdId, status, text);
@@ -96,13 +98,18 @@ namespace Reko.Gui.Windows.Forms
             return (Decompiler != null);
         }
 
+        /// <summary>
+        /// Open the specified file.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns>True if the opened file was a Reko project.</returns>
         public bool OpenBinary(string file)
         {
             var ldr = Services.RequireService<ILoader>();
             this.Decompiler = CreateDecompiler(ldr);
-            IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
+            var svc = Services.RequireService<IWorkerDialogService>();
             bool isOldProject = false;
-            svc.StartBackgroundWork("Loading program", delegate()
+            svc.StartBackgroundWork("Loading program", delegate ()
             {
                 isOldProject = Decompiler.Load(file);
             });
@@ -110,11 +117,7 @@ namespace Reko.Gui.Windows.Forms
                 return false;
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);
-            if (Decompiler.Project.Programs.Count > 0)
-            {
-                var memSvc = Services.RequireService<ILowLevelViewService>();
-                memSvc.ViewImage(Decompiler.Project.Programs.First());
-            }
+            ShowLowLevelWindow();
             return isOldProject;
         }
 
@@ -132,12 +135,17 @@ namespace Reko.Gui.Windows.Forms
             });
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);
-            if (Decompiler.Project.Programs.Count > 0)
+            ShowLowLevelWindow();
+            return false;   // We never open projects this way.
+        }
+
+        private void ShowLowLevelWindow()
+        {
+            if (Decompiler.Project.Programs.Any(p => p.NeedsScanning))
             {
                 var memSvc = Services.RequireService<ILowLevelViewService>();
-                memSvc.ViewImage(Decompiler.Project.Programs.First());
+                memSvc.ViewImage(Decompiler.Project.Programs.First(p => p.NeedsScanning));
             }
-            return false;   // We never open projects this way.
         }
 
         public bool Assemble(string file, Assembler asm)
@@ -153,13 +161,16 @@ namespace Reko.Gui.Windows.Forms
                 return false;
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);
-            if (Decompiler.Project.Programs.Count > 0)
-            {
-                var memSvc = Services.RequireService<ILowLevelViewService>();
-                memSvc.ViewImage(Decompiler.Project.Programs.First());
-            }
+            ShowLowLevelWindow();
             return false;
         }
 
+        private bool NeedsScanning()
+        {
+            return
+                Decompiler != null &&
+                Decompiler.Project != null &&
+                Decompiler.Project.Programs.Any(p => p.NeedsScanning);
+        }
     }
 }

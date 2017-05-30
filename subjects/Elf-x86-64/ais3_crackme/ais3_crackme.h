@@ -81,7 +81,7 @@ Eq_267: (fn void ())
 	T_267 (in _init : ptr64)
 	T_268 (in signature of _init : void)
 Eq_300: (union "Eq_300" (word32 u0) ((ptr code) u1))
-	T_300 (in 0x0000000000600DF8[rbx_47 * 0x00000008] : word32)
+	T_300 (in 0x0000000000600DF8[rbx_47 * 0x0000000000000008] : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -1271,15 +1271,15 @@ T_297: (in 0000000000600DF8 : ptr64)
   Class: Eq_297
   DataType: (ptr (arr Eq_300))
   OrigDataType: (ptr (struct (0 (arr T_304) a0000)))
-T_298: (in 0x00000008 : word32)
+T_298: (in 0x0000000000000008 : word64)
   Class: Eq_298
-  DataType: ui32
-  OrigDataType: ui32
-T_299: (in rbx_47 * 0x00000008 : word64)
+  DataType: ui64
+  OrigDataType: ui64
+T_299: (in rbx_47 * 0x0000000000000008 : word64)
   Class: Eq_299
   DataType: ui64
   OrigDataType: ui64
-T_300: (in 0x0000000000600DF8[rbx_47 * 0x00000008] : word32)
+T_300: (in 0x0000000000600DF8[rbx_47 * 0x0000000000000008] : word32)
   Class: Eq_300
   DataType: Eq_300
   OrigDataType: (union (word32 u0) ((ptr code) u1))

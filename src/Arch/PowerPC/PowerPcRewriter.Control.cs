@@ -86,14 +86,18 @@ namespace Reko.Arch.PowerPC
             }
             if (toLinkRegister)
             {
+                emitter.BranchInMiddleOfInstruction(
+                    emitter.Test(cc, cr).Invert(),
+                    instr.Address + instr.Length,
+                    RtlClass.ConditionalTransfer);
                 var dst = frame.EnsureRegister(arch.lr);
                 if (updateLinkregister)
                 {
-                    emitter.If(emitter.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
+                    emitter.Call(dst, 0);
                 }
                 else
                 {
-                    emitter.If(emitter.Test(cc, cr), new RtlReturn(0, 0, RtlClass.Transfer));
+                    emitter.Return(0, 0);
                 }
             }
             else
@@ -101,7 +105,11 @@ namespace Reko.Arch.PowerPC
                 var dst = RewriteOperand(ccrOp != null ? instr.op2 : instr.op1);
                 if (updateLinkregister)
                 {
-                    emitter.If(emitter.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
+                    emitter.BranchInMiddleOfInstruction(
+                        emitter.Test(cc, cr).Invert(),
+                        instr.Address + instr.Length,
+                        RtlClass.ConditionalTransfer);
+                    emitter.Call(dst, 0);
                 }
                 else
                 {
@@ -154,9 +162,11 @@ namespace Reko.Arch.PowerPC
             emitter.Assign(ctr, emitter.ISub(ctr, 1));
             if (updateLinkRegister)
             {
-                emitter.If(
-                    cond,
-                    new RtlCall(dest, 0, RtlClass.ConditionalTransfer));
+                emitter.BranchInMiddleOfInstruction(
+                    cond.Invert(),
+                    instr.Address + instr.Length,
+                    RtlClass.ConditionalTransfer);
+                emitter.Call(dest, 0);
             }
             else
             {

@@ -401,5 +401,30 @@ namespace Reko.UnitTests.Arch.Intel
 ";
             Assert.AreEqual(sExp, sig.ToString("test", FunctionType.EmitFlags.AllDetails));
         }
+
+        [Test(Description = "Do not overrride user-defined stack delta")]
+        public void ProcSer_Load_UserDefinedStackDelta()
+        {
+            var ssig = new SerializedSignature
+            {
+                StackDelta = 12,
+                Arguments = new Argument_v1[] {
+                    new Argument_v1
+                    {
+                        Name = "arg",
+                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 },
+                    }
+                }
+            };
+            Given_ProcedureSerializer(ssig.Convention);
+            mr.ReplayAll();
+
+            var sig = ser.Deserialize(ssig, arch.CreateFrame());
+            var sExp =
+@"void foo(Stack int32 arg)
+// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            Assert.AreEqual(sExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
+        }
     }
 }

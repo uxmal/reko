@@ -84,6 +84,11 @@ namespace Reko.Evaluation
             return new Cast(cast.DataType, exp);
         }
 
+        public Expression VisitConditionalExpression(ConditionalExpression c)
+        {
+            throw new NotImplementedException();
+        }
+
         public Expression VisitConditionOf(ConditionOf cof)
         {
             var exp = cof.Expression.Accept(this);

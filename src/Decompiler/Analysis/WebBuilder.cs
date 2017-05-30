@@ -146,9 +146,9 @@ namespace Reko.Analysis
 			PhiFunction phi = p.Src;
 			for (int i = 0; i < phi.Arguments.Length; ++i)
 			{
-				Identifier id = (Identifier) phi.Arguments[i];
+                Identifier id = phi.Arguments[i] as Identifier;
 				Block pred = stmCur.Block.Pred[i];
-				if (id != idDst)
+				if (id != null && id != idDst)
 					Merge(webOf[idDst], webOf[id]);
 			}
 		}

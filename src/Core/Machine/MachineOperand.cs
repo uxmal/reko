@@ -43,17 +43,17 @@ namespace Reko.Core.Machine
 
         public sealed override string ToString()
         {
-            return ToString(false);
+            return ToString(MachineInstructionWriterOptions.None);
         }
 
-		public string ToString(bool fExplicit)
+		public string ToString(MachineInstructionWriterOptions options)
 		{
             var sr = new StringRenderer();
-            Write(fExplicit, sr);
+            Write(sr, options);
 			return sr.ToString();
 		}
 
-        public abstract void Write(bool fExplicit, MachineInstructionWriter writer);
+        public abstract void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options);
 
 		public static string FormatSignedValue(Constant c)
 		{
@@ -119,7 +119,7 @@ namespace Reko.Core.Machine
 			value = c;
 		}
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             var s = FormatValue(value);
             var pt = value.DataType as PrimitiveType;
@@ -228,7 +228,7 @@ namespace Reko.Core.Machine
             return new AddressOperand(Address.Ptr64(a), PrimitiveType.Pointer64);
         }
 
-        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteAddress(Address.ToString(), Address);
         }
@@ -251,8 +251,8 @@ namespace Reko.Core.Machine
 			get { return fpuReg; }
 		}
 
-		public override void Write(bool fExplicit, MachineInstructionWriter writer)
-		{
+		public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
 			writer.Write("st(" + fpuReg + ")");
 		}
 	}

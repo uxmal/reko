@@ -140,7 +140,7 @@ namespace Reko.UnitTests.Arch.Avr
             AssertCode("jmp\t00420000", 0x950D, 0x0000);
             AssertCode("call\t00440000", 0x951E, 0x0000);
             AssertCode("call\t007F2468", 0x95FF, 0x9234);
-        }
+    }
 
         [Test]
         public void Avr8_dis_cpi()
