@@ -64,6 +64,12 @@ namespace Reko.Core
             this.Resources = new ProgramResourceGroup();
             this.User = new UserData();
             this.GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
+            // Most binary images don't have procedure information left.
+            this.NeedsScanning = true;
+            // Most binary images are not in SSA form.
+            this.NeedsSsaTransform = true;
+            // Most binary images have no type information.
+            this.NeedsTypeReconstruction = true;
         }
 
         public Program(SegmentMap segmentMap, IProcessorArchitecture arch, IPlatform platform) : this()
@@ -128,6 +134,9 @@ namespace Reko.Core
 
         public StructureType GlobalFields { get; private set; }
 
+        /// <summary>
+        /// Default encoding to use when interpreting sequences of bytes as text.
+        /// </summary>
         public Encoding TextEncoding
         {
             get
@@ -138,10 +147,40 @@ namespace Reko.Core
             }
         }
 
+        /// <summary>
+        /// Image loaders can tell the Reko decompiler whether scanning is 
+        /// needed to discover the procedures and basic blocks of the source 
+        /// binary. If this property is set to false, the image loader will
+        /// have populated the Procedures collection with the IR code of all
+        /// the procedures of the binary.
+        /// </summary>
+        [DefaultValue(true)]
+        public bool NeedsScanning { get; set; }
+
+        /// <summary>
+        /// Image loaders can tell the Reko decompiler whether the procedures
+        /// in the Procedures collection require SSA analysis or just a simple
+        /// graph generation.
+        /// </summary>
+        /// <remarks>
+        /// Some formats, like LLVM IR, are already in SSA form, so an SSA
+        /// analysis is redundant. Note that if this property is false, it
+        /// implies that the NeedsScanning property must also be false.
+        /// </remarks>
+        [DefaultValue(true)]
+        public bool NeedsSsaTransform { get; set; }
+
+        /// <summary>
+        /// Some image formats have detailed type information that makes Reko's
+        /// type inference unnecessary.
+        /// </summary>
+        [DefaultValue(true)]
+        public bool NeedsTypeReconstruction { get; set; }
+
         private void EnsureGlobals()
         {
-            if (Architecture == null)
-                throw new InvalidOperationException("The program's Architecture property must be set before accessing the Globals property.");
+            if (Platform == null)
+                throw new InvalidOperationException("The program's Platform property must be set before accessing the Globals property.");
             var ptrGlobals = TypeFactory.CreatePointer(GlobalFields, Platform.PointerType.Size);
             globals = new Identifier("globals", ptrGlobals, new MemoryStorage());
         }
@@ -279,6 +318,7 @@ namespace Reko.Core
             this.GlobalsFilename = GlobalsFilename ?? Path.ChangeExtension(fileName, ".globals.c");
         }
        
+        // Convenience functions.
         public EndianImageReader CreateImageReader(Address addr)
         {
             ImageSegment segment;
@@ -341,6 +381,8 @@ namespace Reko.Core
         /// </summary>
         public void BuildImageMap()
         {
+            if (!this.NeedsScanning)
+                return;
             this.ImageMap = SegmentMap.CreateImageMap();
             foreach (var sym in this.ImageSymbols.Values.Where(
                 s => s.Type == SymbolType.Data && s.Size != 0))

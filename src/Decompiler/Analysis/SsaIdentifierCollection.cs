@@ -43,7 +43,7 @@ namespace Reko.Analysis
 			}
 			else
 			{
-				idNew = (Identifier)idOld;
+				idNew = idOld;
 			}
 			var sid = new SsaIdentifier(idNew, idOld, stmDef, exprDef, isSideEffect);
 			sids.Add(idNew, sid);

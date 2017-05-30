@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Gui.Windows
             mr.ReplayAll();
 
             var codeViewerSvc = new CodeViewerServiceImpl(sc);
-            codeViewerSvc.DisplayProcedure(program, m.Procedure);
+            codeViewerSvc.DisplayProcedure(program, m.Procedure, true);
 
             uiSvc.VerifyAllExpectations();
         }

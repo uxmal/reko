@@ -91,13 +91,21 @@
     <Compile Include="Arch\RiscV\RiscVRewriterTests.cs" />
     <Compile Include="Arch\SuperH\SuperHDisassemblerTests.cs" />
     <Compile Include="Arch\SuperH\SuperHRewriterTests.cs" />
+    <Compile Include="Arch\Tlcs\Tlcs900DisassemblerTests.cs" />
+    <Compile Include="Arch\Tlcs\Tlcs900RewriterTests.cs" />
+    <Compile Include="Arch\Tlcs\Tlcs90DisassemblerTests.cs" />
+    <Compile Include="Arch\Tlcs\Tlcs90RewriterTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaDisassemblerTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaRewriterTests.cs" />
     <Compile Include="Core\Analysis\PyArgFormatParserTests.cs" />
     <Compile Include="Core\Analysis\ScanfFormatParserTests.cs" />
     <Compile Include="Core\DumperTests.cs" />
+    <Compile Include="Core\IRFormat\IRParserTests.cs" />
     <Compile Include="Core\NativeInterface\NativeTypeFactoryTests.cs" />
     <Compile Include="Core\NativeInterface\RtlNativeEmitterTests.cs" />
+    <Compile Include="Core\Output\IRFormatterTests.cs" />
+    <Compile Include="Core\Output\JsonFormatterTests.cs" />
+    <Compile Include="Core\Output\LlvmFormatterTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
     <Compile Include="Environments\SysV\Arm32ProcedureSerializerTests.cs" />
@@ -106,6 +114,9 @@
     <Compile Include="Environments\Windows\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Fragments\FCmpFragment.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
+    <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />
+    <Compile Include="ImageLoaders\Llvm\LlvmParserTests.cs" />
+    <Compile Include="ImageLoaders\Llvm\ProgramBuilderTests.cs" />
     <Compile Include="Mocks\FakeTypeDeserializer.cs" />
     <Compile Include="Core\Analysis\PyBuildValueFormatParserTests.cs" />
     <Compile Include="Mocks\SsaProcedureBuilder.cs" />
@@ -631,6 +642,10 @@
       <Project>{fc3aa408-b2b1-4b40-b29d-9ebb46aa8b33}</Project>
       <Name>SuperH</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Tlcs\Tlcs.csproj">
+      <Project>{B15C2937-0FB8-4F3B-8B84-BEE861DC841B}</Project>
+      <Name>Tlcs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Vax\Vax.csproj">
       <Project>{82777964-b370-431a-ac97-733c594c02b5}</Project>
       <Name>Vax</Name>
@@ -722,6 +737,10 @@
     <ProjectReference Include="..\ImageLoaders\IntelHex\IntelHex.csproj">
       <Project>{72641087-68D2-41E7-9B29-BC9D4213940A}</Project>
       <Name>IntelHex</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\Llvm\LLVM.csproj">
+      <Project>{9292f9e7-2ce7-470d-b5f0-72d775720bc0}</Project>
+      <Name>LLVM</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\MachO\MachO.csproj">
       <Project>{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}</Project>

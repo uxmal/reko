@@ -388,6 +388,22 @@ namespace Reko.Evaluation
             return cast;
         }
 
+        public virtual Expression VisitConditionalExpression(ConditionalExpression c)
+        {
+            var cond = c.Condition.Accept(this);
+            var t = c.ThenExp.Accept(this);
+            var f = c.FalseExp.Accept(this);
+            var cCond = cond as Constant;
+            if (cCond!= null && cCond.DataType == PrimitiveType.Bool)
+            {
+                if (cCond.IsZero)
+                    return f;
+                else
+                    return t;
+            }
+            return new ConditionalExpression(c.DataType, cond, t, f);
+        }
+
         public virtual Expression VisitConditionOf(ConditionOf c)
         {
             var e = c.Expression.Accept(this);
@@ -428,7 +444,8 @@ namespace Reko.Evaluation
 
         public virtual Expression VisitDereference(Dereference deref)
         {
-            throw new NotImplementedException();
+            var e = deref.Expression.Accept(this);
+            return new Dereference(deref.DataType, e);
         }
 
         public virtual Expression VisitFieldAccess(FieldAccess acc)

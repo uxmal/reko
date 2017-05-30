@@ -77,14 +77,7 @@ namespace Reko.Analysis
 
                 try
                 {
-                    var larw = new LongAddRewriter(proc, program.Architecture);
-                    larw.Transform();
-
-                    Aliases alias = new Aliases(proc, program.Architecture, flow);
-                    alias.Transform();
-
-                    var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
-                    var sst = new SsaTransform(flow, proc, importResolver, doms, new HashSet<RegisterStorage>());
+                    var sst = BuildSsaTransform(proc);
                     var ssa = sst.SsaState;
 
                     var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
@@ -153,7 +146,29 @@ namespace Reko.Analysis
 			}
 		}
 
-		public void DumpProgram()
+        private SsaTransform BuildSsaTransform(Procedure proc)
+        {
+            if (program.NeedsSsaTransform)
+            {
+                var larw = new LongAddRewriter(proc, program.Architecture);
+                larw.Transform();
+
+                var alias = new Aliases(proc, program.Architecture, flow);
+                alias.Transform();
+
+                var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
+                var sst = new SsaTransform(flow, proc, importResolver, doms, new HashSet<RegisterStorage>());
+                return sst;
+            }
+            else
+            {
+                // We are assuming phi functions are already generated.
+                var sst = new SsaTransform(proc);
+                return sst;
+            }
+        }
+
+        public void DumpProgram()
 		{
 			foreach (Procedure proc in program.Procedures.Values)
 			{

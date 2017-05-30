@@ -160,7 +160,12 @@ namespace Reko.Typing
 			cast.Expression.Accept(this);
 		}
 
-		public void VisitConditionOf(ConditionOf cond)
+        public void VisitConditionalExpression(ConditionalExpression c)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void VisitConditionOf(ConditionOf cond)
 		{
 			throw new NotImplementedException();
 		}

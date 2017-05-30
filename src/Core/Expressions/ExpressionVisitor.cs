@@ -34,7 +34,8 @@ namespace Reko.Core.Expressions
 		void VisitArrayAccess(ArrayAccess acc);
 		void VisitBinaryExpression(BinaryExpression binExp);
 		void VisitCast(Cast cast);
-		void VisitConditionOf(ConditionOf cof);
+        void VisitConditionalExpression(ConditionalExpression cond);
+        void VisitConditionOf(ConditionOf cof);
 		void VisitConstant(Constant c);
 		void VisitDepositBits(DepositBits d);
 		void VisitDereference(Dereference deref);
@@ -61,6 +62,7 @@ namespace Reko.Core.Expressions
         T VisitArrayAccess(ArrayAccess acc);
         T VisitBinaryExpression(BinaryExpression binExp);
         T VisitCast(Cast cast);
+        T VisitConditionalExpression(ConditionalExpression cond);
         T VisitConditionOf(ConditionOf cof);
         T VisitConstant(Constant c);
         T VisitDepositBits(DepositBits d);
@@ -88,6 +90,7 @@ namespace Reko.Core.Expressions
         T VisitArrayAccess(ArrayAccess acc, C ctx);
         T VisitBinaryExpression(BinaryExpression binExp, C ctx);
         T VisitCast(Cast cast, C ctx);
+        T VisitConditionalExpression(ConditionalExpression c, C context);
         T VisitConditionOf(ConditionOf cof, C ctx);
         T VisitConstant(Constant c, C ctx);
         T VisitDepositBits(DepositBits d, C ctx);
@@ -142,7 +145,14 @@ namespace Reko.Core.Expressions
 			cast.Expression.Accept(this);
 		}
 
-		public void VisitConditionOf(ConditionOf cof)
+        public void VisitConditionalExpression(ConditionalExpression cond)
+        {
+            cond.Condition.Accept(this);
+            cond.ThenExp.Accept(this);
+            cond.FalseExp.Accept(this);
+        }
+
+        public void VisitConditionOf(ConditionOf cof)
 		{
 			cof.Expression.Accept(this);
 		}
@@ -265,6 +275,11 @@ namespace Reko.Core.Expressions
         }
 
         public virtual T VisitCast(Cast cast)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitConditionalExpression(ConditionalExpression cond)
         {
             throw new NotImplementedException();
         }

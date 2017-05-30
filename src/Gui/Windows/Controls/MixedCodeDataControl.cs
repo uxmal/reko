@@ -50,10 +50,10 @@ namespace Reko.Gui.Windows.Controls
             get { return program; }
             set
             {
-                if (program != null)
+                if (program != null && program.ImageMap != null)
                     program.ImageMap.MapChanged -= ImageMap_MapChanged;
                 program = value;
-                if (program != null)
+                if (program != null && program.ImageMap != null) 
                     program.ImageMap.MapChanged += ImageMap_MapChanged;
                 ProgramChanged.Fire(this);
             }

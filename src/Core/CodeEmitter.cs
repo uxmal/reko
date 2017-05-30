@@ -81,9 +81,9 @@ namespace Reko.Core
             Assign(reg, new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, reg.DataType));
         }
 
-        public Statement Phi(Identifier idDst, params Identifier[] ids)
+        public Statement Phi(Identifier idDst, params Expression[] exprs)
         {
-            return Emit(new PhiAssignment(idDst, new PhiFunction(idDst.DataType, ids)));
+            return Emit(new PhiAssignment(idDst, new PhiFunction(idDst.DataType, exprs)));
         }
 
         public virtual void Return()
