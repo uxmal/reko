@@ -280,9 +280,10 @@ namespace Reko.CmdLine
                 }
                 else if (args[i] == "--heuristic")
                 {
-                    if (!string.IsNullOrEmpty(args[i]))
+                    if (i < args.Length-1 && !string.IsNullOrEmpty(args[i+1]))
                     {
-                        parsedArgs["heuristics"] = args[i].Split(',');
+                        parsedArgs["heuristics"] = args[i+1].Split(',');
+                        ++i;
                     }
                 }
                 else if (arg.StartsWith("-"))

@@ -1098,7 +1098,6 @@ namespace Reko.Scanning
                 {
                     var addrProc = rtlProc.Entry.Address;
                     TerminateAnyBlockAt(addrProc);
-                    EnsureProcedure(addrProc, null);
                     EnqueueProcedure(addrProc);
                 }
                 ProcessQueue();

@@ -193,6 +193,7 @@ namespace Reko.Scanning
                 clusters.Add(cluster);
 
                 BuildWCC(node, cluster, nodesLeft);
+                sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
             }
             return clusters;
         }
@@ -254,6 +255,7 @@ namespace Reko.Scanning
                 if (listener.IsCanceled())
                     break;
                 FuseLinearBlocks(cluster);
+                sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
                 if (FindClusterEntries(cluster))
                 {
                     procs.AddRange(PostProcessCluster(cluster));

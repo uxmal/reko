@@ -103,8 +103,6 @@ namespace Reko.Scanning
             while (rtlStream.MoveNext())
             {
                 this.ric = rtlStream.Current;
-                if (ric.Address.ToString().EndsWith(":3D5A"))//$DEBUG
-                    ric.ToString();
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;  // Fell off the end of this block.
                 if (!ProcessRtlCluster(ric))

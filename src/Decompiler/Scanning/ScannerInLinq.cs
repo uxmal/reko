@@ -50,8 +50,6 @@ namespace Reko.Scanning
             this.eventListener = eventListener;
         }
 
-     
-
         #region Simulate binary
         public void SimulateBinary(int binary_size)
         {
@@ -106,6 +104,9 @@ namespace Reko.Scanning
         public ScanResults ScanImage(ScanResults sr)
         {
             this.sr = sr;
+
+            //sr.WatchedAddresses.Add(Address.Ptr16(0x0608));  
+            //sr.WatchedAddresses.Add(Address.SegPtr(0x0800, 0x176));
 
             // At this point, we have some entries in the image map
             // that are data, and unscanned ranges in betweeen. We
@@ -180,6 +181,7 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         public void Probe(ScanResults sr)
         {
+            sr.BreakOnWatchedAddress(sr.ICFG.Nodes.Select(n => n.Address));
         }
 
         /// <summary>

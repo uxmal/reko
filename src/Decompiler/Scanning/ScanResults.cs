@@ -42,6 +42,7 @@ namespace Reko.Scanning
             this.IndirectCalls = new HashSet<Address>();
             this.IndirectJumps = new HashSet<Address>();
             this.Procedures = new List<RtlProcedure>();
+            this.WatchedAddresses = new HashSet<Address>();
         }
 
         /// <summary>
@@ -112,9 +113,16 @@ namespace Reko.Scanning
         /// </summary>
         public HashSet<Address> IndirectCalls;
 
+        /// <summary>
+        /// Useful for debugging.
+        /// </summary>
+        public HashSet<Address> WatchedAddresses;
+
         [Conditional("DEBUG")]
         public void Dump(string caption = "Dump")
         {
+            BreakOnWatchedAddress(ICFG.Nodes.Select(n => n.Address));
+
             return;     // This is horribly verbose, so only use it when debugging unit tests.
             Debug.Print("== {0} =====================", caption);
             Debug.Print("{0} nodes", ICFG.Nodes.Count);
@@ -192,6 +200,12 @@ namespace Reko.Scanning
             public Address id;
             public Address component_id;
             internal instr[] instrs;
+        }
+
+        [Conditional("DEBUG")]
+        public void BreakOnWatchedAddress(IEnumerable<Address> enumerable)
+        {
+            var hits = enumerable.Intersect(this.WatchedAddresses).ToArray();
         }
     }
 }
