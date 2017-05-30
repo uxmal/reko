@@ -65,7 +65,6 @@ namespace Reko.Typing
                 {
                     if (eventListener.IsCanceled())
                         return;
-                    Debug.Print("{0:X8} {1}", stm.LinearAddress, stm.Instruction);
                     try
                     {
                         stm.Instruction = stm.Instruction.Accept(this);
@@ -74,6 +73,8 @@ namespace Reko.Typing
                     {
                         Debug.WriteLine(
                             string.Format("Exception in TypedExpressionRewriter.RewriteProgram: {0} ({1})\r\n{2}", proc, ex.Message, ex.StackTrace));
+                        // reset flags after error
+                        dereferenced = false;
                     }
                 }
             }

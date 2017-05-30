@@ -45,22 +45,22 @@ namespace Reko.Tools.C2Xml.UnitTests
                 base.PointerType = PrimitiveType.Pointer32;
             }
 
-            public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+            public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
             {
                 throw new NotImplementedException();
             }
 
-            public override ImageReader CreateImageReader(MemoryArea img, ulong off)
+            public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
             {
                 throw new NotImplementedException();
             }
 
-            public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+            public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
             {
                 throw new NotImplementedException();
             }
 
-            public override ImageReader CreateImageReader(MemoryArea img, Address addr)
+            public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
             {
                 throw new NotImplementedException();
             }
@@ -80,7 +80,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
-            public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+            public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
             {
                 throw new NotImplementedException();
             }
@@ -90,7 +90,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
-            public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+            public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
             {
                 throw new NotImplementedException();
             }
@@ -135,7 +135,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
-            public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+            public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
             {
                 throw new NotImplementedException();
             }

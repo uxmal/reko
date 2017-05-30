@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Gui.Design
             des.Services = services;
             var codeSvc = mr.StrictMock<ICodeViewerService>();
             Given_Service<ICodeViewerService>(codeSvc);
-            codeSvc.Expect(c => c.DisplayProcedure(program, proc));
+            codeSvc.Expect(c => c.DisplayProcedure(program, proc, true));
             mr.ReplayAll();
 
             des.DoDefaultAction();

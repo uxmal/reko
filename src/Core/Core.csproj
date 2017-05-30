@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <ProjectGuid>{5C315C78-1F97-4B16-81AA-917284969DFE}</ProjectGuid>
@@ -36,7 +36,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
@@ -56,6 +56,8 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -71,6 +73,7 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
     <OutputPath>bin\TravisRelease\</OutputPath>
@@ -82,6 +85,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System">
@@ -197,6 +201,8 @@
     <Compile Include="Configuration\TypeLibraryElement.cs" />
     <Compile Include="Configuration\UiPreferencesConfiguration.cs" />
     <Compile Include="Configuration\UiStyleElement.cs" />
+    <Compile Include="Endianess.cs" />
+    <Compile Include="EndianImageReader.cs" />
     <Compile Include="EnumerableEx.cs" />
     <Compile Include="EvaluationContext.cs" />
     <Compile Include="EventEx.cs" />
@@ -204,6 +210,7 @@
     <Compile Include="Expressions\ArrayAccess.cs" />
     <Compile Include="Expressions\BinaryExpression.cs" />
     <Compile Include="Expressions\Cast.cs" />
+    <Compile Include="Expressions\ConditionalExpression.cs" />
     <Compile Include="Expressions\ConditionCode.cs" />
     <Compile Include="Expressions\ConditionOf.cs" />
     <Compile Include="Expressions\Constant.cs" />
@@ -227,8 +234,14 @@
     <Compile Include="Expressions\TestCondition.cs" />
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="FieldAttribute.cs" />
+    <Compile Include="ImageReader.cs" />
     <Compile Include="ImageSymbol.cs" />
     <Compile Include="Analysis\IVarargsFormatParser.cs" />
+    <Compile Include="IRFormat\IRFormatLexer.cs" />
+    <Compile Include="IRFormat\IRFormatParser.cs" />
+    <Compile Include="IRFormat\IRProcedureBuilder.cs" />
+    <Compile Include="IRFormat\IRToken.cs" />
+    <Compile Include="IStorageBinder.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />
     <Compile Include="Lib\SuffixArray.cs" />
@@ -237,8 +250,13 @@
     <Compile Include="Lib\UbjsonWriter.cs" />
     <Compile Include="Lib\WildPatternMatcher.cs" />
     <Compile Include="Operators\FNegOperator.cs" />
+    <Compile Include="Output\IRFormatter.cs" />
+    <Compile Include="Output\JsonFormatter.cs" />
+    <Compile Include="Output\JsonWriter.cs" />
+    <Compile Include="Output\LlvmFormatter.cs" />
     <Compile Include="Output\CTypeReferenceFormatter.cs" />
     <Compile Include="Rational.cs" />
+    <Compile Include="Rtl\RtlIf.cs" />
     <Compile Include="SegmentMap.cs" />
     <Compile Include="Serialization\ArgumentDeserializer.cs" />
     <Compile Include="Serialization\GlobalDataItem_v2.cs" />
@@ -294,7 +312,6 @@
     <Compile Include="Rtl\RtlCall.cs" />
     <Compile Include="Rtl\RtlEmitter.cs" />
     <Compile Include="Rtl\RtlGoto.cs" />
-    <Compile Include="Rtl\RtlIf.cs" />
     <Compile Include="Rtl\RtlInstruction.cs" />
     <Compile Include="Rtl\RtlInstructionMatcher.cs" />
     <Compile Include="Rtl\RtlInstructionVisitor.cs" />
@@ -412,9 +429,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ImageMapVectorTable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ImageReader.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ImageWriter.cs" />
@@ -594,6 +608,7 @@
     <Compile Include="Services\IUnpackerService.cs" />
     <Compile Include="SignatureBuilder.cs" />
     <Compile Include="StatementCorrelatedException.cs" />
+    <Compile Include="StorageBinder.cs" />
     <Compile Include="StructureReader.cs" />
     <Compile Include="TypedDataDumper.cs" />
     <Compile Include="TypeLibrary.cs">

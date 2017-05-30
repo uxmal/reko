@@ -10,4 +10,9 @@
       <terminates>true</terminates>
     </characteristics>
   </entry>
+  <entry name="__assert_fail">
+    <characteristics>
+      <terminates>true</terminates>
+    </characteristics>
+  </entry>
 </characteristics>

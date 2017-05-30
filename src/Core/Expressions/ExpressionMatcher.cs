@@ -131,6 +131,9 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitArrayAccess(ArrayAccess acc)
         {
+            var arrayP = p as ArrayAccess;
+            if (arrayP == null)
+                return false;
             throw new NotImplementedException();
         }
 
@@ -151,6 +154,18 @@ namespace Reko.Core.Expressions
             return 
                 castP != null &&
                 Match(castP.Expression, cast.Expression);
+        }
+
+        bool ExpressionVisitor<bool>.VisitConditionalExpression(ConditionalExpression cond)
+        {
+            var condP = p as ConditionalExpression;
+            if (condP == null)
+                return false;
+            if (!Match(condP.Condition, cond.Condition))
+                return false;
+            if (!Match(condP.ThenExp, cond.ThenExp))
+                return false;
+            return Match(condP.FalseExp, cond.FalseExp);
         }
 
         bool ExpressionVisitor<bool>.VisitConditionOf(ConditionOf cof)
@@ -289,6 +304,9 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitSlice(Slice slice)
         {
+            var slicePat = p as Slice;
+            if (slicePat == null)
+                return false;
             throw new NotImplementedException();
         }
 

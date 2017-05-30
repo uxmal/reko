@@ -37,6 +37,8 @@ namespace Reko.Arch.Arm
 {
     public class Arm32ProcessorArchitecture : ProcessorArchitecture
     {
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public Arm32ProcessorArchitecture()
         {
             InstructionBitSize = 32;
@@ -44,26 +46,27 @@ namespace Reko.Arch.Arm
             PointerType = PrimitiveType.Pointer32;
             WordWidth = PrimitiveType.Word32;
             StackRegister = A32Registers.sp;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         #region IProcessorArchitecture Members
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new Arm32Disassembler(this, imageReader);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
         {
             return new LeImageReader(image, addrBegin, addrEnd);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
+        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -80,7 +83,7 @@ namespace Reko.Arch.Arm
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new Arm32InstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()
@@ -88,12 +91,12 @@ namespace Reko.Arch.Arm
             return new ArmProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame, host);
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             if (flags != PointerScannerFlags.Calls)
@@ -150,7 +153,10 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            throw new NotImplementedException();
+            if (offset == 0 || (ulong) width != reg.BitSize)
+                return null;
+            else
+                return reg;
         }
 
         public override Address MakeAddressFromConstant(Constant c)
@@ -165,9 +171,17 @@ namespace Reko.Arch.Arm
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
-        }
+            FlagGroupStorage f;
+            if (flagGroups.TryGetValue(grf, out f))
+            {
+                return f;
+            }
 
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(A32Registers.cpsr, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
+        }
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
@@ -181,7 +195,7 @@ namespace Reko.Arch.Arm
                          dataType);
         }
 
-        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }

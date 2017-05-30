@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.ImageLoaders.Elf</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.Elf</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -95,6 +95,7 @@
     <Compile Include="Relocators\PpcRelocator.cs" />
     <Compile Include="Relocators\RiscVRelocator.cs" />
     <Compile Include="Relocators\SparcRelocator.cs" />
+    <Compile Include="Relocators\SuperHRelocator.cs" />
     <Compile Include="Relocators\x86Relocator.cs" />
     <Compile Include="Relocators\x86_64Relocator.cs" />
     <Compile Include="Relocators\XtensaRelocator.cs" />

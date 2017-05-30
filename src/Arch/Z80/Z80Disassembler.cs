@@ -34,11 +34,11 @@ namespace Reko.Arch.Z80
     /// </summary>
     public class Z80Disassembler : DisassemblerBase<Z80Instruction>
     {
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private RegisterStorage IndexRegister;
         private Z80Instruction instr;
 
-        public Z80Disassembler(ImageReader rdr)
+        public Z80Disassembler(EndianImageReader rdr)
         {
             this.rdr = rdr;
         }

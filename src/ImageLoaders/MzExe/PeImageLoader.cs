@@ -78,7 +78,7 @@ namespace Reko.ImageLoaders.MzExe
 
 		public PeImageLoader(IServiceProvider services, string filename, byte [] img, uint peOffset) : base(services, filename, img)
 		{
-			ImageReader rdr = new LeImageReader(RawImage, peOffset);
+			EndianImageReader rdr = new LeImageReader(RawImage, peOffset);
 			if (rdr.ReadByte() != 'P' ||
 				rdr.ReadByte() != 'E' ||
 				rdr.ReadByte() != 0x0 ||
@@ -98,7 +98,7 @@ namespace Reko.ImageLoaders.MzExe
 
 		private void AddExportedEntryPoints(Address addrLoad, SegmentMap imageMap, List<ImageSymbol> entryPoints)
 		{
-			ImageReader rdr = imgLoaded.CreateLeReader(rvaExportTable);
+			EndianImageReader rdr = imgLoaded.CreateLeReader(rvaExportTable);
 			rdr.ReadLeUInt32();	// Characteristics
 			rdr.ReadLeUInt32(); // timestamp
 			rdr.ReadLeUInt32();	// version.
@@ -106,14 +106,14 @@ namespace Reko.ImageLoaders.MzExe
 			rdr.ReadLeUInt32();	// base ordinal
 			int nExports = rdr.ReadLeInt32();
 			int nNames = rdr.ReadLeInt32();
-			if (nExports != nNames)
-				throw new BadImageFormatException("Unexpected discrepancy in PE image.");
 			uint rvaApfn = rdr.ReadLeUInt32();
 			uint rvaNames = rdr.ReadLeUInt32();
 
-			ImageReader rdrAddrs = imgLoaded.CreateLeReader(rvaApfn);
-			ImageReader rdrNames = imgLoaded.CreateLeReader(rvaNames);
-			for (int i = 0; i < nNames; ++i)
+			EndianImageReader rdrAddrs = imgLoaded.CreateLeReader(rvaApfn);
+            EndianImageReader rdrNames = nNames != 0
+                ? imgLoaded.CreateLeReader(rvaNames)
+                : null;
+			for (int i = 0; i < nExports; ++i)
 			{
                 ImageSymbol ep = LoadEntryPoint(addrLoad, rdrAddrs, rdrNames);
 				if (imageMap.IsExecutableAddress(ep.Address))
@@ -124,17 +124,21 @@ namespace Reko.ImageLoaders.MzExe
 			}
 		}
 
-        private ImageSymbol LoadEntryPoint(Address addrLoad, ImageReader rdrAddrs, ImageReader rdrNames)
+        private ImageSymbol LoadEntryPoint(Address addrLoad, EndianImageReader rdrAddrs, EndianImageReader rdrNames)
         {
             uint rvaAddr = rdrAddrs.ReadLeUInt32();
-            int iNameMin = rdrNames.ReadLeInt32();
-            int j;
-            for (j = iNameMin; imgLoaded.Bytes[j] != 0; ++j)
-                ;
-            char[] chars = Encoding.ASCII.GetChars(imgLoaded.Bytes, iNameMin, j - iNameMin);
+            string name = null;
+            if (rdrNames != null)
+            {
+                int iNameMin = rdrNames.ReadLeInt32();
+                int j;
+                for (j = iNameMin; imgLoaded.Bytes[j] != 0; ++j)
+                    ;
+                name = Encoding.ASCII.GetString(imgLoaded.Bytes, iNameMin, j - iNameMin);
+            }
             return new ImageSymbol(addrLoad + rvaAddr)
             {
-                Name = new string(chars),
+                Name = name,
                 ProcessorState = arch.CreateProcessorState(),
                 Type = SymbolType.Procedure,
             };
@@ -253,7 +257,7 @@ namespace Reko.ImageLoaders.MzExe
 		private List<Section> LoadSections(Address addrLoad, uint rvaSectionTable, int sections)
         {
             var sectionMap = new List<Section>();
-			ImageReader rdr = new LeImageReader(RawImage, rvaSectionTable);
+			EndianImageReader rdr = new LeImageReader(RawImage, rvaSectionTable);
 
             // Why are we keeping track of this? Any particular reason?
 			Section maxSection = null;
@@ -286,7 +290,7 @@ namespace Reko.ImageLoaders.MzExe
             set { throw new NotImplementedException(); }
         }
 
-		public short ReadCoffHeader(ImageReader rdr)
+		public short ReadCoffHeader(EndianImageReader rdr)
 		{
 			this.machine = rdr.ReadLeUInt16();
             short expectedMagic = GetExpectedMagic(machine);
@@ -304,7 +308,7 @@ namespace Reko.ImageLoaders.MzExe
             return expectedMagic;
 		}
 
-		public void ReadOptionalHeader(ImageReader rdr, short expectedMagic)
+		public void ReadOptionalHeader(EndianImageReader rdr, short expectedMagic)
 		{
 			if (optionalHeaderSize <= 0)
 				throw new BadImageFormatException("Optional header size should be larger than 0 in a PE executable image file.");
@@ -648,7 +652,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 #endif
         public void ApplyRelocations(uint rvaReloc, uint size, Address baseOfImage, RelocationDictionary relocations)
 		{
-			ImageReader rdr = new LeImageReader(RawImage, rvaReloc);
+			EndianImageReader rdr = new LeImageReader(RawImage, rvaReloc);
 			uint rvaStop = rvaReloc + size;
 			while (rdr.Offset < rvaStop)
 			{
@@ -670,7 +674,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 		{
             if (rva == 0)
                 return null;
-			ImageReader rdr = imgLoaded.CreateLeReader(rva);
+			EndianImageReader rdr = imgLoaded.CreateLeReader(rva);
 			List<byte> bytes = new List<byte>();
 			byte b;
 			while ((b = rdr.ReadByte()) != 0)
@@ -695,7 +699,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
         /// <param name="addrLoad"></param>
         /// <returns>True if there were entries in the import descriptor, otherwise 
         /// false.</returns>
-        public bool ReadImportDescriptor(ImageReader rdr, Address addrLoad)
+        public bool ReadImportDescriptor(EndianImageReader rdr, Address addrLoad)
         {
             var rvaILT = rdr.ReadLeUInt32();            // Import lookup table
             rdr.ReadLeUInt32();		                    // Ignore datestamp...
@@ -706,16 +710,19 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 return false;
 
             var ptrSize = platform.PointerType.Size;
-            ImageReader rdrIlt = imgLoaded.CreateLeReader(rvaILT!=0 ? rvaILT:rvaIAT);
-            ImageReader rdrIat = imgLoaded.CreateLeReader(rvaIAT);
+            EndianImageReader rdrIlt = imgLoaded.CreateLeReader(rvaILT!=0 ? rvaILT:rvaIAT);
+            EndianImageReader rdrIat = imgLoaded.CreateLeReader(rvaIAT);
             while (true)
             {
                 var addrIat = rdrIat.Address;
                 var addrIlt = rdrIlt.Address;
-                if (!innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat))
+
+                var iatEntry = innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat);
+                if (iatEntry == null)
                     break;
                 ImageSymbols[addrIat] = new ImageSymbol(addrIat)
                 {
+                    Name = "__imp__" + iatEntry.EntryName,
                     Type = SymbolType.Data,
                     DataType = new Pointer(new CodeType(), ptrSize),
                     Size = (uint) ptrSize
@@ -740,11 +747,11 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 this.outer = outer;
             }
 
-            public abstract bool ResolveImportDescriptorEntry(string dllName, ImageReader rdrIlt, ImageReader rdrIat);
+            public abstract ImportReference ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat);
 
             public abstract bool ImportedFunctionNameSpecified(ulong rvaEntry);
 
-            public ImportReference ResolveImportedFunction(string dllName, ulong rvaEntry, Address addrThunk)
+            public ImportReference CreateImportReference(string dllName, ulong rvaEntry, Address addrThunk)
             {
                 if (!ImportedFunctionNameSpecified(rvaEntry))
                 {
@@ -759,7 +766,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 }
             }
 
-            public abstract Address ReadPreferredImageBase(ImageReader rdr);
+            public abstract Address ReadPreferredImageBase(EndianImageReader rdr);
         }
 
         private class Pe32Loader : SizeSpecificLoader
@@ -771,26 +778,24 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 return (rvaEntry & 0x80000000) == 0;
             }
 
-            public override Address ReadPreferredImageBase(ImageReader rdr)
+            public override Address ReadPreferredImageBase(EndianImageReader rdr)
             {
-                {
-                    uint rvaBaseOfData = rdr.ReadLeUInt32();        // Only exists in PE32, not PE32+
-                    return Address32.Ptr32(rdr.ReadLeUInt32());
-                }
+                uint rvaBaseOfData = rdr.ReadLeUInt32();        // Only exists in PE32, not PE32+
+                return Address.Ptr32(rdr.ReadLeUInt32());
             }
 
-            public override bool ResolveImportDescriptorEntry(string dllName, ImageReader rdrIlt, ImageReader rdrIat)
+            public override ImportReference ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
             {
                 Address addrThunk = rdrIat.Address;
                 uint iatEntry = rdrIat.ReadLeUInt32();
                 uint iltEntry = rdrIlt.ReadLeUInt32();
                 if (iltEntry == 0)
-                    return false;
+                    return null;
 
-                outer.importReferences.Add(
-                    addrThunk,
-                    ResolveImportedFunction(dllName, iltEntry, addrThunk));
-                return true;
+                var impRef = CreateImportReference(dllName, iltEntry, addrThunk);
+                outer.importReferences.Add(addrThunk, impRef);
+
+                return impRef;
             }
         }
 
@@ -803,28 +808,27 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 return (rvaEntry & 0x8000000000000000u) == 0;
             }
 
-            public override Address ReadPreferredImageBase(ImageReader rdr)
+            public override Address ReadPreferredImageBase(EndianImageReader rdr)
             {
                 return Address64.Ptr64(rdr.ReadLeUInt64());
             }
 
-            public override bool ResolveImportDescriptorEntry(string dllName, ImageReader rdrIlt, ImageReader rdrIat)
+            public override ImportReference ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
             {
                 Address addrThunk = rdrIat.Address;
                 ulong iatEntry = rdrIat.ReadLeUInt64();
                 ulong iltEntry = rdrIlt.ReadLeUInt64();
                 if (iltEntry == 0)
-                    return false;
-                outer.importReferences.Add(
-                    addrThunk,
-                    ResolveImportedFunction(dllName, iltEntry, addrThunk));
-                Debug.Print("{0}: {1}", addrThunk, outer.importReferences[addrThunk]);
-                return true;
+                    return null;
+                var impRef = CreateImportReference(dllName, iltEntry, addrThunk);
+                outer.importReferences.Add(addrThunk, impRef);
+                return impRef;
             }
         }
 
-        private bool ReadDeferredLoadDescriptors(ImageReader rdr, Address addrLoad)
+        private bool ReadDeferredLoadDescriptors(EndianImageReader rdr, Address addrLoad)
         {
+            var symbols = new List<ImageSymbol>();
             var attributes = rdr.ReadLeUInt32();
             var dllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);    // DLL name.
             if (dllName == null)
@@ -839,9 +843,10 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 uint rvaThunk = rdrThunks.ReadLeUInt32();
                 if (rvaName == 0)
                     break;
-                importReferences.Add(
-                    addrThunk, 
-                    innerLoader.ResolveImportedFunction(dllName, rvaName, addrThunk));
+                var impRef =
+                    innerLoader.CreateImportReference(dllName, rvaName, addrThunk);
+
+                importReferences.Add(addrThunk, impRef);
             }
             rdr.ReadLeInt32();
             rdr.ReadLeInt32();
@@ -851,7 +856,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
 		private void ReadImportDescriptors(Address addrLoad)
 		{
-			ImageReader rdr = imgLoaded.CreateLeReader(rvaImportTable);
+			EndianImageReader rdr = imgLoaded.CreateLeReader(rvaImportTable);
 			while (ReadImportDescriptor(rdr, addrLoad))
 			{
 			}
@@ -865,7 +870,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             }
         }
 
-		private static Section ReadSection(ImageReader rdr)
+		private static Section ReadSection(EndianImageReader rdr)
 		{
 			Section sec = new Section();
 			sec.Name = ReadSectionName(rdr);
@@ -881,7 +886,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			return sec;
 		}
 
-		private static string ReadSectionName(ImageReader rdr)
+		private static string ReadSectionName(EndianImageReader rdr)
 		{
 			byte [] bytes = new Byte[8];
 			for (int b = 0; b < bytes.Length; ++b)
@@ -925,7 +930,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
         public uint ReadEntryPointRva()
         {
-            ImageReader rdr = new LeImageReader(RawImage, rvaSectionTable);
+            EndianImageReader rdr = new LeImageReader(RawImage, rvaSectionTable);
             for (int i = 0; i < sections; ++i)
             {
                 var s = ReadSection(rdr);

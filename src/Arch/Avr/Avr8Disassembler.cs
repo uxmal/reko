@@ -36,9 +36,9 @@ namespace Reko.Arch.Avr
 
         private Avr8Architecture arch;
         private Address addr;
-        private ImageReader rdr;
+        private EndianImageReader rdr;
 
-        public Avr8Disassembler(Avr8Architecture arch, ImageReader rdr)
+        public Avr8Disassembler(Avr8Architecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;

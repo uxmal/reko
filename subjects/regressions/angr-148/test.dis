@@ -462,7 +462,7 @@ l0000000000400590:
 	byte SZO_82
 	byte C_83
 	byte Z_84
-	call Mem0[0x0000000000600E10 + rbx_28 * 0x00000008:word32] (retsize: 4; depth: 36)
+	call Mem0[0x0000000000600E10 + rbx_28 * 0x0000000000000008:word32] (retsize: 4; depth: 36)
 		uses: C_34,dwLoc04_4,dwLoc08_9,dwLoc0C_13,dwLoc10_18,dwLoc14_21,dwLoc18_25,ebx_27,edi_68,qwLoc08,qwLoc10,qwLoc18,r12_19,r13_63,r14_64,r15d_65,rbp_29,rbx_28,rdi,rdx_66,rsi_67,rsp_30,SCZO_31,SZO_32,Z_33
 		defs: C_83,ebx_81,edi_72,r12_78,r13_76,r14_74,r15d_71,rbp_75,rbx_79,rdi_70,rdx_77,rsi_73,rsp_69,SCZO_80,SZO_82,Z_84
 	branch rbx_79 + 0x0000000000000001 != rbp_75 l0000000000400590

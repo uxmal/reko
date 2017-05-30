@@ -38,7 +38,7 @@ namespace Reko.ImageLoaders.Elf
         public uint r_info;
         public int r_addend;
 
-        public static Elf32_Rela Read(ImageReader rdr)
+        public static Elf32_Rela Read(EndianImageReader rdr)
         {
             var o = rdr.ReadUInt32();
             var i = rdr.ReadUInt32();
@@ -59,7 +59,7 @@ namespace Reko.ImageLoaders.Elf
         public ulong r_info;
         public long r_addend;
 
-        public static Elf64_Rela Read(ImageReader rdr)
+        public static Elf64_Rela Read(EndianImageReader rdr)
         {
             var o = rdr.ReadUInt64();
             var i = rdr.ReadUInt64();

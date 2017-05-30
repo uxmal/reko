@@ -72,7 +72,7 @@ namespace Reko.Gui
             var codeSvc = sp.GetService<ICodeViewerService>();
             var hit = hits[i];
             if (codeSvc != null)
-                codeSvc.DisplayProcedure(hit.Program, hit.Procedure);
+                codeSvc.DisplayProcedure(hit.Program, hit.Procedure, hit.Program.NeedsScanning);
 
             var mvs = sp.GetService<ILowLevelViewService>();
             if (mvs == null)

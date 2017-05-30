@@ -315,13 +315,12 @@ namespace Reko.UnitTests.Arch.Pdp11
         }
 
         [Test]
-        [Ignore]
         public void Pdp11Rw_PostIncrDef()
         {
-            BuildTest(0x0BE4); // jmp @(r4)+
+            BuildTest(0x0054); // jmp @(r4)+
             AssertCode(
                  "0|T--|0200(2): 3 instructions",
-                 "1|L--|v3 = Mem0[r4:word16]",
+                 "1|L--|v3 = Mem0[r4:ptr16]",
                  "2|L--|r4 = r4 + 0x0002",
                  "3|T--|goto v3");
         }
@@ -454,6 +453,47 @@ namespace Reko.UnitTests.Arch.Pdp11
             AssertCode(
                 "0|T--|0200(4): 1 instructions",
                 "1|T--|goto Mem0[r1 + 0x02CC:ptr16]");
+        }
+
+        [Test]
+        public void Pdp11Rw_clr_pcrel_deferred()
+        {
+            BuildTest(0x0A3F, 0x0010);      // clr @0010(pc)
+            AssertCode(
+                "0|L--|0200(4): 6 instructions",
+                "1|L--|v3 = Mem0[0x0214:ptr16]",
+                "2|L--|Mem0[v3:word16] = 0x0000",
+                "3|L--|C = false",
+                "4|L--|V = false",
+                "5|L--|N = false",
+                "6|L--|Z = true");
+        }
+
+        [Test]
+        public void Pdp11Rw_clr_pcrel()
+        {
+            BuildTest(0x0A37, 0x0010);      // clr\t0010(pc)
+            AssertCode(
+                "0|L--|0200(4): 5 instructions",
+                "1|L--|Mem0[0x0214:word16] = 0x0000",
+                "2|L--|C = false",
+                "3|L--|V = false",
+                "4|L--|N = false",
+                "5|L--|Z = true");
+        }
+
+        [Test]
+        public void Pdp11Rw_xor_pcrel_deferred()
+        {
+            BuildTest(0x783F, 0x0010);     // "xor\t@0010(pc),r0
+            AssertCode(
+                "0|L--|0200(4): 6 instructions",
+                "1|L--|v3 = Mem0[0x0214:ptr16]",
+                "2|L--|v3 = Mem0[v3:word16]",
+                "3|L--|r0 = r0 ^ v3",
+                "4|L--|NZ = cond(r0)",
+                "5|L--|C = false",
+                "6|L--|V = false");
         }
     }
 }

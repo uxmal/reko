@@ -46,7 +46,7 @@ namespace Reko.Arch.Avr
             get { return (int)opcode; }
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(opcode.ToString());
             if (operands.Length > 0)

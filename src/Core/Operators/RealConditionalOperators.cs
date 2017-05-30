@@ -39,7 +39,7 @@ namespace Reko.Core.Operators
 
         public override string ToString()
         {
-            return " = ";
+            return " == ";
         }
     }
 

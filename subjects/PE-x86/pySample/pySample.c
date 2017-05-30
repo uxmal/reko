@@ -165,7 +165,7 @@ word32 fn100011E9(word32 dwArg08)
 			void * eax_282 = _encoded_null();
 			globals->ptr100033B0 = eax_282;
 			globals->ptr100033B4 = eax_282;
-			esp_238 = esp_278;
+			esp_238 = (char *) esp_278 + 0x04;
 		}
 		LONG * esp_251 = esp_238 - 0x04;
 		*esp_251 = (int32) 0x00;
@@ -227,7 +227,7 @@ l1000147A:
 		*(esp_182 - 0x08) = ebx_158;
 		ui32 eax_188 = fn100011E9(dwArg04);
 		*(ebp_10 - 0x1C) = eax_188;
-		esp_175 = esp_182;
+		esp_175 = (char *) esp_182 + 0x04;
 		if (eax_188 == 0x00)
 			goto l1000147A;
 	}
@@ -237,7 +237,7 @@ l1000147A:
 	*(esp_56 - 0x08) = ebx_158;
 	word32 eax_62 = fn100017C6(dwArg00, dwArg04);
 	*(ebp_10 - 0x1C) = eax_62;
-	ptr32 esp_142 = esp_56;
+	ptr32 esp_142 = (char *) esp_56 + 0x04;
 	if (esi_14 == 0x01 && eax_62 == 0x00)
 	{
 		*esp_56 = (LPVOID *) edi_12;
@@ -248,7 +248,7 @@ l1000147A:
 		*(esp_56 - 0x04) = 0x00;
 		*(esp_56 - 0x08) = ebx_158;
 		fn100011E9(dwArg04);
-		esp_142 = esp_56;
+		esp_142 = (char *) esp_56 + 0x04;
 		<anonymous> * eax_143 = globals->ptr100020CC;
 		if (eax_143 != null)
 		{
@@ -330,7 +330,7 @@ Eq_791 * fn10001700(word32 dwArg04, word32 dwArg08)
 	struct Eq_794 * ecx_6 = dwArg04 + dwArg04->dw003C / 0x0040;
 	uint32 esi_14 = (word32) ecx_6->w0006;
 	uint32 edx_15 = 0x00;
-	struct Eq_791 * eax_22 = (ecx_6 + ((word32) ecx_6->w0014 + 0x18) / 22)->w0006 + 0x03;
+	struct Eq_791 * eax_22 = &(ecx_6 + ((word32) ecx_6->w0014 + 0x18) / 22)->w0006 + 0x03;
 	if (true)
 	{
 		do

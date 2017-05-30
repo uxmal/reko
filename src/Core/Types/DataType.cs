@@ -46,7 +46,7 @@ namespace Reko.Core.Types
 			this.Name = name;
 		}
 
-        public int BitSize { get { return Size * BitsPerByte; } }		//$REVIEW: Wrong for 36-bit machines
+        public virtual int BitSize { get { return Size * BitsPerByte; } }		//$REVIEW: Wrong for 36-bit machines
         public virtual bool IsComplex { get { return false; } }
         public virtual string Name { get; set; }
         public virtual string Prefix { get { return "t"; } }            // Prefix to use when auto-generating field names.

@@ -61,7 +61,7 @@ namespace Reko.Core
         HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
         HashSet<RegisterStorage> CreateTrashedRegisters();
 
-        IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
+        IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         TypeLibrary CreateMetadata();
         SegmentMap CreateAbsoluteMemoryMap();
@@ -102,7 +102,7 @@ namespace Reko.Core
         /// <returns></returns>
         string GetPrimitiveTypeName(PrimitiveType t, string language);
 
-        ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
+        ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host);
 
         /// <summary>
         /// Given an executable entry point, find the location of the "main" program,
@@ -128,8 +128,8 @@ namespace Reko.Core
         void LoadUserOptions(Dictionary<string, object> options);
         ExternalProcedure LookupProcedureByName(string moduleName, string procName);
         ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
-        Identifier LookupGlobalByName(string moduleName, string globalName);
-        Identifier LookupGlobalByOrdinal(string moduleName, int ordinal);
+        Expression ResolveImportByName(string moduleName, string globalName);
+        Expression ResolveImportByOrdinal(string moduleName, int ordinal);
         ProcedureCharacteristics LookupCharacteristicsByName(string procName);
         Address MakeAddressFromConstant(Constant c);
         Address MakeAddressFromLinear(ulong uAddr);
@@ -223,7 +223,7 @@ namespace Reko.Core
 
         public IEnumerable<Address> CreatePointerScanner(
             SegmentMap segmentMap,
-            ImageReader rdr,
+            EndianImageReader rdr,
             IEnumerable<Address> address,
             PointerScannerFlags pointerScannerFlags)
         {
@@ -348,7 +348,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="imageReader"></param>
         /// <returns></returns>
-        public abstract ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
+        public abstract ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host);
 
         public virtual Address MakeAddressFromConstant(Constant c)
         {
@@ -414,14 +414,22 @@ namespace Reko.Core
             return null;
         }
 
-        public virtual Identifier LookupGlobalByName(string moduleName, string globalName)
+        public virtual Expression ResolveImportByName(string moduleName, string globalName)
         {
-            return null;
+            var ep = LookupProcedureByName(moduleName, globalName);
+            if (ep != null)
+                return new ProcedureConstant(PointerType, ep);
+            else
+                return null;
         }
 
-        public virtual Identifier LookupGlobalByOrdinal(string moduleName, int ordinal)
+        public virtual Expression ResolveImportByOrdinal(string moduleName, int ordinal)
         {
-            return null;
+            var ep = LookupProcedureByOrdinal(moduleName, ordinal);
+            if (ep != null)
+                return new ProcedureConstant(PointerType, ep);
+            else
+                return null;
         }
 
         public virtual ProcedureCharacteristics LookupCharacteristicsByName(string procName)
@@ -503,7 +511,7 @@ namespace Reko.Core
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
         }
-        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
         {
             // No trampolines are supported.
             return null;

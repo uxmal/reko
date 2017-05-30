@@ -29,14 +29,14 @@ namespace Reko.Arch.Arm
     {
         private IEnumerator<Instruction<Gee.External.Capstone.Arm.ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> stream;
 
-        public Arm32Disassembler(Arm32ProcessorArchitecture arch, ImageReader rdr) {
+        public Arm32Disassembler(Arm32ProcessorArchitecture arch, EndianImageReader rdr) {
             var dasm = CapstoneDisassembler.CreateArmDisassembler(
                 DisassembleMode.Arm32 | DisassembleMode.LittleEndian);
             dasm.EnableDetails = true;
             this.stream = dasm.DisassembleStream(
                 rdr.Bytes, 
                 (int)rdr.Offset, 
-                (long)rdr.Address.ToLinear() - rdr.Offset)
+                (long)rdr.Address.ToLinear())
                 .GetEnumerator();
         }
 

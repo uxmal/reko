@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(operation.ToString().ToLower());
         }

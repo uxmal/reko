@@ -96,6 +96,11 @@ namespace Reko.Core.Expressions
             return new ConditionOf(expr);
         }
 
+        public ConditionalExpression Conditional(DataType dt, Expression cond, Expression th, Expression el)
+        {
+            return new ConditionalExpression(dt, cond, th, el);
+        }
+
         /// <summary>
         /// Short-circuiting 'or' ('&&' in C family of languages)
         /// </summary>
@@ -514,9 +519,15 @@ namespace Reko.Core.Expressions
             return ISub(left, Word(left.DataType.Size, right));
         }
 
-        public Slice Slice(PrimitiveType primitiveType, Expression value, uint bitOffset)
+        public Slice Slice(PrimitiveType primitiveType, Expression value, int bitOffset)
         {
             return new Slice(primitiveType, value, bitOffset);
+        }
+
+        public Slice Slice(Expression value, int bitOffset, int bitlength)
+        {
+            var type = PrimitiveType.CreateBitSlice(bitlength);
+            return new Slice(type, value, bitOffset);
         }
 
         public TestCondition Test(ConditionCode cc, Expression expr)

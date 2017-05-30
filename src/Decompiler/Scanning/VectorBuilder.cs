@@ -140,7 +140,7 @@ namespace Reko.Scanning
             }
             else
             {
-                ImageReader rdr = program.CreateImageReader(addrTable);
+                EndianImageReader rdr = program.CreateImageReader(addrTable);
                 int cItems = limit / stride;
                 var segmentMap = program.SegmentMap;
                 var arch = program.Architecture;

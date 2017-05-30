@@ -18,9 +18,13 @@ parser.add_option("-c", "--configuration", dest="configuration",
 parser.add_option("-o", "--check-output", dest="check_output",
                   action="store_true",
                   help="check output files", default=False)
+(options, dirs) = parser.parse_args()
+if len(dirs) == 0:
+    dirs = [ "." ]
 (options, args) = parser.parse_args()
 
 reko_cmdline_dir = os.path.abspath("../src/Drivers/CmdLine")
+
 reko_cmdline = os.path.join(
     reko_cmdline_dir, "bin", options.configuration, "decompile.exe")
 output_extensions = [".asm", ".c", ".dis", ".h"]
@@ -69,7 +73,8 @@ def execute_command_file(dir, scr_name):
         if len(exe_and_args) <= 1:
             continue
         exe_and_args[0] = reko_cmdline
-        execute_command(exe_and_args, exe_and_args[1])
+        # Assumes the binary's name is the last item on the command line.
+        execute_command(exe_and_args, exe_and_args[-1])
 
 def execute_command(exe_and_args, pname):
     if sys.platform == "linux2":
@@ -97,8 +102,9 @@ def check_output_files():
         print("Output files differ from repository")
         exit(1)
 
-for root, subdirs, files in os.walk("."):
-    run_test(root, files)
+for dir in dirs:
+    for root, subdirs, files in os.walk(dir):
+        run_test(root, files)
 
 if options.check_output:
     check_output_files()

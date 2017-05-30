@@ -73,7 +73,7 @@ namespace Reko.Arch.Sparc
             }
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(
                 string.Format("{0}{1}",
@@ -83,21 +83,21 @@ namespace Reko.Arch.Sparc
             if (Op1 != null)
             {
                 writer.Tab();
-                Write(Op1, writer);
+                Write(Op1, writer, options);
                 if (Op2 != null)
                 {
                     writer.Write(',');
-                    Write(Op2, writer);
+                    Write(Op2, writer, options);
                     if (Op3 != null)
                     {
                         writer.Write(',');
-                        Write(Op3, writer);
+                        Write(Op3, writer, options);
                     }
                 }
             }
         }
 
-        private void Write(MachineOperand op, MachineInstructionWriter writer)
+        private void Write(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             var reg = op as RegisterOperand;
             if (reg != null)
@@ -114,13 +114,13 @@ namespace Reko.Arch.Sparc
             var mem = op as MemoryOperand;
             if (mem != null)
             {
-                mem.Write(false, writer);
+                mem.Write(writer, options);
                 return;
             }
             var idx = op as IndexedMemoryOperand;
             if (idx != null)
             {
-                idx.Write(false, writer);
+                idx.Write(writer, options);
                 return;
             }
             writer.Write(op.ToString());

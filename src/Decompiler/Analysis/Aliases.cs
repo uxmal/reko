@@ -243,7 +243,7 @@ namespace Reko.Analysis
 				}
 				else
 				{
-					aliasExpr = new Slice(varTo.DataType, varFrom, (uint) offsetFrom);
+					aliasExpr = new Slice(varTo.DataType, varFrom, offsetFrom);
 				}
 			}
 			else
@@ -266,21 +266,6 @@ namespace Reko.Analysis
 		}
 	}
 
-
-	/// <summary>
-	/// Represents an assignment due to alias expansion. 
-	/// </summary>
-	public class AliasAssignment : Assignment
-	{
-		public AliasAssignment(Identifier idDst, Expression expSrc) : base(idDst, expSrc)
-		{
-		}
-
-		public override bool IsAlias
-		{
-			get { return true; }
-		}
-	}
 
     public class AliasDeadVariableMarker : StorageVisitor<Storage>
     {

@@ -84,6 +84,11 @@ namespace Reko.Evaluation
             return new Cast(cast.DataType, exp);
         }
 
+        public Expression VisitConditionalExpression(ConditionalExpression c)
+        {
+            throw new NotImplementedException();
+        }
+
         public Expression VisitConditionOf(ConditionOf cof)
         {
             var exp = cof.Expression.Accept(this);
@@ -185,7 +190,10 @@ namespace Reko.Evaluation
 
         public Expression VisitSlice(Slice slice)
         {
-            throw new NotImplementedException();
+            var exp = slice.Expression.Accept(this);
+            if (exp == Constant.Invalid)
+                return exp;
+            return new Slice(slice.DataType, exp, slice.Offset);
         }
 
         public Expression VisitTestCondition(TestCondition tc)

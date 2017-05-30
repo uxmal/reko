@@ -42,12 +42,14 @@ namespace Reko.Scanning
         private Procedure procCalling;
         private CallGraph callGraph;
         private DataType dt;
+        private Dictionary<Block, Block> mpBlocks;
 
         public BlockCloner(Block blockToClone, Procedure procCalling, CallGraph callGraph)
         {
             this.blockToClone = blockToClone;
             this.procCalling = procCalling;
             this.callGraph = callGraph;
+            this.mpBlocks = new Dictionary<Block, Block>();
         }
 
         public Statement Statement { get; set; }
@@ -63,8 +65,14 @@ namespace Reko.Scanning
             if (blockOrig == blockOrig.Procedure.ExitBlock)
                 return null;
 
+            Block blockNew;
+            if (mpBlocks.TryGetValue(blockOrig, out blockNew))
+            {
+                return blockNew;
+            }
+            blockNew = new Block(procCalling, blockOrig.Name + "_in_" + procCalling.Name);
+            mpBlocks.Add(blockOrig, blockNew);
             var succ = blockOrig.Succ.Count > 0 ? CloneBlock(blockOrig.Succ[0]) : null;
-            var blockNew = new Block(procCalling, blockOrig.Name + "_in_" + procCalling.Name);
             foreach (var stm in blockOrig.Statements)
             {
                 Statement = stm;
@@ -90,7 +98,8 @@ namespace Reko.Scanning
 
         public Instruction VisitBranch(Branch branch)
         {
-            throw new NotImplementedException();
+            //$TODO: this may not be necessary once scanner-development is done.
+            return new SideEffect(Constant.String(string.Format("cloned {0}", branch), StringType.NullTerminated(PrimitiveType.Char)));
         }
 
         public Instruction VisitCallInstruction(CallInstruction ci)
@@ -189,6 +198,11 @@ namespace Reko.Scanning
             return new Cast(cast.DataType, cast.Expression.Accept(this));
         }
 
+        public Expression VisitConditionalExpression(ConditionalExpression c)
+        {
+            throw new NotImplementedException();
+        }
+
         public Expression VisitConditionOf(ConditionOf cof)
         {
             return new ConditionOf(cof.Expression.Accept(this));
@@ -201,7 +215,10 @@ namespace Reko.Scanning
 
         public Expression VisitDepositBits(DepositBits d)
         {
-            throw new NotImplementedException();
+            return new DepositBits(
+                d.Source.Accept(this),
+                d.InsertedBits.Accept(this),
+                d.BitPosition);
         }
 
         public Expression VisitDereference(Dereference deref)
@@ -277,7 +294,10 @@ namespace Reko.Scanning
 
         public Expression VisitSlice(Slice slice)
         {
-            throw new NotImplementedException();
+            return new Slice(
+                slice.DataType,
+                slice.Expression.Accept(this),
+                slice.Offset);
         }
 
         public Expression VisitTestCondition(TestCondition tc)
@@ -300,7 +320,7 @@ namespace Reko.Scanning
 
         public Identifier VisitFlagRegister(FlagRegister freg)
         {
-            throw new NotImplementedException();
+            return procCalling.Frame.EnsureRegister(freg);
         }
 
         public Identifier VisitFpuStackStorage(FpuStackStorage fpu)

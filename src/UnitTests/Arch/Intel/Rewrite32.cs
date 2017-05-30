@@ -42,11 +42,13 @@ namespace Reko.UnitTests.Arch.Intel
         private Win32Platform win32;
         private IntelArchitecture arch;
         private IServiceProvider services;
+        private FakeDecompilerEventListener eventListener;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
+            eventListener = new FakeDecompilerEventListener();
             this.services = mr.Stub<IServiceProvider>();
             var tlSvc = new TypeLibraryLoaderServiceImpl(services);
             var configSvc = mr.StrictMock<IConfigurationService>();
@@ -63,7 +65,7 @@ namespace Reko.UnitTests.Arch.Intel
                 .Do(new Func<string[], string>(s => string.Join("/", s)));
             services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
             services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(configSvc);
-            services.Stub(s => s.GetService(typeof(DecompilerEventListener))).Return(new FakeDecompilerEventListener());
+            services.Stub(s => s.GetService(typeof(DecompilerEventListener))).Return(eventListener);
             services.Stub(s => s.GetService(typeof(CancellationTokenSource))).Return(null);
             services.Stub(s => s.GetService(typeof(IFileSystemService))).Return(new FileSystemServiceImpl());
             services.Stub(s => s.GetService(typeof(IDiagnosticsService))).Return(new FakeDiagnosticsService());
@@ -133,7 +135,22 @@ namespace Reko.UnitTests.Arch.Intel
 			RunTest("Fragments/switch32.asm", "Intel/RwSwitch32.txt");
 		}
 
-		private void RunTest(string sourceFile, string outputFile)
+        [Test]
+        public void RwSwitchReg00001()
+        {
+            RunTest("Fragments/switch_reg00001.asm", "Intel/RwSwitchReg00001.txt");
+        }
+
+        [Test]
+        public void RwNotFoundImport()
+        {
+            RunTest("Fragments/import32/not_found_import.asm", "Intel/RwNotFoundImport.txt");
+            Assert.AreEqual(
+                "WarningDiagnostic - 10000014 - Unable to guess parameters of msvcrt!_not_found_import.",
+                eventListener.LastDiagnostic);
+        }
+
+        private void RunTest(string sourceFile, string outputFile)
 		{
 			Program program;
             var asm = new X86TextAssembler(services, new X86ArchitectureFlat32());
@@ -149,7 +166,7 @@ namespace Reko.UnitTests.Arch.Intel
             var project = new Project { Programs = { program } };
             Scanner scan = new Scanner(
                 program,
-                new ImportResolver(project, program, new FakeDecompilerEventListener()),
+                new ImportResolver(project, program, eventListener),
                 services);
             foreach (var ep in asm.EntryPoints)
             {

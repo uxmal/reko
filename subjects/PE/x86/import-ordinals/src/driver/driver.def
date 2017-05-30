@@ -1,0 +1,9 @@
+LIBRARY driver
+EXPORTS
+??0MathService@@QAE@XZ	  @1  NONAME
+?add@MathService@@QAEHH@Z	  @2  NONAME
+?mul@MathService@@QAEHH@Z	  @3  NONAME
+?sub@MathService@@QAEHH@Z	  @4  NONAME
+?globalvar@@3HA			  @10 NONAME
+?count@MathService@@2HA	  @11 NONAME
+

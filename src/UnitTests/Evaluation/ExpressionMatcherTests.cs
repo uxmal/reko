@@ -121,6 +121,22 @@ namespace Reko.UnitTests.Evaluation
             Assert.AreEqual("ecx", matcher.CapturedExpression("q").ToString());
         }
 
+        [Test]
+        public void Emt_ArrayAccessMismatch()
+        {
+            var e = m.Array(PrimitiveType.Int32, Id("eax"), m.Word32(6));
+            Create(m.Word32(5));
+            Assert.IsFalse(matcher.Match(e));
+        }
+
+        [Test]
+        public void Emt_SliceMismatch()
+        {
+            var e = m.Slice(PrimitiveType.Int16, Id("eax"), 16);
+            Create(m.Word32(5));
+            Assert.IsFalse(matcher.Match(e));
+        }
+
         private Expression AnyC(string p)
         {
             return ExpressionMatcher.AnyConstant(p);

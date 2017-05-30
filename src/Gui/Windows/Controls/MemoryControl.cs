@@ -568,7 +568,7 @@ namespace Reko.Gui.Windows.Controls
                 ulong laEnd = ctrl.addrMax.ToLinear();
                 if (ctrl.addrTopVisible.ToLinear() >= laEnd)
                     return null;
-                ImageReader rdr = ctrl.arch.CreateImageReader(ctrl.mem, ctrl.addrTopVisible);
+                EndianImageReader rdr = ctrl.arch.CreateImageReader(ctrl.mem, ctrl.addrTopVisible);
                 Rectangle rc = ctrl.ClientRectangle;
                 Size cell = ctrl.CellSize;
                 rc.Height = cell.Height;
@@ -616,7 +616,7 @@ namespace Reko.Gui.Windows.Controls
             /// <param name="g"></param>
             /// <param name="rc"></param>
             /// <param name="rdr"></param>
-            private Address PaintLine(Graphics g, Rectangle rc, ImageReader rdr, Point ptAddr, bool render)
+            private Address PaintLine(Graphics g, Rectangle rc, EndianImageReader rdr, Point ptAddr, bool render)
             {
                 StringBuilder sxbCode = new StringBuilder(" ");
                 var abCode = new List<byte>();

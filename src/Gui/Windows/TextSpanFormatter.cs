@@ -44,6 +44,11 @@ namespace Reko.Gui.Windows
             this.textLines = new List<List<TextSpan>>();
         }
 
+        public TextSpan[][] GetLines()
+        {
+            return textLines.Select(l => l.ToArray()).ToArray();
+        }
+
         public TextViewModel GetModel()
         {
             return new TextSpanModel(textLines.Select(l => l.ToArray())

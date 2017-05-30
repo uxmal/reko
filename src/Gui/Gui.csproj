@@ -20,7 +20,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -223,6 +223,7 @@
     <Compile Include="Windows\CheckBoxWrapper.cs" />
     <Compile Include="Windows\CfgGraphGenerator.cs" />
     <Compile Include="Windows\CodeViewerServiceImpl.cs" />
+    <Compile Include="Windows\CodeViewInteractor.cs" />
     <Compile Include="Windows\CombinedCodeViewInteractor.cs" />
     <Compile Include="Windows\ComboBoxWrapper.cs" />
     <Compile Include="Windows\Controls\ByteMapView.cs">
@@ -273,6 +274,7 @@
     <Compile Include="Windows\Controls\MenuSystem.cs" />
     <Compile Include="Windows\Controls\MixedCodeDataModel.SpanGenerator.cs" />
     <Compile Include="Windows\Controls\NestedTextModel.cs" />
+    <Compile Include="Windows\Controls\ProcedureCodeModel.cs" />
     <Compile Include="Windows\Controls\RegexValidator.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -96,7 +96,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             uint mask = ~0u;
             Address addr;
             ulong P;
-            ImageReader relR;
+            EndianImageReader relR;
             ImageWriter relW;
             if (referringSection.Address != null)
             {

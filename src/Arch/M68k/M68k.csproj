@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.Arch.M68k</RootNamespace>
     <AssemblyName>Reko.Arch.M68k</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -75,6 +75,7 @@
     <Compile Include="M68kArchitecture.cs" />
     <Compile Include="M68kDisassembler.cs" />
     <Compile Include="M68kInstruction.cs" />
+    <Compile Include="M68kInstructionComparer.cs" />
     <Compile Include="M68kProcedureSerializer.cs" />
     <Compile Include="M68kState.cs" />
     <Compile Include="MemoryOperand.cs" />
