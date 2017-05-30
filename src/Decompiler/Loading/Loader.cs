@@ -182,6 +182,7 @@ namespace Reko.Loading
             program.User.Processor = arch.Name;
             program.User.Environment = platform.Name;
             program.User.Loader = details.LoaderName;
+            program.User.LoadAddress = addrLoad;
             program.ImageMap = program.SegmentMap.CreateImageMap();
             return program;
         }
