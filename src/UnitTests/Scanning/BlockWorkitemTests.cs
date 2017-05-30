@@ -179,7 +179,7 @@ namespace Reko.UnitTests.Scanning
         public void Bwi_HandleBranch()
         {
             trace.Add(m =>
-                m.Branch(r1, Address.Ptr32(0x4000), RtlClass.ConditionalTransfer));
+                m.Branch(r1, Address.Ptr32(0x00104000), RtlClass.ConditionalTransfer));
             trace.Add(m =>
                 m.Assign(r1, r2));
             var blockElse = new Block(proc, "else");
@@ -203,7 +203,7 @@ namespace Reko.UnitTests.Scanning
                     Arg<ProcessorState>.Matches(arg => StashArg(ref s1, arg)))).Return(blockElse);
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Is.NotNull,
-                    Arg<Address>.Matches(arg => arg.Offset == 0x4000),
+                    Arg<Address>.Matches(arg => arg.Offset == 0x00104000),
                     Arg<Procedure>.Is.Same(block.Procedure),
                     Arg<ProcessorState>.Matches(arg => StashArg(ref s2, arg)))).Return(blockThen);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);

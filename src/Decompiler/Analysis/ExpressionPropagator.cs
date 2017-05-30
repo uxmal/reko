@@ -106,7 +106,7 @@ namespace Reko.Analysis
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
             ci.CallSite.StackDepthOnEntry =
-                 GetStackDepthBeforeCall() +
+                GetStackDepthBeforeCall() +
                 ci.CallSite.SizeOfReturnAddressOnStack;
             var pc = ci.Callee as ProcedureConstant;
             if (pc != null)

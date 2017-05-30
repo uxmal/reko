@@ -328,12 +328,13 @@ namespace Reko.Scanning
             procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, Program, addr, null));
         }
 
-        public void EnqueueUserProcedure(Procedure_v1 sp)
+        public Address EnqueueUserProcedure(Procedure_v1 sp)
         {
             var de = EnsureUserProcedure(sp);
             if (de == null)
-                return;
+                return null;
             procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, Program, de.Value.Key, sp.Name));
+            return de.Value.Key;
         }
 
         public void EnsureEntryPoint(ImageSymbol sym)
@@ -992,84 +993,14 @@ namespace Reko.Scanning
             // Find all blobs of data, and potentially pointers to code.
             ScanDataItems();
 
-            // Now scan the executable parts of the image, to find all 
-            // potential basic blocks. We use symbols, user procedures, and
-            // the current contents of sr.DirectlyCalledAddresses as "seeds".
-            // The end result is sr.ICFG, the interprocedural control graph.
+            // Find all reachable procedures.
+            ScanProceduresRecursively();
 
-            foreach (Procedure_v1 up in Program.User.Procedures.Values)
+            if (Program.User.Heuristics.Contains("shingle"))
             {
-                var tup = EnsureUserProcedure(up);
-                if (tup.HasValue)
-                {
-                    sr.KnownProcedures.Add(tup.Value.Key);
-                }
+                // Use has requested shingle scanning of remaining areas.
+                ShingleScanProcedures();
             }
-            foreach (ImageSymbol ep in Program.EntryPoints.Values)
-            {
-                EnsureEntryPoint(ep);
-                sr.KnownProcedures.Add(ep.Address);
-            }
-            foreach (ImageSymbol sym in Program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
-            {
-                EnsureProcedure(sym.Address, null);
-                if (sym.NoDecompile)
-                    Program.EnsureUserProcedure(sym.Address, sym.Name, false);
-                else
-                    EnqueueImageSymbol(sym, false);
-                sr.KnownProcedures.Add(sym.Address);
-            }
-
-            var hsc = new ScannerInLinq(Services, Program, this, eventListener);
-            sr = hsc.ScanImage(sr);
-            if (sr != null)
-            {
-                // The heuristic scanner will have detected the procedures.
-
-                var procs = sr.Procedures;
-
-                // At this point, we have RtlProcedures and RtlBlocks.
-                //$TODO: However, Reko hasn't had a chance to reconstitute constants yet, 
-                // because that requires SSA, so we may be missing
-                // opportunities to build and detect pointers. This typically happens in 
-                // the type inference phase, when we both have constants and their types.
-                // 
-                // When this gets merged into analyis-development phase, fold 
-                // Procedure construction into SSA construction.
-                foreach (var rtlProc in procs.Where(p => FilterRtlProcedure(p)))
-                {
-                    var addrProc = rtlProc.Entry.Address;
-                    TerminateAnyBlockAt(addrProc);
-                    EnsureProcedure(addrProc, null);
-                    EnqueueProcedure(addrProc);
-                }
-                ProcessQueue();
-            }
-        }
-
-        /// <summary>
-        /// Determines whether or not an RtlProcedure should be fed into the later stages of 
-        /// the scanner.
-        /// </summary>
-        /// <param name="rtlProc"></param>
-        /// <returns></returns>
-        public bool FilterRtlProcedure(RtlProcedure rtlProc)
-        {
-            var addrRtlProc = rtlProc.Entry.Address;
-            var trampoline = Program.Platform.GetTrampolineDestination(rtlProc.Entry.Instructions, this);
-            if (trampoline != null)
-            {
-                //$REVIEW: consider adding known trampolines to Program. Then, when code calls or 
-                // jumps to a trampoline, we don't have to call IPlatform.GetTrampolineDestination again.
-                return false;
-            }
-
-            Procedure_v1 sProc;
-            if (Program.User.Procedures.TryGetValue(addrRtlProc, out sProc))
-            {
-                return sProc.Decompile;
-            }
-            return true;
         }
 
         /// <summary>
@@ -1099,6 +1030,102 @@ namespace Reko.Scanning
             }
             dataScanner.ProcessQueue();
             return sr;
+        }
+
+        /// <summary>
+        /// Performs a recursive disassembly of the executable parts of the
+        /// image, to find all potential basic blocks. We use symbols from the
+        /// binary and user-specified procedures as "seeds" of a depth-first
+        /// search.
+        /// </summary>
+        public void ScanProceduresRecursively()
+        {
+            foreach (Procedure_v1 up in Program.User.Procedures.Values)
+            {
+                var addr = EnqueueUserProcedure(up);
+                sr.KnownProcedures.Add(addr);
+            }
+            foreach (ImageSymbol ep in Program.EntryPoints.Values)
+            {
+                EnqueueImageSymbol(ep, true);
+                sr.KnownProcedures.Add(ep.Address);
+            }
+            foreach (ImageSymbol sym in Program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
+            {
+                if (sym.NoDecompile)
+                {
+                    EnsureProcedure(sym.Address, null);
+                    Program.EnsureUserProcedure(sym.Address, sym.Name, false);
+                }
+                else
+                {
+                    EnqueueImageSymbol(sym, false);
+                }
+                sr.KnownProcedures.Add(sym.Address);
+            }
+            this.ProcessQueue();
+        }
+
+        /// <summary>
+        /// Performs a shingle scan to recover procedures that weren't found 
+        /// a recursive search. Assumed that Program.ImageMap may contain
+        /// blocks of "known code" and only scans in the gaps between the
+        /// blocks.
+        /// </summary>
+        public void ShingleScanProcedures()
+        {
+            var hsc = new ScannerInLinq(Services, Program, this, eventListener);
+            sr = hsc.ScanImage(sr);
+            if (sr != null)
+            {
+                // The heuristic scanner will have detected any remaining 
+                // procedures.
+
+                var procs = sr.Procedures;
+
+                // At this point, we have RtlProcedures and RtlBlocks.
+                //$TODO: However, Reko hasn't had a chance to reconstitute constants yet, 
+                // because that requires SSA, so we may be missing
+                // opportunities to build and detect pointers. This typically happens in 
+                // the type inference phase, when we both have constants and their types.
+                // 
+                // When this gets merged into analyis-development phase, fold 
+                // Procedure construction into SSA construction.
+                foreach (var rtlProc in procs.Where(p => FilterRtlProcedure(p)))
+                {
+                    var addrProc = rtlProc.Entry.Address;
+                    TerminateAnyBlockAt(addrProc);
+                    EnsureProcedure(addrProc, null);
+                    EnqueueProcedure(addrProc);
+                }
+                ProcessQueue();
+            }
+        }
+
+
+        /// <summary>
+        /// Determines whether or not an RtlProcedure should be fed into the later stages of 
+        /// the scanner.
+        /// </summary>
+        /// <param name="rtlProc"></param>
+        /// <returns></returns>
+        public bool FilterRtlProcedure(RtlProcedure rtlProc)
+        {
+            var addrRtlProc = rtlProc.Entry.Address;
+            var trampoline = Program.Platform.GetTrampolineDestination(rtlProc.Entry.Instructions, this);
+            if (trampoline != null)
+            {
+                //$REVIEW: consider adding known trampolines to Program. Then, when code calls or 
+                // jumps to a trampoline, we don't have to call IPlatform.GetTrampolineDestination again.
+                return false;
+            }
+
+            Procedure_v1 sProc;
+            if (Program.User.Procedures.TryGetValue(addrRtlProc, out sProc))
+            {
+                return sProc.Decompile;
+            }
+            return true;
         }
 
         /*

@@ -45,7 +45,7 @@ namespace Reko.Scanning
     /// University of California Santa Barbara
     /// {chris,wkr,fredrik,vigna}@cs.ucsb.edu
     /// </remarks>
-    public class HeuristicScanner : IScanner
+    public class HeuristicScanner // : IScanner
     {
         private Program program;
         private IRewriterHost host;
@@ -71,13 +71,13 @@ namespace Reko.Scanning
 
         public IServiceProvider Services { get; private set; }
 
-        IServiceProvider IScanner.Services
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        //IServiceProvider IScanner.Services
+        //{
+        //    get
+        //    {
+        //        throw new NotImplementedException();
+        //    }
+        //}
 
         public ScanResults ScanImage(ScanResults sr)
         {
@@ -401,6 +401,7 @@ namespace Reko.Scanning
 
         // IScanner interface.
 
+            /*
         void IScannerQueue.Warn(Address addr, string message)
         {
             eventListener.Warn(eventListener.CreateAddressNavigator(program, addr), message);
@@ -476,7 +477,7 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        void IScanner.EnqueueUserProcedure(Procedure_v1 sp)
+        Address IScanner.EnqueueUserProcedure(Procedure_v1 sp)
         {
             throw new NotImplementedException();
         }
@@ -500,5 +501,6 @@ namespace Reko.Scanning
         {
             throw new NotImplementedException();
         }
+        */
     }
 }

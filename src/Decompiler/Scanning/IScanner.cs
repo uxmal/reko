@@ -47,7 +47,7 @@ namespace Reko.Scanning
         ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
 
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
-        void EnqueueUserProcedure(Procedure_v1 sp);
+        Address EnqueueUserProcedure(Procedure_v1 sp);
 
         ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
         void TerminateBlock(Block block, Address addrEnd);

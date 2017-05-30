@@ -39,9 +39,9 @@ namespace Reko.Scanning
     {
         public ScanResults()
         {
-            this.Edges = new List<Edge>();
             this.IndirectCalls = new HashSet<Address>();
             this.IndirectJumps = new HashSet<Address>();
+            this.Procedures = new List<RtlProcedure>();
         }
 
         /// <summary>
@@ -49,8 +49,6 @@ namespace Reko.Scanning
         /// instruction clusters.
         /// </summary>
         public SortedList<Address, RtlInstructionCluster> Instructions;
-
-        public List<Edge> Edges;
 
         /// <summary>
         /// Interprocedural control flow graph, consisting of all
@@ -189,10 +187,11 @@ namespace Reko.Scanning
             }
         }
 
-        public class Edge
+        public class block
         {
-            public ulong lin_from;
-            public ulong lin_to;
+            public Address id;
+            public Address component_id;
+            internal instr[] instrs;
         }
     }
 }

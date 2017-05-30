@@ -50,29 +50,7 @@ namespace Reko.Scanning
             this.eventListener = eventListener;
         }
 
-        public class block
-        {
-            public Address id;
-            public Address component_id;
-            internal instr[] instrs;
-        }
-
-        public void CollectStatistics(int binary_size)
-        {
-            // warm up cache
-            var sw = new Stopwatch();
-            var times = new List<TimeSpan>();
-            for (int i = 0; i < 3; ++i)
-            {
-                sw.Reset();
-                sw.Start();
-                SimulateBinary(binary_size);
-                var sr = new ScanResults();
-                sw.Stop();
-                times.Add(sw.Elapsed);
-            }
-            Debug.Print("Times for {0}: {1}", binary_size, string.Join(" ", times.Select(t => t.TotalSeconds)));
-        }
+     
 
         #region Simulate binary
         public void SimulateBinary(int binary_size)

@@ -277,7 +277,19 @@ namespace Reko.Scanning
             }
             var fallthruAddress = ric.Address + ric.Length;
 
-            var blockThen = BlockFromAddress(ric.Address, (Address) b.Target, proc, state.Clone());
+            Block blockThen;
+            if (!program.SegmentMap.IsValidAddress((Address)b.Target))
+            {
+                blockThen = proc.AddBlock(this.ric.Address.GenerateName("l", "_then"));
+                var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
+                GenerateCallToOutsideProcedure(jmpSite, (Address)b.Target);
+                Emit(new ReturnInstruction());
+                blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+            }
+            else
+            {
+                blockThen = BlockFromAddress(ric.Address, (Address)b.Target, proc, state.Clone());
+            }
 
             var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
             var branchingBlock = blockCur.IsSynthesized
