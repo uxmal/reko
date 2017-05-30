@@ -1,1 +1,1 @@
-decompile.exe pngpixel
+decompile.exe --heuristic shingle  pngpixel

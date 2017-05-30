@@ -1,1 +1,1 @@
-decompile.exe int16.dll
+decompile.exe --heuristic shingle  int16.dll

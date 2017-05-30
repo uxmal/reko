@@ -1,1 +1,1 @@
-decompile.exe const.o
+decompile.exe --heuristic shingle  const.o
