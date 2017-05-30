@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Core
                 new Func<Frame>(
                     () => new Frame(PrimitiveType.Pointer32)));
             arch.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
-                .Do(new Func<MemoryArea, Address, ImageReader>(
+                .Do(new Func<MemoryArea, Address, EndianImageReader>(
                     (m, a) => new LeImageReader(m, a)));
             arch.Stub(a => a.CreateDisassembler(null)).IgnoreArguments()
                 .Return(new[]
@@ -140,10 +140,10 @@ namespace Reko.UnitTests.Core
             Given_ProcedureAt(Address.Ptr32(0x10010));
             mr.ReplayAll();
 
-            var dmp = new Dumper(program.Architecture);
+            var dmp = new Dumper(program);
 
             var sw = new StringWriter();
-            dmp.Dump(program, new TextFormatter(sw));
+            dmp.Dump(new TextFormatter(sw));
 
             string sExp =
             #region Expected
@@ -171,10 +171,10 @@ fn00010010 proc
             proc.Name = "__foo@8";
             mr.ReplayAll();
 
-            var dmp = new Dumper(program.Architecture);
+            var dmp = new Dumper(program);
 
             var sw = new StringWriter();
-            dmp.Dump(program, new TextFormatter(sw));
+            dmp.Dump(new TextFormatter(sw));
 
             string sExp =
             #region Expected
@@ -208,10 +208,10 @@ __foo@8 proc
                 });
             mr.ReplayAll();
 
-            var dmp = new Dumper(program.Architecture);
+            var dmp = new Dumper(program);
 
             var sw = new StringWriter();
-            dmp.Dump(program, new TextFormatter(sw));
+            dmp.Dump(new TextFormatter(sw));
 
             string sExp =
             #region Expected
@@ -249,10 +249,10 @@ l00010004	dd	0x07060504
                 });
             mr.ReplayAll();
 
-            var dmp = new Dumper(program.Architecture);
+            var dmp = new Dumper(program);
 
             var sw = new StringWriter();
-            dmp.Dump(program, new TextFormatter(sw));
+            dmp.Dump(new TextFormatter(sw));
 
             string sExp =
             #region Expected
@@ -275,16 +275,16 @@ l00010004		db	0x04
         {
             Given_32bit_Program_Zeros(110);
             arch.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
-                .Do(new Func<MemoryArea, Address, ImageReader>(
+                .Do(new Func<MemoryArea, Address, EndianImageReader>(
                     (m, a) => new LeImageReader(m, a)));
             mr.ReplayAll();
 
             var addr = program.ImageMap.BaseAddress + 8;
             var item = new ImageMapItem(90) { Address = addr };
             program.ImageMap.AddItem(item.Address, item);
-            var dmp = new Dumper(program.Architecture);
+            var dmp = new Dumper(program);
             var sw = new StringWriter();
-            dmp.Dump(program, new TextFormatter(sw));
+            dmp.Dump(new TextFormatter(sw));
 
             var sExp =
             #region Expected

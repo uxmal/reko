@@ -319,7 +319,7 @@ namespace Reko.Gui.Windows
             if (control.MemoryView.Focused)
             {
                 var decompiler = services.GetService<IDecompilerService>().Decompiler;
-                var dumper = new Dumper(decompiler.Project.Programs.First().Architecture);
+                var dumper = new Dumper(decompiler.Project.Programs.First());
                 var sb = new StringWriter();
                 dumper.DumpData(control.MemoryView.SegmentMap, range, new TextFormatter(sb));
                 Clipboard.SetText(sb.ToString());       //$TODO: abstract this.

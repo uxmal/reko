@@ -62,7 +62,7 @@ namespace Reko.Core
     /// considered to be at offset 0.</para>
 	/// <para>In addition, support has to be provided for architectures that have separate FPU stacks.</para>
 	/// </remarks>
-	public class Frame
+	public class Frame : IStorageBinder
 	{
 		private List<Identifier> identifiers;	// Identifiers for each access.
 		
@@ -126,6 +126,9 @@ namespace Reko.Core
             var st = stgForeign as StackStorage;
             if (st != null)
                 return EnsureStackVariable(st.StackOffset, st.DataType);
+            var tmp = stgForeign as TemporaryStorage;
+            if (tmp != null)
+                return CreateTemporary(tmp.Name, tmp.DataType);
             throw new NotImplementedException(string.Format(
                 "Unsupported storage {0}.",
                 stgForeign != null ? stgForeign.ToString() : "(null)"));
@@ -140,7 +143,7 @@ namespace Reko.Core
 		{
             string name = "v" + identifiers.Count;
 			Identifier id = new Identifier(name, dt,
-                new TemporaryStorage(name, identifiers.Count, (PrimitiveType) dt));
+                new TemporaryStorage(name, identifiers.Count, dt));
 			identifiers.Add(id);
 			return id;
 		}

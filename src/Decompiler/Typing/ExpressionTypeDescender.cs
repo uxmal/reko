@@ -93,19 +93,31 @@ namespace Reko.Typing
             return false;
         }
 
+        private FunctionType MatchFunctionPointer(DataType dt)
+        {
+            var ptr = dt as Pointer;
+            if (ptr == null)
+                return null;
+            return ptr.Pointee as FunctionType;
+        }
+
+        private FunctionType ExtractSignature(Expression proc)
+        {
+            var pc = proc as ProcedureConstant;
+            if (pc != null)
+                return pc.Procedure.Signature;
+            return MatchFunctionPointer(proc.TypeVariable.DataType);
+        }
+
         private void BindActualTypesToFormalTypes(Application appl)
         {
-            var pc = appl.Procedure as ProcedureConstant;
-            if (pc == null)
-                throw new NotImplementedException("The type inference of indirect calls are not implmented yet.");
-            if (pc.Procedure.Signature == null)
+            var sig = ExtractSignature(appl.Procedure);
+            if (sig == null)
                 return;
-
-            var sig = pc.Procedure.Signature;
             if (appl.Arguments.Length != sig.Parameters.Length)
                 throw new InvalidOperationException(
                     string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
-                    pc.Procedure.Name, appl.Arguments.Length, sig.Parameters.Length));
+                    appl.Procedure, appl.Arguments.Length, sig.Parameters.Length));
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
                 MeetDataType(appl.Arguments[i], sig.Parameters[i].DataType);
@@ -413,6 +425,11 @@ namespace Reko.Typing
             MeetDataType(cast, cast.DataType);
             cast.Expression.Accept(this, cast.Expression.TypeVariable);
             return false;
+        }
+
+        public bool VisitConditionalExpression(ConditionalExpression c, TypeVariable tv)
+        {
+            throw new NotImplementedException();
         }
 
         public bool VisitConditionOf(ConditionOf cof, TypeVariable tv)

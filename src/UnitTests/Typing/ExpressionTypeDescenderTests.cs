@@ -231,6 +231,23 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        public void ExdIndirectCall()
+        {
+            var p = Id("p", PrimitiveType.Word32);
+            var sig = FunctionType.Action(new[] { Id("r", PrimitiveType.Real32) });
+            store.EnsureExpressionTypeVariable(factory, p);
+            p.TypeVariable.OriginalDataType = PointerTo(sig);
+            p.TypeVariable.DataType = PointerTo(sig);
+            RunTest(
+                Test(
+                    m.Fn(
+                        p,
+                        VoidType.Instance,
+                        m.Load(PrimitiveType.Word32, m.Word32(0x0300400))),
+                    VoidType.Instance));
+        }
+
+        [Test]
         public void ExdSubtraction()
         {
             var p = Id("p", PrimitiveType.Word32);

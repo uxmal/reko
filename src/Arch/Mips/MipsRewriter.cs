@@ -43,6 +43,7 @@ namespace Reko.Arch.Mips
         private RtlInstructionCluster cluster;
         private MipsProcessorArchitecture arch;
         private IRewriterHost host;
+        private ExpressionValueComparer cmp;
 
         public MipsRewriter(MipsProcessorArchitecture arch, IEnumerable<MipsInstruction> instrs, Frame frame, IRewriterHost host)
         {
@@ -50,6 +51,7 @@ namespace Reko.Arch.Mips
             this.frame = frame;
             this.dasm = instrs.GetEnumerator();
             this.host = host;
+            this.cmp = new ExpressionValueComparer();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

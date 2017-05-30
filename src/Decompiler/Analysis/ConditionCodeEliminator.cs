@@ -314,7 +314,7 @@ namespace Reko.Analysis
             var expNewHi = m.Slice(
                 PrimitiveType.CreateWord(tmpLo.DataType.Size),
                 sidTmp.Identifier,
-                (uint)tmpHi.DataType.BitSize);
+                tmpHi.DataType.BitSize);
             var stmNewHi = block.Statements.Insert(
                 iRolc + 3,
                 sidOrigHi.DefStatement.LinearAddress,
@@ -391,7 +391,7 @@ namespace Reko.Analysis
             var expNewHi = m.Slice(
                 PrimitiveType.CreateWord(tmpHi.DataType.Size),
                 sidTmp.Identifier,
-                (uint)tmpLo.DataType.BitSize);
+                tmpLo.DataType.BitSize);
             var stmNewHi = block.Statements.Insert(
                 iRorc + 2,
                 sidOrigHi.DefStatement.LinearAddress,

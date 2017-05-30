@@ -36,10 +36,10 @@ namespace Reko.Arch.Mips
         internal bool isVersion6OrLater;
         private MipsInstruction instrCur;
         private Address addr;
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private PrimitiveType signedWord;
 
-        public MipsDisassembler(MipsProcessorArchitecture arch, ImageReader imageReader, bool isVersion6OrLater)
+        public MipsDisassembler(MipsProcessorArchitecture arch, EndianImageReader imageReader, bool isVersion6OrLater)
         {
             this.arch = arch;
             this.rdr = imageReader;

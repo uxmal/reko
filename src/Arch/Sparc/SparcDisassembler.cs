@@ -33,9 +33,9 @@ namespace Reko.Arch.Sparc
     public class SparcDisassembler : DisassemblerBase<SparcInstruction>
     {
         private SparcInstruction instrCur;
-        private ImageReader imageReader;
+        private EndianImageReader imageReader;
 
-        public SparcDisassembler(SparcArchitecture arch, ImageReader imageReader)
+        public SparcDisassembler(SparcArchitecture arch, EndianImageReader imageReader)
         {
             this.imageReader = imageReader;
         }

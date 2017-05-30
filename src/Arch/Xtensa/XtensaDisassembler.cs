@@ -35,10 +35,10 @@ namespace Reko.Arch.Xtensa
         private static int[] b4constu;
 
         private XtensaArchitecture arch;
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private State state;
 
-        public XtensaDisassembler(XtensaArchitecture arch, ImageReader rdr)
+        public XtensaDisassembler(XtensaArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;

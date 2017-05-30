@@ -83,22 +83,22 @@ namespace Reko.Arch.X86
 			}
 		}
 
-        public X86Disassembler CreateDisassemblerImpl(ImageReader imageReader)
+        public X86Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
         {
             return mode.CreateDisassembler(imageReader, Options);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
         {
             return new LeImageReader(image, addrBegin, addrEnd);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
+        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -156,7 +156,7 @@ namespace Reko.Arch.X86
             return rMax;
         }
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
 		{
             return CreateDisassemblerImpl(imageReader);
 		}
@@ -166,12 +166,12 @@ namespace Reko.Arch.X86
 			return new X86State(this);
 		}
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             return mode.CreateInstructionScanner(map, rdr, knownAddresses, flags);
         }
@@ -191,7 +191,7 @@ namespace Reko.Arch.X86
             return mode.CreateSegmentedAddress(seg.ToUInt16(), offset.ToUInt32());
         }
 
-        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
         {
             return mode.ReadCodeAddress(byteSize, rdr, state);
         }

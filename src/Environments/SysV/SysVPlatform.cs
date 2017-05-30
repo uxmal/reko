@@ -78,6 +78,8 @@ namespace Reko.Environments.SysV
                 return new Avr8ProcedureSerializer(Architecture, typeLoader, defaultConvention);
             case "risc-v":
                 return new RiscVProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            case "superH":
+                return new SuperHProcedureSerializer(Architecture, typeLoader, defaultConvention);
             default:
                 throw new NotImplementedException(string.Format("Procedure serializer for {0} not implemented yet.", Architecture.Description));
             }
@@ -116,7 +118,7 @@ namespace Reko.Environments.SysV
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(EndianImageReader rdr, IRewriterHost host)
         {
             var rw = Architecture.CreateRewriter(
                 rdr,

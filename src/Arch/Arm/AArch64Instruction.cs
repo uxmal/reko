@@ -72,7 +72,7 @@ namespace Reko.Arch.Arm
             return null;
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(instruction.Mnemonic);
             var ops = Internal.ArchitectureDetail.Operands;

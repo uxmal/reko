@@ -35,8 +35,6 @@ namespace Reko.UnitTests.Typing
     {
         private MockRepository mr;
         private MemoryArea mem;
-        private Expression globals;
-        private TypeVariable globals_t;
         private StructureType globalStruct;
         private EquivalenceClass eqLink;
         private IProcessorArchitecture arch;
@@ -47,13 +45,13 @@ namespace Reko.UnitTests.Typing
         {
             mr = new MockRepository();
             arch = mr.Stub<IProcessorArchitecture>();
-            arch.Stub(a => a.CreateImageReader(null, 0u)).IgnoreArguments().Do(new Func<MemoryArea, ulong, ImageReader>((i, o) => i.CreateLeReader(o)));
+            arch.Stub(a => a.CreateImageReader(null, 0u)).IgnoreArguments().Do(new Func<MemoryArea, ulong, EndianImageReader>((i, o) => i.CreateLeReader(o)));
             arch.Replay();
             globalStruct = new StructureType
             {
             };
-            globals_t = new TypeVariable("globals_t", 1) { DataType = globalStruct };
-            globals = new Identifier("globals", PrimitiveType.Pointer32, null);
+            var globals_t = new TypeVariable("globals_t", 1) { DataType = globalStruct };
+            var globals = new Identifier("globals", PrimitiveType.Pointer32, null);
 
             eqLink = new EquivalenceClass(new TypeVariable(2));
             StructureType str = new StructureType

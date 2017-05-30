@@ -24,3 +24,5 @@ TestResults
 **/x86/Release
 **/x86/Debug
 **/x64/Release
+/subjects/**/Debug
+/subjects/**/Release

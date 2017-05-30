@@ -98,7 +98,7 @@ namespace Reko.Arch.Arm
             return null;
         }
 
-        public override void Render(MachineInstructionWriter writer)
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (instruction == null)
             {
@@ -218,6 +218,9 @@ namespace Reko.Arch.Arm
                     writer.Write('-');
                 writer.Write(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value].Name);
                 WriteShift(op, writer);
+                break;
+            case ArmInstructionOperandType.SysRegister:
+                writer.Write(A32Registers.SysRegisterByCapstoneID[op.SysRegisterValue.Value].Name);
                 break;
             case ArmInstructionOperandType.Memory:
                 WriteMemoryOperand(op, writer);

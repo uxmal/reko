@@ -32,9 +32,9 @@ namespace Reko.Arch.Vax
     public partial class VaxDisassembler : DisassemblerBase<VaxInstruction>
     {
         private VaxArchitecture arch;
-        private ImageReader rdr;
+        private EndianImageReader rdr;
 
-        public VaxDisassembler(VaxArchitecture arch, ImageReader imageReader)
+        public VaxDisassembler(VaxArchitecture arch, EndianImageReader imageReader)
         {
             this.arch = arch;
             this.rdr = imageReader;

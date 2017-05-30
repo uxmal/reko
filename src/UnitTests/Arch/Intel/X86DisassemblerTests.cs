@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Arch.Intel
         private X86Instruction Disassemble16(params byte[] bytes)
         {
             MemoryArea img = new MemoryArea(Address.SegPtr(0xC00, 0), bytes);
-            ImageReader rdr = img.CreateLeReader(img.BaseAddress);
+            EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(ProcessorMode.Real, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
             if (options != null)
             {
@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Arch.Intel
                 false);
         }
 
-        private void CreateDisassembler16(ImageReader rdr)
+        private void CreateDisassembler16(EndianImageReader rdr)
         {
             dasm = new X86Disassembler(
                 ProcessorMode.Real,
@@ -365,7 +365,7 @@ movzx	ax,byte ptr [bp+04]
             byte[] image = new byte[] { 0xB8, 0x78, 0x56, 0x34, 0x12 };	// mov eax,0x12345678
             MemoryArea img = new MemoryArea(Address.Ptr32(0x00100000), image);
             img.Relocations.AddPointerReference(0x00100001ul - img.BaseAddress.ToLinear(), 0x12345678);
-            ImageReader rdr = img.CreateLeReader(img.BaseAddress);
+            EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
             X86Disassembler dasm = new X86Disassembler(
                 ProcessorMode.Protected32,
                 rdr, 
@@ -383,7 +383,7 @@ movzx	ax,byte ptr [bp+04]
             byte[] image = new byte[] { 0x2E, 0xC7, 0x06, 0x01, 0x00, 0x00, 0x08 }; // mov cs:[0001],0800
             MemoryArea img = new MemoryArea(Address.SegPtr(0x900, 0), image);
             img.Relocations.AddSegmentReference(5, 0x0800);
-            ImageReader rdr = img.CreateLeReader(img.BaseAddress);
+            EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
             CreateDisassembler16(rdr);
             X86Instruction instr = dasm.First();
             Assert.AreEqual("mov\tword ptr cs:[0001],0800", instr.ToString());

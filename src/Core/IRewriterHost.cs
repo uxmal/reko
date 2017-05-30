@@ -31,7 +31,14 @@ namespace Reko.Core
         Expression PseudoProcedure(string name, DataType returnType, params Expression [] args);
         Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
 
-        Identifier GetImportedGlobal(Address addrThunk, Address addrInstr);
+        /// <summary>
+        /// Given an address addrThunk, returns the possible imported thing (procedure or 
+        /// global variable) pointed to by Thunk.
+        /// </summary>
+        /// <param name="addrThunk"></param>
+        /// <param name="addrInstr"></param>
+        /// <returns></returns>
+        Expression GetImport(Address addrThunk, Address addrInstr);
         ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr);
         ExternalProcedure GetInterceptedCall(Address addrImportThunk);
 

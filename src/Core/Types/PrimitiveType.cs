@@ -66,12 +66,14 @@ namespace Reko.Core.Types
 	/// </remarks>
 	public class PrimitiveType : DataType
 	{
-		private short byteSize;
+		private int bitSize;
+        private int byteSize;
 		
-		private PrimitiveType(Domain dom, short byteSize, string name)
+		private PrimitiveType(Domain dom, int bitSize, string name)
 		{
 			this.Domain = dom;
-			this.byteSize = byteSize;
+			this.bitSize = bitSize;
+            this.byteSize = (bitSize + (BitsPerByte-1)) / BitsPerByte;
 			this.Name = name;
 		}
 
@@ -96,17 +98,31 @@ namespace Reko.Core.Types
 			int d = (int) Domain - (int) p.Domain;
 			if (d != 0)
 				return d;
-			return byteSize - p.byteSize;
+			return bitSize - p.bitSize;
 		}
 
 		public static PrimitiveType Create(Domain dom, int byteSize)
 		{
-			return Create(dom, (short) byteSize, null);
+			return Create(dom, byteSize, null);
 		}
 
-		private static PrimitiveType Create(Domain dom, short byteSize, string name)
+        public static PrimitiveType CreateBitSlice(int bitlength)
+        {
+            var p = new PrimitiveType(Domain.Integer, bitlength, null);
+            PrimitiveType shared;
+            if (!cache.TryGetValue(p, out shared))
+            {
+                shared = p;
+                shared.Name = GenerateName(Domain.Integer, p.BitSize);
+                cache.Add(shared, shared);
+                lookupByName.Add(shared.Name, shared);
+            }
+            return shared;
+        }
+
+        private static PrimitiveType Create(Domain dom, int byteSize, string name)
 		{
-			PrimitiveType p = new PrimitiveType(dom, byteSize, null);
+			PrimitiveType p = new PrimitiveType(dom, byteSize*8, null);
 			PrimitiveType shared;
             if (!cache.TryGetValue(p, out shared))
 			{
@@ -118,7 +134,7 @@ namespace Reko.Core.Types
 			return shared;
 		}
 
-		public static PrimitiveType CreateWord(int byteSize)
+        public static PrimitiveType CreateWord(int byteSize)
 		{
 			Domain w;
 			string name;
@@ -165,7 +181,7 @@ namespace Reko.Core.Types
 			PrimitiveType p = obj as PrimitiveType;
 			if (p == null)
 				return false;
-			return p.Domain == Domain && p.byteSize == byteSize;
+			return p.Domain == Domain && p.bitSize == bitSize;
 		}
 	
         /// <summary>
@@ -236,7 +252,7 @@ namespace Reko.Core.Types
 
 		public override int GetHashCode()
 		{
-			return byteSize * 256 ^ Domain.GetHashCode();
+			return bitSize * 256 ^ Domain.GetHashCode();
 		}
 
         /// <summary>
@@ -294,10 +310,15 @@ namespace Reko.Core.Types
 			}
 		}
 
-		/// <summary>
-		/// Size of this primitive type in bytes.
-		/// </summary>
-		public override int Size
+        public override int BitSize
+        {
+            get { return this.bitSize; }
+        }
+
+        /// <summary>
+        /// Size of this primitive type in bytes.
+        /// </summary>
+        public override int Size
 		{
 			get { return byteSize; }
 			set { throw new InvalidOperationException("Size of a primitive type cannot be changed."); }

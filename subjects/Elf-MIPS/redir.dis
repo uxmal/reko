@@ -12762,16 +12762,12 @@ void __fixunsdfsi(word64 f12, word64 f13, word32 FCSR)
 // Trashed: cc0 f0 f1 f2 r1 r2 r25 r28 r3
 // Preserved: FCSR sp
 __fixunsdfsi_entry:
-	def f12_f13
 // DataOut: f12 f13 FCSR
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l00407740:
-	f0_8 = 0x00000000
-	f0_f1_9 = f0_8 (alias)
-	cc0_11 = f0_f1_9 <= f12_f13
-	branch !cc0_11 l00407740_ds_t
+	branch !(0x00000000 <= f12_f13) l00407740_ds_t
 // DataOut: f12 f13 FCSR
 // DataOut (flags): 
 // SymbolicIn: sp:fp

@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Evaluation
             var r2_r1 = m.Frame.EnsureSequence(r2.Storage, r1.Storage, PrimitiveType.Word64);
 
             var ass = m.Assign(r2_r1, m.SMul(r1, c));
-            m.Emit(new AliasAssignment(r2, m.Slice(PrimitiveType.Word32, r2_r1, 32)));
+            m.Alias(r2, m.Slice(PrimitiveType.Word32, r2_r1, 32));
             if (shift != 0)
                 m.Assign(r2, m.Sar(r2, shift));
 

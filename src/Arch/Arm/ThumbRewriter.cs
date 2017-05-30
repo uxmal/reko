@@ -44,7 +44,7 @@ namespace Reko.Arch.Arm
         private int itState;
         private ArmCodeCondition itStateCondition;
 
-        public ThumbRewriter(ThumbProcessorArchitecture arch, ImageReader rdr, ArmProcessorState state, Frame frame, IRewriterHost host)
+        public ThumbRewriter(ThumbProcessorArchitecture arch, EndianImageReader rdr, ArmProcessorState state, Frame frame, IRewriterHost host)
         {
             this.instrs = CreateInstructionStream(rdr);
             this.frame = frame;
@@ -53,7 +53,7 @@ namespace Reko.Arch.Arm
             this.itStateCondition = ArmCodeCondition.AL;
         }
 
-        private IEnumerator<Arm32Instruction> CreateInstructionStream(ImageReader rdr)
+        private IEnumerator<Arm32Instruction> CreateInstructionStream(EndianImageReader rdr)
         {
             return new ThumbDisassembler(rdr).GetEnumerator();
         }
@@ -226,7 +226,13 @@ namespace Reko.Arch.Arm
             if (cond == ArmCodeCondition.AL)
                 emitter.Emit(instr);
             else
-                emitter.If(TestCond(cond), instr);
+            {
+                emitter.BranchInMiddleOfInstruction(
+                    TestCond(cond).Invert(),
+                    Address.Ptr32((uint)(this.instr.Address + this.instr.Bytes.Length)),
+                    RtlClass.ConditionalTransfer);
+                emitter.Emit(instr);
+            }
         }
 
         private void Predicate(ArmCodeCondition cond, Expression dst, Expression src)
@@ -242,10 +248,7 @@ namespace Reko.Arch.Arm
             {
                 instr = new RtlAssignment(dst, src);
             }
-            if (cond == ArmCodeCondition.AL)
-                emitter.Emit(instr);
-            else
-                emitter.If(TestCond(cond), instr);
+            Predicate(cond, instr);
         }
     }
 }

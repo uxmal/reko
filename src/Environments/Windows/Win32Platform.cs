@@ -182,7 +182,7 @@ namespace Reko.Environments.Windows
             return null;
         }
 
-        public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(EndianImageReader rdr, IRewriterHost host)
         {
             var rw = Architecture.CreateRewriter(
                 rdr,
@@ -225,7 +225,8 @@ namespace Reko.Environments.Windows
                 SystemService svc;
                 if (mod.ServicesByName.TryGetValue(procName, out svc))
                 {
-                    return new ExternalProcedure(svc.Name, svc.Signature);
+                    var chr = LookupCharacteristicsByName(svc.Name);
+                    return new ExternalProcedure(svc.Name, svc.Signature, chr);
                 }
                 else
                 {
@@ -235,10 +236,10 @@ namespace Reko.Environments.Windows
             else
             {
                 FunctionType sig;
-                if (Metadata.Signatures.TryGetValue(procName, out sig))
-                    return new ExternalProcedure(procName, sig);
-                else
+                if (!Metadata.Signatures.TryGetValue(procName, out sig))
                     return null;
+                var chr = LookupCharacteristicsByName(procName);
+                return new ExternalProcedure(procName, sig, chr);
             }
         }
 
@@ -251,7 +252,8 @@ namespace Reko.Environments.Windows
             SystemService svc;
             if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
             {
-                return new ExternalProcedure(svc.Name, svc.Signature);
+                var chr = LookupCharacteristicsByName(svc.Name);
+                return new ExternalProcedure(svc.Name, svc.Signature, chr);
             }
             else
                 return null;

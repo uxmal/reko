@@ -246,11 +246,11 @@ test7_exit:
 
 
 
-void nested_if_blocks_test8(real64 rArg04, real64 rArg0)
+word32 nested_if_blocks_test8(real64 rArg04, real64 rArg0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut:
+// LiveOut: ebp esp
 // Trashed: SCZOFPUF ah al ax bp bpl ch cl cx dh dl dx eax ebp ecx edx esp rax rbp rcx rdx rsp sp spl
 // Preserved:
 // Stack args: Stack +0004(64)
@@ -282,13 +282,13 @@ l004011F2:
 
 l0040120D:
 	test6(Mem38[0x00403018:word32], 0x00000006, 0x00000007)
-	return
-// DataOut:
+	return ebp
+// DataOut: ebp esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
 
 nested_if_blocks_test8_exit:
-// DataOut:
+// DataOut: ebp esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
 
@@ -392,6 +392,97 @@ const_div_test10_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp ebp:ebp eax:<invalid> ecx:<invalid> edx:<invalid> -4(fp):ebp
+
+
+
+void loop_test11(word32 ecx, word32 ebp)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ebp ecx
+// LiveOut:
+// Trashed: SCZOFPUF ah al ax bp bpl ch cl cx dh dl dx eax ebp ecx edx esp rax rbp rcx rdx rsp sp spl
+// Preserved: ebp esp
+loop_test11_entry:
+// DataOut: ebp ecx
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l004012D0:
+	word32 ebp_19 = fp - 0x00000004
+// DataOut: ebp ecx esp
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: Local -0004(32)
+
+l004012DD:
+	branch Mem0[ebp_19 - 0x00000004:word32] <= 0x00000000 l00401329
+// DataOut: ebp ecx esp
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):0x00000005 -4(fp):ebp
+// LocalsOut: Local -0004(32)
+
+l00401329:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):0x00000005 -4(fp):ebp
+
+loop_test11_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):0x00000005 -4(fp):ebp
+
+l004012E3:
+	word32 eax_26 = Mem0[ebp_19 - 0x00000004:word32]
+	word32 eax_27 = eax_26 & 0x80000001
+	branch (eax_26 & 0x80000001) >= 0x00000000 l004012F2
+// DataOut: eax ebp ecx esp
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):0x00000005 -4(fp):ebp
+// LocalsOut: Local -0004(32)
+
+l004012ED:
+	eax_27 = ((eax_26 & 0x80000001) - 0x00000001 | 0xFFFFFFFE) + 0x00000001
+// DataOut: eax ebp ecx esp
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):0x00000005 -4(fp):ebp
+// LocalsOut: Local -0004(32)
+
+l004012F2:
+	branch eax_27 != 0x00000000 l0040130D
+// DataOut: ebp ecx esp
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):0x00000005 -4(fp):ebp
+// LocalsOut: Local -0004(32)
+
+l0040130D:
+	Mem55[fp - 0x00000014:real64] = Mem0[ebp_19 + 0x00000008:real64]
+	ebp_19 = nested_if_blocks_test8(rArg00, rArg0)
+// DataOut: ebp esp
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):0x00000005 -4(fp):ebp
+// LocalsOut: Local -0004(32)
+
+l004012F6:
+	Mem43[ebp_19 - 0x00000008:real32] = (real32) Mem0[ebp_19 + 0x00000008:real64]
+	real64 rLoc1_44 = (real64) Mem43[ebp_19 - 0x00000008:real32]
+	Mem46[fp - 0x00000010:word32] = ecx
+	Mem47[fp - 0x00000010:real32] = (real32) rLoc1_44
+	loop_test9(rArg00, rArg0)
+// DataOut: ebp esp
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):0x00000005 -4(fp):ebp
+// LocalsOut: Local -0004(32)
+
+l0040131E:
+	word32 ecx_38 = Mem0[ebp_19 - 0x00000004:word32]
+	Mem41[ebp_19 - 0x00000004:word32] = ecx_38 - 0x00000001
+	ecx = ecx_38 - 0x00000001
+// DataOut: ebp ecx esp
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):0x00000005 -4(fp):ebp
+// LocalsOut: Local -0004(32)
 
 
 

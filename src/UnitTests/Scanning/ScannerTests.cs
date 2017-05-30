@@ -586,6 +586,31 @@ fn00001100_exit:
         }
 
         [Test]
+        public void Scanner_NoDecompiledProcedureFromUserGlobal()
+        {
+            Given_Program(Address.Ptr32(0x12314), new byte[20]);
+            program.User.Procedures.Add(
+                Address.Ptr32(0x12314),
+                new Procedure_v1()
+                {
+                    Decompile = false,
+                }
+            );
+
+            var sc = CreateScanner(program);
+            sc.EnqueueUserProcedure(
+                Address.Ptr32(0x12314),
+                FunctionType.Action());
+            sc.EnqueueUserProcedure(
+                Address.Ptr32(0x12324),
+                FunctionType.Action());
+            sc.ScanImage();
+
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual(0x12324, program.Procedures.Keys[0].Offset);
+        }
+
+        [Test]
         public void Scanner_EvenOdd()
         {
             var scan = CreateScanner(0x1000, 0x2000);

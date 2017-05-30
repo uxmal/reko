@@ -194,6 +194,125 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        public void CEB_BuildPointerToVoid()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            CreateTv(id, Ptr32(VoidType.Instance), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, 4);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(char *) id + 4", e.ToString());
+        }
+
+        [Test]
+        public void CEB_BuildPointerToUnknown()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var index = new Identifier("index", PrimitiveType.Word32, null);
+            CreateTv(id, Ptr32(new UnknownType()), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, index, 0);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(char *) id + index", e.ToString());
+        }
+
+        [Test]
+        public void CEB_BuildPointerToCode()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var indexId = new Identifier("index", PrimitiveType.Word32, null);
+            var index = m.IMul(indexId, 16);
+            CreateTv(id, Ptr32(new CodeType()), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, index, -4);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual(
+                "(char *) id + (index * 0x00000010 - 4)",
+                e.ToString());
+        }
+
+        [Test]
+        public void CEB_BuildPointerToPointerToInteger()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var index = new Identifier("index", PrimitiveType.Word32, null);
+            CreateTv(id, Ptr32(Ptr32(PrimitiveType.Int32)), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, index, -8);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(char *) id + (index - 8)", e.ToString());
+        }
+
+        [Test]
+        public void CEB_BuildPointerToStruct_MiddleOfTheField()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var str = Struct(Fld(4, PrimitiveType.Int32));
+            CreateTv(id, Ptr32(str), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, 6);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(char *) &id->dw0004 + 2", e.ToString());
+        }
+
+        [Test]
+        public void CEB_BuildPointerToStruct_EndOfTheField()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var str = Struct(Fld(4, PrimitiveType.Int32));
+            CreateTv(id, Ptr32(str), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, 8);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("&id->dw0004 + 1", e.ToString());
+        }
+
+        [Test]
+        public void CEB_BuildPointerToInteger()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            CreateTv(id, Ptr32(PrimitiveType.Int32), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, 6);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(char *) id + 6", e.ToString());
+        }
+
+        [Test]
+        public void CEB_BuildUnionWithOffset()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            CreateTv(id, ptrUnion.Pointee, PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, 2);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(word32) id.w + 2", e.ToString());
+        }
+
+        [Test]
+        public void CEB_BuildUnionWithNegativeOffset()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            CreateTv(id, ptrUnion.Pointee, PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, -2);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(word32) id.w - 2", e.ToString());
+        }
+
+        [Test]
+        public void CEB_BuildPointerToStruct_NoFieldAtGivenOffset()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var str = Struct(Fld(8, PrimitiveType.Int32));
+            CreateTv(id, Ptr32(str), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, 4);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(char *) id + 4", e.ToString());
+        }
+
+        [Test]
+        public void CEB_BuildPointerToUnion_NotFoundAlternative()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            CreateTv(id, ptrUnion, PrimitiveType.Real64);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, 2);
+            var e = ceb.BuildComplex(false);
+            Assert.AreEqual("(char *) id + 2", e.ToString());
+        }
+
+        [Test]
         public void CEB_BuildUnionFetch()
         {
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);

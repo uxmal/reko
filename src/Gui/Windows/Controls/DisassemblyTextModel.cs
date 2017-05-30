@@ -104,7 +104,8 @@ namespace Reko.Gui.Windows.Controls
             line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
             line.Add(new InstructionTextSpan(instr, BuildBytes(program, instr), "dasm-bytes"));
             var dfmt = new DisassemblyFormatter(program, instr, line);
-            instr.Render(dfmt);
+            dfmt.Address = instr.Address;
+            instr.Render(dfmt, MachineInstructionWriterOptions.None);
             dfmt.NewLine();
             return new LineSpan(addr, line.ToArray());
         }

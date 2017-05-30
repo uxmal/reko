@@ -55,21 +55,20 @@ namespace Reko.Arch.Mips
             emitter.Assign(RewriteOperand(instr.op1), from);
         }
 
-        private void RewriteTrap(MipsInstruction instr, Func<Expression,Expression,Expression> op)
+        private void RewriteTrap(MipsInstruction instr, Func<Expression, Expression, Expression> op)
         {
-            this.cluster.Class = RtlClass.ConditionalTransfer;
-            var trap = host.PseudoProcedure("__trap", VoidType.Instance, RewriteOperand(instr.op3));
             var op1 = RewriteOperand(instr.op1);
             var op2 = RewriteOperand(instr.op2);
-            var side = new RtlSideEffect(trap);
-            if (op == emitter.Eq && op1 == op2)
+            if (op != emitter.Eq || !cmp.Equals(op1, op2))
             {
-                emitter.Emit(side);
+                this.cluster.Class = RtlClass.ConditionalTransfer;
+                emitter.BranchInMiddleOfInstruction(
+                    op(op1, op2).Invert(),
+                    instr.Address + instr.Length,
+                    RtlClass.ConditionalTransfer);
             }
-            else
-            {
-                emitter.If(op(op1, op2), side);
-            }
+            var trap = host.PseudoProcedure("__trap", VoidType.Instance, RewriteOperand(instr.op3));
+            emitter.SideEffect(trap);
         }
 
         private void RewriteReadHardwareRegister(MipsInstruction instr)

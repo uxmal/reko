@@ -351,8 +351,9 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_tge()
         {
             AssertCode(0x00F000F0,  // tge a3,s0,0x3
-                "0|T--|00100000(4): 1 instructions",
-                "1|---|if (r7 >= r16) __trap(0x0003)");
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (r7 < r16) branch 00100004",
+                "2|L--|__trap(0x0003)");
         }
 
         [Test]
@@ -496,8 +497,8 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_trap()
         {
             AssertCode(0x00000034, // teq zero, zero	 
-                "0|T--|00100000(4): 1 instructions",
-                "1|---|if (0x00000000 == 0x00000000) __trap(0x0000)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__trap(0x0000)");
         }
 
         [Test]

@@ -163,7 +163,14 @@ namespace Reko.Core.Code
 			cast.Expression.Accept(this);
 		}
 
-		public virtual void VisitConditionOf(ConditionOf cof)
+        public virtual void VisitConditionalExpression(ConditionalExpression cond)
+        {
+            cond.Condition.Accept(this);
+            cond.ThenExp.Accept(this);
+            cond.FalseExp.Accept(this);
+        }
+
+        public virtual void VisitConditionOf(ConditionOf cof)
 		{
 			cof.Expression.Accept(this);
 		}

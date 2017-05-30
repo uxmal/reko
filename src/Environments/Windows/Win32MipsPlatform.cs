@@ -109,7 +109,7 @@ namespace Reko.Environments.Windows
         /// <param name="imageReader"></param>
         /// <param name="host"></param>
         /// <returns></returns>
-        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
         {
             var rtls = Architecture.CreateRewriter(
                 imageReader,

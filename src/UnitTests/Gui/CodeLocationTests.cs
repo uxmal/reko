@@ -73,7 +73,8 @@ namespace Reko.UnitTests.Gui
             var codeSvc = mr.DynamicMock<ICodeViewerService>();
             codeSvc.Expect(x => x.DisplayProcedure(
                 Arg<Program>.Is.Same(program),
-                Arg<Procedure>.Is.Same(proc)));
+                Arg<Procedure>.Is.Same(proc),
+                Arg<bool>.Is.Equal(true)));
             mr.ReplayAll();
 
             var sc = new ServiceContainer();
@@ -92,7 +93,9 @@ namespace Reko.UnitTests.Gui
             var codeSvc = mr.DynamicMock<ICodeViewerService>();
             codeSvc.Expect(x => x.DisplayProcedure(
                 Arg<Program>.Is.Same(program),
-                Arg<Procedure>.Is.Same(proc)));
+                Arg<Procedure>.Is.Same(proc),
+                Arg<bool>.Is.Equal(true)));
+
             mr.ReplayAll();
 
             var sc = new ServiceContainer();

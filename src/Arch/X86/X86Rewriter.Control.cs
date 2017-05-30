@@ -93,6 +93,8 @@ namespace Reko.Arch.X86
             {
                 if (addr.ToLinear() == (dasm.Current.Address + dasm.Current.Length).ToLinear())
                 {
+                    // Calling the following address. Is the call followed by a 
+                    // pop?
                     var next = dasm.Peek(1);
                     RegisterOperand reg = next.op1 as RegisterOperand;
                     if (next.code == Opcode.pop && reg != null)
@@ -132,10 +134,12 @@ namespace Reko.Arch.X86
 
         private void RewriteInto()
         {
-            emitter.If(
-                emitter.Test(ConditionCode.OV, orw.FlagGroup(FlagM.OF)),
-                new RtlSideEffect(
-                    host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.Byte(4))));
+            emitter.BranchInMiddleOfInstruction(
+                emitter.Test(ConditionCode.NO, orw.FlagGroup(FlagM.OF)),
+                instrCur.Address + instrCur.Length,
+                RtlClass.ConditionalTransfer);
+            emitter.SideEffect(
+                    host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.Byte(4)));
         }
 
         private void RewriteJcxz()

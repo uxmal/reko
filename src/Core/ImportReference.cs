@@ -36,6 +36,7 @@ namespace Reko.Core
     {
         public Address ReferenceAddress;
         public string ModuleName;
+        public string EntryName;
 
         public ImportReference(Address addr, string moduleName)
         {
@@ -43,7 +44,8 @@ namespace Reko.Core
             this.ModuleName = moduleName;
         }
 
-        public abstract Identifier ResolveImportedGlobal(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
+        public abstract Expression ResolveImport(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
+
         public abstract ExternalProcedure ResolveImportedProcedure(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
 
         public abstract int CompareTo(ImportReference that);
@@ -57,6 +59,7 @@ namespace Reko.Core
             : base(addr, moduleName)
         {
             this.ImportName = importName;
+            this.EntryName = importName;
         }
 
         public override int CompareTo(ImportReference that)
@@ -75,12 +78,12 @@ namespace Reko.Core
             return cmp;
         }
 
-        public override Identifier ResolveImportedGlobal(
+        public override Expression ResolveImport(
             IImportResolver resolver,
             IPlatform platform,
             AddressContext ctx)
         {
-            var global = resolver.ResolveGlobal(ModuleName, ImportName, platform);
+            var global = resolver.ResolveImport(ModuleName, ImportName, platform);
             if (global != null)
                 return global;
             var t = platform.DataTypeFromImportName(ImportName);
@@ -92,6 +95,7 @@ namespace Reko.Core
                 return null;
         }
 
+        [Obsolete("", true)]
         public override ExternalProcedure ResolveImportedProcedure(
             IImportResolver resolver, 
             IPlatform platform, 
@@ -103,7 +107,11 @@ namespace Reko.Core
             // Can we guess at the signature?
             ep = platform.SignatureFromName(ImportName);
             if (ep != null)
+            {
+                if (!ep.Signature.ParametersValid)
+                    ctx.Warn("Unable to guess parameters of {0}.", this);
                 return ep;
+            }
             
             ctx.Warn("Unable to resolve imported reference {0}.", this);
             return new ExternalProcedure(this.ToString(), null);
@@ -129,6 +137,7 @@ namespace Reko.Core
             : base(addr, moduleName)
         {
             this.Ordinal = ordinal;
+            this.EntryName = string.Format("{0}_{1}", moduleName, ordinal);
         }
 
         public override int CompareTo(ImportReference that)
@@ -144,10 +153,12 @@ namespace Reko.Core
             return cmp;
         }
 
-        public override Identifier ResolveImportedGlobal(IImportResolver importResolver, IPlatform platform, AddressContext ctx)
+        public override Expression ResolveImport(IImportResolver importResolver, IPlatform platform, AddressContext ctx)
         {
-            ctx.Warn("Ordinal global imports not supported. Please report this message to the Reko maintainers (https://github.com/uxmal/reko).");
-            var id = importResolver.ResolveGlobal(ModuleName, Ordinal, platform);
+            var imp = importResolver.ResolveImport(ModuleName, Ordinal, platform);
+            if (imp != null)
+                return imp;
+            ctx.Warn("Unable to resolve imported reference {0}.", this);
             return null;
         }
 
