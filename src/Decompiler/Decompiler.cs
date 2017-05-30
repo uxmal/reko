@@ -438,6 +438,16 @@ namespace Reko
                     else
                         scanner.EnqueueImageSymbol(sym, false);
                 }
+                var symSvc = services.GetService<ISymbolLoadingService>();
+                foreach (var ssRef in program.User.SymbolSources)
+                {
+                    var symSrc = symSvc.GetSymbolSource(ssRef);
+                    foreach (var sym in symSrc.GetAllSymbols())
+                    {
+                        scanner.EnqueueImageSymbol(sym, false);
+                    }
+                    symSrc.Dispose();
+                }
                 scanner.ScanImage();
 
                 if (program.User.Heuristics.Contains("HeuristicScanning"))
