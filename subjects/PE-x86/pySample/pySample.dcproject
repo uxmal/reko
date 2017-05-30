@@ -10,6 +10,7 @@
     <types-file>pySample.h</types-file>
     <global-vars>pySample.globals.c</global-vars>
     <user>
+      <processor />
       <procedure name="py_unused">
         <address>10001140</address>
         <CSignature>PyObject *py_unused(PyObject *self, PyObject *args)</CSignature>
@@ -21,6 +22,9 @@
         </arr>
         <Name>methods</Name>
       </global>
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
+      <registerValues />
     </user>
   </input>
   <metadata>

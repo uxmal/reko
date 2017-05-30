@@ -5,7 +5,7 @@ void _init()
 // LiveOut:
 // Trashed: SCZO ah al ax eax rax
 // Preserved: rsp
-fn0000000000400AE8_entry:
+_init_entry:
 // DataOut: r15d rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -31,530 +31,10 @@ l0000000000400AFD:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
 
-fn0000000000400AE8_exit:
+_init_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp rax:<invalid>
-
-
-
-void fn0000000000400B20()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400B20_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400B20_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400B30()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400B30_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400B30_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400B40()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400B40_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400B40_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400B50()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400B50_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400B50_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400B60()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400B60_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400B60_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400B70()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400B70_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400B70_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400B80()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400B80_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400B80_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400B90()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400B90_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400B90_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400BA0()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400BA0_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400BA0_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400BB0()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400BB0_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400BB0_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400BC0()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400BC0_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400BC0_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400BD0()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400BD0_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400BD0_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400BE0()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400BE0_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400BE0_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400BF0()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400BF0_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400BF0_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400C00()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400C00_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400C00_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400C10()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400C10_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400C10_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400C20()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400C20_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400C20_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400C30()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400C30_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400C30_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400C40()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400C40_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400C40_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400C50()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400C50_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400C50_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400C60()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400C60_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400C60_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400C70()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400C70_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400C70_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400C80()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400C80_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400C80_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400C90()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400C90_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400C90_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400CA0()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400CA0_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400CA0_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-
-
-void fn0000000000400CB0()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0000000000400CB0_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000000000400CB0_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
 
 
 
@@ -624,7 +104,7 @@ word64 deregister_tm_clones(word64 r8)
 // LiveOut: rsp
 // Trashed: SCZO ah al ax di dil eax edi esp r8 r8b r8d r8w rax rdi rsp sp spl
 // Preserved: rbp
-fn0000000000400D00_entry:
+deregister_tm_clones_entry:
 // DataOut: r8
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -671,7 +151,7 @@ l0000000000400D1F:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000004 rax:0x0000000000000000 r8:r8 - 6299896 rbp:fp - 0x0000000000000004 -4(fp):rbp
 
-fn0000000000400D00_exit:
+deregister_tm_clones_exit:
 // DataOut: rsp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp + 0x0000000000000004 rax:<invalid> r8:<invalid> rbp:rbp rdi:<invalid> -4(fp):rbp
@@ -685,7 +165,7 @@ void register_tm_clones()
 // LiveOut:
 // Trashed: SCZO ah al ax di dil eax edi esi esp rax rdi rsi rsp si sil sp spl
 // Preserved: rbp
-fn0000000000400D40_entry:
+register_tm_clones_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -730,7 +210,7 @@ l0000000000400D6D:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000004 rsi:0x0000000000000000 rbp:fp - 0x0000000000000004 rax:0x0000000000000000 rdi:<invalid> -4(fp):rbp
 
-fn0000000000400D40_exit:
+register_tm_clones_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp + 0x0000000000000004 rsi:<invalid> rbp:rbp rax:<invalid> rdi:<invalid> -4(fp):rbp
@@ -744,7 +224,7 @@ void __do_global_dtors_aux(word64 r8)
 // LiveOut:
 // Trashed: SCZO ah al ax bp bpl di dil eax ebp edi esp r8 r8b r8d r8w rax rbp rdi rsp sp spl
 // Preserved: rbp
-fn0000000000400D80_entry:
+__do_global_dtors_aux_entry:
 // DataOut: r8
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -770,7 +250,7 @@ l0000000000400D9A:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rbp:<invalid> rax:<invalid> r8:<invalid> rdi:<invalid> -4(fp):rbp
 
-fn0000000000400D80_exit:
+__do_global_dtors_aux_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rbp:<invalid> rax:<invalid> r8:<invalid> rdi:<invalid> -4(fp):rbp
@@ -784,7 +264,7 @@ void frame_dummy()
 // LiveOut:
 // Trashed: SCZO ah al ax di dil eax edi esi esp rax rdi rsi rsp si sil sp spl
 // Preserved: rbp rsp
-fn0000000000400DA0_entry:
+frame_dummy_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -838,7 +318,7 @@ l0000000000400DAB:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp rdi:0x0000000000601E10 rax:0x0000000000000000
 
-fn0000000000400DA0_exit:
+frame_dummy_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rdi:<invalid> rax:<invalid> rsi:<invalid> rbp:rbp -4(fp):rbp
@@ -882,7 +362,7 @@ l0000000000400D6D:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000004 rsi:0x0000000000000000 rbp:fp - 0x0000000000000004 rax:0x0000000000000000 rdi:<invalid> -4(fp):rbp
 
-fn0000000000400D40_exit:
+register_tm_clones_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp + 0x0000000000000004 rsi:<invalid> rbp:rbp rax:<invalid> rdi:<invalid> -4(fp):rbp
@@ -896,7 +376,7 @@ void component(word32 ecx, word32 edx, word32 esi, word32 edi, word32 r8d, word6
 // LiveOut:
 // Trashed: SCZO ah al ax bp bpl dh dl dx eax ebp edx esp rax rbp rdx rsp sp spl
 // Preserved:
-fn0000000000400DC6_entry:
+component_entry:
 // DataOut: ecx edi edx esi r13 r8d
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -944,7 +424,7 @@ l0000000000400E2D:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000034 rbp:fp - 0x0000000000000004 rax:(uint64) eax rdx:(uint64) eax -40(fp):ecx -36(fp):edx -32(fp):esi -28(fp):rdi + ((uint64) eax << 0x0000000000000003) + (uint64) eax -12(fp):eax -8(fp):eax & 0x00000007 -4(fp):rbp
 
-fn0000000000400DC6_exit:
+component_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000034 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> -40(fp):ecx -36(fp):edx -32(fp):esi -28(fp):rdi + ((uint64) eax << 0x0000000000000003) + (uint64) eax -12(fp):eax -8(fp):eax & 0x00000007 -4(fp):rbp
@@ -1520,7 +1000,7 @@ l000000000040167F:
 // SymbolicIn:
 // LocalsOut: fp(64) Local -000C(64)
 
-fn00000000004012F9_entry:
+main_entry:
 // DataOut: edi fs r13 rsi
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -1766,7 +1246,7 @@ l0000000000401777:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rbp:fp - 0x0000000000000004 rax:0x0000000000000001 rcx:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> r9:<invalid> r8:<invalid> -184(fp):fp - 0x0000000000000074 -180(fp):fp - 0x0000000000000070 -176(fp):fp - 0x000000000000006C -164(fp):rsi -152(fp):edi -136(fp):0x00000001 -68(fp):<invalid> -60(fp):<invalid> -52(fp):<invalid> -44(fp):<invalid> -36(fp):<invalid> -28(fp):<invalid> -20(fp):<invalid> -12(fp):<invalid> -4(fp):rbp
 
-fn00000000004012F9_exit:
+main_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp + 0x0000000000000004 rbp:rbp rax:0x0000000000000001 rcx:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> r9:<invalid> r8:<invalid> -184(fp):fp - 0x0000000000000074 -180(fp):fp - 0x0000000000000070 -176(fp):fp - 0x000000000000006C -164(fp):rsi -152(fp):edi -136(fp):0x00000001 -68(fp):<invalid> -60(fp):<invalid> -52(fp):<invalid> -44(fp):<invalid> -36(fp):<invalid> -28(fp):<invalid> -20(fp):<invalid> -12(fp):<invalid> -4(fp):rbp
@@ -1835,7 +1315,7 @@ void __libc_csu_init(word64 rsi, word32 edi)
 // LiveOut:
 // Trashed: SCZO ah al ax bp bpl dh di dil dl dx eax ebp edi edx esi esp r12 r12b r12d r12w r13 r13b r13d r13w r14 r14b r14d r14w r15 r15b r15d r15w rax rbp rdi rdx rsi rsp si sil sp spl
 // Preserved: rbx
-fn0000000000401780_entry:
+__libc_csu_init_entry:
 // DataOut: edi rsi
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -1888,7 +1368,7 @@ l00000000004017D6:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000020 r15:(uint64) edi r12:0000000000601E00 rbp:0x0000000000601E08 - 0x0000000000601E00 >> 0x0000000000000003 r14:rsi r13:rdx rbx:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
 
-fn0000000000401780_exit:
+__libc_csu_init_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:rsi + 0x0000000000000020 r15:(uint64) edi r12:0000000000601E00 rbp:<invalid> r14:rsi r13:rdx rbx:rbx rsi:<invalid> rdi:<invalid> rdx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
@@ -1902,7 +1382,7 @@ void __libc_csu_fini()
 // LiveOut:
 // Trashed:
 // Preserved: rsp
-fn00000000004017F0_entry:
+__libc_csu_fini_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -1913,7 +1393,7 @@ l00000000004017F0:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
-fn00000000004017F0_exit:
+__libc_csu_fini_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -1927,7 +1407,7 @@ void _fini()
 // LiveOut:
 // Trashed: SCZO
 // Preserved: rsp
-fn00000000004017F4_entry:
+_fini_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -1939,7 +1419,7 @@ l00000000004017F4:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
-fn00000000004017F4_exit:
+_fini_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp

@@ -254,7 +254,7 @@ word32 nested_if_blocks_test8(real64 rArg04, real64 rArg0)
 // Trashed: SCZOFPUF ah al ax bp bpl ch cl cx dh dl dx eax ebp ecx edx esp rax rbp rcx rdx rsp sp spl
 // Preserved:
 // Stack args: Stack +0004(64)
-nested_if_blocks_test8_entry:
+fn004011B0_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
@@ -287,7 +287,7 @@ l0040120D:
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
 
-nested_if_blocks_test8_exit:
+fn004011B0_exit:
 // DataOut: ebp esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
@@ -302,7 +302,7 @@ void loop_test9(real32 rArg04, real64 rArg0)
 // Trashed: SCZOFPUF ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 // Preserved: ebp esp
 // Stack args: Stack +0004(32)
-loop_test9_entry:
+fn00401230_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
@@ -329,7 +329,7 @@ l00401294:
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
 
-loop_test9_exit:
+fn00401230_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp ebp:ebp ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
@@ -483,26 +483,6 @@ l0040131E:
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):0x00000005 -4(fp):ebp
 // LocalsOut: Local -0004(32)
-
-
-
-DWORD Win32CrtStartup()
-// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-Win32CrtStartup_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-Win32CrtStartup_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp
 
 
 

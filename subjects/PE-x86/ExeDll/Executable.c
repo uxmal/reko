@@ -612,23 +612,17 @@ void fn00401774(word32 dwArg00, word32 dwArg04)
 		__fastfail(dwArg04);
 }
 
-// 0040188F: Register byte fn0040188F()
-byte fn0040188F()
+// 0040188F: Register bool fn0040188F()
+bool fn0040188F()
 {
 	Eq_1126 eax_4 = GetModuleHandleW(null);
 	if (eax_4 != null && eax_4->unused == 23117)
 	{
 		struct Eq_1140 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
 		if (eax_42->dw0000 == 0x4550 && (eax_42->w0018 == 0x010B && eax_42->dw0074 > 0x0E))
-			return fn004018CF();
+			return eax_42->dw00E8 != 0x00;
 	}
 	return 0x00;
-}
-
-// 004018CF: Register byte fn004018CF()
-byte fn004018CF()
-{
-	return Z;
 }
 
 // 004018D3: void fn004018D3()

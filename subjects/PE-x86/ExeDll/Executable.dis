@@ -1592,12 +1592,7 @@ l004018C2:
 // SymbolicIn: esp:fp eax:<invalid> ecx:0x0000010B -4(fp):0x00000000
 
 l004018C8:
-// DataOut: bl ebp esi fs
-// DataOut (flags): Z
-// SymbolicIn: esp:fp eax:<invalid> ecx:0x0000010B -4(fp):0x00000000
-
-l004018C8_thunk_fn004018CF:
-	return fn004018CF()
+	return Mem0[eax_42 + 0x000000E8:word32] != 0x00000000
 // DataOut: al bl ebp esi fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp eax:<invalid> ecx:0x0000010B -4(fp):0x00000000
@@ -1612,31 +1607,6 @@ fn0040188F_exit:
 // DataOut: al
 // DataOut (flags): 
 // SymbolicIn: esp:fp eax:<invalid> ecx:<invalid> al:<invalid> -4(fp):0x00000000
-
-
-
-byte fn004018CF()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  Z
-// LiveOut: al
-// Trashed: al ax eax rax
-// Preserved: esp
-fn004018CF_entry:
-// DataOut: bl ebp esi fs
-// DataOut (flags): Z
-// SymbolicIn: esp:fp
-
-l004018CF:
-	return Z
-// DataOut: al bl ebp esi fs
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-
-fn004018CF_exit:
-// DataOut: al
-// DataOut (flags): 
-// SymbolicIn: esp:fp al:Test(NE,Z)
 
 
 

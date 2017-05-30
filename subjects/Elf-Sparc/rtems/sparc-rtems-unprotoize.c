@@ -2300,7 +2300,7 @@ void edit_fn_declaration(word32 o0, word32 dwArg44, word32 dwArg48)
 // 00013B68: Register word32 edit_formals_lists(Register word32 o0, Register out ptr32 l1Out, Register out ptr32 i1Out, Register out ptr32 i2Out)
 word32 edit_formals_lists(word32 o0, ptr32 & l1Out, ptr32 & i1Out, ptr32 & i2Out)
 {
-fn00013B68_entry:
+edit_formals_lists_entry:
 	word32 l1_19 = o0 + ~0x00
 	word32 l0_20 = 0x01
 	word32 o0_23 = (int32) Mem0[o0 + ~0x00:int8]
@@ -2495,7 +2495,7 @@ l00013DF4:
 	i0_112 = 0x00
 l00013DFC:
 	return i0_112
-fn00013B68_exit:
+edit_formals_lists_exit:
 }
 
 // 00013E04: Register word32 find_rightmost_formals_list(Register word32 o0, Register out ptr32 i6Out)
@@ -2658,7 +2658,7 @@ fn00014518_exit:
 // 00014578: void scan_for_missed_items(Stack word32 dwArg44)
 void scan_for_missed_items(word32 dwArg44)
 {
-fn00014578_entry:
+scan_for_missed_items_entry:
 	word32 o1_21 = Mem0[0x000281C0:word32]
 	word32 o0_23 = Mem0[0x000281D0:word32]
 	Mem29[164144:word32] = o1_21 + ~0x00
@@ -2838,7 +2838,7 @@ l00014854_ds_t:
 l00014870:
 	return
 	return
-fn00014578_exit:
+scan_for_missed_items_exit:
 }
 
 // 00014878: void edit_file(Register word32 o0)

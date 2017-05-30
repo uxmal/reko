@@ -168,7 +168,7 @@ void handle_log_rotate(word32 dwArg00)
 // 004008D0: void main(Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
 void main(word32 r5, word32 dwArg00, word32 dwArg04)
 {
-fn004008D0_entry:
+main_entry:
 	int32 r2_23 = *globals->ptr10000914
 	int32 * r1_24 = globals->ptr10000A20
 	*r1_24 = r2_23
@@ -1354,7 +1354,7 @@ l00401B50:
 	client_new(r2_467, r4_465, r5_466, r7_471, dwLoc01A0, dwLoc019C, dwLoc0198, dwLoc0194)
 	return
 l00401B6C_thunk_client_new:
-fn004008D0_exit:
+main_exit:
 }
 
 // 00401B70: void client_new(Register word32 r2, Register (ptr Eq_795) r4, Register (ptr Eq_796) r5, Register int32 r7, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C)
@@ -6730,7 +6730,7 @@ l00408B58:
 // 00408BA0: void __divdf3()
 void __divdf3()
 {
-fn00408BA0_entry:
+__divdf3_entry:
 	<anonymous> * r18_22 = globals->ptr10000A10
 	word32 sp_35
 	word32 r28_36
@@ -6921,7 +6921,7 @@ l00408DDC:
 	word32 r13_125
 	r25_100()
 	return
-fn00408BA0_exit:
+__divdf3_exit:
 }
 
 // 00408E10: void __eqdf2()

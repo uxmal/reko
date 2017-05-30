@@ -11,20 +11,6 @@ void _init()
 	return;
 }
 
-// 00000000004003F0: void fn00000000004003F0()
-void fn00000000004003F0()
-{
-fn00000000004003F0_entry:
-fn00000000004003F0_exit:
-}
-
-// 0000000000400400: void fn0000000000400400()
-void fn0000000000400400()
-{
-fn0000000000400400_entry:
-fn0000000000400400_exit:
-}
-
 // 0000000000400410: void _start(Register word64 rax, Register (ptr Eq_6) rdx, Stack word64 qwArg00, Stack word32 dwArg04)
 void _start(word64 rax,  * rdx, word64 qwArg00, word32 dwArg04)
 {
@@ -113,7 +99,7 @@ void __do_global_dtors_aux(word64 r8)
 // 00000000004004F0: void frame_dummy(Register word64 r8)
 void frame_dummy(word64 r8)
 {
-fn00000000004004F0_entry:
+frame_dummy_entry:
 	rsp = fp
 	SCZO = cond(globals->qw600E08 - 0x00)
 	Z = SCZO
@@ -141,7 +127,7 @@ l000000000040050F_thunk_register_tm_clones:
 l0000000000400518:
 	register_tm_clones(r8)
 	return
-fn00000000004004F0_exit:
+frame_dummy_exit:
 }
 
 // 0000000000400520: Register (ptr byte) verify(Register (arr Eq_168) rdi)

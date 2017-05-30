@@ -294,14 +294,11 @@ Eq_1129: LPCWSTR
 Eq_1136: (union "Eq_1136" (int32 u0) (word16 u1))
 	T_1136 (in Mem0[eax_4 + 0x00000000:word16] : word16)
 	T_1137 (in 0x5A4D : word16)
-Eq_1140: (struct "Eq_1140" (0 word32 dw0000) (18 word16 w0018) (74 uint32 dw0074))
+Eq_1140: (struct "Eq_1140" (0 word32 dw0000) (18 word16 w0018) (74 uint32 dw0074) (E8 word32 dw00E8))
 	T_1140 (in eax_42 : (ptr Eq_1140))
 	T_1144 (in Mem0[eax_4 + 0x0000003C:word32] + eax_4 : word32)
 Eq_1142: HMODULE
 	T_1142 (in eax_4 + 0x0000003C : word32)
-Eq_1160: (fn byte ())
-	T_1160 (in fn004018CF : ptr32)
-	T_1161 (in signature of fn004018CF : void)
 Eq_1234: (segment "Eq_1234" (0 ptr32 ptr0000))
 	T_1234 (in fs : selector)
 Eq_1244: (segment "Eq_1244" (0 word32 dw0000))
@@ -4813,9 +4810,9 @@ T_1124: (in Mem118[0x00403368:word32] : word32)
   Class: Eq_1069
   DataType: ui32
   OrigDataType: ui32
-T_1125: (in al : byte)
+T_1125: (in al : bool)
   Class: Eq_1125
-  DataType: byte
+  DataType: bool
   OrigDataType: byte
 T_1126: (in eax_4 : Eq_1126)
   Class: Eq_1126
@@ -4871,12 +4868,12 @@ T_1138: (in eax_4->unused != 0x5A4D : bool)
   OrigDataType: bool
 T_1139: (in 0x00 : byte)
   Class: Eq_1125
-  DataType: byte
+  DataType: bool
   OrigDataType: byte
 T_1140: (in eax_42 : (ptr Eq_1140))
   Class: Eq_1140
   DataType: (ptr Eq_1140)
-  OrigDataType: (ptr (struct (0 T_1147 t0000) (18 T_1152 t0018) (74 T_1157 t0074)))
+  OrigDataType: (ptr (struct (0 T_1147 t0000) (18 T_1152 t0018) (74 T_1157 t0074) (E8 T_1162 t00E8)))
 T_1141: (in 0x0000003C : word32)
   Class: Eq_1141
   DataType: word32
@@ -4953,26 +4950,26 @@ T_1159: (in eax_42->dw0074 <= 0x0000000E : bool)
   Class: Eq_1159
   DataType: bool
   OrigDataType: bool
-T_1160: (in fn004018CF : ptr32)
+T_1160: (in 0x000000E8 : word32)
   Class: Eq_1160
-  DataType: (ptr Eq_1160)
-  OrigDataType: (ptr (fn T_1162 ()))
-T_1161: (in signature of fn004018CF : void)
-  Class: Eq_1160
-  DataType: (ptr Eq_1160)
-  OrigDataType: 
-T_1162: (in fn004018CF() : byte)
+  DataType: word32
+  OrigDataType: word32
+T_1161: (in eax_42 + 0x000000E8 : word32)
+  Class: Eq_1161
+  DataType: ptr32
+  OrigDataType: ptr32
+T_1162: (in Mem0[eax_42 + 0x000000E8:word32] : word32)
+  Class: Eq_1162
+  DataType: word32
+  OrigDataType: word32
+T_1163: (in 0x00000000 : word32)
+  Class: Eq_1162
+  DataType: word32
+  OrigDataType: word32
+T_1164: (in eax_42->dw00E8 != 0x00000000 : bool)
   Class: Eq_1125
-  DataType: byte
-  OrigDataType: byte
-T_1163: (in al : byte)
-  Class: Eq_1163
-  DataType: byte
-  OrigDataType: byte
-T_1164: (in Z : byte)
-  Class: Eq_1163
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1165: (in SetUnhandledExceptionFilter : ptr32)
   Class: Eq_547
   DataType: (ptr Eq_547)
@@ -6250,11 +6247,10 @@ typedef struct Eq_1140 {
 	word32 dw0000;	// 0
 	word16 w0018;	// 18
 	uint32 dw0074;	// 74
+	word32 dw00E8;	// E8
 } Eq_1140;
 
 typedef HMODULE Eq_1142;
-
-typedef byte (Eq_1160)();
 
 typedef struct Eq_1234 {
 	ptr32 ptr0000;	// 0
