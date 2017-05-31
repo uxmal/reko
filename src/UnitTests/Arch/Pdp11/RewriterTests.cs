@@ -31,7 +31,7 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Pdp11
 {
     [TestFixture]
-    class RewriterTests : RewriterTestBase
+    public class RewriterTests : RewriterTestBase
     {
         private Pdp11Architecture arch = new Pdp11Architecture();
         private MemoryArea image;
@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             var dasm = new Pdp11Disassembler(arch.CreateImageReader(image, 0), arch);
             return new Pdp11Rewriter(arch, dasm, frame, base.CreateHost());
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             BuildTest(0x09F7, 0x0582);  // jsr\tpc,0582(pc)
             AssertCode(
                 "0|T--|0200(4): 1 instructions",
-                "1|T--|call 0784 (2)");
+                "1|T--|call 0786 (2)");
         }
 
         [Test]
@@ -494,6 +494,126 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "4|L--|NZ = cond(r0)",
                 "5|L--|C = false",
                 "6|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_Indexed_Deferred()
+        {
+            BuildTest(0x193C, 0x0A26); // mov-(r4),@0A26(r4)
+            AssertCode(
+                  "0|L--|0200(4): 4 instructions",
+                  "1|L--|r4 = r4 - 0x0002",
+                  "2|L--|Mem0[Mem0[r4 + 0x0A26:word16]:ptr16] = Mem0[r4:word16]",
+                  "3|L--|NZ = cond(v4)",
+                  "4|L--|V = false");
+        }
+
+        [Test(Description = "Destination mustn't be an immediate")]
+        public void Pdp11Rw_invalid_dst_immediate()
+        {
+            // 57 58 59 5A
+            BuildTest(0x5857, 0x5A59);
+            AssertCode(
+                  "0|---|0200(4): 1 instructions",
+                  "1|---|<invalid>");
+        }
+
+        [Test]
+        public void Pdp11Rw_Swab()
+        {
+            BuildTest(0x00C3);      // swab r3
+            AssertCode(
+                  "0|L--|0200(2): 4 instructions",
+                  "1|L--|r3 = __swab(r3)",
+                  "2|L--|NZ = cond(r3)",
+                  "3|L--|C = false",
+                  "4|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_Sob()
+        {
+            BuildTest(0x7E44);      // sob r0,..
+            AssertCode(
+                  "0|T--|0200(2): 2 instructions",
+                  "1|L--|r1 = r1 - 0x0001",
+                  "2|T--|if (r1 != 0x0000) branch 01FA");
+        }
+
+        [Test]
+        public void Pdp11Rw_mark()
+        {
+            BuildTest(0x0D27);      // mark 27
+            AssertCode(
+                "0|T--|0200(2): 5 instructions",
+                "1|L--|sp = pc + 78",
+                "2|L--|v4 = r5",
+                "3|L--|r5 = Mem0[sp:word16]",
+                "4|L--|sp = sp + 0x0002",
+                "5|T--|goto v4");
+        }
+
+        [Test]
+        public void Pdp11Rw_mul()
+        {
+            BuildTest(0x7001);     // mul r1,r0
+            AssertCode(
+                "0|L--|0200(2): 3 instructions",
+                "1|L--|r0_r1 = r0 *s r1",
+                "2|L--|NZC = cond(r0_r1)",
+                "3|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_mul_oddDstReg()
+        {
+            BuildTest(0x7042);     // mul r2,r1
+            AssertCode(
+                "0|L--|0200(2): 3 instructions",
+                "1|L--|r1 = r1 *s r2",
+                "2|L--|NZC = cond(r1)",
+                "3|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_clrflags()
+        {
+            BuildTest(0x00AA);      // clrflags NV
+            AssertCode(
+                "0|L--|0200(2): 2 instructions",
+                "1|L--|N = false",
+                "2|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_stexp()
+        {
+            BuildTest(0xFA4A);      // stexp ac3,@(a2)
+            AssertCode(
+                "0|L--|0200(2): 5 instructions",
+                "1|L--|v4 = __stexp(ac2)",
+                "2|L--|Mem0[r2:word16] = v4",
+                "3|L--|NZ = cond(v4)",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_jsr()
+        {
+            BuildTest(0x09F7, 0x02D8);  // jsr pc, 0x000004DC
+            AssertCode(
+               "0|T--|0200(4): 1 instructions",
+               "1|T--|call 04DC (2)");
+        }
+
+        [Test]
+        public void Pdp11Rw_jmp_deferred()
+        {
+            BuildTest(0x005F, 0x00DC);  // jmp @#00DC
+            AssertCode(
+               "0|T--|0200(4): 1 instructions",
+               "1|T--|goto 00DC");
         }
     }
 }

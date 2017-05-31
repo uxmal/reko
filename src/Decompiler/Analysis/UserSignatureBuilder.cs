@@ -74,7 +74,14 @@ namespace Reko.Analysis
                     if (sig != null)
                     {
                         proc.Name = sProc.Name;
-                        ApplySignatureToProcedure(addr, sig, proc);
+                        if (userProc.Decompile)
+                        {
+                            ApplySignatureToProcedure(addr, sig, proc);
+                        }
+                        else
+                        {
+                            proc.Signature = sig;
+                        }
                         return true;
                     }
                 }
@@ -97,10 +104,16 @@ namespace Reko.Analysis
             return null;
         }
 
+        /// <summary>
+        /// Given a decompiled procedure `proc` and a function signature `sig`, introduce
+        /// copy instructions that copy the formal parameters into the body of the procedure.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="sig"></param>
+        /// <param name="proc"></param>
         public void ApplySignatureToProcedure(Address addr, FunctionType sig, Procedure proc)
         {
             proc.Signature = sig;
-
             int i = 0;
             var stmts = proc.EntryBlock.Succ[0].Statements;
             var linAddr = addr.ToLinear();

@@ -104,6 +104,11 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
+        public DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
         public ImageSymbol FindMainProcedure(Program program, Address addrStart)
         {
             throw new NotImplementedException();
@@ -134,7 +139,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
+        public ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             throw new NotImplementedException();
         }

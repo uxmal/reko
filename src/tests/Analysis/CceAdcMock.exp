@@ -3,15 +3,15 @@ Mem0:Global memory
     uses: r0_1 = Mem0[0x01001000:word32]
 r0_1: orig: r0
     def:  r0_1 = Mem0[0x01001000:word32]
-    uses: r0_6 = r0_1 * 0x00000002 + (r1 <u 0x00000002)
+    uses: r0_6 = r0_1 * 0x00000002 + (r1 <u 2)
 r1:r1
     def:  def r1
-    uses: r0_6 = r0_1 * 0x00000002 + (r1 <u 0x00000002)
+    uses: r0_6 = r0_1 * 0x00000002 + (r1 <u 2)
 SZC_3: orig: SZC
 C_4: orig: C
 r0_5: orig: r0
 r0_6: orig: r0
-    def:  r0_6 = r0_1 * 0x00000002 + (r1 <u 0x00000002)
+    def:  r0_6 = r0_1 * 0x00000002 + (r1 <u 2)
     uses: Mem7[0x01001004:word32] = r0_6
 Mem7: orig: Mem0
     def:  Mem7[0x01001004:word32] = r0_6
@@ -24,7 +24,7 @@ AdcMock_entry:
 	// succ:  l1
 l1:
 	r0_1 = Mem0[0x01001000:word32]
-	r0_6 = r0_1 * 0x00000002 + (r1 <u 0x00000002)
+	r0_6 = r0_1 * 0x00000002 + (r1 <u 2)
 	Mem7[0x01001004:word32] = r0_6
 	return
 	// succ:  AdcMock_exit

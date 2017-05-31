@@ -43,9 +43,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            return new SuperHRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
+            return new SuperHRewriter(arch, new LeImageReader(image, 0), state, binder, host);
         }
 
         public override Address LoadAddress

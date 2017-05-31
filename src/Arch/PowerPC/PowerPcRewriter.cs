@@ -34,15 +34,16 @@ namespace Reko.Arch.PowerPC
 {
     public partial class PowerPcRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private Frame frame;
-        private RtlEmitter emitter;
-        private RtlInstructionCluster cluster;
+        private IStorageBinder frame;
+        private RtlEmitter m;
+        private RtlClass rtlc;
+        private List<RtlInstruction> rtlInstructions;
         private PowerPcArchitecture arch;
         private IEnumerator<PowerPcInstruction> dasm;
         private IRewriterHost host;
         private PowerPcInstruction instr;
 
-        public PowerPcRewriter(PowerPcArchitecture arch, IEnumerable<PowerPcInstruction> instrs, Frame frame, IRewriterHost host)
+        public PowerPcRewriter(PowerPcArchitecture arch, IEnumerable<PowerPcInstruction> instrs, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.frame = frame;
@@ -50,7 +51,7 @@ namespace Reko.Arch.PowerPC
             this.dasm = instrs.GetEnumerator();
         }
 
-        public PowerPcRewriter(PowerPcArchitecture arch, EndianImageReader rdr, Frame frame, IRewriterHost host)
+        public PowerPcRewriter(PowerPcArchitecture arch, EndianImageReader rdr, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             //this.state = ppcState;
@@ -64,16 +65,17 @@ namespace Reko.Arch.PowerPC
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                this.cluster = new RtlInstructionCluster(instr.Address, 4);
-                this.cluster.Class = RtlClass.Linear;
-                this.emitter = new RtlEmitter(cluster.Instructions);
+                var addr = this.instr.Address;
+                this.rtlInstructions = new List<RtlInstruction>();
+                this.rtlc = RtlClass.Linear;
+                this.m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Opcode)
                 {
                 default:
                     host.Error(
                         instr.Address, 
                         string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
-                    emitter.Invalid();
+                    m.Invalid();
                     break;
                 case Opcode.addi: RewriteAddi(); break;
                 case Opcode.addc: RewriteAddc(); break;
@@ -91,13 +93,13 @@ namespace Reko.Arch.PowerPC
                 case Opcode.bc: RewriteBc(false); break;
                 case Opcode.bcctr: RewriteBcctr(false); break;
                 case Opcode.bctrl: RewriteBcctr(true); break;
-                case Opcode.bdnz: RewriteCtrBranch(false, false, emitter.Ne, false); break;
-                case Opcode.bdnzf: RewriteCtrBranch(false, false, emitter.Ne, false); break;
-                case Opcode.bdnzl: RewriteCtrBranch(true, false, emitter.Ne, false); break;
-                case Opcode.bdnzt: RewriteCtrBranch(false, false, emitter.Ne, true); break;
-                case Opcode.bdz: RewriteCtrBranch(false, false, emitter.Eq, false); break;
-                case Opcode.bdzf: RewriteCtrBranch(false, false, emitter.Eq, false); break;
-                case Opcode.bdzl: RewriteCtrBranch(true, false, emitter.Eq, false); break;
+                case Opcode.bdnz: RewriteCtrBranch(false, false, m.Ne, false); break;
+                case Opcode.bdnzf: RewriteCtrBranch(false, false, m.Ne, false); break;
+                case Opcode.bdnzl: RewriteCtrBranch(true, false, m.Ne, false); break;
+                case Opcode.bdnzt: RewriteCtrBranch(false, false, m.Ne, true); break;
+                case Opcode.bdz: RewriteCtrBranch(false, false, m.Eq, false); break;
+                case Opcode.bdzf: RewriteCtrBranch(false, false, m.Eq, false); break;
+                case Opcode.bdzl: RewriteCtrBranch(true, false, m.Eq, false); break;
                 case Opcode.beq: RewriteBranch(false, false,ConditionCode.EQ); break;
                 case Opcode.beql: RewriteBranch(true, false, ConditionCode.EQ); break;
                 case Opcode.beqlr: RewriteBranch(false, true, ConditionCode.EQ); break;
@@ -277,7 +279,10 @@ namespace Reko.Arch.PowerPC
                 case Opcode.xori: RewriteXor(); break;
                 case Opcode.xoris: RewriteXoris(); break;
                 }
-                yield return cluster;
+                yield return new RtlInstructionCluster(addr, 4, this.rtlInstructions.ToArray())
+                {
+                    Class = rtlc
+                };
             }
         }
 

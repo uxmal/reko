@@ -110,21 +110,20 @@ fn0000000140001140 proc
 ;; fn00000001400011B0: 00000001400011B0
 fn00000001400011B0 proc
 	cmp	rcx,[rip+00001E49]
-	repne	
-	jnz	00000001400011CC
+	repne jnz	00000001400011CC
 
 l00000001400011BA:
 	rol	rcx,10
 	test	cx,FFFF
-	repne	
-	jnz	00000001400011C8
+	repne jnz	00000001400011C8
 
 l00000001400011C6:
-	repne	
-	ret	
+	repne ret	
 
 l00000001400011C8:
 	ror	rcx,10
+
+l00000001400011CC:
 	jmp	000000014000147C
 00000001400011D1    CC CC CC                                      ...           
 
@@ -478,10 +477,7 @@ l00000001400015D1:
 	mov	rax,gs:[00000030]
 	mov	rcx,[rax+08]
 	jmp	00000001400015E5
-
-l00000001400015E0:
-	cmp	rcx,rax
-	jz	00000001400015F9
+00000001400015E0 48 3B C8 74 14                                  H;.t.          
 
 l00000001400015E5:
 	xor	eax,eax
@@ -491,15 +487,9 @@ l00000001400015E5:
 
 l00000001400015F2:
 	xor	al,al
-
-l00000001400015F4:
 	add	rsp,28
 	ret	
-
-l00000001400015F9:
-	mov	al,01
-	jmp	00000001400015F4
-00000001400015FD                                        CC CC CC              ...
+00000001400015F9                            B0 01 EB F7 CC CC CC          .......
 
 ;; fn0000000140001600: 0000000140001600
 fn0000000140001600 proc
@@ -588,22 +578,18 @@ l0000000140001698:
 	xor	r8,rdx
 	mov	[r13-20],r8
 	mov	[r13-18],r8
-	illegal	
-	loopne	0000000140001710
-	mov	[rbp-10],eax
-	illegal	
-	lock	
+	movups	xmm0,[rbp-20]
+	mov	[r13-10],r8
+	movsd	xmm1,double ptr [rbp-10]
 	movups	[rip+00001EED],xmm0
 	mov	[r13-20],r8
 	mov	[r13-18],r8
-	illegal	
-	loopne	000000014000172C
-	mov	[rbp-10],eax
-	movups	[rip+00001EE5],xmm1
-	illegal	
-	lock	
+	movups	xmm0,[rbp-20]
+	mov	[r13-10],r8
+	movsd	double ptr [rip+00001EE5],xmm1
+	movsd	xmm1,double ptr [rbp-10]
 	movups	[rip+00001EE1],xmm0
-	movups	[rip+00001EE9],xmm1
+	movsd	double ptr [rip+00001EE9],xmm1
 
 l00000001400016FF:
 	mov	rbx,[rsp+50]

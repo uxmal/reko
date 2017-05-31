@@ -12922,7 +12922,7 @@ l004078BC_ds_f:
 // SymbolicIn: sp:fp r25:0x004077E0 r28:0x10008860 r11:r4 r7:<invalid> r3:<invalid> r2:<invalid> r4:<invalid> r8:<invalid> r10:<invalid> r9:<invalid>
 
 l004078D8:
-	r2_164 = 0x00000000 - r2_164
+	r2_164 = -r2_164
 // DataOut: r10 r11 r2 r5 r6 r7 r8 r9
 // DataOut (flags): 
 // SymbolicIn: sp:fp r25:0x004077E0 r28:0x10008860 r11:r4 r7:<invalid> r3:<invalid> r2:<invalid> r4:<invalid> r8:<invalid> r10:<invalid> r9:<invalid>
@@ -13134,7 +13134,7 @@ l00407978_ds_t:
 l00407990:
 	Mem123[r6 + 0x00000004:word32] = 1
 	Mem124[r6 + 0x00000008:word32] = r8_140
-	Mem125[r6 + 0x0000000C:word32] = 0x00000000 - r3_127
+	Mem125[r6 + 0x0000000C:word32] = -r3_127
 // DataOut: r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp r25:0x004077E0 r28:0x10008860 r11:r4 r7:<invalid> r3:<invalid> r2:1 r4:<invalid> r8:<invalid> r10:<invalid> r9:<invalid>
@@ -14445,7 +14445,7 @@ l00407FB4_ds_t:
 // SymbolicIn: sp:fp + -48 r25:0x00407F70 r28:0x10008860 r2:0x80000000 r3:r4 >>u 0x1F r1:0xCF000000 f0:0xCF000000 -32(fp):0x10008860 -24(fp):3 -20(fp):r4 >>u 0x1F -16(fp):30 -4(fp):ra
 
 l00407FB4_ds_f:
-	word32 r2_83 = 0x00000000 - r4
+	word32 r2_83 = -r4
 // DataOut: r2
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:0x00407F70 r28:0x10008860 r2:0x80000000 r3:r4 >>u 0x1F r1:0xCF000000 f0:0xCF000000 -32(fp):0x10008860 -24(fp):3 -20(fp):r4 >>u 0x1F -16(fp):30 -4(fp):ra
@@ -14455,7 +14455,7 @@ l00407FC8:
 	dwLoc0C_60 = r2_83
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -48 r25:0x00407F70 r28:0x10008860 r2:0x00000000 - r4 r3:r4 >>u 0x1F r1:0xCF000000 f0:0xCF000000 -32(fp):0x10008860 -24(fp):3 -20(fp):r4 >>u 0x1F -16(fp):30 -4(fp):ra
+// SymbolicIn: sp:fp + -48 r25:0x00407F70 r28:0x10008860 r2:-r4 r3:r4 >>u 0x1F r1:0xCF000000 f0:0xCF000000 -32(fp):0x10008860 -24(fp):3 -20(fp):r4 >>u 0x1F -16(fp):30 -4(fp):ra
 // LocalsOut: fp(32) Local -000C(32)
 
 l00407FD4:
@@ -14893,7 +14893,7 @@ l00408278_ds_f:
 // SymbolicIn: sp:fp r25:r5 r28:0x10008860 r24:r4 r7:<invalid> r3:<invalid> r13:r6 r2:<invalid> r4:<invalid> r12:<invalid> r10:<invalid> r11:<invalid> r8:<invalid> r9:<invalid>
 
 l0040829C:
-	r2_291 = 0x00000000 - r2_291
+	r2_291 = -r2_291
 // DataOut: r10 r11 r12 r13 r2 r24 r25 r7 r8 r9
 // DataOut (flags): 
 // SymbolicIn: sp:fp r25:r5 r28:0x10008860 r24:r4 r7:<invalid> r3:<invalid> r13:r6 r2:<invalid> r4:<invalid> r12:<invalid> r10:<invalid> r11:<invalid> r8:<invalid> r9:<invalid>
@@ -15117,8 +15117,8 @@ l00408390_ds_t:
 l004083AC:
 	Mem219[r6 + 0x00000004:word32] = 1
 	Mem220[r6 + 0x00000008:word32] = r12_251
-	word32 r5_215 = 0x00000000 - r5_145
-	Mem221[r6 + 0x00000010:word32] = 0x00000000 - r4_148 - (word32) (0x00000000 <u r5_215)
+	word32 r5_215 = -r5_145
+	Mem221[r6 + 0x00000010:word32] = -r4_148 - (word32) (0x00000000 <u r5_215)
 	Mem222[r6 + 0x00000014:word32] = r5_215
 // DataOut: r13
 // DataOut (flags): 
@@ -17475,7 +17475,7 @@ l00409194_ds_t:
 // SymbolicIn: sp:fp + -56 r25:0x00409150 r28:0x10008860 r2:0x80000000 r3:r4 >>u 0x1F r1:0xC1E00000 f1:0xC1E00000 f0:0x00000000 -40(fp):0x10008860 -32(fp):3 -28(fp):r4 >>u 0x1F -24(fp):60 -4(fp):ra
 
 l00409194_ds_f:
-	word32 r2_99 = 0x00000000 - r4
+	word32 r2_99 = -r4
 // DataOut: r2
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:0x00409150 r28:0x10008860 r2:0x80000000 r3:r4 >>u 0x1F r1:0xC1E00000 f1:0xC1E00000 f0:0x00000000 -40(fp):0x10008860 -32(fp):3 -28(fp):r4 >>u 0x1F -24(fp):60 -4(fp):ra
@@ -17486,7 +17486,7 @@ l004091AC:
 	dwLoc0C_103 = r2_99
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:0x00409150 r28:0x10008860 r2:0x00000000 - r4 r3:r4 >>u 0x1F r1:0xC1E00000 f1:0xC1E00000 f0:0x00000000 -40(fp):0x10008860 -32(fp):3 -28(fp):r4 >>u 0x1F -24(fp):60 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:0x00409150 r28:0x10008860 r2:-r4 r3:r4 >>u 0x1F r1:0xC1E00000 f1:0xC1E00000 f0:0x00000000 -40(fp):0x10008860 -32(fp):3 -28(fp):r4 >>u 0x1F -24(fp):60 -4(fp):ra
 // LocalsOut: fp(32) Local -000C(32) Local -0010(32)
 
 l004091D0:
@@ -18557,7 +18557,7 @@ l00409764_ds_f:
 // SymbolicIn: sp:fp r25:0x00409680 r28:0x10008860 r3:<invalid> r10:<invalid> r11:<invalid> r2:<invalid> r8:<invalid> r9:0x00000000 r4:<invalid> r5:<invalid> r6:<invalid>
 
 l0040976C:
-	r15_136 = r15_150 | r10_163 << 0x00000000 - r4_80
+	r15_136 = r15_150 | r10_163 << -r4_80
 // DataOut: r10 r15 r4 r5 r8 r9
 // DataOut (flags): 
 // SymbolicIn: sp:fp r25:0x00409680 r28:0x10008860 r3:<invalid> r10:<invalid> r11:<invalid> r2:<invalid> r8:<invalid> r9:0x00000000 r4:<invalid> r5:<invalid> r6:<invalid> r15:<invalid>

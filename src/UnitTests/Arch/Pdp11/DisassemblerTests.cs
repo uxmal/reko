@@ -31,7 +31,7 @@ using System.IO;
 
 namespace Reko.UnitTests.Arch.Pdp11
 {
-    [TestFixture]   
+    [TestFixture]
     public class DisassemblerTests
     {
         private MachineInstructionWriterOptions options;
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             this.options = MachineInstructionWriterOptions.ResolvePcRelativeAddress;
         }
 
-        private MachineInstruction RunTest(params ushort [] words)
+        private MachineInstruction RunTest(params ushort[] words)
         {
             var bytes = new byte[words.Length * 2];
             LeImageWriter writer = new LeImageWriter(bytes);
@@ -210,7 +210,7 @@ namespace Reko.UnitTests.Arch.Pdp11
         }
 
         [Test]
-        public void Pdp11dis_f()
+        public void Pdp11dis_stcdi()
         {
             RunTest("stcdi\tac4,@-(r4)", 0xFBAC);
         }

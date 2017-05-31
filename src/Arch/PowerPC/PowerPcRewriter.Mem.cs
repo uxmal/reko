@@ -43,34 +43,34 @@ namespace Reko.Arch.PowerPC
         private void RewriteLfd()
         {
             var op1 = RewriteOperand(instr.op1);
-            var ea = EffectiveAddress(dasm.Current.op2, emitter);
-            emitter.Assign(op1, emitter.Load(PrimitiveType.Real64, ea));
+            var ea = EffectiveAddress(dasm.Current.op2, m);
+            m.Assign(op1, m.Load(PrimitiveType.Real64, ea));
         }
 
         private void RewriteLfs()
         {
             var op1 = RewriteOperand(instr.op1);
-            var ea = EffectiveAddress(dasm.Current.op2, emitter);
-            emitter.Assign(op1, emitter.Cast(PrimitiveType.Real64,
-                emitter.Load(PrimitiveType.Real32, ea)));
+            var ea = EffectiveAddress(dasm.Current.op2, m);
+            m.Assign(op1, m.Cast(PrimitiveType.Real64,
+                m.Load(PrimitiveType.Real32, ea)));
         }
 
         private void RewriteLha()
         {
             var op1 = RewriteOperand(instr.op1);
-            var ea = EffectiveAddress_r0(dasm.Current.op2, emitter);
-            emitter.Assign(op1, emitter.Cast(PrimitiveType.Int32,
-                emitter.Load(PrimitiveType.Int16, ea)));
+            var ea = EffectiveAddress_r0(dasm.Current.op2, m);
+            m.Assign(op1, m.Cast(PrimitiveType.Int32,
+                m.Load(PrimitiveType.Int16, ea)));
         }
 
         private void RewriteLhau()
         {
             var opD = RewriteOperand(instr.op1);
-            var opA = EffectiveAddress(instr.op2, emitter);
+            var opA = EffectiveAddress(instr.op2, m);
             var ea = opA;
             //$TODO: should be convert...
-            emitter.Assign(opD, emitter.Cast(PrimitiveType.Int32, emitter.LoadW(ea)));
-            emitter.Assign(opD, ea);
+            m.Assign(opD, m.Cast(PrimitiveType.Int32, m.LoadW(ea)));
+            m.Assign(opD, ea);
         }
 
         private void RewriteLhaux()
@@ -81,19 +81,19 @@ namespace Reko.Arch.PowerPC
             var ea = opA;
             if (!opB.IsZero)
             {
-                ea = emitter.IAdd(opA, opB);
+                ea = m.IAdd(opA, opB);
             }
             //$TODO: should be convert...
-            emitter.Assign(opD, emitter.Cast(PrimitiveType.Int32, emitter.LoadW(ea)));
-            emitter.Assign(opD, ea);
+            m.Assign(opD, m.Cast(PrimitiveType.Int32, m.LoadW(ea)));
+            m.Assign(opD, ea);
         }
 
         private void RewriteLmw()
         {
             var r = ((RegisterOperand)instr.op1).Register.Number;
-            var ea = EffectiveAddress_r0(instr.op2, emitter);
+            var ea = EffectiveAddress_r0(instr.op2, m);
             var tmp = frame.CreateTemporary(ea.DataType);
-            emitter.Assign(tmp, ea);
+            m.Assign(tmp, ea);
             while (r <= 31)
             {
                 var reg = frame.EnsureRegister(arch.GetRegister(r));
@@ -101,14 +101,14 @@ namespace Reko.Arch.PowerPC
                 if (reg.DataType.Size > 4)
                 {
                     var tmp2 = frame.CreateTemporary(PrimitiveType.Word32);
-                    emitter.Assign(tmp2, emitter.LoadDw(tmp));
-                    emitter.Assign(reg, emitter.Dpb(reg, tmp2, 0));
+                    m.Assign(tmp2, m.LoadDw(tmp));
+                    m.Assign(reg, m.Dpb(reg, tmp2, 0));
                 }
                 else
                 {
-                    emitter.Assign(reg, emitter.LoadDw(tmp));
+                    m.Assign(reg, m.LoadDw(tmp));
                 }
-                emitter.Assign(tmp, emitter.IAdd(tmp, emitter.Int32(4)));
+                m.Assign(tmp, m.IAdd(tmp, m.Int32(4)));
                 ++r;
             }
         }
@@ -121,9 +121,9 @@ namespace Reko.Arch.PowerPC
             var rb = RewriteOperand(instr.op3);
             if (!ra.IsZero)
             {
-                rb = emitter.IAdd(ra, rb);
+                rb = m.IAdd(ra, rb);
             }
-            emitter.Assign(
+            m.Assign(
                 vrt,
                 host.PseudoProcedure(
                     "__lvewx",
@@ -138,9 +138,9 @@ namespace Reko.Arch.PowerPC
             var rb = RewriteOperand(instr.op3);
             if (!ra.IsZero)
             {
-                rb = emitter.IAdd(ra, rb);
+                rb = m.IAdd(ra, rb);
             }
-            emitter.SideEffect(
+            m.SideEffect(
                 host.PseudoProcedure(
                     "__stvewx",
                     PrimitiveType.Word128,
@@ -154,9 +154,9 @@ namespace Reko.Arch.PowerPC
             var rb = RewriteOperand(instr.op3);
             if (!ra.IsZero)
             {
-                rb = emitter.IAdd(ra, rb);
+                rb = m.IAdd(ra, rb);
             }
-            emitter.Assign(
+            m.Assign(
                 vrt,
                 host.PseudoProcedure(
                     "__lvsl",
@@ -171,28 +171,28 @@ namespace Reko.Arch.PowerPC
             var b = RewriteOperand(instr.op3);
             var ea = (a.IsZero)
                 ? b
-                : emitter.IAdd(a, b);
-            emitter.Assign(
+                : m.IAdd(a, b);
+            m.Assign(
                 op1,
                 host.PseudoProcedure(
                     "__reverse_bytes_32",
                     PrimitiveType.Word32,
-                    emitter.Load(PrimitiveType.Word32, ea)));
+                    m.Load(PrimitiveType.Word32, ea)));
         }
 
         private void RewriteLz(PrimitiveType dataType)
         {
             var op1 = RewriteOperand(instr.op1);
-            var ea = EffectiveAddress_r0(dasm.Current.op2, emitter);
-            emitter.Assign(op1, emitter.Load(dataType, ea));
+            var ea = EffectiveAddress_r0(dasm.Current.op2, m);
+            m.Assign(op1, m.Load(dataType, ea));
         }
 
         private void RewriteLzu(PrimitiveType dataType)
         {
             var op1 = RewriteOperand(dasm.Current.op1);
-            var  ea = EffectiveAddress(dasm.Current.op2, emitter);
-            emitter.Assign(op1, emitter.Load(dataType, ea));
-            emitter.Assign(UpdatedRegister(ea), ea);
+            var  ea = EffectiveAddress(dasm.Current.op2, m);
+            m.Assign(op1, m.Load(dataType, ea));
+            m.Assign(UpdatedRegister(ea), ea);
         }
         
         private void RewriteLzux(PrimitiveType dataType)
@@ -200,9 +200,9 @@ namespace Reko.Arch.PowerPC
             var op1 = RewriteOperand(instr.op1);
             var a = RewriteOperand(instr.op2);
             var b = RewriteOperand(instr.op3);
-            var ea = emitter.IAdd(a, b);
-            emitter.Assign(op1, emitter.Load(dataType, ea));
-            emitter.Assign(a, emitter.IAdd(a, b));
+            var ea = m.IAdd(a, b);
+            m.Assign(op1, m.Load(dataType, ea));
+            m.Assign(a, m.IAdd(a, b));
         }
 
         private void RewriteLzx(PrimitiveType dataType)
@@ -212,21 +212,21 @@ namespace Reko.Arch.PowerPC
             var b = RewriteOperand(instr.op3);
             var ea = (a.IsZero)
                 ? b
-                : emitter.IAdd(a, b);
-            emitter.Assign(op1, emitter.Load(dataType, ea));
+                : m.IAdd(a, b);
+            m.Assign(op1, m.Load(dataType, ea));
         }
 
         private void RewriteSt(PrimitiveType dataType)
         {
             var s = RewriteOperand(instr.op1);
-            var ea = EffectiveAddress_r0(instr.op2, emitter);
-            emitter.Assign(emitter.Load(dataType, ea), s);
+            var ea = EffectiveAddress_r0(instr.op2, m);
+            m.Assign(m.Load(dataType, ea), s);
         }
 
         private void RewriteStmw()
         {
             var r = ((RegisterOperand)instr.op1).Register.Number;
-            var ea = EffectiveAddress_r0(instr.op2, emitter);
+            var ea = EffectiveAddress_r0(instr.op2, m);
             var tmp = frame.CreateTemporary(ea.DataType);
             while (r <= 31)
             {
@@ -234,10 +234,10 @@ namespace Reko.Arch.PowerPC
                 Expression w = frame.EnsureRegister(reg);
                 if (reg.DataType.Size > 4)
                 {
-                    w = emitter.Slice(PrimitiveType.Word32, w, 0);
+                    w = m.Slice(PrimitiveType.Word32, w, 0);
                 }
-                emitter.Assign(emitter.LoadDw(tmp), w);
-                emitter.Assign(tmp, emitter.IAdd(tmp, emitter.Int32(4)));
+                m.Assign(m.LoadDw(tmp), w);
+                m.Assign(tmp, m.IAdd(tmp, m.Int32(4)));
                 ++r;
             }
         }
@@ -245,15 +245,15 @@ namespace Reko.Arch.PowerPC
         private void RewriteStu(PrimitiveType dataType)
         {
             var s = RewriteOperand(instr.op1);
-            var ea = EffectiveAddress(instr.op2, emitter);
-            emitter.Assign(emitter.Load(dataType, ea), MaybeNarrow(dataType, s));
-            emitter.Assign(((BinaryExpression)ea).Left, EffectiveAddress(instr.op2, emitter));
+            var ea = EffectiveAddress(instr.op2, m);
+            m.Assign(m.Load(dataType, ea), MaybeNarrow(dataType, s));
+            m.Assign(((BinaryExpression)ea).Left, EffectiveAddress(instr.op2, m));
         }
 
         private Expression MaybeNarrow(PrimitiveType pt, Expression e)
         {
             if (e.DataType.Size != pt.Size)
-                return emitter.Cast(pt, e);
+                return m.Cast(pt, e);
             else
                 return e;
         }
@@ -263,8 +263,8 @@ namespace Reko.Arch.PowerPC
             var s = RewriteOperand(instr.op1);
             var a = RewriteOperand(instr.op2);
             var b = RewriteOperand(instr.op3);
-            emitter.Assign(emitter.Load(dataType, emitter.IAdd(a, b)), MaybeNarrow(dataType, s));
-            emitter.Assign(a, emitter.IAdd(a, b));
+            m.Assign(m.Load(dataType, m.IAdd(a, b)), MaybeNarrow(dataType, s));
+            m.Assign(a, m.IAdd(a, b));
         }
 
         private void RewriteStwbrx()
@@ -274,9 +274,9 @@ namespace Reko.Arch.PowerPC
             var b = RewriteOperand(instr.op3);
             var ea = (a.IsZero)
                 ? b
-                : emitter.IAdd(a, b);
-            emitter.Assign(
-                emitter.Load(PrimitiveType.Word32, ea),
+                : m.IAdd(a, b);
+            m.Assign(
+                m.Load(PrimitiveType.Word32, ea),
                 host.PseudoProcedure(
                     "__reverse_bytes_32",
                     PrimitiveType.Word32,
@@ -290,13 +290,13 @@ namespace Reko.Arch.PowerPC
             var b = RewriteOperand(instr.op3);
             var ea = (a.IsZero)
                 ? b
-                : emitter.IAdd(a, b);
-            emitter.Assign(emitter.Load(dataType, ea), MaybeNarrow(dataType, s));
+                : m.IAdd(a, b);
+            m.Assign(m.Load(dataType, ea), MaybeNarrow(dataType, s));
         }
 
         private void RewriteSync()
         {
-            emitter.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance));
+            m.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance));
         }
 
         private void RewriteTw()
@@ -307,26 +307,26 @@ namespace Reko.Arch.PowerPC
             Func<Expression,Expression,Expression> op = null;
             switch (c.ToInt32())
             {
-            case 0x01: op = emitter.Ugt; break;
-            case 0x02: op = emitter.Ult; break;
-            case 0x04: op = emitter.Eq; break;
-            case 0x05: op = emitter.Uge; break;
-            case 0x06: op = emitter.Ule; break;
-            case 0x08: op = emitter.Gt; break;
-            case 0x0C: op = emitter.Ge; break;
-            case 0x10: op = emitter.Lt; break;
-            case 0x14: op = emitter.Le; break;
-            case 0x18: op = emitter.Ne; break;
+            case 0x01: op = m.Ugt; break;
+            case 0x02: op = m.Ult; break;
+            case 0x04: op = m.Eq; break;
+            case 0x05: op = m.Uge; break;
+            case 0x06: op = m.Ule; break;
+            case 0x08: op = m.Gt; break;
+            case 0x0C: op = m.Ge; break;
+            case 0x10: op = m.Lt; break;
+            case 0x14: op = m.Le; break;
+            case 0x18: op = m.Ne; break;
             default: throw new AddressCorrelatedException(
                 instr.Address,
                 string.Format("Unsupported trap operand {0:X2}.", c.ToInt32()));
             }
-            cluster.Class = RtlClass.Linear;
-            emitter.BranchInMiddleOfInstruction(
+            rtlc = RtlClass.Linear;
+            m.BranchInMiddleOfInstruction(
                 op(ra, rb).Invert(),
                 instr.Address + instr.Length,
                 RtlClass.ConditionalTransfer);
-            emitter.SideEffect(
+            m.SideEffect(
                 host.PseudoProcedure(
                     "__trap",
                     VoidType.Instance));

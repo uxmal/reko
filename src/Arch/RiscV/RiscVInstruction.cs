@@ -33,6 +33,7 @@ namespace Reko.Arch.RiscV
         internal MachineOperand op1;
         internal MachineOperand op2;
         internal MachineOperand op3;
+        internal MachineOperand op4;
 
         static RiscVInstruction()
         {
@@ -43,6 +44,7 @@ namespace Reko.Arch.RiscV
                 { Opcode.fcvt_d_s, "fcvt.d.s" },
                 { Opcode.fcvt_s_d, "fcvt.s.d" },
                 { Opcode.feq_s, "feq.s" },
+                { Opcode.fmadd_s, "fmadd.s" },
                 { Opcode.fmv_d_x, "fmv.d.x" },
                 { Opcode.fmv_s_x, "fmv.s.x" },
             };
@@ -72,13 +74,21 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public override bool IsValid { get { throw new NotImplementedException(); } }
+        public override bool IsValid { get { return opcode != Opcode.invalid; } }
 
-        public override int OpcodeAsInteger { get { throw new NotImplementedException(); } }
+        public override int OpcodeAsInteger { get { return (int)opcode; } }
 
         public override MachineOperand GetOperand(int i)
         {
-            throw new NotImplementedException();
+            if (i == 0)
+                return op1;
+            else if (i == 1)
+                return op2;
+            else if (i == 2)
+                return op3;
+            else if (i == 3)
+                return op4;
+            return null;
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
@@ -101,6 +111,10 @@ namespace Reko.Arch.RiscV
                 return;
             writer.Write(',');
             WriteOp(op3, writer);
+            if (op4 == null)
+                return;
+            writer.Write(',');
+            WriteOp(op4, writer);
         }
 
         private void WriteOp(MachineOperand op, MachineInstructionWriter writer)

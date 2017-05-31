@@ -32,12 +32,12 @@ namespace Reko.UnitTests.Mocks
 			Identifier cf = Flags("C");
 			Identifier r1 = Register(1);
 
-			LoadId(r0, Int32(0x01001000));
+			LoadId(r0, Word32(0x01001000));
 			Compare("SZC", r1, Int32(2));
 			Assign(cf, Flags("SZC"));
 			Assign(r0, IAdd(r0,r0));
 			Assign(r0, IAdd(r0,cf));
-			Store(Int32(0x01001004), r0);
+			Store(Word32(0x01001004), r0);
 			Return();
 		}
 	}

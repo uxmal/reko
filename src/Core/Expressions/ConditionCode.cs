@@ -44,5 +44,7 @@ namespace Reko.Core.Expressions
 
         ALWAYS, // Some architectures have this.
         NEVER, 
+
+        IS_NAN, // comparison yielded an floating point NaN
     }
 }

@@ -84,9 +84,9 @@ namespace Reko.Arch.Mos6502
             return new Mos6502ProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new Rewriter(this, rdr.Clone(), state, frame, host);
+            return new Rewriter(this, rdr.Clone(), state, binder, host);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -146,7 +146,7 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

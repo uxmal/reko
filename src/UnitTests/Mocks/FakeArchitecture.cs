@@ -30,6 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 using Reko.Core.Serialization;
+using NUnit.Framework;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -48,8 +49,9 @@ namespace Reko.UnitTests.Mocks
 		internal const int RegisterCount = 64;
 		private const int iStackRegister = 63;
 		private const int iReturnRegister = 62;
+        private bool ignoreUnknownTraces;
 
-		public FakeArchitecture()
+        public FakeArchitecture()
 		{
             this.rewriters = new RtlTraceBuilder();
 		}
@@ -79,6 +81,11 @@ namespace Reko.UnitTests.Mocks
                 rewriters.Add(t);
         }
 
+        public void Test_IgnoreAllUnkownTraces()
+        {
+            this.ignoreUnknownTraces = true;
+        }
+
 		public static RegisterStorage GetMachineRegister(int i)
 		{
 			return registers[i];
@@ -86,12 +93,21 @@ namespace Reko.UnitTests.Mocks
 
 		#region IProcessorArchitecture Members
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             var linAddr = rdr.Address.ToLinear();
             RtlTrace trace;
             if (!rewriters.Traces.TryGetValue(rdr.Address, out trace))
-                NUnit.Framework.Assert.Fail(string.Format("Unexpected request for a rewriter at address {0}", rdr.Address));
+            {
+                if (ignoreUnknownTraces)
+                {
+                    return new RtlInstructionCluster[0];
+                }
+                else
+                {
+                    Assert.Fail(string.Format("Unexpected request for a rewriter at address {0}", rdr.Address));
+                }
+            }
             return trace;
         }
 
@@ -100,7 +116,7 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
+        public Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
         {
             throw new NotImplementedException();
         }
@@ -220,7 +236,27 @@ namespace Reko.UnitTests.Mocks
 
         public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new Comp(norm);
+        }
+
+        private class Comp : EqualityComparer<MachineInstruction>
+        {
+            private Normalize norm;
+
+            public Comp(Normalize norm)
+            {
+                this.norm = norm;
+            }
+
+            public override bool Equals(MachineInstruction x, MachineInstruction y)
+            {
+                return false;
+            }
+
+            public override int GetHashCode(MachineInstruction obj)
+            {
+                return 1;
+            }
         }
 
         public Frame CreateFrame()
@@ -396,7 +432,8 @@ namespace Reko.UnitTests.Mocks
         public override void OnAfterCall(FunctionType sigCallee)
         {
         }
-	}
+
+    }
 
     [Flags]
     public enum StatusFlags: uint

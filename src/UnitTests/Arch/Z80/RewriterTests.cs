@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.Z80
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             return new Z80Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
         }
@@ -193,7 +193,7 @@ namespace Reko.UnitTests.Arch.Z80
             BuildTest(0xDD, 0xBE, 0x08);
             AssertCode(
                 "0|L--|0100(3): 1 instructions",
-                "1|L--|SZPC = a - Mem0[ix + 0x0008:byte]");
+                "1|L--|SZPC = cond(a - Mem0[ix + 0x0008:byte])");
         }
 
         [Test]
@@ -270,12 +270,11 @@ namespace Reko.UnitTests.Arch.Z80
             AssertCode(
                 "0|L--|0100(2): 5 instructions",
                 "1|L--|Mem0[hl:byte] = __in(c)",
-                "2|L--|hl = hl + 0x0001",
+                "2|L--|hl = hl + 1",
                 "3|L--|b = b - 0x01",
                 "4|L--|Z = cond(b)",
                 "5|T--|if (b != 0x00) branch 0100");
         }
-
 
         [Test]
         public void Z80rw_cpdr()
@@ -284,8 +283,8 @@ namespace Reko.UnitTests.Arch.Z80
             AssertCode(
                 "0|L--|0100(2): 5 instructions",
                 "1|L--|Z = cond(a - Mem0[hl:byte])",
-                "2|L--|hl = hl - 0x0001",
-                "3|L--|bc = bc - 0x0001",
+                "2|L--|hl = hl - 1",
+                "3|L--|bc = bc - 1",
                 "4|T--|if (bc == 0x0000) branch 0102",
                 "5|T--|if (Test(NE,Z)) branch 0100");
         }

@@ -40,7 +40,7 @@ namespace Reko.Arch.Sparc
         {
             var dst = RewriteOp(instrCur.Op2);
             var src = RewriteOp(instrCur.Op1);
-            emitter.Assign(dst, host.PseudoProcedure("fabs", PrimitiveType.Real32, src));
+            m.Assign(dst, host.PseudoProcedure("fabs", PrimitiveType.Real32, src));
         }
 
         private void RewriteFadds()
@@ -51,7 +51,7 @@ namespace Reko.Arch.Sparc
             var fdst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
             var fsrc1 = frame.EnsureRegister(Registers.GetFpuRegister(src1.Register.Number));
             var fsrc2 = frame.EnsureRegister(Registers.GetFpuRegister(src2.Register.Number));
-            emitter.Assign(fdst, emitter.FAdd(fsrc1, fsrc2));
+            m.Assign(fdst, m.FAdd(fsrc1, fsrc2));
         }
 
         private void RewriteFcmpes()
@@ -62,7 +62,7 @@ namespace Reko.Arch.Sparc
             var f1 = frame.EnsureRegister(Registers.GetFpuRegister(r1.Register.Number)); 
             var f2 = frame.EnsureRegister(Registers.GetFpuRegister(r2.Register.Number));
             var grf = frame.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
-            emitter.Assign(grf, emitter.Cond(emitter.FSub(f1, f2)));
+            m.Assign(grf, m.Cond(m.FSub(f1, f2)));
         }
 
         private void RewriteFdivs()
@@ -73,7 +73,7 @@ namespace Reko.Arch.Sparc
             var fdst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
             var fsrc1 = frame.EnsureRegister(Registers.GetFpuRegister(src1.Register.Number));
             var fsrc2 = frame.EnsureRegister(Registers.GetFpuRegister(src2.Register.Number));
-            emitter.Assign(fdst, emitter.FDiv(fsrc1, fsrc2));
+            m.Assign(fdst, m.FDiv(fsrc1, fsrc2));
         }
 
         private void RewriteFitod()
@@ -83,7 +83,7 @@ namespace Reko.Arch.Sparc
             var r1 = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number + 1));
             var dt = PrimitiveType.Real64;
             var fpDst = frame.EnsureSequence(r0.Storage, r1.Storage, dt);
-            emitter.Assign(fpDst, emitter.Cast(dt, RewriteOp(instrCur.Op1)));
+            m.Assign(fpDst, m.Cast(dt, RewriteOp(instrCur.Op1)));
         }
 
         private void RewriteFitoq()
@@ -102,7 +102,7 @@ namespace Reko.Arch.Sparc
             var dst = (RegisterOperand) instrCur.Op2;
             var fpDst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
             var dt = PrimitiveType.Real32;
-            emitter.Assign(fpDst, emitter.Cast(dt, RewriteOp(instrCur.Op1)));
+            m.Assign(fpDst, m.Cast(dt, RewriteOp(instrCur.Op1)));
         }
 
         private void RewriteFmovs()
@@ -111,7 +111,7 @@ namespace Reko.Arch.Sparc
             var src = (RegisterOperand)instrCur.Op1;
             var fdst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
             var fsrc = frame.EnsureRegister(Registers.GetFpuRegister(src.Register.Number));
-            emitter.Assign(fdst, fsrc);
+            m.Assign(fdst, fsrc);
         }
 
         private void RewriteFmuls()
@@ -122,7 +122,7 @@ namespace Reko.Arch.Sparc
             var fdst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
             var fsrc1 = frame.EnsureRegister(Registers.GetFpuRegister(src1.Register.Number));
             var fsrc2 = frame.EnsureRegister(Registers.GetFpuRegister(src2.Register.Number));
-            emitter.Assign(fdst, emitter.FMul(fsrc1, fsrc2));
+            m.Assign(fdst, m.FMul(fsrc1, fsrc2));
         }
 
         private void RewriteFnegs()
@@ -131,7 +131,7 @@ namespace Reko.Arch.Sparc
             var src = (RegisterOperand)instrCur.Op1;
             var fdst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
             var fsrc = frame.EnsureRegister(Registers.GetFpuRegister(src.Register.Number));
-            emitter.Assign(fdst, emitter.Neg(fsrc));
+            m.Assign(fdst, m.Neg(fsrc));
         }
 
         private void RewriteFsubs()
@@ -142,7 +142,7 @@ namespace Reko.Arch.Sparc
             var fdst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
             var fsrc1 = frame.EnsureRegister(Registers.GetFpuRegister(src1.Register.Number));
             var fsrc2 = frame.EnsureRegister(Registers.GetFpuRegister(src2.Register.Number));
-            emitter.Assign(fdst, emitter.FSub(fsrc1, fsrc2));
+            m.Assign(fdst, m.FSub(fsrc1, fsrc2));
         }
     }
 }

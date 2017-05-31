@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Arm
             get { return baseAddress; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             return new ArmRewriterNew(arch, new LeImageReader(image, 0), new ArmProcessorState(arch), frame, host);
         }

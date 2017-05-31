@@ -31,17 +31,18 @@ namespace Reko.Arch.Xtensa
 {
     public partial class XtensaRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private Frame frame;
+        private IStorageBinder frame;
         private IRewriterHost host;
         private EndianImageReader rdr;
         private ProcessorState state;
         private XtensaArchitecture arch;
         private IEnumerator<XtensaInstruction> dasm;
-        private RtlInstructionCluster rtlc;
-        private RtlEmitter emitter;
+        private RtlClass rtlc;
+        private List<RtlInstruction> rtlInstructions;
+        private RtlEmitter m;
         private XtensaInstruction instr;
 
-        public XtensaRewriter(XtensaArchitecture arch, EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public XtensaRewriter(XtensaArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;
@@ -55,9 +56,11 @@ namespace Reko.Arch.Xtensa
         {
             while (dasm.MoveNext())
             {
-                rtlc = new RtlInstructionCluster(dasm.Current.Address, dasm.Current.Length);
-                rtlc.Class = RtlClass.Linear;
-                emitter = new RtlEmitter(rtlc.Instructions);
+                var addr = dasm.Current.Address;
+                var len = dasm.Current.Length;
+                rtlInstructions = new List<RtlInstruction>();
+                rtlc = RtlClass.Linear;
+                m = new RtlEmitter(rtlInstructions);
                 this.instr = dasm.Current;
                 switch (instr.Opcode)
                 {
@@ -68,41 +71,41 @@ namespace Reko.Arch.Xtensa
                        instr.Opcode);
                 case Opcodes.abs: RewritePseudoFn("abs"); break;
                 case Opcodes.add:
-                case Opcodes.add_n: RewriteBinOp(emitter.IAdd); break;
-                case Opcodes.add_s: RewriteBinOp(emitter.FAdd); break;
+                case Opcodes.add_n: RewriteBinOp(m.IAdd); break;
+                case Opcodes.add_s: RewriteBinOp(m.FAdd); break;
                 case Opcodes.addi: RewriteAddi(); break;
                 case Opcodes.addi_n: RewriteAddi(); break;
-                case Opcodes.addmi: RewriteBinOp(emitter.IAdd); break;
+                case Opcodes.addmi: RewriteBinOp(m.IAdd); break;
                 case Opcodes.addx2: RewriteAddx(2); break;
                 case Opcodes.addx4: RewriteAddx(4); break;
                 case Opcodes.addx8: RewriteAddx(8); break;
-                case Opcodes.and: RewriteBinOp(emitter.And); break;
-                case Opcodes.andbc: RewriteBinOp((a, b) => emitter.And(a, emitter.Not(b))); break;
+                case Opcodes.and: RewriteBinOp(m.And); break;
+                case Opcodes.andbc: RewriteBinOp((a, b) => m.And(a, m.Not(b))); break;
                 case Opcodes.ball: RewriteBall(); break;
                 case Opcodes.bany: RewriteBany(); break;
                 case Opcodes.bbc: 
-                case Opcodes.bbci: RewriteBbx(emitter.Eq0); break;
+                case Opcodes.bbci: RewriteBbx(m.Eq0); break;
                 case Opcodes.bbs:
-                case Opcodes.bbsi: RewriteBbx(emitter.Ne0); break;
+                case Opcodes.bbsi: RewriteBbx(m.Ne0); break;
                 case Opcodes.beq:
-                case Opcodes.beqi: RewriteBranch(emitter.Eq); break;
+                case Opcodes.beqi: RewriteBranch(m.Eq); break;
                 case Opcodes.beqz:
-                case Opcodes.beqz_n: RewriteBranchZ(emitter.Eq0); break;
+                case Opcodes.beqz_n: RewriteBranchZ(m.Eq0); break;
                 case Opcodes.bge:
-                case Opcodes.bgei: RewriteBranch(emitter.Ge); break;
+                case Opcodes.bgei: RewriteBranch(m.Ge); break;
                 case Opcodes.bgeu:
-                case Opcodes.bgeui: RewriteBranch(emitter.Uge); break;
-                case Opcodes.bgez: RewriteBranchZ(emitter.Ge0); break;
-                case Opcodes.blt: RewriteBranch(emitter.Lt); break;
-                case Opcodes.blti: RewriteBranch(emitter.Lt); break;
+                case Opcodes.bgeui: RewriteBranch(m.Uge); break;
+                case Opcodes.bgez: RewriteBranchZ(m.Ge0); break;
+                case Opcodes.blt: RewriteBranch(m.Lt); break;
+                case Opcodes.blti: RewriteBranch(m.Lt); break;
                 case Opcodes.bltu:
-                case Opcodes.bltui: RewriteBranch(emitter.Ult); break;
-                case Opcodes.bltz: RewriteBranchZ(emitter.Lt0); break;
+                case Opcodes.bltui: RewriteBranch(m.Ult); break;
+                case Opcodes.bltz: RewriteBranchZ(m.Lt0); break;
                 case Opcodes.bnall: RewriteBnall(); break;
-                case Opcodes.bne: RewriteBranch(emitter.Ne); break;
-                case Opcodes.bnei: RewriteBranch(emitter.Ne); break;
+                case Opcodes.bne: RewriteBranch(m.Ne); break;
+                case Opcodes.bnei: RewriteBranch(m.Ne); break;
                 case Opcodes.bnez:
-                case Opcodes.bnez_n: RewriteBranchZ(emitter.Ne0); break;
+                case Opcodes.bnez_n: RewriteBranchZ(m.Ne0); break;
                 case Opcodes.bnone: RewriteBnone(); break;
                 case Opcodes.@break: RewriteBreak(); break;
                 case Opcodes.call0:
@@ -127,23 +130,23 @@ namespace Reko.Arch.Xtensa
                 case Opcodes.movi: RewriteCopy(); break;
                 case Opcodes.movi_n: RewriteMovi_n(); break;
                 case Opcodes.moveqz:
-                case Opcodes.moveqz_s: RewriteMovcc(emitter.Eq); break;
-                case Opcodes.movltz: RewriteMovcc(emitter.Lt); break;
-                case Opcodes.movgez: RewriteMovcc(emitter.Ge); break;
-                case Opcodes.movnez: RewriteMovcc(emitter.Ne); break;
-                case Opcodes.mul_s: RewriteBinOp(emitter.FMul); break;
-                case Opcodes.mul16s: RewriteMul16(emitter.SMul, Domain.SignedInt); break;
-                case Opcodes.mul16u: RewriteMul16(emitter.UMul, Domain.UnsignedInt); break;
-                case Opcodes.mull: RewriteBinOp(emitter.IMul); break;
-                case Opcodes.neg: RewriteUnaryOp(emitter.Neg); break;
+                case Opcodes.moveqz_s: RewriteMovcc(m.Eq); break;
+                case Opcodes.movltz: RewriteMovcc(m.Lt); break;
+                case Opcodes.movgez: RewriteMovcc(m.Ge); break;
+                case Opcodes.movnez: RewriteMovcc(m.Ne); break;
+                case Opcodes.mul_s: RewriteBinOp(m.FMul); break;
+                case Opcodes.mul16s: RewriteMul16(m.SMul, Domain.SignedInt); break;
+                case Opcodes.mul16u: RewriteMul16(m.UMul, Domain.UnsignedInt); break;
+                case Opcodes.mull: RewriteBinOp(m.IMul); break;
+                case Opcodes.neg: RewriteUnaryOp(m.Neg); break;
                 case Opcodes.nsa: RewritePseudoFn("__nsa"); break;
                 case Opcodes.nsau: RewritePseudoFn("__nsau"); break;
                 case Opcodes.or: RewriteOr(); break;
-                case Opcodes.orbc: RewriteBinOp((a, b) => emitter.Or(a, emitter.Not(b))); break;
-                case Opcodes.quos: RewriteBinOp(emitter.SDiv); break;
-                case Opcodes.quou: RewriteBinOp(emitter.UDiv); break;
-                case Opcodes.rems: RewriteBinOp(emitter.Mod); break;
-                case Opcodes.remu: RewriteBinOp(emitter.Mod); break;
+                case Opcodes.orbc: RewriteBinOp((a, b) => m.Or(a, m.Not(b))); break;
+                case Opcodes.quos: RewriteBinOp(m.SDiv); break;
+                case Opcodes.quou: RewriteBinOp(m.UDiv); break;
+                case Opcodes.rems: RewriteBinOp(m.Mod); break;
+                case Opcodes.remu: RewriteBinOp(m.Mod); break;
                 case Opcodes.reserved: RewriteReserved(); break;
                 case Opcodes.ret:
                 case Opcodes.ret_n: RewriteRet(); break;
@@ -157,29 +160,32 @@ namespace Reko.Arch.Xtensa
                 case Opcodes.s32i_n: RewriteSi(PrimitiveType.Word32); break;
                 case Opcodes.s32ri: RewriteSi(PrimitiveType.Word32); break; //$REVIEW: what about concurrency semantics
                 case Opcodes.s8i: RewriteSi(PrimitiveType.Byte); break;
-                case Opcodes.sll: RewriteShift(emitter.Shl); break;
-                case Opcodes.slli: RewriteShiftI(emitter.Shl); break;
-                case Opcodes.sra: RewriteShift(emitter.Sar); break;
-                case Opcodes.srai: RewriteShiftI(emitter.Sar); break;
+                case Opcodes.sll: RewriteShift(m.Shl); break;
+                case Opcodes.slli: RewriteShiftI(m.Shl); break;
+                case Opcodes.sra: RewriteShift(m.Sar); break;
+                case Opcodes.srai: RewriteShiftI(m.Sar); break;
                 case Opcodes.src: RewriteSrc(); break;
-                case Opcodes.srl: RewriteShift(emitter.Sar); break;
-                case Opcodes.srli: RewriteShiftI(emitter.Shr); break;
+                case Opcodes.srl: RewriteShift(m.Sar); break;
+                case Opcodes.srli: RewriteShiftI(m.Shr); break;
                 case Opcodes.ssa8l: RewriteSsa8l(); break;
                 case Opcodes.ssi: RewriteSi(PrimitiveType.Real32); break;
                 case Opcodes.ssl: RewriteSsl(); break;
                 case Opcodes.ssr:
                 case Opcodes.ssai: RewriteSsa(); break;
-                case Opcodes.sub: RewriteBinOp(emitter.ISub); break;
-                case Opcodes.sub_s: RewriteBinOp(emitter.FSub); break;
+                case Opcodes.sub: RewriteBinOp(m.ISub); break;
+                case Opcodes.sub_s: RewriteBinOp(m.FSub); break;
                 case Opcodes.subx2: RewriteSubx(2); break;
                 case Opcodes.subx4: RewriteSubx(4); break;
                 case Opcodes.subx8: RewriteSubx(8); break;
-                case Opcodes.ueq_s: RewriteBinOp(emitter.Eq); break;
+                case Opcodes.ueq_s: RewriteBinOp(m.Eq); break;
                 case Opcodes.wsr: RewriteWsr(); break;
-                case Opcodes.xor: RewriteBinOp(emitter.Xor); break;
+                case Opcodes.xor: RewriteBinOp(m.Xor); break;
 
                 }
-                yield return rtlc;
+                yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())
+                {
+                    Class = rtlc,
+                };
             }
         }
 

@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.Sparc
             return host;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             return e;
         }
@@ -294,7 +294,7 @@ namespace Reko.UnitTests.Arch.Sparc
                 0x02800004,     // be      00100010
                 0x8A04C004);    // add   %l3,%g4,%g5"
             AssertCode(
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|if (Test(EQ,Z)) branch 00100010",
                 "2|L--|00100004(4): 1 instructions",
                 "3|L--|g5 = l3 + g4");
@@ -307,7 +307,7 @@ namespace Reko.UnitTests.Arch.Sparc
                 0x22800004,     // be,a    00100004
                 0x8A04C004);    // add     %l3,%g4,%g5"
             AssertCode(
-                "0|T--|00100000(4): 1 instructions",
+                "0|TDA|00100000(4): 1 instructions",
                 "1|TDA|if (Test(EQ,Z)) branch 00100010",
                 "2|L--|00100004(4): 1 instructions",
                 "3|L--|g5 = l3 + g4");
@@ -318,7 +318,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x03800001);  // fbne    00100004
             AssertCode(
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|if (Test(NE,LG)) branch 00100004");
         }
 
@@ -477,7 +477,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             BuildTest(0x1CBFBFF1);  //  bpos 0001203C
             AssertCode(
-                 "0|T--|00100000(4): 1 instructions",
+                 "0|TD-|00100000(4): 1 instructions",
                  "1|TD-|if (Test(GE,N)) branch 000EFFC4");
         }
 

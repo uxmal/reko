@@ -169,11 +169,6 @@ namespace Reko.UnitTests.Core.Serialization
                 throw new NotImplementedException();
             }
 
-            public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-            {
-                throw new NotImplementedException();
-            }
-
             public override void LoadUserOptions(Dictionary<string, object> options) { Test_Options = options; }
 
             public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

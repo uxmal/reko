@@ -272,7 +272,6 @@ namespace Reko
         /// <param name="fileName"></param>
         /// <param name="arch"></param>
         /// <param name="platform"></param>
-
         public Program LoadRawImage(string fileName, LoadDetails raw)
         {
             eventListener.ShowStatus("Loading raw bytes.");
@@ -329,8 +328,10 @@ namespace Reko
             w.WriteLine("#include \"{0}\"", Path.GetFileName(program.TypesFilename));
             w.WriteLine();
             var fmt = new AbsynCodeFormatter(new TextFormatter(w));
-            foreach (Procedure proc in program.Procedures.Values)
+            foreach (var de in program.Procedures)
             {
+                w.WriteLine("// {0}: {1}", de.Key, de.Value);
+                var proc = de.Value;
                 try
                 {
                     fmt.Write(proc);
@@ -416,54 +417,7 @@ namespace Reko
             {
                 eventListener.ShowStatus("Rewriting reachable machine code.");
                 scanner = CreateScanner(program);
-                var tlDeser = program.CreateTypeLibraryDeserializer();
-                foreach (var global in program.User.Globals)
-                {
-                    var addr = global.Key;
-                    var dt = global.Value.DataType.Accept(tlDeser);
-                    scanner.EnqueueUserGlobalData(addr, dt);
-                }
-                foreach (ImageSymbol ep in program.EntryPoints.Values)
-                {
-                    scanner.EnqueueImageSymbol(ep, true);
-                }
-                foreach (Procedure_v1 up in program.User.Procedures.Values)
-                {
-                    scanner.EnqueueUserProcedure(up);
-                }
-                foreach (ImageSymbol sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
-                {
-                    if (sym.NoDecompile)
-                        program.EnsureUserProcedure(sym.Address, sym.Name, false);
-                    else
-                        scanner.EnqueueImageSymbol(sym, false);
-                }
                 scanner.ScanImage();
-
-                if (program.User.Heuristics.Contains("HeuristicScanning"))
-                {
-                    //eventListener.ShowStatus("Finding machine code using heuristics.");
-                    //scanner.ScanImageHeuristically();
-                }
-                if (program.User.Heuristics.Contains("Shingle heuristic"))
-                {
-                    eventListener.ShowStatus("Shingle scanning");
-                    var sh = new ShingledScanner(program, (IRewriterHost)scanner, eventListener);
-                    var watch = new Stopwatch();
-                    watch.Start();
-                    var procs = sh.Scan();
-                    var pprocs = procs.ToList();
-                    watch.Stop();
-                    Debug.Print(
-                        "Elapsed time: {0} msec for {1} procs",
-                        watch.ElapsedMilliseconds,
-                        pprocs.Count);
-
-                    foreach (var addr in procs)
-                    {
-                        scanner.ScanProcedure(addr.Key, null, program.Architecture.CreateProcessorState());
-                    }
-                }
                 eventListener.ShowStatus("Finished rewriting reachable machine code.");
             }
             finally
@@ -500,8 +454,9 @@ namespace Reko
 
         private IScanner CreateScanner(Program program)
         {
+            //return new ScannerOld(
             return new Scanner(
-                program, 
+                program,
                 new ImportResolver(project, program, eventListener),
                 services);
         }

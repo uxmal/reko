@@ -54,6 +54,7 @@
     <Compile Include="IndirectOperand.cs" />
     <Compile Include="MipsDisassembler.cs" />
     <Compile Include="MipsInstruction.cs" />
+    <Compile Include="MipsInstructionComparer.cs" />
     <Compile Include="MipsPointerScanner.cs" />
     <Compile Include="MipsProcessorArchitecture.cs" />
     <Compile Include="MipsProcessorState.cs" />

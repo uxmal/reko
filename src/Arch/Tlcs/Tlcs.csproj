@@ -56,6 +56,8 @@
     <Compile Include="Tlcs900\ConditionOperand.cs" />
     <Compile Include="Tlcs900\MemoryOperand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tlcs900\Tlcs900InstructionComparer.cs" />
+    <Compile Include="Tlcs90\Tlcs90InstructionComparer.cs" />
     <Compile Include="Tlcs90\ConditionOperand.cs" />
     <Compile Include="Tlcs90\Tlcs90Rewriter.Control.cs" />
     <Compile Include="Tlcs90\Tlcs90Rewriter.Alu.cs" />

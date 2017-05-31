@@ -153,7 +153,7 @@ namespace Reko.Core
                 return;
             byte[] prevLine = null;
             bool showEllipsis = true;
-			EndianImageReader rdr = arch.CreateImageReader(segment.MemoryArea, address);
+			var rdr = arch.CreateImageReader(segment.MemoryArea, address);
 			while (cbBytes > 0)
 			{
 				StringBuilder sb = new StringBuilder(0x12);

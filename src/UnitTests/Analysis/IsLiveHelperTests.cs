@@ -31,7 +31,7 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class IsLiveHelperTests
 	{
-		private Frame f;
+		private IStorageBinder f;
 		private IdentifierLiveness liveness;
 		private RegisterLiveness.IsLiveHelper isLiveHelper;
 

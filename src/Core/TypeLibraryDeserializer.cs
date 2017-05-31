@@ -205,6 +205,7 @@ namespace Reko.Core
             {
                 try
                 {
+                    //$TODO: remove the try-catch when done.
                     dt = pointer.DataType.Accept(this);
                 }
                 catch

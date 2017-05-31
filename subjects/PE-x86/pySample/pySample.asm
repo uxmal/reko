@@ -545,21 +545,107 @@ l100014AA:
 10001590 20 00 10 68 D0 20 00 10 FF 15 1C 20 00 10 83 3D  ..h. ..... ...=
 100015A0 C8 30 00 10 00 75 08 6A 01 E8 4A 03 00 00 59 68 .0...u.j..J...Yh
 100015B0 09 04 00 C0 FF 15 20 20 00 10 50 FF 15 24 20 00 ......  ..P..$ .
-100015C0 10 C9 C3 68 9C 33 00 10 E8 31 03 00 00 59 C3 6A ...h.3...1...Y.j
-100015D0 14 68 10 22 00 10 E8 0D 02 00 00 FF 35 B4 33 00 .h."........5.3.
-100015E0 10 8B 35 68 20 00 10 FF D6 59 89 45 E4 83 F8 FF ..5h ....Y.E....
-100015F0 75 0C FF 75 08 FF 15 50 20 00 10 59 EB 61 6A 08 u..u...P ..Y.aj.
-10001600 E8 0B 03 00 00 59 83 65 FC 00 FF 35 B4 33 00 10 .....Y.e...5.3..
-10001610 FF D6 89 45 E4 FF 35 B0 33 00 10 FF D6 89 45 E0 ...E..5.3.....E.
-10001620 8D 45 E0 50 8D 45 E4 50 FF 75 08 E8 DA 02 00 00 .E.P.E.P.u......
-10001630 89 45 DC FF 75 E4 8B 35 78 20 00 10 FF D6 A3 B4 .E..u..5x ......
-10001640 33 00 10 FF 75 E0 FF D6 83 C4 1C A3 B0 33 00 10 3...u........3..
-10001650 C7 45 FC FE FF FF FF E8 09 00 00 00 8B 45 DC E8 .E...........E..
-10001660 C9 01 00 00 C3 6A 08 E8 98 02 00 00 59 C3 FF 74 .....j......Y..t
-10001670 24 04 E8 58 FF FF FF F7 D8 1B C0 F7 D8 59 48 C3 $..X.........YH.
-10001680 56 57 B8 D8 21 00 10 BF D8 21 00 10 3B C7 8B F0 VW..!....!..;...
-10001690 73 0F 8B 06 85 C0 74 02 FF D0 83 C6 04 3B F7 72 s.....t......;.r
-100016A0 F1 5F 5E C3 56 57 B8 E0 21 00 10 BF E0 21 00 10 ._^.VW..!....!..
+100015C0 10 C9 C3 68 9C 33 00 10 E8 31 03 00 00 59 C3    ...h.3...1...Y.
+
+;; fn100015CF: 100015CF
+fn100015CF proc
+	push	14
+	push	10002210
+	call	100017E8
+	push	dword ptr [100033B4]
+	mov	esi,[10002068]
+	call	esi
+	pop	ecx
+	mov	[ebp-1C],eax
+	cmp	eax,FF
+	jnz	100015FE
+
+l100015F2:
+	push	dword ptr [ebp+08]
+	call	dword ptr [10002050]
+	pop	ecx
+	jmp	1000165F
+
+l100015FE:
+	push	08
+	call	10001910
+	pop	ecx
+	and	dword ptr [ebp-04],00
+	push	dword ptr [100033B4]
+	call	esi
+	mov	[ebp-1C],eax
+	push	dword ptr [100033B0]
+	call	esi
+	mov	[ebp-20],eax
+	lea	eax,[ebp-20]
+	push	eax
+	lea	eax,[ebp-1C]
+	push	eax
+	push	dword ptr [ebp+08]
+	call	1000190A
+	mov	[ebp-24],eax
+	push	dword ptr [ebp-1C]
+	mov	esi,[10002078]
+	call	esi
+	mov	[100033B4],eax
+	push	dword ptr [ebp-20]
+	call	esi
+	add	esp,1C
+	mov	[100033B0],eax
+	mov	dword ptr [ebp-04],FFFFFFFE
+	call	10001665
+	mov	eax,[ebp-24]
+
+l1000165F:
+	call	1000182D
+	ret	
+
+;; fn10001665: 10001665
+fn10001665 proc
+	push	08
+	call	10001904
+	pop	ecx
+	ret	
+
+;; fn1000166E: 1000166E
+fn1000166E proc
+	push	dword ptr [esp+04]
+	call	100015CF
+	neg	eax
+	sbb	eax,eax
+	neg	eax
+	pop	ecx
+	dec	eax
+	ret	
+
+;; fn10001680: 10001680
+fn10001680 proc
+	push	esi
+	push	edi
+	mov	eax,100021D8
+	mov	edi,100021D8
+	cmp	eax,edi
+	mov	esi,eax
+	jnc	100016A1
+
+l10001692:
+	mov	eax,[esi]
+	test	eax,eax
+	jz	1000169A
+
+l10001698:
+	call	eax
+
+l1000169A:
+	add	esi,04
+	cmp	esi,edi
+	jc	10001692
+
+l100016A1:
+	pop	edi
+	pop	esi
+	ret	
+100016A4             56 57 B8 E0 21 00 10 BF E0 21 00 10     VW..!....!..
 100016B0 3B C7 8B F0 73 0F 8B 06 85 C0 74 02 FF D0 83 C6 ;...s.....t.....
 100016C0 04 3B F7 72 F1 5F 5E C3 CC CC CC CC CC CC CC CC .;.r._^.........
 
