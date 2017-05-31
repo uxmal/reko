@@ -450,11 +450,11 @@ namespace Reko.Scanning
             try
             {
                 Address addr = sym.Address;
+                if (sym.NoDecompile || IsNoDecompiledProcedure(addr))
+                    return;
                 Procedure proc = EnsureProcedure(addr, sym.Name);
                 if (visitedProcs.Contains(proc))
                     return; // Already scanned. Do nothing.
-                if (sym.NoDecompile || IsNoDecompiledProcedure(addr))
-                    return;
 
                 if (sym.Signature != null)
                 {
