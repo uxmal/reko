@@ -62,7 +62,7 @@ void call_gmon_start()
 // LiveOut:
 // Trashed: SCZO ah al ax eax rax
 // Preserved: rsp
-fn000000000040043C_entry:
+call_gmon_start_entry:
 // DataOut: r13d rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -98,7 +98,7 @@ l000000000040044E:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
 
-fn000000000040043C_exit:
+call_gmon_start_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp rax:<invalid>
@@ -112,7 +112,7 @@ word64 deregister_tm_clones(word64 r8)
 // LiveOut: rsp
 // Trashed: SCZO ah al ax di dil eax edi esp r8 r8b r8d r8w rax rdi rsp sp spl
 // Preserved: rbp
-fn0000000000400460_entry:
+deregister_tm_clones_entry:
 // DataOut: r8
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -159,7 +159,7 @@ l0000000000400475:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000004 rax:<invalid> r8:r8 - 6295608 rbp:fp - 0x0000000000000004 -4(fp):rbp
 
-fn0000000000400460_exit:
+deregister_tm_clones_exit:
 // DataOut: rsp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp + 0x0000000000000004 rax:<invalid> r8:<invalid> rbp:rbp rdi:<invalid> -4(fp):rbp
@@ -389,7 +389,7 @@ word64 verify(word64 rdi)
 // LiveOut: eax rax
 // Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx esi esp rax rcx rdx rsi rsp si sil sp spl
 // Preserved: rbp
-fn0000000000400520_entry:
+verify_entry:
 // DataOut: rdi
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -447,7 +447,7 @@ l00000000004005C3:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> eax:<invalid> al:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:(uint64) ((word32) al >> cl) ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
 
-fn0000000000400520_exit:
+verify_exit:
 // DataOut: eax rax
 // DataOut (flags): 
 // SymbolicIn: rsp:fp + 0x0000000000000004 rbp:rbp rax:<invalid> rdx:<invalid> eax:<invalid> al:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:(uint64) ((word32) al >> cl) ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp

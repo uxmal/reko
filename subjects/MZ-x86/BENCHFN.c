@@ -4,13 +4,6 @@
 
 #include "BENCHFN.h"
 
-// 0800:0000: void fn0800_0000()
-void fn0800_0000()
-{
-fn0800_0000_entry:
-fn0800_0000_exit:
-}
-
 // 0800:0121: void fn0800_0121()
 void fn0800_0121()
 {

@@ -431,7 +431,7 @@ void factorial(int32 dwArg04)
 // Trashed: CVZNX d0
 // Preserved: a6 a7
 // Stack args: Stack +0004(32)
-fn8000033C_entry:
+_ZL9factoriali_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -457,7 +457,7 @@ l8000036A:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 d0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):a6 4(fp):dwArg04
 
-fn8000033C_exit:
+_ZL9factoriali_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 d0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):a6 4(fp):dwArg04
@@ -479,7 +479,7 @@ void pow_int(real64 rArg04, int32 dwArg0C)
 // Trashed: CVZNX d0 d1 fp0 fpsr
 // Preserved: a6 a7
 // Stack args: Stack +0004(64) Stack +000C(32)
-fn80000372_entry:
+_ZL7pow_intdi_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -505,7 +505,7 @@ l800003A8:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000010 a6:fp - 0x00000004 d0:<invalid> fp0:<invalid> fpsr:<invalid> -16(fp):<invalid> -12(fp):0x00000000 -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
 
-fn80000372_exit:
+_ZL7pow_intdi_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp a6:a6 d0:<invalid> d1:0x00000000 fp0:<invalid> fpsr:<invalid> -24(fp):<invalid> -20(fp):0x00000000 -16(fp):<invalid> -12(fp):0x00000000 -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C

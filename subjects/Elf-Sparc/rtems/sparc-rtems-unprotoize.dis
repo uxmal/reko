@@ -85,7 +85,7 @@ void __do_global_dtors_aux(word32 o7)
 // LiveOut:
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l7 o0 o7
 // Preserved: o1 o2 o3 o4 o5 o7 sp
-fn00011514_entry:
+__do_global_dtors_aux_entry:
 // DataOut: o7
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -202,7 +202,7 @@ l000115C4:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> l7:<invalid> o1:<invalid> o2:<invalid> g0:<invalid> l0:<invalid> o7:00011570
 
-fn00011514_exit:
+__do_global_dtors_aux_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> l7:<invalid> o1:o1 o2:o2 g0:<invalid> o3:o3 o4:o4 o5:o5 o7:<invalid> l0:<invalid>
@@ -253,7 +253,7 @@ void frame_dummy(word32 o7)
 // LiveOut:
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l7 o0 o1
 // Preserved: o2 o3 o4 o5 o7 sp
-fn000115D8_entry:
+frame_dummy_entry:
 // DataOut: o7
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -276,7 +276,7 @@ l00011618:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:0x00000018 l7:<invalid> o1:0x00000000 g0:<invalid>
 
-fn000115D8_exit:
+frame_dummy_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:0x00000018 l7:<invalid> o1:0x00000000 g0:<invalid> o2:o2 o3:o3 o4:o4 o5:o5 o7:o7
@@ -328,7 +328,7 @@ void notice(word32 o0, word32 dwArg48, word32 dwArg4C, word32 dwArg50, word32 dw
 // Trashed:
 // Preserved:
 // Terminates process
-fn0001162C_entry:
+notice_entry:
 // DataOut: l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -342,7 +342,7 @@ l0001162C:
 // SymbolicIn: sp:fp
 // Terminates process
 
-fn0001162C_exit:
+notice_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o0:i0 o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7 72(fp):o1 76(fp):o2 80(fp):o3 84(fp):o4 88(fp):o5
@@ -357,7 +357,7 @@ void xstrerror(word32 o0)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00011660_entry:
+xstrerror_entry:
 // DataOut: l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -371,7 +371,7 @@ l00011660:
 // SymbolicIn: sp:fp
 // Terminates process
 
-fn00011660_exit:
+xstrerror_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7 o0:o0
@@ -386,7 +386,7 @@ void xmalloc(word32 o0)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00011674_entry:
+xmalloc_entry:
 // DataOut: g2 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -411,7 +411,7 @@ l000116A8:
 // DataOut (flags): 
 // SymbolicIn: g0:o0
 
-fn00011674_exit:
+xmalloc_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: g0:o0 o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7 o0:o0
@@ -438,7 +438,7 @@ void xrealloc(word32 o0, word32 o1)
 // Trashed:
 // Preserved:
 // Terminates process
-fn000116B0_entry:
+xrealloc_entry:
 // DataOut: l0 l1 l2 l3 l4 l5 l6 o0 o1 o2
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -494,7 +494,7 @@ l00011700:
 // DataOut (flags): 
 // SymbolicIn: g0:o0
 
-fn000116B0_exit:
+xrealloc_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: g0:o0 o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7 o0:o0
@@ -520,7 +520,7 @@ word32 xfree(word32 o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i3Out, ptr32 & i6O
 // LiveOut: i0 i1 i2 i3 i6
 // Trashed: NZVC i0 i1 i2 i3 i4 i5 i6 i7
 // Preserved: o0 o1 o2 o3 o4 o5 o7 sp
-fn00011708_entry:
+xfree_entry:
 // DataOut: l0 l1 l2 l4 l6 o0 o1 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -551,7 +551,7 @@ l00011720:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:o0
 
-fn00011708_exit:
+xfree_exit:
 // DataOut: i0 i1 i2 i3 i6
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:o0 o1:o1 o2:o2 o3:o3 o4:o4 o5:o5 o7:o7
@@ -577,7 +577,7 @@ void savestring(word32 o0, word32 o1)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00011728_entry:
+savestring_entry:
 // DataOut: l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -592,7 +592,7 @@ l00011728:
 // SymbolicIn: sp:fp
 // Terminates process
 
-fn00011728_exit:
+savestring_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o0:i0 o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7
@@ -607,7 +607,7 @@ void savestring2(word32 o0, word32 o1, word32 o2, word32 o3)
 // Trashed:
 // Preserved:
 // Terminates process
-fn0001174C_entry:
+savestring2_entry:
 // DataOut: l2 l4 o0 o1 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -623,7 +623,7 @@ l0001174C:
 // SymbolicIn: sp:fp
 // Terminates process
 
-fn0001174C_exit:
+savestring2_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o0:i0 o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7
@@ -666,7 +666,7 @@ void dupnstr(word32 o0, word32 o1)
 // Trashed:
 // Preserved:
 // Terminates process
-fn000117A0_entry:
+dupnstr_entry:
 // DataOut: l1 l2 l4 l5 l6 l7 o0 o1 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -682,7 +682,7 @@ l000117A0:
 // SymbolicIn: sp:fp
 // Terminates process
 
-fn000117A0_exit:
+dupnstr_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o0:i0 o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7
@@ -814,7 +814,7 @@ word32 safe_read(word32 o0, word32 o1, word32 o2, ptr32 & l0Out, ptr32 & l2Out, 
 // LiveOut: i0 i1 i2 i3 l0 l2 o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 o0 o1
 // Preserved: o1 o2 o3 o4 o5 o7 sp
-fn00011828_entry:
+safe_read_entry:
 // DataOut: l4 l5 l6 l7 o0 o1 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -908,7 +908,7 @@ l00011880:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i1:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 l2:o0 l0:<invalid> l1:0x0002B400 g0:<invalid> o0:<invalid>
 
-fn00011828_exit:
+safe_read_exit:
 // DataOut: i0 i1 i2 i3 l0 l2 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:<invalid> i1:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 l2:o0 l0:<invalid> l1:0x0002B400 g0:<invalid> o0:<invalid> o1:<invalid> o2:o2 o3:o3 o4:o4 o5:o5 o7:o7
@@ -1061,7 +1061,7 @@ void save_pointers()
 // LiveOut:
 // Trashed: g2 g3 o0 o1 o2
 // Preserved: sp
-fn00011914_entry:
+save_pointers_entry:
 // DataOut: i1 i6
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1075,7 +1075,7 @@ l00011914:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-fn00011914_exit:
+save_pointers_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp g2:0x0002B000 o2:<invalid> g3:0x00028000 o1:<invalid> o0:0x0002B000
@@ -1089,7 +1089,7 @@ void restore_pointers()
 // LiveOut:
 // Trashed: g2 g3 o0 o1 o2
 // Preserved: sp
-fn00011938_entry:
+restore_pointers_entry:
 // DataOut: i1 i6
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1103,7 +1103,7 @@ l00011938:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-fn00011938_exit:
+restore_pointers_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp g2:0x00028000 o2:<invalid> g3:0x0002B000 o1:<invalid> o0:0x00028000
@@ -1117,7 +1117,7 @@ word32 is_id_char(word32 o0)
 // LiveOut: o0
 // Trashed: NZVC g0 g2 g3 o0
 // Preserved: sp
-fn0001195C_entry:
+is_id_char_entry:
 // DataOut: i0 i1 i2 i6 l0 l1 l2 l3 l4 l5 l6 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1184,7 +1184,7 @@ l00011990:
 // DataOut (flags): 
 // SymbolicIn: sp:fp g2:<invalid> o0:o0 & 0x000000FF g3:(word32) Mem0[(o0 & 0x000000FF) + 0x0002B411:byte] g0:<invalid>
 
-fn0001195C_exit:
+is_id_char_exit:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp g2:<invalid> o0:<invalid> g3:(word32) Mem0[(o0 & 0x000000FF) + 0x0002B411:byte] g0:<invalid>
@@ -1199,7 +1199,7 @@ void usage()
 // Trashed:
 // Preserved:
 // Terminates process
-fn00011998_entry:
+usage_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1240,7 +1240,7 @@ l000119CC_thunk_fn000119D0:
 // SymbolicIn: i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:sp i7:o7 sp:sp + 0xFFFFFF90 o0:0x00027C00 g0:(int32) Mem0[o0:int8] - 0x0000002F
 // Terminates process
 
-fn00011998_exit:
+usage_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: i0:<invalid> i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:sp i7:o7 sp:<invalid> o0:<invalid> g0:<invalid> o1:<invalid> l1:<invalid> o2:<invalid> o3:<invalid> o4:<invalid> o5:<invalid> o7:<invalid>
@@ -1254,7 +1254,7 @@ word32 in_system_include_dir(word32 o0)
 // LiveOut: o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l1 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
-fn000119BC_entry:
+in_system_include_dir_entry:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1299,7 +1299,7 @@ l000119CC_thunk_fn000119D0:
 // SymbolicIn:
 // Terminates process
 
-fn000119BC_exit:
+in_system_include_dir_exit:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> i0:<invalid> i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> g0:<invalid> o1:<invalid> l1:<invalid> o2:<invalid> o3:<invalid> o4:<invalid> o5:<invalid> o7:<invalid>
@@ -1454,7 +1454,7 @@ word32 needs_to_be_converted(word32 o0)
 // LiveOut: o0
 // Trashed: NZVC g0 g2 g3 o0
 // Preserved: sp
-fn00011A4C_entry:
+needs_to_be_converted_entry:
 // DataOut: i0 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1526,7 +1526,7 @@ l00011A80:
 // DataOut (flags): 
 // SymbolicIn: sp:fp g3:<invalid> g0:<invalid> o0:<invalid> g2:<invalid>
 
-fn00011A4C_exit:
+needs_to_be_converted_exit:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp g3:<invalid> g0:<invalid> o0:<invalid> g2:<invalid>
@@ -1540,7 +1540,7 @@ word32 directory_specified_p(word32 o0)
 // LiveOut: o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l1 o0
 // Preserved: o1 o2 o3 o4 o5 o7 sp
-fn00011A88_entry:
+directory_specified_p_entry:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1692,7 +1692,7 @@ l00011B38:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> l1:<invalid> g0:<invalid> o1:<invalid> o2:<invalid>
 
-fn00011A88_exit:
+directory_specified_p_exit:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:<invalid> i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> l1:<invalid> g0:<invalid> o1:o1 o2:o2 o3:o3 o4:o4 o5:o5 o7:o7
@@ -1707,7 +1707,7 @@ void file_excluded_p(word32 o0)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00011B40_entry:
+file_excluded_p_entry:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1795,7 +1795,7 @@ l00011BC0:
 // DataOut (flags): 
 // SymbolicIn: l1:o0 o0:<invalid> l0:<invalid> g0:<invalid> i0:<invalid> o1:(int32) Mem0[l1 - o0 + i0 + -1:int8]
 
-fn00011B40_exit:
+file_excluded_p_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: l1:o0 o0:<invalid> l0:<invalid> g0:<invalid> i0:<invalid> o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7
@@ -1810,7 +1810,7 @@ void string_list_cons(word32 o0, word32 o1)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00011BC8_entry:
+string_list_cons_entry:
 // DataOut: o0 o1
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1826,7 +1826,7 @@ l00011BC8:
 // SymbolicIn: sp:fp
 // Terminates process
 
-fn00011BC8_exit:
+string_list_cons_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7 o0:o0
@@ -1840,7 +1840,7 @@ word32 visit_each_hash_node(word32 o0)
 // LiveOut: l0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0 o7
 // Preserved: o1 o2 o3 o4 o5 o7 sp
-fn00011BE4_entry:
+visit_each_hash_node_entry:
 // DataOut: l0 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1945,7 +1945,7 @@ l00011C34:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> g0:<invalid> l1:0x00003000 l0:<invalid> o7:00011C0C
 
-fn00011BE4_exit:
+visit_each_hash_node_exit:
 // DataOut: l0
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:<invalid> i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> g0:<invalid> l1:0x00003000 o1:o1 o2:o2 o3:o3 o4:o4 o5:o5 o7:<invalid> l0:<invalid>
@@ -1960,7 +1960,7 @@ void add_symbol(word32 o0, word32 o1)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00011C3C_entry:
+add_symbol_entry:
 // DataOut: l1 l2 l3 l4 l6 l7 o0 o1 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1978,7 +1978,7 @@ l00011C3C:
 // SymbolicIn: sp:fp
 // Terminates process
 
-fn00011C3C_exit:
+add_symbol_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o0:i0 o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7
@@ -1993,7 +1993,7 @@ void lookup(word32 o0, word32 o1)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00011C6C_entry:
+lookup_entry:
 // DataOut: l2 l3 l4 l6 l7 o0 o1 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -2155,7 +2155,7 @@ l00011D34:
 // DataOut (flags): 
 // SymbolicIn: i0:o0 g0:o0
 
-fn00011C6C_exit:
+lookup_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: i0:o0 g0:o0 o0:o0 o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7
@@ -2169,7 +2169,7 @@ void free_def_dec(word32 o0)
 // LiveOut:
 // Trashed: NZVC i0 i1 i2 i3 i4 i5 i6 i7 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved: o0 o1 o2 o3 o4 o5 o7 sp
-fn00011D3C_entry:
+free_def_dec_entry:
 // DataOut: l0 l1 l2 l6 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -2190,7 +2190,7 @@ l00011D3C:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-fn00011D3C_exit:
+free_def_dec_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> o0:<invalid> o1:<invalid> o2:<invalid> o3:<invalid> o4:<invalid> o5:<invalid> o7:<invalid>
@@ -2204,7 +2204,7 @@ word32 unexpand_if_needed(word32 o0, ptr32 & l0Out, ptr32 & l6Out, ptr32 & i2Out
 // LiveOut: i2 l0 l6 o0
 // Trashed: NZVC g0 g2 g3 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l3 l4 l5 l6 l7 o0 o1
 // Preserved: o2 o3 o4 o5 o7 sp
-fn00011D58_entry:
+unexpand_if_needed_entry:
 	*l0Out = l0
 // DataOut: l0 l2 o0 o2
 // DataOut (flags): 
@@ -2528,7 +2528,7 @@ l00011F2C:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:0x0000000A l1:<invalid> l5:0x00027C00 g0:0x00000000 i1:0x00000000 l6:0x00027C00 o2:<invalid> o1:<invalid> l7:0x00016C00 l4:<invalid> l0:<invalid> l3:o0 g2:<invalid> g3:<invalid>
 
-fn00011D58_exit:
+unexpand_if_needed_exit:
 // DataOut: i2 l0 l6 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> l1:<invalid> l5:0x00027C00 g0:0x00000000 i1:0x00000000 l6:0x00027C00 o2:o2 o1:0x00000000 o3:o3 o4:o4 o5:o5 o7:o7 l7:0x00016C00 l4:<invalid> l0:<invalid> l3:o0 g2:<invalid> g3:<invalid>
@@ -2543,7 +2543,7 @@ void abspath(word32 o0, word32 o1)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00011F34_entry:
+abspath_entry:
 // DataOut: l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -3017,7 +3017,7 @@ l00012138:
 // SymbolicIn: l0:l0 + o0 + 0x00000009 & 0xFFFFFFF8 sp:sp - ((l0 + o0) + 0x00000009 & 0xFFFFFFF8) o0:<invalid> o4:sp - ((l0 + o0) + 0x00000009 & 0xFFFFFFF8) + 0x00000060 o3:<invalid> g0:<invalid> o2:<invalid> i0:<invalid> o1:<invalid> o5:0x00017000
 // Terminates process
 
-fn00011F34_exit:
+abspath_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7 o0:o0
@@ -3032,7 +3032,7 @@ void shortpath(word32 o0, word32 o1)
 // Trashed:
 // Preserved:
 // Terminates process
-fn0001214C_entry:
+shortpath_entry:
 // DataOut: l5 l6 l7 o0 o1 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -3396,7 +3396,7 @@ l000122FC:
 // DataOut (flags): 
 // SymbolicIn: o1:<invalid> l4:o0 l1:<invalid> g0:<invalid> o0:<invalid> i0:<invalid> l0:<invalid> l2:<invalid> o3:l4 + l3 o2:l4 + l3 o4:0x0000002F
 
-fn0001214C_exit:
+shortpath_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o1:i1 l4:o0 l1:<invalid> g0:<invalid> o0:<invalid> i0:<invalid> o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7 l0:<invalid> l2:<invalid>
@@ -3411,7 +3411,7 @@ void find_file(word32 o0, word32 o1)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00012304_entry:
+find_file_entry:
 // DataOut: l0 l2 l3 l4 l6 l7 o0 o1 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -3504,7 +3504,7 @@ l000123C8:
 // DataOut (flags): 
 // SymbolicIn: l5:o0 i0:<invalid> g0:<invalid> l4:o0 o0:<invalid>
 
-fn00012304_exit:
+find_file_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: l5:o0 i0:<invalid> g0:<invalid> o0:<invalid> o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7 l4:o0
@@ -3519,12 +3519,12 @@ void aux_info_corrupted()
 // Trashed:
 // Preserved:
 // Terminates process
-fn000123D0_exit:
+aux_info_corrupted_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn:
 
-fn000123D0_entry:
+aux_info_corrupted_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -3546,7 +3546,7 @@ word32 check_aux_info(word32 o0, ptr32 & i1Out, ptr32 & i3Out, ptr32 & i6Out)
 // LiveOut: i0 i1 i3 i6
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7
 // Preserved: o0 o1 o2 o3 o4 o5 o7 sp
-fn000123F8_entry:
+check_aux_info_entry:
 // DataOut: l0 l1 l2 l3 l4 l6 l7 o0 o1 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -3575,7 +3575,7 @@ l00012410:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 g0:o0
 
-fn000123F8_exit:
+check_aux_info_exit:
 // DataOut: i0 i1 i3 i6
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 g0:o0 o0:o0 o1:o1 o2:o2 o3:o3 o4:o4 o5:o5 o7:o7
@@ -3600,7 +3600,7 @@ word32 find_corresponding_lparen(word32 o0)
 // LiveOut: o0
 // Trashed: NZVC g0 g2 g3 o0
 // Preserved: sp
-fn00012418_entry:
+find_corresponding_lparen_entry:
 // DataOut: l2 l6 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -3678,7 +3678,7 @@ l00012454:
 // DataOut (flags): 
 // SymbolicIn: sp:fp o0:<invalid> g3:<invalid> g2:<invalid> g0:<invalid>
 
-fn00012418_exit:
+find_corresponding_lparen_exit:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp o0:<invalid> g3:<invalid> g2:<invalid> g0:<invalid>
@@ -3693,7 +3693,7 @@ void referenced_file_is_newer(word32 o0)
 // Trashed:
 // Preserved:
 // Terminates process
-fn0001245C_entry:
+referenced_file_is_newer_entry:
 // DataOut: l2 l3 l4 l6 l7 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -3786,7 +3786,7 @@ l00012514:
 // DataOut (flags): 
 // SymbolicIn: o1:<invalid> g0:<invalid> i0:<invalid>
 
-fn0001245C_exit:
+referenced_file_is_newer_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o1:i1 g0:<invalid> i0:<invalid> o0:<invalid> o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7
@@ -3801,7 +3801,7 @@ void save_def_or_dec(word32 o0)
 // Trashed:
 // Preserved:
 // Terminates process
-fn0001251C_entry:
+save_def_or_dec_entry:
 // DataOut: l6 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -4519,7 +4519,7 @@ l00012B5C:
 // DataOut (flags): 
 // SymbolicIn: i0:<invalid> g0:<invalid> o0:<invalid> l3:0x00029800 i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> sp:<invalid> o1:<invalid> o2:<invalid> o3:<invalid> o4:<invalid> o5:<invalid> o7:<invalid> l0:<invalid>
 
-fn0001251C_exit:
+save_def_or_dec_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: i0:<invalid> g0:<invalid> o0:<invalid> l3:0x00029800 i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> sp:<invalid> o1:<invalid> o2:<invalid> o3:<invalid> o4:<invalid> o5:<invalid> o7:<invalid> l0:<invalid>
@@ -4546,7 +4546,7 @@ void munge_compile_params(word32 o0, word32 o3)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00012B64_entry:
+munge_compile_params_entry:
 // DataOut: l4 l6 l7 o0 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -4769,7 +4769,7 @@ l00012C40:
 // DataOut (flags): 
 // SymbolicIn: o0:0x00012C00 sp:sp - ((o0 << 0x00000004) + 0x00000027 & 0xFFFFFFF8) o1:<invalid> l1:sp - ((o0 << 0x00000004) + 0x00000027 & 0xFFFFFFF8) + 0x00000060 l0:<invalid> l2:0x0002B400 o2:0x0002B411 g2:<invalid> g0:<invalid> o3:<invalid> i0:<invalid>
 
-fn00012B64_exit:
+munge_compile_params_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o0:<invalid> o1:<invalid> o2:<invalid> o3:<invalid> o4:i4 o5:i5 sp:<invalid> o7:i7 l1:sp - ((o0 << 0x00000004) + 0x00000027 & 0xFFFFFFF8) + 0x00000060 l0:<invalid> l2:0x0002B400 g2:<invalid> g0:<invalid> i0:<invalid>
@@ -4784,7 +4784,7 @@ void gen_aux_info_file(word32 o0, word32 o3)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00012E2C_entry:
+gen_aux_info_file_entry:
 // DataOut: l4 o0 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -4873,7 +4873,7 @@ l0001302C:
 // DataOut (flags): 
 // SymbolicIn:
 
-fn00012E2C_exit:
+gen_aux_info_file_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn:
@@ -4899,7 +4899,7 @@ void process_aux_info_file(word32 o0, word32 o2, word32 o3)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00013034_entry:
+process_aux_info_file_entry:
 // DataOut: l0 l1 o0 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -5630,7 +5630,7 @@ l000135B8:
 // DataOut (flags): 
 // SymbolicIn: l2:<invalid> g0:<invalid> o0:<invalid> o1:<invalid> l0:<invalid> i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> l3:<invalid>
 
-fn00013034_exit:
+process_aux_info_file_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: l2:<invalid> g0:<invalid> o0:<invalid> o1:<invalid> o2:<invalid> o3:<invalid> o4:<invalid> o5:<invalid> sp:<invalid> o7:<invalid> l0:<invalid> i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> l3:<invalid>
@@ -5860,7 +5860,7 @@ word32 identify_lineno(word32 o0)
 // LiveOut: o0
 // Trashed: NZVC g0 g2 g3 o0 o1
 // Preserved: sp
-fn0001360C_entry:
+identify_lineno_entry:
 // DataOut: i1 i2 i6 l2 l3 l4 l5 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -5922,7 +5922,7 @@ l00013644:
 // DataOut (flags): 
 // SymbolicIn: sp:fp g2:<invalid> g3:<invalid> o1:o0 g0:<invalid> o0:<invalid>
 
-fn0001360C_exit:
+identify_lineno_exit:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp g2:<invalid> g3:<invalid> o1:o0 g0:<invalid> o0:<invalid>
@@ -5937,12 +5937,12 @@ void declare_source_confusing(word32 o0)
 // Trashed:
 // Preserved:
 // Terminates process
-fn0001364C_exit:
+declare_source_confusing_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn:
 
-fn0001364C_entry:
+declare_source_confusing_entry:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -6005,7 +6005,7 @@ word32 check_source(word32 o0, word32 o1, ptr32 & i1Out, ptr32 & i2Out, ptr32 & 
 // LiveOut: i0 i1 i2 i6
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 o0
 // Preserved: o1 o2 o3 o4 o5 o7 sp
-fn000136E0_entry:
+check_source_entry:
 // DataOut: l0 l1 l3 l5 o0 o1 o2
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -6034,7 +6034,7 @@ l000136F8:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 g0:o0 o0:o1
 
-fn000136E0_exit:
+check_source_exit:
 // DataOut: i0 i1 i2 i6
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 g0:o0 o0:o1 o1:o1 o2:o2 o3:o3 o4:o4 o5:o5 o7:o7
@@ -6207,7 +6207,7 @@ word32 forward_to_next_token_char(word32 o0)
 // LiveOut: o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved: o2 o3 o4 o5 o7 sp
-fn000137AC_entry:
+forward_to_next_token_char_entry:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -6263,7 +6263,7 @@ l00013800:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> o0:<invalid> o1:<invalid> o2:(word32) Mem0[(word32) Mem0[o0 + 0x00000001:byte] + 0x0002B411:byte] g0:<invalid> l1:0x0002B411 l0:0x00028000
 
-fn000137AC_exit:
+forward_to_next_token_char_exit:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> o0:<invalid> o1:<invalid> o2:<invalid> g0:<invalid> l1:0x0002B411 o3:<invalid> o4:<invalid> o5:<invalid> o7:<invalid> l0:0x00028000
@@ -6278,7 +6278,7 @@ void output_bytes(word32 o0, word32 o1)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00013808_entry:
+output_bytes_entry:
 // DataOut: o0 o1 o2
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -6323,7 +6323,7 @@ l00013864:
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 l2:0x00028000 o1:<invalid> l3:0x00028000 l0:<invalid> o0:o1 + 0x00000001 g0:<invalid> l1:0x00028000 o2:<invalid>
 // Terminates process
 
-fn00013808_exit:
+output_bytes_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o1:i1 o0:i0 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7
@@ -6338,7 +6338,7 @@ void output_string(word32 o0)
 // Trashed:
 // Preserved:
 // Terminates process
-fn0001388C_entry:
+output_string_entry:
 // DataOut: l1 o0 o1 o2
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -6353,7 +6353,7 @@ l0001388C:
 // SymbolicIn: sp:fp
 // Terminates process
 
-fn0001388C_exit:
+output_string_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o0:i0 o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7
@@ -6367,7 +6367,7 @@ word32 output_up_to(word32 o0, ptr32 & i1Out, ptr32 & i2Out)
 // LiveOut: i0 i1 i2
 // Trashed: NZVC i0 i1 i2 i3 i4 i5 i6 i7 l0 o3
 // Preserved: o0 o1 o2 o4 o5 o7 sp
-fn000138AC_entry:
+output_up_to_entry:
 // DataOut: l1 o0 o1 o2
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -6410,7 +6410,7 @@ l000138E8:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> o1:<invalid> l0:0x00028000 o2:<invalid> o3:0x00028000
 
-fn000138AC_exit:
+output_up_to_exit:
 // DataOut: i0 i1 i2
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:o0 o1:o1 l0:0x00028000 o2:o2 o3:0x00028000 o4:o4 o5:o5 o7:o7
@@ -6424,7 +6424,7 @@ word32 other_variable_style_function(word32 o0, ptr32 & i1Out, ptr32 & i6Out)
 // LiveOut: i1 i6 o0
 // Trashed: NZVC g0 g2 g3 i0 i1 i2 i3 i4 i5 i6 i7 o0 o1
 // Preserved: o2 o3 o4 o5 o7 sp
-fn000138F0_entry:
+other_variable_style_function_entry:
 // DataOut: o0 o1
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -6440,7 +6440,7 @@ l000138F0:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-fn000138F0_exit:
+other_variable_style_function_exit:
 // DataOut: i1 i6 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:<invalid> i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o1:0x00017468 o0:<invalid> g0:<invalid> o2:o2 o3:o3 o4:o4 o5:o5 o7:o7 g2:<invalid> g3:<invalid>
@@ -6938,7 +6938,7 @@ word32 find_rightmost_formals_list(word32 o0, ptr32 & i6Out)
 // LiveOut: i6 o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
-fn00013E04_entry:
+find_rightmost_formals_list_entry:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -7079,7 +7079,7 @@ l00013EB4:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> o0:<invalid> g0:<invalid> o1:<invalid> l4:0x0002B400 l3:0x0002B411 l2:0x00028000 l1:0x00028000 l0:0x0002B411
 
-fn00013E04_exit:
+find_rightmost_formals_list_exit:
 // DataOut: i6 o0
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> o0:<invalid> g0:<invalid> o1:<invalid> l1:0x0002B411 o2:<invalid> o3:<invalid> o4:<invalid> o5:<invalid> o7:<invalid> l0:0x00028000 l4:0x0002B400 l3:0x0002B411 l2:0x00028000
@@ -7293,7 +7293,7 @@ word32 careful_find_l_paren(word32 o0, ptr32 & spOut, ptr32 & i6Out)
 // LiveOut: i6 o0 sp
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
-fn00014518_entry:
+careful_find_l_paren_entry:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -7379,7 +7379,7 @@ l00014570:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> l0:<invalid> l1:0x00028000 o0:<invalid> g0:<invalid> o1:0x00000000
 
-fn00014518_exit:
+careful_find_l_paren_exit:
 // DataOut: i6 o0 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> l0:<invalid> l1:0x00028000 o0:<invalid> g0:<invalid> o1:<invalid> o2:<invalid> o3:<invalid> o4:<invalid> o5:<invalid> o7:<invalid>
@@ -7986,7 +7986,7 @@ void do_processing(word32 o3)
 // LiveOut:
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved: o3 o4 o5 o7 sp
-fn00014E24_entry:
+do_processing_entry:
 // DataOut: o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -8039,7 +8039,7 @@ l00014E78:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> o1:<invalid> o2:0x00028000 l1:<invalid> l0:0x00028000 g0:<invalid>
 
-fn00014E24_exit:
+do_processing_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> o0:<invalid> o1:<invalid> o2:<invalid> l1:<invalid> l0:<invalid> g0:<invalid> o3:<invalid> o4:<invalid> o5:<invalid> o7:<invalid>
@@ -8054,7 +8054,7 @@ void main(word32 o1, word32 dwArg44, word32 dwArg48)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00014EA4_entry:
+main_entry:
 // DataOut: o1
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -8178,7 +8178,7 @@ l00014FBC:
 // DataOut (flags): 
 // SymbolicIn: o1:<invalid> l5:<invalid> l1:<invalid> l4:<invalid> i5:<invalid> i4:<invalid> l3:<invalid> i3:<invalid> i2:<invalid> i1:<invalid> i0:<invalid> l2:<invalid> l6:<invalid> l7:<invalid> l0:<invalid> o0:<invalid> o2:<invalid> o3:0x00015000 o4:<invalid> i6:<invalid> i7:<invalid> o5:<invalid> g0:<invalid> sp:<invalid> o7:<invalid> g2:<invalid> g3:<invalid> g1:<invalid> g4:<invalid> -24(fp):0x00017218 68(fp):o0 72(fp):o1
 
-fn00014EA4_exit:
+main_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o1:0x0001520C l5:<invalid> l1:<invalid> l4:<invalid> i5:<invalid> i4:<invalid> l3:<invalid> i3:<invalid> i2:<invalid> i1:<invalid> i0:<invalid> l2:<invalid> l6:<invalid> l7:<invalid> l0:<invalid> o0:<invalid> o2:<invalid> o3:0x00015000 o4:<invalid> i6:<invalid> i7:<invalid> o5:<invalid> g0:<invalid> sp:<invalid> o7:<invalid> g2:<invalid> g3:<invalid> g1:<invalid> g4:<invalid> -24(fp):0x00017218 68(fp):o0 72(fp):o1
@@ -8386,7 +8386,7 @@ word32 getpwd()
 // LiveOut: i6
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l2 l3 l4 o0 o1
 // Preserved: o1 o2 o3 o4 o5 o7 sp
-fn000152B8_entry:
+getpwd_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -8583,7 +8583,7 @@ l000153BC:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFE80 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> i0:<invalid> g0:<invalid> l4:0x0002B000 o2:<invalid> o1:<invalid> l3:0x0002B000 l2:0x0002B400 l0:<invalid>
 
-fn000152B8_exit:
+getpwd_exit:
 // DataOut: i6
 // DataOut (flags): 
 // SymbolicIn: sp:fp i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> i0:<invalid> g0:<invalid> l4:0x0002B000 o1:<invalid> o2:o2 o3:o3 o4:o4 o5:o5 o7:o7 l3:0x0002B000 l2:0x0002B400 l0:<invalid>
@@ -9963,7 +9963,7 @@ word32 try(word32 o0, word32 o1, ptr32 & i2Out, ptr32 & i3Out, ptr32 & i6Out)
 // LiveOut: i2 i3 i6 o0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 o0
 // Preserved: o1 o2 o3 o4 o5 o7 sp
-fn000158D8_entry:
+try_entry:
 // DataOut: l3 l4 o0 o1 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -10044,7 +10044,7 @@ l00015910:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 g0:o0 o0:o0
 
-fn000158D8_exit:
+try_exit:
 // DataOut: i2 i3 i6 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:<invalid> i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 g0:o0 o0:<invalid> o1:o1 o2:o2 o3:o3 o4:o4 o5:o5 o7:o7
@@ -10059,7 +10059,7 @@ void choose_temp_base()
 // Trashed:
 // Preserved:
 // Terminates process
-fn00015918_entry:
+choose_temp_base_entry:
 // DataOut: l4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -10189,7 +10189,7 @@ l00015A74:
 // DataOut (flags): 
 // SymbolicIn: g0:o0
 
-fn00015918_exit:
+choose_temp_base_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: g0:o0 o0:i0 o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7
@@ -10444,7 +10444,7 @@ word32 my_index(word32 o0, word32 o1)
 // LiveOut: o0
 // Trashed: NZVC g0 g2 g3 o0
 // Preserved: sp
-fn00015C24_entry:
+my_index_entry:
 // DataOut: i0 i1 i2 i4 i5 i6 l0 l6 l7 o0 o1
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -10507,7 +10507,7 @@ l00015C58:
 // DataOut (flags): 
 // SymbolicIn: sp:fp g2:<invalid> g0:<invalid> g3:<invalid> o0:<invalid>
 
-fn00015C24_exit:
+my_index_exit:
 // DataOut: o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp g2:<invalid> g0:<invalid> g3:<invalid> o0:<invalid>
@@ -10521,7 +10521,7 @@ word32 exchange(word32 o0, ptr32 & i2Out, ptr32 & i4Out, ptr32 & i5Out, ptr32 & 
 // LiveOut: i1 i2 i4 i5 i6
 // Trashed: NZVC g0 g1 g2 g3 g4 i0 i1 i2 i3 i4 i5 i6 i7 o0 o1 o2 o3 o4 o5
 // Preserved: o3 o7 sp
-fn00015C60_entry:
+exchange_entry:
 // DataOut: l0 l1 l5 l6 l7 o0 o2
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -10762,7 +10762,7 @@ l00015D44:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i2:<invalid> i3:<invalid> i6:fp i7:o7 g2:<invalid> i1:<invalid> g3:<invalid> g1:<invalid> o1:0x0002B000 i5:<invalid> o2:0x00028000 i4:<invalid> g0:<invalid> o0:0x0002B000 o7:<invalid> g4:<invalid>
 
-fn00015C60_exit:
+exchange_exit:
 // DataOut: i1 i2 i4 i5 i6
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:<invalid> i2:<invalid> i3:<invalid> i6:fp i7:o7 g2:<invalid> i1:<invalid> g3:<invalid> g1:<invalid> o1:<invalid> i5:<invalid> o2:<invalid> i4:<invalid> g0:<invalid> o0:<invalid> o3:<invalid> o4:<invalid> o5:<invalid> o7:o7 g4:<invalid>
@@ -10777,7 +10777,7 @@ void _getopt_initialize(word32 o2)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00015D64_entry:
+_getopt_initialize_entry:
 // DataOut: l0 l5 l7 o1 o2 o4 o5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -10869,7 +10869,7 @@ l00015DFC:
 // DataOut (flags): 
 // SymbolicIn: o1:<invalid> o0:<invalid> g0:<invalid> i0:i0 + 0x00000001
 
-fn00015D64_exit:
+_getopt_initialize_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o1:i1 o0:i0 + 0x00000002 g0:<invalid> i0:i0 + 0x00000001 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7
@@ -10883,7 +10883,7 @@ word32 _getopt_internal(word32 o1, word32 o2, word32 o3, word32 o4, word32 o5, w
 // LiveOut: i6 l0 l6 l7 o0
 // Trashed: NZVC g0 g1 g2 g3 g4 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved: o3 o4 o5 o7 sp
-fn00015E04_entry:
+_getopt_internal_entry:
 	*l7Out = l7
 // DataOut: l7 o1 o2 o3 o4 o5
 // DataOut (flags): 
@@ -13035,7 +13035,7 @@ l00016978:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> o0:<invalid> o2:<invalid> o1:<invalid> l5:0x00028000 g0:<invalid> l0:<invalid> l6:0x0002B000 g2:<invalid> g3:<invalid> o3:<invalid> l1:<invalid> l2:<invalid> g1:<invalid> o4:<invalid> o5:<invalid> g4:<invalid> l3:<invalid> l7:<invalid> l4:<invalid> 68(fp):0x00028000 80(fp):o3
 
-fn00015E04_exit:
+_getopt_internal_exit:
 // DataOut: i6 l0 l6 l7 o0
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> o0:<invalid> o2:<invalid> o1:<invalid> l5:0x00028000 g0:<invalid> l0:<invalid> l6:0x0002B000 g2:<invalid> g3:<invalid> o3:<invalid> o4:<invalid> o5:<invalid> o7:<invalid> l1:<invalid> l2:<invalid> g1:<invalid> g4:<invalid> l3:<invalid> l7:<invalid> l4:<invalid> 68(fp):0x00028000 80(fp):o3
@@ -13080,7 +13080,7 @@ word32 getopt_long(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, ptr32 
 // LiveOut: i6 l0 l6 l7
 // Trashed: NZVC g0 g1 g2 g3 g4 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved: o0 o1 o2 o3 o4 o7 sp
-fn000169A8_entry:
+getopt_long_entry:
 // DataOut: o0 o1 o2 o3 o4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -13097,7 +13097,7 @@ l000169A8:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-fn000169A8_exit:
+getopt_long_exit:
 // DataOut: i6 l0 l6 l7
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> o0:<invalid> o1:<invalid> o2:<invalid> o3:<invalid> o4:<invalid> o5:<invalid> o7:<invalid> l5:0x00028000 g0:<invalid> l0:<invalid> l6:0x0002B000 g2:<invalid> g3:<invalid> l1:<invalid> l2:<invalid> g1:<invalid> g4:<invalid> l3:<invalid> l7:<invalid> l4:<invalid>
@@ -13449,7 +13449,7 @@ l00016C18:
 // SymbolicIn:
 // Terminates process
 
-fn000169F8_entry:
+pexecute_entry:
 // DataOut: l4 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -13641,7 +13641,7 @@ l00016C24:
 // DataOut (flags): 
 // SymbolicIn: g0:o0 o1:<invalid> o0:0x00017B18 o2:<invalid> i0:0xFFFFFFFF -32(fp):<invalid> -28(fp):<invalid> 68(fp):o0 72(fp):o1 76(fp):o2 84(fp):o4 88(fp):o5
 
-fn000169F8_exit:
+pexecute_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: g0:o0 o1:i1 o0:0xFFFFFFFF o2:i2 i0:0xFFFFFFFF o3:i3 o4:i4 o5:i5 sp:i6 o7:i7 -32(fp):<invalid> -28(fp):<invalid> 68(fp):o0 72(fp):o1 76(fp):o2 84(fp):o4 88(fp):o5
@@ -13656,7 +13656,7 @@ void pwait(word32 o1)
 // Trashed:
 // Preserved:
 // Terminates process
-fn00016C2C_entry:
+pwait_entry:
 // DataOut: l0 l1 l4 o0 o1 o2 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -13670,7 +13670,7 @@ l00016C2C:
 // SymbolicIn: sp:fp
 // Terminates process
 
-fn00016C2C_exit:
+pwait_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7 o0:o0
@@ -13862,7 +13862,7 @@ word32 __do_global_ctors_aux(word32 o7)
 // LiveOut: l0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l7 o0 o7
 // Preserved: o1 o2 o3 o4 o5 o7 sp
-fn00016E6C_entry:
+__do_global_ctors_aux_entry:
 // DataOut: o7
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -13936,7 +13936,7 @@ l00016EB4:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> l7:<invalid> o1:<invalid> o2:<invalid> g0:<invalid> l0:<invalid> o7:00016E9C
 
-fn00016E6C_exit:
+__do_global_ctors_aux_exit:
 // DataOut: l0
 // DataOut (flags): 
 // SymbolicIn: sp:fp i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> l7:<invalid> o1:o1 o2:o2 g0:<invalid> l0:<invalid> o3:o3 o4:o4 o5:o5 o7:<invalid>
@@ -13976,7 +13976,7 @@ word32 _init(word32 o7)
 // LiveOut: l0
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l7 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved: o0 o1 o2 o3 o4 o5 o7 sp
-fn00016EC8_entry:
+_init_entry:
 // DataOut: o7
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -13989,7 +13989,7 @@ l00016EC8:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-fn00016EC8_exit:
+_init_exit:
 // DataOut: l0
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> o0:<invalid> o1:<invalid> o2:<invalid> o3:<invalid> o4:<invalid> o5:<invalid> o7:<invalid> l7:<invalid> g0:<invalid> l0:<invalid>

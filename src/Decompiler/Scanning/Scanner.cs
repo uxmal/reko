@@ -450,13 +450,12 @@ namespace Reko.Scanning
             try
             {
                 Address addr = sym.Address;
-                Procedure proc;
-                if (program.Procedures.TryGetValue(addr, out proc))
+                Procedure proc = EnsureProcedure(addr, sym.Name);
+                if (visitedProcs.Contains(proc))
                     return; // Already scanned. Do nothing.
                 if (sym.NoDecompile || IsNoDecompiledProcedure(addr))
                     return;
 
-                proc = EnsureProcedure(addr, sym.Name);
                 if (sym.Signature != null)
                 {
                     var sser = program.CreateProcedureSerializer();
@@ -1055,9 +1054,9 @@ namespace Reko.Scanning
             }
             foreach (ImageSymbol sym in Program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
             {
+                EnsureProcedure(sym.Address, sym.Name);
                 if (sym.NoDecompile)
                 {
-                    EnsureProcedure(sym.Address, null);
                     Program.EnsureUserProcedure(sym.Address, sym.Name, false);
                 }
                 else

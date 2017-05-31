@@ -4,13 +4,6 @@
 
 #include "PP.h"
 
-// 0800:0000: void fn0800_0000()
-void fn0800_0000()
-{
-fn0800_0000_entry:
-fn0800_0000_exit:
-}
-
 // 0800:0150: void fn0800_0150(Register byte al)
 void fn0800_0150(byte al)
 {

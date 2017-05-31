@@ -226,7 +226,7 @@ word32 substr(word32 o0, word32 o1)
 // 00011828: Register word32 safe_read(Register word32 o0, Register word32 o1, Register word32 o2, Register out ptr32 l0Out, Register out ptr32 l2Out, Register out ptr32 i0Out, Register out ptr32 i1Out, Register out ptr32 i2Out, Register out ptr32 i3Out)
 word32 safe_read(word32 o0, word32 o1, word32 o2, ptr32 & l0Out, ptr32 & l2Out, ptr32 & i0Out, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i3Out)
 {
-fn00011828_entry:
+safe_read_entry:
 l00011828:
 	word32 i1_23
 	*i1Out = o1
@@ -282,7 +282,7 @@ l0001187C:
 	*i0Out = o2 - l0_20
 l00011880:
 	return i0_42
-fn00011828_exit:
+safe_read_exit:
 }
 
 // 00011888: void safe_write(Register word32 o0, Register word32 o1, Register word32 o2, Register word32 o3)
@@ -661,7 +661,7 @@ void free_def_dec(word32 o0)
 // 00011D58: Register word32 unexpand_if_needed(Register word32 o0, Register out ptr32 l0Out, Register out ptr32 l6Out, Register out ptr32 i2Out)
 word32 unexpand_if_needed(word32 o0, ptr32 & l0Out, ptr32 & l6Out, ptr32 & i2Out)
 {
-fn00011D58_entry:
+unexpand_if_needed_entry:
 	*l0Out = l0
 	word32 i0_111 = o0
 	word32 i2_6
@@ -817,13 +817,13 @@ l00011F14:
 l00011F1C:
 l00011F2C:
 	return i0_62
-fn00011D58_exit:
+unexpand_if_needed_exit:
 }
 
 // 00011F34: void abspath(Register word32 o0, Register word32 o1)
 void abspath(word32 o0, word32 o1)
 {
-fn00011F34_entry:
+abspath_entry:
 	word32 i0_22 = o0
 	branch o0 != 0x00 l00011F34_ds_t
 	goto l00011F34_ds_f
@@ -1012,7 +1012,7 @@ l00012130:
 l00012138:
 	savestring(sp_29 + 0x60, o2_121 - (sp_29 + 0x60))
 	return
-fn00011F34_exit:
+abspath_exit:
 }
 
 // 0001214C: void shortpath(Register word32 o0, Register word32 o1)
@@ -1186,7 +1186,7 @@ word32 check_aux_info(word32 o0, ptr32 & i1Out, ptr32 & i3Out, ptr32 & i6Out)
 // 00012418: Register word32 find_corresponding_lparen(Register word32 o0)
 word32 find_corresponding_lparen(word32 o0)
 {
-fn00012418_entry:
+find_corresponding_lparen_entry:
 	word32 o0_14 = o0 + ~0x00 + ~0x00
 	word32 g3_13 = 0x01
 	word32 g2_19 = (int32) Mem0[o0 + ~0x00:int8]
@@ -1220,7 +1220,7 @@ l00012448_ds_t:
 	goto l00012424
 l00012454:
 	return o0_14 + 0x01
-fn00012418_exit:
+find_corresponding_lparen_exit:
 }
 
 // 0001245C: void referenced_file_is_newer(Register word32 o0)
@@ -1258,7 +1258,7 @@ void referenced_file_is_newer(word32 o0)
 // 0001251C: void save_def_or_dec(Register word32 o0)
 void save_def_or_dec(word32 o0)
 {
-fn0001251C_entry:
+save_def_or_dec_entry:
 	xmalloc(44)
 	word32 i1_28
 	word32 i3_29
@@ -1594,7 +1594,7 @@ l00012AC0:
 l00012ACC:
 l00012B5C:
 	return
-fn0001251C_exit:
+save_def_or_dec_exit:
 }
 
 // 00012B64: void munge_compile_params(Register word32 o0, Register word32 o3)
@@ -1712,7 +1712,7 @@ void gen_aux_info_file(word32 o0, word32 o3)
 // 00013034: void process_aux_info_file(Register word32 o0, Register word32 o2, Register word32 o3)
 void process_aux_info_file(word32 o0, word32 o2, word32 o3)
 {
-fn00013034_entry:
+process_aux_info_file_entry:
 	strlen()
 	word32 o0_22 = o0 + 0x0A & ~0x07
 	strcpy()
@@ -2065,7 +2065,7 @@ l000135A8:
 	xfree(0x00, out i1_325, out i2_326, out i3_327, out i6_328)
 l000135B8:
 	return
-fn00013034_exit:
+process_aux_info_file_exit:
 }
 
 // 000135C0: void reverse_def_dec_list(Register word32 o0)
@@ -2611,7 +2611,7 @@ void do_cleaning(word32 o0, word32 o1)
 // 00014518: Register word32 careful_find_l_paren(Register word32 o0, Register out ptr32 spOut, Register out ptr32 i6Out)
 word32 careful_find_l_paren(word32 o0, ptr32 & spOut, ptr32 & i6Out)
 {
-fn00014518_entry:
+careful_find_l_paren_entry:
 	word32 i0_19 = o0 + ~0x00
 	word32 l0_20 = 0x01
 	word32 o0_23 = (int32) Mem0[o0 + ~0x00:int8]
@@ -2652,7 +2652,7 @@ l00014570:
 	word32 sp_57
 	*spOut = i6_46
 	return i0_19 + 0x01
-fn00014518_exit:
+careful_find_l_paren_exit:
 }
 
 // 00014578: void scan_for_missed_items(Stack word32 dwArg44)
@@ -2893,7 +2893,7 @@ void do_processing(word32 o3)
 // 00014EA4: void main(Register word32 o1, Stack word32 dwArg44, Stack word32 dwArg48)
 void main(word32 o1, word32 dwArg44, word32 dwArg48)
 {
-fn00014EA4_entry:
+main_entry:
 	word32 o0_21 = Mem0[o1 + 0x00:word32]
 	strrchr()
 	word32 o2_231 = o0_21 + 0x01
@@ -3012,7 +3012,7 @@ l000151C4:
 l000151E4:
 l00015200:
 l00015204:
-fn00014EA4_exit:
+main_exit:
 }
 
 // 000152B8: Register word32 getpwd()
@@ -3935,7 +3935,7 @@ word32 my_index(word32 o0, word32 o1)
 // 00015C60: Register word32 exchange(Register word32 o0, Register out ptr32 i2Out, Register out ptr32 i4Out, Register out ptr32 i5Out, Register out ptr32 i6Out)
 word32 exchange(word32 o0, ptr32 & i2Out, ptr32 & i4Out, ptr32 & i5Out, ptr32 & i6Out)
 {
-fn00015C60_entry:
+exchange_entry:
 	word32 g2_180
 	word32 g1_17 = Mem0[0x0002B300:word32]
 	word32 i5_112 = Mem0[0x00028068:word32]
@@ -4045,7 +4045,7 @@ l00015D44:
 	Mem40[0x0002B2F0:word32] = Mem0[0x0002B2F0:word32] + (g2_180 - Mem0[0x0002B300:word32])
 	Mem41[0x0002B300:word32] = g2_180
 	return i1_115
-fn00015C60_exit:
+exchange_exit:
 }
 
 // 00015D64: void _getopt_initialize(Register word32 o2)
@@ -4072,7 +4072,7 @@ void _getopt_initialize(word32 o2)
 // 00015E04: Register word32 _getopt_internal(Register word32 o1, Register word32 o2, Register word32 o3, Register word32 o4, Register word32 o5, Stack word32 dwArg44, Stack word32 dwArg50, Register out ptr32 l0Out, Register out ptr32 l6Out, Register out ptr32 l7Out, Register out ptr32 i6Out)
 word32 _getopt_internal(word32 o1, word32 o2, word32 o3, word32 o4, word32 o5, word32 dwArg44, word32 dwArg50, ptr32 & l0Out, ptr32 & l6Out, ptr32 & l7Out, ptr32 & i6Out)
 {
-fn00015E04_entry:
+_getopt_internal_entry:
 	*l7Out = l7
 	word32 o2_21 = Mem0[0x00028068:word32]
 	Mem26[0x00028064:word32] = 0x00
@@ -4951,7 +4951,7 @@ l00016974:
 	i0_1062 = i0_218 >> 0x18
 l00016978:
 	return i0_1062
-fn00015E04_exit:
+_getopt_internal_exit:
 }
 
 // 00016980: void getopt(Register word32 o0, Register word32 o1, Register word32 o2)
@@ -4990,7 +4990,7 @@ void getopt_long_only(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4)
 // 000169F8: void pexecute(Stack word32 dwArg44, Stack word32 dwArg48, Stack word32 dwArg4C, Stack word32 dwArg54, Stack word32 dwArg58, Stack word32 dwArg5C)
 void pexecute(word32 dwArg44, word32 dwArg48, word32 dwArg4C, word32 dwArg54, word32 dwArg58, word32 dwArg5C)
 {
-fn000169F8_entry:
+pexecute_entry:
 	sp = fp
 	v3 = fp + ~0x8F
 	i0 = o0
@@ -5274,7 +5274,7 @@ l00016C24:
 	sp = i6
 	o7 = i7
 	return
-fn000169F8_exit:
+pexecute_exit:
 }
 
 // 00016C2C: void pwait(Register word32 o1)

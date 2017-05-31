@@ -439,7 +439,7 @@ word64 print_pixel(byte dil, selector fs, word64 qwArg04, word64 qwArg0C)
 // Trashed: SCZO ah al ax bp bpl dh di dil dl dx eax ebp edi edx esi esp rax rbp rdi rdx rsi rsp si sil sp spl
 // Preserved: rbx
 // Stack args: Stack +000C(64)
-fn0000000000400EE9_entry:
+print_pixel_entry:
 // DataOut: dil fs
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -566,7 +566,7 @@ l0000000000400F4C:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000068 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> eax:(word32) al -112(fp):ecx -108(fp):rdx -100(fp):rsi -92(fp):rdi -68(fp):(word32) al -44(fp):<invalid> -16(fp):rbx -12(fp):fp - 0x0000000000000008 -8(fp):fp - 0x0000000000000004 -4(fp):rbp
 
-fn0000000000400EE9_exit:
+print_pixel_exit:
 // DataOut: rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rbp:<invalid> rax:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> eax:<invalid> rbx:rbx -112(fp):ecx -108(fp):rdx -100(fp):rsi -92(fp):rdi -68(fp):(word32) al -44(fp):<invalid> -16(fp):rbx -12(fp):fp - 0x0000000000000008 -8(fp):fp - 0x0000000000000004 -4(fp):rbp
