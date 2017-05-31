@@ -330,11 +330,6 @@ namespace Reko
             var fmt = new AbsynCodeFormatter(new TextFormatter(w));
             foreach (var de in program.Procedures)
             {
-                // Don't write procedures marked 'no decompile' 
-                Procedure_v1 up;
-                if (program.User.Procedures.TryGetValue(de.Key, out up) && !up.Decompile)
-                    continue;
-
                 w.WriteLine("// {0}: {1}", de.Key, de.Value);
                 var proc = de.Value;
                 try

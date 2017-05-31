@@ -486,26 +486,6 @@ l0040131E:
 
 
 
-DWORD Win32CrtStartup()
-// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-Win32CrtStartup_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-Win32CrtStartup_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-
-
-
 word32 fn004015E4(word32 ebx, word32 esi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 

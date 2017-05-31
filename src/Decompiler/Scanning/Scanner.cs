@@ -1039,28 +1039,36 @@ namespace Reko.Scanning
         /// </summary>
         public void ScanProceduresRecursively()
         {
-            foreach (Procedure_v1 up in Program.User.Procedures.Values)
+            var noDecompiles = Program.User.Procedures
+                .Where(de => !de.Value.Decompile)
+                .Select(de => de.Key)
+                .ToHashSet();
+            foreach (var de in Program.User.Procedures)
             {
-                var addr = EnqueueUserProcedure(up);
-                if (addr != null)
+                if (noDecompiles.Contains(de.Key))
                 {
-                    sr.KnownProcedures.Add(addr);
+                    Program.EnsureUserProcedure(de.Key, de.Value.Name, false);
+                }
+                else
+                {
+                    var addr = EnqueueUserProcedure(de.Value);
+                    if (addr != null)
+                    {
+                        sr.KnownProcedures.Add(addr);
+                    }
                 }
             }
-            foreach (ImageSymbol ep in Program.EntryPoints.Values)
+            foreach (var sym in Program.EntryPoints.Values.Concat(
+                Program.ImageSymbols.Values.Where(
+                    s => s.Type == SymbolType.Procedure)))
             {
-                EnqueueImageSymbol(ep, true);
-                sr.KnownProcedures.Add(ep.Address);
-            }
-            foreach (ImageSymbol sym in Program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
-            {
-                EnsureProcedure(sym.Address, sym.Name);
-                if (sym.NoDecompile)
+                if (sym.NoDecompile || noDecompiles.Contains(sym.Address))
                 {
                     Program.EnsureUserProcedure(sym.Address, sym.Name, false);
                 }
                 else
                 {
+                    EnsureProcedure(sym.Address, sym.Name);
                     EnqueueImageSymbol(sym, false);
                 }
                 sr.KnownProcedures.Add(sym.Address);
