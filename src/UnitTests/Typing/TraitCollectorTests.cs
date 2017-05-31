@@ -193,7 +193,7 @@ namespace Reko.UnitTests.Typing
 		}
 
 		[Test]
-        [Ignore("FIXME")]
+        //[Ignore("FIXME")]
 		public void TrcoGlobalArray()
 		{
             Program program = CreateProgram();

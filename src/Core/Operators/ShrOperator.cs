@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Core.Operators
@@ -29,8 +30,11 @@ namespace Reko.Core.Operators
 		{
             if (!ValidArgs(c1, c2))
                 return Constant.Invalid;
-            return BuildConstant(c1.DataType, c2.DataType, (int) (c1.ToUInt32() >> c2.ToInt32()));
+            return Constant.Create(
+                PrimitiveType.Create(Domain.UnsignedInt, c1.DataType.Size),
+                c1.ToUInt64() >> c2.ToInt32());
 		}
+
 		public override string ToString()
 		{
 			return " >>u ";
