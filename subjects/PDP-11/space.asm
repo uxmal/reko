@@ -390,54 +390,12 @@ l0572:
 05D0 33 34 35 36 37 38 39 66 72 6F 6D 00 69 6E 20 20 3456789from.in  
 05E0 00 0D 0A 00 20 72 6F 75 74 69 6E 65 20 22 00 22 .... routine "."
 05F0 20 20 6C 69 6E 65 20 00 80 0D 0A 3F 45 72 72 20   line ....?Err 
-0600 00 20 28 50 43 3D 00 00                         . (PC=..       
-
-;; fn0608: 0608
-fn0608 proc
-	mov	4E1A(pc),r4
-	add	#002A,r4
-	mov	(sp)+,@r4
-	br	062A
-0614             C4 1D 0E 4E C4 65 2A 00 8C 15 A6 13     ...N.e*.....
-0620 A6 13 36 0A 02 00 36 0A 04 00                   ..6...6...     
-
-l062A:
-	clr	-(sp)
-	mov	0002(sp),r1
-	bgt	0636
-
-l0632:
-	beq	065C
-
-l0634:
-	neg	r1
-
-l0636:
-	rol	-(sp)
-	mov	#0090,r2
-	clrb	0004(sp)
-
-l0640:
-	rol	r1
-	bcs	0648
-
-l0644:
-	dec	r2
-	br	0640
-
-l0648:
-	movb	r1,0005(sp)
-	clrb	r1
-	bis	r2,r1
-	swab	r1
-	ror	(sp)+
-	ror	r1
-	ror	0003(sp)
-	mov	r1,@sp
-
-l065C:
-	jmp	@(r4)+
-065E                                           01 17               ..
+0600 00 20 28 50 43 3D 00 00 C4 1D 1A 4E C4 65 2A 00 . (PC=.....N.e*.
+0610 8C 15 0B 01 C4 1D 0E 4E C4 65 2A 00 8C 15 A6 13 .......N.e*.....
+0620 A6 13 36 0A 02 00 36 0A 04 00 26 0A 81 1D 02 00 ..6...6...&.....
+0630 02 06 14 03 01 0B 66 0C C2 15 90 00 36 8A 04 00 ......f.....6...
+0640 41 0C 02 87 C2 0A FC 01 76 90 05 00 01 8A 81 D0 A.......v.......
+0650 C1 00 16 0C 01 0C 36 8C 03 00 4E 10 5C 00 01 17 ......6...N.\...
 0660 01 01 01 15 40 14 41 12 0A 01 26 0A 26 15 05 01 ....@.A...&.&...
 
 ;; fn0670: 0670
@@ -588,77 +546,13 @@ l0738:
 	mov	r2,-(sp)
 	jmp	@(r4)+
 0742       01 17 01 01 01 15 40 14 41 12 0A 01 26 0A   ......@.A...&.
-0750 26 15 05 01                                     &...           
-
-;; fn0754: 0754
-fn0754 proc
-	mov	4CCE(pc),r4
-	add	#002A,r4
-	mov	(sp)+,@r4
-	mov	(sp)+,r0
-	mov	(sp)+,r1
-	mov	(sp)+,r2
-	mov	@sp,r3
-	mov	r4,@sp
-	mov	r5,-(sp)
-	asl	r0
-	beq	0810
-
-l076E:
-	rol	-(sp)
-	asl	r2
-	beq	080A
-
-l0774:
-	adc	@sp
-	mov	r2,r4
-	clrb	r2
-	bic	r2,r4
-	mov	r0,r5
-	clrb	r0
-	bic	r0,r5
-	sub	r0,r2
-	bcs	078C
-
-l0786:
-	bpl	078E
-
-l0788:
-	trap	#8A
-	br	080A
-
-l078C:
-	bpl	0808
-
-l078E:
-	add	#7F01,r2
-	setflags	#01
-	ror	r4
-	ror	(sp)+
-	ror	r2
-	ror	r5
-	mov	#0100,r0
-	cmp	r4,r5
-	bhi	07AC
-
-l07A4:
-	bcs	07B6
-
-l07A6:
-	cmp	r3,r1
-	bcs	07B6
-
-l07AA:
-	beq	07E6
-
-l07AC:
-	sub	r1,r3
-	sbc	r4
-	sub	r5,r4
-	mov	#0202,r0
-
-l07B6:
-	mov	#07EC,-(sp)
+0750 26 15 05 01 C4 1D CE 4C C4 65 2A 00 8C 15 80 15 &......L.e*.....
+0760 81 15 82 15 83 13 0E 11 66 11 C0 0C 51 03 66 0C ........f...Q.f.
+0770 C2 0C 4B 03 4E 0B 84 10 02 8A 84 40 05 10 00 8A ..K.N......@....
+0780 05 40 02 E0 03 87 03 80 8A 89 3F 01 3D 80 C2 65 .@........?.=..e
+0790 01 7F B1 00 04 8C 16 0C 02 0C 05 8C C0 15 00 01 ................
+07A0 05 21 04 82 08 87 C1 20 06 87 1D 03 43 E0 84 0B .!..... ....C...
+07B0 44 E1 C0 15 02 02 E6 15 EC 07                   D.........     
 
 ;; fn07BA: 07BA
 fn07BA proc
@@ -704,12 +598,8 @@ l07E0:
 	cmp	(sp)+,#07F6
 	beq	07FE
 
-;; fn07E6: 07E6
-fn07E6 proc
+l07E6:
 	add	r0,r2
-
-;; fn07E8: 07E8
-fn07E8 proc
 	clr	r0
 	br	07FE
 07EC                                     02 60 C0 15             .`..
@@ -721,21 +611,8 @@ l07FE:
 	mov	r0,@sp
 	mov	r2,-(sp)
 	jmp	@(r4)+
-
-l0808:
-	trap	#8B
-
-l080A:
-	tst	(sp)+
-
-l080C:
-	clr	r2
-	br	07E8
-
-l0810:
-	trap	#8C
-	br	080C
-0814             80 11 03 01                             ....       
+0808                         8B 89 D6 0B 02 0A EC 01         ........
+0810 8C 89 FC 01 80 11 03 01                         ........       
 
 ;; fn0818: 0818
 fn0818 proc
@@ -831,14 +708,16 @@ fn0AE6 proc
 	cmp	@sp,#0001
 	beq	0B02
 
-l0AF8:
+;; fn0AF8: 0AF8
+fn0AF8 proc
 	cmp	@sp,#0008
 	beq	0B02
 
 l0AFE:
 	add	#0003,@sp
 
-l0B02:
+;; fn0B02: 0B02
+fn0B02 proc
 	cmp	0004(sp),0005(sp)
 	adc	@sp
 	mov	(sp)+,00A4(r3)
@@ -1171,31 +1050,18 @@ l0E7A:
 
 l0E7C:
 	jmp	@(r4)+
+0E7E                                           C0 1C               ..
+0E80 72 00 01 02 85 00 04 10 40 13 C0 45 80 FF F7 09 r.......@..E....
+0E90 BA F6                                           ..             
 
-;; fn0E7E: 0E7E
-fn0E7E proc
-	mov	0072(r3),r0
-	bne	0E86
-
-l0E84:
-	rts	r5
-
-l0E86:
-	mov	r0,r4
-	mov	@r5,r0
-	bic	#FF80,r0
-	jsr	pc,F6BA(pc)
-
-;; fn0E92: 0E92
-fn0E92 proc
+l0E92:
 	mov	0064(r3),sp
 	mov	#0EF4,-(sp)
 	mov	r3,-(sp)
 	tst	0074(r3)
 	bne	0EDA
 
-;; fn0EA2: 0EA2
-fn0EA2 proc
+l0EA2:
 	mov	r4,0002(sp)
 	br	0EDA
 
@@ -1369,10 +1235,12 @@ fn0FB2 proc
 	tst	0014(r3)
 	beq	0FCC
 
-l0FCA:
+;; fn0FCA: 0FCA
+fn0FCA proc
 	trap	#9A
 
-l0FCC:
+;; fn0FCC: 0FCC
+fn0FCC proc
 	mov	0002(sp),0014(r3)
 	mov	0006(sp),001C(r3)
 	mov	(sp)+,r3
@@ -2298,7 +2166,8 @@ fn196A proc
 	cmp	r0,0018(r3)
 	bcc	1978
 
-l1974:
+;; fn1974: 1974
+fn1974 proc
 	inc	001C(r3)
 
 l1978:

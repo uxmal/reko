@@ -249,9 +249,9 @@ namespace Reko.ImageLoaders.MachO
 
                     switch (cmd & ~LC_REQ_DYLD)
                     {
-                    //case LC_SEGMENT:
-                    //    parseSegmentCommand<segment_command, section>();
-                    //    break;
+                    case LC_SEGMENT:
+                        parseSegmentCommand32(imageMap);
+                        break;
                     case LC_SEGMENT_64:
                         parseSegmentCommand64(imageMap);
                         break;
@@ -284,13 +284,40 @@ namespace Reko.ImageLoaders.MachO
                 return new String(chars, 0, i);
             }
 
+            void parseSegmentCommand32(SegmentMap imageMap)
+            {
+                var segname = ReadSegmentName();
+                uint vmaddr;
+                uint vmsize;
+                uint fileoff;
+                uint filesize;
+                uint maxprot;
+                uint initprot;
+                uint nsects;
+                uint flags;
+                if (!rdr.TryReadUInt32(out vmaddr) ||
+                    !rdr.TryReadUInt32(out vmsize) ||
+                    !rdr.TryReadUInt32(out fileoff) ||
+                    !rdr.TryReadUInt32(out filesize) ||
+                    !rdr.TryReadUInt32(out maxprot) ||
+                    !rdr.TryReadUInt32(out initprot) ||
+                    !rdr.TryReadUInt32(out nsects) ||
+                    !rdr.TryReadUInt32(out flags))
+                {
+                    throw new BadImageFormatException("Could not read segment command.");
+                }
+                Debug.Print("Found segment '{0}' with {1} sections.", segname, nsects);
+
+                for (uint i = 0; i < nsects; ++i)
+                {
+                    Debug.Print("Parsing section number {0}.", i);
+                    parseSection32(initprot, imageMap);
+                }
+            }
+
             void parseSegmentCommand64(SegmentMap imageMap)
             {
-                var abSegname = rdr.ReadBytes(16);
-                var cChars = Array.IndexOf<byte>(abSegname, 0);
-                if (cChars == -1)
-                    cChars = 16;
-                string segname = Encoding.ASCII.GetString(abSegname, 0, cChars);
+                string segname = ReadSegmentName();
                 ulong vmaddr;
                 ulong vmsize;
                 ulong fileoff;
@@ -317,6 +344,16 @@ namespace Reko.ImageLoaders.MachO
                     Debug.Print("Parsing section number {0}.", i);
                     parseSection64(initprot, imageMap);
                 }
+            }
+
+            private string ReadSegmentName()
+            {
+                var abSegname = rdr.ReadBytes(16);
+                var cChars = Array.IndexOf<byte>(abSegname, 0);
+                if (cChars == -1)
+                    cChars = 16;
+                string segname = Encoding.ASCII.GetString(abSegname, 0, cChars);
+                return segname;
             }
 
             void parseFunctionStarts(EndianImageReader rdr)
@@ -349,6 +386,79 @@ namespace Reko.ImageLoaders.MachO
             const uint VM_PROT_READ = 0x01;
             const uint VM_PROT_WRITE = 0x02;
             const uint VM_PROT_EXECUTE = 0x04;
+
+            void parseSection32(uint protection, SegmentMap segmentMap)
+            {
+                var abSectname = rdr.ReadBytes(16);
+                var abSegname = rdr.ReadBytes(16);
+
+                uint addr;
+                uint size;
+                uint offset;
+                uint align;
+                uint reloff;
+                uint nreloc;
+                uint flags;
+                uint reserved1;
+                uint reserved2;
+
+                if (!rdr.TryReadUInt32(out addr) ||
+                    !rdr.TryReadUInt32(out size) ||
+                    !rdr.TryReadUInt32(out offset) ||
+                    !rdr.TryReadUInt32(out align) ||
+                    !rdr.TryReadUInt32(out reloff) ||
+                    !rdr.TryReadUInt32(out nreloc) ||
+                    !rdr.TryReadUInt32(out flags) ||
+                    !rdr.TryReadUInt32(out reserved1) ||
+                    !rdr.TryReadUInt32(out reserved2))
+                {
+                    throw new BadImageFormatException("Could not read Mach-O section.");
+                }
+
+                var sectionName = GetAsciizString(abSectname);
+                var segmentName = GetAsciizString(abSegname);
+
+                Debug.Print("Found section '{0}' in segment '{1}, addr = 0x{2:X}, size = 0x{3:X}.",
+                        sectionName,
+                        segmentName,
+                        addr,
+                        size);
+
+                AccessMode am = 0;
+                if ((protection & VM_PROT_READ) != 0)
+                    am |= AccessMode.Read;
+                if ((protection & VM_PROT_WRITE) != 0)
+                    am |= AccessMode.Write;
+                if ((protection & VM_PROT_EXECUTE) != 0)
+                    am |= AccessMode.Execute;
+
+                var bytes = rdr.CreateNew(this.ldr.RawImage, offset);
+                var mem = new MemoryArea(
+                    Address.Ptr32(addr),
+                    bytes.ReadBytes((uint)size));
+                var imageSection = new ImageSegment(
+                    string.Format("{0},{1}", segmentName, sectionName),
+                    mem,
+                    am);
+
+                //imageSection.setBss((section.flags & SECTION_TYPE) == S_ZEROFILL);
+
+                //if (!imageSection.isBss()) {
+                //    auto pos = source_->pos();
+                //    if (!source_->seek(section.offset)) {
+                //        throw ParseError("Could not seek to the beginning of the section's content.");
+                //    }
+                //    auto bytes = source_->read(section.size);
+                //    if (checked_cast<uint>(bytes.size()) != section.size) {
+                //        log_.warning("Could not read all the section's content.");
+                //    } else {
+                //        imageSection->setContent(std::move(bytes));
+                //    }
+                //    source_->seek(pos);
+                //}
+
+                segmentMap.AddSegment(imageSection);
+            }
 
             void parseSection64(uint protection, SegmentMap segmentMap)
             {
@@ -427,7 +537,23 @@ namespace Reko.ImageLoaders.MachO
             }
         }
 
-        public class Loader32 : Parser
+        public enum RelocationInfoType {
+  GENERIC_RELOC_VANILLA = 0, GENERIC_RELOC_PAIR = 1, GENERIC_RELOC_SECTDIFF = 2, GENERIC_RELOC_PB_LA_PTR = 3,
+  GENERIC_RELOC_LOCAL_SECTDIFF = 4, GENERIC_RELOC_TLV = 5, PPC_RELOC_VANILLA = GENERIC_RELOC_VANILLA, PPC_RELOC_PAIR = GENERIC_RELOC_PAIR,
+  PPC_RELOC_BR14 = 2, PPC_RELOC_BR24 = 3, PPC_RELOC_HI16 = 4, PPC_RELOC_LO16 = 5,
+  PPC_RELOC_HA16 = 6, PPC_RELOC_LO14 = 7, PPC_RELOC_SECTDIFF = 8, PPC_RELOC_PB_LA_PTR = 9,
+  PPC_RELOC_HI16_SECTDIFF = 10, PPC_RELOC_LO16_SECTDIFF = 11, PPC_RELOC_HA16_SECTDIFF = 12, PPC_RELOC_JBSR = 13,
+  PPC_RELOC_LO14_SECTDIFF = 14, PPC_RELOC_LOCAL_SECTDIFF = 15, ARM_RELOC_VANILLA = GENERIC_RELOC_VANILLA, ARM_RELOC_PAIR = GENERIC_RELOC_PAIR,
+  ARM_RELOC_SECTDIFF = GENERIC_RELOC_SECTDIFF, ARM_RELOC_LOCAL_SECTDIFF = 3, ARM_RELOC_PB_LA_PTR = 4, ARM_RELOC_BR24 = 5,
+  ARM_THUMB_RELOC_BR22 = 6, ARM_THUMB_32BIT_BRANCH = 7, ARM_RELOC_HALF = 8, ARM_RELOC_HALF_SECTDIFF = 9,
+  ARM64_RELOC_UNSIGNED = 0, ARM64_RELOC_SUBTRACTOR = 1, ARM64_RELOC_BRANCH26 = 2, ARM64_RELOC_PAGE21 = 3,
+  ARM64_RELOC_PAGEOFF12 = 4, ARM64_RELOC_GOT_LOAD_PAGE21 = 5, ARM64_RELOC_GOT_LOAD_PAGEOFF12 = 6, ARM64_RELOC_POINTER_TO_GOT = 7,
+  ARM64_RELOC_TLVP_LOAD_PAGE21 = 8, ARM64_RELOC_TLVP_LOAD_PAGEOFF12 = 9, ARM64_RELOC_ADDEND = 10, X86_64_RELOC_UNSIGNED = 0,
+  X86_64_RELOC_SIGNED = 1, X86_64_RELOC_BRANCH = 2, X86_64_RELOC_GOT_LOAD = 3, X86_64_RELOC_GOT = 4,
+  X86_64_RELOC_SUBTRACTOR = 5, X86_64_RELOC_SIGNED_1 = 6, X86_64_RELOC_SIGNED_2 = 7, X86_64_RELOC_SIGNED_4 = 8,
+  X86_64_RELOC_TLV = 9
+}
+    public class Loader32 : Parser
         {
             public Loader32(MachOLoader ldr, EndianImageReader rdr) : base(ldr, rdr)
             {

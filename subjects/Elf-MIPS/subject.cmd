@@ -1,1 +1,1 @@
-decompile.exe redir
+decompile.exe --heuristic shingle  --heuristic shingle redir

@@ -295,6 +295,7 @@
     <Compile Include="Scanning\ProcedureDetector.cs" />
     <Compile Include="Scanning\RtlProcedure.cs" />
     <Compile Include="Scanning\ScannerBase.cs" />
+    <Compile Include="Scanning\ScannerInLinq.cs" />
     <Compile Include="Scanning\ScanResults.cs" />
     <Compile Include="Scanning\ShingledScanner.cs" />
     <Compile Include="Scanning\StringFinder.cs" />
@@ -423,6 +424,9 @@
     </Content>
     <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_IA64.xml" />
     <Content Include="Loading\Signatures\PLATFORM_INDEPENDENT.xml" />
+    <Content Include="Scanning\scanner_in_sql.sql">
+      <SubType>Component</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

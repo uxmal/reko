@@ -468,7 +468,7 @@ namespace Reko.UnitTests.Analysis
             {
                 var eax = m.Frame.EnsureRegister(Registers.eax);
                 var ebx = m.Frame.EnsureRegister(Registers.ebx);
-                m.Assign(ebx, m.Int32(0x1231313));
+                m.Assign(ebx, m.Word32(0x1231313));
                 m.Assign(eax, m.LoadDw(ebx));
                 m.Return();
             });

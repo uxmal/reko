@@ -337,8 +337,7 @@ l0800_0363:
 	xor	al,al
 
 l0800_036D:
-	repne	
-	scasb	
+	repne scasb	
 
 l0800_036F:
 	jcxz	03E7
@@ -368,9 +367,9 @@ fn0800_038D proc
 	push	cx
 	dec	cx
 
-l0800_0393:
-	rep	
-	movsb	
+;; fn0800_0393: 0800:0393
+fn0800_0393 proc
+	rep movsb	
 
 l0800_0395:
 	xor	al,al
@@ -513,8 +512,7 @@ l0800_0430:
 	cld	
 
 l0800_043A:
-	rep	
-	movsb	
+	rep movsb	
 
 l0800_043C:
 	pop	ds
@@ -541,8 +539,7 @@ l0800_045C:
 	add	bx,02
 
 l0800_0461:
-	repne	
-	scasb	
+	repne scasb	
 
 l0800_0463:
 	cmp	es:[di],al
@@ -2265,8 +2262,7 @@ fn0800_108C proc
 	xor	al,al
 
 l0800_1092:
-	repne	
-	scasb	
+	repne scasb	
 
 l0800_1094:
 	not	cx
@@ -2312,8 +2308,7 @@ l0800_10BE:
 l0800_10CC:
 	ret	
 
-;; fn0800_10CD: 0800:10CD
-fn0800_10CD proc
+l0800_10CD:
 	push	es
 	cld	
 	lea	di,[bp-54]
@@ -2383,17 +2378,35 @@ l0800_113C:
 	mov	bx,ax
 	shl	bx,01
 	jmp	word ptr cs:[bx+1145]
-;; Code vector at 0800:1145 (48 bytes)
+;; Code vector at 0800:1145 (8 bytes)
 	0800:1190
-0800:1145                90 11 78 11 D1 11 84 11 F6 11 00      ..x........
+	0800:1178
+	0800:11D1
+	0800:1184
+0800:1145                90 11 78 11 D1 11 84 11               ..x.....  
+0800:114D                                        F6 11 00              ...
 0800:1150 12 42 12 4C 12 5C 12 B7 11 91 12 6C 12 70 12 74 .B.L.\.....l.p.t
 0800:1160 12 16 13 C8 13 69 13 89 13 33 15 60 15 60 15 60 .....i...3.`.`.`
 0800:1170 15 A3 11 AD 11                                  .....          
 
 l0800_1175:
 	jmp	1560
-0800:1178                         80 FD 00 77 F8 83 8E 68         ...w...h
-0800:1180 FF 01 EB 9B 80 FD 00 77 EC 83 8E 68 FF 02 EB 8F .......w...h....
+
+l0800_1178:
+	cmp	ch,00
+	ja	1175
+
+l0800_117D:
+	or	word ptr [bp+FF68],01
+	jmp	111F
+
+l0800_1184:
+	cmp	ch,00
+	ja	1175
+
+l0800_1189:
+	or	word ptr [bp+FF68],02
+	jmp	111F
 
 l0800_1190:
 	cmp	ch,00
@@ -2410,10 +2423,32 @@ l0800_11A0:
 	jmp	111F
 0800:11A3          83 A6 68 FF DF B5 05 E9 72 FF 83 8E 68    ..h.....r...h
 0800:11B0 FF 20 B5 05 E9 68 FF 80 FD 00 77 44 F7 86 68 FF . ...h....wD..h.
-0800:11C0 02 00 75 21 83 8E 68 FF 08 B5 01 E9 51 FF E9 8F ..u!..h.....Q...
-0800:11D0 03 8B 7E 04 8B 05 83 46 04 02 80 FD 02 73 09 89 ..~....F.....s..
-0800:11E0 86 6E FF B5 03 E9 37 FF 80 FD 04 75 E1 89 86 70 .n....7....u...p
-0800:11F0 FF FE C5 E9 29 FF 80 FD 04 73 D3 B5 04 E9 1F FF ....)....s......
+0800:11C0 02 00 75 21 83 8E 68 FF 08 B5 01 E9 51 FF       ..u!..h.....Q. 
+
+l0800_11CE:
+	jmp	1560
+
+l0800_11D1:
+	mov	di,[bp+04]
+	mov	ax,[di]
+	add	word ptr [bp+04],02
+	cmp	ch,02
+	jnc	11E8
+
+l0800_11DF:
+	mov	[bp+FF6E],ax
+	mov	ch,03
+	jmp	111F
+
+l0800_11E8:
+	cmp	ch,04
+	jnz	11CE
+
+l0800_11ED:
+	mov	[bp+FF70],ax
+	inc	ch
+	jmp	111F
+0800:11F6                   80 FD 04 73 D3 B5 04 E9 1F FF       ...s......
 0800:1200 92 2C 30 98 80 FD 02 77 1B B5 02 87 86 6E FF 0B .,0....w.....n..
 0800:1210 C0 7C D2 D1 E0 8B D0 D1 E0 D1 E0 03 C2 01 86 6E .|.............n
 0800:1220 FF E9 FB FE 80 FD 04 75 A5 87 86 70 FF 0B C0 7C .......u...p...|
@@ -2955,8 +2990,7 @@ fn0800_1AEB proc
 	cmp	word ptr [bp-28],01
 	sbb	word ptr [bp-28],00
 
-;; fn0800_1AFF: 0800:1AFF
-fn0800_1AFF proc
+l0800_1AFF:
 	pop	es
 	mov	ax,[bp-28]
 	jmp	1B8C

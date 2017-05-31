@@ -249,7 +249,8 @@ namespace Reko.Arch.X86
 				case 'Z': grf |= FlagM.ZF; break;
 				case 'D': grf |= FlagM.DF; break;
 				case 'O': grf |= FlagM.OF; break;
-				default: return null;
+				case 'P': grf |= FlagM.PF; break;
+                default: return null;
 				}
 			}
 			return GetFlagGroup((uint) grf);

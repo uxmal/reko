@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Registers = Reko.Arch.Tlcs.Tlcs900.Tlcs900Registers;
 
 namespace Reko.Arch.Tlcs.Tlcs900
 {
@@ -90,14 +91,33 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var co = instr.op1 as ConditionOperand;
             if (co != null)
             {
-                EmitUnitTest("Tlcs900_rw_", "00010000");
-                Invalid();
+                rtlc = RtlClass.ConditionalTransfer;
+
+                var test = GenerateTestExpression(co, true);
+                m.Branch(test, instr.Address + instr.Length, RtlClass.ConditionalTransfer);
+                m.Return(4, 0);
             }
             else
             {
                 rtlc = RtlClass.Transfer;
                 m.Return(4, 0);
             }
+        }
+
+        private void RewriteRetd()
+        {
+            rtlc = RtlClass.Transfer;
+            m.Return(4, ((ImmediateOperand) instr.op1).Value.ToInt32());
+        }
+
+        private void RewriteReti()
+        {
+            rtlc = RtlClass.Transfer;
+            var sr = binder.EnsureRegister(Registers.sr);
+            var sp = binder.EnsureRegister(Registers.xsp);
+            m.Assign(sr, m.LoadW(sp));
+            m.Assign(sp, m.IAdd(sp, m.Int32(2)));
+            m.Return(4, 0);
         }
     }
 }

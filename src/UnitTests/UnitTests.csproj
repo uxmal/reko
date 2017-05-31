@@ -110,6 +110,7 @@
     <Compile Include="Core\Output\IRFormatterTests.cs" />
     <Compile Include="Core\Output\JsonFormatterTests.cs" />
     <Compile Include="Core\Output\LlvmFormatterTests.cs" />
+    <Compile Include="Core\Lib\LinqAlgorithmTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Core\Expressions\ExpressionTreeTests.cs" />
     <Compile Include="Core\Lib\IntervalTreeTests.cs" />
@@ -531,15 +532,16 @@
     <Compile Include="Scanning\Fragments\RtlEvenOdd.cs" />
     <Compile Include="Scanning\GlobalDataWorkItemTests.cs" />
     <Compile Include="Scanning\HeuristicProcedureScannerTests.cs" />
-    <Compile Include="Scanning\HeuristicScannerTests.cs" />
     <Compile Include="Scanning\HeuristicTestBase.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\InterProceduralJumpTests.cs" />
     <Compile Include="Scanning\ProcedureDetectorTests.cs" />
     <Compile Include="Scanning\Scanner.M68kTests.cs" />
+    <Compile Include="Scanning\ScannerInLinqTests.cs" />
     <Compile Include="Scanning\ScannerTestPrograms.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Scanning\ShingledScannerTests.cs" />
+    <Compile Include="Scanning\StorageBinderTests.cs" />
     <Compile Include="Scanning\StringFinderTests.cs" />
     <Compile Include="Scanning\VarargsFormatScannerTests.cs" />
     <Compile Include="Scanning\VectorBuilderTests.cs" />

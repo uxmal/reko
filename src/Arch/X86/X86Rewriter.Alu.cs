@@ -550,7 +550,7 @@ namespace Reko.Arch.X86
         private void RewriteLeave()
         {
             var sp = orw.AluRegister(arch.StackRegister);
-            var bp = orw.AluRegister(arch.GetPart(Registers.ebp, arch.StackRegister.DataType));
+            var bp = orw.AluRegister(arch.GetPart(Registers.rbp, arch.StackRegister.DataType));
             m.Assign(sp, bp);
             m.Assign(bp, orw.StackAccess(sp, bp.DataType));
             m.Assign(sp, m.IAdd(sp, bp.DataType.Size));
@@ -907,16 +907,30 @@ namespace Reko.Arch.X86
 		{
 			get { return orw.AluRegister(Registers.rsi, instrCur.addrWidth); }
 		}
-	
+
         /// <summary>
         /// Rewrites the current instruction as a string instruction.
         /// </summary>
-        /// <returns>False if the current instruction is not a string 
-        /// instruction. This can happen when disassembling data where
-        /// a "rep" prefix is followed by some other junk byte.
-        /// </returns>
-        private bool RewriteStringInstruction()
+        /// If a rep prefix is present, converts it into a loop: 
+        /// <code>
+        /// while ([e]cx != 0)
+        ///		[string instruction]
+        ///		--ecx;
+        ///		if (zF)				; only cmps[b] and scas[b]
+        ///			goto follow;
+        /// follow: ...	
+        /// </code>
+        /// </summary>
+        private void RewriteStringInstruction()
         {
+            var topOfLoop = instrCur.Address;
+            Identifier regCX = null;
+            if (instrCur.repPrefix != 0)
+            {
+                regCX = orw.AluRegister(Registers.rcx, instrCur.addrWidth);
+                m.BranchInMiddleOfInstruction(m.Eq0(regCX), instrCur.Address + instrCur.Length, RtlClass.ConditionalTransfer);
+            }
+
             bool incSi = false;
             bool incDi = false;
             var incOperator = GetIncrementOperator();
@@ -926,7 +940,7 @@ namespace Reko.Arch.X86
             switch (instrCur.code)
             {
             default:
-                return false;
+                return;
             case Opcode.cmps:
             case Opcode.cmpsb:
                 m.Assign(
@@ -966,7 +980,7 @@ namespace Reko.Arch.X86
             case Opcode.scasb:
                 m.Assign(
                     orw.FlagGroup(X86Instruction.DefCc(Opcode.cmp)),
-                    m.Cond(m.ISub(RegAl,MemDi())));
+                    m.Cond(m.ISub(RegAl, MemDi())));
                 incDi = true;
                 break;
             case Opcode.stos:
@@ -974,11 +988,6 @@ namespace Reko.Arch.X86
                 m.Assign(MemDi(), RegAl);
                 incDi = true;
                 break;
-            case Opcode.ret:
-                // "AMD recommends to avoid the penalty by adding rep prefix instead of nop
-                // because it saves decode bandwidth."
-                RewriteRet();
-                return true;
             }
 
             if (incSi)
@@ -990,7 +999,28 @@ namespace Reko.Arch.X86
             {
                 m.Assign(RegDi, incOperator(RegDi, instrCur.dataWidth.Size));
             }
-            return true;
+            if (instrCur.repPrefix == 0)
+                return;
+
+            m.Assign(regCX, m.ISub(regCX, 1));
+
+            switch (instrCur.code)
+            {
+            case Opcode.cmps:
+            case Opcode.cmpsb:
+            case Opcode.scas:
+            case Opcode.scasb:
+                {
+                    var cc = (instrCur.repPrefix == 2)
+                        ? ConditionCode.NE
+                        : ConditionCode.EQ;
+                    m.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)).Invert(), topOfLoop, RtlClass.ConditionalTransfer);
+                    break;
+                }
+            default:
+                m.Goto(topOfLoop);
+                break;
+            }
         }
 
         private Func<Expression,int,Expression> GetIncrementOperator()
@@ -1037,7 +1067,7 @@ namespace Reko.Arch.X86
         private void RewriteXlat()
         {
             var al = orw.AluRegister(Registers.al);
-            var bx = orw.AluRegister(Registers.ebx, instrCur.addrWidth);
+            var bx = orw.AluRegister(Registers.rbx, instrCur.addrWidth);
             var offsetType = PrimitiveType.Create(Domain.UnsignedInt, bx.DataType.Size); 
             m.Assign(
                 al,

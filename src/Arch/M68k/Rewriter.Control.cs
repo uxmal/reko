@@ -130,7 +130,7 @@ namespace Reko.Arch.M68k
 
             m.Assign(src, m.ISub(src, 1));
             m.Branch(
-                m.Ne(src, m.Int32(-1)),
+                m.Ne(src, m.Word32(-1)),
                 (Address)orw.RewriteSrc(di.op2, di.Address, true),
                 RtlClass.ConditionalTransfer);
         }

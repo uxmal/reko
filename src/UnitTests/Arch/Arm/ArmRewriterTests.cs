@@ -660,8 +660,17 @@ means
         {
             BuildTest(0xEE070F58);  // mcr p15,#0,r0,c7
             AssertCode(
-             "0|L--|00100000(4): 1 instructions",
-             "1|L--|__mcr(0x0F, 0x00000000, r0, 0x07, 0x08, 0x00000002)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__mcr(0x0F, 0x00000000, r0, 0x07, 0x08, 0x00000002)");
+        }
+
+        [Test]
+        public void ArmRw_bl()
+        {
+            BuildTest(0xEB00166B);
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|call 001059B4 (0)");
         }
     }
 }

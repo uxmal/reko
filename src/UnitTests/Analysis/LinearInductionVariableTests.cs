@@ -257,7 +257,7 @@ namespace Reko.UnitTests.Analysis
 			Statement use = new Statement(0, null, null);
 			ssa.Identifiers[id3].Uses.Add(use);
 
-			liv.Context.DeltaValue = m.Int32(1);
+			liv.Context.DeltaValue = m.Word32(1);
             m.Assign(id4, m.IAdd(id3, liv.Context.DeltaValue));
             liv.Context.DeltaStatement = m.Block.Statements.Last;
 			ssa.Identifiers[id3].Uses.Add(liv.Context.DeltaStatement);

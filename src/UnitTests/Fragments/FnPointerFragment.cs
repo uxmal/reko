@@ -35,9 +35,9 @@ namespace Reko.UnitTests.Fragments
         protected override void BuildBody()
         {
             Identifier pfn = Local32("pfn");
-            Assign(pfn, Int32(0x1213130));
-            Store(Int32(0x10000000), pfn);
-            Call(LoadDw(Int32(0x10000000)), 4);
+            Assign(pfn, Word32(0x1213130));
+            Store(Word32(0x10000000), pfn);
+            Call(LoadDw(Word32(0x10000000)), 4);
             Return();
         }
     }

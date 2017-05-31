@@ -1426,66 +1426,751 @@ l0CBA:
 	bne	0D62
 	com	0014(pc)
 	rts	pc
-
-;; fn0D98: 0D98
-fn0D98 proc
 	mov	#0046,r1
-
-l0D9C:
 	movb	(r0)+,r2
 	inc	r0
 	movb	0EE0(r2),(r4)+
 	dec	r1
 	bne	0D9C
-
-l0DA8:
 	rts	pc
-0DAA                               00 00 E0 0D F0 0D           ......
-0DB0 00 0E 10 0E 20 0E 30 0E 00 00 00 00 00 00 00 00 .... .0.........
-0DC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-0DD0 00 00 00 00 1E 00 19 00 14 00 0F 00 0A 00 05 00 ................
-0DE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-; ...
-0EE0 20 2D 2B 2A 23 00 00 00 00 00 00 00 00 00 00 00  -+*#...........
-0EF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-0F00 00 00 00 00 00 00 02 00 00 00 FF FF 01 00 00 00 ................
-0F10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-0F20 00 00 00 00 00 00 07 04 04 00 32 00 64 00 96 00 ..........2.d...
-0F30 C8 00 53 50 41 43 45 20 49 4E 56 41 44 45 52 53 ..SPACE INVADERS
-0F40 21 20 20 20 20 20 20 20 00 42 61 73 65 73 3A 20 !       .Bases: 
-0F50 20 20 20 20 20 53 63 6F 72 65 3A 20 20 20 20 20      Score:     
-0F60 20 20 20 20 20 48 69 67 68 65 73 74 3A 20 00 50      Highest: .P
-0F70 72 65 73 73 20 52 45 54 55 52 4E 20 74 6F 20 70 ress RETURN to p
-0F80 6C 61 79 20 61 67 61 69 6E 2C 20 45 53 43 20 74 lay again, ESC t
-0F90 6F 20 71 75 69 74 3A 20 20 00 0D 0A 53 50 41 43 o quit:  ...SPAC
-0FA0 45 20 49 4E 56 41 44 45 52 53 21 20 20 42 65 67 E INVADERS!  Beg
-0FB0 69 6E 6E 65 72 2C 20 49 6E 74 65 72 6D 65 64 69 inner, Intermedi
-0FC0 61 74 65 2C 20 6F 72 20 45 78 70 65 72 74 3F 20 ate, or Expert? 
-0FD0 28 42 2F 49 2F 45 29 3A 20 80 0D 0A 0A 54 68 65 (B/I/E): ....The
-0FE0 20 22 2C 22 20 28 6C 6F 77 65 72 63 61 73 65 20  "," (lowercase 
-0FF0 22 3C 22 29 20 6B 65 79 20 6D 6F 76 65 73 20 6C "<") key moves l
-1000 65 66 74 3B 0D 0A 0A 54 68 65 20 22 2E 22 20 28 eft;...The "." (
-1010 6C 6F 77 65 72 63 61 73 65 20 22 3E 22 29 20 6B lowercase ">") k
-1020 65 79 20 6D 6F 76 65 73 20 72 69 67 68 74 3B 0D ey moves right;.
-1030 0A 0A 50 72 65 73 73 20 74 68 65 20 73 70 61 63 ..Press the spac
-1040 65 62 61 72 20 74 6F 20 73 74 6F 70 20 61 6E 64 ebar to stop and
-1050 20 66 69 72 65 3B 0D 0A 0A 22 51 22 20 74 6F 67  fire;..."Q" tog
-1060 67 6C 65 73 20 73 6F 75 6E 64 20 65 66 66 65 63 gles sound effec
-1070 74 73 20 6F 66 66 2F 6F 6E 20 28 66 6F 72 20 74 ts off/on (for t
-1080 68 6F 73 65 20 6C 61 74 65 20 6E 69 67 68 74 20 hose late night 
-1090 73 65 73 73 69 6F 6E 73 29 3B 0D 0A 0A 50 72 65 sessions);...Pre
-10A0 73 73 20 61 6E 79 20 6F 74 68 65 72 20 6B 65 79 ss any other key
-10B0 20 74 6F 20 73 74 6F 70 20 77 69 74 68 6F 75 74  to stop without
-10C0 20 66 69 72 69 6E 67 3B 0D 0A 0A 49 6E 73 65 72  firing;...Inser
-10D0 74 20 71 75 61 72 74 65 72 20 69 6E 20 6E 65 61 t quarter in nea
-10E0 72 65 73 74 20 70 72 6F 67 72 61 6D 6D 65 72 20 rest programmer 
-10F0 61 6E 64 20 70 72 65 73 73 20 52 45 54 55 52 4E and press RETURN
-1100 20 74 6F 20 73 74 61 72 74 20 67 61 6D 65 3A 20  to start game: 
-1110 80 1B 5B 32 4A 00 1B 5B 41 08 00 0A 08 00 1B 5B ..[2J..[A......[
-1120 00 00 08 20 2D 2D 20 2D 2D 20 00 08 20 2F 2D 4F ... -- -- .. /-O
-1130 2D 5C 20 00 08 20 2D 3D 4F 3D 2D 20 00 08 08 20 -\ .. -=O=- ... 
-1140 20 3D 2A 3E 3E 3E 00 3C 3C 3C 2A 3D 20 20 00 2A  =*>>>.<<<*=  .*
-1150 2A 2A 2A 2A 00 20 20 20 20 20 00 21 4F 00 B8 1A ****.     .!O...
-1160 43 79 86 3A 3C 19 00 00 00 00 00 00 00 00 00 00 Cy.:<...........
-1170 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-; ...
+	halt
+	sxt	-(r0)
+	sxt	0E00(r0)
+	illegal
+	illegal
+	illegal
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	illegal
+	illegal
+	illegal
+	illegal
+	illegal
+	reset
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	cmp	2A2B(r4),-(r0)
+	illegal
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	rti
+	halt
+	sob	pc,0E8E
+	wait
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	bge	0F36
+	iot
+	illegal
+	jmp	-(r4)
+	illegal
+	swab	@r0
+	bis	r1,(r3)+
+	bic	@r5,r1
+	cmp	r1,r5
+	bic	@4156(r1),@r1
+	bic	(r5)+,r4
+	bis	@r5,(r2)+
+	cmp	r0,-(r1)
+	cmp	r0,-(r0)
+	cmp	r0,-(r0)
+	cmp	r0,-(r0)
+	bic	@r0,r0
+	div	-(r1),r5
+	div	-(r5),r5
+	cmp	r0,@2020(r2)
+	cmp	r0,-(r0)
+	bis	@r4,-(r0)
+	add	@6572(r5),-(r3)
+	cmp	r0,@2020(r2)
+	cmp	r0,-(r0)
+	cmp	r0,-(r0)
+	cmp	r0,-(r0)
+	bic	-(r0),-(r0)
+	add	@(r5)+,@-(r1)
+	add	(r5)+,@-(r0)
+	ash	203A(r3),r1
+	bis	r0,r0
+	add	(r5)+,7373(r2)
+	bis	@r0,-(r0)
+	bis	(r1)+,r5
+	bis	@r1,(r5)+
+	cmp	r1,@sp
+	add	@7020(r5),616C(r4)
+	cmp	r1,@6761(r1)
+	add	-(r5),-(r1)
+	cmp	4520(r1),@-(sp)
+	bic	@r5,(r3)+
+	ash	-(r0),r0
+	illegal
+	ash	7469(r1),r5
+	cmp	r0,@0020(r2)
+	clr	@r5
+	bis	r1,(r3)+
+	bic	@r5,r1
+	cmp	r1,r5
+	bic	@4156(r1),@r1
+	bic	(r5)+,r4
+	bis	@r5,(r2)+
+	cmp	r0,-(r1)
+	bic	@r0,-(r0)
+	add	@(r5)+,-(r5)
+	add	@656E(r1),@-(r1)
+	cmp	4920(r1),746E(r2)
+	div	-(r5),r1
+	add	(r5)+,@-(r5)
+	add	-(r5),-(r4)
+	ash	-(r1),r1
+	cmp	6F20(r1),-(r5)
+	cmp	r1,7845(r2)
+	add	(r5)+,7472(r0)
+	cmp	r0,@4228(pc)
+	illegal
+	illegal
+	bit	@-(r0),@-(r1)
+	bpl	101A
+	clr	@r5
+	bis	(r0)+,@r2
+	add	(r5)+,@-(r0)
+	cmp	@r0,-(r0)
+	cmp	@r0,@-(r4)
+	cmp	-(r0),-(r0)
+	add	@6577(r5),@-(r4)
+	add	@r5,7361(r2)
+	cmp	r1,-(r5)
+	bit	2922(r0),-(r2)
+	add	@-(r4),-(r0)
+	xor	-(r5),r5
+	add	766F(r4),-(r0)
+	div	-(r5),r5
+	add	6665(r0),-(r0)
+	bit	@-(r5),0A0D(r4)
+	bis	(r0)+,@r2
+	add	(r5)+,@-(r0)
+	cmp	@r0,-(r0)
+	cmp	@r0,@-(sp)
+	cmp	-(r0),-(r0)
+	add	@6577(r5),@-(r4)
+	add	@r5,7361(r2)
+	cmp	r1,-(r5)
+	bit	@2922(r0),-(r2)
+	add	@-(r4),-(r0)
+	xor	-(r5),r5
+	add	766F(r4),-(r0)
+	div	-(r5),r5
+	div	-(r0),r0
+	add	@(r5)+,@-(r1)
+	ash	@-(r0),r1
+	mark	#3B
+	clr	@r2
+	div	(r0)+,r1
+	div	-(r5),r5
+	cmp	r1,6874(r3)
+	cmp	r1,-(r5)
+	mul	6361(r3),r1
+	add	@r1,-(r5)
+	div	-(r1),r1
+	ash	-(r0),r0
+	illegal
+	ash	706F(r3),r1
+	add	r4,-(r0)
+	add	(r1)+,@-(sp)
+	add	@(r0)+,-(r0)
+	div	@-(r1),r1
+	bit	@-(r5),-(r5)
+	clr	@r5
+	cmp	@r0,@r2
+	cmp	@r1,(r1)+
+	ash	-(r0),r0
+	illegal
+	illegal
+	div	-(r0),r4
+	illegal
+	add	(r1)+,@-(sp)
+	add	(r4)+,-(r0)
+	add	@(r1)+,-(sp)
+	add	@r5,-(r5)
+	div	6F20(r4),r5
+	add	@(r1)+,-(sp)
+	illegal
+	add	@(r0)+,@-(r0)
+	illegal
+	ash	-(r0),r0
+	add	@6573(r5),@-(r0)
+	add	7461(r0),-(r0)
+	cmp	r1,-(r5)
+	add	-(r5),@-(sp)
+	illegal
+	cmp	r1,6573(r4)
+	div	6F69(r3),r5
+	div	@-(sp),r5
+	bit	@-(r4),@-(r1)
+	clr	@r5
+	bis	r0,@r2
+	add	(r5)+,7373(r2)
+	add	r4,-(r0)
+	xor	@-(sp),r5
+	add	@6874(r4),-(r0)
+	div	-(r5),r1
+	add	@-(r4),-(r0)
+	xor	-(r5),r5
+	ash	-(r0),r0
+	illegal
+	ash	706F(r3),r1
+	ashc	-(r0),r4
+	ash	@-(r1),r1
+	add	@7475(r5),@-(r0)
+	add	@(r0)+,-(r0)
+	div	@-(r1),r1
+	add	@3B67(r1),@-(r1)
+	clr	@r5
+	bic	-(r4),@r2
+	div	@-(sp),r5
+	div	-(r5),r1
+	cmp	r1,7571(r4)
+	div	-(r1),r1
+	add	(r5)+,2072(r4)
+	add	@6E20(r1),@-(r1)
+	add	r5,-(r5)
+	add	(r5)+,7473(r2)
+	mul	-(r0),r0
+	add	@7267(r5),6D61(r2)
+	add	(r5)+,@-(r5)
+	cmp	r1,6E61(r2)
+	cmp	r1,-(r4)
+	div	7365(r0),r1
+	cmp	r1,4552(r3)
+	bis	(r5)+,(r4)+
+	bic	@7420(r1),(r2)+
+	illegal
+	ash	7261(r3),r1
+	cmp	r1,6167(r4)
+	add	(r5)+,@-(r5)
+	cmp	r0,@1B80(r2)
+	bit	@r1,@(r3)+
+	jmp	@r2
+	bis	@-(r4),@(r3)+
+	jsr	r1,r1
+	clr	r0
+	illegal
+	bis	@-(r4),@(r3)+
+	halt
+	cmp	r0,@r0
+	cmp	2D20(r4),@-(r5)
+	cmp	r0,@-(r5)
+	jsr	r0,r0
+	cmp	@4F2D(r4),-(r0)
+	bis	0020(r0),@-(r5)
+	cmp	r0,@r0
+	bit	3D4F(r4),@-(r5)
+	cmp	r0,@-(r5)
+	jsr	r0,r0
+	cmp	r0,@r0
+	bit	3E2A(r4),-(r0)
+	bit	@3C00(r0),@3C3C(sp)
+	bit	2020(r4),@-(r2)
+	cmp	@-(r0),r0
+	cmp	@-(r0),@-(r2)
+	cmp	@-(r0),@-(r2)
+	cmp	r0,r0
+	cmp	r0,-(r0)
+	cmp	r0,-(r0)
+	cmp	r4,r0
+	jmp	@pc
+	mov	@-(r2),@7943(r0)
+	bit	@-(r2),sp
+	mov	-(r4),@0000(r4)
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt

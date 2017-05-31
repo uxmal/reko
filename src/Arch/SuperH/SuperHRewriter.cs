@@ -125,8 +125,10 @@ namespace Reko.Arch.SuperH
                 case Opcode.sub: RewriteBinOp(m.ISub, null); break;
                 case Opcode.tst: RewriteTst(); break;
                 }
-                var rtlc = new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray());
-                rtlc.Class = this.rtlc;
+                var rtlc = new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
+                {
+                    Class = this.rtlc,
+                };
                 yield return rtlc;
             }
         }
@@ -145,6 +147,7 @@ namespace Reko.Arch.SuperH
                     "Rewriting of SuperH instruction {0} not implemented yet.",
                 dasm.Current.Opcode));
 
+            this.rtlc = RtlClass.Invalid;
             m.Invalid();
         }
 

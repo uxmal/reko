@@ -91,7 +91,7 @@ namespace Reko.Scanning
         {
             state.ErrorListener = (message) => { scanner.Warn(ric.Address, message); };
             blockCur = scanner.FindContainingBlock(addrStart);
-            if (BlockHasBeenScanned(blockCur))
+            if (blockCur == null || BlockHasBeenScanned(blockCur))
                 return;
 
             frame = blockCur.Procedure.Frame;
@@ -103,8 +103,6 @@ namespace Reko.Scanning
             while (rtlStream.MoveNext())
             {
                 this.ric = rtlStream.Current;
-                if (ric.Address.ToString().EndsWith(":3D5A"))//$DEBUG
-                    ric.ToString();
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;  // Fell off the end of this block.
                 if (!ProcessRtlCluster(ric))
@@ -265,7 +263,19 @@ namespace Reko.Scanning
             }
             var fallthruAddress = ric.Address + ric.Length;
 
-            var blockThen = BlockFromAddress(ric.Address, (Address) b.Target, proc, state.Clone());
+            Block blockThen;
+            if (!program.SegmentMap.IsValidAddress((Address)b.Target))
+            {
+                blockThen = proc.AddBlock(this.ric.Address.GenerateName("l", "_then"));
+                var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
+                GenerateCallToOutsideProcedure(jmpSite, (Address)b.Target);
+                Emit(new ReturnInstruction());
+                blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+            }
+            else
+            {
+                blockThen = BlockFromAddress(ric.Address, (Address)b.Target, proc, state.Clone());
+            }
 
             var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
             var branchingBlock = blockCur.IsSynthesized
@@ -390,6 +400,14 @@ namespace Reko.Scanning
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
+                if (!program.SegmentMap.IsValidAddress(addrTarget))
+                {
+                    var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
+                    GenerateCallToOutsideProcedure(jmpSite, addrTarget);
+                    Emit(new ReturnInstruction());
+                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    return false;
+                }
                 var blockTarget = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
                 var blockSource = blockCur.IsSynthesized
                     ? blockCur
@@ -446,15 +464,7 @@ namespace Reko.Scanning
             {
                 if (!program.SegmentMap.IsValidAddress(addr))
                 {
-                    scanner.Warn(ric.Address, "Call target address {0} is invalid.", addr);
-                    sig = new FunctionType();
-                    EmitCall(
-                        CreateProcedureConstant(
-                            new ExternalProcedure(Procedure.GenerateName(addr), sig)),
-                        sig,
-                        chr,
-                        site);
-                    return OnAfterCall(sig, chr);
+                    return GenerateCallToOutsideProcedure(site, addr);
                 }
 
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
@@ -523,6 +533,20 @@ namespace Reko.Scanning
             var ic = new CallInstruction(call.Target, site);
             Emit(ic);
             sig = GuessProcedureSignature(ic);
+            return OnAfterCall(sig, chr);
+        }
+
+        private bool GenerateCallToOutsideProcedure(CallSite site, Address addr)
+        {
+            scanner.Warn(ric.Address, "Call target address {0} is invalid.", addr);
+            var sig = new FunctionType();
+            ProcedureCharacteristics chr = null;
+            EmitCall(
+                CreateProcedureConstant(
+                    new ExternalProcedure(Procedure.GenerateName(addr), sig)),
+                sig,
+                chr,
+                site);
             return OnAfterCall(sig, chr);
         }
 
@@ -785,8 +809,6 @@ namespace Reko.Scanning
             }
             else
             {
-                if (addrSwitch.ToLinear() == 0x000000000040D935)    //$DEBUG
-                    addrSwitch.ToString();
                 var bw = new Backwalker<Block,Instruction>(new BackwalkerHost(this), xfer, eval);
                 if (!bw.CanBackwalk())
                     return false;

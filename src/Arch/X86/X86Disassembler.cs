@@ -234,7 +234,7 @@ namespace Reko.Arch.X86
                 }
             }
 
-            internal bool RepetitionPrefixF2
+            internal bool F2Prefix
             {
                 get
                 {
@@ -249,7 +249,7 @@ namespace Reko.Arch.X86
                     this.repetitionPrefixF2 = value;
                 }
             }
-            internal bool RepetitionPrefixF3
+            internal bool F3Prefix
             {
                 get
                 {
@@ -742,14 +742,10 @@ namespace Reko.Arch.X86
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
-                if (disasm.rdr.PeekByte(0) == 0x0F)
-                {
-                    disasm.currentDecodingContext.RepetitionPrefixF2 = true;
-                    if (!disasm.rdr.TryReadByte(out op))
-                        return null;
-                    return s_aOpRec[op].Decode(disasm, op, opFormat);
-                }
-                return disasm.DecodeOperands(Opcode.repne, 0xF2, opFormat);
+                disasm.currentDecodingContext.F2Prefix = true;
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                return s_aOpRec[op].Decode(disasm, op, opFormat);
             }
         }
 
@@ -758,19 +754,15 @@ namespace Reko.Arch.X86
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 byte b = disasm.rdr.PeekByte(0);
-                if (b == 0x0F)
-                {
-                    disasm.currentDecodingContext.RepetitionPrefixF3 = true;
-                    if (!disasm.rdr.TryReadByte(out op))
-                        return null;
-                    return s_aOpRec[op].Decode(disasm, op, opFormat);
-                }
                 if (b == 0xC3)
                 {
                     op = disasm.rdr.ReadByte();
                     return s_aOpRec[b].Decode(disasm, op, opFormat);
                 }
-                return disasm.DecodeOperands(Opcode.rep, 0xF3, opFormat);
+                disasm.currentDecodingContext.F3Prefix = true;
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                return s_aOpRec[op].Decode(disasm, op, opFormat);
             }
         }
 
@@ -856,10 +848,18 @@ namespace Reko.Arch.X86
 
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
-                if (disasm.currentDecodingContext.RepetitionPrefixF2)
-                    return disasm.DecodeOperands(this.opF2, op, opF2Fmt);
-                else if (disasm.currentDecodingContext.RepetitionPrefixF3)
-                    return disasm.DecodeOperands(this.opF3, op, opF3Fmt);
+                if (disasm.currentDecodingContext.F2Prefix)
+                {
+                    var instr = disasm.DecodeOperands(this.opF2, op, opF2Fmt);
+                    instr.repPrefix = 0;
+                    return instr;
+                }
+                else if (disasm.currentDecodingContext.F3Prefix)
+                {
+                    var instr = disasm.DecodeOperands(this.opF3, op, opF3Fmt);
+                    instr.repPrefix = 0;
+                    return instr;
+                }
                 else if (disasm.currentDecodingContext.SizeOverridePrefix)
                 {
                     if (disasm.isRegisterExtensionEnabled && disasm.currentDecodingContext.RegisterExtension.FlagWideValue)
@@ -921,6 +921,8 @@ namespace Reko.Arch.X86
 
         private X86Instruction DecodeOperands(Opcode opcode, byte op, string strFormat)
         {
+            if (strFormat == null)
+                return null;
             MachineOperand pOperand;
             PrimitiveType width = null;
             PrimitiveType iWidth = dataWidth;
@@ -959,7 +961,7 @@ namespace Reko.Arch.X86
                         return null;
                     break;
                 case 'Q':		// memory or register MMX operand specified by mod & r/m fields.
-                    width = OperandWidth(strFormat[i++]);
+                    width = SseOperandWidth(strFormat, ref i);
                     pOperand = DecodeModRM(width, this.currentDecodingContext.SegmentOverride, MmxRegFromBits);
                     if (pOperand == null)
                         return null;
@@ -970,8 +972,13 @@ namespace Reko.Arch.X86
                         return null;
                     pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, GpRegFromBits));
                     break;
+                case 'H':       // reg
+                    //$TODO: VEX form not implemented yet, skip over for now.
+                    while (strFormat[i] != ',')
+                        ++i;
+                    continue;
                 case 'P':		// MMX register operand specified by the reg field of the modRM byte.
-                    width = OperandWidth(strFormat[i++]);
+                    width = SseOperandWidth(strFormat, ref i);
                     if (!TryEnsureModRM(out modRm))
                         return null;
                     pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, MmxRegFromBits));
@@ -1068,7 +1075,11 @@ namespace Reko.Arch.X86
                     ops.Add(pOperand);
                 }
             }
-            return new X86Instruction(opcode, iWidth, addressWidth, ops.ToArray());
+            return new X86Instruction(opcode, iWidth, addressWidth, ops.ToArray())
+            {
+                repPrefix = this.currentDecodingContext.F2Prefix ? 2 :
+                            this.currentDecodingContext.F3Prefix ? 3 : 0
+            };
         }
 
 		/// <summary>
@@ -1125,11 +1136,14 @@ namespace Reko.Arch.X86
         {
             switch (fmt[i++])
             {
+            case 'd':
+                return PrimitiveType.Word32;
             case 'p':
                 switch (fmt[i++])
                 {
-                case 's': return PrimitiveType.Word128;
-                case 'd': return PrimitiveType.Word128;
+                case 'd': return PrimitiveType.Word128; //$TODO: this should be array[2] of double32
+                case 'i': return PrimitiveType.Word128; //$TODO: this should be array[4] of int32
+                case 's': return PrimitiveType.Word128; //$TODO: this should be array[4] of real32
                 default: throw new NotImplementedException(string.Format("Unknown operand width p{0}", fmt[i-1]));
                 }
             case 'q':
@@ -1137,8 +1151,9 @@ namespace Reko.Arch.X86
             case 's':
                 switch (fmt[i++])
                 {
-                case 's': return PrimitiveType.Real32;
                 case 'd': return PrimitiveType.Real64;
+                case 'i': return PrimitiveType.Int32;
+                case 's': return PrimitiveType.Real32;
                 default: throw new NotImplementedException(string.Format("Unknown operand width s{0}", fmt[i - 1]));
                 }
             case 'x':

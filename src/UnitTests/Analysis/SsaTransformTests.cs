@@ -941,7 +941,7 @@ proc1_exit:
                 var r2 = m.Register("r2");
                 var r3 = m.Register("r3");
                 m.BranchIf(r1, "true");
-                m.Assign(r2, m.Int32(16));
+                m.Assign(r2, m.Word32(16));
                 m.Label("true");
                 m.Call(r3, 4);
                 m.Return();
@@ -1960,7 +1960,7 @@ proc1_exit:
     uses: bl_2 = Mem0[0x1234:word16]
 bl_2: orig: bl
     def:  bl_2 = Mem0[0x1234:word16]
-    uses: branch bl_2 > 0x00000003 m2
+    uses: branch bl_2 > 3 m2
           bx_5 = DPB(bx, bl_2, 0) (alias)
 bh_3: orig: bh
     def:  bh_3 = 0x00
@@ -1990,7 +1990,7 @@ proc1_entry:
 m0:
 	bl_2 = Mem0[0x1234:word16]
 	bx_5 = DPB(bx, bl_2, 0) (alias)
-	branch bl_2 > 0x00000003 m2
+	branch bl_2 > 3 m2
 	// succ:  m1 m2
 m1:
 	bh_3 = 0x00

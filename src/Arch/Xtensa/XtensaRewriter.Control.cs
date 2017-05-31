@@ -38,8 +38,8 @@ namespace Reko.Arch.Xtensa
             rtlc = RtlClass.ConditionalTransfer;
             var a = RewriteOp(instr.Operands[0]);
             var b = RewriteOp(instr.Operands[1]);
-            var cond = emitter.Eq0(emitter.And(emitter.Comp(a), b));
-            emitter.Branch(
+            var cond = m.Eq0(m.And(m.Comp(a), b));
+            m.Branch(
                 cond, 
                 (Address)RewriteOp(instr.Operands[2]),
                 RtlClass.ConditionalTransfer);
@@ -50,8 +50,8 @@ namespace Reko.Arch.Xtensa
             rtlc = RtlClass.ConditionalTransfer;
             var a = RewriteOp(instr.Operands[0]);
             var b = RewriteOp(instr.Operands[1]);
-            var cond = emitter.Ne0(emitter.And(a, b));
-            emitter.Branch(
+            var cond = m.Ne0(m.And(a, b));
+            m.Branch(
                 cond,
                 (Address)RewriteOp(instr.Operands[2]),
                 RtlClass.ConditionalTransfer);
@@ -69,10 +69,10 @@ namespace Reko.Arch.Xtensa
             }
             else
             {
-                mask = emitter.Shl(Constant.UInt32(1), RewriteOp(instr.Operands[1]));
+                mask = m.Shl(Constant.UInt32(1), RewriteOp(instr.Operands[1]));
             }
-            emitter.Branch(
-                cmp0(emitter.And(src, mask)),
+            m.Branch(
+                cmp0(m.And(src, mask)),
                 (Address)RewriteOp(instr.Operands[2]),
                 RtlClass.ConditionalTransfer);
         }
@@ -82,8 +82,8 @@ namespace Reko.Arch.Xtensa
             rtlc = RtlClass.ConditionalTransfer;
             var a = RewriteOp(instr.Operands[0]);
             var b = RewriteOp(instr.Operands[1]);
-            var cond = emitter.Ne0(emitter.And(emitter.Comp(a), b));
-            emitter.Branch(
+            var cond = m.Ne0(m.And(m.Comp(a), b));
+            m.Branch(
                 cond,
                 (Address)RewriteOp(instr.Operands[2]),
                 RtlClass.ConditionalTransfer);
@@ -94,8 +94,8 @@ namespace Reko.Arch.Xtensa
             rtlc = RtlClass.ConditionalTransfer;
             var a = RewriteOp(instr.Operands[0]);
             var b = RewriteOp(instr.Operands[1]);
-            var cond = emitter.Eq0(emitter.And(a, b));
-            emitter.Branch(
+            var cond = m.Eq0(m.And(a, b));
+            m.Branch(
                 cond,
                 (Address)RewriteOp(instr.Operands[2]),
                 RtlClass.ConditionalTransfer);
@@ -106,7 +106,7 @@ namespace Reko.Arch.Xtensa
             rtlc = RtlClass.ConditionalTransfer;
             var left = RewriteOp(instr.Operands[0]);
             var right = RewriteOp(instr.Operands[1]);
-            emitter.Branch(
+            m.Branch(
                 cmp(left, right), 
                 (Address)RewriteOp(instr.Operands[2]), 
                 RtlClass.ConditionalTransfer);
@@ -116,7 +116,7 @@ namespace Reko.Arch.Xtensa
         {
             rtlc = RtlClass.ConditionalTransfer;
             var src = RewriteOp(instr.Operands[0]);
-            emitter.Branch(
+            m.Branch(
                 cmp0(src),
                 (Address)RewriteOp(instr.Operands[1]),
                 RtlClass.ConditionalTransfer);
@@ -130,24 +130,24 @@ namespace Reko.Arch.Xtensa
             if (rDst != null && rDst.Storage == Registers.a0)
             {
                 var tmp = frame.CreateTemporary(rDst.DataType);
-                emitter.Assign(tmp, dst);
+                m.Assign(tmp, dst);
                 dst = tmp;
             }
             var cont = instr.Address + instr.Length;
-            emitter.Assign(frame.EnsureRegister(Registers.a0), cont);
-            emitter.Call(dst, 0);
+            m.Assign(frame.EnsureRegister(Registers.a0), cont);
+            m.Call(dst, 0);
         }
 
         private void RewriteJ()
         {
             rtlc = RtlClass.Transfer;
-            emitter.Goto(RewriteOp(instr.Operands[0]));
+            m.Goto(RewriteOp(instr.Operands[0]));
         }
 
         private void RewriteRet()
         {
             rtlc = RtlClass.Transfer;
-            emitter.Return(0, 0);
+            m.Return(0, 0);
         }
     }
 }

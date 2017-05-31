@@ -267,7 +267,7 @@ namespace Reko.Core.Expressions
 
         public Constant Int16(short n)
         {
-            return Constant.Word16((ushort)n);
+            return Constant.Int16(n);
         }
 
         public Constant Int16(uint n)
@@ -277,12 +277,12 @@ namespace Reko.Core.Expressions
 
         public Constant Int32(uint n)
         {
-            return Constant.Word32(n);
+            return Constant.Int32((int)n);
         }
 
         public Constant Int32(int n)
         {
-            return Constant.Word32(n);
+            return Constant.Int32(n);
         }
 
         public MemoryAccess Load(DataType dt, Expression ea)
@@ -609,6 +609,11 @@ namespace Reko.Core.Expressions
         public Expression Xor(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Xor, a.DataType, a, b);
+        }
+
+        public Expression Xor(Expression a, int b)
+        {
+            return new BinaryExpression(Operator.Xor, a.DataType, a, Constant.Create(a.DataType, b));
         }
     }
 }

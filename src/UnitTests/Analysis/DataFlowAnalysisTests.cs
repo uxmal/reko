@@ -413,5 +413,13 @@ ProcedureBuilder_exit:
         {
             RunFileTest_x86_real("Fragments/fpustackreturn.asm", "Analysis/DfaFpuStackReturn.txt");
         }
-	}
+
+        [Test]
+        [Ignore("This will be fixed in analysis-branch")]
+        [Category(Categories.FailedTests)]
+        public void DfaJumpIntoProc3()
+        {
+            RunFileTest_x86_32("Fragments/multiple/jumpintoproc3.asm", "Analysis/DfaJumpIntoProc3.txt");
+        }
+    }
 }

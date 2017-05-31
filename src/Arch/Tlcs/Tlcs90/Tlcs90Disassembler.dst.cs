@@ -366,8 +366,6 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-
-
         };
     }
 }

@@ -37,7 +37,14 @@ namespace Reko.Scanning
     /// </summary>
     public class ScanResults
     {
-        public ScanResults() { }
+        public ScanResults()
+        {
+            this.IndirectCalls = new HashSet<Address>();
+            this.IndirectJumps = new HashSet<Address>();
+            this.Procedures = new List<RtlProcedure>();
+            this.WatchedAddresses = new HashSet<Address>();
+        }
+
         /// <summary>
         /// All the discovered machine instructions, rewritten into RTL
         /// instruction clusters.
@@ -81,7 +88,9 @@ namespace Reko.Scanning
         /// or because they were jumped to from different procedures.
         /// This is a key end result of the scanning stage.
         /// </summary>
-        public List<RtlProcedure> Procedures { get; internal set; }
+        public List<RtlProcedure> Procedures { get;  set; }
+        public SortedList<Address, instr> FlatInstructions { get;  set; }
+        public List<link> FlatEdges { get; set; }
 
         /// <summary>
         /// Tally of occurrences of bitpatterns that look like addresses,
@@ -104,9 +113,16 @@ namespace Reko.Scanning
         /// </summary>
         public HashSet<Address> IndirectCalls;
 
+        /// <summary>
+        /// Useful for debugging.
+        /// </summary>
+        public HashSet<Address> WatchedAddresses;
+
         [Conditional("DEBUG")]
         public void Dump(string caption = "Dump")
         {
+            BreakOnWatchedAddress(ICFG.Nodes.Select(n => n.Address));
+
             return;     // This is horribly verbose, so only use it when debugging unit tests.
             Debug.Print("== {0} =====================", caption);
             Debug.Print("{0} nodes", ICFG.Nodes.Count);
@@ -142,6 +158,54 @@ namespace Reko.Scanning
                     .OrderBy(n => n.Address)
                     .Select(n => n.Address)));
             }
+        }
+
+        public class instr
+        {
+            public Address addr;
+            public int size;
+            public ushort type;
+            public Address block_id;
+            public int pred;
+            public int succ;
+            internal RtlInstructionCluster rtl;
+        }
+
+        public class link
+        {
+            public Address first;
+            public Address second;
+
+            public override bool Equals(object obj)
+            {
+                var that = obj as link;
+                if (that == null)
+                    return false;
+                return that.first == this.first && that.second == this.second;
+            }
+
+            public override int GetHashCode()
+            {
+                return first.GetHashCode() ^ 13 * second.GetHashCode();
+            }
+
+            public override string ToString()
+            {
+                return string.Format("[{0:X8} -> {1:X8}]", first, second);
+            }
+        }
+
+        public class block
+        {
+            public Address id;
+            public Address component_id;
+            internal instr[] instrs;
+        }
+
+        [Conditional("DEBUG")]
+        public void BreakOnWatchedAddress(IEnumerable<Address> enumerable)
+        {
+            var hits = enumerable.Intersect(this.WatchedAddresses).ToArray();
         }
     }
 }

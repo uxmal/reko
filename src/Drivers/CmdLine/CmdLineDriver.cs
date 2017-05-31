@@ -122,11 +122,17 @@ namespace Reko.CmdLine
 
         private void Decompile(Dictionary<string, object> pArgs)
         {
+
             object loader;
             pArgs.TryGetValue("--loader", out loader);
             try
             {
                 decompiler.Load((string)pArgs["filename"], (string)loader);
+                object oHeur;
+                if (pArgs.TryGetValue("heuristics", out oHeur))
+                {
+                    decompiler.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
+                }
                 decompiler.ScanPrograms();
                 decompiler.AnalyzeDataFlow();
                 decompiler.ReconstructTypes();
@@ -274,9 +280,10 @@ namespace Reko.CmdLine
                 }
                 else if (args[i] == "--heuristic")
                 {
-                    if (!string.IsNullOrEmpty(args[i]))
+                    if (i < args.Length-1 && !string.IsNullOrEmpty(args[i+1]))
                     {
-                        parsedArgs["heuristics"] = args[i].Split(',');
+                        parsedArgs["heuristics"] = args[i+1].Split(',');
+                        ++i;
                     }
                 }
                 else if (arg.StartsWith("-"))
@@ -309,9 +316,9 @@ namespace Reko.CmdLine
             w.WriteLine("Options:");
             w.WriteLine(" --version                Show version number and exit");
             w.WriteLine(" -h, --help               Show this message and exit");
-            w.WriteLine(" -l, --loader <ldr>       Use a custom loader where <ldr> is either the file name");
-            w.WriteLine("                          containing a loader script or the CLR type name of the");
-            w.WriteLine("                          loader.");
+            w.WriteLine(" -l, --loader <ldr>       Use a custom loader where <ldr> is either the file");
+            w.WriteLine("                          name containing a loader script or the CLR type name");
+            w.WriteLine("                          of the loader.");
             w.WriteLine(" --arch <architecture>    Use an architecture from the following:");
             DumpArchitectures(config, w, "    {0,-25} {1}");
             w.WriteLine(" --env <environment>      Use an operating environment from the following:");

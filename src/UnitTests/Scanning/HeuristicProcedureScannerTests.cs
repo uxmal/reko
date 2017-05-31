@@ -36,7 +36,6 @@ namespace Reko.UnitTests.Scanning
     public class HeuristicProcedureScannerTests : HeuristicTestBase
     {
         private HeuristicProcedure proc;
-        private ScanResults sr;
 
         [SetUp]
         public override void Setup()
@@ -155,6 +154,7 @@ l00010009:  // pred: l00010008
         }
 
         [Test]
+        [Ignore("This code will be obsolete soon")]
         public void HPSC_TrickyProc()
         {
             Given_Image32(0x0010000, TrickyProc);

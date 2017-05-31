@@ -85,10 +85,11 @@ namespace Reko.Arch.X86
                 switch (instrCur.code)
                 {
                 default:
-                    throw new AddressCorrelatedException(
-                        instrCur.Address,
+                    host.Warn(
+                        dasm.Current.Address,
                         "Rewriting x86 opcode '{0}' is not supported yet.",
                         instrCur.code);
+                    goto case Opcode.illegal;
                 case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
                 case Opcode.aaa: RewriteAaa(); break;
                 case Opcode.aad: RewriteAad(); break;
@@ -96,6 +97,8 @@ namespace Reko.Arch.X86
                 case Opcode.aas: RewriteAas(); break;
                 case Opcode.adc: RewriteAdcSbb(m.IAdd); break;
                 case Opcode.add: RewriteAddSub(Operator.IAdd); break;
+                case Opcode.addss: RewriteScalarBinop(m.FAdd, PrimitiveType.Real32); break;
+                case Opcode.addsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64); break;
                 case Opcode.and: RewriteLogical(Operator.And); break;
                 case Opcode.arpl: RewriteArpl(); break;
                 case Opcode.bound: RewriteBound(); break;
@@ -131,6 +134,8 @@ namespace Reko.Arch.X86
                 case Opcode.cmps: RewriteStringInstruction(); break;
                 case Opcode.cmpsb: RewriteStringInstruction(); break;
                 case Opcode.cpuid: RewriteCpuid(); break;
+                case Opcode.cvtsi2sd: RewriteCvtToReal(PrimitiveType.Real64); break;
+                case Opcode.cvtsi2ss: RewriteCvtToReal(PrimitiveType.Real32); break;
                 case Opcode.cvttsd2si: RewriteCvttsd2si(); break;
                 case Opcode.cvttps2pi: RewriteCvttps2pi(); break;
                 case Opcode.cwd: RewriteCwd(); break;
@@ -285,8 +290,6 @@ namespace Reko.Arch.X86
                 case Opcode.rol: RewriteRotation(PseudoProcedure.Rol, false, true); break;
                 case Opcode.ror: RewriteRotation(PseudoProcedure.Ror, false, false); break;
                 case Opcode.rdtsc: RewriteRdtsc(); break;
-                case Opcode.rep: RewriteRep(); break;
-                case Opcode.repne: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.retf: RewriteRet(); break;
                 case Opcode.sahf: m.Assign(orw.FlagGroup(X86Instruction.DefCc(instrCur.code)), orw.AluRegister(Registers.ah)); break;
@@ -320,6 +323,10 @@ namespace Reko.Arch.X86
                 case Opcode.stos: RewriteStringInstruction(); break;
                 case Opcode.stosb: RewriteStringInstruction(); break;
                 case Opcode.sub: RewriteAddSub(BinaryOperator.ISub); break;
+                case Opcode.subsd: RewriteScalarBinop(m.FSub, PrimitiveType.Real64); break;
+                case Opcode.subss: RewriteScalarBinop(m.FSub, PrimitiveType.Real32); break;
+                case Opcode.ucomiss: RewriteComis(PrimitiveType.Real32); break;
+                case Opcode.ucomisd: RewriteComis(PrimitiveType.Real64); break;
                 case Opcode.test: RewriteTest(); break;
                 case Opcode.wait: RewriteWait(); break;
                 case Opcode.xadd: RewriteXadd(); break;

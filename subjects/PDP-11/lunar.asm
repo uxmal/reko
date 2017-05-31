@@ -843,10 +843,6 @@ l0958:
 
 l095A:
 	cmp	r2,#0030
-
-;; fn095C: 095C
-fn095C proc
-	illegal
 	bge	0978
 
 l0960:
@@ -865,8 +861,7 @@ l096E:
 l0978:
 	mov	#2314,r1
 
-;; fn097C: 097C
-fn097C proc
+l097C:
 	mov	r1,@#34C2
 	mov	@#0078,r1
 	mov	#0003,-(sp)

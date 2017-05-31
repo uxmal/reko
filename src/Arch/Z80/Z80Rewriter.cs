@@ -338,7 +338,7 @@ namespace Reko.Arch.Z80
             var b = this.RewriteOp(dasm.Current.Op2);
             m.Assign(
                 FlagGroup(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.PF),
-                m.ISub(a, b));
+                m.Cond(m.ISub(a, b)));
         }
 
         private void RewriteCp(Func<Expression , Expression, Expression> incDec, bool repeat)
@@ -568,7 +568,7 @@ namespace Reko.Arch.Z80
             m.Assign(
                 m.LoadB(hl),
                 host.PseudoProcedure("__in", PrimitiveType.Byte, c));
-            m.Assign(hl, m.IAdd(hl, m.Int16(1)));
+            m.Assign(hl, incDec(hl, m.Int16(1)));
             m.Assign(b, m.ISub(b, 1));
             m.Assign(Z, m.Cond(b));
             if (repeat)

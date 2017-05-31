@@ -162,9 +162,9 @@ namespace Reko.Scanning
                         }
                     }
                     if (Index != null &&
-                        binSrc.Operator == Operator.Xor && 
-                        binSrc.Left == assDst && 
-                        binSrc.Right == assDst && 
+                        binSrc.Operator == Operator.Xor &&
+                        binSrc.Left == assDst &&
+                        binSrc.Right == assDst &&
                         RegisterOf(assDst) == host.GetSubregister(Index, 8, 8))
                     {
                         Operations.Add(new BackwalkOperation(BackwalkOperator.and, 0xFF));

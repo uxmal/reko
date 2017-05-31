@@ -12,8 +12,7 @@
 0B00:0010 8D 3E 0F 7E     	lea	di,[7E0F]
 0B00:0014 B9 0C 00        	mov	cx,000C
 0B00:0017 32 C0           	xor	al,al
-0B00:0019 F3              	rep	
-0B00:001A AE              	scasb	
+0B00:0019 F3 AE           	rep scasb	
 0B00:001B 74 10           	jz	002D
 0B00:001D 8A 65 01        	mov	ah,[di+01]
 0B00:0020 0F BD C8        	bsr	cx,ax

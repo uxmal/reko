@@ -1,1 +1,1 @@
-decompile.exe NGP_IQ.NGP
+decompile.exe --heuristic shingle  NGP_IQ.NGP

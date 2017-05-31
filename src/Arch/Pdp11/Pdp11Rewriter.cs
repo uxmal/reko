@@ -68,9 +68,10 @@ namespace Reko.Arch.Pdp11
                         instr.Address,
                         "Rewriting of PDP-11 instruction {0} not supported yet.", 
                         instr.Opcode);
+                    rtlc = RtlClass.Invalid;
                     m.Invalid();
                     break;
-                case Opcode.illegal: m.Invalid(); break;
+                case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
                 case Opcode.adc: RewriteAdcSbc(m.IAdd); break;
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.addb: RewriteAdd(); break;
@@ -196,7 +197,9 @@ namespace Reko.Arch.Pdp11
                 // for the destination of a transfer instruction.
                 return null;
             }
-            var r = binder.EnsureRegister(memOp.Register);
+            var r = memOp.Register != null
+                ? binder.EnsureRegister(memOp.Register)
+                : null;
             var tmp = binder.CreateTemporary(op.Width);
             switch (memOp.Mode)
             {
@@ -323,7 +326,7 @@ namespace Reko.Arch.Pdp11
                 case AddressMode.IndexedDef:
                     if (memOp.Register == Registers.pc)
                     {
-                        var addr = dasm.Current.Address + dasm.Current.Length + memOp.EffectiveAddress;
+                        var addr = this.dasm.Current.Address + this.dasm.Current.Length + memOp.EffectiveAddress;
                         m.Assign(tmp, m.Load(PrimitiveType.Ptr16, addr));
                         m.Assign(tmp, m.Load(memOp.Width, tmp));
                         return tmp;

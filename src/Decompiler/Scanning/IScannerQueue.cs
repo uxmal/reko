@@ -30,6 +30,8 @@ namespace Reko.Scanning
         void EnqueueUserProcedure(Address addr, FunctionType sig, string name);
         void EnqueueUserGlobalData(Address addr, DataType dt, string name);
 
+        //$REVIEW: these methods don't belong here. 
+        // Callers should use DecompilerEventListener or IRewriterHost.
         void Warn(Address addr, string message);
         void Warn(Address addr, string message, params object[] args);
         void Error(Address addr, string message, params object[] args);

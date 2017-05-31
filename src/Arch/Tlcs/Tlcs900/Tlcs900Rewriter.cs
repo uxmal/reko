@@ -66,31 +66,47 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 switch (instr.Opcode)
                 {
                 default:
+                    host.Error(
+                       instr.Address,
+                       string.Format(
+                           "Rewriting of TLCS-900 instruction '{0}' not implemented yet.",
+                           instr.Opcode));
                     EmitUnitTest();
                     Invalid();
                     break;
                 case Opcode.invalid:
                     Invalid();
                     break;
+                case Opcode.adc: RewriteAdcSbc(m.IAdd, "****0*"); break;
                 case Opcode.add: RewriteBinOp(m.IAdd, "***V0*"); break;
                 case Opcode.and: RewriteBinOp(m.And, "**1*00"); break;
                 case Opcode.bit: RewriteBit(); break;
+                case Opcode.bs1b: RewriteBs1b(); break;
                 case Opcode.call: RewriteCall(); break;
                 case Opcode.calr: RewriteCall(); break;
+                case Opcode.ccf: RewriteCcf(); break;
+                case Opcode.chg: RewriteChg(); break;
                 case Opcode.cp: RewriteCp("SZHV1C"); break;
                 case Opcode.daa: RewriteDaa("****-*"); break;
                 case Opcode.dec: RewriteIncDec(m.ISub, "****1-"); break;
-                case Opcode.div:RewriteDiv(m.UDiv, "---V--");break;
+                case Opcode.decf: RewriteDecf(); break;
+                case Opcode.div: RewriteDiv(m.UDiv, "---V--");break;
+                case Opcode.divs: RewriteDiv(m.SDiv, "---V--");break;
                 case Opcode.djnz: RewriteDjnz(); break;
                 case Opcode.ei: RewriteEi(); break;
+                case Opcode.ex: RewriteEx(); break;
+                case Opcode.halt: RewriteHalt(); break;
                 case Opcode.inc: RewriteIncDec(m.IAdd, "****0-"); break;
+                case Opcode.incf: RewriteIncf(); break;
                 case Opcode.lda: RewriteLda(); break;
                 case Opcode.jp: RewriteJp(); break;
                 case Opcode.jr: RewriteJp(); break;
                 case Opcode.ld: RewriteLd(); break;
+                case Opcode.ldf: RewriteLdf(); break;
                 case Opcode.ldir: RewriteLdir(PrimitiveType.Byte, "--000-"); break;
                 case Opcode.ldirw: RewriteLdir(PrimitiveType.Word16, "--000-"); break;
-                case Opcode.mul: RewriteBinOp(m.UMul, ""); break;
+                case Opcode.mul: RewriteMul(m.UMul); break;
+                case Opcode.muls: RewriteMul(m.SMul); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.or: RewriteBinOp(m.Or, "**0*00"); break;
                 case Opcode.pop: RewritePop(); break;
@@ -98,15 +114,23 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 case Opcode.rcf: RewriteRcf(); break;
                 case Opcode.res: RewriteRes(); break;
                 case Opcode.ret: RewriteRet(); break;
-                case Opcode.set: RewriteSet(); break;
+                case Opcode.retd: RewriteRetd(); break;
+                case Opcode.reti: RewriteReti(); break;
+                case Opcode.sbc: RewriteAdcSbc(m.ISub, "****1*"); break;
+                case Opcode.scc: RewriteScc(); break;
                 case Opcode.scf: RewriteScf(); break;
+                case Opcode.set: RewriteSet(); break;
+                case Opcode.sla: RewriteShift(m.Shl,"**0*0*"); break;
                 case Opcode.sll: RewriteShift(m.Shl,"**0*0*"); break;
                 case Opcode.srl: RewriteShift(m.Shr, "**0*0*"); break;
                 case Opcode.sub: RewriteBinOp(m.ISub, "***V1*"); break;
+                case Opcode.swi: RewriteSwi(); break;
+                case Opcode.xor: RewriteBinOp(m.Xor, "**0*00"); break;
+                case Opcode.zcf: RewriteZcf(); break;
                 }
-                yield return new RtlInstructionCluster(dasm.Current.Address, dasm.Current.Length, instrs.ToArray())
+                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
                 {
-                    Class = rtlc,
+                    Class = rtlc
                 };
             }
         }
@@ -118,11 +142,6 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void Invalid()
         {
-            host.Error(
-               instr.Address,
-               string.Format(
-                   "Rewriting of TLCS-900 instruction '{0}' not implemented yet.",
-                   instr.Opcode));
             rtlc = RtlClass.Invalid;
             m.Invalid();
         }

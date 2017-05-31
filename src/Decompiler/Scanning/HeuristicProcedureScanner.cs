@@ -105,11 +105,11 @@ namespace Reko.Scanning
         private HashSet<RtlBlock> TraceReachableBlocks(IEnumerable<Address> procstarts)
         {
             var reachable = new HashSet<RtlBlock>();
+            var mpAddrToBlock = blocks.Nodes.ToDictionary(k => k.Address);
             foreach (var addrProcStart in procstarts)
             {
-                //$PERF: slow! need a map (address => block)
-                var entry = blocks.Nodes.Where(b => b.Address == addrProcStart).FirstOrDefault();
-                if (entry != null)
+                RtlBlock entry;
+                if (mpAddrToBlock.TryGetValue(addrProcStart ,out entry))
                 {
                     var r = new DfsIterator<RtlBlock>(blocks).PreOrder(entry).ToHashSet();
                     reachable.UnionWith(r);
@@ -177,15 +177,23 @@ namespace Reko.Scanning
         /// <param name="valid"></param>
         private void RemoveBlocksConflictingWithValidBlocks(HashSet<RtlBlock> valid)
         {
-            foreach (var n in blocks.Nodes.Where(nn => !valid.Contains(nn)).ToList())
+            // `nodes` are all blocks that weren't reachable by DFS.
+            var nodes = blocks.Nodes.Where(nn => !valid.Contains(nn)).ToHashSet();
+            foreach (var cc in
+                (from c in conflicts
+                 where nodes.Contains(c.Item1) && valid.Contains(c.Item2)
+                 select c.Item1))
             {
-                foreach (var v in valid)
-                {
-                    if (conflicts.Contains(Tuple.Create(n, v)))
-                    {
-                        RemoveBlockFromGraph(n);
-                    }
-                }
+                nodes.Remove(cc);
+                RemoveBlockFromGraph(cc);
+            }
+            foreach (var cc in 
+                (from c in conflicts
+                 where nodes.Contains(c.Item2) && valid.Contains(c.Item1)
+                 select c.Item2))
+            {
+                nodes.Remove(cc);
+                RemoveBlockFromGraph(cc);
             }
         }
 

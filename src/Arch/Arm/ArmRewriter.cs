@@ -621,12 +621,12 @@ namespace Reko.Arch.Arm
                     Address.Ptr32((uint)(instr.Address + instr.Bytes.Length)),
                     RtlClass.ConditionalTransfer);
             }
-            rtlInstructions.Add(rtlInstr);
+            m.Emit(rtlInstr);
         }
 
         private void ConditionalAssign(Expression dst, Expression src)
         {
-            RtlInstruction rtlInstr = new RtlAssignment(dst, src);
+            var rtlInstr = new RtlAssignment(dst, src);
             AddConditional(rtlInstr);
             }
 
