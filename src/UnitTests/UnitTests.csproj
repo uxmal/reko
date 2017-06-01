@@ -132,9 +132,7 @@
     <Compile Include="Mocks\XmlnsHidingWriter.cs" />
     <Compile Include="OsPath.cs" />
     <Compile Include="Analysis\AliasStateTests.cs" />
-    <Compile Include="Analysis\AliasTests.cs" />
     <Compile Include="Analysis\AnalysisTestBase.cs" />
-    <Compile Include="Analysis\AnalysisTests.cs" />
     <Compile Include="Analysis\CallRewriterTests.cs" />
     <Compile Include="Analysis\CoalescerTests.cs" />
     <Compile Include="Analysis\ConditionCodeEliminatorTests.cs" />

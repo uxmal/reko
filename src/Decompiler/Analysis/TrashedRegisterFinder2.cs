@@ -328,11 +328,12 @@ namespace Reko.Analysis
         {
             foreach (var use in uses)
             {
-                Identifier id;
-                if (!use.Expression.As(out id))
-                    continue;
-                if (id.Storage == stg)
-                    return ssa.Identifiers[id];
+                var ids = ExpressionIdentifierUseFinder.Find(ssa.Identifiers, use.Expression);
+                foreach (var id in ids)
+                {
+                    if (id.Storage == stg)
+                        return ssa.Identifiers[id];
+                }
             }
             return null;
         }
