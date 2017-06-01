@@ -2,7 +2,7 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse: 
 // LiveOut:
-// Trashed: ah al ax bh bl bx ch cl cx eax ebx ecx esp rax rbx rcx rsp sp spl
+// Trashed: eax ebx ecx esp Top
 // Preserved:
 // fn10000000
 // Return size: 0
@@ -16,15 +16,15 @@ l10000000:
 	// succ:  fn10000000_exit
 fn10000000_exit:
 
-// void fn10000013()
+// void fn10000013(Stack word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse: 
+// MayUse:  Stack +0004:[0..31]
 // LiveOut:
-// Trashed: ah al ax eax rax
+// Trashed: eax Top
 // Preserved: esp
 // fn10000013
 // Return size: 0
-void fn10000013(dwArg04)
+void fn10000013(word32 dwArg04)
 fn10000013_entry:
 	// succ:  l10000013
 l10000013:
@@ -37,9 +37,9 @@ fn10000013_exit:
 
 // void fn10000018(Register word32 ebx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  ebx
+// MayUse:  ebx:[0..31]
 // LiveOut:
-// Trashed: ah al ax ch cl cx eax ecx rax rcx
+// Trashed: eax ecx Top
 // Preserved: esp
 // fn10000018
 // Return size: 0
@@ -54,18 +54,17 @@ fn10000018_exit:
 
 // void fn10000020(Stack word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse: 
+// MayUse:  Stack +0004:[0..31]
 // LiveOut:
-// Trashed: ah al ax eax rax
+// Trashed: eax Top
 // Preserved: esp
-// Stack args: Stack +0004(32)
 // fn10000020
 // Return size: 0
 void fn10000020(word32 dwArg04)
 fn10000020_entry:
 	// succ:  l10000020
 l10000020:
-	Mem4[0x00123400:word32] = dwArg04
+	Mem6[0x00123400:word32] = dwArg04
 	return
 	// succ:  fn10000020_exit
 fn10000020_exit:

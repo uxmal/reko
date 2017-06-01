@@ -1,44 +1,116 @@
-Mem0:Global (aliases:)
-fp:fp (aliases:)
-sp:sp (aliases:)
-ax:ax (aliases:)
-ds:ds (aliases:)
+fp:fp
+    def:  def fp
+    uses: sp_2 = fp
+sp_2: orig: sp
+    def:  sp_2 = fp
+    uses: call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,sp:sp_2	defs: ax:ax_8,sp:sp_7
+Top_3: orig: Top
+    def:  Top_3 = 0
+    uses: use Top_3
+ds:ds
+    def:  def ds
+    uses: ax_6 = Mem0[ds:0x0100:word16]
+          Mem9[ds:0x0102:word16] = ax_8
+Mem0:Global
+    def:  def Mem0
+    uses: ax_6 = Mem0[ds:0x0100:word16]
+ax_6: orig: ax
+    def:  ax_6 = Mem0[ds:0x0100:word16]
+    uses: call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,sp:sp_2	defs: ax:ax_8,sp:sp_7
+sp_7: orig: sp
+    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,sp:sp_2	defs: ax:ax_8,sp:sp_7
+    uses: use sp_7
+ax_8: orig: ax
+    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,sp:sp_2	defs: ax:ax_8,sp:sp_7
+    uses: Mem9[ds:0x0102:word16] = ax_8
+          use ax_8
+Mem9: orig: Mem0
+    def:  Mem9[ds:0x0102:word16] = ax_8
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
+	def fp
+	def ds
+	def Mem0
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
-	ax = Mem0[ds:0x0100:word16]
-	call fn0C00_000C (retsize: 2; depth: 2)
-	Mem0[ds:0x0102:word16] = ax
+	sp_2 = fp
+	Top_3 = 0
+	ax_6 = Mem0[ds:0x0100:word16]
+	call fn0C00_000C (retsize: 2;)
+		uses: ax:ax_6,sp:sp_2
+		defs: ax:ax_8,sp:sp_7
+	Mem9[ds:0x0102:word16] = ax_8
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
+	use ax_8
+	use sp_7
+	use Top_3
 
-Mem0:Global (aliases:)
-fp:fp (aliases:)
-sp:sp (aliases:)
-ax:ax (aliases: al)
-ss:ss (aliases:)
-al:al (aliases: ax)
-ds:ds (aliases:)
-wLoc02:Local -0002 (aliases:)
+fp:fp
+    def:  def fp
+    uses: sp_2 = fp
+sp_2: orig: sp
+    def:  sp_2 = fp
+    uses: sp_4 = sp_2 - 0x0002
+Top_3: orig: Top
+    def:  Top_3 = 0
+    uses: use Top_3
+sp_4: orig: sp
+    def:  sp_4 = sp_2 - 0x0002
+    uses: Mem7[ss:sp_4:word16] = ax
+          ax_11 = Mem10[ss:sp_4:word16]
+          sp_12 = sp_4 + 0x0002
+ax:ax
+    def:  def ax
+    uses: Mem7[ss:sp_4:word16] = ax
+ss:ss
+    def:  def ss
+    uses: Mem7[ss:sp_4:word16] = ax
+          ax_11 = Mem10[ss:sp_4:word16]
+Mem7: orig: Mem0
+    def:  Mem7[ss:sp_4:word16] = ax
+    uses: al_9 = Mem7[ds:0x0104:byte]
+ds:ds
+    def:  def ds
+    uses: al_9 = Mem7[ds:0x0104:byte]
+          Mem10[ds:0x0105:byte] = al_9
+al_9: orig: al
+    def:  al_9 = Mem7[ds:0x0104:byte]
+    uses: Mem10[ds:0x0105:byte] = al_9
+Mem10: orig: Mem0
+    def:  Mem10[ds:0x0105:byte] = al_9
+    uses: ax_11 = Mem10[ss:sp_4:word16]
+ax_11: orig: ax
+    def:  ax_11 = Mem10[ss:sp_4:word16]
+    uses: use ax_11
+sp_12: orig: sp
+    def:  sp_12 = sp_4 + 0x0002
+    uses: use sp_12
 // fn0C00_000C
 // Return size: 2
 define fn0C00_000C
 fn0C00_000C_entry:
+	def fp
+	def ax
+	def ss
+	def ds
 	// succ:  l0C00_000C
 l0C00_000C:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = ax
-	al = Mem0[ds:0x0104:byte]
-	Mem0[ds:0x0105:byte] = al
-	ax = wLoc02
-	sp = fp
+	sp_2 = fp
+	Top_3 = 0
+	sp_4 = sp_2 - 0x0002
+	Mem7[ss:sp_4:word16] = ax
+	al_9 = Mem7[ds:0x0104:byte]
+	Mem10[ds:0x0105:byte] = al_9
+	ax_11 = Mem10[ss:sp_4:word16]
+	sp_12 = sp_4 + 0x0002
 	return
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:
+	use ax_11
+	use sp_12
+	use Top_3
 

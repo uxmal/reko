@@ -20,7 +20,7 @@ l0C00_0000:
 	Mem0[ds:si:word16] = ax
 	// succ:  l0C00_0006_thunk_fn0C00_0008
 l0C00_0006_thunk_fn0C00_0008:
-	call fn0C00_0008 (retsize: 2;)
+	call fn0C00_0008 (retsize: 0;)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

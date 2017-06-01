@@ -16,7 +16,7 @@ l0C00_0000:
 	sp = fp
 	// succ:  l0C00_000E_thunk_fn0C00_000F
 l0C00_000E_thunk_fn0C00_000F:
-	call fn0C00_000F (retsize: 2; depth: 2)
+	call fn0C00_000F (retsize: 0;)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

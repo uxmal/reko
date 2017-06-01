@@ -412,9 +412,7 @@ namespace Reko.Scanning
                 addrFrom.ToLinear(),
                 new CallInstruction(
                     new ProcedureConstant(Program.Platform.PointerType, procNew),
-                    new CallSite(
-                        procNew.Signature.ReturnAddressOnStack,
-                        0)));
+                    new CallSite(0, 0)));
             Program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
 
             callRetThunkBlock.Statements.Add(linFrom, new ReturnInstruction());

@@ -83,7 +83,7 @@ l0C00_0024:
 	SZO = cond(ax)
 	// succ:  l0C00_0024_thunk_fn0C00_0015
 l0C00_0024_thunk_fn0C00_0015:
-	call fn0C00_0015 (retsize: 2;)
+	call fn0C00_0015 (retsize: 0;)
 	return
 	// succ:  fn0C00_0020_exit
 l0C00_0028:

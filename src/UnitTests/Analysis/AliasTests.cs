@@ -84,18 +84,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        public void AlPreservedAlias()
-        {
-            RunFileTest_x86_real("Fragments/multiple/preserved_alias.asm", "Analysis/AlPreservedAlias.txt");
-        }
-
-        [Test]
-        public void AlReg00011()
-        {
-            RunFileTest_x86_real("Fragments/regressions/r00011.asm", "Analysis/AlReg00011.txt");
-        }
-
-        [Test]
         public void AliasWideToNarrow()
         {
             Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
@@ -152,48 +140,6 @@ namespace Reko.UnitTests.Analysis
             Identifier argPtr = proc.Frame.EnsureStackArgument(4, PrimitiveType.Pointer32);
             Assignment ass = alias.CreateAliasInstruction(argOff, argPtr);
             Assert.AreEqual("ptrArg04 = DPB(ptrArg04, wArg04, 0) (alias)", ass.ToString());
-        }
-
-        [Test]
-        public void AliasFlags()
-        {
-            var sExp =
-@"Mem0:Global (aliases:)
-fp:fp (aliases:)
-SZ:Flags (aliases: CZ C)
-CZ:Flags (aliases: SZ C)
-C:Flags (aliases: SZ CZ)
-al:al (aliases:)
-esi:esi (aliases:)
-r63:r63 (aliases:)
-// ProcedureBuilder
-// Return size: 0
-define ProcedureBuilder
-ProcedureBuilder_entry:
-	// succ:  l1
-l1:
-	SZ = cond(esi & esi)
-	C = false
-	CZ = C
-	al = Test(ULE,CZ)
-	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
-
-";
-            RunStringTest(sExp, m =>
-            {
-                var scz = m.Frame.EnsureFlagGroup(Registers.eflags, 7, "SZ", PrimitiveType.Byte);
-                var cz = m.Frame.EnsureFlagGroup(Registers.eflags, 3, "CZ", PrimitiveType.Byte);
-                var c = m.Frame.EnsureFlagGroup(Registers.eflags, 1, "C", PrimitiveType.Bool);
-                var al = m.Reg8("al", 0);
-                var esi = m.Reg32("esi", 6);
-                m.Assign(scz, m.Cond(m.And(esi, esi)));
-                m.Assign(c, Constant.False());
-                m.Alias(cz, c);
-                m.Assign(al, m.Test(ConditionCode.ULE, cz));
-                m.Return();
-            });
         }
     }
 }

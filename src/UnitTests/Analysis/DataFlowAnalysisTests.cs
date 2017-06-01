@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Analysis
 
 		[Test]
         [Ignore(Categories.AnalysisDevelopment)]
- //       [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void DfaReg00010()
 		{
 			RunFileTest_x86_real("Fragments/regressions/r00010.asm", "Analysis/DfaReg00010.txt");
@@ -415,8 +415,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
-        [Ignore("This will be fixed in analysis-branch")]
-        [Category(Categories.FailedTests)]
+        [Category(Categories.IntegrationTests)]
         public void DfaJumpIntoProc3()
         {
             RunFileTest_x86_32("Fragments/multiple/jumpintoproc3.asm", "Analysis/DfaJumpIntoProc3.txt");
