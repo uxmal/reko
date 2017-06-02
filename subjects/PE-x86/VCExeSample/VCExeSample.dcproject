@@ -71,7 +71,6 @@
         </ptr>
         <Name>gbl_thiscall</Name>
       </global>
-      <heuristic name="shingle" />
       <onLoad Enabled="false" />
       <registerValues />
     </user>
