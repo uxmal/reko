@@ -198,8 +198,15 @@ namespace Reko.ImageLoaders.MzExe.Pe
             int localeId;
             if (Int32.TryParse(langId, out localeId) && localeId > 0)
             {
-                var ci = CultureInfo.GetCultureInfo(localeId);
-                return ci.EnglishName;
+                try
+                {
+                    var ci = CultureInfo.GetCultureInfo(localeId);
+                    return ci.EnglishName;
+                }
+                catch
+                {
+                    return langId;
+                }
             }
             else
             {
