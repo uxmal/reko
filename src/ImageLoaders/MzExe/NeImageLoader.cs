@@ -664,16 +664,6 @@ namespace Reko.ImageLoaders.MzExe
             public ushort offset;          // Offset in segment to fixup
             public ushort target1;         // Target specification
             public ushort target2;         // Target specification/
-
-            public override string ToString()
-            {
-                return string.Format("{0,8} {1,8} {2:X4} {3:X4} {4:X4}",
-                    this.address_type,
-                    this.relocation_type,
-                    this.offset,
-                    this.target1,
-                    this.target2);
-            }
         }
 
         // Apply relocations to a segment.
@@ -693,7 +683,7 @@ namespace Reko.ImageLoaders.MzExe
                     target1 = rdr.ReadLeUInt16(),
                     target2 = rdr.ReadLeUInt16(),
                 };
-                Debug.Print("  {0}", rep);
+                Debug.Print("  {0}", WriteRelocationEntry(rep));
 
                 // Get the target address corresponding to this entry.
 
@@ -864,5 +854,28 @@ namespace Reko.ImageLoaders.MzExe
             return false;
         }
 
+        private string WriteRelocationEntry(NeRelocationEntry re)
+        {
+            switch (re.relocation_type & (NE_RELTYPE)3)
+            {
+            //case NE_RELTYPE.NAME:
+            case NE_RELTYPE.ORDINAL:
+                return string.Format("{0,8} {1,8} {2:X4} {3:X4} {4:X4}",
+                    re.address_type,
+                    re.relocation_type,
+                    re.offset,
+                    moduleNames[re.target1 - 1],
+                    re.target2);
+            default:
+                return string.Format("{0,8} {1,8} {2:X4} {3:X4} {4:X4}",
+                    re.address_type,
+                    re.relocation_type,
+                    re.offset,
+                    re.target1,
+                    re.target2);
+
+            }
+
+        }
     }
 }
