@@ -32,31 +32,7 @@ wish to build using the command line, use the commands
 msbuild Reko-decompiler.sln
 ```
 
-on Windows machines or
-
-```sh
-xbuild Reko-decompiler.sln
-```
-
-on machines with the Mono toolchain. All external dependencies
-needed to build are included in the `external` directory.
-
-**Note**: some users have reported difficulties with certain
-Linux distributions that don't support the 4.0 CLR framework
-(see issue #251 for details). One workaround that has been
-identified is to specify the CLR target framework explicitly
-at the xbuild command line:
-
-```sh
-xbuild /p:TargetFrameworkVersion="v4.5"  Reko-decompiler.sln
-```
-
-You may be able to work around the problem reported in issue #251
-by downloading the appropriate Mono CLR binaries from
-git://github.com/mono/reference-assemblies.git
-
-**Note**: please let us know if you still are not able to compile,
-so we can help you fix the issue.
+on Windows machines.
 
 ### Warnings and errors related to WiX
 
