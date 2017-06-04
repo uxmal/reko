@@ -260,6 +260,11 @@ namespace Reko.Core.Expressions
             return Gt(a, Int32(b));
         }
 
+        public BinaryExpression Gt0(Expression exp)
+        {
+            return new BinaryExpression(Operator.Gt, PrimitiveType.Bool, exp, Constant.Zero(exp.DataType));
+        }
+
         public Constant Int8(int n)
         {
             return Constant.SByte((sbyte)n);
