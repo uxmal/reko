@@ -262,7 +262,7 @@ namespace Reko.Core.Expressions
             cond.ThenExp.Accept(this);
             cond.FalseExp.Accept(this);
             cond.Condition.Accept(this);
-            return RecordDataType(PrimitiveType.Bool, cond);
+            return RecordDataType(cond.DataType, cond);
         }
 
         public DataType VisitConditionOf(ConditionOf cof)
