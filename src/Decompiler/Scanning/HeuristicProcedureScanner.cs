@@ -130,6 +130,7 @@ namespace Reko.Scanning
             var cmp = program.Architecture.CreateInstructionComparer(Normalize.Constants);
             if (cmp == null)
                 return;
+            //$REVIEW: to what use can we put this?
             var trie = new Trie<MachineInstruction>(cmp);
             foreach (var item in valid.OrderBy(i => i.Address))
             {
