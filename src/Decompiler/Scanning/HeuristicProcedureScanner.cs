@@ -128,6 +128,8 @@ namespace Reko.Scanning
         private void ComputeStatistics(ISet<RtlBlock> valid)
         {
             var cmp = program.Architecture.CreateInstructionComparer(Normalize.Constants);
+            if (cmp == null)
+                return;
             var trie = new Trie<MachineInstruction>(cmp);
             foreach (var item in valid.OrderBy(i => i.Address))
             {
