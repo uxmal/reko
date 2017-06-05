@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Scanning
             arch.Replay();
             program.Platform = new DefaultPlatform(null, arch);
             arch.BackToRecord();
-            arch.Stub(s => s.StackRegister).Return((RegisterStorage)sp.Storage);
+            arch.StackRegister = (RegisterStorage)sp.Storage;
             arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
             scanner.Stub(s => s.Services).Return(sc);
             sc.AddService<DecompilerEventListener>(listener);
