@@ -171,7 +171,14 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             case ElfMachine.EM_AVR: arch = "avr8"; break;
             case ElfMachine.EM_RISCV: arch = "risc-v"; break;
-            case ElfMachine.EM_SH: arch = "superH"; break;
+            case ElfMachine.EM_SH:
+                arch = endianness== ELFDATA2LSB ? "superH-le" : "superH-be";
+                var a = cfgSvc.GetArchitecture(arch);
+                // SuperH stack pointer is not defined by the architecture,
+                // but by the application itself. It appears r15 has been
+                // chosen by at least the NetBSD folks.
+                a.StackRegister = a.GetRegister("r15");
+                return a;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
@@ -236,6 +243,9 @@ namespace Reko.ImageLoaders.Elf
                 break;
             case ELFOSABI_CELL_LV2: // PS/3
                 envName = "elf-cell-lv2";
+                break;
+            case ELFOSABI_LINUX:
+                envName = "linux";      //$TODO: create a linux platform
                 break;
             default:
                 throw new NotSupportedException(string.Format("Unsupported ELF ABI 0x{0:X2}.", osAbi));
@@ -1263,6 +1273,8 @@ namespace Reko.ImageLoaders.Elf
         public string GetSymbolName(ElfSection symSection, uint symbolNo)
         {
             var strSection = symSection.LinkedSection;
+            if (strSection == null)
+                return string.Format("null:{0:X8}", symbolNo);
             uint offset = (uint)(symSection.FileOffset + symbolNo * symSection.EntrySize);
             var rdr = imgLoader.CreateReader(offset);
             rdr.TryReadUInt32(out offset);

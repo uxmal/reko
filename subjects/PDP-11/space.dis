@@ -4625,7 +4625,7 @@ l1900:
 	call fp - 0x0004 (retsize: 2; depth: 6 FPU: 2;)
 		uses: NZ_10,r4,sp_4,V_11,wLoc02_3,wLoc04_9
 		defs: C_16,N_19,NZ_13,pc_20,r2_21,r3_18,r4_15,sp_12,V_14,Z_17
-	branch fp - 0x0004 l190E_thunk_fn18FE
+	branch C_16 l190E_thunk_fn18FE
 // DataOut: pc r1 r2 r3 r4 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp

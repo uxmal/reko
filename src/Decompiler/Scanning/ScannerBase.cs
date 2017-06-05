@@ -18,7 +18,10 @@
  */
 #endregion
 
+using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -30,9 +33,14 @@ namespace Reko.Scanning
 {
     public abstract class ScannerBase
     {
-        public ScannerBase(Program program)
+        private DecompilerEventListener eventListener;
+        private Dictionary<Address, Procedure_v1> noDecompiledProcs;
+ 
+        public ScannerBase(Program program, DecompilerEventListener eventListener)
         {
             this.Program = program;
+            this.eventListener = eventListener;
+            this.noDecompiledProcs = new Dictionary<Address, Procedure_v1>();
         }
 
         public Program Program { get; private set; }
@@ -77,6 +85,85 @@ namespace Reko.Scanning
             Program.Procedures.Add(addr, proc);
             Program.CallGraph.AddProcedure(proc);
             return proc;
+        }
+
+        private bool TryGetNoDecompiledProcedure(Address addr, out Procedure_v1 sProc)
+        {
+            if (!Program.User.Procedures.TryGetValue(addr, out sProc) ||
+                sProc.Decompile)
+            {
+                sProc = null;
+                return false;
+            }
+            return true;
+        }
+
+        protected bool IsNoDecompiledProcedure(Address addr)
+        {
+            Procedure_v1 sProc;
+            return TryGetNoDecompiledProcedure(addr, out sProc);
+        }
+
+        private bool TryGetNoDecompiledParsedProcedure(Address addr, out Procedure_v1 parsedProc)
+        {
+            Procedure_v1 sProc;
+            if (!TryGetNoDecompiledProcedure(addr, out sProc))
+            {
+                parsedProc = null;
+                return false;
+            }
+            if (noDecompiledProcs.TryGetValue(addr, out parsedProc))
+                return true;
+            parsedProc = new Procedure_v1()
+            {
+                Name = sProc.Name,
+            };
+            noDecompiledProcs[addr] = parsedProc;
+            if (string.IsNullOrEmpty(sProc.CSignature))
+            {
+                Warn(addr, "The user-defined procedure at address {0} did not have a signature.", addr);
+                return true;
+            }
+            var usb = new UserSignatureBuilder(Program);
+            var procDecl = usb.ParseFunctionDeclaration(sProc.CSignature);
+            if (procDecl == null)
+            {
+                Warn(addr, "The user-defined procedure signature at address {0} could not be parsed.", addr);
+                return true;
+            }
+            parsedProc.Signature = procDecl.Signature;
+            return true;
+        }
+
+        protected bool TryGetNoDecompiledProcedure(Address addr, out ExternalProcedure ep)
+        {
+            Procedure_v1 sProc;
+            if (!TryGetNoDecompiledParsedProcedure(addr, out sProc))
+            {
+                ep = null;
+                return false;
+            }
+            var ser = Program.CreateProcedureSerializer();
+            var sig = ser.Deserialize(
+                sProc.Signature,
+                Program.Architecture.CreateFrame());
+            ep = new ExternalProcedure(sProc.Name, sig);
+            return true;
+        }
+
+        public void Warn(Address addr, string message)
+        {
+            eventListener.Warn(eventListener.CreateAddressNavigator(Program, addr), message);
+        }
+
+        public void Warn(Address addr, string message, params object[] args)
+        {
+            eventListener.Warn(eventListener.CreateAddressNavigator(Program, addr), message, args);
+        }
+
+        public void Error(Address addr, string message, params object[] args)
+        {
+            eventListener.Error(eventListener.CreateAddressNavigator(Program, addr), message, args);
         }
     }
 }

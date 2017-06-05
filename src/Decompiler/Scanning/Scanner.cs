@@ -65,7 +65,6 @@ namespace Reko.Scanning
         private Dictionary<string, PseudoProcedure> pseudoProcs;
         private Dictionary<Address, ImportReference> importReferences;
         private HashSet<Procedure> visitedProcs;
-        private Dictionary<Address, Procedure_v1> noDecompiledProcs;
         private CancellationTokenSource cancelSvc;
         private HashSet<Address> scannedGlobalData = new HashSet<Address>();
 
@@ -73,7 +72,7 @@ namespace Reko.Scanning
             Program program,
             IImportResolver importResolver,
             IServiceProvider services)
-            : base(program)
+            : base(program, services.RequireService<DecompilerEventListener>())
         {
             this.segmentMap = program.SegmentMap;
             this.importResolver = importResolver;
@@ -93,7 +92,6 @@ namespace Reko.Scanning
             this.pseudoProcs = program.PseudoProcedures;
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
-            this.noDecompiledProcs = new Dictionary<Address, Procedure_v1>();
         }
 
         public IServiceProvider Services { get; private set; }
@@ -161,21 +159,6 @@ namespace Reko.Scanning
             {
                 TerminateBlock(block, addr);
             }
-        }
-
-        public void Warn(Address addr, string message)
-        {
-            eventListener.Warn(eventListener.CreateAddressNavigator(Program, addr), message);
-        }
-
-        public void Warn(Address addr, string message, params object[] args)
-        {
-            eventListener.Warn(eventListener.CreateAddressNavigator(Program, addr), message, args);
-        }
-
-        public void Error(Address addr, string message, params object[] args)
-        {
-            eventListener.Error(eventListener.CreateAddressNavigator(Program, addr), message, args);
         }
 
         /// <summary>
@@ -572,70 +555,6 @@ namespace Reko.Scanning
             var sp = proc.Frame.EnsureRegister(Program.Architecture.StackRegister);
             bb.Assign((Identifier)sp, (Expression)proc.Frame.FramePointer);
             Program.Platform.InjectProcedureEntryStatements(proc, addr, bb);
-        }
-
-        private bool TryGetNoDecompiledProcedure(Address addr, out Procedure_v1 sProc)
-        {
-            if (!Program.User.Procedures.TryGetValue(addr, out sProc) ||
-                sProc.Decompile)
-            {
-                sProc = null;
-                return false;
-            }
-            return true;
-        }
-
-        private bool IsNoDecompiledProcedure(Address addr)
-        {
-            Procedure_v1 sProc;
-            return TryGetNoDecompiledProcedure(addr, out sProc);
-        }
-
-        private bool TryGetNoDecompiledParsedProcedure(Address addr, out Procedure_v1 parsedProc)
-        {
-            Procedure_v1 sProc;
-            if (!TryGetNoDecompiledProcedure(addr, out sProc))
-            {
-                parsedProc = null;
-                return false;
-            }
-            if (noDecompiledProcs.TryGetValue(addr, out parsedProc))
-                return true;
-            parsedProc = new Procedure_v1()
-            {
-                Name = sProc.Name,
-            };
-            noDecompiledProcs[addr] = parsedProc;
-            if (string.IsNullOrEmpty(sProc.CSignature))
-            {
-                Warn(addr, "The user-defined procedure at address {0} did not have a signature.", addr);
-                return true;
-            }
-            var usb = new UserSignatureBuilder(Program);
-            var procDecl = usb.ParseFunctionDeclaration(sProc.CSignature);
-            if (procDecl == null)
-            {
-                Warn(addr, "The user-defined procedure signature at address {0} could not be parsed.", addr);
-                return true;
-            }
-            parsedProc.Signature = procDecl.Signature;
-            return true;
-        }
-
-        private bool TryGetNoDecompiledProcedure(Address addr, out ExternalProcedure ep)
-        {
-            Procedure_v1 sProc;
-            if (!TryGetNoDecompiledParsedProcedure(addr, out sProc))
-            {
-                ep = null;
-                return false;
-            }
-            var ser = Program.CreateProcedureSerializer();
-            var sig = ser.Deserialize(
-                sProc.Signature,
-                Program.Architecture.CreateFrame());
-            ep = new ExternalProcedure(sProc.Name, sig);
-            return true;
         }
 
         public void EnqueueUserGlobalData(Address addr, DataType dt, string name)

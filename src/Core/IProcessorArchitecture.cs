@@ -157,7 +157,7 @@ namespace Reko.Core
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
 		PrimitiveType WordWidth { get; }					// Processor's native word size
         int InstructionBitSize { get; }                     // Instruction "granularity" or alignment.
-        RegisterStorage StackRegister { get; }              // Stack pointer used by this machine.
+        RegisterStorage StackRegister { get; set;  }        // Stack pointer used by this machine.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace Reko.Core
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
         public int InstructionBitSize { get; protected set; }
-        public RegisterStorage StackRegister { get; protected set; }
+        public RegisterStorage StackRegister { get; set; }
         public uint CarryFlagMask { get; protected set; }
 
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);

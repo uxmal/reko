@@ -77,6 +77,7 @@ namespace Reko.Arch.SuperH
             { Opcode.mov_w, "mov.w" },
             { Opcode.mul_l, "mul.l" },
             { Opcode.sts_l, "sts.l" },
+            { Opcode.swap_w, "swap.w" },
         };
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
