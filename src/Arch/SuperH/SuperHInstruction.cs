@@ -21,6 +21,7 @@
 using System;
 using Reko.Core.Machine;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Reko.Arch.SuperH
 {
@@ -89,23 +90,54 @@ namespace Reko.Arch.SuperH
             if (op1 == null)
                 return;
             writer.Tab();
-            Render(op1, writer, options);
-            if (op2 == null)
-                return;
-            writer.Write(',');
-            Render(op2, writer, options);
+            var extra = new List<string>();
+            extra.Add(Render(op1, writer, options));
+            if (op2 != null)
+            {
+                writer.Write(',');
+                extra.Add(Render(op2, writer, options));
+            }
+            extra.RemoveAll(s => s == null);
+            if (extra.Count > 0)
+            {
+                writer.WriteLineComment(string.Join(", ", extra));
+            }
         }
 
-        private void Render(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        private string Render(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             var immOp = op as ImmediateOperand;
             if (immOp != null)
             {
                 writer.Write('#');
                 immOp.Write(writer, options);
-                return;
+                return null;
+            }
+            var memOp = op as MemoryOperand;
+            if (memOp != null && memOp.mode == AddressingMode.PcRelativeDisplacement)
+            {
+                uint uAddr = this.Address.ToUInt32();
+                if (memOp.Width.Size == 4)
+                {
+                    uAddr &= ~3u;
+                }
+                uAddr += (uint)(memOp.disp + 4);
+                var addr = Core.Address.Ptr32(uAddr);
+                if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                {
+                    writer.Write('(');
+                    writer.WriteAddress(uAddr.ToString(), addr);
+                    writer.Write(')');
+                    return op.ToString();
+                }
+                else
+                {
+                    op.Write(writer, options);
+                    return addr.ToString();
+                }
             }
             op.Write(writer, options);
+            return null;
         }
     }
 }

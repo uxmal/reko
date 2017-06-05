@@ -108,6 +108,14 @@ namespace Reko.Gui.Windows
             sb.AppendFormat(fmt, parms);
         }
 
+        public void WriteLineComment(string comment)
+        {
+            int padding = 60 - sb.Length;
+            if (padding > 0)
+                sb.Append(' ', padding);
+            sb.AppendFormat("; {0}", comment);
+        }
+
         public void NewLine()
         {
             TerminateSpan();

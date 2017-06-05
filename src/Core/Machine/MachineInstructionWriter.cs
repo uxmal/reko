@@ -49,6 +49,7 @@ namespace Reko.Core.Machine
         void Write(uint n);
         void Write(string s);
         void Write(string fmt, params object[] parms);
+        void WriteLineComment(string comment);
     }
 
     [Flags]
@@ -105,6 +106,14 @@ namespace Reko.Core.Machine
         public void Write(string fmt, params object[] parms)
         {
             sb.AppendFormat(fmt, parms);
+        }
+
+        public void WriteLineComment(string comment)
+        {
+            int padding = 60 - sb.Length;
+            if (padding > 0)
+                sb.Append(' ', padding);
+            sb.AppendFormat("; {0}", comment);
         }
 
         public override string ToString()

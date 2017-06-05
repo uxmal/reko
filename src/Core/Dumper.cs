@@ -308,6 +308,7 @@ namespace Reko.Core
         public class InstrWriter : MachineInstructionWriter
         {
             private Formatter formatter;
+            private int chars;
 
             public InstrWriter(Formatter formatter)
             {
@@ -319,42 +320,64 @@ namespace Reko.Core
 
             public void Tab()
             {
+                ++chars;
                 formatter.Write("\t");
             }
 
             public void Write(string s)
             {
+                chars += (s ?? "").Length;
                 formatter.Write(s);
             }
 
             public void Write(uint n)
             {
-                formatter.Write(n.ToString());
+                var nn = n.ToString();
+                chars += nn.Length;
+                formatter.Write(nn);
             }
 
             public void Write(char c)
             {
+                ++chars;
                 formatter.Write(c);
             }
 
             public void Write(string fmt, params object[] parms)
             {
-                formatter.Write(fmt, parms);
+                var s = string.Format(fmt, parms);
+                chars += s.Length;
+                formatter.Write(s);
             }
 
             public void WriteAddress(string formattedAddress, Address addr)
             {
+                chars += formattedAddress.Length;
                 formatter.WriteHyperlink(formattedAddress, addr);
             }
 
             public void WriteOpcode(string opcode)
             {
+                chars += opcode.Length;
                 formatter.Write(opcode);
             }
 
             public void WriteLine()
             {
+                chars = 0;
                 formatter.WriteLine();
+            }
+
+            public void WriteLineComment(string comment)
+            {
+                var pad = 60 - chars;
+                if (pad > 0)
+                {
+                    formatter.WriteSpaces(pad);
+                    chars += pad;
+                }
+                Write("; ");
+                Write(comment);
             }
         }
 
