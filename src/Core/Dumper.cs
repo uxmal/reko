@@ -309,10 +309,12 @@ namespace Reko.Core
         {
             private Formatter formatter;
             private int chars;
+            private List<string> annotations;
 
             public InstrWriter(Formatter formatter)
             {
                 this.formatter = formatter;
+                this.annotations = new List<string>();
             }
 
             public IPlatform Platform { get; private set; }
@@ -364,20 +366,25 @@ namespace Reko.Core
 
             public void WriteLine()
             {
+                if (annotations.Count > 0)
+                {
+                    var pad = 60 - chars;
+                    if (pad > 0)
+                    {
+                        formatter.WriteSpaces(pad);
+                        chars += pad;
+                    }
+                    Write("; ");
+                    Write(string.Join(", ", annotations));
+                    annotations.Clear();
+                }
                 chars = 0;
                 formatter.WriteLine();
             }
 
-            public void WriteLineComment(string comment)
+            public void AddAnnotation(string annotation)
             {
-                var pad = 60 - chars;
-                if (pad > 0)
-                {
-                    formatter.WriteSpaces(pad);
-                    chars += pad;
-                }
-                Write("; ");
-                Write(comment);
+                annotations.Add(annotation);
             }
         }
 

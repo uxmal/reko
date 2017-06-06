@@ -37,11 +37,17 @@ namespace Reko.Core.Machine
         /// you test for that before dereferencing.
         /// </summary>
         IPlatform Platform { get;  }
+
         /// <summary>
-        /// The address of the current instruction.
+        /// The address of the current instruction being written.
         /// </summary>
         Address Address { get; set; }
 
+        /// <summary>
+        /// Annotations are displayed as comments at the end of the line.
+        /// </summary>
+        /// <param name="a"></param>
+        void AddAnnotation(string a);   
         void WriteOpcode(string opcode);
         void WriteAddress(string formattedAddress, Address addr);
         void Tab();
@@ -49,7 +55,6 @@ namespace Reko.Core.Machine
         void Write(uint n);
         void Write(string s);
         void Write(string fmt, params object[] parms);
-        void WriteLineComment(string comment);
     }
 
     [Flags]
@@ -72,6 +77,14 @@ namespace Reko.Core.Machine
 
         public IPlatform Platform { get; private set; }
         public Address Address { get; set; }
+
+        /// <summary>
+        /// This renederer ignores annotations
+        /// </summary>
+        /// <param name="annotation"></param>
+        public void AddAnnotation(string annotation)
+        {
+        }
 
         public void WriteOpcode(string opcode)
         {
@@ -106,14 +119,6 @@ namespace Reko.Core.Machine
         public void Write(string fmt, params object[] parms)
         {
             sb.AppendFormat(fmt, parms);
-        }
-
-        public void WriteLineComment(string comment)
-        {
-            int padding = 60 - sb.Length;
-            if (padding > 0)
-                sb.Append(' ', padding);
-            sb.AppendFormat("; {0}", comment);
         }
 
         public override string ToString()

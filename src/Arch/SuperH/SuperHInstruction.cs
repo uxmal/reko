@@ -90,28 +90,22 @@ namespace Reko.Arch.SuperH
             if (op1 == null)
                 return;
             writer.Tab();
-            var extra = new List<string>();
-            extra.Add(Render(op1, writer, options));
+            Render(op1, writer, options);
             if (op2 != null)
             {
                 writer.Write(',');
-                extra.Add(Render(op2, writer, options));
-            }
-            extra.RemoveAll(s => s == null);
-            if (extra.Count > 0)
-            {
-                writer.WriteLineComment(string.Join(", ", extra));
+                Render(op2, writer, options);
             }
         }
 
-        private string Render(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        private void Render(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             var immOp = op as ImmediateOperand;
             if (immOp != null)
             {
                 writer.Write('#');
                 immOp.Write(writer, options);
-                return null;
+                return;
             }
             var memOp = op as MemoryOperand;
             if (memOp != null && memOp.mode == AddressingMode.PcRelativeDisplacement)
@@ -128,16 +122,16 @@ namespace Reko.Arch.SuperH
                     writer.Write('(');
                     writer.WriteAddress(uAddr.ToString(), addr);
                     writer.Write(')');
-                    return op.ToString();
+                    writer.AddAnnotation(op.ToString());
                 }
                 else
                 {
                     op.Write(writer, options);
-                    return addr.ToString();
+                    writer.AddAnnotation(addr.ToString());
                 }
+                return;
             }
             op.Write(writer, options);
-            return null;
         }
     }
 }
