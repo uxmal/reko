@@ -444,6 +444,8 @@ namespace Reko.UnitTests.Scanning
                 m.Movsw();
                 m.Mov(m.bx, m.dx);
 
+                scanner.Stub(f => f.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
+
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Is.NotNull,
                     Arg<Address>.Matches(a => a.Offset == 2),
@@ -488,6 +490,7 @@ namespace Reko.UnitTests.Scanning
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
+                scanner.Stub(f => f.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
             });
             wi.Process();
             var sExp =

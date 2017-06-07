@@ -1844,7 +1844,6 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
 === ls
 *** ls
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
-00000000004025B0: warning: Unable to resolve imported reference __gmon_start__.
 000000000040ADF2: warning: Rewriting x86 opcode 'addps' is not supported yet.
 000000000040B106: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
 000000000040B107: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
@@ -1926,160 +1925,95 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
 0000000000402390: warning: Unable to resolve imported reference __lxstat.
 00000000004025A0: warning: Unable to resolve imported reference sigemptyset.
 000000000040BDD3: warning: Unable to resolve imported reference localeconv.
-00000000004022C0: warning: Unable to resolve imported reference localeconv.
 000000000040C342: warning: Unable to resolve imported reference __memcpy_chk.
-0000000000402590: warning: Unable to resolve imported reference __memcpy_chk.
 000000000040D90E: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
-0000000000402370: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
 0000000000411929: warning: Unable to resolve imported reference nl_langinfo.
-0000000000402660: warning: Unable to resolve imported reference nl_langinfo.
 0000000000411AF9: warning: Unable to resolve imported reference fscanf.
-00000000004024A0: warning: Unable to resolve imported reference fscanf.
 0000000000411D43: warning: Unable to resolve imported reference __freading.
-00000000004026B0: warning: Unable to resolve imported reference __freading.
 0000000000411DB9: warning: Unable to resolve imported reference __freading.
-00000000004026B0: warning: Unable to resolve imported reference __freading.
+0000000000411E0A: warning: Unable to resolve imported reference fseeko.
 0000000000411E38: warning: Unable to resolve imported reference lseek.
-0000000000402430: warning: Unable to resolve imported reference lseek.
 0000000000411D91: warning: Unable to resolve imported reference lseek.
-0000000000402430: warning: Unable to resolve imported reference lseek.
 0000000000411D20: warning: Unable to resolve imported reference __uflow.
-00000000004021B0: warning: Unable to resolve imported reference __uflow.
 0000000000411C04: warning: Unable to resolve imported reference __uflow.
-00000000004021B0: warning: Unable to resolve imported reference __uflow.
 000000000040DE33: warning: Unable to resolve imported reference __ctype_b_loc.
-0000000000402880: warning: Unable to resolve imported reference __ctype_b_loc.
 000000000040E146: warning: Unable to resolve imported reference mbrtowc.
-00000000004023C0: warning: Unable to resolve imported reference mbrtowc.
 000000000040E1C6: warning: Unable to resolve imported reference iswprint.
-0000000000402840: warning: Unable to resolve imported reference iswprint.
 000000000040E1E1: warning: Unable to resolve imported reference mbsinit.
-0000000000402830: warning: Unable to resolve imported reference mbsinit.
 000000000040535A: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
-0000000000402370: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
 000000000040D268: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
-0000000000402370: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
 000000000040D379: warning: Unable to resolve imported reference __ctype_b_loc.
-0000000000402880: warning: Unable to resolve imported reference __ctype_b_loc.
 000000000040D307: warning: Unable to resolve imported reference mbrtowc.
-00000000004023C0: warning: Unable to resolve imported reference mbrtowc.
 000000000040D341: warning: Unable to resolve imported reference iswcntrl.
-00000000004022A0: warning: Unable to resolve imported reference iswcntrl.
 000000000040D2EB: warning: Unable to resolve imported reference mbsinit.
-0000000000402830: warning: Unable to resolve imported reference mbsinit.
 000000000040D307: warning: Unable to resolve imported reference mbrtowc.
-00000000004023C0: warning: Unable to resolve imported reference mbrtowc.
 00000000004053E1: warning: Unable to resolve imported reference __ctype_b_loc.
-0000000000402880: warning: Unable to resolve imported reference __ctype_b_loc.
 0000000000405394: warning: Unable to resolve imported reference fwrite_unlocked.
-00000000004026C0: warning: Unable to resolve imported reference fwrite_unlocked.
 0000000000405412: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
-0000000000402370: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
 0000000000405487: warning: Unable to resolve imported reference mbrtowc.
-00000000004023C0: warning: Unable to resolve imported reference mbrtowc.
 00000000004054EC: warning: Unable to resolve imported reference mbsinit.
-0000000000402830: warning: Unable to resolve imported reference mbsinit.
+00000000004056F8: warning: Unable to resolve imported reference __overflow.
 00000000004055E1: warning: Unable to resolve imported reference __ctype_b_loc.
-0000000000402880: warning: Unable to resolve imported reference __ctype_b_loc.
 0000000000410E77: warning: Unable to resolve imported reference error.
-0000000000402770: warning: Unable to resolve imported reference error.
 0000000000411887: warning: Unable to resolve imported reference __fpending.
-0000000000402270: warning: Unable to resolve imported reference __fpending.
 0000000000411844: warning: Unable to resolve imported reference lgetfilecon.
-0000000000402540: warning: Unable to resolve imported reference lgetfilecon.
 00000000004117DF: warning: Unable to resolve imported reference freecon.
-00000000004027D0: warning: Unable to resolve imported reference freecon.
 0000000000411824: warning: Unable to resolve imported reference getfilecon.
-00000000004025E0: warning: Unable to resolve imported reference getfilecon.
 000000000041184E: warning: Procedure fn0000000000411840 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000411395: warning: Unable to resolve imported reference __ctype_b_loc.
-0000000000402880: warning: Unable to resolve imported reference __ctype_b_loc.
 00000000004113F3: warning: Unable to resolve imported reference __strtoul_internal.
-0000000000402460: warning: Unable to resolve imported reference __strtoul_internal.
 000000000041132A: warning: Unable to resolve imported reference error.
-0000000000402770: warning: Unable to resolve imported reference error.
 0000000000410EC5: warning: Unable to resolve imported reference __ctype_b_loc.
-0000000000402880: warning: Unable to resolve imported reference __ctype_b_loc.
 000000000040EF67: warning: Unable to resolve imported reference strftime.
-0000000000402740: warning: Unable to resolve imported reference strftime.
 000000000040EC93: warning: Unable to resolve imported reference __ctype_toupper_loc.
-00000000004021A0: warning: Unable to resolve imported reference __ctype_toupper_loc.
 000000000040EC43: warning: Unable to resolve imported reference __ctype_tolower_loc.
-0000000000402870: warning: Unable to resolve imported reference __ctype_tolower_loc.
 000000000040EC1F: warning: Procedure fn000000000040EC10 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 000000000040D697: warning: Procedure fn000000000040D690 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 000000000040CF60: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
-0000000000402370: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
 000000000040CF78: warning: Unable to resolve imported reference mbstowcs.
-00000000004022D0: warning: Unable to resolve imported reference mbstowcs.
 000000000040CFDE: warning: Unable to resolve imported reference mbstowcs.
-00000000004022D0: warning: Unable to resolve imported reference mbstowcs.
 000000000040D010: warning: Unable to resolve imported reference iswprint.
-0000000000402840: warning: Unable to resolve imported reference iswprint.
 000000000040CB88: warning: Unable to resolve imported reference getgrgid.
-00000000004023E0: warning: Unable to resolve imported reference getgrgid.
 000000000040AB76: warning: Unable to resolve imported reference setlocale.
-0000000000402710: warning: Unable to resolve imported reference setlocale.
 000000000040AB4B: warning: Unable to resolve imported reference gettimeofday.
-0000000000402440: warning: Unable to resolve imported reference gettimeofday.
+0000000000409FD6: warning: Unable to resolve imported reference error.
+000000000040A10E: warning: Unable to resolve imported reference __overflow.
 0000000000409D79: warning: Unable to resolve imported reference readlink.
-00000000004022E0: warning: Unable to resolve imported reference readlink.
 0000000000409CD3: warning: Unable to resolve imported reference acl_extended_file.
-00000000004024D0: warning: Unable to resolve imported reference acl_extended_file.
 0000000000409BA8: warning: Unable to resolve imported reference setlocale.
-0000000000402710: warning: Unable to resolve imported reference setlocale.
 0000000000407FA1: warning: Unable to resolve imported reference __xstat.
-0000000000402610: warning: Unable to resolve imported reference __xstat.
 0000000000405836: warning: Unable to resolve imported reference error.
-0000000000402770: warning: Unable to resolve imported reference error.
+0000000000405043: warning: Unable to resolve imported reference strcoll.
 000000000040800C: warning: Unable to resolve imported reference __lxstat.
-0000000000402390: warning: Unable to resolve imported reference __lxstat.
 00000000004088C5: warning: Unable to resolve imported reference __xstat.
-0000000000402610: warning: Unable to resolve imported reference __xstat.
 00000000004084DD: warning: Unable to resolve imported reference error.
-0000000000402770: warning: Unable to resolve imported reference error.
 00000000004061CF: warning: Procedure fn0000000000405D50 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00000000004061CF: warning: Procedure fn0000000000405D50 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000408587: warning: Unable to resolve imported reference stpncpy.
-00000000004026F0: warning: Unable to resolve imported reference stpncpy.
 00000000004085C2: warning: Unable to resolve imported reference __xstat.
-0000000000402610: warning: Unable to resolve imported reference __xstat.
+0000000000406464: warning: Unable to resolve imported reference fwrite_unlocked.
 0000000000406A75: warning: Procedure fn0000000000406A30 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000406828: warning: Unable to resolve imported reference _obstack_newchunk.
-0000000000402720: warning: Unable to resolve imported reference _obstack_newchunk.
 00000000004064A7: warning: Unable to resolve imported reference fflush_unlocked.
-0000000000402820: warning: Unable to resolve imported reference fflush_unlocked.
 00000000004064B6: warning: Unable to resolve imported reference sigprocmask.
-00000000004021D0: warning: Unable to resolve imported reference sigprocmask.
 00000000004064DB: warning: Unable to resolve imported reference raise.
-00000000004021E0: warning: Unable to resolve imported reference raise.
 00000000004064EA: warning: Unable to resolve imported reference sigprocmask.
-00000000004021D0: warning: Unable to resolve imported reference sigprocmask.
 0000000000406808: warning: Unable to resolve imported reference _obstack_newchunk.
-0000000000402720: warning: Unable to resolve imported reference _obstack_newchunk.
 0000000000405D3D: warning: Unable to resolve imported reference __overflow.
-0000000000402400: warning: Unable to resolve imported reference __overflow.
 0000000000407106: warning: Unable to resolve imported reference fwrite_unlocked.
-00000000004026C0: warning: Unable to resolve imported reference fwrite_unlocked.
 000000000040579E: warning: Unable to resolve imported reference __overflow.
-0000000000402400: warning: Unable to resolve imported reference __overflow.
 0000000000406B34: warning: Unable to resolve imported reference __mempcpy_chk.
-0000000000402210: warning: Unable to resolve imported reference __mempcpy_chk.
 0000000000406B50: warning: Unable to resolve imported reference stpcpy.
-0000000000402350: warning: Unable to resolve imported reference stpcpy.
 0000000000406B6B: warning: Procedure fn0000000000406A80 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000407181: warning: Unable to resolve imported reference fwrite_unlocked.
-00000000004026C0: warning: Unable to resolve imported reference fwrite_unlocked.
 0000000000405EEF: warning: Procedure fn0000000000405D50 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000405EEF: warning: Procedure fn0000000000405D50 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000405649: warning: Procedure fn00000000004052D0 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000405649: warning: Procedure fn00000000004052D0 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00000000004052B2: warning: Unable to resolve imported reference __overflow.
-0000000000402400: warning: Unable to resolve imported reference __overflow.
 00000000004052BE: warning: Unable to resolve imported reference __overflow.
-0000000000402400: warning: Unable to resolve imported reference __overflow.
+0000000000404DB6: warning: Unable to resolve imported reference freecon.
 0000000000404EE5: warning: Unable to resolve imported reference _setjmp.
-0000000000402510: warning: Unable to resolve imported reference _setjmp.
 0000000000404B20: error: Value does not fall within the expected range.
 0000000000402880: warning: Unable to resolve imported reference __ctype_b_loc.
 0000000000402870: warning: Unable to resolve imported reference __ctype_tolower_loc.
@@ -2089,6 +2023,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
 0000000000402820: warning: Unable to resolve imported reference fflush_unlocked.
 00000000004027E0: warning: Unable to resolve imported reference sigismember.
 00000000004027D0: warning: Unable to resolve imported reference freecon.
+0000000000411EF1: warning: Unable to resolve imported reference __cxa_atexit.
 0000000000402770: warning: Unable to resolve imported reference error.
 0000000000402740: warning: Unable to resolve imported reference strftime.
 0000000000402720: warning: Unable to resolve imported reference _obstack_newchunk.
@@ -2143,20 +2078,13 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-00000000004027D0: error: An error occurred while processing instruction at address 00000000004027D0.
+0000000000404DB6: error: An error occurred while processing instruction at address 0000000000404DB6.
     Expected stack depth to be negative.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-0000000000402550: error: An error occurred while processing instruction at address 0000000000402550.
-    The given key was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-0000000000402690: error: An error occurred while processing instruction at address 0000000000402690.
+0000000000405043: error: An error occurred while processing instruction at address 0000000000405043.
     Expected stack depth to be negative.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
@@ -2200,7 +2128,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-0000000000402790: error: An error occurred while processing instruction at address 0000000000402790.
+0000000000411E0A: error: An error occurred while processing instruction at address 0000000000411E0A.
     Expected stack depth to be negative.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
@@ -2282,7 +2210,7 @@ Parameter name: bitOffset
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 157
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 00000000004054D8: error: An error occurred while processing the statement Mem696[rdx_681 - 0x0000000000000001 + 0x0000000000000000:byte] = (byte) (word32) Mem569[rdi_622 - 0x0000000000000001 + 0x0000000000000000:byte].
-    Not handling (ptr (struct (0 T_1734 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_1719 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -2297,7 +2225,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040A8A3: error: An error occurred while processing the statement r10 = r10 - rbp.
-    Pulling difference (union (bool u2) ((ptr (struct (0 T_416 t0000) (A0 T_3626 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_3722 t0000) (1 T_3753 t0001)))
+    Pulling difference (union (bool u2) ((ptr (struct (0 T_416 t0000) (A0 T_3608 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_3701 t0000) (1 T_3732 t0001)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -2305,7 +2233,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040A8A6: error: An error occurred while processing the statement r12 = r12 - rbx.
-    Pulling difference (union (bool u2) ((ptr (struct (0 T_416 t0000) (A0 T_3626 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_416 t0000) (1 T_3738 t0001) (2 T_3800 t0002) (A0 T_3622 t00A0)))
+    Pulling difference (union (bool u2) ((ptr (struct (0 T_416 t0000) (A0 T_3608 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_416 t0000) (1 T_3717 t0001) (2 T_3779 t0002) (A0 T_3604 t00A0)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -2313,7 +2241,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040AAAD: error: An error occurred while processing the statement r12 = r12 - rbx.
-    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_416 t0000) (A0 T_3626 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_416 t0000) (1 T_3738 t0001) (2 T_3800 t0002) (A0 T_3622 t00A0)))
+    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_416 t0000) (A0 T_3608 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_416 t0000) (1 T_3717 t0001) (2 T_3779 t0002) (A0 T_3604 t00A0)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -2321,7 +2249,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040AAB0: error: An error occurred while processing the statement r10 = r10 - rbp.
-    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_416 t0000) (A0 T_3626 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 char b0000) (1 T_3753 t0001)))
+    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_416 t0000) (A0 T_3608 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 char b0000) (1 T_3732 t0001)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -2329,7 +2257,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040AAF6: error: An error occurred while processing the statement r10 = r10 - rbp.
-    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_416 t0000) (A0 T_3626 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 char b0000) (1 T_3753 t0001)))
+    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_416 t0000) (A0 T_3608 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 char b0000) (1 T_3732 t0001)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -2337,7 +2265,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000000000407FC2: error: An error occurred while processing the statement r15 = (uint64) Mem0[r13 - 0x0000000000000384 + 0x0000000000000000:word32].
-    Not handling (ptr (struct (0 T_7430 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_7406 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -2350,7 +2278,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 00000000004086E0: error: An error occurred while processing the statement Mem0[r8 - 0x0000000000000001 + 0x0000000000000000:byte] = r15b.
-    Not handling (ptr (struct (0 T_9012 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_8992 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -2361,7 +2289,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040A2DA: error: An error occurred while processing the statement branch Mem0[rax_20 - 0x0000000000000001 + 0x0000000000000000:byte] == 0x2F l000000000040A2EE.
-    Not handling (ptr (struct (0 T_10240 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_10215 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -2550,43 +2478,24 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 === pngpixel
 *** pngpixel
 0000000000401348: warning: Unable to resolve imported reference atol.
-0000000000400C30: warning: Unable to resolve imported reference atol.
 0000000000401362: warning: Unable to resolve imported reference atol.
-0000000000400C30: warning: Unable to resolve imported reference atol.
 00000000004013B1: warning: Unable to resolve imported reference png_create_read_struct.
-0000000000400BD0: warning: Unable to resolve imported reference png_create_read_struct.
 00000000004013CE: warning: Unable to resolve imported reference png_create_info_struct.
-0000000000400CA0: warning: Unable to resolve imported reference png_create_info_struct.
 00000000004013F2: warning: Unable to resolve imported reference png_init_io.
-0000000000400C90: warning: Unable to resolve imported reference png_init_io.
 0000000000401405: warning: Unable to resolve imported reference png_read_info.
-0000000000400C10: warning: Unable to resolve imported reference png_read_info.
 0000000000401418: warning: Unable to resolve imported reference png_get_rowbytes.
-0000000000400BE0: warning: Unable to resolve imported reference png_get_rowbytes.
 000000000040142A: warning: Unable to resolve imported reference png_malloc.
-0000000000400C20: warning: Unable to resolve imported reference png_malloc.
 0000000000401469: warning: Unable to resolve imported reference png_get_IHDR.
-0000000000400C50: warning: Unable to resolve imported reference png_get_IHDR.
 00000000004014A6: warning: Unable to resolve imported reference png_error.
-0000000000400B50: warning: Unable to resolve imported reference png_error.
 00000000004014B2: warning: Unable to resolve imported reference png_start_read_image.
-0000000000400B60: warning: Unable to resolve imported reference png_start_read_image.
 0000000000401695: warning: Unable to resolve imported reference png_free.
-0000000000400BA0: warning: Unable to resolve imported reference png_free.
 00000000004016A8: warning: Unable to resolve imported reference png_destroy_info_struct.
-0000000000400C60: warning: Unable to resolve imported reference png_destroy_info_struct.
 00000000004016EF: warning: Unable to resolve imported reference png_destroy_read_struct.
-0000000000400B90: warning: Unable to resolve imported reference png_destroy_read_struct.
 00000000004016BB: warning: Unable to resolve imported reference png_error.
-0000000000400B50: warning: Unable to resolve imported reference png_error.
 000000000040160D: warning: Unable to resolve imported reference png_read_row.
-0000000000400C00: warning: Unable to resolve imported reference png_read_row.
 0000000000400F22: warning: Unable to resolve imported reference png_get_bit_depth.
-0000000000400B30: warning: Unable to resolve imported reference png_get_bit_depth.
 0000000000400F3B: warning: Unable to resolve imported reference png_get_color_type.
-0000000000400BB0: warning: Unable to resolve imported reference png_get_color_type.
 00000000004012D5: warning: Unable to resolve imported reference png_error.
-0000000000400B50: warning: Unable to resolve imported reference png_error.
 0000000000400DC0: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000400B80: warning: Unable to resolve imported reference png_get_tRNS.
 0000000000400CB0: warning: Unable to resolve imported reference png_get_PLTE.
@@ -3744,7 +3653,6 @@ fn00000001400011B0: error: An error occurred while rewriting procedure to high-l
 === test
 *** test
 00000000004003F0: warning: Unable to resolve imported reference __gmon_start__.
-0000000000400430: warning: Unable to resolve imported reference __gmon_start__.
 000000000040051F: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000400497: error: An error occurred while processing instruction at address 0000000000400497.
     Expected stack depth to be negative.
