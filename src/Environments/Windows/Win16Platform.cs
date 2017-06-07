@@ -114,6 +114,10 @@ namespace Reko.Environments.Windows
 
         public override void EnsureTypeLibraries(string envName)
         {
+            if (Metadata != null)
+            {
+                return;
+            }
             base.EnsureTypeLibraries(envName);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var envCfg = cfgSvc.GetEnvironment(PlatformIdentifier);

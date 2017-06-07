@@ -507,13 +507,10 @@ namespace Reko.ImageLoaders.MzExe
             this.segments = ReadSegmentTable(offset, cSeg);
             var segFirst = segments[0];
             var segLast = segments[segments.Length - 1];
-            this.mem = new MemoryArea(
-                PreferredBaseAddress,
-                new byte[segLast.LinearAddress + segLast.DataLength]);
             this.segmentMap = new SegmentMap(segFirst.Address);
             foreach (var segment in segments)
             {
-                var mem = new MemoryArea(
+                this.mem = new MemoryArea(
                     segment.Address, 
                     new byte[Math.Max(segment.Alloc, segment.DataLength)]);
                 LoadSegment(segment, mem, segmentMap);
@@ -544,7 +541,8 @@ namespace Reko.ImageLoaders.MzExe
                 cbSegmentPage = (cbSegmentPage + 0xFFFu) & ~0xFFFu;
                 seg.LinearAddress = linAddress;
                 seg.Address = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | 7), 0);
-                Debug.Print("{0:X4} {1:X4} {2:X4} {3:X4}",
+                Debug.Print("{0}:{1:X4} {2:X4} {3:X4} {4:X4}",
+                    seg.Address,
                     seg.DataOffset,
                     seg.DataLength,
                     seg.Flags,
@@ -553,7 +551,8 @@ namespace Reko.ImageLoaders.MzExe
                 linAddress += cbSegmentPage;
             }
 
-            // Generate pseudo-segment for imports
+            // Generate pseudo-segment for imports with in a segment that isn't
+            // one of the "real" segments loaded above.
             addrImportStubs = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | 7), 0);
 
             return segs.ToArray();
@@ -659,17 +658,16 @@ namespace Reko.ImageLoaders.MzExe
 
         public class NeRelocationEntry
         {
-            public NE_RADDR address_type;    // Relocation address type
-            public NE_RELTYPE relocation_type; // Relocation type
-            public ushort offset;          // Offset in segment to fixup
-            public ushort target1;         // Target specification
-            public ushort target2;         // Target specification/
+            public NE_RADDR address_type;       // Relocation address type
+            public NE_RELTYPE relocation_type;  // Relocation type
+            public ushort offset;               // Offset in segment to fixup
+            public ushort target1;              // Target specification
+            public ushort target2;              // Target specification
         }
 
         // Apply relocations to a segment.
         bool ApplyRelocations(EndianImageReader rdr, int cRelocations, NeSegment seg)
         {
-            string module = "";
             Address address = null;
             NeRelocationEntry rep = null;
             Debug.Print("Relocating segment {0}", seg.Address);
@@ -692,6 +690,7 @@ namespace Reko.ImageLoaders.MzExe
                 bool additive = (rep.relocation_type & NE_RELTYPE.ADDITIVE) != 0;
                 Tuple<Address, ImportReference> impRef;
                 uint lp;
+                string module = "";
                 switch (rep.relocation_type & (NE_RELTYPE)3)
                 {
                 case NE_RELTYPE.ORDINAL:
@@ -718,6 +717,7 @@ namespace Reko.ImageLoaders.MzExe
                     var nameRdr = new LeImageReader(RawImage, offName);
                     byte fnNameLength = nameRdr.ReadByte();
                     var abFnName = nameRdr.ReadBytes(fnNameLength);
+                    // Synthesize the import.
                     lp = ((uint)rep.target1 << 16) | rep.target2;
                     if (importStubs.TryGetValue(lp, out impRef))
                     {
@@ -780,7 +780,7 @@ namespace Reko.ImageLoaders.MzExe
                 if (additive)
                 {
                     var sp = seg.Address + offset;
-                    Debug.Print("    {0}", sp);
+                    Debug.Print("    {0} (contains: {1:X4})", sp, mem.ReadLeUInt16(sp));
                     byte b;
                     ushort w;
                     switch (rep.address_type & (NE_RADDR) 0x7f)
@@ -817,7 +817,7 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         var sp = seg.Address + offset;
                         ushort next_offset = mem.ReadLeUInt16(sp);
-                        Debug.Print("    {0:X4}:{1:X4}", offset, next_offset);
+                        Debug.Print("    {0} (contains: {1:X4})", sp, next_offset);
                         switch (rep.address_type & (NE_RADDR) 0x7f)
                         {
                         case NE_RADDR.LOWBYTE:
