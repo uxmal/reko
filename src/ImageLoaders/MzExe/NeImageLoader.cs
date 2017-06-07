@@ -468,6 +468,7 @@ namespace Reko.ImageLoaders.MzExe
                     }
                     ep.Type = SymbolType.Procedure;
                     ep.ProcessorState = state;
+                    Debug.Print("$$$ {0}", ep.Name);
                     imageSymbols[ep.Address] = ep;
                     entries.Add(ep);
                 }

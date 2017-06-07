@@ -62,6 +62,7 @@ namespace Reko.UnitTests
             case Domain.SignedInt:
                 switch (primitive.ByteSize)
                 {
+                case 1: sb.Append("int8_t"); break;
                 case 2: sb.Append("int16_t"); break;
                 case 4: sb.Append("int32_t"); break;
                 case 8: sb.Append("__int64"); break;
@@ -71,6 +72,7 @@ namespace Reko.UnitTests
             case Domain.UnsignedInt:
                 switch (primitive.ByteSize)
                 {
+                case 2: sb.Append("uint16_t"); break;
                 case 4: sb.Append("uint32_t"); break;
                 default: throw new NotImplementedException();
                 }

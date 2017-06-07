@@ -62,5 +62,44 @@ namespace Reko.UnitTests.Environments.Windows
                 "foo()",
                 "@foo$qv");
         }
+
+        // There are binaries with truncated symbols; rather than die we do a best effort. Users can always always override this
+        // by providing complete external metadata.
+        [Test]
+        public void Bmnp_TruncatedName()
+        {
+            RunTest(
+                "foo::bar(Point ^, FrobnicatorApp_truncated *)",
+                "@foo@0bar$qmx5Pointn17FrobnicatorApp");
+        }
+
+        // Sometimes a mangled argument type refers to a previous argument type.
+        [Test]
+        public void Bmnp_BackReference()
+        {
+            RunTest(
+                "foo::bar(int16_t, Point *, Point *)",
+                "@foo@bar$qin5Pointt2");
+        }
+
+        [Test]
+        public void Bmnp_SignedChar()
+        {
+            RunTest(
+              "foo::bar(int8_t *)",
+              "@foo@bar$qnzc");
+        }
+
+        [Test]
+        public void Bmnp_Specials_dtor()
+        {
+            RunTest("State::~State()", "@State@0$bdtr$qv");
+        }
+
+        [Test]
+        public void Bmnp_Unsigned_short()
+        {
+            RunTest("Fnord::DoState(uint16_t)", "@Fnord@0DoState$qus");
+        }
     }
 }
