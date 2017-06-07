@@ -289,20 +289,7 @@ l004011D7:
 	call memcpy (retsize: 4; depth: 4)
 		uses: al_14,C_20,dwLoc04_4,dwLoc10_9,dwLoc14_22,eax_30,ebp_5,ebx_23,esp_32,SCZO_31,SZO_18,Z_19
 		defs: al_40,C_39,eax_42,ebp_35,ebx_37,ecx_44,edx_43,esp_34,SCZO_36,SZO_38,Z_41
-	word32 esp_48
-	word32 ebp_49
-	byte SCZO_50
-	word32 ebx_51
-	byte SZO_52
-	byte C_53
-	byte al_54
-	byte Z_55
-	word32 eax_56
-	word32 edx_57
-	word32 ecx_58
-	call _InitTermAndUnexPtrs$qv (retsize: 4; depth: 4)
-		uses: al_40,C_39,dwLoc04_4,dwLoc10_9,dwLoc14_22,eax_42,ebp_35,ebx_37,ecx_44,edx_43,esp_46,SCZO_47,SZO_38,Z_41
-		defs: al_54,C_53,eax_56,ebp_49,ebx_51,ecx_58,edx_57,esp_48,SCZO_50,SZO_52,Z_55
+	_InitTermAndUnexPtrs()
 	return
 // DataOut:
 // DataOut (flags): 

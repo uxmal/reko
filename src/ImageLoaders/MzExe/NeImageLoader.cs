@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
+using Reko.Environments.Windows;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -87,6 +88,7 @@ namespace Reko.ImageLoaders.MzExe
         private Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
         private SortedList<Address, ImageSymbol> imageSymbols;
         private IProcessorArchitecture arch;
+        private IPlatform platform;
         private Address addrEntry;
 
         public NeImageLoader(IServiceProvider services, string filename, byte[] rawBytes, uint e_lfanew)
@@ -398,7 +400,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-protected-16");
-            var platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
+            this.platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
 
             var program = new Program(
                 this.segmentMap,

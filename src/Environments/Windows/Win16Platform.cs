@@ -128,5 +128,12 @@ namespace Reko.Environments.Windows
                                 .Load(this, tl.Module, Metadata);
             }
         }
+
+        public override ExternalProcedure SignatureFromName(string fnName)
+        {
+            var tlsvc = new TypeLibraryDeserializer(this, false, Metadata);
+            var sig = SignatureGuesser.SignatureFromName(fnName, tlsvc, this);
+            return sig;
+        }
     }
 }

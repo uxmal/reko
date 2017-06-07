@@ -106,18 +106,7 @@ void fn004011B0(word32 dwArg04)
 	word32 edx_43;
 	word32 ecx_44;
 	memcpy();
-	word32 esp_48;
-	word32 ebp_49;
-	byte SCZO_50;
-	word32 ebx_51;
-	byte SZO_52;
-	byte C_53;
-	byte al_54;
-	byte Z_55;
-	word32 eax_56;
-	word32 edx_57;
-	word32 ecx_58;
-	_InitTermAndUnexPtrs$qv();
+	_InitTermAndUnexPtrs();
 	return;
 }
 
