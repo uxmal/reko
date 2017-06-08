@@ -113,19 +113,19 @@ namespace Reko.Arch.Arm
             writer.Tab();
             if (WriteRegisterSetInstruction(writer))
                 return;
-            Write(ops[0], writer);
+            Write(ops[0], writer, options);
             if (ops.Length < 2)
                 return;
             writer.Write(",");
-            Write(ops[1], writer);
+            Write(ops[1], writer, options);
             if (ops.Length < 3)
                 return;
             writer.Write(",");
-            Write(ops[2], writer);
+            Write(ops[2], writer, options);
             if (ops.Length < 4)
                 return;
             writer.Write(",");
-            Write(ops[3], writer);
+            Write(ops[3], writer, options);
         }
 
         private bool WriteRegisterSetInstruction(MachineInstructionWriter writer)
@@ -140,7 +140,7 @@ namespace Reko.Arch.Arm
             case Opcode.LDM:
             case Opcode.STM:
             case Opcode.STMDB:
-                Write(ops.First(), writer);
+                Write(ops.First(), writer, MachineInstructionWriterOptions.None);
                 if (instruction.ArchitectureDetail.WriteBack)
                     writer.Write("!");
                 ops = ops.Skip(1);
@@ -192,7 +192,7 @@ namespace Reko.Arch.Arm
 
         private static readonly char[] nosuffixRequired = new[] { '.', 'E', 'e' };
 
-        public void Write(ArmInstructionOperand op, MachineInstructionWriter writer)
+        public void Write(ArmInstructionOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             switch (op.Type)
             {
@@ -226,6 +226,26 @@ namespace Reko.Arch.Arm
                 writer.Write(A32Registers.SysRegisterByCapstoneID[op.SysRegisterValue.Value].Name);
                 break;
             case ArmInstructionOperandType.Memory:
+                if (op.MemoryValue.BaseRegister == ArmRegister.PC)
+                {
+                    var uAddr = (uint)((int)this.Address.ToUInt32() + op.MemoryValue.Displacement) + 8u;
+                    var addr = Address.Ptr32(uAddr);
+                    if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                    {
+                        writer.Write('[');
+                        writer.WriteAddress(addr.ToString(), addr);
+                        writer.Write(']');
+                        var sr = new StringRenderer();
+                        WriteMemoryOperand(op, sr);
+                        writer.AddAnnotation(sr.ToString());
+                    }
+                    else
+                    {
+                        WriteMemoryOperand(op, writer);
+                        writer.AddAnnotation(addr.ToString());
+                    }
+                    return;
+                }
                 WriteMemoryOperand(op, writer);
                 break;
             case ArmInstructionOperandType.SetEnd:
@@ -239,7 +259,7 @@ namespace Reko.Arch.Arm
                 break;
             default:
                 throw new NotImplementedException(string.Format(
-                    "Can't disasseble {0} {1}. Unknown operand type: {2}",
+                    "Can't disassemble {0} {1}. Unknown operand type: {2}",
                     instruction.Mnemonic,
                     instruction.Operand,
                     op.Type));

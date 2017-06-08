@@ -5,7 +5,7 @@ main proc
 	push	ebp
 	mov	ebp,esp
 	push	ecx
-	fld1	
+	fld1
 	fstp	dword ptr [esp]
 	push	004020C0
 	mov	eax,[ebp+08]
@@ -17,7 +17,7 @@ main proc
 	add	esp,10
 	xor	eax,eax
 	pop	ebp
-	ret	
+	ret
 00401024             CC CC CC CC CC CC CC CC CC CC CC CC     ............
 
 ;; test1: 00401030
@@ -37,7 +37,7 @@ test1 proc
 	call	dword ptr [0040209C]
 	add	esp,18
 	pop	ebp
-	ret	
+	ret
 00401058                         CC CC CC CC CC CC CC CC         ........
 
 ;; test2: 00401060
@@ -67,7 +67,7 @@ l00401087:
 
 l004010A5:
 	pop	ebp
-	ret	
+	ret
 004010A7                      CC CC CC CC CC CC CC CC CC        .........
 
 ;; indirect_call_test3: 004010B0
@@ -83,7 +83,7 @@ indirect_call_test3 proc
 	call	eax
 	add	esp,08
 	pop	ebp
-	ret	
+	ret
 004010CB                                  CC CC CC CC CC            .....
 
 ;; test4: 004010D0
@@ -98,7 +98,7 @@ test4 proc
 	call	eax
 	add	esp,04
 	pop	ebp
-	ret	
+	ret
 004010EA                               CC CC CC CC CC CC           ......
 
 ;; test5: 004010F0
@@ -117,7 +117,7 @@ test5 proc
 	call	eax
 	add	esp,0C
 	pop	ebp
-	ret	
+	ret
 0040111A                               CC CC CC CC CC CC           ......
 
 ;; test6: 00401120
@@ -148,14 +148,14 @@ test6 proc
 	add	esp,08
 	mov	esp,ebp
 	pop	ebp
-	ret	
+	ret
 00401159                            CC CC CC CC CC CC CC          .......
 
 ;; test7: 00401160
 test7 proc
 	push	ebp
 	mov	ebp,esp
-	fld1	
+	fld1
 	fcomp	double ptr [ebp+08]
 	fstsw	ax
 	test	ah,05
@@ -182,7 +182,7 @@ l00401189:
 	mov	eax,[edx+04]
 	call	eax
 	pop	ebp
-	ret	
+	ret
 004011A9                            CC CC CC CC CC CC CC          .......
 
 ;; nested_if_blocks_test8: 004011B0
@@ -230,7 +230,7 @@ l0040120D:
 	call	00401120
 	add	esp,0C
 	pop	ebp
-	ret	
+	ret
 00401222       CC CC CC CC CC CC CC CC CC CC CC CC CC CC   ..............
 
 ;; loop_test9: 00401230
@@ -278,7 +278,7 @@ l00401278:
 l00401294:
 	mov	esp,ebp
 	pop	ebp
-	ret	
+	ret
 00401298                         CC CC CC CC CC CC CC CC         ........
 
 ;; const_div_test10: 004012A0
@@ -300,7 +300,7 @@ l004012BA:
 	mov	[0040301C],ecx
 	mov	[00403020],eax
 	pop	ebp
-	ret	
+	ret
 004012C7                      CC CC CC CC CC CC CC CC CC        .........
 
 ;; loop_test11: 004012D0
@@ -354,7 +354,7 @@ l0040131E:
 l00401329:
 	mov	esp,ebp
 	pop	ebp
-	ret	
+	ret
 0040132D                                        CC CC CC              ...
 00401330 68 B9 16 40 00 E8 49 03 00 00 A1 4C 30 40 00 C7 h..@..I....L0@..
 00401340 04 24 3C 30 40 00 FF 35 48 30 40 00 A3 3C 30 40 .$<0@..5H0@..<0@
@@ -452,14 +452,14 @@ l00401613:
 
 l00401674:
 	call	00401821
-	ret	
+	ret
 
 ;; fn0040167A: 0040167A
 fn0040167A proc
 	push	08
 	call	00401918
 	pop	ecx
-	ret	
+	ret
 
 ;; fn00401683: 00401683
 fn00401683 proc
@@ -470,7 +470,7 @@ fn00401683 proc
 	neg	eax
 	pop	ecx
 	dec	eax
-	ret	
+	ret
 
 ;; fn00401695: 00401695
 fn00401695 proc
@@ -498,7 +498,7 @@ l004016AF:
 l004016B6:
 	pop	edi
 	pop	esi
-	ret	
+	ret
 004016B9                            56 57 B8 60 21 40 00          VW.`!@.
 004016C0 BF 60 21 40 00 3B C7 8B F0 73 0F 8B 06 85 C0 74 .`!@.;...s.....t
 004016D0 02 FF D0 83 C6 04 3B F7 72 F1 5F 5E C3 CC FF 25 ......;.r._^...%
@@ -512,7 +512,7 @@ fn004016F0 proc
 
 l004016FB:
 	xor	eax,eax
-	ret	
+	ret
 
 l004016FE:
 	mov	eax,[ecx+3C]
@@ -525,7 +525,7 @@ l0040170B:
 	cmp	word ptr [eax+18],010B
 	setz	cl
 	mov	eax,ecx
-	ret	
+	ret
 00401719                            CC CC CC CC CC CC CC          .......
 
 ;; fn00401720: 00401720
@@ -570,7 +570,7 @@ l0040175E:
 	pop	edi
 	pop	esi
 	pop	ebx
-	ret	
+	ret
 
 ;; fn00401762: 00401762
 fn00401762 proc
@@ -612,7 +612,7 @@ l004017BF:
 
 l004017C8:
 	call	00401821
-	ret	
+	ret
 004017CE                                           FF 25               .%
 004017D0 78 20 40 00 FF 25 74 20 40 00 CC CC             x @..%t @...   
 
@@ -638,7 +638,7 @@ fn004017DC proc
 	mov	[ebp-08],eax
 	lea	eax,[ebp-10]
 	mov	fs:[00000000],eax
-	ret	
+	ret
 
 ;; fn00401821: 00401821
 fn00401821 proc
@@ -652,7 +652,7 @@ fn00401821 proc
 	mov	esp,ebp
 	pop	ebp
 	push	ecx
-	ret	
+	ret
 00401835                FF 74 24 10 FF 74 24 10 FF 74 24      .t$..t$..t$
 00401840 10 FF 74 24 10 68 2A 19 40 00 68 10 30 40 00 E8 ..t$.h*.@.h.0@..
 00401850 E6 00 00 00 83 C4 18 C3                         ........       
@@ -680,12 +680,12 @@ l00401872:
 
 l0040187F:
 	pop	esi
-	ret	
+	ret
 
 ;; fn00401881: 00401881
 fn00401881 proc
 	xor	eax,eax
-	ret	
+	ret
 
 ;; fn00401884: 00401884
 fn00401884 proc
@@ -755,8 +755,8 @@ l00401905:
 l00401914:
 	pop	edi
 	pop	ebx
-	leave	
-	ret	
+	leave
+	ret
 00401918                         FF 25 44 20 40 00 FF 25         .%D @..%
 00401920 48 20 40 00 FF 25 98 20 40 00 3B 0D 10 30 40 00 H @..%. @.;..0@.
 00401930 75 02 F3 C3 E9 13 00 00 00 CC FF 25 58 20 40 00 u..........%X @.

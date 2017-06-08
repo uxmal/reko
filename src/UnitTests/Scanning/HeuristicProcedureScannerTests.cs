@@ -146,7 +146,7 @@ l00010003:  // pred: l00010001
 l00010008:  // pred: l00010003
     pop ebp
 l00010009:  // pred: l00010008
-    ret 
+    ret
 ";
             #endregion
 
