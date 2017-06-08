@@ -4,13 +4,6 @@
 
 #include "pngpixel.h"
 
-Eq_222 g_t0001;
-Eq_222 g_t0003;
-Eq_222 g_t0007;
-Eq_222 g_t0008;
-Eq_222 g_t0027;
-Eq_222 g_t002C;
-Eq_222 g_t002E;
 Eq_28 g_t4012F9 = Unexpected function type (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char))))
 ;
 Eq_31 g_t401780 = Unexpected function type (fn void ())
@@ -24,36 +17,11 @@ word64 g_a401958[] =
 	{
 	};
 char g_str401990[] = "rb";
-Eq_222 g_t401993 = 
-	{
-		&g_t2E362E31,
-	};
-Eq_222 g_t40199A = 
-	{
-		&g_t70676E70,
-	};
 char g_str4019B6[] = "png_read_row";
-Eq_222 g_t4019C3 = 
-	{
-		&g_t70676E70,
-	};
-Eq_222 g_t4019E8 = 
-	{
-		&g_t70676E70,
-	};
-Eq_222 g_t401A18 = 
-	{
-		&g_t70676E70,
-	};
-Eq_222 g_t401A48 = 
-	{
-		&g_t70676E70,
-	};
-Eq_222 g_t401A70 = 
-	{
-		&g_t70676E70,
-	};
-union Eq_1153 g_u601E00 = 
+void g_v4019E8 = ;
+void g_v401A18 = ;
+void g_v401A70 = ;
+union Eq_1061 g_u601E00 = 
 	{
 		0x00400DA0
 	};
@@ -61,6 +29,4 @@ word64 g_qw601E10 = 0x0000000000000000;
 word64 g_qw601FF8 = 0x0000000000000000;
 FILE * g_ptr602100 = null;
 byte g_b602108 = 0x00;
-Eq_222 g_t2E362E31;
-Eq_222 g_t70676E70;
 

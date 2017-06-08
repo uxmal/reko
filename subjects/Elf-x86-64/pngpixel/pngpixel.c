@@ -192,7 +192,7 @@ word64 print_pixel(byte dil, Eq_181 * fs, word64 qwArg04, word64 qwArg0C)
 	byte Z_77;
 	byte dil_78;
 	png_get_color_type();
-	FILE * rax_25 = fs->ptr0028;
+	word64 rax_25 = fs->qw0028;
 	uint32 eax_79 = (word32) al_74;
 	if (eax_79 > 0x06)
 	{
@@ -246,506 +246,515 @@ word64 print_pixel(byte dil, Eq_181 * fs, word64 qwArg04, word64 qwArg0C)
 	}
 }
 
-// 00000000004012F9: void main(Register (ptr Eq_222) rsi, Register word32 edi, Register word64 r13, Register (ptr Eq_181) fs)
-void main(FILE * rsi, word32 edi, word64 r13, Eq_181 * fs)
+// 00000000004012F9: void main(Register (ptr Eq_283) rsi, Register word32 edi, Register word64 r13, Register (ptr Eq_286) fs)
+void main(Eq_283 * rsi, word32 edi, word64 r13, Eq_286 * fs)
 {
-main_entry:
-	rsp = fp
-	rsp = fp - 0x04
-	dwLoc04 = rbp
-	rbp = fp - 0x04
-	rsp = fp - 0xA4
-	dwLoc98 = edi
-	qwLocA4 = rsi
-	rax = fs->ptr0028
-	qwLoc0C = rax
-	rax = null
-	dwLoc88 = 0x01
-	SCZO = cond(dwLoc98 - 0x04)
-	Z = SCZO
-	branch Test(NE,Z) l000000000040173F
-	goto l0000000000401337
-l00000000004012F9:
-l0000000000401337:
-	rax = qwLocA4
-	rax = (FILE *) ((char *) &rax->ptr0000 + 0x08)
-	SCZO = cond(rax)
-	rax = rax->ptr0000
-	rdi = rax
-	atol()
-	qwLoc2C = rax
-	rax = qwLocA4
-	rax = (FILE *) ((char *) &rax->ptr0000 + 0x0010)
-	SCZO = cond(rax)
-	rax = rax->ptr0000
-	rdi = rax
-	atol()
-	qwLoc24 = rax
-	rax = qwLocA4
-	rax = (FILE *) ((char *) &rax->ptr0000 + 0x0018)
-	rax = rax->ptr0000
-	rsi = &globals->str401990
-	rdi = rax
-	rax = fopen(rdi, "rb")
-	eax = (word32) rax
-	al = (byte) rax
-	qwLoc1C = rax
-	qwLoc44 = null
-	SCZO = cond(qwLoc1C - 0x00)
-	Z = SCZO
-	branch Test(EQ,Z) l0000000000401716
-l000000000040139D:
-	rcx = null
-	rdx = null
-	rsi = null
-	rdi = &globals->t401993
-	png_create_read_struct()
-	qwLoc3C = rax
-	rax = qwLoc3C
-	SZO = cond(rax & rax)
-	Z = SZO
-	C = false
-	branch Test(EQ,Z) l00000000004016F6
-l00000000004013C7:
-	rax = qwLoc3C
-	rdi = rax
-	png_create_info_struct()
-	qwLoc34 = rax
-	rax = qwLoc34
-	SZO = cond(rax & rax)
-	Z = SZO
-	C = false
-	branch Test(EQ,Z) l00000000004016C0
-l00000000004013E4:
-	rax = qwLoc3C
-	rdx = qwLoc1C
-	rsi = rdx
-	rdi = rax
-	png_init_io()
-	rdx = qwLoc34
-	rax = qwLoc3C
-	rsi = rdx
-	rdi = rax
-	png_read_info()
-	rdx = qwLoc34
-	rax = qwLoc3C
-	rsi = rdx
-	rdi = rax
-	png_get_rowbytes()
-	rdx = rax
-	rax = qwLoc3C
-	rsi = rdx
-	rdi = rax
-	png_malloc()
-	qwLoc44 = rax
-	rax = qwLoc44
-	qwLoc14 = rax
-	rsi = qwLoc34
-	rax = qwLoc3C
-	eax = (word32) rax
-	r9 = r13 - 116
-	r8 = r13 - 0x78
-	rcx = fp - 0x80
-	rdx = fp - 0x84
-	rsp = fp - 0xAC
-	SCZO = cond(fp - 0xAC)
-	rdi = fp - 0x6C
-	rsp = fp - 0xB0
-	dwLocB0 = fp - 0x6C
-	rdi = fp - 0x70
-	rsp = fp - 0xB4
-	dwLocB4 = fp - 0x70
-	rdi = fp - 116
-	rsp = fp - 0xB8
-	dwLocB8 = fp - 116
-	rdi = rax
-	png_get_IHDR()
-	rsp = fp - 0x98
-	SZO = cond(eax & eax)
-	Z = SZO
-	C = false
-	branch Test(EQ,Z) l00000000004016AF
-l000000000040147A:
-	rax = (uint64) dwLoc74
-	eax = (word32) rax
-	al = (byte) rax
-	SZO = cond(eax & eax)
-	Z = SZO
-	C = false
-	branch Test(EQ,Z) l0000000000401488
-l0000000000401481:
-	SCZO = cond(eax - 0x01)
-	Z = SCZO
-	branch Test(EQ,Z) l0000000000401491
-l0000000000401486:
-	rax = qwLoc3C
-	rsi = &globals->t40199A
-	rdi = rax
-	png_error()
-	goto l00000000004014AB
-l0000000000401488:
-	dwLoc68 = 0x01
-	goto l00000000004014AB
-l0000000000401491:
-	dwLoc68 = 0x07
-	goto l00000000004014AB
-l000000000040149A:
-l00000000004014AB:
-	rax = qwLoc3C
-	rdi = rax
-	png_start_read_image()
-	dwLoc64 = 0x00
-l00000000004014C3:
-	rax = (uint64) *(rbp - 0x70)
-	eax = (word32) rax
-	SCZO = cond(eax - 0x01)
-	Z = SCZO
-	branch Test(NE,Z) l00000000004015CE
-l00000000004014CF:
-	SCZO = cond(*(rbp - 0x60) - 0x01)
-	SZO = SCZO
-	branch Test(LE,SZO) l00000000004014EF
-l00000000004014D5:
-	rax = (FILE *) 0x07
-	eax = (word32) rax
-	rax = (uint64) (eax - *(rbp - 0x60))
-	eax = (word32) rax
-	rax = (uint64) (eax >> 0x01)
-	eax = (word32) rax
-	rdx = (FILE *) 0x01
-	edx = (word32) rdx
-	rcx = (uint64) eax
-	cl = (byte) rcx
-	rdx = (uint64) (edx << cl)
-	edx = (word32) rdx
-	rax = (uint64) edx
-	eax = (word32) rax
-	rax = (uint64) (eax - 0x01)
-	eax = (word32) rax
-	al = (byte) rax
-	SCZO = cond(eax)
-	goto l00000000004014F4
-l00000000004014EF:
-	rax = (FILE *) 0x07
-	eax = (word32) rax
-	al = (byte) rax
-l00000000004014F4:
-	rdx = (uint64) *(rbp - 0x60)
-	edx = (word32) rdx
-	rsi = (uint64) edx
-	esi = (word32) rsi
-	rsi = (uint64) (esi & 0x01)
-	esi = (word32) rsi
-	rdx = (uint64) *(rbp - 0x60)
-	edx = (word32) rdx
-	rdx = (uint64) ((word32) edx + 0x01)
-	edx = (word32) rdx
-	rdx = (uint64) (edx >> 0x01)
-	edx = (word32) rdx
-	rcx = (FILE *) 0x03
-	ecx = (word32) rcx
-	rcx = (uint64) (ecx - edx)
-	ecx = (word32) rcx
-	rdx = (uint64) ecx
-	edx = (word32) rdx
-	rcx = (uint64) edx
-	cl = (byte) rcx
-	rsi = (uint64) (esi << cl)
-	esi = (word32) rsi
-	rdx = (uint64) esi
-	edx = (word32) rdx
-	rdx = (uint64) (edx & 0x07)
-	edx = (word32) rdx
-	rax = (uint64) (eax - edx)
-	eax = (word32) rax
-	rdx = (uint64) eax
-	edx = (word32) rdx
-	rax = (uint64) *(rbp - 0x80)
-	eax = (word32) rax
-	rdx = (uint64) ((word32) edx + eax)
-	edx = (word32) rdx
-	SCZO = cond(*(rbp - 0x60) - 0x01)
-	SZO = SCZO
-	branch Test(LE,SZO) l0000000000401531
-l0000000000401525:
-	rax = (FILE *) 0x07
-	eax = (word32) rax
-	rax = (uint64) (eax - *(rbp - 0x60))
-	eax = (word32) rax
-	rax = (uint64) (eax >> 0x01)
-	eax = (word32) rax
-	al = (byte) rax
-	SCZO = cond(eax)
-	goto l0000000000401536
-l0000000000401531:
-	rax = (FILE *) 0x03
-	eax = (word32) rax
-	al = (byte) rax
-l0000000000401536:
-	rcx = (uint64) eax
-	cl = (byte) rcx
-	rdx = (uint64) (edx >> cl)
-	edx = (word32) rdx
-	rax = (uint64) edx
-	eax = (word32) rax
-	SZO = cond(eax & eax)
-	Z = SZO
-	C = false
-	branch Test(EQ,Z) l000000000040166E
-l0000000000401544:
-	rax = (uint64) *(rbp - 0x60)
-	eax = (word32) rax
-	rax = (uint64) (eax & 0x01)
-	eax = (word32) rax
-	rdx = (uint64) eax
-	edx = (word32) rdx
-	rax = (uint64) *(rbp - 0x60)
-	eax = (word32) rax
-	rax = (uint64) (eax + 0x01)
-	eax = (word32) rax
-	rax = (uint64) (eax >> 0x01)
-	eax = (word32) rax
-	rcx = (FILE *) 0x03
-	ecx = (word32) rcx
-	rcx = (uint64) (ecx - eax)
-	ecx = (word32) rcx
-	rax = (uint64) ecx
-	eax = (word32) rax
-	rcx = (uint64) eax
-	cl = (byte) rcx
-	rdx = (uint64) (edx << cl)
-	edx = (word32) rdx
-	rax = (uint64) edx
-	eax = (word32) rax
-	rax = (uint64) (eax & 0x07)
-	eax = (word32) rax
-	*(rbp - 88) = eax
-	rax = (uint64) *(rbp - 0x60)
-	eax = (word32) rax
-	rax = (uint64) (eax & 0x01)
-	eax = (word32) rax
-	SZO = cond(eax & eax)
-	Z = SZO
-	al = Test(EQ,Z)
-	edx = (word32) al
-	rax = (uint64) *(rbp - 0x60)
-	eax = (word32) rax
-	rax = (uint64) (eax >> 0x01)
-	eax = (word32) rax
-	rcx = (FILE *) 0x03
-	ecx = (word32) rcx
-	rcx = (uint64) (ecx - eax)
-	ecx = (word32) rcx
-	rax = (uint64) ecx
-	eax = (word32) rax
-	rcx = (uint64) eax
-	cl = (byte) rcx
-	rdx = (uint64) (edx << cl)
-	edx = (word32) rdx
-	rax = (uint64) edx
-	eax = (word32) rax
-	rax = (uint64) (eax & 0x07)
-	eax = (word32) rax
-	*(rbp - 0x5C) = eax
-	rax = (FILE *) 0x07
-	eax = (word32) rax
-	rax = (uint64) (eax - *(rbp - 0x60))
-	eax = (word32) rax
-	rax = (uint64) (eax >> 0x01)
-	eax = (word32) rax
-	rdx = (FILE *) 0x01
-	rcx = (uint64) eax
-	cl = (byte) rcx
-	rdx = (uint64) (0x01 << cl)
-	edx = (word32) rdx
-	rax = (uint64) edx
-	eax = (word32) rax
-	*(rbp - 0x50) = eax
-	SCZO = cond(*(rbp - 0x60) - 0x02)
-	SZO = SCZO
-	branch Test(LE,SZO) l00000000004015C4
-l00000000004015AF:
-	rax = (uint64) *(rbp - 0x60)
-	eax = (word32) rax
-	rax = (uint64) (eax - 0x01)
-	eax = (word32) rax
-	rax = (uint64) (eax >> 0x01)
-	eax = (word32) rax
-	rdx = (FILE *) 0x08
-	edx = (word32) rdx
-	rcx = (uint64) eax
-	cl = (byte) rcx
-	rdx = (uint64) (edx >> cl)
-	edx = (word32) rdx
-	SCZO = cond(edx)
-	rax = (uint64) edx
-	eax = (word32) rax
-	al = (byte) rax
-	goto l00000000004015C9
-l00000000004015C4:
-	rax = (FILE *) 0x08
-	eax = (word32) rax
-	al = (byte) rax
-l00000000004015C9:
-	*(rbp - 0x54) = eax
-	goto l00000000004015E8
-l00000000004015CE:
-	*(rbp - 88) = 0x00
-	rax = (uint64) *(rbp - 88)
-	eax = (word32) rax
-	*(rbp - 0x5C) = eax
-	*(rbp - 0x50) = 0x01
-	rax = (uint64) *(rbp - 0x50)
-	eax = (word32) rax
-	*(rbp - 0x54) = eax
-l00000000004015E8:
-	rax = (uint64) *(rbp - 0x5C)
-	eax = (word32) rax
-	*(rbp - 0x4C) = eax
-l00000000004015F0:
-	rdi = &globals->str4019B6
-	rax = DPB(rax, puts("png_read_row"), 0)
-	rax = (FILE *) *(rbp - 0x38)
-	rcx = (FILE *) *(rbp - 0x10)
-	rdx = null
-	rsi = rcx
-	rdi = rax
-	png_read_row()
-	rax = (uint64) *(rbp - 0x4C)
-	SCZO = cond(rax - *(rbp - 0x20))
-	Z = SCZO
-	branch Test(NE,Z) l000000000040165E
-l000000000040161B:
-	rax = (uint64) *(rbp - 88)
-	eax = (word32) rax
-	*(rbp - 0x48) = eax
-	*(rbp - 0x44) = 0x00
-	goto l0000000000401656
-l000000000040162A:
-	rax = (uint64) *(rbp - 0x48)
-	SCZO = cond(rax - *(rbp - 0x28))
-	Z = SCZO
-	branch Test(NE,Z) l000000000040164C
-l0000000000401633:
-	rsi = (FILE *) *(rbp - 0x30)
-	rax = (FILE *) *(rbp - 0x38)
-	rcx = (uint64) *(rbp - 0x44)
-	rdx = (FILE *) *(rbp - 0x10)
-	rdi = rax
-	dil = (byte) rdi
-	rbp = print_pixel(dil, fs, qwArg04, qwArg0C)
-	goto l000000000040167F
-l000000000040164C:
-	rax = (uint64) *(rbp - 0x50)
-	eax = (word32) rax
-	v27 = *(rbp - 0x48) + eax
-	*(rbp - 0x48) = v27
-	v28 = *(rbp - 0x44) + 0x01
-	*(rbp - 0x44) = v28
-	SCZO = cond(v28)
-l0000000000401656:
-	rax = (uint64) *(rbp - 0x80)
-	eax = (word32) rax
-	SCZO = cond(*(rbp - 0x48) - eax)
-	C = SCZO
-	branch Test(ULT,C) l000000000040162A
-l000000000040165E:
-	rax = (uint64) *(rbp - 0x54)
-	eax = (word32) rax
-	v26 = *(rbp - 0x4C) + eax
-	*(rbp - 0x4C) = v26
-	SCZO = cond(v26)
-l0000000000401664:
-	rax = (uint64) *(rbp - 0x7C)
-	eax = (word32) rax
-	al = (byte) rax
-	SCZO = cond(*(rbp - 0x4C) - eax)
-	C = SCZO
-	branch Test(ULT,C) l00000000004015F0
-l000000000040166F:
-	v25 = *(rbp - 0x60) + 0x01
-	*(rbp - 0x60) = v25
-	SCZO = cond(v25)
-l0000000000401673:
-	rax = (uint64) *(rbp - 0x60)
-	eax = (word32) rax
-	SCZO = cond(eax - *(rbp - 100))
-	SO = SCZO
-	branch Test(LT,SO) l00000000004014C3
-l000000000040167F:
-	*(rbp - 0x40) = 0x00
-	rax = (FILE *) *(rbp - 0x38)
-	rdx = (FILE *) *(rbp - 0x10)
-	rsi = rdx
-	rdi = rax
-	png_free()
-	rax = (FILE *) *(rbp - 0x38)
-	rdx = rbp - 0x30
-	rsi = rdx
-	rdi = rax
-	png_destroy_info_struct()
-	goto l00000000004016DE
-l00000000004016AF:
-	rax = qwLoc3C
-	rsi = &globals->t4019C3
-	rdi = rax
-	png_error()
-l00000000004016C0:
-	rax = globals->ptr602100
-	rcx = rax
-	rdx = (FILE *) 44
-	rsi = (FILE *) 0x01
-	rdi = &globals->t4019E8
-	rax = DPB(rax, fwrite(&globals->t4019E8, 0x01, 44, rcx), 0)
-l00000000004016DE:
-	rax = fp - 0x3C
-	rdx = null
-	rsi = null
-	rdi = fp - 0x3C
-	png_destroy_read_struct()
-	goto l000000000040175D
-l00000000004016F6:
-	rax = globals->ptr602100
-	rcx = rax
-	rdx = (FILE *) 0x2E
-	rsi = (FILE *) 0x01
-	rdi = &globals->t401A18
-	rax = DPB(rax, fwrite(&globals->t401A18, 0x01, 0x2E, rcx), 0)
-	goto l000000000040175D
-l0000000000401716:
-	rax = qwLocA4
-	rax = (FILE *) ((char *) &rax->ptr0000 + 0x0018)
-	SCZO = cond(rax)
-	rdx = rax->ptr0000
-	rax = globals->ptr602100
-	rsi = &globals->t401A48
-	rdi = rax
-	rax = null
-	rax = null
-	goto l000000000040175D
-l000000000040173F:
-	rax = globals->ptr602100
-	rcx = rax
-	rdx = (FILE *) 0x27
-	rsi = (FILE *) 0x01
-	rdi = &globals->t401A70
-	rax = DPB(rax, fwrite(&globals->t401A70, 0x01, 0x27, rcx), 0)
+	ptr64 rbp_136 = fp - 0x04;
+	if (edi != 0x04)
+	{
+		FILE * rax_1022 = globals->ptr602100;
+		word64 rax_1027 = DPB(rax_1022, fwrite(&globals->v401A70, 0x01, 0x27, rax_1022), 0);
+		goto l000000000040175D;
+	}
+	word64 rsp_105;
+	word64 rbp_106;
+	byte SCZO_107;
+	word32 edi_108;
+	word64 rsi_109;
+	uint64 rax_110;
+	struct Eq_316 * fs_111;
+	word32 eax_112;
+	byte SZO_113;
+	byte C_114;
+	byte Z_115;
+	word64 rdi_116;
+	word32 esi_117;
+	word32 ecx_118;
+	word64 rcx_119;
+	word32 edx_120;
+	word64 rdx_121;
+	word64 r13_122;
+	word64 r9_123;
+	word64 r8_124;
+	byte SO_125;
+	byte cl_126;
+	byte al_127;
+	byte dil_128;
+	atol();
+	word64 rsp_135;
+	byte SCZO_137;
+	word32 edi_138;
+	word64 rsi_139;
+	uint64 rax_140;
+	word32 eax_142;
+	byte SZO_143;
+	byte C_144;
+	byte Z_145;
+	word64 rdi_146;
+	word32 esi_147;
+	word32 ecx_148;
+	word64 rcx_149;
+	word32 edx_150;
+	word64 rdx_151;
+	word64 r13_152;
+	word64 r9_153;
+	word64 r8_154;
+	byte SO_155;
+	byte cl_156;
+	byte al_157;
+	byte dil_158;
+	atol();
+	FILE * rax_165 = fopen(rsi->ptr0018, "rb");
+	if (rax_165 == null)
+	{
 l000000000040175D:
-	rax = (FILE *) 0x01
-	rdi = qwLoc0C
-	rdi = rdi ^ fs->ptr0028
-	SZO = cond(rdi)
-	Z = SZO
-	C = false
-	branch Test(EQ,Z) l0000000000401777
-l0000000000401772:
-	__stack_chk_fail()
-l0000000000401777:
-	rsp = fp - 0x04
-	rbp = qwLoc04
-	rsp = fp + 0x04
-	return
-main_exit:
+		if ((*(rbp_136 - 0x08) ^ fs->qw0028) != 0x00)
+			__stack_chk_fail();
+		return;
+	}
+	word64 rsp_176;
+	byte SCZO_178;
+	word32 edi_179;
+	word64 rsi_180;
+	word64 rax_181;
+	word32 eax_183;
+	byte SZO_184;
+	byte C_185;
+	byte Z_186;
+	word64 rdi_187;
+	word32 esi_188;
+	word32 ecx_189;
+	word64 rcx_190;
+	word32 edx_191;
+	word64 rdx_192;
+	word64 r13_193;
+	word64 r9_194;
+	word64 r8_195;
+	byte SO_196;
+	byte cl_197;
+	byte al_198;
+	byte dil_199;
+	png_create_read_struct();
+	if (rax_181 == 0x00)
+	{
+		FILE * rax_1007 = globals->ptr602100;
+		word64 rax_1012 = DPB(rax_1007, fwrite(&globals->v401A18, 0x01, 0x2E, rax_1007), 0);
+		goto l000000000040175D;
+	}
+	word64 rsp_207;
+	word64 rbp_208;
+	byte SCZO_209;
+	word32 edi_210;
+	word64 rsi_211;
+	word64 rax_212;
+	struct Eq_413 * fs_213;
+	word32 eax_214;
+	byte SZO_215;
+	byte C_216;
+	byte Z_217;
+	word64 rdi_218;
+	word32 esi_219;
+	word32 ecx_220;
+	word64 rcx_221;
+	word32 edx_222;
+	word64 rdx_223;
+	word64 r13_224;
+	word64 r9_225;
+	word64 r8_226;
+	byte SO_227;
+	byte cl_228;
+	byte al_229;
+	byte dil_230;
+	png_create_info_struct();
+	if (rax_212 != 0x00)
+	{
+		word64 rsp_313;
+		word64 rbp_314;
+		byte SCZO_315;
+		word32 edi_316;
+		word64 rsi_317;
+		word64 rax_318;
+		struct Eq_452 * fs_319;
+		word32 eax_320;
+		byte SZO_321;
+		byte C_322;
+		byte Z_323;
+		word64 rdi_324;
+		word32 esi_325;
+		word32 ecx_326;
+		word64 rcx_327;
+		word32 edx_328;
+		word64 rdx_329;
+		word64 r13_330;
+		word64 r9_331;
+		word64 r8_332;
+		byte SO_333;
+		byte cl_334;
+		byte al_335;
+		byte dil_336;
+		png_init_io();
+		word64 rsp_341;
+		word64 rbp_342;
+		byte SCZO_343;
+		word32 edi_344;
+		word64 rsi_345;
+		word64 rax_346;
+		struct Eq_477 * fs_347;
+		word32 eax_348;
+		byte SZO_349;
+		byte C_350;
+		byte Z_351;
+		word64 rdi_352;
+		word32 esi_353;
+		word32 ecx_354;
+		word64 rcx_355;
+		word32 edx_356;
+		word64 rdx_357;
+		word64 r13_358;
+		word64 r9_359;
+		word64 r8_360;
+		byte SO_361;
+		byte cl_362;
+		byte al_363;
+		byte dil_364;
+		png_read_info();
+		word64 rsp_369;
+		word64 rbp_370;
+		byte SCZO_371;
+		word32 edi_372;
+		word64 rsi_373;
+		word64 rax_374;
+		struct Eq_502 * fs_375;
+		word32 eax_376;
+		byte SZO_377;
+		byte C_378;
+		byte Z_379;
+		word64 rdi_380;
+		word32 esi_381;
+		word32 ecx_382;
+		word64 rcx_383;
+		word32 edx_384;
+		word64 rdx_385;
+		word64 r13_386;
+		word64 r9_387;
+		word64 r8_388;
+		byte SO_389;
+		byte cl_390;
+		byte al_391;
+		byte dil_392;
+		png_get_rowbytes();
+		word64 rsp_397;
+		word64 rbp_398;
+		byte SCZO_399;
+		word32 edi_400;
+		word64 rsi_401;
+		word64 rax_402;
+		struct Eq_527 * fs_403;
+		word32 eax_404;
+		byte SZO_405;
+		byte C_406;
+		byte Z_407;
+		word64 rdi_408;
+		word32 esi_409;
+		word32 ecx_410;
+		word64 rcx_411;
+		word32 edx_412;
+		word64 rdx_413;
+		word64 r13_414;
+		word64 r9_415;
+		word64 r8_416;
+		byte SO_417;
+		byte cl_418;
+		byte al_419;
+		byte dil_420;
+		png_malloc();
+		word64 rsp_443;
+		word64 rbp_444;
+		byte SCZO_445;
+		word32 edi_446;
+		word64 rsi_447;
+		word64 rax_448;
+		struct Eq_552 * fs_449;
+		word32 eax_450;
+		byte SZO_451;
+		byte C_452;
+		byte Z_453;
+		word64 rdi_454;
+		word32 esi_455;
+		word32 ecx_456;
+		word64 rcx_457;
+		word32 edx_458;
+		word64 rdx_459;
+		word64 r13_460;
+		word64 r9_461;
+		word64 r8_462;
+		byte SO_463;
+		byte cl_464;
+		byte al_465;
+		byte dil_466;
+		png_get_IHDR();
+		if (eax_450 != 0x00)
+		{
+			word32 eax_473 = (word32) (uint64) dwLoc74;
+			if (eax_473 != 0x00)
+			{
+				if (eax_473 != 0x01)
+				{
+					word64 rsp_954;
+					word64 rbp_955;
+					byte SCZO_956;
+					word32 edi_957;
+					word64 rsi_958;
+					word64 rax_959;
+					struct Eq_615 * fs_960;
+					word32 eax_961;
+					byte SZO_962;
+					byte C_963;
+					byte Z_964;
+					word64 rdi_965;
+					word32 esi_966;
+					word32 ecx_967;
+					word64 rcx_968;
+					word32 edx_969;
+					word64 rdx_970;
+					word64 r13_971;
+					word64 r9_972;
+					word64 r8_973;
+					byte SO_974;
+					byte cl_975;
+					byte al_976;
+					byte dil_977;
+					png_error();
+				}
+				else
+					dwLoc68 = 0x07;
+			}
+			else
+				dwLoc68 = 0x01;
+			word64 rsp_481;
+			byte SCZO_483;
+			word32 edi_484;
+			word64 rsi_485;
+			word64 rax_486;
+			struct Eq_646 * fs_487;
+			word32 eax_488;
+			byte SZO_489;
+			byte C_490;
+			byte Z_491;
+			word64 rdi_492;
+			word32 esi_493;
+			word32 ecx_494;
+			word64 rcx_495;
+			word32 edx_496;
+			word64 rdx_497;
+			word64 r13_498;
+			word64 r9_499;
+			word64 r8_500;
+			byte SO_501;
+			byte cl_502;
+			byte al_503;
+			byte dil_504;
+			ptr64 rbp_482;
+			png_start_read_image();
+			int32 dwLoc64_505 = 0x00;
+l0000000000401673:
+			int32 eax_535 = (word32) (uint64) dwLoc64_505;
+			if (eax_535 >= dwLoc68)
+			{
+l000000000040167F:
+				*(rbp_482 - 0x40) = 0x00;
+				word64 rsp_551;
+				word64 rbp_552;
+				byte SCZO_553;
+				word32 edi_554;
+				word64 rsi_555;
+				word64 rax_556;
+				struct Eq_687 * fs_557;
+				word32 eax_558;
+				byte SZO_559;
+				byte C_560;
+				byte Z_561;
+				word64 rdi_562;
+				word32 esi_563;
+				word32 ecx_564;
+				word64 rcx_565;
+				word32 edx_566;
+				word64 rdx_567;
+				word64 r13_568;
+				word64 r9_569;
+				word64 r8_570;
+				byte SO_571;
+				byte cl_572;
+				byte al_573;
+				byte dil_574;
+				png_free();
+				word64 rsp_579;
+				word64 rbp_580;
+				byte SCZO_581;
+				word32 edi_582;
+				word64 rsi_583;
+				word64 rax_584;
+				struct Eq_712 * fs_585;
+				word32 eax_586;
+				byte SZO_587;
+				byte C_588;
+				byte Z_589;
+				word64 rdi_590;
+				word32 esi_591;
+				word32 ecx_592;
+				word64 rcx_593;
+				word32 edx_594;
+				word64 rdx_595;
+				word64 r13_596;
+				word64 r9_597;
+				word64 r8_598;
+				byte SO_599;
+				byte cl_600;
+				byte al_601;
+				byte dil_602;
+				png_destroy_info_struct();
+l00000000004016DE:
+				word64 rsp_255;
+				byte SCZO_257;
+				word32 edi_258;
+				word64 rsi_259;
+				word64 rax_260;
+				word32 eax_262;
+				byte SZO_263;
+				byte C_264;
+				byte Z_265;
+				word64 rdi_266;
+				word32 esi_267;
+				word32 ecx_268;
+				word64 rcx_269;
+				word32 edx_270;
+				word64 rdx_271;
+				word64 r13_272;
+				word64 r9_273;
+				word64 r8_274;
+				byte SO_275;
+				byte cl_276;
+				byte al_277;
+				byte dil_278;
+				png_destroy_read_struct();
+				goto l000000000040175D;
+			}
+			word32 dwLoc58_643;
+			word32 dwLoc54_642;
+			word32 dwLoc60_641;
+			word32 dwLoc5C_640;
+			if ((word32) (uint64) dwLoc74 == 0x01)
+			{
+				word32 eax_764;
+				if (dwLoc64_505 > 0x01)
+					eax_764 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) (0x01 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x07 - dwLoc64_505)) >> 0x01))))) - 0x01);
+				else
+					eax_764 = 0x07;
+				word32 eax_802;
+				uint32 edx_798 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) (eax_764 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc64_505))) & 0x01)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc64_505) + 0x01)) >> 0x01)))))))))))) & 0x07))) + (word32) ((uint64) dwLoc84));
+				if (dwLoc64_505 > 0x01)
+					eax_802 = (word32) (uint64) ((word32) (uint64) (0x07 - dwLoc64_505) >> 0x01);
+				else
+					eax_802 = 0x03;
+				if ((word32) (uint64) (word32) (uint64) (edx_798 >> (byte) ((uint64) eax_802)) == 0x00)
+					goto l000000000040166F;
+				word32 eax_888;
+				dwLoc5C_640 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) dwLoc64_505 & 0x01) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc64_505) + 0x01)) >> 0x01))))))))) & 0x07);
+				dwLoc60_641 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) ((word32) (uint64) ((word32) (uint64) dwLoc64_505 & 0x01) == 0x00) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) dwLoc64_505) >> 0x01))))))))) & 0x07);
+				dwLoc54_642 = (word32) (uint64) (word32) (uint64) (0x01 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x07 - dwLoc64_505)) >> 0x01)))));
+				if (dwLoc64_505 > 0x02)
+					eax_888 = (word32) (uint64) (word32) (uint64) (0x08 >> (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc64_505) - 0x01)) >> 0x01)))));
+				else
+					eax_888 = 0x08;
+				dwLoc58_643 = eax_888;
+			}
+			else
+			{
+				dwLoc5C_640 = 0x00;
+				dwLoc60_641 = 0x00;
+				dwLoc54_642 = 0x01;
+				dwLoc58_643 = 0x01;
+			}
+			uint32 dwLoc50_658 = (word32) (uint64) dwLoc60_641;
+			while (true)
+			{
+				uint64 rax_682 = (uint64) dwLoc80;
+				uint32 eax_683 = (word32) rax_682;
+				if (dwLoc50_658 >= eax_683)
+					break;
+				word64 rsp_694;
+				byte SCZO_696;
+				word32 edi_697;
+				word64 rsi_698;
+				word64 rax_699;
+				struct Eq_181 * fs_700;
+				word32 eax_701;
+				byte SZO_702;
+				byte C_703;
+				byte Z_704;
+				word64 rdi_705;
+				word32 esi_706;
+				word32 ecx_707;
+				word64 rcx_708;
+				word32 edx_709;
+				word64 rdx_710;
+				word64 r13_711;
+				word64 r9_712;
+				word64 r8_713;
+				byte SO_714;
+				byte cl_715;
+				byte al_716;
+				byte dil_717;
+				png_read_row();
+				uint64 rax_688 = DPB(rax_682, puts("png_read_row"), 0);
+				if ((uint64) dwLoc50_658 == rax_140)
+				{
+					uint32 dwLoc4C_732 = (word32) (uint64) dwLoc5C_640;
+					while (dwLoc4C_732 < (word32) ((uint64) dwLoc84))
+					{
+						if ((uint64) dwLoc4C_732 == rax_110)
+						{
+							rbp_482 = print_pixel((byte) rax_181, fs_700, qwLoc9C, qwLoc94);
+							goto l000000000040167F;
+						}
+						dwLoc4C_732 = dwLoc4C_732 + (word32) ((uint64) dwLoc54_642);
+					}
+				}
+				dwLoc50_658 = dwLoc50_658 + (word32) ((uint64) dwLoc58_643);
+			}
+l000000000040166F:
+			dwLoc64_505 = dwLoc64_505 + 0x01;
+			goto l0000000000401673;
+		}
+		word64 rsp_983;
+		word64 rbp_984;
+		byte SCZO_985;
+		word32 edi_986;
+		word64 rsi_987;
+		word64 rax_988;
+		struct Eq_579 * fs_989;
+		word32 eax_990;
+		byte SZO_991;
+		byte C_992;
+		byte Z_993;
+		word64 rdi_994;
+		word32 esi_995;
+		word32 ecx_996;
+		word64 rcx_997;
+		word32 edx_998;
+		word64 rdx_999;
+		word64 r13_1000;
+		word64 r9_1001;
+		word64 r8_1002;
+		byte SO_1003;
+		byte cl_1004;
+		byte al_1005;
+		byte dil_1006;
+		png_error();
+	}
+	FILE * rax_303 = globals->ptr602100;
+	word64 rax_308 = DPB(rax_303, fwrite(&globals->v4019E8, 0x01, 44, rax_303), 0);
+	goto l00000000004016DE;
 }
 
 // 0000000000401780: void __libc_csu_init(Register word64 rsi, Register word32 edi)

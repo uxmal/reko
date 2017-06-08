@@ -216,7 +216,7 @@ namespace Reko.Environments.Windows
         {
             EnsureTypeLibraries(PlatformIdentifier);
             ModuleDescriptor mod;
-            if (Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+            if (moduleName != null && Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
             {
                 SystemService svc;
                 if (mod.ServicesByName.TryGetValue(procName, out svc))

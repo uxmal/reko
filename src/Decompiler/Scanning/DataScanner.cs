@@ -39,7 +39,7 @@ namespace Reko.Scanning
         private Dictionary<Address, ImageSymbol> procedures;
 
         public DataScanner(Program program, ScanResults sr, DecompilerEventListener listener)
-            :base(program)
+            :base(program, listener)
         {
             this.sr = sr;
             this.listener = listener;
@@ -81,28 +81,12 @@ namespace Reko.Scanning
         {
             if (procedures.ContainsKey(addr))
                 return;
+            if (IsNoDecompiledProcedure(addr))
+                return;
             procedures.Add(addr, new ImageSymbol(addr, name, sig) { Type = SymbolType.Procedure });
             sr.KnownProcedures.Add(addr);
             var proc = EnsureProcedure(addr, name);
             proc.Signature = sig;
-        }
-
-        public void Error(Address addr, string message, params object[] args)
-        {
-            var nav = listener.CreateAddressNavigator(Program, addr);
-            listener.Error(nav, message, args);
-        }
-
-        public void Warn(Address addr, string message)
-        {
-            var nav = listener.CreateAddressNavigator(Program, addr);
-            listener.Error(nav, message);
-        }
-
-        public void Warn(Address addr, string message, params object[] args)
-        {
-            var nav = listener.CreateAddressNavigator(Program, addr);
-            listener.Error(nav, message, args);
         }
     }
 }

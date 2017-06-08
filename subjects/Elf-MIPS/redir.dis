@@ -13648,75 +13648,75 @@ l00407C80_ds_t:
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -003C(32) Local -0040(32) Local -0044(32)
 
 l00407CA8:
-	word32 r4_165
-	uint64 hi_lo_142 = dwLoc3C *u dwLoc2C
-	word32 hi_144 = SLICE(hi_lo_142, word32, 32)
-	word32 lo_143 = (word32) hi_lo_142
-	word32 r6_160 = hi_144 >> 0x00
-	branch hi_144 >> 0x00 >= 0x00000000 l00407CA8_ds_t
+	word32 r4_155
+	uint64 hi_lo_132 = dwLoc3C *u dwLoc2C
+	word32 hi_134 = SLICE(hi_lo_132, word32, 32)
+	word32 lo_133 = (word32) hi_lo_132
+	word32 r6_150 = hi_134 >> 0x00
+	branch hi_134 >> 0x00 >= 0x00000000 l00407CA8_ds_t
 // DataOut: r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0020(32)
 
 l00407CA8_ds_t:
-	r4_165 = lo_143
+	r4_155 = lo_133
 // DataOut: r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:hi r5:lo r16:fp + -56 r2:hi >> 0x1F r7:<invalid> r3:hi >> 0x00 r6:hi >> 0x00 Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0020(32)
 
 l00407CA8_ds_f:
-	r4_165 = lo_143
+	r4_155 = lo_133
 // DataOut: r4 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:hi r5:lo r16:fp + -56 r2:hi >> 0x1F r7:<invalid> r3:hi >> 0x00 r6:hi >> 0x00 Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407CF8:
-	word32 r2_209 = (hi_144 >> 0x00) + 0x00000001
+	word32 r2_199 = (hi_134 >> 0x00) + 0x00000001
 // DataOut: r2 r3 r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:lo r5:lo r16:fp + -56 r2:hi >> 0x1F r7:<invalid> r3:hi >> 0x00 r6:hi >> 0x00 Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D04:
-	branch r2_209 == 0x00000000 l00407CF8_ds_t
+	branch r2_199 == 0x00000000 l00407CF8_ds_t
 // DataOut: r3 r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407CF8_ds_t:
-	r6_160 = r6_160 >>u 0x01
+	r6_150 = r6_150 >>u 0x01
 // DataOut: r3 r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407CF8_ds_f:
-	r6_160 = r6_160 >>u 0x01
+	r6_150 = r6_150 >>u 0x01
 // DataOut: r3 r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D10:
-	r4_165 = r4_165 >>u 0x01 | 0x80000000
+	r4_155 = r4_155 >>u 0x01 | 0x80000000
 // DataOut: r3 r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D18:
-	branch r6_160 < 0x00000000 l00407D18_ds_t
+	branch r6_150 < 0x00000000 l00407D18_ds_t
 // DataOut: r3 r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D18_ds_t:
-	r2_209 = r6_160 + 0x00000001
+	r2_199 = r6_150 + 0x00000001
 // DataOut: r2 r3 r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
@@ -13735,7 +13735,7 @@ l00407D20:
 // LocalsOut: fp(32) Local -0020(32)
 
 l00407D24:
-	branch (word32) (0x3FFFFFFF <u r6_160) != 0x00000000 l00407D24_ds_t
+	branch (word32) (0x3FFFFFFF <u r6_150) != 0x00000000 l00407D24_ds_t
 // DataOut: r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
@@ -13760,8 +13760,8 @@ l00407D38:
 // LocalsOut: fp(32)
 
 l00407D48:
-	r6_160 = r6_160 << 0x01
-	branch r4_165 == 0x80000000 l00407D38_ds_t
+	r6_150 = r6_150 << 0x01
+	branch r4_155 == 0x80000000 l00407D38_ds_t
 // DataOut: r3 r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
@@ -13780,28 +13780,28 @@ l00407D38_ds_f:
 // LocalsOut: fp(32)
 
 l00407D58:
-	r6_160 = r6_160 | 0x00000001
+	r6_150 = r6_150 | 0x00000001
 // DataOut: r3 r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D5C:
-	branch (word32) (0x3FFFFFFF <u r6_160) == 0x00000000 l00407D5C_ds_t
+	branch (word32) (0x3FFFFFFF <u r6_150) == 0x00000000 l00407D5C_ds_t
 // DataOut: r3 r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D5C_ds_t:
-	r4_165 = r4_165 << 0x01
+	r4_155 = r4_155 << 0x01
 // DataOut: r3 r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D5C_ds_f:
-	r4_165 = r4_165 << 0x01
+	r4_155 = r4_155 << 0x01
 // DataOut: r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
@@ -13814,7 +13814,7 @@ l00407D68:
 // LocalsOut: fp(32)
 
 l00407D6C:
-	branch r6_160 != 0x0000003F l00407D6C_ds_t
+	branch r6_150 != 0x0000003F l00407D6C_ds_t
 // DataOut: r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
@@ -13833,7 +13833,7 @@ l00407D6C_ds_f:
 // LocalsOut: fp(32)
 
 l00407D7C:
-	branch r6_160 != 0x00000080 l00407D7C_ds_t
+	branch r6_150 != 0x00000080 l00407D7C_ds_t
 // DataOut: r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:3 r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
@@ -13852,7 +13852,7 @@ l00407D7C_ds_f:
 // LocalsOut: fp(32)
 
 l00407D88:
-	branch r4_165 == 0x00000000 l00407D88_ds_t
+	branch r4_155 == 0x00000000 l00407D88_ds_t
 // DataOut: r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
@@ -15806,45 +15806,45 @@ l004087C4_ds_t:
 // LocalsOut: fp(32) Local -005C(32) Local -0060(32) Local -0068(32) Local -006C(32) Local -0074(32) Local -0078(32) Local -0080(32) Local -0084(32)
 
 l004087EC:
-	word32 r16_296
-	int64 hi_lo_244 = (dwLoc60 >>u 0x00) *u (dwLoc74 + -1)
-	int64 hi_lo_250 = (dwLoc5C + -1) *u (dwLoc78 >>u 0x00)
-	word32 lo_245 = (word32) hi_lo_244
-	word32 lo_251 = (word32) hi_lo_250
-	word32 r21_264 = lo_245 + lo_251
-	word32 r24_259 = SLICE(hi_lo_244, word32, 32) + (word32) ((dwLoc60 >>u 0x00) *s dwLoc78) + (word32) ((dwLoc74 + -1) *s 0x00000000)
-	int64 hi_lo_275 = (dwLoc5C + -1) *u (dwLoc74 + -1)
-	int64 hi_lo_281 = (dwLoc60 >>u 0x00) *u (dwLoc78 >>u 0x00)
-	word32 lo_288 = (word32) ((dwLoc78 >>u 0x00) *s 0x00000000)
-	word32 r20_269 = r24_259 + ((SLICE(hi_lo_250, word32, 32) + (word32) ((dwLoc5C + -1) *s 0x00000000)) + (word32) ((dwLoc78 >>u 0x00) *s dwLoc60)) + (word32) (r21_264 <u lo_251)
-	word32 dwLoc30_238 = 0x00000000
-	word32 lo_276 = (word32) hi_lo_275
-	word32 r16_280 = SLICE(hi_lo_275, word32, 32) + (word32) ((dwLoc5C + -1) *s dwLoc78)
-	word32 lo_282 = (word32) hi_lo_281
-	word32 r18_290 = SLICE(hi_lo_281, word32, 32) + (word32) ((dwLoc60 >>u 0x00) *s 0x00000000) + lo_288
-	word32 lo_292 = (word32) ((dwLoc74 + -1) *s dwLoc60)
-	branch (word32) (r20_269 <u r24_259) != 0x00000000 l004087EC_ds_t
+	word32 r16_286
+	int64 hi_lo_234 = (dwLoc60 >>u 0x00) *u (dwLoc74 + -1)
+	int64 hi_lo_240 = (dwLoc5C + -1) *u (dwLoc78 >>u 0x00)
+	word32 lo_235 = (word32) hi_lo_234
+	word32 lo_241 = (word32) hi_lo_240
+	word32 r21_254 = lo_235 + lo_241
+	word32 r24_249 = SLICE(hi_lo_234, word32, 32) + (word32) ((dwLoc60 >>u 0x00) *s dwLoc78) + (word32) ((dwLoc74 + -1) *s 0x00000000)
+	int64 hi_lo_265 = (dwLoc5C + -1) *u (dwLoc74 + -1)
+	int64 hi_lo_271 = (dwLoc60 >>u 0x00) *u (dwLoc78 >>u 0x00)
+	word32 lo_278 = (word32) ((dwLoc78 >>u 0x00) *s 0x00000000)
+	word32 r20_259 = r24_249 + ((SLICE(hi_lo_240, word32, 32) + (word32) ((dwLoc5C + -1) *s 0x00000000)) + (word32) ((dwLoc78 >>u 0x00) *s dwLoc60)) + (word32) (r21_254 <u lo_241)
+	word32 dwLoc30_228 = 0x00000000
+	word32 lo_266 = (word32) hi_lo_265
+	word32 r16_270 = SLICE(hi_lo_265, word32, 32) + (word32) ((dwLoc5C + -1) *s dwLoc78)
+	word32 lo_272 = (word32) hi_lo_271
+	word32 r18_280 = SLICE(hi_lo_271, word32, 32) + (word32) ((dwLoc60 >>u 0x00) *s 0x00000000) + lo_278
+	word32 lo_282 = (word32) ((dwLoc74 + -1) *s dwLoc60)
+	branch (word32) (r20_259 <u r24_249) != 0x00000000 l004087EC_ds_t
 // DataOut: r16 r17 r18 r19 r20 r21 r24 r25 r4 r8
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:<invalid> r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:<invalid> r18:<invalid> r16:fp + -56 r4:<invalid> r5:<invalid> r17:fp + -112 r22:fp + -136 -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0068(32) Local -006C(32) Local -0080(32) Local -0084(32)
 
 l004087EC_ds_t:
-	r16_296 = r16_280 + lo_292
+	r16_286 = r16_270 + lo_282
 // DataOut: r16 r17 r18 r19 r20 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:lo r28:0x10008860 r3:lo r2:lo r7:<invalid> r6:<invalid> r8:lo r18:hi + lo + lo r16:hi + lo r4:lo r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:0x00000000 r13:lo r14:lo r24:hi + lo + lo r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):0x00000000 -44(fp):0x00000000 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32) Local -0068(32) Local -006C(32) Local -0080(32) Local -0084(32)
 
 l004087EC_ds_f:
-	r16_296 = r16_280 + lo_292
+	r16_286 = r16_270 + lo_282
 // DataOut: r16 r17 r18 r19 r20 r21 r24 r25 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:lo r28:0x10008860 r3:lo r2:lo r7:<invalid> r6:<invalid> r8:lo r18:hi + lo + lo r16:hi + lo r4:lo r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:0x00000000 r13:lo r14:lo r24:hi + lo + lo r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):0x00000000 -44(fp):0x00000000 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0068(32) Local -006C(32) Local -0080(32) Local -0084(32)
 
 l00408914:
-	branch r24_259 != r20_269 l00408914_ds_t
+	branch r24_249 != r20_259 l00408914_ds_t
 // DataOut: r16 r17 r18 r19 r20 r21 r25 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:lo r28:0x10008860 r3:lo r2:lo r7:<invalid> r6:<invalid> r8:lo r18:hi + lo + lo r16:hi + lo + lo r4:lo r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:0x00000000 r13:lo r14:lo r24:hi + lo + lo r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):0x00000000 -44(fp):0x00000000 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -15857,14 +15857,14 @@ l00408914_ds_t:
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0068(32) Local -006C(32) Local -0080(32) Local -0084(32)
 
 l00408914_ds_f:
-	word32 r2_487 = (word32) (r21_264 <u lo_245)
+	word32 r2_477 = (word32) (r21_254 <u lo_235)
 // DataOut: r16 r17 r18 r19 r2 r20 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:lo r28:0x10008860 r3:lo r2:lo r7:<invalid> r6:<invalid> r8:lo r18:hi + lo + lo r16:hi + lo + lo r4:lo r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:0x00000000 r13:lo r14:lo r24:hi + lo + lo r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):0x00000000 -44(fp):0x00000000 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0068(32) Local -006C(32) Local -0080(32) Local -0084(32)
 
 l0040891C:
-	branch r2_487 == 0x00000000 l0040891C_ds_t
+	branch r2_477 == 0x00000000 l0040891C_ds_t
 // DataOut: r16 r17 r18 r19 r20 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:lo r28:0x10008860 r3:lo r2:(word32) (lo * 0x00000002 <u lo) r7:<invalid> r6:<invalid> r8:lo r18:hi + lo + lo r16:hi + lo + lo r4:lo r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:0x00000000 r13:lo r14:lo r24:hi + lo + lo r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):0x00000000 -44(fp):0x00000000 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -15883,16 +15883,16 @@ l0040891C_ds_f:
 // LocalsOut: fp(32) Local -0068(32) Local -006C(32) Local -0080(32) Local -0084(32)
 
 l00408924:
-	dwLoc30_238 = 1
+	dwLoc30_228 = 1
 // DataOut: r16 r17 r18 r19 r20 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:lo r28:0x10008860 r3:lo r2:<invalid> r7:<invalid> r6:<invalid> r8:lo r18:hi + lo + lo r16:hi + lo + lo r4:lo r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:0x00000000 r13:lo r14:lo r24:hi + lo + lo r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):0x00000000 -44(fp):0x00000000 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0068(32) Local -006C(32) Local -0080(32) Local -0084(32)
 
 l00408934:
-	word32 r10_305 = r16_296 + (lo_288 + -1) + (word32) (lo_276 <u 0)
-	word32 dwLoc2C_295 = 0x00000000
-	branch (word32) (r10_305 <u r16_296) != 0x00000000 l00408934_ds_t
+	word32 r10_295 = r16_286 + (lo_278 + -1) + (word32) (lo_266 <u 0)
+	word32 dwLoc2C_285 = 0x00000000
+	branch (word32) (r10_295 <u r16_286) != 0x00000000 l00408934_ds_t
 // DataOut: r10 r11 r16 r17 r18 r19 r20
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:lo r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:lo r18:hi + lo + lo r16:hi + lo + lo r4:lo r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:0x00000000 r13:lo r14:lo r24:hi + lo + lo r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):0 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -15911,7 +15911,7 @@ l00408934_ds_f:
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0068(32) Local -006C(32) Local -0080(32) Local -0084(32)
 
 l00408968:
-	branch r16_296 != r10_305 l00408968_ds_t
+	branch r16_286 != r10_295 l00408968_ds_t
 // DataOut: r10 r11 r17 r18 r19 r20
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:0 r2:(word32) (hi + lo + lo + (lo + -1) + (word32) (lo <u 0) <u (hi + lo) + lo) r7:<invalid> r6:(word32) (lo <u 0) r8:lo r18:hi + lo + lo r16:hi + lo + lo r4:lo r5:0x00000000 r17:lo r22:fp + -136 r11:lo r9:<invalid> Sequence hi:lo:<invalid> r10:hi + lo + lo + (lo + -1) + (word32) (lo <u 0) r13:lo r14:lo r24:lo + -1 r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):0 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -15924,14 +15924,14 @@ l00408968_ds_t:
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0068(32) Local -006C(32) Local -0080(32) Local -0084(32)
 
 l00408968_ds_f:
-	word32 r2_479 = (word32) (lo_276 <u lo_276)
+	word32 r2_469 = (word32) (lo_266 <u lo_266)
 // DataOut: r10 r11 r18 r19 r2 r20
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:0 r2:(word32) (hi + lo + lo + (lo + -1) + (word32) (lo <u 0) <u (hi + lo) + lo) r7:<invalid> r6:(word32) (lo <u 0) r8:lo r18:hi + lo + lo r16:hi + lo + lo r4:lo r5:0x00000000 r17:lo r22:fp + -136 r11:lo r9:<invalid> Sequence hi:lo:<invalid> r10:hi + lo + lo + (lo + -1) + (word32) (lo <u 0) r13:lo r14:lo r24:lo + -1 r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):0 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0068(32) Local -006C(32) Local -0080(32) Local -0084(32)
 
 l00408970:
-	branch r2_479 == 0x00000000 l00408970_ds_t
+	branch r2_469 == 0x00000000 l00408970_ds_t
 // DataOut: r10 r11 r18 r19 r20
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:0 r2:(word32) (lo <u lo) r7:<invalid> r6:(word32) (lo <u 0) r8:lo r18:hi + lo + lo r16:hi + lo + lo r4:lo r5:0x00000000 r17:lo r22:fp + -136 r11:lo r9:<invalid> Sequence hi:lo:<invalid> r10:hi + lo + lo + (lo + -1) + (word32) (lo <u 0) r13:lo r14:lo r24:lo + -1 r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):0 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -15950,34 +15950,34 @@ l00408970_ds_f:
 // LocalsOut: fp(32) Local -0030(32) Local -0068(32) Local -006C(32) Local -0080(32) Local -0084(32)
 
 l00408978:
-	dwLoc30_238 = dwLoc30_238 + (word32) false
-	dwLoc2C_295 = 1
+	dwLoc30_228 = dwLoc30_228 + (word32) false
+	dwLoc2C_285 = 1
 // DataOut: r10 r11 r18 r19 r20
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:0 r2:<invalid> r7:<invalid> r6:(word32) (lo <u 0) r8:lo r18:hi + lo + lo r16:hi + lo + lo r4:lo r5:0x00000000 r17:lo r22:fp + -136 r11:lo r9:<invalid> Sequence hi:lo:<invalid> r10:hi + lo + lo + (lo + -1) + (word32) (lo <u 0) r13:lo r14:lo r24:lo + -1 r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):0 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0068(32) Local -006C(32) Local -0080(32) Local -0084(32)
 
 l00408998:
-	word32 r7_352
-	word32 r5_315 = (r20_269 >>u 0x00) + -1 + lo_282
-	word32 r13_326 = dwLoc2C_295 + r5_315
-	word32 r12_332 = dwLoc30_238 + (r18_290 + (word32) (r5_315 <u lo_282)) + (word32) (r13_326 <u r5_315)
-	word32 r6_340 = r10_305
-	branch (word32) (0x1FFFFFFF <u r12_332) == 0x00000000 l00408998_ds_t
+	word32 r7_342
+	word32 r5_305 = (r20_259 >>u 0x00) + -1 + lo_272
+	word32 r13_316 = dwLoc2C_285 + r5_305
+	word32 r12_322 = dwLoc30_228 + (r18_280 + (word32) (r5_305 <u lo_272)) + (word32) (r13_316 <u r5_305)
+	word32 r6_330 = r10_295
+	branch (word32) (0x1FFFFFFF <u r12_322) == 0x00000000 l00408998_ds_t
 // DataOut: r11 r12 r13 r3 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:0 r2:<invalid> r7:<invalid> r6:(word32) (lo <u 0) r8:lo r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:lo r9:<invalid> Sequence hi:lo:<invalid> r10:hi + lo + lo + (lo + -1) + (word32) (lo <u 0) r13:lo r14:lo r24:lo + -1 r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32) Local -0050(32)
 
 l00408998_ds_t:
-	r7_352 = lo_276
+	r7_342 = lo_266
 // DataOut: r12 r13 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:hi + lo + lo + (lo + -1) + (word32) (lo <u 0) r8:<invalid> r18:hi + lo + lo r16:hi + lo + lo r4:hi + lo + lo + (word32) ((((((hi + lo) + lo) + ((hi + lo) + lo)) + (word32) (lo * 0x00000002 <u lo) >>u 0x00) + -1) + lo <u lo) r5:(hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) >>u 0x00) + -1 + lo r17:lo r22:fp + -136 r11:lo r9:<invalid> Sequence hi:lo:<invalid> r10:hi + lo + lo + (lo + -1) + (word32) (lo <u 0) r13:<invalid> r14:lo r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32) Local -0050(32)
 
 l00408998_ds_f:
-	r7_352 = lo_276
+	r7_342 = lo_266
 // DataOut: r12 r13 r3 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:hi + lo + lo + (lo + -1) + (word32) (lo <u 0) r8:<invalid> r18:hi + lo + lo r16:hi + lo + lo r4:hi + lo + lo + (word32) ((((((hi + lo) + lo) + ((hi + lo) + lo)) + (word32) (lo * 0x00000002 <u lo) >>u 0x00) + -1) + lo <u lo) r5:(hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) >>u 0x00) + -1 + lo r17:lo r22:fp + -136 r11:lo r9:<invalid> Sequence hi:lo:<invalid> r10:hi + lo + lo + (lo + -1) + (word32) (lo <u 0) r13:<invalid> r14:lo r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -15990,10 +15990,10 @@ l00408A18:
 // LocalsOut: fp(32)
 
 l00408A38:
-	r12_332 = r12_332 >>u 0x01
-	r13_326 = r13_326 >>u 0x01 | r12_332 << 0x1F
-	word32 r4_455 = (word32) (0x1FFFFFFF <u r12_332)
-	branch r13_326 == 0x00000001 l00408A18_ds_t
+	r12_322 = r12_322 >>u 0x01
+	r13_316 = r13_316 >>u 0x01 | r12_322 << 0x1F
+	word32 r4_445 = (word32) (0x1FFFFFFF <u r12_322)
+	branch r13_316 == 0x00000001 l00408A18_ds_t
 // DataOut: r12 r13 r4 r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:0x1FFFFFFF r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:0 r9:<invalid> Sequence hi:lo:<invalid> r10:0x80000000 r13:<invalid> r14:0 r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:1 r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -16012,15 +16012,15 @@ l00408A18_ds_f:
 // LocalsOut: fp(32)
 
 l00408A58:
-	r6_340 = r6_340 >>u 0x01 | 0x80000000
-	r7_352 = r7_352 >>u 0x01 | r6_340 << 0x1F
+	r6_330 = r6_330 >>u 0x01 | 0x80000000
+	r7_342 = r7_342 >>u 0x01 | r6_330 << 0x1F
 // DataOut: r12 r13 r4 r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:0x1FFFFFFF r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:0 r9:<invalid> Sequence hi:lo:<invalid> r10:0x80000000 r13:<invalid> r14:0 r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:1 r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32)
 
 l00408A70:
-	branch r4_455 != 0x00000000 l00408A70_ds_t
+	branch r4_445 != 0x00000000 l00408A70_ds_t
 // DataOut: r12 r13 r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:0x1FFFFFFF r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:0 r9:<invalid> Sequence hi:lo:<invalid> r10:0x80000000 r13:<invalid> r14:0 r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:1 r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -16045,7 +16045,7 @@ l00408A78:
 // LocalsOut: fp(32) Local -0050(32)
 
 l00408A7C:
-	branch (word32) (0x0FFFFFFF <u r12_332) != 0x00000000 l00408A7C_ds_t
+	branch (word32) (0x0FFFFFFF <u r12_322) != 0x00000000 l00408A7C_ds_t
 // DataOut: r12 r13 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:<invalid> r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:<invalid> r13:<invalid> r14:<invalid> r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:<invalid> r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -16070,9 +16070,9 @@ l00408A90:
 // LocalsOut: fp(32)
 
 l00408AAC:
-	word32 r12_418 = r12_332 << 0x01 | r13_326 >>u 0x1F
-	r13_326 = r13_326 << 0x01
-	branch (r7_352 | r6_340 + 0x80000000) == 0x00000000 l00408A90_ds_t
+	word32 r12_408 = r12_322 << 0x01 | r13_316 >>u 0x1F
+	r13_316 = r13_316 << 0x01
+	branch (r7_342 | r6_330 + 0x80000000) == 0x00000000 l00408A90_ds_t
 // DataOut: r12 r13 r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:0x0FFFFFFF r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:1 r9:<invalid> Sequence hi:lo:<invalid> r10:0 r13:<invalid> r14:0x80000000 r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:0 r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -16091,30 +16091,30 @@ l00408A90_ds_f:
 // LocalsOut: fp(32)
 
 l00408AD0:
-	r13_326 = r13_326 | 1
+	r13_316 = r13_316 | 1
 // DataOut: r12 r13 r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:0x0FFFFFFF r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:1 r9:<invalid> Sequence hi:lo:<invalid> r10:0 r13:<invalid> r14:0x80000000 r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:0 r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32)
 
 l00408AD8:
-	r12_332 = r12_418
-	r6_340 = r6_340 << 0x01 | r7_352 >>u 0x1F
-	branch (word32) (0x0FFFFFFF <u r12_418) == 0x00000000 l00408AD8_ds_t
+	r12_322 = r12_408
+	r6_330 = r6_330 << 0x01 | r7_342 >>u 0x1F
+	branch (word32) (0x0FFFFFFF <u r12_408) == 0x00000000 l00408AD8_ds_t
 // DataOut: r12 r13 r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:0x0FFFFFFF r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:1 r9:<invalid> Sequence hi:lo:<invalid> r10:0 r13:<invalid> r14:0x80000000 r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:0 r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32)
 
 l00408AD8_ds_t:
-	r7_352 = r7_352 << 0x01
+	r7_342 = r7_342 << 0x01
 // DataOut: r12 r13 r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:0x0FFFFFFF r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:1 r9:<invalid> Sequence hi:lo:<invalid> r10:0 r13:<invalid> r14:0x80000000 r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:0 r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32)
 
 l00408AD8_ds_f:
-	r7_352 = r7_352 << 0x01
+	r7_342 = r7_342 << 0x01
 // DataOut: r12 r13 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:0x0FFFFFFF r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:1 r9:<invalid> Sequence hi:lo:<invalid> r10:0 r13:<invalid> r14:0x80000000 r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:0 r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -16127,7 +16127,7 @@ l00408AF0:
 // LocalsOut: fp(32)
 
 l00408AF4:
-	branch r12_332 != 0x00000000 l00408AF4_ds_t
+	branch r12_322 != 0x00000000 l00408AF4_ds_t
 // DataOut: r12 r13 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:<invalid> r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:<invalid> r13:<invalid> r14:<invalid> r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:<invalid> r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -16140,14 +16140,14 @@ l00408AF4_ds_t:
 // LocalsOut: fp(32)
 
 l00408AF4_ds_f:
-	word32 r5_385 = r13_326 + 255
+	word32 r5_375 = r13_316 + 255
 // DataOut: r12 r13 r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:255 r2:0 r7:<invalid> r6:<invalid> r8:<invalid> r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:<invalid> r13:<invalid> r14:<invalid> r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:<invalid> r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32)
 
 l00408B08:
-	branch r5_385 != 128 l00408B08_ds_t
+	branch r5_375 != 128 l00408B08_ds_t
 // DataOut: r12 r13 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:255 r2:0 r7:<invalid> r6:<invalid> r8:<invalid> r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:<invalid> r13:<invalid> r14:<invalid> r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:<invalid> r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -16166,7 +16166,7 @@ l00408B08_ds_f:
 // LocalsOut: fp(32)
 
 l00408B14:
-	branch (r13_326 + 256 | r12_332) != 0x00000000 l00408B14_ds_t
+	branch (r13_316 + 256 | r12_322) != 0x00000000 l00408B14_ds_t
 // DataOut: r12 r13 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:255 r2:3 r7:<invalid> r6:<invalid> r8:<invalid> r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:<invalid> r13:<invalid> r14:<invalid> r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:<invalid> r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -16179,14 +16179,14 @@ l00408B14_ds_t:
 // LocalsOut: fp(32)
 
 l00408B14_ds_f:
-	word32 r2_396 = r7_352 | r6_340
+	word32 r2_386 = r7_342 | r6_330
 // DataOut: r12 r13 r2
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:<invalid> r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:<invalid> r13:<invalid> r14:<invalid> r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:<invalid> r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 // LocalsOut: fp(32)
 
 l00408B30:
-	branch r2_396 == 0x00000000 l00408B30_ds_t
+	branch r2_386 == 0x00000000 l00408B30_ds_t
 // DataOut: r12 r13
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:<invalid> r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:<invalid> r13:<invalid> r14:<invalid> r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:<invalid> r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra

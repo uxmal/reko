@@ -33,7 +33,7 @@ word64 g_qw40003160;
 ptr64 g_ptr40003178;
 word64 g_qw400031D8;
 word32 g_dw400035B0;
-uint64 g_qw400035B8;
+word64 g_qw400035B8;
 word128 g_ow400035C0;
 real64 g_r400035D0;
 word128 g_ow400035D8;

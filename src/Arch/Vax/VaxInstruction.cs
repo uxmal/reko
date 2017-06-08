@@ -77,8 +77,28 @@ namespace Reko.Arch.Vax
                     writer.Write(',');
                 sep = true;
                 if (op is ImmediateOperand)
+                {
                     writer.Write('#');
-                op.Write(writer, options);
+                    op.Write(writer, options);
+                }
+                else if (op is MemoryOperand && ((MemoryOperand)op).Base == Registers.pc)
+                {
+                    var addr = this.Address + (this.Length + ((MemoryOperand)op).Offset.ToInt32());
+                    if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                    {
+                        writer.WriteAddress(addr.ToString(), addr);
+                        writer.AddAnnotation(op.ToString());
+                    }
+                    else
+                    {
+                        op.Write(writer, options);
+                        writer.AddAnnotation(addr.ToString());
+                    }
+                }
+                else
+                {
+                    op.Write(writer, options);
+                }
             }
         }
 

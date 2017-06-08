@@ -36,6 +36,7 @@ namespace Reko.Gui.Windows
         private MachineInstruction instr;
         private StringBuilder sb = new StringBuilder();
         private List<TextSpan> line;
+        private List<string> annotations;
 
         public DisassemblyFormatter(Program program, MachineInstruction instr, List<TextSpan> line)
         {
@@ -43,6 +44,7 @@ namespace Reko.Gui.Windows
             this.instr = instr;
             this.line = line;
             this.Platform = program.Platform;
+            this.annotations = new List<string>();
         }
 
         public IPlatform Platform { get; private set; }
@@ -108,8 +110,20 @@ namespace Reko.Gui.Windows
             sb.AppendFormat(fmt, parms);
         }
 
+        public void AddAnnotation(string annotation)
+        {
+            this.annotations.Add(annotation);
+        }
+
         public void NewLine()
         {
+            if (annotations.Count > 0)
+            {
+                int padding = 60 - sb.Length;
+                if (padding > 0)
+                    sb.Append(' ', padding);
+                sb.AppendFormat("; {0}", string.Join(", ", annotations));
+            }
             TerminateSpan();
         }
 

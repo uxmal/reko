@@ -14,10 +14,10 @@
 0C00:0012 00 1B           	add	[bp+di],bl
 0C00:0014 00 1F           	add	[bx],bl
 0C00:0016 00 B8 01 00     	add	[bx+si+0001],bh
-0C00:001A C3              	ret	
+0C00:001A C3              	ret
 0C00:001B B8 02 00        	mov	ax,0002
-0C00:001E C3              	ret	
+0C00:001E C3              	ret
 0C00:001F B8 03 00        	mov	ax,0003
-0C00:0022 C3              	ret	
+0C00:0022 C3              	ret
 0C00:0023 B8 00 00        	mov	ax,0000
-0C00:0026 C3              	ret	
+0C00:0026 C3              	ret

@@ -333,9 +333,10 @@ namespace Reko.Scanning
                 else
                     proc.ControlGraph.AddEdge(branchingBlock, blockThen);
             }
-
-            // Now, switch to the fallthru block and keep rewriting.
-            blockCur = blockElse;
+            if (!BlockHasBeenScanned(blockElse))
+            {
+                blockCur = blockElse;
+            }
             return true;
         }
 
@@ -409,10 +410,24 @@ namespace Reko.Scanning
                 rtlStream.MoveNext();
                 ProcessRtlCluster(rtlStream.Current);
             }
+            CallSite site;
             scanner.TerminateBlock(blockCur, rtlStream.Current.Address + ric.Length);
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
+                var impProc = scanner.GetImportedProcedure(addrTarget, this.ric.Address);
+                if (impProc != null)
+                {
+                    site = state.OnBeforeCall(stackReg, arch.PointerType.Size);
+                    var sig = impProc.Signature;
+                    var chr = impProc.Characteristics;
+                    if (chr != null && chr.IsAlloca)
+                        return ProcessAlloca(site, impProc);
+                    EmitCall(CreateProcedureConstant(impProc), sig, chr, site);
+                    Emit(new ReturnInstruction());
+                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    return false;
+                }
                 if (!program.SegmentMap.IsValidAddress(addrTarget))
                 {
                     var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
@@ -433,7 +448,6 @@ namespace Reko.Scanning
                 }
                 return false;
             }
-            CallSite site;
             var mem = g.Target as MemoryAccess;
             if (mem != null)
             {
@@ -475,15 +489,20 @@ namespace Reko.Scanning
             Address addr = call.Target as Address;
             if (addr != null)
             {
+                var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
+                if (impProc != null)
+                {
+                    sig = impProc.Signature;
+                    chr = impProc.Characteristics;
+                    if (chr != null && chr.IsAlloca)
+                        return ProcessAlloca(site, impProc);
+                    EmitCall(CreateProcedureConstant(impProc), sig, chr, site);
+                    return OnAfterCall(sig, chr);
+                }
                 if (!program.SegmentMap.IsValidAddress(addr))
                 {
                     return GenerateCallToOutsideProcedure(site, addr);
                 }
-
-                var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
-                if (impProc != null && impProc.Characteristics.IsAlloca)
-                    return ProcessAlloca(site, impProc);
-
                 var callee = scanner.ScanProcedure(addr, null, state);
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature;
@@ -532,7 +551,6 @@ namespace Reko.Scanning
                 sig = imp.Signature;
                 chr = imp.Characteristics;
                 EmitCall(CreateProcedureConstant(imp), sig, chr, site);
-                //Emit(BuildApplication(CreateProcedureConstant(imp), sig, site));
                 return OnAfterCall(sig, chr);
             }
 

@@ -63,7 +63,7 @@ l00401177:
 	}
 	*(ebp_10 - 0x19) = 0x00;
 	*(ebp_10 - 0x04) = *(ebp_10 - 0x04) & 0x00;
-	*(ebp_10 - 0x24) = fn0040143F(0x14);
+	*(ebp_10 - 0x24) = fn0040143F();
 	ebx = DPB(ebx, 0x00, 0);
 	word32 eax_36 = globals->dw403334;
 	if (eax_36 != 0x01)
@@ -259,13 +259,13 @@ void fn004012D8(word32 dwArg04)
 	return;
 }
 
-// 004013FB: Register (ptr Eq_566) fn004013FB(Stack word32 dwArg04, Stack word32 dwArg08)
-Eq_566 * fn004013FB(word32 dwArg04, word32 dwArg08)
+// 004013FB: Register (ptr Eq_564) fn004013FB(Stack word32 dwArg04, Stack word32 dwArg08)
+Eq_564 * fn004013FB(word32 dwArg04, word32 dwArg08)
 {
-	struct Eq_566 * eax_26;
-	struct Eq_570 * ecx_13 = dwArg04 + dwArg04->dw003C / 0x0040;
-	struct Eq_566 * edx_16 = &ecx_13->w0014 + 0x02 + (word32) ecx_13->w0014 / 22;
-	struct Eq_566 * esi_19 = edx_16 + (word32) ecx_13->w0006;
+	struct Eq_564 * eax_26;
+	struct Eq_568 * ecx_13 = dwArg04 + dwArg04->dw003C / 0x0040;
+	struct Eq_564 * edx_16 = &ecx_13->w0014 + 0x02 + (word32) ecx_13->w0014 / 22;
+	struct Eq_564 * esi_19 = edx_16 + (word32) ecx_13->w0006;
 	if (edx_16 != esi_19)
 	{
 		do
@@ -282,30 +282,24 @@ Eq_566 * fn004013FB(word32 dwArg04, word32 dwArg08)
 	return eax_26;
 }
 
-// 0040143F: Register byte fn0040143F(Stack word32 dwArg00)
-byte fn0040143F(word32 dwArg00)
+// 0040143F: Register byte fn0040143F()
+byte fn0040143F()
 {
 	if (fn00401B98() != 0x00)
 	{
 		word32 edx_32 = fs->ptr0018->dw0004;
 l00401460:
 		__lock();
-		word32 eax_36;
-		__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_36);
-		__lock();
-		word32 eax_43;
-		__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_43);
-		if (eax_43 != 0x00)
+		word32 eax_37;
+		__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_37);
+		if (eax_37 != 0x00)
 		{
-			if (edx_32 != eax_43)
+			if (edx_32 != eax_37)
 				goto l00401460;
 			return 0x01;
 		}
 		else
-		{
 			return 0x00;
-			return 0x00;
-		}
 	}
 	else
 		return 0x00;
@@ -394,16 +388,16 @@ void fn004014AD(ptr32 edi, word32 dwArg04)
 	}
 }
 
-// 00401544: Register (ptr Eq_770) fn00401544(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Register out ptr32 ebxOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
-Eq_770 * fn00401544(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
+// 00401544: Register (ptr Eq_756) fn00401544(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Register out ptr32 ebxOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+Eq_756 * fn00401544(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
 {
-	struct Eq_770 * eax_31;
+	struct Eq_756 * eax_31;
 	struct Eq_90 * ebp_10 = fn00401980(ebx, esi, edi, dwLoc0C, 0x004024F8, 0x08);
 	*(ebp_10 - 0x04) = *(ebp_10 - 0x04) & 0x00;
-	struct Eq_790 * eax_15 = (struct Eq_790 *) 23117;
+	struct Eq_776 * eax_15 = (struct Eq_776 *) 23117;
 	if ((word16 *) 0x00400000 == 23117)
 	{
-		eax_15 = (struct Eq_790 *) (struct Eq_790 **) 0x0040003C;
+		eax_15 = (struct Eq_776 *) (struct Eq_776 **) 0x0040003C;
 		if (eax_15->dw400000 == 0x4550 && eax_15->w400018 == 0x010B)
 		{
 			*(fp - 0x0C) = ebp_10->dw0008 - 0x00400000;
@@ -412,7 +406,7 @@ Eq_770 * fn00401544(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & es
 			if (eax_15 != null && eax_15->dw0024 >= 0x00)
 			{
 				*(ebp_10 - 0x04) = ~0x01;
-				eax_31 = (struct Eq_770 *) DPB(eax_15, 0x01, 0);
+				eax_31 = (struct Eq_756 *) DPB(eax_15, 0x01, 0);
 l004015C8:
 				word32 esi_37;
 				word32 edi_38;
@@ -423,7 +417,7 @@ l004015C8:
 		}
 	}
 	*(ebp_10 - 0x04) = ~0x01;
-	eax_31 = (struct Eq_770 *) DPB(eax_15, 0x00, 0);
+	eax_31 = (struct Eq_756 *) DPB(eax_15, 0x00, 0);
 	goto l004015C8;
 }
 
@@ -615,10 +609,10 @@ void fn00401774(word32 dwArg00, word32 dwArg04)
 // 0040188F: Register bool fn0040188F()
 bool fn0040188F()
 {
-	Eq_1126 eax_4 = GetModuleHandleW(null);
+	Eq_1112 eax_4 = GetModuleHandleW(null);
 	if (eax_4 != null && eax_4->unused == 23117)
 	{
-		struct Eq_1140 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
+		struct Eq_1126 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
 		if (eax_42->dw0000 == 0x4550 && (eax_42->w0018 == 0x010B && eax_42->dw0074 > 0x0E))
 			return eax_42->dw00E8 != 0x00;
 	}

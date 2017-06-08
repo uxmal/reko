@@ -289,7 +289,7 @@ namespace Reko.Arch.X86
         {
             var op1 = SrcOp(instrCur.op1);
             var op2 = SrcOp(instrCur.op2, instrCur.op1.Width);
-            var acc = orw.AluRegister(Registers.eax, instrCur.dataWidth);
+            var acc = orw.AluRegister(Registers.rax, instrCur.dataWidth);
             var Z = orw.FlagGroup(FlagM.ZF);
             m.Assign(
                 Z,

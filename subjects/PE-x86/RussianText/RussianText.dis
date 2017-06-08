@@ -152,8 +152,8 @@ int32 main(int32 argc, char * * argv)
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO ah al ax bp bpl ch cl cx eax ebp ecx esp rax rbp rcx rsp sp spl
-// Preserved:
+// Trashed: SCZO ah al ax ch cl cx eax ecx rax rcx
+// Preserved: ebp esp
 main_entry:
 // DataOut:
 // DataOut (flags): 
@@ -161,15 +161,7 @@ main_entry:
 // LocalsOut: fp(32)
 
 l00401168:
-	word32 esp_14
-	word32 ebp_15
-	word32 ecx_16
-	word32 eax_17
-	byte SZO_18
-	byte C_19
-	call printf (retsize: 4; depth: 12)
-		uses: dwLoc04_10,dwLoc08_13,ebp_11,esp_12
-		defs: C_19,eax_17,ebp_15,ecx_16,esp_14,SZO_18
+	printf(0x004020A4)
 	return 0x00000000
 // DataOut:
 // DataOut (flags): 
@@ -178,7 +170,7 @@ l00401168:
 main_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ebp:<invalid> ecx:<invalid> eax:0x00000000 -8(fp):0x004020A4 -4(fp):ebp 4(fp):argc 8(fp):argv
+// SymbolicIn: esp:fp eax:<invalid> ecx:0x004020A4 ebp:ebp -8(fp):0x004020A4 -4(fp):ebp 4(fp):argc 8(fp):argv
 
 
 
@@ -238,7 +230,7 @@ void fn004011B0(word32 dwArg04)
 // MayUse:  fs
 // LiveOut:
 // Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh dl dx eax ebp ebx ecx edx esp rax rbp rbx rcx rdx rsp sp spl
-// Preserved:
+// Preserved: ebp ebx esp
 // Stack args: Stack +0004(32)
 fn004011B0_entry:
 // DataOut: fs
@@ -247,7 +239,7 @@ fn004011B0_entry:
 // LocalsOut: fp(32) Local -0008(32) Stack +0004(32)
 
 l004011B0:
-	word32 esp_24 = fp + 0xFFFFFFF0
+	word32 esp_29 = fp + 0xFFFFFFF0
 	word32 ebx_11 = dwArg04
 	branch dwArg04 != 0x00000000 l004011D7
 // DataOut: ebx esp fs
@@ -264,45 +256,19 @@ l004011C6:
 
 l004011CA:
 	fn004011FC(fp - 0x0000000C)
-	esp_24 = fp + 0xFFFFFFF4
+	esp_29 = fp + 0xFFFFFFF4
 	ebx_11 = dwLoc08
 // DataOut: ebx esp fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 0x00000004 ebx:<invalid> al:<invalid> eax:eax & 0x00000001 -16(fp):ebx -4(fp):ebp
 
 l004011D7:
-	word32 esp_25 = esp_24 - 0x00000004
-	Mem26[esp_25:word32] = 0x0000009C
-	Mem28[esp_25 - 0x00000004:word32] = ebx_11
-	Mem33[esp_25 - 0x00000008:word32] = fn00401158()
-	word32 esp_34
-	word32 ebp_35
-	byte SCZO_36
-	word32 ebx_37
-	byte SZO_38
-	byte C_39
-	byte al_40
-	byte Z_41
-	word32 eax_42
-	word32 edx_43
-	word32 ecx_44
-	call memcpy (retsize: 4; depth: 4)
-		uses: al_14,C_20,dwLoc04_4,dwLoc10_9,dwLoc14_22,eax_30,ebp_5,ebx_23,esp_32,SCZO_31,SZO_18,Z_19
-		defs: al_40,C_39,eax_42,ebp_35,ebx_37,ecx_44,edx_43,esp_34,SCZO_36,SZO_38,Z_41
-	word32 esp_48
-	word32 ebp_49
-	byte SCZO_50
-	word32 ebx_51
-	byte SZO_52
-	byte C_53
-	byte al_54
-	byte Z_55
-	word32 eax_56
-	word32 edx_57
-	word32 ecx_58
-	call _InitTermAndUnexPtrs$qv (retsize: 4; depth: 4)
-		uses: al_40,C_39,dwLoc04_4,dwLoc10_9,dwLoc14_22,eax_42,ebp_35,ebx_37,ecx_44,edx_43,esp_46,SCZO_47,SZO_38,Z_41
-		defs: al_54,C_53,eax_56,ebp_49,ebx_51,ecx_58,edx_57,esp_48,SCZO_50,SZO_52,Z_55
+	word32 esp_30 = esp_29 - 0x00000004
+	Mem31[esp_30:word32] = 0x0000009C
+	Mem33[esp_30 - 0x00000004:word32] = ebx_11
+	Mem37[esp_30 - 0x00000008:word32] = fn00401158()
+	memcpy(Mem37[esp_30 - 0x00000008:(ptr void)], Mem37[esp_30 - 0x00000004:(ptr void)], Mem37[esp_30:size_t])
+	_InitTermAndUnexPtrs()
 	return
 // DataOut:
 // DataOut (flags): 

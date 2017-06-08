@@ -27,6 +27,9 @@ using Reko.Core.Types;
 
 namespace Reko.Core.Expressions
 {
+    /// <summary>
+    /// Models the C ternary ?: operator.
+    /// </summary>
     public class ConditionalExpression : Expression
     {
         public ConditionalExpression(

@@ -2953,10 +2953,10 @@ fn114A_entry:
 // SymbolicIn: sp:fp
 
 l114A:
-	word16 r2_33
+	word16 r2_300
 	word16 v10_5 = r0 - r1
-	word16 r3_104 = 0x0000
-	*r3Out = r3_104
+	word16 r3_103 = 0x0000
+	*r3Out = r3_103
 	bool C_25 = cond(v10_5)
 	branch v10_5 >=u 0x0000 l115A
 // DataOut: pc r0 r1 r3 r4 r5
@@ -2964,16 +2964,16 @@ l114A:
 // SymbolicIn: sp:fp
 
 l115A:
-	r2_33 = r0
-	*r2Out = r2_33
+	r2_300 = r0
+	*r2Out = r2_300
 	branch r0 == 0x0000 l119E
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): C
 // SymbolicIn: sp:fp r3:0x0000
 
 l1150:
-	r2_33 = r1
-	*r2Out = r2_33
+	r2_300 = r1
+	*r2Out = r2_300
 	branch r1 == 0x0000 l119E
 // DataOut: pc r0 r2 r3 r4 r5
 // DataOut (flags): C
@@ -2986,352 +2986,338 @@ l1154:
 // SymbolicIn: sp:fp r3:0x0000 r2:r1
 
 l115E:
-	word16 r2_284
-	word16 r2_267
-	word16 r2_250
-	word16 r2_233
-	word16 r2_216
-	word16 r2_199
-	word16 r2_182
-	word16 r2_165
-	word16 r2_148
-	word16 r2_131
-	word16 r2_114
-	word16 r2_103
+	word16 r2_232
+	word16 r2_219
+	word16 r2_206
+	word16 r2_193
+	word16 r2_180
+	word16 r2_167
+	word16 r2_154
+	word16 r2_141
+	word16 r2_128
+	word16 r2_115
+	word16 r2_102
 	word16 r2_100
-	word16 r2_340
-	word16 r2_38 = __rol(r2_33, r2_33)
+	word16 r2_281
+	word16 r2_284
+	word16 r2_38 = __rol(r2_300, r2_300)
 	branch r2_38 <u 0x0000 l11A0
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l11A0:
-	r3_104 = r1 << 1
-	r2_284 = __rol(r2_38, r2_38)
-	branch r2_284 >=u 0x0000 l11AC
+	r3_103 = r1 << 1
+	r2_232 = __rol(r2_38, r2_38)
+	branch r2_232 >=u 0x0000 l11AC
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l1162:
-	r2_284 = __rol(r2_38, r2_38)
-	branch r2_284 <u 0x0000 l11A8
+	r2_232 = __rol(r2_38, r2_38)
+	branch r2_232 <u 0x0000 l11A8
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l11A8:
-	word16 r3_292 = r3_104 + r1
-	r3_104 = r3_292 + r1
-	r2_284 = r2_284 + (r3_292 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_232 = r2_232 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l11AC:
-	r3_104 = r3_104 << 1
-	r2_267 = __rol(r2_284, r2_284)
-	branch r2_267 >=u 0x0000 l11B6
+	r3_103 = r3_103 << 1
+	r2_219 = __rol(r2_232, r2_232)
+	branch r2_219 >=u 0x0000 l11B6
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l1166:
-	r2_267 = __rol(r2_284, r2_284)
-	branch r2_267 <u 0x0000 l11B2
+	r2_219 = __rol(r2_232, r2_232)
+	branch r2_219 <u 0x0000 l11B2
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l11B2:
-	word16 r3_275 = r3_104 + r1
-	r3_104 = r3_275 + r1
-	r2_267 = r2_267 + (r3_275 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_219 = r2_219 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l11B6:
-	r3_104 = r3_104 << 1
-	r2_250 = __rol(r2_267, r2_267)
-	branch r2_250 >=u 0x0000 l11C0
+	r3_103 = r3_103 << 1
+	r2_206 = __rol(r2_219, r2_219)
+	branch r2_206 >=u 0x0000 l11C0
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l116A:
-	r2_250 = __rol(r2_267, r2_267)
-	branch r2_250 <u 0x0000 l11BC
+	r2_206 = __rol(r2_219, r2_219)
+	branch r2_206 <u 0x0000 l11BC
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l11BC:
-	word16 r3_258 = r3_104 + r1
-	r3_104 = r3_258 + r1
-	r2_250 = r2_250 + (r3_258 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_206 = r2_206 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l11C0:
-	r3_104 = r3_104 << 1
-	r2_233 = __rol(r2_250, r2_250)
-	branch r2_233 >=u 0x0000 l11CA
+	r3_103 = r3_103 << 1
+	r2_193 = __rol(r2_206, r2_206)
+	branch r2_193 >=u 0x0000 l11CA
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l116E:
-	r2_233 = __rol(r2_250, r2_250)
-	branch r2_233 <u 0x0000 l11C6
+	r2_193 = __rol(r2_206, r2_206)
+	branch r2_193 <u 0x0000 l11C6
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l11C6:
-	word16 r3_241 = r3_104 + r1
-	r3_104 = r3_241 + r1
-	r2_233 = r2_233 + (r3_241 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_193 = r2_193 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l11CA:
-	r3_104 = r3_104 << 1
-	r2_216 = __rol(r2_233, r2_233)
-	branch r2_216 >=u 0x0000 l11D4
+	r3_103 = r3_103 << 1
+	r2_180 = __rol(r2_193, r2_193)
+	branch r2_180 >=u 0x0000 l11D4
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l1172:
-	r2_216 = __rol(r2_233, r2_233)
-	branch r2_216 <u 0x0000 l11D0
+	r2_180 = __rol(r2_193, r2_193)
+	branch r2_180 <u 0x0000 l11D0
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l11D0:
-	word16 r3_224 = r3_104 + r1
-	r3_104 = r3_224 + r1
-	r2_216 = r2_216 + (r3_224 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_180 = r2_180 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l11D4:
-	r3_104 = r3_104 << 1
-	r2_199 = __rol(r2_216, r2_216)
-	branch r2_199 >=u 0x0000 l11DE
+	r3_103 = r3_103 << 1
+	r2_167 = __rol(r2_180, r2_180)
+	branch r2_167 >=u 0x0000 l11DE
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l1176:
-	r2_199 = __rol(r2_216, r2_216)
-	branch r2_199 <u 0x0000 l11DA
+	r2_167 = __rol(r2_180, r2_180)
+	branch r2_167 <u 0x0000 l11DA
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l11DA:
-	word16 r3_207 = r3_104 + r1
-	r3_104 = r3_207 + r1
-	r2_199 = r2_199 + (r3_207 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_167 = r2_167 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l11DE:
-	r3_104 = r3_104 << 1
-	r2_182 = __rol(r2_199, r2_199)
-	branch r2_182 >=u 0x0000 l11E8
+	r3_103 = r3_103 << 1
+	r2_154 = __rol(r2_167, r2_167)
+	branch r2_154 >=u 0x0000 l11E8
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l117A:
-	r2_182 = __rol(r2_199, r2_199)
-	branch r2_182 <u 0x0000 l11E4
+	r2_154 = __rol(r2_167, r2_167)
+	branch r2_154 <u 0x0000 l11E4
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l11E4:
-	word16 r3_190 = r3_104 + r1
-	r3_104 = r3_190 + r1
-	r2_182 = r2_182 + (r3_190 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_154 = r2_154 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l11E8:
-	r3_104 = r3_104 << 1
-	r2_165 = __rol(r2_182, r2_182)
-	branch r2_165 >=u 0x0000 l11F2
+	r3_103 = r3_103 << 1
+	r2_141 = __rol(r2_154, r2_154)
+	branch r2_141 >=u 0x0000 l11F2
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l117E:
-	r2_165 = __rol(r2_182, r2_182)
-	branch r2_165 <u 0x0000 l11EE
+	r2_141 = __rol(r2_154, r2_154)
+	branch r2_141 <u 0x0000 l11EE
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l11EE:
-	word16 r3_173 = r3_104 + r1
-	r3_104 = r3_173 + r1
-	r2_165 = r2_165 + (r3_173 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_141 = r2_141 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l11F2:
-	r3_104 = r3_104 << 1
-	r2_148 = __rol(r2_165, r2_165)
-	branch r2_148 >=u 0x0000 l11FC
+	r3_103 = r3_103 << 1
+	r2_128 = __rol(r2_141, r2_141)
+	branch r2_128 >=u 0x0000 l11FC
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l1182:
-	r2_148 = __rol(r2_165, r2_165)
-	branch r2_148 <u 0x0000 l11F8
+	r2_128 = __rol(r2_141, r2_141)
+	branch r2_128 <u 0x0000 l11F8
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l11F8:
-	word16 r3_156 = r3_104 + r1
-	r3_104 = r3_156 + r1
-	r2_148 = r2_148 + (r3_156 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_128 = r2_128 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l11FC:
-	r3_104 = r3_104 << 1
-	r2_131 = __rol(r2_148, r2_148)
-	branch r2_131 >=u 0x0000 l1206
+	r3_103 = r3_103 << 1
+	r2_115 = __rol(r2_128, r2_128)
+	branch r2_115 >=u 0x0000 l1206
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l1186:
-	r2_131 = __rol(r2_148, r2_148)
-	branch r2_131 <u 0x0000 l1202
+	r2_115 = __rol(r2_128, r2_128)
+	branch r2_115 <u 0x0000 l1202
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l1202:
-	word16 r3_139 = r3_104 + r1
-	r3_104 = r3_139 + r1
-	r2_131 = r2_131 + (r3_139 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_115 = r2_115 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l1206:
-	r3_104 = r3_104 << 1
-	r2_114 = __rol(r2_131, r2_131)
-	branch r2_114 >=u 0x0000 l1210
+	r3_103 = r3_103 << 1
+	r2_102 = __rol(r2_115, r2_115)
+	branch r2_102 >=u 0x0000 l1210
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l118A:
-	r2_114 = __rol(r2_131, r2_131)
-	branch r2_114 <u 0x0000 l120C
+	r2_102 = __rol(r2_115, r2_115)
+	branch r2_102 <u 0x0000 l120C
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l120C:
-	word16 r3_122 = r3_104 + r1
-	r3_104 = r3_122 + r1
-	r2_114 = r2_114 + (r3_122 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_102 = r2_102 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l1210:
-	r3_104 = r3_104 << 1
-	r2_103 = __rol(r2_114, r2_114)
-	branch r2_103 >=u 0x0000 l121A
+	r3_103 = r3_103 << 1
+	r2_100 = __rol(r2_102, r2_102)
+	branch r2_100 >=u 0x0000 l121A
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l118E:
-	r2_103 = __rol(r2_114, r2_114)
-	branch r2_103 <u 0x0000 l1216
+	r2_100 = __rol(r2_102, r2_102)
+	branch r2_100 <u 0x0000 l1216
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l1216:
-	word16 r3_105 = r3_104 + r1
-	r3_104 = r3_105 + r1
-	r2_103 = r2_103 + (r3_105 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_100 = r2_100 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l121A:
-	r3_104 = r3_104 << 1
-	r2_100 = __rol(r2_103, r2_103)
-	branch r2_100 >=u 0x0000 l1224
+	r3_103 = r3_103 << 1
+	r2_281 = __rol(r2_100, r2_100)
+	branch r2_281 >=u 0x0000 l1224
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l1192:
-	r2_100 = __rol(r2_103, r2_103)
-	branch r2_100 <u 0x0000 l1220
+	r2_281 = __rol(r2_100, r2_100)
+	branch r2_281 <u 0x0000 l1220
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l1220:
-	word16 r3_88 = r3_104 + r1
-	r3_104 = r3_88 + r1
-	r2_100 = r2_100 + (r3_88 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_281 = r2_281 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l1224:
-	r3_104 = r3_104 << 1
-	r2_340 = __rol(r2_100, r2_100)
-	branch r2_340 >=u 0x0000 l122E
+	r3_103 = r3_103 << 1
+	r2_284 = __rol(r2_281, r2_281)
+	branch r2_284 >=u 0x0000 l122E
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l1196:
-	r2_340 = __rol(r2_100, r2_100)
-	branch r2_340 <u 0x0000 l122A
+	r2_284 = __rol(r2_281, r2_281)
+	branch r2_284 <u 0x0000 l122A
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:0x0000 r2:<invalid> r1:r0
 
 l122A:
-	word16 r3_71 = r3_104 + r1
-	r3_104 = r3_71 + r1
-	r2_340 = r2_340 + (r3_71 <u 0x0000) + (r3_104 <u 0x0000)
+	r3_103 = r3_103 + r1
+	r2_284 = r2_284 + (r3_103 <u 0x0000)
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l122E:
-	word16 r2_44 = __rol(r2_340, r2_340)
+	word16 r2_44 = __rol(r2_284, r2_284)
 	*r2Out = r2_44
-	word16 r3_43 = r3_104 << 1
+	word16 r3_43 = r3_103 << 1
 	*r3Out = r3_43
 	bool C_46 = cond(r2_44)
 	branch r2_44 >=u 0x0000 l1238
@@ -3356,10 +3342,10 @@ l1238:
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
 
 l119A:
-	word16 r2_343
+	word16 r2_287
 	*r2Out = 0x0000
 	C_25 = false
-	word16 r3_345
+	word16 r3_289
 	*r3Out = r1
 // DataOut: pc r0 r2 r3 r4 r5
 // DataOut (flags): C

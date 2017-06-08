@@ -5,5 +5,6 @@
 #include "RussianText.h"
 
 Eq_9 g_t40208B = null;
+char g_b4020A4 = 'Ý';
 word32 g_dw4020F8 = 0x00000000;
 

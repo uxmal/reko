@@ -201,5 +201,14 @@ namespace Reko.UnitTests.Typing
             var p = Id("p", PrimitiveType.Real64);
             RunTest(m.AddrOf(p));
         }
+
+        [Test]
+        public void ExaConditional()
+        {
+            var id = Id("id", PrimitiveType.Bool);
+            var id1 = Id("id1", PrimitiveType.Int32);
+            var id2 = Id("id2", PrimitiveType.Int32);
+            RunTest(m.Conditional(PrimitiveType.Word32, id, id1, id2));
+        }
     }
 }
