@@ -39,6 +39,8 @@ namespace Reko.Gui.Windows.Controls
     /// </summary>
     public class DisassemblyControl : TextView
     {
+        private DisassemblyTextModel dasmModel;
+
         public DisassemblyControl()
         {
             SetStyle(ControlStyles.DoubleBuffer, true);
@@ -78,6 +80,20 @@ namespace Reko.Gui.Windows.Controls
         public event EventHandler SelectedObjectChanged;
         private object selectedObject;
 
+        public bool ShowPcRelative
+        {
+            get { return dasmModel != null ? dasmModel.ShowPcRelative : false; }
+            set
+            {
+                if (dasmModel == null)
+                    return;
+                dasmModel.ShowPcRelative = value;
+                Invalidate();
+                ShowPcRelativeChanged.Fire(this);
+            }
+        }
+        public event EventHandler ShowPcRelativeChanged;
+
         void DisassemblyControl_StateChange(object sender, EventArgs e)
         {
             if (program == null || topAddress == null)
@@ -95,7 +111,8 @@ namespace Reko.Gui.Windows.Controls
                 else
                 {
                     var addr = topAddress;
-                    Model = new DisassemblyTextModel(program, segment);
+                    this.dasmModel = new DisassemblyTextModel(program, segment);
+                    Model = dasmModel;
                     Model.MoveToLine(addr, 0);
                 }
             }

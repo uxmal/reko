@@ -120,7 +120,7 @@ namespace Reko.Arch.SuperH
                 if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                 {
                     writer.Write('(');
-                    writer.WriteAddress(uAddr.ToString(), addr);
+                    writer.WriteAddress(addr.ToString(), addr);
                     writer.Write(')');
                     writer.AddAnnotation(op.ToString());
                 }

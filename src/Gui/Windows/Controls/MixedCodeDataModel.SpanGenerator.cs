@@ -147,7 +147,7 @@ namespace Reko.Gui.Windows.Controls
                     return null;
                 var instr = instrs[offset];
                 ++offset;
-                var asmLine = DisassemblyTextModel.RenderAsmLine(program, instr);
+                var asmLine = DisassemblyTextModel.RenderAsmLine(program, instr, MachineInstructionWriterOptions.ResolvePcRelativeAddress);
                 if (offset == instrs.Length)
                 {
                     DecorateLastLine(asmLine);
