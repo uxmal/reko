@@ -152,6 +152,7 @@ namespace Reko.Scanning
             return b;
         }
 
+        [Conditional("DEBUG")]
         private void SanityCheck(SortedList<Address, BlockRange> blocks)
         {
             for (int i = 1; i < blocks.Count; ++i)
