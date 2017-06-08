@@ -5,7 +5,7 @@ main proc
 	push	ebp
 	mov	ebp,esp
 	push	ecx
-	fld1	
+	fld1
 	fstp	dword ptr [esp]
 	push	004020C0
 	mov	eax,[ebp+08]
@@ -17,7 +17,7 @@ main proc
 	add	esp,10
 	xor	eax,eax
 	pop	ebp
-	ret	
+	ret
 00401024             CC CC CC CC CC CC CC CC CC CC CC CC     ............
 
 ;; test1: 00401030
@@ -37,7 +37,7 @@ test1 proc
 	call	dword ptr [0040209C]
 	add	esp,18
 	pop	ebp
-	ret	
+	ret
 00401058                         CC CC CC CC CC CC CC CC         ........
 
 ;; test2: 00401060
@@ -67,7 +67,7 @@ l00401087:
 
 l004010A5:
 	pop	ebp
-	ret	
+	ret
 004010A7                      CC CC CC CC CC CC CC CC CC        .........
 
 ;; indirect_call_test3: 004010B0
@@ -83,7 +83,7 @@ indirect_call_test3 proc
 	call	eax
 	add	esp,08
 	pop	ebp
-	ret	
+	ret
 004010CB                                  CC CC CC CC CC            .....
 
 ;; test4: 004010D0
@@ -98,7 +98,7 @@ test4 proc
 	call	eax
 	add	esp,04
 	pop	ebp
-	ret	
+	ret
 004010EA                               CC CC CC CC CC CC           ......
 
 ;; test5: 004010F0
@@ -117,7 +117,7 @@ test5 proc
 	call	eax
 	add	esp,0C
 	pop	ebp
-	ret	
+	ret
 0040111A                               CC CC CC CC CC CC           ......
 
 ;; test6: 00401120
@@ -148,14 +148,14 @@ test6 proc
 	add	esp,08
 	mov	esp,ebp
 	pop	ebp
-	ret	
+	ret
 00401159                            CC CC CC CC CC CC CC          .......
 
 ;; test7: 00401160
 test7 proc
 	push	ebp
 	mov	ebp,esp
-	fld1	
+	fld1
 	fcomp	double ptr [ebp+08]
 	fstsw	ax
 	test	ah,05
@@ -182,7 +182,7 @@ l00401189:
 	mov	eax,[edx+04]
 	call	eax
 	pop	ebp
-	ret	
+	ret
 004011A9                            CC CC CC CC CC CC CC          .......
 
 ;; nested_if_blocks_test8: 004011B0
@@ -230,7 +230,7 @@ l0040120D:
 	call	00401120
 	add	esp,0C
 	pop	ebp
-	ret	
+	ret
 00401222       CC CC CC CC CC CC CC CC CC CC CC CC CC CC   ..............
 
 ;; loop_test9: 00401230
@@ -278,7 +278,7 @@ l00401278:
 l00401294:
 	mov	esp,ebp
 	pop	ebp
-	ret	
+	ret
 00401298                         CC CC CC CC CC CC CC CC         ........
 
 ;; const_div_test10: 004012A0
@@ -300,7 +300,7 @@ l004012BA:
 	mov	[0040301C],ecx
 	mov	[00403020],eax
 	pop	ebp
-	ret	
+	ret
 004012C7                      CC CC CC CC CC CC CC CC CC        .........
 
 ;; loop_test11: 004012D0
@@ -354,7 +354,7 @@ l0040131E:
 l00401329:
 	mov	esp,ebp
 	pop	ebp
-	ret	
+	ret
 0040132D                                        CC CC CC              ...
 00401330 68 B9 16 40 00 E8 49 03 00 00 A1 4C 30 40 00 C7 h..@..I....L0@..
 00401340 04 24 3C 30 40 00 FF 35 48 30 40 00 A3 3C 30 40 .$<0@..5H0@..<0@

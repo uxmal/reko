@@ -21,6 +21,7 @@
 using System;
 using Reko.Core.Machine;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Reko.Arch.SuperH
 {
@@ -90,10 +91,11 @@ namespace Reko.Arch.SuperH
                 return;
             writer.Tab();
             Render(op1, writer, options);
-            if (op2 == null)
-                return;
-            writer.Write(',');
-            Render(op2, writer, options);
+            if (op2 != null)
+            {
+                writer.Write(',');
+                Render(op2, writer, options);
+            }
         }
 
         private void Render(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
@@ -103,6 +105,30 @@ namespace Reko.Arch.SuperH
             {
                 writer.Write('#');
                 immOp.Write(writer, options);
+                return;
+            }
+            var memOp = op as MemoryOperand;
+            if (memOp != null && memOp.mode == AddressingMode.PcRelativeDisplacement)
+            {
+                uint uAddr = this.Address.ToUInt32();
+                if (memOp.Width.Size == 4)
+                {
+                    uAddr &= ~3u;
+                }
+                uAddr += (uint)(memOp.disp + 4);
+                var addr = Core.Address.Ptr32(uAddr);
+                if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                {
+                    writer.Write('(');
+                    writer.WriteAddress(addr.ToString(), addr);
+                    writer.Write(')');
+                    writer.AddAnnotation(op.ToString());
+                }
+                else
+                {
+                    op.Write(writer, options);
+                    writer.AddAnnotation(addr.ToString());
+                }
                 return;
             }
             op.Write(writer, options);

@@ -17,4 +17,4 @@
 0400002C 8B 7C 24 10     	mov	edi,[esp+10]
 04000030 89 07           	mov	[edi],eax
 04000032 83 C4 0C        	add	esp,0C
-04000035 C3              	ret	
+04000035 C3              	ret

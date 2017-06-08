@@ -31,7 +31,7 @@ l00001036:
 	jsr.l	$-0126(a6)
 	movea.l	d0,a3
 	moveq	#$+00,d0
-	lea	$0274(pc),a1
+	lea	$0274(pc),a1                                           ; 000012BC
 	jsr.l	$-0228(a6)
 	tst.l	d0
 	beq	$00001226
@@ -232,7 +232,7 @@ l000011AE:
 	jsr.l	$-007E(a6)
 
 l000011B6:
-	lea	$0112(pc),a0
+	lea	$0112(pc),a0                                           ; 000012C8
 	move.l	a0,d1
 	move.l	#$000003ED,d2
 	jsr.l	$-001E(a6)

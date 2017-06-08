@@ -17,7 +17,7 @@ fn10001000 proc
 
 l10001023:
 	add	esp,08
-	ret	
+	ret
 
 l10001027:
 	mov	eax,[esp]
@@ -28,7 +28,7 @@ l10001027:
 	call	dword ptr [10002090]
 	add	esp,08
 	add	esp,08
-	ret	
+	ret
 10001043          CC CC CC CC CC CC CC CC CC CC CC CC CC    .............
 
 ;; fn10001050: 10001050
@@ -48,7 +48,7 @@ fn10001050 proc
 
 l10001074:
 	add	esp,08
-	ret	
+	ret
 
 l10001078:
 	mov	eax,[esp]
@@ -58,7 +58,7 @@ l10001078:
 	call	dword ptr [10002090]
 	add	esp,08
 	add	esp,08
-	ret	
+	ret
 10001092       CC CC CC CC CC CC CC CC CC CC CC CC CC CC   ..............
 
 ;; fn100010A0: 100010A0
@@ -78,18 +78,18 @@ fn100010A0 proc
 
 l100010C4:
 	add	esp,08
-	ret	
+	ret
 
 l100010C8:
 	mov	eax,[esp]
-	cdq	
+	cdq
 	idiv	dword ptr [esp+04]
 	push	eax
 	push	1000214C
 	call	dword ptr [10002090]
 	add	esp,08
 	add	esp,08
-	ret	
+	ret
 100010E3          CC CC CC CC CC CC CC CC CC CC CC CC CC    .............
 
 ;; fn100010F0: 100010F0
@@ -109,7 +109,7 @@ fn100010F0 proc
 
 l10001114:
 	add	esp,08
-	ret	
+	ret
 
 l10001118:
 	fld	dword ptr [esp]
@@ -120,7 +120,7 @@ l10001118:
 	call	dword ptr [10002090]
 	add	esp,0C
 	add	esp,08
-	ret	
+	ret
 10001137                      CC CC CC CC CC CC CC CC CC        .........
 
 ;; py_unused: 10001140
@@ -134,13 +134,13 @@ py_unused proc
 	jnz	10001158
 
 l10001157:
-	ret	
+	ret
 
 l10001158:
 	mov	eax,[1000208C]
 	add	dword ptr [eax],01
 	mov	eax,[1000208C]
-	ret	
+	ret
 10001166                   CC CC CC CC CC CC CC CC CC CC       ..........
 
 ;; initpySample: 10001170
@@ -152,7 +152,7 @@ initpySample proc
 	push	10002174
 	call	dword ptr [10002084]
 	add	esp,14
-	ret	
+	ret
 1000118D                                        3B 0D 00              ;..
 10001190 30 00 10 75 02 F3 C3 E9 23 03 00 00 56 68 80 00 0..u....#...Vh..
 100011A0 00 00 FF 15 74 20 00 10 8B F0 56 FF 15 78 20 00 ....t ....V..x .
@@ -506,12 +506,12 @@ l1000147A:
 	call	10001493
 	mov	eax,[ebp-1C]
 	call	1000182D
-	ret	
+	ret
 
 ;; fn10001493: 10001493
 fn10001493 proc
 	mov	dword ptr [10003008],FFFFFFFF
-	ret	
+	ret
 
 ;; DllMain: 1000149E
 DllMain proc
@@ -598,14 +598,14 @@ l100015FE:
 
 l1000165F:
 	call	1000182D
-	ret	
+	ret
 
 ;; fn10001665: 10001665
 fn10001665 proc
 	push	08
 	call	10001904
 	pop	ecx
-	ret	
+	ret
 
 ;; fn1000166E: 1000166E
 fn1000166E proc
@@ -616,7 +616,7 @@ fn1000166E proc
 	neg	eax
 	pop	ecx
 	dec	eax
-	ret	
+	ret
 
 ;; fn10001680: 10001680
 fn10001680 proc
@@ -644,7 +644,7 @@ l1000169A:
 l100016A1:
 	pop	edi
 	pop	esi
-	ret	
+	ret
 100016A4             56 57 B8 E0 21 00 10 BF E0 21 00 10     VW..!....!..
 100016B0 3B C7 8B F0 73 0F 8B 06 85 C0 74 02 FF D0 83 C6 ;...s.....t.....
 100016C0 04 3B F7 72 F1 5F 5E C3 CC CC CC CC CC CC CC CC .;.r._^.........
@@ -657,7 +657,7 @@ fn100016D0 proc
 
 l100016DB:
 	xor	eax,eax
-	ret	
+	ret
 
 l100016DE:
 	mov	eax,[ecx+3C]
@@ -670,7 +670,7 @@ l100016EB:
 	cmp	word ptr [eax+18],010B
 	setz	cl
 	mov	eax,ecx
-	ret	
+	ret
 100016F9                            CC CC CC CC CC CC CC          .......
 
 ;; fn10001700: 10001700
@@ -715,7 +715,7 @@ l1000173E:
 	pop	edi
 	pop	esi
 	pop	ebx
-	ret	
+	ret
 
 ;; fn10001742: 10001742
 fn10001742 proc
@@ -757,7 +757,7 @@ l1000179F:
 
 l100017A8:
 	call	1000182D
-	ret	
+	ret
 100017AE                                           FF 25               .%
 100017B0 64 20 00 10                                     d ..           
 100017B4             FF 25 60 20 00 10                       .%` ..     
@@ -805,7 +805,7 @@ fn100017E8 proc
 	mov	[ebp-08],eax
 	lea	eax,[ebp-10]
 	mov	fs:[00000000],eax
-	ret	
+	ret
 
 ;; fn1000182D: 1000182D
 fn1000182D proc
@@ -819,7 +819,7 @@ fn1000182D proc
 	mov	esp,ebp
 	pop	ebp
 	push	ecx
-	ret	
+	ret
 10001841    FF 74 24 10 FF 74 24 10 FF 74 24 10 FF 74 24  .t$..t$..t$..t$
 10001850 10 68 8D 11 00 10 68 00 30 00 10 E8 B6 00 00 00 .h....h.0.......
 10001860 83 C4 18 C3                                     ....           
@@ -892,8 +892,8 @@ l100018E5:
 l100018F4:
 	pop	edi
 	pop	ebx
-	leave	
-	ret	
+	leave
+	ret
 100018F8                         FF 25 3C 20 00 10 FF 25         .%< ...%
 10001900 7C 20 00 10 FF 25 44 20 00 10 FF 25 48 20 00 10 | ...%D ...%H ..
 10001910 FF 25 4C 20 00 10 FF 25 54 20 00 10 00 00 00 00 .%L ...%T ......

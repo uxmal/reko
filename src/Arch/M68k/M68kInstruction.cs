@@ -23,6 +23,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.M68k
@@ -85,13 +86,36 @@ namespace Reko.Arch.M68k
             writer.Tab();
             if (op1 != null)
             {
-                op1.Write(writer, options);
+                WriteOperand(op1, writer, options);
                 if (op2 != null)
                 {
                     writer.Write(',');
-                    op2.Write(writer, options);
+                    WriteOperand(op2, writer, options);
                 }
             }
+        }
+
+        private void WriteOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            var memOp = op as MemoryOperand;
+            if (memOp != null && memOp.Base == Registers.pc)
+            {
+                var uAddr = Address.ToUInt32() + memOp.Offset.ToInt32();
+                var addr = Address.Ptr32((uint)uAddr);
+                if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                {
+                    writer.WriteAddress(addr.ToString(), addr);
+                    writer.AddAnnotation(op.ToString());
+                }
+                else
+                {
+                    op.Write(writer, options);
+                    writer.AddAnnotation(addr.ToString());
+                }
+                return;
+
+            }
+            op.Write(writer, options);
         }
 
         private string DataSizeSuffix(PrimitiveType dataWidth)

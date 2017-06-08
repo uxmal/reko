@@ -8,5 +8,5 @@
 1000010B 83 C4 04        	add	esp,04
 1000010E C7 00 00 00 00 00 	mov	dword ptr [eax],00000000
 10000114 C7 40 04 00 00 00 00 	mov	dword ptr [eax+04],00000000
-1000011B C3              	ret	
+1000011B C3              	ret
 10000100: _malloc

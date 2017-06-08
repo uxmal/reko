@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Assemblers.x86
         }
 
         [Test]
-        public void Factorial()
+        public void AsfFactorial()
         {
             RunTest(new Factorial(), 
                 "0C00:0000	mov	cx,0100" + nl +
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Assemblers.x86
                 "0C00:0004	call	000F" + nl +
                 "0C00:0007	add	sp,02" + nl +
                 "0C00:000A	mov	[0100],ax" + nl +
-                "0C00:000E	ret	" + nl +
+                "0C00:000E	ret" + nl +
                 "0C00:000F	push	bp" + nl +
                 "0C00:0010	mov	bp,sp" + nl +
                 "0C00:0012	mov	ax,[bp+04]" + nl +
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Assemblers.x86
                 "0C00:0023	jmp	0029" + nl +
                 "0C00:0026	mov	ax,0001" + nl +
                 "0C00:0029	pop	bp" + nl +
-                "0C00:002A	ret	" + nl);
+                "0C00:002A	ret" + nl);
         }
 
 
