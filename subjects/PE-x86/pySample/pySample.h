@@ -4370,7 +4370,7 @@ T_1003: (in true : bool)
   Class: Eq_1003
   DataType: bool
   OrigDataType: bool
-T_1004: (in eax_34 : (ptr code))
+T_1004: (in eax_30 : (ptr code))
   Class: Eq_1004
   DataType: (ptr code)
   OrigDataType: (ptr code)
@@ -4390,7 +4390,7 @@ T_1008: (in 0x00000000 : word32)
   Class: Eq_1004
   DataType: (ptr code)
   OrigDataType: word32
-T_1009: (in eax_34 == null : bool)
+T_1009: (in eax_30 == null : bool)
   Class: Eq_1009
   DataType: bool
   OrigDataType: bool
@@ -4410,31 +4410,31 @@ T_1013: (in esi_12 < &globals->dw100021D8 : bool)
   Class: Eq_1013
   DataType: bool
   OrigDataType: bool
-T_1014: (in esp_47 : word32)
+T_1014: (in esp_43 : word32)
   Class: Eq_1014
   DataType: word32
   OrigDataType: word32
-T_1015: (in edi_49 : word32)
+T_1015: (in edi_45 : word32)
   Class: Eq_1015
   DataType: word32
   OrigDataType: word32
-T_1016: (in eax_50 : word32)
+T_1016: (in eax_46 : word32)
   Class: Eq_1016
   DataType: word32
   OrigDataType: word32
-T_1017: (in SCZO_51 : byte)
+T_1017: (in SCZO_47 : byte)
   Class: Eq_1017
   DataType: byte
   OrigDataType: byte
-T_1018: (in C_52 : byte)
+T_1018: (in C_48 : byte)
   Class: Eq_1018
   DataType: byte
   OrigDataType: byte
-T_1019: (in SZO_53 : byte)
+T_1019: (in SZO_49 : byte)
   Class: Eq_1019
   DataType: byte
   OrigDataType: byte
-T_1020: (in Z_54 : byte)
+T_1020: (in Z_50 : byte)
   Class: Eq_1020
   DataType: byte
   OrigDataType: byte

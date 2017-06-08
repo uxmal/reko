@@ -631,12 +631,12 @@ l00200557:
 	Mem6[xsp_3 - 4:word32] = xhl
 	Mem10[xsp_3 - 8:word32] = xde
 	Mem14[0x00004002:byte] = d << 0x01
-	word32 xwa_110 = (word32) (c * 0x02)
+	word32 xwa_106 = (word32) (c * 0x02)
 	word16 bc_29 = DPB(bc, 0x00, 8)
 	word16 wa_23 = DPB(wa, c * 0x02, 0)
-	word32 xde_102 = xwa_110 + 0x00009800 + bc_29 *u 0x0040
-	byte b_106 = 0x13
-	word32 xbc_107
+	word32 xde_32 = xwa_106 + 0x00009800 + bc_29 *u 0x0040
+	byte b_102 = 0x13
+	word32 xbc_103
 	*xbcOut = DPB(bc_29 *u 0x0040, 0x13, 8)
 // DataOut: b bc de wa xbc xde xhl xsp xwa
 // DataOut (flags): 
@@ -644,8 +644,8 @@ l00200557:
 
 l00200579:
 	byte v18_50 = Mem14[xhl:byte]
-	xwa_110 = DPB(xwa_110, v18_50, 0) (alias)
-	word16 wa_111 = DPB(wa_23, v18_50, 0)
+	xwa_106 = DPB(xwa_106, v18_50, 0) (alias)
+	word16 wa_107 = DPB(wa_23, v18_50, 0)
 	branch v18_50 == 0x00 l0020059E
 // DataOut: a b bc de wa xbc xde xhl xsp xwa
 // DataOut (flags): 
@@ -659,35 +659,34 @@ l0020057F:
 // SymbolicIn: sp:<invalid> xsp:xsp - 12 d:<invalid> xde:<invalid> xwa:<invalid> a:<invalid> c:<invalid> b:<invalid> xbc:<invalid> xhl:<invalid> w:<invalid> wa:<invalid>
 
 l00200586:
-	xwa_110 = DPB(xwa_110, v18_50 + 0xE0, 0) (alias)
-	wa_111 = DPB(wa_23, v18_50 + 0xE0, 0) (alias)
+	xwa_106 = DPB(xwa_106, v18_50 + 0xE0, 0) (alias)
+	wa_107 = DPB(wa_23, v18_50 + 0xE0, 0) (alias)
 // DataOut: a b bc de wa xbc xde xhl xsp xwa
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> xsp:xsp - 12 d:<invalid> xde:<invalid> xwa:<invalid> a:<invalid> c:<invalid> b:<invalid> xbc:<invalid> xhl:<invalid> w:<invalid> wa:<invalid>
 
 l00200589:
-	word16 wa_88 = DPB(wa_111, 0x00, 8)
-	byte w_93 = SLICE(wa_88 + 0x0009, byte, 8) + Mem14[0x00004002:byte]
-	Mem98[xde_102:byte] = (byte) (wa_88 + 0x0009)
-	word32 xde_99 = xde_102 + 0x00000001
-	Mem101[xde_99:byte] = w_93
-	b_106 = b_106 - 0x01
-	xwa_110 = DPB(xwa_110, w_93, 8) (alias)
-	wa_23 = DPB(wa_88 + 0x0009, w_93, 8) (alias)
-	xde_102 = xde_99 + 0x00000001
-	*xbcOut = DPB(xbc_107, b_106, 8)
-	branch b_106 != 0x00 l00200579
+	word16 wa_84 = DPB(wa_107, 0x00, 8)
+	byte w_89 = SLICE(wa_84 + 0x0009, byte, 8) + Mem14[0x00004002:byte]
+	Mem94[xde_32:byte] = (byte) (wa_84 + 0x0009)
+	word32 xde_95 = xde_32 + 0x00000001
+	Mem97[xde_95:byte] = w_89
+	b_102 = b_102 - 0x01
+	xwa_106 = DPB(xwa_106, w_89, 8) (alias)
+	wa_23 = DPB(wa_84 + 0x0009, w_89, 8) (alias)
+	xde_32 = xde_95 + 0x00000001
+	*xbcOut = DPB(xbc_103, b_102, 8)
+	branch b_102 != 0x00 l00200579
 // DataOut: b bc de wa xbc xde xhl xsp xwa
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> xsp:xsp - 12 d:<invalid> xde:<invalid> xwa:<invalid> a:<invalid> c:<invalid> b:<invalid> xbc:<invalid> xhl:<invalid> w:<invalid> wa:<invalid>
 
 l0020059E:
-	return xwa_110
-	word32 xde_72
-	*xdeOut = Mem14[xsp_3:word32]
-	word32 xsp_76
-	*xspOut = xsp_3 + 8
-	return xwa_110
+	word32 xde_68
+	*xdeOut = Mem14[xsp_3 - 8:word32]
+	word32 xsp_72
+	*xspOut = xsp_3
+	return xwa_106
 // DataOut: bc de wa xbc xde xsp xwa
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> xsp:xsp - 12 d:<invalid> xde:<invalid> xwa:<invalid> a:<invalid> c:<invalid> b:<invalid> xbc:<invalid> xhl:<invalid> w:<invalid> wa:<invalid>
@@ -695,7 +694,7 @@ l0020059E:
 fn00200557_exit:
 // DataOut: wa xbc xde xsp xwa
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> xsp:xsp - 132 d:<invalid> xde:<invalid> xwa:<invalid> a:<invalid> c:<invalid> b:<invalid> xbc:<invalid> xhl:<invalid> w:<invalid> wa:<invalid>
+// SymbolicIn: sp:<invalid> xsp:xsp - 36 d:<invalid> xde:<invalid> xwa:<invalid> a:<invalid> c:<invalid> b:<invalid> xbc:<invalid> xhl:<invalid> w:<invalid> wa:<invalid>
 
 
 

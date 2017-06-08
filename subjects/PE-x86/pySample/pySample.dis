@@ -1041,7 +1041,7 @@ void fn10001680()
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO ah al ax di dil eax edi esi esp rax rdi rsi rsp si sil sp spl
-// Preserved:
+// Preserved: edi esi esp
 fn10001680_entry:
 // DataOut:
 // DataOut (flags): 
@@ -1056,23 +1056,23 @@ l10001680:
 // SymbolicIn: esp:fp
 
 l10001692:
-	word32 eax_34 = Mem0[esi_12:word32]
-	branch eax_34 == 0x00000000 l1000169A
+	word32 eax_30 = Mem0[esi_12:word32]
+	branch eax_30 == 0x00000000 l1000169A
 // DataOut: esi esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> eax:<invalid> edi:0x100021D8 esi:<invalid> -8(fp):edi -4(fp):esi
 
 l10001698:
-	word32 esp_47
-	word32 edi_49
-	word32 eax_50
-	byte SCZO_51
-	byte C_52
-	byte SZO_53
-	byte Z_54
-	call eax_34 (retsize: 4; depth: 4)
-		uses: C_37,dwLoc04_4,dwLoc08_7,eax_34,edi_31,esi_32,esp_33,SCZO_30,SZO_35,Z_36
-		defs: C_52,eax_50,edi_49,esi_48,esp_47,SCZO_51,SZO_53,Z_54
+	word32 esp_43
+	word32 edi_45
+	word32 eax_46
+	byte SCZO_47
+	byte C_48
+	byte SZO_49
+	byte Z_50
+	call eax_30 (retsize: 4; depth: 4)
+		uses: C_33,dwLoc04_4,dwLoc08_7,eax_30,edi_27,esi_28,esp_29,SCZO_26,SZO_31,Z_32
+		defs: C_48,eax_46,edi_45,esi_44,esp_43,SCZO_47,SZO_49,Z_50
 // DataOut: esi esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> eax:<invalid> edi:0x100021D8 esi:<invalid> -8(fp):edi -4(fp):esi
@@ -1085,7 +1085,6 @@ l1000169A:
 // SymbolicIn: esp:<invalid> eax:<invalid> edi:0x100021D8 esi:<invalid> -8(fp):edi -4(fp):esi
 
 l100016A1:
-	return
 	return
 // DataOut:
 // DataOut (flags): 

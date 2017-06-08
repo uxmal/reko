@@ -421,22 +421,21 @@ void fn10001680()
 	{
 		do
 		{
-			<anonymous> * eax_34 = *esi_12;
-			if (eax_34 != null)
+			<anonymous> * eax_30 = *esi_12;
+			if (eax_30 != null)
 			{
-				word32 esp_47;
-				word32 edi_49;
-				word32 eax_50;
-				byte SCZO_51;
-				byte C_52;
-				byte SZO_53;
-				byte Z_54;
-				eax_34();
+				word32 esp_43;
+				word32 edi_45;
+				word32 eax_46;
+				byte SCZO_47;
+				byte C_48;
+				byte SZO_49;
+				byte Z_50;
+				eax_30();
 			}
 			esi_12 = esi_12 + 0x01;
 		} while (esi_12 < &globals->dw100021D8);
 	}
-	return;
 	return;
 }
 

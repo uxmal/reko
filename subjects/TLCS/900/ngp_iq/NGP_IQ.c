@@ -339,48 +339,47 @@ word32 fn00200532(word32 xwa, word32 xbc, byte * xde, byte * xhl, word32 xsp, pt
 // 00200557: Register word32 fn00200557(Register word16 wa, Register word16 bc, Register (ptr word16) xde, Register (ptr byte) xhl, Register word32 xsp, Register out ptr32 xbcOut, Register out ptr32 xdeOut, Register out ptr32 xspOut)
 word32 fn00200557(word16 wa, word16 bc, word16 * xde, byte * xhl, word32 xsp, ptr32 & xbcOut, ptr32 & xdeOut, ptr32 & xspOut)
 {
-	word32 * xsp_3 = DPB(xsp, fp, 0);
+	ptr32 xsp_3 = DPB(xsp, fp, 0);
 	*(xsp_3 - 0x04) = (byte **) xhl;
 	*(xsp_3 - 0x08) = (word16 **) xde;
 	*(ui8 *) 0x4002 = d << 0x01;
-	word32 xwa_110 = (word32) (c * 0x02);
+	word32 xwa_106 = (word32) (c * 0x02);
 	uint16 bc_29 = DPB(bc, 0x00, 8);
 	word16 wa_23 = DPB(wa, c * 0x02, 0);
-	byte * xde_102 = (word16) (bc_29 * 0x40) + (xwa_110 + 0x9800);
-	byte b_106 = 0x13;
-	word32 xbc_107;
+	byte * xde_32 = (word16) (bc_29 * 0x40) + (xwa_106 + 0x9800);
+	byte b_102 = 0x13;
+	word32 xbc_103;
 	*xbcOut = DPB(bc_29 * 0x40, 0x13, 8);
 l00200579:
 	cu8 v18_50 = *xhl;
-	xwa_110 = DPB(xwa_110, v18_50, 0);
-	word16 wa_111 = DPB(wa_23, v18_50, 0);
+	xwa_106 = DPB(xwa_106, v18_50, 0);
+	word16 wa_107 = DPB(wa_23, v18_50, 0);
 	if (v18_50 != 0x00)
 	{
 		xhl = xhl + 0x01;
 		if (v18_50 >= 0x5B)
 		{
-			xwa_110 = DPB(xwa_110, v18_50 + 0xE0, 0);
-			wa_111 = DPB(wa_23, v18_50 + 0xE0, 0);
+			xwa_106 = DPB(xwa_106, v18_50 + 0xE0, 0);
+			wa_107 = DPB(wa_23, v18_50 + 0xE0, 0);
 		}
-		word16 wa_88 = DPB(wa_111, 0x00, 8);
-		byte w_93 = SLICE(wa_88 + 0x09, byte, 8) + *((byte *) 0x4002);
-		*xde_102 = (byte) (wa_88 + 0x09);
-		byte * xde_99 = xde_102 + 0x01;
-		*xde_99 = w_93;
-		b_106 = b_106 - 0x01;
-		xwa_110 = DPB(xwa_110, w_93, 8);
-		wa_23 = DPB(wa_88 + 0x09, w_93, 8);
-		xde_102 = xde_99 + 0x01;
-		*xbcOut = DPB(xbc_107, b_106, 8);
-		if (b_106 != 0x00)
+		word16 wa_84 = DPB(wa_107, 0x00, 8);
+		byte w_89 = SLICE(wa_84 + 0x09, byte, 8) + *((byte *) 0x4002);
+		*xde_32 = (byte) (wa_84 + 0x09);
+		byte * xde_95 = xde_32 + 0x01;
+		*xde_95 = w_89;
+		b_102 = b_102 - 0x01;
+		xwa_106 = DPB(xwa_106, w_89, 8);
+		wa_23 = DPB(wa_84 + 0x09, w_89, 8);
+		xde_32 = xde_95 + 0x01;
+		*xbcOut = DPB(xbc_103, b_102, 8);
+		if (b_102 != 0x00)
 			goto l00200579;
 	}
-	return xwa_110;
-	word32 xde_72;
-	*xdeOut = *xsp_3;
-	word32 xsp_76;
-	*xspOut = xsp_3 + 0x02;
-	return xwa_110;
+	word32 xde_68;
+	*xdeOut = *(xsp_3 - 0x08);
+	word32 xsp_72;
+	*xspOut = xsp_3;
+	return xwa_106;
 }
 
 // 002005B8: void fn002005B8()

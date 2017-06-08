@@ -6,7 +6,7 @@
 
 word16 g_w0006 = 0x0000;
 byte g_b0080 = 0x00;
-Eq_863 g_t0103 = 
+Eq_838 g_t0103 = 
 	{
 		0x00,
 		0x5A,
@@ -16,7 +16,7 @@ byte g_b02A3 = 0x64;
 ptr16 g_ptr1388 = 0x0000;
 cu8 g_b138A = 0x00;
 cu8 g_b138B = 0x00;
-Eq_3033 g_t138C = 
+Eq_3009 g_t138C = 
 	{
 		0x00
 	};
@@ -35,7 +35,7 @@ byte g_b14FA = 0x00;
 byte g_b14FB = 0x00;
 byte g_b14FC = 0x00;
 cu8 g_b14FD = 0x00;
-Eq_1332 g_t14FE = 
+Eq_1307 g_t14FE = 
 	{
 		0x01
 	};
@@ -56,7 +56,7 @@ Eq_361 g_t1520 =
 	{
 		0x00
 	};
-struct Eq_2879 * g_ptr1521 = null;
+struct Eq_2855 * g_ptr1521 = null;
 byte g_b1529 = 0x00;
 word16 g_w1640 = 0x0000;
 byte g_b1645 = 0x30;
@@ -150,14 +150,14 @@ Eq_777 g_t167A =
 	};
 byte g_b167B = 0x1A;
 byte g_b167C = 0x1A;
-Eq_943 g_t167D = 
+Eq_918 g_t167D = 
 	{
 		0x1A
 	};
 byte g_b167E = 0x1A;
 cu8 g_b1681 = 0xEC;
 cu8 g_b1682 = 0x08;
-Eq_1068 g_t1683 = 
+Eq_1043 g_t1683 = 
 	{
 		0xDA
 	};
@@ -199,7 +199,7 @@ Eq_361 g_t1691 =
 	{
 		0xC3
 	};
-Eq_1973 g_t1692 = 
+Eq_1948 g_t1692 = 
 	{
 		0x2A
 	};
@@ -213,20 +213,20 @@ Eq_81 g_t1696 =
 	{
 		0x17
 	};
-Eq_2189 g_t1697 = 
+Eq_2164 g_t1697 = 
 	{
 		0xB7
 	};
 byte g_b16A6 = 0x23;
-Eq_3033 g_t16A7 = 
+Eq_3009 g_t16A7 = 
 	{
 		0x7E
 	};
-Eq_3097 g_t16A8 = 
+Eq_3073 g_t16A8 = 
 	{
 		0x23
 	};
-Eq_3097 g_t16A9 = 
+Eq_3073 g_t16A9 = 
 	{
 		0x56
 	};
