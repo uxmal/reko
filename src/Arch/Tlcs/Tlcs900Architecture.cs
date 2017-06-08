@@ -45,7 +45,7 @@ namespace Reko.Arch.Tlcs
             this.FramePointerType = PrimitiveType.Pointer32;
             this.PointerType = PrimitiveType.Pointer32;
             this.WordWidth = PrimitiveType.Word32;
-            this.StackRegister = Registers.sp;
+            this.StackRegister = Registers.xsp;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
