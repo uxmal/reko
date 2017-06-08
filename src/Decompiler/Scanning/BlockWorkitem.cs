@@ -332,9 +332,10 @@ namespace Reko.Scanning
                 else
                     proc.ControlGraph.AddEdge(branchingBlock, blockThen);
             }
-
-            // Now, switch to the fallthru block and keep rewriting.
-            blockCur = blockElse;
+            if (!BlockHasBeenScanned(blockElse))
+            {
+                blockCur = blockElse;
+            }
             return true;
         }
 

@@ -118,6 +118,11 @@ namespace Reko.Scanning
             public Block Block { get; private set; }
             public ulong Start { get; set; }
             public ulong End { get; set; }
+
+            public override string ToString()
+            {
+                return string.Format("[{0:X}..{1:X}) - {2:X}", Start, End, End - Start);
+            }
         }
 
         /// <summary>
@@ -130,13 +135,31 @@ namespace Reko.Scanning
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             Block b = new Block(proc, blockName) { Address = addr };
-            var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
-            blocks.Add(addr, new BlockRange(b, addr.ToLinear(), lastMem.BaseAddress.ToLinear() + (uint)lastMem.Length));
+            BlockRange br;
+            if (!blocks.TryGetUpperBound(addr, out br))
+            {
+                var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
+                blocks.Add(addr, new BlockRange(b, addr.ToLinear(), lastMem.BaseAddress.ToLinear() + (uint)lastMem.Length));
+            }
+            else
+            {
+                blocks.Add(addr, new BlockRange(b, addr.ToLinear(), br.Start));
+            }
             blockStarts.Add(b, addr);
             proc.ControlGraph.Blocks.Add(b);
 
             imageMap.AddItem(addr, new ImageMapBlock { Block = b });
             return b;
+        }
+
+        private void SanityCheck(SortedList<Address, BlockRange> blocks)
+        {
+            for (int i = 1; i < blocks.Count; ++i)
+            {
+                var prev = blocks.Values[i - 1];
+                var cur = blocks.Values[i];
+                Debug.Assert(prev.End <= cur.Start);
+            }
         }
 
         /// <summary>
@@ -553,7 +576,7 @@ namespace Reko.Scanning
         {
             var bb = new StatementInjector(proc, proc.EntryBlock.Succ[0], addr);
             var sp = proc.Frame.EnsureRegister(Program.Architecture.StackRegister);
-            bb.Assign((Identifier)sp, (Expression)proc.Frame.FramePointer);
+            bb.Assign(sp, proc.Frame.FramePointer);
             Program.Platform.InjectProcedureEntryStatements(proc, addr, bb);
         }
 
@@ -678,12 +701,14 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Splits the given block at the specified address, yielding two blocks. The first block is the original block,
-        /// now truncated, with a single out edge to the new block. The second block receives the out edges of the first block.
+        /// Splits the given block at the specified address, yielding two 
+        /// blocks. The first resulting block is the original block, now
+        /// truncated, with a single out edge to the new block. The second 
+        /// block receives the out edges of the first block.
         /// </summary>
-        /// <param name="block"></param>
-        /// <param name="addr"></param>
-        /// <returns>The newly created, empty second block</returns>
+        /// <param name="block">The block to split</param>
+        /// <param name="addr">The address at which to split it.</param>
+        /// <returns>The newly created, empty second block.</returns>
         public Block SplitBlock(Block blockToSplit, Address addr)
         {
             var graph = blockToSplit.Procedure.ControlGraph;
@@ -710,7 +735,9 @@ namespace Reko.Scanning
             {
                 stm.Block = blockNew;
             }
+            blocks[addr].End = blocks[blockStarts[blockToSplit]].End;
             blocks[blockStarts[blockToSplit]].End = linAddr;
+            SanityCheck(blocks);
             return blockNew;
         }
 
