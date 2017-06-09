@@ -1,5 +1,6 @@
 ﻿**/[Oo]bj/
 **/[Bb]in/
+/**/obj/
 TestResults
 /src/Samples/TravisRelease
 /src/.vs
