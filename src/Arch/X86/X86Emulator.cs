@@ -206,7 +206,6 @@ namespace Reko.Arch.X86
             case Opcode.popa: Popa(); return;
             case Opcode.push: Push(Read(instr.op1)); return;
             case Opcode.pusha: Pusha(); return;
-            case Opcode.repne: Repne(); return;
             case Opcode.rol: Rol(instr.op1, instr.op2); return;
             case Opcode.scasb: Scasb(); return;
             case Opcode.shl: Shl(instr.op1, instr.op2); return;
@@ -281,6 +280,7 @@ namespace Reko.Arch.X86
 
         private void Scasb()
         {
+            //$TODO repne
             byte al = (byte) ReadRegister(X86.Registers.al);
             TWord edi = ReadRegister(X86.Registers.edi);
             var addr = Address.Ptr32(edi);

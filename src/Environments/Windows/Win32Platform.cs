@@ -182,14 +182,10 @@ namespace Reko.Environments.Windows
             return null;
         }
 
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader rdr, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> rdr, IRewriterHost host)
         {
-            var rw = Architecture.CreateRewriter(
-                rdr,
-                Architecture.CreateProcessorState(),
-                Architecture.CreateFrame(), host);
-            var rtlc = rw.FirstOrDefault();
-            if (rtlc == null || rtlc.Instructions.Count == 0)
+            var rtlc = rdr.FirstOrDefault();
+            if (rtlc == null)
                 return null;
             var jump = rtlc.Instructions[0] as RtlGoto;
             if (jump == null)
@@ -220,7 +216,7 @@ namespace Reko.Environments.Windows
         {
             EnsureTypeLibraries(PlatformIdentifier);
             ModuleDescriptor mod;
-            if (Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+            if (moduleName != null && Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
             {
                 SystemService svc;
                 if (mod.ServicesByName.TryGetValue(procName, out svc))

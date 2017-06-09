@@ -247,6 +247,11 @@
     <Compile Include="IRFormat\IRToken.cs" />
     <Compile Include="IStorageBinder.cs" />
     <Compile Include="ISymbolSource.cs" />
+    <Compile Include="Lib\ArticulationPointFinder.cs" />
+    <Compile Include="Lib\Dijkstra.cs" />
+    <Compile Include="Lib\FibonacciHeap.cs" />
+    <Compile Include="Lib\LinqAlgorithms.cs" />
+    <Compile Include="Lib\LTDominatorGraph.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />
     <Compile Include="Lib\SuffixArray.cs" />
@@ -264,6 +269,7 @@
     <Compile Include="Rtl\RtlIf.cs" />
     <Compile Include="SegmentMap.cs" />
     <Compile Include="Serialization\ArgumentDeserializer.cs" />
+    <Compile Include="Serialization\DispatchProcedure_v1.cs" />
     <Compile Include="Serialization\GlobalDataItem_v2.cs" />
     <Compile Include="IByteSource.cs" />
     <Compile Include="ICodeLocation.cs" />

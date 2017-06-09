@@ -43,10 +43,7 @@ namespace Reko.Core
 
 		public ExternalProcedure CreateExternalProcedure(IProcessorArchitecture arch)
 		{
-            if (Characteristics == null)
-                return new ExternalProcedure(Name, Signature);
-            else
-                return new ExternalProcedure(Name, Signature, Characteristics);
+            return new ExternalProcedure(Name, Signature, Characteristics);
 		}
 	}
 

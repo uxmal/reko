@@ -95,7 +95,6 @@ namespace Reko.Core
                 return null;
         }
 
-        [Obsolete("", true)]
         public override ExternalProcedure ResolveImportedProcedure(
             IImportResolver resolver, 
             IPlatform platform, 
@@ -109,7 +108,19 @@ namespace Reko.Core
             if (ep != null)
             {
                 if (!ep.Signature.ParametersValid)
+                {
+                    // We found a imported procedure but couldn't find its signature.
+                    // Perhaps it has been mangled, and we can use the stripped name.
+                    var epNew = resolver.ResolveProcedure(null, ep.Name, platform);
+                    if (epNew != null)
+                    {
+                        ep = epNew;
+                    }
+                }
+                if (!ep.Signature.ParametersValid)
+                {
                     ctx.Warn("Unable to guess parameters of {0}.", this);
+                }
                 return ep;
             }
             

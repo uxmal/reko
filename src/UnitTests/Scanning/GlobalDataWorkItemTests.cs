@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Scanning
     public class GlobalDataWorkItemTests
     {
         private MockRepository mr;
-        private IScanner scanner;
+        private IScannerQueue scanner;
         private IProcessorArchitecture arch;
         private IPlatform platform;
         private Program program;
@@ -52,9 +52,9 @@ namespace Reko.UnitTests.Scanning
                 .IgnoreArguments()
                 .Do(new Func<MemoryArea, Address, EndianImageReader>((i, a) => new LeImageReader(i, a)));
             platform.Stub(p => p.Architecture).Return(arch);
-            scanner.Stub(s => s.Error(null, null))
+            scanner.Stub(s => s.Error(null, null, null))
                 .IgnoreArguments()
-                .Do(new Action<Address, string>((a, s) => { Assert.Fail(string.Format("{0}: {1}", a, s)); }));
+                .Do(new Action<Address, string, object[]>((a, s, args) => { Assert.Fail(string.Format("{0}: {1}", a, string.Format(s, args))); }));
         }
 
         private void Given_Program(Address address, byte[] bytes)
@@ -118,7 +118,7 @@ namespace Reko.UnitTests.Scanning
             Expect_ScannerGlobalData(0x43210073, ft2);
             mr.ReplayAll();
 
-            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, arrayType);
+            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, arrayType, null);
             gdwi.Process();
 
             mr.VerifyAll();
@@ -128,7 +128,8 @@ namespace Reko.UnitTests.Scanning
         {
             scanner.Expect(s => s.EnqueueUserGlobalData(
                 Arg<Address>.Is.Equal(Address.Ptr32(addrExp)),
-                Arg<DataType>.Is.Same(dtExp)));
+                Arg<DataType>.Is.Same(dtExp),
+                Arg<string>.Is.Anything));
         }
 
         [Test]
@@ -156,7 +157,7 @@ namespace Reko.UnitTests.Scanning
 
             mr.ReplayAll();
 
-            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, str);
+            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, str, null);
             gdwi.Process();
 
             mr.VerifyAll();
@@ -189,7 +190,7 @@ namespace Reko.UnitTests.Scanning
             Expect_ScannerGlobalData(0x43210008, ft);
             mr.ReplayAll();
 
-            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, str);
+            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, str, null);
             gdwi.Process();
 
             mr.VerifyAll();
@@ -205,10 +206,11 @@ namespace Reko.UnitTests.Scanning
                new Identifier[0]);
             scanner.Expect(s => s.EnqueueUserProcedure(
                 Arg<Address>.Is.Equal(addr),
-                Arg<FunctionType>.Is.NotNull));
+                Arg<FunctionType>.Is.NotNull,
+                Arg<string>.Is.Anything));
             mr.ReplayAll();
 
-            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, ft);
+            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, ft, null);
             gdwi.Process();
 
             mr.VerifyAll();

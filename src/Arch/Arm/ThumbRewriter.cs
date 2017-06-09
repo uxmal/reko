@@ -35,16 +35,17 @@ namespace Reko.Arch.Arm
     public partial class ThumbRewriter : IEnumerable<RtlInstructionCluster>
     {
         private IEnumerator<Arm32Instruction> instrs;
-        private Frame frame;
+        private IStorageBinder frame;
         private IRewriterHost host;
         private Instruction<ArmInstruction,ArmRegister,ArmInstructionGroup,ArmInstructionDetail> instr;
         private ArmInstructionOperand[] ops;
-        private RtlInstructionCluster ric;
-        private RtlEmitter emitter;
+        private RtlClass rtlc;
+        private List<RtlInstruction> rtlInstructions;
+        private RtlEmitter m;
         private int itState;
         private ArmCodeCondition itStateCondition;
 
-        public ThumbRewriter(ThumbProcessorArchitecture arch, EndianImageReader rdr, ArmProcessorState state, Frame frame, IRewriterHost host)
+        public ThumbRewriter(ThumbProcessorArchitecture arch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.instrs = CreateInstructionStream(rdr);
             this.frame = frame;
@@ -70,9 +71,9 @@ namespace Reko.Arch.Arm
                         "Invalid opcode cannot be rewritten to IR.");
                 }
                 this.ops = instr.ArchitectureDetail.Operands;
-                this.ric = new RtlInstructionCluster(instrs.Current.Address, instr.Bytes.Length);
-                this.ric.Class = RtlClass.Linear;
-                this.emitter = new RtlEmitter(ric.Instructions);
+                this.rtlInstructions = new List<RtlInstruction>();
+                this.rtlc = RtlClass.Linear;
+                this.m = new RtlEmitter(rtlInstructions);
                 switch (instr.Id)
                 {
                 default:
@@ -80,18 +81,18 @@ namespace Reko.Arch.Arm
                       instrs.Current.Address,
                       "Rewriting ARM Thumb opcode '{0}' ({1}) is not supported yet.",
                       instr.Mnemonic, instr.Id);
-                case ArmInstruction.ADD: RewriteBinop((a, b) => emitter.IAdd(a, b)); break;
+                case ArmInstruction.ADD: RewriteBinop((a, b) => m.IAdd(a, b)); break;
                 case ArmInstruction.ADDW: RewriteAddw(); break;
                 case ArmInstruction.ADR: RewriteAdr(); break;
                 case ArmInstruction.AND: RewriteAnd(); break;
-                case ArmInstruction.ASR: RewriteShift(emitter.Sar); break;
+                case ArmInstruction.ASR: RewriteShift(m.Sar); break;
                 case ArmInstruction.B: RewriteB(); break;
                 case ArmInstruction.BIC: RewriteBic(); break;
                 case ArmInstruction.BL: RewriteBl(); break;
                 case ArmInstruction.BLX: RewriteBlx(); break;
                 case ArmInstruction.BX: RewriteBx(); break;
-                case ArmInstruction.CBZ: RewriteCbnz(emitter.Eq0); break;
-                case ArmInstruction.CBNZ: RewriteCbnz(emitter.Ne0); break;
+                case ArmInstruction.CBZ: RewriteCbnz(m.Eq0); break;
+                case ArmInstruction.CBNZ: RewriteCbnz(m.Ne0); break;
                 case ArmInstruction.CMP: RewriteCmp(); break;
                 case ArmInstruction.DMB: RewriteDmb(); break;
                 case ArmInstruction.EOR: RewriteEor(); break;
@@ -101,8 +102,8 @@ namespace Reko.Arch.Arm
                 case ArmInstruction.LDRSB: RewriteLdr(PrimitiveType.Int32,PrimitiveType.SByte); break;
                 case ArmInstruction.LDREX: RewriteLdrex(); break;
                 case ArmInstruction.LDRH: RewriteLdr(PrimitiveType.UInt32, PrimitiveType.Word16); break;
-                case ArmInstruction.LSL: RewriteShift(emitter.Shl); break;
-                case ArmInstruction.LSR: RewriteShift(emitter.Shr); break;
+                case ArmInstruction.LSL: RewriteShift(m.Shl); break;
+                case ArmInstruction.LSR: RewriteShift(m.Shr); break;
                 case ArmInstruction.MOV: RewriteMov(); break;
                 case ArmInstruction.MOVT: RewriteMovt(); break;
                 case ArmInstruction.MOVW: RewriteMovw(); break;
@@ -116,7 +117,7 @@ namespace Reko.Arch.Arm
                 case ArmInstruction.STRH: RewriteStr(PrimitiveType.Word16); break;
                 case ArmInstruction.STRB: RewriteStr(PrimitiveType.Byte); break;
                 case ArmInstruction.STREX: RewriteStrex(); break;
-                case ArmInstruction.SUB: RewriteBinop((a, b) => emitter.ISub(a, b)); break;
+                case ArmInstruction.SUB: RewriteBinop((a, b) => m.ISub(a, b)); break;
                 case ArmInstruction.SUBW: RewriteSubw(); break;
                 case ArmInstruction.TRAP: RewriteTrap(); break;
                 case ArmInstruction.TST: RewriteTst(); break;
@@ -128,7 +129,14 @@ namespace Reko.Arch.Arm
                 {
                     itStateCondition = ArmCodeCondition.AL;
                 }
-                yield return ric;
+                yield return new RtlInstructionCluster(
+                    instrs.Current.Address,
+                    instr.Bytes.Length,
+                    rtlInstructions.ToArray())
+                {
+                    Class = rtlc
+                };
+                
             }
         }
 
@@ -156,7 +164,7 @@ namespace Reko.Arch.Arm
             case ArmInstructionOperandType.Memory:
                 var mem = op.MemoryValue;
                 var ea = EffectiveAddress(mem);
-                return emitter.Load(accessSize, ea);
+                return m.Load(accessSize, ea);
             default:
                 throw new NotImplementedException(op.Type.ToString());
             }
@@ -168,15 +176,15 @@ namespace Reko.Arch.Arm
             var ea = baseReg;
             if (mem.Displacement > 0)
             {
-                ea = emitter.IAdd(ea, Constant.Int32(mem.Displacement));
+                ea = m.IAdd(ea, Constant.Int32(mem.Displacement));
             }
             else if (mem.Displacement < 0)
             {
-                ea = emitter.ISub(ea, Constant.Int32(-mem.Displacement));
+                ea = m.ISub(ea, Constant.Int32(-mem.Displacement));
             }
             else if (mem.IndexRegister != ArmRegister.Invalid)
             {
-                ea = emitter.IAdd(ea, GetReg(mem.IndexRegister));
+                ea = m.IAdd(ea, GetReg(mem.IndexRegister));
             }
             return ea;
         }
@@ -224,14 +232,14 @@ namespace Reko.Arch.Arm
         private void Predicate(ArmCodeCondition cond, RtlInstruction instr)
         {
             if (cond == ArmCodeCondition.AL)
-                emitter.Emit(instr);
+                m.Emit(instr);
             else
             {
-                emitter.BranchInMiddleOfInstruction(
+                m.BranchInMiddleOfInstruction(
                     TestCond(cond).Invert(),
                     Address.Ptr32((uint)(this.instr.Address + this.instr.Bytes.Length)),
                     RtlClass.ConditionalTransfer);
-                emitter.Emit(instr);
+                m.Emit(instr);
             }
         }
 
@@ -241,7 +249,7 @@ namespace Reko.Arch.Arm
             Identifier id;
             if (dst.As<Identifier>(out id) && id.Storage == A32Registers.pc)
             {
-                ric.Class = RtlClass.Transfer;
+                rtlc = RtlClass.Transfer;
                 instr = new RtlGoto(src, RtlClass.Transfer);
             }
             else

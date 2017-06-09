@@ -40,6 +40,7 @@ namespace Reko.Arch.X86
         private static Dictionary<Opcode, InstructionClass> classOf;
 
 		public Opcode code;		// Opcode of the instruction.
+        public int repPrefix;           // 0 = no prefix, 2 = repnz, 3 = repz
 		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	// width of the address mode.	// TODO: belongs in MemoryOperand
 		public MachineOperand op1;
@@ -114,9 +115,20 @@ namespace Reko.Arch.X86
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-			// Get opcode. 
+            if (repPrefix == 3)
+            {
+                writer.WriteOpcode("rep");
+                writer.Write(' ');
+            }
+            else if (repPrefix == 2)
+            {
+                writer.WriteOpcode("repne");
+                writer.Write(' ');
+            }
 
-			string s = code.ToString();
+            // Get opcode. 
+
+            string s = code.ToString();
 			switch (code)
 			{
 			case Opcode.cwd:
@@ -149,7 +161,6 @@ namespace Reko.Arch.X86
 				break;
 			}
 			writer.WriteOpcode(s);
-			writer.Tab();
 
             if (NeedsExplicitMemorySize())
             {
@@ -158,19 +169,46 @@ namespace Reko.Arch.X86
 
 			if (Operands >= 1)
 			{
-				op1.Write(writer, options);
+                writer.Tab();
+                Write(op1, writer, options);
 				if (Operands >= 2)
 				{
 					writer.Write(',');
-					op2.Write(writer, options);
+					Write(op2, writer, options);
 					if (Operands >= 3)
 					{
 						writer.Write(",");
-						op3.Write(writer, options);
+						Write(op3, writer, options);
 					}
 				}
 			}
 		}
+
+        private void Write(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            var memOp = op as MemoryOperand;
+            if (memOp != null)
+            {
+                if (memOp.Base == Registers.rip)
+                {
+                    var addr = this.Address + this.Length + memOp.Offset.ToInt32();
+                    if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                    {
+                        writer.Write("[");
+                        writer.WriteAddress(addr.ToString(), addr);
+                        writer.Write("]");
+                        writer.AddAnnotation(op.ToString());
+                    }
+                    else
+                    {
+                        op.Write(writer, options);
+                        writer.AddAnnotation(addr.ToString());
+                    }
+                    return;
+                }
+            }
+            op.Write(writer, options);
+        }
 
         public override InstructionClass InstructionClass
         {

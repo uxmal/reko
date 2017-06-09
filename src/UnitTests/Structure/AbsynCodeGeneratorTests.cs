@@ -279,15 +279,15 @@ namespace Reko.UnitTests.Structure
             RunTest(
                 "MockWhileBreak()" + nl +
                 "{" + nl +
-                "	r2 = 0x00000000;" + nl +
-                "	while (r1 != 0x00000000)" + nl +
+                "	r2 = 0;" + nl +
+                "	while (r1 != 0)" + nl +
                 "	{" + nl +
                 "		r3 = Mem0[r1:word32];" + nl +
                 "		r2 = r2 + r3;" + nl +
-                "		r3 = Mem0[r1 + 0x00000004:word32];" + nl +
-                "		if (r3 == 0x00000000)" + nl +
+                "		r3 = Mem0[r1 + 4:word32];" + nl +
+                "		if (r3 == 0)" + nl +
                 "			return r2;" + nl +
-                "		r1 = Mem0[r1 + 0x0000000C:word32];" + nl +
+                "		r1 = Mem0[r1 + 12:word32];" + nl +
                 "	}" + nl +
                 "	return r2;" + nl +
                 "}" + nl);
@@ -349,10 +349,10 @@ namespace Reko.UnitTests.Structure
             RunTest(
                 "MockNestedWhileLoops()" + nl +
                 "{" + nl +
-                "	int32 i = 0x00000000;" + nl +
+                "	int32 i = 0;" + nl +
                 "	while (i < 10)" + nl +
                 "	{" + nl +
-                "		int32 j = 0x00000000;" + nl +
+                "		int32 j = 0;" + nl +
                 "		while (j < 10)" + nl +
                 "		{" + nl +
                 "			Mem0[0x00001234:int32] = Mem0[0x00001234:int32] + j;" + nl +

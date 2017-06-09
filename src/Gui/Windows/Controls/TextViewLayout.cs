@@ -111,7 +111,7 @@ namespace Reko.Gui.Windows.Controls
                     return FindSpanPosition(g, pt, line, styleStack);
                 }
             }
-            return new TextPointer { Line = model.EndPosition, Span = 0, Character = 0 };
+            return new TextPointer(model.EndPosition, 0, 0);
         }
 
         public int ComparePositions(TextPointer a, TextPointer b)
@@ -133,16 +133,11 @@ namespace Reko.Gui.Windows.Controls
                 if (span.ContentExtent.Contains(ptClient))
                 {
                     int iChar = GetCharPosition(g, ptClient, span, styleStack);
-                    return new TextPointer
-                    {
-                        Line = line.Position,
-                        Span = iSpan,
-                        Character = iChar
-                    };
+                    return new TextPointer(line.Position, iSpan, iChar);
                 }
                 ++iSpan;
             }
-            return new TextPointer { Line = line.Position, Span = iSpan, Character = 0 };
+            return new TextPointer(line.Position, iSpan, 0);
         }
 
         private int GetCharPosition(Graphics g, Point ptClient, LayoutSpan span, StyleStack styleStack)

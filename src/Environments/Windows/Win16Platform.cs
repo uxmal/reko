@@ -92,11 +92,6 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            return null;
-        }
-
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             EnsureTypeLibraries(PlatformIdentifier);
@@ -119,6 +114,10 @@ namespace Reko.Environments.Windows
 
         public override void EnsureTypeLibraries(string envName)
         {
+            if (Metadata != null)
+            {
+                return;
+            }
             base.EnsureTypeLibraries(envName);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var envCfg = cfgSvc.GetEnvironment(PlatformIdentifier);
@@ -128,6 +127,13 @@ namespace Reko.Environments.Windows
                 Metadata = new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(tl.Name))
                                 .Load(this, tl.Module, Metadata);
             }
+        }
+
+        public override ExternalProcedure SignatureFromName(string fnName)
+        {
+            var tlsvc = new TypeLibraryDeserializer(this, false, Metadata);
+            var sig = SignatureGuesser.SignatureFromName(fnName, tlsvc, this);
+            return sig;
         }
     }
 }

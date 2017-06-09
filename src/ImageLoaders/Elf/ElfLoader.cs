@@ -171,7 +171,14 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             case ElfMachine.EM_AVR: arch = "avr8"; break;
             case ElfMachine.EM_RISCV: arch = "risc-v"; break;
-            case ElfMachine.EM_SH: arch = "superH"; break;
+            case ElfMachine.EM_SH:
+                arch = endianness== ELFDATA2LSB ? "superH-le" : "superH-be";
+                var a = cfgSvc.GetArchitecture(arch);
+                // SuperH stack pointer is not defined by the architecture,
+                // but by the application itself. It appears r15 has been
+                // chosen by at least the NetBSD folks.
+                a.StackRegister = a.GetRegister("r15");
+                return a;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
@@ -206,13 +213,23 @@ namespace Reko.ImageLoaders.Elf
                 ? symSection.Address + sym.Value
                 : platform.MakeAddressFromLinear(sym.Value);
 
+            var dt = GetSymbolDataType(sym);
             return new ImageSymbol(addr)
             {
                 Type = st,
                 Name = sym.Name,
                 Size = (uint)sym.Size,     //$REVIEW: is int32 a problem? Could such large objects (like arrays) exist?
+                DataType = dt,
                 ProcessorState = Architecture.CreateProcessorState()
             };
+        }
+
+        private DataType GetSymbolDataType(ElfSymbol sym)
+        {
+            if (sym.Type == ElfSymbolType.STT_FUNC)
+                return new FunctionType();
+            else
+                return new UnknownType();
         }
 
         public IPlatform LoadPlatform(byte osAbi, IProcessorArchitecture arch)
@@ -226,6 +243,9 @@ namespace Reko.ImageLoaders.Elf
                 break;
             case ELFOSABI_CELL_LV2: // PS/3
                 envName = "elf-cell-lv2";
+                break;
+            case ELFOSABI_LINUX:
+                envName = "linux";      //$TODO: create a linux platform
                 break;
             default:
                 throw new NotSupportedException(string.Format("Unsupported ELF ABI 0x{0:X2}.", osAbi));
@@ -882,6 +902,12 @@ namespace Reko.ImageLoaders.Elf
             return new RelocationResults(entryPoints, symbols);
         }
 
+        /// <summary>
+        /// Locates the GOT and populates the provided <paramref name="symbols"/> collection
+        /// with entries found in the GOT.
+        /// </summary>
+        /// <param name="program"></param>
+        /// <param name="symbols"></param>
         public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
         {
             // Locate the GOT
@@ -889,11 +915,15 @@ namespace Reko.ImageLoaders.Elf
             // information.
             var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
             if (got == null)
+            {
                 return;
+            }
 
             var rdr = program.CreateImageReader(got.Address);
             while (rdr.Address < got.EndAddress)
             {
+                // Read a 64-bit value and see if it corresponds
+                // to the address of a symbol.
                 var addrGot = rdr.Address;
                 ulong uAddrSym;
                 if (!rdr.TryReadUInt64(out uAddrSym))
@@ -1243,6 +1273,8 @@ namespace Reko.ImageLoaders.Elf
         public string GetSymbolName(ElfSection symSection, uint symbolNo)
         {
             var strSection = symSection.LinkedSection;
+            if (strSection == null)
+                return string.Format("null:{0:X8}", symbolNo);
             uint offset = (uint)(symSection.FileOffset + symbolNo * symSection.EntrySize);
             var rdr = imgLoader.CreateReader(offset);
             rdr.TryReadUInt32(out offset);

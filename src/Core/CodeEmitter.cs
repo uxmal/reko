@@ -101,9 +101,10 @@ namespace Reko.Core
             return Emit(new SideEffect(side));
         }
 
+        [Obsolete("Use explicit size, or create a Store32 method")]
         public Statement Store(Expression ea, int n)
         {
-            return Store(ea, Int32(n));
+            return Store(ea, Word32(n));
         }
 
         public Statement Store(Expression ea, Expression src)
@@ -112,11 +113,6 @@ namespace Reko.Core
             return Emit(s);
         }
 
-        public Statement Store(DataType size, Expression ea, Expression src)
-        {
-            Store s = new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, size), src);
-            return Emit(s);
-        }
 
         public Statement SegStore(Expression basePtr, Expression ea, Expression src)
         {

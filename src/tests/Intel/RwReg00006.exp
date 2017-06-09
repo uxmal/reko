@@ -44,7 +44,7 @@ l10000000:
 	// succ:  l10000010 l10000021
 l10000010:
 	Mem0[0x1006B8E0:byte] = 0x00
-	call fn100002A8 (retsize: 4;)
+	call fn1000032A (retsize: 4;)
 	edi = Mem0[esp:word32]
 	esp = esp + 0x00000004
 	esi = Mem0[esp:word32]
@@ -79,7 +79,7 @@ l1000002C:
 	Mem0[esp:word32] = eax
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = ebp
-	call fn10000277 (retsize: 4;)
+	call fn100002EF (retsize: 4;)
 	esi = eax
 	esp = esp + 0x00000018
 	SCZO = cond(esp)
@@ -109,7 +109,7 @@ l10000067:
 l1000006D:
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = esi
-	call fn1000023D (retsize: 4;)
+	call fn10000251 (retsize: 4;)
 	eax = Mem0[esi:word32]
 	ebp = ebp ^ ebp
 	SZO = cond(ebp)
@@ -134,7 +134,7 @@ l10000096:
 l100000A0:
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = esi
-	call fn1000023D (retsize: 4;)
+	call fn10000251 (retsize: 4;)
 	edx = Mem0[esi + 0x00000004:word32]
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
@@ -152,7 +152,7 @@ l100000C2:
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = esi
 	Mem0[edx + 0x00000030:word32] = ebp
-	call fn1000023D (retsize: 4;)
+	call fn10000251 (retsize: 4;)
 	eax = Mem0[esi + 0x00000004:word32]
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = 0x00000001
@@ -177,16 +177,16 @@ l100000F8:
 	Mem0[esp:word32] = eax
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = esi
+	call fn100002BA (retsize: 4;)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = esi
+	call fn100002AB (retsize: 4;)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = esi
+	call fn100002CD (retsize: 4;)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = esi
 	call fn10000260 (retsize: 4;)
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
-	call fn1000025B (retsize: 4;)
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
-	call fn10000269 (retsize: 4;)
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
-	call fn10000242 (retsize: 4;)
 	esp = esp + 0x0000001C
 	SCZO = cond(esp)
 	goto l10000211
@@ -215,7 +215,7 @@ l1000014C:
 l10000158:
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = esi
-	call fn10000251 (retsize: 4;)
+	call fn1000028D (retsize: 4;)
 	eax = Mem0[esi:word32]
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
@@ -240,7 +240,7 @@ l1000017D:
 l10000182:
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = esi
-	call fn10000238 (retsize: 4;)
+	call fn10000242 (retsize: 4;)
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
 	// succ:  l1000018B
@@ -268,10 +268,10 @@ l100001AD:
 l100001B2:
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = esi
-	call fn1000024C (retsize: 4;)
+	call fn1000027E (retsize: 4;)
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = esi
-	call fn10000256 (retsize: 4;)
+	call fn1000029C (retsize: 4;)
 	eax = Mem0[esi + 0x00000004:word32]
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = ebp
@@ -285,7 +285,7 @@ l100001B2:
 	Mem0[esp:word32] = ebp
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = eax
-	call fn100002A9 (retsize: 4;)
+	call fn1000032B (retsize: 4;)
 	ecx = Mem0[esi + 0x00000004:word32]
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = ebp
@@ -299,7 +299,7 @@ l100001B2:
 	Mem0[esp:word32] = ebp
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = ecx
-	call fn100002A9 (retsize: 4;)
+	call fn1000032B (retsize: 4;)
 	edx = Mem0[esi + 0x00000004:word32]
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = ebp
@@ -313,7 +313,7 @@ l100001B2:
 	Mem0[esp:word32] = ebp
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = edx
-	call fn100002A9 (retsize: 4;)
+	call fn1000032B (retsize: 4;)
 	esp = esp + 0x00000044
 	SCZO = cond(esp)
 	goto l10000211
@@ -334,7 +334,7 @@ l1000021B:
 	edx = Mem0[ecx + 0x000000D0:word32]
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = edx
-	call fn1000026E (retsize: 4;)
+	call fn100002DC (retsize: 4;)
 	esp = esp + 0x00000008
 	SCZO = cond(esp)
 	// succ:  l1000022E
@@ -363,44 +363,11 @@ fn10000233_entry:
 	// succ:  l10000233
 l10000233:
 	esp = fp
+	Mem0[0x00123400:word32] = 0x10004AE0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
 	// succ:  fn10000233_exit
 fn10000233_exit:
-
-// fn10000238
-// Return size: 4
-// Mem0:Global memory
-// fp:fp
-// esp:esp
-// eax:eax
-// return address size: 4
-void fn10000238()
-fn10000238_entry:
-	// succ:  l10000238
-l10000238:
-	esp = fp
-	eax = Mem0[esp + 0x00000004:word32]
-	return
-	// succ:  fn10000238_exit
-fn10000238_exit:
-
-// fn1000023D
-// Return size: 4
-// Mem0:Global memory
-// fp:fp
-// esp:esp
-// eax:eax
-// return address size: 4
-void fn1000023D()
-fn1000023D_entry:
-	// succ:  l1000023D
-l1000023D:
-	esp = fp
-	eax = Mem0[esp + 0x00000004:word32]
-	return
-	// succ:  fn1000023D_exit
-fn1000023D_exit:
 
 // fn10000242
 // Return size: 4
@@ -414,27 +381,11 @@ fn10000242_entry:
 	// succ:  l10000242
 l10000242:
 	esp = fp
+	Mem0[0x00123400:word32] = 0x10004EA0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
 	// succ:  fn10000242_exit
 fn10000242_exit:
-
-// fn1000024C
-// Return size: 4
-// Mem0:Global memory
-// fp:fp
-// esp:esp
-// eax:eax
-// return address size: 4
-void fn1000024C()
-fn1000024C_entry:
-	// succ:  l1000024C
-l1000024C:
-	esp = fp
-	eax = Mem0[esp + 0x00000004:word32]
-	return
-	// succ:  fn1000024C_exit
-fn1000024C_exit:
 
 // fn10000251
 // Return size: 4
@@ -448,44 +399,11 @@ fn10000251_entry:
 	// succ:  l10000251
 l10000251:
 	esp = fp
+	Mem0[0x00123400:word32] = 0x1000022D
 	eax = Mem0[esp + 0x00000004:word32]
 	return
 	// succ:  fn10000251_exit
 fn10000251_exit:
-
-// fn10000256
-// Return size: 4
-// Mem0:Global memory
-// fp:fp
-// esp:esp
-// eax:eax
-// return address size: 4
-void fn10000256()
-fn10000256_entry:
-	// succ:  l10000256
-l10000256:
-	esp = fp
-	eax = Mem0[esp + 0x00000004:word32]
-	return
-	// succ:  fn10000256_exit
-fn10000256_exit:
-
-// fn1000025B
-// Return size: 4
-// Mem0:Global memory
-// fp:fp
-// esp:esp
-// eax:eax
-// return address size: 4
-void fn1000025B()
-fn1000025B_entry:
-	// succ:  l1000025B
-l1000025B:
-	esp = fp
-	eax = Mem0[esp + 0x00000004:word32]
-	return
-	// succ:  fn1000025B_exit
-fn1000025B_exit:
 
 // fn10000260
 // Return size: 4
@@ -493,38 +411,109 @@ fn1000025B_exit:
 // fp:fp
 // esp:esp
 // eax:eax
-// SCZO:Flags
 // return address size: 4
 void fn10000260()
 fn10000260_entry:
 	// succ:  l10000260
 l10000260:
 	esp = fp
-	eax = Mem0[esp + 0x00000008:word32]
-	eax = eax + Mem0[esp + 0x00000004:word32]
-	SCZO = cond(eax)
+	Mem0[0x00123400:word32] = 0x10005A80
+	eax = Mem0[esp + 0x00000004:word32]
 	return
 	// succ:  fn10000260_exit
 fn10000260_exit:
 
-// fn10000269
+// fn1000026F
 // Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
 // eax:eax
 // return address size: 4
-void fn10000269()
-fn10000269_entry:
-	// succ:  l10000269
-l10000269:
+void fn1000026F()
+fn1000026F_entry:
+	// succ:  l1000026F
+l1000026F:
 	esp = fp
+	Mem0[0x00123400:word32] = 0x1000A450
 	eax = Mem0[esp + 0x00000004:word32]
 	return
-	// succ:  fn10000269_exit
-fn10000269_exit:
+	// succ:  fn1000026F_exit
+fn1000026F_exit:
 
-// fn1000026E
+// fn1000027E
+// Return size: 4
+// Mem0:Global memory
+// fp:fp
+// esp:esp
+// eax:eax
+// return address size: 4
+void fn1000027E()
+fn1000027E_entry:
+	// succ:  l1000027E
+l1000027E:
+	esp = fp
+	Mem0[0x00123400:word32] = 0x1000A700
+	eax = Mem0[esp + 0x00000004:word32]
+	return
+	// succ:  fn1000027E_exit
+fn1000027E_exit:
+
+// fn1000028D
+// Return size: 4
+// Mem0:Global memory
+// fp:fp
+// esp:esp
+// eax:eax
+// return address size: 4
+void fn1000028D()
+fn1000028D_entry:
+	// succ:  l1000028D
+l1000028D:
+	esp = fp
+	Mem0[0x00123400:word32] = 0x1000B860
+	eax = Mem0[esp + 0x00000004:word32]
+	return
+	// succ:  fn1000028D_exit
+fn1000028D_exit:
+
+// fn1000029C
+// Return size: 4
+// Mem0:Global memory
+// fp:fp
+// esp:esp
+// eax:eax
+// return address size: 4
+void fn1000029C()
+fn1000029C_entry:
+	// succ:  l1000029C
+l1000029C:
+	esp = fp
+	Mem0[0x00123400:word32] = 0x1000D460
+	eax = Mem0[esp + 0x00000004:word32]
+	return
+	// succ:  fn1000029C_exit
+fn1000029C_exit:
+
+// fn100002AB
+// Return size: 4
+// Mem0:Global memory
+// fp:fp
+// esp:esp
+// eax:eax
+// return address size: 4
+void fn100002AB()
+fn100002AB_entry:
+	// succ:  l100002AB
+l100002AB:
+	esp = fp
+	Mem0[0x00123400:word32] = 0x1000D510
+	eax = Mem0[esp + 0x00000004:word32]
+	return
+	// succ:  fn100002AB_exit
+fn100002AB_exit:
+
+// fn100002BA
 // Return size: 4
 // Mem0:Global memory
 // fp:fp
@@ -532,19 +521,59 @@ fn10000269_exit:
 // eax:eax
 // SCZO:Flags
 // return address size: 4
-void fn1000026E()
-fn1000026E_entry:
-	// succ:  l1000026E
-l1000026E:
+void fn100002BA()
+fn100002BA_entry:
+	// succ:  l100002BA
+l100002BA:
 	esp = fp
+	Mem0[0x00123400:word32] = 0x1000D580
 	eax = Mem0[esp + 0x00000008:word32]
 	eax = eax + Mem0[esp + 0x00000004:word32]
 	SCZO = cond(eax)
 	return
-	// succ:  fn1000026E_exit
-fn1000026E_exit:
+	// succ:  fn100002BA_exit
+fn100002BA_exit:
 
-// fn10000277
+// fn100002CD
+// Return size: 4
+// Mem0:Global memory
+// fp:fp
+// esp:esp
+// eax:eax
+// return address size: 4
+void fn100002CD()
+fn100002CD_entry:
+	// succ:  l100002CD
+l100002CD:
+	esp = fp
+	Mem0[0x00123400:word32] = 0x1000D5E0
+	eax = Mem0[esp + 0x00000004:word32]
+	return
+	// succ:  fn100002CD_exit
+fn100002CD_exit:
+
+// fn100002DC
+// Return size: 4
+// Mem0:Global memory
+// fp:fp
+// esp:esp
+// eax:eax
+// SCZO:Flags
+// return address size: 4
+void fn100002DC()
+fn100002DC_entry:
+	// succ:  l100002DC
+l100002DC:
+	esp = fp
+	Mem0[0x00123400:word32] = 0x10025160
+	eax = Mem0[esp + 0x00000008:word32]
+	eax = eax + Mem0[esp + 0x00000004:word32]
+	SCZO = cond(eax)
+	return
+	// succ:  fn100002DC_exit
+fn100002DC_exit:
+
+// fn100002EF
 // Return size: 4
 // Mem0:Global memory
 // fp:fp
@@ -552,11 +581,12 @@ fn1000026E_exit:
 // edx:edx
 // eax:eax
 // return address size: 4
-void fn10000277()
-fn10000277_entry:
-	// succ:  l10000277
-l10000277:
+void fn100002EF()
+fn100002EF_entry:
+	// succ:  l100002EF
+l100002EF:
 	esp = fp
+	Mem0[0x00123400:word32] = 0x10000267
 	edx = Mem0[0x20000000:word32]
 	eax = Mem0[esp + 0x00000004:word32]
 	Mem0[edx + 0x00000004:word32] = eax
@@ -571,25 +601,25 @@ l10000277:
 	eax = Mem0[esp + 0x00000018:word32]
 	Mem0[edx + 0x0000001C:word32] = eax
 	return
-	// succ:  fn10000277_exit
-fn10000277_exit:
+	// succ:  fn100002EF_exit
+fn100002EF_exit:
 
-// fn100002A8
+// fn1000032A
 // Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
 // return address size: 4
-void fn100002A8()
-fn100002A8_entry:
-	// succ:  l100002A8
-l100002A8:
+void fn1000032A()
+fn1000032A_entry:
+	// succ:  l1000032A
+l1000032A:
 	esp = fp
 	return
-	// succ:  fn100002A8_exit
-fn100002A8_exit:
+	// succ:  fn1000032A_exit
+fn1000032A_exit:
 
-// fn100002A9
+// fn1000032B
 // Return size: 4
 // Mem0:Global memory
 // fp:fp
@@ -597,11 +627,12 @@ fn100002A8_exit:
 // edx:edx
 // eax:eax
 // return address size: 4
-void fn100002A9()
-fn100002A9_entry:
-	// succ:  l100002A9
-l100002A9:
+void fn1000032B()
+fn1000032B_entry:
+	// succ:  l1000032B
+l1000032B:
 	esp = fp
+	Mem0[0x00123400:word32] = 0x10032760
 	edx = Mem0[0x20000000:word32]
 	eax = Mem0[esp + 0x00000004:word32]
 	Mem0[edx + 0x00000004:word32] = eax
@@ -614,6 +645,6 @@ l100002A9:
 	eax = Mem0[esp + 0x00000014:word32]
 	Mem0[edx + 0x00000014:word32] = eax
 	return
-	// succ:  fn100002A9_exit
-fn100002A9_exit:
+	// succ:  fn1000032B_exit
+fn1000032B_exit:
 

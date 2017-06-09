@@ -28,6 +28,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Output;
+using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -350,13 +351,16 @@ namespace Reko.UnitTests.Analysis
                          StackDelta = 4,
                      }));
             platform.Stub(p => p.GetTrampolineDestination(
-                Arg<EndianImageReader>.Is.NotNull,
+                Arg<IEnumerable<RtlInstructionCluster>>.Is.NotNull,
                 Arg<IRewriterHost>.Is.NotNull))
                 .Return(null);
 
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
             platform.Stub(p => p.CreateImplicitArgumentRegisters()).Return(
                 new HashSet<RegisterStorage>());
+            platform.Stub(p => p.MakeAddressFromLinear(0ul))
+                .IgnoreArguments()
+                .Do(new Func<ulong, Address>(ul => Address.Ptr32((uint) ul)));
             Given_Platform(platform);
         }
 	}

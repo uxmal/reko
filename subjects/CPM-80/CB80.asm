@@ -1,5 +1,265 @@
+;;; Segment lma (0000)
+0000 00 00 00 00 00                                  .....          
+
+l0005:
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
 ;;; Segment code (0100)
-0100 C3 E1 0F 00 5A C3 29 17 00 17 2D 2D 2D 2D 2D 2D ....Z.)...------
+0100 C3 E1 0F 00 5A                                  ....Z          
+
+;; fn0105: 0105
+fn0105 proc
+	jp	1729
+0108                         00 17 2D 2D 2D 2D 2D 2D         ..------
 0110 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D ----------------
 0120 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D ----------------
 0130 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 0D 0A 43 42 41 -----------..CBA
@@ -15,9 +275,22 @@
 01D0 49 6E 63 2E 0D 0A 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D Inc...----------
 01E0 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D ----------------
 01F0 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D ----------------
-0200 2D 2D 2D 2D 2D 2D 2D 0D 0A 24 C3 2D 17 00 00 00 -------..$.-....
+0200 2D 2D 2D 2D 2D 2D 2D 0D 0A 24                   -------..$     
+
+;; fn020A: 020A
+fn020A proc
+	jp	172D
+020D                                        00 00 00              ...
 0210 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-0220 00 C3 05 00 C3 7D 17 10 27 E8 03 64 00 0A 00 01 .....}..'..d....
+0220 00                                              .              
+
+;; fn0221: 0221
+fn0221 proc
+	jp	0005
+
+l0224:
+	jp	177D
+0227                      10 27 E8 03 64 00 0A 00 01        .'..d....
 0230 00 04 43 42 38 30 63 6F 75 6C 64 20 6E 6F 74 20 ..CB80could not 
 0240 6F 70 65 6E 20 66 69 6C 65 3A 20 24 69 6E 76 61 open file: $inva
 0250 6C 69 64 20 66 69 6C 65 20 6E 61 6D 65 3A 20 24 lid file name: $
@@ -39,153 +312,1498 @@
 0350 72 6F 72 20 69 73 20 6E 65 61 72 20 73 6F 75 72 ror is near sour
 0360 63 65 20 6C 69 6E 65 20 24 4D 69 73 73 69 6E 67 ce line $Missing
 0370 20 73 6F 75 72 63 65 20 66 69 6C 65 20 6E 61 6D  source file nam
-0380 65 24 04 0D 0A 0D 0A 21 8F 03 E5 2A 48 16 E9 C9 e$.....!...*H...
-0390 21 56 16 73 2B 70 2B 71 2B D1 C1 71 D5 3A 53 16 !V.s+p+q+..q.:S.
-03A0 3D 32 53 16 FE FF CA BA 03 2A 54 16 3A 56 16 77 =2S......*T.:V.w
-03B0 2A 54 16 23 22 54 16 C3 9D 03 C9 21 57 16 71 3A *T.#"T.....!W.q:
-03C0 57 16 D6 61 4F 3E 1A 91 9F 2F C9 21 58 16 71 3A W..aO>.../.!X.q:
-03D0 58 16 D6 41 4F 3E 19 91 9F 2F F5 2A 58 16 4D CD X..AO>.../.*X.M.
-03E0 BB 03 C1 48 B1 C9 21 59 16 71 2A 59 16 4D CD BB ...H..!Y.q*Y.M..
-03F0 03 1F D2 FB 03 3A 59 16 E6 5F C9 3A 59 16 C9 C9 .....:Y.._.:Y...
-0400 2A 06 00 22 40 16 21 80 00 22 4E 16 C9 21 5E 16 *.."@.!.."N..!^.
-0410 73 2B 70 2B 71 2B D1 C1 70 2B 71 D5 3E 00 21 5E s+p+q+..p+q.>.!^
-0420 16 BE D2 5A 04 2A 5C 16 EB 0E 1A CD 21 02 2A 5A ...Z.*\.....!.*Z
-0430 16 EB 0E 14 CD 21 02 FE 00 C2 4D 04 21 5E 16 35 .....!....M.!^.5
-0440 11 80 00 2A 5C 16 19 22 5C 16 C3 57 04 2A 5C 16 ...*\.."\..W.*\.
-0450 36 1A 21 5E 16 36 00 C3 1C 04 C9 3A 80 00 FE 00 6.!^.6.....:....
-0460 C2 66 04 3E 00 C9 21 80 00 35 2A 4E 16 23 22 4E .f.>..!..5*N.#"N
-0470 16 7E C9 21 5F 16 71 2A 5F 16 26 00 EB 0E 02 CD .~.!_.q*_.&.....
-0480 21 02 C9 21 65 16 72 2B 73 2B 70 2B 71 2B D1 C1 !..!e.r+s+p+q+..
-0490 70 2B 71 D5 11 80 00 2A 64 16 19 2B 0E 07 CD 26 p+q....*d..+...&
-04A0 13 EB 21 67 16 73 3E 00 21 67 16 BE D2 23 05 2A ..!g.s>.!g...#.*
-04B0 62 16 EB 0E 1A CD 21 02 2A 60 16 EB 0E 15 CD 21 b.....!.*`.....!
-04C0 02 FE 00 C2 D7 04 21 67 16 35 11 80 00 2A 62 16 ......!g.5...*b.
-04D0 19 22 62 16 C3 20 05 21 A3 02 22 68 16 2A 68 16 ."b.. .!.."h.*h.
-04E0 7E FE 24 CA F7 04 2A 68 16 4E CD 73 04 2A 68 16 ~.$...*h.N.s.*h.
-04F0 23 22 68 16 C3 DD 04 2A 60 16 7E FE 00 C2 0D 05 #"h....*`.~.....
-0500 11 00 00 0E 19 CD 21 02 3C 2A 60 16 77 2A 60 16 ......!.<*`.w*`.
-0510 3E 61 86 3D 4F CD 73 04 0E 3A CD 73 04 CD 87 03 >a.=O.s..:.s....
-0520 C3 A6 04 C9 21 6A 16 71 2A 6A 16 26 00 EB 0E 05 ....!j.q*j.&....
-0530 CD 21 02 C9 21 6B 16 71 2A BE 14 EB 2A BC 14 19 .!..!k.q*...*...
-0540 3A 6B 16 77 2A BE 14 23 22 BE 14 EB 21 00 02 CD :k.w*..#"...!...
-0550 35 13 DA 6A 05 01 C0 14 C5 2A BC 14 44 4D 11 00 5..j.....*..DM..
-0560 02 CD 83 04 21 00 00 22 BE 14 C9 21 6C 16 71 3A ....!.."...!l.q:
-0570 F3 14 FE 01 C2 81 05 2A 6C 16 4D CD 24 05 C3 A2 .......*l.M.$...
-0580 05 3A F3 14 FE 02 C2 93 05 2A 6C 16 4D CD 73 04 .:.......*l.M.s.
-0590 C3 A2 05 3A F3 14 FE 04 C2 A2 05 2A 6C 16 4D CD ...:.......*l.M.
-05A0 34 05 3A 6C 16 FE 0D C2 B2 05 21 F6 14 36 01 C3 4.:l......!..6..
-05B0 CD 05 3A 6C 16 FE 0A C2 C9 05 3A F3 14 FE 00 CA ..:l......:.....
-05C0 C6 05 21 FD 14 34 C3 CD 05 21 F6 14 34 C9 21 6E ..!..4...!..4.!n
-05D0 16 70 2B 71 2A 6D 16 7E FE 24 CA EE 05 2A 6D 16 .p+q*m.~.$...*m.
-05E0 4E CD 6B 05 2A 6D 16 23 22 6D 16 C3 D4 05 C9 21 N.k.*m.#"m.....!
-05F0 70 16 70 2B 71 21 71 16 36 01 2A 6F 16 7E 21 71 p.p+q!q.6.*o.~!q
-0600 16 BE DA 1A 06 2A 71 16 26 00 EB 2A 6F 16 19 4E .....*q.&..*o..N
-0610 CD 6B 05 21 71 16 34 C2 FA 05 C9 21 75 16 72 2B .k.!q.4....!u.r+
-0620 73 2B 70 2B 71 21 F3 14 36 02 2A 72 16 44 4D CD s+p+q!..6.*r.DM.
-0630 CE 05 2A 74 16 44 4D CD EF 05 CD 87 03 C9 21 79 ..*t.DM.......!y
-0640 16 72 2B 73 2B 70 2B 71 21 7B 16 36 00 2A 78 16 .r+s+p+q!{.6.*x.
-0650 36 00 21 7A 16 36 00 3E 03 21 7A 16 BE DA B6 06 6.!z.6.>.!z.....
-0660 21 7C 16 36 30 2A 7A 16 26 00 01 27 02 29 09 11 !|.60*z.&..'.)..
-0670 76 16 CD 48 13 DA 97 06 2A 7A 16 26 00 01 27 02 v..H....*z.&..'.
-0680 29 09 11 76 16 CD 48 13 EB 2B 73 23 72 21 7B 16 )..v..H..+s#r!{.
-0690 36 01 23 34 C3 65 06 3A 7B 16 1F D2 AF 06 2A 78 6.#4.e.:{.....*x
-06A0 16 7E 3C 77 4F 06 00 2A 78 16 09 3A 7C 16 77 21 .~<wO..*x..:|.w!
-06B0 7A 16 34 C2 57 06 11 30 00 2A 76 16 19 E5 2A 78 z.4.W..0.*v...*x
-06C0 16 7E 3C 77 4F 06 00 2A 78 16 09 C1 71 C9 21 7E .~<wO..*x...q.!~
-06D0 16 70 2B 71 2A 7D 16 44 4D 11 2C 16 CD 3E 06 01 .p+q*}.DM.,..>..
-06E0 2C 16 CD EF 05 C9 21 80 16 70 2B 71 2A 7F 16 7C ,.....!..p+q*..|
+0380 65 24 04 0D 0A 0D 0A                            e$.....        
+
+;; fn0387: 0387
+fn0387 proc
+	ld	hl,038F
+	push	hl
+	ld	hl,(1648)
+	jp	(hl)
+038F                                              C9                .
+
+;; fn0390: 0390
+fn0390 proc
+	ld	hl,1656
+	ld	(hl),e
+	dec	hl
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	dec	hl
+	pop	de
+	pop	bc
+	ld	(hl),c
+	push	de
+
+l039D:
+	ld	a,(1653)
+	dec	a
+	ld	(1653),a
+	cp	a,FF
+	jp	z,03BA
+
+l03A9:
+	ld	hl,(1654)
+	ld	a,(1656)
+	ld	(hl),a
+	ld	hl,(1654)
+	inc	hl
+	ld	(1654),hl
+	jp	039D
+
+l03BA:
+	ret
+
+;; fn03BB: 03BB
+fn03BB proc
+	ld	hl,1657
+	ld	(hl),c
+	ld	a,(1657)
+	sub	a,61
+	ld	c,a
+	ld	a,1A
+	sub	a,c
+	sbc	a,a
+	cpl
+	ret
+
+;; fn03CB: 03CB
+fn03CB proc
+	ld	hl,1658
+	ld	(hl),c
+	ld	a,(1658)
+	sub	a,41
+	ld	c,a
+	ld	a,19
+	sub	a,c
+	sbc	a,a
+	cpl
+	push	af
+	ld	hl,(1658)
+	ld	c,l
+	call	03BB
+	pop	bc
+	ld	c,b
+	or	a,c
+	ret
+
+;; fn03E6: 03E6
+fn03E6 proc
+	ld	hl,1659
+	ld	(hl),c
+	ld	hl,(1659)
+	ld	c,l
+	call	03BB
+	rra
+	jp	nc,03FB
+
+l03F5:
+	ld	a,(1659)
+	add	a,5F
+	ret
+
+l03FB:
+	ld	a,(1659)
+	ret
+03FF                                              C9                .
+
+;; fn0400: 0400
+fn0400 proc
+	ld	hl,(0006)
+	ld	(1640),hl
+	ld	hl,0080
+	ld	(164E),hl
+	ret
+
+;; fn040D: 040D
+fn040D proc
+	ld	hl,165E
+	ld	(hl),e
+	dec	hl
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	dec	hl
+	pop	de
+	pop	bc
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	push	de
+
+l041C:
+	ld	a,00
+	ld	hl,165E
+	cp	a,(hl)
+	jp	nc,045A
+
+l0425:
+	ld	hl,(165C)
+	ex	de,hl
+	ld	c,1A
+	call	0221
+	ld	hl,(165A)
+	ex	de,hl
+	ld	c,14
+	call	0221
+	cp	a,00
+	jp	nz,044D
+
+l043C:
+	ld	hl,165E
+	dec	(hl)
+	ld	de,0080
+	ld	hl,(165C)
+	add	hl,de
+	ld	(165C),hl
+	jp	0457
+
+l044D:
+	ld	hl,(165C)
+	ld	(hl),1A
+	ld	hl,165E
+	ld	(hl),00
+
+l0457:
+	jp	041C
+
+l045A:
+	ret
+
+;; fn045B: 045B
+fn045B proc
+	ld	a,(0080)
+	cp	a,00
+	jp	nz,0466
+
+l0463:
+	ld	a,00
+	ret
+
+l0466:
+	ld	hl,0080
+	dec	(hl)
+	ld	hl,(164E)
+	inc	hl
+	ld	(164E),hl
+	ld	a,(hl)
+	ret
+
+;; fn0473: 0473
+fn0473 proc
+	ld	hl,165F
+	ld	(hl),c
+	ld	hl,(165F)
+	ld	h,00
+	ex	de,hl
+	ld	c,02
+	call	0221
+	ret
+
+;; fn0483: 0483
+fn0483 proc
+	ld	hl,1665
+	ld	(hl),d
+	dec	hl
+	ld	(hl),e
+	dec	hl
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	dec	hl
+	pop	de
+	pop	bc
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	push	de
+	ld	de,0080
+	ld	hl,(1664)
+	add	hl,de
+	dec	hl
+	ld	c,07
+	call	1326
+	ex	de,hl
+	ld	hl,1667
+	ld	(hl),e
+
+l04A6:
+	ld	a,00
+	ld	hl,1667
+	cp	a,(hl)
+	jp	nc,0523
+
+l04AF:
+	ld	hl,(1662)
+	ex	de,hl
+	ld	c,1A
+	call	0221
+	ld	hl,(1660)
+	ex	de,hl
+	ld	c,15
+	call	0221
+	cp	a,00
+	jp	nz,04D7
+
+l04C6:
+	ld	hl,1667
+	dec	(hl)
+	ld	de,0080
+	ld	hl,(1662)
+	add	hl,de
+	ld	(1662),hl
+	jp	0520
+
+l04D7:
+	ld	hl,02A3
+	ld	(1668),hl
+
+l04DD:
+	ld	hl,(1668)
+	ld	a,(hl)
+	cp	a,24
+	jp	z,04F7
+
+l04E6:
+	ld	hl,(1668)
+	ld	c,(hl)
+	call	0473
+	ld	hl,(1668)
+	inc	hl
+	ld	(1668),hl
+	jp	04DD
+
+l04F7:
+	ld	hl,(1660)
+	ld	a,(hl)
+	cp	a,00
+	jp	nz,050D
+
+l0500:
+	ld	de,0000
+	ld	c,19
+	call	0221
+	inc	a
+	ld	hl,(1660)
+	ld	(hl),a
+
+l050D:
+	ld	hl,(1660)
+	ld	a,61
+	add	a,(hl)
+	dec	a
+	ld	c,a
+	call	0473
+	ld	c,3A
+	call	0473
+	call	0387
+
+l0520:
+	jp	04A6
+
+l0523:
+	ret
+
+;; fn0524: 0524
+fn0524 proc
+	ld	hl,166A
+	ld	(hl),c
+	ld	hl,(166A)
+	ld	h,00
+	ex	de,hl
+	ld	c,05
+	call	0221
+	ret
+
+;; fn0534: 0534
+fn0534 proc
+	ld	hl,166B
+	ld	(hl),c
+	ld	hl,(14BE)
+	ex	de,hl
+	ld	hl,(14BC)
+	add	hl,de
+	ld	a,(166B)
+	ld	(hl),a
+	ld	hl,(14BE)
+	inc	hl
+	ld	(14BE),hl
+	ex	de,hl
+	ld	hl,0200
+	call	1335
+	jp	c,056A
+
+l0555:
+	ld	bc,14C0
+	push	bc
+	ld	hl,(14BC)
+	ld	b,h
+	ld	c,l
+	ld	de,0200
+	call	0483
+	ld	hl,0000
+	ld	(14BE),hl
+
+l056A:
+	ret
+
+;; fn056B: 056B
+fn056B proc
+	ld	hl,166C
+	ld	(hl),c
+	ld	a,(14F3)
+	cp	a,01
+	jp	nz,0581
+
+l0577:
+	ld	hl,(166C)
+	ld	c,l
+	call	0524
+	jp	05A2
+
+l0581:
+	ld	a,(14F3)
+	cp	a,02
+	jp	nz,0593
+
+l0589:
+	ld	hl,(166C)
+	ld	c,l
+	call	0473
+	jp	05A2
+
+l0593:
+	ld	a,(14F3)
+	cp	a,04
+	jp	nz,05A2
+
+l059B:
+	ld	hl,(166C)
+	ld	c,l
+	call	0534
+
+l05A2:
+	ld	a,(166C)
+	cp	a,0D
+	jp	nz,05B2
+
+l05AA:
+	ld	hl,14F6
+	ld	(hl),01
+	jp	05CD
+
+l05B2:
+	ld	a,(166C)
+	cp	a,0A
+	jp	nz,05C9
+
+l05BA:
+	ld	a,(14F3)
+	cp	a,00
+	jp	z,05C6
+
+l05C2:
+	ld	hl,14FD
+	inc	(hl)
+
+l05C6:
+	jp	05CD
+
+l05C9:
+	ld	hl,14F6
+	inc	(hl)
+
+l05CD:
+	ret
+
+;; fn05CE: 05CE
+fn05CE proc
+	ld	hl,166E
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+
+l05D4:
+	ld	hl,(166D)
+	ld	a,(hl)
+	cp	a,24
+	jp	z,05EE
+
+l05DD:
+	ld	hl,(166D)
+	ld	c,(hl)
+	call	056B
+	ld	hl,(166D)
+	inc	hl
+	ld	(166D),hl
+	jp	05D4
+
+l05EE:
+	ret
+
+;; fn05EF: 05EF
+fn05EF proc
+	ld	hl,1670
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	ld	hl,1671
+	ld	(hl),01
+
+l05FA:
+	ld	hl,(166F)
+	ld	a,(hl)
+	ld	hl,1671
+	cp	a,(hl)
+	jp	c,061A
+
+l0605:
+	ld	hl,(1671)
+	ld	h,00
+	ex	de,hl
+	ld	hl,(166F)
+	add	hl,de
+	ld	c,(hl)
+	call	056B
+	ld	hl,1671
+	inc	(hl)
+	jp	nz,05FA
+
+l061A:
+	ret
+
+;; fn061B: 061B
+fn061B proc
+	ld	hl,1675
+	ld	(hl),d
+	dec	hl
+	ld	(hl),e
+	dec	hl
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	ld	hl,14F3
+	ld	(hl),02
+	ld	hl,(1672)
+	ld	b,h
+	ld	c,l
+	call	05CE
+	ld	hl,(1674)
+	ld	b,h
+	ld	c,l
+	call	05EF
+	call	0387
+	ret
+
+;; fn063E: 063E
+fn063E proc
+	ld	hl,1679
+	ld	(hl),d
+	dec	hl
+	ld	(hl),e
+	dec	hl
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	ld	hl,167B
+	ld	(hl),00
+	ld	hl,(1678)
+	ld	(hl),00
+	ld	hl,167A
+	ld	(hl),00
+
+l0657:
+	ld	a,03
+	ld	hl,167A
+	cp	a,(hl)
+	jp	c,06B6
+
+l0660:
+	ld	hl,167C
+	ld	(hl),30
+
+l0665:
+	ld	hl,(167A)
+	ld	h,00
+	ld	bc,0227
+	add	hl,hl
+	add	hl,bc
+	ld	de,1676
+	call	1348
+	jp	c,0697
+
+l0678:
+	ld	hl,(167A)
+	ld	h,00
+	ld	bc,0227
+	add	hl,hl
+	add	hl,bc
+	ld	de,1676
+	call	1348
+	ex	de,hl
+	dec	hl
+	ld	(hl),e
+	inc	hl
+	ld	(hl),d
+	ld	hl,167B
+	ld	(hl),01
+	inc	hl
+	inc	(hl)
+	jp	0665
+
+l0697:
+	ld	a,(167B)
+	rra
+	jp	nc,06AF
+
+l069E:
+	ld	hl,(1678)
+	ld	a,(hl)
+	inc	a
+	ld	(hl),a
+	ld	c,a
+	ld	b,00
+	ld	hl,(1678)
+	add	hl,bc
+	ld	a,(167C)
+	ld	(hl),a
+
+l06AF:
+	ld	hl,167A
+	inc	(hl)
+	jp	nz,0657
+
+l06B6:
+	ld	de,0030
+	ld	hl,(1676)
+	add	hl,de
+	push	hl
+	ld	hl,(1678)
+	ld	a,(hl)
+	inc	a
+	ld	(hl),a
+	ld	c,a
+	ld	b,00
+	ld	hl,(1678)
+	add	hl,bc
+	pop	bc
+	ld	(hl),c
+	ret
+
+;; fn06CE: 06CE
+fn06CE proc
+	ld	hl,167E
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	ld	hl,(167D)
+	ld	b,h
+	ld	c,l
+	ld	de,162C
+	call	063E
+	ld	bc,162C
+	call	05EF
+	ret
+06E6                   21 80 16 70 2B 71 2A 7F 16 7C       !..p+q*..|
 06F0 E6 F8 1F 1F 1F 1F 4F CD 22 07 2A 7F 16 7C E6 0F ......O.".*..|..
 0700 4F CD 22 07 2A 7F 16 7D E6 F8 1F 1F 1F 1F 4F CD O.".*..}......O.
 0710 22 07 2A 7F 16 7D E6 0F 4F CD 22 07 0E 68 CD 6B ".*..}..O."..h.k
-0720 05 C9 21 81 16 71 3E 09 21 81 16 BE D2 3B 07 3A ..!..q>.!....;.:
-0730 81 16 C6 57 4F CD 6B 05 C3 44 07 3A 81 16 C6 30 ...WO.k..D.:...0
-0740 4F CD 6B 05 C9 21 82 16 71 21 82 16 3A F6 14 BE O.k..!..q!..:...
-0750 D2 5B 07 0E 20 CD 6B 05 C3 49 07 C9 21 86 16 72 .[.. .k..I..!..r
-0760 2B 73 2B 70 2B 71 21 F3 14 36 02 3A F6 14 FE 01 +s+p+q!..6.:....
-0770 CA 7D 07 0E 0D CD 6B 05 0E 0A CD 6B 05 01 60 02 .}....k....k..`.
-0780 CD CE 05 2A 83 16 44 4D CD CE 06 0E 0D CD 6B 05 ...*..DM......k.
-0790 0E 0A CD 6B 05 3E 00 11 85 16 CD 53 13 B5 CA AF ...k.>.....S....
-07A0 07 01 4E 03 CD CE 05 2A 85 16 44 4D CD CE 06 CD ..N....*..DM....
-07B0 87 03 C9 3A F9 14 1F D2 0E 08 0E 0D CD 6B 05 21 ...:.........k.!
-07C0 F7 14 3A FD 14 BE D2 D6 07 0E 0D CD 6B 05 0E 0A ..:.........k...
-07D0 CD 6B 05 C3 BF 07 0E 0D CD 6B 05 0E 0A CD 6B 05 .k.......k....k.
-07E0 01 B7 02 CD CE 05 01 FF 14 CD EF 05 3A F8 14 D6 ............:...
-07F0 0A 4F CD 45 07 01 FC 02 CD CE 05 2A FE 14 4D 06 .O.E.......*..M.
-0800 00 CD CE 06 21 FE 14 34 01 82 03 CD EF 05 21 FD ....!..4......!.
-0810 14 36 03 C9 0E 0D CD 6B 05 0E 0A CD 6B 05 3A F7 .6.....k....k.:.
-0820 14 D6 03 4F 3A FD 14 B9 DA 2E 08 CD B3 07 C9 21 ...O:..........!
-0830 8D 16 73 2B 70 2B 71 2B D1 C1 70 2B 71 2B C1 70 ..s+p+q+..p+q+.p
-0840 2B 71 D5 21 8F 16 36 00 23 36 00 23 36 00 3A 8D +q.!..6.#6.#6.:.
-0850 16 07 1F D2 5E 08 21 90 16 36 01 C3 7E 08 3A 8D ....^.!..6..~.:.
-0860 16 07 07 1F D2 6F 08 21 91 16 36 01 C3 7E 08 3A .....o.!..6..~.:
-0870 8D 16 07 07 07 1F D2 7E 08 21 8F 16 36 01 3A 8D .......~.!..6.:.
-0880 16 07 07 07 07 1F D2 8E 08 21 8E 16 36 01 3A 8D .........!..6.:.
-0890 16 E6 0F 32 8D 16 2A 87 16 44 4D 2A 89 16 EB CD ...2..*..DM*....
-08A0 90 09 2F 1F D2 B1 08 2A 87 16 EB 01 4C 02 CD 1B ../....*....L...
-08B0 06 3A 90 16 1F D2 DD 08 2A 8B 16 7E FE 00 C2 DA .:......*..~....
-08C0 08 3A 1D 15 FE 00 C2 D3 08 2A 8B 16 3A 1F 15 77 .:.......*..:..w
-08D0 C3 DA 08 2A 8B 16 3A 1D 15 77 C3 20 09 3A 91 16 ...*..:..w. .:..
-08E0 1F D2 00 09 3A 1E 15 FE 00 CA F6 08 2A 8B 16 3A ....:.......*..:
-08F0 1E 15 77 C3 FD 08 2A 8B 16 3A 1F 15 77 C3 20 09 ..w...*..:..w. .
-0900 3A 8F 16 1F D2 20 09 3A 20 15 FE 00 CA 19 09 2A :.... .: ......*
-0910 8B 16 3A 20 15 77 C3 20 09 2A 8B 16 3A 1F 15 77 ..: .w. .*..:..w
-0920 11 80 00 0E 1A CD 21 02 3A 8D 16 FE 00 C2 6E 09 ......!.:.....n.
-0930 11 00 00 0E 0C CD 21 02 D6 30 9F 2F 21 8E 16 A6 ......!..0./!...
-0940 1F D2 53 09 01 07 00 2A 8B 16 09 3E 80 B6 2A 8B ..S....*...>..*.
-0950 16 09 77 2A 8B 16 EB 0E 0F CD 21 02 FE FF C2 6B ..w*......!....k
-0960 09 2A 87 16 EB 01 36 02 CD 1B 06 C3 8F 09 2A 8B .*....6.......*.
-0970 16 EB 0E 13 CD 21 02 2A 8B 16 EB 0E 16 CD 21 02 .....!.*......!.
-0980 FE FF C2 8F 09 2A 87 16 EB 01 87 02 CD 1B 06 C9 .....*..........
-0990 21 95 16 72 2B 73 2B 70 2B 71 0E 0B C5 2A 8B 16 !..r+s+p+q...*..
-09A0 23 44 4D 1E 20 CD 90 03 2A 92 16 7E 32 96 16 2A #DM. ...*..~2..*
-09B0 92 16 23 22 92 16 23 7E FE 3A C2 0C 0A 2A 92 16 ..#"..#~.:...*..
-09C0 4E CD CB 03 2A 92 16 F5 7E D6 40 D6 01 9F C1 48 N...*...~.@....H
-09D0 B1 F5 3E 02 21 96 16 96 9F C1 48 A1 1F D2 06 0A ..>.!.....H.....
-09E0 2A 92 16 3E 1F A6 2A 8B 16 77 2A 8B 16 3E 10 BE *..>..*..w*..>..
-09F0 D2 F6 09 3E 00 C9 2A 92 16 23 23 22 92 16 21 96 ...>..*..##"..!.
-0A00 16 35 35 C3 09 0A 3E 00 C9 C3 11 0A 2A 8B 16 36 .55...>.....*..6
-0A10 00 21 97 16 36 00 3E 07 21 97 16 96 9F 2F F5 CD .!..6.>.!..../..
-0A20 74 0B C1 48 A1 1F D2 53 0A 2A 97 16 26 00 EB 2A t..H...S.*..&..*
-0A30 92 16 19 E5 2A 97 16 26 00 01 01 00 09 EB 2A 8B ....*..&......*.
-0A40 16 19 D1 1A 77 FE 2A C2 4D 0A 3E 00 C9 CD 91 0B ....w.*.M.>.....
-0A50 C3 16 0A 3E 01 21 96 16 96 9F 23 4E 06 00 2A 92 ...>.!....#N..*.
-0A60 16 09 F5 7E D6 2E D6 01 9F C1 48 A1 1F D2 A3 0A ...~......H.....
-0A70 CD 91 0B 3E 03 21 96 16 BE D2 7F 0A 3E 00 C9 2A ...>.!......>..*
-0A80 96 16 E5 2A 97 16 26 00 EB 2A 92 16 19 01 09 00 ...*..&..*......
-0A90 E5 2A 8B 16 09 EB C1 E1 0A 12 03 13 2D C2 98 0A .*..........-...
-0AA0 C3 E5 0A 3A 96 16 D6 00 D6 01 9F 2A 97 16 26 00 ...:.......*..&.
-0AB0 EB 2A 92 16 19 F5 7E D6 2E D6 01 9F C1 48 B1 1F .*....~......H..
-0AC0 D2 E2 0A 2A 94 16 6E E5 2A 94 16 23 01 09 00 E5 ...*..n.*..#....
-0AD0 2A 8B 16 09 EB C1 E1 0A 12 03 13 2D C2 D7 0A C3 *..........-....
-0AE0 E5 0A 3E 00 C9 0E 03 C5 01 0C 00 2A 8B 16 09 44 ..>........*...D
-0AF0 4D 1E 00 CD 90 03 01 20 00 2A 8B 16 09 36 00 21 M...... .*...6.!
-0B00 97 16 36 00 3E 07 21 97 16 BE DA 38 0B 2A 97 16 ..6.>.!....8.*..
-0B10 26 00 01 01 00 09 EB 2A 8B 16 19 4E CD E6 03 2A &......*...N...*
-0B20 97 16 26 00 01 01 00 09 EB 2A 8B 16 19 77 3A 97 ..&......*...w:.
-0B30 16 3C 32 97 16 C2 04 0B 21 97 16 36 00 3E 02 21 .<2.....!..6.>.!
-0B40 97 16 BE DA 71 0B 2A 97 16 26 00 01 09 00 09 EB ....q.*..&......
-0B50 2A 8B 16 19 4E CD E6 03 2A 97 16 26 00 01 09 00 *...N...*..&....
-0B60 09 EB 2A 8B 16 19 77 3A 97 16 3C 32 97 16 C2 3D ..*...w:..<2...=
-0B70 0B 3E 01 C9 2A 97 16 26 00 EB 2A 92 16 19 7E D6 .>..*..&..*...~.
-0B80 2E C6 FF 9F F5 3A 96 16 D6 00 C6 FF 9F C1 48 A1 .....:........H.
-0B90 C9 21 97 16 34 2B 35 C9 21 99 16 70 2B 71 11 80 .!..4+5.!..p+q..
+0720 05 C9                                           ..             
+
+;; fn0722: 0722
+fn0722 proc
+	ld	hl,1681
+	ld	(hl),c
+	ld	a,09
+	ld	hl,1681
+	cp	a,(hl)
+	jp	nc,073B
+
+l072F:
+	ld	a,(1681)
+	add	a,57
+	ld	c,a
+	call	056B
+	jp	0744
+
+l073B:
+	ld	a,(1681)
+	add	a,30
+	ld	c,a
+	call	056B
+
+l0744:
+	ret
+
+;; fn0745: 0745
+fn0745 proc
+	ld	hl,1682
+	ld	(hl),c
+
+l0749:
+	ld	hl,1682
+	ld	a,(14F6)
+	cp	a,(hl)
+	jp	nc,075B
+
+l0753:
+	ld	c,20
+	call	056B
+	jp	0749
+
+l075B:
+	ret
+
+;; fn075C: 075C
+fn075C proc
+	ld	hl,1686
+	ld	(hl),d
+	dec	hl
+	ld	(hl),e
+	dec	hl
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	ld	hl,14F3
+	ld	(hl),02
+	ld	a,(14F6)
+	cp	a,01
+	jp	z,077D
+
+l0773:
+	ld	c,0D
+	call	056B
+	ld	c,0A
+	call	056B
+
+l077D:
+	ld	bc,0260
+	call	05CE
+	ld	hl,(1683)
+	ld	b,h
+	ld	c,l
+	call	06CE
+	ld	c,0D
+	call	056B
+	ld	c,0A
+	call	056B
+	ld	a,00
+	ld	de,1685
+	call	1353
+	or	a,l
+	jp	z,07AF
+
+l07A1:
+	ld	bc,034E
+	call	05CE
+	ld	hl,(1685)
+	ld	b,h
+	ld	c,l
+	call	06CE
+
+l07AF:
+	call	0387
+	ret
+
+;; fn07B3: 07B3
+fn07B3 proc
+	ld	a,(14F9)
+	rra
+	jp	nc,080E
+
+l07BA:
+	ld	c,0D
+	call	056B
+
+l07BF:
+	ld	hl,14F7
+	ld	a,(14FD)
+	cp	a,(hl)
+	jp	nc,07D6
+
+l07C9:
+	ld	c,0D
+	call	056B
+	ld	c,0A
+	call	056B
+	jp	07BF
+
+l07D6:
+	ld	c,0D
+	call	056B
+	ld	c,0A
+	call	056B
+	ld	bc,02B7
+	call	05CE
+	ld	bc,14FF
+	call	05EF
+	ld	a,(14F8)
+	sub	a,0A
+	ld	c,a
+	call	0745
+	ld	bc,02FC
+	call	05CE
+	ld	hl,(14FE)
+	ld	c,l
+	ld	b,00
+	call	06CE
+	ld	hl,14FE
+	inc	(hl)
+	ld	bc,0382
+	call	05EF
+
+l080E:
+	ld	hl,14FD
+	ld	(hl),03
+	ret
+
+;; fn0814: 0814
+fn0814 proc
+	ld	c,0D
+	call	056B
+	ld	c,0A
+	call	056B
+	ld	a,(14F7)
+	sub	a,03
+	ld	c,a
+	ld	a,(14FD)
+	cp	a,c
+	jp	c,082E
+
+l082B:
+	call	07B3
+
+l082E:
+	ret
+
+;; fn082F: 082F
+fn082F proc
+	ld	hl,168D
+	ld	(hl),e
+	dec	hl
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	dec	hl
+	pop	de
+	pop	bc
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	dec	hl
+	pop	bc
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	push	de
+	ld	hl,168F
+	ld	(hl),00
+	inc	hl
+	ld	(hl),00
+	inc	hl
+	ld	(hl),00
+	ld	a,(168D)
+	rlca
+	rra
+	jp	nc,085E
+
+l0856:
+	ld	hl,1690
+	ld	(hl),01
+	jp	087E
+
+l085E:
+	ld	a,(168D)
+	rlca
+	rlca
+	rra
+	jp	nc,086F
+
+l0867:
+	ld	hl,1691
+	ld	(hl),01
+	jp	087E
+
+l086F:
+	ld	a,(168D)
+	rlca
+	rlca
+	rlca
+	rra
+	jp	nc,087E
+
+l0879:
+	ld	hl,168F
+	ld	(hl),01
+
+l087E:
+	ld	a,(168D)
+	rlca
+	rlca
+	rlca
+	rlca
+	rra
+	jp	nc,088E
+
+l0889:
+	ld	hl,168E
+	ld	(hl),01
+
+l088E:
+	ld	a,(168D)
+	add	a,0F
+	ld	(168D),a
+	ld	hl,(1687)
+	ld	b,h
+	ld	c,l
+	ld	hl,(1689)
+	ex	de,hl
+	call	0990
+	cpl
+	rra
+	jp	nc,08B1
+
+l08A7:
+	ld	hl,(1687)
+	ex	de,hl
+	ld	bc,024C
+	call	061B
+
+l08B1:
+	ld	a,(1690)
+	rra
+	jp	nc,08DD
+
+l08B8:
+	ld	hl,(168B)
+	ld	a,(hl)
+	cp	a,00
+	jp	nz,08DA
+
+l08C1:
+	ld	a,(151D)
+	cp	a,00
+	jp	nz,08D3
+
+l08C9:
+	ld	hl,(168B)
+	ld	a,(151F)
+	ld	(hl),a
+	jp	08DA
+
+l08D3:
+	ld	hl,(168B)
+	ld	a,(151D)
+	ld	(hl),a
+
+l08DA:
+	jp	0920
+
+l08DD:
+	ld	a,(1691)
+	rra
+	jp	nc,0900
+
+l08E4:
+	ld	a,(151E)
+	cp	a,00
+	jp	z,08F6
+
+;; fn08EC: 08EC
+fn08EC proc
+	ld	hl,(168B)
+	ld	a,(151E)
+	ld	(hl),a
+	jp	08FD
+
+l08F6:
+	ld	hl,(168B)
+	ld	a,(151F)
+	ld	(hl),a
+
+;; fn08FD: 08FD
+fn08FD proc
+	jp	0920
+
+l0900:
+	ld	a,(168F)
+	rra
+	jp	nc,0920
+
+l0907:
+	ld	a,(1520)
+	cp	a,00
+	jp	z,0919
+
+l090F:
+	ld	hl,(168B)
+	ld	a,(1520)
+	ld	(hl),a
+	jp	0920
+
+l0919:
+	ld	hl,(168B)
+	ld	a,(151F)
+	ld	(hl),a
+
+;; fn0920: 0920
+fn0920 proc
+	ld	de,0080
+	ld	c,1A
+	call	0221
+	ld	a,(168D)
+
+;; fn092A: 092A
+fn092A proc
+	ld	d,FE
+	nop
+	jp	nz,096E
+
+;; fn0930: 0930
+fn0930 proc
+	ld	de,0000
+	ld	c,0C
+	call	0221
+	sub	a,30
+	sbc	a,a
+	cpl
+	ld	hl,168E
+	and	a,(hl)
+	rra
+	jp	nc,0953
+
+l0944:
+	ld	bc,0007
+	ld	hl,(168B)
+	add	hl,bc
+	ld	a,80
+	or	a,(hl)
+	ld	hl,(168B)
+	add	hl,bc
+	ld	(hl),a
+
+l0953:
+	ld	hl,(168B)
+	ex	de,hl
+	ld	c,0F
+	call	0221
+	cp	a,FF
+	jp	nz,096B
+
+l0961:
+	ld	hl,(1687)
+	ex	de,hl
+	ld	bc,0236
+	call	061B
+
+l096B:
+	jp	098F
+
+;; fn096E: 096E
+fn096E proc
+	ld	hl,(168B)
+	ex	de,hl
+	ld	c,13
+	call	0221
+	ld	hl,(168B)
+	ex	de,hl
+	ld	c,16
+	call	0221
+	cp	a,FF
+	jp	nz,098F
+
+l0985:
+	ld	hl,(1687)
+	ex	de,hl
+	ld	bc,0287
+	call	061B
+
+l098F:
+	ret
+
+;; fn0990: 0990
+fn0990 proc
+	ld	hl,1695
+	ld	(hl),d
+	dec	hl
+	ld	(hl),e
+	dec	hl
+	ld	(hl),b
+	dec	hl
+	ld	(hl),c
+	ld	c,0B
+	push	bc
+	ld	hl,(168B)
+	inc	hl
+	ld	b,h
+	ld	c,l
+	ld	e,20
+	call	0390
+	ld	hl,(1692)
+	ld	a,(hl)
+	ld	(1696),a
+	ld	hl,(1692)
+	inc	hl
+	ld	(1692),hl
+	inc	hl
+	ld	a,(hl)
+	cp	a,3A
+	jp	nz,0A0C
+
+l09BD:
+	ld	hl,(1692)
+	ld	c,(hl)
+	call	03CB
+	ld	hl,(1692)
+	push	af
+	ld	a,(hl)
+	sub	a,40
+	sub	a,01
+	sbc	a,a
+	pop	bc
+	ld	c,b
+	or	a,c
+	push	af
+	ld	a,02
+	ld	hl,1696
+	sub	a,(hl)
+	sbc	a,a
+	pop	bc
+	ld	c,b
+	and	a,c
+	rra
+	jp	nc,0A06
+
+l09E0:
+	ld	hl,(1692)
+	ld	a,1F
+	and	a,(hl)
+	ld	hl,(168B)
+	ld	(hl),a
+	ld	hl,(168B)
+	ld	a,10
+	cp	a,(hl)
+	jp	nc,09F6
+
+l09F3:
+	ld	a,00
+	ret
+
+l09F6:
+	ld	hl,(1692)
+	inc	hl
+	inc	hl
+	ld	(1692),hl
+	ld	hl,1696
+	dec	(hl)
+	dec	(hl)
+	jp	0A09
+
+l0A06:
+	ld	a,00
+	ret
+
+l0A09:
+	jp	0A11
+
+l0A0C:
+	ld	hl,(168B)
+	ld	(hl),00
+
+l0A11:
+	ld	hl,1697
+	ld	(hl),00
+
+l0A16:
+	ld	a,07
+	ld	hl,1697
+	sub	a,(hl)
+	sbc	a,a
+	cpl
+	push	af
+	call	0B74
+	pop	bc
+	ld	c,b
+	and	a,c
+	rra
+	jp	nc,0A53
+
+l0A29:
+	ld	hl,(1697)
+	ld	h,00
+	ex	de,hl
+	ld	hl,(1692)
+	add	hl,de
+	push	hl
+	ld	hl,(1697)
+	ld	h,00
+	ld	bc,0001
+	add	hl,bc
+	ex	de,hl
+	ld	hl,(168B)
+	add	hl,de
+	pop	de
+	ld	a,(de)
+	ld	(hl),a
+	cp	a,2A
+	jp	nz,0A4D
+
+l0A4A:
+	ld	a,00
+	ret
+
+l0A4D:
+	call	0B91
+	jp	0A16
+
+l0A53:
+	ld	a,01
+	ld	hl,1696
+	sub	a,(hl)
+	sbc	a,a
+	inc	hl
+	ld	c,(hl)
+	ld	b,00
+	ld	hl,(1692)
+	add	hl,bc
+	push	af
+	ld	a,(hl)
+	sub	a,2E
+	sub	a,01
+	sbc	a,a
+	pop	bc
+	ld	c,b
+	and	a,c
+	rra
+	jp	nc,0AA3
+
+l0A70:
+	call	0B91
+	ld	a,03
+	ld	hl,1696
+	cp	a,(hl)
+	jp	nc,0A7F
+
+l0A7C:
+	ld	a,00
+	ret
+
+l0A7F:
+	ld	hl,(1696)
+	push	hl
+	ld	hl,(1697)
+	ld	h,00
+	ex	de,hl
+	ld	hl,(1692)
+	add	hl,de
+	ld	bc,0009
+	push	hl
+	ld	hl,(168B)
+	add	hl,bc
+	ex	de,hl
+	pop	bc
+	pop	hl
+
+l0A98:
+	ld	a,(bc)
+	ld	(de),a
+	inc	bc
+	inc	de
+	dec	l
+	jp	nz,0A98
+
+l0AA0:
+	jp	0AE5
+
+l0AA3:
+	ld	a,(1696)
+	sub	a,00
+	sub	a,01
+	sbc	a,a
+	ld	hl,(1697)
+	ld	h,00
+	ex	de,hl
+	ld	hl,(1692)
+	add	hl,de
+	push	af
+	ld	a,(hl)
+	sub	a,2E
+	sub	a,01
+	sbc	a,a
+	pop	bc
+	ld	c,b
+	or	a,c
+	rra
+	jp	nc,0AE2
+
+l0AC3:
+	ld	hl,(1694)
+	ld	l,(hl)
+	push	hl
+	ld	hl,(1694)
+	inc	hl
+	ld	bc,0009
+	push	hl
+	ld	hl,(168B)
+	add	hl,bc
+	ex	de,hl
+	pop	bc
+	pop	hl
+
+l0AD7:
+	ld	a,(bc)
+	ld	(de),a
+	inc	bc
+	inc	de
+	dec	l
+	jp	nz,0AD7
+
+l0ADF:
+	jp	0AE5
+
+l0AE2:
+	ld	a,00
+	ret
+
+l0AE5:
+	ld	c,03
+	push	bc
+	ld	bc,000C
+	ld	hl,(168B)
+	add	hl,bc
+	ld	b,h
+	ld	c,l
+	ld	e,00
+	call	0390
+	ld	bc,0020
+	ld	hl,(168B)
+	add	hl,bc
+	ld	(hl),00
+	ld	hl,1697
+	ld	(hl),00
+
+l0B04:
+	ld	a,07
+	ld	hl,1697
+	cp	a,(hl)
+	jp	c,0B38
+
+l0B0D:
+	ld	hl,(1697)
+	ld	h,00
+	ld	bc,0001
+	add	hl,bc
+	ex	de,hl
+	ld	hl,(168B)
+	add	hl,de
+	ld	c,(hl)
+	call	03E6
+	ld	hl,(1697)
+	ld	h,00
+	ld	bc,0001
+	add	hl,bc
+	ex	de,hl
+	ld	hl,(168B)
+	add	hl,de
+	ld	(hl),a
+	ld	a,(1697)
+	inc	a
+	ld	(1697),a
+	jp	nz,0B04
+
+l0B38:
+	ld	hl,1697
+	ld	(hl),00
+
+l0B3D:
+	ld	a,02
+	ld	hl,1697
+	cp	a,(hl)
+	jp	c,0B71
+
+l0B46:
+	ld	hl,(1697)
+	ld	h,00
+	ld	bc,0009
+	add	hl,bc
+	ex	de,hl
+	ld	hl,(168B)
+	add	hl,de
+	ld	c,(hl)
+	call	03E6
+	ld	hl,(1697)
+	ld	h,00
+	ld	bc,0009
+	add	hl,bc
+	ex	de,hl
+	ld	hl,(168B)
+	add	hl,de
+	ld	(hl),a
+	ld	a,(1697)
+	inc	a
+	ld	(1697),a
+	jp	nz,0B3D
+
+l0B71:
+	ld	a,01
+	ret
+
+;; fn0B74: 0B74
+fn0B74 proc
+	ld	hl,(1697)
+	ld	h,00
+	ex	de,hl
+	ld	hl,(1692)
+	add	hl,de
+	ld	a,(hl)
+	sub	a,2E
+	add	a,FF
+	sbc	a,a
+	push	af
+	ld	a,(1696)
+	sub	a,00
+	add	a,FF
+	sbc	a,a
+	pop	bc
+	ld	c,b
+	and	a,c
+	ret
+
+;; fn0B91: 0B91
+fn0B91 proc
+	ld	hl,1697
+	inc	(hl)
+	dec	hl
+	dec	(hl)
+	ret
+0B98                         21 99 16 70 2B 71 11 80         !..p+q..
 0BA0 00 0E 1A CD 21 02 2A 98 16 EB 0E 10 CD 21 02 FE ....!.*......!..
 0BB0 FF C2 C0 0B CD 14 08 01 E6 02 CD CE 05 CD 87 03 ................
 0BC0 C9 21 9B 16 70 2B 71 3A 8B 13 E6 01 FE 00 CA D2 .!..p+q:........
 0BD0 0B C9 11 80 00 0E 1A CD 21 02 2A 9A 16 EB 0E 13 ........!.*.....
-0BE0 CD 21 02 C9 3A 8A 13 D6 01 C6 FF 9F F5 3A F3 14 .!..:........:..
-0BF0 D6 02 D6 01 9F C1 48 A1 1F D2 1A 0C 3A F6 14 FE ......H.....:...
-0C00 01 CA 07 0C CD 14 08 01 96 02 CD CE 05 3A 8A 13 .............:..
-0C10 3D 4F 06 00 CD CE 06 CD 14 08 2A 88 13 F9 3A 8A =O........*...:.
-0C20 13 C6 30 32 45 16 01 31 02 C5 01 42 16 C5 1E 10 ..02E..1...B....
-0C30 01 5C 00 CD 2F 08 01 5C 00 C5 01 08 01 11 03 01 .\../..\........
-0C40 CD 46 13 0E 07 CD 26 13 EB 2A 08 01 44 4D CD 0D .F....&..*..DM..
-0C50 04 3A 8A 13 D6 00 D6 01 9F F5 3E 03 21 8A 13 96 .:........>.!...
-0C60 9F C1 48 B1 1F D2 71 0C 11 00 00 01 01 00 CD 5C ..H...q........\
-0C70 07 3A 8A 13 FE 01 C2 7C 0C C3 0A 02 3A 8A 13 FE .:.....|....:...
-0C80 02 C2 87 0C C3 24 02 3A 8A 13 FE 03 C2 92 0C C3 .....$.:........
-0C90 05 01 C9 3A 8D 13 21 8C 13 86 4E 06 00 21 8C 13 ...:..!...N..!..
-0CA0 09 86 E6 7F C9 01 07 00 2A 21 15 09 3E F0 A6 E6 ........*!..>...
+0BE0 CD 21 02 C9                                     .!..           
+
+;; fn0BE4: 0BE4
+fn0BE4 proc
+	ld	a,(138A)
+	sub	a,01
+	add	a,FF
+	sbc	a,a
+	push	af
+	ld	a,(14F3)
+	sub	a,02
+	sub	a,01
+	sbc	a,a
+	pop	bc
+	ld	c,b
+	and	a,c
+	rra
+	jp	nc,0C1A
+
+l0BFC:
+	ld	a,(14F6)
+	cp	a,01
+	jp	z,0C07
+
+l0C04:
+	call	0814
+
+l0C07:
+	ld	bc,0296
+	call	05CE
+	ld	a,(138A)
+	dec	a
+	ld	c,a
+	ld	b,00
+	call	06CE
+	call	0814
+
+l0C1A:
+	ld	hl,(1388)
+	ld	sp,hl
+	ld	a,(138A)
+	add	a,30
+	ld	(1645),a
+	ld	bc,0231
+	push	bc
+	ld	bc,1642
+	push	bc
+	ld	e,10
+	ld	bc,005C
+	call	082F
+	ld	bc,005C
+	push	bc
+	ld	bc,0108
+	ld	de,0103
+	call	1346
+	ld	c,07
+	call	1326
+	ex	de,hl
+	ld	hl,(0108)
+	ld	b,h
+	ld	c,l
+	call	040D
+	ld	a,(138A)
+	sub	a,00
+	sub	a,01
+	sbc	a,a
+	push	af
+	ld	a,03
+	ld	hl,138A
+	sub	a,(hl)
+	sbc	a,a
+	pop	bc
+	ld	c,b
+	or	a,c
+	rra
+	jp	nc,0C71
+
+l0C68:
+	ld	de,0000
+	ld	bc,0001
+	call	075C
+
+l0C71:
+	ld	a,(138A)
+	cp	a,01
+	jp	nz,0C7C
+
+l0C79:
+	jp	020A
+
+l0C7C:
+	ld	a,(138A)
+	cp	a,02
+	jp	nz,0C87
+
+l0C84:
+	jp	0224
+
+l0C87:
+	ld	a,(138A)
+	cp	a,03
+	jp	nz,0C92
+
+l0C8F:
+	jp	0105
+
+l0C92:
+	ret
+
+;; fn0C93: 0C93
+fn0C93 proc
+	ld	a,(138D)
+	ld	hl,138C
+	add	a,(hl)
+	ld	c,(hl)
+	ld	b,00
+	ld	hl,138C
+	add	hl,bc
+	add	a,(hl)
+	add	a,7F
+	ret
+0CA5                01 07 00 2A 21 15 09 3E F0 A6 E6      ...*!..>...
 0CB0 F8 1F 1F 1F 1F C9 21 9C 16 71 01 07 00 2A 21 15 ......!..q...*!.
 0CC0 09 3E 0F A6 F5 3A 9C 16 87 87 87 87 C1 48 B1 77 .>...:.......H.w
 0CD0 C9 01 07 00 2A 21 15 09 3E 0E A6 B7 1F C9 21 9D ....*!..>.....!.
@@ -197,14 +1815,75 @@
 0D30 87 87 87 87 C1 48 B1 77 C9 01 08 00 2A 21 15 09 .....H.w....*!..
 0D40 7E C9 01 08 00 2A 21 15 09 3E 01 B6 77 C9 01 08 ~....*!..>..w...
 0D50 00 2A 21 15 09 7E 0F C9 01 08 00 2A 21 15 09 3E .*!..~.....*!..>
-0D60 02 B6 77 C9 01 09 00 2A 21 15 09 7E B7 1F C9 01 ..w....*!..~....
-0D70 09 00 2A 21 15 09 3E 02 B6 77 C9 01 09 00 2A 21 ..*!..>..w....*!
-0D80 15 09 7E C9 CD 64 0D 1F D2 94 0D 11 00 00 01 02 ..~..d..........
-0D90 00 CD 5C 07 01 09 00 2A 21 15 09 3E 01 B6 77 C9 ..\....*!..>..w.
+0D60 02 B6 77 C9                                     ..w.           
+
+;; fn0D64: 0D64
+fn0D64 proc
+	ld	bc,0009
+	ld	hl,(1521)
+	add	hl,bc
+	ld	a,(hl)
+	or	a,a
+	rra
+	ret
+
+;; fn0D6F: 0D6F
+fn0D6F proc
+	ld	bc,0009
+	ld	hl,(1521)
+	add	hl,bc
+	ld	a,02
+	or	a,(hl)
+	ld	(hl),a
+	ret
+0D7B                                  01 09 00 2A 21            ...*!
+0D80 15 09 7E C9                                     ..~.           
+
+;; fn0D84: 0D84
+fn0D84 proc
+	call	0D64
+	rra
+	jp	nc,0D94
+
+l0D8B:
+	ld	de,0000
+	ld	bc,0002
+	call	075C
+
+l0D94:
+	ld	bc,0009
+	ld	hl,(1521)
+	add	hl,bc
+	ld	a,01
+	or	a,(hl)
+	ld	(hl),a
+	ret
 0DA0 01 09 00 2A 21 15 09 7E E6 FE 1F 1F C9 01 09 00 ...*!..~........
-0DB0 2A 21 15 09 3E 04 B6 77 C9 01 09 00 2A 21 15 09 *!..>..w....*!..
-0DC0 7E E6 FC 1F 1F 1F C9 CD B9 0D C9 01 09 00 2A 21 ~.............*!
-0DD0 15 09 3E 08 B6 77 C9 CD CB 0D C9 21 A0 16 70 2B ..>..w.....!..p+
+0DB0 2A 21 15 09 3E 04 B6 77 C9                      *!..>..w.      
+
+;; fn0DB9: 0DB9
+fn0DB9 proc
+	ld	bc,0009
+	ld	hl,(1521)
+	add	hl,bc
+	ld	a,(hl)
+	add	a,FC
+	rra
+	rra
+	rra
+	ret
+0DC7                      CD B9 0D C9                       ....    
+
+;; fn0DCB: 0DCB
+fn0DCB proc
+	ld	bc,0009
+	ld	hl,(1521)
+	add	hl,bc
+	ld	a,08
+	or	a,(hl)
+	ld	(hl),a
+	ret
+0DD7                      CD CB 0D C9 21 A0 16 70 2B        ....!..p+
 0DE0 71 CD 6F 0D 01 03 00 2A 21 15 09 E5 2A 9F 16 EB q.o....*!...*...
 0DF0 E1 73 23 72 C9 01 03 00 2A 21 15 09 5E 23 56 EB .s#r....*!..^#V.
 0E00 C9 21 A2 16 70 2B 71 01 05 00 2A 21 15 09 E5 2A .!..p+q...*!...*
@@ -213,15 +1892,103 @@
 0E30 2A 21 15 09 E5 2A A3 16 EB E1 73 23 72 C9 01 03 *!...*....s#r...
 0E40 00 2A 21 15 09 5E 23 56 EB C9 21 A5 16 71 01 08 .*!..^#V..!..q..
 0E50 00 2A 21 15 09 3A A5 16 77 C9 01 08 00 2A 21 15 .*!..:..w....*!.
-0E60 09 7E C9 21 A6 16 71 CD 93 0C 4F 06 00 21 2C 15 .~.!..q...O..!,.
-0E70 09 09 5E 23 56 EB 22 21 15 3E 00 11 21 15 CD 53 ..^#V."!.>..!..S
-0E80 13 B5 CA A8 0E 2A 21 15 23 23 3A A6 16 BE C2 9B .....*!.##:.....
-0E90 0E CD AB 0E 1F D2 9B 0E 3E 01 C9 2A 21 15 5E 23 ........>..*!.^#
-0EA0 56 EB 22 21 15 C3 79 0E 3E 00 C9 21 A7 16 36 00 V."!..y.>..!..6.
-0EB0 3A 8C 13 21 A7 16 BE DA E2 0E 2A A7 16 26 00 01 :..!......*..&..
-0EC0 0A 00 09 EB 2A 21 15 19 E5 2A A7 16 26 00 01 8C ....*!...*..&...
-0ED0 13 09 D1 1A BE CA DB 0E 3E 00 C9 21 A7 16 34 C3 ........>..!..4.
-0EE0 B0 0E 3E 01 C9 3E 00 21 2A 15 BE D2 FC 0E 2A 2A ..>..>.!*.....**
+0E60 09 7E C9                                        .~.            
+
+;; fn0E63: 0E63
+fn0E63 proc
+	ld	hl,16A6
+	ld	(hl),c
+	call	0C93
+	ld	c,a
+	ld	b,00
+	ld	hl,152C
+	add	hl,bc
+	add	hl,bc
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ex	de,hl
+	ld	(1521),hl
+
+l0E79:
+	ld	a,00
+	ld	de,1521
+	call	1353
+	or	a,l
+	jp	z,0EA8
+
+l0E85:
+	ld	hl,(1521)
+	inc	hl
+	inc	hl
+	ld	a,(16A6)
+	cp	a,(hl)
+	jp	nz,0E9B
+
+l0E91:
+	call	0EAB
+	rra
+	jp	nc,0E9B
+
+l0E98:
+	ld	a,01
+	ret
+
+l0E9B:
+	ld	hl,(1521)
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ex	de,hl
+	ld	(1521),hl
+	jp	0E79
+
+l0EA8:
+	ld	a,00
+	ret
+
+;; fn0EAB: 0EAB
+fn0EAB proc
+	ld	hl,16A7
+	ld	(hl),00
+
+l0EB0:
+	ld	a,(138C)
+	ld	hl,16A7
+	cp	a,(hl)
+	jp	c,0EE2
+
+l0EBA:
+	ld	hl,(16A7)
+	ld	h,00
+	ld	bc,000A
+	add	hl,bc
+	ex	de,hl
+	ld	hl,(1521)
+	add	hl,de
+	push	hl
+	ld	hl,(16A7)
+	ld	h,00
+	ld	bc,138C
+	add	hl,bc
+	pop	de
+	ld	a,(de)
+	cp	a,(hl)
+	jp	z,0EDB
+
+l0ED8:
+	ld	a,00
+	ret
+
+l0EDB:
+	ld	hl,16A7
+	inc	(hl)
+	jp	0EB0
+
+l0EE2:
+	ld	a,01
+	ret
+0EE5                3E 00 21 2A 15 BE D2 FC 0E 2A 2A      >.!*.....**
 0EF0 15 4D CD 63 0E 1F D2 FC 0E 3E 01 C9 0E 00 CD 63 .M.c.....>.....c
 0F00 0E C9 2A 2A 15 4D CD 63 0E C9 2A 23 15 22 21 15 ..**.M.c..*#."!.
 0F10 CD B8 0F 11 23 15 CD 15 13 EB 2B 73 23 72 EB 11 ....#.....+s#r..
@@ -234,77 +2001,1269 @@
 0F80 09 36 00 2A 21 15 23 23 3A 2A 15 77 CD 93 0C 4F .6.*!.##:*.w...O
 0F90 06 00 21 2C 15 09 09 E5 2A 21 15 E3 4E 23 46 E1 ..!,....*!..N#F.
 0FA0 71 23 70 CD 93 0C 4F 06 00 21 2C 15 09 09 E5 2A q#p...O..!,....*
-0FB0 21 15 EB E1 73 23 72 C9 2A 8C 13 26 00 01 0B 00 !...s#r.*..&....
-0FC0 09 7D C9 11 3C 00 2A 21 15 19 EB 3E 31 CD 3C 13 .}..<.*!...>1.<.
+0FB0 21 15 EB E1 73 23 72 C9                         !...s#r.       
+
+;; fn0FB8: 0FB8
+fn0FB8 proc
+	ld	hl,(138C)
+	ld	h,00
+	ld	bc,000B
+	add	hl,bc
+	ld	a,l
+	ret
+0FC3          11 3C 00 2A 21 15 19 EB 3E 31 CD 3C 13    .<.*!...>1.<.
 0FD0 01 0A 00 E5 2A 21 15 09 5E 16 00 E1 19 22 21 15 ....*!..^...."!.
 0FE0 C9 31 88 13 21 00 00 39 22 88 13 CD 00 04 01 0A .1..!..9".......
 0FF0 01 CD CE 05 CD 5B 04 32 A8 16 CD 62 12 21 FF 14 .....[.2...b.!..
-1000 36 00 3A A8 16 D6 20 C6 FF 9F F5 3A A8 16 E6 5F 6.:... ....:..._
-1010 D6 5B C6 FF 9F C1 48 A1 F5 3A A8 16 D6 00 C6 FF .[....H..:......
-1020 9F C1 48 A1 F5 3A FF 14 D6 0E 9F C1 48 A1 1F D2 ..H..:......H...
-1030 4D 10 3A FF 14 3C 32 FF 14 4F 06 00 21 FF 14 09 M.:..<2..O..!...
-1040 3A A8 16 77 CD 5B 04 32 A8 16 C3 02 10 3A FF 14 :..w.[.2.....:..
-1050 FE 00 C2 5E 10 01 69 03 CD CE 05 CD 87 03 3A A8 ...^..i.......:.
-1060 16 E6 5F D6 5B C6 FF 9F F5 3A A8 16 D6 00 C6 FF .._.[....:......
-1070 9F C1 48 A1 1F D2 81 10 CD 5B 04 32 A8 16 C3 5E ..H......[.2...^
-1080 10 CD 5B 04 32 A8 16 3A A8 16 E6 5F D6 5D C6 FF ..[.2..:..._.]..
-1090 9F F5 3A A8 16 D6 00 C6 FF 9F C1 48 A1 1F D2 FD ..:........H....
-10A0 11 3A A8 16 FE 20 C2 AC 10 CD 62 12 3A A8 16 FE .:... ....b.:...
-10B0 42 C2 BC 10 21 F3 14 36 00 C3 B5 11 3A A8 16 FE B...!..6....:...
-10C0 43 C2 CD 10 CD D8 12 32 1D 15 C3 B5 11 3A A8 16 C......2.....:..
-10D0 FE 44 C2 DE 10 CD 79 12 32 8B 13 C3 B5 11 3A A8 .D....y.2.....:.
-10E0 16 FE 46 C2 EE 10 21 F3 14 36 04 C3 B5 11 3A A8 ..F...!..6....:.
-10F0 16 FE 49 C2 FE 10 21 FA 14 36 01 C3 B5 11 3A A8 ..I...!..6....:.
-1100 16 FE 4C C2 0F 11 CD 79 12 32 F7 14 C3 B5 11 3A ..L....y.2.....:
-1110 A8 16 FE 4E C2 1F 11 21 FB 14 36 01 C3 B5 11 3A ...N...!..6....:
-1120 A8 16 FE 4F C2 2F 11 21 EF 14 36 00 C3 B5 11 3A ...O./.!..6....:
-1130 A8 16 FE 50 C2 3F 11 21 F3 14 36 01 C3 B5 11 3A ...P.?.!..6....:
-1140 A8 16 FE 52 C2 50 11 CD D8 12 32 20 15 C3 B5 11 ...R.P....2 ....
-1150 3A A8 16 FE 53 C2 60 11 21 F0 14 36 01 C3 B5 11 :...S.`.!..6....
-1160 3A A8 16 FE 54 C2 70 11 21 F5 14 36 01 C3 B5 11 :...T.p.!..6....
-1170 3A A8 16 FE 55 C2 80 11 21 29 15 36 01 C3 B5 11 :...U...!).6....
-1180 3A A8 16 FE 56 C2 90 11 21 FC 14 36 01 C3 B5 11 :...V...!..6....
-1190 3A A8 16 FE 57 C2 A1 11 CD 79 12 32 F8 14 C3 B5 :...W....y.2....
-11A0 11 3A A8 16 FE 58 C2 B2 11 CD D8 12 32 1E 15 C3 .:...X......2...
-11B0 B5 11 CD 29 12 CD 5B 04 32 A8 16 CD 62 12 3A A8 ...)..[.2...b.:.
-11C0 16 FE 2C C2 CF 11 CD 5B 04 32 A8 16 C3 FA 11 3A ..,....[.2.....:
-11D0 A8 16 E6 5F FE 5D C2 FA 11 CD 5B 04 32 A8 16 CD ..._.]....[.2...
-11E0 62 12 3A A8 16 E6 5F FE 5B CA F4 11 21 A8 16 36 b.:..._.[...!..6
-11F0 5D C3 FA 11 CD 5B 04 32 A8 16 C3 87 10 3A F3 14 ]....[.2.....:..
-1200 FE 01 C2 0F 12 0E 0C CD 6B 05 21 F9 14 36 01 3A ........k.!..6.:
-1210 F3 14 32 F4 14 3A F7 14 3C 32 FD 14 21 8A 13 36 ..2..:..<2..!..6
-1220 01 CD B3 07 CD E4 0B FB 76 21 F3 14 36 02 01 D1 ........v!..6...
-1230 02 CD CE 05 3A A8 16 FE 00 CA 5E 12 0E 3E CD 6B ....:.....^..>.k
-1240 05 0E 20 CD 6B 05 3A A8 16 FE 00 CA 5E 12 2A A8 .. .k.:.....^.*.
-1250 16 4D CD 6B 05 CD 5B 04 32 A8 16 C3 46 12 CD 87 .M.k..[.2...F...
-1260 03 C9 3A A8 16 FE 20 C2 78 12 CD 5B 04 32 A8 16 ..:... .x..[.2..
-1270 FE 20 C2 78 12 C3 6A 12 C9 CD 5B 04 32 A8 16 CD . .x..j...[.2...
-1280 62 12 3A A8 16 FE 28 CA 8D 12 CD 29 12 21 AA 16 b.:...(....).!..
-1290 36 00 CD 5B 04 32 A9 16 D6 30 4F 3E 09 B9 DA BE 6..[.2...0O>....
-12A0 12 3A AA 16 87 87 87 F5 3A AA 16 87 C1 48 81 F5 .:......:....H..
-12B0 3A A9 16 E6 0F C1 48 81 32 AA 16 C3 92 12 3A A9 :.....H.2.....:.
-12C0 16 FE 20 C2 C9 12 CD 62 12 3A A9 16 FE 29 CA D4 .. ....b.:...)..
-12D0 12 CD 29 12 3A AA 16 C9 CD 5B 04 32 A8 16 CD 62 ..).:....[.2...b
-12E0 12 3A A8 16 FE 28 C2 F4 12 CD 5B 04 E6 1F 32 AB .:...(....[...2.
-12F0 16 C3 F7 12 CD 29 12 CD 5B 04 D6 29 C6 FF 9F F5 .....)..[..)....
-1300 3E 10 21 AB 16 96 9F C1 48 B1 1F D2 11 13 CD 29 >.!.....H......)
-1310 12 3A AB 16 C9 EB 5F 16 00 EB 1A 85 6F 13 1A 8C .:...._.....o...
-1320 67 C9 5E 23 56 EB 7C B7 1F 67 7D 1F 6F 0D C2 26 g.^#V.|..g}.o..&
-1330 13 C9 5F 16 00 7B 95 6F 7A 9C 67 C9 4F 06 00 7B .._..{.oz.g.O..{
-1340 91 6F 7A 98 67 C9 69 60 4E 23 46 1A 91 6F 13 1A .oz.g.i`N#F..o..
-1350 98 67 C9 6F 26 00 1A 95 6F 13 1A 9C 67 C9 00 00 .g.o&...o...g...
+1000 36 00                                           6.             
+
+l1002:
+	ld	a,(16A8)
+	sub	a,20
+	add	a,FF
+	sbc	a,a
+
+;; fn100A: 100A
+fn100A proc
+	push	af
+	ld	a,(16A8)
+	add	a,5F
+	sub	a,5B
+	add	a,FF
+	sbc	a,a
+	pop	bc
+	ld	c,b
+	and	a,c
+	push	af
+	ld	a,(16A8)
+	sub	a,00
+	add	a,FF
+	sbc	a,a
+	pop	bc
+	ld	c,b
+	and	a,c
+	push	af
+	ld	a,(14FF)
+	sub	a,0E
+	sbc	a,a
+	pop	bc
+	ld	c,b
+	and	a,c
+	rra
+	jp	nc,104D
+
+l1032:
+	ld	a,(14FF)
+	inc	a
+	ld	(14FF),a
+	ld	c,a
+	ld	b,00
+	ld	hl,14FF
+	add	hl,bc
+	ld	a,(16A8)
+	ld	(hl),a
+	call	045B
+	ld	(16A8),a
+	jp	1002
+
+l104D:
+	ld	a,(14FF)
+	cp	a,00
+	jp	nz,105E
+
+;; fn1055: 1055
+fn1055 proc
+	ld	bc,0369
+	call	05CE
+	call	0387
+
+l105E:
+	ld	a,(16A8)
+	add	a,5F
+	sub	a,5B
+	add	a,FF
+	sbc	a,a
+	push	af
+	ld	a,(16A8)
+	sub	a,00
+
+;; fn106E: 106E
+fn106E proc
+	add	a,FF
+	sbc	a,a
+	pop	bc
+	ld	c,b
+	and	a,c
+	rra
+	jp	nc,1081
+
+;; fn1078: 1078
+fn1078 proc
+	call	045B
+	ld	(16A8),a
+	jp	105E
+
+;; fn1081: 1081
+fn1081 proc
+	call	045B
+	ld	(16A8),a
+
+l1087:
+	ld	a,(16A8)
+	add	a,5F
+	sub	a,5D
+	add	a,FF
+	sbc	a,a
+	push	af
+	ld	a,(16A8)
+	sub	a,00
+	add	a,FF
+	sbc	a,a
+	pop	bc
+	ld	c,b
+	and	a,c
+	rra
+	jp	nc,11FD
+
+l10A1:
+	ld	a,(16A8)
+	cp	a,20
+	jp	nz,10AC
+
+l10A9:
+	call	1262
+
+l10AC:
+	ld	a,(16A8)
+	cp	a,42
+	jp	nz,10BC
+
+l10B4:
+	ld	hl,14F3
+	ld	(hl),00
+	jp	11B5
+
+l10BC:
+	ld	a,(16A8)
+	cp	a,43
+	jp	nz,10CD
+
+l10C4:
+	call	12D8
+	ld	(151D),a
+	jp	11B5
+
+l10CD:
+	ld	a,(16A8)
+	cp	a,44
+	jp	nz,10DE
+
+l10D5:
+	call	1279
+	ld	(138B),a
+	jp	11B5
+
+l10DE:
+	ld	a,(16A8)
+	cp	a,46
+	jp	nz,10EE
+
+l10E6:
+	ld	hl,14F3
+	ld	(hl),04
+	jp	11B5
+
+l10EE:
+	ld	a,(16A8)
+	cp	a,49
+	jp	nz,10FE
+
+l10F6:
+	ld	hl,14FA
+	ld	(hl),01
+	jp	11B5
+
+l10FE:
+	ld	a,(16A8)
+	cp	a,4C
+	jp	nz,110F
+
+l1106:
+	call	1279
+	ld	(14F7),a
+	jp	11B5
+
+l110F:
+	ld	a,(16A8)
+	cp	a,4E
+	jp	nz,111F
+
+l1117:
+	ld	hl,14FB
+	ld	(hl),01
+	jp	11B5
+
+l111F:
+	ld	a,(16A8)
+	cp	a,4F
+	jp	nz,112F
+
+l1127:
+	ld	hl,14EF
+	ld	(hl),00
+	jp	11B5
+
+l112F:
+	ld	a,(16A8)
+	cp	a,50
+	jp	nz,113F
+
+l1137:
+	ld	hl,14F3
+	ld	(hl),01
+	jp	11B5
+
+l113F:
+	ld	a,(16A8)
+	cp	a,52
+	jp	nz,1150
+
+l1147:
+	call	12D8
+	ld	(1520),a
+	jp	11B5
+
+l1150:
+	ld	a,(16A8)
+	cp	a,53
+	jp	nz,1160
+
+l1158:
+	ld	hl,14F0
+	ld	(hl),01
+	jp	11B5
+
+l1160:
+	ld	a,(16A8)
+	cp	a,54
+	jp	nz,1170
+
+l1168:
+	ld	hl,14F5
+	ld	(hl),01
+	jp	11B5
+
+l1170:
+	ld	a,(16A8)
+	cp	a,55
+	jp	nz,1180
+
+l1178:
+	ld	hl,1529
+	ld	(hl),01
+	jp	11B5
+
+l1180:
+	ld	a,(16A8)
+	cp	a,56
+	jp	nz,1190
+
+l1188:
+	ld	hl,14FC
+	ld	(hl),01
+	jp	11B5
+
+l1190:
+	ld	a,(16A8)
+	cp	a,57
+	jp	nz,11A1
+
+l1198:
+	call	1279
+	ld	(14F8),a
+	jp	11B5
+
+l11A1:
+	ld	a,(16A8)
+	cp	a,58
+	jp	nz,11B2
+
+l11A9:
+	call	12D8
+	ld	(151E),a
+	jp	11B5
+
+l11B2:
+	call	1229
+
+l11B5:
+	call	045B
+	ld	(16A8),a
+	call	1262
+	ld	a,(16A8)
+	cp	a,2C
+	jp	nz,11CF
+
+l11C6:
+	call	045B
+	ld	(16A8),a
+	jp	11FA
+
+l11CF:
+	ld	a,(16A8)
+	add	a,5F
+	cp	a,5D
+	jp	nz,11FA
+
+l11D9:
+	call	045B
+	ld	(16A8),a
+	call	1262
+	ld	a,(16A8)
+	add	a,5F
+	cp	a,5B
+	jp	z,11F4
+
+l11EC:
+	ld	hl,16A8
+	ld	(hl),5D
+	jp	11FA
+
+l11F4:
+	call	045B
+	ld	(16A8),a
+
+l11FA:
+	jp	1087
+
+l11FD:
+	ld	a,(14F3)
+	cp	a,01
+	jp	nz,120F
+
+l1205:
+	ld	c,0C
+	call	056B
+	ld	hl,14F9
+	ld	(hl),01
+
+l120F:
+	ld	a,(14F3)
+	ld	(14F4),a
+	ld	a,(14F7)
+	inc	a
+	ld	(14FD),a
+	ld	hl,138A
+	ld	(hl),01
+	call	07B3
+	call	0BE4
+	ei
+	hlt
+
+;; fn1229: 1229
+fn1229 proc
+	ld	hl,14F3
+	ld	(hl),02
+	ld	bc,02D1
+	call	05CE
+	ld	a,(16A8)
+	cp	a,00
+	jp	z,125E
+
+;; fn123C: 123C
+fn123C proc
+	ld	c,3E
+	call	056B
+	ld	c,20
+	call	056B
+
+l1246:
+	ld	a,(16A8)
+	cp	a,00
+	jp	z,125E
+
+l124E:
+	ld	hl,(16A8)
+	ld	c,l
+	call	056B
+	call	045B
+	ld	(16A8),a
+	jp	1246
+
+l125E:
+	call	0387
+	ret
+
+;; fn1262: 1262
+fn1262 proc
+	ld	a,(16A8)
+	cp	a,20
+	jp	nz,1278
+
+l126A:
+	call	045B
+	ld	(16A8),a
+	cp	a,20
+	jp	nz,1278
+
+l1275:
+	jp	126A
+
+l1278:
+	ret
+
+;; fn1279: 1279
+fn1279 proc
+	call	045B
+	ld	(16A8),a
+	call	1262
+	ld	a,(16A8)
+	cp	a,28
+	jp	z,128D
+
+l128A:
+	call	1229
+
+l128D:
+	ld	hl,16AA
+	ld	(hl),00
+
+l1292:
+	call	045B
+	ld	(16A9),a
+	sub	a,30
+	ld	c,a
+	ld	a,09
+	cp	a,c
+	jp	c,12BE
+
+l12A1:
+	ld	a,(16AA)
+	add	a,a
+	add	a,a
+	add	a,a
+	push	af
+	ld	a,(16AA)
+	add	a,a
+	pop	bc
+	ld	c,b
+	add	a,c
+	push	af
+	ld	a,(16A9)
+	add	a,0F
+	pop	bc
+	ld	c,b
+	add	a,c
+	ld	(16AA),a
+	jp	1292
+
+l12BE:
+	ld	a,(16A9)
+	cp	a,20
+	jp	nz,12C9
+
+l12C6:
+	call	1262
+
+l12C9:
+	ld	a,(16A9)
+	cp	a,29
+	jp	z,12D4
+
+l12D1:
+	call	1229
+
+l12D4:
+	ld	a,(16AA)
+	ret
+
+;; fn12D8: 12D8
+fn12D8 proc
+	call	045B
+	ld	(16A8),a
+	call	1262
+	ld	a,(16A8)
+	cp	a,28
+	jp	nz,12F4
+
+l12E9:
+	call	045B
+	add	a,1F
+	ld	(16AB),a
+	jp	12F7
+
+l12F4:
+	call	1229
+
+l12F7:
+	call	045B
+	sub	a,29
+	add	a,FF
+	sbc	a,a
+	push	af
+	ld	a,10
+	ld	hl,16AB
+	sub	a,(hl)
+	sbc	a,a
+	pop	bc
+	ld	c,b
+	or	a,c
+	rra
+
+;; fn130B: 130B
+fn130B proc
+	jp	nc,1311
+
+;; fn130E: 130E
+fn130E proc
+	call	1229
+
+l1311:
+	ld	a,(16AB)
+	ret
+
+;; fn1315: 1315
+fn1315 proc
+	ex	de,hl
+	ld	e,a
+	ld	d,00
+	ex	de,hl
+	ld	a,(de)
+	add	a,l
+	ld	l,a
+	inc	de
+	ld	a,(de)
+	adc	a,h
+	ld	h,a
+	ret
+1322       5E 23 56 EB                                 ^#V.         
+
+;; fn1326: 1326
+fn1326 proc
+	ld	a,h
+	or	a,a
+	rra
+	ld	h,a
+	ld	a,l
+	rra
+	ld	l,a
+	dec	c
+	jp	nz,1326
+
+l1331:
+	ret
+1332       5F 16 00                                    _..          
+
+;; fn1335: 1335
+fn1335 proc
+	ld	a,e
+	sub	a,l
+	ld	l,a
+	ld	a,d
+	sbc	a,h
+	ld	h,a
+	ret
+
+;; fn133C: 133C
+fn133C proc
+	ld	c,a
+	ld	b,00
+	ld	a,e
+	sub	a,c
+	ld	l,a
+	ld	a,d
+	sbc	a,b
+	ld	h,a
+	ret
+
+;; fn1346: 1346
+fn1346 proc
+	ld	l,c
+	ld	h,b
+
+;; fn1348: 1348
+fn1348 proc
+	ld	c,(hl)
+	inc	hl
+	ld	b,(hl)
+	ld	a,(de)
+	sub	a,c
+	ld	l,a
+	inc	de
+	ld	a,(de)
+	sbc	a,b
+	ld	h,a
+	ret
+
+;; fn1353: 1353
+fn1353 proc
+	ld	l,a
+	ld	h,00
+
+;; fn1356: 1356
+fn1356 proc
+	ld	a,(de)
+	sub	a,l
+	ld	l,a
+	inc	de
+	ld	a,(de)
+	sbc	a,h
+	ld	h,a
+	ret
+135E                                           00 00               ..
 1360 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 ; ...
-14E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ................
-14F0 00 00 00 02 00 00 01 42 50 00 00 00 00 00 01 00 .......BP.......
-1500 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-; ...
-1640 00 00 03 6F 76 30 05 00 00 00 00 00 05 00 1A 1A ...ov0..........
-1650 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A ................
-1660 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A ................
-1670 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A 1A ................
-1680 CD EC 08 DA 94 14 CD 0B 14 2A 52 17 EB 3E 82 B7 .........*R..>..
-1690 37 C3 2A 09 3A 25 17 B7 C2 39 15 21 26 17 0E 08 7.*.:%...9.!&...
+1400 00 00 00 00 00 00 00 00 00 00 00                ...........    
+
+;; fn140B: 140B
+fn140B proc
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+
+;; fn1494: 1494
+fn1494 proc
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	ld	bc,0000
+	nop
+	ld	(bc),a
+	nop
+	nop
+	ld	bc,5042
+	nop
+	nop
+	nop
+	nop
+	nop
+	ld	bc,0000
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+
+;; fn156F: 156F
+fn156F proc
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+
+;; fn15B0: 15B0
+fn15B0 proc
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	inc	bc
+	ld	l,a
+	hlt
+	jr	nc,164C
+
+l1647:
+	nop
+	nop
+	nop
+	nop
+	nop
+
+l164C:
+	dec	b
+	nop
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	ld	a,(de)
+	call	08EC
+	jp	c,1494
+
+l1686:
+	call	140B
+	ld	hl,(1752)
+	ex	de,hl
+	ld	a,82
+	or	a,a
+	scf
+	jp	092A
+1694             3A 25 17 B7 C2 39 15 21 26 17 0E 08     :%...9.!&...
 16A0 E5 7E B7 CA F6 14 23 7E 23 56 2A E5 17 BD C2 F6 .~....#~#V*.....
 16B0 14 7A BC C2 F6 14 E1 7E 3D C2 C4 14 F5 3D 32 25 .z.....~=....=2%
 16C0 17 C3 DB 14 77 F5 CD 6F 15 FE 02 CA DB 14 3A 4C ....w..o......:L

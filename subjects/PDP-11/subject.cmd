@@ -1,3 +1,3 @@
-decompile.exe space.sav
-decompile.exe spcinv.sav
-decompile.exe lunar.lda
+decompile.exe --heuristic shingle  space.sav
+decompile.exe --heuristic shingle  spcinv.sav
+decompile.exe --heuristic shingle  lunar.lda

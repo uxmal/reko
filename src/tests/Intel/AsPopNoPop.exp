@@ -5,7 +5,7 @@
 0B00:0000 E8 07 00        	call	000A
 0B00:0003 72 04           	jc	0009
 0B00:0005 89 2E 00 02     	mov	[0200],bp
-0B00:0009 C3              	ret	
+0B00:0009 C3              	ret
 0B00:000A 55              	push	bp
 0B00:000B BD 00 03        	mov	bp,0300
 0B00:000E E9 03 00        	jmp	0014
@@ -15,8 +15,8 @@
 0B00:0019 83 7E 00 00     	cmp	word ptr [bp+00],00
 0B00:001D 75 F2           	jnz	0011
 0B00:001F 83 C4 02        	add	sp,02
-0B00:0022 F8              	clc	
-0B00:0023 C3              	ret	
+0B00:0022 F8              	clc
+0B00:0023 C3              	ret
 0B00:0024 5D              	pop	bp
-0B00:0025 F9              	stc	
-0B00:0026 C3              	ret	
+0B00:0025 F9              	stc
+0B00:0026 C3              	ret

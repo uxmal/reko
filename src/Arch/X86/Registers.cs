@@ -165,6 +165,8 @@ namespace Reko.Arch.X86
 
         internal static readonly RegisterStorage[] All;
 
+        internal static readonly RegisterStorage[] Gp64BitRegisters;
+
         static Registers()
         {
             eax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
@@ -821,6 +823,11 @@ namespace Reko.Arch.X86
                         { 0x0008, r15b },
                     }
                 },
+            };
+
+            Gp64BitRegisters = new[]
+            {
+                rax, rcx, rdx, rbx, rsp, rbp, rsi, rdi, r8, r9, r10, r11, r12, r13, r14, r15,
             };
         }
 

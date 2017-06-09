@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Core.Serialization
             svc = new SerializedService
             {
                 Name = "msdos_ioctl_get_device_info",
-                SyscallInfo = new SerializedSyscallInfo
+                SyscallInfo = new SyscallInfo_v1
                 {
                     Vector = "21",
                     RegisterValues = new[] {

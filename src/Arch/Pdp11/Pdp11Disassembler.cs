@@ -47,16 +47,23 @@ namespace Reko.Arch.Pdp11
             if (!rdr.IsValid)
                 return null;
             var addr = rdr.Address;
-            try
+            ushort opcode;
+            if (!rdr.TryReadLeUInt16(out opcode))
+                return null;
+            dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
+            var decoder = decoders[(opcode >> 0x0C) & 0x00F];
+            if (decoder != null)
             {
-                instrCur = Disassemble();
-            } catch (AddressCorrelatedException)
-            {
-                throw;
+                instrCur = decoder.Decode(opcode, this);
             }
-            catch (Exception ex)
+            else
             {
-                throw new AddressCorrelatedException(addr, "{0}", ex.Message);
+                switch ((opcode >> 0x0C) & 0x007)
+                {
+                case 0: instrCur = NonDoubleOperandInstruction(opcode, this); break;
+                case 7: instrCur = extraDecoders[(opcode >> 0x09) & 7].Decode(opcode, this); break;
+                default: throw new NotImplementedException();
+                }
             }
             instrCur.Address = addr;
             instrCur.Length = (int)(rdr.Address - addr);
@@ -211,7 +218,7 @@ namespace Reko.Arch.Pdp11
 
                 new FormatOpRec("", Opcode.illegal),
                 new FormatOpRec("f,F", Opcode.divf),
-                new FormatOpRec("r,F", Opcode.stexp),
+                new FormatOpRec("f,E", Opcode.stexp),
                 new FormatOpRec("f,F", Opcode.stcdi),
 
                 new FormatOpRec("f,F", Opcode.stcfd),
@@ -221,23 +228,7 @@ namespace Reko.Arch.Pdp11
             };
         }
 
-        private Pdp11Instruction Disassemble()
-        {
-            ushort opcode;
-            if (!rdr.TryReadLeUInt16(out opcode))
-                return new Pdp11Instruction { Opcode = Opcode.illegal };
-            dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
-            var decoder = decoders[(opcode >> 0x0C) & 0x00F];
-            if (decoder != null)
-                return decoder.Decode(opcode, this);
 
-            switch ((opcode >> 0x0C) & 0x007)
-            {
-            case 0: return NonDoubleOperandInstruction(opcode, this);
-            case 7: return extraDecoders[(opcode >> 0x09) & 7].Decode(opcode, this);
-            }
-            throw new NotImplementedException();
-        }
 
         private MachineOperand Imm6(ushort opcode)
         {
@@ -311,7 +302,9 @@ namespace Reko.Arch.Pdp11
                 case 0: op1 = dasm.DecodeOperand(opcode & 7); oc = Opcode.rts; break;
                 case 3: op1 = dasm.DecodeOperand(opcode); oc = Opcode.spl; break;
                 case 0x20:
+                case 0x28:
                 case 0x30:
+                case 0x38:
                     return dasm.DecodeCondCode(opcode);
                 }
                 break;
@@ -397,7 +390,8 @@ namespace Reko.Arch.Pdp11
                 oc = Opcode.asl; op1 = dasm.DecodeOperand(opcode);
                 break;
             case 0x034:
-                oc = Opcode.mark; op1 = dasm.DecodeOperand(opcode);
+                oc = Opcode.mark;
+                op1 = new ImmediateOperand(Constant.Byte((byte)opcode));
                 break;
             case 0x234:
                 oc = Opcode.mtps; op1 = dasm.DecodeOperand(opcode);

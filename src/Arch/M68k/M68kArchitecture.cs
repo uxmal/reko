@@ -148,12 +148,12 @@ namespace Reko.Arch.M68k
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new Rewriter(this, rdr, (M68kState)state, frame, host);
+            return new Rewriter(this, rdr, (M68kState)state, binder, host);
         }
 
-        public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
         {
             return new MemoryAccess(new BinaryExpression(
                 Operator.IAdd, FramePointerType,

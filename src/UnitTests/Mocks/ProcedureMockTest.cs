@@ -108,12 +108,10 @@ namespace Reko.UnitTests.Mocks
 			{
 				Identifier r = Local32("r0");
 
-				LoadId(r, Int32(0x20000000));
-				Store(Int32(0x20000000), r);
+				LoadId(r, Word32(0x20000000));
+				Store(Word32(0x20000000), r);
 				Return();
 			}
-
 		}
-
 	}
 }

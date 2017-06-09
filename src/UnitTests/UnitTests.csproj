@@ -87,6 +87,7 @@
     <Compile Include="Arch\Avr\Avr8ArchitectureTests.cs" />
     <Compile Include="Arch\Avr\Avr8DisassemblerTests.cs" />
     <Compile Include="Arch\Avr\Avr8RewriterTests.cs" />
+    <Compile Include="Arch\Pdp11\Pdp11InstructionComparerTests.cs" />
     <Compile Include="Arch\RiscV\RiscVDisassemblerTests.cs" />
     <Compile Include="Arch\RiscV\RiscVRewriterTests.cs" />
     <Compile Include="Arch\SuperH\SuperHDisassemblerTests.cs" />
@@ -104,10 +105,12 @@
     <Compile Include="Core\Output\IRFormatterTests.cs" />
     <Compile Include="Core\Output\JsonFormatterTests.cs" />
     <Compile Include="Core\Output\LlvmFormatterTests.cs" />
+    <Compile Include="Core\Lib\LinqAlgorithmTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
     <Compile Include="Environments\SysV\Arm32ProcedureSerializerTests.cs" />
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
+    <Compile Include="Environments\Windows\BorlandMangledNameParserTests.cs" />
     <Compile Include="Environments\Windows\MsPrintfFormatParserTests.cs" />
     <Compile Include="Environments\Windows\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Fragments\FCmpFragment.cs" />
@@ -524,14 +527,16 @@
     <Compile Include="Scanning\Fragments\RtlEvenOdd.cs" />
     <Compile Include="Scanning\GlobalDataWorkItemTests.cs" />
     <Compile Include="Scanning\HeuristicProcedureScannerTests.cs" />
-    <Compile Include="Scanning\HeuristicScannerTests.cs" />
     <Compile Include="Scanning\HeuristicTestBase.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\InterProceduralJumpTests.cs" />
+    <Compile Include="Scanning\ProcedureDetectorTests.cs" />
     <Compile Include="Scanning\Scanner.M68kTests.cs" />
+    <Compile Include="Scanning\ScannerInLinqTests.cs" />
     <Compile Include="Scanning\ScannerTestPrograms.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Scanning\ShingledScannerTests.cs" />
+    <Compile Include="Scanning\StorageBinderTests.cs" />
     <Compile Include="Scanning\StringFinderTests.cs" />
     <Compile Include="Scanning\VarargsFormatScannerTests.cs" />
     <Compile Include="Scanning\VectorBuilderTests.cs" />
@@ -555,6 +560,7 @@
     <Compile Include="Symbols\LGSymLoader\LGSymSourceTests.cs" />
     <Compile Include="TestCode\Factorial.cs" />
     <Compile Include="TestCode\ManyIncrements.cs" />
+    <Compile Include="TestSerializedTypeRenderer.cs" />
     <Compile Include="Typing\AddressTraitCollectorTests.cs" />
     <Compile Include="Typing\ArrayExpressionMatcherTests.cs" />
     <Compile Include="Typing\ComplexExpressionBuilderTests.cs" />

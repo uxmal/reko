@@ -42,7 +42,8 @@ namespace Reko.Core
         ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr);
         ExternalProcedure GetInterceptedCall(Address addrImportThunk);
 
-        void Error(Address address, string message);
+        void Error(Address address, string format, params object[] args);
+        void Warn(Address address, string format, params object[] args);
     }
 }
 

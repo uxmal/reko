@@ -171,6 +171,19 @@ namespace Reko.Gui.Windows.Forms
                 new InformationalDiagnostic(string.Format(message, args)));
         }
 
+        public void Inform(ICodeLocation location, string message)
+        {
+            AddDiagnostic(location, new InformationalDiagnostic(message));
+        }
+
+        public void Inform(ICodeLocation location, string message, params object[] args)
+        {
+            AddDiagnostic(
+                location,
+                new InformationalDiagnostic(string.Format(message, args)));
+        }
+
+
         public void ClearDiagnostics()
         {
             listView.Items.Clear();

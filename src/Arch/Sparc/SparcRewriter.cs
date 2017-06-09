@@ -37,14 +37,15 @@ namespace Reko.Arch.Sparc
     public partial class SparcRewriter : IEnumerable<RtlInstructionCluster>
     {
         private SparcArchitecture arch;
-        private Frame frame;
+        private IStorageBinder frame;
         private IRewriterHost host;
         private LookaheadEnumerator<SparcInstruction> dasm;
         private SparcInstruction instrCur;
-        private RtlEmitter emitter;
-        private RtlInstructionCluster ric;
+        private RtlEmitter m;
+        private List<RtlInstruction> rtlInstructions;
+        private RtlClass rtlc;
 
-        public SparcRewriter(SparcArchitecture arch, EndianImageReader rdr, SparcProcessorState state, Frame frame, IRewriterHost host)
+        public SparcRewriter(SparcArchitecture arch, EndianImageReader rdr, SparcProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.frame = frame;
@@ -52,7 +53,7 @@ namespace Reko.Arch.Sparc
             this.dasm = new LookaheadEnumerator<SparcInstruction>(CreateDisassemblyStream(rdr));
         }
 
-        public SparcRewriter(SparcArchitecture arch, IEnumerator<SparcInstruction> instrs, SparcProcessorState state, Frame frame, IRewriterHost host)
+        public SparcRewriter(SparcArchitecture arch, IEnumerator<SparcInstruction> instrs, SparcProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.frame = frame;
@@ -70,9 +71,10 @@ namespace Reko.Arch.Sparc
             while (dasm.MoveNext())
             {
                 instrCur = dasm.Current;
-                ric = new RtlInstructionCluster(instrCur.Address, 4);
-                ric.Class = RtlClass.Linear;
-                emitter = new RtlEmitter(ric.Instructions);
+                var addr = instrCur.Address;
+                rtlInstructions = new List<RtlInstruction>();
+                rtlc = RtlClass.Linear;
+                m = new RtlEmitter(rtlInstructions);
                 switch (instrCur.Opcode)
                 {
                 default: 
@@ -80,27 +82,31 @@ namespace Reko.Arch.Sparc
                         instrCur.Address,
                         "Rewriting SPARC opcode '{0}' is not supported yet.",
                         instrCur.Opcode);
-                case Opcode.add: RewriteAlu(emitter.IAdd, false); break;
-                case Opcode.addcc: RewriteAluCc(emitter.IAdd, false); break;
-                case Opcode.addx: RewriteAddxSubx(emitter.IAdd, false); break;
-                case Opcode.addxcc: RewriteAddxSubx(emitter.IAdd, true); break;
-                case Opcode.and: RewriteAlu(emitter.And, false); break;
-                case Opcode.andcc: RewriteAluCc(emitter.And, false); break;
-                case Opcode.andn: RewriteAlu(emitter.And, true); break;
+                case Opcode.illegal:
+                    rtlc = RtlClass.Invalid;
+                    m.Invalid();
+                    break;
+                case Opcode.add: RewriteAlu(m.IAdd, false); break;
+                case Opcode.addcc: RewriteAluCc(m.IAdd, false); break;
+                case Opcode.addx: RewriteAddxSubx(m.IAdd, false); break;
+                case Opcode.addxcc: RewriteAddxSubx(m.IAdd, true); break;
+                case Opcode.and: RewriteAlu(m.And, false); break;
+                case Opcode.andcc: RewriteAluCc(m.And, false); break;
+                case Opcode.andn: RewriteAlu(m.And, true); break;
                 case Opcode.ba: RewriteBranch(Constant.True()); break;
                 case Opcode.bn: RewriteBranch(Constant.False()); break;
-                case Opcode.bne: RewriteBranch(emitter.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
-                case Opcode.be: RewriteBranch(emitter.Test(ConditionCode.EQ, Grf(FlagM.ZF))); break;
-                case Opcode.bg: RewriteBranch(emitter.Test(ConditionCode.GT, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
-                case Opcode.bge: RewriteBranch(emitter.Test(ConditionCode.GE, Grf(FlagM.NF | FlagM.VF))); break;
-                case Opcode.bgu: RewriteBranch(emitter.Test(ConditionCode.UGE, Grf(FlagM.CF | FlagM.ZF))); break;
-                case Opcode.bl: RewriteBranch(emitter.Test(ConditionCode.LT, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
-                case Opcode.ble: RewriteBranch(emitter.Test(ConditionCode.LE, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
-                case Opcode.bleu: RewriteBranch(emitter.Test(ConditionCode.ULE, Grf(FlagM.CF | FlagM.ZF))); break;
-                case Opcode.bcc: RewriteBranch(emitter.Test(ConditionCode.UGE, Grf(FlagM.CF))); break;
-                case Opcode.bcs: RewriteBranch(emitter.Test(ConditionCode.ULT, Grf(FlagM.CF))); break;
-                case Opcode.bneg: RewriteBranch(emitter.Test(ConditionCode.LT, Grf(FlagM.NF))); break;
-                case Opcode.bpos: RewriteBranch(emitter.Test(ConditionCode.GE, Grf(FlagM.NF))); break;
+                case Opcode.bne: RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
+                case Opcode.be: RewriteBranch(m.Test(ConditionCode.EQ, Grf(FlagM.ZF))); break;
+                case Opcode.bg: RewriteBranch(m.Test(ConditionCode.GT, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
+                case Opcode.bge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.NF | FlagM.VF))); break;
+                case Opcode.bgu: RewriteBranch(m.Test(ConditionCode.UGE, Grf(FlagM.CF | FlagM.ZF))); break;
+                case Opcode.bl: RewriteBranch(m.Test(ConditionCode.LT, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
+                case Opcode.ble: RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
+                case Opcode.bleu: RewriteBranch(m.Test(ConditionCode.ULE, Grf(FlagM.CF | FlagM.ZF))); break;
+                case Opcode.bcc: RewriteBranch(m.Test(ConditionCode.UGE, Grf(FlagM.CF))); break;
+                case Opcode.bcs: RewriteBranch(m.Test(ConditionCode.ULT, Grf(FlagM.CF))); break;
+                case Opcode.bneg: RewriteBranch(m.Test(ConditionCode.LT, Grf(FlagM.NF))); break;
+                case Opcode.bpos: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.NF))); break;
                 //                    Z
                 //case Opcode.bgu  not (C or Z)
                 //case Opcode.bleu (C or Z)
@@ -114,16 +120,16 @@ namespace Reko.Arch.Sparc
                 case Opcode.call: RewriteCall(); break;
                 case Opcode.fabss: RewriteFabss(); break;
                 case Opcode.fadds: RewriteFadds(); break;
-                case Opcode.fbne: RewriteBranch(emitter.Test(ConditionCode.NE, Grf(FlagM.LF | FlagM.GF))); break;
+                case Opcode.fbne: RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.LF | FlagM.GF))); break;
                 case Opcode.fba: RewriteBranch(Constant.True()); break;
                 case Opcode.fbn: RewriteBranch(Constant.False()); break;
 
-                case Opcode.fbu   : RewriteBranch(emitter.Test(ConditionCode.NE, Grf(FlagM.UF))); break;
-                case Opcode.fbg   : RewriteBranch(emitter.Test(ConditionCode.GT, Grf(FlagM.GF))); break;
-                case Opcode.fbug  : RewriteBranch(emitter.Test(ConditionCode.GT, Grf(FlagM.GF | FlagM.UF))); break;
+                case Opcode.fbu   : RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.UF))); break;
+                case Opcode.fbg   : RewriteBranch(m.Test(ConditionCode.GT, Grf(FlagM.GF))); break;
+                case Opcode.fbug  : RewriteBranch(m.Test(ConditionCode.GT, Grf(FlagM.GF | FlagM.UF))); break;
                 //case Opcode.fbug  : on Unordered or Greater G or U
                 //case Opcode.fbl   : on Less L
-                case Opcode.fbul: RewriteBranch(emitter.Test(ConditionCode.LT, Grf(FlagM.GF|FlagM.UF))); break;
+                case Opcode.fbul: RewriteBranch(m.Test(ConditionCode.LT, Grf(FlagM.GF|FlagM.UF))); break;
                 //case Opcode.fbul  : on Unordered or Less L or U
                 //case Opcode.fblg  : on Less or Greater L or G
                 //case Opcode.fbne  : on Not Equal L or G or U
@@ -131,11 +137,11 @@ namespace Reko.Arch.Sparc
                 //case Opcode.fbue  : on Unordered or Equal E or U
                 //case Opcode.fbge  : on Greater or Equal E or G
                 //case Opcode.fbuge : on Unordered or Greater or Equal E or G or U
-                case Opcode.fbuge: RewriteBranch(emitter.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF | FlagM.UF))); break;
+                case Opcode.fbuge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF | FlagM.UF))); break;
 
                 //case Opcode.fble  : on Less or Equal E or L
                 //case Opcode.fbule : on Unordered or Less or Equal E or L or U
-                case Opcode.fbule: RewriteBranch(emitter.Test(ConditionCode.LE, Grf(FlagM.EF | FlagM.LF | FlagM.UF))); break;
+                case Opcode.fbule: RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.EF | FlagM.LF | FlagM.UF))); break;
                 //                case Opcode.FBO   : on Ordered E or L or G
 
 
@@ -158,41 +164,44 @@ namespace Reko.Arch.Sparc
                 case Opcode.ldub: RewriteLoad(PrimitiveType.Byte); break;
                 case Opcode.lduh: RewriteLoad(PrimitiveType.Word16); break;
                 case Opcode.mulscc: RewriteMulscc(); break;
-                case Opcode.or: RewriteAlu(emitter.Or, false); break;
-                case Opcode.orcc: RewriteAluCc(emitter.Or, false); break;
+                case Opcode.or: RewriteAlu(m.Or, false); break;
+                case Opcode.orcc: RewriteAluCc(m.Or, false); break;
                 case Opcode.restore: RewriteRestore(); break;
                 case Opcode.rett: RewriteRett(); break;
                 case Opcode.save: RewriteSave(); break;
                 case Opcode.sethi: RewriteSethi(); break;
-                case Opcode.sdiv: RewriteAlu(emitter.SDiv, false); break;
-                case Opcode.sdivcc: RewriteAlu(emitter.SDiv, false); break;
-                case Opcode.sll: RewriteAlu(emitter.Shl, false); break;
-                case Opcode.smul: RewriteAlu(emitter.SMul, false); break;
-                case Opcode.smulcc: RewriteAluCc(emitter.SMul, false); break;
-                case Opcode.sra: RewriteAlu(emitter.Sar, false); break;
-                case Opcode.srl: RewriteAlu(emitter.Shr, false); break;
+                case Opcode.sdiv: RewriteAlu(m.SDiv, false); break;
+                case Opcode.sdivcc: RewriteAlu(m.SDiv, false); break;
+                case Opcode.sll: RewriteAlu(m.Shl, false); break;
+                case Opcode.smul: RewriteAlu(m.SMul, false); break;
+                case Opcode.smulcc: RewriteAluCc(m.SMul, false); break;
+                case Opcode.sra: RewriteAlu(m.Sar, false); break;
+                case Opcode.srl: RewriteAlu(m.Shr, false); break;
                 case Opcode.st: RewriteStore(PrimitiveType.Word32); break;
                 case Opcode.stb: RewriteStore(PrimitiveType.Byte); break;
                 case Opcode.std: RewriteStore(PrimitiveType.Word64); break;
                 case Opcode.stf: RewriteStore(PrimitiveType.Real32); break;
                 case Opcode.sth: RewriteStore(PrimitiveType.Word16); break;
-                case Opcode.sub: RewriteAlu(emitter.ISub, false); break;
-                case Opcode.subcc: RewriteAluCc(emitter.ISub, false); break;
-                case Opcode.subx: RewriteAddxSubx(emitter.ISub, false); break;
-                case Opcode.subxcc: RewriteAddxSubx(emitter.ISub, true); break;
+                case Opcode.sub: RewriteAlu(m.ISub, false); break;
+                case Opcode.subcc: RewriteAluCc(m.ISub, false); break;
+                case Opcode.subx: RewriteAddxSubx(m.ISub, false); break;
+                case Opcode.subxcc: RewriteAddxSubx(m.ISub, true); break;
                 case Opcode.ta: RewriteTrap(Constant.True()); break;
                 case Opcode.tn: RewriteTrap(Constant.False()); break;
-                case Opcode.tne: RewriteTrap(emitter.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
-                case Opcode.te: RewriteTrap(emitter.Test(ConditionCode.EQ, Grf(FlagM.ZF))); break;
+                case Opcode.tne: RewriteTrap(m.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
+                case Opcode.te: RewriteTrap(m.Test(ConditionCode.EQ, Grf(FlagM.ZF))); break;
 
-                case Opcode.udiv: RewriteAlu(emitter.UDiv, false); break;
-                case Opcode.udivcc: RewriteAluCc(emitter.UDiv, false); break;
-                case Opcode.umul: RewriteAlu(emitter.UMul, false); break;
-                case Opcode.umulcc: RewriteAluCc(emitter.UMul, false); break;
-                case Opcode.unimp: emitter.Invalid(); break;
-                case Opcode.xor: RewriteAlu(emitter.Xor, false); break;
+                case Opcode.udiv: RewriteAlu(m.UDiv, false); break;
+                case Opcode.udivcc: RewriteAluCc(m.UDiv, false); break;
+                case Opcode.umul: RewriteAlu(m.UMul, false); break;
+                case Opcode.umulcc: RewriteAluCc(m.UMul, false); break;
+                case Opcode.unimp: m.Invalid(); break;
+                case Opcode.xor: RewriteAlu(m.Xor, false); break;
                 }
-                yield return ric;
+                yield return new RtlInstructionCluster(addr, 4, rtlInstructions.ToArray())
+                {
+                    Class = rtlc
+                };
             }
         }
 
@@ -203,12 +212,12 @@ namespace Reko.Arch.Sparc
 
         private void EmitCc(Expression dst)
         {
-            emitter.Assign(
+            m.Assign(
                 frame.EnsureFlagGroup(
                     Registers.psr,
                     0xF, "NZVC",
                     PrimitiveType.Byte),
-                emitter.Cond(dst));
+                m.Cond(dst));
         }
 
         private Expression RewriteOp(MachineOperand op)
@@ -275,7 +284,7 @@ namespace Reko.Arch.Sparc
             else if (srcRight == null)
                 return srcLeft;
             else
-                return emitter.IAdd(srcLeft, srcRight);
+                return m.IAdd(srcLeft, srcRight);
         }
     }
 }

@@ -12,20 +12,20 @@ l1007100A:
 
 l10071011:
 	mov	eax,10072018
-	ret	
+	ret
 
 l10071017:
 	mov	eax,10072014
-	ret	
+	ret
 
 l1007101D:
 	mov	eax,10072010
-	ret	
+	ret
 10071023          B8 08 20 07 10 C3                         .. ...      
 
 l10071029:
 	mov	eax,10072000
-	ret	
+	ret
 1007102F                                              90                .
 ;; Code vector at 10071030 (12 bytes)
 	10071011

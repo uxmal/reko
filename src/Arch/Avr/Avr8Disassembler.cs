@@ -357,12 +357,41 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.spm, ""),
             };
 
+            var oprecs95_8 = new OpRec[]
+            {
+                new BOpRec(Opcode.ret, ""),
+                new BOpRec(Opcode.reti, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.sleep, ""),
+                new BOpRec(Opcode.@break, ""),
+                new BOpRec(Opcode.wdr, ""),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.lpm, ""),
+                new BOpRec(Opcode.elpm, ""),
+                new BOpRec(Opcode.spm, ""),
+                new BOpRec(Opcode.spm, ""),
+            };
+
             var oprecs94_9 = new Dictionary<int, OpRec>
             {
                 { 0, new BOpRec(Opcode.ijmp, "") },
                 { 1, new BOpRec(Opcode.eijmp, "") },
                 { 16, new BOpRec(Opcode.icall, "") },
                 { 17, new BOpRec(Opcode.eicall, "") },
+            };
+
+            var oprecs95_9 = new Dictionary<int, OpRec>
+            {
+                { 0, new BOpRec(Opcode.icall, "") },
+                { 1, new BOpRec(Opcode.eicall, "") },
             };
 
             var oprecs90 = new OpRec[]
@@ -432,6 +461,30 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.jmp, "Q"),
                 new BOpRec(Opcode.call, "Q"),
                 new BOpRec(Opcode.call, "Q"),
+            };
+
+            var oprecs95 = new OpRec[]
+            {
+                new BOpRec(Opcode.com, "D"),
+                new BOpRec(Opcode.neg, "D"),
+                new BOpRec(Opcode.swap, "D"),
+                new BOpRec(Opcode.inc, "D"),
+
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.asr, "D"),
+                new BOpRec(Opcode.lsr, "D"),
+                new BOpRec(Opcode.ror, "D"),
+
+                new GrpOpRec(4, 5, oprecs95_8),
+                new SparseOpRec(4, 5, oprecs95_9),
+                new BOpRec(Opcode.dec, "D"),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.jmp, "Q"),
+                new BOpRec(Opcode.jmp, "Q"),
+                new BOpRec(Opcode.call, "Q"),
+                new BOpRec(Opcode.call, "Q"),
+
             };
 
             var oprecs9 = new OpRec[]

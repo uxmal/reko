@@ -48,6 +48,12 @@ namespace Reko.Core.Lib
             }
         }
 
+        /// <summary>
+        /// Visit graph nodes in pre-order depth first order,
+        /// starting at <paramref name="item"/>.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public IEnumerable<T> PreOrder(T item)
         {
             Stack<IEnumerator<T>> stack = new Stack<IEnumerator<T>>();

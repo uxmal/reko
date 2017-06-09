@@ -38,14 +38,15 @@ namespace Reko.Arch.Arm
     {
         private Arm32ProcessorArchitecture arch;
         private IEnumerator<Arm32Instruction> instrs;
-        private Frame frame;
+        private IStorageBinder frame;
         private CapstoneArmInstruction instr;
         private ArmInstructionOperand [] ops;
-        private RtlInstructionCluster ric;
+        private RtlClass rtlc;
+        private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
         private IRewriterHost host;
 
-        public ArmRewriter(Arm32ProcessorArchitecture arch, EndianImageReader rdr, ArmProcessorState state, Frame frame, IRewriterHost host)
+        public ArmRewriter(Arm32ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.instrs = CreateInstructionStream(rdr);
@@ -75,9 +76,9 @@ namespace Reko.Arch.Arm
                 }
                 this.ops = instr.ArchitectureDetail.Operands;
 
-                this.ric = new RtlInstructionCluster(instrs.Current.Address, instr.Bytes.Length);
-                this.ric.Class = RtlClass.Linear;
-                this.m = new RtlEmitter(ric.Instructions);
+                this.rtlInstructions = new List<RtlInstruction>();
+                this.rtlc = RtlClass.Linear;
+                this.m = new RtlEmitter(rtlInstructions);
                 switch (instr.Id)
                 {
                 default:
@@ -522,7 +523,13 @@ namespace Reko.Arch.Arm
                 case Opcode.VSTMIA: RewriteVstmia(); break;
 
                 }
-                yield return ric;
+                yield return new RtlInstructionCluster(
+                    instrs.Current.Address,
+                    instr.Bytes.Length,
+                    rtlInstructions.ToArray())
+                {
+                    Class = rtlc
+                };
             }
             instrs.Dispose();
         }
@@ -563,7 +570,7 @@ namespace Reko.Arch.Arm
             }
             if (link)
             {
-                ric.Class = RtlClass.Transfer;
+                rtlc = RtlClass.Transfer;
                 if (instr.ArchitectureDetail.CodeCondition != ArmCodeCondition.AL)
                 {
                     m.BranchInMiddleOfInstruction(
@@ -571,18 +578,18 @@ namespace Reko.Arch.Arm
                         Address.Ptr32((uint)(instr.Address + instr.Bytes.Length)),
                         RtlClass.ConditionalTransfer);
                 }
-                m.Call(dst, 0);
-            }
-            else
-            {
+                    m.Call(dst, 0);
+                }
+                else
+                {
                 if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
                 {
-                    ric.Class = RtlClass.Transfer;
+                    rtlc = RtlClass.Transfer;
                     m.Goto(dst);
                 }
                 else
                 {
-                    ric.Class = RtlClass.ConditionalTransfer;
+                    rtlc = RtlClass.ConditionalTransfer;
                     var addr = dst as Address;
                     if (addr != null)
                     {
@@ -619,7 +626,7 @@ namespace Reko.Arch.Arm
 
         private void ConditionalAssign(Expression dst, Expression src)
         {
-            RtlInstruction rtlInstr = new RtlAssignment(dst, src);
+            var rtlInstr = new RtlAssignment(dst, src);
             AddConditional(rtlInstr);
         }
 
@@ -676,6 +683,8 @@ namespace Reko.Arch.Arm
                     ea = baseReg;
                 }
                 return m.Load(SizeFromLoadStore(instr), ea);
+            case ArmInstructionOperandType.FloatingPoint:
+                return Constant.Real64(op.FloatingPointValue.Value);
             }
             throw new NotImplementedException(op.Type.ToString());
         }
@@ -783,6 +792,8 @@ namespace Reko.Arch.Arm
                 return new TestCondition(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF, "NZ", PrimitiveType.Byte));
             case ArmCodeCondition.NE:
                 return new TestCondition(ConditionCode.NE, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Byte));
+            case ArmCodeCondition.VC:
+                return new TestCondition(ConditionCode.NO, FlagGroup(FlagM.VF, "V", PrimitiveType.Byte));
             case ArmCodeCondition.VS:
                 return new TestCondition(ConditionCode.OV, FlagGroup(FlagM.VF, "V", PrimitiveType.Byte));
             }

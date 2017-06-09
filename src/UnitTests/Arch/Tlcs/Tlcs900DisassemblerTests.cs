@@ -332,5 +332,11 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("ldirw", "9311");
             AssertCode("ldir",  "8311");
         }
+
+        [Test]
+        public void Tlcs900_dis_muls()
+        {
+            AssertCode("muls\tde,bc","D94A");
+        }
     }
 }

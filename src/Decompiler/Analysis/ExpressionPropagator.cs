@@ -106,7 +106,7 @@ namespace Reko.Analysis
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
             ci.CallSite.StackDepthOnEntry =
-                 GetStackDepthBeforeCall() +
+                GetStackDepthBeforeCall() +
                 ci.CallSite.SizeOfReturnAddressOnStack;
             var pc = ci.Callee as ProcedureConstant;
             if (pc != null)
@@ -341,7 +341,10 @@ namespace Reko.Analysis
 
         public Result VisitConditionalExpression(ConditionalExpression cond)
         {
-            throw new NotImplementedException();
+            var c = cond.Condition.Accept(this).PropagatedExpression;
+            var t = cond.ThenExp.Accept(this).PropagatedExpression;
+            var e = cond.FalseExp.Accept(this).PropagatedExpression;
+            return SimplifyExpression(new ConditionalExpression(cond.DataType, c, t, e));
         }
 
         public Result VisitConditionOf(ConditionOf cof)

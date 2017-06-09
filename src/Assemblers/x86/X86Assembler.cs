@@ -1777,9 +1777,14 @@ namespace Reko.Assemblers.x86
             EmitOpcode(0xF5, null);
         }
 
-        public void Cmp(ParsedOperand src, int dst)
+        public void Cmp(ParsedOperand dst, int src)
         {
-            ProcessBinop(0x7, src, Imm(dst));
+            ProcessBinop(0x7, dst, Imm(src));
+        }
+
+        public void Cmp(ParsedOperand dst, ParsedOperand src)
+        {
+            ProcessBinop(0x7, dst, src);
         }
 
         public void Db(params int[] bytes)
@@ -2043,12 +2048,10 @@ namespace Reko.Assemblers.x86
             get { return new ParsedOperand(new RegisterOperand(Registers.ah)); }
         }
 
-
         public ParsedOperand bh
         {
             get { return new ParsedOperand(new RegisterOperand(Registers.bh)); }
         }
-
 
         public ParsedOperand eax
         {
@@ -2130,9 +2133,21 @@ namespace Reko.Assemblers.x86
             return Mem(PrimitiveType.Word32, null, null, null, 1, offset);
         }
 
-        public ParsedOperand MemDw(RegisterStorage @base, string offset)
+        public ParsedOperand MemDw(object @base, string offset)
         {
-            return Mem(PrimitiveType.Word32, null, @base, null, 1, offset);
+            RegisterStorage reg = ExpectRegister(@base);
+            return Mem(PrimitiveType.Word32, null, reg, null, 1, offset);
+        }
+
+        private static RegisterStorage ExpectRegister(object @base)
+        {
+            var reg = @base as RegisterStorage;
+            if (reg == null)
+            {
+                var op = (ParsedOperand)@base;
+                reg = ((RegisterOperand)op.Operand).Register;
+            }
+            return reg;
         }
 
         public ParsedOperand MemW(RegisterStorage @base, string offset)
@@ -2150,9 +2165,9 @@ namespace Reko.Assemblers.x86
             return Mem(PrimitiveType.Word16, seg, @base, null, 1, offset);
         }
 
-        public ParsedOperand MemDw(RegisterStorage @base, int offset)
+        public ParsedOperand MemDw(object @base, int offset)
         {
-            return Mem(PrimitiveType.Word32, @base, offset);
+            return Mem(PrimitiveType.Word32, ExpectRegister(@base), offset);
         }
 
         public ParsedOperand MemW(RegisterStorage @base, int offset)

@@ -860,7 +860,7 @@ namespace Reko.Core.Expressions
 
         public override long ToInt64()
         {
-            return value;
+            return (int)value;
         }
     }
 

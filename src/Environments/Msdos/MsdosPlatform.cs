@@ -144,17 +144,6 @@ namespace Reko.Environments.Msdos
             }
         }
 
-        /// <summary>
-        /// MS-DOS has no concept of "trampolines".
-        /// </summary>
-        /// <param name="imageReader"></param>
-        /// <param name="host"></param>
-        /// <returns></returns>
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            return null;
-        }
-        
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();

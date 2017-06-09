@@ -60,11 +60,7 @@ namespace Reko.UnitTests.Environments.Windows
             var host = mr.Stub<IRewriterHost>();
             var services = mr.Stub<IServiceProvider>();
             var arch = mr.Stub<IProcessorArchitecture>();
-            var state = mr.Stub<ProcessorState>();
             var addr = Address.Ptr32(0x00031234);
-            arch.Stub(a => a.CreateFrame()).Return(frame);
-            arch.Stub(a => a.CreateProcessorState()).Return(state);
-            arch.Stub(a => a.CreateRewriter(null, null, null, null)).IgnoreArguments().Return(rtl);
             arch.Stub(a => a.MakeAddressFromConstant(Arg<Constant>.Is.NotNull)).Return(addr);
             host.Stub(h => h.GetImportedProcedure(
                 Arg<Address>.Is.Equal(addr),
@@ -72,7 +68,7 @@ namespace Reko.UnitTests.Environments.Windows
             mr.ReplayAll();
 
             var platform = new Win32MipsPlatform(services, arch);
-            var result = platform.GetTrampolineDestination(new LeImageReader(new byte[0]), host);
+            var result = platform.GetTrampolineDestination(rtl, host);
             Assert.IsNotNull(result);
         }
     }

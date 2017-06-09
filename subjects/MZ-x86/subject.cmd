@@ -1,1 +1,1 @@
-decompile.exe BENCHFN.EXE
+decompile.exe --heuristic shingle  BENCHFN.EXE

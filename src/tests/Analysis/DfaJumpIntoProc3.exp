@@ -1,0 +1,72 @@
+// void fn10000000()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse: 
+// LiveOut:
+// Trashed: ah al ax bh bl bx ch cl cx eax ebx ecx esp rax rbx rcx rsp sp spl
+// Preserved:
+// fn10000000
+// Return size: 0
+void fn10000000()
+fn10000000_entry:
+	// succ:  l10000000
+l10000000:
+	fn10000018(0x00000003)
+	fn10000013(0x00000009)
+	return
+	// succ:  fn10000000_exit
+fn10000000_exit:
+
+// void fn10000013()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse: 
+// LiveOut:
+// Trashed: ah al ax eax rax
+// Preserved: esp
+// fn10000013
+// Return size: 0
+void fn10000013(dwArg04)
+fn10000013_entry:
+	// succ:  l10000013
+l10000013:
+	// succ:  l10000013_thunk_fn10000020
+l10000013_thunk_fn10000020:
+	fn10000020(dwArg04)
+	return
+	// succ:  fn10000013_exit
+fn10000013_exit:
+
+// void fn10000018(Register word32 ebx)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  ebx
+// LiveOut:
+// Trashed: ah al ax ch cl cx eax ecx rax rcx
+// Preserved: esp
+// fn10000018
+// Return size: 0
+void fn10000018(word32 ebx)
+fn10000018_entry:
+	// succ:  l10000018
+l10000018:
+	fn10000020(ebx)
+	return
+	// succ:  fn10000018_exit
+fn10000018_exit:
+
+// void fn10000020(Stack word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse: 
+// LiveOut:
+// Trashed: ah al ax eax rax
+// Preserved: esp
+// Stack args: Stack +0004(32)
+// fn10000020
+// Return size: 0
+void fn10000020(word32 dwArg04)
+fn10000020_entry:
+	// succ:  l10000020
+l10000020:
+	Mem4[0x00123400:word32] = dwArg04
+	return
+	// succ:  fn10000020_exit
+fn10000020_exit:
+

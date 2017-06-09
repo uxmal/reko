@@ -1,1 +1,1 @@
-decompile.exe flags3
+decompile.exe --heuristic shingle  flags3

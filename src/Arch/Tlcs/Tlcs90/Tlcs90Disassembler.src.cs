@@ -179,15 +179,15 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.invalid, ""),
 
             // 70
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.add, "H,x"),
+            new OpRec(Opcode.adc, "H,x"),
+            new OpRec(Opcode.sub, "H,x"),
+            new OpRec(Opcode.sbc, "H,x"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.and, "H,x"),
+            new OpRec(Opcode.xor, "H,x"),
+            new OpRec(Opcode.or,  "H,x"),
+            new OpRec(Opcode.cp,  "H,x"),
 
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),

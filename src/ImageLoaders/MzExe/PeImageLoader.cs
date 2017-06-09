@@ -460,6 +460,13 @@ namespace Reko.ImageLoaders.MzExe
             return new RelocationResults(entryPoints, ImageSymbols);
 		}
 
+        /// <summary>
+        /// All PE executables have a principal entry point, the WinMain or DllMain.
+        /// </summary>
+        /// <param name="isDll"></param>
+        /// <param name="addrEp"></param>
+        /// <param name="platform"></param>
+        /// <returns></returns>
         public ImageSymbol CreateMainEntryPoint(bool isDll, Address addrEp, IPlatform platform)
         {
             var s = platform.FindMainProcedure(this.program, addrEp);

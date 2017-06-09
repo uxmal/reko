@@ -12,7 +12,7 @@ l1:
 	goto loop
 	// succ:  loop
 l2:
-	Mem2[p_1 + 0x00000000:word32] = 0x00000000
+	Mem2[p_1 + 0x00000000:int32] = 0
 	p_3 = p_1 + 0x00000004
 	// succ:  loop
 loop:

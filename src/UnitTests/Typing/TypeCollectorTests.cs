@@ -193,7 +193,7 @@ namespace Reko.UnitTests.Typing
                 Identifier a = m.Local32("a");
                 Identifier i = m.Local32("i");
                 m.Assign(a, 0x00123456);		// array pointer
-                m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
+                m.Store(m.IAdd(a, m.IMul(i, 8)), m.Word32(42));
             });
             RunTest(pp.BuildProgram(), "Typing/TycoArrayConstantPointers.txt");
         }

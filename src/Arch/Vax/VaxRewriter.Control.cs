@@ -26,6 +26,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -37,116 +38,170 @@ namespace Reko.Arch.Vax
         {
             var limit = RewriteSrcOp(0, width);
             var add = RewriteSrcOp(1, width);
-            var index = RewriteDstOp(2, width, e => emitter.FAdd(e, add));
-            NZV(index);
+            var index = RewriteDstOp(2, width, e => m.FAdd(e, add));
+            if (!NZV(index))
+                return;
             var cAdd = add as Constant;
             if (cAdd == null)
-                throw new AddressCorrelatedException(
+            {
+                host.Error(
                     dasm.Current.Address,
-                    "Instruction {0] too complex to rewrite.",
+                    "Instruction {0} too complex to rewrite.",
                     dasm.Current);
+                m.Invalid();
+                return;
+            }
             if (cAdd.ToReal64() >= 0.0)
             {
-                emitter.Branch(
-                    emitter.FLe(index, limit),
+                m.Branch(
+                    m.FLe(index, limit),
                     ((AddressOperand)dasm.Current.Operands[3]).Address,
                     RtlClass.ConditionalTransfer);
             }
             else
             {
-                emitter.Branch(
-                    emitter.FGe(index, limit),
+                m.Branch(
+                    m.FGe(index, limit),
                     ((AddressOperand)dasm.Current.Operands[3]).Address,
                     RtlClass.ConditionalTransfer);
             }
-            rtlc.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
         }
 
         private void RewriteAcbi(PrimitiveType width)
         {
             var limit = RewriteSrcOp(0, width);
             var add = RewriteSrcOp(1, width);
-            var index = RewriteDstOp(2, width, e => emitter.IAdd(e, add));
-            NZV(index);
+            var index = RewriteDstOp(2, width, e => m.IAdd(e, add));
+            if (!NZV(index))
+                return;
             var cAdd = add as Constant;
             if (cAdd == null)
-                throw new AddressCorrelatedException(
+            {
+                Debug.Print(
+                    "{0}: Instruction {1} too complex to rewrite.",
                     dasm.Current.Address,
-                    "Instruction {0] too complex to rewrite.",
                     dasm.Current);
+                m.Invalid();
+                return;
+            }
             if (cAdd.ToInt32() >= 0)
             {
-                emitter.Branch(
-                          emitter.Le(index, limit),
+                m.Branch(
+                          m.Le(index, limit),
                           ((AddressOperand)dasm.Current.Operands[3]).Address,
                           RtlClass.ConditionalTransfer);
             }
             else
             {
-                emitter.Branch(
-                    emitter.Ge(index, limit),
+                m.Branch(
+                    m.Ge(index, limit),
                     ((AddressOperand)dasm.Current.Operands[3]).Address,
                     RtlClass.ConditionalTransfer);
             }
-            rtlc.Class = RtlClass.ConditionalTransfer;
-
+            rtlc = RtlClass.ConditionalTransfer;
         }
 
         private void RewriteBb(bool set)
         {
             var pos = RewriteSrcOp(0, PrimitiveType.Word32);
             var @base = RewriteSrcOp(1, PrimitiveType.Word32);
-            Expression test = emitter.And(
+            Expression test = m.And(
                 @base,
-                emitter.Shl(emitter.Word32(1), pos));
+                m.Shl(m.Word32(1), pos));
             if (set)
             {
-                test = emitter.Ne0(test);
+                test = m.Ne0(test);
             }
             else
             {
-                test = emitter.Eq0(test);
+                test = m.Eq0(test);
             }
-            emitter.Branch(test,
+            m.Branch(test,
                 ((AddressOperand)dasm.Current.Operands[2]).Address,
                 RtlClass.ConditionalTransfer);
-            rtlc.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
+        }
+
+        private void RewriteBbxx(bool testBit, bool updateBit)
+        {
+            var pos = RewriteSrcOp(0, PrimitiveType.Word32);
+            var bas = RewriteSrcOp(1, PrimitiveType.Word32);
+            var dst = ((AddressOperand)dasm.Current.Operands[2]).Address;
+            var tst = frame.CreateTemporary(PrimitiveType.Word32);
+            m.Assign(tst, m.And(bas, m.Shl(Constant.Int32(1), pos)));
+            if (updateBit)
+            {
+                m.Assign(bas, m.Or(bas, m.Shl(Constant.Int32(1), pos)));
+            } 
+            else
+            {
+                m.Assign(bas, m.And(bas, m.Comp( m.Shl(Constant.Int32(1), pos))));
+            }
+            var t = testBit
+                ? m.Ne0(tst)
+                : m.Eq0(tst);
+            m.Branch(t, dst, RtlClass.ConditionalTransfer);
+            rtlc = RtlClass.ConditionalTransfer;
+        }
+
+        private void RewriteBbxxi(bool testBit)
+        {
+            var pos = RewriteSrcOp(0, PrimitiveType.Word32);
+            var bas = RewriteSrcOp(1, PrimitiveType.Word32);
+            var dst = ((AddressOperand)dasm.Current.Operands[2]).Address;
+            var tst = frame.CreateTemporary(PrimitiveType.Word32);
+            m.SideEffect(host.PseudoProcedure("__set_interlock", VoidType.Instance));
+            m.Assign(tst, m.And(bas, m.Shl(Constant.Int32(1), pos)));
+            if (testBit)
+            {
+                m.Assign(bas, m.Or(bas, m.Shl(Constant.Int32(1), pos)));
+            }
+            else
+            {
+                m.Assign(bas, m.And(bas, m.Comp(m.Shl(Constant.Int32(1), pos))));
+            }
+            m.SideEffect(host.PseudoProcedure("__release_interlock", VoidType.Instance));
+            var t = testBit
+                ? m.Ne0(tst)
+                : m.Eq0(tst);
+            m.Branch(t, dst, RtlClass.ConditionalTransfer);
+            rtlc = RtlClass.ConditionalTransfer;
         }
 
         private void RewriteBlb(Func<Expression,Expression> fn)
         {
             var n = RewriteSrcOp(0, PrimitiveType.Word32);
-            var test = fn(emitter.And(n, 1));
-            emitter.Branch(test,
+            var test = fn(m.And(n, 1));
+            m.Branch(test,
                     ((AddressOperand)dasm.Current.Operands[1]).Address,
                     RtlClass.ConditionalTransfer);
-            rtlc.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
         }
 
         private void RewriteBranch()
         {
-            emitter.Goto(
+            m.Goto(
                 ((AddressOperand)dasm.Current.Operands[0]).Address);
-            rtlc.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
         }
 
         private void RewriteBsb()
         {
-            emitter.Call(
+            m.Call(
                 ((AddressOperand)dasm.Current.Operands[0]).Address,
                 4);
-            rtlc.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
         }
 
         private void RewriteBranch(ConditionCode cc, FlagM flags)
         {
-            emitter.Branch(
-                emitter.Test(cc, FlagGroup(flags)),
+            m.Branch(
+                m.Test(cc, FlagGroup(flags)),
                 ((AddressOperand)dasm.Current.Operands[0]).Address,
                 RtlClass.ConditionalTransfer);
-            rtlc.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
         }
-
 
         private void RewriteAob(
             Func<Expression, Expression, Expression> cmp)
@@ -155,13 +210,14 @@ namespace Reko.Arch.Vax
             var dst = RewriteDstOp(
                 1,
                 PrimitiveType.Word32,
-                e => emitter.IAdd(e, emitter.Word32(1)));
-            AllFlags(dst);
-            emitter.Branch(
+                e => m.IAdd(e, m.Word32(1)));
+            if (!AllFlags(dst))
+                return;
+            m.Branch(
                 cmp(dst, limit),
                 ((AddressOperand)dasm.Current.Operands[2]).Address,
                 RtlClass.ConditionalTransfer);
-            rtlc.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
         }
 
         private void RewriteSob(
@@ -170,25 +226,32 @@ namespace Reko.Arch.Vax
             var dst = RewriteDstOp(
                 0,
                 PrimitiveType.Word32,
-                e => emitter.ISub(e, emitter.Word32(1)));
-            AllFlags(dst);
-            emitter.Branch(
+                e => m.ISub(e, m.Word32(1)));
+            if (!AllFlags(dst))
+                return;
+            m.Branch(
                 cmp(dst, Constant.Word32(0)),
                 ((AddressOperand)dasm.Current.Operands[1]).Address,
                 RtlClass.ConditionalTransfer);
-            rtlc.Class = RtlClass.ConditionalTransfer;
+            rtlc = RtlClass.ConditionalTransfer;
         }
 
         private void RewriteJmp()
         {
-            emitter.Goto(RewriteSrcOp(0, PrimitiveType.Word32));
-            rtlc.Class = RtlClass.Transfer;
+            m.Goto(RewriteSrcOp(0, PrimitiveType.Word32));
+            rtlc = RtlClass.Transfer;
         }
 
         private void RewriteJsb()
         {
-            emitter.Call(RewriteSrcOp(0, PrimitiveType.Word32), 4);
-            rtlc.Class = RtlClass.Transfer;
+            m.Call(RewriteSrcOp(0, PrimitiveType.Word32), 4);
+            rtlc = RtlClass.Transfer;
+        }
+
+        private void RewriteRei()
+        {
+            m.Return(4, 4);
+            rtlc = RtlClass.Transfer;
         }
 
         // condition handler (initially 0) <-- fp
@@ -204,17 +267,17 @@ namespace Reko.Arch.Vax
             var sp = frame.EnsureRegister(Registers.sp);
             var fp = frame.EnsureRegister(Registers.fp);
             var ap = frame.EnsureRegister(Registers.ap);
-            emitter.Assign(sp, emitter.ISub(fp, 4));
-            emitter.Assign(fp, emitter.LoadDw(emitter.IAdd(sp, 16)));
-            emitter.Assign(ap, emitter.LoadDw(emitter.IAdd(sp, 12)));
-            emitter.Return(4, 0);
-            rtlc.Class = RtlClass.Transfer;
+            m.Assign(sp, m.ISub(fp, 4));
+            m.Assign(fp, m.LoadDw(m.IAdd(sp, 16)));
+            m.Assign(ap, m.LoadDw(m.IAdd(sp, 12)));
+            m.Return(4, 0);
+            rtlc = RtlClass.Transfer;
         }
 
         private void RewriteRsb()
         {
-            emitter.Return(4, 0);
-            rtlc.Class = RtlClass.Transfer;
+            m.Return(4, 0);
+            rtlc = RtlClass.Transfer;
         }
     }
 }

@@ -42,7 +42,7 @@ _init proc
 	sub	rsp,08
 	call	000000000040043C
 	add	rsp,08
-	ret	
+	ret
 ;;; Segment .plt (00000000004003E0)
 00000000004003E0 FF 35 0A 0C 20 00 FF 25 0C 0C 20 00 0F 1F 40 00 .5.. ..%.. ...@.
 00000000004003F0 FF 25 0A 0C 20 00 68 00 00 00 00 E9 E0 FF FF FF .%.. .h.........
@@ -62,13 +62,13 @@ _start proc
 	mov	rcx,+00400620
 	mov	rdi,+004005C5
 	call	0000000000400400
-	hlt	
+	hlt
 000000000040043A                               90 90                       ..   
 
 ;; call_gmon_start: 000000000040043C
 call_gmon_start proc
 	sub	rsp,08
-	mov	rax,[rip+00200B99]
+	mov	rax,[rip+00200B99]                                     ; 0000000000600FE0
 	test	rax,rax
 	jz	000000000040044E
 
@@ -77,7 +77,7 @@ l000000000040044C:
 
 l000000000040044E:
 	add	rsp,08
-	ret	
+	ret
 0000000000400453          90 90 90 90 90 90 90 90 90 90 90 90 90    .............
 
 ;; deregister_tm_clones: 0000000000400460
@@ -91,7 +91,7 @@ deregister_tm_clones proc
 
 l0000000000400475:
 	pop	rbp
-	ret	
+	ret
 
 l0000000000400477:
 	mov	eax,00000000
@@ -119,7 +119,7 @@ register_tm_clones proc
 
 l00000000004004B2:
 	pop	rbp
-	ret	
+	ret
 
 l00000000004004B4:
 	mov	edx,00000000
@@ -135,7 +135,7 @@ l00000000004004BE:
 
 ;; __do_global_dtors_aux: 00000000004004D0
 __do_global_dtors_aux proc
-	cmp	byte ptr [rip+00200B61],00
+	cmp	byte ptr [rip+00200B61],00                             ; 0000000000601038
 	jnz	00000000004004EA
 
 l00000000004004D9:
@@ -143,15 +143,15 @@ l00000000004004D9:
 	mov	rbp,rsp
 	call	0000000000400460
 	pop	rbp
-	mov	byte ptr [rip+00200B4E],01
+	mov	byte ptr [rip+00200B4E],01                             ; 0000000000601038
 
 l00000000004004EA:
-	ret	
+	ret
 00000000004004EC                                     0F 1F 40 00             ..@.
 
 ;; frame_dummy: 00000000004004F0
 frame_dummy proc
-	cmp	qword ptr [rip+00200910],00
+	cmp	qword ptr [rip+00200910],00                            ; 0000000000600E08
 	jz	0000000000400518
 
 l00000000004004FA:
@@ -212,7 +212,7 @@ l0000000000400531:
 	mov	[rbp-05],al
 	add	byte ptr [rbp-05],08
 	mov	eax,[rbp-04]
-	cbw	
+	cbw
 	movzx	eax,byte ptr [rax+00601020]
 	cmp	al,[rbp-05]
 	jz	000000000040059D
@@ -240,7 +240,7 @@ l00000000004005B9:
 
 l00000000004005C3:
 	pop	rbp
-	ret	
+	ret
 
 ;; main: 00000000004005C5
 main proc
@@ -280,16 +280,16 @@ l0000000000400618:
 	mov	eax,00000000
 
 l000000000040061D:
-	leave	
-	ret	
+	leave
+	ret
 000000000040061F                                              90                .
 
 ;; __libc_csu_init: 0000000000400620
 __libc_csu_init proc
 	mov	[rsp-28],rbp
 	mov	[rsp-20],r12
-	lea	rbp,[rip+002007CF]
-	lea	r12,[rip+002007C0]
+	lea	rbp,[rip+002007CF]                                     ; 0000000000600E00
+	lea	r12,[rip+002007C0]                                     ; 0000000000600DF8
 	mov	[rsp-18],r13
 	mov	[rsp-10],r14
 	mov	[rsp-08],r15
@@ -325,12 +325,12 @@ l0000000000400686:
 	mov	r14,[rsp+28]
 	mov	r15,[rsp+30]
 	add	rsp,38
-	ret	
+	ret
 00000000004006A9                            0F 1F 80 00 00 00 00          .......
 
 ;; __libc_csu_fini: 00000000004006B0
 __libc_csu_fini proc
-	ret	
+	ret
 00000000004006B2       90 90                                       ..           
 ;;; Segment .fini (00000000004006B4)
 
@@ -338,7 +338,7 @@ __libc_csu_fini proc
 _fini proc
 	sub	rsp,08
 	add	rsp,08
-	ret	
+	ret
 ;;; Segment .rodata (00000000004006C0)
 00000000004006C0 01 00 02 00                                     ....           
 00000000004006C4             00 00 00 00 59 6F 75 20 6E 65 65 64     ....You need

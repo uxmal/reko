@@ -76,6 +76,7 @@ namespace Reko.ImageLoaders.MzExe
             var relocations = imgLoaded.Relocations;
 			int i = exe.e_cRelocations;
             var segments = new Dictionary<Address, ushort>();
+            var linBase = addrLoad.ToLinear();
 			while (i != 0)
 			{
 				uint offset = rdr.ReadLeUInt16();
@@ -84,7 +85,7 @@ namespace Reko.ImageLoaders.MzExe
 
 				ushort seg = (ushort) (imgLoaded.ReadLeUInt16(offset) + addrLoad.Selector.Value);
 				imgLoaded.WriteLeUInt16(offset, seg);
-				relocations.AddSegmentReference(offset, seg);
+				relocations.AddSegmentReference(offset + linBase, seg);
 
                 var segment = new ImageSegment(
                     seg.ToString("X4"),

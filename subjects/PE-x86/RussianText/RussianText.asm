@@ -12,18 +12,47 @@
 _GetExceptDLLinfo proc
 	jmp	004011FC
 00401076                   33 C0 A0 7D 20 40 00 C3 A1 93       3..} @....
-00401080 20 40 00 C3 60 BB 00 50 B0 BC 53 68 AD 0B 00 00  @..`..P..Sh....
-00401090 C3 B9 9C 00 00 00 0B C9 74 4D 83 3D 8B 20 40 00 ........tM.=. @.
+00401080 20 40 00 C3                                      @..           
+
+;; fn00401084: 00401084
+fn00401084 proc
+	pusha
+	mov	ebx,BCB05000
+	push	ebx
+	push	00000BAD
+	ret
+00401091    B9 9C 00 00 00 0B C9 74 4D 83 3D 8B 20 40 00  .......tM.=. @.
 004010A0 00 73 0A B8 FE 00 00 00 E8 D7 FF FF FF B9 9C 00 .s..............
 004010B0 00 00 51 6A 08 E8 9E 01 00 00 50 E8 9E 01 00 00 ..Qj......P.....
 004010C0 0B C0 75 0A B8 FD 00 00 00 E8 B6 FF FF FF 50 50 ..u...........PP
 004010D0 FF 35 8B 20 40 00 E8 BB 01 00 00 FF 35 8B 20 40 .5. @.......5. @
 004010E0 00 E8 AA 01 00 00 5F C3 B9 9C 00 00 00 0B C9 74 ......_........t
 004010F0 19 E8 82 01 00 00 A3 8B 20 40 00 83 F8 00 73 91 ........ @....s.
-00401100 B8 FC 00 00 00 E8 7A FF FF FF C3 83 3D 8B 20 40 ......z.....=. @
-00401110 00 00 72 28 FF 35 8B 20 40 00 E8 6B 01 00 00 0B ..r(.5. @..k....
-00401120 C0 74 19 50 6A 08 E8 2D 01 00 00 50 E8 33 01 00 .t.Pj..-...P.3..
-00401130 00 FF 35 8B 20 40 00 E8 42 01 00 00 C3 C3 83 3D ..5. @..B......=
+00401100 B8 FC 00 00 00 E8 7A FF FF FF C3                ......z....    
+
+;; fn0040110B: 0040110B
+fn0040110B proc
+	cmp	dword ptr [0040208B],00
+	jc	0040113C
+
+l00401114:
+	push	dword ptr [0040208B]
+	call	0040128A
+	or	eax,eax
+	jz	0040113C
+
+l00401123:
+	push	eax
+	push	08
+	call	00401258
+	push	eax
+	call	00401264
+	push	dword ptr [0040208B]
+	call	0040127E
+
+l0040113C:
+	ret
+0040113D                                        C3 83 3D              ..=
 00401140 8B 20 40 00 00 72 10 E8 BF FF FF FF FF 35 8B 20 . @..r.......5. 
 00401150 40 00 E8 2D 01 00 00 C3                         @..-....       
 
@@ -32,7 +61,7 @@ fn00401158 proc
 	mov	eax,[0040208B]
 	mov	edx,fs:[002C]
 	mov	eax,[edx+eax*4]
-	ret	
+	ret
 00401167                      90                                .       
 
 ;; main: 00401168
@@ -44,18 +73,63 @@ main proc
 	pop	ecx
 	xor	eax,eax
 	pop	ebp
-	ret	
-0040117A                               90 90 C3 90 90 90           ......
-00401180 C3 90 90 90 68 84 21 40 00 6A 00 E8 BC 00 00 00 ....h.!@.j......
+	ret
+0040117A                               90 90                       ..   
+
+;; fn0040117C: 0040117C
+fn0040117C proc
+	ret
+0040117D                                        90 90 90              ...
+
+;; fn00401180: 00401180
+fn00401180 proc
+	ret
+00401181    90 90 90 68 84 21 40 00 6A 00 E8 BC 00 00 00  ...h.!@.j......
 00401190 50 E8 BC 00 00 00 A3 B4 21 40 00 83 3D B4 21 40 P.......!@..=.!@
 004011A0 00 00 75 0A C7 05 B4 21 40 00 98 20 40 00 C3 90 ..u....!@.. @...
-004011B0 55 8B EC 83 C4 F8 53 8B 5D 08 85 DB 0F 95 C0 83 U.....S.].......
-004011C0 E0 01 85 DB 75 11 85 DB 75 0D 8D 55 F8 52 E8 29 ....u...u..U.R.)
-004011D0 00 00 00 59 8B 5D FC 68 9C 00 00 00 53 E8 76 FF ...Y.].h....S.v.
-004011E0 FF FF 81 C0 00 00 00 00 50 E8 FC 00 00 00 83 C4 ........P.......
-004011F0 0C E8 76 00 00 00 5B 59 59 5D C3 90             ..v...[YY]..   
 
-l004011FC:
+;; fn004011B0: 004011B0
+fn004011B0 proc
+	push	ebp
+	mov	ebp,esp
+	add	esp,F8
+	push	ebx
+	mov	ebx,[ebp+08]
+	test	ebx,ebx
+	setnz	al
+	and	eax,01
+	test	ebx,ebx
+	jnz	004011D7
+
+l004011C6:
+	test	ebx,ebx
+	jnz	004011D7
+
+l004011CA:
+	lea	edx,[ebp-08]
+	push	edx
+	call	004011FC
+	pop	ecx
+	mov	ebx,[ebp-04]
+
+l004011D7:
+	push	0000009C
+	push	ebx
+	call	00401158
+	add	eax,00000000
+	push	eax
+	call	004012EA
+	add	esp,0C
+	call	0040126C
+	pop	ebx
+	pop	ecx
+	pop	ecx
+	pop	ebp
+	ret
+004011FB                                  90                        .   
+
+;; fn004011FC: 004011FC
+fn004011FC proc
 	push	ebp
 	mov	ebp,esp
 	push	ebx
@@ -67,7 +141,7 @@ l004011FC:
 	mov	dword ptr [ebx+04],004020E4
 	pop	ebx
 	pop	ebp
-	ret	
+	ret
 00401223          90 E8 AF 00 00 00 A1 EC 50 40 00 8B 10    ........P@...
 00401230 89 15 B8 21 40 00 8B 0D F0 50 40 00 8B 01 A3 BC ...!@....P@.....
 00401240 21 40 00 C3 E8 65 00 00 00 C3 90 90 FF 25 54 50 !@...e.......%TP

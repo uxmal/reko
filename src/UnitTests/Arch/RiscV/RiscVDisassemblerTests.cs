@@ -218,5 +218,11 @@ namespace Reko.UnitTests.Arch.RiscV
             // 1010000 011110111001001111 10100 11
             AssertCode("feq.s\ta5,fa4,fa5", 0xA0F727D3u);
         }
+
+        [Test]
+        public void RiscV_dasm_fmadd()
+        {
+            AssertCode("fmadd.s\tfs10,ft7,fs1,fa6", 0x8293FD43);
+        }
     }
 }

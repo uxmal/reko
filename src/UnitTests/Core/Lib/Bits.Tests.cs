@@ -31,7 +31,7 @@ namespace Reko.UnitTests.Core.Lib
     public class BitsTests
     {
 		[Test]
-		public void BitCount()
+		public void Bits_BitCount()
         {
             Assert.AreEqual(63, Bits.BitCount(~1ul));
             Assert.AreEqual(0, Bits.BitCount(0));
@@ -39,6 +39,19 @@ namespace Reko.UnitTests.Core.Lib
             Assert.AreEqual(2, Bits.BitCount(12));
             Assert.AreEqual(3, Bits.BitCount(14));
             Assert.AreEqual(7, Bits.BitCount(254));
+        }
+
+        [Test]
+        public void Bits_PowersOfTwo()
+        {
+            Assert.IsTrue(Bits.IsEvenPowerOfTwo(2), "2 is power of two");
+            Assert.IsTrue(Bits.IsEvenPowerOfTwo(4), "4 is power of two");
+            Assert.IsTrue(Bits.IsEvenPowerOfTwo(8), "8 is power of two");
+            Assert.IsTrue(Bits.IsEvenPowerOfTwo(16), "16 is power of two");
+            Assert.IsTrue(Bits.IsEvenPowerOfTwo(256), "256 is power of two");
+            Assert.IsFalse(Bits.IsEvenPowerOfTwo(3), "3 isn't power of two");
+            Assert.IsFalse(Bits.IsEvenPowerOfTwo(7), "7 isn't power of two");
+            Assert.IsFalse(Bits.IsEvenPowerOfTwo(127), "127 isn't power of two");
         }
     }
 }

@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Typing
 		{
 			Expression e = m.IAdd(r, m.IAdd(m.SMul(c, i), off));
 			Assert.IsTrue(aem.Match(e));
-			Assert.AreEqual("r + 0x0000002A", aem.ArrayPointer.ToString());
+			Assert.AreEqual("r + 42", aem.ArrayPointer.ToString());
 			Assert.AreEqual("i", aem.Index.ToString());
             Assert.AreEqual(0x10, aem.ElementSize.ToInt32());
 		}
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Typing
 		{
 			Expression e = m.IAdd(m.IAdd(r, off), m.SMul(i, c));
 			Assert.IsTrue(aem.Match(e));
-			Assert.AreEqual("r + 0x0000002A", aem.ArrayPointer.ToString());
+			Assert.AreEqual("r + 42", aem.ArrayPointer.ToString());
 			Assert.AreEqual("i", aem.Index.ToString());
             Assert.AreEqual(0x10, aem.ElementSize.ToInt32());
         }
