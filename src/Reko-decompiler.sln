@@ -402,8 +402,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeoGeo", "Environments\NeoG
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Symbols", "Symbols", "{EF16C5BE-595C-4A9F-9CA6-028D993661E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lgsymdmp", "lgsymdmp\lgsymdmp.csproj", "{7AA094D5-3692-4535-B21B-3982AEB78C5A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LGSymLoader", "Symbols\LGSymLoader\LGSymLoader.csproj", "{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}"
 EndProject
 Global
