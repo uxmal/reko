@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Analysis
@@ -86,6 +87,18 @@ namespace Reko.Analysis
 		{
 			a.Src.Accept(this);
 		}
+
+        public override void VisitCallInstruction(CallInstruction ci)
+        {
+            foreach (var di in ci.Definitions)
+            {
+                if (di.Expression == sid.Identifier)
+                {
+                    defExpr = new Application(ci.Callee, new UnknownType());
+                    return;
+                }
+            }
+        }
 
 		public override void VisitIdentifier(Identifier id)
 		{

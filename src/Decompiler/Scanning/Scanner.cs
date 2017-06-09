@@ -65,7 +65,6 @@ namespace Reko.Scanning
         private Dictionary<string, PseudoProcedure> pseudoProcs;
         private Dictionary<Address, ImportReference> importReferences;
         private HashSet<Procedure> visitedProcs;
-        private Dictionary<Address, Procedure_v1> noDecompiledProcs;
         private CancellationTokenSource cancelSvc;
         private HashSet<Address> scannedGlobalData = new HashSet<Address>();
 
@@ -73,7 +72,7 @@ namespace Reko.Scanning
             Program program,
             IImportResolver importResolver,
             IServiceProvider services)
-            : base(program)
+            : base(program, services.RequireService<DecompilerEventListener>())
         {
             this.segmentMap = program.SegmentMap;
             this.importResolver = importResolver;
@@ -93,7 +92,6 @@ namespace Reko.Scanning
             this.pseudoProcs = program.PseudoProcedures;
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
-            this.noDecompiledProcs = new Dictionary<Address, Procedure_v1>();
         }
 
         public IServiceProvider Services { get; private set; }
@@ -120,6 +118,11 @@ namespace Reko.Scanning
             public Block Block { get; private set; }
             public ulong Start { get; set; }
             public ulong End { get; set; }
+
+            public override string ToString()
+            {
+                return string.Format("[{0:X}..{1:X}) - {2:X}", Start, End, End - Start);
+            }
         }
 
         /// <summary>
@@ -132,13 +135,32 @@ namespace Reko.Scanning
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             Block b = new Block(proc, blockName) { Address = addr };
-            var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
-            blocks.Add(addr, new BlockRange(b, addr.ToLinear(), lastMem.BaseAddress.ToLinear() + (uint)lastMem.Length));
+            BlockRange br;
+            if (!blocks.TryGetUpperBound(addr, out br))
+            {
+                var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
+                blocks.Add(addr, new BlockRange(b, addr.ToLinear(), lastMem.BaseAddress.ToLinear() + (uint)lastMem.Length));
+            }
+            else
+            {
+                blocks.Add(addr, new BlockRange(b, addr.ToLinear(), br.Start));
+            }
             blockStarts.Add(b, addr);
             proc.ControlGraph.Blocks.Add(b);
 
             imageMap.AddItem(addr, new ImageMapBlock { Block = b });
             return b;
+        }
+
+        [Conditional("DEBUG")]
+        private void SanityCheck(SortedList<Address, BlockRange> blocks)
+        {
+            for (int i = 1; i < blocks.Count; ++i)
+            {
+                var prev = blocks.Values[i - 1];
+                var cur = blocks.Values[i];
+                Debug.Assert(prev.End <= cur.Start);
+            }
         }
 
         /// <summary>
@@ -161,21 +183,6 @@ namespace Reko.Scanning
             {
                 TerminateBlock(block, addr);
             }
-        }
-
-        public void Warn(Address addr, string message)
-        {
-            eventListener.Warn(eventListener.CreateAddressNavigator(Program, addr), message);
-        }
-
-        public void Warn(Address addr, string message, params object[] args)
-        {
-            eventListener.Warn(eventListener.CreateAddressNavigator(Program, addr), message, args);
-        }
-
-        public void Error(Address addr, string message, params object[] args)
-        {
-            eventListener.Error(eventListener.CreateAddressNavigator(Program, addr), message, args);
         }
 
         /// <summary>
@@ -568,72 +575,8 @@ namespace Reko.Scanning
         {
             var bb = new StatementInjector(proc, proc.EntryBlock.Succ[0], addr);
             var sp = proc.Frame.EnsureRegister(Program.Architecture.StackRegister);
-            bb.Assign((Identifier)sp, (Expression)proc.Frame.FramePointer);
+            bb.Assign(sp, proc.Frame.FramePointer);
             Program.Platform.InjectProcedureEntryStatements(proc, addr, bb);
-        }
-
-        private bool TryGetNoDecompiledProcedure(Address addr, out Procedure_v1 sProc)
-        {
-            if (!Program.User.Procedures.TryGetValue(addr, out sProc) ||
-                sProc.Decompile)
-            {
-                sProc = null;
-                return false;
-            }
-            return true;
-        }
-
-        private bool IsNoDecompiledProcedure(Address addr)
-        {
-            Procedure_v1 sProc;
-            return TryGetNoDecompiledProcedure(addr, out sProc);
-        }
-
-        private bool TryGetNoDecompiledParsedProcedure(Address addr, out Procedure_v1 parsedProc)
-        {
-            Procedure_v1 sProc;
-            if (!TryGetNoDecompiledProcedure(addr, out sProc))
-            {
-                parsedProc = null;
-                return false;
-            }
-            if (noDecompiledProcs.TryGetValue(addr, out parsedProc))
-                return true;
-            parsedProc = new Procedure_v1()
-            {
-                Name = sProc.Name,
-            };
-            noDecompiledProcs[addr] = parsedProc;
-            if (string.IsNullOrEmpty(sProc.CSignature))
-            {
-                Warn(addr, "The user-defined procedure at address {0} did not have a signature.", addr);
-                return true;
-            }
-            var usb = new UserSignatureBuilder(Program);
-            var procDecl = usb.ParseFunctionDeclaration(sProc.CSignature);
-            if (procDecl == null)
-            {
-                Warn(addr, "The user-defined procedure signature at address {0} could not be parsed.", addr);
-                return true;
-            }
-            parsedProc.Signature = procDecl.Signature;
-            return true;
-        }
-
-        private bool TryGetNoDecompiledProcedure(Address addr, out ExternalProcedure ep)
-        {
-            Procedure_v1 sProc;
-            if (!TryGetNoDecompiledParsedProcedure(addr, out sProc))
-            {
-                ep = null;
-                return false;
-            }
-            var ser = Program.CreateProcedureSerializer();
-            var sig = ser.Deserialize(
-                sProc.Signature,
-                Program.Architecture.CreateFrame());
-            ep = new ExternalProcedure(sProc.Name, sig);
-            return true;
         }
 
         public void EnqueueUserGlobalData(Address addr, DataType dt, string name)
@@ -757,12 +700,14 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Splits the given block at the specified address, yielding two blocks. The first block is the original block,
-        /// now truncated, with a single out edge to the new block. The second block receives the out edges of the first block.
+        /// Splits the given block at the specified address, yielding two 
+        /// blocks. The first resulting block is the original block, now
+        /// truncated, with a single out edge to the new block. The second 
+        /// block receives the out edges of the first block.
         /// </summary>
-        /// <param name="block"></param>
-        /// <param name="addr"></param>
-        /// <returns>The newly created, empty second block</returns>
+        /// <param name="block">The block to split</param>
+        /// <param name="addr">The address at which to split it.</param>
+        /// <returns>The newly created, empty second block.</returns>
         public Block SplitBlock(Block blockToSplit, Address addr)
         {
             var graph = blockToSplit.Procedure.ControlGraph;
@@ -789,7 +734,9 @@ namespace Reko.Scanning
             {
                 stm.Block = blockNew;
             }
+            blocks[addr].End = blocks[blockStarts[blockToSplit]].End;
             blocks[blockStarts[blockToSplit]].End = linAddr;
+            SanityCheck(blocks);
             return blockNew;
         }
 

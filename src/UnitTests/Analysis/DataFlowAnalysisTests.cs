@@ -47,13 +47,15 @@ namespace Reko.UnitTests.Analysis
         {
             mr = new MockRepository();
             this.CSignature = null;
+            this.dfa = null;
+            base.platform = null;
         }
 
         protected override void RunTest(Program program, TextWriter writer)
 		{
             SetCSignatures(program);
             IImportResolver importResolver = mr.Stub<IImportResolver>();
-            importResolver.Replay();
+            mr.ReplayAll();
 			dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
 			foreach (Procedure proc in program.Procedures.Values)
@@ -133,7 +135,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        //[Ignore(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void DfaMutualTest()
 		{

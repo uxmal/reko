@@ -166,7 +166,7 @@ namespace Reko.Environments.Windows
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             ModuleDescriptor mod;
-            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+            if (moduleName == null || !Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
                 return null;
             SystemService svc;
             if (mod.ServicesByName.TryGetValue(procName, out svc))

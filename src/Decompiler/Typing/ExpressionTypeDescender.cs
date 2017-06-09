@@ -429,7 +429,11 @@ namespace Reko.Typing
 
         public bool VisitConditionalExpression(ConditionalExpression c, TypeVariable tv)
         {
-            throw new NotImplementedException();
+            MeetDataType(c.Condition, PrimitiveType.Bool);
+            c.Condition.Accept(this, c.Condition.TypeVariable);
+            c.ThenExp.Accept(this, c.TypeVariable);
+            c.FalseExp.Accept(this, c.TypeVariable);
+            return false;
         }
 
         public bool VisitConditionOf(ConditionOf cof, TypeVariable tv)

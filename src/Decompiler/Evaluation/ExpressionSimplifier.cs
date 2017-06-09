@@ -400,7 +400,7 @@ namespace Reko.Evaluation
             var t = c.ThenExp.Accept(this);
             var f = c.FalseExp.Accept(this);
             var cCond = cond as Constant;
-            if (cCond!= null && cCond.DataType == PrimitiveType.Bool)
+            if (cCond != null && cCond.DataType == PrimitiveType.Bool)
             {
                 if (cCond.IsZero)
                     return f;

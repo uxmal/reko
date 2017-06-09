@@ -9,4 +9,4 @@
 0C00:000D 84 04           	test	[si],al
 0C00:000F F6 06 00 03 03  	test	byte ptr [0300],03
 0C00:0014 F7 06 02 03 05 00 	test	word ptr [0302],0005
-0C00:001A C3              	ret	
+0C00:001A C3              	ret

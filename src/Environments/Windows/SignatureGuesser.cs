@@ -94,6 +94,23 @@ namespace Reko.Environments.Windows
             }
             else if (fnName[0] == '@')
             {
+                // Borland-mangled signatures begin with '@'.
+                var bmnp = new BorlandMangledNamedParser(fnName);
+                var field = bmnp.Parse();
+                if (field != null)
+                {
+                    var sproc = field.Item2 as SerializedSignature;
+                    if (sproc != null)
+                    {
+                        var sser = platform.CreateProcedureSerializer(loader, sproc.Convention);
+                        var sig = sser.Deserialize(sproc, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
+                        return new ExternalProcedure(field.Item1, sig)
+                        {
+                            EnclosingType = sproc.EnclosingType
+                        };
+                    }
+                    throw new NotImplementedException();
+                }
                 // Win32 prefixes fastcall functions with '@'.
                 int lastAt = fnName.LastIndexOf('@');
                 if (lastAt <= 0)

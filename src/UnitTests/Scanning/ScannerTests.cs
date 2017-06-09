@@ -229,6 +229,16 @@ namespace Reko.UnitTests.Scanning
             return new TestScanner(program, importResolver, sc);
         }
 
+        private DataScanner CreateDataScanner(Program program)
+        {
+            this.program = program;
+            var sr = new ScanResults()
+            {
+                KnownProcedures = new HashSet<Address>(),
+            };
+            return new DataScanner(program, sr,  eventListener);
+        }
+
         [Test]
         public void Scanner_SplitBlock()
         {
@@ -609,6 +619,33 @@ fn00001100_exit:
                 FunctionType.Action(),
                 null);
             sc.ScanImage();
+
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual(0x12324, program.Procedures.Keys[0].Offset);
+        }
+
+        [Test]
+        public void Scanner_ScanData_NoDecompiledProcedureFromUserGlobal()
+        {
+            Given_Program(Address.Ptr32(0x12314), new byte[20]);
+            program.User.Procedures.Add(
+                Address.Ptr32(0x12314),
+                new Procedure_v1()
+                {
+                    Decompile = false,
+                }
+            );
+
+            var sc = CreateDataScanner(program);
+            sc.EnqueueUserProcedure(
+                Address.Ptr32(0x12314),
+                FunctionType.Action(),
+                null);
+            sc.EnqueueUserProcedure(
+                Address.Ptr32(0x12324),
+                FunctionType.Action(),
+                null);
+            sc.ProcessQueue();
 
             Assert.AreEqual(1, program.Procedures.Count);
             Assert.AreEqual(0x12324, program.Procedures.Keys[0].Offset);
