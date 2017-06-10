@@ -87,7 +87,7 @@ namespace Reko.Core
 
 		public void AddStackArgument(int stackOffset, Identifier id)
 		{
-			args.Add(new Identifier(id.Name, id.DataType, new StackArgumentStorage(stackOffset, id.DataType)));
+			args.Add(id);
 		}
 
 		public FunctionType BuildSignature()
