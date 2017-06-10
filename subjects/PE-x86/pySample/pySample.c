@@ -65,8 +65,8 @@ void initpySample()
 	return;
 }
 
-// 100011E9: Register word32 fn100011E9(Stack word32 dwArg08)
-word32 fn100011E9(word32 dwArg08)
+// 100011E9: Register word32 fn100011E9(Stack uint32 dwArg08)
+word32 fn100011E9(uint32 dwArg08)
 {
 	word32 eax_123;
 	Eq_139 ebp_203 = 0x00;
@@ -127,7 +127,7 @@ word32 fn100011E9(word32 dwArg08)
 				word32 ebx_184;
 				word32 esi_185;
 				word32 edi_186;
-				struct Eq_392 * fs_187;
+				struct Eq_391 * fs_187;
 				globals->ptr100033B8();
 			}
 		}
@@ -162,7 +162,7 @@ word32 fn100011E9(word32 dwArg08)
 					byte Z_295;
 					word32 ecx_296;
 					word32 esi_298;
-					struct Eq_332 * fs_300;
+					struct Eq_331 * fs_300;
 					eax_285();
 				}
 			}
@@ -184,18 +184,18 @@ word32 fn100011E9(word32 dwArg08)
 	return eax_123;
 }
 
-// 10001388: Register word32 fn10001388(Register Eq_396 ecx, Register Eq_198 edx, Register (ptr Eq_173) ebx, Register ptr32 esi, Register word32 edi)
+// 10001388: Register word32 fn10001388(Register Eq_395 ecx, Register Eq_197 edx, Register (ptr Eq_172) ebx, Register ptr32 esi, Register word32 edi)
 word32 fn10001388(LPVOID ecx, DWORD edx,  * ebx, ptr32 esi, word32 edi)
 {
-	struct Eq_401 * ebp_10 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x100021E8, 0x10);
+	struct Eq_400 * ebp_10 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x100021E8, 0x10);
 	ui32 ebx_158 = ebp_10->dw0008;
 	*(ebp_10 - 0x1C) = 0x01;
 	*(ebp_10 - 0x04) = 0x00;
 	globals->t10003008 = edx;
 	*(ebp_10 - 0x04) = 0x01;
 	ptr32 esp_175 = fp - 0x08;
-	Eq_396 edi_12 = ecx;
-	Eq_198 esi_14 = edx;
+	Eq_395 edi_12 = ecx;
+	Eq_197 esi_14 = edx;
 	if (edx == 0x00 && globals->dw10003070 == 0x00)
 	{
 		*(ebp_10 - 0x1C) = 0x00;
@@ -316,7 +316,7 @@ void fn10001493()
 	return;
 }
 
-// 1000149E: Register Eq_742 DllMain(Stack Eq_743 hModule, Stack Eq_198 dwReason, Stack Eq_396 lpReserved)
+// 1000149E: Register Eq_741 DllMain(Stack Eq_742 hModule, Stack Eq_197 dwReason, Stack Eq_395 lpReserved)
 BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 {
 	if (dwReason == 0x01)
@@ -324,11 +324,11 @@ BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 	return fn10001388(lpReserved, dwReason, ebx, esi, edi);
 }
 
-// 100015CF: Register word32 fn100015CF(Register (ptr Eq_173) ebx, Register ptr32 esi, Register word32 edi)
+// 100015CF: Register word32 fn100015CF(Register (ptr Eq_172) ebx, Register ptr32 esi, Register word32 edi)
 word32 fn100015CF( * ebx, ptr32 esi, word32 edi)
 {
-	Eq_761 eax_122;
-	struct Eq_401 * ebp_10 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10002210, 0x14);
+	Eq_760 eax_122;
+	struct Eq_400 * ebp_10 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10002210, 0x14);
 	*(fp - 0x0C) = (void **) globals->ptr100033B4;
 	word32 * eax_16 = _decode_pointer(*(fp - 0x0C));
 	*(ebp_10 - 0x1C) = eax_16;
@@ -344,7 +344,7 @@ word32 fn100015CF( * ebx, ptr32 esi, word32 edi)
 		word32 esi_48;
 		word32 eax_49;
 		word32 ecx_50;
-		struct Eq_800 * ebp_51;
+		struct Eq_799 * ebp_51;
 		byte SCZO_52;
 		byte Z_53;
 		byte SZO_54;
@@ -360,7 +360,7 @@ word32 fn100015CF( * ebx, ptr32 esi, word32 edi)
 		*(esp_47 - 0x0C) = ebp_51 - 0x20;
 		*(esp_47 - 0x10) = ebp_51 - 0x1C;
 		*(esp_47 - 0x14) = ebp_51->dw0008;
-		Eq_761 eax_84 = __dllonexit(*(esp_47 - 0x14), *(esp_47 - 0x10), *(esp_47 - 0x0C));
+		Eq_760 eax_84 = __dllonexit(*(esp_47 - 0x14), *(esp_47 - 0x10), *(esp_47 - 0x0C));
 		*(ebp_51 - 0x24) = (_onexit_t *) eax_84;
 		*(esp_47 - 0x18) = *(ebp_51 - 0x1C);
 		ptr32 esp_90;
@@ -391,7 +391,7 @@ word32 fn100015CF( * ebx, ptr32 esi, word32 edi)
 		globals->ptr100033B0 = eax_108;
 		*(ebp_10 - 0x04) = ~0x01;
 		fn10001665();
-		eax_122 = (Eq_761) *(ebp_10 - 0x24);
+		eax_122 = (Eq_760) *(ebp_10 - 0x24);
 	}
 	fn1000182D(ebp_10, 0x14, dwArg00, dwArg04, dwArg08, dwArg0C);
 	return eax_122;
@@ -406,7 +406,7 @@ void fn10001665()
 	return;
 }
 
-// 1000166E: void fn1000166E(Register (ptr Eq_173) ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg04)
+// 1000166E: void fn1000166E(Register (ptr Eq_172) ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg04)
 void fn1000166E( * ebx, ptr32 esi, word32 edi, word32 dwArg04)
 {
 	fn100015CF(ebx, esi, edi);
@@ -439,25 +439,25 @@ void fn10001680()
 	return;
 }
 
-// 100016D0: Register word32 fn100016D0(Stack word32 dwArg04)
-word32 fn100016D0(word32 dwArg04)
+// 100016D0: Register word32 fn100016D0(Stack Eq_488 dwArg04)
+word32 fn100016D0(HMODULE dwArg04)
 {
-	if (dwArg04->w0000 == 23117)
+	if (dwArg04->unused == 23117)
 	{
-		struct Eq_1029 * eax_21 = dwArg04 + dwArg04->dw003C / 0x0040;
+		struct Eq_1027 * eax_21 = dwArg04 + dwArg04->dw003C / 0x0040;
 		if (eax_21->dw0000 == 0x4550)
 			return (word32) (eax_21->w0018 == 0x010B);
 	}
 	return 0x00;
 }
 
-// 10001700: Register (ptr Eq_1046) fn10001700(Stack word32 dwArg04, Stack word32 dwArg08)
-Eq_1046 * fn10001700(word32 dwArg04, word32 dwArg08)
+// 10001700: Register (ptr Eq_1044) fn10001700(Stack Eq_488 dwArg04, Stack uint32 dwArg08)
+Eq_1044 * fn10001700(HMODULE dwArg04, uint32 dwArg08)
 {
-	struct Eq_1049 * ecx_6 = dwArg04 + dwArg04->dw003C / 0x0040;
+	struct Eq_1047 * ecx_6 = dwArg04 + dwArg04->dw003C / 0x0040;
 	uint32 esi_14 = (word32) ecx_6->w0006;
 	uint32 edx_15 = 0x00;
-	struct Eq_1046 * eax_22 = &(ecx_6 + ((word32) ecx_6->w0014 + 0x18) / 22)->w0006 + 0x03;
+	struct Eq_1044 * eax_22 = &(ecx_6 + ((word32) ecx_6->w0014 + 0x18) / 22)->w0006 + 0x03;
 	if (true)
 	{
 		do
@@ -473,18 +473,18 @@ Eq_1046 * fn10001700(word32 dwArg04, word32 dwArg08)
 	return eax_22;
 }
 
-// 10001742: Register ui32 fn10001742(Register (ptr Eq_173) ebx, Register ptr32 esi, Register word32 edi, Register out ptr32 ediOut)
+// 10001742: Register ui32 fn10001742(Register (ptr Eq_172) ebx, Register ptr32 esi, Register word32 edi, Register out ptr32 ediOut)
 ui32 fn10001742( * ebx, ptr32 esi, word32 edi, ptr32 & ediOut)
 {
 	ui32 eax_31;
-	struct Eq_401 * ebp_10 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10002230, 0x08);
+	struct Eq_400 * ebp_10 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10002230, 0x08);
 	*(ebp_10 - 0x04) = *(ebp_10 - 0x04) & 0x00;
 	*(fp - 0x0C) = 0x10000000;
 	if (fn100016D0(dwArg00) != 0x00)
 	{
 		*(fp - 0x0C) = ebp_10->dw0008 - 0x10000000;
 		*(fp - 0x10) = 0x10000000;
-		struct Eq_1146 * eax_54 = fn10001700(dwArg00, dwArg04);
+		struct Eq_1142 * eax_54 = fn10001700(dwArg00, dwArg04);
 		if (eax_54 != null)
 		{
 			eax_31 = ~(eax_54->dw0024 >> 0x1F) & 0x01;
@@ -500,16 +500,16 @@ l100017A8:
 	goto l100017A8;
 }
 
-// 100017C6: Register word32 fn100017C6(Stack word32 dwArg04, Stack word32 dwArg08)
-word32 fn100017C6(word32 dwArg04, word32 dwArg08)
+// 100017C6: Register word32 fn100017C6(Stack Eq_488 dwArg04, Stack uint32 dwArg08)
+word32 fn100017C6(HMODULE dwArg04, uint32 dwArg08)
 {
 	if (dwArg08 == 0x01 && globals->ptr100020CC == null)
 		DisableThreadLibraryCalls(dwArg04);
 	return 0x01;
 }
 
-// 100017E8: Register ptr32 fn100017E8(Register (ptr Eq_173) ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08)
-ptr32 fn100017E8( * ebx, ptr32 esi, word32 edi, word32 dwArg00, word32 dwArg04, word32 dwArg08)
+// 100017E8: Register ptr32 fn100017E8(Register (ptr Eq_172) ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg00, Stack word32 dwArg04, Stack ui32 dwArg08)
+ptr32 fn100017E8( * ebx, ptr32 esi, word32 edi, word32 dwArg00, word32 dwArg04, ui32 dwArg08)
 {
 	ptr32 esp_14 = fp - 0x08 - dwArg08;
 	*(esp_14 - 0x04) = (Eq_139 (**)(LONG *, Eq_139, Eq_139)) ebx;
@@ -521,8 +521,8 @@ ptr32 fn100017E8( * ebx, ptr32 esi, word32 edi, word32 dwArg00, word32 dwArg04, 
 	return fp + 0x08;
 }
 
-// 1000182D: Register word32 fn1000182D(Register (ptr Eq_401) ebp, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10)
-word32 fn1000182D(Eq_401 * ebp, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
+// 1000182D: Register uint32 fn1000182D(Register (ptr Eq_400) ebp, Stack word32 dwArg00, Stack Eq_488 dwArg04, Stack uint32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10)
+uint32 fn1000182D(Eq_400 * ebp, word32 dwArg00, HMODULE dwArg04, uint32 dwArg08, word32 dwArg0C, word32 dwArg10)
 {
 	fs->dw0000 = *(ebp - 0x10);
 	ebp->dw0000 = dwArg00;
