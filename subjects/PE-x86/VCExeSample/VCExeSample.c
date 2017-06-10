@@ -135,3 +135,20 @@ void loop_test11(word32 ecx, word32 ebp)
 	return;
 }
 
+// 00401330: void nested_structs_test12(Stack (ptr Eq_312) dwArg04)
+void nested_structs_test12(nested_structs_type * dwArg04)
+{
+	dwArg04->dw0000 = 0x01;
+	dwArg04->dw0004 = 0x02;
+	dwArg04->dw0008 = 0x03;
+	dwArg04->dw000C = 0x04;
+	return;
+}
+
+// 00401360: void nested_structs_test13(Stack (ptr Eq_330) str)
+void nested_structs_test13(nested_structs_type * str)
+{
+	nested_structs_test12(str);
+	return;
+}
+

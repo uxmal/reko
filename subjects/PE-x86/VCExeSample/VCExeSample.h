@@ -175,6 +175,16 @@ Eq_256: (fn (ptr Eq_223) (real64, real64))
 Eq_287: (fn void (real32, real64))
 	T_287 (in loop_test9 : ptr32)
 	T_288 (in signature of loop_test9 : void)
+Eq_312: nested_structs_type
+	T_312 (in dwArg04 : (ptr Eq_312))
+	T_333 (in str : (ptr nested_structs_type))
+Eq_314: (struct "Eq_314" (0 word32 dw0000) (4 word32 dw0004) (8 word32 dw0008) (C word32 dw000C))
+	T_314 (in dwArg04 : word32)
+Eq_330: nested_structs_type
+	T_330 (in str : (ptr Eq_330))
+Eq_331: (fn void ((ptr Eq_312)))
+	T_331 (in nested_structs_test12 : ptr32)
+	T_332 (in signature of nested_structs_test12 : void)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -1420,6 +1430,98 @@ T_311: (in *(ebp_19 - 0x00000004) <= 0x00000000 : bool)
   Class: Eq_311
   DataType: bool
   OrigDataType: bool
+T_312: (in dwArg04 : (ptr Eq_312))
+  Class: Eq_312
+  DataType: (ptr Eq_312)
+  OrigDataType: word32
+T_313: (in 0x00000001 : word32)
+  Class: Eq_313
+  DataType: word32
+  OrigDataType: word32
+T_314: (in dwArg04 : word32)
+  Class: Eq_314
+  DataType: (ptr Eq_314)
+  OrigDataType: (ptr (struct (0 T_317 t0000) (4 T_321 t0004) (8 T_325 t0008) (C T_329 t000C)))
+T_315: (in 0x00000000 : word32)
+  Class: Eq_315
+  DataType: word32
+  OrigDataType: word32
+T_316: (in dwArg04 + 0x00000000 : word32)
+  Class: Eq_316
+  DataType: word32
+  OrigDataType: word32
+T_317: (in Mem8[dwArg04 + 0x00000000:word32] : word32)
+  Class: Eq_313
+  DataType: word32
+  OrigDataType: word32
+T_318: (in 0x00000002 : word32)
+  Class: Eq_318
+  DataType: word32
+  OrigDataType: word32
+T_319: (in 0x00000004 : word32)
+  Class: Eq_319
+  DataType: word32
+  OrigDataType: word32
+T_320: (in dwArg04 + 0x00000004 : word32)
+  Class: Eq_320
+  DataType: ptr32
+  OrigDataType: ptr32
+T_321: (in Mem10[dwArg04 + 0x00000004:word32] : word32)
+  Class: Eq_318
+  DataType: word32
+  OrigDataType: word32
+T_322: (in 0x00000003 : word32)
+  Class: Eq_322
+  DataType: word32
+  OrigDataType: word32
+T_323: (in 0x00000008 : word32)
+  Class: Eq_323
+  DataType: word32
+  OrigDataType: word32
+T_324: (in dwArg04 + 0x00000008 : word32)
+  Class: Eq_324
+  DataType: ptr32
+  OrigDataType: ptr32
+T_325: (in Mem12[dwArg04 + 0x00000008:word32] : word32)
+  Class: Eq_322
+  DataType: word32
+  OrigDataType: word32
+T_326: (in 0x00000004 : word32)
+  Class: Eq_326
+  DataType: word32
+  OrigDataType: word32
+T_327: (in 0x0000000C : word32)
+  Class: Eq_327
+  DataType: word32
+  OrigDataType: word32
+T_328: (in dwArg04 + 0x0000000C : word32)
+  Class: Eq_328
+  DataType: ptr32
+  OrigDataType: ptr32
+T_329: (in Mem14[dwArg04 + 0x0000000C:word32] : word32)
+  Class: Eq_326
+  DataType: word32
+  OrigDataType: word32
+T_330: (in str : (ptr Eq_330))
+  Class: Eq_330
+  DataType: (ptr Eq_330)
+  OrigDataType: (ptr nested_structs_type)
+T_331: (in nested_structs_test12 : ptr32)
+  Class: Eq_331
+  DataType: (ptr Eq_331)
+  OrigDataType: (ptr (fn T_334 (T_333)))
+T_332: (in signature of nested_structs_test12 : void)
+  Class: Eq_331
+  DataType: (ptr Eq_331)
+  OrigDataType: 
+T_333: (in str : (ptr nested_structs_type))
+  Class: Eq_312
+  DataType: (ptr Eq_312)
+  OrigDataType: (ptr nested_structs_type)
+T_334: (in nested_structs_test12(str) : void)
+  Class: Eq_334
+  DataType: void
+  OrigDataType: void
 */
 typedef struct Globals {
 	char str4020C0[];	// 4020C0
@@ -1590,4 +1692,17 @@ typedef struct Eq_223 {
 typedef Eq_223 * (Eq_256)(real64, real64);
 
 typedef void (Eq_287)(real32, real64);
+
+typedef nested_structs_type Eq_312;
+
+typedef struct Eq_314 {
+	word32 dw0000;	// 0
+	word32 dw0004;	// 4
+	word32 dw0008;	// 8
+	word32 dw000C;	// C
+} Eq_314;
+
+typedef nested_structs_type Eq_330;
+
+typedef void (Eq_331)(nested_structs_type *);
 
