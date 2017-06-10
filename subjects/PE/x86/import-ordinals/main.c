@@ -272,8 +272,8 @@ l004012C3:
 	goto l00401172;
 }
 
-// 004013F6: Register (ptr Eq_518) fn004013F6(Stack word32 dwArg04, Stack word32 dwArg08)
-Eq_518 * fn004013F6(word32 dwArg04, word32 dwArg08)
+// 004013F6: Register (ptr Eq_518) fn004013F6(Stack (ptr Eq_95) dwArg04, Stack uint32 dwArg08)
+Eq_518 * fn004013F6(Eq_95 * dwArg04, uint32 dwArg08)
 {
 	struct Eq_518 * eax_26;
 	struct Eq_522 * ecx_13 = dwArg04 + dwArg04->dw003C / 0x0040;
@@ -318,10 +318,10 @@ l0040145B:
 		return 0x00;
 }
 
-// 0040146F: Register byte fn0040146F(Register word32 edx, Stack word32 dwArg04)
-byte fn0040146F(word32 edx, word32 dwArg04)
+// 0040146F: Register byte fn0040146F(Register word32 edx, Stack (ptr Eq_95) dwArg04)
+byte fn0040146F(word32 edx, Eq_95 * dwArg04)
 {
-	if (dwArg04 == 0x00)
+	if (dwArg04 == null)
 		globals->b403354 = 0x01;
 	fn004019FE(edx);
 	fn00401C46();
@@ -335,16 +335,16 @@ byte fn0040146F(word32 edx, word32 dwArg04)
 	return 0x00;
 }
 
-// 0040153F: Register (ptr Eq_612) fn0040153F(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Register out ptr32 ebxOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
-Eq_612 * fn0040153F(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
+// 0040153F: Register (ptr Eq_609) fn0040153F(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Register out ptr32 ebxOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+Eq_609 * fn0040153F(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
 {
-	struct Eq_612 * eax_31;
+	struct Eq_609 * eax_31;
 	struct Eq_66 * ebp_10 = fn00401980(ebx, esi, edi, dwLoc0C, 0x00402528, 0x08);
 	*(ebp_10 - 0x04) = *(ebp_10 - 0x04) & 0x00;
-	struct Eq_632 * eax_15 = (struct Eq_632 *) 23117;
+	struct Eq_629 * eax_15 = (struct Eq_629 *) 23117;
 	if ((word16 *) 0x00400000 == 23117)
 	{
-		eax_15 = (struct Eq_632 *) (struct Eq_632 **) 0x0040003C;
+		eax_15 = (struct Eq_629 *) (struct Eq_629 **) 0x0040003C;
 		if (eax_15->dw400000 == 0x4550 && eax_15->w400018 == 0x010B)
 		{
 			*(fp - 0x0C) = ebp_10->dw0008 - 0x00400000;
@@ -353,7 +353,7 @@ Eq_612 * fn0040153F(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & es
 			if (eax_15 != null && eax_15->dw0024 >= 0x00)
 			{
 				*(ebp_10 - 0x04) = ~0x01;
-				eax_31 = (struct Eq_612 *) DPB(eax_15, 0x01, 0);
+				eax_31 = (struct Eq_609 *) DPB(eax_15, 0x01, 0);
 l004015C3:
 				word32 esi_37;
 				word32 edi_38;
@@ -364,7 +364,7 @@ l004015C3:
 		}
 	}
 	*(ebp_10 - 0x04) = ~0x01;
-	eax_31 = (struct Eq_612 *) DPB(eax_15, 0x00, 0);
+	eax_31 = (struct Eq_609 *) DPB(eax_15, 0x00, 0);
 	goto l004015C3;
 }
 
@@ -376,8 +376,8 @@ void fn004015C9(byte bArg04)
 	return;
 }
 
-// 004015E6: void fn004015E6(Stack word32 dwArg04, Stack byte bArg08)
-void fn004015E6(word32 dwArg04, byte bArg08)
+// 004015E6: void fn004015E6(Stack (ptr Eq_95) dwArg04, Stack byte bArg08)
+void fn004015E6(Eq_95 * dwArg04, byte bArg08)
 {
 	if (globals->b403354 == 0x00 || bArg08 == 0x00)
 	{
@@ -421,8 +421,8 @@ ptr32 fn00401767()
 	return 0x00403380;
 }
 
-// 0040176D: void fn0040176D(Stack word32 dwArg00, Stack word32 dwArg04)
-void fn0040176D(word32 dwArg00, word32 dwArg04)
+// 0040176D: void fn0040176D(Stack word32 dwArg00, Stack (ptr Eq_95) dwArg04)
+void fn0040176D(word32 dwArg00, Eq_95 * dwArg04)
 {
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
 	{
@@ -442,10 +442,10 @@ void fn0040176D(word32 dwArg00, word32 dwArg04)
 // 0040188B: Register bool fn0040188B()
 bool fn0040188B()
 {
-	Eq_863 eax_4 = GetModuleHandleW(null);
+	Eq_857 eax_4 = GetModuleHandleW(null);
 	if (eax_4 != null && eax_4->unused == 23117)
 	{
-		struct Eq_877 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
+		struct Eq_871 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
 		if (eax_42->dw0000 == 0x4550 && (eax_42->w0018 == 0x010B && eax_42->dw0074 > 0x0E))
 			return eax_42->dw00E8 != 0x00;
 	}
@@ -460,8 +460,8 @@ void fn00401972()
 	return;
 }
 
-// 00401980: Register ptr32 fn00401980(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08)
-ptr32 fn00401980(word32 ebx, ptr32 esi, ptr32 edi, word32 dwArg00, word32 dwArg04, word32 dwArg08)
+// 00401980: Register ptr32 fn00401980(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Stack word32 dwArg00, Stack word32 dwArg04, Stack ui32 dwArg08)
+ptr32 fn00401980(word32 ebx, ptr32 esi, ptr32 edi, word32 dwArg00, word32 dwArg04, ui32 dwArg08)
 {
 	ptr32 esp_14 = fp - 0x08 - dwArg08;
 	*(esp_14 - 0x04) = ebx;
@@ -473,8 +473,8 @@ ptr32 fn00401980(word32 ebx, ptr32 esi, ptr32 edi, word32 dwArg00, word32 dwArg0
 	return fp + 0x08;
 }
 
-// 004019C6: Register word32 fn004019C6(Register (ptr Eq_66) ebp, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10, Register out ptr32 esiOut, Register out ptr32 ediOut)
-word32 fn004019C6(Eq_66 * ebp, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10, ptr32 & esiOut, ptr32 & ediOut)
+// 004019C6: Register word32 fn004019C6(Register (ptr Eq_66) ebp, Stack word32 dwArg00, Stack (ptr Eq_95) dwArg04, Stack uint32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10, Register out ptr32 esiOut, Register out ptr32 ediOut)
+word32 fn004019C6(Eq_66 * ebp, word32 dwArg00, Eq_95 * dwArg04, uint32 dwArg08, word32 dwArg0C, word32 dwArg10, ptr32 & esiOut, ptr32 & ediOut)
 {
 	fs->dw0000 = *(ebp - 0x10);
 	ebp->dw0000 = dwArg00;
