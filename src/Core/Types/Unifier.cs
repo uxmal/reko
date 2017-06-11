@@ -523,14 +523,21 @@ namespace Reko.Core.Types
 				if (fa == null || fb == null)
 					break;
 
-				if (fa.Offset < fb.Offset)
+                StructureField fStruct, fOther;
+                if (IsNestedStructure(fa, fb, out fStruct, out fOther))
+                {
+                    var field = MergeFieldIntoNestedStructure(fStruct, fOther);
+                    fa = (fOther == fa) ? null : field;
+                    fb = (fOther == fb) ? null : field;
+                }
+                else if (fa.Offset < fb.Offset)
 				{
-					mem.Fields.Add(fa.Clone());
-					fa = null;
+                    mem.Fields.Add(fa.Clone());
+                    fa = null;
 				}
 				else if (fa.Offset > fb.Offset)
 				{
-					mem.Fields.Add(fb.Clone());
+                    mem.Fields.Add(fb.Clone());
 					fb = null;
 				}
 				else
@@ -581,7 +588,44 @@ namespace Reko.Core.Types
             return true;
         }
 
-		public DataType UnifyPointer(Pointer ptrA, DataType b)
+        private bool IsNestedStructure(
+            StructureField fa, StructureField fb,
+            out StructureField fNestedStruct, out StructureField fOther)
+        {
+            var strFa = fa.DataType.TypeReferenceAs<StructureType>();
+            var strFb = fb.DataType.TypeReferenceAs<StructureType>();
+            fNestedStruct = null;
+            fOther = null;
+            if (
+                (strFa == null && strFb == null) ||
+                (strFa != null && strFb != null))
+                return false;
+
+            var strSize = ((strFa != null) ? strFa : strFb).GetInferredSize();
+            fNestedStruct = (strFa != null) ? fa : fb;
+            fOther = (strFb != null) ? fa : fb;
+
+            return (
+                fOther.Offset >= fNestedStruct.Offset &&
+                fOther.Offset < fNestedStruct.Offset + strSize);
+        }
+
+        private StructureField MergeFieldIntoNestedStructure(
+            StructureField fNestedStruct, StructureField fOther)
+        {
+            var str = factory.CreateStructureType(null, 0);
+            str.Fields.Add(
+                fOther.Offset - fNestedStruct.Offset,
+                fOther.DataType);
+
+            var fieldType = Unify(fNestedStruct.DataType, str);
+            return new StructureField(
+                fNestedStruct.Offset,
+                fieldType,
+                fNestedStruct.Name);
+        }
+
+        public DataType UnifyPointer(Pointer ptrA, DataType b)
 		{
 			PrimitiveType pb = b as PrimitiveType;
 			if (pb != null)
