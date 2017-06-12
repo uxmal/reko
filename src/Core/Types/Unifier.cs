@@ -602,8 +602,7 @@ namespace Reko.Core.Types
                 this.unifier = unifier;
             }
 
-            public bool Match(
-                StructureField fa, StructureField fb)
+            public bool Match(StructureField fa, StructureField fb)
             {
                 this.fa = fa;
                 this.fb = fb;
@@ -613,11 +612,14 @@ namespace Reko.Core.Types
                 this.NextFieldB = null;
                 var strFa = fa.DataType.TypeReferenceAs<StructureType>();
                 var strFb = fb.DataType.TypeReferenceAs<StructureType>();
+                // only one field should be nested structure
                 if (
                     (strFa == null && strFb == null) ||
                     (strFa != null && strFb != null))
                     return false;
 
+                // check which of two fields is nested structure and store it
+                // and other field in corresponding variables.
                 int strSize;
                 if (strFa != null)
                 {
@@ -632,6 +634,7 @@ namespace Reko.Core.Types
                     strSize = strFb.GetInferredSize();
                 }
 
+                // check if other field is inside nested structure
                 return (
                     fOther.Offset >= fNestedStruct.Offset &&
                     fOther.Offset < fNestedStruct.Offset + strSize);
