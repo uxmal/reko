@@ -183,6 +183,8 @@ Eq_324: nested_structs_type
 Eq_325: (fn void ((ptr Eq_307)))
 	T_325 (in nested_structs_test12 : ptr32)
 	T_326 (in signature of nested_structs_test12 : void)
+Eq_329: (struct "nested_struct" (0 int32 b) (4 int32 c))
+	T_329
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -1496,6 +1498,10 @@ T_328: (in nested_structs_test12(str) : void)
   Class: Eq_328
   DataType: void
   OrigDataType: void
+T_329:
+  Class: Eq_329
+  DataType: Eq_329
+  OrigDataType: 
 */
 typedef struct Globals {
 	char str4020C0[];	// 4020C0
@@ -1672,4 +1678,9 @@ typedef nested_structs_type Eq_307;
 typedef nested_structs_type Eq_324;
 
 typedef void (Eq_325)(nested_structs_type *);
+
+typedef struct nested_struct {
+	int32 b;	// 0
+	int32 c;	// 4
+} Eq_329;
 
