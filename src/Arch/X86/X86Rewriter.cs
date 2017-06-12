@@ -342,6 +342,7 @@ namespace Reko.Arch.X86
                 case Opcode.xadd: RewriteXadd(); break;
                 case Opcode.xchg: RewriteExchange(); break;
                 case Opcode.xgetbv: RewriteXgetbv(); break;
+                case Opcode.xsetbv: RewriteXsetbv(); break;
                 case Opcode.xlat: RewriteXlat(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
                 case Opcode.BOR_exp: RewriteFUnary("exp"); break;
