@@ -21,7 +21,7 @@ char g_str4019B6[] = "png_read_row";
 void g_v4019E8 = ;
 void g_v401A18 = ;
 void g_v401A70 = ;
-union Eq_1061 g_u601E00 = 
+union Eq_1059 g_u601E00 = 
 	{
 		0x00400DA0
 	};

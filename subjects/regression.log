@@ -1572,79 +1572,6 @@ _getopt_internal: error: An error occurred while rewriting procedure to high-lev
 === ls
 *** ls
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
-000000000040ADF2: warning: Rewriting x86 opcode 'addps' is not supported yet.
-000000000040B106: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B107: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B118: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B119: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B16E: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B16F: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B173: warning: Rewriting x86 opcode 'addps' is not supported yet.
-000000000040B18E: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B18F: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B193: warning: Rewriting x86 opcode 'addps' is not supported yet.
-000000000040B481: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B482: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B4A4: warning: Rewriting x86 opcode 'subps' is not supported yet.
-000000000040B4B5: warning: Rewriting x86 opcode 'cvttss2si' is not supported yet.
-000000000040B568: warning: Rewriting x86 opcode 'cvttss2si' is not supported yet.
-000000000040B586: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B587: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B58B: warning: Rewriting x86 opcode 'addps' is not supported yet.
-000000000040B734: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B735: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B757: warning: Rewriting x86 opcode 'subps' is not supported yet.
-000000000040B768: warning: Rewriting x86 opcode 'cvttss2si' is not supported yet.
-000000000040B880: warning: Rewriting x86 opcode 'cvttss2si' is not supported yet.
-000000000040B8DD: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B8DE: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B8E2: warning: Rewriting x86 opcode 'addps' is not supported yet.
-000000000040B946: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B947: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B95C: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B95D: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B9E8: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B9E9: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B9FA: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040B9FB: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BA37: warning: Rewriting x86 opcode 'cvttss2si' is not supported yet.
-000000000040BA7D: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BA7E: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BA82: warning: Rewriting x86 opcode 'addps' is not supported yet.
-000000000040BA9D: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BA9E: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BAA2: warning: Rewriting x86 opcode 'addps' is not supported yet.
-000000000040BAC9: warning: Rewriting x86 opcode 'subps' is not supported yet.
-000000000040BADA: warning: Rewriting x86 opcode 'cvttss2si' is not supported yet.
-000000000040BAF4: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BAF5: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BAF9: warning: Rewriting x86 opcode 'addps' is not supported yet.
-000000000040BB0E: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BB0F: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BB13: warning: Rewriting x86 opcode 'addps' is not supported yet.
-000000000040BBE6: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BBE7: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BBFC: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BBFD: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BC33: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BC34: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BC45: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BC46: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BC73: warning: Rewriting x86 opcode 'cvttss2si' is not supported yet.
-000000000040BCD5: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BCD6: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BCDA: warning: Rewriting x86 opcode 'addps' is not supported yet.
-000000000040BCF5: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BCF6: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BCFA: warning: Rewriting x86 opcode 'addps' is not supported yet.
-000000000040BD11: warning: Rewriting x86 opcode 'subps' is not supported yet.
-000000000040BD22: warning: Rewriting x86 opcode 'cvttss2si' is not supported yet.
-000000000040BD3C: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BD3D: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BD41: warning: Rewriting x86 opcode 'addps' is not supported yet.
-000000000040BD56: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BD57: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-000000000040BD5B: warning: Rewriting x86 opcode 'addps' is not supported yet.
 00000000004021A0: warning: Unable to resolve imported reference __ctype_toupper_loc.
 00000000004021B0: warning: Unable to resolve imported reference __uflow.
 00000000004021D0: warning: Unable to resolve imported reference sigprocmask.
@@ -1936,7 +1863,7 @@ Parameter name: bitOffset
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 157
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 00000000004054D8: error: An error occurred while processing the statement Mem696[rdx_681 - 0x0000000000000001 + 0x0000000000000000:byte] = (byte) (word32) Mem569[rdi_622 - 0x0000000000000001 + 0x0000000000000000:byte].
-    Not handling (ptr (struct (0 T_1649 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_1648 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1951,7 +1878,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040A8A3: error: An error occurred while processing the statement r10 = r10 - rbp.
-    Pulling difference (union (bool u2) ((ptr (struct (0 T_404 t0000) (A0 T_3505 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_3598 t0000) (1 T_3629 t0001)))
+    Pulling difference (union (bool u2) ((ptr (struct (0 T_403 t0000) (A0 T_3504 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_3597 t0000) (1 T_3628 t0001)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -1959,7 +1886,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040A8A6: error: An error occurred while processing the statement r12 = r12 - rbx.
-    Pulling difference (union (bool u2) ((ptr (struct (0 T_404 t0000) (A0 T_3505 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_404 t0000) (1 T_3614 t0001) (2 T_3676 t0002) (A0 T_3501 t00A0)))
+    Pulling difference (union (bool u2) ((ptr (struct (0 T_403 t0000) (A0 T_3504 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_403 t0000) (1 T_3613 t0001) (2 T_3675 t0002) (A0 T_3500 t00A0)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -1967,7 +1894,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040AAAD: error: An error occurred while processing the statement r12 = r12 - rbx.
-    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_404 t0000) (A0 T_3505 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_404 t0000) (1 T_3614 t0001) (2 T_3676 t0002) (A0 T_3501 t00A0)))
+    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_403 t0000) (A0 T_3504 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_403 t0000) (1 T_3613 t0001) (2 T_3675 t0002) (A0 T_3500 t00A0)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -1975,7 +1902,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040AAB0: error: An error occurred while processing the statement r10 = r10 - rbp.
-    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_404 t0000) (A0 T_3505 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 char b0000) (1 T_3629 t0001)))
+    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_403 t0000) (A0 T_3504 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 char b0000) (1 T_3628 t0001)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -1983,7 +1910,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040AAF6: error: An error occurred while processing the statement r10 = r10 - rbp.
-    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_404 t0000) (A0 T_3505 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 char b0000) (1 T_3629 t0001)))
+    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_403 t0000) (A0 T_3504 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 char b0000) (1 T_3628 t0001)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -1991,7 +1918,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000000000407FC2: error: An error occurred while processing the statement r15 = (uint64) Mem0[r13 - 0x0000000000000384 + 0x0000000000000000:word32].
-    Not handling (ptr (struct (0 T_7165 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_7164 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -2004,7 +1931,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 00000000004086E0: error: An error occurred while processing the statement Mem0[r8 - 0x0000000000000001 + 0x0000000000000000:byte] = r15b.
-    Not handling (ptr (struct (0 T_8627 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_8626 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -2015,7 +1942,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040A2DA: error: An error occurred while processing the statement branch Mem0[rax_20 - 0x0000000000000001 + 0x0000000000000000:byte] == 0x2F l000000000040A2EE.
-    Not handling (ptr (struct (0 T_9762 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_9761 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -3010,7 +2937,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 3224: error: An error occurred while processing the statement Mem16[Mem16[r4_10 - 0x0002 + 0x0000:ptr16] + 0x0000:word16] = r4_10 - 0x0002 | Mem0[Mem0[(r4_10 - 0x0002) + 0x0000:ptr16] + 0x0000:word16].
-    Not handling (ptr (struct (0 T_11866 t0000))) and (union (cui16 u0) (ptr16 u1)) yet
+    Not handling (ptr (struct (0 T_11846 t0000))) and (union (cui16 u0) (ptr16 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -3463,10 +3390,6 @@ Borland C v3 runtime detected
 0800:9F8F: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:0EEA: warning: Can't determine size of jump vector; probing only one entry.
 0800:0EEA: warning: Unable to determine index variable for indirect jump.
-0800:074E: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-0800:73FB: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-0800:73FC: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
-1483:1856: warning: Rewriting x86 opcode 'cvtpi2ps' is not supported yet.
 1483:1BF1: warning: Procedure fn1483_1B38 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
 1483:0CA6: warning: Call target address 1483:FD4E is invalid.
 1483:0CD2: warning: Call target address 1483:4FE0 is invalid.

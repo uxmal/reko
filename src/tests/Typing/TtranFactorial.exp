@@ -35,10 +35,10 @@ Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (segment (64 int16 w0064))
 	T_2 (in ds : selector)
-Eq_3: (fn int16 (word16))
+Eq_3: (fn int16 (int16))
 	T_3 (in fn0C00_000F : ptr32)
 	T_4 (in signature of fn0C00_000F : void)
-	T_16 (in fn0C00_000F : ptr32)
+	T_15 (in fn0C00_000F : ptr32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -58,11 +58,11 @@ T_4: (in signature of fn0C00_000F : void)
   OrigDataType: 
 T_5: (in wArg02 : word16)
   Class: Eq_5
-  DataType: word16
-  OrigDataType: word16
+  DataType: int16
+  OrigDataType: int16
 T_6: (in 0x0064 : word16)
   Class: Eq_5
-  DataType: word16
+  DataType: int16
   OrigDataType: word16
 T_7: (in fn0C00_000F(0x0064) : word16)
   Class: Eq_7
@@ -84,43 +84,39 @@ T_11: (in ax_16 : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16
-T_12: (in wArg02 : word16)
-  Class: Eq_12
-  DataType: int16
-  OrigDataType: int16
-T_13: (in 0x0001 : word16)
-  Class: Eq_12
+T_12: (in 0x0001 : word16)
+  Class: Eq_5
   DataType: int16
   OrigDataType: word16
-T_14: (in wArg02 == 0x0001 : bool)
-  Class: Eq_14
+T_13: (in wArg02 == 0x0001 : bool)
+  Class: Eq_13
   DataType: bool
   OrigDataType: bool
-T_15: (in 0x0001 : word16)
+T_14: (in 0x0001 : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16
-T_16: (in fn0C00_000F : ptr32)
+T_15: (in fn0C00_000F : ptr32)
   Class: Eq_3
   DataType: (ptr Eq_3)
-  OrigDataType: (ptr (fn T_19 (T_18)))
-T_17: (in 0x0001 : word16)
-  Class: Eq_17
+  OrigDataType: (ptr (fn T_18 (T_17)))
+T_16: (in 0x0001 : word16)
+  Class: Eq_16
   DataType: int16
   OrigDataType: int16
-T_18: (in wArg02 - 0x0001 : word16)
+T_17: (in wArg02 - 0x0001 : word16)
   Class: Eq_5
-  DataType: word16
+  DataType: int16
   OrigDataType: word16
-T_19: (in fn0C00_000F(wArg02 - 0x0001) : word16)
+T_18: (in fn0C00_000F(wArg02 - 0x0001) : word16)
   Class: Eq_7
   DataType: int16
   OrigDataType: int16
-T_20: (in wArg02 *s fn0C00_000F(wArg02 - 0x0001) : int32)
-  Class: Eq_20
+T_19: (in wArg02 *s fn0C00_000F(wArg02 - 0x0001) : int32)
+  Class: Eq_19
   DataType: int32
   OrigDataType: int32
-T_21: (in (word16) (wArg02 *s fn0C00_000F(wArg02 - 0x0001)) : word16)
+T_20: (in (word16) (wArg02 *s fn0C00_000F(wArg02 - 0x0001)) : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16

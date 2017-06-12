@@ -93,8 +93,8 @@ void fn004011B0(word32 dwArg04)
 	return;
 }
 
-// 004011FC: void fn004011FC(Stack ptr32 dwArg04)
-void fn004011FC(ptr32 dwArg04)
+// 004011FC: void fn004011FC(Stack (ptr Eq_4) dwArg04)
+void fn004011FC(Eq_4 * dwArg04)
 {
 	globals->dw4020F8 = fn00401158() + 0x1C;
 	dwArg04->dw0000 = 0x82727349;

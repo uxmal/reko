@@ -8602,12 +8602,15 @@ l000000000040B480:
 	cvtsi2ss	xmm0,r15
 
 l000000000040B485:
-	rep illegal
-	ror	dword ptr [rdi],2E
-	add	eax,0000AA78
+	divss	xmm0,xmm1
+	ucomiss	xmm0,dword ptr [rip+0000AA78]                      ; 0000000000415F08
 	jnc	000000000040B540
+
+l000000000040B496:
 	ucomiss	xmm0,dword ptr [rip+0000AA6F]                      ; 0000000000415F0C
 	jc	000000000040B568
+
+l000000000040B4A3:
 	subss	xmm0,dword ptr [rip+0000AA61]                        ; 0000000000415F0C
 	mov	r8,8000000000000000
 	cvttss2si	r15d,xmm0
@@ -8673,8 +8676,12 @@ l000000000040B548:
 	pop	rsi
 	pop	rdi
 	ret
-000000000040B561    0F 1F 80 00 00 00 00 F3 4C 0F 2C F8 E9 4E FF  ........L.,..N.
-000000000040B570 FF FF 66 0F 1F 44 00 00                         ..f..D..       
+000000000040B561    0F 1F 80 00 00 00 00                          .......       
+
+l000000000040B568:
+	cvttss2si	r15d,xmm0
+	jmp	000000000040B4C0
+000000000040B572       66 0F 1F 44 00 00                           f..D..       
 
 l000000000040B578:
 	mov	rax,r15
@@ -8811,36 +8818,172 @@ l000000000040B6EF:
 l000000000040B6FC:
 	jmp	000000000040B659
 000000000040B701    66 66 66 66 66 66 2E 0F 1F 84 00 00 00 00 00  ffffff.........
-000000000040B710 41 54 55 53 48 89 FB 48 83 EC 50 48 8B 6F 28 80 ATUSH..H..PH.o(.
-000000000040B720 7D 10 00 F3 0F 10 4D 08 75 46 48 85 F6 0F 88 9D }.....M.uFH.....
-000000000040B730 01 00 00 F3 48 0F 2A C6 F3 0F 5E C1 0F 2E 05 C5 ....H.*...^.....
-000000000040B740 A7 00 00 0F 83 27 01 00 00 0F 2E 05 BC A7 00 00 .....'..........
-000000000040B750 0F 82 2A 01 00 00 F3 0F 5C 05 AE A7 00 00 48 B8 ..*.....\.....H.
-000000000040B760 00 00 00 00 00 00 00 80 F3 48 0F 2C F0 48 31 C6 .........H.,.H1.
-000000000040B770 48 89 F7 E8 48 F4 FF FF 48 8D 50 FF 49 89 C4 48 H...H...H.P.I..H
-000000000040B780 B8 FE FF FF FF FF FF FF 1F 48 39 C2 0F 87 DE 00 .........H9.....
-000000000040B790 00 00 4C 39 63 10 0F 84 C4 00 00 00 BE 10 00 00 ..L9c...........
-000000000040B7A0 00 4C 89 E7 E8 87 6D FF FF 48 85 C0 48 89 04 24 .L....m..H..H..$
-000000000040B7B0 0F 84 BA 00 00 00 4C 89 64 24 10 49 C1 E4 04 31 ......L.d$.I...1
-000000000040B7C0 D2 4C 01 E0 48 89 DE 48 89 E7 48 89 44 24 08 48 .L..H..H..H.D$.H
-000000000040B7D0 8B 43 30 48 89 6C 24 28 48 C7 44 24 18 00 00 00 .C0H.l$(H.D$....
-000000000040B7E0 00 48 C7 44 24 20 00 00 00 00 48 89 44 24 30 48 .H.D$ ....H.D$0H
-000000000040B7F0 8B 43 38 48 89 44 24 38 48 8B 43 40 48 89 44 24 .C8H.D$8H.C@H.D$
-000000000040B800 40 48 8B 43 48 48 89 44 24 48 E8 31 F6 FF FF 84 @H.CHH.D$H.1....
-000000000040B810 C0 89 C5 75 7B 48 8B 44 24 48 BA 01 00 00 00 48 ...u{H.D$H.....H
-000000000040B820 89 E6 48 89 DF 48 89 43 48 E8 12 F6 FF FF 84 C0 ..H..H.CH.......
-000000000040B830 0F 84 B4 00 00 00 31 D2 48 89 E6 48 89 DF E8 FD ......1.H..H....
-000000000040B840 F5 FF FF 84 C0 0F 84 9F 00 00 00 48 8B 3C 24 E8 ...........H.<$.
-000000000040B850 9C 69 FF FF 48 83 C4 50 89 E8 5B 5D 41 5C C3 90 .i..H..P..[]A\..
-000000000040B860 48 83 C4 50 BD 01 00 00 00 5B 89 E8 5D 41 5C C3 H..P.....[..]A\.
-000000000040B870 48 83 C4 50 31 ED 5B 89 E8 5D 41 5C C3 0F 1F 00 H..P1.[..]A\....
-000000000040B880 F3 48 0F 2C F0 E9 E6 FE FF FF 66 0F 1F 44 00 00 .H.,......f..D..
-000000000040B890 48 8B 3B E8 58 69 FF FF 48 8B 04 24 48 89 03 48 H.;.Xi..H..$H..H
-000000000040B8A0 8B 44 24 08 48 89 43 08 48 8B 44 24 10 48 89 43 .D$.H.C.H.D$.H.C
-000000000040B8B0 10 48 8B 44 24 18 48 89 43 18 48 8B 44 24 48 48 .H.D$.H.C.H.D$HH
-000000000040B8C0 89 43 48 48 83 C4 50 89 E8 5B 5D 41 5C C3 66 90 .CHH..P..[]A\.f.
-000000000040B8D0 48 89 F0 83 E6 01 48 D1 E8 48 09 F0 F3 48 0F 2A H.....H..H...H.*
-000000000040B8E0 C0 F3 0F 58 C0 E9 4E FE FF FF E8 31 69 FF FF 90 ...X..N....1i...
+
+;; fn000000000040B710: 000000000040B710
+fn000000000040B710 proc
+	push	rsp
+	push	rbp
+	push	rbx
+	mov	rbx,rdi
+	sub	rsp,50
+	mov	rbp,[rdi+28]
+	cmp	byte ptr [rbp+10],00
+	movss	xmm1,dword ptr [rbp+08]
+	jnz	000000000040B770
+
+l000000000040B72A:
+	test	rsi,rsi
+	js	000000000040B8D0
+
+l000000000040B733:
+	cvtsi2ss	xmm0,rsi
+
+l000000000040B738:
+	divss	xmm0,xmm1
+	ucomiss	xmm0,dword ptr [rip+0000A7C5]                      ; 0000000000415F08
+	jnc	000000000040B870
+
+l000000000040B749:
+	ucomiss	xmm0,dword ptr [rip+0000A7BC]                      ; 0000000000415F0C
+	jc	000000000040B880
+
+l000000000040B756:
+	subss	xmm0,dword ptr [rip+0000A7AE]                        ; 0000000000415F0C
+	mov	r8,8000000000000000
+	cvttss2si	esi,xmm0
+	xor	rsi,rax
+
+l000000000040B770:
+	mov	rdi,rsi
+	call	000000000040ABC0
+	lea	rdx,[rax-01]
+	mov	r12,rax
+	mov	r8,1FFFFFFFFFFFFFFE
+	cmp	rdx,rax
+	ja	000000000040B870
+
+l000000000040B792:
+	cmp	[r11+10],r12
+	jz	000000000040B860
+
+l000000000040B79C:
+	mov	esi,00000010
+	mov	rdi,r12
+	call	0000000000402530
+	test	rax,rax
+	mov	[rsp],rax
+	jz	000000000040B870
+
+l000000000040B7B6:
+	mov	[rsp+10],r12
+	shl	r12,04
+	xor	edx,edx
+	add	rax,r12
+	mov	rsi,rbx
+	mov	rdi,rsp
+	mov	[rsp+08],rax
+	mov	rax,[rbx+30]
+	mov	[rsp+28],rbp
+	mov	qword ptr [rsp+18],+00000000
+	mov	qword ptr [rsp+20],+00000000
+	mov	[rsp+30],rax
+	mov	rax,[rbx+38]
+	mov	[rsp+38],rax
+	mov	rax,[rbx+40]
+	mov	[rsp+40],rax
+	mov	rax,[rbx+48]
+	mov	[rsp+48],rax
+	call	000000000040AE40
+	test	al,al
+	mov	ebp,eax
+	jnz	000000000040B890
+
+l000000000040B815:
+	mov	rax,[rsp+48]
+	mov	edx,00000001
+	mov	rsi,rsp
+	mov	rdi,rbx
+	mov	[rbx+48],rax
+	call	000000000040AE40
+	test	al,al
+	jz	000000000040B8EA
+
+l000000000040B836:
+	xor	edx,edx
+	mov	rsi,rsp
+	mov	rdi,rbx
+	call	000000000040AE40
+	test	al,al
+	jz	000000000040B8EA
+
+l000000000040B84B:
+	mov	rdi,[rsp]
+	call	00000000004021F0
+	add	rsp,50
+	mov	eax,ebp
+	pop	rbx
+	pop	rbp
+	pop	rsp
+	ret
+000000000040B85F                                              90                .
+
+l000000000040B860:
+	add	rsp,50
+	mov	ebp,00000001
+	pop	rbx
+	mov	eax,ebp
+	pop	rbp
+	pop	rsp
+	ret
+
+l000000000040B870:
+	add	rsp,50
+	xor	ebp,ebp
+	pop	rbx
+	mov	eax,ebp
+	pop	rbp
+	pop	rsp
+	ret
+000000000040B87D                                        0F 1F 00              ...
+
+l000000000040B880:
+	cvttss2si	esi,xmm0
+	jmp	000000000040B770
+000000000040B88A                               66 0F 1F 44 00 00           f..D..
+
+l000000000040B890:
+	mov	rdi,[rbx]
+	call	00000000004021F0
+	mov	rax,[rsp]
+	mov	[rbx],rax
+	mov	rax,[rsp+08]
+	mov	[rbx+08],rax
+	mov	rax,[rsp+10]
+	mov	[rbx+10],rax
+	mov	rax,[rsp+18]
+	mov	[rbx+18],rax
+	mov	rax,[rsp+48]
+	mov	[rbx+48],rax
+	add	rsp,50
+	mov	eax,ebp
+	pop	rbx
+	pop	rbp
+	pop	rsp
+	ret
+000000000040B8CE                                           66 90               f.
+
+l000000000040B8D0:
+	mov	rax,rsi
+	and	esi,01
+	shr	rax,01
+	or	rax,rsi
+	cvtsi2ss	xmm0,rax
+	addss	xmm0,xmm0
+	jmp	000000000040B738
+
+l000000000040B8EA:
+	call	0000000000402220
+000000000040B8EF                                              90                .
 
 ;; fn000000000040B8F0: 000000000040B8F0
 fn000000000040B8F0 proc
@@ -8868,6 +9011,8 @@ l000000000040B91B:
 l000000000040B924:
 	mov	[r12],rax
 	xor	eax,eax
+
+l000000000040B92A:
 	add	rsp,10
 	pop	rbx
 	pop	rbp
@@ -8893,17 +9038,25 @@ l000000000040B95B:
 	cvtsi2ss	xmm1,rax
 
 l000000000040B960:
-	rep illegal
-	or	[rdi],cl
-	shl	dword ptr cs:[rdi+5E],4C
-	mov	esp,[rsp+08]
+	mulss	xmm1,dword ptr [rdx+08]
+	ucomiss	xmm0,xmm1
+	ja	000000000040B9C8
+
+l000000000040B96A:
+	mov	r12,[rsp+08]
 	cmp	qword ptr [r12],00
 	jz	000000000040BAB0
+
+l000000000040B97A:
 	mov	rax,[rbx+48]
 	test	rax,rax
 	jz	000000000040BB1B
+
+l000000000040B987:
 	mov	rdx,[rax+08]
 	mov	[rbx+48],rdx
+
+l000000000040B98F:
 	mov	rdx,[r12+08]
 	mov	[rax],rbp
 	mov	[rax+08],rdx
@@ -8915,7 +9068,7 @@ l000000000040B960:
 	pop	rbp
 	pop	rsp
 	ret
-	nop	dword ptr [rax+rax+00]
+000000000040B9B3          0F 1F 44 00 00                            ..D..       
 
 l000000000040B9B8:
 	add	rsp,10
@@ -8924,17 +9077,67 @@ l000000000040B9B8:
 	pop	rbp
 	pop	rsp
 	ret
-000000000040B9C3          0F 1F 44 00 00 48 8D 7B 28 E8 DF F3 FF    ..D..H.{(....
-000000000040B9D0 FF 48 8B 43 10 48 8B 53 28 48 85 C0 F3 0F 10 52 .H.C.H.S(H.....R
-000000000040B9E0 08 0F 88 00 01 00 00 F3 48 0F 2A C0 48 8B 43 18 ........H.*.H.C.
-000000000040B9F0 48 85 C0 0F 88 08 01 00 00 F3 48 0F 2A C8 0F 28 H.........H.*..(
-000000000040BA00 DA F3 0F 59 D8 0F 2E CB 0F 86 5C FF FF FF 80 7A ...Y......\....z
-000000000040BA10 10 00 F3 0F 59 42 0C 75 04 F3 0F 59 C2 0F 2E 05 ....YB.u...Y....
-000000000040BA20 E4 A4 00 00 0F 83 04 01 00 00 0F 2E 05 DB A4 00 ................
-000000000040BA30 00 0F 83 91 00 00 00 F3 48 0F 2C F0 48 89 DF E8 ........H.,.H...
-000000000040BA40 CC FC FF FF 84 C0 0F 84 E2 00 00 00 48 8D 54 24 ............H.T$
-000000000040BA50 08 31 C9 48 89 EE 48 89 DF E8 52 F2 FF FF 48 85 .1.H..H...R...H.
-000000000040BA60 C0 0F 84 03 FF FF FF                            .......        
+000000000040B9C3          0F 1F 44 00 00                            ..D..       
+
+l000000000040B9C8:
+	lea	rdi,[rbx+28]
+	call	000000000040ADB0
+	mov	rax,[rbx+10]
+	mov	rdx,[rbx+28]
+	test	rax,rax
+	movss	xmm2,dword ptr [rdx+08]
+	js	000000000040BAE7
+
+l000000000040B9E7:
+	cvtsi2ss	xmm0,rax
+
+l000000000040B9EC:
+	mov	rax,[rbx+18]
+	test	rax,rax
+	js	000000000040BB01
+
+l000000000040B9F9:
+	cvtsi2ss	xmm1,rax
+
+l000000000040B9FE:
+	movaps	xmm3,xmm2
+	mulss	xmm3,xmm0
+	ucomiss	xmm1,xmm3
+	jbe	000000000040B96A
+
+l000000000040BA0E:
+	cmp	byte ptr [rdx+10],00
+	mulss	xmm0,dword ptr [rdx+0C]
+	jnz	000000000040BA1D
+
+l000000000040BA19:
+	mulss	xmm0,xmm2
+
+l000000000040BA1D:
+	ucomiss	xmm0,dword ptr [rip+0000A4E4]                      ; 0000000000415F08
+	jnc	000000000040BB2E
+
+l000000000040BA2A:
+	ucomiss	xmm0,dword ptr [rip+0000A4DB]                      ; 0000000000415F0C
+	jnc	000000000040BAC8
+
+l000000000040BA37:
+	cvttss2si	esi,xmm0
+
+l000000000040BA3C:
+	mov	rdi,rbx
+	call	000000000040B710
+	test	al,al
+	jz	000000000040BB2E
+
+l000000000040BA4C:
+	lea	rdx,[rsp+08]
+	xor	ecx,ecx
+	mov	rsi,rbp
+	mov	rdi,rbx
+	call	000000000040ACB0
+	test	rax,rax
+	jz	000000000040B96A
 
 l000000000040BA67:
 	call	0000000000402220
@@ -8959,15 +9162,49 @@ l000000000040BA90:
 	addss	xmm1,xmm1
 	jmp	000000000040B960
 000000000040BAAA                               66 0F 1F 44 00 00           f..D..
-000000000040BAB0 49 89 2C 24 B8 01 00 00 00 48 83 43 20 01 48 83 I.,$.....H.C .H.
-000000000040BAC0 43 18 01 E9 62 FE FF FF F3 0F 5C 05 3C A4 00 00 C...b.....\.<...
-000000000040BAD0 48 B8 00 00 00 00 00 00 00 80 F3 48 0F 2C F0 48 H..........H.,.H
-000000000040BAE0 31 C6 E9 55 FF FF FF 48 89 C1 83 E0 01 48 D1 E9 1..U...H.....H..
-000000000040BAF0 48 09 C1 F3 48 0F 2A C1 F3 0F 58 C0 E9 EB FE FF H...H.*...X.....
-000000000040BB00 FF 48 89 C1 83 E0 01 48 D1 E9 48 09 C1 F3 48 0F .H.....H..H...H.
-000000000040BB10 2A C9 F3 0F 58 C9 E9 E3 FE FF FF BF 10 00 00 00 *...X...........
-000000000040BB20 E8 1B 6B FF FF 48 85 C0 0F 85 61 FE FF FF B8 FF ..k..H....a.....
-000000000040BB30 FF FF FF E9 F2 FD FF FF 0F 1F 84 00 00 00 00 00 ................
+
+l000000000040BAB0:
+	mov	[r12],rbp
+	mov	eax,00000001
+	add	qword ptr [rbx+20],01
+	add	qword ptr [rbx+18],01
+	jmp	000000000040B92A
+
+l000000000040BAC8:
+	subss	xmm0,dword ptr [rip+0000A43C]                        ; 0000000000415F0C
+	mov	r8,8000000000000000
+	cvttss2si	esi,xmm0
+	xor	rsi,rax
+	jmp	000000000040BA3C
+
+l000000000040BAE7:
+	mov	rcx,rax
+	and	eax,01
+	shr	rcx,01
+	or	rcx,rax
+	cvtsi2ss	xmm0,rcx
+	addss	xmm0,xmm0
+	jmp	000000000040B9EC
+
+l000000000040BB01:
+	mov	rcx,rax
+	and	eax,01
+	shr	rcx,01
+	or	rcx,rax
+	cvtsi2ss	xmm1,rcx
+	addss	xmm1,xmm1
+	jmp	000000000040B9FE
+
+l000000000040BB1B:
+	mov	edi,00000010
+	call	0000000000402640
+	test	rax,rax
+	jnz	000000000040B98F
+
+l000000000040BB2E:
+	mov	eax,FFFFFFFF
+	jmp	000000000040B92A
+000000000040BB38                         0F 1F 84 00 00 00 00 00         ........
 000000000040BB40 E9 AB FD FF FF 66 66 2E 0F 1F 84 00 00 00 00 00 .....ff.........
 
 ;; fn000000000040BB50: 000000000040BB50
@@ -9044,59 +9281,90 @@ l000000000040BBFB:
 	cvtsi2ss	xmm1,rax
 
 l000000000040BC00:
-	rep illegal
-	or	cl,[rdi]
-	enter	0F77,48
-	add	esp,10
+	mulss	xmm1,dword ptr [rdx]
+	ucomiss	xmm1,xmm0
+	ja	000000000040BC18
+
+l000000000040BC09:
+	add	rsp,10
 	mov	rax,rbp
 	pop	rbx
 	pop	rbp
 	pop	rsp
 	ret
-	nop	dword ptr [rax]
+000000000040BC15                0F 1F 00                              ...       
+
+l000000000040BC18:
 	lea	rdi,[rbx+28]
 	call	000000000040ADB0
 	mov	rdx,[rbx+10]
 	mov	rax,[rbx+28]
 	test	rdx,rdx
 	js	000000000040BD2F
+
+l000000000040BC32:
 	cvtsi2ss	xmm0,rdx
+
+l000000000040BC37:
 	mov	rdx,[rbx+18]
 	test	rdx,rdx
 	js	000000000040BD49
+
+l000000000040BC44:
 	cvtsi2ss	xmm1,rdx
+
+l000000000040BC49:
 	movss	xmm2,dword ptr [rax]
-	rep illegal
-	ror	byte ptr [rdi],01
-	shl	dword ptr cs:[rsi-4D],01
+	mulss	xmm2,xmm0
+	ucomiss	xmm2,xmm1
+	jbe	000000000040BC09
+
+l000000000040BC56:
 	cmp	byte ptr [rax+10],00
-	rep illegal
-	add	al,75
-	add	eax,40590FF3
-	or	[rdi],cl
-	add	eax,0000A29F
+	mulss	xmm0,dword ptr [rax+04]
+	jnz	000000000040BC66
+
+l000000000040BC61:
+	mulss	xmm0,dword ptr [rax+08]
+
+l000000000040BC66:
+	ucomiss	xmm0,dword ptr [rip+0000A29F]                      ; 0000000000415F0C
 	jnc	000000000040BD10
+
+l000000000040BC73:
 	cvttss2si	esi,xmm0
+
+l000000000040BC78:
 	mov	rdi,rbx
 	call	000000000040B710
 	mov	edx,eax
 	mov	rax,rbp
 	test	dl,dl
 	jnz	000000000040BBC6
+
+l000000000040BC8D:
 	mov	rdi,[rbx+48]
 	test	rdi,rdi
 	jnz	000000000040BCA3
+
+l000000000040BC96:
 	jmp	000000000040BCB1
-	nop	dword ptr [rax+rax+00000000]
+000000000040BC98                         0F 1F 84 00 00 00 00 00         ........
+
+l000000000040BCA0:
 	mov	rdi,r12
+
+l000000000040BCA3:
 	mov	r12,[r15+08]
 	call	00000000004021F0
 	test	r12,r12
 	jnz	000000000040BCA0
+
+l000000000040BCB1:
 	mov	qword ptr [rbx+48],+00000000
 	mov	rax,rbp
 	jmp	000000000040BBC6
-	nop	dword ptr [rax+00000000]
+000000000040BCC1    0F 1F 80 00 00 00 00                          .......       
 
 l000000000040BCC8:
 	mov	rcx,rax
@@ -9122,12 +9390,32 @@ l000000000040BD08:
 	xor	eax,eax
 	jmp	000000000040BBC6
 000000000040BD0F                                              90                .
-000000000040BD10 F3 0F 5C 05 F4 A1 00 00 48 B8 00 00 00 00 00 00 ..\.....H.......
-000000000040BD20 00 80 F3 48 0F 2C F0 48 31 C6 E9 49 FF FF FF 48 ...H.,.H1..I...H
-000000000040BD30 89 D1 83 E2 01 48 D1 E9 48 09 D1 F3 48 0F 2A C1 .....H..H...H.*.
-000000000040BD40 F3 0F 58 C0 E9 EE FE FF FF 48 89 D1 83 E2 01 48 ..X......H.....H
-000000000040BD50 D1 E9 48 09 D1 F3 48 0F 2A C9 F3 0F 58 C9 E9 E6 ..H...H.*...X...
-000000000040BD60 FE FF FF 66 2E 0F 1F 84 00 00 00 00 00 0F 1F 00 ...f............
+
+l000000000040BD10:
+	subss	xmm0,dword ptr [rip+0000A1F4]                        ; 0000000000415F0C
+	mov	r8,8000000000000000
+	cvttss2si	esi,xmm0
+	xor	rsi,rax
+	jmp	000000000040BC78
+
+l000000000040BD2F:
+	mov	rcx,rdx
+	and	edx,01
+	shr	rcx,01
+	or	rcx,rdx
+	cvtsi2ss	xmm0,rcx
+	addss	xmm0,xmm0
+	jmp	000000000040BC37
+
+l000000000040BD49:
+	mov	rcx,rdx
+	and	edx,01
+	shr	rcx,01
+	or	rcx,rdx
+	cvtsi2ss	xmm1,rcx
+	addss	xmm1,xmm1
+	jmp	000000000040BC49
+000000000040BD63          66 2E 0F 1F 84 00 00 00 00 00 0F 1F 00    f............
 
 ;; fn000000000040BD70: 000000000040BD70
 fn000000000040BD70 proc
