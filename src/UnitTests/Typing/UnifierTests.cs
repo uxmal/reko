@@ -296,6 +296,39 @@ namespace Reko.UnitTests.Typing
             Assert.Fail("Should throw NotSupportedException");
         }
 
+        [Test]
+        public void UnifyNestedStruct()
+        {
+            var inner = new StructureType
+            {
+                Fields = {
+                    { 0, PrimitiveType.Int32 },
+                    { 4, PrimitiveType.Word32 },
+                }
+            };
+            var s1 = new StructureType {
+                Fields = {
+                    { 0, PrimitiveType.Word32 },
+                    { 4, inner },
+                }
+            };
+            var s2 = new StructureType
+            {
+                Fields = {
+                    { 0, PrimitiveType.Pointer32 },
+                    { 4, PrimitiveType.Word32 },
+                    { 8, PrimitiveType.Real32 },
+                }
+            };
+
+            var dt = un.Unify(s1, s2);
+
+            Assert.AreEqual(
+                "(struct (0 ptr32 ptr0000) " +
+                "(4 (struct (0 int32 dw0000) (4 real32 r0004)) t0004))",
+                dt.ToString());
+        }
+
         // Arrays with the same sized elements should unify just fine.
         [Test]
 		public void UnifyArrays()

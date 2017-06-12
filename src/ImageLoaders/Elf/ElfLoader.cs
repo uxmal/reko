@@ -743,32 +743,50 @@ namespace Reko.ImageLoaders.Elf
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
             var segmentMap = new SegmentMap(addrPreferred);
-            foreach (var section in Sections)
+            if (Sections.Count > 0)
             {
-                if (section.Name == null || section.Address == null)
-                    continue;
-                MemoryArea mem;
-                if (segMap.TryGetLowerBound(section.Address, out mem) &&
-                    section.Address < mem.EndAddress)
+                foreach (var section in Sections)
                 {
-                    AccessMode mode = AccessModeOf(section.Flags);
-                    var seg = segmentMap.AddSegment(new ImageSegment(
-                        section.Name,
-                        section.Address,
-                        mem, mode)
+                    if (section.Name == null || section.Address == null)
+                        continue;
+                    MemoryArea mem;
+                    if (segMap.TryGetLowerBound(section.Address, out mem) &&
+                        section.Address < mem.EndAddress)
                     {
-                        Size = (uint)section.Size
-                    });
-                    seg.Designer = CreateRenderer64(section);
+                        AccessMode mode = AccessModeOf(section.Flags);
+                        var seg = segmentMap.AddSegment(new ImageSegment(
+                            section.Name,
+                            section.Address,
+                            mem, mode)
+                        {
+                            Size = (uint)section.Size
+                        });
+                        seg.Designer = CreateRenderer64(section);
+                    }
+                    else
+                    {
+                        //$TODO: warn
+                    }
                 }
-                else
+            }
+            else
+            {
+                // There are stripped ELF binaries with 0 sections. If we have one
+                // create a pseudo-section from the segMap.
+                foreach (var segment in segMap)
                 {
-                    //$TODO: warn
+                    var imgSegment = new ImageSegment(
+                        segment.Value.BaseAddress.GenerateName("seg", ""),
+                        segment.Value,
+                        AccessMode.ReadExecute)        //$TODO: writeable segments.
+                    {
+                        Size = (uint)segment.Value.Length,
+                    };
+                    segmentMap.AddSegment(imgSegment);
                 }
             }
             segmentMap.DumpSections();
             return segmentMap;
-
         }
 
         public override int LoadProgramHeaderTable()
@@ -1305,27 +1323,47 @@ namespace Reko.ImageLoaders.Elf
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
             var segmentMap = new SegmentMap(addrPreferred);
-            foreach (var section in Sections)
+            if (Sections.Count > 0)
             {
-                if (section.Name == null || section.Address == null)
-                    continue;
+                foreach (var section in Sections)
+                {
+                    if (section.Name == null || section.Address == null)
+                        continue;
 
-                MemoryArea mem;
-                if (segMap.TryGetLowerBound(section.Address, out mem) &&
-                    section.Address < mem.EndAddress)
-                {
-                    AccessMode mode = AccessModeOf(section.Flags);
-                    var seg = segmentMap.AddSegment(new ImageSegment(
-                        section.Name,
-                        section.Address,
-                        mem, mode)
+                    MemoryArea mem;
+                    if (segMap.TryGetLowerBound(section.Address, out mem) &&
+                        section.Address < mem.EndAddress)
                     {
-                        Size = (uint)section.Size
-                    });
-                    seg.Designer = CreateRenderer(section, machine);
-                } else
+                        AccessMode mode = AccessModeOf(section.Flags);
+                        var seg = segmentMap.AddSegment(new ImageSegment(
+                            section.Name,
+                            section.Address,
+                            mem, mode)
+                        {
+                            Size = (uint)section.Size
+                        });
+                        seg.Designer = CreateRenderer(section, machine);
+                    }
+                    else
+                    {
+                        //$TODO: warn
+                    }
+                }
+            }
+            else
+            {
+                // There are stripped ELF binaries with 0 sections. If we have one
+                // create a pseudo-section from the segMap.
+                foreach (var segment in segMap)
                 {
-                    //$TODO: warn
+                    var imgSegment = new ImageSegment(
+                        segment.Value.BaseAddress.GenerateName("seg", ""),
+                        segment.Value,
+                        AccessMode.ReadExecute)        //$TODO: writeable segments.
+                    {
+                        Size = (uint)segment.Value.Length,
+                    };
+                    segmentMap.AddSegment(imgSegment);
                 }
             }
             segmentMap.DumpSections();

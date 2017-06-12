@@ -195,9 +195,19 @@ namespace Reko.Arch.X86
 
         public void RewriteRet()
         {
+            int extraBytesPopped = instrCur.Operands == 1 
+                ? ((ImmediateOperand)instrCur.op1).Value.ToInt32() 
+                : 0;
+            if ((extraBytesPopped & 1) == 1)
+            {
+                // Unlikely that an odd number of bytes are pushed on the stack.
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
+            }
             m.Return(
                 this.arch.WordWidth.Size + (instrCur.code == Opcode.retf ? Registers.cs.DataType.Size : 0),
-                instrCur.Operands == 1 ? ((ImmediateOperand)instrCur.op1).Value.ToInt32() : 0);
+                extraBytesPopped);
             rtlc = RtlClass.Transfer;
         }
 
