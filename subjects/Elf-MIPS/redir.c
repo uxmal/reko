@@ -4281,16 +4281,16 @@ void properties_parse_command_line(int32 r4, Eq_5256 * r5[], word32 dwArg00, wor
 	int32 dwLoc28_103 = 0x00;
 	if ((word32) (dwLoc28_103 < r4) == 0x00)
 		return;
-	if ((word32) (r5[dwLoc28_103]->b0000 + 0x00) != 0x002D)
+	if ((word32) (r5[dwLoc28_103].b0000 + 0x00) != 0x002D)
 	{
 l0040625C:
 		dwLoc28_103 = dwLoc28_103 + 0x01;
 		goto l00405D00;
 	}
-	byte bLoc1C_111 = (byte) (word32) (r5[dwLoc28_103]->b0000 + 0x01);
+	byte bLoc1C_111 = (byte) (word32) (r5[dwLoc28_103].b0000 + 0x01);
 	if ((word32) bLoc1C_111 != 0x00)
 	{
-		if ((word32) (r5[dwLoc28_103]->b0000 + 0x02) != 0x00)
+		if ((word32) (r5[dwLoc28_103].b0000 + 0x02) != 0x00)
 		{
 l00405E54:
 			int32 r3_115 = (word32) bLoc1C_111;
