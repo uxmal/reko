@@ -40526,28 +40526,3 @@ fn1483_1C50_exit:
 
 
 
-void fn1483_1C95(word16 ax, word16 bp)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  ax bp ss
-// LiveOut:
-// Trashed: SCZO ah al ax bp bpl eax ebp rax rbp
-// Preserved: sp
-fn1483_1C95_entry:
-// DataOut: ax bp ss
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l1483_1C95:
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-fn1483_1C95_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp ax:ax + 0x7A52 bp:<invalid>
-
-
-

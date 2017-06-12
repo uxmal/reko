@@ -17988,9 +17988,3 @@ void fn1483_1C50(word16 dx)
 	return;
 }
 
-// 1483:1C95: void fn1483_1C95(Register word16 ax, Register word16 bp)
-void fn1483_1C95(word16 ax, word16 bp)
-{
-	return;
-}
-
