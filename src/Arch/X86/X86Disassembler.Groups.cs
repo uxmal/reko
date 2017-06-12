@@ -96,7 +96,16 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new Group7OpRec(
                     new SingleByteOpRec(Opcode.illegal),
-                    new SingleByteOpRec(Opcode.xgetbv)),
+
+                    new SingleByteOpRec(Opcode.xgetbv),
+                    new SingleByteOpRec(Opcode.xsetbv),
+                    new SingleByteOpRec(Opcode.illegal),
+                    new SingleByteOpRec(Opcode.illegal),
+
+                    new SingleByteOpRec(Opcode.vmfunc),
+                    new SingleByteOpRec(Opcode.xend),
+                    new SingleByteOpRec(Opcode.xtest),
+                    new SingleByteOpRec(Opcode.illegal)),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),

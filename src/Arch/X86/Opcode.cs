@@ -302,12 +302,16 @@ namespace Reko.Arch.X86
         test,
         ucomiss,
         ucomisd,
+        vmfunc,
         wait,
         xadd,
         xchg,
+        xend,
         xgetbv,
         xlat,
         xor,
+        xsetbv,
+        xtest,
 
         // Borland implemented an x87 emulator, and introduced these
         // pseudo-instructions.
