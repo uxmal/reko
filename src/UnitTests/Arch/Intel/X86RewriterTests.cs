@@ -1709,6 +1709,15 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|v3 = (real32) xmm0 / xmm1",
                 "2|L--|xmm0 = DPB(xmm0, v3, 0)");
         }
+
+        [Test(Description = "RET n instructions with an odd n are unlikely to be valid.")]
+        public void X86rw_invalid_ret_n()
+        {
+            Run64bitTest("C2 01 00");
+            AssertCode(     // ret 0001
+                "0|---|0000000140000000(3): 1 instructions",
+                "1|---|<invalid>");
+        }
     }
 }
 
