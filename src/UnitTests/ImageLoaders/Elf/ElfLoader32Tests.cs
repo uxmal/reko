@@ -252,5 +252,21 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             this.program = new Program(new SegmentMap(Address.Ptr32(0x10000)), this.arch, this.platform);
         }
+
+        [Test]
+        public void El32_Executable_NoSections()
+        {
+            Given_RawImage("C0 DE 00 00 00 00 00 00 DA 7A 00 00");
+            Given_ImageHeader(ElfMachine.EM_386);
+            Given_ProgramHeader(ProgramHeaderType.PT_LOAD, 0, 0x1000, 8, 8);
+            mr.ReplayAll();
+
+            When_CreateLoader32(false);
+            var segmentMap = el32.LoadImageBytes(platform, this.bytes, Address.Ptr32(0x1000));
+
+            Assert.AreEqual(1, segmentMap.Segments.Count);
+            mr.VerifyAll();
+
+        }
     }
 }
