@@ -21910,7 +21910,7 @@ T_5257: (in 0x00000000 : word32)
   Class: Eq_5257
   DataType: word32
   OrigDataType: word32
-T_5258: (in r5[dwLoc28_103]->b0000 + 0x00000000 : word32)
+T_5258: (in r5[dwLoc28_103].b0000 + 0x00000000 : word32)
   Class: Eq_5258
   DataType: word32
   OrigDataType: word32
@@ -21918,7 +21918,7 @@ T_5259: (in Mem0[r5[dwLoc28_103 * 0x00000004] + 0x00000000:int8] : int8)
   Class: Eq_5259
   DataType: int8
   OrigDataType: int8
-T_5260: (in (word32) (r5[dwLoc28_103]->b0000 + 0x00000000) : word32)
+T_5260: (in (word32) (r5[dwLoc28_103].b0000 + 0x00000000) : word32)
   Class: Eq_5260
   DataType: int32
   OrigDataType: word32
@@ -21926,7 +21926,7 @@ T_5261: (in 45 : int32)
   Class: Eq_5260
   DataType: int32
   OrigDataType: int32
-T_5262: (in (word32) (r5[dwLoc28_103]->b0000 + 0x00000000) != 45 : bool)
+T_5262: (in (word32) (r5[dwLoc28_103].b0000 + 0x00000000) != 45 : bool)
   Class: Eq_5262
   DataType: bool
   OrigDataType: bool
@@ -21958,7 +21958,7 @@ T_5269: (in 1 : int32)
   Class: Eq_5269
   DataType: int32
   OrigDataType: int32
-T_5270: (in r5[dwLoc28_103]->b0000 + 1 : word32)
+T_5270: (in r5[dwLoc28_103].b0000 + 1 : word32)
   Class: Eq_5270
   DataType: word32
   OrigDataType: word32
@@ -21966,11 +21966,11 @@ T_5271: (in Mem0[r5[dwLoc28_103 * 0x00000004] + 1:byte] : byte)
   Class: Eq_5271
   DataType: byte
   OrigDataType: byte
-T_5272: (in (word32) (r5[dwLoc28_103]->b0000 + 1) : word32)
+T_5272: (in (word32) (r5[dwLoc28_103].b0000 + 1) : word32)
   Class: Eq_5272
   DataType: word32
   OrigDataType: word32
-T_5273: (in (byte) (word32) (r5[dwLoc28_103]->b0000 + 1) : byte)
+T_5273: (in (byte) (word32) (r5[dwLoc28_103].b0000 + 1) : byte)
   Class: Eq_5265
   DataType: byte
   OrigDataType: byte
@@ -22018,7 +22018,7 @@ T_5284: (in 2 : int32)
   Class: Eq_5284
   DataType: int32
   OrigDataType: int32
-T_5285: (in r5[dwLoc28_103]->b0000 + 2 : word32)
+T_5285: (in r5[dwLoc28_103].b0000 + 2 : word32)
   Class: Eq_5285
   DataType: word32
   OrigDataType: word32
@@ -22026,7 +22026,7 @@ T_5286: (in Mem0[r5[dwLoc28_103 * 0x00000004] + 2:int8] : int8)
   Class: Eq_5286
   DataType: int8
   OrigDataType: int8
-T_5287: (in (word32) (r5[dwLoc28_103]->b0000 + 2) : word32)
+T_5287: (in (word32) (r5[dwLoc28_103].b0000 + 2) : word32)
   Class: Eq_5287
   DataType: word32
   OrigDataType: word32
@@ -22034,7 +22034,7 @@ T_5288: (in 0x00000000 : word32)
   Class: Eq_5287
   DataType: word32
   OrigDataType: word32
-T_5289: (in (word32) (r5[dwLoc28_103]->b0000 + 2) == 0x00000000 : bool)
+T_5289: (in (word32) (r5[dwLoc28_103].b0000 + 2) == 0x00000000 : bool)
   Class: Eq_5289
   DataType: bool
   OrigDataType: bool

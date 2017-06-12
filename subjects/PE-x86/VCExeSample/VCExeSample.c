@@ -139,8 +139,8 @@ void loop_test11(word32 ecx, word32 ebp)
 void nested_structs_test12(nested_structs_type * dwArg04)
 {
 	dwArg04->a = 0x01;
-	dwArg04->str->b = 0x02;
-	dwArg04->str->c = 0x03;
+	dwArg04->str.b = 0x02;
+	dwArg04->str.c = 0x03;
 	dwArg04->d = 0x04;
 	return;
 }
