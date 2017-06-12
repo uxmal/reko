@@ -262,6 +262,20 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        public void CEB_BuildPointerToNestedStruct()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var nestedStr = Struct(
+                Fld(0, PrimitiveType.Int32),
+                Fld(4, PrimitiveType.Real32));
+            var str = Struct(Fld(4, nestedStr));
+            CreateTv(id, Ptr32(str), PrimitiveType.Word32);
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, id, null, 8);
+            var e = ceb.BuildComplex(true);
+            Assert.AreEqual("id->t0004.r0004", e.ToString());
+        }
+
+        [Test]
         public void CEB_BuildPointerToInteger()
         {
             var id = new Identifier("id", PrimitiveType.Word32, null);
