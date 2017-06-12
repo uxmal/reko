@@ -618,9 +618,19 @@ namespace Reko.Core.Types
                     (strFa != null && strFb != null))
                     return false;
 
-                var strSize = ((strFa != null) ? strFa : strFb).GetInferredSize();
-                fNestedStruct = (strFa != null) ? fa : fb;
-                fOther = (strFb != null) ? fa : fb;
+                int strSize;
+                if (strFa != null)
+                {
+                    fNestedStruct = fa;
+                    fOther = fb;
+                    strSize = strFa.GetInferredSize();
+                }
+                else
+                {
+                    fNestedStruct = fb;
+                    fOther = fa;
+                    strSize = strFb.GetInferredSize();
+                }
 
                 return (
                     fOther.Offset >= fNestedStruct.Offset &&
