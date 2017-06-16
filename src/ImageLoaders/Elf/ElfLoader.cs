@@ -54,6 +54,7 @@ namespace Reko.ImageLoaders.Elf
         public const byte ELFDATA2LSB = 1;
         public const byte ELFDATA2MSB = 2;
 
+        public const int ELFOSABI_ARM = 0x61;
         public const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
         public const uint SHF_WRITE = 0x1;
         public const uint SHF_ALLOC = 0x2;
@@ -239,6 +240,7 @@ namespace Reko.ImageLoaders.Elf
             switch (osAbi)
             {
             case ELFOSABI_NONE: // Unspecified ABI
+            case ELFOSABI_ARM:
                 envName = "elf-neutral";
                 break;
             case ELFOSABI_CELL_LV2: // PS/3

@@ -124,7 +124,8 @@ namespace Reko.Environments.Windows
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             foreach (ITypeLibraryElement tl in envCfg.TypeLibraries)
             {
-                Metadata = new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(tl.Name))
+                var path = cfgSvc.GetInstallationRelativePath(tl.Name);
+                Metadata = new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(path))
                                 .Load(this, tl.Module, Metadata);
             }
         }
