@@ -94,7 +94,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public Tuple<string, DataType, SerializedType> DataTypeFromImportName(string importName)
+        public Tuple<string, SerializedType, SerializedType> DataTypeFromImportName(string importName)
         {
             throw new NotImplementedException();
         }

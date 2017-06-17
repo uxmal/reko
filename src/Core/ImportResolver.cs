@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Expressions;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Core.Operators;
@@ -144,8 +145,14 @@ namespace Reko.Core
             var t = platform.DataTypeFromImportName(name);
             //$REVIEW: the way imported symbols are resolved as 
             // globals or functions needs a revisit.
-            if (t != null && !(t.Item2 is FunctionType))
-                return new Identifier(t.Item1, t.Item2, new MemoryStorage());
+            if (t != null && !(t.Item2 is SerializedSignature))
+            {
+                var dSer = program.CreateTypeLibraryDeserializer();
+                var dt = (t.Item2 == null) ?
+                    new UnknownType() :
+                    t.Item2.Accept(dSer);
+                return new Identifier(t.Item1, dt, new MemoryStorage());
+            }
             else
                 return null;
         }
