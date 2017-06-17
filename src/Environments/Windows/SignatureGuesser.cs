@@ -31,7 +31,7 @@ namespace Reko.Environments.Windows
 {
     public class SignatureGuesser
     {
-        public static Tuple<string, DataType, SerializedType> InferTypeFromName(string fnName, TypeLibraryDeserializer loader, IPlatform platform)
+        public static Tuple<string, SerializedType, SerializedType> InferTypeFromName(string fnName)
         {
             if (fnName[0] == '?')
             {
@@ -47,23 +47,7 @@ namespace Reko.Environments.Windows
                     Debug.Print("*** Error parsing {0}. {1}", fnName, ex.Message);
                     return null;
                 }
-                var sproc = field.Item2 as SerializedSignature;
-                if (sproc != null)
-                {
-                    var sser = platform.CreateProcedureSerializer(loader, sproc.Convention);
-                    var sig = sser.Deserialize(sproc, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
-                    return new Tuple<string, DataType, SerializedType>(
-                        field.Item1,
-                        sig,
-                        field.Item3);
-                }
-                else
-                {
-                    var dt = (field.Item2 == null) ?
-                        new UnknownType() :
-                        field.Item2.Accept(loader);
-                    return Tuple.Create(field.Item1, dt, field.Item3);
-                }
+                return field;
             }
             return null;
         }

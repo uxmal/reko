@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Expressions;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Core.Operators;
@@ -60,6 +61,31 @@ namespace Reko.Core
         }
 
         public ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform)
+        {
+            var ep = LookupProcedure(moduleName, importName, platform);
+            if (ep != null)
+                return ep;
+            // Can we guess at the signature?
+            ep = platform.SignatureFromName(importName);
+            if (ep != null)
+            {
+                if (!ep.Signature.ParametersValid)
+                {
+                    // We found a imported procedure but couldn't find its signature.
+                    // Perhaps it has been mangled, and we can use the stripped name.
+                    var epNew = LookupProcedure(null, ep.Name, platform);
+                    if (epNew != null)
+                    {
+                        ep = epNew;
+                    }
+                }
+                return ep;
+            }
+
+            return null;
+        }
+
+        private ExternalProcedure LookupProcedure(string moduleName, string importName, IPlatform platform)
         {
             if (!string.IsNullOrEmpty(moduleName))
             {
@@ -112,6 +138,26 @@ namespace Reko.Core
         }
 
         public Expression ResolveImport(string moduleName, string name, IPlatform platform)
+        {
+            var global = LookupImport(moduleName, name, platform);
+            if (global != null)
+                return global;
+            var t = platform.DataTypeFromImportName(name);
+            //$REVIEW: the way imported symbols are resolved as 
+            // globals or functions needs a revisit.
+            if (t != null && !(t.Item2 is SerializedSignature))
+            {
+                var dSer = program.CreateTypeLibraryDeserializer();
+                var dt = (t.Item2 == null) ?
+                    new UnknownType() :
+                    t.Item2.Accept(dSer);
+                return new Identifier(t.Item1, dt, new MemoryStorage());
+            }
+            else
+                return null;
+        }
+
+        private Expression LookupImport(string moduleName, string name, IPlatform platform)
         {
             foreach (var program in project.Programs)
             {

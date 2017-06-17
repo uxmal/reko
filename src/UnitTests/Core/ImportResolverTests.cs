@@ -233,5 +233,22 @@ namespace Reko.UnitTests.Core
             var dt = impres.ResolveImport("foo", "bar", platform);
             Assert.AreEqual("&bar", dt.ToString());
         }
+
+        [Test]
+        public void Impres_VtblFromMsMangledName()
+        {
+            var proj = new Project();
+            var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
+            platform.Stub(p => p.ResolveImportByName(null, null)).
+                IgnoreArguments().Return(null);
+            SerializedType nullType = null;
+            platform.Stub(p => p.DataTypeFromImportName("??_7Scope@@6B@")).
+                Return(Tuple.Create("`vftable'", nullType, nullType));
+
+            var id = impres.ResolveImport("foo", "??_7Scope@@6B@", platform);
+
+            Assert.AreEqual("`vftable'", id.ToString());
+            Assert.IsInstanceOf<UnknownType>(id.DataType);
+        }
     }
 }
