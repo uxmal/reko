@@ -138,6 +138,7 @@ namespace Reko.Environments.Windows
             return new ExternalProcedure(name, new FunctionType
             {
                 ReturnAddressOnStack = arch.PointerType.Size,
+                StackDelta = arch.PointerType.Size,
             });
         }
 

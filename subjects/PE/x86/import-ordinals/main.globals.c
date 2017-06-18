@@ -4,13 +4,13 @@
 
 #include "main.h"
 
-Eq_629 g_t5A4D;
+Eq_623 g_t5A4D;
 word16 g_w400000;
-struct Eq_629 * g_ptr40003C;
+struct Eq_623 * g_ptr40003C;
 <anonymous> g_t401731 = <code>;
 <anonymous> * g_ptr4020D4 = &g_t401731;
-Eq_163 g_t4020E0 = null;
-Eq_163 g_t4020F0 = null;
+Eq_162 g_t4020E0 = null;
+Eq_162 g_t4020F0 = null;
 ui32 g_dw403000 = 0x44BF19B1;
 ui32 g_dw403004 = 0xBB40E64E;
 ui32 g_dw403010 = 0x00000001;

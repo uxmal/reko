@@ -879,7 +879,7 @@ fn100015CF_entry:
 // LocalsOut: fp(32)
 
 l100015CF:
-	word32 eax_122
+	word32 eax_119
 	word32 ebp_10 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10002210, 0x00000014)
 	Mem14[fp - 0x0000000C:word32] = Mem0[0x100033B4:word32]
 	word32 eax_16 = _decode_pointer(Mem14[fp - 0x0000000C:(ptr void)])
@@ -906,50 +906,50 @@ l100015FE:
 	call lock (retsize: 4; depth: 4)
 		uses: C,dwLoc04_3,dwLoc08_5,dwLoc0C,eax_16,ebp_10,ebx,ecx_17,edi,esi_15,esp_45,SCZO_20,SZO,Z_21
 		defs: C_55,eax_49,ebp_51,ebx_56,ecx_50,edi_57,esi_48,esp_47,SCZO_52,SZO_54,Z_53
-	Mem62[ebp_51 - 0x00000004:word32] = Mem46[ebp_51 - 0x00000004:word32] & 0x00000000
-	Mem67[esp_47 - 0x00000004:word32] = Mem62[0x100033B4:word32]
-	Mem69[ebp_51 - 0x0000001C:word32] = _decode_pointer(Mem67[esp_47 - 0x00000004:(ptr void)])
-	Mem72[esp_47 - 0x00000008:word32] = Mem69[0x100033B0:word32]
-	Mem74[ebp_51 - 0x00000020:word32] = _decode_pointer(Mem72[esp_47 - 0x00000008:(ptr void)])
-	Mem77[esp_47 - 0x0000000C:word32] = ebp_51 - 0x00000020
-	Mem80[esp_47 - 0x00000010:word32] = ebp_51 - 0x0000001C
-	Mem83[esp_47 - 0x00000014:word32] = Mem80[ebp_51 + 0x00000008:word32]
-	word32 eax_84 = __dllonexit(Mem83[esp_47 - 0x00000014:_onexit_t], Mem83[esp_47 - 0x00000010:(ptr (ptr PVFV))], Mem83[esp_47 - 0x0000000C:(ptr (ptr PVFV))])
-	Mem85[ebp_51 - 0x00000024:word32] = eax_84
-	Mem88[esp_47 - 0x00000018:word32] = Mem85[ebp_51 - 0x0000001C:word32]
-	word32 esp_90
-	word32 esi_91
-	word32 eax_92
-	word32 ecx_93
-	word32 ebp_94
-	byte SCZO_95
-	byte Z_96
-	byte SZO_97
-	byte C_98
-	word32 ebx_99
-	word32 edi_100
+	Mem61[ebp_51 - 0x00000004:word32] = Mem46[ebp_51 - 0x00000004:word32] & 0x00000000
+	Mem66[esp_47:word32] = Mem61[0x100033B4:word32]
+	Mem68[ebp_51 - 0x0000001C:word32] = _decode_pointer(Mem66[esp_47:(ptr void)])
+	Mem71[esp_47 - 0x00000004:word32] = Mem68[0x100033B0:word32]
+	Mem73[ebp_51 - 0x00000020:word32] = _decode_pointer(Mem71[esp_47 - 0x00000004:(ptr void)])
+	Mem76[esp_47 - 0x00000008:word32] = ebp_51 - 0x00000020
+	Mem79[esp_47 - 0x0000000C:word32] = ebp_51 - 0x0000001C
+	Mem82[esp_47 - 0x00000010:word32] = Mem79[ebp_51 + 0x00000008:word32]
+	word32 eax_83 = __dllonexit(Mem82[esp_47 - 0x00000010:_onexit_t], Mem82[esp_47 - 0x0000000C:(ptr (ptr PVFV))], Mem82[esp_47 - 0x00000008:(ptr (ptr PVFV))])
+	Mem84[ebp_51 - 0x00000024:word32] = eax_83
+	Mem87[esp_47 - 0x00000014:word32] = Mem84[ebp_51 - 0x0000001C:word32]
+	word32 esp_89
+	word32 esi_90
+	word32 eax_91
+	word32 ecx_92
+	word32 ebp_93
+	byte SCZO_94
+	byte Z_95
+	byte SZO_96
+	byte C_97
+	word32 ebx_98
+	word32 edi_99
 	call encode_pointer (retsize: 4; depth: 4)
-		uses: C_64,dwLoc04_3,dwLoc08_5,dwLoc0C,eax_84,ebp_51,ebx_56,ecx_59,edi_57,esi_89,esp_87,SCZO_52,SZO_63,Z_53
-		defs: C_98,eax_92,ebp_94,ebx_99,ecx_93,edi_100,esi_91,esp_90,SCZO_95,SZO_97,Z_96
-	Mem102[0x100033B4:word32] = eax_92
-	Mem105[esp_90 - 0x00000008:word32] = Mem102[ebp_94 - 0x00000020:word32]
-	word32 esp_106
-	word32 esi_107
-	word32 eax_108
-	word32 ecx_109
-	byte SCZO_111
-	byte Z_112
-	byte SZO_113
-	byte C_114
-	word32 ebx_115
-	word32 edi_116
+		uses: C_63,dwLoc04_3,dwLoc08_5,dwLoc0C,eax_83,ebp_51,ebx_56,ecx_58,edi_57,esi_88,esp_86,SCZO_52,SZO_62,Z_53
+		defs: C_97,eax_91,ebp_93,ebx_98,ecx_92,edi_99,esi_90,esp_89,SCZO_94,SZO_96,Z_95
+	Mem100[0x100033B4:word32] = eax_91
+	Mem103[esp_89 - 0x00000004:word32] = Mem100[ebp_93 - 0x00000020:word32]
+	word32 esp_104
+	word32 esi_105
+	word32 eax_106
+	word32 ecx_107
+	byte SCZO_109
+	byte Z_110
+	byte SZO_111
+	byte C_112
+	word32 ebx_113
+	word32 edi_114
 	call encode_pointer (retsize: 4; depth: 4)
-		uses: C_98,dwLoc04_3,dwLoc08_5,dwLoc0C,eax_92,ebp_94,ebx_99,ecx_93,edi_100,esi_91,esp_104,SCZO_95,SZO_97,Z_96
-		defs: C_114,eax_108,ebp_110,ebx_115,ecx_109,edi_116,esi_107,esp_106,SCZO_111,SZO_113,Z_112
-	Mem120[0x100033B0:word32] = eax_108
-	Mem121[ebp_10 - 0x00000004:word32] = 0xFFFFFFFE
+		uses: C_97,dwLoc04_3,dwLoc08_5,dwLoc0C,eax_91,ebp_93,ebx_98,ecx_92,edi_99,esi_90,esp_102,SCZO_94,SZO_96,Z_95
+		defs: C_112,eax_106,ebp_108,ebx_113,ecx_107,edi_114,esi_105,esp_104,SCZO_109,SZO_111,Z_110
+	Mem117[0x100033B0:word32] = eax_106
+	Mem118[ebp_10 - 0x00000004:word32] = 0xFFFFFFFE
 	fn10001665()
-	eax_122 = Mem121[ebp_10 - 0x00000024:word32]
+	eax_119 = Mem118[ebp_10 - 0x00000024:word32]
 // DataOut: eax ebp fs
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> esi:_decode_pointer eax:<invalid> ecx:<invalid> ebp:<invalid> -12(fp):<invalid> -8(fp):0x10002210 -4(fp):0x00000014
@@ -957,7 +957,7 @@ l100015FE:
 
 l100015F2:
 	Mem39[fp - 0x0000000C:word32] = Mem19[ebp_10 + 0x00000008:word32]
-	eax_122 = _onexit(Mem39[fp - 0x0000000C:_onexit_t])
+	eax_119 = _onexit(Mem39[fp - 0x0000000C:_onexit_t])
 // DataOut: eax ebp fs
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> esi:_decode_pointer eax:<invalid> ecx:<invalid> ebp:<invalid> -12(fp):<invalid> -8(fp):0x10002210 -4(fp):0x00000014
@@ -965,7 +965,7 @@ l100015F2:
 
 l1000165F:
 	fn1000182D(ebp_10, 0x00000014, dwArg00, dwArg04, dwArg08, dwArg0C)
-	return eax_122
+	return eax_119
 // DataOut: eax esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> esi:<invalid> eax:<invalid> ecx:<invalid> ebp:<invalid> -12(fp):<invalid> -8(fp):0x10002210 -4(fp):0x00000014
