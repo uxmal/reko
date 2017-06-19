@@ -91,20 +91,20 @@ l00401114:
 // SymbolicIn: esp:fp
 
 l00401123:
-	Mem31[fp + 0xFFFFFFF4:word32] = eax_22
-	Mem33[fp + 0xFFFFFFF0:word32] = 0x00000008
-	Mem36[fp + 0xFFFFFFEC:word32] = GetProcessHeap()
-	word32 eax_37 = HeapFree(Mem36[fp + 0xFFFFFFEC:HANDLE], Mem36[fp + 0xFFFFFFF0:DWORD], Mem36[fp + 0xFFFFFFF4:LPVOID])
-	Mem41[fp + 0xFFFFFFF4:word32] = Mem36[0x0040208B:word32]
-	word32 esp_42
-	byte SCZO_43
-	byte C_44
-	word32 eax_45
-	byte SZO_46
-	byte Z_47
+	Mem30[esp_19 - 0x00000004:word32] = eax_22
+	Mem32[esp_19 - 0x00000008:word32] = 0x00000008
+	Mem35[esp_19 - 0x0000000C:word32] = GetProcessHeap()
+	word32 eax_36 = HeapFree(Mem35[esp_19 - 0x0000000C:HANDLE], Mem35[esp_19 - 0x00000008:DWORD], Mem35[esp_19 - 0x00000004:LPVOID])
+	Mem40[esp_19 - 0x00000004:word32] = Mem35[0x0040208B:word32]
+	word32 esp_41
+	byte SCZO_42
+	byte C_43
+	word32 eax_44
+	byte SZO_45
+	byte Z_46
 	call __CRTL_TLS_ExitThread (retsize: 4; depth: 4)
-		uses: C_29,dwLoc04_18,eax_37,esp_40,SCZO_20,SZO_27,Z_28
-		defs: C_44,eax_45,esp_42,SCZO_43,SZO_46,Z_47
+		uses: C_28,dwLoc04_18,eax_36,esp_39,SCZO_20,SZO_26,Z_27
+		defs: C_43,eax_44,esp_41,SCZO_42,SZO_45,Z_46
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> eax:eax -4(fp):<invalid>
