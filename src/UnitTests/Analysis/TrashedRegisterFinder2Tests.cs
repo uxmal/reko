@@ -39,7 +39,7 @@ using Reko.Core.Code;
 namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
-    [Ignore(Categories.WorkInProgress)]
+    //[Ignore(Categories.WorkInProgress)]
     public class TrashedRegisterFinder2Tests
     {
         private MockRepository mr;
@@ -140,15 +140,17 @@ namespace Reko.UnitTests.Analysis
 
         private void ProcessScc(IList<Procedure> scc)
         {
+            var sccSet = scc.ToHashSet();
             foreach (var proc in scc)
             {
                 var sst = new SsaTransform(
                     program,
                     proc,
-                    new HashSet<Procedure>(),
+                    sccSet,
                     importResolver,
                     dataFlow);
                 sst.Transform();
+                sst.AddUsesToExitBlock();
                 var vp = new ValuePropagator(program.Architecture, sst.SsaState, NullDecompilerEventListener.Instance);
                 vp.Transform();
             }
@@ -510,6 +512,48 @@ Constants: cl:0x00
                     m.Load(ST, dt, Top)));
                 m.Assign(Top, m.IAdd(Top, 1));
 
+                m.Return();
+            });
+            RunTest();
+        }
+
+        /// <summary>
+        /// This code has duplicated procedure tails (which restore the caller's
+        /// stack frame. This may cause accuracy problems when computing 
+        /// trashed registers.
+        /// </summary>
+        [Test]
+        public void TrfRecursive_duplicate_tails()
+        {
+            Given_PlatformTrashedRegisters();
+            Expect(
+                "recursive",
+                "Preserved: ebp,esp",
+                "Trashed: esp",
+                "");
+            AddProcedure("recursive", m =>
+            {
+                var ebp = m.Frame.EnsureRegister(new RegisterStorage("ebp", 4, 0, PrimitiveType.Word32));
+                var esp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                m.Assign(esp, m.Frame.FramePointer);
+                m.Assign(esp, m.ISub(esp, 4));
+                m.Store(esp, ebp);
+                m.Assign(ebp, esp);
+                m.BranchIf(m.LoadB(m.Word32(0x123400)), "m2base_case");
+
+                m.Label("m1recursive");
+                m.Call("recursive", 4);
+                m.Assign(esp, ebp);
+                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(esp, m.IAdd(esp, 4));
+                m.Goto("m3done");
+
+                m.Label("m2base_case");
+                m.Assign(esp, ebp);
+                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(esp, m.IAdd(esp, 4));
+
+                m.Label("m3done");
                 m.Return();
             });
             RunTest();

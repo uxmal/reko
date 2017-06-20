@@ -661,5 +661,49 @@ const eax:<invalid>
     main_exit eax:eax esp:fp";
             RunTest(p, sExp);
         }
+
+        /// <summary>
+        /// This code has duplicated procedure tails (which restore the caller's
+        /// stack frame. This may cause accuracy problems when computing 
+        /// trashed registers.
+        /// </summary>
+        [Test]
+        public void TrashRecursive()
+        {
+            p.Add("recursive", m =>
+            {
+                var ebp = m.Frame.EnsureRegister(Registers.ebp);
+                var esp = m.Frame.EnsureRegister(Registers.esp);
+                m.Assign(esp, m.Frame.FramePointer);
+                m.Assign(esp, m.ISub(esp, 4)); 
+                m.Store(esp, ebp);
+                m.Assign(ebp, esp);
+                m.BranchIf(m.LoadB(m.Word32(0x123400)), "m2base_case");
+
+                m.Label("m1recursive");
+                m.Call("recursive", 4);
+                m.Assign(esp, ebp);
+                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(esp, m.IAdd(esp, 4));
+                m.Goto("m3done");
+
+                m.Label("m2base_case");
+                m.Assign(esp, ebp);
+                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(esp, m.IAdd(esp, 4));
+
+                m.Label("m3done");
+                m.Return();
+            });
+            var sExp =
+@"recursive
+    recursive_entry esp:fp
+    l1 esp:fp
+    m1recursive ebp:fp - 0x00000004 esp:fp - 0x00000004
+    m2base_case ebp:fp - 0x00000004 esp:fp - 0x00000004
+    m3done ebp:ebp esp:fp
+    recursive_exit ebp:ebp esp:fp";
+            RunTest(p, sExp);
+        }
     }
 }
