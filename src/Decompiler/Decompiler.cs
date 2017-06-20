@@ -80,7 +80,7 @@ namespace Reko
             this.loader = ldr;
             this.host = services.RequireService<DecompilerHost>();
             this.services = services;
-            this.eventListener = services.GetService<DecompilerEventListener>();
+            this.eventListener = services.RequireService<DecompilerEventListener>();
         }
 
         public Project Project { get { return project; } set { project = value; ProjectChanged.Fire(this); } }
