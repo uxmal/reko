@@ -257,14 +257,14 @@ Constants: cl:0x00
                 m.Label("zero");
                 m.Assign(cl, 0);
                 m.Assign(cx, m.Dpb(cx, cl, 0));
-                
+
                 m.Label("done");
                 m.Return();
             });
             RunTest();
         }
 
-        [Test(Description="Tests propagation between caller and callee.")]
+        [Test(Description = "Tests propagation between caller and callee.")]
         [Category(Categories.UnitTests)]
         public void TrfSubroutine_WithRegisterParameters()
         {
@@ -390,7 +390,7 @@ Constants: cl:0x00
             RunTest();
         }
 
-        [Test(Description="Respect user-provided signatures")]
+        [Test(Description = "Respect user-provided signatures")]
         public void TrfUserSignature()
         {
             AddProcedure("fnSig", m =>
@@ -408,7 +408,7 @@ Constants: cl:0x00
                 m.Procedure.Signature = FunctionType.Func(
                     new Identifier("", PrimitiveType.Word32, r1.Storage),
                     new Identifier("arg1", PrimitiveType.Word32, r1.Storage));
-                });
+            });
             Expect("fnSig", "Preserved: ", "Trashed: r1", "");
             RunTest();
         }
@@ -550,6 +550,61 @@ Constants: cl:0x00
 
                 m.Label("m2base_case");
                 m.Assign(esp, ebp);
+                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(esp, m.IAdd(esp, 4));
+
+                m.Label("m3done");
+                m.Return();
+            });
+            RunTest();
+        }
+
+        [Test]
+        public void TrfFibonacci()
+        {
+            Given_PlatformTrashedRegisters();
+            Expect(
+                "recursive",
+                "Preserved: ebp,esp",
+                "Trashed: esp",
+                "");
+            AddProcedure("recursive", m =>
+            {
+                var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
+                var ebp = m.Frame.EnsureRegister(new RegisterStorage("ebp", 4, 0, PrimitiveType.Word32));
+                var esp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                m.Assign(esp, m.Frame.FramePointer);
+                m.Assign(esp, m.ISub(esp, 4));
+                m.Store(esp, ebp);
+                m.Assign(ebp, esp);
+                m.Assign(esp, m.ISub(esp, 4));
+                m.BranchIf(m.Lt(m.LoadDw(m.IAdd(ebp, 8)), 2), "m2base_case");
+
+                m.Label("m1recursive");
+                m.Assign(eax, m.LoadDw(m.IAdd(ebp, 8)));
+                m.Assign(eax, m.ISub(eax, 1));
+                m.Assign(esp, m.ISub(esp, 4));
+                m.Store(esp, eax);
+                m.Call("recursive", 4);
+                m.Assign(esp, m.IAdd(esp, 4));
+                m.Store(m.ISub(ebp, 4), eax);
+
+                m.Assign(eax, m.LoadDw(m.IAdd(ebp, 8)));
+                m.Assign(eax, m.ISub(eax, 2));
+                m.Assign(esp, m.ISub(esp, 4));
+                m.Store(esp, eax);
+                m.Store(esp, eax);
+                m.Call("recursive", 4);
+                m.Assign(esp, m.IAdd(esp, 4));
+                m.Assign(eax, m.IAdd(eax, m.LoadDw(m.ISub(ebp, 4))));
+
+                m.Assign(esp, ebp);
+                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(esp, m.IAdd(esp, 4));
+                m.Goto("m3done");
+
+                m.Label("m2base_case");
+                m.Assign(eax, 1);
                 m.Assign(ebp, m.LoadDw(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
 
