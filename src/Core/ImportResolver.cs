@@ -132,6 +132,14 @@ namespace Reko.Core
                 SystemService svc;
                 if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
                 {
+					if(svc.Signature == null)
+					{
+						FunctionType fnc;
+						if(program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name, out fnc))
+						{
+							svc.Signature = fnc;
+						}
+					}
                     return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                 }
             }
