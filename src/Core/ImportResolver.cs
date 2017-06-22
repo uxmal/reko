@@ -60,6 +60,16 @@ namespace Reko.Core
             this.eventListener = eventListener;
         }
 
+        private void EnsureSignature(Program program, SystemService svc)
+        {
+            if (svc.Signature == null) {
+                FunctionType fnc;
+                if (program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name, out fnc)) {
+                    svc.Signature = fnc;
+                }
+            }
+        }
+
         public ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform)
         {
             var ep = LookupProcedure(moduleName, importName, platform);
@@ -132,14 +142,7 @@ namespace Reko.Core
                 SystemService svc;
                 if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
                 {
-					if(svc.Signature == null)
-					{
-						FunctionType fnc;
-						if(program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name, out fnc))
-						{
-							svc.Signature = fnc;
-						}
-					}
+                    EnsureSignature(program, svc);
                     return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                 }
             }
@@ -211,12 +214,7 @@ namespace Reko.Core
                 SystemService svc;
                 if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
                 {
-                    if (svc.Signature == null) {
-                        FunctionType fnc;
-                        if (program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name, out fnc)) {
-                            svc.Signature = fnc;
-                        }
-                    }
+                    EnsureSignature(program, svc);
                     var ep = new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                     return new ProcedureConstant(platform.PointerType, ep);
                 }
