@@ -66,9 +66,11 @@ namespace Reko.Core
             if (ep != null)
                 return ep;
             // Can we guess at the signature?
-            ep = platform.SignatureFromName(importName);
-            if (ep != null)
+            var sProc = platform.SignatureFromName(importName);
+            if (sProc != null)
             {
+                var loader = program.CreateTypeLibraryDeserializer();
+                ep = loader.LoadExternalProcedure(sProc);
                 if (!ep.Signature.ParametersValid)
                 {
                     // We found a imported procedure but couldn't find its signature.
