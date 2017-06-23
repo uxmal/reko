@@ -94,6 +94,8 @@ namespace Reko.Environments.Windows
             if (d == null || d.Length == 0)
                 d = DefaultConvention;
             sig.StackDelta = Architecture.PointerType.Size;
+            if (ssig.StackDelta != 0)
+                sig.StackDelta = ssig.StackDelta;
             sig.ReturnAddressOnStack = Architecture.PointerType.Size;
         }
 
