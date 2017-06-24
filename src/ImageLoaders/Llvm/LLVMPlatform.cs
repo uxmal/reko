@@ -194,7 +194,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public ExternalProcedure SignatureFromName(string importName)
+        public ProcedureBase_v1 SignatureFromName(string importName)
         {
             throw new NotImplementedException();
         }

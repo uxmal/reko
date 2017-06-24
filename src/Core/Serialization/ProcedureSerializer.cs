@@ -69,7 +69,10 @@ namespace Reko.Core.Serialization
         {
             SerializedSignature ssig = new SerializedSignature();
             if (!sig.ParametersValid)
+            {
+                ssig.ParametersValid = false;
                 return ssig;
+            }
             ArgumentSerializer argSer = new ArgumentSerializer(Architecture);
             ssig.ReturnValue = argSer.Serialize(sig.ReturnValue);
             ssig.Arguments = new Argument_v1[sig.Parameters.Length];

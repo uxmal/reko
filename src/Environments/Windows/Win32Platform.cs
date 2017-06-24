@@ -268,13 +268,10 @@ namespace Reko.Environments.Windows
             get { return "__cdecl"; }
         }
 
-        public override ExternalProcedure SignatureFromName(string fnName)
+        public override ProcedureBase_v1 SignatureFromName(string fnName)
         {
             EnsureTypeLibraries(PlatformIdentifier); 
-            return SignatureGuesser.SignatureFromName(
-                fnName, 
-                new TypeLibraryDeserializer(this, true, Metadata),
-                this);
+            return SignatureGuesser.SignatureFromName(fnName, this);
         }
 
         public override Tuple<string, SerializedType, SerializedType> DataTypeFromImportName(string importName)
