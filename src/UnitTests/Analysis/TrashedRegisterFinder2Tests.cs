@@ -593,7 +593,6 @@ Constants: cl:0x00
                 m.Assign(eax, m.ISub(eax, 2));
                 m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, eax);
-                m.Store(esp, eax);
                 m.Call("recursive", 4);
                 m.Assign(esp, m.IAdd(esp, 4));
                 m.Assign(eax, m.IAdd(eax, m.LoadDw(m.ISub(ebp, 4))));
@@ -605,6 +604,7 @@ Constants: cl:0x00
 
                 m.Label("m2base_case");
                 m.Assign(eax, 1);
+                m.Assign(esp, ebp);
                 m.Assign(ebp, m.LoadDw(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
 
