@@ -33,13 +33,37 @@ namespace Reko.Analysis
     /// <summary>
     /// Fuses pairs of unaligned loads or stores.
     /// </summary>
-    public class UnalignedMemoryAccessFuser
+    /// <remarks>
+    /// This transform must run before value propagation, because 
+    /// it depends on the availability of the source/target registers
+    /// of the LWR/LWL and SWL/SWR instructions. Value propagation
+    /// can wipe these out.
+    /// </remarks>
+    public class UnalignedMemoryAccessFuser : InstructionVisitorBase
     {
         private SsaState ssa;
 
         public UnalignedMemoryAccessFuser(SsaState ssa)
         {
             this.ssa = ssa;
+        }
+
+        public void Transform()
+        {
+            foreach (var stm in ssa.Procedure.Statements.ToList())
+            {
+                stm.Instruction.Accept(this);
+            }
+        }
+
+        public override void VisitAssignment(Assignment a)
+        {
+            FuseUnalignedLoads(a);
+        }
+
+        public override void VisitSideEffect(SideEffect side)
+        {
+            FuseUnalignedStores(side);
         }
 
         // On MIPS-LE the sequence

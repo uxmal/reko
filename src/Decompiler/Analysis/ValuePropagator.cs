@@ -48,8 +48,7 @@ namespace Reko.Analysis
         private ExpressionSimplifier eval;
         private SsaEvaluationContext evalCtx;
         private SsaIdentifierTransformer ssaIdTransformer;
-        private UnalignedMemoryAccessFuser fuser;
-        DecompilerEventListener eventListener;
+        private DecompilerEventListener eventListener;
 
         public ValuePropagator(
             IProcessorArchitecture arch,
@@ -62,7 +61,6 @@ namespace Reko.Analysis
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);
             this.eval = new ExpressionSimplifier(evalCtx, eventListener);
-            this.fuser = new UnalignedMemoryAccessFuser(ssa);
         }
 
         public bool Changed { get { return eval.Changed; } set { eval.Changed = value; } }
@@ -72,7 +70,7 @@ namespace Reko.Analysis
             do
             {
                 Changed = false;
-                foreach (Statement stm in ssa.Procedure.Statements.ToList())
+                foreach (Statement stm in ssa.Procedure.Statements)
                 {
                     Transform(stm);
                 }
@@ -92,7 +90,6 @@ namespace Reko.Analysis
         public Instruction VisitAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(eval);
-            fuser.FuseUnalignedLoads(a);
             ssa.Identifiers[a.Dst].DefExpression = a.Src;
             return a;
         }
@@ -156,7 +153,7 @@ namespace Reko.Analysis
         public Instruction VisitSideEffect(SideEffect side)
         {
             side.Expression = side.Expression.Accept(eval);
-            return fuser.FuseUnalignedStores(side);
+            return side;
         }
 
         public Instruction VisitStore(Store store)
@@ -178,6 +175,5 @@ namespace Reko.Analysis
         }
 
         #endregion
-
     }
 }
