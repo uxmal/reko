@@ -184,40 +184,32 @@ namespace Reko.Analysis
         {
             var regR = assR.Dst;
             var stmR = ssa.Identifiers[regR].DefStatement;
-            var app = assR.Src as Application;
-            if (app == null)
-                return;
-            var pc = app.Procedure as ProcedureConstant;
-            if (pc == null)
-                return;
-            var ppp = pc.Procedure as PseudoProcedure;
-            if (ppp == null)
-                return;
-            if (ppp.Name != PseudoProcedure.LwR)
+
+            var appR = MatchIntrinsicApplication(assR.Src, PseudoProcedure.LwR);
+            if (appR == null)
                 return;
 
-            var regL = (Identifier)app.Arguments[0];
-            var memR = (MemoryAccess)app.Arguments[1];
+            var memR = (MemoryAccess)appR.Arguments[1];
             var binR = (BinaryExpression)memR.EffectiveAddress;
             var offR = ((Constant)binR.Right).ToInt32();
 
-            var stmL = ssa.Identifiers[regL].DefStatement;
-            if (stmL == null)
-                return;
-            var assL = stmL.Instruction as Assignment;
-            if (assL == null)
-                return;
-
-            var appL = assL.Src as Application;
+            var appL = appR.Arguments[0] as Application;
+            Statement stmL = null;
+            Assignment assL = null;
             if (appL == null)
-                return;
-            var pcL = appL.Procedure as ProcedureConstant;
-            if (pcL == null)
-                return;
-            var pppL = pcL.Procedure as PseudoProcedure;
-            if (pppL == null)
-                return;
-            if (pppL.Name != PseudoProcedure.LwL)
+            {
+                var regL = (Identifier)appR.Arguments[0];
+                stmL = ssa.Identifiers[regL].DefStatement;
+                if (stmL == null)
+                    return;
+                assL = stmL.Instruction as Assignment;
+                if (assL == null)
+                    return;
+
+                appL = assL.Src as Application;
+            }
+            appL = MatchIntrinsicApplication(appL, PseudoProcedure.LwL);
+            if (appL == null)
                 return;
 
             var memL = (MemoryAccess)appL.Arguments[1];
@@ -236,10 +228,29 @@ namespace Reko.Analysis
 
             ssa.RemoveUses(stmL);
             ssa.RemoveUses(stmR);
-            assL.Src = appL.Arguments[0];
+            if (assL != null)
+            {
+                assL.Src = appL.Arguments[0];
+                ssa.AddUses(stmL);
+            }
             assR.Src = memR;
-            ssa.AddUses(stmL);
             ssa.AddUses(stmR);
+        }
+
+        private Application MatchIntrinsicApplication(Expression e, string name)
+        {
+            var app = e as Application;
+            if (app == null)
+                return null;
+            var pc = app.Procedure as ProcedureConstant;
+            if (pc == null)
+                return null;
+            var ppp = pc.Procedure as PseudoProcedure;
+            if (ppp == null)
+                return null;
+            if (ppp.Name != name)
+                return null;
+            return app;
         }
     }
 }

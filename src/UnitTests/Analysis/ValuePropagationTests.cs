@@ -966,32 +966,77 @@ ProcedureBuilder_exit:
 r4:r4
     def:  def r4
     uses: r8_5 = Mem3[r4 + 0x00000028:word32]
-Mem4:Global memory
-    def:  def Mem4
-    uses: 
+Mem2:Global memory
+    def:  def Mem2
 r8_3: orig: r8
     def:  r8_3 = r8
-    uses: 
-Mem5:Global memory
-    def:  def Mem5
-    uses: r8_5 = Mem3[r4 + 0x00000028:word32])
+Mem3:Global memory
+    def:  def Mem3
+    uses: r8_5 = Mem3[r4 + 0x00000028:word32]
 r8_5: orig: r8
-    def:  r8_5 = Mem3[r4 + 0x00000028:word32])
+    def:  r8_5 = Mem3[r4 + 0x00000028:word32]
 // SsaProcedureBuilder
 // Return size: 0
 void SsaProcedureBuilder()
 SsaProcedureBuilder_entry:
 	def r8
 	def r4
-	def Mem4
-	def Mem5
+	def Mem2
+	def Mem3
 	// succ:  l1
 l1:
 	r8_3 = r8
-	r8_5 = Mem3[r4 + 0x00000028:word32])
+	r8_5 = Mem3[r4 + 0x00000028:word32]
 SsaProcedureBuilder_exit:
 ";
             #endregion 
+            AssertStringsEqual(sExp, ssa);
+        }
+
+        [Test]
+        public void VpMipsLittleEndianUnalignedWordLoad_Coalesced()
+        {
+            var r4 = m.Reg32("r4");
+            var r8 = m.Reg32("r8");
+
+            m.Assign(
+                r8,
+                m.Fn(
+                    new PseudoProcedure(PseudoProcedure.LwR, PrimitiveType.Word32, 2),
+                    m.Fn(
+                        new PseudoProcedure(PseudoProcedure.LwL, PrimitiveType.Word32, 2),
+                        r8,
+                        m.LoadDw(m.IAdd(r4, 0x2B))),
+                    m.LoadDw(m.IAdd(r4, 0x28))));
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"r8:r8
+    def:  def r8
+r4:r4
+    def:  def r4
+    uses: r8_4 = Mem3[r4 + 0x00000028:word32]
+Mem2:Global memory
+    def:  def Mem2
+Mem3:Global memory
+    def:  def Mem3
+    uses: r8_4 = Mem3[r4 + 0x00000028:word32]
+r8_4: orig: r8
+    def:  r8_4 = Mem3[r4 + 0x00000028:word32]
+// SsaProcedureBuilder
+// Return size: 0
+void SsaProcedureBuilder()
+SsaProcedureBuilder_entry:
+	def r8
+	def r4
+	def Mem2
+	def Mem3
+	// succ:  l1
+l1:
+	r8_4 = Mem3[r4 + 0x00000028:word32]
+SsaProcedureBuilder_exit:
+";
+            #endregion
             AssertStringsEqual(sExp, ssa);
         }
     }
