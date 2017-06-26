@@ -223,7 +223,18 @@ namespace Reko.Analysis
                 offL = -offL;
                 offR = -offR;
             }
-            if (offR + 3 != offL)
+            MemoryAccess mem;
+            if (offR + 3 == offL)
+            {
+                // Little endian use
+                mem = memR;
+            }
+            else if (offL + 3 == offR)
+            {
+                // Big endian use
+                mem = memL;
+            }
+            else
                 return;
 
             ssa.RemoveUses(stmL);
@@ -233,7 +244,7 @@ namespace Reko.Analysis
                 assL.Src = appL.Arguments[0];
                 ssa.AddUses(stmL);
             }
-            assR.Src = memR;
+            assR.Src = mem;
             ssa.AddUses(stmR);
         }
 
