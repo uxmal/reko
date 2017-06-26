@@ -145,19 +145,19 @@ l8000021C:
 	branch 100 - dwLoc20_28 < 0x00000000 l8000028A
 // DataOut: a6 d2
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:<invalid> fp2:<invalid> d1:<invalid> -72(fp):(real96) (real80) Mem0[fp - 0x00000004 + 8:real96] -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:<invalid> fp2:<invalid> d1:<invalid> -72(fp):<invalid> -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
 // LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -0030(32) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 l8000028A:
 	return (real80) DPB(rLoc3C, dwLoc10, 0)
 // DataOut: fp0
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:100 fp2:<invalid> d1:<invalid> -72(fp):(real96) (real80) Mem0[fp - 0x00000004 + 8:real96] -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:100 fp2:<invalid> d1:<invalid> -72(fp):<invalid> -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
 
 fn800001F2_exit:
 // DataOut: fp0
 // DataOut (flags): 
-// SymbolicIn: a7:fp a6:a6 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:<invalid> d1:<invalid> d2:d2 fp2:<invalid> -72(fp):(real96) (real80) Mem0[fp - 0x00000004 + 8:real96] -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp a6:a6 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:<invalid> d1:<invalid> d2:d2 fp2:<invalid> -72(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
 
 l80000224:
 	fn80000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_28)
@@ -167,7 +167,7 @@ l80000224:
 	dwLoc20_28 = dwLoc20_28 + 0x00000002
 // DataOut: a6 d2
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:100 fp2:<invalid> d1:<invalid> -72(fp):(real96) (real80) Mem0[fp - 0x00000004 + 8:real96] -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:100 fp2:<invalid> d1:<invalid> -72(fp):<invalid> -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
 // LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -0030(32) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 
@@ -197,7 +197,7 @@ l800002DA:
 	branch 100 - dwLoc20_27 < 0x00000000 l80000348
 // DataOut: a6 d2
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:<invalid> fp2:<invalid> d1:<invalid> -72(fp):(real96) (real80) Mem0[fp - 0x00000004 + 8:real96] -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:<invalid> fp2:<invalid> d1:<invalid> -72(fp):<invalid> -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
 // LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -002C(80) Local -0030(32) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 l80000348:
@@ -206,12 +206,12 @@ l80000348:
 	return (real80) DPB(rLoc3C, dwLoc10, 0)
 // DataOut: fp0 fp2
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:100 fp2:<invalid> d1:<invalid> -72(fp):(real96) (real80) Mem0[fp - 0x00000004 + 8:real96] -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:100 fp2:<invalid> d1:<invalid> -72(fp):<invalid> -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
 
 fn800002AE_exit:
 // DataOut: fp0 fp2
 // DataOut (flags): 
-// SymbolicIn: a7:fp a6:a6 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:<invalid> d1:<invalid> d2:d2 fp2:<invalid> -72(fp):(real96) (real80) Mem0[fp - 0x00000004 + 8:real96] -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp a6:a6 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:<invalid> d1:<invalid> d2:d2 fp2:<invalid> -72(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
 
 l800002E2:
 	fn80000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_27)
@@ -221,7 +221,7 @@ l800002E2:
 	dwLoc20_27 = dwLoc20_27 + 0x00000002
 // DataOut: a6 d2
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:100 fp2:<invalid> d1:<invalid> -72(fp):(real96) (real80) Mem0[fp - 0x00000004 + 8:real96] -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> fp1:<invalid> d0:100 fp2:<invalid> d1:<invalid> -72(fp):<invalid> -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
 // LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -002C(80) Local -0030(32) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 
@@ -285,7 +285,7 @@ l800003CC:
 fn800003CC_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: a7:fp a6:a6 fp0:<invalid> fpsr:<invalid> d0:0x00000000 fp2:<invalid> fp1:<invalid> d1:<invalid> -40(fp):(real96) (real80) Mem0[0x80000538:real96] -28(fp):(real96) (real80) Mem0[0x80000538:real96] -16(fp):(real96) (real80) Mem0[0x80000538:real96] -4(fp):a6
+// SymbolicIn: a7:fp a6:a6 fp0:<invalid> fpsr:<invalid> d0:0x00000000 fp2:<invalid> fp1:<invalid> d1:<invalid> -40(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
 
 
 

@@ -408,7 +408,7 @@ l00000000004005A1:
 	branch (byte) (word32) Mem0[rax_32:byte] != 0x00 l0000000000400531
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> eax:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:(uint64) ((word32) al >> cl) ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> eax:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:<invalid> ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
 // LocalsOut: fp(64) Local -0008(32) Local -001C(64)
 
 l0000000000400531:
@@ -417,40 +417,40 @@ l0000000000400531:
 	branch (byte) (word32) Mem0[DPB(rax_114, (int16) (byte) rax_114, 0) + 0x0000000000601020:byte] == (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_74 >> (byte) ((uint64) ((word32) ((uint64) (0x00000008 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc08_127) ^ 0x00000009)) & 0x00000003)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_74 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc08_127) ^ 0x00000009)) & 0x00000003)))))))))))) + 0x08 l000000000040059D
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> eax:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:(uint64) ((word32) al >> cl) ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> eax:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:<invalid> ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
 // LocalsOut: fp(64) Local -0008(32) Local -001C(64)
 
 l000000000040059D:
 	dwLoc08_127 = dwLoc08_127 + 0x00000001
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> eax:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:(uint64) ((word32) al >> cl) ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> eax:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:<invalid> ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
 // LocalsOut: fp(64) Local -0008(32) Local -001C(64)
 
 l0000000000400596:
 	rax_122 = 0x0000000000000000
 // DataOut: eax rax
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> eax:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:(uint64) ((word32) al >> cl) ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> eax:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:<invalid> ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
 // LocalsOut: fp(64)
 
 l00000000004005B9:
 	rax_122 = DPB(rax_32, (word32) (dwLoc08_127 == 0x00000017), 0) (alias)
 // DataOut: eax rax
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> eax:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:(uint64) ((word32) al >> cl) ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> eax:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:<invalid> ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
 // LocalsOut: fp(64)
 
 l00000000004005C3:
 	return rax_122
 // DataOut: eax rax
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> eax:<invalid> al:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:(uint64) ((word32) al >> cl) ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:fp - 0x0000000000000004 rax:<invalid> rdx:<invalid> eax:<invalid> al:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:<invalid> ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
 
 verify_exit:
 // DataOut: eax rax
 // DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x0000000000000004 rbp:rbp rax:<invalid> rdx:<invalid> eax:<invalid> al:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:(uint64) ((word32) al >> cl) ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
+// SymbolicIn: rsp:fp + 0x0000000000000004 rbp:rbp rax:<invalid> rdx:<invalid> eax:<invalid> al:<invalid> edx:<invalid> rcx:<invalid> esi:<invalid> rsi:<invalid> ax:<invalid> -28(fp):rdi -9(fp):al + 0x08 -8(fp):<invalid> -4(fp):rbp
 
 
 

@@ -3738,7 +3738,7 @@ void fn0000000000407EA0(word64 rcx, word32 edx, word64 rbp, word64 rsi, word64 r
 	{
 		r8 = 0xAAAAAAAA;
 		rdi = Mem0[0x000000000061B1C0 + 0x00:word64];
-		SCZO = cond(rcx - 0x00);
+		SCZO = cond(rcx - rax);
 		if (Test(UGT,CZ))
 			goto l0000000000408C7B;
 		rsi = rcx + rcx * 0x02;
@@ -3799,7 +3799,7 @@ l0000000000407F1F:
 	C = false;
 	while (rcx != 0x00)
 	{
-		Mem0[rdi + 0x00:word64] = 0x00;
+		Mem0[rdi + 0x00:word64] = rax;
 		rdi = rdi + 0x08;
 		rcx = rcx - 0x01;
 	}
@@ -8939,12 +8939,12 @@ void fn000000000040CDC0(word64 rax, word64 rcx, word64 rdx, word64 rsi, word64 r
 {
 	word64 r15_392;
 	word64 qwLoc40_106;
-	word64 rbp_127;
+	word64 rbp_124;
 	word64 rax_372;
-	word64 rcx_123;
+	word64 rcx_120;
 	word32 eax_294;
 	word32 ecx_288;
-	word64 r12_124;
+	word64 r12_121;
 	word64 rbx_24 = (uint64) r9d;
 	word64 rax_34 = DPB(rax, strlen(rdi), 0);
 	word64 r13_11 = rsi;
@@ -9019,7 +9019,7 @@ l000000000040CDFA:
 		{
 			r15_392 = r14_110;
 			qwLoc40_106 = 0x00;
-			rbp_127 = 0x00;
+			rbp_124 = 0x00;
 			goto l000000000040CE08;
 		}
 		goto l000000000040CF8C;
@@ -9033,11 +9033,11 @@ l000000000040CDFA:
 		{
 l000000000040CF8C:
 			qwLoc40_106 = 0x00;
-			rbp_127 = 0x00;
+			rbp_124 = 0x00;
 			goto l000000000040CEFF;
 		}
 		r15_392 = r14_110;
-		rbp_127 = 0x00;
+		rbp_124 = 0x00;
 l000000000040CE08:
 		rax_372 = Mem0[r12_16 + 0x00:word64];
 		if (r15_392 >u rax_372)
@@ -9076,7 +9076,7 @@ l000000000040CE08:
 	{
 l000000000040CE03:
 		r15_392 = rbp_42;
-		rbp_127 = 0x00;
+		rbp_124 = 0x00;
 		goto l000000000040CE08;
 	}
 	word64 rsi_723;
@@ -9138,13 +9138,13 @@ l000000000040CE03:
 	rax_372 = Mem694[r12_16 + 0x00:word64];
 	if (r15_392 <=u rax_372)
 	{
-		rbp_127 = 0x00;
+		rbp_124 = 0x00;
 l000000000040CF2A:
 		if (r15_392 <u rax_372)
 		{
 			Mem424[r12_16 + 0x00:word64] = r15_392;
 			word64 rax_420 = rax_372 - r15_392;
-			rcx_123 = rax_420;
+			rcx_120 = rax_420;
 			ecx_288 = (word32) rax_420;
 			eax_294 = (word32) (uint64) r8d;
 			if (eax_294 != 0x00)
@@ -9155,32 +9155,32 @@ l000000000040CF2A:
 l000000000040CE1A:
 		Mem378[r12_16 + 0x00:word64] = rax_372;
 		ecx_288 = 0x00;
-		rcx_123 = 0x00;
+		rcx_120 = 0x00;
 		eax_294 = (word32) (uint64) r8d;
 		if (eax_294 != 0x00)
 		{
 l000000000040CE2A:
-			r12_124 = 0x00;
+			r12_121 = 0x00;
 			if (eax_294 != 0x01)
 			{
-				r12_124 = rcx_123 >>u 0x01;
-				rcx_123 = (uint64) (ecx_288 & 0x01) + r12_124;
+				r12_121 = rcx_120 >>u 0x01;
+				rcx_120 = (uint64) (ecx_288 & 0x01) + r12_121;
 			}
 l000000000040CE3E:
 			if ((bl_113 & 0x04) != 0x00)
-				rcx_123 = 0x00;
+				rcx_120 = 0x00;
 			if ((word32) (uint64) (ebx_112 & 0x08) != 0x00)
-				r12_124 = 0x00;
+				r12_121 = 0x00;
 			if (rdx != 0x00)
 			{
-				word64 rdx_173 = rcx_123 - 0x01;
+				word64 rdx_173 = rcx_120 - 0x01;
 				word64 rbx_175 = r13_11 - 0x01 + rdx;
-				if (rcx_123 != 0x00 && r13_11 <u rbx_175)
+				if (rcx_120 != 0x00 && r13_11 <u rbx_175)
 				{
 					word64 rax_249 = 0x00;
 					do
 					{
-						Mem263[rbp_127 - 0x01 + 0x00:byte] = 0x20;
+						Mem263[rbp_124 - 0x01 + 0x00:byte] = 0x20;
 						r13_11 = r13_11 + 0x01;
 						if (rdx_173 == rax_249)
 							goto l000000000040CE97;
@@ -9188,14 +9188,14 @@ l000000000040CE3E:
 					} while (r13_11 == rbx_175);
 				}
 l000000000040CE97:
-				Mem188[rbp_127 + 0x00:byte] = 0x00;
+				Mem188[rbp_124 + 0x00:byte] = 0x00;
 				word64 rdx_189 = rbx_175 - r13_11;
 				if (rdx_189 >u r14_110)
 					rdx_189 = r14_110;
 				word64 rax_197 = mempcpy(r13_11, qwLoc48_105, rdx_189);
 				word64 rdx_204 = rax_197;
-				word64 rsi_206 = r12_124 - 0x01;
-				if (r12_124 != 0x00 && rbx_175 >u rax_197)
+				word64 rsi_206 = r12_121 - 0x01;
+				if (r12_121 != 0x00 && rbx_175 >u rax_197)
 				{
 					word64 rax_223 = 0x00;
 					do
@@ -9212,18 +9212,18 @@ l000000000040CEF6:
 			}
 l000000000040CEFF:
 			free(qwLoc40_106);
-			free(rbp_127);
+			free(rbp_124);
 			return;
 		}
 l000000000040CF4C:
-		r12_124 = rcx_123;
-		rcx_123 = 0x00;
+		r12_121 = rcx_120;
+		rcx_120 = 0x00;
 		goto l000000000040CE3E;
 	}
 	qwLoc30_703 = rbp_42 + 0x01;
 l000000000040D064:
 	word64 rax_726 = malloc(qwLoc30_703);
-	rbp_127 = rax_726;
+	rbp_124 = rax_726;
 	if (rax_726 != 0x00)
 	{
 		word64 rdi_738 = (uint64) Mem694[rax_646 + 0x00:word32];
@@ -9443,7 +9443,7 @@ l000000000040D33D:
 	call iswcntrl (retsize: 8; depth: 72)
 		uses: al_448,C_495,CZ_415,dh_425,dwLoc04_23,dwLoc08_27,dwLoc0C_29,dwLoc10_33,dwLoc14_35,dwLoc18_39,dwLoc34,dwLoc44_12,dwLoc48_13,eax_447,ebp_428,ebx_445,edi_497,edx_403,esi_420,fs_411,qwLoc08,qwLoc10,qwLoc18,qwLoc28_43,qwLoc30_390,qwLoc40,qwLoc48_14,r12_419,r12d_418,r13_407,r14_417,r14d_416,r15_404,r15d_402,rax_446,rbp_406,rbx_444,rcx_421,rdi_496,rdx_424,rsi_405,rsp_400,S_450,SCZO_435,SO_423,SZO_493,Z_494
 		defs: al_520,C_512,CZ_513,dh_523,eax_510,ebp_526,ebx_528,edi_525,edx_501,esi_518,fs_509,r12_517,r12d_516,r13_505,r14_515,r14d_514,r15_502,r15d_500,rax_508,rbp_504,rbx_506,rcx_519,rdi_499,rdx_522,rsi_503,rsp_498,S_527,SCZO_507,SO_521,SZO_511,Z_524
-	branch true l000000000040D2E3
+	branch eax_510 != 0x00 l000000000040D2E3
 l000000000040D34A:
 	branch r12d_516 == 0x7FFFFFFF l000000000040D3C0
 	goto l000000000040D2E3
@@ -9880,25 +9880,25 @@ void fn000000000040D6A0(word64 rax, word64 rdi)
 // 000000000040D740: void fn000000000040D740(Register word32 esi, Register word64 rdi)
 void fn000000000040D740(word32 esi, word64 rdi)
 {
-	word64 rcx_15 = 0x07;
-	word64 rdi_14 = fp - 0x48;
-	while (rcx_15 != 0x00)
+	word64 rcx_16 = 0x07;
+	word64 rdi_15 = fp - 0x48;
+	while (rcx_16 != 0x00)
 	{
-		Mem17[rdi_14 + 0x00:word64] = 0x00;
-		rdi_14 = rdi_14 + 0x08;
-		rcx_15 = rcx_15 - 0x01;
+		Mem18[rdi_15 + 0x00:word64] = 0x00;
+		rdi_15 = rdi_15 + 0x08;
+		rcx_16 = rcx_16 - 0x01;
 	}
 	if (esi == 0x08)
 		abort();
 	else
 	{
-		Mem25[rdi + 0x00:word64] = DPB(qwLoc48, esi, 0);
-		Mem28[rdi + 0x08:word64] = qwLoc40;
-		Mem31[rdi + 0x10:word64] = qwLoc38;
-		Mem34[rdi + 0x18:word64] = qwLoc30;
-		Mem37[rdi + 0x20:word64] = qwLoc28;
-		Mem40[rdi + 0x28:word64] = qwLoc20;
-		Mem43[rdi + 0x30:word64] = qwLoc18;
+		Mem26[rdi + 0x00:word64] = DPB(qwLoc48, esi, 0);
+		Mem29[rdi + 0x08:word64] = qwLoc40;
+		Mem32[rdi + 0x10:word64] = qwLoc38;
+		Mem35[rdi + 0x18:word64] = qwLoc30;
+		Mem38[rdi + 0x20:word64] = qwLoc28;
+		Mem41[rdi + 0x28:word64] = qwLoc20;
+		Mem44[rdi + 0x30:word64] = qwLoc18;
 		return;
 	}
 }
@@ -12767,7 +12767,7 @@ l0000000000411A00:
 			if (Test(NE,Z))
 			{
 l0000000000411A19:
-				r13 = 0x00 + r12;
+				r13 = r13 + r12;
 				rdi = 0x0F;
 				rax = malloc(0x0F);
 				SZO = cond(rax & rax);
