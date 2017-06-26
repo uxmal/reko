@@ -470,9 +470,11 @@ namespace Reko.Scanning
                 }
                 else if (sym.Name != null)
                 {
-                    var exp = program.Platform.SignatureFromName(sym.Name);
-                    if (exp != null)
+                    var sProc = program.Platform.SignatureFromName(sym.Name);
+                    if (sProc != null)
                     {
+                        var loader = Program.CreateTypeLibraryDeserializer();
+                        var exp = loader.LoadExternalProcedure(sProc);
                         proc.Name = exp.Name;
                         proc.Signature = exp.Signature;
                         proc.EnclosingType = exp.EnclosingType;

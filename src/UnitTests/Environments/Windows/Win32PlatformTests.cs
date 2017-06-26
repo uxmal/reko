@@ -161,7 +161,12 @@ namespace Reko.UnitTests.Environments.Windows
             var fnName = "_foo@4";
             When_Creating_Win32_Platform();
 
-            var ep = win32.SignatureFromName(fnName);
+            var sProc = win32.SignatureFromName(fnName);
+            var loader = new TypeLibraryDeserializer(
+                win32,
+                false,
+                new TypeLibrary());
+            var ep = loader.LoadExternalProcedure(sProc);
 
             var sigExp =
 @"void foo()

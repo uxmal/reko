@@ -94,6 +94,8 @@ namespace Reko.Environments.Windows
             if (d == null || d.Length == 0)
                 d = DefaultConvention;
             sig.StackDelta = Architecture.PointerType.Size;
+            if (ssig.StackDelta != 0)
+                sig.StackDelta = ssig.StackDelta;
             sig.ReturnAddressOnStack = Architecture.PointerType.Size;
         }
 
@@ -131,7 +133,9 @@ namespace Reko.Environments.Windows
                     args.Add(arg);
                 }
             }
-            var sig = new FunctionType(ret, args.ToArray());
+            var sig = ss.ParametersValid ?
+                new FunctionType(ret, args.ToArray()) :
+                new FunctionType();
             sig.IsInstanceMetod = ss.IsInstanceMethod;
             ApplyConvention(ss, sig);
             return sig;

@@ -130,10 +130,9 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override ExternalProcedure SignatureFromName(string fnName)
+        public override ProcedureBase_v1 SignatureFromName(string fnName)
         {
-            var tlsvc = new TypeLibraryDeserializer(this, false, Metadata);
-            var sig = SignatureGuesser.SignatureFromName(fnName, tlsvc, this);
+            var sig = SignatureGuesser.SignatureFromName(fnName, this);
             return sig;
         }
     }
