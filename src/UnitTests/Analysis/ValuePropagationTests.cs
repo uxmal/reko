@@ -938,5 +938,61 @@ ProcedureBuilder_exit:
             RunValuePropagator();
             Assert.AreEqual("bx_4 = Mem8[es_bx_1:word16]", instr.ToString());
         }
+
+        [Test]
+        public void VpMipsLittleEndianUnalignedWordLoad()
+        {
+            var r4 = m.Reg32("r4");
+            var r8 = m.Reg32("r8");
+
+            m.Assign(
+                r8,
+                m.Fn(
+                    new PseudoProcedure(PseudoProcedure.LwL, PrimitiveType.Word32, 2),
+                    r8,
+                    m.LoadDw(m.IAdd(r4, 0x2B))));
+            m.Assign(
+                r8,
+                m.Fn(
+                    new PseudoProcedure(PseudoProcedure.LwR, PrimitiveType.Word32, 2),
+                    r8,
+                    m.LoadDw(m.IAdd(r4, 0x28))));
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"r8:r8
+    def:  def r8
+    uses: r8_3 = r8
+r4:r4
+    def:  def r4
+    uses: r8_5 = Mem3[r4 + 0x00000028:word32]
+Mem4:Global memory
+    def:  def Mem4
+    uses: 
+r8_3: orig: r8
+    def:  r8_3 = r8
+    uses: 
+Mem5:Global memory
+    def:  def Mem5
+    uses: r8_5 = Mem3[r4 + 0x00000028:word32])
+r8_5: orig: r8
+    def:  r8_5 = Mem3[r4 + 0x00000028:word32])
+// SsaProcedureBuilder
+// Return size: 0
+void SsaProcedureBuilder()
+SsaProcedureBuilder_entry:
+	def r8
+	def r4
+	def Mem4
+	def Mem5
+	// succ:  l1
+l1:
+	r8_3 = r8
+	r8_5 = Mem3[r4 + 0x00000028:word32])
+SsaProcedureBuilder_exit:
+";
+            #endregion 
+            AssertStringsEqual(sExp, ssa);
+        }
     }
 }

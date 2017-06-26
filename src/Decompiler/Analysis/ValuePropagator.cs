@@ -89,6 +89,7 @@ namespace Reko.Analysis
         public Instruction VisitAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(eval);
+            FuseUnalignedLoads(a);
             ssa.Identifiers[a.Dst].DefExpression = a.Src;
             return a;
         }
@@ -174,5 +175,71 @@ namespace Reko.Analysis
         }
 
         #endregion
+
+        // On MIPS-LE the sequence
+        //   lwl rx,K+3(ry)
+        //   lwr rx,K(ry)
+        // is an unaligned read.
+        private void FuseUnalignedLoads(Assignment assR)
+        {
+            var regR = assR.Dst;
+            var stmR = ssa.Identifiers[regR].DefStatement;
+            var app = assR.Src as Application;
+            if (app == null)
+                return;
+            var pc = app.Procedure as ProcedureConstant;
+            if (pc == null)
+                return;
+            var ppp = pc.Procedure as PseudoProcedure;
+            if (ppp == null)
+                return;
+            if (ppp.Name != PseudoProcedure.LwR)
+                return;
+
+            var regL = (Identifier)app.Arguments[0];
+            var memR = (MemoryAccess)app.Arguments[1];
+            var binR = (BinaryExpression)memR.EffectiveAddress;
+            var offR = ((Constant)binR.Right).ToInt32();
+
+            var stmL = ssa.Identifiers[regL].DefStatement;
+            if (stmL == null)
+                return;
+            var assL = stmL.Instruction as Assignment;
+            if (assL == null)
+                return;
+
+            var appL = assL.Src as Application;
+            if (appL == null)
+                return;
+            var pcL = appL.Procedure as ProcedureConstant;
+            if (pcL == null)
+                return;
+            var pppL = pcL.Procedure as PseudoProcedure;
+            if (pppL == null)
+                return;
+            if (pppL.Name != PseudoProcedure.LwL)
+                return;
+
+            var memL = (MemoryAccess)appL.Arguments[1];
+            var binL = (BinaryExpression)memL.EffectiveAddress;
+            var offL = ((Constant)binL.Right).ToInt32();
+
+            if (binL.Operator != binR.Operator)
+                return;
+            if (binL.Operator == Operator.ISub)
+            {
+                offL = -offL;
+                offR = -offR;
+            }
+            if (offR + 3 != offL)
+                return;
+
+            ssa.RemoveUses(stmL);
+            ssa.RemoveUses(stmR);
+            assL.Src = appL.Arguments[0];
+            assR.Src = memR;
+            ssa.AddUses(stmL);
+            ssa.AddUses(stmR);
+        }
     }
 }
