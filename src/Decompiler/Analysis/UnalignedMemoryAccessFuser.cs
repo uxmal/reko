@@ -58,12 +58,14 @@ namespace Reko.Analysis
 
         public override void VisitAssignment(Assignment a)
         {
+            base.VisitAssignment(a);
             FuseUnalignedLoads(a);
         }
 
         public override void VisitSideEffect(SideEffect side)
         {
-            FuseUnalignedStores(side);
+            base.VisitSideEffect(side);
+            //FuseUnalignedStores(side);
         }
 
         // On MIPS-LE the sequence
