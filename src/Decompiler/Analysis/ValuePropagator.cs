@@ -27,6 +27,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -47,6 +48,7 @@ namespace Reko.Analysis
         private ExpressionSimplifier eval;
         private SsaEvaluationContext evalCtx;
         private SsaIdentifierTransformer ssaIdTransformer;
+        private UnalignedMemoryAccessFuser fuser;
         DecompilerEventListener eventListener;
 
         public ValuePropagator(
@@ -56,10 +58,11 @@ namespace Reko.Analysis
         {
             this.arch = arch;
             this.ssa = ssa;
+            this.eventListener = eventListener;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);
             this.eval = new ExpressionSimplifier(evalCtx, eventListener);
-            this.eventListener = eventListener;
+            this.fuser = new UnalignedMemoryAccessFuser(ssa);
         }
 
         public bool Changed { get { return eval.Changed; } set { eval.Changed = value; } }
@@ -69,7 +72,7 @@ namespace Reko.Analysis
             do
             {
                 Changed = false;
-                foreach (Statement stm in ssa.Procedure.Statements)
+                foreach (Statement stm in ssa.Procedure.Statements.ToList())
                 {
                     Transform(stm);
                 }
@@ -89,7 +92,7 @@ namespace Reko.Analysis
         public Instruction VisitAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(eval);
-            FuseUnalignedLoads(a);
+            fuser.FuseUnalignedLoads(a);
             ssa.Identifiers[a.Dst].DefExpression = a.Src;
             return a;
         }
@@ -153,7 +156,7 @@ namespace Reko.Analysis
         public Instruction VisitSideEffect(SideEffect side)
         {
             side.Expression = side.Expression.Accept(eval);
-            return side;
+            return fuser.FuseUnalignedStores(side);
         }
 
         public Instruction VisitStore(Store store)
@@ -176,92 +179,5 @@ namespace Reko.Analysis
 
         #endregion
 
-        // On MIPS-LE the sequence
-        //   lwl rx,K+3(ry)
-        //   lwr rx,K(ry)
-        // is an unaligned read.
-        private void FuseUnalignedLoads(Assignment assR)
-        {
-            var regR = assR.Dst;
-            var stmR = ssa.Identifiers[regR].DefStatement;
-
-            var appR = MatchIntrinsicApplication(assR.Src, PseudoProcedure.LwR);
-            if (appR == null)
-                return;
-
-            var memR = (MemoryAccess)appR.Arguments[1];
-            var binR = (BinaryExpression)memR.EffectiveAddress;
-            var offR = ((Constant)binR.Right).ToInt32();
-
-            var appL = appR.Arguments[0] as Application;
-            Statement stmL = null;
-            Assignment assL = null;
-            if (appL == null)
-            {
-                var regL = (Identifier)appR.Arguments[0];
-                stmL = ssa.Identifiers[regL].DefStatement;
-                if (stmL == null)
-                    return;
-                assL = stmL.Instruction as Assignment;
-                if (assL == null)
-                    return;
-
-                appL = assL.Src as Application;
-            }
-            appL = MatchIntrinsicApplication(appL, PseudoProcedure.LwL);
-            if (appL == null)
-                return;
-
-            var memL = (MemoryAccess)appL.Arguments[1];
-            var binL = (BinaryExpression)memL.EffectiveAddress;
-            var offL = ((Constant)binL.Right).ToInt32();
-
-            if (binL.Operator != binR.Operator)
-                return;
-            if (binL.Operator == Operator.ISub)
-            {
-                offL = -offL;
-                offR = -offR;
-            }
-            MemoryAccess mem;
-            if (offR + 3 == offL)
-            {
-                // Little endian use
-                mem = memR;
-            }
-            else if (offL + 3 == offR)
-            {
-                // Big endian use
-                mem = memL;
-            }
-            else
-                return;
-
-            ssa.RemoveUses(stmL);
-            ssa.RemoveUses(stmR);
-            if (assL != null)
-            {
-                assL.Src = appL.Arguments[0];
-                ssa.AddUses(stmL);
-            }
-            assR.Src = mem;
-            ssa.AddUses(stmR);
-        }
-
-        private Application MatchIntrinsicApplication(Expression e, string name)
-        {
-            var app = e as Application;
-            if (app == null)
-                return null;
-            var pc = app.Procedure as ProcedureConstant;
-            if (pc == null)
-                return null;
-            var ppp = pc.Procedure as PseudoProcedure;
-            if (ppp == null)
-                return null;
-            if (ppp.Name != name)
-                return null;
-            return app;
-        }
     }
 }

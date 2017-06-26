@@ -1094,5 +1094,51 @@ SsaProcedureBuilder_exit:
             #endregion
             AssertStringsEqual(sExp, ssa);
         }
+
+        [Test]
+        public void VpMipsLittleEndianUnalignedWordStore()
+        {
+            var r4 = m.Reg32("r4");
+            var r8 = m.Reg32("r8");
+
+            m.SideEffect(
+                m.Fn(
+                    new PseudoProcedure(PseudoProcedure.SwL, PrimitiveType.Word32, 2),
+                    m.LoadDw(m.IAdd(r4, 0x2B)),
+                    r8));
+            m.SideEffect(
+                m.Fn(
+                    new PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, 2),
+                    m.LoadDw(m.IAdd(r4, 0x28)),
+                    r8));
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"r4:r4
+    def:  def r4
+    uses: Mem3[r4 + 0x00000028:word32] = r8
+Mem2:Global memory
+    def:  def Mem2
+r8:r8
+    def:  def r8
+    uses: Mem3[r4 + 0x00000028:word32] = r8
+Mem3:Global memory
+    def:  def Mem3
+// SsaProcedureBuilder
+// Return size: 0
+void SsaProcedureBuilder()
+SsaProcedureBuilder_entry:
+	def r4
+	def Mem2
+	def r8
+	def Mem3
+	// succ:  l1
+l1:
+	Mem3[r4 + 0x00000028:word32] = r8
+SsaProcedureBuilder_exit:
+";
+            #endregion 
+            AssertStringsEqual(sExp, ssa);
+        }
     }
 }
