@@ -9131,13 +9131,6 @@ properties_load_entry:
 // LocalsOut: fp(32) Local -0039(0) Local -003C(0) Local -003D(0) Local -0040(0)
 
 l004054D0:
-	word32 r2_19 = Mem0[0x10000880:word32]
-	word32 r4_22 = Mem0[r2_19 + -23072:word32]
-	word32 r5_24 = Mem0[r2_19 + 0xFFFFA5E4:word32]
-	__swl(dwLoc40, r4_22)
-	__swr(dwLoc3D, r4_22)
-	__swl(dwLoc3C, r5_24)
-	__swr(dwLoc39, r5_24)
 	word32 dwLoc30_33 = 0x00000000
 	branch r4 != 0x00000000 l004054D0_ds_t
 // DataOut:
