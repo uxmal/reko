@@ -65,7 +65,7 @@ namespace Reko.Analysis
         public override void VisitSideEffect(SideEffect side)
         {
             base.VisitSideEffect(side);
-            //FuseUnalignedStores(side);
+            FuseUnalignedStores(side);
         }
 
         // On MIPS-LE the sequence
