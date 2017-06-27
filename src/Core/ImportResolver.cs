@@ -62,7 +62,8 @@ namespace Reko.Core
 
         private void EnsureSignature(Program program, SystemService svc)
         {
-            if (svc.Signature == null) {
+            if (svc.Signature == null)
+            {
                 FunctionType fnc;
                 if (program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name, out fnc)) {
                     svc.Signature = fnc;

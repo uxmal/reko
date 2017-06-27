@@ -135,6 +135,61 @@ SsaProcedureBuilder_exit:
         }
 
         [Test]
+        public void UfuserMipsLittleEndianUnalignedWordLoad_0_offset()
+        {
+            var r4 = m.Reg32("r4");
+            var r8 = m.Reg32("r8");
+
+            m.Assign(
+                r8,
+                m.Fn(
+                    new PseudoProcedure(PseudoProcedure.LwL, PrimitiveType.Word32, 2),
+                    r8,
+                    m.LoadDw(m.IAdd(r4, 0x3))));
+            m.Assign(
+                r8,
+                m.Fn(
+                    new PseudoProcedure(PseudoProcedure.LwR, PrimitiveType.Word32, 2),
+                    r8,
+                    m.LoadDw(r4)));
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"r8:r8
+    def:  def r8
+    uses: r8_3 = r8
+r4:r4
+    def:  def r4
+    uses: r8_5 = Mem3[r4:word32]
+Mem2:Global memory
+    def:  def Mem2
+r8_3: orig: r8
+    def:  r8_3 = r8
+Mem3:Global memory
+    def:  def Mem3
+    uses: r8_5 = Mem3[r4:word32]
+r8_5: orig: r8
+    def:  r8_5 = Mem3[r4:word32]
+// SsaProcedureBuilder
+// Return size: 0
+void SsaProcedureBuilder()
+SsaProcedureBuilder_entry:
+	def r8
+	def r4
+	def Mem2
+	def Mem3
+	// succ:  l1
+l1:
+	r8_3 = r8
+	r8_5 = Mem3[r4:word32]
+SsaProcedureBuilder_exit:
+";
+            #endregion 
+            AssertStringsEqual(sExp, ssa);
+        }
+
+
+        [Test]
         public void UfuserMipsBigEndianUnalignedWordLoad()
         {
             var r4 = m.Reg32("r4");

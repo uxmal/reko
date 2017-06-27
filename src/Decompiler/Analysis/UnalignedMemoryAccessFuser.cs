@@ -76,16 +76,15 @@ namespace Reko.Analysis
         //   lwr rx,K+3(ry)
         public void FuseUnalignedLoads(Assignment assR)
         {
-            var regR = assR.Dst;
-            var stmR = ssa.Identifiers[regR].DefStatement;
-
             var appR = MatchIntrinsicApplication(assR.Src, PseudoProcedure.LwR);
             if (appR == null)
                 return;
 
-            var memR = (MemoryAccess)appR.Arguments[1];
-            var binR = (BinaryExpression)memR.EffectiveAddress;
-            var offR = ((Constant)binR.Right).ToInt32();
+            var regR = assR.Dst;
+            var stmR = ssa.Identifiers[regR].DefStatement;
+
+            var memR = appR.Arguments[1];
+            var offR = GetOffsetOf(memR);
 
             var appL = appR.Arguments[0] as Application;
             Statement stmL = null;
@@ -106,18 +105,10 @@ namespace Reko.Analysis
             if (appL == null)
                 return;
 
-            var memL = (MemoryAccess)appL.Arguments[1];
-            var binL = (BinaryExpression)memL.EffectiveAddress;
-            var offL = ((Constant)binL.Right).ToInt32();
+            var memL = appL.Arguments[1];
+            var offL = GetOffsetOf(memL);
 
-            if (binL.Operator != binR.Operator)
-                return;
-            if (binL.Operator == Operator.ISub)
-            {
-                offL = -offL;
-                offR = -offR;
-            }
-            MemoryAccess mem;
+            Expression mem;
             if (offR + 3 == offL)
             {
                 // Little endian use
@@ -152,7 +143,17 @@ namespace Reko.Analysis
             var appR = MatchIntrinsicApplication(se.Expression, PseudoProcedure.SwR);
             if (appR == null)
                 return se;
-            var sidR = ssa.Identifiers[(Identifier)appR.Arguments[1]];
+            var idR = appR.Arguments[1] as Identifier;
+            if (idR == null)
+            {
+                //$TODO: Reko expects this pass to have executed very soon after SSA.
+                // In particular, no constant propagation should be done before this
+                // transform. This is fixed in analysis-development branch, but is  
+                // too expensive to back-port to master. We just bail for now, and
+                // make sure this works in analysis-development branch
+                return se;
+            }
+            var sidR = ssa.Identifiers[idR];
             Application appL = null;
             Statement stmL = null;
             Statement stmR = null;
@@ -218,9 +219,15 @@ namespace Reko.Analysis
             else
             {
                 var mem = (MemoryAccess)e;
-                var binL = (BinaryExpression)mem.EffectiveAddress;
-                var off = ((Constant)binL.Right).ToInt32();
-                return off;
+                var binL = mem.EffectiveAddress as BinaryExpression;
+                if (binL != null)
+                {
+                    return ((Constant)binL.Right).ToInt32();
+                }
+                else
+                {
+                    return 0;
+                }
             }
         }
 

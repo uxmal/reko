@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Decompiler/v2">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v4">
+  <arch>x86-real-16</arch>
+  <platform>ms-dos</platform>
   <input>
     <filename>BENCHFN.EXE</filename>
-    <address>0800:0000</address>
-    <procedure name="fn0800_0222">
-      <address>0800:0222</address>
-      <assume reg="ds" value="1000" />
-    </procedure>
     <disassembly>BENCHFN.asm</disassembly>
     <intermediate-code>BENCHFN.dis</intermediate-code>
     <output>BENCHFN.c</output>
     <types-file>BENCHFN.h</types-file>
     <global-vars>BENCHFN.globals.c</global-vars>
-    <options>
-      <HeuristicScanning>false</HeuristicScanning>
-    </options>
+    <user>
+      <processor />
+      <procedure name="fn0800_0222">
+        <address>0800:0222</address>
+        <assume reg="ds" value="1000" />
+      </procedure>
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
+      <registerValues />
+    </user>
   </input>
-  <output />
 </project>
