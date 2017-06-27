@@ -46,6 +46,12 @@ namespace Reko.Core
         public const string RolC = "__rcl";     // ternary: rotate left, passing in the contents of a processor flag
         public const string Syscall = "__syscall";  // Invokes a system call.
 
+        // MIPS-style unaligned memory accesses
+        public const string LwL = "__lwl";
+        public const string LwR = "__lwr";
+        public const string SwL = "__swl";
+        public const string SwR = "__swr";
+
         /// <summary>
         /// Use this constructor for pseudoprocedures that model operators that may have parameters of varying sizes.
         /// </summary>

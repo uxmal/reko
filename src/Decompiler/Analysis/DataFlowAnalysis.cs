@@ -302,6 +302,10 @@ namespace Reko.Analysis
                 var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
                 var ssa = sst.Transform();
 
+                // Merge unaligned .
+                var fuser = new UnalignedMemoryAccessFuser(ssa);
+                fuser.Transform();
+
                 // Propagate condition codes and registers. At the end, the hope
                 // is that all statements like (x86) mem[esp_42+4] will have been
                 // converted to mem[fp - 30]. We also hope that procedure constants

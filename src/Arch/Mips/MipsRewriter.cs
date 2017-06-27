@@ -212,8 +212,6 @@ namespace Reko.Arch.Mips
                     RewriteStore(instr); break;
                 case Opcode.swl: RewriteSwl(instr); break;
                 case Opcode.swr: RewriteSwr(instr); break;
-                case Opcode.swu:
-                    goto default;
                 case Opcode.sync: RewriteSync(instr); break;
                 case Opcode.syscall: RewriteSyscall(instr); break;
                 case Opcode.teq: RewriteTrap(instr, m.Eq); break;

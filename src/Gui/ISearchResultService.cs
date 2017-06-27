@@ -30,7 +30,8 @@ using System.Windows.Forms;
 namespace Reko.Gui
 {
     /// <summary>
-    /// The Search Result Service is used to show the results of some kind of search.
+    /// The Search Result Service is used to show the results of some kind of
+    /// search.
     /// </summary>
     public interface ISearchResultService 
     {

@@ -31,7 +31,7 @@ namespace Reko.Environments.Windows
 {
     public class SignatureGuesser
     {
-        public static Tuple<string, DataType, SerializedType> InferTypeFromName(string fnName, TypeLibraryDeserializer loader, IPlatform platform)
+        public static Tuple<string, SerializedType, SerializedType> InferTypeFromName(string fnName)
         {
             if (fnName[0] == '?')
             {
@@ -47,23 +47,7 @@ namespace Reko.Environments.Windows
                     Debug.Print("*** Error parsing {0}. {1}", fnName, ex.Message);
                     return null;
                 }
-                var sproc = field.Item2 as SerializedSignature;
-                if (sproc != null)
-                {
-                    var sser = platform.CreateProcedureSerializer(loader, sproc.Convention);
-                    var sig = sser.Deserialize(sproc, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
-                    return new Tuple<string, DataType, SerializedType>(
-                        field.Item1,
-                        sig,
-                        field.Item3);
-                }
-                else
-                {
-                    var dt = (field.Item2 == null) ?
-                        new UnknownType() :
-                        field.Item2.Accept(loader);
-                    return Tuple.Create(field.Item1, dt, field.Item3);
-                }
+                return field;
             }
             return null;
         }
@@ -75,7 +59,7 @@ namespace Reko.Environments.Windows
         /// <param name="loader"></param>
         /// <param name="arch"></param>
         /// <returns></returns>
-        public static ExternalProcedure SignatureFromName(string fnName, TypeLibraryDeserializer loader, IPlatform platform)
+        public static ProcedureBase_v1 SignatureFromName(string fnName, IPlatform platform)
         {
             int argBytes;
             if (fnName[0] == '_')
@@ -102,11 +86,10 @@ namespace Reko.Environments.Windows
                     var sproc = field.Item2 as SerializedSignature;
                     if (sproc != null)
                     {
-                        var sser = platform.CreateProcedureSerializer(loader, sproc.Convention);
-                        var sig = sser.Deserialize(sproc, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
-                        return new ExternalProcedure(field.Item1, sig)
+                        return new Procedure_v1
                         {
-                            EnclosingType = sproc.EnclosingType
+                            Name = field.Item1,
+                            Signature = sproc,
                         };
                     }
                     throw new NotImplementedException();
@@ -138,41 +121,55 @@ namespace Reko.Environments.Windows
                 var sproc = field.Item2 as SerializedSignature;
                 if (sproc != null)
                 {
-                    var sser = platform.CreateProcedureSerializer(loader, sproc.Convention);
-                    var sig = sser.Deserialize(sproc, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
-                    return new ExternalProcedure(field.Item1, sig)
-                    {
-                        EnclosingType = sproc.EnclosingType
+                    return new Procedure_v1 {
+                        Name = field.Item1,
+                        Signature = sproc,
                     };
                 }
             }
             return null;
         }
 
-        private static ExternalProcedure CdeclSignature(string name, IProcessorArchitecture arch)
+        private static ProcedureBase_v1 CdeclSignature(string name, IProcessorArchitecture arch)
         {
-            return new ExternalProcedure(name, new FunctionType
+            var sproc = new SerializedSignature
             {
-                ReturnAddressOnStack = arch.PointerType.Size,
-            });
+                ParametersValid = false,
+                StackDelta = arch.PointerType.Size,
+            };
+            return new Procedure_v1
+            {
+                Name = name,
+                Signature = sproc,
+            };
         }
 
-        private static ExternalProcedure StdcallSignature(string name, int argBytes, IProcessorArchitecture arch)
+        private static ProcedureBase_v1 StdcallSignature(string name, int argBytes, IProcessorArchitecture arch)
         {
-            return new ExternalProcedure(name, new FunctionType
+            var sproc = new SerializedSignature
             {
-                ReturnAddressOnStack = arch.PointerType.Size,
+                ParametersValid = false,
                 StackDelta = argBytes + arch.PointerType.Size,
-            });
+            };
+            return new Procedure_v1
+            {
+                Name = name,
+                Signature = sproc,
+            };
         }
 
-        private static ExternalProcedure FastcallSignature(string name, int argBytes, IProcessorArchitecture arch)
+        private static ProcedureBase_v1 FastcallSignature(string name, int argBytes, IProcessorArchitecture arch)
         {
-            return new ExternalProcedure(name, new FunctionType
+            var sproc = new SerializedSignature
             {
-                ReturnAddressOnStack = arch.PointerType.Size,
+                ParametersValid = false,
                 StackDelta = argBytes - 2 * arch.PointerType.Size, // ecx, edx
-            });
+            };
+            return new Procedure_v1
+            {
+                Name = name,
+                Signature = sproc,
+            };
         }
     }
 }

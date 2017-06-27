@@ -50,7 +50,7 @@ namespace Reko.Analysis
         private ExpressionSimplifier eval;
         private SsaEvaluationContext evalCtx;
         private SsaIdentifierTransformer ssaIdTransformer;
-        DecompilerEventListener eventListener;
+        private DecompilerEventListener eventListener;
 
         public ValuePropagator(
             IProcessorArchitecture arch,
@@ -59,10 +59,10 @@ namespace Reko.Analysis
         {
             this.arch = arch;
             this.ssa = ssa;
-            this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);
-            this.eval = new ExpressionSimplifier(evalCtx, eventListener);
             this.eventListener = eventListener;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
+            this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);
+            this.eval = new ExpressionSimplifier(evalCtx, eventListener);
         }
 
         public bool Changed { get { return eval.Changed; } set { eval.Changed = value; } }

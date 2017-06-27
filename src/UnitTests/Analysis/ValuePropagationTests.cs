@@ -156,7 +156,6 @@ namespace Reko.UnitTests.Analysis
         private SsaState RunTest(ProcedureBuilder m)
         {
             var proc = m.Procedure;
-            var gr = proc.CreateBlockDominatorGraph();
             var sst = new SsaTransform(
                 program,
                 proc,

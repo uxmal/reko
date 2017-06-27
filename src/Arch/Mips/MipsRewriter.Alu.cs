@@ -125,14 +125,14 @@ namespace Reko.Arch.Mips
         {
             var opDst = RewriteOperand0(instr.op1);
             var opSrc = RewriteOperand0(instr.op2);
-            m.Assign(opDst, host.PseudoProcedure("__lwl", PrimitiveType.Word32, opSrc));
+            m.Assign(opDst, host.PseudoProcedure("__lwl", PrimitiveType.Word32, opDst, opSrc));
         }
 
         private void RewriteLwr(MipsInstruction instr)
         {
             var opDst = RewriteOperand0(instr.op1);
             var opSrc = RewriteOperand0(instr.op2);
-            m.Assign(opDst, host.PseudoProcedure("__lwr", PrimitiveType.Word32, opSrc));
+            m.Assign(opDst, host.PseudoProcedure("__lwr", PrimitiveType.Word32, opDst, opSrc));
         }
 
         private void RewriteMf(MipsInstruction instr, RegisterStorage reg)
@@ -293,14 +293,14 @@ namespace Reko.Arch.Mips
         {
             var opDst = RewriteOperand0(instr.op2);
             var opSrc = RewriteOperand0(instr.op1);
-            m.Assign(opDst, host.PseudoProcedure("__swl", PrimitiveType.Word32, opSrc));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.SwL, PrimitiveType.Word32, opDst, opSrc));
         }
 
         private void RewriteSwr(MipsInstruction instr)
         {
             var opDst = RewriteOperand0(instr.op2);
             var opSrc = RewriteOperand0(instr.op1);
-            m.Assign(opDst, host.PseudoProcedure("__swr", PrimitiveType.Word32, opSrc));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, opDst, opSrc));
         }
 
         private void RewriteSxx(MipsInstruction instr, Func<Expression,Expression,Expression> op)
