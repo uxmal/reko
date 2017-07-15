@@ -1728,6 +1728,15 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|rArg0 = tan(rArg0)",
                 "2|L--|rLoc1 = 1.0");
         }
+
+        [Test]
+        public void X86rw_f2xm1()
+        {
+            Run16bitTest(0xD9, 0xF0);
+            AssertCode(     // f2xm1
+                "0|L--|0C00:0000(2): 1 instructions",
+                "1|L--|rArg0 = pow(2.0, rArg0) - 1.0");
+        }
     }
 }
 

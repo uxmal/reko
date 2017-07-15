@@ -83,6 +83,19 @@ namespace Reko.Arch.X86
             }
         }
 
+        private void RewriteF2xm1()
+        {
+            m.Assign(
+                FpuRegister(0),
+                m.FSub(
+                    host.PseudoProcedure(
+                        "pow",
+                        PrimitiveType.Real64, 
+                        Constant.Real64(2.0),
+                        FpuRegister(0)),
+                    Constant.Real64(1.0)));
+        }
+
         private void RewriteFabs()
         {
             m.Assign(FpuRegister(0), host.PseudoProcedure("fabs", PrimitiveType.Real64, FpuRegister(0)));
