@@ -1718,6 +1718,16 @@ namespace Reko.UnitTests.Arch.Intel
                 "0|---|0000000140000000(3): 1 instructions",
                 "1|---|<invalid>");
         }
+
+        [Test]
+        public void X86rw_fptan()
+        {
+            Run16bitTest(0xD9, 0xF2);
+            AssertCode(     // fptan
+                "0|L--|0C00:0000(2): 2 instructions",
+                "1|L--|rArg0 = tan(rArg0)",
+                "2|L--|rLoc1 = 1.0");
+        }
     }
 }
 

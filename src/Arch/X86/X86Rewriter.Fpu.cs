@@ -256,6 +256,14 @@ namespace Reko.Arch.X86
             WriteFpuStack(0);
         }
 
+        private void RewriteFptan()
+        {
+            Expression op1 = FpuRegister(0);
+            m.Assign(FpuRegister(0), host.PseudoProcedure("tan", PrimitiveType.Real64, op1));
+            state.GrowFpuStack(instrCur.Address);
+            m.Assign(FpuRegister(0), Constant.Real64(1.0));
+        }
+
         private void RewriteFsincos()
         {
             Identifier itmp = frame.CreateTemporary(PrimitiveType.Real64);
