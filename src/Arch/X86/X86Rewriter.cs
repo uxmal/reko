@@ -183,6 +183,7 @@ namespace Reko.Arch.X86
                 case Opcode.fld1: RewriteFldConst(1.0); break;
                 case Opcode.fldcw: RewriteFldcw(); break;
                 case Opcode.fldenv: RewriteFldenv(); break;
+                case Opcode.fldl2e: RewriteFldConst(Constant.LgE()); break;
                 case Opcode.fldl2t: RewriteFldConst(Constant.Lg10()); break;
                 case Opcode.fldlg2: RewriteFldConst(Constant.Log2()); break;
                 case Opcode.fldln2: RewriteFldConst(Constant.Ln2()); break;
