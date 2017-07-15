@@ -294,14 +294,15 @@ namespace Reko.Scanning
             var bra = host.AsBranch(instr);
             if (bra != null)
             {
-                return VisitBranch(bra);
+                bool fallthrough = host.IsFallthrough(instr, startBlock);
+                return VisitBranch(bra, fallthrough);
             }
 
             Debug.WriteLine("Backwalking not supported: " + instr);
             return true;
         }
 
-        private bool VisitBranch(Expression bra)
+        private bool VisitBranch(Expression bra, bool fallthrough)
         {
             var cond = bra as TestCondition;
             if (cond != null)
@@ -315,15 +316,20 @@ namespace Reko.Scanning
                     break;
                     //$TODO: verify the branch direction here.
                 case ConditionCode.ULE:
-                    cc = ConditionCode.UGT; break;
+                    fallthrough = !fallthrough;
+                    cc = ConditionCode.UGT;
+                    break;
                 case ConditionCode.ULT:
-                    cc = ConditionCode.UGE; break;
+                    fallthrough = !fallthrough;
+                    cc = ConditionCode.UGE;
+                    break;
                 default:return true;
                 }
-                Operations.Add(new BackwalkBranch(cc));
-                UsedFlagIdentifier = (Identifier)cond.Expression;
-
-
+                if (fallthrough)
+                {
+                    Operations.Add(new BackwalkBranch(cc));
+                    UsedFlagIdentifier = (Identifier)cond.Expression;
+                }
             }
             return true;
         }

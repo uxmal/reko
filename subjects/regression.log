@@ -2368,8 +2368,20 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 === const.o
 === BENCHFN.dcproject
 *** BENCHFN.dcproject
-0800:17B2: warning: Can't determine size of jump vector; probing only one entry.
 0800:1782: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1895: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:196C: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:188F: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1A03: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:188F: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1892: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1A60: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1969: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1969: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1905: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1ADD: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1AE3: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1AE8: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:036F: warning: Procedure fn0800_0336 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:0385: warning: Procedure fn0800_0336 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:03FF: warning: Procedure fn0800_0336 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -2398,10 +2410,8 @@ fn0800_16F3: error: An error occurred during data flow analysis.
     Index was outside the bounds of the array.
        at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 385
    at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
-   at Reko.Core.Code.InstructionVisitorBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 244
-   at Reko.Core.Expressions.TestCondition.Accept(IExpressionVisitor visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 66
-   at Reko.Core.Code.InstructionVisitorBase.VisitBranch(Branch b) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 74
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Core.Code.InstructionVisitorBase.VisitReturnInstruction(ReturnInstruction ret) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 108
+   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
    at Reko.Analysis.SsaTransform.LocateDefinedVariables.LocateDefs(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 283
    at Reko.Analysis.SsaTransform.LocateAllDefinedVariables(Dictionary`2[] defOrig) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 107
    at Reko.Analysis.SsaTransform.PlacePhiFunctions() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 135
@@ -2433,13 +2443,14 @@ fn0800_0393: error: An error occurred while rewriting procedure to high-level la
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn0800_0421: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0800_1073: error: An error occurred while rewriting procedure to high-level language.
-    Can't collapse l0800_1560 (Tail) => l0800_1572
+    Can't collapse l0800_1175 (Tail) => l0800_1560
        at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 797
    at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 752
-   at Reko.Structure.StructureAnalysis.VirtualizeIrregularExits(Region header, Region latch, Region follow, ISet`1 lexicalNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1248
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1004
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
+   at Reko.Structure.StructureAnalysis.VirtualizeIrregularSwitchEntries(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 489
+   at Reko.Structure.StructureAnalysis.RefineIncSwitch(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 470
+   at Reko.Structure.StructureAnalysis.ReduceSwitchRegion(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 395
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 257
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn0800_1099: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
@@ -3298,13 +3309,10 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 === PP.EXE
 *** PP.EXE
 Borland C v3 runtime detected
-0800:98F9: warning: Can't determine size of jump vector; probing only one entry.
 0800:8BC5: warning: Procedure fn0800_8BC2 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F8F: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:0EEA: warning: Can't determine size of jump vector; probing only one entry.
-0800:0EEA: warning: Unable to determine index variable for indirect jump.
 1483:1BF1: warning: Procedure fn1483_1B38 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
 1483:0CA6: warning: Call target address 1483:FD4E is invalid.
 1483:0CD2: warning: Call target address 1483:4FE0 is invalid.
@@ -3319,44 +3327,44 @@ Borland C v3 runtime detected
 1483:0D02: warning: Procedure fn1483_0CFA previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 1483:0DCF: warning: Procedure fn1483_0D3F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
 1483:0DCF: warning: Multiple different values of stack delta in procedure fn1483_0D3F when processing RET instruction; was 2 previously.
-0800:906C: warning: Can't determine size of jump vector; probing only one entry.
-0800:B6DE: warning: Procedure fn0800_B6D6 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:903C: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:906C: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:8FC8: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:8FC7: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:8FC8: error: An error occurred while processing instruction at address 0800:8FC8.
+0800:9127: warning: Procedure fn0800_8F97 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
+0800:920B: warning: Procedure fn0800_8F97 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
+0800:93BA: warning: Procedure fn0800_93C5 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:93EC: warning: Procedure fn0800_93C5 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:906C: error: An error occurred while processing instruction at address 0800:906C.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-0800:9110: error: An error occurred while processing instruction at address 0800:9110.
+0800:906C: error: An error occurred while processing instruction at address 0800:906C.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+0800:906C: error: An error occurred while processing instruction at address 0800:906C.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+0800:9105: error: An error occurred while processing instruction at address 0800:9105.
     Expected stack depth to be negative.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-0800:911C: error: An error occurred while processing instruction at address 0800:911C.
+0800:9105: error: An error occurred while processing instruction at address 0800:9105.
     Expected stack depth to be negative.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-0800:9121: error: An error occurred while processing instruction at address 0800:9121.
-    Expected stack depth to be negative.
-       at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-0800:9121: error: An error occurred while processing instruction at address 0800:9121.
-    Expected stack depth to be negative.
-       at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-0800:9124: error: An error occurred while processing instruction at address 0800:9124.
+0800:9105: error: An error occurred while processing instruction at address 0800:9105.
     Expected stack depth to be negative.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
@@ -3373,18 +3381,6 @@ Borland C v3 runtime detected
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-0800:B720: error: An error occurred while processing instruction at address 0800:B720.
-    Expected stack depth to be negative.
-       at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-0800:B772: error: An error occurred while processing instruction at address 0800:B772.
-    Expected stack depth to be negative.
-       at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
@@ -3474,7 +3470,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-fn0800_8FC8: error: An error occurred during data flow analysis.
+fn0800_8F97: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
@@ -3482,39 +3478,18 @@ fn0800_8FC8: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
    at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 145
    at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
-   at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 113
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
+   at Reko.Analysis.DeadCode.VisitAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 143
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
-fn0800_8FCB: error: An error occurred during data flow analysis.
-    Index was outside the bounds of the array.
-       at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 385
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
-   at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitApplication(Application app) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 320
-   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
-   at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 113
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Analysis.SsaTransform.LocateDefinedVariables.LocateDefs(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 283
-   at Reko.Analysis.SsaTransform.LocateAllDefinedVariables(Dictionary`2[] defOrig) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 107
-   at Reko.Analysis.SsaTransform.PlacePhiFunctions() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 135
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 216
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 163
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 fn0800_93BE: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
-   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
-   at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 145
-   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
-   at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 113
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
-   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 199
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 fn0800_9F92: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -3528,13 +3503,6 @@ fn0800_9F92: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
-fn0800_B775: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 199
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 fn1483_0CA1: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -3613,7 +3581,6 @@ fn0800_0541: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_0DE8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0800_2688: error: An error occurred while rewriting procedure to high-level language.
     Index was outside the bounds of the array.
        at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 306
@@ -3688,7 +3655,7 @@ fn0800_7FDC: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_8FC8: error: An error occurred while rewriting procedure to high-level language.
+fn0800_8F97: error: An error occurred while rewriting procedure to high-level language.
     The method or operation is not implemented.
        at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
    at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
@@ -3697,31 +3664,24 @@ fn0800_8FC8: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_8FCB: error: An error occurred while rewriting procedure to high-level language.
+fn0800_90F2: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+fn0800_9107: error: An error occurred while rewriting procedure to high-level language.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 208
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_90F2: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-fn0800_93BE: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
-   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn0800_911F: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0800_9828: error: An error occurred while rewriting procedure to high-level language.
-    Can't collapse l0800_98BF (Tail) => l0800_9C96
+    Can't collapse l0800_98FE (Tail) => l0800_9C82
        at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 797
    at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 752
-   at Reko.Structure.StructureAnalysis.VirtualizeIrregularExits(Region header, Region latch, Region follow, ISet`1 lexicalNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1248
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1004
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
+   at Reko.Structure.StructureAnalysis.VirtualizeIrregularSwitchEntries(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 489
+   at Reko.Structure.StructureAnalysis.RefineIncSwitch(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 470
+   at Reko.Structure.StructureAnalysis.ReduceSwitchRegion(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 395
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 257
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn0800_984F: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
@@ -3731,13 +3691,6 @@ fn0800_9F92: error: An error occurred while rewriting procedure to high-level la
    at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
    at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
    at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_B6E1: error: An error occurred while rewriting procedure to high-level language.
-    The given key was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 208
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
