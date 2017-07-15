@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void Test()
+        public void SsigTest()
         {
             Given_ProcedureSerializer("stdapi");
             FunctionType sig = new FunctionType(
