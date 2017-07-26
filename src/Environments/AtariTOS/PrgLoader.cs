@@ -80,7 +80,7 @@ namespace Reko.Environments.AtariTOS
         {
             var sr = new StructureReader<PrgHeader>(rdr);
             hdr = sr.Read();
-            return true;
+            return hdr.Magic == 0x601A;
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
