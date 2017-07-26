@@ -203,6 +203,7 @@
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\OdbgScript\$(OutDir)Reko.ImageLoaders.OdbgScript.*" />
     <ImageLoaders Include="$(Projectdir)..\..\ImageLoaders\VmsExe\$(OutDir)Reko.ImageLoaders.VmsExe.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\AmigaOS\$(OutDir)Reko.Environments.AmigaOS.*" />
+    <Environments Include="$(ProjectDir)..\..\Environments\AtariTOS\$(OutDir)Reko.Environments.AtariTOS.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\C64\$(OutDir)Reko.Environments.C64.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Dreamcast\$(OutDir)Reko.Environments.Dreamcast.*" />

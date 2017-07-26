@@ -45,8 +45,10 @@ namespace Reko.Typing
         private Program program;
         private HashSet<EquivalenceClass> classesVisited;
         private HashSet<DataType> visitedTypes;
+        private DecompilerEventListener eventListener;
+        private int recursionGuard;
 
-		public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store, Program program)
+        public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store, Program program)
 		{
 			this.factory = factory;
 			this.store = store;
@@ -65,6 +67,7 @@ namespace Reko.Typing
 		{
 			changed = false;
 			classesVisited  = new HashSet<EquivalenceClass>();
+            this.eventListener = eventListener;
 
             // Replace the DataType of all the equivalence classes
 			foreach (TypeVariable tv in store.TypeVariables)
@@ -188,10 +191,23 @@ namespace Reko.Typing
 
         public override DataType VisitStructure(StructureType str)
         {
-            //if (visitedTypes.Contains(str))
-            //   return str;
-            //visitedTypes.Add(str);
-            return base.VisitStructure(str);
+            ++recursionGuard;
+            DataType dt;
+            if (recursionGuard > 100)
+            {
+                eventListener.Warn(new NullCodeLocation(""), "Recursion too deep in PtrPrimitiveReplacer");
+                dt = str;
+            }
+            else
+            {
+
+                //if (visitedTypes.Contains(str))
+                //   return str;
+                //visitedTypes.Add(str);
+                dt = base.VisitStructure(str);
+            }
+            --recursionGuard;
+            return dt;
         }
 
 		public override DataType VisitTypeVariable(TypeVariable tv)

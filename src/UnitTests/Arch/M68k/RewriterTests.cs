@@ -1312,5 +1312,24 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|T--|00010000(2): 1 instructions",
                 "1|L--|__trap(0x0E)");
         }
+
+        [Test]
+        public void M68krw_move_to_ccr()
+        {
+            Rewrite(0x44c3);
+            AssertCode(     // move\td3,ccr
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|ccr = d3");
+        }
+
+        [Test]
+        public void M68krw_move_fr_ccr()
+        {
+            Rewrite(0x42d3);
+            AssertCode( // move\tccr,(a3)",
+                "0|L--|00010000(2): 2 instructions",
+                "1|L--|v4 = (uint16) ccr",
+                "2|L--|Mem0[a3:uint16] = v4");
+        }
     }
 }

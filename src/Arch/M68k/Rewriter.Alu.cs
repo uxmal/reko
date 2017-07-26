@@ -479,8 +479,21 @@ namespace Reko.Arch.M68k
 
         public void RewriteMove(bool setFlag)
         {
+            if (GetRegister(di.op1) == Registers.ccr)
+            {
+                // move from ccr.
+                var src = m.Cast(PrimitiveType.UInt16, binder.EnsureRegister(Registers.ccr));
+                var dst = orw.RewriteDst(di.op2, di.Address, PrimitiveType.UInt16, src, (s, d) => s);
+                return;
+            }
+            else if (GetRegister(di.op2) == Registers.ccr)
+            {
+                var src = orw.RewriteSrc(di.op1, di.Address);
+                var dst = orw.RewriteDst(di.op2, di.Address, di.dataWidth ?? (PrimitiveType)src.DataType, src, (s, d) => s);
+                return;
+            }
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
-            var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) => s);
+            var opDst = orw.RewriteDst(di.op2, di.Address, di.dataWidth ?? (PrimitiveType)opSrc.DataType, opSrc, (s, d) => s);
             if (opDst == null)
             {
                 EmitInvalid();
