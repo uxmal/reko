@@ -1242,8 +1242,9 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x4D82);         // chk
             AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|---|if ((word16) d2 < 0x0000 || (word16) d2 > (word16) d6) __trap(0x06)");
+                "0|L--|00010000(2): 2 instructions",
+                "1|T--|if ((word16) d2 >= 0x0000 && (word16) d2 <= (word16) d6) branch 00010002",
+                "2|L--|__trap(0x06)");
         }
 
         [Test]
@@ -1251,8 +1252,9 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x4D92);         // chk
             AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|---|if (Mem0[a2:word16] < 0x0000 || Mem0[a2:word16] > (word16) d6) __trap(0x06)");
+                "0|L--|00010000(2): 2 instructions",
+                "1|T--|if (Mem0[a2:word16] >= 0x0000 && Mem0[a2:word16] <= (word16) d6) branch 00010002",
+                "2|L--|__trap(0x06)");
         }
 
         [Test]
@@ -1260,10 +1262,11 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x4D9A);         // chk
             AssertCode(
-                "0|L--|00010000(2): 3 instructions",
+                "0|L--|00010000(2): 4 instructions",
                 "1|L--|v3 = Mem0[a2:word16]",
                 "2|L--|a2 = a2 + 0x00000002",
-                "3|---|if (v3 < 0x0000 || v3 > (word16) d6) __trap(0x06)");
+                "3|T--|if (v3 >= 0x0000 && v3 <= (word16) d6) branch 00010002",
+                "4|L--|__trap(0x06)");
         }
 
         [Test]
@@ -1271,8 +1274,9 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x4D02);         // chk
             AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|---|if (d2 < 0x00000000 || d2 > d6) __trap(0x06)");
+                "0|L--|00010000(2): 2 instructions",
+                "1|T--|if (d2 >= 0x00000000 && d2 <= d6) branch 00010002",
+                "2|L--|__trap(0x06)");
         }
 
         [Test]

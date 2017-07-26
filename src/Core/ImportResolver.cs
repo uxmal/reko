@@ -247,7 +247,7 @@ namespace Reko.Core
     }
 
         [Obsolete()]
-    public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+        public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
         {
             var addrInstruction = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
             var addrImportThunk = program.Platform.MakeAddressFromConstant(c);

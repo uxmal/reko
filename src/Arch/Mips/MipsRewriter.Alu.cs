@@ -152,7 +152,11 @@ namespace Reko.Arch.Mips
             var opCond = RewriteOperand0(instr.op3);
             var opDst = RewriteOperand0(instr.op1);
             var opSrc = RewriteOperand0(instr.op2);
-            m.If(cmp0(opCond), new RtlAssignment(opDst, opSrc));
+            m.BranchInMiddleOfInstruction(
+                cmp0(opCond).Invert(),
+                instr.Address + instr.Length,
+                RtlClass.ConditionalTransfer);
+            m.Assign(opDst, opSrc);
         }
 
         private void RewriteMul(MipsInstruction instr, Func<Expression,Expression,Expression> fn, PrimitiveType ret)
