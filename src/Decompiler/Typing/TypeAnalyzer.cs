@@ -81,7 +81,7 @@ namespace Reko.Typing
             ctn = new ComplexTypeNamer();
             ter = new TypedExpressionRewriter(program, eventListener);
 
-            RestrictProcedures(program, 0, 60, true); // Re-enable this for debugging
+            // RestrictProcedures(program, 0, 60, true); // Re-enable this for debugging
             eventListener.ShowStatus("Gathering primitive datatypes from instructions.");
 			aen.Transform(program);
             eqb.Build(program);
