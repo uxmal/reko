@@ -23,6 +23,7 @@ using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -77,26 +78,9 @@ namespace Reko.Environments.AtariTOS
 
         private bool TryLoadHeader(BeImageReader rdr, out PrgHeader hdr)
         {
-            hdr = new PrgHeader();
-            if (!rdr.TryReadBeUInt16(out hdr.Magic) || hdr.Magic != 0x601A)
-                return false;
-            if (!rdr.TryReadBeUInt32(out hdr.TextSize))
-                return false;
-            if (!rdr.TryReadBeUInt32(out hdr.DataSize))
-                return false;
-            if (!rdr.TryReadBeUInt32(out hdr.BssSize))
-                return false;
-            if (!rdr.TryReadBeUInt32(out hdr.SymbolsSize))
-                return false;
-            if (!rdr.TryReadBeUInt32(out hdr.Reserved1))
-                return false;
-            if (!rdr.TryReadBeUInt32(out hdr.ProgramFlags))
-                return false;
-            if (!rdr.TryReadBeUInt16(out hdr.IsAbsolute))
-                return false;
-
+            var sr = new StructureReader<PrgHeader>(rdr);
+            hdr = sr.Read();
             return true;
-
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
@@ -143,6 +127,7 @@ namespace Reko.Environments.AtariTOS
         }
 
         [Endian(Endianness.LittleEndian)]
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct PrgHeader
         {
             public ushort Magic;
