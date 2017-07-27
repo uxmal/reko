@@ -65,7 +65,13 @@ namespace Reko.Environments.AtariTOS
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotImplementedException();
+            EnsureTypeLibraries(PlatformIdentifier);
+            //foreach (SystemService svc in realModeServices)
+            //{
+            //    if (svc.SyscallInfo.Matches(vector, state))
+            //        return svc;
+            //}
+            return null;
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)

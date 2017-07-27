@@ -148,6 +148,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\AtariTOS\atariTOS.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_map.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\realmodeintservices.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\msvcrt.xml" />

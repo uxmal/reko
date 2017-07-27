@@ -76,6 +76,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\AtariTOS\atariTOS.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_bdos_services.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_map.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\realmodeintservices.xml">

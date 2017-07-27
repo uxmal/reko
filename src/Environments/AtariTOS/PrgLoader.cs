@@ -126,7 +126,7 @@ namespace Reko.Environments.AtariTOS
             }
         }
 
-        [Endian(Endianness.LittleEndian)]
+        [Endian(Endianness.BigEndian)]
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct PrgHeader
         {
