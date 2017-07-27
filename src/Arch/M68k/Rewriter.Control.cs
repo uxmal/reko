@@ -81,7 +81,7 @@ namespace Reko.Arch.M68k
                 di.Address + di.Length,
                 RtlClass.ConditionalTransfer);
             m.SideEffect(
-                host.PseudoProcedure("__trap", VoidType.Instance, m.Byte(6)));
+                host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, m.Byte(6)));
         }
 
         private void RewriteChk2()
@@ -98,7 +98,7 @@ namespace Reko.Arch.M68k
                 di.Address + di.Length,
                 RtlClass.ConditionalTransfer);
                 new RtlSideEffect(
-                    host.PseudoProcedure("__trap", VoidType.Instance, m.Byte(6)));
+                    host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, m.Byte(6)));
         }
 
         private void RewriteJmp()
@@ -168,7 +168,7 @@ namespace Reko.Arch.M68k
         {
             rtlc = RtlClass.Transfer;
             var vector = orw.RewriteSrc(di.op1, di.Address);
-            m.SideEffect(host.PseudoProcedure("__trap", VoidType.Instance, vector));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, vector));
         }
     }
 }
