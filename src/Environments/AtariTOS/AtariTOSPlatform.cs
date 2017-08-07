@@ -49,7 +49,7 @@ namespace Reko.Environments.AtariTOS
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
-            throw new NotImplementedException();
+            return new TOSProcedureSerializer(Architecture, typeLoader, defaultConvention);
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
@@ -65,12 +65,16 @@ namespace Reko.Environments.AtariTOS
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
+            if (Metadata == null)
+            { }
             EnsureTypeLibraries(PlatformIdentifier);
-            //foreach (SystemService svc in realModeServices)
-            //{
-            //    if (svc.SyscallInfo.Matches(vector, state))
-            //        return svc;
-            //}
+            foreach (var module in this.Metadata.Modules.Values)
+            {
+                SystemService svc;
+                if (!module.ServicesByVector.TryGetValue(vector, out svc))
+                    continue;
+
+            }
             return null;
         }
 

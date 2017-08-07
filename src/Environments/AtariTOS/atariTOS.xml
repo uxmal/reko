@@ -9,8 +9,8 @@
       <return>
         <prim domain="SignedInt" size="4" />
       </return>
-      <arg name="startadr"><stack size="4" /></arg>
-      <arg name="newsize"><stack size="4" /></arg>
+      <arg name="startadr"><ptr><void /></ptr></arg>
+      <arg name="newsize"><prim domain="SignedInt" size="4"/></arg>
     </signature>
   </service>
 </library>
