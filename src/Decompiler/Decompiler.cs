@@ -242,11 +242,11 @@ namespace Reko
             {
                 //$TODO: should be in the config file, yeah.
                 var type = Type.GetType("Reko.ImageLoaders.OdbgScript.OllyLang,Reko.ImageLoaders.OdbgScript");
-                interpreter = (IScriptInterpreter) Activator.CreateInstance(type);
+                interpreter = (IScriptInterpreter)Activator.CreateInstance(type, services);
             }
             catch (Exception ex)
             {
-                eventListener.Error(new NullCodeLocation(""), ex, "Unable to load script interpreter {0}.");
+                eventListener.Error(new NullCodeLocation(""), ex, "Unable to load OllyLang script interpreter.");
                 return;
             }
 

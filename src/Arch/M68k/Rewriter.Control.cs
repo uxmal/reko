@@ -75,11 +75,13 @@ namespace Reko.Arch.M68k
             rtlc = RtlClass.Conditional | RtlClass.Linear;
             var src = orw.RewriteSrc(di.op1, di.Address, true);
             var bound = orw.RewriteSrc(di.op2, di.Address, true);
-            m.If(m.Cor(
-                m.Lt0(src),
-                m.Gt(src, bound)),
-                new RtlSideEffect(
-                    host.PseudoProcedure("__trap", VoidType.Instance, m.Byte(6))));
+            m.Branch(m.Cand(
+                    m.Ge0(src),
+                    m.Le(src, bound)),
+                di.Address + di.Length,
+                RtlClass.ConditionalTransfer);
+            m.SideEffect(
+                host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, m.Byte(6)));
         }
 
         private void RewriteChk2()
@@ -89,11 +91,14 @@ namespace Reko.Arch.M68k
             var lowBound = orw.RewriteSrc(di.op1, di.Address);
             var ea = ((MemoryAccess)lowBound).EffectiveAddress;
             var hiBound = m.Load(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
-            m.If(m.Cor(
-                m.Lt(reg, lowBound),
-                m.Gt(reg, hiBound)),
+            m.Branch(
+                m.Cand(
+                    m.Ge(reg, lowBound),
+                    m.Le(reg, hiBound)),
+                di.Address + di.Length,
+                RtlClass.ConditionalTransfer);
                 new RtlSideEffect(
-                    host.PseudoProcedure("__trap", VoidType.Instance, m.Byte(6))));
+                    host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, m.Byte(6)));
         }
 
         private void RewriteJmp()
@@ -163,7 +168,7 @@ namespace Reko.Arch.M68k
         {
             rtlc = RtlClass.Transfer;
             var vector = orw.RewriteSrc(di.op1, di.Address);
-            m.SideEffect(host.PseudoProcedure("__trap", VoidType.Instance, vector));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, vector));
         }
     }
 }

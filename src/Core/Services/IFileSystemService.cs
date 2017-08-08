@@ -35,7 +35,9 @@ namespace Reko.Core.Services
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access);
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access, FileShare share);
         XmlWriter CreateXmlWriter(string filename);
+        string GetCurrentDirectory();
         bool FileExists(string filePath);
+        bool IsPathRooted(string path);
         string MakeRelativePath(string fromPath, string toPath);
         byte[] ReadAllBytes(string filePath);
     }
@@ -77,9 +79,19 @@ namespace Reko.Core.Services
             };
         }
 
+        public string GetCurrentDirectory()
+        {
+            return Directory.GetCurrentDirectory();
+        }
+
         public bool FileExists(string filePath)
         {
             return File.Exists(filePath);
+        }
+
+        public bool IsPathRooted(string path)
+        {
+            return Path.IsPathRooted(path);
         }
 
         public string MakeRelativePath(string fromPath, string toPath)
@@ -112,6 +124,5 @@ namespace Reko.Core.Services
         {
             return File.ReadAllBytes(filePath);
         }
-        
     }
 }

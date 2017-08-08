@@ -162,13 +162,13 @@ namespace Reko.ImageLoaders.OdbgScript
                                     {
                                         string dir;
                                         string philename = Helper.pathfixup(args.Substring(1, args.Length - 2), false);
-                                        if (!Helper.IsFullPath(philename))
+                                        if (!Path.IsPathRooted(philename))
                                         {
                                             philename = currentdir + philename;
                                             dir = currentdir;
                                         }
                                         else
-                                            dir = Helper.folderfrompath(philename);
+											dir = Path.GetDirectoryName(philename);
 
                                         InsertLines(Helper.ReadLinesFromFile(philename), dir);
                                     }
@@ -241,12 +241,12 @@ namespace Reko.ImageLoaders.OdbgScript
             string sdir;
 
             path = Helper.pathfixup(file, false);
-            if (!Helper.IsFullPath(path))
+            if (!Path.IsPathRooted(path))
             {
-                path = curdir + path;
+                path = Path.Combine(cdir, path);
             }
             if (string.IsNullOrEmpty(dir))
-                sdir = Helper.folderfrompath(path);
+				sdir = Path.GetDirectoryName(path);
             else
                 sdir = dir;
 

@@ -3040,8 +3040,8 @@ namespace Reko.Arch.M68k
 	new OpRec("J", 0xff00, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_8 
 	new OpRec("J", 0xffff, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_16
 	new OpRec("J", 0xffff, 0x61ff, 0x000, Opcode.bsr),              // d68020_bsr_32
-	new OpRec("D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),         // d68000_btst_r 
-	new OpRec("Iw,E0", 0xffc0, 0x0800, 0xbfb, Opcode.btst),         // d68000_btst_s
+	new OpRec("sl:D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),      // d68000_btst_r 
+	new OpRec("sw:Iw,E0", 0xffc0, 0x0800, 0xbfb, Opcode.btst),      // d68000_btst_s
 	new OpRec(d68020_callm        , 0xffc0, 0x06c0, 0x27b),
 	new OpRec(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
 	new OpRec(d68020_cas_16       , 0xffc0, 0x0cc0, 0x3f8),

@@ -49,8 +49,9 @@ namespace Reko.Scanning
         private Identifier UsedAsFlag;
 
         private static TraceSwitch trace = new TraceSwitch("BackWalker", "Traces the progress backward instruction walking");
+        private TBlock startBlock;
 
-		public Backwalker(IBackWalkHost<TBlock, TInstr> host, RtlTransfer xfer, ExpressionSimplifier eval)
+        public Backwalker(IBackWalkHost<TBlock, TInstr> host, RtlTransfer xfer, ExpressionSimplifier eval)
 		{
             this.host = host;
             this.eval = eval;
@@ -93,6 +94,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public List<BackwalkOperation> BackWalk(TBlock block)
         {
+            this.startBlock = block;
             if (Stride > 1)
                 Operations.Add(new BackwalkOperation(BackwalkOperator.mul, Stride));
 
@@ -292,21 +294,43 @@ namespace Reko.Scanning
             var bra = host.AsBranch(instr);
             if (bra != null)
             {
-                var cond = bra as TestCondition;
-                if (cond != null)
-                {
-                    if (cond.ConditionCode == ConditionCode.UGE ||
-                        cond.ConditionCode == ConditionCode.UGT ||
-                        cond.ConditionCode == ConditionCode.GT)
-                    {
-                        Operations.Add(new BackwalkBranch(cond.ConditionCode));
-                        UsedFlagIdentifier = (Identifier)cond.Expression;
-                    }
-                }
-                return true;
+                bool fallthrough = host.IsFallthrough(instr, startBlock);
+                return VisitBranch(bra, fallthrough);
             }
 
             Debug.WriteLine("Backwalking not supported: " + instr);
+            return true;
+        }
+
+        private bool VisitBranch(Expression bra, bool fallthrough)
+        {
+            var cond = bra as TestCondition;
+            if (cond != null)
+            {
+                ConditionCode cc = cond.ConditionCode;
+                switch (cc)
+                {
+                case ConditionCode.UGE:
+                case ConditionCode.UGT:
+                case ConditionCode.GT:
+                    break;
+                    //$TODO: verify the branch direction here.
+                case ConditionCode.ULE:
+                    fallthrough = !fallthrough;
+                    cc = ConditionCode.UGT;
+                    break;
+                case ConditionCode.ULT:
+                    fallthrough = !fallthrough;
+                    cc = ConditionCode.UGE;
+                    break;
+                default:return true;
+                }
+                if (fallthrough)
+                {
+                    Operations.Add(new BackwalkBranch(cc));
+                    UsedFlagIdentifier = (Identifier)cond.Expression;
+                }
+            }
             return true;
         }
 

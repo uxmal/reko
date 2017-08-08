@@ -79,9 +79,10 @@ namespace Reko.ImageLoaders.OdbgScript
     {
         private OdbgScriptLoader loader;
 
-        public Host(OdbgScriptLoader loader)
+		public Host(OdbgScriptLoader loader, SegmentMap segmentMap)
         {
             this.loader = loader;
+			this.SegmentMap = segmentMap;
         }
 
         public SegmentMap SegmentMap { get; set; }

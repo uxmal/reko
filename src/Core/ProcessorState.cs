@@ -161,6 +161,14 @@ namespace Reko.Core
             return Constant.Invalid;
         }
 
+        public Expression GetStackValue(int offset)
+        {
+            Expression value;
+            if (stackState.TryGetValue(offset, out value))
+                return value;
+            return Constant.Invalid;
+        }
+
         public Expression GetValue(Application appl)
         {
             return Constant.Invalid;

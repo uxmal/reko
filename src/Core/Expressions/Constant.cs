@@ -268,11 +268,23 @@ namespace Reko.Core.Expressions
             return Constant.Real64(3.3219280948873623478703194294894);
         }
 
+        public static Constant LgE()
+        {
+            // log(2) of e.
+            return Constant.Real64(1.4426950408889634073599246810019);
+        }
+
         public static Constant Ln2()
         {
             return Constant.Real64(0.69314718055994530941723212145818);
         }
 
+        public static Constant Log2()
+        {
+            // log(10) of 2
+            return Constant.Real64(0.30102999566398119521373889472449);
+        }
+       
         public virtual bool ToBoolean()
         {
             return Convert.ToBoolean(GetValue());

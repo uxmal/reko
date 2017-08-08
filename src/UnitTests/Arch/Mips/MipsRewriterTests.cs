@@ -432,8 +432,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RunTest("000000 00011 01001 01010 00000 001010");    // movz
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|if (r9 == 0x00000000) r10 = r3");
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (r9 != 0x00000000) branch 00100004", 
+                "2|L--|r10 = r3");
         }
 
         [Test]
