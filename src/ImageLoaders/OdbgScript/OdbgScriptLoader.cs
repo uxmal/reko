@@ -79,7 +79,7 @@ namespace Reko.ImageLoaders.OdbgScript
             var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.SegmentMap, win32);
             this.debugger = new Debugger(emu);
             this.scriptInterpreter = new OllyLang(Services);
-            this.scriptInterpreter.Host = new Host(this);
+            this.scriptInterpreter.Host = new Host(this, program.SegmentMap);
             this.scriptInterpreter.Debugger = this.debugger;
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.WriteRegister(Registers.esp, (uint)ImageMap.BaseAddress.ToLinear() + 0x1000 - 4u);

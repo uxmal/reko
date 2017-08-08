@@ -427,13 +427,13 @@ namespace Reko.ImageLoaders.OdbgScript
 
             if (!string.IsNullOrEmpty(@out))
             {
-                @out = @out.Replace('/', '\\');
-                if (isfolder && !@out.EndsWith("\\"))
-                    @out += '\\';
+				if (isfolder && @out[@out.Length-1] != Path.DirectorySeparatorChar)
+					@out += Path.DirectorySeparatorChar;
             }
             return @out;
         }
 
+		[Obsolete("Use Path.GetDirectoryName", true)]
         public static string folderfrompath(string path)
         {
             int p = path.LastIndexOf('\\');

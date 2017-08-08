@@ -168,7 +168,7 @@ namespace Reko.ImageLoaders.OdbgScript
                                             dir = currentdir;
                                         }
                                         else
-                                            dir = Helper.folderfrompath(philename);
+											dir = Path.GetDirectoryName(philename);
 
                                         InsertLines(Helper.ReadLinesFromFile(philename), dir);
                                     }
@@ -246,7 +246,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 path = curdir + path;
             }
             if (string.IsNullOrEmpty(dir))
-                sdir = Helper.folderfrompath(path);
+				sdir = Path.GetDirectoryName(path);
             else
                 sdir = dir;
 
