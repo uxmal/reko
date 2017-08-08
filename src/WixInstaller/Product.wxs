@@ -184,6 +184,8 @@
         <File Source="$(var.SolutionDir)..\external\wine\krnl386.exe16.spec" />
         <File Source="$(var.SolutionDir)..\external\wine\user.exe16.spec" />
 
+        <!-- License files -->
+        <File Source="$(var.SolutionDir)..\COPYING" Id="F_License" />
       </Component>
     </ComponentGroup>
 
@@ -193,6 +195,9 @@
     </Feature>
 
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.SolutionDir)..\COPYING.rtf" />
+    
     <UIRef Id="WixUI_InstallDir" />
 
     <Property Id="ARPPRODUCTICON" Value="PackageIcon" />
