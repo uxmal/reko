@@ -393,9 +393,9 @@ Eq_745 * fn00401544(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & es
 	struct Eq_89 * ebp_10 = fn00401980(ebx, esi, edi, dwLoc0C, 0x004024F8, 0x08);
 	*(ebp_10 - 0x04) = *(ebp_10 - 0x04) & 0x00;
 	struct Eq_765 * eax_15 = (struct Eq_765 *) 23117;
-	if ((word16 *) 0x00400000 == 23117)
+	if (globals->w400000 == 23117)
 	{
-		eax_15 = (struct Eq_765 *) (struct Eq_765 **) 0x0040003C;
+		eax_15 = globals->ptr40003C;
 		if (eax_15->dw400000 == 0x4550 && eax_15->w400018 == 0x010B)
 		{
 			*(fp - 0x0C) = ebp_10->dw0008 - 0x00400000;

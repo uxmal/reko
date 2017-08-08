@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (40001ABC (fn int32 ((ptr (struct "_exception")))) t40001ABC) (40002028 (ptr code) ptr40002028) (40002058 (ptr code) ptr40002058) (40002068 (ptr code) ptr40002068) (40002098 (union "Eq_405" (word32 u0) ((ptr code) u1)) u40002098) (40002190 (ptr code) ptr40002190) (400021A0 PVFV t400021A0) (400021B0 PVFV t400021B0) (400021B8 PVFV t400021B8) (400021D0 PVFV t400021D0) (40002680 word64 qw40002680) (40002690 word64 qw40002690) (40003000 word64 qw40003000) (40003008 word64 qw40003008) (40003014 word32 dw40003014) (40003018 word32 dw40003018) (4000301C word32 dw4000301C) (40003020 ui64 qw40003020) (40003030 word32 dw40003030) (40003040 word32 dw40003040) (40003044 word32 dw40003044) (40003050 word64 qw40003050) (40003058 word32 dw40003058) (40003060 word64 qw40003060) (400030E0 (struct "Eq_807" (F8 Eq_891 t00F8)) t400030E0) (40003160 word64 qw40003160) (40003178 ptr64 ptr40003178) (400031D8 word64 qw400031D8) (400035B0 word32 dw400035B0) (400035B8 word64 qw400035B8) (400035C0 word128 ow400035C0) (400035D0 real64 r400035D0) (400035D8 word128 ow400035D8) (400035E8 real64 r400035E8) (400035F0 byte b400035F0) (40003610 ui32 dw40003610) (40003614 word32 dw40003614))
+Eq_1: (struct "Globals" (40000000 word16 w40000000) (4000003C word32 dw4000003C) (40001ABC (fn int32 ((ptr (struct "_exception")))) t40001ABC) (40002028 (ptr code) ptr40002028) (40002058 (ptr code) ptr40002058) (40002068 (ptr code) ptr40002068) (40002098 (union "Eq_405" (word32 u0) ((ptr code) u1)) u40002098) (40002190 (ptr code) ptr40002190) (400021A0 PVFV t400021A0) (400021B0 PVFV t400021B0) (400021B8 PVFV t400021B8) (400021D0 PVFV t400021D0) (40002680 word64 qw40002680) (40002690 word64 qw40002690) (40003000 word64 qw40003000) (40003008 word64 qw40003008) (40003014 word32 dw40003014) (40003018 word32 dw40003018) (4000301C word32 dw4000301C) (40003020 ui64 qw40003020) (40003030 word32 dw40003030) (40003040 word32 dw40003040) (40003044 word32 dw40003044) (40003050 word64 qw40003050) (40003058 word32 dw40003058) (40003060 word64 qw40003060) (400030E0 (struct "Eq_807" (F8 Eq_891 t00F8)) t400030E0) (40003160 word64 qw40003160) (40003178 ptr64 ptr40003178) (400031D8 word64 qw400031D8) (400035B0 word32 dw400035B0) (400035B8 word64 qw400035B8) (400035C0 word128 ow400035C0) (400035D0 real64 r400035D0) (400035D8 word128 ow400035D8) (400035E8 real64 r400035E8) (400035F0 byte b400035F0) (40003610 ui32 dw40003610) (40003614 word32 dw40003614))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_3: (union "Eq_3" (byte u0) (ptr64 u1))
 	T_3 (in silOut : Eq_3)
@@ -5224,7 +5224,7 @@ T_1180: (in 0x5A4D : word16)
   Class: Eq_1179
   DataType: word16
   OrigDataType: word16
-T_1181: (in *(word16 *) 0x0000000140000000 != 0x5A4D : bool)
+T_1181: (in globals->w40000000 != 0x5A4D : bool)
   Class: Eq_1181
   DataType: bool
   OrigDataType: bool
@@ -5252,7 +5252,7 @@ T_1187: (in Mem0[0x000000014000003C + 0x0000000000000000:word32] : word32)
   Class: Eq_1187
   DataType: word32
   OrigDataType: word32
-T_1188: (in (int64) *(word32 *) 0x000000014000003C : int64)
+T_1188: (in (int64) globals->dw4000003C : int64)
   Class: Eq_1174
   DataType: (ptr word32)
   OrigDataType: int64
@@ -8859,6 +8859,8 @@ union Eq_405 {
 	<anonymous> * u1;
 } Eq_1struct Eq_807;
 struct Globals {
+	word16 w40000000;	// 40000000
+	word32 dw4000003C;	// 4000003C
 	int32 t40001ABC(struct _exception * rcx);	// 40001ABC
 	<anonymous> * ptr40002028;	// 40002028
 	<anonymous> * ptr40002058;	// 40002058

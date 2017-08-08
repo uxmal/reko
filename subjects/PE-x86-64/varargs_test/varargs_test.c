@@ -723,9 +723,9 @@ Eq_1172 * fn0000000140001718(word64 * rcx)
 {
 	struct Eq_1172 * rax_101;
 	word32 * rax_33 = (word32 *) 23117;
-	if (*(word16 *) 0x140000000 == 23117)
+	if (globals->w40000000 == 23117)
 	{
-		rax_33 = (int64) *(word32 *) 0x14000003C;
+		rax_33 = (int64) globals->dw4000003C;
 		word64 rcx_51 = rax_33 + 0x0000000140000000;
 		if (rcx_51->dw0000 == 0x4550)
 		{

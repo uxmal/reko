@@ -279,6 +279,7 @@ namespace Reko.ImageLoaders.MzExe
                     SizeRawData = minSection.OffsetRawData,
                     VirtualAddress = 0,
                     VirtualSize = minSection.OffsetRawData,
+                    IsHidden = true,
                 });
             }
             return sectionMap;
@@ -544,11 +545,12 @@ namespace Reko.ImageLoaders.MzExe
                 }
                 var seg = SegmentMap.AddSegment(new ImageSegment(
                     s.Name,
-                    addrLoad + s.VirtualAddress, 
-                    imgLoaded, 
+                    addrLoad + s.VirtualAddress,
+                    imgLoaded,
                     acc)
                 {
-                    Size = s.VirtualSize
+                    Size = s.VirtualSize,
+                    IsHidden = s.IsHidden,
                 });
                 seg.IsDiscardable = s.IsDiscardable;
             }
@@ -878,6 +880,8 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
 		private void ReadImportDescriptors(Address addrLoad)
 		{
+            if (rvaImportTable == 0)
+                return;
 			EndianImageReader rdr = imgLoaded.CreateLeReader(rvaImportTable);
 			while (ReadImportDescriptor(rdr, addrLoad))
 			{
@@ -945,12 +949,14 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			public uint SizeRawData;
 			public uint Flags;
 			public uint OffsetRawData;
+            public bool IsHidden;
 
-			public bool IsDiscardable
+            public bool IsDiscardable
 			{
 				get { return (Flags & SectionFlagsDiscardable) != 0; }
 			}
-		}
+
+        }
 
         public uint ReadEntryPointRva()
         {

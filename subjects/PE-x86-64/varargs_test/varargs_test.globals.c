@@ -4,6 +4,8 @@
 
 #include "varargs_test.h"
 
+word16 g_w40000000;
+word32 g_dw4000003C;
 int32 g_t40001ABC(struct _exception * rcx);
 <anonymous> * g_ptr40002028;
 <anonymous> * g_ptr40002058;
