@@ -76,26 +76,38 @@ namespace Reko.ImageLoaders.OdbgScript
 
             var win32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
             var state = (X86State)program.Architecture.CreateProcessorState();
-            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.SegmentMap, win32);
+            var emu = new X86Emulator((IntelArchitecture)program.Architecture, program.SegmentMap, win32);
             this.debugger = new Debugger(emu);
             this.scriptInterpreter = new OllyLang(Services);
             this.scriptInterpreter.Host = new Host(this, program.SegmentMap);
             this.scriptInterpreter.Debugger = this.debugger;
             emu.InstructionPointer = rr.EntryPoints[0].Address;
-            emu.WriteRegister(Registers.esp, (uint)ImageMap.BaseAddress.ToLinear() + 0x1000 - 4u);
             emu.BeforeStart += emu_BeforeStart;
             emu.ExceptionRaised += emu_ExceptionRaised;
 
-            // Load the script.
+            var stackSeg = InitializeStack(emu);
             LoadScript(Argument, scriptInterpreter.script);
-
             emu.Start();
+            TearDownStack(stackSeg);
 
             foreach (var ic in win32.InterceptedCalls)
             {
                 program.InterceptedCalls.Add(Address.Ptr32(ic.Key), ic.Value);
             }
             return program;
+        }
+
+        private ImageSegment InitializeStack(X86Emulator emu)
+        {
+            var stack = new MemoryArea(Address.Ptr32(0x7FE00000), new byte[1024 * 1024]);
+            var stackSeg = this.ImageMap.AddSegment(stack, "stack", AccessMode.ReadWrite);
+            emu.WriteRegister(Registers.esp, (uint)stack.EndAddress.ToLinear() - 4u);
+            return stackSeg;
+        }
+
+        private void TearDownStack(ImageSegment stackSeg)
+        {
+            this.ImageMap.Segments.Remove(stackSeg.Address);
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)

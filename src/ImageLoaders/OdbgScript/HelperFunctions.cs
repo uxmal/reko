@@ -416,11 +416,6 @@ namespace Reko.ImageLoaders.OdbgScript
 
         // File functions
 
-        public static bool IsFullPath(string path)
-        {
-            return Path.IsPathRooted(path);
-        }
-
         public static string pathfixup(string path, bool isfolder)
         {
             string @out = path;

@@ -34,7 +34,7 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
-    class X86EmulatorTests
+    public class X86EmulatorTests
     {
         private MockRepository mr;
         private IntelArchitecture arch;
@@ -500,6 +500,26 @@ namespace Reko.UnitTests.Arch.Intel
             emu.Start();
 
             Assert.AreEqual(~0u, emu.Registers[Registers.esi.Number]);
+        }
+
+        [Test]
+        public void X86Emu_repne_scasb()
+        {
+            Given_Code(m =>
+            {
+                m.Repne();
+                m.Scasb();
+                m.Hlt();
+                m.Db(0);
+                m.Db(Encoding.ASCII.GetBytes("Hello"));
+                m.Db(0);
+            });
+            emu.Registers[Registers.edi.Number] = 0x00100004;
+            emu.Registers[Registers.ecx.Number] = 0xFFFFFFFF;
+            emu.Start();
+
+            Assert.AreEqual(0x0010000A, emu.Registers[Registers.edi.Number]);
+
         }
     }
 }
