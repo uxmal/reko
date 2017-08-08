@@ -18,20 +18,18 @@
  */
 #endregion
 
+using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Services;
+using Reko.Environments.Windows;
+using Reko.ImageLoaders.MzExe;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using rulong = System.UInt64;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
-    using Reko.Arch.X86;
-    using Reko.Environments.Windows;
-    using Reko.ImageLoaders.MzExe;
-    using System.IO;
-    using rulong = System.UInt64;
 
     /// <summary>
     /// ImageLoader that uses OdbgScript to assist in the unpacking of 
@@ -135,6 +133,25 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual void LoadScript(string scriptFilename, OllyScript script)
         {
+            // If the script file is not a rooted path, first try looking at 
+            // the current directory. If there is no file there, try finding 
+            // it in the installation directory. 
+            var fsSvc = Services.RequireService<IFileSystemService>();
+            if (!fsSvc.IsPathRooted(scriptFilename))
+            {
+                string curDir = fsSvc.GetCurrentDirectory();
+                var absPath = Path.Combine(curDir, scriptFilename);
+                if (fsSvc.FileExists(absPath))
+                {
+                    scriptFilename = absPath;
+                }
+                else
+                {
+                    var dir = Path.GetDirectoryName(GetType().Assembly.Location);
+                    absPath = Path.Combine(dir, scriptFilename);
+                    scriptFilename = absPath;
+                }
+            }
             script.LoadFile(scriptFilename, null);
         }
 
