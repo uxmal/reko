@@ -273,7 +273,7 @@ namespace Reko.Arch.X86
         {
             Expression op1 = FpuRegister(0);
             m.Assign(FpuRegister(0), host.PseudoProcedure("tan", PrimitiveType.Real64, op1));
-            state.GrowFpuStack(instrCur.Address);
+            GrowFpuStack(1);
             m.Assign(FpuRegister(0), Constant.Real64(1.0));
         }
 

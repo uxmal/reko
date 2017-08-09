@@ -448,9 +448,9 @@ Constants: cl:0x00
         {
             Expect(
                 "TrfFpuReturn",
-                "Preserved: ",
-                "Trashed: FPU -1,Top",
-                "Constants: FPU -1:2.0,Top:0xFF");
+                "Preserved: r63",
+                "Trashed: Top",
+                "Constants: Top:0xFF");
 
             AddProcedure("TrfFpuReturn", m =>
             {
@@ -470,9 +470,9 @@ Constants: cl:0x00
         {
             Expect(
                 "TrfFpuReturnTwoValues",
-                "Preserved: ",
-                "Trashed: FPU -1,FPU -2,Top",
-                "Constants: FPU -1:2.0,FPU -2:1.0,Top:0xFE");
+                "Preserved: r63",
+                "Trashed: Top",
+                "Constants: Top:0xFE");
 
             AddProcedure("TrfFpuReturnTwoValues", m =>
             {
@@ -494,8 +494,8 @@ Constants: cl:0x00
         {
             Expect(
                 "TrfFpuMultiplyAdd",
-                "Preserved: ",
-                "Trashed: FPU +1,FPU +2,Top",
+                "Preserved: r63",
+                "Trashed: Top",
                 "Constants: Top:0x02");
             AddProcedure("TrfFpuMultiplyAdd", m =>
             {
