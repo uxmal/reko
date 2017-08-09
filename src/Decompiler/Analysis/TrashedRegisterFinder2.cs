@@ -351,6 +351,20 @@ namespace Reko.Analysis
         //      if s.dst is ID
         //          e = SRC
         //   if s is call:
-        //      
+        //  
+        
+        // recursiveQ.clear
+        // Q = all_blocks
+        // while Q:
+        //      b = pop(Q)
+        //      state = states[b]
+        //      for s in b.statements
+        //          if (ass)
+        //              state[ass.Dst] = eval(ass.Src, state)
+        //          else if (side,branch) 
+        //              eval(x.Expression, state)
+
+
+            
     }
 }

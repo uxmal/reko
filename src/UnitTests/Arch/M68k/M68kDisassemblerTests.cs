@@ -567,7 +567,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_btst()
         {
-            RunTest("btst\t#$0000,(34,a0,d0)", 0x0830, 0x0000, 0x0034);
+            RunTest("btst.w\t#$0000,(34,a0,d0)", 0x0830, 0x0000, 0x0034);
         }
 
         [Test]

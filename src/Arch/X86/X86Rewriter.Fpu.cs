@@ -83,6 +83,19 @@ namespace Reko.Arch.X86
             }
         }
 
+        private void RewriteF2xm1()
+        {
+            m.Assign(
+                FpuRegister(0),
+                m.FSub(
+                    host.PseudoProcedure(
+                        "pow",
+                        PrimitiveType.Real64, 
+                        Constant.Real64(2.0),
+                        FpuRegister(0)),
+                    Constant.Real64(1.0)));
+        }
+
         private void RewriteFabs()
         {
             m.Assign(FpuRegister(0), host.PseudoProcedure("fabs", PrimitiveType.Real64, FpuRegister(0)));
@@ -254,6 +267,14 @@ namespace Reko.Arch.X86
             m.Assign(FpuRegister(0),
                 m.Mod(op2, op1));
             WriteFpuStack(0);
+        }
+
+        private void RewriteFptan()
+        {
+            Expression op1 = FpuRegister(0);
+            m.Assign(FpuRegister(0), host.PseudoProcedure("tan", PrimitiveType.Real64, op1));
+            state.GrowFpuStack(instrCur.Address);
+            m.Assign(FpuRegister(0), Constant.Real64(1.0));
         }
 
         private void RewriteFsincos()

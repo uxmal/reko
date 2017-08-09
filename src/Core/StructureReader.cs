@@ -29,7 +29,8 @@ using Reko.Core.Types;
 
 namespace Reko.Core
 {
-	public class StructureMemberAttribute : Attribute {
+	public class StructureMemberAttribute : Attribute
+    {
 		public Type memberType { get; private set; }
 
 		/// <summary>

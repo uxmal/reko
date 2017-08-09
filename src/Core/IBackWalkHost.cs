@@ -42,5 +42,6 @@ namespace Reko.Core
         Tuple<Expression,Expression> AsAssignment(TInstr instr);
         Expression AsBranch(TInstr instr);
         bool IsStackRegister(Storage storage);
+        bool IsFallthrough(TInstr instr, TBlock block);
     }
 }

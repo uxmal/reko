@@ -75,7 +75,9 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 }
                 else
                 {
-                    m.If(test, new RtlGoto(dst, RtlClass.ConditionalTransfer));
+                    m.BranchInMiddleOfInstruction(
+                        test.Invert(), instr.Address + instr.Length, RtlClass.ConditionalTransfer);
+                    m.Goto(dst);
                 }
             }
             else

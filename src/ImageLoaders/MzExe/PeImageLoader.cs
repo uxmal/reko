@@ -259,16 +259,29 @@ namespace Reko.ImageLoaders.MzExe
             var sectionMap = new List<Section>();
 			EndianImageReader rdr = new LeImageReader(RawImage, rvaSectionTable);
 
-            // Why are we keeping track of this? Any particular reason?
-			Section maxSection = null;
+            Section minSection = null;
 			for (int i = 0; i != sections; ++i)
 			{
 				Section section = ReadSection(rdr);
 				sectionMap.Add(section);
-				if (maxSection == null || section.VirtualAddress > maxSection.VirtualAddress)
-					maxSection = section;
+				if (minSection == null || section.VirtualAddress < minSection.VirtualAddress)
+					minSection = section;
                 Debug.Print("  Section: {0,10} {1:X8} {2:X8} {3:X8} {4:X8}", section.Name, section.OffsetRawData, section.SizeRawData, section.VirtualAddress, section.VirtualSize);
 			}
+
+            // Map the area between addrLoad and the lowest section.
+            if (minSection != null && 0 < minSection.VirtualAddress)
+            {
+                sectionMap.Insert(0, new Section
+                {
+                    Name = "(PE header)",
+                    OffsetRawData= 0,
+                    SizeRawData = minSection.OffsetRawData,
+                    VirtualAddress = 0,
+                    VirtualSize = minSection.OffsetRawData,
+                    IsHidden = true,
+                });
+            }
             return sectionMap;
 		}
 
@@ -442,7 +455,10 @@ namespace Reko.ImageLoaders.MzExe
             relocator = CreateRelocator(machine, program);
             var relocations = imgLoaded.Relocations;
 			Section relocSection;
-            if ((relocSection = sectionList.Find(section => this.rvaBaseRelocationTable >= section.VirtualAddress && this.rvaBaseRelocationTable < section.VirtualAddress + section.VirtualSize)) != null)
+            if (rvaBaseRelocationTable != 0 &&
+                (relocSection = sectionList.Find(section => 
+                    this.rvaBaseRelocationTable >= section.VirtualAddress &&
+                    this.rvaBaseRelocationTable < section.VirtualAddress + section.VirtualSize)) != null)
 			{
                 ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, addrLoad, relocations);
 			} 
@@ -529,11 +545,12 @@ namespace Reko.ImageLoaders.MzExe
                 }
                 var seg = SegmentMap.AddSegment(new ImageSegment(
                     s.Name,
-                    addrLoad + s.VirtualAddress, 
-                    imgLoaded, 
+                    addrLoad + s.VirtualAddress,
+                    imgLoaded,
                     acc)
                 {
-                    Size = s.VirtualSize
+                    Size = s.VirtualSize,
+                    IsHidden = s.IsHidden,
                 });
                 seg.IsDiscardable = s.IsDiscardable;
             }
@@ -863,6 +880,8 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
 		private void ReadImportDescriptors(Address addrLoad)
 		{
+            if (rvaImportTable == 0)
+                return;
 			EndianImageReader rdr = imgLoaded.CreateLeReader(rvaImportTable);
 			while (ReadImportDescriptor(rdr, addrLoad))
 			{
@@ -871,6 +890,8 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
         private void ReadDeferredLoadDescriptors(Address addrLoad)
         {
+            if (rvaDelayImportDescriptor == 0)
+                return;
             var rdr = imgLoaded.CreateLeReader(rvaDelayImportDescriptor);
             while (ReadDeferredLoadDescriptors(rdr, addrLoad))
             {
@@ -928,12 +949,14 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			public uint SizeRawData;
 			public uint Flags;
 			public uint OffsetRawData;
+            public bool IsHidden;
 
-			public bool IsDiscardable
+            public bool IsDiscardable
 			{
 				get { return (Flags & SectionFlagsDiscardable) != 0; }
 			}
-		}
+
+        }
 
         public uint ReadEntryPointRva()
         {

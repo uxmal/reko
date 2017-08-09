@@ -50,6 +50,9 @@ namespace Reko.ImageLoaders.MzExe.Pe
 
         public List<ProgramResource> Load()
         {
+            if (rvaResources == 0)
+                return new List<ProgramResource>();
+
             var rsrcSection = new LeImageReader(this.imgLoaded, rvaResources);
             var rdr = rsrcSection.Clone();
 

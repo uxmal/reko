@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+  <service name="Mshrink">
+    <syscallinfo>
+      <vector>1</vector>
+      <stackvalue offset="0">4A</stackvalue>
+    </syscallinfo>
+    <signature convention="TOScall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="startadr"><ptr><void /></ptr></arg>
+      <arg name="newsize"><prim domain="SignedInt" size="4"/></arg>
+    </signature>
+  </service>
+</library>

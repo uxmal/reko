@@ -287,7 +287,9 @@ namespace Reko.ImageLoaders.MzExe
 			// Create a new image based on the uncompressed data.
 
 			this.imgLoaded = new MemoryArea(addrLoad, abU);
-            this.segmentMap = imgLoaded.CreateImageMap();
+            this.segmentMap = new SegmentMap(
+                addrLoad,
+                new ImageSegment("", this.imgLoaded, AccessMode.ReadWriteExecute));
 			return imgLoaded;
 		}
 

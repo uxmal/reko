@@ -291,7 +291,7 @@ namespace Reko.Environments.SysV
 
         private bool PeekAndDiscard(char ch)
         {
-            if (str[i] == ch)
+            if (i < str.Length && str[i] == ch)
             {
                 ++i;
                 return true;

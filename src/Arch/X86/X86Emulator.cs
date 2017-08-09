@@ -56,6 +56,7 @@ namespace Reko.Arch.X86
         private Action stepAction;
         private bool stepInto;
         private TWord stepOverAddress;
+        private bool ignoreRep;
 
         public X86Emulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
@@ -127,7 +128,7 @@ namespace Reko.Arch.X86
             {
                 while (running && dasm.MoveNext())
                 {
-                    // Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
+    //                Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
                     Action bpAction;
                     TWord eip = (uint)dasm.Current.Address.ToLinear();
                     if (bpExecute.TryGetValue(eip, out bpAction))
@@ -179,6 +180,15 @@ namespace Reko.Arch.X86
 
         public void Execute(X86Instruction instr)
         {
+            if (instr.repPrefix == 2 && !ignoreRep)
+            {
+                // repne
+                switch (instr.code)
+                {
+                case Opcode.scasb: Repne(); return;
+                }
+                throw new NotImplementedException();
+            }
             switch (instr.code)
             {
             default:
@@ -251,21 +261,18 @@ namespace Reko.Arch.X86
 
         private void Repne()
         {
-            dasm.MoveNext();
             var strInstr = dasm.Current;
+            this.ignoreRep = true;
             uint ecx = ReadRegister(X86.Registers.ecx);
-            if  (ecx != 0)
+            while (ecx != 0)
             {
-                for (; ; )
-                {
-                    Execute(strInstr);
-                    --ecx;
-                    if (ecx == 0)
-                        break;
-                    if ((Flags & Zmask) != 0)
-                        break;
-                }
+                Execute(strInstr);
+                --ecx;
+                if ((Flags & Zmask) != 0)
+                    break;
             }
+            WriteRegister(X86.Registers.ecx, ecx);
+            this.ignoreRep = false;
         }
 
         private void Rol(MachineOperand dst, MachineOperand src)
@@ -539,8 +546,7 @@ namespace Reko.Arch.X86
         public TWord Pop()
         {
             var esp = Registers[X86.Registers.esp.Number];
-            var u = (uint)esp - map.BaseAddress.ToUInt32();
-            var word = ReadLeUInt32(u);
+            var word = ReadLeUInt32((uint)esp);
             esp += 4;
             WriteRegister(X86.Registers.esp, (uint)esp);
             return word;
