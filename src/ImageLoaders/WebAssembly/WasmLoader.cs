@@ -48,21 +48,25 @@ namespace Reko.ImageLoaders.WebAssembly
         public override Program Load(Address addrLoad)
         {
             var rdr = LoadHeader();
-            LoadSections(rdr);
+            var sections = LoadSections(rdr);
+            var dataSeg = BuildDataSegment(sections);
             return new Program()
             {
 
             };
         }
 
-        private void LoadSections(WasmImageReader rdr)
+        private List<Section> LoadSections(WasmImageReader rdr)
         {
+            var sections = new List<Section>();
             for (;;)
             {
                 var s = LoadSection(rdr);
                 if (s == null)
                     break;
+                sections.Add(s);
             }
+            return sections;
         }
 
         public WasmImageReader LoadHeader()
@@ -99,9 +103,12 @@ namespace Reko.ImageLoaders.WebAssembly
             string name;
             if (type == WasmSection.Custom)
             {
+                var offset = rdr.Offset;
+                // Custom sections' names are part of the payload.
                 if (!rdr.TryReadVarUInt32(out name_len) || name_len == 0)
                     throw new NotImplementedException();
                 name = Encoding.UTF8.GetString(rdr.ReadBytes(name_len));
+                payload_len -= (uint)(rdr.Offset - offset);
             }
             else
             {
@@ -459,20 +466,49 @@ namespace Reko.ImageLoaders.WebAssembly
             uint count;
             if (!rdr.TryReadVarUInt32(out count))
                 return null;
-            var funcBodies = new List<Tuple<int,int,byte[]>>();
+            var funcBodies = new List<FunctionDefinition>();
             for (int i = 0; i < count; ++i)
             {
-                uint len;
-                if (!rdr.TryReadVarUInt32(out len))
+                var fd =  LoadFunctionDefinition(rdr);
+                if (fd == null)
                     return null;
-                var start = (int)rdr.Offset;
-                var end = start + (int) len;
-                var codeBytes = rdr.ReadBytes(len);
-                funcBodies.Add(Tuple.Create(start, end, codeBytes));
+                funcBodies.Add(fd);
             }
             return new CodeSection
             {
                 Functions = funcBodies,
+            };
+        }
+
+        private FunctionDefinition LoadFunctionDefinition(WasmImageReader rdr)
+        {
+            uint len;
+            if (!rdr.TryReadVarUInt32(out len))
+                return null;
+            var start = (int)rdr.Offset;
+            var end = start + (int)len;
+            uint cEntries;
+            if (!rdr.TryReadVarUInt32(out cEntries))
+                return null;
+            var locals = new List<LocalVariable>();
+            for (int i = 0; i < cEntries; ++i)
+            {
+                uint n;
+                if (!rdr.TryReadVarUInt32(out n))
+                    return null;
+                var dt = ReadValueType(rdr);
+                if (dt == null)
+                    return null;
+                locals.AddRange(Enumerable.Range(0, (int)n).Select(nn => new LocalVariable { DataType = dt }));
+            }
+            len -= (uint)(rdr.Offset - start);
+            var codeBytes = rdr.ReadBytes(len);
+            return new FunctionDefinition
+            {
+                Item1 = start,
+                Item2 = end,
+                Locals = locals.ToArray(),
+                Item3 = codeBytes
             };
         }
 
@@ -515,10 +551,10 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private FunctionType LoadFuncType(WasmImageReader rdr)
         {
-            byte form;          // varint7     the value for the func type constructor as defined above
-            uint param_count;   //  varuint32   the number of parameters to the function
-            byte return_count;    // varuint1    the number of results from the function
-            Identifier ret = null;   //      value_type ? the result type of the function(if return_count is 1)
+            byte form;              // varint7     the value for the func type constructor as defined above
+            uint param_count;       // varuint32   the number of parameters to the function
+            byte return_count;      // varuint1    the number of results from the function
+            Identifier ret = null;  // value_type ? the result type of the function(if return_count is 1)
 
             if (!rdr.TryReadVarUInt7(out form))
                 return null;
@@ -583,6 +619,11 @@ namespace Reko.ImageLoaders.WebAssembly
             if (!rdr.TryReadByte(out b))
                 return null;
             return Tuple.Create(dt, b != 0);
+        }
+
+        public ImageSegment BuildDataSegment(List<Section> sections)
+        {
+            return null;
         }
     }
 
@@ -740,12 +781,20 @@ namespace Reko.ImageLoaders.WebAssembly
 
     public class CodeSection : Section
     {
-        public List<Tuple<int, int, byte[]>> Functions;
+        public List<FunctionDefinition> Functions;
 
         public override string ToString()
         {
             return base.ToString();
         }
+    }
+
+    public class FunctionDefinition
+    {
+        public int Item1;
+        public int Item2;
+        public LocalVariable[] Locals;
+        public byte[] Item3;
     }
 
     public class DataSection : Section
@@ -782,5 +831,10 @@ namespace Reko.ImageLoaders.WebAssembly
     public class ElementSection : Section
     {
         public List<ElementSegment> Segments { get; internal set; }
+    }
+
+    public class LocalVariable
+    {
+        internal DataType DataType;
     }
 }

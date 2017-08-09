@@ -33,7 +33,7 @@ namespace Reko.ImageLoaders.WebAssembly
     {
         private WasmImageReader rdr;
 
-        public WasmDisassembler(LeImageReader rdr)
+        public WasmDisassembler(EndianImageReader rdr)
         {
             this.rdr = new WasmImageReader(rdr.Bytes);
             this.rdr.Offset = rdr.Offset;

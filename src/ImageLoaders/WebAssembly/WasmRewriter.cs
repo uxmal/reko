@@ -40,7 +40,7 @@ namespace Reko.ImageLoaders.WebAssembly
         private Frame frame;
         private RtlEmitter m;
 
-        public WasmRewriter(WasmArchitecture arch, LeImageReader rdr, Frame frame)
+        public WasmRewriter(WasmArchitecture arch, EndianImageReader rdr, Frame frame)
         {
             this.arch = arch;
             this.dasm = new WasmDisassembler(rdr).GetEnumerator();
