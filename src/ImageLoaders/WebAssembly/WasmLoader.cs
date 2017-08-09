@@ -505,10 +505,10 @@ namespace Reko.ImageLoaders.WebAssembly
             var codeBytes = rdr.ReadBytes(len);
             return new FunctionDefinition
             {
-                Item1 = start,
-                Item2 = end,
+                Start = start,
+                End = end,
                 Locals = locals.ToArray(),
-                Item3 = codeBytes
+                ByteCode = codeBytes
             };
         }
 
@@ -791,10 +791,10 @@ namespace Reko.ImageLoaders.WebAssembly
 
     public class FunctionDefinition
     {
-        public int Item1;
-        public int Item2;
+        public int Start;
+        public int End;
         public LocalVariable[] Locals;
-        public byte[] Item3;
+        public byte[] ByteCode;
     }
 
     public class DataSection : Section
