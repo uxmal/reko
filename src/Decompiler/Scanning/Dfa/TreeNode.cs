@@ -25,7 +25,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Scanning.Dfa
+namespace Reko.Core.Dfa
 {
     public class TreeNode
     {
