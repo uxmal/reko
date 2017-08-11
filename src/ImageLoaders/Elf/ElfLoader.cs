@@ -376,6 +376,21 @@ namespace Reko.ImageLoaders.Elf
 
         public abstract Address GetEntryPointAddress(Address addrBase);
 
+        protected void EnsureEntryPoint(List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
+        {
+            if (addr == null)
+                return;
+            ImageSymbol ep;
+            if (!symbols.TryGetValue(addr, out ep))
+            {
+                ep = new ImageSymbol(addr)
+                {
+                    ProcessorState = Architecture.CreateProcessorState()
+                };
+            }
+            entryPoints.Add(ep);
+        }
+
         // A map for extra symbols, those not in the usual Elf symbol tables
 
         public void AddSymbol(uint uNative, string pName)
@@ -473,8 +488,6 @@ namespace Reko.ImageLoaders.Elf
             numImports = n;
             return 0; //m_pImportStubs[];
         }
-
-
 
         public string GetStrPtr(Elf32_SHdr sect, uint offset)
         {
@@ -903,22 +916,9 @@ namespace Reko.ImageLoaders.Elf
             }
 
             var addrEntry = GetEntryPointAddress(addrLoad);
-            if (addrEntry != null)
-            {
-                ImageSymbol entrySymbol;
-                if (symbols.TryGetValue(addrEntry, out entrySymbol))
-                {
-                    entryPoints.Add(entrySymbol);
-                }
-                else
-                {
-                    var ep = new ImageSymbol(addrEntry)
-                    {
-                        ProcessorState = Architecture.CreateProcessorState()
-                    };
-                    entryPoints.Add(ep);
-                }
-            }
+            EnsureEntryPoint(entryPoints, symbols, addrEntry);
+            var addrMain = Relocator.FindMainFunction(program, addrEntry);
+            EnsureEntryPoint(entryPoints, symbols, addrMain);
             return new RelocationResults(entryPoints, symbols);
         }
 
@@ -1484,22 +1484,9 @@ namespace Reko.ImageLoaders.Elf
             }
 
             var addrEntry = GetEntryPointAddress(addrLoad);
-            if (addrEntry != null)
-            {
-                ImageSymbol entrySymbol;
-                if (symbols.TryGetValue(addrEntry, out entrySymbol))
-                {
-                    entryPoints.Add(entrySymbol);
-                }
-                else
-                {
-                    var ep = new ImageSymbol(addrEntry)
-                    {
-                        ProcessorState = Architecture.CreateProcessorState()
-                    };
-                    entryPoints.Add(ep);
-                }
-            }
+            EnsureEntryPoint(entryPoints, symbols, addrEntry);
+            var addrMain = Relocator.FindMainFunction(program, addrEntry);
+            EnsureEntryPoint(entryPoints, symbols, addrMain);
             return new RelocationResults(entryPoints, symbols);
         }
 

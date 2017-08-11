@@ -30,7 +30,47 @@ namespace Reko.ImageLoaders.Elf.Relocators
     public abstract class ElfRelocator
     {
         public abstract void Relocate(Program program);
+
         public abstract string RelocationTypeToString(uint type);
+
+        /// <summary>
+        /// When an ELF binary has no symbols, Reko needs help in finding the location
+        /// of the entry point because it's so early in the analysis we have no
+        /// way of tracing pointers yet.
+        /// </summary>
+        /// <returns>The address of the main function, or null if it couldn't
+        /// be found.
+        /// </returns>
+        /// <param name="program"></param>
+        /// <param name="addrEntry"></param>
+        /// <returns></returns>
+        public Address FindMainFunction(Program program, Address addrEntry)
+        {
+            ImageSegment seg;
+            if (!program.SegmentMap.TryFindSegment(addrEntry, out seg))
+                return null;
+            foreach (var sPattern in GetStartPatterns())
+            {
+                var dfa = Core.Dfa.Automaton.CreateFromPattern(sPattern.SearchPattern);
+                var start = addrEntry - seg.MemoryArea.BaseAddress;
+                var hits = dfa.GetMatches(seg.MemoryArea.Bytes, (int)start, (int)start + 300).ToList();
+                if (hits.Count > 0)
+                {
+                    return GetMainFunctionAddress(program.Architecture, seg.MemoryArea, hits[0], sPattern);
+                }
+            }
+            return null;
+        }
+
+        protected virtual Address GetMainFunctionAddress(IProcessorArchitecture arch, MemoryArea mem, int offset, StartPattern sPattern)
+        {
+            return null;
+        }
+
+        public virtual StartPattern[] GetStartPatterns()
+        {
+            return new StartPattern[0];
+        }
     }
 
     public abstract class ElfRelocator32 : ElfRelocator
@@ -114,7 +154,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         }
 
         public abstract void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf64_Rela rela);
-    
+
         [Conditional("DEBUG")]
         protected void DumpRela64(ElfLoader64 loader)
         {
@@ -139,5 +179,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 }
             }
         }
+    }
+
+    public class StartPattern
+    {
+        public string SearchPattern;
+        public int MainAddressOffset;
     }
 }

@@ -203,6 +203,11 @@
     <Compile Include="Configuration\UiPreferencesConfiguration.cs" />
     <Compile Include="Configuration\UiStyleElement.cs" />
     <Compile Include="DebugEx.cs" />
+    <Compile Include="Dfa\Automaton.cs" />
+    <Compile Include="Dfa\DfaBuilder.cs" />
+    <Compile Include="Dfa\PatternParser.cs" />
+    <Compile Include="Dfa\State.cs" />
+    <Compile Include="Dfa\TreeNode.cs" />
     <Compile Include="Endianess.cs" />
     <Compile Include="EndianImageReader.cs" />
     <Compile Include="EnumerableEx.cs" />

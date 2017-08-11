@@ -140,6 +140,35 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             return ((x86_64Rt)type).ToString();
         }
+        
+        public override StartPattern[] GetStartPatterns()
+        {
+            return new[]
+            {
+                new StartPattern
+                {
+                     SearchPattern =
+                        "31 ED" +                   // 00: xor ebp, ebp
+                        "49 89 D1" +                // 02: mov r9, rdx
+                        "5E" +                      // 05: pop rsi
+                        "48 89 E2" +                // 06: mov rdx, rsp
+                        "48 83 E4 F0" +             // 09: and rsp,F0
+                        "50" +                      // 0D: push rax
+                        "54" +                      // 0E: push rsp
+                        "49 C7 C0 ?? ?? ?? ??" +    // 0F: mov r8,+004005B0
+                        "48 C7 C1 ?? ?? ?? ??" +    // 16: mov rcx,+00400540
+                        "48 C7 C7 ?? ?? ?? ??" +    // 1D: mov rdi,offset main
+                        "E8 ?? ?? ?? ??",           // 24: call __libc_start_main
+                     MainAddressOffset = 0x20
+                }
+            };
+        }
+
+        protected override Address GetMainFunctionAddress(IProcessorArchitecture arch, MemoryArea mem, int offset, StartPattern sPattern)
+        {
+            var uAddr = mem.ReadLeUInt32((uint)(offset + sPattern.MainAddressOffset));
+            return Address.Ptr64(uAddr);
+        }
     }
 
     public enum x86_64Rt

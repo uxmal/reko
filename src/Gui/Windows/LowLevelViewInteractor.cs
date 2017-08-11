@@ -424,7 +424,7 @@ namespace Reko.Gui.Windows
                 dlg.InitialPattern = SelectionToHex(addrRange);
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
-                    var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
+                    var re = Core.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
                     var hits = 
                         //$BUG: wrong result
                         program.SegmentMap.Segments.Values

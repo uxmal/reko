@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Scanning.Dfa
+namespace Reko.Core.Dfa
 {
     /// <summary>
     /// Parses a regexp pattern into a tree of TreeNodes.

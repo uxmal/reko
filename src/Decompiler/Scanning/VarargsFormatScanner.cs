@@ -101,7 +101,7 @@ namespace Reko.Scanning
                 throw new ApplicationException(
                     string.Format("Varargs: should be at least 2 parameters"));
             var formatParam = sig.Parameters[formatIndex];
-            // $TODO: what about non-x86 architectures, like Sparc or PowerPC,
+            // $TODO: Issue #471: what about non-x86 architectures, like Sparc or PowerPC,
             // there can be varargs functions where the first N parameters are
             // passed in registers and the remaining are passed on the stack.
             var stackStorage = formatParam.Storage as StackStorage;
