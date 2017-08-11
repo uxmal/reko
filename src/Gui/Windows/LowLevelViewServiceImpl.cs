@@ -50,10 +50,14 @@ namespace Reko.Gui.Windows
             mvi.Program = program;
             if (program != null)
             {
-                mvi.SelectedAddress = program.SegmentMap.Segments.Values
+                var addr = program.SegmentMap.Segments.Values
                     .Where(s => s.MemoryArea != null)
                     .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
-                    .First();
+                    .FirstOrDefault();
+                if (addr != null)
+                {
+                    mvi.SelectedAddress = addr;
+                }
             }
         }
 

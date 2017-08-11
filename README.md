@@ -15,6 +15,12 @@ project files contain additional information about a binary file,
 helpful to the decompilation process or for formatting the output.
 The decompiler engine then proceeds to analyze the input binary.
 
+Reko has the ambition of supporting decompilation of various 
+processor architectures and executable file formats with minimal user
+intervention. For a complete list, see the
+[supported binaries](https://github.com/uxmal/reko/wiki/Supported-binaries) 
+page.
+
 Please note that many software licenses prohibit decompilation or
 other reverse engineering of their machine code binaries. Use this
 decompiler only if you have legal rights to decompile the binary

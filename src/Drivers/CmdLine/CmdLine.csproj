@@ -76,6 +76,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\AtariTOS\atariTOS.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_bdos_services.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_map.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\realmodeintservices.xml">
@@ -135,6 +136,7 @@
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\$(OutDir)Reko.ImageLoaders.OdbgScript.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\$(OutDir)Reko.ImageLoaders.VmsExe.*" />
     <Environments Include="$(SolutionDir)Environments\AmigaOS\$(OutDir)Reko.Environments.AmigaOS.*" />
+    <Environments Include="$(SolutionDir)Environments\AtariTOS\$(OutDir)Reko.Environments.AtariTOS.*" />
     <Environments Include="$(SolutionDir)Environments\C64\$(OutDir)Reko.Environments.C64.*" />
     <Environments Include="$(SolutionDir)Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />
     <Environments Include="$(SolutionDir)Environments\Dreamcast\$(OutDir)Reko.Environments.Dreamcast.*" />

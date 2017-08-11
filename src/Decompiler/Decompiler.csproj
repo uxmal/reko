@@ -153,6 +153,7 @@
     <Compile Include="Analysis\ProcedureGraph.cs" />
     <Compile Include="Analysis\RegisterPreservation.cs" />
     <Compile Include="Analysis\TrashedRegisterFinder2.cs" />
+    <Compile Include="Analysis\UnalignedMemoryAccessFuser.cs" />
     <Compile Include="Analysis\UsedIdentifierFinder.cs" />
     <Compile Include="Analysis\IdentifierLiveness.cs" />
     <Compile Include="Analysis\Interference.cs">
@@ -223,7 +224,7 @@
     <Compile Include="Analysis\WebBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Evaluation\CastCastRule.cs" />
@@ -277,11 +278,6 @@
     <Compile Include="Scanning\BlockCloner.cs" />
     <Compile Include="Scanning\CommonPatternFinder.cs" />
     <Compile Include="Scanning\DataScanner.cs" />
-    <Compile Include="Scanning\Dfa\DfaBuilder.cs" />
-    <Compile Include="Scanning\Dfa\PatternParser.cs" />
-    <Compile Include="Scanning\Dfa\State.cs" />
-    <Compile Include="Scanning\Dfa\TreeNode.cs" />
-    <Compile Include="Scanning\Dfa\Automaton.cs" />
     <Compile Include="Scanning\GlobalDataWorkItem.cs" />
     <Compile Include="Scanning\IcfgBuilder.cs" />
     <Compile Include="Scanning\IScanner.cs" />
@@ -329,6 +325,8 @@
     <Compile Include="Scanning\VectorBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Scanning\Vsa\AbstractLocation.cs" />
+    <Compile Include="Scanning\Vsa\ReducedIntervalCongruence.cs" />
     <Compile Include="Scanning\WorkItem.cs">
       <SubType>Code</SubType>
     </Compile>

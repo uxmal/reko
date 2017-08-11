@@ -54,6 +54,7 @@ namespace Reko.ImageLoaders.Elf
         public const byte ELFDATA2LSB = 1;
         public const byte ELFDATA2MSB = 2;
 
+        public const int ELFOSABI_ARM = 0x61;
         public const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
         public const uint SHF_WRITE = 0x1;
         public const uint SHF_ALLOC = 0x2;
@@ -239,6 +240,7 @@ namespace Reko.ImageLoaders.Elf
             switch (osAbi)
             {
             case ELFOSABI_NONE: // Unspecified ABI
+            case ELFOSABI_ARM:
                 envName = "elf-neutral";
                 break;
             case ELFOSABI_CELL_LV2: // PS/3
@@ -374,6 +376,21 @@ namespace Reko.ImageLoaders.Elf
 
         public abstract Address GetEntryPointAddress(Address addrBase);
 
+        protected void EnsureEntryPoint(List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
+        {
+            if (addr == null)
+                return;
+            ImageSymbol ep;
+            if (!symbols.TryGetValue(addr, out ep))
+            {
+                ep = new ImageSymbol(addr)
+                {
+                    ProcessorState = Architecture.CreateProcessorState()
+                };
+            }
+            entryPoints.Add(ep);
+        }
+
         // A map for extra symbols, those not in the usual Elf symbol tables
 
         public void AddSymbol(uint uNative, string pName)
@@ -471,8 +488,6 @@ namespace Reko.ImageLoaders.Elf
             numImports = n;
             return 0; //m_pImportStubs[];
         }
-
-
 
         public string GetStrPtr(Elf32_SHdr sect, uint offset)
         {
@@ -743,32 +758,50 @@ namespace Reko.ImageLoaders.Elf
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
             var segmentMap = new SegmentMap(addrPreferred);
-            foreach (var section in Sections)
+            if (Sections.Count > 0)
             {
-                if (section.Name == null || section.Address == null)
-                    continue;
-                MemoryArea mem;
-                if (segMap.TryGetLowerBound(section.Address, out mem) &&
-                    section.Address < mem.EndAddress)
+                foreach (var section in Sections)
                 {
-                    AccessMode mode = AccessModeOf(section.Flags);
-                    var seg = segmentMap.AddSegment(new ImageSegment(
-                        section.Name,
-                        section.Address,
-                        mem, mode)
+                    if (section.Name == null || section.Address == null)
+                        continue;
+                    MemoryArea mem;
+                    if (segMap.TryGetLowerBound(section.Address, out mem) &&
+                        section.Address < mem.EndAddress)
                     {
-                        Size = (uint)section.Size
-                    });
-                    seg.Designer = CreateRenderer64(section);
+                        AccessMode mode = AccessModeOf(section.Flags);
+                        var seg = segmentMap.AddSegment(new ImageSegment(
+                            section.Name,
+                            section.Address,
+                            mem, mode)
+                        {
+                            Size = (uint)section.Size
+                        });
+                        seg.Designer = CreateRenderer64(section);
+                    }
+                    else
+                    {
+                        //$TODO: warn
+                    }
                 }
-                else
+            }
+            else
+            {
+                // There are stripped ELF binaries with 0 sections. If we have one
+                // create a pseudo-section from the segMap.
+                foreach (var segment in segMap)
                 {
-                    //$TODO: warn
+                    var imgSegment = new ImageSegment(
+                        segment.Value.BaseAddress.GenerateName("seg", ""),
+                        segment.Value,
+                        AccessMode.ReadExecute)        //$TODO: writeable segments.
+                    {
+                        Size = (uint)segment.Value.Length,
+                    };
+                    segmentMap.AddSegment(imgSegment);
                 }
             }
             segmentMap.DumpSections();
             return segmentMap;
-
         }
 
         public override int LoadProgramHeaderTable()
@@ -883,22 +916,9 @@ namespace Reko.ImageLoaders.Elf
             }
 
             var addrEntry = GetEntryPointAddress(addrLoad);
-            if (addrEntry != null)
-            {
-                ImageSymbol entrySymbol;
-                if (symbols.TryGetValue(addrEntry, out entrySymbol))
-                {
-                    entryPoints.Add(entrySymbol);
-                }
-                else
-                {
-                    var ep = new ImageSymbol(addrEntry)
-                    {
-                        ProcessorState = Architecture.CreateProcessorState()
-                    };
-                    entryPoints.Add(ep);
-                }
-            }
+            EnsureEntryPoint(entryPoints, symbols, addrEntry);
+            var addrMain = Relocator.FindMainFunction(program, addrEntry);
+            EnsureEntryPoint(entryPoints, symbols, addrMain);
             return new RelocationResults(entryPoints, symbols);
         }
 
@@ -1305,27 +1325,47 @@ namespace Reko.ImageLoaders.Elf
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
             var segmentMap = new SegmentMap(addrPreferred);
-            foreach (var section in Sections)
+            if (Sections.Count > 0)
             {
-                if (section.Name == null || section.Address == null)
-                    continue;
+                foreach (var section in Sections)
+                {
+                    if (section.Name == null || section.Address == null)
+                        continue;
 
-                MemoryArea mem;
-                if (segMap.TryGetLowerBound(section.Address, out mem) &&
-                    section.Address < mem.EndAddress)
-                {
-                    AccessMode mode = AccessModeOf(section.Flags);
-                    var seg = segmentMap.AddSegment(new ImageSegment(
-                        section.Name,
-                        section.Address,
-                        mem, mode)
+                    MemoryArea mem;
+                    if (segMap.TryGetLowerBound(section.Address, out mem) &&
+                        section.Address < mem.EndAddress)
                     {
-                        Size = (uint)section.Size
-                    });
-                    seg.Designer = CreateRenderer(section, machine);
-                } else
+                        AccessMode mode = AccessModeOf(section.Flags);
+                        var seg = segmentMap.AddSegment(new ImageSegment(
+                            section.Name,
+                            section.Address,
+                            mem, mode)
+                        {
+                            Size = (uint)section.Size
+                        });
+                        seg.Designer = CreateRenderer(section, machine);
+                    }
+                    else
+                    {
+                        //$TODO: warn
+                    }
+                }
+            }
+            else
+            {
+                // There are stripped ELF binaries with 0 sections. If we have one
+                // create a pseudo-section from the segMap.
+                foreach (var segment in segMap)
                 {
-                    //$TODO: warn
+                    var imgSegment = new ImageSegment(
+                        segment.Value.BaseAddress.GenerateName("seg", ""),
+                        segment.Value,
+                        AccessMode.ReadExecute)        //$TODO: writeable segments.
+                    {
+                        Size = (uint)segment.Value.Length,
+                    };
+                    segmentMap.AddSegment(imgSegment);
                 }
             }
             segmentMap.DumpSections();
@@ -1444,22 +1484,9 @@ namespace Reko.ImageLoaders.Elf
             }
 
             var addrEntry = GetEntryPointAddress(addrLoad);
-            if (addrEntry != null)
-            {
-                ImageSymbol entrySymbol;
-                if (symbols.TryGetValue(addrEntry, out entrySymbol))
-                {
-                    entryPoints.Add(entrySymbol);
-                }
-                else
-                {
-                    var ep = new ImageSymbol(addrEntry)
-                    {
-                        ProcessorState = Architecture.CreateProcessorState()
-                    };
-                    entryPoints.Add(ep);
-                }
-            }
+            EnsureEntryPoint(entryPoints, symbols, addrEntry);
+            var addrMain = Relocator.FindMainFunction(program, addrEntry);
+            EnsureEntryPoint(entryPoints, symbols, addrMain);
             return new RelocationResults(entryPoints, symbols);
         }
 

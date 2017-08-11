@@ -84,6 +84,10 @@ namespace Reko.Arch.X86
         das,
         dec,
         div,
+        divpd,
+        divps,
+        divsd,
+        divss,
         enter,
 
         f2xm1,
@@ -223,6 +227,10 @@ namespace Reko.Arch.X86
         movups,
         movzx,
         mul,
+        mulpd,
+        mulps,
+        mulsd,
+        mulss,
         neg,
         nop,
         not,
@@ -294,12 +302,16 @@ namespace Reko.Arch.X86
         test,
         ucomiss,
         ucomisd,
+        vmfunc,
         wait,
         xadd,
         xchg,
+        xend,
         xgetbv,
         xlat,
         xor,
+        xsetbv,
+        xtest,
 
         // Borland implemented an x87 emulator, and introduced these
         // pseudo-instructions.

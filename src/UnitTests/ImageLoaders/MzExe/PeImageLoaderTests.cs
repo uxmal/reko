@@ -519,7 +519,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 
             Given_PeLoader();
             var program = peldr.Load(addrLoad);
-            Assert.AreEqual(2, program.SegmentMap.Segments.Count);
+            Assert.AreEqual(3, program.SegmentMap.Segments.Count);
             Assert.AreEqual("hehe", program.SegmentMap.Segments[Address.Ptr32(0x00101000)].Name);
             Assert.AreEqual("hehe", program.SegmentMap.Segments[Address.Ptr32(0x00102000)].Name);
         }

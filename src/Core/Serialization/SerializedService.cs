@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using System;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
@@ -64,6 +65,15 @@ namespace Reko.Core.Serialization
                             Value = Convert.ToInt32(SyscallInfo.RegisterValues[i].Value, 16),
                         };
                     }
+                } 
+                if (SyscallInfo.StackValues != null)
+                {
+                    svc.SyscallInfo.StackValues = SyscallInfo.StackValues.Select(sv =>
+                        new StackValue
+                        {
+                            Offset = Convert.ToInt32(sv.Offset, 16),
+                            Value = Convert.ToInt32(sv.Value, 16)
+                        }).ToArray();
                 }
             }
 			if (svc.SyscallInfo.RegisterValues == null)
@@ -85,7 +95,10 @@ namespace Reko.Core.Serialization
 
 		[XmlElement("regvalue")]
 		public SerializedRegValue [] RegisterValues;
-	}
+
+        [XmlElement("stackvalue")]
+        public StackValue_v1[] StackValues;
+    }
 
     [Obsolete("use RegisterValue_v2")]
 	public class SerializedRegValue
@@ -106,4 +119,13 @@ namespace Reko.Core.Serialization
 			Value = val;
 		}
 	}
+
+    public class StackValue_v1
+    {
+        [XmlAttribute("offset")]
+        public string Offset;
+
+        [XmlText]
+        public string Value;
+    }
 }

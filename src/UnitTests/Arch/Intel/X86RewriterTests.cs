@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
@@ -236,8 +237,15 @@ namespace Reko.UnitTests.Arch.Intel
             host = new RewriterHost(null);
         }
 
+        private void Run64bitTest(string hexBytes)
+        {
+            arch = arch64;
+            image = new MemoryArea(baseAddr64, OperatingEnvironmentElement.LoadHexBytes(hexBytes).ToArray());
+            host = new RewriterHost(null);
+        }
+
         [Test]
-        public void X86Rw_MovAxBx()
+        public void X86rw_MovAxBx()
         {
             Run16bitTest(m =>
             {
@@ -252,14 +260,14 @@ namespace Reko.UnitTests.Arch.Intel
         {
             state = new X86State(arch32);
             return new X86Rewriter(
-                arch32, 
-                host, 
-                state, 
+                arch32,
+                host,
+                state,
                 m.GetImage().SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0),
                 new Frame(arch32.WordWidth));
         }
 
-        private X86Rewriter CreateRewriter32(byte [] bytes)
+        private X86Rewriter CreateRewriter32(byte[] bytes)
         {
             state = new X86State(arch32);
             return new X86Rewriter(arch32, host, state, new LeImageReader(image, 0), new Frame(arch32.WordWidth));
@@ -272,7 +280,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_MovStackArgument()
+        public void X86rw_MovStackArgument()
         {
             Run16bitTest(m =>
             {
@@ -284,7 +292,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_AddToReg()
+        public void X86rw_AddToReg()
         {
             Run16bitTest(m =>
             {
@@ -297,7 +305,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_AddToMem()
+        public void X86rw_AddToMem()
         {
             Run16bitTest(m =>
             {
@@ -311,7 +319,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Sub()
+        public void X86rw_Sub()
         {
             Run16bitTest(m =>
             {
@@ -324,7 +332,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Or()
+        public void X86rw_Or()
         {
             Run16bitTest(m =>
             {
@@ -338,7 +346,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_And()
+        public void X86rw_And()
         {
             Run16bitTest(m =>
             {
@@ -352,7 +360,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Xor()
+        public void X86rw_Xor()
         {
             Run16bitTest(m =>
             {
@@ -366,7 +374,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Test()
+        public void X86rw_Test()
         {
             Run16bitTest(m =>
             {
@@ -379,9 +387,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Cmp()
+        public void X86rw_Cmp()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Cmp(m.ebx, 3);
             });
@@ -391,9 +399,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_PushPop()
+        public void X86rw_PushPop()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Push(m.eax);
                 m.Pop(m.ebx);
@@ -408,9 +416,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Jmp()
+        public void X86rw_Jmp()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Label("lupe");
                 m.Jmp("lupe");
@@ -421,9 +429,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_JmpIndirect()
+        public void X86rw_JmpIndirect()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Jmp(m.WordPtr(m.bx, 0x10));
             });
@@ -433,9 +441,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Jne()
+        public void X86rw_Jne()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Label("lupe");
                 m.Jnz("lupe");
@@ -449,9 +457,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Call16bit()
+        public void X86rw_Call16bit()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Label("self");
                 m.Call("self");
@@ -462,9 +470,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Call32Bit()
+        public void X86rw_Call32Bit()
         {
-            Run32bitTest(delegate(X86Assembler m)
+            Run32bitTest(delegate (X86Assembler m)
             {
                 m.Label("self");
                 m.Call("self");
@@ -475,9 +483,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Bswap()
+        public void X86rw_Bswap()
         {
-            Run32bitTest(delegate(X86Assembler m)
+            Run32bitTest(delegate (X86Assembler m)
             {
                 m.Bswap(m.ebx);
             });
@@ -487,9 +495,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_IntInstruction()
+        public void X86rw_IntInstruction()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Mov(m.ax, 0x4C00);
                 m.Int(0x21);
@@ -502,9 +510,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_InInstruction()
+        public void X86rw_InInstruction()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.In(m.al, m.dx);
             });
@@ -514,9 +522,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RetInstruction()
+        public void X86rw_RetInstruction()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Ret();
             });
@@ -526,9 +534,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RealModeReboot()
+        public void X86rw_RealModeReboot()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.JmpF(Address.SegPtr(0xF000, 0xFFF0));
             });
@@ -538,9 +546,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RetNInstruction()
+        public void X86rw_RetNInstruction()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Ret(8);
             });
@@ -550,9 +558,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Loop()
+        public void X86rw_Loop()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Label("lupe");
                 m.Loop("lupe");
@@ -564,9 +572,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Loope()
+        public void X86rw_Loope()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Label("lupe");
                 m.Loope("lupe");
@@ -581,9 +589,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Adc()
+        public void X86rw_Adc()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Adc(m.WordPtr(0x100), m.ax);
             });
@@ -595,9 +603,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Lea()
+        public void X86rw_Lea()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Lea(m.bx, m.MemW(Registers.bx, 4));
             });
@@ -607,9 +615,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Enter()
+        public void X86rw_Enter()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Enter(16, 0);
             });
@@ -622,9 +630,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Neg()
+        public void X86rw_Neg()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Neg(m.ecx);
             });
@@ -636,9 +644,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Not()
+        public void X86rw_Not()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Not(m.bx);
             });
@@ -648,9 +656,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Out()
+        public void X86rw_Out()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Out(m.dx, m.al);
             });
@@ -660,9 +668,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Jcxz()
+        public void X86rw_Jcxz()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Label("lupe");
                 m.Jcxz("lupe");
@@ -673,9 +681,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RepLodsw()
+        public void X86rw_RepLodsw()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Rep();
                 m.Lodsw();
@@ -695,9 +703,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Shld()
+        public void X86rw_Shld()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Shld(m.edx, m.eax, m.cl);
             });
@@ -707,9 +715,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Shrd()
+        public void X86rw_Shrd()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Shrd(m.eax, m.edx, 4);
             });
@@ -719,9 +727,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Fild()
+        public void X86rw_Fild()
         {
-            Run32bitTest(delegate(X86Assembler m)
+            Run32bitTest(delegate (X86Assembler m)
             {
                 m.Fild(m.MemDw(Registers.ebx, 4));
             });
@@ -731,9 +739,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Fstp()
+        public void X86rw_Fstp()
         {
-            Run32bitTest(m => 
+            Run32bitTest(m =>
             {
                 m.Fstp(m.MemDw(Registers.ebx, 4));
             });
@@ -742,9 +750,9 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|Mem0[ebx + 0x00000004:real32] = (real32) rArg0");
         }
         [Test]
-        public void X86Rw_RepScasb()
+        public void X86rw_RepScasb()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Rep();
                 m.Scasb();
@@ -762,9 +770,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RewriteLesBxStack()
+        public void X86rw_RewriteLesBxStack()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Les(m.bx, m.MemW(Registers.bp, 6));
             });
@@ -782,9 +790,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RewriteBswap()
+        public void X86rw_RewriteBswap()
         {
-            Run32bitTest(delegate(X86Assembler m)
+            Run32bitTest(delegate (X86Assembler m)
             {
                 m.Bswap(m.ebx);
             });
@@ -794,9 +802,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RewriteFiadd()
+        public void X86rw_RewriteFiadd()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Fiadd(m.WordPtr(m.bx, 0));
             });
@@ -809,9 +817,9 @@ namespace Reko.UnitTests.Arch.Intel
         /// Captures the side effect of setting CF = 0
         /// </summary>
         [Test]
-        public void X86Rw_RewriteAnd()
+        public void X86rw_RewriteAnd()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.And(m.ax, m.Const(8));
             });
@@ -823,9 +831,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test(Description = "Captures the side effect of setting CF = 0")]
-        public void X86Rw_RewriteTest()
+        public void X86rw_RewriteTest()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Test(m.ax, m.Const(8));
             });
@@ -836,9 +844,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RewriteImul()
+        public void X86rw_RewriteImul()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Imul(m.cx);
             });
@@ -849,9 +857,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RewriteMul()
+        public void X86rw_RewriteMul()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Mul(m.cx);
             });
@@ -862,9 +870,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RewriteFmul()
+        public void X86rw_RewriteFmul()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Fmul(m.St(1));
             });
@@ -874,9 +882,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RewriteDivWithRemainder()
+        public void X86rw_RewriteDivWithRemainder()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Div(m.cx);
             });
@@ -889,9 +897,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RewriteIdivWithRemainder()
+        public void X86rw_RewriteIdivWithRemainder()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Idiv(m.cx);
             });
@@ -904,9 +912,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RewriteBsr()
+        public void X86rw_RewriteBsr()
         {
-            Run32bitTest(delegate(X86Assembler m)
+            Run32bitTest(delegate (X86Assembler m)
             {
                 m.Bsr(m.ecx, m.eax);
             });
@@ -917,9 +925,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RewriteIndirectCalls()
+        public void X86rw_RewriteIndirectCalls()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Call(m.bx);
                 m.Call(m.WordPtr(m.bx, 4));
@@ -935,7 +943,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_RewriteJp()
+        public void X86rw_RewriteJp()
         {
             Run16bitTest(m =>
             {
@@ -951,9 +959,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_FstswSahf()
+        public void X86rw_FstswSahf()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Fstsw(m.ax);
                 m.Sahf();
@@ -964,9 +972,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_FstswTestAhEq()
+        public void X86rw_FstswTestAhEq()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Label("foo");
                 m.Fcompp();
@@ -983,9 +991,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Sar()
+        public void X86rw_Sar()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Sar(m.ax, 1);
                 m.Sar(m.bx, m.cl);
@@ -1004,9 +1012,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Xlat16()
+        public void X86rw_Xlat16()
         {
-            Run16bitTest(delegate(X86Assembler m)
+            Run16bitTest(delegate (X86Assembler m)
             {
                 m.Xlat();
             });
@@ -1016,9 +1024,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Xlat32()
+        public void X86rw_Xlat32()
         {
-            Run32bitTest(delegate(X86Assembler m)
+            Run32bitTest(delegate (X86Assembler m)
             {
                 m.Xlat();
             });
@@ -1028,9 +1036,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Aaa()
+        public void X86rw_Aaa()
         {
-            Run32bitTest(delegate(X86Assembler m)
+            Run32bitTest(delegate (X86Assembler m)
             {
                 m.Aaa();
             });
@@ -1040,9 +1048,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Aam()
+        public void X86rw_Aam()
         {
-            Run32bitTest(delegate(X86Assembler m)
+            Run32bitTest(delegate (X86Assembler m)
             {
                 m.Aam();
             });
@@ -1052,9 +1060,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Cmpsb()
+        public void X86rw_Cmpsb()
         {
-            Run32bitTest(delegate(X86Assembler m)
+            Run32bitTest(delegate (X86Assembler m)
             {
                 m.Cmpsb();
             });
@@ -1066,9 +1074,9 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Hlt()
+        public void X86rw_Hlt()
         {
-            Run32bitTest(delegate(X86Assembler m)
+            Run32bitTest(delegate (X86Assembler m)
             {
                 m.Hlt();
             });
@@ -1078,7 +1086,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Pushf_Popf()
+        public void X86rw_Pushf_Popf()
         {
             Run16bitTest((m) =>
             {
@@ -1095,7 +1103,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Std_Lodsw()
+        public void X86rw_Std_Lodsw()
         {
             Run32bitTest(m =>
             {
@@ -1118,7 +1126,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_les_bx()
+        public void X86rw_les_bx()
         {
             Run16bitTest(m =>
             {
@@ -1130,7 +1138,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_cmovz()
+        public void X86rw_cmovz()
         {
             Run32bitTest(0x0F, 0x44, 0xC8);
             AssertCode(
@@ -1140,16 +1148,16 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_cmp_Ev_Ib()
+        public void X86rw_cmp_Ev_Ib()
         {
             Run32bitTest(0x83, 0x3F, 0xFF);
             AssertCode(
                 "0|L--|10000000(3): 1 instructions",
                 "1|L--|SCZO = cond(Mem0[edi:word32] - 0xFFFFFFFF)");
-         }
+        }
 
         [Test]
-        public void X86Rw_rol_Eb()
+        public void X86rw_rol_Eb()
         {
             Run32bitTest(0xC0, 0xC0, 0xC0);
             AssertCode(
@@ -1157,10 +1165,10 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|v2 = (al & 0x01 << 0x08 - 0xC0) != 0x00",
                 "2|L--|al = __rol(al, 0xC0)",
                 "3|L--|C = v2");
-         }
+        }
 
         [Test]
-        public void X86Rw_pxor_self()
+        public void X86rw_pxor_self()
         {
             Run32bitTest(0x0F, 0xEF, 0xC9);
             AssertCode(
@@ -1169,7 +1177,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_lock()
+        public void X86rw_lock()
         {
             Run32bitTest(0xF0);
             AssertCode(
@@ -1178,16 +1186,16 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_Cmpxchg()
+        public void X86rw_Cmpxchg()
         {
-            Run32bitTest(0x0F, 0xB1, 0x0A); 
+            Run32bitTest(0x0F, 0xB1, 0x0A);
             AssertCode(
               "0|L--|10000000(3): 1 instructions",
               "1|L--|Z = __cmpxchg(Mem0[edx:word32], ecx, eax, out eax)");
         }
 
         [Test]
-        public void X86Rw_Xadd()
+        public void X86rw_Xadd()
         {
             Run32bitTest(0x0f, 0xC1, 0xC2);
             AssertCode(
@@ -1197,7 +1205,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Rw_cvttsd2si()
+        public void X86rw_cvttsd2si()
         {
             Run32bitTest(0xF2, 0x0F, 0x2C, 0xC3);
             AssertCode(
@@ -1207,7 +1215,7 @@ namespace Reko.UnitTests.Arch.Intel
 
 
         [Test]
-        public void X86Rw_fucompp()
+        public void X86rw_fucompp()
         {
             Run32bitTest(0xDA, 0xE9);
             AssertCode(
@@ -1219,9 +1227,9 @@ namespace Reko.UnitTests.Arch.Intel
         public void X86rw_fs_prefix()
         {
             Run32bitTest(0x64, 0x8B, 0x0A);
-               AssertCode(
-              "0|L--|10000000(3): 1 instructions",
-              "1|L--|ecx = Mem0[fs:edx:word32]");
+            AssertCode(
+           "0|L--|10000000(3): 1 instructions",
+           "1|L--|ecx = Mem0[fs:edx:word32]");
         }
 
         [Test]
@@ -1608,5 +1616,127 @@ namespace Reko.UnitTests.Arch.Intel
                "1|L--|v4 = (real32) rax",
                "2|L--|xmm0 = DPB(xmm0, v4, 0)");
         }
+
+        [Test]
+        public void X86rw_cvtpi2ps()
+        {
+            Run64bitTest("49 0F 2A C5");
+            AssertCode( // cvtpi2ps xmm0, mm5
+               "0|L--|0000000140000000(4): 3 instructions",
+               "1|L--|v3 = (real32) SLICE(mm5, int32, 0)",
+               "2|L--|v4 = (real32) SLICE(mm5, int32, 32)",
+               "3|L--|xmm0 = SEQ(v4, v3)");
+        }
+
+        [Test]
+        public void X86rw_addps()
+        {
+            Run64bitTest("0F 58 0D FB B0 00 00");
+            AssertCode( // addps xmm1,[0000000000415EF4]
+                "0|L--|0000000140000000(7): 3 instructions",
+                "1|L--|v3 = xmm1",
+                "2|L--|v4 = Mem0[0x000000014000B102:word128]",
+                "3|L--|xmm1 = __addps(v3, v4)");
+        }
+
+        [Test]
+        public void X86rw_divsd()
+        {
+            Run64bitTest("F2 0F 5E C1");
+            AssertCode( // divsd xmm0,xmm1
+               "0|L--|0000000140000000(4): 2 instructions",
+               "1|L--|v3 = (real64) xmm0 / xmm1",
+               "2|L--|xmm0 = DPB(xmm0, v3, 0)");
+        }
+
+        [Test]
+        public void X86rw_mulsd()
+        {
+            Run64bitTest("F2 0F 59 05 92 AD 00 00 ");
+            AssertCode(     // mulsd xmm0,qword ptr[rip + ad92]
+               "0|L--|0000000140000000(8): 2 instructions",
+               "1|L--|v3 = (real64) xmm0 * Mem0[0x000000014000AD9A:real64]",
+               "2|L--|xmm0 = DPB(xmm0, v3, 0)");
+        }
+
+        [Test]
+        public void X86rw_subps()
+        {
+            Run64bitTest("0F 5C 05 61 AA 00 00");
+            AssertCode( // subps xmm0,[0000000000415F0C]
+               "0|L--|0000000140000000(7): 3 instructions",
+               "1|L--|v3 = xmm0",
+               "2|L--|v4 = Mem0[0x000000014000AA68:word128]",
+               "3|L--|xmm0 = __subps(v3, v4)");
+        }
+
+        [Test]
+        public void X86rw_cvttss2si()
+        {
+            Run64bitTest("F3 4C 0F 2C F8");
+            AssertCode(     // cvttss2si r15d, xmm0
+               "0|L--|0000000140000000(5): 1 instructions",
+               "1|L--|r15d = (int32) xmm0");
+        }
+
+        [Test]
+        public void X86rw_mulps()
+        {
+            Run64bitTest("0F 59 4A 08");
+            AssertCode(     // mulps xmm1,[rdx+08]
+                "0|L--|0000000140000000(4): 3 instructions",
+                "1|L--|v4 = xmm1",
+                "2|L--|v5 = Mem0[rdx + 0x0000000000000008:word128]",
+                "3|L--|xmm1 = __mulps(v4, v5)");
+        }
+
+        [Test]
+        public void X86rw_mulss()
+        {
+            Run64bitTest("F3 0F 59 D8");
+            AssertCode(     // mulss xmm3, xmm0
+                "0|L--|0000000140000000(4): 2 instructions",
+                "1|L--|v3 = (real32) xmm3 * xmm0",
+                "2|L--|xmm3 = DPB(xmm3, v3, 0)");
+        }
+
+        [Test]
+        public void X86rw_divss()
+        {
+            Run64bitTest("F3 0F 5E C1");
+            AssertCode(     // divss xmm0, xmm1
+                "0|L--|0000000140000000(4): 2 instructions",
+                "1|L--|v3 = (real32) xmm0 / xmm1",
+                "2|L--|xmm0 = DPB(xmm0, v3, 0)");
+        }
+
+        [Test(Description = "RET n instructions with an odd n are unlikely to be valid.")]
+        public void X86rw_invalid_ret_n()
+        {
+            Run64bitTest("C2 01 00");
+            AssertCode(     // ret 0001
+                "0|---|0000000140000000(3): 1 instructions",
+                "1|---|<invalid>");
+        }
+
+        [Test]
+        public void X86rw_fptan()
+        {
+            Run16bitTest(0xD9, 0xF2);
+            AssertCode(     // fptan
+                "0|L--|0C00:0000(2): 2 instructions",
+                "1|L--|rArg0 = tan(rArg0)",
+                "2|L--|rLoc1 = 1.0");
+        }
+
+        [Test]
+        public void X86rw_f2xm1()
+        {
+            Run16bitTest(0xD9, 0xF0);
+            AssertCode(     // f2xm1
+                "0|L--|0C00:0000(2): 1 instructions",
+                "1|L--|rArg0 = pow(2.0, rArg0) - 1.0");
+        }
     }
 }
+

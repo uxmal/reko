@@ -166,8 +166,12 @@ namespace Reko.Arch.X86
                     Opcode.addpd, "Vpd,Hpd,Wpd",
                     Opcode.addss, "Vss,Hss,Wss",
                     Opcode.addsd, "Vsd,Hsd,Wsd"),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+                new PrefixedOpRec(
+                    Opcode.mulps, "Vps,Hps,Wps",
+                    Opcode.mulpd, "Vpd,Hpd,Wpd",
+                    Opcode.mulss, "Vss,Hss,Wss",
+                    Opcode.mulsd, "Vsd,Hsd,Wsd"),
+                new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new PrefixedOpRec(
                     Opcode.subps, "Vps,Hps,Wps",
@@ -175,8 +179,12 @@ namespace Reko.Arch.X86
                     Opcode.subss, "Vss,Hss,Wss",
                     Opcode.subsd, "Vsd,Hsd,Wsd"),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+                new PrefixedOpRec(
+                    Opcode.divps, "Vps,Hps,Wps",
+                    Opcode.divpd, "Vpd,Hpd,Wpd",
+                    Opcode.divss, "Vss,Hss,Wss",
+                    Opcode.divsd, "Vsd,Hsd,Wsd"),
+                new SingleByteOpRec(Opcode.illegal),
 					
 				// 60
 				new PrefixedOpRec(

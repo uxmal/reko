@@ -53,7 +53,7 @@ namespace Reko.Core
             var mappedItems =
                 from seg in map.Segments.Values
                 from item in program.ImageMap.Items.Values
-                where seg.IsInRange(item.Address)
+                where seg.IsInRange(item.Address) && !seg.IsHidden
                 group new { seg, item } by seg into g
                 orderby g.Key.Address
                 select new { g.Key, Items = g.Select(gg => gg.item) }; 

@@ -416,24 +416,19 @@ namespace Reko.ImageLoaders.OdbgScript
 
         // File functions
 
-        public static bool IsFullPath(string path)
-        {
-            return Path.IsPathRooted(path);
-        }
-
         public static string pathfixup(string path, bool isfolder)
         {
             string @out = path;
 
             if (!string.IsNullOrEmpty(@out))
             {
-                @out = @out.Replace('/', '\\');
-                if (isfolder && !@out.EndsWith("\\"))
-                    @out += '\\';
+				if (isfolder && @out[@out.Length-1] != Path.DirectorySeparatorChar)
+					@out += Path.DirectorySeparatorChar;
             }
             return @out;
         }
 
+		[Obsolete("Use Path.GetDirectoryName", true)]
         public static string folderfrompath(string path)
         {
             int p = path.LastIndexOf('\\');

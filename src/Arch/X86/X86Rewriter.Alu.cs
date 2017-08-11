@@ -167,6 +167,19 @@ namespace Reko.Arch.X86
                 orw.AluRegister(Registers.ecx)));
         }
 
+        private void RewriteXsetbv()
+        {
+            var edx_eax = frame.EnsureSequence(
+                Registers.edx,
+                Registers.eax,
+                PrimitiveType.Word64);
+            m.SideEffect(
+                host.PseudoProcedure("__xsetbv",
+                    VoidType.Instance,
+                    orw.AluRegister(Registers.ecx),
+                    edx_eax));
+        }
+
         private void RewriteRdtsc()
         {
             Identifier edx_eax = frame.EnsureSequence(

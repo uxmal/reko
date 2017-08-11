@@ -53,6 +53,12 @@ namespace Reko.Core
 		public int Value;
 	}
 
+    public class StackValue
+    {
+        public int Offset;
+        public int Value;
+    }
+
     /// <summary>
     /// Describes an exported entry point to an operating system service, or an
     /// ordinal entry point to a dynamic library.
@@ -68,6 +74,11 @@ namespace Reko.Core
         /// Register values that select which subservice of the system call to invoke.
         /// </summary>
 		public RegValue [] RegisterValues;
+
+        /// <summary>
+        /// Stack values that select which subservice of the system call to invoke.
+        /// </summary>
+        public StackValue[] StackValues;
 
 		public bool Matches(int vector, ProcessorState state)
 		{
@@ -85,6 +96,17 @@ namespace Reko.Core
                     return false;
                 if (v.ToUInt32() != RegisterValues[i].Value)
                     return false;
+            }
+            if (StackValues != null && StackValues.Length > 0)
+            {
+                for (int i = 0; i < StackValues.Length; ++i)
+                {
+                    var c = state.GetStackValue(StackValues[i].Offset) as Constant;
+                    if (c == null || c == Constant.Invalid)
+                        return false;
+                    if (c.ToUInt32() != StackValues[i].Value)
+                        return false;
+                }
             }
             return true;
         }

@@ -124,6 +124,11 @@ namespace Reko.Core
 
         public bool IsDiscardable { get; set; }
 
+        /// <summary>
+        /// If set to true, this segment should not be emitted as source code.
+        /// </summary>
+        public bool IsHidden { get; set; }
+
         public bool IsExecutable { get { return (this.Access & AccessMode.Execute) != 0; } }
 
         /// <summary>

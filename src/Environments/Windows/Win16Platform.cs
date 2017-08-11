@@ -124,15 +124,15 @@ namespace Reko.Environments.Windows
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             foreach (ITypeLibraryElement tl in envCfg.TypeLibraries)
             {
-                Metadata = new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(tl.Name))
+                var path = cfgSvc.GetInstallationRelativePath(tl.Name);
+                Metadata = new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(path))
                                 .Load(this, tl.Module, Metadata);
             }
         }
 
-        public override ExternalProcedure SignatureFromName(string fnName)
+        public override ProcedureBase_v1 SignatureFromName(string fnName)
         {
-            var tlsvc = new TypeLibraryDeserializer(this, false, Metadata);
-            var sig = SignatureGuesser.SignatureFromName(fnName, tlsvc, this);
+            var sig = SignatureGuesser.SignatureFromName(fnName, this);
             return sig;
         }
     }

@@ -98,6 +98,7 @@ namespace Reko.Arch.X86
                 case Opcode.add: RewriteAddSub(Operator.IAdd); break;
                 case Opcode.addss: RewriteScalarBinop(m.FAdd, PrimitiveType.Real32); break;
                 case Opcode.addsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64); break;
+                case Opcode.addps: RewritePackedBinop("__addps", PrimitiveType.Real32); break;
                 case Opcode.and: RewriteLogical(Operator.And); break;
                 case Opcode.arpl: RewriteArpl(); break;
                 case Opcode.bound: RewriteBound(); break;
@@ -133,15 +134,21 @@ namespace Reko.Arch.X86
                 case Opcode.cmps: RewriteStringInstruction(); break;
                 case Opcode.cmpsb: RewriteStringInstruction(); break;
                 case Opcode.cpuid: RewriteCpuid(); break;
+                case Opcode.cvtpi2ps: RewriteCvtPackedToReal(PrimitiveType.Real32); break;
                 case Opcode.cvtsi2sd: RewriteCvtToReal(PrimitiveType.Real64); break;
                 case Opcode.cvtsi2ss: RewriteCvtToReal(PrimitiveType.Real32); break;
-                case Opcode.cvttsd2si: RewriteCvttsd2si(); break;
+                case Opcode.cvttsd2si: RewriteCvtts2si(PrimitiveType.Real64); break;
+                case Opcode.cvttss2si: RewriteCvtts2si(PrimitiveType.Real32); break;
                 case Opcode.cvttps2pi: RewriteCvttps2pi(); break;
                 case Opcode.cwd: RewriteCwd(); break;
                 case Opcode.daa: EmitDaaDas("__daa"); break;
                 case Opcode.das: EmitDaaDas("__das"); break;
                 case Opcode.dec: RewriteIncDec(-1); break;
                 case Opcode.div: RewriteDivide(m.UDiv, Domain.UnsignedInt); break;
+                case Opcode.divps: RewritePackedBinop("__divps", PrimitiveType.Real32); break;
+                case Opcode.divsd: RewriteScalarBinop(m.FDiv, PrimitiveType.Real64); break;
+                case Opcode.divss: RewriteScalarBinop(m.FDiv, PrimitiveType.Real32); break;
+                case Opcode.f2xm1: RewriteF2xm1(); break;
                 case Opcode.enter: RewriteEnter(); break;
                 case Opcode.fabs: RewriteFabs(); break;
                 case Opcode.fadd: EmitCommonFpuInstruction(m.FAdd, false, false); break;
@@ -176,7 +183,9 @@ namespace Reko.Arch.X86
                 case Opcode.fld1: RewriteFldConst(1.0); break;
                 case Opcode.fldcw: RewriteFldcw(); break;
                 case Opcode.fldenv: RewriteFldenv(); break;
+                case Opcode.fldl2e: RewriteFldConst(Constant.LgE()); break;
                 case Opcode.fldl2t: RewriteFldConst(Constant.Lg10()); break;
+                case Opcode.fldlg2: RewriteFldConst(Constant.Log2()); break;
                 case Opcode.fldln2: RewriteFldConst(Constant.Ln2()); break;
                 case Opcode.fldpi: RewriteFldConst(Constant.Pi()); break;
                 case Opcode.fldz: RewriteFldConst(0.0); break;
@@ -184,6 +193,7 @@ namespace Reko.Arch.X86
                 case Opcode.fmulp: EmitCommonFpuInstruction(m.FMul, false, true); break;
                 case Opcode.fpatan: RewriteFpatan(); break;
                 case Opcode.fprem: RewriteFprem(); break;
+                case Opcode.fptan: RewriteFptan(); break;
                 case Opcode.frndint: RewriteFUnary("__rndint"); break;
                 case Opcode.frstor: RewriteFrstor(); break;
                 case Opcode.fsave: RewriteFsave(); break;
@@ -265,6 +275,10 @@ namespace Reko.Arch.X86
                 case Opcode.movupd: RewriteMov(); break;
                 case Opcode.movzx: RewriteMovzx(); break;
                 case Opcode.mul: RewriteMultiply(Operator.UMul, Domain.UnsignedInt); break;
+                case Opcode.mulpd: RewritePackedBinop("__mulpd", PrimitiveType.Real64); break;
+                case Opcode.mulps: RewritePackedBinop("__mulps", PrimitiveType.Real32); break;
+                case Opcode.mulss: RewriteScalarBinop(m.FMul, PrimitiveType.Real32); break;
+                case Opcode.mulsd: RewriteScalarBinop(m.FMul, PrimitiveType.Real64); break;
                 case Opcode.neg: RewriteNeg(); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.not: RewriteNot(); break;
@@ -324,6 +338,7 @@ namespace Reko.Arch.X86
                 case Opcode.sub: RewriteAddSub(BinaryOperator.ISub); break;
                 case Opcode.subsd: RewriteScalarBinop(m.FSub, PrimitiveType.Real64); break;
                 case Opcode.subss: RewriteScalarBinop(m.FSub, PrimitiveType.Real32); break;
+                case Opcode.subps: RewritePackedBinop("__subps", PrimitiveType.Real32); break;
                 case Opcode.ucomiss: RewriteComis(PrimitiveType.Real32); break;
                 case Opcode.ucomisd: RewriteComis(PrimitiveType.Real64); break;
                 case Opcode.test: RewriteTest(); break;
@@ -331,6 +346,7 @@ namespace Reko.Arch.X86
                 case Opcode.xadd: RewriteXadd(); break;
                 case Opcode.xchg: RewriteExchange(); break;
                 case Opcode.xgetbv: RewriteXgetbv(); break;
+                case Opcode.xsetbv: RewriteXsetbv(); break;
                 case Opcode.xlat: RewriteXlat(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
                 case Opcode.BOR_exp: RewriteFUnary("exp"); break;

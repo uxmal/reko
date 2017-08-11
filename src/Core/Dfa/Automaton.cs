@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Scanning.Dfa
+namespace Reko.Core.Dfa
 {
     /// <summary>
     /// Deterministic finite automaton that matches a pattern of bytes in an array.

@@ -1140,6 +1140,14 @@ namespace Reko.Scanning
                 return bra.Condition;
             }
 
+            public bool IsFallthrough(Instruction instr, Block block)
+            {
+                var bra = instr as Branch;
+                if (bra == null)
+                    return false;
+                return bra.Target != block;
+            }
+
             public AddressRange GetSinglePredecessorAddressRange(Address block)
             {
                 throw new NotImplementedException();

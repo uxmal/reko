@@ -78,6 +78,15 @@ namespace Reko.UnitTests.Scanning
                     return null;
                 return bra.Condition;
             }
+
+            public bool IsFallthrough(Instruction instr, Block block)
+            {
+                var bra = instr as Branch;
+                if (bra == null)
+                    return false;
+                return bra.Target != block;
+            }
+
             public AddressRange GetSinglePredecessorAddressRange(Address block)
             {
                 throw new NotImplementedException();
@@ -242,6 +251,35 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual("cmp 120", ops[0].ToString());
             Assert.AreEqual("branch UGT", ops[1].ToString());
             Assert.AreEqual("* 8", ops[2].ToString());
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void BwInvertedCondition()
+        {
+            var ebx = m.Reg32("ebx", 3);
+            var eax = m.Reg32("eax", 0);
+
+            var CZ = m.Flags("CZ");
+            m.Assign(CZ, m.Cond(m.ISub(ebx, 0x30)));
+            m.BranchIf(m.Test(ConditionCode.ULE, CZ), "do_switch");
+            m.Goto("default_case");
+
+            m.Label("do_switch");
+            m.Assign(eax, 0);
+            var block = m.CurrentBlock;
+            var xfer = new RtlGoto(m.LoadDw(m.IAdd(Constant.Word32(0x00123400), m.IMul(ebx, 4))), RtlClass.Transfer);
+
+            m.Label("default_case");
+            m.Return();
+
+            var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
+            Assert.IsTrue(bw.CanBackwalk());
+            var ops = bw.BackWalk(block);
+            Assert.AreEqual(3, ops.Count);
+            Assert.AreEqual("cmp 48", ops[0].ToString());
+            Assert.AreEqual("branch UGT", ops[1].ToString());
+            Assert.AreEqual("* 4", ops[2].ToString());
         }
     }
 }

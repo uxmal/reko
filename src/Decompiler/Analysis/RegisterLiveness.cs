@@ -76,11 +76,15 @@ namespace Reko.Analysis
             Debug.WriteLineIf(trace.TraceError, "** Computing ByPass ****");
             live.CurrentState = new ByPassState(p.Architecture);
             live.ProcessWorklist();
+            if (eventListener.IsCanceled())
+                return live;
 
             Debug.WriteLineIf(trace.TraceError, "** Computing MayUse ****");
             live.CurrentState = new MayUseState();
             if (trace.TraceInfo) live.Dump();
             live.ProcessWorklist();
+            if (eventListener.IsCanceled())
+                return live;
 
             //$REVIEW: since we never use the liveinstate, can we get rid of the following
             // four statements?
@@ -88,6 +92,8 @@ namespace Reko.Analysis
             live.CurrentState = new LiveInState();
             if (trace.TraceInfo) live.Dump();
             live.ProcessWorklist();
+            if (eventListener.IsCanceled())
+                return live;
 
             live.CompleteWork();
             if (trace.TraceInfo) live.Dump();

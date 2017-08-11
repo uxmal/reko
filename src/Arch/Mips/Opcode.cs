@@ -139,7 +139,6 @@ namespace Reko.Arch.Mips
         swc1,
         swl,
         swr,
-        swu,
         sync,
         syscall,
         teq,

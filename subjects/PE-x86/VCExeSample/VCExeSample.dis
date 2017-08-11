@@ -486,3 +486,62 @@ l0040131E:
 
 
 
+void nested_structs_test12(word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Preserved: ebp esp
+// Stack args: Stack +0004(32)
+nested_structs_test12_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(32)
+
+l00401330:
+	Mem8[dwArg04:word32] = 0x00000001
+	Mem10[dwArg04 + 0x00000004:word32] = 0x00000002
+	Mem12[dwArg04 + 0x00000008:word32] = 0x00000003
+	Mem14[dwArg04 + 0x0000000C:word32] = 0x00000004
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+nested_structs_test12_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebp:ebp eax:<invalid> ecx:<invalid> edx:<invalid> -4(fp):ebp
+
+
+
+void nested_structs_test13(nested_structs_type * str)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Preserved: ebp esp
+// Stack args: Stack +0004(32)
+nested_structs_test13_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(32)
+
+l00401360:
+	nested_structs_test12(str)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+nested_structs_test13_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebp:ebp eax:<invalid> ecx:<invalid> edx:<invalid> -8(fp):str -4(fp):ebp 4(fp):str
+
+
+

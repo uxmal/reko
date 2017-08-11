@@ -448,12 +448,12 @@ namespace Reko.ImageLoaders.MzExe
             var entries = new List<ImageSymbol>();
             for (;;)
             {
-                var cEntries = rdr.ReadByte();
-                if (cEntries == 0)
+                var cBundleEntries = rdr.ReadByte();
+                if (cBundleEntries == 0)
                     break;
                 var segNum = rdr.ReadByte();
                 var seg = this.segments[segNum - 1];
-                for (int i = 0; i < cEntries; ++i)
+                for (int i = 0; i < cBundleEntries; ++i)
                 {
                     var flags = rdr.ReadByte();
                     var offset = rdr.ReadUInt16();
@@ -462,13 +462,12 @@ namespace Reko.ImageLoaders.MzExe
                     var state = arch.CreateProcessorState();
 
                     ImageSymbol ep = new ImageSymbol(addr);
-                    if (names.TryGetValue(entries.Count, out name))
+                    if (names.TryGetValue(entries.Count + 1, out name))
                     {
                         ep.Name = name;
                     }
                     ep.Type = SymbolType.Procedure;
                     ep.ProcessorState = state;
-                    Debug.Print("$$$ {0}", ep.Name);
                     imageSymbols[ep.Address] = ep;
                     entries.Add(ep);
                 }

@@ -377,7 +377,7 @@ l000000000040052D:
 f_exit:
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x0000000000000004 rdi:0x0000000000000078 rax:DPB(rax, <invalid>, 0) rbp:rbp -4(fp):rbp
+// SymbolicIn: rsp:fp + 0x0000000000000004 rdi:0x0000000000000078 rax:<invalid> rbp:rbp -4(fp):rbp
 
 
 
@@ -432,7 +432,7 @@ l0000000000400550:
 l0000000000400588:
 // DataOut: r15d rbp rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000020 r15:(uint64) edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 rbx:0x0000000000000000 rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000020 r15:(uint64) edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 rbx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
 // LocalsOut: fp(64) Local -0008(64)
 
 l0000000000400590:

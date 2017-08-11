@@ -326,19 +326,29 @@ namespace Reko.Scanning
             // use those as entries.
             if (cluster.Entries.Count > 0)
                 return true;
+
+            // If a single node has 0 predecessors, make it the entry.
+            if (nopreds.Count == 1)
+            {
+                // This is disabled as we get a lot of false positives.
+                // If we can generate a cross reference lookup then perhaps
+                // this will improve.
+                //cluster.Entries.UnionWith(nopreds);
+                //return true;
+                return false;
+            }
+
             /*
-             *            return false;
+            // Otherwise, if one or more nodes has zero predecessors, pick it.
+            if (nopreds.Count > 0)
+            {
+                cluster.Entries.UnionWith(nopreds);
+                return;
+            }
 
-                        // Otherwise, if one or more nodes has zero predecessors, pick it.
-                        if (nopreds.Count > 0)
-                        {
-                            cluster.Entries.UnionWith(nopreds);
-                            return;
-                        }
-
-                        // If we can't find another possibility, return the node with the
-                        // lowest address.
-                        cluster.Entries.Add(cluster.Blocks.OrderBy(b => b.Address).First());
+            // If we can't find another possibility, return the node with the
+            // lowest address.
+            cluster.Entries.Add(cluster.Blocks.OrderBy(b => b.Address).First());
              */
             return false;
         }
@@ -358,6 +368,11 @@ namespace Reko.Scanning
                 .Where(b => !entries.Contains(b) && sr.ICFG.Predecessors(b).Count == 0)
                 .ToHashSet();
             cluster.Blocks.ExceptWith(deadNodes);
+            if (cluster.Blocks.Count == 0)
+            {
+                //$TODO: investigate why this happens.
+                return new List<RtlProcedure>();
+            }
 
             // Join blocks which have a single successor / single predecessor
             // relationship.

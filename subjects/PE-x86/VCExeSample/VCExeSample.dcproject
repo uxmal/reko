@@ -31,9 +31,14 @@
         <address>00401120</address>
         <CSignature>void test6(cdecl_class *c, int a, int b)</CSignature>
       </procedure>
+      <procedure name="nested_structs_test13">
+        <characteristics />
+        <address>00401360</address>
+        <CSignature>void nested_structs_test13(nested_structs_type *str)</CSignature>
+      </procedure>
       <procedure name="Win32CrtStartup">
         <characteristics />
-        <address>004015D3</address>
+        <address>00401623</address>
         <decompile>false</decompile>
         <CSignature>DWORD Win32CrtStartup()</CSignature>
       </procedure>

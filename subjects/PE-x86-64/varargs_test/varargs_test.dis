@@ -3,7 +3,7 @@ word32 fn0000000140001000(ptr64 & silOut)
 
 // MayUse: 
 // LiveOut: eax sil
-// Trashed: SCZO ah al ax bh bl bx ch cl cx dh di dil dl dx eax ebx ecx edi edx esi esp r8 r8b r8d r8w r9 r9b r9d r9w rax rbx rcx rdi rdx rsi rsp si sil sp spl xmm0
+// Trashed: SCZO ah al ax bh bl bx ch cl cx dh dl dx eax ebx ecx edx esi esp r8 r8b r8d r8w r9 r9b r9d r9w rax rbx rcx rdx rsi rsp si sil sp spl xmm0
 // Preserved: rsp
 fn0000000140001000_entry:
 // DataOut:
@@ -12,14 +12,14 @@ fn0000000140001000_entry:
 // LocalsOut: fp(64)
 
 l0000000140001000:
-	fn0000000140001140(qwLocC8, qwLocC0, qwLocB8, qwLocB0)
-	Mem22[fp - 0x0000000000000090:word64] = fp - 0x0000000000000084
-	Mem25[fp - 0x0000000000000098:word64] = fp - 0x0000000000000088
-	Mem28[fp - 0x00000000000000A0:word64] = fp - 0x0000000000000078
-	Mem32[fp - 0x00000000000000A8:word64] = fp - 0x0000000000000080
-	fn00000001400010D0(qwArg00, qwArg08, qwArg10, qwArg18)
-	byte sil_42
-	return fn00000001400011B0(Mem32[fp - 0x0000000000000010:word64] ^ fp - 200, out sil_42)
+	fn0000000140001140(qwLocCC, qwLocC8, qwLocC0, qwLocB8, qwLocB0)
+	Mem23[fp - 0x0000000000000090:word64] = fp - 0x0000000000000084
+	Mem26[fp - 0x0000000000000098:word64] = fp - 0x0000000000000088
+	Mem29[fp - 0x00000000000000A0:word64] = fp - 0x0000000000000078
+	Mem33[fp - 0x00000000000000A8:word64] = fp - 0x0000000000000080
+	fn00000001400010D0(qwLoc04, qwArg00, qwArg08, qwArg10, qwArg18)
+	byte sil_44
+	return fn00000001400011B0(Mem33[fp - 0x0000000000000010:word64] ^ fp - 200, out sil_44)
 // DataOut: eax sil
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -27,7 +27,7 @@ l0000000140001000:
 fn0000000140001000_exit:
 // DataOut: eax sil
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rax:<invalid> xmm0:<invalid> r9:<invalid> r8:<invalid> rcx:<invalid> rdx:<invalid> rdi:<invalid> rsi:<invalid> rbx:<invalid> eax:<invalid> -168(fp):<invalid> -160(fp):fp - 0x0000000000000078 -152(fp):<invalid> -144(fp):<invalid> -16(fp):<invalid>
+// SymbolicIn: rsp:<invalid> rax:<invalid> xmm0:<invalid> r9:<invalid> r8:<invalid> rcx:<invalid> rdx:<invalid> rsi:<invalid> rbx:<invalid> eax:<invalid> -168(fp):<invalid> -160(fp):fp - 0x0000000000000078 -152(fp):<invalid> -144(fp):<invalid> -16(fp):<invalid>
 
 
 
@@ -56,13 +56,13 @@ fn00000001400010C0_exit:
 
 
 
-void fn00000001400010D0(word64 qwArg08, word64 qwArg10, word64 qwArg18, word64 qwArg20)
+void fn00000001400010D0(word64 qwArg04, word64 qwArg08, word64 qwArg10, word64 qwArg18, word64 qwArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut: rsp
-// Trashed: SCZO ah al ax bh bl bx ch cl cx dh di dil dl dx eax ebx ecx edi edx esi esp r8 r8b r8d r8w r9 r9b r9d r9w rax rbx rcx rdi rdx rsi rsp si sil sp spl
-// Preserved:
+// Trashed: SCZO ah al ax bh bl bx ch cl cx dh dl dx eax ebx ecx edx esi esp r8 r8b r8d r8w r9 r9b r9d r9w rax rbx rcx rdx rsi rsp si sil sp spl
+// Preserved: rdi
 fn00000001400010D0_entry:
 // DataOut:
 // DataOut (flags): 
@@ -70,41 +70,41 @@ fn00000001400010D0_entry:
 // LocalsOut: fp(64)
 
 l00000001400010D0:
-	word64 rsp_28
-	word64 rcx_29
-	word64 rdx_30
-	word64 r8_31
-	word64 r9_32
-	word64 rbx_33
-	word64 rsi_34
-	word64 rdi_35
-	byte SCZO_36
-	word32 ecx_37
-	byte SZO_38
-	byte C_39
-	word64 rax_40
-	word32 r9d_41
+	word64 rsp_30
+	word64 rcx_31
+	word64 rdx_32
+	word64 r8_33
+	word64 r9_34
+	word64 rbx_35
+	word64 rsi_36
+	word64 rdi_37
+	byte SCZO_38
+	word32 ecx_39
+	byte SZO_40
+	byte C_41
+	word64 rax_42
+	word32 r9d_43
 	call _acrt_iob_func (retsize: 4; depth: 64)
-		uses: C_27,dwLoc04_12,dwLoc08_15,dwLoc0C_18,ecx_25,qwLoc0C_20,r8,r9,rbx,rcx_24,rdi_22,rdx,rsi_23,rsp_21,SZO_26
-		defs: C_39,ecx_37,r8_31,r9_32,r9d_41,rax_40,rbx_33,rcx_29,rdi_35,rdx_30,rsi_34,rsp_28,SCZO_36,SZO_38
-	word64 rax_44 = fn00000001400010C0()
-	word64 rsp_54
-	word64 rcx_55
-	word64 rdx_56
-	word64 r8_57
-	word64 r9_58
-	word64 rbx_59
-	word64 rsi_60
-	word64 rdi_61
-	byte SCZO_62
-	word32 ecx_63
-	byte SZO_64
-	byte C_65
-	word64 rax_66
-	word32 r9d_67
-	call _stdio_common_vfscanf (retsize: 4; depth: 72)
-		uses: C_48,dwLoc04_12,dwLoc08_15,dwLoc0C_18,ecx_37,qwLoc0C_20,qwLoc24_49,r8_50,r9_45,r9d_46,rax_44,rbx_43,rcx_53,rdi_35,rdx_51,rsi_34,rsp_42,SCZO_36,SZO_47
-		defs: C_65,ecx_63,r8_57,r9_58,r9d_67,rax_66,rbx_59,rcx_55,rdi_61,rdx_56,rsi_60,rsp_54,SCZO_62,SZO_64
+		uses: C_29,dwLoc04_12,dwLoc08_17,dwLoc0C_20,ecx_27,qwLoc04_14,qwLoc0C_22,r8,r9,rbx,rcx_26,rdi_24,rdx,rsi_25,rsp_23,SZO_28
+		defs: C_41,ecx_39,r8_33,r9_34,r9d_43,rax_42,rbx_35,rcx_31,rdi_37,rdx_32,rsi_36,rsp_30,SCZO_38,SZO_40
+	word64 rax_45 = fn00000001400010C0()
+	word64 rsp_55
+	word64 rcx_56
+	word64 rdx_57
+	word64 r8_58
+	word64 r9_59
+	word64 rbx_60
+	word64 rsi_61
+	word64 rdi_62
+	byte SCZO_63
+	word32 ecx_64
+	byte SZO_65
+	byte C_66
+	word64 rax_67
+	word32 r9d_68
+	call _stdio_common_vfscanf (retsize: 4; depth: 64)
+		uses: C_49,dwLoc04_12,dwLoc08_17,dwLoc0C_20,ecx_39,qwLoc04_14,qwLoc0C_22,qwLoc1C_50,r8_51,r9_46,r9d_47,rax_45,rbx_44,rcx_54,rdi_37,rdx_52,rsi_36,rsp_30,SCZO_38,SZO_48
+		defs: C_66,ecx_64,r8_58,r9_59,r9d_68,rax_67,rbx_60,rcx_56,rdi_62,rdx_57,rsi_61,rsp_55,SCZO_63,SZO_65
 	return
 // DataOut: rsp
 // DataOut (flags): 
@@ -113,7 +113,7 @@ l00000001400010D0:
 fn00000001400010D0_exit:
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rdi:<invalid> rsi:<invalid> rcx:<invalid> rbx:rdi r9:<invalid> r8:<invalid> rdx:<invalid> rax:<invalid> -36(fp):fp + 0x000000000000001C -12(fp):rdi -8(fp):rsi -4(fp):rbx 8(fp):rcx 16(fp):rdx 24(fp):r8 32(fp):r9
+// SymbolicIn: rsp:fp + 0x000000000000000C rdi:rdi rsi:rbx rcx:<invalid> rbx:<invalid> r9:<invalid> r8:<invalid> rdx:<invalid> rax:<invalid> -28(fp):fp + 0x000000000000001C -12(fp):rdi -8(fp):rsi -4(fp):rbx 8(fp):rcx 16(fp):rdx 24(fp):r8 32(fp):r9
 
 
 
@@ -142,13 +142,13 @@ fn0000000140001130_exit:
 
 
 
-void fn0000000140001140(word64 qwArg08, word64 qwArg10, word64 qwArg18, word64 qwArg20)
+void fn0000000140001140(word64 qwArg04, word64 qwArg08, word64 qwArg10, word64 qwArg18, word64 qwArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut: rsp
-// Trashed: SCZO ah al ax bh bl bx ch cl cx dh di dil dl dx eax ebx ecx edi edx esi esp r8 r8b r8d r8w r9 r9b r9d r9w rax rbx rcx rdi rdx rsi rsp si sil sp spl
-// Preserved:
+// Trashed: SCZO ah al ax bh bl bx ch cl cx dh dl dx eax ebx ecx edx esi esp r8 r8b r8d r8w r9 r9b r9d r9w rax rbx rcx rdx rsi rsp si sil sp spl
+// Preserved: rdi
 fn0000000140001140_entry:
 // DataOut:
 // DataOut (flags): 
@@ -156,41 +156,41 @@ fn0000000140001140_entry:
 // LocalsOut: fp(64)
 
 l0000000140001140:
-	word64 rsp_26
-	word64 rcx_27
-	word64 rdx_28
-	word64 r8_29
-	word64 r9_30
-	word64 rbx_31
-	word64 rsi_32
-	word64 rdi_33
-	byte SCZO_34
-	word32 ecx_35
-	word64 rax_36
-	word32 r9d_37
-	byte SZO_38
-	byte C_39
+	word64 rsp_28
+	word64 rcx_29
+	word64 rdx_30
+	word64 r8_31
+	word64 r9_32
+	word64 rbx_33
+	word64 rsi_34
+	word64 rdi_35
+	byte SCZO_36
+	word32 ecx_37
+	word64 rax_38
+	word32 r9d_39
+	byte SZO_40
+	byte C_41
 	call _acrt_iob_func (retsize: 4; depth: 64)
-		uses: dwLoc04_12,dwLoc08_15,dwLoc0C_18,qwLoc0C_20,r8,r9,rbx,rcx_25,rdi_23,rdx,rsi_24,rsp_21,SCZO_22
-		defs: C_39,ecx_35,r8_29,r9_30,r9d_37,rax_36,rbx_31,rcx_27,rdi_33,rdx_28,rsi_32,rsp_26,SCZO_34,SZO_38
-	word64 rax_42 = fn0000000140001130()
-	word64 rsp_52
-	word64 rcx_53
-	word64 rdx_54
-	word64 r8_55
-	word64 r9_56
-	word64 rbx_57
-	word64 rsi_58
-	word64 rdi_59
-	byte SCZO_60
-	word32 ecx_61
-	word64 rax_62
-	word32 r9d_63
-	byte SZO_64
-	byte C_65
-	call _stdio_common_vfprintf (retsize: 4; depth: 72)
-		uses: C_46,dwLoc04_12,dwLoc08_15,dwLoc0C_18,ecx_35,qwLoc0C_20,qwLoc24_47,r8_48,r9_43,r9d_44,rax_42,rbx_41,rcx_51,rdi_33,rdx_49,rsi_32,rsp_40,SCZO_34,SZO_45
-		defs: C_65,ecx_61,r8_55,r9_56,r9d_63,rax_62,rbx_57,rcx_53,rdi_59,rdx_54,rsi_58,rsp_52,SCZO_60,SZO_64
+		uses: dwLoc04_12,dwLoc08_17,dwLoc0C_20,qwLoc04_14,qwLoc0C_22,r8,r9,rbx,rcx_27,rdi_25,rdx,rsi_26,rsp_23,SCZO_24
+		defs: C_41,ecx_37,r8_31,r9_32,r9d_39,rax_38,rbx_33,rcx_29,rdi_35,rdx_30,rsi_34,rsp_28,SCZO_36,SZO_40
+	word64 rax_43 = fn0000000140001130()
+	word64 rsp_53
+	word64 rcx_54
+	word64 rdx_55
+	word64 r8_56
+	word64 r9_57
+	word64 rbx_58
+	word64 rsi_59
+	word64 rdi_60
+	byte SCZO_61
+	word32 ecx_62
+	word64 rax_63
+	word32 r9d_64
+	byte SZO_65
+	byte C_66
+	call _stdio_common_vfprintf (retsize: 4; depth: 64)
+		uses: C_47,dwLoc04_12,dwLoc08_17,dwLoc0C_20,ecx_37,qwLoc04_14,qwLoc0C_22,qwLoc1C_48,r8_49,r9_44,r9d_45,rax_43,rbx_42,rcx_52,rdi_35,rdx_50,rsi_34,rsp_28,SCZO_36,SZO_46
+		defs: C_66,ecx_62,r8_56,r9_57,r9d_64,rax_63,rbx_58,rcx_54,rdi_60,rdx_55,rsi_59,rsp_53,SCZO_61,SZO_65
 	return
 // DataOut: rsp
 // DataOut (flags): 
@@ -199,7 +199,7 @@ l0000000140001140:
 fn0000000140001140_exit:
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rdi:<invalid> rsi:<invalid> rcx:<invalid> rbx:rdi r9:<invalid> r8:<invalid> rdx:<invalid> rax:<invalid> -36(fp):fp + 0x000000000000001C -12(fp):rdi -8(fp):rsi -4(fp):rbx 8(fp):rcx 16(fp):rdx 24(fp):r8 32(fp):r9
+// SymbolicIn: rsp:fp + 0x000000000000000C rdi:rdi rsi:rbx rcx:<invalid> rbx:<invalid> r9:<invalid> r8:<invalid> rdx:<invalid> rax:<invalid> -28(fp):fp + 0x000000000000001C -12(fp):rdi -8(fp):rsi -4(fp):rbx 8(fp):rcx 16(fp):rdx 24(fp):r8 32(fp):r9
 
 
 
@@ -314,7 +314,7 @@ fn00000001400011D4_entry:
 // DataOut: r13 r8 rbx xmm1
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(64) Local -002C(0)
+// LocalsOut: fp(64) Local -0024(0)
 
 l00000001400011D4:
 	word64 rsp_8
@@ -336,9 +336,9 @@ l00000001400011D4:
 		uses: dwLoc04_4,rbx,rcx_7,rsp_5,SCZO_6
 		defs: al_15,bl_22,C_17,eax_13,ecx_11,r13_20,r8_19,rax_14,rbx_9,rcx_12,rsp_8,SCZO_10,SZO_16,xmm1_21,Z_18
 	fn0000000140001920()
-	_set_fmode(dwLoc2C)
-	Mem33[__p__commode():word32] = fn0000000140001ABC()
-	word32 eax_35 = fn000000014000164C(0x00000001, r8_19, r13_20, xmm1_21, qwLoc2C)
+	_set_fmode(dwLoc24)
+	Mem32[__p__commode():word32] = fn0000000140001ABC()
+	word32 eax_35 = fn000000014000164C(0x00000001, r8_19, r13_20, xmm1_21, qwLoc24, qwLoc20)
 	byte al_37 = (byte) eax_35
 	branch al_37 == 0x00 l0000000140001279
 // DataOut: eax
@@ -347,9 +347,9 @@ l00000001400011D4:
 // LocalsOut: Local -0004(64)
 
 l0000000140001279:
-	word64 rcx_160
-	byte bl_161
-	fn0000000140001974(0x00000007, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_160, out bl_161)
+	word64 rcx_157
+	byte bl_158
+	fn0000000140001974(0x00000007, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_157, out bl_158)
 	int3()
 // DataOut:
 // DataOut (flags): 
@@ -376,7 +376,7 @@ l000000014000120D:
 	word128 xmm1_93
 	byte bl_94
 	call configure_narrow_argv (retsize: 8; depth: 8)
-		uses: al_37,bl_22,C_40,dwLoc04_4,dwLoc2C,eax_78,ecx_32,qwLoc04,qwLoc2C,r13_20,r8_19,rax_36,rbx_29,rcx_79,rsp_23,SCZO_10,SZO_38,xmm1_21,Z_39
+		uses: al_37,bl_22,C_40,dwLoc04_4,dwLoc24,eax_78,ecx_31,qwLoc04,qwLoc20,qwLoc24,r13_20,r8_19,rax_36,rbx_28,rcx_79,rsp_8,SCZO_10,SZO_38,xmm1_21,Z_39
 		defs: al_87,bl_94,C_89,eax_85,ecx_83,r13_92,r8_91,rax_86,rbx_81,rcx_84,rsp_80,SCZO_82,SZO_88,xmm1_93,Z_90
 	branch eax_85 != 0x00000000 l0000000140001284
 // DataOut: rsp
@@ -399,7 +399,7 @@ l000000014000128F_thunk_fn0000000140001290:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rcx:<invalid> eax:<invalid> rax:<invalid> rbx:<invalid> rbp:<invalid> rdx:0x0000000000000000 r8:<invalid> al:<invalid> xmm0:<invalid> xmm1:<invalid> rsi:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbx
+// SymbolicIn: rsp:<invalid> rcx:<invalid> eax:<invalid> rax:<invalid> rbx:<invalid> rbp:<invalid> rdx:<invalid> r8:<invalid> al:<invalid> xmm0:<invalid> xmm1:<invalid> rsi:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbx
 
 l000000014000122E:
 	fn0000000140001928()
@@ -417,25 +417,25 @@ l000000014000123C:
 l0000000140001248:
 	fn0000000140001DD0()
 	fn0000000140001DD0()
-	word32 eax_103 = fn0000000140001ABC()
-	word64 rsp_105
-	word64 rbx_106
-	byte SCZO_107
-	word32 ecx_108
-	word64 rcx_109
-	word32 eax_110
-	word64 rax_111
-	byte al_112
-	byte SZO_113
-	byte C_114
-	byte Z_115
-	word64 r8_116
-	word64 r13_117
-	word128 xmm1_118
-	byte bl_119
+	word32 eax_102 = fn0000000140001ABC()
+	word64 rsp_104
+	word64 rbx_105
+	byte SCZO_106
+	word32 ecx_107
+	word64 rcx_108
+	word32 eax_109
+	word64 rax_110
+	byte al_111
+	byte SZO_112
+	byte C_113
+	byte Z_114
+	word64 r8_115
+	word64 r13_116
+	word128 xmm1_117
+	byte bl_118
 	call configthreadlocale (retsize: 8; depth: 8)
-		uses: al_87,bl_94,C_102,dwLoc04_4,dwLoc2C,eax_103,ecx_83,qwLoc04,qwLoc2C,r13_92,r8_91,rax_86,rbx_81,rcx_104,rsp_95,SCZO_82,SZO_100,xmm1_93,Z_101
-		defs: al_112,bl_119,C_114,eax_110,ecx_108,r13_117,r8_116,rax_111,rbx_106,rcx_109,rsp_105,SCZO_107,SZO_113,xmm1_118,Z_115
+		uses: al_87,bl_94,C_101,dwLoc04_4,dwLoc24,eax_102,ecx_83,qwLoc04,qwLoc20,qwLoc24,r13_92,r8_91,rax_86,rbx_81,rcx_103,rsp_80,SCZO_82,SZO_99,xmm1_93,Z_100
+		defs: al_111,bl_118,C_113,eax_109,ecx_107,r13_116,r8_115,rax_110,rbx_105,rcx_108,rsp_104,SCZO_106,SZO_112,xmm1_117,Z_114
 	fn0000000140001938()
 	branch 0x01 == 0x00 l000000014000126C
 // DataOut: rsp
@@ -443,24 +443,24 @@ l0000000140001248:
 // SymbolicIn: rsp:<invalid> rcx:<invalid> eax:<invalid> rax:<invalid> rbx:<invalid> al:<invalid> rbp:<invalid> rdx:<invalid> r8:<invalid> xmm0:<invalid> xmm1:<invalid> rsi:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbx
 
 l0000000140001267:
-	word64 rsp_141
-	word64 rbx_142
-	byte SCZO_143
-	word32 ecx_144
-	word64 rcx_145
-	word32 eax_146
-	word64 rax_147
-	byte al_148
-	byte SZO_149
-	byte C_150
-	byte Z_151
-	word64 r8_152
-	word64 r13_153
-	word128 xmm1_154
-	byte bl_155
+	word64 rsp_139
+	word64 rbx_140
+	byte SCZO_141
+	word32 ecx_142
+	word64 rcx_143
+	word32 eax_144
+	word64 rax_145
+	byte al_146
+	byte SZO_147
+	byte C_148
+	byte Z_149
+	word64 r8_150
+	word64 r13_151
+	word128 xmm1_152
+	byte bl_153
 	call initialize_narrow_environment (retsize: 8; depth: 8)
-		uses: al_112,bl_119,C_123,dwLoc04_4,dwLoc2C,eax_110,ecx_108,qwLoc04,qwLoc2C,r13_117,r8_116,rax_111,rbx_106,rcx_109,rsp_120,SCZO_107,SZO_121,xmm1_118,Z_122
-		defs: al_148,bl_155,C_150,eax_146,ecx_144,r13_153,r8_152,rax_147,rbx_142,rcx_145,rsp_141,SCZO_143,SZO_149,xmm1_154,Z_151
+		uses: al_111,bl_118,C_121,dwLoc04_4,dwLoc24,eax_109,ecx_107,qwLoc04,qwLoc20,qwLoc24,r13_116,r8_115,rax_110,rbx_105,rcx_108,rsp_104,SCZO_106,SZO_119,xmm1_117,Z_120
+		defs: al_146,bl_153,C_148,eax_144,ecx_142,r13_151,r8_150,rax_145,rbx_140,rcx_143,rsp_139,SCZO_141,SZO_147,xmm1_152,Z_149
 // DataOut: rsp
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> eax:<invalid> rax:<invalid> rbx:<invalid> al:0x01 rbp:<invalid> rdx:<invalid> r8:<invalid> xmm0:<invalid> xmm1:<invalid> rsi:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbx
@@ -502,7 +502,7 @@ l0000000140001290:
 fn0000000140001290_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp rax:0x0000000000000000
+// SymbolicIn: rsp:fp rax:<invalid>
 
 
 
@@ -538,7 +538,7 @@ l0000000140001E52:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp rcx:(uint64) eax rax:0x0000000000000000
+// SymbolicIn: rsp:fp rcx:(uint64) eax rax:<invalid>
 
 fn00000001400012A0_exit:
 // DataOut:
@@ -568,9 +568,9 @@ l00000001400012BC:
 // LocalsOut: Local -0004(64)
 
 l00000001400012D9:
-	word64 rcx_359
-	byte bl_360
-	fn0000000140001974(0x00000007, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_359, out bl_360)
+	word64 rcx_354
+	byte bl_355
+	fn0000000140001974(0x00000007, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_354, out bl_355)
 	int3()
 // DataOut: gs rsp
 // DataOut (flags): 
@@ -591,28 +591,28 @@ l00000001400012E4:
 
 l00000001400012FE:
 	ecx_33 = 0x00000007 (alias)
-	word64 rcx_352
-	rax_27 = DPB(rax, fn0000000140001974(0x00000007, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_352, out bl_28), 0) (alias)
+	word64 rcx_347
+	rax_27 = DPB(rax, fn0000000140001974(0x00000007, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_347, out bl_28), 0) (alias)
 // DataOut: bl eax ecx rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rcx:(uint64) Mem0[0x00000001400035B0:word32] sil:0x00 bl:<invalid> al:<invalid> eax:<invalid> rbx:<invalid> rdx:<invalid> r8:<invalid> rax:<invalid> r9:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r10:<invalid> r11:<invalid> rdi:<invalid> -20(fp):0x00 -4(fp):rdi 8(fp):rbx 16(fp):rsi
+// SymbolicIn: rsp:<invalid> rcx:<invalid> sil:0x00 bl:<invalid> al:<invalid> eax:<invalid> rbx:<invalid> rdx:<invalid> r8:<invalid> rax:<invalid> r9:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r10:<invalid> r11:<invalid> rdi:<invalid> -20(fp):0x00 -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l0000000140001308:
-	word64 rax_228
+	word64 rax_225
 	branch ecx_33 != 0x00000000 l0000000140001356
 // DataOut: bl eax rsp
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:0x00 bl:<invalid> al:<invalid> rbx:<invalid> eax:<invalid> rdx:<invalid> r8:<invalid> rax:<invalid> r9:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r10:<invalid> r11:<invalid> rdi:<invalid> -20(fp):0x00 -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l0000000140001356:
-	Mem343[fp - 0x0000000000000014:byte] = 0x01
+	Mem338[fp - 0x0000000000000014:byte] = 0x01
 // DataOut: bl
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:0x00 bl:<invalid> al:<invalid> rbx:<invalid> eax:<invalid> rdx:<invalid> r8:<invalid> rax:<invalid> r9:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r10:<invalid> r11:<invalid> rdi:<invalid> -20(fp):0x00 -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l000000014000130C:
-	Mem328[0x00000001400035B0:word32] = 0x00000001
-	word64 rax_331 = DPB(rax_27, _initterm_e(0x00000001400021B8, 0x00000001400021D0), 0)
+	Mem323[0x00000001400035B0:word32] = 0x00000001
+	word64 rax_326 = DPB(rax_27, _initterm_e(0x00000001400021B8, 0x00000001400021D0), 0)
 	branch _initterm_e(0x00000001400021B8, 0x00000001400021D0) == 0x00000000 l0000000140001337
 // DataOut: bl rsp
 // DataOut (flags): 
@@ -620,7 +620,7 @@ l000000014000130C:
 
 l0000000140001337:
 	_initterm(0x00000001400021A0, 0x00000001400021B0)
-	Mem341[0x00000001400035B0:word32] = 0x00000002
+	Mem336[0x00000001400035B0:word32] = 0x00000002
 // DataOut: bl
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:00000001400021B8 sil:0x00 bl:<invalid> rdx:00000001400021D0 rax:<invalid> al:<invalid> rbx:<invalid> eax:<invalid> r8:<invalid> r9:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r10:<invalid> r11:<invalid> rdi:<invalid> -20(fp):0x00 -4(fp):rdi 8(fp):rbx 16(fp):rsi
@@ -629,97 +629,97 @@ l000000014000135E:
 	fn00000001400017B4(bl_28)
 	word64 rax_79 = fn0000000140001964()
 	branch Mem22[rax_79:word64] == 0x0000000000000000 l0000000140001395
-// DataOut: rax rbx rsp
+// DataOut: rax rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rax:<invalid> al:<invalid> rbx:<invalid> eax:<invalid> r8:<invalid> r9:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r10:<invalid> r11:<invalid> rdi:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l0000000140001373:
-	word64 rax_290 = fn0000000140001718(rax_79)
-	byte al_291 = (byte) rax_290
-	branch al_291 == 0x00 l0000000140001395
-// DataOut: eax rbx rsp
+	word64 rax_285 = fn0000000140001718(rax_79)
+	byte al_286 = (byte) rax_285
+	branch al_286 == 0x00 l0000000140001395
+// DataOut: eax rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rax:<invalid> cl:<invalid> rbx:<invalid> al:<invalid> eax:<invalid> r8:<invalid> r9:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r10:<invalid> r11:<invalid> rdi:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l000000014000137F:
-	word64 rbx_296 = Mem22[rax_79:word64]
+	word64 rbx_291 = Mem22[rax_79:word64]
 	fn0000000140001BF4()
-	word32 ebx_297 = (word32) rbx_296
-	word64 rsp_304
-	word64 rbx_305
-	word64 rsi_306
-	word64 rdi_307
-	byte SCZO_308
-	word64 rcx_309
-	byte al_310
-	byte SZO_311
-	byte C_312
-	byte Z_313
-	byte sil_314
-	byte bl_315
-	word32 ecx_316
-	word64 rdx_317
-	word64 rax_318
-	word32 eax_319
-	byte cl_320
-	word32 r8d_321
-	word64 r8_322
-	word32 edx_323
-	word32 ebx_324
-	word64 r13_325
-	selector gs_326
-	byte dl_327
-	call ebx_297 (retsize: 4; depth: 4)
-		uses: al_291,bl_83,C_303,cl_78,dl,dwLoc04_8,eax_292,ebx_297,ecx_37,edx_300,gs,r13,r8_299,r8d,rax_290,rbx_296,rcx_301,rdi,rdx_74,rsi,rsp_9,SCZO_85,sil_73,SZO_302,Z_294
-		defs: al_310,bl_315,C_312,cl_320,dl_327,eax_319,ebx_324,ecx_316,edx_323,gs_326,r13_325,r8_322,r8d_321,rax_318,rbx_305,rcx_309,rdi_307,rdx_317,rsi_306,rsp_304,SCZO_308,sil_314,SZO_311,Z_313
-// DataOut: rsp
+	word32 ebx_292 = (word32) rbx_291
+	word64 rsp_299
+	word64 rbx_300
+	word64 rsi_301
+	word64 rdi_302
+	byte SCZO_303
+	word64 rcx_304
+	byte al_305
+	byte SZO_306
+	byte C_307
+	byte Z_308
+	byte sil_309
+	byte bl_310
+	word32 ecx_311
+	word64 rdx_312
+	word64 rax_313
+	word32 eax_314
+	byte cl_315
+	word32 r8d_316
+	word64 r8_317
+	word32 edx_318
+	word32 ebx_319
+	word64 r13_320
+	selector gs_321
+	byte dl_322
+	call ebx_292 (retsize: 4; depth: 4)
+		uses: al_286,bl_83,C_298,cl_78,dl,dwLoc04_8,eax_287,ebx_292,ecx_37,edx_295,gs,r13,r8_294,r8d,rax_285,rbx_291,rcx_296,rdi,rdx_74,rsi,rsp_9,SCZO_85,sil_73,SZO_297,Z_289
+		defs: al_305,bl_310,C_307,cl_315,dl_322,eax_314,ebx_319,ecx_311,edx_318,gs_321,r13_320,r8_317,r8d_316,rax_313,rbx_300,rcx_304,rdi_302,rdx_312,rsi_301,rsp_299,SCZO_303,sil_309,SZO_306,Z_308
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rax:<invalid> cl:<invalid> rbx:<invalid> r8:<invalid> al:<invalid> eax:<invalid> r9:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r10:<invalid> r11:<invalid> rdi:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l0000000140001395:
 	word64 rax_106 = fn000000014000196C()
 	branch Mem22[rax_106:word64] == 0x0000000000000000 l00000001400013B7
-// DataOut: rax rbx rsp
+// DataOut: rax rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rax:<invalid> cl:<invalid> rbx:<invalid> r8:<invalid> al:<invalid> edx:<invalid> eax:<invalid> r9:<invalid> ebx:<invalid> ecx:<invalid> r10:<invalid> r11:<invalid> rdi:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l00000001400013A3:
-	word64 rax_257 = fn0000000140001718(rax_106)
-	byte al_258 = (byte) rax_257
-	branch al_258 == 0x00 l00000001400013B7
-// DataOut: rax rbx rsp
+	word64 rax_253 = fn0000000140001718(rax_106)
+	byte al_254 = (byte) rax_253
+	branch al_254 == 0x00 l00000001400013B7
+// DataOut: rax rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rax:<invalid> cl:<invalid> rbx:<invalid> r8:<invalid> al:<invalid> edx:<invalid> eax:<invalid> r9:<invalid> ebx:<invalid> ecx:<invalid> r10:<invalid> r11:<invalid> rdi:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l00000001400013AF:
-	word64 rsp_264
-	word64 rbx_265
-	word64 rsi_266
-	word64 rdi_267
-	byte SCZO_268
-	word64 rcx_269
-	byte al_270
-	byte SZO_271
-	byte C_272
-	byte Z_273
-	byte sil_274
-	byte bl_275
-	word32 ecx_276
-	word64 rdx_277
-	word64 rax_278
-	word32 eax_279
-	byte cl_280
-	word32 r8d_281
-	word64 r8_282
-	word32 edx_283
-	word32 ebx_284
-	word64 r13_285
-	selector gs_286
-	byte dl_287
+	word64 rsp_260
+	word64 rbx_261
+	word64 rsi_262
+	word64 rdi_263
+	byte SCZO_264
+	word64 rcx_265
+	byte al_266
+	byte SZO_267
+	byte C_268
+	byte Z_269
+	byte sil_270
+	byte bl_271
+	word32 ecx_272
+	word64 rdx_273
+	word64 rax_274
+	word32 eax_275
+	byte cl_276
+	word32 r8d_277
+	word64 r8_278
+	word32 edx_279
+	word32 ebx_280
+	word64 r13_281
+	selector gs_282
+	byte dl_283
 	call register_thread_local_exe_atexit_callback (retsize: 8; depth: 8)
-		uses: al_258,bl_110,C_262,cl_101,dl_98,dwLoc04_8,eax_259,ebx_111,ecx_95,edx_92,gs_90,r13_91,r8_93,r8d_94,rax_257,rbx_109,rcx_263,rdi_104,rdx_97,rsi_103,rsp_105,SCZO_112,sil_96,SZO_260,Z_261
-		defs: al_270,bl_275,C_272,cl_280,dl_287,eax_279,ebx_284,ecx_276,edx_283,gs_286,r13_285,r8_282,r8d_281,rax_278,rbx_265,rcx_269,rdi_267,rdx_277,rsi_266,rsp_264,SCZO_268,sil_274,SZO_271,Z_273
-// DataOut: rax rsp
+		uses: al_254,bl_110,C_258,cl_101,dl_98,dwLoc04_8,eax_255,ebx_111,ecx_95,edx_92,gs_90,r13_91,r8_93,r8d_94,rax_253,rbx_109,rcx_259,rdi_104,rdx_97,rsi_103,rsp_105,SCZO_112,sil_96,SZO_256,Z_257
+		defs: al_266,bl_271,C_268,cl_276,dl_283,eax_275,ebx_280,ecx_272,edx_279,gs_282,r13_281,r8_278,r8d_277,rax_274,rbx_261,rcx_265,rdi_263,rdx_273,rsi_262,rsp_260,SCZO_264,sil_270,SZO_267,Z_269
+// DataOut: rax
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rax:<invalid> cl:<invalid> rbx:<invalid> r8:<invalid> al:<invalid> edx:<invalid> eax:<invalid> r9:<invalid> ebx:<invalid> ecx:<invalid> r10:<invalid> r11:<invalid> rdi:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
@@ -751,128 +751,128 @@ l00000001400013B7:
 	call _p___argv (retsize: 8; depth: 8)
 		uses: al_107,bl_110,C_100,cl_101,dl_98,dwLoc04_8,eax_108,ebx_111,ecx_95,edx_92,gs_90,r13_91,r8_93,r8d_94,rax_106,rbx_109,rcx_102,rdi_104,rdx_97,rsi_103,rsp_105,SCZO_112,sil_96,SZO_99,Z_113
 		defs: al_120,bl_125,C_122,cl_130,dl_137,eax_129,ebx_134,ecx_126,edx_133,gs_136,r13_135,r8_132,r8d_131,rax_128,rbx_115,rcx_119,rdi_117,rdx_127,rsi_116,rsp_114,SCZO_118,sil_124,SZO_121,Z_123
-	word64 rsp_140
-	word64 rbx_141
-	word64 rsi_142
-	word64 rdi_143
-	byte SCZO_144
-	word64 rcx_145
-	byte al_146
-	byte SZO_147
-	byte C_148
-	byte Z_149
-	byte sil_150
-	byte bl_151
-	word32 ecx_152
-	word64 rdx_153
-	word64 rax_154
-	word32 eax_155
-	byte cl_156
-	word32 r8d_157
-	word64 r8_158
-	word32 edx_159
-	word32 ebx_160
-	word64 r13_161
-	selector gs_162
-	byte dl_163
+	word64 rsp_139
+	word64 rbx_140
+	word64 rsi_141
+	word64 rdi_142
+	byte SCZO_143
+	word64 rcx_144
+	byte al_145
+	byte SZO_146
+	byte C_147
+	byte Z_148
+	byte sil_149
+	byte bl_150
+	word32 ecx_151
+	word64 rdx_152
+	word64 rax_153
+	word32 eax_154
+	byte cl_155
+	word32 r8d_156
+	word64 r8_157
+	word32 edx_158
+	word32 ebx_159
+	word64 r13_160
+	selector gs_161
+	byte dl_162
 	call _p___argc (retsize: 8; depth: 8)
-		uses: al_120,bl_125,C_122,cl_130,dl_137,dwLoc04_8,eax_129,ebx_134,ecx_126,edx_133,gs_136,r13_135,r8_132,r8d_131,rax_128,rbx_115,rcx_119,rdi_139,rdx_127,rsi_116,rsp_138,SCZO_118,sil_124,SZO_121,Z_123
-		defs: al_146,bl_151,C_148,cl_156,dl_163,eax_155,ebx_160,ecx_152,edx_159,gs_162,r13_161,r8_158,r8d_157,rax_154,rbx_141,rcx_145,rdi_143,rdx_153,rsi_142,rsp_140,SCZO_144,sil_150,SZO_147,Z_149
-	word64 rsp_166
-	word64 rbx_167
-	word64 rsi_168
-	word64 rdi_169
-	byte SCZO_170
-	word64 rcx_171
-	byte al_172
-	byte SZO_173
-	byte C_174
-	byte Z_175
-	byte sil_176
-	byte bl_177
-	word32 ecx_178
-	word64 rdx_179
-	word64 rax_180
-	word32 eax_181
-	byte cl_182
-	word32 r8d_183
-	word64 r8_184
-	word32 edx_185
-	word32 ebx_186
-	word64 r13_187
-	selector gs_188
-	byte dl_189
+		uses: al_120,bl_125,C_122,cl_130,dl_137,dwLoc04_8,eax_129,ebx_134,ecx_126,edx_133,gs_136,r13_135,r8_132,r8d_131,rax_128,rbx_115,rcx_119,rdi_138,rdx_127,rsi_116,rsp_114,SCZO_118,sil_124,SZO_121,Z_123
+		defs: al_145,bl_150,C_147,cl_155,dl_162,eax_154,ebx_159,ecx_151,edx_158,gs_161,r13_160,r8_157,r8d_156,rax_153,rbx_140,rcx_144,rdi_142,rdx_152,rsi_141,rsp_139,SCZO_143,sil_149,SZO_146,Z_148
+	word64 rsp_164
+	word64 rbx_165
+	word64 rsi_166
+	word64 rdi_167
+	byte SCZO_168
+	word64 rcx_169
+	byte al_170
+	byte SZO_171
+	byte C_172
+	byte Z_173
+	byte sil_174
+	byte bl_175
+	word32 ecx_176
+	word64 rdx_177
+	word64 rax_178
+	word32 eax_179
+	byte cl_180
+	word32 r8d_181
+	word64 r8_182
+	word32 edx_183
+	word32 ebx_184
+	word64 r13_185
+	selector gs_186
+	byte dl_187
 	call get_initial_narrow_environment (retsize: 8; depth: 8)
-		uses: al_146,bl_151,C_148,cl_156,dl_163,dwLoc04_8,eax_155,ebx_160,ecx_152,edx_159,gs_162,r13_161,r8_158,r8d_157,rax_154,rbx_165,rcx_145,rdi_143,rdx_153,rsi_142,rsp_164,SCZO_144,sil_150,SZO_147,Z_149
-		defs: al_172,bl_177,C_174,cl_182,dl_189,eax_181,ebx_186,ecx_178,edx_185,gs_188,r13_187,r8_184,r8d_183,rax_180,rbx_167,rcx_171,rdi_169,rdx_179,rsi_168,rsp_166,SCZO_170,sil_176,SZO_173,Z_175
-	byte sil_194
-	word32 eax_195 = fn0000000140001000(out sil_194)
-	word64 rbx_196 = (uint64) eax_195
-	word32 ebx_198 = (word32) rbx_196
-	byte al_199 = fn0000000140001AC0()
-	branch al_199 != 0x00 l00000001400013EB
-// DataOut: ebx rsp sil
+		uses: al_145,bl_150,C_147,cl_155,dl_162,dwLoc04_8,eax_154,ebx_159,ecx_151,edx_158,gs_161,r13_160,r8_157,r8d_156,rax_153,rbx_163,rcx_144,rdi_142,rdx_152,rsi_141,rsp_139,SCZO_143,sil_149,SZO_146,Z_148
+		defs: al_170,bl_175,C_172,cl_180,dl_187,eax_179,ebx_184,ecx_176,edx_183,gs_186,r13_185,r8_182,r8d_181,rax_178,rbx_165,rcx_169,rdi_167,rdx_177,rsi_166,rsp_164,SCZO_168,sil_174,SZO_171,Z_173
+	byte sil_191
+	word32 eax_192 = fn0000000140001000(out sil_191)
+	word64 rbx_193 = (uint64) eax_192
+	word32 ebx_195 = (word32) rbx_193
+	byte al_196 = fn0000000140001AC0()
+	branch al_196 != 0x00 l00000001400013EB
+// DataOut: ebx sil
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rax:<invalid> cl:<invalid> rbx:<invalid> r8:<invalid> al:<invalid> edx:<invalid> eax:<invalid> r9:<invalid> ebx:<invalid> ecx:<invalid> r10:<invalid> r11:<invalid> rdi:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l00000001400013EB:
-	branch sil_194 != 0x00 l00000001400013F5
-// DataOut: rsp
+	branch sil_191 != 0x00 l00000001400013F5
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rax:<invalid> cl:<invalid> rbx:<invalid> r8:<invalid> al:<invalid> rdi:<invalid> xmm0:<invalid> r9:<invalid> rsi:<invalid> eax:<invalid> edx:<invalid> ebx:<invalid> ecx:<invalid> r10:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l00000001400013F0:
-	word64 rsp_231
-	word64 rbx_232
-	word64 rsi_233
-	word64 rdi_234
-	byte SCZO_235
-	word64 rcx_236
-	byte al_237
-	byte SZO_238
-	byte C_239
-	byte Z_240
-	byte sil_241
-	byte bl_242
-	word32 ecx_243
-	word64 rdx_244
-	word64 rax_245
-	word32 eax_246
-	byte cl_247
-	word32 r8d_248
-	word64 r8_249
-	word32 edx_250
-	word32 ebx_251
-	word64 r13_252
-	selector gs_253
-	byte dl_254
+	word64 rsp_228
+	word64 rbx_229
+	word64 rsi_230
+	word64 rdi_231
+	byte SCZO_232
+	word64 rcx_233
+	byte al_234
+	byte SZO_235
+	byte C_236
+	byte Z_237
+	byte sil_238
+	byte bl_239
+	word32 ecx_240
+	word64 rdx_241
+	word64 rax_242
+	word32 eax_243
+	byte cl_244
+	word32 r8d_245
+	word64 r8_246
+	word32 edx_247
+	word32 ebx_248
+	word64 r13_249
+	selector gs_250
+	byte dl_251
 	call cexit (retsize: 8; depth: 8)
-		uses: al_199,bl_197,C_206,cl_182,dl_189,dwLoc04_8,eax_195,ebx_198,ecx_178,edx_185,gs_188,r13_187,r8_191,r8d_183,rax_180,rbx_196,rcx_193,rdi_169,rdx_192,rsi_168,rsp_190,SCZO_170,sil_194,SZO_204,Z_205
-		defs: al_237,bl_242,C_239,cl_247,dl_254,eax_246,ebx_251,ecx_243,edx_250,gs_253,r13_252,r8_249,r8d_248,rax_245,rbx_232,rcx_236,rdi_234,rdx_244,rsi_233,rsp_231,SCZO_235,sil_241,SZO_238,Z_240
+		uses: al_196,bl_194,C_203,cl_180,dl_187,dwLoc04_8,eax_192,ebx_195,ecx_176,edx_183,gs_186,r13_185,r8_188,r8d_181,rax_178,rbx_193,rcx_190,rdi_167,rdx_189,rsi_166,rsp_164,SCZO_168,sil_191,SZO_201,Z_202
+		defs: al_234,bl_239,C_236,cl_244,dl_251,eax_243,ebx_248,ecx_240,edx_247,gs_250,r13_249,r8_246,r8d_245,rax_242,rbx_229,rcx_233,rdi_231,rdx_241,rsi_230,rsp_228,SCZO_232,sil_238,SZO_235,Z_237
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rax:<invalid> cl:<invalid> rbx:<invalid> r8:<invalid> al:<invalid> rdi:<invalid> xmm0:<invalid> r9:<invalid> rsi:<invalid> eax:<invalid> edx:<invalid> ebx:<invalid> ecx:<invalid> r10:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l00000001400013F5:
-	rax_228 = (uint64) fn00000001400017D8(0x00)
+	rax_225 = (uint64) fn00000001400017D8(0x00)
 // DataOut: rax rsp
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rax:<invalid> cl:<invalid> rbx:<invalid> r8:<invalid> al:<invalid> rdi:<invalid> xmm0:<invalid> r9:<invalid> rsi:<invalid> eax:<invalid> edx:<invalid> ebx:<invalid> ecx:<invalid> r10:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l00000001400013E4:
-	exit((uint64) ebx_198)
+	exit((uint64) ebx_195)
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rax:<invalid> cl:<invalid> rbx:<invalid> r8:<invalid> al:<invalid> rdi:<invalid> xmm0:<invalid> r9:<invalid> rsi:<invalid> eax:<invalid> edx:<invalid> ebx:<invalid> ecx:<invalid> r10:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l000000014000132D:
-	rax_228 = 0x00000000000000FF
+	rax_225 = 0x00000000000000FF
 // DataOut: rax rsp
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:00000001400021B8 sil:0x00 bl:<invalid> rdx:00000001400021D0 rax:<invalid> al:<invalid> rbx:<invalid> eax:<invalid> r8:<invalid> r9:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r10:<invalid> r11:<invalid> rdi:<invalid> -20(fp):0x00 -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l0000000140001423:
-	return rax_228
+	return rax_225
 // DataOut: rax
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rcx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rax:<invalid> al:<invalid> rbx:<invalid> eax:<invalid> r8:<invalid> r9:<invalid> cl:0x01 rdi:<invalid> xmm0:<invalid> rsi:<invalid> edx:<invalid> ebx:<invalid> ecx:<invalid> r10:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
@@ -1036,7 +1036,7 @@ l000000014000156A:
 	branch rax_49 == 0x0000000000000000 l00000001400015B9
 // DataOut: edi rsi
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x000000000000004C rbx:rcx rsi:<invalid> rdi:<invalid> r8:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> r9:<invalid> -44(fp):0x0000000000000000 -36(fp):fp + 0x0000000000000024 -28(fp):fp + 0x000000000000001C -20(fp):<invalid> -12(fp):rdi -8(fp):rsi -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x000000000000004C rbx:rcx rsi:<invalid> rdi:<invalid> r8:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> r9:<invalid> -44(fp):rcx -36(fp):fp + 0x0000000000000024 -28(fp):fp + 0x000000000000001C -20(fp):<invalid> -12(fp):rdi -8(fp):rsi -4(fp):rbx
 // LocalsOut: fp(64) Local -0004(8) Local -0014(64)
 
 l0000000140001580:
@@ -1063,19 +1063,19 @@ l0000000140001580:
 	branch (word32) (uint64) (edi_103 + 0x00000001) < 0x00000002 l000000014000156A
 // DataOut: edi rsi
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x000000000000004C rbx:rcx rsi:<invalid> rdi:<invalid> r8:0x0000000000000000 rdx:fp + 0x0000000000000014 rcx:<invalid> rax:<invalid> r9:<invalid> -44(fp):0x0000000000000000 -36(fp):fp + 0x0000000000000024 -28(fp):fp + 0x000000000000001C -20(fp):<invalid> -12(fp):rdi -8(fp):rsi -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x000000000000004C rbx:rcx rsi:<invalid> rdi:<invalid> r8:<invalid> rdx:fp + 0x0000000000000014 rcx:<invalid> rax:<invalid> r9:<invalid> -44(fp):rcx -36(fp):fp + 0x0000000000000024 -28(fp):fp + 0x000000000000001C -20(fp):<invalid> -12(fp):rdi -8(fp):rsi -4(fp):rbx
 // LocalsOut: fp(64) Local -0004(8) Local -0014(64)
 
 l00000001400015B9:
 	return (byte) qwLoc04
 // DataOut: rsp sil
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x000000000000004C rbx:rcx rsi:<invalid> rdi:<invalid> r8:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> r9:<invalid> -44(fp):0x0000000000000000 -36(fp):fp + 0x0000000000000024 -28(fp):fp + 0x000000000000001C -20(fp):<invalid> -12(fp):rdi -8(fp):rsi -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x000000000000004C rbx:rcx rsi:<invalid> rdi:<invalid> r8:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> r9:<invalid> -44(fp):rcx -36(fp):fp + 0x0000000000000024 -28(fp):fp + 0x000000000000001C -20(fp):<invalid> -12(fp):rdi -8(fp):rsi -4(fp):rbx
 
 fn0000000140001550_exit:
 // DataOut: rsp sil
 // DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x000000000000000C rbx:<invalid> rsi:rbx rdi:rdi r8:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> r9:<invalid> -44(fp):0x0000000000000000 -36(fp):fp + 0x0000000000000024 -28(fp):fp + 0x000000000000001C -20(fp):<invalid> -12(fp):rdi -8(fp):rsi -4(fp):rbx
+// SymbolicIn: rsp:fp + 0x000000000000000C rbx:<invalid> rsi:rbx rdi:rdi r8:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> r9:<invalid> -44(fp):rcx -36(fp):fp + 0x0000000000000024 -28(fp):fp + 0x000000000000001C -20(fp):<invalid> -12(fp):rdi -8(fp):rsi -4(fp):rbx
 
 
 
@@ -1111,25 +1111,25 @@ l00000001400015D1:
 l00000001400015E5:
 	__lock()
 	eax_21 = 0x00000000 (alias)
-	word64 rax_38
-	branch __cmpxchg(Mem0[0x00000001400035B8:word64], rcx_32, 0x0000000000000000, out rax_38) l00000001400015E0
-// DataOut: rcx
+	word64 rax_39
+	branch __cmpxchg(Mem0[0x00000001400035B8:word64], rcx_32, 0x0000000000000000, out rax_39) l00000001400015E0
+// DataOut: rax rcx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000028 rax:<invalid> rcx:<invalid> al:<invalid>
 // LocalsOut: fp(64)
 
 l00000001400015E0:
-	branch rcx_32 == 0x0000000000000000 l00000001400015F9
+	branch rcx_32 == rax_39 l00000001400015F9
 // DataOut: rcx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000028 rax:0x0000000000000000 rcx:<invalid> al:0x00
+// SymbolicIn: rsp:fp - 0x0000000000000028 rax:<invalid> rcx:<invalid> al:<invalid>
 // LocalsOut: fp(64)
 
 l00000001400015F9:
 	eax_13 = 0x00000001 (alias)
 // DataOut: al eax
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000028 rax:0x0000000000000000 rcx:<invalid> al:0x00
+// SymbolicIn: rsp:fp - 0x0000000000000028 rax:<invalid> rcx:<invalid> al:<invalid>
 // LocalsOut: fp(64)
 
 l00000001400015F2:
@@ -1176,7 +1176,7 @@ l0000000140001614_1:
 	al_16 = 0x01 (alias)
 // DataOut: al ebx edx gs r13 rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000024 eax:(word32) Mem0[0x00000001400035F0:byte] rbx:0x0000000000000001 -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000024 eax:<invalid> rbx:0x0000000000000001 -4(fp):rbx
 
 l0000000140001617:
 	byte al_35
@@ -1226,7 +1226,7 @@ fn0000000140001600_exit:
 
 
 
-word32 fn000000014000164C(word32 ecx, word64 r8, word64 r13, word128 xmm1, word64 qwArg08)
+word32 fn000000014000164C(word32 ecx, word64 r8, word64 r13, word128 xmm1, word64 qwArg08, word64 qwArg0C)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ecx r13 r8 xmm1
@@ -1243,15 +1243,15 @@ l000000014000164C:
 	word64 rbx_10 = (uint64) ecx
 	word32 ebx_11 = (word32) rbx_10
 	branch ecx >u 0x00000001 l000000014000170A
-// DataOut: ebx r13 r8 rsp xmm1
+// DataOut: ebx r13 r8 xmm1
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64) Local -0014(128) Local -0024(128)
 
 l000000014000170A:
-	word64 rcx_184
-	byte bl_185
-	fn0000000140001974(0x00000005, qwLoc48, qwLoc44, qwLoc40, qwLoc38, out rcx_184, out bl_185)
+	word64 rcx_183
+	byte bl_184
+	fn0000000140001974(0x00000005, qwLoc48, qwLoc44, qwLoc40, qwLoc38, out rcx_183, out bl_184)
 	int3()
 	int3()
 	int3()
@@ -1261,74 +1261,75 @@ l000000014000170A:
 // SymbolicIn: rsp:fp - 0x0000000000000044 rbp:fp - 0x0000000000000004 rbx:(uint64) ecx -4(fp):rbp 8(fp):rbx
 
 l0000000140001717_thunk_fn0000000140001718:
-	return (word32) fn0000000140001718(rcx_184)
+	return (word32) fn0000000140001718(rcx_183)
 // DataOut: al eax
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rbp:fp - 0x0000000000000004 rbx:<invalid> rcx:<invalid> eax:<invalid> rdx:0x0000000000000000 r8:<invalid> rax:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbp 8(fp):rbx
+// SymbolicIn: rsp:<invalid> rbp:fp - 0x0000000000000004 rbx:<invalid> rcx:<invalid> eax:<invalid> rdx:<invalid> r8:<invalid> rax:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbp 8(fp):rbx
 
 l0000000140001664:
 	word32 eax_143
 	word32 eax_37 = fn0000000140001DC4()
 	branch eax_37 == 0x00000000 l0000000140001698
-// DataOut: eax ebx r13 r8 rsp xmm1
+// DataOut: eax ebx r13 r8 xmm1
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000044 rbp:fp - 0x0000000000000004 rbx:(uint64) ecx -4(fp):rbp 8(fp):rbx
 // LocalsOut: fp(64) Local -0014(128) Local -0024(128)
 
 l000000014000166D:
 	branch ebx_11 != 0x00000000 l0000000140001698
-// DataOut: eax r13 r8 rsp xmm1
+// DataOut: eax r13 r8 xmm1
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000044 rbp:fp - 0x0000000000000004 rbx:(uint64) ecx rax:<invalid> al:<invalid> -4(fp):rbp 8(fp):rbx
 // LocalsOut: fp(64) Local -0014(128) Local -0024(128)
 
 l0000000140001698:
-	word64 rdx_70 = Mem0[0x0000000140003000:word64]
-	word32 eax_79 = (word32) (uint64) ((word32) (uint64) (word32) rdx_70 & 0x0000003F)
-	word64 r8_87 = __ror(r8 | 0xFFFFFFFFFFFFFFFF, (byte) (uint64) (0x00000040 - eax_79)) ^ rdx_70
-	Mem90[r13 - 0x0000000000000020:word64] = r8_87
-	Mem92[r13 - 0x0000000000000018:word64] = r8_87
-	Mem95[r13 - 0x0000000000000010:word64] = r8_87
-	Mem99[0x00000001400035C0:word128] = owLoc24
-	Mem100[r13 - 0x0000000000000020:word64] = r8_87
-	Mem101[r13 - 0x0000000000000018:word64] = r8_87
-	Mem103[r13 - 0x0000000000000010:word64] = r8_87
-	Mem104[0x00000001400035D0:real64] = rLoc14
-	Mem106[0x00000001400035D8:word128] = owLoc24
-	Mem107[0x00000001400035E8:real64] = rLoc14
-	eax_143 = DPB(eax_79, 0x01, 0) (alias)
-// DataOut: al eax rsp
+	word64 rdx_71 = Mem0[0x0000000140003000:word64]
+	word32 eax_80 = (word32) (uint64) ((word32) (uint64) (word32) rdx_71 & 0x0000003F)
+	word64 r8_88 = __ror(r8 | 0xFFFFFFFFFFFFFFFF, (byte) (uint64) (0x00000040 - eax_80)) ^ rdx_71
+	Mem91[r13 - 0x0000000000000020:word64] = r8_88
+	Mem93[r13 - 0x0000000000000018:word64] = r8_88
+	Mem96[r13 - 0x0000000000000010:word64] = r8_88
+	Mem100[0x00000001400035C0:word128] = owLoc24
+	Mem101[r13 - 0x0000000000000020:word64] = r8_88
+	Mem102[r13 - 0x0000000000000018:word64] = r8_88
+	Mem104[r13 - 0x0000000000000010:word64] = r8_88
+	Mem105[0x00000001400035D0:real64] = rLoc14
+	Mem107[0x00000001400035D8:word128] = owLoc24
+	Mem108[0x00000001400035E8:real64] = rLoc14
+	eax_143 = DPB(eax_80, 0x01, 0) (alias)
+// DataOut: al eax
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000044 rbp:fp - 0x0000000000000004 rbx:(uint64) ecx rax:<invalid> al:<invalid> -4(fp):rbp 8(fp):rbx
+// LocalsOut: fp(64)
 
 l0000000140001671:
-	word64 rsp_116
-	word64 rbx_117
-	word64 rbp_118
-	byte SCZO_119
-	word32 ebx_120
-	word32 ecx_121
-	byte CZ_122
-	word32 eax_123
-	byte SZO_124
-	byte C_125
-	byte Z_126
-	word64 rcx_127
-	byte al_128
-	word64 rdx_129
-	word64 r8_130
-	word32 edx_131
-	word64 rax_132
-	byte cl_133
-	word64 r13_134
-	word128 xmm0_135
-	word128 xmm1_136
-	byte bl_137
+	word64 rsp_117
+	word64 rbx_118
+	word64 rbp_119
+	byte SCZO_120
+	word32 ebx_121
+	word32 ecx_122
+	byte CZ_123
+	word32 eax_124
+	byte SZO_125
+	byte C_126
+	byte Z_127
+	word64 rcx_128
+	byte al_129
+	word64 rdx_130
+	word64 r8_131
+	word32 edx_132
+	word64 rax_133
+	byte cl_134
+	word64 r13_135
+	word128 xmm0_136
+	word128 xmm1_137
+	byte bl_138
 	call initialize_onexit_table (retsize: 8; depth: 76)
-		uses: al_40,bl_12,C_110,cl,CZ_14,dwLoc04_6,eax_37,ebx_11,ecx,edx,owLoc24,r13,r8,rax_39,rbp_7,rbx_10,rcx_111,rdx,rLoc14,rsp_8,SCZO_13,SZO_108,xmm0,xmm1,Z_109
-		defs: al_128,bl_137,C_125,cl_133,CZ_122,eax_123,ebx_120,ecx_121,edx_131,r13_134,r8_130,rax_132,rbp_118,rbx_117,rcx_127,rdx_129,rsp_116,SCZO_119,SZO_124,xmm0_135,xmm1_136,Z_126
-	branch eax_123 == 0x00000000 l0000000140001685
-// DataOut: eax rsp
+		uses: al_40,bl_12,C_111,cl,CZ_14,dwLoc04_6,eax_37,ebx_11,ecx,edx,owLoc24,qwLoc04,r13,r8,rax_39,rbp_7,rbx_10,rcx_112,rdx,rLoc14,rsp_8,SCZO_13,SZO_109,xmm0,xmm1,Z_110
+		defs: al_129,bl_138,C_126,cl_134,CZ_123,eax_124,ebx_121,ecx_122,edx_132,r13_135,r8_131,rax_133,rbp_119,rbx_118,rcx_128,rdx_130,rsp_117,SCZO_120,SZO_125,xmm0_136,xmm1_137,Z_127
+	branch eax_124 == 0x00000000 l0000000140001685
+// DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000044 rbp:fp - 0x0000000000000004 rbx:(uint64) ecx rax:<invalid> al:<invalid> -4(fp):rbp 8(fp):rbx
 // LocalsOut: fp(64)
@@ -1356,30 +1357,32 @@ l0000000140001685:
 	word128 xmm0_167
 	word128 xmm1_168
 	byte bl_169
-	call initialize_onexit_table (retsize: 8; depth: 84)
-		uses: al_128,bl_137,C_141,cl_133,CZ_122,dwLoc04_6,eax_123,ebx_120,ecx_121,edx_131,owLoc24,r13_134,r8_130,rax_132,rbp_118,rbx_117,rcx_147,rdx_129,rLoc14,rsp_138,SCZO_119,SZO_139,xmm0_135,xmm1_136,Z_140
+	call initialize_onexit_table (retsize: 8; depth: 76)
+		uses: al_129,bl_138,C_141,cl_134,CZ_123,dwLoc04_6,eax_124,ebx_121,ecx_122,edx_132,owLoc24,qwLoc04,r13_135,r8_131,rax_133,rbp_119,rbx_118,rcx_147,rdx_130,rLoc14,rsp_117,SCZO_120,SZO_139,xmm0_136,xmm1_137,Z_140
 		defs: al_160,bl_169,C_157,cl_165,CZ_154,eax_155,ebx_152,ecx_153,edx_163,r13_166,r8_162,rax_164,rbp_150,rbx_149,rcx_159,rdx_161,rsp_148,SCZO_151,SZO_156,xmm0_167,xmm1_168,Z_158
 	eax_143 = DPB(eax_155, eax_155 == 0x00000000, 0) (alias)
-// DataOut: al eax rsp
+// DataOut: al eax
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x000000000000004C rbp:fp - 0x0000000000000004 rbx:(uint64) ecx rcx:<invalid> rax:<invalid> al:<invalid> -4(fp):rbp 8(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000044 rbp:fp - 0x0000000000000004 rbx:(uint64) ecx rcx:<invalid> rax:<invalid> al:<invalid> -4(fp):rbp 8(fp):rbx
+// LocalsOut: fp(64)
 
 l0000000140001681:
-	eax_143 = DPB(eax_123, 0x00, 0) (alias)
-// DataOut: al eax rsp
+	eax_143 = DPB(eax_124, 0x00, 0) (alias)
+// DataOut: al eax
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x000000000000004C rbp:fp - 0x0000000000000004 rbx:(uint64) ecx rcx:<invalid> rax:<invalid> al:<invalid> -4(fp):rbp 8(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000044 rbp:fp - 0x0000000000000004 rbx:(uint64) ecx rcx:<invalid> rax:<invalid> al:<invalid> -4(fp):rbp 8(fp):rbx
+// LocalsOut: fp(64)
 
 l00000001400016FF:
 	return eax_143
 // DataOut: al eax
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rbp:fp - 0x0000000000000004 rbx:(uint64) ecx rdx:<invalid> r8:<invalid> rax:<invalid> rcx:<invalid> al:<invalid> xmm0:<invalid> xmm1:DPB(DPB(xmm1, <invalid>, 0), <invalid>, 0) -4(fp):rbp 8(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000044 rbp:fp - 0x0000000000000004 rbx:(uint64) ecx rdx:<invalid> r8:<invalid> rax:<invalid> rcx:<invalid> al:<invalid> xmm0:<invalid> xmm1:<invalid> -4(fp):rbp 8(fp):rbx
 
 fn000000014000164C_exit:
 // DataOut: al eax
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rbp:<invalid> rbx:<invalid> rcx:<invalid> rdx:<invalid> r8:<invalid> rax:<invalid> al:<invalid> xmm0:<invalid> xmm1:DPB(DPB(xmm1, <invalid>, 0), <invalid>, 0) eax:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbp 8(fp):rbx
+// SymbolicIn: rsp:<invalid> rbp:<invalid> rbx:<invalid> rcx:<invalid> rdx:<invalid> r8:<invalid> rax:<invalid> al:<invalid> xmm0:<invalid> xmm1:<invalid> eax:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbp 8(fp):rbx
 
 
 
@@ -1419,14 +1422,14 @@ l0000000140001747:
 	branch Mem0[rcx_51 + 0x0000000000000018:word16] != 0x020B l00000001400017A6
 // DataOut: r8 rbx rcx rdx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx rax:(int64) Mem0[0x000000014000003C:word32] rdx:0000000140000000 rcx:(int64) Mem0[0x000000014000003C:word32] + 0x0000000140000000
+// SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx rax:<invalid> rdx:0000000140000000 rcx:<invalid>
 // LocalsOut: fp(64)
 
 l00000001400017A6:
 	rax_101 = DPB(rax_33, 0x00, 0) (alias)
 // DataOut: al eax rax rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx rax:<invalid> rdx:0000000140000000 rcx:(int64) Mem0[0x000000014000003C:word32] + 0x0000000140000000
+// SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx rax:<invalid> rdx:0000000140000000 rcx:<invalid>
 // LocalsOut: fp(64)
 
 l0000000140001752:
@@ -1437,7 +1440,7 @@ l0000000140001752:
 	word64 r9_69 = rdx_116 + (rax_114 * 0x0000000000000005) * 0x0000000000000008
 // DataOut: r8 r9 rbx rdx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx rax:0x000000000000020B rdx:0000000140000000 rcx:(int64) Mem0[0x000000014000003C:word32] + 0x0000000140000000
+// SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx rax:0x000000000000020B rdx:0000000140000000 rcx:<invalid>
 // LocalsOut: fp(64)
 
 l000000014000176C:
@@ -1530,7 +1533,7 @@ void fn00000001400017B4(byte cl)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  cl
-// LiveOut: rsp
+// LiveOut:
 // Trashed: SCZO ah al ax bl bx dh dl dx eax ebx edx esp rax rbx rdx rsp sp spl
 // Preserved: rbx
 fn00000001400017B4_entry:
@@ -1541,33 +1544,33 @@ fn00000001400017B4_entry:
 
 l00000001400017B4:
 	branch fn0000000140001DC4() == 0x00000000 l00000001400017D2
-// DataOut: bl
+// DataOut: bl rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64)
 
 l00000001400017C7:
 	branch cl != 0x00 l00000001400017D2
-// DataOut:
+// DataOut: rdx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000024 bl:cl rdx:0x0000000000000000 rax:<invalid> al:<invalid> -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000024 bl:cl rdx:<invalid> rax:<invalid> al:<invalid> -4(fp):rbx
 // LocalsOut: fp(64)
 
 l00000001400017CB:
-	Mem29[0x00000001400035B8:word64] = 0x0000000000000000
+	Mem30[0x00000001400035B8:word64] = 0x0000000000000000
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000024 bl:cl rdx:0x0000000000000000 rax:<invalid> al:<invalid> -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000024 bl:cl rdx:<invalid> rax:<invalid> al:<invalid> -4(fp):rbx
 // LocalsOut: fp(64)
 
 l00000001400017D2:
 	return
-// DataOut: rsp
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000024 bl:cl rdx:<invalid> rax:<invalid> al:<invalid> -4(fp):rbx
 
 fn00000001400017B4_exit:
-// DataOut: rsp
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp + 0x0000000000000004 bl:<invalid> rdx:<invalid> rbx:rbx rax:<invalid> al:<invalid> -4(fp):rbx
 
@@ -1621,97 +1624,98 @@ fn00000001400017D8_exit:
 
 
 
-void fn0000000140001804(word32 eax)
+word64 fn0000000140001804(word32 eax)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  eax
-// LiveOut: rsp
-// Trashed: SCZO ah al ax bh bl bx ch cl cx dh dl dx eax ebx ecx edx esp rax rbx rcx rdx rsp sp spl
-// Preserved:
+// LiveOut: rax rsp
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx esp rax rcx rdx rsp sp spl
+// Preserved: rbx
 fn0000000140001804_entry:
-// DataOut: eax
+// DataOut: eax rcx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64)
 
 l0000000140001804:
-	word32 eax_20
+	word64 rbx_25
+	word32 eax_23
 	word64 rdx_7 = Mem0[0x0000000140003000:word64]
 	word32 edx_8 = (word32) rdx_7
 	word32 ecx_12 = (word32) (uint64) edx_8
 	byte cl_15 = (byte) (uint64) (ecx_12 & 0x0000003F)
 	word64 rdx_17 = __ror(rdx_7 ^ Mem0[0x00000001400035C0:word64], cl_15)
 	branch rdx_17 != 0xFFFFFFFFFFFFFFFF l0000000140001833
-// DataOut: eax
+// DataOut: eax rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64)
 
 l0000000140001833:
-	word64 rsp_62
-	word64 rbx_63
-	byte SCZO_64
-	word64 rdx_65
-	word64 rcx_66
-	word32 ecx_67
-	word32 edx_68
-	byte SZO_69
-	byte C_70
-	byte cl_71
-	byte Z_72
-	word64 rax_74
+	word64 rsp_66
+	byte SCZO_68
+	word64 rdx_69
+	word64 rcx_70
+	word32 ecx_71
+	word32 edx_72
+	byte SZO_73
+	byte C_74
+	byte cl_75
+	byte Z_76
+	word64 rax_78
 	call register_onexit_function (retsize: 8; depth: 44)
-		uses: C,cl_15,dwLoc04_4,eax,ecx_12,edx_8,qwLoc0C,rax,rbx_10,rcx_61,rdx_60,rsp_5,SCZO_18,SZO,Z_19
-		defs: C_70,cl_71,eax_73,ecx_67,edx_68,rax_74,rbx_63,rcx_66,rdx_65,rsp_62,SCZO_64,SZO_69,Z_72
-// DataOut: eax
+		uses: C,cl_15,dwLoc04_4,eax,ecx_12,edx_8,qwLoc04,rax,rbx_10,rcx_65,rdx_64,rsp_5,SCZO_18,SZO,Z_19
+		defs: C_74,cl_75,eax_77,ecx_71,edx_72,rax_78,rbx_67,rcx_70,rdx_69,rsp_66,SCZO_68,SZO_73,Z_76
+// DataOut: eax rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000024 rdx:<invalid> rbx:rcx rcx:(uint64) (ecx & 0x0000003F) -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000024 rdx:<invalid> rbx:rcx rcx:<invalid> -4(fp):rbx
 // LocalsOut: fp(64)
 
 l0000000140001829:
-	word64 rsp_46
-	word64 rbx_47
-	byte SCZO_48
-	word64 rdx_49
-	word64 rcx_50
-	word32 ecx_51
-	word32 edx_52
-	byte SZO_53
-	byte C_54
-	byte cl_55
-	byte Z_56
-	word64 rax_58
+	word64 rsp_51
+	byte SCZO_53
+	word64 rdx_54
+	word64 rcx_55
+	word32 ecx_56
+	word32 edx_57
+	byte SZO_58
+	byte C_59
+	byte cl_60
+	byte Z_61
+	word64 rax_63
 	call crt_atexit (retsize: 8; depth: 44)
-		uses: C,cl_15,dwLoc04_4,eax,ecx_12,edx_8,qwLoc0C,rax,rbx_10,rcx_41,rdx_17,rsp_5,SCZO_18,SZO,Z_19
-		defs: C_54,cl_55,eax_57,ecx_51,edx_52,rax_58,rbx_47,rcx_50,rdx_49,rsp_46,SCZO_48,SZO_53,Z_56
-// DataOut: eax
+		uses: C,cl_15,dwLoc04_4,eax,ecx_12,edx_8,qwLoc04,rax,rbx_10,rcx_46,rdx_17,rsp_5,SCZO_18,SZO,Z_19
+		defs: C_59,cl_60,eax_62,ecx_56,edx_57,rax_63,rbx_52,rcx_55,rdx_54,rsp_51,SCZO_53,SZO_58,Z_61
+// DataOut: eax rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000024 rdx:<invalid> rbx:rcx rcx:(uint64) (ecx & 0x0000003F) -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000024 rdx:<invalid> rbx:rcx rcx:<invalid> -4(fp):rbx
 // LocalsOut: fp(64)
 
 l0000000140001842:
-	branch eax_20 != 0x00000000 l000000014000184A
-// DataOut:
+	word64 rcx_27 = 0x0000000000000000
+	branch eax_23 != 0x00000000 l000000014000184A
+// DataOut: rbx rcx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x000000000000002C rdx:<invalid> rbx:rcx rcx:<invalid> -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000024 rdx:<invalid> rbx:rcx rcx:<invalid> -4(fp):rbx
 // LocalsOut: fp(64)
 
 l0000000140001846_1:
-// DataOut:
+	rcx_27 = rbx_25
+// DataOut: rcx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x000000000000002C rdx:<invalid> rbx:rcx rcx:0x0000000000000000 -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000024 rdx:<invalid> rbx:rcx rcx:<invalid> -4(fp):rbx
 // LocalsOut: fp(64)
 
 l000000014000184A:
-	return
-// DataOut: rsp
+	return rcx_27
+// DataOut: rax rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x000000000000002C rdx:<invalid> rbx:rcx rcx:0x0000000000000000 -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000024 rdx:<invalid> rbx:rcx rcx:<invalid> -4(fp):rbx
 
 fn0000000140001804_exit:
-// DataOut: rsp
+// DataOut: rax rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rdx:<invalid> rbx:<invalid> rcx:0x0000000000000000 rax:0x0000000000000000 -4(fp):rbx
+// SymbolicIn: rsp:fp + 0x0000000000000004 rdx:<invalid> rbx:rbx rcx:<invalid> rax:<invalid> -4(fp):rbx
 
 
 
@@ -1720,7 +1724,7 @@ void fn0000000140001854(word32 eax)
 
 // MayUse:  eax
 // LiveOut:
-// Trashed: SCZO ah al ax bh bl bx ch cl cx dh dl dx eax ebx ecx edx esp rax rbx rcx rdx rsp sp spl
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx esp rax rcx rdx rsp sp spl
 // Preserved: rsp
 fn0000000140001854_entry:
 // DataOut: eax
@@ -1738,7 +1742,7 @@ l0000000140001854:
 fn0000000140001854_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rax:(uint64) (eax - 0x00000001) rdx:<invalid> rbx:<invalid> rcx:0x0000000000000000
+// SymbolicIn: rsp:<invalid> rax:<invalid> rdx:<invalid> rcx:<invalid>
 
 
 
@@ -2070,7 +2074,7 @@ l00000001400019DE:
 		defs: bl_155,C_147,eax_145,ebx_142,ecx_143,edx_149,r8_153,r8d_152,r9_154,rax_151,rbp_140,rbx_139,rcx_144,rdx_150,rsp_138,SCZO_141,SZO_146,Z_148
 // DataOut: gs
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x00000000000005C4 rbp:fp - 0x00000000000004C4 rbx:<invalid> rcx:<invalid> eax:<invalid> rdx:fp + 0x0000000000000014 r8:0x0000000000000000 rax:<invalid> -4(fp):rbp 8(fp):rbx
+// SymbolicIn: rsp:fp - 0x00000000000005C4 rbp:fp - 0x00000000000004C4 rbx:<invalid> rcx:<invalid> eax:<invalid> rdx:fp + 0x0000000000000014 r8:<invalid> rax:<invalid> -4(fp):rbp 8(fp):rbx
 // LocalsOut: fp(64) Local -05B4(0) Local -05BC(0) Local -05C0(0) Local -05C4(0) Stack +000C(8)
 
 l0000000140001A1A:
@@ -2091,7 +2095,7 @@ l0000000140001A9E:
 	Mem111[0x0000000140003610:word32] = Mem23[0x0000000140003610:word32] & eax_109
 // DataOut: eax ecx gs rcx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x00000000000005C4 rbp:fp - 0x00000000000004C4 rbx:<invalid> rcx:fp - 0x0000000000000584 eax:<invalid> rdx:0x0000000000000000 r8:<invalid> rax:<invalid> r9:<invalid> bl:Test(EQ,Z) -1444(fp):fp - 0x00000000000004D4 -1436(fp):fp + 0x0000000000000024 -1428(fp):fp + 0x000000000000001C -1420(fp):<invalid> -1412(fp):fp - 0x0000000000000574 -1404(fp):fp - 0x00000000000004D4 -1396(fp):0x40000015 -1392(fp):0x00000001 -1380(fp):<invalid> -1084(fp):0x00000000000000A0 -988(fp):<invalid> -4(fp):rbp 8(fp):rbx
+// SymbolicIn: rsp:fp - 0x00000000000005C4 rbp:fp - 0x00000000000004C4 rbx:<invalid> rcx:fp - 0x0000000000000584 eax:<invalid> rdx:<invalid> r8:<invalid> rax:<invalid> r9:<invalid> bl:Test(EQ,Z) -1444(fp):fp - 0x00000000000004D4 -1436(fp):fp + 0x0000000000000024 -1428(fp):fp + 0x000000000000001C -1420(fp):<invalid> -1412(fp):fp - 0x0000000000000574 -1404(fp):fp - 0x00000000000004D4 -1396(fp):0x40000015 -1392(fp):0x00000001 -1380(fp):<invalid> -1084(fp):0x00000000000000A0 -988(fp):<invalid> -4(fp):rbp 8(fp):rbx
 // LocalsOut: fp(64) Stack +000C(8)
 
 l0000000140001AA8:
@@ -2100,12 +2104,12 @@ l0000000140001AA8:
 	return eax_109
 // DataOut: bl eax ecx gs rcx rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x00000000000005C4 rbp:fp - 0x00000000000004C4 rbx:<invalid> rcx:fp - 0x0000000000000584 eax:<invalid> rdx:0x0000000000000000 r8:<invalid> rax:<invalid> r9:<invalid> bl:<invalid> -1444(fp):fp - 0x00000000000004D4 -1436(fp):fp + 0x0000000000000024 -1428(fp):fp + 0x000000000000001C -1420(fp):<invalid> -1412(fp):fp - 0x0000000000000574 -1404(fp):fp - 0x00000000000004D4 -1396(fp):0x40000015 -1392(fp):0x00000001 -1380(fp):<invalid> -1084(fp):0x00000000000000A0 -988(fp):<invalid> -4(fp):rbp 8(fp):rbx
+// SymbolicIn: rsp:fp - 0x00000000000005C4 rbp:fp - 0x00000000000004C4 rbx:<invalid> rcx:fp - 0x0000000000000584 eax:<invalid> rdx:<invalid> r8:<invalid> rax:<invalid> r9:<invalid> bl:<invalid> -1444(fp):fp - 0x00000000000004D4 -1436(fp):fp + 0x0000000000000024 -1428(fp):fp + 0x000000000000001C -1420(fp):<invalid> -1412(fp):fp - 0x0000000000000574 -1404(fp):fp - 0x00000000000004D4 -1396(fp):0x40000015 -1392(fp):0x00000001 -1380(fp):<invalid> -1084(fp):0x00000000000000A0 -988(fp):<invalid> -4(fp):rbp 8(fp):rbx
 
 fn0000000140001974_exit:
 // DataOut: bl eax ecx rcx rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x0000000000000004 rbp:rbp rbx:SLICE(rbx, word64, 32) rcx:fp - 0x0000000000000584 eax:<invalid> rdx:0x0000000000000000 r8:<invalid> rax:<invalid> r9:<invalid> bl:<invalid> -1444(fp):fp - 0x00000000000004D4 -1436(fp):fp + 0x0000000000000024 -1428(fp):fp + 0x000000000000001C -1420(fp):<invalid> -1412(fp):fp - 0x0000000000000574 -1404(fp):fp - 0x00000000000004D4 -1396(fp):0x40000015 -1392(fp):0x00000001 -1380(fp):<invalid> -1084(fp):0x00000000000000A0 -988(fp):<invalid> -4(fp):rbp 8(fp):rbx
+// SymbolicIn: rsp:fp + 0x0000000000000004 rbp:rbp rbx:SLICE(rbx, word64, 32) rcx:fp - 0x0000000000000584 eax:<invalid> rdx:<invalid> r8:<invalid> rax:<invalid> r9:<invalid> bl:<invalid> -1444(fp):fp - 0x00000000000004D4 -1436(fp):fp + 0x0000000000000024 -1428(fp):fp + 0x000000000000001C -1420(fp):<invalid> -1412(fp):fp - 0x0000000000000574 -1404(fp):fp - 0x00000000000004D4 -1396(fp):0x40000015 -1392(fp):0x00000001 -1380(fp):<invalid> -1084(fp):0x00000000000000A0 -988(fp):<invalid> -4(fp):rbp 8(fp):rbx
 
 l0000000140001999:
 	__fastfail((word32) (uint64) ebx_11)
@@ -2136,7 +2140,7 @@ l0000000140001ABC:
 fn0000000140001ABC_exit:
 // DataOut: eax
 // DataOut (flags): 
-// SymbolicIn: rsp:fp rax:0x0000000000000000
+// SymbolicIn: rsp:fp rax:<invalid>
 
 
 
@@ -2181,21 +2185,21 @@ l0000000140001AF1:
 	branch Mem0[rax_49 + 0x0000000000000018:word16] != 0x020B l0000000140001AD4
 // DataOut: ebx rax sil
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000028 rcx:rax eax:<invalid> rax:(int64) Mem0[rax + 0x000000000000003C:word32] + rax
+// SymbolicIn: rsp:fp - 0x0000000000000028 rcx:rax eax:<invalid> rax:<invalid>
 // LocalsOut: fp(64)
 
 l0000000140001AFC:
 	branch Mem0[rax_49 + 0x0000000000000084:word32] <=u 0x0000000E l0000000140001AD4
 // DataOut: ebx rax sil
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000028 rcx:0x000000000000020B eax:<invalid> rax:(int64) Mem0[rax + 0x000000000000003C:word32] + rax
+// SymbolicIn: rsp:fp - 0x0000000000000028 rcx:0x000000000000020B eax:<invalid> rax:<invalid>
 // LocalsOut: fp(64)
 
 l0000000140001B05:
 	al_21 = Mem0[rax_49 + 0x00000000000000F8:word32] != 0x00000000
 // DataOut: al ebx sil
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000028 rcx:0x000000000000020B eax:<invalid> rax:(int64) Mem0[rax + 0x000000000000003C:word32] + rax
+// SymbolicIn: rsp:fp - 0x0000000000000028 rcx:0x000000000000020B eax:<invalid> rax:<invalid>
 // LocalsOut: fp(64)
 
 l0000000140001AD4:
@@ -2553,21 +2557,21 @@ l0000000140001C97:
 	branch eax_211 == 0x000106C0 l0000000140001CDE
 // DataOut: eax ebx ecx edi edx gs r11d r13 r8d r9d rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000024 rbp:fp - 0x0000000000000004 rcx:<invalid> rax:<invalid> eax:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r8:(uint64) Mem0[0x0000000140003614:word32] r9:<invalid> r10:<invalid> r11:<invalid> rdx:<invalid> rdi:<invalid> -28(fp):<invalid> -20(fp):<invalid> -16(fp):<invalid> -8(fp):<invalid> -4(fp):rbp 16(fp):rbx 24(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000024 rbp:fp - 0x0000000000000004 rcx:<invalid> rax:<invalid> eax:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> r11:<invalid> rdx:<invalid> rdi:<invalid> -28(fp):<invalid> -20(fp):<invalid> -16(fp):<invalid> -8(fp):<invalid> -4(fp):rbp 16(fp):rbx 24(fp):rdi
 // LocalsOut: fp(64) Local -001C(0) Stack +0014(8)
 
 l0000000140001CB6:
 	branch eax_211 == 0x00020660 l0000000140001CDE
 // DataOut: eax ebx ecx edi edx gs r11d r13 r8d r9d rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000024 rbp:fp - 0x0000000000000004 rcx:<invalid> rax:<invalid> eax:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r8:(uint64) (r8d | 0x00000004) r9:<invalid> r10:<invalid> r11:<invalid> rdx:<invalid> rdi:<invalid> -28(fp):<invalid> -20(fp):<invalid> -16(fp):<invalid> -8(fp):<invalid> -4(fp):rbp 16(fp):rbx 24(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000024 rbp:fp - 0x0000000000000004 rcx:<invalid> rax:<invalid> eax:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> r11:<invalid> rdx:<invalid> rdi:<invalid> -28(fp):<invalid> -20(fp):<invalid> -16(fp):<invalid> -8(fp):<invalid> -4(fp):rbp 16(fp):rbx 24(fp):rdi
 // LocalsOut: fp(64) Local -001C(0) Stack +0014(8)
 
 l0000000140001CBD:
 	branch eax_211 == 0x00020670 l0000000140001CDE
 // DataOut: eax ebx ecx edi edx gs r11d r13 r8d r9d rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000024 rbp:fp - 0x0000000000000004 rcx:<invalid> rax:<invalid> eax:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r8:(uint64) (r8d | 0x00000004) r9:<invalid> r10:<invalid> r11:<invalid> rdx:<invalid> rdi:<invalid> -28(fp):<invalid> -20(fp):<invalid> -16(fp):<invalid> -8(fp):<invalid> -4(fp):rbp 16(fp):rbx 24(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000024 rbp:fp - 0x0000000000000004 rcx:<invalid> rax:<invalid> eax:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> r11:<invalid> rdx:<invalid> rdi:<invalid> -28(fp):<invalid> -20(fp):<invalid> -16(fp):<invalid> -8(fp):<invalid> -4(fp):rbp 16(fp):rbx 24(fp):rdi
 // LocalsOut: fp(64) Local -001C(0) Stack +0014(8)
 
 l0000000140001CC4:
@@ -2575,7 +2579,7 @@ l0000000140001CC4:
 	branch (word32) rax_235 >u 0x00000020 l0000000140001CE9
 // DataOut: ebx ecx edi edx gs r11d r13 r8d r9d rax rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000024 rbp:fp - 0x0000000000000004 rcx:<invalid> rax:<invalid> eax:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r8:(uint64) (r8d | 0x00000004) r9:<invalid> r10:<invalid> r11:<invalid> rdx:<invalid> rdi:<invalid> -28(fp):<invalid> -20(fp):<invalid> -16(fp):<invalid> -8(fp):<invalid> -4(fp):rbp 16(fp):rbx 24(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000024 rbp:fp - 0x0000000000000004 rcx:<invalid> rax:<invalid> eax:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> r11:<invalid> rdx:<invalid> rdi:<invalid> -28(fp):<invalid> -20(fp):<invalid> -16(fp):<invalid> -8(fp):<invalid> -4(fp):rbp 16(fp):rbx 24(fp):rdi
 // LocalsOut: fp(64) Local -001C(0) Stack +0014(8)
 
 l0000000140001CCE:
@@ -2583,7 +2587,7 @@ l0000000140001CCE:
 	branch __bt(rbx, rax_235) l0000000140001CE9
 // DataOut: ebx ecx edi edx gs r11d r13 r8d r9d
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000024 rbp:fp - 0x0000000000000004 rcx:<invalid> rax:<invalid> eax:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r8:(uint64) (r8d | 0x00000004) r9:<invalid> r10:<invalid> r11:<invalid> rdx:<invalid> rdi:<invalid> -28(fp):<invalid> -20(fp):<invalid> -16(fp):<invalid> -8(fp):<invalid> -4(fp):rbp 16(fp):rbx 24(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000024 rbp:fp - 0x0000000000000004 rcx:<invalid> rax:<invalid> eax:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> r11:<invalid> rdx:<invalid> rdi:<invalid> -28(fp):<invalid> -20(fp):<invalid> -16(fp):<invalid> -8(fp):<invalid> -4(fp):rbp 16(fp):rbx 24(fp):rdi
 // LocalsOut: fp(64) Local -001C(0) Stack +0014(8)
 
 l0000000140001CDE:
@@ -2591,7 +2595,7 @@ l0000000140001CDE:
 	Mem230[0x0000000140003614:word32] = r8d_201
 // DataOut: ebx ecx edi edx gs r11d r13 r8d r9d
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000024 rbp:fp - 0x0000000000000004 rcx:<invalid> rax:<invalid> eax:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r8:(uint64) (r8d | 0x00000004) r9:<invalid> r10:<invalid> r11:<invalid> rdx:<invalid> rdi:<invalid> -28(fp):<invalid> -20(fp):<invalid> -16(fp):<invalid> -8(fp):<invalid> -4(fp):rbp 16(fp):rbx 24(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000024 rbp:fp - 0x0000000000000004 rcx:<invalid> rax:<invalid> eax:<invalid> ebx:<invalid> ecx:<invalid> edx:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> r11:<invalid> rdx:<invalid> rdi:<invalid> -28(fp):<invalid> -20(fp):<invalid> -16(fp):<invalid> -8(fp):<invalid> -4(fp):rbp 16(fp):rbx 24(fp):rdi
 // LocalsOut: fp(64) Local -001C(0) Stack +0014(8)
 
 l0000000140001CE9:
@@ -2809,7 +2813,7 @@ l0000000140001EB4:
 	r10_19 = (int64) Mem0[r8 + 0x0000000000000004:word32] + rcx & (int64) ((word32) ((uint64) (-((word32) ((uint64) Mem0[rax + 0x0000000000000008:word32])))))
 // DataOut: r10 r11d r9 rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 r11:(uint64) (r11d & 0xFFFFFFF8) rbx:rdx r9:rcx r10:rcx -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000004 r11:<invalid> rbx:rdx r9:rcx r10:rcx -4(fp):rbx
 // LocalsOut: fp(64)
 
 l0000000140001EC7:
@@ -2818,21 +2822,21 @@ l0000000140001EC7:
 	branch (Mem0[rcx_27 + 0x0000000000000003:byte] & 0x0F) == 0x00 l0000000140001EE9
 // DataOut: r9 rcx rdx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 r11:(uint64) (r11d & 0xFFFFFFF8) rbx:rdx r9:rcx r10:<invalid> rax:(uint64) -eax rcx:(int64) eax -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000004 r11:<invalid> rbx:rdx r9:rcx r10:<invalid> rax:<invalid> rcx:(int64) eax -4(fp):rbx
 // LocalsOut: fp(64)
 
 l0000000140001EDF:
 	r9_14 = rcx + (uint64) ((word32) Mem0[rcx_27 + 0x0000000000000003:byte] & 0xFFFFFFF0)
 // DataOut: r9 rdx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 r11:(uint64) (r11d & 0xFFFFFFF8) rbx:rdx r9:rcx r10:<invalid> rax:<invalid> rcx:<invalid> rdx:<invalid> -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000004 r11:<invalid> rbx:rdx r9:rcx r10:<invalid> rax:<invalid> rcx:<invalid> rdx:<invalid> -4(fp):rbx
 // LocalsOut: fp(64)
 
 l0000000140001EE9:
 	word64 r9_37 = r9_14 ^ rdx_24
 // DataOut: rcx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 r11:(uint64) (r11d & 0xFFFFFFF8) rbx:rdx r9:<invalid> r10:<invalid> rax:<invalid> rcx:<invalid> rdx:<invalid> eax:<invalid> -4(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000004 r11:<invalid> rbx:rdx r9:<invalid> r10:<invalid> rax:<invalid> rcx:<invalid> rdx:<invalid> eax:<invalid> -4(fp):rbx
 
 l0000000140001EF0_thunk_fn00000001400011B0:
 	byte sil_45
@@ -2840,12 +2844,12 @@ l0000000140001EF0_thunk_fn00000001400011B0:
 	return
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x0000000000000004 r11:(uint64) (r11d & 0xFFFFFFF8) rbx:rbx r9:<invalid> r10:<invalid> rax:<invalid> rcx:<invalid> rdx:<invalid> eax:<invalid> -4(fp):rbx
+// SymbolicIn: rsp:fp + 0x0000000000000004 r11:<invalid> rbx:rbx r9:<invalid> r10:<invalid> rax:<invalid> rcx:<invalid> rdx:<invalid> eax:<invalid> -4(fp):rbx
 
 fn0000000140001E9C_exit:
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> r11:(uint64) (r11d & 0xFFFFFFF8) rbx:<invalid> r9:<invalid> r10:<invalid> rax:<invalid> rcx:<invalid> rdx:<invalid> eax:<invalid> rsi:<invalid> r8:<invalid> -4(fp):rbx
+// SymbolicIn: rsp:<invalid> r11:<invalid> rbx:<invalid> r9:<invalid> r10:<invalid> rax:<invalid> rcx:<invalid> rdx:<invalid> eax:<invalid> rsi:<invalid> r8:<invalid> -4(fp):rbx
 
 
 
@@ -2884,8 +2888,8 @@ void fn0000000140001F12(word64 rcx)
 
 // MayUse:  rcx
 // LiveOut:
-// Trashed: SCZO ah al ax bp bpl ch cl cx dh dl dx eax ebp ecx edx esp rax rbp rcx rdx rsp sp spl
-// Preserved:
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx esp rax rcx rdx rsp sp spl
+// Preserved: rbp
 fn0000000140001F12_entry:
 // DataOut: rcx
 // DataOut (flags): 
@@ -2893,16 +2897,16 @@ fn0000000140001F12_entry:
 // LocalsOut: fp(64)
 
 l0000000140001F12:
-	word64 rsp_14
-	word64 rbp_15
-	byte SCZO_16
-	word64 rdx_17
-	word64 rax_18
-	word64 rcx_19
-	word32 ecx_20
+	word64 rsp_16
+	word64 rbp_17
+	byte SCZO_18
+	word64 rdx_19
+	word64 rax_20
+	word64 rcx_21
+	word32 ecx_22
 	call seh_filter_exe (retsize: 8; depth: 44)
-		uses: dwLoc04_4,rax_11,rbp_8,rcx_13,rdx_12,rsp_5,SCZO_6
-		defs: ecx_20,rax_18,rbp_15,rcx_19,rdx_17,rsp_14,SCZO_16
+		uses: dwLoc04_4,qwLoc04_6,rax_13,rbp_10,rcx_15,rdx_14,rsp_7,SCZO_8
+		defs: ecx_22,rax_20,rbp_17,rcx_21,rdx_19,rsp_16,SCZO_18
 	return
 // DataOut:
 // DataOut (flags): 
@@ -2911,7 +2915,7 @@ l0000000140001F12:
 fn0000000140001F12_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:<invalid> rax:<invalid> rdx:<invalid> rcx:<invalid> -4(fp):rbp
+// SymbolicIn: rsp:fp + 0x0000000000000004 rbp:rbp rax:<invalid> rdx:<invalid> rcx:<invalid> -4(fp):rbp
 
 
 

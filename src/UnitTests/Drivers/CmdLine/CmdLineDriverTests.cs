@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Drivers.CmdLine
                 .Return(new Program());
             mr.ReplayAll();
 
-            var cmdline = new CmdLineDriver(sc, ldr, decompiler);
+            var cmdline = new CmdLineDriver(sc, ldr, decompiler, null);
             cmdline.Execute(new string[]
             {
                 "--arch",  "mmix",

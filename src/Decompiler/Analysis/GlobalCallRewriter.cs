@@ -56,7 +56,7 @@ namespace Reko.Analysis
 			this.mpprocflow = mpprocflow;
 		}
 
-		public void AddStackArgument(int x, Identifier id, ProcedureFlow flow, SignatureBuilder sb)
+		public void AddStackArgument(Identifier id, ProcedureFlow flow, SignatureBuilder sb)
 		{
 			object o = flow.StackArguments[id];
 			if (o != null)
@@ -71,7 +71,7 @@ namespace Reko.Analysis
 					}
 				}
 			}
-			sb.AddStackArgument(x, id);
+			sb.AddInParam(id);
 		}
 
 		public void AddUseInstructionsForOutArguments(Procedure proc)
@@ -157,9 +157,9 @@ namespace Reko.Analysis
 				}
 			}
 
-			foreach (KeyValuePair<int,Identifier> de in GetSortedStackArguments(proc.Frame))
+			foreach (var id in GetSortedStackArguments(proc.Frame).Values)
 			{
-				AddStackArgument(de.Key, de.Value, flow, sb);
+				AddStackArgument(id, flow, sb);
 			}
 
             foreach (KeyValuePair<int, Identifier> de in GetSortedFpuStackArguments(proc.Frame, 0))

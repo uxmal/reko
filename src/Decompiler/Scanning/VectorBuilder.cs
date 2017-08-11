@@ -231,6 +231,14 @@ namespace Reko.Scanning
             return program.Architecture.MakeSegmentedAddress(seg, off);
         }
 
+        public bool IsFallthrough(Instruction instr, Block block)
+        {
+            var bra = instr as Branch;
+            if (bra == null)
+                return false;
+            return bra.Target != block;
+        }
+
         public RegisterStorage IndexRegister
         {
             get { return bw != null ? bw.Index: RegisterStorage.None; }

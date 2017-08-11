@@ -199,7 +199,7 @@ namespace Reko.Environments.SysV
             return proc;
         }
 
-        public override ExternalProcedure SignatureFromName(string fnName)
+        public override ProcedureBase_v1 SignatureFromName(string fnName)
         {
             StructField_v1 field = null;
             try
@@ -217,12 +217,10 @@ namespace Reko.Environments.SysV
             var sproc = field.Type as SerializedSignature;
             if (sproc != null)
             {
-                var loader = new TypeLibraryDeserializer(this, false, Metadata);
-                var sser = this.CreateProcedureSerializer(loader, sproc.Convention);
-                var sig = sser.Deserialize(sproc, this.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
-                return new ExternalProcedure(field.Name, sig)
+                return new Procedure_v1
                 {
-                    EnclosingType = sproc.EnclosingType
+                    Name = field.Name,
+                    Signature = sproc,
                 };
             }
             return null;

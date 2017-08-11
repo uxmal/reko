@@ -180,7 +180,18 @@ namespace Reko.Core
         {
             return sType.Accept(this);
         }
-        
+
+        public ExternalProcedure LoadExternalProcedure(ProcedureBase_v1 sProc)
+        {
+            var sSig = sProc.Signature;
+            var sser = platform.CreateProcedureSerializer(this, this.defaultConvention);
+            var sig = sser.Deserialize(sSig, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
+            return new ExternalProcedure(sProc.Name, sig)
+            {
+                EnclosingType = sSig.EnclosingType
+            };
+        }
+
         public void ReadDefaults(SerializedLibraryDefaults defaults)
         {
             if (defaults == null)
