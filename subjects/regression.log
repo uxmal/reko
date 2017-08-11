@@ -1571,16 +1571,11 @@ _getopt_internal: error: An error occurred while rewriting procedure to high-lev
 
 === ls
 *** ls
-0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
-00000000004021A0: warning: Unable to resolve imported reference __ctype_toupper_loc.
-00000000004021B0: warning: Unable to resolve imported reference __uflow.
-00000000004021D0: warning: Unable to resolve imported reference sigprocmask.
-0000000000402210: warning: Unable to resolve imported reference __mempcpy_chk.
-0000000000402290: warning: Unable to resolve imported reference sigaction.
-0000000000402390: warning: Unable to resolve imported reference __lxstat.
-00000000004025A0: warning: Unable to resolve imported reference sigemptyset.
-000000000040BDD3: warning: Unable to resolve imported reference localeconv.
-000000000040C342: warning: Unable to resolve imported reference __memcpy_chk.
+00000000004028FB: warning: Unable to resolve imported reference setlocale.
+000000000040290A: warning: Unable to resolve imported reference bindtextdomain.
+0000000000411EF1: warning: Unable to resolve imported reference __cxa_atexit.
+000000000040298F: warning: Unable to resolve imported reference isatty.
+0000000000410E77: warning: Unable to resolve imported reference error.
 000000000040D90E: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
 0000000000411929: warning: Unable to resolve imported reference nl_langinfo.
 0000000000411AF9: warning: Unable to resolve imported reference fscanf.
@@ -1595,12 +1590,61 @@ _getopt_internal: error: An error occurred while rewriting procedure to high-lev
 000000000040E146: warning: Unable to resolve imported reference mbrtowc.
 000000000040E1C6: warning: Unable to resolve imported reference iswprint.
 000000000040E1E1: warning: Unable to resolve imported reference mbsinit.
-000000000040535A: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
+00000000004037AE: warning: Unable to resolve imported reference error.
+0000000000402AC2: warning: Unable to resolve imported reference ioctl.
+0000000000410EC5: warning: Unable to resolve imported reference __ctype_b_loc.
+0000000000402B4C: warning: Unable to resolve imported reference getopt_long.
+0000000000402B6A: warning: Unable to determine index variable for indirect jump.
+00000000004041E3: warning: Unable to resolve imported reference error.
+0000000000409BA8: warning: Unable to resolve imported reference setlocale.
+00000000004033CA: warning: Unable to resolve imported reference _obstack_begin.
+00000000004033E3: warning: Unable to resolve imported reference _obstack_begin.
+0000000000404DB6: warning: Unable to resolve imported reference freecon.
+0000000000407FA1: warning: Unable to resolve imported reference __xstat.
+000000000040E93F: warning: Procedure fn000000000040E930 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0000000000405836: warning: Unable to resolve imported reference error.
+0000000000405043: warning: Unable to resolve imported reference strcoll.
+0000000000411824: warning: Unable to resolve imported reference getfilecon.
+00000000004117DF: warning: Unable to resolve imported reference freecon.
+000000000040800C: warning: Unable to resolve imported reference __lxstat.
+000000000040BDD3: warning: Unable to resolve imported reference localeconv.
+000000000040C342: warning: Unable to resolve imported reference __memcpy_chk.
 000000000040D268: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
 000000000040D379: warning: Unable to resolve imported reference __ctype_b_loc.
 000000000040D307: warning: Unable to resolve imported reference mbrtowc.
 000000000040D341: warning: Unable to resolve imported reference iswcntrl.
 000000000040D2EB: warning: Unable to resolve imported reference mbsinit.
+00000000004088C5: warning: Unable to resolve imported reference __xstat.
+0000000000409CD3: warning: Unable to resolve imported reference acl_extended_file.
+00000000004084DD: warning: Unable to resolve imported reference error.
+000000000040CB88: warning: Unable to resolve imported reference getgrgid.
+0000000000409D79: warning: Unable to resolve imported reference readlink.
+0000000000408587: warning: Unable to resolve imported reference stpncpy.
+00000000004085C2: warning: Unable to resolve imported reference __xstat.
+0000000000411844: warning: Unable to resolve imported reference lgetfilecon.
+000000000041182E: warning: Procedure fn0000000000411820 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+000000000040352A: warning: Unable to resolve imported reference opendir.
+000000000040354C: warning: Unable to resolve imported reference dirfd.
+0000000000403565: warning: Unable to resolve imported reference __fxstat.
+0000000000404EE5: warning: Unable to resolve imported reference _setjmp.
+000000000040D697: warning: Procedure fn000000000040D690 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0000000000403E9D: warning: Unable to resolve imported reference __xstat.
+000000000040406E: warning: Unable to resolve imported reference _obstack_newchunk.
+00000000004044A8: warning: Unable to resolve imported reference __overflow.
+0000000000403F12: warning: Unable to resolve imported reference error.
+0000000000403F1A: warning: Unable to resolve imported reference closedir.
+000000000041132A: warning: Unable to resolve imported reference error.
+0000000000404433: warning: Unable to resolve imported reference error.
+000000000040349C: warning: Unable to resolve imported reference closedir.
+00000000004038F3: warning: Unable to resolve imported reference nl_langinfo.
+000000000040CF60: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
+000000000040CF78: warning: Unable to resolve imported reference mbstowcs.
+000000000040CFDE: warning: Unable to resolve imported reference mbstowcs.
+000000000040D010: warning: Unable to resolve imported reference iswprint.
+00000000004045E9: warning: Unable to resolve imported reference __overflow.
+000000000040437B: warning: Unable to resolve imported reference error.
+000000000040535A: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
+000000000040D43B: warning: Procedure fn000000000040D420 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00000000004053E1: warning: Unable to resolve imported reference __ctype_b_loc.
 0000000000405394: warning: Unable to resolve imported reference fwrite_unlocked.
 0000000000405412: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
@@ -1608,50 +1652,52 @@ _getopt_internal: error: An error occurred while rewriting procedure to high-lev
 00000000004054EC: warning: Unable to resolve imported reference mbsinit.
 00000000004056F8: warning: Unable to resolve imported reference __overflow.
 00000000004055E1: warning: Unable to resolve imported reference __ctype_b_loc.
-0000000000410E77: warning: Unable to resolve imported reference error.
-0000000000411887: warning: Unable to resolve imported reference __fpending.
-0000000000411844: warning: Unable to resolve imported reference lgetfilecon.
-00000000004117DF: warning: Unable to resolve imported reference freecon.
-0000000000411824: warning: Unable to resolve imported reference getfilecon.
-000000000041184E: warning: Procedure fn0000000000411840 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000000411395: warning: Unable to resolve imported reference __ctype_b_loc.
-00000000004113F3: warning: Unable to resolve imported reference __strtoul_internal.
-000000000041132A: warning: Unable to resolve imported reference error.
-0000000000410EC5: warning: Unable to resolve imported reference __ctype_b_loc.
-000000000040EF67: warning: Unable to resolve imported reference strftime.
-000000000040EC93: warning: Unable to resolve imported reference __ctype_toupper_loc.
-000000000040EC43: warning: Unable to resolve imported reference __ctype_tolower_loc.
-000000000040EC1F: warning: Procedure fn000000000040EC10 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000000000040D697: warning: Procedure fn000000000040D690 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000000000040CF60: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
-000000000040CF78: warning: Unable to resolve imported reference mbstowcs.
-000000000040CFDE: warning: Unable to resolve imported reference mbstowcs.
-000000000040D010: warning: Unable to resolve imported reference iswprint.
-000000000040CB88: warning: Unable to resolve imported reference getgrgid.
-000000000040AB76: warning: Unable to resolve imported reference setlocale.
-000000000040AB4B: warning: Unable to resolve imported reference gettimeofday.
-0000000000409FD6: warning: Unable to resolve imported reference error.
-000000000040A10E: warning: Unable to resolve imported reference __overflow.
-0000000000409D79: warning: Unable to resolve imported reference readlink.
-0000000000409CD3: warning: Unable to resolve imported reference acl_extended_file.
-0000000000409BA8: warning: Unable to resolve imported reference setlocale.
-0000000000407FA1: warning: Unable to resolve imported reference __xstat.
-0000000000405836: warning: Unable to resolve imported reference error.
-0000000000405043: warning: Unable to resolve imported reference strcoll.
-000000000040800C: warning: Unable to resolve imported reference __lxstat.
-00000000004088C5: warning: Unable to resolve imported reference __xstat.
-00000000004084DD: warning: Unable to resolve imported reference error.
-00000000004061CF: warning: Procedure fn0000000000405D50 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00000000004061CF: warning: Procedure fn0000000000405D50 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000000408587: warning: Unable to resolve imported reference stpncpy.
-00000000004085C2: warning: Unable to resolve imported reference __xstat.
+00000000004040A4: warning: Unable to resolve imported reference _obstack_newchunk.
+00000000004036C9: warning: Unable to resolve imported reference fwrite_unlocked.
+0000000000403F44: warning: Unable to resolve imported reference fwrite_unlocked.
+00000000004036FB: warning: Unable to resolve imported reference readdir.
+0000000000403FF6: warning: Unable to resolve imported reference _obstack_newchunk.
 0000000000406464: warning: Unable to resolve imported reference fwrite_unlocked.
-0000000000406A75: warning: Procedure fn0000000000406A30 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000000406828: warning: Unable to resolve imported reference _obstack_newchunk.
 00000000004064A7: warning: Unable to resolve imported reference fflush_unlocked.
 00000000004064B6: warning: Unable to resolve imported reference sigprocmask.
 00000000004064DB: warning: Unable to resolve imported reference raise.
 00000000004064EA: warning: Unable to resolve imported reference sigprocmask.
+0000000000403CF6: warning: Unable to resolve imported reference closedir.
+0000000000404089: warning: Unable to resolve imported reference _obstack_newchunk.
+00000000004044E1: warning: Unable to resolve imported reference __overflow.
+00000000004044F0: warning: Unable to resolve imported reference __overflow.
+0000000000403FA3: warning: Unable to resolve imported reference fwrite_unlocked.
+00000000004040F9: warning: Unable to resolve imported reference fflush_unlocked.
+0000000000404116: warning: Unable to resolve imported reference sigismember.
+0000000000403A2F: warning: Unable to resolve imported reference _obstack_begin.
+0000000000405649: warning: Procedure fn00000000004052D0 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0000000000405649: warning: Procedure fn00000000004052D0 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0000000000404139: warning: Unable to resolve imported reference raise.
+000000000040414D: warning: Unable to resolve imported reference raise.
+0000000000403B37: warning: Unable to resolve imported reference tcgetpgrp.
+0000000000403B4C: warning: Unable to resolve imported reference sigemptyset.
+0000000000403B62: warning: Unable to resolve imported reference sigaction.
+0000000000403B77: warning: Unable to resolve imported reference sigaddset.
+000000000040AB76: warning: Unable to resolve imported reference setlocale.
+0000000000409FD6: warning: Unable to resolve imported reference error.
+0000000000403BBA: warning: Unable to resolve imported reference sigismember.
+0000000000403BDF: warning: Unable to resolve imported reference sigaction.
+0000000000411395: warning: Unable to resolve imported reference __ctype_b_loc.
+00000000004113F3: warning: Unable to resolve imported reference __strtoul_internal.
+0000000000403ABB: warning: Unable to resolve imported reference error.
+0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
+00000000004021A0: warning: Unable to resolve imported reference __ctype_toupper_loc.
+0000000000402210: warning: Unable to resolve imported reference __mempcpy_chk.
+0000000000402250: warning: Unable to resolve imported reference _exit.
+00000000004026A0: warning: Unable to resolve imported reference mktime.
+000000000040EC43: warning: Unable to resolve imported reference __ctype_tolower_loc.
+0000000000411887: warning: Unable to resolve imported reference __fpending.
+000000000040EF67: warning: Unable to resolve imported reference strftime.
+000000000040EC93: warning: Unable to resolve imported reference __ctype_toupper_loc.
+000000000040AB4B: warning: Unable to resolve imported reference gettimeofday.
+000000000040A10E: warning: Unable to resolve imported reference __overflow.
+0000000000406A75: warning: Procedure fn0000000000406A30 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0000000000406828: warning: Unable to resolve imported reference _obstack_newchunk.
 0000000000406808: warning: Unable to resolve imported reference _obstack_newchunk.
 0000000000405D3D: warning: Unable to resolve imported reference __overflow.
 0000000000407106: warning: Unable to resolve imported reference fwrite_unlocked.
@@ -1660,71 +1706,24 @@ _getopt_internal: error: An error occurred while rewriting procedure to high-lev
 0000000000406B50: warning: Unable to resolve imported reference stpcpy.
 0000000000406B6B: warning: Procedure fn0000000000406A80 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000407181: warning: Unable to resolve imported reference fwrite_unlocked.
-0000000000405EEF: warning: Procedure fn0000000000405D50 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000000405EEF: warning: Procedure fn0000000000405D50 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000000405649: warning: Procedure fn00000000004052D0 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000000405649: warning: Procedure fn00000000004052D0 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0000000000405EC4: warning: Procedure fn0000000000405D50 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00000000004052B2: warning: Unable to resolve imported reference __overflow.
 00000000004052BE: warning: Unable to resolve imported reference __overflow.
-0000000000404DB6: warning: Unable to resolve imported reference freecon.
-0000000000404EE5: warning: Unable to resolve imported reference _setjmp.
-0000000000402880: warning: Unable to resolve imported reference __ctype_b_loc.
 0000000000402870: warning: Unable to resolve imported reference __ctype_tolower_loc.
-0000000000402850: warning: Unable to resolve imported reference sigaddset.
-0000000000402840: warning: Unable to resolve imported reference iswprint.
-0000000000402830: warning: Unable to resolve imported reference mbsinit.
-0000000000402820: warning: Unable to resolve imported reference fflush_unlocked.
-00000000004027E0: warning: Unable to resolve imported reference sigismember.
-00000000004027D0: warning: Unable to resolve imported reference freecon.
-0000000000411EF1: warning: Unable to resolve imported reference __cxa_atexit.
 0000000000402770: warning: Unable to resolve imported reference error.
 0000000000402740: warning: Unable to resolve imported reference strftime.
 0000000000402720: warning: Unable to resolve imported reference _obstack_newchunk.
-0000000000402710: warning: Unable to resolve imported reference setlocale.
-00000000004026F0: warning: Unable to resolve imported reference stpncpy.
 00000000004026D0: warning: Unable to resolve imported reference acl_get_entry.
 00000000004026C0: warning: Unable to resolve imported reference fwrite_unlocked.
-00000000004026B0: warning: Unable to resolve imported reference __freading.
-00000000004026A0: warning: Unable to resolve imported reference mktime.
-0000000000408CDB: warning: Procedure fn0000000000407EA0 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000000402680: warning: Unable to resolve imported reference __fxstat.
-0000000000402660: warning: Unable to resolve imported reference nl_langinfo.
-0000000000402620: warning: Unable to resolve imported reference readdir.
-0000000000402610: warning: Unable to resolve imported reference __xstat.
-0000000000402600: warning: Unable to resolve imported reference tcgetpgrp.
-00000000004025E0: warning: Unable to resolve imported reference getfilecon.
 00000000004025D0: warning: Unable to resolve imported reference getgrnam.
-0000000000402590: warning: Unable to resolve imported reference __memcpy_chk.
 0000000000402580: warning: Unable to resolve imported reference getpwnam.
-0000000000402570: warning: Unable to resolve imported reference dirfd.
-0000000000402540: warning: Unable to resolve imported reference lgetfilecon.
-0000000000402510: warning: Unable to resolve imported reference _setjmp.
-00000000004024E0: warning: Unable to resolve imported reference closedir.
-00000000004024D0: warning: Unable to resolve imported reference acl_extended_file.
-00000000004024B0: warning: Unable to resolve imported reference ioctl.
-00000000004024A0: warning: Unable to resolve imported reference fscanf.
 0000000000402490: warning: Unable to resolve imported reference acl_get_tag_type.
-0000000000402460: warning: Unable to resolve imported reference __strtoul_internal.
 0000000000402440: warning: Unable to resolve imported reference gettimeofday.
-0000000000402430: warning: Unable to resolve imported reference lseek.
 0000000000402420: warning: Unable to resolve imported reference fgetfilecon.
 0000000000402400: warning: Unable to resolve imported reference __overflow.
-00000000004023F0: warning: Unable to resolve imported reference _obstack_begin.
-00000000004023E0: warning: Unable to resolve imported reference getgrgid.
-00000000004023C0: warning: Unable to resolve imported reference mbrtowc.
-00000000004023B0: warning: Unable to resolve imported reference getopt_long.
-0000000000402370: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
 0000000000402350: warning: Unable to resolve imported reference stpcpy.
-0000000000402340: warning: Unable to resolve imported reference bindtextdomain.
-0000000000402320: warning: Unable to resolve imported reference opendir.
-00000000004022E0: warning: Unable to resolve imported reference readlink.
-00000000004022D0: warning: Unable to resolve imported reference mbstowcs.
-00000000004022C0: warning: Unable to resolve imported reference localeconv.
-00000000004022A0: warning: Unable to resolve imported reference iswcntrl.
 0000000000402280: warning: Unable to resolve imported reference isatty.
 0000000000402270: warning: Unable to resolve imported reference __fpending.
-0000000000402250: warning: Unable to resolve imported reference _exit.
-00000000004021E0: warning: Unable to resolve imported reference raise.
 00000000004048E7: error: An error occurred while processing instruction at address 00000000004048E7.
     Expected stack depth to be negative.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
@@ -1737,13 +1736,7 @@ _getopt_internal: error: An error occurred while rewriting procedure to high-lev
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 214
-0000000000405043: error: An error occurred while processing instruction at address 0000000000405043.
-    Expected stack depth to be negative.
-       at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 214
-0000000000408CDB: error: An error occurred while processing instruction at address 0000000000408CDB.
+00000000004061A2: error: An error occurred while processing instruction at address 00000000004061A2.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
@@ -1757,25 +1750,25 @@ _getopt_internal: error: An error occurred while rewriting procedure to high-lev
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 214
-000000000040D43E: error: An error occurred while processing instruction at address 000000000040D43E.
+000000000040D43B: error: An error occurred while processing instruction at address 000000000040D43B.
     Expected stack depth to be negative.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 214
-0000000000410E40: error: An error occurred while processing instruction at address 0000000000410E40.
+0000000000410E41: error: An error occurred while processing instruction at address 0000000000410E41.
     Expected stack depth to be negative.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 214
-000000000041182F: error: An error occurred while processing instruction at address 000000000041182F.
+000000000041182E: error: An error occurred while processing instruction at address 000000000041182E.
     Expected stack depth to be negative.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 214
-000000000041184E: error: An error occurred while processing instruction at address 000000000041184E.
+000000000041184F: error: An error occurred while processing instruction at address 000000000041184F.
     Expected stack depth to be negative.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
@@ -1787,7 +1780,7 @@ _getopt_internal: error: An error occurred while rewriting procedure to high-lev
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 214
-fn00000000004061D1: error: An error occurred during data flow analysis.
+fn00000000004061B0: error: An error occurred during data flow analysis.
     Offset must be non-negative.
 Parameter name: bitOffset
        at Reko.Core.Expressions.Slice..ctor(DataType dt, Expression i, Int32 bitOffset) in D:\dev\uxmal\reko\master\src\Core\Expressions\Slice.cs:line 40
@@ -1797,18 +1790,6 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Analysis.Aliases.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 175
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn0000000000406248: error: An error occurred during data flow analysis.
-    Index was outside the bounds of the array.
-       at Reko.Analysis.SsaTransform.LocateDefinedVariables.MarkDefined(Identifier eDef) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 266
-   at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 290
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Analysis.SsaTransform.LocateDefinedVariables.LocateDefs(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 283
-   at Reko.Analysis.SsaTransform.LocateAllDefinedVariables(Dictionary`2[] defOrig) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 107
-   at Reko.Analysis.SsaTransform.PlacePhiFunctions() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 135
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 216
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 163
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 fn0000000000406B70: error: An error occurred during data flow analysis.
     Offset must be non-negative.
@@ -1842,6 +1823,26 @@ fn000000000040BD70: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
    at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
+fn000000000040D240: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
+   at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 145
+   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
+   at Reko.Analysis.DeadCode.VisitAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 143
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn000000000040D420: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 199
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 fn000000000040D450: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1862,63 +1863,16 @@ Parameter name: bitOffset
    at Reko.Analysis.Aliases.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 175
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-00000000004054D8: error: An error occurred while processing the statement Mem696[rdx_681 - 0x0000000000000001 + 0x0000000000000000:byte] = (byte) (word32) Mem569[rdi_622 - 0x0000000000000001 + 0x0000000000000000:byte].
-    Not handling (ptr (struct (0 T_1648 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 57
-   at Reko.Typing.ExpressionTypeDescender.VisitCast(Cast cast, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 426
-   at Reko.Core.Expressions.Cast.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 46
-   at Reko.Typing.ExpressionTypeDescender.VisitCast(Cast cast, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 426
-   at Reko.Core.Expressions.Cast.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 46
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 207
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-000000000040A8A3: error: An error occurred while processing the statement r10 = r10 - rbp.
-    Pulling difference (union (bool u2) ((ptr (struct (0 T_403 t0000) (A0 T_3504 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_3597 t0000) (1 T_3628 t0001)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-000000000040A8A6: error: An error occurred while processing the statement r12 = r12 - rbx.
-    Pulling difference (union (bool u2) ((ptr (struct (0 T_403 t0000) (A0 T_3504 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_403 t0000) (1 T_3613 t0001) (2 T_3675 t0002) (A0 T_3500 t00A0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-000000000040AAAD: error: An error occurred while processing the statement r12 = r12 - rbx.
-    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_403 t0000) (A0 T_3504 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 T_403 t0000) (1 T_3613 t0001) (2 T_3675 t0002) (A0 T_3500 t00A0)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-000000000040AAB0: error: An error occurred while processing the statement r10 = r10 - rbp.
-    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_403 t0000) (A0 T_3504 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 char b0000) (1 T_3628 t0001)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-000000000040AAF6: error: An error occurred while processing the statement r10 = r10 - rbp.
-    Pulling difference (union (bool u2) (int32 u3) ((ptr (struct (0 T_403 t0000) (A0 T_3504 t00A0))) u0) (ptr64 u1)) and (ptr (struct (0 char b0000) (1 T_3628 t0001)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
+0000000000405502: error: An error occurred while processing the statement rbx_112 = rbx_483 - Mem65[rbp_118 + 0xFFFFFFFFFFFFDF98:word64].
+    Pulling difference (ptr (struct 0001 (0 byte b0000))) and (ptr char)
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000000000407FC2: error: An error occurred while processing the statement r15 = (uint64) Mem0[r13 - 0x0000000000000384 + 0x0000000000000000:word32].
-    Not handling (ptr (struct (0 T_7162 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_12143 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1931,7 +1885,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 00000000004086E0: error: An error occurred while processing the statement Mem0[r8 - 0x0000000000000001 + 0x0000000000000000:byte] = r15b.
-    Not handling (ptr (struct (0 T_8624 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_13661 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1942,7 +1896,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000000000040A2DA: error: An error occurred while processing the statement branch Mem0[rax_20 - 0x0000000000000001 + 0x0000000000000000:byte] == 0x2F l000000000040A2EE.
-    Not handling (ptr (struct (0 T_9759 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_14814 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 393
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 230
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1962,20 +1916,28 @@ Parameter name: Linear address 00000000 is not in known segment.
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 81
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 90
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 312
-fn0000000000405630: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-fn00000000004061B0: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-fn00000000004061D1: error: An error occurred while rewriting procedure to high-level language.
-    The given key was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 208
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+fn00000000004028C0: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
+   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
+   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0000000000406248: error: An error occurred while rewriting procedure to high-level language.
-    The given key was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 208
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+fn0000000000405630: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+fn00000000004061B0: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
+   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
+   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn0000000000406490: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 306
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 254
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn000000000040AE40: error: An error occurred while rewriting procedure to high-level language.
@@ -1997,10 +1959,11 @@ fn000000000040BD70: error: An error occurred while rewriting procedure to high-l
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn000000000040D240: error: An error occurred while rewriting procedure to high-level language.
     The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn000000000040D450: error: An error occurred while rewriting procedure to high-level language.
@@ -2021,7 +1984,6 @@ fn000000000040D8A0: error: An error occurred while rewriting procedure to high-l
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn000000000040E450: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn000000000040ECD0: error: An error occurred while rewriting procedure to high-level language.
     Index was outside the bounds of the array.
        at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 306
@@ -2051,7 +2013,6 @@ fn0000000000411360: error: An error occurred while rewriting procedure to high-l
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn00000000004117B0: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
 === ais3_crackme
 *** ais3_crackme

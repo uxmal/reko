@@ -377,7 +377,7 @@ l000000000040052D:
 f_exit:
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x0000000000000004 rdi:0x0000000000000078 rax:DPB(rax, <invalid>, 0) rbp:rbp -4(fp):rbp
+// SymbolicIn: rsp:fp + 0x0000000000000004 rdi:0x0000000000000078 rax:<invalid> rbp:rbp -4(fp):rbp
 
 
 

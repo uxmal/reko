@@ -1377,12 +1377,12 @@ l00000001400016FF:
 	return eax_143
 // DataOut: al eax
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000044 rbp:fp - 0x0000000000000004 rbx:(uint64) ecx rdx:<invalid> r8:<invalid> rax:<invalid> rcx:<invalid> al:<invalid> xmm0:<invalid> xmm1:DPB(DPB(xmm1, <invalid>, 0), <invalid>, 0) -4(fp):rbp 8(fp):rbx
+// SymbolicIn: rsp:fp - 0x0000000000000044 rbp:fp - 0x0000000000000004 rbx:(uint64) ecx rdx:<invalid> r8:<invalid> rax:<invalid> rcx:<invalid> al:<invalid> xmm0:<invalid> xmm1:<invalid> -4(fp):rbp 8(fp):rbx
 
 fn000000014000164C_exit:
 // DataOut: al eax
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rbp:<invalid> rbx:<invalid> rcx:<invalid> rdx:<invalid> r8:<invalid> rax:<invalid> al:<invalid> xmm0:<invalid> xmm1:DPB(DPB(xmm1, <invalid>, 0), <invalid>, 0) eax:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbp 8(fp):rbx
+// SymbolicIn: rsp:<invalid> rbp:<invalid> rbx:<invalid> rcx:<invalid> rdx:<invalid> r8:<invalid> rax:<invalid> al:<invalid> xmm0:<invalid> xmm1:<invalid> eax:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbp 8(fp):rbx
 
 
 

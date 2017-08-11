@@ -380,7 +380,7 @@ component_entry:
 // DataOut: ecx edi edx esi r13 r8d
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(64) Local -002C(0)
+// LocalsOut: fp(64) Local -002C(0) Local -0034(0)
 
 l0000000000400DC6:
 	Mem16[r13 - 0x0000000000000028:word32] = r8d
@@ -388,9 +388,10 @@ l0000000000400DC6:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: Local -0028(64)
+// LocalsOut: Local -0028(64) Local -0034(0)
 
 l0000000000400EC1:
+	word64 rax_85 = (uint64) fprintf(Mem16[0x0000000000602100:word64], 0x0000000000401808, tLoc34)
 	exit(0x0000000000000001)
 // DataOut:
 // DataOut (flags): 
@@ -595,8 +596,8 @@ l00000000004012F9:
 // LocalsOut: fp(64) Local -0068(0) Local -0074(32) Local -0080(32) Local -0084(32) Local -0098(32) Local -00A4(64)
 
 l000000000040173F:
-	word64 rax_1022 = Mem0[0x0000000000602100:word64]
-	word64 rax_1027 = DPB(rax_1022, fwrite(0x0000000000401A70, 0x0000000000000001, 0x0000000000000027, rax_1022), 0)
+	word64 rax_1023 = Mem0[0x0000000000602100:word64]
+	word64 rax_1028 = DPB(rax_1023, fwrite(0x0000000000401A70, 0x0000000000000001, 0x0000000000000027, rax_1023), 0)
 // DataOut: fs rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A4 rbp:fp - 0x0000000000000004 rax:<invalid> -164(fp):rsi -152(fp):edi -136(fp):0x00000001 -12(fp):<invalid> -4(fp):rbp
@@ -662,6 +663,7 @@ l0000000000401337:
 // LocalsOut: fp(64) Local -0024(0) Local -002C(0) Local -0068(0) Local -0074(32) Local -0080(32) Local -0084(32) Local -0098(32) Local -00A4(64)
 
 l0000000000401716:
+	word64 rax_1022 = (uint64) fprintf(Mem0[0x0000000000602100:word64], 0x0000000000401A48, tLocA4)
 // DataOut: fs rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A4 rbp:fp - 0x0000000000000004 rax:<invalid> rdi:<invalid> rsi:0x0000000000401990 -164(fp):rsi -152(fp):edi -136(fp):0x00000001 -68(fp):0x0000000000000000 -44(fp):<invalid> -36(fp):<invalid> -28(fp):<invalid> -12(fp):<invalid> -4(fp):rbp
