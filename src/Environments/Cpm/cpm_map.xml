@@ -2,19 +2,15 @@
 
   <segment name="lma" addr="0" size="0100" attr="rwx">
     <description>Low memory area</description>
-    <function addr="0000" name="cpm_warm_boot"></function>
-    <service-function addr="0005" name="cpm_bdos">
+    <procedure address="0000" name="cpm_warm_boot"></procedure>
+    <dispatch-procedure address="0005">
       <service name="P_TERMCPM">
         <syscallinfo>
           <regvalue reg="c">0</regvalue>
         </syscallinfo>
         <signature></signature>
-      </service>      
-    </service-function>
-  </segment>
-  
-  <segment name="tpa" addr="0100" size="FF00" attr="rwx">
-    <description>Transient program area</description>
+      </service>
+    </dispatch-procedure> 
   </segment>
 </memory>
 <!--

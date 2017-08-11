@@ -37,11 +37,11 @@ namespace Reko.UnitTests.Fragments
             Identifier ax = Local16("ax");
             Identifier si = Local16("si");
             Identifier si2 = Local16("si2");
-            Assign(si, Int16(0x0001));
+            Assign(si, Word16(0x0001));
             Assign(ax, SegMemW(cs, si));
-            Assign(si2, Int16(0x0005));
+            Assign(si2, Word16(0x0005));
             Assign(ax, SegMemW(cs, si2));
-            Store(SegMemW(cs, Int16(0x1234)), ax);
+            Store(SegMemW(cs, Word16(0x1234)), ax);
             Store(SegMemW(cs, IAdd(si, 2)), ax);
         }
     }

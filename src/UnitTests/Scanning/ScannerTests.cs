@@ -179,7 +179,7 @@ namespace Reko.UnitTests.Scanning
             this.project = new Project { Programs = { program } };
         }
 
-        private void Given_Trace( RtlTrace trace)
+        private void Given_Trace(RtlTrace trace)
         {
             fakeArch.Test_AddTrace(trace);
         }
@@ -227,6 +227,16 @@ namespace Reko.UnitTests.Scanning
                 mem.BaseAddress,
                 new ImageSegment("progseg", this.mem, AccessMode.ReadExecute));
             return new TestScanner(prog, importResolver, sc);
+        }
+
+        private DataScanner CreateDataScanner(Program program)
+        {
+            this.program = program;
+            var sr = new ScanResults()
+            {
+                KnownProcedures = new HashSet<Address>(),
+            };
+            return new DataScanner(program, sr,  eventListener);
         }
 
         [Test]
@@ -427,7 +437,7 @@ fn0C00_0000_exit:
         {
             var scanner = CreateScanner(0x1000, 0x1000);
             var m = new ProcedureBuilder(arch, "fn1000");
-            m.Assign(m.Register("ax"), m.Register("bx"));
+            m.Assign(m.Register("r0"), m.Register("r1"));
 
             var block = m.Block;
             Assert.IsFalse(scanner.IsLinearReturning(block));
@@ -453,6 +463,7 @@ fn0C00_0000_exit:
                 m => { m.Assign(reg1, m.Word32(1)); },
                 m => { m.Goto(Address.Ptr32(0x1004)); },
             });
+            fakeArch.Test_IgnoreAllUnkownTraces();
 
             scan.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x1000)) { ProcessorState = arch.CreateProcessorState(), }, true);
             scan.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x1100)) { ProcessorState = arch.CreateProcessorState(), }, true);
@@ -600,11 +611,40 @@ fn00001100_exit:
             var sc = CreateScanner(program);
             sc.EnqueueUserProcedure(
                 Address.Ptr32(0x12314),
-                FunctionType.Action());
+                FunctionType.Action(),
+                null);
             sc.EnqueueUserProcedure(
                 Address.Ptr32(0x12324),
-                FunctionType.Action());
+                FunctionType.Action(),
+                null);
             sc.ScanImage();
+
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual(0x12324, program.Procedures.Keys[0].Offset);
+        }
+
+        [Test]
+        public void Scanner_ScanData_NoDecompiledProcedureFromUserGlobal()
+        {
+            Given_Program(Address.Ptr32(0x12314), new byte[20]);
+            program.User.Procedures.Add(
+                Address.Ptr32(0x12314),
+                new Procedure_v1()
+                {
+                    Decompile = false,
+                }
+            );
+
+            var sc = CreateDataScanner(program);
+            sc.EnqueueUserProcedure(
+                Address.Ptr32(0x12314),
+                FunctionType.Action(),
+                null);
+            sc.EnqueueUserProcedure(
+                Address.Ptr32(0x12324),
+                FunctionType.Action(),
+                null);
+            sc.ProcessQueue();
 
             Assert.AreEqual(1, program.Procedures.Count);
             Assert.AreEqual(0x12324, program.Procedures.Keys[0].Offset);
@@ -786,7 +826,7 @@ fn00001200_exit:
             var elementType = new TypeReference("test", str);
             var arrayType = new ArrayType(elementType, 3);
 
-            sc.EnqueueUserGlobalData(Address.Ptr32(0x43210000), arrayType);
+            sc.EnqueueUserGlobalData(Address.Ptr32(0x43210000), arrayType, null);
             sc.ScanImage();
 
             var sExpSig1 =
@@ -859,7 +899,7 @@ fn00001200_exit:
             };
             str.Fields.AddRange(fields);
 
-            sc.EnqueueUserGlobalData(Address.Ptr32(0x43210000), str);
+            sc.EnqueueUserGlobalData(Address.Ptr32(0x43210000), str, null);
             sc.ScanImage();
 
             var sExpSig =
@@ -900,7 +940,7 @@ fn00001200_exit:
                 this.program,
                 new ImportResolver(project, program, eventListener),
                 this.sc);
-            scanner.EnqueueUserGlobalData(Address.Ptr32(0x43210000), str);
+            scanner.EnqueueUserGlobalData(Address.Ptr32(0x43210000), str, null);
             scanner.ScanImage();
 
             Assert.AreEqual(1, program.Procedures.Count, "Scanner should have detected the pointer to function correctly.");
@@ -931,6 +971,37 @@ fn00001200_exit:
 
             Assert.AreEqual("foo", proc.Name);
             Assert.AreEqual("Register int32 foo(Stack (ptr char) a, Stack real32 b)", proc.Signature.ToString(proc.Name));
+        }
+
+        [Test(Description = "Should discover pointer to function and record it in ScanResults.")]
+        public void Scanner_ScanData_ImageSymbols()
+        {
+            Given_Program(Address.Ptr32(0x00100000), new byte[] {
+                0x42, 0x42, 0x42, 0x42,
+                0x10, 0x00, 0x10, 0x00,
+                0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00,
+                0xC3, 0x00, 0x00, 0x00,
+            });
+            Given_Project();
+            var dt = new StructureType
+            {
+                Fields =
+                {
+                    { 0,  PrimitiveType.Int32, "data" },
+                    { 4,  new Pointer(FunctionType.Action(
+                            new Identifier("arg", PrimitiveType.Int32, null)),
+                            4)
+                    }
+                }
+            };
+            var sym = new ImageSymbol(Address.Ptr32(0x00100000), "data_blob", dt) { Type = SymbolType.Data };
+            program.ImageSymbols.Add(sym.Address, sym);
+
+            var scanner = new Scanner(program, importResolver, sc);
+            var sr = scanner.ScanDataItems();
+            Assert.AreEqual(1, sr.KnownProcedures.Count);
+            Assert.AreEqual("00100010", sr.KnownProcedures.First().ToString());
         }
     }
 }

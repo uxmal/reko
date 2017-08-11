@@ -135,7 +135,10 @@ namespace Reko.Analysis
 
             public bool VisitConditionalExpression(ConditionalExpression cond)
             {
-                throw new NotImplementedException();
+                var dead = cond.Condition.Accept(this);
+                dead &= cond.ThenExp.Accept(this);
+                dead &= cond.FalseExp.Accept(this);
+                return dead;
             }
 
             public bool VisitConditionOf(ConditionOf cof)

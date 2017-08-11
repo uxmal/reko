@@ -401,7 +401,7 @@ l1:
 	// succ:  LiveLoopMock_exit
 loop:
 	y = i
-	i = i + 0x00000001
+	i = i + 1
 	branch Mem0[i:byte] != 0 loop
 	goto l1
 	// succ:  l1 loop

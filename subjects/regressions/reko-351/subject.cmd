@@ -1,1 +1,1 @@
-decompile.exe a.out
+decompile.exe --heuristic shingle  a.out

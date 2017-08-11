@@ -23,4 +23,4 @@
 20000045 8B 04 7D 00 00 00 00 	mov	eax,[00000000+edi*2]
 2000004C 8B 1C 38        	mov	ebx,[eax+edi]
 2000004F 8B 9C F0 0F 0D 00 00 	mov	ebx,[eax+esi*8+00000D0F]
-20000056 C3              	ret	
+20000056 C3              	ret

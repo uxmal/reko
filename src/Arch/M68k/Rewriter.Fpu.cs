@@ -37,18 +37,18 @@ namespace Reko.Arch.M68k
 
         private void RewriteFbcc(ConditionCode cc)
         {
-            ric.Class = RtlClass.ConditionalTransfer;
-            emitter.Branch(
-                emitter.Test(cc, frame.EnsureIdentifier(Registers.fpsr)),
+            rtlc = RtlClass.ConditionalTransfer;
+            m.Branch(
+                m.Test(cc, binder.EnsureRegister(Registers.fpsr)),
                 ((M68kAddressOperand)di.op1).Address,
                 RtlClass.ConditionalTransfer);
         }
 
         private void RewriteFbcc(Func<Expression, Expression> fnTest)
         {
-            ric.Class = RtlClass.ConditionalTransfer;
-            emitter.Branch(fnTest(
-                frame.EnsureIdentifier(Registers.fpsr)),
+            rtlc = RtlClass.ConditionalTransfer;
+            m.Branch(fnTest(
+                binder.EnsureRegister(Registers.fpsr)),
                 ((M68kAddressOperand)di.op1).Address,
                 RtlClass.ConditionalTransfer);
         }
@@ -58,30 +58,40 @@ namespace Reko.Arch.M68k
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, binOpGen);
-            emitter.Assign(frame.EnsureIdentifier(Registers.fpsr), emitter.Cond(opDst));
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
+            m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(opDst));
         }
 
         private void RewriteFUnaryOp(Func<Expression, Expression> unaryOpGen)
         {
             var op = orw.RewriteUnary(di.op1, di.Address, di.dataWidth, unaryOpGen);
-            emitter.Assign(frame.EnsureIdentifier(Registers.fpsr), emitter.Cond(op));
+            m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(op));
         }
 
         private void RewriteFcmp()
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteSrc(di.op2, di.Address);
-            var tmp = frame.CreateTemporary(opDst.DataType);
-            emitter.Assign(
-                frame.EnsureIdentifier(Registers.fpsr), 
-                emitter.Cond(emitter.FSub(opDst, opSrc)));
+            var tmp = binder.CreateTemporary(opDst.DataType);
+            m.Assign(
+                binder.EnsureRegister(Registers.fpsr), 
+                m.Cond(m.FSub(opDst, opSrc)));
         }
 
         private void RewriteFmove()
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, MaybeCastFpuArgs);
-            emitter.Assign(frame.EnsureIdentifier(Registers.fpsr), emitter.Cond(opDst));
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
+            m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(opDst));
         }
 
         private void RewriteFmovecr()
@@ -100,14 +110,14 @@ namespace Reko.Arch.M68k
                 src = host.PseudoProcedure("__fmovecr", PrimitiveType.Real64, opSrc.Constant);
             }
             var dst = orw.RewriteSrc(di.op2, di.Address);
-            emitter.Assign(dst, src);
-            emitter.Assign(frame.EnsureIdentifier(Registers.fpsr), emitter.Cond(dst));
+            m.Assign(dst, src);
+            m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(dst));
         }
 
         private Expression MaybeCastFpuArgs(Expression src, Expression dst)
         {
             if (src.DataType != dst.DataType)
-                return emitter.Cast(dst.DataType, src);
+                return m.Cast(dst.DataType, src);
             else
                 return src;
         }

@@ -41,7 +41,7 @@ namespace Reko.Core.Types
 		public Unifier(TypeFactory factory)
 		{
 			this.factory = factory;
-		}
+        }
 
 		public bool AreCompatible(DataType a, DataType b)
 		{
@@ -523,14 +523,21 @@ namespace Reko.Core.Types
 				if (fa == null || fb == null)
 					break;
 
-				if (fa.Offset < fb.Offset)
+                var nestedStructureUnifier = new NestedStructureUnifier(this);
+                if (nestedStructureUnifier.Match(fa, fb))
+                {
+                    nestedStructureUnifier.Unify();
+                    fa = nestedStructureUnifier.NextFieldA;
+                    fb = nestedStructureUnifier.NextFieldB;
+                }
+                else if (fa.Offset < fb.Offset)
 				{
-					mem.Fields.Add(fa.Clone());
-					fa = null;
+                    mem.Fields.Add(fa.Clone());
+                    fa = null;
 				}
 				else if (fa.Offset > fb.Offset)
 				{
-					mem.Fields.Add(fb.Clone());
+                    mem.Fields.Add(fb.Clone());
 					fb = null;
 				}
 				else
@@ -581,7 +588,79 @@ namespace Reko.Core.Types
             return true;
         }
 
-		public DataType UnifyPointer(Pointer ptrA, DataType b)
+        class NestedStructureUnifier
+        {
+            private Unifier unifier;
+            private StructureField fNestedStruct;
+            private StructureField fOther;
+            private StructureField fa;
+            private StructureField fb;
+
+
+            public NestedStructureUnifier(Unifier unifier)
+            {
+                this.unifier = unifier;
+            }
+
+            public bool Match(StructureField fa, StructureField fb)
+            {
+                this.fa = fa;
+                this.fb = fb;
+                this.fNestedStruct = null;
+                this.fOther = null;
+                this.NextFieldA = null;
+                this.NextFieldB = null;
+                var strFa = fa.DataType.TypeReferenceAs<StructureType>();
+                var strFb = fb.DataType.TypeReferenceAs<StructureType>();
+                // only one field should be nested structure
+                if (
+                    (strFa == null && strFb == null) ||
+                    (strFa != null && strFb != null))
+                    return false;
+
+                // check which of two fields is nested structure and store it
+                // and other field in corresponding variables.
+                int strSize;
+                if (strFa != null)
+                {
+                    fNestedStruct = fa;
+                    fOther = fb;
+                    strSize = strFa.GetInferredSize();
+                }
+                else
+                {
+                    fNestedStruct = fb;
+                    fOther = fa;
+                    strSize = strFb.GetInferredSize();
+                }
+
+                // check if other field is inside nested structure
+                return (
+                    fOther.Offset >= fNestedStruct.Offset &&
+                    fOther.Offset < fNestedStruct.Offset + strSize);
+            }
+
+            public void Unify()
+            {
+                var str = unifier.factory.CreateStructureType(null, 0);
+                str.Fields.Add(
+                    fOther.Offset - fNestedStruct.Offset,
+                    fOther.DataType);
+
+                var fieldType = unifier.Unify(fNestedStruct.DataType, str);
+                var field = new StructureField(
+                    fNestedStruct.Offset,
+                    fieldType,
+                    fNestedStruct.Name);
+                NextFieldA = (fOther == fa) ? null : field;
+                NextFieldB = (fOther == fb) ? null : field;
+            }
+
+            public StructureField NextFieldA { get; private set; }
+            public StructureField NextFieldB { get; private set; }
+        }
+
+        public DataType UnifyPointer(Pointer ptrA, DataType b)
 		{
 			PrimitiveType pb = b as PrimitiveType;
 			if (pb != null)

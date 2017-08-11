@@ -6,7 +6,7 @@
     <ProductVersion>3.7</ProductVersion>
     <ProjectGuid>b1916638-ef20-4692-8c95-1c5ad6c67d30</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>reko-0.6.2.0</OutputName>
+    <OutputName>reko-0.7.1.0</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
@@ -97,6 +97,22 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\SuperH\SuperH.csproj">
+      <Name>SuperH</Name>
+      <Project>{fc3aa408-b2b1-4b40-b29d-9ebb46aa8b33}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Tlcs\Tlcs.csproj">
+      <Name>Tlcs</Name>
+      <Project>{b15c2937-0fb8-4f3b-8b84-bee861dc841b}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Vax\Vax.csproj">
       <Name>Vax</Name>
       <Project>{82777964-b370-431a-ac97-733c594c02b5}</Project>
@@ -132,6 +148,14 @@
     <ProjectReference Include="..\Arch\Z80\Z80.csproj">
       <Name>Z80</Name>
       <Project>{66a00ab2-6964-4815-9140-f28fee48e6d6}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Assemblers\M68k\M68kAssembler.csproj">
+      <Name>M68kAssembler</Name>
+      <Project>{fd6ad906-bed1-4ac1-a7c5-0a04cca2d7dc}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -201,6 +225,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\AtariTOS\AtariTOS.csproj">
+      <Name>AtariTOS</Name>
+      <Project>{73e8b629-f836-4ca6-b003-dae0809b8a7a}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\C64\C64.csproj">
       <Name>C64</Name>
       <Project>{fdfe3507-e8ce-4930-b9b5-8fb647cfc6dc}</Project>
@@ -212,6 +244,14 @@
     <ProjectReference Include="..\Environments\Cpm\Cpm.csproj">
       <Name>Cpm</Name>
       <Project>{a1376626-5207-41a9-a77b-11ddb9f534d1}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\Dreamcast\Dreamcast.csproj">
+      <Name>Dreamcast</Name>
+      <Project>{908b208a-becc-42ad-8253-a167ec40b20b}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

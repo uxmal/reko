@@ -32,7 +32,7 @@ namespace Reko.Arch.Xtensa
     {
         private void RewriteBreak()
         {
-            emitter.SideEffect(host.PseudoProcedure(
+            m.SideEffect(host.PseudoProcedure(
                 "__break",
                 VoidType.Instance,
                 RewriteOp(instr.Operands[0]),
@@ -45,19 +45,19 @@ namespace Reko.Arch.Xtensa
             {
                 Terminates = true,
             };
-            emitter.SideEffect(host.PseudoProcedure("__ill", c, VoidType.Instance));
+            m.SideEffect(host.PseudoProcedure("__ill", c, VoidType.Instance));
         }
 
         private void RewriteL32e()
         {
             var dst = RewriteOp(this.instr.Operands[0]);
             var offset = ((ImmediateOperand)dasm.Current.Operands[2]).Value;
-            emitter.Assign(
+            m.Assign(
                 dst,
                 host.PseudoProcedure(
                     "__l32e",
                     PrimitiveType.Word32,
-                    emitter.IAdd(
+                    m.IAdd(
                         RewriteOp(dasm.Current.Operands[1]),
                         offset)));
         }
@@ -66,11 +66,11 @@ namespace Reko.Arch.Xtensa
         {
             var src = RewriteOp(this.instr.Operands[0]);
             var offset = ((ImmediateOperand)dasm.Current.Operands[2]).Value;
-            emitter.SideEffect(
+            m.SideEffect(
                 host.PseudoProcedure(
                     "__s32e",
                     VoidType.Instance,
-                    emitter.IAdd(
+                    m.IAdd(
                         RewriteOp(dasm.Current.Operands[1]),
                         offset),
                     src));
@@ -78,14 +78,14 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteReserved()
         {
-            emitter.SideEffect(host.PseudoProcedure("__reserved", VoidType.Instance));
+            m.SideEffect(host.PseudoProcedure("__reserved", VoidType.Instance));
         }
 
         private void RewriteWsr()
         {
             var dst = RewriteOp(dasm.Current.Operands[1]);
             var src = RewriteOp(dasm.Current.Operands[0]);
-            emitter.Assign(dst, src);
+            m.Assign(dst, src);
         }
     }
 }

@@ -30,6 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Reko.CmdLine
@@ -41,6 +42,8 @@ namespace Reko.CmdLine
         private IDecompiler decompiler;
         private IConfigurationService config;
         private IDiagnosticsService diagnosticSvc;
+        private CmdLineListener listener;
+        private Timer timer;
 
         public static void Main(string[] args)
         {
@@ -56,15 +59,20 @@ namespace Reko.CmdLine
             services.AddService<DecompilerHost>(new CmdLineHost());
             var ldr = new Loader(services);
             var decompiler = new DecompilerDriver(ldr, services);
-            var driver = new CmdLineDriver(services, ldr, decompiler);
+            var driver = new CmdLineDriver(services, ldr, decompiler, listener);
             driver.Execute(args);
         }
 
-        public CmdLineDriver(IServiceProvider services, ILoader ldr, IDecompiler decompiler)
+        public CmdLineDriver(
+            IServiceProvider services,
+            ILoader ldr,
+            IDecompiler decompiler,
+            CmdLineListener listener)
         {
             this.services = services;
             this.ldr = ldr;
             this.decompiler = decompiler;
+            this.listener = listener;
             this.config = services.RequireService<IConfigurationService>();
             this.diagnosticSvc = services.RequireService<IDiagnosticsService>();
         }
@@ -80,6 +88,9 @@ namespace Reko.CmdLine
             {
                 ldr.DefaultToFormat = (string)defaultTo;
             }
+
+            StartTimer(pArgs);
+
             if (OverridesRequested(pArgs))
             {
                 DecompileRawImage(pArgs);
@@ -92,6 +103,21 @@ namespace Reko.CmdLine
             {
                 Usage(Console.Out);
             }
+        }
+
+        private void StartTimer(Dictionary<string, object> pArgs)
+        {
+            object oLimit;
+            if (pArgs.TryGetValue("time-limit", out oLimit))
+            {
+                int msecLimit = 1000 * (int)oLimit;
+                this.timer = new Timer(TimeLimitExpired, null, msecLimit, Timeout.Infinite);
+            }
+        }
+
+        private void TimeLimitExpired(object state)
+        {
+            this.listener.CancelDecompilation("User-specified time limit has expired.");
         }
 
         public bool OverridesRequested(Dictionary<string,object> pArgs)
@@ -122,11 +148,17 @@ namespace Reko.CmdLine
 
         private void Decompile(Dictionary<string, object> pArgs)
         {
+
             object loader;
             pArgs.TryGetValue("--loader", out loader);
             try
             {
                 decompiler.Load((string)pArgs["filename"], (string)loader);
+                object oHeur;
+                if (pArgs.TryGetValue("heuristics", out oHeur))
+                {
+                    decompiler.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
+                }
                 decompiler.ScanPrograms();
                 decompiler.AnalyzeDataFlow();
                 decompiler.ReconstructTypes();
@@ -274,14 +306,26 @@ namespace Reko.CmdLine
                 }
                 else if (args[i] == "--heuristic")
                 {
-                    if (!string.IsNullOrEmpty(args[i]))
+                    if (i < args.Length-1 && !string.IsNullOrEmpty(args[i+1]))
                     {
-                        parsedArgs["heuristics"] = args[i].Split(',');
+                        parsedArgs["heuristics"] = args[i+1].Split(',');
+                        ++i;
                     }
+                }
+                else if (args[i] == "--time-limit")
+                {
+                    int timeLimit;
+                    if (i >= args.Length - 1 || !int.TryParse(args[i+1], out timeLimit))
+                    {
+                        w.WriteLine("error: time-limit option expects a numerical argument.");
+                        return null;
+                    }
+                    parsedArgs["time-limit"] = timeLimit;
+                    ++i;
                 }
                 else if (arg.StartsWith("-"))
                 {
-                    w.WriteLine("error: uncrecognized option {0}", arg);
+                    w.WriteLine("error: unrecognized option {0}", arg);
                     return null;
                 }
                 else
@@ -309,9 +353,9 @@ namespace Reko.CmdLine
             w.WriteLine("Options:");
             w.WriteLine(" --version                Show version number and exit");
             w.WriteLine(" -h, --help               Show this message and exit");
-            w.WriteLine(" -l, --loader <ldr>       Use a custom loader where <ldr> is either the file name");
-            w.WriteLine("                          containing a loader script or the CLR type name of the");
-            w.WriteLine("                          loader.");
+            w.WriteLine(" -l, --loader <ldr>       Use a custom loader where <ldr> is either the file");
+            w.WriteLine("                          name containing a loader script or the CLR type name");
+            w.WriteLine("                          of the loader.");
             w.WriteLine(" --arch <architecture>    Use an architecture from the following:");
             DumpArchitectures(config, w, "    {0,-25} {1}");
             w.WriteLine(" --env <environment>      Use an operating environment from the following:");
@@ -326,6 +370,7 @@ namespace Reko.CmdLine
             w.WriteLine(" --heuristic <h1>[,<h2>...] Use one of the following heuristics to examine");
             w.WriteLine("                          the binary:");
             w.WriteLine("    shingle               Use shingle assembler to discard data ");
+            w.WriteLine(" --time-limit <s>         Limit execution time to s seconds");
             //           01234567890123456789012345678901234567890123456789012345678901234567890123456789
         }
 

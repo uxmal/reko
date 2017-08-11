@@ -207,7 +207,13 @@ namespace Reko.Typing
 			EnsureTypeVariable(c);
 		}
 
-		public override void VisitConditionOf(ConditionOf cof)
+        public override void VisitConditionalExpression(ConditionalExpression cond)
+        {
+            base.VisitConditionalExpression(cond);
+            EnsureTypeVariable(cond);
+        }
+
+        public override void VisitConditionOf(ConditionOf cof)
 		{
 			cof.Expression.Accept(this);
 			EnsureTypeVariable(cof);

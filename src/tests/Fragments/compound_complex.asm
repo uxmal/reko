@@ -28,4 +28,5 @@ noteq2:
 	xor ax,ax
 test2done:
 	mov [0x302],ax
+	ret
 	endp

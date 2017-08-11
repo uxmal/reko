@@ -1,1 +1,1 @@
-decompile PP.EXE
+decompile --heuristic shingle PP.EXE

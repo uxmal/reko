@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
@@ -35,11 +36,11 @@ namespace Reko.Scanning
     /// Builds a jump or call table by backtracking from the call site to find a comparison with a constant.
     /// This is (usually!) the upper bound of the size of the table.
     /// </summary>
-    public class VectorBuilder : IBackWalkHost
+    public class VectorBuilder : IBackWalkHost<Block,Instruction>
     {
         private IServiceProvider services;
         private Program program;
-        private Backwalker bw;
+        private Backwalker<Block,Instruction> bw;
         private DirectedGraphImpl<object> jumpGraph;        //$TODO:
 
         public VectorBuilder(IServiceProvider services, Program program, DirectedGraphImpl<object> jumpGraph)
@@ -51,9 +52,25 @@ namespace Reko.Scanning
 
         public int TableByteSize { get; private set; }
 
+        public Tuple<Expression,Expression> AsAssignment(Instruction instr)
+        {
+            var ass = instr as Assignment;
+            if (ass == null)
+                return null;
+            return Tuple.Create((Expression)ass.Dst, ass.Src);
+        }
+
+        public Expression AsBranch(Instruction instr)
+        {
+            var bra = instr as Branch;
+            if (bra == null)
+                return null;
+            return bra.Condition;
+        }
+
         public List<Address> Build(Address addrTable, Address addrFrom, ProcessorState state)
         {
-            bw = new Backwalker(this, null, null);
+            bw = new Backwalker<Block,Instruction>(this, null, null);
             if (bw == null)
                 return null;
             List<BackwalkOperation> operations = bw.BackWalk(null);
@@ -62,7 +79,7 @@ namespace Reko.Scanning
             return BuildAux(bw, addrFrom, state);
         }
 
-        public List<Address> BuildAux(Backwalker bw, Address addrFrom, ProcessorState state)
+        public List<Address> BuildAux(Backwalker<Block, Instruction> bw, Address addrFrom, ProcessorState state)
         {
             int limit = 0;
             int[] permutation = null;
@@ -214,9 +231,22 @@ namespace Reko.Scanning
             return program.Architecture.MakeSegmentedAddress(seg, off);
         }
 
+        public bool IsFallthrough(Instruction instr, Block block)
+        {
+            var bra = instr as Branch;
+            if (bra == null)
+                return false;
+            return bra.Target != block;
+        }
+
         public RegisterStorage IndexRegister
         {
             get { return bw != null ? bw.Index: RegisterStorage.None; }
+        }
+
+        public bool IsStackRegister(Storage stg)
+        {
+            return stg == program.Architecture.StackRegister;
         }
 
         private List<Address> PostError(string err, Address addrInstr, Address addrTable)
@@ -228,6 +258,11 @@ namespace Reko.Scanning
         public bool IsValidAddress(Address addr)
         {
             return program.SegmentMap.IsValidAddress(addr);
+        }
+
+        public IEnumerable<Instruction> GetReversedBlockInstructions(Block block)
+        {
+            return block.Statements.Select(s => s.Instruction).Reverse();
         }
     }
 }

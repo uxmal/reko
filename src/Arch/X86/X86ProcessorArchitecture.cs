@@ -166,7 +166,7 @@ namespace Reko.Arch.X86
 			return new X86State(this);
 		}
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }
@@ -176,7 +176,7 @@ namespace Reko.Arch.X86
             return mode.CreateInstructionScanner(map, rdr, knownAddresses, flags);
         }
 
-        public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
         {
             return mode.CreateStackAccess(frame, offset, dataType);
         }
@@ -222,7 +222,8 @@ namespace Reko.Arch.X86
 				case 'Z': grf |= FlagM.ZF; break;
 				case 'D': grf |= FlagM.DF; break;
 				case 'O': grf |= FlagM.OF; break;
-				default: return null;
+				case 'P': grf |= FlagM.PF; break;
+                default: return null;
 				}
 			}
 			return GetFlagGroup((uint) grf);

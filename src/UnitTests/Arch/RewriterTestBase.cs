@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch
 
         protected virtual IRewriterHost CreateHost()
         {
-            return null;
+            return new RewriterHost(this.Architecture);
         }
     }
 }

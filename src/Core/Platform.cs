@@ -41,6 +41,7 @@ namespace Reko.Core
     /// </summary>
     public interface IPlatform
     {
+        string Name { get; }
         IProcessorArchitecture Architecture { get; }
         string DefaultCallingConvention { get; }
         Encoding DefaultTextEncoding { get; set; }
@@ -53,7 +54,6 @@ namespace Reko.Core
         /// available in the MemoryMap.
         /// </summary>
         MemoryMap_v1 MemoryMap { get; set; }
-        string Name { get; }
         string PlatformIdentifier { get; }
         PrimitiveType PointerType { get; }
 
@@ -64,6 +64,13 @@ namespace Reko.Core
         IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         TypeLibrary CreateMetadata();
+
+        /// <summary>
+        /// Creates an empty SegmentMap based on the absolute memory map. It is 
+        /// the caller's responsibility to fill in the MemoryArea properties
+        /// of each resulting ImageSegment.
+        /// </summary>
+        /// <returns></returns>
         SegmentMap CreateAbsoluteMemoryMap();
 
         /// <summary>
@@ -102,7 +109,7 @@ namespace Reko.Core
         /// <returns></returns>
         string GetPrimitiveTypeName(PrimitiveType t, string language);
 
-        ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host);
+        ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> instrs, IRewriterHost host);
 
         /// <summary>
         /// Given an executable entry point, find the location of the "main" program,
@@ -116,6 +123,8 @@ namespace Reko.Core
 
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
+        DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr);
+
         string FormatProcedureName(Program program, Procedure proc);
 
         /// <summary>
@@ -135,8 +144,8 @@ namespace Reko.Core
         Address MakeAddressFromLinear(ulong uAddr);
         bool TryParseAddress(string sAddress, out Address addr);
         Dictionary<string, object> SaveUserOptions();
-        ExternalProcedure SignatureFromName(string importName);
-        Tuple<string, DataType, SerializedType> DataTypeFromImportName(string importName);
+        ProcedureBase_v1 SignatureFromName(string importName);
+        Tuple<string, SerializedType, SerializedType> DataTypeFromImportName(string importName);
     }
 
     /// <summary>
@@ -331,6 +340,11 @@ namespace Reko.Core
 
         public abstract SystemService FindService(int vector, ProcessorState state);
 
+        public virtual DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr)
+        {
+            return null;
+        }
+
         public virtual SystemService FindService(RtlInstruction rtl, ProcessorState state)
         {
             return null;
@@ -348,7 +362,10 @@ namespace Reko.Core
         /// </summary>
         /// <param name="imageReader"></param>
         /// <returns></returns>
-        public abstract ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host);
+        public virtual ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> instrs, IRewriterHost host)
+        {
+            return null;
+        }
 
         public virtual Address MakeAddressFromConstant(Constant c)
         {
@@ -399,12 +416,12 @@ namespace Reko.Core
         /// </summary>
         /// <param name="fnName"></param>
         /// <returns>null if there is no way to guess a ProcedureSignature from the name.</returns>
-        public virtual ExternalProcedure SignatureFromName(string fnName)
+        public virtual ProcedureBase_v1 SignatureFromName(string fnName)
         {
             return null;
         }
 
-        public virtual Tuple<string, DataType, SerializedType> DataTypeFromImportName(string importName)
+        public virtual Tuple<string, SerializedType, SerializedType> DataTypeFromImportName(string importName)
         {
             return null;
         }
@@ -510,11 +527,6 @@ namespace Reko.Core
             case CBasicType.Int64: return 8;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
-        }
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            // No trampolines are supported.
-            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

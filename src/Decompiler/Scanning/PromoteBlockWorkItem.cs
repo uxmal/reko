@@ -128,7 +128,7 @@ namespace Reko.Scanning
                 return Program.Platform.MakeAddressFromLinear(0);
             return inboundBlock.Address != null
                 ? inboundBlock.Address + (inboundBlock.Statements.Last.LinearAddress - inboundBlock.Statements[0].LinearAddress)
-                : Program.Platform.MakeAddressFromLinear(0);
+                : Program.Platform.MakeAddressFromLinear(inboundBlock.Statements.Last.LinearAddress);
         }
 
         public void FixOutboundEdges(Block block)

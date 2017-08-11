@@ -95,7 +95,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             decSvc.Decompiler = new DecompilerDriver(ldr, sc);
             decSvc.Decompiler.Load("test.exe");
             this.program = this.decSvc.Decompiler.Project.Programs.First();
-            decSvc.Decompiler.ScanPrograms();
             sc.AddService(typeof(IDecompilerService), decSvc);
 
             sc.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
@@ -104,6 +103,11 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         [TearDown]
         public void TearDown()
         {
+        }
+
+        private void Given_Interactor()
+        {
+            interactor = new AnalyzedPageInteractorImpl(sc);
         }
 
         private T AddService<T>() where T : class
@@ -129,10 +133,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
-        private void Given_Interactor()
-        {
-            interactor = new AnalyzedPageInteractorImpl(sc);
-        }
 
         [Test]
         public void Anpi_SelectProcedure()

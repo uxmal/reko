@@ -30,9 +30,9 @@ namespace Reko.UnitTests.Typing
 		protected override void BuildBody()
 		{
 			Identifier ptr = Local32("ptr");
-			Declare(ptr, Int32(0x10000004));
+			Declare(ptr, Word32(0x10000004));
 			Store(ptr, Constant.Real32(0.75F));
-			Store(Int32(0x10000000), Constant.Real32(0.5F));
+			Store(Word32(0x10000000), Constant.Real32(0.5F));
 		}
 	}
 }

@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Mocks
 
 			Assign(r0, IAdd(r0, r1));
 			Label("skip");
-			Store(Int32(0x10003000), r0);
+			Store(Word32(0x10003000), r0);
 			Return();
 		}
 	}

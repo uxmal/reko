@@ -28,7 +28,7 @@ namespace Reko.Arch.Pdp11
 {
     public partial class Pdp11Rewriter
     {
-        private void RewriteStcdi(Pdp11Instruction instr)
+        private void RewriteStcdi()
         {
             var src = m.Cast(PrimitiveType.Int32, RewriteSrc(instr.op1));
             var dst = RewriteDst(instr.op2, src, s => s);

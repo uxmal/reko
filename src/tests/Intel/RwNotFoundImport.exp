@@ -17,10 +17,8 @@ l10000000:
 	rLoc1 = Mem0[edi + 0x00000004:real64]
 	rLoc2 = Mem0[edi + 0x0000000C:real64]
 	call not_found_import (retsize: 4; FPU: 2;)
-	esp = esp + 0xFFFFFFFC
 	Mem0[edi + 0x00000014:word32] = eax
 	call not_found_import (retsize: 4; FPU: 2;)
-	esp = esp + 0xFFFFFFFC
 	Mem0[edi + 0x0000001C:word32] = eax
 	return
 	// succ:  fn10000000_exit

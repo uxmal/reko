@@ -1,1 +1,1 @@
-decompile.exe varargs_test.exe
+decompile.exe --heuristic shingle  varargs_test.exe

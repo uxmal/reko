@@ -25,6 +25,16 @@ public:
     virtual double modify_double(int,double) = 0;
 };
 
+struct nested_structs_type
+{
+    int a;
+    struct {
+        int b;
+        int c;
+    } str;
+    int d;
+};
+
 static cdecl_class_ptr gbl_c;
 static thiscall_class *gbl_thiscall;
 
@@ -124,4 +134,17 @@ extern "C" __declspec(dllexport) void loop_test11(double d)
             nested_if_blocks_test8(d);
         i--;
     }
+}
+
+extern "C" __declspec(dllexport) void nested_structs_test12(nested_structs_type *str)
+{
+    str->a = 1;
+    str->str.b = 2;
+    str->str.c = 3;
+    str->d = 4;
+}
+
+extern "C" __declspec(dllexport) void nested_structs_test13(nested_structs_type *str)
+{
+    nested_structs_test12(str);
 }

@@ -167,7 +167,7 @@ namespace Reko.UnitTests.Core
             dw.Accept(cf);
             var sExp =
                 "\tdo" + nl +
-                "\t\tfoo = 0x00000003;" + nl +
+                "\t\tfoo = 3;" + nl +
                 "\twhile (bar < 0x00000000);" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
@@ -185,8 +185,8 @@ namespace Reko.UnitTests.Core
             var sExp =
                 "\tdo" + nl +
                 "\t{" + nl +
-                    "\t\tfoo = 0x00000003;" + nl + 
-                    "\t\tfoo = 0x00000004;" + nl + 
+                    "\t\tfoo = 3;" + nl + 
+                    "\t\tfoo = 4;" + nl + 
                 "\t} while (bar < 0x00000000);" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }

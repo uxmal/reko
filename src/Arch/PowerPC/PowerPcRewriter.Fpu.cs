@@ -34,7 +34,7 @@ namespace Reko.Arch.PowerPC
             if (!instr.setsCR0)
                 return;
             var cr1 = frame.EnsureFlagGroup(arch.cr, 0x2, "cr1", PrimitiveType.Byte);
-            emitter.Assign(cr1, emitter.Cond(e));
+            m.Assign(cr1, m.Cond(e));
         }
 
         public void RewriteFadd()
@@ -42,7 +42,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.FAdd(opL, opR));
+            m.Assign(opD, m.FAdd(opL, opR));
             MaybeEmitCr1(opD);
         }
 
@@ -50,7 +50,7 @@ namespace Reko.Arch.PowerPC
         {
             var dst = RewriteOperand(instr.op1);
             var src = RewriteOperand(instr.op2);
-            emitter.Assign(dst, emitter.Cast(PrimitiveType.Real64, src));
+            m.Assign(dst, m.Cast(PrimitiveType.Real64, src));
         }
 
         public void RewriteFcmpu()
@@ -58,14 +58,14 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.Cond(emitter.FSub(opL, opR)));
+            m.Assign(opD, m.Cond(m.FSub(opL, opR)));
         }
 
         private void RewriteFctiwz()
         {
             var dst = RewriteOperand(instr.op1);
             var src = RewriteOperand(instr.op2);
-            emitter.Assign(dst, emitter.Cast(PrimitiveType.Int32, src));
+            m.Assign(dst, m.Cast(PrimitiveType.Int32, src));
         }
 
         public void RewriteFdiv()
@@ -73,7 +73,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.FDiv(opL, opR));
+            m.Assign(opD, m.FDiv(opL, opR));
             MaybeEmitCr1(opD);
         }
 
@@ -81,7 +81,7 @@ namespace Reko.Arch.PowerPC
         {
             var opS = RewriteOperand(instr.op2);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, opS);
+            m.Assign(opD, opS);
             MaybeEmitCr1(opD);
         }
 
@@ -91,7 +91,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.FAdd(opS, emitter.FMul(opL, opR)));
+            m.Assign(opD, m.FAdd(opS, m.FMul(opL, opR)));
             MaybeEmitCr1(opD);
         }
 
@@ -101,7 +101,7 @@ namespace Reko.Arch.PowerPC
             var opb = RewriteOperand(instr.op3);
             var opa = RewriteOperand(instr.op2);
             var opt = RewriteOperand(instr.op1);
-            emitter.Assign(opt, emitter.FSub(emitter.FMul(opa, opb), opc));
+            m.Assign(opt, m.FSub(m.FMul(opa, opb), opc));
             MaybeEmitCr1(opt);
         }
 
@@ -110,7 +110,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.FMul(opL, opR));
+            m.Assign(opD, m.FMul(opL, opR));
             MaybeEmitCr1(opD);
         }
 
@@ -118,7 +118,7 @@ namespace Reko.Arch.PowerPC
         {
             var opS = RewriteOperand(instr.op2);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.Neg(opS));
+            m.Assign(opD, m.Neg(opS));
             MaybeEmitCr1(opD);
         }
 
@@ -126,7 +126,7 @@ namespace Reko.Arch.PowerPC
         {
             var opS = RewriteOperand(instr.op2);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.Cast(PrimitiveType.Real32, opS));
+            m.Assign(opD, m.Cast(PrimitiveType.Real32, opS));
             MaybeEmitCr1(opD);
         }
 
@@ -135,7 +135,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.FSub(opL, opR));
+            m.Assign(opD, m.FSub(opL, opR));
             
             MaybeEmitCr1(opD);
         }
@@ -143,7 +143,7 @@ namespace Reko.Arch.PowerPC
         public void RewriteMffs()
         {
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, frame.EnsureRegister(arch.fpscr));
+            m.Assign(opD, frame.EnsureRegister(arch.fpscr));
             MaybeEmitCr1(opD);
         }
 
@@ -151,7 +151,7 @@ namespace Reko.Arch.PowerPC
         {
             var op1 = RewriteOperand(instr.op1);
             var op2 = RewriteOperand(instr.op2);
-            emitter.SideEffect(
+            m.SideEffect(
                 host.PseudoProcedure("__mtfsf",
                     VoidType.Instance,
                     op2,

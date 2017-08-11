@@ -53,6 +53,7 @@ namespace Reko.Scanning
         }
 
         public Statement Statement { get; set; }
+        public Statement StatementNew { get; set; }
         public Identifier Identifier { get; set; }
 
         public Block Execute()
@@ -76,10 +77,13 @@ namespace Reko.Scanning
             foreach (var stm in blockOrig.Statements)
             {
                 Statement = stm;
-                blockNew.Statements.Add(new Statement(
+                StatementNew = new Statement(
                     stm.LinearAddress,
-                    stm.Instruction.Accept(this),
-                    blockNew));
+                    null,
+                    blockNew);
+                StatementNew.Instruction = stm.Instruction.Accept(this);
+                
+                blockNew.Statements.Add(StatementNew);
             }
             procCalling.AddBlock(blockNew);
             if (succ == null)
@@ -111,7 +115,7 @@ namespace Reko.Scanning
                 var calledProc = pc.Procedure as Procedure;
                 if (calledProc != null)
                 {
-                    callGraph.AddEdge(Statement, calledProc);
+                    callGraph.AddEdge(StatementNew, calledProc);
                 }
             }
             var ciNew = new CallInstruction(ci.Callee, new CallSite(ci.CallSite.SizeOfReturnAddressOnStack, ci.CallSite.FpuStackDepthBefore));
@@ -302,7 +306,9 @@ namespace Reko.Scanning
 
         public Expression VisitTestCondition(TestCondition tc)
         {
-            throw new NotImplementedException();
+            return new TestCondition(
+                tc.ConditionCode,
+                tc.Expression.Accept(this));
         }
 
         public Expression VisitUnaryExpression(UnaryExpression unary)

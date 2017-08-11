@@ -49,10 +49,10 @@ namespace Reko.UnitTests.Scanning
         private IProcessorArchitecture arch;
         private ProcessorState state;
         private ExpressionSimplifier expSimp;
-        private IBackWalkHost host;
+        private IBackWalkHost<Block,Instruction> host;
         private FakeDecompilerEventListener listener;
 
-        private class BackwalkerHost : IBackWalkHost
+        private class BackwalkerHost : IBackWalkHost<Block,Instruction>
         {
             private IProcessorArchitecture arch;
 
@@ -61,6 +61,30 @@ namespace Reko.UnitTests.Scanning
             public BackwalkerHost(IProcessorArchitecture arch)
             {
                 this.arch = arch;
+            }
+
+            public Tuple<Expression, Expression> AsAssignment(Instruction instr)
+            {
+                var ass = instr as Assignment;
+                if (ass == null)
+                    return null;
+                return Tuple.Create((Expression)ass.Dst, ass.Src);
+            }
+
+            public Expression AsBranch(Instruction instr)
+            {
+                var bra = instr as Branch;
+                if (bra == null)
+                    return null;
+                return bra.Condition;
+            }
+
+            public bool IsFallthrough(Instruction instr, Block block)
+            {
+                var bra = instr as Branch;
+                if (bra == null)
+                    return false;
+                return bra.Target != block;
             }
 
             public AddressRange GetSinglePredecessorAddressRange(Address block)
@@ -83,6 +107,11 @@ namespace Reko.UnitTests.Scanning
                 return arch.GetSubregister(reg, off, width);
             }
 
+            public bool IsStackRegister(Storage stg)
+            {
+                return stg == arch.StackRegister;
+            }
+
             public bool IsValidAddress(Address addr)
             {
                 return true;
@@ -98,6 +127,10 @@ namespace Reko.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
+            public IEnumerable<Instruction> GetReversedBlockInstructions(Block block)
+            {
+                return block.Statements.Select(s => s.Instruction).Reverse();
+            }
             #endregion
         }
 
@@ -174,11 +207,79 @@ namespace Reko.UnitTests.Scanning
             m.Assign(a5, m.LoadDw(m.IAdd(Address.Ptr32(0x0000C046), d0)));
             var xfer = new RtlCall(a5, 4, RtlClass.Transfer);
 
-            var bw = new Backwalker(host, xfer, expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
             Assert.IsTrue(bw.CanBackwalk());
             Assert.AreEqual("a5", bw.Index.Name);
             bw.BackWalk(m.Block);
             Assert.AreEqual("v40", bw.IndexExpression.ToString());
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void BwLoadDirect()
+        {
+            var r1 = m.Reg32("r1", 1);
+            m.Assign(r1, m.LoadDw(Constant.Word32(0x00123400)));
+            var xfer = new RtlGoto(m.LoadDw(m.IAdd(Constant.Word32(0x00113300), m.IMul(r1, 8))), RtlClass.Transfer);
+
+            var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
+            Assert.IsTrue(bw.CanBackwalk());
+            var ops = bw.BackWalk(m.Block);
+            Assert.IsNull(ops, "Should have reported missing guard.");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void BwZeroExtend()
+        {
+            var rax = m.Reg64("rax", 0);
+            var eax = m.Reg32("eax", 0);
+            var al = m.Reg8("al", 0);
+            var ecx = m.Reg32("ecx", 1);
+            var CZ = m.Flags("CZ");
+
+            m.Assign(eax, m.LoadB(rax));
+            m.Assign(CZ, m.Cond(m.ISub(al, 0x78)));
+            m.BranchIf(m.Test(ConditionCode.UGT, CZ), "ldefault");
+            m.Assign(ecx, m.Cast(PrimitiveType.Word32, al));
+            var xfer = new RtlGoto(m.LoadDw(m.IAdd(Constant.Word32(0x00411F40), m.IMul(ecx, 8))), RtlClass.Transfer);
+
+            var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
+            Assert.IsTrue(bw.CanBackwalk());
+            var ops = bw.BackWalk(m.Block);
+            Assert.AreEqual(3, ops.Count);
+            Assert.AreEqual("cmp 120", ops[0].ToString());
+            Assert.AreEqual("branch UGT", ops[1].ToString());
+            Assert.AreEqual("* 8", ops[2].ToString());
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void BwInvertedCondition()
+        {
+            var ebx = m.Reg32("ebx", 3);
+            var eax = m.Reg32("eax", 0);
+
+            var CZ = m.Flags("CZ");
+            m.Assign(CZ, m.Cond(m.ISub(ebx, 0x30)));
+            m.BranchIf(m.Test(ConditionCode.ULE, CZ), "do_switch");
+            m.Goto("default_case");
+
+            m.Label("do_switch");
+            m.Assign(eax, 0);
+            var block = m.CurrentBlock;
+            var xfer = new RtlGoto(m.LoadDw(m.IAdd(Constant.Word32(0x00123400), m.IMul(ebx, 4))), RtlClass.Transfer);
+
+            m.Label("default_case");
+            m.Return();
+
+            var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
+            Assert.IsTrue(bw.CanBackwalk());
+            var ops = bw.BackWalk(block);
+            Assert.AreEqual(3, ops.Count);
+            Assert.AreEqual("cmp 48", ops[0].ToString());
+            Assert.AreEqual("branch UGT", ops[1].ToString());
+            Assert.AreEqual("* 4", ops[2].ToString());
         }
     }
 }

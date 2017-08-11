@@ -55,5 +55,14 @@ namespace Reko.Arch.RiscV
             }
             m.Assign(dst, m.Load(dt, ea));
         }
+
+        private void RewriteFmadd(PrimitiveType dt, Func<Expression,Expression,Expression> addsub)
+        {
+            var dst = RewriteOp(instr.op1);
+            var factor1 = RewriteOp(instr.op2);
+            var factor2 = RewriteOp(instr.op3);
+            var summand = RewriteOp(instr.op4);
+            m.Assign(dst, addsub(m.FMul(factor1, factor2), summand));
+        }
     }
 }

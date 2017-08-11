@@ -55,7 +55,7 @@ namespace Reko.Core
         /// machine-specific instructions and rewriting them into one or more machine-independent RtlInstructions codes. These are then 
         /// returned as clusters of RtlInstructions.
         /// </summary>
-        IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
+        IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
 
         /// <summary>
         /// Given a set of addresses, returns a set of address where something
@@ -145,7 +145,7 @@ namespace Reko.Core
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
 		FlagGroupStorage GetFlagGroup(string name);
-        Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
+        Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType);
         Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
@@ -157,7 +157,7 @@ namespace Reko.Core
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
 		PrimitiveType WordWidth { get; }					// Processor's native word size
         int InstructionBitSize { get; }                     // Instruction "granularity" or alignment.
-        RegisterStorage StackRegister { get; }              // Stack pointer used by this machine.
+        RegisterStorage StackRegister { get; set;  }        // Stack pointer used by this machine.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace Reko.Core
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
         public int InstructionBitSize { get; protected set; }
-        public RegisterStorage StackRegister { get; protected set; }
+        public RegisterStorage StackRegister { get; set; }
         public uint CarryFlagMask { get; protected set; }
 
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
@@ -213,8 +213,8 @@ namespace Reko.Core
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
-        public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
-        public abstract Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
+        public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
+        public abstract Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType);
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
         public abstract RegisterStorage GetRegister(int i);

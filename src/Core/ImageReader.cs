@@ -154,6 +154,13 @@ namespace Reko.Core
             return dst;
         }
 
+        public int ReadBytes(byte[] dst, int offset, uint length)
+        {
+            Array.Copy(bytes, (int)off, dst, offset, length);
+            Offset += length;
+            return (int)length;
+        }
+
         /// <summary>
         /// Reads a chunk of bytes and interprets it in Little-Endian mode.
         /// </summary>

@@ -27,11 +27,14 @@ namespace Reko.Core
 {
     public class RelocationResults
     {
-        // Collection into which any found entry points found should be added.
+        // Known locations in the binary, along with some
+        // type information and a name.
+        public SortedList<Address, ImageSymbol> Symbols;
+
+        // Known callable entry points. This is a subset
+        // of the list of symbols above.
         public readonly List<ImageSymbol> EntryPoints;
 
-        // Symbols whose addresses are known.
-        public SortedList<Address, ImageSymbol> Symbols;
 
         public RelocationResults(
             List<ImageSymbol> entryPoints, 

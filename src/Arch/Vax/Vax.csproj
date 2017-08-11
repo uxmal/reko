@@ -60,6 +60,7 @@
     <Compile Include="VaxDisassembler.TwoByte.cs" />
     <Compile Include="VaxDisassembler.OneByte.cs" />
     <Compile Include="VaxInstruction.cs" />
+    <Compile Include="VaxInstructionComparer.cs" />
     <Compile Include="VaxProcessorState.cs" />
     <Compile Include="VaxRewriter.Alu.cs" />
     <Compile Include="VaxRewriter.Control.cs" />

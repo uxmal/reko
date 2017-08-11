@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using Reko.Arch.Tlcs;
 using Reko.Core;
 using Reko.Core.CLanguage;
+using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 
@@ -67,7 +68,7 @@ namespace Reko.Environments.NeoGeo
             throw new NotImplementedException();
         }
 
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             return null;
         }

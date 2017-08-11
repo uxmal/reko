@@ -75,6 +75,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BorlandMangledNamedParser.cs" />
     <Compile Include="MipsProcedureSerializer.cs" />
     <Compile Include="ModuleDefinitionLoader.cs" />
     <Compile Include="MsAPrintfFormatParser.cs" />

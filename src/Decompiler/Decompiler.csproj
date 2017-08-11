@@ -153,6 +153,7 @@
     <Compile Include="Analysis\ProcedureGraph.cs" />
     <Compile Include="Analysis\RegisterPreservation.cs" />
     <Compile Include="Analysis\TrashedRegisterFinder2.cs" />
+    <Compile Include="Analysis\UnalignedMemoryAccessFuser.cs" />
     <Compile Include="Analysis\UsedIdentifierFinder.cs" />
     <Compile Include="Analysis\IdentifierLiveness.cs" />
     <Compile Include="Analysis\Interference.cs">
@@ -223,7 +224,7 @@
     <Compile Include="Analysis\WebBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Evaluation\CastCastRule.cs" />
@@ -276,13 +277,12 @@
     <Compile Include="Scanning\Backwalker.cs" />
     <Compile Include="Scanning\BlockCloner.cs" />
     <Compile Include="Scanning\CommonPatternFinder.cs" />
-    <Compile Include="Scanning\Dfa\DfaBuilder.cs" />
-    <Compile Include="Scanning\Dfa\PatternParser.cs" />
-    <Compile Include="Scanning\Dfa\State.cs" />
-    <Compile Include="Scanning\Dfa\TreeNode.cs" />
-    <Compile Include="Scanning\Dfa\Automaton.cs" />
+    <Compile Include="Scanning\DataScanner.cs" />
     <Compile Include="Scanning\GlobalDataWorkItem.cs" />
-    <Compile Include="Scanning\HeuristicBlock.cs" />
+    <Compile Include="Scanning\IcfgBuilder.cs" />
+    <Compile Include="Scanning\IScanner.cs" />
+    <Compile Include="Scanning\IScannerQueue.cs" />
+    <Compile Include="Scanning\RtlBlock.cs" />
     <Compile Include="Scanning\HeuristicDisassembler.cs" />
     <Compile Include="Scanning\HeuristicProcedure.cs" />
     <Compile Include="Scanning\HeuristicProcedureScanner.cs" />
@@ -291,6 +291,11 @@
     <Compile Include="Scanning\ImageSymbolWorkItem.cs" />
     <Compile Include="Scanning\PromoteBlockWorkItem.cs" />
     <Compile Include="Scanning\RobustRewriter.cs" />
+    <Compile Include="Scanning\ProcedureDetector.cs" />
+    <Compile Include="Scanning\RtlProcedure.cs" />
+    <Compile Include="Scanning\ScannerBase.cs" />
+    <Compile Include="Scanning\ScannerInLinq.cs" />
+    <Compile Include="Scanning\ScanResults.cs" />
     <Compile Include="Scanning\ShingledScanner.cs" />
     <Compile Include="Scanning\StringFinder.cs" />
     <Compile Include="Scanning\StringSearch.cs" />
@@ -320,6 +325,8 @@
     <Compile Include="Scanning\VectorBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Scanning\Vsa\AbstractLocation.cs" />
+    <Compile Include="Scanning\Vsa\ReducedIntervalCongruence.cs" />
     <Compile Include="Scanning\WorkItem.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -418,6 +425,9 @@
     </Content>
     <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_IA64.xml" />
     <Content Include="Loading\Signatures\PLATFORM_INDEPENDENT.xml" />
+    <Content Include="Scanning\scanner_in_sql.sql">
+      <SubType>Component</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

@@ -14,7 +14,20 @@
     </signature>
   </service> 
   
-  <service name="TTYOUT "><syscallinfo><vector>88E1</vector></syscallinfo></service>  <!-- Write one character to TTY, Cy=1 if no space in output buffer -->
+  <service name="TTYOUT">  <!-- Write one character to TTY, Cy=1 if no space in output buffer -->
+    <syscallinfo><vector>88E1</vector></syscallinfo>
+    <signature>
+            <return>
+        <prim domain="Boolean" size="1" />
+        <flag>C</flag>
+      </return>
+      <arg name="ch">
+        <prim domain="Character" size="1"/>
+        <reg>r0</reg>
+      </arg>
+    </signature>
+  </service>
+  
   <service name="DSTAT  "><syscallinfo><vector>88E2</vector></syscallinfo></service>  <!-- Read status of device -->
   <service name="FETCH  "><syscallinfo><vector>88E3</vector></syscallinfo></service>  <!-- Load device handler -->
   <service name="CSIGEN "><syscallinfo><vector>88E4</vector></syscallinfo></service>  <!-- Call Command String Interpreter in general mode -->

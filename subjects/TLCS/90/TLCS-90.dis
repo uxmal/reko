@@ -1,4 +1,4 @@
-void fn0000(word16 a, word16 wArg00)
+void fn0000(byte a, word16 wArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a
@@ -18,7 +18,7 @@ l0000:
 // LocalsOut: fp(16)
 
 l0100:
-	Mem4[null:byte] = a
+	Mem3[null:byte] = a
 	return
 // DataOut:
 // DataOut (flags): 
@@ -27,7 +27,7 @@ l0100:
 fn0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 bc:<invalid>
+// SymbolicIn: sp:fp + 2 bc:<invalid>
 
 
 

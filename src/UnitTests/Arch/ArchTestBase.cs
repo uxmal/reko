@@ -40,12 +40,12 @@ namespace Reko.UnitTests.Arch
 
         public abstract Address LoadAddress { get; }
 
-        protected virtual IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected virtual IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             yield break;
         }
 
-        private class RewriterHost : IRewriterHost
+        public class RewriterHost : IRewriterHost
         {
             private IProcessorArchitecture arch;
 
@@ -107,9 +107,16 @@ namespace Reko.UnitTests.Arch
                 throw new NotImplementedException();
             }
 
-            public void Error(Address address, string message)
+            public void Error(Address address, string message, params object[] args)
             {
-                throw new Exception(string.Format("{0}: {1}", address, message));
+                throw new Exception(string.Format("{0}: {1}", address, 
+                    string.Format(message, args)));
+            }
+
+            public void Warn(Address address, string format, params object[] args)
+            {
+                throw new Exception(string.Format("{0}: {1}", address,
+                    string.Format(format, args)));
             }
         }
 
@@ -128,7 +135,7 @@ namespace Reko.UnitTests.Arch
             {
                 Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(rewriter.Current.Class),  rewriter.Current));
                 ++i;
-                var ee = rewriter.Current.Instructions.GetEnumerator();
+                var ee = rewriter.Current.Instructions.OfType<RtlInstruction>().GetEnumerator();
                 while (i < expected.Length && ee.MoveNext())
                 {
                     Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(ee.Current.Class), ee.Current));

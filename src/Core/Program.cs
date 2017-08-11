@@ -46,7 +46,6 @@ namespace Reko.Core
     public class Program
     {
         private Identifier globals;
-        private Dictionary<string, PseudoProcedure> pseudoProcs;
 
         public Program()
         {
@@ -57,7 +56,7 @@ namespace Reko.Core
             this.EnvironmentMetadata = new TypeLibrary();
             this.ImportReferences = new Dictionary<Address, ImportReference>(new Address.Comparer());		// uint (offset) -> string
             this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>(new Address.Comparer());
-            this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
+            this.PseudoProcedures = new Dictionary<string, PseudoProcedure>();
             this.InductionVariables = new Dictionary<Identifier, LinearInductionVariable>();
             this.TypeFactory = new TypeFactory();
             this.TypeStore = new TypeStore();
@@ -264,10 +263,7 @@ namespace Reko.Core
         /// <summary>
         /// The program's pseudo procedures, indexed by name.
         /// </summary>
-        public Dictionary<string, PseudoProcedure> PseudoProcedures
-        {
-            get { return pseudoProcs; }
-        }
+        public Dictionary<string, PseudoProcedure> PseudoProcedures { get; private set; }
 
         /// <summary>
         /// List of resources stored in the binary. Some executable file formats support the
@@ -449,10 +445,10 @@ namespace Reko.Core
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
         {
             PseudoProcedure p;
-            if (!pseudoProcs.TryGetValue(name, out p))
+            if (!PseudoProcedures.TryGetValue(name, out p))
             {
                 p = new PseudoProcedure(name, returnType, arity);
-                pseudoProcs[name] = p;
+                PseudoProcedures[name] = p;
             }
             return p;
         }

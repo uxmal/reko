@@ -36,6 +36,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Collections.Generic;
 using Reko.Core.Services;
+using Reko.Core.Lib;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -47,9 +48,9 @@ namespace Reko.UnitTests.Scanning
         private ProcessorState state;
         private ExpressionSimplifier expSimp;
         private Identifier SCZO;
-        private IBackWalkHost host;
+        private IBackWalkHost<Block,Instruction> host;
 
-        private class BackwalkerHost : IBackWalkHost
+        private class BackwalkerHost : IBackWalkHost<Block,Instruction>
         {
             private IProcessorArchitecture arch;
 
@@ -58,6 +59,30 @@ namespace Reko.UnitTests.Scanning
             public BackwalkerHost(IProcessorArchitecture arch)
             {
                 this.arch = arch;
+            }
+
+            public Tuple<Expression, Expression> AsAssignment(Instruction instr)
+            {
+                var ass = instr as Assignment;
+                if (ass == null)
+                    return null;
+                return Tuple.Create((Expression)ass.Dst, ass.Src);
+            }
+
+            public Expression AsBranch(Instruction instr)
+            {
+                var bra = instr as Branch;
+                if (bra == null)
+                    return null;
+                return bra.Condition;
+            }
+
+            public bool IsFallthrough(Instruction instr, Block block)
+            {
+                var bra = instr as Branch;
+                if (bra == null)
+                    return false;
+                return bra.Target != block;
             }
 
             public AddressRange GetSinglePredecessorAddressRange(Address block)
@@ -80,6 +105,11 @@ namespace Reko.UnitTests.Scanning
                 return arch.GetSubregister(reg, off, width);
             }
 
+            public bool IsStackRegister(Storage stg)
+            {
+                return stg == arch.StackRegister;
+            }
+
             public bool IsValidAddress(Address addr)
             {
                 return true;
@@ -93,6 +123,11 @@ namespace Reko.UnitTests.Scanning
             public Address MakeSegmentedAddress(Constant selector, Constant offset)
             {
                 throw new NotImplementedException();
+            }
+
+            public IEnumerable<Instruction> GetReversedBlockInstructions(Block block)
+            {
+                return block.Statements.Select(s => s.Instruction).Reverse();
             }
 
             #endregion
@@ -145,7 +180,7 @@ namespace Reko.UnitTests.Scanning
                 m.Procedure.Write(false, fut.TextWriter);
                 fut.TextWriter.Flush();
 
-                var ibw = new Backwalker(host, rtlTransfer, expSimp);
+                var ibw = new Backwalker<Block,Instruction>(host, rtlTransfer, expSimp);
                 var bwoList = ibw.BackWalk(m.CurrentBlock);
                 Assert.IsNotNull(bwoList);
                 foreach (BackwalkOperation bwo in bwoList)
@@ -161,7 +196,7 @@ namespace Reko.UnitTests.Scanning
         public void BwAdd()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
-            var bw = new Backwalker(
+            var bw = new Backwalker<Block,Instruction>(
                 host,
                 new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)), RtlClass.Transfer),
                 expSimp);
@@ -175,7 +210,7 @@ namespace Reko.UnitTests.Scanning
         public void BwAndMask()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)), RtlClass.Transfer), expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)), RtlClass.Transfer), expSimp);
             Assert.IsFalse(bw.BackwalkInstruction(m.Assign(eax, m.And(eax, 0x7))));
             Assert.AreSame(Registers.eax, bw.Index);
             Assert.AreEqual(0x10000ul, bw.VectorAddress.ToLinear());
@@ -187,7 +222,7 @@ namespace Reko.UnitTests.Scanning
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF|FlagM.ZF|FlagM.CF|FlagM.OF), "SCZO", PrimitiveType.Byte);
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
             Assert.IsTrue(
                 bw.BackwalkInstruction(
                     m.BranchIf(
@@ -202,7 +237,7 @@ namespace Reko.UnitTests.Scanning
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
             bw.UsedFlagIdentifier = m.Frame.EnsureFlagGroup(Registers.eflags,(uint)FlagM.CF, "C", PrimitiveType.Byte);
             Assert.IsFalse(
                 bw.BackwalkInstruction(
@@ -216,7 +251,7 @@ namespace Reko.UnitTests.Scanning
         public void BwMaskWithHoles()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)), RtlClass.Transfer), expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)), RtlClass.Transfer), expSimp);
             Assert.IsFalse(bw.BackwalkInstruction(m.Assign(eax, m.And(eax, 0x0A))));
             Assert.IsNull(bw.Index);
             Assert.AreEqual(0, bw.Operations.Count);
@@ -229,7 +264,7 @@ namespace Reko.UnitTests.Scanning
             var edx = m.Frame.EnsureRegister(Registers.edx);
             var al = m.Frame.EnsureRegister(Registers.al);
             m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
             Assert.IsTrue(bw.BackwalkInstruction(
                 m.Assign(al, m.LoadB(m.IAdd(edx, 0x1004)))));
             Assert.AreSame(Registers.edx, bw.Index);
@@ -241,7 +276,7 @@ namespace Reko.UnitTests.Scanning
             var bx = m.Frame.EnsureRegister(Registers.bx);
             var bl = m.Frame.EnsureRegister(Registers.bl);
             var bh = m.Frame.EnsureRegister(Registers.bh);
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(bx, 0x1000)), RtlClass.Transfer), expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.LoadDw(m.IAdd(bx, 0x1000)), RtlClass.Transfer), expSimp);
 
             Assert.IsTrue(bw.BackwalkInstruction(
                 m.Assign(bh, m.Xor(bh, bh))));
@@ -345,31 +380,19 @@ namespace Reko.UnitTests.Scanning
                 "Scanning/BwSwitch16.txt");
         }
 
-		[Test]
-		public void BwInc()
-		{
+        [Test]
+        public void BwInc()
+        {
             var state = arch.CreateProcessorState();
             var di = new Identifier("di", Registers.di.DataType, Registers.di);
-			Backwalker bw = new Backwalker(host, new RtlGoto(new MemoryAccess(di, di.DataType), RtlClass.Transfer),
+            var bw = new Backwalker<Block, Instruction>(host, new RtlGoto(new MemoryAccess(di, di.DataType), RtlClass.Transfer),
                 new ExpressionSimplifier(state, new FakeDecompilerEventListener()));
-			var instrs = new StatementList(new Block(null, "foo"));
-			instrs.Add(0, new Assignment(di, new BinaryExpression(Operator.IAdd, di.DataType, di, Constant.Word16(1))));
-			bw.BackwalkInstructions(Registers.di, instrs);
+            var instrs = new StatementList(new Block(null, "foo"));
+            bw.BackwalkInstructions(Registers.di, new Instruction[] {
+                new Assignment(di, new BinaryExpression(Operator.IAdd, di.DataType, di, Constant.Word16(1)))
+                });
 			Assert.AreSame(Registers.di, bw.Index);
 			Assert.AreEqual("+ 1", bw.Operations[0].ToString());
-		}
-
-		[Test]
-		public void BwPowersOfTwo()
-		{
-			Assert.IsTrue(Backwalker.IsEvenPowerOfTwo(2), "2 is power of two");
-			Assert.IsTrue(Backwalker.IsEvenPowerOfTwo(4), "4 is power of two");
-			Assert.IsTrue(Backwalker.IsEvenPowerOfTwo(8), "8 is power of two");
-			Assert.IsTrue(Backwalker.IsEvenPowerOfTwo(16), "16 is power of two");
-			Assert.IsTrue(Backwalker.IsEvenPowerOfTwo(256), "256 is power of two");
-			Assert.IsFalse(Backwalker.IsEvenPowerOfTwo(3), "3 isn't power of two");
-			Assert.IsFalse(Backwalker.IsEvenPowerOfTwo(7), "7 isn't power of two");
-			Assert.IsFalse(Backwalker.IsEvenPowerOfTwo(127), "127 isn't power of two");
 		}
 
         [Test]
@@ -377,7 +400,7 @@ namespace Reko.UnitTests.Scanning
         {
             var edx = m.Frame.EnsureRegister(Registers.edx);
             var xfer = new RtlGoto(m.LoadDw(m.IAdd(m.Word32(0x10001234), m.IMul(edx, 4))), RtlClass.Transfer);
-            var bw = new Backwalker(host, xfer, expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
             Assert.AreSame(Registers.edx, bw.Index);
         }
 
@@ -406,7 +429,7 @@ namespace Reko.UnitTests.Scanning
             var xfer = new RtlGoto(m.LoadDw(m.IAdd(eax, 0x12000)), RtlClass.Transfer);
 
             var block1 = m.CurrentBlock;
-            var bw = new Backwalker(host, xfer, expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
             var ret = bw.BackwalkInstructions(Registers.eax, block1);
             Assert.AreEqual("None", bw.Index.ToString());
             Assert.AreEqual("Mem0[ebp - 0x000000C4:word32]", bw.IndexExpression.ToString());
@@ -426,7 +449,7 @@ namespace Reko.UnitTests.Scanning
             var xfer = new RtlCall(m.LoadDw(m.IAdd(esi, 40)), 4, RtlClass.Transfer);
             m.Assign(v1, m.LoadDw(edi));
             m.Assign(esi, v1);
-            var bw = new Backwalker(host, xfer, expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
             bool result;
             result = bw.BackwalkInstruction(m.Block.Statements[1].Instruction);
             result = bw.BackwalkInstruction(m.Block.Statements[0].Instruction);
@@ -449,7 +472,7 @@ namespace Reko.UnitTests.Scanning
             m.BranchIf(m.Test(ConditionCode.EQ, Z), "null_ptr");
             m.Label("do_call");
 
-            var bw = new Backwalker(host, xfer, expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
             Assert.IsTrue(bw.CanBackwalk());
             Assert.AreEqual("eax", bw.Index.Name);
             bw.BackWalk(m.Block);

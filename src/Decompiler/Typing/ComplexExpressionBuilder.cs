@@ -425,7 +425,7 @@ namespace Reko.Typing
 
         private Expression CreateFieldAccess(DataType dtStructure, DataType dtField, Expression exp, Field field)
         {
-            if (enclosingPtr != null)
+            if (enclosingPtr != null && !dereferenceGenerated)
             {
                 dereferenceGenerated = true;
                 exp = CreateDereference(dtStructure, exp);

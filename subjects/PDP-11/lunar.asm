@@ -1,15 +1,6 @@
 ;;; Segment image (0000)
-0000 5F 00 DC 00 00 02 E0 00 02 02                   _.........     
-;; Code vector at 000A (12 bytes)
-	00E0
-	0204
-	00E0
-	0206
-	00E0
-	020A
-000A                               E0 00 04 02 E0 00           ......
-0010 06 02 E0 00 0A 02                               ......         
-0016                   E0 00 08 02 E0 00 00 00 00 00       ..........
+0000 5F 00 DC 00 00 02 E0 00 02 02 E0 00 04 02 E0 00 _...............
+0010 06 02 E0 00 0A 02 E0 00 08 02 E0 00 00 00 00 00 ................
 0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 ; ...
 0040 8A 13 C0 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
@@ -24,17 +15,12 @@
 l00DC:
 	reset
 	mov	#182A,r0
-
-;; fn00E0: 00E0
-fn00E0 proc
-	mov	-(r0),@-(r2)
 	mov	#1FFC,r1
 	sub	r0,r1
 	asr	r1
 	asr	r1
 
-;; fn00EC: 00EC
-fn00EC proc
+l00EC:
 	mov	#F700,(r0)+
 	clr	(r0)+
 	dec	r1
@@ -66,8 +52,7 @@ l011E:
 	mov	(r0)+,@r1
 	br	011A
 
-;; fn0122: 0122
-fn0122 proc
+l0122:
 	jsr	pc,@#0128
 	br	0122
 
@@ -97,26 +82,10 @@ l013C:
 01D0 F0 9D 62 17 F0 9D 7C 17 F0 9D 96 17 F0 9D AE 17 ..b...|.........
 01E0 F0 9D C8 17 F0 9D E2 17 F0 9D FC 17 F0 9D 16 18 ................
 01F0 F0 9D 9A 00 F4 01 9C 00 0A 00 C0 25 00 F7 00 00 ...........%....
-0200 00 00 00 00                                     ....           
-
-;; fn0204: 0204
-fn0204 proc
-	halt
-
-l0206:
-	halt
-0208                         00 00                           ..     
-
-l020A:
-	mov	#00CE,@#0096
-	mov	#1428,@#00CE
-	clr	@#0094
-	mov	#16F2,@#F400
-	mov	#0040,@#FF66
-	mov	#3FFE,sp
-	clr	@#FFFE
-	jmp	@#0122
-0232       1F 0A 94 00 26 10 66 10 C1 15 9E 16 5F 00   ....&.f....._.
+0200 00 00 00 00 00 00 00 00 00 00 DF 15 CE 00 96 00 ................
+0210 DF 15 28 14 CE 00 1F 0A 94 00 DF 15 F2 16 00 F4 ..(.............
+0220 DF 15 40 00 66 FF C6 15 FE 3F 1F 0A FE FF 5F 00 ..@.f....?...._.
+0230 22 01 1F 0A 94 00 26 10 66 10 C1 15 9E 16 5F 00 ".....&.f....._.
 0240 3E 14                                           >.             
 
 ;; fn0242: 0242
@@ -126,6 +95,8 @@ fn0242 proc
 	clr	@#0080
 	clr	@#0082
 	mov	#7FFF,@#0086
+
+l0254:
 	mov	(r4)+,pc
 	clr	-(sp)
 	jsr	pc,@#02C8
@@ -151,22 +122,27 @@ l0288:
 	mov	r3,r1
 	sub	@#0082,r3
 	bpl	02A2
+
+l029C:
 	neg	r3
 	bis	#0040,@sp
+
+l02A2:
 	bic	#FFC0,r3
 	mov	r1,@#0082
 	cmp	r1,@#0086
 	bge	02B4
+
+l02B0:
 	mov	r1,@#0086
+
+l02B4:
 	bis	r2,r3
 	bis	(sp)+,r3
 	mov	r3,(r5)+
 	br	0254
-	mov	(r4)+,(r5)+
-	br	0254
-	mov	#F700,(r5)+
-	clr	(r5)+
-	rts	pc
+02BC                                     15 15 CA 01             ....
+02C0 D5 15 00 F7 15 0A 87 00                         ........       
 
 ;; fn02C8: 02C8
 fn02C8 proc
@@ -1018,6 +994,9 @@ l0A82:
 	asr	r3
 	asr	r3
 	asr	r3
+
+;; fn0A94: 0A94
+fn0A94 proc
 	asr	r3
 	beq	0B00
 
@@ -1035,6 +1014,8 @@ l0AA6:
 l0AA8:
 	mov	@#00B0,r2
 	mov	#FFC0,r3
+
+l0AB0:
 	add	@#0070,r2
 	inc	r2
 	bic	r3,r2
@@ -1057,10 +1038,17 @@ l0AA8:
 	mov	r0,(r5)+
 	dec	@sp
 	bgt	0AB0
+
+l0AEC:
 	mov	#F700,(r5)+
 	clr	@r5
 	mov	r2,@#00B0
+
+;; fn0AF6: 0AF6
+fn0AF6 proc
 	tst	(sp)+
+
+l0AF8:
 	mov	#35CA,@#34D2
 	rts	pc
 
@@ -1072,13 +1060,23 @@ l0B00:
 fn0B06 proc
 	jsr	pc,@#13AA
 	sob	pc,0A94
+
+l0B0C:
 	mov	@#34B4,@#267A
+
+l0B12:
 	mov	@#34B6,@#267C
 	mov	#2678,@#34D2
+
+l0B1E:
 	bit	#007F,@#0070
 	bne	0B1E
+
+l0B26:
 	tst	@#07BA
 	beq	0BD0
+
+l0B2C:
 	mov	@#2610,r3
 	sub	@#34B4,r3
 	mov	@#2612,r2
@@ -1086,7 +1084,11 @@ fn0B06 proc
 	add	#0003,r2
 	mov	r2,-(sp)
 	beq	0B48
+
+l0B44:
 	jsr	pc,@#0C36
+
+l0B48:
 	mov	@#2610,r3
 	sub	@#267A,r3
 	add	#0019,r3
@@ -1096,9 +1098,13 @@ fn0B06 proc
 	mov	#24A2,@#34CA
 	jsr	pc,@#13AA
 	sob	pc,0AF8
+
+l0B68:
 	clr	@#34CA
 	jsr	pc,@#13AA
 	sob	pc,0AF6
+
+l0B72:
 	neg	@sp
 	mov	@sp,r3
 	clr	r2
@@ -1107,14 +1113,22 @@ fn0B06 proc
 	mov	(sp)+,r2
 	neg	r2
 	beq	0B88
+
+l0B84:
 	jsr	pc,@#0C36
+
+l0B88:
 	jsr	pc,@#13AA
 	sob	pc,0B12
+
+l0B8E:
 	add	#0004,@#005E
 	add	#07D0,@#0068
 	clr	@#0058
 	clr	@#006C
 	mov	#3FFE,sp
+
+l0BA6:
 	clr	@#34CA
 	clr	@#0046
 	clr	@#0054
@@ -1122,10 +1136,14 @@ fn0B06 proc
 	jsr	pc,@#0128
 	tst	@#009E
 	bne	0BA6
+
+l0BC2:
 	clr	@#34BA
 	clr	@#34C2
 	jsr	pc,@#13AA
 	bpt
+
+l0BD0:
 	mov	#0001,-(sp)
 	mov	@#0078,-(sp)
 	jsr	pc,@#0C90
@@ -1134,7 +1152,11 @@ fn0B06 proc
 	mov	@#0070,r5
 	ror	r5
 	bcc	0BEE
+
+l0BEC:
 	neg	r3
+
+l0BEE:
 	mov	r3,-(sp)
 	jsr	pc,@#0C36
 	mov	(sp)+,r3
@@ -1153,35 +1175,64 @@ fn0B06 proc
 	mov	#24D6,@#34CA
 	jsr	pc,@#13AA
 	illegal
+
+;; fn0C36: 0C36
+fn0C36 proc
 	mov	#0A80,r5
 	tst	r3
 	bpl	0C44
+
+l0C3E:
 	mov	#0AC0,r5
 	neg	r3
+
+l0C44:
 	mov	r5,@#0C72
 	clr	r5
 	tst	r2
 	beq	0C58
+
+l0C4E:
 	inc	r5
 	mov	r2,r3
 	bpl	0C58
+
+l0C54:
 	neg	r3
 	neg	r5
+
+l0C58:
 	mov	@#267A,r0
+
+l0C5C:
 	jsr	pc,@#0C72
 	mov	r0,@#267A
 	add	r5,@#267C
 	jsr	pc,@#0C76
 	dec	r3
 	bgt	0C5C
+
+l0C70:
 	rts	pc
+
+;; fn0C72: 0C72
+fn0C72 proc
 	halt
-	rts	pc
+0C74             87 00                                   ..         
+
+;; fn0C76: 0C76
+fn0C76 proc
 	bit	#0007,@#0070
 	beq	0C76
+
+l0C7E:
 	jsr	pc,@#1578
+
+l0C82:
 	bit	#0007,@#0070
 	bne	0C82
+
+l0C8A:
 	jsr	pc,@#1578
 	rts	pc
 
@@ -1274,8 +1325,17 @@ fn0D3C proc
 	mov	#F0A0,(r5)+
 	clr	(r5)+
 	jmp	@000A(sp)
-0D66                   B6 13 0C 00 84 15 84 15 81 15       ..........
-0D70 80 15 83 15 82 15 87 00                         ........       
+
+;; fn0D66: 0D66
+fn0D66 proc
+	mov	@sp,000C(sp)
+	mov	(sp)+,r4
+	mov	(sp)+,r4
+	mov	(sp)+,r1
+	mov	(sp)+,r0
+	mov	(sp)+,r3
+	mov	(sp)+,r2
+	rts	pc
 
 ;; fn0D78: 0D78
 fn0D78 proc
@@ -1379,6 +1439,8 @@ fn0E32 proc
 	clr	@#34C2
 	clr	@#34D2
 	bis	#0000,@#F402
+
+l0E44:
 	mov	#35CA,r5
 	mov	@#00AC,r4
 	inc	r4
@@ -1399,10 +1461,17 @@ fn0E32 proc
 	add	#0021,@#00AE
 	cmp	@#00AE,#00C0
 	ble	0E44
+
+l0E92:
 	jsr	pc,@#13AA
 	reset
+
+;; fn0E98: 0E98
+fn0E98 proc
 	mov	#FFE2,@#0046
 	mov	#00F1,-(sp)
+
+l0EA2:
 	jsr	pc,@#0444
 	mov	FFFA(sp),r0
 	asr	r0
@@ -1414,11 +1483,15 @@ fn0E32 proc
 	movb	2773(r0),r4
 	add	@#00AE,r4
 	bmi	0EFE
+
+l0EC8:
 	mov	r4,r0
 	mov	@#004C,r1
 	jsr	pc,@#125E
 	add	@#34B4,r2
 	bmi	0EFE
+
+l0ED8:
 	bis	#4000,r2
 	mov	r2,(r5)+
 	mov	r4,r0
@@ -1426,13 +1499,23 @@ fn0E32 proc
 	jsr	pc,@#125E
 	add	@#34B6,r2
 	bmi	0EFC
+
+l0EEE:
 	mov	r2,(r5)+
+
+l0EF0:
 	inc	@#0046
 	dec	@sp
 	bgt	0EA2
+
+l0EF8:
 	tst	(sp)+
 	rts	pc
+
+l0EFC:
 	clr	-(r5)
+
+l0EFE:
 	clr	(r5)+
 	clr	(r5)+
 	br	0EF0
@@ -1546,15 +1629,66 @@ fn100C proc
 	rts	pc
 101E                                           DF 09               ..
 1020 3C 10 00 00 17 00 E8 FF DF 09 3C 10 A6 FF 10 00 <.........<.....
-1030 EE FF DF 09 3C 10 5A 00 10 00 EE FF 57 21 96 1F ....<.Z.....W!..
-1040 3A 82 66 10 A6 10 E6 10 26 11 26 10 80 1D 0A 00 :.f.....&.&.....
-1050 D5 15 00 98 95 13 E6 17 46 00 C4 12 DF 09 0C 10 ........F.......
-1060 26 11 C4 1C 02 00 DF 09 0C 10 84 65 84 0C 1F 14 &..........e....
-1070 46 00 04 64 1F 12 84 00 15 11 F3 22 02 00 08 03 F..d......."....
-1080 04 82 DF 65 EA FF 46 00 03 01 DF 65 16 00 46 00 ...e..F....e..F.
-1090 DF 09 44 04 41 11 C0 15 D8 26 DF 09 42 02 25 0A ..D.A....&..B.%.
-10A0 25 0A 9F 15 46 00 DF 09 44 04 80 15 84 15 83 15 %...F...D.......
-10B0 82 15 81 15 D6 0B 87 00 57 21 C6 1F 2A 82 1F 10 ........W!..*...
+1030 EE FF DF 09 3C 10 5A 00 10 00 EE FF             ....<.Z.....   
+
+;; fn103C: 103C
+fn103C proc
+	cmp	r5,#1F96
+	bhi	10B6
+
+l1042:
+	mov	r1,-(sp)
+	mov	r2,-(sp)
+	mov	r3,-(sp)
+	mov	r4,-(sp)
+	mov	r0,-(sp)
+	mov	000A(sp),r0
+	mov	#9800,(r5)+
+	mov	@sp,(r5)+
+	mov	@#0046,-(sp)
+	mov	@r3,r4
+	jsr	pc,@#100C
+	mov	r4,-(sp)
+	mov	0002(r3),r4
+	jsr	pc,@#100C
+	add	(sp)+,r4
+	asr	r4
+	mov	(r0)+,@#0046
+	add	(r0)+,r4
+	mov	@r0,@#0084
+	mov	r4,(r5)+
+	cmp	@r3,0002(r3)
+	beq	1090
+
+l1080:
+	bhi	108A
+
+l1082:
+	add	#FFEA,@#0046
+	br	1090
+
+l108A:
+	add	#0016,@#0046
+
+l1090:
+	jsr	pc,@#0444
+	mov	r5,r1
+	mov	#26D8,r0
+	jsr	pc,@#0242
+	clr	-(r5)
+	clr	-(r5)
+	mov	(sp)+,@#0046
+	jsr	pc,@#0444
+	mov	(sp)+,r0
+	mov	(sp)+,r4
+	mov	(sp)+,r3
+	mov	(sp)+,r2
+	mov	(sp)+,r1
+	tst	(sp)+
+
+l10B6:
+	rts	pc
+10B8                         57 21 C6 1F 2A 82 1F 10         W!..*...
 10C0 AC 26 C4 12 DF 09 0C 10 01 11 C4 1C 02 00 DF 09 .&..............
 10D0 0C 10 44 60 84 0C 1F 11 AE 26 C1 15 A8 26 13 01 ..D`.....&...&..
 10E0 57 21 C2 1F 16 82 1F 10 DC 25 C4 12 DF 09 0C 10 W!.......%......

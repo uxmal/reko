@@ -98,8 +98,8 @@ namespace Reko.UnitTests.Arch.Intel
                 this.program, 
                 new ImportResolver(project, this.program, eventListener),
                 sc);
-            ImageSymbol ep = new ImageSymbol(baseAddress);
-            scanner.EnqueueImageSymbol(ep, true);
+            var ep = new ImageSymbol(baseAddress);
+            this.program.EntryPoints.Add(ep.Address, ep);
             var program =  project.Programs[0];
             foreach (Procedure_v1 sp in program.User.Procedures.Values)
             {

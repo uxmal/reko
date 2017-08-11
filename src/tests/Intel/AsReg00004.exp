@@ -64,7 +64,7 @@
 1000008E 89 4C 24 1C     	mov	[esp+1C],ecx
 10000092 DB 44 24 1C     	fild	dword ptr [esp+1C]
 10000096 D9 C1           	fld	st(1)
-10000098 DE D9           	fcompp	
+10000098 DE D9           	fcompp
 1000009A 66 DF E0        	fstsw	ax
 1000009D F6 C4 40        	test	ah,40
 100000A0 75 0B           	jnz	100000AD
@@ -100,7 +100,7 @@
 10000101 C7 01 00 00 00 00 	mov	dword ptr [ecx],00000000
 10000107 5D              	pop	ebp
 10000108 5B              	pop	ebx
-10000109 C3              	ret	
+10000109 C3              	ret
 1000010A DB 5C 24 FC     	fistp	dword ptr [esp-04]
 1000010E 8B 44 24 FC     	mov	eax,[esp-04]
-10000112 C3              	ret	
+10000112 C3              	ret

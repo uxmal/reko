@@ -37,219 +37,7 @@ namespace Reko.UnitTests.Environments.Windows
             var p = new MsMangledNameParser(parse);
             var sp = p.Parse();
             var sb = new StringBuilder();
-            Assert.AreEqual(expected, new Renderer(sb).Render(p.Modifier, p.Scope, sp.Item1, sp.Item2));
-        }
-
-        class Renderer : ISerializedTypeVisitor<StringBuilder>
-        {
-            private StringBuilder sb;
-            private string name;
-            private string modifier;
-
-            public Renderer(StringBuilder sb)
-            {
-                this.sb = sb;
-            }
-
-            internal string Render(string modifier, string scope, string name, SerializedType sp)
-            {
-                this.modifier = modifier;
-                this.name = name;
-                if (scope != null)
-                    this.name = scope + "::" + name;
-                if (sp != null)
-                    sp.Accept(this);
-                else
-                    sb.Append(this.name);
-                return sb.ToString();
-            }
-
-            public StringBuilder VisitPrimitive(PrimitiveType_v1 primitive)
-            {
-                switch (primitive.Domain)
-                {
-                case Domain.None:
-                    sb.Append("void");
-                    break;
-                case Domain.SignedInt:
-                    switch (primitive.ByteSize)
-                    {
-                    case 4: sb.Append("int"); break;
-                    case 8: sb.Append("__int64");break;
-                    default: throw new NotImplementedException();
-                    }
-                    break;
-                case Domain.UnsignedInt:
-                    switch (primitive.ByteSize)
-                    {
-                    case 4: sb.Append("unsigned int");
-                        break;
-                    default: throw new NotImplementedException();
-                    }
-                    break;
-                case Domain.Character:
-                    switch (primitive.ByteSize)
-                    {
-                    case 1: sb.Append("char"); break;
-                    case 2: sb.Append("wchar_t"); break;
-                    }
-                    break;
-                case Domain.Character | Domain.UnsignedInt:
-                    switch (primitive.ByteSize)
-                    {
-                    case 1: sb.Append("char"); break;
-                    default: throw new NotImplementedException();
-                    }
-                    break;
-                default:
-                    throw new NotSupportedException(string.Format("Domain {0} is not supported.", primitive.Domain));
-                }
-                if (name != null)
-                    sb.AppendFormat(" {0}", name);
-                return sb;
-            }
-
-            public StringBuilder VisitPointer(PointerType_v1 pointer)
-            {
-                var n = name;
-                name = null;
-                pointer.DataType.Accept(this);
-                sb.AppendFormat(" *");
-                name = n;
-                if (name != null)
-                    sb.AppendFormat(" {0}", name);
-                return sb;
-            }
-
-            public StringBuilder VisitReference(ReferenceType_v1 reference)
-            {
-                var n = name;
-                name = null;
-                reference.Referent.Accept(this);
-                sb.AppendFormat(" ^");
-                name = n;
-                if (name != null)
-                    sb.AppendFormat(" {0}", name);
-                return sb;
-            }
-
-            public StringBuilder VisitMemberPointer(MemberPointer_v1 memptr)
-            {
-                var n = name;
-                memptr.DeclaringClass.Accept(this);
-                sb.Append("::*");
-                sb.Append(n);
-                return sb;
-            }
-
-            public StringBuilder VisitArray(ArrayType_v1 array)
-            {
-                throw new NotImplementedException();
-            }
-
-            public StringBuilder VisitCode(CodeType_v1 array)
-            {
-                throw new NotImplementedException();
-            }
-
-            public StringBuilder VisitSignature(SerializedSignature signature)
-            {
-                if (!string.IsNullOrEmpty(signature.Convention))
-                    sb.AppendFormat("{0} ", signature.Convention);
-                if (!string.IsNullOrEmpty(modifier))
-                    sb.AppendFormat("{0}: ", modifier);
-                if (signature.ReturnValue != null && signature.ReturnValue.Type != null)
-                {
-                    signature.ReturnValue.Type.Accept(this);
-                }
-                else
-                {
-                    sb.Append(name);
-                }
-                sb.Append("(");
-                string sep = "";
-                foreach (var arg in signature.Arguments)
-                {
-                    sb.Append(sep);
-                    sep = ", ";
-                    this.name = arg.Name;
-                    arg.Type.Accept(this);
-                }
-                sb.Append(")");
-                return sb;
-            }
-
-            public StringBuilder VisitString(StringType_v2 str)
-            {
-                throw new NotImplementedException();
-            }
-
-            public StringBuilder VisitStructure(StructType_v1 structure)
-            {
-                throw new NotImplementedException();
-            }
-
-            public StringBuilder VisitTypedef(SerializedTypedef typedef)
-            {
-                throw new NotImplementedException();
-            }
-
-            public StringBuilder VisitTypeReference(TypeReference_v1 typeReference)
-            {
-                sb.Append(typeReference.TypeName);
-                if (name != null)
-                    sb.AppendFormat(" {0}", name);
-                if (typeReference.TypeArguments != null && typeReference.TypeArguments.Length > 0)
-                {
-                    sb.Append("<");
-                    var sep = "";
-                    foreach (var tyArg in typeReference.TypeArguments)
-                    {
-                        sb.Append(sep);
-                        tyArg.Accept(this);
-                        sep = ",";
-                    }
-                    sb.Append(">");
-                }
-                return sb;
-            }
-
-            public StringBuilder VisitUnion(UnionType_v1 union)
-            {
-                throw new NotImplementedException();
-            }
-
-            public StringBuilder VisitEnum(SerializedEnumType serializedEnumType)
-            {
-                sb.AppendFormat("enum {0}", serializedEnumType.Name);
-                return sb;
-            }
-
-            public StringBuilder VisitTemplate(SerializedTemplate template)
-            {
-                var n = name;
-                sb.Append(template.Name);
-                sb.Append("<");
-                var sep = "";
-                foreach (var typeArg in template.TypeArguments)
-                {
-                    sb.Append(sep);
-                    typeArg.Accept(this);
-                }
-                sb.Append(">");
-
-                name = n;
-                if (name != null)
-                    sb.AppendFormat(" {0}", name);
-                return sb;
-            }
-            public StringBuilder VisitVoidType(VoidType_v1 serializedVoidType)
-            {
-                sb.Append("void");
-                if (name != null)
-                    sb.AppendFormat(" {0}", name);
-                return sb;
-            }
+            Assert.AreEqual(expected, new TestSerializedTypeRenderer(sb).Render(p.Modifier, p.Scope, sp.Item1, sp.Item2));
         }
 
         [Test]
@@ -261,13 +49,13 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void PMNP_Simple()
         {
-            RunTest("__cdecl int foo()", "?foo@@YAHXZ");
+            RunTest("__cdecl int32_t foo()", "?foo@@YAHXZ");
         }
 
         [Test]
         public void PMNP_stdcall()
         {
-            RunTest("__stdcall int foo(char)", "?foo@@YGHD@Z");
+            RunTest("__stdcall int32_t foo(char)", "?foo@@YGHD@Z");
         }
 
         [Test]
@@ -303,7 +91,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_const_ptr()
         {
             RunTest(
-                "__thiscall public: int foo::foox(foo *)",
+                "__thiscall public: int32_t foo::foox(foo *)",
                 "?foox@foo@@QBEHPBV1@@Z");
         }
 
@@ -319,7 +107,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_template_function()
         {
             RunTest(
-                "__cdecl char barzoom(int)",      //$TODO: a SerializedProcedure could be templatized.
+                "__cdecl char barzoom(int32_t)",      //$TODO: a SerializedProcedure could be templatized.
                  "??$barzoom@N@@YADH@Z");
         }
 
@@ -335,7 +123,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_wchar_t()
         {
             RunTest(
-                "__stdcall unsigned int HashKey(wchar_t *)",
+                "__stdcall uint32_t HashKey(wchar_t *)",
                 "??$HashKey@PB_W@@YGIPB_W@Z");
         }
 
@@ -343,7 +131,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_BackRefs()
         {
             RunTest(
-                "__stdcall int Foo(void *, void *, int)",
+                "__stdcall int32_t Foo(void *, void *, int32_t)",
                 "?Foo@@YGHPAX0H@Z");
         }
 
@@ -352,14 +140,14 @@ namespace Reko.UnitTests.Environments.Windows
         {
             RunTest(
                 "__thiscall public virtual: void CFile::Abort()",
-            "?Abort@CFile@@UAEXXZ");
+                "?Abort@CFile@@UAEXXZ");
         }
 
         [Test]
         public void PMNP_function_ptr()
         {
             RunTest(
-                "__cdecl char install(char *, __cdecl int(int *, char *) *, int)",
+                "__cdecl char install(char *, __cdecl int32_t(int32_t *, char *) *, int32_t)",
                 "?install@@YADPADP6AHPAH0@ZJ@Z");
         }
 
@@ -399,7 +187,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_regression2()
         {
             RunTest(
-                "__stdcall int ATL::AtlIAccessibleGetIDsOfNamesHelper(_GUID *, wchar_t * *, unsigned int, unsigned int, int *)",
+                "__stdcall int32_t ATL::AtlIAccessibleGetIDsOfNamesHelper(_GUID *, wchar_t * *, uint32_t, uint32_t, int32_t *)",
                 "?AtlIAccessibleGetIDsOfNamesHelper@ATL@@YGJABU_GUID@@PAPA_WIKPAJ@Z");
         }
 
@@ -407,7 +195,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_regression3()
         {
             RunTest(
-                "unsigned int CEditView::dwStyleDefault",
+                "uint32_t CEditView::dwStyleDefault",
                 "?dwStyleDefault@CEditView@@2KB");
         }
 
@@ -439,7 +227,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_protected_static_field()
         { 
             RunTest(
-                "unsigned int COleDropTarget::nScrollDelay",
+                "uint32_t COleDropTarget::nScrollDelay",
                 "?nScrollDelay@COleDropTarget@@1IA");
         }
 
@@ -447,7 +235,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_regression5()
         {
             RunTest(
-                "__thiscall public: int COleFrameHook::NotifyAllInPlace(int, COleFrameHook::*)",
+                "__thiscall public: int32_t COleFrameHook::NotifyAllInPlace(int32_t, COleFrameHook::*)",
                 "?NotifyAllInPlace@COleFrameHook@@QAEHHP81@AEHH@Z@Z");
         }
         [Test]
@@ -463,7 +251,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_regression7()
         {
             RunTest(
-                "__thiscall public: int CDHtmlControlSink::InvokeFromFuncInfo(CDHtmlSinkHandler::*, void)", 
+                "__thiscall public: int32_t CDHtmlControlSink::InvokeFromFuncInfo(CDHtmlSinkHandler::*, void)", 
                 "?InvokeFromFuncInfo@CDHtmlControlSink@@QAEJP8CDHtmlSinkHandler@@AGXXZAAU_ATL_FUNC_INFO@ATL@@PAUtagDISPPARAMS@@PAUtagVARIANT@@@Z");
         }
 
@@ -487,7 +275,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_regression10()
         {
             RunTest(
-                "__thiscall private: char A::get(int, int)",
+                "__thiscall private: char A::get(int32_t, int32_t)",
                 "?get@A@@AAEEHH@Z");
         }
 
@@ -495,7 +283,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_regression11()
         {
             RunTest(
-                "__stdcall void CopyElements(COleVariant *, COleVariant *, int)",
+                "__stdcall void CopyElements(COleVariant *, COleVariant *, int32_t)",
                 "??$CopyElements@VCOleVariant@@@@YGXPAVCOleVariant@@PBV0@H@Z");
         }
 

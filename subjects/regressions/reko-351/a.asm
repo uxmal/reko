@@ -77,14 +77,14 @@ l800000F4:
 l80000114:
 	addq.l	#$01,d0
 	move.l	d0,$80002726
-	movea.l	(a2,d0*2),a0
+	movea.l	(a2,d0*4),a0
 	jsr.l	(a0)
 	move.l	$80002726,d0
 	cmp.l	d0,d2
 	bhi	$80000114
 
 l8000012C:
-	jsr.l	$-00AC(pc)
+	jsr.l	$-00AC(pc)                                           ; 80000080
 	lea	$00000000,a0
 	tst.l	a0
 	beq	$80000144
@@ -221,8 +221,8 @@ sine_taylor proc
 	unlk	a6
 	rts	
 
-;; _ZL9factoriali: 8000033C
-_ZL9factoriali proc
+;; factorial: 8000033C
+factorial proc
 	link	a6,#$FFF8
 	moveq	#$+01,d0
 	move.l	d0,$-0008(a6)
@@ -246,8 +246,8 @@ l8000036A:
 	unlk	a6
 	rts	
 
-;; _ZL7pow_intdi: 80000372
-_ZL7pow_intdi proc
+;; pow_int: 80000372
+pow_int proc
 	link	a6,#$FFF4
 	move.l	#$3FF00000,$-000C(a6)
 	clr.l	$-0008(a6)
@@ -292,11 +292,11 @@ l800003E0:
 	move.l	$-0004(a6),-(a7)
 	move.l	$000C(a6),-(a7)
 	move.l	$0008(a6),-(a7)
-	jsr.l	$-007A(pc)
+	jsr.l	$-007A(pc)                                           ; 80000372
 	lea	$000C(a7),a7
 	fmove.x	fp0,fp2
 	move.l	$-0004(a6),-(a7)
-	jsr.l	$-00C0(pc)
+	jsr.l	$-00C0(pc)                                           ; 8000033C
 	addq.l	#$04,a7
 	fmove.l	d0,fp0
 	fmove.x	fp2,fp1
@@ -321,11 +321,11 @@ l80000438:
 	move.l	$-0004(a6),-(a7)
 	move.l	$000C(a6),-(a7)
 	move.l	$0008(a6),-(a7)
-	jsr.l	$-00D2(pc)
+	jsr.l	$-00D2(pc)                                           ; 80000372
 	lea	$000C(a7),a7
 	fmove.x	fp0,fp2
 	move.l	$-0004(a6),-(a7)
-	jsr.l	$-0118(pc)
+	jsr.l	$-0118(pc)                                           ; 8000033C
 	addq.l	#$04,a7
 	fmove.l	d0,fp0
 	fmove.x	fp2,fp1
@@ -352,7 +352,7 @@ main proc
 	link	a6,#$FFFC
 	move.l	#$51EB851F,-(a7)
 	move.l	#$40091EB8,-(a7)
-	jsr.l	$-02FE(pc)
+	jsr.l	$-02FE(pc)                                           ; 800001AC
 	addq.l	#$08,a7
 	move.l	a6,d0
 	subq.l	#$04,d0

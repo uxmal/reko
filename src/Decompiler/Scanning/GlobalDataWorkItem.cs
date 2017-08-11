@@ -33,16 +33,18 @@ namespace Reko.Scanning
     /// </summary>
     public class GlobalDataWorkItem : WorkItem, IDataTypeVisitor
     {
-        private IScanner scanner;
+        private IScannerQueue scanner;
         private Program program;
         private DataType dt;
         private EndianImageReader rdr;
+        private string name;
 
-        public GlobalDataWorkItem(IScanner scanner, Program program, Address addr, DataType dt) : base(addr)
+        public GlobalDataWorkItem(IScannerQueue scanner, Program program, Address addr, DataType dt, string name) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;
             this.dt = dt;
+            this.name = name;
             this.rdr = program.CreateImageReader(addr);
         }
 
@@ -53,9 +55,9 @@ namespace Reko.Scanning
 
         public void VisitArray(ArrayType at)
         {
-            if (at.Length == 0)
+            if (at.Length <= 0)
             {
-                scanner.Warn(Address, "User-specified arrays must have a non-zero size.");
+                scanner.Warn(Address, "User-specified arrays must have a positive size.");
                 return;
             }
             for (int i = 0; i < at.Length; ++i)
@@ -71,7 +73,7 @@ namespace Reko.Scanning
 
         public void VisitCode(CodeType c)
         {
-            throw new NotImplementedException();
+            program.ImageMap.TerminateItem(rdr.Address);
         }
 
         public void VisitEnum(EnumType e)
@@ -87,7 +89,7 @@ namespace Reko.Scanning
         public void VisitFunctionType(FunctionType ft)
         {
             var addr = rdr.Address;
-            scanner.EnqueueUserProcedure(addr, ft);
+            scanner.EnqueueUserProcedure(addr, ft, null);
         }
 
         public void VisitPrimitive(PrimitiveType pt)
@@ -108,7 +110,7 @@ namespace Reko.Scanning
             if (!program.SegmentMap.IsValidAddress(addr))
                 return;
 
-            scanner.EnqueueUserGlobalData(addr, ptr.Pointee);
+            scanner.EnqueueUserGlobalData(addr, ptr.Pointee, null);
         }
 
         public void VisitReference(ReferenceTo refTo)

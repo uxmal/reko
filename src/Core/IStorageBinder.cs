@@ -33,7 +33,6 @@ namespace Reko.Core
     /// </summary>
     public interface IStorageBinder
     {
-        Identifier EnsureIdentifier(Storage stg);
         Identifier EnsureRegister(RegisterStorage stgForeign);
         Identifier EnsureFlagGroup(FlagGroupStorage grf);
         Identifier EnsureFlagGroup(FlagRegister flagRegister, uint flagGroupBits, string name, DataType dataType);

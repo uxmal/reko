@@ -204,7 +204,7 @@ namespace Reko.Core
 		public Identifier EnsureRegister(RegisterStorage reg)
 		{
 			Identifier id = FindRegister(reg);
-			if (id == null)
+			if (id == null && reg != null)
 			{
 				id = new Identifier(reg.Name, reg.DataType, reg);
 				identifiers.Add(id);
@@ -397,7 +397,7 @@ namespace Reko.Core
 			foreach (Identifier id in identifiers)
 			{
 				RegisterStorage s = id.Storage as RegisterStorage;
-				if (s == reg)
+				if (s != null && s == reg)
 					return id;
 			}
 			return null;

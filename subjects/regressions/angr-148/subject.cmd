@@ -1,1 +1,1 @@
-decompile.exe test
+decompile.exe --heuristic shingle  test

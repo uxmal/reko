@@ -2,7 +2,7 @@
 
 ;; fn80000000: 80000000
 fn80000000 proc
-	jsr.l	$03CC(pc)
+	jsr.l	$03CC(pc)                                            ; 800003CC
 	rts	
 80000006                   4E 71 4E 71 4E 71 4E 71 4E 71       NqNqNqNqNq
 80000010 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
@@ -114,12 +114,12 @@ l80000224:
 	fmove.x	fp0,-(a7)
 	fmove.x	$0008(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	$-0106(pc)
+	jsr.l	$-0106(pc)                                           ; 80000132
 	lea	$0018(a7),a7
 	fmove.x	fp0,fp2
 	fmove.l	$-001C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	$-00C0(pc)
+	jsr.l	$-00C0(pc)                                           ; 8000018E
 	lea	$000C(a7),a7
 	fmove.x	fp2,fp1
 	fdiv.x	fp0,fp1
@@ -168,12 +168,12 @@ l800002E2:
 	fmove.x	fp0,-(a7)
 	fmove.x	$0008(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	$-01C4(pc)
+	jsr.l	$-01C4(pc)                                           ; 80000132
 	lea	$0018(a7),a7
 	fmove.x	fp0,fp2
 	fmove.l	$-001C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	$-017E(pc)
+	jsr.l	$-017E(pc)                                           ; 8000018E
 	lea	$000C(a7),a7
 	fmove.x	fp2,fp1
 	fdiv.x	fp0,fp1
@@ -207,12 +207,12 @@ fn8000036C proc
 	move.l	d2,-(a7)
 	fmove.x	$0008(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	$-018E(pc)
+	jsr.l	$-018E(pc)                                           ; 800001F2
 	lea	$000C(a7),a7
 	fmove.x	fp0,fp2
 	fmove.x	$0008(a6),fp1
 	fmove.x	fp1,-(a7)
-	jsr.l	$-00E8(pc)
+	jsr.l	$-00E8(pc)                                           ; 800002AE
 	lea	$000C(a7),a7
 	fmove.x	fp2,fp1
 	fdiv.x	fp0,fp1
@@ -239,23 +239,23 @@ fn800003CC proc
 	fmove.x	fp0,-(a7)
 	fmove.x	$-000C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	$-02C0(pc)
+	jsr.l	$-02C0(pc)                                           ; 80000132
 	lea	$0018(a7),a7
 	fmove.x	$-000C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	$-0276(pc)
+	jsr.l	$-0276(pc)                                           ; 8000018E
 	lea	$000C(a7),a7
 	fmove.x	$-000C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	$-0224(pc)
+	jsr.l	$-0224(pc)                                           ; 800001F2
 	lea	$000C(a7),a7
 	fmove.x	$-000C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	$-017A(pc)
+	jsr.l	$-017A(pc)                                           ; 800002AE
 	lea	$000C(a7),a7
 	fmove.x	$-000C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	$-00CE(pc)
+	jsr.l	$-00CE(pc)                                           ; 8000036C
 	lea	$000C(a7),a7
 	clr.l	d0
 	unlk	a6

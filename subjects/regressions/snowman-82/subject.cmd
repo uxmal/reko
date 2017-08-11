@@ -1,1 +1,1 @@
-decompile.exe flags
+decompile.exe --heuristic shingle  flags

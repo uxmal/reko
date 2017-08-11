@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Core
             caller.Frame.EnsureStackLocal(-4, PrimitiveType.Word32, "bindToArg04");
             caller.Frame.EnsureStackLocal(-6, PrimitiveType.Word16, "bindToArg02");
 
-            var callee = new Procedure("callee", new  Frame (PrimitiveType.Word16));
+            var callee = new Procedure("callee", new Frame(PrimitiveType.Word16));
             var wArg = callee.Frame.EnsureStackArgument(0, PrimitiveType.Word16);
             var dwArg = callee.Frame.EnsureStackArgument(2, PrimitiveType.Word32);
             callee.Signature = FunctionType.Action(

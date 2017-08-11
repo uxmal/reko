@@ -35,6 +35,11 @@ namespace Reko.Core.Lib
             return w != 0 && (w & (w - 1)) == 0;
         }
 
+        public static bool IsEvenPowerOfTwo(int n)
+        {
+            return n != 0 && (n & (n - 1)) == 0;
+        }
+
         /// <summary>
         /// Sign-extend the <paramref name="b"/>-bit number 
         /// <paramref name="w"/>.

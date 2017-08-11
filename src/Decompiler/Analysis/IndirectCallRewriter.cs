@@ -232,7 +232,7 @@ namespace Reko.Analysis
     class SsaIdentifierTransformer : InstructionTransformer
     {
         private SsaState ssa;
-        private Frame frame;
+        private IStorageBinder frame;
         private Statement stm;
         private CallInstruction call;
         private ArgumentTransformer argumentTransformer;

@@ -41,20 +41,21 @@ namespace Reko.Arch.M68k
 
         // These fields are internal so that the OperandRewriter can use them.
         internal M68kArchitecture arch;
-        internal Frame frame;
+        internal IStorageBinder binder;
         internal M68kInstruction di;
-        internal RtlEmitter emitter;
+        internal RtlEmitter m;
         private M68kState state;
         private IRewriterHost host;
         private IEnumerator<M68kInstruction> dasm;
-        private RtlInstructionCluster ric;
+        private RtlClass rtlc;
+        private List<RtlInstruction> rtlInstructions;
         private OperandRewriter orw;
 
-        public Rewriter(M68kArchitecture m68kArchitecture, EndianImageReader rdr, M68kState m68kState, Frame frame, IRewriterHost host)
+        public Rewriter(M68kArchitecture m68kArchitecture, EndianImageReader rdr, M68kState m68kState, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = m68kArchitecture;
             this.state = m68kState;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
             this.dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
         }
@@ -64,22 +65,32 @@ namespace Reko.Arch.M68k
             while (dasm.MoveNext())
             {
                 di = dasm.Current;
-                ric = new RtlInstructionCluster(di.Address, di.Length);
-                ric.Class = RtlClass.Linear;
-                emitter = new RtlEmitter(ric.Instructions);
-                orw = new OperandRewriter(arch, this.emitter, this.frame, di.dataWidth);
+                var addr = di.Address;
+                var len = di.Length;
+                rtlInstructions = new List<RtlInstruction>();
+                rtlc = RtlClass.Linear;
+                m = new RtlEmitter(rtlInstructions);
+                orw = new OperandRewriter(arch, this.m, this.binder, di.dataWidth);
                 switch (di.code)
                 {
-                case Opcode.add: RewriteBinOp((s, d) => emitter.IAdd(d, s), FlagM.CVZNX); break;
-                case Opcode.adda: RewriteBinOp((s, d) => emitter.IAdd(d, s)); break;
-                case Opcode.addi: RewriteArithmetic((s, d) => emitter.IAdd(d, s)); break;
-                case Opcode.addq: RewriteAddSubq((s, d) => emitter.IAdd(d, s)); break;
-                case Opcode.addx: RewriteAddSubx(emitter.IAdd); break;
+                default:
+                    host.Warn(
+                        di.Address,
+                        "Rewriting M68k opcode '{0}' is not supported yet.",
+                        di.code);
+                    m.Invalid();
+                    break;
+                case Opcode.illegal: RewriteIllegal(); break;
+                case Opcode.add: RewriteBinOp((s, d) => m.IAdd(d, s), FlagM.CVZNX); break;
+                case Opcode.adda: RewriteBinOp((s, d) => m.IAdd(d, s)); break;
+                case Opcode.addi: RewriteArithmetic((s, d) => m.IAdd(d, s)); break;
+                case Opcode.addq: RewriteAddSubq((s, d) => m.IAdd(d, s)); break;
+                case Opcode.addx: RewriteAddSubx(m.IAdd); break;
                 
-                case Opcode.and: RewriteLogical((s, d) => emitter.And(d, s)); break;
-                case Opcode.andi: RewriteLogical((s, d) => emitter.And(d, s)); break;
-                case Opcode.asl: RewriteArithmetic((s, d) => emitter.Shl(d, s)); break;
-                case Opcode.asr: RewriteShift((s, d) => emitter.Sar(d, s)); break;
+                case Opcode.and: RewriteLogical((s, d) => m.And(d, s)); break;
+                case Opcode.andi: RewriteLogical((s, d) => m.And(d, s)); break;
+                case Opcode.asl: RewriteArithmetic((s, d) => m.Shl(d, s)); break;
+                case Opcode.asr: RewriteShift((s, d) => m.Sar(d, s)); break;
 /*
  * 
  * Mnemonic Condition Encoding Test
@@ -109,8 +120,12 @@ VS Overflow Set 1001 V
                 case Opcode.bset: RewriteBclrBset("__bset"); break;
                 case Opcode.bsr: RewriteBsr(); break;
                 case Opcode.btst: RewriteBtst(); break;
+                case Opcode.cas: RewriteCas(); break;
                 case Opcode.clr: RewriteClr(); break;
+                case Opcode.chk: RewriteChk(); break;
+                case Opcode.chk2: RewriteChk2(); break;
                 case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.cmp2: RewriteCmp2(); break;
                 case Opcode.cmpa: RewriteCmp(); break;
                 case Opcode.cmpi: RewriteCmp(); break;
                 case Opcode.cmpm: RewriteCmp(); break;
@@ -119,46 +134,49 @@ VS Overflow Set 1001 V
                 case Opcode.dbhi: RewriteDbcc(ConditionCode.ULE, FlagM.CF | FlagM.ZF); break;
                 case Opcode.dbne: RewriteDbcc(ConditionCode.NE, FlagM.ZF); break;
                 case Opcode.dbra: RewriteDbcc(ConditionCode.None, 0); break;
-                case Opcode.divs: RewriteDiv(emitter.SDiv, PrimitiveType.Int16); break;
-                case Opcode.divu: RewriteDiv(emitter.UDiv, PrimitiveType.UInt16); break;
-                case Opcode.eor: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
-                case Opcode.eori: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
+                case Opcode.divs: RewriteDiv(m.SDiv, PrimitiveType.Int16); break;
+                case Opcode.divu: RewriteDiv(m.UDiv, PrimitiveType.UInt16); break;
+                case Opcode.eor: RewriteLogical((s, d) => m.Xor(d, s)); break;
+                case Opcode.eori: RewriteLogical((s, d) => m.Xor(d, s)); break;
                 case Opcode.exg: RewriteExg(); break;
                 case Opcode.ext: RewriteExt(); break;
                 case Opcode.extb: RewriteExtb(); break;
-                case Opcode.fadd: RewriteFBinOp((s, d) => emitter.FAdd(d, s)); break;
+                case Opcode.fadd: RewriteFBinOp((s, d) => m.FAdd(d, s)); break;
                     //$REVIEW: the following don't respect NaN, but NaN typically doesn't exist in HLLs.
+                case Opcode.fbf: m.Nop(); break;
                 case Opcode.fbnge: RewriteFbcc(ConditionCode.LT); break;
                 case Opcode.fbnlt: RewriteFbcc(ConditionCode.GE); break;
                 case Opcode.fbnle: RewriteFbcc(ConditionCode.GT); break;
+                case Opcode.fbogl: RewriteFbcc(ConditionCode.NE); break;
+                case Opcode.fbult: RewriteFbcc(ConditionCode.LT); break;
+                case Opcode.fbun: RewriteFbcc(ConditionCode.IS_NAN); break;
                 case Opcode.fcmp: RewriteFcmp(); break;
-                case Opcode.fdiv: RewriteFBinOp((s, d) => emitter.FDiv(d, s)); break;
+                case Opcode.fdiv: RewriteFBinOp((s, d) => m.FDiv(d, s)); break;
                 case Opcode.fmove: RewriteFmove(); break;
                 case Opcode.fmovecr: RewriteFmovecr(); break;
                 case Opcode.fmovem: RewriteMovem(i => arch.GetRegister(i+Registers.fp0.Number)); break;
-                case Opcode.fmul: RewriteFBinOp((s, d) => emitter.FMul(d,s)); break;
-                case Opcode.fneg: RewriteFUnaryOp(emitter.Neg); break;
-                case Opcode.fsub: RewriteFBinOp((s, d) => emitter.FSub(d, s)); break;
-
-                case Opcode.illegal: if (!RewriteIllegal()) goto default; break;
+                case Opcode.fmul: RewriteFBinOp((s, d) => m.FMul(d,s)); break;
+                case Opcode.fneg: RewriteFUnaryOp(m.Neg); break;
+                case Opcode.fsub: RewriteFBinOp((s, d) => m.FSub(d, s)); break;
                 case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.jsr: RewriteJsr(); break;
                 case Opcode.lea: RewriteLea(); break;
                 case Opcode.link: RewriteLink(); break;
-                case Opcode.lsl: RewriteShift((s, d) => emitter.Shl(d, s)); break;
-                case Opcode.lsr: RewriteShift((s, d) => emitter.Shr(d, s)); break;
+                case Opcode.lsl: RewriteShift((s, d) => m.Shl(d, s)); break;
+                case Opcode.lsr: RewriteShift((s, d) => m.Shr(d, s)); break;
                 case Opcode.move: RewriteMove(true); break;
                 case Opcode.movea: RewriteMove(false); break;
+                case Opcode.movep: RewriteMovep(); break;
                 case Opcode.moveq: RewriteMoveq(); break;
                 case Opcode.movem: RewriteMovem(arch.GetRegister); break;
-                case Opcode.muls: RewriteMul((s, d) => emitter.SMul(d, s)); break;
-                case Opcode.mulu: RewriteMul((s, d) => emitter.UMul(d, s)); break;
-                case Opcode.neg: RewriteUnary(s => emitter.Neg(s), AllConditions); break;
+                case Opcode.muls: RewriteMul((s, d) => m.SMul(d, s)); break;
+                case Opcode.mulu: RewriteMul((s, d) => m.UMul(d, s)); break;
+                case Opcode.neg: RewriteUnary(s => m.Neg(s), AllConditions); break;
                 case Opcode.negx: RewriteUnary(RewriteNegx, AllConditions); break;
-                case Opcode.nop: emitter.Nop(); break;
-                case Opcode.not: RewriteUnary(s => emitter.Comp(s), LogicalConditions); break;
-                case Opcode.or: RewriteLogical((s, d) => emitter.Or(d, s)); break;
-                case Opcode.ori: RewriteLogical((s, d) => emitter.Or(d, s)); break;
+                case Opcode.nop: m.Nop(); break;
+                case Opcode.not: RewriteUnary(s => m.Comp(s), LogicalConditions); break;
+                case Opcode.or: RewriteLogical((s, d) => m.Or(d, s)); break;
+                case Opcode.ori: RewriteLogical((s, d) => m.Or(d, s)); break;
                 case Opcode.pea: RewritePea(); break;
                 case Opcode.rol: RewriteRotation(PseudoProcedure.Rol); break;
                 case Opcode.ror: RewriteRotation(PseudoProcedure.Ror);  break;
@@ -179,21 +197,24 @@ VS Overflow Set 1001 V
                 case Opcode.spl: RewriteScc(ConditionCode.GT, FlagM.NF); break;
                 case Opcode.st: orw.RewriteMoveDst(di.op1, di.Address, PrimitiveType.Bool, Constant.True()); break;
                 case Opcode.sf: orw.RewriteMoveDst(di.op1, di.Address, PrimitiveType.Bool, Constant.False()); break;
-                case Opcode.sub: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
-                case Opcode.suba: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
-                case Opcode.subi: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
-                case Opcode.subq: RewriteAddSubq((s, d) => emitter.ISub(d, s)); break;
-                case Opcode.subx: RewriteArithmetic((s, d) => emitter.ISub(emitter.ISub(d, s), frame.EnsureFlagGroup(Registers.ccr, (uint)FlagM.XF, "X", PrimitiveType.Bool))); break;
+                case Opcode.stop: RewriteStop(); break;
+                case Opcode.sub: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
+                case Opcode.suba: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
+                case Opcode.subi: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
+                case Opcode.subq: RewriteAddSubq((s, d) => m.ISub(d, s)); break;
+                case Opcode.subx: RewriteArithmetic((s, d) => m.ISub(m.ISub(d, s), binder.EnsureFlagGroup(Registers.ccr, (uint)FlagM.XF, "X", PrimitiveType.Bool))); break;
                 case Opcode.swap: RewriteSwap(); break;
+                case Opcode.trap: RewriteTrap(); break;
                 case Opcode.tst: RewriteTst(); break;
                 case Opcode.unlk: RewriteUnlk(); break;
-                default:
-                    throw new AddressCorrelatedException(
-                        di.Address,
-                        "Rewriting M68k opcode '{0}' is not supported yet.",
-                        di.code);
                 }
-                yield return ric;
+                yield return new RtlInstructionCluster(
+                    addr,
+                    len,
+                    rtlInstructions.ToArray())
+                {
+                    Class = rtlc
+                };
             }
             yield break;
         }
@@ -207,6 +228,13 @@ VS Overflow Set 1001 V
         {
             var rOp = op as RegisterOperand;
             return rOp != null ? rOp.Register : null;
+        }
+
+        private void EmitInvalid()
+        {
+            rtlInstructions.Clear();
+            rtlc = RtlClass.Invalid;
+            m.Invalid();
         }
 
         static Rewriter()

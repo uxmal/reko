@@ -512,10 +512,6 @@ namespace Reko.Arch.M68k
         private MachineOperand get_ea_mode_str(uint instruction, PrimitiveType dataWidth)
         {
             uint extension;
-            uint @base;
-            uint outer;
-            string base_reg = "";
-            string index_reg = "";
             bool preindex;
             bool postindex;
             bool comma = false;
@@ -618,79 +614,106 @@ namespace Reko.Arch.M68k
                         break;
                     }
 
-                    @base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
-                    outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
+                    Constant @base = null;
+                    Constant outer = null;
+                    RegisterStorage base_reg = null;
+                    RegisterStorage index_reg = null;
+                    if (EXT_BASE_DISPLACEMENT_PRESENT(extension))
+                    {
+                        @base = rdr.ReadBe(EXT_BASE_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16);
+                    }
+                    if (EXT_OUTER_DISPLACEMENT_PRESENT(extension))
+                    {
+                        outer = rdr.ReadBe(EXT_OUTER_DISPLACEMENT_LONG(extension)
+                            ? PrimitiveType.Word32
+                            : PrimitiveType.Int16);
+                    }
                     if (EXT_BASE_REGISTER_PRESENT(extension))
-                        base_reg = string.Format("A{0}", instruction & 7);
+                        base_reg = Registers.AddressRegister((int)instruction & 7);
                     else
-                        base_reg = "";
+                        base_reg = null;
                     if (EXT_INDEX_REGISTER_PRESENT(extension))
                     {
-                        index_reg = string.Format("{0}{1}.{2}", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
-                        if (EXT_INDEX_SCALE(extension) != 0)
-                            index_reg += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
+                        index_reg = EXT_INDEX_AR(extension)
+                           ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
+                           : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension));
                     }
                     else
-                        index_reg = "";
+                        index_reg = null;
                     preindex = (extension & 7) > 0 && (extension & 7) < 4;
                     postindex = (extension & 7) > 4;
-
-                    mode = "(";
-                    if (preindex || postindex)
-                        mode += "[";
-                    if (@base != 0)
-                    {
-                        if (EXT_BASE_DISPLACEMENT_LONG(extension))
-                        {
-                            mode += make_signed_hex_str_32(@base);
-                        }
-                        else
-                        {
-                            mode += make_signed_hex_str_16(@base);
-                        }
-                        comma = true;
-                    }
-                    if (base_reg != "")
-                    {
-                        if (comma)
-                            mode += ",";
-                        mode += base_reg;
-                        comma = true;
-                    }
-                    if (postindex)
-                    {
-                        mode += "]";
-                        comma = true;
-                    }
-                    if (index_reg != "")
-                    {
-                        if (comma)
-                            mode += ",";
-                        mode += index_reg;
-                        comma = true;
-                    }
-                    if (preindex)
-                    {
-                        mode += "]";
-                        comma = true;
-                    }
-                    if (outer != 0)
-                    {
-                        if (comma)
-                            mode += ",";
-                        mode += make_signed_hex_str_16(outer);
-                    }
-                    mode += ")";
-                    break;
+                    var op = new IndexedOperand(
+                        dataWidth, @base, outer, base_reg, index_reg,
+                        EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Word16,
+                        1 << EXT_INDEX_SCALE(extension),
+                        preindex,
+                        postindex);
+                    return op;
+                    //mode = "(";
+                    //if (preindex || postindex)
+                    //    mode += "[";
+                    //if (@base != 0)
+                    //{
+                    //    if (EXT_BASE_DISPLACEMENT_LONG(extension))
+                    //    {
+                    //        mode += make_signed_hex_str_32(@base);
+                    //    }
+                    //    else
+                    //    {
+                    //        mode += make_signed_hex_str_16(@base);
+                    //    }
+                    //    comma = true;
+                    //}
+                    //if (base_reg != "")
+                    //{
+                    //    if (comma)
+                    //        mode += ",";
+                    //    mode += base_reg;
+                    //    comma = true;
+                    //}
+                    //if (postindex)
+                    //{
+                    //    mode += "]";
+                    //    comma = true;
+                    //}
+                    //if (index_reg != "")
+                    //{
+                    //    if (comma)
+                    //        mode += ",";
+                    //    mode += index_reg;
+                    //    comma = true;
+                    //}
+                    //if (preindex)
+                    //{
+                    //    mode += "]";
+                    //    comma = true;
+                    //}
+                    //if (outer != 0)
+                    //{
+                    //    if (comma)
+                    //        mode += ",";
+                    //    mode += make_signed_hex_str_16(outer);
+                    //}
+                    //mode += ")";
                 }
-
-                if (EXT_8BIT_DISPLACEMENT(extension) == 0)
-                    mode = string.Format("(A{0},{1}{2}.{3}", instruction & 7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
                 else
-                    mode = string.Format("({0},A{1},{2}{3}.{4}", make_signed_hex_str_8(extension), instruction & 7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
-                if (EXT_INDEX_SCALE(extension) != 0)
-                    mode += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
-                mode += ")";
+                {
+                    var regBase = Registers.AddressRegister((int)instruction & 7);
+                    var regIndex = EXT_INDEX_AR(extension)
+                        ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
+                        : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension));
+                    Constant disp = EXT_8BIT_DISPLACEMENT(extension) != 0
+                        ? Constant.SByte((sbyte)extension)
+                        : null;
+                    return new IndexedOperand(dataWidth, null, null, regBase, regIndex,
+                        EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
+                        1 << EXT_INDEX_SCALE(extension), false, false);
+                    //else
+                    //    mode = string.Format("({0},A{1},{2}{3}.{4}", make_signed_hex_str_8(extension), instruction & 7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+                    //if (EXT_INDEX_SCALE(extension) != 0)
+                    //    mode += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
+                    //mode += ")";
+                }
                 break;
             case 0x38:
                 // Absolute short address
@@ -725,62 +748,84 @@ namespace Reko.Arch.M68k
                         mode = "0";
                         break;
                     }
-                    @base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
-                    outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
+                    Constant @base = null;
+                    Constant outer = null;
+                    if (EXT_BASE_DISPLACEMENT_PRESENT(extension))
+                    {
+                        @base = rdr.ReadBe(EXT_BASE_DISPLACEMENT_LONG(extension)
+                            ? PrimitiveType.Word32
+                            : PrimitiveType.Int16);
+                    }
+                    if (EXT_OUTER_DISPLACEMENT_PRESENT(extension))
+                    { 
+                        outer = rdr.ReadBe(EXT_OUTER_DISPLACEMENT_LONG(extension)
+                             ? PrimitiveType.Word32
+                            : PrimitiveType.Int16);
+                    }
+                    RegisterStorage base_reg;
                     if (EXT_BASE_REGISTER_PRESENT(extension))
-                        base_reg = "PC";
+                        base_reg = Registers.pc;
                     else
-                        base_reg = "";
+                        base_reg = null;
+                    RegisterStorage index_reg;
                     if (EXT_INDEX_REGISTER_PRESENT(extension))
                     {
-                        index_reg = string.Format("{0}{1}.{2}", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
-                        if (EXT_INDEX_SCALE(extension) != 0)
-                            index_reg += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
+                        index_reg = EXT_INDEX_AR(extension)
+                            ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
+                            : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension));
+                        //    'A' : 'D', , EXT_INDEX_LONG(extension) ? 'l' : 'w');
+                        //if (EXT_INDEX_SCALE(extension) != 0)
+                        //    index_reg += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
                     }
                     else
-                        index_reg = "";
+                        index_reg =null;
                     preindex = (extension & 7) > 0 && (extension & 7) < 4;
                     postindex = (extension & 7) > 4;
-
-                    mode = "(";
-                    if (preindex || postindex)
-                        mode += "[";
-                    if (@base != 0)
-                    {
-                        mode += make_signed_hex_str_16(@base);
-                        comma = true;
-                    }
-                    if (base_reg != "")
-                    {
-                        if (comma)
-                            mode += ",";
-                        mode += base_reg;
-                        comma = true;
-                    }
-                    if (postindex)
-                    {
-                        mode += "]";
-                        comma = true;
-                    }
-                    if (index_reg != "")
-                    {
-                        if (comma)
-                            mode += ",";
-                        mode += index_reg;
-                        comma = true;
-                    }
-                    if (preindex)
-                    {
-                        mode += "]";
-                        comma = true;
-                    }
-                    if (outer != 0)
-                    {
-                        if (comma)
-                            mode += ",";
-                        mode += make_signed_hex_str_16(outer);
-                    }
-                    mode += ")";
+                    return new IndexedOperand(
+                        dataWidth, @base, outer, base_reg, index_reg,
+                        EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Word16,
+                        1 << EXT_INDEX_SCALE(extension),
+                        preindex,
+                        postindex);
+                    //mode = "(";
+                    //if (preindex || postindex)
+                    //    mode += "[";
+                    //if (@base != 0)
+                    //{
+                    //    mode += make_signed_hex_str_16(@base);
+                    //    comma = true;
+                    //}
+                    //if (base_reg != "")
+                    //{
+                    //    if (comma)
+                    //        mode += ",";
+                    //    mode += base_reg;
+                    //    comma = true;
+                    //}
+                    //if (postindex)
+                    //{
+                    //    mode += "]";
+                    //    comma = true;
+                    //}
+                    //if (index_reg != "")
+                    //{
+                    //    if (comma)
+                    //        mode += ",";
+                    //    mode += index_reg;
+                    //    comma = true;
+                    //}
+                    //if (preindex)
+                    //{
+                    //    mode += "]";
+                    //    comma = true;
+                    //}
+                    //if (outer != 0)
+                    //{
+                    //    if (comma)
+                    //        mode += ",";
+                    //    mode += make_signed_hex_str_16(outer);
+                    //}
+                    //mode += ")";
                     break;
                 }
 
@@ -2912,8 +2957,10 @@ namespace Reko.Arch.M68k
         static OpRec[] g_opcode_info;
 
         /// <summary>
-        /// Generates the table of opcode decoders. Should only be called once per execution, as the table is expensive to build.
-        /// Fortunately, OpRecs have no mutable state, so the table is reused for all disassembler instances.
+        /// Generates the table of opcode decoders. Should only be called once
+        /// per execution, as the table is expensive to build. Fortunately,
+        /// OpRecs have no mutable state, so the table is reused for all
+        /// disassembler instances.
         /// </summary>
         private static void GenTable()
         {
@@ -2972,10 +3019,10 @@ namespace Reko.Arch.M68k
 	new OpRec(d68000_bcc_8        , 0xf000, 0x6000, 0x000),
 	new OpRec(d68000_bcc_16       , 0xf0ff, 0x6000, 0x000),
 	new OpRec(d68020_bcc_32       , 0xf0ff, 0x60ff, 0x000),
-	new OpRec("D9,E0", 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r 
-	new OpRec("Ib,E0", 0xffc0, 0x0840, 0xbf8, Opcode.bchg),          // d68000_bchg_s 
-	new OpRec("D9,E0", 0xf1c0, 0x0180, 0xbf8, Opcode.bclr),          // d68000_bclr_r 
-	new OpRec("Ib,E0", 0xffc0, 0x0880, 0xbf8, Opcode.bclr),          // d68000_bclr_s 
+	new OpRec("sr:D9,E0", 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r 
+	new OpRec("sr:Ib,E0", 0xffc0, 0x0840, 0xbf8, Opcode.bchg),          // d68000_bchg_s 
+	new OpRec("sr:D9,E0", 0xf1c0, 0x0180, 0xbf8, Opcode.bclr),          // d68000_bclr_r 
+	new OpRec("sr:Ib,E0", 0xffc0, 0x0880, 0xbf8, Opcode.bclr),          // d68000_bclr_s 
 	new OpRec(d68020_bfchg        , 0xffc0, 0xeac0, 0xa78),
 	new OpRec(d68020_bfclr        , 0xffc0, 0xecc0, 0xa78),
 	new OpRec(d68020_bfexts       , 0xffc0, 0xebc0, 0xa7b),
@@ -2993,8 +3040,8 @@ namespace Reko.Arch.M68k
 	new OpRec("J", 0xff00, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_8 
 	new OpRec("J", 0xffff, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_16
 	new OpRec("J", 0xffff, 0x61ff, 0x000, Opcode.bsr),              // d68020_bsr_32
-	new OpRec("D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),      // d68000_btst_r 
-	new OpRec("Iw,E0", 0xffc0, 0x0800, 0xbfb, Opcode.btst),         // d68000_btst_s
+	new OpRec("sl:D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),      // d68000_btst_r 
+	new OpRec("sw:Iw,E0", 0xffc0, 0x0800, 0xbfb, Opcode.btst),      // d68000_btst_s
 	new OpRec(d68020_callm        , 0xffc0, 0x06c0, 0x27b),
 	new OpRec(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
 	new OpRec(d68020_cas_16       , 0xffc0, 0x0cc0, 0x3f8),
@@ -3015,7 +3062,7 @@ namespace Reko.Arch.M68k
 	new OpRec("sl:E0,D9", 0xf1c0, 0xb080, 0xfff, Opcode.cmp),   // d68000_cmp_32
 	new OpRec("sw:E0,A9", 0xf1c0, 0xb0c0, 0xfff, Opcode.cmpa),  // d68000_cmpa_16
 	new OpRec("sl:E0,A9", 0xf1c0, 0xb1c0, 0xfff, Opcode.cmpa),  // d68000_cmpa_32
-	new OpRec("sb:Ib,E0", 0xffc0, 0x0c00, 0xbf8, Opcode.cmpi),     // d68000_cmpi_8
+	new OpRec("sb:Ib,E0", 0xffc0, 0x0c00, 0xbf8, Opcode.cmpi),  // d68000_cmpi_8
 	new OpRec(d68020_cmpi_pcdi_8  , 0xffff, 0x0c3a, 0x000),
 	new OpRec(d68020_cmpi_pcix_8  , 0xffff, 0x0c3b, 0x000),
 	new OpRec("sw:Iw,E0", 0xffc0, 0x0c40, 0xbf8, Opcode.cmpi),      // d68000_cmpi_16

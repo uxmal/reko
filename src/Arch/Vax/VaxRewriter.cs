@@ -34,16 +34,17 @@ namespace Reko.Arch.Vax
 {
     public partial class VaxRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private Frame frame;
+        private IStorageBinder frame;
         private IRewriterHost host;
         private EndianImageReader rdr;
         private ProcessorState state;
         private VaxArchitecture arch;
-        private RtlInstructionCluster rtlc;
-        private RtlEmitter emitter;
+        private RtlClass rtlc;
+        private List<RtlInstruction> rtlInstructions;
+        private RtlEmitter m;
         private IEnumerator<VaxInstruction> dasm;
 
-        public VaxRewriter(VaxArchitecture arch, EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public VaxRewriter(VaxArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;
@@ -57,9 +58,11 @@ namespace Reko.Arch.Vax
         {
             while (dasm.MoveNext())
             {
-                rtlc = new RtlInstructionCluster(dasm.Current.Address, dasm.Current.Length);
-                rtlc.Class = RtlClass.Linear;
-                emitter = new RtlEmitter(rtlc.Instructions);
+                var addr = dasm.Current.Address;
+                var len = dasm.Current.Length;
+                rtlInstructions = new List<RtlInstruction>();
+                rtlc = RtlClass.Linear;
+                m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Opcode)
                 {
                 default:
@@ -67,11 +70,14 @@ namespace Reko.Arch.Vax
                     //emitter.SideEffect(Constant.String(
                     //    dasm.Current.ToString(),
                     //    StringType.NullTerminated(PrimitiveType.Char)));
-                    //break;
-                    throw new AddressCorrelatedException(
-                        dasm.Current.Address,
-                        "Rewriting of VAX instruction {0} not implemented yet.",
-                        dasm.Current.Opcode);
+                    //host.Warn(
+                    //    dasm.Current.Address,
+                    //    "Rewriting of VAX instruction {0} not implemented yet.",
+                    //    dasm.Current.Opcode);
+                    m.Invalid();
+                    break;
+                case Opcode.Invalid: m.Invalid(); break;
+                case Opcode.Reserved: m.Invalid(); break;
                 case Opcode.acbb: RewriteAcbi(PrimitiveType.Byte); break;
                 case Opcode.acbd: RewriteAcbf(PrimitiveType.Real64); break;
                 case Opcode.acbf: RewriteAcbf(PrimitiveType.Real32); break;
@@ -80,26 +86,32 @@ namespace Reko.Arch.Vax
                 case Opcode.acbl: RewriteAcbi(PrimitiveType.Word32); break;
                 case Opcode.acbw: RewriteAcbi(PrimitiveType.Word16); break;
                 case Opcode.adawi: RewriteAlu2(PrimitiveType.Word16, Adawi, AllFlags); break;
-                case Opcode.addb2: RewriteAlu2(PrimitiveType.Byte, emitter.IAdd, AllFlags); break;
-                case Opcode.addb3: RewriteAlu3(PrimitiveType.Byte, emitter.IAdd, AllFlags); break;
-                case Opcode.addd2: RewriteFpu2(PrimitiveType.Real64, emitter.FAdd, NZ00); break;
-                case Opcode.addd3: RewriteFpu3(PrimitiveType.Real64, emitter.FAdd, NZ00); break;
-                case Opcode.addf2: RewriteFpu2(PrimitiveType.Real32, emitter.FAdd, NZ00); break;
-                case Opcode.addf3: RewriteFpu3(PrimitiveType.Real32, emitter.FAdd, NZ00); break;
-                case Opcode.addl2: RewriteAlu2(PrimitiveType.Word32, emitter.IAdd, AllFlags); break;
-                case Opcode.addl3: RewriteAlu3(PrimitiveType.Word32, emitter.IAdd, AllFlags); break;
+                case Opcode.addb2: RewriteAlu2(PrimitiveType.Byte, m.IAdd, AllFlags); break;
+                case Opcode.addb3: RewriteAlu3(PrimitiveType.Byte, m.IAdd, AllFlags); break;
+                case Opcode.addd2: RewriteFpu2(PrimitiveType.Real64, m.FAdd, NZ00); break;
+                case Opcode.addd3: RewriteFpu3(PrimitiveType.Real64, m.FAdd, NZ00); break;
+                case Opcode.addf2: RewriteFpu2(PrimitiveType.Real32, m.FAdd, NZ00); break;
+                case Opcode.addf3: RewriteFpu3(PrimitiveType.Real32, m.FAdd, NZ00); break;
+                case Opcode.addl2: RewriteAlu2(PrimitiveType.Word32, m.IAdd, AllFlags); break;
+                case Opcode.addl3: RewriteAlu3(PrimitiveType.Word32, m.IAdd, AllFlags); break;
                 case Opcode.addp4: RewriteP4("vax_addp4"); break;
                 case Opcode.addp6: RewriteP6("vax_addp6"); break;
-                case Opcode.addw2: RewriteAlu2(PrimitiveType.Word16, emitter.IAdd, AllFlags); break;
-                case Opcode.addw3: RewriteAlu3(PrimitiveType.Word16, emitter.IAdd, AllFlags); break;
+                case Opcode.addw2: RewriteAlu2(PrimitiveType.Word16, m.IAdd, AllFlags); break;
+                case Opcode.addw3: RewriteAlu3(PrimitiveType.Word16, m.IAdd, AllFlags); break;
                 case Opcode.adwc: RewriteAdwc(); break;
-                case Opcode.aobleq: RewriteAob(emitter.Le); break;
-                case Opcode.aoblss: RewriteAob(emitter.Lt); break;
+                case Opcode.aobleq: RewriteAob(m.Le); break;
+                case Opcode.aoblss: RewriteAob(m.Lt); break;
                 case Opcode.ashl: RewriteAsh(PrimitiveType.Word32); break;
                 case Opcode.ashp: RewriteAshp(); break;
                 case Opcode.ashq: RewriteAsh(PrimitiveType.Word64); break;
                 case Opcode.bbc: RewriteBb(false); break;
+                case Opcode.bbcc: RewriteBbxx(false, false); break;
+                case Opcode.bbcci: RewriteBbxxi(false); break;
+                case Opcode.bbcs: RewriteBbxx(false, true); break;
                 case Opcode.bbs: RewriteBb(true); break;
+                case Opcode.bbsc: RewriteBbxx(true, false); break;
+                case Opcode.bbss: RewriteBbxx(true, true); break;
+                case Opcode.bbssi: RewriteBbxxi(true); break;
                 case Opcode.beql: RewriteBranch(ConditionCode.EQ, FlagM.ZF); break;
                 case Opcode.bgeq: RewriteBranch(ConditionCode.GE, FlagM.NF); break;
                 case Opcode.bgequ: RewriteBranch(ConditionCode.UGE, FlagM.CF); break;
@@ -116,25 +128,34 @@ namespace Reko.Arch.Vax
                 case Opcode.bicb3: RewriteAlu3(PrimitiveType.Byte, Bic, NZ00); break;
                 case Opcode.bicl2: RewriteAlu2(PrimitiveType.Word32, Bic, NZ00); break;
                 case Opcode.bicl3: RewriteAlu3(PrimitiveType.Word32, Bic, NZ00); break;
-                case Opcode.bicpsw: goto default;
+                case Opcode.bicpsw: RewriteBicpsw(); break;
                 case Opcode.bicw2: RewriteAlu2(PrimitiveType.Word16, Bic, NZ00); break;
                 case Opcode.bicw3: RewriteAlu3(PrimitiveType.Word16, Bic, NZ00); break;
-                case Opcode.bisb2: RewriteAlu2(PrimitiveType.Byte, emitter.Or, NZ00); break;
-                case Opcode.bisb3: RewriteAlu3(PrimitiveType.Byte, emitter.Or, NZ00); break;
-                case Opcode.bispsw: goto default;
-                case Opcode.bisl2: RewriteAlu2(PrimitiveType.Word32, emitter.Or, NZ00); break;
-                case Opcode.bisl3: RewriteAlu3(PrimitiveType.Word32, emitter.Or, NZ00); break;
-                case Opcode.bisw2: RewriteAlu2(PrimitiveType.Word16, emitter.Or, NZ00); break;
-                case Opcode.bisw3: RewriteAlu3(PrimitiveType.Word16, emitter.Or, NZ00); break;
-                case Opcode.blbc: RewriteBlb(emitter.Eq0); break;
-                case Opcode.blbs: RewriteBlb(emitter.Ne0); break;
+                case Opcode.bisb2: RewriteAlu2(PrimitiveType.Byte, m.Or, NZ00); break;
+                case Opcode.bisb3: RewriteAlu3(PrimitiveType.Byte, m.Or, NZ00); break;
+                case Opcode.bispsw: RewriteBispsw(); break;
+                case Opcode.bisl2: RewriteAlu2(PrimitiveType.Word32, m.Or, NZ00); break;
+                case Opcode.bisl3: RewriteAlu3(PrimitiveType.Word32, m.Or, NZ00); break;
+                case Opcode.bisw2: RewriteAlu2(PrimitiveType.Word16, m.Or, NZ00); break;
+                case Opcode.bisw3: RewriteAlu3(PrimitiveType.Word16, m.Or, NZ00); break;
+                case Opcode.bitb: RewriteBit(PrimitiveType.Byte); break;
+                case Opcode.bitw: RewriteBit(PrimitiveType.Byte); break;
+                case Opcode.bitl: RewriteBit(PrimitiveType.Byte); break;
+                case Opcode.blbc: RewriteBlb(m.Eq0); break;
+                case Opcode.blbs: RewriteBlb(m.Ne0); break;
                 case Opcode.bpt: RewriteBpt(); break;
                 case Opcode.brb: RewriteBranch(); break;
                 case Opcode.brw: RewriteBranch(); break;
                 case Opcode.bsbb: RewriteBsb(); break;
                 case Opcode.bsbw: RewriteBsb(); break;
 
-                case Opcode.chme: RewriteChme(); break;
+                case Opcode.caseb: goto default;
+                case Opcode.casel: goto default;
+                case Opcode.chme: RewriteChm("vax_chme"); break;
+                case Opcode.chmk: RewriteChm("vax_chmk"); break;
+                case Opcode.chms: RewriteChm("vax_chms"); break;
+                case Opcode.chmu: RewriteChm("vax_chmu"); break;
+
                 case Opcode.clrb: RewriteClr(PrimitiveType.Byte); break;
                 case Opcode.clrh: RewriteClr(PrimitiveType.Word128); break;
                 case Opcode.clrl: RewriteClr(PrimitiveType.Word32); break;
@@ -149,8 +170,6 @@ namespace Reko.Arch.Vax
                 case Opcode.cmpw: RewriteCmp(PrimitiveType.Word16); break;
                 case Opcode.cmpp3: RewriteCmpp3(); break;
                 case Opcode.cmpp4: RewriteCmpp4(); break;
-                case Opcode.cmpc3: goto default;
-                case Opcode.cmpc5: goto default;
                 case Opcode.cmpv: goto default;
                 case Opcode.cmpzv: goto default;
                 case Opcode.cvtbd: RewriteCvt(PrimitiveType.SByte, PrimitiveType.Real64); break;
@@ -181,6 +200,7 @@ namespace Reko.Arch.Vax
                 case Opcode.cvthg: RewriteCvt(PrimitiveType.Real128, PrimitiveType.Real64); break;
                 case Opcode.cvthl: RewriteCvt(PrimitiveType.Real128, PrimitiveType.Int32); break;
                 case Opcode.cvthw: RewriteCvt(PrimitiveType.Real128, PrimitiveType.Int16); break;
+                case Opcode.cvtps: RewriteCvtComplex("__cvtps"); break;
                 case Opcode.cvtrdl: RewriteCvtr(PrimitiveType.Real64, PrimitiveType.Int32); break;
                 case Opcode.cvtrfl: RewriteCvtr(PrimitiveType.Real32, PrimitiveType.Int32); break;
                 case Opcode.cvtrgl: RewriteCvtr(PrimitiveType.Real64, PrimitiveType.Int32); break;
@@ -193,9 +213,8 @@ namespace Reko.Arch.Vax
                 case Opcode.cvtlp: goto default;
                 case Opcode.cvtlw: RewriteCvt(PrimitiveType.Int32, PrimitiveType.Int16); break;
                 case Opcode.cvtpl: goto default;
-                case Opcode.cvtps: goto default;
                 case Opcode.cvtpt: goto default;
-                case Opcode.cvtsp: goto default;
+                case Opcode.cvtsp: RewriteCvtComplex("__cvtsp"); break;
                 case Opcode.cvttp: goto default;
                 case Opcode.cvtwb: RewriteCvt(PrimitiveType.Int16, PrimitiveType.SByte); break;
                 case Opcode.cvtwd: RewriteCvt(PrimitiveType.Int16, PrimitiveType.Real64); break;
@@ -206,35 +225,42 @@ namespace Reko.Arch.Vax
                 case Opcode.decb: RewriteIncDec(PrimitiveType.Byte, Dec); break;
                 case Opcode.decl: RewriteIncDec(PrimitiveType.Word32, Dec); break;
                 case Opcode.decw: RewriteIncDec(PrimitiveType.Word16, Dec); break;
-                case Opcode.divb2: RewriteAlu2(PrimitiveType.Byte, emitter.SDiv, AllFlags); break;
-                case Opcode.divb3: RewriteAlu3(PrimitiveType.Byte, emitter.SDiv, AllFlags); break;
-                case Opcode.divd2: RewriteFpu2(PrimitiveType.Real64, emitter.FDiv, AllFlags); break;
-                case Opcode.divd3: RewriteFpu3(PrimitiveType.Real64, emitter.FDiv, AllFlags); break;
-                case Opcode.divf2: RewriteFpu2(PrimitiveType.Real32, emitter.FDiv, AllFlags); break;
-                case Opcode.divf3: RewriteFpu3(PrimitiveType.Real32, emitter.FDiv, AllFlags); break;
-                case Opcode.divl2: RewriteAlu2(PrimitiveType.Word32, emitter.SDiv, AllFlags); break;
-                case Opcode.divl3: RewriteAlu3(PrimitiveType.Word32, emitter.SDiv, AllFlags); break;
+                case Opcode.divb2: RewriteAlu2(PrimitiveType.Byte, m.SDiv, AllFlags); break;
+                case Opcode.divb3: RewriteAlu3(PrimitiveType.Byte, m.SDiv, AllFlags); break;
+                case Opcode.divd2: RewriteFpu2(PrimitiveType.Real64, m.FDiv, AllFlags); break;
+                case Opcode.divd3: RewriteFpu3(PrimitiveType.Real64, m.FDiv, AllFlags); break;
+                case Opcode.divf2: RewriteFpu2(PrimitiveType.Real32, m.FDiv, AllFlags); break;
+                case Opcode.divf3: RewriteFpu3(PrimitiveType.Real32, m.FDiv, AllFlags); break;
+                case Opcode.divl2: RewriteAlu2(PrimitiveType.Word32, m.SDiv, AllFlags); break;
+                case Opcode.divl3: RewriteAlu3(PrimitiveType.Word32, m.SDiv, AllFlags); break;
                 case Opcode.divp: RewriteDivp(); break;
-                case Opcode.divw2: RewriteAlu2(PrimitiveType.Word16, emitter.SDiv, AllFlags); break;
-                case Opcode.divw3: RewriteAlu3(PrimitiveType.Word16, emitter.SDiv, AllFlags); break;
+                case Opcode.divw2: RewriteAlu2(PrimitiveType.Word16, m.SDiv, AllFlags); break;
+                case Opcode.divw3: RewriteAlu3(PrimitiveType.Word16, m.SDiv, AllFlags); break;
+                case Opcode.emodd: RewriteEmod("emodd", PrimitiveType.Real64 , PrimitiveType.Byte); break; //$TODO: VAX floating point types
+                case Opcode.emodf: RewriteEmod("emodf", PrimitiveType.Real32 , PrimitiveType.Byte); break; //$TODO: VAX floating point types
+                case Opcode.emodg: RewriteEmod("emodg", PrimitiveType.Real64 , PrimitiveType.Word16); break; //$TODO: VAX floating point types
+                case Opcode.emodh: RewriteEmod("emodh", PrimitiveType.Real128, PrimitiveType.Word16); break; //$TODO: VAX floating point types
 
+                case Opcode.ffc: RewriteFfx("__ffc"); break;
+                case Opcode.ffs: RewriteFfx("__ffs"); break;
                 case Opcode.halt: RewriteHalt(); break;
                 case Opcode.incb: RewriteIncDec(PrimitiveType.Byte, Inc); break;
                 case Opcode.incl: RewriteIncDec(PrimitiveType.Word32, Inc); break;
                 case Opcode.incw: RewriteIncDec(PrimitiveType.Word16, Inc); break;
+                case Opcode.insque: RewriteInsque(); break;
                 case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.jsb: RewriteJsb(); break;
 
-                case Opcode.mcomb: RewriteAluUnary2(PrimitiveType.Byte, emitter.Comp, NZ00); break;
-                case Opcode.mcoml: RewriteAluUnary2(PrimitiveType.Word32, emitter.Comp, NZ00); break;
-                case Opcode.mcomw: RewriteAluUnary2(PrimitiveType.Word16, emitter.Comp, NZ00); break;
-                case Opcode.mnegb: RewriteAluUnary2(PrimitiveType.Byte, emitter.Neg, AllFlags); break;
-                case Opcode.mnegd: RewriteAluUnary2(PrimitiveType.Real64, emitter.FNeg, NZ00); break;
-                case Opcode.mnegf: RewriteAluUnary2(PrimitiveType.Real32, emitter.FNeg, NZ00); break;
-                case Opcode.mnegg: RewriteAluUnary2(PrimitiveType.Real64, emitter.FNeg, NZ00); break;
-                case Opcode.mnegh: RewriteAluUnary2(PrimitiveType.Word128, emitter.FNeg, NZ00); break;
-                case Opcode.mnegl: RewriteAluUnary2(PrimitiveType.Word32, emitter.Neg, AllFlags); break;
-                case Opcode.mnegw: RewriteAluUnary2(PrimitiveType.Word16, emitter.Neg, AllFlags); break;
+                case Opcode.mcomb: RewriteAluUnary2(PrimitiveType.Byte, m.Comp, NZ00); break;
+                case Opcode.mcoml: RewriteAluUnary2(PrimitiveType.Word32, m.Comp, NZ00); break;
+                case Opcode.mcomw: RewriteAluUnary2(PrimitiveType.Word16, m.Comp, NZ00); break;
+                case Opcode.mnegb: RewriteAluUnary2(PrimitiveType.Byte, m.Neg, AllFlags); break;
+                case Opcode.mnegd: RewriteAluUnary2(PrimitiveType.Real64, m.FNeg, NZ00); break;
+                case Opcode.mnegf: RewriteAluUnary2(PrimitiveType.Real32, m.FNeg, NZ00); break;
+                case Opcode.mnegg: RewriteAluUnary2(PrimitiveType.Real64, m.FNeg, NZ00); break;
+                case Opcode.mnegh: RewriteAluUnary2(PrimitiveType.Word128, m.FNeg, NZ00); break;
+                case Opcode.mnegl: RewriteAluUnary2(PrimitiveType.Word32, m.Neg, AllFlags); break;
+                case Opcode.mnegw: RewriteAluUnary2(PrimitiveType.Word16, m.Neg, AllFlags); break;
 
                 case Opcode.movab: RewriteMova(PrimitiveType.Byte); break;
                 case Opcode.movah: RewriteMova(PrimitiveType.Real128); break;
@@ -257,22 +283,22 @@ namespace Reko.Arch.Vax
                 case Opcode.movzbl: RewriteMovz(PrimitiveType.Byte, PrimitiveType.UInt32); break;
                 case Opcode.movzbw: RewriteMovz(PrimitiveType.Byte, PrimitiveType.UInt16); break;
                 case Opcode.movzwl: RewriteMovz(PrimitiveType.Word16, PrimitiveType.UInt32); break;
-                case Opcode.mulb2: RewriteAlu2(PrimitiveType.Byte, emitter.IMul, AllFlags); break;
-                case Opcode.mulb3: RewriteAlu3(PrimitiveType.Byte, emitter.IMul, AllFlags); break;
-                case Opcode.muld2: RewriteAlu2(PrimitiveType.Real64, emitter.FMul, AllFlags); break;
-                case Opcode.muld3: RewriteAlu3(PrimitiveType.Real64, emitter.FMul, AllFlags); break;
-                case Opcode.mulf2: RewriteAlu2(PrimitiveType.Real32, emitter.FMul, AllFlags); break;
-                case Opcode.mulf3: RewriteAlu3(PrimitiveType.Real32, emitter.FMul, AllFlags); break;
-                case Opcode.mulg2: RewriteAlu2(PrimitiveType.Real64, emitter.FMul, AllFlags); break;
-                case Opcode.mulg3: RewriteAlu3(PrimitiveType.Real64, emitter.FMul, AllFlags); break;
-                case Opcode.mulh2: RewriteAlu2(PrimitiveType.Real128, emitter.FMul, AllFlags); break;
-                case Opcode.mulh3: RewriteAlu3(PrimitiveType.Real128, emitter.FMul, AllFlags); break;
-                case Opcode.mull2: RewriteAlu2(PrimitiveType.Word32, emitter.IMul, AllFlags); break;
-                case Opcode.mull3: RewriteAlu3(PrimitiveType.Word32, emitter.IMul, AllFlags); break;
+                case Opcode.mulb2: RewriteAlu2(PrimitiveType.Byte, m.IMul, AllFlags); break;
+                case Opcode.mulb3: RewriteAlu3(PrimitiveType.Byte, m.IMul, AllFlags); break;
+                case Opcode.muld2: RewriteAlu2(PrimitiveType.Real64, m.FMul, AllFlags); break;
+                case Opcode.muld3: RewriteAlu3(PrimitiveType.Real64, m.FMul, AllFlags); break;
+                case Opcode.mulf2: RewriteAlu2(PrimitiveType.Real32, m.FMul, AllFlags); break;
+                case Opcode.mulf3: RewriteAlu3(PrimitiveType.Real32, m.FMul, AllFlags); break;
+                case Opcode.mulg2: RewriteAlu2(PrimitiveType.Real64, m.FMul, AllFlags); break;
+                case Opcode.mulg3: RewriteAlu3(PrimitiveType.Real64, m.FMul, AllFlags); break;
+                case Opcode.mulh2: RewriteAlu2(PrimitiveType.Real128, m.FMul, AllFlags); break;
+                case Opcode.mulh3: RewriteAlu3(PrimitiveType.Real128, m.FMul, AllFlags); break;
+                case Opcode.mull2: RewriteAlu2(PrimitiveType.Word32, m.IMul, AllFlags); break;
+                case Opcode.mull3: RewriteAlu3(PrimitiveType.Word32, m.IMul, AllFlags); break;
                 case Opcode.mulp: RewriteMulp(); break;
-                case Opcode.mulw2: RewriteAlu2(PrimitiveType.Word16, emitter.IMul, AllFlags); break;
-                case Opcode.mulw3: RewriteAlu3(PrimitiveType.Word16, emitter.IMul, AllFlags); break;
-                case Opcode.nop: emitter.Nop(); break;
+                case Opcode.mulw2: RewriteAlu2(PrimitiveType.Word16, m.IMul, AllFlags); break;
+                case Opcode.mulw3: RewriteAlu3(PrimitiveType.Word16, m.IMul, AllFlags); break;
+                case Opcode.nop: m.Nop(); break;
 
                 case Opcode.polyd: RewritePoly(PrimitiveType.Real64); break;
                 case Opcode.polyf: RewritePoly(PrimitiveType.Real32); break;
@@ -291,29 +317,31 @@ namespace Reko.Arch.Vax
                 case Opcode.pushaq: RewritePusha(); break;
                 case Opcode.pushl: RewritePush(PrimitiveType.Word32); break;
 
+                case Opcode.rei: RewriteRei(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.rotl: RewriteAlu3(PrimitiveType.Word32, Rotl, NZ00); break;
                 case Opcode.rsb: RewriteRsb(); break;
 
                 case Opcode.sbwc: RewriteSbwc(); break;
-                case Opcode.sobgeq: RewriteSob(emitter.Ge); break;
-                case Opcode.sobgtr: RewriteSob(emitter.Gt); break;
-                case Opcode.subb2: RewriteAlu2(PrimitiveType.Byte, emitter.ISub, AllFlags); break;
-                case Opcode.subb3: RewriteAlu3(PrimitiveType.Byte, emitter.ISub, AllFlags); break;
-                case Opcode.subd2: RewriteAlu2(PrimitiveType.Real64, emitter.FSub, NZ00); break;
-                case Opcode.subd3: RewriteAlu3(PrimitiveType.Real64, emitter.FSub, NZ00); break;
-                case Opcode.subf2: RewriteAlu2(PrimitiveType.Real32, emitter.FSub, NZ00); break;
-                case Opcode.subf3: RewriteAlu3(PrimitiveType.Real32, emitter.FSub, NZ00); break;
-                case Opcode.subg2: RewriteAlu2(PrimitiveType.Real64, emitter.FSub, NZ00); break;
-                case Opcode.subg3: RewriteAlu3(PrimitiveType.Real64, emitter.FSub, NZ00); break;
-                case Opcode.subh2: RewriteAlu2(PrimitiveType.Real128, emitter.FSub, NZ00); break;
-                case Opcode.subh3: RewriteAlu3(PrimitiveType.Real128, emitter.FSub, NZ00); break;
-                case Opcode.subl2: RewriteAlu2(PrimitiveType.Word32, emitter.ISub, AllFlags); break;
-                case Opcode.subl3: RewriteAlu3(PrimitiveType.Word32, emitter.ISub, AllFlags); break;
+                case Opcode.scanc: RewriteScanc(); break;
+                case Opcode.sobgeq: RewriteSob(m.Ge); break;
+                case Opcode.sobgtr: RewriteSob(m.Gt); break;
+                case Opcode.subb2: RewriteAlu2(PrimitiveType.Byte, m.ISub, AllFlags); break;
+                case Opcode.subb3: RewriteAlu3(PrimitiveType.Byte, m.ISub, AllFlags); break;
+                case Opcode.subd2: RewriteAlu2(PrimitiveType.Real64, m.FSub, NZ00); break;
+                case Opcode.subd3: RewriteAlu3(PrimitiveType.Real64, m.FSub, NZ00); break;
+                case Opcode.subf2: RewriteAlu2(PrimitiveType.Real32, m.FSub, NZ00); break;
+                case Opcode.subf3: RewriteAlu3(PrimitiveType.Real32, m.FSub, NZ00); break;
+                case Opcode.subg2: RewriteAlu2(PrimitiveType.Real64, m.FSub, NZ00); break;
+                case Opcode.subg3: RewriteAlu3(PrimitiveType.Real64, m.FSub, NZ00); break;
+                case Opcode.subh2: RewriteAlu2(PrimitiveType.Real128, m.FSub, NZ00); break;
+                case Opcode.subh3: RewriteAlu3(PrimitiveType.Real128, m.FSub, NZ00); break;
+                case Opcode.subl2: RewriteAlu2(PrimitiveType.Word32, m.ISub, AllFlags); break;
+                case Opcode.subl3: RewriteAlu3(PrimitiveType.Word32, m.ISub, AllFlags); break;
                 case Opcode.subp4: RewriteP4("vax_subp4"); break;
                 case Opcode.subp6: RewriteP6("vax_subp6"); break;
-                case Opcode.subw2: RewriteAlu2(PrimitiveType.Word16, emitter.ISub, AllFlags); break;
-                case Opcode.subw3: RewriteAlu3(PrimitiveType.Word16, emitter.ISub, AllFlags); break;
+                case Opcode.subw2: RewriteAlu2(PrimitiveType.Word16, m.ISub, AllFlags); break;
+                case Opcode.subw3: RewriteAlu3(PrimitiveType.Word16, m.ISub, AllFlags); break;
                 case Opcode.tstb: RewriteTst(PrimitiveType.Byte, ICmp0); break;
                 case Opcode.tstd: RewriteTst(PrimitiveType.Real64, FCmp0); break;
                 case Opcode.tstf: RewriteTst(PrimitiveType.Real32, FCmp0); break;
@@ -321,14 +349,13 @@ namespace Reko.Arch.Vax
                 case Opcode.tsth: RewriteTst(PrimitiveType.Real128, FCmp0); break;
                 case Opcode.tstl: RewriteTst(PrimitiveType.Word32, ICmp0); break;
                 case Opcode.tstw: RewriteTst(PrimitiveType.Word16, ICmp0); break;
-                case Opcode.xorb2: RewriteAlu2(PrimitiveType.Byte, emitter.Xor, NZ00); break;
-                case Opcode.xorb3: RewriteAlu3(PrimitiveType.Byte, emitter.Xor, NZ00); break;
-                case Opcode.xorl2: RewriteAlu2(PrimitiveType.Word32, emitter.Xor, NZ00); break;
-                case Opcode.xorl3: RewriteAlu3(PrimitiveType.Word32, emitter.Xor, NZ00); break;
-                case Opcode.xorw2: RewriteAlu2(PrimitiveType.Word16, emitter.Xor, NZ00); break;
-                case Opcode.xorw3: RewriteAlu3(PrimitiveType.Word16, emitter.Xor, NZ00); break;
+                case Opcode.xorb2: RewriteAlu2(PrimitiveType.Byte, m.Xor, NZ00); break;
+                case Opcode.xorb3: RewriteAlu3(PrimitiveType.Byte, m.Xor, NZ00); break;
+                case Opcode.xorl2: RewriteAlu2(PrimitiveType.Word32, m.Xor, NZ00); break;
+                case Opcode.xorl3: RewriteAlu3(PrimitiveType.Word32, m.Xor, NZ00); break;
+                case Opcode.xorw2: RewriteAlu2(PrimitiveType.Word16, m.Xor, NZ00); break;
+                case Opcode.xorw3: RewriteAlu3(PrimitiveType.Word16, m.Xor, NZ00); break;
 
-                case Opcode.rei: goto default;
                 case Opcode.ldpctx: goto default;
                 case Opcode.svpctx: goto default;
                 case Opcode.editpc: goto default;
@@ -337,10 +364,7 @@ namespace Reko.Arch.Vax
                 case Opcode.locc: goto default;
                 case Opcode.crc: goto default;
                 case Opcode.skpc: goto default;
-                case Opcode.insque: goto default;
                 case Opcode.remque: goto default;
-                case Opcode.emodf: goto default;
-                case Opcode.scanc: goto default;
                 case Opcode.spanc: goto default;
                 case Opcode.insqhi: goto default;
                 case Opcode.insqti: goto default;
@@ -349,31 +373,14 @@ namespace Reko.Arch.Vax
                 case Opcode.movtuc: goto default;
                 case Opcode.remqti: goto default;
 
-                case Opcode.bitb: goto default;
-                case Opcode.emodd: goto default;
 
                 case Opcode.emul: goto default;
                 case Opcode.ediv: goto default;
                 case Opcode.casew: goto default;
-                case Opcode.bitw: goto default;
-                case Opcode.chmk: goto default;
-                case Opcode.chms: goto default;
-                case Opcode.caseb: goto default;
-                case Opcode.chmu: goto default;
-                case Opcode.bbss: goto default;
-                case Opcode.bbcs: goto default;
-                case Opcode.bbsc: goto default;
-                case Opcode.bbcc: goto default;
-                case Opcode.bbssi: goto default;
-                case Opcode.bbcci: goto default;
-                case Opcode.ffs: goto default;
-                case Opcode.ffc: goto default;
                 case Opcode.extv: goto default;
-                case Opcode.casel: goto default;
                 case Opcode.extzv: goto default;
                 case Opcode.insv: goto default;
 
-                case Opcode.bitl: goto default;
                 case Opcode.mtpr: goto default;
                 case Opcode.callg: goto default;
                 case Opcode.mfpr: goto default;
@@ -389,7 +396,6 @@ namespace Reko.Arch.Vax
                 case Opcode.addg3: goto default;
                 case Opcode.divg2: goto default;
                 case Opcode.divg3: goto default;
-                case Opcode.emodg: goto default;
                 case Opcode.addh2: goto default;
                 case Opcode.addh3: goto default;
                 case Opcode.divh2: goto default;
@@ -403,7 +409,6 @@ namespace Reko.Arch.Vax
                 case Opcode.vsmull: goto default;
                 case Opcode.vvmulg: goto default;
                 case Opcode.vsmulg: goto default;
-                case Opcode.emodh: goto default;
                 case Opcode.vvmulf: goto default;
                 case Opcode.vsmulf: goto default;
                 case Opcode.vvmuld: goto default;
@@ -458,7 +463,13 @@ namespace Reko.Arch.Vax
                 case Opcode.bugl: goto default;
                 case Opcode.bugw: goto default;
                 }
-                yield return rtlc;
+                yield return new RtlInstructionCluster(
+                    addr,
+                    len, 
+                    rtlInstructions.ToArray())
+                {
+                    Class = rtlc
+                };
             }
         }
 
@@ -501,13 +512,18 @@ namespace Reko.Arch.Vax
             if (regOp != null)
             {
                 var reg = frame.EnsureRegister(regOp.Register);
+                if (reg == null)
+                    return null;
                 if (width.Size == 4)
                 {
                     return reg;
                 }
                 else if (width.Size == 8)
                 {
-                    var regHi = frame.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
+                    var rHi = arch.GetRegister(1 + (int)reg.Storage.Domain);
+                    if (rHi == null)
+                        return null;
+                    var regHi = frame.EnsureRegister(rHi);
                     return frame.EnsureSequence(regHi.Storage, reg.Storage, width);
                 }
                 else if (width.Size == 16)
@@ -522,7 +538,7 @@ namespace Reko.Arch.Vax
                 }
                 else
                 {
-                    return emitter.Cast(width, reg);
+                    return m.Cast(width, reg);
                 }
             }
             var immOp = op as ImmediateOperand;
@@ -539,37 +555,37 @@ namespace Reko.Arch.Vax
                     var reg = frame.EnsureRegister(memOp.Base);
                     if (memOp.AutoDecrement)
                     {
-                        emitter.Assign(reg, emitter.ISub(reg, width.Size));
+                        m.Assign(reg, m.ISub(reg, width.Size));
                     } else if (memOp.AutoIncrement)
                     {
                         var tmp = frame.CreateTemporary(reg.DataType);
-                        emitter.Assign(tmp, reg);
+                        m.Assign(tmp, reg);
                         reg = tmp;
                     }
                     ea = reg;
                     if (memOp.Offset != null)
                     {
-                        ea = emitter.IAdd(ea, memOp.Offset);
+                        ea = m.IAdd(ea, memOp.Offset);
                     }
                     if (memOp.Index != null)
                     {
                         Expression idx = frame.EnsureRegister(memOp.Index);
                         if (width.Size != 1)
-                            idx = emitter.IMul(idx, Constant.Int32(width.Size));
-                        ea = emitter.IAdd(ea, idx);
+                            idx = m.IMul(idx, Constant.Int32(width.Size));
+                        ea = m.IAdd(ea, idx);
                     }
                     Expression load;
                     if (memOp.Deferred)
-                        load = emitter.Load(width, emitter.LoadDw(ea));
+                        load = m.Load(width, m.LoadDw(ea));
                     else
-                        load = emitter.Load(width, ea);
+                        load = m.Load(width, ea);
                     if (memOp.AutoIncrement)
                     {
                         if (memOp.AutoIncrement)
                         {
                             reg = frame.EnsureRegister(memOp.Base);
                             int inc = (memOp.Deferred) ? 4 : width.Size;
-                            emitter.Assign(reg, emitter.IAdd(reg, inc));
+                            m.Assign(reg, m.IAdd(reg, inc));
                         }
                     }
                     return load;
@@ -593,16 +609,21 @@ namespace Reko.Arch.Vax
             if (regOp != null)
             {
                 var reg = frame.EnsureRegister(regOp.Register);
+                if (reg == null)
+                    return null;
                 if (width.Size < 4)
                 {
                     var tmp = frame.CreateTemporary(width);
-                    emitter.Assign(tmp, fn(emitter.Cast(width, reg)));
-                    emitter.Assign(reg, emitter.Dpb(reg, tmp, 0));
+                    m.Assign(tmp, fn(m.Cast(width, reg)));
+                    m.Assign(reg, m.Dpb(reg, tmp, 0));
                     return tmp;
                 }
                 else if (width.Size == 8)
                 {
-                    var regHi = frame.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
+                    var rHi = arch.GetRegister(1 + (int)reg.Storage.Domain);
+                    if (rHi == null)
+                        return null;
+                    var regHi = frame.EnsureRegister(rHi);
                     reg = frame.EnsureSequence(regHi.Storage, reg.Storage, width);
                 }
                 else if (width.Size == 16)
@@ -615,15 +636,13 @@ namespace Reko.Arch.Vax
                     var regHi = frame.EnsureSequence(regHi3.Storage, regHi2.Storage, PrimitiveType.Word64);
                     reg = frame.EnsureSequence(regHi.Storage, regLo.Storage, width);
                 }
-                emitter.Assign(reg, fn(reg));
+                m.Assign(reg, fn(reg));
                 return reg;
             }
-            if( op is ImmediateOperand)
+            if (op is ImmediateOperand || op is AddressOperand)
             {
-                throw new AddressCorrelatedException(
-                    dasm.Current.Address,
-                    "Instruction {0} is attempting to assign to an immediate value.",
-                    dasm.Current);
+                // Can't assign to an immediate.
+                return null;
             }
             var memOp = op as MemoryOperand;
             if (memOp != null)
@@ -634,26 +653,26 @@ namespace Reko.Arch.Vax
                     var reg = frame.EnsureRegister(memOp.Base);
                     if (memOp.AutoDecrement)
                     {
-                        emitter.Assign(reg, emitter.ISub(reg, width.Size));
+                        m.Assign(reg, m.ISub(reg, width.Size));
                     }
                     ea = reg;
                     if (memOp.Offset != null)
                     {
-                        ea = emitter.IAdd(ea, memOp.Offset);
+                        ea = m.IAdd(ea, memOp.Offset);
                     }
                     var tmp = frame.CreateTemporary(width);
-                    emitter.Assign(tmp, fn(emitter.Load(width, ea)));
+                    m.Assign(tmp, fn(m.Load(width, ea)));
                     Expression load; 
                     if (memOp.Deferred)
-                        load = emitter.Load(width, emitter.LoadDw(ea));
+                        load = m.Load(width, m.LoadDw(ea));
                     else
-                        load = emitter.Load(width, ea);
-                    emitter.Assign(load, tmp);
+                        load = m.Load(width, ea);
+                    m.Assign(load, tmp);
 
                     if (memOp.AutoIncrement)
                     {
                         int inc = (memOp.Deferred) ? 4 : width.Size;
-                        emitter.Assign(reg, emitter.IAdd(reg, inc));
+                        m.Assign(reg, m.IAdd(reg, inc));
                     }
                     return tmp;
                 }
@@ -669,34 +688,65 @@ namespace Reko.Arch.Vax
             return frame.EnsureFlagGroup(Registers.psw, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
         }
 
-        private void AllFlags(Expression dst)
+        private bool AllFlags(Expression dst)
         {
+            if (dst == null)
+            {
+                EmitInvalid();
+                return false;
+            }
             var grf = FlagGroup(FlagM.NZVC);
-            emitter.Assign(grf, emitter.Cond(dst));
+            m.Assign(grf, m.Cond(dst));
+            return true;
         }
 
-        private void NZ00(Expression dst)
+        private bool NZ00(Expression dst)
         {
+            if (dst == null)
+            {
+                EmitInvalid();
+                return false;
+            }
             var grf = FlagGroup(FlagM.NF| FlagM.ZF);
-            emitter.Assign(grf, emitter.Cond(dst));
+            m.Assign(grf, m.Cond(dst));
             var c = FlagGroup(FlagM.CF);
             var v = FlagGroup(FlagM.VF);
-            emitter.Assign(c, Constant.False());
-            emitter.Assign(v, Constant.False());
+            m.Assign(c, Constant.False());
+            m.Assign(v, Constant.False());
+            return true;
         }
 
-        private void NZV(Expression dst)
+        private bool NZV(Expression dst)
         {
+            if (dst == null)
+            {
+                EmitInvalid();
+                return false;
+            }
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
-            emitter.Assign(grf, emitter.Cond(dst));
+            m.Assign(grf, m.Cond(dst));
+            return true;
         }
 
-        private void NZV0(Expression dst)
+        private bool NZV0(Expression dst)
         {
+            if (dst == null)
+            {
+                EmitInvalid();
+                return false;
+            }
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
-            emitter.Assign(grf, emitter.Cond(dst));
+            m.Assign(grf, m.Cond(dst));
             var c = FlagGroup(FlagM.CF);
-            emitter.Assign(c, Constant.False());
+            m.Assign(c, Constant.False());
+            return true;
+        }
+
+        private void EmitInvalid()
+        {
+            rtlInstructions.Clear();
+            rtlc = RtlClass.Invalid;
+            m.Invalid();
         }
     }
 }

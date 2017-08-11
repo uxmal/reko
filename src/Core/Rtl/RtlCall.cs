@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -31,6 +32,7 @@ namespace Reko.Core.Rtl
     {
         public RtlCall(Expression target, byte stackPushedReturnAddressSize, RtlClass rtlClass) : base(target, rtlClass)
         {
+            Debug.Assert((rtlClass & (RtlClass.Call | RtlClass.Transfer)) != 0);
             this.ReturnAddressSize = stackPushedReturnAddressSize;
         }
 

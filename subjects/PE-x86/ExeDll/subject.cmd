@@ -1,1 +1,1 @@
-decompile.exe Executable.exe
+decompile.exe --heuristic shingle  Executable.exe

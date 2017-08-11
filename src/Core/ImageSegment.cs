@@ -90,9 +90,14 @@ namespace Reko.Core
             this.Access = access;
         }
 
-        public Address Address { get; private set; }    // Start address of the segment
+        /// <summary>
+        /// Start address of the segment
+        /// </summary>
+        public Address Address { get; private set; }
 
-        // Size of the segment address space (content may be smaller)
+        /// <summary>
+        /// Size of the segment address space (content may be smaller)
+        /// </summary>
         public uint Size { get; set; }
 
         public uint ContentSize { get { return (ctSize != 0) ? ctSize : Size; } set { ctSize = value; } }
@@ -106,15 +111,23 @@ namespace Reko.Core
         /// </remarks>
         public MemoryArea MemoryArea { get; set; }
 
+        /// <summary>
+        /// Access mode of the segment.
+        /// </summary>
 		public AccessMode Access { get; set; }
-
-        public bool IsDiscardable { get; set; }
 
         public ImageSegmentRenderer Designer { get; set; }
 
 		public string Name { get; set; }
 
         public Address EndAddress { get { return Address + ContentSize; } }
+
+        public bool IsDiscardable { get; set; }
+
+        /// <summary>
+        /// If set to true, this segment should not be emitted as source code.
+        /// </summary>
+        public bool IsHidden { get; set; }
 
         public bool IsExecutable { get { return (this.Access & AccessMode.Execute) != 0; } }
 

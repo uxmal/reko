@@ -36,56 +36,6 @@ using System.Threading;
 namespace Reko.Scanning
 {
     /// <summary>
-    /// A class implementing IScanner is responsible for tracing the execution
-    /// flow of a binary image. It uses a Rewriter to convert the machine-
-    /// specific instructions into lower-level register-transfer (RTL) 
-    /// instructions. By simulating the execution of branch and call
-    /// instructions, the IScanner can reconstruct the basic blocks and 
-    /// procedures that constituted the original source program. Any 
-    /// discoveries made are added to the Program instance.
-    /// </summary>
-    public interface IScanner
-    {
-        IServiceProvider Services { get; }
-
-        void ScanImage();
-        ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
-
-        void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint);
-        void EnqueueProcedure(Address addr);
-        Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
-        void EnqueueUserProcedure(Procedure_v1 sp);
-        void EnqueueUserProcedure(Address addr, FunctionType sig);
-        void EnqueueUserGlobalData(Address addr, DataType dt);
-
-        void Warn(Address addr, string message);
-        void Warn(Address addr, string message, params object[] args);
-        void Error(Address addr, string message);
-        FunctionType GetCallSignatureAtAddress(Address addrCallInstruction);
-        ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
-        void TerminateBlock(Block block, Address addrEnd);
-
-        /// <summary>
-        /// Find the block that contains the address <paramref name="addr"/>, or return null if there
-        /// is no such block.
-        /// </summary>
-        /// <param name="addrStart"></param>
-        /// <returns></returns>
-        Block FindContainingBlock(Address addr);
-        Block FindExactBlock(Address addr);
-        Block SplitBlock(Block block, Address addr);
-
-        EndianImageReader CreateReader(Address addr);
-
-        Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew);
-        void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
-
-        IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame);
-
-        void ScanImageHeuristically();
-    }
-
-    /// <summary>
     /// Scans the binary, locating and creating procedures and basic blocks by following calls, jumps,
     /// and branches. Simple data type analysis is done as well: for instance, pointers to
     /// code are located, as are global data pointers.
@@ -94,7 +44,7 @@ namespace Reko.Scanning
     /// Callers feed the scanner by calling EnqueueXXX methods before calling ProcessQueue(). ProcessQueue() then
     /// processes the queues.
     /// </remarks>
-    public class Scanner : IScanner, IRewriterHost
+    public class ScannerOld : ScannerBase, IScanner, IRewriterHost
     {
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
@@ -104,8 +54,9 @@ namespace Reko.Scanning
 
         private static TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
 
-        private Program program;
-        private PriorityQueue<WorkItem> queue;
+        protected DecompilerEventListener eventListener;
+
+        private PriorityQueue<WorkItem> procQueue;
         private SegmentMap segmentMap;
         private ImageMap imageMap;
         private IImportResolver importResolver;
@@ -113,18 +64,16 @@ namespace Reko.Scanning
         private Dictionary<Block, Address> blockStarts;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
         private Dictionary<Address, ImportReference> importReferences;
-        private DecompilerEventListener eventListener;
         private HashSet<Procedure> visitedProcs;
-        private Dictionary<Address, Procedure_v1> noDecompiledProcs;
         private CancellationTokenSource cancelSvc;
         private HashSet<Address> scannedGlobalData = new HashSet<Address>();
 
-        public Scanner(
-            Program program, 
+        public ScannerOld(
+            Program program,
             IImportResolver importResolver,
             IServiceProvider services)
+            : base(program, services.RequireService<DecompilerEventListener>())
         {
-            this.program = program;
             this.segmentMap = program.SegmentMap;
             this.importResolver = importResolver;
             this.Services = services;
@@ -137,13 +86,12 @@ namespace Reko.Scanning
                 program.ImageMap = segmentMap.CreateImageMap();
             }
             this.imageMap = program.ImageMap;
-            this.queue = new PriorityQueue<WorkItem>();
+            this.procQueue = new PriorityQueue<WorkItem>();
             this.blocks = new SortedList<Address, BlockRange>();
             this.blockStarts = new Dictionary<Block, Address>();
             this.pseudoProcs = program.PseudoProcedures;
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
-            this.noDecompiledProcs = new Dictionary<Address, Procedure_v1>();
         }
 
         public IServiceProvider Services { get; private set; }
@@ -164,11 +112,17 @@ namespace Reko.Scanning
                 this.Block = block;
                 this.Start = start;
                 this.End = end;
+                Debug.Assert(start < end);
             }
 
             public Block Block { get; private set; }
             public ulong Start { get; set; }
             public ulong End { get; set; }
+
+            public override string ToString()
+            {
+                return string.Format("[{0:X}..{1:X}) - {2:X}", Start, End, End - Start);
+            }
         }
 
         /// <summary>
@@ -181,13 +135,32 @@ namespace Reko.Scanning
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             Block b = new Block(proc, blockName) { Address = addr };
-            var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
-            blocks.Add(addr, new BlockRange(b, addr.ToLinear(), lastMem.BaseAddress.ToLinear() + (uint)lastMem.Length));
+            BlockRange br;
+            if (!blocks.TryGetUpperBound(addr, out br))
+            {
+                var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
+                blocks.Add(addr, new BlockRange(b, addr.ToLinear(), lastMem.BaseAddress.ToLinear() + (uint)lastMem.Length));
+            }
+            else
+            {
+                blocks.Add(addr, new BlockRange(b, addr.ToLinear(), br.Start));
+            }
             blockStarts.Add(b, addr);
             proc.ControlGraph.Blocks.Add(b);
 
-            imageMap.AddItem(addr, new ImageMapBlock { Block = b }); 
+            imageMap.AddItem(addr, new ImageMapBlock { Block = b });
             return b;
+        }
+
+        [Conditional("DEBUG")]
+        private void SanityCheck(SortedList<Address, BlockRange> blocks)
+        {
+            for (int i = 1; i < blocks.Count; ++i)
+            {
+                var prev = blocks.Values[i - 1];
+                var cur = blocks.Values[i];
+                Debug.Assert(prev.End <= cur.Start);
+            }
         }
 
         /// <summary>
@@ -203,33 +176,13 @@ namespace Reko.Scanning
             imageMap.TerminateItem(addr);
         }
 
-        private void TerminateAnyBlockAt(Address addr)
+        public void TerminateAnyBlockAt(Address addr)
         {
             var block = FindContainingBlock(addr);
             if (block != null)
             {
                 TerminateBlock(block, addr);
             }
-        }
-
-        public void Warn(Address addr, string message)
-        {
-            eventListener.Warn(eventListener.CreateAddressNavigator(program, addr), message);
-        }
-
-        public void Warn(Address addr, string message, params object[] args)
-        {
-            eventListener.Warn(eventListener.CreateAddressNavigator(program, addr), string.Format(message, args));
-        }
-
-        public void Error(Address addr, string message)
-        {
-            eventListener.Error(eventListener.CreateAddressNavigator(program, addr), message);
-        }
-
-        public EndianImageReader CreateReader(Address addr)
-        {
-            return program.CreateImageReader(addr);
         }
 
         /// <summary>
@@ -243,20 +196,20 @@ namespace Reko.Scanning
         /// <returns></returns>
         public virtual BlockWorkitem CreateBlockWorkItem(
             Address addrStart,
-            Procedure proc, 
+            Procedure proc,
             ProcessorState stateOnEntry)
         {
             return new BlockWorkitem(
                 this,
-                program,
+                Program,
                 stateOnEntry,
                 addrStart);
         }
 
-        public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame)
+        public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, IStorageBinder frame)
         {
-            return program.Architecture.CreateRewriter(
-                CreateReader(addrStart),
+            return Program.Architecture.CreateRewriter(
+                Program.CreateImageReader(addrStart),
                 state,
                 frame,
                 this);
@@ -267,7 +220,7 @@ namespace Reko.Scanning
             return new PromoteBlockWorkItem(addrStart)
             {
                 Scanner = this,
-                Program = program,
+                Program = Program,
                 Block = block,
                 ProcNew = procNew,
             };
@@ -276,46 +229,19 @@ namespace Reko.Scanning
         public void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
             if (sym.ProcessorState == null)
-                sym.ProcessorState = program.Architecture.CreateProcessorState();
-            queue.Enqueue(PriorityEntryPoint, new ImageSymbolWorkItem(this, program, sym, isEntryPoint));
+                sym.ProcessorState = Program.Architecture.CreateProcessorState();
+            procQueue.Enqueue(PriorityEntryPoint, new ImageSymbolWorkItem(this, Program, sym, isEntryPoint));
         }
 
-        public void EnqueueProcedure(Address addr)
+        public void EnqueueUserProcedure(Address addr, FunctionType sig, string name)
         {
-            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, null));
-        }
-
-        public void EnqueueUserProcedure(Procedure_v1 sp) {
-            Address addr;
-            if (!program.Architecture.TryParseAddress(sp.Address, out addr))
-                return;
-            Procedure proc;
-            if (program.Procedures.TryGetValue(addr, out proc))
-                return; // Already scanned. Do nothing.
-            if (!sp.Decompile)
-                return;
-            proc = EnsureProcedure(addr, sp.Name);
-            if (sp.Signature != null)
-            {
-                var sser = program.CreateProcedureSerializer();
-                proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
-            }
-            if (sp.Characteristics != null)
-            {
-                proc.Characteristics = sp.Characteristics;
-            }
-            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, sp.Name));
-        }
-
-        public void EnqueueUserProcedure(Address addr, FunctionType sig)
-        {
-            if (program.Procedures.ContainsKey(addr))
+            if (Program.Procedures.ContainsKey(addr))
                 return; // Already scanned. Do nothing.
             if (IsNoDecompiledProcedure(addr))
                 return;
-            var proc = EnsureProcedure(addr, null);
-            proc.Signature = (FunctionType)sig.Clone();
-            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, proc.Name));
+            var proc = EnsureProcedure(addr, name);
+            proc.Signature = sig;
+            procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, Program, addr, proc.Name));
         }
 
         public Block EnqueueJumpTarget(Address addrSrc, Address addrDest, Procedure proc, ProcessorState state)
@@ -339,7 +265,7 @@ namespace Reko.Scanning
                 {
                     // Easy case: split a block in our own procedure.
                     var wi = CreateBlockWorkItem(addrDest, proc, state);
-                    queue.Enqueue(PriorityJumpTarget, wi);
+                    procQueue.Enqueue(PriorityJumpTarget, wi);
                 }
                 else if (IsBlockLinearProcedureExit(block))
                 {
@@ -350,10 +276,10 @@ namespace Reko.Scanning
                     // We just created a block in a foreign procedure. 
                     blocks.Remove(addrDest);
                     block.Procedure.RemoveBlock(block);
-                    procDest = (Procedure) ScanProcedure(addrDest, null, state);
+                    procDest = (Procedure)ScanProcedure(addrDest, null, state);
                     var blockThunk = CreateCallRetThunk(addrSrc, proc, procDest);
                     var wi = CreatePromoteWorkItem(addrDest, block, procDest);
-                    queue.Enqueue(PriorityBlockPromote, wi);
+                    procQueue.Enqueue(PriorityBlockPromote, wi);
                     block = blockThunk;
                 }
             }
@@ -361,14 +287,14 @@ namespace Reko.Scanning
             {
                 // Jumped to a block with a different procedure than the 
                 // current one. Was the jump to the entry of an existing procedure?
-                if (program.Procedures.TryGetValue(addrDest, out procDest))
+                if (Program.Procedures.TryGetValue(addrDest, out procDest))
                 {
                     if (procDest == proc)
                     {
                         proc.Signature.StackDelta = block.Procedure.Signature.StackDelta;
                         proc.Signature.FpuStackDelta = block.Procedure.Signature.FpuStackDelta;
                         var wi = CreatePromoteWorkItem(addrDest, block, procDest);
-                        queue.Enqueue(PriorityBlockPromote, wi);
+                        procQueue.Enqueue(PriorityBlockPromote, wi);
                     }
                     else
                     {
@@ -392,16 +318,65 @@ namespace Reko.Scanning
                         // promote the block to a new procedure.
                         procDest = EnsureProcedure(addrDest, null);
                         var blockNew = CreateCallRetThunk(addrSrc, proc, procDest);
-                        EstablishInitialState(addrDest, program.Architecture.CreateProcessorState(), procDest);
+                        EstablishInitialState(addrDest, Program.Architecture.CreateProcessorState(), procDest);
                         procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
                         InjectProcedureEntryInstructions(addrDest, procDest);
                         var wi = CreatePromoteWorkItem(addrDest, block, procDest);
-                        queue.Enqueue(PriorityBlockPromote, wi);
+                        procQueue.Enqueue(PriorityBlockPromote, wi);
                         return blockNew;
                     }
                 }
             }
             return block;
+        }
+
+        public void EnqueueProcedure(Address addr)
+        {
+            procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, Program, addr, null));
+        }
+
+        public Address EnqueueUserProcedure(Procedure_v1 sp)
+        {
+            var de = EnsureUserProcedure(sp);
+            if (de == null)
+                return null;
+            procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, Program, de.Value.Key, sp.Name));
+            return de.Value.Key;
+        }
+
+        public void EnsureEntryPoint(ImageSymbol sym)
+        {
+            var proc = EnsureProcedure(sym.Address, sym.Name);
+            if (sym.Signature != null && !proc.Signature.ParametersValid)
+            {
+                var sser = Program.CreateProcedureSerializer();
+                var sig = sser.Deserialize(sym.Signature, proc.Frame);
+                proc.Signature = sig;
+            }
+            Program.CallGraph.EntryPoints.Add(proc);
+        }
+
+        protected KeyValuePair<Address, Procedure>? EnsureUserProcedure(Procedure_v1 sp)
+        {
+            Address addr;
+            if (!Program.Architecture.TryParseAddress(sp.Address, out addr))
+                return null;
+            Procedure proc;
+            if (Program.Procedures.TryGetValue(addr, out proc))
+                return null; // Already scanned. Do nothing.
+            if (!sp.Decompile)
+                return null;
+            proc = EnsureProcedure(addr, sp.Name);
+            if (sp.Signature != null)
+            {
+                var sser = Program.CreateProcedureSerializer();
+                proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
+            }
+            if (sp.Characteristics != null)
+            {
+                proc.Characteristics = sp.Characteristics;
+            }
+            return new KeyValuePair<Address, Procedure>(addr, proc);
         }
 
         public bool IsBlockLinearProcedureExit(Block block)
@@ -414,7 +389,7 @@ namespace Reko.Scanning
         private Block CloneBlockIntoOtherProcedure(Block block, Procedure proc)
         {
             Debug.Print("Cloning {0} to {1}", block.Name, proc);
-            var clonedBlock = new BlockCloner(block, proc, program.CallGraph).Execute();
+            var clonedBlock = new BlockCloner(block, proc, Program.CallGraph).Execute();
             //ReplaceSuccessorsWith(pred, block, clonedBlock);
             //pred.Procedure.ControlGraph.Blocks.Remove(block);
             return clonedBlock;
@@ -433,7 +408,7 @@ namespace Reko.Scanning
             //$BUG: ReturnAddressOnStack property needs to be properly set, the
             // EvenOdd sample shows how this doesn't work currently. 
             var blockName = string.Format(
-                "{0}_thunk_{1}", 
+                "{0}_thunk_{1}",
                 Block.GenerateName(addrFrom),
                 procNew.Name);
             var callRetThunkBlock = procOld.AddBlock(blockName);
@@ -441,13 +416,13 @@ namespace Reko.Scanning
 
             var linFrom = addrFrom.ToLinear();
             callRetThunkBlock.Statements.Add(
-                addrFrom.ToLinear(), 
+                addrFrom.ToLinear(),
                 new CallInstruction(
-                    new ProcedureConstant(program.Platform.PointerType, procNew),
+                    new ProcedureConstant(Program.Platform.PointerType, procNew),
                     new CallSite(
                         procNew.Signature.ReturnAddressOnStack,
                         0)));
-            program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
+            Program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
 
             callRetThunkBlock.Statements.Add(linFrom, new ReturnInstruction());
             procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
@@ -463,7 +438,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public bool IsLinearReturning(Block block)
         {
-            for (; ; )
+            for (;;)
             {
                 if (block.Statements.Count == 0)
                     return false;
@@ -482,13 +457,12 @@ namespace Reko.Scanning
             try
             {
                 Address addr = sym.Address;
-                Procedure proc;
-                if (program.Procedures.TryGetValue(addr, out proc))
-                    return; // Already scanned. Do nothing.
                 if (sym.NoDecompile || IsNoDecompiledProcedure(addr))
                     return;
+                Procedure proc = EnsureProcedure(addr, sym.Name);
+                if (visitedProcs.Contains(proc))
+                    return; // Already scanned. Do nothing.
 
-                proc = EnsureProcedure(addr, sym.Name);
                 if (sym.Signature != null)
                 {
                     var sser = program.CreateProcedureSerializer();
@@ -496,9 +470,11 @@ namespace Reko.Scanning
                 }
                 else if (sym.Name != null)
                 {
-                    var exp = program.Platform.SignatureFromName(sym.Name);
-                    if (exp != null)
+                    var sProc = program.Platform.SignatureFromName(sym.Name);
+                    if (sProc != null)
                     {
+                        var loader = Program.CreateTypeLibraryDeserializer();
+                        var exp = loader.LoadExternalProcedure(sProc);
                         proc.Name = exp.Name;
                         proc.Signature = exp.Signature;
                         proc.EnclosingType = exp.EnclosingType;
@@ -541,7 +517,7 @@ namespace Reko.Scanning
             ExternalProcedure ep;
             if (TryGetNoDecompiledProcedure(addr, out ep))
                 return ep;
-            if (program.InterceptedCalls.TryGetValue(addr, out ep))
+            if (Program.InterceptedCalls.TryGetValue(addr, out ep))
                 return ep;
             var trampoline = GetTrampoline(addr);
             if (trampoline != null)
@@ -561,16 +537,16 @@ namespace Reko.Scanning
             EstablishInitialState(addr, st, proc);
 
             //$REFACTOR: make the stack explicit?
-            var oldQueue = queue;
-            queue = new PriorityQueue<WorkItem>();
+            var oldQueue = procQueue;
+            procQueue = new PriorityQueue<WorkItem>();
             var block = EnqueueJumpTarget(addr, addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             ProcessQueue();
 
-            queue = oldQueue;
+            procQueue = oldQueue;
 
             InjectProcedureEntryInstructions(addr, proc);
-            var usb = new UserSignatureBuilder(program);
+            var usb = new UserSignatureBuilder(Program);
             usb.BuildSignature(addr, proc);
             return proc;
         }
@@ -586,8 +562,8 @@ namespace Reko.Scanning
         {
             st.SetInstructionPointer(addr);
             st.OnProcedureEntered();
-            var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
-            st.SetValue(sp, proc.Frame.FramePointer);
+            var sp = proc.Frame.EnsureRegister(Program.Architecture.StackRegister);
+            st.SetValue((Identifier)sp, (Expression)proc.Frame.FramePointer);
             SetAssumedRegisterValues(addr, st);
         }
 
@@ -602,81 +578,17 @@ namespace Reko.Scanning
         public void InjectProcedureEntryInstructions(Address addr, Procedure proc)
         {
             var bb = new StatementInjector(proc, proc.EntryBlock.Succ[0], addr);
-            var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
+            var sp = proc.Frame.EnsureRegister(Program.Architecture.StackRegister);
             bb.Assign(sp, proc.Frame.FramePointer);
-            program.Platform.InjectProcedureEntryStatements(proc, addr, bb);
+            Program.Platform.InjectProcedureEntryStatements(proc, addr, bb);
         }
 
-        private bool TryGetNoDecompiledProcedure(Address addr, out Procedure_v1 sProc)
-        {
-            if (!program.User.Procedures.TryGetValue(addr, out sProc) ||
-                sProc.Decompile)
-            {
-                sProc = null;
-                return false;
-            }
-            return true;
-        }
-
-        private bool IsNoDecompiledProcedure(Address addr)
-        {
-            Procedure_v1 sProc;
-            return TryGetNoDecompiledProcedure(addr, out sProc);
-        }
-
-        private bool TryGetNoDecompiledParsedProcedure(Address addr, out Procedure_v1 parsedProc)
-        {
-            Procedure_v1 sProc;
-            if (!TryGetNoDecompiledProcedure(addr, out sProc))
-            {
-                parsedProc = null;
-                return false;
-            }
-            if (noDecompiledProcs.TryGetValue(addr, out parsedProc))
-                return true;
-            parsedProc = new Procedure_v1()
-            {
-                Name = sProc.Name,
-            };
-            noDecompiledProcs[addr] = parsedProc;
-            if (string.IsNullOrEmpty(sProc.CSignature))
-            {
-                Warn(addr, "The user-defined procedure at address {0} did not have a signature.", addr);
-                return true;
-            }
-            var usb = new UserSignatureBuilder(program);
-            var procDecl = usb.ParseFunctionDeclaration(sProc.CSignature);
-            if (procDecl == null)
-            {
-                Warn(addr, "The user-defined procedure signature at address {0} could not be parsed.", addr);
-                return true;
-            }
-            parsedProc.Signature = procDecl.Signature;
-            return true;
-        }
-
-        private bool TryGetNoDecompiledProcedure(Address addr, out ExternalProcedure ep)
-        {
-            Procedure_v1 sProc;
-            if (!TryGetNoDecompiledParsedProcedure(addr, out sProc))
-            {
-                ep = null;
-                return false;
-            }
-            var ser = program.CreateProcedureSerializer();
-            var sig = ser.Deserialize(
-                sProc.Signature,
-                program.Architecture.CreateFrame());
-            ep = new ExternalProcedure(sProc.Name, sig);
-            return true;
-        }
-
-        public void EnqueueUserGlobalData(Address addr, DataType dt)
+        public void EnqueueUserGlobalData(Address addr, DataType dt, string name)
         {
             if (scannedGlobalData.Contains(addr))
                 return;
             scannedGlobalData.Add(addr);
-            queue.Enqueue(PriorityGlobalData, new GlobalDataWorkItem(this, program, addr, dt));
+            procQueue.Enqueue(PriorityGlobalData, new GlobalDataWorkItem(this, Program, addr, dt, name));
         }
 
         public Block FindContainingBlock(Address address)
@@ -722,8 +634,10 @@ namespace Reko.Scanning
         /// <returns>Null if there was no trampoline.</returns>
         public ProcedureBase GetTrampoline(Address addr)
         {
-            var rdr = program.CreateImageReader(addr);
-            var target = program.Platform.GetTrampolineDestination(rdr, this);
+            var rdr = Program.CreateImageReader(addr);
+            var arch = Program.Architecture;
+            var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(), arch.CreateFrame(), this);
+            var target = Program.Platform.GetTrampolineDestination(rw, this);
             return target;
         }
 
@@ -734,8 +648,8 @@ namespace Reko.Scanning
             {
                 var global = impref.ResolveImport(
                     importResolver,
-                    program.Platform,
-                    new AddressContext(program, addrInstruction, this.eventListener));
+                    Program.Platform,
+                    new AddressContext(Program, addrInstruction, this.eventListener));
                 return global;
             }
             return null;
@@ -757,13 +671,13 @@ namespace Reko.Scanning
             {
                 var extProc = impref.ResolveImportedProcedure(
                     importResolver,
-                    program.Platform,
-                    new AddressContext(program, addrInstruction, this.eventListener));
+                    Program.Platform,
+                    new AddressContext(Program, addrInstruction, this.eventListener));
                 return extProc;
             }
 
             ExternalProcedure ep;
-            if (program.InterceptedCalls.TryGetValue(addrImportThunk, out ep))
+            if (Program.InterceptedCalls.TryGetValue(addrImportThunk, out ep))
                 return ep;
             return GetInterceptedCall(addrImportThunk);
         }
@@ -780,22 +694,24 @@ namespace Reko.Scanning
             ExternalProcedure ep;
             if (!segmentMap.IsValidAddress(addrImportThunk))
                 return null;
-            var rdr= program.CreateImageReader(addrImportThunk);
+            var rdr = Program.CreateImageReader(addrImportThunk);
             uint uDest;
             if (!rdr.TryReadUInt32(out uDest))
                 return null;
             var addrDest = Address.Ptr32(uDest);
-            program.InterceptedCalls.TryGetValue(addrDest, out ep);
+            Program.InterceptedCalls.TryGetValue(addrDest, out ep);
             return ep;
         }
 
         /// <summary>
-        /// Splits the given block at the specified address, yielding two blocks. The first block is the original block,
-        /// now truncated, with a single out edge to the new block. The second block receives the out edges of the first block.
+        /// Splits the given block at the specified address, yielding two 
+        /// blocks. The first resulting block is the original block, now
+        /// truncated, with a single out edge to the new block. The second 
+        /// block receives the out edges of the first block.
         /// </summary>
-        /// <param name="block"></param>
-        /// <param name="addr"></param>
-        /// <returns>The newly created, empty second block</returns>
+        /// <param name="block">The block to split</param>
+        /// <param name="addr">The address at which to split it.</param>
+        /// <returns>The newly created, empty second block.</returns>
         public Block SplitBlock(Block blockToSplit, Address addr)
         {
             var graph = blockToSplit.Procedure.ControlGraph;
@@ -822,7 +738,9 @@ namespace Reko.Scanning
             {
                 stm.Block = blockNew;
             }
+            blocks[addr].End = blocks[blockStarts[blockToSplit]].End;
             blocks[blockStarts[blockToSplit]].End = linAddr;
+            SanityCheck(blocks);
             return blockNew;
         }
 
@@ -830,18 +748,35 @@ namespace Reko.Scanning
         /// Performs the work of scanning the image and resolving any 
         /// cross procedure jumps after the scan is done.
         /// </summary>
-        public void ScanImage()
+        public virtual void ScanImage()
         {
-            ProcessQueue();
-        }
+            var tlDeser = Program.CreateTypeLibraryDeserializer();
+            foreach (var global in Program.User.Globals)
+            {
+                var addr = global.Key;
+                var dt = global.Value.DataType.Accept(tlDeser);
+                EnqueueUserGlobalData(addr, dt, global.Value.Name);
+            }
+            foreach (ImageSymbol ep in Program.EntryPoints.Values)
+            {
+                EnqueueImageSymbol(ep, true);
+            }
+            foreach (Procedure_v1 up in Program.User.Procedures.Values)
+            {
+                EnqueueUserProcedure(up);
+            }
+            foreach (ImageSymbol sym in Program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
+            {
+                if (sym.NoDecompile)
+                    Program.EnsureUserProcedure(sym.Address, sym.Name, false);
+                else
+                    EnqueueImageSymbol(sym, false);
+            }
 
-        /// <summary>
-        /// Uses the HeuristicScanner to try to located code heuristically.
-        /// </summary>
-        public void ScanImageHeuristically()
-        {
-            var heuristicScanner = new HeuristicScanner(program, this, eventListener);
-            heuristicScanner.ScanImageHeuristically();
+            //var hsc = new HeuristicScanner(Services, program, this, eventListener);
+            //var sr = hsc.ScanImage();
+
+            ProcessQueue();
         }
 
         [Conditional("DEBUG")]
@@ -854,31 +789,15 @@ namespace Reko.Scanning
             }
         }
 
-        private Procedure EnsureProcedure(Address addr, string procedureName)
+        protected void ProcessQueue()
         {
-            Procedure proc;
-            if (program.Procedures.TryGetValue(addr, out proc))
-                return proc;
-            ImageSymbol sym;
-            if (procedureName == null && program.ImageSymbols.TryGetValue(addr, out sym))
-            {
-                procedureName = sym.Name;
-            }
-            proc = Procedure.Create(procedureName, addr, program.Architecture.CreateFrame());
-            program.Procedures.Add(addr, proc);
-            program.CallGraph.AddProcedure(proc);
-            return proc;
-        }
-
-        private void ProcessQueue()
-        {
-            while (queue.Count > 0)
+            while (procQueue.Count > 0)
             {
                 if (eventListener.IsCanceled())
                 {
                     break;
                 }
-                var workitem = queue.Dequeue();
+                var workitem = procQueue.Dequeue();
                 try
                 {
                     workitem.Process();
@@ -899,45 +818,37 @@ namespace Reko.Scanning
         //$REVIEW: can't the callers call Program.EnsurePse
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
         {
-            return program.EnsurePseudoProcedure(name, returnType, arity);
+            return Program.EnsurePseudoProcedure(name, returnType, arity);
         }
 
         public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
         {
-            var ppp = program.EnsurePseudoProcedure(name, returnType, args.Length);
+            var ppp = Program.EnsurePseudoProcedure(name, returnType, args.Length);
             return new Application(
-                new ProcedureConstant(program.Architecture.PointerType, ppp),
+                new ProcedureConstant(Program.Architecture.PointerType, ppp),
                 returnType,
                 args);
         }
 
         public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
         {
-            var ppp = program.EnsurePseudoProcedure(name, returnType, args.Length);
+            var ppp = Program.EnsurePseudoProcedure(name, returnType, args.Length);
             ppp.Characteristics = c;
             return new Application(
-                new ProcedureConstant(program.Architecture.PointerType, ppp),
+                new ProcedureConstant(Program.Architecture.PointerType, ppp),
                 returnType,
                 args);
-        }
-
-        public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
-        {
-            UserCallData call = null;
-            if (!program.User.Calls.TryGetValue(addrCallInstruction, out call))
-                return null;
-            return call.Signature;
         }
 
         public void SetAssumedRegisterValues(Address addr, ProcessorState st)
         {
             Procedure_v1 userProc;
-            if (!program.User.Procedures.TryGetValue(addr, out userProc) ||
+            if (!Program.User.Procedures.TryGetValue(addr, out userProc) ||
                 userProc.Assume == null)
                 return;
             foreach (var rv in userProc.Assume)
             {
-                var reg = program.Architecture.GetRegister(rv.Register);
+                var reg = Program.Architecture.GetRegister(rv.Register);
                 var val = rv.Value == "*"
                     ? Constant.Invalid
                     : Constant.Create(reg.DataType, Convert.ToUInt64(rv.Value, 16));
@@ -951,14 +862,14 @@ namespace Reko.Scanning
             {
                 if (proc.Frame.ReturnAddressSize != returnAddressBytes)
                 {
-                    Warn(
+                    this.Warn(
                         address,
                         string.Format(
                             "Procedure {1} previously had a return address of {2} bytes on the stack, " +
                             "but now seems to have a return address of {0} bytes on the stack.",
                         returnAddressBytes,
                         proc.Name,
-                        proc.Frame.ReturnAddressSize));
+(object)proc.Frame.ReturnAddressSize));
                 }
             }
             else
@@ -1000,49 +911,225 @@ namespace Reko.Scanning
         }
     }
 
-    /*
-     * State:
-     *   regs:
-     *      abstr_value
-     *      reaching_defs
-     *   stack:
-     *   globals:
-     *   
-     * Scanner:
-     *   q = stack of known code addresses
-     *   while q
-     *      b = blockat(q.addr)
-     *      if (exists)
-     *          split(q.addr)
-     *      else 
-     *          b = new block(q.addr)
-     *      successors = process block(b)
-     *      enqueue(successors)
-     *      
-     *  process block(b)
-     *      while i = reader:
-     *          if i.addr inside (other block)
-     *              successors += other_block
-     *              return;
-     *          if i is assign
-     *              b.add(i)
-     *              state = eval(i, state)
-     *          if i is goto
-     *              if goto.label const
-     *                  succs += goto.label
-     *                  return
-     *              if (calltable (state))
-     *                  return
-     *              if state(goto.label) = continuation
-     *                  cur_fn.returns = true
-     *                  emit return
-     *                  return
-     *          if i is call
-     *              if (eval(target)  = { set of constants }
-     *                  emit call(target)
-     *                  callsite += [ set of constants ]
-     *                  foreach (target) 
-     *                      if (fn = functions.completed(target))
-     *                          if fn.returns
-     */
+    /// <summary>
+    /// The new scanning algorithm, which incorporates the HeuristicScanner
+    /// to disassemble pockets of bytes that are not reachable by simple 
+    /// recursive disassembly of the binary.
+    /// </summary>
+    public class Scanner : ScannerOld
+    {
+        private ScanResults sr;
+
+        public Scanner(Program program, IImportResolver importResolver, IServiceProvider services) : base(program, importResolver, services)
+        {
+            this.sr = new ScanResults
+            {
+                KnownProcedures = program.User.Procedures.Keys.ToHashSet(),
+                KnownAddresses = program.ImageSymbols.ToDictionary(de => de.Key, de=> de.Value),
+                ICFG = new DiGraph<RtlBlock>(),
+            };
+        }
+
+        /// <summary>
+        /// Scans the image, locating blobs of data and procedures.
+        /// End result is that the program.ImageMap is populated with
+        /// chunks of data, and the program.Procedures dictionary contains
+        /// all procedures to decompile.
+        /// </summary>
+        public override void ScanImage()
+        {
+            // Find all blobs of data, and potentially pointers to code.
+            ScanDataItems();
+
+            // Find all reachable procedures.
+            ScanProceduresRecursively();
+
+            if (Program.User.Heuristics.Contains("shingle"))
+            {
+                // Use has requested shingle scanning of remaining areas.
+                ShingleScanProcedures();
+            }
+        }
+
+        /// <summary>
+        /// Using user-specified globals and image metadata, scan all known 
+        /// data. If we discover pointers to procedures, we add them to
+        /// the list of known procedures. They are known because we reached
+        /// them by tracing from known roots.
+        /// </summary>
+        /// <returns></returns>
+        public ScanResults ScanDataItems()
+        {
+            var tlDeser = Program.CreateTypeLibraryDeserializer();
+            var dataScanner = new DataScanner(Program, sr, eventListener);
+
+            // Enqueue known data items, then process them. If we find code
+            // pointers, they will be added to sr.KnownProcedures.
+
+            foreach (var global in Program.User.Globals)
+            {
+                var addr = global.Key;
+                var dt = global.Value.DataType.Accept(tlDeser);
+                dataScanner.EnqueueUserGlobalData(addr, dt, global.Value.Name);
+            }
+            foreach (var sym in Program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Data))
+            {
+                dataScanner.EnqueueUserGlobalData(sym.Address, sym.DataType, sym.Name);
+            }
+            dataScanner.ProcessQueue();
+            return sr;
+        }
+
+        /// <summary>
+        /// Performs a recursive disassembly of the executable parts of the
+        /// image, to find all potential basic blocks. We use symbols from the
+        /// binary and user-specified procedures as "seeds" of a depth-first
+        /// search.
+        /// </summary>
+        public void ScanProceduresRecursively()
+        {
+            var noDecompiles = Program.User.Procedures
+                .Where(de => !de.Value.Decompile)
+                .Select(de => de.Key)
+                .ToHashSet();
+            foreach (var de in Program.User.Procedures)
+            {
+                if (noDecompiles.Contains(de.Key))
+                {
+                    Program.EnsureUserProcedure(de.Key, de.Value.Name, false);
+                }
+                else
+                {
+                    var addr = EnqueueUserProcedure(de.Value);
+                    if (addr != null)
+                    {
+                        sr.KnownProcedures.Add(addr);
+                    }
+                }
+            }
+            foreach (var sym in Program.EntryPoints.Values.Concat(
+                Program.ImageSymbols.Values.Where(
+                    s => s.Type == SymbolType.Procedure)))
+            {
+                if (sym.NoDecompile || noDecompiles.Contains(sym.Address))
+                {
+                    Program.EnsureUserProcedure(sym.Address, sym.Name, false);
+                }
+                else
+                {
+                    EnsureProcedure(sym.Address, sym.Name);
+                    EnqueueImageSymbol(sym, false);
+                }
+                sr.KnownProcedures.Add(sym.Address);
+            }
+            this.ProcessQueue();
+        }
+
+        /// <summary>
+        /// Performs a shingle scan to recover procedures that weren't found 
+        /// a recursive search. Assumed that Program.ImageMap may contain
+        /// blocks of "known code" and only scans in the gaps between the
+        /// blocks.
+        /// </summary>
+        public void ShingleScanProcedures()
+        {
+            var hsc = new ScannerInLinq(Services, Program, this, eventListener);
+            sr = hsc.ScanImage(sr);
+            if (sr != null)
+            {
+                // The heuristic scanner will have detected any remaining 
+                // procedures.
+
+                var procs = sr.Procedures;
+
+                // At this point, we have RtlProcedures and RtlBlocks.
+                //$TODO: However, Reko hasn't had a chance to reconstitute constants yet, 
+                // because that requires SSA, so we may be missing
+                // opportunities to build and detect pointers. This typically happens in 
+                // the type inference phase, when we both have constants and their types.
+                // 
+                // When this gets merged into analyis-development phase, fold 
+                // Procedure construction into SSA construction.
+                foreach (var rtlProc in procs.Where(p => FilterRtlProcedure(p)))
+                {
+                    var addrProc = rtlProc.Entry.Address;
+                    TerminateAnyBlockAt(addrProc);
+                    EnqueueProcedure(addrProc);
+                }
+                ProcessQueue();
+            }
+        }
+
+
+        /// <summary>
+        /// Determines whether or not an RtlProcedure should be fed into the later stages of 
+        /// the scanner.
+        /// </summary>
+        /// <param name="rtlProc"></param>
+        /// <returns></returns>
+        public bool FilterRtlProcedure(RtlProcedure rtlProc)
+        {
+            var addrRtlProc = rtlProc.Entry.Address;
+            var trampoline = Program.Platform.GetTrampolineDestination(rtlProc.Entry.Instructions, this);
+            if (trampoline != null)
+            {
+                //$REVIEW: consider adding known trampolines to Program. Then, when code calls or 
+                // jumps to a trampoline, we don't have to call IPlatform.GetTrampolineDestination again.
+                return false;
+            }
+
+            Procedure_v1 sProc;
+            if (Program.User.Procedures.TryGetValue(addrRtlProc, out sProc))
+            {
+                return sProc.Decompile;
+            }
+            return true;
+        }
+
+        /*
+         * State:
+         *   regs:
+         *      abstr_value
+         *      reaching_defs
+         *   stack:
+         *   globals:
+         *   
+         * Scanner:
+         *   q = stack of known code addresses
+         *   while q
+         *      b = blockat(q.addr)
+         *      if (exists)
+         *          split(q.addr)
+         *      else 
+         *          b = new block(q.addr)
+         *      successors = process block(b)
+         *      enqueue(successors)
+         *      
+         *  process block(b)
+         *      while i = reader:
+         *          if i.addr inside (other block)
+         *              successors += other_block
+         *              return;
+         *          if i is assign
+         *              b.add(i)
+         *              state = eval(i, state)
+         *          if i is goto
+         *              if goto.label const
+         *                  succs += goto.label
+         *                  return
+         *              if (calltable (state))
+         *                  return
+         *              if state(goto.label) = continuation
+         *                  cur_fn.returns = true
+         *                  emit return
+         *                  return
+         *          if i is call
+         *              if (eval(target)  = { set of constants }
+         *                  emit call(target)
+         *                  callsite += [ set of constants ]
+         *                  foreach (target) 
+         *                      if (fn = functions.completed(target))
+         *                          if fn.returns
+         */
+    }
 }

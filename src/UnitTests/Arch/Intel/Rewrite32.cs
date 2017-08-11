@@ -158,6 +158,7 @@ namespace Reko.UnitTests.Arch.Intel
             {
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
                 program.Platform = win32;
+                program.User.Heuristics.Add("shingle");
             }
             foreach (var item in asm.ImportReferences)
             {

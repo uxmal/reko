@@ -31,14 +31,14 @@ namespace Reko.UnitTests.Mocks
 		protected override void BuildBody()
 		{
 			Identifier ds = Local16("ds");
-			Constant offset = Int16(0x300);
+			Constant offset = Word16(0x300);
 			Identifier si1 = Local16("si1");
 			Identifier si2 = Local16("si2");
 
 			Assign(si1, SegMemW(ds, offset));
-			Store(SegMemW(ds, Int16(0x100)), SegMemW(ds, IAdd(si1, 0x0004)));
+			Store(SegMemW(ds, Word16(0x100)), SegMemW(ds, IAdd(si1, 0x0004)));
 			Assign(si2, SegMemW(ds, offset));
-			Store(SegMemW(ds, Int16(0x102)), SegMemW(ds, IAdd(si2, 0x0004)));
+			Store(SegMemW(ds, Word16(0x102)), SegMemW(ds, IAdd(si2, 0x0004)));
 		}
 	}
 }

@@ -180,7 +180,18 @@ namespace Reko.Core
         {
             return sType.Accept(this);
         }
-        
+
+        public ExternalProcedure LoadExternalProcedure(ProcedureBase_v1 sProc)
+        {
+            var sSig = sProc.Signature;
+            var sser = platform.CreateProcedureSerializer(this, this.defaultConvention);
+            var sig = sser.Deserialize(sSig, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
+            return new ExternalProcedure(sProc.Name, sig)
+            {
+                EnclosingType = sSig.EnclosingType
+            };
+        }
+
         public void ReadDefaults(SerializedLibraryDefaults defaults)
         {
             if (defaults == null)
@@ -201,8 +212,18 @@ namespace Reko.Core
             DataType dt;
             if (pointer.DataType == null)
                 dt = new UnknownType();
-            else 
-                dt = pointer.DataType.Accept(this);
+            else
+            {
+                try
+                {
+                    //$TODO: remove the try-catch when done.
+                    dt = pointer.DataType.Accept(this);
+                }
+                catch
+                {
+                    dt = new UnknownType();
+                }
+            }
             return new Pointer(dt, platform.PointerType.Size);
         }
 

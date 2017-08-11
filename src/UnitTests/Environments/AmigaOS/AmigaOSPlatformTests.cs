@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
         private RtlEmitter m;
         private AmigaOSPlatform platform;
         private List<RtlInstruction> rtls;
-        private Frame frame;
+        private IStorageBinder frame;
 
         [SetUp]
         public void Setup()

@@ -31,28 +31,36 @@
         <address>00401120</address>
         <CSignature>void test6(cdecl_class *c, int a, int b)</CSignature>
       </procedure>
+      <procedure name="nested_structs_test13">
+        <characteristics />
+        <address>00401360</address>
+        <CSignature>void nested_structs_test13(nested_structs_type *str)</CSignature>
+      </procedure>
       <procedure name="Win32CrtStartup">
         <characteristics />
-        <address>004015D3</address>
+        <address>00401623</address>
         <decompile>false</decompile>
         <CSignature>DWORD Win32CrtStartup()</CSignature>
       </procedure>
       <call>
         <address>00401113</address>
-        <signature>
-          <return>
+        <signature stackDelta="4">
+          <return name="">
             <void />
           </return>
           <arg name="c">
             <ptr size="4">
               <type>cdecl_class</type>
             </ptr>
+            <stack />
           </arg>
           <arg name="i">
             <prim domain="SignedInt" size="4" />
+            <stack />
           </arg>
           <arg name="f">
             <prim domain="Real" size="4" />
+            <stack />
           </arg>
         </signature>
       </call>
@@ -68,6 +76,7 @@
         </ptr>
         <Name>gbl_thiscall</Name>
       </global>
+      <onLoad Enabled="false" />
       <registerValues />
     </user>
   </input>

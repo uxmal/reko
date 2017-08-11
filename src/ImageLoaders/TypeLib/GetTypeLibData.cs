@@ -6,16 +6,19 @@
 // *************************************
 
 using System.IO;
-public class GetTypeLibData
+using Reko.Core;
+
+public class GetTypeLibDatax
 {
 
-// **************************************
-// this is a re-entrant procedure
-// ird must always arrive pointing to a resource directory
+    // **************************************
+    // this is a re-entrant procedure
+    // ird must always arrive pointing to a resource directory
 
 // For now, this assumes all offsets are relative to the start
 // of the resource section (opinions seem to differ on this)
-int GetResource( 
+#if NO
+    int GetResource( 
 	string cs, 
 	IMAGE_RESOURCE_DIRECTORY ird, 
 	uint de,     // value to subtract from ".link" offsets// s
@@ -24,8 +27,8 @@ int GetResource(
 	)
 {
 
-Long n;
-Dword p;
+int n;
+uint p;
 IMAGE_RESOURCE_DATA_ENTRY Ptr pirde;
 IMAGE_RESOURCE_DIRECTORY_ENTRY Ptr irde;
 IMAGE_RESOURCE_DIRECTORY_STRING ids;
@@ -38,7 +41,7 @@ Static typ		As Dword ;
 Static ns		As String;
 
 	if (lvl = 0) { rp = StrPtr(cs); } // = ird // save pointer to start of resource section
-	Incr lvl
+        ++lvl;
 
 	irde = ird + SizeOf(IMAGE_RESOURCE_DIRECTORY);
 
@@ -101,6 +104,7 @@ Static ns		As String;
 
         } // GetResource
 
+#endif
 // ***************************************
 //  gets TypeLib data from a PE file// s resource section
 int GetTypeLibData(string cs, string fs)
@@ -121,7 +125,6 @@ int GetTypeLibData(string cs, string fs)
 	// get the Typelib data
 	try
     {
-		ff = FreeFile();
         ff = new FileStream(fs, FileMode.Open, FileAccess.Read, FileShare.Read);
         
         byte[] cs = new byte[2048];
@@ -129,10 +132,11 @@ int GetTypeLibData(string cs, string fs)
 
 		// ----------------------------------
 		// get PE signature if present
-		LSet DosHdr = cs;
-		if ((Left$(cs, 2) = $PeMZ) &&  (Mid$(cs, DosHdr.lfanew + 1, 4) = $PePE32)) {
+		DosHdr = cs;
+            lfanew = ProgramImage.ReadUInt32(cs, 0x3C);
+		if (cs[0] == 'M' && cs[1] == 'Z' && cs[lfanew] == 'P' && cs[lfanew+1] == 'E' && cs[lfanew+2] == 0 && cs[lfanew+3] == 0) {
 
-			Decr fTlb // disable loading the file below
+			--fTlb // disable loading the file below
 			pPH = StrPtr(cs) + DosHdr.lfanew + 4;
 			pOH = pPH + SizeOf(PEHeader);
 

@@ -108,6 +108,7 @@ namespace Reko.Scanning
 
         private void Dump(TrieNode n, int depth)
         {
+            return;     // Very verbose output slows down regression tests, comment out for debugging.
             var sl = n.Successors
                 .ToSortedList(
                     k => k.Key.ToString(),

@@ -3,7 +3,7 @@
 ;; fn00401000: 00401000
 fn00401000 proc
 	mov	eax,00403378
-	ret	
+	ret
 00401006                   CC CC CC CC CC CC CC CC CC CC       ..........
 
 ;; fn00401010: 00401010
@@ -27,7 +27,7 @@ fn00401010 proc
 	add	esp,18
 	pop	esi
 	pop	ebp
-	ret	
+	ret
 
 ;; fn00401040: 00401040
 fn00401040 proc
@@ -54,7 +54,7 @@ fn00401040 proc
 	xor	eax,eax
 	mov	esp,ebp
 	pop	ebp
-	ret	
+	ret
 0040108B                                  3B 0D 04 30 40            ;..0@
 00401090 00 F2 75 02 F2 C3 F2 E9 5F 02 00 00 56 6A 01 E8 ..u....._...Vj..
 004010A0 12 0B 00 00 E8 55 06 00 00 50 E8 3D 0B 00 00 E8 .....U...P.=....
@@ -216,7 +216,7 @@ l00401270:
 
 l004012C3:
 	call	004019C6
-	ret	
+	ret
 
 ;; Win32CrtStartup: 004012C9
 Win32CrtStartup proc
@@ -283,7 +283,7 @@ l00401431:
 l00401433:
 	pop	esi
 	pop	ebp
-	ret	
+	ret
 
 l00401436:
 	mov	eax,edx
@@ -297,7 +297,7 @@ fn0040143A proc
 
 l00401443:
 	xor	al,al
-	ret	
+	ret
 
 l00401446:
 	mov	eax,fs:[00000018]
@@ -313,7 +313,7 @@ l00401457:
 l0040145B:
 	xor	eax,eax
 	mov	ecx,edx
-	lock	
+	lock
 	cmpxchg	[esi],ecx
 	test	eax,eax
 	jnz	00401457
@@ -321,12 +321,12 @@ l0040145B:
 l00401467:
 	xor	al,al
 	pop	esi
-	ret	
+	ret
 
 l0040146B:
 	mov	al,01
 	pop	esi
-	ret	
+	ret
 
 ;; fn0040146F: 0040146F
 fn0040146F proc
@@ -347,7 +347,7 @@ l0040147F:
 l0040148D:
 	xor	al,al
 	pop	ebp
-	ret	
+	ret
 
 l00401491:
 	call	00401C46
@@ -363,7 +363,7 @@ l0040149A:
 l004014A4:
 	mov	al,01
 	pop	ebp
-	ret	
+	ret
 004014A8                         55 8B EC 83 EC 0C 56 8B         U.....V.
 004014B0 75 08 85 F6 74 05 83 FE 01 75 7C E8 D8 06 00 00 u...t....u|.....
 004014C0 85 C0 74 2A 85 F6 75 26 68 3C 33 40 00 E8 50 07 ..t*..u&h<3@..P.
@@ -424,7 +424,7 @@ l004015BA:
 
 l004015C3:
 	call	004019C6
-	ret	
+	ret
 
 ;; fn004015C9: 004015C9
 fn004015C9 proc
@@ -445,7 +445,7 @@ l004015DB:
 
 l004015E4:
 	pop	ebp
-	ret	
+	ret
 
 ;; fn004015E6: 004015E6
 fn004015E6 proc
@@ -469,7 +469,7 @@ l004015F8:
 l0040160A:
 	mov	al,01
 	pop	ebp
-	ret	
+	ret
 0040160E                                           55 8B               U.
 00401610 EC A1 04 30 40 00 8B C8 33 05 3C 33 40 00 83 E1 ...0@...3.<3@...
 00401620 1F FF 75 08 D3 C8 83 F8 FF 75 07 E8 FE 05 00 00 ..u......u......
@@ -547,7 +547,7 @@ l004016F4:
 	pop	esi
 	mov	esp,ebp
 	pop	ebp
-	ret	
+	ret
 004016FA                               33 C0 40 C3 B8 00           3.@...
 00401700 40 00 00 C3 68 58 33 40 00 FF 15 08 20 40 00 C3 @...hX3@.... @..
 00401710 68 00 00 03 00 68 00 00 01 00 6A 00 E8 13 05 00 h....h....j.....
@@ -560,12 +560,12 @@ l004016F4:
 ;; fn00401761: 00401761
 fn00401761 proc
 	mov	eax,00403384
-	ret	
+	ret
 
 ;; fn00401767: 00401767
 fn00401767 proc
 	mov	eax,00403380
-	ret	
+	ret
 
 ;; fn0040176D: 0040176D
 fn0040176D proc
@@ -604,7 +604,7 @@ l00401788:
 	mov	[ebp-00000290],es
 	mov	[ebp-00000294],fs
 	mov	[ebp-00000298],gs
-	pushf	
+	pushf
 	pop	dword ptr [ebp-00000264]
 	mov	eax,[ebp+04]
 	mov	[ebp-0000026C],eax
@@ -651,7 +651,7 @@ l00401882:
 	pop	ebx
 	mov	esp,ebp
 	pop	ebp
-	ret	
+	ret
 00401888                         33 C0 C3                        3..    
 
 ;; fn0040188B: 0040188B
@@ -664,7 +664,7 @@ fn0040188B proc
 
 l00401899:
 	xor	al,al
-	ret	
+	ret
 
 l0040189C:
 	mov	eax,00005A4D
@@ -689,7 +689,7 @@ l004018BE:
 l004018C4:
 	cmp	dword ptr [eax+000000E8],00
 	setnz	al
-	ret	
+	ret
 004018CF                                              68                h
 004018D0 DB 18 40 00 FF 15 10 20 40 00 C3 55 8B EC 8B 45 ..@.... @..U...E
 004018E0 08 8B 00 81 38 63 73 6D E0 75 25 83 78 10 03 75 ....8csm.u%.x..u
@@ -730,8 +730,7 @@ fn00401980 proc
 	mov	[ebp-08],eax
 	lea	eax,[ebp-10]
 	mov	fs:[00000000],eax
-	repne	
-	ret	
+	repne ret
 
 ;; fn004019C6: 004019C6
 fn004019C6 proc
@@ -745,22 +744,10 @@ fn004019C6 proc
 	mov	esp,ebp
 	pop	ebp
 	push	ecx
-	repne	
-	ret	
-
-l004019DB:
-	push	ebp
-	mov	ebp,esp
-	push	dword ptr [ebp+14]
-	push	dword ptr [ebp+10]
-	push	dword ptr [ebp+0C]
-	push	dword ptr [ebp+08]
-	push	0040108B
-	push	00403004
-	call	00401BAA
-	add	esp,18
-	pop	ebp
-	ret	
+	repne ret
+004019DB                                  55 8B EC FF 75            U...u
+004019E0 14 FF 75 10 FF 75 0C FF 75 08 68 8B 10 40 00 68 ..u..u..u.h..@.h
+004019F0 04 30 40 00 E8 B1 01 00 00 83 C4 18 5D C3       .0@.........]. 
 
 ;; fn004019FE: 004019FE
 fn004019FE proc
@@ -787,7 +774,7 @@ l00401A24:
 	mov	[0040336C],ebx
 	lea	edi,[ebp-28]
 	push	ebx
-	cpuid	
+	cpuid
 	mov	esi,ebx
 	pop	ebx
 	mov	[edi],eax
@@ -809,7 +796,7 @@ l00401A24:
 	push	00
 	pop	ecx
 	push	ebx
-	cpuid	
+	cpuid
 	mov	esi,ebx
 	pop	ebx
 	mov	[edi],eax
@@ -867,7 +854,7 @@ l00401AE9:
 	pop	eax
 	xor	ecx,ecx
 	push	ebx
-	cpuid	
+	cpuid
 	mov	esi,ebx
 	pop	ebx
 	lea	ebx,[ebp-28]
@@ -903,7 +890,7 @@ l00401B3C:
 
 l00401B43:
 	xor	ecx,ecx
-	xgetbv	
+	xgetbv
 	mov	[ebp-0C],eax
 	mov	[ebp-08],edx
 	mov	eax,[ebp-0C]
@@ -935,16 +922,15 @@ l00401B91:
 	pop	ebx
 	mov	esp,ebp
 	pop	ebp
-	ret	
+	ret
 
 ;; fn00401B98: 00401B98
 fn00401B98 proc
 	xor	eax,eax
 	cmp	[00403014],eax
 	setnz	al
-	ret	
-00401BA4             FF 25 34 20 40 00                       .%4 @.     
-00401BAA                               FF 25 38 20 40 00           .%8 @.
+	ret
+00401BA4             FF 25 34 20 40 00 FF 25 38 20 40 00     .%4 @..%8 @.
 00401BB0 FF 25 A0 20 40 00 FF 25 70 20 40 00 FF 25 50 20 .%. @..%p @..%P 
 00401BC0 40 00 FF 25 8C 20 40 00 FF 25 9C 20 40 00 FF 25 @..%. @..%. @..%
 00401BD0 98 20 40 00 FF 25 94 20 40 00 FF 25 6C 20 40 00 . @..%. @..%l @.
@@ -959,7 +945,7 @@ fn00401B98 proc
 ;; fn00401C46: 00401C46
 fn00401C46 proc
 	mov	al,01
-	ret	
+	ret
 ;;; Segment .rdata (00402000)
 __imp__GetModuleHandleW		; 00402000
 	dd	0x00002AA8

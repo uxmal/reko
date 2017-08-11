@@ -27,25 +27,40 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Reko.Core.Lib;
+using Reko.Core.Types;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Disassembles basic blocks of instructions and places them in 
+    /// the provided control flow graph.
+    /// </summary>
     public class HeuristicDisassembler
     {
         private Program program;
-        private HeuristicProcedure proc;
+        private IStorageBinder binder;
         private IRewriterHost host;
-        private Dictionary<Address, HeuristicBlock> blockMap;
+        private Dictionary<Address, RtlBlock> blockMap;
+        private ScanResults sr;
+        private Func<Address, bool> isAddrValid;
+        private bool assumeCallsDiverge;
 
         public HeuristicDisassembler(
             Program program,
-            HeuristicProcedure proc,
+            IStorageBinder binder,
+            ScanResults sr,
+            Func<Address, bool> isAddrValid,
+            bool assumeCallsDiverge,
             IRewriterHost host)
         {
             this.program = program;
-            this.proc = proc;
+            this.binder = binder;
+            this.sr = sr;
+            this.isAddrValid = isAddrValid;
+            this.assumeCallsDiverge = assumeCallsDiverge;
             this.host = host;
-            blockMap = new Dictionary<Address, HeuristicBlock>();
+            blockMap = new Dictionary<Address, RtlBlock>();
         }
 
         /// <summary>
@@ -55,13 +70,17 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         /// <param name="proc"></param>
         /// <returns></returns>
-        public HeuristicBlock Disassemble(Address addr)
+        public RtlBlock Disassemble(Address addr)
         {
-            var current = new HeuristicBlock(addr, string.Format("l{0:X}", addr));
-            var dasm = program.CreateDisassembler(addr);
-            foreach (var instr in dasm.TakeWhile(r => r.Address < proc.EndAddress))
+            var current = new RtlBlock(addr, string.Format("l{0:X}", addr));
+            var dasm = program.Architecture.CreateRewriter(
+                program.CreateImageReader(addr),
+                program.Architecture.CreateProcessorState(),    //$TODO: use state from user.
+                binder,
+                host);
+            foreach (var instr in dasm.TakeWhile(i => isAddrValid(i.Address)))
             {
-                HeuristicBlock block;
+                RtlBlock block;
                 if (blockMap.TryGetValue(instr.Address, out block))
                 {
                     // This instruction was already disassembled before.
@@ -78,7 +97,7 @@ namespace Reko.Scanning
                     {
                         // Fell into 'block' while disassembling
                         // 'current'. Create a fall-though edge
-                        if (!proc.Cfg.Nodes.Contains(current))
+                        if (!sr.ICFG.Nodes.Contains(current))
                         {
                             AddNode(current);
                         }
@@ -92,34 +111,86 @@ namespace Reko.Scanning
                     AddNode(current);
                     current.Instructions.Add(instr);
                     blockMap.Add(instr.Address, current);
-                    var op0 = instr.GetOperand(0);
-                    var addrOp= op0 as AddressOperand;
-                    switch (instr.InstructionClass)
+                    Address addrOp;
+                    switch (instr.Class)
                     {
-                    case InstructionClass.Invalid:
+                    case RtlClass.Invalid:
+                    case RtlClass.None:
                         current.IsValid = false;
                         return current;
-                    case InstructionClass.Transfer | InstructionClass.Call:
-                        return current;
-                    case InstructionClass.Transfer:
-                        if (addrOp != null &&
-                            proc.BeginAddress <= addrOp.Address && addrOp.Address < proc.EndAddress)
+                    case RtlClass.Linear:
+                    case RtlClass.Linear | RtlClass.Conditional:
+                        if (FallthroughToInvalid(instr))
                         {
-                            block = Disassemble(addrOp.Address);
-                            AddEdge(current, block);
+                            current.IsValid = false;
+                            return current;
+                        }
+                        break;
+                    case RtlClass.Transfer | RtlClass.Call:
+                        addrOp = DestinationAddress(instr);
+                        if (addrOp != null)
+                        {
+                            if (program.SegmentMap.IsValidAddress(addrOp))
+                            {
+                                int c;
+                                if (!sr.DirectlyCalledAddresses.TryGetValue(addrOp, out c))
+                                    c = 0;
+                                sr.DirectlyCalledAddresses[addrOp] = c + 1;
+                            }
+                            else
+                            {
+                                current.IsValid = false;
+                            }
+                        }
+                        if (FallthroughToInvalid(instr))
+                        {
+                            current.IsValid = false;
+                            return current;
+                        }
+                        // If assume calls terminate, stop scanning.
+                        if (assumeCallsDiverge)
+                        {
+                            return current;
+                        }
+                        block = Disassemble(instr.Address + instr.Length);
+                        AddEdge(current, block);
+                        return current;
+                    case RtlClass.Transfer:
+                        addrOp = DestinationAddress(instr);
+                        if (addrOp != null)
+                        {
+                            if (isAddrValid(addrOp))
+                            {
+                                block = Disassemble(addrOp);
+                                AddEdge(current, block);
+                                return current;
+                            }
+                            else
+                            {
+                                // Very verbose debugging statement disabled to speed up Reko.
+                                //Debug.Print("{0} jumps to invalid address", instr.Address);
+                                current.IsValid = false;
+                            }
                             return current;
                         }
                         return current;
-                    case InstructionClass.Transfer | InstructionClass.Conditional:
-                        if (addrOp != null && program.SegmentMap.IsValidAddress(addrOp.Address))
+                    case RtlClass.Transfer | RtlClass.Conditional:
+                        FallthroughToInvalid(instr);
+                        addrOp = DestinationAddress(instr);
+                        if (addrOp != null && program.SegmentMap.IsValidAddress(addrOp))
                         {
-                            block = Disassemble(addrOp.Address);
-                            Debug.Assert(proc.Cfg.Nodes.Contains(block));
+                            block = Disassemble(addrOp);
+                            Debug.Assert(sr.ICFG.Nodes.Contains(block));
                             AddEdge(current, block);
                         }
                         block = Disassemble(instr.Address + instr.Length);
                         AddEdge(current, block);
                         return current;
+                    default:
+                        throw new NotImplementedException(
+                            string.Format(
+                                "RTL class {0}.", 
+                                instr.Class));
                     }
                 }
             }
@@ -127,10 +198,53 @@ namespace Reko.Scanning
             return current;
         }
 
-        private HeuristicBlock SplitBlock(HeuristicBlock block, Address addr)
+        private bool FallthroughToInvalid(RtlInstructionCluster instr)
         {
-            var newBlock = new HeuristicBlock(addr, string.Format("l{0:X}", addr));
-            proc.Cfg.Nodes.Add(newBlock);
+            var addrNextInstr = instr.Address + instr.Length;
+            if (!isAddrValid(addrNextInstr))
+                return true;
+            ImageMapItem item;
+            if (!program.ImageMap.TryFindItem(addrNextInstr, out item))
+                return false;
+            return !(item.DataType is UnknownType);
+        }
+
+        /// <summary>
+        /// Find the constant destination of a transfer instruction.
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        private Address DestinationAddress(RtlInstructionCluster i)
+        {
+            var last = i.Instructions[i.Instructions.Length - 1];
+            var xfer = last as RtlTransfer;
+            if (xfer == null)
+            {
+                var cond = last as RtlIf;
+                if (cond == null)
+                    return null;
+                xfer = cond.Instruction as RtlGoto;
+                if (xfer == null)
+                    return null;
+            }
+
+            var addr = xfer.Target as Address;
+            return addr;
+        }
+
+        /// <summary>
+        /// Split a block at address <paramref name="addr" />.
+        /// </summary>
+        /// <param name="block"></param>
+        /// <param name="addr"></param>
+        /// <returns></returns>
+        private RtlBlock SplitBlock(RtlBlock block, Address addr)
+        {
+            var newBlock = new RtlBlock(addr, string.Format("l{0:X}", addr))
+            {
+                IsValid = block.IsValid
+            };
+            sr.ICFG.Nodes.Add(newBlock);
             newBlock.Instructions.AddRange(
                 block.Instructions.Where(r => r.Address >= addr).OrderBy(r => r.Address));
             foreach (var de in blockMap.Where(d => d.Key >= addr && d.Value == block).ToList())
@@ -138,7 +252,7 @@ namespace Reko.Scanning
                 blockMap[de.Key] = newBlock;
             }
             block.Instructions.RemoveAll(r => r.Address >= addr);
-            var succs = proc.Cfg.Successors(block).ToArray();
+            var succs = sr.ICFG.Successors(block).ToArray();
             foreach (var s in succs)
             {
                 AddEdge(newBlock, s);
@@ -148,20 +262,20 @@ namespace Reko.Scanning
             return newBlock;
         }
 
-        private void AddEdge(HeuristicBlock from, HeuristicBlock to)
+        private void AddEdge(RtlBlock from, RtlBlock to)
         {
-            proc.Cfg.AddEdge(from, to);
+            sr.ICFG.AddEdge(from, to);
         }
 
-        private void AddNode(HeuristicBlock block)
+        private void AddNode(RtlBlock block)
         {
-            if (!proc.Cfg.Nodes.Contains(block))
-                proc.Cfg.Nodes.Add(block);
+            if (!sr.ICFG.Nodes.Contains(block))
+                sr.ICFG.Nodes.Add(block);
         }
 
-        private void RemoveEdge(HeuristicBlock from, HeuristicBlock to)
+        private void RemoveEdge(RtlBlock from, RtlBlock to)
         {
-            proc.Cfg.RemoveEdge(from, to);
+            sr.ICFG.RemoveEdge(from, to);
         }
     }
 }

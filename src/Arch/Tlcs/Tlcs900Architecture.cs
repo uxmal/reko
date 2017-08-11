@@ -45,7 +45,7 @@ namespace Reko.Arch.Tlcs
             this.FramePointerType = PrimitiveType.Pointer32;
             this.PointerType = PrimitiveType.Pointer32;
             this.WordWidth = PrimitiveType.Word32;
-            this.StackRegister = Registers.sp;
+            this.StackRegister = Registers.xsp;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -80,7 +80,7 @@ namespace Reko.Arch.Tlcs
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new Tlcs900.Tlcs900InstructionComparer(norm);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -93,12 +93,12 @@ namespace Reko.Arch.Tlcs
             return new Tlcs900ProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             return new Tlcs900.Tlcs900Rewriter(this, rdr, state, frame, host);
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

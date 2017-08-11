@@ -53,7 +53,7 @@ namespace Reko.Core
             var mappedItems =
                 from seg in map.Segments.Values
                 from item in program.ImageMap.Items.Values
-                where seg.IsInRange(item.Address)
+                where seg.IsInRange(item.Address) && !seg.IsHidden
                 group new { seg, item } by seg into g
                 orderby g.Key.Address
                 select new { g.Key, Items = g.Select(gg => gg.item) }; 
@@ -153,7 +153,7 @@ namespace Reko.Core
                 return;
             byte[] prevLine = null;
             bool showEllipsis = true;
-			EndianImageReader rdr = arch.CreateImageReader(segment.MemoryArea, address);
+			var rdr = arch.CreateImageReader(segment.MemoryArea, address);
 			while (cbBytes > 0)
 			{
 				StringBuilder sb = new StringBuilder(0x12);
@@ -308,10 +308,13 @@ namespace Reko.Core
         public class InstrWriter : MachineInstructionWriter
         {
             private Formatter formatter;
+            private int chars;
+            private List<string> annotations;
 
             public InstrWriter(Formatter formatter)
             {
                 this.formatter = formatter;
+                this.annotations = new List<string>();
             }
 
             public IPlatform Platform { get; private set; }
@@ -319,42 +322,69 @@ namespace Reko.Core
 
             public void Tab()
             {
+                ++chars;
                 formatter.Write("\t");
             }
 
             public void Write(string s)
             {
+                chars += (s ?? "").Length;
                 formatter.Write(s);
             }
 
             public void Write(uint n)
             {
-                formatter.Write(n.ToString());
+                var nn = n.ToString();
+                chars += nn.Length;
+                formatter.Write(nn);
             }
 
             public void Write(char c)
             {
+                ++chars;
                 formatter.Write(c);
             }
 
             public void Write(string fmt, params object[] parms)
             {
-                formatter.Write(fmt, parms);
+                var s = string.Format(fmt, parms);
+                chars += s.Length;
+                formatter.Write(s);
             }
 
             public void WriteAddress(string formattedAddress, Address addr)
             {
+                chars += formattedAddress.Length;
                 formatter.WriteHyperlink(formattedAddress, addr);
             }
 
             public void WriteOpcode(string opcode)
             {
+                chars += opcode.Length;
                 formatter.Write(opcode);
             }
 
             public void WriteLine()
             {
+                if (annotations.Count > 0)
+                {
+                    var pad = 60 - chars;
+                    if (pad > 0)
+                    {
+                        formatter.WriteSpaces(pad);
+                        chars += pad;
+                    }
+                    Write("; ");
+                    Write(string.Join(", ", annotations));
+                    annotations.Clear();
+                }
+                chars = 0;
                 formatter.WriteLine();
+            }
+
+            public void AddAnnotation(string annotation)
+            {
+                annotations.Add(annotation);
             }
         }
 

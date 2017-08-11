@@ -181,7 +181,7 @@ namespace Reko.Arch.Arm
             if (rDst == A32Registers.pc)
             {
                 // Assignment to PC is the same as a jump
-                ric.Class = RtlClass.Transfer;
+                rtlc = RtlClass.Transfer;
                 m.Goto(opSrc);
                 return;
             }
@@ -236,7 +236,7 @@ namespace Reko.Arch.Arm
         {
             if (Dst.Type == ArmInstructionOperandType.Register && Dst.RegisterValue.Value == ArmRegister.PC)
             {
-                ric.Class = RtlClass.Transfer;
+                rtlc = RtlClass.Transfer;
                 if (Src1.Type == ArmInstructionOperandType.Register && Src1.RegisterValue.Value == ArmRegister.LR)
                 {
                     AddConditional(new RtlReturn(0, 0, RtlClass.Transfer));
@@ -279,12 +279,12 @@ namespace Reko.Arch.Arm
                 if (r.RegisterValue.Value == ArmRegister.PC)
                 {
                     pcRestored = true;
-                }
+            }
                 else
-                {
+            {
                     var dstReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.RegisterValue.Value]);
                     m.Assign(dstReg, m.LoadDw(ea));
-                }
+            }
                 offset += 4;
             }
             if (writeback)
@@ -294,7 +294,7 @@ namespace Reko.Arch.Arm
             if (pcRestored)
             {
                 m.Return(0, 0);
-            }
+        }
         }
 
         private void RewriteMulbb( bool hiLeft, bool hiRight, DataType dtMultiplicand, Func<Expression,Expression,Expression> mul)
@@ -426,7 +426,7 @@ namespace Reko.Arch.Arm
                     Src2.ImmediateValue.Value,
                     Src3.ImmediateValue.Value));
             ConditionalAssign(dst, src);
-        }
+    }
 
         private void RewriteUmlal()
         {

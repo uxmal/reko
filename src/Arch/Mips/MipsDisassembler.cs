@@ -65,6 +65,10 @@ namespace Reko.Arch.Mips
             }
             catch
             {
+                instrCur = null;
+            }
+            if (instrCur == null)
+            {
                 instrCur = new MipsInstruction { opcode = Opcode.illegal };
             }
             instrCur.Address = this.addr;
@@ -374,11 +378,12 @@ namespace Reko.Arch.Mips
                     }
                     break;
                 case 'f': // FPU control register
+                    RegisterOperand fcreg;
                     switch (opFmt[++i])
                     {
-                    case '1': op = FCReg(wInstr >> 21); break;
-                    case '2': op = FCReg(wInstr >> 16); break;
-                    case '3': op = FCReg(wInstr >> 11); break;
+                    case '1': if (!TryGetFCReg(wInstr >> 21, out fcreg)) return null; op = fcreg; break;
+                    case '2': if (!TryGetFCReg(wInstr >> 16, out fcreg)) return null; op = fcreg; break;
+                    case '3': if (!TryGetFCReg(wInstr >> 11, out fcreg)) return null; op = fcreg; break;
                     //case '4': op = MemOff(wInstr >> 6, wInstr); break;
                     default: throw new NotImplementedException(string.Format("Register field {0}.", opFmt[i]));
                     }
@@ -443,9 +448,19 @@ namespace Reko.Arch.Mips
             return new RegisterOperand(Registers.fpuRegs[regNumber & 0x1F]);
         }
 
-        private RegisterOperand FCReg(uint regNumber)
+        private bool TryGetFCReg(uint regNumber, out RegisterOperand op)
         {
-            return new RegisterOperand(Registers.fpuCtrlRegs[regNumber & 0x1F]);
+            RegisterStorage fcreg;
+            if (Registers.fpuCtrlRegs.TryGetValue(regNumber & 0x1F, out fcreg))
+            {
+                op = new RegisterOperand(fcreg);
+                return true;
+            }
+            else
+            {
+                op = null;
+                return false;
+            }
         }
 
         private RegisterOperand CCodeFlag(uint wInstr, string fmt, ref int i)

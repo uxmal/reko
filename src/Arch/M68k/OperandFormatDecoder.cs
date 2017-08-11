@@ -229,6 +229,12 @@ namespace Reko.Arch.M68k
             case 'u': return PrimitiveType.UInt16;
             case 'w': return PrimitiveType.Word16;
             case 'l': return PrimitiveType.Word32;
+            case 'r':
+                // If EA is register, 32 bits, else 8.
+                if ((opcode & 0x30) == 0)
+                    return PrimitiveType.Word32;
+                else
+                    return PrimitiveType.Byte;
             default: return SizeField(opcode, GetOpcodeOffset(c));
             }
         }
@@ -361,7 +367,8 @@ namespace Reko.Arch.M68k
                     op = new M68kImmediateOperand(coff);
                     return true;
                 default:
-                    throw new NotImplementedException(string.Format("Address mode {0}:{1} not implemented.", addressMode, operandBits));
+                    op = null;
+                    return false;
                 }
             default: 
                 throw new NotImplementedException(string.Format("Address mode {0:X1} not implemented.", addressMode));
@@ -423,7 +430,7 @@ namespace Reko.Arch.M68k
                         ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
                         : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension)),
                     EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
-                    EXT_INDEX_SCALE(extension));
+                    1 << EXT_INDEX_SCALE(extension));
             }
             return true;
         }

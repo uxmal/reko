@@ -54,6 +54,7 @@ namespace Reko.ImageLoaders.Elf
         public const byte ELFDATA2LSB = 1;
         public const byte ELFDATA2MSB = 2;
 
+        public const int ELFOSABI_ARM = 0x61;
         public const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
         public const uint SHF_WRITE = 0x1;
         public const uint SHF_ALLOC = 0x2;
@@ -171,7 +172,14 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             case ElfMachine.EM_AVR: arch = "avr8"; break;
             case ElfMachine.EM_RISCV: arch = "risc-v"; break;
-            case ElfMachine.EM_SH: arch = "superH"; break;
+            case ElfMachine.EM_SH:
+                arch = endianness== ELFDATA2LSB ? "superH-le" : "superH-be";
+                var a = cfgSvc.GetArchitecture(arch);
+                // SuperH stack pointer is not defined by the architecture,
+                // but by the application itself. It appears r15 has been
+                // chosen by at least the NetBSD folks.
+                a.StackRegister = a.GetRegister("r15");
+                return a;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
@@ -206,13 +214,23 @@ namespace Reko.ImageLoaders.Elf
                 ? symSection.Address + sym.Value
                 : platform.MakeAddressFromLinear(sym.Value);
 
+            var dt = GetSymbolDataType(sym);
             return new ImageSymbol(addr)
             {
                 Type = st,
                 Name = sym.Name,
                 Size = (uint)sym.Size,     //$REVIEW: is int32 a problem? Could such large objects (like arrays) exist?
+                DataType = dt,
                 ProcessorState = Architecture.CreateProcessorState()
             };
+        }
+
+        private DataType GetSymbolDataType(ElfSymbol sym)
+        {
+            if (sym.Type == ElfSymbolType.STT_FUNC)
+                return new FunctionType();
+            else
+                return new UnknownType();
         }
 
         public IPlatform LoadPlatform(byte osAbi, IProcessorArchitecture arch)
@@ -222,10 +240,14 @@ namespace Reko.ImageLoaders.Elf
             switch (osAbi)
             {
             case ELFOSABI_NONE: // Unspecified ABI
+            case ELFOSABI_ARM:
                 envName = "elf-neutral";
                 break;
             case ELFOSABI_CELL_LV2: // PS/3
                 envName = "elf-cell-lv2";
+                break;
+            case ELFOSABI_LINUX:
+                envName = "linux";      //$TODO: create a linux platform
                 break;
             default:
                 throw new NotSupportedException(string.Format("Unsupported ELF ABI 0x{0:X2}.", osAbi));
@@ -354,6 +376,21 @@ namespace Reko.ImageLoaders.Elf
 
         public abstract Address GetEntryPointAddress(Address addrBase);
 
+        protected void EnsureEntryPoint(List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
+        {
+            if (addr == null)
+                return;
+            ImageSymbol ep;
+            if (!symbols.TryGetValue(addr, out ep))
+            {
+                ep = new ImageSymbol(addr)
+                {
+                    ProcessorState = Architecture.CreateProcessorState()
+                };
+            }
+            entryPoints.Add(ep);
+        }
+
         // A map for extra symbols, those not in the usual Elf symbol tables
 
         public void AddSymbol(uint uNative, string pName)
@@ -451,8 +488,6 @@ namespace Reko.ImageLoaders.Elf
             numImports = n;
             return 0; //m_pImportStubs[];
         }
-
-
 
         public string GetStrPtr(Elf32_SHdr sect, uint offset)
         {
@@ -723,32 +758,50 @@ namespace Reko.ImageLoaders.Elf
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
             var segmentMap = new SegmentMap(addrPreferred);
-            foreach (var section in Sections)
+            if (Sections.Count > 0)
             {
-                if (section.Name == null || section.Address == null)
-                    continue;
-                MemoryArea mem;
-                if (segMap.TryGetLowerBound(section.Address, out mem) &&
-                    section.Address < mem.EndAddress)
+                foreach (var section in Sections)
                 {
-                    AccessMode mode = AccessModeOf(section.Flags);
-                    var seg = segmentMap.AddSegment(new ImageSegment(
-                        section.Name,
-                        section.Address,
-                        mem, mode)
+                    if (section.Name == null || section.Address == null)
+                        continue;
+                    MemoryArea mem;
+                    if (segMap.TryGetLowerBound(section.Address, out mem) &&
+                        section.Address < mem.EndAddress)
                     {
-                        Size = (uint)section.Size
-                    });
-                    seg.Designer = CreateRenderer64(section);
+                        AccessMode mode = AccessModeOf(section.Flags);
+                        var seg = segmentMap.AddSegment(new ImageSegment(
+                            section.Name,
+                            section.Address,
+                            mem, mode)
+                        {
+                            Size = (uint)section.Size
+                        });
+                        seg.Designer = CreateRenderer64(section);
+                    }
+                    else
+                    {
+                        //$TODO: warn
+                    }
                 }
-                else
+            }
+            else
+            {
+                // There are stripped ELF binaries with 0 sections. If we have one
+                // create a pseudo-section from the segMap.
+                foreach (var segment in segMap)
                 {
-                    //$TODO: warn
+                    var imgSegment = new ImageSegment(
+                        segment.Value.BaseAddress.GenerateName("seg", ""),
+                        segment.Value,
+                        AccessMode.ReadExecute)        //$TODO: writeable segments.
+                    {
+                        Size = (uint)segment.Value.Length,
+                    };
+                    segmentMap.AddSegment(imgSegment);
                 }
             }
             segmentMap.DumpSections();
             return segmentMap;
-
         }
 
         public override int LoadProgramHeaderTable()
@@ -863,25 +916,18 @@ namespace Reko.ImageLoaders.Elf
             }
 
             var addrEntry = GetEntryPointAddress(addrLoad);
-            if (addrEntry != null)
-            {
-                ImageSymbol entrySymbol;
-                if (symbols.TryGetValue(addrEntry, out entrySymbol))
-                {
-                    entryPoints.Add(entrySymbol);
-                }
-                else
-                {
-                    var ep = new ImageSymbol(addrEntry)
-                    {
-                        ProcessorState = Architecture.CreateProcessorState()
-                    };
-                    entryPoints.Add(ep);
-                }
-            }
+            EnsureEntryPoint(entryPoints, symbols, addrEntry);
+            var addrMain = Relocator.FindMainFunction(program, addrEntry);
+            EnsureEntryPoint(entryPoints, symbols, addrMain);
             return new RelocationResults(entryPoints, symbols);
         }
 
+        /// <summary>
+        /// Locates the GOT and populates the provided <paramref name="symbols"/> collection
+        /// with entries found in the GOT.
+        /// </summary>
+        /// <param name="program"></param>
+        /// <param name="symbols"></param>
         public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
         {
             // Locate the GOT
@@ -889,11 +935,15 @@ namespace Reko.ImageLoaders.Elf
             // information.
             var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
             if (got == null)
+            {
                 return;
+            }
 
             var rdr = program.CreateImageReader(got.Address);
             while (rdr.Address < got.EndAddress)
             {
+                // Read a 64-bit value and see if it corresponds
+                // to the address of a symbol.
                 var addrGot = rdr.Address;
                 ulong uAddrSym;
                 if (!rdr.TryReadUInt64(out uAddrSym))
@@ -1243,6 +1293,8 @@ namespace Reko.ImageLoaders.Elf
         public string GetSymbolName(ElfSection symSection, uint symbolNo)
         {
             var strSection = symSection.LinkedSection;
+            if (strSection == null)
+                return string.Format("null:{0:X8}", symbolNo);
             uint offset = (uint)(symSection.FileOffset + symbolNo * symSection.EntrySize);
             var rdr = imgLoader.CreateReader(offset);
             rdr.TryReadUInt32(out offset);
@@ -1273,27 +1325,47 @@ namespace Reko.ImageLoaders.Elf
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
             var segmentMap = new SegmentMap(addrPreferred);
-            foreach (var section in Sections)
+            if (Sections.Count > 0)
             {
-                if (section.Name == null || section.Address == null)
-                    continue;
+                foreach (var section in Sections)
+                {
+                    if (section.Name == null || section.Address == null)
+                        continue;
 
-                MemoryArea mem;
-                if (segMap.TryGetLowerBound(section.Address, out mem) &&
-                    section.Address < mem.EndAddress)
-                {
-                    AccessMode mode = AccessModeOf(section.Flags);
-                    var seg = segmentMap.AddSegment(new ImageSegment(
-                        section.Name,
-                        section.Address,
-                        mem, mode)
+                    MemoryArea mem;
+                    if (segMap.TryGetLowerBound(section.Address, out mem) &&
+                        section.Address < mem.EndAddress)
                     {
-                        Size = (uint)section.Size
-                    });
-                    seg.Designer = CreateRenderer(section, machine);
-                } else
+                        AccessMode mode = AccessModeOf(section.Flags);
+                        var seg = segmentMap.AddSegment(new ImageSegment(
+                            section.Name,
+                            section.Address,
+                            mem, mode)
+                        {
+                            Size = (uint)section.Size
+                        });
+                        seg.Designer = CreateRenderer(section, machine);
+                    }
+                    else
+                    {
+                        //$TODO: warn
+                    }
+                }
+            }
+            else
+            {
+                // There are stripped ELF binaries with 0 sections. If we have one
+                // create a pseudo-section from the segMap.
+                foreach (var segment in segMap)
                 {
-                    //$TODO: warn
+                    var imgSegment = new ImageSegment(
+                        segment.Value.BaseAddress.GenerateName("seg", ""),
+                        segment.Value,
+                        AccessMode.ReadExecute)        //$TODO: writeable segments.
+                    {
+                        Size = (uint)segment.Value.Length,
+                    };
+                    segmentMap.AddSegment(imgSegment);
                 }
             }
             segmentMap.DumpSections();
@@ -1412,22 +1484,9 @@ namespace Reko.ImageLoaders.Elf
             }
 
             var addrEntry = GetEntryPointAddress(addrLoad);
-            if (addrEntry != null)
-            {
-                ImageSymbol entrySymbol;
-                if (symbols.TryGetValue(addrEntry, out entrySymbol))
-                {
-                    entryPoints.Add(entrySymbol);
-                }
-                else
-                {
-                    var ep = new ImageSymbol(addrEntry)
-                    {
-                        ProcessorState = Architecture.CreateProcessorState()
-                    };
-                    entryPoints.Add(ep);
-                }
-            }
+            EnsureEntryPoint(entryPoints, symbols, addrEntry);
+            var addrMain = Relocator.FindMainFunction(program, addrEntry);
+            EnsureEntryPoint(entryPoints, symbols, addrMain);
             return new RelocationResults(entryPoints, symbols);
         }
 

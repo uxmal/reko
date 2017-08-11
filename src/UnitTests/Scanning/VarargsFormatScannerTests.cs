@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Scanning
     {
         private ProcedureBuilder m;
         private X86ArchitectureFlat32 x86;
+        private X86ArchitectureFlat64 x86_64;
         private PowerPcArchitecture32 ppc;
         private Program program;
         private ProcessorState state;
@@ -46,6 +47,7 @@ namespace Reko.UnitTests.Scanning
         private ProcedureCharacteristics printfChr;
         private FunctionType x86PrintfSig;
         private FunctionType x86SprintfSig;
+        private FunctionType x86_64PrintfSig;
         private FunctionType ppcPrintfSig;
         private ServiceContainer sc;
         private Address addrInstr;
@@ -55,6 +57,7 @@ namespace Reko.UnitTests.Scanning
         {
             this.sc = new ServiceContainer();
             this.x86 = new X86ArchitectureFlat32();
+            this.x86_64 = new X86ArchitectureFlat64();
             this.ppc = new PowerPcArchitecture32();
             this.m = new ProcedureBuilder();
             this.printfChr = new ProcedureCharacteristics()
@@ -71,6 +74,10 @@ namespace Reko.UnitTests.Scanning
                 StackId(null,   4, CStringType()),
                 StackId(null,   8, CStringType()),
                 StackId("...", 12, new UnknownType()));
+            this.x86_64PrintfSig = new FunctionType(
+                null,
+                RegId(null, x86_64, "rdi", CStringType()),
+                RegId("...", x86_64, "r8", new UnknownType()));
             this.ppcPrintfSig = new FunctionType(
                 null,
                 RegId(null,  ppc, "r3", CStringType()),
@@ -198,6 +205,21 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(
                 "(fn void ((ptr char), (ptr char), char))",
                 sig.ToString());
+        }
+
+        [Test]
+        [Ignore("Varargs scanning has not implemented on x86-64")]
+        public void Vafs_X86_64Printf()
+        {
+            Given_VaScanner(x86_64);
+            Given_StackString(4, "%d %f %s ");
+            Assert.IsTrue(vafs.TryScan(addrInstr, x86_64PrintfSig, printfChr));
+            var c = Constant.Word32(666);
+            var instr = vafs.BuildInstruction(c, new CallSite(4, 0));
+            Assert.AreEqual(
+                "0x0000029A(Mem0[esp:(ptr char)], Mem0[esp + 4:int32], " +
+                           "Mem0[esp + 8:real64])",
+                instr.ToString());
         }
 
         [Test]

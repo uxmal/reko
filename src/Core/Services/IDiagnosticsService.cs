@@ -25,6 +25,10 @@ using System.Text;
 
 namespace Reko.Core.Services
 {
+    /// <summary>
+    /// Service used to display warnings in the diagnostics window
+    /// of the Reko GUI.
+    /// </summary>
     public interface IDiagnosticsService
     {
         void Error(string message);
@@ -40,6 +44,8 @@ namespace Reko.Core.Services
         void Warn(ICodeLocation location, string message, params object[] args);
         void Inform(string message);
         void Inform(string message, params object[] args);
+        void Inform(ICodeLocation location, string message);
+        void Inform(ICodeLocation location, string message, params object[] args);
         void ClearDiagnostics();
     }
 }

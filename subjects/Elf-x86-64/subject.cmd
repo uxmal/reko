@@ -1,1 +1,1 @@
-decompile.exe ls
+decompile.exe --heuristic shingle ls

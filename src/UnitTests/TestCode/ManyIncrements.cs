@@ -42,17 +42,17 @@ namespace Reko.UnitTests.TestCode
 
             Assign(r1, Load(PrimitiveType.Byte, r0));
             Assign(r0, IAdd(r0, 1));
-            Store(Int32(0x33333330), r1);
+            Store(Word32(0x33333330), r1);
             Assign(r1, Load(PrimitiveType.Byte, r0));
             Assign(r0, IAdd(r0, 1));
-            Store(Int32(0x33333331), r1);
+            Store(Word32(0x33333331), r1);
             Goto("loopTop");
 
             Label("not1");
             BranchIf(Ne(r1, base.Int8(2)), "done");
             Assign(r1, Load(PrimitiveType.Byte, r0));
             Assign(r0, IAdd(r0, 1));
-            Store(Int32(0x33333330), r1);
+            Store(Word32(0x33333330), r1);
             Goto("loopTop");
 
             Label("done");

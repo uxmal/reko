@@ -1,1 +1,1 @@
-decompile RussianText.exe
+decompile --heuristic shingle RussianText.exe

@@ -355,6 +355,14 @@ ProcedureBuilder_exit:
 				proc.Write(false, writer);
 				writer.WriteLine();
 			}
-		}	
-	}
+		}
+
+        [Test]
+        [Ignore("This will be fixed in analysis-branch")]
+        [Category(Categories.FailedTests)]
+        public void DfaJumpIntoProc3()
+        {
+            RunFileTest32("Fragments/multiple/jumpintoproc3.asm", "Analysis/DfaJumpIntoProc3.txt");
+        }
+    }
 }

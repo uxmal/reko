@@ -13,6 +13,9 @@
       <address>0100</address>
       <processor name="z80" />
       <platform name="cpm" />
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
+      <registerValues />
     </user>
   </input>
 </project>

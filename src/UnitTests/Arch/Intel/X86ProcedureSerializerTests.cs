@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void Test()
+        public void X86ps_Test()
         {
             Given_ProcedureSerializer("stdapi");
             FunctionType sig = new FunctionType(
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void SsigSerializeAxBxCl()
+        public void X86ps_SerializeAxBxCl()
         {
             Given_ProcedureSerializer("stdapi");
             SerializedSignature ssig = ser.Serialize(SerializedSignatureTests.MkSigAxBxCl());
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void SsigSerializeSequence()
+        public void X86ps_SerializeSequence()
         {
             Identifier seq = new Identifier("es_bx", PrimitiveType.Word32, 
                 new SequenceStorage(Registers.es, Registers.bx));
@@ -109,7 +109,8 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void SerializeProcedure()
+        [Category(Categories.UnitTests)]
+        public void X86ps_SerializeProcedure()
         {
             Procedure proc = new Procedure("foo", arch.CreateFrame());
             Address addr = Address.Ptr32(0x12345);
@@ -122,7 +123,8 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void SerializeProcedureWithSignature()
+        [Category(Categories.UnitTests)]
+        public void X86ps_ProcedureWithSignature()
         {
             Procedure proc = new Procedure("foo", arch.CreateFrame())
             {
@@ -142,6 +144,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void X86ps_DeserializeFpuStackargument()
         {
             var ssig = new SerializedSignature

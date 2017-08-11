@@ -38,7 +38,7 @@ namespace Reko.Arch.Sparc
             var src1 = RewriteOp(instrCur.Op1);
             var src2 = RewriteOp(instrCur.Op2);
             var C = frame.EnsureFlagGroup(Registers.C);
-            emitter.Assign(
+            m.Assign(
                 dst,
                 op(op(src1, src2), C));
             if (emitCc)
@@ -54,9 +54,9 @@ namespace Reko.Arch.Sparc
             var src2 = RewriteOp(instrCur.Op2);
             if (negateOp2)
             {
-                src2 = emitter.Comp(src2);
+                src2 = m.Comp(src2);
             }
-            emitter.Assign(dst, op(src1, src2));
+            m.Assign(dst, op(src1, src2));
         }
 
         private void RewriteAluCc(Func<Expression, Expression, Expression> op, bool negateOp2)
@@ -78,9 +78,9 @@ namespace Reko.Arch.Sparc
             if (size.Size < dst.DataType.Size)
             {
                 size = (size.Domain == Domain.SignedInt) ? PrimitiveType.Int32 : PrimitiveType.Word32;
-                src = emitter.Cast(size, src);
+                src = m.Cast(size, src);
             }
-            emitter.Assign(dst, src);
+            m.Assign(dst, src);
         }
 
         private void RewriteMulscc()
@@ -88,7 +88,7 @@ namespace Reko.Arch.Sparc
             var dst = RewriteOp(instrCur.Op3);
             var src1 = RewriteOp(instrCur.Op1);
             var src2 = RewriteOp(instrCur.Op2);
-            emitter.Assign(
+            m.Assign(
                 dst,
                 host.PseudoProcedure("__mulscc", PrimitiveType.Int32, src1, src2));
             EmitCc(dst);
@@ -103,7 +103,7 @@ namespace Reko.Arch.Sparc
             if (dst is Identifier && ((Identifier)dst).Storage != Registers.g0)
             {
                 tmp = frame.CreateTemporary(dst.DataType);
-                emitter.Assign(tmp, emitter.IAdd(src1, src2));
+                m.Assign(tmp, m.IAdd(src1, src2));
             }
             Copy(Registers.i0, Registers.o0);
             Copy(Registers.i1, Registers.o1);
@@ -115,7 +115,7 @@ namespace Reko.Arch.Sparc
             Copy(Registers.i7, Registers.o7);
             if (tmp != null)
             {
-                emitter.Assign(dst, tmp);
+                m.Assign(dst, tmp);
             }
         }
 
@@ -128,7 +128,7 @@ namespace Reko.Arch.Sparc
             if (((Identifier)dst).Storage != Registers.g0)
             {
                 tmp = frame.CreateTemporary(dst.DataType);
-                emitter.Assign(tmp, emitter.IAdd(src1, src2));
+                m.Assign(tmp, m.IAdd(src1, src2));
             }
             Copy(Registers.o0, Registers.i0);
             Copy(Registers.o1, Registers.i1);
@@ -140,14 +140,14 @@ namespace Reko.Arch.Sparc
             Copy(Registers.o7, Registers.i7);
             if (tmp != null)
             {
-                emitter.Assign(dst, tmp);
+                m.Assign(dst, tmp);
             }
         }
 
 
         private void Copy(RegisterStorage src, RegisterStorage dst)
         {
-            emitter.Assign(
+            m.Assign(
                 frame.EnsureRegister(dst),
                 frame.EnsureRegister(src));
         }
@@ -157,14 +157,14 @@ namespace Reko.Arch.Sparc
             var rDst = (RegisterOperand)instrCur.Op2;
             if (rDst.Register == Registers.g0)
             {
-                emitter.Nop();
+                m.Nop();
             }
             else
             {
                 //$TODO: check relocations for a symbol at instrCur.Address.
                 var dst = frame.EnsureRegister(rDst.Register);
                 var src = (ImmediateOperand)instrCur.Op1;
-                emitter.Assign(dst, Constant.Word32(src.Value.ToUInt32() << 10));
+                m.Assign(dst, Constant.Word32(src.Value.ToUInt32() << 10));
             }
         }
 
@@ -173,8 +173,8 @@ namespace Reko.Arch.Sparc
             var src = RewriteOp(instrCur.Op1);
             var dst = RewriteMemOp(instrCur.Op2, size);
             if (size.Size < src.DataType.Size)
-                src = emitter.Cast(size, src);
-            emitter.Assign(dst, src);
+                src = m.Cast(size, src);
+            m.Assign(dst, src);
         }
     }
 }

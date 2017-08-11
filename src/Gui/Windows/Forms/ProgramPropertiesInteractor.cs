@@ -28,6 +28,10 @@ namespace Reko.Gui.Windows.Forms
     public class ProgramPropertiesInteractor
     {
         private ProgramPropertiesDialog dlg;
+        private Dictionary<string, string> heuristicDescriptions = new Dictionary<string, string>
+        {
+            { "shingle", "Shingle heuristic" }
+        };
 
         public void Attach(ProgramPropertiesDialog dlg)
         {
@@ -58,7 +62,7 @@ namespace Reko.Gui.Windows.Forms
             if (dlg.Program.User.Heuristics.Count == 0)
                 dlg.Heuristics.SelectedIndex = 0;
             else
-                dlg.Heuristics.SelectedItem = dlg.Program.User.Heuristics.First();
+                dlg.Heuristics.SelectedItem = heuristicDescriptions[dlg.Program.User.Heuristics.First()];
         }
 
         void OkButton_Click(object sender, EventArgs e)
@@ -69,9 +73,15 @@ namespace Reko.Gui.Windows.Forms
                 Script = dlg.LoadScript.Text,
             };
             if (dlg.Heuristics.SelectedIndex != 0)
-                dlg.Program.User.Heuristics.Add((string)dlg.Heuristics.SelectedItem);
+            {
+                var item = heuristicDescriptions.First(
+                    de => de.Value == (string)dlg.Heuristics.SelectedItem);
+                dlg.Program.User.Heuristics.Add(item.Key);
+            }
             else
+            {
                 dlg.Program.User.Heuristics.Clear();
+            }
         }
     }
 }

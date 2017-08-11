@@ -83,19 +83,9 @@ namespace Reko.Core
             IPlatform platform,
             AddressContext ctx)
         {
-            var global = resolver.ResolveImport(ModuleName, ImportName, platform);
-            if (global != null)
-                return global;
-            var t = platform.DataTypeFromImportName(ImportName);
-            //$REVIEW: the way imported symbols are resolved as 
-            // globals or functions needs a revisit.
-            if (t != null && !(t.Item2 is FunctionType))
-                return new Identifier(t.Item1, t.Item2, new MemoryStorage());
-            else
-                return null;
+            return resolver.ResolveImport(ModuleName, ImportName, platform);
         }
 
-        [Obsolete("", true)]
         public override ExternalProcedure ResolveImportedProcedure(
             IImportResolver resolver, 
             IPlatform platform, 
@@ -103,16 +93,13 @@ namespace Reko.Core
         {
             var ep = resolver.ResolveProcedure(ModuleName, ImportName, platform);
             if (ep != null)
-                return ep;
-            // Can we guess at the signature?
-            ep = platform.SignatureFromName(ImportName);
-            if (ep != null)
             {
                 if (!ep.Signature.ParametersValid)
+                {
                     ctx.Warn("Unable to guess parameters of {0}.", this);
+                }
                 return ep;
             }
-            
             ctx.Warn("Unable to resolve imported reference {0}.", this);
             return new ExternalProcedure(this.ToString(), null);
         }

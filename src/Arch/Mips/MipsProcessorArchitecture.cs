@@ -58,7 +58,7 @@ namespace Reko.Arch.Mips
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new MipsInstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()
@@ -66,12 +66,12 @@ namespace Reko.Arch.Mips
             return new MipsProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             return new MipsRewriter(
                 this,
                 new MipsDisassembler(this, rdr, IsVersion6OrLater),
-                frame,
+                binder,
                 host);
         }
 
@@ -130,7 +130,7 @@ namespace Reko.Arch.Mips
             throw new NotImplementedException();
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

@@ -79,7 +79,7 @@ namespace Reko.ImageLoaders.Elf
             var segments = ComputeSegmentSizes();
             var imageMap = CreateSegments(addrLoad, segments);
             var program = new Program(imageMap, platform.Architecture, platform);
-            LoadExternalProcedures(program.InterceptedCalls);;
+            LoadExternalProcedures(program.InterceptedCalls);
             return program;
         }
 

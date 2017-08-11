@@ -31,7 +31,7 @@ l00001036:
 	jsr.l	$-0126(a6)
 	movea.l	d0,a3
 	moveq	#$+00,d0
-	lea	$0274(pc),a1
+	lea	$0274(pc),a1                                           ; 000012BC
 	jsr.l	$-0228(a6)
 	tst.l	d0
 	beq	$00001226
@@ -232,7 +232,7 @@ l000011AE:
 	jsr.l	$-007E(a6)
 
 l000011B6:
-	lea	$0112(pc),a0
+	lea	$0112(pc),a0                                           ; 000012C8
 	move.l	a0,d1
 	move.l	#$000003ED,d2
 	jsr.l	$-001E(a6)
@@ -455,29 +455,29 @@ l00001372:
 fn00001390 proc
 	lea	$-0010(a7),a7
 	movem.l	d2-d3,-(a7)
-	pea	$00A0(pc)
+	pea	$00A0(pc)                                              ; 00001438
 	jsr.l	$00003E04
 	lea	$0010(a7),a0
 	move.l	a0,-(a7)
-	pea	$00B0(pc)
+	pea	$00B0(pc)                                              ; 00001458
 	jsr.l	$00002BDC
 	moveq	#$+01,d2
 	lea	$000C(a7),a7
 	bra	$000013F4
 
 l000013BA:
-	pea	$0056(pc)
+	pea	$0056(pc)                                              ; 00001410
 	jsr.l	$00003E04
 	lea	$0014(a7),a0
 	move.l	a0,-(a7)
-	pea	$0056(pc)
+	pea	$0056(pc)                                              ; 00001420
 	jsr.l	$00002BDC
 	move.l	$001C(a7),-(a7)
 	bsr	$0000145C
 	move.l	d0,d3
 	move.l	d3,-(a7)
 	move.l	$0024(a7),-(a7)
-	pea	$0040(pc)
+	pea	$0040(pc)                                              ; 00001424
 	jsr.l	$00001498
 	lea	$001C(a7),a7
 	addq.l	#$01,d2
@@ -574,7 +574,7 @@ l000014F6:
 	moveq	#$+00,d1
 
 l000014F8:
-	lea	$0914(pc),a0
+	lea	$0914(pc),a0                                           ; 00001E0C
 	move.l	d0,-(a7)
 	move.b	(a0,d1),d0
 	cmp.b	(a2),d0
@@ -1192,11 +1192,11 @@ l00001A0C:
 	beq	$00001A1E
 
 l00001A18:
-	lea	$03FC(pc),a6
+	lea	$03FC(pc),a6                                           ; 00001E14
 	bra	$00001A22
 
 l00001A1E:
-	lea	$0406(pc),a6
+	lea	$0406(pc),a6                                           ; 00001E24
 
 l00001A22:
 	move.l	a6,$002C(a7)
@@ -1341,7 +1341,7 @@ l00001B5A:
 	bra	$00001C20
 
 l00001B60:
-	lea	$02A8(pc),a3
+	lea	$02A8(pc),a3                                           ; 00001E08
 	move.l	#$00000001,$0066(a7)
 	moveq	#$+00,d5
 	bra	$00001C20
@@ -4108,7 +4108,7 @@ l00003444:
 	move.b	$0037(a7),d0
 	and.l	#$000000FF,d0
 	lea	$000028B0,a0
-	btst	#$0000,(01,a0,d0)
+	btst.w	#$0000,(01,a0,d0)
 	beq	$0000346A
 
 l00003466:
@@ -4279,7 +4279,7 @@ l000035B6:
 	move.b	$0037(a7),d0
 	and.l	#$000000FF,d0
 	lea	$000028B0,a0
-	btst	#$0000,(01,a0,d0)
+	btst.w	#$0000,(01,a0,d0)
 	beq	$000035DC
 
 l000035D8:

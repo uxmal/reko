@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Arch.Mips
             return image;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             return new MipsRewriter(arch, dasm, frame, host);
         }
@@ -220,7 +220,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_beq()
         {
             AssertCode(0x10300005,
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|if (r1 == r16) branch 00100018");
         }
 
@@ -293,7 +293,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_br()
         {
             AssertCode(0x1000ffc2,  // b loc_00026e0
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|goto 000FFF0C");
         }
 
@@ -310,11 +310,11 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x88c80003,  // lwl t0,3(a2)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __lwl(Mem0[r6 + 0x00000003:word32])");
+                "1|L--|r8 = __lwl(r8, Mem0[r6 + 0x00000003:word32])");
 
             AssertCode(0x98c80000,   // lwr t0,0(a2)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __lwr(Mem0[r6:word32])");
+                "1|L--|r8 = __lwr(r8, Mem0[r6:word32])");
         }
 
         [Test]
@@ -407,24 +407,54 @@ namespace Reko.UnitTests.Arch.Mips
         {
             // Test only the known ones, we'll have to see how this changes things later on with dynamic custom registers
             RunTest("011111 00000 00110 00000 00000 111011");   // CPU number
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r6 = __read_hardware_register(0x00)");
 
             RunTest("011111 00000 01000 00001 00000 111011");   // SYNCI step size
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r8 = __read_hardware_register(0x01)");
 
             RunTest("011111 00000 00001 00010 00000 111011");   // Cycle counter
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r1 = __read_hardware_register(0x02)");
 
             RunTest("011111 00000 00011 00011 00000 111011");   // Cycle counter resolution
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r3 = __read_hardware_register(0x03)");
 
             RunTest("011111 00000 00111 11101 00000 111011");   // OS-specific, thread local pointer on Linux
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r7 = __read_hardware_register(0x1D)");
+        }
+
+        [Test]
+        public void MipsRw_movz()
+        {
+            RunTest("000000 00011 01001 01010 00000 001010");    // movz
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (r9 != 0x00000000) branch 00100004", 
+                "2|L--|r10 = r3");
+        }
+
+        [Test]
+        public void MipsRw_sd()
+        {
+            AssertCode(0xFC444444,                              // sd
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r2 + 0x00004444:word64] = r4");
+        }
+
+        [Test]
+        public void MipsRw_swl_swr()
+        {
+            AssertCode(0xABA8002B,                // swl r8, 002B(sp)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__swl(Mem0[sp + 0x0000002B:word32], r8)");
+
+            AssertCode(0xBBA80028,                // swr r8, 0028(sp)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__swr(Mem0[sp + 0x00000028:word32], r8)");
         }
     }
 }

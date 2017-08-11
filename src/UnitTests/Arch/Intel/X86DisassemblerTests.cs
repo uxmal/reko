@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Arch.Intel
             var dasm = new X86Disassembler(
                 ProcessorMode.Protected64,
                 rdr,
-                PrimitiveType.Word32, 
+                PrimitiveType.Word32,
                 PrimitiveType.Word64,
                 true);
             return dasm.First();
@@ -120,6 +120,12 @@ namespace Reko.UnitTests.Arch.Intel
                 false);
         }
 
+        private void AssertCode16(string sExp, params byte[] bytes)
+        {
+            var instr = Disassemble16(bytes);
+            Assert.AreEqual(sExp, instr.ToString());
+        }
+
         private void AssertCode32(string sExp, params byte[] bytes)
         {
             var instr = Disassemble32(bytes);
@@ -163,8 +169,8 @@ foo:
             string s = sb.ToString();
             Assert.AreEqual(
                 "0B96:0000\tmov\tax,0000\r\n" +
-                "0B96:0003\tcwd\t\r\n" +
-                "0B96:0004\tlodsb\t\r\n" +
+                "0B96:0003\tcwd\r\n" +
+                "0B96:0004\tlodsb\r\n" +
                 "0B96:0005\tdec\tcx\r\n" +
                 "0B96:0006\tjnz\t0004\r\n",
                 s);
@@ -256,7 +262,7 @@ movzx	ax,byte ptr [bp+04]
             var lr = asm.AssembleFragment(
                 Address.Ptr32(0x01001000),
 
-                "db 0xf2, 0x0f, 0x70, 0x00, 0x00\r\n" + 
+                "db 0xf2, 0x0f, 0x70, 0x00, 0x00\r\n" +
                 "db 0xf3, 0x0f, 0x70, 0x00, 0x00\r\n");
 
             /* Before (incorrect):
@@ -351,7 +357,7 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
-        public void X86Dis_Bswap()
+        public void X86Dis_bswap()
         {
             var instr = Disassemble32(0x0F, 0xC8); ;		// bswap eax
             Assert.AreEqual("bswap\teax", instr.ToString());
@@ -368,7 +374,7 @@ movzx	ax,byte ptr [bp+04]
             EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
             X86Disassembler dasm = new X86Disassembler(
                 ProcessorMode.Protected32,
-                rdr, 
+                rdr,
                 PrimitiveType.Word32,
                 PrimitiveType.Word32,
                 false);
@@ -419,7 +425,7 @@ movzx	ax,byte ptr [bp+04]
         public void X86Dis_Xlat16()
         {
             var instr = Disassemble16(0xD7);
-            Assert.AreEqual("xlat\t", instr.ToString());
+            Assert.AreEqual("xlat", instr.ToString());
             Assert.AreEqual(PrimitiveType.Byte, instr.dataWidth);
             Assert.AreEqual(PrimitiveType.Word16, instr.addrWidth);
         }
@@ -428,7 +434,7 @@ movzx	ax,byte ptr [bp+04]
         public void X86Dis_Xlat32()
         {
             var instr = Disassemble32(0xD7);
-            Assert.AreEqual("xlat\t", instr.ToString());
+            Assert.AreEqual("xlat", instr.ToString());
             Assert.AreEqual(PrimitiveType.Byte, instr.dataWidth);
             Assert.AreEqual(PrimitiveType.Word32, instr.addrWidth);
         }
@@ -437,7 +443,7 @@ movzx	ax,byte ptr [bp+04]
         public void X86Dis_Hlt()
         {
             var instr = Disassemble16(0xF4);
-            Assert.AreEqual("hlt\t", instr.ToString());
+            Assert.AreEqual("hlt", instr.ToString());
         }
 
         [Test]
@@ -549,7 +555,7 @@ movzx	ax,byte ptr [bp+04]
         public void Dis_x86_fucompp()
         {
             var instr = Disassemble32(0xDA, 0xE9);
-            Assert.AreEqual("fucompp\t", instr.ToString());
+            Assert.AreEqual("fucompp", instr.ToString());
         }
 
         [Test]
@@ -607,21 +613,21 @@ movzx	ax,byte ptr [bp+04]
         public void Dis_x86_cpuid()
         {
             var instr = Disassemble32(0x0F, 0xA2);
-            Assert.AreEqual("cpuid\t", instr.ToString());
+            Assert.AreEqual("cpuid", instr.ToString());
         }
 
         [Test]
         public void Dis_x86_xgetbv()
         {
             var instr = Disassemble32(0x0F, 0x01, 0xD0);
-            Assert.AreEqual("xgetbv\t", instr.ToString());
+            Assert.AreEqual("xgetbv", instr.ToString());
         }
 
         [Test]
         public void Dis_x86_rdtsc()
         {
             var instr = Disassemble32(0x0F, 0x31);
-            Assert.AreEqual("rdtsc\t", instr.ToString());
+            Assert.AreEqual("rdtsc", instr.ToString());
         }
 
         [Test]
@@ -703,8 +709,8 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void Dis_x86_nops()
         {
-            AssertCode64("nop\t", 0x90);
-            AssertCode64("nop\t", 0x66, 0x90);
+            AssertCode64("nop", 0x90);
+            AssertCode64("nop", 0x66, 0x90);
             AssertCode64("nop\tdword ptr [rax]", 0x0F, 0x1F, 0x00);
             AssertCode64("nop\tdword ptr [rax+00]", 0x0F, 0x1F, 0x40, 0x00);
             AssertCode64("nop\tdword ptr [rax+rax+00]", 0x0F, 0x1F, 0x44, 0x00, 0x00);
@@ -723,13 +729,13 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void Dis_x86_repz_ret()
         {
-            AssertCode64("ret\t", 0xF3, 0xC3);
+            AssertCode64("ret", 0xF3, 0xC3);
         }
 
         [Test]
         public void Dis_x86_invalid_les()
         {
-            AssertCode64("illegal\t", 0xC4, 0xC0);
+            AssertCode64("illegal", 0xC4, 0xC0);
         }
 
         [Test]
@@ -740,7 +746,7 @@ movzx	ax,byte ptr [bp+04]
             var instrs = dasm.Take(2)
                 .Select(i => i.ToString())
                 .ToArray();
-            Assert.AreEqual("nop\t", instrs[0]);
+            Assert.AreEqual("nop", instrs[0]);
             Assert.AreEqual("fstp\tdouble ptr [bp-16]", instrs[1]);
         }
 
@@ -752,7 +758,7 @@ movzx	ax,byte ptr [bp+04]
             var instrs = dasm.Take(2)
                 .Select(i => i.ToString())
                 .ToArray();
-            Assert.AreEqual("nop\t", instrs[0]);
+            Assert.AreEqual("nop", instrs[0]);
             Assert.AreEqual("fld\tdouble ptr es:[048B]", instrs[1]);
         }
 
@@ -777,15 +783,15 @@ movzx	ax,byte ptr [bp+04]
                 "scasb\r\n" +
                 "scasw\r\n" +
                 "scasd\r\n" +
-                
+
                 "cmpsb\r\n" +
                 "cmpsw\r\n" +
                 "cmpsd\r\n" +
-                
+
                 "lodsb\r\n" +
                 "lodsw\r\n" +
                 "lodsd\r\n" +
-                
+
                 "stosb\r\n" +
                 "stosw\r\n" +
                 "stosd\r\n");
@@ -835,5 +841,57 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("movups\t[rsp+20],xmm0", 0x0F, 0x11, 0x44, 0x24, 0x20);
         }
+
+        [Test]
+        public void X86dis_fucomi()
+        {
+            AssertCode32("fucomi\tst(0),st(3)", 0xDB, 0xEB);
+        }
+
+        [Test]
+        public void X86dis_fucomip()
+        {
+            AssertCode32("fucomip\tst(0),st(1)", 0xDF, 0xE9);
+        }
+
+        [Test]
+        public void X86dis_movups()
+        {
+            AssertCode64("movups\txmm0,[rbp-20]", 0x0F, 0x10, 0x45, 0xE0);
+            AssertCode64("movupd\txmm0,[rbp-20]", 0x66, 0x0F, 0x10, 0x45, 0xE0);
+            AssertCode64("movss\txmm0,dword ptr [rbp-20]", 0xF3, 0x0F, 0x10, 0x45, 0xE0);
+            AssertCode64("movsd\txmm0,double ptr [rbp-20]", 0xF2, 0x0F, 0x10, 0x45, 0xE0);
+        }
+
+        [Test]
+        public void X86dis_movups_16bit()
+        {
+            AssertCode16("movups\txmm7,xmm3", 0x0F, 0x10, 0xFB);
+        }
+
+        [Test]
+        public void X86dis_ucomiss()
+        {
+            AssertCode64("ucomiss\txmm0,dword ptr [rip+0000B12D]", 0x0F, 0x2E, 0x05, 0x2D, 0xB1, 0x00, 0x00);
+        }
+
+        [Test]
+        public void X86dis_ucomisd()
+        {
+            AssertCode64("ucomisd\txmm0,double ptr [rip+0000B12D]", 0x66, 0x0F, 0x2E, 0x05, 0x2D, 0xB1, 0x00, 0x00);
+        }
+
+        [Test]
+        public void X86dis_addss()
+        {
+            AssertCode64("addss\txmm1,dword ptr [rip+0000B0FB]", 0xF3, 0x0F, 0x58, 0x0D, 0xFB, 0xB0, 0x00, 0x00);
+        }
+
+        [Test]
+        public void X86dis_cvtsi2ss()
+        {
+            AssertCode64("cvtsi2ss\txmm0,rax", 0xF3, 0x48, 0x0F, 0x2A, 0xC0);
+        }
     }
 }
+

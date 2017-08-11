@@ -89,13 +89,6 @@ namespace Reko.Core
             return new LeImageReader(this, offset);
         }
 
-        [Obsolete]
-        public SegmentMap CreateImageMap()
-        {
-            return new SegmentMap(BaseAddress,
-                new ImageSegment("", this, AccessMode.ReadWriteExecute));
-        }
-
 		/// <summary>
 		/// Adds the delta to the ushort at the given offset.
 		/// </summary>

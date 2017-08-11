@@ -43,7 +43,7 @@ namespace Reko.Core.Serialization
             Argument_v1 sarg = new Argument_v1 
             {
 			    Name = arg.Name,
-			    Kind = arg.Storage.Serialize(),
+			    Kind = arg.Storage != null ? arg.Storage.Serialize() : null,
                 OutParameter = arg.Storage is OutArgumentStorage,
                 Type = arg.DataType.Accept(new DataTypeSerializer()),
             };

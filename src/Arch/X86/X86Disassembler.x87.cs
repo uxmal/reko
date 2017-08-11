@@ -450,6 +450,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
 
+                // DB E0
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.fclex), 
@@ -459,15 +460,16 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+				new SingleByteOpRec(Opcode.fucomi, "f,F"), 
+				new SingleByteOpRec(Opcode.fucomi, "f,F"), 
+				new SingleByteOpRec(Opcode.fucomi, "f,F"), 
+				new SingleByteOpRec(Opcode.fucomi, "f,F"), 
+				new SingleByteOpRec(Opcode.fucomi, "f,F"), 
+				new SingleByteOpRec(Opcode.fucomi, "f,F"), 
+				new SingleByteOpRec(Opcode.fucomi, "f,F"), 
+				new SingleByteOpRec(Opcode.fucomi, "f,F"), 
 
+                // DB F0
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
@@ -802,14 +804,14 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 						
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.fucomip, "f,F"),
+				new SingleByteOpRec(Opcode.fucomip, "f,F"),
+				new SingleByteOpRec(Opcode.fucomip, "f,F"),
+				new SingleByteOpRec(Opcode.fucomip, "f,F"),
+				new SingleByteOpRec(Opcode.fucomip, "f,F"),
+				new SingleByteOpRec(Opcode.fucomip, "f,F"),
+				new SingleByteOpRec(Opcode.fucomip, "f,F"),
+				new SingleByteOpRec(Opcode.fucomip, "f,F"),
 						
 				// F0
 				new SingleByteOpRec(Opcode.illegal),

@@ -47,7 +47,7 @@ namespace Reko.Core
 			args = new List<Identifier>();
 		}
 
-		public void AddFlagGroupReturnValue(uint bitMask, Frame frame)
+		public void AddFlagGroupReturnValue(uint bitMask, IStorageBinder frame)
 		{
 			PrimitiveType dt = Bits.IsSingleBitSet(bitMask) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var grf = arch.GetFlagGroup(bitMask);
@@ -84,11 +84,6 @@ namespace Reko.Core
         {
             args.Add(arg);
         }
-
-		public void AddStackArgument(int stackOffset, Identifier id)
-		{
-			args.Add(new Identifier(id.Name, id.DataType, new StackArgumentStorage(stackOffset, id.DataType)));
-		}
 
 		public FunctionType BuildSignature()
 		{

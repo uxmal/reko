@@ -8,10 +8,10 @@
 0C00:0006 68 00 01        	push	0100
 0C00:0009 E8 0B 00        	call	0017
 0C00:000C 83 C4 02        	add	sp,02
-0C00:000F C3              	ret	
+0C00:000F C3              	ret
 0C00:0010 8B 44 02        	mov	ax,[si+02]
 0C00:0013 E8 13 00        	call	0029
-0C00:0016 C3              	ret	
+0C00:0016 C3              	ret
 0C00:0017 55              	push	bp
 0C00:0018 8B EC           	mov	bp,sp
 0C00:001A 8B 5E 04        	mov	bx,[bp+04]
@@ -20,12 +20,12 @@
 0C00:0021 E8 08 00        	call	002C
 0C00:0024 83 C4 02        	add	sp,02
 0C00:0027 5D              	pop	bp
-0C00:0028 C3              	ret	
+0C00:0028 C3              	ret
 0C00:0029 89 05           	mov	[di],ax
-0C00:002B C3              	ret	
+0C00:002B C3              	ret
 0C00:002C 55              	push	bp
 0C00:002D 8B EC           	mov	bp,sp
 0C00:002F 8B 46 04        	mov	ax,[bp+04]
 0C00:0032 89 05           	mov	[di],ax
 0C00:0034 5D              	pop	bp
-0C00:0035 C3              	ret	
+0C00:0035 C3              	ret

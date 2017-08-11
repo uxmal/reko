@@ -34,13 +34,14 @@ namespace Reko.Arch.RiscV
         private RiscVArchitecture arch;
         private IEnumerator<RiscVInstruction> dasm;
         private RtlEmitter m;
-        private Frame frame;
+        private IStorageBinder frame;
         private IRewriterHost host;
         private RiscVInstruction instr;
-        private RtlInstructionCluster rtlc;
+        private List<RtlInstruction> rtlInstructions;
+        private RtlClass rtlc;
         private ProcessorState state;
 
-        public RiscVRewriter(RiscVArchitecture arch, EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public RiscVRewriter(RiscVArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.dasm = new RiscVDisassembler(arch, rdr).GetEnumerator();
@@ -54,18 +55,23 @@ namespace Reko.Arch.RiscV
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-
-                this.rtlc = new RtlInstructionCluster(dasm.Current.Address, dasm.Current.Length);
-                this.rtlc.Class = RtlClass.Linear;
-                this.m = new RtlEmitter(rtlc.Instructions);
+                var addr = dasm.Current.Address;
+                var len = dasm.Current.Length;
+                this.rtlInstructions = new List<RtlInstruction>();
+                this.rtlc = RtlClass.Linear;
+                this.m = new RtlEmitter(rtlInstructions);
 
                 switch (instr.opcode)
                 {
                 default:
-                    throw new AddressCorrelatedException(
-                       instr.Address,
-                       "Rewriting of Risc-V instruction '{0}' not implemented yet.",
-                       instr.opcode);
+                    host.Warn(
+                        instr.Address, 
+                        "Rewriting of Risc-V instruction '{0}' not implemented yet.",
+                        instr.opcode);
+                    rtlc = RtlClass.Invalid;
+                    m.Invalid();
+                    break;
+                case Opcode.invalid: rtlc = RtlClass.Invalid; m.Invalid(); break;
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.addi: RewriteAdd(); break;
                 case Opcode.addiw: RewriteAddw(); break;
@@ -81,6 +87,7 @@ namespace Reko.Arch.RiscV
                 case Opcode.bne: RewriteBranch(m.Ne); break;
                 case Opcode.fcvt_d_s: RewriteFcvt(PrimitiveType.Real64); break;
                 case Opcode.feq_s: RewriteFcmp(PrimitiveType.Real32, m.FEq); break;
+                case Opcode.fmadd_s: RewriteFmadd(PrimitiveType.Real32, m.FAdd); break;
                 case Opcode.fmv_d_x: RewriteFcvt(PrimitiveType.Real64); break;
                 case Opcode.fmv_s_x: RewriteFcvt(PrimitiveType.Real32); break;
                 case Opcode.flw: RewriteFload(PrimitiveType.Real32); break;
@@ -89,6 +96,8 @@ namespace Reko.Arch.RiscV
                 case Opcode.lb: RewriteLoad(PrimitiveType.SByte); break;
                 case Opcode.lbu: RewriteLoad(PrimitiveType.Byte); break;
                 case Opcode.ld: RewriteLoad(PrimitiveType.Word64); break;
+                case Opcode.lh: RewriteLoad(PrimitiveType.Int16); break;
+                case Opcode.lhu: RewriteLoad(PrimitiveType.UInt16); break;
                 case Opcode.lui: RewriteLui(); break;
                 case Opcode.lw: RewriteLoad(PrimitiveType.Int32); break;
                 case Opcode.lwu: RewriteLoad(PrimitiveType.UInt32); break;
@@ -112,7 +121,13 @@ namespace Reko.Arch.RiscV
                 case Opcode.xor: RewriteXor(); break;
                 case Opcode.xori: RewriteXor(); break;
                 }
-                yield return rtlc;
+                yield return new RtlInstructionCluster(
+                    addr,
+                    len,
+                    rtlInstructions.ToArray())
+                {
+                    Class = rtlc,
+                };
             }
         }
 

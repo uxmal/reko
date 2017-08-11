@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Arch.M68k
             get { return addrBase; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             return arch.CreateRewriter(mem.CreateLeReader(0), arch.CreateProcessorState(), arch.CreateFrame(), host);
         }
@@ -726,6 +726,15 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68krw_bcc_invalid_address()
+        {
+            Rewrite(0x6439);
+            AssertCode(
+                "0|---|00010000(2): 1 instructions",
+                "1|---|<invalid>");
+        }
+
+        [Test]
         public void M68krw_addq_d()
         {
             Rewrite(0x5401);
@@ -1013,7 +1022,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0x2432, 0x04fc);    // move.l\t(-04,a2,d0*2),d2",
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
-                "1|L--|d2 = Mem0[a2 + -4 + (int32) ((int16) d0) * 2:word32]"
+                "1|L--|d2 = Mem0[a2 + -4 + (int32) ((int16) d0) * 4:word32]"
                 );
         }
 
@@ -1222,10 +1231,109 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0xF22E, 0xD020, 0xFFE8); //  fmovemx %fp@(-24),%fp2
             AssertCode(
-                 "0|L--|00010000(6): 3 instructions",
-                 "1|L--|v3 = a6 + -24",
-                 "2|L--|fp2 = Mem0[v3:real96]",
-                 "3|L--|v3 = v3 + 0x0000000C");
+                "0|L--|00010000(6): 3 instructions",
+                "1|L--|v3 = a6 + -24",
+                "2|L--|fp2 = Mem0[v3:real96]",
+                "3|L--|v3 = v3 + 0x0000000C");
+        }
+
+        [Test]
+        public void M68krw_chk16_dreg()
+        {
+            Rewrite(0x4D82);         // chk
+            AssertCode(
+                "0|L--|00010000(2): 2 instructions",
+                "1|T--|if ((word16) d2 >= 0x0000 && (word16) d2 <= (word16) d6) branch 00010002",
+                "2|L--|__syscall(0x06)");
+        }
+
+        [Test]
+        public void M68krw_chk16_indirect()
+        {
+            Rewrite(0x4D92);         // chk
+            AssertCode(
+                "0|L--|00010000(2): 2 instructions",
+                "1|T--|if (Mem0[a2:word16] >= 0x0000 && Mem0[a2:word16] <= (word16) d6) branch 00010002",
+                "2|L--|__syscall(0x06)");
+        }
+
+        [Test]
+        public void M68krw_chk16_postinc()
+        {
+            Rewrite(0x4D9A);         // chk
+            AssertCode(
+                "0|L--|00010000(2): 4 instructions",
+                "1|L--|v3 = Mem0[a2:word16]",
+                "2|L--|a2 = a2 + 0x00000002",
+                "3|T--|if (v3 >= 0x0000 && v3 <= (word16) d6) branch 00010002",
+                "4|L--|__syscall(0x06)");
+        }
+
+        [Test]
+        public void M68krw_chk32_dreg()
+        {
+            Rewrite(0x4D02);         // chk
+            AssertCode(
+                "0|L--|00010000(2): 2 instructions",
+                "1|T--|if (d2 >= 0x00000000 && d2 <= d6) branch 00010002",
+                "2|L--|__syscall(0x06)");
+        }
+
+        [Test]
+        public void M68krw_movep()
+        {
+            Rewrite(0x0949, 0x0010);        // movep.w $10(a1), d4
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|__movep_l(Mem0[a1 + 16:word32], d4)");
+        }
+
+        [Test]
+        public void M68krw_cmp2()
+        {
+            Rewrite(0x04D1, 0xA000);        // cmp2 (a1),a2
+            AssertCode(
+              "0|L--|00010000(4): 2 instructions",
+              "1|L--|C = a2 < Mem0[a1:word32] || a2 > Mem0[a1 + 0x00000004:word32]",
+              "2|L--|Z = a2 == Mem0[a1:word32] || a2 == Mem0[a1 + 0x00000004:word32]");
+        }
+
+        [Test]
+        public void M68krw_cas()
+        {
+            //$TODO: add "stdatomic.h"  to output file.
+            Rewrite(0x0ED3, 0x0102);        // cas.w d2,d1,(a3)
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|CVZN = atomic_compare_exchange_weak(&Mem0[a3:word16], (word16) d1, (word16) d2)");
+        }
+
+        [Test]
+        public void M68krw_trap()
+        {
+            Rewrite(0x4E4E);
+            AssertCode(
+                "0|T--|00010000(2): 1 instructions",
+                "1|L--|__syscall(0x0E)");
+        }
+
+        [Test]
+        public void M68krw_move_to_ccr()
+        {
+            Rewrite(0x44c3);
+            AssertCode(     // move\td3,ccr
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|ccr = d3");
+        }
+
+        [Test]
+        public void M68krw_move_fr_ccr()
+        {
+            Rewrite(0x42d3);
+            AssertCode( // move\tccr,(a3)",
+                "0|L--|00010000(2): 2 instructions",
+                "1|L--|v4 = (uint16) ccr",
+                "2|L--|Mem0[a3:uint16] = v4");
         }
     }
 }

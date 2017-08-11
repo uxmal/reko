@@ -91,7 +91,7 @@ namespace Reko.Arch.Arm
             return new ArmProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame, host);
         }
@@ -187,7 +187,7 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             return new MemoryAccess(new BinaryExpression(
                          Operator.IAdd, FramePointerType,

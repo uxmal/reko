@@ -65,6 +65,7 @@ namespace Reko.UnitTests.Arch.Intel
 	mov ax,[si+2]
 	mov dx,[si+4]
 	div cx
+	ret
 ");
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwDivideTests.txt"))
 			{

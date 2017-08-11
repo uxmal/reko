@@ -8,7 +8,7 @@ l1:
 	x = i
 	x = r
 	Mem0[ptr:int32] = i
-	Mem0[ptr + 0x00000004:real32] = r
+	Mem0[ptr + 4:real32] = r
 	return
 	// succ:  UnionIntRealMock_exit
 UnionIntRealMock_exit:
@@ -36,7 +36,7 @@ Eq_2: (union "Eq_2" (int32 u0) (real32 u1))
 	T_3 (in x : word32)
 	T_4 (in r : real32)
 	T_8 (in Mem0[ptr + 0x00000000:int32] : int32)
-	T_11 (in Mem0[ptr + 0x00000004:real32] : real32)
+	T_11 (in Mem0[ptr + 4:real32] : real32)
 Eq_5: (struct "Eq_5" (0 Eq_2 t0000) (4 Eq_2 t0004))
 	T_5 (in ptr : word32)
 // Type Variables ////////////
@@ -72,15 +72,15 @@ T_8: (in Mem0[ptr + 0x00000000:int32] : int32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: int32
-T_9: (in 0x00000004 : word32)
+T_9: (in 4 : int32)
   Class: Eq_9
-  DataType: word32
-  OrigDataType: word32
-T_10: (in ptr + 0x00000004 : word32)
+  DataType: int32
+  OrigDataType: int32
+T_10: (in ptr + 4 : word32)
   Class: Eq_10
   DataType: ptr32
   OrigDataType: ptr32
-T_11: (in Mem0[ptr + 0x00000004:real32] : real32)
+T_11: (in Mem0[ptr + 4:real32] : real32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: real32

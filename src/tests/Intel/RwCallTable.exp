@@ -12,7 +12,7 @@ l0C00_0008:
 	call	word ptr cs:[bx+0012]
 
 l0C00_0011:
-	ret	
+	ret
 ;; Code vector at 0C00:0012 (6 bytes)
 	0C00:0018
 	0C00:0022
@@ -24,21 +24,21 @@ fn0C00_0018 proc
 	mov	ax,[si+02]
 	add	ax,[si+04]
 	mov	[si+06],ax
-	ret	
+	ret
 
 ;; fn0C00_0022: 0C00:0022
 fn0C00_0022 proc
 	mov	ax,[si+02]
 	sub	ax,[si+04]
 	mov	[si+06],ax
-	ret	
+	ret
 
 ;; fn0C00_002C: 0C00:002C
 fn0C00_002C proc
 	mov	ax,[si+02]
 	and	ax,[bx+04]
 	mov	[si+06],ax
-	ret	
+	ret
 
 Procedure fn0C00_0000 calls:
 	fn0C00_002C

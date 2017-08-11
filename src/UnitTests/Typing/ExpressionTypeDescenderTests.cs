@@ -278,5 +278,14 @@ namespace Reko.UnitTests.Typing
             Assert.IsNotNull(tRef, "Should be type reference");
             Assert.AreEqual("(struct (4 T_5 t0004))", tRef.Referent.ToString());
         }
+
+        [Test]
+        public void ExdConditional()
+        {
+            var id = Id("id", PrimitiveType.Bool);
+            var id1 = Id("id1", PrimitiveType.Int32);
+            var id2 = Id("id2", PrimitiveType.Int32);
+            RunTest(m.Conditional(PrimitiveType.Word32, id, id1, id2), PrimitiveType.Word32);
+        }
     }
 }

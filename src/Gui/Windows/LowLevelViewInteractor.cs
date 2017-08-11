@@ -209,6 +209,10 @@ namespace Reko.Gui.Windows
                             status.Status = 0;
                         }
                         return true;
+                    case CmdIds.ViewPcRelative:
+                        status.Status = MenuStatus.Visible | MenuStatus.Enabled |
+                            (control.DisassemblyView.ShowPcRelative ? MenuStatus.Checked : 0);
+                        return true;
                     case CmdIds.TextEncodingChoose:
                         return true;
                     }
@@ -245,6 +249,7 @@ namespace Reko.Gui.Windows
                     case CmdIds.EditAnnotation: return EditDasmAnnotation();
                     case CmdIds.TextEncodingChoose: return ChooseTextEncoding();
                     case CmdIds.ActionCallTerminates: return EditCallSite();
+                    case CmdIds.ViewPcRelative: return ToggleShowPcRelative();
                     }
                 }
             }
@@ -419,7 +424,7 @@ namespace Reko.Gui.Windows
                 dlg.InitialPattern = SelectionToHex(addrRange);
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
-                    var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
+                    var re = Core.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
                     var hits = 
                         //$BUG: wrong result
                         program.SegmentMap.Segments.Values
@@ -447,6 +452,14 @@ namespace Reko.Gui.Windows
                     this.control.DisassemblyView.RecomputeLayout();
                 }
             }
+            return true;
+        }
+
+        public bool ToggleShowPcRelative()
+        {
+            var show = control.DisassemblyView.ShowPcRelative;
+            control.DisassemblyView.ShowPcRelative = !show;
+            control.DisassemblyView.RecomputeLayout();
             return true;
         }
 

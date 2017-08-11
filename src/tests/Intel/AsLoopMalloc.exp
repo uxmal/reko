@@ -18,7 +18,7 @@
 1000002C 83 C7 04        	add	edi,04
 1000002F 0B F6           	or	esi,esi
 10000031 75 E2           	jnz	10000015
-10000033 C3              	ret	
+10000033 C3              	ret
 10000034 00 00           	add	[eax],al
 10000036 00 00           	add	[eax],al
 10000038 00 00           	add	[eax],al

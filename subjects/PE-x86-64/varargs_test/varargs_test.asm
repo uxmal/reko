@@ -3,15 +3,15 @@
 ;; fn0000000140001000: 0000000140001000
 fn0000000140001000 proc
 	sub	rsp,+000000C8
-	mov	rax,[rip+00001FF2]
+	mov	rax,[rip+00001FF2]                                     ; 0000000140003000
 	xor	rax,rsp
 	mov	[rsp+000000B8],rax
-	movaps	xmm0,[rip+00001240]
-	lea	r9,[rip+00001219]
+	movaps	xmm0,[rip+00001240]                                 ; 0000000140002260
+	lea	r9,[rip+00001219]                                      ; 0000000140002240
 	mov	dword ptr [rsp+38],00000057
-	lea	r8,[rip+0000121A]
+	lea	r8,[rip+0000121A]                                      ; 0000000140002250
 	mov	dword ptr [rsp+30],00000063
-	lea	rcx,[rip+000011CB]
+	lea	rcx,[rip+000011CB]                                     ; 0000000140002210
 	mov	edx,00000003
 	movups	[rsp+20],xmm0
 	call	0000000140001140
@@ -25,7 +25,7 @@ fn0000000140001000 proc
 	mov	[rsp+28],rax
 	lea	rdx,[rsp+4C]
 	lea	rax,[rsp+48]
-	lea	rcx,[rip+0000119B]
+	lea	rcx,[rip+0000119B]                                     ; 0000000140002228
 	mov	[rsp+20],rax
 	call	00000001400010D0
 	xor	eax,eax
@@ -33,13 +33,13 @@ fn0000000140001000 proc
 	xor	rcx,rsp
 	call	00000001400011B0
 	add	rsp,+000000C8
-	ret	
+	ret
 00000001400010B1    CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC  ...............
 
 ;; fn00000001400010C0: 00000001400010C0
 fn00000001400010C0 proc
-	lea	rax,[rip+00002561]
-	ret	
+	lea	rax,[rip+00002561]                                     ; 0000000140003628
+	ret
 00000001400010C8                         CC CC CC CC CC CC CC CC         ........
 
 ;; fn00000001400010D0: 00000001400010D0
@@ -55,7 +55,7 @@ fn00000001400010D0 proc
 	mov	rdi,rcx
 	lea	rsi,[rsp+58]
 	xor	ecx,ecx
-	call	dword ptr [rip+0000107D]
+	call	dword ptr [rip+0000107D]                              ; 0000000140002178
 	mov	rbx,rax
 	call	00000001400010C0
 	xor	r9d,r9d
@@ -63,18 +63,18 @@ fn00000001400010D0 proc
 	mov	r8,rdi
 	mov	rdx,rbx
 	mov	rcx,[rax]
-	call	dword ptr [rip+0000104E]
+	call	dword ptr [rip+0000104E]                              ; 0000000140002168
 	add	rsp,30
 	pop	rdi
 	pop	rsi
 	pop	rbx
-	ret	
+	ret
 0000000140001122       CC CC CC CC CC CC CC CC CC CC CC CC CC CC   ..............
 
 ;; fn0000000140001130: 0000000140001130
 fn0000000140001130 proc
-	lea	rax,[rip+000024E9]
-	ret	
+	lea	rax,[rip+000024E9]                                     ; 0000000140003620
+	ret
 0000000140001138                         CC CC CC CC CC CC CC CC         ........
 
 ;; fn0000000140001140: 0000000140001140
@@ -90,7 +90,7 @@ fn0000000140001140 proc
 	mov	rdi,rcx
 	lea	rsi,[rsp+58]
 	mov	ecx,00000001
-	call	dword ptr [rip+0000100A]
+	call	dword ptr [rip+0000100A]                              ; 0000000140002178
 	mov	rbx,rax
 	call	0000000140001130
 	xor	r9d,r9d
@@ -98,33 +98,32 @@ fn0000000140001140 proc
 	mov	r8,rdi
 	mov	rdx,rbx
 	mov	rcx,[rax]
-	call	dword ptr [rip+00000FE3]
+	call	dword ptr [rip+00000FE3]                              ; 0000000140002170
 	add	rsp,30
 	pop	rdi
 	pop	rsi
 	pop	rbx
-	ret	
+	ret
 0000000140001195                CC CC CC CC CC CC CC CC CC CC CC      ...........
 00000001400011A0 CC CC CC CC CC CC 66 66 0F 1F 84 00 00 00 00 00 ......ff........
 
 ;; fn00000001400011B0: 00000001400011B0
 fn00000001400011B0 proc
-	cmp	rcx,[rip+00001E49]
-	repne	
-	jnz	00000001400011CC
+	cmp	rcx,[rip+00001E49]                                     ; 0000000140003000
+	repne jnz	00000001400011CC
 
 l00000001400011BA:
 	rol	rcx,10
 	test	cx,FFFF
-	repne	
-	jnz	00000001400011C8
+	repne jnz	00000001400011C8
 
 l00000001400011C6:
-	repne	
-	ret	
+	repne ret
 
 l00000001400011C8:
 	ror	rcx,10
+
+l00000001400011CC:
 	jmp	000000014000147C
 00000001400011D1    CC CC CC                                      ...           
 
@@ -148,7 +147,7 @@ fn00000001400011D4 proc
 
 l000000014000120D:
 	call	0000000140001B5C
-	lea	rcx,[rip+0000098F]
+	lea	rcx,[rip+0000098F]                                     ; 0000000140001BA8
 	call	0000000140001854
 	call	0000000140001918
 	mov	ecx,eax
@@ -163,7 +162,7 @@ l000000014000122E:
 	jz	0000000140001248
 
 l000000014000123C:
-	lea	rcx,[rip+00000879]
+	lea	rcx,[rip+00000879]                                     ; 0000000140001ABC
 	call	0000000140001DF8
 
 l0000000140001248:
@@ -184,7 +183,7 @@ l000000014000126C:
 	xor	eax,eax
 	add	rsp,20
 	pop	rbx
-	ret	
+	ret
 
 l0000000140001279:
 	mov	ecx,00000007
@@ -203,7 +202,7 @@ fn0000000140001290 proc
 	call	000000014000193C
 	xor	eax,eax
 	add	rsp,28
-	ret	
+	ret
 
 ;; fn00000001400012A0: 00000001400012A0
 fn00000001400012A0 proc
@@ -236,7 +235,7 @@ l00000001400012E4:
 	mov	[rsp+20],sil
 	call	00000001400015C4
 	mov	bl,al
-	mov	ecx,[rip+000022B7]
+	mov	ecx,[rip+000022B7]                                     ; 00000001400035B0
 	cmp	ecx,01
 	jnz	0000000140001308
 
@@ -249,9 +248,9 @@ l0000000140001308:
 	jnz	0000000140001356
 
 l000000014000130C:
-	mov	dword ptr [rip+0000229A],00000001
-	lea	rdx,[rip+00000EB3]
-	lea	rcx,[rip+00000E94]
+	mov	dword ptr [rip+0000229A],00000001                      ; 00000001400035B0
+	lea	rdx,[rip+00000EB3]                                     ; 00000001400021D0
+	lea	rcx,[rip+00000E94]                                     ; 00000001400021B8
 	call	0000000140001E16
 	test	eax,eax
 	jz	0000000140001337
@@ -261,10 +260,10 @@ l000000014000132D:
 	jmp	0000000140001423
 
 l0000000140001337:
-	lea	rdx,[rip+00000E72]
-	lea	rcx,[rip+00000E5B]
+	lea	rdx,[rip+00000E72]                                     ; 00000001400021B0
+	lea	rcx,[rip+00000E5B]                                     ; 00000001400021A0
 	call	0000000140001E10
-	mov	dword ptr [rip+0000225C],00000002
+	mov	dword ptr [rip+0000225C],00000002                      ; 00000001400035B0
 	jmp	000000014000135E
 
 l0000000140001356:
@@ -351,7 +350,7 @@ l0000000140001423:
 	mov	rsi,[rsp+48]
 	add	rsp,30
 	pop	rdi
-	ret	
+	ret
 0000000140001433          CC                                        .           
 
 ;; Win32CrtStartup: 0000000140001434
@@ -368,15 +367,15 @@ fn0000000140001448 proc
 	sub	rsp,20
 	mov	rbx,rcx
 	xor	ecx,ecx
-	call	dword ptr [rip+00000C0F]
+	call	dword ptr [rip+00000C0F]                              ; 0000000140002068
 	mov	rcx,rbx
-	call	dword ptr [rip+00000BAE]
-	call	dword ptr [rip+00000BF8]
+	call	dword ptr [rip+00000BAE]                              ; 0000000140002010
+	call	dword ptr [rip+00000BF8]                              ; 0000000140002060
 	mov	rcx,rax
 	mov	edx,C0000409
 	add	rsp,20
 	pop	rbx
-	jmp	qword ptr [rip+00000BDC]
+	jmp	qword ptr [rip+00000BDC]                               ; 0000000140002058
 
 ;; fn000000014000147C: 000000014000147C
 fn000000014000147C proc
@@ -392,36 +391,36 @@ l0000000140001493:
 	int	29
 
 l000000014000149A:
-	lea	rcx,[rip+00001C3F]
+	lea	rcx,[rip+00001C3F]                                     ; 00000001400030E0
 	call	0000000140001550
 	mov	rax,[rsp+38]
-	mov	[rip+00001D26],rax
+	mov	[rip+00001D26],rax                                     ; 00000001400031D8
 	lea	rax,[rsp+38]
 	add	rax,08
-	mov	[rip+00001CB6],rax
-	mov	rax,[rip+00001D0F]
-	mov	[rip+00001B80],rax
+	mov	[rip+00001CB6],rax                                     ; 0000000140003178
+	mov	rax,[rip+00001D0F]                                     ; 00000001400031D8
+	mov	[rip+00001B80],rax                                     ; 0000000140003050
 	mov	rax,[rsp+40]
-	mov	[rip+00001C84],rax
-	mov	dword ptr [rip+00001B5A],C0000409
-	mov	dword ptr [rip+00001B54],00000001
-	mov	dword ptr [rip+00001B5E],00000001
+	mov	[rip+00001C84],rax                                     ; 0000000140003160
+	mov	dword ptr [rip+00001B5A],C0000409                      ; 0000000140003040
+	mov	dword ptr [rip+00001B54],00000001                      ; 0000000140003044
+	mov	dword ptr [rip+00001B5E],00000001                      ; 0000000140003058
 	mov	eax,00000008
 	imul	rax,rax,00
-	lea	rcx,[rip+00001B56]
+	lea	rcx,[rip+00001B56]                                     ; 0000000140003060
 	mov	qword ptr [rcx+rax],+00000002
 	mov	eax,00000008
 	imul	rax,rax,00
-	mov	rcx,[rip+00001ADE]
+	mov	rcx,[rip+00001ADE]                                     ; 0000000140003000
 	mov	[rsp+rax+20],rcx
 	mov	eax,00000008
 	imul	rax,rax,01
-	mov	rcx,[rip+00001AD1]
+	mov	rcx,[rip+00001AD1]                                     ; 0000000140003008
 	mov	[rsp+rax+20],rcx
-	lea	rcx,[rip+00000CBD]
+	lea	rcx,[rip+00000CBD]                                     ; 0000000140002200
 	call	0000000140001448
 	add	rsp,38
-	ret	
+	ret
 000000014000154D                                        CC CC CC              ...
 
 ;; fn0000000140001550: 0000000140001550
@@ -431,7 +430,7 @@ fn0000000140001550 proc
 	push	rdi
 	sub	rsp,40
 	mov	rbx,rcx
-	call	dword ptr [rip+00000B0F]
+	call	dword ptr [rip+00000B0F]                              ; 0000000140002070
 	mov	rsi,[rbx+000000F8]
 	xor	edi,edi
 
@@ -439,7 +438,7 @@ l000000014000156A:
 	xor	r8d,r8d
 	lea	rdx,[rsp+60]
 	mov	rcx,rsi
-	call	dword ptr [rip+00000A85]
+	call	dword ptr [rip+00000A85]                              ; 0000000140002000
 	test	rax,rax
 	jz	00000001400015B9
 
@@ -454,7 +453,7 @@ l0000000140001580:
 	mov	[rsp+28],rcx
 	xor	ecx,ecx
 	mov	[rsp+20],rbx
-	call	dword ptr [rip+00000A56]
+	call	dword ptr [rip+00000A56]                              ; 0000000140002008
 	inc	edi
 	cmp	edi,02
 	jl	000000014000156A
@@ -464,7 +463,7 @@ l00000001400015B9:
 	pop	rdi
 	pop	rsi
 	pop	rbx
-	ret	
+	ret
 00000001400015C1    CC CC CC                                      ...           
 
 ;; fn00000001400015C4: 00000001400015C4
@@ -485,8 +484,8 @@ l00000001400015E0:
 
 l00000001400015E5:
 	xor	eax,eax
-	lock	
-	cmpxchg	[rip+00001FC8],rcx
+	lock
+	cmpxchg	[rip+00001FC8],rcx                                 ; 00000001400035B8
 	jnz	00000001400015E0
 
 l00000001400015F2:
@@ -494,7 +493,7 @@ l00000001400015F2:
 
 l00000001400015F4:
 	add	rsp,28
-	ret	
+	ret
 
 l00000001400015F9:
 	mov	al,01
@@ -505,13 +504,13 @@ l00000001400015F9:
 fn0000000140001600 proc
 	push	rbx
 	sub	rsp,20
-	movzx	eax,byte ptr [rip+00001FE3]
+	movzx	eax,byte ptr [rip+00001FE3]                          ; 00000001400035F0
 	test	ecx,ecx
 	mov	ebx,00000001
 	cmovz	eax,ebx
 
 l0000000140001617:
-	mov	[rip+00001FD3],al
+	mov	[rip+00001FD3],al                                      ; 00000001400035F0
 	call	0000000140001BFC
 	call	0000000140001938
 	test	al,al
@@ -537,7 +536,7 @@ l0000000140001641:
 l0000000140001643:
 	add	rsp,20
 	pop	rbx
-	ret	
+	ret
 0000000140001649                            CC CC CC                      ...   
 
 ;; fn000000014000164C: 000000014000164C
@@ -560,7 +559,7 @@ l000000014000166D:
 	jnz	0000000140001698
 
 l0000000140001671:
-	lea	rcx,[rip+00001F48]
+	lea	rcx,[rip+00001F48]                                     ; 00000001400035C0
 	call	0000000140001E5E
 	test	eax,eax
 	jz	0000000140001685
@@ -570,14 +569,14 @@ l0000000140001681:
 	jmp	00000001400016FF
 
 l0000000140001685:
-	lea	rcx,[rip+00001F4C]
+	lea	rcx,[rip+00001F4C]                                     ; 00000001400035D8
 	call	0000000140001E5E
 	test	eax,eax
 	setz	al
 	jmp	00000001400016FF
 
 l0000000140001698:
-	mov	rdx,[rip+00001961]
+	mov	rdx,[rip+00001961]                                     ; 0000000140003000
 	or	r8,FF
 	mov	eax,edx
 	mov	ecx,00000040
@@ -588,28 +587,24 @@ l0000000140001698:
 	xor	r8,rdx
 	mov	[r13-20],r8
 	mov	[r13-18],r8
-	illegal	
-	loopne	0000000140001710
-	mov	[rbp-10],eax
-	illegal	
-	lock	
-	movups	[rip+00001EED],xmm0
+	movups	xmm0,[rbp-20]
+	mov	[r13-10],r8
+	movsd	xmm1,double ptr [rbp-10]
+	movups	[rip+00001EED],xmm0                                 ; 00000001400035C0
 	mov	[r13-20],r8
 	mov	[r13-18],r8
-	illegal	
-	loopne	000000014000172C
-	mov	[rbp-10],eax
-	movups	[rip+00001EE5],xmm1
-	illegal	
-	lock	
-	movups	[rip+00001EE1],xmm0
-	movups	[rip+00001EE9],xmm1
+	movups	xmm0,[rbp-20]
+	mov	[r13-10],r8
+	movsd	double ptr [rip+00001EE5],xmm1                       ; 00000001400035D0
+	movsd	xmm1,double ptr [rbp-10]
+	movups	[rip+00001EE1],xmm0                                 ; 00000001400035D8
+	movsd	double ptr [rip+00001EE9],xmm1                       ; 00000001400035E8
 
 l00000001400016FF:
 	mov	rbx,[rsp+50]
 	add	rsp,40
 	pop	rbp
-	ret	
+	ret
 
 l000000014000170A:
 	mov	ecx,00000005
@@ -624,12 +619,12 @@ fn0000000140001718 proc
 	sub	rsp,18
 	mov	r8,rcx
 	mov	eax,00005A4D
-	cmp	[rip-0000172B],ax
+	cmp	[rip-0000172B],ax                                      ; 0000000140000000
 	jnz	00000001400017A6
 
 l000000014000172D:
-	movsx	rax,dword ptr [rip-000016F8]
-	lea	rdx,[rip-0000173B]
+	movsx	rax,dword ptr [rip-000016F8]                         ; 000000014000003C
+	lea	rdx,[rip-0000173B]                                     ; 0000000140000000
 	lea	rcx,[rax+rdx]
 	cmp	dword ptr [rcx],00004550
 	jnz	00000001400017A6
@@ -698,7 +693,7 @@ l00000001400017A6:
 
 l00000001400017AC:
 	add	rsp,18
-	ret	
+	ret
 00000001400017B1    CC CC CC                                      ...           
 
 ;; fn00000001400017B4: 00000001400017B4
@@ -716,18 +711,18 @@ l00000001400017C7:
 	jnz	00000001400017D2
 
 l00000001400017CB:
-	xchg	[rip+00001DE6],rdx
+	xchg	[rip+00001DE6],rdx                                    ; 00000001400035B8
 
 l00000001400017D2:
 	add	rsp,20
 	pop	rbx
-	ret	
+	ret
 
 ;; fn00000001400017D8: 00000001400017D8
 fn00000001400017D8 proc
 	push	rbx
 	sub	rsp,20
-	cmp	byte ptr [rip+00001E0B],00
+	cmp	byte ptr [rip+00001E0B],00                             ; 00000001400035F0
 	mov	bl,cl
 	jz	00000001400017ED
 
@@ -745,17 +740,17 @@ l00000001400017FB:
 	mov	al,01
 	add	rsp,20
 	pop	rbx
-	ret	
+	ret
 0000000140001803          CC                                        .           
 
 ;; fn0000000140001804: 0000000140001804
 fn0000000140001804 proc
 	push	rbx
 	sub	rsp,20
-	mov	rdx,[rip+000017EF]
+	mov	rdx,[rip+000017EF]                                     ; 0000000140003000
 	mov	rbx,rcx
 	mov	ecx,edx
-	xor	rdx,[rip+00001DA3]
+	xor	rdx,[rip+00001DA3]                                     ; 00000001400035C0
 	and	ecx,3F
 	ror	rdx,cl
 	cmp	rdx,FF
@@ -768,7 +763,7 @@ l0000000140001829:
 
 l0000000140001833:
 	mov	rdx,rbx
-	lea	rcx,[rip+00001D83]
+	lea	rcx,[rip+00001D83]                                     ; 00000001400035C0
 	call	0000000140001E64
 
 l0000000140001842:
@@ -780,7 +775,7 @@ l000000014000184A:
 	mov	rax,rcx
 	add	rsp,20
 	pop	rbx
-	ret	
+	ret
 0000000140001853          CC                                        .           
 
 ;; fn0000000140001854: 0000000140001854
@@ -792,7 +787,7 @@ fn0000000140001854 proc
 	neg	eax
 	dec	eax
 	add	rsp,28
-	ret	
+	ret
 000000014000186B                                  CC                        .   
 
 ;; fn000000014000186C: 000000014000186C
@@ -803,23 +798,23 @@ fn000000014000186C proc
 	sub	rsp,20
 	and	qword ptr [rbp+18],00
 	mov	r11,2B992DDFA232
-	mov	rax,[rip+00001771]
+	mov	rax,[rip+00001771]                                     ; 0000000140003000
 	cmp	rax,rbx
 	jnz	0000000140001903
 
 l0000000140001894:
 	lea	rcx,[rbp+18]
-	call	dword ptr [rip+00000792]
+	call	dword ptr [rip+00000792]                              ; 0000000140002030
 	mov	rax,[rbp+18]
 	mov	[rbp+10],rax
-	call	dword ptr [rip+0000078C]
+	call	dword ptr [rip+0000078C]                              ; 0000000140002038
 	mov	eax,eax
 	xor	[rbp+10],rax
-	call	dword ptr [rip+00000788]
+	call	dword ptr [rip+00000788]                              ; 0000000140002040
 	mov	eax,eax
 	lea	rcx,[rbp+20]
 	xor	[rbp+10],rax
-	call	dword ptr [rip+00000780]
+	call	dword ptr [rip+00000780]                              ; 0000000140002048
 	mov	eax,[rbp+20]
 	lea	rcx,[rbp+10]
 	shl	rax,20
@@ -833,38 +828,38 @@ l0000000140001894:
 	cmovz	rax,rcx
 
 l00000001400018FC:
-	mov	[rip+000016FD],rax
+	mov	[rip+000016FD],rax                                     ; 0000000140003000
 
 l0000000140001903:
 	mov	rbx,[rsp+48]
 	not	rax
-	mov	[rip+000016F6],rax
+	mov	[rip+000016F6],rax                                     ; 0000000140003008
 	add	rsp,20
 	pop	rbp
-	ret	
+	ret
 
 ;; fn0000000140001918: 0000000140001918
 fn0000000140001918 proc
 	mov	eax,00000001
-	ret	
+	ret
 000000014000191E                                           CC CC               ..
 
 ;; fn0000000140001920: 0000000140001920
 fn0000000140001920 proc
 	mov	eax,00004000
-	ret	
+	ret
 0000000140001926                   CC CC                               ..       
 
 ;; fn0000000140001928: 0000000140001928
 fn0000000140001928 proc
-	lea	rcx,[rip+00001CD1]
-	jmp	qword ptr [rip+000006F2]
+	lea	rcx,[rip+00001CD1]                                     ; 0000000140003600
+	jmp	qword ptr [rip+000006F2]                               ; 0000000140002028
 0000000140001936                   CC CC                               ..       
 
 ;; fn0000000140001938: 0000000140001938
 fn0000000140001938 proc
 	mov	al,01
-	ret	
+	ret
 000000014000193B                                  CC                        .   
 
 ;; fn000000014000193C: 000000014000193C
@@ -875,25 +870,25 @@ fn000000014000193C proc
 	call	00000001400010C0
 	or	qword ptr [rax],02
 	add	rsp,28
-	ret	
+	ret
 0000000140001957                      CC                                .       
 
 ;; fn0000000140001958: 0000000140001958
 fn0000000140001958 proc
 	xor	eax,eax
-	cmp	[rip+000016B4],eax
+	cmp	[rip+000016B4],eax                                     ; 0000000140003014
 	setz	al
-	ret	
+	ret
 
 ;; fn0000000140001964: 0000000140001964
 fn0000000140001964 proc
-	lea	rax,[rip+00001CCD]
-	ret	
+	lea	rax,[rip+00001CCD]                                     ; 0000000140003638
+	ret
 
 ;; fn000000014000196C: 000000014000196C
 fn000000014000196C proc
-	lea	rax,[rip+00001CBD]
-	ret	
+	lea	rax,[rip+00001CBD]                                     ; 0000000140003630
+	ret
 
 ;; fn0000000140001974: 0000000140001974
 fn0000000140001974 proc
@@ -912,18 +907,18 @@ l0000000140001999:
 	int	29
 
 l000000014000199D:
-	and	dword ptr [rip+00001C6C],00
+	and	dword ptr [rip+00001C6C],00                            ; 0000000140003610
 	lea	rcx,[rbp-10]
 	xor	edx,edx
 	mov	eax,000004D0
 	call	0000000140001DE6
 	lea	rcx,[rbp-10]
-	call	dword ptr [rip+000006B1]
+	call	dword ptr [rip+000006B1]                              ; 0000000140002070
 	mov	rbx,[rbp+000000E8]
 	lea	rdx,[rbp+000004D8]
 	mov	rcx,rbx
 	xor	r8d,r8d
-	call	dword ptr [rip+00000627]
+	call	dword ptr [rip+00000627]                              ; 0000000140002000
 	test	rax,rax
 	jz	0000000140001A1A
 
@@ -939,7 +934,7 @@ l00000001400019DE:
 	lea	rcx,[rbp-10]
 	mov	[rsp+20],rcx
 	xor	ecx,ecx
-	call	dword ptr [rip+000005EE]
+	call	dword ptr [rip+000005EE]                              ; 0000000140002008
 
 l0000000140001A1A:
 	mov	rax,[rbp+000004C8]
@@ -955,7 +950,7 @@ l0000000140001A1A:
 	mov	[rsp+60],rax
 	mov	dword ptr [rsp+50],40000015
 	mov	dword ptr [rsp+54],00000001
-	call	dword ptr [rip+000005B2]
+	call	dword ptr [rip+000005B2]                              ; 0000000140002020
 	cmp	eax,01
 	lea	rax,[rsp+50]
 	mov	[rsp+40],rax
@@ -963,35 +958,35 @@ l0000000140001A1A:
 	setz	bl
 	mov	[rsp+48],rax
 	xor	ecx,ecx
-	call	dword ptr [rip+000005D9]
+	call	dword ptr [rip+000005D9]                              ; 0000000140002068
 	lea	rcx,[rsp+40]
-	call	dword ptr [rip+00000576]
+	call	dword ptr [rip+00000576]                              ; 0000000140002010
 	test	eax,eax
 	jnz	0000000140001AA8
 
 l0000000140001A9E:
 	neg	bl
 	sbb	eax,eax
-	and	[rip+00001B68],eax
+	and	[rip+00001B68],eax                                     ; 0000000140003610
 
 l0000000140001AA8:
 	mov	rbx,[rsp+000005D0]
 	add	rsp,+000005C0
 	pop	rbp
-	ret	
+	ret
 0000000140001AB9                            CC CC CC                      ...   
 
 ;; fn0000000140001ABC: 0000000140001ABC
 fn0000000140001ABC proc
 	xor	eax,eax
-	ret	
+	ret
 0000000140001ABF                                              CC                .
 
 ;; fn0000000140001AC0: 0000000140001AC0
 fn0000000140001AC0 proc
 	sub	rsp,28
 	xor	ecx,ecx
-	call	dword ptr [rip+0000054C]
+	call	dword ptr [rip+0000054C]                              ; 0000000140002018
 	mov	rcx,rax
 	test	rax,rax
 	jnz	0000000140001AD8
@@ -1026,12 +1021,12 @@ l0000000140001B05:
 
 l0000000140001B0F:
 	add	rsp,28
-	ret	
+	ret
 
 ;; fn0000000140001B14: 0000000140001B14
 fn0000000140001B14 proc
-	lea	rcx,[rip+00000009]
-	jmp	qword ptr [rip+00000546]
+	lea	rcx,[rip+00000009]                                     ; 0000000140001B24
+	jmp	qword ptr [rip+00000546]                               ; 0000000140002068
 0000000140001B22       CC CC                                       ..           
 
 ;; fn0000000140001B24: 0000000140001B24
@@ -1058,7 +1053,7 @@ l0000000140001B47:
 l0000000140001B4F:
 	xor	eax,eax
 	add	rsp,28
-	ret	
+	ret
 
 l0000000140001B56:
 	call	0000000140001E70
@@ -1070,8 +1065,8 @@ fn0000000140001B5C proc
 	mov	[rsp+10],rsi
 	push	rdi
 	sub	rsp,20
-	lea	rbx,[rip+00000B0E]
-	lea	rsi,[rip+00000B07]
+	lea	rbx,[rip+00000B0E]                                     ; 0000000140002680
+	lea	rsi,[rip+00000B07]                                     ; 0000000140002680
 	jmp	0000000140001B91
 
 l0000000140001B7B:
@@ -1096,7 +1091,7 @@ l0000000140001B96:
 	mov	rsi,[rsp+38]
 	add	rsp,20
 	pop	rdi
-	ret	
+	ret
 0000000140001BA6                   CC CC                               ..       
 
 ;; fn0000000140001BA8: 0000000140001BA8
@@ -1105,8 +1100,8 @@ fn0000000140001BA8 proc
 	mov	[rsp+10],rsi
 	push	rdi
 	sub	rsp,20
-	lea	rbx,[rip+00000AD2]
-	lea	rsi,[rip+00000ACB]
+	lea	rbx,[rip+00000AD2]                                     ; 0000000140002690
+	lea	rsi,[rip+00000ACB]                                     ; 0000000140002690
 	jmp	0000000140001BDD
 
 l0000000140001BC7:
@@ -1131,12 +1126,12 @@ l0000000140001BE2:
 	mov	rsi,[rsp+38]
 	add	rsp,20
 	pop	rdi
-	ret	
+	ret
 0000000140001BF2       CC CC                                       ..           
 
 ;; fn0000000140001BF4: 0000000140001BF4
 fn0000000140001BF4 proc
-	jmp	qword ptr [rip+00000595]
+	jmp	qword ptr [rip+00000595]                               ; 0000000140002190
 0000000140001BFB                                  CC                        .   
 
 ;; fn0000000140001BFC: 0000000140001BFC
@@ -1149,10 +1144,10 @@ fn0000000140001BFC proc
 	and	dword ptr [rbp-18],00
 	xor	ecx,ecx
 	xor	eax,eax
-	mov	dword ptr [rip+000013FC],00000002
-	cpuid	
+	mov	dword ptr [rip+000013FC],00000002                      ; 000000014000301C
+	cpuid
 	mov	r8d,ecx
-	mov	dword ptr [rip+000013E9],00000001
+	mov	dword ptr [rip+000013E9],00000001                      ; 0000000140003018
 	xor	ecx,444D4163
 	mov	r9d,edx
 	mov	r10d,edx
@@ -1161,7 +1156,7 @@ fn0000000140001BFC proc
 	xor	r8d,6C65746E
 	or	r10d,r8d
 	mov	r11d,ebx
-	mov	r8d,[rip+000019B7]
+	mov	r8d,[rip+000019B7]                                     ; 0000000140003614
 	xor	r11d,68747541
 	or	r11d,r9d
 	mov	edx,ebx
@@ -1171,7 +1166,7 @@ fn0000000140001BFC proc
 	mov	edi,eax
 	or	r10d,edx
 	mov	eax,00000001
-	cpuid	
+	cpuid
 	mov	[rbp-10],eax
 	mov	r9d,ecx
 	mov	[r13-08],r9d
@@ -1182,10 +1177,10 @@ fn0000000140001BFC proc
 	jnz	0000000140001CE9
 
 l0000000140001C97:
-	or	qword ptr [rip+00001381],FF
+	or	qword ptr [rip+00001381],FF                             ; 0000000140003020
 	or	r8d,04
 	and	eax,0FFF3FF0
-	mov	[rip+00001965],r8d
+	mov	[rip+00001965],r8d                                     ; 0000000140003614
 	cmp	eax,000106C0
 	jz	0000000140001CDE
 
@@ -1209,7 +1204,7 @@ l0000000140001CCE:
 
 l0000000140001CDE:
 	or	r8d,01
-	mov	[rip+0000192B],r8d
+	mov	[rip+0000192B],r8d                                     ; 0000000140003614
 
 l0000000140001CE9:
 	test	r11d,r11d
@@ -1222,7 +1217,7 @@ l0000000140001CEE:
 
 l0000000140001CFC:
 	or	r8d,04
-	mov	[rip+0000190D],r8d
+	mov	[rip+0000190D],r8d                                     ; 0000000140003614
 
 l0000000140001D07:
 	mov	eax,00000007
@@ -1233,7 +1228,7 @@ l0000000140001D07:
 
 l0000000140001D17:
 	xor	ecx,ecx
-	cpuid	
+	cpuid
 	mov	[rbp-10],eax
 	mov	[rbp-0C],ebx
 	mov	[rbp-08],ecx
@@ -1244,15 +1239,15 @@ l0000000140001D17:
 
 l0000000140001D30:
 	or	r8d,02
-	mov	[rip+000018D9],r8d
+	mov	[rip+000018D9],r8d                                     ; 0000000140003614
 
 l0000000140001D3B:
 	bt	r9d,14
 	jnc	0000000140001DB0
 
 l0000000140001D42:
-	mov	dword ptr [rip+000012CC],00000002
-	mov	dword ptr [rip+000012C6],00000006
+	mov	dword ptr [rip+000012CC],00000002                      ; 0000000140003018
+	mov	dword ptr [rip+000012C6],00000006                      ; 000000014000301C
 	bt	r9d,1B
 	jnc	0000000140001DB0
 
@@ -1262,7 +1257,7 @@ l0000000140001D5D:
 
 l0000000140001D64:
 	xor	ecx,ecx
-	xgetbv	
+	xgetbv
 	shl	rdx,20
 	or	rdx,rax
 	mov	[rbp+10],rdx
@@ -1272,17 +1267,17 @@ l0000000140001D64:
 	jnz	0000000140001DB0
 
 l0000000140001D7E:
-	mov	eax,[rip+00001298]
+	mov	eax,[rip+00001298]                                     ; 000000014000301C
 	or	eax,08
-	mov	dword ptr [rip+00001287],00000003
+	mov	dword ptr [rip+00001287],00000003                      ; 0000000140003018
 	test	byte ptr [rbp-18],20
-	mov	[rip+00001281],eax
+	mov	[rip+00001281],eax                                     ; 000000014000301C
 	jz	0000000140001DB0
 
 l0000000140001D9D:
 	or	eax,20
-	mov	dword ptr [rip+0000126E],00000005
-	mov	[rip+0000126C],eax
+	mov	dword ptr [rip+0000126E],00000005                      ; 0000000140003018
+	mov	[rip+0000126C],eax                                     ; 000000014000301C
 
 l0000000140001DB0:
 	mov	rbx,[rsp+38]
@@ -1290,15 +1285,15 @@ l0000000140001DB0:
 	mov	rdi,[rsp+40]
 	add	rsp,20
 	pop	rbp
-	ret	
+	ret
 0000000140001DC2       CC CC                                       ..           
 
 ;; fn0000000140001DC4: 0000000140001DC4
 fn0000000140001DC4 proc
 	xor	eax,eax
-	cmp	[rip+00001264],eax
+	cmp	[rip+00001264],eax                                     ; 0000000140003030
 	setnz	al
-	ret	
+	ret
 
 ;; fn0000000140001DD0: 0000000140001DD0
 fn0000000140001DD0 proc
@@ -1314,7 +1309,7 @@ fn0000000140001DD0 proc
 0000000140001E50 00 00                                           ..             
 
 l0000000140001E52:
-	jmp	dword ptr [rip+00000240]
+	jmp	dword ptr [rip+00000240]                               ; 0000000140002098
 0000000140001E58                         FF 25 02 03 00 00 FF 25         .%.....%
 0000000140001E60 EC 02 00 00 FF 25 66 02 00 00 FF 25 68 02 00 00 .....%f....%h...
 0000000140001E70 FF 25 6A 02 00 00 FF 25 D4 01 00 00             .%j....%....   
@@ -1328,7 +1323,7 @@ fn0000000140001E7C proc
 	call	0000000140001E9C
 	mov	eax,00000001
 	add	rsp,28
-	ret	
+	ret
 0000000140001E99                            CC CC CC                      ...   
 
 ;; fn0000000140001E9C: 0000000140001E9C
@@ -1385,10 +1380,10 @@ fn0000000140001F12 proc
 	mov	rdx,rcx
 	mov	ecx,[rax]
 	call	0000000140001DEC
-	nop	
+	nop
 	add	rsp,20
 	pop	rbp
-	ret	
+	ret
 0000000140001F2F                                              CC                .
 
 ;; fn0000000140001F30: 0000000140001F30
@@ -1401,7 +1396,7 @@ fn0000000140001F30 proc
 	setz	cl
 	mov	eax,ecx
 	pop	rbp
-	ret	
+	ret
 0000000140001F47                      CC                                .       
 ;;; Segment .rdata (0000000140002000)
 __imp__RtlLookupFunctionEntry		; 0000000140002000

@@ -126,7 +126,28 @@ namespace Reko.Arch.SuperH
                     int offset = ((int)uInstr << 20) >> 19;
                     ops[iop] = AddressOperand.Create(rdr.Address + (2 + offset));
                     break;
-
+                case 'm':   // Macl.
+                    if (i < format.Length-1)
+                    {
+                        ++i;
+                        if (format[i] == 'l')
+                        {
+                            ops[iop] = new RegisterOperand(Registers.macl);
+                        }
+                        else if (format[i] == 'h')
+                        {
+                            ops[iop] = new RegisterOperand(Registers.mach);
+                        }
+                        else
+                        {
+                            throw new NotImplementedException(string.Format("m{0}", format[i]));
+                        }
+                    }
+                    else
+                    {
+                        throw new NotImplementedException(string.Format("m{0}", format[i]));
+                    }
+                    break;
                 default: throw new NotImplementedException(string.Format("SuperHDisassembler.Decode({0})", format[i]));
                 }
                 ++iop;
@@ -261,7 +282,7 @@ namespace Reko.Arch.SuperH
             {
                 { 0x03, new OprecField(4, 4, new Dictionary<int, OprecBase>
                     {
-                        { 0x0, new Oprec( Opcode.bsrf, "r1") },
+                        { 0x0, new Oprec(Opcode.bsrf, "r1") },
                         { 0x2, new Oprec(Opcode.braf, "r1") },
                     })
                 },
@@ -272,6 +293,7 @@ namespace Reko.Arch.SuperH
                 { 0x8, new OprecField(4, 4, new Dictionary<int, OprecBase>
                     {
                         { 0x0, new Oprec(Opcode.clrt, "") },
+                        { 0x1, new Oprec(Opcode.sett, "") },
                         { 0x2, new Oprec(Opcode.clrmac, "") },
                         { 0x4, new Oprec(Opcode.clrs, "") },
                     })
@@ -281,6 +303,12 @@ namespace Reko.Arch.SuperH
                         { 0x0, new Oprec(Opcode.nop, "") },
                         { 0x1, new Oprec(Opcode.div0u, "") },
                         { 0x2, new Oprec(Opcode.movt, "r1") },
+                    })
+                },
+                { 0xA, new OprecField(4, 4, new Dictionary<int, OprecBase>
+                    {
+                        { 0x0, new Oprec(Opcode.sts, "mh,r1") },
+                        { 0x1, new Oprec(Opcode.sts, "ml,r1") },
                     })
                 },
                 { 0xB, new OprecField(4, 4, new Dictionary<int, OprecBase>
@@ -313,9 +341,9 @@ namespace Reko.Arch.SuperH
                 new Oprec(Opcode.or, "r2,r1"),
 
                 new Oprec(Opcode.cmp_str, "r2,r1"),
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.xtrct, "r2,r1"),
+                new Oprec(Opcode.mulu_w, "r2,r1"),
+                new Oprec(Opcode.muls_w, "r2,r1"),
             }),
             // 3...
             new Oprec4Bits(0, new OprecBase[]
@@ -332,8 +360,8 @@ namespace Reko.Arch.SuperH
 
                 new Oprec(Opcode.sub, "r2,r1"),
                 new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.subc, "r2,r1"),
+                new Oprec(Opcode.subv, "r2,r1"),
 
                 new Oprec(Opcode.add, "r2,r1"),
                 new Oprec(Opcode.dmuls_l, "r2,r1"),
@@ -346,16 +374,58 @@ namespace Reko.Arch.SuperH
             {
                 { 0x00, new Oprec(Opcode.shll, "r1") },
                 { 0x01, new Oprec(Opcode.shlr, "r1") },
+                { 0x04, new Oprec(Opcode.rotl, "r1") },
+                { 0x05, new Oprec(Opcode.rotr, "r1") },
                 { 0x08, new Oprec(Opcode.shll2, "r1") },
                 { 0x09, new Oprec(Opcode.shlr, "r1") },
                 { 0x0B, new Oprec(Opcode.jsr, "@1l") },
+
+                { 0x0C, new Oprec(Opcode.shad, "r2,r1") },
+                { 0x1C, new Oprec(Opcode.shad, "r2,r1") },
+                { 0x2C, new Oprec(Opcode.shad, "r2,r1") },
+                { 0x3C, new Oprec(Opcode.shad, "r2,r1") },
+                { 0x4C, new Oprec(Opcode.shad, "r2,r1") },
+                { 0x5C, new Oprec(Opcode.shad, "r2,r1") },
+                { 0x6C, new Oprec(Opcode.shad, "r2,r1") },
+                { 0x7C, new Oprec(Opcode.shad, "r2,r1") },
+                { 0x8C, new Oprec(Opcode.shad, "r2,r1") },
+                { 0x9C, new Oprec(Opcode.shad, "r2,r1") },
+                { 0xAC, new Oprec(Opcode.shad, "r2,r1") },
+                { 0xBC, new Oprec(Opcode.shad, "r2,r1") },
+                { 0xCC, new Oprec(Opcode.shad, "r2,r1") },
+                { 0xDC, new Oprec(Opcode.shad, "r2,r1") },
+                { 0xEC, new Oprec(Opcode.shad, "r2,r1") },
+                { 0xFC, new Oprec(Opcode.shad, "r2,r1") },
+
+                { 0x0D, new Oprec(Opcode.shld, "r2,r1") },
+                { 0x1D, new Oprec(Opcode.shld, "r2,r1") },
+                { 0x2D, new Oprec(Opcode.shld, "r2,r1") },
+                { 0x3D, new Oprec(Opcode.shld, "r2,r1") },
+                { 0x4D, new Oprec(Opcode.shld, "r2,r1") },
+                { 0x5D, new Oprec(Opcode.shld, "r2,r1") },
+                { 0x6D, new Oprec(Opcode.shld, "r2,r1") },
+                { 0x7D, new Oprec(Opcode.shld, "r2,r1") },
+                { 0x8D, new Oprec(Opcode.shld, "r2,r1") },
+                { 0x9D, new Oprec(Opcode.shld, "r2,r1") },
+                { 0xAD, new Oprec(Opcode.shld, "r2,r1") },
+                { 0xBD, new Oprec(Opcode.shld, "r2,r1") },
+                { 0xCD, new Oprec(Opcode.shld, "r2,r1") },
+                { 0xDD, new Oprec(Opcode.shld, "r2,r1") },
+                { 0xED, new Oprec(Opcode.shld, "r2,r1") },
+                { 0xFD, new Oprec(Opcode.shld, "r2,r1") },
+
                 { 0x10, new Oprec(Opcode.dt, "r1") },
                 { 0x11, new Oprec(Opcode.cmp_pz, "r1") },
                 { 0x15, new Oprec(Opcode.cmp_pl, "r1") },
                 { 0x18, new Oprec(Opcode.shll8, "r1") },
                 { 0x19, new Oprec(Opcode.shlr8, "r1") },
+                { 0x21, new Oprec(Opcode.shar, "r1") },
                 { 0x22, new Oprec(Opcode.sts_l, "RP,-1l") },
+                { 0x24, new Oprec(Opcode.rotcl, "r1") },
+                { 0x25, new Oprec(Opcode.rotcr, "r1") },
                 { 0x26, new Oprec(Opcode.lds_l, "+1l,RP") },
+                { 0x28, new Oprec(Opcode.shll16, "r1") },
+                { 0x29, new Oprec(Opcode.shlr16, "r1") },
                 { 0x2B, new Oprec(Opcode.jmp, "@1l") },
             }),
             new Oprec(Opcode.mov_l, "D2l,r1"),
@@ -373,8 +443,8 @@ namespace Reko.Arch.SuperH
                 new Oprec(Opcode.not, "r2,r1"),
 
                 new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
-                new Oprec(Opcode.invalid, ""),
+                new Oprec(Opcode.swap_w, "r2,r1"),
+                new Oprec(Opcode.negc, "r2,r1"),
                 new Oprec(Opcode.neg, "r2,r1"),
 
                 new Oprec(Opcode.extu_b, "r2,r1"),
