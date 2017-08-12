@@ -904,6 +904,11 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			sec.Name = ReadSectionName(rdr);
 			sec.VirtualSize = rdr.ReadLeUInt32();
 			sec.VirtualAddress = rdr.ReadLeUInt32();
+
+			if(sec.Name == null) {
+				sec.Name = ".reko_" + sec.VirtualAddress.ToString("x16");
+			}
+
 			sec.SizeRawData = rdr.ReadLeUInt32();
 			sec.OffsetRawData = rdr.ReadLeUInt32();
 			rdr.ReadLeUInt32();			// pointer to relocations
@@ -932,6 +937,9 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 					++i;
 					break;
 				}
+			}
+			if(i < 0) {
+				return null;
 			}
 			return new String(chars, 0, i);
 		}
