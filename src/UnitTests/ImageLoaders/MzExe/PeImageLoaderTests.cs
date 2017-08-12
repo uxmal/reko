@@ -523,5 +523,21 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Assert.AreEqual("hehe", program.SegmentMap.Segments[Address.Ptr32(0x00101000)].Name);
             Assert.AreEqual("hehe", program.SegmentMap.Segments[Address.Ptr32(0x00102000)].Name);
         }
+
+		[Test]
+		public void Pil32_NullSectionNames()
+		{
+			Given_Pe32Header(0x00100000);
+			Given_Section("\x00\x00", 0x1000, 0x1000);
+			Given_Section("\x00\x00\x00", 0x2000, 0x2000);
+
+			mr.ReplayAll();
+
+			Given_PeLoader();
+			var program = peldr.Load(addrLoad);
+			Assert.AreEqual(3, program.SegmentMap.Segments.Count);
+			Assert.AreEqual(".reko_0000000000001000", program.SegmentMap.Segments[Address.Ptr32(0x00101000)].Name);
+			Assert.AreEqual(".reko_0000000000002000", program.SegmentMap.Segments[Address.Ptr32(0x00102000)].Name);
+		}
     }
 }
