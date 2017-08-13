@@ -125,8 +125,7 @@ void component(uint32 ecx, word32 edx, word32 esi, word32 edi, word32 r8d, ptr64
 	*(r13 - 0x28) = r8d;
 	if (ecx > 0x10)
 	{
-		uint64 rax_85 = (uint64) fprintf(globals->ptr602100, "pngpixel: invalid bit depth %u
-", tLoc34);
+		uint64 rax_85 = (uint64) fprintf(globals->ptr602100, "pngpixel: invalid bit depth %u\n", tLoc34);
 		exit(0x01);
 	}
 	else
@@ -311,8 +310,7 @@ void main(Eq_295 * rsi, word32 edi, word64 r13, Eq_298 * fs)
 	FILE * rax_165 = fopen(rsi->ptr0018, "rb");
 	if (rax_165 == null)
 	{
-		uint64 rax_1022 = (uint64) fprintf(globals->ptr602100, "pngpixel: %s: could not open file
-", tLocA4);
+		uint64 rax_1022 = (uint64) fprintf(globals->ptr602100, "pngpixel: %s: could not open file\n", tLocA4);
 		goto l000000000040175D;
 	}
 	word64 rsp_176;
