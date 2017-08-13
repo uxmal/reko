@@ -44,7 +44,7 @@ namespace Reko.Scanning
         private Frame frame;
         private ExpressionSimplifier eval;
         private IServiceProvider services;
-        private FunctionType sig;
+        private FunctionType expandedSig;
 
         public VarargsFormatScanner(
             Program program,
@@ -65,8 +65,8 @@ namespace Reko.Scanning
         {
             var pc = callee as ProcedureConstant;
             if (pc != null)
-                pc.Procedure.Signature = this.sig;
-            var ab = CreateApplicationBuilder(callee, this.sig, site);
+                pc.Procedure.Signature = this.expandedSig;
+            var ab = CreateApplicationBuilder(callee, this.expandedSig, site);
             return ab.CreateInstruction();
         }
 
@@ -77,12 +77,12 @@ namespace Reko.Scanning
                 chr == null || !VarargsParserSet(chr)
             )
             {
-                this.sig = null;    //$out parameter
+                this.expandedSig = null;    //$out parameter
                 return false;
             }
             var format = ReadVarargsFormat(sig);
             var argTypes = ParseVarargsFormat(addrInstr, chr, format);
-            this.sig = ReplaceVarargs(sig, argTypes);
+            this.expandedSig = ReplaceVarargs(sig, argTypes);
             return true;
         }
 
@@ -118,11 +118,18 @@ namespace Reko.Scanning
             // passed in registers and the remaining are passed on the stack.
             var stackStorage = formatParam.Storage as StackStorage;
             if (stackStorage == null)
+            {
+                var reg = GetValue(formatParam) as Address;
+                if (reg != null)
+                {
+                    return ReadCString(reg);
+                }
                 throw new NotSupportedException(
                     string.Format(
                         "The {0} parameter of {1} wasn't a stack access.",
                          formatParam.Name,
                          sig.Name));
+            }
             var stackAccess = arch.CreateStackAccess(
                 frame,
                 stackStorage.StackOffset,
@@ -137,6 +144,11 @@ namespace Reko.Scanning
         private string ReadCString(Constant cAddr)
         {
             var addr = program.Platform.MakeAddressFromConstant(cAddr);
+            return ReadCString(addr);
+        }
+
+        private string ReadCString(Address addr)
+        {
             if (!program.SegmentMap.IsValidAddress(addr))
                 throw new ApplicationException(
                     string.Format("Varargs: invalid address: {0}", addr));

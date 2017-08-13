@@ -107,6 +107,12 @@ namespace Reko.Core.Types
             return last != null && last.Name == "...";
         }
 
+        /// <summary>
+        /// Create a new signature with the varargs replaced with
+        /// the provided parameters.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public FunctionType ReplaceVarargs(params Identifier[] parameters)
         {
             if (!IsVarargs())

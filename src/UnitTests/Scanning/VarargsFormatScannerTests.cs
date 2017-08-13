@@ -67,20 +67,20 @@ namespace Reko.UnitTests.Scanning
             };
             this.x86PrintfSig = new FunctionType(
                 null,
-                StackId(null,   4, CStringType()),
+                StackId(null,   4, CStringType32()),
                 StackId("...",  8, new UnknownType()));
             this.x86SprintfSig = new FunctionType(
                 null,
-                StackId(null,   4, CStringType()),
-                StackId(null,   8, CStringType()),
+                StackId(null,   4, CStringType32()),
+                StackId(null,   8, CStringType32()),
                 StackId("...", 12, new UnknownType()));
             this.x86_64PrintfSig = new FunctionType(
                 null,
-                RegId(null, x86_64, "rdi", CStringType()),
+                RegId(null, x86_64, "rdi", CStringType64()),
                 RegId("...", x86_64, "r8", new UnknownType()));
             this.ppcPrintfSig = new FunctionType(
                 null,
-                RegId(null,  ppc, "r3", CStringType()),
+                RegId(null,  ppc, "r3", CStringType32()),
                 RegId("...", ppc, "r4", new UnknownType()));
             this.addrInstr = Address.Ptr32(0x123400);
             var listener = new FakeDecompilerEventListener();
@@ -101,15 +101,26 @@ namespace Reko.UnitTests.Scanning
             return new VarargsFormatScanner(program, frame, state, sc);
         }
 
-        private void WriteString(Program program, uint uiAddr, string str)
+        private void WriteString32(Program program, uint uiAddr, string str)
         {
             var imgW = program.CreateImageWriter(Address.Ptr32(uiAddr));
             imgW.WriteString(str, Encoding.ASCII);
         }
 
-        private DataType CStringType()
+        private void WriteString64(Program program, uint uiAddr, string str)
+        {
+            var imgW = program.CreateImageWriter(Address.Ptr64(uiAddr));
+            imgW.WriteString(str, Encoding.ASCII);
+        }
+
+        private DataType CStringType32()
         {
             return new Pointer(PrimitiveType.Char, 4);
+        }
+
+        private DataType CStringType64()
+        {
+            return new Pointer(PrimitiveType.Char, 8);
         }
 
         private Identifier StackId(string name, int offset, DataType dt)
@@ -146,15 +157,23 @@ namespace Reko.UnitTests.Scanning
             var sp = m.Register(program.Architecture.StackRegister);
             var stackAccess = m.IAdd(sp, stackOffset);
             state.SetValueEa(stackAccess, Constant.Word32(uiAddr));
-            WriteString(program, uiAddr, str);
+            WriteString32(program, uiAddr, str);
         }
 
-        private void Given_RegString(string reg, string str)
+        private void Given_RegString32(string reg, string str)
         {
             uint uiAddr = 0x13;
             var r = program.Architecture.GetRegister(reg);
             state.SetRegister(r, Constant.Word32(uiAddr));
-            WriteString(program, uiAddr, str);
+            WriteString32(program, uiAddr, str);
+        }
+
+        private void Given_RegString64(string reg, string str)
+        {
+            uint uiAddr = 0x13;
+            var r = program.Architecture.GetRegister(reg);
+            state.SetRegister(r, Constant.Word64(uiAddr));
+            WriteString64(program, uiAddr, str);
         }
 
         [Test]
@@ -208,11 +227,10 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
-        [Ignore("Varargs scanning has not implemented on x86-64")]
         public void Vafs_X86_64Printf()
         {
             Given_VaScanner(x86_64);
-            Given_StackString(4, "%d %f %s ");
+            Given_RegString64("rdi", "%d %f %s ");
             Assert.IsTrue(vafs.TryScan(addrInstr, x86_64PrintfSig, printfChr));
             var c = Constant.Word32(666);
             var instr = vafs.BuildInstruction(c, new CallSite(4, 0));
@@ -227,7 +245,7 @@ namespace Reko.UnitTests.Scanning
         public void Vafs_PpcPrintf()
         {
             Given_VaScanner(ppc);
-            Given_RegString("r3", "%d%d");
+            Given_RegString32("r3", "%d%d");
             Assert.IsTrue(vafs.TryScan(addrInstr, ppcPrintfSig, printfChr));
             var c = Constant.Word32(0x123);
             var instr = vafs.BuildInstruction(c, new CallSite(4, 0));
