@@ -65,61 +65,112 @@ namespace Reko.Arch.X86
             sig.ReturnAddressOnStack = Architecture.PointerType.Size;   //$BUG: x86 real mode?
         }
 
+        private bool HasExplicitStorage(Argument_v1 sArg)
+        {
+            return sArg.Kind != null;
+        }
+
         public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
         {
             if (ss == null)
                 return null;
+            var retAddrSize = this.Architecture.PointerType.Size;   //$TODO: deal with near/far calls in x86-realmode
+            if (!ss.ParametersValid)
+            {
+                return new FunctionType
+                {
+                    StackDelta = ss.StackDelta,
+                    ReturnAddressOnStack = retAddrSize,
+                };
+            }
+
             this.argDeser = new ArgumentDeserializer(
                 this,
                 Architecture,
                 frame,
-                Architecture.PointerType.Size, //$BUG: x86 real mode?
+                retAddrSize,
                 Architecture.WordWidth.Size);
-            Identifier ret = null;
-            int fpuDelta = FpuStackOffset;
 
-            FpuStackOffset = 0;
-            if (ss.ReturnValue != null)
-            {
-                ret = argDeser.DeserializeReturnValue(ss.ReturnValue);
-                fpuDelta += FpuStackOffset;
-            }
-
-            FpuStackOffset = 0;
             var args = new List<Identifier>();
-            if (ss.EnclosingType != null)
+
+            Identifier ret = null;
+            // If the user has specified the storage on all
+            // parameters, no heed is taken of any calling 
+            // convention.
+            if (ss.Arguments != null && ss.Arguments.All(HasExplicitStorage))
             {
-                var arg = DeserializeImplicitThisArgument(ss);
-                args.Add(arg);
-            }
-            if (ss.Arguments != null)
-            {
-                if (ss.Convention == "pascal")
+                if (!ss.Arguments.All(HasExplicitStorage))
+                    throw new InvalidOperationException(string.Format(
+                        "Not all arguments of signature {0} were explictly denoted with a storage.",
+                        ss));
+
+                int fpuDelta = FpuStackOffset;
+                FpuStackOffset = 0;
+                if (ss.ReturnValue != null)
                 {
-                    for (int iArg = ss.Arguments.Length -1; iArg >= 0; --iArg)
-                    {
-                        var sArg = ss.Arguments[iArg];
-                        var arg = DeserializeArgument(sArg, iArg, ss.Convention);
-                        args.Add(arg);
-                    }
-                    args.Reverse();
+                    ret = argDeser.DeserializeReturnValue(ss.ReturnValue);
+                    fpuDelta += FpuStackOffset;
                 }
-                else
+
+                FpuStackOffset = 0;
+                for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
                 {
-                    for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
-                    {
-                        var sArg = ss.Arguments[iArg];
-                        var arg = DeserializeArgument(sArg, iArg, ss.Convention);
-                        args.Add(arg);
-                    }
+                    var sArg = ss.Arguments[iArg];
+                    var arg = DeserializeArgument(sArg, iArg, ss.Convention);
+                    args.Add(arg);
                 }
                 fpuDelta -= FpuStackOffset;
+                FpuStackOffset = fpuDelta;
             }
-            FpuStackOffset = fpuDelta;
-            var sig = ss.ParametersValid ?
-                new FunctionType(ret, args.ToArray()) :
-                new FunctionType();
-            sig.IsInstanceMetod = ss.IsInstanceMethod;
+            else
+            {
+                // A calling convention governs the storage of a the 
+                // parameters
+
+                int fpuDelta = FpuStackOffset;
+
+                FpuStackOffset = 0;
+                if (ss.ReturnValue != null)
+                {
+                    ret = argDeser.DeserializeReturnValue(ss.ReturnValue);
+                    fpuDelta += FpuStackOffset;
+                }
+
+                FpuStackOffset = 0;
+                if (ss.EnclosingType != null)
+                {
+                    var arg = DeserializeImplicitThisArgument(ss);
+                    args.Add(arg);
+                }
+                if (ss.Arguments != null)
+                {
+                    if (ss.Convention == "pascal")
+                    {
+                        for (int iArg = ss.Arguments.Length - 1; iArg >= 0; --iArg)
+                        {
+                            var sArg = ss.Arguments[iArg];
+                            var arg = DeserializeArgument(sArg, iArg, ss.Convention);
+                            args.Add(arg);
+                        }
+                        args.Reverse();
+                    }
+                    else
+                    {
+                        for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
+                        {
+                            var sArg = ss.Arguments[iArg];
+                            var arg = DeserializeArgument(sArg, iArg, ss.Convention);
+                            args.Add(arg);
+                        }
+                    }
+                    fpuDelta -= FpuStackOffset;
+                }
+                FpuStackOffset = fpuDelta;
+            }
+            var sig = new FunctionType(ret, args.ToArray())
+            {
+                IsInstanceMetod = ss.IsInstanceMethod,
+            };
             ApplyConvention(ss, sig);
             return sig;
         }
