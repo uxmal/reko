@@ -190,7 +190,6 @@ namespace Reko.Core.CLanguage
             {
                 return new Argument_v1
                 {
-                    Kind = new StackVariable_v1 { },
                     Name = "...",
                 };
             }

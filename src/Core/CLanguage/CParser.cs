@@ -367,6 +367,9 @@ IGNORE tab + cr + lf
         //  ).
         public Decl Parse_ExternalDecl()
         {
+            // Eat leading semicolons.
+            while (PeekThenDiscard(CTokenType.Semicolon))
+                ;
             var attrs = Parse_AttributeSpecifierSeq();
             var decl_spec_list = Parse_DeclSpecifierList();
             if (decl_spec_list == null)
@@ -551,6 +554,7 @@ IGNORE tab + cr + lf
             case CTokenType.Auto:
             case CTokenType.Register:
             case CTokenType.__Cdecl:
+            case CTokenType.__ForceInline:
             case CTokenType.__Inline:
             case CTokenType.__Stdcall:
                 return grammar.StorageClass( lexer.Read().Type);

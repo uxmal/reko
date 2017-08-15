@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Core.Serialization
 		[Test]
 		public void VoidFunctionSignature()
 		{
-			SerializedSignature sig = new SerializedSignature();
+			var sig = new SerializedSignature();
             Given_X86ProcedureSerializer();
             FunctionType ps = ser.Deserialize(sig, platform.Architecture.CreateFrame());
 			Assert.AreEqual("void foo()", ps.ToString("foo"));
