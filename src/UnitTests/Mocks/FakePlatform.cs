@@ -60,9 +60,10 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public string Test_DefaultCallingConvention = "";
         public override string DefaultCallingConvention
         {
-            get { return ""; }
+            get { return Test_DefaultCallingConvention; }
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)

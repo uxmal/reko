@@ -1,5 +1,6 @@
 ﻿// Types
 
+typedef unsigned int size_t;
 typedef void (*PVFV)(void);
 typedef int (*_onexit_t)(void);
 typedef int time_t;

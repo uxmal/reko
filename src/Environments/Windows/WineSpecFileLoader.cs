@@ -71,7 +71,7 @@ namespace Reko.Environments.Windows
                     break;
                 if (PeekAndDiscard(TokenType.NL))
                     continue;
-                var line =  ParseLine();
+                var line = ParseLine();
                 if (line != null)
                 {
                     if (line.Item1.HasValue)
@@ -106,7 +106,7 @@ namespace Reko.Environments.Windows
                 ssig.Arguments = ParseParameters(ssig);
                 SkipToEndOfLine();
 
-                var deser = new X86ProcedureSerializer((IntelArchitecture)platform.Architecture, tlLoader, callconv);
+                var deser = new X86ProcedureSerializer((IntelArchitecture)platform.Architecture, tlLoader, ssig.Convention);
                 var sig = deser.Deserialize(ssig, new Frame(platform.FramePointerType));
                 var svc = new SystemService
                 {

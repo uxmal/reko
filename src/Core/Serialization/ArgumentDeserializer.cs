@@ -95,7 +95,7 @@ namespace Reko.Core.Serialization
             {
                 return null;
             }
-            var name = frame.FormatStackAccessName(
+            var name = Frame.FormatStackAccessName(
                 dt,
                 "Arg",
                 procSer.StackOffset + retAddressOnStack,

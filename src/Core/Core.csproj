@@ -243,7 +243,6 @@
     <Compile Include="ImageReader.cs" />
     <Compile Include="ImageSymbol.cs" />
     <Compile Include="Analysis\IVarargsFormatParser.cs" />
-    <Compile Include="IProcedureSignature.cs" />
     <Compile Include="IRFormat\IRFormatLexer.cs" />
     <Compile Include="IRFormat\IRFormatParser.cs" />
     <Compile Include="IRFormat\IRProcedureBuilder.cs" />

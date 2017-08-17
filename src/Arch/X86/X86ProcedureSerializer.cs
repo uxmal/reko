@@ -91,19 +91,16 @@ namespace Reko.Arch.X86
                 retAddrSize,
                 Architecture.WordWidth.Size);
 
-            var args = new List<Identifier>();
+            var parameters = new List<Identifier>();
 
             Identifier ret = null;
             // If the user has specified the storage on all
-            // parameters, no heed is taken of any calling 
+            // parameters, and the return value, no heed is taken of any calling 
             // convention.
-            if (ss.Arguments != null && ss.Arguments.All(HasExplicitStorage))
+            if ((ss.Arguments == null || ss.Arguments.All(HasExplicitStorage)) && 
+                (ss.ReturnValue == null || ss.ReturnValue.Type == null ||
+                 ss.ReturnValue.Type is VoidType_v1 || HasExplicitStorage(ss.ReturnValue)))
             {
-                if (!ss.Arguments.All(HasExplicitStorage))
-                    throw new InvalidOperationException(string.Format(
-                        "Not all arguments of signature {0} were explictly denoted with a storage.",
-                        ss));
-
                 int fpuDelta = FpuStackOffset;
                 FpuStackOffset = 0;
                 if (ss.ReturnValue != null)
@@ -113,66 +110,142 @@ namespace Reko.Arch.X86
                 }
 
                 FpuStackOffset = 0;
-                for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
+                if (ss.Arguments != null)
                 {
-                    var sArg = ss.Arguments[iArg];
-                    var arg = DeserializeArgument(sArg, iArg, ss.Convention);
-                    args.Add(arg);
+                    for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
+                    {
+                        var sArg = ss.Arguments[iArg];
+                        var arg = DeserializeArgument(sArg, iArg, ss.Convention);
+                        parameters.Add(arg);
+                    }
                 }
                 fpuDelta -= FpuStackOffset;
                 FpuStackOffset = fpuDelta;
+                var sig = new FunctionType(ret, parameters.ToArray())
+                {
+                    IsInstanceMetod = ss.IsInstanceMethod,
+                };
+                ApplyConvention(ss, sig);
+                return sig;
+
             }
             else
             {
+                var dtRet = ss.ReturnValue != null
+                    ? ss.ReturnValue.Type.Accept(TypeLoader)
+                    : VoidType.Instance;
+                var dtThis = ss.EnclosingType != null
+                    ? new Pointer(ss.EnclosingType.Accept(TypeLoader), Architecture.PointerType.Size)
+                    : null;
+                var dtParameters = ss.Arguments != null
+                    ? ss.Arguments
+                        .TakeWhile(p => p.Name != "...")
+                        .Select(p => p.Type.Accept(TypeLoader))
+                        .ToList()
+                    : new List<DataType>();
+
                 // A calling convention governs the storage of a the 
                 // parameters
 
-                int fpuDelta = FpuStackOffset;
+                var cc = GetCallingConvention(ss.Convention);
 
-                FpuStackOffset = 0;
-                if (ss.ReturnValue != null)
+                var res = cc.Generate(dtRet, dtThis, dtParameters);
+                if (res.Return != null)
                 {
-                    ret = argDeser.DeserializeReturnValue(ss.ReturnValue);
-                    fpuDelta += FpuStackOffset;
+                    ret = new Identifier("", dtRet, res.Return);
                 }
-
-                FpuStackOffset = 0;
-                if (ss.EnclosingType != null)
+                if (res.ImplicitThis != null)
                 {
-                    var arg = DeserializeImplicitThisArgument(ss);
-                    args.Add(arg);
+                    var param = new Identifier("this", dtThis, res.ImplicitThis);
+                    parameters.Add(param);
                 }
                 if (ss.Arguments != null)
                 {
-                    if (ss.Convention == "pascal")
+                    for (int i = 0; i < ss.Arguments.Length; ++i)
                     {
-                        for (int iArg = ss.Arguments.Length - 1; iArg >= 0; --iArg)
+                        if (ss.Arguments[i].Name == "...")
                         {
-                            var sArg = ss.Arguments[iArg];
-                            var arg = DeserializeArgument(sArg, iArg, ss.Convention);
-                            args.Add(arg);
+                            var unk = new UnknownType();
+                            parameters.Add(new Identifier("...", unk, new StackArgumentStorage(0, unk)));
                         }
-                        args.Reverse();
-                    }
-                    else
-                    {
-                        for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
+                        else
                         {
-                            var sArg = ss.Arguments[iArg];
-                            var arg = DeserializeArgument(sArg, iArg, ss.Convention);
-                            args.Add(arg);
+                            var name = GenerateParameterName(ss.Arguments[i].Name, dtParameters[i], res.Parameters[i]);
+                            var param = new Identifier(name, dtParameters[i], res.Parameters[i]);
+                            parameters.Add(param);
                         }
                     }
-                    fpuDelta -= FpuStackOffset;
                 }
-                FpuStackOffset = fpuDelta;
+                var ft = new FunctionType(ret, parameters.ToArray())
+                {
+                    IsInstanceMetod = ss.IsInstanceMethod,
+                    StackDelta = ss.StackDelta != 0 
+                        ? ss.StackDelta
+                        : res.StackDelta,
+                    FpuStackDelta = res.FpuStackDelta,
+                    ReturnAddressOnStack = retAddrSize,
+                };
+                return ft;
+
             }
-            var sig = new FunctionType(ret, args.ToArray())
+        }
+
+        private CallingConvention GetCallingConvention(string conventionName)
+        {
+            if (string.IsNullOrEmpty(conventionName))
+                conventionName = DefaultConvention;
+            var edx_eax = new SequenceStorage(Registers.edx, Registers.eax);
+            switch (conventionName)
             {
-                IsInstanceMetod = ss.IsInstanceMethod,
-            };
-            ApplyConvention(ss, sig);
-            return sig;
+            case "cdecl":
+            case "__cdecl":
+                return new X86CallingConvention(
+                                    Architecture.PointerType.Size,
+                                    Architecture.WordWidth.Size,
+                                    Architecture.PointerType.Size,
+                                    true,
+                                    false);
+            case "stdcall":
+            case "__stdcall":
+            case "stdapi":
+                return new X86CallingConvention(
+                                Architecture.PointerType.Size,
+                                Architecture.WordWidth.Size,
+                                Architecture.PointerType.Size,
+                                false,
+                                false);
+            case "pascal":
+                return new X86CallingConvention(
+                                Architecture.PointerType.Size,
+                                Architecture.WordWidth.Size,
+                                Architecture.PointerType.Size,
+                                false,
+                                true);
+            case "__thiscall":
+                return new ThisCallConvention(
+                                Registers.ecx,
+                                Architecture.WordWidth.Size,
+                                Architecture.PointerType.Size);
+
+            }
+            throw new NotImplementedException(string.Format("Unsupported calling convention '{0}'.",
+                string.IsNullOrEmpty(conventionName) ? "<empty>" : conventionName));
+        }
+
+        private string GenerateParameterName(string name, DataType dataType, Storage storage)
+        {
+            if (!string.IsNullOrEmpty(name))
+                return name;
+            var stack = storage as StackStorage;
+            if (stack != null)
+                return Frame.FormatStackAccessName(dataType, "Arg", stack.StackOffset, name);
+            var seq = storage as SequenceStorage;
+            if (seq != null)
+                return seq.Name;
+            var reg = storage as RegisterStorage;
+            if (reg != null)
+                return reg.Name;
+            throw new NotImplementedException();
         }
 
         private Identifier DeserializeImplicitThisArgument(SerializedSignature ss)

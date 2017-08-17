@@ -324,14 +324,14 @@ namespace Reko.Core
 			return null;
 		}
 
-		public string FormatStackAccessName(DataType type, string prefix, int cbOffset)
+		public static string FormatStackAccessName(DataType type, string prefix, int cbOffset)
 		{
 			cbOffset = Math.Abs(cbOffset);
 			string fmt = (cbOffset > 0xFF) ? "{0}{1}{2:X4}" : "{0}{1}{2:X2}";
 			return string.Format(fmt, type.Prefix, prefix, cbOffset);
 		}
 
-		public string FormatStackAccessName(DataType type, string prefix, int cbOffset, string nameOverride)
+		public static string FormatStackAccessName(DataType type, string prefix, int cbOffset, string nameOverride)
 		{
 			if (nameOverride != null)
 				return nameOverride;

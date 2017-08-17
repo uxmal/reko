@@ -419,7 +419,7 @@ namespace Reko.UnitTests.Arch.Intel
                     }
                 }
             };
-            Given_ProcedureSerializer(ssig.Convention);
+            Given_ProcedureSerializer("__cdecl");
             mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());

@@ -194,11 +194,13 @@ namespace Reko.Core
 
         public void ReadDefaults(SerializedLibraryDefaults defaults)
         {
-            if (defaults == null)
-                return;
-            if (defaults.Signature != null)
+            if (defaults != null && defaults.Signature != null)
             {
                 defaultConvention = defaults.Signature.Convention;
+            }
+            if (string.IsNullOrEmpty(defaultConvention))
+            {
+                defaultConvention = platform.DefaultCallingConvention;
             }
         }
 

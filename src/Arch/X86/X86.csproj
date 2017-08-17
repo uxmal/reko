@@ -98,6 +98,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ThisCallConvention.cs" />
+    <Compile Include="X86CallingConvention.cs" />
     <Compile Include="X86Disassembler.0F3A.cs" />
     <Compile Include="X86Emulator.cs" />
     <Compile Include="X86Options.cs" />

@@ -209,13 +209,16 @@ test_exit:
                     m.Return();
                 });
             var program = pb.BuildProgram();
-            var platform = new FakePlatform(null, arch);
+            var platform = new FakePlatform(null, arch)
+            {
+                Test_DefaultCallingConvention = "__cdecl",
+            };
             platform.Test_CreateImplicitArgumentRegisters = () =>
                 new HashSet<RegisterStorage>();
             platform.Test_CreateProcedureSerializer = (t, d) =>
             {
                 var typeLoader = new TypeLibraryDeserializer(platform, false, new TypeLibrary());
-                return new X86ProcedureSerializer((IntelArchitecture)program.Architecture, typeLoader, "");
+                return new X86ProcedureSerializer((IntelArchitecture)program.Architecture, typeLoader, "__cdecl");
             };
 
             var importResolver = MockRepository.GenerateStub<IImportResolver>();

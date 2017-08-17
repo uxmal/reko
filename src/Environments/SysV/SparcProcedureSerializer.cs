@@ -91,6 +91,13 @@ namespace Reko.Environments.SysV
 
         public Identifier DeserializeArgument(Argument_v1 sArg, int idx, string convention)
         {
+            if (sArg.Name == "...")
+            {
+                return this.CreateId(
+                    sArg.Name,
+                    new UnknownType(),
+                    null);
+            }
             if (sArg.Kind != null)
             {
                 return argser.Deserialize(sArg, sArg.Kind);

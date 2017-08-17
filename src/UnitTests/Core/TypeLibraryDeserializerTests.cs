@@ -328,6 +328,9 @@ namespace Reko.UnitTests.Core
         public void Tlldr_LoadGlobalByOrdinal()
         {
             var typelib = new TypeLibrary();
+            platform = mr.Stub<IPlatform>();
+            platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
+            platform.Replay();
             var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
             tlldr.Load(new SerializedLibrary
             {

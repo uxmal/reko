@@ -73,9 +73,17 @@ namespace Reko.Environments.SysV
 
         private Identifier DeserializeArgument(ArgumentDeserializer argser, Argument_v1 sArg)
         {
-            Identifier arg;
+            if (sArg.Name == "...")
+            {
+                return this.CreateId(
+                    sArg.Name,
+                    new UnknownType(),
+                    null);
+            }
             if (sArg.Kind != null)
                 return argser.Deserialize(sArg);
+
+            Identifier arg;
             var dtArg = sArg.Type.Accept(TypeLoader);
             var prim = dtArg as PrimitiveType;
             if (prim != null && prim.Domain == Domain.Real && !firstArgIntegral)

@@ -160,6 +160,7 @@ namespace Reko.UnitTests.Scanning
                 new ImageSegment("proggie", mem, AccessMode.ReadExecute));
             var arch = new X86ArchitectureFlat32();
             var platform = new FakePlatform(null, arch);
+            platform.Test_DefaultCallingConvention = "__cdecl";
             this.program = new Program
             {
                 Architecture = arch,
@@ -169,7 +170,7 @@ namespace Reko.UnitTests.Scanning
             platform.Test_CreateProcedureSerializer = (t, d) =>
             {
                 var typeLoader = new TypeLibraryDeserializer(platform, false, new TypeLibrary());
-                return new X86ProcedureSerializer((IntelArchitecture)program.Architecture, typeLoader, "");
+                return new X86ProcedureSerializer((IntelArchitecture)program.Architecture, typeLoader, "__cdecl");
             };
         }
 
@@ -543,7 +544,7 @@ fn00001100_exit:
             var proc = sc.ScanProcedure(Address.Ptr32(0x2000), "fn000020", arch.CreateProcessorState());
             Assert.AreEqual("ndProc", proc.Name);
             Assert.AreEqual("int32", proc.Signature.ReturnValue.DataType.ToString());
-            Assert.AreEqual("eax", proc.Signature.ReturnValue.Name);
+            Assert.AreEqual("eax", proc.Signature.ReturnValue.Storage.Name);
             Assert.AreEqual(1, proc.Signature.Parameters.Length);
             Assert.AreEqual("real64", proc.Signature.Parameters[0].DataType.ToString());
             Assert.AreEqual("dVal", proc.Signature.Parameters[0].Name);
@@ -810,6 +811,7 @@ fn00001200_exit:
 
             var ft1 = Given_Serialized_Signature(new SerializedSignature
             {
+                Convention = "__cdecl",
                 ReturnValue = new Argument_v1 { Type = Int32() },
             });
             var ft2 = Given_Serialized_Signature(new SerializedSignature
