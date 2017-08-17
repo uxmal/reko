@@ -166,6 +166,7 @@
     <Compile Include="Assemblers\Assembler.cs" />
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
+    <Compile Include="CallingConvention.cs" />
     <Compile Include="CharacteristicsLibrary.cs" />
     <Compile Include="CLanguage\CBasicType.cs" />
     <Compile Include="CLanguage\CConstantEvaluator.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="ImageReader.cs" />
     <Compile Include="ImageSymbol.cs" />
     <Compile Include="Analysis\IVarargsFormatParser.cs" />
+    <Compile Include="IProcedureSignature.cs" />
     <Compile Include="IRFormat\IRFormatLexer.cs" />
     <Compile Include="IRFormat\IRFormatParser.cs" />
     <Compile Include="IRFormat\IRProcedureBuilder.cs" />
