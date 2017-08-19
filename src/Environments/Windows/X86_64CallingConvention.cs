@@ -22,6 +22,8 @@ using System;
 using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Types;
+using Reko.Arch.X86;
+using System.Diagnostics;
 
 namespace Reko.Environments.Windows
 {
@@ -30,9 +32,53 @@ namespace Reko.Environments.Windows
     /// </summary>
     public class X86_64CallingConvention : CallingConvention
     {
+        private static readonly RegisterStorage[] iRegs =
+        {
+            Registers.rcx,
+            Registers.rdx,
+            Registers.r8,
+            Registers.r9,
+        };
+
+        private static readonly RegisterStorage[] fRegs =
+        {
+            Registers.xmm0,
+            Registers.xmm1,
+            Registers.xmm2,
+            Registers.xmm3,
+        };
+
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            throw new NotImplementedException();
+            var parameters = new List<Storage>();
+            for (int i = 0; i < dtParams.Count; ++i)
+            {
+                var dt = dtParams[i];
+                if (dt.Size > 8)
+                    throw new NotImplementedException();
+                var pt = dt as PrimitiveType;
+                if (pt != null && pt.Domain == Domain.Real && i < fRegs.Length)
+                {
+                    parameters.Add(fRegs[i]);
+                }
+                else if (i < iRegs.Length)
+                {
+                    parameters.Add(iRegs[i]);
+                }
+                else
+                {
+                    var stg = new StackArgumentStorage(8 * (i + 1), dt);
+                    parameters.Add(stg);
+                }
+            }
+            return new CallingConventionResult
+            {
+                Return = null,
+                ImplicitThis = null,
+                Parameters = parameters,
+                StackDelta = 8,
+                FpuStackDelta = 0,
+            };
         }
     }
 }

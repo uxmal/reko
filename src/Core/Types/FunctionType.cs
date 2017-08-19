@@ -115,9 +115,6 @@ namespace Reko.Core.Types
         /// <returns></returns>
         public FunctionType ReplaceParameters(params Identifier[] parameters)
         {
-            if (!IsVarargs())
-                throw new NotSupportedException(
-                    "Signature should contain varargs");
             var sig = (FunctionType)Clone();
             sig.Parameters = parameters;
             return sig;

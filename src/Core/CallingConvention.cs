@@ -45,5 +45,36 @@ namespace Reko.Core
         public List<Storage> Parameters;
         public int StackDelta;
         public int FpuStackDelta;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("Stk: {0} ", StackDelta);
+            if (FpuStackDelta != 0)
+            {
+                sb.AppendFormat("Fpu: {0} ", FpuStackDelta);
+            }
+            if (this.Return != null)
+            {
+                sb.AppendFormat("{0} ", this.Return);
+            }
+            else
+            {
+                sb.AppendFormat("void ");
+            }
+            if (this.ImplicitThis != null)
+            {
+                sb.AppendFormat("[this {0}] ", this.ImplicitThis);
+            }
+            sb.Append("(");
+            var sep = "";
+            foreach (var dt in this.Parameters)
+            {
+                sb.AppendFormat("{0}{1}", sep, dt);
+                sep = ", ";
+            }
+            sb.Append(")");
+            return sb.ToString();
+        }
     }
 }

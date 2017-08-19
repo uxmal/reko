@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Scanning
         private ProcedureCharacteristics printfChr;
         private FunctionType x86PrintfSig;
         private FunctionType x86SprintfSig;
-        private FunctionType x86_64PrintfSig;
+        private FunctionType win_x86_64PrintfSig;
         private FunctionType ppcPrintfSig;
         private ServiceContainer sc;
         private Address addrInstr;
@@ -88,10 +88,10 @@ namespace Reko.UnitTests.Scanning
                 StackId(null,   4, CStringType32()),
                 StackId(null,   8, CStringType32()),
                 StackId("...", 12, new UnknownType()));
-            this.x86_64PrintfSig = new FunctionType(
+            this.win_x86_64PrintfSig = new FunctionType(
                 null,
-                RegId(null, win_x86_64, "rdi", CStringType64()),
-                RegId("...", win_x86_64, "r8", new UnknownType()));
+                RegId(null, win_x86_64, "rcx", CStringType64()),
+                RegId("...", win_x86_64, "rdx", new UnknownType()));
             this.ppcPrintfSig = new FunctionType(
                 null,
                 RegId(null,  sysV_ppc, "r3", CStringType32()),
@@ -266,13 +266,12 @@ namespace Reko.UnitTests.Scanning
         public void Vafs_X86_64Printf()
         {
             Given_VaScanner(win_x86_64);
-            Given_RegString64("rdi", "%d %f %s ");
-            Assert.IsTrue(vafs.TryScan(addrInstr, x86_64PrintfSig, printfChr));
+            Given_RegString64("rcx", "%d %f %s %u %x");
+            Assert.IsTrue(vafs.TryScan(addrInstr, win_x86_64PrintfSig, printfChr));
             var c = Constant.Word32(666);
-            var instr = vafs.BuildInstruction(c, new CallSite(4, 0));
+            var instr = vafs.BuildInstruction(c, new CallSite(8, 0));
             Assert.AreEqual(
-                "0x0000029A(Mem0[esp:(ptr char)], Mem0[esp + 4:int32], " +
-                           "Mem0[esp + 8:real64])",
+                "0x0000029A(rcx, rdx, xmm2, r9, Mem0[rsp + 32:uint64], Mem0[rsp + 40:uint64])",
                 instr.ToString());
         }
 
