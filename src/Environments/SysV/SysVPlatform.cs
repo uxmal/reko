@@ -84,6 +84,11 @@ namespace Reko.Environments.SysV
             }
         }
 
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new HashSet<RegisterStorage>();

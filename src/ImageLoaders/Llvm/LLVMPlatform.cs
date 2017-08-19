@@ -89,6 +89,11 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
+        public CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
         public HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             throw new NotImplementedException();

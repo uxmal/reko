@@ -77,6 +77,12 @@ namespace Reko.Environments.Msdos
             return new X86ProcedureSerializer((IntelArchitecture) this.Architecture, typeLoader, defaultConvention);
         }
 
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public override string DetermineCallingConvention(FunctionType signature)
         {
             if (!signature.HasVoidReturn)

@@ -62,6 +62,11 @@ namespace Reko.Environments.RiscOS
             throw new NotImplementedException();
         }
 
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             switch (vector)

@@ -72,6 +72,11 @@ namespace Reko.Environments.Windows
             return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
         }
 
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
         {
             Services.RequireService<DecompilerEventListener>().Warn(new NullCodeLocation(program.Name),

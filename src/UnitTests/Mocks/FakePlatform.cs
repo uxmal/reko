@@ -55,6 +55,11 @@ namespace Reko.UnitTests.Mocks
             return Test_CreateProcedureSerializer(typeLoader, defaultConvention);
         }
 
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotImplementedException();

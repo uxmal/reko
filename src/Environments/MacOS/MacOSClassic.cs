@@ -63,6 +63,11 @@ namespace Reko.Environments.MacOS
             return new M68kProcedureSerializer((M68kArchitecture) Architecture, typeLoader, defaultConvention);
         }
 
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             base.EnsureTypeLibraries(base.PlatformIdentifier);

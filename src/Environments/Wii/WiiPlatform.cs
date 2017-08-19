@@ -54,7 +54,12 @@ namespace Reko.Environments.Wii
 				defaultConvention);
 		}
 
-		public override HashSet<RegisterStorage> CreateTrashedRegisters() {
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override HashSet<RegisterStorage> CreateTrashedRegisters() {
 			//TODO: find out what registers are always trashed
 			return new HashSet<RegisterStorage>();
 		}

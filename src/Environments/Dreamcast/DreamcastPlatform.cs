@@ -57,6 +57,11 @@ namespace Reko.Environments.Dreamcast
             throw new NotImplementedException();
         }
 
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             throw new NotImplementedException();

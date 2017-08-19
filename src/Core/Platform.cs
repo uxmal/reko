@@ -63,6 +63,7 @@ namespace Reko.Core
 
         IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
+        CallingConvention GetCallingConvention(string ccName);
         TypeLibrary CreateMetadata();
 
         /// <summary>
@@ -252,6 +253,8 @@ namespace Reko.Core
         /// <param name="typeLoader">Used to resolve data types</param>
         /// <param name="defaultConvention">Default calling convention, if none specified.</param>
         public abstract ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
+
+        public abstract CallingConvention GetCallingConvention(string ccName);
 
         /// <summary>
         /// Creates an empty imagemap based on the absolute memory map. It is 
@@ -504,6 +507,11 @@ namespace Reko.Core
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             throw new NotSupportedException();
+        }
+
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

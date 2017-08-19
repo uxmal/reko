@@ -57,6 +57,11 @@ namespace Reko.Environments.Cpm
             throw new NotImplementedException();
         }
 
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotImplementedException();

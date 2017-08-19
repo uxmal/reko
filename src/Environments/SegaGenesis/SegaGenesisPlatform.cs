@@ -52,6 +52,11 @@ namespace Reko.Environments.SegaGenesis
             throw new NotImplementedException();
         }
 
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             //$TODO: implement some services;

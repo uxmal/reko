@@ -70,6 +70,11 @@ namespace Reko.Environments.Windows
             return new X86ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);
         }
 
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             return null;

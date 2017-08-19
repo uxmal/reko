@@ -72,6 +72,11 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override SystemService FindService(RtlInstruction rtl, ProcessorState state)
         {
             return base.FindService(rtl, state);

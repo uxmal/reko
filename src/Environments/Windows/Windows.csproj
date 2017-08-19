@@ -92,6 +92,7 @@
     <Compile Include="WineSpecFileLoader.cs" />
     <Compile Include="Win_x86_64_Platform.cs" />
     <Compile Include="X86StartFinder.cs" />
+    <Compile Include="X86_64CallingConvention.cs" />
     <Compile Include="X86_64ProcedureSerializer.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -101,6 +101,11 @@ namespace Reko.Environments.Windows
             return new X86_64ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);
         }
 
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            return new X86_64CallingConvention();
+        }
+
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
         {
             return null;

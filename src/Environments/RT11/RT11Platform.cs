@@ -67,6 +67,11 @@ namespace Reko.Environments.RT11
             return new Rt11ProcedureSerializer(Architecture, typeLoader, defaultConvention);
         }
 
+        public override CallingConvention GetCallingConvention(string ccName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             base.EnsureTypeLibraries(PlatformIdentifier);
