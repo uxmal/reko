@@ -108,21 +108,18 @@ namespace Reko.Core.Types
         }
 
         /// <summary>
-        /// Create a new signature with the varargs replaced with
+        /// Create a new signature with the parameters replaced with
         /// the provided parameters.
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public FunctionType ReplaceVarargs(params Identifier[] parameters)
+        public FunctionType ReplaceParameters(params Identifier[] parameters)
         {
             if (!IsVarargs())
                 throw new NotSupportedException(
                     "Signature should contain varargs");
             var sig = (FunctionType)Clone();
-            sig.Parameters = Parameters.
-                Where(a => a.Name != "...").
-                Concat(parameters).
-                ToArray();
+            sig.Parameters = parameters;
             return sig;
         }
 

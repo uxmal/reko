@@ -159,6 +159,11 @@ namespace Reko.UnitTests.Core.Serialization
                 throw new NotImplementedException();
             }
 
+            public override CallingConvention GetCallingConvention(string ccName)
+            {
+                throw new NotImplementedException();
+            }
+
             public override SystemService FindService(int vector, ProcessorState state)
             {
                 throw new NotImplementedException();

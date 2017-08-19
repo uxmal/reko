@@ -82,7 +82,7 @@ namespace Reko.Scanning
             }
             var format = ReadVarargsFormat(sig);
             var argTypes = ParseVarargsFormat(addrInstr, chr, format);
-            this.expandedSig = ReplaceVarargs(sig, argTypes);
+            this.expandedSig = ReplaceVarargs(program.Platform, sig, argTypes);
             return true;
         }
 
@@ -183,27 +183,24 @@ namespace Reko.Scanning
             return varargsParser.ArgumentTypes;
         }
 
-        private FunctionType ReplaceVarargs(
+        public static FunctionType ReplaceVarargs(
+            IPlatform platform,
             FunctionType sig,
             IEnumerable<DataType> argumentTypes)
         {
-            var varargs = sig.Parameters.Last();
-            var varargsStorage = varargs.Storage as StackStorage;
-            if (varargsStorage == null)
-                throw new NotSupportedException(
-                    string.Format(
-                        "The {0} parameter of {1} wasn't a stack access.",
-                        varargs.Name,
-                        sig.Name));
-            var stackOffset = varargsStorage.StackOffset;
-            var args = argumentTypes.Select(dt =>
-            {
-                var stg = new StackArgumentStorage(stackOffset, dt);
-                stackOffset += dt.Size;
-                return new Identifier(null, dt, stg);
-            });
-
-            return sig.ReplaceVarargs(args.ToArray());
+            var fixedArgs = sig.Parameters.TakeWhile(p => p.Name != "...").ToList();
+            var cc = platform.GetCallingConvention(""); //$REVIEW: default CC tends to be __cdecl.
+            var ccr = cc.Generate(
+                sig.ReturnValue.DataType,
+                null, //$TODO: what to do about implicit this?
+                fixedArgs
+                    .Select(p => p.DataType)
+                    .Concat(argumentTypes)
+                    .ToList());
+            var varArgs = argumentTypes.Zip(
+                ccr.Parameters.Skip(fixedArgs.Count),
+                (t, s) => new Identifier("", t, s));
+            return sig.ReplaceParameters(fixedArgs.Concat(varArgs).ToArray());
         }
     }
 }
