@@ -31,237 +31,64 @@ using System;
 using System.Xml;
 using System.Xml.Serialization;
 using Rhino.Mocks;
+using Reko.Environments.SysV.ArchSpecific;
+using System.Collections.Generic;
 
-namespace Reko.UnitTests.Environments.SysV
+namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 {
     [TestFixture]
-    public class X86_64ProcedureSerializerTests
+    public class X86_64CallingConventionTests
     {
-        private MockRepository mr;
-        private MockFactory mockFactory;
         private X86ArchitectureFlat64 arch;
-        private X86_64ProcedureSerializer ser;
-        private ISerializedTypeVisitor<DataType> deserializer;
+        private X86_64CallingConvention cc;
+        private PrimitiveType i8 = PrimitiveType.SByte;
+        private PrimitiveType i16 = PrimitiveType.Int16;
+        private PrimitiveType i32 = PrimitiveType.Int32;
+        private PrimitiveType r64 = PrimitiveType.Real64;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            mockFactory = new MockFactory(mr);
             arch = new X86ArchitectureFlat64();
         }
 
-        private void Given_ProcedureSerializer()
+        private void Given_CallingConvention()
         {
-            this.deserializer = mockFactory.CreateDeserializer(arch.PointerType.Size);
-            this.ser = new X86_64ProcedureSerializer(arch, deserializer, "");
-        }
-
-        private void Verify(SerializedSignature ssig, string outputFilename)
-        {
-            using (FileUnitTester fut = new FileUnitTester(outputFilename))
-            {
-                XmlTextWriter x = new FilteringXmlWriter(fut.TextWriter);
-                x.Formatting = Formatting.Indented;
-                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(ssig.GetType());
-                ser.Serialize(x, ssig);
-                fut.AssertFilesEqual();
-            }
-        }
-
-        [Test]
-        public void SvAmdPs_Serialize()
-        {
-            Given_ProcedureSerializer();
-
-            mr.ReplayAll();
-
-            var sig = new FunctionType(
-                new Identifier("rbx", PrimitiveType.Word32, arch.GetRegister("rbx")),
-                new Identifier[] {
-                    new Identifier("rbx", PrimitiveType.Word32, arch.GetRegister("rbx"))
-                });
-
-            SerializedSignature ssig = ser.Serialize(sig);
-            Assert.IsNotNull(ssig.ReturnValue);
-            Assert.AreEqual("rbx", ssig.ReturnValue.Name);
-            Register_v1 sreg = (Register_v1)ssig.ReturnValue.Kind;
-            Assert.AreEqual("rbx", sreg.Name);
-        }
-
-        [Test]
-        public void SvAmdPs_SerializeProcedure()
-        {
-            Procedure proc = new Procedure("foo", arch.CreateFrame());
-            Address addr = Address.Ptr32(0x12345);
-            Given_ProcedureSerializer();
-
-            mr.ReplayAll();
-
-            Procedure_v1 sproc = ser.Serialize(proc, addr);
-            Assert.AreEqual("foo", sproc.Name);
-            Assert.AreEqual("00012345", sproc.Address);
-        }
-
-        [Test]
-        public void SvAmdPs_SerializeProcedureWithSignature()
-        {
-            Procedure proc = new Procedure("foo", arch.CreateFrame())
-            {
-                Signature = new FunctionType(
-                    new Identifier("rax", PrimitiveType.Word32, arch.GetRegister("rax")),
-                    new Identifier[] {
-                        new Identifier("arg00", PrimitiveType.Word32, arch.GetRegister("rdi")),
-                    })
-            };
-
-            Address addr = Address.Ptr32(0x567A0C);
-            Given_ProcedureSerializer();
-
-            mr.ReplayAll();
-
-            Procedure_v1 sproc = ser.Serialize(proc, addr);
-            Assert.AreEqual("rax", sproc.Signature.ReturnValue.Name);
+            this.cc = new X86_64CallingConvention(arch);
         }
 
         [Test]
         public void SvAmdPs_DeserializeFpuArgument()
         {
-            var ssig = new SerializedSignature
-            {
-                Convention = "stdapi",
-                ReturnValue = RegArg(Type("int"), "rax"),
-                Arguments = new Argument_v1[] {
-                    FpuArg(Type("double"), "xmm0")
-                }
-            };
-            Given_ProcedureSerializer();
-
-            mr.ReplayAll();
-
-            var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual("Register int test(Register double xmm0)", sig.ToString("test"));
-        }
-
-        private SerializedType Type(string typeName)
-        {
-            return new TypeReference_v1(typeName);
-        }
-
-        private Argument_v1 RegArg(SerializedType type, string regName)
-        {
-            return new Argument_v1
-            {
-                Type = type,
-                Kind = new Register_v1 { Name = regName },
-                Name = regName
-            };
-        }
-
-        private Argument_v1 FpuArg(SerializedType type, string name)
-        {
-            return new Argument_v1(
-                name,
-                type,
-                new Register_v1 { Name = name },
-                false);
+            Given_CallingConvention();
+            var ccr = cc.Generate(i32, null, new List<DataType> { r64 });
+            Assert.AreEqual("Stk: 8 rax (xmm0)", ccr.ToString());
         }
 
         [Test]
         public void SvAmdPs_DeserializeFpuStackReturnValue()
         {
-            var ssig = new SerializedSignature
-            {
-                ReturnValue = new Argument_v1
-                {
-                    Type = new PrimitiveType_v1(Domain.Real, 8),
-                }
-            };
-            Given_ProcedureSerializer();
-
-            mr.ReplayAll();
-
-            var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual("xmm0", sig.ReturnValue.Storage.ToString());
+            Given_CallingConvention();
+            var ccr = cc.Generate(r64, null, new List<DataType>());
+            Assert.AreEqual("Stk: 8 xmm0 ()", ccr.ToString());
         }
 
         [Test]
         public void SvAmdPs_Load_cdecl()
         {
-            var ssig = new SerializedSignature
-            {
-                Convention = "__cdecl",
-                Arguments = new Argument_v1[] {
-                    new Argument_v1
-                    {
-                        Name = "foo",
-                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 },
-                    }
-                }
-            };
-            Given_ProcedureSerializer();
-            mr.ReplayAll();
-
-            var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual(0, sig.StackDelta);
+            Given_CallingConvention();
+            var ccr = cc.Generate(null, null, new List<DataType> { i32 } );
+            Assert.AreEqual("Stk: 8 void (rdi)", ccr.ToString());
         }
 
         [Test]
         public void SvAmdPs_Load_IntArgs()
         {
-            var ssig = new SerializedSignature
-            {
-                Arguments = new Argument_v1[] {
-                    new Argument_v1
-                    {
-                        Name="dc",
-                        Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize=2 },
-                    },
-                    new Argument_v1
-                    {
-                        Name = "b2",
-                        Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 1 },
-                    },
-                       new Argument_v1
-                    {
-                        Name = "w3",
-                        Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 4 },
-                    },
-                       new Argument_v1
-                    {
-                        Name = "h4",
-                        Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize=2 },
-                    },
-                       new Argument_v1
-                    {
-                        Name = "b5",
-                        Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 1 },
-                    },
-                    new Argument_v1
-                    {
-                        Name = "i6",
-                        Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 4 },
-                    },
-                    new Argument_v1
-                    {
-                        Name = "b7",
-                        Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 1 },
-                    }
-                }
-            };
-            Given_ProcedureSerializer();
-
-            mr.ReplayAll();
-
-            var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            var args = sig.Parameters;
-            Assert.AreEqual("rdi", args[0].Storage.ToString());
-            Assert.AreEqual("rsi", args[1].Storage.ToString());
-            Assert.AreEqual("rdx", args[2].Storage.ToString());
-            Assert.AreEqual("rcx", args[3].Storage.ToString());
-            Assert.AreEqual("r8", args[4].Storage.ToString());
-            Assert.AreEqual("r9", args[5].Storage.ToString());
-            Assert.AreEqual("Stack +0008", args[6].Storage.ToString());
+            Given_CallingConvention();
+            var ccr = cc.Generate(null, null, new List<DataType> { i16, i8, i32, i16, i8, i32, i8, i32 });
+            Assert.AreEqual(
+                "Stk: 8 void (rdi, rsi, rdx, rcx, r8, r9, Stack +0038, Stack +0040)",
+                ccr.ToString());
         }
     }
 }

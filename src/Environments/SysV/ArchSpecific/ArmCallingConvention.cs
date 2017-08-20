@@ -40,7 +40,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             int ncrn = 0;
-            int nsaa = 0;
+            int nsaa = 0x10;
             // mem arg forb ret val
 
             Storage ret = null;
@@ -74,7 +74,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 }
                 else
                 {
-                    arg = new StackArgumentStorage((nsaa + 4) * 4, dt);
+                    arg = new StackArgumentStorage(nsaa, dt);
                     nsaa += AlignedStackArgumentSize(dt);
                 }
                 parameters.Add(arg);

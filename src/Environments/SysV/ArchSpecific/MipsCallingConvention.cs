@@ -35,7 +35,6 @@ namespace Reko.Environments.SysV.ArchSpecific
 
     public class MipsCallingConvention : CallingConvention
     {
-        private int ir;
         private IProcessorArchitecture arch;
 
         public MipsCallingConvention(IProcessorArchitecture arch)
@@ -55,7 +54,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             var parameters = new List<Storage>();
             int ir =  0;
             bool firstArgIntegral = false;
-
+            int stackOff = 0x10;
             for (int i = 0; i < dtParams.Count; ++i)
             {
                 Storage param;
@@ -65,23 +64,24 @@ namespace Reko.Environments.SysV.ArchSpecific
                 {
                     if ((ir % 2) != 0)
                         ++ir;
-                    if (this.ir >= 4)
+                    if (ir >= 4)
                     {
-                        param = new StackArgumentStorage(-1, dtParam);
+                        param = new StackArgumentStorage(stackOff, dtParam);
+                        stackOff += Align(dtParam.Size, 4);
                     }
                     else
                     {
                         if (prim.Size == 4)
                         {
-                            param = arch.GetRegister("f" + (this.ir + 12));
-                            this.ir += 1;
+                            param = arch.GetRegister("f" + (ir + 12));
+                            ir += 1;
                         }
                         else if (prim.Size == 8)
                         {
                             param = new SequenceStorage(
                             arch.GetRegister("f" + (ir + 12)),
                             arch.GetRegister("f" + (ir + 13)));
-                            this.ir += 2;
+                            ir += 2;
                         }
                         else
                         {
@@ -89,34 +89,37 @@ namespace Reko.Environments.SysV.ArchSpecific
                         }
                     }
                 }
-                else {
+                else
+                {
                     if (ir == 0)
                         firstArgIntegral = true;
                     if (dtParam.Size <= 4)
                     {
-                        if (this.ir >= 4)
+                        if (ir >= 4)
                         {
-                            param = new StackArgumentStorage(-1, dtParam);
+                            param = new StackArgumentStorage(stackOff, dtParam);
+                            stackOff += Align(dtParam.Size, 4);
                         }
                         else
                         {
                             param = arch.GetRegister("r" + (ir + 4));
-                            ++this.ir;
+                            ++ir;
                         }
                     }
                     else if (dtParam.Size <= 8)
                     {
                         if ((ir & 1) != 0)
                             ++ir;
-                        if (this.ir >= 4)
+                        if (ir >= 4)
                         {
-                            param = new StackArgumentStorage(-1, dtParam);
+                            param = new StackArgumentStorage(stackOff, dtParam);
+                            stackOff += Align(dtParam.Size, 4);
                         }
                         else
                         {
                             param = new SequenceStorage(
                                 arch.GetRegister("r" + (ir + 4)),
-                                arch.GetRegister("r" + (ir + 4)));
+                                arch.GetRegister("r" + (ir + 5)));
                             ir += 2;
                         }
                     }

@@ -51,6 +51,7 @@ namespace Reko.Environments.SysV.ArchSpecific
 
             int ir = 0;
             var parameters = new List<Storage>();
+            int stackOffset = 0x0018;
             for (int iArg = 0; iArg < dtParams.Count; ++iArg)
             {
                 Storage param;
@@ -60,7 +61,8 @@ namespace Reko.Environments.SysV.ArchSpecific
                 {
                     if (ir >= iregs.Length)
                     {
-                        param = new StackArgumentStorage(-1, dtArg);
+                        param = new StackArgumentStorage(stackOffset, dtArg);
+                        stackOffset += Align(dtArg.Size, 4);
                     }
                     else
                     {

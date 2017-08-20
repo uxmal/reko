@@ -51,6 +51,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             var args = new List<Storage>();
             int fr = 0;
             int ir = 0;
+            int stackOffset = 0x38;
             foreach (var dtParam in dtParams) 
             {
                 Storage arg;
@@ -59,7 +60,8 @@ namespace Reko.Environments.SysV.ArchSpecific
                 {
                     if (fr >= fregs.Length)
                     {
-                        arg = new StackArgumentStorage(-1, dtParam);
+                        arg = new StackArgumentStorage(stackOffset, dtParam);
+                        stackOffset += Align(dtParam.Size, 8);
                     }
                     else
                     {
@@ -71,7 +73,8 @@ namespace Reko.Environments.SysV.ArchSpecific
                 {
                     if (ir >= iregs.Length)
                     {
-                        arg = new StackArgumentStorage(-1, dtParam);
+                        arg = new StackArgumentStorage(stackOffset, dtParam);
+                        stackOffset += Align(dtParam.Size, 8);
                     }
                     else
                     {
@@ -84,7 +87,8 @@ namespace Reko.Environments.SysV.ArchSpecific
                     int regsNeeded = (dtParam.Size + 7) / 8;
                     if (regsNeeded > 4 || ir + regsNeeded >= iregs.Length)
                     {
-                        arg = new StackArgumentStorage(-1, dtParam);
+                        arg = new StackArgumentStorage(stackOffset, dtParam);
+                        stackOffset += Align(dtParam.Size, 8);
                     }
                     else
                         throw new NotImplementedException();
