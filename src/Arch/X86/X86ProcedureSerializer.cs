@@ -49,18 +49,11 @@ namespace Reko.Arch.X86
 
         public void ApplyConvention(SerializedSignature ssig, FunctionType sig)
         {
-            string d = ssig.Convention;
-            if (d == null || d.Length == 0)
-                d = DefaultConvention;
             sig.StackDelta = Architecture.PointerType.Size;  //$BUG: far/near pointers?
-            if (d == "stdapi" ||
-                d == "stdcall" ||
-                d == "__stdcall" ||
-                d == "__thiscall" ||
-                d == "pascal")
-                sig.StackDelta += StackOffset;
             if (ssig.StackDelta != 0)
                 sig.StackDelta = ssig.StackDelta;
+            else 
+                sig.StackDelta = Architecture.PointerType.Size;   //$BUG: x86 real mode?
             sig.FpuStackDelta = FpuStackOffset;
             sig.ReturnAddressOnStack = Architecture.PointerType.Size;   //$BUG: x86 real mode?
         }
@@ -127,7 +120,6 @@ namespace Reko.Arch.X86
                 };
                 ApplyConvention(ss, sig);
                 return sig;
-
             }
             else
             {
@@ -186,7 +178,6 @@ namespace Reko.Arch.X86
                     ReturnAddressOnStack = retAddrSize,
                 };
                 return ft;
-
             }
         }
 

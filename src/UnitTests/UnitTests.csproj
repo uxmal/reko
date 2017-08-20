@@ -109,7 +109,7 @@
     <Compile Include="Core\Lib\LinqAlgorithmTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
-    <Compile Include="Environments\SysV\Arm32ProcedureSerializerTests.cs" />
+    <Compile Include="Environments\SysV\ArchSpecific\Arm32CallingConventionTests.cs" />
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
     <Compile Include="Environments\Windows\BorlandMangledNameParserTests.cs" />
     <Compile Include="Environments\Windows\MsPrintfFormatParserTests.cs" />
@@ -172,9 +172,9 @@
     <Compile Include="Core\Services\FileSystemServiceTests.cs" />
     <Compile Include="Environments\AmigaOS\AmigaHeaderLoaderTests.cs" />
     <Compile Include="Environments\SegaGenesis\RomLoaderTests.cs" />
-    <Compile Include="Environments\SysV\MipsProcedureSerializerTests.cs" />
-    <Compile Include="Environments\SysV\SparcProcedureSerializerTests.cs" />
-    <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
+    <Compile Include="Environments\SysV\ArchSpecific\MipsCallingConventionTests.cs" />
+    <Compile Include="Environments\SysV\ArchSpecific\SparcCallingConventionTests.cs" />
+    <Compile Include="Environments\SysV\ArchSpecific\X86_64CallingConventionTests.cs" />
     <Compile Include="Environments\SysV\X86ProcedureSerializerTests.cs" />
     <Compile Include="Environments\Windows\MipsProcedureSerializerTests.cs" />
     <Compile Include="Environments\Windows\ModuleDefinitionLoaderTests.cs" />
