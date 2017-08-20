@@ -1,0 +1,132 @@
+﻿#region License
+/* 
+ * Copyright (C) 1999-2017 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Reko.Environments.SysV.ArchSpecific
+{
+    public class X86_64CallingConvention : CallingConvention
+    {
+        private IProcessorArchitecture arch;
+        private static string[] iregs = { "rdi", "rsi", "rdx", "rcx", "r8", "r9" };
+        private static string[] fregs = { "xmm0", "xmm1", "xmm2", "xmm3", "xmm4", "xmm5", "xmm6", "xmm7" };
+
+        public X86_64CallingConvention(IProcessorArchitecture arch)
+        {
+            this.arch = arch;
+        }
+
+        public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        {
+            Storage ret = null;
+            if (dtRet != null)
+            {
+                ret = this.GetReturnRegister(dtRet);
+            }
+
+            var args = new List<Storage>();
+            int fr = 0;
+            int ir = 0;
+            foreach (var dtParam in dtParams) 
+            {
+                Storage arg;
+                var prim = dtParam as PrimitiveType;
+                if (prim != null && prim.Domain == Domain.Real)
+                {
+                    if (fr >= fregs.Length)
+                    {
+                        arg = new StackArgumentStorage(-1, dtParam);
+                    }
+                    else
+                    {
+                        arg = arch.GetRegister(fregs[fr]);
+                    }
+                    ++fr;
+                }
+                else if (dtParam.Size <= 8)
+                {
+                    if (ir >= iregs.Length)
+                    {
+                        arg = new StackArgumentStorage(-1, dtParam);
+                    }
+                    else
+                    {
+                        arg = arch.GetRegister(iregs[ir]);
+                    }
+                    ++ir;
+                }
+                else
+                {
+                    int regsNeeded = (dtParam.Size + 7) / 8;
+                    if (regsNeeded > 4 || ir + regsNeeded >= iregs.Length)
+                    {
+                        arg = new StackArgumentStorage(-1, dtParam);
+                    }
+                    else
+                        throw new NotImplementedException();
+                }
+                args.Add(arg);
+            }
+
+            return new CallingConventionResult
+            {
+                Return = ret,
+                ImplicitThis = null, //$TODO
+                Parameters = args,
+                StackDelta = arch.PointerType.Size,
+                FpuStackDelta = 0,
+            };
+        }
+
+        public Storage GetReturnRegister(DataType dtArg)
+        {
+            var pt = dtArg as PrimitiveType;
+            int bitSize = dtArg.BitSize;
+            if (pt != null && pt.Domain == Domain.Real)
+            {
+                var xmm0 = arch.GetRegister("xmm0");
+                if (bitSize <= 64)
+                    return xmm0;
+                if (bitSize <= 128)
+                {
+                    var xmm1 = arch.GetRegister("xmm1");
+                    return new SequenceStorage(xmm1, xmm0);
+                }
+                throw new NotImplementedException();
+            }
+            var rax = arch.GetRegister("rax");
+            if (bitSize <= 64)
+                return rax;
+            if (bitSize <= 128)
+            {
+                var rdx = arch.GetRegister("rdx");
+                return new SequenceStorage(rdx, rax);
+            }
+            throw new NotImplementedException();
+        }
+    }
+}

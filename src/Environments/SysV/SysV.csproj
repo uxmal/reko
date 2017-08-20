@@ -53,6 +53,16 @@
   <ItemGroup>
     <Compile Include="ArmProcedureSerializer.cs" />
     <Compile Include="Avr8ProcedureSerializer.cs" />
+    <Compile Include="ArchSpecific\ArmCallingConvention.cs" />
+    <Compile Include="ArchSpecific\Avr8CallingConvention.cs" />
+    <Compile Include="ArchSpecific\M68kCallingConvention.cs" />
+    <Compile Include="ArchSpecific\MipsCallingConvention.cs" />
+    <Compile Include="ArchSpecific\PowerPcCallingConvention.cs" />
+    <Compile Include="ArchSpecific\RiscVCallingConvention.cs" />
+    <Compile Include="ArchSpecific\SparcCallingConvention.cs" />
+    <Compile Include="ArchSpecific\SuperHCallingConvention.cs" />
+    <Compile Include="ArchSpecific\X86_64CallingConvention.cs" />
+    <Compile Include="ArchSpecific\XtensaCallingConvention.cs" />
     <Compile Include="GccMangledNameParser.cs" />
     <Compile Include="M68kProcedureSerializer.cs" />
     <Compile Include="MipsProcedureSerializer.cs" />
