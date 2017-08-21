@@ -50,6 +50,21 @@ namespace Reko.Environments.Windows
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
+            Storage ret = null;
+            if (dtRet != null)
+            {
+                if (dtRet.Size > 8)
+                    throw new NotImplementedException();
+                var pt = dtRet as PrimitiveType;
+                if (pt != null && pt.Domain == Domain.Real)
+                {
+                    ret = Registers.xmm0;
+                }
+                else
+                {
+                    ret = Registers.rax;
+                }
+            }
             var parameters = new List<Storage>();
             for (int i = 0; i < dtParams.Count; ++i)
             {
@@ -73,7 +88,7 @@ namespace Reko.Environments.Windows
             }
             return new CallingConventionResult
             {
-                Return = null,
+                Return = ret,
                 ImplicitThis = null,
                 Parameters = parameters,
                 StackDelta = 8,

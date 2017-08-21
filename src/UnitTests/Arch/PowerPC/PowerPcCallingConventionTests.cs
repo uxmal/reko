@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             Given_CallingConvention();
             var ccr = cc.Generate(i32, null, new List<DataType> { r64 });
-            Assert.AreEqual("Register int test(Register double f1)", ccr.ToString());
+            Assert.AreEqual("Stk: 0 r3 (f1)", ccr.ToString());
         }
 
 
@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             Given_CallingConvention();
             var ccr = cc.Generate(null, null, new List<DataType> { i16, i64 });
-            Assert.AreEqual("Stk: void (r3, Sequence r5:r6)", ccr.ToString());
+            Assert.AreEqual("Stk: 0 void (r3, Sequence r5:r6)", ccr.ToString());
         }
     }
 }

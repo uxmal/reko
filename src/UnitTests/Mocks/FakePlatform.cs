@@ -49,9 +49,10 @@ namespace Reko.UnitTests.Mocks
             return Test_CreateTrashedRegisters();
         }
 
+        public Func<string, CallingConvention> Test_GetCallingConvention;
         public override CallingConvention GetCallingConvention(string ccName)
         {
-            throw new NotImplementedException();
+            return Test_GetCallingConvention(ccName);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

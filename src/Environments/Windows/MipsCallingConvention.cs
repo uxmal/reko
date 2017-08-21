@@ -52,6 +52,7 @@ namespace Reko.Environments.Windows
 
             int ir = 0;
             int fr = 0;
+            int stackOffset = 0x10;
             var args = new List<Storage>();
             for (int iArg = 0; iArg < dtParams.Count; ++iArg)
             {
@@ -62,7 +63,8 @@ namespace Reko.Environments.Windows
                 {
                     if (fr >= fregs.Length)
                     {
-                        arg = new StackArgumentStorage(-1, dtArg);
+                        arg = new StackArgumentStorage(stackOffset, dtArg);
+                        stackOffset += Align(dtArg.Size, 4);
                     }
                     else
                     {
@@ -74,7 +76,8 @@ namespace Reko.Environments.Windows
                 {
                     if (ir >= iregs.Length)
                     {
-                        arg = new StackArgumentStorage(-1, dtArg);
+                        arg = new StackArgumentStorage(stackOffset, dtArg);
+                        stackOffset += Align(dtArg.Size, 4);
                     }
                     else
                     {
@@ -87,7 +90,8 @@ namespace Reko.Environments.Windows
                     int regsNeeded = (dtArg.Size + 3) / 4;
                     if (regsNeeded > 4 || ir + regsNeeded >= iregs.Length)
                     {
-                        arg = new StackArgumentStorage(-1, dtArg);
+                        arg = new StackArgumentStorage(stackOffset, dtArg);
+                        stackOffset += Align(dtArg.Size, 4);
                     }
                     if (regsNeeded == 2)
                     {

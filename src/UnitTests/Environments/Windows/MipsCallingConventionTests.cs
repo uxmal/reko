@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_CallingConvention();
             var ccr = cc.Generate(i32, null, new List<DataType> { });
-            Assert.AreEqual("r2", ccr.ToString());
+            Assert.AreEqual("Stk: 0 r2 ()", ccr.ToString());
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_CallingConvention();
             var ccr = cc.Generate(null, null,new List<DataType> { Ptr(v) });
-            Assert.AreEqual("r4", ccr.ToString());
+            Assert.AreEqual("Stk: 0 void (r4)", ccr.ToString());
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_CallingConvention();
             var ccr = cc.Generate(null, null, new List<DataType> { Ptr(v), Ptr(v), Ptr(v), Ptr(v), Ptr(v) });
-            Assert.AreEqual("@@@", ccr.ToString());
+            Assert.AreEqual("Stk: 0 void (r4, r5, r6, r7, Stack +0010)", ccr.ToString());
         }
     }
 }

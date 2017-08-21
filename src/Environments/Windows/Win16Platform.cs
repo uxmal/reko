@@ -67,7 +67,17 @@ namespace Reko.Environments.Windows
 
         public override CallingConvention GetCallingConvention(string ccName)
         {
-            throw new NotImplementedException();
+            if (ccName == null)
+                ccName = "";
+            switch (ccName)
+            {
+            case "":
+            case "__cdecl":
+                return new X86CallingConvention(4, 2, 4, true, false);
+            case "pascal":
+                return new X86CallingConvention(4, 2, 4, false, true);
+            }
+            throw new NotSupportedException(string.Format("Calling convention '{0}' is not supported.", ccName));
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

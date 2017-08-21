@@ -58,84 +58,31 @@ namespace Reko.UnitTests.Arch.Intel
             platform = new Win32Platform(null, arch);
         }
 
-        private void Verify(SerializedSignature ssig, string outputFilename)
-        {
-            using (FileUnitTester fut = new FileUnitTester(outputFilename))
-            {
-                XmlTextWriter x = new FilteringXmlWriter(fut.TextWriter);
-                x.Formatting = Formatting.Indented;
-                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(ssig.GetType());
-                ser.Serialize(x, ssig);
-                fut.AssertFilesEqual();
-            }
-        }
-        private void Given_ProcedureSerializer(string cConvention)
+        private void Given_CallingConvention(string cConvention)
         {
             this.deserializer = new FakeTypeDeserializer(4);
             X86CallingConvention cc;
             switch (cConvention)
             {
-            case "stdapi":
-                cc = new X86CallingConvention(4, 4, 4, false, false);
-
+            case "__cdecl":
+                cc = new X86CallingConvention(4, 4, 4, true, false);
                 break;
-            default: throw new NotImplementedException();
+            case "stdapi":
+            case "stdcall":
+            case "__stdcall":
+                cc = new X86CallingConvention(4, 4, 4, false, false);
+                break;
+            case "pascal":
+                cc = new X86CallingConvention(4, 4, 4, false, true);
+                break;
+            default: throw new NotImplementedException(cConvention + " not supported.");
             }
             this.cc = cc;
         }
 
         [Test]
-        [Category(Categories.UnitTests)]
-        [Ignore("This ia custom arg scenario")]
-        public void X86ps_DeserializeFpuStackargument()
-        {
-            throw new NotImplementedException();
-            /*
-            var ssig = new SerializedSignature
-            {
-                Convention = "stdapi",
-                ReturnValue = RegArg(Type("int"), "eax"),
-                Arguments = new Argument_v1[] {
-                    FpuArg(Type("double"),  null)
-                }
-            };
-            Given_ProcedureSerializer("stdapi");
-            mr.ReplayAll();
-
-            var ccr = cc.Generate(ssig, arch.CreateFrame());
-            Assert.AreEqual("Register int test(FpuStack real64 fpArg0)", ccr.ToString());
-            */
-        }
-
-        private SerializedType Type(string typeName)
-        {
-            return new TypeReference_v1(typeName);
-        }
-
-        private Argument_v1 RegArg(SerializedType type, string regName)
-        {
-            return new Argument_v1
-            {
-                Type = type,
-                Kind = new Register_v1 { Name = "eax" },
-                Name = regName
-            };
-        }
-
-        private Argument_v1 FpuArg(SerializedType type, string name)
-        {
-            return new Argument_v1(
-                name, 
-                type, 
-                new FpuStackVariable_v1 { ByteSize = 8 },
-                false);
-        }
-
-
-
-        [Test]
-        [Ignore("Wait a while")]
-        public void X86ProcSer_Deserialize_thiscall()
+        [Ignore("Wait a while with __thiscall")]
+        public void X86Cc_Deserialize_thiscall()
         {
             throw new NotImplementedException();
             /*
@@ -163,66 +110,39 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void ProcSer_Load_cdecl()
+        public void X86Cc_Load_cdecl()
         {
-            var ssig = new SerializedSignature
-            {
-                Convention = "__cdecl",
-                Arguments = new Argument_v1[] {
-                    new Argument_v1
-                    {
-                        Name = "foo",
-                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 },
-                    }
-                }
-            };
-            Given_ProcedureSerializer("__cdecl");
-            mr.ReplayAll();
-
+            Given_CallingConvention("__cdecl");
             var ccr = cc.Generate(null, null, new List<DataType> { i32 });
-            Assert.AreEqual(4, ccr.StackDelta);
-            Assert.AreEqual(4, ((StackArgumentStorage)ccr.Parameters[0]).StackOffset);
+            Assert.AreEqual("Stk: 4 void (Stack +0004)", ccr.ToString());
         }
 
         [Test]
-        public void ProcSer_Load_stdapi()
+        public void X86Cc_Load_stdapi()
         {
-            var ssig = new SerializedSignature
-            {
-                Convention = "stdapi",
-                Arguments = new Argument_v1[] {
-                    new Argument_v1
-                    {
-                        Name = "foo",
-                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 },
-                    }
-                }
-            };
-            Given_ProcedureSerializer("stdapi");
+            Given_CallingConvention("stdapi");
             var ccr = cc.Generate(null, null, new List<DataType> { i32 });
-            Assert.AreEqual("Stk: 8 void (Stack +0004", ccr.ToString());
-            //Assert.AreEqual(8, sig.StackDelta);
-            //Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
+            Assert.AreEqual("Stk: 8 void (Stack +0004)", ccr.ToString());
         }
 
         [Test]
-        public void ProcSer_Load_stdcall()
+        public void X86Cc_Load_stdcall()
         {
-            Given_ProcedureSerializer("stdcall");
+            Given_CallingConvention("stdcall");
             var ccr = cc.Generate(null, null, new List<DataType> { i32 });
-            Assert.AreEqual("Stk: 8 void (Stack +0004", ccr.ToString());
+            Assert.AreEqual("Stk: 8 void (Stack +0004)", ccr.ToString());
         }
 
         [Test]
-        public void ProcSer_Load___stdcall()
+        public void X86Cc_Load___stdcall()
         {
-            Given_ProcedureSerializer("stdcall");
+            Given_CallingConvention("stdcall");
             var ccr = cc.Generate(null, null, new List<DataType> { i32 });
-            Assert.AreEqual("Stk: 8 void (Stack +0004", ccr.ToString());
+            Assert.AreEqual("Stk: 8 void (Stack +0004)", ccr.ToString());
         }
 
         [Test]
-        public void ProcSer_Load_pascal()
+        public void X86Cc_Load_pascal()
         {
             var ssig = new SerializedSignature
             {
@@ -241,16 +161,14 @@ namespace Reko.UnitTests.Arch.Intel
                     }
                 }
             };
-            Given_ProcedureSerializer("pascal");
+            Given_CallingConvention("pascal");
             var ccr = cc.Generate(null, null, new List<DataType> { i16, i32 });
-            Assert.AreEqual("Stk: 8 void (Stack +0004", ccr.ToString());
-            //Assert.AreEqual(8, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
-            //Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);
+            Assert.AreEqual("Stk: 12 void (Stack +0008, Stack +0004)", ccr.ToString());
         }
 
         [Test]
         [Ignore("Rethink __thiscall")]
-        public void X86ProcSer_Load_thiscall()
+        public void X86Cc_Load_thiscall()
         {
             throw new NotImplementedException();
             /*
@@ -286,27 +204,12 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test(Description = "Ensure FPU stack effects are accounted for when returning floats")]
-        public void X86ProcSer_Load_FpuReturnValue()
+        public void X86Cc_Load_FpuReturnValue()
         {
-            var ssig = new SerializedSignature
-            {
-                Convention = "__cdecl",
-                ReturnValue = new Argument_v1
-                {
-                    Type = PrimitiveType_v1.Real64()
-                }
-            };
-            Given_ProcedureSerializer(ssig.Convention);
-            mr.ReplayAll();
+            Given_CallingConvention("__cdecl");
 
             var ccr = cc.Generate(r64, null, new List<DataType> ());
-            var sExp =
-@"FpuStack real64 test()
-// stackDelta: 4; fpuStackDelta: 1; fpuMaxParam: -1
-";
-            Assert.AreEqual(sExp, ccr.ToString());
+            Assert.AreEqual("Stk: 4 Fpu: 1 FPU stack ()", ccr.ToString());
         }
-
-  
     }
 }

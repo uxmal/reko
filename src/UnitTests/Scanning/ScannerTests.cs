@@ -167,6 +167,10 @@ namespace Reko.UnitTests.Scanning
                 SegmentMap = segmentMap,
                 Platform = platform
             };
+            platform.Test_GetCallingConvention = (ccName) => {
+                Debug.Assert(ccName == "__cdecl");
+                return new X86CallingConvention(4, 4, 4, true, false);
+            };
             //platform.Test_CreateProcedureSerializer = (t, d) =>
             //{
             //    var typeLoader = new TypeLibraryDeserializer(platform, false, new TypeLibrary());

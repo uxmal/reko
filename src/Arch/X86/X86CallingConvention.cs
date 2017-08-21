@@ -114,8 +114,11 @@ namespace Reko.Arch.X86
 
         public static Storage GetReturnStorage(DataType dtRet)
         {
+            if (dtRet == null)
+                return null;
+
             Storage stgRet = null;
-            int retSize = dtRet != null ? dtRet.Size : 0;
+            int retSize = dtRet.Size;
             if (retSize > 8)
             {
                 // returns a pointer to the stack-allocated large return value
