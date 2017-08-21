@@ -195,6 +195,10 @@ namespace Reko.Core.Serialization
             var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m)).ToList();
             sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
             this.project.LoadedMetadata = this.platform.CreateMetadata();
+            foreach (var program in programs)
+            {
+                program.EnvironmentMetadata = this.project.LoadedMetadata;
+            }
             project.Programs.AddRange(programs);
             project.MetadataFiles.AddRange(typelibs);
             return this.project;
@@ -209,8 +213,13 @@ namespace Reko.Core.Serialization
         public Project LoadProject(string projectFilePath, Project_v2 sp)
         {
             var typelibs = sp.Inputs.OfType<MetadataFile_v2>().Select(m => VisitMetadataFile(m));
-            var programs = sp.Inputs.OfType<DecompilerInput_v2>().Select(s => VisitInputFile(projectFilePath, s));
+            var programs = sp.Inputs.OfType<DecompilerInput_v2>().Select(s => VisitInputFile(projectFilePath, s)).ToList();
             sp.Inputs.OfType<AssemblerFile_v2>().Select(s => VisitAssemblerFile(s));
+            this.project.LoadedMetadata = this.platform.CreateMetadata();
+            foreach (var program in programs)
+            {
+                program.EnvironmentMetadata = this.project.LoadedMetadata;
+            }
             project.MetadataFiles.AddRange(typelibs);
             project.Programs.AddRange(programs);
             return this.project;
@@ -558,6 +567,7 @@ namespace Reko.Core.Serialization
             var bytes = loader.LoadImageBytes(binFilename, 0);
             var program = loader.LoadExecutable(binFilename, bytes, null, null);
             program.Filename = binFilename;
+            this.platform = program.Platform;
             LoadUserData(sInput, program, program.User);
 
             program.DisassemblyFilename = sInput.DisassemblyFilename;
@@ -598,7 +608,6 @@ namespace Reko.Core.Serialization
             {
                 program.User.Heuristics.Add("shingle");
             }
-            program.EnvironmentMetadata = project.LoadedMetadata;
         }
 
         private KeyValuePair<Address, Procedure_v1> LoadUserProcedure_v1(
