@@ -67,7 +67,7 @@ namespace Reko.Environments.Windows
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
-            return new X86ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);
+            return new ProcedureSerializer(this, typeLoader, defaultConvention);
         }
 
         public override CallingConvention GetCallingConvention(string ccName)

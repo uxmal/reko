@@ -74,7 +74,7 @@ namespace Reko.Environments.Msdos
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             //$BUGBUG: unlikely to be correct in long run.
-            return new X86ProcedureSerializer((IntelArchitecture) this.Architecture, typeLoader, defaultConvention);
+            return new ProcedureSerializer(this, typeLoader, defaultConvention);
         }
 
         public override CallingConvention GetCallingConvention(string ccName)

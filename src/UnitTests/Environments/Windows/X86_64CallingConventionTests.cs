@@ -35,6 +35,10 @@ namespace Reko.UnitTests.Environments.Windows
     public class X86_64CallingConventionTests
     {
         private X86_64CallingConvention cc;
+        private PrimitiveType i8 = PrimitiveType.Char;
+        private PrimitiveType i32 = PrimitiveType.Int32;
+        private PrimitiveType r32 = PrimitiveType.Real32;
+        private PrimitiveType r64 = PrimitiveType.Real64;
 
         [SetUp]
         public void Setup()
@@ -102,15 +106,43 @@ namespace Reko.UnitTests.Environments.Windows
             var ccr = cc.Generate(
                 null,
                 null,
-                new List<DataType> {
-                    PrimitiveType.Real32,
-                    PrimitiveType.Real64,
-                    PrimitiveType.Real32,
-                    PrimitiveType.Real64,
-                    PrimitiveType.Real32,
-                });
+                new List<DataType> { r32, r64, r32, r64, r32 });
             var sExp = "Stk: 8 void (xmm0, xmm1, xmm2, xmm3, Stack +0028)";
             AssertEqual(sExp, ccr);
+        }
+
+        private Pointer Ptr(DataType dt)
+        {
+            return new Pointer(dt, 8);
+        }
+
+        [Test]
+        public void X86_64Cc_AllInts()
+        {
+            var ccr = cc.Generate(i32, null, new List<DataType> { i32, i32, i32, i32, i32, Ptr(i32) });
+            Assert.AreEqual("rcx, rdx, r8, r9, Stack +0008", ccr.ToString());
+        }
+
+        [Test]
+        public void X86_64Cc_AllFloats()
+        {
+            var ccr = cc.Generate(r32, null, new List<DataType> { r32, r64, r32, r64, r32 });
+            Assert.AreEqual("xmm0, xmm1, xmm2, xmm3, Stack +0008", ccr.ToString());
+        }
+
+        [Test]
+        public void X86_64Cc_MixedIntsFloats()
+        {
+            var ccr = cc.Generate(i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, r32 });
+            Assert.AreEqual("Stk: 8 rax (rcx, xmm1, r8, xmm3, Stack +0008)", ccr.ToString());
+        }
+
+
+        [Test(Description = "Verifies that small stack arguments are properly aligned on stack")]
+        public void X86_64Cc_SmallStackArguments()
+        {
+            var ccr = cc.Generate(i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, i8, i8, i8 });
+            Assert.AreEqual("rax (rcx, xmm1, r8, xmm3, Stack +0008, Stack +0010, Stack +0018)", ccr.ToString());
         }
     }
 }

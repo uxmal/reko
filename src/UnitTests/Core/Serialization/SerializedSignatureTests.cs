@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Core.Serialization
 	public class SerializedSignatureTests
 	{
 		private IntelArchitecture arch;
-        private X86ProcedureSerializer sser;
+        private ProcedureSerializer sser;
         private MsdosPlatform platform;
         private ServiceContainer sc;
 
@@ -51,8 +51,8 @@ namespace Reko.UnitTests.Core.Serialization
 
         private void Given_X86ProcedureSerializer()
         {
-            sser = new X86ProcedureSerializer(
-                arch, 
+            sser = new ProcedureSerializer(
+                platform, 
                 new TypeLibraryDeserializer(platform, true, new TypeLibrary()),
                 "stdapi");
         }

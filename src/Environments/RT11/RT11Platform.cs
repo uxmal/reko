@@ -64,12 +64,12 @@ namespace Reko.Environments.RT11
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
-            return new Rt11ProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            return new ProcedureSerializer(this, typeLoader, defaultConvention);
         }
 
         public override CallingConvention GetCallingConvention(string ccName)
         {
-            throw new NotImplementedException();
+            return new Rt11CallingConvention(this.arch);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

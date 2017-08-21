@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Core.Serialization
 	public class SerializedSequenceTests
 	{
         private IPlatform platform;
-        private X86ProcedureSerializer ser;
+        private ProcedureSerializer ser;
 
         [SetUp]
         public void Setup()
@@ -51,8 +51,8 @@ namespace Reko.UnitTests.Core.Serialization
 
         private void Given_X86ProcedureSerializer()
         {
-            this.ser = new X86ProcedureSerializer(
-                (IntelArchitecture) platform.Architecture,
+            this.ser = new ProcedureSerializer(
+                platform,
                 new TypeLibraryDeserializer(platform, true, new TypeLibrary()),
                 "stdapi");
         }

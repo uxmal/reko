@@ -112,15 +112,15 @@ namespace Reko.Environments.AmigaOS
             ISerializedTypeVisitor<DataType> typeLoader,
             string defaultConvention)
         {
-            return new M68kProcedureSerializer(
-                (M68kArchitecture)Architecture,
+            return new ProcedureSerializer(
+                this,
                 typeLoader,
                 defaultConvention);
         }
 
         public override CallingConvention GetCallingConvention(string ccName)
         {
-            throw new NotImplementedException();
+            return new M68kCallingConvention((M68kArchitecture) this.Architecture);
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()

@@ -137,28 +137,6 @@ namespace Reko.Core.Serialization
             return frame.EnsureSequence(h, t, dt);
         }
 
-        public Identifier DeserializeReturnValue(Argument_v1 arg)
-        {
-            argCur = arg;
-            DataType dt = null;
-            if (this.argCur.Type != null)
-                dt = this.argCur.Type.Accept(procSer.TypeLoader);
-            if (dt is VoidType)
-                return null;
-            Identifier id;
-            if (arg.Kind != null)
-            {
-                id = arg.Kind.Deserialize(this);
-                id.DataType = dt ?? id.DataType;
-            }
-            else
-            {
-                var reg = procSer.GetReturnRegister(arg, dt.BitSize);
-                id = new Identifier(reg.ToString(), dt, reg);
-            }
-            return id;
-        }
-
         public Identifier Deserialize(Argument_v1 arg)
         {
             argCur = arg;

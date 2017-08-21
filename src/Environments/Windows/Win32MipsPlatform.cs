@@ -69,12 +69,12 @@ namespace Reko.Environments.Windows
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
-            return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            return new ProcedureSerializer(this, typeLoader, defaultConvention);
         }
 
         public override CallingConvention GetCallingConvention(string ccName)
         {
-            throw new NotImplementedException();
+            return new MipsCallingConvention(this.Architecture);
         }
 
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)

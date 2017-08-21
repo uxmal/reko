@@ -55,35 +55,7 @@ namespace Reko.Environments.SysV
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
-            switch (Architecture.Name)
-            {
-            case "mips-be-32":
-            case "mips-le-32":
-                return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "ppc32":
-                return new PowerPcProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "sparc32":
-                return new SparcProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "x86-protected-32":
-                return new X86ProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "x86-protected-64":
-                return new X86_64ProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "xtensa":
-                return new XtensaProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "arm":
-                return new Arm32ProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "m68k":
-                return new M68kProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "avr8":
-                return new Avr8ProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "risc-v":
-                return new RiscVProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "superH-le":
-            case "superH-be":
-                return new SuperHProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            default:
-                throw new NotImplementedException(string.Format("Procedure serializer for {0} not implemented yet.", Architecture.Description));
-            }
+            return new ProcedureSerializer(this, typeLoader, defaultConvention);
         }
 
         public override CallingConvention GetCallingConvention(string ccName)

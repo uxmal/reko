@@ -106,7 +106,7 @@ namespace Reko.Environments.Windows
                 ssig.Arguments = ParseParameters(ssig);
                 SkipToEndOfLine();
 
-                var deser = new X86ProcedureSerializer((IntelArchitecture)platform.Architecture, tlLoader, ssig.Convention);
+                var deser = new ProcedureSerializer(platform, tlLoader, ssig.Convention);
                 var sig = deser.Deserialize(ssig, new Frame(platform.FramePointerType));
                 var svc = new SystemService
                 {

@@ -33,25 +33,21 @@ namespace Reko.Environments.Wii
 {
 	public class WiiPlatform : Platform {
 
-		public WiiPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "wii") {
+		public WiiPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "wii")
+        {
 		}
 
-		public override string DefaultCallingConvention {
-			get {
-				return "";
-			}
-		}
+		public override string DefaultCallingConvention { get { return ""; } }
 
-		public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters() {
+		public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        {
 			//$TODO: find out what registers are always preserved
 			return new HashSet<RegisterStorage>();
 		}
 
-		public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention) {
-			return new PowerPcProcedureSerializer(
-				(PowerPcArchitecture)Architecture,
-				typeLoader,
-				defaultConvention);
+		public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        {
+            return new ProcedureSerializer(this, typeLoader, defaultConvention);
 		}
 
         public override CallingConvention GetCallingConvention(string ccName)

@@ -107,6 +107,7 @@
     <Compile Include="Core\Output\JsonFormatterTests.cs" />
     <Compile Include="Core\Output\LlvmFormatterTests.cs" />
     <Compile Include="Core\Lib\LinqAlgorithmTests.cs" />
+    <Compile Include="Core\Serialization\ProcedureSerializerTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\Arm32CallingConventionTests.cs" />
@@ -175,8 +176,7 @@
     <Compile Include="Environments\SysV\ArchSpecific\MipsCallingConventionTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\SparcCallingConventionTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\X86_64CallingConventionTests.cs" />
-    <Compile Include="Environments\SysV\X86ProcedureSerializerTests.cs" />
-    <Compile Include="Environments\Windows\MipsProcedureSerializerTests.cs" />
+    <Compile Include="Environments\Windows\MipsCallingConventionTests.cs" />
     <Compile Include="Environments\Windows\ModuleDefinitionLoaderTests.cs" />
     <Compile Include="Environments\Windows\MsMangledNameParserTests.cs" />
     <Compile Include="Environments\Windows\Win32MipsPlatformTests.cs" />
@@ -238,7 +238,7 @@
     <Compile Include="Arch\Pdp11\RewriterTests.cs" />
     <Compile Include="Arch\PowerPC\InstructionBuilder.cs" />
     <Compile Include="Arch\PowerPC\PowerPcPointerScannerTests.cs" />
-    <Compile Include="Arch\PowerPC\PowerPcProcedureSerializerTests.cs" />
+    <Compile Include="Arch\PowerPC\PowerPcCallingConventionTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcRewriterTests.cs" />
     <Compile Include="Arch\RewriterTestBase.cs" />
     <Compile Include="Arch\Sparc\RtlTranslator.cs" />
@@ -395,7 +395,7 @@
     <Compile Include="Core\Serialization\SerializedServiceTests.cs" />
     <Compile Include="Core\Serialization\SerializedSignatureTests.cs" />
     <Compile Include="Core\Serialization\SerializedTypeTests.cs" />
-    <Compile Include="Arch\Intel\X86ProcedureSerializerTests.cs" />
+    <Compile Include="Arch\Intel\X86CallingConventionTests.cs" />
     <Compile Include="Core\SignatureLibraryTests.cs" />
     <Compile Include="Core\StructureTypeTests.cs" />
     <Compile Include="Core\TypeComparerTests.cs" />

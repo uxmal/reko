@@ -80,7 +80,6 @@
     <Compile Include="Arm32Disassembler.cs" />
     <Compile Include="Arm32Instruction.cs" />
     <Compile Include="Arm32InstructionComparer.cs" />
-    <Compile Include="ArmProcedureSerializer.cs" />
     <Compile Include="Arm32ProcessorArchitecture.cs" />
     <Compile Include="ArmProcessorState.cs" />
     <Compile Include="ArmRewriter.Alu.cs" />

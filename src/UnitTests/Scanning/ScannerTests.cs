@@ -170,7 +170,7 @@ namespace Reko.UnitTests.Scanning
             platform.Test_CreateProcedureSerializer = (t, d) =>
             {
                 var typeLoader = new TypeLibraryDeserializer(platform, false, new TypeLibrary());
-                return new X86ProcedureSerializer((IntelArchitecture)program.Architecture, typeLoader, "__cdecl");
+                return new ProcedureSerializer(program.Platform, typeLoader, "__cdecl");
             };
         }
 
