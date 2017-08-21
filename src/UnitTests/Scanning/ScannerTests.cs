@@ -167,11 +167,11 @@ namespace Reko.UnitTests.Scanning
                 SegmentMap = segmentMap,
                 Platform = platform
             };
-            platform.Test_CreateProcedureSerializer = (t, d) =>
-            {
-                var typeLoader = new TypeLibraryDeserializer(platform, false, new TypeLibrary());
-                return new ProcedureSerializer(program.Platform, typeLoader, "__cdecl");
-            };
+            //platform.Test_CreateProcedureSerializer = (t, d) =>
+            //{
+            //    var typeLoader = new TypeLibraryDeserializer(platform, false, new TypeLibrary());
+            //    return new ProcedureSerializer(program.Platform, typeLoader, "__cdecl");
+            //};
         }
 
         private void Given_Project()

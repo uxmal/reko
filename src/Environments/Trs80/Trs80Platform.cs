@@ -59,11 +59,6 @@ namespace Reko.Environments.Trs80
             return new HashSet<RegisterStorage> { Registers.a };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
-        {
-            throw new NotImplementedException();
-        }
-
         public override CallingConvention GetCallingConvention(string ccName)
         {
             throw new NotImplementedException();

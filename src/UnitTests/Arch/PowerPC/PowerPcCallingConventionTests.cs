@@ -61,14 +61,11 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PpcCc_DeserializeFpuArgument()
         {
+            Given_CallingConvention();
             var ccr = cc.Generate(i32, null, new List<DataType> { r64 });
             Assert.AreEqual("Register int test(Register double f1)", ccr.ToString());
         }
 
-        private SerializedType Type(string typeName)
-        {
-            return new TypeReference_v1(typeName);
-        }
 
         private Argument_v1 RegArg(SerializedType type, string regName)
         {
@@ -94,7 +91,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             Given_CallingConvention();
             var ccr = cc.Generate(r64, null, new List<DataType>());
-            Assert.AreEqual("f1", ccr.ToString());
+            Assert.AreEqual("Stk: 0 f1 ()", ccr.ToString());
         }
 
         [Test]
@@ -102,7 +99,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             Given_CallingConvention();
             var ccr = cc.Generate(null, null, new List<DataType> { i32 });
-            Assert.AreEqual("@@@", ccr.ToString());
+            Assert.AreEqual("Stk: 0 void (r3)", ccr.ToString());
         }
 
         [Test]
@@ -110,7 +107,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             Given_CallingConvention();
             var ccr = cc.Generate(null, null, new List<DataType> { i16, i64 });
-            Assert.AreEqual("@@r5:r6", ccr.ToString());
+            Assert.AreEqual("Stk: void (r3, Sequence r5:r6)", ccr.ToString());
         }
     }
 }

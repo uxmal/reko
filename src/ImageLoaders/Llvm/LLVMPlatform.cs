@@ -84,11 +84,6 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
-        {
-            throw new NotImplementedException();
-        }
-
         public CallingConvention GetCallingConvention(string ccName)
         {
             throw new NotImplementedException();

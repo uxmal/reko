@@ -50,8 +50,8 @@ namespace Reko.UnitTests.Core.Serialization
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             arch = new X86ArchitectureReal();
             platform = new MsdosPlatform(sc, arch);
-            sigser = mr.Stub<ProcedureSerializer>(
-                arch,
+            sigser = new ProcedureSerializer(
+                platform,
                 new TypeLibraryDeserializer(platform, true, new TypeLibrary()),
                 "stdapi");
             argser = new ArgumentDeserializer(

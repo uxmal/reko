@@ -96,11 +96,6 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
-        {
-            return new ProcedureSerializer(this, typeLoader, defaultConvention);
-        }
-
         public override CallingConvention GetCallingConvention(string ccName)
         {
             return new X86_64CallingConvention();

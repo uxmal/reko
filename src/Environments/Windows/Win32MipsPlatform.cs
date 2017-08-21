@@ -65,13 +65,6 @@ namespace Reko.Environments.Windows
             return new HashSet<RegisterStorage>();
         }
 
-
-
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
-        {
-            return new ProcedureSerializer(this, typeLoader, defaultConvention);
-        }
-
         public override CallingConvention GetCallingConvention(string ccName)
         {
             return new MipsCallingConvention(this.Architecture);

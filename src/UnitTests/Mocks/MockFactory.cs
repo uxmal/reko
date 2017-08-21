@@ -79,11 +79,6 @@ namespace Reko.UnitTests.Mocks
             platform.Stub(p => p.Architecture).Return(arch);
             platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
 
-            platform.Stub(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Do(
-                new Func<ISerializedTypeVisitor<DataType>, string, ProcedureSerializer>((tlDeser, dc) =>
-                    new ProcedureSerializer(platform, tlDeser, dc)
-                )
-            );
             platform.Stub(p => p.SaveUserOptions()).Return(null);
 
             platform.Replay();

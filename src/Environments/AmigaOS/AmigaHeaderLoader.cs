@@ -79,7 +79,7 @@ namespace Reko.Environments.AmigaOS
                         ssig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(
                             "returns", declaration.attribute_list);
                     }
-                    var sser = platform.CreateProcedureSerializer(tldser, platform.DefaultCallingConvention);
+                    var sser = new ProcedureSerializer(platform, tldser, platform.DefaultCallingConvention);
                     var sig = sser.Deserialize(ssig, platform.Architecture.CreateFrame());
                     SystemServices.Add(
                         vectorOffset.Value,

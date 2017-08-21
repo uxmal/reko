@@ -120,21 +120,21 @@ namespace Reko.UnitTests.Environments.Windows
         public void X86_64Cc_AllInts()
         {
             var ccr = cc.Generate(i32, null, new List<DataType> { i32, i32, i32, i32, i32, Ptr(i32) });
-            Assert.AreEqual("rcx, rdx, r8, r9, Stack +0008", ccr.ToString());
+            Assert.AreEqual("Stk: 8 rax (rcx, rdx, r8, r9, Stack +0008)", ccr.ToString());
         }
 
         [Test]
         public void X86_64Cc_AllFloats()
         {
             var ccr = cc.Generate(r32, null, new List<DataType> { r32, r64, r32, r64, r32 });
-            Assert.AreEqual("xmm0, xmm1, xmm2, xmm3, Stack +0008", ccr.ToString());
+            Assert.AreEqual("Stk: 8 void (xmm0, xmm1, xmm2, xmm3, Stack +0028)", ccr.ToString());
         }
 
         [Test]
         public void X86_64Cc_MixedIntsFloats()
         {
             var ccr = cc.Generate(i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, r32 });
-            Assert.AreEqual("Stk: 8 rax (rcx, xmm1, r8, xmm3, Stack +0008)", ccr.ToString());
+            Assert.AreEqual("Stk: 8 rax (rcx, xmm1, r8, xmm3, Stack +0028)", ccr.ToString());
         }
 
 

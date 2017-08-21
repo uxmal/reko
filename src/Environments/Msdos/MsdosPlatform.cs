@@ -71,15 +71,14 @@ namespace Reko.Environments.Msdos
             };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
-        {
-            //$BUGBUG: unlikely to be correct in long run.
-            return new ProcedureSerializer(this, typeLoader, defaultConvention);
-        }
-
         public override CallingConvention GetCallingConvention(string ccName)
         {
-            throw new NotImplementedException();
+            return new X86CallingConvention(
+                4,      //$REVIEW: this is a far call, what about near calls?
+                2,
+                4,      //$REVIEW: this is a far ptr.
+                true,
+                false);
         }
 
 

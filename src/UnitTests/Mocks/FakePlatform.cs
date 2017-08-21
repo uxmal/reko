@@ -49,12 +49,6 @@ namespace Reko.UnitTests.Mocks
             return Test_CreateTrashedRegisters();
         }
 
-        public Func<ISerializedTypeVisitor<DataType>, string, ProcedureSerializer> Test_CreateProcedureSerializer;
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
-        {
-            return Test_CreateProcedureSerializer(typeLoader, defaultConvention);
-        }
-
         public override CallingConvention GetCallingConvention(string ccName)
         {
             throw new NotImplementedException();

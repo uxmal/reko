@@ -56,8 +56,7 @@ namespace Reko.UnitTests.Core
             arch = mr.DynamicMock<IProcessorArchitecture>();
             platform = mr.DynamicMock<IPlatform>();
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
-            this.procSer = mr.StrictMock<ProcedureSerializer>(null, null, null);
-            platform.Stub(p => p.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(procSer);
+            this.procSer = new ProcedureSerializer(platform, null, "");
             platform.Stub(p => p.Architecture).Return(arch);
         }
 
