@@ -32,10 +32,18 @@ namespace Reko.Environments.SysV.ArchSpecific
     public class PowerPcCallingConvention : CallingConvention
     {
         private IProcessorArchitecture arch;
+        private RegisterStorage[] fregs;
+        private RegisterStorage[] iregs;
 
         public PowerPcCallingConvention(IProcessorArchitecture  arch)
         {
             this.arch = arch;
+            this.iregs = new[] { "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10" }
+                .Select(r => arch.GetRegister(r))
+                .ToArray();
+            this.fregs = new[] { "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8" }
+                .Select(r => arch.GetRegister(r))
+                .ToArray();
         }
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
@@ -47,8 +55,9 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
 
             var parameters = new List<Storage>();
-            int fr = 1;
-            int gr = 3;
+            int fr = 0;
+            int gr = 0;
+            int stackOffset = 0x40; //$BUG: look this up!
             for (int i = 0; i < dtParams.Count; ++i)
             {
                 var dtArg = dtParams[i];
@@ -58,39 +67,42 @@ namespace Reko.Environments.SysV.ArchSpecific
                 {
                     if (fr > 8)
                     {
-                        param = new StackArgumentStorage(-1, dtArg);
+                        param = new StackArgumentStorage(stackOffset, dtArg);
+                        stackOffset += Align(dtArg.Size, arch.WordWidth.Size);
                     }
                     else
                     {
-                        param = arch.GetRegister("f" + fr);
+                        param = fregs[fr];
                         ++fr;
                     }
                 }
                 else if (dtArg.Size <= 4)
                 {
-                    if (gr > 10)
+                    if (gr >= iregs.Length)
                     {
-                        param = new StackArgumentStorage(-1, dtArg);
+                        param = new StackArgumentStorage(stackOffset, dtArg);
+                        stackOffset += Align(dtArg.Size, arch.WordWidth.Size);
                     }
                     else
                     {
-                        param = arch.GetRegister("r" + gr);
+                        param = iregs[gr];
                         ++gr;
                     }
                 }
                 else if (dtArg.Size <= 8)
                 {
-                    if (gr > 9)
+                    if (gr >= iregs.Length - 1)
                     {
-                        param = new StackArgumentStorage(-1, dtArg);
+                        param = new StackArgumentStorage(stackOffset, dtArg);
+                        stackOffset += Align(dtArg.Size, arch.WordWidth.Size);
                     }
                     else
                     {
-                        if ((gr & 1) == 0)
+                        if ((gr & 1) == 1)
                             ++gr;
                         param = new SequenceStorage(
-                            arch.GetRegister("r" + gr),
-                            arch.GetRegister("r" + (gr + 1)));
+                            iregs[gr],
+                            iregs[gr + 1]);
                         gr += 2;
                     }
                 }
@@ -111,9 +123,9 @@ namespace Reko.Environments.SysV.ArchSpecific
             var prim = dt as PrimitiveType;
             if (prim != null && prim.Domain == Domain.Real)
             {
-                return arch.GetRegister("f1");
+                return fregs[0];
             }
-            return arch.GetRegister("r3");
+            return iregs[0];
         }
     }
 }

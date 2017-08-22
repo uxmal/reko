@@ -36,10 +36,22 @@ namespace Reko.Environments.SysV.ArchSpecific
     public class MipsCallingConvention : CallingConvention
     {
         private IProcessorArchitecture arch;
+        private RegisterStorage[] iregs;
+        private RegisterStorage[] fregs;
+        private RegisterStorage iret;
+        private RegisterStorage fret;
 
         public MipsCallingConvention(IProcessorArchitecture arch)
         {
             this.arch = arch;
+            this.iregs = new[] { "r4", "r5", "r6", "r7" }
+                .Select(r => arch.GetRegister(r))
+                .ToArray();
+            this.fregs = new[] { "f12", "f13", "f14", "f15" }
+                .Select(r => arch.GetRegister(r))
+                .ToArray();
+            this.iret = arch.GetRegister("r3");
+            this.fret = arch.GetRegister("f1");
         }
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
@@ -64,7 +76,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 {
                     if ((ir % 2) != 0)
                         ++ir;
-                    if (ir >= 4)
+                    if (ir >= fregs.Length)
                     {
                         param = new StackArgumentStorage(stackOff, dtParam);
                         stackOff += Align(dtParam.Size, 4);
@@ -73,14 +85,14 @@ namespace Reko.Environments.SysV.ArchSpecific
                     {
                         if (prim.Size == 4)
                         {
-                            param = arch.GetRegister("f" + (ir + 12));
+                            param = fregs[ir];
                             ir += 1;
                         }
                         else if (prim.Size == 8)
                         {
                             param = new SequenceStorage(
-                            arch.GetRegister("f" + (ir + 12)),
-                            arch.GetRegister("f" + (ir + 13)));
+                                fregs[ir],
+                                fregs[ir + 1]);
                             ir += 2;
                         }
                         else
@@ -102,7 +114,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                         }
                         else
                         {
-                            param = arch.GetRegister("r" + (ir + 4));
+                            param = iregs[ir];
                             ++ir;
                         }
                     }
@@ -118,8 +130,8 @@ namespace Reko.Environments.SysV.ArchSpecific
                         else
                         {
                             param = new SequenceStorage(
-                                arch.GetRegister("r" + (ir + 4)),
-                                arch.GetRegister("r" + (ir + 5)));
+                                iregs[ir],
+                                iregs[ir + 1]);
                             ir += 2;
                         }
                     }
@@ -145,9 +157,9 @@ namespace Reko.Environments.SysV.ArchSpecific
             if (prim != null)
             {
                 if (prim.Domain == Domain.Real)
-                    return arch.GetRegister("f1");
+                    return fret;
             }
-            return arch.GetRegister("r3");
+            return iret;
         }
     }
 }

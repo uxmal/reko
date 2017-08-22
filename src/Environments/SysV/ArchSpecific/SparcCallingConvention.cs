@@ -24,21 +24,28 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Core.Expressions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
     public class SparcCallingConvention : CallingConvention
     {
-        private static string[] iregs = new string[]
-        {
-            "o0","o1","o2","o3","o4","o5",
-        };
+        private RegisterStorage[] regs;
+        private RegisterStorage iret;
+        private RegisterStorage fret0;
+        private RegisterStorage fret1;
 
         private IProcessorArchitecture arch;
 
         public SparcCallingConvention(IProcessorArchitecture arch)
         {
             this.arch = arch;
+            this.regs = new[] { "o0", "o1", "o2", "o3", "o4", "o5" }
+                .Select(r => arch.GetRegister(r))
+                .ToArray();
+            this.iret = arch.GetRegister("o0");
+            this.fret0 = arch.GetRegister("f0");
+            this.fret1 = arch.GetRegister("f1");
         }
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
@@ -59,14 +66,14 @@ namespace Reko.Environments.SysV.ArchSpecific
                 var prim = dtArg as PrimitiveType;
                 if (dtArg.Size <= 8)
                 {
-                    if (ir >= iregs.Length)
+                    if (ir >= regs.Length)
                     {
                         param = new StackArgumentStorage(stackOffset, dtArg);
-                        stackOffset += Align(dtArg.Size, 4);
+                        stackOffset += Align(dtArg.Size, arch.WordWidth.Size);
                     }
                     else
                     {
-                        param = arch.GetRegister(iregs[ir]);
+                        param = regs[ir];
                     }
                     ++ir;
                 }
@@ -91,21 +98,21 @@ namespace Reko.Environments.SysV.ArchSpecific
             {
                 if (ptArg.Domain == Domain.Real)
                 {
-                    var f0 = arch.GetRegister("f0");
+                    var f0 = fret0;
                     if (ptArg.Size <= 4)
                         return f0;
-                    var f1 = arch.GetRegister("f1");
+                    var f1 = fret1;
                     return new SequenceStorage(f1, f0);
                 }
-                return arch.GetRegister("o0");
+                return iret;
             }
             else if (dtArg is Pointer)
             {
-                return arch.GetRegister("o0");
+                return iret;
             }
             else if (dtArg.Size <= this.arch.WordWidth.Size)
             {
-                return arch.GetRegister("o0");
+                return iret;
             }
             throw new NotImplementedException();
         }

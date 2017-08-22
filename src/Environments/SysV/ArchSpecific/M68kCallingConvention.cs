@@ -32,10 +32,12 @@ namespace Reko.Environments.SysV.ArchSpecific
     public class M68kCallingConvention : CallingConvention
     {
         private IProcessorArchitecture arch;
+        private RegisterStorage d0;
 
         public M68kCallingConvention(IProcessorArchitecture arch)
         {
             this.arch = arch;
+            this.d0 = arch.GetRegister("d0");
         }
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
@@ -69,7 +71,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         public Storage GetReturnRegister(DataType dt)
         {
             if (dt.BitSize <= 32)
-                return arch.GetRegister("d0");
+                return d0;
             throw new NotImplementedException();
         }
     }

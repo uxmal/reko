@@ -32,10 +32,18 @@ namespace Reko.Arch.PowerPC
     public class PowerPcCallingConvention : CallingConvention
     {
         private PowerPcArchitecture arch;
+        private RegisterStorage[] iregs;
+        private RegisterStorage[] fregs;
 
         public PowerPcCallingConvention(PowerPcArchitecture arch)
         {
             this.arch = arch;
+            this.iregs = new[] { "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10" }
+                .Select(r => arch.GetRegister(r))
+                .ToArray();
+            this.fregs = new[] { "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8" }
+                .Select(r => arch.GetRegister(r))
+                .ToArray();
         }
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
@@ -48,8 +56,8 @@ namespace Reko.Arch.PowerPC
             }
 
             var parameters = new List<Storage>();
-            int gr = 3;
-            int fr = 1;
+            int gr = 0; // 3;
+            int fr = 0; // ;
             int stackOffset = 0x40; //$BUG: look this up!
             for (int iArg = 0; iArg < dtParams.Count; ++iArg)
             {
@@ -58,40 +66,44 @@ namespace Reko.Arch.PowerPC
                 Storage arg;
                 if (prim != null && prim.Domain == Domain.Real)
                 {
-                    if (fr > 8)
+                    if (fr >= fregs.Length)
                     {
                         arg = new StackArgumentStorage(stackOffset, dtArg);
+                        stackOffset += Align(dtArg.Size, arch.WordWidth.Size);
                     }
                     else
                     {
-                        arg = arch.GetRegister("f" + fr);
+                        arg = fregs[fr];
                         ++fr;
                     }
-                } else if (dtArg.Size <= 4)
+                }
+                else if (dtArg.Size <= 4)
                 {
-                    if (gr > 10)
+                    if (gr >= iregs.Length)
                     {
                         arg = new StackArgumentStorage(stackOffset, dtArg);
+                        stackOffset += Align(dtArg.Size, arch.WordWidth.Size);
                     }
                     else
                     {
-                        arg = arch.GetRegister("r" + gr);
+                        arg = iregs[gr];
                         ++gr;
                     }
                 }
                 else if (dtArg.Size <= 8)
                 {
-                    if (gr > 9)
+                    if (gr >= iregs.Length-1)
                     {
                         arg = new StackArgumentStorage(stackOffset, dtArg);
+                        stackOffset += Align(dtArg.Size, arch.WordWidth.Size);
                     }
                     else
                     {
-                        if ((gr & 1) == 0)
+                        if ((gr & 1) == 1)
                             ++gr;
                         arg = new SequenceStorage(
-                            arch.GetRegister("r" + gr),
-                            arch.GetRegister("r" + (gr + 1)));
+                            iregs[gr],
+                            iregs[gr + 1]);
                         gr += 2;
                     }
                 }
@@ -117,9 +129,9 @@ namespace Reko.Arch.PowerPC
             var prim = dt as PrimitiveType;
             if (prim != null && prim.Domain == Domain.Real)
             {
-                return arch.GetRegister("f1");
+                return fregs[0];
             }
-            return arch.GetRegister("r3");
+            return iregs[0];
         }
     }
 }

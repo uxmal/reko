@@ -24,17 +24,20 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System.Collections.Generic;
 using Reko.Core.Expressions;
+using System.Linq;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
     public class Arm32CallingConvention : CallingConvention
     {
-        private static string[] argRegs = { "r0", "r1", "r2", "r3" };
+        private RegisterStorage[] argRegs;
         private IProcessorArchitecture arch;
 
         public Arm32CallingConvention(IProcessorArchitecture arch)
         {
             this.arch = arch;
+            this.argRegs = new[] { "r0", "r1", "r2", "r3" }
+            .Select(r => arch.GetRegister(r)).ToArray();
         }
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
@@ -57,18 +60,18 @@ namespace Reko.Environments.SysV.ArchSpecific
                 if (sizeInWords == 2 && (ncrn & 1) == 1)
                     ++ncrn;
                 Storage arg;
-                if (sizeInWords <= 4 - ncrn)
+                if (sizeInWords <= argRegs.Length - ncrn)
                 {
                     if (sizeInWords == 2)
                     {
                         arg = new SequenceStorage(
-                            arch.GetRegister(argRegs[ncrn]),
-                            arch.GetRegister(argRegs[ncrn + 1]));
+                            argRegs[ncrn],
+                            argRegs[ncrn + 1]);
                         ncrn += 2;
                     }
                     else
                     {
-                        arg = arch.GetRegister(argRegs[ncrn]);
+                        arg = argRegs[ncrn];
                         ncrn += 1;
                     }
                 }
@@ -98,13 +101,11 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
             if (bitSize <= 32)
             {
-                return arch.GetRegister("r0");
+                return argRegs[0];
             }
             else if (bitSize <= 64)
             {
-                return new SequenceStorage(
-                    arch.GetRegister("r1"),
-                    arch.GetRegister("r0"));
+                return new SequenceStorage(argRegs[1], argRegs[0]);
             }
             else
                 throw new NotSupportedException(string.Format("Return values of {0} bits are not supported.", bitSize));

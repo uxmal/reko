@@ -32,12 +32,22 @@ namespace Reko.Environments.SysV.ArchSpecific
     public class X86_64CallingConvention : CallingConvention
     {
         private IProcessorArchitecture arch;
-        private static string[] iregs = { "rdi", "rsi", "rdx", "rcx", "r8", "r9" };
-        private static string[] fregs = { "xmm0", "xmm1", "xmm2", "xmm3", "xmm4", "xmm5", "xmm6", "xmm7" };
+        private RegisterStorage[] iregs;
+        private RegisterStorage[] fregs;
+        private RegisterStorage rax;
+        private RegisterStorage rdx;
 
         public X86_64CallingConvention(IProcessorArchitecture arch)
         {
             this.arch = arch;
+            this.iregs = new[] { "rdi", "rsi", "rdx", "rcx", "r8", "r9" }
+                .Select(r => arch.GetRegister(r))
+                .ToArray();
+            this.fregs = new []{ "xmm0", "xmm1", "xmm2", "xmm3", "xmm4", "xmm5", "xmm6", "xmm7" }
+                .Select(r => arch.GetRegister(r))
+                .ToArray();
+            this.rax = arch.GetRegister("rax");
+            this.rdx = arch.GetRegister("rdx");
         }
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
@@ -69,7 +79,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                     }
                     else
                     {
-                        arg = arch.GetRegister(fregs[fr]);
+                        arg = fregs[fr];
                     }
                     ++fr;
                 }
@@ -82,7 +92,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                     }
                     else
                     {
-                        arg = arch.GetRegister(iregs[ir]);
+                        arg = iregs[ir];
                     }
                     ++ir;
                 }
@@ -116,22 +126,20 @@ namespace Reko.Environments.SysV.ArchSpecific
             int bitSize = dtArg.BitSize;
             if (pt != null && pt.Domain == Domain.Real)
             {
-                var xmm0 = arch.GetRegister("xmm0");
+                var xmm0 = fregs[0];
                 if (bitSize <= 64)
                     return xmm0;
                 if (bitSize <= 128)
                 {
-                    var xmm1 = arch.GetRegister("xmm1");
+                    var xmm1 = fregs[1];
                     return new SequenceStorage(xmm1, xmm0);
                 }
                 throw new NotImplementedException();
             }
-            var rax = arch.GetRegister("rax");
             if (bitSize <= 64)
                 return rax;
             if (bitSize <= 128)
             {
-                var rdx = arch.GetRegister("rdx");
                 return new SequenceStorage(rdx, rax);
             }
             throw new NotImplementedException();

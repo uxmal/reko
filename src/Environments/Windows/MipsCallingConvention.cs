@@ -24,21 +24,35 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Environments.Windows
 {
     /// <summary>
     /// Seralizes and deserializes MIPS signatures on Windows. 
     /// </summary>
+    // https://msdn.microsoft.com/en-us/library/aa448706.aspx
     public class MipsCallingConvention : CallingConvention
     {
         private IProcessorArchitecture arch;
-        private static string[] iregs = { "r4", "r5", "r6", "r7" };
-        private static string[] fregs = { };
+        private RegisterStorage[] iregs;
+        private RegisterStorage[] fregs = { };
+        private RegisterStorage iretLo;
+        private RegisterStorage iretHi;
+        private RegisterStorage fret;
 
         public MipsCallingConvention(IProcessorArchitecture arch)
         {
             this.arch = arch;
+            this.iregs = new[] { "r4", "r5", "r6", "r7" }
+                .Select(r => arch.GetRegister(r))
+                .ToArray();
+            this.fregs = new[] { "f12", "f13", "f14", "f15" }
+                .Select(r => arch.GetRegister(r))
+                .ToArray();
+            this.iretLo = arch.GetRegister("r2");
+            this.iretHi = arch.GetRegister("r3");
+            this.fret = arch.GetRegister("f0");
         }
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
@@ -68,7 +82,7 @@ namespace Reko.Environments.Windows
                     }
                     else
                     {
-                        arg = arch.GetRegister(fregs[fr]);
+                        arg = fregs[fr];
                     }
                     ++fr;
                 }
@@ -81,7 +95,7 @@ namespace Reko.Environments.Windows
                     }
                     else
                     {
-                        arg = arch.GetRegister(iregs[ir]);
+                        arg = iregs[ir];
                     }
                     ++ir;
                 }
@@ -96,8 +110,8 @@ namespace Reko.Environments.Windows
                     if (regsNeeded == 2)
                     {
                         arg = new SequenceStorage(
-                                arch.GetRegister(iregs[ir]),
-                                arch.GetRegister(iregs[ir + 1]));
+                            iregs[ir],
+                            iregs[ir + 1]);
                         ir += 2;
                     }
                     else
@@ -123,18 +137,15 @@ namespace Reko.Environments.Windows
             var pt = dtArg as PrimitiveType;
             if (pt != null && pt.Domain == Domain.Real)
             {
-                var f0 = arch.GetRegister("f0");
                 if (bitSize <= 64)
-                    return f0;
+                    return fret;
                 throw new NotImplementedException();
             }
-            var v0 = arch.GetRegister("r2");
             if (bitSize <= 32)
-                return v0;
+                return iretLo;
             if (bitSize <= 64)
             {
-                var v1 = arch.GetRegister("r3");
-                return new SequenceStorage(v1, v0);
+                return new SequenceStorage(iretHi, iretLo);
             }
             throw new NotImplementedException();
         }
