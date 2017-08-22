@@ -43,36 +43,26 @@ namespace Reko.Environments.AtariTOS
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             int stackOffset = 4 + 4;   // Skip the system call selector + return address.
-            Storage ret = null;
+            var ccr = new CallingConventionResult(4, stackOffset);
             if (dtRet != null)
             {
-                ret = GetReturnRegister(dtRet);
+                ccr.Return = GetReturnRegister(dtRet);
             }
 
-            var args = new List<Storage>();
             if (dtThis != null)
             {
+                //ImplicitThis = null, //$TODO
                 throw new NotImplementedException("C++ implicit `this` arguments are not implemented for Atari TOS.");
             }
             for (int iArg = 0; iArg < dtParams.Count; ++iArg)
             {
-                var dtParam = dtParams[iArg];
-                Storage arg = new StackArgumentStorage(stackOffset, dtParam);
-                stackOffset += Align(dtParam.Size, 4);
-                args.Add(arg);
+                ccr.Push(dtParams[iArg]);
             }
-
-            return new CallingConventionResult
-            {
-                Return = ret,
-                ImplicitThis = null, //$TODO
-                Parameters = args,
-
-                // AFAIK the calling convention on Atari TOS is caller-cleanup, 
-                // so the only thing we clean up is the return value on the stack.
-                StackDelta = 4,
-                FpuStackDelta = 0
-            };
+            // AFAIK the calling convention on Atari TOS is caller-cleanup, 
+            // so the only thing we clean up is the return value on the stack.
+            ccr.StackDelta = 4;
+            ccr.FpuStackDelta = 0;
+            return ccr;
         }
 
         public Storage GetReturnRegister(DataType dt)

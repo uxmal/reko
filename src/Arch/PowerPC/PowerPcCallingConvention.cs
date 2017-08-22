@@ -48,32 +48,28 @@ namespace Reko.Arch.PowerPC
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            Storage ret = null;
-
+            //$TODO: verify the stack offset
+            var ccr = new CallingConventionResult(arch.WordWidth.Size, 0x40);
             if (dtRet != null)
             {
-                ret = this.GetReturnRegister(dtRet);
+                ccr.Return = this.GetReturnRegister(dtRet);
             }
 
-            var parameters = new List<Storage>();
-            int gr = 0; // 3;
-            int fr = 0; // ;
-            int stackOffset = 0x40; //$BUG: look this up!
+            int gr = 0;
+            int fr = 0; 
             for (int iArg = 0; iArg < dtParams.Count; ++iArg)
             {
                 var dtArg = dtParams[iArg];
                 var prim = dtArg as PrimitiveType;
-                Storage arg;
                 if (prim != null && prim.Domain == Domain.Real)
                 {
                     if (fr >= fregs.Length)
                     {
-                        arg = new StackArgumentStorage(stackOffset, dtArg);
-                        stackOffset += Align(dtArg.Size, arch.WordWidth.Size);
+                        ccr.Push(dtArg);
                     }
                     else
                     {
-                        arg = fregs[fr];
+                        ccr.Push(fregs[fr]);
                         ++fr;
                     }
                 }
@@ -81,12 +77,11 @@ namespace Reko.Arch.PowerPC
                 {
                     if (gr >= iregs.Length)
                     {
-                        arg = new StackArgumentStorage(stackOffset, dtArg);
-                        stackOffset += Align(dtArg.Size, arch.WordWidth.Size);
+                        ccr.Push(dtArg);
                     }
                     else
                     {
-                        arg = iregs[gr];
+                        ccr.Push(iregs[gr]);
                         ++gr;
                     }
                 }
@@ -94,34 +89,23 @@ namespace Reko.Arch.PowerPC
                 {
                     if (gr >= iregs.Length-1)
                     {
-                        arg = new StackArgumentStorage(stackOffset, dtArg);
-                        stackOffset += Align(dtArg.Size, arch.WordWidth.Size);
+                        ccr.Push(dtArg);
                     }
                     else
                     {
                         if ((gr & 1) == 1)
                             ++gr;
-                        arg = new SequenceStorage(
+                        ccr.Push(new SequenceStorage(
                             iregs[gr],
-                            iregs[gr + 1]);
+                            iregs[gr + 1]));
                         gr += 2;
                     }
                 }
                 else 
                     throw new NotImplementedException();
 
-                parameters.Add(arg);
             }
-
-
-            return new CallingConventionResult
-            {
-                Return = ret,
-                ImplicitThis = null, //$TODO
-                Parameters = parameters,
-                StackDelta = 0,
-                FpuStackDelta = 0
-            };
+            return ccr;
         }
 
         public Storage GetReturnRegister(DataType dt)

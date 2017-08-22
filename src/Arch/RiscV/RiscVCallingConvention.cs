@@ -94,24 +94,24 @@ namespace Reko.Arch.RiscV
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            Storage ret = null;
+            var ccr = new CallingConventionResult(arch.WordWidth.Size, 0);
             if (dtRet != null)
             {
                 var pt = dtRet as PrimitiveType;
                 if (pt != null && pt.Domain == Domain.Real)
                 {
                     //$TODO floats > 64 bits
-                    ret = fregs[0];
+                    ccr.Return = fregs[0];
                 }
                 else
                 {
                     if (dtRet.Size <= arch.PointerType.Size)
                     {
-                        ret = iregs[0];
+                        ccr.Return = iregs[0];
                     }
                     else if (dtRet.Size <= arch.PointerType.Size * 2)
                     {
-                        ret = new SequenceStorage(iregs[1], iregs[0]);
+                        ccr.Return = new SequenceStorage(iregs[1], iregs[0]);
                     }
                     else
                         //$TODO: return values > 128 bits.
@@ -119,34 +119,29 @@ namespace Reko.Arch.RiscV
                 }
             }
             int ir = 0;
-            int stackOffset = 0;
-            var parameters = new List<Storage>();
             for (int i = 0; i < dtParams.Count; ++i)
             {
-                Storage arg;
                 var dtParam = dtParams[i];
                 var pt = dtParam as PrimitiveType;
                 if (pt != null && pt.Domain == Domain.Real)
                 {
                     if (ir >= fregs.Length)
                     {
-                        arg = new StackArgumentStorage(stackOffset, dtParam);
-                        stackOffset += Align(dtParam.Size, arch.PointerType.Size);
+                        ccr.Push(dtParam);
                     }
                     else
                     {
-                        arg = fregs[ir];
+                        ccr.Push(fregs[ir]);
                         ++ir;
                     }
                 }
                 else if (ir >= iregs.Length)
                 {
-                    arg = new StackArgumentStorage(stackOffset, dtParam);
-                    stackOffset += Align(dtParam.Size, arch.PointerType.Size);
+                    ccr.Push(dtParam);
                 }
                 else if (dtParam.Size <= arch.PointerType.Size)
                 {
-                    arg = iregs[ir];
+                    ccr.Push(iregs[ir]);
                     ++ir;
                 }
                 else if (dtParam.Size <= arch.PointerType.Size * 2)
@@ -155,26 +150,18 @@ namespace Reko.Arch.RiscV
                         ++ir;
                     if (ir >= iregs.Length)
                     {
-                        arg = new StackArgumentStorage(stackOffset, dtParam);
-                        stackOffset += Align(dtParam.Size, arch.PointerType.Size);
+                        ccr.Push(dtParam);
                     }
                     else
                     {
-                        arg = new SequenceStorage(iregs[ir + 1], iregs[ir]);
+                        ccr.Push(new SequenceStorage(iregs[ir + 1], iregs[ir]));
                         ir += 2;
                     }
                 }
                 else
                     throw new NotImplementedException();
-
-                parameters.Add(arg);
             }
-            return new CallingConventionResult
-            {
-                Return = ret,
-                ImplicitThis = null, //$TODO
-                Parameters = parameters,
-            };
+            return ccr;
         }
     }
 }

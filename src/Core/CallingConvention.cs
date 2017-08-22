@@ -30,12 +30,6 @@ namespace Reko.Core
     public abstract class CallingConvention
     {
         public abstract CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams);
-
-        public int Align(int n, int quantum)
-        {
-            int units = (n + quantum - 1) / quantum;
-            return units * quantum;
-        }
     }
 
     public class CallingConventionResult
@@ -45,6 +39,34 @@ namespace Reko.Core
         public List<Storage> Parameters;
         public int StackDelta;
         public int FpuStackDelta;
+
+        private int stackAlignment;
+        public int stackOffset;
+
+        public CallingConventionResult(int stackAlignment, int stackOffset)
+        {
+            this.stackAlignment = stackAlignment;
+            this.stackOffset = stackOffset;
+            this.Parameters = new List<Storage>();
+        }
+
+        public int Align(int n, int quantum)
+        {
+            int units = (n + quantum - 1) / quantum;
+            return units * quantum;
+        }
+
+        public void Push(Storage stg)
+        {
+            this.Parameters.Add(stg);
+        }
+
+        public void Push(DataType dt)
+        {
+            var stg = new StackArgumentStorage(stackOffset, dt);
+            stackOffset += Align(dt.Size, stackAlignment);
+            Parameters.Add(stg);
+        }
 
         public override string ToString()
         {

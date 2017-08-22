@@ -61,55 +61,39 @@ namespace Reko.Arch.X86
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
+            var ccr = new CallingConventionResult(stackAlignment, retAddressOnStack);
             int fpuStackDelta = 0;
-            Storage stgRet = GetReturnStorage(dtRet);
+            ccr.Return = GetReturnStorage(dtRet);
 
-            if (stgRet is FpuStackStorage)
+            if (ccr.Return is FpuStackStorage)
                 fpuStackDelta = 1;
 
             Storage stgThis = null;
-            List<Storage> stgParams = new List<Storage>();
-
-            int stackOffset = retAddressOnStack;
-
             if (dtThis != null)
             {
-                stgThis = new StackArgumentStorage(stackOffset, PrimitiveType.Create(Domain.Pointer, pointerSize));
-                stackOffset += Align(pointerSize, stackAlignment);
+                ccr.Push(dtThis);
+                stgThis = ccr.Parameters[0];
+                ccr.Parameters.Clear();
             }
             if (reverseArguments)
             {
                 for (int i = dtParams.Count - 1; i >= 0; --i)
                 {
-                    int alignedSize = Align(dtParams[i].Size, stackAlignment);
-                    stgParams.Add(new StackArgumentStorage(stackOffset, PrimitiveType.CreateWord(alignedSize)));
-                    stackOffset += alignedSize;
+                    ccr.Push(dtParams[i]);
                 }
-                stgParams.Reverse();
+                ccr.Parameters.Reverse();
             }
             else
             {
                 for (int i = 0; i < dtParams.Count; ++i)
                 {
-                    int alignedSize = Align(dtParams[i].Size, stackAlignment);
-                    if (alignedSize == 0)
-                        alignedSize = stackAlignment;
-                    stgParams.Add(new StackArgumentStorage(stackOffset, dtParams[i]));
-                    stackOffset += alignedSize;
+                    ccr.Push(dtParams[i]);
                 }
             }
-            if (callerCleanup)
-            {
-                stackOffset = retAddressOnStack;
-            }
-            return new CallingConventionResult
-            {
-                Return = stgRet,
-                ImplicitThis = stgThis,
-                Parameters = stgParams,
-                FpuStackDelta = fpuStackDelta,
-                StackDelta = stackOffset
-            };
+            ccr.ImplicitThis = stgThis;
+            ccr.FpuStackDelta = fpuStackDelta;
+            ccr.StackDelta = callerCleanup ? retAddressOnStack : ccr.stackOffset;
+            return ccr;
         }
 
         public static Storage GetReturnStorage(DataType dtRet)

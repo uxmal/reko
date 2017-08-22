@@ -40,28 +40,21 @@ namespace Reko.Arch.M68k
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            Storage ret = null;
+            int stackOffset = 4;        // return address
+            var ccr = new CallingConventionResult(4, stackOffset);
             if (dtRet != null)
             {
-                ret = GetReturnRegister(dtRet);
+                ccr.Return = GetReturnRegister(dtRet);
             }
 
-            int stackOffset = 4;        // return address
-            var parameters = new List<Storage>();
-            for (int iArg = 0; iArg < dtParams.Count; ++iArg)
+            for (int i = 0; i < dtParams.Count; ++i)
             {
-                var dtArg = dtParams[iArg];
-                var stg = new StackArgumentStorage(stackOffset, dtArg);
-                parameters.Add(stg);
+                ccr.Push(dtParams[i]);
+                var dtArg = dtParams[i];
             }
-            return new CallingConventionResult
-            {
-                Return = ret,
-                ImplicitThis= null, //$TODO
-                Parameters = parameters,
-                StackDelta = 4,
-                FpuStackDelta = 0
-            };
+            ccr.StackDelta = 4;
+            ccr.FpuStackDelta = 0;
+            return ccr;
         }
 
         public Storage GetReturnRegister(DataType dt)

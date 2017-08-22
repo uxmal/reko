@@ -38,27 +38,21 @@ namespace Reko.Environments.RT11
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            Storage ret = null;
+            var ccr = new CallingConventionResult(2, 2);
             if (dtRet != null)
             {
-                ret = GetReturnRegister(dtRet);
+                ccr.Return = GetReturnRegister(dtRet);
             }
 
-            var parameters = new List<Storage>();
             int gr = 0;
             for (int iArg = 0; iArg < dtParams.Count; ++iArg)
             {
                 var arg = arch.GetRegister("r" + gr);
                 ++gr;
-                    parameters.Add(arg);
+                ccr.Push(arg);
             }
-            return new CallingConventionResult
-            {
-                Return = ret,
-                ImplicitThis = null, //$TODO
-                Parameters = parameters,
-                StackDelta = 2,
-            };
+            ccr.StackDelta = 2;
+            return ccr;
         }
 
         public Storage GetReturnRegister(DataType dtRet)

@@ -52,72 +52,58 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            Storage ret = null;
+            var ccr = new CallingConventionResult(arch.PointerType.Size, 0x0008);
             if (dtRet != null)
             {
-                ret = this.GetReturnRegister(dtRet);
+                ccr.Return = this.GetReturnRegister(dtRet);
             }
-
-            var args = new List<Storage>();
             int fr = 0;
             int ir = 0;
             // The SysV calling convention specifies that there is no 
             // "reserved slot" prior to the return address on the stack, in
             // contrast with Windows where 4*8 bytes are allocated for 
             // space for the four registers
-            int stackOffset = 0x8;
-            foreach (var dtParam in dtParams) 
+            foreach (var dtParam in dtParams)
             {
-                Storage arg;
                 var prim = dtParam as PrimitiveType;
                 if (prim != null && prim.Domain == Domain.Real)
                 {
                     if (fr >= fregs.Length)
                     {
-                        arg = new StackArgumentStorage(stackOffset, dtParam);
-                        stackOffset += Align(dtParam.Size, 8);
+                        ccr.Push(dtParam);
                     }
                     else
                     {
-                        arg = fregs[fr];
+                        ccr.Push(fregs[fr]);
+                        ++fr;
                     }
-                    ++fr;
                 }
                 else if (dtParam.Size <= 8)
                 {
                     if (ir >= iregs.Length)
                     {
-                        arg = new StackArgumentStorage(stackOffset, dtParam);
-                        stackOffset += Align(dtParam.Size, 8);
+                        ccr.Push(dtParam);
                     }
                     else
                     {
-                        arg = iregs[ir];
+                        ccr.Push(iregs[ir]);
+                        ++ir;
                     }
-                    ++ir;
                 }
                 else
                 {
                     int regsNeeded = (dtParam.Size + 7) / 8;
                     if (regsNeeded > 4 || ir + regsNeeded >= iregs.Length)
                     {
-                        arg = new StackArgumentStorage(stackOffset, dtParam);
-                        stackOffset += Align(dtParam.Size, 8);
+                        ccr.Push(dtParam);
                     }
                     else
                         throw new NotImplementedException();
                 }
-                args.Add(arg);
             }
 
-            return new CallingConventionResult
-            {
-                Return = ret,
-                ImplicitThis = null, //$TODO
-                Parameters = args,
-                StackDelta = arch.PointerType.Size,
-                FpuStackDelta = 0,
-            };
+            ccr.StackDelta = arch.PointerType.Size;
+            return ccr;
         }
 
         public Storage GetReturnRegister(DataType dtArg)

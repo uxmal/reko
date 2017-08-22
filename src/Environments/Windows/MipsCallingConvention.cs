@@ -57,61 +57,54 @@ namespace Reko.Environments.Windows
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            Storage  ret = null;
-
+            var ccr = new CallingConventionResult(arch.WordWidth.Size, 0x10);
             if (dtRet != null)
             {
-                ret = this.GetReturnRegister(dtRet);
+                ccr.Return = this.GetReturnRegister(dtRet);
             }
 
             int ir = 0;
             int fr = 0;
-            int stackOffset = 0x10;
-            var args = new List<Storage>();
             for (int iArg = 0; iArg < dtParams.Count; ++iArg)
             {
-                Storage arg;
                 var dtArg = dtParams[iArg];
                 var prim = dtArg as PrimitiveType;
                 if (prim != null && prim.Domain == Domain.Real)
                 {
                     if (fr >= fregs.Length)
                     {
-                        arg = new StackArgumentStorage(stackOffset, dtArg);
-                        stackOffset += Align(dtArg.Size, 4);
+                        ccr.Push(dtArg);
                     }
                     else
                     {
-                        arg = fregs[fr];
+                       ccr.Push(fregs[fr]);
+                       ++fr;
                     }
-                    ++fr;
                 }
                 else if (dtArg.Size <= 4)
                 {
                     if (ir >= iregs.Length)
                     {
-                        arg = new StackArgumentStorage(stackOffset, dtArg);
-                        stackOffset += Align(dtArg.Size, 4);
+                        ccr.Push(dtArg);
                     }
                     else
                     {
-                        arg = iregs[ir];
+                        ccr.Push(iregs[ir]);
+                        ++ir;
                     }
-                    ++ir;
                 }
                 else
                 {
                     int regsNeeded = (dtArg.Size + 3) / 4;
                     if (regsNeeded > 4 || ir + regsNeeded >= iregs.Length)
                     {
-                        arg = new StackArgumentStorage(stackOffset, dtArg);
-                        stackOffset += Align(dtArg.Size, 4);
+                        ccr.Push(dtArg);
                     }
                     if (regsNeeded == 2)
                     {
-                        arg = new SequenceStorage(
+                        ccr.Push(new SequenceStorage(
                             iregs[ir],
-                            iregs[ir + 1]);
+                            iregs[ir + 1]));
                         ir += 2;
                     }
                     else
@@ -119,16 +112,8 @@ namespace Reko.Environments.Windows
                         throw new NotImplementedException();
                     }
                 }
-                args.Add(arg);
             }
-            return new CallingConventionResult
-            {
-                Return = ret,
-                ImplicitThis = null, //$TODO
-                Parameters = args,
-                StackDelta = 0,
-                FpuStackDelta = 0,
-            };
+            return ccr;
         }
 
         public Storage GetReturnRegister(DataType dtArg)

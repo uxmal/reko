@@ -42,31 +42,21 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            Storage ret = null;
-
+            var ccr = new CallingConventionResult(4, 4);
             if (dtRet != null)
             {
-                ret = this.GetReturnRegister(dtRet);
+                ccr.Return = this.GetReturnRegister(dtRet);
             }
 
             var args = new List<Storage>();
             int stOffset = arch.PointerType.Size;
             foreach (var dtParam in dtParams)
             {
-                args.Add(new StackArgumentStorage(stOffset, dtParam));
-                stOffset += Align(dtParam.Size, arch.WordWidth.Size);
+                ccr.Push(dtParam);
             }
-
-            return new CallingConventionResult
-            {
-                Return = ret,
-                ImplicitThis = null, //$TODO
-                Parameters = args,
-                StackDelta = arch.PointerType.Size,
-                FpuStackDelta = 0,
-            };
+            ccr.StackDelta = arch.PointerType.Size;
+            return ccr;
         }
-
 
         public Storage GetReturnRegister(DataType dt)
         {

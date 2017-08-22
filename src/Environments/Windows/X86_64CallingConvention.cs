@@ -50,7 +50,7 @@ namespace Reko.Environments.Windows
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            Storage ret = null;
+            var ccr = new CallingConventionResult(8, 0x0028);
             if (dtRet != null)
             {
                 if (dtRet.Size > 8)
@@ -58,14 +58,13 @@ namespace Reko.Environments.Windows
                 var pt = dtRet as PrimitiveType;
                 if (pt != null && pt.Domain == Domain.Real)
                 {
-                    ret = Registers.xmm0;
+                    ccr.Return = Registers.xmm0;
                 }
                 else
                 {
-                    ret = Registers.rax;
+                    ccr.Return = Registers.rax;
                 }
             }
-            var parameters = new List<Storage>();
             for (int i = 0; i < dtParams.Count; ++i)
             {
                 var dt = dtParams[i];
@@ -74,26 +73,19 @@ namespace Reko.Environments.Windows
                 var pt = dt as PrimitiveType;
                 if (pt != null && pt.Domain == Domain.Real && i < fRegs.Length)
                 {
-                    parameters.Add(fRegs[i]);
+                    ccr.Push(fRegs[i]);
                 }
                 else if (i < iRegs.Length)
                 {
-                    parameters.Add(iRegs[i]);
+                    ccr.Push(iRegs[i]);
                 }
                 else
                 {
-                    var stg = new StackArgumentStorage(8 * (i + 1), dt);
-                    parameters.Add(stg);
+                    ccr.Push(dt);
                 }
             }
-            return new CallingConventionResult
-            {
-                Return = ret,
-                ImplicitThis = null,
-                Parameters = parameters,
-                StackDelta = 8,
-                FpuStackDelta = 0,
-            };
+            ccr.StackDelta = 8;
+            return ccr;
         }
     }
 }

@@ -56,20 +56,17 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            Storage ret = null;
+            var ccr = new CallingConventionResult(arch.WordWidth.Size, 0x10);
 
             if (dtRet != null)
             {
-                ret = this.GetReturnRegister(dtRet);
+                ccr.Return = this.GetReturnRegister(dtRet);
             }
 
-            var parameters = new List<Storage>();
             int ir =  0;
             bool firstArgIntegral = false;
-            int stackOff = 0x10;
             for (int i = 0; i < dtParams.Count; ++i)
             {
-                Storage param;
                 var dtParam = dtParams[i];
                 var prim = dtParam as PrimitiveType;
                 if (prim != null && prim.Domain == Domain.Real && !firstArgIntegral)
@@ -78,21 +75,20 @@ namespace Reko.Environments.SysV.ArchSpecific
                         ++ir;
                     if (ir >= fregs.Length)
                     {
-                        param = new StackArgumentStorage(stackOff, dtParam);
-                        stackOff += Align(dtParam.Size, 4);
+                        ccr.Push(dtParam);
                     }
                     else
                     {
                         if (prim.Size == 4)
                         {
-                            param = fregs[ir];
+                            ccr.Push(fregs[ir]);
                             ir += 1;
                         }
                         else if (prim.Size == 8)
                         {
-                            param = new SequenceStorage(
+                            ccr.Push(new SequenceStorage(
                                 fregs[ir],
-                                fregs[ir + 1]);
+                                fregs[ir + 1]));
                             ir += 2;
                         }
                         else
@@ -109,12 +105,11 @@ namespace Reko.Environments.SysV.ArchSpecific
                     {
                         if (ir >= 4)
                         {
-                            param = new StackArgumentStorage(stackOff, dtParam);
-                            stackOff += Align(dtParam.Size, 4);
+                            ccr.Push(dtParam);
                         }
                         else
                         {
-                            param = iregs[ir];
+                            ccr.Push(iregs[ir]);
                             ++ir;
                         }
                     }
@@ -124,30 +119,21 @@ namespace Reko.Environments.SysV.ArchSpecific
                             ++ir;
                         if (ir >= 4)
                         {
-                            param = new StackArgumentStorage(stackOff, dtParam);
-                            stackOff += Align(dtParam.Size, 4);
+                            ccr.Push(dtParam);
                         }
                         else
                         {
-                            param = new SequenceStorage(
+                            ccr.Push(new SequenceStorage(
                                 iregs[ir],
-                                iregs[ir + 1]);
+                                iregs[ir + 1]));
                             ir += 2;
                         }
                     }
                     else
                         throw new NotImplementedException();
                 }
-                parameters.Add(param);
             }
-            return new CallingConventionResult
-            {
-                Return = ret,
-                ImplicitThis = null, //$TODO
-                Parameters = parameters,
-                StackDelta = 0,
-                FpuStackDelta = 0,
-            };
+            return ccr;
         }
 
         public Storage GetReturnRegister(DataType dt)

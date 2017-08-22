@@ -42,54 +42,43 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
+            var ccr = new CallingConventionResult(4, 0x0010);
+
             int ncrn = 0;
-            int nsaa = 0x10;
             // mem arg forb ret val
 
-            Storage ret = null;
             if (dtRet != null)
             {
-                ret = GetReturnRegister(dtRet.BitSize);
+                ccr.Return = GetReturnRegister(dtRet.BitSize);
             }
 
-            var parameters = new List<Storage>();
             foreach (var dt in dtParams)
             {
                 var sizeInWords = (dt.Size + 3) / 4;
 
                 if (sizeInWords == 2 && (ncrn & 1) == 1)
                     ++ncrn;
-                Storage arg;
                 if (sizeInWords <= argRegs.Length - ncrn)
                 {
                     if (sizeInWords == 2)
                     {
-                        arg = new SequenceStorage(
+                        ccr.Push(new SequenceStorage(
                             argRegs[ncrn],
-                            argRegs[ncrn + 1]);
+                            argRegs[ncrn + 1]));
                         ncrn += 2;
                     }
                     else
                     {
-                        arg = argRegs[ncrn];
+                        ccr.Push(argRegs[ncrn]);
                         ncrn += 1;
                     }
                 }
                 else
                 {
-                    arg = new StackArgumentStorage(nsaa, dt);
-                    nsaa += AlignedStackArgumentSize(dt);
+                    ccr.Push(dt);
                 }
-                parameters.Add(arg);
             }
-            return new CallingConventionResult
-            {
-                Return = ret,
-                ImplicitThis = null,    //$TODO!
-                Parameters = parameters,
-                StackDelta = 0,
-                FpuStackDelta = 0
-            };
+            return ccr;
         }
 
         private int AlignedStackArgumentSize(DataType dt)

@@ -50,45 +50,33 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            Storage ret = null;
+            var ccr = new CallingConventionResult(arch.WordWidth.Size, 0x0018);
             if (dtRet != null)
             {
-                ret = this.GetReturnRegister(dtRet);
+                ccr.Return = this.GetReturnRegister(dtRet);
             }
 
             int ir = 0;
-            var parameters = new List<Storage>();
-            int stackOffset = 0x0018;
             for (int iArg = 0; iArg < dtParams.Count; ++iArg)
             {
-                Storage param;
                 var dtArg = dtParams[iArg];
                 var prim = dtArg as PrimitiveType;
                 if (dtArg.Size <= 8)
                 {
                     if (ir >= regs.Length)
                     {
-                        param = new StackArgumentStorage(stackOffset, dtArg);
-                        stackOffset += Align(dtArg.Size, arch.WordWidth.Size);
+                        ccr.Push(dtArg);
                     }
                     else
                     {
-                        param = regs[ir];
+                        ccr.Push(regs[ir]);
+                        ++ir;
                     }
-                    ++ir;
                 }
                 else
                     throw new NotImplementedException();
-                parameters.Add(param);
             }
-            return new CallingConventionResult
-            {
-                Return = ret,
-                ImplicitThis = null,    //$TODO
-                Parameters = parameters,
-                StackDelta = 0,
-                FpuStackDelta = 0, 
-            };
+            return ccr;
         }
 
         public Storage GetReturnRegister(DataType dtArg)
