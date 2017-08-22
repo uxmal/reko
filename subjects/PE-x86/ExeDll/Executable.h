@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (5 Eq_118 t0005) (100 Eq_765 t0100) (5A4D Eq_765 t5A4D) (400000 word16 w400000) (40003C (ptr Eq_765) ptr40003C) (4018DF (fn LONG ((ptr (struct "_EXCEPTION_POINTERS")))) t4018DF) (4020D0 (ptr code) ptr4020D0) (4020DC Eq_186 t4020DC) (4020EC Eq_186 t4020EC) (4024C8 word32 dw4024C8) (403000 ui32 dw403000) (403004 ui32 dw403004) (403010 ui32 dw403010) (403014 word32 dw403014) (403334 word32 dw403334) (403338 word32 dw403338) (40333C ui32 dw40333C) (403340 ui32 dw403340) (403344 ui32 dw403344) (403348 ui32 dw403348) (40334C ui32 dw40334C) (403350 ui32 dw403350) (403354 byte b403354) (403358 (union "_SLIST_HEADER" ((struct "struct_59" (0 SINGLE_LIST_ENTRY Next) (4 WORD Depth) (6 WORD Sequence)) u1) (ULONGLONG Alignment)) u403358) (403360 ui32 dw403360) (403364 word32 dw403364) (403368 ui32 dw403368) (40336C ui32 dw40336C) (403370 ui32 dw403370) (403378 ui32 dw403378) (40337C word32 dw40337C) (403384 ptr32 ptr403384) (403388 word32 dw403388))
+Eq_1: (struct "Globals" (5 Eq_118 t0005) (100 Eq_765 t0100) (5A4D Eq_765 t5A4D) (400000 word16 w400000) (40003C (ptr Eq_765) ptr40003C) (4018DF (fn LONG ((ptr (struct "_EXCEPTION_POINTERS")))) t4018DF) (4020D0 (ptr code) ptr4020D0) (4020DC Eq_186 t4020DC) (4020EC Eq_186 t4020EC) (4024C8 word32 dw4024C8) (403000 ui32 dw403000) (403004 ui32 dw403004) (403010 ui32 dw403010) (403014 word32 dw403014) (403334 word32 dw403334) (403338 word32 dw403338) (40333C ui32 dw40333C) (403340 ui32 dw403340) (403344 ui32 dw403344) (403348 ui32 dw403348) (40334C ui32 dw40334C) (403350 ui32 dw403350) (403354 byte b403354) (403358 (union "_SLIST_HEADER" ((struct "struct_70" (0 SLIST_ENTRY Next) (4 WORD Depth) (6 WORD CpuId)) u1) (ULONGLONG Alignment)) u403358) (403360 ui32 dw403360) (403364 word32 dw403364) (403368 ui32 dw403368) (40336C ui32 dw40336C) (403370 ui32 dw403370) (403378 ui32 dw403378) (40337C word32 dw40337C) (403384 ptr32 ptr403384) (403388 word32 dw403388))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_4: (fn void (Eq_6))
 	T_4 (in InitializeCriticalSection : ptr32)
@@ -5875,7 +5875,7 @@ T_1388: (in (word32) (globals->dw403014 != 0x00000000) : word32)
 */
 typedef Eq_1struct _EXCEPTION_POINTERS;
 union _SLIST_HEADER {
-	struct struct_59 u1;
+	struct struct_70 u1;
 	ULONGLONG Alignment;
 } Eq_1struct Globals {
 	Eq_118 t0005;	// 5
