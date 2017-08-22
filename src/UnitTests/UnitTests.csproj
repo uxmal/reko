@@ -89,6 +89,7 @@
     <Compile Include="Arch\Avr\Avr8DisassemblerTests.cs" />
     <Compile Include="Arch\Avr\Avr8RewriterTests.cs" />
     <Compile Include="Arch\Pdp11\Pdp11InstructionComparerTests.cs" />
+    <Compile Include="Arch\RiscV\RiscVCallingConventionTests.cs" />
     <Compile Include="Arch\RiscV\RiscVDisassemblerTests.cs" />
     <Compile Include="Arch\RiscV\RiscVRewriterTests.cs" />
     <Compile Include="Arch\SuperH\SuperHDisassemblerTests.cs" />

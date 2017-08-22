@@ -56,7 +56,6 @@
     <Compile Include="ArchSpecific\M68kCallingConvention.cs" />
     <Compile Include="ArchSpecific\MipsCallingConvention.cs" />
     <Compile Include="ArchSpecific\PowerPcCallingConvention.cs" />
-    <Compile Include="ArchSpecific\RiscVCallingConvention.cs" />
     <Compile Include="ArchSpecific\SparcCallingConvention.cs" />
     <Compile Include="ArchSpecific\SuperHCallingConvention.cs" />
     <Compile Include="ArchSpecific\X86_64CallingConvention.cs" />

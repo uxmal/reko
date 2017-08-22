@@ -41,6 +41,7 @@ namespace Reko.Environments.SysV
     {
         private RegisterStorage[] trashedRegs;
         private CallingConvention ccX86;
+        private CallingConvention ccRiscV;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
@@ -87,8 +88,13 @@ namespace Reko.Environments.SysV
                 return new M68kCallingConvention(Architecture);
             case "avr8":                                       
                 return new Avr8CallingConvention(Architecture);
-            case "risc-v":                                     
-                return new RiscVCallingConvention(Architecture);
+            case "risc-v":
+                if (this.ccRiscV == null)
+                {
+                    var t = Type.GetType("Reko.Arch.RiscV.RiscVCallingConvention,Reko.Arch.RiscV", true);
+                    this.ccRiscV = (CallingConvention)Activator.CreateInstance(t, Architecture);
+                }
+                return this.ccRiscV;
             case "superH-le":
             case "superH-be":
                 return new SuperHCallingConvention(Architecture);

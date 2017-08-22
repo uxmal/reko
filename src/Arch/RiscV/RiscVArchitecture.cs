@@ -47,6 +47,7 @@ namespace Reko.Arch.RiscV
         };
 
         private RegisterStorage[] regs;
+        private Dictionary<string, RegisterStorage> regsByName;
 
         public RiscVArchitecture()
         {
@@ -69,6 +70,7 @@ namespace Reko.Arch.RiscV
                         0,
                         PrimitiveType.Word64)))
                 .ToArray();
+            this.regsByName = regs.ToDictionary(r => r.Name);
             this.StackRegister = regs[2];       // sp
         }
 
@@ -149,7 +151,11 @@ namespace Reko.Arch.RiscV
 
         public override RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            RegisterStorage reg;
+            if (regsByName.TryGetValue(name, out reg))
+                return reg;
+            else
+                return null;
         }
 
         public override RegisterStorage GetRegister(int i)
