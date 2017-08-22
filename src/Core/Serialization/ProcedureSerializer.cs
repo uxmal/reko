@@ -96,13 +96,6 @@ namespace Reko.Core.Serialization
                 };
             }
 
-            this.argDeser = new ArgumentDeserializer(
-                this,
-                Architecture,
-                frame,
-                retAddrSize,
-                Architecture.WordWidth.Size);
-
             var parameters = new List<Identifier>();
 
             Identifier ret = null;
@@ -113,6 +106,13 @@ namespace Reko.Core.Serialization
                 (ss.ReturnValue == null || ss.ReturnValue.Type == null ||
                  ss.ReturnValue.Type is VoidType_v1 || HasExplicitStorage(ss.ReturnValue)))
             {
+                this.argDeser = new ArgumentDeserializer(
+                    this,
+                    Architecture,
+                    frame,
+                    retAddrSize,
+                    Architecture.WordWidth.Size);
+
                 int fpuDelta = FpuStackOffset;
                 FpuStackOffset = 0;
                 if (ss.ReturnValue != null)
@@ -274,25 +274,12 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         public Identifier DeserializeArgument(Argument_v1 arg, int idx, string convention)
         {
-            if (arg.Kind != null)
+            var kind = arg.Kind;
+            if (kind == null)
             {
-                return argDeser.Deserialize(arg, arg.Kind);
+                kind = new StackVariable_v1();
             }
-            if (convention == null)
-                return argDeser.Deserialize(arg, new StackVariable_v1());
-            switch (convention)
-            {
-            case "":
-            case "cdecl":
-            case "pascal":
-            case "stdapi":
-            case "stdcall":
-            case "__cdecl":
-            case "__stdcall":
-            case "__thiscall":
-                return argDeser.Deserialize(arg, new StackVariable_v1 { });
-            }
-            throw new NotSupportedException(string.Format("Unsupported calling convention '{0}'.", convention));
+            return argDeser.Deserialize(arg, kind);
         }
     }
 }

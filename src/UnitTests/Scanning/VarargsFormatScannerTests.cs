@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Scanning
             sc.AddService<IConfigurationService>(cfg);
             this.win32 = new Win32Platform(sc, new X86ArchitectureFlat32());
             this.win_x86_64 = new Win_x86_64_Platform(sc, new X86ArchitectureFlat64());
-            this.sysV_ppc = new SysVPlatform(sc, new PowerPcArchitecture32());
+            this.sysV_ppc = new SysVPlatform(sc, new PowerPcArchitecture32 { Name = "ppc32" });
             this.m = new ProcedureBuilder();
             this.printfChr = new ProcedureCharacteristics()
             {
@@ -276,7 +276,6 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
-        [Ignore("Varargs scanning has not implemented on PowerPc")]
         public void Vafs_PpcPrintf()
         {
             Given_VaScanner(sysV_ppc);

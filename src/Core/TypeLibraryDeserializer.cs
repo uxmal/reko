@@ -273,11 +273,6 @@ namespace Reko.Core
         {
             var sser = new ProcedureSerializer(platform, this, this.defaultConvention);
             return sser.Deserialize(sSig, platform.Architecture.CreateFrame());
-            //return new FunctionType(
-            //    null,
-            //    sig.ReturnValue,
-            //    sig.Parameters, 
-            //    sSig);
         }
 
         public DataType VisitStructure(StructType_v1 structure)
