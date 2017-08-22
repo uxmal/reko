@@ -163,7 +163,8 @@ namespace Reko.Core.Serialization
                 var res = cc.Generate(dtRet, dtThis, dtParameters);
                 if (res.Return != null)
                 {
-                    ret = new Identifier("", dtRet, res.Return);
+                    var retReg = res.Return as RegisterStorage;
+                    ret = new Identifier(retReg != null ? retReg.Name : "", dtRet, res.Return);
                 }
                 if (res.ImplicitThis != null)
                 {
