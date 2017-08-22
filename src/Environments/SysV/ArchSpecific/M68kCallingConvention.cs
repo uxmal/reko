@@ -42,7 +42,8 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            var ccr = new CallingConventionResult(4, 4);
+            var ccr = new CallingConventionResult();
+            ccr.LowLevelDetails(4, 4);
             if (dtRet != null)
             {
                 ccr.Return = this.GetReturnRegister(dtRet);

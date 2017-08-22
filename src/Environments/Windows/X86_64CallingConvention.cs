@@ -50,7 +50,8 @@ namespace Reko.Environments.Windows
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            var ccr = new CallingConventionResult(8, 0x0028);
+            var ccr = new CallingConventionResult();
+            ccr.LowLevelDetails(8, 0x0028);
             if (dtRet != null)
             {
                 if (dtRet.Size > 8)

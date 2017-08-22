@@ -43,7 +43,8 @@ namespace Reko.Environments.AtariTOS
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             int stackOffset = 4 + 4;   // Skip the system call selector + return address.
-            var ccr = new CallingConventionResult(4, stackOffset);
+            var ccr = new CallingConventionResult();
+            ccr.LowLevelDetails(4, stackOffset);
             if (dtRet != null)
             {
                 ccr.Return = GetReturnRegister(dtRet);

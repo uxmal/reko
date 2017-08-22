@@ -49,7 +49,8 @@ namespace Reko.Environments.SysV.ArchSpecific
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             int stackOffset = 0x40; //$BUG: look this up!
-            var ccr = new CallingConventionResult(arch.WordWidth.Size, stackOffset);
+            var ccr = new CallingConventionResult();
+            ccr.LowLevelDetails(arch.WordWidth.Size, stackOffset);
             if (dtRet != null)
             {
                 ccr.Return = GetReturnRegister(dtRet);

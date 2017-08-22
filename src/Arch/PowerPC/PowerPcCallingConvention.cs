@@ -49,7 +49,8 @@ namespace Reko.Arch.PowerPC
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             //$TODO: verify the stack offset
-            var ccr = new CallingConventionResult(arch.WordWidth.Size, 0x40);
+            var ccr = new CallingConventionResult();
+            ccr.LowLevelDetails(arch.WordWidth.Size, 0x40);
             if (dtRet != null)
             {
                 ccr.Return = this.GetReturnRegister(dtRet);

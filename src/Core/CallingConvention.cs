@@ -43,11 +43,15 @@ namespace Reko.Core
         private int stackAlignment;
         public int stackOffset;
 
-        public CallingConventionResult(int stackAlignment, int stackOffset)
+        public CallingConventionResult()
+        {
+            this.Parameters = new List<Storage>();
+        }
+
+        public void LowLevelDetails(int stackAlignment, int stackOffset)
         {
             this.stackAlignment = stackAlignment;
             this.stackOffset = stackOffset;
-            this.Parameters = new List<Storage>();
         }
 
         public static int Align(int n, int quantum)

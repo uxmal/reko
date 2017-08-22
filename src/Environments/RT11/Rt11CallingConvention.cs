@@ -38,7 +38,8 @@ namespace Reko.Environments.RT11
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            var ccr = new CallingConventionResult(2, 2);
+            var ccr = new CallingConventionResult();
+            ccr.LowLevelDetails(2, 2);
             if (dtRet != null)
             {
                 ccr.Return = GetReturnRegister(dtRet);

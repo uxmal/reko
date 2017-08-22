@@ -42,7 +42,8 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            var ccr = new CallingConventionResult(4, 0x0010);
+            var ccr = new CallingConventionResult();
+            ccr.LowLevelDetails(4, 0x0010);
 
             int ncrn = 0;
             // mem arg forb ret val
