@@ -51,7 +51,11 @@ namespace Reko.Environments.SysV.ArchSpecific
             var args = new List<Storage>();
             int fr = 0;
             int ir = 0;
-            int stackOffset = 0x38;
+            // The SysV calling convention specifies that there is no 
+            // "reserved slot" prior to the return address on the stack, in
+            // contrast with Windows where 4*8 bytes are allocated for 
+            // space for the four registers
+            int stackOffset = 0x8;
             foreach (var dtParam in dtParams) 
             {
                 Storage arg;

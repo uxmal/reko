@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
             Given_CallingConvention();
             var ccr = cc.Generate(null, null, new List<DataType> { i16, i8, i32, i16, i8, i32, i8, i32 });
             Assert.AreEqual(
-                "Stk: 8 void (rdi, rsi, rdx, rcx, r8, r9, Stack +0038, Stack +0040)",
+                "Stk: 8 void (rdi, rsi, rdx, rcx, r8, r9, Stack +0008, Stack +0010)",
                 ccr.ToString());
         }
     }
