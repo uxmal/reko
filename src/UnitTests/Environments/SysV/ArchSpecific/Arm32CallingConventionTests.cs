@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         private void Given_CallingConvention()
         {
             this.cc = new Arm32CallingConvention(arch);
-            this.ccr = new ICallingConventionEmitter();
+            this.ccr = new CallingConventionEmitter();
         }
 
         private Argument_v1 RegArg(SerializedType type, string regName)

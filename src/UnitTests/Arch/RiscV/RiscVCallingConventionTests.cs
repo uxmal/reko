@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             this.arch = new RiscVArchitecture();
             this.cc = new RiscVCallingConvention(arch);
-            this.ccr = new ICallingConventionEmitter();
+            this.ccr = new CallingConventionEmitter();
         }
 
         [Test]

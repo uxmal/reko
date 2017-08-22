@@ -32,7 +32,7 @@ namespace Reko.Core
         void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams);
     }
 
-    public class ICallingConventionEmitter
+    public abstract class ICallingConventionEmitter
     {
         public Storage Return;
         public Storage ImplicitThis;
@@ -120,5 +120,9 @@ namespace Reko.Core
             sb.Append(")");
             return sb.ToString();
         }
+    }
+
+    public class CallingConventionEmitter : ICallingConventionEmitter
+    {
     }
 }

@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void Setup()
         {
             this.cc = new X86_64CallingConvention();
-            this.ccr = new ICallingConventionEmitter();
+            this.ccr = new CallingConventionEmitter();
         }
 
         private void AssertEqual(string sExp, ICallingConventionEmitter ccr)

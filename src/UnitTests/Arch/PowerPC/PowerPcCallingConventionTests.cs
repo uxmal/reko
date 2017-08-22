@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         private void Given_CallingConvention()
         {
             this.cc = new PowerPcCallingConvention(arch);
-            this.ccr = new ICallingConventionEmitter();
+            this.ccr = new CallingConventionEmitter();
         }
 
         [Test]

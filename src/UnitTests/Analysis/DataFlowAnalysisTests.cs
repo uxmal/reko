@@ -339,20 +339,20 @@ ProcedureBuilder_exit:
             this.CSignature = CSignature;
         }
 
-        protected override void RunTest(Program prog, TextWriter writer)
+        protected override void RunTest(Program program, TextWriter writer)
 		{
-            SetCSignatures(prog);
+            SetCSignatures(program);
             IImportResolver importResolver = mr.Stub<IImportResolver>();
             importResolver.Replay();
-			dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
+			dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				writer.Write("// ");
                 var sig = flow.Signature ?? proc.Signature;
                 sig.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, writer);
-				flow.Emit(prog.Architecture, writer);
+				flow.Emit(program.Architecture, writer);
 				proc.Write(false, writer);
 				writer.WriteLine();
 			}

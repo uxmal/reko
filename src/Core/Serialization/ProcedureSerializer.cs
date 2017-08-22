@@ -159,7 +159,7 @@ namespace Reko.Core.Serialization
                 // parameters
 
                 var cc = platform.GetCallingConvention(ss.Convention);
-                var res = new ICallingConventionEmitter();
+                var res = new CallingConventionEmitter();
                 cc.Generate(res, dtRet, dtThis, dtParameters);
                 if (res.Return != null)
                 {

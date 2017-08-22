@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         {
             var arch = new MipsBe32Architecture();
             var cc = new MipsCallingConvention(arch);
-            var ccr = new ICallingConventionEmitter();
+            var ccr = new CallingConventionEmitter();
             cc.Generate(ccr, null, null, args.ToList());
             Assert.AreEqual(sExp.Trim(), ccr.ToString());
         }

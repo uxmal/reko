@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         private void Given_32bit_CallingConvention(string cConvention)
         {
-            this.ccr = new ICallingConventionEmitter();
+            this.ccr = new CallingConventionEmitter();
             this.deserializer = new FakeTypeDeserializer(4);
             X86CallingConvention cc;
             switch (cConvention)

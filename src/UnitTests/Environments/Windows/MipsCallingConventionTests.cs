@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             var cc = new MipsCallingConvention(arch);
             this.cc = cc;
-            this.ccr = new ICallingConventionEmitter();
+            this.ccr = new CallingConventionEmitter();
         }
 
         [Test]
