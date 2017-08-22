@@ -1,5 +1,5 @@
-=== CB80.dcproject
-*** CB80.dcproject
+=== CPM-80\CB80.dcproject
+*** CPM-80\CB80.dcproject
 020A: warning: Call target address 172D is invalid.
 0105: warning: Call target address 1729 is invalid.
 0224: warning: Call target address 177D is invalid.
@@ -225,8 +225,8 @@ fn106E: warning: Structure analysis stopped making progress, quitting. Please re
 fn1229: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn130B: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
-=== redir
-*** redir
+=== Elf-MIPS\redir
+*** Elf-MIPS\redir
 main: error: An error occurred while rewriting procedure to high-level language.
     Sequence contains no elements
        at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
@@ -264,8 +264,8 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 1000002C: warning: Expected sizes of arrays to have been determined by now
 100007E0: warning: Expected sizes of arrays to have been determined by now
 
-=== ipcalc.dcproject
-*** ipcalc.dcproject
+=== Elf-RiscV\ipcalc\ipcalc.dcproject
+*** Elf-RiscV\ipcalc\ipcalc.dcproject
 fn0000000000015F94: error: An error occurred during data flow analysis.
     Index was outside the bounds of the array.
        at Reko.Analysis.SsaTransform.LocateDefinedVariables.MarkDefined(Identifier eDef) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 266
@@ -310,8 +310,8 @@ fn00000000000164D0: warning: Structure analysis stopped making progress, quittin
 fn0000000000016830: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn00000000000173D4: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
-=== sparc-rtems-unprotoize
-*** sparc-rtems-unprotoize
+=== Elf-Sparc\rtems\sparc-rtems-unprotoize
+*** Elf-Sparc\rtems\sparc-rtems-unprotoize
 00011698: error: An error occurred while processing instruction at address 00011698.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1569,8 +1569,8 @@ _getopt_internal: error: An error occurred while rewriting procedure to high-lev
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 
-=== ls
-*** ls
+=== Elf-x86-64\ls
+*** Elf-x86-64\ls
 00000000004028FB: warning: Unable to resolve imported reference setlocale.
 000000000040290A: warning: Unable to resolve imported reference bindtextdomain.
 0000000000411EF1: warning: Unable to resolve imported reference __cxa_atexit.
@@ -2014,8 +2014,8 @@ fn0000000000411360: error: An error occurred while rewriting procedure to high-l
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 
-=== ais3_crackme
-*** ais3_crackme
+=== Elf-x86-64\ais3_crackme\ais3_crackme
+*** Elf-x86-64\ais3_crackme\ais3_crackme
 000000000040050F: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000400487: error: An error occurred while processing instruction at address 0000000000400487.
     Expected stack depth to be negative.
@@ -2076,8 +2076,8 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 
-=== pngpixel
-*** pngpixel
+=== Elf-x86-64\pngpixel\pngpixel
+*** Elf-x86-64\pngpixel\pngpixel
 0000000000401348: warning: Unable to resolve imported reference atol.
 0000000000401362: warning: Unable to resolve imported reference atol.
 00000000004013B1: warning: Unable to resolve imported reference png_create_read_struct.
@@ -2190,8 +2190,8 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Core.Types.VoidType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\VoidType.cs:line 51
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 
-=== BENCHFN
-*** BENCHFN
+=== Hunk-m68k\BENCHFN
+*** Hunk-m68k\BENCHFN
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001BF0: error: An error occurred while processing the statement d0_1425 = a2_1422 - a4_145.
@@ -2208,8 +2208,8 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 0000288D: warning: Expected sizes of arrays to have been determined by now
 00003EAC: warning: Expected sizes of arrays to have been determined by now
 
-=== BENCHLNG
-*** BENCHLNG
+=== Hunk-m68k\BENCHLNG
+*** Hunk-m68k\BENCHLNG
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001444: error: An error occurred while processing the statement branch d2_107 - Mem163[fp + 0xFFFFFFF0:word32] < 0x00000000 l0000144A.
@@ -2236,8 +2236,8 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 000028C5: warning: Expected sizes of arrays to have been determined by now
 00003E5C: warning: Expected sizes of arrays to have been determined by now
 
-=== BENCHMUL
-*** BENCHMUL
+=== Hunk-m68k\BENCHMUL
+*** Hunk-m68k\BENCHMUL
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001E78: error: An error occurred while processing the statement d0_1453 = a2_1450 - a4_147.
@@ -2254,8 +2254,8 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 00002B15: warning: Expected sizes of arrays to have been determined by now
 00004134: warning: Expected sizes of arrays to have been determined by now
 
-=== BYTEOPS
-*** BYTEOPS
+=== Hunk-m68k\BYTEOPS
+*** Hunk-m68k\BYTEOPS
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001BB8: error: An error occurred while processing the statement d0_1425 = a2_1422 - a4_145.
@@ -2270,8 +2270,8 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 00002BC4: warning: Expected sizes of arrays to have been determined by now
 00002BC4: warning: Expected sizes of arrays to have been determined by now
 
-=== FIBO
-*** FIBO
+=== Hunk-m68k\FIBO
+*** Hunk-m68k\FIBO
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001C14: error: An error occurred while processing the statement d0_1425 = a2_1422 - a4_145.
@@ -2288,9 +2288,9 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 000028B1: warning: Expected sizes of arrays to have been determined by now
 00003ED0: warning: Expected sizes of arrays to have been determined by now
 
-=== MATRIXMU
-=== MAX
-*** MAX
+=== Hunk-m68k\MATRIXMU
+=== Hunk-m68k\MAX
+*** Hunk-m68k\MAX
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00003694: error: An error occurred while processing the statement d0_1453 = a2_1450 - a4_147.
@@ -2307,9 +2307,9 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 00002BED: warning: Expected sizes of arrays to have been determined by now
 00003DCC: warning: Expected sizes of arrays to have been determined by now
 
-=== STRLEN
-=== TESTLONG
-*** TESTLONG
+=== Hunk-m68k\STRLEN
+=== Hunk-m68k\TESTLONG
+*** Hunk-m68k\TESTLONG
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001B78: error: An error occurred while processing the statement d0_1425 = a2_1422 - a4_145.
@@ -2326,9 +2326,9 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 00002815: warning: Expected sizes of arrays to have been determined by now
 00003DAC: warning: Expected sizes of arrays to have been determined by now
 
-=== const.o
-=== BENCHFN.dcproject
-*** BENCHFN.dcproject
+=== MachO\const.o
+=== MZ-x86\BENCHFN.dcproject
+*** MZ-x86\BENCHFN.dcproject
 0800:1782: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1895: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:196C: warning: Procedure fn0800_16F3 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -2423,8 +2423,8 @@ fn0800_16F3: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 
-=== space.sav
-*** space.sav
+=== PDP-11\space.sav
+*** PDP-11\space.sav
 46BE: warning: No valid entries could be found in jump vector.
 1368: warning: Procedure fn1366 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 136C: warning: Procedure fn1366 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -2931,8 +2931,8 @@ fn1DAE: error: An error occurred while rewriting procedure to high-level languag
 00005A3E: warning: Expected sizes of arrays to have been determined by now
 00005A66: warning: Expected sizes of arrays to have been determined by now
 
-=== spcinv.sav
-*** spcinv.sav
+=== PDP-11\spcinv.sav
+*** PDP-11\spcinv.sav
 02C2: error: An error occurred while processing instruction at address 02C2.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -3053,8 +3053,8 @@ fn0200: error: An error occurred while rewriting procedure to high-level languag
 00000EF3: warning: Expected sizes of arrays to have been determined by now
 00000F2A: warning: Expected sizes of arrays to have been determined by now
 
-=== lunar.lda
-*** lunar.lda
+=== PDP-11\lunar.lda
+*** PDP-11\lunar.lda
 0B70: warning: Procedure fn0B06 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0AF2: warning: Procedure fn0A94 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0B6C: error: An error occurred while processing instruction at address 0B6C.
@@ -3139,14 +3139,14 @@ fn0AF6: error: An error occurred while rewriting procedure to high-level languag
 000028F8: warning: Expected sizes of arrays to have been determined by now
 000034E0: warning: Expected sizes of arrays to have been determined by now
 
-=== Demo.exe
-=== import-ordinals.dcproject
-=== Executable.exe
-=== pySample.dcproject
-=== RussianText.exe
-=== VCExeSample.dcproject
-=== varargs_test.exe
-*** varargs_test.exe
+=== PE\x86\demo_upx\Demo.exe
+=== PE\x86\import-ordinals\import-ordinals.dcproject
+=== PE-x86\ExeDll\Executable.exe
+=== PE-x86\pySample\pySample.dcproject
+=== PE-x86\RussianText\RussianText.exe
+=== PE-x86\VCExeSample\VCExeSample.dcproject
+=== PE-x86-64\varargs_test\varargs_test.exe
+*** PE-x86-64\varargs_test\varargs_test.exe
 0000000140001A14: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
 0000000140001E46: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_thread_local_exe_atexit_callback.
 0000000140001E34: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argv.
@@ -3202,8 +3202,8 @@ fn00000001400011B0: error: An error occurred while rewriting procedure to high-l
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 
-=== test
-*** test
+=== regressions\angr-148\test
+*** regressions\angr-148\test
 00000000004003F0: warning: Unable to resolve imported reference __gmon_start__.
 000000000040051F: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000400497: error: An error occurred while processing instruction at address 0000000000400497.
@@ -3265,11 +3265,11 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 
-=== m68k_jump.dcproject
-=== a.out
-=== code.dcproject
-=== PP.EXE
-*** PP.EXE
+=== regressions\reko-121\m68k_jump.dcproject
+=== regressions\reko-351\a.out
+=== regressions\reko-367\code.dcproject
+=== regressions\reko-90\PP.EXE
+*** regressions\reko-90\PP.EXE
 Borland C v3 runtime detected
 0800:8BC5: warning: Procedure fn0800_8BC2 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -3701,10 +3701,10 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn1483_1BBD: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
-=== switch.dcproject
-=== int16.dll
-=== flags
-=== flags3
-=== TLCS-90.corpus
-=== NGP_IQ.NGP
-=== unzip.dcproject
+=== regressions\snowman-51\switch.dcproject
+=== regressions\snowman-74\int16.dll
+=== regressions\snowman-82\flags
+=== regressions\snowman-83\flags3
+=== TLCS\90\TLCS-90.corpus
+=== TLCS\900\ngp_iq\NGP_IQ.NGP
+=== VMS-vax\unzip.dcproject
