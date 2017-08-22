@@ -56,7 +56,7 @@ namespace Reko.Environments.AtariTOS
             }
             for (int iArg = 0; iArg < dtParams.Count; ++iArg)
             {
-                ccr.Push(dtParams[iArg]);
+                ccr.StackParam(dtParams[iArg]);
             }
             // AFAIK the calling convention on Atari TOS is caller-cleanup, 
             // so the only thing we clean up is the return value on the stack.

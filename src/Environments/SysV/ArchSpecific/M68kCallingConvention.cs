@@ -52,7 +52,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             int stOffset = arch.PointerType.Size;
             foreach (var dtParam in dtParams)
             {
-                ccr.Push(dtParam);
+                ccr.StackParam(dtParam);
             }
             ccr.StackDelta = arch.PointerType.Size;
             return ccr;

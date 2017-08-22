@@ -68,18 +68,17 @@ namespace Reko.Arch.X86
             if (ccr.Return is FpuStackStorage)
                 fpuStackDelta = 1;
 
-            Storage stgThis = null;
             if (dtThis != null)
             {
-                ccr.Push(dtThis);
-                stgThis = ccr.Parameters[0];
+                ccr.StackParam(dtThis);
+                ccr.ImplicitThis = ccr.Parameters[0];
                 ccr.Parameters.Clear();
             }
             if (reverseArguments)
             {
                 for (int i = dtParams.Count - 1; i >= 0; --i)
                 {
-                    ccr.Push(dtParams[i]);
+                    ccr.StackParam(dtParams[i]);
                 }
                 ccr.Parameters.Reverse();
             }
@@ -87,10 +86,9 @@ namespace Reko.Arch.X86
             {
                 for (int i = 0; i < dtParams.Count; ++i)
                 {
-                    ccr.Push(dtParams[i]);
+                    ccr.StackParam(dtParams[i]);
                 }
             }
-            ccr.ImplicitThis = stgThis;
             ccr.FpuStackDelta = fpuStackDelta;
             ccr.StackDelta = callerCleanup ? retAddressOnStack : ccr.stackOffset;
             return ccr;

@@ -49,7 +49,7 @@ namespace Reko.Arch.X86
 
             for (int i = 0; i < dtParams.Count; ++i)
             {
-                ccr.Push(dtParams[i]);
+                ccr.StackParam(dtParams[i]);
             }
 
             ccr.ImplicitThis = this.ecxThis;

@@ -75,20 +75,18 @@ namespace Reko.Environments.SysV.ArchSpecific
                         ++ir;
                     if (ir >= fregs.Length)
                     {
-                        ccr.Push(dtParam);
+                        ccr.StackParam(dtParam);
                     }
                     else
                     {
                         if (prim.Size == 4)
                         {
-                            ccr.Push(fregs[ir]);
+                            ccr.RegParam(fregs[ir]);
                             ir += 1;
                         }
                         else if (prim.Size == 8)
                         {
-                            ccr.Push(new SequenceStorage(
-                                fregs[ir],
-                                fregs[ir + 1]));
+                            ccr.SequenceParam(fregs[ir], fregs[ir + 1]);
                             ir += 2;
                         }
                         else
@@ -105,11 +103,11 @@ namespace Reko.Environments.SysV.ArchSpecific
                     {
                         if (ir >= 4)
                         {
-                            ccr.Push(dtParam);
+                            ccr.StackParam(dtParam);
                         }
                         else
                         {
-                            ccr.Push(iregs[ir]);
+                            ccr.RegParam(iregs[ir]);
                             ++ir;
                         }
                     }
@@ -119,13 +117,11 @@ namespace Reko.Environments.SysV.ArchSpecific
                             ++ir;
                         if (ir >= 4)
                         {
-                            ccr.Push(dtParam);
+                            ccr.StackParam(dtParam);
                         }
                         else
                         {
-                            ccr.Push(new SequenceStorage(
-                                iregs[ir],
-                                iregs[ir + 1]));
+                            ccr.SequenceParam(iregs[ir], iregs[ir + 1]);
                             ir += 2;
                         }
                     }

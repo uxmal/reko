@@ -127,21 +127,21 @@ namespace Reko.Arch.RiscV
                 {
                     if (ir >= fregs.Length)
                     {
-                        ccr.Push(dtParam);
+                        ccr.StackParam(dtParam);
                     }
                     else
                     {
-                        ccr.Push(fregs[ir]);
+                        ccr.RegParam(fregs[ir]);
                         ++ir;
                     }
                 }
                 else if (ir >= iregs.Length)
                 {
-                    ccr.Push(dtParam);
+                    ccr.StackParam(dtParam);
                 }
                 else if (dtParam.Size <= arch.PointerType.Size)
                 {
-                    ccr.Push(iregs[ir]);
+                    ccr.RegParam(iregs[ir]);
                     ++ir;
                 }
                 else if (dtParam.Size <= arch.PointerType.Size * 2)
@@ -150,11 +150,11 @@ namespace Reko.Arch.RiscV
                         ++ir;
                     if (ir >= iregs.Length)
                     {
-                        ccr.Push(dtParam);
+                        ccr.StackParam(dtParam);
                     }
                     else
                     {
-                        ccr.Push(new SequenceStorage(iregs[ir + 1], iregs[ir]));
+                        ccr.SequenceParam(iregs[ir + 1], iregs[ir]);
                         ir += 2;
                     }
                 }

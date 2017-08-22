@@ -49,7 +49,7 @@ namespace Reko.Environments.RT11
             {
                 var arg = arch.GetRegister("r" + gr);
                 ++gr;
-                ccr.Push(arg);
+                ccr.RegParam(arg);
             }
             ccr.StackDelta = 2;
             return ccr;

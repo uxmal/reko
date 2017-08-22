@@ -73,15 +73,15 @@ namespace Reko.Environments.Windows
                 var pt = dt as PrimitiveType;
                 if (pt != null && pt.Domain == Domain.Real && i < fRegs.Length)
                 {
-                    ccr.Push(fRegs[i]);
+                    ccr.RegParam(fRegs[i]);
                 }
                 else if (i < iRegs.Length)
                 {
-                    ccr.Push(iRegs[i]);
+                    ccr.RegParam(iRegs[i]);
                 }
                 else
                 {
-                    ccr.Push(dt);
+                    ccr.StackParam(dt);
                 }
             }
             ccr.StackDelta = 8;

@@ -70,11 +70,11 @@ namespace Reko.Environments.SysV.ArchSpecific
                 {
                     if (fr >= fregs.Length)
                     {
-                        ccr.Push(dtParam);
+                        ccr.StackParam(dtParam);
                     }
                     else
                     {
-                        ccr.Push(fregs[fr]);
+                        ccr.RegParam(fregs[fr]);
                         ++fr;
                     }
                 }
@@ -82,11 +82,11 @@ namespace Reko.Environments.SysV.ArchSpecific
                 {
                     if (ir >= iregs.Length)
                     {
-                        ccr.Push(dtParam);
+                        ccr.StackParam(dtParam);
                     }
                     else
                     {
-                        ccr.Push(iregs[ir]);
+                        ccr.RegParam(iregs[ir]);
                         ++ir;
                     }
                 }
@@ -95,7 +95,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                     int regsNeeded = (dtParam.Size + 7) / 8;
                     if (regsNeeded > 4 || ir + regsNeeded >= iregs.Length)
                     {
-                        ccr.Push(dtParam);
+                        ccr.StackParam(dtParam);
                     }
                     else
                         throw new NotImplementedException();

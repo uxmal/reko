@@ -65,11 +65,11 @@ namespace Reko.Environments.SysV.ArchSpecific
                 {
                     if (ir >= regs.Length)
                     {
-                        ccr.Push(dtArg);
+                        ccr.StackParam(dtArg);
                     }
                     else
                     {
-                        ccr.Push(regs[ir]);
+                        ccr.RegParam(regs[ir]);
                         ++ir;
                     }
                 }

@@ -73,11 +73,11 @@ namespace Reko.Environments.Windows
                 {
                     if (fr >= fregs.Length)
                     {
-                        ccr.Push(dtArg);
+                        ccr.StackParam(dtArg);
                     }
                     else
                     {
-                       ccr.Push(fregs[fr]);
+                       ccr.RegParam(fregs[fr]);
                        ++fr;
                     }
                 }
@@ -85,11 +85,11 @@ namespace Reko.Environments.Windows
                 {
                     if (ir >= iregs.Length)
                     {
-                        ccr.Push(dtArg);
+                        ccr.StackParam(dtArg);
                     }
                     else
                     {
-                        ccr.Push(iregs[ir]);
+                        ccr.RegParam(iregs[ir]);
                         ++ir;
                     }
                 }
@@ -98,13 +98,11 @@ namespace Reko.Environments.Windows
                     int regsNeeded = (dtArg.Size + 3) / 4;
                     if (regsNeeded > 4 || ir + regsNeeded >= iregs.Length)
                     {
-                        ccr.Push(dtArg);
+                        ccr.StackParam(dtArg);
                     }
                     if (regsNeeded == 2)
                     {
-                        ccr.Push(new SequenceStorage(
-                            iregs[ir],
-                            iregs[ir + 1]));
+                        ccr.SequenceParam(iregs[ir], iregs[ir + 1]);
                         ir += 2;
                     }
                     else

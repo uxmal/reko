@@ -36,7 +36,7 @@ namespace Reko.Core
     {
         public Storage Return;
         public Storage ImplicitThis;
-        public List<Storage> Parameters;
+        public readonly List<Storage> Parameters;
         public int StackDelta;
         public int FpuStackDelta;
 
@@ -50,22 +50,40 @@ namespace Reko.Core
             this.Parameters = new List<Storage>();
         }
 
-        public int Align(int n, int quantum)
+        public static int Align(int n, int quantum)
         {
             int units = (n + quantum - 1) / quantum;
             return units * quantum;
         }
 
-        public void Push(Storage stg)
+        /// <summary>
+        /// Add a register parameter.
+        /// </summary>
+        /// <param name="stg"></param>
+        public void RegParam(RegisterStorage stg)
         {
             this.Parameters.Add(stg);
         }
 
-        public void Push(DataType dt)
+        /// <summary>
+        /// Add a stack parameter of the type dt.
+        /// </summary>
+        /// <param name="dt"></param>
+        public void StackParam(DataType dt)
         {
             var stg = new StackArgumentStorage(stackOffset, dt);
             stackOffset += Align(dt.Size, stackAlignment);
             Parameters.Add(stg);
+        }
+
+        /// <summary>
+        /// Add a sequence parameter.
+        /// </summary>
+        /// <param name="stgHi"></param>
+        /// <param name="stgLo"></param>
+        public void SequenceParam(RegisterStorage stgHi, RegisterStorage stgLo)
+        {
+            this.Parameters.Add(new SequenceStorage(stgHi, stgLo));
         }
 
         public override string ToString()

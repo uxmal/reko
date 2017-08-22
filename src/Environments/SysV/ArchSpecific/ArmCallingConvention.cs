@@ -62,20 +62,20 @@ namespace Reko.Environments.SysV.ArchSpecific
                 {
                     if (sizeInWords == 2)
                     {
-                        ccr.Push(new SequenceStorage(
+                        ccr.SequenceParam(
                             argRegs[ncrn],
-                            argRegs[ncrn + 1]));
+                            argRegs[ncrn + 1]);
                         ncrn += 2;
                     }
                     else
                     {
-                        ccr.Push(argRegs[ncrn]);
+                        ccr.RegParam(argRegs[ncrn]);
                         ncrn += 1;
                     }
                 }
                 else
                 {
-                    ccr.Push(dt);
+                    ccr.StackParam(dt);
                 }
             }
             return ccr;

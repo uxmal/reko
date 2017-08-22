@@ -190,13 +190,14 @@ namespace Reko.Scanning
         {
             var fixedArgs = sig.Parameters.TakeWhile(p => p.Name != "...").ToList();
             var cc = platform.GetCallingConvention(""); //$REVIEW: default CC tends to be __cdecl.
+            var allTypes = fixedArgs
+                .Select(p => p.DataType)
+                .Concat(argumentTypes)
+                .ToList();
             var ccr = cc.Generate(
                 sig.ReturnValue.DataType,
                 null, //$TODO: what to do about implicit this?
-                fixedArgs
-                    .Select(p => p.DataType)
-                    .Concat(argumentTypes)
-                    .ToList());
+                allTypes);
             var varArgs = argumentTypes.Zip(
                 ccr.Parameters.Skip(fixedArgs.Count),
                 (t, s) => new Identifier("", t, s));

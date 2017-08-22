@@ -65,11 +65,11 @@ namespace Reko.Arch.PowerPC
                 {
                     if (fr >= fregs.Length)
                     {
-                        ccr.Push(dtArg);
+                        ccr.StackParam(dtArg);
                     }
                     else
                     {
-                        ccr.Push(fregs[fr]);
+                        ccr.RegParam(fregs[fr]);
                         ++fr;
                     }
                 }
@@ -77,11 +77,11 @@ namespace Reko.Arch.PowerPC
                 {
                     if (gr >= iregs.Length)
                     {
-                        ccr.Push(dtArg);
+                        ccr.StackParam(dtArg);
                     }
                     else
                     {
-                        ccr.Push(iregs[gr]);
+                        ccr.RegParam(iregs[gr]);
                         ++gr;
                     }
                 }
@@ -89,15 +89,13 @@ namespace Reko.Arch.PowerPC
                 {
                     if (gr >= iregs.Length-1)
                     {
-                        ccr.Push(dtArg);
+                        ccr.StackParam(dtArg);
                     }
                     else
                     {
                         if ((gr & 1) == 1)
                             ++gr;
-                        ccr.Push(new SequenceStorage(
-                            iregs[gr],
-                            iregs[gr + 1]));
+                        ccr.SequenceParam(iregs[gr], iregs[gr + 1]);
                         gr += 2;
                     }
                 }
