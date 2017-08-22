@@ -215,7 +215,7 @@ namespace Reko.UnitTests.Scanning
             Given_StackString(4, "%d %f %s ");
             Assert.IsTrue(vafs.TryScan(addrInstr, x86_64PrintfSig, printfChr));
             var c = Constant.Word32(666);
-            var instr = vafs.BuildInstruction(c, new CallSite(4, 0));
+            var instr = vafs.BuildInstruction(c, new CallSite(4, 0), printfChr);
             Assert.AreEqual(
                 "0x0000029A(Mem0[esp:(ptr char)], Mem0[esp + 4:int32], " +
                            "Mem0[esp + 8:real64])",
