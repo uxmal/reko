@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void X86_64Cc_AllInts()
         {
             var ccr = cc.Generate(i32, null, new List<DataType> { i32, i32, i32, i32, i32, Ptr(i32) });
-            Assert.AreEqual("Stk: 8 rax (rcx, rdx, r8, r9, Stack +0028, Stack +0030)", ccr.ToString());
+            Assert.AreEqual("Stk: 8 eax (rcx, rdx, r8, r9, Stack +0028, Stack +0030)", ccr.ToString());
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void X86_64Cc_MixedIntsFloats()
         {
             var ccr = cc.Generate(i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, r32 });
-            Assert.AreEqual("Stk: 8 rax (rcx, xmm1, r8, xmm3, Stack +0028)", ccr.ToString());
+            Assert.AreEqual("Stk: 8 eax (rcx, xmm1, r8, xmm3, Stack +0028)", ccr.ToString());
         }
 
 
@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void X86_64Cc_SmallStackArguments()
         {
             var ccr = cc.Generate(i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, i8, i8, i8 });
-            Assert.AreEqual("Stk: 8 rax (rcx, xmm1, r8, xmm3, Stack +0028, Stack +0030, Stack +0038)", ccr.ToString());
+            Assert.AreEqual("Stk: 8 eax (rcx, xmm1, r8, xmm3, Stack +0028, Stack +0030, Stack +0038)", ccr.ToString());
         }
     }
 }

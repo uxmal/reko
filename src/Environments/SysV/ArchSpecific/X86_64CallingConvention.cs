@@ -34,6 +34,9 @@ namespace Reko.Environments.SysV.ArchSpecific
         private IProcessorArchitecture arch;
         private RegisterStorage[] iregs;
         private RegisterStorage[] fregs;
+        private RegisterStorage al;
+        private RegisterStorage ax;
+        private RegisterStorage eax;
         private RegisterStorage rax;
         private RegisterStorage rdx;
 
@@ -46,6 +49,9 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.fregs = new []{ "xmm0", "xmm1", "xmm2", "xmm3", "xmm4", "xmm5", "xmm6", "xmm7" }
                 .Select(r => arch.GetRegister(r))
                 .ToArray();
+            this.al = arch.GetRegister("al");
+            this.ax = arch.GetRegister("ax");
+            this.eax = arch.GetRegister("eax");
             this.rax = arch.GetRegister("rax");
             this.rdx = arch.GetRegister("rdx");
         }
@@ -122,6 +128,12 @@ namespace Reko.Environments.SysV.ArchSpecific
                 }
                 throw new NotImplementedException();
             }
+            if (bitSize <= 8)
+                return al;
+            if (bitSize <= 16)
+                return ax;
+            if (bitSize <= 32)
+                return eax;
             if (bitSize <= 64)
                 return rax;
             if (bitSize <= 128)

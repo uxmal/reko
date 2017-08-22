@@ -63,7 +63,7 @@ namespace Reko.Arch.X86
         {
             var ccr = new CallingConventionResult(stackAlignment, retAddressOnStack);
             int fpuStackDelta = 0;
-            ccr.Return = GetReturnStorage(dtRet);
+            ccr.Return = GetReturnStorage(dtRet, stackAlignment);
 
             if (ccr.Return is FpuStackStorage)
                 fpuStackDelta = 1;
@@ -94,7 +94,7 @@ namespace Reko.Arch.X86
             return ccr;
         }
 
-        public static Storage GetReturnStorage(DataType dtRet)
+        public static Storage GetReturnStorage(DataType dtRet, int stackAlignment)
         {
             if (dtRet == null)
                 return null;
@@ -117,9 +117,20 @@ namespace Reko.Arch.X86
                 {
                     stgRet = new SequenceStorage(Registers.edx, Registers.eax);
                 }
-                else if (retSize > 0)
+                else if (retSize > 2)
                 {
-                    stgRet = Registers.eax;
+                    if (stackAlignment == 4)
+                        stgRet = Registers.eax;
+                    else
+                        stgRet = new SequenceStorage(Registers.dx, Registers.ax);
+                }
+                else if (retSize > 1)
+                {
+                    stgRet = Registers.ax;
+                }
+                else
+                {
+                    stgRet = Registers.al;
                 }
             }
             return stgRet;

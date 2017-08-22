@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.Intel
             platform = new Win32Platform(null, arch);
         }
 
-        private void Given_CallingConvention(string cConvention)
+        private void Given_32bit_CallingConvention(string cConvention)
         {
             this.deserializer = new FakeTypeDeserializer(4);
             X86CallingConvention cc;
@@ -74,6 +74,28 @@ namespace Reko.UnitTests.Arch.Intel
                 break;
             case "pascal":
                 cc = new X86CallingConvention(4, 4, 4, false, true);
+                break;
+            default: throw new NotImplementedException(cConvention + " not supported.");
+            }
+            this.cc = cc;
+        }
+
+        private void Given_16bit_CallingConvention(string cConvention)
+        {
+            this.deserializer = new FakeTypeDeserializer(4);
+            X86CallingConvention cc;
+            switch (cConvention)
+            {
+            case "__cdecl":
+                cc = new X86CallingConvention(4, 2, 4, true, false);
+                break;
+            case "stdapi":
+            case "stdcall":
+            case "__stdcall":
+                cc = new X86CallingConvention(4, 2, 4, false, false);
+                break;
+            case "pascal":
+                cc = new X86CallingConvention(4, 2, 4, false, true);
                 break;
             default: throw new NotImplementedException(cConvention + " not supported.");
             }
@@ -112,7 +134,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Cc_Load_cdecl()
         {
-            Given_CallingConvention("__cdecl");
+            Given_32bit_CallingConvention("__cdecl");
             var ccr = cc.Generate(null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 4 void (Stack +0004)", ccr.ToString());
         }
@@ -120,7 +142,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Cc_Load_stdapi()
         {
-            Given_CallingConvention("stdapi");
+            Given_32bit_CallingConvention("stdapi");
             var ccr = cc.Generate(null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 8 void (Stack +0004)", ccr.ToString());
         }
@@ -128,7 +150,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Cc_Load_stdcall()
         {
-            Given_CallingConvention("stdcall");
+            Given_32bit_CallingConvention("stdcall");
             var ccr = cc.Generate(null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 8 void (Stack +0004)", ccr.ToString());
         }
@@ -136,7 +158,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Cc_Load___stdcall()
         {
-            Given_CallingConvention("stdcall");
+            Given_32bit_CallingConvention("stdcall");
             var ccr = cc.Generate(null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 8 void (Stack +0004)", ccr.ToString());
         }
@@ -161,7 +183,7 @@ namespace Reko.UnitTests.Arch.Intel
                     }
                 }
             };
-            Given_CallingConvention("pascal");
+            Given_32bit_CallingConvention("pascal");
             var ccr = cc.Generate(null, null, new List<DataType> { i16, i32 });
             Assert.AreEqual("Stk: 12 void (Stack +0008, Stack +0004)", ccr.ToString());
         }
@@ -206,10 +228,38 @@ namespace Reko.UnitTests.Arch.Intel
         [Test(Description = "Ensure FPU stack effects are accounted for when returning floats")]
         public void X86Cc_Load_FpuReturnValue()
         {
-            Given_CallingConvention("__cdecl");
-
+            Given_32bit_CallingConvention("__cdecl");
             var ccr = cc.Generate(r64, null, new List<DataType> ());
             Assert.AreEqual("Stk: 4 Fpu: 1 FPU stack ()", ccr.ToString());
         }
+
+        [Test]
+        public void X86Cc_Return_bool()
+        {
+            var stg = X86CallingConvention.GetReturnStorage(PrimitiveType.Bool, 2);
+            Assert.AreEqual("al", stg.ToString());
+        }
+
+        [Test]
+        public void X86Cc_Return_16bit_long()
+        {
+            var stg = X86CallingConvention.GetReturnStorage(PrimitiveType.Int32, 2);
+            Assert.AreEqual("Sequence dx:ax", stg.ToString());
+        }
+
+        [Test]
+        public void X86Cc_Return_32bit_long()
+        {
+            var stg = X86CallingConvention.GetReturnStorage(PrimitiveType.Int32, 4);
+            Assert.AreEqual("eax", stg.ToString());
+        }
+
+        [Test]
+        public void X86Cc_Return_64bit_long()
+        {
+            var stg = X86CallingConvention.GetReturnStorage(PrimitiveType.UInt64, 4);
+            Assert.AreEqual("Sequence edx:eax", stg.ToString());
+        }
     }
 }
+

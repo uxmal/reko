@@ -21,11 +21,11 @@ void _init()
 	return;
 }
 
-// 0000000000400440: void _start(Register word64 rax, Register (ptr Eq_17) rdx, Stack Eq_18 qwArg00, Stack word32 dwArg04)
-void _start(word64 rax,  * rdx, Eq_18 qwArg00, word32 dwArg04)
+// 0000000000400440: void _start(Register (ptr Eq_16) rdx, Stack Eq_17 qwArg00, Stack word32 dwArg04)
+void _start( * rdx, Eq_17 qwArg00, word32 dwArg04)
 {
 	__align(fp + 0x08);
-	word64 rax_22 = DPB(rax, __libc_start_main(&globals->t40053D, qwArg00, fp + 0x08, &globals->t400550, &globals->t4005C0, rdx, DPB(qwArg00, fp + 0x04, 0)), 0);
+	__libc_start_main(&globals->t40053D, qwArg00, fp + 0x08, &globals->t400550, &globals->t4005C0, rdx, DPB(qwArg00, fp + 0x04, 0));
 	__hlt();
 }
 
@@ -122,17 +122,17 @@ l0000000000400528:
 frame_dummy_exit:
 }
 
-// 000000000040052D: Register ptr64 f(Register uint64 rax)
-ptr64 f(uint64 rax)
+// 000000000040052D: Register ptr64 f()
+ptr64 f()
 {
-	word64 rax_9 = DPB(rax, putchar(0x78), 0);
+	putchar(0x78);
 	return fp + 0x04;
 }
 
 // 000000000040053D: void main()
 void main()
 {
-	f(0x00);
+	f();
 	return;
 }
 

@@ -60,8 +60,20 @@ namespace Reko.Environments.Windows
                 {
                     ccr.Return = Registers.xmm0;
                 }
-                else
+                else if (dtRet.Size <= 1)
                 {
+                    ccr.Return = Registers.al;
+                }
+                else if (dtRet.Size <= 2)
+                {
+                    ccr.Return = Registers.ax;
+                }
+                else if (dtRet.Size <= 4)
+                {
+                    ccr.Return = Registers.eax;
+                }
+                else
+                { 
                     ccr.Return = Registers.rax;
                 }
             }

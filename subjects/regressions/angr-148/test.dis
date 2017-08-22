@@ -47,10 +47,10 @@ _init_exit:
 
 
 
-void _start(word64 rax, word64 rdx, word64 qwArg00, word32 dwArg04)
+void _start(word64 rdx, word64 qwArg00, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rax rdx
+// MayUse:  rdx
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -62,14 +62,14 @@ _start_exit:
 // SymbolicIn:
 
 _start_entry:
-// DataOut: rax rdx
+// DataOut: rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64) Stack +0000(64)
 
 l0000000000400440:
 	__align(fp + 0x0000000000000008)
-	word64 rax_22 = DPB(rax, __libc_start_main(0x000000000040053D, qwArg00, fp + 0x0000000000000008, 0x0000000000400550, 0x00000000004005C0, rdx, DPB(qwArg00, fp + 0x0000000000000004, 0)), 0)
+	__libc_start_main(0x000000000040053D, qwArg00, fp + 0x0000000000000008, 0x0000000000400550, 0x00000000004005C0, rdx, DPB(qwArg00, fp + 0x0000000000000004, 0))
 	__hlt()
 // DataOut:
 // DataOut (flags): 
@@ -354,21 +354,21 @@ frame_dummy_exit:
 
 
 
-word64 f(word64 rax)
+word64 f()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rax
+// MayUse: 
 // LiveOut: rsp
 // Trashed: ah al ax di dil eax edi esp rax rdi rsp sp spl
 // Preserved: rbp
 f_entry:
-// DataOut: rax
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64)
 
 l000000000040052D:
-	word64 rax_9 = DPB(rax, putchar(0x0000000000000078), 0)
+	putchar(0x0000000000000078)
 	return fp + 0x0000000000000004
 // DataOut: rsp
 // DataOut (flags): 
@@ -377,7 +377,7 @@ l000000000040052D:
 f_exit:
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x0000000000000004 rdi:0x0000000000000078 rax:<invalid> rbp:rbp -4(fp):rbp
+// SymbolicIn: rsp:fp + 0x0000000000000004 rdi:0x0000000000000078 eax:<invalid> rbp:rbp -4(fp):rbp
 
 
 
@@ -395,7 +395,7 @@ main_entry:
 // LocalsOut: fp(64)
 
 l000000000040053D:
-	f(0x0000000000000000)
+	f()
 	return
 // DataOut:
 // DataOut (flags): 
@@ -404,7 +404,7 @@ l000000000040053D:
 main_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rbp:<invalid> rax:<invalid> rdi:0x0000000000000078 -4(fp):rbp
+// SymbolicIn: rsp:<invalid> rbp:<invalid> rax:0x0000000000000000 rdi:0x0000000000000078 eax:<invalid> -4(fp):rbp
 
 
 
