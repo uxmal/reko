@@ -29,7 +29,7 @@ namespace Reko.Core
 {
     public abstract class CallingConvention
     {
-        public abstract ICallingConventionEmitter Generate( DataType dtRet, DataType dtThis, List<DataType> dtParams);
+        public abstract ICallingConventionEmitter Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams);
     }
 
     public class ICallingConventionEmitter

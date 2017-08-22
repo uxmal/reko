@@ -40,6 +40,7 @@ namespace Reko.UnitTests.Environments.Windows
         private MockRepository mr;
         private MipsLe32Architecture arch;
         private Reko.Environments.Windows.MipsCallingConvention cc;
+        private ICallingConventionEmitter ccr;
 
         [SetUp]
         public void Setup()
@@ -57,13 +58,14 @@ namespace Reko.UnitTests.Environments.Windows
         {
             var cc = new MipsCallingConvention(arch);
             this.cc = cc;
+            this.ccr = new ICallingConventionEmitter();
         }
 
         [Test]
         public void MipsProcSer_ReturnRegister()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(i32, null, new List<DataType> { });
+            cc.Generate(ccr, i32, null, new List<DataType> { });
             Assert.AreEqual("Stk: 0 r2 ()", ccr.ToString());
         }
 
@@ -71,7 +73,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void MipsProcSet_CharArg()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(null, null,new List<DataType> { Ptr(v) });
+            cc.Generate(ccr, null, null,new List<DataType> { Ptr(v) });
             Assert.AreEqual("Stk: 0 void (r4)", ccr.ToString());
         }
 
@@ -79,7 +81,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void MipsProcSet_ManyArgs()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(null, null, new List<DataType> { Ptr(v), Ptr(v), Ptr(v), Ptr(v), Ptr(v) });
+            cc.Generate(ccr, null, null, new List<DataType> { Ptr(v), Ptr(v), Ptr(v), Ptr(v), Ptr(v) });
             Assert.AreEqual("Stk: 0 void (r4, r5, r6, r7, Stack +0010)", ccr.ToString());
         }
     }

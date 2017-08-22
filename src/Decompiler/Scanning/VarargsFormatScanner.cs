@@ -194,7 +194,9 @@ namespace Reko.Scanning
                 .Select(p => p.DataType)
                 .Concat(argumentTypes)
                 .ToList();
-            var ccr = cc.Generate(
+            var ccr = new ICallingConventionEmitter();
+            cc.Generate(
+                ccr,
                 sig.ReturnValue.DataType,
                 null, //$TODO: what to do about implicit this?
                 allTypes);

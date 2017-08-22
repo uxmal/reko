@@ -34,16 +34,19 @@ namespace Reko.UnitTests.Environments.Windows
     [TestFixture]
     public class X86_64CallingConventionTests
     {
-        private X86_64CallingConvention cc;
         private PrimitiveType i8 = PrimitiveType.Char;
         private PrimitiveType i32 = PrimitiveType.Int32;
         private PrimitiveType r32 = PrimitiveType.Real32;
         private PrimitiveType r64 = PrimitiveType.Real64;
 
+        private X86_64CallingConvention cc;
+        private ICallingConventionEmitter ccr;
+
         [SetUp]
         public void Setup()
         {
             this.cc = new X86_64CallingConvention();
+            this.ccr = new ICallingConventionEmitter();
         }
 
         private void AssertEqual(string sExp, ICallingConventionEmitter ccr)
@@ -59,7 +62,8 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void X86_64_cc_1_Param()
         {
-            var ccr = cc.Generate(
+            cc.Generate(
+                ccr,
                 null,
                 null,
                 new List<DataType> { PrimitiveType.Char });
@@ -70,7 +74,8 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void X86_64_cc_4_Params()
         {
-            var ccr = cc.Generate(
+            cc.Generate(
+                ccr,
                 null,
                 null,
                 new List<DataType> {
@@ -86,7 +91,8 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void X86_64_cc_5_Params()
         {
-            var ccr = cc.Generate(
+            cc.Generate(
+                ccr,
                 null,
                 null,
                 new List<DataType> {
@@ -103,7 +109,8 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void X86_64_cc_5_Real_Params()
         {
-            var ccr = cc.Generate(
+            cc.Generate(
+                ccr,
                 null,
                 null,
                 new List<DataType> { r32, r64, r32, r64, r32 });
@@ -119,21 +126,21 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void X86_64Cc_AllInts()
         {
-            var ccr = cc.Generate(i32, null, new List<DataType> { i32, i32, i32, i32, i32, Ptr(i32) });
+            cc.Generate(ccr, i32, null, new List<DataType> { i32, i32, i32, i32, i32, Ptr(i32) });
             Assert.AreEqual("Stk: 8 eax (rcx, rdx, r8, r9, Stack +0028, Stack +0030)", ccr.ToString());
         }
 
         [Test]
         public void X86_64Cc_AllFloats()
         {
-            var ccr = cc.Generate(r32, null, new List<DataType> { r32, r64, r32, r64, r32 });
+            cc.Generate(ccr, r32, null, new List<DataType> { r32, r64, r32, r64, r32 });
             Assert.AreEqual("Stk: 8 xmm0 (xmm0, xmm1, xmm2, xmm3, Stack +0028)", ccr.ToString());
         }
 
         [Test]
         public void X86_64Cc_MixedIntsFloats()
         {
-            var ccr = cc.Generate(i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, r32 });
+            cc.Generate(ccr, i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, r32 });
             Assert.AreEqual("Stk: 8 eax (rcx, xmm1, r8, xmm3, Stack +0028)", ccr.ToString());
         }
 
@@ -141,7 +148,7 @@ namespace Reko.UnitTests.Environments.Windows
         [Test(Description = "Verifies that small stack arguments are properly aligned on stack")]
         public void X86_64Cc_SmallStackArguments()
         {
-            var ccr = cc.Generate(i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, i8, i8, i8 });
+            cc.Generate(ccr, i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, i8, i8, i8 });
             Assert.AreEqual("Stk: 8 eax (rcx, xmm1, r8, xmm3, Stack +0028, Stack +0030, Stack +0038)", ccr.ToString());
         }
     }

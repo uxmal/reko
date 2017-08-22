@@ -36,9 +36,8 @@ namespace Reko.Environments.RT11
             this.arch = arch;
         }
 
-        public override ICallingConventionEmitter Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public override ICallingConventionEmitter Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            var ccr = new ICallingConventionEmitter();
             ccr.LowLevelDetails(2, 2);
             if (dtRet != null)
             {

@@ -39,12 +39,14 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
     [TestFixture]
     public class X86_64CallingConventionTests
     {
+        private readonly PrimitiveType i8 = PrimitiveType.SByte;
+        private readonly PrimitiveType i16 = PrimitiveType.Int16;
+        private readonly PrimitiveType i32 = PrimitiveType.Int32;
+        private readonly PrimitiveType r64 = PrimitiveType.Real64;
+
         private X86ArchitectureFlat64 arch;
         private X86_64CallingConvention cc;
-        private PrimitiveType i8 = PrimitiveType.SByte;
-        private PrimitiveType i16 = PrimitiveType.Int16;
-        private PrimitiveType i32 = PrimitiveType.Int32;
-        private PrimitiveType r64 = PrimitiveType.Real64;
+        private ICallingConventionEmitter ccr;
 
         [SetUp]
         public void Setup()
@@ -55,13 +57,14 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         private void Given_CallingConvention()
         {
             this.cc = new X86_64CallingConvention(arch);
+            this.ccr = new ICallingConventionEmitter();
         }
 
         [Test]
         public void SvAmdCc_DeserializeFpuArgument()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(i32, null, new List<DataType> { r64 });
+            cc.Generate(ccr, i32, null, new List<DataType> { r64 });
             Assert.AreEqual("Stk: 8 eax (xmm0)", ccr.ToString());
         }
 
@@ -69,7 +72,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvAmdCc_DeserializeFpuStackReturnValue()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(r64, null, new List<DataType>());
+            cc.Generate(ccr, r64, null, new List<DataType>());
             Assert.AreEqual("Stk: 8 xmm0 ()", ccr.ToString());
         }
 
@@ -77,7 +80,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvAmdCc_Load_cdecl()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(null, null, new List<DataType> { i32 } );
+            cc.Generate(ccr, null, null, new List<DataType> { i32 } );
             Assert.AreEqual("Stk: 8 void (rdi)", ccr.ToString());
         }
 
@@ -85,7 +88,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvAmdCc_Load_IntArgs()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(null, null, new List<DataType> { i16, i8, i32, i16, i8, i32, i8, i32 });
+            cc.Generate(ccr, null, null, new List<DataType> { i16, i8, i32, i16, i8, i32, i8, i32 });
             Assert.AreEqual(
                 "Stk: 8 void (rdi, rsi, rdx, rcx, r8, r9, Stack +0008, Stack +0010)",
                 ccr.ToString());
@@ -95,7 +98,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvAmdCc_Return_Short()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(PrimitiveType.Int16, null, new List<DataType>());
+            cc.Generate(ccr, PrimitiveType.Int16, null, new List<DataType>());
             Assert.AreEqual("Stk: 8 ax ()", ccr.ToString());
         }
     }

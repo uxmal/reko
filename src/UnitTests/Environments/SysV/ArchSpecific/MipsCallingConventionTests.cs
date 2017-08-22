@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.Mips;
+using Reko.Core;
 using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System.Linq;
@@ -37,7 +38,8 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         {
             var arch = new MipsBe32Architecture();
             var cc = new MipsCallingConvention(arch);
-            var ccr = cc.Generate(null, null, args.ToList());
+            var ccr = new ICallingConventionEmitter();
+            cc.Generate(ccr, null, null, args.ToList());
             Assert.AreEqual(sExp.Trim(), ccr.ToString());
         }
 

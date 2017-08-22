@@ -46,6 +46,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         private PrimitiveType i32 = PrimitiveType.Int32;
         private PrimitiveType i64 = PrimitiveType.Int64;
         private PrimitiveType r64 = PrimitiveType.Real64;
+        private ICallingConventionEmitter ccr;
 
         [SetUp]
         public void Setup()
@@ -56,13 +57,14 @@ namespace Reko.UnitTests.Arch.PowerPC
         private void Given_CallingConvention()
         {
             this.cc = new PowerPcCallingConvention(arch);
+            this.ccr = new ICallingConventionEmitter();
         }
 
         [Test]
         public void PpcCc_DeserializeFpuArgument()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(i32, null, new List<DataType> { r64 });
+            cc.Generate(ccr, i32, null, new List<DataType> { r64 });
             Assert.AreEqual("Stk: 0 r3 (f1)", ccr.ToString());
         }
 
@@ -90,7 +92,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PpcCc_DeserializeFpuStackReturnValue()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(r64, null, new List<DataType>());
+            cc.Generate(ccr, r64, null, new List<DataType>());
             Assert.AreEqual("Stk: 0 f1 ()", ccr.ToString());
         }
 
@@ -98,7 +100,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PpcCc_Load_cdecl()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 0 void (r3)", ccr.ToString());
         }
 
@@ -106,7 +108,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PpcCc_Load_LongArg()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(null, null, new List<DataType> { i16, i64 });
+            cc.Generate(ccr, null, null, new List<DataType> { i16, i64 });
             Assert.AreEqual("Stk: 0 void (r3, Sequence r5:r6)", ccr.ToString());
         }
     }

@@ -43,6 +43,7 @@ namespace Reko.UnitTests.Arch.Intel
         private MockFactory mockFactory;
         private IntelArchitecture arch;
         private X86CallingConvention cc;
+        private ICallingConventionEmitter ccr;
         private Win32Platform platform;
         private ISerializedTypeVisitor<DataType> deserializer;
         private PrimitiveType i16 = PrimitiveType.Int16;
@@ -60,6 +61,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         private void Given_32bit_CallingConvention(string cConvention)
         {
+            this.ccr = new ICallingConventionEmitter();
             this.deserializer = new FakeTypeDeserializer(4);
             X86CallingConvention cc;
             switch (cConvention)
@@ -135,7 +137,7 @@ namespace Reko.UnitTests.Arch.Intel
         public void X86Cc_Load_cdecl()
         {
             Given_32bit_CallingConvention("__cdecl");
-            var ccr = cc.Generate(null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 4 void (Stack +0004)", ccr.ToString());
         }
 
@@ -143,7 +145,7 @@ namespace Reko.UnitTests.Arch.Intel
         public void X86Cc_Load_stdapi()
         {
             Given_32bit_CallingConvention("stdapi");
-            var ccr = cc.Generate(null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 8 void (Stack +0004)", ccr.ToString());
         }
 
@@ -151,7 +153,7 @@ namespace Reko.UnitTests.Arch.Intel
         public void X86Cc_Load_stdcall()
         {
             Given_32bit_CallingConvention("stdcall");
-            var ccr = cc.Generate(null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 8 void (Stack +0004)", ccr.ToString());
         }
 
@@ -159,7 +161,7 @@ namespace Reko.UnitTests.Arch.Intel
         public void X86Cc_Load___stdcall()
         {
             Given_32bit_CallingConvention("stdcall");
-            var ccr = cc.Generate(null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 8 void (Stack +0004)", ccr.ToString());
         }
 
@@ -184,7 +186,7 @@ namespace Reko.UnitTests.Arch.Intel
                 }
             };
             Given_32bit_CallingConvention("pascal");
-            var ccr = cc.Generate(null, null, new List<DataType> { i16, i32 });
+            cc.Generate(ccr, null, null, new List<DataType> { i16, i32 });
             Assert.AreEqual("Stk: 12 void (Stack +0008, Stack +0004)", ccr.ToString());
         }
 
@@ -229,7 +231,7 @@ namespace Reko.UnitTests.Arch.Intel
         public void X86Cc_Load_FpuReturnValue()
         {
             Given_32bit_CallingConvention("__cdecl");
-            var ccr = cc.Generate(r64, null, new List<DataType> ());
+            cc.Generate(ccr, r64, null, new List<DataType> ());
             Assert.AreEqual("Stk: 4 Fpu: 1 FPU stack ()", ccr.ToString());
         }
 

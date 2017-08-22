@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.Sparc;
+using Reko.Core;
 using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System.Collections.Generic;
@@ -29,11 +30,13 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
     [TestFixture]
     public class SparcCallingConventionTests
     {
-        private SparcArchitecture32 arch;
-        private SparcCallingConvention cc;
         private PrimitiveType i8 = PrimitiveType.SByte;
         private PrimitiveType i16 = PrimitiveType.Int16;
         private PrimitiveType i32 = PrimitiveType.Int32;
+
+        private SparcArchitecture32 arch;
+        private SparcCallingConvention cc;
+        private ICallingConventionEmitter ccr;
 
         [SetUp]
         public void Setup()
@@ -44,13 +47,14 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         private void Given_CallingConvention()
         {
             this.cc = new SparcCallingConvention(arch);
+            this.ccr = new ICallingConventionEmitter();
         }
 
         [Test]
         public void SvSparcPs_DeserializeFpuStackReturnValue()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(PrimitiveType.Real64, null, new List<DataType>());
+            cc.Generate(ccr, PrimitiveType.Real64, null, new List<DataType>());
             Assert.AreEqual("Sequence f1:f0", ccr.Return.ToString());
         }
 
@@ -58,7 +62,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvSparcPs_Load_cdecl()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(null, null, new List<DataType> { PrimitiveType.Int32 });
+            cc.Generate(ccr, null, null, new List<DataType> { PrimitiveType.Int32 });
             Assert.AreEqual("Stk: 0 void (o0)", ccr.ToString());
         }
 
@@ -66,7 +70,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvSparcPs_Load_IntArgs()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(null, null, new List<DataType> { i16, i8, i32, i16, i8, i32, i8 });
+            cc.Generate(ccr, null, null, new List<DataType> { i16, i8, i32, i16, i8, i32, i8 });
             Assert.AreEqual("Stk: 0 void (o0, o1, o2, o3, o4, o5, Stack +0018)", ccr.ToString());
         }
     }

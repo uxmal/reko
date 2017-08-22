@@ -32,14 +32,16 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
     [Category(Categories.Capstone)]
     public class Arm32CallingConventionTests
     {
+        private readonly PrimitiveType i32 = PrimitiveType.Int32;
+        private readonly PrimitiveType u32 = PrimitiveType.UInt32;
+        private readonly PrimitiveType i8 = PrimitiveType.SByte;
+        private readonly PrimitiveType u8 = PrimitiveType.Byte;
+        private readonly PrimitiveType i16 = PrimitiveType.Int16;
+        private readonly VoidType v = VoidType.Instance;
+
         private Arm32ProcessorArchitecture arch;
         private CallingConvention cc;
-        private PrimitiveType i32 = PrimitiveType.Int32;
-        private PrimitiveType u32 = PrimitiveType.UInt32;
-        private PrimitiveType i8 = PrimitiveType.SByte;
-        private PrimitiveType u8 = PrimitiveType.Byte;
-        private PrimitiveType i16 = PrimitiveType.Int16;
-        private VoidType v = VoidType.Instance;
+        private ICallingConventionEmitter ccr;
 
         [SetUp]
         public void Setup()
@@ -55,6 +57,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         private void Given_CallingConvention()
         {
             this.cc = new Arm32CallingConvention(arch);
+            this.ccr = new ICallingConventionEmitter();
         }
 
         private Argument_v1 RegArg(SerializedType type, string regName)
@@ -80,8 +83,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvArm32Cc_DeserializeFpuReturnValue()
         {
             Given_CallingConvention();
-
-            var ccr = cc.Generate(PrimitiveType.Real64, null, new List<DataType>());
+            cc.Generate(ccr, PrimitiveType.Real64, null, new List<DataType>());
             Assert.AreEqual("Stk: 0 Sequence r1:r0 ()", ccr.ToString());
         }
 
@@ -89,7 +91,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvArm32Cc_Load_cdecl()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 0 void (r0)", ccr.ToString());
         }
 
@@ -97,7 +99,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvArm32Cc_Load_IntArgs()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(null, null, new List<DataType> { i16, i8, i32, i16, u8, i32, i32 });
+            cc.Generate(ccr, null, null, new List<DataType> { i16, i8, i32, i16, u8, i32, i32 });
             Assert.AreEqual("Stk: 0 void (r0, r1, r2, r3, Stack +0010, Stack +0014, Stack +0018)", ccr.ToString());
         }
 
@@ -105,7 +107,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvArm32Cc_mmap()
         {
             Given_CallingConvention();
-            var ccr = cc.Generate(Ptr(v), null, new List<DataType> { Ptr(v), u32, i32, i32, i32, i32 });
+            cc.Generate(ccr, Ptr(v), null, new List<DataType> { Ptr(v), u32, i32, i32, i32, i32 });
             Assert.AreEqual("Stk: 0 r0 (r0, r1, r2, r3, Stack +0010, Stack +0014)", ccr.ToString());
         }
     }

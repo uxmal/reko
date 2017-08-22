@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.RiscV;
+using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -32,46 +33,49 @@ namespace Reko.UnitTests.Arch.RiscV
     [TestFixture]
     public class RiscVCallingConventionTests
     {
-        private RiscVArchitecture arch;
-        private RiscVCallingConvention cc;
         private static PrimitiveType i32 = PrimitiveType.Int32;
         private static PrimitiveType i64 = PrimitiveType.Int64;
         private static PrimitiveType w128 = PrimitiveType.Word128;
         private static PrimitiveType r32 = PrimitiveType.Real32;
         private static PrimitiveType r64 = PrimitiveType.Real64;
 
+        private RiscVArchitecture arch;
+        private RiscVCallingConvention cc;
+        private ICallingConventionEmitter ccr;
+
         [SetUp]
         public void Setup()
         {
             this.arch = new RiscVArchitecture();
             this.cc = new RiscVCallingConvention(arch);
+            this.ccr = new ICallingConventionEmitter();
         }
 
         [Test]
         public void RiscVCc_SingleArg()
         {
-            var ccr = cc.Generate(null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 0 void (a0)", ccr.ToString());
         }
 
         [Test]
         public void RiscVCc_ReturnInt()
         {
-            var ccr = cc.Generate(i64, null, new List<DataType> { r64 });
+            cc.Generate(ccr, i64, null, new List<DataType> { r64 });
             Assert.AreEqual("Stk: 0 a0 (fa0)", ccr.ToString());
         }
 
         [Test]
         public void RiscVCc_ReturnLongLong()
         {
-            var ccr = cc.Generate(r64, null, new List<DataType> { i32, w128 });
+            cc.Generate(ccr, r64, null, new List<DataType> { i32, w128 });
             Assert.AreEqual("Stk: 0 fa0 (a0, Sequence a3:a2)", ccr.ToString());
         }
 
         [Test]
         public void RiscVcc_ArgsOnStack()
         {
-            var ccr = cc.Generate(null, null,
+            cc.Generate(ccr, null, null,
                 new List<DataType> { w128, w128, w128, i32, w128, r64 });
 
             Assert.AreEqual(
@@ -87,7 +91,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscVcc_MixedRegs()
         {
-            var ccr = cc.Generate(null, null,
+            cc.Generate(ccr, null, null,
                 new List<DataType> { r64, i32, r32, i64, r64, i32, r32, i64, r32, i32 });
             Assert.AreEqual(
                 "Stk: 0 void (fa0, a1, fa2, a3, fa4, a5, fa6, a7, Stack +0000, Stack +0008)",
