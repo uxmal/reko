@@ -292,8 +292,9 @@ namespace Reko.Core
                     throw new ApplicationException(string.Format(
                         "Environment '{0}' doesn't appear in the configuration file. Your installation may be out-of-date.",
                         envName));
-                var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.Metadata = new TypeLibrary();
+
+                var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
 
                 foreach (var tl in envCfg.TypeLibraries
                     .Where(t => t.Architecture == null ||

@@ -215,7 +215,10 @@ namespace Reko.Core.Serialization
             var typelibs = sp.Inputs.OfType<MetadataFile_v2>().Select(m => VisitMetadataFile(m));
             var programs = sp.Inputs.OfType<DecompilerInput_v2>().Select(s => VisitInputFile(projectFilePath, s)).ToList();
             sp.Inputs.OfType<AssemblerFile_v2>().Select(s => VisitAssemblerFile(s));
-            this.project.LoadedMetadata = this.platform.CreateMetadata();
+            if (this.platform != null)
+            {
+                this.project.LoadedMetadata = this.platform.CreateMetadata();
+            }
             foreach (var program in programs)
             {
                 program.EnvironmentMetadata = this.project.LoadedMetadata;
