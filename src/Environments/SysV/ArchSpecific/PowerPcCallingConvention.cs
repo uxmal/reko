@@ -46,10 +46,10 @@ namespace Reko.Environments.SysV.ArchSpecific
                 .ToArray();
         }
 
-        public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public override ICallingConventionEmitter Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             int stackOffset = 0x40; //$BUG: look this up!
-            var ccr = new CallingConventionResult();
+            var ccr = new ICallingConventionEmitter();
             ccr.LowLevelDetails(arch.WordWidth.Size, stackOffset);
             if (dtRet != null)
             {

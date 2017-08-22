@@ -48,9 +48,9 @@ namespace Reko.Environments.Windows
             Registers.xmm3,
         };
 
-        public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public override ICallingConventionEmitter Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            var ccr = new CallingConventionResult();
+            var ccr = new ICallingConventionEmitter();
             ccr.LowLevelDetails(8, 0x0028);
             if (dtRet != null)
             {

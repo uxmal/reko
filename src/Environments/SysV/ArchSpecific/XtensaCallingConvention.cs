@@ -32,7 +32,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
         }
 
-        public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public override ICallingConventionEmitter Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             throw new NotImplementedException();
         }

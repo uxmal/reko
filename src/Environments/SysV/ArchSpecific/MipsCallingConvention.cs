@@ -54,9 +54,9 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.fret = arch.GetRegister("f1");
         }
 
-        public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public override ICallingConventionEmitter Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            var ccr = new CallingConventionResult();
+            var ccr = new ICallingConventionEmitter();
             ccr.LowLevelDetails(arch.WordWidth.Size, 0x10);
 
             if (dtRet != null)

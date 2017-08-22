@@ -38,10 +38,10 @@ namespace Reko.Arch.M68k
             this.arch = arch;
         }
 
-        public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public override ICallingConventionEmitter Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             int stackOffset = 4;        // return address
-            var ccr = new CallingConventionResult();
+            var ccr = new ICallingConventionEmitter();
             ccr.LowLevelDetails(4, stackOffset);
             if (dtRet != null)
             {

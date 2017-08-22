@@ -40,9 +40,9 @@ namespace Reko.Environments.SysV.ArchSpecific
             .Select(r => arch.GetRegister(r)).ToArray();
         }
 
-        public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public override ICallingConventionEmitter Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            var ccr = new CallingConventionResult();
+            var ccr = new ICallingConventionEmitter();
             ccr.LowLevelDetails(4, 0x0010);
 
             int ncrn = 0;

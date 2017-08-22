@@ -86,7 +86,7 @@ char - just clr r25). Arguments to functions with variable argument lists
         {
         }
 
-        public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public override ICallingConventionEmitter Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             throw new NotImplementedException();
         }

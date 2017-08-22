@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Environments.Windows
             this.cc = new X86_64CallingConvention();
         }
 
-        private void AssertEqual(string sExp, CallingConventionResult ccr)
+        private void AssertEqual(string sExp, ICallingConventionEmitter ccr)
         {
             var sActual = ccr.ToString();
             if (sExp != sActual)

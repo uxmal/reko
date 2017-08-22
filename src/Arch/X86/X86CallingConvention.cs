@@ -59,9 +59,9 @@ namespace Reko.Arch.X86
             this.reverseArguments = reverseArguments;
         }
 
-        public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public override ICallingConventionEmitter Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            var ccr = new CallingConventionResult();
+            var ccr = new ICallingConventionEmitter();
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
             int fpuStackDelta = 0;
             ccr.Return = GetReturnStorage(dtRet, stackAlignment);

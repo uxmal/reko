@@ -41,9 +41,9 @@ namespace Reko.Arch.X86
             this.retAddressOnStack = retAddressOnStack;
         }
 
-        public override CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public override ICallingConventionEmitter Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            var ccr = new CallingConventionResult();
+            var ccr = new ICallingConventionEmitter();
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
             ccr.Return = X86CallingConvention.GetReturnStorage(dtRet, stackAlignment);
             var fpuStackDelta = ccr.Return is FpuStackStorage ? 1 : 0;

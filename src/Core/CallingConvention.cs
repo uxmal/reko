@@ -29,10 +29,10 @@ namespace Reko.Core
 {
     public abstract class CallingConvention
     {
-        public abstract CallingConventionResult Generate(DataType dtRet, DataType dtThis, List<DataType> dtParams);
+        public abstract ICallingConventionEmitter Generate( DataType dtRet, DataType dtThis, List<DataType> dtParams);
     }
 
-    public class CallingConventionResult
+    public class ICallingConventionEmitter
     {
         public Storage Return;
         public Storage ImplicitThis;
@@ -43,7 +43,7 @@ namespace Reko.Core
         private int stackAlignment;
         public int stackOffset;
 
-        public CallingConventionResult()
+        public ICallingConventionEmitter()
         {
             this.Parameters = new List<Storage>();
         }
