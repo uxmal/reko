@@ -48,7 +48,7 @@ namespace Reko.Environments.Windows
             Registers.xmm3,
         };
 
-        public override ICallingConventionEmitter Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(8, 0x0028);
             if (dtRet != null)
@@ -97,7 +97,6 @@ namespace Reko.Environments.Windows
                 }
             }
             ccr.StackDelta = 8;
-            return ccr;
         }
     }
 }

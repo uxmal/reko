@@ -40,7 +40,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             .Select(r => arch.GetRegister(r)).ToArray();
         }
 
-        public override ICallingConventionEmitter Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 0x0010);
 
@@ -78,7 +78,6 @@ namespace Reko.Environments.SysV.ArchSpecific
                     ccr.StackParam(dt);
                 }
             }
-            return ccr;
         }
 
         private int AlignedStackArgumentSize(DataType dt)

@@ -59,7 +59,7 @@ namespace Reko.Arch.X86
             this.reverseArguments = reverseArguments;
         }
 
-        public override ICallingConventionEmitter Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
             int fpuStackDelta = 0;
@@ -91,7 +91,6 @@ namespace Reko.Arch.X86
             }
             ccr.FpuStackDelta = fpuStackDelta;
             ccr.StackDelta = callerCleanup ? retAddressOnStack : ccr.stackOffset;
-            return ccr;
         }
 
         public static Storage GetReturnStorage(DataType dtRet, int stackAlignment)

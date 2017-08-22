@@ -41,7 +41,7 @@ namespace Reko.Arch.X86
             this.retAddressOnStack = retAddressOnStack;
         }
 
-        public override ICallingConventionEmitter Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
             ccr.Return = X86CallingConvention.GetReturnStorage(dtRet, stackAlignment);
@@ -55,7 +55,6 @@ namespace Reko.Arch.X86
             ccr.ImplicitThis = this.ecxThis;
             ccr.FpuStackDelta = fpuStackDelta;
             ccr.StackDelta = ccr.stackOffset;
-            return ccr;
         }
     }
 }

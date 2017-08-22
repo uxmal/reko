@@ -56,7 +56,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.rdx = arch.GetRegister("rdx");
         }
 
-        public override ICallingConventionEmitter Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(arch.PointerType.Size, 0x0008);
             if (dtRet != null)
@@ -109,7 +109,6 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
 
             ccr.StackDelta = arch.PointerType.Size;
-            return ccr;
         }
 
         public Storage GetReturnRegister(DataType dtArg)

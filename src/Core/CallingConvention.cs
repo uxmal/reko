@@ -27,9 +27,9 @@ using System.Threading.Tasks;
 
 namespace Reko.Core
 {
-    public abstract class CallingConvention
+    public interface CallingConvention
     {
-        public abstract ICallingConventionEmitter Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams);
+        void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams);
     }
 
     public class ICallingConventionEmitter

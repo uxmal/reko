@@ -92,7 +92,7 @@ namespace Reko.Arch.RiscV
                 .ToArray();
         }
 
-        public override ICallingConventionEmitter Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(arch.WordWidth.Size, 0);
             if (dtRet != null)
@@ -161,7 +161,6 @@ namespace Reko.Arch.RiscV
                 else
                     throw new NotImplementedException();
             }
-            return ccr;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Reko.Environments.AtariTOS
             this.arch = arch;
         }
 
-        public override ICallingConventionEmitter Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             int stackOffset = 4 + 4;   // Skip the system call selector + return address.
             ccr.LowLevelDetails(4, stackOffset);
@@ -62,7 +62,6 @@ namespace Reko.Environments.AtariTOS
             // so the only thing we clean up is the return value on the stack.
             ccr.StackDelta = 4;
             ccr.FpuStackDelta = 0;
-            return ccr;
         }
 
         public Storage GetReturnRegister(DataType dt)

@@ -55,7 +55,7 @@ namespace Reko.Environments.Windows
             this.fret = arch.GetRegister("f0");
         }
 
-        public override ICallingConventionEmitter Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(arch.WordWidth.Size, 0x10);
             if (dtRet != null)
@@ -111,7 +111,6 @@ namespace Reko.Environments.Windows
                     }
                 }
             }
-            return ccr;
         }
 
         public Storage GetReturnRegister(DataType dtArg)

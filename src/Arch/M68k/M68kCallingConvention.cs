@@ -38,7 +38,7 @@ namespace Reko.Arch.M68k
             this.arch = arch;
         }
 
-        public override ICallingConventionEmitter Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             int stackOffset = 4;        // return address
             ccr.LowLevelDetails(4, stackOffset);
@@ -54,7 +54,6 @@ namespace Reko.Arch.M68k
             }
             ccr.StackDelta = 4;
             ccr.FpuStackDelta = 0;
-            return ccr;
         }
 
         public Storage GetReturnRegister(DataType dt)

@@ -36,7 +36,7 @@ namespace Reko.Environments.RT11
             this.arch = arch;
         }
 
-        public override ICallingConventionEmitter Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(2, 2);
             if (dtRet != null)
@@ -52,7 +52,6 @@ namespace Reko.Environments.RT11
                 ccr.RegParam(arg);
             }
             ccr.StackDelta = 2;
-            return ccr;
         }
 
         public Storage GetReturnRegister(DataType dtRet)
