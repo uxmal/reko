@@ -49,7 +49,7 @@ namespace Reko.Environments.SysV.ArchSpecific
 
             if (dtRet != null)
             {
-                ccr.Return = GetReturnRegister(dtRet.BitSize);
+                SetReturnRegister(ccr, dtRet.BitSize);
             }
 
             foreach (var dt in dtParams)
@@ -85,15 +85,15 @@ namespace Reko.Environments.SysV.ArchSpecific
             return ((dt.Size + 3) / 4) * 4; 
         }
 
-        public Storage GetReturnRegister(int bitSize)
+        public void SetReturnRegister(ICallingConventionEmitter ccr, int bitSize)
         {
             if (bitSize <= 32)
             {
-                return argRegs[0];
+                ccr.RegReturn(argRegs[0]);
             }
             else if (bitSize <= 64)
             {
-                return new SequenceStorage(argRegs[1], argRegs[0]);
+                ccr.SequenceReturn(argRegs[1], argRegs[0]);
             }
             else
                 throw new NotSupportedException(string.Format("Return values of {0} bits are not supported.", bitSize));

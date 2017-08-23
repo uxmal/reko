@@ -44,8 +44,8 @@ namespace Reko.Arch.X86
         public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
-            ccr.Return = X86CallingConvention.GetReturnStorage(dtRet, stackAlignment);
-            var fpuStackDelta = ccr.Return is FpuStackStorage ? 1 : 0;
+            bool fpu = X86CallingConvention.SetReturnStorage(ccr, dtRet, stackAlignment);
+            var fpuStackDelta = fpu ? 1 : 0;
 
             for (int i = 0; i < dtParams.Count; ++i)
             {

@@ -61,7 +61,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             ccr.LowLevelDetails(arch.PointerType.Size, 0x0008);
             if (dtRet != null)
             {
-                ccr.Return = this.GetReturnRegister(dtRet);
+                SetReturnRegister(ccr, dtRet);
             }
             int fr = 0;
             int ir = 0;
@@ -111,7 +111,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             ccr.StackDelta = arch.PointerType.Size;
         }
 
-        public Storage GetReturnRegister(DataType dtArg)
+        public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg)
         {
             var pt = dtArg as PrimitiveType;
             int bitSize = dtArg.BitSize;
@@ -119,25 +119,42 @@ namespace Reko.Environments.SysV.ArchSpecific
             {
                 var xmm0 = fregs[0];
                 if (bitSize <= 64)
-                    return xmm0;
+                {
+                    ccr.RegReturn(xmm0);
+                    return;
+                }
                 if (bitSize <= 128)
                 {
                     var xmm1 = fregs[1];
-                    return new SequenceStorage(xmm1, xmm0);
+                    ccr.SequenceReturn(xmm1, xmm0);
+                    return;
                 }
                 throw new NotImplementedException();
             }
             if (bitSize <= 8)
-                return al;
+            {
+                ccr.RegReturn(al);
+                return;
+            }
             if (bitSize <= 16)
-                return ax;
+            {
+                ccr.RegReturn(ax);
+                return;
+            }
             if (bitSize <= 32)
-                return eax;
+            {
+                ccr.RegReturn(eax);
+                return;
+            }
             if (bitSize <= 64)
-                return rax;
+            {
+                ccr.RegReturn(rax);
+                return;
+            }
             if (bitSize <= 128)
             {
-                return new SequenceStorage(rdx, rax);
+                ccr.SequenceReturn(rdx, rax);
+                return;
             }
             throw new NotImplementedException();
         }

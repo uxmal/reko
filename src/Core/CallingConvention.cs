@@ -34,7 +34,6 @@ namespace Reko.Core
 
     public abstract class ICallingConventionEmitter
     {
-        public Storage Return;
         public Storage ImplicitThis;
         public readonly List<Storage> Parameters;
         public int StackDelta;
@@ -69,6 +68,8 @@ namespace Reko.Core
             this.Parameters.Add(stg);
         }
 
+        public abstract void RegReturn(RegisterStorage stg);
+
         /// <summary>
         /// Add a stack parameter of the type dt.
         /// </summary>
@@ -88,6 +89,30 @@ namespace Reko.Core
         public void SequenceParam(RegisterStorage stgHi, RegisterStorage stgLo)
         {
             this.Parameters.Add(new SequenceStorage(stgHi, stgLo));
+        }
+
+        public abstract void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo);
+
+        public abstract void FpuReturn(int depth, DataType dt);
+    }
+
+    public class CallingConventionEmitter : ICallingConventionEmitter
+    {
+        public Storage Return;
+
+        public override void RegReturn(RegisterStorage stg)
+        {
+            this.Return = stg;
+        }
+
+        public override void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo)
+        {
+            this.Return = new SequenceStorage(stgHi, stgLo);
+        }
+
+        public override void FpuReturn(int depth, DataType dt)
+        {
+            this.Return = new FpuStackStorage(0, dt);
         }
 
         public override string ToString()
@@ -120,9 +145,5 @@ namespace Reko.Core
             sb.Append(")");
             return sb.ToString();
         }
-    }
-
-    public class CallingConventionEmitter : ICallingConventionEmitter
-    {
     }
 }

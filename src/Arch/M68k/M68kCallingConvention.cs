@@ -44,7 +44,7 @@ namespace Reko.Arch.M68k
             ccr.LowLevelDetails(4, stackOffset);
             if (dtRet != null)
             {
-                ccr.Return = GetReturnRegister(dtRet);
+                ccr.RegReturn(Registers.d0);
             }
 
             for (int i = 0; i < dtParams.Count; ++i)
@@ -54,11 +54,6 @@ namespace Reko.Arch.M68k
             }
             ccr.StackDelta = 4;
             ccr.FpuStackDelta = 0;
-        }
-
-        public Storage GetReturnRegister(DataType dt)
-        {
-            return Registers.d0;
         }
     }
 }

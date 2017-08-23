@@ -46,7 +46,7 @@ namespace Reko.Environments.AtariTOS
             ccr.LowLevelDetails(4, stackOffset);
             if (dtRet != null)
             {
-                ccr.Return = GetReturnRegister(dtRet);
+                ccr.RegReturn(Registers.d0);
             }
 
             if (dtThis != null)
@@ -64,9 +64,5 @@ namespace Reko.Environments.AtariTOS
             ccr.FpuStackDelta = 0;
         }
 
-        public Storage GetReturnRegister(DataType dt)
-        {
-            return Registers.d0;
-        }
     }
 }

@@ -101,17 +101,17 @@ namespace Reko.Arch.RiscV
                 if (pt != null && pt.Domain == Domain.Real)
                 {
                     //$TODO floats > 64 bits
-                    ccr.Return = fregs[0];
+                    ccr.RegReturn(fregs[0]);
                 }
                 else
                 {
                     if (dtRet.Size <= arch.PointerType.Size)
                     {
-                        ccr.Return = iregs[0];
+                        ccr.RegReturn(iregs[0]);
                     }
                     else if (dtRet.Size <= arch.PointerType.Size * 2)
                     {
-                        ccr.Return = new SequenceStorage(iregs[1], iregs[0]);
+                        ccr.SequenceReturn(iregs[1], iregs[0]);
                     }
                     else
                         //$TODO: return values > 128 bits.

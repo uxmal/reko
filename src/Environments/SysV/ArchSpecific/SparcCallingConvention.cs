@@ -53,7 +53,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             ccr.LowLevelDetails(arch.WordWidth.Size, 0x0018);
             if (dtRet != null)
             {
-                ccr.Return = this.GetReturnRegister(dtRet);
+                SetReturnRegister(ccr, dtRet);
             }
 
             int ir = 0;
@@ -78,7 +78,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public Storage GetReturnRegister(DataType dtArg)
+        public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg)
         {
             var ptArg = dtArg as PrimitiveType;
             if (ptArg != null)
@@ -87,19 +87,26 @@ namespace Reko.Environments.SysV.ArchSpecific
                 {
                     var f0 = fret0;
                     if (ptArg.Size <= 4)
-                        return f0;
+                    {
+                        ccr.RegReturn(f0);
+                        return;
+                    }
                     var f1 = fret1;
-                    return new SequenceStorage(f1, f0);
+                    ccr.SequenceReturn(f1, f0);
+                    return;
                 }
-                return iret;
+                ccr.RegReturn(iret);
+                return;
             }
             else if (dtArg is Pointer)
             {
-                return iret;
+                ccr.RegReturn(iret);
+                return;
             }
             else if (dtArg.Size <= this.arch.WordWidth.Size)
             {
-                return iret;
+                ccr.RegReturn(iret);
+                return;
             }
             throw new NotImplementedException();
         }

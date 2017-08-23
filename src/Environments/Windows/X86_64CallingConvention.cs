@@ -58,23 +58,23 @@ namespace Reko.Environments.Windows
                 var pt = dtRet as PrimitiveType;
                 if (pt != null && pt.Domain == Domain.Real)
                 {
-                    ccr.Return = Registers.xmm0;
+                    ccr.RegReturn(Registers.xmm0);
                 }
                 else if (dtRet.Size <= 1)
                 {
-                    ccr.Return = Registers.al;
+                    ccr.RegReturn(Registers.al);
                 }
                 else if (dtRet.Size <= 2)
                 {
-                    ccr.Return = Registers.ax;
+                    ccr.RegReturn(Registers.ax);
                 }
                 else if (dtRet.Size <= 4)
                 {
-                    ccr.Return = Registers.eax;
+                    ccr.RegReturn(Registers.eax);
                 }
                 else
-                { 
-                    ccr.Return = Registers.rax;
+                {
+                    ccr.RegReturn(Registers.rax);
                 }
             }
             for (int i = 0; i < dtParams.Count; ++i)

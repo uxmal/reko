@@ -60,7 +60,7 @@ namespace Reko.Environments.SysV.ArchSpecific
 
             if (dtRet != null)
             {
-                ccr.Return = this.GetReturnRegister(dtRet);
+                SetReturnRegister(ccr, dtRet);
             }
 
             int ir =  0;
@@ -131,16 +131,18 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public Storage GetReturnRegister(DataType dt)
+        public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dt)
         {
             int bitSize = dt.BitSize;
             var prim = dt as PrimitiveType;
-            if (prim != null)
+            if (prim != null && prim.Domain == Domain.Real)
             {
-                if (prim.Domain == Domain.Real)
-                    return fret;
+                ccr.RegReturn(fret);
             }
-            return iret;
+            else
+            {
+                ccr.RegReturn(iret);
+            }
         }
     }
 }

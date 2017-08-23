@@ -62,10 +62,10 @@ namespace Reko.Arch.X86
         public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
-            int fpuStackDelta = 0;
-            ccr.Return = GetReturnStorage(dtRet, stackAlignment);
+            bool isReal = SetReturnStorage(ccr, dtRet, stackAlignment);
+            int fpuStackDelta = isReal ? 1 : 0;
 
-            if (ccr.Return is FpuStackStorage)
+            if (isReal)
                 fpuStackDelta = 1;
 
             if (dtThis != null)
@@ -93,46 +93,47 @@ namespace Reko.Arch.X86
             ccr.StackDelta = callerCleanup ? retAddressOnStack : ccr.stackOffset;
         }
 
-        public static Storage GetReturnStorage(DataType dtRet, int stackAlignment)
+        public static bool SetReturnStorage(ICallingConventionEmitter ccr, DataType dtRet, int stackAlignment)
         {
             if (dtRet == null)
-                return null;
+                return false;
 
-            Storage stgRet = null;
             int retSize = dtRet.Size;
             if (retSize > 8)
             {
                 // returns a pointer to the stack-allocated large return value
-                stgRet = Registers.eax;
+                ccr.RegReturn(Registers.eax);
+                return false;
             }
             else
             {
                 var pt = dtRet.ResolveAs<PrimitiveType>();
                 if (pt != null && pt.Domain == Domain.Real)
                 {
-                    stgRet = new FpuStackStorage(0, PrimitiveType.Real64);
+                    ccr.FpuReturn(0, PrimitiveType.Real64);
+                    return true;
                 }
-                else if (retSize > 4)
+                if (retSize > 4)
                 {
-                    stgRet = new SequenceStorage(Registers.edx, Registers.eax);
+                    ccr.SequenceReturn(Registers.edx, Registers.eax);
+                    return false;
                 }
-                else if (retSize > 2)
+                if (retSize > 2)
                 {
                     if (stackAlignment == 4)
-                        stgRet = Registers.eax;
+                        ccr.RegReturn(Registers.eax);
                     else
-                        stgRet = new SequenceStorage(Registers.dx, Registers.ax);
+                        ccr.SequenceReturn(Registers.dx, Registers.ax);
+                    return false;
                 }
-                else if (retSize > 1)
+                if (retSize > 1)
                 {
-                    stgRet = Registers.ax;
+                    ccr.RegReturn(Registers.ax);
+                    return false;
                 }
-                else
-                {
-                    stgRet = Registers.al;
-                }
+                ccr.RegReturn(Registers.al);
+                return false;
             }
-            return stgRet;
         }
     }
 }

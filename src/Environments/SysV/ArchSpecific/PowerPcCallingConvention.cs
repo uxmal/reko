@@ -52,7 +52,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             ccr.LowLevelDetails(arch.WordWidth.Size, stackOffset);
             if (dtRet != null)
             {
-                ccr.Return = GetReturnRegister(dtRet);
+                SetReturnRegister(ccr, dtRet);
             }
 
             int fr = 0;
@@ -104,14 +104,17 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public Storage GetReturnRegister(DataType dt)
+        public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dt)
         {
             var prim = dt as PrimitiveType;
             if (prim != null && prim.Domain == Domain.Real)
             {
-                return fregs[0];
+                ccr.RegReturn(fregs[0]);
             }
-            return iregs[0];
+            else
+            {
+                ccr.RegReturn(iregs[0]);
+            }
         }
     }
 }

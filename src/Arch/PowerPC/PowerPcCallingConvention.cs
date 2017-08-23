@@ -52,7 +52,7 @@ namespace Reko.Arch.PowerPC
             ccr.LowLevelDetails(arch.WordWidth.Size, 0x40);
             if (dtRet != null)
             {
-                ccr.Return = this.GetReturnRegister(dtRet);
+                SetReturnRegister(ccr, dtRet);
             }
 
             int gr = 0;
@@ -104,14 +104,17 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public Storage GetReturnRegister(DataType dt)
+        public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dt)
         {
             var prim = dt as PrimitiveType;
             if (prim != null && prim.Domain == Domain.Real)
             {
-                return fregs[0];
+                ccr.RegReturn(fregs[0]);
             }
-            return iregs[0];
+            else
+            {
+                ccr.RegReturn(iregs[0]);
+            }
         }
     }
 }

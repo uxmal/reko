@@ -45,7 +45,9 @@ namespace Reko.Environments.SysV.ArchSpecific
             ccr.LowLevelDetails(4, 4);
             if (dtRet != null)
             {
-                ccr.Return = this.GetReturnRegister(dtRet);
+                if (dtRet.BitSize > 32)
+                    throw new NotImplementedException();
+                ccr.RegReturn(d0);
             }
 
             var args = new List<Storage>();
@@ -55,13 +57,6 @@ namespace Reko.Environments.SysV.ArchSpecific
                 ccr.StackParam(dtParam);
             }
             ccr.StackDelta = arch.PointerType.Size;
-        }
-
-        public Storage GetReturnRegister(DataType dt)
-        {
-            if (dt.BitSize <= 32)
-                return d0;
-            throw new NotImplementedException();
         }
     }
 }

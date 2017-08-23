@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         private SparcArchitecture32 arch;
         private SparcCallingConvention cc;
-        private ICallingConventionEmitter ccr;
+        private CallingConventionEmitter ccr;
 
         [SetUp]
         public void Setup()

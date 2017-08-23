@@ -41,7 +41,7 @@ namespace Reko.Environments.RT11
             ccr.LowLevelDetails(2, 2);
             if (dtRet != null)
             {
-                ccr.Return = GetReturnRegister(dtRet);
+                SetReturnRegisters(ccr, dtRet);
             }
 
             int gr = 0;
@@ -54,9 +54,9 @@ namespace Reko.Environments.RT11
             ccr.StackDelta = 2;
         }
 
-        public Storage GetReturnRegister(DataType dtRet)
+        public void SetReturnRegisters(ICallingConventionEmitter ccr, DataType dtRet)
         {
-            return arch.GetRegister("r0");
+            ccr.RegReturn(arch.GetRegister("r0"));
         }
     }
 }

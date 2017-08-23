@@ -60,7 +60,7 @@ namespace Reko.Environments.Windows
             ccr.LowLevelDetails(arch.WordWidth.Size, 0x10);
             if (dtRet != null)
             {
-                ccr.Return = this.GetReturnRegister(dtRet);
+                SetReturnRegister(ccr, dtRet);
             }
 
             int ir = 0;
@@ -113,21 +113,26 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public Storage GetReturnRegister(DataType dtArg)
+        public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg)
         {
             int bitSize = dtArg.BitSize;
             var pt = dtArg as PrimitiveType;
             if (pt != null && pt.Domain == Domain.Real)
             {
-                if (bitSize <= 64)
-                    return fret;
-                throw new NotImplementedException();
+                if (bitSize > 64)
+                    throw new NotImplementedException();
+                ccr.RegReturn(fret);
+                return;
             }
             if (bitSize <= 32)
-                return iretLo;
+            {
+                ccr.RegReturn(iretLo);
+                return;
+            }
             if (bitSize <= 64)
             {
-                return new SequenceStorage(iretHi, iretLo);
+                ccr.SequenceReturn(iretHi, iretLo);
+                return;
             }
             throw new NotImplementedException();
         }

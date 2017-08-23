@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Arch.Intel
         private ISerializedTypeVisitor<DataType> deserializer;
         private PrimitiveType i16 = PrimitiveType.Int16;
         private PrimitiveType i32 = PrimitiveType.Int32;
+        private PrimitiveType u64 = PrimitiveType.UInt64;
         private PrimitiveType r64 = PrimitiveType.Real64;
 
         [SetUp]
@@ -84,6 +85,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         private void Given_16bit_CallingConvention(string cConvention)
         {
+            this.ccr = new CallingConventionEmitter();
             this.deserializer = new FakeTypeDeserializer(4);
             X86CallingConvention cc;
             switch (cConvention)
@@ -238,29 +240,33 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Cc_Return_bool()
         {
-            var stg = X86CallingConvention.GetReturnStorage(PrimitiveType.Bool, 2);
-            Assert.AreEqual("al", stg.ToString());
+            Given_32bit_CallingConvention("__cdecl");
+            cc.Generate(ccr, PrimitiveType.Bool, null, new List<DataType>());
+            Assert.AreEqual("Stk: 4 al ()", ccr.ToString());
         }
 
         [Test]
         public void X86Cc_Return_16bit_long()
         {
-            var stg = X86CallingConvention.GetReturnStorage(PrimitiveType.Int32, 2);
-            Assert.AreEqual("Sequence dx:ax", stg.ToString());
+            Given_16bit_CallingConvention("__cdecl");
+            cc.Generate(ccr, i32, null, new List<DataType>());
+            Assert.AreEqual("Stk: 4 Sequence dx:ax ()", ccr.ToString());
         }
 
         [Test]
         public void X86Cc_Return_32bit_long()
         {
-            var stg = X86CallingConvention.GetReturnStorage(PrimitiveType.Int32, 4);
-            Assert.AreEqual("eax", stg.ToString());
+            Given_32bit_CallingConvention("__cdecl");
+            cc.Generate(ccr, i32, null, new List<DataType>());
+            Assert.AreEqual("Stk: 4 eax ()", ccr.ToString());
         }
 
         [Test]
-        public void X86Cc_Return_64bit_long()
+        public void X86Cc_Return_32bit_long_long()
         {
-            var stg = X86CallingConvention.GetReturnStorage(PrimitiveType.UInt64, 4);
-            Assert.AreEqual("Sequence edx:eax", stg.ToString());
+            Given_32bit_CallingConvention("__cdecl");
+            cc.Generate(ccr, u64, null, new List<DataType>());
+            Assert.AreEqual("Stk: 4 Sequence edx:eax ()", ccr.ToString());
         }
     }
 }
