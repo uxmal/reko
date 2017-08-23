@@ -1,4 +1,24 @@
-﻿using NUnit.Framework;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2017 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
@@ -17,9 +37,8 @@ using System.Xml.Serialization;
 
 namespace Reko.UnitTests.Core.Serialization
 {
-    class ProcedureSerializerTests
+    public class ProcedureSerializerTests
     {
-
         private MockRepository mr;
         private MockFactory mockFactory;
         private IntelArchitecture arch;
@@ -223,6 +242,37 @@ namespace Reko.UnitTests.Core.Serialization
             var sExp =
 @"void foo(Stack int32 arg)
 // stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            Assert.AreEqual(sExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
+        }
+
+        [Test]
+        public void ProcSer_Deserialize_thiscall()
+        {
+            var ssig = new SerializedSignature
+            {
+                Convention = "__thiscall",
+                Arguments = new Argument_v1[]
+                {
+                    new Argument_v1
+                    {
+                        Name = "self",
+                        Type = new PointerType_v1 { DataType = PrimitiveType_v1.Int32(), PointerSize = 4 }
+                    },
+                    new Argument_v1
+                    {
+                        Name = "arg1",
+                        Type = new PointerType_v1 { DataType = PrimitiveType_v1.Int32(), PointerSize = 4 }
+                    },
+                }
+            };
+            Given_ProcedureSerializer("__thiscall");
+            mr.ReplayAll();
+
+            var sig = ser.Deserialize(ssig, arch.CreateFrame());
+            var sExp =
+@"void foo(Register (ptr int32) self, Stack (ptr int32) arg1)
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
         }

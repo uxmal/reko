@@ -28,6 +28,9 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.X86
 {
+    /// <summary>
+    /// Implements the Win32 __thiscall calling convention.
+    /// </summary>
     public class ThisCallConvention : CallingConvention
     {
         private RegisterStorage ecxThis;
@@ -41,18 +44,31 @@ namespace Reko.Arch.X86
             this.retAddressOnStack = retAddressOnStack;
         }
 
+        /// <summary>
+        /// If dtThis is supplied, it is known that it is the `this` corresponding to an enclosing
+        /// C++ class. If dtThis is null, then the first of the dtParams will be treated as a `this`.
+        /// </summary>
         public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
             X86CallingConvention.SetReturnStorage(ccr, dtRet, stackAlignment);
 
-            for (int i = 0; i < dtParams.Count; ++i)
+            if (dtThis != null)
             {
-                ccr.StackParam(dtParams[i]);
+                ccr.ImplicitThisRegister(this.ecxThis);
+                for (int i = 0; i < dtParams.Count; ++i)
+                {
+                    ccr.StackParam(dtParams[i]);
+                }
             }
-
-            ccr.ImplicitThisRegister(this.ecxThis);
-
+            else if (dtParams.Count > 0)
+            {
+                ccr.RegParam(this.ecxThis);
+                for (int i = 1; i < dtParams.Count; ++i)
+                {
+                    ccr.StackParam(dtParams[i]);
+                }
+            }
             ccr.CalleeCleanup();
         }
     }
