@@ -27,77 +27,104 @@ using System.Threading.Tasks;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// A class implementing this interface is expected to translate the data 
+    /// types of a function type (i.e. the parameters and the return type) 
+    /// into Storages (stack accesses, FPU stack accesses, registers or 
+    /// register pairs. 
+    /// </summary>
     public interface CallingConvention
     {
         void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams);
     }
 
-    public abstract class ICallingConventionEmitter
+    public interface ICallingConventionEmitter
     {
-        public int StackDelta;
-        public int FpuStackDelta;
+        /// <summary>
+        /// Indicate that the callee will clean up all pushed arguments off 
+        /// the stack.
+        /// </summary>
+        void CalleeCleanup();
 
-        public int stackOffset;
+        /// <summary>
+        /// Indicate that the callee will only clean up the return address off
+        /// the stack.
+        /// </summary>
+        void CallerCleanup(int retAddressOnStack);
 
         /// <summary>
         /// Indicate a floating point value is returned in an x87 FPU register.
         /// </summary>
         /// <param name="depth"></param>
         /// <param name="dt"></param>
-        public abstract void FpuReturn(int depth, DataType dt);
+        void FpuReturn(int depth, DataType dt);
 
-        public abstract void LowLevelDetails(int stackAlignment, int initialStackOffset);
+        /// <summary>
+        /// Provides the stack alignment (minimum allocation unit on the
+        /// stack) and the initial stack offset of the first parameter
+        /// passed on the stack.
+        /// </summary>
+        void LowLevelDetails(int stackAlignment, int initialStackOffset);
 
         /// <summary>
         /// Add a register parameter.
         /// </summary>
-        /// <param name="stg"></param>
-        public abstract void RegParam(RegisterStorage stg);
+        void RegParam(RegisterStorage stg);
 
         /// <summary>
         /// Indicate a register is returned.
         /// </summary>
-        /// <param name="stg"></param>
-        public abstract void RegReturn(RegisterStorage stg);
+        void RegReturn(RegisterStorage stg);
 
-        public abstract void ReverseParameters();
+        /// <summary>
+        /// Reverses the order of the parameters. Used in calling conventions
+        /// where arguments are passed left-to-right.
+        /// </summary>
+        void ReverseParameters();
+
         /// <summary>
         /// Add a sequence parameter.
         /// </summary>
-        /// <param name="stgHi"></param>
-        /// <param name="stgLo"></param>
-        public abstract void SequenceParam(RegisterStorage stgHi, RegisterStorage stgLo);
+        void SequenceParam(RegisterStorage stgHi, RegisterStorage stgLo);
 
         /// <summary>
         /// Indicate that a sequence is returned.
         /// </summary>
-        /// <param name="stgHi"></param>
-        /// <param name="stgLo"></param>
-        public abstract void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo);
+        void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo);
 
-        public abstract void ImplicitThisRegister(Storage dtThis);
+        /// <summary>
+        /// Indicate that the implicit "this" pointer is passed in a register.
+        /// </summary>
+        /// <param name="dtThis"></param>
+        void ImplicitThisRegister(Storage dtThis);
 
-        public abstract void ImplicitThisStack(DataType dtThis);
+        /// <summary>
+        /// Indicate that the implicit "this" pointer is passed on the stack.
+        /// </summary>
+        void ImplicitThisStack(DataType dtThis);
 
         /// <summary>
         /// Add a stack parameter of the type dt.
         /// </summary>
         /// <param name="dt"></param>
-        public abstract void StackParam(DataType dt);
+        void StackParam(DataType dt);
     }
 
     public class CallingConventionEmitter : ICallingConventionEmitter
     {
-        public Storage ImplicitThis;
-        public Storage Return;
-        public readonly List<Storage> Parameters;
-
         private int stackAlignment;
+        private int stackOffset;
 
         public CallingConventionEmitter()
         {
             this.Parameters = new List<Storage>();
         }
+
+        public Storage ImplicitThis { get; private set; }
+        public Storage Return { get; private set; }
+        public List<Storage> Parameters { get; private set; }
+        public int StackDelta { get; private set; }
+        public int FpuStackDelta { get; private set; }
 
         public static int Align(int n, int quantum)
         {
@@ -105,56 +132,66 @@ namespace Reko.Core
             return units * quantum;
         }
 
-        public override void ImplicitThisRegister(Storage dtThis)
+        public void CalleeCleanup()
+        {
+            this.StackDelta = this.stackOffset;
+        }
+
+        public void CallerCleanup(int retAddressOnStack)
+        {
+            this.StackDelta = retAddressOnStack;
+        }
+
+        public void ImplicitThisRegister(Storage dtThis)
         {
             this.ImplicitThis = dtThis;
         }
 
-        public override void ImplicitThisStack(DataType dt)
+        public void ImplicitThisStack(DataType dt)
         {
             this.ImplicitThis = new StackArgumentStorage(stackOffset, dt);
             stackOffset += Align(dt.Size, stackAlignment);
         }
 
-        public override void LowLevelDetails(int stackAlignment, int initialStackOffset)
+        public void LowLevelDetails(int stackAlignment, int initialStackOffset)
         {
             this.stackAlignment = stackAlignment;
             this.stackOffset = initialStackOffset;
         }
 
-        public override void RegParam(RegisterStorage stg)
+        public void RegParam(RegisterStorage stg)
         {
             this.Parameters.Add(stg);
         }
 
-        public override void RegReturn(RegisterStorage stg)
+        public void RegReturn(RegisterStorage stg)
         {
             this.Return = stg;
         }
 
-        public override void ReverseParameters()
+        public void ReverseParameters()
         {
             this.Parameters.Reverse();
         }
 
-        public override void SequenceParam(RegisterStorage stgHi, RegisterStorage stgLo)
+        public void SequenceParam(RegisterStorage stgHi, RegisterStorage stgLo)
         {
             this.Parameters.Add(new SequenceStorage(stgHi, stgLo));
         }
 
-        public override void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo)
+        public void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo)
         {
             this.Return = new SequenceStorage(stgHi, stgLo);
         }
 
-        public override void StackParam(DataType dt)
+        public void StackParam(DataType dt)
         {
             var stg = new StackArgumentStorage(stackOffset, dt);
             stackOffset += Align(dt.Size, stackAlignment);
             Parameters.Add(stg);
         }
 
-        public override void FpuReturn(int depth, DataType dt)
+        public void FpuReturn(int depth, DataType dt)
         {
             this.Return = new FpuStackStorage(0, dt);
             this.FpuStackDelta = 1;

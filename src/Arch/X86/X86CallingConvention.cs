@@ -62,11 +62,7 @@ namespace Reko.Arch.X86
         public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
-            bool isReal = SetReturnStorage(ccr, dtRet, stackAlignment);
-            int fpuStackDelta = isReal ? 1 : 0;
-
-            if (isReal)
-                fpuStackDelta = 1;
+            SetReturnStorage(ccr, dtRet, stackAlignment);
 
             if (dtThis != null)
             {
@@ -87,21 +83,27 @@ namespace Reko.Arch.X86
                     ccr.StackParam(dtParams[i]);
                 }
             }
-            ccr.FpuStackDelta = fpuStackDelta;
-            ccr.StackDelta = callerCleanup ? retAddressOnStack : ccr.stackOffset;
+            if (callerCleanup)
+            {
+                ccr.CallerCleanup(retAddressOnStack);
+            }
+            else
+            {
+                ccr.CalleeCleanup();
+            }
         }
 
-        public static bool SetReturnStorage(ICallingConventionEmitter ccr, DataType dtRet, int stackAlignment)
+        public static void SetReturnStorage(ICallingConventionEmitter ccr, DataType dtRet, int stackAlignment)
         {
             if (dtRet == null)
-                return false;
+                return;
 
             int retSize = dtRet.Size;
             if (retSize > 8)
             {
                 // returns a pointer to the stack-allocated large return value
                 ccr.RegReturn(Registers.eax);
-                return false;
+                return;
             }
             else
             {
@@ -109,12 +111,12 @@ namespace Reko.Arch.X86
                 if (pt != null && pt.Domain == Domain.Real)
                 {
                     ccr.FpuReturn(0, PrimitiveType.Real64);
-                    return true;
+                    return;
                 }
                 if (retSize > 4)
                 {
                     ccr.SequenceReturn(Registers.edx, Registers.eax);
-                    return false;
+                    return;
                 }
                 if (retSize > 2)
                 {
@@ -122,15 +124,15 @@ namespace Reko.Arch.X86
                         ccr.RegReturn(Registers.eax);
                     else
                         ccr.SequenceReturn(Registers.dx, Registers.ax);
-                    return false;
+                    return;
                 }
                 if (retSize > 1)
                 {
                     ccr.RegReturn(Registers.ax);
-                    return false;
+                    return;
                 }
                 ccr.RegReturn(Registers.al);
-                return false;
+                return;
             }
         }
     }

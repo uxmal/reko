@@ -44,7 +44,7 @@ namespace Reko.Arch.X86
         public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
-            bool fpu = X86CallingConvention.SetReturnStorage(ccr, dtRet, stackAlignment);
+            X86CallingConvention.SetReturnStorage(ccr, dtRet, stackAlignment);
 
             for (int i = 0; i < dtParams.Count; ++i)
             {
@@ -53,7 +53,7 @@ namespace Reko.Arch.X86
 
             ccr.ImplicitThisRegister(this.ecxThis);
 
-            ccr.StackDelta = ccr.stackOffset;
+            ccr.CalleeCleanup();
         }
     }
 }

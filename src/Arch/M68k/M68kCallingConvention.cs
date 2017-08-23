@@ -51,7 +51,7 @@ namespace Reko.Arch.M68k
             {
                 ccr.StackParam(dtParams[i]);
             }
-            ccr.StackDelta = 4;
+            ccr.CallerCleanup(4);
         }
     }
 }

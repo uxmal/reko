@@ -56,7 +56,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             {
                 ccr.StackParam(dtParam);
             }
-            ccr.StackDelta = arch.PointerType.Size;
+            ccr.CallerCleanup(arch.PointerType.Size);
         }
     }
 }

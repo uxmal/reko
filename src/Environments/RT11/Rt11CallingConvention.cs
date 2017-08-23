@@ -51,7 +51,7 @@ namespace Reko.Environments.RT11
                 ++gr;
                 ccr.RegParam(arg);
             }
-            ccr.StackDelta = 2;
+            ccr.CallerCleanup(arch.PointerType.Size);
         }
 
         public void SetReturnRegisters(ICallingConventionEmitter ccr, DataType dtRet)

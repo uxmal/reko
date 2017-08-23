@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Analysis
             mr = new MockRepository();
             this.CSignature = null;
             dfa = null;
+            base.platform = null;
         }
 
 		[Test]

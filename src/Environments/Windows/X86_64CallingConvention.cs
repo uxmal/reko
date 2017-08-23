@@ -96,7 +96,7 @@ namespace Reko.Environments.Windows
                     ccr.StackParam(dt);
                 }
             }
-            ccr.StackDelta = 8;
+            ccr.CallerCleanup(8);
         }
     }
 }

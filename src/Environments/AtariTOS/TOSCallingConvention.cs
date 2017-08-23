@@ -60,9 +60,7 @@ namespace Reko.Environments.AtariTOS
             }
             // AFAIK the calling convention on Atari TOS is caller-cleanup, 
             // so the only thing we clean up is the return value on the stack.
-            ccr.StackDelta = 4;
-            ccr.FpuStackDelta = 0;
+            ccr.CallerCleanup(4);
         }
-
     }
 }

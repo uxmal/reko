@@ -107,8 +107,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                         throw new NotImplementedException();
                 }
             }
-
-            ccr.StackDelta = arch.PointerType.Size;
+            ccr.CallerCleanup(arch.PointerType.Size);
         }
 
         public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg)

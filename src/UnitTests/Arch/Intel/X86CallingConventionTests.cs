@@ -268,6 +268,14 @@ namespace Reko.UnitTests.Arch.Intel
             cc.Generate(ccr, u64, null, new List<DataType>());
             Assert.AreEqual("Stk: 4 Sequence edx:eax ()", ccr.ToString());
         }
+
+        [Test]
+        public void X86Cc_Return_double()
+        {
+            Given_32bit_CallingConvention("__cdecl");
+            cc.Generate(ccr, r64, null, new List<DataType>());
+            Assert.AreEqual("Stk: 4 Fpu: 1 FPU stack ()", ccr.ToString());
+        }
     }
 }
 
