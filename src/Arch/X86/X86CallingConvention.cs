@@ -70,9 +70,7 @@ namespace Reko.Arch.X86
 
             if (dtThis != null)
             {
-                ccr.StackParam(dtThis);
-                ccr.ImplicitThis = ccr.Parameters[0];
-                ccr.Parameters.Clear();
+                ccr.ImplicitThisStack(dtThis);
             }
             if (reverseArguments)
             {
@@ -80,7 +78,7 @@ namespace Reko.Arch.X86
                 {
                     ccr.StackParam(dtParams[i]);
                 }
-                ccr.Parameters.Reverse();
+                ccr.ReverseParameters();
             }
             else
             {

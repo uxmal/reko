@@ -34,23 +34,69 @@ namespace Reko.Core
 
     public abstract class ICallingConventionEmitter
     {
-        public Storage ImplicitThis;
-        public readonly List<Storage> Parameters;
         public int StackDelta;
         public int FpuStackDelta;
 
-        private int stackAlignment;
         public int stackOffset;
 
-        public ICallingConventionEmitter()
+        /// <summary>
+        /// Indicate a floating point value is returned in an x87 FPU register.
+        /// </summary>
+        /// <param name="depth"></param>
+        /// <param name="dt"></param>
+        public abstract void FpuReturn(int depth, DataType dt);
+
+        public abstract void LowLevelDetails(int stackAlignment, int initialStackOffset);
+
+        /// <summary>
+        /// Add a register parameter.
+        /// </summary>
+        /// <param name="stg"></param>
+        public abstract void RegParam(RegisterStorage stg);
+
+        /// <summary>
+        /// Indicate a register is returned.
+        /// </summary>
+        /// <param name="stg"></param>
+        public abstract void RegReturn(RegisterStorage stg);
+
+        public abstract void ReverseParameters();
+        /// <summary>
+        /// Add a sequence parameter.
+        /// </summary>
+        /// <param name="stgHi"></param>
+        /// <param name="stgLo"></param>
+        public abstract void SequenceParam(RegisterStorage stgHi, RegisterStorage stgLo);
+
+        /// <summary>
+        /// Indicate that a sequence is returned.
+        /// </summary>
+        /// <param name="stgHi"></param>
+        /// <param name="stgLo"></param>
+        public abstract void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo);
+
+        public abstract void ImplicitThisRegister(Storage dtThis);
+
+        public abstract void ImplicitThisStack(DataType dtThis);
+
+        /// <summary>
+        /// Add a stack parameter of the type dt.
+        /// </summary>
+        /// <param name="dt"></param>
+        public abstract void StackParam(DataType dt);
+    }
+
+    public class CallingConventionEmitter : ICallingConventionEmitter
+    {
+        public Storage ImplicitThis;
+        public Storage Return;
+        public readonly List<Storage> Parameters;
+
+        private int stackAlignment;
+
+        public CallingConventionEmitter()
         {
             this.Parameters = new List<Storage>();
-        }
-
-        public void LowLevelDetails(int stackAlignment, int stackOffset)
-        {
-            this.stackAlignment = stackAlignment;
-            this.stackOffset = stackOffset;
         }
 
         public static int Align(int n, int quantum)
@@ -59,50 +105,41 @@ namespace Reko.Core
             return units * quantum;
         }
 
-        /// <summary>
-        /// Add a register parameter.
-        /// </summary>
-        /// <param name="stg"></param>
-        public void RegParam(RegisterStorage stg)
+        public override void ImplicitThisRegister(Storage dtThis)
+        {
+            this.ImplicitThis = dtThis;
+        }
+
+        public override void ImplicitThisStack(DataType dt)
+        {
+            this.ImplicitThis = new StackArgumentStorage(stackOffset, dt);
+            stackOffset += Align(dt.Size, stackAlignment);
+        }
+
+        public override void LowLevelDetails(int stackAlignment, int initialStackOffset)
+        {
+            this.stackAlignment = stackAlignment;
+            this.stackOffset = initialStackOffset;
+        }
+
+        public override void RegParam(RegisterStorage stg)
         {
             this.Parameters.Add(stg);
         }
 
-        public abstract void RegReturn(RegisterStorage stg);
-
-        /// <summary>
-        /// Add a stack parameter of the type dt.
-        /// </summary>
-        /// <param name="dt"></param>
-        public void StackParam(DataType dt)
-        {
-            var stg = new StackArgumentStorage(stackOffset, dt);
-            stackOffset += Align(dt.Size, stackAlignment);
-            Parameters.Add(stg);
-        }
-
-        /// <summary>
-        /// Add a sequence parameter.
-        /// </summary>
-        /// <param name="stgHi"></param>
-        /// <param name="stgLo"></param>
-        public void SequenceParam(RegisterStorage stgHi, RegisterStorage stgLo)
-        {
-            this.Parameters.Add(new SequenceStorage(stgHi, stgLo));
-        }
-
-        public abstract void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo);
-
-        public abstract void FpuReturn(int depth, DataType dt);
-    }
-
-    public class CallingConventionEmitter : ICallingConventionEmitter
-    {
-        public Storage Return;
-
         public override void RegReturn(RegisterStorage stg)
         {
             this.Return = stg;
+        }
+
+        public override void ReverseParameters()
+        {
+            this.Parameters.Reverse();
+        }
+
+        public override void SequenceParam(RegisterStorage stgHi, RegisterStorage stgLo)
+        {
+            this.Parameters.Add(new SequenceStorage(stgHi, stgLo));
         }
 
         public override void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo)
@@ -110,9 +147,17 @@ namespace Reko.Core
             this.Return = new SequenceStorage(stgHi, stgLo);
         }
 
+        public override void StackParam(DataType dt)
+        {
+            var stg = new StackArgumentStorage(stackOffset, dt);
+            stackOffset += Align(dt.Size, stackAlignment);
+            Parameters.Add(stg);
+        }
+
         public override void FpuReturn(int depth, DataType dt)
         {
             this.Return = new FpuStackStorage(0, dt);
+            this.FpuStackDelta = 1;
         }
 
         public override string ToString()

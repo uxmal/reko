@@ -45,15 +45,14 @@ namespace Reko.Arch.X86
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
             bool fpu = X86CallingConvention.SetReturnStorage(ccr, dtRet, stackAlignment);
-            var fpuStackDelta = fpu ? 1 : 0;
 
             for (int i = 0; i < dtParams.Count; ++i)
             {
                 ccr.StackParam(dtParams[i]);
             }
 
-            ccr.ImplicitThis = this.ecxThis;
-            ccr.FpuStackDelta = fpuStackDelta;
+            ccr.ImplicitThisRegister(this.ecxThis);
+
             ccr.StackDelta = ccr.stackOffset;
         }
     }

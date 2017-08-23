@@ -50,10 +50,8 @@ namespace Reko.Arch.M68k
             for (int i = 0; i < dtParams.Count; ++i)
             {
                 ccr.StackParam(dtParams[i]);
-                var dtArg = dtParams[i];
             }
             ccr.StackDelta = 4;
-            ccr.FpuStackDelta = 0;
         }
     }
 }
