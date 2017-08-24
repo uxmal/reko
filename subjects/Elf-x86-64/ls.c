@@ -4231,6 +4231,18 @@ void fn0000000000405630(word64 rsi, word64 rdi, word64 qwArg04)
 	word64 rax_13 = Mem0[rsi + 0x18:word64];
 	word64 rbp_14 = Mem0[rsi + 0x10:word64];
 	word64 r12_18 = (uint64) ((word32) (rax_13 - rbp_14) >>u 0x03);
+	if (r12_18 == 0x00)
+		return;
+	else
+	{
+		word64 rbx_30;
+		word64 rsp_31;
+		word64 rbp_32;
+		word64 rsi_33;
+		word32 edi_34;
+		fn000000000040564F(rax_13, rbp_14, rsi, rdi, r12_18, out rbx_30, out rsp_31, out rbp_32, out rsi_33, out edi_34);
+		return;
+	}
 }
 
 // 000000000040564F: Register word64 fn000000000040564F(Register word64 rax, Register word64 rbp, Register word64 rsi, Register word64 rdi, Register word64 r12, Register out ptr64 rbxOut, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 rsiOut, Register out ptr64 ediOut)
