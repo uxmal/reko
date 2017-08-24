@@ -308,5 +308,27 @@ namespace Reko.UnitTests.Core.Serialization
 ";
             Assert.AreEqual(sExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
         }
+
+        [Test]
+        public void ProcSer_Deserialize_thiscall_method_noargs()
+        {
+            var ssig = new SerializedSignature
+            {
+                Convention = "__thiscall",
+                EnclosingType = new TypeReference_v1 { TypeName = "bob" },
+                ReturnValue = new Argument_v1 { Type = new VoidType_v1() },
+                Arguments = new Argument_v1[0]
+            };
+            Given_ProcedureSerializer("__thiscall");
+            mr.ReplayAll();
+
+            var sig = ser.Deserialize(ssig, arch.CreateFrame());
+            var sExp =
+@"void foo(Register (ptr bob) this)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            Assert.AreEqual(sExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
+        }
+
     }
 }

@@ -99,12 +99,7 @@ namespace Reko.Core.Serialization
             var parameters = new List<Identifier>();
 
             Identifier ret = null;
-            // If the user has specified the storage on all
-            // parameters, and the return value, no heed is taken of any calling 
-            // convention.
-            if ((ss.Arguments == null || ss.Arguments.All(HasExplicitStorage)) &&
-                (ss.ReturnValue == null || ss.ReturnValue.Type == null ||
-                 ss.ReturnValue.Type is VoidType_v1 || HasExplicitStorage(ss.ReturnValue)))
+            if (UseUserSpecifiedStorages(ss))
             {
                 this.argDeser = new ArgumentDeserializer(
                     this,
@@ -199,6 +194,25 @@ namespace Reko.Core.Serialization
                 };
                 return ft;
             }
+        }
+
+        /// <summary>
+        /// If the user has specified the storage on all
+        /// parameters, and the return value, no heed is taken of any calling 
+        /// convention.
+        /// </summary>
+        /// <param name="ss"></param>
+        /// <returns></returns>
+        private bool UseUserSpecifiedStorages(SerializedSignature ss)
+        {
+            if (ss.Arguments != null && !ss.Arguments.All(HasExplicitStorage))
+                return false;
+            if (ss.ReturnValue != null && ss.ReturnValue.Type != null &&
+                !(ss.ReturnValue.Type is VoidType_v1) && !HasExplicitStorage(ss.ReturnValue))
+                return false;
+            if (ss.EnclosingType != null)
+                return false;
+            return true;
         }
 
         private string GenerateParameterName(string name, DataType dataType, Storage storage)

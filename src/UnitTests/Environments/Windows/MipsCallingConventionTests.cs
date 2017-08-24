@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Environments.Windows
         }
 
         [Test]
-        public void MipsProcSer_ReturnRegister()
+        public void MipsCc_ReturnRegister()
         {
             Given_CallingConvention();
             cc.Generate(ccr, i32, null, new List<DataType> { });
@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Environments.Windows
         }
 
         [Test]
-        public void MipsProcSet_CharArg()
+        public void MipsCc_CharArg()
         {
             Given_CallingConvention();
             cc.Generate(ccr, null, null,new List<DataType> { Ptr(v) });
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Environments.Windows
         }
 
         [Test]
-        public void MipsProcSet_ManyArgs()
+        public void MipsCc_ManyArgs()
         {
             Given_CallingConvention();
             cc.Generate(ccr, null, null, new List<DataType> { Ptr(v), Ptr(v), Ptr(v), Ptr(v), Ptr(v) });
