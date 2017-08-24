@@ -45,29 +45,28 @@ namespace Reko.Arch.X86
         }
 
         /// <summary>
-        /// If dtThis is supplied, it is known that it is the `this` corresponding to an enclosing
-        /// C++ class. If dtThis is null, then the first of the dtParams will be treated as a `this`.
+        /// If dtThis is supplied, it is known that it is the `this` 
+        /// corresponding to an enclosing C++ class. If dtThis is null, then
+        /// the first of the dtParams will be treated as a `this`.
         /// </summary>
         public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
             X86CallingConvention.SetReturnStorage(ccr, dtRet, stackAlignment);
 
+            int i = 0;
             if (dtThis != null)
             {
                 ccr.ImplicitThisRegister(this.ecxThis);
-                for (int i = 0; i < dtParams.Count; ++i)
-                {
-                    ccr.StackParam(dtParams[i]);
-                }
             }
             else if (dtParams.Count > 0)
             {
                 ccr.RegParam(this.ecxThis);
-                for (int i = 1; i < dtParams.Count; ++i)
-                {
-                    ccr.StackParam(dtParams[i]);
-                }
+                i = 1;
+            }
+            for (; i < dtParams.Count; ++i)
+            {
+                ccr.StackParam(dtParams[i]);
             }
             ccr.CalleeCleanup();
         }

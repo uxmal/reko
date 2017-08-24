@@ -217,23 +217,6 @@ namespace Reko.Core.Serialization
             throw new NotImplementedException();
         }
 
-        private Identifier DeserializeImplicitThisArgument(SerializedSignature ss)
-        {
-            var sArg = new Argument_v1
-            {
-                Type = new PointerType_v1(ss.EnclosingType),
-                Name = "this",
-            };
-            if (ss.Convention == "__thiscall")
-            {
-                sArg.Kind = new Register_v1("ecx");
-            }
-            else
-                sArg.Kind = new StackVariable_v1();
-            var arg = argDeser.Deserialize(sArg);
-            return arg;
-        }
-
         public SerializedSignature Serialize(FunctionType sig)
         {
             SerializedSignature ssig = new SerializedSignature();

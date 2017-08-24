@@ -203,7 +203,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        public void ProcSer_DeserializeFpuStackReturnValue()
+        public void ProcSer_DeserializeFpuStackReturnValue_function()
         {
             var ssig = new SerializedSignature
             {
@@ -247,7 +247,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        public void ProcSer_Deserialize_thiscall()
+        public void ProcSer_Deserialize_thiscall_function()
         {
             var ssig = new SerializedSignature
             {
@@ -273,6 +273,38 @@ namespace Reko.UnitTests.Core.Serialization
             var sExp =
 @"void foo(Register (ptr int32) self, Stack (ptr int32) arg1)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            Assert.AreEqual(sExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
+        }
+
+        [Test]
+        public void ProcSer_Deserialize_thiscall_method()
+        {
+            var ssig = new SerializedSignature
+            {
+                Convention = "__thiscall",
+                EnclosingType = new TypeReference_v1 { TypeName = "bob" },
+                Arguments = new Argument_v1[]
+                {
+                    new Argument_v1
+                    {
+                        Name = "arg0",
+                        Type = new PointerType_v1 { DataType = PrimitiveType_v1.Int32(), PointerSize = 4 }
+                    },
+                    new Argument_v1
+                    {
+                        Name = "arg1",
+                        Type = new PointerType_v1 { DataType = PrimitiveType_v1.Int32(), PointerSize = 4 }
+                    },
+                }
+            };
+            Given_ProcedureSerializer("__thiscall");
+            mr.ReplayAll();
+
+            var sig = ser.Deserialize(ssig, arch.CreateFrame());
+            var sExp =
+@"void foo(Register (ptr bob) this, Stack (ptr int32) arg0, Stack (ptr int32) arg1)
+// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
         }
