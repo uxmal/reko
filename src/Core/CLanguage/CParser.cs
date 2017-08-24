@@ -557,6 +557,7 @@ IGNORE tab + cr + lf
             case CTokenType.__ForceInline:
             case CTokenType.__Inline:
             case CTokenType.__Stdcall:
+            case CTokenType.__Thiscall:
                 return grammar.StorageClass( lexer.Read().Type);
             case CTokenType.Const:
             case CTokenType.Volatile:

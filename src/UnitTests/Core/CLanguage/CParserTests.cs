@@ -1232,5 +1232,15 @@ int x = 3;
             var decls = parser.Parse();
             Assert.AreEqual(1, decls.Count);
         }
+
+        [Test(Description = "Test non-standard use of __thiscall keyword in a non-member function declaration.")]
+        public void CParser_thiscall()
+        {
+            Lex("int __thiscall foo(char * bar, const float * baz);");
+            var decl = parser.Parse_Decl();
+            Assert.AreEqual(
+                "(decl Int __Thiscall ((init-decl (func foo ((Char (ptr bar)) (Const Float (ptr baz)))))))",
+                decl.ToString());
+        }
     }
 }
