@@ -74,8 +74,9 @@
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\tools\c2xml\c2xml.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly> 
+    <ProjectReference Include="..\..\tools\c2xml\C2Xml.csproj">
+      <Project>{500c7c4b-5b7a-40e0-beed-75ddf1ba78d5}</Project>
+      <Name>C2Xml</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
