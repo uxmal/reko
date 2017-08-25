@@ -74,6 +74,9 @@
       <Project>{38a94634-b2b2-4a89-af02-2a2898b93343}</Project>
       <Name>M68k</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\tools\xslt\xslt.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly> 
+    </ProjectReference>    
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="M68kPropertiesControl.resx">
