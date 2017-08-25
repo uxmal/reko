@@ -200,7 +200,6 @@ namespace Reko.Core.Output
             throw new NotImplementedException();
         }
 
-
         void InstructionVisitor.VisitGotoInstruction(GotoInstruction def)
         {
             writer.Write("Jump");
