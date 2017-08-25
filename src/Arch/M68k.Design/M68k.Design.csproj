@@ -70,13 +70,14 @@
       <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>
       <Name>Gui</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\tools\xslt\xslt.csproj">
+      <Project>{c4ef0f8b-b8bc-4bbd-91e6-f11d2335f901}</Project>
+      <Name>xslt</Name>
+    </ProjectReference>
     <ProjectReference Include="..\M68k\M68k.csproj">
       <Project>{38a94634-b2b2-4a89-af02-2a2898b93343}</Project>
       <Name>M68k</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\tools\xslt\xslt.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly> 
-    </ProjectReference>    
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="M68kPropertiesControl.resx">
