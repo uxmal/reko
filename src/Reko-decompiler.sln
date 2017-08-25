@@ -12,6 +12,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{5C315C78-1F97-4B16-81AA-917284969DFE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{AD6CD1E3-2C31-4E78-9432-4BAC77BC63D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C2Xml", "tools\c2xml\C2Xml.csproj", "{500C7C4B-5B7A-40E0-BEED-75DDF1BA78D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xslt", "tools\xslt\xslt.csproj", "{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "makesigs", "tools\makesigs\makesigs.csproj", "{8D0F740F-A1DD-4BCF-9471-DD40BB74B25A}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decompiler", "Decompiler\Decompiler.csproj", "{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Architectures", "Architectures", "{18994109-C4D5-49F9-86E0-3B5B1046C08E}"
@@ -74,14 +82,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows", "Environments\Win
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trs80", "Environments\Trs80\Trs80.csproj", "{8C072C7A-9771-42D5-BF07-E79850CFCC90}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{AD6CD1E3-2C31-4E78-9432-4BAC77BC63D5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C2Xml", "tools\c2xml\C2Xml.csproj", "{500C7C4B-5B7A-40E0-BEED-75DDF1BA78D5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xslt", "tools\xslt\xslt.csproj", "{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "makesigs", "tools\makesigs\makesigs.csproj", "{8D0F740F-A1DD-4BCF-9471-DD40BB74B25A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Loaders", "Loaders", "{E34BB92E-9C1E-41E8-8333-8BB69831BB63}"
 EndProject
