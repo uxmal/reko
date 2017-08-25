@@ -66,7 +66,7 @@ namespace Reko.Arch.X86
 
             if (dtThis != null)
             {
-                ccr.StackParam(dtThis);
+                ccr.ImplicitThisStack(dtThis);
             }
             if (reverseArguments)
             {
