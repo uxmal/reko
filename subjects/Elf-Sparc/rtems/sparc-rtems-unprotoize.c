@@ -215,17 +215,12 @@ word32 substr(word32 o0, word32 o1)
 	return o0;
 }
 
-// 00011828: Register word32 safe_read(Register word32 o0, Register word32 o1, Register word32 o2, Register out ptr32 l0Out, Register out ptr32 l1Out, Register out ptr32 l2Out)
-word32 safe_read(word32 o0, word32 o1, word32 o2, ptr32 & l0Out, ptr32 & l1Out, ptr32 & l2Out)
+// 00011828: void safe_read(Register word32 o0, Register word32 o1, Register word32 o2)
+void safe_read(word32 o0, word32 o1, word32 o2)
 {
 safe_read_entry:
 l00011828:
-	word32 l2_19
-	*l2Out = o0
-	word32 l0_20
-	*l0Out = o2
-	word32 l1_21
-	*l1Out = 0x0002B400
+	word32 l0_20 = o2
 	goto l00011840
 l0001183C:
 l00011840:
@@ -236,20 +231,18 @@ l00011840_ds_f:
 l00011840_ds_t:
 	goto l0001187C
 l00011844:
-	word32 i0_42
 	branch NZV_31 l00011840_ds_t
 	goto l00011840_ds_f
 l0001184C:
 	read()
-	i0_42 = o0
 	branch o0 >= 0x00 l0001184C_ds_t
 l0001184C_ds_f:
-	word32 o0_75 = Mem0[0x0002B760:word32]
+	word32 o0_59 = Mem0[0x0002B760:word32]
 	goto l00011864
 l0001184C_ds_t:
 	goto l00011874
 l00011864:
-	branch o0_75 == 0x04 l00011864_ds_t
+	branch o0_59 == 0x04 l00011864_ds_t
 l00011864_ds_f:
 	goto l00011870
 l00011864_ds_t:
@@ -260,15 +253,14 @@ l00011870:
 l00011874:
 	branch o0 != 0x00 l00011874_ds_t
 l00011874_ds_t:
-	*l0Out = l0_20 - o0
+	l0_20 = l0_20 - o0
 	goto l0001183C
 l00011874_ds_t:
-	*l0Out = l0_20 - o0
+	l0_20 = l0_20 - o0
 	goto l0001183C
 l0001187C:
-	i0_42 = o2 - l0_20
 l00011880:
-	return i0_42
+	return
 safe_read_exit:
 }
 
@@ -1619,18 +1611,18 @@ process_aux_info_file_entry:
 	strcpy()
 	strcat()
 	word32 sp_23 = fp + ~0xF7 - (o0 + 0x0A & ~0x07)
-	word32 l2_226 = 0x00
+	word32 l2_222 = 0x00
 	goto l00013074
 l00013034:
 l00013034_ds_f:
-	word32 l3_260 = Mem0[0x0002B760:word32]
-	branch l3_260 != 0x02 l0001308C_ds_t
+	word32 l3_256 = Mem0[0x0002B760:word32]
+	branch l3_256 != 0x02 l0001308C_ds_t
 	goto l0001308C_ds_f
 l00013034_ds_t:
-	Z_274 = cond(l2_226) (alias)
+	Z_270 = cond(l2_222) (alias)
 	goto l00013100
 l00013074:
-	bool Z_274
+	bool Z_270
 	word32 o0_107
 	access()
 	branch sp_23 != 0x61 l00013034_ds_t
@@ -1641,7 +1633,7 @@ l0001308C_ds_f:
 	goto l000130A0_ds_f
 l0001308C_ds_t:
 	shortpath(0x00, sp_23 + 0x60)
-	xstrerror(l3_260)
+	xstrerror(l3_256)
 	o0_107 = 0x00017300
 	goto l000131F0
 l000130A0:
@@ -1651,12 +1643,12 @@ l000130AC:
 l000130C0:
 l000130C8:
 l000130FC:
-	Z_274 = cond(0x01) (alias)
+	Z_270 = cond(0x01) (alias)
 l00013100:
 	word32 o1_102
 	word32 l0_101
 	word32 l2_119
-	branch Z_274 l00013100_ds_t
+	branch Z_270 l00013100_ds_t
 l00013100_ds_f:
 	gen_aux_info_file(o0)
 	branch o0 == 0x00 l00013108_ds_t
@@ -1667,7 +1659,7 @@ l00013108_ds_f:
 	branch sp_23 != 0x61 l0001311C_ds_t
 	goto l0001311C_ds_f
 l00013108_ds_t:
-	Mem255[163616:word32] = Mem0[163616:word32] + 0x01
+	Mem251[163616:word32] = Mem0[163616:word32] + 0x01
 	goto l000135B8
 l0001311C:
 l0001311C_ds_f:
@@ -1695,7 +1687,7 @@ l00013188_ds_f:
 	goto l00013194_ds_f
 l00013194:
 l00013194_ds_f:
-	word32 l7_208 = Mem0[fp + -88:word32]
+	word32 l7_204 = Mem0[fp + -88:word32]
 	stat()
 	branch o0 != ~0x00 l0001319C_ds_t
 	goto l0001319C_ds_f
@@ -1706,8 +1698,8 @@ l0001319C_ds_f:
 	o1_102 = o0
 	goto l000131D0
 l0001319C_ds_t:
-	word32 o0_222 = Mem0[fp + -88:word32]
-	branch o0_222 - l7_208 > 0x00 l0001320C_ds_t
+	word32 o0_218 = Mem0[fp + -88:word32]
+	branch o0_218 - l7_204 > 0x00 l0001320C_ds_t
 	goto l00013218
 l000131B4:
 l000131D0:
@@ -1719,7 +1711,7 @@ l000131F0:
 l000131F8:
 l0001320C:
 l0001320C_ds_t:
-	l2_226 = 0x01
+	l2_222 = 0x01
 	goto l00013074
 l00013218:
 	open()
@@ -1730,21 +1722,18 @@ l00013218_ds_f:
 	xstrerror(l2_143)
 	notice(0x00017358, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58)
 l00013218_ds_t:
-	word32 l0_176
-	word32 l2_174
+	word32 l0_172
+	word32 l2_170
 	xmalloc(l0_124 + 0x01)
 	Mem160[l0_124 + 0x01 + l0_124:byte] = 0x00
-	word32 l0_164
-	word32 l1_165
-	word32 l2_166
-	word32 o0_167 = safe_read(sp_23 + 0x60, l0_124 + 0x01, l0_124, out l0_164, out l1_165, out l2_166)
-	branch o0_167 - l0_164 == 0x00 l00013250_ds_t
+	safe_read(sp_23 + 0x60, l0_124 + 0x01, l0_124)
+	branch sp_23 + 0x60 - l0_124 == 0x00 l00013250_ds_t
 	goto l00013250_ds_f
 l00013238:
 l00013250:
 l00013250_ds_f:
-	l2_174 = Mem160[0x0002B760:word32]
-	l0_176 = 0x00017390
+	l2_170 = Mem160[0x0002B760:word32]
+	l0_172 = 0x00017390
 	goto l000132BC
 l00013250_ds_t:
 	close()
@@ -1753,14 +1742,14 @@ l00013250_ds_t:
 l0001327C:
 l00013294:
 l00013294_ds_f:
-	l2_174 = Mem160[0x0002B760:word32]
-	l0_176 = 0x000173C0
+	l2_170 = Mem160[0x0002B760:word32]
+	l0_172 = 0x000173C0
 	goto l000132BC
 l000132A8:
 l000132BC:
 	shortpath(0x00, sp_23 + 0x60)
-	xstrerror(l2_174)
-	notice(l0_176, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58)
+	xstrerror(l2_170)
+	notice(l0_172, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58)
 	free()
 	close()
 	goto l000135B8

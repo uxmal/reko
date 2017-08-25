@@ -727,9 +727,9 @@ Eq_135 fn07A6(Eq_2 r4, Eq_4 * pc, ptr16 & r1Out, ptr16 & r3Out, ptr16 & r4Out, p
 				if (r5_167 == null)
 					r2_183->t0DB8.u0 = 0x00;
 			}
-			ci16 v81_201 = pc->w06AE - 0x02;
-			pc->w06AE = v81_201;
-			if (v81_201 < 0x00)
+			ci16 v80_201 = pc->w06AE - 0x02;
+			pc->w06AE = v80_201;
+			if (v80_201 < 0x00)
 			{
 				globals->w0F1C = 0x0A;
 				globals->w0DAA = ~globals->w0DA8;
@@ -750,9 +750,9 @@ Eq_135 fn07A6(Eq_2 r4, Eq_4 * pc, ptr16 & r1Out, ptr16 & r3Out, ptr16 & r4Out, p
 	}
 	if (globals->w0F12 == 0x00)
 		return r0;
-	cui16 v39_49 = pc->w063A & globals->w0EF4;
-	pc->w063A = v39_49;
-	if (v39_49 == 0x00)
+	cui16 v38_49 = pc->w063A & globals->w0EF4;
+	pc->w063A = v38_49;
+	if (v38_49 == 0x00)
 		return r0;
 	struct Eq_1775 * r2_54 = globals->w0F06;
 	if (r2_54[0x0EE6] != 0x00)

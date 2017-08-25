@@ -155,14 +155,14 @@ l00000000004004A0:
 	branch true l00000000004004C4
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rax:<invalid> r8:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid>
+// SymbolicIn: rsp:fp
 // LocalsOut: fp(64)
 
 l00000000004004C4:
 	branch 0x0000000000000000 == 0x0000000000000000 l00000000004004C2
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rax:0x0000000000060104 r8:<invalid> rbp:fp - 0x0000000000000004 rdx:0x0000000000000000 rsi:<invalid> rdi:<invalid> -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 0x0000000000000004 rdx:0x0000000000000000 -4(fp):rbp
 // LocalsOut: fp(64)
 
 l00000000004004CE:
@@ -184,13 +184,13 @@ l00000000004004CE:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rax:0x0000000000060104 r8:<invalid> rbp:fp - 0x0000000000000004 rdx:0x0000000000000000 rsi:<invalid> rdi:<invalid> -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 0x0000000000000004 rdx:0x0000000000000000 -4(fp):rbp
 
 l00000000004004C2:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rax:0x0000000000060104 r8:<invalid> rbp:fp - 0x0000000000000004 rdx:0x0000000000000000 rsi:<invalid> rdi:<invalid> -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 0x0000000000000004 rdx:0x0000000000000000 -4(fp):rbp
 
 register_tm_clones_exit:
 // DataOut:
@@ -245,7 +245,7 @@ void frame_dummy(word64 r8)
 // MayUse:  r8
 // LiveOut:
 // Trashed: SCZO ah al ax dh di dil dl dx eax edi edx esi esp r8 r8b r8d r8w rax rdi rdx rsi rsp si sil sp spl
-// Preserved: rbp rsp
+// Preserved: rbp
 frame_dummy_entry:
 // DataOut: r8
 // DataOut (flags): 
@@ -253,95 +253,55 @@ frame_dummy_entry:
 // LocalsOut: fp(64)
 
 l0000000000400500:
-	rsp = fp
-	SCZO = cond(Mem0[0x0000000000600E20:word64] - 0x0000000000000000)
-	Z = SCZO (alias)
-	branch Test(EQ,Z) l0000000000400528
+	branch Mem0[0x0000000000600E20:word64] == 0x0000000000000000 l0000000000400528
 // DataOut: r8
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64)
 
 l000000000040050A:
-	rax = 0x0000000000000000
-	SZO = cond(0x0000000000000000)
-	Z = SZO (alias)
-	C = false
-	branch Test(EQ,Z) l0000000000400528
+	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400528
 // DataOut: r8
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64)
 
 l0000000000400528:
+// DataOut: r8
+// DataOut (flags): 
+// SymbolicIn: rsp:fp rax:0x0000000000000000
+
+l0000000000400528_thunk_register_tm_clones:
 	register_tm_clones(r8)
 	return
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp rax:0x0000000000000000
 
-l00000000004004A0:
-	branch true l00000000004004C4
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rax:<invalid> r8:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid>
-// LocalsOut: fp(64)
-
-l00000000004004C4:
-	branch 0x0000000000000000 == 0x0000000000000000 l00000000004004C2
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rax:0x0000000000060104 r8:<invalid> rbp:fp - 0x0000000000000004 rdx:0x0000000000000000 rsi:<invalid> rdi:<invalid> -4(fp):rbp
-// LocalsOut: fp(64)
-
-l00000000004004CE:
-	word64 rsp_48
-	word64 rax_49
-	word64 rbp_50
-	word64 r8_51
-	byte SCZO_52
-	word64 rdx_53
-	byte Z_54
-	byte SZO_55
-	byte C_56
-	word64 rsi_57
-	word64 rdi_58
-	word32 edx_59
-	call edx (retsize: 4;)
-		uses: C_43,dwLoc04_5,edx,qwLoc04,r8_7,rax_13,rbp_44,rdi_47,rdx_40,rsi_46,rsp_45,SCZO_14,SZO_41,Z_42
-		defs: C_56,edx_59,r8_51,rax_49,rbp_50,rdi_58,rdx_53,rsi_57,rsp_48,SCZO_52,SZO_55,Z_54
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rax:0x0000000000060104 r8:<invalid> rbp:fp - 0x0000000000000004 rdx:0x0000000000000000 rsi:<invalid> rdi:<invalid> -4(fp):rbp
-
-l00000000004004C2:
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rax:0x0000000000060104 r8:<invalid> rbp:fp - 0x0000000000000004 rdx:0x0000000000000000 rsi:<invalid> rdi:<invalid> -4(fp):rbp
-
-register_tm_clones_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x0000000000000004 rax:<invalid> r8:<invalid> rbp:rbp rdx:<invalid> rsi:<invalid> rdi:<invalid> -4(fp):rbp
-
 l0000000000400514:
-	rsp = fp - 0x0000000000000004
-	dwLoc04 = rbp
-	qwLoc04 = DPB(qwLoc04, dwLoc04, 0) (alias)
-	rdi = 0x0000000000600E20
-	rbp = fp - 0x0000000000000004
+	word64 rsp_47
+	byte SCZO_48
+	byte Z_49
+	word32 eax_50
+	word64 rax_51
+	byte SZO_52
+	byte C_53
+	word64 rbp_54
+	word32 edi_55
+	word64 rdi_56
+	word64 r8_57
+	word64 rdx_58
+	word32 edx_59
+	word64 rsi_60
 	call eax (retsize: 4; depth: 8)
-		defs: C,eax,edi,edx,r8,rax,rbp,rdi,rdx,rsi,rsp,SCZO,SZO,Z
-	rbp = qwLoc04
-	rsp = fp + 0x0000000000000004
+		uses: C_41,dwLoc04_43,eax,edi,edx,qwLoc04_44,r8,rax_38,rbp_46,rdi_45,rdx,rsi,rsp_42,SCZO_3,SZO_39,Z_40
+		defs: C_53,eax_50,edi_55,edx_59,r8_57,rax_51,rbp_54,rdi_56,rdx_58,rsi_60,rsp_47,SCZO_48,SZO_52,Z_49
 // DataOut: r8
 // DataOut (flags): 
 // SymbolicIn: rsp:fp rax:0x0000000000000000
 
 l000000000040051F_thunk_register_tm_clones:
-	register_tm_clones(r8)
+	register_tm_clones(r8_57)
 	return
 // DataOut:
 // DataOut (flags): 
