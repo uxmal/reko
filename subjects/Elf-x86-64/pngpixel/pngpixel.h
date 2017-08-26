@@ -799,11 +799,13 @@ T_159: (in tLoc34 : <unknown>)
   Class: Eq_153
   DataType: Eq_153
   OrigDataType: <unknown>
-T_160: (in fprintf(globals->ptr602100, "pngpixel: invalid bit depth %u\n", tLoc34) : int32)
+T_160: (in fprintf(globals->ptr602100, "pngpixel: invalid bit depth %u
+", tLoc34) : int32)
   Class: Eq_160
   DataType: int32
   OrigDataType: int32
-T_161: (in (uint64) fprintf(globals->ptr602100, "pngpixel: invalid bit depth %u\n", tLoc34) : uint64)
+T_161: (in (uint64) fprintf(globals->ptr602100, "pngpixel: invalid bit depth %u
+", tLoc34) : uint64)
   Class: Eq_148
   DataType: uint64
   OrigDataType: uint64
@@ -1719,11 +1721,13 @@ T_389: (in tLocA4 : <unknown>)
   Class: Eq_153
   DataType: Eq_153
   OrigDataType: <unknown>
-T_390: (in fprintf(globals->ptr602100, "pngpixel: %s: could not open file\n", tLocA4) : int32)
+T_390: (in fprintf(globals->ptr602100, "pngpixel: %s: could not open file
+", tLocA4) : int32)
   Class: Eq_160
   DataType: int32
   OrigDataType: int32
-T_391: (in (uint64) fprintf(globals->ptr602100, "pngpixel: %s: could not open file\n", tLocA4) : uint64)
+T_391: (in (uint64) fprintf(globals->ptr602100, "pngpixel: %s: could not open file
+", tLocA4) : uint64)
   Class: Eq_382
   DataType: uint64
   OrigDataType: uint64
