@@ -2556,13 +2556,13 @@ l0000000000015F24:
 	branch 0x0000000000000000 == 0x0000000000000000 l0000000000015F60
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
+// SymbolicIn: sp:fp a5:<invalid> a0:<invalid> a1:0x0000000000000000 t1:0x0000000000000000
 
 l0000000000015F4C:
 	branch 0x0000000000000000 == 0x0000000000000000 l0000000000015F60
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp a0:0x0000000000010000 a5:0x0000000000000000 a1:0x0000000000000000
+// SymbolicIn: sp:fp a0:0x0000000000010000 a5:0x0000000000000000 a1:0x0000000000000000 t1:0x0000000000000000
 
 l0000000000015F60:
 	return
@@ -2644,13 +2644,19 @@ fn0000000000015F94_entry:
 // LocalsOut: fp(64)
 
 l0000000000015F94:
-	branch Mem0[0x0000000000019E28:word64] != 0x0000000000000000 l0000000000015FA8
+	sp = fp
+	a5 = 0x000000000001A000
+	a0 = 0x0000000000019E28
+	a5 = Mem0[0x0000000000019E28:word64]
+	branch a5 != 0x0000000000000000 l0000000000015FA8
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(64)
 
 l0000000000015FA8:
+	a5 = 0x0000000000000000
+	a5 = 0x0000000000000000
 	branch 0x0000000000000000 == 0x0000000000000000 l0000000000015FA4
 // DataOut:
 // DataOut (flags): 
@@ -2658,15 +2664,11 @@ l0000000000015FA8:
 // LocalsOut: fp(64)
 
 l0000000000015FB4:
-	word64 sp_22
-	word64 a5_23
-	word64 a0_24
-	word64 ra_25
-	word64 a1_26
-	word64 t1_27
+	sp = fp + -16
+	qwLoc08 = ra
 	call 0x0000000000000000 (retsize: 0; depth: 16)
-		uses: a0_3,a1,a5_19,qwLoc08_21,ra,sp_20,t1
-		defs: a0_24,a1_26,a5_23,ra_25,sp_22,t1_27
+	ra = qwLoc08
+	sp = fp
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp a5:0x0000000000000000 a0:0x0000000000019E28
@@ -2679,11 +2681,6 @@ l0000000000015FC4_thunk_fn0000000000015F24:
 // SymbolicIn: sp:fp a5:0x0000000000000000 a0:0x0000000000019E28 ra:ra -8(fp):ra
 
 l0000000000015FA4:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp a5:<invalid> a0:0x0000000000019E28
-
-l0000000000015FA4_thunk_fn0000000000015F24:
 	fn0000000000015F24()
 	return
 // DataOut:
@@ -2693,7 +2690,44 @@ l0000000000015FA4_thunk_fn0000000000015F24:
 fn0000000000015F94_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp a5:0x0000000000000000 a0:<invalid> a1:0x0000000000000000 t1:0x0000000000000000 ra:ra -8(fp):ra
+// SymbolicIn: sp:fp a5:<invalid> a0:<invalid> a1:0x0000000000000000 t1:0x0000000000000000 ra:ra -8(fp):ra
+
+l0000000000015F24:
+	branch 0x0000000000000000 == 0x0000000000000000 l0000000000015F60
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a5:<invalid> a0:<invalid> a1:0x0000000000000000 t1:0x0000000000000000
+
+l0000000000015F4C:
+	branch 0x0000000000000000 == 0x0000000000000000 l0000000000015F60
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a0:0x0000000000010000 a5:0x0000000000000000 a1:0x0000000000000000 t1:0x0000000000000000
+
+l0000000000015F60:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a0:0x0000000000010000 a5:0x0000000000000000 a1:0x0000000000000000 t1:0x0000000000000000
+
+l0000000000015F58:
+	word64 sp_21
+	word64 a0_22
+	word64 a5_23
+	word64 a1_24
+	word64 t1_25
+	call 0x0000000000000000 (retsize: 0;)
+		uses: a0_20,a1_10,a5_7,sp_1,t1_19
+		defs: a0_22,a1_24,a5_23,sp_21,t1_25
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a0:0x0000000000010000 a5:0x0000000000000000 a1:0x0000000000000000 t1:0x0000000000000000
+
+fn0000000000015F24_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a0:<invalid> a5:0x0000000000000000 a1:0x0000000000000000 t1:0x0000000000000000
 
 
 
@@ -2933,6 +2967,16 @@ l00000000000164D0:
 // DataOut: a0 gp s10 s2 s4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+
+l00000000000164FC_thunk_fn0000000000016500:
+	word64 sp_37
+	word64 s0_38
+	word64 s1_39
+	word64 a0_40
+	return fn0000000000016500(0x00000000000115D0, a1, out sp_37, out s0_38, out s1_39, out a0_40)
+// DataOut: a0 gp ra s0 s1 s10 s4 sp
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 s0:a0 a0:0x00000000000115D0 s2:a1 a1:0 t3:<invalid> t1:<invalid> -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l00000000000164FC_thunk_fn0000000000016544:
 	word64 sp_32
@@ -3514,6 +3558,15 @@ l0000000000016830:
 // DataOut: a0 a1 gp ra s0 s10 s5 s6 s8
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+
+l0000000000016848_thunk_fn000000000001684C:
+	word64 sp_29
+	word64 s0_30
+	word64 a0_31
+	return fn000000000001684C(ra, gp, s0, a0, a1, out sp_29, out s0_30, out a0_31)
+// DataOut: a0 a1 gp ra s0 s10 s5 s6 s8 sp
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 a5:<invalid> -32(fp):0x0000000000000000 -24(fp):<invalid> -16(fp):s0 -8(fp):ra
 
 l0000000000016848_thunk_fn0000000000016864:
 	word64 sp_25
@@ -4977,6 +5030,16 @@ l00000000000173D4:
 // DataOut: a0 a1 gp s0 s10 s2 s3 s5 s6 s8 s9
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+
+l00000000000173FC_thunk_fn0000000000017400:
+	word64 s0_39
+	word64 a0_40
+	word64 s2_41
+	word64 s3_42
+	return fn0000000000017400(a0, a0, a1, s2_17, s3_18, out s0_39, out a0_40, out s2_41, out s3_42)
+// DataOut: a0 gp s0 s10 s2 s3 s5 s6 s8 s9 sp
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 a5:128 s0:a0 s2:<invalid> s3:<invalid> -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l00000000000173FC_thunk_fn00000000000174DC:
 	word64 s0_34

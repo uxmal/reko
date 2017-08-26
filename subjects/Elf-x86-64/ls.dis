@@ -6630,6 +6630,18 @@ l0000000000405630:
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64) Stack +0004(64)
 
+l0000000000405649_thunk_fn000000000040564F:
+	word64 rbx_45
+	word64 rsp_46
+	word64 rbp_47
+	word64 rsi_48
+	word32 edi_49
+	fn000000000040564F(rax_13, rbp_14, rsi, rdi, r12_18, out rbx_45, out rsp_46, out rbp_47, out rsi_48, out edi_49)
+	return
+// DataOut: r13 r15
+// DataOut (flags): 
+// SymbolicIn: rsp:fp - 0x000000000000000C rax:<invalid> rbp:<invalid> r12:<invalid> -12(fp):rbx -8(fp):rbp -4(fp):fp
+
 l00000000004056DB_in_fn0000000000405630:
 	return
 // DataOut: r13 r15

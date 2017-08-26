@@ -173,11 +173,9 @@ namespace Reko.Typing
         {
         }
 
-        public void VisitGotoInstruction(GotoInstruction g)
+        public void VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
-            var dt = g.Target.Accept(asc);
-            desc.MeetDataType(g.Target, dt);
-            g.Target.Accept(desc, g.Target.TypeVariable);
+            throw new NotImplementedException();
         }
 
         public void VisitPhiAssignment(PhiAssignment phi)

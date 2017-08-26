@@ -25,8 +25,6 @@ if len(dirs) == 0:
 
 reko_cmdline_dir = os.path.abspath("../src/Drivers/CmdLine")
 
-start_dir = os.getcwd()
-
 reko_cmdline = os.path.join(
     reko_cmdline_dir, "bin", options.configuration, "decompile.exe")
 output_extensions = [".asm", ".c", ".dis", ".h"]
@@ -79,19 +77,16 @@ def execute_command_file(dir, scr_name):
         execute_command(exe_and_args, exe_and_args[-1])
 
 def execute_command(exe_and_args, pname):
-
-    rel_pname = os.path.join(os.path.relpath(os.getcwd(), start_dir), pname)
-    
     if sys.platform == "linux2":
         exe_and_args.insert(0, "mono")
-    print("=== "+ rel_pname)
+    print("=== "+ pname)
     proc = subprocess.Popen(
         exe_and_args,
         stdout=subprocess.PIPE,
         universal_newlines=True)
     out = proc.communicate()[0]
     if "error" in out.lower():
-        print("*** " + rel_pname)
+        print("*** " + pname)
         print(out)
 
 def check_output_files():
