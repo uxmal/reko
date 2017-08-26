@@ -332,15 +332,11 @@ namespace Reko.Scanning
                 else
                     proc.ControlGraph.AddEdge(branchingBlock, blockThen);
             }
-            if (BlockHasBeenScanned(blockElse))
-            {
-                return false;
-            }
-            else
+            if (!BlockHasBeenScanned(blockElse))
             {
                 blockCur = blockElse;
-                return true;
             }
+            return true;
         }
 
         /// <summary>
