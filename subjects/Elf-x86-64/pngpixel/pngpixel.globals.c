@@ -23,7 +23,7 @@ void g_v4019E8 = ;
 void g_v401A18 = ;
 char g_str401A48[] = "pngpixel: %s: could not open file\x0A";
 void g_v401A70 = ;
-union Eq_1073 g_u601E00 = 
+union Eq_1083 g_u601E00 = 
 	{
 		0x00400DA0
 	};

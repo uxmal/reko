@@ -61111,7 +61111,7 @@ T_14781: (in Mem277[0x57AA + 0x0000:word16] : word16)
   Class: Eq_14777
   DataType: word16
   OrigDataType: word16
-T_14782: (in v200 : word16)
+T_14782: (in v203 : word16)
   Class: Eq_14782
   DataType: ci16
   OrigDataType: ci16
@@ -61119,7 +61119,7 @@ T_14783: (in 0x0000 : word16)
   Class: Eq_14782
   DataType: ci16
   OrigDataType: ci16
-T_14784: (in v200 > 0x0000 : bool)
+T_14784: (in v203 > 0x0000 : bool)
   Class: Eq_14784
   DataType: bool
   OrigDataType: bool

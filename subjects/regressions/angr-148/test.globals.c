@@ -10,7 +10,7 @@ Eq_31 g_t400550 = Unexpected function type (fn void ())
 ;
 Eq_32 g_t4005C0 = Unexpected function type (fn void ())
 ;
-union Eq_179 g_u600E10 = 
+union Eq_187 g_u600E10 = 
 	{
 		0x00400500
 	};

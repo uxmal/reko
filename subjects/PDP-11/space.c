@@ -4213,7 +4213,7 @@ Eq_1283 fn3B3C(Eq_1283 r0, Eq_2056 * r4, word16 * r5, Eq_4633 * pc, ptr16 & r4Ou
 				r0_114 = fn4230(r0_263, r4_261, &globals->w52CE, pc, out r2_271, out r4_242, out r5_273);
 				*globals->w5426 = 0x35;
 				globals->w57AA = globals->w57A8 - 0x01;
-			} while (v200 > 0x00);
+			} while (v203 > 0x00);
 			*globals->w5426 = *globals->w5426 + 0x01;
 			pc->w1A9A = pc->w1A9A + globals->w5798;
 			*globals->w5426 = *globals->w5426 + 0x01;

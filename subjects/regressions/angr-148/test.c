@@ -91,31 +91,35 @@ void __do_global_dtors_aux(word64 r8)
 // 0000000000400500: void frame_dummy(Register word64 r8)
 void frame_dummy(word64 r8)
 {
-	if (globals->qw600E20 == 0x00 || 0x00 == 0x00)
-	{
-		register_tm_clones(r8);
-		return;
-	}
-	else
-	{
-		word64 rsp_47;
-		byte SCZO_48;
-		byte Z_49;
-		word32 eax_50;
-		word64 rax_51;
-		byte SZO_52;
-		byte C_53;
-		word64 rbp_54;
-		word32 edi_55;
-		word64 rdi_56;
-		word64 r8_57;
-		word64 rdx_58;
-		word32 edx_59;
-		word64 rsi_60;
-		eax();
-		register_tm_clones(r8_57);
-		return;
-	}
+frame_dummy_entry:
+	rsp = fp
+	SCZO = cond(globals->qw600E20 - 0x00)
+	Z = SCZO
+	branch Test(EQ,Z) l0000000000400528
+	goto l000000000040050A
+l0000000000400500:
+l000000000040050A:
+	rax = 0x00
+	SZO = cond(0x00)
+	Z = SZO
+	C = false
+	branch Test(EQ,Z) l0000000000400528
+l0000000000400514:
+	rsp = fp - 0x04
+	dwLoc04 = rbp
+	qwLoc04 = DPB(qwLoc04, dwLoc04, 0)
+	rdi = 0x00600E20
+	rbp = fp - 0x04
+	eax()
+	rbp = qwLoc04
+	rsp = fp + 0x04
+	register_tm_clones(r8)
+	return
+l000000000040051F_thunk_register_tm_clones:
+l0000000000400528:
+	register_tm_clones(r8)
+	return
+frame_dummy_exit:
 }
 
 // 000000000040052D: Register ptr64 f(Register uint64 rax)
