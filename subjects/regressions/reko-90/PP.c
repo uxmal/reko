@@ -12295,16 +12295,6 @@ void fn0800_90F2(word16 ax, word16 bx, word16 bp, selector ds)
 	word16 bx_23;
 	word16 di_24;
 	word16 ax_25 = fn0800_94B0(ax, bx, ds, Mem0[ss:bp + 0x08:word16], wArg00, wArg02, wArg04, ptrArg06, ptrArg0A, out dx_22, out bx_23, out di_24);
-	if (Mem0[ss:bp - 0x08 + 0x00:word16] <= 0x00)
-	{
-		fn0800_911F(bp);
-		return;
-	}
-	else
-	{
-		fn0800_9107(ax_25, dx_22, bx_23, bp, di_24, ds);
-		return;
-	}
 }
 
 // 0800:9107: void fn0800_9107(Register word16 ax, Register word16 dx, Register word16 bx, Register word16 bp, Register word16 di, Register selector ds)
@@ -14217,16 +14207,6 @@ word16 fn0800_984F(byte al, word16 bp, word16 di, ptr16 & dxOut, ptr16 & bxOut, 
 	Mem9[ss:bp - 0x14 + 0x00:byte] = v8_8;
 	word16 di_6;
 	*diOut = di + 0x01;
-	if (v8_8 != 0x00)
-		return cx;
-	else
-	{
-		word16 dx_21;
-		word16 bx_22;
-		word16 di_23;
-		selector es_24;
-		return fn0800_9858(bp, di + 0x01, out dx_21, out bx_22, out di_23, out es_24);
-	}
 }
 
 // 0800:9858: Register word16 fn0800_9858(Register word16 bp, Register word16 di, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 diOut, Register out ptr16 esOut)
@@ -14522,7 +14502,6 @@ fn0800_9F92_entry:
 	wLoc04_14 = di
 	Mem16[0x0800:~0x62C4:word16] = ds
 	branch cx_5 == 0x00 l0800_9FFD_in_fn0800_9F92
-	goto l0800_9F9D_thunk_fn0800_9F9F
 l0800_9F92:
 l0800_9F92:
 	cx = ax
@@ -14541,6 +14520,9 @@ l0800_9F9D_thunk_fn0800_9F9F:
 	ax_34 = fn0800_9F9F(ax, dx, bp, out dx_30, out bx_31, out bp_32, out ds_33)
 	return ax_34
 l0800_9F9D_thunk_fn0800_9F9F:
+	ax_48 = fn0800_9F9F(ax, dx, bp, out dx_44, out bx_45, out bp_46, out ds_47)
+	return ax_48
+l0800_9F9D_thunk_fn0800_9F9F:
 	ax = fn0800_9F9F(ax, dx, bp, out dx, out bx, out bp, out ds)
 	return ax
 l0800_9F9D_thunk_fn0800_9F9F:
@@ -14556,14 +14538,14 @@ l0800_9FFD_in_fn0800_9F92:
 	sp_42 = fp + 0x02
 	return ax
 fn0800_9F92_exit:
-	di_17 = PHI(di_36, di, di, di)
-	si_18 = PHI(si_38, si, si, si)
-	sp_19 = PHI(sp_42, sp_12, sp, sp)
-	dx_20 = PHI(dx, dx_30, dx, dx)
-	bx_21 = PHI(bx, bx_31, bx, bx)
-	bp_22 = PHI(bp_41, bp_32, bp, bp)
-	ds_23 = PHI(ds_35, ds_33, ds, ds)
-	ax_24 = PHI(ax, ax_34, ax, ax)
+	di_17 = PHI(di_36, di, di, di, di)
+	si_18 = PHI(si_38, si, si, si, si)
+	sp_19 = PHI(sp_42, sp_12, sp_12, sp, sp)
+	dx_20 = PHI(dx, dx_30, dx_44, dx, dx)
+	bx_21 = PHI(bx, bx_31, bx_45, bx, bx)
+	bp_22 = PHI(bp_41, bp_32, bp_46, bp, bp)
+	ds_23 = PHI(ds_35, ds_33, ds_47, ds, ds)
+	ax_24 = PHI(ax, ax_34, ax_48, ax, ax)
 	use dx_20 (=> dxOut)
 	use bx_21 (=> bxOut)
 	use bp_22 (=> bpOut)
@@ -18133,7 +18115,6 @@ fn1483_0CFC_entry:
 	ax_14 = DPB(ax, al_12, 0) (alias)
 	Mem15[ss:bp + si:word16] = ~0x2E00
 	branch cx == 0x00 l1483_0D04_thunk_fn1483_0C91
-	goto l1483_0D04_thunk_fn1483_0D06
 l1483_0CFC:
 l1483_0CFC:
 	al = Mem0[ds:bx + di:byte]
@@ -18160,17 +18141,22 @@ l1483_0D04_thunk_fn1483_0D06:
 	al_46 = (byte) ax_45 (alias)
 	ah_47 = SLICE(ax_45, byte, 8) (alias)
 	return ax_45
+l1483_0D04_thunk_fn1483_0D06:
+	ax_66 = fn1483_0D06(ax_14, dx, bx_6, ds, fs, out cx_60, out dx_61, out bx_62, out bp_63, out si_64, out di_65)
+	al_67 = (byte) ax_66 (alias)
+	ah_68 = SLICE(ax_66, byte, 8) (alias)
+	return ax_66
 fn1483_0CFC_exit:
-	es_20 = PHI(es_56, es, es, es)
-	cx_21 = PHI(cx_50, cx_39, cx, cx)
-	dx_22 = PHI(dx_51, dx_40, dx, dx)
-	bx_23 = PHI(bx_52, bx_41, bx, bx)
-	bp_24 = PHI(bp_53, bp_42, bp, bp)
-	si_25 = PHI(si_54, si_43, si, si)
-	di_26 = PHI(di_55, di_44, di, di)
-	ax_27 = PHI(ax_57, ax_45, ax, ax)
-	al_28 = PHI(al_58, al_46, al, al)
-	ah_29 = PHI(ah_59, ah_47, ah, ah)
+	es_20 = PHI(es_56, es, es, es, es)
+	cx_21 = PHI(cx_50, cx_39, cx_60, cx, cx)
+	dx_22 = PHI(dx_51, dx_40, dx_61, dx, dx)
+	bx_23 = PHI(bx_52, bx_41, bx_62, bx, bx)
+	bp_24 = PHI(bp_53, bp_42, bp_63, bp, bp)
+	si_25 = PHI(si_54, si_43, si_64, si, si)
+	di_26 = PHI(di_55, di_44, di_65, di, di)
+	ax_27 = PHI(ax_57, ax_45, ax_66, ax, ax)
+	al_28 = PHI(al_58, al_46, al_67, al, al)
+	ah_29 = PHI(ah_59, ah_47, ah_68, ah, ah)
 	use cx_21 (=> cxOut)
 	use dx_22 (=> dxOut)
 	use bx_23 (=> bxOut)
@@ -18682,21 +18668,27 @@ fn1483_1BB9_exit:
 // 1483:1BBD: void fn1483_1BBD()
 void fn1483_1BBD()
 {
-	if (S)
-	{
-		word16 sp_12;
-		byte S_13;
-		word16 bx_14;
-		word16 di_15;
-		selector ds_16;
-		Mem0[ds:bx + 0xE10D + di:word16]();
-		return;
-	}
-	else
-	{
-		fn1483_1BBF();
-		return;
-	}
+fn1483_1BBD_entry:
+	branch S l1483_1BBE
+l1483_1BBD:
+l1483_1BBD:
+l1483_1BBD_thunk_fn1483_1BBF:
+	fn1483_1BBF()
+	return
+l1483_1BBD_thunk_fn1483_1BBF:
+	fn1483_1BBF()
+	return
+l1483_1BBE:
+	word16 sp_12
+	byte S_13
+	word16 bx_14
+	word16 di_15
+	selector ds_16
+	call Mem0[ds:bx + 0xE10D + di:word16] (retsize: 4; depth: 4)
+		uses: bx,di,ds,S,sp_1
+		defs: bx_14,di_15,ds_16,S_13,sp_12
+	return
+fn1483_1BBD_exit:
 }
 
 // 1483:1BBF: void fn1483_1BBF()

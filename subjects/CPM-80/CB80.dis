@@ -2054,6 +2054,14 @@ l092A:
 // DataOut (flags): C
 // SymbolicIn: sp:fp
 
+l092D_thunk_fn0930:
+	fn0930(a, b, e, d_2, l, h)
+	return
+// DataOut: af b d e h hl l sp
+// DataOut (flags): C
+// SymbolicIn: sp:fp d:0xFE
+// Terminates process
+
 l092D_thunk_fn096E:
 	fn096E(a, b, e, d_2, l, h)
 	return
@@ -3325,6 +3333,14 @@ l106E:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
+l1075_thunk_fn1078:
+	fn1078(af_19, b_10, d, e, l, h)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 0x0002 a:<invalid> bc:<invalid> c:b
+// Terminates process
+
 l1075_thunk_fn1081:
 	fn1081(af_19, b_10, d, e, l, h)
 	return
@@ -3851,6 +3867,15 @@ l1229:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
+l1239_thunk_fn123C:
+	byte l_36
+	byte h_37
+	word16 sp_38
+	return fn123C(e, d, l_12, h_11, out l_36, out h_37, out sp_38)
+// DataOut: af b d e h l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> hl:<invalid> bc:<invalid> a:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
 l125E_in_fn1229:
 	word16 sp_32
 	word16 hl_33 = fn0387(out sp_32)
@@ -4186,6 +4211,17 @@ fn130B_entry:
 l130B:
 	branch C l1311_in_fn130B
 // DataOut: b c d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l130B_thunk_fn130E:
+	byte b_21
+	byte l_22
+	byte h_23
+	word16 sp_24
+	fn130E(c, b, e, d, l, h, out b_21, out l_22, out h_23, out sp_24)
+	return
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
