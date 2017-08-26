@@ -1254,5 +1254,15 @@ int x = 3;
                 "(decl Int ((init-decl (ptr (__Thiscall (func foo)))))))",
                 decl.ToString());
         }
+
+        [Test]
+        public void CParser_thiscall_abstract_parameter()
+        {
+            Lex("float func(int x, bool (__thiscall * fn)());");
+            var decl = parser.Parse_Decl();
+            Assert.AreEqual(
+                "(decl Float ((init-decl (func func ((Int x) (bool (func (__Thiscall (ptr fn))))))))))",
+                decl.ToString());
+        }
     }
 }
