@@ -840,6 +840,7 @@ IGNORE tab + cr + lf
             case CTokenType.Star:
                 return Parse_Pointer();
             case CTokenType.__Stdcall:
+            case CTokenType.__Thiscall:
             case CTokenType.__Cdecl:
                 lexer.Read();
                 decl = Parse_Declarator();
