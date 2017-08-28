@@ -228,8 +228,8 @@ namespace Reko.Core.CLanguage
             CToken x = lexer.Peek(i);
             while (x.Type == CTokenType.Star || x.Type == CTokenType.LParen || x.Type == CTokenType.Const || 
                    x.Type == CTokenType.Volatile || x.Type == CTokenType.__Ptr64 ||
-                   x.Type == CTokenType.__Fastcall || x.Type == CTokenType.__Stdcall || 
-                   x.Type == CTokenType.__Cdecl)
+                   x.Type == CTokenType.__Fastcall || x.Type == CTokenType.__Stdcall ||
+                   x.Type == CTokenType.__Thiscall || x.Type == CTokenType.__Cdecl)
                 x = lexer.Peek(++i);
             if (x.Type != CTokenType.Id)
                 return true;
@@ -840,6 +840,7 @@ IGNORE tab + cr + lf
             case CTokenType.Star:
                 return Parse_Pointer();
             case CTokenType.__Stdcall:
+            case CTokenType.__Thiscall:
             case CTokenType.__Cdecl:
                 lexer.Read();
                 decl = Parse_Declarator();
