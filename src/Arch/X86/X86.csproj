@@ -98,6 +98,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ThisCallConvention.cs" />
+    <Compile Include="X86CallingConvention.cs" />
     <Compile Include="X86Disassembler.0F3A.cs" />
     <Compile Include="X86Emulator.cs" />
     <Compile Include="X86FrameApplicationBuilder.cs" />
@@ -124,7 +126,6 @@
     <Compile Include="X86Disassembler.TwoByte.cs" />
     <Compile Include="X86Disassembler.x87.cs" />
     <Compile Include="X86ProcessorArchitecture.cs" />
-    <Compile Include="X86ProcedureSerializer.cs" />
     <Compile Include="X86Rewriter.Ext.cs" />
     <Compile Include="X86Rewriter.Fpu.cs" />
     <Compile Include="X86Rewriter.Sse.cs" />

@@ -140,6 +140,11 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public CallingConvention GetCallingConvention(string ccName)
+            {
+                throw new NotImplementedException();
+            }
+
             public ProcedureBase GetTrampolineDestination(EndianImageReader rdr, IRewriterHost host)
             {
                 return null;

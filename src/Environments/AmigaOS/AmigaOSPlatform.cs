@@ -108,14 +108,9 @@ namespace Reko.Environments.AmigaOS
             return segmentMap;
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(
-            ISerializedTypeVisitor<DataType> typeLoader,
-            string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new M68kProcedureSerializer(
-                (M68kArchitecture)Architecture,
-                typeLoader,
-                defaultConvention);
+            return new M68kCallingConvention((M68kArchitecture) this.Architecture);
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -246,7 +241,8 @@ namespace Reko.Environments.AmigaOS
         {
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             var fsSvc = Services.RequireService<IFileSystemService>();
-            var sser = this.CreateProcedureSerializer(new TypeLibraryDeserializer(this, true, libDst), DefaultCallingConvention);
+            var tser = new TypeLibraryDeserializer(this, true, libDst);
+            var sser = new ProcedureSerializer(this, tser, DefaultCallingConvention);
             using (var rdr = new StreamReader(fsSvc.CreateFileStream(tlSvc.InstalledFileLocation(lib_name + ".funcs"), FileMode.Open, FileAccess.Read)))
             {
                 var fpp = new FuncsFileParser((M68kArchitecture)this.Architecture, rdr);

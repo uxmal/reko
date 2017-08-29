@@ -48,17 +48,18 @@ namespace Reko.UnitTests.Core
         [TearDown]
         public void TearDown()
         {
-            mr.VerifyAll();
         }
 
         private void Given_ArchitectureStub()
         {
             arch = mr.DynamicMock<IProcessorArchitecture>();
+            arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
+            arch.Stub(a => a.WordWidth).Return(PrimitiveType.Pointer32);
             platform = mr.DynamicMock<IPlatform>();
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
-            this.procSer = mr.StrictMock<ProcedureSerializer>(null, null, null);
-            platform.Stub(p => p.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(procSer);
             platform.Stub(p => p.Architecture).Return(arch);
+            platform.Replay();
+            this.procSer = new ProcedureSerializer(platform, null, "");
         }
 
         private void Given_Arch_PointerDataType(PrimitiveType dt)
@@ -290,6 +291,7 @@ namespace Reko.UnitTests.Core
         public void Tlldr_signature()
         {
             Given_ArchitectureStub();
+            arch.Stub(a => a.GetRegister("r3")).Return(new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
             var r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
             Given_ProcedureSignature(FunctionType.Func(
                 new Identifier("", PrimitiveType.Int32, r3),
@@ -304,28 +306,32 @@ namespace Reko.UnitTests.Core
                 {
                     new Argument_v1 {
                         Name = "reg1",
-                        Type = new PrimitiveType_v1 { Domain =Domain.Real, ByteSize = 4 },
+                        Type = new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 4 },
                         Kind = new Register_v1 { Name = "r3" }
                     }
                 },
                 ReturnValue = new Argument_v1
                 {
-                    Type = new PrimitiveType_v1 { Domain = Domain.Integer, ByteSize = 4 },
+                    Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 },
                     Kind = new Register_v1 { Name = "r3" }
                 }
             });
             Assert.AreEqual("(fn int32 (real32))", fn.ToString());
+            mr.VerifyAll();
         }
 
         private void Given_ProcedureSignature(FunctionType sig)
         {
-            procSer.Stub(p => p.Deserialize(null, null)).IgnoreArguments().Return(sig);
+            //procSer.Stub(p => p.Deserialize(null, null)).IgnoreArguments().Return(sig);
         }
 
         [Test(Description = "Verifies that globals can be specified by ordinal")]
         public void Tlldr_LoadGlobalByOrdinal()
         {
             var typelib = new TypeLibrary();
+            platform = mr.Stub<IPlatform>();
+            platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
+            platform.Replay();
             var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
             tlldr.Load(new SerializedLibrary
             {

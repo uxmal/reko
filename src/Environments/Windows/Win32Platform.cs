@@ -111,9 +111,49 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new X86ProcedureSerializer((IntelArchitecture) Architecture, typeLoader, defaultConvention);
+            if (ccName == null)
+                return new X86CallingConvention(
+                                    Architecture.PointerType.Size,
+                                    Architecture.WordWidth.Size,
+                                    Architecture.PointerType.Size,
+                                    true,
+                                    false);
+            switch (ccName)
+            {
+            case "":
+            case "cdecl":
+            case "__cdecl":
+                return new X86CallingConvention(
+                                    Architecture.PointerType.Size,
+                                    Architecture.WordWidth.Size,
+                                    Architecture.PointerType.Size,
+                                    true,
+                                    false);
+            case "stdcall":
+            case "__stdcall":
+            case "stdapi":
+                return new X86CallingConvention(
+                                Architecture.PointerType.Size,
+                                Architecture.WordWidth.Size,
+                                Architecture.PointerType.Size,
+                                false,
+                                false);
+            case "pascal":
+                return new X86CallingConvention(
+                                Architecture.PointerType.Size,
+                                Architecture.WordWidth.Size,
+                                Architecture.PointerType.Size,
+                                false,
+                                true);
+            case "__thiscall":
+                return new ThisCallConvention(
+                                Registers.ecx,
+                                Architecture.WordWidth.Size,
+                                Architecture.PointerType.Size);
+            }
+            throw new ArgumentOutOfRangeException(string.Format("Unknown calling convention '{0}'.", ccName));
         }
 
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
@@ -136,6 +176,7 @@ namespace Reko.Environments.Windows
             case CBasicType.Double: return 8;
             case CBasicType.LongDouble: return 8;
             case CBasicType.Int64: return 8;
+            case CBasicType.WChar_t: return 2;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
         }

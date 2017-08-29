@@ -27,20 +27,15 @@ using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Types;
 
-namespace Reko.Environments.SysV
+namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class SuperHProcedureSerializer : ProcedureSerializer
+    public class SuperHCallingConvention : CallingConvention
     {
-        public SuperHProcedureSerializer(IProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention) : base(arch, typeLoader, defaultConvention)
+        public SuperHCallingConvention(IProcessorArchitecture arch)
         {
         }
 
-        public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
-        {
-            return new FunctionType();
-        }
-
-        public override Storage GetReturnRegister(Argument_v1 sArg, int bitSize)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             throw new NotImplementedException();
         }

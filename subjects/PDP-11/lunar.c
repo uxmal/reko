@@ -1818,11 +1818,11 @@ Eq_2 fn13AA(word16 pc, Eq_1600 ptrArg00)
 		word16 * r0_67 = globals->a013E;
 		while (true)
 		{
-			word16 * v29_71 = *r0_67;
+			word16 * v28_71 = *r0_67;
 			word16 * r0_72 = r0_67 + 0x01;
-			if (v29_71 == null)
+			if (v28_71 == null)
 				break;
-			*v29_71 = *r0_72;
+			*v28_71 = *r0_72;
 			r0_67 = r0_72 + 0x01;
 		}
 		while (true)

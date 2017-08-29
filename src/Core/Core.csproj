@@ -167,6 +167,7 @@
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
     <Compile Include="BitRange.cs" />
+    <Compile Include="CallingConvention.cs" />
     <Compile Include="CharacteristicsLibrary.cs" />
     <Compile Include="CLanguage\CBasicType.cs" />
     <Compile Include="CLanguage\CConstantEvaluator.cs" />

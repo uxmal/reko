@@ -76,7 +76,7 @@
     <Compile Include="PowerPcDisassembler.cs" />
     <Compile Include="PowerPcInstruction.cs" />
     <Compile Include="PowerPcPointerScanner.cs" />
-    <Compile Include="PowerPcProcedureSerializer.cs" />
+    <Compile Include="PowerPcCallingConvention.cs" />
     <Compile Include="PowerPcRewriter.Alu.cs" />
     <Compile Include="PowerPcRewriter.Control.cs" />
     <Compile Include="PowerPcRewriter.cs" />

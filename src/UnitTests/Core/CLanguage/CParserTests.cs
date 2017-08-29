@@ -448,7 +448,7 @@ namespace Reko.UnitTests.Core.CLanguage
         }
 
         private string windows_h =
-#region Windows.h
+        #region Windows.h
 @"#line 1 ""\\program files\\Microsoft SDKs\\Windows\\v6.0A\\Include\\windows.h""
 
 #line 1 ""\\program files\\Microsoft SDKs\\Windows\\v6.0A\\Include\\sdkddkver.h""
@@ -1039,6 +1039,24 @@ _mm_pause (
     void
     );
 
+LONGLONG
+__forceinline
+_InterlockedOr64 (
+      LONGLONG volatile *Destination,
+      LONGLONG Value
+    )
+{
+    LONGLONG Old;
+
+    do {
+        Old = *Destination;
+    } while (_InterlockedCompareExchange64(Destination,
+                                          Old | Value,
+                                          Old) != Old);
+
+    return Old;
+}
+
 #pragma intrinsic(_mm_pause)
 #pragma warning( push )
 #pragma warning( disable : 4793 )
@@ -1054,6 +1072,7 @@ MemoryBarrier (
     }
 }
 
+
 ";
 #endregion
 
@@ -1067,7 +1086,7 @@ MemoryBarrier (
                 Debug.Print("{0}: {1}", i, decls[i].ToString());
                 Debug.WriteLine("");
             }
-            Assert.AreEqual(185, decls.Count);
+            Assert.AreEqual(186, decls.Count);
         }
 
         [Test]
@@ -1184,6 +1203,66 @@ MemoryBarrier (
         {
             Lex("int _ftol([[reko::x87_fpu_arg]]double);");
             var decl = parser.Parse_ExternalDecl();
+        }
+
+        [Test]
+        public void CParser_Pragma_Prefast()
+        {
+            Lex(
+@"
+#pragma prefast(push)
+#pragma prefast(disable: 6001 28113, ""The barrier variable is accessed only to create a side effect."")
+#pragma prefast(pop)
+int x;
+ ");
+            var decl = parser.Parse_Decl();
+        }
+
+        [Test]
+        public void CParser_Semicolon_after_pragma()
+        {
+            Lex(
+@"
+#pragma region
+
+;
+#pragma endregion
+int x = 3;
+");
+            var decls = parser.Parse();
+            Assert.AreEqual(1, decls.Count);
+        }
+
+        [Test(Description = "Test non-standard use of __thiscall keyword in a non-member function declaration.")]
+        public void CParser_thiscall()
+        {
+            Lex("int __thiscall foo(char * bar, const float * baz);");
+            var decl = parser.Parse_Decl();
+            Assert.AreEqual(
+                "(decl Int __Thiscall ((init-decl (func foo ((Char (ptr bar)) (Const Float (ptr baz)))))))",
+                decl.ToString());
+        }
+
+        [Test]
+        public void CParser_thiscall_return_pointer_to_int()
+        {
+            Lex("int * __thiscall foo();");
+
+            var decl = parser.Parse_Decl();
+
+            Assert.AreEqual(
+                "(decl Int ((init-decl (ptr (__Thiscall (func foo)))))))",
+                decl.ToString());
+        }
+
+        [Test]
+        public void CParser_thiscall_abstract_parameter()
+        {
+            Lex("float func(int x, bool (__thiscall * fn)());");
+            var decl = parser.Parse_Decl();
+            Assert.AreEqual(
+                "(decl Float ((init-decl (func func ((Int x) (bool (func (__Thiscall (ptr fn))))))))))",
+                decl.ToString());
         }
     }
 }

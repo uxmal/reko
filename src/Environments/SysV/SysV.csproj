@@ -51,19 +51,17 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArmProcedureSerializer.cs" />
-    <Compile Include="Avr8ProcedureSerializer.cs" />
+    <Compile Include="ArchSpecific\ArmCallingConvention.cs" />
+    <Compile Include="ArchSpecific\Avr8CallingConvention.cs" />
+    <Compile Include="ArchSpecific\M68kCallingConvention.cs" />
+    <Compile Include="ArchSpecific\MipsCallingConvention.cs" />
+    <Compile Include="ArchSpecific\PowerPcCallingConvention.cs" />
+    <Compile Include="ArchSpecific\SparcCallingConvention.cs" />
+    <Compile Include="ArchSpecific\SuperHCallingConvention.cs" />
+    <Compile Include="ArchSpecific\X86_64CallingConvention.cs" />
+    <Compile Include="ArchSpecific\XtensaCallingConvention.cs" />
     <Compile Include="GccMangledNameParser.cs" />
-    <Compile Include="M68kProcedureSerializer.cs" />
-    <Compile Include="MipsProcedureSerializer.cs" />
-    <Compile Include="PowerPcProcedureSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RiscVProcedureSerializer.cs" />
-    <Compile Include="SparcProcedureSerializer.cs" />
-    <Compile Include="SuperHProcedureSerializer.cs" />
-    <Compile Include="X86ProcedureSerializer.cs" />
-    <Compile Include="X86_64ProcedureSerializer.cs" />
-    <Compile Include="XtensaProcedureSerializer.cs" />
     <Content Include="sysvcharacteristics.xml">
       <SubType>Designer</SubType>
     </Content>

@@ -7,15 +7,15 @@
 // r316
 // Return size: 4
 int32 r316(int32 a)
-fn0C00_0000_entry:
-	// succ:  l0C00_0000
-l0C00_0000:
+fn10000000_entry:
+	// succ:  l10000000
+l10000000:
 	word32 ecx_7 = Mem3[a:word32]
 	word32 eax_11
 	call Mem9[ecx_7 + 0x00000004:word32] (retsize: 4;)
 		uses: eax:a,ecx:ecx_7,esp:fp - 0x00000004,Local -0004:0x0000000A,Stack +0004:a
 		defs: eax:eax_11
 	return eax_11 + 0x00000001
-	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:
+	// succ:  fn10000000_exit
+fn10000000_exit:
 

@@ -312,7 +312,7 @@ done:
         public void DfaReg00316()
         {
             Given_CSignature("long r316(long a)");
-            RunFileTest_x86_real("Fragments/regressions/r00316.asm", "Analysis/DfaReg00316.txt");
+            RunFileTest32("Fragments/regressions/r00316.asm", "Analysis/DfaReg00316.txt");
         }
 
         [Test]
@@ -415,6 +415,43 @@ ProcedureBuilder_exit:
         {
             RunFileTest_x86_real("Fragments/fpustackreturn.asm", "Analysis/DfaFpuStackReturn.txt");
         }
+
+        private void SetCSignatures(Program program)
+        {
+            foreach (var addr in program.Procedures.Keys)
+            {
+                program.User.Procedures.Add(
+                    addr,
+                    new Procedure_v1
+                    {
+                        CSignature = this.CSignature
+                    });
+            }
+        }
+
+        protected void Given_CSignature(string CSignature)
+        {
+            this.CSignature = CSignature;
+        }
+
+        protected override void RunTest(Program program, TextWriter writer)
+		{
+            SetCSignatures(program);
+            IImportResolver importResolver = mr.Stub<IImportResolver>();
+            importResolver.Replay();
+			dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+			dfa.AnalyzeProgram();
+			foreach (Procedure proc in program.Procedures.Values)
+			{
+				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
+				writer.Write("// ");
+                var sig = flow.Signature ?? proc.Signature;
+                sig.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, writer);
+				flow.Emit(program.Architecture, writer);
+				proc.Write(false, writer);
+				writer.WriteLine();
+			}
+		}
 
         [Test]
         [Category(Categories.IntegrationTests)]

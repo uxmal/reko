@@ -155,6 +155,17 @@ namespace Reko.Core.CLanguage
                 Expect(CTokenType.RParen);
                 return lexer.Read();
             }
+            else if (pragma == "prefast")
+            {
+                Expect(CTokenType.LParen);
+                for (;;)
+                {
+                    var token = lexer.Read();
+                    if (token.Type == CTokenType.RParen)
+                        break;
+                }
+                return lexer.Read();
+            }
             else if (pragma == "intrinsic" || pragma == "function")
             {
                 Expect(CTokenType.LParen);
