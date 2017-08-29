@@ -205,7 +205,7 @@ namespace Reko.Core
         public ProcedureSerializer CreateProcedureSerializer()
         {
             var typeLoader = new TypeLibraryDeserializer(Platform, true, EnvironmentMetadata.Clone());
-            return Platform.CreateProcedureSerializer(typeLoader, Platform.DefaultCallingConvention);
+            return new ProcedureSerializer(Platform, typeLoader, Platform.DefaultCallingConvention);
         }
 
         public TypeLibraryDeserializer CreateTypeLibraryDeserializer()

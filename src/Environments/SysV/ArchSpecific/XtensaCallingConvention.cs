@@ -19,29 +19,22 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 
-namespace Reko.Environments.SysV
+namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class XtensaProcedureSerializer : ProcedureSerializer
+    public class XtensaCallingConvention : CallingConvention
     {
-        public XtensaProcedureSerializer(IProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention) 
-            : base(arch, typeLoader, defaultConvention)
+        public XtensaCallingConvention(IProcessorArchitecture arch)
         {
         }
 
-        public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            //$TODO: fer real.
-            return new FunctionType();
-        }
-
-        public override Storage GetReturnRegister(Argument_v1 sArg, int bitSize)
-        {
-            //$TODO: fer real.
-            return new TemporaryStorage("r0", 0, PrimitiveType.Word32);
+            throw new NotImplementedException();
         }
     }
 }

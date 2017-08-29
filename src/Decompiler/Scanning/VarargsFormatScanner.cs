@@ -44,7 +44,7 @@ namespace Reko.Scanning
         private Frame frame;
         private ExpressionSimplifier eval;
         private IServiceProvider services;
-        private FunctionType sig;
+        private FunctionType expandedSig;
 
         public VarargsFormatScanner(
             Program program,
@@ -65,8 +65,8 @@ namespace Reko.Scanning
         {
             var pc = callee as ProcedureConstant;
             if (pc != null)
-                pc.Procedure.Signature = this.sig;
-            var ab = CreateApplicationBuilder(callee, this.sig, site);
+                pc.Procedure.Signature = this.expandedSig;
+            var ab = CreateApplicationBuilder(callee, this.expandedSig, site);
             return ab.CreateInstruction();
         }
 
@@ -77,12 +77,12 @@ namespace Reko.Scanning
                 chr == null || !VarargsParserSet(chr)
             )
             {
-                this.sig = null;    //$out parameter
+                this.expandedSig = null;    //$out parameter
                 return false;
             }
             var format = ReadVarargsFormat(sig);
             var argTypes = ParseVarargsFormat(addrInstr, chr, format);
-            this.sig = ReplaceVarargs(sig, argTypes);
+            this.expandedSig = ReplaceVarargs(program.Platform, sig, argTypes);
             return true;
         }
 
@@ -118,11 +118,18 @@ namespace Reko.Scanning
             // passed in registers and the remaining are passed on the stack.
             var stackStorage = formatParam.Storage as StackStorage;
             if (stackStorage == null)
+            {
+                var reg = GetValue(formatParam) as Address;
+                if (reg != null)
+                {
+                    return ReadCString(reg);
+                }
                 throw new NotSupportedException(
                     string.Format(
                         "The {0} parameter of {1} wasn't a stack access.",
                          formatParam.Name,
                          sig.Name));
+            }
             var stackAccess = arch.CreateStackAccess(
                 frame,
                 stackStorage.StackOffset,
@@ -137,6 +144,11 @@ namespace Reko.Scanning
         private string ReadCString(Constant cAddr)
         {
             var addr = program.Platform.MakeAddressFromConstant(cAddr);
+            return ReadCString(addr);
+        }
+
+        private string ReadCString(Address addr)
+        {
             if (!program.SegmentMap.IsValidAddress(addr))
                 throw new ApplicationException(
                     string.Format("Varargs: invalid address: {0}", addr));
@@ -171,27 +183,27 @@ namespace Reko.Scanning
             return varargsParser.ArgumentTypes;
         }
 
-        private FunctionType ReplaceVarargs(
+        public static FunctionType ReplaceVarargs(
+            IPlatform platform,
             FunctionType sig,
             IEnumerable<DataType> argumentTypes)
         {
-            var varargs = sig.Parameters.Last();
-            var varargsStorage = varargs.Storage as StackStorage;
-            if (varargsStorage == null)
-                throw new NotSupportedException(
-                    string.Format(
-                        "The {0} parameter of {1} wasn't a stack access.",
-                        varargs.Name,
-                        sig.Name));
-            var stackOffset = varargsStorage.StackOffset;
-            var args = argumentTypes.Select(dt =>
-            {
-                var stg = new StackArgumentStorage(stackOffset, dt);
-                stackOffset += dt.Size;
-                return new Identifier(null, dt, stg);
-            });
-
-            return sig.ReplaceVarargs(args.ToArray());
+            var fixedArgs = sig.Parameters.TakeWhile(p => p.Name != "...").ToList();
+            var cc = platform.GetCallingConvention(""); //$REVIEW: default CC tends to be __cdecl.
+            var allTypes = fixedArgs
+                .Select(p => p.DataType)
+                .Concat(argumentTypes)
+                .ToList();
+            var ccr = new CallingConventionEmitter();
+            cc.Generate(
+                ccr,
+                sig.ReturnValue.DataType,
+                null, //$TODO: what to do about implicit this?
+                allTypes);
+            var varArgs = argumentTypes.Zip(
+                ccr.Parameters.Skip(fixedArgs.Count),
+                (t, s) => new Identifier("", t, s));
+            return sig.ReplaceParameters(fixedArgs.Concat(varArgs).ToArray());
         }
     }
 }

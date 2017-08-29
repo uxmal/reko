@@ -25,25 +25,38 @@ using System.Linq;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Types;
+using Reko.Core.Expressions;
 
-namespace Reko.Environments.SysV
+namespace Reko.Environments.SysV.ArchSpecific
 {
-    public class RiscVProcedureSerializer : ProcedureSerializer
+    public class M68kCallingConvention : CallingConvention
     {
-        public RiscVProcedureSerializer(IProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention) 
-            : base(arch, typeLoader, defaultConvention)
+        private IProcessorArchitecture arch;
+        private RegisterStorage d0;
+
+        public M68kCallingConvention(IProcessorArchitecture arch)
         {
+            this.arch = arch;
+            this.d0 = arch.GetRegister("d0");
         }
 
-        public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            //$TODO: really now
-            return new FunctionType();
-        }
+            ccr.LowLevelDetails(4, 4);
+            if (dtRet != null)
+            {
+                if (dtRet.BitSize > 32)
+                    throw new NotImplementedException();
+                ccr.RegReturn(d0);
+            }
 
-        public override Storage GetReturnRegister(Argument_v1 sArg, int bitSize)
-        {
-            throw new NotImplementedException();
+            var args = new List<Storage>();
+            int stOffset = arch.PointerType.Size;
+            foreach (var dtParam in dtParams)
+            {
+                ccr.StackParam(dtParam);
+            }
+            ccr.CallerCleanup(arch.PointerType.Size);
         }
     }
 }

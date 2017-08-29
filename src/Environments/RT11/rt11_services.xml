@@ -17,7 +17,7 @@
   <service name="TTYOUT">  <!-- Write one character to TTY, Cy=1 if no space in output buffer -->
     <syscallinfo><vector>88E1</vector></syscallinfo>
     <signature>
-            <return>
+      <return>
         <prim domain="Boolean" size="1" />
         <flag>C</flag>
       </return>
@@ -57,7 +57,8 @@
         <reg>r0</reg>
       </arg>
     </signature>
-    </service>  
+  </service>
+
   <service name="SRESET "><syscallinfo><vector>88EA</vector></syscallinfo></service>  <!-- Reset all channels -->
   <service name="QSET   "><syscallinfo><vector>88EB</vector></syscallinfo></service>  <!-- Increase size of monitor I/O queue -->
   

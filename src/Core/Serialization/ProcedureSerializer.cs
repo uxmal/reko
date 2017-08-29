@@ -24,20 +24,25 @@ using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using System.Linq;
 
 namespace Reko.Core.Serialization
 {
 	/// <summary>
 	/// Helper class that serializes and deserializes procedures with their signatures.
 	/// </summary>
-	public abstract class ProcedureSerializer
+	public sealed class ProcedureSerializer
 	{
-		public ProcedureSerializer(
-            IProcessorArchitecture arch, 
+        private IPlatform platform;
+        private ArgumentDeserializer argDeser;
+
+        public ProcedureSerializer(
+            IPlatform platform, 
             ISerializedTypeVisitor<DataType> typeLoader, 
             string defaultConvention)
 		{
-			this.Architecture = arch;
+            this.platform = platform;
+			this.Architecture = platform.Architecture;
             this.TypeLoader = typeLoader;
 			this.DefaultConvention = defaultConvention;
 		}
@@ -49,10 +54,26 @@ namespace Reko.Core.Serialization
         public int FpuStackOffset { get; set; }
         public int StackOffset { get; set; }
 
-		public Identifier CreateId(string name, DataType type, Storage storage)
+        public void ApplyConvention(SerializedSignature ssig, FunctionType sig)
+        {
+            sig.StackDelta = Architecture.PointerType.Size;  //$BUG: far/near pointers?
+            if (ssig.StackDelta != 0)
+                sig.StackDelta = ssig.StackDelta;
+            else
+                sig.StackDelta = Architecture.PointerType.Size;   //$BUG: x86 real mode?
+            sig.FpuStackDelta = FpuStackOffset;
+            sig.ReturnAddressOnStack = Architecture.PointerType.Size;   //$BUG: x86 real mode?
+        }
+
+        public Identifier CreateId(string name, DataType type, Storage storage)
 		{
 			return new Identifier(name, type, storage);
 		}
+
+        private bool HasExplicitStorage(Argument_v1 sArg)
+        {
+            return sArg.Kind != null;
+        }
 
         /// <summary>
         /// Deserializes the signature <paramref name="ss"/>. Any instantiated
@@ -61,11 +82,156 @@ namespace Reko.Core.Serialization
         /// <param name="ss"></param>
         /// <param name="frame"></param>
         /// <returns></returns>
-        public abstract FunctionType Deserialize(SerializedSignature ss, Frame frame);
+        public FunctionType Deserialize(SerializedSignature ss, Frame frame)
+        {
+            if (ss == null)
+                return null;
+            var retAddrSize = this.Architecture.PointerType.Size;   //$TODO: deal with near/far calls in x86-realmode
+            if (!ss.ParametersValid)
+            {
+                return new FunctionType
+                {
+                    StackDelta = ss.StackDelta,
+                    ReturnAddressOnStack = retAddrSize,
+                };
+            }
 
-        public abstract Storage GetReturnRegister(Argument_v1 sArg, int bitSize);
+            var parameters = new List<Identifier>();
 
-        public virtual SerializedSignature Serialize(FunctionType sig)
+            Identifier ret = null;
+            if (UseUserSpecifiedStorages(ss))
+            {
+                this.argDeser = new ArgumentDeserializer(
+                    this,
+                    Architecture,
+                    frame,
+                    retAddrSize,
+                    Architecture.WordWidth.Size);
+
+                int fpuDelta = FpuStackOffset;
+                FpuStackOffset = 0;
+                if (ss.ReturnValue != null)
+                {
+                    ret = DeserializeArgument(ss.ReturnValue, -1, "");
+                    fpuDelta += FpuStackOffset;
+                }
+
+                FpuStackOffset = 0;
+                if (ss.Arguments != null)
+                {
+                    for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
+                    {
+                        var sArg = ss.Arguments[iArg];
+                        var arg = DeserializeArgument(sArg, iArg, ss.Convention);
+                        parameters.Add(arg);
+                    }
+                }
+                fpuDelta -= FpuStackOffset;
+                FpuStackOffset = fpuDelta;
+                var sig = new FunctionType(ret, parameters.ToArray())
+                {
+                    IsInstanceMetod = ss.IsInstanceMethod,
+                };
+                ApplyConvention(ss, sig);
+                return sig;
+            }
+            else
+            {
+                var dtRet = ss.ReturnValue != null
+                    ? ss.ReturnValue.Type.Accept(TypeLoader)
+                    : null;
+                var dtThis = ss.EnclosingType != null
+                    ? new Pointer(ss.EnclosingType.Accept(TypeLoader), Architecture.PointerType.Size)
+                    : null;
+                var dtParameters = ss.Arguments != null
+                    ? ss.Arguments
+                        .TakeWhile(p => p.Name != "...")
+                        .Select(p => p.Type.Accept(TypeLoader))
+                        .ToList()
+                    : new List<DataType>();
+
+                // A calling convention governs the storage of a the 
+                // parameters
+
+                var cc = platform.GetCallingConvention(ss.Convention);
+                var res = new CallingConventionEmitter();
+                cc.Generate(res, dtRet, dtThis, dtParameters);
+                if (res.Return != null)
+                {
+                    var retReg = res.Return as RegisterStorage;
+                    ret = new Identifier(retReg != null ? retReg.Name : "", dtRet, res.Return);
+                }
+                if (res.ImplicitThis != null)
+                {
+                    var param = new Identifier("this", dtThis, res.ImplicitThis);
+                    parameters.Add(param);
+                }
+                if (ss.Arguments != null)
+                {
+                    for (int i = 0; i < ss.Arguments.Length; ++i)
+                    {
+                        if (ss.Arguments[i].Name == "...")
+                        {
+                            var unk = new UnknownType();
+                            parameters.Add(new Identifier("...", unk, new StackArgumentStorage(0, unk)));
+                        }
+                        else
+                        {
+                            var name = GenerateParameterName(ss.Arguments[i].Name, dtParameters[i], res.Parameters[i]);
+                            var param = new Identifier(name, dtParameters[i], res.Parameters[i]);
+                            parameters.Add(param);
+                        }
+                    }
+                }
+                var ft = new FunctionType(ret, parameters.ToArray())
+                {
+                    IsInstanceMetod = ss.IsInstanceMethod,
+                    StackDelta = ss.StackDelta != 0
+                        ? ss.StackDelta
+                        : res.StackDelta,
+                    FpuStackDelta = res.FpuStackDelta,
+                    ReturnAddressOnStack = retAddrSize,
+                };
+                return ft;
+            }
+        }
+
+        /// <summary>
+        /// If the user has specified the storage on all
+        /// parameters, and the return value, no heed is taken of any calling 
+        /// convention.
+        /// </summary>
+        /// <param name="ss"></param>
+        /// <returns></returns>
+        private bool UseUserSpecifiedStorages(SerializedSignature ss)
+        {
+            if (ss.Arguments != null && !ss.Arguments.All(HasExplicitStorage))
+                return false;
+            if (ss.ReturnValue != null && ss.ReturnValue.Type != null &&
+                !(ss.ReturnValue.Type is VoidType_v1) && !HasExplicitStorage(ss.ReturnValue))
+                return false;
+            if (ss.EnclosingType != null)
+                return false;
+            return true;
+        }
+
+        private string GenerateParameterName(string name, DataType dataType, Storage storage)
+        {
+            if (!string.IsNullOrEmpty(name))
+                return name;
+            var stack = storage as StackStorage;
+            if (stack != null)
+                return Frame.FormatStackAccessName(dataType, "Arg", stack.StackOffset, name);
+            var seq = storage as SequenceStorage;
+            if (seq != null)
+                return seq.Name;
+            var reg = storage as RegisterStorage;
+            if (reg != null)
+                return reg.Name;
+            throw new NotImplementedException();
+        }
+
+        public SerializedSignature Serialize(FunctionType sig)
         {
             SerializedSignature ssig = new SerializedSignature();
             if (!sig.ParametersValid)
@@ -94,6 +260,23 @@ namespace Reko.Core.Serialization
             if (proc.Signature != null)
                 sproc.Signature = Serialize(proc.Signature);
             return sproc;
+        }
+
+        /// <summary>
+        /// Deserializes an argument.
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <param name="idx"></param>
+        /// <param name="convention"></param>
+        /// <returns></returns>
+        public Identifier DeserializeArgument(Argument_v1 arg, int idx, string convention)
+        {
+            var kind = arg.Kind;
+            if (kind == null)
+            {
+                kind = new StackVariable_v1();
+            }
+            return argDeser.Deserialize(arg, kind);
         }
     }
 }

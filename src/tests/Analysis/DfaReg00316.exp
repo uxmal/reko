@@ -8,9 +8,9 @@
 // r316
 // Return size: 4
 int32 r316(int32 a)
-fn0C00_0000_entry:
-	// succ:  l0C00_0000
-l0C00_0000:
+fn10000000_entry:
+	// succ:  l10000000
+l10000000:
 	word32 ecx_6 = Mem0[a:word32]
 	word32 esp_9
 	word32 eax_10
@@ -20,6 +20,6 @@ l0C00_0000:
 		uses: dwLoc04_8,eax_4,ecx_6,esp_7
 		defs: eax_10,ecx_11,esp_9,SZO_12
 	return eax_10 + 0x00000001
-	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:
+	// succ:  fn10000000_exit
+fn10000000_exit:
 

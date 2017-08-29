@@ -26,7 +26,7 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.Types;
 
-namespace Reko.Environments.SysV
+namespace Reko.Environments.SysV.ArchSpecific
 {
     /*
      * http://www.atmel.com/webdoc/AVRLibcReferenceManual/FAQ_1faq_reg_usage.html
@@ -80,18 +80,13 @@ to 16 bits by the called function (unsigned char is more efficient than signed
 char - just clr r25). Arguments to functions with variable argument lists
 (printf etc.) are all passed on stack, and char is extended to int. 
 */
-    public class Avr8ProcedureSerializer : ProcedureSerializer
+    public class Avr8CallingConvention : CallingConvention
     {
-        public Avr8ProcedureSerializer(IProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention) : base(arch, typeLoader, defaultConvention)
+        public Avr8CallingConvention(IProcessorArchitecture arch)
         {
         }
 
-        public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
-        {
-            return new FunctionType();
-        }
-
-        public override Storage GetReturnRegister(Argument_v1 sArg, int bitSize)
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
             throw new NotImplementedException();
         }

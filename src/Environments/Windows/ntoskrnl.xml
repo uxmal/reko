@@ -70,9 +70,7 @@
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
-      <arg name="...">
-        <stack />
-      </arg>
+      <arg name="..." />
     </signature>
   </procedure>
   <procedure name="IoGetCurrentProcess">

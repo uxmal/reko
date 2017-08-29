@@ -52,7 +52,7 @@
     <Compile Include="AtariTOSPlatform.cs" />
     <Compile Include="PrgLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TOSProcedureSerializer.cs" />
+    <Compile Include="TOSCallingConvention.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\M68k\M68k.csproj">
