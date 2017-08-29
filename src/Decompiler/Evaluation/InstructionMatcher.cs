@@ -95,7 +95,11 @@ namespace Reko.Evaluation
 
         public bool VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
-            throw new NotImplementedException();
+            var gotoPat = pattern as GotoInstruction;
+            if (gotoPat == null)
+                return false;
+            matcher.Pattern = gotoPat.Target;
+            return matcher.Match(gotoInstruction.Target);
         }
 
         public bool VisitPhiAssignment(PhiAssignment phi)

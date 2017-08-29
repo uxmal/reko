@@ -234,7 +234,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Given_32bit_CallingConvention("__cdecl");
             cc.Generate(ccr, r64, null, new List<DataType> ());
-            Assert.AreEqual("Stk: 4 Fpu: 1 FPU stack ()", ccr.ToString());
+            Assert.AreEqual("Stk: 4 Fpu: 1 FPU +0 ()", ccr.ToString());
         }
 
         [Test]
@@ -274,7 +274,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Given_32bit_CallingConvention("__cdecl");
             cc.Generate(ccr, r64, null, new List<DataType>());
-            Assert.AreEqual("Stk: 4 Fpu: 1 FPU stack ()", ccr.ToString());
+            Assert.AreEqual("Stk: 4 Fpu: 1 FPU +0 ()", ccr.ToString());
         }
     }
 }

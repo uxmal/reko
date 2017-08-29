@@ -269,7 +269,7 @@ namespace Reko.UnitTests.Scanning
             Given_RegString64("rcx", "%d %f %s %u %x");
             Assert.IsTrue(vafs.TryScan(addrInstr, win_x86_64PrintfSig, printfChr));
             var c = Constant.Word32(666);
-            var instr = vafs.BuildInstruction(c, new CallSite(4, 0), printfChr);
+            var instr = vafs.BuildInstruction(c, new CallSite(8, 0), printfChr);
             Assert.AreEqual(
                 "0x0000029A(rcx, rdx, xmm2, r9, Mem0[rsp + 32:uint64], Mem0[rsp + 40:uint64])",
                 instr.ToString());

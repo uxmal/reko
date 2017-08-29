@@ -21,13 +21,16 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Reko.Core.Types;
 
 namespace Reko.Analysis
 {
@@ -44,6 +47,8 @@ namespace Reko.Analysis
         private Dictionary<Procedure, ProcedureFlow> procCtx;
         private Dictionary<Block, Context> blockCtx;
         private Context ctx;
+        private ExpressionSimplifier eval;
+
         private bool propagateToCallers;
 
         public TrashedRegisterFinder3(
@@ -66,8 +71,19 @@ namespace Reko.Analysis
         public void Compute()
         {
             CreateState();
-            worklist.AddRange(sccGroup.Select(s => s.SsaState.Procedure.EntryBlock));
             this.propagateToCallers = false;
+            foreach (var sst in sccGroup)
+            {
+                var proc = sst.SsaState.Procedure;
+                if (proc.Signature.ParametersValid)
+                {
+                    ApplySignature(proc.Signature, flow[proc]);
+                }
+                else
+                {
+                    worklist.Add(proc.EntryBlock);
+                }
+            }
             Block block;
             while (worklist.GetWorkItem(out block))
             {
@@ -83,19 +99,37 @@ namespace Reko.Analysis
             {
                 var proc = sst.SsaState.Procedure;
                 var procFlow = this.flow[proc];
+
                 procCtx.Add(proc, procFlow);
                 var idState = new Dictionary<Identifier, Expression>();
                 foreach (var block in sst.SsaState.Procedure.ControlGraph.Blocks)
                 {
-                    blockCtx[block] = new Context(idState, procFlow);
+                    blockCtx[block] = new Context(sst.SsaState, idState, procFlow);
                 }
+            }
+        }
+
+        private void ApplySignature(FunctionType sig, ProcedureFlow procFlow)
+        {
+            //$REVIEW: do we need this? if a procedure has a signature,
+            // we will always trust that rather than the flow.
+            if (!sig.HasVoidReturn)
+            {
+                procFlow.Trashed.Add(sig.ReturnValue.Storage);
+            }
+            foreach (var stg in sig.Parameters
+                .Select(p => p.Storage)
+                .OfType<OutArgumentStorage>())
+            {
+                procFlow.Trashed.Add(stg.OriginalIdentifier.Storage);
             }
         }
 
         private void ProcessBlock(Block block)
         {
             this.ctx = blockCtx[block];
-            
+            this.eval = new ExpressionSimplifier(ctx, listener);
+
             foreach (var stm in block.Statements)
             {
                 stm.Instruction.Accept(this);
@@ -106,7 +140,7 @@ namespace Reko.Analysis
             }
             else
             {
-                UpdateProcedureSuccessors(block);
+                UpateBlockSuccessors(block);
             }
         }
 
@@ -114,14 +148,9 @@ namespace Reko.Analysis
         {
             if (!propagateToCallers)
                 return;
-            foreach (var de in ctx.IdState)
-            {
-                throw new NotImplementedException();
-
-            }
         }
 
-        private void UpdateProcedureSuccessors(Block block)
+        private void UpateBlockSuccessors(Block block)
         {
             var bf = blockCtx[block];
             foreach (var s in block.Succ)
@@ -136,18 +165,36 @@ namespace Reko.Analysis
         {
             var eval = new ExpressionSimplifier(ctx, listener);
             var value = ass.Src.Accept(eval);
+            Debug.Print("{0} = [{1}]", ass.Dst, value);
             ctx.SetValue(ass.Dst, value);
             return ass;
         }
 
         public Instruction VisitBranch(Branch branch)
         {
-            throw new NotImplementedException();
+            var eval = new ExpressionSimplifier(ctx, listener);
+            branch.Condition.Accept(eval);
+            return branch;
         }
 
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
-            throw new NotImplementedException();
+            var pc = ci.Callee as ProcedureConstant;
+            if (pc == null)
+                throw new NotImplementedException();
+            var callee = pc.Procedure as Procedure;
+            if (callee == null)
+                throw new NotImplementedException();
+
+            if (sccGroup.Any(s => s.SsaState.Procedure == callee))
+                throw new NotImplementedException();
+
+            var flow = this.flow[callee];
+            foreach (var x in flow.Trashed)
+            {
+                x.ToString();
+            }
+            return ci;
         }
 
         public Instruction VisitDeclaration(Declaration decl)
@@ -157,7 +204,7 @@ namespace Reko.Analysis
 
         public Instruction VisitDefInstruction(DefInstruction def)
         {
-            throw new NotImplementedException();
+            return def;
         }
 
         public Instruction VisitGotoInstruction(GotoInstruction gotoInstruction)
@@ -167,7 +214,28 @@ namespace Reko.Analysis
 
         public Instruction VisitPhiAssignment(PhiAssignment phi)
         {
-            throw new NotImplementedException();
+            Expression total = null;
+            for (int i = 0; i < phi.Src.Arguments.Length; ++i)
+            {
+                var value = phi.Src.Arguments[i].Accept(eval);
+                if (total == null)
+                {
+                    total = value;
+                }
+                else if (total is Constant)
+                {
+                    var cTotal = total as Constant;
+                    var cValue = value as Constant;
+                    if (cValue == null || !cValue.Equals(cTotal))
+                    {
+                        total = Constant.Invalid;
+                        break;
+                    }
+                }
+            }
+            ctx.SetValue(phi.Dst, total);
+            Debug.Print("{0} = [{1}]", phi.Dst, total);
+            return phi;
         }
 
         public Instruction VisitReturnInstruction(ReturnInstruction ret)
@@ -182,12 +250,17 @@ namespace Reko.Analysis
 
         public Instruction VisitSideEffect(SideEffect side)
         {
-            throw new NotImplementedException();
+            var eval = new ExpressionSimplifier(ctx, listener);
+            side.Expression.Accept(eval);
+            return side;
         }
 
         public Instruction VisitStore(Store store)
         {
-            throw new NotImplementedException();
+            var eval = new ExpressionSimplifier(ctx, listener);
+            var value = store.Src.Accept(eval);
+            ctx.SetValueEa(((MemoryAccess)store.Dst).EffectiveAddress, value);
+            return store;
         }
 
         public Instruction VisitSwitchInstruction(SwitchInstruction si)
@@ -195,39 +268,60 @@ namespace Reko.Analysis
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// We're in the exit block now, so collect all identifiers
+        /// that are registers into the procedureflow of the 
+        /// current procedure.
+        /// </summary>
         public Instruction VisitUseInstruction(UseInstruction use)
         {
-            // We're in the exit block now, so collect all identifiers
-            // that are registes into the procedureflow of the 
-            // current procedure.
             var id = use.Expression as Identifier;
-            if (id != null && id.Storage is RegisterStorage)
+            if (id == null || !(id.Storage is RegisterStorage))
+                return use;
+            var value = ctx.GetValue(id);
+            if (value == Constant.Invalid)
             {
-                var value = ctx.GetValue(id);
-                if (value == Constant.Invalid)
+                ctx.ProcFlow.Trashed.Add(id.Storage);
+                return use;
+            }
+            var c = value as Constant;
+            if (c != null)
+            {
+                ctx.ProcFlow.Constants[id.Storage] = c;
+                ctx.ProcFlow.Trashed.Add(id.Storage);
+                return use;
+            }
+            var idV = value as Identifier;
+            if (idV != null)
+            {
+                if (id.Storage == arch.StackRegister)
                 {
-                    ctx.ProcFlow.Trashed.Add(id.Storage);
-                }
-                else
-                {
-                    var c = value as Constant;
-                    if (c != null)
+                    if (idV == ctx.FramePointer)
                     {
-                        ctx.ProcFlow.Constants[id.Storage] = c;
+                        ctx.ProcFlow.Preserved.Add(arch.StackRegister);
+                        return use;
                     }
                 }
+                else if (idV.Storage == id.Storage)
+                {
+                    ctx.ProcFlow.Preserved.Add(id.Storage);
+                    return use;
+                }
             }
+            ctx.ProcFlow.Trashed.Add(id.Storage);
             return use;
         }
 
         public class Context : EvaluationContext
         {
+            public readonly Identifier FramePointer;
             public readonly Dictionary<Identifier, Expression> IdState;
             public readonly ProcedureFlow ProcFlow;
             public readonly Dictionary<int, Expression> StackState;
 
-            public Context(Dictionary<Identifier, Expression> idState, ProcedureFlow procFlow)
+            public Context(SsaState ssa, Dictionary<Identifier, Expression> idState, ProcedureFlow procFlow)
             {
+                this.FramePointer = ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Identifier;
                 this.IdState = idState;
                 this.ProcFlow = procFlow;
                 this.StackState = new Dictionary<int, Expression>();
@@ -240,7 +334,7 @@ namespace Reko.Analysis
 
             public Expression GetDefiningExpression(Identifier id)
             {
-                throw new NotImplementedException();
+                return null;
             }
 
             public Expression GetValue(SegmentedAccess access)
@@ -250,17 +344,37 @@ namespace Reko.Analysis
 
             public Expression GetValue(Application appl)
             {
-                throw new NotImplementedException();
+                var args = appl.Arguments;
+                for (int i = 0; i < args.Length; ++i)
+                {
+                    var outArg = args[i] as OutArgument;
+                    if (outArg == null)
+                        continue;
+                    var outId = outArg.Expression as Identifier;
+                    if (outId != null)
+                        SetValue(outId, Constant.Invalid);
+                }
+                return Constant.Invalid;
             }
 
             public Expression GetValue(MemoryAccess access)
             {
-                throw new NotImplementedException();
+                var offset = this.GetFrameOffset(access.EffectiveAddress);
+                Expression value;
+                if (offset.HasValue && StackState.TryGetValue(offset.Value, out value))
+                {
+                    return value;
+                }
+                return Constant.Invalid;
             }
 
             public Expression GetValue(Identifier id)
             {
-                return IdState[id];
+                Expression value;
+                if (!IdState.TryGetValue(id, out value))
+                    return id;
+                else
+                    return value;
             }
 
             public bool IsUsedInPhi(Identifier id)
@@ -280,23 +394,39 @@ namespace Reko.Analysis
 
             public void RemoveIdentifierUse(Identifier id)
             {
-                throw new NotImplementedException();
             }
 
             public void SetValue(Identifier id, Expression value)
             {
-                Expression oldValue;
-                if (!IdState.TryGetValue(id, out oldValue))
-                {
-                    IdState.Add(id, value);
-                }
-                else
-                    throw new NotImplementedException();
+                IdState[id] = value;
             }
 
-            public void SetValueEa(Expression ea, Expression value)
+            public void SetValueEa(Expression effectiveAddress, Expression value)
             {
-                throw new NotImplementedException();
+                var offset = GetFrameOffset(effectiveAddress);
+                if (offset.HasValue)
+                {
+                    this.StackState[offset.Value] = value;
+                }
+            }
+
+            private int? GetFrameOffset(Expression effectiveAddress)
+            {
+                var ea = effectiveAddress as BinaryExpression;
+                if (ea == null || ea.Left != FramePointer)
+                    return null;
+                var o = ea.Right as Constant;
+                if (o == null)
+                    return null;
+                if (ea.Operator == Operator.IAdd)
+                {
+                    return o.ToInt32();
+                }
+                else if (ea.Operator == Operator.ISub)
+                {
+                    return -o.ToInt32();
+                }
+                return null;
             }
 
             public void SetValueEa(Expression basePointer, Expression ea, Expression value)
@@ -306,7 +436,6 @@ namespace Reko.Analysis
 
             public void UseExpression(Expression expr)
             {
-                throw new NotImplementedException();
             }
         }
     }
