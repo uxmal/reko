@@ -130,7 +130,6 @@ namespace Reko.Analysis
             var assSrc = src.Instruction as Assignment;
             if (assSrc == null)
                 return false;
-            //new DefinedIdentifierFinder();        //$REVIEW: this doesn't appear to do anything?
             return ExpressionIdentifierUseFinder.Find(ssaIds, assSrc.Src)
                 .Select(c => ssaIds[c].DefStatement)
                 .Where(d => d != null)

@@ -84,6 +84,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\TrashedRegisterFinder3Tests.cs" />
     <Compile Include="Analysis\UnalignedMemoryAccessFuserTests.cs" />
     <Compile Include="Analysis\ValueNumberingTests.cs" />
     <Compile Include="Arch\Avr\Avr8ArchitectureTests.cs" />
