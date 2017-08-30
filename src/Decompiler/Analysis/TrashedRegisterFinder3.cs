@@ -48,7 +48,7 @@ namespace Reko.Analysis
         private Dictionary<Block, Context> blockCtx;
         private Context ctx;
         private ExpressionSimplifier eval;
-
+        private Block block;
         private bool propagateToCallers;
 
         public TrashedRegisterFinder3(
@@ -128,6 +128,7 @@ namespace Reko.Analysis
         private void ProcessBlock(Block block)
         {
             this.ctx = blockCtx[block];
+            this.block = block;
             this.eval = new ExpressionSimplifier(ctx, listener);
 
             foreach (var stm in block.Statements)

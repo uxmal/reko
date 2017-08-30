@@ -147,7 +147,7 @@ namespace Reko.Arch.X86
             Dictionary<uint, RegisterStorage> subregs;
             if ((mask & reg.BitMask) == reg.BitMask)
                 return reg;
-                RegisterStorage rMax = null;
+            RegisterStorage rMax = null;
             if (Registers.SubRegisters.TryGetValue(reg, out subregs))
             {
                 foreach (var subreg in subregs.Values)

@@ -726,21 +726,24 @@ namespace Reko.Analysis
 
         public override Expression VisitMemoryAccess(MemoryAccess access)
         {
-            if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
+            if (this.RenameFrameAccesses)
             {
-                ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
-                ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
-                var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
-                var idNew = NewUse(idFrame, stmCur, true);
-                return idNew;
-            } 
-            if (this.RenameFrameAccesses && IsConstFpuStackAccess(ssa.Procedure, access))
-            {
-                ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
-                var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(
-                    ((Constant)access.EffectiveAddress).ToInt32(), access.DataType);
-                var idNew = NewUse(idFrame, stmCur, true);
-                return idNew;
+                if (IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
+                {
+                    ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
+                    ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
+                    var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
+                    var idNew = NewUse(idFrame, stmCur, true);
+                    return idNew;
+                }
+                if (IsConstFpuStackAccess(ssa.Procedure, access))
+                {
+                    ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
+                    var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(
+                        ((Constant)access.EffectiveAddress).ToInt32(), access.DataType);
+                    var idNew = NewUse(idFrame, stmCur, true);
+                    return idNew;
+                }
             }
 
             var ea = access.EffectiveAddress.Accept(this);
