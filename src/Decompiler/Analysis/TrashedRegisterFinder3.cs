@@ -102,10 +102,9 @@ namespace Reko.Analysis
 
                 procCtx.Add(proc, procFlow);
                 var idState = new Dictionary<Identifier, Expression>();
-                foreach (var block in sst.SsaState.Procedure.ControlGraph.Blocks)
-                {
-                    blockCtx[block] = new Context(sst.SsaState, idState, procFlow);
-                }
+                var fp = sst.SsaState.Identifiers[proc.Frame.FramePointer].Identifier;
+                var block = proc.EntryBlock;
+                blockCtx.Add(block, new Context(fp, idState, procFlow));
             }
         }
 
@@ -156,9 +155,17 @@ namespace Reko.Analysis
             var bf = blockCtx[block];
             foreach (var s in block.Succ)
             {
-                var changed = blockCtx[s].MergeWith(bf);
-                if (changed)
+                Context succCtx;
+                if (!blockCtx.TryGetValue(s, out succCtx))
+                {
+                    blockCtx.Add(s, ctx.Clone());
                     worklist.Add(s);
+                }
+                else if (bf.IsDirty)
+                {
+                    succCtx.MergeWith(bf);
+                    worklist.Add(s);
+                }
             }
         }
 
@@ -231,6 +238,13 @@ namespace Reko.Analysis
                     {
                         total = Constant.Invalid;
                         break;
+                    }
+                }
+                else if (total is Identifier)
+                {
+                    if (value != total)
+                    {
+                        total = Constant.Invalid;   
                     }
                 }
             }
@@ -319,30 +333,39 @@ namespace Reko.Analysis
             public readonly Dictionary<Identifier, Expression> IdState;
             public readonly ProcedureFlow ProcFlow;
             public readonly Dictionary<int, Expression> StackState;
+            public bool IsDirty;
+            private readonly ExpressionValueComparer cmp;
 
             public Context(
                 Identifier fp,
                 Dictionary<Identifier, Expression> idState,
                 ProcedureFlow procFlow) 
-                : this(fp, idState, procFlow, new Dictionary<int,Expression>())
+                : this(
+                      fp,
+                      idState,
+                      procFlow, 
+                      new Dictionary<int,Expression>(),
+                      new ExpressionValueComparer())
             {
             }
 
-            public Context(
+            private Context(
                 Identifier fp,
                 Dictionary<Identifier, Expression> idState,
                 ProcedureFlow procFlow,
-                Dictionary<int, Expression> stack)
+                Dictionary<int, Expression> stack,
+                ExpressionValueComparer cmp)
             {
                 this.FramePointer = fp;
                 this.IdState = idState;
                 this.ProcFlow = procFlow;
                 this.StackState = stack;
+                this.cmp = cmp;
             }
 
             public Context Clone()
             {
-                return new Context(this.FramePointer, this.IdState, this.ProcFlow, new Dictionary<int, Expression>(StackState));
+                return new Context(this.FramePointer, this.IdState, this.ProcFlow, new Dictionary<int, Expression>(StackState), cmp);
             }
 
             public bool MergeWith(Context ctxOther)
@@ -416,15 +439,35 @@ namespace Reko.Analysis
 
             public void SetValue(Identifier id, Expression value)
             {
-                IdState[id] = value;
+                Expression oldValue;
+                if (!IdState.TryGetValue(id, out oldValue))
+                {
+                    IsDirty = true;
+                    IdState.Add(id, value);
+                }
+                else if (!cmp.Equals(oldValue, value))
+                {
+                    IsDirty = true;
+                    IdState[id] = value;
+                }
             }
 
             public void SetValueEa(Expression effectiveAddress, Expression value)
             {
                 var offset = GetFrameOffset(effectiveAddress);
-                if (offset.HasValue)
+                if (!offset.HasValue)
+                    return;
+
+                Expression oldValue;
+                if (!StackState.TryGetValue(offset.Value, out oldValue))
                 {
-                    this.StackState[offset.Value] = value;
+                    IsDirty = true;
+                    StackState.Add(offset.Value, value);
+                }
+                else if (!cmp.Equals(oldValue, value))
+                {
+                    IsDirty = true;
+                    StackState[offset.Value] = value;
                 }
             }
 

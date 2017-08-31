@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Analysis
         [Test(Description = "Constant in one branch, not constant in the other")]
         public void TrfConstNonConst()
         {
-            Expect("TrfConstNonConst", "Preserved: r63", "Trashed: cl,cx", "");
+            Expect("TrfConstNonConst", "Preserved: r63", "Trashed: cx", "");
             builder.Add("TrfConstNonConst", m =>
             {
                 var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
