@@ -174,6 +174,7 @@ namespace Reko.Analysis
             var eval = new ExpressionSimplifier(ctx, listener);
             var value = ass.Src.Accept(eval);
             Debug.Print("{0} = [{1}]", ass.Dst, value);
+
             ctx.SetValue(ass.Dst, value);
             return ass;
         }
@@ -198,9 +199,13 @@ namespace Reko.Analysis
                 throw new NotImplementedException();
 
             var flow = this.flow[callee];
-            foreach (var x in flow.Trashed)
+            foreach (var d in ci.Definitions)
             {
-                x.ToString();
+                if (flow.Trashed.Contains(d.Storage))
+                {
+                    ctx.SetValue((Identifier)d.Expression, Constant.Invalid);
+                    Debug.Print("  {0} = [{1}]", d.Expression, Constant.Invalid);
+                }
             }
             return ci;
         }
