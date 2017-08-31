@@ -320,12 +320,29 @@ namespace Reko.Analysis
             public readonly ProcedureFlow ProcFlow;
             public readonly Dictionary<int, Expression> StackState;
 
-            public Context(SsaState ssa, Dictionary<Identifier, Expression> idState, ProcedureFlow procFlow)
+            public Context(
+                Identifier fp,
+                Dictionary<Identifier, Expression> idState,
+                ProcedureFlow procFlow) 
+                : this(fp, idState, procFlow, new Dictionary<int,Expression>())
             {
-                this.FramePointer = ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Identifier;
+            }
+
+            public Context(
+                Identifier fp,
+                Dictionary<Identifier, Expression> idState,
+                ProcedureFlow procFlow,
+                Dictionary<int, Expression> stack)
+            {
+                this.FramePointer = fp;
                 this.IdState = idState;
                 this.ProcFlow = procFlow;
-                this.StackState = new Dictionary<int, Expression>();
+                this.StackState = stack;
+            }
+
+            public Context Clone()
+            {
+                return new Context(this.FramePointer, this.IdState, this.ProcFlow, new Dictionary<int, Expression>(StackState));
             }
 
             public bool MergeWith(Context ctxOther)
