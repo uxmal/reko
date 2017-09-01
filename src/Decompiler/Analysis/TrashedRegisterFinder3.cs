@@ -230,31 +230,27 @@ namespace Reko.Analysis
             Expression total = null;
             for (int i = 0; i < phi.Src.Arguments.Length; ++i)
             {
-                var value = phi.Src.Arguments[i].Accept(eval);
-                if (total == null)
+                var p = block.Pred[i];
+                if (blockCtx.ContainsKey(p))
                 {
-                    total = value;
-                }
-                else if (total is Constant)
-                {
-                    var cTotal = total as Constant;
-                    var cValue = value as Constant;
-                    if (cValue == null || !cValue.Equals(cTotal))
+                    // We've visited p.
+                    var value = ctx.GetValue((Identifier)phi.Src.Arguments[i]);
+                    if (total == null)
+                    {
+                        total = value;
+                    }
+                    else if (!cmp.Equals(value, total))
                     {
                         total = Constant.Invalid;
                         break;
                     }
                 }
-                else if (total is Identifier)
-                {
-                    if (value != total)
-                    {
-                        total = Constant.Invalid;   
-                    }
-                }
             }
-            ctx.SetValue(phi.Dst, total);
-            Debug.Print("{0} = [{1}]", phi.Dst, total);
+            if (total != null)
+            {
+                ctx.SetValue(phi.Dst, total);
+            }
+            Debug.Print("{0} = φ[{1}]", phi.Dst, total);
             return phi;
         }
 
@@ -302,12 +298,15 @@ namespace Reko.Analysis
             if (value == Constant.Invalid)
             {
                 ctx.ProcFlow.Trashed.Add(id.Storage);
+                ctx.ProcFlow.Preserved.Remove(id.Storage);
+                ctx.ProcFlow.Constants.Remove(id.Storage);
                 return use;
             }
             var c = value as Constant;
             if (c != null)
             {
                 ctx.ProcFlow.Constants[id.Storage] = c;
+                ctx.ProcFlow.Preserved.Remove(id.Storage);
                 ctx.ProcFlow.Trashed.Add(id.Storage);
                 return use;
             }
@@ -418,7 +417,7 @@ namespace Reko.Analysis
             {
                 Expression value;
                 if (!IdState.TryGetValue(id, out value))
-                    return id;
+                    return null;
                 else
                     return value;
             }

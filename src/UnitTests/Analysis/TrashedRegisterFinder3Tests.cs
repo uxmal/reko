@@ -685,5 +685,57 @@ Constants: cl:0x00
             });
             RunTest();
         }
+
+        [Test]
+        public void TrfSaveRegistersOnStack()
+        {
+            Expect("main", "Preserved: ebp,r63", "Trashed: eax", "");
+            builder.Add("main", m => 
+            {
+                var eax = m.Reg32("eax", 0);
+                var esp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                var ebp = m.Reg32("ebp", 5);
+                m.Assign(esp, m.Frame.FramePointer);
+                m.Assign(esp, m.ISub(esp, 4));
+                m.Store(esp, ebp);
+                m.Assign(ebp, esp);
+                m.Assign(eax, m.LoadDw(m.IAdd(ebp, 8)));
+                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(esp, m.IAdd(esp, 4));
+                m.Return();
+            });
+            RunTest();
+        }
+
+        [Test]
+        public void TrfSaveRegistersOnStack_TwoExits()
+        {
+            Expect("main", "Preserved: ebp,r63", "Trashed: eax", "");
+            builder.Add("main", m =>
+            {
+                var eax = m.Reg32("eax", 0);
+                var esp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                var ebp = m.Reg32("ebp", 5);
+                m.Assign(esp, m.Frame.FramePointer);
+                m.Assign(esp, m.ISub(esp, 4));
+                m.Store(esp, ebp);
+                m.Assign(ebp, esp);
+                m.Assign(eax, m.LoadDw(m.IAdd(ebp, 8)));
+                m.BranchIf(m.Eq0(eax), "zero");
+
+                m.Label("not_zero");
+                m.Assign(eax, 1);
+                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(esp, m.IAdd(esp, 4));
+                m.Return();
+
+                m.Label("zero");
+                m.Assign(eax, 0);
+                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(esp, m.IAdd(esp, 4));
+                m.Return();
+            });
+            RunTest();
+        }
     }
 }
