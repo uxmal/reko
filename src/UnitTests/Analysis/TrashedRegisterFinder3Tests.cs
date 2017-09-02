@@ -72,7 +72,6 @@ namespace Reko.UnitTests.Analysis
             mr.ReplayAll();
 
             this.program = builder.BuildProgram();
-            builder.BuildCallgraph();
             this.dataFlow = new ProgramDataFlow(program);
             var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), ProcessScc);
             foreach (var procedure in program.Procedures.Values)
@@ -344,7 +343,7 @@ Constants: cl:0x00
                 "fact",
                 "Preserved: r2,r63",
                 "Trashed: r1",
-                "Constants: r1:<invalid>");
+                "");
             builder.Add("fact", m =>
             {
                 Given_PlatformTrashedRegisters();
@@ -570,8 +569,8 @@ Constants: cl:0x00
             Given_PlatformTrashedRegisters();
             Expect(
                 "recursive",
-                "Preserved: ebp,esp",
-                "Trashed: esp",
+                "Preserved: ebp,r63",
+                "Trashed: ",
                 "");
             builder.Add("recursive", m =>
             {
@@ -607,8 +606,8 @@ Constants: cl:0x00
             Given_PlatformTrashedRegisters();
             Expect(
                 "recursive",
-                "Preserved: ebp,esp",
-                "Trashed: esp",
+                "Preserved: ebp,r63",
+                "Trashed: eax",
                 "");
             builder.Add("recursive", m =>
             {

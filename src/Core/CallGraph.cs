@@ -83,11 +83,9 @@ namespace Reko.Core
 			return graphProcs.Predecessors(proc);
 		}
 
-        //$TODO: should return IEnumerable<Statement>. Fix this when all
-        // unit tests pass.
-        public IEnumerable<object> CallerStatements(Procedure proc)
+        public IEnumerable<Statement> CallerStatements(Procedure proc)
 		{
-            return graphStms.Predecessors(proc);
+            return graphStms.Predecessors(proc).OfType<Statement>();
 		}
 
 		public void Write(TextWriter wri)
