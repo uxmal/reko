@@ -36,6 +36,8 @@ namespace Reko.Analysis
 {
     public class TrashedRegisterFinder3 : InstructionVisitor<bool>
     {
+        private static TraceSwitch trace = new TraceSwitch("TrashedRegisters", "Trashed value propagation");
+
         private IProcessorArchitecture arch;
         private ProgramDataFlow flow;
         private Dictionary<Procedure, HashSet<Storage>> assumedPreserved;
@@ -177,7 +179,6 @@ namespace Reko.Analysis
             this.eval = new ExpressionSimplifier(ctx, listener);
 
             this.block = block;
-            this.eval = new ExpressionSimplifier(ctx, listener);
 
             this.ctx.IsDirty = false;
             foreach (var stm in block.Statements)
@@ -229,7 +230,7 @@ namespace Reko.Analysis
         public bool VisitAssignment(Assignment ass)
         {
             var value = ass.Src.Accept(eval);
-            Debug.Print("{0} = [{1}]", ass.Dst, value);
+            DebugEx.Print(trace.TraceVerbose, "{0} = [{1}]", ass.Dst, value);
 
             ctx.SetValue(ass.Dst, value);
             return true;
@@ -270,7 +271,7 @@ namespace Reko.Analysis
                 if (flow.Trashed.Contains(d.Storage))
                 {
                     ctx.SetValue((Identifier)d.Expression, Constant.Invalid);
-                    Debug.Print("  {0} = [{1}]", d.Expression, Constant.Invalid);
+                    DebugEx.Print(trace.TraceVerbose, "  {0} = [{1}]", d.Expression, Constant.Invalid);
                 }
                 if (flow.Preserved.Contains(d.Storage))
                 {
@@ -279,7 +280,7 @@ namespace Reko.Analysis
                         .Select(u => u.Expression.Accept(eval))
                         .SingleOrDefault();
                     ctx.SetValue((Identifier)d.Expression, before);
-                    Debug.Print("  {0} = [{1}]", d.Expression, before);
+                    DebugEx.Print(trace.TraceVerbose, "  {0} = [{1}]", d.Expression, before);
                 }
             }
             return true;
@@ -316,7 +317,7 @@ namespace Reko.Analysis
                     {
                         total = value;
                     }
-                    else if (!cmp.Equals(value, total))
+                    else if (value != null && !cmp.Equals(value, total))
                     {
                         total = Constant.Invalid;
                         break;
@@ -327,7 +328,7 @@ namespace Reko.Analysis
             {
                 ctx.SetValue(phi.Dst, total);
             }
-            Debug.Print("{0} = φ[{1}]", phi.Dst, total);
+            DebugEx.Print(trace.TraceVerbose, "{0} = φ[{1}]", phi.Dst, total);
             return true;
         }
 
@@ -412,11 +413,11 @@ namespace Reko.Analysis
             var b = block ?? this.block;
             foreach (var de in blockCtx[b].IdState.OrderBy(i => i.Key.Name))
             {
-                Debug.Print("{0}: [{1}]", de.Key, de.Value);
+                DebugEx.Print(trace.TraceVerbose, "{0}: [{1}]", de.Key, de.Value);
             }
             foreach (var de in blockCtx[b].StackState.OrderBy(i => i.Key))
             {
-                Debug.Print("fp {0} {1}: [{2}]", de.Key >= 0 ? "+" : "-", Math.Abs(de.Key), de.Value);
+                DebugEx.Print(trace.TraceVerbose, "fp {0} {1}: [{2}]", de.Key >= 0 ? "+" : "-", Math.Abs(de.Key), de.Value);
             }
         }
 
