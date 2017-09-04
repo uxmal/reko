@@ -5,15 +5,15 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	word16 di_1 = 0x5388
+	word16 di_3 = 0x5388
 	goto lupe
 	// succ:  lupe
 l2:
 	return
 	// succ:  proc1_exit
 lupe:
-	Mem4[ds:di_1 + 0x0000:word16] = 0x0000
-	di_1 = di_1 + 0x0002
+	Mem6[ds:di_3 + 0x0000:word16] = 0x0000
+	di_3 = di_3 + 0x0002
 	cx = cx - 0x0001
 	branch cx != 0x0000 lupe
 	goto l2
@@ -27,15 +27,15 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	word16 Eq_5::* di_1 = Eq_5::a5388
+	word16 Eq_5::* di_3 = Eq_5::a5388
 	goto lupe
 	// succ:  lupe
 l2:
 	return
 	// succ:  proc1_exit
 lupe:
-	ds->*di_1 = 0x0000
-	di_1 = di_1 + 1
+	ds->*di_3 = 0x0000
+	di_3 = di_3 + 1
 	cx = cx - 0x0001
 	branch cx != 0x0000 lupe
 	goto l2
@@ -52,7 +52,7 @@ globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct "Globals"))
-T_2: (in di_1 : (memptr (ptr Eq_5) word16))
+T_2: (in di_3 : (memptr (ptr Eq_5) word16))
   Class: Eq_2
   DataType: (memptr (ptr Eq_5) word16)
   OrigDataType: (memptr T_5 (struct 0002 (0 word16 w0000)))
@@ -72,11 +72,11 @@ T_6: (in 0x0000 : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_7: (in di_1 + 0x0000 : word16)
+T_7: (in di_3 + 0x0000 : word16)
   Class: Eq_7
   DataType: word16
   OrigDataType: word16
-T_8: (in Mem4[ds:di_1 + 0x0000:word16] : word16)
+T_8: (in Mem6[ds:di_3 + 0x0000:word16] : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
@@ -84,7 +84,7 @@ T_9: (in 0x0002 : word16)
   Class: Eq_9
   DataType: int16
   OrigDataType: int16
-T_10: (in di_1 + 0x0002 : word16)
+T_10: (in di_3 + 0x0002 : word16)
   Class: Eq_2
   DataType: (memptr (ptr Eq_5) word16)
   OrigDataType: (memptr T_5 (struct 0002 (0 word16 w0000)))

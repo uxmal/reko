@@ -1,7 +1,7 @@
 void fn0C00_0000(Register byte al, Register selector ds)
 // MayUse:  al:[0..7] ds:[0..15]
 // LiveOut:
-// Trashed: al C O S Top Z
+// Trashed: SCZO al Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -12,9 +12,9 @@ void fn0C00_0000(Register byte al, Register selector ds)
 // ds:ds
 // al:al
 // Top:Top
-// O:O
 // S:S
 // Z:Z
+// O:O
 // return address size: 2
 void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:
@@ -22,8 +22,8 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	C_6 = fn0C00_000A(al, out al_5)
-	branch C_6 l0C00_0009
+	C_7 = fn0C00_000A(al, out al_5)
+	branch C_7 l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
 	Mem11[ds:0x0300:byte] = al_5
@@ -35,7 +35,7 @@ fn0C00_0000_exit:
 FlagGroup byte fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // MayUse:  al:[0..7]
 // LiveOut: al C
-// Trashed: al C O S Top Z
+// Trashed: SCZO al Top
 // Preserved: sp
 // fn0C00_000A
 // Return size: 0

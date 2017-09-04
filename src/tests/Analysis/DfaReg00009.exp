@@ -2,7 +2,7 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds:[0..15]
 // LiveOut:
-// Trashed: ax bx C cx di dx es gs O S Top Z
+// Trashed: SCZO ax bx cx di dx es gs Top
 // Preserved: ds sp
 // fn0C00_0000
 // Return size: 0

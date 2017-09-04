@@ -40,35 +40,34 @@ namespace Reko.Analysis
 
         private IProcessorArchitecture arch;
         private ProgramDataFlow flow;
-        private Dictionary<Procedure, HashSet<Storage>> assumedPreserved;
-        private ExpressionValueComparer cmp;
+        private HashSet<SsaTransform> sccGroup;
         private CallGraph callGraph;
         private DecompilerEventListener listener;
-        private HashSet<SsaTransform> sccGroup;
         private WorkStack<Block> worklist;
         private Dictionary<Procedure, ProcedureFlow> procCtx;
         private Dictionary<Block, Context> blockCtx;
+        private Dictionary<Procedure, SsaState> ssas;
         private Context ctx;
         private ExpressionSimplifier eval;
         private Block block;
+        private ExpressionValueComparer cmp;
         private bool propagateToCallers;
         private bool selfRecursiveCalls;
 
         public TrashedRegisterFinder3(
-            IProcessorArchitecture arch,
+            Program program,
             ProgramDataFlow flow,
-            CallGraph callGraph,
             IEnumerable<SsaTransform> sccGroup,
             DecompilerEventListener listener)
         {
-            this.arch = arch;
+            this.arch = program.Architecture;
             this.flow = flow;
             this.sccGroup = sccGroup.ToHashSet();
-            this.callGraph = callGraph;
-            this.assumedPreserved = sccGroup.ToDictionary(k => k.SsaState.Procedure, v => new HashSet<Storage>());
+            this.callGraph = program.CallGraph;
             this.listener = listener;
             this.cmp = new ExpressionValueComparer();
             this.worklist = new WorkStack<Block>();
+            this.ssas = sccGroup.ToDictionary(s => s.SsaState.Procedure, s => s.SsaState);
         }
 
         public void Compute()
@@ -246,7 +245,15 @@ namespace Reko.Analysis
         {
             var pc = ci.Callee as ProcedureConstant;
             if (pc == null)
-                throw new NotImplementedException();
+            {
+                foreach (var d in ci.Definitions)
+                {
+                    ctx.SetValue((Identifier)d.Expression, Constant.Invalid);
+                    DebugEx.Print(trace.TraceVerbose, "  {0} = [{1}]", d.Expression, Constant.Invalid);
+                }
+                return true;
+            }
+
             var callee = pc.Procedure as Procedure;
             if (callee == null)
                 throw new NotImplementedException();
@@ -288,11 +295,16 @@ namespace Reko.Analysis
 
         public bool VisitDeclaration(Declaration decl)
         {
-            throw new NotImplementedException();
+            var value = decl.Expression.Accept(eval);
+            DebugEx.Print(trace.TraceVerbose, "{0} = [{1}]", decl.Identifier, value);
+            ctx.SetValue(decl.Identifier, value);
+            return true;
         }
 
         public bool VisitDefInstruction(DefInstruction def)
         {
+            var id = (Identifier)def.Expression;
+            ctx.SetValue(id, id);
             return true;
         }
 
@@ -368,42 +380,78 @@ namespace Reko.Analysis
         public bool VisitUseInstruction(UseInstruction use)
         {
             var id = use.Expression as Identifier;
-            if (id == null || !(id.Storage is RegisterStorage))
+            if (id == null)
                 return true;
-            var value = ctx.GetValue(id);
-            if (value == Constant.Invalid)
+            var sid = ssas[block.Procedure].Identifiers[id];
+            if (id.Storage is RegisterStorage)
             {
-                ctx.ProcFlow.Trashed.Add(id.Storage);
-                ctx.ProcFlow.Preserved.Remove(id.Storage);
-                ctx.ProcFlow.Constants.Remove(id.Storage);
-                return true;
-            }
-            var c = value as Constant;
-            if (c != null)
-            {
-                ctx.ProcFlow.Constants[id.Storage] = c;
-                ctx.ProcFlow.Preserved.Remove(id.Storage);
-                ctx.ProcFlow.Trashed.Add(id.Storage);
-                return true;
-            }
-            var idV = value as Identifier;
-            if (idV != null)
-            {
-                if (id.Storage == arch.StackRegister)
+                var value = ctx.GetValue(id);
+                if (value == Constant.Invalid)
                 {
-                    if (idV == ctx.FramePointer)
+                    ctx.ProcFlow.Trashed.Add(id.Storage);
+                    ctx.ProcFlow.Preserved.Remove(id.Storage);
+                    ctx.ProcFlow.Constants.Remove(id.Storage);
+                    return true;
+                }
+                var c = value as Constant;
+                if (c != null)
+                {
+                    ctx.ProcFlow.Constants[id.Storage] = c;
+                    ctx.ProcFlow.Preserved.Remove(id.Storage);
+                    ctx.ProcFlow.Trashed.Add(id.Storage);
+                    return true;
+                }
+                var idV = value as Identifier;
+                if (idV != null)
+                {
+                    if (id.Storage == arch.StackRegister)
                     {
-                        ctx.ProcFlow.Preserved.Add(arch.StackRegister);
+                        if (idV == ctx.FramePointer)
+                        {
+                            ctx.ProcFlow.Preserved.Add(arch.StackRegister);
+                            return true;
+                        }
+                    }
+                    else if (idV.Storage == id.Storage)
+                    {
+                        ctx.ProcFlow.Preserved.Add(id.Storage);
                         return true;
                     }
                 }
-                else if (idV.Storage == id.Storage)
-                {
-                    ctx.ProcFlow.Preserved.Add(id.Storage);
-                    return true;
-                }
+                ctx.ProcFlow.Trashed.Add(id.Storage);
             }
-            ctx.ProcFlow.Trashed.Add(id.Storage);
+            else if (id.Storage is FlagGroupStorage)
+            {
+                var grfStorage = (FlagGroupStorage)id.Storage;
+                var value = ctx.GetValue(id);
+                var idV = value as Identifier;
+                if (idV != null && idV == sid.OriginalIdentifier)
+                {
+                    ctx.ProcFlow.grfPreserved |= grfStorage.FlagGroupBits;
+                    ctx.ProcFlow.grfTrashed &= ~grfStorage.FlagGroupBits;
+                }
+                else
+                {
+                    ctx.ProcFlow.grfTrashed |= grfStorage.FlagGroupBits;
+                    ctx.ProcFlow.grfPreserved &= ~grfStorage.FlagGroupBits;
+                }
+                return true;
+            }
+            else if (id.Storage is FpuStackStorage)
+            {
+                var fpuStg = (FpuStackStorage)id.Storage;
+                var value = ctx.GetValue(id);
+                var idV = value as Identifier;
+                if (idV != null && idV == sid.OriginalIdentifier)
+                {
+                    ctx.ProcFlow.Preserved.Add(fpuStg);
+                }
+                else
+                {
+                    ctx.ProcFlow.Trashed.Add(fpuStg);
+                }
+                return true;
+            }
             return true;
         }
 
@@ -479,7 +527,13 @@ namespace Reko.Analysis
 
             public Expression GetValue(SegmentedAccess access)
             {
-                throw new NotImplementedException();
+                var offset = this.GetFrameOffset(access.EffectiveAddress);
+                Expression value;
+                if (offset.HasValue && StackState.TryGetValue(offset.Value, out value))
+                {
+                    return value;
+                }
+                return Constant.Invalid;
             }
 
             public Expression GetValue(Application appl)

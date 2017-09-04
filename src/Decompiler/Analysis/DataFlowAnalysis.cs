@@ -163,12 +163,12 @@ namespace Reko.Analysis
             this.ssts.AddRange(ssts);
 
             // At this point, the computation of ProcedureFlow is possible.
-            var trf = new TrashedRegisterFinder2(program.Architecture, flow, ssts, this.eventListener);
+            var trf = new TrashedRegisterFinder3(program, flow, ssts, this.eventListener);
+            trf.Compute();
             var uid = new UsedRegisterFinder(program.Architecture, flow, ssts, this.eventListener);
             foreach (var sst in ssts)
             {
                 var ssa = sst.SsaState;
-                trf.Compute(ssa);
                 RemovePreservedUseInstructions(ssa);
                 DeadCode.Eliminate(ssa);
                 uid.Compute(ssa);

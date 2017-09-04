@@ -34,7 +34,7 @@ l0C00_0062:
 	fn0C00_0261()
 	Mem52[ds_45:0x53C2:word16] = 0x4AF3
 	fn0C00_0283(0x5447, ds_45)
-	word16 sp_58
+	word16 sp_55
 	branch fn0C00_0271(ds_45) l0C00_008D
 	// succ:  l0C00_0086 l0C00_008D
 l0C00_0086:
@@ -59,7 +59,7 @@ l0C00_00B4:
 	Mem85[ds_45:0x53C0:word16] = bx_79 - 0x0002
 	fn0C00_025A(Mem85[ds_45:0x53C0:word16], ds_45)
 	selector es_273 = Mem85[ds_45:0x53C2:selector]
-	word16 sp_97 = sp_58 - 0x0002
+	word16 sp_97 = sp_55 - 0x0002
 	Mem101[ss:sp_97:word16] = 0x6C34
 	word16 di_117 = 0x0000
 	selector ds_102 = Mem101[ss:sp_97:selector]
@@ -261,7 +261,7 @@ void fn0C00_0000(selector ds)
 	fn0C00_0261();
 	Mem52[ds_45:0x53C2:word16] = 0x4AF3;
 	fn0C00_0283(0x5447, ds_45);
-	word16 sp_58;
+	word16 sp_55;
 	if (!fn0C00_0271(ds_45))
 	{
 		ss_292 = ss;
@@ -281,7 +281,7 @@ void fn0C00_0000(selector ds)
 		Mem85[ds_45:0x53C0:word16] = bx_79 - 0x0002;
 		fn0C00_025A(Mem85[ds_45:0x53C0:word16], ds_45);
 		selector es_273 = Mem85[ds_45:0x53C2:selector];
-		word16 sp_97 = sp_58 - 0x0002;
+		word16 sp_97 = sp_55 - 0x0002;
 		Mem101[ss:sp_97:word16] = 0x6C34;
 		word16 di_117 = 0x0000;
 		selector ds_102 = Mem101[ss:sp_97:selector];

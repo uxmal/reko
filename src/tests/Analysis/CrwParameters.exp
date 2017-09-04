@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:[0..15]
 // LiveOut:
-// Trashed: ax C O S si Top Z
+// Trashed: SCZO ax si Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -12,10 +12,10 @@ void fn0C00_0000(Register selector ds)
 // ds:ds
 // ax:ax
 // Top:Top
-// C:C
-// O:O
 // S:S
+// C:C
 // Z:Z
+// O:O
 // return address size: 2
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
@@ -26,9 +26,9 @@ l0C00_0000:
 	si_6 = Mem0[ds:0x0200:word16]
 	ax_7 = fn0C00_0025(si_6, ds, out si_8)
 	Mem9[ds:0x0310:word16] = ax_7
-	ax_10 = fn0C00_0027(si_8, ds, out si_14)
+	ax_10 = fn0C00_0027(si_8, ds, out si_11)
 	Mem16[ds:0x0320:word16] = ax_10
-	ax_17 = fn0C00_002F(si_14, ds, out si_18)
+	ax_17 = fn0C00_002F(si_11, ds, out si_18)
 	Mem19[ds:0x0330:word16] = ax_17
 	ax_20 = fn0C00_0036(si_18, ds, out si_21)
 	Mem22[ds:0x0340:word16] = ax_20
@@ -68,7 +68,7 @@ fn0C00_0025_exit:
 Register word16 fn0C00_0027(Register word16 si, Register selector ds, Register out ptr16 siOut)
 // MayUse:  ds:[0..15] si:[0..15]
 // LiveOut: ax si
-// Trashed: ax C O S si Top Z
+// Trashed: SCZO ax si Top
 // Preserved: sp
 // fn0C00_0027
 // Return size: 0

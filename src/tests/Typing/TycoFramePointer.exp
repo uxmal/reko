@@ -4,8 +4,8 @@ void FramePointerFragment()
 FramePointerFragment_entry:
 	// succ:  l1
 l1:
-	word32 fp_2 = &frame
-	Mem4[fp_2 + 0x00000004:word32] = Mem0[fp_2 + 0x00000008:word32]
+	word32 framep_4 = &frame
+	Mem6[framep_4 + 0x00000004:word32] = Mem0[framep_4 + 0x00000008:word32]
 FramePointerFragment_exit:
 
 // Equivalence classes ////////////
@@ -14,7 +14,7 @@ globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr (struct))
   OrigDataType: (ptr (struct "Globals"))
-T_2: (in fp_2 : word32)
+T_2: (in framep_4 : word32)
   Class: Eq_2
   DataType: (ptr (struct "frame_t"))
   OrigDataType: (ptr (struct "frame_t"))
@@ -30,11 +30,11 @@ T_5: (in 0x00000008 : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_6: (in fp_2 + 0x00000008 : word32)
+T_6: (in framep_4 + 0x00000008 : word32)
   Class: Eq_6
   DataType: ptr32
   OrigDataType: ptr32
-T_7: (in Mem0[fp_2 + 0x00000008:word32] : word32)
+T_7: (in Mem0[framep_4 + 0x00000008:word32] : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
@@ -42,11 +42,11 @@ T_8: (in 0x00000004 : word32)
   Class: Eq_8
   DataType: word32
   OrigDataType: word32
-T_9: (in fp_2 + 0x00000004 : word32)
+T_9: (in framep_4 + 0x00000004 : word32)
   Class: Eq_9
   DataType: ptr32
   OrigDataType: ptr32
-T_10: (in Mem4[fp_2 + 0x00000004:word32] : word32)
+T_10: (in Mem6[framep_4 + 0x00000004:word32] : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32

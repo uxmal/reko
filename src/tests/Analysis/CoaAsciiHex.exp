@@ -7,12 +7,12 @@ al:al
 al_5: orig: al
     def:  branch fn0C00_000A(al, out al_5) l0C00_0009
     uses: Mem11[ds:0x0300:byte] = al_5
-C_6: orig: C
-O_7: orig: O
+S_6: orig: S
     def:  branch fn0C00_000A(al, out al_5) l0C00_0009
-S_8: orig: S
+C_7: orig: C
+Z_8: orig: Z
     def:  branch fn0C00_000A(al, out al_5) l0C00_0009
-Z_9: orig: Z
+O_9: orig: O
     def:  branch fn0C00_000A(al, out al_5) l0C00_0009
 ds:ds
     def:  def ds

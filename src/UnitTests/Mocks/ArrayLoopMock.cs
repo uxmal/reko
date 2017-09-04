@@ -30,6 +30,7 @@ namespace Reko.UnitTests.Mocks
 		protected override void BuildBody()
 		{
 			var ptr = Local32("ptr");
+            Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
 			Assign(ptr, 0x04000000);
 			Label("looptest");
 			BranchIf(Uge(ptr, 0x04001000), "done");

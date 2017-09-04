@@ -4,6 +4,7 @@ define FnPointerFragment
 FnPointerFragment_entry:
 	// succ:  l1
 l1:
+	r63 = fp
 	pfn = 0x01213130
 	Mem0[0x10000000:word32] = pfn
 	call Mem0[0x10000000:word32] (retsize: 4;)
@@ -19,20 +20,20 @@ globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct "Globals"))
-T_2: (in 0x01213130 : word32)
+T_2: (in fp : ptr32)
   Class: Eq_2
-  DataType: (ptr code)
-  OrigDataType: word32
-T_3: (in pfn : word32)
+  DataType: ptr32
+  OrigDataType: ptr32
+T_3: (in r63 : word32)
   Class: Eq_2
-  DataType: (ptr code)
-  OrigDataType: word32
-T_4: (in 0x10000000 : word32)
+  DataType: ptr32
+  OrigDataType: ptr32
+T_4: (in 0x01213130 : word32)
   Class: Eq_4
-  DataType: (ptr (ptr code))
-  OrigDataType: (ptr (struct (0 T_5 t0000)))
-T_5: (in Mem0[0x10000000:word32] : word32)
-  Class: Eq_2
+  DataType: (ptr code)
+  OrigDataType: word32
+T_5: (in pfn : word32)
+  Class: Eq_4
   DataType: (ptr code)
   OrigDataType: word32
 T_6: (in 0x10000000 : word32)
@@ -40,6 +41,14 @@ T_6: (in 0x10000000 : word32)
   DataType: (ptr (ptr code))
   OrigDataType: (ptr (struct (0 T_7 t0000)))
 T_7: (in Mem0[0x10000000:word32] : word32)
-  Class: Eq_2
+  Class: Eq_4
+  DataType: (ptr code)
+  OrigDataType: word32
+T_8: (in 0x10000000 : word32)
+  Class: Eq_8
+  DataType: (ptr (ptr code))
+  OrigDataType: (ptr (struct (0 T_9 t0000)))
+T_9: (in Mem0[0x10000000:word32] : word32)
+  Class: Eq_4
   DataType: (ptr code)
   OrigDataType: (ptr code)

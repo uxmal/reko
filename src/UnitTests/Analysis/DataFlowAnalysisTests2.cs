@@ -110,10 +110,11 @@ namespace Reko.UnitTests.Analysis
         public void Dfa2_Simple()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
-            pb.Add("test", m=>
+            pb.Add("test", m =>
                 {
-                    var r1 = m.Reg32("r1", 1);
-                    var r2 = m.Reg32("r2", 2);
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                    m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                     m.Assign(r1, m.LoadDw(m.Word32(0x010000)));
                     m.Assign(r2, m.LoadDw(m.Word32(0x010004)));
                     m.Store(m.Word32(0x010008), m.IAdd(r1, r2));
@@ -129,7 +130,7 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	Mem4[0x00010008:word32] = Mem0[0x00010000:word32] + Mem0[0x00010004:word32]
+	Mem6[0x00010008:word32] = Mem0[0x00010000:word32] + Mem0[0x00010004:word32]
 	return
 	// succ:  test_exit
 test_exit:
@@ -284,6 +285,7 @@ test_exit:
             pb.Add("main", m =>
             {
                 var r1 = m.Register(1);
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
                 m.Call("level1", 0);
                 m.Store(m.Word32(0x123400), r1);
@@ -291,6 +293,7 @@ test_exit:
             });
             pb.Add("level1", m =>
             {
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("level2", 0);
                 m.Return();
             });
@@ -298,6 +301,7 @@ test_exit:
             {
                 var r1 = m.Register(1);
                 var r2 = m.Register(2);
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(r2, -1);
                 m.Assign(r1, m.IAdd(r1, 1));
                 m.Return();
@@ -316,7 +320,7 @@ void main()
 main_entry:
 	// succ:  l1
 l1:
-	Mem5[0x00123400:word32] = level1(Mem0[0x00123400:word32])
+	Mem7[0x00123400:word32] = level1(Mem0[0x00123400:word32])
 	return
 	// succ:  main_exit
 main_exit:

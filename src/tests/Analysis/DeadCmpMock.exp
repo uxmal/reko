@@ -1,20 +1,22 @@
+fp:fp
+r63_2: orig: r63
 r0:r0
     def:  def r0
-    uses: r0_4 = r0 + r1
+    uses: r0_6 = r0 + r1
           branch r0 == 0 skip
-          r0_5 = PHI(r0, r0_4)
-Z_2: orig: Z
+          r0_7 = PHI(r0, r0_6)
+Z_4: orig: Z
 r1:r1
     def:  def r1
-    uses: r0_4 = r0 + r1
-r0_4: orig: r0
-    def:  r0_4 = r0 + r1
-    uses: r0_5 = PHI(r0, r0_4)
-r0_5: orig: r0
-    def:  r0_5 = PHI(r0, r0_4)
-    uses: Mem6[0x10003000:word32] = r0_5
-Mem6: orig: Mem0
-    def:  Mem6[0x10003000:word32] = r0_5
+    uses: r0_6 = r0 + r1
+r0_6: orig: r0
+    def:  r0_6 = r0 + r1
+    uses: r0_7 = PHI(r0, r0_6)
+r0_7: orig: r0
+    def:  r0_7 = PHI(r0, r0_6)
+    uses: Mem8[0x10003000:word32] = r0_7
+Mem8: orig: Mem0
+    def:  Mem8[0x10003000:word32] = r0_7
 // CmpMock
 // Return size: 0
 void CmpMock(word32 r0, word32 r1)
@@ -26,11 +28,11 @@ l1:
 	branch r0 == 0 skip
 	// succ:  l2 skip
 l2:
-	r0_4 = r0 + r1
+	r0_6 = r0 + r1
 	// succ:  skip
 skip:
-	r0_5 = PHI(r0, r0_4)
-	Mem6[0x10003000:word32] = r0_5
+	r0_7 = PHI(r0, r0_6)
+	Mem8[0x10003000:word32] = r0_7
 	return
 	// succ:  CmpMock_exit
 CmpMock_exit:

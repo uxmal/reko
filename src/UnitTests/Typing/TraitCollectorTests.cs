@@ -574,6 +574,7 @@ namespace Reko.UnitTests.Typing
 			Identifier ax = Local16("ax");
 			Identifier bx = Local16("bx");
 			Identifier si = Local16("si");
+            Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
 			Assign(es, SegMem(PrimitiveType.Word16, ds, Word16(0x7070)));
 			Assign(ax, 0x4A);
 			Assign(si, SMul(ax, SegMem(PrimitiveType.Word16, ds, Word16(0x1C0A))));

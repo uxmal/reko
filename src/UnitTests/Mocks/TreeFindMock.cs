@@ -33,7 +33,8 @@ namespace Reko.UnitTests.Mocks
 			var v = Local32("v");
 			var t = Local32("t");
 			var vv = Local32("vv");
-
+            Label("l0");
+            Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
 			Label("l0_seek");
 			BranchIf(Eq(t, 0), "l5_found"); 
 			Assign(vv, Load(PrimitiveType.Word32, t));

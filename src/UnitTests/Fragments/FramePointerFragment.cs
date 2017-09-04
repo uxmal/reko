@@ -41,9 +41,10 @@ namespace Reko.UnitTests.Fragments
         protected override void BuildBody()
         {
             Identifier frame = Declare(new StructureType("frame_t", 0), "frame");
-            Identifier fp = Local32("fp");
-            Assign(fp, AddrOf(frame));
-            Store(IAdd(fp, 4), Load(PrimitiveType.Word32, IAdd(fp, 8)));
+            Identifier framep = Local32("framep");
+            Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
+            Assign(framep, AddrOf(frame));
+            Store(IAdd(framep, 4), Load(PrimitiveType.Word32, IAdd(framep, 8)));
         }
     }
 }

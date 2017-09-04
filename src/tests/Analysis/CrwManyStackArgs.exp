@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:[0..15]
 // LiveOut:
-// Trashed: ax C O S Top Z
+// Trashed: SCZO ax Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -13,10 +13,10 @@ void fn0C00_0000(Register selector ds)
 // ds:ds
 // ax:ax
 // Top:Top
-// C:C
-// O:O
 // S:S
+// C:C
 // Z:Z
+// O:O
 // wLoc02:Local -0002
 // wLoc04:Local -0004
 // wLoc06:Local -0006
@@ -34,7 +34,7 @@ fn0C00_0000_exit:
 Register word16 fn0C00_0011(Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06)
 // MayUse:  Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
 // LiveOut: ax
-// Trashed: ax C O S Top Z
+// Trashed: SCZO ax Top
 // Preserved: bp sp
 // fn0C00_0011
 // Return size: 0

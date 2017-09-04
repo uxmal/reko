@@ -233,7 +233,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore("scanning-development")]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void CrwMemPreserve()
         {
             RunFileTest_x86_real("Fragments/multiple/mempreserve.asm", "Analysis/CrwMemPreserve.xml", "Analysis/CrwMemPreserve.txt");
@@ -247,6 +247,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CrwProcIsolation()
         {
             RunFileTest_x86_real("Fragments/multiple/procisolation.asm", "Analysis/CrwProcIsolation.txt");
@@ -254,13 +255,14 @@ namespace Reko.UnitTests.Analysis
 
         [Test]
         [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+
         public void CrwFibonacci()
         {
             RunFileTest_x86_32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
         }
 
         [Test]
+        [Ignore(Categories.UnitTests)]
         public void CrwRegisterArgument()
         {
             flow.BitsUsed.Add(Registers.eax, new BitRange(0, 32));
@@ -474,6 +476,7 @@ CrwManyPredecessorsToExitBlock_exit:
             {
                 var Top = m.Frame.EnsureRegister(_top);
 
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(Top, 0);
                 m.Assign(Top, m.ISub(Top, 1));
                 m.Store(ST, Top, Constant.Real64(3.0));
@@ -491,6 +494,7 @@ CrwManyPredecessorsToExitBlock_exit:
             {
                 var Top = m.Frame.EnsureRegister(_top);
 
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(Top, 0);
                 m.Store(ST, m.IAdd(Top, 1), m.FMul(
                     m.Load(ST, dt, m.IAdd(Top, 1)),
@@ -512,12 +516,13 @@ CrwManyPredecessorsToExitBlock_exit:
 // MayUse: 
 // LiveOut:
 // Trashed: FPU -1 FPU -2 FPU -3 Top
-// Preserved:
+// Preserved: r63
 // main
 // Return size: 0
 // Mem0:Global
 // fp:fp
 // Top:Top
+// r63:r63
 // rLoc1:FPU -1
 // rLoc2:FPU -2
 // rLoc3:FPU -3
@@ -526,8 +531,8 @@ void main()
 main_entry:
 	// succ:  l1
 l1:
-	rLoc1_14 = FpuMultiplyAdd(5.0, 4.0, 3.0)
-	Mem9[0x00123400:real64] = rLoc1_14
+	rLoc1_16 = FpuMultiplyAdd(5.0, 4.0, 3.0)
+	Mem11[0x00123400:real64] = rLoc1_16
 	return
 	// succ:  main_exit
 main_exit:
@@ -535,12 +540,13 @@ FpuStack real64 FpuMultiplyAdd(FpuStack real64 rArg0, FpuStack real64 rArg1, Fpu
 // MayUse:  FPU +0:[0..63] FPU +1:[0..63] FPU +2:[0..63]
 // LiveOut: FPU +2
 // Trashed: FPU +1 FPU +2 Top
-// Preserved:
+// Preserved: r63
 // FpuMultiplyAdd
 // Return size: 0
 // Mem0:Global
 // fp:fp
 // Top:Top
+// r63:r63
 // rArg1:FPU +1
 // rArg0:FPU +0
 // rArg2:FPU +2
@@ -552,9 +558,9 @@ FpuMultiplyAdd_entry:
 	def rArg2
 	// succ:  l1
 l1:
-	rArg1_9 = rArg1 * rArg0
-	rArg2_11 = rArg2 + rArg1_9
-	return rArg2_11
+	rArg1_11 = rArg1 * rArg0
+	rArg2_13 = rArg2 + rArg1_11
+	return rArg2_13
 	// succ:  FpuMultiplyAdd_exit
 FpuMultiplyAdd_exit:
 ";
@@ -570,6 +576,7 @@ FpuMultiplyAdd_exit:
             {
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("fnOutParam", 0);
                 m.Store(m.Word32(0x00123400), r1);
                 m.Store(m.Word32(0x00123404), r2);
@@ -581,6 +588,7 @@ FpuMultiplyAdd_exit:
                 var r2 = m.Reg32("r2", 2);
 
                 m.Label("m0");
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.BranchIf(m.Eq0(r1), "m2");
 
                 m.Label("m1");
@@ -596,17 +604,18 @@ FpuMultiplyAdd_exit:
 
             var sExp =
             #region Expected
-                @"void main(Register word32 r1, Register word32 r2)
+@"void main(Register word32 r1, Register word32 r2)
 // MayUse:  r1:[0..31] r2:[0..31]
 // LiveOut:
 // Trashed: r1 r2
-// Preserved:
+// Preserved: r63
 // main
 // Return size: 0
 // Mem0:Global
 // fp:fp
 // r1:r1
 // r2:r2
+// r63:r63
 // r1:r1
 // r2:r2
 // return address size: 0
@@ -616,11 +625,11 @@ main_entry:
 	def r2
 	// succ:  l1
 l1:
-	r1_3 = fnOutParam(r1, r2, out r2_4)
-	r1_5 = (word32) r1_3 (alias)
-	r2_7 = (word32) r2_4 (alias)
-	Mem6[0x00123400:word32] = r1_5
-	Mem8[0x00123404:word32] = r2_7
+	r1_5 = fnOutParam(r1, r2, out r2_6)
+	r1_7 = (word32) r1_5 (alias)
+	r2_9 = (word32) r2_6 (alias)
+	Mem8[0x00123400:word32] = r1_7
+	Mem10[0x00123404:word32] = r2_9
 	return
 	// succ:  main_exit
 main_exit:
@@ -628,13 +637,14 @@ Register word32 fnOutParam(Register word32 r1, Register word32 r2, Register out 
 // MayUse:  r1:[0..31] r2:[0..31]
 // LiveOut: r1 r2
 // Trashed: r1 r2
-// Preserved:
+// Preserved: r63
 // fnOutParam
 // Return size: 0
 // Mem0:Global
 // fp:fp
 // r1:r1
 // r2:r2
+// r63:r63
 // r2Out:Out:r2
 // return address size: 0
 word32 fnOutParam(word32 r1, word32 r2, ptr32 & r2Out)
@@ -646,16 +656,16 @@ m0:
 	branch r1 == 0x00000000 m2
 	// succ:  m1 m2
 m1:
-	r1_4 = r1 + 0x00000003
-	r2_6 = r2 - 0x00000003
-	r2Out = r2_6
-	return r1_4
+	r1_6 = r1 + 0x00000003
+	r2_8 = r2 - 0x00000003
+	r2Out = r2_8
+	return r1_6
 	// succ:  fnOutParam_exit
 m2:
-	r1_2 = 0x00000000
-	r2_3 = 0x00000000
-	r2Out = r2_3
-	return r1_2
+	r1_4 = 0x00000000
+	r2_5 = 0x00000000
+	r2Out = r2_5
+	return r1_4
 	// succ:  fnOutParam_exit
 fnOutParam_exit:
 ";

@@ -3,35 +3,38 @@
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: r0 r1
-// Preserved:
+// Preserved: r63
 // ManyIncrements
 // Return size: 0
 void ManyIncrements(word32 r0)
 ManyIncrements_entry:
-	goto loopTop
-	// succ:  loopTop
+	goto l1
+	// succ:  l1
 done:
 	return
 	// succ:  ManyIncrements_exit
 l1:
-	Mem10[0x33333330:word32] = Mem2[r0_4:byte]
-	Mem13[0x33333331:word32] = Mem10[r0_4 + 0x00000001:byte]
-	r0 = r0_4 + 0x00000002
 	goto loopTop
 	// succ:  loopTop
 l2:
-	Mem7[0x33333330:word32] = Mem2[r0_4:byte]
-	r0 = r0_4 + 0x00000001
+	Mem12[0x33333330:word32] = Mem4[r0_6:byte]
+	Mem15[0x33333331:word32] = Mem12[r0_6 + 0x00000001:byte]
+	r0 = r0_6 + 0x00000002
+	goto loopTop
+	// succ:  loopTop
+l3:
+	Mem9[0x33333330:word32] = Mem4[r0_6:byte]
+	r0 = r0_6 + 0x00000001
 	// succ:  loopTop
 loopTop:
-	word32 r1_3 = Mem2[r0:byte]
-	word32 r0_4 = r0 + 0x00000001
-	branch r1_3 != 1 not1
-	goto l1
-	// succ:  l1 not1
-not1:
-	branch r1_3 != 2 done
+	word32 r1_5 = Mem4[r0:byte]
+	word32 r0_6 = r0 + 0x00000001
+	branch r1_5 != 1 not1
 	goto l2
-	// succ:  l2 done
+	// succ:  l2 not1
+not1:
+	branch r1_5 != 2 done
+	goto l3
+	// succ:  l3 done
 ManyIncrements_exit:
 

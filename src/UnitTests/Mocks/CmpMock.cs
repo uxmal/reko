@@ -31,6 +31,7 @@ namespace Reko.UnitTests.Mocks
 			Identifier r0 = Register(0);
 			Identifier r1 = Register(1);
 
+            Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
 			Compare("Z", r0, Int32(0));
 			BranchCc(ConditionCode.EQ, "skip");
 

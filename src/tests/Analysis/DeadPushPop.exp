@@ -97,33 +97,37 @@ di:di
 ds:ds
     def:  def ds
     uses: ax_7 = fn0C00_0008(0x0014, di, ds)
-          Mem13[ds:si:word16] = ax_7
+          Mem14[ds:si:word16] = ax_7
           fn0C00_0008(0x0014, di, ds)
 ax_7: orig: ax
     def:  ax_7 = fn0C00_0008(0x0014, di, ds)
-    uses: Mem13[ds:si:word16] = ax_7
-C_8: orig: C
+    uses: Mem14[ds:si:word16] = ax_7
+ss_8: orig: ss
     def:  ax_7 = fn0C00_0008(0x0014, di, ds)
-O_9: orig: O
+S_9: orig: S
     def:  ax_7 = fn0C00_0008(0x0014, di, ds)
-S_10: orig: S
+C_10: orig: C
     def:  ax_7 = fn0C00_0008(0x0014, di, ds)
 Z_11: orig: Z
     def:  ax_7 = fn0C00_0008(0x0014, di, ds)
+O_12: orig: O
+    def:  ax_7 = fn0C00_0008(0x0014, di, ds)
 si:si
     def:  def si
-    uses: Mem13[ds:si:word16] = ax_7
-Mem13: orig: Mem0
-    def:  Mem13[ds:si:word16] = ax_7
-ax_14: orig: ax
+    uses: Mem14[ds:si:word16] = ax_7
+Mem14: orig: Mem0
+    def:  Mem14[ds:si:word16] = ax_7
+ax_15: orig: ax
     def:  fn0C00_0008(0x0014, di, ds)
-C_15: orig: C
-    def:  fn0C00_0008(0x0014, di, ds)
-O_16: orig: O
+ss_16: orig: ss
     def:  fn0C00_0008(0x0014, di, ds)
 S_17: orig: S
     def:  fn0C00_0008(0x0014, di, ds)
-Z_18: orig: Z
+C_18: orig: C
+    def:  fn0C00_0008(0x0014, di, ds)
+Z_19: orig: Z
+    def:  fn0C00_0008(0x0014, di, ds)
+O_20: orig: O
     def:  fn0C00_0008(0x0014, di, ds)
 // fn0C00_0000
 // Return size: 0
@@ -135,7 +139,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_7 = fn0C00_0008(0x0014, di, ds)
-	Mem13[ds:si:word16] = ax_7
+	Mem14[ds:si:word16] = ax_7
 	// succ:  l0C00_0006_thunk_fn0C00_0008
 l0C00_0006_thunk_fn0C00_0008:
 	fn0C00_0008(0x0014, di, ds)

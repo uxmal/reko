@@ -175,7 +175,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Prepare(new WhileLtIncMock().Procedure);
 			var doms = ssa.Procedure.CreateBlockDominatorGraph();
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(ssa, doms);
+			var liv = new LinearInductionVariableFinder(ssa, doms);
 			Assert.IsNull(liv.Context.PhiIdentifier);
 			Assert.IsNull(liv.Context.PhiStatement);
             Assert.Fail(); /*

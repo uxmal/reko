@@ -2,7 +2,7 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  bx:[0..63] ds:[0..63] FPU +0:[0..63] si:[0..15]
 // LiveOut:
-// Trashed: C FPUF O S Top Z
+// Trashed: SCZO FPUF Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0

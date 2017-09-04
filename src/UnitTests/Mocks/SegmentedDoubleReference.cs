@@ -35,7 +35,8 @@ namespace Reko.UnitTests.Mocks
 			Identifier si1 = Local16("si1");
 			Identifier si2 = Local16("si2");
 
-			Assign(si1, SegMemW(ds, offset));
+            Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
+            Assign(si1, SegMemW(ds, offset));
 			Store(SegMemW(ds, Word16(0x100)), SegMemW(ds, IAdd(si1, 0x0004)));
 			Assign(si2, SegMemW(ds, offset));
 			Store(SegMemW(ds, Word16(0x102)), SegMemW(ds, IAdd(si2, 0x0004)));

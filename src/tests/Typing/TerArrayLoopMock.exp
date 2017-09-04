@@ -9,15 +9,15 @@ done:
 	return
 	// succ:  ArrayLoopMock_exit
 l1:
-	word32 ptr_1 = 0x04000000
+	word32 ptr_3 = 0x04000000
 	goto looptest
 	// succ:  looptest
 l2:
-	Mem3[ptr_1:word32] = 0x00000000
-	ptr_1 = ptr_1 + 0x00000004
+	Mem5[ptr_3:word32] = 0x00000000
+	ptr_3 = ptr_3 + 0x00000004
 	// succ:  looptest
 looptest:
-	branch ptr_1 >=u 0x04001000 done
+	branch ptr_3 >=u 0x04001000 done
 	goto l2
 	// succ:  l2 done
 ArrayLoopMock_exit:
@@ -33,15 +33,15 @@ done:
 	return
 	// succ:  ArrayLoopMock_exit
 l1:
-	word32 * ptr_1 = globals->a4000000
+	word32 * ptr_3 = globals->a4000000
 	goto looptest
 	// succ:  looptest
 l2:
-	*ptr_1 = 0x00000000
-	ptr_1 = ptr_1 + 1
+	*ptr_3 = 0x00000000
+	ptr_3 = ptr_3 + 1
 	// succ:  looptest
 looptest:
-	branch ptr_1 >= &globals->dw4001000 done
+	branch ptr_3 >= &globals->dw4001000 done
 	goto l2
 	// succ:  l2 done
 ArrayLoopMock_exit:
@@ -54,7 +54,7 @@ globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct "Globals"))
-T_2: (in ptr_1 : (ptr word32))
+T_2: (in ptr_3 : (ptr word32))
   Class: Eq_2
   DataType: (ptr word32)
   OrigDataType: (ptr (struct 0004 (0 word32 dw0000)))
@@ -66,7 +66,7 @@ T_4: (in 0x04001000 : word32)
   Class: Eq_2
   DataType: (ptr word32)
   OrigDataType: uint32
-T_5: (in ptr_1 >= &globals->dw4001000 : bool)
+T_5: (in ptr_3 >= &globals->dw4001000 : bool)
   Class: Eq_5
   DataType: bool
   OrigDataType: bool
@@ -78,11 +78,11 @@ T_7: (in 0x00000000 : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8: (in ptr_1 + 0x00000000 : word32)
+T_8: (in ptr_3 + 0x00000000 : word32)
   Class: Eq_8
   DataType: word32
   OrigDataType: word32
-T_9: (in Mem3[ptr_1 + 0x00000000:word32] : word32)
+T_9: (in Mem5[ptr_3 + 0x00000000:word32] : word32)
   Class: Eq_6
   DataType: word32
   OrigDataType: word32
@@ -90,7 +90,7 @@ T_10: (in 0x00000004 : word32)
   Class: Eq_10
   DataType: int32
   OrigDataType: int32
-T_11: (in ptr_1 + 0x00000004 : word32)
+T_11: (in ptr_3 + 0x00000004 : word32)
   Class: Eq_2
   DataType: (ptr word32)
   OrigDataType: ptr32

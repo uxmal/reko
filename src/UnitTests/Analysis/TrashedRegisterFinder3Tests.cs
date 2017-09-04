@@ -134,9 +134,8 @@ namespace Reko.UnitTests.Analysis
             }
 
             var trf = new TrashedRegisterFinder3(
-                program.Architecture,
+                program,
                 dataFlow,
-                program.CallGraph,
                 sstSet,
                 NullDecompilerEventListener.Instance);
             trf.Compute();
@@ -735,6 +734,31 @@ Constants: cl:0x00
                 m.Return();
             });
             RunTest();
+        }
+
+        [Test]
+        public void TrfFlags()
+        {
+            Expect("main", "Preserved: r63", "Trashed: r2", "");
+            builder.Add("main", m =>
+            {
+                var grf1 = m.Flags("SNZV");
+                var grf2 = m.Flags("CZS");
+                var r2 = m.Reg32("r2", 2);
+                var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Assign(grf1, m.Cond(m.ISub(r2, 3)));
+                m.BranchIf(m.Test(ConditionCode.EQ, grf1), "mEq");
+
+                m.Assign(r2, 4);
+                m.Assign(grf2, m.Cond(r2));
+
+                m.Label("mEq");
+                m.Return();
+            });
+            RunTest();
+            Assert.AreEqual(0x0F, FlowOf("main").grfTrashed);
         }
     }
 }

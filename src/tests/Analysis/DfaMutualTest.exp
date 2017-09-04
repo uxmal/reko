@@ -10,8 +10,8 @@ void fn0C00_0000(word16 dx)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 dx_4
-	fn0C00_0004(dx, out dx_4)
+	word16 dx_3
+	fn0C00_0004(dx, out dx_3)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -28,7 +28,7 @@ word16 fn0C00_0004(word16 dx, ptr16 & dxOut)
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	word16 dx_10
+	word16 dx_11
 	branch dx != 0x001E l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
 l0C00_0009:
@@ -39,7 +39,7 @@ l0C00_000F:
 	*dxOut = dx - 0x0001
 	// succ:  l0C00_0010
 l0C00_0010:
-	return dx_10
+	return dx_11
 	// succ:  fn0C00_0004_exit
 fn0C00_0004_exit:
 
@@ -55,18 +55,18 @@ word16 fn0C00_0013(word16 dx)
 fn0C00_0013_entry:
 	// succ:  l0C00_0013
 l0C00_0013:
-	word16 dx_13
+	word16 dx_12
 	branch dx < 0x0014 l0C00_001F
 	// succ:  l0C00_0018 l0C00_001F
 l0C00_0018:
-	fn0C00_0004(dx - 0x0001, out dx_13)
+	fn0C00_0004(dx - 0x0001, out dx_12)
 	goto l0C00_0025
 	// succ:  l0C00_0025
 l0C00_001F:
-	fn0C00_0004(dx - 0x000A, out dx_13)
+	fn0C00_0004(dx - 0x000A, out dx_12)
 	// succ:  l0C00_0025
 l0C00_0025:
-	return dx_13
+	return dx_12
 	// succ:  fn0C00_0013_exit
 fn0C00_0013_exit:
 

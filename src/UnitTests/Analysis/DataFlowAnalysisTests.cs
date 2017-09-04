@@ -184,8 +184,9 @@ namespace Reko.UnitTests.Analysis
 
 		[Test]
         [Category(Categories.IntegrationTests)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void DfaReadFile()
-		{
+        {
 			RunFileTest_x86_real("Fragments/multiple/read_file.asm", "Analysis/DfaReadFile.txt");
 		}
 
@@ -263,6 +264,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.IntegrationTests)]
         public void DfaReg00015()
         {
@@ -321,13 +323,12 @@ done:
         {
             var m = new ProcedureBuilder();
             var r1 = m.Register(1);
-            r1.DataType = PrimitiveType.Real32;
             var r2 = m.Register(2);
+            m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
+            r1.DataType = PrimitiveType.Real32;
             r2.DataType = PrimitiveType.Real32;
-            var cast = m.Cast(PrimitiveType.Real64, r1);
-            m.Assign(r2, cast);
-            var castCast = m.Cast(PrimitiveType.Real32, r2);
-            m.Store(m.Word32(0x123408), castCast);
+            m.Assign(r2, m.Cast(PrimitiveType.Real64, r1));
+            m.Store(m.Word32(0x123408), m.Cast(PrimitiveType.Real32, r2));
             m.Return();
 
             RunFileTest(m, "Analysis/DfaCastCast.txt");
@@ -399,6 +400,8 @@ ProcedureBuilder_exit:
             var r2 = m.Register(2);
             var r2_r1 = m.Frame.EnsureSequence(r2.Storage, r1.Storage, PrimitiveType.Word64);
             var tmp = m.Frame.CreateTemporary(r2_r1.DataType);
+
+            m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
             m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
             m.Assign(r2_r1, m.Seq(m.Word32(0), r1));
             m.Assign(tmp, r2_r1);

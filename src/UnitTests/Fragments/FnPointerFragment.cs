@@ -35,6 +35,7 @@ namespace Reko.UnitTests.Fragments
         protected override void BuildBody()
         {
             Identifier pfn = Local32("pfn");
+            Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
             Assign(pfn, Word32(0x1213130));
             Store(Word32(0x10000000), pfn);
             Call(LoadDw(Word32(0x10000000)), 4);

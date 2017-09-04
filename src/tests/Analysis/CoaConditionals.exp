@@ -99,12 +99,12 @@ ss:ss
     uses: Mem68[ss:bp - 0x000A:byte] = 0x01
 Mem43: orig: Mem0
     uses: Mem51 = PHI(Mem43, Mem49)
-C_44: orig: C
-O_45: orig: O
+S_44: orig: S
     def:  branch fn0C00_0069(0x0003) l0C00_0049
-S_46: orig: S
+C_45: orig: C
+Z_46: orig: Z
     def:  branch fn0C00_0069(0x0003) l0C00_0049
-Z_47: orig: Z
+O_47: orig: O
     def:  branch fn0C00_0069(0x0003) l0C00_0049
 ds_48: orig: ds
     def:  ds_48 = PHI(ds, ds)

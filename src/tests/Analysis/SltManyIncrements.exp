@@ -1,89 +1,94 @@
-r0_1: orig: r0
-    def:  r0_1 = PHI(r0, r0_12, r0_6)
-    uses: r1_3 = Mem2[r0_1:byte]
-          r0_4 = r0_1 + 0x00000001
-Mem2: orig: Mem0
-    def:  Mem2 = PHI(Mem0, Mem13, Mem7)
-    uses: r1_3 = Mem2[r0_1:byte]
-          Mem7[0x33333330:word32] = Mem2[r0_4:byte]
-          Mem10[0x33333330:word32] = Mem2[r0_4:byte]
-r1_3: orig: r1
-    def:  r1_3 = Mem2[r0_1:byte]
-    uses: branch r1_3 != 1 not1
-          branch r1_3 != 2 done
-r0_4: orig: r0
-    def:  r0_4 = r0_1 + 0x00000001
-    uses: Mem7[0x33333330:word32] = Mem2[r0_4:byte]
-          r0_6 = r0_4 + 0x00000001
-          Mem10[0x33333330:word32] = Mem2[r0_4:byte]
-          Mem13[0x33333331:word32] = Mem10[r0_4 + 0x00000001:byte]
-          r0_12 = r0_4 + 0x00000002
+fp:fp
+r63_2: orig: r63
+r0_3: orig: r0
+    def:  r0_3 = PHI(r0, r0_14, r0_8)
+    uses: r1_5 = Mem4[r0_3:byte]
+          r0_6 = r0_3 + 0x00000001
+Mem4: orig: Mem0
+    def:  Mem4 = PHI(Mem0, Mem15, Mem9)
+    uses: r1_5 = Mem4[r0_3:byte]
+          Mem9[0x33333330:word32] = Mem4[r0_6:byte]
+          Mem12[0x33333330:word32] = Mem4[r0_6:byte]
 r1_5: orig: r1
+    def:  r1_5 = Mem4[r0_3:byte]
+    uses: branch r1_5 != 1 not1
+          branch r1_5 != 2 done
 r0_6: orig: r0
-    def:  r0_6 = r0_4 + 0x00000001
-    uses: r0_1 = PHI(r0, r0_12, r0_6)
-Mem7: orig: Mem0
-    def:  Mem7[0x33333330:word32] = Mem2[r0_4:byte]
-    uses: Mem2 = PHI(Mem0, Mem13, Mem7)
-r1_8: orig: r1
-r0_9: orig: r0
-Mem10: orig: Mem0
-    def:  Mem10[0x33333330:word32] = Mem2[r0_4:byte]
-    uses: Mem13[0x33333331:word32] = Mem10[r0_4 + 0x00000001:byte]
-r1_11: orig: r1
-r0_12: orig: r0
-    def:  r0_12 = r0_4 + 0x00000002
-    uses: r0_1 = PHI(r0, r0_12, r0_6)
-Mem13: orig: Mem0
-    def:  Mem13[0x33333331:word32] = Mem10[r0_4 + 0x00000001:byte]
-    uses: Mem2 = PHI(Mem0, Mem13, Mem7)
+    def:  r0_6 = r0_3 + 0x00000001
+    uses: Mem9[0x33333330:word32] = Mem4[r0_6:byte]
+          r0_8 = r0_6 + 0x00000001
+          Mem12[0x33333330:word32] = Mem4[r0_6:byte]
+          Mem15[0x33333331:word32] = Mem12[r0_6 + 0x00000001:byte]
+          r0_14 = r0_6 + 0x00000002
+r1_7: orig: r1
+r0_8: orig: r0
+    def:  r0_8 = r0_6 + 0x00000001
+    uses: r0_3 = PHI(r0, r0_14, r0_8)
+Mem9: orig: Mem0
+    def:  Mem9[0x33333330:word32] = Mem4[r0_6:byte]
+    uses: Mem4 = PHI(Mem0, Mem15, Mem9)
+r1_10: orig: r1
+r0_11: orig: r0
+Mem12: orig: Mem0
+    def:  Mem12[0x33333330:word32] = Mem4[r0_6:byte]
+    uses: Mem15[0x33333331:word32] = Mem12[r0_6 + 0x00000001:byte]
+r1_13: orig: r1
+r0_14: orig: r0
+    def:  r0_14 = r0_6 + 0x00000002
+    uses: r0_3 = PHI(r0, r0_14, r0_8)
+Mem15: orig: Mem0
+    def:  Mem15[0x33333331:word32] = Mem12[r0_6 + 0x00000001:byte]
+    uses: Mem4 = PHI(Mem0, Mem15, Mem9)
 r0:r0
     def:  def r0
-    uses: r0_1 = PHI(r0, r0_12, r0_6)
+    uses: r0_3 = PHI(r0, r0_14, r0_8)
 Mem0:Global
     def:  def Mem0
-    uses: Mem2 = PHI(Mem0, Mem13, Mem7)
+    uses: Mem4 = PHI(Mem0, Mem15, Mem9)
 // ManyIncrements
 // Return size: 0
 define ManyIncrements
 ManyIncrements_entry:
 	def r0
 	def Mem0
-	goto loopTop
-	// succ:  loopTop
+	goto l1
+	// succ:  l1
 done:
 	return
 	// succ:  ManyIncrements_exit
 l1:
-	Mem10[0x33333330:word32] = Mem2[r0_4:byte]
-	Mem13[0x33333331:word32] = Mem10[r0_4 + 0x00000001:byte]
-	r0_12 = r0_4 + 0x00000002
 	goto loopTop
 	// succ:  loopTop
 l2:
-	Mem7[0x33333330:word32] = Mem2[r0_4:byte]
-	r0_6 = r0_4 + 0x00000001
+	Mem12[0x33333330:word32] = Mem4[r0_6:byte]
+	Mem15[0x33333331:word32] = Mem12[r0_6 + 0x00000001:byte]
+	r0_14 = r0_6 + 0x00000002
+	goto loopTop
+	// succ:  loopTop
+l3:
+	Mem9[0x33333330:word32] = Mem4[r0_6:byte]
+	r0_8 = r0_6 + 0x00000001
 	// succ:  loopTop
 loopTop:
-	Mem2 = PHI(Mem0, Mem13, Mem7)
-	r0_1 = PHI(r0, r0_12, r0_6)
-	r1_3 = Mem2[r0_1:byte]
-	r0_4 = r0_1 + 0x00000001
-	branch r1_3 != 1 not1
-	goto l1
-	// succ:  l1 not1
-not1:
-	branch r1_3 != 2 done
+	Mem4 = PHI(Mem0, Mem15, Mem9)
+	r0_3 = PHI(r0, r0_14, r0_8)
+	r1_5 = Mem4[r0_3:byte]
+	r0_6 = r0_3 + 0x00000001
+	branch r1_5 != 1 not1
 	goto l2
-	// succ:  l2 done
+	// succ:  l2 not1
+not1:
+	branch r1_5 != 2 done
+	goto l3
+	// succ:  l3 done
 ManyIncrements_exit:
 - Interference graph -------------------
 Mem0 interferes with r0
-Mem10 interferes with r0_4
-Mem13 interferes with r0_4
-Mem2 interferes with r0_1
-Mem2 interferes with r0_4
-Mem2 interferes with r1_3
-Mem7 interferes with r0_4
-r0_1 interferes with r1_3
-r0_4 interferes with r1_3
+Mem12 interferes with r0_6
+Mem15 interferes with r0_6
+Mem4 interferes with r0_3
+Mem4 interferes with r0_6
+Mem4 interferes with r1_5
+Mem9 interferes with r0_6
+r0_3 interferes with r1_5
+r0_6 interferes with r1_5

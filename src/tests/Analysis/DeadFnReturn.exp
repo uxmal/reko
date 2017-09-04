@@ -1,4 +1,6 @@
-unused_1: orig: unused
+fp:fp
+r63_2: orig: r63
+unused_3: orig: unused
 // foo
 // Return size: 0
 void foo()

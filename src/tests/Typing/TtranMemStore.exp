@@ -4,8 +4,8 @@ void ProcedureBuilder()
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	Mem1[0x00003120:word32] = 0x00000000
-	Mem2[0x00003120:word32] = Mem1[0x00003120:word32] + 0x00000001
+	Mem3[0x00003120:word32] = 0x00000000
+	Mem4[0x00003120:word32] = Mem3[0x00003120:word32] + 0x00000001
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -26,7 +26,7 @@ T_3: (in 0x00003120 : word32)
   Class: Eq_3
   DataType: (ptr word32)
   OrigDataType: (ptr (struct (0 T_4 t0000)))
-T_4: (in Mem1[0x00003120:word32] : word32)
+T_4: (in Mem3[0x00003120:word32] : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
@@ -34,7 +34,7 @@ T_5: (in 0x00003120 : word32)
   Class: Eq_5
   DataType: (ptr word32)
   OrigDataType: (ptr (struct (0 T_6 t0000)))
-T_6: (in Mem1[0x00003120:word32] : word32)
+T_6: (in Mem3[0x00003120:word32] : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
@@ -42,7 +42,7 @@ T_7: (in 0x00000001 : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8: (in Mem1[0x00003120:word32] + 0x00000001 : word32)
+T_8: (in Mem3[0x00003120:word32] + 0x00000001 : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
@@ -50,7 +50,7 @@ T_9: (in 0x00003120 : word32)
   Class: Eq_9
   DataType: (ptr word32)
   OrigDataType: (ptr (struct (0 T_10 t0000)))
-T_10: (in Mem2[0x00003120:word32] : word32)
+T_10: (in Mem4[0x00003120:word32] : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32

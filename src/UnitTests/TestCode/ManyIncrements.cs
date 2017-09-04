@@ -35,6 +35,8 @@ namespace Reko.UnitTests.TestCode
             Identifier r0 = Register(0);
             Identifier r1 = Register(1);
 
+            Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
+
             Label("loopTop");
             Assign(r1, Load(PrimitiveType.Byte, r0));
             Assign(r0, IAdd(r0, 1));

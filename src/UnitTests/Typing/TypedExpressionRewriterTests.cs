@@ -478,6 +478,7 @@ namespace Reko.UnitTests.Typing
                 var ds = m.Local16("ds");
                 var cx = m.Local16("cx");
                 var di = m.Local16("di");
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(di, 0);
                 m.Label("lupe");
                 m.SegStore(ds, m.IAdd(di, 0x5388), m.Word16(0));
@@ -497,6 +498,7 @@ namespace Reko.UnitTests.Typing
             {
                 var ds = m.Local(PrimitiveType.SegmentSelector, "ds");
                 var bx = m.Local(PrimitiveType.Word16, "bx");
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.SegStore(ds, m.Word16(0x300), m.SegMemW(ds, m.SegMemW(ds, bx)));
                 m.Return();
             });
@@ -585,6 +587,7 @@ namespace Reko.UnitTests.Typing
                     FunctionType.Func(
                         new Identifier("ax", PrimitiveType.Int16, ax.Storage),
                         new Identifier[0]));
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(ax, m.Fn(rand));
                 m.Store(m.Word16(0x1300), ax);
                 m.Return();
@@ -602,6 +605,7 @@ namespace Reko.UnitTests.Typing
                     var ecx = m.Reg32("ecx", 1);
                     var eax = m.Reg32("eax", 0);
 
+                    m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                     m.Assign(ebp, m.ISub(m.Frame.FramePointer, 4));
                     m.Assign(eax, m.LoadDw(m.IAdd(ebp, 0x0C)));
                     m.Assign(ecx, m.LoadDw(m.IAdd(ebp, 0x08)));
@@ -623,6 +627,7 @@ namespace Reko.UnitTests.Typing
                 var eax_2 = m.Reg32("eax_2", 0);
 
                 // eax_2 = (int32) ecx[eax];
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(
                     eax_2,
                     m.Cast(PrimitiveType.Int32,

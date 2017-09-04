@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:[0..63]
 // LiveOut:
-// Trashed: ax bx C FPU -1 FPU -2 O S Top Z
+// Trashed: SCZO ax bx FPU -1 FPU -2 Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0

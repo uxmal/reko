@@ -85,11 +85,13 @@ namespace Reko.UnitTests.Analysis
 
             pb.Add("main", m =>
             {
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("foo", 0);
             });
             pb.Add("foo", m =>
             {
                 var r1 = m.Frame.EnsureRegister(_r1);
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
                 m.Store(m.Word16(0x123408), r1);
                 m.Return();
@@ -115,8 +117,8 @@ foo_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r1_2 = Mem0[0x00123400:word32]
-	Mem3[0x3408:word32] = r1_2
+	r1_4 = Mem0[0x00123400:word32]
+	Mem5[0x3408:word32] = r1_4
 	return
 	// succ:  foo_exit
 foo_exit:
@@ -137,6 +139,7 @@ foo_exit:
             pb.Add("main", m =>
             {
                 var r1 = m.Frame.EnsureRegister(_r1);
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("foo", 0);
                 m.Store(m.Word32(0x123420), r1);
             });
@@ -144,6 +147,7 @@ foo_exit:
             {
                 var r1 = m.Frame.EnsureRegister(_r1);
                 var r2 = m.Frame.EnsureRegister(_r2);
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
                 m.Store(m.Word32(0x123408), r1);
                 m.Assign(r2, m.LoadDw(m.Word32(0x123410)));
@@ -162,8 +166,8 @@ main_entry:
 	// succ:  l1
 l1:
 	call foo (retsize: 0;)
-		defs: r1:r1_1
-	Mem3[0x00123420:word32] = r1_1
+		defs: r1:r1_3
+	Mem5[0x00123420:word32] = r1_3
 main_exit:
 ===
 // foo
@@ -173,14 +177,14 @@ foo_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r1_2 = Mem0[0x00123400:word32]
-	Mem3[0x00123408:word32] = r1_2
-	r2_4 = Mem3[0x00123410:word32]
-	Mem5[0x00123418:word32] = r2_4
+	r1_4 = Mem0[0x00123400:word32]
+	Mem5[0x00123408:word32] = r1_4
+	r2_6 = Mem5[0x00123410:word32]
+	Mem7[0x00123418:word32] = r2_6
 	return
 	// succ:  foo_exit
 foo_exit:
-	use r1_2
+	use r1_4
 ===
 ";
             #endregion
@@ -198,6 +202,7 @@ foo_exit:
             pb.Add("main", m =>
             {
                 var r1 = m.Frame.EnsureRegister(_r1);
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("foo", 0);
                 m.Store(m.Word32(0x123420), r1);
             });
@@ -205,6 +210,7 @@ foo_exit:
             {
                 var r1 = m.Frame.EnsureRegister(_r1);
                 var r2 = m.Frame.EnsureRegister(_r2);
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
                 m.Store(m.Word32(0x123408), r1);
                 m.Assign(r2, m.LoadDw(m.Word32(0x123410)));
@@ -227,25 +233,27 @@ main_entry:
 	def r2
 	// succ:  l1
 l1:
-	r1_2 = foo(r2)
-	Mem3[0x00123420:word32] = r1_2
+	r1_4 = foo(r2)
+	Mem5[0x00123420:word32] = r1_4
 main_exit:
 ===
 // foo
 // Return size: 0
 word32 foo(word32 arg1)
 foo_entry:
+	def fp
 	def Mem0
 	// succ:  l1
 l1:
-	r1_2 = Mem0[0x00123400:word32]
-	Mem3[0x00123408:word32] = r1_2
-	r2_4 = Mem3[0x00123410:word32]
-	Mem5[0x00123418:word32] = r2_4
+	r63_2 = fp
+	r1_4 = Mem0[0x00123400:word32]
+	Mem5[0x00123408:word32] = r1_4
+	r2_6 = Mem5[0x00123410:word32]
+	Mem7[0x00123418:word32] = r2_6
 	return
 	// succ:  foo_exit
 foo_exit:
-	use r1_2
+	use r1_4
 ===
 ";
             #endregion

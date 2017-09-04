@@ -141,6 +141,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			ProcedureBuilder m = new ProcedureBuilder("foo");
 			Identifier unused = m.Local32("unused");
+            m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
 			m.Assign(unused, m.Fn("foo", Constant.Word32(1)));
 			m.Return();
 			RunFileTest(m, "Analysis/DeadFnReturn.txt");

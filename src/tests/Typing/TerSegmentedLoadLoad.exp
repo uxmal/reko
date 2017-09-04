@@ -5,7 +5,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	Mem4[ds:0x0300:word16] = Mem0[ds:Mem0[ds:bx:word16]:word16]
+	Mem6[ds:0x0300:word16] = Mem0[ds:Mem0[ds:bx:word16]:word16]
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -68,7 +68,7 @@ T_10: (in 0x0300 : word16)
   Class: Eq_10
   DataType: (memptr (ptr Eq_2) word16)
   OrigDataType: (memptr T_2 (struct (0 T_11 t0000)))
-T_11: (in Mem4[ds:0x0300:word16] : word16)
+T_11: (in Mem6[ds:0x0300:word16] : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: word16

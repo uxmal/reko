@@ -3,14 +3,14 @@
 // MayUse: 
 // LiveOut:
 // Trashed: r1 r2
-// Preserved:
+// Preserved: r63
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	Mem8[0x00123404:word32] = (uint64) (uint32) Mem0[0x00123400:word32] /u 0x0000002A
+	Mem10[0x00123404:word32] = (uint64) (uint32) Mem0[0x00123400:word32] /u 0x0000002A
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
