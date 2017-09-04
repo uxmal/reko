@@ -78,6 +78,9 @@ namespace Reko.UnitTests.Arch.Intel
             case "pascal":
                 cc = new X86CallingConvention(4, 4, 4, false, true);
                 break;
+            case "__thiscall":
+                cc = new X86CallingConvention(4, 4, 4, false, false);
+                break;
             default: throw new NotImplementedException(cConvention + " not supported.");
             }
             this.cc = cc;
@@ -104,35 +107,6 @@ namespace Reko.UnitTests.Arch.Intel
             default: throw new NotImplementedException(cConvention + " not supported.");
             }
             this.cc = cc;
-        }
-
-        [Test]
-        [Ignore("Wait a while with __thiscall")]
-        public void X86Cc_Deserialize_thiscall()
-        {
-            throw new NotImplementedException();
-            /*
-            var ssig = new SerializedSignature
-            {
-                EnclosingType = new StructType_v1 { Name = "CHandle" },
-                Convention = "__thiscall",
-                Arguments = new Argument_v1[] {
-                    new Argument_v1 
-                    {
-                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 },
-                        Name = "foo"
-                    }
-                }
-            };
-
-            Given_ProcedureSerializer("stdcall");
-            mr.ReplayAll();
-
-            var sig = cc.Generate()
-            Assert.AreEqual(2, sig.Parameters.Length);
-            Assert.AreEqual("this", sig.Parameters[0].ToString());
-            Assert.AreEqual("ecx", sig.Parameters[0].Storage.ToString());
-            Assert.AreEqual(8, sig.StackDelta);*/
         }
 
         [Test]
@@ -190,43 +164,6 @@ namespace Reko.UnitTests.Arch.Intel
             Given_32bit_CallingConvention("pascal");
             cc.Generate(ccr, null, null, new List<DataType> { i16, i32 });
             Assert.AreEqual("Stk: 12 void (Stack +0008, Stack +0004)", ccr.ToString());
-        }
-
-        [Test]
-        [Ignore("Rethink __thiscall")]
-        public void X86Cc_Load_thiscall()
-        {
-            throw new NotImplementedException();
-            /*
-            var ssig = new SerializedSignature
-            {
-                EnclosingType = new StructType_v1 { Name="CWindow" },
-                Convention = "__thiscall",
-                Arguments = new Argument_v1[]
-                {
-                    new Argument_v1
-                    {
-                        Name = "XX",
-                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize= 4 },
-                    },
-                    new Argument_v1
-                    {
-                        Name = "arg1",
-                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize= 2 },
-                    },
-                }
-            };
-            Given_ProcedureSerializer(ssig.Convention);
-
-            var sig = cc.Generate(ssig, arch.CreateFrame());
-            var sExp =
-@"void memfn(Register (ptr (struct ""CWindow"")) this, Stack int32 XX, Stack int16 arg1)
-// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1
-";
-            Assert.AreEqual(sExp, sig.ToString("memfn", FunctionType.EmitFlags.AllDetails));
-            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);
-            Assert.AreEqual(8, ((StackArgumentStorage)sig.Parameters[2].Storage).StackOffset);
-            */
         }
 
         [Test(Description = "Ensure FPU stack effects are accounted for when returning floats")]
