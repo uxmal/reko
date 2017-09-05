@@ -570,7 +570,7 @@ namespace Reko.Arch.Arm
             }
             if (link)
             {
-                rtlc = RtlClass.Transfer;
+                rtlc = RtlClass.Transfer | RtlClass.Call;
                 if (instr.ArchitectureDetail.CodeCondition != ArmCodeCondition.AL)
                 {
                     m.BranchInMiddleOfInstruction(

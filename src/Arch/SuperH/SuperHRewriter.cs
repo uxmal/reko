@@ -418,7 +418,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteBsr()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Delay;
+            rtlc = RtlClass.Transfer | RtlClass.Call | RtlClass.Delay;
             var dst = SrcOp(instr.op1, null);
             m.CallD(dst, 0);
         }

@@ -187,6 +187,8 @@ namespace Reko.Scanning
                     AddEdge(G, Bad, addr);
                     continue;
                 }
+                if (addr.ToLinear() == 0x8BD4)  //$DEBUG:
+                    addr.ToString();
                 var i = dasm.Current;
 
                 if (IsInvalid(mem, i))

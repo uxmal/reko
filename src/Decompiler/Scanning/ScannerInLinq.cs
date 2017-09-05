@@ -156,6 +156,8 @@ namespace Reko.Scanning
             bool unscanned = false;
             foreach (var range in ranges)
             {
+                if (range.Item2.ToLinear() == 0x8948)   //$DEBUG
+                    range.ToString();       //$DEBUG:
                 unscanned = true;
                 try
                 {
