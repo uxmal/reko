@@ -452,7 +452,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("FA"); // swi
             AssertCode(
-                "0|L--|00010000(1): 3 instructions",
+                "0|T--|00010000(1): 3 instructions",
                 "1|L--|xsp = xsp - 2",
                 "2|L--|Mem0[xsp:word16] = sr",
                 "3|T--|call 00FFFF08 (4)");
