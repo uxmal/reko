@@ -18433,8 +18433,8 @@ void fn1483_1B13()
 	return;
 }
 
-// 1483:1B38: Register word16 fn1483_1B38(Register word16 ax, Register word16 cx, Register word16 dx, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Stack selector psegArg00, Register out ptr16 cxOut, Register out ptr16 dhOut, Register out ptr16 dlOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 esOut, Register out ptr16 dsOut)
-word16 fn1483_1B38(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, selector psegArg00, ptr16 & cxOut, ptr16 & dhOut, ptr16 & dlOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
+// 1483:1B38: Register word16 fn1483_1B38(Register word16 ax, Register word16 cx, Register word16 dx, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Stack selector psegArg00, Register out ptr16 cxOut, Register out ptr16 dlOut, Register out ptr16 dhOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 esOut, Register out ptr16 dsOut)
+word16 fn1483_1B38(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, selector psegArg00, ptr16 & cxOut, ptr16 & dlOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
 {
 	*esOut = es;
 	*siOut = si;
@@ -18601,8 +18601,8 @@ fn1483_1BB8_entry:
 	def ax
 	def cx
 	def bp
-	def dh
 	def dl
+	def dh
 	def bx
 	def di
 	def es
@@ -18619,8 +18619,8 @@ l1483_1BB8_thunk_fn1483_1BB9:
 l1483_1BBC_thunk_fn1483_1B38:
 fn1483_1BB8_exit:
 	cx_21 = PHI(cx, cx)
-	dh_22 = PHI(dh, dh)
-	dl_23 = PHI(dl, dl)
+	dl_22 = PHI(dl, dl)
+	dh_23 = PHI(dh, dh)
 	bx_24 = PHI(bx, bx)
 	si_25 = PHI(si, si)
 	di_26 = PHI(di, di)
@@ -18653,7 +18653,7 @@ l1483_1BB9_thunk_fn1483_1BBF:
 	return C
 l1483_1BBB_thunk_fn1483_1BBD:
 l1483_1BBC:
-	ax = fn1483_1B38(ax, cx, dx, bx, bp, si, di, es, ds, psegArg00, out cx, out dh, out dl, out bx, out bp, out si, out di, out es, out ds)
+	ax = fn1483_1B38(ax, cx, dx, bx, bp, si, di, es, ds, psegArg00, out cx, out dl, out dh, out bx, out bp, out si, out di, out es, out ds)
 	al = (byte) ax (alias)
 	return ax
 fn1483_1BB9_exit:
