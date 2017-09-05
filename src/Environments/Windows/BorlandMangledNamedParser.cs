@@ -33,6 +33,7 @@ namespace Reko.Environments.Windows
     /// Parses C++ names mangled by Borland compilers.
     /// </summary>
     // https://github.com/mildred/Lysaac/blob/master/doc/boa.cp437.txt
+    // http://edn.embarcadero.com/article/27758
     public class BorlandMangledNamedParser
     {
         private string s;
