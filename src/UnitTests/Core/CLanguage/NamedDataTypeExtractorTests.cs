@@ -211,5 +211,29 @@ namespace Reko.UnitTests.Core.CLanguage
             Assert.IsNotNull(kind);
             Assert.IsInstanceOf<FpuStackVariable_v1>(kind);
         }
+
+        [Test]
+        public void NamedDataTypeExtractor_thiscall_declspec()
+        {
+            Run(new[] { SType(CTokenType.Char) },
+                new PointerDeclarator()
+                {
+                    Pointee = new CallConventionDeclarator()
+                    {
+                        Convention = CTokenType.__Thiscall,
+                        Declarator = new FunctionDeclarator()
+                        {
+                            Declarator = new IdDeclarator()
+                            {
+                                Name = "test"
+                            },
+                            Parameters = new List<ParamDecl>()
+                        }
+                    }
+                });
+            Assert.AreEqual(
+                "fn(__thiscall,arg(ptr(prim(Character,1))),()",
+                nt.DataType.ToString());
+        }
     }
 }

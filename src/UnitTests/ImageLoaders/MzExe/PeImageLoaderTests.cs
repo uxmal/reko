@@ -47,6 +47,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
     /// | 2000 - 21FF | ILT    | .reloc
     /// | 2200 - 23FF | IAT    |
     /// | 3000 - 3FFF | data   | .data
+    /// | 4000 - 4FFF | didata | .didata
     /// </remarks>
     [TestFixture]
     public class PeImageLoaderTests
@@ -62,6 +63,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         private const int RvaText = 0x1000;
         private const int RvaImportDescriptor = 0x2000;
         private const int RvaData = 0x3000;
+        private const int RvaDelayImportDescriptor = 0x1800;
+
         private IProcessorArchitecture arch_386;
         private Win32Platform win32;
 
@@ -120,27 +123,31 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 
         private void Given_DelayLoadDirectories(params DelayLoadDirectoryEntry [] delayLoadDirectory)
         {
-            writer.Position = 0x1800;
+            writer.Position = RvaDelayImportDescriptor;
             foreach (var entry in delayLoadDirectory)
             {
-                entry.rvaName = writer.Position;
+                int offset = ((entry.Attributes & PeImageLoader.DID_RvaBased) != 0)
+                    ? 0
+                    : (int)addrLoad.ToUInt32();
+
+                entry.rvaName = writer.Position + offset;
                 writer.WriteString(entry.Name, Encoding.UTF8).WriteByte(0);
                 entry.arvaImportNames = new List<int>();
                 foreach (var impName in entry.ImportNames)
                 {
-                    entry.arvaImportNames.Add(writer.Position);
+                    entry.arvaImportNames.Add(writer.Position + offset);
                     writer.WriteLeInt16(0);
                     writer.WriteString(impName, Encoding.UTF8).WriteByte(0);
                 }
                 Align();
-                entry.rvaImportNames = writer.Position;
+                entry.rvaImportNames = writer.Position + offset;
                 foreach (var rva in entry.arvaImportNames)
                 {
                     writer.WriteLeUInt32((uint)rva);
                 }
                 writer.WriteLeUInt32(0);
 
-                entry.rvaImportAddressTable = writer.Position;
+                entry.rvaImportAddressTable = writer.Position + offset;
                 foreach (var rva in entry.arvaImportNames)
                 {
                     writer.WriteLeUInt32(0xCCCCCCCC);
@@ -150,7 +157,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             var rvaDld = writer.Position;
             foreach (var entry in delayLoadDirectory)
             {
-                writer.WriteLeUInt32(1);
+                writer.WriteLeUInt32(entry.Attributes);
                 writer.WriteLeUInt32((uint)entry.rvaName);
                 writer.WriteLeUInt32(0);    // module handle
                 writer.WriteLeUInt32((uint)entry.rvaImportAddressTable);
@@ -176,6 +183,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 
         public class DelayLoadDirectoryEntry
         {
+            public uint Attributes;
             public string Name;
             public string[] ImportNames;
 
@@ -376,13 +384,41 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         }
 
         [Test]
-        public void Pil32_DelayLoads()
+        public void Pil32_DelayLoads_Absolute()
         {
             Given_Pe32Header(0x00100000);
             Given_Section(".text", 0x1000u, 0x1000u);
             Given_DelayLoadDirectories(
                 new DelayLoadDirectoryEntry
                 {
+                    Attributes = 0,
+                    Name = "user32.dll",
+                    ImportNames = new string[] {
+                        "GetDesktopWindow",
+                        "GetFocus"
+                    }
+                });
+            sc.AddService<IDiagnosticsService>(mr.Stub<IDiagnosticsService>());
+            mr.ReplayAll();
+
+            Given_PeLoader();
+
+            var program = peldr.Load(addrLoad);
+            peldr.Relocate(program, addrLoad);
+
+            Assert.AreEqual(2, program.ImportReferences.Count);
+            Assert.AreEqual("user32.dll!GetDesktopWindow", program.ImportReferences[Address.Ptr32(0x0010183C)].ToString());
+            Assert.AreEqual("user32.dll!GetFocus", program.ImportReferences[Address.Ptr32(0x00101840)].ToString());
+        }
+        [Test]
+        public void Pil32_DelayLoads_RvaBased()
+        {
+            Given_Pe32Header(0x00100000);
+            Given_Section(".text", 0x1000u, 0x1000u);
+            Given_DelayLoadDirectories(
+                new DelayLoadDirectoryEntry
+                {
+                    Attributes = PeImageLoader.DID_RvaBased,
                     Name = "user32.dll",
                     ImportNames = new string[] {
                         "GetDesktopWindow",
@@ -523,5 +559,21 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Assert.AreEqual("hehe", program.SegmentMap.Segments[Address.Ptr32(0x00101000)].Name);
             Assert.AreEqual("hehe", program.SegmentMap.Segments[Address.Ptr32(0x00102000)].Name);
         }
+
+		[Test]
+		public void Pil32_NullSectionNames()
+		{
+			Given_Pe32Header(0x00100000);
+			Given_Section("\x00\x00", 0x1000, 0x1000);
+			Given_Section("\x00\x00\x00", 0x2000, 0x2000);
+
+			mr.ReplayAll();
+
+			Given_PeLoader();
+			var program = peldr.Load(addrLoad);
+			Assert.AreEqual(3, program.SegmentMap.Segments.Count);
+			Assert.AreEqual(".reko_0000000000001000", program.SegmentMap.Segments[Address.Ptr32(0x00101000)].Name);
+			Assert.AreEqual(".reko_0000000000002000", program.SegmentMap.Segments[Address.Ptr32(0x00102000)].Name);
+		}
     }
 }

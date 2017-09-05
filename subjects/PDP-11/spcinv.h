@@ -7784,7 +7784,7 @@ T_1694: (in globals->w0F12 == 0x0000 : bool)
   Class: Eq_1694
   DataType: bool
   OrigDataType: bool
-T_1695: (in v81_201 : ci16)
+T_1695: (in v80_201 : ci16)
   Class: Eq_1695
   DataType: ci16
   OrigDataType: ci16
@@ -7824,7 +7824,7 @@ T_1704: (in 0x0000 : word16)
   Class: Eq_1695
   DataType: ci16
   OrigDataType: ci16
-T_1705: (in v81_201 < 0x0000 : bool)
+T_1705: (in v80_201 < 0x0000 : bool)
   Class: Eq_1705
   DataType: bool
   OrigDataType: bool
@@ -8048,7 +8048,7 @@ T_1760: (in Mem452[r1_396 + 0x0000:word16] : word16)
   Class: Eq_1757
   DataType: Eq_99
   OrigDataType: wchar_t
-T_1761: (in v39_49 : cui16)
+T_1761: (in v38_49 : cui16)
   Class: Eq_1761
   DataType: cui16
   OrigDataType: cui16
@@ -8100,7 +8100,7 @@ T_1773: (in 0x0000 : word16)
   Class: Eq_1761
   DataType: cui16
   OrigDataType: word16
-T_1774: (in v39_49 == 0x0000 : bool)
+T_1774: (in v38_49 == 0x0000 : bool)
   Class: Eq_1774
   DataType: bool
   OrigDataType: bool

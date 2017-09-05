@@ -15,14 +15,15 @@
       <terminates>true</terminates>
     </characteristics>
   </entry>
-  <!-- //$TODO: Issue #471. Can't enable printf formatting until we solve how to handle
-       varargs on platforms with register calling conventions
-  -->
-  <!--
   <entry name="printf">
     <characteristics>
       <varargs>Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc</varargs>
     </characteristics>
   </entry>
-  -->
+  <entry name="fprintf">
+    <characteristics>
+      <varargs>Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
+  </entry>
+
 </characteristics>

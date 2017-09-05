@@ -76,7 +76,7 @@
     <Compile Include="M68kDisassembler.cs" />
     <Compile Include="M68kInstruction.cs" />
     <Compile Include="M68kInstructionComparer.cs" />
-    <Compile Include="M68kProcedureSerializer.cs" />
+    <Compile Include="M68kCallingConvention.cs" />
     <Compile Include="M68kState.cs" />
     <Compile Include="MemoryOperand.cs" />
     <Compile Include="Opcode.cs" />

@@ -49,10 +49,10 @@ namespace Reko.UnitTests.Mocks
             return Test_CreateTrashedRegisters();
         }
 
-        public Func<ISerializedTypeVisitor<DataType>, string, ProcedureSerializer> Test_CreateProcedureSerializer;
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public Func<string, CallingConvention> Test_GetCallingConvention;
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return Test_CreateProcedureSerializer(typeLoader, defaultConvention);
+            return Test_GetCallingConvention(ccName);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -60,9 +60,10 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public string Test_DefaultCallingConvention = "";
         public override string DefaultCallingConvention
         {
-            get { return ""; }
+            get { return Test_DefaultCallingConvention; }
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)

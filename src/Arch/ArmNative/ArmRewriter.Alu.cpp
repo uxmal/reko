@@ -178,7 +178,9 @@ void ArmRewriter::RewriteLdr(BaseType size)
 	{
 		// Assignment to PC is the same as a jump
 		m.Goto(opSrc);
-		rtlClass = RtlClass::Transfer;
+		rtlClass = instr->detail->arm.cc == ARM_CC_AL
+			? RtlClass::Transfer
+			: RtlClass::ConditionalTransfer;
 		return;
 	}
 	m.Assign(opDst, opSrc);
@@ -297,6 +299,9 @@ void ArmRewriter::RewriteLdm(HExpr dst, int skip, int offset, BinOpEmitter op, b
 	}
 	if (pcRestored)
 	{
+		rtlClass = instr->detail->arm.cc == ARM_CC_AL
+			? RtlClass::Transfer
+			: RtlClass::ConditionalTransfer;
 		m.Return(0, 0);
 	}
 }

@@ -47,6 +47,7 @@ namespace Reko.ImageLoaders.MzExe
         private const short ImageFileRelocationsStripped = 0x0001;
         private const short ImageFileExecutable = 0x0002;
         private const short ImageFileDll = 0x2000;
+        public const uint DID_RvaBased = 1;
 
         private IProcessorArchitecture arch;
         private IPlatform platform;
@@ -854,12 +855,16 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
         {
             var symbols = new List<ImageSymbol>();
             var attributes = rdr.ReadLeUInt32();
-            var dllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);    // DLL name.
+            var offset = ((attributes & DID_RvaBased) != 0) ? 0 : addrLoad.ToUInt32();
+            var rvaDllName = rdr.ReadLeUInt32();
+            if (rvaDllName == 0)
+                return false;
+            var dllName = ReadUtf8String(rvaDllName - offset, 0);    // DLL name.
             if (dllName == null)
                 return false;
             var rdrModule = rdr.ReadLeInt32();
-            var rdrThunks = imgLoaded.CreateLeReader(rdr.ReadLeUInt32());
-            var rdrNames = imgLoaded.CreateLeReader(rdr.ReadLeUInt32());
+            var rdrThunks = imgLoaded.CreateLeReader(rdr.ReadLeUInt32() - offset);
+            var rdrNames = imgLoaded.CreateLeReader(rdr.ReadLeUInt32() - offset);
             for (;;)
             {
                 var addrThunk = imgLoaded.BaseAddress + rdrThunks.Offset;
@@ -867,6 +872,8 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 uint rvaThunk = rdrThunks.ReadLeUInt32();
                 if (rvaName == 0)
                     break;
+                rvaName -= offset;
+                rvaThunk -= offset;
                 var impRef =
                     innerLoader.CreateImportReference(dllName, rvaName, addrThunk);
 
@@ -904,6 +911,11 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			sec.Name = ReadSectionName(rdr);
 			sec.VirtualSize = rdr.ReadLeUInt32();
 			sec.VirtualAddress = rdr.ReadLeUInt32();
+
+			if(sec.Name == null) {
+				sec.Name = ".reko_" + sec.VirtualAddress.ToString("x16");
+			}
+
 			sec.SizeRawData = rdr.ReadLeUInt32();
 			sec.OffsetRawData = rdr.ReadLeUInt32();
 			rdr.ReadLeUInt32();			// pointer to relocations
@@ -932,6 +944,9 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 					++i;
 					break;
 				}
+			}
+			if(i < 0) {
+				return null;
 			}
 			return new String(chars, 0, i);
 		}

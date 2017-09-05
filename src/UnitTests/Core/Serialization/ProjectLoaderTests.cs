@@ -154,7 +154,7 @@ namespace Reko.UnitTests.Core.Serialization
                 throw new NotImplementedException();
             }
 
-            public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+            public override CallingConvention GetCallingConvention(string ccName)
             {
                 throw new NotImplementedException();
             }
@@ -400,6 +400,11 @@ namespace Reko.UnitTests.Core.Serialization
             var ldr = mr.Stub<ILoader>();
             var platform = new TestPlatform(sc);
             Given_Binary(ldr, platform);
+            Given_TypeLibraryLoaderService();
+            cfgSvc.Stub(c => c.GetEnvironment("testOS")).Return(new OperatingEnvironmentElement
+            {
+
+            });
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr, listener);

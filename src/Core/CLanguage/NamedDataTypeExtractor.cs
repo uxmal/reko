@@ -190,7 +190,6 @@ namespace Reko.Core.CLanguage
             {
                 return new Argument_v1
                 {
-                    Kind = new StackVariable_v1 { },
                     Name = "...",
                 };
             }
@@ -540,6 +539,7 @@ namespace Reko.Core.CLanguage
             case CTokenType.__Cdecl:
             case CTokenType.__Fastcall:
             case CTokenType.__Stdcall:
+            case CTokenType.__Thiscall:
                 ApplyCallConvention(storageClassSpec.Type);
                 break;
             }

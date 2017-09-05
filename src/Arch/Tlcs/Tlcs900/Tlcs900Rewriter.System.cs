@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -68,6 +69,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteSwi()
         {
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             var xsp = binder.EnsureRegister(Registers.xsp);
             var sr = binder.EnsureRegister(Registers.sr);
             var dst = Address.Ptr32(0xFFFF00u + ((ImmediateOperand)instr.op1).Value.ToUInt32() * 4);

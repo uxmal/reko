@@ -657,6 +657,59 @@ fn002005B8_exit:
 
 
 
+void fn002005F5(word32 xwa)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  w xwa
+// LiveOut:
+// Trashed: SZHVNC sr w
+// Preserved: xix xsp
+fn002005F5_entry:
+// DataOut: w xwa
+// DataOut (flags): 
+// SymbolicIn: xsp:fp
+// LocalsOut: fp(32)
+
+l002005F5:
+	__ldf(0x03)
+	byte w_10 = w * 0x02 * 0x02
+	word32 xwa_12 = DPB(xwa, w_10, 8)
+	word32 v9_16 = Mem0[xwa_12:word32]
+	branch false l00200609
+// DataOut: xix
+// DataOut (flags): 
+// SymbolicIn: xsp:fp
+// LocalsOut: fp(32)
+
+l00200607_1:
+	word32 xsp_27
+	word16 sr_28
+	word32 xix_29
+	byte w_30
+	bool N_31
+	byte SZHVC_32
+	word32 xwa_33
+	call Mem0[v9_16:word32] (retsize: 4; depth: 10)
+		uses: dwLoc06_7,N_13,sr,SZHVC_14,w_10,wLoc02_4,xix_17,xsp_5,xwa_12
+		defs: N_31,sr_28,SZHVC_32,w_30,xix_29,xsp_27,xwa_33
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: xsp:fp - 6 w:w * 0x02 * 0x02 + (w * 0x02) * 0x02 xix:<invalid> -6(fp):xix -2(fp):sr
+// LocalsOut: fp(32)
+
+l00200609:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: xsp:fp - 6 w:w * 0x02 * 0x02 + (w * 0x02) * 0x02 xix:<invalid> -6(fp):xix -2(fp):sr
+
+fn002005F5_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: xsp:fp w:w * 0x02 * 0x02 + (w * 0x02) * 0x02 xix:xix sr:<invalid> -6(fp):xix -2(fp):sr
+
+
+
 void fn0020060C()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 

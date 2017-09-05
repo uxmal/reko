@@ -700,11 +700,22 @@ HExpr ArmRewriter::Operand(const cs_arm_op & op)
 		if (op.mem.base == ARM_REG_PC)
 		{
 			// PC-relative address
-			if (op.mem.disp != 0)
+			auto dst = (uint32_t)((int32_t)instr->address + op.mem.disp) + 8u;
+			ea = m.Ptr32(dst);
+
+			if (op.mem.index != ARM_REG_INVALID)
 			{
-				auto dst = (uint32_t)((int32_t)instr->address + op.mem.disp) + 8u;
-				return m.Mem(SizeFromLoadStore(), m.Ptr32(dst));
+				auto ireg = Reg(op.mem.index);
+				if (op.shift.type == ARM_SFT_LSL)
+				{
+					ea = m.IAdd(ea, m.IMul(ireg, m.Int32(1 << op.shift.value)));
+				}
+				else
+				{
+					//$TODO: handle these (unlikely) cases!
+				}
 			}
+			return m.Mem(SizeFromLoadStore(), ea);
 		}
 		if (op.mem.disp != 0 && IsLastOperand(op))
 		{

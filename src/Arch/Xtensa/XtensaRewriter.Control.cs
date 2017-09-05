@@ -124,7 +124,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteCall0()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             var dst = RewriteOp(instr.Operands[0]);
             var rDst = dst as Identifier;
             if (rDst != null && rDst.Storage == Registers.a0)

@@ -799,13 +799,14 @@ substr_exit:
 
 
 
-word32 safe_read(word32 o0, word32 o1, word32 o2, ptr32 & l0Out, ptr32 & l1Out, ptr32 & l2Out)
+void safe_read(word32 o0, word32 o1, word32 o2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  o0 o1 o2
-// LiveOut: l0 l1 l2 o0
-// Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 o0 o1
-// Preserved: o1 o2 o3 o4 o5 o7 sp
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 safe_read_entry:
 // DataOut: l4 l5 l6 o0 o1 o2
 // DataOut (flags): 
@@ -813,108 +814,100 @@ safe_read_entry:
 // LocalsOut: fp(32)
 
 l00011828:
-	word32 l2_19
-	*l2Out = o0
-	word32 l0_20
-	*l0Out = o2
-	word32 l1_21
-	*l1Out = 0x0002B400
-// DataOut: i1 i2 l0 l1 l2 l4 l5 l6
+	word32 l0_20 = o2
+// DataOut: i1 l0 l1 l2 l4 l5 l6
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l00011840:
 	byte NZV_31 = cond(l0_20)
-// DataOut: i1 i2 l0 l1 l2 l4 l5 l6
+// DataOut: i1 l0 l1 l2 l4 l5 l6
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 l2:o0 l0:<invalid> l1:0x0002B400 o0:<invalid>
 
 l00011844:
-	word32 i0_43
 	branch NZV_31 l00011840_ds_t
-// DataOut: i1 i2 l0 l1 l2 l4 l5 l6
+// DataOut: i1 l0 l1 l2 l4 l5 l6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 l2:o0 l0:<invalid> l1:0x0002B400 g0:<invalid> o0:<invalid>
 
 l00011840_ds_t:
-// DataOut: i2 l0 l1 l2 l4 l5 l6
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 l2:o0 l0:<invalid> l1:0x0002B400 g0:<invalid> o0:<invalid>
 
 l00011840_ds_f:
-// DataOut: i1 i2 l0 l1 l2 l4 l5 l6 o0
+// DataOut: i1 l0 l1 l2 l4 l5 l6 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 l2:o0 l0:<invalid> l1:0x0002B400 g0:<invalid> o0:<invalid>
 
 l0001184C:
 	read()
-	i0_43 = o0
 	branch o0 >= 0x00000000 l0001184C_ds_t
-// DataOut: i0 i1 i2 l0 l1 l2 l4 l5 l6
+// DataOut: i0 i1 l0 l1 l2 l4 l5 l6
 // DataOut (flags): Z
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 l2:o0 l0:<invalid> l1:0x0002B400 g0:<invalid> o0:o0
 // Terminates process
 
 l0001184C_ds_t:
-// DataOut: i0 i1 i2 l0 l1 l2 l4 l5 l6
+// DataOut: i0 i1 l0 l1 l2 l4 l5 l6
 // DataOut (flags): Z
 // SymbolicIn: i0:o0
 
 l00011874:
 	branch o0 != 0x00000000 l00011874_ds_t
-// DataOut: i0 i1 i2 l0 l1 l2 l4 l5 l6
+// DataOut: i0 i1 l0 l1 l2 l4 l5 l6
 // DataOut (flags): 
 // SymbolicIn: i0:o0 o0:<invalid>
 
 l00011874_ds_t:
-	*l0Out = l0_20 - o0
-// DataOut: i0 i1 i2 l0 l1 l2 l4 l5 l6
+	l0_20 = l0_20 - o0
+// DataOut: i0 i1 l0 l1 l2 l4 l5 l6
 // DataOut (flags): 
 // SymbolicIn: i0:o0 o0:<invalid>
 
+l00011880:
+	return
+// DataOut: l0 l1 l2 l4 l5 l6 o0
+// DataOut (flags): 
+// SymbolicIn: i0:o0 o0:<invalid>
+
+safe_read_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: i0:o0 o0:o0 o1:i1 o2:i2 o3:i3 o4:i4 o5:i5 sp:i6 o7:i7
+
 l00011874_ds_t:
-	*l0Out = l0_20 - o0
-// DataOut: i0 i1 i2 l0 l1 l2 l4 l5 l6
+	l0_20 = l0_20 - o0
+// DataOut: i0 i1 l0 l1 l2 l4 l5 l6
 // DataOut (flags): 
 // SymbolicIn: i0:o0 o0:<invalid>
 
 l0001183C:
-// DataOut: i1 i2 l0 l1 l2 l4 l5 l6
+// DataOut: i1 l0 l1 l2 l4 l5 l6
 // DataOut (flags): 
 // SymbolicIn: i0:o0 o0:<invalid> l0:l0 - o0
 
 l0001187C:
-	i0_43 = o2 - l0_20
-// DataOut: i0 l0 l1 l2 l4 l5 l6
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 l2:o0 l0:<invalid> l1:0x0002B400 g0:<invalid> o0:<invalid>
 
-l00011880:
-	return i0_43
-// DataOut: l0 l1 l2 l4 l5 l6 o0
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i1:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 l2:o0 l0:<invalid> l1:0x0002B400 g0:<invalid> o0:<invalid>
-
-safe_read_exit:
-// DataOut: l0 l1 l2 o0
-// DataOut (flags): 
-// SymbolicIn: sp:fp i0:<invalid> i1:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 l2:o0 l0:<invalid> l1:0x0002B400 g0:<invalid> o0:<invalid> o1:<invalid> o2:o2 o3:o3 o4:o4 o5:o5 o7:o7
-
 l0001184C_ds_f:
-	word32 o0_77 = Mem0[0x0002B760:word32]
-// DataOut: i1 i2 l0 l1 l2 l4 l5 l6 o0
+	word32 o0_59 = Mem0[0x0002B760:word32]
+// DataOut: i1 l0 l1 l2 l4 l5 l6 o0
 // DataOut (flags): 
 // SymbolicIn: i0:o0
 
 l00011864:
-	branch o0_77 == 0x00000004 l00011864_ds_t
-// DataOut: i1 i2 l0 l1 l2 l4 l5 l6
+	branch o0_59 == 0x00000004 l00011864_ds_t
+// DataOut: i1 l0 l1 l2 l4 l5 l6
 // DataOut (flags): 
 // SymbolicIn: i0:o0 o0:<invalid>
 
 l00011864_ds_t:
 	NZV_31 = cond(l0_20) (alias)
-// DataOut: i1 i2 l0 l1 l2 l4 l5 l6
+// DataOut: i1 l0 l1 l2 l4 l5 l6
 // DataOut (flags): NZV
 // SymbolicIn: i0:o0 o0:<invalid> g0:<invalid>
 
@@ -1255,14 +1248,6 @@ l000119BC_ds_t:
 // DataOut: i0 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> g0:<invalid>
-
-l000119CC_thunk_fn000119D0:
-	fn000119D0(0x00027C00, o0)
-	return 0x00027C00
-// DataOut: o0
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:0x00027C00 g0:<invalid>
-// Terminates process
 
 l000119CC_thunk_fn000119E0:
 	return fn000119E0(0x00027C00, o0)
@@ -2318,7 +2303,7 @@ l00011E74:
 	branch l0_121 - Mem0[0x00027F54:word32] != 0x00000000 l00011E74_ds_t
 // DataOut: i0 l0 l1 l5 l6 o1
 // DataOut (flags): 
-// SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> l1:<invalid> l5:0x00027C00 g0:<invalid> i1:0x00000000 l6:0x00027C00 l7:0x00016C00 l4:<invalid> l3:o0 o1:<invalid> l0:<invalid> g2:<invalid> g3:<invalid>
+// SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> l1:<invalid> l5:0x00027C00 g0:<invalid> i1:0x00000000 l6:0x00027C00 l7:0x00016C00 l4:<invalid> l3:o0 o1:<invalid> g2:<invalid> g3:<invalid> l0:<invalid>
 
 l00011E74_ds_t:
 	o0_126 = (word32) Mem0[i0_107:byte]
@@ -4396,7 +4381,7 @@ l00012AB4:
 // SymbolicIn: o2:<invalid> g0:<invalid> o0:<invalid> l0:<invalid> o1:<invalid> i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid>
 
 l00012AB4_ds_t:
-// DataOut: l2 o1
+// DataOut: o1
 // DataOut (flags): 
 // SymbolicIn: o2:<invalid> g0:<invalid> o0:<invalid> l0:<invalid> o1:<invalid> i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid>
 
@@ -4433,7 +4418,7 @@ l00012AC0:
 	free_def_dec(0x0000002C)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: i0:<invalid> g0:<invalid> o0:<invalid> l3:0x00029800 o2:<invalid> o1:<invalid> l0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid>
+// SymbolicIn: i0:<invalid> g0:<invalid> o0:<invalid> l3:0x00029800 o2:<invalid> l0:<invalid> o1:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid>
 
 l000128DC_ds_f:
 // DataOut: l2 o0
@@ -4624,8 +4609,7 @@ l00012CD8:
 // Terminates process
 
 l00012CD8_ds_t:
-	o3_142 = l0_136 + 0x00000001
-// DataOut: g2 i0 i6 l0 l1 l2 l4 l6 l7 o3 sp
+// DataOut: i0 i6 l0 l1 l2 l4 l6 l7 sp
 // DataOut (flags): 
 // SymbolicIn: o1:l0 << 0x00000002 l0:l0 + 0x00000001 o0:<invalid> g2:l0 + 0x00000002 << 0x00000002 g0:<invalid>
 
@@ -4760,14 +4744,14 @@ l00012F10:
 	xstrerror(l2_80)
 	fprintf()
 	pwait(0x00017270)
-// DataOut: i0 i2 i6 l0 l1 l4
+// DataOut: i0 i2 i6 l0 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: o1:<invalid> o3:<invalid> o0:<invalid> o4:<invalid> o2:<invalid> o5:<invalid> g0:<invalid> i0:<invalid> sp:<invalid> o7:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> l0:0x0002B000 l1:<invalid>
 // Terminates process
 
 l0001302C:
 	return
-// DataOut: i0 i2 i6 l0 l1 l4 o0
+// DataOut: i0 i2 i6 l0 l1 l2 l4 o0
 // DataOut (flags): 
 // SymbolicIn:
 
@@ -4808,13 +4792,13 @@ l00013034:
 	strcpy()
 	strcat()
 	word32 sp_23 = fp + 0xFFFFFF08 - (o0 + 0x0000000A & 0xFFFFFFF8)
-	word32 l2_226 = 0x00000000
+	word32 l2_222 = 0x00000000
 // DataOut: i0 i2 i6 l0 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l00013074:
-	bool Z_274
+	bool Z_270
 	word32 o0_107
 	access()
 	branch sp_23 != 0x00000061 l00013034_ds_t
@@ -4823,8 +4807,8 @@ l00013074:
 // SymbolicIn: l2:<invalid> g0:<invalid> o0:<invalid>
 
 l00013034_ds_t:
-	Z_274 = cond(l2_226) (alias)
-// DataOut: i0 i2 i6 l0 l4
+	Z_270 = cond(l2_222) (alias)
+// DataOut: i0 i2 i6 l0 l2 l4
 // DataOut (flags): Z
 // SymbolicIn: g0:o0 - 0xFFFFFFFF
 
@@ -4834,8 +4818,8 @@ l00013034_ds_f:
 // SymbolicIn: g0:o0 - 0xFFFFFFFF
 
 l0001308C:
-	word32 l3_260 = Mem0[0x0002B760:word32]
-	branch l3_260 != 0x00000002 l0001308C_ds_t
+	word32 l3_256 = Mem0[0x0002B760:word32]
+	branch l3_256 != 0x00000002 l0001308C_ds_t
 // DataOut: i0 i2 i6 l0 l1 l3 l4
 // DataOut (flags): 
 // SymbolicIn: g0:l2
@@ -4847,7 +4831,7 @@ l0001308C_ds_t:
 
 l000130C8:
 	shortpath(0x00000000, sp_23 + 0x00000060)
-	xstrerror(l3_260)
+	xstrerror(l3_256)
 	o0_107 = 0x00017300
 // DataOut: l1 o0
 // DataOut (flags): 
@@ -4870,7 +4854,7 @@ l000130A0_ds_t:
 // SymbolicIn: g0:i2 o0:0x00028000 l3:<invalid>
 
 l000130C0:
-// DataOut: i0 i2 i6 l0 l4
+// DataOut: i0 i2 i6 l0 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:i2 o0:0x00028000 l3:<invalid> o1:<invalid>
 
@@ -4881,14 +4865,14 @@ l000130A0_ds_f:
 
 l000130AC:
 	notice(0x000172D0, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58)
-// DataOut: i0 i2 i6 l0 l1 l4
+// DataOut: i0 i2 i6 l0 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:i2 o0:0x00028000 l3:<invalid> o1:<invalid>
 // Terminates process
 
 l000130FC:
-	Z_274 = cond(0x00000001) (alias)
-// DataOut: i0 i2 i6 l0 l4
+	Z_270 = cond(0x00000001) (alias)
+// DataOut: i0 i2 i6 l0 l2 l4
 // DataOut (flags): Z
 // SymbolicIn: l2:0x00000001 g0:i2 o0:0x00028000 l3:<invalid> o1:<invalid>
 
@@ -4896,25 +4880,25 @@ l00013100:
 	word32 o1_102
 	word32 l0_101
 	word32 l2_119
-	branch Z_274 l00013100_ds_t
-// DataOut: i0 i2 i6 l0 l4
+	branch Z_270 l00013100_ds_t
+// DataOut: i0 i2 i6 l0 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:<invalid> l2:0x00000001 o0:0x00028000 l3:<invalid> o1:<invalid>
 
 l00013100_ds_t:
-// DataOut: i0 i2 i6 l1 l4
+// DataOut: i0 i2 i6 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:<invalid> l2:0x00000001 o0:0x00028000 l3:<invalid> o1:<invalid>
 
 l00013100_ds_f:
-// DataOut: i0 i2 i6 l0 l1 l4
+// DataOut: i0 i2 i6 l0 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:<invalid> l2:0x00000001 o0:0x00028000 l3:<invalid> o1:<invalid>
 
 l00013108:
 	gen_aux_info_file(o0)
 	branch o0 == 0x00000000 l00013108_ds_t
-// DataOut: i0 i2 i6 l0 l1 l4
+// DataOut: i0 i2 i6 l0 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:<invalid> l1:i6 + 0xFFFFFF68 l2:0x00000001 o0:0x00028000 l3:<invalid> o1:<invalid>
 // Terminates process
@@ -4925,45 +4909,45 @@ l00013108_ds_t:
 // SymbolicIn: g0:o0
 
 l000131F8:
-	Mem255[0x00027F20:word32] = Mem0[0x00027F20:word32] + 0x00000001
+	Mem251[0x00027F20:word32] = Mem0[0x00027F20:word32] + 0x00000001
 // DataOut: l0 l1
 // DataOut (flags): 
 // SymbolicIn: g0:o0 o0:l4
 
 l00013108_ds_f:
-// DataOut: i0 i2 i6 l4 o0
+// DataOut: i0 i2 i6 l2 l4 o0
 // DataOut (flags): 
 // SymbolicIn: g0:o0
 
 l0001311C:
 	access()
 	branch sp_23 != 0x00000061 l0001311C_ds_t
-// DataOut: i0 i2 i6 l4
+// DataOut: i0 i2 i6 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:o0 o0:l4
 
 l0001311C_ds_t:
-// DataOut: i0 i2 i6 l1 l4
+// DataOut: i0 i2 i6 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:o0 - 0xFFFFFFFF
 
 l00013150:
 	stat()
 	branch sp_23 != 0x00000061 l00013150_ds_t
-// DataOut: i0 i2 i6 l1 l4
+// DataOut: i0 i2 i6 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:<invalid> l1:i6 + 0xFFFFFF68 l2:0x00000001 o0:0x00028000 l3:<invalid> o1:<invalid>
 // Terminates process
 
 l00013150_ds_t:
 	word32 l0_124 = Mem0[fp + -104:word32]
-// DataOut: i0 i2 i6 l0 l1 l4
+// DataOut: i0 i2 i6 l0 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:o0 - 0xFFFFFFFF
 
 l00013188:
 	branch l0_124 == 0x00000000 l00013188_ds_t
-// DataOut: i0 i2 i6 l0 l1 l4
+// DataOut: i0 i2 i6 l0 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:o0 - 0xFFFFFFFF l0:<invalid>
 
@@ -4973,48 +4957,48 @@ l00013188_ds_t:
 // SymbolicIn: g0:<invalid> l0:<invalid>
 
 l00013188_ds_f:
-// DataOut: i0 i2 i6 l0 l1 l4
+// DataOut: i0 i2 i6 l0 l1 l2 l4
 // DataOut (flags): Z
 // SymbolicIn: g0:<invalid> l0:<invalid>
 
 l00013194:
 	branch o2 != 0x00000000 l00013194_ds_t
-// DataOut: i0 i2 i6 l0 l1 l4
+// DataOut: i0 i2 i6 l0 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:i2 l0:<invalid>
 
 l00013194_ds_t:
-// DataOut: l0 l4
+// DataOut: l0 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:i2 l0:<invalid>
 
 l00013194_ds_f:
-	word32 l7_208 = Mem0[fp + -88:word32]
-// DataOut: i0 i2 i6 l0 l1 l4 l7
+	word32 l7_204 = Mem0[fp + -88:word32]
+// DataOut: i0 i2 i6 l0 l1 l2 l4 l7
 // DataOut (flags): 
 // SymbolicIn: g0:i2 l0:<invalid>
 
 l0001319C:
 	stat()
 	branch o0 != 0xFFFFFFFF l0001319C_ds_t
-// DataOut: i0 i2 i6 l0 l1 l4 l7
+// DataOut: i0 i2 i6 l0 l1 l2 l4 l7
 // DataOut (flags): 
 // SymbolicIn: g0:i2 l0:<invalid> l7:<invalid>
 
 l0001319C_ds_t:
-	word32 o0_222 = Mem0[fp + -88:word32]
-// DataOut: i0 i2 i6 l0 l1 l4 l7 o0
+	word32 o0_218 = Mem0[fp + -88:word32]
+// DataOut: i0 i2 i6 l0 l1 l2 l4 l7 o0
 // DataOut (flags): 
 // SymbolicIn: g0:o0 - 0xFFFFFFFF
 
 l0001320C:
-	branch o0_222 - l7_208 > 0x00000000 l0001320C_ds_t
-// DataOut: i0 i2 i6 l0 l1 l4
+	branch o0_218 - l7_204 > 0x00000000 l0001320C_ds_t
+// DataOut: i0 i2 i6 l0 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:o0 - 0xFFFFFFFF o0:<invalid>
 
 l0001320C_ds_t:
-	l2_226 = 0x00000001
+	l2_222 = 0x00000001
 // DataOut: i0 i2 i6 l0 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: g0:<invalid> o0:<invalid>
@@ -5022,25 +5006,22 @@ l0001320C_ds_t:
 l00013218:
 	open()
 	branch sp_23 != 0x00000061 l00013218_ds_t
-// DataOut: l0 l4 l5
+// DataOut: l0 l1 l2 l4 l5
 // DataOut (flags): 
 // SymbolicIn: g0:<invalid> l0:<invalid> l7:<invalid> o0:<invalid>
 
 l00013218_ds_t:
-// DataOut: l0 l4 l5
+// DataOut: l0 l1 l2 l4 l5
 // DataOut (flags): 
 // SymbolicIn: l5:o0 g0:o0 - 0xFFFFFFFF
 
 l00013250:
-	word32 l0_176
-	word32 l2_174
+	word32 l0_172
+	word32 l2_170
 	xmalloc(l0_124 + 0x00000001)
 	Mem160[l0_124 + 0x00000001 + l0_124:byte] = 0x00
-	word32 l0_164
-	word32 l1_165
-	word32 l2_166
-	word32 o0_167 = safe_read(sp_23 + 0x00000060, l0_124 + 0x00000001, l0_124, out l0_164, out l1_165, out l2_166)
-	branch o0_167 - l0_164 == 0x00000000 l00013250_ds_t
+	safe_read(sp_23 + 0x00000060, l0_124 + 0x00000001, l0_124)
+	branch sp_23 + 0x00000060 - l0_124 == 0x00000000 l00013250_ds_t
 // DataOut: l0 l1 l2 l4 l5 l6
 // DataOut (flags): 
 // SymbolicIn: l5:o0 g0:o0 - 0xFFFFFFFF o0:0x0002B400
@@ -5048,14 +5029,14 @@ l00013250:
 l00013250_ds_t:
 // DataOut: l0 l1 l2 l4 l5 l6
 // DataOut (flags): 
-// SymbolicIn: l6:o0 o0:<invalid> o1:<invalid> o2:l0 i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> l2:<invalid> l0:<invalid> l1:0x0002B400 g0:<invalid>
+// SymbolicIn: g0:o0 - l0
 
 l00013294:
 	close()
 	branch sp_23 == 0x00000060 l00013294_ds_t
 // DataOut: l0 l1 l2 l4 l5 l6
 // DataOut (flags): 
-// SymbolicIn: l6:o0 o0:0x0002B400 o1:<invalid> o2:l0 i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> l2:<invalid> l0:<invalid> l1:0x0002B400 g0:<invalid>
+// SymbolicIn: g0:o0 - l0 o0:0x0002B400
 // Terminates process
 
 l00013294_ds_t:
@@ -5074,8 +5055,8 @@ l00013294_ds_f:
 // SymbolicIn: g0:o0
 
 l000132A8:
-	l2_174 = Mem160[0x0002B760:word32]
-	l0_176 = 0x000173C0
+	l2_170 = Mem160[0x0002B760:word32]
+	l0_172 = 0x000173C0
 // DataOut: l0 l2 l3 l4 l5 l6
 // DataOut (flags): 
 // SymbolicIn: g0:o0 o0:0x0002B400
@@ -5083,24 +5064,24 @@ l000132A8:
 l00013250_ds_f:
 // DataOut: l4 l5 l6
 // DataOut (flags): 
-// SymbolicIn: l6:o0 o0:<invalid> o1:<invalid> o2:l0 i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> l2:<invalid> l0:<invalid> l1:0x0002B400 g0:<invalid>
+// SymbolicIn: g0:o0 - l0
 
 l0001327C:
-	l2_174 = Mem160[0x0002B760:word32]
-	l0_176 = 0x00017390
+	l2_170 = Mem160[0x0002B760:word32]
+	l0_172 = 0x00017390
 // DataOut: l0 l2 l3 l4 l5 l6
 // DataOut (flags): 
-// SymbolicIn: l6:o0 o0:0x0002B400 o1:<invalid> o2:l0 i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> l2:<invalid> l0:<invalid> l1:0x0002B400 g0:<invalid>
+// SymbolicIn: g0:o0 - l0 o0:0x0002B400
 
 l000132BC:
 	shortpath(0x00000000, sp_23 + 0x00000060)
-	xstrerror(l2_174)
-	notice(l0_176, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58)
+	xstrerror(l2_170)
+	notice(l0_172, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58)
 	free()
 	close()
 // DataOut: l0 l1
 // DataOut (flags): 
-// SymbolicIn: l6:o0 o0:0x0002B400 o1:0x00028000 o2:l0 i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> l2:<invalid> l0:<invalid> l1:0x0002B400 g0:<invalid> l3:<invalid>
+// SymbolicIn: g0:<invalid> o0:0x0002B400 o1:0x00028000 l2:<invalid> l0:<invalid> l3:<invalid>
 // Terminates process
 
 l000135B8:
@@ -11286,8 +11267,7 @@ l000168C8:
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> o0:<invalid> o2:<invalid> o1:<invalid> l5:0x00028000 g0:<invalid> l0:<invalid> l6:0x0002B000 g2:<invalid> g3:<invalid> o3:<invalid> l2:<invalid> l1:<invalid> l3:<invalid> l7:<invalid> l4:<invalid> g1:<invalid> o4:<invalid> o5:<invalid> g4:<invalid> 68(fp):0x00028000 80(fp):o3
 
 l000168C8_ds_t:
-	o0_255 = Mem148[0x00028068:word32]
-// DataOut: i0 i1 i2 i6 l0 l6 l7 o0 o1
+// DataOut: i0 i1 i2 i6 l0 l6 l7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:<invalid> i1:<invalid> i2:<invalid> i3:<invalid> i4:<invalid> i5:<invalid> i6:<invalid> i7:<invalid> o0:<invalid> o2:<invalid> o1:<invalid> l5:0x00028000 g0:<invalid> l0:<invalid> l6:0x0002B000 g2:<invalid> g3:<invalid> o3:<invalid> l2:<invalid> l1:<invalid> l3:<invalid> l7:<invalid> l4:<invalid> g1:<invalid> o4:<invalid> o5:<invalid> g4:<invalid> 68(fp):0x00028000 80(fp):o3
 
@@ -12956,7 +12936,7 @@ void pwait(word32 o1)
 // Preserved:
 // Terminates process
 pwait_entry:
-// DataOut: l0 l1 l4 o0 o1 o2
+// DataOut: l0 l1 l2 l4 o0 o1 o2
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
@@ -12964,7 +12944,7 @@ pwait_entry:
 l00016C2C:
 	wait()
 	return
-// DataOut: i0 i2 i6 l0 l1 l4
+// DataOut: i0 i2 i6 l0 l1 l2 l4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // Terminates process
@@ -13758,19 +13738,19 @@ void read()
 // Preserved:
 // Terminates process
 fn00027CF8_entry:
-// DataOut: i1 i2 l0 l1 l2 l4 l5 l6 o0
+// DataOut: i1 l0 l1 l2 l4 l5 l6 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l00027CF8:
-// DataOut: i1 i2 l0 l1 l2 l4 l5 l6 o0
+// DataOut: i1 l0 l1 l2 l4 l5 l6 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l00027CFC_thunk__PROCEDURE_LINKAGE_TABLE_:
 	_PROCEDURE_LINKAGE_TABLE_()
 	return
-// DataOut: i1 i2 l0 l1 l2 l4 l5 l6 o0
+// DataOut: i1 l0 l1 l2 l4 l5 l6 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp g1:0x00030000
 // Terminates process
@@ -14157,19 +14137,19 @@ void open()
 // Preserved:
 // Terminates process
 fn00027D88_entry:
-// DataOut: i0 i1 l0 l1 l3 l4 l5 o0 o3
+// DataOut: i0 i1 l0 l1 l2 l3 l4 l5 o0 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l00027D88:
-// DataOut: i0 i1 l0 l1 l3 l4 l5 o0 o3
+// DataOut: i0 i1 l0 l1 l2 l3 l4 l5 o0 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l00027D8C_thunk__PROCEDURE_LINKAGE_TABLE_:
 	_PROCEDURE_LINKAGE_TABLE_()
 	return
-// DataOut: i0 i1 l0 l1 l3 l4 l5 o0 o3
+// DataOut: i0 i1 l0 l1 l2 l3 l4 l5 o0 o3
 // DataOut (flags): 
 // SymbolicIn: sp:fp g1:0x00054000
 // Terminates process
@@ -14208,6 +14188,39 @@ l00027D98_thunk__PROCEDURE_LINKAGE_TABLE_:
 // Terminates process
 
 fn00027D94_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void unlink()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00027DA0_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DA0:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DA4_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x0005A000
+// Terminates process
+
+fn00027DA0_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn:
@@ -14307,6 +14320,138 @@ l00027DC8_thunk__PROCEDURE_LINKAGE_TABLE_:
 // Terminates process
 
 fn00027DC4_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void fflush()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00027DD0_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DD0:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DD4_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x00066000
+// Terminates process
+
+fn00027DD0_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void link()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00027DDC_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DDC:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DE0_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x00069000
+// Terminates process
+
+fn00027DDC_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void creat()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00027DE8_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DE8:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DEC_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x0006C000
+// Terminates process
+
+fn00027DE8_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void chmod()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00027DF4_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DF4:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DF8_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x0006F000
+// Terminates process
+
+fn00027DF4_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn:
@@ -14619,19 +14764,19 @@ void wait()
 // Preserved:
 // Terminates process
 fn00027E84_entry:
-// DataOut: i0 i2 i6 l0 l1 l4 o0
+// DataOut: i0 i2 i6 l0 l1 l2 l4 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l00027E84:
-// DataOut: i0 i2 i6 l0 l1 l4 o0
+// DataOut: i0 i2 i6 l0 l1 l2 l4 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l00027E88_thunk__PROCEDURE_LINKAGE_TABLE_:
 	_PROCEDURE_LINKAGE_TABLE_()
 	return
-// DataOut: i0 i2 i6 l0 l1 l4 o0
+// DataOut: i0 i2 i6 l0 l1 l2 l4 o0
 // DataOut (flags): 
 // SymbolicIn: sp:fp g1:0x00093000
 // Terminates process

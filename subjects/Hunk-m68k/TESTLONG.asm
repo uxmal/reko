@@ -1990,9 +1990,30 @@ l00002018:
 	movem.l	(a7)+,d2
 	rts	
 0000201E                                           00 00               ..
-00002020 20 2F 00 04 20 40 4A 80 67 20 4A B9 00 00 3D A8  /.. @J.g J...=.
-00002030 67 18 70 04 D0 A0 2F 00 2F 08 2F 39 00 00 3D A8 g.p.../././9..=.
-00002040 4E B9 00 00 20 E8 4F EF 00 0C 4E 75 48 E7 30 38 N... .O...NuH.08
+
+;; fn00002020: 00002020
+fn00002020 proc
+	move.l	$0004(a7),d0
+	movea.l	d0,a0
+	tst.l	d0
+	beq	$0000204A
+
+l0000202A:
+	tst.l	$00003DA8
+	beq	$0000204A
+
+l00002032:
+	moveq	#$+04,d0
+	add.l	-(a0),d0
+	move.l	d0,-(a7)
+	move.l	a0,-(a7)
+	move.l	$00003DA8,-(a7)
+	jsr.l	$000020E8
+	lea	$000C(a7),a7
+
+l0000204A:
+	rts	
+0000204C                                     48 E7 30 38             H.08
 00002050 28 6F 00 1C 24 6F 00 18 22 0A 66 0A 2F 0C 61 00 (o..$o..".f./.a.
 00002060 FF 54 58 4F 60 7A 26 6A FF FC 2F 0C 61 00 FF 46 .TXO`z&j../.a..F
 00002070 26 00 58 4F 67 68 B9 CB 64 04 20 0C 60 02 20 0B &.XOgh..d. .`. .
@@ -2002,17 +2023,86 @@ l00002018:
 000020B0 59 82 66 FA 34 01 60 14 B4 BC 00 01 00 00 65 0A Y.f.4.`.......e.
 000020C0 20 08 10 D9 53 82 66 FA 60 0C 20 08 53 42 65 06  ...S.f.`. .SBe.
 000020D0 10 D9 51 CA FF FC 2F 0A 61 00 FF 46 58 4F 20 03 ..Q.../.a..FXO .
-000020E0 4C DF 1C 0C 4E 75 00 00 48 E7 20 3E 22 2F 00 20 L...Nu..H. >"/. 
-000020F0 2A 6F 00 24 28 6F 00 1C 20 79 00 00 3D 74 0C 68 *o.$(o.. y..=t.h
-00002100 00 27 00 14 65 12 2C 79 00 00 3D 74 20 4C 22 41 .'..e.,y..=t L"A
-00002110 20 0D 4E AE FD 36 60 64 24 0C 67 60 4A 81 67 5C  .N..6`d$.g`J.g\
-00002120 26 41 47 EB FF F4 BB EC 00 14 64 36 24 4C 24 52 &AG.......d6$L$R
-00002130 4A 92 67 48 4A 2A 00 08 67 F4 B2 AA 00 14 65 EE J.gHJ*..g.....e.
-00002140 B2 AA 00 18 64 E8 2C 79 00 00 3D 74 20 4A 22 41 ....d.,y..=t J"A
-00002150 20 0D 4E AE FF 40 20 2A 00 1C B0 AC 00 10 66 1C  .N..@ *......f.
-00002160 26 4A 2C 79 00 00 3D 74 22 4B 4E AE FF 04 20 23 &J,y..=t"KN... #
-00002170 2C 79 00 00 3D 74 22 4B 4E AE FF 2E 4C DF 7C 04 ,y..=t"KN...L.|.
-00002180 4E 75 00 00                                     Nu..           
+000020E0 4C DF 1C 0C 4E 75 00 00                         L...Nu..       
+
+;; fn000020E8: 000020E8
+fn000020E8 proc
+	movem.l	d2/a2-a6,-(a7)
+	move.l	$0020(a7),d1
+	movea.l	$0024(a7),a5
+	movea.l	$001C(a7),a4
+	movea.l	$00003D74,a0
+	cmpi.w	#$0027,$0014(a0)
+	bcs	$00002118
+
+l00002106:
+	movea.l	$00003D74,a6
+	movea.l	a4,a0
+	movea.l	d1,a1
+	move.l	a5,d0
+	jsr.l	$-02CA(a6)
+	bra	$0000217C
+
+l00002118:
+	move.l	a4,d2
+	beq	$0000217C
+
+l0000211C:
+	tst.l	d1
+	beq	$0000217C
+
+l00002120:
+	movea.l	d1,a3
+	lea	$-000C(a3),a3
+	cmpa.l	$0014(a4),a5
+	bcc	$00002162
+
+l0000212C:
+	movea.l	a4,a2
+
+l0000212E:
+	movea.l	(a2),a2
+	tst.l	(a2)
+	beq	$0000217C
+
+l00002134:
+	tst.b	$0008(a2)
+	beq	$0000212E
+
+l0000213A:
+	cmp.l	$0014(a2),d1
+	bcs	$0000212E
+
+l00002140:
+	cmp.l	$0018(a2),d1
+	bcc	$0000212E
+
+l00002146:
+	movea.l	$00003D74,a6
+	movea.l	a2,a0
+	movea.l	d1,a1
+	move.l	a5,d0
+	jsr.l	$-00C0(a6)
+	move.l	$001C(a2),d0
+	cmp.l	$0010(a4),d0
+	bne	$0000217C
+
+l00002160:
+	movea.l	a2,a3
+
+l00002162:
+	movea.l	$00003D74,a6
+	movea.l	a3,a1
+	jsr.l	$-00FC(a6)
+	move.l	-(a3),d0
+	movea.l	$00003D74,a6
+	movea.l	a3,a1
+	jsr.l	$-00D2(a6)
+
+l0000217C:
+	movem.l	(a7)+,d2/a2-a6
+	rts	
+00002182       00 00                                       ..           
 
 ;; fn00002184: 00002184
 fn00002184 proc
@@ -2200,14 +2290,55 @@ l00002310:
 l00002312:
 	movem.l	(a7)+,d2-d3/a2/a6
 	rts	
-00002318                         48 E7 20 22 24 2F 00 10         H. "$/..
-00002320 20 79 00 00 3D 74 0C 68 00 27 00 14 65 0E 2C 79  y..=t.h.'..e.,y
-00002330 00 00 3D 74 20 42 4E AE FD 42 60 44 4A 82 67 40 ..=t BN..B`DJ.g@
-00002340 2C 79 00 00 3D 74 20 42 4E AE FE FE 24 40 22 0A ,y..=t BN...$@".
-00002350 67 20 20 22 2C 79 00 00 3D 74 22 4A 4E AE FF 2E g  ",y..=t"JN...
-00002360 2C 79 00 00 3D 74 20 42 4E AE FE FE 24 40 20 0A ,y..=t BN...$@ .
-00002370 66 E0 2C 79 00 00 3D 74 22 42 70 18 4E AE FF 2E f.,y..=t"Bp.N...
-00002380 4C DF 44 04 4E 75 00 00                         L.D.Nu..       
+
+;; fn00002318: 00002318
+fn00002318 proc
+	movem.l	d2/a2/a6,-(a7)
+	move.l	$0010(a7),d2
+	movea.l	$00003D74,a0
+	cmpi.w	#$0027,$0014(a0)
+	bcs	$0000233C
+
+l0000232E:
+	movea.l	$00003D74,a6
+	movea.l	d2,a0
+	jsr.l	$-02BE(a6)
+	bra	$00002380
+
+l0000233C:
+	tst.l	d2
+	beq	$00002380
+
+l00002340:
+	movea.l	$00003D74,a6
+	movea.l	d2,a0
+	jsr.l	$-0102(a6)
+	movea.l	d0,a2
+	move.l	a2,d1
+	beq	$00002372
+
+l00002352:
+	move.l	-(a2),d0
+	movea.l	$00003D74,a6
+	movea.l	a2,a1
+	jsr.l	$-00D2(a6)
+	movea.l	$00003D74,a6
+	movea.l	d2,a0
+	jsr.l	$-0102(a6)
+	movea.l	d0,a2
+	move.l	a2,d0
+	bne	$00002352
+
+l00002372:
+	movea.l	$00003D74,a6
+	movea.l	d2,a1
+	moveq	#$+18,d0
+	jsr.l	$-00D2(a6)
+
+l00002380:
+	movem.l	(a7)+,d2/a2/a6
+	rts	
+00002386                   00 00                               ..       
 
 ;; fn00002388: 00002388
 fn00002388 proc
@@ -2919,11 +3050,46 @@ l0000280C:
 00002AC0 3E D4 21 79 00 00 3E D0 00 10 20 79 00 00 3E D4 >.!y..>... y..>.
 00002AD0 42 A8 00 0C 23 F9 00 00 3E CC 00 00 3E D8 23 F9 B...#...>...>.#.
 00002AE0 00 00 3E D4 00 00 3E DC 4C DF 4C 00 4E 75 00 00 ..>...>.L.L.Nu..
-00002AF0 42 A7 4E B9 00 00 2A FC 58 4F 4E 75 48 E7 00 20 B.N...*.XONuH.. 
-00002B00 24 6F 00 08 20 0A 67 0C 2F 0A 4E B9 00 00 1F 08 $o.. .g./.N.....
-00002B10 58 4F 60 26 24 79 00 00 3E D8 20 0A 67 1C 70 02 XO`&$y..>. .g.p.
-00002B20 C0 AA 00 18 67 0A 2F 0A 4E B9 00 00 1F 08 58 4F ....g./.N.....XO
-00002B30 41 EA 00 0C 24 50 20 0A 66 E4 70 00 24 5F 4E 75 A...$P .f.p.$_Nu
+00002AF0 42 A7 4E B9 00 00 2A FC 58 4F 4E 75             B.N...*.XONu   
+
+;; fn00002AFC: 00002AFC
+fn00002AFC proc
+	movem.l	a2,-(a7)
+	movea.l	$0008(a7),a2
+	move.l	a2,d0
+	beq	$00002B14
+
+l00002B08:
+	move.l	a2,-(a7)
+	jsr.l	$00001F08
+	addq.w	#$04,a7
+	bra	$00002B3A
+
+l00002B14:
+	movea.l	$00003ED8,a2
+	move.l	a2,d0
+	beq	$00002B3A
+
+l00002B1E:
+	moveq	#$+02,d0
+	and.l	$0018(a2),d0
+	beq	$00002B30
+
+l00002B26:
+	move.l	a2,-(a7)
+	jsr.l	$00001F08
+	addq.w	#$04,a7
+
+l00002B30:
+	lea	$000C(a2),a0
+	movea.l	(a0),a2
+	move.l	a2,d0
+	bne	$00002B1E
+
+l00002B3A:
+	moveq	#$+00,d0
+	movea.l	(a7)+,a2
+	rts	
 
 ;; fn00002B40: 00002B40
 fn00002B40 proc

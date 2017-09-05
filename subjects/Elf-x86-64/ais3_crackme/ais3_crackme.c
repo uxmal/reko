@@ -11,11 +11,11 @@ void _init()
 	return;
 }
 
-// 0000000000400410: void _start(Register word64 rax, Register (ptr Eq_6) rdx, Stack Eq_7 qwArg00, Stack word32 dwArg04)
-void _start(word64 rax,  * rdx, Eq_7 qwArg00, word32 dwArg04)
+// 0000000000400410: void _start(Register (ptr Eq_5) rdx, Stack Eq_6 qwArg00, Stack word32 dwArg04)
+void _start( * rdx, Eq_6 qwArg00, word32 dwArg04)
 {
 	__align(fp + 0x08);
-	word64 rax_22 = DPB(rax, __libc_start_main(&globals->t4005C5, qwArg00, fp + 0x08, &globals->t400620, &globals->t4006B0, rdx, DPB(qwArg00, fp + 0x04, 0)), 0);
+	__libc_start_main(&globals->t4005C5, qwArg00, fp + 0x08, &globals->t400620, &globals->t4006B0, rdx, DPB(qwArg00, fp + 0x04, 0));
 	__hlt();
 }
 
@@ -99,79 +99,64 @@ void __do_global_dtors_aux(word64 r8)
 // 00000000004004F0: void frame_dummy(Register word64 r8)
 void frame_dummy(word64 r8)
 {
-frame_dummy_entry:
-	rsp = fp
-	SCZO = cond(globals->qw600E08 - 0x00)
-	Z = SCZO
-	branch Test(EQ,Z) l0000000000400518
-	goto l00000000004004FA
-l00000000004004F0:
-l00000000004004FA:
-	rax = 0x00
-	SZO = cond(0x00)
-	Z = SZO
-	C = false
-	branch Test(EQ,Z) l0000000000400518
-l0000000000400504:
-	rsp = fp - 0x04
-	dwLoc04 = rbp
-	qwLoc04 = DPB(qwLoc04, dwLoc04, 0)
-	rdi = 0x00600E08
-	rbp = fp - 0x04
-	eax()
-	rbp = qwLoc04
-	rsp = fp + 0x04
-	register_tm_clones(r8)
-	return
-l000000000040050F_thunk_register_tm_clones:
-l0000000000400518:
-	register_tm_clones(r8)
-	return
-frame_dummy_exit:
+	if (globals->qw600E08 == 0x00 || 0x00 == 0x00)
+	{
+		register_tm_clones(r8);
+		return;
+	}
+	else
+	{
+		word64 rsp_47;
+		byte SCZO_48;
+		byte Z_49;
+		word32 eax_50;
+		word64 rax_51;
+		byte SZO_52;
+		byte C_53;
+		word64 rbp_54;
+		word32 edi_55;
+		word64 rdi_56;
+		word64 r8_57;
+		word64 rdx_58;
+		word32 edx_59;
+		word64 rsi_60;
+		eax();
+		register_tm_clones(r8_57);
+		return;
+	}
 }
 
-// 0000000000400520: Register (ptr byte) verify(Register (arr Eq_167) rdi)
-byte * verify(Eq_167 rdi[])
+// 0000000000400520: Register word32 verify(Register (arr Eq_141) rdi)
+word32 verify(Eq_141 rdi[])
 {
 	word32 dwLoc08_127 = 0x00;
 	while (true)
 	{
-		byte * rax_122;
-		byte * rax_32 = (rdi + (int64) ((word32) ((uint64) dwLoc08_127)))->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000->a0000;
-		if ((byte) (word32) *rax_32 == 0x00)
+		word32 eax_123;
+		if ((byte) (word32) (&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&rdi[(int64) (word32) (uint64) dwLoc08_127].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] == 0x00)
 			break;
 		byte al_74 = (byte) (uint64) ((word32) (uint64) dwLoc08_127 ^ (word32) ((uint64) ((word32) (&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&(rdi)[(int64) ((word32) ((uint64) dwLoc08_127))].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000)[0x00])));
 		uint64 rax_114 = (uint64) dwLoc08_127;
 		if ((byte) (word32) (DPB(rax_114, (int16) (byte) rax_114, 0) + 0x00601020) != (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_74 >> (byte) ((uint64) ((word32) ((uint64) (0x08 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc08_127) ^ 0x09)) & 0x03)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_74 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc08_127) ^ 0x09)) & 0x03)))))))))))) + 0x08)
 		{
-			rax_122 = null;
-			return rax_122;
+			eax_123 = 0x00;
+			return eax_123;
 		}
 		dwLoc08_127 = dwLoc08_127 + 0x01;
 	}
-	rax_122 = DPB(rax_32, (word32) (dwLoc08_127 == 0x17), 0);
-	return rax_122;
+	eax_123 = (word32) (dwLoc08_127 == 0x17);
+	return eax_123;
 }
 
-// 00000000004005C5: void main(Register word64 rax, Register (ptr Eq_242) rsi, Register word32 edi)
-void main(word64 rax, Eq_242 * rsi, word32 edi)
+// 00000000004005C5: void main(Register (ptr Eq_226) rsi, Register word32 edi)
+void main(Eq_226 * rsi, word32 edi)
 {
 	if (edi != 0x02)
-	{
-		word64 rax_26 = DPB(rax, puts("You need to enter the secret key!"), 0);
-	}
+		puts("You need to enter the secret key!");
+	else if (verify(rsi->ptr0008) != 0x00)
+		puts("Correct! that is the secret key!");
 	else
-	{
-		word64 rax_37 = verify(rsi->ptr0008);
-		if ((word32) rax_37 != 0x00)
-		{
-			word64 rax_45 = DPB(rax_37, puts("Correct! that is the secret key!"), 0);
-		}
-		else
-		{
-			word64 rax_47 = DPB(rax_37, puts("I'm sorry, that's the wrong secret key!"), 0);
-		}
-	}
+		puts("I'm sorry, that's the wrong secret key!");
 	return;
 }
 

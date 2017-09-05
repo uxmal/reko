@@ -121,7 +121,7 @@ namespace Reko.Core
         {
             try
             {
-                var sser = platform.CreateProcedureSerializer(this, this.defaultConvention);
+                var sser = new ProcedureSerializer(platform, this, this.defaultConvention);
                 var signature = sser.Deserialize(sp.Signature, platform.Architecture.CreateFrame());
                 library.Signatures[sp.Name] = signature;
                 var mod = EnsureModule(this.moduleName, this.library);
@@ -184,7 +184,7 @@ namespace Reko.Core
         public ExternalProcedure LoadExternalProcedure(ProcedureBase_v1 sProc)
         {
             var sSig = sProc.Signature;
-            var sser = platform.CreateProcedureSerializer(this, this.defaultConvention);
+            var sser = new ProcedureSerializer(platform, this, this.defaultConvention);
             var sig = sser.Deserialize(sSig, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
             return new ExternalProcedure(sProc.Name, sig)
             {
@@ -194,11 +194,13 @@ namespace Reko.Core
 
         public void ReadDefaults(SerializedLibraryDefaults defaults)
         {
-            if (defaults == null)
-                return;
-            if (defaults.Signature != null)
+            if (defaults != null && defaults.Signature != null)
             {
                 defaultConvention = defaults.Signature.Convention;
+            }
+            if (string.IsNullOrEmpty(defaultConvention))
+            {
+                defaultConvention = platform.DefaultCallingConvention;
             }
         }
 
@@ -270,13 +272,8 @@ namespace Reko.Core
 
         public DataType VisitSignature(SerializedSignature sSig)
         {
-            var sser = platform.CreateProcedureSerializer(this, this.defaultConvention);
+            var sser = new ProcedureSerializer(platform, this, this.defaultConvention);
             return sser.Deserialize(sSig, platform.Architecture.CreateFrame());
-            //return new FunctionType(
-            //    null,
-            //    sig.ReturnValue,
-            //    sig.Parameters, 
-            //    sSig);
         }
 
         public DataType VisitStructure(StructType_v1 structure)

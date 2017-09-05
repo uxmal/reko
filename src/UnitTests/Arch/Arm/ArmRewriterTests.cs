@@ -1198,7 +1198,7 @@ means
         {
             BuildTest(0xb851eb85);  // ldmdalt r1, {r0, r2, r7, r8, sb, fp, sp, lr, pc} ^
             AssertCode(
-                "0|L--|00100000(4): 10 instructions",
+                "0|T--|00100000(4): 10 instructions",
                 "1|T--|if (Test(GE,NZV)) branch 00100004",
                 "2|L--|r0 = Mem0[r1:word32]",
                 "3|L--|r2 = Mem0[r1 - 4:word32]",
@@ -1352,6 +1352,16 @@ means
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r10_r0 = (int16) (ip >> 16) *s (int16) (fp >> 16) + r10_r0");
+        }
+
+        [Test]
+        public void ArmRw_ldrls_pc()
+        {
+            BuildTest(0x979FF103);   // ldrls\tpc,[pc,r3,lsl #2]
+            AssertCode(
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(UGT,ZC)) branch 00100004",
+                "2|T--|goto Mem0[0x00100008 + r3 * 4:word32]");
         }
     }
 }

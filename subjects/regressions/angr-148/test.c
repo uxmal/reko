@@ -21,11 +21,11 @@ void _init()
 	return;
 }
 
-// 0000000000400440: void _start(Register word64 rax, Register (ptr Eq_17) rdx, Stack Eq_18 qwArg00, Stack word32 dwArg04)
-void _start(word64 rax,  * rdx, Eq_18 qwArg00, word32 dwArg04)
+// 0000000000400440: void _start(Register (ptr Eq_16) rdx, Stack Eq_17 qwArg00, Stack word32 dwArg04)
+void _start( * rdx, Eq_17 qwArg00, word32 dwArg04)
 {
 	__align(fp + 0x08);
-	word64 rax_22 = DPB(rax, __libc_start_main(&globals->t40053D, qwArg00, fp + 0x08, &globals->t400550, &globals->t4005C0, rdx, DPB(qwArg00, fp + 0x04, 0)), 0);
+	__libc_start_main(&globals->t40053D, qwArg00, fp + 0x08, &globals->t400550, &globals->t4005C0, rdx, DPB(qwArg00, fp + 0x04, 0));
 	__hlt();
 }
 
@@ -91,48 +91,44 @@ void __do_global_dtors_aux(word64 r8)
 // 0000000000400500: void frame_dummy(Register word64 r8)
 void frame_dummy(word64 r8)
 {
-frame_dummy_entry:
-	rsp = fp
-	SCZO = cond(globals->qw600E20 - 0x00)
-	Z = SCZO
-	branch Test(EQ,Z) l0000000000400528
-	goto l000000000040050A
-l0000000000400500:
-l000000000040050A:
-	rax = 0x00
-	SZO = cond(0x00)
-	Z = SZO
-	C = false
-	branch Test(EQ,Z) l0000000000400528
-l0000000000400514:
-	rsp = fp - 0x04
-	dwLoc04 = rbp
-	qwLoc04 = DPB(qwLoc04, dwLoc04, 0)
-	rdi = 0x00600E20
-	rbp = fp - 0x04
-	eax()
-	rbp = qwLoc04
-	rsp = fp + 0x04
-	register_tm_clones(r8)
-	return
-l000000000040051F_thunk_register_tm_clones:
-l0000000000400528:
-	register_tm_clones(r8)
-	return
-frame_dummy_exit:
+	if (globals->qw600E20 == 0x00 || 0x00 == 0x00)
+	{
+		register_tm_clones(r8);
+		return;
+	}
+	else
+	{
+		word64 rsp_47;
+		byte SCZO_48;
+		byte Z_49;
+		word32 eax_50;
+		word64 rax_51;
+		byte SZO_52;
+		byte C_53;
+		word64 rbp_54;
+		word32 edi_55;
+		word64 rdi_56;
+		word64 r8_57;
+		word64 rdx_58;
+		word32 edx_59;
+		word64 rsi_60;
+		eax();
+		register_tm_clones(r8_57);
+		return;
+	}
 }
 
-// 000000000040052D: Register ptr64 f(Register uint64 rax)
-ptr64 f(uint64 rax)
+// 000000000040052D: Register ptr64 f()
+ptr64 f()
 {
-	word64 rax_9 = DPB(rax, putchar(0x78), 0);
+	putchar(0x78);
 	return fp + 0x04;
 }
 
 // 000000000040053D: void main()
 void main()
 {
-	f(0x00);
+	f();
 	return;
 }
 

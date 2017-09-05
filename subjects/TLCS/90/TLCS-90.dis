@@ -31,3 +31,4882 @@ fn0000_exit:
 
 
 
+void fn0273(word16 af, byte b, byte c, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a af b c h hl ix l
+// LiveOut:
+// Trashed: SZHXVNC a af b c h hl l sp
+// Preserved: sp
+fn0273_entry:
+	def SZXC
+	def SZHXVC
+	def C
+	def c
+	def b
+	def l
+	def h
+	def hl
+	def a
+	def af
+	def fp
+	def ix
+	def Mem0
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l0273:
+	SZXC_10 = PHI(SZXC, SZXC_118)
+	SZHXVC_11 = PHI(SZHXVC, SZHXVC_124)
+	C_12 = PHI(C, C_119)
+	c_13 = PHI(c, c_114)
+	b_14 = PHI(b, b_117)
+	l_15 = PHI(l, l_122)
+	h_16 = PHI(h, h_121)
+	hl_17 = PHI(hl, hl_120)
+	a_18 = PHI(a, a_22)
+	af_19 = PHI(af, af_23)
+	sp_21 = fp
+	a_22 = a_18 - 1
+	af_23 = DPB(af_19, a_22, 8) (alias)
+	N_24 = false
+	SZHXV_25 = cond(a_22)
+	Z_26 = SZHXV_25 (alias)
+	branch a_22 != 0x00 l026D
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> hl:<invalid>
+// LocalsOut: fp(16)
+
+l026D:
+	c_114 = c_13 << 1
+	SZXC_115 = cond(c_114)
+	C_116 = SZXC_115 (alias)
+	b_117 = __rcl(b_14, C_116)
+	SZXC_118 = cond(b_117)
+	C_119 = SZXC_118 (alias)
+	hl_120 = hl_17 + hl_17 + C_119
+	h_121 = SLICE(hl_120, byte, 8) (alias)
+	l_122 = (byte) hl_120 (alias)
+	N_123 = false
+	SZHXVC_124 = cond(hl_120)
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> hl:<invalid>
+// LocalsOut: fp(16)
+
+l0276:
+	a_27 = c_13
+	v9_30 = Mem0[ix + -26:byte]
+	a_31 = a_27 + v9_30
+	SZHXVC_32 = cond(a_31)
+	C_33 = SZHXVC_32 (alias)
+	Mem34[ix + -6:byte] = a_31
+	a_35 = b_14
+	v12_36 = Mem34[ix + -25:byte]
+	a_37 = a_35 + v12_36 + (a_31 <u 0x00)
+	SZHXVC_38 = cond(a_37)
+	C_39 = SZHXVC_38 (alias)
+	Mem40[ix + -5:byte] = a_37
+	a_41 = l_15
+	v15_42 = Mem40[ix + -24:byte]
+	a_43 = a_41 + v15_42 + (a_37 <u 0x00)
+	SZHXVC_44 = cond(a_43)
+	C_45 = SZHXVC_44 (alias)
+	Mem46[ix + -4:byte] = a_43
+	a_47 = h_16
+	v17_48 = Mem46[ix + -23:byte]
+	a_49 = a_47 + v17_48 + (a_43 <u 0x00)
+	Mem50[ix + -3:byte] = a_49
+	v18_51 = Mem50[ix + -14:byte]
+	a_52 = v18_51
+	v19_53 = Mem50[ix + -18:byte]
+	a_54 = a_52 + v19_53
+	SZHXVC_55 = cond(a_54)
+	C_56 = SZHXVC_55 (alias)
+	c_57 = a_54
+	v20_58 = Mem50[ix + -13:byte]
+	a_59 = v20_58
+	v21_60 = Mem50[ix + -17:byte]
+	a_61 = a_59 + v21_60 + (a_54 <u 0x00)
+	SZHXVC_62 = cond(a_61)
+	C_63 = SZHXVC_62 (alias)
+	b_64 = a_61
+	v22_65 = Mem50[ix + -12:byte]
+	a_66 = v22_65
+	v23_67 = Mem50[ix + -16:byte]
+	a_68 = a_66 + v23_67 + (a_61 <u 0x00)
+	SZHXVC_69 = cond(a_68)
+	C_70 = SZHXVC_69 (alias)
+	l_71 = a_68
+	v24_72 = Mem50[ix + -11:byte]
+	a_73 = v24_72
+	v25_74 = Mem50[ix + -15:byte]
+	a_75 = a_73 + v25_74 + (a_68 <u 0x00)
+	h_76 = a_75
+	v26_77 = Mem50[ix + -6:byte]
+	a_78 = v26_77
+	a_79 = a_78 ^ c_57
+	Mem80[ix + -6:byte] = a_79
+	v30_81 = Mem80[ix + -5:byte]
+	a_82 = v30_81
+	a_83 = a_82 ^ b_64
+	Mem84[ix + -5:byte] = a_83
+	v31_85 = Mem84[ix + -4:byte]
+	a_86 = v31_85
+	a_87 = a_86 ^ l_71
+	Mem88[ix + -4:byte] = a_87
+	v32_89 = Mem88[ix + -3:byte]
+	a_90 = v32_89
+	a_91 = a_90 ^ h_76
+	af_92 = DPB(af_23, a_91, 8) (alias)
+	H_93 = true
+	X_94 = false
+	N_95 = false
+	C_96 = false
+	SZV_97 = cond(a_91)
+	Mem98[ix + -3:byte] = a_91
+	sp_99 = fp - 2
+	wLoc02_100 = af_92
+	v34_101 = Mem98[ix + -14:byte]
+	c_102 = v34_101
+	v35_103 = Mem98[ix + -13:byte]
+	b_104 = v35_103
+	v36_105 = Mem98[ix + -12:byte]
+	l_106 = v36_105
+	v37_107 = Mem98[ix + -11:byte]
+	h_108 = v37_107
+	hl_109 = DPB(hl_17, h_108, 8) (alias)
+	af_110 = wLoc02_100
+	sp_111 = fp
+	a_112 = 0x05
+	af_113 = DPB(af_110, a_112, 8) (alias)
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> hl:<invalid>
+
+l02DC_thunk_fn02DE:
+	fn02DE(af_113, c_102, b_104, hl_109, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:0x05 c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> hl:<invalid> -2(fp):af
+
+fn0273_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> hl:<invalid> -2(fp):af
+
+
+
+void fn02A4(word16 af, byte b, byte c, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C af b c hl ix
+// LiveOut:
+// Trashed: SZHXVNC a af b c h hl l sp
+// Preserved: sp
+fn02A4_entry:
+// DataOut: af b c hl ix
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l02A4:
+	byte v4_4 = Mem0[ix + 97:byte]
+	byte a_10 = Mem0[ix + -11:byte] + Mem0[ix + -15:byte] + C
+	Mem16[ix + -6:byte] = Mem0[ix + -6:byte] ^ c
+	Mem21[ix + -5:byte] = Mem16[ix + -5:byte] ^ b
+	Mem25[ix + -4:byte] = Mem21[ix + -4:byte] ^ v4_4
+	Mem36[ix + -3:byte] = Mem25[ix + -3:byte] ^ a_10
+	byte v23_39 = Mem36[ix + -14:byte]
+	byte v24_41 = Mem36[ix + -13:byte]
+	word16 hl_48 = DPB(hl, Mem36[ix + -11:byte], 8)
+	word16 af_52 = DPB(af, 0x05, 8)
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l02DC_thunk_fn02DE:
+	fn02DE(af_52, v23_39, v24_41, hl_48, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp l:<invalid> a:0x05 h:<invalid> c:<invalid> b:<invalid> af:<invalid> -2(fp):af
+
+fn02A4_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> l:<invalid> a:<invalid> h:<invalid> c:<invalid> b:<invalid> af:<invalid> hl:<invalid> -2(fp):af
+
+
+
+void fn02DE(word16 af, byte c, byte b, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a af b c h hl ix l
+// LiveOut:
+// Trashed: SZHXVNC a af b c h hl l sp
+// Preserved:
+fn02DE_entry:
+	def l
+	def h
+	def a
+	def c
+	def b
+	def hl
+	def af
+	def v3
+	def ix
+	def Mem0
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: v3(16)
+
+l02DE:
+	l_7 = PHI(l_19, l)
+	h_8 = PHI(h_16, h)
+	a_9 = PHI(a_28, a)
+	c_10 = PHI(c_26, c)
+	b_11 = PHI(b_23, b)
+	hl_12 = PHI(hl_20, hl)
+	af_13 = PHI(af_29, af)
+	sp_15 = v3
+	h_16 = h_8 >>u 1
+	SZXC_17 = cond(h_16)
+	C_18 = SZXC_17 (alias)
+	l_19 = __rcr(l_7, C_18)
+	hl_20 = DPB(hl_12, l_19, 0) (alias)
+	SZXC_21 = cond(l_19)
+	C_22 = SZXC_21 (alias)
+	b_23 = __rcr(b_11, C_22)
+	SZXC_24 = cond(b_23)
+	C_25 = SZXC_24 (alias)
+	c_26 = __rcr(c_10, C_25)
+	SZXC_27 = cond(c_26)
+	a_28 = a_9 - 1
+	af_29 = DPB(af_13, a_28, 8) (alias)
+	N_30 = false
+	SZHXV_31 = cond(a_28)
+	Z_32 = SZHXV_31 (alias)
+	branch Test(NE,Z_32) l02DE
+// DataOut: a af b c h hl ix l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> h:<invalid> l:<invalid> b:<invalid> c:<invalid> a:<invalid>
+// LocalsOut: v3(16)
+
+l02E9:
+	a_33 = c_26
+	v16_36 = Mem0[ix + -30:byte]
+	a_37 = a_33 + v16_36
+	SZHXVC_38 = cond(a_37)
+	C_39 = SZHXVC_38 (alias)
+	c_40 = a_37
+	a_41 = b_23
+	v18_42 = Mem0[ix + -29:byte]
+	a_43 = a_41 + v18_42 + C_39
+	SZHXVC_44 = cond(a_43)
+	C_45 = SZHXVC_44 (alias)
+	b_46 = a_43
+	a_47 = l_19
+	v19_48 = Mem0[ix + -28:byte]
+	a_49 = a_47 + v19_48 + C_45
+	SZHXVC_50 = cond(a_49)
+	C_51 = SZHXVC_50 (alias)
+	l_52 = a_49
+	a_53 = h_16
+	v20_54 = Mem0[ix + -27:byte]
+	a_55 = a_53 + v20_54 + C_51
+	h_56 = a_55
+	a_57 = c_40
+	v21_58 = Mem0[ix + -6:byte]
+	a_59 = a_57 ^ v21_58
+	c_60 = a_59
+	a_61 = b_46
+	v24_62 = Mem0[ix + -5:byte]
+	a_63 = a_61 ^ v24_62
+	b_64 = a_63
+	a_65 = l_52
+	v25_66 = Mem0[ix + -4:byte]
+	a_67 = a_65 ^ v25_66
+	l_68 = a_67
+	a_69 = h_56
+	v26_70 = Mem0[ix + -3:byte]
+	a_71 = a_69 ^ v26_70
+	h_72 = a_71
+	v27_73 = Mem0[ix + -10:byte]
+	a_74 = v27_73
+	a_75 = a_74 + c_60
+	SZHXVC_76 = cond(a_75)
+	C_77 = SZHXVC_76 (alias)
+	Mem78[ix + -10:byte] = a_75
+	v28_79 = Mem78[ix + -9:byte]
+	a_80 = v28_79
+	a_81 = a_80 + b_64 + C_77
+	SZHXVC_82 = cond(a_81)
+	C_83 = SZHXVC_82 (alias)
+	Mem84[ix + -9:byte] = a_81
+	v29_85 = Mem84[ix + -8:byte]
+	a_86 = v29_85
+	a_87 = a_86 + l_68 + C_83
+	SZHXVC_88 = cond(a_87)
+	C_89 = SZHXVC_88 (alias)
+	Mem90[ix + -8:byte] = a_87
+	v30_91 = Mem90[ix + -7:byte]
+	a_92 = v30_91
+	a_93 = a_92 + h_72 + C_89
+	af_94 = DPB(af_29, a_93, 8) (alias)
+	N_95 = false
+	SZHXVC_96 = cond(a_93)
+	Mem97[ix + -7:byte] = a_93
+	sp_98 = sp_15 - 2
+	Mem99[sp_98:word16] = af_94
+	v32_100 = Mem99[ix + -10:byte]
+	c_101 = v32_100
+	v33_102 = Mem99[ix + -9:byte]
+	b_103 = v33_102
+	v34_104 = Mem99[ix + -8:byte]
+	l_105 = v34_104
+	v35_106 = Mem99[ix + -7:byte]
+	h_107 = v35_106
+	hl_108 = DPB(hl_20, h_107, 8) (alias)
+	af_109 = Mem99[sp_98:word16]
+	sp_110 = sp_98 + 2
+	a_111 = 0x04
+	af_112 = DPB(af_109, a_111, 8) (alias)
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:v3 h:<invalid> l:<invalid> b:<invalid> c:<invalid> a:<invalid>
+
+l033F_thunk_fn0341:
+	af_116 = fn0341(af_112, b_103, c_101, hl_108, ix, out c_113, out b_114, out hl_115)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:v3 h:<invalid> l:<invalid> b:<invalid> c:<invalid> a:0x04 af:<invalid>
+
+fn02DE_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> h:<invalid> l:<invalid> b:<invalid> c:<invalid> a:<invalid> af:<invalid> hl:<invalid>
+
+
+
+void fn02F2(word16 af, byte c, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a af c h hl ix l
+// LiveOut:
+// Trashed: SZHXVNC a af b c h hl l sp
+// Preserved: sp
+fn02F2_entry:
+// DataOut: a af c h hl ix l
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l02F2:
+	word16 af_7 = DPB(af, l, 8)
+// DataOut: a af b c h hl ix
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l02F3_thunk_fn02F4:
+	byte c_11
+	byte b_12
+	word16 hl_13
+	fn02F4(af_7, a, c, hl, ix, out c_11, out b_12, out hl_13)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp b:a a:l
+
+fn02F2_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> b:<invalid> a:<invalid> l:<invalid> h:<invalid> c:<invalid> af:<invalid> hl:<invalid>
+
+
+
+word16 fn02F4(word16 af, byte b, byte c, word16 hl, word16 ix, ptr32 & cOut, ptr32 & bOut, ptr32 & hlOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C a af b c h hl ix
+// LiveOut: af b c h hl l
+// Trashed: SZHXVNC a af b c h hl l sp
+// Preserved: sp
+fn02F4_entry:
+// DataOut: a af b bc c de h hl ix
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l02F4:
+	byte a_7 = a + Mem0[ix + -28:byte] + C
+	byte a_24 = b ^ Mem0[ix + -5:byte]
+	byte a_28 = a_7 ^ Mem0[ix + -4:byte]
+	byte a_32 = h + Mem0[ix + -27:byte] + (a_7 <u 0x00) ^ Mem0[ix + -3:byte]
+	byte a_36 = Mem0[ix + -10:byte] + (c ^ Mem0[ix + -6:byte])
+	Mem39[ix + -10:byte] = a_36
+	byte a_42 = Mem39[ix + -9:byte] + a_24 + (a_36 <u 0x00)
+	Mem45[ix + -9:byte] = a_42
+	byte a_48 = Mem45[ix + -8:byte] + a_28 + (a_42 <u 0x00)
+	Mem51[ix + -8:byte] = a_48
+	Mem59[ix + -7:byte] = Mem51[ix + -7:byte] + a_32 + (a_48 <u 0x00)
+	byte v26_62 = Mem59[ix + -10:byte]
+	byte v27_64 = Mem59[ix + -9:byte]
+	word16 hl_71 = DPB(hl, Mem59[ix + -7:byte], 8)
+	word16 af_75 = DPB(af, 0x04, 8)
+// DataOut: a af b bc c de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l033F_thunk_fn0341:
+	byte c_76
+	byte b_77
+	word16 hl_78
+	return fn0341(af_75, v27_64, v26_62, hl_71, ix, out c_76, out b_77, out hl_78)
+// DataOut: af b bc c de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:0x04 l:<invalid> h:<invalid> c:<invalid> b:<invalid> af:<invalid> -2(fp):af
+
+fn02F4_exit:
+// DataOut: af b c h hl l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> l:<invalid> h:<invalid> c:<invalid> b:<invalid> af:<invalid> hl:<invalid> -2(fp):af
+
+
+
+void fn02F9(word16 af, byte b, byte c, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C a af b c hl ix l
+// LiveOut:
+// Trashed: SZHXVNC a af b c h hl l sp
+// Preserved: sp
+fn02F9_entry:
+// DataOut: a af b c hl ix l
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l02F9:
+	byte a_17 = b ^ Mem0[ix + -5:byte]
+	byte a_22 = l ^ Mem0[ix + -4:byte]
+	byte a_26 = a + Mem0[ix + -27:byte] + C ^ Mem0[ix + -3:byte]
+	byte a_30 = Mem0[ix + -10:byte] + (c ^ Mem0[ix + -6:byte])
+	Mem33[ix + -10:byte] = a_30
+	byte a_36 = Mem33[ix + -9:byte] + a_17 + (a_30 <u 0x00)
+	Mem39[ix + -9:byte] = a_36
+	byte a_42 = Mem39[ix + -8:byte] + a_22 + (a_36 <u 0x00)
+	Mem45[ix + -8:byte] = a_42
+	Mem53[ix + -7:byte] = Mem45[ix + -7:byte] + a_26 + (a_42 <u 0x00)
+	byte v25_56 = Mem53[ix + -10:byte]
+	byte v26_58 = Mem53[ix + -9:byte]
+	word16 hl_65 = DPB(hl, Mem53[ix + -7:byte], 8)
+	word16 af_69 = DPB(af, 0x04, 8)
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l033F_thunk_fn0341:
+	byte c_70
+	byte b_71
+	word16 hl_72
+	fn0341(af_69, v26_58, v25_56, hl_65, ix, out c_70, out b_71, out hl_72)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:0x04 h:<invalid> c:<invalid> b:<invalid> l:<invalid> af:<invalid> -2(fp):af
+
+fn02F9_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> h:<invalid> c:<invalid> b:<invalid> l:<invalid> af:<invalid> hl:<invalid> -2(fp):af
+
+
+
+word16 fn0341(word16 af, byte b, byte c, word16 hl, word16 ix, ptr32 & cOut, ptr32 & bOut, ptr32 & hlOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a af b c h hl ix l
+// LiveOut: af b c h hl l
+// Trashed: SZHXVNC a af b c h hl l sp
+// Preserved:
+fn0341_entry:
+	def hl
+	def c
+	def b
+	def af
+	def a
+	def v3
+	def ix
+	def cOut
+	def bOut
+	def hlOut
+// DataOut: a af b bc c de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0341:
+	hl_5 = PHI(hl_18, hl)
+	c_6 = PHI(c_12, c)
+	b_7 = PHI(b_15, b)
+	af_8 = PHI(af_23, af)
+	a_9 = PHI(a_22, a)
+	sp_11 = v3
+	c_12 = c_6 << 1
+	SZXC_13 = cond(c_12)
+	C_14 = SZXC_13 (alias)
+	b_15 = __rcl(b_7, C_14)
+	SZXC_16 = cond(b_15)
+	C_17 = SZXC_16 (alias)
+	hl_18 = hl_5 + hl_5 + C_17
+	l_19 = (byte) hl_18 (alias)
+	h_20 = SLICE(hl_18, byte, 8) (alias)
+	SZHXVC_21 = cond(hl_18)
+	a_22 = a_9 - 1
+	af_23 = DPB(af_8, a_22, 8) (alias)
+	N_24 = false
+	SZHXV_25 = cond(a_22)
+	Z_26 = SZHXV_25 (alias)
+	branch Test(NE,Z_26) l0341
+// DataOut: a af b bc c de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> c:<invalid> b:<invalid> hl:<invalid> a:<invalid>
+
+l0348_thunk_fn034A:
+	af_32 = fn034A(af_23, c_12, b_15, l_19, h_20, ix, out c_28, out b_29, out l_30, out h_31)
+	a_33 = SLICE(af_32, byte, 8) (alias)
+	return af_32
+// DataOut: af b bc c de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:v3 c:<invalid> b:<invalid> hl:<invalid> a:<invalid>
+
+fn0341_exit:
+	use c_28 (=> cOut)
+	use b_29 (=> bOut)
+	use hl_18 (=> hlOut)
+// DataOut: af b c h hl l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> c:<invalid> b:<invalid> hl:<invalid> a:<invalid> l:<invalid> h:<invalid> af:<invalid>
+
+
+
+void fn0343(word16 af, byte b, byte c, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C a af b c h hl ix l
+// LiveOut:
+// Trashed: SZHXVNC a af b c h hl l sp
+// Preserved: sp
+fn0343_entry:
+	def fp
+	def b
+	def C
+	def hl
+	def a
+	def af
+	def c
+	def ix
+// DataOut: a af b c h hl ix l
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l0343:
+	sp_1 = fp
+	b_4 = __rcl(b, C)
+	SZXC_5 = cond(b_4)
+	C_6 = SZXC_5 (alias)
+	hl_8 = hl + hl + C_6
+	l_9 = (byte) hl_8 (alias)
+	h_10 = SLICE(hl_8, byte, 8) (alias)
+	SZHXVC_11 = cond(hl_8)
+	a_13 = a - 1
+	af_15 = DPB(af, a_13, 8) (alias)
+	N_16 = false
+	SZHXV_17 = cond(a_13)
+	Z_18 = SZHXV_17 (alias)
+	branch Test(NE,Z_18) l0348_thunk_fn0341
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0348_thunk_fn0341:
+	af_35 = fn0341(af_15, b_4, c, hl_8, ix, out c_32, out b_33, out hl_34)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp b:<invalid> hl:<invalid> a:a - 1
+
+l0348_thunk_fn034A:
+	af_31 = fn034A(af_15, c, b_4, l_9, h_10, ix, out c_27, out b_28, out l_29, out h_30)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp b:<invalid> hl:<invalid> a:a - 1
+
+fn0343_exit:
+	hl_19 = PHI(hl_34, hl_8)
+	c_20 = PHI(c_32, c_27)
+	b_21 = PHI(b_33, b_28)
+	l_22 = PHI(l_9, l_29)
+	h_23 = PHI(h_10, h_30)
+	af_24 = PHI(af_35, af_31)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> b:<invalid> hl:<invalid> a:<invalid> c:<invalid> l:<invalid> h:<invalid> af:<invalid>
+
+
+
+word16 fn034A(word16 af, byte c, byte b, byte l, byte h, word16 ix, ptr32 & cOut, ptr32 & bOut, ptr32 & lOut, ptr32 & hOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  af b c h ix l
+// LiveOut: af b c h l
+// Trashed: SZHXVNC a af b c h l sp
+// Preserved:
+fn034A_entry:
+// DataOut: af b bc c de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: v3(16)
+
+l034A:
+	byte a_7 = c + Mem0[ix + -34:byte]
+	Mem10[ix + -6:byte] = a_7
+	byte a_14 = b + Mem10[ix + -33:byte] + (a_7 <u 0x00)
+	Mem17[ix + -5:byte] = a_14
+	byte a_21 = l + Mem17[ix + -32:byte] + (a_14 <u 0x00)
+	Mem24[ix + -4:byte] = a_21
+	Mem29[ix + -3:byte] = h + Mem24[ix + -31:byte] + (a_21 <u 0x00)
+	byte a_33 = Mem29[ix + -10:byte] + Mem29[ix + -18:byte]
+	byte a_40 = Mem29[ix + -9:byte] + Mem29[ix + -17:byte] + (a_33 <u 0x00)
+	byte a_47 = Mem29[ix + -8:byte] + Mem29[ix + -16:byte] + (a_40 <u 0x00)
+	byte a_54 = Mem29[ix + -7:byte] + Mem29[ix + -15:byte] + (a_47 <u 0x00)
+	Mem59[ix + -6:byte] = Mem29[ix + -6:byte] ^ a_33
+	Mem63[ix + -5:byte] = Mem59[ix + -5:byte] ^ a_40
+	Mem67[ix + -4:byte] = Mem63[ix + -4:byte] ^ a_47
+	byte a_70 = Mem67[ix + -3:byte] ^ a_54
+	Mem78[ix + -3:byte] = a_70
+	Mem80[v3 - 2:word16] = DPB(af, a_70, 8)
+	byte v33_81 = Mem80[ix + -10:byte]
+	byte v34_83 = Mem80[ix + -9:byte]
+	byte v35_85 = Mem80[ix + -8:byte]
+	byte v36_87 = Mem80[ix + -7:byte]
+	word16 af_92 = DPB(Mem80[v3 - 2:word16], 0x05, 8)
+// DataOut: a af b bc c de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l03B0_thunk_fn03B2:
+	byte b_93
+	byte l_94
+	byte h_95
+	byte c_96
+	*cOut = fn03B2(0x05, v33_81, v34_83, v35_85, v36_87, ix, out b_93, out l_94, out h_95)
+	return af_92
+// DataOut: af b bc c de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:v3 a:0x05 c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid>
+
+fn034A_exit:
+// DataOut: af b c h l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid>
+
+
+
+void fn034E(byte a, byte b, byte l, byte h, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C a b h ix l
+// LiveOut:
+// Trashed: SZHXVNC a af b c h l sp
+// Preserved: sp
+fn034E_entry:
+// DataOut: a b h ix l
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l034E:
+	Mem3[ix + -6:byte] = a
+	byte a_9 = b + Mem3[ix + -33:byte] + C
+	Mem12[ix + -5:byte] = a_9
+	byte a_16 = l + Mem12[ix + -32:byte] + (a_9 <u 0x00)
+	Mem19[ix + -4:byte] = a_16
+	Mem24[ix + -3:byte] = h + Mem19[ix + -31:byte] + (a_16 <u 0x00)
+	byte a_28 = Mem24[ix + -10:byte] + Mem24[ix + -18:byte]
+	byte a_35 = Mem24[ix + -9:byte] + Mem24[ix + -17:byte] + (a_28 <u 0x00)
+	byte a_42 = Mem24[ix + -8:byte] + Mem24[ix + -16:byte] + (a_35 <u 0x00)
+	byte a_49 = Mem24[ix + -7:byte] + Mem24[ix + -15:byte] + (a_42 <u 0x00)
+	Mem54[ix + -6:byte] = Mem24[ix + -6:byte] ^ a_28
+	Mem58[ix + -5:byte] = Mem54[ix + -5:byte] ^ a_35
+	Mem67[ix + -4:byte] = Mem58[ix + -4:byte] ^ a_42
+	byte v29_68 = Mem67[ix + -3:byte]
+// DataOut: a h ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l039A_thunk_fn039D:
+	fn039D(v29_68, a_49, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid>
+
+fn034E_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid>
+
+
+
+void fn039D(byte a, byte h, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a h ix
+// LiveOut:
+// Trashed: SZHXVNC a af b c h l sp
+// Preserved: sp
+fn039D_entry:
+// DataOut: a h ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l039D:
+	Mem12[ix + -3:byte] = a ^ h
+	byte v12_16 = Mem12[ix + -10:byte]
+	byte v14_18 = Mem12[ix + -9:byte]
+	byte v16_20 = Mem12[ix + -8:byte]
+	byte v18_22 = Mem12[ix + -7:byte]
+// DataOut: a b c h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l03B0_thunk_fn03B2:
+	byte b_28
+	byte l_29
+	byte h_30
+	fn03B2(0x05, v12_16, v14_18, v16_20, v18_22, ix, out b_28, out l_29, out h_30)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:0x05 c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> -2(fp):af
+
+fn039D_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> -2(fp):af
+
+
+
+void fn03AA()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn03AA_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn03AA_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l03AA:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+
+
+byte fn03B2(byte a, byte c, byte b, byte l, byte h, word16 ix, ptr32 & bOut, ptr32 & lOut, ptr32 & hOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a b c h ix l
+// LiveOut: b c h l
+// Trashed: SZHXVNC a b c h l sp
+// Preserved:
+fn03B2_entry:
+	def a
+	def c
+	def b
+	def l
+	def h
+	def v3
+	def ix
+	def Mem0
+	def bOut
+	def lOut
+	def hOut
+// DataOut: a af b bc c de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l03B2:
+	a_5 = PHI(a_23, a, a)
+	c_6 = PHI(c_21, c, c)
+	b_7 = PHI(b_18, b, b)
+	l_8 = PHI(l_15, l, l)
+	h_9 = PHI(h_12, h, h)
+	sp_11 = v3
+	h_12 = h_9 >>u 1
+	SZXC_13 = cond(h_12)
+	C_14 = SZXC_13 (alias)
+	l_15 = __rcr(l_8, C_14)
+	SZXC_16 = cond(l_15)
+	C_17 = SZXC_16 (alias)
+	b_18 = __rcr(b_7, C_17)
+	SZXC_19 = cond(b_18)
+	C_20 = SZXC_19 (alias)
+	c_21 = __rcr(c_6, C_20)
+	SZXC_22 = cond(c_21)
+	a_23 = a_5 - 1
+	N_24 = false
+	SZHXV_25 = cond(a_23)
+	Z_26 = SZHXV_25 (alias)
+	branch Test(NE,Z_26) l03B2
+// DataOut: a af b bc c de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> h:<invalid> l:<invalid> b:<invalid> c:<invalid> a:<invalid>
+
+l03BD:
+	a_27 = c_21
+	v16_30 = Mem0[ix + -38:byte]
+	a_31 = a_27 + v16_30
+	SZHXVC_32 = cond(a_31)
+	C_33 = SZHXVC_32 (alias)
+	c_34 = a_31
+	a_35 = b_18
+	v18_36 = Mem0[ix + -37:byte]
+	a_37 = a_35 + v18_36 + C_33
+	SZHXVC_38 = cond(a_37)
+	C_39 = SZHXVC_38 (alias)
+	b_40 = a_37
+	a_41 = l_15
+	v19_42 = Mem0[ix + -36:byte]
+	a_43 = a_41 + v19_42 + C_39
+	SZHXVC_44 = cond(a_43)
+	C_45 = SZHXVC_44 (alias)
+	l_46 = a_43
+	a_47 = h_12
+	v20_48 = Mem0[ix + -35:byte]
+	a_49 = a_47 + v20_48 + C_45
+	h_50 = a_49
+	a_51 = c_34
+	v21_52 = Mem0[ix + -6:byte]
+	a_53 = a_51 ^ v21_52
+	c_54 = a_53
+	a_55 = b_40
+	v24_56 = Mem0[ix + -5:byte]
+	a_57 = a_55 ^ v24_56
+	b_58 = a_57
+	a_59 = l_46
+	v25_60 = Mem0[ix + -4:byte]
+	a_61 = a_59 ^ v25_60
+	l_62 = a_61
+	a_63 = h_50
+	v26_64 = Mem0[ix + -3:byte]
+	a_65 = a_63 ^ v26_64
+	h_66 = a_65
+	v27_67 = Mem0[ix + -14:byte]
+	a_68 = v27_67
+	a_69 = a_68 + c_54
+	SZHXVC_70 = cond(a_69)
+	C_71 = SZHXVC_70 (alias)
+	Mem72[ix + -14:byte] = a_69
+	v28_73 = Mem72[ix + -13:byte]
+	a_74 = v28_73
+	a_75 = a_74 + b_58 + C_71
+	SZHXVC_76 = cond(a_75)
+	C_77 = SZHXVC_76 (alias)
+	Mem78[ix + -13:byte] = a_75
+	v29_79 = Mem78[ix + -12:byte]
+	a_80 = v29_79
+	a_81 = a_80 + l_62 + C_77
+	SZHXVC_82 = cond(a_81)
+	C_83 = SZHXVC_82 (alias)
+	Mem84[ix + -12:byte] = a_81
+	v30_85 = Mem84[ix + -11:byte]
+	a_86 = v30_85
+	a_87 = a_86 + h_66 + C_83
+	Mem88[ix + -11:byte] = a_87
+	v31_89 = Mem88[ix + -22:byte]
+	a_90 = v31_89
+	a_91 = a_90 + 0xFF
+	SZHXVC_92 = cond(a_91)
+	C_93 = SZHXVC_92 (alias)
+	c_94 = a_91
+	v32_95 = Mem88[ix + -21:byte]
+	a_96 = v32_95
+	a_97 = a_96 + 0xFF + C_93
+	SZHXVC_98 = cond(a_97)
+	C_99 = SZHXVC_98 (alias)
+	b_100 = a_97
+	v33_101 = Mem88[ix + -20:byte]
+	a_102 = v33_101
+	a_103 = a_102 + 0xFF + C_99
+	SZHXVC_104 = cond(a_103)
+	C_105 = SZHXVC_104 (alias)
+	l_106 = a_103
+	v34_107 = Mem88[ix + -19:byte]
+	a_108 = v34_107
+	a_109 = a_108 + 0xFF + C_105
+	h_110 = a_109
+	Mem111[ix + -22:byte] = c_94
+	Mem112[ix + -21:byte] = b_100
+	Mem113[ix + -20:byte] = l_106
+	Mem114[ix + -19:byte] = h_110
+	a_115 = h_110
+	a_116 = a_115 | l_106
+	a_117 = a_116 | b_100
+	a_118 = a_117 | c_94
+	H_119 = false
+	X_120 = false
+	N_121 = false
+	C_122 = false
+	SZV_123 = cond(a_118)
+	Z_124 = SZV_123 (alias)
+	branch Test(EQ,Z_124) l0434
+// DataOut: af b bc c de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:v3 h:<invalid> l:<invalid> b:<invalid> c:<invalid> a:<invalid>
+
+l0434:
+	v35_125 = Mem114[0x0350:ptr16]
+	call v35_125 (retsize: 4; depth: 4)
+		uses: a_118,b_100,C_122,c_94,h_110,H_119,ix,l_106,N_121,sp_11,SZHXV_25,SZHXVC_104,SZV_123,SZXC_22,X_120,Z_124
+		defs: a_135,b_133,C_132,c_134,h_127,H_128,ix_138,l_131,N_129,sp_126,SZHXV_136,SZHXVC_139,SZV_141,SZXC_130,X_140,Z_137
+	return c_134
+// DataOut: af b bc c de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:v3 h:<invalid> l:<invalid> b:<invalid> c:<invalid> a:<invalid>
+
+fn03B2_exit:
+	use b_133 (=> bOut)
+	use l_131 (=> lOut)
+	use h_127 (=> hOut)
+// DataOut: b c h l
+// DataOut (flags): 
+// SymbolicIn: sp:v3 h:<invalid> l:<invalid> b:<invalid> c:<invalid> a:<invalid>
+
+
+
+void fn03CD(byte a, byte b, byte c, byte l, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C a b c ix l
+// LiveOut:
+// Trashed: SZHXVNC a b c h l
+// Preserved: sp
+fn03CD_entry:
+// DataOut: a b c ix l
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l03CD:
+	byte a_17 = b ^ Mem0[ix + -5:byte]
+	byte a_22 = l ^ Mem0[ix + -4:byte]
+	byte a_26 = a + Mem0[ix + -35:byte] + C ^ Mem0[ix + -3:byte]
+	byte a_30 = Mem0[ix + -14:byte] + (c ^ Mem0[ix + -6:byte])
+	Mem33[ix + -14:byte] = a_30
+	byte a_36 = Mem33[ix + -13:byte] + a_17 + (a_30 <u 0x00)
+	Mem39[ix + -13:byte] = a_36
+	byte a_42 = Mem39[ix + -12:byte] + a_22 + (a_36 <u 0x00)
+	Mem45[ix + -12:byte] = a_42
+	Mem49[ix + -11:byte] = Mem45[ix + -11:byte] + a_26 + (a_42 <u 0x00)
+	byte v24_50 = Mem49[ix + -22:byte]
+	byte a_58 = Mem49[ix + -21:byte] + 0xFF + (v24_50 <u 0xFF)
+	byte a_64 = Mem49[ix + -20:byte] + 0xFF + (a_58 <u 0x00)
+	byte a_70 = Mem49[ix + -19:byte] + 0xFF + (a_64 <u 0x00)
+	Mem72[ix + -22:byte] = v24_50 + 0xFF
+	Mem73[ix + -21:byte] = a_58
+	Mem74[ix + -20:byte] = a_64
+	Mem75[ix + -19:byte] = a_70
+	byte a_79 = a_70 | a_64 | a_58 | v24_50 + 0xFF
+	branch a_79 == 0x00 l0434_in_fn03CD
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0434_in_fn03CD:
+	word16 sp_118
+	word16 ix_119
+	byte a_120
+	bool C_121
+	bool N_122
+	byte SZHXVC_123
+	byte h_124
+	byte c_125
+	bool H_126
+	bool X_127
+	byte SZV_128
+	byte b_129
+	byte l_130
+	bool Z_131
+	call v35 (retsize: 4; depth: 4)
+		uses: a_79,b_61,c_55,C_83,h_71,H_80,ix,l_67,N_82,sp_1,SZHXVC_65,SZV_84,X_81,Z_85
+		defs: a_120,b_129,C_121,c_125,h_124,H_126,ix_119,l_130,N_122,sp_118,SZHXVC_123,SZV_128,X_127,Z_131
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> h:<invalid> c:<invalid> b:<invalid> l:<invalid>
+
+l0434_in_fn03CD:
+	word16 sp_103
+	word16 ix_104
+	byte a_105
+	bool C_106
+	bool N_107
+	byte SZHXVC_108
+	byte h_109
+	byte c_110
+	bool H_111
+	bool X_112
+	byte SZV_113
+	byte b_114
+	byte l_115
+	bool Z_116
+	call v35 (retsize: 4; depth: 4)
+		uses: a_79,b_61,c_55,C_83,h_71,H_80,ix,l_67,N_82,sp_1,SZHXVC_65,SZV_84,X_81,Z_85
+		defs: a_105,b_114,C_106,c_110,h_109,H_111,ix_104,l_115,N_107,sp_103,SZHXVC_108,SZV_113,X_112,Z_116
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> h:<invalid> c:<invalid> b:<invalid> l:<invalid>
+
+fn03CD_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> h:<invalid> c:<invalid> b:<invalid> l:<invalid>
+
+
+
+void fn04EE(word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  hl ix
+// LiveOut:
+// Trashed: SZHXVNC a af b c h hl l
+// Preserved: sp
+fn04EE_entry:
+	def fp
+	def b
+	def af
+	def ix
+	def hl
+// DataOut: hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l04EE:
+	sp_1 = fp
+	a_3 = b
+	af_5 = DPB(af, a_3, 8) (alias)
+	Mem6[ix + -37:byte] = 0x37
+	Mem8[ix + -36:byte] = 0xEF
+	Mem9[ix + -35:byte] = 0xC6
+	sp_10 = fp - 2
+	wLoc02_11 = af_5
+	v7_12 = Mem9[ix + -26:byte]
+	c_13 = v7_12
+	v9_14 = Mem9[ix + -25:byte]
+	b_15 = v9_14
+	v10_16 = Mem9[ix + -24:byte]
+	l_17 = v10_16
+	v12_18 = Mem9[ix + -23:byte]
+	h_19 = v12_18
+	hl_21 = DPB(hl, h_19, 8) (alias)
+	af_22 = wLoc02_11
+	sp_23 = fp
+	a_24 = 0x04
+	af_25 = DPB(af_22, a_24, 8) (alias)
+// DataOut: a b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l050B:
+	c_26 = PHI(c_13, c_31)
+	b_27 = PHI(b_15, b_34)
+	hl_28 = PHI(hl_21, hl_37)
+	a_29 = PHI(a_24, a_41)
+	af_30 = PHI(af_25, af_42)
+	c_31 = c_26 << 1
+	SZXC_32 = cond(c_31)
+	C_33 = SZXC_32 (alias)
+	b_34 = __rcl(b_27, C_33)
+	SZXC_35 = cond(b_34)
+	C_36 = SZXC_35 (alias)
+	hl_37 = hl_28 + hl_28 + C_36
+	h_38 = SLICE(hl_37, byte, 8) (alias)
+	l_39 = (byte) hl_37 (alias)
+	SZHXVC_40 = cond(hl_37)
+	a_41 = a_29 - 1
+	af_42 = DPB(af_30, a_41, 8) (alias)
+	N_43 = false
+	SZHXV_44 = cond(a_41)
+	Z_45 = SZHXV_44 (alias)
+	branch Test(NE,Z_45) l050B
+// DataOut: a b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> hl:<invalid> -2(fp):af
+// LocalsOut: fp(16)
+
+l0514:
+	a_46 = c_31
+	v22_47 = Mem9[ix + -10:byte]
+	a_48 = a_46 + v22_47
+	SZHXVC_49 = cond(a_48)
+	C_50 = SZHXVC_49 (alias)
+	Mem51[ix + -4:byte] = a_48
+	a_52 = b_34
+	v23_53 = Mem51[ix + -9:byte]
+	a_54 = a_52 + v23_53 + C_50
+	SZHXVC_55 = cond(a_54)
+	C_56 = SZHXVC_55 (alias)
+	Mem57[ix + -3:byte] = a_54
+	a_58 = l_39
+	v24_59 = Mem57[ix + -8:byte]
+	a_60 = a_58 + v24_59 + C_56
+	SZHXVC_61 = cond(a_60)
+	C_62 = SZHXVC_61 (alias)
+	Mem63[ix + -2:byte] = a_60
+	a_64 = h_38
+	v25_65 = Mem63[ix + -7:byte]
+	a_66 = a_64 + v25_65 + C_62
+	Mem67[ix + -1:byte] = a_66
+	v26_68 = Mem67[ix + -26:byte]
+	a_69 = v26_68
+	v27_70 = Mem67[ix + -38:byte]
+	a_71 = a_69 + v27_70
+	SZHXVC_72 = cond(a_71)
+	C_73 = SZHXVC_72 (alias)
+	c_74 = a_71
+	v28_75 = Mem67[ix + -25:byte]
+	a_76 = v28_75
+	v29_77 = Mem67[ix + -37:byte]
+	a_78 = a_76 + v29_77 + C_73
+	SZHXVC_79 = cond(a_78)
+	C_80 = SZHXVC_79 (alias)
+	b_81 = a_78
+	v30_82 = Mem67[ix + -24:byte]
+	a_83 = v30_82
+	v31_84 = Mem67[ix + -36:byte]
+	a_85 = a_83 + v31_84 + C_80
+	SZHXVC_86 = cond(a_85)
+	C_87 = SZHXVC_86 (alias)
+	l_88 = a_85
+	v32_89 = Mem67[ix + -23:byte]
+	a_90 = v32_89
+	v33_91 = Mem67[ix + -35:byte]
+	a_92 = a_90 + v33_91 + C_87
+	h_93 = a_92
+	v34_94 = Mem67[ix + -4:byte]
+	a_95 = v34_94
+	a_96 = a_95 ^ c_74
+	Mem97[ix + -4:byte] = a_96
+	v37_98 = Mem97[ix + -3:byte]
+	a_99 = v37_98
+	a_100 = a_99 ^ b_81
+	Mem101[ix + -3:byte] = a_100
+	v38_102 = Mem101[ix + -2:byte]
+	a_103 = v38_102
+	a_104 = a_103 ^ l_88
+	Mem105[ix + -2:byte] = a_104
+	v39_106 = Mem105[ix + -1:byte]
+	a_107 = v39_106
+	a_108 = a_107 ^ h_93
+	af_109 = DPB(af_42, a_108, 8) (alias)
+	H_110 = true
+	X_111 = false
+	N_112 = false
+	C_113 = false
+	SZV_114 = cond(a_108)
+	Mem115[ix + -1:byte] = a_108
+	sp_116 = fp - 2
+	wLoc02_117 = af_109
+	v40_118 = Mem115[ix + -26:byte]
+	c_119 = v40_118
+	v41_120 = Mem115[ix + -25:byte]
+	b_121 = v41_120
+	v42_122 = Mem115[ix + -24:byte]
+	l_123 = v42_122
+	v43_124 = Mem115[ix + -23:byte]
+	h_125 = v43_124
+	hl_126 = DPB(hl_37, h_125, 8) (alias)
+	af_127 = wLoc02_117
+	sp_128 = fp
+	a_129 = 0x05
+	af_130 = DPB(af_127, a_129, 8) (alias)
+// DataOut: a b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> hl:<invalid> -2(fp):af
+// LocalsOut: fp(16)
+
+l057C:
+	c_131 = PHI(c_119, c_148)
+	b_132 = PHI(b_121, b_145)
+	hl_133 = PHI(hl_126, hl_142)
+	h_134 = PHI(h_125, h_138)
+	l_135 = PHI(l_123, l_141)
+	a_136 = PHI(a_129, a_150)
+	af_137 = PHI(af_130, af_151)
+	h_138 = h_134 >>u 1
+	SZXC_139 = cond(h_138)
+	C_140 = SZXC_139 (alias)
+	l_141 = __rcr(l_135, C_140)
+	hl_142 = DPB(hl_133, l_141, 0) (alias)
+	SZXC_143 = cond(l_141)
+	C_144 = SZXC_143 (alias)
+	b_145 = __rcr(b_132, C_144)
+	SZXC_146 = cond(b_145)
+	C_147 = SZXC_146 (alias)
+	c_148 = __rcr(c_131, C_147)
+	SZXC_149 = cond(c_148)
+	a_150 = a_136 - 1
+	af_151 = DPB(af_137, a_150, 8) (alias)
+	N_152 = false
+	SZHXV_153 = cond(a_150)
+	Z_154 = SZHXV_153 (alias)
+	branch Test(NE,Z_154) l057C
+// DataOut: a b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> hl:<invalid> -2(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0587:
+	a_155 = c_148
+	v44_156 = Mem115[ix + -22:byte]
+	a_157 = a_155 + v44_156
+	SZHXVC_158 = cond(a_157)
+	C_159 = SZHXVC_158 (alias)
+	c_160 = a_157
+	a_161 = b_145
+	v45_162 = Mem115[ix + -21:byte]
+	a_163 = a_161 + v45_162 + C_159
+	SZHXVC_164 = cond(a_163)
+	C_165 = SZHXVC_164 (alias)
+	b_166 = a_163
+	a_167 = l_141
+	v46_168 = Mem115[ix + -20:byte]
+	a_169 = a_167 + v46_168 + C_165
+	SZHXVC_170 = cond(a_169)
+	C_171 = SZHXVC_170 (alias)
+	l_172 = a_169
+	a_173 = h_138
+	v47_174 = Mem115[ix + -19:byte]
+	a_175 = a_173 + v47_174 + C_171
+	h_176 = a_175
+	a_177 = c_160
+	v48_178 = Mem115[ix + -4:byte]
+	a_179 = a_177 ^ v48_178
+	c_180 = a_179
+	a_181 = b_166
+	v49_182 = Mem115[ix + -3:byte]
+	a_183 = a_181 ^ v49_182
+	b_184 = a_183
+	a_185 = l_172
+	v50_186 = Mem115[ix + -2:byte]
+	a_187 = a_185 ^ v50_186
+	l_188 = a_187
+	a_189 = h_176
+	v51_190 = Mem115[ix + -1:byte]
+	a_191 = a_189 ^ v51_190
+	h_192 = a_191
+	v52_193 = Mem115[ix + -34:byte]
+	a_194 = v52_193
+	a_195 = a_194 - c_180
+	SZHXVC_196 = cond(a_195)
+	C_197 = SZHXVC_196 (alias)
+	Mem198[ix + -34:byte] = a_195
+	v53_199 = Mem198[ix + -33:byte]
+	a_200 = v53_199
+	a_201 = a_200 - b_184 - C_197
+	SZHXVC_202 = cond(a_201)
+	C_203 = SZHXVC_202 (alias)
+	Mem204[ix + -33:byte] = a_201
+	v54_205 = Mem204[ix + -32:byte]
+	a_206 = v54_205
+	a_207 = a_206 - l_188 - C_203
+	SZHXVC_208 = cond(a_207)
+	C_209 = SZHXVC_208 (alias)
+	Mem210[ix + -32:byte] = a_207
+	v55_211 = Mem210[ix + -31:byte]
+	a_212 = v55_211
+	a_213 = a_212 - h_192 - C_209
+	af_214 = DPB(af_151, a_213, 8) (alias)
+	N_215 = true
+	SZHXVC_216 = cond(a_213)
+	Mem217[ix + -31:byte] = a_213
+	sp_218 = fp - 2
+	wLoc02_219 = af_214
+	v56_220 = Mem217[ix + -34:byte]
+	c_221 = v56_220
+	v57_222 = Mem217[ix + -33:byte]
+	b_223 = v57_222
+	v58_224 = Mem217[ix + -32:byte]
+	l_225 = v58_224
+	v59_226 = Mem217[ix + -31:byte]
+	h_227 = v59_226
+	hl_228 = DPB(hl_142, h_227, 8) (alias)
+	af_229 = wLoc02_219
+	sp_230 = fp
+	a_231 = 0x04
+	af_232 = DPB(af_229, a_231, 8) (alias)
+// DataOut: a b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> hl:<invalid> -2(fp):<invalid>
+
+l05DF:
+	c_233 = PHI(c_221, c_238)
+	b_234 = PHI(b_223, b_241)
+	hl_235 = PHI(hl_228, hl_244)
+	a_236 = PHI(a_231, a_248)
+	af_237 = PHI(af_232, af_249)
+	c_238 = c_233 << 1
+	SZXC_239 = cond(c_238)
+	C_240 = SZXC_239 (alias)
+	b_241 = __rcl(b_234, C_240)
+	SZXC_242 = cond(b_241)
+	C_243 = SZXC_242 (alias)
+	hl_244 = hl_235 + hl_235 + C_243
+	h_245 = SLICE(hl_244, byte, 8) (alias)
+	l_246 = (byte) hl_244 (alias)
+	SZHXVC_247 = cond(hl_244)
+	a_248 = a_236 - 1
+	af_249 = DPB(af_237, a_248, 8) (alias)
+	N_250 = false
+	SZHXV_251 = cond(a_248)
+	Z_252 = SZHXV_251 (alias)
+	branch Test(NE,Z_252) l05DF
+// DataOut: a b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> hl:<invalid> -2(fp):<invalid>
+
+l05E8:
+	a_253 = c_238
+	v60_254 = Mem217[ix + -18:byte]
+	a_255 = a_253 + v60_254
+	SZHXVC_256 = cond(a_255)
+	C_257 = SZHXVC_256 (alias)
+	Mem258[ix + -4:byte] = a_255
+	a_259 = b_241
+	v61_260 = Mem258[ix + -17:byte]
+	a_261 = a_259 + v61_260 + C_257
+	SZHXVC_262 = cond(a_261)
+	C_263 = SZHXVC_262 (alias)
+	Mem264[ix + -3:byte] = a_261
+	a_265 = l_246
+	v62_266 = Mem264[ix + -16:byte]
+	a_267 = a_265 + v62_266 + C_263
+	SZHXVC_268 = cond(a_267)
+	C_269 = SZHXVC_268 (alias)
+	Mem270[ix + -2:byte] = a_267
+	a_271 = h_245
+	v63_272 = Mem270[ix + -15:byte]
+	a_273 = a_271 + v63_272 + C_269
+	N_274 = false
+	SZHXVC_275 = cond(a_273)
+	Mem276[ix + -1:byte] = a_273
+	v64_277 = Mem276[ix + -34:byte]
+	a_278 = v64_277
+	af_279 = DPB(af_249, a_278, 8) (alias)
+// DataOut: a ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> hl:<invalid> -2(fp):<invalid>
+
+l0604_thunk_fn0607:
+	fn0607(a_278, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> hl:<invalid> -2(fp):<invalid>
+
+fn04EE_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> hl:<invalid> -2(fp):<invalid>
+
+
+
+void fn0607(byte a, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a ix
+// LiveOut:
+// Trashed: SZHXVNC a af b c h l
+// Preserved: sp
+fn0607_entry:
+	def fp
+	def ix
+	def Mem0
+	def a
+	def af
+// DataOut: a ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l0607:
+	sp_1 = fp
+	v4_4 = Mem0[ix + -38:byte]
+	a_6 = a + v4_4
+	SZHXVC_7 = cond(a_6)
+	C_8 = SZHXVC_7 (alias)
+	c_9 = a_6
+	v9_10 = Mem0[ix + -33:byte]
+	a_11 = v9_10
+	v10_12 = Mem0[ix + -37:byte]
+	a_13 = a_11 + v10_12 + (a_6 <u 0x00)
+	SZHXVC_14 = cond(a_13)
+	C_15 = SZHXVC_14 (alias)
+	b_16 = a_13
+	v13_17 = Mem0[ix + -32:byte]
+	a_18 = v13_17
+	v14_19 = Mem0[ix + -36:byte]
+	a_20 = a_18 + v14_19 + (a_13 <u 0x00)
+	SZHXVC_21 = cond(a_20)
+	C_22 = SZHXVC_21 (alias)
+	l_23 = a_20
+	v16_24 = Mem0[ix + -31:byte]
+	a_25 = v16_24
+	v17_26 = Mem0[ix + -35:byte]
+	a_27 = a_25 + v17_26 + (a_20 <u 0x00)
+	h_28 = a_27
+	v19_29 = Mem0[ix + -4:byte]
+	a_30 = v19_29
+	a_31 = a_30 ^ c_9
+	Mem32[ix + -4:byte] = a_31
+	v23_33 = Mem32[ix + -3:byte]
+	a_34 = v23_33
+	a_35 = a_34 ^ b_16
+	Mem36[ix + -3:byte] = a_35
+	v24_37 = Mem36[ix + -2:byte]
+	a_38 = v24_37
+	a_39 = a_38 ^ l_23
+	Mem40[ix + -2:byte] = a_39
+	v25_41 = Mem40[ix + -1:byte]
+	a_42 = v25_41
+	a_43 = a_42 ^ h_28
+	af_45 = DPB(af, a_43, 8) (alias)
+	H_46 = true
+	X_47 = false
+	N_48 = false
+	C_49 = false
+	SZV_50 = cond(a_43)
+	Mem51[ix + -1:byte] = a_43
+	sp_52 = fp - 2
+	wLoc02_53 = af_45
+	v27_54 = Mem51[ix + -34:byte]
+	c_55 = v27_54
+	v28_56 = Mem51[ix + -33:byte]
+	b_57 = v28_56
+	v29_58 = Mem51[ix + -32:byte]
+	l_59 = v29_58
+	v30_60 = Mem51[ix + -31:byte]
+	h_61 = v30_60
+	af_62 = wLoc02_53
+	sp_63 = fp
+	a_64 = 0x05
+	af_65 = DPB(af_62, a_64, 8) (alias)
+// DataOut: a b c h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0650:
+	af_66 = PHI(af_65, af_84)
+	h_67 = PHI(h_61, h_72)
+	l_68 = PHI(l_59, l_75)
+	b_69 = PHI(b_57, b_78)
+	c_70 = PHI(c_55, c_81)
+	a_71 = PHI(a_64, a_83)
+	h_72 = h_67 >>u 1
+	SZXC_73 = cond(h_72)
+	C_74 = SZXC_73 (alias)
+	l_75 = __rcr(l_68, C_74)
+	SZXC_76 = cond(l_75)
+	C_77 = SZXC_76 (alias)
+	b_78 = __rcr(b_69, C_77)
+	SZXC_79 = cond(b_78)
+	C_80 = SZXC_79 (alias)
+	c_81 = __rcr(c_70, C_80)
+	SZXC_82 = cond(c_81)
+	a_83 = a_71 - 1
+	af_84 = DPB(af_66, a_83, 8) (alias)
+	N_85 = false
+	SZHXV_86 = cond(a_83)
+	Z_87 = SZHXV_86 (alias)
+	branch Test(NE,Z_87) l0650
+// DataOut: a b c h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> -2(fp):af
+
+l065B:
+	a_88 = c_81
+	v34_89 = Mem51[ix + -14:byte]
+	a_90 = a_88 + v34_89
+	SZHXVC_91 = cond(a_90)
+	C_92 = SZHXVC_91 (alias)
+	c_93 = a_90
+	a_94 = b_78
+	v35_95 = Mem51[ix + -13:byte]
+	a_96 = a_94 + v35_95 + C_92
+	SZHXVC_97 = cond(a_96)
+	C_98 = SZHXVC_97 (alias)
+	b_99 = a_96
+	a_100 = l_75
+	v36_101 = Mem51[ix + -12:byte]
+	a_102 = a_100 + v36_101 + C_98
+	SZHXVC_103 = cond(a_102)
+	C_104 = SZHXVC_103 (alias)
+	l_105 = a_102
+	a_106 = h_72
+	v37_107 = Mem51[ix + -11:byte]
+	a_108 = a_106 + v37_107 + C_104
+	h_109 = a_108
+	a_110 = c_93
+	v38_111 = Mem51[ix + -4:byte]
+	a_112 = a_110 ^ v38_111
+	c_113 = a_112
+	a_114 = b_99
+	v39_115 = Mem51[ix + -3:byte]
+	a_116 = a_114 ^ v39_115
+	b_117 = a_116
+	a_118 = l_105
+	v40_119 = Mem51[ix + -2:byte]
+	a_120 = a_118 ^ v40_119
+	l_121 = a_120
+	a_122 = h_109
+	v41_123 = Mem51[ix + -1:byte]
+	a_124 = a_122 ^ v41_123
+	h_125 = a_124
+	v42_126 = Mem51[ix + -26:byte]
+	a_127 = v42_126
+	a_128 = a_127 - c_113
+	SZHXVC_129 = cond(a_128)
+	C_130 = SZHXVC_129 (alias)
+	Mem131[ix + -26:byte] = a_128
+	v43_132 = Mem131[ix + -25:byte]
+	a_133 = v43_132
+	a_134 = a_133 - b_117 - C_130
+	SZHXVC_135 = cond(a_134)
+	C_136 = SZHXVC_135 (alias)
+	Mem137[ix + -25:byte] = a_134
+	v44_138 = Mem137[ix + -24:byte]
+	a_139 = v44_138
+	a_140 = a_139 - l_121 - C_136
+	SZHXVC_141 = cond(a_140)
+	C_142 = SZHXVC_141 (alias)
+	Mem143[ix + -24:byte] = a_140
+	v45_144 = Mem143[ix + -23:byte]
+	a_145 = v45_144
+	a_146 = a_145 - h_125 - C_142
+	Mem147[ix + -23:byte] = a_146
+	v46_148 = Mem147[ix + -38:byte]
+	a_149 = v46_148
+	a_150 = a_149 + 0x47
+	SZHXVC_151 = cond(a_150)
+	C_152 = SZHXVC_151 (alias)
+	Mem153[ix + -38:byte] = a_150
+	v47_154 = Mem153[ix + -37:byte]
+	a_155 = v47_154
+	a_156 = a_155 + 0x86 + C_152
+	SZHXVC_157 = cond(a_156)
+	C_158 = SZHXVC_157 (alias)
+	Mem159[ix + -37:byte] = a_156
+	v48_160 = Mem159[ix + -36:byte]
+	a_161 = v48_160
+	a_162 = a_161 + 0xC8 + C_158
+	SZHXVC_163 = cond(a_162)
+	C_164 = SZHXVC_163 (alias)
+	Mem165[ix + -36:byte] = a_162
+	v49_166 = Mem165[ix + -35:byte]
+	a_167 = v49_166
+	a_168 = a_167 + 0x61 + C_164
+	Mem169[ix + -35:byte] = a_168
+	v50_170 = Mem169[ix + -30:byte]
+	a_171 = v50_170
+	a_172 = a_171 + 0xFF
+	SZHXVC_173 = cond(a_172)
+	C_174 = SZHXVC_173 (alias)
+	c_175 = a_172
+	v51_176 = Mem169[ix + -29:byte]
+	a_177 = v51_176
+	a_178 = a_177 + 0xFF + C_174
+	SZHXVC_179 = cond(a_178)
+	C_180 = SZHXVC_179 (alias)
+	b_181 = a_178
+	v52_182 = Mem169[ix + -28:byte]
+	a_183 = v52_182
+	a_184 = a_183 + 0xFF + C_180
+	SZHXVC_185 = cond(a_184)
+	C_186 = SZHXVC_185 (alias)
+	l_187 = a_184
+	v53_188 = Mem169[ix + -27:byte]
+	a_189 = v53_188
+	a_190 = a_189 + 0xFF + C_186
+	h_191 = a_190
+	Mem192[ix + -30:byte] = c_175
+	Mem193[ix + -29:byte] = b_181
+	Mem194[ix + -28:byte] = l_187
+	Mem195[ix + -27:byte] = h_191
+	a_196 = h_191
+	a_197 = a_196 | l_187
+	a_198 = a_197 | b_181
+	a_199 = a_198 | c_175
+	H_200 = false
+	X_201 = false
+	N_202 = false
+	C_203 = false
+	SZV_204 = cond(a_199)
+	Z_205 = SZV_204 (alias)
+	branch Test(EQ,Z_205) l06F2
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> -2(fp):af
+
+l06F2:
+	v54_206 = Mem195[0x060E:ptr16]
+	call v54_206 (retsize: 4; depth: 4)
+		uses: a_199,af_84,b_181,c_175,C_203,h_191,H_200,ix,l_187,N_202,sp_63,SZHXV_86,SZHXVC_185,SZV_204,SZXC_82,wLoc02_53,X_201,Z_205
+		defs: a_209,af_220,b_214,c_212,C_213,h_216,H_217,ix_208,l_215,N_210,sp_207,SZHXV_222,SZHXVC_211,SZV_219,SZXC_221,X_218,Z_223
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> -2(fp):af
+
+fn0607_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> -2(fp):af
+
+
+
+void fn0805(byte a)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0805_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0805_entry:
+// DataOut: a
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0805:
+	__disable_interrupts()
+	fn0823(wLoc02)
+	fn0822()
+	__halt()
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+
+
+void fn0822()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: bc sp
+// Preserved: sp
+fn0822_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0822:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0822_thunk_fn0823:
+	fn0823(wLoc02)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0822_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bc:<invalid>
+
+
+
+void fn0823(word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: bc sp
+// Preserved: a
+fn0823_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l0823:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0823_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 a:a bc:<invalid>
+
+
+
+void fn0914(word16 bc, word16 de, word16 hl, word16 ix, word16 wArg00, word16 wArg02)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  bc de hl ix
+// LiveOut:
+// Trashed: SZHXVNC a af b bc c de h hl l sp
+// Preserved:
+// Stack args: Stack +0000(16)
+fn0914_entry:
+	def fp
+	def bc
+	def de
+	def hl
+	def Mem0
+	def wArg00
+	def wArg02
+	def ix
+	def af
+// DataOut: bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0000(16)
+
+l0914:
+	sp_1 = fp
+// DataOut: bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0000(16)
+
+l0915:
+	bc_5 = PHI(bc, bc_15)
+	de_6 = PHI(de, de_14)
+	hl_7 = PHI(hl, hl_11)
+	v3_9 = Mem0[hl_7:byte]
+	Mem10[de_6:byte] = v3_9
+	hl_11 = hl_7 + 1
+	l_12 = (byte) hl_11 (alias)
+	h_13 = SLICE(hl_11, byte, 8) (alias)
+	de_14 = de_6 + 1
+	bc_15 = bc_5 - 1
+	c_16 = (byte) bc_15 (alias)
+	b_17 = SLICE(bc_15, byte, 8) (alias)
+	branch bc_15 != 0x0000 l0915
+// DataOut: bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:<invalid> de:<invalid> bc:<invalid>
+// LocalsOut: fp(16) Stack +0000(16)
+
+l0917:
+	bc_19 = wArg00
+	sp_20 = fp + 2
+	de_22 = wArg02
+	sp_23 = fp + 4
+	hl_24 = 0x0008
+	hl_25 = 0x0008 + bc_19
+	sp_26 = fp + 2
+	wArg02_27 = de_22
+	sp_28 = fp
+	wArg00_29 = bc_19
+	v11_30 = de_22
+	de_31 = hl_25
+	hl_32 = 0x0008
+	hl_33 = fp + 0x0008
+	N_34 = false
+	SZHXVC_35 = cond(fp + 0x0008)
+	v12_36 = de_31
+	de_37 = fp + 0x0008
+	hl_38 = v12_36
+	l_39 = (byte) hl_38 (alias)
+	h_40 = SLICE(hl_38, byte, 8) (alias)
+	bc_41 = 0x0004
+	c_42 = (byte) bc_41 (alias)
+	b_43 = SLICE(bc_41, byte, 8) (alias)
+// DataOut: bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:<invalid> de:<invalid> bc:<invalid>
+// LocalsOut: fp(16) Stack +0000(16)
+
+l092A:
+	bc_44 = PHI(bc_41, bc_53)
+	de_45 = PHI(de_37, de_52)
+	hl_46 = PHI(hl_38, hl_49)
+	v13_47 = Mem10[hl_46:byte]
+	Mem48[de_45:byte] = v13_47
+	hl_49 = hl_46 + 1
+	l_50 = (byte) hl_49 (alias)
+	h_51 = SLICE(hl_49, byte, 8) (alias)
+	de_52 = de_45 + 1
+	bc_53 = bc_44 - 1
+	c_54 = (byte) bc_53 (alias)
+	b_55 = SLICE(bc_53, byte, 8) (alias)
+	branch bc_53 != 0x0000 l092A
+// DataOut: bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:<invalid> de:<invalid> bc:<invalid> 0(fp):<invalid> 2(fp):<invalid> 8(fp):<invalid>
+// LocalsOut: fp(16) Stack +0000(16)
+
+l092C:
+	bc_56 = wArg00_29
+	sp_57 = fp + 2
+	de_58 = wArg02_27
+	sp_59 = fp + 4
+	hl_60 = 0x000C
+	hl_61 = 0x000C + bc_56
+	sp_62 = fp + 2
+	wArg02_63 = de_58
+	v14_64 = de_58
+	de_65 = hl_61
+	hl_66 = 0x0002
+	hl_67 = fp + 0x0004
+	N_68 = false
+	SZHXVC_69 = cond(fp + 0x0004)
+	v15_70 = de_65
+	de_71 = fp + 0x0004
+	hl_72 = v15_70
+	l_73 = (byte) hl_72 (alias)
+	h_74 = SLICE(hl_72, byte, 8) (alias)
+	bc_75 = 0x0004
+	c_76 = (byte) bc_75 (alias)
+	b_77 = SLICE(bc_75, byte, 8) (alias)
+// DataOut: bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:<invalid> de:<invalid> bc:<invalid> 0(fp):<invalid> 2(fp):<invalid> 8(fp):<invalid>
+// LocalsOut: fp(16)
+
+l093E:
+	bc_78 = PHI(bc_75, bc_87)
+	de_79 = PHI(de_71, de_86)
+	hl_80 = PHI(hl_72, hl_83)
+	v16_81 = Mem48[hl_80:byte]
+	Mem82[de_79:byte] = v16_81
+	hl_83 = hl_80 + 1
+	l_84 = (byte) hl_83 (alias)
+	h_85 = SLICE(hl_83, byte, 8) (alias)
+	de_86 = de_79 + 1
+	bc_87 = bc_78 - 1
+	c_88 = (byte) bc_87 (alias)
+	b_89 = SLICE(bc_87, byte, 8) (alias)
+	branch bc_87 != 0x0000 l093E
+// DataOut: bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 hl:<invalid> de:<invalid> bc:<invalid> 0(fp):<invalid> 2(fp):<invalid> 4(fp):<invalid> 8(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0940:
+	de_90 = wArg02_63
+	sp_91 = fp + 4
+	Mem92[ix + -22:byte] = 0x20
+	a_94 = 0x00
+	Mem95[ix + -21:byte] = 0x00
+	Mem96[ix + -20:byte] = 0x00
+	Mem97[ix + -19:byte] = 0x00
+	a_98 = 0x00
+	Mem99[ix + -18:byte] = 0x00
+	Mem100[ix + -17:byte] = 0x00
+	Mem101[ix + -16:byte] = 0x00
+	Mem102[ix + -15:byte] = 0x00
+	v22_103 = Mem102[ix + -18:byte]
+	a_104 = v22_103
+	a_105 = a_104 + 0xB9
+	SZHXVC_106 = cond(a_105)
+	C_107 = SZHXVC_106 (alias)
+	Mem108[ix + -18:byte] = a_105
+	v23_109 = Mem108[ix + -17:byte]
+	a_110 = v23_109
+	a_111 = a_110 + 0x79 + (a_105 <u 0x00)
+	SZHXVC_112 = cond(a_111)
+	C_113 = SZHXVC_112 (alias)
+	Mem114[ix + -17:byte] = a_111
+	v24_115 = Mem114[ix + -16:byte]
+	a_116 = v24_115
+	a_117 = a_116 + 0x37 + (a_111 <u 0x00)
+	SZHXVC_118 = cond(a_117)
+	C_119 = SZHXVC_118 (alias)
+	Mem120[ix + -16:byte] = a_117
+	v25_121 = Mem120[ix + -15:byte]
+	a_122 = v25_121
+	a_123 = a_122 + 0x9E + (a_117 <u 0x00)
+	af_125 = DPB(af, a_123, 8) (alias)
+	N_126 = false
+	SZHXVC_127 = cond(a_123)
+	Mem128[ix + -15:byte] = a_123
+	sp_129 = fp + 2
+	wArg02_130 = af_125
+	v27_131 = Mem128[ix + -14:byte]
+	c_132 = v27_131
+	v29_133 = Mem128[ix + -13:byte]
+	b_134 = v29_133
+	bc_135 = DPB(bc_87, b_134, 8) (alias)
+	v31_136 = Mem128[ix + -12:byte]
+	l_137 = v31_136
+	v33_138 = Mem128[ix + -11:byte]
+	h_139 = v33_138
+	hl_140 = DPB(hl_83, h_139, 8) (alias)
+	af_141 = wArg02_130
+	sp_142 = fp + 4
+	a_143 = 0x04
+	af_144 = DPB(af_141, a_143, 8) (alias)
+// DataOut: a b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 hl:<invalid> de:<invalid> bc:<invalid> 0(fp):<invalid> 2(fp):<invalid> 4(fp):<invalid> 8(fp):<invalid>
+// LocalsOut: fp(16)
+
+l098E:
+	b_145 = PHI(b_134, b_154)
+	c_146 = PHI(c_132, c_151)
+	af_147 = PHI(af_144, af_163)
+	a_148 = PHI(a_143, a_162)
+	bc_149 = PHI(bc_135, bc_155)
+	hl_150 = PHI(hl_140, hl_158)
+	c_151 = c_146 << 1
+	SZXC_152 = cond(c_151)
+	C_153 = SZXC_152 (alias)
+	b_154 = __rcl(b_145, C_153)
+	bc_155 = DPB(bc_149, b_154, 8) (alias)
+	SZXC_156 = cond(b_154)
+	C_157 = SZXC_156 (alias)
+	hl_158 = hl_150 + hl_150 + C_157
+	l_159 = (byte) hl_158 (alias)
+	h_160 = SLICE(hl_158, byte, 8) (alias)
+	SZHXVC_161 = cond(hl_158)
+	a_162 = a_148 - 1
+	af_163 = DPB(af_147, a_162, 8) (alias)
+	N_164 = false
+	SZHXV_165 = cond(a_162)
+	Z_166 = SZHXV_165 (alias)
+	branch Test(NE,Z_166) l098E
+// DataOut: a b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 4 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> 0(fp):<invalid> 2(fp):af 4(fp):<invalid> 8(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0997:
+	a_167 = c_151
+	v38_168 = Mem128[ix + -26:byte]
+	a_169 = a_167 + v38_168
+	SZHXVC_170 = cond(a_169)
+	C_171 = SZHXVC_170 (alias)
+	Mem172[ix + -6:byte] = a_169
+	a_173 = b_154
+	v39_174 = Mem172[ix + -25:byte]
+	a_175 = a_173 + v39_174 + C_171
+	SZHXVC_176 = cond(a_175)
+	C_177 = SZHXVC_176 (alias)
+	Mem178[ix + -5:byte] = a_175
+	a_179 = l_159
+	v40_180 = Mem178[ix + -24:byte]
+	a_181 = a_179 + v40_180 + C_177
+	SZHXVC_182 = cond(a_181)
+	C_183 = SZHXVC_182 (alias)
+	Mem184[ix + -4:byte] = a_181
+	a_185 = h_160
+	v41_186 = Mem184[ix + -23:byte]
+	a_187 = a_185 + v41_186 + C_183
+	Mem188[ix + -3:byte] = a_187
+	v42_189 = Mem188[ix + -14:byte]
+	a_190 = v42_189
+	v43_191 = Mem188[ix + -18:byte]
+	a_192 = a_190 + v43_191
+	SZHXVC_193 = cond(a_192)
+	C_194 = SZHXVC_193 (alias)
+	c_195 = a_192
+	v44_196 = Mem188[ix + -13:byte]
+	a_197 = v44_196
+	v45_198 = Mem188[ix + -17:byte]
+	a_199 = a_197 + v45_198 + C_194
+	SZHXVC_200 = cond(a_199)
+	C_201 = SZHXVC_200 (alias)
+	b_202 = a_199
+	v46_203 = Mem188[ix + -12:byte]
+	a_204 = v46_203
+	v47_205 = Mem188[ix + -16:byte]
+	a_206 = a_204 + v47_205 + C_201
+	SZHXVC_207 = cond(a_206)
+	C_208 = SZHXVC_207 (alias)
+	l_209 = a_206
+	v48_210 = Mem188[ix + -11:byte]
+	a_211 = v48_210
+	v49_212 = Mem188[ix + -15:byte]
+	a_213 = a_211 + v49_212 + C_208
+	h_214 = a_213
+	v50_215 = Mem188[ix + -6:byte]
+	a_216 = v50_215
+	a_217 = a_216 ^ c_195
+	Mem218[ix + -6:byte] = a_217
+	v51_219 = Mem218[ix + -5:byte]
+	a_220 = v51_219
+	a_221 = a_220 ^ b_202
+	Mem222[ix + -5:byte] = a_221
+	v52_223 = Mem222[ix + -4:byte]
+	a_224 = v52_223
+	a_225 = a_224 ^ l_209
+	Mem226[ix + -4:byte] = a_225
+	v53_227 = Mem226[ix + -3:byte]
+	a_228 = v53_227
+	a_229 = a_228 ^ h_214
+	af_230 = DPB(af_163, a_229, 8) (alias)
+	H_231 = true
+	X_232 = false
+	N_233 = false
+	C_234 = false
+	SZV_235 = cond(a_229)
+	Mem236[ix + -3:byte] = a_229
+	sp_237 = fp + 2
+	wArg02_238 = af_230
+	v54_239 = Mem236[ix + -14:byte]
+	c_240 = v54_239
+	v55_241 = Mem236[ix + -13:byte]
+	b_242 = v55_241
+	bc_243 = DPB(bc_155, b_242, 8) (alias)
+	v56_244 = Mem236[ix + -12:byte]
+	l_245 = v56_244
+	v57_246 = Mem236[ix + -11:byte]
+	h_247 = v57_246
+	hl_248 = DPB(hl_158, h_247, 8) (alias)
+	af_249 = wArg02_238
+	sp_250 = fp + 4
+	a_251 = 0x05
+	af_252 = DPB(af_249, a_251, 8) (alias)
+// DataOut: a b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 4 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> 0(fp):<invalid> 2(fp):af 4(fp):<invalid> 8(fp):<invalid>
+// LocalsOut: fp(16)
+
+l09FF:
+	h_253 = PHI(h_247, h_261)
+	l_254 = PHI(l_245, l_264)
+	b_255 = PHI(b_242, b_268)
+	c_256 = PHI(c_240, c_271)
+	af_257 = PHI(af_252, af_275)
+	a_258 = PHI(a_251, a_274)
+	bc_259 = PHI(bc_243, bc_272)
+	hl_260 = PHI(hl_248, hl_265)
+	h_261 = h_253 >>u 1
+	SZXC_262 = cond(h_261)
+	C_263 = SZXC_262 (alias)
+	l_264 = __rcr(l_254, C_263)
+	hl_265 = DPB(hl_260, l_264, 0) (alias)
+	SZXC_266 = cond(l_264)
+	C_267 = SZXC_266 (alias)
+	b_268 = __rcr(b_255, C_267)
+	SZXC_269 = cond(b_268)
+	C_270 = SZXC_269 (alias)
+	c_271 = __rcr(c_256, C_270)
+	bc_272 = DPB(bc_259, c_271, 0) (alias)
+	SZXC_273 = cond(c_271)
+	a_274 = a_258 - 1
+	af_275 = DPB(af_257, a_274, 8) (alias)
+	N_276 = false
+	SZHXV_277 = cond(a_274)
+	Z_278 = SZHXV_277 (alias)
+	branch Test(NE,Z_278) l09FF
+// DataOut: a b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 4 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> 0(fp):<invalid> 2(fp):<invalid> 4(fp):<invalid> 8(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0A0A:
+	a_279 = c_271
+	v58_280 = Mem236[ix + -30:byte]
+	a_281 = a_279 + v58_280
+	SZHXVC_282 = cond(a_281)
+	C_283 = SZHXVC_282 (alias)
+	c_284 = a_281
+	a_285 = b_268
+	v59_286 = Mem236[ix + -29:byte]
+	a_287 = a_285 + v59_286 + C_283
+	SZHXVC_288 = cond(a_287)
+	C_289 = SZHXVC_288 (alias)
+	b_290 = a_287
+	a_291 = l_264
+	v60_292 = Mem236[ix + -28:byte]
+	a_293 = a_291 + v60_292 + C_289
+	SZHXVC_294 = cond(a_293)
+	C_295 = SZHXVC_294 (alias)
+	l_296 = a_293
+	a_297 = h_261
+	v61_298 = Mem236[ix + -27:byte]
+	a_299 = a_297 + v61_298 + C_295
+	h_300 = a_299
+	a_301 = c_284
+	v62_302 = Mem236[ix + -6:byte]
+	a_303 = a_301 ^ v62_302
+	c_304 = a_303
+	a_305 = b_290
+	v63_306 = Mem236[ix + -5:byte]
+	a_307 = a_305 ^ v63_306
+	b_308 = a_307
+	a_309 = l_296
+	v64_310 = Mem236[ix + -4:byte]
+	a_311 = a_309 ^ v64_310
+	l_312 = a_311
+	a_313 = h_300
+	v65_314 = Mem236[ix + -3:byte]
+	a_315 = a_313 ^ v65_314
+	h_316 = a_315
+	v66_317 = Mem236[ix + -10:byte]
+	a_318 = v66_317
+	a_319 = a_318 + c_304
+	SZHXVC_320 = cond(a_319)
+	C_321 = SZHXVC_320 (alias)
+	Mem322[ix + -10:byte] = a_319
+	v67_323 = Mem322[ix + -9:byte]
+	a_324 = v67_323
+	a_325 = a_324 + b_308 + C_321
+	SZHXVC_326 = cond(a_325)
+	C_327 = SZHXVC_326 (alias)
+	Mem328[ix + -9:byte] = a_325
+	v68_329 = Mem328[ix + -8:byte]
+	a_330 = v68_329
+	a_331 = a_330 + l_312 + C_327
+	SZHXVC_332 = cond(a_331)
+	C_333 = SZHXVC_332 (alias)
+	Mem334[ix + -8:byte] = a_331
+	v69_335 = Mem334[ix + -7:byte]
+	a_336 = v69_335
+	a_337 = a_336 + h_316 + C_333
+	af_338 = DPB(af_275, a_337, 8) (alias)
+	N_339 = false
+	SZHXVC_340 = cond(a_337)
+	Mem341[ix + -7:byte] = a_337
+	sp_342 = fp + 2
+	wArg02_343 = af_338
+	v70_344 = Mem341[ix + -10:byte]
+	c_345 = v70_344
+	v71_346 = Mem341[ix + -9:byte]
+	b_347 = v71_346
+	bc_348 = DPB(bc_272, b_347, 8) (alias)
+	v72_349 = Mem341[ix + -8:byte]
+	l_350 = v72_349
+	v73_351 = Mem341[ix + -7:byte]
+	h_352 = v73_351
+	hl_353 = DPB(hl_265, h_352, 8) (alias)
+	af_354 = wArg02_343
+	sp_355 = fp + 4
+	a_356 = 0x04
+	af_357 = DPB(af_354, a_356, 8) (alias)
+// DataOut: a b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 4 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> 0(fp):<invalid> 2(fp):<invalid> 4(fp):<invalid> 8(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0A62:
+	b_358 = PHI(b_347, b_367)
+	c_359 = PHI(c_345, c_364)
+	af_360 = PHI(af_357, af_376)
+	a_361 = PHI(a_356, a_375)
+	bc_362 = PHI(bc_348, bc_368)
+	hl_363 = PHI(hl_353, hl_371)
+	c_364 = c_359 << 1
+	SZXC_365 = cond(c_364)
+	C_366 = SZXC_365 (alias)
+	b_367 = __rcl(b_358, C_366)
+	bc_368 = DPB(bc_362, b_367, 8) (alias)
+	SZXC_369 = cond(b_367)
+	C_370 = SZXC_369 (alias)
+	hl_371 = hl_363 + hl_363 + C_370
+	l_372 = (byte) hl_371 (alias)
+	h_373 = SLICE(hl_371, byte, 8) (alias)
+	SZHXVC_374 = cond(hl_371)
+	a_375 = a_361 - 1
+	af_376 = DPB(af_360, a_375, 8) (alias)
+	N_377 = false
+	SZHXV_378 = cond(a_375)
+	Z_379 = SZHXV_378 (alias)
+	branch Test(NE,Z_379) l0A62
+// DataOut: a b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 4 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> 0(fp):<invalid> 2(fp):<invalid> 4(fp):<invalid> 8(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0A6B:
+	a_380 = c_364
+	v74_381 = Mem341[ix + -34:byte]
+	a_382 = a_380 + v74_381
+	SZHXVC_383 = cond(a_382)
+	C_384 = SZHXVC_383 (alias)
+	Mem385[ix + -6:byte] = a_382
+	a_386 = b_367
+	v75_387 = Mem385[ix + -33:byte]
+	a_388 = a_386 + v75_387 + C_384
+	SZHXVC_389 = cond(a_388)
+	C_390 = SZHXVC_389 (alias)
+	Mem391[ix + -5:byte] = a_388
+	a_392 = l_372
+	v76_393 = Mem391[ix + -32:byte]
+	a_394 = a_392 + v76_393 + C_390
+	SZHXVC_395 = cond(a_394)
+	C_396 = SZHXVC_395 (alias)
+	Mem397[ix + -4:byte] = a_394
+	a_398 = h_373
+	v77_399 = Mem397[ix + -31:byte]
+	a_400 = a_398 + v77_399 + C_396
+	Mem401[ix + -3:byte] = a_400
+	v78_402 = Mem401[ix + -10:byte]
+	a_403 = v78_402
+	v79_404 = Mem401[ix + -18:byte]
+	a_405 = a_403 + v79_404
+	SZHXVC_406 = cond(a_405)
+	C_407 = SZHXVC_406 (alias)
+	c_408 = a_405
+	v80_409 = Mem401[ix + -9:byte]
+	a_410 = v80_409
+	v81_411 = Mem401[ix + -17:byte]
+	a_412 = a_410 + v81_411 + C_407
+	SZHXVC_413 = cond(a_412)
+	C_414 = SZHXVC_413 (alias)
+	b_415 = a_412
+	v82_416 = Mem401[ix + -8:byte]
+	a_417 = v82_416
+	v83_418 = Mem401[ix + -16:byte]
+	a_419 = a_417 + v83_418 + C_414
+	SZHXVC_420 = cond(a_419)
+	C_421 = SZHXVC_420 (alias)
+	l_422 = a_419
+	v84_423 = Mem401[ix + -7:byte]
+	a_424 = v84_423
+	v85_425 = Mem401[ix + -15:byte]
+	a_426 = a_424 + v85_425 + C_421
+	h_427 = a_426
+	v86_428 = Mem401[ix + -6:byte]
+	a_429 = v86_428
+	a_430 = a_429 ^ c_408
+	Mem431[ix + -6:byte] = a_430
+	v87_432 = Mem431[ix + -5:byte]
+	a_433 = v87_432
+	a_434 = a_433 ^ b_415
+	Mem435[ix + -5:byte] = a_434
+	v88_436 = Mem435[ix + -4:byte]
+	a_437 = v88_436
+	a_438 = a_437 ^ l_422
+	Mem439[ix + -4:byte] = a_438
+	v89_440 = Mem439[ix + -3:byte]
+	a_441 = v89_440
+	a_442 = a_441 ^ h_427
+	af_443 = DPB(af_376, a_442, 8) (alias)
+	H_444 = true
+	X_445 = false
+	N_446 = false
+	C_447 = false
+	SZV_448 = cond(a_442)
+	Mem449[ix + -3:byte] = a_442
+	sp_450 = fp + 2
+	wArg02_451 = af_443
+	v90_452 = Mem449[ix + -10:byte]
+	c_453 = v90_452
+	v91_454 = Mem449[ix + -9:byte]
+	b_455 = v91_454
+	bc_456 = DPB(bc_368, b_455, 8) (alias)
+	v92_457 = Mem449[ix + -8:byte]
+	l_458 = v92_457
+	v93_459 = Mem449[ix + -7:byte]
+	h_460 = v93_459
+	hl_461 = DPB(hl_371, h_460, 8) (alias)
+	af_462 = wArg02_451
+	sp_463 = fp + 4
+	a_464 = 0x05
+	af_465 = DPB(af_462, a_464, 8) (alias)
+// DataOut: a b c h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 4 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> 0(fp):<invalid> 2(fp):<invalid> 4(fp):<invalid> 8(fp):<invalid>
+
+l0AD3:
+	h_466 = PHI(h_460, h_474)
+	l_467 = PHI(l_458, l_477)
+	b_468 = PHI(b_455, b_481)
+	c_469 = PHI(c_453, c_484)
+	af_470 = PHI(af_465, af_488)
+	a_471 = PHI(a_464, a_487)
+	bc_472 = PHI(bc_456, bc_485)
+	hl_473 = PHI(hl_461, hl_478)
+	h_474 = h_466 >>u 1
+	SZXC_475 = cond(h_474)
+	C_476 = SZXC_475 (alias)
+	l_477 = __rcr(l_467, C_476)
+	hl_478 = DPB(hl_473, l_477, 0) (alias)
+	SZXC_479 = cond(l_477)
+	C_480 = SZXC_479 (alias)
+	b_481 = __rcr(b_468, C_480)
+	SZXC_482 = cond(b_481)
+	C_483 = SZXC_482 (alias)
+	c_484 = __rcr(c_469, C_483)
+	bc_485 = DPB(bc_472, c_484, 0) (alias)
+	SZXC_486 = cond(c_484)
+	a_487 = a_471 - 1
+	af_488 = DPB(af_470, a_487, 8) (alias)
+	N_489 = false
+	SZHXV_490 = cond(a_487)
+	Z_491 = SZHXV_490 (alias)
+	branch Test(NE,Z_491) l0AD3
+// DataOut: a b c h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 4 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> 0(fp):<invalid> 2(fp):<invalid> 4(fp):<invalid> 8(fp):<invalid>
+
+l0ADE:
+	a_492 = c_484
+	v94_493 = Mem449[ix + -38:byte]
+	a_494 = a_492 + v94_493
+	SZHXVC_495 = cond(a_494)
+	C_496 = SZHXVC_495 (alias)
+	c_497 = a_494
+	a_498 = b_481
+	v95_499 = Mem449[ix + -37:byte]
+	a_500 = a_498 + v95_499 + C_496
+	SZHXVC_501 = cond(a_500)
+	C_502 = SZHXVC_501 (alias)
+	b_503 = a_500
+	a_504 = l_477
+	v96_505 = Mem449[ix + -36:byte]
+	a_506 = a_504 + v96_505 + C_502
+	SZHXVC_507 = cond(a_506)
+	C_508 = SZHXVC_507 (alias)
+	l_509 = a_506
+	a_510 = h_474
+	v97_511 = Mem449[ix + -35:byte]
+	a_512 = a_510 + v97_511 + C_508
+	h_513 = a_512
+	a_514 = c_497
+	v98_515 = Mem449[ix + -6:byte]
+	a_516 = a_514 ^ v98_515
+	c_517 = a_516
+	a_518 = b_503
+	v99_519 = Mem449[ix + -5:byte]
+	a_520 = a_518 ^ v99_519
+	b_521 = a_520
+	a_522 = l_509
+	v100_523 = Mem449[ix + -4:byte]
+	a_524 = a_522 ^ v100_523
+	l_525 = a_524
+	a_526 = h_513
+	v101_527 = Mem449[ix + -3:byte]
+	a_528 = a_526 ^ v101_527
+	h_529 = a_528
+	v102_530 = Mem449[ix + -14:byte]
+	a_531 = v102_530
+	a_532 = a_531 + c_517
+	SZHXVC_533 = cond(a_532)
+	C_534 = SZHXVC_533 (alias)
+	Mem535[ix + -14:byte] = a_532
+	v103_536 = Mem535[ix + -13:byte]
+	a_537 = v103_536
+	a_538 = a_537 + b_521 + C_534
+	SZHXVC_539 = cond(a_538)
+	C_540 = SZHXVC_539 (alias)
+	Mem541[ix + -13:byte] = a_538
+	v104_542 = Mem541[ix + -12:byte]
+	a_543 = v104_542
+	a_544 = a_543 + l_525 + C_540
+	SZHXVC_545 = cond(a_544)
+	C_546 = SZHXVC_545 (alias)
+	Mem547[ix + -12:byte] = a_544
+	v105_548 = Mem547[ix + -11:byte]
+	a_549 = v105_548
+	a_550 = a_549 + h_529 + C_546
+	Mem551[ix + -11:byte] = a_550
+	v106_552 = Mem551[ix + -22:byte]
+	a_553 = v106_552
+	a_554 = a_553 + 0xFF
+	SZHXVC_555 = cond(a_554)
+	C_556 = SZHXVC_555 (alias)
+	c_557 = a_554
+	v107_558 = Mem551[ix + -21:byte]
+	a_559 = v107_558
+	a_560 = a_559 + 0xFF + C_556
+	SZHXVC_561 = cond(a_560)
+	C_562 = SZHXVC_561 (alias)
+	b_563 = a_560
+	v108_564 = Mem551[ix + -20:byte]
+	a_565 = v108_564
+	a_566 = a_565 + 0xFF + C_562
+	SZHXVC_567 = cond(a_566)
+	C_568 = SZHXVC_567 (alias)
+	l_569 = a_566
+	v109_570 = Mem551[ix + -19:byte]
+	a_571 = v109_570
+	a_572 = a_571 + 0xFF + C_568
+	h_573 = a_572
+	Mem574[ix + -22:byte] = c_557
+	Mem575[ix + -21:byte] = b_563
+	Mem576[ix + -20:byte] = l_569
+	Mem577[ix + -19:byte] = h_573
+	a_578 = h_573
+	a_579 = a_578 | l_569
+	a_580 = a_579 | b_563
+	a_581 = a_580 | c_557
+	H_582 = false
+	X_583 = false
+	N_584 = false
+	C_585 = false
+	SZV_586 = cond(a_581)
+	Z_587 = SZV_586 (alias)
+	branch Test(EQ,Z_587) l0B55
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 4 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> 0(fp):<invalid> 2(fp):<invalid> 4(fp):<invalid> 8(fp):<invalid>
+
+l0B55:
+	v110_588 = Mem577[0x0350:ptr16]
+	call v110_588 (retsize: 4;)
+		uses: a_581,af_488,b_563,bc_485,c_557,C_585,de_90,h_573,H_582,hl_478,ix,l_569,N_584,sp_463,SZHXV_490,SZHXVC_567,SZV_586,SZXC_486,X_583,Z_587
+		defs: a_598,af_602,b_604,bc_592,C_600,c_603,de_591,H_593,h_606,hl_590,ix_597,l_605,N_595,sp_589,SZHXV_608,SZHXVC_596,SZV_601,SZXC_607,V_594,X_599,Z_609
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 4 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> 0(fp):<invalid> 2(fp):<invalid> 4(fp):<invalid> 8(fp):<invalid>
+
+fn0914_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 4 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> 0(fp):<invalid> 2(fp):<invalid> 4(fp):<invalid> 8(fp):<invalid>
+
+
+
+void fn0B59(word16 bc, word16 de, word16 hl, word16 ix, word16 wArg24)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  bc de hl ix
+// LiveOut:
+// Trashed: SZHXVNC bc de hl ix sp
+// Preserved:
+// Stack args: Stack +0024(16)
+fn0B59_entry:
+// DataOut: bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32) Stack +0024(16)
+
+l0B59:
+	word16 hl_10 = hl + Mem0[0x0438:word16]
+// DataOut: bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32) Stack +0024(16)
+
+l0B5D:
+	Mem14[de:byte] = Mem0[hl_10:byte]
+	hl_10 = hl_10 + 1
+	de = de + 1
+	bc = bc - 1
+	branch bc != 0x0000 l0B5D
+// DataOut: bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:<invalid> de:<invalid> bc:<invalid>
+// LocalsOut: fp(32) Stack +0024(16)
+
+l0B5F:
+	word16 de_24 = wArg24
+	word16 hl_26 = fp + 0x0018
+	word16 bc_29 = 0x0004
+// DataOut: bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:<invalid> de:<invalid> bc:<invalid>
+
+l0B6C:
+	Mem34[de_24:byte] = Mem14[hl_26:byte]
+	hl_26 = hl_26 + 1
+	de_24 = de_24 + 1
+	bc_29 = bc_29 - 1
+	branch bc_29 != 0x0000 l0B6C
+// DataOut: bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:<invalid> de:<invalid> bc:<invalid>
+
+l0B6E:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:<invalid> de:<invalid> bc:<invalid>
+
+fn0B59_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:ix + 2 hl:<invalid> de:<invalid> bc:<invalid> ix:<invalid>
+
+
+
+void fn0BD0(word16 af, word16 bc, word16 de, word16 hl, word16 ix, word16 wArg00, word16 wArg02)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  af bc de hl ix
+// LiveOut:
+// Trashed:
+// Preserved:
+// Stack args: Stack +0000(16)
+// Terminates process
+fn0BD0_entry:
+// DataOut: af bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0000(16)
+
+l0BD0:
+// DataOut: af bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0000(16)
+
+l0BD1:
+	Mem10[de:byte] = Mem0[hl:byte]
+	hl = hl + 1
+	de = de + 1
+	bc = bc - 1
+	branch bc != 0x0000 l0BD1
+// DataOut: af bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:<invalid> de:<invalid> bc:<invalid>
+// LocalsOut: fp(16) Stack +0000(16)
+
+l0BD3:
+	word16 de_37 = fp + 0x0020
+	word16 hl_38 = wArg00 + 0x0008
+	word16 bc_41 = 0x0004
+// DataOut: af bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:<invalid> de:<invalid> bc:<invalid>
+// LocalsOut: fp(16) Stack +0000(16)
+
+l0BE6:
+	Mem48[de_37:byte] = Mem10[hl_38:byte]
+	hl_38 = hl_38 + 1
+	de_37 = de_37 + 1
+	bc_41 = bc_41 - 1
+	branch bc_41 != 0x0000 l0BE6
+// DataOut: af bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:<invalid> de:<invalid> bc:<invalid> 0(fp):<invalid> 2(fp):<invalid> 32(fp):<invalid>
+// LocalsOut: fp(16) Stack +0000(16)
+
+l0BE8:
+	word16 de_71 = fp + 0x0014
+	word16 hl_72 = wArg00 + 0x000C
+	word16 bc_75 = 0x0004
+// DataOut: af bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:<invalid> de:<invalid> bc:<invalid> 0(fp):<invalid> 2(fp):<invalid> 32(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0BFA:
+	Mem82[de_71:byte] = Mem48[hl_72:byte]
+	hl_72 = hl_72 + 1
+	de_71 = de_71 + 1
+	bc_75 = bc_75 - 1
+	branch bc_75 != 0x0000 l0BFA
+// DataOut: af bc de hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 hl:<invalid> de:<invalid> bc:<invalid> 0(fp):<invalid> 2(fp):<invalid> 20(fp):<invalid> 32(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0BFC:
+	Mem92[ix + -30:byte] = 0x20
+	Mem102[ix + -29:byte] = 0x00
+	Mem103[ix + -28:byte] = 0x00
+	Mem104[ix + -27:byte] = 0x00
+	Mem105[ix + -38:byte] = 0x20
+	Mem106[ix + -37:byte] = 0x37
+	Mem107[ix + -36:byte] = 0xEF
+	Mem108[ix + -35:byte] = 0xC6
+	byte v23_111 = Mem108[ix + -26:byte]
+	byte v25_113 = Mem108[ix + -25:byte]
+	word16 hl_120 = DPB(hl_72, Mem108[ix + -23:byte], 8)
+	word16 af_124 = DPB(af, 0x04, 8)
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 hl:<invalid> de:<invalid> bc:<invalid> 0(fp):<invalid> 2(fp):<invalid> 20(fp):<invalid> 32(fp):<invalid>
+
+l0C2C_thunk_fn0C2C:
+	fn0C2C(af_124, v25_113, v23_111, hl_120, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 4 hl:<invalid> de:<invalid> bc:<invalid> a:0x04 c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> 0(fp):<invalid> 2(fp):af 20(fp):<invalid> 32(fp):<invalid>
+// Terminates process
+
+fn0BD0_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: 0(fp):<invalid> 2(fp):af 20(fp):<invalid> 32(fp):<invalid>
+
+
+
+void fn0BFE()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0BFE_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0BFE_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0BFE:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+
+
+void fn0C1D(word16 hl, word16 ix, word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  hl ix
+// LiveOut:
+// Trashed:
+// Preserved:
+// Stack args: Stack +0000(16)
+// Terminates process
+fn0C1D_entry:
+// DataOut: hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0000(16)
+
+l0C1D:
+	byte v4_4 = Mem0[ix + -26:byte]
+	byte v6_6 = Mem0[ix + -25:byte]
+	word16 hl_13 = DPB(hl, Mem0[ix + -23:byte], 8)
+	word16 af_18 = DPB(wArg00, 0x04, 8)
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C2A_thunk_fn0C2C:
+	fn0C2C(af_18, v6_6, v4_4, hl_13, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> a:0x04
+// Terminates process
+
+fn0C1D_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void fn0C2C(word16 af, byte b, byte c, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a af b c h hl ix l
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0C2C_entry:
+	def c
+	def b
+	def hl
+	def a
+	def af
+	def v3
+	def ix
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C2C:
+	c_5 = PHI(c_12, c)
+	b_6 = PHI(b_15, b)
+	hl_7 = PHI(hl_18, hl)
+	a_8 = PHI(a_20, a)
+	af_9 = PHI(af_21, af)
+	sp_11 = v3
+	c_12 = c_5 << 1
+	SZXC_13 = cond(c_12)
+	C_14 = SZXC_13 (alias)
+	b_15 = __rcl(b_6, C_14)
+	SZXC_16 = cond(b_15)
+	C_17 = SZXC_16 (alias)
+	hl_18 = hl_7 + hl_7 + C_17
+	SZHXVC_19 = cond(hl_18)
+	a_20 = a_8 - 1
+	af_21 = DPB(af_9, a_20, 8) (alias)
+	N_22 = false
+	SZHXV_23 = cond(a_20)
+	Z_24 = SZHXV_23 (alias)
+	branch Test(NE,Z_24) l0C2C
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> c:<invalid> b:<invalid> hl:<invalid> a:<invalid>
+
+l0C33_thunk_fn0C35:
+	fn0C35(af_21, c_12, b_15, hl_18, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:v3 c:<invalid> b:<invalid> hl:<invalid> a:<invalid>
+// Terminates process
+
+fn0C2C_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void fn0C35(word16 af, byte c, byte b, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  af b c h hl ix l
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0C35_entry:
+// DataOut: af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: v3(16)
+
+l0C35:
+	byte a_7 = c + Mem0[ix + -10:byte]
+	Mem10[ix + -4:byte] = a_7
+	byte a_14 = b + Mem10[ix + -9:byte] + (a_7 <u 0x00)
+	Mem17[ix + -3:byte] = a_14
+	byte a_21 = l + Mem17[ix + -8:byte] + (a_14 <u 0x00)
+	Mem24[ix + -2:byte] = a_21
+	Mem29[ix + -1:byte] = h + Mem24[ix + -7:byte] + (a_21 <u 0x00)
+	byte a_33 = Mem29[ix + -26:byte] + Mem29[ix + -38:byte]
+	byte a_40 = Mem29[ix + -25:byte] + Mem29[ix + -37:byte] + (a_33 <u 0x00)
+	byte a_47 = Mem29[ix + -24:byte] + Mem29[ix + -36:byte] + (a_40 <u 0x00)
+	byte a_54 = Mem29[ix + -23:byte] + Mem29[ix + -35:byte] + (a_47 <u 0x00)
+	Mem59[ix + -4:byte] = Mem29[ix + -4:byte] ^ a_33
+	Mem63[ix + -3:byte] = Mem59[ix + -3:byte] ^ a_40
+	Mem67[ix + -2:byte] = Mem63[ix + -2:byte] ^ a_47
+	byte a_70 = Mem67[ix + -1:byte] ^ a_54
+	Mem78[ix + -1:byte] = a_70
+	Mem80[v3 - 2:word16] = DPB(af, a_70, 8)
+	byte v33_81 = Mem80[ix + -26:byte]
+	byte v34_83 = Mem80[ix + -25:byte]
+	word16 hl_90 = DPB(hl, Mem80[ix + -23:byte], 8)
+	word16 af_94 = DPB(Mem80[v3 - 2:word16], 0x05, 8)
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C9B_thunk_fn0C9D:
+	fn0C9D(af_94, v33_81, v34_83, hl_90, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:v3 a:0x05 c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid>
+// Terminates process
+
+fn0C35_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void fn0C39(word16 af, byte b, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C a af b h hl ix l
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0C39_entry:
+// DataOut: a af b h hl ix l
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l0C39:
+	Mem3[ix + -4:byte] = a
+	byte a_9 = b + Mem3[ix + -9:byte] + C
+	Mem12[ix + -3:byte] = a_9
+	byte a_16 = l + Mem12[ix + -8:byte] + (a_9 <u 0x00)
+	Mem19[ix + -2:byte] = a_16
+	Mem24[ix + -1:byte] = h + Mem19[ix + -7:byte] + (a_16 <u 0x00)
+	byte a_28 = Mem24[ix + -26:byte] + Mem24[ix + -38:byte]
+	byte a_35 = Mem24[ix + -25:byte] + Mem24[ix + -37:byte] + (a_28 <u 0x00)
+	word16 hl_52 = DPB(hl, Mem24[ix + -23:byte] + Mem24[ix + -35:byte] + ((Mem24[ix + -24:byte] + Mem24[ix + -36:byte]) + (a_35 <u 0x00) <u 0x00), 8)
+	Mem56[ix + -4:byte] = Mem24[ix + -4:byte] ^ a_28
+	Mem65[ix + -3:byte] = Mem56[ix + -3:byte] ^ a_35
+	word16 af_69 = DPB(af, Mem65[ix + -2:byte], 8)
+// DataOut: a af h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C7D_thunk_fn0C80:
+	fn0C80(af_69, hl_52, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid>
+// Terminates process
+
+fn0C39_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void fn0C80(word16 af, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a af h hl ix l
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0C80_entry:
+// DataOut: a af h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l0C80:
+	Mem5[ix + -2:byte] = a ^ l
+	Mem18[ix + -1:byte] = Mem5[ix + -1:byte] ^ h
+	byte v14_21 = Mem18[ix + -26:byte]
+	byte v16_23 = Mem18[ix + -25:byte]
+	word16 hl_30 = DPB(hl, Mem18[ix + -23:byte], 8)
+	word16 af_34 = DPB(af, 0x05, 8)
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C9B_thunk_fn0C9D:
+	fn0C9D(af_34, v14_21, v16_23, hl_30, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:0x05 c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid> -2(fp):af
+// Terminates process
+
+fn0C80_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: -2(fp):af
+
+
+
+void fn0C9D(word16 af, byte c, byte b, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a af b c h hl ix l
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0C9D_entry:
+	def c
+	def b
+	def l
+	def h
+	def hl
+	def a
+	def af
+	def v3
+	def ix
+	def Mem0
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: v3(16)
+
+l0C9D:
+	c_7 = PHI(c_26, c)
+	b_8 = PHI(b_23, b)
+	l_9 = PHI(l_19, l)
+	h_10 = PHI(h_16, h)
+	hl_11 = PHI(hl_20, hl)
+	a_12 = PHI(a_28, a)
+	af_13 = PHI(af_29, af)
+	sp_15 = v3
+	h_16 = h_10 >>u 1
+	SZXC_17 = cond(h_16)
+	C_18 = SZXC_17 (alias)
+	l_19 = __rcr(l_9, C_18)
+	hl_20 = DPB(hl_11, l_19, 0) (alias)
+	SZXC_21 = cond(l_19)
+	C_22 = SZXC_21 (alias)
+	b_23 = __rcr(b_8, C_22)
+	SZXC_24 = cond(b_23)
+	C_25 = SZXC_24 (alias)
+	c_26 = __rcr(c_7, C_25)
+	SZXC_27 = cond(c_26)
+	a_28 = a_12 - 1
+	af_29 = DPB(af_13, a_28, 8) (alias)
+	N_30 = false
+	SZHXV_31 = cond(a_28)
+	Z_32 = SZHXV_31 (alias)
+	branch Test(NE,Z_32) l0C9D
+// DataOut: a af b c h hl ix l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> h:<invalid> l:<invalid> b:<invalid> c:<invalid> a:<invalid>
+// LocalsOut: v3(16)
+
+l0CA8:
+	a_33 = c_26
+	v16_36 = Mem0[ix + -22:byte]
+	a_37 = a_33 + v16_36
+	SZHXVC_38 = cond(a_37)
+	C_39 = SZHXVC_38 (alias)
+	c_40 = a_37
+	a_41 = b_23
+	v18_42 = Mem0[ix + -21:byte]
+	a_43 = a_41 + v18_42 + C_39
+	SZHXVC_44 = cond(a_43)
+	C_45 = SZHXVC_44 (alias)
+	b_46 = a_43
+	a_47 = l_19
+	v19_48 = Mem0[ix + -20:byte]
+	a_49 = a_47 + v19_48 + C_45
+	SZHXVC_50 = cond(a_49)
+	C_51 = SZHXVC_50 (alias)
+	l_52 = a_49
+	a_53 = h_16
+	v20_54 = Mem0[ix + -19:byte]
+	a_55 = a_53 + v20_54 + C_51
+	h_56 = a_55
+	a_57 = c_40
+	v21_58 = Mem0[ix + -4:byte]
+	a_59 = a_57 ^ v21_58
+	c_60 = a_59
+	a_61 = b_46
+	v24_62 = Mem0[ix + -3:byte]
+	a_63 = a_61 ^ v24_62
+	b_64 = a_63
+	a_65 = l_52
+	v25_66 = Mem0[ix + -2:byte]
+	a_67 = a_65 ^ v25_66
+	l_68 = a_67
+	a_69 = h_56
+	v26_70 = Mem0[ix + -1:byte]
+	a_71 = a_69 ^ v26_70
+	h_72 = a_71
+	v27_73 = Mem0[ix + -34:byte]
+	a_74 = v27_73
+	a_75 = a_74 - c_60
+	SZHXVC_76 = cond(a_75)
+	C_77 = SZHXVC_76 (alias)
+	Mem78[ix + -34:byte] = a_75
+	v28_79 = Mem78[ix + -33:byte]
+	a_80 = v28_79
+	a_81 = a_80 - b_64 - C_77
+	SZHXVC_82 = cond(a_81)
+	C_83 = SZHXVC_82 (alias)
+	Mem84[ix + -33:byte] = a_81
+	v29_85 = Mem84[ix + -32:byte]
+	a_86 = v29_85
+	a_87 = a_86 - l_68 - C_83
+	SZHXVC_88 = cond(a_87)
+	C_89 = SZHXVC_88 (alias)
+	Mem90[ix + -32:byte] = a_87
+	v30_91 = Mem90[ix + -31:byte]
+	a_92 = v30_91
+	a_93 = a_92 - h_72 - C_89
+	af_94 = DPB(af_29, a_93, 8) (alias)
+	N_95 = true
+	SZHXVC_96 = cond(a_93)
+	Mem97[ix + -31:byte] = a_93
+	sp_98 = sp_15 - 2
+	Mem99[sp_98:word16] = af_94
+	v32_100 = Mem99[ix + -34:byte]
+	c_101 = v32_100
+	v33_102 = Mem99[ix + -33:byte]
+	b_103 = v33_102
+	v34_104 = Mem99[ix + -32:byte]
+	l_105 = v34_104
+	v35_106 = Mem99[ix + -31:byte]
+	h_107 = v35_106
+	hl_108 = DPB(hl_20, h_107, 8) (alias)
+	af_109 = Mem99[sp_98:word16]
+	sp_110 = sp_98 + 2
+	a_111 = 0x04
+	af_112 = DPB(af_109, a_111, 8) (alias)
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:v3 h:<invalid> l:<invalid> b:<invalid> c:<invalid> a:<invalid>
+
+l0CFE_thunk_fn0D00:
+	fn0D00(af_112, b_103, c_101, hl_108, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:v3 h:<invalid> l:<invalid> b:<invalid> c:<invalid> a:0x04 af:<invalid>
+// Terminates process
+
+fn0C9D_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void fn0CB7(word16 af, byte b, byte c, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C af b c h hl ix l
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0CB7_entry:
+// DataOut: af b c h hl ix l
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l0CB7:
+	byte a_18 = b ^ Mem0[ix + -3:byte]
+	byte a_23 = l ^ Mem0[ix + -2:byte]
+	byte a_27 = h + Mem0[ix + -19:byte] + C ^ Mem0[ix + -1:byte]
+	byte a_31 = Mem0[ix + -34:byte] - (c ^ Mem0[ix + -4:byte])
+	Mem34[ix + -34:byte] = a_31
+	byte a_37 = Mem34[ix + -33:byte] - a_18 - (a_31 <u 0x00)
+	Mem40[ix + -33:byte] = a_37
+	byte a_43 = Mem40[ix + -32:byte] - a_23 - (a_37 <u 0x00)
+	Mem46[ix + -32:byte] = a_43
+	Mem54[ix + -31:byte] = Mem46[ix + -31:byte] - a_27 - (a_43 <u 0x00)
+	byte v25_57 = Mem54[ix + -34:byte]
+	byte v26_59 = Mem54[ix + -33:byte]
+	word16 hl_66 = DPB(hl, Mem54[ix + -31:byte], 8)
+	word16 af_70 = DPB(af, 0x04, 8)
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0CFE_thunk_fn0D00:
+	fn0D00(af_70, v26_59, v25_57, hl_66, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:0x04 h:<invalid> c:<invalid> b:<invalid> l:<invalid> af:<invalid> -2(fp):af
+// Terminates process
+
+fn0CB7_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: -2(fp):af
+
+
+
+void fn0D00(word16 af, byte b, byte c, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a af b c h hl ix l
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0D00_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0D00_entry:
+	def af
+	def a
+	def hl
+	def b
+	def c
+	def v3
+	def ix
+	def Mem0
+// DataOut: a af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: v3(16)
+
+l0D00:
+	af_5 = PHI(af_23, af)
+	a_6 = PHI(a_22, a)
+	hl_7 = PHI(hl_18, hl)
+	b_8 = PHI(b_15, b)
+	c_9 = PHI(c_12, c)
+	sp_11 = v3
+	c_12 = c_9 << 1
+	SZXC_13 = cond(c_12)
+	C_14 = SZXC_13 (alias)
+	b_15 = __rcl(b_8, C_14)
+	SZXC_16 = cond(b_15)
+	C_17 = SZXC_16 (alias)
+	hl_18 = hl_7 + hl_7 + C_17
+	l_19 = (byte) hl_18 (alias)
+	h_20 = SLICE(hl_18, byte, 8) (alias)
+	SZHXVC_21 = cond(hl_18)
+	a_22 = a_6 - 1
+	af_23 = DPB(af_5, a_22, 8) (alias)
+	N_24 = false
+	SZHXV_25 = cond(a_22)
+	Z_26 = SZHXV_25 (alias)
+	branch Test(NE,Z_26) l0D00
+// DataOut: a af b c h hl ix l sp
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> c:<invalid> b:<invalid> hl:<invalid> a:<invalid>
+// LocalsOut: v3(16)
+
+l0D09:
+	a_27 = c_12
+	v16_30 = Mem0[ix + -18:byte]
+	a_31 = a_27 + v16_30
+	SZHXVC_32 = cond(a_31)
+	C_33 = SZHXVC_32 (alias)
+	Mem34[ix + -4:byte] = a_31
+	a_35 = b_15
+	v17_36 = Mem34[ix + -17:byte]
+	a_37 = a_35 + v17_36 + C_33
+	SZHXVC_38 = cond(a_37)
+	C_39 = SZHXVC_38 (alias)
+	Mem40[ix + -3:byte] = a_37
+	a_41 = l_19
+	v19_42 = Mem40[ix + -16:byte]
+	a_43 = a_41 + v19_42 + C_39
+	SZHXVC_44 = cond(a_43)
+	C_45 = SZHXVC_44 (alias)
+	Mem46[ix + -2:byte] = a_43
+	a_47 = h_20
+	v21_48 = Mem46[ix + -15:byte]
+	a_49 = a_47 + v21_48 + C_45
+	Mem50[ix + -1:byte] = a_49
+	v22_51 = Mem50[ix + -34:byte]
+	a_52 = v22_51
+	v23_53 = Mem50[ix + -38:byte]
+	a_54 = a_52 + v23_53
+	SZHXVC_55 = cond(a_54)
+	C_56 = SZHXVC_55 (alias)
+	c_57 = a_54
+	v24_58 = Mem50[ix + -33:byte]
+	a_59 = v24_58
+	v25_60 = Mem50[ix + -37:byte]
+	a_61 = a_59 + v25_60 + C_56
+	SZHXVC_62 = cond(a_61)
+	C_63 = SZHXVC_62 (alias)
+	b_64 = a_61
+	v26_65 = Mem50[ix + -32:byte]
+	a_66 = v26_65
+	v27_67 = Mem50[ix + -36:byte]
+	a_68 = a_66 + v27_67 + C_63
+	SZHXVC_69 = cond(a_68)
+	C_70 = SZHXVC_69 (alias)
+	l_71 = a_68
+	v28_72 = Mem50[ix + -31:byte]
+	a_73 = v28_72
+	v29_74 = Mem50[ix + -35:byte]
+	a_75 = a_73 + v29_74 + C_70
+	h_76 = a_75
+	v30_77 = Mem50[ix + -4:byte]
+	a_78 = v30_77
+	a_79 = a_78 ^ c_57
+	Mem80[ix + -4:byte] = a_79
+	v33_81 = Mem80[ix + -3:byte]
+	a_82 = v33_81
+	a_83 = a_82 ^ b_64
+	Mem84[ix + -3:byte] = a_83
+	v34_85 = Mem84[ix + -2:byte]
+	a_86 = v34_85
+	a_87 = a_86 ^ l_71
+	Mem88[ix + -2:byte] = a_87
+	v35_89 = Mem88[ix + -1:byte]
+	a_90 = v35_89
+	a_91 = a_90 ^ h_76
+	af_92 = DPB(af_23, a_91, 8) (alias)
+	H_93 = true
+	X_94 = false
+	N_95 = false
+	C_96 = false
+	SZV_97 = cond(a_91)
+	Mem98[ix + -1:byte] = a_91
+	sp_99 = sp_11 - 2
+	Mem100[sp_99:word16] = af_92
+	v37_101 = Mem100[ix + -34:byte]
+	c_102 = v37_101
+	v38_103 = Mem100[ix + -33:byte]
+	b_104 = v38_103
+	v39_105 = Mem100[ix + -32:byte]
+	l_106 = v39_105
+	v40_107 = Mem100[ix + -31:byte]
+	h_108 = v40_107
+	hl_109 = DPB(hl_18, h_108, 8) (alias)
+	af_110 = Mem100[sp_99:word16]
+	sp_111 = sp_99 + 2
+	a_112 = 0x05
+	af_113 = DPB(af_110, a_112, 8) (alias)
+// DataOut: a b c h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:v3 c:<invalid> b:<invalid> hl:<invalid> a:<invalid>
+
+l0D71:
+	af_114 = PHI(af_113, af_134)
+	h_115 = PHI(h_108, h_121)
+	l_116 = PHI(l_106, l_124)
+	a_117 = PHI(a_112, a_133)
+	hl_118 = PHI(hl_109, hl_125)
+	b_119 = PHI(b_104, b_128)
+	c_120 = PHI(c_102, c_131)
+	h_121 = h_115 >>u 1
+	SZXC_122 = cond(h_121)
+	C_123 = SZXC_122 (alias)
+	l_124 = __rcr(l_116, C_123)
+	hl_125 = DPB(hl_118, l_124, 0) (alias)
+	SZXC_126 = cond(l_124)
+	C_127 = SZXC_126 (alias)
+	b_128 = __rcr(b_119, C_127)
+	SZXC_129 = cond(b_128)
+	C_130 = SZXC_129 (alias)
+	c_131 = __rcr(c_120, C_130)
+	SZXC_132 = cond(c_131)
+	a_133 = a_117 - 1
+	af_134 = DPB(af_114, a_133, 8) (alias)
+	N_135 = false
+	SZHXV_136 = cond(a_133)
+	Z_137 = SZHXV_136 (alias)
+	branch Test(NE,Z_137) l0D71
+// DataOut: a b c h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:v3 c:<invalid> b:<invalid> hl:<invalid> a:<invalid> l:<invalid> h:<invalid> af:<invalid>
+
+l0D7C:
+	a_138 = c_131
+	v41_139 = Mem100[ix + -14:byte]
+	a_140 = a_138 + v41_139
+	SZHXVC_141 = cond(a_140)
+	C_142 = SZHXVC_141 (alias)
+	c_143 = a_140
+	a_144 = b_128
+	v42_145 = Mem100[ix + -13:byte]
+	a_146 = a_144 + v42_145 + C_142
+	SZHXVC_147 = cond(a_146)
+	C_148 = SZHXVC_147 (alias)
+	b_149 = a_146
+	a_150 = l_124
+	v43_151 = Mem100[ix + -12:byte]
+	a_152 = a_150 + v43_151 + C_148
+	SZHXVC_153 = cond(a_152)
+	C_154 = SZHXVC_153 (alias)
+	l_155 = a_152
+	a_156 = h_121
+	v44_157 = Mem100[ix + -11:byte]
+	a_158 = a_156 + v44_157 + C_154
+	h_159 = a_158
+	a_160 = c_143
+	v45_161 = Mem100[ix + -4:byte]
+	a_162 = a_160 ^ v45_161
+	c_163 = a_162
+	a_164 = b_149
+	v46_165 = Mem100[ix + -3:byte]
+	a_166 = a_164 ^ v46_165
+	b_167 = a_166
+	a_168 = l_155
+	v47_169 = Mem100[ix + -2:byte]
+	a_170 = a_168 ^ v47_169
+	l_171 = a_170
+	a_172 = h_159
+	v48_173 = Mem100[ix + -1:byte]
+	a_174 = a_172 ^ v48_173
+	h_175 = a_174
+	v49_176 = Mem100[ix + -26:byte]
+	a_177 = v49_176
+	a_178 = a_177 - c_163
+	SZHXVC_179 = cond(a_178)
+	C_180 = SZHXVC_179 (alias)
+	Mem181[ix + -26:byte] = a_178
+	v50_182 = Mem181[ix + -25:byte]
+	a_183 = v50_182
+	a_184 = a_183 - b_167 - C_180
+	SZHXVC_185 = cond(a_184)
+	C_186 = SZHXVC_185 (alias)
+	Mem187[ix + -25:byte] = a_184
+	v51_188 = Mem187[ix + -24:byte]
+	a_189 = v51_188
+	a_190 = a_189 - l_171 - C_186
+	SZHXVC_191 = cond(a_190)
+	C_192 = SZHXVC_191 (alias)
+	Mem193[ix + -24:byte] = a_190
+	v52_194 = Mem193[ix + -23:byte]
+	a_195 = v52_194
+	a_196 = a_195 - h_175 - C_192
+	Mem197[ix + -23:byte] = a_196
+	v53_198 = Mem197[ix + -38:byte]
+	a_199 = v53_198
+	a_200 = a_199 + 0x47
+	SZHXVC_201 = cond(a_200)
+	C_202 = SZHXVC_201 (alias)
+	Mem203[ix + -38:byte] = a_200
+	v54_204 = Mem203[ix + -37:byte]
+	a_205 = v54_204
+	a_206 = a_205 + 0x86 + C_202
+	SZHXVC_207 = cond(a_206)
+	C_208 = SZHXVC_207 (alias)
+	Mem209[ix + -37:byte] = a_206
+	v55_210 = Mem209[ix + -36:byte]
+	a_211 = v55_210
+	a_212 = a_211 + 0xC8 + C_208
+	SZHXVC_213 = cond(a_212)
+	C_214 = SZHXVC_213 (alias)
+	Mem215[ix + -36:byte] = a_212
+	v56_216 = Mem215[ix + -35:byte]
+	a_217 = v56_216
+	a_218 = a_217 + 0x61 + C_214
+	Mem219[ix + -35:byte] = a_218
+	v57_220 = Mem219[ix + -30:byte]
+	a_221 = v57_220
+	a_222 = a_221 + 0xFF
+	SZHXVC_223 = cond(a_222)
+	C_224 = SZHXVC_223 (alias)
+	c_225 = a_222
+	v58_226 = Mem219[ix + -29:byte]
+	a_227 = v58_226
+	a_228 = a_227 + 0xFF + C_224
+	SZHXVC_229 = cond(a_228)
+	C_230 = SZHXVC_229 (alias)
+	b_231 = a_228
+	v59_232 = Mem219[ix + -28:byte]
+	a_233 = v59_232
+	a_234 = a_233 + 0xFF + C_230
+	SZHXVC_235 = cond(a_234)
+	C_236 = SZHXVC_235 (alias)
+	l_237 = a_234
+	v60_238 = Mem219[ix + -27:byte]
+	a_239 = v60_238
+	a_240 = a_239 + 0xFF + C_236
+	h_241 = a_240
+	Mem242[ix + -30:byte] = c_225
+	Mem243[ix + -29:byte] = b_231
+	Mem244[ix + -28:byte] = l_237
+	Mem245[ix + -27:byte] = h_241
+	a_246 = h_241
+	a_247 = a_246 | l_237
+	a_248 = a_247 | b_231
+	a_249 = a_248 | c_225
+	H_250 = false
+	X_251 = false
+	N_252 = false
+	C_253 = false
+	SZV_254 = cond(a_249)
+	Z_255 = SZV_254 (alias)
+	branch Test(EQ,Z_255) l0E13
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:v3 c:<invalid> b:<invalid> hl:<invalid> a:<invalid> l:<invalid> h:<invalid> af:<invalid>
+
+l0E13:
+	v61_256 = Mem245[0x060E:ptr16]
+	call v61_256 (retsize: 4; depth: 4)
+		uses: a_249,af_134,b_231,c_225,C_253,h_241,H_250,hl_125,ix,l_237,N_252,sp_111,SZHXV_136,SZHXVC_235,SZV_254,SZXC_132,X_251,Z_255
+		defs: a_266,af_274,b_262,c_258,C_263,H_259,h_271,hl_264,ix_269,l_270,N_260,sp_257,SZHXV_267,SZHXVC_265,SZV_273,SZXC_261,X_272,Z_268
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:v3 c:<invalid> b:<invalid> hl:<invalid> a:<invalid> l:<invalid> h:<invalid> af:<invalid>
+
+
+
+void fn0DFC(byte c, byte b, byte h, byte l, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b c h ix l
+// LiveOut:
+// Trashed: SZHXVNC a
+// Preserved: sp
+fn0DFC_entry:
+// DataOut: b c h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0DFC:
+	Mem3[ix + -30:byte] = c
+	Mem6[ix + -29:byte] = b
+	Mem8[ix + -28:byte] = l
+	Mem10[ix + -27:byte] = h
+	byte a_14 = h | l | b | c
+	branch a_14 == 0x00 l0E13_in_fn0DFC
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0E13_in_fn0DFC:
+	word16 sp_51
+	byte c_52
+	word16 ix_53
+	byte b_54
+	byte l_55
+	byte h_56
+	byte a_57
+	bool H_58
+	bool X_59
+	bool N_60
+	bool C_61
+	byte SZV_62
+	bool Z_63
+	call v97 (retsize: 4; depth: 4)
+		uses: a_14,b,c,C_18,h,H_15,ix,l,N_17,sp_1,SZV_19,X_16,Z_20
+		defs: a_57,b_54,c_52,C_61,h_56,H_58,ix_53,l_55,N_60,sp_51,SZV_62,X_59,Z_63
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:h | l | b | c
+
+l0E13_in_fn0DFC:
+	word16 sp_37
+	byte c_38
+	word16 ix_39
+	byte b_40
+	byte l_41
+	byte h_42
+	byte a_43
+	bool H_44
+	bool X_45
+	bool N_46
+	bool C_47
+	byte SZV_48
+	bool Z_49
+	call v97 (retsize: 4; depth: 4)
+		uses: a_14,b,c,C_18,h,H_15,ix,l,N_17,sp_1,SZV_19,X_16,Z_20
+		defs: a_43,b_40,c_38,C_47,h_42,H_44,ix_39,l_41,N_46,sp_37,SZV_48,X_45,Z_49
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:h | l | b | c
+
+fn0DFC_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:h | l | b | c
+
+
+
+void fn0E3B(word16 bc, word16 de)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b bc de
+// LiveOut:
+// Trashed: SZHXVN b bc de hl
+// Preserved: sp
+l0E3B:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0E3B_entry:
+// DataOut: b bc de h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0E3B:
+	word16 bc_12 = DPB(bc, b + 1, 8)
+	word16 hl_10 = 0x0823
+// DataOut: bc de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0E3F:
+	Mem15[de:byte] = Mem0[hl_10:byte]
+	hl_10 = hl_10 + 1
+	de = de + 1
+	bc_12 = bc_12 - 1
+	branch bc_12 != 0x0000 l0E3F
+// DataOut: bc de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp b:<invalid> hl:<invalid> de:<invalid> bc:<invalid>
+
+l0E41:
+	return
+// DataOut: h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp b:<invalid> hl:<invalid> de:<invalid> bc:<invalid>
+
+fn0E3B_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp b:<invalid> hl:<invalid> de:<invalid> bc:<invalid>
+
+
+
+void fn0F9A(word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: af sp
+// Preserved:
+fn0F9A_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l0F9A:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0F9A_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 af:<invalid>
+
+
+
+void fn13A7(byte a, word16 bc, word16 de, byte l, byte h, word16 ix, word16 wArg04, word16 wArg08)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a b bc de h ix l
+// LiveOut:
+// Trashed:
+// Preserved:
+// Stack args: Stack +0004(16) Stack +0008(16)
+// Terminates process
+fn13A7_entry:
+// DataOut: a b bc de h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0004(16) Stack +0008(16)
+
+l13A7:
+	fn1BA4(a, bc, de, wArg08, ix, wLoc0A, wArg06, wArg13, wArg15)
+	byte h_19 = SLICE(wArg08, byte, 8)
+	Mem29[ix + -19:byte] = h_19
+	byte l_18 = (byte) wArg08
+	Mem30[ix + -20:byte] = l_18
+	byte a_38 = Mem30[ix + -17:byte] | Mem30[ix + -18:byte]
+	branch a_38 == 0x00 l13CA
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// Terminates process
+
+l13CA:
+	word16 sp_46
+	byte a_47
+	word16 bc_48
+	word16 de_49
+	word16 hl_50
+	bool N_51
+	byte SZHXVC_52
+	byte h_53
+	word16 ix_54
+	byte l_55
+	bool H_56
+	bool X_57
+	bool C_58
+	byte SZV_59
+	bool Z_60
+	call Mem30[0x0738:ptr16] (retsize: 4; depth: 4)
+		uses: a_38,bc_33,C_42,de_31,h_19,H_39,hl_17,ix,l_18,N_41,sp_34,SZV_43,wLoc02_6,wLoc04_9,wLoc06_14,wLoc08_21,wLoc0A,X_40,Z_44
+		defs: a_47,bc_48,C_58,de_49,h_53,H_56,hl_50,ix_54,l_55,N_51,sp_46,SZHXVC_52,SZV_59,X_57,Z_60
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 6 de:<invalid> bc:<invalid> a:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):de -2(fp):bc
+
+fn13A7_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 6 de:<invalid> bc:<invalid> a:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):de -2(fp):bc
+
+
+
+void fn152A(byte b, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b hl ix
+// LiveOut:
+// Trashed: X a hl ix l sp
+// Preserved:
+l152A:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn152A_entry:
+// DataOut: b hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l152A:
+	Mem6[hl + 1:byte] = b
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn152A_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:ix + 2 a:c hl:<invalid> l:0x01 ix:<invalid>
+
+
+
+void fn164F(word16 af, word16 bc, byte h, word16 ix, word16 wArg13, word16 wArg1B)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C a af b bc c h ix
+// LiveOut:
+// Trashed:
+// Preserved:
+// Stack args: Stack +0013(16) Stack +001B(16)
+// Terminates process
+fn164F_entry:
+// DataOut: a af b bc c h ix
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0013(16) Stack +001B(16)
+
+l164F:
+	Mem3[ix + -20:byte] = a
+	Mem10[ix + -19:byte] = Mem3[ix + -7:byte] - h - C
+	byte a_42 = Mem10[ix + -7:byte] - Mem10[ix + -3:byte] - (Mem10[ix + -8:byte] - Mem10[ix + -4:byte] <u 0x00)
+	word16 hl_48 = DPB(wArg1B + 1, a_42, 8)
+	byte a_22 = c - Mem10[wArg1B:byte]
+	byte l_63 = (byte) hl_48
+	byte c_70
+	byte b_71
+	word16 hl_72
+	word16 af_73 = fn02F4(DPB(af, a_42, 8), b - Mem10[wArg1B + 1:byte] - (a_22 <u 0x00), a_22, hl_48, ix, out c_70, out b_71, out hl_72)
+	word16 af_77 = DPB(af_73, l_63, 8)
+	branch l_63 != 0x00 l1692
+// DataOut: af b bc c de h hl ix sp
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1692:
+	word16 v30_105 = Mem10[fp + 23:word16]
+	word16 v33_112 = Mem10[fp + 21:word16]
+	byte v31_107 = Mem10[v30_105:byte]
+	byte v32_110 = Mem10[v30_105 + 1:byte]
+	byte v36_117 = Mem10[v33_112 + 1:byte]
+	byte a_120 = v31_107 - Mem10[v33_112:byte]
+	Mem123[ix + -20:byte] = a_120
+	Mem126[ix + -19:byte] = v32_110 - v36_117 - (a_120 <u 0x00)
+	word16 v38_127 = Mem126[fp + 33:word16]
+	word16 v41_134 = Mem126[fp + 14:word16]
+	byte v39_129 = Mem126[v38_127:byte]
+	byte v40_132 = Mem126[v38_127 + 1:byte]
+	byte v43_139 = Mem126[v41_134 + 1:byte]
+	byte a_143 = v39_129 - Mem126[v41_134:byte]
+	Mem146[ix + -22:byte] = a_143
+	Mem149[ix + -21:byte] = v40_132 - v43_139 - (a_143 <u 0x00)
+	word16 v44_150 = Mem149[fp + 27:word16]
+	byte a_159 = v31_107 - Mem149[v44_150:byte]
+	word16 v47_167 = Mem149[fp + 37:word16]
+	byte a_164 = v32_110 - Mem149[v44_150 + 1:byte] - (a_159 <u 0x00)
+	byte a_181 = v40_132 - Mem149[v47_167 + 1:byte] - (v39_129 - Mem149[v47_167:byte] <u 0x00)
+	Mem190[fp - 2:word16] = Mem149[fp + 19:word16]
+	word16 v51_191 = Mem190[fp + 17:word16]
+	Mem196[fp - 4:word16] = v51_191
+	Mem198[fp - 6:word16] = DPB(bc, a_164, 8)
+	Mem200[fp - 8:word16] = DPB(wArg13, a_181, 8)
+	byte l_194 = (byte) v51_191
+	byte c_201
+	byte b_202
+	word16 hl_203
+	word16 af_208 = DPB(fn02F4(DPB(af_73, a_181, 8), a_164, a_159, v51_191, ix, out c_201, out b_202, out hl_203), l_194, 8)
+	branch l_194 != 0x00 l1707
+// DataOut: af b c h hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> h:<invalid> l:<invalid> c:<invalid> b:<invalid> de:<invalid> af:<invalid> -8(fp):<invalid> -6(fp):bc -4(fp):<invalid> -2(fp):de
+
+l1700_thunk_fn1707:
+	fn1707(af_208, c_201, b_202, hl_203, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> h:<invalid> l:<invalid> c:<invalid> b:<invalid> de:<invalid> e:<invalid> d:<invalid> af:<invalid> -8(fp):<invalid> -6(fp):bc -4(fp):<invalid> -2(fp):<invalid>
+// Terminates process
+
+l1700_thunk_fn1702:
+	fn1702(af_208, c_201, b_202, hl_203, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> h:<invalid> l:<invalid> c:<invalid> b:<invalid> de:<invalid> e:<invalid> d:<invalid> af:<invalid> -8(fp):<invalid> -6(fp):bc -4(fp):<invalid> -2(fp):<invalid>
+// Terminates process
+
+l168D:
+	word16 hl_104 = DPB(hl_72, 0x03, 0)
+// DataOut: af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> h:<invalid> l:<invalid> c:<invalid> b:<invalid> de:<invalid> af:<invalid> -8(fp):<invalid> -6(fp):bc -4(fp):<invalid> -2(fp):de
+
+l168F_thunk_fn0C35:
+	fn0C35(af_77, c_70, b_71, hl_104, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> h:<invalid> l:0x03 c:<invalid> b:<invalid> de:<invalid> af:<invalid> -8(fp):<invalid> -6(fp):bc -4(fp):<invalid> -2(fp):de
+// Terminates process
+
+fn164F_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: -8(fp):<invalid> -6(fp):bc -4(fp):<invalid> -2(fp):<invalid>
+
+
+
+void fn16F7(word16 af, byte b, byte c, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a af b c h hl ix
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn16F7_entry:
+// DataOut: a af b c h hl ix
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l16F7:
+	byte c_7
+	byte b_8
+	word16 hl_9
+	word16 af_15 = DPB(fn02F4(af, b, c, hl, ix, out c_7, out b_8, out hl_9), l, 8)
+	branch l != 0x00 l1700_thunk_fn1707
+// DataOut: af b c h hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1700_thunk_fn1707:
+	fn1707(af_15, c_7, b_8, hl_9, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> l:<invalid> h:<invalid> c:<invalid> b:<invalid> af:<invalid> hl:<invalid>
+// Terminates process
+
+l1700_thunk_fn1702:
+	fn1702(af_15, c_7, b_8, hl_9, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> a:<invalid> l:<invalid> h:<invalid> c:<invalid> b:<invalid> af:<invalid> hl:<invalid>
+// Terminates process
+
+fn16F7_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void fn1702(word16 af, byte c, byte b, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  af b c h hl ix
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn1702_entry:
+// DataOut: af b c h hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1702:
+	word16 hl_4 = DPB(hl, 0x03, 0)
+// DataOut: af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1704_thunk_fn0C35:
+	fn0C35(af, c, b, hl_4, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:v3 l:0x03
+// Terminates process
+
+fn1702_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void fn1707(word16 af, byte c, byte b, word16 hl, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  af b c h hl ix
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn1707_entry:
+// DataOut: af b c h hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1707:
+	word16 hl_4 = DPB(hl, 0x00, 0)
+// DataOut: af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1709_thunk_fn0C35:
+	fn0C35(af, c, b, hl_4, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:v3 l:0x00
+// Terminates process
+
+fn1707_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void fn1873(word16 af, byte b, byte c, byte h, word16 ix, word16 wArg13)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  af b c h ix
+// LiveOut:
+// Trashed:
+// Preserved:
+// Stack args: Stack +0013(16)
+// Terminates process
+fn1873_entry:
+// DataOut: af b c h ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: Stack +0013(16)
+
+l1873:
+	Mem6[wArg13:byte] = c
+	Mem11[wArg13 + 1:byte] = b
+	word16 hl_13 = DPB(wArg13 + 1, 0x02, 0)
+// DataOut: af b c h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l187D_thunk_fn0C35:
+	fn0C35(af, c, b, hl_13, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:<invalid> l:0x02
+// Terminates process
+
+fn1873_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void fn1929(word16 af, byte b, byte c, byte d, byte e, word16 ix, word16 wArg11, word16 wArg13)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a af b c d e ix
+// LiveOut:
+// Trashed: SZHXVNC a af b c d e h hl ix l sp
+// Preserved:
+// Stack args: Stack +0011(16)
+fn1929_entry:
+// DataOut: a af b c d e ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0011(16)
+
+l1929:
+	byte c_40
+	byte b_41
+	word16 hl_42
+	fn02F4(DPB(af, d - a - (e - a <u 0x00), 8), b, c, wArg11, ix, out c_40, out b_41, out hl_42)
+	byte l_29 = (byte) wArg11
+	byte v17_46 = Mem0[ix + -39:byte]
+	branch v17_46 != 0x00 l194E
+// DataOut: a ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l194A:
+	branch (v17_46 | l_29) == 0x00 l1952
+// DataOut: ix l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> h:<invalid> l:<invalid> a:<invalid> e:0x00 d:<invalid> hl:<invalid> c:<invalid> b:<invalid> af:<invalid> -8(fp):de -6(fp):bc -4(fp):<invalid> -2(fp):<invalid>
+
+l1952:
+	branch Mem0[ix + -39:byte] == 0x00 l195E
+// DataOut: ix l
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> h:<invalid> l:<invalid> a:<invalid> e:0x00 d:<invalid> hl:<invalid> c:<invalid> b:<invalid> af:<invalid> -8(fp):de -6(fp):bc -4(fp):<invalid> -2(fp):<invalid>
+
+l1959:
+	branch l_29 != 0x00 l1962
+// DataOut: ix
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> h:<invalid> l:<invalid> a:<invalid> e:0x00 d:<invalid> hl:<invalid> c:<invalid> b:<invalid> af:<invalid> -8(fp):de -6(fp):bc -4(fp):<invalid> -2(fp):<invalid>
+
+l1962:
+// DataOut: ix
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> h:<invalid> l:<invalid> a:<invalid> e:0x00 d:<invalid> hl:<invalid> c:<invalid> b:<invalid> af:<invalid> -8(fp):de -6(fp):bc -4(fp):<invalid> -2(fp):<invalid>
+
+l195E:
+// DataOut: ix
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> h:<invalid> l:<invalid> a:<invalid> e:0x00 d:<invalid> hl:<invalid> c:<invalid> b:<invalid> af:<invalid> -8(fp):de -6(fp):bc -4(fp):<invalid> -2(fp):<invalid>
+
+l194E:
+// DataOut: ix
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> h:<invalid> l:<invalid> a:<invalid> e:0x00 d:<invalid> hl:<invalid> c:<invalid> b:<invalid> af:<invalid> -8(fp):de -6(fp):bc -4(fp):<invalid> -2(fp):<invalid>
+
+l1964:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> h:<invalid> l:<invalid> a:<invalid> e:0x00 d:<invalid> hl:<invalid> c:<invalid> b:<invalid> af:<invalid> -8(fp):de -6(fp):bc -4(fp):<invalid> -2(fp):<invalid>
+
+fn1929_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:ix + 2 h:<invalid> l:<invalid> a:<invalid> e:0x00 d:<invalid> hl:<invalid> ix:<invalid> c:<invalid> b:<invalid> af:<invalid> -8(fp):de -6(fp):bc -4(fp):<invalid> -2(fp):<invalid>
+
+
+
+void fn1BA4(byte a, word16 bc, word16 de, word16 hl, word16 ix, word16 wArg00, word16 wArg10, word16 wArg1D, word16 wArg1F)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a b bc de hl ix l
+// LiveOut:
+// Trashed:
+// Preserved:
+// Stack args: Stack +0000(16) Stack +0010(16)
+// Terminates process
+fn1BA4_entry:
+// DataOut: a b bc de h hl ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0000(16) Stack +0010(16)
+
+l1BA4:
+	fn0805(a)
+	byte l_38 = (byte) wArg1D
+	word16 de_44 = DPB(wArg00, l_38, 0)
+	byte a_46 = 0x03 - l_38
+	branch a_46 <u 0x00 l1BF9
+// DataOut: b bc de h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// Terminates process
+
+l1BCD_thunk_fn1BF9:
+	fn1BF9(bc, de_44, ix)
+	return
+// DataOut: h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x000A e:l a:0x03 - l -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):hl * 0x0002 * 0x0002 + (hl * 0x0002) * 0x0002 + ((hl * 0x0002) * 0x0002 + (hl * 0x0002) * 0x0002) + de + bc 0(fp):<invalid>
+
+l1BCF:
+// DataOut: de h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x000A e:l a:0x03 - l -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):hl * 0x0002 * 0x0002 + (hl * 0x0002) * 0x0002 + ((hl * 0x0002) * 0x0002 + (hl * 0x0002) * 0x0002) + de + bc 0(fp):<invalid>
+
+l1BD4_in_fn1BA4:
+	word16 sp_81
+	byte h_82
+	byte d_83
+	word16 hl_84
+	bool N_85
+	byte SZHXVC_86
+	word16 de_87
+	word16 bc_88
+	word16 iy_89
+	byte l_90
+	byte e_91
+	byte a_92
+	bool C_93
+	word16 ix_94
+	byte SZHXV_95
+	call v10 (retsize: 4; depth: 4)
+		uses: a_46,bc,C_49,d_65,de_66,e_43,h_72,hl_71,ix,iy_20,l_73,N_74,sp_42,SZHXV,SZHXVC_75,wLoc02_26,wLoc04_28,wLoc06_33,wLoc08_40
+		defs: a_92,bc_88,C_93,d_83,de_87,e_91,h_82,hl_84,ix_94,iy_89,l_90,N_85,sp_81,SZHXV_95,SZHXVC_86
+	return
+// DataOut: h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x000A e:l a:0x03 - l d:0x00 hl:0x0EAB -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):hl * 0x0002 * 0x0002 + (hl * 0x0002) * 0x0002 + ((hl * 0x0002) * 0x0002 + (hl * 0x0002) * 0x0002) + de + bc 0(fp):<invalid>
+
+fn1BA4_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x000A e:l a:<invalid> d:0x00 hl:<invalid> b:<invalid> de:<invalid> bc:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):hl * 0x0002 * 0x0002 + (hl * 0x0002) * 0x0002 + ((hl * 0x0002) * 0x0002 + (hl * 0x0002) * 0x0002) + de + bc 0(fp):<invalid>
+
+
+
+void fn1BD2(word16 de, word16 hl)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  de hl
+// LiveOut:
+// Trashed: SZHXVNC hl
+// Preserved: sp
+fn1BD2_entry:
+// DataOut: de hl
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1BD2:
+// DataOut: de hl
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1BD4:
+	word16 hl_10 = hl + de + de
+	word16 sp_14
+	bool Z_15
+	bool N_16
+	byte SHXV_17
+	word16 de_18
+	word16 hl_19
+	byte SZHXVC_20
+	call Mem0[hl_10:ptr16] (retsize: 4; depth: 4)
+		uses: de,hl_10,N_11,SHXV_6,sp_1,SZHXVC_12,Z_4
+		defs: de_18,hl_19,N_16,SHXV_17,sp_14,SZHXVC_20,Z_15
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn1BD2_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp hl:hl + de + de
+
+
+
+void fn1BDE(word16 bc, word16 de, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b bc de ix
+// LiveOut:
+// Trashed: SZHXVNC a b bc de hl
+// Preserved: sp
+fn1BDE_entry:
+// DataOut: b bc de ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1BDE:
+// DataOut: b bc de ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1BE9:
+	Mem6[ix + -23:byte] = Mem0[ix + -23:byte] + 1
+	Mem11[ix + -1:byte] = Mem6[ix + -23:byte]
+// DataOut: b bc de ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1BF2_thunk_fn1BF9:
+	fn1BF9(bc, de, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid>
+
+fn1BDE_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> b:<invalid> hl:<invalid> de:<invalid> bc:<invalid>
+
+
+
+void fn1BF9(word16 bc, word16 de, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b bc de ix
+// LiveOut:
+// Trashed: SZHXVNC a b bc de hl
+// Preserved: sp
+fn1BF9_entry:
+// DataOut: b bc de h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1BF9:
+	byte v4_4 = Mem0[ix + -9:byte]
+	Mem9[ix + -9:byte] = v4_4 + 0x09
+	Mem14[ix + -8:byte] = Mem9[ix + -8:byte] + (v4_4 <u 0x09)
+	Mem17[ix + -11:byte] = Mem14[ix + -11:byte] + 1
+// DataOut: b bc de h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1C0C_thunk_fn0E3B:
+	fn0E3B(bc, de)
+	return
+// DataOut: h ix l
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid>
+
+fn1BF9_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> b:<invalid> hl:<invalid> de:<invalid> bc:<invalid>
+
+
+
+void fn1C54()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn1C54_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn1C54_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l1C54:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+
+
+void fn1C89(byte a, byte c, word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a c
+// LiveOut:
+// Trashed: SZHXVNC a af l sp
+// Preserved:
+fn1C89_entry:
+// DataOut: a c
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l1C89:
+	branch (a | c) == 0x00 l1C92
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l1C92:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:a | c
+// LocalsOut: fp(16)
+
+l1C8D:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:a | c
+// LocalsOut: fp(16)
+
+l0F96:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:a | c l:<invalid>
+
+fn1C89_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 a:<invalid> l:<invalid> af:<invalid>
+
+
+
+void fn204C(byte a, word16 ix, word16 wArg20, word16 wArg22, word16 wArg24)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C a ix
+// LiveOut:
+// Trashed: SZHXVNC a hl l
+// Preserved: sp
+// Stack args: Stack +0024(16)
+fn204C_entry:
+// DataOut: a ix
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+// LocalsOut: Stack +0024(16)
+
+l204C:
+	Mem9[ix + -5:byte] = a + Mem0[ix + -36:byte] + C
+	byte a_13 = Mem9[ix + 4:byte] + Mem9[ix + -4:byte]
+	Mem16[ix + -8:byte] = a_13
+	Mem21[ix + -7:byte] = Mem16[ix + 5:byte] + Mem16[ix + -3:byte] + (a_13 <u 0x00)
+	byte v13_22 = Mem21[ix + -8:byte]
+	Mem27[ix + -10:byte] = v13_22 + 0x02
+	Mem31[ix + -9:byte] = Mem27[ix + -7:byte] + (v13_22 <u 0x02)
+	Mem32[ix + -41:byte] = 0x00
+	byte a_44 = Mem32[ix + -41:byte] - Mem32[wArg24:byte]
+	branch a_44 <u 0x00 l2090
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l2090:
+	word16 sp_49
+	byte a_50
+	word16 ix_51
+	bool C_52
+	bool N_53
+	byte SZHXVC_54
+	word16 hl_55
+	byte l_56
+	call Mem32[0x14A1:ptr16] (retsize: 4; depth: 4)
+		uses: a_44,C_47,hl_40,ix,l_35,N_45,sp_1,SZHXVC_46
+		defs: a_50,C_52,hl_55,ix_51,l_56,N_53,sp_49,SZHXVC_54
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> hl:<invalid> l:<invalid> 32(fp):<invalid> 34(fp):0x0000
+
+fn204C_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> hl:<invalid> l:<invalid> 32(fp):<invalid> 34(fp):0x0000
+
+
+
+void fn2093(word16 hl, word16 ix, word16 wArg06)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  hl ix
+// LiveOut:
+// Trashed: SZHXVNC a b c hl
+// Preserved: sp
+// Stack args: Stack +0006(16)
+fn2093_entry:
+// DataOut: hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: Stack +0006(16)
+
+l2093:
+	byte v7_7 = Mem0[hl + 1:byte]
+	byte a_12 = Mem0[hl:byte] + Mem0[ix + -14:byte]
+	Mem15[ix + -40:byte] = a_12
+	byte a_18 = v7_7 + Mem15[ix + -13:byte] + (a_12 <u 0x00)
+	Mem20[ix + -39:byte] = a_18
+	branch (Mem20[wArg06 + 1:byte] & 0x80) == 0x00 l20B4
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l20B4:
+	word16 sp_33
+	word16 hl_34
+	byte c_35
+	bool X_36
+	byte b_37
+	byte a_38
+	word16 ix_39
+	bool N_40
+	byte SZHXVC_41
+	bool C_42
+	bool Z_43
+	byte SHXV_44
+	call Mem20[0x147B:ptr16] (retsize: 4; depth: 4)
+		uses: a_18,b_28,C_14,c_25,hl_26,ix,N_30,SHXV_31,sp_1,SZHXVC_19,Z_29
+		defs: a_38,b_37,c_35,C_42,hl_34,ix_39,N_40,SHXV_44,sp_33,SZHXVC_41,X_36,Z_43
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp c:<invalid> hl:<invalid> b:<invalid> a:<invalid>
+
+fn2093_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp c:<invalid> hl:<invalid> b:<invalid> a:<invalid>
+
+
+
+void fn22A6(word16 bc, word16 ix, word16 wArg03, word16 wArg05, word16 wArg07, word16 wArg0D, word16 wArg10)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  bc ix
+// LiveOut:
+// Trashed:
+// Preserved:
+// Stack args: Stack +0005(16) Stack +0007(16) Stack +000D(16) Stack +0010(16)
+// Terminates process
+fn22A6_entry:
+// DataOut: bc ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32) Stack +0005(16) Stack +0007(16) Stack +000D(16) Stack +0010(16)
+
+l22A6:
+	Mem6[ix + -4:byte] = Mem0[ix + -9:byte]
+	Mem7[ix + -3:byte] = 0x00
+	word16 hl_34 = DPB(wArg10 + (wArg05 + 1), 0x00, 8) * 0x0002 * 0x0002 * 0x0002 + DPB(wArg05 + 1, 0x00, 8) + bc
+	Mem42[ix + -8:byte] = Mem7[hl_34 + 2:byte]
+	Mem46[ix + -7:byte] = Mem42[hl_34 + 3:byte]
+	word16 hl_105 = DPB(wArg10 + (wArg05 + 3), 0x00, 8) * 0x0002 * 0x0002 * 0x0002 + DPB(wArg05 + 3, 0x00, 8) + DPB(bc, Mem46[(wArg0D + DPB(bc, SLICE(DPB(wArg10 + (wArg05 + 2), 0x00, 8) * 0x0002 + DPB(bc, 0x00, 8), byte, 8), 8)) + 1:byte], 8)
+	byte v49_136 = Mem46[hl_105:byte]
+	byte v50_139 = Mem46[hl_105 + 1:byte]
+	fn03AA()
+	Mem165[wArg07:byte] = v49_136
+	Mem169[wArg07 + 1:byte] = v50_139
+	Mem172[ix + -9:byte] = Mem169[ix + -9:byte] + 1
+	Mem175[ix + -9:byte] = Mem172[ix + -9:byte] + 1
+	Mem178[ix + -9:byte] = Mem175[ix + -9:byte] + 1
+	Mem181[ix + -9:byte] = Mem178[ix + -9:byte] + 1
+// DataOut: b hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// Terminates process
+
+l2377_thunk_fn152A:
+	fn152A(v50_139, wArg07 + 1, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0004 c:l b:h hl:<invalid> -4(fp):<invalid> -2(fp):bc 3(fp):<invalid> 5(fp):<invalid>
+
+fn22A6_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> c:l b:h hl:<invalid> a:<invalid> l:0x01 ix:<invalid> -4(fp):<invalid> -2(fp):bc 3(fp):<invalid> 5(fp):<invalid>
+
+
+
+void fn291C(byte a, word16 hl)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a hl
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn291C_entry:
+	def fp
+	def a
+	def hl
+	def Mem0
+	def af
+	def SZHXVC
+// DataOut: a hl
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
+l291C:
+	sp_1 = fp
+	e_3 = a
+	hl_5 = hl - 1
+	v7_7 = Mem0[hl_5:byte]
+	l_8 = v7_7
+	a_9 = l_8
+	a_10 = __ror(a_9)
+	SZXC_11 = cond(a_10)
+	C_12 = SZXC_11 (alias)
+	a_13 = 0x00 - (a_10 <u 0x00)
+	h_14 = a_13
+	hl_15 = DPB(hl_5, h_14, 8) (alias)
+	a_16 = e_3
+	a_17 = __ror(a_16)
+	SZXC_18 = cond(a_17)
+	C_19 = SZXC_18 (alias)
+	a_20 = 0x00 - (a_17 <u 0x00)
+	d_21 = a_20
+	a_22 = h_14
+	a_23 = a_22 ^ d_21
+	C_24 = false
+	SZV_25 = cond(a_23)
+	a_26 = __rcl(a_23, C_24)
+	SZXC_27 = cond(a_26)
+	C_28 = SZXC_27 (alias)
+	a_29 = h_14
+	af_31 = DPB(af, a_29, 8) (alias)
+	sp_32 = fp - 2
+	wLoc02_33 = af_31
+	a_34 = __rcl(a_29, C_28)
+	H_35 = false
+	N_36 = false
+	SZXC_37 = cond(a_34)
+	C_38 = SZXC_37 (alias)
+	branch Test(UGE,C_38) l293D
+// DataOut: d e h l
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l2933:
+	a_66 = 0x00
+	a_67 = 0x00 - l_8
+	SZHXVC_68 = cond(a_67)
+	C_69 = SZHXVC_68 (alias)
+	l_70 = a_67
+	a_71 = 0x00 - C_69
+	a_72 = a_71 - h_14
+	N_73 = true
+	SZHXVC_74 = cond(a_72)
+	h_75 = a_72
+// DataOut: d e
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 2 e:a hl:<invalid> l:<invalid> a:<invalid> h:<invalid> d:<invalid> -2(fp):af
+
+l293D:
+	l_40 = PHI(l_8, l_70)
+	h_41 = PHI(h_14, h_75)
+	C_42 = PHI(C_38, C_69)
+	a_43 = PHI(a_34, a_72)
+	SZHXVC_44 = PHI(SZHXVC, SZHXVC_74)
+	Z_45 = (d_21 & 0x80) == 0x00
+	N_46 = false
+	SHXV_47 = cond(d_21)
+	branch Test(EQ,Z_45) l294B
+// DataOut: d e
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 2 e:a hl:<invalid> l:<invalid> a:<invalid> h:<invalid> d:<invalid> -2(fp):af
+
+l2941:
+	a_56 = 0x00
+	a_57 = 0x00 - e_3
+	SZHXVC_58 = cond(a_57)
+	C_59 = SZHXVC_58 (alias)
+	e_60 = a_57
+	a_61 = 0x00 - C_59
+	a_62 = a_61 - d_21
+	N_63 = true
+	SZHXVC_64 = cond(a_62)
+	d_65 = a_62
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 2 e:a hl:<invalid> l:<invalid> a:<invalid> h:<invalid> d:<invalid> -2(fp):af
+
+l294B:
+	C_48 = PHI(C_42, C_59)
+	e_49 = PHI(e_3, e_60)
+	a_50 = PHI(a_43, a_62)
+	N_51 = PHI(N_46, N_63)
+	SZHXVC_52 = PHI(SZHXVC_44, SZHXVC_64)
+	d_53 = PHI(d_21, d_65)
+	fn1C54()
+	af_54 = wLoc02_33
+	sp_55 = fp
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 2 e:<invalid> hl:<invalid> l:<invalid> a:<invalid> h:<invalid> d:<invalid> -2(fp):af
+// Terminates process
+
+fn291C_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: af:<invalid> sp:sp + 2 -2(fp):af
+
+
+
+void fn3542(byte c, word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c ix
+// LiveOut:
+// Trashed: SZHXVNC a
+// Preserved: sp
+fn3542_entry:
+// DataOut: c ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l3542:
+	byte a_7 = Mem0[ix + -19:byte] - c
+	branch a_7 <u 0x00 l354C
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l354C:
+	word16 sp_12
+	byte a_13
+	word16 ix_14
+	byte c_15
+	bool N_16
+	byte SZHXVC_17
+	bool C_18
+	call Mem0[0x0CEE:ptr16] (retsize: 4; depth: 4)
+		uses: a_7,c,C_10,ix,N_8,sp_1,SZHXVC_9
+		defs: a_13,c_15,C_18,ix_14,N_16,sp_12,SZHXVC_17
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid>
+
+fn3542_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid>
+
+
+
+void fn384A(word16 ix)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ix
+// LiveOut:
+// Trashed: ix l sp
+// Preserved:
+fn384A_entry:
+// DataOut: ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l384A:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn384A_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:ix + 2 l:0x01 ix:<invalid>
+
+
+
+void fn3BD3(byte a, word16 ix, word16 wArg20, word16 wArg22, word16 wArg24)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C a ix
+// LiveOut:
+// Trashed: SZHXVNC a hl l
+// Preserved: sp
+// Stack args: Stack +0024(16)
+fn3BD3_entry:
+// DataOut: a ix
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+// LocalsOut: Stack +0024(16)
+
+l3BD3:
+	Mem9[ix + -5:byte] = a + Mem0[ix + -36:byte] + C
+	byte a_13 = Mem9[ix + 4:byte] + Mem9[ix + -4:byte]
+	Mem16[ix + -8:byte] = a_13
+	Mem21[ix + -7:byte] = Mem16[ix + 5:byte] + Mem16[ix + -3:byte] + (a_13 <u 0x00)
+	byte v13_22 = Mem21[ix + -8:byte]
+	Mem27[ix + -10:byte] = v13_22 + 0x02
+	Mem31[ix + -9:byte] = Mem27[ix + -7:byte] + (v13_22 <u 0x02)
+	Mem32[ix + -41:byte] = 0x00
+	byte a_44 = Mem32[ix + -41:byte] - Mem32[wArg24:byte]
+	branch a_44 <u 0x00 l3C17
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l3C17:
+	word16 sp_49
+	byte a_50
+	word16 ix_51
+	bool C_52
+	bool N_53
+	byte SZHXVC_54
+	word16 hl_55
+	byte l_56
+	call Mem32[0x14A1:ptr16] (retsize: 4; depth: 4)
+		uses: a_44,C_47,hl_40,ix,l_35,N_45,sp_1,SZHXVC_46
+		defs: a_50,C_52,hl_55,ix_51,l_56,N_53,sp_49,SZHXVC_54
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> hl:<invalid> l:<invalid> 32(fp):<invalid> 34(fp):0x0000
+
+fn3BD3_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> hl:<invalid> l:<invalid> 32(fp):<invalid> 34(fp):0x0000
+
+
+
+void fn3C1A(word16 hl, word16 ix, word16 wArg06)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  hl ix
+// LiveOut:
+// Trashed: SZHXVNC a b c hl
+// Preserved: sp
+// Stack args: Stack +0006(16)
+fn3C1A_entry:
+// DataOut: hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: Stack +0006(16)
+
+l3C1A:
+	byte v7_7 = Mem0[hl + 1:byte]
+	byte a_12 = Mem0[hl:byte] + Mem0[ix + -14:byte]
+	Mem15[ix + -40:byte] = a_12
+	byte a_18 = v7_7 + Mem15[ix + -13:byte] + (a_12 <u 0x00)
+	Mem20[ix + -39:byte] = a_18
+	branch (Mem20[wArg06 + 1:byte] & 0x80) == 0x00 l3C3B
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l3C3B:
+	word16 sp_33
+	word16 hl_34
+	byte c_35
+	bool X_36
+	byte b_37
+	byte a_38
+	word16 ix_39
+	bool N_40
+	byte SZHXVC_41
+	bool C_42
+	bool Z_43
+	byte SHXV_44
+	call Mem20[0x147B:ptr16] (retsize: 4; depth: 4)
+		uses: a_18,b_28,C_14,c_25,hl_26,ix,N_30,SHXV_31,sp_1,SZHXVC_19,Z_29
+		defs: a_38,b_37,c_35,C_42,hl_34,ix_39,N_40,SHXV_44,sp_33,SZHXVC_41,X_36,Z_43
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp c:<invalid> hl:<invalid> b:<invalid> a:<invalid>
+
+fn3C1A_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp c:<invalid> hl:<invalid> b:<invalid> a:<invalid>
+
+
+
+void fn3E2D(word16 bc, word16 ix, word16 wArg03, word16 wArg05, word16 wArg07, word16 wArg0D, word16 wArg10)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  bc ix
+// LiveOut:
+// Trashed:
+// Preserved:
+// Stack args: Stack +0005(16) Stack +0007(16) Stack +000D(16) Stack +0010(16)
+// Terminates process
+fn3E2D_entry:
+// DataOut: bc ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32) Stack +0005(16) Stack +0007(16) Stack +000D(16) Stack +0010(16)
+
+l3E2D:
+	Mem6[ix + -4:byte] = Mem0[ix + -9:byte]
+	Mem7[ix + -3:byte] = 0x00
+	word16 hl_34 = DPB(wArg10 + (wArg05 + 1), 0x00, 8) * 0x0002 * 0x0002 * 0x0002 + DPB(wArg05 + 1, 0x00, 8) + bc
+	Mem42[ix + -8:byte] = Mem7[hl_34 + 2:byte]
+	Mem46[ix + -7:byte] = Mem42[hl_34 + 3:byte]
+	word16 hl_105 = DPB(wArg10 + (wArg05 + 3), 0x00, 8) * 0x0002 * 0x0002 * 0x0002 + DPB(wArg05 + 3, 0x00, 8) + DPB(bc, Mem46[(wArg0D + DPB(bc, SLICE(DPB(wArg10 + (wArg05 + 2), 0x00, 8) * 0x0002 + DPB(bc, 0x00, 8), byte, 8), 8)) + 1:byte], 8)
+	byte v49_136 = Mem46[hl_105:byte]
+	byte v50_139 = Mem46[hl_105 + 1:byte]
+	fn03AA()
+	Mem165[wArg07:byte] = v49_136
+	Mem169[wArg07 + 1:byte] = v50_139
+	Mem172[ix + -9:byte] = Mem169[ix + -9:byte] + 1
+	Mem175[ix + -9:byte] = Mem172[ix + -9:byte] + 1
+	Mem178[ix + -9:byte] = Mem175[ix + -9:byte] + 1
+	Mem181[ix + -9:byte] = Mem178[ix + -9:byte] + 1
+// DataOut: b hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// Terminates process
+
+l3EFE_thunk_fn152A:
+	fn152A(v50_139, wArg07 + 1, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0004 c:l b:h hl:<invalid> -4(fp):<invalid> -2(fp):bc 3(fp):<invalid> 5(fp):<invalid>
+
+fn3E2D_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> c:l b:h hl:<invalid> a:<invalid> l:0x01 ix:<invalid> -4(fp):<invalid> -2(fp):bc 3(fp):<invalid> 5(fp):<invalid>
+
+
+
+void fn3EC2(byte a, byte b, word16 ix, word16 wArg03, word16 wArg05, word16 wArg07)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C a b ix
+// LiveOut:
+// Trashed:
+// Preserved:
+// Stack args: Stack +0003(16) Stack +0005(16) Stack +0007(16)
+// Terminates process
+fn3EC2_entry:
+// DataOut: a b ix
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32) Stack +0003(16) Stack +0005(16) Stack +0007(16)
+
+l3EC2:
+	byte v16_21 = Mem0[wArg05:byte]
+	byte v17_24 = Mem0[wArg05 + 1:byte]
+	fn03AA()
+	Mem51[wArg07:byte] = v16_21
+	Mem55[wArg07 + 1:byte] = v17_24
+	Mem59[ix + -9:byte] = Mem55[ix + -9:byte] + 1
+	Mem62[ix + -9:byte] = Mem59[ix + -9:byte] + 1
+	Mem65[ix + -9:byte] = Mem62[ix + -9:byte] + 1
+	Mem68[ix + -9:byte] = Mem65[ix + -9:byte] + 1
+// DataOut: b hl ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// Terminates process
+
+l3EFE_thunk_fn152A:
+	fn152A(v17_24, wArg07 + 1, ix)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0004 c:l b:h hl:<invalid> -4(fp):de -2(fp):bc
+
+fn3EC2_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> c:l b:h hl:<invalid> a:<invalid> l:0x01 ix:<invalid> -4(fp):de -2(fp):bc
+
+
+
+void fn59FE(word16 bc, word16 ix, word16 wArg0A, word16 wArg10)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  bc ix
+// LiveOut:
+// Trashed:
+// Preserved:
+// Stack args: Stack +0010(16)
+// Terminates process
+fn59FE_entry:
+// DataOut: bc ix
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0010(16)
+
+l59FE:
+	fn0BFE()
+	byte a_38 = Mem0[ix + -1:byte] - Mem0[ix + 5:byte] - (Mem0[ix + -2:byte] - Mem0[ix + 4:byte] <u 0x00)
+	branch OVERFLOW(a_38) l5A25
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// Terminates process
+
+l5A25:
+	word16 sp_43
+	word16 hl_44
+	word16 bc_45
+	bool N_46
+	byte SZHXVC_47
+	word16 de_48
+	word16 ix_49
+	byte a_50
+	bool C_51
+	bool V_52
+	call Mem0[0x0A35:ptr16] (retsize: 4; depth: 4)
+		uses: a_38,bc_24,C_34,de_22,hl_18,ix,N_39,sp_25,SZHXVC_40,V_41,wLoc02_10,wLoc04_13,wLoc06_15,wLoc08_20
+		defs: a_50,bc_45,C_51,de_48,hl_44,ix_49,N_46,sp_43,SZHXVC_47,V_52
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0016 de:<invalid> bc:<invalid> a:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):de -2(fp):bc
+
+fn59FE_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0016 de:<invalid> bc:<invalid> a:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):de -2(fp):bc
+
+
+
+void fn5A49(word16 de, word16 hl, word16 ix, word16 wArg08)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  C de hl ix
+// LiveOut:
+// Trashed: SZHXVNC a de h hl l
+// Preserved: sp
+fn5A49_entry:
+// DataOut: de hl ix
+// DataOut (flags): C
+// SymbolicIn: sp:fp
+
+l5A49:
+	byte d_16 = SLICE(DPB(hl, Mem0[ix + -3:byte] + 0x80 + C, 8) + de, byte, 8)
+	word16 hl_20 = DPB(de, d_16, 8)
+	byte a_30 = Mem0[hl_20 + 1:byte] | Mem0[hl_20:byte]
+	branch a_30 != 0x00 l5A66
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l5A66:
+	word16 sp_38
+	byte a_39
+	word16 ix_40
+	bool C_41
+	bool N_42
+	byte SZHXVC_43
+	byte h_44
+	word16 de_45
+	word16 hl_46
+	byte e_47
+	byte l_48
+	byte d_49
+	bool X_50
+	bool H_51
+	byte SZV_52
+	bool Z_53
+	call Mem0[0x0B1B:ptr16] (retsize: 4; depth: 4)
+		uses: a_30,C_34,d_16,de_14,e_15,h_25,H_31,hl_27,ix,l_26,N_33,sp_1,SZV_35,X_32,Z_36
+		defs: a_39,C_41,d_49,de_45,e_47,h_44,H_51,hl_46,ix_40,l_48,N_42,sp_38,SZHXVC_43,SZV_52,X_50,Z_53
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> h:<invalid> hl:<invalid> de:hl + de l:<invalid> 8(fp):<invalid>
+
+fn5A49_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp a:<invalid> h:<invalid> hl:<invalid> de:hl + de l:<invalid> 8(fp):<invalid>
+
+
+
