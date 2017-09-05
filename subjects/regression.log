@@ -159,6 +159,7 @@ fn092A: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 
+=== Elf\ARM\switch\switch
 === Elf-MIPS\redir
 *** Elf-MIPS\redir
 main: error: An error occurred while rewriting procedure to high-level language.

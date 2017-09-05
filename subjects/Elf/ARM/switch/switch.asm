@@ -57,13 +57,8 @@ _init proc
 	bl	$0000870C
 	pop	{pc}
 ;;; Segment .plt (00008304)
-
-;; fn00008304: 00008304
-fn00008304 proc
-	str	lr,[sp,-#4]!
-	ldr	lr,[pc,#&10]                                           ; 00008320
-	add	lr,pc,lr
-	ldr	pc,[lr,#8]!
+00008304             04 E0 2D E5 10 E0 9F E5 0E E0 8F E0     ..-.........
+00008310 08 F0 BE E5                                     ....           
 
 ;; abort@@GLIBC_2.0: 00008314
 abort@@GLIBC_2.0 proc
@@ -112,11 +107,7 @@ call_gmon_start proc
 l00008388:
 	mov	lr,pc
 	mov	pc,r3
-
-;; fn00008390: 00008390
-fn00008390 proc
-	pop	{r10,pc}
-00008394             C8 84 00 00 14 00 00 00                 ........   
+00008390 00 84 BD E8 C8 84 00 00 14 00 00 00             ............   
 
 ;; __do_global_dtors_aux: 0000839C
 __do_global_dtors_aux proc
@@ -230,13 +221,23 @@ switcheroo proc
 	ldr	r3,[fp,-#&10]
 	cmp	r3,#6
 	ldrls	pc,[pc,r3,lsl #2]                                    ; 000084F8
-000084F4             11 00 00 EA 14 85 00 00 14 85 00 00     ............
+
+l000084F4:
+	b	$00008540
+000084F8                         14 85 00 00 14 85 00 00         ........
 00008500 14 85 00 00 40 85 00 00 20 85 00 00 40 85 00 00 ....@... ...@...
 00008510 34 85 00 00 10 00 1B E5 C5 FF FF EB 0A 00 00 EA 4...............
 00008520 10 30 1B E5 03 30 43 E2 03 00 A0 E1 C0 FF FF EB .0...0C.........
 00008530 05 00 00 EA 10 00 1B E5 10 10 1B E5 CB FF FF EB ................
-00008540 00 00 A0 E3 00 10 A0 E3 C8 FF FF EB 10 30 1B E5 .............0..
-00008550 01 30 83 E2 03 00 A0 E1 00 A8 1B E9             .0..........   
+
+l00008540:
+	mov	r0,#0
+	mov	r1,#0
+	bl	$00008470
+	ldr	r3,[fp,-#&10]
+	add	r3,r3,#1
+	mov	r0,r3
+	ldmdb	fp,fp,sp,pc
 
 ;; main: 0000855C
 main proc
@@ -379,20 +380,10 @@ __libc_csu_init proc
 l00008684:
 	mov	r6,r1
 	mov	r5,r3
-
-l0000868C:
 	mov	lr,pc
 	ldr	pc,[r6,r4,lsl #2]
-
-;; fn00008694: 00008694
-fn00008694 proc
-	add	r4,r4,#1
-	cmp	r4,r5,asr #2
-	blo	$0000868C
-
-l000086A0:
-	pop	{r4-r6,r10,pc}
-000086A4             E0 81 00 00 18 00 00 00 1C 00 00 00     ............
+00008694             01 40 84 E2 45 01 54 E1 FA FF FF 3A     .@..E.T....:
+000086A0 70 84 BD E8 E0 81 00 00 18 00 00 00 1C 00 00 00 p...............
 
 ;; __libc_csu_fini: 000086B0
 __libc_csu_fini proc
@@ -432,19 +423,9 @@ __do_global_ctors_aux proc
 
 l00008724:
 	mov	r3,r2
-
-l00008728:
 	mov	lr,pc
 	mov	pc,r3
-
-;; fn00008730: 00008730
-fn00008730 proc
-	ldr	r3,[r4,-#4]!
-	cmn	r3,#1
-	bne	$00008728
-
-l0000873C:
-	pop	{r4,pc}
+00008730 04 30 34 E5 01 00 73 E3 FA FF FF 1A 10 80 BD E8 .04...s.........
 00008740 38 08 01 00                                     8...           
 
 ;; call___do_global_ctors_aux: 00008744
