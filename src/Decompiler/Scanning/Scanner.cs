@@ -944,7 +944,7 @@ namespace Reko.Scanning
             // Find all reachable procedures.
             ScanProceduresRecursively();
 
-            if (true || Program.User.Heuristics.Contains("shingle"))
+            if (Program.User.Heuristics.Contains("shingle"))
             {
                 // Use has requested shingle scanning of remaining areas.
                 ShingleScanProcedures();

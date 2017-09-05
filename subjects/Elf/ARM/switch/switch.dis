@@ -1,0 +1,791 @@
+// _init
+// Return size: 0
+void _init()
+_init_entry:
+	// succ:  l000082F0
+l000082F0:
+	sp = fp
+	sp = sp + -4
+	Mem0[sp:word32] = lr
+	call call_gmon_start (retsize: 0;)
+	call frame_dummy (retsize: 0;)
+	call __do_global_ctors_aux (retsize: 0;)
+	sp = sp + 4
+	return
+	// succ:  _init_exit
+_init_exit:
+
+
+// fn00008304
+// Return size: 0
+void fn00008304()
+fn00008304_entry:
+	// succ:  l00008304
+l00008304:
+	sp = fp
+	sp = sp + -4
+	Mem0[sp:word32] = lr
+	lr = Mem0[0x00008320:word32]
+	lr = pc + lr
+	lr = lr + 8
+	call Mem0[lr:word32] (retsize: 0;)
+	return
+	// succ:  fn00008304_exit
+fn00008304_exit:
+
+
+// abort@@GLIBC_2.0
+// Return size: 0
+void abort@@GLIBC_2.0()
+fn00008314_entry:
+	// succ:  l00008314
+l00008314:
+	sp = fp
+	ip = Mem0[0x00008320:word32]
+	ip = pc + ip
+	call Mem0[ip:word32] (retsize: 0;)
+	return
+	// succ:  fn00008314_exit
+fn00008314_exit:
+
+
+// __libc_start_main@@GLIBC_2.0
+// Return size: 0
+void __libc_start_main@@GLIBC_2.0()
+fn00008324_entry:
+	// succ:  l00008324
+l00008324:
+	sp = fp
+	ip = Mem0[0x00008330:word32]
+	ip = pc + ip
+	call Mem0[ip:word32] (retsize: 0;)
+	return
+	// succ:  fn00008324_exit
+fn00008324_exit:
+
+
+// _start
+// Return size: 0
+void _start()
+_start_entry:
+	// succ:  l00008334
+l00008334:
+	sp = fp
+	ip = Mem0[0x00008360:word32]
+	fp = 0x00000000
+	r1 = Mem0[sp:word32]
+	sp = sp + 4
+	r2 = sp
+	sp = sp + -4
+	Mem0[sp:word32] = r2
+	sp = sp + -4
+	Mem0[sp:word32] = r0
+	r0 = Mem0[0x00008364:word32]
+	r3 = Mem0[0x00008368:word32]
+	sp = sp + -4
+	Mem0[sp:word32] = ip
+	call __libc_start_main@@GLIBC_2.0 (retsize: 0;)
+	call abort@@GLIBC_2.0 (retsize: 0;)
+	Mem0[r0:word16] = r8
+	r0 = r0 - r0
+	branch Test(NE,Z) l00008368
+	// succ:  l00008364_1 l00008368
+l00008364_1:
+	r8 = r0 & ip >> r5
+	// succ:  l00008368
+l00008368:
+	branch Test(NE,Z) l0000836C
+	// succ:  l00008368_1 l00008368_thunk_call_gmon_start
+l00008368_1:
+	r8 = r0 & r4 >> r6
+	// succ:  l00008368_thunk_call_gmon_start
+l00008368_thunk_call_gmon_start:
+	call call_gmon_start (retsize: 0;)
+	return
+	// succ:  _start_exit
+l00008368_thunk_call_gmon_start:
+	call call_gmon_start (retsize: 0;)
+	return
+	// succ:  _start_exit
+_start_exit:
+
+
+// call_gmon_start
+// Return size: 0
+void call_gmon_start()
+call_gmon_start_entry:
+	// succ:  l0000836C
+l0000836C:
+	sp = fp
+	Mem0[sp:word32] = r10
+	Mem0[sp - 0x00000004:word32] = lr
+	sp = sp - 0x00000008
+	r10 = Mem0[0x00008394:word32]
+	r3 = Mem0[0x00008398:word32]
+	r10 = pc + r10
+	r3 = Mem0[r10:word32]
+	NZCV = cond(r3 - 0x00000000)
+	branch Test(NE,Z) l00008388
+	// succ:  l00008384_1 l00008388
+l00008384_1:
+	r10 = Mem0[sp:word32]
+	sp = sp + 8
+	return
+	// succ:  call_gmon_start_exit
+l00008388:
+	lr = pc
+	call r3 (retsize: 0;)
+	return
+	// succ:  call_gmon_start_exit
+call_gmon_start_exit:
+
+
+// fn00008390
+// Return size: 0
+void fn00008390()
+fn00008390_entry:
+	// succ:  l00008390
+l00008390:
+	sp = fp
+	r10 = Mem0[sp:word32]
+	sp = sp + 8
+	return
+	// succ:  fn00008390_exit
+fn00008390_exit:
+
+
+// __do_global_dtors_aux
+// Return size: 0
+void __do_global_dtors_aux()
+__do_global_dtors_aux_entry:
+	// succ:  l0000839C
+l0000839C:
+	sp = fp
+	Mem0[sp:word32] = r4
+	Mem0[sp - 0x00000004:word32] = r5
+	Mem0[sp - 0x00000008:word32] = lr
+	sp = sp - 0x0000000C
+	r5 = Mem0[0x000083F4:word32]
+	r3 = Mem0[r5:byte]
+	NZCV = cond(r3 - 0x00000000)
+	branch Test(EQ,Z) l000083B0
+	// succ:  l000083AC_1 l000083B0
+l000083AC_1:
+	r4 = Mem0[sp:word32]
+	r5 = Mem0[sp + 4:word32]
+	sp = sp + 12
+	return
+	// succ:  __do_global_dtors_aux_exit
+l000083B0:
+	r4 = Mem0[0x000083F8:word32]
+	r3 = Mem0[r4:word32]
+	r2 = Mem0[r3:word32]
+	NZCV = cond(r2 - 0x00000000)
+	branch Test(EQ,Z) l000083E8
+	// succ:  l000083C4 l000083E8
+l000083C4:
+	r3 = Mem0[r4:word32]
+	r3 = r3 + 0x00000004
+	Mem0[r4:word32] = r3
+	lr = pc
+	call r2 (retsize: 0;)
+	return
+	// succ:  __do_global_dtors_aux_exit
+l000083E8:
+	r3 = 0x00000001
+	Mem0[r5:byte] = r3
+	r4 = Mem0[sp:word32]
+	r5 = Mem0[sp + 4:word32]
+	sp = sp + 12
+	return
+	// succ:  __do_global_dtors_aux_exit
+__do_global_dtors_aux_exit:
+
+
+// call___do_global_dtors_aux
+// Return size: 0
+void call___do_global_dtors_aux()
+call___do_global_dtors_aux_entry:
+	// succ:  l000083FC
+l000083FC:
+	sp = fp
+	sp = sp + -4
+	Mem0[sp:word32] = lr
+	sp = sp + 4
+	return
+	// succ:  call___do_global_dtors_aux_exit
+call___do_global_dtors_aux_exit:
+
+
+// frame_dummy
+// Return size: 0
+void frame_dummy()
+frame_dummy_entry:
+	// succ:  l00008404
+l00008404:
+	sp = fp
+	r0 = Mem0[0x00008424:word32]
+	r3 = Mem0[r0:word32]
+	NZCV = cond(r3 - 0x00000000)
+	branch Test(NE,Z) l00008414
+	// succ:  l00008410_1 l00008414
+l00008410_1:
+	return
+	// succ:  frame_dummy_exit
+l00008414:
+	r3 = Mem0[0x00008428:word32]
+	NZCV = cond(r3 - 0x00000000)
+	branch Test(NE,Z) l00008420
+	// succ:  l0000841C_1 l00008420
+l0000841C_1:
+	return
+	// succ:  frame_dummy_exit
+l00008420:
+	call fn00000000 (retsize: 0;)
+	return
+	// succ:  frame_dummy_exit
+frame_dummy_exit:
+
+
+// call_frame_dummy
+// Return size: 0
+void call_frame_dummy()
+call_frame_dummy_entry:
+	// succ:  l0000842C
+l0000842C:
+	sp = fp
+	sp = sp + -4
+	Mem0[sp:word32] = lr
+	sp = sp + 4
+	return
+	// succ:  call_frame_dummy_exit
+call_frame_dummy_exit:
+
+
+// frobulate
+// Return size: 0
+void frobulate()
+frobulate_entry:
+	// succ:  l00008434
+l00008434:
+	sp = fp
+	ip = sp
+	Mem0[sp:word32] = fp
+	Mem0[sp - 0x00000004:word32] = ip
+	Mem0[sp - 0x00000008:word32] = lr
+	Mem0[sp - 0x0000000C:word32] = pc
+	sp = sp - 0x00000010
+	fp = ip - 0x00000004
+	sp = sp - 0x00000004
+	Mem0[fp + -16:word32] = r0
+	r2 = Mem0[fp + -16:word32]
+	r3 = Mem0[fp + -16:word32]
+	r3 = r2 * r3
+	r0 = r3
+	r1 = 0x00000530
+	r1 = r1 + 0x00000009
+	call __divsi3 (retsize: 0;)
+	r3 = r0
+	r0 = r3
+	fp = Mem0[fp:word32]
+	sp = Mem0[fp + 4:word32]
+	return
+	// succ:  frobulate_exit
+frobulate_exit:
+
+
+// bazulate
+// Return size: 0
+void bazulate()
+bazulate_entry:
+	// succ:  l00008470
+l00008470:
+	sp = fp
+	ip = sp
+	Mem0[sp:word32] = r4
+	Mem0[sp - 0x00000004:word32] = fp
+	Mem0[sp - 0x00000008:word32] = ip
+	Mem0[sp - 0x0000000C:word32] = lr
+	Mem0[sp - 0x00000010:word32] = pc
+	sp = sp - 0x00000014
+	fp = ip - 0x00000004
+	sp = sp - 0x00000008
+	Mem0[fp + -20:word32] = r0
+	Mem0[fp + -24:word32] = r1
+	r2 = Mem0[fp + -20:word32]
+	r3 = Mem0[fp + -24:word32]
+	r4 = r2 + r3
+	r0 = Mem0[fp + -20:word32]
+	call frobulate (retsize: 0;)
+	r3 = r0
+	r0 = r4
+	r1 = r3
+	call __divsi3 (retsize: 0;)
+	r4 = r0
+	r0 = Mem0[fp + -24:word32]
+	call frobulate (retsize: 0;)
+	r3 = r0
+	r0 = r4
+	r1 = r3
+	call __divsi3 (retsize: 0;)
+	r3 = r0
+	r0 = r3
+	r4 = Mem0[fp:word32]
+	fp = Mem0[fp + 4:word32]
+	sp = Mem0[fp + 8:word32]
+	return
+	// succ:  bazulate_exit
+bazulate_exit:
+
+
+// switcheroo
+// Return size: 0
+void switcheroo()
+switcheroo_entry:
+	// succ:  l000084D4
+l000084D4:
+	sp = fp
+	ip = sp
+	Mem0[sp:word32] = fp
+	Mem0[sp - 0x00000004:word32] = ip
+	Mem0[sp - 0x00000008:word32] = lr
+	Mem0[sp - 0x0000000C:word32] = pc
+	sp = sp - 0x00000010
+	fp = ip - 0x00000004
+	sp = sp - 0x00000004
+	Mem0[fp + -16:word32] = r0
+	r3 = Mem0[fp + -16:word32]
+	NZCV = cond(r3 - 0x00000006)
+	call Mem0[pc:word32] (retsize: 0;)
+	return
+	// succ:  switcheroo_exit
+switcheroo_exit:
+
+
+// main
+// Return size: 0
+void main()
+main_entry:
+	// succ:  l0000855C
+l0000855C:
+	sp = fp
+	ip = sp
+	Mem0[sp:word32] = fp
+	Mem0[sp - 0x00000004:word32] = ip
+	Mem0[sp - 0x00000008:word32] = lr
+	Mem0[sp - 0x0000000C:word32] = pc
+	sp = sp - 0x00000010
+	fp = ip - 0x00000004
+	sp = sp - 0x00000008
+	Mem0[fp + -16:word32] = r0
+	Mem0[fp + -20:word32] = r1
+	r0 = Mem0[fp + -16:word32]
+	call switcheroo (retsize: 0;)
+	r3 = 0x00000000
+	r0 = r3
+	fp = Mem0[fp:word32]
+	sp = Mem0[fp + 4:word32]
+	return
+	// succ:  main_exit
+main_exit:
+
+
+// __divsi3
+// Return size: 0
+void __divsi3()
+__divsi3_entry:
+	// succ:  l00008588
+l00008588:
+	sp = fp
+	ip = r0 ^ r1
+	r3 = 0x00000001
+	r2 = 0x00000000
+	NZCV = cond(r1 - 0x00000000)
+	branch Test(GE,N) l0000859C
+	// succ:  l00008598_1 l0000859C
+l00008598_1:
+	r1 = r1 - 0x00000000
+	// succ:  l0000859C
+l0000859C:
+	branch Test(EQ,Z) l00008628
+	// succ:  l000085A0 l00008628
+l000085A0:
+	NZCV = cond(r0 - 0x00000000)
+	branch Test(GE,N) l000085A8
+	// succ:  l000085A4_1 l000085A8
+l000085A4_1:
+	r0 = r0 - 0x00000000
+	// succ:  l000085A8
+l000085A8:
+	NZCV = cond(r0 - r1)
+	branch Test(ULT,C) l00008618
+	// succ:  l000085B0 l00008618
+l000085B0:
+	NZCV = cond(r1 - 0x10000000)
+	branch Test(UGE,C) l000085B8
+	// succ:  l000085B4_1 l000085B8
+l000085B4_1:
+	NZCV = cond(r1 - r0)
+	// succ:  l000085B8
+l000085B8:
+	branch Test(UGE,C) l000085BC
+	// succ:  l000085B8_1 l000085BC
+l000085B8_1:
+	r1 = r1 << 0x04
+	// succ:  l000085BC
+l000085BC:
+	branch Test(UGE,C) l000085C0
+	// succ:  l000085BC_1 l000085C0
+l000085BC_1:
+	r3 = r3 << 0x04
+	// succ:  l000085C0
+l000085C0:
+	branch Test(ULT,C) l000085B0
+	// succ:  l000085C4 l000085B0
+l000085C4:
+	NZCV = cond(r1 - 0x80000000)
+	branch Test(UGE,C) l000085CC
+	// succ:  l000085C8_1 l000085CC
+l000085C8_1:
+	NZCV = cond(r1 - r0)
+	// succ:  l000085CC
+l000085CC:
+	branch Test(UGE,C) l000085D0
+	// succ:  l000085CC_1 l000085D0
+l000085CC_1:
+	r1 = r1 << 0x01
+	// succ:  l000085D0
+l000085D0:
+	branch Test(UGE,C) l000085D4
+	// succ:  l000085D0_1 l000085D4
+l000085D0_1:
+	r3 = r3 << 0x01
+	// succ:  l000085D4
+l000085D4:
+	branch Test(ULT,C) l000085C4
+	// succ:  l000085D8 l000085C4
+l000085D8:
+	NZCV = cond(r0 - r1)
+	branch Test(ULT,C) l000085E0
+	// succ:  l000085DC_1 l000085E0
+l000085DC_1:
+	r0 = r0 - r1
+	// succ:  l000085E0
+l000085E0:
+	branch Test(ULT,C) l000085E4
+	// succ:  l000085E0_1 l000085E4
+l000085E0_1:
+	r2 = r2 | r3
+	// succ:  l000085E4
+l000085E4:
+	NZCV = cond(r0 - (r1 >>u 0x01))
+	branch Test(ULT,C) l000085EC
+	// succ:  l000085E8_1 l000085EC
+l000085E8_1:
+	r0 = r0 - (r1 >>u 0x01)
+	// succ:  l000085EC
+l000085EC:
+	branch Test(ULT,C) l000085F0
+	// succ:  l000085EC_1 l000085F0
+l000085EC_1:
+	r2 = r2 | r3 >>u 0x01
+	// succ:  l000085F0
+l000085F0:
+	NZCV = cond(r0 - (r1 >>u 0x02))
+	branch Test(ULT,C) l000085F8
+	// succ:  l000085F4_1 l000085F8
+l000085F4_1:
+	r0 = r0 - (r1 >>u 0x02)
+	// succ:  l000085F8
+l000085F8:
+	branch Test(ULT,C) l000085FC
+	// succ:  l000085F8_1 l000085FC
+l000085F8_1:
+	r2 = r2 | r3 >>u 0x02
+	// succ:  l000085FC
+l000085FC:
+	NZCV = cond(r0 - (r1 >>u 0x03))
+	branch Test(ULT,C) l00008604
+	// succ:  l00008600_1 l00008604
+l00008600_1:
+	r0 = r0 - (r1 >>u 0x03)
+	// succ:  l00008604
+l00008604:
+	branch Test(ULT,C) l00008608
+	// succ:  l00008604_1 l00008608
+l00008604_1:
+	r2 = r2 | r3 >>u 0x03
+	// succ:  l00008608
+l00008608:
+	NZCV = cond(r0 - 0x00000000)
+	branch Test(EQ,Z) l00008610
+	// succ:  l0000860C_1 l00008610
+l0000860C_1:
+	r3 = r3 >>u 0x04
+	// succ:  l00008610
+l00008610:
+	branch Test(EQ,Z) l00008614
+	// succ:  l00008610_1 l00008614
+l00008610_1:
+	r1 = r1 >>u 0x04
+	// succ:  l00008614
+l00008614:
+	branch Test(NE,Z) l000085D8
+	// succ:  l00008618 l000085D8
+l00008618:
+	r0 = r2
+	NZCV = cond(ip - 0x00000000)
+	branch Test(GE,N) l00008624
+	// succ:  l00008620_1 l00008624
+l00008620_1:
+	r0 = r0 - 0x00000000
+	// succ:  l00008624
+l00008624:
+	return
+	// succ:  __divsi3_exit
+l00008628:
+	sp = sp + -4
+	Mem0[sp:word32] = lr
+	call __div0 (retsize: 0;)
+	r0 = 0x00000000
+	sp = sp + 4
+	return
+	// succ:  __divsi3_exit
+__divsi3_exit:
+
+
+// __div0
+// Return size: 0
+void __div0()
+__div0_entry:
+	// succ:  l00008638
+l00008638:
+	sp = fp
+	Mem0[sp:word32] = r1
+	Mem0[sp - 0x00000004:word32] = lr
+	sp = sp - 0x00000008
+	__syscall(0x00900014)
+	NZCV = cond(r0 + 0x000003E8)
+	branch Test(ULT,C) l00008648
+	// succ:  l00008644_1 l00008648
+l00008644_1:
+	r1 = Mem0[sp:word32]
+	sp = sp + 8
+	return
+	// succ:  __div0_exit
+l00008648:
+	r1 = 0x00000008
+	__syscall(0x00900025)
+	r1 = Mem0[sp:word32]
+	sp = sp + 8
+	return
+	// succ:  __div0_exit
+__div0_exit:
+
+
+// __libc_csu_init
+// Return size: 0
+void __libc_csu_init()
+__libc_csu_init_entry:
+	// succ:  l00008654
+l00008654:
+	sp = fp
+	Mem0[sp:word32] = r4
+	Mem0[sp - 0x00000004:word32] = r5
+	Mem0[sp - 0x00000008:word32] = r6
+	Mem0[sp - 0x0000000C:word32] = r10
+	Mem0[sp - 0x00000010:word32] = lr
+	sp = sp - 0x00000014
+	r4 = 0x00000000
+	r10 = Mem0[0x000086A4:word32]
+	r10 = pc + r10
+	call _init (retsize: 0;)
+	r3 = Mem0[0x000086A8:word32]
+	r2 = Mem0[0x000086AC:word32]
+	r1 = Mem0[r10:word32]
+	r3 = Mem0[r10:word32]
+	r3 = r1 - r3
+	NZCV = cond(r4 - (r3 >> 0x00000002))
+	branch Test(ULT,C) l00008684
+	// succ:  l00008680_1 l00008684
+l00008680_1:
+	r4 = Mem0[sp:word32]
+	r5 = Mem0[sp + 4:word32]
+	r6 = Mem0[sp + 8:word32]
+	r10 = Mem0[sp + 12:word32]
+	sp = sp + 20
+	return
+	// succ:  __libc_csu_init_exit
+l00008684:
+	r6 = r1
+	r5 = r3
+	// succ:  l0000868C
+l0000868C:
+	lr = pc
+	call Mem0[r6:word32] (retsize: 0;)
+	return
+	// succ:  __libc_csu_init_exit
+__libc_csu_init_exit:
+
+
+// fn00008694
+// Return size: 0
+void fn00008694()
+fn00008694_entry:
+	goto l00008694
+	// succ:  l00008694
+l0000868C_in_fn00008694:
+	lr = pc
+	call Mem0[r6:word32] (retsize: 0;)
+	return
+	// succ:  fn00008694_exit
+l00008694:
+	sp = fp
+	r4 = r4 + 0x00000001
+	NZCV = cond(r4 - (r5 >> 0x00000002))
+	branch Test(ULT,C) l0000868C_in_fn00008694
+	// succ:  l000086A0 l0000868C_in_fn00008694
+l000086A0:
+	r4 = Mem0[sp:word32]
+	r5 = Mem0[sp + 4:word32]
+	r6 = Mem0[sp + 8:word32]
+	r10 = Mem0[sp + 12:word32]
+	sp = sp + 20
+	return
+	// succ:  fn00008694_exit
+fn00008694_exit:
+
+
+// __libc_csu_fini
+// Return size: 0
+void __libc_csu_fini()
+__libc_csu_fini_entry:
+	// succ:  l000086B0
+l000086B0:
+	sp = fp
+	Mem0[sp:word32] = r4
+	Mem0[sp - 0x00000004:word32] = r5
+	Mem0[sp - 0x00000008:word32] = r10
+	Mem0[sp - 0x0000000C:word32] = lr
+	sp = sp - 0x00000010
+	r10 = Mem0[0x00008700:word32]
+	r3 = Mem0[0x00008704:word32]
+	r2 = Mem0[0x00008708:word32]
+	r10 = pc + r10
+	r1 = Mem0[r10:word32]
+	r3 = Mem0[r10:word32]
+	r3 = r1 - r3
+	r4 = r3 >> 0x00000002
+	NZCV = cond(r4 - 0x00000000)
+	r4 = r4 - 0x00000001
+	branch Test(EQ,Z) l000086F8
+	// succ:  l000086E0 l000086F8
+l000086E0:
+	r5 = r1
+	lr = pc
+	call Mem0[r5:word32] (retsize: 0;)
+	return
+	// succ:  __libc_csu_fini_exit
+l000086F8:
+	r4 = Mem0[sp:word32]
+	r5 = Mem0[sp + 4:word32]
+	r10 = Mem0[sp + 8:word32]
+	lr = Mem0[sp + 12:word32]
+	sp = sp + 16
+	// succ:  l000086F8_thunk__fini
+l000086F8_thunk__fini:
+	call _fini (retsize: 0;)
+	return
+	// succ:  __libc_csu_fini_exit
+__libc_csu_fini_exit:
+
+
+// __do_global_ctors_aux
+// Return size: 0
+void __do_global_ctors_aux()
+__do_global_ctors_aux_entry:
+	// succ:  l0000870C
+l0000870C:
+	sp = fp
+	Mem0[sp:word32] = r4
+	Mem0[sp - 0x00000004:word32] = lr
+	sp = sp - 0x00000008
+	r3 = Mem0[0x00008740:word32]
+	r2 = Mem0[r3 + -4:word32]
+	NZCV = cond(r2 + 0x00000001)
+	r4 = r3 - 0x00000004
+	branch Test(NE,Z) l00008724
+	// succ:  l00008720_1 l00008724
+l00008720_1:
+	r4 = Mem0[sp:word32]
+	sp = sp + 8
+	return
+	// succ:  __do_global_ctors_aux_exit
+l00008724:
+	r3 = r2
+	// succ:  l00008728
+l00008728:
+	lr = pc
+	call r3 (retsize: 0;)
+	return
+	// succ:  __do_global_ctors_aux_exit
+__do_global_ctors_aux_exit:
+
+
+// fn00008730
+// Return size: 0
+void fn00008730()
+fn00008730_entry:
+	goto l00008730
+	// succ:  l00008730
+l00008728_in_fn00008730:
+	lr = pc
+	call r3 (retsize: 0;)
+	return
+	// succ:  fn00008730_exit
+l00008730:
+	sp = fp
+	r4 = r4 + -4
+	r3 = Mem0[r4:word32]
+	NZCV = cond(r3 + 0x00000001)
+	branch Test(NE,Z) l00008728_in_fn00008730
+	// succ:  l0000873C l00008728_in_fn00008730
+l0000873C:
+	r4 = Mem0[sp:word32]
+	sp = sp + 8
+	return
+	// succ:  fn00008730_exit
+fn00008730_exit:
+
+
+// call___do_global_ctors_aux
+// Return size: 0
+void call___do_global_ctors_aux()
+call___do_global_ctors_aux_entry:
+	// succ:  l00008744
+l00008744:
+	sp = fp
+	sp = sp + -4
+	Mem0[sp:word32] = lr
+	sp = sp + 4
+	return
+	// succ:  call___do_global_ctors_aux_exit
+call___do_global_ctors_aux_exit:
+
+
+// _fini
+// Return size: 0
+void _fini()
+_fini_entry:
+	// succ:  l0000874C
+l0000874C:
+	sp = fp
+	sp = sp + -4
+	Mem0[sp:word32] = lr
+	call __do_global_dtors_aux (retsize: 0;)
+	sp = sp + 4
+	return
+	// succ:  _fini_exit
+_fini_exit:
+
+

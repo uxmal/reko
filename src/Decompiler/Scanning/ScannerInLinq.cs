@@ -105,7 +105,7 @@ namespace Reko.Scanning
         {
             this.sr = sr;
 
-            //sr.WatchedAddresses.Add(Address.Ptr64(0x00000000004028A0));
+            //sr.WatchedAddresses.Add(Address.Ptr32(0x9D34)); //$DEBUG
 
             // At this point, we have some entries in the image map
             // that are data, and unscanned ranges in betweeen. We
@@ -116,7 +116,7 @@ namespace Reko.Scanning
                 return sr;
 
             var the_blocks = BuildBasicBlocks(sr);
-
+            sr.BreakOnWatchedAddress(the_blocks.Select(q => q.Key));
             the_blocks = RemoveInvalidBlocks(sr, the_blocks);
 
             // Remove blocks that fall off the end of the segment
@@ -291,7 +291,6 @@ namespace Reko.Scanning
             }
 
             var the_excluded_edges = new HashSet<link>();
-
             foreach (var instr in sr.FlatInstructions.Values)
             {
                 if (instr.type != (ushort)RtlClass.Linear)

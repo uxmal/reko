@@ -182,7 +182,7 @@ namespace Reko.Arch.Arm
             {
                 // Assignment to PC is the same as a jump
                 rtlc = RtlClass.Transfer;
-                m.Goto(opSrc);
+                AddConditional(new RtlGoto(opSrc, RtlClass.Transfer));
                 return;
             }
             m.Assign(opDst, opSrc);
@@ -293,8 +293,11 @@ namespace Reko.Arch.Arm
             }
             if (pcRestored)
             {
+                rtlc = (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
+                    ? RtlClass.Transfer
+                    : RtlClass.ConditionalTransfer;
                 m.Return(0, 0);
-        }
+            }
         }
 
         private void RewriteMulbb( bool hiLeft, bool hiRight, DataType dtMultiplicand, Func<Expression,Expression,Expression> mul)
