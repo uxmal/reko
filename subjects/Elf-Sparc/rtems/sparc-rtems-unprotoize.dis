@@ -14194,6 +14194,39 @@ fn00027D94_exit:
 
 
 
+void unlink()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00027DA0_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DA0:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DA4_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x0005A000
+// Terminates process
+
+fn00027DA0_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
 void strrchr()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
@@ -14287,6 +14320,138 @@ l00027DC8_thunk__PROCEDURE_LINKAGE_TABLE_:
 // Terminates process
 
 fn00027DC4_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void fflush()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00027DD0_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DD0:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DD4_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x00066000
+// Terminates process
+
+fn00027DD0_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void link()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00027DDC_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DDC:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DE0_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x00069000
+// Terminates process
+
+fn00027DDC_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void creat()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00027DE8_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DE8:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DEC_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x0006C000
+// Terminates process
+
+fn00027DE8_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+
+
+void chmod()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00027DF4_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DF4:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00027DF8_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x0006F000
+// Terminates process
+
+fn00027DF4_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn:

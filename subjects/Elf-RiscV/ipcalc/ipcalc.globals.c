@@ -5,17 +5,17 @@
 #include "ipcalc.h"
 
 byte g_b0000;
-Eq_2530 g_t11780 = 
+Eq_2538 g_t11780 = 
 	{
 		0x31,
 		0x00,
 	};
-Eq_2530 g_t12660 = 
+Eq_2538 g_t12660 = 
 	{
 		0x32,
 		0x00,
 	};
-Eq_3402 g_t12B50 = 
+Eq_3410 g_t12B50 = 
 	{
 		0x69
 	};
@@ -39,6 +39,7 @@ word64 g_qw19E28 = 0x0000000000000000;
 <anonymous> * g_ptr1A058 = &g_t14F00;
 <anonymous> * g_ptr1A060 = &g_t14F00;
 <anonymous> * g_ptr1A068 = &g_t14F00;
+<anonymous> * g_ptr1A070 = &g_t14F00;
 <anonymous> * g_ptr1A078 = &g_t14F00;
 <anonymous> * g_ptr1A080 = &g_t14F00;
 <anonymous> * g_ptr1A088 = &g_t14F00;

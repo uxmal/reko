@@ -222,9 +222,22 @@ l004012C3:
 Win32CrtStartup proc
 	call	0040165E
 	jmp	0040115A
-004012D3          55 8B EC 6A 00 FF 15 10 20 40 00 FF 75    U..j.... @..u
-004012E0 08 FF 15 1C 20 40 00 68 09 04 00 C0 FF 15 14 20 .... @.h....... 
-004012F0 40 00 50 FF 15 18 20 40 00 5D C3 55 8B EC 81 EC @.P... @.].U....
+
+;; fn004012D3: 004012D3
+fn004012D3 proc
+	push	ebp
+	mov	ebp,esp
+	push	00
+	call	dword ptr [00402010]
+	push	dword ptr [ebp+08]
+	call	dword ptr [0040201C]
+	push	C0000409
+	call	dword ptr [00402014]
+	push	eax
+	call	dword ptr [00402018]
+	pop	ebp
+	ret
+004012FB                                  55 8B EC 81 EC            U....
 00401300 24 03 00 00 6A 17 E8 35 09 00 00 85 C0 74 05 6A $...j..5.....t.j
 00401310 02 59 CD 29 A3 18 31 40 00 89 0D 14 31 40 00 89 .Y.)..1@....1@..
 00401320 15 10 31 40 00 89 1D 0C 31 40 00 89 35 08 31 40 ..1@....1@..5.1@
@@ -364,16 +377,89 @@ l004014A4:
 	mov	al,01
 	pop	ebp
 	ret
-004014A8                         55 8B EC 83 EC 0C 56 8B         U.....V.
-004014B0 75 08 85 F6 74 05 83 FE 01 75 7C E8 D8 06 00 00 u...t....u|.....
-004014C0 85 C0 74 2A 85 F6 75 26 68 3C 33 40 00 E8 50 07 ..t*..u&h<3@..P.
-004014D0 00 00 59 85 C0 74 04 32 C0 EB 57 68 48 33 40 00 ..Y..t.2..WhH3@.
-004014E0 E8 3D 07 00 00 F7 D8 59 1A C0 FE C0 EB 44 A1 04 .=.....Y.....D..
-004014F0 30 40 00 8D 75 F4 57 83 E0 1F BF 3C 33 40 00 6A 0@..u.W....<3@.j
-00401500 20 59 2B C8 83 C8 FF D3 C8 33 05 04 30 40 00 89  Y+......3..0@..
-00401510 45 F4 89 45 F8 89 45 FC A5 A5 A5 BF 48 33 40 00 E..E..E.....H3@.
-00401520 89 45 F4 89 45 F8 8D 75 F4 89 45 FC B0 01 A5 A5 .E..E..u..E.....
-00401530 A5 5F 5E 8B E5 5D C3 6A 05 E8 2F 02 00 00 CC    ._^..].j../....
+
+;; fn004014A8: 004014A8
+fn004014A8 proc
+	push	ebp
+	mov	ebp,esp
+	sub	esp,0C
+	push	esi
+	mov	esi,[ebp+08]
+	test	esi,esi
+	jz	004014BB
+
+l004014B6:
+	cmp	esi,01
+	jnz	00401537
+
+l004014BB:
+	call	00401B98
+	test	eax,eax
+	jz	004014EE
+
+l004014C4:
+	test	esi,esi
+	jnz	004014EE
+
+l004014C8:
+	push	0040333C
+	call	00401C22
+	pop	ecx
+	test	eax,eax
+	jz	004014DB
+
+l004014D7:
+	xor	al,al
+	jmp	00401532
+
+l004014DB:
+	push	00403348
+	call	00401C22
+	neg	eax
+	pop	ecx
+	sbb	al,al
+	inc	al
+	jmp	00401532
+
+l004014EE:
+	mov	eax,[00403004]
+	lea	esi,[ebp-0C]
+	push	edi
+	and	eax,1F
+	mov	edi,0040333C
+	push	20
+	pop	ecx
+	sub	ecx,eax
+	or	eax,FF
+	ror	eax,cl
+	xor	eax,[00403004]
+	mov	[ebp-0C],eax
+	mov	[ebp-08],eax
+	mov	[ebp-04],eax
+	movsd
+	movsd
+	movsd
+	mov	edi,00403348
+	mov	[ebp-0C],eax
+	mov	[ebp-08],eax
+	lea	esi,[ebp-0C]
+	mov	[ebp-04],eax
+	mov	al,01
+	movsd
+	movsd
+	movsd
+	pop	edi
+
+l00401532:
+	pop	esi
+	mov	esp,ebp
+	pop	ebp
+	ret
+
+l00401537:
+	push	05
+	call	0040176D
+	int	03
 
 ;; fn0040153F: 0040153F
 fn0040153F proc
@@ -470,12 +556,51 @@ l0040160A:
 	mov	al,01
 	pop	ebp
 	ret
-0040160E                                           55 8B               U.
-00401610 EC A1 04 30 40 00 8B C8 33 05 3C 33 40 00 83 E1 ...0@...3.<3@...
-00401620 1F FF 75 08 D3 C8 83 F8 FF 75 07 E8 FE 05 00 00 ..u......u......
-00401630 EB 0B 68 3C 33 40 00 E8 EC 05 00 00 59 F7 D8 59 ..h<3@......Y..Y
-00401640 1B C0 F7 D0 23 45 08 5D C3 55 8B EC FF 75 08 E8 ....#E.].U...u..
-00401650 BA FF FF FF F7 D8 59 1B C0 F7 D8 48 5D C3       ......Y....H]. 
+
+;; fn0040160E: 0040160E
+fn0040160E proc
+	push	ebp
+	mov	ebp,esp
+	mov	eax,[00403004]
+	mov	ecx,eax
+	xor	eax,[0040333C]
+	and	ecx,1F
+	push	dword ptr [ebp+08]
+	ror	eax,cl
+	cmp	eax,FF
+	jnz	00401632
+
+l0040162B:
+	call	00401C2E
+	jmp	0040163D
+
+l00401632:
+	push	0040333C
+	call	00401C28
+	pop	ecx
+
+l0040163D:
+	neg	eax
+	pop	ecx
+	sbb	eax,eax
+	not	eax
+	and	eax,[ebp+08]
+	pop	ebp
+	ret
+
+;; fn00401649: 00401649
+fn00401649 proc
+	push	ebp
+	mov	ebp,esp
+	push	dword ptr [ebp+08]
+	call	0040160E
+	neg	eax
+	pop	ecx
+	sbb	eax,eax
+	neg	eax
+	dec	eax
+	pop	ebp
+	ret
 
 ;; fn0040165E: 0040165E
 fn0040165E proc
@@ -548,14 +673,69 @@ l004016F4:
 	mov	esp,ebp
 	pop	ebp
 	ret
-004016FA                               33 C0 40 C3 B8 00           3.@...
-00401700 40 00 00 C3 68 58 33 40 00 FF 15 08 20 40 00 C3 @...hX3@.... @..
-00401710 68 00 00 03 00 68 00 00 01 00 6A 00 E8 13 05 00 h....h....j.....
-00401720 00 83 C4 0C 85 C0 75 01 C3 6A 07 E8 3D 00 00 00 ......u..j..=...
-00401730 CC C3 B8 60 33 40 00 C3 E8 C3 F8 FF FF 8B 48 04 ...`3@........H.
-00401740 83 08 04 89 48 04 E8 E7 FF FF FF 8B 48 04 83 08 ....H.......H...
-00401750 02 89 48 04 C3 33 C0 39 05 0C 30 40 00 0F 94 C0 ..H..3.9..0@....
-00401760 C3                                              .              
+
+;; fn004016FA: 004016FA
+fn004016FA proc
+	xor	eax,eax
+	inc	eax
+	ret
+
+;; fn004016FE: 004016FE
+fn004016FE proc
+	mov	eax,00004000
+	ret
+
+;; fn00401704: 00401704
+fn00401704 proc
+	push	00403358
+	call	dword ptr [00402008]
+	ret
+
+;; fn00401710: 00401710
+fn00401710 proc
+	push	00030000
+	push	00010000
+	push	00
+	call	00401C34
+	add	esp,0C
+	test	eax,eax
+	jnz	00401729
+
+l00401728:
+	ret
+
+l00401729:
+	push	07
+	call	0040176D
+	int	03
+
+;; fn00401731: 00401731
+fn00401731 proc
+	ret
+
+;; fn00401732: 00401732
+fn00401732 proc
+	mov	eax,00403360
+	ret
+
+;; fn00401738: 00401738
+fn00401738 proc
+	call	00401000
+	mov	ecx,[eax+04]
+	or	dword ptr [eax],04
+	mov	[eax+04],ecx
+	call	00401732
+	mov	ecx,[eax+04]
+	or	dword ptr [eax],02
+	mov	[eax+04],ecx
+	ret
+
+;; fn00401755: 00401755
+fn00401755 proc
+	xor	eax,eax
+	cmp	[0040300C],eax
+	setz	al
+	ret
 
 ;; fn00401761: 00401761
 fn00401761 proc
@@ -652,7 +832,11 @@ l00401882:
 	mov	esp,ebp
 	pop	ebp
 	ret
-00401888                         33 C0 C3                        3..    
+
+;; fn00401888: 00401888
+fn00401888 proc
+	xor	eax,eax
+	ret
 
 ;; fn0040188B: 0040188B
 fn0040188B proc
@@ -690,15 +874,53 @@ l004018C4:
 	cmp	dword ptr [eax+000000E8],00
 	setnz	al
 	ret
-004018CF                                              68                h
-004018D0 DB 18 40 00 FF 15 10 20 40 00 C3 55 8B EC 8B 45 ..@.... @..U...E
+
+;; fn004018CF: 004018CF
+fn004018CF proc
+	push	004018DB
+	call	dword ptr [00402010]
+	ret
+004018DB                                  55 8B EC 8B 45            U...E
 004018E0 08 8B 00 81 38 63 73 6D E0 75 25 83 78 10 03 75 ....8csm.u%.x..u
 004018F0 1F 8B 40 14 3D 20 05 93 19 74 1B 3D 21 05 93 19 ..@.= ...t.=!...
 00401900 74 14 3D 22 05 93 19 74 0D 3D 00 40 99 01 74 06 t.="...t.=.@..t.
-00401910 33 C0 5D C2 04 00 E8 1F 03 00 00 CC 53 56 BE FC 3.].........SV..
-00401920 24 40 00 BB FC 24 40 00 3B F3 73 18 57 8B 3E 85 $@...$@.;.s.W.>.
-00401930 FF 74 09 8B CF E8 38 00 00 00 FF D7 83 C6 04 3B .t....8........;
-00401940 F3 72 EA 5F 5E 5B C3 53 56 BE 04 25 40 00 BB 04 .r._^[.SV..%@...
+00401910 33 C0 5D C2 04 00 E8 1F 03 00 00 CC             3.].........   
+
+;; fn0040191C: 0040191C
+fn0040191C proc
+	push	ebx
+	push	esi
+	mov	esi,004024FC
+	mov	ebx,004024FC
+	cmp	esi,ebx
+	jnc	00401944
+
+l0040192C:
+	push	edi
+
+l0040192D:
+	mov	edi,[esi]
+	test	edi,edi
+	jz	0040193C
+
+l00401933:
+	mov	ecx,edi
+	call	00401972
+	call	edi
+
+l0040193C:
+	add	esi,04
+	cmp	esi,ebx
+	jc	0040192D
+
+l00401943:
+	pop	edi
+
+l00401944:
+	pop	esi
+	pop	ebx
+	ret
+00401947                      53 56 BE 04 25 40 00 BB 04        SV..%@...
 00401950 25 40 00 3B F3 73 18 57 8B 3E 85 FF 74 09 8B CF %@.;.s.W.>..t...
 00401960 E8 0D 00 00 00 FF D7 83 C6 04 3B F3 72 EA 5F 5E ..........;.r._^
 00401970 5B C3                                           [.             

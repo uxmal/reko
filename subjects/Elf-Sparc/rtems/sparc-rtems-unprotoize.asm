@@ -7627,7 +7627,12 @@ close proc
 	sethi	0x0000015C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
-00027DA0 03 00 01 68 30 BF FF A5 01 00 00 00             ...h0.......   
+
+;; unlink: 00027DA0
+unlink proc
+	sethi	0x00000168,%g1
+	ba,a	00027C38
+	sethi	0x00000000,%g0
 
 ;; strrchr: 00027DAC
 strrchr proc
@@ -7646,9 +7651,30 @@ setjmp proc
 	sethi	0x0000018C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
-00027DD0 03 00 01 98 30 BF FF 99 01 00 00 00 03 00 01 A4 ....0...........
-00027DE0 30 BF FF 96 01 00 00 00 03 00 01 B0 30 BF FF 93 0...........0...
-00027DF0 01 00 00 00 03 00 01 BC 30 BF FF 90 01 00 00 00 ........0.......
+
+;; fflush: 00027DD0
+fflush proc
+	sethi	0x00000198,%g1
+	ba,a	00027C38
+	sethi	0x00000000,%g0
+
+;; link: 00027DDC
+link proc
+	sethi	0x000001A4,%g1
+	ba,a	00027C38
+	sethi	0x00000000,%g0
+
+;; creat: 00027DE8
+creat proc
+	sethi	0x000001B0,%g1
+	ba,a	00027C38
+	sethi	0x00000000,%g0
+
+;; chmod: 00027DF4
+chmod proc
+	sethi	0x000001BC,%g1
+	ba,a	00027C38
+	sethi	0x00000000,%g0
 
 ;; setlocale: 00027E00
 setlocale proc

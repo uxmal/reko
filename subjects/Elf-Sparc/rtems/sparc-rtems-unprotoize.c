@@ -5083,6 +5083,13 @@ void close()
 	return;
 }
 
+// 00027DA0: void unlink()
+void unlink()
+{
+	_PROCEDURE_LINKAGE_TABLE_();
+	return;
+}
+
 // 00027DAC: void strrchr()
 void strrchr()
 {
@@ -5099,6 +5106,34 @@ void longjmp()
 
 // 00027DC4: void setjmp()
 void setjmp()
+{
+	_PROCEDURE_LINKAGE_TABLE_();
+	return;
+}
+
+// 00027DD0: void fflush()
+void fflush()
+{
+	_PROCEDURE_LINKAGE_TABLE_();
+	return;
+}
+
+// 00027DDC: void link()
+void link()
+{
+	_PROCEDURE_LINKAGE_TABLE_();
+	return;
+}
+
+// 00027DE8: void creat()
+void creat()
+{
+	_PROCEDURE_LINKAGE_TABLE_();
+	return;
+}
+
+// 00027DF4: void chmod()
+void chmod()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
 	return;

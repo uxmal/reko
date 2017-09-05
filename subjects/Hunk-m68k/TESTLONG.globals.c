@@ -22,7 +22,7 @@ struct Eq_725 g_t1D6C =
 		0x25,
 		0x00,
 	};
-Eq_4320 g_a2815[] = 
+Eq_4513 g_a2815[] = 
 	{
 	};
 ptr32 g_ptr3D70 = 0x00000000;
@@ -38,7 +38,7 @@ ptr32 g_ptr3D9C = 0x06060606;
 word32 g_dw3DA0 = 0x06060606;
 struct Eq_3069 * g_ptr3DA4 = &g_t6060606;
 word32 g_dw3DA8 = 0x06060606;
-Eq_3467 g_a3DAC[] = 
+Eq_3614 g_a3DAC[] = 
 	{
 	};
 Eq_5 g_t4000;

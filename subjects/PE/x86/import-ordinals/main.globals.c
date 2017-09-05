@@ -4,24 +4,49 @@
 
 #include "main.h"
 
-Eq_623 g_t0100;
-Eq_623 g_t5A4D;
+Eq_94 g_t0005;
+Eq_739 g_t0100;
+Eq_739 g_t5A4D;
 word16 g_w400000 = 0x5A4D;
-struct Eq_623 * g_ptr40003C = &g_t0100;
-<anonymous> g_t401731 = <code>;
-<anonymous> * g_ptr4020D4 = &g_t401731;
+struct Eq_739 * g_ptr40003C = &g_t0100;
+LONG g_t4018DB(struct _EXCEPTION_POINTERS * ExceptionInfo) = Unexpected function type (fn LONG ((ptr (struct "_EXCEPTION_POINTERS"))))
+;
+<anonymous> * g_ptr4020D4 = fn00401731;
 Eq_162 g_t4020E0 = null;
 Eq_162 g_t4020F0 = null;
+word32 g_dw4024FC = 0x00000000;
 ui32 g_dw403000 = 0x44BF19B1;
 ui32 g_dw403004 = 0xBB40E64E;
 ui32 g_dw403010 = 0x00000001;
 word32 g_dw403014 = 0x00000001;
 word32 g_dw403334 = 0x00000000;
 word32 g_dw403338 = 0x00000000;
+ui32 g_dw40333C = 0x00000000;
+ui32 g_dw403340 = 0x00000000;
+ui32 g_dw403344 = 0x00000000;
+ui32 g_dw403348 = 0x00000000;
+ui32 g_dw40334C = 0x00000000;
+ui32 g_dw403350 = 0x00000000;
 byte g_b403354 = 0x00;
+union _SLIST_HEADER g_u403358 = 
+	{
+		
+		{
+			
+			{
+				null,
+			},
+			0x0000,
+			0x0000,
+		}
+	};
+ui32 g_dw403360 = 0x00000000;
+word32 g_dw403364 = 0x00000000;
 ui32 g_dw403368 = 0x00000000;
 ui32 g_dw40336C = 0x00000000;
 ui32 g_dw403370 = 0x00000000;
+ui32 g_dw403378 = 0x00000000;
+word32 g_dw40337C = 0x00000000;
 ptr32 g_ptr403380 = 0x00000000;
 word32 g_dw403384 = 0x00000000;
 

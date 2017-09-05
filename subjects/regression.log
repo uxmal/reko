@@ -3436,5 +3436,943 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 === TLCS\90\TLCS-90.corpus
+*** TLCS\90\TLCS-90.corpus
+1BCD: warning: Procedure fn1BA4 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0B51: error: An error occurred while processing instruction at address 0B51.
+    Expected stack depth to be negative.
+       at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 213
+0C2C: error: An error occurred while processing instruction at address 0C2C.
+    Expected stack depth to be negative.
+       at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 213
+0C2A: error: An error occurred while processing instruction at address 0C2A.
+    Expected stack depth to be negative.
+       at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 213
+fn0273: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.ConditionCodeEliminator.TransformRolC(Application rolc, Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 259
+   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 221
+   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
+   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
+fn02DE: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.ConditionCodeEliminator.TransformRorC(Application rorc, Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 348
+   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 217
+   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
+   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
+fn0341: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.ConditionCodeEliminator.TransformRolC(Application rolc, Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 259
+   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 221
+   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
+   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
+fn0343: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.ConditionCodeEliminator.TransformRolC(Application rolc, Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 259
+   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 221
+   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
+   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
+fn03B2: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.ConditionCodeEliminator.TransformRorC(Application rorc, Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 348
+   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 217
+   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
+   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
+fn04EE: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.ConditionCodeEliminator.TransformRolC(Application rolc, Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 259
+   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 221
+   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
+   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
+fn0607: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.ConditionCodeEliminator.TransformRorC(Application rorc, Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 348
+   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 217
+   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
+   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
+fn0914: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.ConditionCodeEliminator.TransformRolC(Application rolc, Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 259
+   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 221
+   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
+   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
+fn0C2C: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.ConditionCodeEliminator.TransformRolC(Application rolc, Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 259
+   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 221
+   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
+   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
+fn0C9D: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.ConditionCodeEliminator.TransformRorC(Application rorc, Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 348
+   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 217
+   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
+   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
+fn0D00: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.ConditionCodeEliminator.TransformRolC(Application rolc, Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 259
+   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 221
+   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
+   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
+fn291C: error: An error occurred during data flow analysis.
+    Index was outside the bounds of the array.
+       at Reko.Analysis.ConditionCodeEliminator.TransformRolC(Application rolc, Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 259
+   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 221
+   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
+   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
+0000: error: An error occurred while processing the statement SZXC_10 = PHI(SZXC, SZXC_118).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement SZHXVC_11 = PHI(SZHXVC, SZHXVC_124).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement C_12 = PHI(C, C_119).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_13 = PHI(c, c_114).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_14 = PHI(b, b_117).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement l_15 = PHI(l, l_122).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement h_16 = PHI(h, h_121).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_17 = PHI(hl, hl_120).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_18 = PHI(a, a_22).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_19 = PHI(af, af_23).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement l_7 = PHI(l_19, l).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement h_8 = PHI(h_16, h).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_9 = PHI(a_28, a).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_10 = PHI(c_26, c).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_11 = PHI(b_23, b).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_12 = PHI(hl_20, hl).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_13 = PHI(af_29, af).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_5 = PHI(hl_18, hl).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_6 = PHI(c_12, c).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_7 = PHI(b_15, b).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_8 = PHI(af_23, af).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_9 = PHI(a_22, a).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_19 = PHI(hl_34, hl_8).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_20 = PHI(c_32, c_27).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_21 = PHI(b_33, b_28).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement l_22 = PHI(l_9, l_29).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement h_23 = PHI(h_10, h_30).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_24 = PHI(af_35, af_31).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement word16 af_92 = DPB(Mem80[v3 - 2 + 0x0000:word16], 0x05, 8).
+    Pulling difference ptr32 and (union (int16 u0) (ui32 u1))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 326
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 321
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
+   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 157
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_5 = PHI(a_23, a, a).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_6 = PHI(c_21, c, c).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_7 = PHI(b_18, b, b).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement l_8 = PHI(l_15, l, l).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement h_9 = PHI(h_12, h, h).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_26 = PHI(c_13, c_31).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_27 = PHI(b_15, b_34).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_28 = PHI(hl_21, hl_37).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_29 = PHI(a_24, a_41).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_30 = PHI(af_25, af_42).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_131 = PHI(c_119, c_148).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_132 = PHI(b_121, b_145).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_133 = PHI(hl_126, hl_142).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement h_134 = PHI(h_125, h_138).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement l_135 = PHI(l_123, l_141).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_136 = PHI(a_129, a_150).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_137 = PHI(af_130, af_151).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_233 = PHI(c_221, c_238).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_234 = PHI(b_223, b_241).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_235 = PHI(hl_228, hl_244).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_236 = PHI(a_231, a_248).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_237 = PHI(af_232, af_249).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_66 = PHI(af_65, af_84).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement h_67 = PHI(h_61, h_72).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement l_68 = PHI(l_59, l_75).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_69 = PHI(b_57, b_78).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_70 = PHI(c_55, c_81).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_71 = PHI(a_64, a_83).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement bc_5 = PHI(bc, bc_15).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement de_6 = PHI(de, de_14).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_7 = PHI(hl, hl_11).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement bc_44 = PHI(bc_41, bc_53).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement de_45 = PHI(de_37, de_52).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_46 = PHI(hl_38, hl_49).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement bc_78 = PHI(bc_75, bc_87).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement de_79 = PHI(de_71, de_86).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_80 = PHI(hl_72, hl_83).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_145 = PHI(b_134, b_154).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_146 = PHI(c_132, c_151).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_147 = PHI(af_144, af_163).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_148 = PHI(a_143, a_162).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement bc_149 = PHI(bc_135, bc_155).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_150 = PHI(hl_140, hl_158).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement h_253 = PHI(h_247, h_261).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement l_254 = PHI(l_245, l_264).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_255 = PHI(b_242, b_268).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_256 = PHI(c_240, c_271).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_257 = PHI(af_252, af_275).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_258 = PHI(a_251, a_274).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement bc_259 = PHI(bc_243, bc_272).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_260 = PHI(hl_248, hl_265).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_358 = PHI(b_347, b_367).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_359 = PHI(c_345, c_364).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_360 = PHI(af_357, af_376).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_361 = PHI(a_356, a_375).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement bc_362 = PHI(bc_348, bc_368).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_363 = PHI(hl_353, hl_371).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement h_466 = PHI(h_460, h_474).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement l_467 = PHI(l_458, l_477).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_468 = PHI(b_455, b_481).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_469 = PHI(c_453, c_484).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_470 = PHI(af_465, af_488).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_471 = PHI(a_464, a_487).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement bc_472 = PHI(bc_456, bc_485).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_473 = PHI(hl_461, hl_478).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_5 = PHI(c_12, c).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_6 = PHI(b_15, b).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_7 = PHI(hl_18, hl).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_8 = PHI(a_20, a).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_9 = PHI(af_21, af).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement word16 af_94 = DPB(Mem80[v3 - 2 + 0x0000:word16], 0x05, 8).
+    Pulling difference ptr32 and (union (int16 u0) (ui32 u1))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 326
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 321
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
+   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 157
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_7 = PHI(c_26, c).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_8 = PHI(b_23, b).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement l_9 = PHI(l_19, l).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement h_10 = PHI(h_16, h).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_11 = PHI(hl_20, hl).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_12 = PHI(a_28, a).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_13 = PHI(af_29, af).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_5 = PHI(af_23, af).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_6 = PHI(a_22, a).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_7 = PHI(hl_18, hl).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_8 = PHI(b_15, b).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_9 = PHI(c_12, c).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement af_114 = PHI(af_113, af_134).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement h_115 = PHI(h_108, h_121).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement l_116 = PHI(l_106, l_124).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_117 = PHI(a_112, a_133).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement hl_118 = PHI(hl_109, hl_125).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement b_119 = PHI(b_104, b_128).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement c_120 = PHI(c_102, c_131).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement l_40 = PHI(l_8, l_70).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement h_41 = PHI(h_14, h_75).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement C_42 = PHI(C_38, C_69).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_43 = PHI(a_34, a_72).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement SZHXVC_44 = PHI(SZHXVC, SZHXVC_74).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement C_48 = PHI(C_42, C_59).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement e_49 = PHI(e_3, e_60).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement a_50 = PHI(a_43, a_62).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement N_51 = PHI(N_46, N_63).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement SZHXVC_52 = PHI(SZHXVC_44, SZHXVC_64).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+0000: error: An error occurred while processing the statement d_53 = PHI(d_21, d_65).
+    The method or operation is not implemented.
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
+   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+fn0273: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn02DE: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn0341: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn0343: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn03B2: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn04EE: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn0607: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn0914: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn0C2C: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn0C9D: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn0D00: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn291C: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+00000823: warning: Expected sizes of arrays to have been determined by now
+00000823: warning: Expected sizes of arrays to have been determined by now
+
 === TLCS\900\ngp_iq\NGP_IQ.NGP
 === VMS-vax\unzip.dcproject
+*** VMS-vax\unzip.dcproject
+000012B8: error: Instruction acbd	#8.0,r5,(sp),00007C18 too complex to rewrite.
+0000178C: error: Instruction acbd	#8.0,(r4),(r9),00008805 too complex to rewrite.
+00001C2B: error: Instruction acbd	-(r7),(r5),-(r2),00007D94 too complex to rewrite.
+00001C48: error: Instruction acbd	-(r4),(r5),(r4),0000856E too complex to rewrite.
+00001E12: error: Instruction acbd	(ap),(r11),-(r3),00007F38 too complex to rewrite.
+00001E4D: error: Instruction acbd	(fp),-(r0),-(r2),000091B8 too complex to rewrite.
+00001E96: error: Instruction acbd	(sp),-(r4),(r1),00008D05 too complex to rewrite.
+00001EE6: error: Instruction acbd	(sp),-(r4),(r1),00008D55 too complex to rewrite.
+00001F13: error: Instruction acbd	-(r6),(r5),(fp),0000847B too complex to rewrite.
+00001F31: error: Instruction acbd	#8.0,(r6),(r9),000084A3 too complex to rewrite.
+00001F63: error: Instruction acbd	-(r0),-(r4),(r9),00008DD8 too complex to rewrite.
+00001F80: error: Instruction acbf	#8.0,(r6),(r9),000084F2 too complex to rewrite.
+00001FB2: error: Instruction acbd	-(r0),-(r4),(r9),00008E27 too complex to rewrite.
+00001FC9: error: Instruction acbd	-(r2),(fp),(r1),00004043 too complex to rewrite.
+00001FCF: error: Instruction acbd	-(r0),-(r4),(r9),00008E44 too complex to rewrite.
+00001FFD: error: Instruction acbd	-(r2),(fp),(r1),00004077 too complex to rewrite.
+00002052: error: Instruction acbd	-(r2),(fp),(r1),00002ACC too complex to rewrite.
+0000207A: error: Instruction acbd	-(r2),(fp),(r1),000040F4 too complex to rewrite.
+0000209E: error: Instruction acbd	-(r2),(fp),(r1),00002B18 too complex to rewrite.
+000020B3: error: Instruction acbd	-(r0),-(r4),(r9),00008F28 too complex to rewrite.
+000020EA: error: Instruction acbd	-(r4),(r1),(ap),00004163 too complex to rewrite.
+00002127: error: Instruction acbd	(fp),(fp),(r5),0000959B too complex to rewrite.
+00002143: error: Instruction acbd	-(r2),-(r4),(r1),00008DAB too complex to rewrite.
+00002154: error: Instruction acbd	-(r2),(fp),(r1),00002BCE too complex to rewrite.
+000021A7: error: Instruction acbd	-(r5),-(r4),-(r0),00009622 too complex to rewrite.
+000021B1: error: Instruction acbd	-(r5),(r7),(r8),000083D7 too complex to rewrite.
+0000223E: error: Instruction acbd	-(r7),(r5),-(r2),000083A7 too complex to rewrite.
+0000225B: error: Instruction acbd	-(r4),(r5),(r4),00008B81 too complex to rewrite.
+00002280: error: Instruction acbd	-(r6),(r5),(fp),000087E8 too complex to rewrite.
+000022CA: error: Instruction acbd	-(r0),-(r4),(r9),0000913F too complex to rewrite.
+000022D4: error: Instruction acbd	(r4),(r9),(r6),00008843 too complex to rewrite.
+000022F2: error: Instruction acbd	#8.0,(r5),-(r8),0000956C too complex to rewrite.
+00002323: error: Instruction acbd	#8.0,(r5),-(r8),00008C8D too complex to rewrite.
+error: An error occurred during decompilation. System.NullReferenceException: Object reference not set to an instance of an object.
+   at Reko.Arch.Vax.VaxInstruction.Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options) in D:\dev\uxmal\reko\master\src\Arch\Vax\VaxInstruction.cs:line 86
+   at Reko.Core.Machine.MachineInstruction.ToString() in D:\dev\uxmal\reko\master\src\Core\Machine\MachineInstruction.cs:line 80
+   at System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.Format(String format, Object[] args)
+   at Reko.CmdLine.CmdLineListener.Error(ICodeLocation location, String message, Object[] args) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineListener.cs:line 94
+   at Reko.Scanning.ScannerBase.Error(Address addr, String message, Object[] args) in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerBase.cs:line 168
+   at Reko.Arch.Vax.VaxRewriter.RewriteAcbf(PrimitiveType width) in D:\dev\uxmal\reko\master\src\Arch\Vax\VaxRewriter.Control.cs:line 47
+   at Reko.Arch.Vax.VaxRewriter.<GetEnumerator>d__62.MoveNext() in D:\dev\uxmal\reko\master\src\Arch\Vax\VaxRewriter.cs:line 82
+   at Reko.Scanning.ShingledScanner.ScanRange(MemoryArea mem, Address addrStart, Address addrEnd, UInt64 workToDo) in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 185
+   at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 164
+   at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 115
+   at Reko.Scanning.Scanner.ShingleScanProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1037
+   at Reko.Scanning.Scanner.ScanImage() in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 950
+   at Reko.DecompilerDriver.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 421
+   at Reko.DecompilerDriver.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 409
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 162
+
