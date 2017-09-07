@@ -663,7 +663,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Target Name="BeforeBuild" BeforeTargets="Build">
+  <Target Name="GenerateCsFiles" BeforeTargets="Build">
     <Exec Condition=" '$(OS)' == 'Unix'" Command="ls -l $(ProjectDir)../tools" />
     <Message Text="== Existence check of $(ProjectDir)../tools/xslt.exe:" />
     <Message Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe')" Text="    Exists!" />
