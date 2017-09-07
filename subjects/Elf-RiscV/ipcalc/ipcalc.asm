@@ -948,13 +948,7 @@ dlsym proc
 	ld	t3,t3,152
 	jalr	t1,t3,0
 0000000000014FDC                                     13 00 00 00             ....
-
-;; exit: 0000000000014FE0
-exit proc
-	auipc	t3,0x00000005
-	ld	t3,t3,144
-	jalr	t1,t3,0
-0000000000014FEC                                     13 00 00 00             ....
+0000000000014FE0 17 5E 00 00 03 3E 0E 09 67 03 0E 00 13 00 00 00 .^...>..g.......
 
 ;; getopt_long: 0000000000014FF0
 getopt_long proc

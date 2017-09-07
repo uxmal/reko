@@ -382,38 +382,6 @@ fn0000000000014FD0_exit:
 
 
 
-void exit()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed: t1 t3
-// Preserved: sp
-fn0000000000014FE0_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l0000000000014FE0:
-	word64 t3_4 = Mem0[0x000000000001A070:word64]
-	word64 sp_6
-	word64 t3_7
-	word64 t1_8
-	call t3_4 (retsize: 0;)
-		uses: sp_1,t1_5,t3_4
-		defs: sp_6,t1_8,t3_7
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-fn0000000000014FE0_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp t3:<invalid> t1:0000000000014FEC
-
-
-
 void getopt_long()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
