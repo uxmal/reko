@@ -502,7 +502,7 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
-   <ProjectReference Include="..\src\tools\xslt\xslt.csproj">
+   <ProjectReference Include="..\tools\xslt\xslt.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly> 
     </ProjectReference>
   </ItemGroup>
