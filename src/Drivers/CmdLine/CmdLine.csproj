@@ -73,6 +73,14 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Environments\SysV\SysV.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Project>{500C7C4B-5B7A-40E0-BEED-75DDF1BA78D5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Project>{5B6DA2CA-5CA1-4A84-8084-9D6780F64BCF}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
