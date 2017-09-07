@@ -98,7 +98,7 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
-    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -663,7 +663,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Target Name="BeforeBuild">
+  <Target Name="BeforeBuild" BeforeTargets="Build">
     <Exec Condition=" '$(OS)' == 'Unix'" Command="ls -l $(ProjectDir)../tools" />
     <Message Text="== Existence check of $(ProjectDir)../tools/xslt.exe:" />
     <Message Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe')" Text="    Exists!" />
