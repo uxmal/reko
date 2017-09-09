@@ -291,6 +291,27 @@ void fn002005B8()
 	return;
 }
 
+// 002005F5: void fn002005F5(Register word32 xwa)
+void fn002005F5(word32 xwa)
+{
+	__ldf(0x03);
+	ui8 w_10 = w * 0x02 * 0x02;
+	<anonymous> *** xwa_12 = DPB(xwa, w_10, 8);
+	<anonymous> ** v9_16 = *xwa_12;
+	if (true)
+	{
+		word32 xsp_27;
+		word16 sr_28;
+		word32 xix_29;
+		byte w_30;
+		bool N_31;
+		byte SZHVC_32;
+		word32 xwa_33;
+		(*v9_16)();
+	}
+	return;
+}
+
 // 0020060C: void fn0020060C()
 void fn0020060C()
 {

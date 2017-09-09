@@ -66,7 +66,11 @@ namespace Reko.UnitTests.Core
             var contents =
 @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
-  <Types />
+  <Types>
+    <typedef name=""size_t"">
+      <prim domain=""UnsignedInt"" size=""4"" />
+    </typedef>
+  </Types>
   <procedure name=""strlen"">
     <signature convention=""__cdecl"">
       <return>
@@ -82,7 +86,7 @@ namespace Reko.UnitTests.Core
 </library>";
             CreateTypeLibraryLoader("c:\\bar\\foo.xml", contents);
             var lib = tlldr.Load(platform, new TypeLibrary());
-            Assert.AreEqual(0, lib.Types.Count);
+            Assert.AreEqual(1, lib.Types.Count);
             Assert.AreEqual(1, lib.Signatures.Count);
             var sExp =
 @"Register size_t strlen(Stack (ptr char) ptrArg04)

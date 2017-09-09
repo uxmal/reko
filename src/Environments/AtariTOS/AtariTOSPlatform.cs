@@ -47,9 +47,11 @@ namespace Reko.Environments.AtariTOS
             throw new NotImplementedException();
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new TOSProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            if (ccName == "TOSCall")
+                return new TOSCallingConvention(this.Architecture);
+            throw new NotImplementedException();
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

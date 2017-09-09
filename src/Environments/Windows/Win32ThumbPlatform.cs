@@ -146,7 +146,7 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
             throw new NotImplementedException();
         }

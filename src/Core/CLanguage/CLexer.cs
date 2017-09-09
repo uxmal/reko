@@ -71,6 +71,7 @@ namespace Reko.Core.CLanguage
             { "__cdecl", CTokenType.__Cdecl },
             { "__declspec", CTokenType.__Declspec },
             { "__fastcall", CTokenType.__Fastcall },
+            { "__forceinline", CTokenType.__ForceInline },
             { "__in", CTokenType.__In },
             { "__in_opt", CTokenType.__In_Opt },
             { "__inline", CTokenType.__Inline },
@@ -81,6 +82,7 @@ namespace Reko.Core.CLanguage
             { "__ptr64", CTokenType.__Ptr64 },
             { "__stdcall", CTokenType.__Stdcall },
             { "__success", CTokenType.__Success },
+            { "__thiscall", CTokenType.__Thiscall },
             { "__w64", CTokenType.__W64 },
         };
 
@@ -866,6 +868,7 @@ namespace Reko.Core.CLanguage
         __Cdecl,
         __Declspec,
         __Fastcall,
+        __ForceInline,
         __In,
         __In_Opt,
         __Inline,
@@ -876,6 +879,7 @@ namespace Reko.Core.CLanguage
         __Ptr64,
         __Stdcall,
         __Success,
+        __Thiscall,
         __W64,
         Switch,
         While,

@@ -95,7 +95,7 @@ namespace Reko.Core.Serialization
             {
                 return null;
             }
-            var name = frame.FormatStackAccessName(
+            var name = Frame.FormatStackAccessName(
                 dt,
                 "Arg",
                 procSer.StackOffset + retAddressOnStack,
@@ -129,46 +129,13 @@ namespace Reko.Core.Serialization
         {
             var h = arch.GetRegister(sq.Registers[0].Name.Trim());
             var t = arch.GetRegister(sq.Registers[1].Name.Trim());
-            Identifier head = frame.EnsureRegister(h);
-            Identifier tail = frame.EnsureRegister(t);
             DataType dt;
             if (this.argCur.Type != null)
                 dt = this.argCur.Type.Accept(procSer.TypeLoader);
             else 
-                dt = PrimitiveType.CreateWord(head.DataType.Size + tail.DataType.Size);
-            return frame.EnsureSequence(head.Storage, tail.Storage, dt);
+                dt = PrimitiveType.CreateWord(h.DataType.Size + h.DataType.Size);
+            return frame.EnsureSequence(h, t, dt);
         }
-
-        public Identifier DeserializeReturnValue(Argument_v1 arg)
-        {
-            argCur = arg;
-            DataType dt = null;
-            if (this.argCur.Type != null)
-                dt = this.argCur.Type.Accept(procSer.TypeLoader);
-            if (dt is VoidType)
-                return null;
-            Identifier id;
-            if (arg.Kind != null)
-            {
-                id = arg.Kind.Deserialize(this);
-                id.DataType = dt ?? id.DataType;
-            }
-            else
-            {
-                var reg = procSer.GetReturnRegister(arg, dt.BitSize);
-                id = new Identifier(reg.ToString(), dt, reg);
-            }
-            return id;
-        }
-
-        public string ArgumentName(string argName, string argName2)
-        {
-            if (argName != null)
-                return argName;
-            else
-                return argName2;
-        }
-
 
         public Identifier Deserialize(Argument_v1 arg)
         {

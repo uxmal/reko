@@ -56,7 +56,7 @@ get_exit:
 
 
 BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
-// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
@@ -76,7 +76,7 @@ l10071080:
 DllMain_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp eax:0x00000001 4(fp):lpReserved
+// SymbolicIn: esp:fp eax:0x00000001 4(fp):hModule 8(fp):dwReason 12(fp):lpReserved
 
 
 

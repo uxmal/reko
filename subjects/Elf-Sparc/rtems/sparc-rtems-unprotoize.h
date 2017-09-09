@@ -2767,8 +2767,8 @@ T_690: (in Mem25[o0 + 8:word32] : word32)
   OrigDataType: word32
 T_691: (in o0 : word32)
   Class: Eq_691
-  DataType: (ptr (struct (0 (arr T_7767) a0000)))
-  OrigDataType: (ptr (struct (0 (arr T_7767) a0000)))
+  DataType: (ptr (struct (0 (arr T_7777) a0000)))
+  OrigDataType: (ptr (struct (0 (arr T_7777) a0000)))
 T_692: (in o1 : word32)
   Class: Eq_156
   DataType: (ptr (struct (0 T_697 t0000)))
@@ -31069,8 +31069,48 @@ T_7766: (in _PROCEDURE_LINKAGE_TABLE_() : void)
   Class: Eq_7766
   DataType: 
   OrigDataType: 
-T_7767:
-  Class: Eq_7767
+T_7767: (in _PROCEDURE_LINKAGE_TABLE_ : ptr32)
+  Class: Eq_7680
+  DataType: 
+  OrigDataType: 
+T_7768: (in _PROCEDURE_LINKAGE_TABLE_() : void)
+  Class: Eq_7768
+  DataType: 
+  OrigDataType: 
+T_7769: (in _PROCEDURE_LINKAGE_TABLE_ : ptr32)
+  Class: Eq_7680
+  DataType: 
+  OrigDataType: 
+T_7770: (in _PROCEDURE_LINKAGE_TABLE_() : void)
+  Class: Eq_7770
+  DataType: 
+  OrigDataType: 
+T_7771: (in _PROCEDURE_LINKAGE_TABLE_ : ptr32)
+  Class: Eq_7680
+  DataType: 
+  OrigDataType: 
+T_7772: (in _PROCEDURE_LINKAGE_TABLE_() : void)
+  Class: Eq_7772
+  DataType: 
+  OrigDataType: 
+T_7773: (in _PROCEDURE_LINKAGE_TABLE_ : ptr32)
+  Class: Eq_7680
+  DataType: 
+  OrigDataType: 
+T_7774: (in _PROCEDURE_LINKAGE_TABLE_() : void)
+  Class: Eq_7774
+  DataType: 
+  OrigDataType: 
+T_7775: (in _PROCEDURE_LINKAGE_TABLE_ : ptr32)
+  Class: Eq_7680
+  DataType: 
+  OrigDataType: 
+T_7776: (in _PROCEDURE_LINKAGE_TABLE_() : void)
+  Class: Eq_7776
+  DataType: 
+  OrigDataType: 
+T_7777:
+  Class: Eq_7777
   DataType: (struct 000C (0 T_739 t0000))
   OrigDataType: (struct 000C (0 T_739 t0000))
 */

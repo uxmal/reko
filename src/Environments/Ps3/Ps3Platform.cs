@@ -68,12 +68,9 @@ namespace Reko.Environments.Ps3
             return new HashSet<RegisterStorage>();
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new PowerPcProcedureSerializer(
-                (PowerPcArchitecture)Architecture,
-                typeLoader,
-                defaultConvention);
+            throw new NotImplementedException();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

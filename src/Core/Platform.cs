@@ -62,7 +62,7 @@ namespace Reko.Core
         HashSet<RegisterStorage> CreateTrashedRegisters();
 
         IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
-        ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
+        CallingConvention GetCallingConvention(string ccName);
         TypeLibrary CreateMetadata();
 
         /// <summary>
@@ -246,13 +246,12 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Creates a procedure serializer that understands the calling conventions used on this
-        /// processor and environment
+        /// Creates a CallingConvention that understands the calling convention named
+        /// <paramref name="ccName"/>.
         /// </summary>
-        /// <param name="typeLoader">Used to resolve data types</param>
-        /// <param name="defaultConvention">Default calling convention, if none specified.</param>
-        public abstract ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
-
+        /// <param name="ccName">Name of the calling convention.</param>
+        public abstract CallingConvention GetCallingConvention(string ccName);
+        
         /// <summary>
         /// Creates an empty imagemap based on the absolute memory map. It is 
         /// the caller's responsibility to fill in the MemoryArea properties
@@ -293,8 +292,9 @@ namespace Reko.Core
                     throw new ApplicationException(string.Format(
                         "Environment '{0}' doesn't appear in the configuration file. Your installation may be out-of-date.",
                         envName));
-                var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.Metadata = new TypeLibrary();
+
+                var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
 
                 foreach (var tl in envCfg.TypeLibraries
                     .Where(t => t.Architecture == null ||
@@ -501,9 +501,9 @@ namespace Reko.Core
             return new HashSet<RegisterStorage>();
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

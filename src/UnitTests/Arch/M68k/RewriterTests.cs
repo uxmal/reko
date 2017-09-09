@@ -1335,5 +1335,26 @@ namespace Reko.UnitTests.Arch.M68k
                 "1|L--|v4 = (uint16) ccr",
                 "2|L--|Mem0[a3:uint16] = v4");
         }
+
+        [Test]
+        public void M68krw_move_pc_index()
+        {
+            Rewrite(0x4BFB, 0x0170, 0x0000, 0x3D60);    //  lea (00003D60, pc),a5
+            AssertCode(
+                "0|L--|00010000(8): 1 instructions",
+                "1|L--|a5 = 00013D60");
+        }
+
+        [Test]
+        public void M68krw_divsl()
+        {
+            Rewrite(0x4C40, 0x3801);        // divsl d0,d1,d3
+            AssertCode(
+                "0|L--|00010000(4): 4 instructions",
+                "1|L--|d1 = d3 % d0",
+                "2|L--|d3 = d3 / d0",
+                "3|L--|VZN = cond(d3)",
+                "4|L--|C = false");
+        }
     }
 }

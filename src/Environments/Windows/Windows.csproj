@@ -76,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BorlandMangledNamedParser.cs" />
-    <Compile Include="MipsProcedureSerializer.cs" />
+    <Compile Include="MipsCallingConvention.cs" />
     <Compile Include="ModuleDefinitionLoader.cs" />
     <Compile Include="MsAPrintfFormatParser.cs" />
     <Compile Include="MsMangledNameParser.cs" />
@@ -92,7 +92,7 @@
     <Compile Include="WineSpecFileLoader.cs" />
     <Compile Include="Win_x86_64_Platform.cs" />
     <Compile Include="X86StartFinder.cs" />
-    <Compile Include="X86_64ProcedureSerializer.cs" />
+    <Compile Include="X86_64CallingConvention.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
@@ -146,7 +146,8 @@
       <Name>Libc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\tools\c2xml\c2xml.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly> 
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Project>{500C7C4B-5B7A-40E0-BEED-75DDF1BA78D5}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

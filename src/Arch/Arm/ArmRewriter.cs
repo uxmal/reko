@@ -570,7 +570,7 @@ namespace Reko.Arch.Arm
             }
             if (link)
             {
-                rtlc = RtlClass.Transfer;
+                rtlc = RtlClass.Transfer | RtlClass.Call;
                 if (instr.ArchitectureDetail.CodeCondition != ArmCodeCondition.AL)
                 {
                     m.BranchInMiddleOfInstruction(
@@ -664,11 +664,19 @@ namespace Reko.Arch.Arm
                 if (op.MemoryValue.BaseRegister
                     == ArmRegister.PC)  // PC-relative address
                 {
-                    if (op.MemoryValue.Displacement != 0)
+                    var dst = (uint)((int)instrs.Current.Address.ToUInt32() + op.MemoryValue.Displacement) + 8u;
+                    ea = Address.Ptr32(dst);
+                    if (op.MemoryValue.IndexRegister != ArmRegister.Invalid)
                     {
-                        var dst = (uint)((int)instrs.Current.Address.ToUInt32() + op.MemoryValue.Displacement) + 8u;
-                        return m.Load(SizeFromLoadStore(instr), Address.Ptr32(dst));
+                        var ireg = Reg(op.MemoryValue.IndexRegister);
+                        if (op.Shifter.Type == ArmShifterType.LSL)
+                        {
+                            ea = m.IAdd(ea, m.IMul(ireg, 1 << op.Shifter.Value));
+                        }
+                        else
+                            throw new NotImplementedException();
                     }
+                    return m.Load(SizeFromLoadStore(instr), ea);
                 }
                 if (op.MemoryValue.Displacement != 0 && instrs.Current.IsLastOperand(op))
                 {

@@ -58,9 +58,9 @@ namespace Reko.Environments.MacOS
             };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new M68kProcedureSerializer((M68kArchitecture) Architecture, typeLoader, defaultConvention);
+            return new M68kCallingConvention((M68kArchitecture)this.Architecture);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

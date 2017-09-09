@@ -672,5 +672,15 @@ means
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|call 001059B4 (0)");
         }
+
+        [Test]
+        public void ArmRw_ldrls_pc()
+        {
+            BuildTest(0x979FF103);   // ldrls\tpc,[pc,r3,lsl #2]
+            AssertCode(
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (Test(UGT,ZC)) branch 00100004",
+                "2|T--|goto Mem0[0x00100008 + r3 * 0x00000004:word32]");
+        }
     }
 }

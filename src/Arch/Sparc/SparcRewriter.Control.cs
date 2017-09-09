@@ -61,7 +61,7 @@ namespace Reko.Arch.Sparc
 
         private void RewriteCall()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             m.CallD(((AddressOperand)instrCur.Op1).Address, 0);
         }
 

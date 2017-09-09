@@ -4,4 +4,41 @@
 
 #include "TLCS-90.h"
 
+byte g_b0001 = 0x00;
+union Eq_1517 g_u0350 = 
+	{
+		0x2026
+	};
+word16 g_w0438 = 0x3870;
+union Eq_2746 g_u060E = 
+	{
+		0xDBF0
+	};
+union Eq_5635 g_u0738 = 
+	{
+		0x0000
+	};
+byte g_a0823[] = 
+	{
+	};
+union Eq_6874 g_u0A35 = 
+	{
+		0x60F9
+	};
+union Eq_6921 g_u0B1B = 
+	{
+		0xF4F4
+	};
+union Eq_6510 g_u0CEE = 
+	{
+		0x26E1
+	};
+union Eq_6208 g_u147B = 
+	{
+		0x08F2
+	};
+union Eq_6156 g_u14A1 = 
+	{
+		0xA41C
+	};
 
