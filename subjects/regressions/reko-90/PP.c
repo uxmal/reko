@@ -12221,48 +12221,32 @@ byte fn0800_8F7F(byte al, selector ds, segptr32 ptrArg02)
 // 0800:8F97: void fn0800_8F97(Register word16 ax, Register word16 dx, Register word16 bx, Register word16 di, Register selector ds)
 void fn0800_8F97(word16 ax, word16 dx, word16 bx, word16 di, selector ds)
 {
-fn0800_8F97_entry:
-	def fp
-	def bp
-	def si
-	def di
-	def es
-	def ax
-	def dx
-	def bx
-	def ds
-	sp_1 = fp
-	sp_2 = fp - 0x02
-	wLoc02_4 = bp
-	bp_5 = fp - 0x02
-	sp_6 = fp - 44
-	SCZO_7 = cond(fp - 44)
-	sp_8 = fp - 0x2E
-	wLoc2E_10 = si
-	sp_11 = fp - 0x30
-	wLoc30_13 = di
-	wLoc06_14 = 0x00
-	wLoc08_15 = 0x00
-	sp_16 = fp - 0x32
-	wLoc32_18 = es
-	D_19 = false
-	fn0800_9107(ax, dx, bx, bp_5, di, ds)
-	return
-l0800_8F97:
-l0800_8FC6:
-l0800_8FC7_thunk_fn0800_9107:
-l0800_906C_thunk_fn0800_93BE:
-	ax = fn0800_93BE(bp, psegArg00, wArg02, wArg04, out bp)
-	return
-l0800_906C_thunk_fn0800_93BE:
-	ax = fn0800_93BE(bp, psegArg00, wArg02, wArg04, out bp)
-	return
-l0800_906C_thunk_fn0800_93BE:
-	ax = fn0800_93BE(bp, psegArg00, wArg02, wArg04, out bp)
-	return
-fn0800_8F97_exit:
-	ax_24 = PHI(ax, ax, ax, ax)
-	bp_25 = PHI(bp, bp, bp, bp_5)
+	mp16 fp;
+	word16 bp;
+	word16 si;
+	word16 di;
+	selector es;
+	word16 ax;
+	word16 dx;
+	word16 bx;
+	selector ds;
+	sp_1 = fp;
+	sp_2 = fp - 0x02;
+	wLoc02_4 = bp;
+	bp_5 = fp - 0x02;
+	sp_6 = fp - 44;
+	SCZO_7 = cond(fp - 44);
+	sp_8 = fp - 0x2E;
+	wLoc2E_10 = si;
+	sp_11 = fp - 0x30;
+	wLoc30_13 = di;
+	wLoc06_14 = 0x00;
+	wLoc08_15 = 0x00;
+	sp_16 = fp - 0x32;
+	wLoc32_18 = es;
+	D_19 = false;
+	fn0800_9107(ax, dx, bx, bp_5, di, ds);
+	return;
 }
 
 // 0800:8FAB: Register word16 fn0800_8FAB(Register word16 bp, Register selector ds, Register out ptr16 esOut)
@@ -14484,78 +14468,46 @@ word16 fn0800_9F89(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 &
 // 0800:9F92: Register word16 fn0800_9F92(Register word16 ax, Register word16 dx, Register word16 bp, Register selector ds, Stack word16 wArg00, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 dsOut)
 word16 fn0800_9F92(word16 ax, word16 dx, word16 bp, selector ds, word16 wArg00, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & dsOut)
 {
-fn0800_9F92_entry:
-	def fp
-	def ax
-	def dx
-	def si
-	def di
-	def ds
-	def dxOut
-	def bxOut
-	def bpOut
-	def dsOut
-	def bp
-	def wArg00
-	def bx
-	sp_1 = fp
-	cx_3 = ax
-	cx_5 = cx_3 | dx
-	SZO_6 = cond(cx_5)
-	Z_7 = SZO_6 (alias)
-	C_8 = false
-	sp_9 = fp - 0x02
-	wLoc02_11 = si
-	sp_12 = fp - 0x04
-	wLoc04_14 = di
-	Mem16[0x0800:~0x62C4:word16] = ds
-	branch cx_5 == 0x00 l0800_9FFD_in_fn0800_9F92
-	goto l0800_9F9D_thunk_fn0800_9F9F
-l0800_9F92:
-l0800_9F92:
-	cx = ax
-	cx = cx | dx
-	SZO = cond(cx)
-	Z = SZO (alias)
-	C = false
-	sp = sp - 0x02
-	Mem0[ss:sp + 0x00:word16] = si
-	sp = sp - 0x02
-	Mem0[ss:sp + 0x00:word16] = di
-	Mem0[0x0800:~0x62C4:word16] = ds
-	branch Test(EQ,Z) l0800_9FFD
-	goto l0800_9F9D_thunk_fn0800_9F9F
-l0800_9F9D_thunk_fn0800_9F9F:
-	ax_34 = fn0800_9F9F(ax, dx, bp, out dx_30, out bx_31, out bp_32, out ds_33)
-	return ax_34
-l0800_9F9D_thunk_fn0800_9F9F:
-	ax = fn0800_9F9F(ax, dx, bp, out dx, out bx, out bp, out ds)
-	return ax
-l0800_9F9D_thunk_fn0800_9F9F:
-	ax = fn0800_9F9F(ax, dx, bp, out dx, out bx, out bp, out ds)
-	return ax
-l0800_9FFD_in_fn0800_9F92:
-	ds_35 = Mem16[0x0800:~0x62C4:selector]
-	di_36 = wLoc04_14
-	sp_37 = fp - 0x02
-	si_38 = wLoc02_11
-	sp_39 = fp
-	bp_41 = wArg00
-	sp_42 = fp + 0x02
-	return ax
-fn0800_9F92_exit:
-	di_17 = PHI(di_36, di, di, di)
-	si_18 = PHI(si_38, si, si, si)
-	sp_19 = PHI(sp_42, sp_12, sp, sp)
-	dx_20 = PHI(dx, dx_30, dx, dx)
-	bx_21 = PHI(bx, bx_31, bx, bx)
-	bp_22 = PHI(bp_41, bp_32, bp, bp)
-	ds_23 = PHI(ds_35, ds_33, ds, ds)
-	ax_24 = PHI(ax, ax_34, ax, ax)
-	use dx_20 (=> dxOut)
-	use bx_21 (=> bxOut)
-	use bp_22 (=> bpOut)
-	use ds_23 (=> dsOut)
+	mp16 fp;
+	word16 ax;
+	word16 dx;
+	word16 si;
+	word16 di;
+	selector ds;
+	ptr16 dxOut;
+	ptr16 bxOut;
+	ptr16 bpOut;
+	ptr16 dsOut;
+	word16 bp;
+	word16 wArg00;
+	word16 bx;
+	sp_1 = fp;
+	cx_3 = ax;
+	cx_5 = cx_3 | dx;
+	SZO_6 = cond(cx_5);
+	Z_7 = SZO_6;
+	C_8 = false;
+	sp_9 = fp - 0x02;
+	wLoc02_11 = si;
+	sp_12 = fp - 0x04;
+	wLoc04_14 = di;
+	Mem16[0x0800:~0x62C4:word16] = ds;
+	if (cx_5 == 0x00)
+	{
+		ds_35 = Mem16[0x0800:~0x62C4:selector];
+		di_36 = wLoc04_14;
+		sp_37 = fp - 0x02;
+		si_38 = wLoc02_11;
+		sp_39 = fp;
+		bp_41 = wArg00;
+		sp_42 = fp + 0x02;
+		return ax;
+	}
+	else
+	{
+		ax_34 = fn0800_9F9F(ax, dx, bp, out dx_30, out bx_31, out bp_32, out ds_33);
+		return ax_34;
+	}
 }
 
 // 0800:9F9F: Register word16 fn0800_9F9F(Register word16 ax, Register word16 dx, Register word16 bp, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 dsOut)
@@ -17910,165 +17862,90 @@ word16 fn1483_0CA0(byte al, byte ah, byte dl, word16 bx, word16 bp, word16 si, w
 // 1483:0CA1: Register word16 fn1483_0CA1(Register byte ah, Register byte al, Register byte dl, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 diOut)
 word16 fn1483_0CA1(byte ah, byte al, byte dl, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & diOut)
 {
-fn1483_0CA1_entry:
-	def fp
-	def es
-	def ds
-	def bx
-	def di
-	def Mem0
-	def si
-	def ah
-	def ax
-	def v13
-	def v19
-	def v21
-	def v23
-	def v25
-	def v26
-	def v27
-	def v27
-	def cxOut
-	def dxOut
-	def bxOut
-	def bpOut
-	def diOut
-	sp_1 = fp
-	sp_2 = fp - 0x02
-	wLoc02_4 = es
-	v9_10 = Mem0[ds:bx + di:word16] + si
-	Mem11[ds:bx + di:word16] = v9_10
-	ah_13 = ah + Mem11[ds:bx + si:byte]
-	ax_15 = DPB(ax, ah_13, 8) (alias)
-	SCZO_16 = cond(ah_13)
-	call fn1483_FD4E (retsize: 2; depth: 4)
-		uses: ah_13,ax_15,bx,di,ds,es,SCZO_16,si,sp_2,wLoc02_4
-		defs: ah_25,al_33,ax_31,bl_30,bp_28,bx_20,C_32,cl_35,cx_34,di_21,dl_26,ds_22,dx_27,es_18,SCZO_24,si_23,sp_17,ss_19,SZO_29
-	dl_36 = dl_26 + Mem11[ds_22:bx_20 + 0x00:byte]
-	dx_37 = Mem11[ds_22:si_23 + 5950:word16] *s 0x0C62
-	dl_38 = (byte) dx_37 (alias)
-	v13_39 = Mem11[ds_22:bx_20 + 0x00:byte] + dl_38
-	Mem41[ds_22:bx_20 + 0x00:byte] = v13
-	bp_42 = bp_28 - 0x01
-	bl_43 = bl_30 + ah_25
-	bx_44 = DPB(bx_20, bl_43, 0) (alias)
-	ax_45 = ax_31 - 12972
-	al_46 = (byte) ax_45 (alias)
-	v17_47 = (Mem41[ds_22:bx_44 - 0x56 + di_21:byte] & 0x40) != 0x00
-	Mem48[ds_22:bx_44 - 0x56 + di_21:byte] = __rol(Mem41[ds_22:bx_44 - 0x56 + di_21:byte], 226)
-	v19_49 = (Mem48[ss_19:bp_42 + 0x7C:word16] & 0x02) != 0x00
-	Mem50[ss_19:bp_42 + 0x7C:word16] = __ror(Mem48[ss_19:bp_42 + 0x7C:word16], 0x01)
-	C_52 = v19
-	v21_53 = Mem50[ds_22:bx_44 + 0x00:byte] + bl_43 + C_52
-	Mem55[ds_22:bx_44 + 0x00:byte] = v21
-	bl_56 = bl_43 & Mem55[ds_22:bx_44 + 0x00:byte]
-	bx_57 = DPB(bx_44, bl_56, 0) (alias)
-	C_58 = false
-	Mem59[es_18:di_21 + 0x00:byte] = al_46
-	di_60 = di_21 + 0x01
-	ax_61 = ax_45 - 35615 - C_58
-	v23_62 = Mem59[ds_22:bx_57 + 0x00:word16] + bx_57
-	Mem64[ds_22:bx_57 + 0x00:word16] = v23
-	cx_65 = di_60
-	cx_66 = cx_65 - si_23
-	cl_67 = (byte) cx_66 (alias)
-	SCZO_68 = cond(cx_66)
-	v25_69 = Mem64[ds_22:di_60 + 0x14:word16]
-	Mem70[ds_22:di_60 + 0x14:word16] = ax_61
-	ax_72 = v25
-	call fn1483_4FE0 (retsize: 2; depth: 2)
-		uses: ah_25,al_46,ax_72,bl_56,bp_42,bx_57,C_58,cl_67,cx_66,di_60,dl_38,ds_22,dx_37,es_18,SCZO_68,si_23,sp_17,ss_19,SZO_29,wLoc02_4
-		defs: ah_81,al_89,ax_87,bl_86,bp_84,bx_76,C_88,cl_91,cx_90,di_77,dl_82,ds_78,dx_83,es_74,SCZO_80,si_79,sp_73,ss_75,SZO_85
-	v26_92 = Mem70[ds_78:~0x081C:word16] - dx_83
-	Mem94[ds_78:~0x081C:word16] = v26
-	ax_95 = ax_87 - sp_73
-	v27_96 = Mem94[ds_78:bx_76 + di_77:word16] + bp_84
-	Mem98[ds_78:bx_76 + di_77:word16] = v27
-	SCZO_100 = cond(v27)
-	C_101 = SCZO_100 (alias)
-	sp_102 = sp_73 - 0x02
-	Mem103[ss_75:sp_102 + 0x00:word16] = si_79
-	sp_104 = sp_102 - 0x02
-	Mem105[ss_75:sp_104 + 0x00:word16] = cx_90
-	cl_106 = cl_91 - Mem105[ss_75:(bp_84 + 0x027E) + di_77:byte] - (v27 <u 0x00)
-	cx_107 = DPB(cx_90, cl_106, 0) (alias)
-	SCZO_108 = cond(cl_106)
-	sp_109 = sp_104 - 0x02
-	Mem110[ss_75:sp_109 + 0x00:word16] = si_79
-	ax_111 = __inw(0x8B)
-	ah_112 = SLICE(ax_111, byte, 8) (alias)
-	al_113 = (byte) ax_111 (alias)
-	return ax_111
-l1483_0CA1:
-l1483_0CA1:
-	ah = ah + Mem0[ds:bx + si:byte]
-	ax = DPB(ax, ah, 8) (alias)
-	SCZO = cond(ah)
-	call fn1483_FD4E (retsize: 2;)
-		defs: ah,al,ax,bl,bp,bx,C,cl,cx,di,dl,ds,dx,es,SCZO,si,sp,ss,SZO
-	dl = dl + Mem0[ds:bx + 0x00:byte]
-	dx = Mem0[ds:si + 5950:word16] *s 0x0C62
-	dl = (byte) dx (alias)
-	v43 = Mem0[ds:bx + 0x00:byte] + dl
-	Mem0[ds:bx + 0x00:byte] = v43
-	bp = bp - 0x01
-	bl = bl + ah
-	bx = DPB(bx, bl, 0) (alias)
-	ax = ax - 12972
-	al = (byte) ax (alias)
-	v44 = (Mem0[ds:bx - 0x56 + di:byte] & 0x40) != 0x00
-	Mem0[ds:bx - 0x56 + di:byte] = __rol(Mem0[ds:bx - 0x56 + di:byte], 226)
-	v45 = (Mem0[ss:bp + 0x7C:word16] & 0x02) != 0x00
-	Mem0[ss:bp + 0x7C:word16] = __ror(Mem0[ss:bp + 0x7C:word16], 0x01)
-	C = v45
-	v46 = Mem0[ds:bx + 0x00:byte] + bl + C
-	Mem0[ds:bx + 0x00:byte] = v46
-	bl = bl & Mem0[ds:bx + 0x00:byte]
-	bx = DPB(bx, bl, 0) (alias)
-	C = false
-	Mem0[es:di + 0x00:byte] = al
-	di = di + 0x01
-	ax = ax - 35615 - C
-	v47 = Mem0[ds:bx + 0x00:word16] + bx
-	Mem0[ds:bx + 0x00:word16] = v47
-	cx = di
-	cx = cx - si
-	cl = (byte) cx (alias)
-	SCZO = cond(cx)
-	v48 = Mem0[ds:di + 0x14:word16]
-	Mem0[ds:di + 0x14:word16] = ax
-	ax = v48
-	call fn1483_4FE0 (retsize: 2;)
-		defs: ah,al,ax,bl,bp,bx,C,cl,cx,di,dl,ds,dx,es,SCZO,si,sp,ss,SZO
-	v49 = Mem0[ds:~0x081C:word16] - dx
-	Mem0[ds:~0x081C:word16] = v49
-	ax = ax - sp
-	v50 = Mem0[ds:bx + di:word16] + bp
-	Mem0[ds:bx + di:word16] = v50
-	SCZO = cond(v50)
-	C = SCZO (alias)
-	sp = sp - 0x02
-	Mem0[ss:sp + 0x00:word16] = si
-	sp = sp - 0x02
-	Mem0[ss:sp + 0x00:word16] = cx
-	cl = cl - Mem0[ss:(bp + 0x027E) + di:byte] - C
-	cx = DPB(cx, cl, 0) (alias)
-	SCZO = cond(cl)
-	sp = sp - 0x02
-	Mem0[ss:sp + 0x00:word16] = si
-	ax = __inw(0x8B)
-	ah = SLICE(ax, byte, 8) (alias)
-	al = (byte) ax (alias)
-	return ax
-l1483_0CA9:
-l1483_0CA9_in_fn1483_0CA1:
-l1483_0CE5:
-fn1483_0CA1_exit:
-	use cx_107 (=> cxOut)
-	use dx_83 (=> dxOut)
-	use bx_76 (=> bxOut)
-	use bp_84 (=> bpOut)
-	use di_77 (=> diOut)
+	mp16 fp;
+	selector es;
+	selector ds;
+	word16 bx;
+	word16 di;
+	<type-error> Mem0;
+	word16 si;
+	byte ah;
+	word16 ax;
+	byte v13;
+	bool v19;
+	byte v21;
+	word16 v23;
+	word16 v25;
+	word16 v26;
+	word16 v27;
+	word16 v27;
+	ptr16 cxOut;
+	ptr16 dxOut;
+	ptr16 bxOut;
+	ptr16 bpOut;
+	ptr16 diOut;
+	sp_1 = fp;
+	sp_2 = fp - 0x02;
+	wLoc02_4 = es;
+	v9_10 = Mem0[ds:bx + di:word16] + si;
+	Mem11[ds:bx + di:word16] = v9_10;
+	ah_13 = ah + Mem11[ds:bx + si:byte];
+	ax_15 = DPB(ax, ah_13, 8);
+	SCZO_16 = cond(ah_13);
+	fn1483_FD4E();
+	dl_36 = dl_26 + Mem11[ds_22:bx_20 + 0x00:byte];
+	dx_37 = Mem11[ds_22:si_23 + 5950:word16] *s 0x0C62;
+	dl_38 = (byte) dx_37;
+	v13_39 = Mem11[ds_22:bx_20 + 0x00:byte] + dl_38;
+	Mem41[ds_22:bx_20 + 0x00:byte] = v13;
+	bp_42 = bp_28 - 0x01;
+	bl_43 = bl_30 + ah_25;
+	bx_44 = DPB(bx_20, bl_43, 0);
+	ax_45 = ax_31 - 12972;
+	al_46 = (byte) ax_45;
+	v17_47 = (Mem41[ds_22:bx_44 - 0x56 + di_21:byte] & 0x40) != 0x00;
+	Mem48[ds_22:bx_44 - 0x56 + di_21:byte] = __rol(Mem41[ds_22:bx_44 - 0x56 + di_21:byte], 226);
+	v19_49 = (Mem48[ss_19:bp_42 + 0x7C:word16] & 0x02) != 0x00;
+	Mem50[ss_19:bp_42 + 0x7C:word16] = __ror(Mem48[ss_19:bp_42 + 0x7C:word16], 0x01);
+	C_52 = v19;
+	v21_53 = Mem50[ds_22:bx_44 + 0x00:byte] + bl_43 + C_52;
+	Mem55[ds_22:bx_44 + 0x00:byte] = v21;
+	bl_56 = bl_43 & Mem55[ds_22:bx_44 + 0x00:byte];
+	bx_57 = DPB(bx_44, bl_56, 0);
+	C_58 = false;
+	Mem59[es_18:di_21 + 0x00:byte] = al_46;
+	di_60 = di_21 + 0x01;
+	ax_61 = ax_45 - 35615 - C_58;
+	v23_62 = Mem59[ds_22:bx_57 + 0x00:word16] + bx_57;
+	Mem64[ds_22:bx_57 + 0x00:word16] = v23;
+	cx_65 = di_60;
+	cx_66 = cx_65 - si_23;
+	cl_67 = (byte) cx_66;
+	SCZO_68 = cond(cx_66);
+	v25_69 = Mem64[ds_22:di_60 + 0x14:word16];
+	Mem70[ds_22:di_60 + 0x14:word16] = ax_61;
+	ax_72 = v25;
+	fn1483_4FE0();
+	v26_92 = Mem70[ds_78:~0x081C:word16] - dx_83;
+	Mem94[ds_78:~0x081C:word16] = v26;
+	ax_95 = ax_87 - sp_73;
+	v27_96 = Mem94[ds_78:bx_76 + di_77:word16] + bp_84;
+	Mem98[ds_78:bx_76 + di_77:word16] = v27;
+	SCZO_100 = cond(v27);
+	C_101 = SCZO_100;
+	sp_102 = sp_73 - 0x02;
+	Mem103[ss_75:sp_102 + 0x00:word16] = si_79;
+	sp_104 = sp_102 - 0x02;
+	Mem105[ss_75:sp_104 + 0x00:word16] = cx_90;
+	cl_106 = cl_91 - Mem105[ss_75:(bp_84 + 0x027E) + di_77:byte] - (v27 <u 0x00);
+	cx_107 = DPB(cx_90, cl_106, 0);
+	SCZO_108 = cond(cl_106);
+	sp_109 = sp_104 - 0x02;
+	Mem110[ss_75:sp_109 + 0x00:word16] = si_79;
+	ax_111 = __inw(0x8B);
+	ah_112 = SLICE(ax_111, byte, 8);
+	al_113 = (byte) ax_111;
+	return ax_111;
 }
 
 // 1483:0CFA: Register word16 fn1483_0CFA(Register byte al, Register byte ah, Register word16 cx, Register word16 dx, Register byte bl, Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register selector fs, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 esOut)
@@ -18088,84 +17965,51 @@ word16 fn1483_0CFA(byte al, byte ah, word16 cx, word16 dx, byte bl, word16 bp, w
 // 1483:0CFC: Register word16 fn1483_0CFC(Register byte al, Register byte ah, Register word16 cx, Register word16 dx, Register byte bl, Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Register selector fs, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 esOut)
 word16 fn1483_0CFC(byte al, byte ah, word16 cx, word16 dx, byte bl, word16 bp, word16 si, word16 di, selector ds, selector fs, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut)
 {
-fn1483_0CFC_entry:
-	def fp
-	def bl
-	def al
-	def bx
-	def ds
-	def di
-	def Mem0
-	def ax
-	def ss
-	def bp
-	def si
-	def cx
-	def cxOut
-	def dxOut
-	def bxOut
-	def bpOut
-	def siOut
-	def diOut
-	def esOut
-	def dx
-	def fs
-	def es
-	def psegLoc02
-	sp_1 = fp
-	bl_4 = bl ^ al
-	bx_6 = DPB(bx, bl_4, 0) (alias)
-	SZO_7 = cond(bl_4)
-	C_8 = false
-	al_12 = Mem0[ds:bx_6 + di:byte]
-	ax_14 = DPB(ax, al_12, 0) (alias)
-	Mem15[ss:bp + si:word16] = ~0x2E00
-	branch cx == 0x00 l1483_0D04_thunk_fn1483_0C91
-	goto l1483_0D04_thunk_fn1483_0D06
-l1483_0CFC:
-l1483_0CFC:
-	al = Mem0[ds:bx + di:byte]
-	ax = DPB(ax, al, 0) (alias)
-	Mem0[ss:bp + si:word16] = ~0x2E00
-	branch cx == 0x00 l1483_0D04_thunk_fn1483_0C91
-l1483_0D02_thunk_fn1483_0D06:
-	ax = fn1483_0D06(ax, dx, bx, ds, fs, out cx, out dx, out bx, out bp, out si, out di)
-	al = (byte) ax (alias)
-	ah = SLICE(ax, byte, 8) (alias)
-	return ax
-l1483_0D04_thunk_fn1483_0C91:
-	ax_57 = fn1483_0C91(ax_14, cx, dx, bx_6, bp, si, di, ds, psegLoc02, out cx_50, out dx_51, out bx_52, out bp_53, out si_54, out di_55, out es_56)
-	al_58 = (byte) ax_57 (alias)
-	ah_59 = SLICE(ax_57, byte, 8) (alias)
-	return ax_57
-l1483_0D04_thunk_fn1483_0C91:
-	ax = fn1483_0C91(ax, cx, dx, bx, bp, si, di, ds, psegArg00, out cx, out dx, out bx, out bp, out si, out di, out es)
-	al = (byte) ax (alias)
-	ah = SLICE(ax, byte, 8) (alias)
-	return ax
-l1483_0D04_thunk_fn1483_0D06:
-	ax_45 = fn1483_0D06(ax_14, dx, bx_6, ds, fs, out cx_39, out dx_40, out bx_41, out bp_42, out si_43, out di_44)
-	al_46 = (byte) ax_45 (alias)
-	ah_47 = SLICE(ax_45, byte, 8) (alias)
-	return ax_45
-fn1483_0CFC_exit:
-	es_20 = PHI(es_56, es, es, es)
-	cx_21 = PHI(cx_50, cx_39, cx, cx)
-	dx_22 = PHI(dx_51, dx_40, dx, dx)
-	bx_23 = PHI(bx_52, bx_41, bx, bx)
-	bp_24 = PHI(bp_53, bp_42, bp, bp)
-	si_25 = PHI(si_54, si_43, si, si)
-	di_26 = PHI(di_55, di_44, di, di)
-	ax_27 = PHI(ax_57, ax_45, ax, ax)
-	al_28 = PHI(al_58, al_46, al, al)
-	ah_29 = PHI(ah_59, ah_47, ah, ah)
-	use cx_21 (=> cxOut)
-	use dx_22 (=> dxOut)
-	use bx_23 (=> bxOut)
-	use bp_24 (=> bpOut)
-	use si_25 (=> siOut)
-	use di_26 (=> diOut)
-	use es_20 (=> esOut)
+	mp16 fp;
+	byte bl;
+	byte al;
+	word16 bx;
+	selector ds;
+	word16 di;
+	<type-error> Mem0;
+	word16 ax;
+	selector ss;
+	word16 bp;
+	word16 si;
+	word16 cx;
+	ptr16 cxOut;
+	ptr16 dxOut;
+	ptr16 bxOut;
+	ptr16 bpOut;
+	ptr16 siOut;
+	ptr16 diOut;
+	ptr16 esOut;
+	word16 dx;
+	selector fs;
+	selector es;
+	selector psegLoc02;
+	sp_1 = fp;
+	bl_4 = bl ^ al;
+	bx_6 = DPB(bx, bl_4, 0);
+	SZO_7 = cond(bl_4);
+	C_8 = false;
+	al_12 = Mem0[ds:bx_6 + di:byte];
+	ax_14 = DPB(ax, al_12, 0);
+	Mem15[ss:bp + si:word16] = ~0x2E00;
+	if (cx == 0x00)
+	{
+		ax_57 = fn1483_0C91(ax_14, cx, dx, bx_6, bp, si, di, ds, psegLoc02, out cx_50, out dx_51, out bx_52, out bp_53, out si_54, out di_55, out es_56);
+		al_58 = (byte) ax_57;
+		ah_59 = SLICE(ax_57, byte, 8);
+		return ax_57;
+	}
+	else
+	{
+		ax_45 = fn1483_0D06(ax_14, dx, bx_6, ds, fs, out cx_39, out dx_40, out bx_41, out bp_42, out si_43, out di_44);
+		al_46 = (byte) ax_45;
+		ah_47 = SLICE(ax_45, byte, 8);
+		return ax_45;
+	}
 }
 
 // 1483:0D06: Register word16 fn1483_0D06(Register word16 ax, Register word16 dx, Register word16 bx, Register selector ds, Register selector fs, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut)
@@ -18433,8 +18277,8 @@ void fn1483_1B13()
 	return;
 }
 
-// 1483:1B38: Register word16 fn1483_1B38(Register word16 ax, Register word16 cx, Register word16 dx, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Stack selector psegArg00, Register out ptr16 cxOut, Register out ptr16 dhOut, Register out ptr16 dlOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 esOut, Register out ptr16 dsOut)
-word16 fn1483_1B38(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, selector psegArg00, ptr16 & cxOut, ptr16 & dhOut, ptr16 & dlOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
+// 1483:1B38: Register word16 fn1483_1B38(Register word16 ax, Register word16 cx, Register word16 dx, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Stack selector psegArg00, Register out ptr16 cxOut, Register out ptr16 dlOut, Register out ptr16 dhOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 esOut, Register out ptr16 dsOut)
+word16 fn1483_1B38(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, selector psegArg00, ptr16 & cxOut, ptr16 & dlOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
 {
 	*esOut = es;
 	*siOut = si;
@@ -18592,44 +18436,27 @@ byte fn1483_1B91(byte al, word16 cx, word16 bx, word16 bp, word16 di, selector d
 // 1483:1BB8: Register word16 fn1483_1BB8(Register byte al, Register word16 cx, Register word16 bp, Register word16 si, Register selector ds, Register out ptr16 bpOut)
 word16 fn1483_1BB8(byte al, word16 cx, word16 bp, word16 si, selector ds, ptr16 & bpOut)
 {
-fn1483_1BB8_entry:
-	def fp
-	def al
-	def ds
-	def si
-	def Mem0
-	def ax
-	def cx
-	def bp
-	def dh
-	def dl
-	def bx
-	def di
-	def es
-	def bpOut
-	sp_1 = fp
-	al_6 = al | Mem0[ds:si + 0x00:byte]
-	ax_8 = DPB(ax, al_6, 0) (alias)
-	SZO_9 = cond(al_6)
-	C_10 = false
-	C_15 = fn1483_1BB9(al_6, cx, bp, out ax_13, out bp_14)
-	return ax_13
-l1483_1BB8:
-l1483_1BB8_thunk_fn1483_1BB9:
-l1483_1BBC_thunk_fn1483_1B38:
-fn1483_1BB8_exit:
-	cx_21 = PHI(cx, cx)
-	dh_22 = PHI(dh, dh)
-	dl_23 = PHI(dl, dl)
-	bx_24 = PHI(bx, bx)
-	si_25 = PHI(si, si)
-	di_26 = PHI(di, di)
-	es_27 = PHI(es, es)
-	ds_28 = PHI(ds, ds)
-	al_29 = PHI(al_6, al)
-	ax_30 = PHI(ax_13, ax)
-	bp_31 = PHI(bp_14, bp)
-	use bp_31 (=> bpOut)
+	mp16 fp;
+	byte al;
+	selector ds;
+	word16 si;
+	<type-error> Mem0;
+	word16 ax;
+	word16 cx;
+	word16 bp;
+	byte dl;
+	byte dh;
+	word16 bx;
+	word16 di;
+	selector es;
+	ptr16 bpOut;
+	sp_1 = fp;
+	al_6 = al | Mem0[ds:si + 0x00:byte];
+	ax_8 = DPB(ax, al_6, 0);
+	SZO_9 = cond(al_6);
+	C_10 = false;
+	C_15 = fn1483_1BB9(al_6, cx, bp, out ax_13, out bp_14);
+	return ax_13;
 }
 
 // 1483:1BB9: FlagGroup byte fn1483_1BB9(Register byte al, Register word16 cx, Register word16 bp, Register out ptr16 axOut, Register out ptr16 bpOut)
@@ -18653,7 +18480,7 @@ l1483_1BB9_thunk_fn1483_1BBF:
 	return C
 l1483_1BBB_thunk_fn1483_1BBD:
 l1483_1BBC:
-	ax = fn1483_1B38(ax, cx, dx, bx, bp, si, di, es, ds, psegArg00, out cx, out dh, out dl, out bx, out bp, out si, out di, out es, out ds)
+	ax = fn1483_1B38(ax, cx, dx, bx, bp, si, di, es, ds, psegArg00, out cx, out dl, out dh, out bx, out bp, out si, out di, out es, out ds)
 	al = (byte) ax (alias)
 	return ax
 fn1483_1BB9_exit:

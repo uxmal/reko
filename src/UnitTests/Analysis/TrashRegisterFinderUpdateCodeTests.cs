@@ -374,7 +374,7 @@ main_exit:
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
+        [Ignore("A spurious goto statement is being emitted. Analysis-branch should clean this up")]
         public void Trfu_WhileLoop()
         {
             AnalysisTestBase.RunTest_x86_real("Fragments/while_loop.asm", RunTest, "Analysis/TrfuWhileLoop.txt");

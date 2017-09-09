@@ -89,9 +89,7 @@ namespace Reko.Analysis
             var liveDefStms = proc.EntryBlock.Statements
                 .Select(s => s.Instruction)
                 .OfType<DefInstruction>()
-                .Select(d => d.Expression)
-                .OfType<Identifier>()
-                .Select(i => i.Storage);
+                .Select(d => d.Identifier.Storage);
             var dead = flow.BitsUsed.Keys
                 .Except(liveDefStms).ToList();
             foreach (var dd in dead)
@@ -175,7 +173,8 @@ namespace Reko.Analysis
             var liveOut = allLiveOut.OfType<RegisterStorage>().ToHashSet();
             liveOut.ExceptWith(implicitRegs);
 
-            foreach (var r in liveOut.OfType<RegisterStorage>().OrderBy(r => r.Number))
+            // Sort the names in a stable way to avoid regression tests failing.
+            foreach (var r in liveOut.OrderBy(r => r.Number).ThenBy(r => r.BitAddress))
 			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
 				{

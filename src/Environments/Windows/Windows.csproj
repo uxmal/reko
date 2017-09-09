@@ -145,6 +145,10 @@
       <Project>{fdaf4ca9-085c-473e-bcb5-0d2a4354a949}</Project>
       <Name>Libc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\tools\c2xml\c2xml.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Project>{500C7C4B-5B7A-40E0-BEED-75DDF1BA78D5}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

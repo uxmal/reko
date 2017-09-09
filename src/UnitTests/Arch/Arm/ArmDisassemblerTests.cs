@@ -335,7 +335,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         [Test]
         public void ArmDasm_ldrsb()
-        {                             
+        {
             var instr = Disassemble32(0xE1F322D1);
             Assert.AreEqual("ldrsb\tr2,[r3,#&21]!", instr.ToString());
         }
@@ -392,8 +392,15 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_ldr_post()
         {
-            var instr = Disassemble32(0xE4D43001); 
+            var instr = Disassemble32(0xE4D43001);
             Assert.AreEqual("ldrb\tr3,[r4],#1", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_ldrls_pc()
+        {
+            var instr = Disassemble32(0x979FF103);
+            Assert.AreEqual("ldrls\tpc,[pc,r3,lsl #2]", instr.ToString());
         }
     }
 }

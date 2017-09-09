@@ -60,7 +60,7 @@ namespace Reko.Arch.PowerPC
             }
             else
             {
-                rtlc = RtlClass.Transfer;
+                rtlc = RtlClass.Transfer | RtlClass.Call;
                 m.Call(dst, 0);
             }
         }
@@ -164,6 +164,7 @@ namespace Reko.Arch.PowerPC
             m.Assign(ctr, m.ISub(ctr, 1));
             if (updateLinkRegister)
             {
+                rtlc |= RtlClass.Call;
                 m.BranchInMiddleOfInstruction(
                     cond.Invert(),
                     instr.Address + instr.Length,

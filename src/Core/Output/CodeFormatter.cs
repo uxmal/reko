@@ -547,7 +547,7 @@ namespace Reko.Core.Output
 			writer.Indent();
             writer.WriteKeyword("def");
             writer.Write(" ");
-			def.Expression.Accept(this);
+			def.Identifier.Accept(this);
 			writer.Terminate();
 		}
 

@@ -96,8 +96,8 @@ namespace Reko.ImageLoaders.Elf
         public ElfRelocator Relocator { get; protected set; }
         public abstract Address DefaultAddress { get; }
         public List<ElfSection> Sections { get; private set; }
-        public Dictionary<ElfSection, List<ElfSymbol>> Symbols { get; }
-        public Dictionary<Address, ExternalProcedure> ExternalProcedures { get; }
+        public Dictionary<ElfSection, List<ElfSymbol>> Symbols { get; private set; }
+        public Dictionary<Address, ExternalProcedure> ExternalProcedures { get; private set; }
 
         public static AccessMode AccessModeOf(ulong sh_flags)
         {

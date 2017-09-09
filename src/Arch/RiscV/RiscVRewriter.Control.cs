@@ -61,6 +61,7 @@ namespace Reko.Arch.RiscV
             }
             else
             {
+                rtlc |= RtlClass.Call;
                 m.Call(dst, 0);
             }
         }
@@ -89,6 +90,7 @@ namespace Reko.Arch.RiscV
             }
             else if (continuation.Number == 1)     // 'r1'
             {
+                rtlc |= RtlClass.Call;
                 m.Call(dst, 0);
             } 
             else 

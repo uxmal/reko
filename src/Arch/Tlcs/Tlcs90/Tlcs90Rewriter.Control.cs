@@ -31,9 +31,10 @@ namespace Reko.Arch.Tlcs.Tlcs90
     {
         private void RewriteCall()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             if (instr.op2 != null)
             {
+                rtlc |= RtlClass.Conditional;
                 var cc = RewriteCondition((ConditionOperand)instr.op1).Invert();
                 m.Branch(cc, instr.Address + instr.Length, RtlClass.ConditionalTransfer);
                 instr.op2.Width = PrimitiveType.Ptr16;
@@ -135,7 +136,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteSwi()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             var sp = binder.EnsureRegister(Registers.sp);
             var af = binder.EnsureRegister(Registers.af);
             m.Assign(sp, m.ISub(sp, m.Int32(2)));

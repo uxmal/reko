@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-        [Ignore(Categories.FailedTests)]
+        [Ignore("A spurious goto statement is being emitted. Analysis-branch should clean this up")]
 		public void RwReg00006()
 		{
 			RunTest("Fragments/regressions/r00006.asm", "Intel/RwReg00006.txt");

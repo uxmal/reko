@@ -368,7 +368,7 @@ namespace Reko.Scanning
                 .Where(b => !entries.Contains(b) && sr.ICFG.Predecessors(b).Count == 0)
                 .ToHashSet();
             cluster.Blocks.ExceptWith(deadNodes);
-            if (cluster.Blocks.Count == 0)
+            if (cluster.Blocks.Count == 0 || entries.Count == 0)
             {
                 //$TODO: investigate why this happens.
                 return new List<RtlProcedure>();

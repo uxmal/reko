@@ -706,40 +706,21 @@ Eq_2 fn0A94(int16 r3, Eq_2 r4, word16 * r5)
 // 0AF6: void fn0AF6(Stack Eq_1600 wArg00)
 void fn0AF6(Eq_1600 wArg00)
 {
-fn0AF6_entry:
-	def fp
-	def wArg00
-	def v35
-	sp_1 = fp
-	v3_3 = wArg00
-	sp_4 = fp + 0x02
-	v4_5 = v3_3
-	v4_6 = v4_5 & v4_5
-	NZ_7 = cond(v4_6)
-	C_8 = false
-	V_9 = false
-	globals->w34D2 = 13770
-	NZ_12 = cond(v35)
-	V_13 = false
-	return
-l0AF6:
-l0AF6:
-	v9 = *sp
-	sp = sp + 0x01
-	v10 = v9
-	v10 = v10 & v10
-	NZ = cond(v10)
-	C = false
-	V = false
-	globals->w34D2 = 13770
-	NZ = cond(v11)
-	V = false
-	return
-l0AF8:
-l0AF8_in_fn0AF6:
-fn0AF6_exit:
-	NZ_14 = PHI(NZ_12, NZ)
-	V_15 = PHI(V_13, V)
+	ptr16 fp;
+	ci16 * wArg00;
+	word16 v35;
+	sp_1 = fp;
+	v3_3 = wArg00;
+	sp_4 = fp + 0x02;
+	v4_5 = v3_3;
+	v4_6 = v4_5 & v4_5;
+	NZ_7 = cond(v4_6);
+	C_8 = false;
+	V_9 = false;
+	globals->w34D2 = 13770;
+	NZ_12 = cond(v35);
+	V_13 = false;
+	return;
 }
 
 // 0B06: Register word16 fn0B06(Register int16 r3, Register (ptr word16) r5, Register word16 pc)
