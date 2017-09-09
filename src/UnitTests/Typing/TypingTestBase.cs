@@ -149,7 +149,8 @@ namespace Reko.UnitTests.Typing
                 if (u != null && u.Length > 0)
                     return method.Name;
             }
-            throw new InvalidOperationException("Unable to determine the unit test name from the call stack.");
+            throw new InvalidOperationException(
+                string.Format("Unable to determine the unit test name from the call stack. {0}.", stackTrace));
         }
 
         protected abstract void RunTest(Program prog, string outputFile);
