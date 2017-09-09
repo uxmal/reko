@@ -3,6 +3,6 @@ build:
   project: src/Reko-decompiler.sln
   verbosity: normal
 
-test:
+test_script:
   - nunit-console.exe ./src/tools/c2xml/bin/TravisRelease/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
   - nunit-console.exe ./src/UnitTests/bin/TravisRelease/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
