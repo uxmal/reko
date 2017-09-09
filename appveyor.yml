@@ -1,8 +1,11 @@
-version: 1.0.{build}
+version: 0.7.2.{build}
+
+configuration: Release
+
 build:
   project: src/Reko-decompiler.sln
   verbosity: normal
 
 test_script:
-  - nunit-console.exe ./src/tools/c2xml/bin/TravisRelease/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
-  - nunit-console.exe ./src/UnitTests/bin/TravisRelease/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
+  - nunit-console.exe ./src/tools/c2xml/bin/Release/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
+  - nunit-console.exe ./src/UnitTests/bin/Release/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
