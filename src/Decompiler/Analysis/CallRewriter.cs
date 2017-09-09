@@ -175,7 +175,7 @@ namespace Reko.Analysis
 
             // Sort the names in a stable way to avoid regression tests failing.
             foreach (var r in liveOut.OrderBy(r => r.Number).ThenBy(r => r.BitAddress))
-			{
+    			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
 				{
 					sb.AddOutParam(frame.EnsureRegister(r));

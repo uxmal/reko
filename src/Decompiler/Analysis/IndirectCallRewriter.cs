@@ -126,7 +126,7 @@ namespace Reko.Analysis
                 .FirstOrDefault();
             if (defSpBinding == null)
                 return;
-            var defSpId = defSpBinding.Identifier as Identifier;
+            var defSpId = defSpBinding.Expression as Identifier;
             if (defSpId == null)
                 return;
             var usedSpExp = call.Uses.Where(

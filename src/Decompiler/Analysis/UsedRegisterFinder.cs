@@ -88,9 +88,7 @@ namespace Reko.Analysis
                 DefInstruction def;
                 if (!stm.Instruction.As(out def))
                     continue;
-                Identifier id;
-                if (!def.Expression.As(out id))
-                    continue;
+                Identifier id = def.Identifier;
                 var sid = ssa.Identifiers[id];
                 if ((sid.Identifier.Storage is RegisterStorage ||
                      sid.Identifier.Storage is StackArgumentStorage ||
