@@ -853,12 +853,12 @@ are added during loop refinement, which we discuss next.
             bool didReduce = false;
             var loopNodes = new LoopFinder<Region>(regionGraph, n, doms).LoopNodes;
             Region[] succs;
-            for (; ; )
+            for (;;)
             {
                 succs = regionGraph.Successors(n).ToArray();
                 if (succs.Length != 1 || !ReduceSequence(n))
                     break;
-            Probe();
+                Probe();
                 didReduce = true;
             }
             foreach (var s in succs)
@@ -1112,7 +1112,7 @@ refinement on the loop body, which we describe below.
             {
                 // If the head is a Conditional node and one of the edges 
                 // leaves the loop, the head of that edge is the follow 
-                // node of the 
+                // node of the loop.
                 Region follow = null;
                 if (!loopNodes.Contains(headSucc[0]))
                 {
@@ -1253,7 +1253,7 @@ refinement on the loop body, which we describe below.
 
         /// <summary>
         /// If the algorithm does not collapse any nodes or perform any
-        /// refinement during an iteration, we must an edge in
+        /// refinement during an iteration, we must add an edge in
         /// the graph to allow it to make progress. We call this process
         /// the last resort refinement, because it has the lowest priority,
         /// and always allows progress to be made. Last resort refine-
