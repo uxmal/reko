@@ -92,7 +92,7 @@ namespace Reko.Analysis
         {
             foreach (var di in ci.Definitions)
             {
-                if (di.Expression == sid.Identifier)
+                if (di.Identifier == sid.Identifier)
                 {
                     defExpr = new Application(ci.Callee, new UnknownType());
                     return;

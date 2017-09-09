@@ -82,7 +82,7 @@ namespace Reko.Structure
         {
             //$TODO: should there be a warning? DefInstructions should have been
             // removed before entering this code.
-            return new AbsynDeclaration(def.Expression, null);
+            return new AbsynDeclaration(def.Identifier, null);
         }
 
         public AbsynStatement VisitGotoInstruction(GotoInstruction gotoInstruction)

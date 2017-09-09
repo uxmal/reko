@@ -409,7 +409,7 @@ namespace Reko.Analysis
 			private Statement stmCur; 
 			private Procedure proc;
             private IImportResolver importResolver;
-            private HashSet<Expression> existingDefs;
+            private HashSet<Identifier> existingDefs;
             private HashSet<Statement> newPhiStatements;
 
             /// <summary>
@@ -435,7 +435,7 @@ namespace Reko.Analysis
                 this.existingDefs = proc.EntryBlock.Statements
                     .Select(s => s.Instruction as DefInstruction)
                     .Where(d => d != null)
-                    .Select(d => d.Expression)
+                    .Select(d => d.Identifier)
                     .ToHashSet();
                 this.newPhiStatements = newPhiStatements;
 			}
@@ -551,7 +551,7 @@ namespace Reko.Analysis
 
             private void AddDefInstructions(CallInstruction ci, ProcedureFlow2 flow)
             {
-                var existing = ci.Definitions.Select(d => ssa.Identifiers[(Identifier)d.Expression].OriginalIdentifier).ToHashSet();
+                var existing = ci.Definitions.Select(d => ssa.Identifiers[(Identifier)d.Identifier].OriginalIdentifier).ToHashSet();
                 var ab = new ApplicationBuilder(null, proc.Frame, null, null, null, true);
                 foreach (var idDef in flow.Trashed)
                 {
@@ -563,8 +563,8 @@ namespace Reko.Analysis
                 }
                 foreach (var def in ci.Definitions)
                 {
-                    var idNew = NewDef((Identifier) def.Expression, null, false);
-                    def.Expression = idNew;
+                    var idNew = NewDef((Identifier) def.Identifier, null, false);
+                    def.Identifier = idNew;
                 }
             }
 
@@ -685,11 +685,11 @@ namespace Reko.Analysis
                 }
                 foreach (DefInstruction def in ci.Definitions)
                 {
-                    var id = (Identifier)def.Expression;
+                    var id = (Identifier)def.Identifier;
                     if (IsMutableRegister(id.Storage) || id.Storage is FlagGroupStorage ||
                         id.Storage is StackLocalStorage)
                     {
-                        def.Expression = NewDef(id, null, false);
+                        def.Identifier = NewDef(id, null, false);
                     }
                 }
             }

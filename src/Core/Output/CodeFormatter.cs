@@ -504,7 +504,7 @@ namespace Reko.Core.Output
                 writer.Indentation += writer.TabSize;
                 writer.Indent();
                 writer.Write("defs: ");
-                writer.Write(string.Join(",", ci.Definitions.OrderBy(d => ((Identifier)d.Expression).Name).Select(d => d.Expression)));
+                writer.Write(string.Join(",", ci.Definitions.OrderBy(d => ((Identifier)d.Identifier).Name).Select(d => d.Identifier)));
                 writer.Terminate();
                 writer.Indentation -= writer.TabSize;
             }
@@ -535,7 +535,7 @@ namespace Reko.Core.Output
 			writer.Indent();
             writer.WriteKeyword("def");
             writer.Write(" ");
-			def.Expression.Accept(this);
+			def.Identifier.Accept(this);
 			writer.Terminate();
 		}
 
