@@ -1,5 +1,8 @@
 version: 0.7.2.{build}
 
+init: 
+  - git config --global core.autocrlf true 
+
 configuration: Release
 
 build:
