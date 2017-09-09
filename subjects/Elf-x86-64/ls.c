@@ -9876,2079 +9876,2078 @@ l000000000040BBC6:
 // 000000000040BD70: Register word64 fn000000000040BD70(Register word64 rcx, Register word32 edx, Register word64 rbp, Register word64 rsi, Register word64 rdi, Register word64 r8, Register selector fs, Register out ptr64 rspOut, Register out ptr64 rbpOut, Register out ptr64 r8Out, Register out ptr64 r9Out, Register out ptr64 r11Out, Register out ptr64 r13Out, Register out ptr64 r14dOut, Register out ptr64 r15Out)
 word64 fn000000000040BD70(word64 rcx, word32 edx, word64 rbp, word64 rsi, word64 rdi, word64 r8, selector fs, ptr64 & rspOut, ptr64 & rbpOut, ptr64 & r8Out, ptr64 & r9Out, ptr64 & r11Out, ptr64 & r13Out, ptr64 & r14dOut, ptr64 & r15Out)
 {
-fn000000000040BD70_entry:
-	def fp
-	def rdi
-	def edx
-	def rsi
-	def rbp
-	def rbx
-	def rcx
-	def r8
-	def fs
-	def Mem0
-	def bLocB0
-	def qwLoc18
-	def qwLoc10
-	def qwLoc08
-	def rspOut
-	def rbpOut
-	def r8Out
-	def r9Out
-	def r11Out
-	def r13Out
-	def r14dOut
-	def r15Out
-	def dwLoc74
-	def qwLoc90
-	def qwLoc98
-	def rLoc4
-	def wLoc6A
-	def wLoc6C
-	def rLoc90
-	def rLoc3
-	def rLoc2
-	def qwLoc68
-	def rLoc1
-	def rLocD0
-	rsp_1 = fp
-	rsp_2 = fp - 0x04
-	dwLoc04_4 = rdi
-	rax_6 = (uint64) edx
-	eax_7 = (word32) rax_6 (alias)
-	rax_8 = (uint64) (eax_7 & 0x03)
-	eax_9 = (word32) rax_8 (alias)
-	rsp_10 = fp - 0x08
-	dwLoc08_12 = rsi
-	r14_13 = rsi
-	r14d_14 = (word32) r14_13 (alias)
-	rsp_15 = fp - 0x0C
-	dwLoc0C_17 = rbp
-	v12_18 = fp - 0x0C
-	rsp_19 = fp - 0x10
-	dwLoc10_20 = fp - 0x0C
-	r12_21 = rdi
-	r12d_22 = (word32) r12_21 (alias)
-	rsp_23 = fp - 0x14
-	dwLoc14_24 = rbp
-	rsp_25 = fp - 0x18
-	dwLoc18_27 = rbx
-	rbx_29 = rcx
-	ebx_30 = (word32) rbx_29 (alias)
-	rsp_31 = fp - 0xD0
-	dwLoc98_32 = eax_9
-	rax_33 = (uint64) edx
-	eax_34 = (word32) rax_33 (alias)
-	qwLocA0_35 = rsi
-	rax_36 = (uint64) (eax_34 & 0x20)
-	eax_37 = (word32) rax_36 (alias)
-	dwLocB0_38 = edx
-	qwLocA8_40 = r8
-	rcx_43 = Mem0[fs:0x28:word64]
-	qwLoc28_44 = rcx_43
-	rcx_45 = 0x00
-	SCZO_46 = cond(eax_37 - 0x01)
-	C_47 = SCZO_46 (alias)
-	dwLoc78_48 = eax_37
-	rax_49 = (uint64) (0x00 - C_47)
-	eax_50 = (word32) rax_49 (alias)
-	dwLocAC_51 = eax_50
-	v20_52 = dwLocAC_51 & ~0x17
-	dwLocAC_53 = v20_52
-	SZO_54 = cond(dwLocAC_53)
-	v21_55 = dwLocAC_53 + 0x0400
-	dwLocAC_56 = v21_55
-	SCZO_57 = cond(v21_55)
-	call localeconv (retsize: 8; depth: 216)
-		uses: C_47,dwLoc04_4,dwLoc08_12,dwLoc0C_17,dwLoc10_20,dwLoc14_24,dwLoc18_27,dwLoc78_48,dwLoc98_32,dwLocAC_56,dwLocB0_38,eax_50,ebx_30,edx,fs,qwLoc28_44,qwLocA0_35,qwLocA8_40,r12_21,r12d_22,r14_13,r14d_14,r8,rax_49,rbp,rbx_29,rcx_45,rdi,rsi,rsp_31,SCZO_57,SZO_54
-		defs: ah_92,al_98,ax_93,C_64,cl_85,CZ_79,CZP_90,dil_97,dl_95,eax_60,ebx_82,ecx_74,edi_84,edx_61,esi_88,fs_73,P_94,r10_83,r10b_101,r10d_100,r11_77,r12_68,r12d_89,r13_76,r14_66,r14d_91,r15_75,r15d_99,r8_72,r9_87,r9d_86,rax_62,rbp_67,rbx_69,rcx_70,rdi_59,rdx_78,rsi_65,rsp_58,S_81,SCZO_71,sil_96,SZO_63,Z_80
-	r15_102 = Mem0[r8_72 + 0x00:word64]
-	r15d_103 = (word32) r15_102 (alias)
-	r13_104 = rax_62
-	rdi_105 = r15_102
-	eax_106 = strlen(rdi_105)
-	rax_107 = DPB(rax_62, eax_106, 0) (alias)
-	rbp_108 = Mem0[rbp_67 + 0x10:word64]
-	r11_109 = rax_107
-	r13_110 = Mem0[r13_104 + 0x08:word64]
-	rax_111 = rax_107 - 0x01
-	rdx_112 = 0x01
-	edx_113 = (word32) rdx_112 (alias)
-	dl_114 = (byte) rdx_112 (alias)
-	SCZO_115 = cond(rax_111 - 0x10)
-	C_116 = SCZO_115 (alias)
-	SZO_117 = SCZO_115 (alias)
-	Z_118 = SCZO_115 (alias)
-	CZ_119 = SCZO_115 (alias)
-	S_120 = SCZO_115 (alias)
-	CZP_121 = SCZO_115 (alias)
-	rdi_122 = r13_110
-	edi_123 = (word32) rdi_122 (alias)
-	dil_124 = (byte) rdi_122 (alias)
-	rax_125 = 0x00413990
-	rdx_rax_126 = SEQ(rdx_112, rax_125) (alias)
-	edx_eax_127 = rax_125 (alias)
-	branch rax_111 <u 0x10 l000000000040BE0A
-	goto l000000000040BE06_1
-l000000000040BD70:
-l000000000040BE06_1:
-	r11_1858 = 0x01
-l000000000040BE0A:
-	r11_128 = PHI(r11_109, r11_1858)
-	branch rax_111 <u 0x10 l000000000040BE0E
-l000000000040BE0A_1:
-	r15_1856 = 0x00413990
-	r15d_1857 = (word32) r15_1856 (alias)
-l000000000040BE0E:
-	r15_129 = PHI(r15_102, r15_1856)
-	r15d_130 = PHI(r15d_103, r15d_1857)
-	qwLoc80_131 = r11_128
-	eax_132 = strlen(rdi_122)
-	rax_133 = DPB(rax_125, eax_132, 0) (alias)
-	SCZO_134 = cond(rax_133 - 0x11)
-	C_135 = SCZO_134 (alias)
-	rax_136 = 0x00416919
-	rdx_rax_137 = SEQ(rdx_112, rax_136) (alias)
-	edx_eax_138 = rax_136 (alias)
-	r11_139 = qwLoc80_131
-	branch rax_133 <u 0x11 l000000000040BE2A
-l000000000040BE26_1:
-	r13_1855 = 0x00416919
-l000000000040BE2A:
-	r13_140 = PHI(r13_110, r13_1855)
-	rax_141 = r14_66
-	rdx_rax_142 = SEQ(rdx_112, rax_141) (alias)
-	edx_eax_143 = rax_141 (alias)
-	r8_144 = r8_72 + 0x0288
-	SCZO_145 = cond(qwLocA8_40 - rbx_69)
-	CZ_146 = SCZO_145 (alias)
-	qwLocB8_147 = rax_141
-	branch qwLocA8_40 >u rbx_69 l000000000040C0E0
-l000000000040BE43:
-	rdx_1745 = 0x00
-	rax_1746 = rbx_69
-	rdx_rax_1747 = SEQ(rdx_1745, rax_1746) (alias)
-	v28_1748 = rdx_rax_1747
-	rdx_1749 = (uint64) (v28_1748 % qwLocA8_40)
-	edx_1750 = (word32) rdx_1749 (alias)
-	dl_1751 = (byte) rdx_1749 (alias)
-	rax_1752 = (uint64) (v28_1748 /u qwLocA8_40)
-	eax_1753 = (word32) rax_1752 (alias)
-	rdx_rax_1754 = SEQ(rdx_1749, rax_1752) (alias)
-	edx_eax_1755 = rax_1752 (alias)
-	ah_1756 = SLICE(rax_1752, byte, 8) (alias)
-	ax_1757 = (word16) rax_1752 (alias)
-	al_1758 = (byte) rax_1752 (alias)
-	SZO_1759 = cond(rdx_1749 & rdx_1749)
-	Z_1760 = SZO_1759 (alias)
-	C_1761 = false
-	rcx_1762 = rax_1752
-	ecx_1763 = (word32) rcx_1762 (alias)
-	cl_1764 = (byte) rcx_1762 (alias)
-	branch Test(EQ,Z_1760) l000000000040C2F0
-l000000000040BE59:
-	r10b_629 = PHI(r10b_101, r10b_101, r10b_101, r10b_1769)
-	r10d_630 = PHI(r10d_100, r10d_100, r10d_100, r10d_1768)
-	sil_631 = PHI(sil_96, sil_96, sil_1806, sil_96)
-	esi_632 = PHI(esi_88, esi_88, esi_1807, esi_88)
-	r10_633 = PHI(r10_83, r10_83, r10_83, r10_1767)
-	ecx_634 = PHI(ecx_1763, ecx_74, ecx_74, ecx_1763)
-	rcx_635 = PHI(rcx_1762, rcx_70, rcx_70, rcx_1762)
-	cl_636 = PHI(cl_1764, cl_85, cl_85, cl_1764)
-	Z_637 = PHI(Z_1760, Z_1790, Z_1803, Z_1780)
-	rax_638 = PHI(rax_1752, rax_141, rax_1799, rax_1776)
-	eax_639 = PHI(eax_1753, eax_132, eax_132, eax_1753)
-	ah_640 = PHI(ah_1756, ah_92, ah_92, ah_1756)
-	ax_641 = PHI(ax_1757, ax_93, ax_93, ax_1757)
-	al_642 = PHI(al_1758, al_98, al_98, al_1758)
-	rdx_643 = PHI(rdx_1749, rdx_112, rdx_1796, rdx_1773)
-	edx_644 = PHI(edx_1750, edx_113, edx_1797, edx_1774)
-	rdx_rax_645 = PHI(rdx_rax_1754, rdx_rax_142, rdx_rax_1800, rdx_rax_1777)
-	edx_eax_646 = PHI(edx_eax_1755, edx_eax_143, edx_eax_1801, edx_eax_1778)
-	dl_647 = PHI(dl_1751, dl_114, dl_1798, dl_1775)
-	SCZO_648 = PHI(SCZO_145, SCZO_145, SCZO_145, SCZO_1779)
-	rsi_649 = PHI(rsi_65, rsi_65, rsi_1805, rsi_65)
-	qwLoc68_650 = r12_68
-	SZO_651 = cond(r12_68 & r12_68)
-	S_652 = SZO_651 (alias)
-	C_653 = false
-	rLoc1_654 = (real64) qwLoc68_650
-	branch (r12_68 & r12_68) < 0x00 l000000000040C5F0
-l000000000040BE6B:
-	qwLoc68_1283 = rbx_69
-	SZO_1284 = cond(rbx_69 & rbx_69)
-	S_1285 = SZO_1284 (alias)
-	C_1286 = false
-	rLoc2_1287 = (real64) qwLoc68_1283
-	branch Test(SG,S_1285) l000000000040C608
-l000000000040BE7D:
-	rLoc2_655 = PHI(rLoc2_1287, rLoc2_1282, rLoc2_1293)
-	rLoc1_656 = PHI(rLoc1_654, rLoc1_1278, rLoc1_1288)
-	rax_657 = qwLocA8_40
-	rdx_rax_658 = SEQ(rdx_643, rax_657) (alias)
-	edx_eax_659 = rax_657 (alias)
-	qwLoc68_660 = rax_657
-	SZO_661 = cond(rax_657 & rax_657)
-	S_662 = SZO_661 (alias)
-	C_663 = false
-	rLoc3_664 = (real64) qwLoc68_660
-	branch (rax_657 & rax_657) < 0x00 l000000000040C5E0
-l000000000040BE94:
-	rLoc3_665 = PHI(rLoc3_664, rLoc3_1275)
-	SZO_666 = cond(bLocB0 & 0x10)
-	Z_667 = SZO_666 (alias)
-	C_668 = false
-	rLoc2_669 = rLoc2_655 / rLoc3_665
-	rLoc1_670 = rLoc1_656 * rLoc2_669
-	branch (bLocB0 & 0x10) == 0x00 l000000000040C1B8
-l000000000040BEA3:
-	rLoc2_721 = (real64) dwLocAC_56
-	rbx_722 = 0x00
-	ebx_723 = (word32) rbx_722 (alias)
-	SZO_724 = cond(ebx_723)
-	C_725 = false
-	rLoc3_726 = rLoc3_665
-	goto l000000000040BEB4
-l000000000040BEB0:
-	rLoc3_1104 = rLoc4_739
-	v56_1105 = rLoc3_1104
-	rLoc3_1106 = rLoc1_740
-	rLoc1_1107 = v56_1105
-l000000000040BEB4:
-	rLoc4_728 = PHI(rLoc4, rLoc4_739)
-	rLoc3_729 = PHI(rLoc3_726, rLoc3_1106)
-	rLoc1_730 = PHI(rLoc1_670, rLoc1_1107)
-	ebx_731 = PHI(ebx_723, ebx_735)
-	Z_732 = PHI(Z_667, Z_1101)
-	rLoc4_733 = rLoc4_728
-	rbx_734 = (uint64) (ebx_731 + 0x01)
-	ebx_735 = (word32) rbx_734 (alias)
-	SCZO_736 = cond(ebx_735)
-	rLoc4_737 = rLoc4_733 * rLoc2_721
-	v46_738 = rLoc4_737
-	rLoc4_739 = rLoc1_730
-	rLoc1_740 = v46_738
-	CZP_741 = cond(rLoc4_739 - rLoc1_740)
-	C_742 = CZP_741 (alias)
-	branch rLoc4_739 <u rLoc1_740 l000000000040BED0
-l000000000040BEC1:
-	SCZO_1100 = cond(ebx_735 - 0x08)
-	Z_1101 = SCZO_1100 (alias)
-	branch Test(NE,Z_1101) l000000000040BEB0
-l000000000040BEC6:
-	rLoc2_1102 = rLoc4_739
-	rLoc1_1103 = rLoc3_729
-	goto l000000000040BED4
-l000000000040BED0:
-	rLoc2_1108 = rLoc4_739
-	rLoc1_1109 = rLoc3_729
-l000000000040BED4:
-	rLoc2_743 = PHI(rLoc2_1102, rLoc2_1108)
-	rLoc1_744 = PHI(rLoc1_1103, rLoc1_1109)
-	rLoc1_745 = rLoc2_743 / rLoc1_744
-	SCZO_746 = cond(dwLoc98_32 - 0x01)
-	Z_747 = SCZO_746 (alias)
-	rLoc2_748 = rLoc2_743
-	branch dwLoc98_32 == 0x01 l000000000040BF70
-l000000000040BEE3:
-	rLoc2_973 = rLoc2_748
-	rLoc2_974 = (real64) Mem0[0x0000000000415F90 + 0x00:real80]
-	CZP_975 = cond(rLoc2_974 - rLoc1_745)
-	CZ_976 = CZP_975 (alias)
-	branch Test(ULE,CZ_976) l000000000040C498
-l000000000040BEF3:
-	rLoc2_977 = (real64) Mem0[0x0000000000415F0C + 0x00:real32]
-	v52_978 = rLoc2_977
-	rLoc2_979 = rLoc1_745
-	rLoc1_980 = v52_978
-	CZP_981 = cond(rLoc2_979 - rLoc1_980)
-	C_982 = CZP_981 (alias)
-	branch Test(UGE,C_982) l000000000040C660
-l000000000040BF03:
-	rLoc1_1054 = rLoc2_979
-	wLoc6A_1055 = __fstcw()
-	eax_1056 = (word32) wLoc6A_1055
-	ah_1057 = SLICE(eax_1056, byte, 8) (alias)
-	ah_1058 = ah_1057 | 0x0C
-	ax_1059 = DPB(ax_641, ah_1058, 8) (alias)
-	SZO_1060 = cond(ah_1058)
-	C_1061 = false
-	wLoc6C_1062 = ax_1059
-	rLoc2_1063 = rLoc2_979
-	__fldcw(wLoc6C_1062)
-	qwLoc68_1064 = (int64) rLoc2_1063
-	__fldcw(wLoc6A_1055)
-	rax_1065 = qwLoc68_1064
-	eax_1066 = (word32) rax_1065 (alias)
-	rdx_rax_1067 = SEQ(rdx_643, rax_1065) (alias)
-	edx_eax_1068 = rax_1065 (alias)
-	ah_1069 = SLICE(rax_1065, byte, 8) (alias)
-	ax_1070 = (word16) rax_1065 (alias)
-	al_1071 = (byte) rax_1065 (alias)
-l000000000040BF29:
-	wLoc6A_983 = PHI(wLoc6A_1055, wLoc6A_1072)
-	wLoc6C_984 = PHI(wLoc6C_1062, wLoc6C_1082)
-	rLoc2_985 = PHI(rLoc2_1063, rLoc2_1077)
-	qwLoc68_986 = PHI(qwLoc68_1064, qwLoc68_1083)
-	rLoc1_987 = PHI(rLoc1_1054, rLoc1_1078)
-	r10_988 = PHI(r10_633, r10_1079)
-	rax_989 = PHI(rax_1065, rax_1085)
-	eax_990 = PHI(eax_1066, eax_1086)
-	ah_991 = PHI(ah_1069, ah_1089)
-	ax_992 = PHI(ax_1070, ax_1090)
-	al_993 = PHI(al_1071, al_1091)
-	rcx_994 = (uint64) dwLoc98_32
-	ecx_995 = (word32) rcx_994 (alias)
-	rdx_996 = 0x00
-	edx_997 = (word32) rdx_996 (alias)
-	rdx_rax_998 = SEQ(rdx_996, rax_989) (alias)
-	edx_eax_999 = rdx_996 (alias)
-	dl_1000 = (byte) rdx_996 (alias)
-	SZO_1001 = cond(ecx_995 & ecx_995)
-	Z_1002 = SZO_1001 (alias)
-	C_1003 = false
-	branch Test(NE,Z_1002) l000000000040BF55
-l000000000040BF33:
-	qwLoc68_1028 = rax_989
-	SZO_1029 = cond(rax_989 & rax_989)
-	S_1030 = SZO_1029 (alias)
-	C_1031 = false
-	rLoc2_1032 = (real64) qwLoc68_1028
-	branch Test(SG,S_1030) l000000000040C77D
-l000000000040BF45:
-	rLoc2_1033 = PHI(rLoc2_1032, rLoc2_1053)
-	rcx_1034 = 0x00
-	ecx_1035 = (word32) rcx_1034 (alias)
-	SZO_1036 = cond(ecx_1035)
-	rdx_1037 = 0x01
-	edx_1038 = (word32) rdx_1037 (alias)
-	rdx_rax_1039 = SEQ(rdx_1037, rax_989) (alias)
-	edx_eax_1040 = rdx_1037 (alias)
-	dl_1041 = (byte) rdx_1037 (alias)
-	CZP_1042 = cond(rLoc2_1033 - rLoc1_987)
-	Z_1043 = CZP_1042 (alias)
-	P_1044 = CZP_1042 (alias)
-	cl_1045 = Test(PE,P_1044)
-	rcx_1046 = DPB(rcx_1034, cl_1045, 0) (alias)
-	ecx_1047 = DPB(ecx_1035, cl_1045, 0) (alias)
-	branch Test(NE,Z_1043) l000000000040BF55
-l000000000040BF51_1:
-	rdx_1048 = rcx_1046
-	edx_1049 = (word32) rdx_1048 (alias)
-	rdx_rax_1050 = SEQ(rdx_1048, rax_989) (alias)
-	edx_eax_1051 = rdx_1048 (alias)
-	dl_1052 = (byte) rdx_1048 (alias)
-l000000000040BF55:
-	P_1004 = PHI(P_1044, P_1044, P_94)
-	CZP_1005 = PHI(CZP_1042, CZP_1042, CZP_981)
-	ecx_1006 = PHI(ecx_1047, ecx_1047, ecx_995)
-	rcx_1007 = PHI(rcx_1046, rcx_1046, rcx_994)
-	cl_1008 = PHI(cl_1045, cl_1045, cl_636)
-	Z_1009 = PHI(Z_1043, Z_1043, Z_1002)
-	rdx_1010 = PHI(rdx_1037, rdx_1048, rdx_996)
-	edx_1011 = PHI(edx_1038, edx_1049, edx_997)
-	rdx_rax_1012 = PHI(rdx_rax_1039, rdx_rax_1050, rdx_rax_998)
-	edx_eax_1013 = PHI(edx_eax_1040, edx_eax_1051, edx_eax_999)
-	dl_1014 = PHI(dl_1041, dl_1052, dl_1000)
-	rax_1015 = rax_989 + rdx_1010
-	qwLoc68_1016 = rax_1015
-	SZO_1017 = cond(rax_1015 & rax_1015)
-	S_1018 = SZO_1017 (alias)
-	C_1019 = false
-	rLoc2_1020 = (real64) qwLoc68_1016
-	branch Test(SG,S_1018) l000000000040C758
-l000000000040BF6A:
-	v60_1021 = rLoc2_1020
-	rLoc2_1022 = rLoc1_987
-	rLoc1_1023 = v60_1021
-	goto l000000000040BF72
-l000000000040BF70:
-	v67_1097 = rLoc2_748
-	rLoc2_1098 = rLoc1_745
-	rLoc1_1099 = v67_1097
-l000000000040BF72:
-	wLoc6A_749 = PHI(wLoc6A_983, wLoc6A_983, wLoc6A, wLoc6A)
-	wLoc6C_750 = PHI(wLoc6C_984, wLoc6C_984, wLoc6C, wLoc6C)
-	rLoc2_751 = PHI(rLoc2_1022, rLoc2_1026, rLoc2_1094, rLoc2_1098)
-	qwLoc68_752 = PHI(qwLoc68_1016, qwLoc68_1016, qwLoc68_660, qwLoc68_660)
-	rLoc1_753 = PHI(rLoc1_1023, rLoc1_1027, rLoc1_745, rLoc1_1099)
-	P_754 = PHI(P_1004, P_1004, P_94, P_94)
-	CZP_755 = PHI(CZP_1005, CZP_1005, CZP_975, CZP_741)
-	r10_756 = PHI(r10_988, r10_988, r10_633, r10_633)
-	S_757 = PHI(S_1018, S_1018, S_662, S_662)
-	ecx_758 = PHI(ecx_1006, ecx_1006, ecx_634, ecx_634)
-	cl_759 = PHI(cl_1008, cl_1008, cl_636, cl_636)
-	C_760 = PHI(C_1019, C_1019, C_742, C_742)
-	ah_761 = PHI(ah_991, ah_991, ah_640, ah_640)
-	ax_762 = PHI(ax_992, ax_992, ax_641, ax_641)
-	r14_763 = qwLocA0_35
-	rdx_764 = ~0x00
-	rcx_765 = 0x00415F1E
-	rsi_766 = 0x01
-	rax_767 = 0x00
-	qwLoc80_768 = r11_139
-	rdi_769 = r14_763
-	rLoc90_770 = (real80) rLoc2_751
-	rLocD0_771 = (real80) rLoc1_753
-	eax_772 = __sprintf_chk(rdi_769, 0x01, ~0x00, 0x00415F1E)
-	rdi_773 = r14_763
-	eax_774 = strlen(rdi_773)
-	rax_775 = DPB(rax_767, eax_774, 0) (alias)
-	r11_776 = qwLoc80_768
-	rdx_777 = (uint64) dwLoc78_48
-	edx_778 = (word32) rdx_777 (alias)
-	dl_779 = (byte) rdx_777 (alias)
-	r15_780 = rax_775
-	r15d_781 = (word32) r15_780 (alias)
-	rax_782 = 0x00
-	rLoc1_783 = (real64) rLoc90_770
-	SZO_784 = cond(edx_778 & edx_778)
-	Z_785 = SZO_784 (alias)
-	r14_786 = r11_776 + 0x01
-	r14d_787 = (word32) r14_786 (alias)
-	al_788 = (edx_778 & edx_778) == 0x00
-	rax_789 = DPB(rax_782, al_788, 0) (alias)
-	rax_790 = r14_786 + 0x01 + rax_789
-	rdx_rax_791 = SEQ(rdx_777, rax_790) (alias)
-	edx_eax_792 = rax_790 (alias)
-	SCZO_793 = cond(r15_780 - rax_790)
-	CZ_794 = SCZO_793 (alias)
-	branch r15_780 >u rax_790 l000000000040BFF0
-l000000000040BFCB:
-	SZO_963 = cond(bLocB0 & 0x08)
-	Z_964 = SZO_963 (alias)
-	C_965 = false
-	branch Test(EQ,Z_964) l000000000040C208
-l000000000040BFD6:
-	rax_966 = qwLocA0_35
-	rdx_rax_967 = SEQ(rdx_777, rax_966) (alias)
-	edx_eax_968 = rax_966 (alias)
-	SCZO_969 = cond(Mem0[rax_966 - 0x01 + r15_780:byte] - 0x30)
-	Z_970 = SCZO_969 (alias)
-	branch Test(NE,Z_970) l000000000040C210
-l000000000040BFF0:
-	SZO_795 = PHI(SZO_784, SZO_963)
-	C_796 = PHI(C_760, C_965)
-	rax_797 = PHI(rax_790, rax_966)
-	rdx_rax_798 = PHI(rdx_rax_791, rdx_rax_967)
-	edx_eax_799 = PHI(edx_eax_792, edx_eax_968)
-	SCZO_800 = cond(dwLoc98_32 - 0x01)
-	Z_801 = SCZO_800 (alias)
-	rLoc1_802 = rLoc1_783 * Mem0[0x0000000000415F84 + 0x00:real32]
-	branch dwLoc98_32 == 0x01 l000000000040C0A0
-l000000000040C001:
-	rLoc2_841 = (real64) Mem0[0x0000000000415F90 + 0x00:real80]
-	CZP_842 = cond(rLoc2_841 - rLoc1_802)
-	CZ_843 = CZP_842 (alias)
-	branch rLoc2_841 <=u rLoc1_802 l000000000040C0A0
-l000000000040C00F:
-	rLoc2_844 = (real64) Mem0[0x0000000000415F0C + 0x00:real32]
-	v64_845 = rLoc2_844
-	rLoc2_846 = rLoc1_802
-	rLoc1_847 = v64_845
-	CZP_848 = cond(rLoc2_846 - rLoc1_847)
-	C_849 = CZP_848 (alias)
-	branch rLoc2_846 >=u rLoc1_847 l000000000040C720
-l000000000040C01F:
-	rLoc1_923 = rLoc2_846
-	wLoc6A_924 = __fstcw()
-	eax_925 = (word32) wLoc6A_924
-	ah_926 = SLICE(eax_925, byte, 8) (alias)
-	ah_927 = ah_926 | 0x0C
-	ax_928 = DPB(ax_762, ah_927, 8) (alias)
-	SZO_929 = cond(ah_927)
-	C_930 = false
-	wLoc6C_931 = ax_928
-	rLoc2_932 = rLoc2_846
-	__fldcw(wLoc6C_931)
-	qwLoc68_933 = (int64) rLoc2_932
-	__fldcw(wLoc6A_924)
-	rax_934 = qwLoc68_933
-	eax_935 = (word32) rax_934 (alias)
-	rdx_rax_936 = SEQ(rdx_777, rax_934) (alias)
-	edx_eax_937 = rax_934 (alias)
-	ah_938 = SLICE(rax_934, byte, 8) (alias)
-	ax_939 = (word16) rax_934 (alias)
-	al_940 = (byte) rax_934 (alias)
-l000000000040C045:
-	wLoc6A_850 = PHI(wLoc6A_924, wLoc6A_941)
-	wLoc6C_851 = PHI(wLoc6C_931, wLoc6C_951)
-	rLoc2_852 = PHI(rLoc2_932, rLoc2_946)
-	qwLoc68_853 = PHI(qwLoc68_933, qwLoc68_952)
-	rLoc1_854 = PHI(rLoc1_923, rLoc1_947)
-	r10_855 = PHI(r10_756, r10_948)
-	rax_856 = PHI(rax_934, rax_954)
-	eax_857 = PHI(eax_935, eax_955)
-	ah_858 = PHI(ah_938, ah_958)
-	ax_859 = PHI(ax_939, ax_959)
-	al_860 = PHI(al_940, al_960)
-	r14_861 = (uint64) dwLoc98_32
-	r14d_862 = (word32) r14_861 (alias)
-	rdx_863 = 0x00
-	edx_864 = (word32) rdx_863 (alias)
-	rdx_rax_865 = SEQ(rdx_863, rax_856) (alias)
-	edx_eax_866 = rdx_863 (alias)
-	dl_867 = (byte) rdx_863 (alias)
-	SZO_868 = cond(r14d_862 & r14d_862)
-	Z_869 = SZO_868 (alias)
-	C_870 = false
-	branch (r14d_862 & r14d_862) != 0x00 l000000000040C080
-l000000000040C051:
-	qwLoc68_890 = rax_856
-	SZO_891 = cond(rax_856 & rax_856)
-	S_892 = SZO_891 (alias)
-	C_893 = false
-	rLoc2_894 = (real64) qwLoc68_890
-	branch (rax_856 & rax_856) < 0x00 l000000000040C79E
-l000000000040C063:
-	rLoc2_895 = PHI(rLoc2_894, rLoc2_921)
-	rcx_896 = 0x00
-	ecx_897 = (word32) rcx_896 (alias)
-	SZO_898 = cond(ecx_897)
-	rdx_899 = 0x01
-	edx_900 = (word32) rdx_899 (alias)
-	rdx_rax_901 = SEQ(rdx_899, rax_856) (alias)
-	edx_eax_902 = rdx_899 (alias)
-	dl_903 = (byte) rdx_899 (alias)
-	CZP_904 = cond(rLoc2_895 - rLoc1_854)
-	Z_905 = CZP_904 (alias)
-	P_906 = CZP_904 (alias)
-	rLoc1_907 = rLoc1_854
-	cl_908 = Test(PE,P_906)
-	rcx_909 = DPB(rcx_896, cl_908, 0) (alias)
-	ecx_910 = DPB(ecx_897, cl_908, 0) (alias)
-	branch rLoc2_895 != rLoc1_854 l000000000040C075
-l000000000040C071_1:
-	rdx_916 = rcx_909
-	edx_917 = (word32) rdx_916 (alias)
-	rdx_rax_918 = SEQ(rdx_916, rax_856) (alias)
-	edx_eax_919 = rdx_916 (alias)
-	dl_920 = (byte) rdx_916 (alias)
-l000000000040C075:
-	rdx_911 = PHI(rdx_899, rdx_916)
-	edx_912 = PHI(edx_900, edx_917)
-	rdx_rax_913 = PHI(rdx_rax_901, rdx_rax_918)
-	edx_eax_914 = PHI(edx_eax_902, edx_eax_919)
-	dl_915 = PHI(dl_903, dl_920)
-	goto l000000000040C082
-l000000000040C080:
-	rLoc1_922 = rLoc1_854
-l000000000040C082:
-	rLoc2_871 = PHI(rLoc2_895, rLoc2_852)
-	P_872 = PHI(P_906, P_754)
-	CZP_873 = PHI(CZP_904, CZP_848)
-	ecx_874 = PHI(ecx_910, ecx_758)
-	rcx_875 = PHI(rcx_909, rcx_765)
-	cl_876 = PHI(cl_908, cl_759)
-	Z_877 = PHI(Z_905, Z_869)
-	rdx_878 = PHI(rdx_911, rdx_863)
-	edx_879 = PHI(edx_912, edx_864)
-	rdx_rax_880 = PHI(rdx_rax_913, rdx_rax_865)
-	edx_eax_881 = PHI(edx_eax_914, edx_eax_866)
-	dl_882 = PHI(dl_915, dl_867)
-	rax_883 = rax_856 + rdx_878
-	qwLoc68_884 = rax_883
-	SZO_885 = cond(rax_883 & rax_883)
-	S_886 = SZO_885 (alias)
-	C_887 = false
-	rLoc1_888 = (real64) qwLoc68_884
-	branch (rax_883 & rax_883) >= 0x00 l000000000040C0A0
-l000000000040C093:
-	rLoc1_889 = rLoc1_888 + Mem0[0x0000000000415F08 + 0x00:real32]
-l000000000040C0A0:
-	wLoc6A_803 = PHI(wLoc6A_749, wLoc6A_749, wLoc6A_850, wLoc6A_850)
-	wLoc6C_804 = PHI(wLoc6C_750, wLoc6C_750, wLoc6C_851, wLoc6C_851)
-	rLoc2_805 = PHI(rLoc2_751, rLoc2_841, rLoc2_871, rLoc2_871)
-	qwLoc68_806 = PHI(qwLoc68_752, qwLoc68_752, qwLoc68_884, qwLoc68_884)
-	rLoc1_807 = PHI(rLoc1_802, rLoc1_802, rLoc1_888, rLoc1_889)
-	P_808 = PHI(P_754, P_754, P_872, P_872)
-	CZP_809 = PHI(CZP_755, CZP_842, CZP_873, CZP_873)
-	r10_810 = PHI(r10_756, r10_756, r10_855, r10_855)
-	S_811 = PHI(S_757, S_757, S_886, S_886)
-	CZ_812 = PHI(CZ_794, CZ_843, CZ_843, CZ_843)
-	ecx_813 = PHI(ecx_758, ecx_758, ecx_874, ecx_874)
-	cl_814 = PHI(cl_759, cl_759, cl_876, cl_876)
-	Z_815 = PHI(Z_801, Z_801, Z_877, Z_877)
-	ah_816 = PHI(ah_761, ah_761, ah_858, ah_858)
-	ax_817 = PHI(ax_762, ax_762, ax_859, ax_859)
-	al_818 = PHI(al_788, al_788, al_860, al_860)
-	edx_819 = PHI(edx_778, edx_778, edx_879, edx_879)
-	rdx_rax_820 = PHI(rdx_rax_798, rdx_rax_798, rdx_rax_880, rdx_rax_880)
-	edx_eax_821 = PHI(edx_eax_799, edx_eax_799, edx_eax_881, edx_eax_881)
-	dl_822 = PHI(dl_779, dl_779, dl_882, dl_882)
-	rLoc1_823 = rLoc1_807 / Mem0[0x0000000000415F84 + 0x00:real32]
-	r14_824 = qwLocA0_35
-	rcx_825 = 4284184
-	rdx_826 = ~0x00
-	rsi_827 = 0x01
-	rax_828 = 0x00
-	rdi_829 = r14_824
-	rLocD0_830 = (real80) rLoc1_823
-	eax_831 = __sprintf_chk(rdi_829, 0x01, ~0x00, 4284184)
-	rdi_832 = r14_824
-	r14_833 = 0x00
-	r14d_834 = (word32) r14_833 (alias)
-	SZO_835 = cond(r14d_834)
-	C_836 = false
-	eax_837 = strlen(rdi_832)
-	rax_838 = DPB(rax_828, eax_837, 0) (alias)
-	r15_839 = rax_838
-	r15d_840 = (word32) r15_839 (alias)
-	goto l000000000040C218
-l000000000040C0E0:
-	SZO_1789 = cond(rbx_69 & rbx_69)
-	Z_1790 = SZO_1789 (alias)
-	C_1791 = false
-	branch Test(EQ,Z_1790) l000000000040BE59
-l000000000040C0E9:
-	rax_1792 = qwLocA8_40
-	rdx_1793 = 0x00
-	rdx_rax_1794 = SEQ(rdx_1793, rax_1792) (alias)
-	v35_1795 = rdx_rax_1794
-	rdx_1796 = (uint64) (v35_1795 % rbx_69)
-	edx_1797 = (word32) rdx_1796 (alias)
-	dl_1798 = (byte) rdx_1796 (alias)
-	rax_1799 = (uint64) (v35_1795 /u rbx_69)
-	rdx_rax_1800 = SEQ(rdx_1796, rax_1799) (alias)
-	edx_eax_1801 = rax_1799 (alias)
-	SZO_1802 = cond(rdx_1796 & rdx_1796)
-	Z_1803 = SZO_1802 (alias)
-	C_1804 = false
-	rsi_1805 = rax_1799
-	sil_1806 = (byte) rsi_1805 (alias)
-	esi_1807 = (word32) rsi_1805 (alias)
-	branch Test(NE,Z_1803) l000000000040BE59
-l000000000040C0FF:
-	rdx_1808 = 0x00
-	rax_1809 = r12_68
-	rdx_rax_1810 = SEQ(rdx_1808, rax_1809) (alias)
-	v36_1811 = rdx_rax_1810
-	rdx_1812 = (uint64) (v36_1811 % rsi_1805)
-	rax_1813 = (uint64) (v36_1811 /u rsi_1805)
-	rdi_1814 = rdx_1812 + rdx_1812 * 0x04
-	r10_1815 = rax_1813
-	r10d_1816 = (word32) r10_1815 (alias)
-	r10b_1817 = (byte) r10_1815 (alias)
-	rdx_1818 = 0x00
-	rax_1819 = rdi_1814 + rdi_1814
-	rdx_rax_1820 = SEQ(rdx_1818, rax_1819) (alias)
-	v38_1821 = rdx_rax_1820
-	rdx_1822 = (uint64) (v38_1821 % rsi_1805)
-	rax_1823 = (uint64) (v38_1821 /u rsi_1805)
-	eax_1824 = (word32) rax_1823 (alias)
-	rdx_1825 = rdx_1822 + rdx_1822
-	edx_1826 = (word32) rdx_1825 (alias)
-	rdx_rax_1827 = SEQ(rdx_1825, rax_1823) (alias)
-	edx_eax_1828 = rdx_1825 (alias)
-	dl_1829 = (byte) rdx_1825 (alias)
-	rdi_1830 = (uint64) eax_1824
-	edi_1831 = (word32) rdi_1830 (alias)
-	dil_1832 = (byte) rdi_1830 (alias)
-	SCZO_1833 = cond(rsi_1805 - rdx_1825)
-	C_1834 = SCZO_1833 (alias)
-	SZO_1835 = SCZO_1833 (alias)
-	Z_1836 = SCZO_1833 (alias)
-	CZ_1837 = SCZO_1833 (alias)
-	S_1838 = SCZO_1833 (alias)
-	CZP_1839 = SCZO_1833 (alias)
-	branch Test(ULE,CZ_1837) l000000000040C6E0
-l000000000040C125:
-	rcx_1840 = 0x00
-	SZO_1841 = cond(rdx_1825 & rdx_1825)
-	Z_1842 = SZO_1841 (alias)
-	C_1843 = false
-	cl_1844 = Test(NE,Z_1842)
-	rcx_1845 = DPB(rcx_1840, cl_1844, 0) (alias)
-	ecx_1846 = DPB(ecx_74, cl_1844, 0) (alias)
+	ptr64 fp;
+	word64 rdi;
+	word32 edx;
+	word64 rsi;
+	word64 rbp;
+	word64 rbx;
+	word64 rcx;
+	word64 r8;
+	selector fs;
+	<type-error> Mem0;
+	byte bLocB0;
+	word64 qwLoc18;
+	word64 qwLoc10;
+	word64 qwLoc08;
+	ptr64 rspOut;
+	ptr64 rbpOut;
+	ptr64 r8Out;
+	ptr64 r9Out;
+	ptr64 r11Out;
+	ptr64 r13Out;
+	ptr64 r14dOut;
+	ptr64 r15Out;
+	word32 dwLoc74;
+	word64 qwLoc90;
+	word64 qwLoc98;
+	real64 rLoc4;
+	word16 wLoc6A;
+	word16 wLoc6C;
+	real80 rLoc90;
+	real64 rLoc3;
+	real64 rLoc2;
+	word64 qwLoc68;
+	real64 rLoc1;
+	real80 rLocD0;
+	rsp_1 = fp;
+	rsp_2 = fp - 0x04;
+	dwLoc04_4 = rdi;
+	rax_6 = (uint64) edx;
+	eax_7 = (word32) rax_6;
+	rax_8 = (uint64) (eax_7 & 0x03);
+	eax_9 = (word32) rax_8;
+	rsp_10 = fp - 0x08;
+	dwLoc08_12 = rsi;
+	r14_13 = rsi;
+	r14d_14 = (word32) r14_13;
+	rsp_15 = fp - 0x0C;
+	dwLoc0C_17 = rbp;
+	v12_18 = fp - 0x0C;
+	rsp_19 = fp - 0x10;
+	dwLoc10_20 = fp - 0x0C;
+	r12_21 = rdi;
+	r12d_22 = (word32) r12_21;
+	rsp_23 = fp - 0x14;
+	dwLoc14_24 = rbp;
+	rsp_25 = fp - 0x18;
+	dwLoc18_27 = rbx;
+	rbx_29 = rcx;
+	ebx_30 = (word32) rbx_29;
+	rsp_31 = fp - 0xD0;
+	dwLoc98_32 = eax_9;
+	rax_33 = (uint64) edx;
+	eax_34 = (word32) rax_33;
+	qwLocA0_35 = rsi;
+	rax_36 = (uint64) (eax_34 & 0x20);
+	eax_37 = (word32) rax_36;
+	dwLocB0_38 = edx;
+	qwLocA8_40 = r8;
+	rcx_43 = Mem0[fs:0x28:word64];
+	qwLoc28_44 = rcx_43;
+	rcx_45 = 0x00;
+	SCZO_46 = cond(eax_37 - 0x01);
+	C_47 = SCZO_46;
+	dwLoc78_48 = eax_37;
+	rax_49 = (uint64) (0x00 - C_47);
+	eax_50 = (word32) rax_49;
+	dwLocAC_51 = eax_50;
+	v20_52 = dwLocAC_51 & ~0x17;
+	dwLocAC_53 = v20_52;
+	SZO_54 = cond(dwLocAC_53);
+	v21_55 = dwLocAC_53 + 0x0400;
+	dwLocAC_56 = v21_55;
+	SCZO_57 = cond(v21_55);
+	localeconv();
+	r15_102 = Mem0[r8_72 + 0x00:word64];
+	r15d_103 = (word32) r15_102;
+	r13_104 = rax_62;
+	rdi_105 = r15_102;
+	eax_106 = strlen(rdi_105);
+	rax_107 = DPB(rax_62, eax_106, 0);
+	rbp_108 = Mem0[rbp_67 + 0x10:word64];
+	r11_109 = rax_107;
+	r13_110 = Mem0[r13_104 + 0x08:word64];
+	rax_111 = rax_107 - 0x01;
+	rdx_112 = 0x01;
+	edx_113 = (word32) rdx_112;
+	dl_114 = (byte) rdx_112;
+	SCZO_115 = cond(rax_111 - 0x10);
+	C_116 = SCZO_115;
+	SZO_117 = SCZO_115;
+	Z_118 = SCZO_115;
+	CZ_119 = SCZO_115;
+	S_120 = SCZO_115;
+	CZP_121 = SCZO_115;
+	rdi_122 = r13_110;
+	edi_123 = (word32) rdi_122;
+	dil_124 = (byte) rdi_122;
+	rax_125 = 0x00413990;
+	rdx_rax_126 = SEQ(rdx_112, rax_125);
+	edx_eax_127 = rax_125;
+	if (rax_111 >=u 0x10)
+		r11_1858 = 0x01;
+	r11_128 = ϕ(r11_109, r11_1858);
+	if (rax_111 >=u 0x10)
+	{
+		r15_1856 = 0x00413990;
+		r15d_1857 = (word32) r15_1856;
+	}
+	r15_129 = ϕ(r15_102, r15_1856);
+	r15d_130 = ϕ(r15d_103, r15d_1857);
+	qwLoc80_131 = r11_128;
+	eax_132 = strlen(rdi_122);
+	rax_133 = DPB(rax_125, eax_132, 0);
+	SCZO_134 = cond(rax_133 - 0x11);
+	C_135 = SCZO_134;
+	rax_136 = 0x00416919;
+	rdx_rax_137 = SEQ(rdx_112, rax_136);
+	edx_eax_138 = rax_136;
+	r11_139 = qwLoc80_131;
+	if (rax_133 >=u 0x11)
+		r13_1855 = 0x00416919;
+	r13_140 = ϕ(r13_110, r13_1855);
+	rax_141 = r14_66;
+	rdx_rax_142 = SEQ(rdx_112, rax_141);
+	edx_eax_143 = rax_141;
+	r8_144 = r8_72 + 0x0288;
+	SCZO_145 = cond(qwLocA8_40 - rbx_69);
+	CZ_146 = SCZO_145;
+	qwLocB8_147 = rax_141;
+	if (qwLocA8_40 <=u rbx_69)
+	{
+		rdx_1745 = 0x00;
+		rax_1746 = rbx_69;
+		rdx_rax_1747 = SEQ(rdx_1745, rax_1746);
+		v28_1748 = rdx_rax_1747;
+		rdx_1749 = (uint64) (v28_1748 % qwLocA8_40);
+		edx_1750 = (word32) rdx_1749;
+		dl_1751 = (byte) rdx_1749;
+		rax_1752 = (uint64) (v28_1748 /u qwLocA8_40);
+		eax_1753 = (word32) rax_1752;
+		rdx_rax_1754 = SEQ(rdx_1749, rax_1752);
+		edx_eax_1755 = rax_1752;
+		ah_1756 = SLICE(rax_1752, byte, 8);
+		ax_1757 = (word16) rax_1752;
+		al_1758 = (byte) rax_1752;
+		SZO_1759 = cond(rdx_1749 & rdx_1749);
+		Z_1760 = SZO_1759;
+		C_1761 = false;
+		rcx_1762 = rax_1752;
+		ecx_1763 = (word32) rcx_1762;
+		cl_1764 = (byte) rcx_1762;
+		if (Test(NE,Z_1760))
+			goto l000000000040BE59;
+		r10_1765 = rax_1752;
+		rdx_1766 = 0x00;
+		r10_1767 = r10_1765 *s r12_68;
+		r10d_1768 = (word32) r10_1767;
+		r10b_1769 = (byte) r10_1767;
+		rax_1770 = r10_1767;
+		rdx_rax_1771 = SEQ(rdx_1766, rax_1770);
+		v72_1772 = rdx_rax_1771;
+		rdx_1773 = (uint64) (v72_1772 % rcx_1762);
+		edx_1774 = (word32) rdx_1773;
+		dl_1775 = (byte) rdx_1773;
+		rax_1776 = (uint64) (v72_1772 /u rcx_1762);
+		rdx_rax_1777 = SEQ(rdx_1773, rax_1776);
+		edx_eax_1778 = rax_1776;
+		SCZO_1779 = cond(rax_1776 - r12_68);
+		Z_1780 = SCZO_1779;
+		if (Test(EQ,Z_1780))
+		{
+			rcx_1781 = 0x00;
+			ecx_1782 = (word32) rcx_1781;
+			cl_1783 = (byte) rcx_1781;
+			rdi_1784 = 0x00;
+			edi_1785 = (word32) rdi_1784;
+			dil_1786 = (byte) rdi_1784;
+			SZO_1787 = cond(edi_1785);
+			C_1788 = false;
+			goto l000000000040C12D;
+		}
+	}
+	else
+	{
+		SZO_1789 = cond(rbx_69 & rbx_69);
+		Z_1790 = SZO_1789;
+		C_1791 = false;
+		if (Test(EQ,Z_1790))
+			goto l000000000040BE59;
+		rax_1792 = qwLocA8_40;
+		rdx_1793 = 0x00;
+		rdx_rax_1794 = SEQ(rdx_1793, rax_1792);
+		v35_1795 = rdx_rax_1794;
+		rdx_1796 = (uint64) (v35_1795 % rbx_69);
+		edx_1797 = (word32) rdx_1796;
+		dl_1798 = (byte) rdx_1796;
+		rax_1799 = (uint64) (v35_1795 /u rbx_69);
+		rdx_rax_1800 = SEQ(rdx_1796, rax_1799);
+		edx_eax_1801 = rax_1799;
+		SZO_1802 = cond(rdx_1796 & rdx_1796);
+		Z_1803 = SZO_1802;
+		C_1804 = false;
+		rsi_1805 = rax_1799;
+		sil_1806 = (byte) rsi_1805;
+		esi_1807 = (word32) rsi_1805;
+		if (Test(EQ,Z_1803))
+		{
+			rdx_1808 = 0x00;
+			rax_1809 = r12_68;
+			rdx_rax_1810 = SEQ(rdx_1808, rax_1809);
+			v36_1811 = rdx_rax_1810;
+			rdx_1812 = (uint64) (v36_1811 % rsi_1805);
+			rax_1813 = (uint64) (v36_1811 /u rsi_1805);
+			rdi_1814 = rdx_1812 + rdx_1812 * 0x04;
+			r10_1815 = rax_1813;
+			r10d_1816 = (word32) r10_1815;
+			r10b_1817 = (byte) r10_1815;
+			rdx_1818 = 0x00;
+			rax_1819 = rdi_1814 + rdi_1814;
+			rdx_rax_1820 = SEQ(rdx_1818, rax_1819);
+			v38_1821 = rdx_rax_1820;
+			rdx_1822 = (uint64) (v38_1821 % rsi_1805);
+			rax_1823 = (uint64) (v38_1821 /u rsi_1805);
+			eax_1824 = (word32) rax_1823;
+			rdx_1825 = rdx_1822 + rdx_1822;
+			edx_1826 = (word32) rdx_1825;
+			rdx_rax_1827 = SEQ(rdx_1825, rax_1823);
+			edx_eax_1828 = rdx_1825;
+			dl_1829 = (byte) rdx_1825;
+			rdi_1830 = (uint64) eax_1824;
+			edi_1831 = (word32) rdi_1830;
+			dil_1832 = (byte) rdi_1830;
+			SCZO_1833 = cond(rsi_1805 - rdx_1825);
+			C_1834 = SCZO_1833;
+			SZO_1835 = SCZO_1833;
+			Z_1836 = SCZO_1833;
+			CZ_1837 = SCZO_1833;
+			S_1838 = SCZO_1833;
+			CZP_1839 = SCZO_1833;
+			if (Test(UGT,CZ_1837))
+			{
+				rcx_1840 = 0x00;
+				SZO_1841 = cond(rdx_1825 & rdx_1825);
+				Z_1842 = SZO_1841;
+				C_1843 = false;
+				cl_1844 = Test(NE,Z_1842);
+				rcx_1845 = DPB(rcx_1840, cl_1844, 0);
+				ecx_1846 = DPB(ecx_74, cl_1844, 0);
+			}
+			else
+			{
+				rcx_1847 = (uint64) (0x00 - C_1834);
+				ecx_1848 = (word32) rcx_1847;
+				rcx_1849 = (uint64) ~ecx_1848;
+				ecx_1850 = (word32) rcx_1849;
+				rcx_1851 = (uint64) (ecx_1850 + 0x03);
+				ecx_1852 = (word32) rcx_1851;
+				cl_1853 = (byte) rcx_1851;
+				SCZO_1854 = cond(ecx_1852);
+			}
 l000000000040C12D:
-	r10b_1294 = PHI(r10b_1817, r10b_1817, r10b_1769)
-	r10d_1295 = PHI(r10d_1816, r10d_1816, r10d_1768)
-	dil_1296 = PHI(dil_1832, dil_1832, dil_1786)
-	sil_1297 = PHI(sil_1806, sil_1806, sil_96)
-	CZP_1298 = PHI(CZP_1839, CZP_1839, CZP_121)
-	esi_1299 = PHI(esi_1807, esi_1807, esi_88)
-	edi_1300 = PHI(edi_1831, edi_1831, edi_1785)
-	r10_1301 = PHI(r10_1815, r10_1815, r10_1767)
-	S_1302 = PHI(S_1838, S_1838, S_120)
-	CZ_1303 = PHI(CZ_1837, CZ_1837, CZ_146)
-	ecx_1304 = PHI(ecx_1846, ecx_1852, ecx_1782)
-	rcx_1305 = PHI(rcx_1845, rcx_1851, rcx_1781)
-	cl_1306 = PHI(cl_1844, cl_1853, cl_1783)
-	rax_1307 = PHI(rax_1823, rax_1823, rax_1776)
-	eax_1308 = PHI(eax_1824, eax_1824, eax_1753)
-	ah_1309 = PHI(ah_92, ah_92, ah_1756)
-	ax_1310 = PHI(ax_93, ax_93, ax_1757)
-	al_1311 = PHI(al_98, al_98, al_1758)
-	rdx_1312 = PHI(rdx_1825, rdx_1825, rdx_1773)
-	edx_1313 = PHI(edx_1826, edx_1826, edx_1774)
-	rdx_rax_1314 = PHI(rdx_rax_1827, rdx_rax_1827, rdx_rax_1777)
-	edx_eax_1315 = PHI(edx_eax_1828, edx_eax_1828, edx_eax_1778)
-	dl_1316 = PHI(dl_1829, dl_1829, dl_1775)
-	SCZO_1317 = PHI(SCZO_1833, SCZO_1854, SCZO_1779)
-	rsi_1318 = PHI(rsi_1805, rsi_1805, rsi_65)
-	rdi_1319 = PHI(rdi_1830, rdi_1830, rdi_1784)
-	r9_1320 = (uint64) dwLocB0_38
-	r9d_1321 = (word32) r9_1320 (alias)
-	r8_1322 = qwLocB8_147
-	rbx_1323 = 0xFFFFFFFF
-	ebx_1324 = (word32) rbx_1323 (alias)
-	r9_1325 = (uint64) (r9d_1321 & 0x10)
-	r9d_1326 = (word32) r9_1325 (alias)
-	SZO_1327 = cond(r9d_1326)
-	Z_1328 = SZO_1327 (alias)
-	C_1329 = false
-	branch Test(EQ,Z_1328) l000000000040C530
-l000000000040C146:
-	rsi_1519 = (uint64) dwLocAC_56
-	sil_1520 = (byte) rsi_1519 (alias)
-	esi_1521 = (word32) rsi_1519 (alias)
-	SCZO_1522 = cond(r10_1301 - rsi_1519)
-	C_1523 = SCZO_1522 (alias)
-	branch Test(ULT,C_1523) l000000000040C710
-l000000000040C153:
-	rbx_1524 = 0x00
-	ebx_1525 = (word32) rbx_1524 (alias)
-	SZO_1526 = cond(ebx_1525)
-	C_1527 = false
-	r12_1528 = (uint64) dwLocAC_56
-	r12d_1529 = (word32) r12_1528 (alias)
-	goto l000000000040C17D
-l000000000040C160:
-	SZO_1733 = cond(ecx_1574 & ecx_1574)
-	Z_1734 = SZO_1733 (alias)
-	C_1735 = false
-	cl_1736 = Test(NE,Z_1734)
-	ecx_1737 = (word32) cl_1736
-	rcx_1738 = DPB(rcx_1573, ecx_1737, 0) (alias)
-	cl_1739 = (byte) ecx_1737 (alias)
-l000000000040C168:
-	ecx_1578 = PHI(ecx_1730, ecx_1737)
-	rcx_1579 = PHI(rcx_1729, rcx_1738)
-	cl_1580 = PHI(cl_1731, cl_1739)
-	SZO_1581 = PHI(SZO_1534, SZO_1733)
-	Z_1582 = PHI(Z_1535, Z_1734)
-	C_1583 = PHI(C_1724, C_1735)
-	rbx_1584 = (uint64) (ebx_1532 + 0x01)
-	ebx_1585 = (word32) rbx_1584 (alias)
-	SCZO_1586 = cond(rsi_1519 - r8_1546)
-	CZ_1587 = SCZO_1586 (alias)
-	branch Test(UGT,CZ_1587) l000000000040C49F
-l000000000040C174:
-	SCZO_1592 = cond(ebx_1585 - 0x08)
-	Z_1593 = SCZO_1592 (alias)
-	branch Test(EQ,Z_1593) l000000000040C768
-l000000000040C17D:
-	r10_1530 = PHI(r10_1301, r10_1550)
-	r14_1531 = PHI(r14_66, r14_1569)
-	ebx_1532 = PHI(ebx_1525, ebx_1585)
-	ecx_1533 = PHI(ecx_1304, ecx_1578)
-	SZO_1534 = PHI(SZO_1526, SZO_1581)
-	Z_1535 = PHI(Z_1328, Z_1593)
-	C_1536 = PHI(C_1527, C_1583)
-	edx_1537 = PHI(edx_1313, edx_1559)
-	rbx_1538 = PHI(rbx_1524, rbx_1584)
-	rdi_1539 = PHI(rdi_1319, rdi_1570)
-	rax_1540 = r10_1530
-	rdx_1541 = 0x00
-	rdx_rax_1542 = SEQ(rdx_1541, rax_1540) (alias)
-	v48_1543 = rdx_rax_1542
-	rdx_1544 = (uint64) (v48_1543 % rsi_1519)
-	rax_1545 = (uint64) (v48_1543 /u rsi_1519)
-	r8_1546 = rax_1545
-	eax_1547 = rdx_1544 + rdx_1544 * 0x04
-	rax_1548 = DPB(rax_1545, eax_1547, 0) (alias)
-	rdx_1549 = 0x00
-	r10_1550 = r8_1546
-	r10d_1551 = (word32) r10_1550 (alias)
-	r10b_1552 = (byte) r10_1550 (alias)
-	eax_1553 = rdi_1539 + rax_1548 * 0x02
-	edx_eax_1554 = SEQ(edx_1537, eax_1553) (alias)
-	rdi_1555 = (uint64) ecx_1533
-	edi_1556 = (word32) rdi_1555 (alias)
-	rdi_1557 = (uint64) (edi_1556 >> 0x01)
-	v50_1558 = edx_eax_1554
-	edx_1559 = (uint32) (v50_1558 % r12d_1529)
-	rdx_1560 = DPB(rdx_1549, edx_1559, 0) (alias)
-	eax_1561 = (uint32) (v50_1558 /u r12d_1529)
-	rax_1562 = DPB(rax_1548, eax_1561, 0) (alias)
-	rdx_rax_1563 = DPB(rdx_rax_1542, eax_1561, 0) (alias)
-	edx_eax_1564 = SEQ(edx_1559, eax_1561) (alias)
-	ah_1565 = SLICE(eax_1561, byte, 8) (alias)
-	ax_1566 = (word16) eax_1561 (alias)
-	al_1567 = (byte) eax_1561 (alias)
-	r14d_1568 = rdi_1557 + rdx_1560 * 0x02
-	r14_1569 = DPB(r14_1531, r14d_1568, 0) (alias)
-	rdi_1570 = (uint64) eax_1561
-	edi_1571 = (word32) rdi_1570 (alias)
-	dil_1572 = (byte) rdi_1570 (alias)
-	rcx_1573 = (uint64) (ecx_1533 + r14d_1568)
-	ecx_1574 = (word32) rcx_1573 (alias)
-	cl_1575 = (byte) rcx_1573 (alias)
-	SCZO_1576 = cond(r12d_1529 - r14d_1568)
-	CZ_1577 = SCZO_1576 (alias)
-	branch Test(UGT,CZ_1577) l000000000040C160
-l000000000040C1A8:
-	SCZO_1723 = cond(r12d_1529 - ecx_1574)
-	C_1724 = SCZO_1723 (alias)
-	rcx_1725 = (uint64) (0x00 - C_1724)
-	ecx_1726 = (word32) rcx_1725 (alias)
-	rcx_1727 = (uint64) ~ecx_1726
-	ecx_1728 = (word32) rcx_1727 (alias)
-	rcx_1729 = (uint64) (ecx_1728 + 0x03)
-	ecx_1730 = (word32) rcx_1729 (alias)
-	cl_1731 = (byte) rcx_1729 (alias)
-	SCZO_1732 = cond(ecx_1730)
-	goto l000000000040C168
-l000000000040C1B8:
-	SCZO_1110 = cond(dwLoc98_32 - 0x01)
-	Z_1111 = SCZO_1110 (alias)
-	branch Test(EQ,Z_1111) l000000000040C1CD
-l000000000040C1BF:
-	rLoc2_1153 = (real64) Mem0[0x0000000000415F90 + 0x00:real80]
-	CZP_1154 = cond(rLoc2_1153 - rLoc1_670)
-	CZ_1155 = CZP_1154 (alias)
-	branch Test(UGT,CZ_1155) l000000000040C408
-l000000000040C1CD:
-	wLoc6A_1112 = PHI(wLoc6A, wLoc6A, wLoc6A_1162, wLoc6A_1162)
-	wLoc6C_1113 = PHI(wLoc6C, wLoc6C, wLoc6C_1163, wLoc6C_1163)
-	rLoc2_1114 = PHI(rLoc2_669, rLoc2_1153, rLoc2_1183, rLoc2_1183)
-	qwLoc68_1115 = PHI(qwLoc68_660, qwLoc68_660, qwLoc68_1196, qwLoc68_1196)
-	rLoc1_1116 = PHI(rLoc1_670, rLoc1_670, rLoc1_1200, rLoc1_1201)
-	P_1117 = PHI(P_94, P_94, P_1184, P_1184)
-	CZP_1118 = PHI(CZP_121, CZP_1154, CZP_1185, CZP_1185)
-	esi_1119 = PHI(esi_632, esi_632, esi_1174, esi_1174)
-	r10_1120 = PHI(r10_633, r10_633, r10_1167, r10_1167)
-	S_1121 = PHI(S_662, S_662, S_1198, S_1198)
-	CZ_1122 = PHI(CZ_146, CZ_1155, CZ_1155, CZ_1155)
-	ecx_1123 = PHI(ecx_634, ecx_634, ecx_1186, ecx_1186)
-	cl_1124 = PHI(cl_636, cl_636, cl_1188, cl_1188)
-	Z_1125 = PHI(Z_1111, Z_1111, Z_1189, Z_1189)
-	ah_1126 = PHI(ah_640, ah_640, ah_1170, ah_1170)
-	ax_1127 = PHI(ax_641, ax_641, ax_1171, ax_1171)
-	al_1128 = PHI(al_642, al_642, al_1172, al_1172)
-	edx_1129 = PHI(edx_644, edx_644, edx_1191, edx_1191)
-	rdx_rax_1130 = PHI(rdx_rax_658, rdx_rax_658, rdx_rax_1192, rdx_rax_1192)
-	edx_eax_1131 = PHI(edx_eax_659, edx_eax_659, edx_eax_1193, edx_eax_1193)
-	dl_1132 = PHI(dl_647, dl_647, dl_1194, dl_1194)
-	rLocD0_1133 = (real80) rLoc1_1116
-	rbx_1134 = qwLocA0_35
-	rcx_1135 = 4284184
-	rdx_1136 = ~0x00
-	rsi_1137 = 0x01
-	rax_1138 = 0x00
-	r14_1139 = 0x00
-	r14d_1140 = (word32) r14_1139 (alias)
-	SZO_1141 = cond(r14d_1140)
-	C_1142 = false
-	rdi_1143 = rbx_1134
-	eax_1144 = __sprintf_chk(rdi_1143, 0x01, ~0x00, 4284184)
-	rdi_1145 = rbx_1134
-	rbx_1146 = 0xFFFFFFFF
-	ebx_1147 = (word32) rbx_1146 (alias)
-	eax_1148 = strlen(rdi_1145)
-	rax_1149 = DPB(rax_1138, eax_1148, 0) (alias)
-	r15_1150 = rax_1149
-	r15d_1151 = (word32) r15_1150 (alias)
-	goto l000000000040C218
-l000000000040C208:
-	rLoc1_972 = rLoc1_783
-	goto l000000000040C218
-l000000000040C210:
-	rLoc1_971 = rLoc1_783
-l000000000040C218:
-	rLoc4_671 = PHI(rLoc4_739, rLoc4_739, rLoc4_739, rLoc4)
-	rLoc3_672 = PHI(rLoc3_729, rLoc3_729, rLoc3_729, rLoc3_665)
-	qwLoc80_673 = PHI(qwLoc80_768, qwLoc80_768, qwLoc80_768, qwLoc80_131)
-	rLoc90_674 = PHI(rLoc90_770, rLoc90_770, rLoc90_770, rLoc90)
-	wLoc6A_675 = PHI(wLoc6A_749, wLoc6A_749, wLoc6A_803, wLoc6A_1112)
-	wLoc6C_676 = PHI(wLoc6C_750, wLoc6C_750, wLoc6C_804, wLoc6C_1113)
-	rLoc2_677 = PHI(rLoc2_751, rLoc2_751, rLoc2_805, rLoc2_1114)
-	qwLoc68_678 = PHI(qwLoc68_752, qwLoc68_752, qwLoc68_806, qwLoc68_1115)
-	rLoc1_679 = PHI(rLoc1_971, rLoc1_972, rLoc1_823, rLoc1_1116)
-	rLocD0_680 = PHI(rLocD0_771, rLocD0_771, rLocD0_830, rLocD0_1133)
-	P_681 = PHI(P_754, P_754, P_808, P_1117)
-	CZP_682 = PHI(CZP_755, CZP_755, CZP_809, CZP_1118)
-	esi_683 = PHI(esi_632, esi_632, esi_632, esi_1119)
-	r10_684 = PHI(r10_756, r10_756, r10_810, r10_1120)
-	S_685 = PHI(S_757, S_757, S_811, S_1121)
-	r11_686 = PHI(r11_776, r11_776, r11_776, r11_139)
-	r15_687 = PHI(r15_780, r15_780, r15_839, r15_1150)
-	r14_688 = PHI(r14_786, r14_786, r14_833, r14_1139)
-	r14d_689 = PHI(r14d_787, r14d_787, r14d_834, r14d_1140)
-	CZ_690 = PHI(CZ_794, CZ_794, CZ_812, CZ_1122)
-	ebx_691 = PHI(ebx_735, ebx_735, ebx_735, ebx_1147)
-	ecx_692 = PHI(ecx_758, ecx_758, ecx_813, ecx_1123)
-	rcx_693 = PHI(rcx_765, rcx_765, rcx_825, rcx_1135)
-	cl_694 = PHI(cl_759, cl_759, cl_814, cl_1124)
-	SZO_695 = PHI(SZO_963, SZO_963, SZO_835, SZO_1141)
-	Z_696 = PHI(Z_970, Z_964, Z_815, Z_1125)
-	C_697 = PHI(C_965, C_965, C_836, C_1142)
-	eax_698 = PHI(eax_774, eax_774, eax_837, eax_1148)
-	ah_699 = PHI(ah_761, ah_761, ah_816, ah_1126)
-	ax_700 = PHI(ax_762, ax_762, ax_817, ax_1127)
-	al_701 = PHI(al_788, al_788, al_818, al_1128)
-	edx_702 = PHI(edx_778, edx_778, edx_819, edx_1129)
-	rdx_rax_703 = PHI(rdx_rax_967, rdx_rax_791, rdx_rax_820, rdx_rax_1130)
-	edx_eax_704 = PHI(edx_eax_968, edx_eax_792, edx_eax_821, edx_eax_1131)
-	dl_705 = PHI(dl_779, dl_779, dl_822, dl_1132)
-	rbx_706 = PHI(rbx_734, rbx_734, rbx_734, rbx_1146)
-	r12_707 = qwLocB8_147
-	rsi_708 = qwLocA0_35
-	rdx_709 = r15_687
-	r12_710 = r12_707 - r15_687
-	r12d_711 = (word32) r12_710 (alias)
-	r15_712 = r15_687 - r14_688
-	r15d_713 = (word32) r15_712 (alias)
-	SCZO_714 = cond(r15_712)
-	rdi_715 = r12_710
-	rax_716 = memmove(rdi_715, rsi_708, rdx_709)
-	r8_717 = r12_710 + r15_712
-l000000000040C237:
-	dwLoc74_148 = PHI(dwLoc74, dwLoc74_1330)
-	qwLoc90_149 = PHI(qwLoc90, qwLoc90_1331)
-	rLoc4_150 = PHI(rLoc4_671, rLoc4)
-	rLoc3_151 = PHI(rLoc3_672, rLoc3)
-	qwLoc80_152 = PHI(qwLoc80_673, qwLoc80_1332)
-	rLoc90_153 = PHI(rLoc90_674, rLoc90)
-	wLoc6A_154 = PHI(wLoc6A_675, wLoc6A)
-	wLoc6C_155 = PHI(wLoc6C_676, wLoc6C)
-	rLoc2_156 = PHI(rLoc2_677, rLoc2)
-	qwLoc68_157 = PHI(qwLoc68_678, qwLoc68)
-	rLoc1_158 = PHI(rLoc1_679, rLoc1)
-	rLocD0_159 = PHI(rLocD0_680, rLocD0)
-	qwLoc98_160 = PHI(qwLoc98, qwLoc98_1387)
-	r10b_161 = PHI(r10b_629, r10b_1432)
-	r10d_162 = PHI(r10d_630, r10d_1431)
-	dil_163 = PHI(dil_124, dil_1335)
-	sil_164 = PHI(sil_631, sil_1336)
-	P_165 = PHI(P_681, P_94)
-	CZP_166 = PHI(CZP_682, CZP_1298)
-	esi_167 = PHI(esi_683, esi_1370)
-	edi_168 = PHI(edi_123, edi_1371)
-	r10_169 = PHI(r10_684, r10_1430)
-	S_170 = PHI(S_685, S_1302)
-	r11_171 = PHI(r11_686, r11_1340)
-	r8_172 = PHI(r8_717, r8_1391)
-	r15_173 = PHI(r15_712, r15_129)
-	r15d_174 = PHI(r15d_713, r15d_130)
-	r9_175 = PHI(r9_87, r9_1410)
-	r9d_176 = PHI(r9d_86, r9d_1411)
-	r12_177 = PHI(r12_710, r12_1415)
-	r12d_178 = PHI(r12d_711, r12d_1416)
-	r14_179 = PHI(r14_688, r14_1346)
-	r14d_180 = PHI(r14d_689, r14d_1347)
-	CZ_181 = PHI(CZ_690, CZ_1348)
-	ebx_182 = PHI(ebx_691, ebx_1392)
-	ecx_183 = PHI(ecx_692, ecx_1372)
-	rcx_184 = PHI(rcx_693, rcx_1373)
-	cl_185 = PHI(cl_694, cl_1374)
-	rax_186 = PHI(rax_716, rax_1421)
-	eax_187 = PHI(eax_698, eax_1397)
-	ah_188 = PHI(ah_699, ah_1398)
-	ax_189 = PHI(ax_700, ax_1399)
-	al_190 = PHI(al_701, al_1400)
-	rdx_191 = PHI(rdx_709, rdx_1419)
-	edx_192 = PHI(edx_702, edx_1361)
-	rdx_rax_193 = PHI(rdx_rax_703, rdx_rax_1417)
-	edx_eax_194 = PHI(edx_eax_704, edx_eax_1403)
-	dl_195 = PHI(dl_705, dl_1364)
-	SCZO_196 = PHI(SCZO_714, SCZO_1404)
-	rbx_197 = PHI(rbx_706, rbx_1405)
-	rsi_198 = PHI(rsi_708, rsi_1406)
-	rdi_199 = PHI(rdi_715, rdi_1407)
-	SZO_201 = cond(bLocB0 & 0x04)
-	Z_202 = SZO_201 (alias)
-	C_203 = false
-	branch (bLocB0 & 0x04) != 0x00 l000000000040C318
-l000000000040C242:
-	qwLoc98_204 = PHI(qwLoc98_505, qwLoc98_160)
-	r10b_205 = PHI(r10b_549, r10b_161)
-	r10d_206 = PHI(r10d_548, r10d_162)
-	dil_207 = PHI(dil_545, dil_163)
-	sil_208 = PHI(sil_544, sil_164)
-	P_209 = PHI(P_542, P_165)
-	CZP_210 = PHI(CZP_538, CZP_166)
-	esi_211 = PHI(esi_536, esi_167)
-	edi_212 = PHI(edi_532, edi_168)
-	r10_213 = PHI(r10_531, r10_169)
-	S_214 = PHI(S_529, S_170)
-	r11_215 = PHI(r11_525, r11_171)
-	fs_216 = PHI(fs_521, fs_73)
-	r8_217 = PHI(r8_520, r8_172)
-	r13_218 = PHI(r13_554, r13_140)
-	r15_219 = PHI(r15_587, r15_173)
-	r15d_220 = PHI(r15d_588, r15d_174)
-	r9_221 = PHI(r9_605, r9_175)
-	r9d_222 = PHI(r9d_606, r9d_176)
-	r12_223 = PHI(r12_607, r12_177)
-	r12d_224 = PHI(r12d_608, r12d_178)
-	r14_225 = PHI(r14_589, r14_179)
-	r14d_226 = PHI(r14d_590, r14d_180)
-	CZ_227 = PHI(CZ_585, CZ_181)
-	ebx_228 = PHI(ebx_530, ebx_182)
-	ecx_229 = PHI(ecx_522, ecx_183)
-	rcx_230 = PHI(rcx_518, rcx_184)
-	cl_231 = PHI(cl_533, cl_185)
-	rax_232 = PHI(rax_595, rax_186)
-	eax_233 = PHI(eax_596, eax_187)
-	ah_234 = PHI(ah_599, ah_188)
-	ax_235 = PHI(ax_600, ax_189)
-	al_236 = PHI(al_601, al_190)
-	rdx_237 = PHI(rdx_592, rdx_191)
-	edx_238 = PHI(edx_573, edx_192)
-	rdx_rax_239 = PHI(rdx_rax_597, rdx_rax_193)
-	edx_eax_240 = PHI(edx_eax_598, edx_eax_194)
-	dl_241 = PHI(dl_577, dl_195)
-	SCZO_242 = PHI(SCZO_584, SCZO_196)
-	rbx_243 = PHI(rbx_517, rbx_197)
-	rbp_244 = PHI(rbp_583, rbp_108)
-	rsi_245 = PHI(rsi_593, rsi_198)
-	rdi_246 = PHI(rdi_594, rdi_199)
-	rsp_247 = PHI(rsp_506, rsp_58)
-	SZO_248 = cond(bLocB0 & 0x80)
-	Z_249 = SZO_248 (alias)
-	C_250 = false
-	branch (bLocB0 & 0x80) == 0x00 l000000000040C2BA
-l000000000040C249:
-	SCZO_384 = cond(ebx_228 - ~0x00)
-	Z_385 = SCZO_384 (alias)
-	branch ebx_228 == ~0x00 l000000000040C618
-l000000000040C252:
-	r14_386 = PHI(r14_225, r14_460, r14_460, r14_225)
-	r14d_387 = PHI(r14d_226, r14d_461, r14d_461, r14d_226)
-	CZ_388 = PHI(CZ_227, CZ_483, CZ_483, CZ_459)
-	ebx_389 = PHI(ebx_228, ebx_471, ebx_485, ebx_489)
-	rdx_390 = PHI(rdx_237, rdx_453, rdx_453, rdx_453)
-	edx_391 = PHI(edx_238, edx_454, edx_454, edx_454)
-	dl_392 = PHI(dl_241, dl_457, dl_457, dl_457)
-	SCZO_393 = PHI(SCZO_384, SCZO_482, SCZO_486, SCZO_458)
-	rbx_394 = PHI(rbx_243, rbx_474, rbx_484, rbx_488)
-	rax_395 = (uint64) dwLocB0_38
-	eax_396 = (word32) rax_395 (alias)
-	rcx_397 = (uint64) ebx_389
-	ecx_398 = (word32) rcx_397 (alias)
-	rax_399 = (uint64) (eax_396 & 0x0100)
-	eax_400 = (word32) rax_399 (alias)
-	rdx_rax_401 = SEQ(rdx_390, rax_399) (alias)
-	edx_eax_402 = rax_399 (alias)
-	ah_403 = SLICE(rax_399, byte, 8) (alias)
-	ax_404 = (word16) rax_399 (alias)
-	al_405 = (byte) rax_399 (alias)
-	rcx_406 = (uint64) (ecx_398 | eax_400)
-	ecx_407 = (word32) rcx_406 (alias)
-	SZO_408 = cond(ecx_407)
-	Z_409 = SZO_408 (alias)
-	C_410 = false
-	branch ecx_407 == 0x00 l000000000040C2BA
-l000000000040C261:
-	SZO_411 = cond(bLocB0 & 0x40)
-	Z_412 = SZO_411 (alias)
-	C_413 = false
-	branch (bLocB0 & 0x40) != 0x00 l000000000040C3E8
-l000000000040C26C:
-	rcx_414 = PHI(rcx_406, rcx_449)
-	qwLocB8_415 = PHI(qwLocB8_147, qwLocB8_452)
-	rsi_416 = PHI(rsi_245, rsi_450)
-	SZO_417 = cond(ebx_389 & ebx_389)
-	Z_418 = SZO_417 (alias)
-	C_419 = false
-	branch (ebx_389 & ebx_389) == 0x00 l000000000040C7EB
-l000000000040C274:
-	rcx_420 = qwLocB8_415
-	rdx_421 = rcx_420 + 0x01
-	edx_422 = (word32) rdx_421 (alias)
-	rdx_rax_423 = SEQ(rdx_421, rax_399) (alias)
-	edx_eax_424 = rdx_421 (alias)
-	dl_425 = (byte) rdx_421 (alias)
-	rcx_426 = (uint64) dwLoc78_48
-	ecx_427 = (word32) rcx_426 (alias)
-	SZO_428 = cond(ecx_427 & ecx_427)
-	Z_429 = SZO_428 (alias)
-	C_430 = false
-	branch (ecx_427 & ecx_427) == 0x00 l000000000040C3D0
-l000000000040C289:
-	Z_438 = PHI(Z_429, Z_445)
-	SCZO_439 = PHI(SCZO_393, SCZO_444)
-	rcx_440 = (int64) ebx_389
-	ecx_441 = (word32) Mem0[rcx_440 + 4284280:byte]
-	rcx_442 = DPB(rcx_440, ecx_441, 0) (alias)
-	cl_443 = (byte) ecx_441 (alias)
-l000000000040C293:
-	ecx_431 = PHI(ecx_441, ecx_447)
-	rcx_432 = PHI(rcx_442, rcx_446)
-	cl_433 = PHI(cl_443, cl_448)
-	Z_434 = PHI(Z_438, Z_445)
-	SCZO_435 = PHI(SCZO_439, SCZO_444)
-	rdi_436 = qwLocB8_415
-	Mem437[rdi_436 + 0x00:byte] = cl_433
-l000000000040C29A:
-	r14_329 = PHI(r14_386, r14_251)
-	r14d_330 = PHI(r14d_387, r14d_252)
-	CZ_331 = PHI(CZ_388, CZ_253)
-	ebx_332 = PHI(ebx_389, ebx_254)
-	ecx_333 = PHI(ecx_431, ecx_255)
-	rcx_334 = PHI(rcx_432, rcx_256)
-	cl_335 = PHI(cl_433, cl_257)
-	qwLocB8_336 = PHI(qwLocB8_415, qwLocB8_258)
-	rax_337 = PHI(rax_399, rax_262)
-	eax_338 = PHI(eax_400, eax_263)
-	ah_339 = PHI(ah_403, ah_264)
-	ax_340 = PHI(ax_404, ax_265)
-	al_341 = PHI(al_405, al_266)
-	rdx_342 = PHI(rdx_421, rdx_271)
-	edx_343 = PHI(edx_422, edx_272)
-	rdx_rax_344 = PHI(rdx_rax_423, rdx_rax_273)
-	edx_eax_345 = PHI(edx_eax_424, edx_eax_274)
-	dl_346 = PHI(dl_425, dl_275)
-	SCZO_347 = PHI(SCZO_435, SCZO_267)
-	rbx_348 = PHI(rbx_394, rbx_268)
-	rsi_349 = PHI(rsi_416, rsi_269)
-	rdi_350 = PHI(rdi_436, rdi_270)
-	SZO_351 = cond(eax_338 & eax_338)
-	Z_352 = SZO_351 (alias)
-	C_353 = false
-	branch (eax_338 & eax_338) == 0x00 l000000000040C7F5
-l000000000040C2A2:
-	rax_354 = (uint64) dwLoc78_48
-	eax_355 = (word32) rax_354 (alias)
-	rdx_rax_356 = SEQ(rdx_342, rax_354) (alias)
-	edx_eax_357 = rax_354 (alias)
-	SZO_358 = cond(eax_355 & eax_355)
-	Z_359 = SZO_358 (alias)
-	C_360 = false
-	branch (eax_355 & eax_355) != 0x00 l000000000040C3B8
-l000000000040C2AE:
-	SZO_361 = PHI(SZO_358, SZO_373, SZO_373)
-	Z_362 = PHI(Z_359, Z_374, Z_374)
-	C_363 = PHI(C_360, C_375, C_375)
-	rdx_364 = PHI(rdx_342, rdx_342, rdx_377)
-	edx_365 = PHI(edx_343, edx_343, edx_378)
-	rdx_rax_366 = PHI(rdx_rax_356, rdx_rax_356, rdx_rax_379)
-	edx_eax_367 = PHI(edx_eax_357, edx_eax_357, edx_eax_380)
-	dl_368 = PHI(dl_346, dl_346, dl_381)
-	SCZO_369 = PHI(SCZO_347, SCZO_347, SCZO_382)
-	rax_370 = rdx_364 + 0x01
-	Mem371[rdx_364 + 0x00:byte] = 66
-	qwLocB8_372 = rax_370
-l000000000040C2BA:
-	r14_276 = PHI(r14_225, r14_386, r14_329, r14_329)
-	r14d_277 = PHI(r14d_226, r14d_387, r14d_330, r14d_330)
-	CZ_278 = PHI(CZ_227, CZ_388, CZ_331, CZ_331)
-	ebx_279 = PHI(ebx_228, ebx_389, ebx_332, ebx_332)
-	ecx_280 = PHI(ecx_229, ecx_407, ecx_333, ecx_333)
-	rcx_281 = PHI(rcx_230, rcx_406, rcx_334, rcx_334)
-	cl_282 = PHI(cl_231, cl_231, cl_335, cl_335)
-	qwLocB8_283 = PHI(qwLocB8_147, qwLocB8_147, qwLocB8_372, qwLocB8_383)
-	rdx_284 = PHI(rdx_237, rdx_390, rdx_364, rdx_342)
-	edx_285 = PHI(edx_238, edx_391, edx_365, edx_343)
-	dl_286 = PHI(dl_241, dl_392, dl_368, dl_346)
-	SCZO_287 = PHI(SCZO_242, SCZO_393, SCZO_369, SCZO_347)
-	rbx_288 = PHI(rbx_243, rbx_394, rbx_348, rbx_348)
-	rsi_289 = PHI(rsi_245, rsi_245, rsi_349, rsi_349)
-	rax_290 = qwLocB8_283
-	rdi_291 = qwLoc28_44
-	rdi_292 = rdi_291 ^ Mem0[fs_216:0x28:word64]
-	SZO_293 = cond(rdi_292)
-	Z_294 = SZO_293 (alias)
-	C_295 = false
-	Mem296[rax_290 + 0x00:byte] = 0x00
-	rax_297 = r12_223
-	eax_298 = (word32) rax_297 (alias)
-	rdx_rax_299 = SEQ(rdx_284, rax_297) (alias)
-	edx_eax_300 = rax_297 (alias)
-	ah_301 = SLICE(rax_297, byte, 8) (alias)
-	ax_302 = (word16) rax_297 (alias)
-	al_303 = (byte) rax_297 (alias)
-	branch rdi_292 != 0x00 l000000000040C7E6
-l000000000040C2DC:
-	rsp_304 = fp - 0x18
-	SCZO_305 = cond(fp - 0x18)
-	rbx_307 = qwLoc18
-	rsp_308 = fp - 0x10
-	rbp_310 = qwLoc10
-	rsp_311 = fp - 0x08
-	rsp_313 = qwLoc08
-	rsp_314 = rsp_313 + 0x08
-	rbp_315 = Mem296[rsp_314 + 0x00:word64]
-	rsp_316 = rsp_314 + 0x08
-	rsi_317 = Mem296[rsp_316 + 0x00:word64]
-	rsp_318 = rsp_316 + 0x08
-	rdi_319 = Mem296[rsp_318 + 0x00:word64]
-	rsp_320 = rsp_318 + 0x08
-	return rax_297
-l000000000040C2F0:
-	r10_1765 = rax_1752
-	rdx_1766 = 0x00
-	r10_1767 = r10_1765 *s r12_68
-	r10d_1768 = (word32) r10_1767 (alias)
-	r10b_1769 = (byte) r10_1767 (alias)
-	rax_1770 = r10_1767
-	rdx_rax_1771 = SEQ(rdx_1766, rax_1770) (alias)
-	v72_1772 = rdx_rax_1771
-	rdx_1773 = (uint64) (v72_1772 % rcx_1762)
-	edx_1774 = (word32) rdx_1773 (alias)
-	dl_1775 = (byte) rdx_1773 (alias)
-	rax_1776 = (uint64) (v72_1772 /u rcx_1762)
-	rdx_rax_1777 = SEQ(rdx_1773, rax_1776) (alias)
-	edx_eax_1778 = rax_1776 (alias)
-	SCZO_1779 = cond(rax_1776 - r12_68)
-	Z_1780 = SCZO_1779 (alias)
-	branch Test(NE,Z_1780) l000000000040BE59
-l000000000040C308:
-	rcx_1781 = 0x00
-	ecx_1782 = (word32) rcx_1781 (alias)
-	cl_1783 = (byte) rcx_1781 (alias)
-	rdi_1784 = 0x00
-	edi_1785 = (word32) rdi_1784 (alias)
-	dil_1786 = (byte) rdi_1784 (alias)
-	SZO_1787 = cond(edi_1785)
-	C_1788 = false
-	goto l000000000040C12D
-l000000000040C318:
-	r8_492 = r8_172 - r12_177
-	SCZO_493 = cond(r8_492)
-	rdi_494 = r13_140
-	r15_495 = ~0x00
-	r15d_496 = (word32) r15_495 (alias)
-	r14_497 = r8_492
-	r14d_498 = (word32) r14_497 (alias)
-	eax_499 = strlen(rdi_494)
-	rax_500 = DPB(rax_186, eax_499, 0) (alias)
-	rdi_501 = fp - 0x60
-	rsi_502 = r12_177
-	rcx_503 = 0x29
-	rdx_504 = r14_497
-	qwLoc98_505 = rax_500
-	call __memcpy_chk (retsize: 8; depth: 216)
-		uses: ah_188,al_190,ax_189,bLocB0,C_203,cl_185,CZ_181,CZP_166,dil_163,dl_195,dwLoc04_4,dwLoc08_12,dwLoc0C_17,dwLoc10_20,dwLoc14_24,dwLoc18_27,dwLoc74_148,dwLoc78_48,dwLoc98_32,dwLocAC_56,dwLocB0_38,eax_499,ebx_182,ecx_183,edi_168,edx_192,esi_167,fs_73,P_165,qwLoc08,qwLoc10,qwLoc18,qwLoc28_44,qwLoc68_157,qwLoc80_152,qwLoc90_149,qwLoc98_505,qwLocA0_35,qwLocA8_40,qwLocB8_147,r10_169,r10b_161,r10d_162,r11_171,r12_177,r12d_178,r13_140,r14_497,r14d_498,r15_495,r15d_496,r8_492,r9_175,r9d_176,rax_500,rbp_108,rbx_197,rcx_503,rdi_501,rdx_504,rLoc90_153,rLocD0_159,rsi_502,rsp_58,S_170,SCZO_493,sil_164,SZO_201,wLoc6A_154,wLoc6C_155,Z_202
-		defs: ah_540,al_546,ax_541,C_512,cl_533,CZ_527,CZP_538,dil_545,dl_543,eax_508,ebx_530,ecx_522,edi_532,edx_509,esi_536,fs_521,P_542,r10_531,r10b_549,r10d_548,r11_525,r12_516,r12d_537,r13_524,r14_514,r14d_539,r15_523,r15d_547,r8_520,r9_535,r9d_534,rax_510,rbp_515,rbx_517,rcx_518,rdi_507,rdx_526,rsi_513,rsp_506,S_529,SCZO_519,sil_544,SZO_511,Z_528
-	r9_550 = r12_516 + r14_514
-	r9d_551 = (word32) r9_550 (alias)
-	r12_552 = r13_524
-	r12d_553 = (word32) r12_552 (alias)
-	r13_554 = qwLoc98_505
-	goto l000000000040C36C
-l000000000040C358:
-	r9_609 = r9_605 - r13_554
-	SCZO_610 = cond(r9_609)
-	rdx_611 = r13_554
-	rsi_612 = r12_552
-	rdi_613 = r9_609
-	rax_614 = memcpy(rdi_613, rsi_612, rdx_611)
-	r9_615 = rax_614
-	r9d_616 = (word32) r9_615 (alias)
-l000000000040C36C:
-	r15_555 = PHI(r15_523, r15_587)
-	r15d_556 = PHI(r15d_547, r15d_588)
-	r9_557 = PHI(r9_550, r9_615)
-	r9d_558 = PHI(r9d_551, r9d_616)
-	r14_559 = PHI(r14_514, r14_589)
-	r14d_560 = PHI(r14d_539, r14d_590)
-	CZ_561 = PHI(CZ_527, CZ_585)
-	rax_562 = PHI(rax_510, rax_614)
-	eax_563 = PHI(eax_508, eax_596)
-	ah_564 = PHI(ah_540, ah_599)
-	ax_565 = PHI(ax_541, ax_600)
-	al_566 = PHI(al_546, al_601)
-	rdx_567 = PHI(rdx_526, rdx_611)
-	rdx_rax_568 = PHI(rdx_rax_193, rdx_rax_597)
-	SCZO_569 = PHI(SCZO_519, SCZO_610)
-	rbp_570 = PHI(rbp_515, rbp_583)
-	rsi_571 = PHI(rsi_513, rsi_612)
-	rdi_572 = PHI(rdi_507, rdi_613)
-	edx_573 = (word32) Mem0[rbp_570 + 0x00:byte]
-	rdx_574 = DPB(rdx_567, edx_573, 0) (alias)
-	rdx_rax_575 = DPB(rdx_rax_568, edx_573, 64) (alias)
-	edx_eax_576 = SEQ(edx_573, eax_563) (alias)
-	dl_577 = (byte) edx_573 (alias)
-	SZO_578 = cond(dl_577 & dl_577)
-	Z_579 = SZO_578 (alias)
-	C_580 = false
-	branch (dl_577 & dl_577) == 0x00 l000000000040C383
-l000000000040C374:
-	SCZO_619 = cond(dl_577 - 0x7E)
-	CZ_620 = SCZO_619 (alias)
-	r15d_621 = (word32) dl_577
-	r15_622 = DPB(r15_555, r15d_621, 0) (alias)
-	branch dl_577 <=u 0x7E l000000000040C37F
-l000000000040C37B_1:
-	r15_627 = r14_559
-	r15d_628 = (word32) r15_627 (alias)
-l000000000040C37F:
-	r15_623 = PHI(r15_622, r15_627)
-	r15d_624 = PHI(r15d_621, r15d_628)
-	rbp_625 = rbp_570 + 0x01
-	SCZO_626 = cond(rbp_625)
-l000000000040C383:
-	r15_581 = PHI(r15_555, r15_623)
-	r15d_582 = PHI(r15d_556, r15d_624)
-	rbp_583 = PHI(rbp_570, rbp_625)
-	SCZO_584 = cond(r15_581 - r14_559)
-	CZ_585 = SCZO_584 (alias)
-	rax_586 = fp - 0x60
-	branch r15_581 <=u r14_559 l000000000040C38F
-l000000000040C38B_1:
-	r15_617 = r14_559
-	r15d_618 = (word32) r15_617 (alias)
-l000000000040C38F:
-	r15_587 = PHI(r15_581, r15_617)
-	r15d_588 = PHI(r15d_582, r15d_618)
-	r14_589 = r14_559 - r15_587
-	r14d_590 = (word32) r14_589 (alias)
-	r9_591 = r9_557 - r15_587
-	rdx_592 = r15_587
-	rsi_593 = fp - 0x60 + r14_589
-	rdi_594 = r9_591
-	rax_595 = memcpy(rdi_594, rsi_593, rdx_592)
-	eax_596 = (word32) rax_595 (alias)
-	rdx_rax_597 = SEQ(rdx_592, rax_595) (alias)
-	edx_eax_598 = rax_595 (alias)
-	ah_599 = SLICE(rax_595, byte, 8) (alias)
-	ax_600 = (word16) rax_595 (alias)
-	al_601 = (byte) rax_595 (alias)
-	SZO_602 = cond(r14_589 & r14_589)
-	Z_603 = SZO_602 (alias)
-	C_604 = false
-	r9_605 = rax_595
-	r9d_606 = (word32) r9_605 (alias)
-	branch (r14_589 & r14_589) != 0x00 l000000000040C358
-l000000000040C3AC:
-	r12_607 = rax_595
-	r12d_608 = (word32) r12_607 (alias)
-	goto l000000000040C242
-l000000000040C3B8:
-	SZO_373 = cond(ebx_332 & ebx_332)
-	Z_374 = SZO_373 (alias)
-	C_375 = false
-	branch (ebx_332 & ebx_332) == 0x00 l000000000040C2AE
-l000000000040C3C0:
-	Mem376[rdx_342 + 0x00:byte] = 0x69
-	rdx_377 = rdx_342 + 0x01
-	edx_378 = (word32) rdx_377 (alias)
-	rdx_rax_379 = SEQ(rdx_377, rax_354) (alias)
-	edx_eax_380 = rdx_377 (alias)
-	dl_381 = (byte) rdx_377 (alias)
-	SCZO_382 = cond(rdx_377)
-	goto l000000000040C2AE
-l000000000040C3D0:
-	SCZO_444 = cond(ebx_389 - 0x01)
-	Z_445 = SCZO_444 (alias)
-	rcx_446 = 0x6B
-	ecx_447 = (word32) rcx_446 (alias)
-	cl_448 = (byte) rcx_446 (alias)
-	branch ebx_389 != 0x01 l000000000040C289
-	goto l000000000040C293
-l000000000040C3E8:
-	rcx_449 = qwLocA0_35
-	rsi_450 = rcx_449 + 0x0289
-	Mem451[rcx_449 + 0x0288:byte] = 0x20
-	qwLocB8_452 = rsi_450
-	goto l000000000040C26C
-l000000000040C408:
-	rLoc2_1156 = (real64) Mem0[0x0000000000415F0C + 0x00:real32]
-	v70_1157 = rLoc2_1156
-	rLoc2_1158 = rLoc1_670
-	rLoc1_1159 = v70_1157
-	CZP_1160 = cond(rLoc2_1158 - rLoc1_1159)
-	C_1161 = CZP_1160 (alias)
-	branch Test(UGE,C_1161) l000000000040C6A0
-l000000000040C418:
-	rLoc1_1235 = rLoc2_1158
-	wLoc6A_1236 = __fstcw()
-	eax_1237 = (word32) wLoc6A_1236
-	ah_1238 = SLICE(eax_1237, byte, 8) (alias)
-	ah_1239 = ah_1238 | 0x0C
-	ax_1240 = DPB(ax_641, ah_1239, 8) (alias)
-	SZO_1241 = cond(ah_1239)
-	C_1242 = false
-	wLoc6C_1243 = ax_1240
-	rLoc2_1244 = rLoc2_1158
-	__fldcw(wLoc6C_1243)
-	qwLoc68_1245 = (int64) rLoc2_1244
-	__fldcw(wLoc6A_1236)
-	rax_1246 = qwLoc68_1245
-	eax_1247 = (word32) rax_1246 (alias)
-	rdx_rax_1248 = SEQ(rdx_643, rax_1246) (alias)
-	edx_eax_1249 = rax_1246 (alias)
-	ah_1250 = SLICE(rax_1246, byte, 8) (alias)
-	ax_1251 = (word16) rax_1246 (alias)
-	al_1252 = (byte) rax_1246 (alias)
-l000000000040C43E:
-	wLoc6A_1162 = PHI(wLoc6A_1236, wLoc6A_1253)
-	wLoc6C_1163 = PHI(wLoc6C_1243, wLoc6C_1263)
-	rLoc2_1164 = PHI(rLoc2_1244, rLoc2_1258)
-	qwLoc68_1165 = PHI(qwLoc68_1245, qwLoc68_1264)
-	rLoc1_1166 = PHI(rLoc1_1235, rLoc1_1259)
-	r10_1167 = PHI(r10_633, r10_1260)
-	rax_1168 = PHI(rax_1246, rax_1266)
-	eax_1169 = PHI(eax_1247, eax_1267)
-	ah_1170 = PHI(ah_1250, ah_1270)
-	ax_1171 = PHI(ax_1251, ax_1271)
-	al_1172 = PHI(al_1252, al_1272)
-	rsi_1173 = (uint64) dwLoc98_32
-	esi_1174 = (word32) rsi_1173 (alias)
-	rdx_1175 = 0x00
-	edx_1176 = (word32) rdx_1175 (alias)
-	rdx_rax_1177 = SEQ(rdx_1175, rax_1168) (alias)
-	edx_eax_1178 = rdx_1175 (alias)
-	dl_1179 = (byte) rdx_1175 (alias)
-	SZO_1180 = cond(esi_1174 & esi_1174)
-	Z_1181 = SZO_1180 (alias)
-	C_1182 = false
-	branch Test(NE,Z_1181) l000000000040C470
-l000000000040C448:
-	qwLoc68_1202 = rax_1168
-	SZO_1203 = cond(rax_1168 & rax_1168)
-	S_1204 = SZO_1203 (alias)
-	C_1205 = false
-	rLoc2_1206 = (real64) qwLoc68_1202
-	branch Test(SG,S_1204) l000000000040C772
-l000000000040C45A:
-	rLoc2_1207 = PHI(rLoc2_1206, rLoc2_1233)
-	rcx_1208 = 0x00
-	ecx_1209 = (word32) rcx_1208 (alias)
-	SZO_1210 = cond(ecx_1209)
-	rdx_1211 = 0x01
-	edx_1212 = (word32) rdx_1211 (alias)
-	rdx_rax_1213 = SEQ(rdx_1211, rax_1168) (alias)
-	edx_eax_1214 = rdx_1211 (alias)
-	dl_1215 = (byte) rdx_1211 (alias)
-	CZP_1216 = cond(rLoc2_1207 - rLoc1_1166)
-	Z_1217 = CZP_1216 (alias)
-	P_1218 = CZP_1216 (alias)
-	rLoc1_1219 = rLoc1_1166
-	cl_1220 = Test(PE,P_1218)
-	rcx_1221 = DPB(rcx_1208, cl_1220, 0) (alias)
-	ecx_1222 = DPB(ecx_1209, cl_1220, 0) (alias)
-	branch Test(NE,Z_1217) l000000000040C46C
-l000000000040C468_1:
-	rdx_1228 = rcx_1221
-	edx_1229 = (word32) rdx_1228 (alias)
-	rdx_rax_1230 = SEQ(rdx_1228, rax_1168) (alias)
-	edx_eax_1231 = rdx_1228 (alias)
-	dl_1232 = (byte) rdx_1228 (alias)
-l000000000040C46C:
-	rdx_1223 = PHI(rdx_1211, rdx_1228)
-	edx_1224 = PHI(edx_1212, edx_1229)
-	rdx_rax_1225 = PHI(rdx_rax_1213, rdx_rax_1230)
-	edx_eax_1226 = PHI(edx_eax_1214, edx_eax_1231)
-	dl_1227 = PHI(dl_1215, dl_1232)
-	goto l000000000040C472
-l000000000040C470:
-	rLoc1_1234 = rLoc1_1166
-l000000000040C472:
-	rLoc2_1183 = PHI(rLoc2_1207, rLoc2_1164)
-	P_1184 = PHI(P_1218, P_94)
-	CZP_1185 = PHI(CZP_1216, CZP_1160)
-	ecx_1186 = PHI(ecx_1222, ecx_634)
-	rcx_1187 = PHI(rcx_1221, rcx_635)
-	cl_1188 = PHI(cl_1220, cl_636)
-	Z_1189 = PHI(Z_1217, Z_1181)
-	rdx_1190 = PHI(rdx_1223, rdx_1175)
-	edx_1191 = PHI(edx_1224, edx_1176)
-	rdx_rax_1192 = PHI(rdx_rax_1225, rdx_rax_1177)
-	edx_eax_1193 = PHI(edx_eax_1226, edx_eax_1178)
-	dl_1194 = PHI(dl_1227, dl_1179)
-	rax_1195 = rax_1168 + rdx_1190
-	qwLoc68_1196 = rax_1195
-	SZO_1197 = cond(rax_1195 & rax_1195)
-	S_1198 = SZO_1197 (alias)
-	C_1199 = false
-	rLoc1_1200 = (real64) qwLoc68_1196
-	branch Test(NS,S_1198) l000000000040C1CD
-l000000000040C487:
-	rLoc1_1201 = rLoc1_1200 + Mem0[0x0000000000415F08 + 0x00:real32]
-	goto l000000000040C1CD
-l000000000040C498:
-	rLoc2_1094 = rLoc2_974
-	goto l000000000040BF72
-l000000000040C49F:
-	SCZO_1594 = cond(r8_1546 - 0x09)
-	CZ_1595 = SCZO_1594 (alias)
-	branch Test(UGT,CZ_1595) l000000000040C768
-l000000000040C4A9:
-	SCZO_1596 = cond(dwLoc98_32 - 0x01)
-	Z_1597 = SCZO_1596 (alias)
-	branch Test(EQ,Z_1597) l000000000040C7B0
-l000000000040C4B4:
-	r12_1694 = (uint64) dwLoc98_32
-	r12d_1695 = (word32) r12_1694 (alias)
-	SZO_1696 = cond(ecx_1578 & ecx_1578)
-	dl_1697 = Test(GT,SZO_1696)
-	edx_1698 = DPB(edx_1559, dl_1697, 0) (alias)
-	SZO_1699 = cond(r12d_1695 & r12d_1695)
-	Z_1700 = SZO_1699 (alias)
-	sil_1701 = Test(EQ,Z_1700)
-	esi_1702 = DPB(esi_1521, sil_1701, 0) (alias)
-	rdx_1703 = (uint64) (edx_1698 & esi_1702)
-	edx_1704 = (word32) rdx_1703 (alias)
-	rdx_rax_1705 = SEQ(rdx_1703, rax_1562) (alias)
-	edx_eax_1706 = rdx_1703 (alias)
-	dl_1707 = (byte) rdx_1703 (alias)
-	SZO_1708 = cond(edx_1704)
-	C_1709 = false
-l000000000040C4C7:
-	sil_1598 = PHI(sil_1701, sil_1520)
-	esi_1599 = PHI(esi_1702, esi_1521)
-	r12_1600 = PHI(r12_1694, r12_1528)
-	r12d_1601 = PHI(r12d_1695, r12d_1529)
-	rdx_1602 = PHI(rdx_1703, rdx_1720)
-	edx_1603 = PHI(edx_1704, edx_1719)
-	rdx_rax_1604 = PHI(rdx_rax_1705, rdx_rax_1721)
-	edx_eax_1605 = PHI(edx_eax_1706, edx_eax_1722)
-	dl_1606 = PHI(dl_1707, dl_1718)
-	SCZO_1607 = PHI(SCZO_1596, SCZO_1716)
-	SZO_1608 = cond(dl_1606 & dl_1606)
-	Z_1609 = SZO_1608 (alias)
-	C_1610 = false
-	branch Test(EQ,Z_1609) l000000000040C788
-l000000000040C4CF:
-	edi_1667 = rax_1562 + 0x01
-	rdi_1668 = DPB(rdi_1570, edi_1667, 0) (alias)
-	dil_1669 = (byte) edi_1667 (alias)
-	SCZO_1670 = cond(edi_1667 - 0x0A)
-	Z_1671 = SCZO_1670 (alias)
-	branch Test(EQ,Z_1671) l000000000040C7CE
-l000000000040C4DB:
-	edi_1611 = PHI(edi_1667, edi_1571, edi_1657)
-	r10_1612 = PHI(r10_1550, r10_1550, r10_1647)
-	Z_1613 = PHI(Z_1671, Z_1692, Z_1654)
-	SCZO_1614 = PHI(SCZO_1670, SCZO_1607, SCZO_1651)
-	rax_1615 = qwLocA0_35
-	rdi_1616 = (uint64) (edi_1611 + 0x30)
-	dil_1617 = (byte) rdi_1616 (alias)
-	rdx_1618 = r11_139
-	rsi_1619 = r15_129
-	dwLoc74_1620 = r9d_1326
-	qwLoc90_1621 = r10_1612
-	qwLoc80_1622 = r11_139
-	r8_1623 = r8_1546 + 0x0287
-	Mem1624[rax_1615 + 0x0287:byte] = dil_1617
-	r8_1625 = r8_1623 - r11_139
-	rdi_1626 = r8_1625
-	rax_1627 = memcpy(rdi_1626, rsi_1619, rdx_1618)
-	r11_1628 = qwLoc80_1622
-	r10_1629 = qwLoc90_1621
-	r10d_1630 = (word32) r10_1629 (alias)
-	r10b_1631 = (byte) r10_1629 (alias)
-	r8_1632 = rax_1627
-	r9_1633 = (uint64) dwLoc74_1620
-	r9d_1634 = (word32) r9_1633 (alias)
-	rcx_1635 = 0x00
-	ecx_1636 = (word32) rcx_1635 (alias)
-	cl_1637 = (byte) rcx_1635 (alias)
-	rdi_1638 = 0x00
-	edi_1639 = (word32) rdi_1638 (alias)
-	dil_1640 = (byte) rdi_1638 (alias)
-	SZO_1641 = cond(0x00)
-	C_1642 = false
+			r10b_1294 = ϕ(r10b_1817, r10b_1817, r10b_1769);
+			r10d_1295 = ϕ(r10d_1816, r10d_1816, r10d_1768);
+			dil_1296 = ϕ(dil_1832, dil_1832, dil_1786);
+			sil_1297 = ϕ(sil_1806, sil_1806, sil_96);
+			CZP_1298 = ϕ(CZP_1839, CZP_1839, CZP_121);
+			esi_1299 = ϕ(esi_1807, esi_1807, esi_88);
+			edi_1300 = ϕ(edi_1831, edi_1831, edi_1785);
+			r10_1301 = ϕ(r10_1815, r10_1815, r10_1767);
+			S_1302 = ϕ(S_1838, S_1838, S_120);
+			CZ_1303 = ϕ(CZ_1837, CZ_1837, CZ_146);
+			ecx_1304 = ϕ(ecx_1846, ecx_1852, ecx_1782);
+			rcx_1305 = ϕ(rcx_1845, rcx_1851, rcx_1781);
+			cl_1306 = ϕ(cl_1844, cl_1853, cl_1783);
+			rax_1307 = ϕ(rax_1823, rax_1823, rax_1776);
+			eax_1308 = ϕ(eax_1824, eax_1824, eax_1753);
+			ah_1309 = ϕ(ah_92, ah_92, ah_1756);
+			ax_1310 = ϕ(ax_93, ax_93, ax_1757);
+			al_1311 = ϕ(al_98, al_98, al_1758);
+			rdx_1312 = ϕ(rdx_1825, rdx_1825, rdx_1773);
+			edx_1313 = ϕ(edx_1826, edx_1826, edx_1774);
+			rdx_rax_1314 = ϕ(rdx_rax_1827, rdx_rax_1827, rdx_rax_1777);
+			edx_eax_1315 = ϕ(edx_eax_1828, edx_eax_1828, edx_eax_1778);
+			dl_1316 = ϕ(dl_1829, dl_1829, dl_1775);
+			SCZO_1317 = ϕ(SCZO_1833, SCZO_1854, SCZO_1779);
+			rsi_1318 = ϕ(rsi_1805, rsi_1805, rsi_65);
+			rdi_1319 = ϕ(rdi_1830, rdi_1830, rdi_1784);
+			r9_1320 = (uint64) dwLocB0_38;
+			r9d_1321 = (word32) r9_1320;
+			r8_1322 = qwLocB8_147;
+			rbx_1323 = 0xFFFFFFFF;
+			ebx_1324 = (word32) rbx_1323;
+			r9_1325 = (uint64) (r9d_1321 & 0x10);
+			r9d_1326 = (word32) r9_1325;
+			SZO_1327 = cond(r9d_1326);
+			Z_1328 = SZO_1327;
+			C_1329 = false;
+			if (Test(EQ,Z_1328))
+			{
 l000000000040C530:
-	dwLoc74_1330 = PHI(dwLoc74, dwLoc74, dwLoc74_1620, dwLoc74, dwLoc74, dwLoc74)
-	qwLoc90_1331 = PHI(qwLoc90, qwLoc90, qwLoc90_1621, qwLoc90, qwLoc90, qwLoc90)
-	qwLoc80_1332 = PHI(qwLoc80_131, qwLoc80_131, qwLoc80_1622, qwLoc80_131, qwLoc80_131, qwLoc80_131)
-	r10b_1333 = PHI(r10b_1294, r10b_1552, r10b_1631, r10b_1674, r10b_1643, r10b_1294)
-	r10d_1334 = PHI(r10d_1295, r10d_1551, r10d_1630, r10d_1673, r10d_1644, r10d_1295)
-	dil_1335 = PHI(dil_1296, dil_1572, dil_1640, dil_1683, dil_1664, dil_1296)
-	sil_1336 = PHI(sil_1520, sil_1520, sil_1598, sil_1598, sil_1598, sil_1297)
-	esi_1337 = PHI(esi_1521, esi_1521, esi_1599, esi_1599, esi_1599, esi_1299)
-	edi_1338 = PHI(edi_1300, edi_1571, edi_1639, edi_1682, edi_1663, edi_1300)
-	r10_1339 = PHI(r10_1301, r10_1550, r10_1629, r10_1672, r10_1647, r10_1301)
-	r11_1340 = PHI(r11_139, r11_139, r11_1628, r11_139, r11_139, r11_139)
-	r8_1341 = PHI(r8_1740, r8_1591, r8_1632, r8_1677, r8_1661, r8_1322)
-	r9_1342 = PHI(r9_1325, r9_1325, r9_1633, r9_1325, r9_1325, r9_1325)
-	r9d_1343 = PHI(r9d_1326, r9d_1326, r9d_1634, r9d_1326, r9d_1326, r9d_1326)
-	r12_1344 = PHI(r12_68, r12_1528, r12_1600, r12_1600, r12_1600, r12_68)
-	r12d_1345 = PHI(r12d_89, r12d_1529, r12d_1601, r12d_1601, r12d_1601, r12d_89)
-	r14_1346 = PHI(r14_66, r14_1569, r14_1569, r14_1569, r14_1569, r14_66)
-	r14d_1347 = PHI(r14d_91, r14d_1568, r14d_1568, r14d_1568, r14d_1568, r14d_91)
-	CZ_1348 = PHI(CZ_1303, CZ_1588, CZ_1595, CZ_1595, CZ_1595, CZ_1303)
-	ebx_1349 = PHI(ebx_1742, ebx_1585, ebx_1585, ebx_1585, ebx_1585, ebx_1324)
-	ecx_1350 = PHI(ecx_1304, ecx_1578, ecx_1636, ecx_1679, ecx_1648, ecx_1304)
-	rcx_1351 = PHI(rcx_1305, rcx_1579, rcx_1635, rcx_1678, rcx_1649, rcx_1305)
-	cl_1352 = PHI(cl_1306, cl_1580, cl_1637, cl_1680, cl_1650, cl_1306)
-	SZO_1353 = PHI(SZO_1743, SZO_1581, SZO_1641, SZO_1684, SZO_1665, SZO_1327)
-	C_1354 = PHI(C_1744, C_1583, C_1642, C_1685, C_1666, C_1329)
-	rax_1355 = PHI(rax_1307, rax_1562, rax_1627, rax_1562, rax_1562, rax_1307)
-	eax_1356 = PHI(eax_1308, eax_1561, eax_1561, eax_1561, eax_1561, eax_1308)
-	ah_1357 = PHI(ah_1309, ah_1565, ah_1565, ah_1565, ah_1565, ah_1309)
-	ax_1358 = PHI(ax_1310, ax_1566, ax_1566, ax_1566, ax_1566, ax_1310)
-	al_1359 = PHI(al_1311, al_1567, al_1567, al_1567, al_1567, al_1311)
-	rdx_1360 = PHI(rdx_1312, rdx_1560, rdx_1618, rdx_1602, rdx_1602, rdx_1312)
-	edx_1361 = PHI(edx_1313, edx_1559, edx_1603, edx_1603, edx_1603, edx_1313)
-	rdx_rax_1362 = PHI(rdx_rax_1314, rdx_rax_1563, rdx_rax_1604, rdx_rax_1604, rdx_rax_1604, rdx_rax_1314)
-	edx_eax_1363 = PHI(edx_eax_1315, edx_eax_1564, edx_eax_1605, edx_eax_1605, edx_eax_1605, edx_eax_1315)
-	dl_1364 = PHI(dl_1316, dl_1316, dl_1606, dl_1606, dl_1606, dl_1316)
-	rbx_1365 = PHI(rbx_1741, rbx_1584, rbx_1584, rbx_1584, rbx_1584, rbx_1323)
-	rsi_1366 = PHI(rsi_1519, rsi_1519, rsi_1619, rsi_1519, rsi_1519, rsi_1318)
-	rdi_1367 = PHI(rdi_1319, rdi_1570, rdi_1638, rdi_1681, rdi_1662, rdi_1319)
-	SCZO_1368 = cond(dwLoc98_32 - 0x01)
-	Z_1369 = SCZO_1368 (alias)
-	branch Test(EQ,Z_1369) l000000000040C6F0
-l000000000040C53B:
-	rsi_1476 = (uint64) dwLoc98_32
-	esi_1477 = (word32) rsi_1476 (alias)
-	rax_1478 = 0x00
-	eax_1479 = (word32) rax_1478 (alias)
-	rdx_rax_1480 = SEQ(rdx_1360, rax_1478) (alias)
-	edx_eax_1481 = rax_1478 (alias)
-	ax_1482 = (word16) rax_1478 (alias)
-	al_1483 = (byte) rax_1478 (alias)
-	SZO_1484 = cond(esi_1477 & esi_1477)
-	Z_1485 = SZO_1484 (alias)
-	C_1486 = false
-	branch Test(NE,Z_1485) l000000000040C54C
-l000000000040C545:
-	rcx_1487 = (uint64) (ecx_1350 + edi_1338)
-	ecx_1488 = (word32) rcx_1487 (alias)
-	cl_1489 = (byte) rcx_1487 (alias)
-	SZO_1490 = cond(ecx_1488 & ecx_1488)
-	C_1491 = false
-	al_1492 = Test(GT,SZO_1490)
-	eax_1493 = DPB(eax_1479, al_1492, 0) (alias)
-	rax_1494 = DPB(rax_1478, al_1492, 0) (alias)
-	rdx_rax_1495 = DPB(rdx_rax_1480, al_1492, 0) (alias)
-	edx_eax_1496 = DPB(edx_eax_1481, al_1492, 0) (alias)
-	ax_1497 = DPB(ax_1482, al_1492, 0) (alias)
-l000000000040C54C:
-	esi_1370 = PHI(esi_1477, esi_1477, esi_1337)
-	edi_1371 = PHI(edi_1338, edi_1338, edi_1510)
-	ecx_1372 = PHI(ecx_1350, ecx_1488, ecx_1501)
-	rcx_1373 = PHI(rcx_1351, rcx_1487, rcx_1500)
-	cl_1374 = PHI(cl_1352, cl_1489, cl_1502)
-	rax_1375 = PHI(rax_1478, rax_1494, rax_1515)
-	eax_1376 = PHI(eax_1479, eax_1493, eax_1514)
-	ax_1377 = PHI(ax_1482, ax_1497, ax_1518)
-	al_1378 = PHI(al_1483, al_1492, al_1513)
-	rdx_rax_1379 = PHI(rdx_rax_1480, rdx_rax_1495, rdx_rax_1516)
-	edx_eax_1380 = PHI(edx_eax_1481, edx_eax_1496, edx_eax_1517)
-	SCZO_1381 = PHI(SCZO_1368, SCZO_1368, SCZO_1511)
-	rsi_1382 = PHI(rsi_1476, rsi_1476, rsi_1366)
-	rdi_1383 = PHI(rdi_1367, rdi_1367, rdi_1509)
-	SZO_1384 = cond(al_1378 & al_1378)
-	Z_1385 = SZO_1384 (alias)
-	C_1386 = false
-	branch Test(EQ,Z_1385) l000000000040C5A0
-l000000000040C550:
-	r10_1438 = r10_1339 + 0x01
-	r10d_1439 = (word32) r10_1438 (alias)
-	r10b_1440 = (byte) r10_1438 (alias)
-	SZO_1441 = cond(r9d_1343 & r9d_1343)
-	Z_1442 = SZO_1441 (alias)
-	C_1443 = false
-	branch Test(EQ,Z_1442) l000000000040C5A0
-l000000000040C559:
-	rax_1444 = (uint64) dwLocAC_56
-	eax_1445 = (word32) rax_1444 (alias)
-	rdx_rax_1446 = SEQ(rdx_1360, rax_1444) (alias)
-	edx_eax_1447 = rax_1444 (alias)
-	ah_1448 = SLICE(rax_1444, byte, 8) (alias)
-	ax_1449 = (word16) rax_1444 (alias)
-	al_1450 = (byte) rax_1444 (alias)
-	SCZO_1451 = cond(rax_1444 - r10_1438)
-	Z_1452 = SCZO_1451 (alias)
-	branch Test(NE,Z_1452) l000000000040C5A0
-l000000000040C562:
-	SCZO_1453 = cond(ebx_1349 - 0x08)
-	Z_1454 = SCZO_1453 (alias)
-	branch Test(EQ,Z_1454) l000000000040C5A0
-l000000000040C567:
-	rbx_1455 = (uint64) (ebx_1349 + 0x01)
-	ebx_1456 = (word32) rbx_1455 (alias)
-	SZO_1457 = cond(bLocB0 & 0x08)
-	Z_1458 = SZO_1457 (alias)
-	C_1459 = false
-	rdx_1460 = 0x01
-	rdx_rax_1461 = SEQ(rdx_1460, rax_1444) (alias)
-	edx_eax_1462 = rdx_1460 (alias)
-	branch Test(NE,Z_1458) l000000000040C5A0
-l000000000040C577:
-	rax_1463 = rax_1444 - 0x01
-	Mem1464[rax_1463 - 0x01 + 0x00:byte] = 0x30
-	rdx_1465 = r11_1340
-	rsi_1466 = r15_129
-	qwLoc98_1467 = r10_1438
-	rax_1468 = rax_1463 - r11_1340
-	SCZO_1469 = cond(rax_1468)
-	rdi_1470 = rax_1468
-	rax_1471 = memcpy(rdi_1470, rsi_1466, rdx_1465)
-	r10_1472 = qwLoc98_1467
-	r10d_1473 = (word32) r10_1472 (alias)
-	r10b_1474 = (byte) r10_1472 (alias)
-	r8_1475 = rax_1471
-l000000000040C5A0:
-	qwLoc98_1387 = PHI(qwLoc98, qwLoc98, qwLoc98, qwLoc98, qwLoc98, qwLoc98_1467)
-	r10b_1388 = PHI(r10b_1333, r10b_1440, r10b_1440, r10b_1440, r10b_1440, r10b_1474)
-	r10d_1389 = PHI(r10d_1334, r10d_1439, r10d_1439, r10d_1439, r10d_1439, r10d_1473)
-	r10_1390 = PHI(r10_1339, r10_1438, r10_1438, r10_1438, r10_1438, r10_1472)
-	r8_1391 = PHI(r8_1341, r8_1341, r8_1341, r8_1341, r8_1341, r8_1475)
-	ebx_1392 = PHI(ebx_1349, ebx_1349, ebx_1349, ebx_1349, ebx_1456, ebx_1456)
-	SZO_1393 = PHI(SZO_1384, SZO_1441, SZO_1441, SZO_1441, SZO_1457, SZO_1457)
-	Z_1394 = PHI(Z_1385, Z_1442, Z_1452, Z_1454, Z_1458, Z_1458)
-	C_1395 = PHI(C_1386, C_1443, C_1443, C_1443, C_1459, C_1459)
-	rax_1396 = PHI(rax_1375, rax_1375, rax_1444, rax_1444, rax_1444, rax_1471)
-	eax_1397 = PHI(eax_1376, eax_1376, eax_1445, eax_1445, eax_1445, eax_1445)
-	ah_1398 = PHI(ah_1357, ah_1357, ah_1448, ah_1448, ah_1448, ah_1448)
-	ax_1399 = PHI(ax_1377, ax_1377, ax_1449, ax_1449, ax_1449, ax_1449)
-	al_1400 = PHI(al_1378, al_1378, al_1450, al_1450, al_1450, al_1450)
-	rdx_1401 = PHI(rdx_1360, rdx_1360, rdx_1360, rdx_1360, rdx_1460, rdx_1465)
-	rdx_rax_1402 = PHI(rdx_rax_1379, rdx_rax_1379, rdx_rax_1446, rdx_rax_1446, rdx_rax_1461, rdx_rax_1461)
-	edx_eax_1403 = PHI(edx_eax_1380, edx_eax_1380, edx_eax_1447, edx_eax_1447, edx_eax_1462, edx_eax_1462)
-	SCZO_1404 = PHI(SCZO_1381, SCZO_1381, SCZO_1451, SCZO_1453, SCZO_1453, SCZO_1469)
-	rbx_1405 = PHI(rbx_1365, rbx_1365, rbx_1365, rbx_1365, rbx_1455, rbx_1455)
-	rsi_1406 = PHI(rsi_1382, rsi_1382, rsi_1382, rsi_1382, rsi_1382, rsi_1466)
-	rdi_1407 = PHI(rdi_1383, rdi_1383, rdi_1383, rdi_1383, rdi_1383, rdi_1470)
-	r12_1408 = r8_1391
-	r12d_1409 = (word32) r12_1408 (alias)
-	r9_1410 = 0xCCCCCCCD
-	r9d_1411 = (word32) r9_1410 (alias)
-l000000000040C5B0:
-	r10_1412 = PHI(r10_1390, r10_1430)
-	r12_1413 = PHI(r12_1408, r12_1415)
-	rax_1414 = r10_1412
-	r12_1415 = r12_1413 - 0x01
-	r12d_1416 = (word32) r12_1415 (alias)
-	rdx_rax_1417 = rcx_1373 *u rax_1414
-	rdx_1418 = SLICE(rdx_rax_1417, word64, 64) (alias)
-	rdx_1419 = rdx_1418 >>u 0x03
-	rax_1420 = rdx_1419 + rdx_1419 * 0x04
-	rax_1421 = rax_1420 + rax_1420
-	r10_1422 = r10_1412 - rax_1421
-	r10d_1423 = (word32) r10_1422 (alias)
-	r10_1424 = (uint64) (r10d_1423 + 0x30)
-	r10b_1425 = (byte) r10_1424 (alias)
-	SZO_1426 = cond(rdx_1419 & rdx_1419)
-	Z_1427 = SZO_1426 (alias)
-	C_1428 = false
-	Mem1429[r12_1415 + 0x00:byte] = r10b_1425
-	r10_1430 = rdx_1419
-	r10d_1431 = (word32) r10_1430 (alias)
-	r10b_1432 = (byte) r10_1430 (alias)
-	branch Test(NE,Z_1427) l000000000040C5B0
-	goto l000000000040C237
-l000000000040C5E0:
-	rLoc3_1275 = rLoc3_664 + Mem0[0x0000000000415F08 + 0x00:real32]
-	goto l000000000040BE94
-l000000000040C5F0:
-	rLoc1_1288 = rLoc1_654 + Mem0[0x0000000000415F08 + 0x00:real32]
-	qwLoc68_1289 = rbx_69
-	SZO_1290 = cond(rbx_69 & rbx_69)
-	S_1291 = SZO_1290 (alias)
-	C_1292 = false
-	rLoc2_1293 = (real64) qwLoc68_1289
-	branch Test(NS,S_1291) l000000000040BE7D
-l000000000040C608:
-	rLoc2_1276 = PHI(rLoc2_1287, rLoc2_1293)
-	qwLoc68_1277 = PHI(qwLoc68_1283, qwLoc68_1289)
-	rLoc1_1278 = PHI(rLoc1_654, rLoc1_1288)
-	S_1279 = PHI(S_1285, S_1291)
-	SZO_1280 = PHI(SZO_1284, SZO_1290)
-	C_1281 = PHI(C_1286, C_1292)
-	rLoc2_1282 = rLoc2_1276 + Mem0[0x0000000000415F08 + 0x00:real32]
-	goto l000000000040BE7D
-l000000000040C618:
-	rdx_453 = qwLocA8_40
-	edx_454 = (word32) rdx_453 (alias)
-	rdx_rax_455 = SEQ(rdx_453, rax_232) (alias)
-	edx_eax_456 = rdx_453 (alias)
-	dl_457 = (byte) rdx_453 (alias)
-	SCZO_458 = cond(rdx_453 - 0x01)
-	CZ_459 = SCZO_458 (alias)
-	branch rdx_453 <=u 0x01 l000000000040C7A9
-l000000000040C627:
-	r14_460 = (uint64) dwLocAC_56
-	r14d_461 = (word32) r14_460 (alias)
-	rbx_462 = 0x01
-	ebx_463 = (word32) rbx_462 (alias)
-	rax_464 = 0x01
-	eax_465 = (word32) rax_464 (alias)
-	rdx_rax_466 = SEQ(rdx_453, rax_464) (alias)
-	edx_eax_467 = rax_464 (alias)
-	ah_468 = SLICE(rax_464, byte, 8) (alias)
-	ax_469 = (word16) rax_464 (alias)
-	al_470 = (byte) rax_464 (alias)
-l000000000040C640:
-	ebx_471 = PHI(ebx_463, ebx_485)
-	Z_472 = PHI(Z_385, Z_487)
-	rax_473 = PHI(rax_464, rax_475)
-	rbx_474 = PHI(rbx_462, rbx_484)
-	rax_475 = rax_473 *s r14_460
-	eax_476 = (word32) rax_475 (alias)
-	rdx_rax_477 = SEQ(rdx_453, rax_475) (alias)
-	edx_eax_478 = rax_475 (alias)
-	ah_479 = SLICE(rax_475, byte, 8) (alias)
-	ax_480 = (word16) rax_475 (alias)
-	al_481 = (byte) rax_475 (alias)
-	SCZO_482 = cond(rdx_453 - rax_475)
-	CZ_483 = SCZO_482 (alias)
-	branch rdx_453 <=u rax_475 l000000000040C252
-l000000000040C64D:
-	rbx_484 = (uint64) (ebx_471 + 0x01)
-	ebx_485 = (word32) rbx_484 (alias)
-	SCZO_486 = cond(ebx_485 - 0x08)
-	Z_487 = SCZO_486 (alias)
-	branch ebx_485 != 0x08 l000000000040C640
-	goto l000000000040C252
-l000000000040C660:
-	wLoc6A_1072 = __fstcw()
-	eax_1073 = (word32) wLoc6A_1072
-	ah_1074 = SLICE(eax_1073, byte, 8) (alias)
-	rLoc2_1075 = rLoc2_979 - rLoc1_980
-	v61_1076 = rLoc2_1075
-	rLoc2_1077 = rLoc1_980
-	rLoc1_1078 = v61_1076
-	r10_1079 = 0x00
-	ah_1080 = ah_1074 | 0x0C
-	ax_1081 = DPB(ax_641, ah_1080, 8) (alias)
-	wLoc6C_1082 = ax_1081
-	__fldcw(wLoc6C_1082)
-	qwLoc68_1083 = (int64) rLoc2_1077
-	__fldcw(wLoc6A_1072)
-	rax_1084 = qwLoc68_1083
-	rax_1085 = rax_1084 ^ rdx_643
-	eax_1086 = (word32) rax_1085 (alias)
-	rdx_rax_1087 = SEQ(rdx_643, rax_1085) (alias)
-	edx_eax_1088 = rax_1085 (alias)
-	ah_1089 = SLICE(rax_1085, byte, 8) (alias)
-	ax_1090 = (word16) rax_1085 (alias)
-	al_1091 = (byte) rax_1085 (alias)
-	SZO_1092 = cond(rax_1085)
-	C_1093 = false
-	goto l000000000040BF29
-l000000000040C6A0:
-	wLoc6A_1253 = __fstcw()
-	eax_1254 = (word32) wLoc6A_1253
-	ah_1255 = SLICE(eax_1254, byte, 8) (alias)
-	rLoc2_1256 = rLoc2_1158 - rLoc1_1159
-	v71_1257 = rLoc2_1256
-	rLoc2_1258 = rLoc1_1159
-	rLoc1_1259 = v71_1257
-	r10_1260 = 0x00
-	ah_1261 = ah_1255 | 0x0C
-	ax_1262 = DPB(ax_641, ah_1261, 8) (alias)
-	wLoc6C_1263 = ax_1262
-	__fldcw(wLoc6C_1263)
-	qwLoc68_1264 = (int64) rLoc2_1258
-	__fldcw(wLoc6A_1253)
-	rax_1265 = qwLoc68_1264
-	rax_1266 = rax_1265 ^ rdx_643
-	eax_1267 = (word32) rax_1266 (alias)
-	rdx_rax_1268 = SEQ(rdx_643, rax_1266) (alias)
-	edx_eax_1269 = rax_1266 (alias)
-	ah_1270 = SLICE(rax_1266, byte, 8) (alias)
-	ax_1271 = (word16) rax_1266 (alias)
-	al_1272 = (byte) rax_1266 (alias)
-	SZO_1273 = cond(rax_1266)
-	C_1274 = false
-	goto l000000000040C43E
-l000000000040C6E0:
-	rcx_1847 = (uint64) (0x00 - C_1834)
-	ecx_1848 = (word32) rcx_1847 (alias)
-	rcx_1849 = (uint64) ~ecx_1848
-	ecx_1850 = (word32) rcx_1849 (alias)
-	rcx_1851 = (uint64) (ecx_1850 + 0x03)
-	ecx_1852 = (word32) rcx_1851 (alias)
-	cl_1853 = (byte) rcx_1851 (alias)
-	SCZO_1854 = cond(ecx_1852)
-	goto l000000000040C12D
-l000000000040C6F0:
-	rax_1498 = r10_1339
-	eax_1499 = (word32) rax_1498 (alias)
-	rcx_1500 = (int64) ecx_1350
-	ecx_1501 = (word32) rcx_1500 (alias)
-	cl_1502 = (byte) rcx_1500 (alias)
-	rax_1503 = (uint64) (eax_1499 & 0x01)
-	rax_1504 = rax_1503 + rcx_1500
-	SCZO_1505 = cond(rax_1504)
-	Z_1506 = SCZO_1505 (alias)
-	al_1507 = Test(NE,Z_1506)
-	eax_1508 = (word32) al_1507
-	rdi_1509 = (uint64) (edi_1338 + eax_1508)
-	edi_1510 = (word32) rdi_1509 (alias)
-	SCZO_1511 = cond(edi_1510 - 0x05)
-	SZO_1512 = SCZO_1511 (alias)
-	al_1513 = Test(GT,SZO_1512)
-	eax_1514 = DPB(eax_1508, al_1513, 0) (alias)
-	rax_1515 = DPB(rax_1504, al_1513, 0) (alias)
-	rdx_rax_1516 = DPB(rdx_rax_1362, al_1513, 0) (alias)
-	edx_eax_1517 = DPB(edx_eax_1363, al_1513, 0) (alias)
-	ax_1518 = DPB(ax_1358, al_1513, 0) (alias)
-	goto l000000000040C54C
-l000000000040C710:
-	r8_1740 = qwLocB8_147
-	rbx_1741 = 0x00
-	ebx_1742 = (word32) rbx_1741 (alias)
-	SZO_1743 = cond(ebx_1742)
-	C_1744 = false
-	goto l000000000040C530
-l000000000040C720:
-	wLoc6A_941 = __fstcw()
-	eax_942 = (word32) wLoc6A_941
-	ah_943 = SLICE(eax_942, byte, 8) (alias)
-	rLoc2_944 = rLoc2_846 - rLoc1_847
-	v65_945 = rLoc2_944
-	rLoc2_946 = rLoc1_847
-	rLoc1_947 = v65_945
-	r10_948 = 0x00
-	ah_949 = ah_943 | 0x0C
-	ax_950 = DPB(ax_762, ah_949, 8) (alias)
-	wLoc6C_951 = ax_950
-	__fldcw(wLoc6C_951)
-	qwLoc68_952 = (int64) rLoc2_946
-	__fldcw(wLoc6A_941)
-	rax_953 = qwLoc68_952
-	rax_954 = rax_953 ^ rdx_777
-	eax_955 = (word32) rax_954 (alias)
-	rdx_rax_956 = SEQ(rdx_777, rax_954) (alias)
-	edx_eax_957 = rax_954 (alias)
-	ah_958 = SLICE(rax_954, byte, 8) (alias)
-	ax_959 = (word16) rax_954 (alias)
-	al_960 = (byte) rax_954 (alias)
-	SZO_961 = cond(rax_954)
-	C_962 = false
-	goto l000000000040C045
-l000000000040C758:
-	rLoc2_1024 = rLoc2_1020 + Mem0[0x0000000000415F08 + 0x00:real32]
-	v63_1025 = rLoc2_1024
-	rLoc2_1026 = rLoc1_987
-	rLoc1_1027 = v63_1025
-	goto l000000000040BF72
-l000000000040C768:
-	CZ_1588 = PHI(CZ_1587, CZ_1595)
-	Z_1589 = PHI(Z_1593, Z_1582)
-	SCZO_1590 = PHI(SCZO_1592, SCZO_1594)
-	r8_1591 = qwLocB8_147
-	goto l000000000040C530
-l000000000040C772:
-	rLoc2_1233 = rLoc2_1206 + Mem0[0x0000000000415F08 + 0x00:real32]
-	goto l000000000040C45A
-l000000000040C77D:
-	rLoc2_1053 = rLoc2_1032 + Mem0[0x0000000000415F08 + 0x00:real32]
-	goto l000000000040BF45
-l000000000040C788:
-	SZO_1691 = cond(eax_1561 & eax_1561)
-	Z_1692 = SZO_1691 (alias)
-	C_1693 = false
-	branch Test(NE,Z_1692) l000000000040C4DB
-l000000000040C790:
-	r10b_1643 = PHI(r10b_1674, r10b_1552)
-	r10d_1644 = PHI(r10d_1673, r10d_1551)
-	dil_1645 = PHI(dil_1669, dil_1572)
-	edi_1646 = PHI(edi_1667, edi_1571)
-	r10_1647 = PHI(r10_1672, r10_1550)
-	ecx_1648 = PHI(ecx_1687, ecx_1578)
-	rcx_1649 = PHI(rcx_1686, rcx_1579)
-	cl_1650 = PHI(cl_1688, cl_1580)
-	SCZO_1651 = PHI(SCZO_1675, SCZO_1607)
-	rdi_1652 = PHI(rdi_1668, rdi_1570)
-	SZO_1653 = cond(bLocB0 & 0x08)
-	Z_1654 = SZO_1653 (alias)
-	C_1655 = false
-	branch Test(NE,Z_1654) l000000000040C7C2
-l000000000040C797:
-	rdi_1656 = 0x00
-	edi_1657 = (word32) rdi_1656 (alias)
-	dil_1658 = (byte) rdi_1656 (alias)
-	SZO_1659 = cond(0x00)
-	C_1660 = false
-	goto l000000000040C4DB
-l000000000040C79E:
-	rLoc2_921 = rLoc2_894 + Mem0[0x0000000000415F08 + 0x00:real32]
-	goto l000000000040C063
-l000000000040C7A9:
-	rbx_488 = 0x00
-	ebx_489 = (word32) rbx_488 (alias)
-	SZO_490 = cond(ebx_489)
-	C_491 = false
-	goto l000000000040C252
-l000000000040C7B0:
-	rdx_1710 = (uint64) eax_1561
-	edx_1711 = (word32) rdx_1710 (alias)
-	rdx_1712 = (uint64) (edx_1711 & 0x01)
-	edx_1713 = (word32) rdx_1712 (alias)
-	rdx_1714 = (uint64) (edx_1713 + ecx_1578)
-	edx_1715 = (word32) rdx_1714 (alias)
-	SCZO_1716 = cond(edx_1715 - 0x02)
-	SZO_1717 = SCZO_1716 (alias)
-	dl_1718 = Test(GT,SZO_1717)
-	edx_1719 = DPB(edx_1715, dl_1718, 0) (alias)
-	rdx_1720 = DPB(rdx_1714, dl_1718, 0) (alias)
-	rdx_rax_1721 = DPB(rdx_rax_1563, dl_1718, 64) (alias)
-	edx_eax_1722 = DPB(edx_eax_1564, dl_1718, 32) (alias)
-	goto l000000000040C4C7
-l000000000040C7C2:
-	r8_1661 = qwLocB8_147
-	rdi_1662 = 0x00
-	edi_1663 = (word32) rdi_1662 (alias)
-	dil_1664 = (byte) rdi_1662 (alias)
-	SZO_1665 = cond(0x00)
-	C_1666 = false
-	goto l000000000040C530
-l000000000040C7CE:
-	r10_1672 = r8_1546 + 0x01
-	r10d_1673 = (word32) r10_1672 (alias)
-	r10b_1674 = (byte) r10_1672 (alias)
-	SCZO_1675 = cond(r10_1672 - 0x0A)
-	Z_1676 = SCZO_1675 (alias)
-	branch Test(NE,Z_1676) l000000000040C7FF
-l000000000040C7D8:
-	r8_1677 = qwLocB8_147
-	rcx_1678 = 0x00
-	ecx_1679 = (word32) rcx_1678 (alias)
-	cl_1680 = (byte) rcx_1678 (alias)
-	rdi_1681 = 0x00
-	edi_1682 = (word32) rdi_1681 (alias)
-	dil_1683 = (byte) rdi_1681 (alias)
-	SZO_1684 = cond(0x00)
-	C_1685 = false
-	goto l000000000040C530
-l000000000040C7E6:
-	__stack_chk_fail()
+				dwLoc74_1330 = ϕ(dwLoc74, dwLoc74, dwLoc74_1620, dwLoc74, dwLoc74, dwLoc74);
+				qwLoc90_1331 = ϕ(qwLoc90, qwLoc90, qwLoc90_1621, qwLoc90, qwLoc90, qwLoc90);
+				qwLoc80_1332 = ϕ(qwLoc80_131, qwLoc80_131, qwLoc80_1622, qwLoc80_131, qwLoc80_131, qwLoc80_131);
+				r10b_1333 = ϕ(r10b_1294, r10b_1552, r10b_1631, r10b_1674, r10b_1643, r10b_1294);
+				r10d_1334 = ϕ(r10d_1295, r10d_1551, r10d_1630, r10d_1673, r10d_1644, r10d_1295);
+				dil_1335 = ϕ(dil_1296, dil_1572, dil_1640, dil_1683, dil_1664, dil_1296);
+				sil_1336 = ϕ(sil_1520, sil_1520, sil_1598, sil_1598, sil_1598, sil_1297);
+				esi_1337 = ϕ(esi_1521, esi_1521, esi_1599, esi_1599, esi_1599, esi_1299);
+				edi_1338 = ϕ(edi_1300, edi_1571, edi_1639, edi_1682, edi_1663, edi_1300);
+				r10_1339 = ϕ(r10_1301, r10_1550, r10_1629, r10_1672, r10_1647, r10_1301);
+				r11_1340 = ϕ(r11_139, r11_139, r11_1628, r11_139, r11_139, r11_139);
+				r8_1341 = ϕ(r8_1740, r8_1591, r8_1632, r8_1677, r8_1661, r8_1322);
+				r9_1342 = ϕ(r9_1325, r9_1325, r9_1633, r9_1325, r9_1325, r9_1325);
+				r9d_1343 = ϕ(r9d_1326, r9d_1326, r9d_1634, r9d_1326, r9d_1326, r9d_1326);
+				r12_1344 = ϕ(r12_68, r12_1528, r12_1600, r12_1600, r12_1600, r12_68);
+				r12d_1345 = ϕ(r12d_89, r12d_1529, r12d_1601, r12d_1601, r12d_1601, r12d_89);
+				r14_1346 = ϕ(r14_66, r14_1569, r14_1569, r14_1569, r14_1569, r14_66);
+				r14d_1347 = ϕ(r14d_91, r14d_1568, r14d_1568, r14d_1568, r14d_1568, r14d_91);
+				CZ_1348 = ϕ(CZ_1303, CZ_1588, CZ_1595, CZ_1595, CZ_1595, CZ_1303);
+				ebx_1349 = ϕ(ebx_1742, ebx_1585, ebx_1585, ebx_1585, ebx_1585, ebx_1324);
+				ecx_1350 = ϕ(ecx_1304, ecx_1578, ecx_1636, ecx_1679, ecx_1648, ecx_1304);
+				rcx_1351 = ϕ(rcx_1305, rcx_1579, rcx_1635, rcx_1678, rcx_1649, rcx_1305);
+				cl_1352 = ϕ(cl_1306, cl_1580, cl_1637, cl_1680, cl_1650, cl_1306);
+				SZO_1353 = ϕ(SZO_1743, SZO_1581, SZO_1641, SZO_1684, SZO_1665, SZO_1327);
+				C_1354 = ϕ(C_1744, C_1583, C_1642, C_1685, C_1666, C_1329);
+				rax_1355 = ϕ(rax_1307, rax_1562, rax_1627, rax_1562, rax_1562, rax_1307);
+				eax_1356 = ϕ(eax_1308, eax_1561, eax_1561, eax_1561, eax_1561, eax_1308);
+				ah_1357 = ϕ(ah_1309, ah_1565, ah_1565, ah_1565, ah_1565, ah_1309);
+				ax_1358 = ϕ(ax_1310, ax_1566, ax_1566, ax_1566, ax_1566, ax_1310);
+				al_1359 = ϕ(al_1311, al_1567, al_1567, al_1567, al_1567, al_1311);
+				rdx_1360 = ϕ(rdx_1312, rdx_1560, rdx_1618, rdx_1602, rdx_1602, rdx_1312);
+				edx_1361 = ϕ(edx_1313, edx_1559, edx_1603, edx_1603, edx_1603, edx_1313);
+				rdx_rax_1362 = ϕ(rdx_rax_1314, rdx_rax_1563, rdx_rax_1604, rdx_rax_1604, rdx_rax_1604, rdx_rax_1314);
+				edx_eax_1363 = ϕ(edx_eax_1315, edx_eax_1564, edx_eax_1605, edx_eax_1605, edx_eax_1605, edx_eax_1315);
+				dl_1364 = ϕ(dl_1316, dl_1316, dl_1606, dl_1606, dl_1606, dl_1316);
+				rbx_1365 = ϕ(rbx_1741, rbx_1584, rbx_1584, rbx_1584, rbx_1584, rbx_1323);
+				rsi_1366 = ϕ(rsi_1519, rsi_1519, rsi_1619, rsi_1519, rsi_1519, rsi_1318);
+				rdi_1367 = ϕ(rdi_1319, rdi_1570, rdi_1638, rdi_1681, rdi_1662, rdi_1319);
+				SCZO_1368 = cond(dwLoc98_32 - 0x01);
+				Z_1369 = SCZO_1368;
+				if (Test(NE,Z_1369))
+				{
+					rsi_1476 = (uint64) dwLoc98_32;
+					esi_1477 = (word32) rsi_1476;
+					rax_1478 = 0x00;
+					eax_1479 = (word32) rax_1478;
+					rdx_rax_1480 = SEQ(rdx_1360, rax_1478);
+					edx_eax_1481 = rax_1478;
+					ax_1482 = (word16) rax_1478;
+					al_1483 = (byte) rax_1478;
+					SZO_1484 = cond(esi_1477 & esi_1477);
+					Z_1485 = SZO_1484;
+					C_1486 = false;
+					if (Test(EQ,Z_1485))
+					{
+						rcx_1487 = (uint64) (ecx_1350 + edi_1338);
+						ecx_1488 = (word32) rcx_1487;
+						cl_1489 = (byte) rcx_1487;
+						SZO_1490 = cond(ecx_1488 & ecx_1488);
+						C_1491 = false;
+						al_1492 = Test(GT,SZO_1490);
+						eax_1493 = DPB(eax_1479, al_1492, 0);
+						rax_1494 = DPB(rax_1478, al_1492, 0);
+						rdx_rax_1495 = DPB(rdx_rax_1480, al_1492, 0);
+						edx_eax_1496 = DPB(edx_eax_1481, al_1492, 0);
+						ax_1497 = DPB(ax_1482, al_1492, 0);
+					}
+				}
+				else
+				{
+					rax_1498 = r10_1339;
+					eax_1499 = (word32) rax_1498;
+					rcx_1500 = (int64) ecx_1350;
+					ecx_1501 = (word32) rcx_1500;
+					cl_1502 = (byte) rcx_1500;
+					rax_1503 = (uint64) (eax_1499 & 0x01);
+					rax_1504 = rax_1503 + rcx_1500;
+					SCZO_1505 = cond(rax_1504);
+					Z_1506 = SCZO_1505;
+					al_1507 = Test(NE,Z_1506);
+					eax_1508 = (word32) al_1507;
+					rdi_1509 = (uint64) (edi_1338 + eax_1508);
+					edi_1510 = (word32) rdi_1509;
+					SCZO_1511 = cond(edi_1510 - 0x05);
+					SZO_1512 = SCZO_1511;
+					al_1513 = Test(GT,SZO_1512);
+					eax_1514 = DPB(eax_1508, al_1513, 0);
+					rax_1515 = DPB(rax_1504, al_1513, 0);
+					rdx_rax_1516 = DPB(rdx_rax_1362, al_1513, 0);
+					edx_eax_1517 = DPB(edx_eax_1363, al_1513, 0);
+					ax_1518 = DPB(ax_1358, al_1513, 0);
+				}
+				esi_1370 = ϕ(esi_1477, esi_1477, esi_1337);
+				edi_1371 = ϕ(edi_1338, edi_1338, edi_1510);
+				ecx_1372 = ϕ(ecx_1350, ecx_1488, ecx_1501);
+				rcx_1373 = ϕ(rcx_1351, rcx_1487, rcx_1500);
+				cl_1374 = ϕ(cl_1352, cl_1489, cl_1502);
+				rax_1375 = ϕ(rax_1478, rax_1494, rax_1515);
+				eax_1376 = ϕ(eax_1479, eax_1493, eax_1514);
+				ax_1377 = ϕ(ax_1482, ax_1497, ax_1518);
+				al_1378 = ϕ(al_1483, al_1492, al_1513);
+				rdx_rax_1379 = ϕ(rdx_rax_1480, rdx_rax_1495, rdx_rax_1516);
+				edx_eax_1380 = ϕ(edx_eax_1481, edx_eax_1496, edx_eax_1517);
+				SCZO_1381 = ϕ(SCZO_1368, SCZO_1368, SCZO_1511);
+				rsi_1382 = ϕ(rsi_1476, rsi_1476, rsi_1366);
+				rdi_1383 = ϕ(rdi_1367, rdi_1367, rdi_1509);
+				SZO_1384 = cond(al_1378 & al_1378);
+				Z_1385 = SZO_1384;
+				C_1386 = false;
+				if (Test(NE,Z_1385))
+				{
+					r10_1438 = r10_1339 + 0x01;
+					r10d_1439 = (word32) r10_1438;
+					r10b_1440 = (byte) r10_1438;
+					SZO_1441 = cond(r9d_1343 & r9d_1343);
+					Z_1442 = SZO_1441;
+					C_1443 = false;
+					if (Test(NE,Z_1442))
+					{
+						rax_1444 = (uint64) dwLocAC_56;
+						eax_1445 = (word32) rax_1444;
+						rdx_rax_1446 = SEQ(rdx_1360, rax_1444);
+						edx_eax_1447 = rax_1444;
+						ah_1448 = SLICE(rax_1444, byte, 8);
+						ax_1449 = (word16) rax_1444;
+						al_1450 = (byte) rax_1444;
+						SCZO_1451 = cond(rax_1444 - r10_1438);
+						Z_1452 = SCZO_1451;
+						if (Test(EQ,Z_1452))
+						{
+							SCZO_1453 = cond(ebx_1349 - 0x08);
+							Z_1454 = SCZO_1453;
+							if (Test(NE,Z_1454))
+							{
+								rbx_1455 = (uint64) (ebx_1349 + 0x01);
+								ebx_1456 = (word32) rbx_1455;
+								SZO_1457 = cond(bLocB0 & 0x08);
+								Z_1458 = SZO_1457;
+								C_1459 = false;
+								rdx_1460 = 0x01;
+								rdx_rax_1461 = SEQ(rdx_1460, rax_1444);
+								edx_eax_1462 = rdx_1460;
+								if (Test(EQ,Z_1458))
+								{
+									rax_1463 = rax_1444 - 0x01;
+									Mem1464[rax_1463 - 0x01 + 0x00:byte] = 0x30;
+									rdx_1465 = r11_1340;
+									rsi_1466 = r15_129;
+									qwLoc98_1467 = r10_1438;
+									rax_1468 = rax_1463 - r11_1340;
+									SCZO_1469 = cond(rax_1468);
+									rdi_1470 = rax_1468;
+									rax_1471 = memcpy(rdi_1470, rsi_1466, rdx_1465);
+									r10_1472 = qwLoc98_1467;
+									r10d_1473 = (word32) r10_1472;
+									r10b_1474 = (byte) r10_1472;
+									r8_1475 = rax_1471;
+								}
+							}
+						}
+					}
+				}
+				qwLoc98_1387 = ϕ(qwLoc98, qwLoc98, qwLoc98, qwLoc98, qwLoc98, qwLoc98_1467);
+				r10b_1388 = ϕ(r10b_1333, r10b_1440, r10b_1440, r10b_1440, r10b_1440, r10b_1474);
+				r10d_1389 = ϕ(r10d_1334, r10d_1439, r10d_1439, r10d_1439, r10d_1439, r10d_1473);
+				r10_1390 = ϕ(r10_1339, r10_1438, r10_1438, r10_1438, r10_1438, r10_1472);
+				r8_1391 = ϕ(r8_1341, r8_1341, r8_1341, r8_1341, r8_1341, r8_1475);
+				ebx_1392 = ϕ(ebx_1349, ebx_1349, ebx_1349, ebx_1349, ebx_1456, ebx_1456);
+				SZO_1393 = ϕ(SZO_1384, SZO_1441, SZO_1441, SZO_1441, SZO_1457, SZO_1457);
+				Z_1394 = ϕ(Z_1385, Z_1442, Z_1452, Z_1454, Z_1458, Z_1458);
+				C_1395 = ϕ(C_1386, C_1443, C_1443, C_1443, C_1459, C_1459);
+				rax_1396 = ϕ(rax_1375, rax_1375, rax_1444, rax_1444, rax_1444, rax_1471);
+				eax_1397 = ϕ(eax_1376, eax_1376, eax_1445, eax_1445, eax_1445, eax_1445);
+				ah_1398 = ϕ(ah_1357, ah_1357, ah_1448, ah_1448, ah_1448, ah_1448);
+				ax_1399 = ϕ(ax_1377, ax_1377, ax_1449, ax_1449, ax_1449, ax_1449);
+				al_1400 = ϕ(al_1378, al_1378, al_1450, al_1450, al_1450, al_1450);
+				rdx_1401 = ϕ(rdx_1360, rdx_1360, rdx_1360, rdx_1360, rdx_1460, rdx_1465);
+				rdx_rax_1402 = ϕ(rdx_rax_1379, rdx_rax_1379, rdx_rax_1446, rdx_rax_1446, rdx_rax_1461, rdx_rax_1461);
+				edx_eax_1403 = ϕ(edx_eax_1380, edx_eax_1380, edx_eax_1447, edx_eax_1447, edx_eax_1462, edx_eax_1462);
+				SCZO_1404 = ϕ(SCZO_1381, SCZO_1381, SCZO_1451, SCZO_1453, SCZO_1453, SCZO_1469);
+				rbx_1405 = ϕ(rbx_1365, rbx_1365, rbx_1365, rbx_1365, rbx_1455, rbx_1455);
+				rsi_1406 = ϕ(rsi_1382, rsi_1382, rsi_1382, rsi_1382, rsi_1382, rsi_1466);
+				rdi_1407 = ϕ(rdi_1383, rdi_1383, rdi_1383, rdi_1383, rdi_1383, rdi_1470);
+				r12_1408 = r8_1391;
+				r12d_1409 = (word32) r12_1408;
+				r9_1410 = 0xCCCCCCCD;
+				r9d_1411 = (word32) r9_1410;
+				do
+				{
+					r10_1412 = ϕ(r10_1390, r10_1430);
+					r12_1413 = ϕ(r12_1408, r12_1415);
+					rax_1414 = r10_1412;
+					r12_1415 = r12_1413 - 0x01;
+					r12d_1416 = (word32) r12_1415;
+					rdx_rax_1417 = rcx_1373 *u rax_1414;
+					rdx_1418 = SLICE(rdx_rax_1417, word64, 64);
+					rdx_1419 = rdx_1418 >>u 0x03;
+					rax_1420 = rdx_1419 + rdx_1419 * 0x04;
+					rax_1421 = rax_1420 + rax_1420;
+					r10_1422 = r10_1412 - rax_1421;
+					r10d_1423 = (word32) r10_1422;
+					r10_1424 = (uint64) (r10d_1423 + 0x30);
+					r10b_1425 = (byte) r10_1424;
+					SZO_1426 = cond(rdx_1419 & rdx_1419);
+					Z_1427 = SZO_1426;
+					C_1428 = false;
+					Mem1429[r12_1415 + 0x00:byte] = r10b_1425;
+					r10_1430 = rdx_1419;
+					r10d_1431 = (word32) r10_1430;
+					r10b_1432 = (byte) r10_1430;
+				} while (Test(NE,Z_1427));
+l000000000040C237:
+				dwLoc74_148 = ϕ(dwLoc74, dwLoc74_1330);
+				qwLoc90_149 = ϕ(qwLoc90, qwLoc90_1331);
+				rLoc4_150 = ϕ(rLoc4_671, rLoc4);
+				rLoc3_151 = ϕ(rLoc3_672, rLoc3);
+				qwLoc80_152 = ϕ(qwLoc80_673, qwLoc80_1332);
+				rLoc90_153 = ϕ(rLoc90_674, rLoc90);
+				wLoc6A_154 = ϕ(wLoc6A_675, wLoc6A);
+				wLoc6C_155 = ϕ(wLoc6C_676, wLoc6C);
+				rLoc2_156 = ϕ(rLoc2_677, rLoc2);
+				qwLoc68_157 = ϕ(qwLoc68_678, qwLoc68);
+				rLoc1_158 = ϕ(rLoc1_679, rLoc1);
+				rLocD0_159 = ϕ(rLocD0_680, rLocD0);
+				qwLoc98_160 = ϕ(qwLoc98, qwLoc98_1387);
+				r10b_161 = ϕ(r10b_629, r10b_1432);
+				r10d_162 = ϕ(r10d_630, r10d_1431);
+				dil_163 = ϕ(dil_124, dil_1335);
+				sil_164 = ϕ(sil_631, sil_1336);
+				P_165 = ϕ(P_681, P_94);
+				CZP_166 = ϕ(CZP_682, CZP_1298);
+				esi_167 = ϕ(esi_683, esi_1370);
+				edi_168 = ϕ(edi_123, edi_1371);
+				r10_169 = ϕ(r10_684, r10_1430);
+				S_170 = ϕ(S_685, S_1302);
+				r11_171 = ϕ(r11_686, r11_1340);
+				r8_172 = ϕ(r8_717, r8_1391);
+				r15_173 = ϕ(r15_712, r15_129);
+				r15d_174 = ϕ(r15d_713, r15d_130);
+				r9_175 = ϕ(r9_87, r9_1410);
+				r9d_176 = ϕ(r9d_86, r9d_1411);
+				r12_177 = ϕ(r12_710, r12_1415);
+				r12d_178 = ϕ(r12d_711, r12d_1416);
+				r14_179 = ϕ(r14_688, r14_1346);
+				r14d_180 = ϕ(r14d_689, r14d_1347);
+				CZ_181 = ϕ(CZ_690, CZ_1348);
+				ebx_182 = ϕ(ebx_691, ebx_1392);
+				ecx_183 = ϕ(ecx_692, ecx_1372);
+				rcx_184 = ϕ(rcx_693, rcx_1373);
+				cl_185 = ϕ(cl_694, cl_1374);
+				rax_186 = ϕ(rax_716, rax_1421);
+				eax_187 = ϕ(eax_698, eax_1397);
+				ah_188 = ϕ(ah_699, ah_1398);
+				ax_189 = ϕ(ax_700, ax_1399);
+				al_190 = ϕ(al_701, al_1400);
+				rdx_191 = ϕ(rdx_709, rdx_1419);
+				edx_192 = ϕ(edx_702, edx_1361);
+				rdx_rax_193 = ϕ(rdx_rax_703, rdx_rax_1417);
+				edx_eax_194 = ϕ(edx_eax_704, edx_eax_1403);
+				dl_195 = ϕ(dl_705, dl_1364);
+				SCZO_196 = ϕ(SCZO_714, SCZO_1404);
+				rbx_197 = ϕ(rbx_706, rbx_1405);
+				rsi_198 = ϕ(rsi_708, rsi_1406);
+				rdi_199 = ϕ(rdi_715, rdi_1407);
+				SZO_201 = cond(bLocB0 & 0x04);
+				Z_202 = SZO_201;
+				C_203 = false;
+				if ((bLocB0 & 0x04) != 0x00)
+				{
+					r8_492 = r8_172 - r12_177;
+					SCZO_493 = cond(r8_492);
+					rdi_494 = r13_140;
+					r15_495 = ~0x00;
+					r15d_496 = (word32) r15_495;
+					r14_497 = r8_492;
+					r14d_498 = (word32) r14_497;
+					eax_499 = strlen(rdi_494);
+					rax_500 = DPB(rax_186, eax_499, 0);
+					rdi_501 = fp - 0x60;
+					rsi_502 = r12_177;
+					rcx_503 = 0x29;
+					rdx_504 = r14_497;
+					qwLoc98_505 = rax_500;
+					__memcpy_chk();
+					r9_550 = r12_516 + r14_514;
+					r9d_551 = (word32) r9_550;
+					r12_552 = r13_524;
+					r12d_553 = (word32) r12_552;
+					r13_554 = qwLoc98_505;
+					while (true)
+					{
+						r15_555 = ϕ(r15_523, r15_587);
+						r15d_556 = ϕ(r15d_547, r15d_588);
+						r9_557 = ϕ(r9_550, r9_615);
+						r9d_558 = ϕ(r9d_551, r9d_616);
+						r14_559 = ϕ(r14_514, r14_589);
+						r14d_560 = ϕ(r14d_539, r14d_590);
+						CZ_561 = ϕ(CZ_527, CZ_585);
+						rax_562 = ϕ(rax_510, rax_614);
+						eax_563 = ϕ(eax_508, eax_596);
+						ah_564 = ϕ(ah_540, ah_599);
+						ax_565 = ϕ(ax_541, ax_600);
+						al_566 = ϕ(al_546, al_601);
+						rdx_567 = ϕ(rdx_526, rdx_611);
+						rdx_rax_568 = ϕ(rdx_rax_193, rdx_rax_597);
+						SCZO_569 = ϕ(SCZO_519, SCZO_610);
+						rbp_570 = ϕ(rbp_515, rbp_583);
+						rsi_571 = ϕ(rsi_513, rsi_612);
+						rdi_572 = ϕ(rdi_507, rdi_613);
+						edx_573 = (word32) Mem0[rbp_570 + 0x00:byte];
+						rdx_574 = DPB(rdx_567, edx_573, 0);
+						rdx_rax_575 = DPB(rdx_rax_568, edx_573, 64);
+						edx_eax_576 = SEQ(edx_573, eax_563);
+						dl_577 = (byte) edx_573;
+						SZO_578 = cond(dl_577 & dl_577);
+						Z_579 = SZO_578;
+						C_580 = false;
+						if ((dl_577 & dl_577) != 0x00)
+						{
+							SCZO_619 = cond(dl_577 - 0x7E);
+							CZ_620 = SCZO_619;
+							r15d_621 = (word32) dl_577;
+							r15_622 = DPB(r15_555, r15d_621, 0);
+							if (dl_577 >u 0x7E)
+							{
+								r15_627 = r14_559;
+								r15d_628 = (word32) r15_627;
+							}
+							r15_623 = ϕ(r15_622, r15_627);
+							r15d_624 = ϕ(r15d_621, r15d_628);
+							rbp_625 = rbp_570 + 0x01;
+							SCZO_626 = cond(rbp_625);
+						}
+						r15_581 = ϕ(r15_555, r15_623);
+						r15d_582 = ϕ(r15d_556, r15d_624);
+						rbp_583 = ϕ(rbp_570, rbp_625);
+						SCZO_584 = cond(r15_581 - r14_559);
+						CZ_585 = SCZO_584;
+						rax_586 = fp - 0x60;
+						if (r15_581 >u r14_559)
+						{
+							r15_617 = r14_559;
+							r15d_618 = (word32) r15_617;
+						}
+						r15_587 = ϕ(r15_581, r15_617);
+						r15d_588 = ϕ(r15d_582, r15d_618);
+						r14_589 = r14_559 - r15_587;
+						r14d_590 = (word32) r14_589;
+						r9_591 = r9_557 - r15_587;
+						rdx_592 = r15_587;
+						rsi_593 = fp - 0x60 + r14_589;
+						rdi_594 = r9_591;
+						rax_595 = memcpy(rdi_594, rsi_593, rdx_592);
+						eax_596 = (word32) rax_595;
+						rdx_rax_597 = SEQ(rdx_592, rax_595);
+						edx_eax_598 = rax_595;
+						ah_599 = SLICE(rax_595, byte, 8);
+						ax_600 = (word16) rax_595;
+						al_601 = (byte) rax_595;
+						SZO_602 = cond(r14_589 & r14_589);
+						Z_603 = SZO_602;
+						C_604 = false;
+						r9_605 = rax_595;
+						r9d_606 = (word32) r9_605;
+						if ((r14_589 & r14_589) == 0x00)
+							break;
+						r9_609 = r9_605 - r13_554;
+						SCZO_610 = cond(r9_609);
+						rdx_611 = r13_554;
+						rsi_612 = r12_552;
+						rdi_613 = r9_609;
+						rax_614 = memcpy(rdi_613, rsi_612, rdx_611);
+						r9_615 = rax_614;
+						r9d_616 = (word32) r9_615;
+					}
+					r12_607 = rax_595;
+					r12d_608 = (word32) r12_607;
+				}
+				qwLoc98_204 = ϕ(qwLoc98_505, qwLoc98_160);
+				r10b_205 = ϕ(r10b_549, r10b_161);
+				r10d_206 = ϕ(r10d_548, r10d_162);
+				dil_207 = ϕ(dil_545, dil_163);
+				sil_208 = ϕ(sil_544, sil_164);
+				P_209 = ϕ(P_542, P_165);
+				CZP_210 = ϕ(CZP_538, CZP_166);
+				esi_211 = ϕ(esi_536, esi_167);
+				edi_212 = ϕ(edi_532, edi_168);
+				r10_213 = ϕ(r10_531, r10_169);
+				S_214 = ϕ(S_529, S_170);
+				r11_215 = ϕ(r11_525, r11_171);
+				fs_216 = ϕ(fs_521, fs_73);
+				r8_217 = ϕ(r8_520, r8_172);
+				r13_218 = ϕ(r13_554, r13_140);
+				r15_219 = ϕ(r15_587, r15_173);
+				r15d_220 = ϕ(r15d_588, r15d_174);
+				r9_221 = ϕ(r9_605, r9_175);
+				r9d_222 = ϕ(r9d_606, r9d_176);
+				r12_223 = ϕ(r12_607, r12_177);
+				r12d_224 = ϕ(r12d_608, r12d_178);
+				r14_225 = ϕ(r14_589, r14_179);
+				r14d_226 = ϕ(r14d_590, r14d_180);
+				CZ_227 = ϕ(CZ_585, CZ_181);
+				ebx_228 = ϕ(ebx_530, ebx_182);
+				ecx_229 = ϕ(ecx_522, ecx_183);
+				rcx_230 = ϕ(rcx_518, rcx_184);
+				cl_231 = ϕ(cl_533, cl_185);
+				rax_232 = ϕ(rax_595, rax_186);
+				eax_233 = ϕ(eax_596, eax_187);
+				ah_234 = ϕ(ah_599, ah_188);
+				ax_235 = ϕ(ax_600, ax_189);
+				al_236 = ϕ(al_601, al_190);
+				rdx_237 = ϕ(rdx_592, rdx_191);
+				edx_238 = ϕ(edx_573, edx_192);
+				rdx_rax_239 = ϕ(rdx_rax_597, rdx_rax_193);
+				edx_eax_240 = ϕ(edx_eax_598, edx_eax_194);
+				dl_241 = ϕ(dl_577, dl_195);
+				SCZO_242 = ϕ(SCZO_584, SCZO_196);
+				rbx_243 = ϕ(rbx_517, rbx_197);
+				rbp_244 = ϕ(rbp_583, rbp_108);
+				rsi_245 = ϕ(rsi_593, rsi_198);
+				rdi_246 = ϕ(rdi_594, rdi_199);
+				rsp_247 = ϕ(rsp_506, rsp_58);
+				SZO_248 = cond(bLocB0 & 0x80);
+				Z_249 = SZO_248;
+				C_250 = false;
+				if ((bLocB0 & 0x80) == 0x00)
+				{
+l000000000040C2BA:
+					r14_276 = ϕ(r14_225, r14_386, r14_329, r14_329);
+					r14d_277 = ϕ(r14d_226, r14d_387, r14d_330, r14d_330);
+					CZ_278 = ϕ(CZ_227, CZ_388, CZ_331, CZ_331);
+					ebx_279 = ϕ(ebx_228, ebx_389, ebx_332, ebx_332);
+					ecx_280 = ϕ(ecx_229, ecx_407, ecx_333, ecx_333);
+					rcx_281 = ϕ(rcx_230, rcx_406, rcx_334, rcx_334);
+					cl_282 = ϕ(cl_231, cl_231, cl_335, cl_335);
+					qwLocB8_283 = ϕ(qwLocB8_147, qwLocB8_147, qwLocB8_372, qwLocB8_383);
+					rdx_284 = ϕ(rdx_237, rdx_390, rdx_364, rdx_342);
+					edx_285 = ϕ(edx_238, edx_391, edx_365, edx_343);
+					dl_286 = ϕ(dl_241, dl_392, dl_368, dl_346);
+					SCZO_287 = ϕ(SCZO_242, SCZO_393, SCZO_369, SCZO_347);
+					rbx_288 = ϕ(rbx_243, rbx_394, rbx_348, rbx_348);
+					rsi_289 = ϕ(rsi_245, rsi_245, rsi_349, rsi_349);
+					rax_290 = qwLocB8_283;
+					rdi_291 = qwLoc28_44;
+					rdi_292 = rdi_291 ^ Mem0[fs_216:0x28:word64];
+					SZO_293 = cond(rdi_292);
+					Z_294 = SZO_293;
+					C_295 = false;
+					Mem296[rax_290 + 0x00:byte] = 0x00;
+					rax_297 = r12_223;
+					eax_298 = (word32) rax_297;
+					rdx_rax_299 = SEQ(rdx_284, rax_297);
+					edx_eax_300 = rax_297;
+					ah_301 = SLICE(rax_297, byte, 8);
+					ax_302 = (word16) rax_297;
+					al_303 = (byte) rax_297;
+					if (rdi_292 == 0x00)
+					{
+						rsp_304 = fp - 0x18;
+						SCZO_305 = cond(fp - 0x18);
+						rbx_307 = qwLoc18;
+						rsp_308 = fp - 0x10;
+						rbp_310 = qwLoc10;
+						rsp_311 = fp - 0x08;
+						rsp_313 = qwLoc08;
+						rsp_314 = rsp_313 + 0x08;
+						rbp_315 = Mem296[rsp_314 + 0x00:word64];
+						rsp_316 = rsp_314 + 0x08;
+						rsi_317 = Mem296[rsp_316 + 0x00:word64];
+						rsp_318 = rsp_316 + 0x08;
+						rdi_319 = Mem296[rsp_318 + 0x00:word64];
+						rsp_320 = rsp_318 + 0x08;
+						return rax_297;
+					}
+					__stack_chk_fail();
 l000000000040C7EB:
-	r14_251 = PHI(r14_386, r14_276)
-	r14d_252 = PHI(r14d_387, r14d_277)
-	CZ_253 = PHI(CZ_388, CZ_278)
-	ebx_254 = PHI(ebx_389, ebx_279)
-	ecx_255 = PHI(ecx_407, ecx_280)
-	rcx_256 = PHI(rcx_414, rcx_281)
-	cl_257 = PHI(cl_231, cl_282)
-	qwLocB8_258 = PHI(qwLocB8_415, qwLocB8_283)
-	SZO_259 = PHI(SZO_417, SZO_293)
-	Z_260 = PHI(Z_418, Z_294)
-	C_261 = PHI(C_419, C_295)
-	rax_262 = PHI(rax_399, rax_297)
-	eax_263 = PHI(eax_400, eax_298)
-	ah_264 = PHI(ah_403, ah_301)
-	ax_265 = PHI(ax_404, ax_302)
-	al_266 = PHI(al_405, al_303)
-	SCZO_267 = PHI(SCZO_393, SCZO_287)
-	rbx_268 = PHI(rbx_394, rbx_288)
-	rsi_269 = PHI(rsi_416, rsi_289)
-	rdi_270 = PHI(rdi_246, rdi_292)
-	rdx_271 = qwLocB8_258
-	edx_272 = (word32) rdx_271 (alias)
-	rdx_rax_273 = SEQ(rdx_271, rax_262) (alias)
-	edx_eax_274 = rdx_271 (alias)
-	dl_275 = (byte) rdx_271 (alias)
-	goto l000000000040C29A
-l000000000040C7F5:
-	qwLocB8_383 = rdx_342
-	goto l000000000040C2BA
-l000000000040C7FF:
-	rcx_1686 = 0x00
-	ecx_1687 = (word32) rcx_1686 (alias)
-	cl_1688 = (byte) rcx_1686 (alias)
-	SZO_1689 = cond(0x00)
-	C_1690 = false
-	goto l000000000040C790
-fn000000000040BD70_exit:
-	use rsp_320 (=> rspOut)
-	use rbp_315 (=> rbpOut)
-	use r8_217 (=> r8Out)
-	use r9_221 (=> r9Out)
-	use r11_215 (=> r11Out)
-	use r13_218 (=> r13Out)
-	use r14d_277 (=> r14dOut)
-	use r15_219 (=> r15Out)
+					r14_251 = ϕ(r14_386, r14_276);
+					r14d_252 = ϕ(r14d_387, r14d_277);
+					CZ_253 = ϕ(CZ_388, CZ_278);
+					ebx_254 = ϕ(ebx_389, ebx_279);
+					ecx_255 = ϕ(ecx_407, ecx_280);
+					rcx_256 = ϕ(rcx_414, rcx_281);
+					cl_257 = ϕ(cl_231, cl_282);
+					qwLocB8_258 = ϕ(qwLocB8_415, qwLocB8_283);
+					SZO_259 = ϕ(SZO_417, SZO_293);
+					Z_260 = ϕ(Z_418, Z_294);
+					C_261 = ϕ(C_419, C_295);
+					rax_262 = ϕ(rax_399, rax_297);
+					eax_263 = ϕ(eax_400, eax_298);
+					ah_264 = ϕ(ah_403, ah_301);
+					ax_265 = ϕ(ax_404, ax_302);
+					al_266 = ϕ(al_405, al_303);
+					SCZO_267 = ϕ(SCZO_393, SCZO_287);
+					rbx_268 = ϕ(rbx_394, rbx_288);
+					rsi_269 = ϕ(rsi_416, rsi_289);
+					rdi_270 = ϕ(rdi_246, rdi_292);
+					rdx_271 = qwLocB8_258;
+					edx_272 = (word32) rdx_271;
+					rdx_rax_273 = SEQ(rdx_271, rax_262);
+					edx_eax_274 = rdx_271;
+					dl_275 = (byte) rdx_271;
+					goto l000000000040C29A;
+				}
+				SCZO_384 = cond(ebx_228 - ~0x00);
+				Z_385 = SCZO_384;
+				if (ebx_228 == ~0x00)
+				{
+					rdx_453 = qwLocA8_40;
+					edx_454 = (word32) rdx_453;
+					rdx_rax_455 = SEQ(rdx_453, rax_232);
+					edx_eax_456 = rdx_453;
+					dl_457 = (byte) rdx_453;
+					SCZO_458 = cond(rdx_453 - 0x01);
+					CZ_459 = SCZO_458;
+					if (rdx_453 >u 0x01)
+					{
+						r14_460 = (uint64) dwLocAC_56;
+						r14d_461 = (word32) r14_460;
+						rbx_462 = 0x01;
+						ebx_463 = (word32) rbx_462;
+						rax_464 = 0x01;
+						eax_465 = (word32) rax_464;
+						rdx_rax_466 = SEQ(rdx_453, rax_464);
+						edx_eax_467 = rax_464;
+						ah_468 = SLICE(rax_464, byte, 8);
+						ax_469 = (word16) rax_464;
+						al_470 = (byte) rax_464;
+						do
+						{
+							ebx_471 = ϕ(ebx_463, ebx_485);
+							Z_472 = ϕ(Z_385, Z_487);
+							rax_473 = ϕ(rax_464, rax_475);
+							rbx_474 = ϕ(rbx_462, rbx_484);
+							rax_475 = rax_473 *s r14_460;
+							eax_476 = (word32) rax_475;
+							rdx_rax_477 = SEQ(rdx_453, rax_475);
+							edx_eax_478 = rax_475;
+							ah_479 = SLICE(rax_475, byte, 8);
+							ax_480 = (word16) rax_475;
+							al_481 = (byte) rax_475;
+							SCZO_482 = cond(rdx_453 - rax_475);
+							CZ_483 = SCZO_482;
+							if (rdx_453 <=u rax_475)
+								goto l000000000040C252;
+							rbx_484 = (uint64) (ebx_471 + 0x01);
+							ebx_485 = (word32) rbx_484;
+							SCZO_486 = cond(ebx_485 - 0x08);
+							Z_487 = SCZO_486;
+						} while (ebx_485 != 0x08);
+					}
+					else
+					{
+						rbx_488 = 0x00;
+						ebx_489 = (word32) rbx_488;
+						SZO_490 = cond(ebx_489);
+						C_491 = false;
+					}
+				}
+l000000000040C252:
+				r14_386 = ϕ(r14_225, r14_460, r14_460, r14_225);
+				r14d_387 = ϕ(r14d_226, r14d_461, r14d_461, r14d_226);
+				CZ_388 = ϕ(CZ_227, CZ_483, CZ_483, CZ_459);
+				ebx_389 = ϕ(ebx_228, ebx_471, ebx_485, ebx_489);
+				rdx_390 = ϕ(rdx_237, rdx_453, rdx_453, rdx_453);
+				edx_391 = ϕ(edx_238, edx_454, edx_454, edx_454);
+				dl_392 = ϕ(dl_241, dl_457, dl_457, dl_457);
+				SCZO_393 = ϕ(SCZO_384, SCZO_482, SCZO_486, SCZO_458);
+				rbx_394 = ϕ(rbx_243, rbx_474, rbx_484, rbx_488);
+				rax_395 = (uint64) dwLocB0_38;
+				eax_396 = (word32) rax_395;
+				rcx_397 = (uint64) ebx_389;
+				ecx_398 = (word32) rcx_397;
+				rax_399 = (uint64) (eax_396 & 0x0100);
+				eax_400 = (word32) rax_399;
+				rdx_rax_401 = SEQ(rdx_390, rax_399);
+				edx_eax_402 = rax_399;
+				ah_403 = SLICE(rax_399, byte, 8);
+				ax_404 = (word16) rax_399;
+				al_405 = (byte) rax_399;
+				rcx_406 = (uint64) (ecx_398 | eax_400);
+				ecx_407 = (word32) rcx_406;
+				SZO_408 = cond(ecx_407);
+				Z_409 = SZO_408;
+				C_410 = false;
+				if (ecx_407 == 0x00)
+					goto l000000000040C2BA;
+				SZO_411 = cond(bLocB0 & 0x40);
+				Z_412 = SZO_411;
+				C_413 = false;
+				if ((bLocB0 & 0x40) != 0x00)
+				{
+					rcx_449 = qwLocA0_35;
+					rsi_450 = rcx_449 + 0x0289;
+					Mem451[rcx_449 + 0x0288:byte] = 0x20;
+					qwLocB8_452 = rsi_450;
+				}
+				rcx_414 = ϕ(rcx_406, rcx_449);
+				qwLocB8_415 = ϕ(qwLocB8_147, qwLocB8_452);
+				rsi_416 = ϕ(rsi_245, rsi_450);
+				SZO_417 = cond(ebx_389 & ebx_389);
+				Z_418 = SZO_417;
+				C_419 = false;
+				if ((ebx_389 & ebx_389) == 0x00)
+					goto l000000000040C7EB;
+				rcx_420 = qwLocB8_415;
+				rdx_421 = rcx_420 + 0x01;
+				edx_422 = (word32) rdx_421;
+				rdx_rax_423 = SEQ(rdx_421, rax_399);
+				edx_eax_424 = rdx_421;
+				dl_425 = (byte) rdx_421;
+				rcx_426 = (uint64) dwLoc78_48;
+				ecx_427 = (word32) rcx_426;
+				SZO_428 = cond(ecx_427 & ecx_427);
+				Z_429 = SZO_428;
+				C_430 = false;
+				if ((ecx_427 & ecx_427) == 0x00)
+				{
+					SCZO_444 = cond(ebx_389 - 0x01);
+					Z_445 = SCZO_444;
+					rcx_446 = 0x6B;
+					ecx_447 = (word32) rcx_446;
+					cl_448 = (byte) rcx_446;
+					if (ebx_389 == 0x01)
+						goto l000000000040C293;
+				}
+				Z_438 = ϕ(Z_429, Z_445);
+				SCZO_439 = ϕ(SCZO_393, SCZO_444);
+				rcx_440 = (int64) ebx_389;
+				ecx_441 = (word32) Mem0[rcx_440 + 4284280:byte];
+				rcx_442 = DPB(rcx_440, ecx_441, 0);
+				cl_443 = (byte) ecx_441;
+l000000000040C293:
+				ecx_431 = ϕ(ecx_441, ecx_447);
+				rcx_432 = ϕ(rcx_442, rcx_446);
+				cl_433 = ϕ(cl_443, cl_448);
+				Z_434 = ϕ(Z_438, Z_445);
+				SCZO_435 = ϕ(SCZO_439, SCZO_444);
+				rdi_436 = qwLocB8_415;
+				Mem437[rdi_436 + 0x00:byte] = cl_433;
+l000000000040C29A:
+				r14_329 = ϕ(r14_386, r14_251);
+				r14d_330 = ϕ(r14d_387, r14d_252);
+				CZ_331 = ϕ(CZ_388, CZ_253);
+				ebx_332 = ϕ(ebx_389, ebx_254);
+				ecx_333 = ϕ(ecx_431, ecx_255);
+				rcx_334 = ϕ(rcx_432, rcx_256);
+				cl_335 = ϕ(cl_433, cl_257);
+				qwLocB8_336 = ϕ(qwLocB8_415, qwLocB8_258);
+				rax_337 = ϕ(rax_399, rax_262);
+				eax_338 = ϕ(eax_400, eax_263);
+				ah_339 = ϕ(ah_403, ah_264);
+				ax_340 = ϕ(ax_404, ax_265);
+				al_341 = ϕ(al_405, al_266);
+				rdx_342 = ϕ(rdx_421, rdx_271);
+				edx_343 = ϕ(edx_422, edx_272);
+				rdx_rax_344 = ϕ(rdx_rax_423, rdx_rax_273);
+				edx_eax_345 = ϕ(edx_eax_424, edx_eax_274);
+				dl_346 = ϕ(dl_425, dl_275);
+				SCZO_347 = ϕ(SCZO_435, SCZO_267);
+				rbx_348 = ϕ(rbx_394, rbx_268);
+				rsi_349 = ϕ(rsi_416, rsi_269);
+				rdi_350 = ϕ(rdi_436, rdi_270);
+				SZO_351 = cond(eax_338 & eax_338);
+				Z_352 = SZO_351;
+				C_353 = false;
+				if ((eax_338 & eax_338) != 0x00)
+				{
+					rax_354 = (uint64) dwLoc78_48;
+					eax_355 = (word32) rax_354;
+					rdx_rax_356 = SEQ(rdx_342, rax_354);
+					edx_eax_357 = rax_354;
+					SZO_358 = cond(eax_355 & eax_355);
+					Z_359 = SZO_358;
+					C_360 = false;
+					if ((eax_355 & eax_355) != 0x00)
+					{
+						SZO_373 = cond(ebx_332 & ebx_332);
+						Z_374 = SZO_373;
+						C_375 = false;
+						if ((ebx_332 & ebx_332) != 0x00)
+						{
+							Mem376[rdx_342 + 0x00:byte] = 0x69;
+							rdx_377 = rdx_342 + 0x01;
+							edx_378 = (word32) rdx_377;
+							rdx_rax_379 = SEQ(rdx_377, rax_354);
+							edx_eax_380 = rdx_377;
+							dl_381 = (byte) rdx_377;
+							SCZO_382 = cond(rdx_377);
+						}
+					}
+					SZO_361 = ϕ(SZO_358, SZO_373, SZO_373);
+					Z_362 = ϕ(Z_359, Z_374, Z_374);
+					C_363 = ϕ(C_360, C_375, C_375);
+					rdx_364 = ϕ(rdx_342, rdx_342, rdx_377);
+					edx_365 = ϕ(edx_343, edx_343, edx_378);
+					rdx_rax_366 = ϕ(rdx_rax_356, rdx_rax_356, rdx_rax_379);
+					edx_eax_367 = ϕ(edx_eax_357, edx_eax_357, edx_eax_380);
+					dl_368 = ϕ(dl_346, dl_346, dl_381);
+					SCZO_369 = ϕ(SCZO_347, SCZO_347, SCZO_382);
+					rax_370 = rdx_364 + 0x01;
+					Mem371[rdx_364 + 0x00:byte] = 66;
+					qwLocB8_372 = rax_370;
+				}
+				else
+					qwLocB8_383 = rdx_342;
+				goto l000000000040C2BA;
+			}
+			rsi_1519 = (uint64) dwLocAC_56;
+			sil_1520 = (byte) rsi_1519;
+			esi_1521 = (word32) rsi_1519;
+			SCZO_1522 = cond(r10_1301 - rsi_1519);
+			C_1523 = SCZO_1522;
+			if (Test(ULT,C_1523))
+			{
+				r8_1740 = qwLocB8_147;
+				rbx_1741 = 0x00;
+				ebx_1742 = (word32) rbx_1741;
+				SZO_1743 = cond(ebx_1742);
+				C_1744 = false;
+				goto l000000000040C530;
+			}
+			rbx_1524 = 0x00;
+			ebx_1525 = (word32) rbx_1524;
+			SZO_1526 = cond(ebx_1525);
+			C_1527 = false;
+			r12_1528 = (uint64) dwLocAC_56;
+			r12d_1529 = (word32) r12_1528;
+l000000000040C17D:
+			r10_1530 = ϕ(r10_1301, r10_1550);
+			r14_1531 = ϕ(r14_66, r14_1569);
+			ebx_1532 = ϕ(ebx_1525, ebx_1585);
+			ecx_1533 = ϕ(ecx_1304, ecx_1578);
+			SZO_1534 = ϕ(SZO_1526, SZO_1581);
+			Z_1535 = ϕ(Z_1328, Z_1593);
+			C_1536 = ϕ(C_1527, C_1583);
+			edx_1537 = ϕ(edx_1313, edx_1559);
+			rbx_1538 = ϕ(rbx_1524, rbx_1584);
+			rdi_1539 = ϕ(rdi_1319, rdi_1570);
+			rax_1540 = r10_1530;
+			rdx_1541 = 0x00;
+			rdx_rax_1542 = SEQ(rdx_1541, rax_1540);
+			v48_1543 = rdx_rax_1542;
+			rdx_1544 = (uint64) (v48_1543 % rsi_1519);
+			rax_1545 = (uint64) (v48_1543 /u rsi_1519);
+			r8_1546 = rax_1545;
+			eax_1547 = rdx_1544 + rdx_1544 * 0x04;
+			rax_1548 = DPB(rax_1545, eax_1547, 0);
+			rdx_1549 = 0x00;
+			r10_1550 = r8_1546;
+			r10d_1551 = (word32) r10_1550;
+			r10b_1552 = (byte) r10_1550;
+			eax_1553 = rdi_1539 + rax_1548 * 0x02;
+			edx_eax_1554 = SEQ(edx_1537, eax_1553);
+			rdi_1555 = (uint64) ecx_1533;
+			edi_1556 = (word32) rdi_1555;
+			rdi_1557 = (uint64) (edi_1556 >> 0x01);
+			v50_1558 = edx_eax_1554;
+			edx_1559 = (uint32) (v50_1558 % r12d_1529);
+			rdx_1560 = DPB(rdx_1549, edx_1559, 0);
+			eax_1561 = (uint32) (v50_1558 /u r12d_1529);
+			rax_1562 = DPB(rax_1548, eax_1561, 0);
+			rdx_rax_1563 = DPB(rdx_rax_1542, eax_1561, 0);
+			edx_eax_1564 = SEQ(edx_1559, eax_1561);
+			ah_1565 = SLICE(eax_1561, byte, 8);
+			ax_1566 = (word16) eax_1561;
+			al_1567 = (byte) eax_1561;
+			r14d_1568 = rdi_1557 + rdx_1560 * 0x02;
+			r14_1569 = DPB(r14_1531, r14d_1568, 0);
+			rdi_1570 = (uint64) eax_1561;
+			edi_1571 = (word32) rdi_1570;
+			dil_1572 = (byte) rdi_1570;
+			rcx_1573 = (uint64) (ecx_1533 + r14d_1568);
+			ecx_1574 = (word32) rcx_1573;
+			cl_1575 = (byte) rcx_1573;
+			SCZO_1576 = cond(r12d_1529 - r14d_1568);
+			CZ_1577 = SCZO_1576;
+			if (Test(ULE,CZ_1577))
+			{
+				SCZO_1723 = cond(r12d_1529 - ecx_1574);
+				C_1724 = SCZO_1723;
+				rcx_1725 = (uint64) (0x00 - C_1724);
+				ecx_1726 = (word32) rcx_1725;
+				rcx_1727 = (uint64) ~ecx_1726;
+				ecx_1728 = (word32) rcx_1727;
+				rcx_1729 = (uint64) (ecx_1728 + 0x03);
+				ecx_1730 = (word32) rcx_1729;
+				cl_1731 = (byte) rcx_1729;
+				SCZO_1732 = cond(ecx_1730);
+			}
+			else
+			{
+				SZO_1733 = cond(ecx_1574 & ecx_1574);
+				Z_1734 = SZO_1733;
+				C_1735 = false;
+				cl_1736 = Test(NE,Z_1734);
+				ecx_1737 = (word32) cl_1736;
+				rcx_1738 = DPB(rcx_1573, ecx_1737, 0);
+				cl_1739 = (byte) ecx_1737;
+			}
+			ecx_1578 = ϕ(ecx_1730, ecx_1737);
+			rcx_1579 = ϕ(rcx_1729, rcx_1738);
+			cl_1580 = ϕ(cl_1731, cl_1739);
+			SZO_1581 = ϕ(SZO_1534, SZO_1733);
+			Z_1582 = ϕ(Z_1535, Z_1734);
+			C_1583 = ϕ(C_1724, C_1735);
+			rbx_1584 = (uint64) (ebx_1532 + 0x01);
+			ebx_1585 = (word32) rbx_1584;
+			SCZO_1586 = cond(rsi_1519 - r8_1546);
+			CZ_1587 = SCZO_1586;
+			if (Test(ULE,CZ_1587))
+			{
+				SCZO_1592 = cond(ebx_1585 - 0x08);
+				Z_1593 = SCZO_1592;
+				if (Test(NE,Z_1593))
+					goto l000000000040C17D;
+				CZ_1588 = ϕ(CZ_1587, CZ_1595);
+				Z_1589 = ϕ(Z_1593, Z_1582);
+				SCZO_1590 = ϕ(SCZO_1592, SCZO_1594);
+				r8_1591 = qwLocB8_147;
+				goto l000000000040C530;
+			}
+			SCZO_1594 = cond(r8_1546 - 0x09);
+			CZ_1595 = SCZO_1594;
+			if (Test(UGT,CZ_1595))
+				break;
+			SCZO_1596 = cond(dwLoc98_32 - 0x01);
+			Z_1597 = SCZO_1596;
+			if (Test(NE,Z_1597))
+			{
+				r12_1694 = (uint64) dwLoc98_32;
+				r12d_1695 = (word32) r12_1694;
+				SZO_1696 = cond(ecx_1578 & ecx_1578);
+				dl_1697 = Test(GT,SZO_1696);
+				edx_1698 = DPB(edx_1559, dl_1697, 0);
+				SZO_1699 = cond(r12d_1695 & r12d_1695);
+				Z_1700 = SZO_1699;
+				sil_1701 = Test(EQ,Z_1700);
+				esi_1702 = DPB(esi_1521, sil_1701, 0);
+				rdx_1703 = (uint64) (edx_1698 & esi_1702);
+				edx_1704 = (word32) rdx_1703;
+				rdx_rax_1705 = SEQ(rdx_1703, rax_1562);
+				edx_eax_1706 = rdx_1703;
+				dl_1707 = (byte) rdx_1703;
+				SZO_1708 = cond(edx_1704);
+				C_1709 = false;
+			}
+			else
+			{
+				rdx_1710 = (uint64) eax_1561;
+				edx_1711 = (word32) rdx_1710;
+				rdx_1712 = (uint64) (edx_1711 & 0x01);
+				edx_1713 = (word32) rdx_1712;
+				rdx_1714 = (uint64) (edx_1713 + ecx_1578);
+				edx_1715 = (word32) rdx_1714;
+				SCZO_1716 = cond(edx_1715 - 0x02);
+				SZO_1717 = SCZO_1716;
+				dl_1718 = Test(GT,SZO_1717);
+				edx_1719 = DPB(edx_1715, dl_1718, 0);
+				rdx_1720 = DPB(rdx_1714, dl_1718, 0);
+				rdx_rax_1721 = DPB(rdx_rax_1563, dl_1718, 64);
+				edx_eax_1722 = DPB(edx_eax_1564, dl_1718, 32);
+			}
+			sil_1598 = ϕ(sil_1701, sil_1520);
+			esi_1599 = ϕ(esi_1702, esi_1521);
+			r12_1600 = ϕ(r12_1694, r12_1528);
+			r12d_1601 = ϕ(r12d_1695, r12d_1529);
+			rdx_1602 = ϕ(rdx_1703, rdx_1720);
+			edx_1603 = ϕ(edx_1704, edx_1719);
+			rdx_rax_1604 = ϕ(rdx_rax_1705, rdx_rax_1721);
+			edx_eax_1605 = ϕ(edx_eax_1706, edx_eax_1722);
+			dl_1606 = ϕ(dl_1707, dl_1718);
+			SCZO_1607 = ϕ(SCZO_1596, SCZO_1716);
+			SZO_1608 = cond(dl_1606 & dl_1606);
+			Z_1609 = SZO_1608;
+			C_1610 = false;
+			if (Test(NE,Z_1609))
+			{
+				edi_1667 = rax_1562 + 0x01;
+				rdi_1668 = DPB(rdi_1570, edi_1667, 0);
+				dil_1669 = (byte) edi_1667;
+				SCZO_1670 = cond(edi_1667 - 0x0A);
+				Z_1671 = SCZO_1670;
+				if (Test(NE,Z_1671))
+					goto l000000000040C4DB;
+				r10_1672 = r8_1546 + 0x01;
+				r10d_1673 = (word32) r10_1672;
+				r10b_1674 = (byte) r10_1672;
+				SCZO_1675 = cond(r10_1672 - 0x0A);
+				Z_1676 = SCZO_1675;
+				if (Test(EQ,Z_1676))
+				{
+					r8_1677 = qwLocB8_147;
+					rcx_1678 = 0x00;
+					ecx_1679 = (word32) rcx_1678;
+					cl_1680 = (byte) rcx_1678;
+					rdi_1681 = 0x00;
+					edi_1682 = (word32) rdi_1681;
+					dil_1683 = (byte) rdi_1681;
+					SZO_1684 = cond(0x00);
+					C_1685 = false;
+					goto l000000000040C530;
+				}
+				rcx_1686 = 0x00;
+				ecx_1687 = (word32) rcx_1686;
+				cl_1688 = (byte) rcx_1686;
+				SZO_1689 = cond(0x00);
+				C_1690 = false;
+			}
+			else
+			{
+				SZO_1691 = cond(eax_1561 & eax_1561);
+				Z_1692 = SZO_1691;
+				C_1693 = false;
+				if (Test(NE,Z_1692))
+					goto l000000000040C4DB;
+			}
+			r10b_1643 = ϕ(r10b_1674, r10b_1552);
+			r10d_1644 = ϕ(r10d_1673, r10d_1551);
+			dil_1645 = ϕ(dil_1669, dil_1572);
+			edi_1646 = ϕ(edi_1667, edi_1571);
+			r10_1647 = ϕ(r10_1672, r10_1550);
+			ecx_1648 = ϕ(ecx_1687, ecx_1578);
+			rcx_1649 = ϕ(rcx_1686, rcx_1579);
+			cl_1650 = ϕ(cl_1688, cl_1580);
+			SCZO_1651 = ϕ(SCZO_1675, SCZO_1607);
+			rdi_1652 = ϕ(rdi_1668, rdi_1570);
+			SZO_1653 = cond(bLocB0 & 0x08);
+			Z_1654 = SZO_1653;
+			C_1655 = false;
+			if (Test(NE,Z_1654))
+			{
+				r8_1661 = qwLocB8_147;
+				rdi_1662 = 0x00;
+				edi_1663 = (word32) rdi_1662;
+				dil_1664 = (byte) rdi_1662;
+				SZO_1665 = cond(0x00);
+				C_1666 = false;
+				goto l000000000040C530;
+			}
+			rdi_1656 = 0x00;
+			edi_1657 = (word32) rdi_1656;
+			dil_1658 = (byte) rdi_1656;
+			SZO_1659 = cond(0x00);
+			C_1660 = false;
+l000000000040C4DB:
+			edi_1611 = ϕ(edi_1667, edi_1571, edi_1657);
+			r10_1612 = ϕ(r10_1550, r10_1550, r10_1647);
+			Z_1613 = ϕ(Z_1671, Z_1692, Z_1654);
+			SCZO_1614 = ϕ(SCZO_1670, SCZO_1607, SCZO_1651);
+			rax_1615 = qwLocA0_35;
+			rdi_1616 = (uint64) (edi_1611 + 0x30);
+			dil_1617 = (byte) rdi_1616;
+			rdx_1618 = r11_139;
+			rsi_1619 = r15_129;
+			dwLoc74_1620 = r9d_1326;
+			qwLoc90_1621 = r10_1612;
+			qwLoc80_1622 = r11_139;
+			r8_1623 = r8_1546 + 0x0287;
+			Mem1624[rax_1615 + 0x0287:byte] = dil_1617;
+			r8_1625 = r8_1623 - r11_139;
+			rdi_1626 = r8_1625;
+			rax_1627 = memcpy(rdi_1626, rsi_1619, rdx_1618);
+			r11_1628 = qwLoc80_1622;
+			r10_1629 = qwLoc90_1621;
+			r10d_1630 = (word32) r10_1629;
+			r10b_1631 = (byte) r10_1629;
+			r8_1632 = rax_1627;
+			r9_1633 = (uint64) dwLoc74_1620;
+			r9d_1634 = (word32) r9_1633;
+			rcx_1635 = 0x00;
+			ecx_1636 = (word32) rcx_1635;
+			cl_1637 = (byte) rcx_1635;
+			rdi_1638 = 0x00;
+			edi_1639 = (word32) rdi_1638;
+			dil_1640 = (byte) rdi_1638;
+			SZO_1641 = cond(0x00);
+			C_1642 = false;
+			goto l000000000040C530;
+		}
+	}
+l000000000040BE59:
+	r10b_629 = ϕ(r10b_101, r10b_101, r10b_101, r10b_1769);
+	r10d_630 = ϕ(r10d_100, r10d_100, r10d_100, r10d_1768);
+	sil_631 = ϕ(sil_96, sil_96, sil_1806, sil_96);
+	esi_632 = ϕ(esi_88, esi_88, esi_1807, esi_88);
+	r10_633 = ϕ(r10_83, r10_83, r10_83, r10_1767);
+	ecx_634 = ϕ(ecx_1763, ecx_74, ecx_74, ecx_1763);
+	rcx_635 = ϕ(rcx_1762, rcx_70, rcx_70, rcx_1762);
+	cl_636 = ϕ(cl_1764, cl_85, cl_85, cl_1764);
+	Z_637 = ϕ(Z_1760, Z_1790, Z_1803, Z_1780);
+	rax_638 = ϕ(rax_1752, rax_141, rax_1799, rax_1776);
+	eax_639 = ϕ(eax_1753, eax_132, eax_132, eax_1753);
+	ah_640 = ϕ(ah_1756, ah_92, ah_92, ah_1756);
+	ax_641 = ϕ(ax_1757, ax_93, ax_93, ax_1757);
+	al_642 = ϕ(al_1758, al_98, al_98, al_1758);
+	rdx_643 = ϕ(rdx_1749, rdx_112, rdx_1796, rdx_1773);
+	edx_644 = ϕ(edx_1750, edx_113, edx_1797, edx_1774);
+	rdx_rax_645 = ϕ(rdx_rax_1754, rdx_rax_142, rdx_rax_1800, rdx_rax_1777);
+	edx_eax_646 = ϕ(edx_eax_1755, edx_eax_143, edx_eax_1801, edx_eax_1778);
+	dl_647 = ϕ(dl_1751, dl_114, dl_1798, dl_1775);
+	SCZO_648 = ϕ(SCZO_145, SCZO_145, SCZO_145, SCZO_1779);
+	rsi_649 = ϕ(rsi_65, rsi_65, rsi_1805, rsi_65);
+	qwLoc68_650 = r12_68;
+	SZO_651 = cond(r12_68 & r12_68);
+	S_652 = SZO_651;
+	C_653 = false;
+	rLoc1_654 = (real64) qwLoc68_650;
+	if ((r12_68 & r12_68) >= 0x00)
+	{
+		qwLoc68_1283 = rbx_69;
+		SZO_1284 = cond(rbx_69 & rbx_69);
+		S_1285 = SZO_1284;
+		C_1286 = false;
+		rLoc2_1287 = (real64) qwLoc68_1283;
+		if (Test(NS,S_1285))
+			goto l000000000040BE7D;
+	}
+	else
+	{
+		rLoc1_1288 = rLoc1_654 + Mem0[0x0000000000415F08 + 0x00:real32];
+		qwLoc68_1289 = rbx_69;
+		SZO_1290 = cond(rbx_69 & rbx_69);
+		S_1291 = SZO_1290;
+		C_1292 = false;
+		rLoc2_1293 = (real64) qwLoc68_1289;
+		if (Test(NS,S_1291))
+			goto l000000000040BE7D;
+	}
+	rLoc2_1276 = ϕ(rLoc2_1287, rLoc2_1293);
+	qwLoc68_1277 = ϕ(qwLoc68_1283, qwLoc68_1289);
+	rLoc1_1278 = ϕ(rLoc1_654, rLoc1_1288);
+	S_1279 = ϕ(S_1285, S_1291);
+	SZO_1280 = ϕ(SZO_1284, SZO_1290);
+	C_1281 = ϕ(C_1286, C_1292);
+	rLoc2_1282 = rLoc2_1276 + Mem0[0x0000000000415F08 + 0x00:real32];
+l000000000040BE7D:
+	rLoc2_655 = ϕ(rLoc2_1287, rLoc2_1282, rLoc2_1293);
+	rLoc1_656 = ϕ(rLoc1_654, rLoc1_1278, rLoc1_1288);
+	rax_657 = qwLocA8_40;
+	rdx_rax_658 = SEQ(rdx_643, rax_657);
+	edx_eax_659 = rax_657;
+	qwLoc68_660 = rax_657;
+	SZO_661 = cond(rax_657 & rax_657);
+	S_662 = SZO_661;
+	C_663 = false;
+	rLoc3_664 = (real64) qwLoc68_660;
+	if ((rax_657 & rax_657) < 0x00)
+		rLoc3_1275 = rLoc3_664 + Mem0[0x0000000000415F08 + 0x00:real32];
+	rLoc3_665 = ϕ(rLoc3_664, rLoc3_1275);
+	SZO_666 = cond(bLocB0 & 0x10);
+	Z_667 = SZO_666;
+	C_668 = false;
+	rLoc2_669 = rLoc2_655 / rLoc3_665;
+	rLoc1_670 = rLoc1_656 * rLoc2_669;
+	if ((bLocB0 & 0x10) != 0x00)
+	{
+		rLoc2_721 = (real64) dwLocAC_56;
+		rbx_722 = 0x00;
+		ebx_723 = (word32) rbx_722;
+		SZO_724 = cond(ebx_723);
+		C_725 = false;
+		rLoc3_726 = rLoc3_665;
+		while (true)
+		{
+			rLoc4_728 = ϕ(rLoc4, rLoc4_739);
+			rLoc3_729 = ϕ(rLoc3_726, rLoc3_1106);
+			rLoc1_730 = ϕ(rLoc1_670, rLoc1_1107);
+			ebx_731 = ϕ(ebx_723, ebx_735);
+			Z_732 = ϕ(Z_667, Z_1101);
+			rLoc4_733 = rLoc4_728;
+			rbx_734 = (uint64) (ebx_731 + 0x01);
+			ebx_735 = (word32) rbx_734;
+			SCZO_736 = cond(ebx_735);
+			rLoc4_737 = rLoc4_733 * rLoc2_721;
+			v46_738 = rLoc4_737;
+			rLoc4_739 = rLoc1_730;
+			rLoc1_740 = v46_738;
+			CZP_741 = cond(rLoc4_739 - rLoc1_740);
+			C_742 = CZP_741;
+			if (rLoc4_739 <u rLoc1_740)
+				break;
+			SCZO_1100 = cond(ebx_735 - 0x08);
+			Z_1101 = SCZO_1100;
+			if (Test(EQ,Z_1101))
+			{
+				rLoc2_1102 = rLoc4_739;
+				rLoc1_1103 = rLoc3_729;
+				goto l000000000040BED4;
+			}
+			rLoc3_1104 = rLoc4_739;
+			v56_1105 = rLoc3_1104;
+			rLoc3_1106 = rLoc1_740;
+			rLoc1_1107 = v56_1105;
+		}
+		rLoc2_1108 = rLoc4_739;
+		rLoc1_1109 = rLoc3_729;
+l000000000040BED4:
+		rLoc2_743 = ϕ(rLoc2_1102, rLoc2_1108);
+		rLoc1_744 = ϕ(rLoc1_1103, rLoc1_1109);
+		rLoc1_745 = rLoc2_743 / rLoc1_744;
+		SCZO_746 = cond(dwLoc98_32 - 0x01);
+		Z_747 = SCZO_746;
+		rLoc2_748 = rLoc2_743;
+		if (dwLoc98_32 != 0x01)
+		{
+			rLoc2_973 = rLoc2_748;
+			rLoc2_974 = (real64) Mem0[0x0000000000415F90 + 0x00:real80];
+			CZP_975 = cond(rLoc2_974 - rLoc1_745);
+			CZ_976 = CZP_975;
+			if (Test(UGT,CZ_976))
+			{
+				rLoc2_977 = (real64) Mem0[0x0000000000415F0C + 0x00:real32];
+				v52_978 = rLoc2_977;
+				rLoc2_979 = rLoc1_745;
+				rLoc1_980 = v52_978;
+				CZP_981 = cond(rLoc2_979 - rLoc1_980);
+				C_982 = CZP_981;
+				if (Test(ULT,C_982))
+				{
+					rLoc1_1054 = rLoc2_979;
+					wLoc6A_1055 = __fstcw();
+					eax_1056 = (word32) wLoc6A_1055;
+					ah_1057 = SLICE(eax_1056, byte, 8);
+					ah_1058 = ah_1057 | 0x0C;
+					ax_1059 = DPB(ax_641, ah_1058, 8);
+					SZO_1060 = cond(ah_1058);
+					C_1061 = false;
+					wLoc6C_1062 = ax_1059;
+					rLoc2_1063 = rLoc2_979;
+					__fldcw(wLoc6C_1062);
+					qwLoc68_1064 = (int64) rLoc2_1063;
+					__fldcw(wLoc6A_1055);
+					rax_1065 = qwLoc68_1064;
+					eax_1066 = (word32) rax_1065;
+					rdx_rax_1067 = SEQ(rdx_643, rax_1065);
+					edx_eax_1068 = rax_1065;
+					ah_1069 = SLICE(rax_1065, byte, 8);
+					ax_1070 = (word16) rax_1065;
+					al_1071 = (byte) rax_1065;
+				}
+				else
+				{
+					wLoc6A_1072 = __fstcw();
+					eax_1073 = (word32) wLoc6A_1072;
+					ah_1074 = SLICE(eax_1073, byte, 8);
+					rLoc2_1075 = rLoc2_979 - rLoc1_980;
+					v61_1076 = rLoc2_1075;
+					rLoc2_1077 = rLoc1_980;
+					rLoc1_1078 = v61_1076;
+					r10_1079 = 0x00;
+					ah_1080 = ah_1074 | 0x0C;
+					ax_1081 = DPB(ax_641, ah_1080, 8);
+					wLoc6C_1082 = ax_1081;
+					__fldcw(wLoc6C_1082);
+					qwLoc68_1083 = (int64) rLoc2_1077;
+					__fldcw(wLoc6A_1072);
+					rax_1084 = qwLoc68_1083;
+					rax_1085 = rax_1084 ^ rdx_643;
+					eax_1086 = (word32) rax_1085;
+					rdx_rax_1087 = SEQ(rdx_643, rax_1085);
+					edx_eax_1088 = rax_1085;
+					ah_1089 = SLICE(rax_1085, byte, 8);
+					ax_1090 = (word16) rax_1085;
+					al_1091 = (byte) rax_1085;
+					SZO_1092 = cond(rax_1085);
+					C_1093 = false;
+				}
+				wLoc6A_983 = ϕ(wLoc6A_1055, wLoc6A_1072);
+				wLoc6C_984 = ϕ(wLoc6C_1062, wLoc6C_1082);
+				rLoc2_985 = ϕ(rLoc2_1063, rLoc2_1077);
+				qwLoc68_986 = ϕ(qwLoc68_1064, qwLoc68_1083);
+				rLoc1_987 = ϕ(rLoc1_1054, rLoc1_1078);
+				r10_988 = ϕ(r10_633, r10_1079);
+				rax_989 = ϕ(rax_1065, rax_1085);
+				eax_990 = ϕ(eax_1066, eax_1086);
+				ah_991 = ϕ(ah_1069, ah_1089);
+				ax_992 = ϕ(ax_1070, ax_1090);
+				al_993 = ϕ(al_1071, al_1091);
+				rcx_994 = (uint64) dwLoc98_32;
+				ecx_995 = (word32) rcx_994;
+				rdx_996 = 0x00;
+				edx_997 = (word32) rdx_996;
+				rdx_rax_998 = SEQ(rdx_996, rax_989);
+				edx_eax_999 = rdx_996;
+				dl_1000 = (byte) rdx_996;
+				SZO_1001 = cond(ecx_995 & ecx_995);
+				Z_1002 = SZO_1001;
+				C_1003 = false;
+				if (Test(EQ,Z_1002))
+				{
+					qwLoc68_1028 = rax_989;
+					SZO_1029 = cond(rax_989 & rax_989);
+					S_1030 = SZO_1029;
+					C_1031 = false;
+					rLoc2_1032 = (real64) qwLoc68_1028;
+					if (Test(SG,S_1030))
+						rLoc2_1053 = rLoc2_1032 + Mem0[0x0000000000415F08 + 0x00:real32];
+					rLoc2_1033 = ϕ(rLoc2_1032, rLoc2_1053);
+					rcx_1034 = 0x00;
+					ecx_1035 = (word32) rcx_1034;
+					SZO_1036 = cond(ecx_1035);
+					rdx_1037 = 0x01;
+					edx_1038 = (word32) rdx_1037;
+					rdx_rax_1039 = SEQ(rdx_1037, rax_989);
+					edx_eax_1040 = rdx_1037;
+					dl_1041 = (byte) rdx_1037;
+					CZP_1042 = cond(rLoc2_1033 - rLoc1_987);
+					Z_1043 = CZP_1042;
+					P_1044 = CZP_1042;
+					cl_1045 = Test(PE,P_1044);
+					rcx_1046 = DPB(rcx_1034, cl_1045, 0);
+					ecx_1047 = DPB(ecx_1035, cl_1045, 0);
+					if (Test(EQ,Z_1043))
+					{
+						rdx_1048 = rcx_1046;
+						edx_1049 = (word32) rdx_1048;
+						rdx_rax_1050 = SEQ(rdx_1048, rax_989);
+						edx_eax_1051 = rdx_1048;
+						dl_1052 = (byte) rdx_1048;
+					}
+				}
+				P_1004 = ϕ(P_1044, P_1044, P_94);
+				CZP_1005 = ϕ(CZP_1042, CZP_1042, CZP_981);
+				ecx_1006 = ϕ(ecx_1047, ecx_1047, ecx_995);
+				rcx_1007 = ϕ(rcx_1046, rcx_1046, rcx_994);
+				cl_1008 = ϕ(cl_1045, cl_1045, cl_636);
+				Z_1009 = ϕ(Z_1043, Z_1043, Z_1002);
+				rdx_1010 = ϕ(rdx_1037, rdx_1048, rdx_996);
+				edx_1011 = ϕ(edx_1038, edx_1049, edx_997);
+				rdx_rax_1012 = ϕ(rdx_rax_1039, rdx_rax_1050, rdx_rax_998);
+				edx_eax_1013 = ϕ(edx_eax_1040, edx_eax_1051, edx_eax_999);
+				dl_1014 = ϕ(dl_1041, dl_1052, dl_1000);
+				rax_1015 = rax_989 + rdx_1010;
+				qwLoc68_1016 = rax_1015;
+				SZO_1017 = cond(rax_1015 & rax_1015);
+				S_1018 = SZO_1017;
+				C_1019 = false;
+				rLoc2_1020 = (real64) qwLoc68_1016;
+				if (Test(NS,S_1018))
+				{
+					v60_1021 = rLoc2_1020;
+					rLoc2_1022 = rLoc1_987;
+					rLoc1_1023 = v60_1021;
+				}
+				else
+				{
+					rLoc2_1024 = rLoc2_1020 + Mem0[0x0000000000415F08 + 0x00:real32];
+					v63_1025 = rLoc2_1024;
+					rLoc2_1026 = rLoc1_987;
+					rLoc1_1027 = v63_1025;
+				}
+			}
+			else
+				rLoc2_1094 = rLoc2_974;
+		}
+		else
+		{
+			v67_1097 = rLoc2_748;
+			rLoc2_1098 = rLoc1_745;
+			rLoc1_1099 = v67_1097;
+		}
+		wLoc6A_749 = ϕ(wLoc6A_983, wLoc6A_983, wLoc6A, wLoc6A);
+		wLoc6C_750 = ϕ(wLoc6C_984, wLoc6C_984, wLoc6C, wLoc6C);
+		rLoc2_751 = ϕ(rLoc2_1022, rLoc2_1026, rLoc2_1094, rLoc2_1098);
+		qwLoc68_752 = ϕ(qwLoc68_1016, qwLoc68_1016, qwLoc68_660, qwLoc68_660);
+		rLoc1_753 = ϕ(rLoc1_1023, rLoc1_1027, rLoc1_745, rLoc1_1099);
+		P_754 = ϕ(P_1004, P_1004, P_94, P_94);
+		CZP_755 = ϕ(CZP_1005, CZP_1005, CZP_975, CZP_741);
+		r10_756 = ϕ(r10_988, r10_988, r10_633, r10_633);
+		S_757 = ϕ(S_1018, S_1018, S_662, S_662);
+		ecx_758 = ϕ(ecx_1006, ecx_1006, ecx_634, ecx_634);
+		cl_759 = ϕ(cl_1008, cl_1008, cl_636, cl_636);
+		C_760 = ϕ(C_1019, C_1019, C_742, C_742);
+		ah_761 = ϕ(ah_991, ah_991, ah_640, ah_640);
+		ax_762 = ϕ(ax_992, ax_992, ax_641, ax_641);
+		r14_763 = qwLocA0_35;
+		rdx_764 = ~0x00;
+		rcx_765 = 0x00415F1E;
+		rsi_766 = 0x01;
+		rax_767 = 0x00;
+		qwLoc80_768 = r11_139;
+		rdi_769 = r14_763;
+		rLoc90_770 = (real80) rLoc2_751;
+		rLocD0_771 = (real80) rLoc1_753;
+		eax_772 = __sprintf_chk(rdi_769, 0x01, ~0x00, 0x00415F1E);
+		rdi_773 = r14_763;
+		eax_774 = strlen(rdi_773);
+		rax_775 = DPB(rax_767, eax_774, 0);
+		r11_776 = qwLoc80_768;
+		rdx_777 = (uint64) dwLoc78_48;
+		edx_778 = (word32) rdx_777;
+		dl_779 = (byte) rdx_777;
+		r15_780 = rax_775;
+		r15d_781 = (word32) r15_780;
+		rax_782 = 0x00;
+		rLoc1_783 = (real64) rLoc90_770;
+		SZO_784 = cond(edx_778 & edx_778);
+		Z_785 = SZO_784;
+		r14_786 = r11_776 + 0x01;
+		r14d_787 = (word32) r14_786;
+		al_788 = (edx_778 & edx_778) == 0x00;
+		rax_789 = DPB(rax_782, al_788, 0);
+		rax_790 = r14_786 + 0x01 + rax_789;
+		rdx_rax_791 = SEQ(rdx_777, rax_790);
+		edx_eax_792 = rax_790;
+		SCZO_793 = cond(r15_780 - rax_790);
+		CZ_794 = SCZO_793;
+		if (r15_780 <=u rax_790)
+		{
+			SZO_963 = cond(bLocB0 & 0x08);
+			Z_964 = SZO_963;
+			C_965 = false;
+			if (Test(EQ,Z_964))
+			{
+				rLoc1_972 = rLoc1_783;
+				goto l000000000040C218;
+			}
+			rax_966 = qwLocA0_35;
+			rdx_rax_967 = SEQ(rdx_777, rax_966);
+			edx_eax_968 = rax_966;
+			SCZO_969 = cond(Mem0[rax_966 - 0x01 + r15_780:byte] - 0x30);
+			Z_970 = SCZO_969;
+			if (Test(NE,Z_970))
+			{
+				rLoc1_971 = rLoc1_783;
+				goto l000000000040C218;
+			}
+		}
+		SZO_795 = ϕ(SZO_784, SZO_963);
+		C_796 = ϕ(C_760, C_965);
+		rax_797 = ϕ(rax_790, rax_966);
+		rdx_rax_798 = ϕ(rdx_rax_791, rdx_rax_967);
+		edx_eax_799 = ϕ(edx_eax_792, edx_eax_968);
+		SCZO_800 = cond(dwLoc98_32 - 0x01);
+		Z_801 = SCZO_800;
+		rLoc1_802 = rLoc1_783 * Mem0[0x0000000000415F84 + 0x00:real32];
+		if (dwLoc98_32 != 0x01)
+		{
+			rLoc2_841 = (real64) Mem0[0x0000000000415F90 + 0x00:real80];
+			CZP_842 = cond(rLoc2_841 - rLoc1_802);
+			CZ_843 = CZP_842;
+			if (rLoc2_841 >u rLoc1_802)
+			{
+				rLoc2_844 = (real64) Mem0[0x0000000000415F0C + 0x00:real32];
+				v64_845 = rLoc2_844;
+				rLoc2_846 = rLoc1_802;
+				rLoc1_847 = v64_845;
+				CZP_848 = cond(rLoc2_846 - rLoc1_847);
+				C_849 = CZP_848;
+				if (rLoc2_846 <u rLoc1_847)
+				{
+					rLoc1_923 = rLoc2_846;
+					wLoc6A_924 = __fstcw();
+					eax_925 = (word32) wLoc6A_924;
+					ah_926 = SLICE(eax_925, byte, 8);
+					ah_927 = ah_926 | 0x0C;
+					ax_928 = DPB(ax_762, ah_927, 8);
+					SZO_929 = cond(ah_927);
+					C_930 = false;
+					wLoc6C_931 = ax_928;
+					rLoc2_932 = rLoc2_846;
+					__fldcw(wLoc6C_931);
+					qwLoc68_933 = (int64) rLoc2_932;
+					__fldcw(wLoc6A_924);
+					rax_934 = qwLoc68_933;
+					eax_935 = (word32) rax_934;
+					rdx_rax_936 = SEQ(rdx_777, rax_934);
+					edx_eax_937 = rax_934;
+					ah_938 = SLICE(rax_934, byte, 8);
+					ax_939 = (word16) rax_934;
+					al_940 = (byte) rax_934;
+				}
+				else
+				{
+					wLoc6A_941 = __fstcw();
+					eax_942 = (word32) wLoc6A_941;
+					ah_943 = SLICE(eax_942, byte, 8);
+					rLoc2_944 = rLoc2_846 - rLoc1_847;
+					v65_945 = rLoc2_944;
+					rLoc2_946 = rLoc1_847;
+					rLoc1_947 = v65_945;
+					r10_948 = 0x00;
+					ah_949 = ah_943 | 0x0C;
+					ax_950 = DPB(ax_762, ah_949, 8);
+					wLoc6C_951 = ax_950;
+					__fldcw(wLoc6C_951);
+					qwLoc68_952 = (int64) rLoc2_946;
+					__fldcw(wLoc6A_941);
+					rax_953 = qwLoc68_952;
+					rax_954 = rax_953 ^ rdx_777;
+					eax_955 = (word32) rax_954;
+					rdx_rax_956 = SEQ(rdx_777, rax_954);
+					edx_eax_957 = rax_954;
+					ah_958 = SLICE(rax_954, byte, 8);
+					ax_959 = (word16) rax_954;
+					al_960 = (byte) rax_954;
+					SZO_961 = cond(rax_954);
+					C_962 = false;
+				}
+				wLoc6A_850 = ϕ(wLoc6A_924, wLoc6A_941);
+				wLoc6C_851 = ϕ(wLoc6C_931, wLoc6C_951);
+				rLoc2_852 = ϕ(rLoc2_932, rLoc2_946);
+				qwLoc68_853 = ϕ(qwLoc68_933, qwLoc68_952);
+				rLoc1_854 = ϕ(rLoc1_923, rLoc1_947);
+				r10_855 = ϕ(r10_756, r10_948);
+				rax_856 = ϕ(rax_934, rax_954);
+				eax_857 = ϕ(eax_935, eax_955);
+				ah_858 = ϕ(ah_938, ah_958);
+				ax_859 = ϕ(ax_939, ax_959);
+				al_860 = ϕ(al_940, al_960);
+				r14_861 = (uint64) dwLoc98_32;
+				r14d_862 = (word32) r14_861;
+				rdx_863 = 0x00;
+				edx_864 = (word32) rdx_863;
+				rdx_rax_865 = SEQ(rdx_863, rax_856);
+				edx_eax_866 = rdx_863;
+				dl_867 = (byte) rdx_863;
+				SZO_868 = cond(r14d_862 & r14d_862);
+				Z_869 = SZO_868;
+				C_870 = false;
+				if ((r14d_862 & r14d_862) == 0x00)
+				{
+					qwLoc68_890 = rax_856;
+					SZO_891 = cond(rax_856 & rax_856);
+					S_892 = SZO_891;
+					C_893 = false;
+					rLoc2_894 = (real64) qwLoc68_890;
+					if ((rax_856 & rax_856) < 0x00)
+						rLoc2_921 = rLoc2_894 + Mem0[0x0000000000415F08 + 0x00:real32];
+					rLoc2_895 = ϕ(rLoc2_894, rLoc2_921);
+					rcx_896 = 0x00;
+					ecx_897 = (word32) rcx_896;
+					SZO_898 = cond(ecx_897);
+					rdx_899 = 0x01;
+					edx_900 = (word32) rdx_899;
+					rdx_rax_901 = SEQ(rdx_899, rax_856);
+					edx_eax_902 = rdx_899;
+					dl_903 = (byte) rdx_899;
+					CZP_904 = cond(rLoc2_895 - rLoc1_854);
+					Z_905 = CZP_904;
+					P_906 = CZP_904;
+					rLoc1_907 = rLoc1_854;
+					cl_908 = Test(PE,P_906);
+					rcx_909 = DPB(rcx_896, cl_908, 0);
+					ecx_910 = DPB(ecx_897, cl_908, 0);
+					if (rLoc2_895 == rLoc1_854)
+					{
+						rdx_916 = rcx_909;
+						edx_917 = (word32) rdx_916;
+						rdx_rax_918 = SEQ(rdx_916, rax_856);
+						edx_eax_919 = rdx_916;
+						dl_920 = (byte) rdx_916;
+					}
+					rdx_911 = ϕ(rdx_899, rdx_916);
+					edx_912 = ϕ(edx_900, edx_917);
+					rdx_rax_913 = ϕ(rdx_rax_901, rdx_rax_918);
+					edx_eax_914 = ϕ(edx_eax_902, edx_eax_919);
+					dl_915 = ϕ(dl_903, dl_920);
+				}
+				else
+					rLoc1_922 = rLoc1_854;
+				rLoc2_871 = ϕ(rLoc2_895, rLoc2_852);
+				P_872 = ϕ(P_906, P_754);
+				CZP_873 = ϕ(CZP_904, CZP_848);
+				ecx_874 = ϕ(ecx_910, ecx_758);
+				rcx_875 = ϕ(rcx_909, rcx_765);
+				cl_876 = ϕ(cl_908, cl_759);
+				Z_877 = ϕ(Z_905, Z_869);
+				rdx_878 = ϕ(rdx_911, rdx_863);
+				edx_879 = ϕ(edx_912, edx_864);
+				rdx_rax_880 = ϕ(rdx_rax_913, rdx_rax_865);
+				edx_eax_881 = ϕ(edx_eax_914, edx_eax_866);
+				dl_882 = ϕ(dl_915, dl_867);
+				rax_883 = rax_856 + rdx_878;
+				qwLoc68_884 = rax_883;
+				SZO_885 = cond(rax_883 & rax_883);
+				S_886 = SZO_885;
+				C_887 = false;
+				rLoc1_888 = (real64) qwLoc68_884;
+				if ((rax_883 & rax_883) < 0x00)
+					rLoc1_889 = rLoc1_888 + Mem0[0x0000000000415F08 + 0x00:real32];
+			}
+		}
+		wLoc6A_803 = ϕ(wLoc6A_749, wLoc6A_749, wLoc6A_850, wLoc6A_850);
+		wLoc6C_804 = ϕ(wLoc6C_750, wLoc6C_750, wLoc6C_851, wLoc6C_851);
+		rLoc2_805 = ϕ(rLoc2_751, rLoc2_841, rLoc2_871, rLoc2_871);
+		qwLoc68_806 = ϕ(qwLoc68_752, qwLoc68_752, qwLoc68_884, qwLoc68_884);
+		rLoc1_807 = ϕ(rLoc1_802, rLoc1_802, rLoc1_888, rLoc1_889);
+		P_808 = ϕ(P_754, P_754, P_872, P_872);
+		CZP_809 = ϕ(CZP_755, CZP_842, CZP_873, CZP_873);
+		r10_810 = ϕ(r10_756, r10_756, r10_855, r10_855);
+		S_811 = ϕ(S_757, S_757, S_886, S_886);
+		CZ_812 = ϕ(CZ_794, CZ_843, CZ_843, CZ_843);
+		ecx_813 = ϕ(ecx_758, ecx_758, ecx_874, ecx_874);
+		cl_814 = ϕ(cl_759, cl_759, cl_876, cl_876);
+		Z_815 = ϕ(Z_801, Z_801, Z_877, Z_877);
+		ah_816 = ϕ(ah_761, ah_761, ah_858, ah_858);
+		ax_817 = ϕ(ax_762, ax_762, ax_859, ax_859);
+		al_818 = ϕ(al_788, al_788, al_860, al_860);
+		edx_819 = ϕ(edx_778, edx_778, edx_879, edx_879);
+		rdx_rax_820 = ϕ(rdx_rax_798, rdx_rax_798, rdx_rax_880, rdx_rax_880);
+		edx_eax_821 = ϕ(edx_eax_799, edx_eax_799, edx_eax_881, edx_eax_881);
+		dl_822 = ϕ(dl_779, dl_779, dl_882, dl_882);
+		rLoc1_823 = rLoc1_807 / Mem0[0x0000000000415F84 + 0x00:real32];
+		r14_824 = qwLocA0_35;
+		rcx_825 = 4284184;
+		rdx_826 = ~0x00;
+		rsi_827 = 0x01;
+		rax_828 = 0x00;
+		rdi_829 = r14_824;
+		rLocD0_830 = (real80) rLoc1_823;
+		eax_831 = __sprintf_chk(rdi_829, 0x01, ~0x00, 4284184);
+		rdi_832 = r14_824;
+		r14_833 = 0x00;
+		r14d_834 = (word32) r14_833;
+		SZO_835 = cond(r14d_834);
+		C_836 = false;
+		eax_837 = strlen(rdi_832);
+		rax_838 = DPB(rax_828, eax_837, 0);
+		r15_839 = rax_838;
+		r15d_840 = (word32) r15_839;
+	}
+	else
+	{
+		SCZO_1110 = cond(dwLoc98_32 - 0x01);
+		Z_1111 = SCZO_1110;
+		if (Test(NE,Z_1111))
+		{
+			rLoc2_1153 = (real64) Mem0[0x0000000000415F90 + 0x00:real80];
+			CZP_1154 = cond(rLoc2_1153 - rLoc1_670);
+			CZ_1155 = CZP_1154;
+			if (Test(UGT,CZ_1155))
+			{
+				rLoc2_1156 = (real64) Mem0[0x0000000000415F0C + 0x00:real32];
+				v70_1157 = rLoc2_1156;
+				rLoc2_1158 = rLoc1_670;
+				rLoc1_1159 = v70_1157;
+				CZP_1160 = cond(rLoc2_1158 - rLoc1_1159);
+				C_1161 = CZP_1160;
+				if (Test(ULT,C_1161))
+				{
+					rLoc1_1235 = rLoc2_1158;
+					wLoc6A_1236 = __fstcw();
+					eax_1237 = (word32) wLoc6A_1236;
+					ah_1238 = SLICE(eax_1237, byte, 8);
+					ah_1239 = ah_1238 | 0x0C;
+					ax_1240 = DPB(ax_641, ah_1239, 8);
+					SZO_1241 = cond(ah_1239);
+					C_1242 = false;
+					wLoc6C_1243 = ax_1240;
+					rLoc2_1244 = rLoc2_1158;
+					__fldcw(wLoc6C_1243);
+					qwLoc68_1245 = (int64) rLoc2_1244;
+					__fldcw(wLoc6A_1236);
+					rax_1246 = qwLoc68_1245;
+					eax_1247 = (word32) rax_1246;
+					rdx_rax_1248 = SEQ(rdx_643, rax_1246);
+					edx_eax_1249 = rax_1246;
+					ah_1250 = SLICE(rax_1246, byte, 8);
+					ax_1251 = (word16) rax_1246;
+					al_1252 = (byte) rax_1246;
+				}
+				else
+				{
+					wLoc6A_1253 = __fstcw();
+					eax_1254 = (word32) wLoc6A_1253;
+					ah_1255 = SLICE(eax_1254, byte, 8);
+					rLoc2_1256 = rLoc2_1158 - rLoc1_1159;
+					v71_1257 = rLoc2_1256;
+					rLoc2_1258 = rLoc1_1159;
+					rLoc1_1259 = v71_1257;
+					r10_1260 = 0x00;
+					ah_1261 = ah_1255 | 0x0C;
+					ax_1262 = DPB(ax_641, ah_1261, 8);
+					wLoc6C_1263 = ax_1262;
+					__fldcw(wLoc6C_1263);
+					qwLoc68_1264 = (int64) rLoc2_1258;
+					__fldcw(wLoc6A_1253);
+					rax_1265 = qwLoc68_1264;
+					rax_1266 = rax_1265 ^ rdx_643;
+					eax_1267 = (word32) rax_1266;
+					rdx_rax_1268 = SEQ(rdx_643, rax_1266);
+					edx_eax_1269 = rax_1266;
+					ah_1270 = SLICE(rax_1266, byte, 8);
+					ax_1271 = (word16) rax_1266;
+					al_1272 = (byte) rax_1266;
+					SZO_1273 = cond(rax_1266);
+					C_1274 = false;
+				}
+				wLoc6A_1162 = ϕ(wLoc6A_1236, wLoc6A_1253);
+				wLoc6C_1163 = ϕ(wLoc6C_1243, wLoc6C_1263);
+				rLoc2_1164 = ϕ(rLoc2_1244, rLoc2_1258);
+				qwLoc68_1165 = ϕ(qwLoc68_1245, qwLoc68_1264);
+				rLoc1_1166 = ϕ(rLoc1_1235, rLoc1_1259);
+				r10_1167 = ϕ(r10_633, r10_1260);
+				rax_1168 = ϕ(rax_1246, rax_1266);
+				eax_1169 = ϕ(eax_1247, eax_1267);
+				ah_1170 = ϕ(ah_1250, ah_1270);
+				ax_1171 = ϕ(ax_1251, ax_1271);
+				al_1172 = ϕ(al_1252, al_1272);
+				rsi_1173 = (uint64) dwLoc98_32;
+				esi_1174 = (word32) rsi_1173;
+				rdx_1175 = 0x00;
+				edx_1176 = (word32) rdx_1175;
+				rdx_rax_1177 = SEQ(rdx_1175, rax_1168);
+				edx_eax_1178 = rdx_1175;
+				dl_1179 = (byte) rdx_1175;
+				SZO_1180 = cond(esi_1174 & esi_1174);
+				Z_1181 = SZO_1180;
+				C_1182 = false;
+				if (Test(EQ,Z_1181))
+				{
+					qwLoc68_1202 = rax_1168;
+					SZO_1203 = cond(rax_1168 & rax_1168);
+					S_1204 = SZO_1203;
+					C_1205 = false;
+					rLoc2_1206 = (real64) qwLoc68_1202;
+					if (Test(SG,S_1204))
+						rLoc2_1233 = rLoc2_1206 + Mem0[0x0000000000415F08 + 0x00:real32];
+					rLoc2_1207 = ϕ(rLoc2_1206, rLoc2_1233);
+					rcx_1208 = 0x00;
+					ecx_1209 = (word32) rcx_1208;
+					SZO_1210 = cond(ecx_1209);
+					rdx_1211 = 0x01;
+					edx_1212 = (word32) rdx_1211;
+					rdx_rax_1213 = SEQ(rdx_1211, rax_1168);
+					edx_eax_1214 = rdx_1211;
+					dl_1215 = (byte) rdx_1211;
+					CZP_1216 = cond(rLoc2_1207 - rLoc1_1166);
+					Z_1217 = CZP_1216;
+					P_1218 = CZP_1216;
+					rLoc1_1219 = rLoc1_1166;
+					cl_1220 = Test(PE,P_1218);
+					rcx_1221 = DPB(rcx_1208, cl_1220, 0);
+					ecx_1222 = DPB(ecx_1209, cl_1220, 0);
+					if (Test(EQ,Z_1217))
+					{
+						rdx_1228 = rcx_1221;
+						edx_1229 = (word32) rdx_1228;
+						rdx_rax_1230 = SEQ(rdx_1228, rax_1168);
+						edx_eax_1231 = rdx_1228;
+						dl_1232 = (byte) rdx_1228;
+					}
+					rdx_1223 = ϕ(rdx_1211, rdx_1228);
+					edx_1224 = ϕ(edx_1212, edx_1229);
+					rdx_rax_1225 = ϕ(rdx_rax_1213, rdx_rax_1230);
+					edx_eax_1226 = ϕ(edx_eax_1214, edx_eax_1231);
+					dl_1227 = ϕ(dl_1215, dl_1232);
+				}
+				else
+					rLoc1_1234 = rLoc1_1166;
+				rLoc2_1183 = ϕ(rLoc2_1207, rLoc2_1164);
+				P_1184 = ϕ(P_1218, P_94);
+				CZP_1185 = ϕ(CZP_1216, CZP_1160);
+				ecx_1186 = ϕ(ecx_1222, ecx_634);
+				rcx_1187 = ϕ(rcx_1221, rcx_635);
+				cl_1188 = ϕ(cl_1220, cl_636);
+				Z_1189 = ϕ(Z_1217, Z_1181);
+				rdx_1190 = ϕ(rdx_1223, rdx_1175);
+				edx_1191 = ϕ(edx_1224, edx_1176);
+				rdx_rax_1192 = ϕ(rdx_rax_1225, rdx_rax_1177);
+				edx_eax_1193 = ϕ(edx_eax_1226, edx_eax_1178);
+				dl_1194 = ϕ(dl_1227, dl_1179);
+				rax_1195 = rax_1168 + rdx_1190;
+				qwLoc68_1196 = rax_1195;
+				SZO_1197 = cond(rax_1195 & rax_1195);
+				S_1198 = SZO_1197;
+				C_1199 = false;
+				rLoc1_1200 = (real64) qwLoc68_1196;
+				if (Test(SG,S_1198))
+					rLoc1_1201 = rLoc1_1200 + Mem0[0x0000000000415F08 + 0x00:real32];
+			}
+		}
+		wLoc6A_1112 = ϕ(wLoc6A, wLoc6A, wLoc6A_1162, wLoc6A_1162);
+		wLoc6C_1113 = ϕ(wLoc6C, wLoc6C, wLoc6C_1163, wLoc6C_1163);
+		rLoc2_1114 = ϕ(rLoc2_669, rLoc2_1153, rLoc2_1183, rLoc2_1183);
+		qwLoc68_1115 = ϕ(qwLoc68_660, qwLoc68_660, qwLoc68_1196, qwLoc68_1196);
+		rLoc1_1116 = ϕ(rLoc1_670, rLoc1_670, rLoc1_1200, rLoc1_1201);
+		P_1117 = ϕ(P_94, P_94, P_1184, P_1184);
+		CZP_1118 = ϕ(CZP_121, CZP_1154, CZP_1185, CZP_1185);
+		esi_1119 = ϕ(esi_632, esi_632, esi_1174, esi_1174);
+		r10_1120 = ϕ(r10_633, r10_633, r10_1167, r10_1167);
+		S_1121 = ϕ(S_662, S_662, S_1198, S_1198);
+		CZ_1122 = ϕ(CZ_146, CZ_1155, CZ_1155, CZ_1155);
+		ecx_1123 = ϕ(ecx_634, ecx_634, ecx_1186, ecx_1186);
+		cl_1124 = ϕ(cl_636, cl_636, cl_1188, cl_1188);
+		Z_1125 = ϕ(Z_1111, Z_1111, Z_1189, Z_1189);
+		ah_1126 = ϕ(ah_640, ah_640, ah_1170, ah_1170);
+		ax_1127 = ϕ(ax_641, ax_641, ax_1171, ax_1171);
+		al_1128 = ϕ(al_642, al_642, al_1172, al_1172);
+		edx_1129 = ϕ(edx_644, edx_644, edx_1191, edx_1191);
+		rdx_rax_1130 = ϕ(rdx_rax_658, rdx_rax_658, rdx_rax_1192, rdx_rax_1192);
+		edx_eax_1131 = ϕ(edx_eax_659, edx_eax_659, edx_eax_1193, edx_eax_1193);
+		dl_1132 = ϕ(dl_647, dl_647, dl_1194, dl_1194);
+		rLocD0_1133 = (real80) rLoc1_1116;
+		rbx_1134 = qwLocA0_35;
+		rcx_1135 = 4284184;
+		rdx_1136 = ~0x00;
+		rsi_1137 = 0x01;
+		rax_1138 = 0x00;
+		r14_1139 = 0x00;
+		r14d_1140 = (word32) r14_1139;
+		SZO_1141 = cond(r14d_1140);
+		C_1142 = false;
+		rdi_1143 = rbx_1134;
+		eax_1144 = __sprintf_chk(rdi_1143, 0x01, ~0x00, 4284184);
+		rdi_1145 = rbx_1134;
+		rbx_1146 = 0xFFFFFFFF;
+		ebx_1147 = (word32) rbx_1146;
+		eax_1148 = strlen(rdi_1145);
+		rax_1149 = DPB(rax_1138, eax_1148, 0);
+		r15_1150 = rax_1149;
+		r15d_1151 = (word32) r15_1150;
+	}
+l000000000040C218:
+	rLoc4_671 = ϕ(rLoc4_739, rLoc4_739, rLoc4_739, rLoc4);
+	rLoc3_672 = ϕ(rLoc3_729, rLoc3_729, rLoc3_729, rLoc3_665);
+	qwLoc80_673 = ϕ(qwLoc80_768, qwLoc80_768, qwLoc80_768, qwLoc80_131);
+	rLoc90_674 = ϕ(rLoc90_770, rLoc90_770, rLoc90_770, rLoc90);
+	wLoc6A_675 = ϕ(wLoc6A_749, wLoc6A_749, wLoc6A_803, wLoc6A_1112);
+	wLoc6C_676 = ϕ(wLoc6C_750, wLoc6C_750, wLoc6C_804, wLoc6C_1113);
+	rLoc2_677 = ϕ(rLoc2_751, rLoc2_751, rLoc2_805, rLoc2_1114);
+	qwLoc68_678 = ϕ(qwLoc68_752, qwLoc68_752, qwLoc68_806, qwLoc68_1115);
+	rLoc1_679 = ϕ(rLoc1_971, rLoc1_972, rLoc1_823, rLoc1_1116);
+	rLocD0_680 = ϕ(rLocD0_771, rLocD0_771, rLocD0_830, rLocD0_1133);
+	P_681 = ϕ(P_754, P_754, P_808, P_1117);
+	CZP_682 = ϕ(CZP_755, CZP_755, CZP_809, CZP_1118);
+	esi_683 = ϕ(esi_632, esi_632, esi_632, esi_1119);
+	r10_684 = ϕ(r10_756, r10_756, r10_810, r10_1120);
+	S_685 = ϕ(S_757, S_757, S_811, S_1121);
+	r11_686 = ϕ(r11_776, r11_776, r11_776, r11_139);
+	r15_687 = ϕ(r15_780, r15_780, r15_839, r15_1150);
+	r14_688 = ϕ(r14_786, r14_786, r14_833, r14_1139);
+	r14d_689 = ϕ(r14d_787, r14d_787, r14d_834, r14d_1140);
+	CZ_690 = ϕ(CZ_794, CZ_794, CZ_812, CZ_1122);
+	ebx_691 = ϕ(ebx_735, ebx_735, ebx_735, ebx_1147);
+	ecx_692 = ϕ(ecx_758, ecx_758, ecx_813, ecx_1123);
+	rcx_693 = ϕ(rcx_765, rcx_765, rcx_825, rcx_1135);
+	cl_694 = ϕ(cl_759, cl_759, cl_814, cl_1124);
+	SZO_695 = ϕ(SZO_963, SZO_963, SZO_835, SZO_1141);
+	Z_696 = ϕ(Z_970, Z_964, Z_815, Z_1125);
+	C_697 = ϕ(C_965, C_965, C_836, C_1142);
+	eax_698 = ϕ(eax_774, eax_774, eax_837, eax_1148);
+	ah_699 = ϕ(ah_761, ah_761, ah_816, ah_1126);
+	ax_700 = ϕ(ax_762, ax_762, ax_817, ax_1127);
+	al_701 = ϕ(al_788, al_788, al_818, al_1128);
+	edx_702 = ϕ(edx_778, edx_778, edx_819, edx_1129);
+	rdx_rax_703 = ϕ(rdx_rax_967, rdx_rax_791, rdx_rax_820, rdx_rax_1130);
+	edx_eax_704 = ϕ(edx_eax_968, edx_eax_792, edx_eax_821, edx_eax_1131);
+	dl_705 = ϕ(dl_779, dl_779, dl_822, dl_1132);
+	rbx_706 = ϕ(rbx_734, rbx_734, rbx_734, rbx_1146);
+	r12_707 = qwLocB8_147;
+	rsi_708 = qwLocA0_35;
+	rdx_709 = r15_687;
+	r12_710 = r12_707 - r15_687;
+	r12d_711 = (word32) r12_710;
+	r15_712 = r15_687 - r14_688;
+	r15d_713 = (word32) r15_712;
+	SCZO_714 = cond(r15_712);
+	rdi_715 = r12_710;
+	rax_716 = memmove(rdi_715, rsi_708, rdx_709);
+	r8_717 = r12_710 + r15_712;
+	goto l000000000040C237;
 }
 
 // 000000000040C810: Register word64 fn000000000040C810(Register word64 rdx, Register word64 rdi, Register word64 r8, Register out ptr64 r9Out, Register out ptr64 r13Out, Register out ptr64 r14Out, Register out ptr64 r15Out)

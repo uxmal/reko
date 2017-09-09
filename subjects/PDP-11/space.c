@@ -554,57 +554,34 @@ word16 fn0AE2(word16 r4, ptr16 & r4Out)
 // 0AE6: Register Eq_1071 fn0AE6(Register word16 r4, Stack byte bArg00, Register out ptr16 r4Out)
 Eq_1071 fn0AE6(word16 r4, byte bArg00, ptr16 & r4Out)
 {
-fn0AE6_entry:
-	def fp
-	def r3
-	def Mem0
-	def bArg00
-	def r4Out
-	def r4
-	sp_1 = fp
-	sp_2 = fp - 0x02
-	wLoc02_4 = r3
-	r3_6 = globals->ptr5424
-	sp_7 = fp - 0x04
-	wLoc04_8 = 0x00
-	v14_10 = bArg00
-	bLoc04_11 = v14_10
-	wLoc04_12 = DPB(wLoc04_8, bLoc04_11, 0)
-	v16_13 = 0x01 - wLoc04_12
-	NZVC_14 = cond(v16_13)
-	Z_15 = NZVC_14
-	branch v16_13 == 0x00 l0AF6_thunk_fn0B02
-	goto l0AF6_thunk_fn0AF8
-l0AE6:
-l0AE6:
-	sp = sp - 0x02
-	sp->t0000 = r3
-	r3 = globals->ptr5424
-	sp = sp - 0x02
-	sp->t0000.u0 = 0x00
-	v19 = sp->t0004
-	sp->t0000 = v19
-	v20 = 0x01 - sp->t0000
-	NZVC = cond(v20)
-	Z = NZVC
-	branch Test(EQ,Z) l0B02
-	goto l0AF6_thunk_fn0AF8
-l0AF6_thunk_fn0AF8:
-	r3_21 = fn0AF8(r3_6, r4, out r4_20)
-	return r3_21
-l0AF6_thunk_fn0AF8:
-	r3 = fn0AF8(r3, r4, out r4)
-	return r3
-l0AF6_thunk_fn0B02:
-	r3_23 = fn0B02(r3_6, r4, out r4_22)
-	return r3_23
-l0AF6_thunk_fn0B02:
-	r3 = fn0B02(r3, r4, out r4)
-	return r3
-fn0AE6_exit:
-	r4_16 = PHI(r4_22, r4_20, r4, r4)
-	r3_17 = PHI(r3_23, r3_21, r3, r3)
-	use r4_16 (=> r4Out)
+	ptr16 fp;
+	Eq_1071 r3;
+	<type-error> Mem0;
+	byte bArg00;
+	ptr16 r4Out;
+	word16 r4;
+	sp_1 = fp;
+	sp_2 = fp - 0x02;
+	wLoc02_4 = r3;
+	r3_6 = globals->ptr5424;
+	sp_7 = fp - 0x04;
+	wLoc04_8 = 0x00;
+	v14_10 = bArg00;
+	bLoc04_11 = v14_10;
+	wLoc04_12 = DPB(wLoc04_8, bLoc04_11, 0);
+	v16_13 = 0x01 - wLoc04_12;
+	NZVC_14 = cond(v16_13);
+	Z_15 = NZVC_14;
+	if (v16_13 == 0x00)
+	{
+		r3_23 = fn0B02(r3_6, r4, out r4_22);
+		return r3_23;
+	}
+	else
+	{
+		r3_21 = fn0AF8(r3_6, r4, out r4_20);
+		return r3_21;
+	}
 }
 
 // 0AF8: Register Eq_1071 fn0AF8(Register Eq_1071 r3, Register word16 r4, Register out ptr16 r4Out)
@@ -1225,70 +1202,39 @@ word16 fn0FAE(Eq_1674 r2, ptr16 & r2Out, ptr16 & r3Out)
 // 0FB2: Register word16 fn0FB2(Register Eq_1674 r2, Register out ptr16 r2Out, Register out ptr16 r3Out)
 word16 fn0FB2(Eq_1674 r2, ptr16 & r2Out, ptr16 & r3Out)
 {
-fn0FB2_entry:
-	def fp
-	def r3
-	def Mem0
-	def r2Out
-	def r3Out
-	def r2
-	sp_1 = fp
-	sp_2 = fp - 0x02
-	wLoc02_4 = r3
-	r3_5 = fp - 0x02
-	r3_6 = fp + 0x0A
-	sp_7 = fp - 0x04
-	wLoc04_8 = fp + 0x0A
-	r3_10 = globals->ptr5424
-	v11_11 = wLoc04_8
-	sp_12 = fp - 0x02
-	r3_10->ptr0064 = fp + 0x0A
-	v14_14 = r3_10->w0014
-	v14_15 = v14_14 & v14_14
-	NZ_16 = cond(v14_15)
-	Z_17 = NZ_16
-	C_18 = false
-	V_19 = false
-	branch v14_15 == 0x00 l0FC8_thunk_fn0FCC
-	goto l0FC8_thunk_fn0FCA
-l0FB2:
-l0FB2:
-	sp = sp - 0x02
-	sp->ptr0000 = r3
-	r3 = sp
-	r3 = (struct Eq_2426 *) ((char *) &r3->ptr0000 + 0x0C)
-	sp = sp - 0x02
-	sp->ptr0000 = r3
-	r3 = globals->ptr5424
-	v19 = sp->ptr0000
-	sp = (struct Eq_2426 *) ((char *) &sp->ptr0000 + 0x02)
-	r3->ptr0064 = v19
-	v21 = r3->w0014
-	v21 = v21 & v21
-	NZ = cond(v21)
-	Z = NZ
-	C = false
-	V = false
-	branch Test(EQ,Z) l0FCC
-	goto l0FC8_thunk_fn0FCA
-l0FC8_thunk_fn0FCA:
-	r0_28 = fn0FCA(r2, r3_10, out r2_26, out r3_27)
-	return r0_28
-l0FC8_thunk_fn0FCA:
-	r0 = fn0FCA(r2, r3, out r2, out r3)
-	return r0
-l0FC8_thunk_fn0FCC:
-	r0_31 = fn0FCC(r2, r3_10, out r2_29, out r3_30)
-	return r0_31
-l0FC8_thunk_fn0FCC:
-	r0 = fn0FCC(r2, r3, out r2, out r3)
-	return r0
-fn0FB2_exit:
-	r2_20 = PHI(r2_29, r2_26, r2, r2)
-	r3_21 = PHI(r3_30, r3_27, r3, r3)
-	r0_22 = PHI(r0_31, r0_28, r0, r0)
-	use r2_20 (=> r2Out)
-	use r3_21 (=> r3Out)
+	ptr16 fp;
+	word16 r3;
+	<type-error> Mem0;
+	ptr16 r2Out;
+	ptr16 r3Out;
+	Eq_1674 r2;
+	sp_1 = fp;
+	sp_2 = fp - 0x02;
+	wLoc02_4 = r3;
+	r3_5 = fp - 0x02;
+	r3_6 = fp + 0x0A;
+	sp_7 = fp - 0x04;
+	wLoc04_8 = fp + 0x0A;
+	r3_10 = globals->ptr5424;
+	v11_11 = wLoc04_8;
+	sp_12 = fp - 0x02;
+	r3_10->ptr0064 = fp + 0x0A;
+	v14_14 = r3_10->w0014;
+	v14_15 = v14_14 & v14_14;
+	NZ_16 = cond(v14_15);
+	Z_17 = NZ_16;
+	C_18 = false;
+	V_19 = false;
+	if (v14_15 == 0x00)
+	{
+		r0_31 = fn0FCC(r2, r3_10, out r2_29, out r3_30);
+		return r0_31;
+	}
+	else
+	{
+		r0_28 = fn0FCA(r2, r3_10, out r2_26, out r3_27);
+		return r0_28;
+	}
 }
 
 // 0FCA: Register word16 fn0FCA(Register Eq_1674 r2, Register (ptr Eq_2426) r3, Register out ptr16 r2Out, Register out (ptr Eq_2493) r3Out)
