@@ -1253,7 +1253,7 @@ refinement on the loop body, which we describe below.
 
         /// <summary>
         /// If the algorithm does not collapse any nodes or perform any
-        /// refinement during an iteration, we must add an edge in
+        /// refinement during an iteration, we must remove an edge in
         /// the graph to allow it to make progress. We call this process
         /// the last resort refinement, because it has the lowest priority,
         /// and always allows progress to be made. Last resort refine-
