@@ -511,7 +511,7 @@ namespace Reko.Environments.C64
             if (!EatSpaces() ||
                 !GetInteger(out lineNumber))
                 SyntaxError();
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             m.Call(Address.Ptr16((ushort)lineNumber), 2);
         }
 

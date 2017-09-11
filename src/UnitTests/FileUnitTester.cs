@@ -64,7 +64,8 @@ namespace Reko.UnitTests
 		{
 			get 
 			{
-                string assemblyName = typeof(FileUnitTester).Assembly.Location;
+                string assemblyUri = typeof(FileUnitTester).Assembly.CodeBase;
+                string assemblyName = new Uri(assemblyUri).LocalPath;
                 var iUnitTests = assemblyName.IndexOf("UnitTests");
                 if (iUnitTests <= 0)
                     throw new NotSupportedException("Directory structure is expected to be '.../UnitTests/...'");

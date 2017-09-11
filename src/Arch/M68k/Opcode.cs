@@ -94,7 +94,9 @@ namespace Reko.Arch.M68k
         dbgt,
         dble,
         divs,
+        divsl,
         divu,
+        divul,
 
         eor,
         eori,

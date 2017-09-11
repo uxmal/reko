@@ -101,7 +101,12 @@ def check_output_files():
         universal_newlines=True)
     out = proc.communicate()[0]
     print(out)
+    directoryClean = False
     if "working directory clean" in out.lower():
+        directoryClean = True
+    if "working tree clean" in out.lower():
+        directoryClean = True
+    if directoryClean:
         print("Output files are the same as in repository")
     else:
         print("Output files differ from repository")

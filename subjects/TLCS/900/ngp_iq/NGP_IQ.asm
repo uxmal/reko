@@ -455,8 +455,23 @@ l002005D7:
 l002005E6:
 	ret
 002005E7                      38 39 3A 08 6F 4E C1 04 40        89:.oN..@
-002005F0 61 5A 59 58 07 02 17 03 3C C8 80 C8 80 44 00 FE aZYX....<....D..
-00200600 FF 00 E3 03 F0 E1 24 B4 E8 5C 03 0E             ......$..\..   
+002005F0 61 5A 59 58 07                                  aZYX.          
+
+;; fn002005F5: 002005F5
+fn002005F5 proc
+	push	sr
+	ldf	03
+	push	xix
+	add	w,w
+	add	w,w
+	ld	xix,00FFFE00
+	ld	xix,(xwa+a)
+	call	T,(xix)
+
+l00200609:
+	pop	xix
+	pop	sr
+	ret
 
 ;; fn0020060C: 0020060C
 fn0020060C proc

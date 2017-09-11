@@ -75,9 +75,9 @@ namespace Reko.Core.Code
     /// </summary>
 	public class DefInstruction : Instruction
 	{
-		public DefInstruction(Expression e)
+		public DefInstruction(Identifier e)
 		{
-			Expression = e;
+			Identifier = e;
 		}
 
 		public override Instruction Accept(InstructionTransformer xform)
@@ -96,7 +96,7 @@ namespace Reko.Core.Code
 			v.VisitDefInstruction(this);
 		}
 
-        public Expression Expression { get; set; }
+        public Identifier Identifier { get; set; }
 
 		public override bool IsControlFlow
 		{

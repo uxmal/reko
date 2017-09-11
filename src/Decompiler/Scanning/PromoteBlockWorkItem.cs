@@ -146,9 +146,9 @@ namespace Reko.Scanning
                     block.Succ[i] = retCallThunkBlock;
                     retCallThunkBlock.Pred.Add(block);
                 }
-                s.ToString();
             }
         }
+
 
         private void ReplaceSuccessorsWith(Block block, Block blockOld, Block blockNew)
         {

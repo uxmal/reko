@@ -135,6 +135,7 @@ VS Overflow Set 1001 V
                 case Opcode.dbne: RewriteDbcc(ConditionCode.NE, FlagM.ZF); break;
                 case Opcode.dbra: RewriteDbcc(ConditionCode.None, 0); break;
                 case Opcode.divs: RewriteDiv(m.SDiv, PrimitiveType.Int16); break;
+                case Opcode.divsl: RewriteDiv(m.SDiv, PrimitiveType.Int32); break;
                 case Opcode.divu: RewriteDiv(m.UDiv, PrimitiveType.UInt16); break;
                 case Opcode.eor: RewriteLogical((s, d) => m.Xor(d, s)); break;
                 case Opcode.eori: RewriteLogical((s, d) => m.Xor(d, s)); break;

@@ -303,7 +303,7 @@ namespace Reko.Analysis
 
         public bool VisitDefInstruction(DefInstruction def)
         {
-            var id = (Identifier)def.Expression;
+            var id = def.Identifier;
             ctx.SetValue(id, id);
             return true;
         }

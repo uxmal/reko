@@ -353,26 +353,47 @@ namespace Reko.Arch.M68k
 
         private void RewriteDiv(Func<Expression,Expression,Expression> op, DataType dt)
         {
-            Debug.Print(di.dataWidth.ToString());
+            var src = orw.RewriteSrc(di.op1, di.Address);
+            Expression dividend;
+            Expression quot;
+            Expression rem;
             if (di.dataWidth.BitSize == 16)
             {
                 di.dataWidth = PrimitiveType.UInt32;
-                var src = orw.RewriteSrc(di.op1, di.Address);
-                var rem = binder.CreateTemporary(dt);
-                var quot = binder.CreateTemporary(dt);
-                var regDst = binder.EnsureRegister(((RegisterOperand) di.op2).Register);
-                m.Assign(rem, m.Cast(rem.DataType, m.Remainder(regDst, src)));
-                m.Assign(quot, m.Cast(quot.DataType, op(regDst, src)));
-                m.Assign(regDst, m.Dpb(regDst, rem, 16));
-                m.Assign(regDst, m.Dpb(regDst, quot, 0));
-                m.Assign(
-                    orw.FlagGroup(FlagM.NF | FlagM.VF | FlagM.ZF),
-                    m.Cond(quot));
-                m.Assign(
-                    orw.FlagGroup(FlagM.CF), Constant.False());
-                return;
+                rem = binder.CreateTemporary(dt);
+                quot = binder.CreateTemporary(dt);
+                dividend = binder.EnsureRegister(((RegisterOperand) di.op2).Register);
+                m.Assign(rem, m.Cast(rem.DataType, m.Remainder(dividend, src)));
+                m.Assign(quot, m.Cast(quot.DataType, op(dividend, src)));
+                m.Assign(dividend, m.Dpb(dividend, rem, 16));
+                m.Assign(dividend, m.Dpb(dividend, quot, 0));
             }
-            throw new NotImplementedException(di.ToString());
+            else
+            {
+                var dreg = di.op2 as DoubleRegisterOperand;
+                if (dreg != null)
+                {
+                    rem = binder.EnsureRegister(dreg.Register1);
+                    quot = binder.EnsureRegister(dreg.Register2);
+                    if (di.code == Opcode.divsl)
+                    {
+                        dividend = quot;
+                    }
+                    else
+                    {
+                        dividend = binder.EnsureSequence(dreg.Register1, dreg.Register2, di.dataWidth);
+                    }
+                    m.Assign(rem, m.Remainder(dividend, src));
+                    m.Assign(quot, op(dividend, src));
+                }
+                else
+                    throw new NotImplementedException();
+            }
+            m.Assign(
+                orw.FlagGroup(FlagM.NF | FlagM.VF | FlagM.ZF),
+                m.Cond(quot));
+            m.Assign(
+                orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
         private Expression RewriteSrcOperand(MachineOperand mop)
@@ -451,6 +472,17 @@ namespace Reko.Arch.M68k
             if (addrOp != null)
             {
                 return addrOp.Address;
+            }
+            var idxOp = op as IndexedOperand;
+            if (idxOp != null)
+            {
+                var c = idxOp.Base;
+                if (idxOp.base_reg == Registers.pc)
+                {
+                    var addr = di.Address + c.ToInt32();
+                    return addr;
+                }
+                idxOp.ToString();
             }
             var indIdx = di.op1 as IndirectIndexedOperand;
             if (indIdx != null)

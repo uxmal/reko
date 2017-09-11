@@ -230,7 +230,8 @@ namespace Reko.Arch.Arm
                 {
                     var uAddr = (uint)((int)this.Address.ToUInt32() + op.MemoryValue.Displacement) + 8u;
                     var addr = Address.Ptr32(uAddr);
-                    if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                    if (op.MemoryValue.IndexRegister == ArmRegister.Invalid &&
+                        (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                     {
                         writer.Write('[');
                         writer.WriteAddress(addr.ToString(), addr);

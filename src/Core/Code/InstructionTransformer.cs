@@ -73,7 +73,6 @@ namespace Reko.Core.Code
 
 		public virtual Instruction TransformDefInstruction(DefInstruction def)
 		{
-			def.Expression = def.Expression.Accept(this);
 			return def;
 		}
 

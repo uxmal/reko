@@ -377,7 +377,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteCall()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             m.Call(RewriteOp(0), 2);    //$TODO: 3-byte mode in architecture.
         }
 
@@ -411,7 +411,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteIcall()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             var z = binder.EnsureRegister(arch.z);
             m.Call(z, 2);
         }

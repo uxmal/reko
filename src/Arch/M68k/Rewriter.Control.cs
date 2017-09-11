@@ -65,7 +65,7 @@ namespace Reko.Arch.M68k
             }
             else
             {
-                rtlc = RtlClass.Transfer;
+                rtlc = RtlClass.Transfer | RtlClass.Call;
                 m.Call(orw.RewriteSrc(di.op1, di.Address, true), 4);
             }
         }
@@ -113,7 +113,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteJsr()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             var src = orw.RewriteSrc(di.op1, di.Address, true);
             var mem = src as MemoryAccess;
             if (mem != null)
