@@ -753,6 +753,7 @@ doing future pattern matches.
             regionGraph.RemoveEdge(vEdge.From, vEdge.To);
             if (regionGraph.Predecessors(vEdge.To).Count == 0 && vEdge.To != entry)
             {
+                //$BUGBUG: this causes losing of some code blocks
                 RemoveRegion(vEdge.To);
 
 
