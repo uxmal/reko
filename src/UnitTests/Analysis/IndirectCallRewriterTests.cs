@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Analysis
             m.Assign(eax, m.LoadDw(m.IAdd(esp, 4)));
             m.Assign(ecx, m.LoadDw(eax));
             m.Assign(esp, m.ISub(esp, 4));
-            m.Store(esp, 0x000A);
+            m.Store32(esp, 0x000A);
             var c = m.Call(m.LoadDw(m.IAdd(ecx, 4)), 4);
             c.CallSite.StackDepthOnEntry = 8;
             m.Return();
@@ -100,9 +100,9 @@ namespace Reko.UnitTests.Analysis
             m.Assign(eax, m.LoadDw(m.IAdd(esp, 4)));
             m.Assign(ecx, m.LoadDw(eax));
             m.Assign(esp, m.ISub(esp, 4));
-            m.Store(esp, 0x000B);
+            m.Store32(esp, 0x000B);
             m.Assign(esp, m.ISub(esp, 4));
-            m.Store(esp, 0x000A);
+            m.Store32(esp, 0x000A);
             var c = m.Call(m.LoadDw(m.IAdd(ecx, 8)), 4);
             c.CallSite.StackDepthOnEntry = 12;
             m.Return();

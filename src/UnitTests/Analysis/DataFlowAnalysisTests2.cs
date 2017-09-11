@@ -200,9 +200,9 @@ test_exit:
                 var fooProc = GivenFunction("foo", m.Architecture.GetRegister(1), 4, 8);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, 2);
+                m.Store32(sp, 2);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, 1);
+                m.Store32(sp, 1);
                 m.Call(fooProc, 4);
                 m.Assign(sp, m.IAdd(sp, 8));
                 m.Return();

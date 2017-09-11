@@ -219,7 +219,7 @@ namespace Reko.UnitTests.Analysis
                 r2 = m.Register("r2");
                 sp = m.Frame.EnsureRegister(arch.StackRegister);
                 m.Store(m.ISub(sp, 12), m.ISub(sp, 16));
-                m.Store(m.ISub(sp, 12), 2);
+                m.Store32(m.ISub(sp, 12), 2);
             });
 
             var ctx = new SymbolicEvaluationContext (arch, proc.Frame);
