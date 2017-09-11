@@ -274,8 +274,8 @@ namespace Reko.Structure
             if (unresolvedCycles.Count != 0)
             {
                 var cycle = unresolvedCycles.Dequeue();
-                RefineLoop(cycle.Item1, cycle.Item2);
-                return true;
+                if (RefineLoop(cycle.Item1, cycle.Item2))
+                    return true;
             }
             var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
             foreach (var n in postOrder)
@@ -753,6 +753,7 @@ doing future pattern matches.
             regionGraph.RemoveEdge(vEdge.From, vEdge.To);
             if (regionGraph.Predecessors(vEdge.To).Count == 0 && vEdge.To != entry)
             {
+                //$BUGBUG: this causes losing of some code blocks
                 RemoveRegion(vEdge.To);
 
 
@@ -888,8 +889,7 @@ are added during loop refinement, which we discuss next.
             }
             foreach (var s in succs)
             {
-                var ss = SingleSuccessor(s);
-                if (ss != null && ss == n)
+                if (SingleSuccessor(s) == n && SinglePredecessor(s) == n)
                 {
                     // While!
                     var exp = s == succs[0] 
@@ -998,6 +998,8 @@ refinement on the loop body, which we describe below.
         {
             head = EnsureSingleEntry(head, loopNodes);
             var fl = DetermineFollowLatch(head, loopNodes);
+            if (fl == null)
+                return false;
             var follow = fl.Item1;
             var latch = fl.Item2;
             var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
@@ -1105,7 +1107,7 @@ refinement on the loop body, which we describe below.
                     .Count();
         }
 
-        private Tuple<Region,Region> DetermineFollowLatch(Region head, ISet<Region> loopNodes)
+        private Tuple<Region, Region> DetermineFollowLatch(Region head, ISet<Region> loopNodes)
         {
             var headSucc = regionGraph.Successors(head).ToArray();
             if (headSucc.Length == 2)
@@ -1147,7 +1149,7 @@ refinement on the loop body, which we describe below.
                     }
                 }
             }
-            throw new NotImplementedException();
+            return null;
         }
         
         /// <summary>

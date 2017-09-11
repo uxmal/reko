@@ -448,6 +448,43 @@ unstructuredexit:
         }
 
         [Test]
+        public void ProcStr_InfiniteLoop_BreakInsideOfNestedIfs()
+        {
+            m.Label("loopheader");
+
+            m.SideEffect(m.Fn("beforeCheck"));
+            m.BranchIf(m.Fn("skipCheck"), "loop");
+            m.BranchIf(m.Fn("failed"), "exit");
+            m.SideEffect(m.Fn("check"));
+
+            m.Label("loop");
+            m.SideEffect(m.Fn("afterCheck"));
+            m.Goto("loopheader");
+
+            m.Label("exit");
+            m.SideEffect(m.Fn("exit"));
+            m.Return();
+
+            var sExp =
+@"    while (true)
+    {
+        beforeCheck();
+        if (!skipCheck())
+        {
+            if (failed())
+            {
+                exit();
+                return;
+            }
+            check();
+        }
+        afterCheck();
+    }
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
         public void ProcStr_InfiniteLoop()
         {
             var r1 = m.Reg32("r1", 1);
