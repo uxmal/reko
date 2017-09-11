@@ -143,10 +143,11 @@ namespace Reko.Scanning
                     var lastAddress = GetAddressOfLastInstruction(block);
                     var retCallThunkBlock = Scanner.CreateCallRetThunk(lastAddress, block.Procedure, s.Procedure);
                     block.Succ[i] = retCallThunkBlock;
+                    retCallThunkBlock.Pred.Add(block);
                 }
-                s.ToString();
             }
         }
+
 
         private void ReplaceSuccessorsWith(Block block, Block blockOld, Block blockNew)
         {
