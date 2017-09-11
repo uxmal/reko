@@ -152,28 +152,6 @@ fn092A: error: An error occurred during data flow analysis.
 
 === Elf\ARM\switch\switch
 === Elf-MIPS\redir
-*** Elf-MIPS\redir
-main: error: An error occurred while rewriting procedure to high-level language.
-    Sequence contains no elements
-       at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
-   at Reko.Structure.StructureAnalysis.ReduceSequence(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 366
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 260
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-__divdf3: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-100007E0: warning: Expected sizes of arrays to have been determined by now
-1000002C: warning: Expected sizes of arrays to have been determined by now
-1000002C: warning: Expected sizes of arrays to have been determined by now
-100007E0: warning: Expected sizes of arrays to have been determined by now
-
 === Elf-RiscV\ipcalc\ipcalc.dcproject
 *** Elf-RiscV\ipcalc\ipcalc.dcproject
 fn0000000000016864: error: An error occurred during data flow analysis.
@@ -1338,94 +1316,6 @@ Parameter name: index
    at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 66
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-unexpand_if_needed: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-abspath: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-find_corresponding_lparen: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-save_def_or_dec: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-process_aux_info_file: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-edit_formals_lists: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-careful_find_l_paren: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-scan_for_missed_items: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-main: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-exchange: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-_getopt_internal: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 
 === Elf-x86-64\ls
 *** Elf-x86-64\ls
@@ -1681,19 +1571,6 @@ fn000000000040BD70: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
    at Reko.Analysis.ConditionCodeEliminator.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
-fn000000000040D240: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
-   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
-   at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 145
-   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
-   at Reko.Analysis.DeadCode.VisitAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 143
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Analysis.DeadCode.Eliminate() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
-   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
 fn000000000040D420: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1774,52 +1651,7 @@ Parameter name: Linear address 00000000 is not in known segment.
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 81
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 90
    at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 312
-fn00000000004028C0: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn00000000004061B0: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0000000000406490: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 306
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 254
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn000000000040AE40: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn000000000040D240: error: An error occurred while rewriting procedure to high-level language.
-    The given key was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 208
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn000000000040D450: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn00000000004028C0: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn000000000040D8A0: error: An error occurred while rewriting procedure to high-level language.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1830,16 +1662,9 @@ fn000000000040D8A0: error: An error occurred while rewriting procedure to high-l
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn000000000040ECD0: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 306
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 254
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn0000000000410E90: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse l0000000000410F78 (Tail) => l0000000000411028
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 797
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 798
    at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 752
    at Reko.Structure.StructureAnalysis.VirtualizeIrregularSwitchEntries(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 489
    at Reko.Structure.StructureAnalysis.RefineIncSwitch(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 470
@@ -1850,7 +1675,7 @@ fn0000000000410E90: error: An error occurred while rewriting procedure to high-l
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn0000000000411360: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse l0000000000411450 (Tail) => l0000000000411500
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 797
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 798
    at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 752
    at Reko.Structure.StructureAnalysis.VirtualizeIrregularSwitchEntries(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 489
    at Reko.Structure.StructureAnalysis.RefineIncSwitch(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 470
@@ -2179,16 +2004,9 @@ fn0000000000411360: error: An error occurred while rewriting procedure to high-l
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 159
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-fn0800_0393: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 306
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 254
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn0800_1073: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse l0800_1175 (Tail) => l0800_1560
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 797
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 798
    at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 752
    at Reko.Structure.StructureAnalysis.VirtualizeIrregularSwitchEntries(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 489
    at Reko.Structure.StructureAnalysis.RefineIncSwitch(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 470
@@ -2199,7 +2017,7 @@ fn0800_1073: error: An error occurred while rewriting procedure to high-level la
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn0800_16F3: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse l0800_1794 (Tail) => l0800_17E6
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 797
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 798
    at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 752
    at Reko.Structure.StructureAnalysis.VirtualizeIrregularSwitchEntries(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 489
    at Reko.Structure.StructureAnalysis.RefineIncSwitch(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 470
@@ -2625,31 +2443,6 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-fn0670: error: An error occurred while rewriting procedure to high-level language.
-    The given key was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DiGraph`1.Successors(T item) in C:\dev\uxmal\reko\master\src\Core\Lib\DiGraph.cs:line 183
-   at Reko.Structure.StructureAnalysis.ReduceSequence(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 366
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 260
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn172C: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn1DAE: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 000046C4: warning: Expected sizes of arrays to have been determined by now
 000047E4: warning: Expected sizes of arrays to have been determined by now
 0000487E: warning: Expected sizes of arrays to have been determined by now
@@ -2857,14 +2650,6 @@ fn0AF6: error: An error occurred during data flow analysis.
        at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-fn053A: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 0000013E: warning: Expected sizes of arrays to have been determined by now
 00000FEC: warning: Expected sizes of arrays to have been determined by now
 0000168C: warning: Expected sizes of arrays to have been determined by now
@@ -3223,98 +3008,19 @@ main: error: An error occurred while rewriting procedure to high-level language.
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_0541: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_2688: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 306
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 254
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_29C5: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_51A9: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_55E8: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 306
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 254
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_579B: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_5A8D: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 306
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 254
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_741D: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 306
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 254
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_7A02: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 306
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 254
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_7C78: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 306
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 254
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0800_7FDC: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn0800_9107: error: An error occurred while rewriting procedure to high-level language.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 208
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Core.Lib.DiGraph`1.RemoveEdge(T itemFrom, T itemTo) in C:\dev\uxmal\reko\master\src\Core\Lib\DiGraph.cs:line 231
+   at Reko.Structure.StructureAnalysis.ReduceIncSwitch(Region n, Region follow) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 588
+   at Reko.Structure.StructureAnalysis.ReduceSwitchRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 397
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 257
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn0800_9828: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse l0800_98FE (Tail) => l0800_9C82
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 797
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 798
    at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 752
    at Reko.Structure.StructureAnalysis.VirtualizeIrregularSwitchEntries(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 489
    at Reko.Structure.StructureAnalysis.RefineIncSwitch(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 470
