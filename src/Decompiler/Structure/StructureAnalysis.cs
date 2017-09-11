@@ -888,8 +888,7 @@ are added during loop refinement, which we discuss next.
             }
             foreach (var s in succs)
             {
-                var ss = SingleSuccessor(s);
-                if (ss != null && ss == n)
+                if (SingleSuccessor(s) == n && SinglePredecessor(s) == n)
                 {
                     // While!
                     var exp = s == succs[0] 

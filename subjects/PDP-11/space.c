@@ -318,116 +318,125 @@ void fn054C(Eq_666 r0, Eq_667 * r3)
 // 0670: void fn0670(Register word16 r5, Stack (ptr code) wArg00, Stack cui16 wArg02, Stack cui16 wArg04, Stack cui16 wArg06, Stack cui16 wArg08)
 void fn0670(word16 r5, code * wArg00, cui16 wArg02, cui16 wArg04, cui16 wArg06, cui16 wArg08)
 {
-fn0670_entry:
-	struct Eq_710 * r4_3 = globals->ptr5424
-	r4_3->ptr002A = wArg00
-	cui16 r0_14 = wArg02
-	cui16 r1_18 = wArg04
-	cui16 r2_22 = wArg06
-	cui16 r3_24 = wArg08
-	branch wArg08 != 0x00 l068E
-	goto l0684
-l0670:
-l0684:
-	r3_24 = wArg04
-	r0_14 = wArg06
-	r2_22 = wArg02
-	r1_18 = wArg08
-l068E:
-	word16 r0_38 = __rol(r0_14, r0_14)
-	ui16 r1_37 = r1_18 << 0x01
-	word16 r5_39 = __rol(r5, r5)
-	branch r0_38 == 0x00 l06B2
-l069C:
-	uint16 r2_91 = r2_22 << 0x01
-	branch r2_91 == 0x00 l06B2
-l06A0:
-	word16 r5_98 = (byte) (r2_91 < 0x00) + r5_39
-	wchar_t r4_100 = DPB(r0_38, 0x00, 0) + r2_91
-	branch r4_100 >= 0x00 l06AE
-l06A8:
-	branch r4_100 > 0x00 l06BE
-l06AA:
-	__syscall(0x898A)
-	goto l06B2
-l06AE:
-	branch r4_100 < 0x00 l06B8
-l06B0:
-	__syscall(0x898B)
+	struct Eq_710 * r4_3 = globals->ptr5424;
+	r4_3->ptr002A = wArg00;
+	cui16 r0_14 = wArg02;
+	cui16 r1_18 = wArg04;
+	cui16 r2_22 = wArg06;
+	cui16 r3_24 = wArg08;
+	if (wArg08 == 0x00)
+	{
+		r3_24 = wArg04;
+		r0_14 = wArg06;
+		r2_22 = wArg02;
+		r1_18 = wArg08;
+	}
+	word16 r0_38 = __rol(r0_14, r0_14);
+	ui16 r1_37 = r1_18 << 0x01;
+	word16 r5_39 = __rol(r5, r5);
+	if (r0_38 == 0x00)
+	{
 l06B2:
-	goto l0738
-l06B8:
-	r4_100 = r4_100 & 0x7F00
-	branch (r4_100 & 0x7F00) == 0x00 l06B0
-l06BE:
-	__ror(r5_98, r5_98)
-	wchar_t r4_123 = DPB(r4_100, 0x00, 0)
-	cui16 r4_126 = __ror(r4_123 + 0x7F01, r4_123 + 0x7F01)
-	Eq_765 r2_129 = __ror(r2_91, r2_91)
-	cui16 r3_130 = __swab(r3_24)
-	cui16 r2_133 = DPB(__swab(r2_129), 0x00, 0) | r3_130
-	cui16 r3_134 = DPB(r3_130, 0x00, 0)
-	int16 r2_135 = __ror(r2_133, r2_133)
-	cu16 r3_136 = __ror(r3_134, r3_134)
-	cui16 r1_137 = __swab(r1_37)
-	cu16 r0_140 = DPB(__swab(r0_38), 0x00, 0) | r1_137
-	ui16 r1_141 = DPB(r1_137, 0x00, 0)
-	int16 r4_143 = r2_135
-	cu16 r5_144 = r3_136
-l06E8:
-	r4_143 = r4_143 >> 0x01
-	r5_144 = __ror(r5_144, r5_144)
-	r1_141 = r1_141 << 0x01
-	branch r1_141 == 0x00 l06FC
-l06F0:
-	r0_140 = __rol(r0_140, r0_140)
-	branch r0_140 >= 0x00 l06E8
-l06F4:
-	r3_136 = r3_136 + r5_144
-	r2_135 = (byte) (r3_136 < 0x00) + r2_135 + r4_143
-	goto l06E8
-l06FC:
-	uint16 r0_168 = __rol(r0_140, r0_140)
-	branch r0_168 >= 0x00 l0706
+		goto l0738;
+	}
+	uint16 r2_91 = r2_22 << 0x01;
+	if (r2_91 == 0x00)
+		goto l06B2;
+	word16 r5_98 = (byte) (r2_91 < 0x00) + r5_39;
+	wchar_t r4_100 = DPB(r0_38, 0x00, 0) + r2_91;
+	if (r4_100 < 0x00)
+	{
+		if (r4_100 <= 0x00)
+		{
+			__syscall(0x898A);
+			goto l06B2;
+		}
+	}
+	else
+	{
+		if (r4_100 >= 0x00)
+			goto l06B0;
+		r4_100 = r4_100 & 0x7F00;
+		if ((r4_100 & 0x7F00) == 0x00)
+		{
+l06B0:
+			__syscall(0x898B);
+			goto l06B2;
+		}
+	}
+	__ror(r5_98, r5_98);
+	wchar_t r4_123 = DPB(r4_100, 0x00, 0);
+	cui16 r4_126 = __ror(r4_123 + 0x7F01, r4_123 + 0x7F01);
+	Eq_765 r2_129 = __ror(r2_91, r2_91);
+	cui16 r3_130 = __swab(r3_24);
+	cui16 r2_133 = DPB(__swab(r2_129), 0x00, 0) | r3_130;
+	cui16 r3_134 = DPB(r3_130, 0x00, 0);
+	int16 r2_135 = __ror(r2_133, r2_133);
+	cu16 r3_136 = __ror(r3_134, r3_134);
+	cui16 r1_137 = __swab(r1_37);
+	cu16 r0_140 = DPB(__swab(r0_38), 0x00, 0) | r1_137;
+	ui16 r1_141 = DPB(r1_137, 0x00, 0);
+	int16 r4_143 = r2_135;
+	cu16 r5_144 = r3_136;
+	while (true)
+	{
+		r4_143 = r4_143 >> 0x01;
+		r5_144 = __ror(r5_144, r5_144);
+		r1_141 = r1_141 << 0x01;
+		if (r1_141 == 0x00)
+			break;
+		r0_140 = __rol(r0_140, r0_140);
+		if (r0_140 < 0x00)
+		{
+			r3_136 = r3_136 + r5_144;
+			r2_135 = (byte) (r3_136 < 0x00) + r2_135 + r4_143;
+		}
+	}
+	uint16 r0_168 = __rol(r0_140, r0_140);
+	if (r0_168 < 0x00)
+	{
 l0700:
-	r3_136 = r3_136 + r5_144
-	r2_135 = (byte) (r3_136 < 0x00) + r2_135 + r4_143
-l0706:
-	r4_143 = r4_143 >> 0x01
-	r5_144 = __ror(r5_144, r5_144)
-	r0_168 = r0_168 << 0x01
-	branch r0_168 < 0x00 l0700
-l070E:
-	branch r0_168 != 0x00 l0706
-l0710:
-	branch r2_135 < 0x00 l0724
-l0716:
-	r3_136 = __rol(r3_136, r3_136)
-	r2_135 = __rol(r2_135, r2_135)
-	branch (r4_126 & 0x7F80) == 0x00 l06B0
+		r3_136 = r3_136 + r5_144;
+		r2_135 = (byte) (r3_136 < 0x00) + r2_135 + r4_143;
+	}
+	do
+	{
+		r4_143 = r4_143 >> 0x01;
+		r5_144 = __ror(r5_144, r5_144);
+		r0_168 = r0_168 << 0x01;
+		if (r0_168 < 0x00)
+			goto l0700;
+	} while (r0_168 != 0x00);
+	if (r2_135 < 0x00)
+	{
 l0724:
-	Eq_866 r3_200 = __rol(r3_136, r3_136)
-	__rol(r1_141, r1_141)
-	__swab(DPB(r3_200, 0x00, 0) | r2_135)
-	__swab(DPB(r2_135, 0x00, 0))
+		Eq_866 r3_200 = __rol(r3_136, r3_136);
+		__rol(r1_141, r1_141);
+		__swab(DPB(r3_200, 0x00, 0) | r2_135);
+		__swab(DPB(r2_135, 0x00, 0));
 l0738:
-	word16 sp_63
-	word16 pc_64
-	word16 r4_65
-	byte NZ_66
-	bool V_67
-	byte NZVC_68
-	word16 r0_69
-	word16 r1_70
-	word16 r2_71
-	word16 r3_72
-	bool Z_73
-	word16 r5_74
-	bool C_75
-	bool N_76
-	r4_3->ptr002A()
-	return
-fn0670_exit:
+		word16 sp_63;
+		word16 pc_64;
+		word16 r4_65;
+		byte NZ_66;
+		bool V_67;
+		byte NZVC_68;
+		word16 r0_69;
+		word16 r1_70;
+		word16 r2_71;
+		word16 r3_72;
+		bool Z_73;
+		word16 r5_74;
+		bool C_75;
+		bool N_76;
+		r4_3->ptr002A();
+		return;
+	}
+	r3_136 = __rol(r3_136, r3_136);
+	r2_135 = __rol(r2_135, r2_135);
+	if ((r4_126 & 0x7F80) != 0x00)
+		goto l0724;
+	goto l06B0;
 }
 
 // 07BA: void fn07BA(Register cu16 r0, Register uint16 r1, Register word16 r2, Register uint16 r3, Register Eq_892 r4, Register Eq_893 r5, Stack word16 wArg00, Stack word16 wArg02, Stack (ptr (ptr code)) wArg04)
