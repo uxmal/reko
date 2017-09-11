@@ -141,14 +141,15 @@ namespace Reko.Scanning
                     continue;
                 if (s.Procedure.EntryBlock.Succ[0] == s)
                 {
+                    // s is the first block of a (different) procedure
                     var lastAddress = GetAddressOfLastInstruction(block);
                     var retCallThunkBlock = Scanner.CreateCallRetThunk(lastAddress, block.Procedure, s.Procedure);
                     block.Succ[i] = retCallThunkBlock;
                     retCallThunkBlock.Pred.Add(block);
+                    s.Pred.Remove(block);
                 }
             }
         }
-
 
         private void ReplaceSuccessorsWith(Block block, Block blockOld, Block blockNew)
         {

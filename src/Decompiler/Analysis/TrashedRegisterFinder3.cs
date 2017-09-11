@@ -204,7 +204,19 @@ namespace Reko.Analysis
                 .CallerStatements(block.Procedure)
                 .Cast<Statement>()
                 .Select(s => s.Block);
-            worklist.AddRange(callingBlocks);
+            foreach (var caller in callingBlocks)
+            {
+                Context succCtx;
+                if (!blockCtx.TryGetValue(caller, out succCtx))
+                {
+                    blockCtx.Add(caller, ctx.Clone());
+                }
+                else
+                {
+                    succCtx.MergeWith(ctx);
+                }
+                worklist.Add(caller);
+            }
         }
 
         private void UpateBlockSuccessors(Block block)
@@ -231,6 +243,8 @@ namespace Reko.Analysis
             var value = ass.Src.Accept(eval);
             DebugEx.Print(trace.TraceVerbose, "{0} = [{1}]", ass.Dst, value);
 
+            if (ass.Dst.Name.StartsWith("bp")) //$DEBUG
+                ass.ToString();
             ctx.SetValue(ass.Dst, value);
             return true;
         }
@@ -414,7 +428,10 @@ namespace Reko.Analysis
                     }
                     else if (idV.Storage == id.Storage)
                     {
-                        ctx.ProcFlow.Preserved.Add(id.Storage);
+                        if (sid.OriginalIdentifier != id)
+                        {
+                            ctx.ProcFlow.Preserved.Add(id.Storage);
+                        }
                         return true;
                     }
                 }

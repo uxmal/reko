@@ -2,7 +2,7 @@ void fn0C00_0000(Register word16 ax, Register word16 bx, Register selector ds)
 // MayUse:  ax:[0..15] bx:[0..15] ds:[0..15]
 // LiveOut:
 // Trashed: SCZO ax Top
-// Preserved: ds sp
+// Preserved: sp
 // fn0C00_0000
 // Return size: 0
 // Mem0:Global

@@ -3,7 +3,7 @@
 // MayUse:  ds:[0..15] si:[0..15]
 // LiveOut:
 // Trashed: SCZO ax Top
-// Preserved: ds si sp ss
+// Preserved: sp
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 si, selector ds)
