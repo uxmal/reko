@@ -133,7 +133,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore("scanning-development")]
+        //[Ignore("scanning-development")]
         public void CceAddSubCarries()
 		{
 			RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/CceAddSubCarries.txt");

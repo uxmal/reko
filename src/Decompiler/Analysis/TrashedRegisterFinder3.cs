@@ -532,9 +532,28 @@ namespace Reko.Analysis
                 return new Context(ssa, this.FramePointer, this.IdState, this.ProcFlow, new Dictionary<int, Expression>(StackState), cmp);
             }
 
+            /// <summary>
+            /// Merge <paramref name="ctxOther"/> into this context.
+            /// </summary>
+            /// <param name="ctxOther"></param>
+            /// <returns>True if a change resulted, otherwise false.</returns>
             public bool MergeWith(Context ctxOther)
             {
-                return true;
+                bool changed = false;
+                foreach (var de in ctxOther.StackState)
+                {
+                    if (!this.StackState.ContainsKey(de.Key))
+                    {
+                        changed = true;
+                        this.StackState.Add(de.Key, de.Value);
+                    }
+                    else if (!cmp.Equals(this.StackState[de.Key], de.Value))
+                    {
+                        changed = true;
+                        this.StackState[de.Key] = Constant.Invalid;
+                    }
+                }
+                return changed;
             }
 
             public Expression GetDefiningExpression(Identifier id)
