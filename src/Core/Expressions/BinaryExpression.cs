@@ -140,7 +140,7 @@ namespace Reko.Core.Expressions
             if (Operator == Operators.Operator.Fgt)
                 return new BinaryExpression(Operators.Operator.Fle, this.DataType, Left, Right);
 
-            throw new NotImplementedException();
-		}
+            return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);
+        }
 	}
 }

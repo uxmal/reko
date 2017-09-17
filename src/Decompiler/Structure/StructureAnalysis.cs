@@ -476,7 +476,7 @@ all other cases, together they constitute a Switch[].
         private void VirtualizeIrregularSwitchEntries(Region n)
         {
             var vEdges = new List<VirtualEdge>();
-            foreach (var s in regionGraph.Successors(n))
+            foreach (var s in regionGraph.Successors(n).Distinct())
             {
                 foreach (var sp in regionGraph.Predecessors(s))
                 {
@@ -576,21 +576,29 @@ all other cases, together they constitute a Switch[].
         private bool ReduceIncSwitch(Region n, Region follow)
         {
             var succs = regionGraph.Successors(n).ToArray();
-            var stms = new List<AbsynStatement>();
+            var cases = new Dictionary<Region, List<int>>();
             for (int i = 0; i < succs.Length; ++i)
             {
-                stms.Add(new AbsynCase(Constant.Create(n.Expression.DataType, i)));
-                stms.AddRange(succs[i].Statements);
-                if (succs[i].Type != RegionType.Tail)
+                if (!cases.ContainsKey(succs[i]))
+                    cases.Add(succs[i], new List<int>());
+                cases[succs[i]].Add(i);
+            }
+            var stms = new List<AbsynStatement>();
+            foreach (var succ in cases.Keys)
+            {
+                foreach (int c in cases[succ])
+                    stms.Add(new AbsynCase(Constant.Create(n.Expression.DataType, c)));
+                stms.AddRange(succ.Statements);
+                if (succ.Type != RegionType.Tail)
                 {
                     stms.Add(new AbsynBreak());
                 }
-                regionGraph.RemoveEdge(n, succs[i]);
+                cases[succ].ForEach(c => regionGraph.RemoveEdge(n, succ));
                 if (follow != null)
                 {
-                    regionGraph.RemoveEdge(succs[i], follow);
+                    regionGraph.RemoveEdge(succ, follow);
                 }
-                RemoveRegion(succs[i]);
+                RemoveRegion(succ);
             }
             var sw = new AbsynSwitch(n.Expression, stms);
             n.Statements.Add(sw);
