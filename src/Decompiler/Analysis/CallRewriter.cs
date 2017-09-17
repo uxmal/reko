@@ -174,8 +174,8 @@ namespace Reko.Analysis
             liveOut.ExceptWith(implicitRegs);
 
             // Sort the names in a stable way to avoid regression tests failing.
-            foreach (var r in liveOut.OfType<RegisterStorage>().OrderBy(r => r.Number).ThenBy(r => r.BitAddress))
-			{
+            foreach (var r in liveOut.OrderBy(r => r.Number).ThenBy(r => r.BitAddress))
+    			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
 				{
 					sb.AddOutParam(frame.EnsureRegister(r));
