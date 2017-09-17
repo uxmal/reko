@@ -587,6 +587,49 @@ case_2:
             RunTest(sExp, m.Procedure);
         }
 
+        [Test]
+        public void ProcStr_Switch_Fallthru_CoincidentTargets()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.Label("head");
+            m.Switch(r1, "target_2", "target_0", "target_1", "target_2");
+
+            m.Label("target_0");
+            m.Assign(r1, 0);
+            m.Goto("done");
+
+            m.Label("target_1");
+            m.Assign(r1, 1);
+            // Fallthru
+
+            m.Label("target_2");
+            m.Assign(r1, 2);
+            m.Goto("done");
+
+            m.Label("done");
+            m.Return(r1);
+
+            var sExp =
+@"    switch (r1)
+    {
+    case 0x00:
+    case 0x03:
+target_2:
+        r1 = 0x02;
+        break;
+    case 0x01:
+        r1 = 0x00;
+        break;
+    case 0x02:
+        r1 = 0x01;
+        goto target_2;
+    }
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
         [Test(Description="A do-while with a nested if-then-else")]
         public void ProcStr_DoWhile_NestedIfElse()
         {
