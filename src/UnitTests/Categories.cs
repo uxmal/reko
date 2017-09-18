@@ -29,7 +29,14 @@ namespace Reko.UnitTests
     {
         public const string Regressions = "Regressions";
 
+        // Unit tests in the UnitTests category must complete without 
+        // performing IO. This means not using "recordings" saved 
+        // on disk or popping up windows during the test.
         public const string UnitTests = "UnitTests";
+
+        // Tests that are slower, because they show UI or hit
+        // the file system, are considered integration tests.
+        public const string IntegrationTests = "IntegrationTests";
 
         // The purpose of FailedTests category is to avoid running such unit
         // tests under Travis CI before fixing of Reko so that they could pass.
@@ -44,10 +51,6 @@ namespace Reko.UnitTests
         // The Reko build provides special mono-compatible linux Capstone 
         // disassembler libraries for ARM, so they can run on Travis.
         public const string Capstone = "Capstone";
-
-        // Tests that are slower, because they show UI or hit
-        // the file system, are considered integration tests.
-        public const string IntegrationTests = "IntegrationTests";
 
         // Tests that are currently failing in the "analysis-development"
         // branch. Before merging back into "master", these must all be 

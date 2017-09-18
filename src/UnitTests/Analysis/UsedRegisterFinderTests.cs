@@ -18,32 +18,32 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Lib;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
     public class UsedRegisterFinderTests
     {
+        private MockRepository mr;
         private ProgramDataFlow pf;
         private ProgramBuilder progBuilder;
 
         [SetUp]
         public void Setup()
         {
+            this.mr = new MockRepository();
             this.pf = new ProgramDataFlow();
             this.progBuilder = new ProgramBuilder();
         }
@@ -83,8 +83,13 @@ namespace Reko.UnitTests.Analysis
             {
                 Programs = { this.progBuilder.Program }
             };
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            var importResolver = mr.Stub<IImportResolver>();
             importResolver.Replay();
+            var platform = mr.Stub<IPlatform>();
+            platform.Stub(p => p.CreateTrashedRegisters()).Return(new HashSet<RegisterStorage>());
+            platform.Replay();
+            progBuilder.Program.Platform = platform;
+
             var sst = new SsaTransform(
                 progBuilder.Program, 
                 proc, 
@@ -247,6 +252,22 @@ namespace Reko.UnitTests.Analysis
                 var r1 = m.Reg32("r1", 1);
 
                 m.Store(m.Word16(0x00123400), m.Slice(PrimitiveType.Word16, r1, 16));
+                m.Return();
+            });
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void UrfCall()
+        {
+            var sExp = "Used: [r1, [0..31]],[r2, [0..31]]";
+            RunTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+
+                m.Assign(r2, m.IAdd(r2, 0));
+                m.Call(r1, 0);
                 m.Return();
             });
         }

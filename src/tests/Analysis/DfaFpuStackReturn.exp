@@ -1,6 +1,6 @@
 // void fn0C00_0000(Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  ds:[0..63]
+// MayUse:  ds:[0..15]
 // LiveOut:
 // Trashed: bx FPU -1 Top
 // Preserved: sp

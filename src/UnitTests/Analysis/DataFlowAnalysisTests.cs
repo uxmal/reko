@@ -168,7 +168,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+ 
         [Category(Categories.AnalysisDevelopment)]
         public void DfaNegsNots()
 		{
@@ -184,7 +184,6 @@ namespace Reko.UnitTests.Analysis
 
 		[Test]
         [Category(Categories.IntegrationTests)]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void DfaReadFile()
         {
 			RunFileTest_x86_real("Fragments/multiple/read_file.asm", "Analysis/DfaReadFile.txt");

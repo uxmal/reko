@@ -101,56 +101,64 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CoaMemoryTest()
 		{
 			RunFileTest_x86_real("Fragments/simple_memoperations.asm", "Analysis/CoaMemoryTest.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CoaSmallLoop()
-		{
+        {
 			RunFileTest_x86_real("Fragments/small_loop.asm", "Analysis/CoaSmallLoop.txt");
 		}
 
 		[Test]
         [Ignore("scanning-development")]
+        [Category(Categories.IntegrationTests)]
         public void CoaAddSubCarries()
-		{
+        {
 			RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/CoaAddSubCarries.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CoaConditionals()
 		{
 			RunFileTest_x86_real("Fragments/multiple/conditionals.asm", "Analysis/CoaConditionals.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CoaSliceReturn()
 		{
 			RunFileTest_x86_real("Fragments/multiple/slicereturn.asm", "Analysis/CoaSliceReturn.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CoaReg00002()
 		{
 			RunFileTest_x86_real("Fragments/regression00002.asm", "Analysis/CoaReg00002.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CoaWhileGoto()
 		{
 			RunFileTest_x86_real("Fragments/while_goto.asm", "Analysis/CoaWhileGoto.txt");
 		}
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CoaSideEffectCalls()
         {
             RunFileTest_x86_real("Fragments/multiple/sideeffectcalls.asm", "Analysis/CoaSideEffectCalls.txt");
         }
 
         [Test]
-        [Ignore("What happened to r2 as input argument?")]
+        [Category(Categories.IntegrationTests)]
         public void CoaCallUses()
         {
             var m = new ProcedureBuilder("foo");
@@ -165,7 +173,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore("What happened to r2 as input argument?")]
+        [Category(Categories.IntegrationTests)]
         public void CoaCallCallee()
         {
             var m = new ProcedureBuilder("foo");

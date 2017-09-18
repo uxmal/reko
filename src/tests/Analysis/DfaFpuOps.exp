@@ -18,7 +18,7 @@ fn0C00_0000_exit:
 
 // void fn0C00_0010(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  ds:[0..63] Stack +0002:[0..15] Stack +0004:[0..63]
+// MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut:
 // Trashed: bx FPU -1 FPU -2 Top
 // Preserved: bp sp

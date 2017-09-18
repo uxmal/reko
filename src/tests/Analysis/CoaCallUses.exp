@@ -1,28 +1,35 @@
+fp:fp
+    def:  def fp
+    uses: call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2(),r63:fp
+r63_2: orig: r63
 r2:r2
     def:  def r2
-    uses: call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
-          call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
-r4_2: orig: r4
+    uses: call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2(),r63:fp
+          call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2(),r63:fp
+r4_4: orig: r4
 r3:r3
     def:  def r3
-    uses: call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
-          call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
-r2_4: orig: r2
-    def:  call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
-r3_5: orig: r3
-    def:  call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
-r4_6: orig: r4
-    def:  call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
+    uses: call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2(),r63:fp
+          call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2(),r63:fp
+r2_6: orig: r2
+    def:  call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2(),r63:fp
+r3_7: orig: r3
+    def:  call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2(),r63:fp
+r4_8: orig: r4
+    def:  call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2(),r63:fp
+r63_9: orig: r63
+    def:  call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2(),r63:fp
 // foo
 // Return size: 0
 void foo(word32 r2, word32 r3)
 foo_entry:
+	def fp
 	def r2
 	def r3
 	// succ:  l1
 l1:
 	call r3 (retsize: 4;)
-		uses: r2:r2,r3:r3,r4:r2()
+		uses: r2:r2,r3:r3,r4:r2(),r63:fp
 	return
 	// succ:  foo_exit
 foo_exit:

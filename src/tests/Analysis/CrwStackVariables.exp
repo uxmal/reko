@@ -71,7 +71,7 @@ l0C00_0020:
 	// succ:  fn0C00_0020_exit
 fn0C00_0020_exit:
 Register word16 fn0C00_002E(Stack segptr32 ptrArg02, Stack word16 wArg06)
-// MayUse:  Stack +0002:[0..31] Stack +0006:[0..31]
+// MayUse:  Stack +0002:[0..31] Stack +0006:[0..15]
 // LiveOut: ax
 // Trashed: SCZO ax bx es Top
 // Preserved: bp sp

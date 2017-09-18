@@ -516,7 +516,6 @@ namespace Reko.Analysis
 
         private void GenerateUseDefsForUnknownCallee(CallInstruction ci)
         {
-            //$TODO special case for flags; unify them all into an überflag.
             var existingUses = ci.Uses
                 .Select(u => u.Storage)
                 .ToHashSet();

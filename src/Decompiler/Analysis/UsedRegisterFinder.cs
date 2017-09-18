@@ -140,10 +140,11 @@ namespace Reko.Analysis
 
         public BitRange VisitCallInstruction(CallInstruction ci)
         {
-            return ci.Uses
-                .Aggregate(
+            var brFn = ci.Callee.Accept(this);
+            var brArgs = ci.Uses.Aggregate(
                     BitRange.Empty,
-                    (br, cb) => cb.Expression.Accept(this));
+                    (br, cb) => br | cb.Expression.Accept(this));
+            return brFn | brArgs;
         }
 
         public BitRange VisitDeclaration(Declaration decl)
@@ -203,17 +204,21 @@ namespace Reko.Analysis
             return use.Expression.Accept(this);
         }
 
+
+
         public BitRange VisitAddress(Address addr)
         {
-            throw new NotImplementedException();
+            return BitRange.Empty;
         }
 
         public BitRange VisitApplication(Application appl)
         {
-            return appl.Arguments
+            var brFn = appl.Procedure.Accept(this);
+            var brArgs = appl.Arguments
                 .Aggregate(
                     BitRange.Empty,
                     (br, e) => br | e.Accept(this));
+            return brFn | brArgs;
         }
 
         public BitRange VisitArrayAccess(ArrayAccess acc)
@@ -266,7 +271,10 @@ namespace Reko.Analysis
 
         public BitRange VisitIdentifier(Identifier id)
         {
-            return new BitRange(0, (int)id.Storage.BitSize);
+            if (id == idCur)
+                return new BitRange(0, (int)id.Storage.BitSize);
+            else
+                return BitRange.Empty;
         }
 
         public BitRange VisitMemberPointerSelector(MemberPointerSelector mps)
@@ -308,7 +316,7 @@ namespace Reko.Analysis
 
         public BitRange VisitProcedureConstant(ProcedureConstant pc)
         {
-            throw new NotImplementedException();
+            return BitRange.Empty;
         }
 
         public BitRange VisitScopeResolution(ScopeResolution scopeResolution)

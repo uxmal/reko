@@ -1,5 +1,5 @@
 void fn0C00_0000(Register selector ds)
-// MayUse:  ds:[0..63]
+// MayUse:  ds:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bx FPU -1 FPU -2 Top
 // Preserved: sp
@@ -40,7 +40,7 @@ l0C00_0000:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 void fn0C00_0024(Register selector ds, Stack word16 wArg02, FpuStack real64 rArg0, FpuStack real64 rArg1)
-// MayUse:  ds:[0..31] FPU +0:[0..31] FPU +1:[0..31] Stack +0002:[0..31]
+// MayUse:  ds:[0..15] FPU +0:[0..31] FPU +1:[0..31] Stack +0002:[0..15]
 // LiveOut:
 // Trashed: bx Top
 // Preserved: bp sp

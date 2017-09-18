@@ -68,6 +68,11 @@ namespace Reko.Analysis
             get { return sids.Count; }
         }
 
+        public bool Contains(Identifier id)
+        {
+            return sids.ContainsKey(id);
+        }
+
         public IEnumerator<SsaIdentifier> GetEnumerator()
         {
             return sids.Values.GetEnumerator();
