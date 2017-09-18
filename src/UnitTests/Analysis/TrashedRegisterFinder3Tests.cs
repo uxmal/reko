@@ -655,6 +655,7 @@ Constants: cl:0x00
         }
 
         [Test(Description = "Tests that phi nodes with constants result in constants.")]
+        [Category(Categories.UnitTests)]
         public void TrfSameConstant()
         {
             Expect(
@@ -685,10 +686,11 @@ Constants: cl:0x00
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void TrfSaveRegistersOnStack()
         {
             Expect("main", "Preserved: ebp,r63", "Trashed: eax", "");
-            builder.Add("main", m => 
+            builder.Add("main", m =>
             {
                 var eax = m.Reg32("eax", 0);
                 var esp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
@@ -706,6 +708,7 @@ Constants: cl:0x00
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void TrfSaveRegistersOnStack_TwoExits()
         {
             Expect("main", "Preserved: ebp,r63", "Trashed: eax", "");
@@ -737,6 +740,7 @@ Constants: cl:0x00
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void TrfFlags()
         {
             Expect("main", "Preserved: r63", "Trashed: r2", "");
@@ -759,6 +763,66 @@ Constants: cl:0x00
             });
             RunTest();
             Assert.AreEqual(0x0F, FlowOf("main").grfTrashed);
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void TrfCtx_MergeState_Stack()
+        {
+            var state = new Dictionary<Identifier, Expression>();
+            var stateOther = new Dictionary<Identifier, Expression>();
+            var procFlow = new ProcedureFlow(null);
+            var ctx = new TrashedRegisterFinder3.Context(
+                null, null, state, procFlow);
+            var ctxOther = new TrashedRegisterFinder3.Context(
+                null, null, state, procFlow);
+            var ebp = new Identifier("ebp", PrimitiveType.Word32, new RegisterStorage("ebp", 5, 0, PrimitiveType.Word32));
+            var esi = new Identifier("esi", PrimitiveType.Word32, new RegisterStorage("esi", 6, 0, PrimitiveType.Word32));
+            var edi = new Identifier("edi", PrimitiveType.Word32, new RegisterStorage("edi", 7, 0, PrimitiveType.Word32));
+
+            ctx.StackState[-4] = ebp;
+            ctx.StackState[-8] = esi;
+            ctx.StackState[-16] = Constant.Word32(0x42);
+            ctx.StackState[-20] = Constant.Word32(0x42);
+            ctxOther.StackState[-4] = ebp;
+            ctxOther.StackState[-12] = edi;
+            ctxOther.StackState[-16] = Constant.Word32(0x42);
+            ctxOther.StackState[-20] = Constant.Word32(0x4711);
+
+            ctx.MergeWith(ctxOther);
+
+            Assert.AreEqual(ebp, ctx.StackState[-4]);
+            Assert.AreEqual(esi, ctx.StackState[-8]);
+            Assert.AreEqual(edi, ctx.StackState[-12]);
+            Assert.AreEqual("0x00000042", ctx.StackState[-16].ToString());
+            Assert.AreSame(Constant.Invalid, ctx.StackState[-20]);
+        }
+
+        [Test(Description = "This analysis is flow sensitive, so if a called procedure terminates, no effects are propagated")]
+        [Category(Categories.UnitTests)]
+        public void TrfTerminates()
+        {
+            Expect("main", "Preserved: r63", "Trashed: ", "");
+            builder.Add("main", m =>
+            {
+                var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                var fn = new ExternalProcedure(
+                    "exit",
+                    FunctionType.Action(r1),
+                    new ProcedureCharacteristics { Terminates = true });
+                m.Assign(sp, m.Frame.FramePointer);
+                m.BranchIf(m.Ne0(r2), "m2notzero");
+
+                m.Label("m1fail");
+                m.Assign(r1, 1);
+                m.SideEffect(m.Fn(fn, r1));
+
+                m.Label("m2notzero");
+                m.Return();
+            });
+            RunTest();
         }
     }
 }

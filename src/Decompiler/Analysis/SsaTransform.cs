@@ -667,8 +667,28 @@ namespace Reko.Analysis
                 appl.Arguments[i] = appl.Arguments[i].Accept(this);
             }
             appl.Procedure = appl.Procedure.Accept(this);
+            var pc = appl.Procedure as ProcedureConstant;
+            if (pc != null)
+            {
+                blockstates[block].terminates |= ProcedureTerminates(pc.Procedure);
+            }
             return appl;
         }
+
+        private bool ProcedureTerminates(ProcedureBase proc)
+        {
+            if (proc.Characteristics != null && proc.Characteristics.Terminates)
+                return true;
+            var callee = proc as Procedure;
+            if (callee == null)
+                return false;
+
+            ProcedureFlow pflow;
+            return 
+                programFlow.ProcedureFlows.TryGetValue(callee, out pflow) &&
+                pflow.TerminatesProcess;
+        }
+
 
         public override Expression VisitIdentifier(Identifier id)
         {

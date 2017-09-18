@@ -114,7 +114,6 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("eax = DPB(eax, foo(), 0)", instr.ToString());
         }
 
-        [Ignore("Variadic calls not implemented yet")]
         [Test(Description ="Variadic signature specified, but no way of parsing the parameters.")]
         public void AppBld_NoVariadic_Characteristics()
         {
@@ -124,7 +123,8 @@ namespace Reko.UnitTests.Core
                 caller.Frame,
                 new CallSite(4, 0),
                 new ProcedureConstant(PrimitiveType.Pointer32, callee));
-            var sig = FunctionType.Action(new Identifier("...", new UnknownType(), new StackArgumentStorage(0, null)));
+            var unk = new UnknownType();
+            var sig = FunctionType.Action(new Identifier("...", unk, new StackArgumentStorage(0, unk)));
             var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("callee(0x00000000)", instr.ToString());//$BUG: obviously wrong
         }

@@ -153,6 +153,7 @@ namespace Reko.Analysis
                 {
                     worklist.Add(proc.EntryBlock);
                 }
+                procFlow.TerminatesProcess = proc.ExitBlock.Pred.Count == 0;
             }
         }
 
@@ -174,6 +175,8 @@ namespace Reko.Analysis
 
         private void ProcessBlock(Block block)
         {
+            if (block.Name.EndsWith("1A"))  //$DEBUG
+                block.Name.ToString();
             this.ctx = blockCtx[block];
             this.eval = new ExpressionSimplifier(ctx, listener);
 
@@ -243,8 +246,6 @@ namespace Reko.Analysis
             var value = ass.Src.Accept(eval);
             DebugEx.Print(trace.TraceVerbose, "{0} = [{1}]", ass.Dst, value);
 
-            if (ass.Dst.Name.StartsWith("bp")) //$DEBUG
-                ass.ToString();
             ctx.SetValue(ass.Dst, value);
             return true;
         }
@@ -370,7 +371,6 @@ namespace Reko.Analysis
         public bool VisitSideEffect(SideEffect side)
         {
             side.Expression.Accept(eval);
-            //$TODO What about terminating functions like "exit"?
             return true;
         }
 
@@ -383,7 +383,8 @@ namespace Reko.Analysis
 
         public bool VisitSwitchInstruction(SwitchInstruction si)
         {
-            throw new NotImplementedException();
+            si.Expression.Accept(eval);
+            return true;
         }
 
         /// <summary>
@@ -428,7 +429,8 @@ namespace Reko.Analysis
                     }
                     else if (idV.Storage == id.Storage)
                     {
-                        if (sid.OriginalIdentifier != id)
+                        if (sid.OriginalIdentifier == idV &&
+                            sid.OriginalIdentifier != id)
                         {
                             ctx.ProcFlow.Preserved.Add(id.Storage);
                         }
@@ -500,7 +502,7 @@ namespace Reko.Analysis
                 SsaState ssa,
                 Identifier fp,
                 Dictionary<Identifier, Expression> idState,
-                ProcedureFlow procFlow) 
+                ProcedureFlow procFlow)
                 : this(
                       ssa,
                       fp,
