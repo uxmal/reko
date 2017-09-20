@@ -44,7 +44,7 @@ namespace Reko.Analysis
 		/// <param name="sb">stream into which the data is written</param>
 		public abstract void Emit(IProcessorArchitecture arch, TextWriter sb);
 
-		public static void EmitRegisters(IProcessorArchitecture arch, string caption, uint grfFlags, HashSet<Storage> regs, TextWriter sb)
+		public static void EmitRegisters(IProcessorArchitecture arch, string caption, uint grfFlags, IEnumerable<Storage> regs, TextWriter sb)
 		{
 			sb.Write(caption);
 			if (grfFlags != 0)
@@ -69,7 +69,7 @@ namespace Reko.Analysis
             }
         }
 
-        private static void EmitRegistersCore(IProcessorArchitecture arch, HashSet<Storage> regs, TextWriter sb)
+        private static void EmitRegistersCore(IProcessorArchitecture arch, IEnumerable<Storage> regs, TextWriter sb)
 		{
             foreach (var reg in regs.Where(r => r!= null).OrderBy(r => r.Name))
             {

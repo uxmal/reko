@@ -60,7 +60,7 @@ namespace Reko.Analysis
 
 		public Hashtable StackArguments;		//$REFACTOR: make this a strongly typed dictionary (Var -> PrimitiveType)
 
-		public HashSet<Storage> LiveOut;
+		public Dictionary<Storage, BitRange> LiveOut;       //$TODO: rename to BitsUsedOut.
 		public uint grfLiveOut;
 
 		public FunctionType Signature;
@@ -80,7 +80,7 @@ namespace Reko.Analysis
 
             ByPass = new HashSet<Storage>();
             MayUse = new HashSet<Storage>();
-            LiveOut = new HashSet<Storage>();
+            LiveOut = new Dictionary<Storage, BitRange>();
 
             StackArguments = new Hashtable();
             this.BitsUsed = new Dictionary<Storage, BitRange>();
@@ -98,7 +98,7 @@ namespace Reko.Analysis
 		{
 			EmitRegisterValues("// MayUse: ", BitsUsed, writer);
 			writer.WriteLine();
-			EmitRegisters(arch, "// LiveOut:", grfLiveOut, LiveOut, writer);
+			EmitRegisters(arch, "// LiveOut:", grfLiveOut, LiveOut.Keys, writer);
 			writer.WriteLine();
 			EmitRegisters(arch, "// Trashed:", grfTrashed, Trashed, writer);
 			writer.WriteLine();
@@ -140,7 +140,7 @@ namespace Reko.Analysis
 			RegisterStorage reg = id.Storage as RegisterStorage;
 			if (reg != null)
 			{
-                return LiveOut.Contains(reg);
+                return LiveOut.ContainsKey(reg);
 			}
 			return false;
 		}

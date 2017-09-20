@@ -83,7 +83,13 @@ namespace Reko.Analysis
             {
                 var liveOut = CollectLiveOutStorages(proc);
                 var flow = this.dataFlow[proc];
-                flow.LiveOut.UnionWith(liveOut);
+                var newOut = new Dictionary<Storage, BitRange>(flow.LiveOut);
+                foreach (var l in liveOut)
+                {
+                    if (!newOut.ContainsKey(l))
+                        newOut.Add(l, BitRange.Empty);
+                }
+                flow.LiveOut = newOut;
             }
         }
 

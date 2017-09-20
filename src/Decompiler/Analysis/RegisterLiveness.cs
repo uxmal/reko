@@ -138,7 +138,7 @@ namespace Reko.Analysis
 				ProcedureFlow pi = mpprocData[proc];
 
 				BlockFlow bi = mpprocData[proc.ExitBlock];
-                pi.LiveOut = bi.DataOut;
+                pi.LiveOut = bi.DataOut.ToDictionary(k => k, v => BitRange.Empty);
 				pi.grfLiveOut = bi.grfOut;
 
                 // Remove unneeded data. Done for performance (and to give GC something to do).

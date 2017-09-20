@@ -81,7 +81,12 @@ namespace Reko.Analysis
 		private void AdjustLiveOut(ProcedureFlow flow)
 		{
 			flow.grfLiveOut &= flow.grfTrashed;
-            flow.LiveOut.IntersectWith(flow.Trashed);
+            var newOut = flow.LiveOut.Keys.ToHashSet();
+            foreach (var stg in newOut)
+            {
+                if (!flow.Trashed.Contains(stg))
+                    flow.LiveOut.Remove(stg);
+            }
         }
 
         private void AdjustLiveIn(Procedure proc, ProcedureFlow flow)
@@ -141,7 +146,7 @@ namespace Reko.Analysis
             var frame = proc.Frame;
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
 
-            AddModifiedFlags(frame, allLiveOut, sb);
+            AddModifiedFlags(frame, allLiveOut.Keys, sb);
 
             var mayUse = new HashSet<RegisterStorage>(flow.BitsUsed.Keys.OfType<RegisterStorage>());
             mayUse.ExceptWith(implicitRegs);
@@ -170,7 +175,7 @@ namespace Reko.Analysis
                 sb.AddFpuStackArgument(fpu.FpuStackOffset, id);
 			}
 
-            var liveOut = allLiveOut.OfType<RegisterStorage>().ToHashSet();
+            var liveOut = allLiveOut.Keys.OfType<RegisterStorage>().ToHashSet();
             liveOut.ExceptWith(implicitRegs);
 
             // Sort the names in a stable way to avoid regression tests failing.
@@ -182,7 +187,7 @@ namespace Reko.Analysis
 				}
 			}
 
-            foreach (var fpu in allLiveOut.OfType<FpuStackStorage>().OrderBy(r => r.FpuStackOffset))
+            foreach (var fpu in allLiveOut.Keys.OfType<FpuStackStorage>().OrderBy(r => r.FpuStackOffset))
             {
                 sb.AddOutParam(frame.EnsureFpuStackVariable(fpu.FpuStackOffset, fpu.DataType));
 			}
