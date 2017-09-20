@@ -64,7 +64,7 @@ namespace Reko.Analysis
 		public uint grfLiveOut;
 
 		public FunctionType Signature;
-        public Dictionary<Storage, BitRange> BitsUsed;
+        public Dictionary<Storage, BitRange> BitsUsed;  // the bits of each live-in storage
 
         // True if calling this procedure terminates the thread/process. This implies
         // that no code path reached the exit block without first terminating the process.

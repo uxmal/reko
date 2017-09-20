@@ -81,8 +81,8 @@ namespace Reko.Analysis
 		private void AdjustLiveOut(ProcedureFlow flow)
 		{
 			flow.grfLiveOut &= flow.grfTrashed;
-			flow.LiveOut.IntersectWith(flow.Trashed);
-		}
+            flow.LiveOut.IntersectWith(flow.Trashed);
+        }
 
         private void AdjustLiveIn(Procedure proc, ProcedureFlow flow)
         {

@@ -260,5 +260,24 @@ foo_exit:
 
             RunTest(sExp, pb.Program);
         }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void Uvr_()
+        {
+            var _r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
+            var pb = new ProgramBuilder();
+            pb.Add("main", m =>
+            {
+                var r1 = m.Frame.EnsureRegister(_r1);
+                m.Call("bool_proc", 0);
+                m.Store(m.Word32(0x00123400), m.Cast(PrimitiveType.Byte, r1));
+                m.Return();
+            });
+            pb.Add("bool_proc", m =>
+            {
+
+            });
+        }
     }
 }

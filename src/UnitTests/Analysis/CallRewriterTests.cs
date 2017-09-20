@@ -141,6 +141,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void CrwNoCalls()
         {
             RunFileTest_x86_real("Fragments/diamond.asm", "Analysis/CrwNoCalls.txt");

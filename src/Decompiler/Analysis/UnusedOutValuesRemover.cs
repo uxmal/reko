@@ -57,7 +57,7 @@ namespace Reko.Analysis
             this.eventListener = eventListener;
             this.procToSsa = ssts
                 .Select(t => t.SsaState)
-                .ToDictionary(s => s.Procedure, s => s);
+                .ToDictionary(s => s.Procedure);
         }
 
         public void Transform()
@@ -74,11 +74,9 @@ namespace Reko.Analysis
                 {
                     if (this.eventListener.IsCanceled())
                         return;
-                    {
-                        var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
-                        vp.Transform();
-                        change |= RemoveUnusedDefinedValues(ssa, wl);
-                    }
+                    var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
+                    vp.Transform();
+                    change |= RemoveUnusedDefinedValues(ssa, wl);
                 }
             } while (change);
             foreach (var proc in procToSsa.Keys)

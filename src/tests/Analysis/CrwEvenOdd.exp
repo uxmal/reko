@@ -1,11 +1,11 @@
 void fn0C00_0000(Register selector ds)
-// MayUse:  ds
+// MayUse:  ds:[0..15]
 // LiveOut:
-// Trashed: SCZO ah al ax eax rax
+// Trashed: SCZO ax sp Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // sp:sp
 // ax:ax
@@ -14,6 +14,7 @@ void fn0C00_0000(Register selector ds)
 // return address size: 2
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
+	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
@@ -27,13 +28,13 @@ l0C00_0000:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 Register byte fn0C00_0015(Register word16 ax)
-// MayUse:  ax
+// MayUse:  ax:[0..15]
 // LiveOut: al
 // Trashed: SCZO ah al ax eax rax
 // Preserved: sp
 // fn0C00_0015
 // Return size: 0
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // sp:sp
 // ax:ax
@@ -46,11 +47,7 @@ byte fn0C00_0015(word16 ax)
 fn0C00_0015_entry:
 	// succ:  l0C00_0015
 l0C00_0015:
-	sp = fp
-	ax = ax | ax
-	SZO = cond(ax)
-	C = false
-	branch Test(EQ,Z) l0C00_001D
+	branch ax == 0x0000 l0C00_001D
 	// succ:  l0C00_0019 l0C00_001D
 l0C00_0019:
 	ax = ax - 0x0001
@@ -66,7 +63,7 @@ l0C00_001D:
 	// succ:  fn0C00_0015_exit
 fn0C00_0015_exit:
 Register byte fn0C00_0020(Register word16 ax)
-// MayUse:  ax
+// MayUse:  ax:[0..15]
 // LiveOut: al
 // Trashed: SCZO ah al ax eax rax
 // Preserved: sp
@@ -83,20 +80,15 @@ Register byte fn0C00_0020(Register word16 ax)
 // return address size: 2
 byte fn0C00_0020(word16 ax)
 fn0C00_0020_entry:
+	def ax
 	// succ:  l0C00_0020
 l0C00_0020:
-	sp = fp
-	ax = ax | ax
-	SZO = cond(ax)
-	C = false
-	branch Test(EQ,Z) l0C00_0028
+	branch ax == 0x0000 l0C00_0028
 	// succ:  l0C00_0024 l0C00_0028
 l0C00_0024:
-	ax = ax - 0x0001
-	SZO = cond(ax)
 	// succ:  l0C00_0024_thunk_fn0C00_0015
 l0C00_0024_thunk_fn0C00_0015:
-	al = fn0C00_0015(ax)
+	al = fn0C00_0015(ax - 0x0001)
 	return al
 	// succ:  fn0C00_0020_exit
 l0C00_0028:
