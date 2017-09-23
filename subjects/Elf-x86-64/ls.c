@@ -550,6 +550,7 @@ l000000000040380D:
 					word64 rsi_5751 = r12_1135;
 					word64 rdi_5754 = r14_1040;
 					word64 rcx_5756 = r13_493;
+l0000000000403847:
 					if (rcx_5756 != 0x00)
 					{
 						Z_5712 = cond(Mem722[rsi_6421 + 0x00:byte] - Mem722[rdi_6422 + 0x00:byte]);
@@ -3144,6 +3145,7 @@ l0000000000404A70:
 	SZO_161 = cond(al_100 - 0x3D);
 	if (al_100 == 0x3D)
 		goto l0000000000404ABA;
+l0000000000404A78:
 	if (SZO_161)
 	{
 		if (al_100 != 0x00 && al_100 != 0x3A)
@@ -3242,6 +3244,7 @@ word32 fn0000000000404CD0(word32 edi, ptr64 & rsiOut)
 		{
 			word64 rdi_46 = 0x00413733;
 			word64 rcx_48 = 0x02;
+l0000000000404D0A:
 			if (rcx_48 != 0x00)
 			{
 				Z_42 = cond(Mem0[rsi_85 + 0x00:byte] - Mem0[rdi_86 + 0x00:byte]);
@@ -3482,6 +3485,7 @@ word64 fn0000000000405090(byte sil, word64 rdi, word64 r11, ptr64 & rbpOut, ptr6
 		rsp_121 = fn0000000000404D20(0x00, rdi, 0x00, r11, out rbp_275, out rsi_276, out r12_277, out r13_116);
 	}
 	word64 rbx_43 = Mem0[0x000000000061B1B0 + 0x00:word64];
+l0000000000405108:
 	if (rbx_43 == 0x00)
 	{
 		word64 rdx_208;
@@ -7041,6 +7045,7 @@ l0000000000408093:
 												rdi = Mem0[rsi + 0xA8:word64];
 												rsi = 4274097;
 												rcx = 0x0A;
+l00000000004080A4:
 												if (rcx != 0x00)
 												{
 													SCZO = cond(Mem0[rsi + 0x00:byte] - Mem0[rdi + 0x00:byte]);
@@ -7979,6 +7984,7 @@ word64 fn0000000000409D20(word64 rsi, ptr64 & rbpOut, ptr64 & rsiOut, ptr64 & r1
 	word64 rbx_158 = 0x0401;
 	if (rsi <=u 0x0400)
 		rbx_158 = rsi + 0x01;
+l0000000000409D60:
 	if (malloc(rbx_158) != 0x00)
 	{
 l0000000000409D70:
@@ -8566,6 +8572,7 @@ word64 fn000000000040A730(word64 rdi, word32 r14d, ptr64 & r9Out)
 		return 0x00;
 	byte r8b_140 = 0x00;
 	word64 rax_107 = 0x00;
+l000000000040A776:
 	if (r8b_140 == 0x00)
 	{
 		if (cl_127 == 0x2E)
@@ -8665,6 +8672,7 @@ word64 fn000000000040AB70(word64 rax, ptr64 & rsiOut)
 		*rsiOut = rax_13;
 		word64 rdi_50 = 4284010;
 		word64 rcx_52 = 0x06;
+l000000000040ABA5:
 		if (rcx_52 != 0x00)
 		{
 			Z_42 = cond(Mem0[rsi_102 + 0x00:byte] - Mem0[rdi_103 + 0x00:byte]);
@@ -8720,6 +8728,7 @@ word64 fn000000000040ABC0(word64 rdi, word64 r8, ptr64 & rsiOut, ptr64 & r9Out)
 		else
 		{
 			rcx_105 = 0x03;
+l000000000040AC2D:
 			if ((uint64) (rdi_121 % rcx_105) != 0x00)
 				return rdi_121;
 		}
@@ -12996,6 +13005,7 @@ word64 fn000000000040D6A0(word64 rdi)
 				word64 rsi_146 = rax_11 - 0x06;
 				word64 rdi_149 = 4284376;
 				word64 rcx_151 = 0x07;
+l000000000040D6D6:
 				if (rcx_151 != 0x00)
 				{
 					byte SCZO_141 = cond(Mem0[rsi_159 + 0x00:byte] - Mem0[rdi_160 + 0x00:byte]);
@@ -13015,6 +13025,7 @@ word64 fn000000000040D6A0(word64 rdi)
 					word64 rcx_105 = 0x03;
 					word64 rsi_101 = rax_11 + 0x01;
 					word64 rdi_103 = 4284384;
+l000000000040D6E7:
 					if (rcx_105 != 0x00)
 					{
 						byte SCZO_128 = cond(Mem0[rsi_161 + 0x00:byte] - Mem0[rdi_162 + 0x00:byte]);
@@ -13766,6 +13777,7 @@ l000000000040DC46:
 				*r15Out = Mem1304[rsp_1041 + 0x40:word64];
 				*r8Out = r13_1487;
 				dl_1181 = (byte) (uint64) ((word32) (uint64) esi_1014 ^ 0x01);
+l000000000040E22D:
 				if (rax_1031 >u 0x01)
 				{
 					dl_1028 = dl_1181 & Mem1304[rsp_1041 + 0x20:byte];
@@ -14280,6 +14292,7 @@ l000000000040EDC0:
 				}
 				else
 				{
+l000000000040EDA1:
 					if (!SZO_646)
 					{
 						if (dil_643 == 0x23)
@@ -14789,6 +14802,7 @@ word64 fn0000000000410C40(word64 rsi, word64 rdi, ptr64 & rspOut)
 word64 fn0000000000410C90(word64 rdx, word64 rsi, word64 rdi, ptr64 & rspOut, ptr64 & r8Out)
 {
 	*r8Out = r8;
+l0000000000410C90:
 	if (rsi == 0x00 && rdi != 0x00)
 	{
 		free(rdi);
@@ -15790,6 +15804,7 @@ word32 fn00000000004117B0(word64 rsi, word32 edi)
 			word64 rdi_32 = 4274097;
 			word64 rcx_34 = 0x0A;
 			word64 rsi_35 = rdx_31;
+l00000000004117D8:
 			if (rcx_34 != 0x00)
 			{
 				Z_22 = cond(Mem0[rsi_82 + 0x00:byte] - Mem0[rdi_81 + 0x00:byte]);
