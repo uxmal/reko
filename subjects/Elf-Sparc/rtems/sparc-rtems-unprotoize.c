@@ -641,6 +641,7 @@ void unexpand_if_needed(word32 o0)
 	}
 	l1_106 = Mem0[163664:word32];
 	word32 o0_115 = Mem0[0x00016F14:word32];
+l00011DA0:
 	if (o0_115 != 0x00)
 	{
 		word32 l4_140 = 0x00016F14;
@@ -1057,6 +1058,7 @@ word32 find_corresponding_lparen(word32 o0)
 	word32 o0_14 = o0 + ~0x00 + ~0x00;
 	word32 g3_13 = 0x01;
 	word32 g2_19 = (int32) Mem0[o0 + ~0x00:int8];
+l00012424:
 	if (g2_19 != 0x28)
 	{
 		word32 g0_25 = g2_19 - 0x29;
@@ -1223,6 +1225,7 @@ l000127B8:
 										}
 									}
 									o0_202 = (int32) Mem196[i0_195 + 0x00:int8];
+l000127E4:
 									if (o0_202 != 0x29)
 									{
 l00012AC0:
@@ -2243,6 +2246,7 @@ l00014854:
 					goto l00014804;
 				}
 				word32 o0_251 = Mem215[o1_222 + 0x0014:word32];
+l000147D4:
 				if (o0_251 == 0x00)
 				{
 l000147F0:
@@ -2266,6 +2270,7 @@ l00014804:
 			}
 			Mem290[164144:word32] = o0_190 + 0x01;
 		}
+l00014850:
 		goto l00014854;
 	}
 }
@@ -2927,6 +2932,7 @@ void _obstack_newchunk(word32 o0, word32 o1)
 void _obstack_allocated_p(word32 o0, word32 o1)
 {
 	word32 g3_28 = Mem0[o0 + 0x04:word32];
+l000156F4:
 	if (g3_28 == 0x00)
 		return;
 	else
@@ -4153,6 +4159,7 @@ word32 pexecute(word32 o4, word32 o5, word32 l1, word32 dwArg44, word32 dwArg48,
 		Mem217[fp + -0x0028:word32] = o2_213 + 0x01;
 	}
 	Z_100 = cond(l1 - ~0x00);
+l00016AEC:
 	if (!Z_100)
 	{
 		if (l1 == 0x00)
@@ -4279,6 +4286,10 @@ void mkstemps(word32 o0, word32 o1)
 				Mem204[0x0002B400:word64] = o2_190;
 			}
 		}
+	}
+	else
+	{
+l00016E58:
 	}
 	return;
 }
