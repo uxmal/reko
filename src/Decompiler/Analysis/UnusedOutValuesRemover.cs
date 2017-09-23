@@ -83,15 +83,61 @@ namespace Reko.Analysis
             {
                 var liveOut = CollectLiveOutStorages(proc);
                 var flow = this.dataFlow[proc];
-                var newOut = new Dictionary<Storage, BitRange>(flow.LiveOut);
-                foreach (var l in liveOut)
-                {
-                    if (!newOut.ContainsKey(l))
-                        newOut.Add(l, BitRange.Empty);
-                }
-                flow.LiveOut = newOut;
+                flow.LiveOut = flow.LiveOut.Concat(liveOut)
+                    .Where(de => de.Key is RegisterStorage)
+                    .Select(de => new KeyValuePair<RegisterStorage, BitRange>((RegisterStorage)de.Key, de.Value))
+                    .GroupBy(
+                        de => de.Key.Domain,
+                        (g, items) => items
+                            .OrderByDescending(i => i.Value.Extent)
+                            .Select(i => new KeyValuePair<RegisterStorage, BitRange>(
+                                program.Architecture.GetSubregister(i.Key, i.Value.Lsb, i.Value.Extent),
+                                i.Value))
+                            .First())
+                    .ToDictionary(k => (Storage)k.Key, v => v.Value);
+                flow.grfLiveOut |= liveOut.Keys
+                    .OfType<FlagGroupStorage>()
+                    .Select(stg => stg.FlagGroupBits)
+                    .Aggregate(0u, (grf, total) => total |= grf);
             }
         }
+
+        /* //$TODO: finish implementing this.
+        private Dictionary<Storage, BitRange> SummarizeStorageBitranges(
+            IEnumerable<KeyValuePair<Storage, BitRange>> items)
+        {
+            var registerDomains = new Dictionary<StorageDomain, Tuple<Storage, BitRange>>();
+            var fpuStorages = new HashSet<Storage>();
+            foreach (var item in items)
+            {
+                RegisterStorage reg;
+                FpuStackStorage fpu;
+                if (item.Key.As(out reg))
+                {
+                    Tuple<Storage, BitRange> widestRange;
+                    if (!registerDomains.TryGetValue(reg.Domain, out widestRange))
+                    {
+                        widestRange = new Tuple<Storage,BitRange>(reg, item.Value);
+                        registerDomains.Add(reg.Domain, widestRange);
+                    }
+                    else
+                    {
+                        int min = Math.Min(item.Value.Lsb, widestRange.Item2.Lsb);
+                        int max = Math.Min(item.Value.Msb, widestRange.Item2.Msb);
+                         if (item.Key.Covers(widestRange.Item1))
+                    {
+                        widestRange = new Tuple<Storage, BitRange>(reg, item.Value);
+                        registerDomains[reg.Domain] = widestRange;
+                    }
+                }
+                else if (item.Key.As(out fpu))
+                {
+                    fpuStorages.Add(fpu);
+                }
+            }
+            return registerDomains. fpuStorages.Concat()
+        }
+        */
 
         /// <summary>
         /// Remove any UseInstructions in the exit block of the procedure that 
@@ -103,7 +149,7 @@ namespace Reko.Analysis
         {
             bool change = false;
             Debug.Print("UVR: {0}", ssa.Procedure);
-            HashSet<Storage> liveOutStorages = CollectLiveOutStorages(ssa.Procedure);
+            var liveOutStorages = CollectLiveOutStorages(ssa.Procedure);
             var deadStms = new HashSet<Statement>();
             var deadStgs = new HashSet<Storage>();
             FindDeadStatementsInExitBlock(ssa, liveOutStorages, deadStms, deadStgs);
@@ -137,7 +183,7 @@ namespace Reko.Analysis
 
         private static void FindDeadStatementsInExitBlock(
             SsaState ssa,
-            HashSet<Storage> liveOutStorages,
+            Dictionary<Storage, BitRange> liveOutStorages,
             HashSet<Statement> deadStms, 
             HashSet<Storage> deadStgs)
         {
@@ -150,7 +196,7 @@ namespace Reko.Analysis
                 foreach (var id in ids)
                 {
                     var stg = id.Storage;
-                    if (!liveOutStorages.Contains(stg))
+                    if (!liveOutStorages.ContainsKey(stg))
                     {
                         deadStgs.Add(stg);
                         deadStms.Add(stm);
@@ -166,9 +212,9 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="procCallee">Procedure that was called</param>
         /// <returns></returns>
-        private HashSet<Storage> CollectLiveOutStorages(Procedure procCallee)
+        private Dictionary<Storage, BitRange> CollectLiveOutStorages(Procedure procCallee)
         {
-            var liveOutStorages = new HashSet<Storage>();
+            var liveOutStorages = new Dictionary<Storage, BitRange>();
 
             var sig = procCallee.Signature;
             if (sig.ParametersValid)
@@ -178,11 +224,14 @@ namespace Reko.Analysis
 
                 if (!sig.HasVoidReturn)
                 {
-                    liveOutStorages.Add(sig.ReturnValue.Storage);
+                    liveOutStorages.Add(
+                        sig.ReturnValue.Storage,
+                        new BitRange(0, sig.ReturnValue.DataType.BitSize));
                 }
             }
             else
             {
+                var urf = new UsedRegisterFinder(program.Architecture, dataFlow, eventListener);
                 foreach (Statement stm in program.CallGraph.CallerStatements(procCallee))
                 {
                     var ci = stm.Instruction as CallInstruction;
@@ -196,7 +245,15 @@ namespace Reko.Analysis
                             continue;
                         var sid = ssaCaller.Identifiers[id];
                         if (sid.Uses.Count > 0)
-                            liveOutStorages.Add(def.Storage);
+                        {
+                            var br = urf.Classify(ssaCaller, sid);
+                            BitRange brOld;
+                            if (liveOutStorages.TryGetValue(def.Storage, out brOld))
+                            {
+                                br = br | brOld;
+                            }
+                            liveOutStorages[def.Storage] = br;
+                        }
                     }
                 }
             }

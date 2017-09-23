@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Arch.Intel
             return new X86Instruction(op, dSize, aSize, ops);
         }
 
-        private class RewriterHost : IRewriterHost
+        private new class RewriterHost : IRewriterHost
         {
             private Dictionary<string, PseudoProcedure> ppp;
             private Dictionary<Address, ImportReference> importThunks;

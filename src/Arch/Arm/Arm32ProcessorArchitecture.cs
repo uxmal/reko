@@ -175,7 +175,7 @@ namespace Reko.Arch.Arm
             if (flagGroups.TryGetValue(grf, out f))
             {
                 return f;
-        }
+            }
 
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var fl = new FlagGroupStorage(A32Registers.cpsr, grf, GrfToString(grf), dt);

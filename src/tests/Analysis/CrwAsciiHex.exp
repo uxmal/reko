@@ -34,7 +34,7 @@ l0C00_0009:
 fn0C00_0000_exit:
 FlagGroup byte fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // MayUse:  al:[0..7]
-// LiveOut: al C
+// LiveOut: C al
 // Trashed: SCZO al Top
 // Preserved: sp
 // fn0C00_000A

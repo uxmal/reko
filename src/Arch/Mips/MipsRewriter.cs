@@ -189,7 +189,6 @@ namespace Reko.Arch.Mips
                 case Opcode.sd: RewriteStore(instr); break;
                 case Opcode.sdl: RewriteSdl(instr); break;
                 case Opcode.sdr: RewriteSdr(instr); break;
-                    goto default;
                 case Opcode.sh: RewriteStore(instr); break;
                 case Opcode.sll:
                 case Opcode.sllv:

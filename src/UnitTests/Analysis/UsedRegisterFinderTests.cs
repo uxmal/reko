@@ -111,10 +111,8 @@ namespace Reko.UnitTests.Analysis
             var urf = new UsedRegisterFinder(
                 arch, 
                 pf,
-                new[] { sst },
                 NullDecompilerEventListener.Instance);
-            urf.IgnoreUseInstructions = true;
-            var flow = urf.Compute(sst.SsaState);
+            var flow = urf.ComputeBitsUsed(sst.SsaState, true);
             var sw = new StringWriter();
             sw.Write("Used: ");
             sw.Write(string.Join(",", flow.BitsUsed.OrderBy(p => p.Key.ToString())));

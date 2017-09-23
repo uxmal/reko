@@ -41,6 +41,11 @@ namespace Reko.Core
         public short Lsb { get; private set; }
         public short Msb { get; private set; }
 
+        public int Extent
+        {
+            get { return Math.Max(Msb - Lsb, 0); }
+        }
+
         public bool IsEmpty
         {
             get { return Lsb >= Msb; }
@@ -89,6 +94,25 @@ namespace Reko.Core
         public static bool operator !=(BitRange a, BitRange b)
         {
             return a.Lsb != b.Lsb || a.Msb != b.Msb;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is BitRange)
+            {
+                var that = (BitRange)obj;
+                if (this.IsEmpty)
+                    return that.IsEmpty;
+                return this.Msb == that.Msb && this.Lsb == that.Lsb;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            if (this.IsEmpty)
+                return 0;
+            return Lsb.GetHashCode() ^ 17 * Msb.GetHashCode();
         }
 
         public override string ToString()

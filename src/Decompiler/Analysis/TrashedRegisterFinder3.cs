@@ -175,8 +175,6 @@ namespace Reko.Analysis
 
         private void ProcessBlock(Block block)
         {
-            if (block.Name.EndsWith("1A"))  //$DEBUG
-                block.Name.ToString();
             this.ctx = blockCtx[block];
             this.eval = new ExpressionSimplifier(ctx, listener);
 

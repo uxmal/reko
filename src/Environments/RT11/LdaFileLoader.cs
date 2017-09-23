@@ -124,7 +124,6 @@ namespace Reko.Environments.RT11
         /// <returns></returns>
         public Tuple<ushort, byte[]> ReadDataBlock(LeImageReader rdr)
         {
-            ushort w;
             ushort count;
             ushort uAddr;
             byte b;

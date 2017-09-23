@@ -32,7 +32,6 @@ namespace Reko.Environments.AtariTOS
     // the first one since it is the system call selector.
     public class TOSCallingConvention : CallingConvention
     {
-        private ArgumentDeserializer argDeser;
         private IProcessorArchitecture arch;
 
         public TOSCallingConvention(IProcessorArchitecture arch)

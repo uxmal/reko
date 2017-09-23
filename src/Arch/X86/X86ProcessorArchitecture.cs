@@ -56,12 +56,12 @@ namespace Reko.Arch.X86
 	public class IntelArchitecture : ProcessorArchitecture
 	{
 		private ProcessorMode mode;
-        private List<FlagGroupStorage> flagGroups;
+        private Dictionary<uint, FlagGroupStorage> flagGroupCache;
 
         public IntelArchitecture(ProcessorMode mode)
         {
             this.mode = mode;
-            this.flagGroups = new List<FlagGroupStorage>();
+            this.flagGroupCache = new Dictionary<uint, FlagGroupStorage>();
             this.InstructionBitSize = 8;
             this.CarryFlagMask = (uint)FlagM.CF;
             this.PointerType = mode.PointerType;
@@ -225,16 +225,16 @@ namespace Reko.Arch.X86
 
 		public override FlagGroupStorage GetFlagGroup(uint grf)
 		{
-			foreach (FlagGroupStorage f in flagGroups)
+            FlagGroupStorage f;
+            if (flagGroupCache.TryGetValue(grf, out f))
 			{
-				if (f.FlagGroupBits == grf)
-					return f;
+				return f;
 			}
 
-			PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.eflags, grf, GrfToString(grf), dt);
-			flagGroups.Add(fl);
-			return fl;
+			var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            f = new FlagGroupStorage(Registers.eflags, grf, GrfToString(grf), dt);
+			flagGroupCache.Add(grf, f);
+			return f;
 		}
 
         public override FlagGroupStorage GetFlagGroup(string name)

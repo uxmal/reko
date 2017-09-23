@@ -758,21 +758,4 @@ namespace Reko.Scanning
         }
     }
 
-    public class Goo : IEnumerable
-    {
-        public void Add(string s)
-        {
-
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return null;
-        }
-
-        public static Goo Create()
-        {
-            return new Goo { "a", "B" };
-        }
-    }
 }

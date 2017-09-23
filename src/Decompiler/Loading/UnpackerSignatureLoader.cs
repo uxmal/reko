@@ -57,7 +57,7 @@ namespace Reko.Loading
             }
         }
 
-        private ImageSignature CreateSignature(UnpackerSignature_v1 sig)
+        private static ImageSignature CreateSignature(UnpackerSignature_v1 sig)
         {
             return new ImageSignature
             {

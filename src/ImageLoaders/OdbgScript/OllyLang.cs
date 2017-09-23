@@ -282,11 +282,11 @@ namespace Reko.ImageLoaders.OdbgScript
 
         //cache for GMEXP
         List<t_export> tExportsCache = new List<t_export>();
-        ulong exportsCacheAddr;
+        //ulong exportsCacheAddr;
 
         //cache for GMIMP
         List<t_export> tImportsCache = new List<t_export>();
-        ulong importsCacheAddr;
+        //ulong importsCacheAddr;
     
 #if _WIN64
 
@@ -808,9 +808,9 @@ namespace Reko.ImageLoaders.OdbgScript
             return_to_usercode = false;
 
             tExportsCache.Clear();
-            exportsCacheAddr = 0;
+            //exportsCacheAddr = 0;
             tImportsCache.Clear();
-            importsCacheAddr = 0;
+            //importsCacheAddr = 0;
         }
 
         public void LoadFromFile(string scriptFilename, string curDir)

@@ -51,23 +51,19 @@ namespace Reko.Analysis
         private Identifier idCur;
         private ProcedureFlow procFlow;
         private SsaState ssa;
-        private SsaTransform[] ssts;
-        private Dictionary<SsaIdentifier, int> uses;
         private Dictionary<PhiAssignment, BitRange> visited;
+        private bool ignoreUseInstructions;
 
         public UsedRegisterFinder(
             IProcessorArchitecture arch,
             ProgramDataFlow flow,
-            SsaTransform[] ssts,
             DecompilerEventListener eventListener)
         {
             this.arch = arch;
             this.flow = flow;
-            this.ssts = ssts;
             this.eventListener = eventListener;
         }
 
-        public bool IgnoreUseInstructions { get; set; }
 
         /// <summary>
         /// Compute the live-in of the procedure whose SSA state is 
@@ -77,11 +73,11 @@ namespace Reko.Analysis
         /// Assmumes that any live-in parameters are located in the
         /// entry block of the procedure.</remarks>
         /// <param name="ssaState"></param>
-        public ProcedureFlow Compute(SsaState ssaState)
+        public ProcedureFlow ComputeBitsUsed(SsaState ssaState, bool ignoreUse)
         {
             this.procFlow = flow[ssaState.Procedure];
-            this.uses = new Dictionary<SsaIdentifier, int>();
             this.ssa = ssaState;
+            this.ignoreUseInstructions = ignoreUse;
             foreach (var stm in ssa.Procedure.EntryBlock.Statements)
             {
                 this.visited = new Dictionary<PhiAssignment, BitRange>();
@@ -103,6 +99,24 @@ namespace Reko.Analysis
             return procFlow;
         }
 
+        public BitRange Classify(SsaState ssa, SsaIdentifier sid)
+        {
+            this.procFlow = flow[ssa.Procedure];
+            this.ssa = ssa;
+            this.ignoreUseInstructions = false;
+            if ((sid.Identifier.Storage is RegisterStorage ||
+                 sid.Identifier.Storage is StackArgumentStorage ||
+                 sid.Identifier.Storage is FpuStackStorage))
+            {
+                var n = Classify(sid);
+                return n;
+            }
+            else
+            {
+                return BitRange.Empty;
+            }
+        }
+
         /// <summary>
         /// Find all places where the SSA identifer <paramref name="sid"/> is used,
         /// discounting any uses in the exit block; uses in the exit block 
@@ -110,11 +124,11 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="sid"></param>
         /// <returns>The bit range used by sid</returns>
-        private BitRange Classify(SsaIdentifier sid)
+        public BitRange Classify(SsaIdentifier sid)
         {
             idCur = sid.Identifier;
             return sid.Uses
-                .Where(u => u.Block != ssa.Procedure.ExitBlock)
+                .Where(u =>  !this.ignoreUseInstructions || u.Block != ssa.Procedure.ExitBlock)
                 .Aggregate(BitRange.Empty, (w, stm) => w | stm.Instruction.Accept(this));
         }
 
@@ -199,7 +213,7 @@ namespace Reko.Analysis
 
         public BitRange VisitUseInstruction(UseInstruction use)
         {
-            if (IgnoreUseInstructions)
+            if (ignoreUseInstructions)
                 return BitRange.Empty;
             return use.Expression.Accept(this);
         }

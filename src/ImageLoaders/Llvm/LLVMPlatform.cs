@@ -32,11 +32,12 @@ namespace Reko.ImageLoaders.LLVM
 {
     public class LLVMPlatform : IPlatform
     {
-        private PrimitiveType ptrType;
         private IServiceProvider services;
 
         public LLVMPlatform(IServiceProvider services)
         {
+            this.services = services;
+            this.Name = "LLVM";
         }
 
         public IProcessorArchitecture Architecture { get; set; }
@@ -53,7 +54,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public MemoryMap_v1 MemoryMap { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         public string PlatformIdentifier { get; set; }
 

@@ -714,7 +714,6 @@ namespace Reko.Arch.M68k
                     //    mode += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
                     //mode += ")";
                 }
-                break;
             case 0x38:
                 // Absolute short address
                 mode = string.Format("${0}.w", read_imm_16());

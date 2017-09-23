@@ -57,8 +57,6 @@ namespace Reko.Gui.Windows
         private ImageSegment segment;
         private bool showProcedures;
 
-        private PreviewInteractor previewInteractor;
-
         public CodeViewInteractor()
         {
         }

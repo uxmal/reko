@@ -146,7 +146,7 @@ namespace Reko.Analysis
             var frame = proc.Frame;
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
 
-            AddModifiedFlags(frame, allLiveOut.Keys, sb);
+            AddModifiedFlags(frame, flow.grfLiveOut, sb);
 
             var mayUse = new HashSet<RegisterStorage>(flow.BitsUsed.Keys.OfType<RegisterStorage>());
             mayUse.ExceptWith(implicitRegs);
@@ -208,6 +208,13 @@ namespace Reko.Analysis
             }
         }
 
+        private void AddModifiedFlags(Frame frame, uint grf, SignatureBuilder sb)
+        {
+            if (grf == 0)
+                return;
+            var flags = platform.Architecture.GetFlagGroup(grf);
+            sb.AddOutParam(frame.EnsureFlagGroup(flags));
+        }
 
 		public SortedList<int, Identifier> GetSortedArguments(Frame f, Type type, int startOffset)
 		{
@@ -364,9 +371,10 @@ namespace Reko.Analysis
                 if (idRet != null && !(idRet.DataType is VoidType))
                 {
                     var idStg = reachingBlock.Value
-                        .Where(cb => cb.Storage == idRet.Storage).First();
+                        .Where(cb => cb.Storage.Covers(idRet.Storage)).First();
                     SetReturnExpression(
                         block,
+                        idRet,
                         ssa.Identifiers[(Identifier)idStg.Expression]);
                 }
                 int insertPos = block.Statements.FindIndex(s => s.Instruction is ReturnInstruction);
@@ -389,9 +397,7 @@ namespace Reko.Analysis
             //ssa.DeleteStatement(stmUse);
         }
 
-     
-
-        private void SetReturnExpression(Block block, SsaIdentifier sid)
+        private void SetReturnExpression(Block block, Identifier idRet, SsaIdentifier sid)
         {
             for (int i = block.Statements.Count-1; i >=0; --i)
             {
@@ -399,7 +405,12 @@ namespace Reko.Analysis
                 var ret = stm.Instruction as ReturnInstruction;
                 if (ret != null)
                 {
-                    ret.Expression = sid.Identifier;
+                    Expression e = sid.Identifier;
+                    if (idRet.DataType.Size < e.DataType.Size)
+                    {
+                        e = new Cast(idRet.DataType, e);
+                    }
+                    ret.Expression = e;
                     sid.Uses.Add(stm);
                 }
             }
