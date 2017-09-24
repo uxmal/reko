@@ -41,6 +41,14 @@ namespace Reko.Core
         public short Lsb { get; private set; }
         public short Msb { get; private set; }
 
+
+        public ulong BitMask()
+        {
+            var low = (1ul << Lsb);
+            return (Msb >= 64 ? 0ul : (1ul << Msb))
+                - low; 
+        }
+
         public int Extent
         {
             get { return Math.Max(Msb - Lsb, 0); }
