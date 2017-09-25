@@ -104,6 +104,7 @@
     <Compile Include="Arch\Tlcs\Tlcs90RewriterTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaDisassemblerTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaRewriterTests.cs" />
+    <Compile Include="Arch\Z80\Z80ArchitectureTests.cs" />
     <Compile Include="Core\Analysis\PyArgFormatParserTests.cs" />
     <Compile Include="Analysis\UnusedOutValuesRemoverTests.cs" />
     <Compile Include="Core\Analysis\ScanfFormatParserTests.cs" />

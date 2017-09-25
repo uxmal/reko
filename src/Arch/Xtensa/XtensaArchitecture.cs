@@ -101,6 +101,9 @@ namespace Reko.Arch.Xtensa
             Registers.f15,
         };
 
+        private static RegisterStorage[] allRegs =
+            aregs.Concat(bregs).Concat(fregs).ToArray();
+
         private static Dictionary<int, RegisterStorage> sregs = new Dictionary<int, RegisterStorage>
         {
             { 0x03, Registers.SAR },
@@ -239,7 +242,7 @@ namespace Reko.Arch.Xtensa
 
         public override RegisterStorage GetRegister(int i)
         {
-            return aregs[i];
+            return allRegs[i];
         }
 
         public override RegisterStorage[] GetRegisters()

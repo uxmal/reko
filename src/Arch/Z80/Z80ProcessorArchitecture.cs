@@ -126,6 +126,11 @@ namespace Reko.Arch.Z80
             return Registers.GetRegister(name);
         }
 
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            return Registers.GetRegister(domain, range.BitMask());
+        }
+
         public override RegisterStorage[] GetRegisters()
         {
             return Registers.All;
@@ -140,32 +145,34 @@ namespace Reko.Arch.Z80
         {
             if (offset == 0 && reg.BitSize == (ulong)width)
                 return reg;
-            Dictionary<uint, RegisterStorage> dict;
-            if (!Registers.SubRegisters.TryGetValue(reg, out dict))
-                return null;
-            RegisterStorage subReg;
-            if (!dict.TryGetValue((uint)(offset + width * 16), out subReg))
-                return null;
-            return subReg;
+            //Dictionary<uint, RegisterStorage> dict;
+            //if (!Registers. SubRegisters.TryGetValue(reg.Domain, out dict))
+            //    return null;
+            //RegisterStorage subReg;
+            //if (!dict.TryGetValue((uint)(offset + width * 16), out subReg))
+            //    return null;
+            throw new NotImplementedException();
+            //return subReg;
         }
 
         public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
         {
             ulong mask = regs.Where(b => b != null && b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
-            Dictionary<uint, RegisterStorage> subregs;
+            RegisterStorage[]  subregs;
             if ((mask & reg.BitMask) == reg.BitMask)
                 return reg;
             RegisterStorage rMax = null;
-            if (Registers.SubRegisters.TryGetValue(reg, out subregs))
+            if (Registers.SubRegisters.TryGetValue(reg.Domain, out subregs))
             {
-                foreach (var subreg in subregs.Values)
-                {
-                    if ((subreg.BitMask & mask) == subreg.BitMask &&
-                        (rMax == null || subreg.BitSize > rMax.BitSize))
-                    {
-                        rMax = subreg;
-                    }
-                }
+                throw new NotImplementedException();
+                //foreach (var subreg in subregs.Values)
+                //{
+                //    if ((subreg.BitMask & mask) == subreg.BitMask &&
+                //        (rMax == null || subreg.BitSize > rMax.BitSize))
+                //    {
+                //        rMax = subreg;
+                //    }
+                //}
             }
             return rMax;
         }
@@ -266,8 +273,9 @@ namespace Reko.Arch.Z80
         public static readonly RegisterStorage C = new RegisterStorage("C", 27, 0, PrimitiveType.Bool);
 
         internal static RegisterStorage[] All;
-        internal static Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>> SubRegisters;
+        internal static Dictionary<StorageDomain, RegisterStorage[]> SubRegisters;
         private static Dictionary<string, RegisterStorage> regsByName;
+        private static RegisterStorage[] regsByStorage;
 
         static Registers()
         {
@@ -308,32 +316,25 @@ namespace Reko.Arch.Z80
             };
 
             Registers.regsByName = All.Where(reg => reg != null).ToDictionary(reg => reg.Name);
+            regsByStorage = new[]
+            {
+                af, bc,  de, hl, sp, ix, iy, null,
+                i,  r,   null, null, bc_, de_, hl_, af_,
+            };
 
             SubRegisters = new Dictionary<
-                RegisterStorage, 
-                Dictionary<uint, RegisterStorage>>
+                StorageDomain, 
+                RegisterStorage[]>
             {
                 {
-                    bc, new Dictionary<uint, RegisterStorage>
-                    {
-                        { 0x08, Registers.c },
-                        { 0x88, Registers.b },
-                    }
+                    bc.Domain, new [] { Registers.c, Registers.b }
                 },
                 {
-                    de, new Dictionary<uint, RegisterStorage>
-                    {
-                        { 0x08, Registers.e },
-                        { 0x88, Registers.d },
-                    }
+                    de.Domain, new []  { Registers.e, Registers.d }
                 },
                 {
-                    hl, new Dictionary<uint, RegisterStorage>
-                    {
-                        { 0x08, Registers.l },
-                        { 0x88, Registers.h },
-                    }
-                }
+                    hl.Domain, new[] { Registers.l, Registers.h }
+                },
             };
         }
 
@@ -345,6 +346,23 @@ namespace Reko.Arch.Z80
         internal static RegisterStorage GetRegister(string name)
         {
             return regsByName[name];
+        }
+
+        internal static RegisterStorage GetRegister(StorageDomain domain, ulong mask)
+        {
+            RegisterStorage[] subregs;
+            RegisterStorage regBest = regsByStorage[domain - StorageDomain.Register];
+            if (SubRegisters.TryGetValue(domain, out subregs))
+            {
+                for (int i = 0; i < subregs.Length; ++i)
+                {
+                    var reg = subregs[i];
+                    var regMask = reg.BitMask;
+                    if ((mask & (~regMask)) == 0)
+                        regBest = reg;
+                }
+            }
+            return regBest;
         }
     }
 

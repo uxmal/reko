@@ -147,6 +147,7 @@ namespace Reko.Core
         int? GetOpcodeNumber(string name);                  // Returns an internal Reko opcode for an instruction, or null if none is available.
         RegisterStorage GetRegister(int i);                 // Returns register corresponding to number i.
         RegisterStorage GetRegister(string name);           // Returns register whose name is 'name'
+        RegisterStorage GetRegister(StorageDomain domain, BitRange range);  
 
         RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
         void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg);  // Removes any aliases of reg from the set
@@ -243,6 +244,12 @@ namespace Reko.Core
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
         public abstract RegisterStorage GetRegister(int i);
         public abstract RegisterStorage GetRegister(string name);
+
+        public virtual RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            return GetRegister(domain - StorageDomain.Register);
+        }
+
         public abstract RegisterStorage[] GetRegisters();
 
         public virtual FrameApplicationBuilder CreateFrameApplicationBuilder(

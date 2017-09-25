@@ -65,5 +65,26 @@ namespace Reko.UnitTests.Core
             var c = a - b;
             Assert.AreEqual(new BitRange(0, 32), c);
         }
+
+        [Test]
+        public void Bitr_Bitmask()
+        {
+            var a = new BitRange(8, 16);
+            Assert.AreEqual(0xFF00, a.BitMask());
+        }
+
+        [Test]
+        public void Bitr_Bitmask_32bit()
+        {
+            var a = new BitRange(0, 32);
+            Assert.AreEqual(0xFFFFFFFF, a.BitMask());
+        }
+
+        [Test]
+        public void Bitr_Bitmask_64bit()
+        {
+            var a = new BitRange(0, 64);
+            Assert.AreEqual(~0ul, a.BitMask());
+        }
     }
 }

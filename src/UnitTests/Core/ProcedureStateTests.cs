@@ -160,6 +160,11 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+            {
+                return GetRegister(domain - StorageDomain.Register);
+            }
+
             public RegisterStorage[] GetRegisters()
             {
                 throw new NotImplementedException();

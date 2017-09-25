@@ -141,27 +141,6 @@ namespace Reko.Arch.X86
             return (int)result;
         }
 
-        public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
-        {
-            ulong mask = bits.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
-            Dictionary<uint, RegisterStorage> subregs;
-            if ((mask & reg.BitMask) == reg.BitMask)
-                return reg;
-            RegisterStorage rMax = null;
-            if (Registers.SubRegisters.TryGetValue(reg, out subregs))
-            {
-                foreach (var subreg in subregs.Values)
-                {
-                    if ((subreg.BitMask & mask) == subreg.BitMask &&
-                        (rMax == null || subreg.BitSize > rMax.BitSize))
-                    {
-                        rMax = subreg;
-                    }
-                }
-            }
-            return rMax;
-        }
-
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
 		{
             return CreateDisassemblerImpl(imageReader);
@@ -269,6 +248,11 @@ namespace Reko.Arch.X86
 			return r;
 		}
 
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            return Registers.GetRegister(domain, range);
+        }
+
         public override IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
         {
             return Registers.All.Where(r => r != null && r.OverlapsWith(reg));
@@ -276,17 +260,43 @@ namespace Reko.Arch.X86
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            if (offset == 0 && reg.BitSize == (ulong) width)
-                return reg;
-            Dictionary<uint, RegisterStorage> dict;
-            if (!Registers.SubRegisters.TryGetValue(reg, out dict))
+            RegisterStorage[] subregs;
+            var mask = reg.BitMask & new BitRange(offset, offset + width).BitMask();
+            if (mask == 0)
                 return null;
-            RegisterStorage subReg;
-            if (!dict.TryGetValue((uint)(offset * 256 + width), out subReg))
-                return null;
-            return subReg;
+            if (Registers.SubRegisters.TryGetValue(reg.Domain, out subregs))
+            {
+                for (int i = 0; i < subregs.Length; ++i)
+                {
+                    var subreg = subregs[i];
+                    var regMask = subreg.BitMask;
+                    if ((mask & (~regMask)) == 0)
+                        reg = subreg;
+                }
+            }
+            return reg;
         }
 
+
+        public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
+        {
+            ulong mask = bits.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
+            if (mask == 0)
+                return null;
+            mask &= reg.BitMask;
+            RegisterStorage[] subregs;
+            if (Registers.SubRegisters.TryGetValue(reg.Domain, out subregs))
+            {
+                for (int i = 0; i < subregs.Length; ++i)
+                {
+                    var subreg = subregs[i];
+                    var regMask = subreg.BitMask;
+                    if ((mask & (~regMask)) == 0)
+                        reg = subreg;
+                }
+            }
+            return reg;
+        }
         public override RegisterStorage[] GetRegisters()
         {
             return Registers.All.Where(a => a != null).ToArray();

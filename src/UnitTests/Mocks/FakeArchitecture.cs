@@ -204,6 +204,11 @@ namespace Reko.UnitTests.Mocks
             return null;
 		}
 
+        public RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            return GetRegister(domain - StorageDomain.Register);
+        }
+
         public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
             if (offset == 0 && width == (int)reg.BitSize)

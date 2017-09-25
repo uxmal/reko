@@ -1,5 +1,5 @@
-void fn0C00_0000(Register selector ds)
-// MayUse:  ds:[0..15]
+void fn0C00_0000(Register word16 ax, Register selector ds)
+// MayUse:  ax:[0..15] ds:[0..15]
 // LiveOut:
 // Trashed: SCZO ax si Top
 // Preserved: sp
@@ -19,26 +19,27 @@ void fn0C00_0000(Register selector ds)
 // Z:Z
 // O:O
 // return address size: 2
-void fn0C00_0000(selector ds)
+void fn0C00_0000(word16 ax, selector ds)
 fn0C00_0000_entry:
 	def ds
+	def ax
 	def Mem0
 	// succ:  l0C00_0000
 l0C00_0000:
-	C_8 = fn0C00_000A(ds, out ax_6)
-	branch C_8 l0C00_0009
+	C_9 = fn0C00_000A(ax, ds, out ax_7)
+	branch C_9 l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
-	v6_12 = Mem0[ds:0x0300:word16] + ax_6
-	Mem13[ds:0x0300:word16] = v6_12
+	v6_13 = Mem0[ds:0x0300:word16] + ax_7
+	Mem14[ds:0x0300:word16] = v6_13
 	// succ:  l0C00_0009
 l0C00_0009:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
-// MayUse:  ds:[0..15]
-// LiveOut: ax C
+FlagGroup byte fn0C00_000A(Register word16 ax, Register selector ds, Register out ptr16 axOut)
+// MayUse:  ax:[0..15] ds:[0..15]
+// LiveOut: C ax
 // Trashed: SCZO ax si Top
 // Preserved: sp
 // fn0C00_000A
@@ -58,7 +59,7 @@ FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // O:O
 // axOut:Out:ax
 // return address size: 2
-byte fn0C00_000A(selector ds, ptr16 & axOut)
+byte fn0C00_000A(word16 ax, selector ds, ptr16 & axOut)
 fn0C00_000A_entry:
 	def ds
 	def Mem0
