@@ -26,3 +26,6 @@ TestResults
 **/x64/Release
 /subjects/**/Debug
 /subjects/**/Release
+
+# Visual Studio 2015 cache/options directory
+.vs/
