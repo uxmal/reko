@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "prestart": "npm run build",
-    "start": "electron .",
+    "start": "electron generated",
     "pack": "electron-packager . sample --out=dist --arch=x64 --platform=win32 --version=1.7.5 --overwrite --prune --ignore=dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

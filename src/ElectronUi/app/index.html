@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+	<head>
+		<script src="components/requirejs/require.js"></script>
+		<script>
+			function getComponentPath(name, relative = false){
+				var relativePart = (relative) ? "../" : "";
+				return relativePart + "components/" + name;
+			}
+			requirejs.config({
+				baseUrl: "js",
+				paths: {
+					jquery: getComponentPath("jquery/dist/jquery.min.js", true),
+					bootstrap: getComponentPath("bootstrap/dist/js/bootstrap.min.js", true)
+				},
+				shim: {
+					jquery: {
+						exports: "$"
+					},
+					bootstrap : {
+						deps : ['jquery']
+					}
+				}
+			});
+		</script>
+	</head>
+
+	<body>
+		<h1>Hello World</h1>
+	</body>
+</html>

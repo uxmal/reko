@@ -5,13 +5,13 @@
 				"type": "node",
 				"request": "launch",
 				"name": "Launch Program",
-				"program": "${workspaceRoot}\\main.js",
+				"program": "${workspaceRoot}/generated/main.js",
 				"stopOnEntry": false,
 				"args": [],
 				"env": {},
 				"sourceMaps": true,
 				"outFiles": [
-					"${workspaceRoot}/**/*.js"
+					"${workspaceRoot}/generated/**/*.js"
 				],
 				"runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
 				"console": "integratedTerminal",
