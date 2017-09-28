@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -87,13 +87,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Msagl">
-      <HintPath>..\..\external\Msagl\Microsoft.Msagl.dll</HintPath>
+      <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Msagl.Drawing">
-      <HintPath>..\..\external\Msagl\Microsoft.Msagl.Drawing.dll</HintPath>
+      <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.Drawing.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Msagl.GraphViewerGdi">
-      <HintPath>..\..\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll</HintPath>
+      <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -505,7 +505,7 @@
     <ProjectReference Include="..\..\tools\xslt\xslt.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Project>{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}</Project>
-      <Name>..\tools\xslt\xslt.csproj</Name>
+      <Name>..\..\tools\xslt\xslt.csproj</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -665,10 +665,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="mono $(ProjectDir)../tools/xslt.exe $(ProjectDir)Windows/Forms/cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)Windows/Forms/CmdIds.cs" />
-    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe')" Command="mono $(ProjectDir)../tools/xslt.exe $(ProjectDir)Windows/Forms/decompiler-menus.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)Windows/Forms/DecompilerMenus.cs" />
-    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Windows\Forms\cmdids.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)Windows\Forms\CmdIds.cs&quot;" />
-    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe')" Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Windows\Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)Windows\Forms\DecompilerMenus.cs&quot;" />
+    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe') " Command="mono $(ProjectDir)../../tools/xslt.exe $(ProjectDir)Windows/Forms/cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)Windows/Forms/CmdIds.cs" />
+    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="mono $(ProjectDir)../../tools/xslt.exe $(ProjectDir)Windows/Forms/decompiler-menus.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)Windows/Forms/DecompilerMenus.cs" />
+    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe') " Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Windows\Forms\cmdids.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)Windows\Forms\CmdIds.cs&quot;" />
+    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Windows\Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)Windows\Forms\DecompilerMenus.cs&quot;" />
   </Target>
   <PropertyGroup>
     <PreBuildEvent>
