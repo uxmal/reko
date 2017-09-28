@@ -80,6 +80,7 @@
     <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Project>{5B6DA2CA-5CA1-4A84-8084-9D6780F64BCF}</Project>
+      <Name>Dol</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
