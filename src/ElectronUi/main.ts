@@ -4,7 +4,9 @@ import {app, BrowserWindow} from 'electron';
 var mainWindow: Electron.BrowserWindow | null = null;
 
 app.on('window-all-closed', function() {
-	app.quit();
+	if (process.platform != 'darwin') {
+		app.quit();
+	}
 });
 
 app.on('ready', function() {
