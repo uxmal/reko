@@ -494,17 +494,18 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
+    <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Decompiler\Decompiler.csproj">
+    <ProjectReference Include="..\..\Decompiler\Decompiler.csproj">
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
-   <ProjectReference Include="..\tools\xslt\xslt.csproj">
+    <ProjectReference Include="..\..\tools\xslt\xslt.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Project>{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}</Project>
+      <Name>..\tools\xslt\xslt.csproj</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
