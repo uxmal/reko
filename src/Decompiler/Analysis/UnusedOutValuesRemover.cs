@@ -83,6 +83,8 @@ namespace Reko.Analysis
             {
                 var liveOut = CollectLiveOutStorages(proc);
                 var flow = this.dataFlow[proc];
+                flow.LiveOut = SummarizeStorageBitranges(flow.LiveOut.Concat(liveOut));
+                /*
                 flow.LiveOut = flow.LiveOut.Concat(liveOut)
                     .Where(de => de.Key is RegisterStorage)
                     .Select(de => new KeyValuePair<RegisterStorage, BitRange>((RegisterStorage)de.Key, de.Value))
@@ -94,7 +96,7 @@ namespace Reko.Analysis
                                 program.Architecture.GetSubregister(i.Key, i.Value.Lsb, i.Value.Extent),
                                 i.Value))
                             .First())
-                    .ToDictionary(k => (Storage)k.Key, v => v.Value);
+                    .ToDictionary(k => (Storage)k.Key, v => v.Value);*/
                 flow.grfLiveOut |= liveOut.Keys
                     .OfType<FlagGroupStorage>()
                     .Select(stg => stg.FlagGroupBits)
@@ -102,42 +104,42 @@ namespace Reko.Analysis
             }
         }
 
-        /* //$TODO: finish implementing this.
         private Dictionary<Storage, BitRange> SummarizeStorageBitranges(
             IEnumerable<KeyValuePair<Storage, BitRange>> items)
         {
-            var registerDomains = new Dictionary<StorageDomain, Tuple<Storage, BitRange>>();
-            var fpuStorages = new HashSet<Storage>();
+            var registerDomains = new Dictionary<StorageDomain, KeyValuePair<Storage, BitRange>>();
+            var fpuStorages = new Dictionary<Storage, BitRange>();
             foreach (var item in items)
             {
                 RegisterStorage reg;
                 FpuStackStorage fpu;
                 if (item.Key.As(out reg))
                 {
-                    Tuple<Storage, BitRange> widestRange;
+                    KeyValuePair<Storage, BitRange> widestRange;
                     if (!registerDomains.TryGetValue(reg.Domain, out widestRange))
                     {
-                        widestRange = new Tuple<Storage,BitRange>(reg, item.Value);
+                        widestRange = new KeyValuePair<Storage, BitRange>(reg, item.Value);
                         registerDomains.Add(reg.Domain, widestRange);
                     }
                     else
                     {
-                        int min = Math.Min(item.Value.Lsb, widestRange.Item2.Lsb);
-                        int max = Math.Min(item.Value.Msb, widestRange.Item2.Msb);
-                         if (item.Key.Covers(widestRange.Item1))
-                    {
-                        widestRange = new Tuple<Storage, BitRange>(reg, item.Value);
-                        registerDomains[reg.Domain] = widestRange;
+                        int min = Math.Min(item.Value.Lsb, widestRange.Value.Lsb);
+                        int max = Math.Min(item.Value.Msb, widestRange.Value.Msb);
+                        if (item.Key.Covers(widestRange.Key))
+                        {
+                            widestRange = new KeyValuePair<Storage, BitRange>(reg, item.Value);
+                            registerDomains[reg.Domain] = widestRange;
+                        }
                     }
                 }
                 else if (item.Key.As(out fpu))
                 {
-                    fpuStorages.Add(fpu);
+                    fpuStorages[fpu] = new BitRange(0, (int)fpu.BitSize);
                 }
             }
-            return registerDomains. fpuStorages.Concat()
+            return registerDomains.Select(r => r.Value).Concat(fpuStorages)
+                .ToDictionary(k => k.Key, v => v.Value);
         }
-        */
 
         /// <summary>
         /// Remove any UseInstructions in the exit block of the procedure that 

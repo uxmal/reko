@@ -96,6 +96,12 @@ namespace Reko.UnitTests.Analysis
             dfa = new DataFlowAnalysis(program, importResolver, eventListener);
             var ssts = dfa.RewriteProceduresToSsa();
 
+            foreach (var p in program.Procedures.Values)
+            {
+                p.Dump(true);
+                Debug.Print("====");
+            }
+
             // Discover ssaId's that are live out at each call site.
             // Delete all others.
             var uvr = new UnusedOutValuesRemover(program, ssts, dfa.ProgramDataFlow, eventListener);
