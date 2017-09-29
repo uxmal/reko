@@ -108,6 +108,7 @@
     <Compile Include="Core\Output\JsonFormatterTests.cs" />
     <Compile Include="Core\Output\LlvmFormatterTests.cs" />
     <Compile Include="Core\Lib\LinqAlgorithmTests.cs" />
+    <Compile Include="Core\Serialization\Json\JsonProcedureSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProcedureSerializerTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
