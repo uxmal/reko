@@ -17,34 +17,79 @@ namespace Reko.Gui.Electron.Adapter
 {
     public class ElectronDecompilerDriver
     {
-        //$REVIEW: Ew. Global variable. Ew. Ew.
-        private static Project project;
+        private Project project;
 
-        public async Task<object> Hello(object foo)
+	    private string secret = null;
+
+	    private string appConfigPath;
+	    private string fileNamePath;
+	    private ElectronDiagnosticsService diagService;
+
+	    private ServiceContainer services;
+
+		public async Task<object> Hello2(dynamic foo) {
+		    MessageBox.Show("Reko2");
+		    secret = "foo";
+		    return "Hello World2";
+		}
+
+	    public async Task<object> Hello3(dynamic foo) {
+		    MessageBox.Show("Reko3");
+		    return secret;
+	    }
+
+		public async Task<object> Hello(object foo)
         {
             MessageBox.Show("Hello, i'm Reko");
-            return null;
+	        return new {
+		        Reko2 = (Func<object, Task<object>>)Hello2,
+		        Reko3 = (Func<object, Task<object>>)Hello3
+	        };
         }
 
-        public async Task<object> Decompile(dynamic input)
+	    public async Task<object> CreateReko(dynamic input) {
+		    appConfigPath = input.appConfig;
+		    fileNamePath = input.fileName;
+
+		    this.diagService = new ElectronDiagnosticsService(Console.Out, (Func<object, Task<object>>)input.notify);
+
+			var config = RekoConfigurationService.Load(this.appConfigPath);
+		    var listener = new ElectronEventListener(this.diagService);
+
+		    this.services = new ServiceContainer();
+			services.AddService<DecompilerEventListener>(listener);
+		    services.AddService<IConfigurationService>(config);
+		    services.AddService<ITypeLibraryLoaderService>(new TypeLibraryLoaderServiceImpl(services));
+		    services.AddService<IDiagnosticsService>(this.diagService);
+		    services.AddService<IFileSystemService>(new FileSystemServiceImpl());
+		    services.AddService<DecompilerHost>(new ElectronDecompilerHost());
+
+
+			return new {
+				Decompile = (Func<object, Task<object>>)Decompile,
+				RenderProcedure = (Func<object, Task<object>>)RenderProcedure
+			};
+	    }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
+		public async Task<object> Decompile(dynamic input)
         {
-            var services = new ServiceContainer();
-            var config = RekoConfigurationService.Load(input.appConfig as string);
-            var diagnosticSvc = new ElectronDiagnosticsService(Console.Out, (Func<object, Task<object>>)input.notify);
-            var listener = new ElectronEventListener(diagnosticSvc);
-            services.AddService<DecompilerEventListener>(listener);
-            services.AddService<IConfigurationService>(config);
-            services.AddService<ITypeLibraryLoaderService>(new TypeLibraryLoaderServiceImpl(services));
-            services.AddService<IDiagnosticsService>(diagnosticSvc);
-            services.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            services.AddService<DecompilerHost>(new ElectronDecompilerHost());
             var ldr = new Loader(services);
             var decompiler = new DecompilerDriver(ldr, services);
-            decompiler.Decompile(input.fileName);
+            decompiler.Decompile(this.fileNamePath);
             project = decompiler.Project;
             return await Task.FromResult(project.Programs[0].Name);
         }
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
         public async Task<object> RenderProcedure(dynamic input)
         {
             string sProgramProcedure = (string)input;
@@ -61,6 +106,12 @@ namespace Reko.Gui.Electron.Adapter
             return await Task.FromResult(html);
         }
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="program"></param>
+		/// <param name="proc"></param>
+		/// <returns></returns>
         private string RenderProcedureToHtml(Program program, Procedure proc)
         {
             var output = new StringWriter();

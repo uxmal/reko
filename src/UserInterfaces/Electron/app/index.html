@@ -3,10 +3,14 @@
 	<head>
 		<script src="components/requirejs/require.js"></script>
 		<script>
-			function getComponentPath(name, relative = false){
-				var relativePart = (relative) ? "../" : "";
-				return relativePart + "components/" + name;
-			}
+				function getComponentPath(name, relative = false){
+					var relativePart = (relative) ? "../" : "";
+					return relativePart + "components/" + name;
+				}
+				window.$ = window.jQuery = require("./" + getComponentPath("jquery/dist/jquery.min.js", false));
+		</script>
+		<script src="script.js"></script>
+		<script>
 			requirejs.config({
 				baseUrl: "js",
 				paths: {
@@ -27,5 +31,8 @@
 
 	<body>
 		<h1>Hello World</h1>
+		<input type="button" id="btn-test" value="Decompile" />
+		<div class="reko-procedures">
+		</div>
 	</body>
 </html>
