@@ -23,27 +23,27 @@ namespace Reko.Gui.Electron.Adapter
 
         public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
         {
-            throw new NotImplementedException();
+            //$TODO: write output file
         }
 
         public void WriteDisassembly(Program program, Action<Formatter> writer)
         {
-            throw new NotImplementedException();
+            //$TODO: write output file
         }
 
         public void WriteGlobals(Program program, Action<TextWriter> writer)
         {
-            throw new NotImplementedException();
+            //$TODO: write output file
         }
 
         public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
         {
-            throw new NotImplementedException();
+            //$TODO: write output file
         }
 
         public void WriteTypes(Program program, Action<TextWriter> writer)
         {
-            throw new NotImplementedException();
+            //$TODO: write output file
         }
     }
 }
