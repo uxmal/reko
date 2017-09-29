@@ -44,9 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DecompilerDriver.cs" />
+    <Compile Include="ElectronDecompilerDriver.cs" />
     <Compile Include="ElectronDecompilerHost.cs" />
     <Compile Include="ElectronDiagnosticsService.cs" />
+    <Compile Include="ElectronEventListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

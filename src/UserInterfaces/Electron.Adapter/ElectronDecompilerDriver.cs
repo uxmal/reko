@@ -12,20 +12,20 @@ using System.Windows.Forms;
 
 namespace Reko.Gui.Electron.Adapter
 {
-    public class ElectronDecompilerDriver
+    public class ElectronDecompilerDriver 
     {
         public async Task<object> Hello(object foo)
         {
             MessageBox.Show("Hello, i'm Reko");
-	        return null;
+            return null;
         }
 
         public async Task<object> Decompile(dynamic input)
         {
             var services = new ServiceContainer();
-            var listener = new NullDecompilerEventListener();       //$TODO: spew to JAvascript 
             var config = RekoConfigurationService.Load(input.appConfig as string);
             var diagnosticSvc = new ElectronDiagnosticsService(Console.Out);
+            var listener = new ElectronEventListener(diagnosticSvc); 
             services.AddService<DecompilerEventListener>(listener);
             services.AddService<IConfigurationService>(config);
             services.AddService<ITypeLibraryLoaderService>(new TypeLibraryLoaderServiceImpl(services));
@@ -36,7 +36,7 @@ namespace Reko.Gui.Electron.Adapter
             var decompiler = new DecompilerDriver(ldr, services);
             decompiler.Decompile(input.fileName);
 
-	        return null;
+            return null;
         }
 
 #if false
