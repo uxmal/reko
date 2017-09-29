@@ -41,6 +41,8 @@ namespace Reko.Gui.Electron.Adapter
             var ldr = new Loader(services);
             var decompiler = new DecompilerDriver(ldr, services);
             decompiler.Decompile(input.fileName);
+            //$REVIEW: Ew. using a global variable to keep this alive unti the next call.
+            // How do we reason about instances?
             project = decompiler.Project;
             return await Task.FromResult(project.Programs[0].Name);
         }
