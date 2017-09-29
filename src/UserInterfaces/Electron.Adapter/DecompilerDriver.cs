@@ -14,16 +14,17 @@ namespace Reko.Gui.Electron.Adapter
 {
     public class ElectronDecompilerDriver
     {
-        public void Hello(object foo)
+        public async Task<object> Hello(object foo)
         {
             MessageBox.Show("Hello, i'm Reko");
+	        return null;
         }
 
-        public void Decompile(string filename)
+        public async Task<object> Decompile(dynamic input)
         {
             var services = new ServiceContainer();
             var listener = new NullDecompilerEventListener();       //$TODO: spew to JAvascript 
-            var config = RekoConfigurationService.Load(@"C:\dev\uxmal\reko\master\src\UserInterfaces\Electron\generated\assemblies\Reko.config");
+            var config = RekoConfigurationService.Load(input.appConfig as string);
             var diagnosticSvc = new ElectronDiagnosticsService(Console.Out);
             services.AddService<DecompilerEventListener>(listener);
             services.AddService<IConfigurationService>(config);
@@ -33,13 +34,17 @@ namespace Reko.Gui.Electron.Adapter
             services.AddService<DecompilerHost>(new ElectronDecompilerHost());
             var ldr = new Loader(services);
             var decompiler = new DecompilerDriver(ldr, services);
-            decompiler.Decompile(filename);
+            decompiler.Decompile(input.fileName);
+
+	        return null;
         }
 
-        public static void Main(string[] args)
+#if false
+		public static void Main(string[] args)
         {
             var x = new ElectronDecompilerDriver();
             x.Decompile(@"C:\dev\uxmal\reko\zoo\users\smxsmx\abheram\Aberaham.exe");
         }
+#endif
     }
 }

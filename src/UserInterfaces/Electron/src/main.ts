@@ -40,5 +40,16 @@ Decompile("C:/dec/Aberaham.exe", true, function(error:any, result:any){
 });
 */
 
-var hello = rekoUi.getFunction("Reko.Gui.Electron.Adapter.ElectronDecompilerDriver", "Hello");
+var rootType:string = "Reko.Gui.Electron.Adapter.ElectronDecompilerDriver";
+
+var hello = rekoUi.getFunction(rootType, "Hello");
 hello();
+
+var resolve = require('path').resolve;
+var decompile = rekoUi.getFunction(rootType, "Decompile");
+decompile(({
+	appConfig: resolve("generated/assemblies/reko.config"),
+	fileName: "E:/dec/Aberaham.exe"
+}), true, function(error:any, result:any){
+	console.log(error, result);
+});
