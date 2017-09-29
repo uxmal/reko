@@ -12,10 +12,12 @@ namespace Reko.Gui.Electron.Adapter
     public class ElectronDiagnosticsService : IDiagnosticsService
     {
         private TextWriter writer;
+        private Func<object, Task<object>> jsNotify;
 
-        public ElectronDiagnosticsService(TextWriter textWriter)
+        public ElectronDiagnosticsService(TextWriter textWriter, Func<object, Task<object>> jsNotify)
         {
             this.writer = textWriter;
+            this.jsNotify = jsNotify;
         }
 
         public void AddDiagnostic(ICodeLocation location, Diagnostic diagnostic)
@@ -25,7 +27,7 @@ namespace Reko.Gui.Electron.Adapter
 
         public void Error(string message)
         {
-            writer.WriteLine("error: {0}", message);
+            WriteToJs("error", null, message);
         }
 
         public void Error(string message, params object[] args)
@@ -35,12 +37,12 @@ namespace Reko.Gui.Electron.Adapter
 
         public void Error(Exception ex, string message)
         {
-            writer.WriteLine("error: {0} {1}", message, ex);
+            WriteToJs("error", null, string.Format("{0} {1}", message, ex));
         }
 
         public void Error(ICodeLocation location, string message)
         {
-            writer.WriteLine("{0}: error: {1}", location, message);
+            WriteToJs("error", location, message);
         }
 
         public void Error(ICodeLocation location, string message, params object[] args)
@@ -50,54 +52,65 @@ namespace Reko.Gui.Electron.Adapter
 
         public void Error(ICodeLocation location, Exception ex, string message)
         {
-            writer.WriteLine("{0}: error: {1} {2}", location, message, GetExceptionMessage(ex));
-            writer.WriteLine(ex.StackTrace);
+            Error(location, string.Format("{0} {1}", message, GetExceptionMessage(ex)));
+            //$TODO: stack trace
         }
 
         public void Error(ICodeLocation location, Exception ex, string message, params object[] args)
         {
-            writer.WriteLine("{0}: error: {1} {2}", location, string.Format(message, args), GetExceptionMessage(ex));
-            writer.WriteLine(ex.StackTrace);
+            Error(location, ex, string.Format(message, args));
+            //$TODO: stack trace
         }
 
         public void Warn(string message)
         {
-            throw new NotImplementedException();
+            WriteToJs("warning", null, message);
         }
 
         public void Warn(string message, params object[] args)
         {
-            writer.WriteLine("warning: {0}", string.Format(message, args));
+            WriteToJs("warning", null, string.Format(message, args));
         }
 
         public void Warn(ICodeLocation location, string message)
         {
-            throw new NotImplementedException();
+            WriteToJs("warning", location, message);
         }
 
         public void Warn(ICodeLocation location, string message, params object[] args)
         {
-            writer.WriteLine("{0}: warning: {1}", location, string.Format(message, args));
+            Warn(location, string.Format(message, args));
         }
 
         public void Inform(string message)
         {
-            writer.WriteLine(message);
+            WriteToJs("info", null, message);
         }
 
         public void Inform(string message, params object[] args)
         {
-            writer.WriteLine(message, args);
+            WriteToJs("info", null, string.Format(message, args));
         }
 
         public void Inform(ICodeLocation location, string message)
         {
-            writer.WriteLine("{0}: {1}", location, message);
+            WriteToJs("info", location, message);
         }
 
         public void Inform(ICodeLocation location, string message, params object[] args)
         {
             Inform(location, string.Format(message, args));
+        }
+
+        private void WriteToJs(string status, ICodeLocation location, string message)
+        {
+            var jsLoc = location as JsCodeLocation;
+            this.jsNotify(
+                new {
+                    status = status,
+                    location = jsLoc != null ? jsLoc.Text : null,
+                    message = message
+                });
         }
 
         public void ClearDiagnostics()

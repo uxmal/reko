@@ -48,6 +48,7 @@
     <Compile Include="ElectronDecompilerHost.cs" />
     <Compile Include="ElectronDiagnosticsService.cs" />
     <Compile Include="ElectronEventListener.cs" />
+    <Compile Include="JsCodeLocation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

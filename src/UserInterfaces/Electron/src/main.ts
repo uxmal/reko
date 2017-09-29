@@ -31,14 +31,24 @@ var rekoUi:SharpAssembly = new SharpAssembly("generated/assemblies/Reko.Gui.Elec
 
 var rootType:string = "Reko.Gui.Electron.Adapter.ElectronDecompilerDriver";
 
-var hello = rekoUi.getFunction(rootType, "Hello");
-hello();
+// var hello = rekoUi.getFunction(rootType, "Hello");
+// hello();
 
 var resolve = require('path').resolve;
 var decompile = rekoUi.getFunction(rootType, "Decompile");
-decompile(({
-	appConfig: resolve("generated/assemblies/reko.config"),
-	fileName: "E:/dec/Aberaham.exe"
-}), true, function(error:any, result:any){
-	console.log(error, result);
-});
+
+decompile(
+	{
+		appConfig: resolve("generated/assemblies/reko.config"),
+//		fileName: "E:/dec/Aberaham.exe"
+		fileName: "C:/dev/uxmal/reko/zoo/users/smxsmx/abheram/Aberaham.exe",
+		notify: function (data:any, callback:any) {
+			console.log(JSON.stringify(data));
+			//$TODO: display the message in HTML user interface.
+			callback(null, true);
+		}
+	}, 
+	false,		// true: means we're expecting the method to complete synchronously.
+	function(error:any, result:any) {
+		console.log(error, result);
+    });
