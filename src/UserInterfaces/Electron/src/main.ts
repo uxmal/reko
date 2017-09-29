@@ -29,17 +29,6 @@ app.on('ready', function() {
 
 var rekoUi:SharpAssembly = new SharpAssembly("generated/assemblies/Reko.Gui.Electron.Adapter.dll");
 
-/*
-var Decompile = rekoUi.getFunction("ElectronDecompilerDriver", "Decompile");
-
-Decompile("C:/dec/Aberaham.exe", true, function(error:any, result:any){
-	if(error){
-		dialog.showErrorBox("C# Exception", error);
-	}
-	console.log(util.inspect(error, true, 99, false));
-});
-*/
-
 var rootType:string = "Reko.Gui.Electron.Adapter.ElectronDecompilerDriver";
 
 var hello = rekoUi.getFunction(rootType, "Hello");
