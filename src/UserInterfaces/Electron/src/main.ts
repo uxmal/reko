@@ -36,7 +36,9 @@ var rootType:string = "Reko.Gui.Electron.Adapter.ElectronDecompilerDriver";
 
 var resolve = require('path').resolve;
 var decompile = rekoUi.getFunction(rootType, "Decompile");
+var renderProcedure = rekoUi.getFunction(rootType, "RenderProcedure");
 
+console.log("$$$ About to decompile")
 decompile(
 	{
 		appConfig: resolve("generated/assemblies/reko.config"),
@@ -48,7 +50,17 @@ decompile(
 			callback(null, true);
 		}
 	}, 
-	false,		// true: means we're expecting the method to complete synchronously.
 	function(error:any, result:any) {
+		console.log("decomple DONE");
 		console.log(error, result);
-    });
+	});
+	
+// console.log("$$$ About to render")
+// 	renderProcedure(
+// 	"Aberaham.exe:fn00011000",
+// 	function(error:any, html:any) {
+// 		if (!error) {
+// 			console.log("The generated HTML");
+// 			console.log(html);
+// 		 }
+// 	});

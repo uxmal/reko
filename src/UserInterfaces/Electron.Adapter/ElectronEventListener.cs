@@ -7,79 +7,66 @@ namespace Reko.Gui.Electron.Adapter
     public class ElectronEventListener : DecompilerEventListener
     {
         private IDiagnosticsService diagnosticSvc;
-        private ElectronDecompilerDriver driver;
 
         public ElectronEventListener(IDiagnosticsService diagnosticSvc)
         {
             this.diagnosticSvc = diagnosticSvc;
         }
 
-        public ElectronEventListener(ElectronDecompilerDriver driver)
-        {
-            this.driver = driver;
-        }
-
         public ICodeLocation CreateAddressNavigator(Program program, Address address)
         {
-            return new NullCodeLocation(address.ToString());
+            return JsCodeLocation.ForAddress(program, address);
         }
 
         public ICodeLocation CreateBlockNavigator(Program program, Block block)
         {
-            return new NullCodeLocation(string.Format("{0}:{1}", block.Procedure.Name, block.Name));
+            return JsCodeLocation.ForBlock(program, block);
         }
 
         public ICodeLocation CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector, int stride)
         {
-            return new NullCodeLocation(addrIndirectJump.ToString());
+            //$TODO: make a JumpTableNavigator
+            return JsCodeLocation.ForAddress(program, addrIndirectJump);
         }
 
         public ICodeLocation CreateProcedureNavigator(Program program, Procedure proc)
         {
-            return new NullCodeLocation(string.Format("{0}", proc));
+            return JsCodeLocation.ForProcedure(program, proc);
         }
 
         public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
         {
-            return new NullCodeLocation(string.Format("{0}:{1}:{2}:{3} {4}",
-                stm.Block.Procedure.Name,
-                stm.Block.Name,
-                stm.Block.Statements.IndexOf(stm),
-                stm.LinearAddress,
-                stm.Instruction));
-
+            return JsCodeLocation.ForStatement(program, stm);
         }
 
         public void Error(ICodeLocation location, string message)
         {
-            Console.WriteLine("ERR:  {0} {1}", location, message);
+            diagnosticSvc.Error(location, message);
         }
 
         public void Error(ICodeLocation location, Exception ex, string message)
         {
-            Console.WriteLine("ERR:  {0} {1} {2}", location, message, ex.Message);
-            Console.WriteLine(ex.StackTrace);
+            diagnosticSvc.Error(location, ex, message);
         }
 
         public void Error(ICodeLocation location, string message, params object[] args)
         {
-            Console.WriteLine("ERR:  {0} {1}", location, string.Format(message, args));
+            diagnosticSvc.Error(location, message, args);
         }
 
         public void Error(ICodeLocation location, Exception ex, string message, params object[] args)
         {
-            Console.WriteLine("ERR:  {0} {1} {2}", location, string.Format(message, args), ex.Message);
-            Console.WriteLine(ex.StackTrace);
+            diagnosticSvc.Error(location, ex, message, args);
         }
 
         public void Info(ICodeLocation location, string message)
         {
-            Console.WriteLine("Info: {0} {1}", location, message);
+            diagnosticSvc.Inform(location, message);
         }
 
         public void Info(ICodeLocation location, string message, params object[] args)
         {
-            Console.WriteLine("Info: {0} {1}", location, string.Format(message, args));
+            diagnosticSvc.Inform(location, message, args);
         }
 
         public bool IsCanceled()
@@ -99,12 +86,12 @@ namespace Reko.Gui.Electron.Adapter
 
         public void Warn(ICodeLocation location, string message)
         {
-            Console.WriteLine("Warn: {0} {1}", location, message);
+            diagnosticSvc.Warn(location, message);
         }
 
         public void Warn(ICodeLocation location, string message, params object[] args)
         {
-            Console.WriteLine("Warn: {0} {1}", location, string.Format(message, args));
+            diagnosticSvc.Warn(location, message, args);
         }
     }
 }
