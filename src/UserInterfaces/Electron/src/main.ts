@@ -23,7 +23,6 @@ app.on('ready', function() {
 
 	mainWindow.webContents.on("did-finish-load", function(){
 		afterInit();
-		//});
 	});
 
 	mainWindow.on('closed', function() {
@@ -45,8 +44,8 @@ function afterInit(){
 	console.log("$$$ About to decompile");
 	SharpAssembly.InvokeAsync(createReko, {
 		appConfig: resolve("generated/assemblies/reko.config"),
-		//fileName: "E:/dec/Aberaham.exe",
-		fileName: "C:/dev/uxmal/reko/zoo/users/smxsmx/abheram/Aberaham.exe",
+		fileName: "E:/dec/Aberaham.exe",
+		//fileName: "C:/dev/uxmal/reko/zoo/users/smxsmx/abheram/Aberaham.exe",
 		notify: function (data:any, callback:any) {
 			console.log(JSON.stringify(data));
 			//$TODO: display the message in HTML user interface.

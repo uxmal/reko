@@ -1,0 +1,23 @@
+{
+  "name": "reko-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uxmal/reko.git"
+  },
+  "author": "John Källén",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/uxmal/reko/issues"
+  },
+  "homepage": "https://github.com/uxmal/reko#readme",
+  "dependencies": {
+    "@types/jquery": "^3.2.12",
+    "jquery": "^3.2.1"
+  }
+}

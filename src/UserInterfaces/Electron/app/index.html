@@ -9,7 +9,6 @@
 				}
 				window.$ = window.jQuery = require("./" + getComponentPath("jquery/dist/jquery.min.js", false));
 		</script>
-		<script src="script.js"></script>
 		<script>
 			requirejs.config({
 				baseUrl: "js",
@@ -27,9 +26,15 @@
 				}
 			});
 		</script>
+		
+		<script>require("./generated/script.js");</script>
+		<link rel="stylesheet" type="text/css" href="style.css" />
 	</head>
 
 	<body>
+
+		<ul class="reko-menu"></ul>
+
 		<h1>Hello World</h1>
 		<input type="button" id="btn-test" value="Decompile" />
 		<div class="reko-procedures">

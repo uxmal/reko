@@ -1,9 +1,9 @@
-const {ipcRenderer} = require('electron')
+import {ipcRenderer} from 'electron';
+import $ = require("jquery");
 
 
 function setup(){
-	ipcRenderer.on("procedure", (event, arg) => {
-		alert("Incoming transmission");
+	ipcRenderer.on("procedure", (event:any, arg:any) => {
 		$(".reko-procedures").html(arg);
 	});
 
