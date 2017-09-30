@@ -32,14 +32,24 @@ app.on('ready', function() {
 
 
 var rekoUi:SharpAssembly = new SharpAssembly("generated/assemblies/Reko.Gui.Electron.Adapter.dll");
-
 var rootType:string = "Reko.Gui.Electron.Adapter.ElectronDecompilerDriver";
+var reko:any;
+
+function renderProcedure(result:string){
+	mainWindow.webContents.send("procedure", result);
+}
+
+ipcMain.on("getProcedure", (event:any, args: any) => {
+	var proc = args.program + ":" + args.address;
+	reko.RenderProcedure(proc, (error:any, result:any) => {
+		if(!error)
+			renderProcedure(result);
+	});
+});
 
 function afterInit(){
 	var resolve = require('path').resolve;
 	var createReko = rekoUi.getFunction(rootType, "CreateReko");
-	
-	var reko:any;
 	
 	console.log("$$$ About to decompile");
 	SharpAssembly.InvokeAsync(createReko, {
@@ -62,7 +72,10 @@ function afterInit(){
 		return SharpAssembly.InvokeAsync(reko.RenderProcedure, "Aberaham.exe:fn00011000");
 	}).then((result) => {
 		console.log("Sending result");
-		mainWindow.webContents.send("procedure", result);
+		renderProcedure(result);
+		return SharpAssembly.InvokeAsync(reko.RenderProjectJson, {});
+	}).then((result) => {
+		mainWindow.webContents.send("project", result);
 	}).catch((error) => {
 		dialog.showErrorBox("Something blew up", error);
 	});
