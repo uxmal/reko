@@ -15,4 +15,14 @@ export default class SharpAssembly {
 		});
 		return clrMethod;
 	}
+
+	public static InvokeAsync(func: any, args: any) : Promise<any>{
+		return new Promise((resolve, reject) => {
+			func(args, function(error:any, result:any){
+				if(error)
+					return reject(error);
+				resolve(result);
+			});
+		});
+	}
 }
