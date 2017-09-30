@@ -194,6 +194,5 @@ namespace Reko.UnitTests.Core.Serialization.Json
             RunTest(sExpMain, pb.Program.Procedures.Values[0]); 
             RunTest(sExpSub, pb.Program.Procedures.Values[1]);
         }
-
     }
 }

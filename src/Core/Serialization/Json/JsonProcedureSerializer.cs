@@ -34,12 +34,13 @@ namespace Reko.Core.Serialization.Json
 {
     public class JsonProcedureSerializer : InstructionVisitor, IExpressionVisitor
     {
-
         private TextWriter w;
+        private JsonWriter js;
 
         public string Serialize(Procedure proc)
         {
             var sw = new StringWriter();
+            this.js = new JsonWriter(sw);
             Serialize(proc, sw);
             return sw.ToString();
         }
@@ -47,15 +48,12 @@ namespace Reko.Core.Serialization.Json
         public void Serialize(Procedure proc, TextWriter w)
         {
             this.w = w;
-            w.Write('{');
-            Write("name", proc.Name);
-            w.Write(",");
-            Write("signature", () => WriteSignature(proc.Signature));
-            w.Write(",");
-            Write("ids", () => WriteIdentifiers(proc));
-            w.Write(",");
-            Write("blocks", () => WriteBlocks(proc));
-            w.Write('}');
+            js.BeginObject();
+            js.WriteKeyValue("name", proc.Name);
+            js.WriteKeyValue("signature", () => WriteSignature(proc.Signature));
+            js.WriteKeyValue("ids", () => WriteIdentifiers(proc));
+            js.WriteKeyValue("blocks", () => WriteBlocks(proc));
+            js.EndObject();
         }
 
         private void WriteSignature(FunctionType sig)
@@ -64,7 +62,7 @@ namespace Reko.Core.Serialization.Json
                 throw new NotImplementedException();
             else
             {
-                Write("");
+                js.Write("");
             }
         }
 
@@ -81,22 +79,20 @@ namespace Reko.Core.Serialization.Json
             }
             if (idsByName.Count > 0)
             {
-                WriteList(idsByName.Values, WriteIdentifier);
+                js.WriteList(idsByName.Values, WriteIdentifier);
             }
         }
 
         private void WriteIdentifier(Identifier id)
         {
-            w.Write('{');
-            Write("name", id.Name);
+            js.BeginObject();
+            js.WriteKeyValue("name", id.Name);
             if (!(id.Storage is MemoryStorage))
             {
-                w.Write(',');
-                Write("type", () => WriteType(id.DataType));
+                js.WriteKeyValue("type", () => WriteType(id.DataType));
             }
-            w.Write(',');
-            Write("stg", () => WriteStorage(id.Storage));
-            w.Write('}');
+            js.WriteKeyValue("stg", () => WriteStorage(id.Storage));
+            js.EndObject();
         }
 
         private void WriteType(DataType dt)
@@ -104,7 +100,7 @@ namespace Reko.Core.Serialization.Json
             string primitiveName;
             if (JsonSymbols.PrimitiveNames.TryGetValue(dt, out primitiveName))
             {
-                Write(primitiveName);
+                js.Write(primitiveName);
             }
             else
                 throw new NotImplementedException(dt.ToString());
@@ -112,171 +108,63 @@ namespace Reko.Core.Serialization.Json
 
         private void WriteStorage(Storage stg)
         {
-            w.Write('{');
+            js.BeginObject();
             RegisterStorage reg;
             MemoryStorage mem;
             FlagGroupStorage flg;
             if (stg.As(out reg))
             {
-                Write("kind", "reg");
-                w.Write(',');
-                Write("name", reg.Name);
+                js.WriteKeyValue("kind", "reg");
+                js.WriteKeyValue("name", reg.Name);
             }
             else if (stg.As(out mem))
             {
-                Write("kind", "mem");
+                js.WriteKeyValue("kind", "mem");
             }
             else if (stg.As(out flg))
             {
-                Write("kind", "flg");
-                w.Write(",");
-                Write("grf", flg.FlagGroupBits);
-                w.Write(",");
-                Write("reg", flg.FlagRegister.Name);
+                js.WriteKeyValue("kind", "flg");
+                js.WriteKeyValue("grf", flg.FlagGroupBits);
+                js.WriteKeyValue("reg", flg.FlagRegister.Name);
             }
             else
                 throw new NotImplementedException(string.Format("Unimplemented storage: {0}.", stg));
-            w.Write('}');
+            js.EndObject();
         }
 
         private void WriteBlocks(Procedure proc)
         {
-            WriteList(proc.ControlGraph.Blocks, b => WriteBlock(b, b == proc.ExitBlock));
+            js.WriteList(proc.ControlGraph.Blocks, b => WriteBlock(b, b == proc.ExitBlock));
         }
 
         private void WriteBlock(Block block, bool isExit)
         {
-            w.Write('{');
-            Write("name", block.Name);
+            js.BeginObject();
+            js.WriteKeyValue("name", block.Name);
             if (isExit)
             {
-                w.Write(',');
-                Write("exit", isExit);
+                js.WriteKeyValue("exit", isExit);
             }
             if (block.Statements.Count > 0)
             {
-                w.Write(',');
                 var linaddr = block.Statements[0].LinearAddress;
-                Write("linaddr", linaddr);
-                w.Write(',');
-                Write("stms", () => WriteList(block.Statements, stm => WriteStatement(stm, linaddr)));
+                js.WriteKeyValue("linaddr", linaddr);
+                js.WriteKeyValue("stms", () => js.WriteList(block.Statements, stm => WriteStatement(stm, linaddr)));
             }
             if (block.Succ.Count > 0)
             {
-                w.Write(',');
-                Write("succ", () => WriteList(block.Succ.Select(s => s.Name), Write));
+                js.WriteKeyValue("succ", () => js.WriteList(block.Succ.Select(s => s.Name), js.Write));
             }
-            w.Write('}');
+            js.EndObject();
         }
 
         private void WriteStatement(Statement stm, ulong linAddrBlock)
         {
             w.Write("[");
-            Write(stm.LinearAddress - linAddrBlock);
+            js.Write(stm.LinearAddress - linAddrBlock);
             w.Write(',');
             stm.Instruction.Accept(this);
             w.Write("]");
-        }
-
-        private void WriteList<T>(IEnumerable<T> items, Action<T> itemWriter)
-        {
-            w.Write('[');
-            WriteListContents(items, itemWriter);
-            w.Write(']');
-        }
-
-        private void WriteListContents<T>(IEnumerable<T> items, Action<T> itemWriter)
-        {
-            bool sep = false;
-            foreach (var item in items)
-            {
-                if (sep)
-                    w.Write(',');
-                sep = true;
-                itemWriter(item);
-            }
-        }
-
-        private void Write(string key, ulong u64)
-        {
-            Write(key);
-            w.Write(':');
-            Write(u64);
-        }
-
-        private void Write(string key, bool value)
-        {
-            Write(key);
-            w.Write(':');
-            Write(value);
-        }
-
-        private void Write(bool value)
-        {
-            w.Write(value ? "true" : "false");
-        }
-
-        private void Write(ulong u64)
-        {
-            // Max integer representable with a IEEE 64-bit double
-            const ulong MaxExactUInt = (1ul << 53) - 1ul;
-            if (u64 > MaxExactUInt)
-                Write(u64.ToString());
-            else
-                w.Write(u64);
-        }
-
-        private void Write(long i64)
-        {
-            // Max integer representable with a IEEE 64-bit double
-            const long MaxExactInt = (1L << 53) - 1L;
-            if (Math.Abs(i64) > MaxExactInt)
-                Write(i64.ToString());
-            else
-                w.Write(i64);
-        }
-
-        private void Write(string s)
-        {
-            w.Write('"');
-            foreach (char c in s)
-            {
-                switch (c)
-                {
-                case '\b': w.Write(@"\"); break;
-                case '\t': w.Write(@"\"); break;
-                case '\n': w.Write(@"\"); break;
-                case '\f': w.Write(@"\"); break;
-                case '\r': w.Write(@"\"); break;
-                case '\"': w.Write(@"\"""); break;
-                case '\\': w.Write(@"\\"); break;
-                default:
-                    if (0 <= c && c < ' ' || 0x7F <= c)
-                    {
-                        w.Write(@"\u{0:X4}", (int)c);
-                    }
-                    else
-                    {
-                        w.Write(c);
-                    }
-                    break;
-                }
-            }
-            w.Write('"');
-        }
-
-        private void Write(string key, Action writer)
-        {
-            Write(key);
-            w.Write(':');
-            writer();
-        }
-
-        private void Write(string key, string value)
-        {
-            Write(key);
-            w.Write(':');
-            Write(value);
         }
 
         public void VisitAddress(Address addr)
@@ -289,7 +177,7 @@ namespace Reko.Core.Serialization.Json
             w.Write('[');
             appl.Procedure.Accept(this);
             w.Write(',');
-            WriteListContents(appl.Arguments, e => e.Accept(this));
+            js.WriteListContents(appl.Arguments, e => e.Accept(this));
         }
 
         public void VisitArrayAccess(ArrayAccess acc)
@@ -299,7 +187,7 @@ namespace Reko.Core.Serialization.Json
 
         public void VisitAssignment(Assignment ass)
         {
-            Write("=");
+            js.Write("=");
             w.Write(',');
             ass.Dst.Accept(this);
             w.Write(',');
@@ -309,7 +197,7 @@ namespace Reko.Core.Serialization.Json
         public void VisitBinaryExpression(BinaryExpression binExp)
         {
             w.Write('[');
-            Write(JsonSymbols.OpNames[binExp.Operator]);
+            js.Write(JsonSymbols.OpNames[binExp.Operator]);
             w.Write(',');
             binExp.Left.Accept(this);
             w.Write(',');
@@ -319,25 +207,25 @@ namespace Reko.Core.Serialization.Json
 
         public void VisitBranch(Branch branch)
         {
-            Write("bra");
+            js.Write("bra");
             w.Write(',');
             branch.Condition.Accept(this);
             w.Write(',');
-            Write(branch.Target.Name);
+            js.Write(branch.Target.Name);
         }
 
         public void VisitCallInstruction(CallInstruction ci)
         {
-            Write("call");
+            js.Write("call");
             w.Write(',');
             ci.Callee.Accept(this);
             w.Write(',');
-            Write(ci.CallSite.SizeOfReturnAddressOnStack);
+            js.Write(ci.CallSite.SizeOfReturnAddressOnStack);
             w.Write(',');
-            Write(ci.CallSite.FpuStackDepthBefore);
+            js.Write(ci.CallSite.FpuStackDepthBefore);
             w.Write(',');
-            WriteList(ci.Uses.Select(u => u.Expression), e => e.Accept(this));
-            WriteList(ci.Definitions.Select(d => d.Identifier), id => Write(id.Name));
+            js.WriteList(ci.Uses.Select(u => u.Expression), e => e.Accept(this));
+            js.WriteList(ci.Definitions.Select(d => d.Identifier), id => js.Write(id.Name));
         }
 
         private void WriteUseInstruction(UseInstruction ui)
@@ -356,7 +244,7 @@ namespace Reko.Core.Serialization.Json
 
         public void VisitConditionOf(ConditionOf cof)
         {
-            Write("cof");
+            js.Write("cof");
             w.Write(',');
             cof.Expression.Accept(this);
         }
@@ -364,7 +252,7 @@ namespace Reko.Core.Serialization.Json
         public void VisitConstant(Constant c)
         {
             w.Write('[');
-            Write(c.ToInt64());
+            js.Write(c.ToInt64());
             w.Write(',');
             WriteType(c.DataType);
             w.Write(']');
@@ -402,7 +290,7 @@ namespace Reko.Core.Serialization.Json
 
         public void VisitIdentifier(Identifier id)
         {
-            Write(id.Name);
+            js.Write(id.Name);
         }
 
         public void VisitMemberPointerSelector(MemberPointerSelector mps)
@@ -413,7 +301,7 @@ namespace Reko.Core.Serialization.Json
         public void VisitMemoryAccess(MemoryAccess access)
         {
             w.Write('[');
-            Write("m");
+            js.Write("m");
             w.Write(',');
             access.MemoryId.Accept(this);
             w.Write(',');
@@ -450,12 +338,12 @@ namespace Reko.Core.Serialization.Json
 
         public void VisitProcedureConstant(ProcedureConstant pc)
         {
-            Write(pc.Procedure.Name);
+            js.Write(pc.Procedure.Name);
         }
 
         public void VisitReturnInstruction(ReturnInstruction ret)
         {
-            Write("ret");
+            js.Write("ret");
             if (ret.Expression != null)
             {
                 w.Write(',');
@@ -486,7 +374,7 @@ namespace Reko.Core.Serialization.Json
         public void VisitStore(Store store)
         {
             w.Write('[');
-            Write("st");
+            js.Write("st");
             w.Write(',');
             store.Dst.Accept(this);
             w.Write(',');
@@ -502,9 +390,9 @@ namespace Reko.Core.Serialization.Json
         public void VisitTestCondition(TestCondition tc)
         {
             w.Write('[');
-            Write("test");
+            js.Write("test");
             w.Write(',');
-            Write(tc.ConditionCode.ToString());
+            js.Write(tc.ConditionCode.ToString());
             w.Write(',');
             tc.Expression.Accept(this);
             w.Write(']');
@@ -513,7 +401,7 @@ namespace Reko.Core.Serialization.Json
         public void VisitUnaryExpression(UnaryExpression unary)
         {
             w.Write('[');
-            Write(JsonSymbols.OpNames[unary.Operator]);
+            js.Write(JsonSymbols.OpNames[unary.Operator]);
             w.Write(',');
             unary.Expression.Accept(this);
             w.Write(']');
