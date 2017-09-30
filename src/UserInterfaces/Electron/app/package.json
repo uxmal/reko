@@ -19,6 +19,7 @@
   "dependencies": {
     "@types/jquery": "^3.2.12",
     "bootstrap": "^3.3.7",
+    "css-modules-require-hook": "^4.2.2",
     "jquery": "^3.2.1"
   }
 }
