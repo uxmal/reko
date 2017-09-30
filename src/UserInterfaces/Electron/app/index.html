@@ -1,17 +1,38 @@
 <!doctype html>
 <html>
 	<head>
-		<script>require("./generated/app.js");</script>
+		<script>
+			require("./generated/app.js");
+		</script>
+		<!-- TODO: Use css-modules-require-hook -->
+		<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
 		<link rel="stylesheet" type="text/css" href="style.css" />
 	</head>
 
 	<body>
+		<div class="jumbotron text-center">
+			<h1>Reko Decompiler</h1>
+		</div>
 
-		<ul class="reko-menu"></ul>
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav">
+					<li><a href"#">Item</a></li>
+					<li><a href"#">Item</a></li>
+					<li><a href"#">Item</a></li>
+					<li><a href"#">Item</a></li>
+				</ul>
+			</div>
+		</nav>
 
-		<h1>Hello World</h1>
-		<input type="button" id="btn-test" value="Decompile" />
-		<div class="reko-procedures">
+		<div class="container">
+			<input type="button" id="btn-test" value="Decompile" />
+			<div class="panel"></div>
+			<div class="panel">
+				<div class="reko-procedures">
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
