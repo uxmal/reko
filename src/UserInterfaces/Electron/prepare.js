@@ -34,7 +34,7 @@ run_shell("npm install -g " + global_deps.join(" "));
 pr_status("[+] Rebuilding edge for electron");
 run_shell(
     "node-gyp",
-    __dirname + "/node_modules/electron-edge/",
+    __dirname + "/node_modules/edge/",
     "clean configure build " +
     "--target=1.7.8 --dist-url=https://atom.io/download/atom-shell --msvs_version=2015"
 );

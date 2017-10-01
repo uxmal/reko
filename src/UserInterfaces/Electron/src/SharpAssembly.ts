@@ -1,4 +1,4 @@
-var edge = require("electron-edge");
+var edge = require("edge");
 
 export default class SharpAssembly {
 	private assembly:string;
