@@ -126,6 +126,7 @@
         <File Source="$(var.Wii.TargetPath)" />
         <File Source="$(var.Windows.TargetPath)" />
         <File Source="$(var.Windows.ProjectDir)windows32.xml" />
+        <File Source="$(var.Windows.ProjectDir)windows_CE.xml" />
         <File Source="$(var.Windows.ProjectDir)windows64.xml" />
         <File Source="$(var.Windows.ProjectDir)commctrl.xml" />
         <File Source="$(var.Windows.ProjectDir)ntoskrnl.xml" />

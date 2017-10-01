@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- This file contains metadata used with Windows CE that isn't present in the 
+     Win32 windows.h on x86.
+     -->
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+  <procedure name="ShellExecuteEx">
+    <signature convention="__stdcall">
+      <return>
+        <type>BOOL</type>
+      </return>
+      <arg name="lpExecInfo">
+        <ptr>
+          <type>LPSHELLEXECUTEINFO</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+</library>

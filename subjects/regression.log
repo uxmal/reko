@@ -1652,38 +1652,8 @@ Parameter name: Linear address 00000000 is not in known segment.
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 90
    at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 312
 fn00000000004028C0: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-fn000000000040D8A0: error: An error occurred while rewriting procedure to high-level language.
-    The given key was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DiGraph`1.RemoveEdge(T itemFrom, T itemTo) in C:\dev\uxmal\reko\master\src\Core\Lib\DiGraph.cs:line 231
-   at Reko.Structure.StructureAnalysis.ReduceIncSwitch(Region n, Region follow) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 588
-   at Reko.Structure.StructureAnalysis.ReduceSwitchRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 397
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 257
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0000000000410E90: error: An error occurred while rewriting procedure to high-level language.
-    Can't collapse l0000000000410F78 (Tail) => l0000000000411028
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 798
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 752
-   at Reko.Structure.StructureAnalysis.VirtualizeIrregularSwitchEntries(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 489
-   at Reko.Structure.StructureAnalysis.RefineIncSwitch(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 470
-   at Reko.Structure.StructureAnalysis.ReduceSwitchRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 395
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 257
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn0000000000411360: error: An error occurred while rewriting procedure to high-level language.
-    Can't collapse l0000000000411450 (Tail) => l0000000000411500
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 798
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 752
-   at Reko.Structure.StructureAnalysis.VirtualizeIrregularSwitchEntries(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 489
-   at Reko.Structure.StructureAnalysis.RefineIncSwitch(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 470
-   at Reko.Structure.StructureAnalysis.ReduceSwitchRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 395
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 257
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+fn0000000000410E90: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+fn0000000000411360: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
 === Elf-x86-64\ais3_crackme\ais3_crackme
 *** Elf-x86-64\ais3_crackme\ais3_crackme
@@ -2005,25 +1975,20 @@ fn0000000000411360: error: An error occurred while rewriting procedure to high-l
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 fn0800_1073: error: An error occurred while rewriting procedure to high-level language.
-    Can't collapse l0800_1175 (Tail) => l0800_1560
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 798
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 752
-   at Reko.Structure.StructureAnalysis.VirtualizeIrregularSwitchEntries(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 489
-   at Reko.Structure.StructureAnalysis.RefineIncSwitch(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 470
-   at Reko.Structure.StructureAnalysis.ReduceSwitchRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 395
+    Unable to cast object of type 'Reko.Core.Types.MemberPointer' to type 'Reko.Core.Types.PrimitiveType'.
+       at Reko.Core.Expressions.Constant.Create(DataType dt, Int64 value) in C:\dev\uxmal\reko\master\src\Core\Expressions\Constant.cs:line 46
+   at Reko.Structure.StructureAnalysis.ReduceIncSwitch(Region n, Region follow) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 590
+   at Reko.Structure.StructureAnalysis.ReduceSwitchRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 397
    at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 257
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn0800_16F3: error: An error occurred while rewriting procedure to high-level language.
-    Can't collapse l0800_1794 (Tail) => l0800_17E6
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 798
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 752
-   at Reko.Structure.StructureAnalysis.VirtualizeIrregularSwitchEntries(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 489
-   at Reko.Structure.StructureAnalysis.RefineIncSwitch(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 470
-   at Reko.Structure.StructureAnalysis.ReduceSwitchRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 395
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 257
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 126
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 
@@ -2998,44 +2963,20 @@ Parameter name: Linear address 00000000 is not in known segment.
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 81
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 90
    at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 312
-main: error: An error occurred while rewriting procedure to high-level language.
-    The given key was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DiGraph`1.RemoveEdge(T itemFrom, T itemTo) in C:\dev\uxmal\reko\master\src\Core\Lib\DiGraph.cs:line 231
-   at Reko.Structure.StructureAnalysis.ReduceIncSwitch(Region n, Region follow) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 588
-   at Reko.Structure.StructureAnalysis.ReduceSwitchRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 397
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 257
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn0800_9107: error: An error occurred while rewriting procedure to high-level language.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DiGraph`1.RemoveEdge(T itemFrom, T itemTo) in C:\dev\uxmal\reko\master\src\Core\Lib\DiGraph.cs:line 231
-   at Reko.Structure.StructureAnalysis.ReduceIncSwitch(Region n, Region follow) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 588
-   at Reko.Structure.StructureAnalysis.ReduceSwitchRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 397
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 257
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 126
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn0800_9828: error: An error occurred while rewriting procedure to high-level language.
-    Can't collapse l0800_98FE (Tail) => l0800_9C82
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 798
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 752
-   at Reko.Structure.StructureAnalysis.VirtualizeIrregularSwitchEntries(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 489
-   at Reko.Structure.StructureAnalysis.RefineIncSwitch(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 470
-   at Reko.Structure.StructureAnalysis.ReduceSwitchRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 395
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 257
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
-fn1483_0D3F: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Core.Expressions.BinaryExpression.Invert() in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 143
-   at Reko.Core.Expressions.BinaryExpression.Invert() in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 107
-   at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 344
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 254
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 126
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
 fn1483_1BB9: error: An error occurred while rewriting procedure to high-level language.
