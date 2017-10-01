@@ -1575,6 +1575,7 @@ void client_parse_request(Eq_2077 * r4, word32 dwArg00)
 {
 	int32 r2_21 = r4->dw07D8;
 	struct Eq_2083 * dwLoc20_125 = r4->ptr0FB4;
+l004022C4:
 	if (r2_21 <= 0x00)
 		return;
 	<anonymous> * r25_91 = globals->ptr100008AC;
@@ -3619,6 +3620,7 @@ void request_get_content_length(Eq_4465 * r4, uint32 r5, word32 dwArg00, word32 
 void is_a_method(word32 dwArg00)
 {
 	ui32 dwLoc18_15 = 0x00;
+l0040528C:
 	if (globals->ptr100009C8[dwLoc18_15] != 0x00)
 	{
 		ui32 r3_51 = dwLoc18_15 + 0x01;
@@ -4139,6 +4141,7 @@ void properties_load(word32 r4, word32 r5, word32 dwArg00, word32 dwArg04)
 void properties_parse_command_line(int32 r4, Eq_5219 * r5[], word32 dwArg00, word32 dwArg04)
 {
 	int32 dwLoc28_103 = 0x00;
+l00405D00:
 	if ((word32) (dwLoc28_103 < r4) == 0x00)
 		return;
 	if ((word32) (r5[dwLoc28_103].b0000 + 0x00) != 0x002D)
@@ -6713,6 +6716,7 @@ l00408D08:
 		Eq_8593 r11_184 = 0x00;
 		ui32 r12_185 = 0x00;
 		int32 r13_186 = 0x00;
+l00408D18:
 		if (r14_176 == 0x00)
 		{
 			uint32 r2_239;
