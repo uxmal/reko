@@ -29,6 +29,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core;
 using Rhino.Mocks;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.Environments.Windows
 {
@@ -52,6 +53,21 @@ namespace Reko.UnitTests.Environments.Windows
         private Pointer Ptr(DataType dt)
         {
             return new Pointer(dt, 4);
+        }
+
+        private StructureType LargeInt()
+        {
+            var largeInt = new StructureType
+            {
+                Size = 8,
+                Fields =
+                {
+                    { 0x0000, PrimitiveType.Word32 },
+                    { 0x0004, PrimitiveType.Word32 },
+                }
+            };
+            Debug.Assert(largeInt.GetInferredSize() == 8);
+            return largeInt;
         }
 
         private void Given_CallingConvention()
@@ -83,6 +99,21 @@ namespace Reko.UnitTests.Environments.Windows
             Given_CallingConvention();
             cc.Generate(ccr, null, null, new List<DataType> { Ptr(v), Ptr(v), Ptr(v), Ptr(v), Ptr(v) });
             Assert.AreEqual("Stk: 0 void (r4, r5, r6, r7, Stack +0010)", ccr.ToString());
+        }
+
+        [Test(Description = "The spec says that when an argument whose size is > 32 bits is straddling the 4 word boundary"  + 
+            "it should spill the variable into a stack location.")]
+        public void MipsCc_LargeIntegerStraddling4WordBoundary()
+        {
+            Given_CallingConvention();
+            var largeInt = LargeInt();
+            cc.Generate(ccr, null, null, new List<DataType> {
+                PrimitiveType.Word32,
+                largeInt,
+                largeInt,
+                largeInt                // this straddles the 4-word limit.
+            });
+            Assert.AreEqual("Stk: 0 void (r4, Sequence r5:r6, Stack +0010, Stack +0018)", ccr.ToString());
         }
     }
 }
