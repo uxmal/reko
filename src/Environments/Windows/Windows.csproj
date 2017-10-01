@@ -120,6 +120,7 @@
     <Content Include="windows32.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="windows_CE.xml" />
     <Content Include="wsock32.xml" />
     <Content Include="wininet.xml" />
     <Content Include="oleaut32.xml" />
