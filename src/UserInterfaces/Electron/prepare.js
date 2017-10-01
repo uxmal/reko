@@ -24,8 +24,6 @@ function run_shell(cmd, dir, ...args){
 
 var global_deps = [
     "typescript",
-    "electron",
-    "electron-packager",
     "node-gyp"
 ];
 
