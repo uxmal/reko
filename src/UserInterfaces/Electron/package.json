@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "reko",
   "version": "1.0.0",
   "description": "Reko is a binary decompiler",
@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && cd app && tsc",
     "prestart": "npm run build",
-    "start": "electron generated",
+    "start": "electron generated/src/main.js",
     "pack": "electron-packager . sample --out=dist --arch=x64 --platform=win32 --version=1.7.5 --overwrite --prune --ignore=dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/uxmal/reko#readme",
   "devDependencies": {
-    "electron": "^1.7.8",
+    "electron": "1.7.8",
     "electron-packager": "^9.1.0",
     "typescript": "^2.5.3"
   },
