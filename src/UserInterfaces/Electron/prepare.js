@@ -31,12 +31,19 @@ var global_deps = [
 
 pr_status("[+] Installing required global dependencies");
 run_shell("npm install -g " + global_deps.join(" "));
-pr_status("[+] Rebuilding edge for electron");
+
+var electron_version = child.spawnSync("electron", ["-v"], {
+    shell: true,
+    cwd: __dirname + "/node_modules/.bin"
+}).output.toString().replace(/\r?\n/gm, "").replace(/[,v]/gm, "").trim();
+
+pr_status("[+] Rebuilding edge for electron " + electron_version);
 run_shell(
     "node-gyp",
     __dirname + "/node_modules/edge/",
     "clean configure build " +
-    "--target=1.7.8 --dist-url=https://atom.io/download/atom-shell --msvs_version=2015"
+    `--target=${electron_version} ` + 
+    "--dist-url=https://atom.io/download/atom-shell --msvs_version=2015"
 );
 pr_status("[+] Installing dependencies for app-render");
 run_shell("npm install", __dirname + "/app");
