@@ -339,7 +339,7 @@ namespace Reko.UnitTests.Scanning
                 Arg<string>.Is.Equal("__hlt"),
                 Arg<DataType>.Is.NotNull,
                 Arg<int>.Is.Equal(0))).
-                Return(new PseudoProcedure("__hlt", VoidType.Instance, 0));
+                Return(new PseudoProcedure("__hlt", FunctionType.Action()));
             mr.ReplayAll();
 
             siq.ScanInstructions(sr);

@@ -328,7 +328,7 @@ namespace Reko.Typing
 		{
 			EnsureTypeVariable(pc);
 			VisitProcedure(pc.Procedure);
-			if (pc.Procedure.Signature != null)
+			if (pc.Procedure.Signature.ParametersValid)
 			{
 				store.MergeClasses(pc.TypeVariable, pc.Procedure.Signature.TypeVariable);
 				signature = pc.Procedure.Signature;
@@ -337,24 +337,21 @@ namespace Reko.Typing
 
 		public void VisitProcedure(ProcedureBase proc)
 		{
-			if (proc.Signature != null)
+			if (proc.Signature.TypeVariable == null)
 			{
-				if (proc.Signature.TypeVariable == null)
-				{
-					proc.Signature.TypeVariable = store.EnsureExpressionTypeVariable(
-						factory,
-                        new Identifier("signature of " + proc.Name, VoidType.Instance, null),
-						null);
-				}
-				if (proc.Signature.Parameters != null)
-				{
-					foreach (Identifier id in proc.Signature.Parameters)
-					{
-						id.Accept(this);
-					}
-				}
-				//$REVIEW: return type?
+				proc.Signature.TypeVariable = store.EnsureExpressionTypeVariable(
+					factory,
+                    new Identifier("signature of " + proc.Name, VoidType.Instance, null),
+					null);
 			}
+			if (proc.Signature.Parameters != null)
+			{
+				foreach (Identifier id in proc.Signature.Parameters)
+				{
+					id.Accept(this);
+				}
+			}
+			//$REVIEW: return type?
 		}
 
 		public override void VisitSlice(Slice slice)

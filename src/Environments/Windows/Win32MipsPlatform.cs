@@ -62,7 +62,27 @@ namespace Reko.Environments.Windows
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
-            return new HashSet<RegisterStorage>();
+            return new HashSet<RegisterStorage>
+            {
+                Architecture.GetRegister(2),
+                Architecture.GetRegister(3),
+                Architecture.GetRegister(4),
+                Architecture.GetRegister(5),
+                Architecture.GetRegister(6),
+                Architecture.GetRegister(7),
+                Architecture.GetRegister(8),
+                Architecture.GetRegister(9),
+                Architecture.GetRegister(10),
+                Architecture.GetRegister(11),
+                Architecture.GetRegister(12),
+                Architecture.GetRegister(13),
+                Architecture.GetRegister(14),
+                Architecture.GetRegister(15),
+
+                Architecture.GetRegister(24),
+                Architecture.GetRegister(25),
+            };
+
         }
 
         public override CallingConvention GetCallingConvention(string ccName)

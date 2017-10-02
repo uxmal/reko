@@ -360,7 +360,7 @@ namespace Reko.Analysis
         {
             ci.Callee = ci.Callee.Accept(this);
             ProcedureBase callee = GetCalleeProcedure(ci);
-            if (callee != null && callee.Signature != null && callee.Signature.ParametersValid)
+            if (callee != null && callee.Signature.ParametersValid)
             {
                 // Signature is known: build the application immediately.
                 // First, remove all uses of the old call.

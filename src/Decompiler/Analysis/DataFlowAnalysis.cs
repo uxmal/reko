@@ -70,10 +70,8 @@ namespace Reko.Analysis
                 TextFormatter f = new TextFormatter(output);
 				if (pf.Signature != null)
 					pf.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
-				else if (proc.Signature != null)
-					proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				else
-					output.Write("Warning: no signature found for {0}", proc.Name);
+					proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				output.WriteLine();
 				pf.Emit(program.Architecture, output);
 
@@ -302,7 +300,7 @@ namespace Reko.Analysis
                 var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
                 var ssa = sst.Transform();
 
-                // Merge unaligned .
+                // Merge unaligned memory accesses.
                 var fuser = new UnalignedMemoryAccessFuser(ssa);
                 fuser.Transform();
 

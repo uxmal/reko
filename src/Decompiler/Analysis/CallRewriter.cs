@@ -138,7 +138,7 @@ namespace Reko.Analysis
 		public void EnsureSignature(Procedure proc, ProcedureFlow flow)
 		{
             // If we already have a signature, we don't need to do this work.
-			if (proc.Signature != null && proc.Signature.ParametersValid)
+			if (proc.Signature.ParametersValid)
 				return;
 
             var allLiveOut = flow.LiveOut;

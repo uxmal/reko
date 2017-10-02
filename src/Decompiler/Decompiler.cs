@@ -158,10 +158,8 @@ namespace Reko
                     TextFormatter f = new TextFormatter(output);
                     if (flow.Signature != null)
                         flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
-                    else if (proc.Signature != null)
-                        proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                     else
-                        output.Write("Warning: no signature found for {0}", proc.Name);
+                        proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                     output.WriteLine();
                     flow.Emit(program.Architecture, output);
                     foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())

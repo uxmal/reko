@@ -106,7 +106,7 @@ namespace Reko.Analysis
         {
             ci.Callee = ci.Callee.Accept(eval);
             var pc = ci.Callee as ProcedureConstant;
-            if (pc != null && pc.Procedure.Signature != null && pc.Procedure.Signature.ParametersValid)
+            if (pc != null && pc.Procedure.Signature.ParametersValid)
             {
                 var binder = new CallInstructionBinder(ci);
                 var ab = arch.CreateFrameApplicationBuilder(

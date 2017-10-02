@@ -254,11 +254,12 @@ namespace Reko.Core.Serialization
 
         public Procedure_v1 Serialize(Procedure proc, Address addr)
         {
-            Procedure_v1 sproc = new Procedure_v1();
-            sproc.Address = addr.ToString();
-            sproc.Name = proc.Name;
-            if (proc.Signature != null)
-                sproc.Signature = Serialize(proc.Signature);
+            var sproc = new Procedure_v1
+            {
+                Address = addr.ToString(),
+                Name = proc.Name,
+                Signature = Serialize(proc.Signature),
+            };
             return sproc;
         }
 
