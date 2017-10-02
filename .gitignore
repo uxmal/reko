@@ -26,3 +26,5 @@ TestResults
 **/x64/Release
 /subjects/**/Debug
 /subjects/**/Release
+# added by @uxmal to avoid trouble when switching between branches.
+/src/UserInterfaces/Electron
