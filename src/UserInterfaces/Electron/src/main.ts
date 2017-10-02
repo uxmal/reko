@@ -47,6 +47,10 @@ ipcMain.on("getProcedure", (event:any, args: any) => {
 	});
 });
 
+/*ipcMain.on("getTemplate", (event:Electron.IpcMessageEvent, arg:string) => {
+	event.returnValue = TemplateLoader.LoadTemplate(arg);
+})*/
+
 function afterInit(){
 	var resolve = require('path').resolve;
 	var createReko = rekoUi.getFunction(rootType, "CreateReko");
@@ -76,7 +80,7 @@ function afterInit(){
 		return SharpAssembly.InvokeAsync(reko.RenderProjectJson, {});
 	}).then((result) => {
 		mainWindow.webContents.send("project", result);
-	}).catch((error) => {
+	}).catch((error:any) => {
 		dialog.showErrorBox("Something blew up", error);
 	});
 }

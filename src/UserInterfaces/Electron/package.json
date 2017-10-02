@@ -31,9 +31,12 @@
   "devDependencies": {
     "electron": "^1.7.8",
     "electron-packager": "^9.1.0",
+    "grunt": "^1.0.1",
     "typescript": "^2.5.3"
   },
   "dependencies": {
-    "edge": "^7.10.1"
+    "@types/handlebars": "^4.0.36",
+    "edge": "^7.10.1",
+    "handlebars": "^4.0.10"
   }
 }
