@@ -880,7 +880,6 @@ namespace Reko.Analysis
         {
             public readonly Block Block;
             public readonly Dictionary<StorageDomain, AliasState> currentDef;
-            public readonly List<Tuple<FlagGroupStorage, SsaIdentifier>> currentFlagDef;
             public readonly IntervalTree<int, SsaIdentifier> currentStackDef;
             public readonly Dictionary<int, SsaIdentifier> currentFpuDef;
             public bool Visited;
@@ -891,7 +890,6 @@ namespace Reko.Analysis
                 this.Block = block;
                 this.Visited = false;
                 this.currentDef = new Dictionary<StorageDomain, AliasState>();
-                this.currentFlagDef = new List<Tuple<FlagGroupStorage,SsaIdentifier>>();
                 this.currentStackDef = new IntervalTree<int, SsaIdentifier>();
                 this.currentFpuDef = new Dictionary<int, SsaIdentifier>();
             }
@@ -907,87 +905,6 @@ namespace Reko.Analysis
                 return sb.ToString();
             }
 #endif
-        }
-
-        class SimpleTransformer : InstructionTransformer
-        {
-            private SsaState ssa;
-            private Statement stmCur;
-
-            public SimpleTransformer(SsaState ssa)
-            {
-                this.ssa = ssa;
-            }
-
-            public void Transform()
-            {
-                var sig = ssa.Procedure.Signature;
-                for (int i = 0; i < sig.Parameters.Length; ++i)
-                {
-                    sig.Parameters[i] = Def(sig.Parameters[i], null);
-                }
-                foreach (var stm in ssa.Procedure.Statements)
-                {
-                    this.stmCur = stm;
-                    stm.Instruction = stm.Instruction.Accept(this);
-                }
-            }
-
-            public override Instruction TransformAssignment(Assignment a)
-            {
-                a.Src = a.Src.Accept(this);
-                a.Dst = Def(a.Dst, a.Src);
-                return a;
-            }
-
-            public override Instruction TransformDeclaration(Declaration decl)
-            {
-                if (decl.Expression != null)
-                {
-                    decl.Expression = decl.Expression.Accept(this);
-                }
-                decl.Identifier = Def(decl.Identifier, decl.Expression);
-                return decl;
-            }
-
-            public override Instruction TransformPhiAssignment(PhiAssignment phi)
-            {
-                phi.Src = (PhiFunction)phi.Src.Accept(this);
-                phi.Dst = Def(phi.Dst, phi.Src);
-                return phi;
-            }
-
-            public override Expression VisitIdentifier(Identifier id)
-            {
-                return Use(id);
-            }
-
-            private Identifier Use(Identifier idOld)
-            {
-                SsaIdentifier sid;
-                if (!ssa.Identifiers.TryGetValue(idOld, out sid))
-                {
-                    sid = new SsaIdentifier(idOld, idOld, stmCur, null, false);
-                    ssa.Identifiers.Add(idOld, sid);
-                }
-                ssa.Identifiers[idOld].Uses.Add(stmCur);
-                return idOld;
-            }
-
-            private Identifier Def(Identifier idOld, Expression expr)
-            {
-                SsaIdentifier sid;
-                if (ssa.Identifiers.TryGetValue(idOld, out sid))
-                {
-                    sid.DefExpression = expr;
-                }
-                else
-                {
-                    sid = new SsaIdentifier(idOld, idOld, stmCur, expr, false);
-                    ssa.Identifiers.Add(idOld, sid);
-                }
-                return idOld;
-            }
         }
 
         public class AliasState
@@ -1158,29 +1075,8 @@ namespace Reko.Analysis
                 return ReadVariableRecursive(bs, generateAlias);
             }
 
-            public bool ProbeVariable(SsaBlockState bs)
-            {
-                if (ProbeBlockLocalVariable(bs))
-                    return true;
-                return ProbeVariable(bs, new HashSet<Block>());
-            }
-
-            public bool ProbeVariable(SsaBlockState bs, HashSet<Block> visited)
-            {
-                if (bs.Block.Pred.Any(p => !blockstates[p].Visited))
-                    return false;
-                foreach (var p in bs.Block.Pred)
-                {
-                    if (visited.Contains(p))
-                        continue;
-                    if (ProbeBlockLocalVariable(this.blockstates[p]))
-                        return true;
-                }
-                return false;
-            }
 
             public abstract SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias);
-            public abstract bool ProbeBlockLocalVariable(SsaBlockState bs);
 
             public SsaIdentifier ReadVariableRecursive(SsaBlockState bs, bool generateAlias)
             {
@@ -1400,7 +1296,13 @@ namespace Reko.Analysis
                     var phiAss = use.Instruction as PhiAssignment;
                     if (phiAss != null)
                     {
-                        TryRemoveTrivial(ssaIds[phiAss.Dst]);
+                        var sidU = ssaIds[phiAss.Dst];
+                        var sidNew = TryRemoveTrivial(sidU);
+                        if (sidU == sid)
+                        {
+                            same = sidNew.Identifier;
+                            sid = sidNew;
+                        }
                     }
                 }
                 AliasState alias;
@@ -1409,6 +1311,8 @@ namespace Reko.Analysis
                     alias.SsaId = outer.ssa.Identifiers[same];
                 }
                 phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
+                phi.DefStatement = null;
+                phi.DefExpression = null;
                 this.outer.sidsToRemove.Add(phi);
                 return sid;
             }
@@ -1433,7 +1337,7 @@ namespace Reko.Analysis
             {
                 foreach (var use in sidOld.Uses.ToList())
                 {
-                    use.Instruction.Accept(new IdentifierReplacer(this.ssaIds, use, sidOld.Identifier, idNew));
+                    use.Instruction.Accept(new IdentifierReplacer(this.ssaIds, use, sidOld.Identifier, idNew, false));
                 }
             }
         }
@@ -1477,26 +1381,6 @@ namespace Reko.Analysis
                 }
                 return null;
             }
-
-            public override bool ProbeBlockLocalVariable(SsaBlockState bs)
-            {
-                AliasState alias;
-                if (bs.currentDef.TryGetValue(id.Storage.Domain, out alias))
-                {
-                    while (alias != null)
-                    {
-                        if (alias.SsaId.Identifier.Storage.OverlapsWith(id.Storage) &&
-                            alias.SsaId.Identifier.Storage.Exceeds(id.Storage))
-                            return true;
-                        alias = alias.PrevState;
-                    }
-                    return false;
-                }
-                else
-                {
-                    return false;
-                }
-            }
         }
 
         public class FlagGroupTransformer : IdentifierTransformer
@@ -1525,87 +1409,37 @@ namespace Reko.Analysis
                 return e;
             }
 
-            public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
-            {
-                // Remove any flag groups that this covers if it
-                // isn't an alias statement.
-                if (!(sid.DefStatement.Instruction is AliasAssignment))
-                {
-                    for (int i = 0; i < bs.currentFlagDef.Count; ++i)
-                    {
-                        if (this.flagGroup.Covers(bs.currentFlagDef[i].Item1))
-                        {
-                            bs.currentFlagDef.RemoveAt(i);
-                            --i;
-                        }
-                    }
-                }
-                bs.currentFlagDef.Add(Tuple.Create(this.flagGroup, sid));
-                return sid.Identifier;
-            }
-
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
             {
-                if (bs.currentFlagDef.Count == 0)
-                    return null;
-                SsaIdentifier sid = null;
-                uint bitsLeft = this.flagGroup.FlagGroupBits;
-                var overlaps = new List<SsaIdentifier>();
-
-                // Find the most recent exact match, if any.
-                for (int i = bs.currentFlagDef.Count - 1; i >= 0; --i)
-                {
-                    var f = bs.currentFlagDef[i];
-                    if (f.Item1.FlagGroupBits == this.flagGroup.FlagGroupBits)
-                        return bs.currentFlagDef[i].Item2;
-                }
-
-                // Couldn't find an exact match, go find overlapping matches.
-                for (int i = bs.currentFlagDef.Count - 1; bitsLeft != 0 && i >= 0; --i)
-                {
-                    var f = bs.currentFlagDef[i];
-                    if (!(f.Item2.DefStatement.Instruction is AliasAssignment) &&
-                        f.Item1.OverlapsWith(this.flagGroup))
-                    {
-                        // An overlap found. Remove the bits that it sets.
-                        bitsLeft &= ~f.Item1.FlagGroupBits;
-                        overlaps.Add(f.Item2);
-                    }
-                }
-                if (overlaps.Count == 0)
+                AliasState alias;
+                if (!bs.currentDef.TryGetValue(flagGroup.FlagRegister.Domain, out alias))
                     return null;
 
-                if (generateAlias)
+                // Defined locally in this block.
+                // Has the alias already been calculated?
+                for (var a = alias; a != null; a = a.PrevState)
                 {
-                    if (overlaps.Count > 1)
+                    SsaIdentifier ssaId = a.SsaId;
+                    if (a.SsaId.OriginalIdentifier == id ||
+                        a.Aliases.TryGetValue(id, out ssaId))
                     {
-                        sid = GenerateFlagConjunction(overlaps);
+                        return ssaId;
                     }
-                    else
-                    {
-                        sid = MaybeGenerateAliasStatement(overlaps[0]);
-                    }
-                    WriteVariable(bs, sid, false);
-                }
-                return sid;
-            }
 
-            private SsaIdentifier GenerateFlagConjunction(List<SsaIdentifier> overlaps)
-            {
-                Debug.Assert(overlaps.Count > 1);
-                Expression e = overlaps[0].Identifier;
-                foreach (var sid in overlaps.Skip(1))
-                {
-                    e = new BinaryExpression(
-                        Operator.Or, e.DataType, e, sid.Identifier);
+                    // Does ssaId cover the probed value?
+                    if (a.SsaId.Identifier.Storage.OverlapsWith(this.flagGroup))
+                    {
+                        if (generateAlias)
+                        {
+                            var sid = MaybeGenerateAliasStatement(a);
+                            bs.currentDef[id.Storage.Domain] = a;
+                            return sid;
+                        }
+                        else
+                            return alias.SsaId;
+                    }
                 }
-                var ass = new AliasAssignment(id, e);
-                var sidAlias = InsertAfterDefinition(overlaps[0].DefStatement, ass);
-                foreach (var sid in overlaps)
-                {
-                    sid.Uses.Add(sidAlias.DefStatement);
-                }
-                return sidAlias;
+                return null;
             }
 
             /// <summary>
@@ -1615,14 +1449,16 @@ namespace Reko.Analysis
             /// </summary>
             /// <param name="sidDef">The id of the defined flag group.</param>
             /// <returns></returns>
-            protected SsaIdentifier MaybeGenerateAliasStatement(SsaIdentifier sidDef)
+            protected new SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasDef)
             {
+                var sidDef = aliasDef.SsaId;
                 var b = sidDef.DefStatement.Block;
                 var stgUse = id.Storage;
                 var stgDef = (FlagGroupStorage)sidDef.Identifier.Storage;
                 if (stgDef == stgUse)
                 {
                     // Exact match, no need for alias statement.
+                    aliasDef.Aliases[id] = sidDef;
                     return sidDef;
                 }
 
@@ -1639,6 +1475,7 @@ namespace Reko.Analysis
                     var ass = new AliasAssignment(id, e);
                     var sidAlias = InsertAfterDefinition(sidDef.DefStatement, ass);
                     sidUse.Uses.Add(sidAlias.DefStatement);
+                    aliasDef.Aliases[id] = sidAlias;
                     return sidAlias;
                 }
                 else
@@ -1663,15 +1500,9 @@ namespace Reko.Analysis
                         PrimitiveType.Bool,
                         sidDef.Identifier,
                         sidPrev.Identifier);
-
+                    aliasDef.Aliases[id] = sidAlias;
                     return sidAlias;
                 }
-            }
-
-            public override bool ProbeBlockLocalVariable(SsaBlockState bs)
-            {
-                // Bits don't have substructure.
-                return false;
             }
         }
 
@@ -1795,12 +1626,6 @@ namespace Reko.Analysis
                     arg.Key.Intersect(this.offsetInterval));
             }
 
-            public override bool ProbeBlockLocalVariable(SsaBlockState bs)
-            {
-                return bs.currentStackDef.GetIntervalsOverlappingWith(
-                    this.offsetInterval).Count() > 0;
-            }
-
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
                 var ints = bs.currentStackDef.GetIntervalsOverlappingWith(offsetInterval);
@@ -1845,15 +1670,6 @@ namespace Reko.Analysis
                 // We shouldn't reach this, as ReadVariable above should have 
                 // broken the sequence into a head and tail read.
                 throw new InvalidOperationException();
-            }
-
-            public override bool ProbeBlockLocalVariable(SsaBlockState bs)
-            {
-                var hd = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Head), stm);
-                var tl = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Tail), stm);
-                return
-                    hd.ProbeBlockLocalVariable(bs) &&
-                    tl.ProbeBlockLocalVariable(bs);
             }
 
             public SsaIdentifier Fuse(SsaIdentifier head, SsaIdentifier tail)
@@ -1955,11 +1771,6 @@ namespace Reko.Analysis
             {
                 bs.currentFpuDef[fpu.FpuStackOffset] = sid;
                 return sid.Identifier;
-            }
-
-            public override bool ProbeBlockLocalVariable(SsaBlockState bs)
-            {
-                return false;
             }
         }
     }

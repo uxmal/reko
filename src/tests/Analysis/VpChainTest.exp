@@ -205,11 +205,8 @@ SZO_18: orig: SZO
 ax_19: orig: ax
     def:  ax_19 = si_14
 ss_20: orig: ss
-    def:  ss_20 = PHI(ss, ss_20)
 sp_21: orig: sp
-    def:  sp_21 = PHI(sp_4, sp_21)
 Mem22: orig: Mem0
-    def:  Mem22 = PHI(Mem7, Mem22)
 si_23: orig: si
     def:  si_23 = Mem7[ss:sp_4:word16]
 sp_24: orig: sp
@@ -315,11 +312,8 @@ SZO_18: orig: SZO
 ax_19: orig: ax
     def:  ax_19 = si_14
 ss_20: orig: ss
-    def:  ss_20 = PHI(ss, ss_20)
 sp_21: orig: sp
-    def:  sp_21 = PHI(sp_4, sp_21)
 Mem22: orig: Mem0
-    def:  Mem22 = PHI(Mem7, Mem22)
 si_23: orig: si
     def:  si_23 = wLoc02_26
 sp_24: orig: sp
@@ -331,7 +325,6 @@ wLoc02_26: orig: wLoc02
     def:  wLoc02_26 = si
     uses: si_23 = wLoc02_26
 wLoc02_27: orig: wLoc02
-    def:  wLoc02_27 = PHI(wLoc02_26, wLoc02_27)
 // fn0C00_000F
 // Return size: 2
 define fn0C00_000F

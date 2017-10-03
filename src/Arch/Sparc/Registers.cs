@@ -203,7 +203,7 @@ namespace Reko.Arch.Sparc
             f30= RegisterStorage.Reg32("f30", 30);
             f31= RegisterStorage.Reg32("f31", 31);
 
-            psr = new FlagRegister("psr", 0, PrimitiveType.Word32);
+            psr = new FlagRegister("psr", 64, PrimitiveType.Word32);
 
             N = new FlagGroupStorage(psr, (uint) FlagM.NF, "N", PrimitiveType.Bool);
             Z = new FlagGroupStorage(psr, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);

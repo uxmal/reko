@@ -24,7 +24,6 @@ ax_14: orig: ax
     def:  ax_14 = PHI(ax_13, ax_8, ax_12)
     uses: Mem17[ds:0x0100:word16] = ax_14
 ds_15: orig: ds
-    def:  ds_15 = PHI(ds, ds, ds)
 ds:ds
     def:  def ds
     uses: Mem17[ds:0x0100:word16] = ax_14
@@ -40,6 +39,7 @@ S_24: orig: S
 S_25: orig: S
 Z_28: orig: Z
 Z_29: orig: Z
+Z_30: orig: Z
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 bx, selector ds)

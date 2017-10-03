@@ -300,7 +300,6 @@ done:
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void DfaReg00282()
         {
@@ -308,7 +307,6 @@ done:
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void DfaReg00316()
         {

@@ -32,7 +32,6 @@ Mem9: orig: Mem0
     def:  Mem9[ds:0x0F00:byte] = 0x01
     uses: Mem11 = PHI(Mem0, Mem9)
 ds_10: orig: ds
-    def:  ds_10 = PHI(ds, ds)
 Mem11: orig: Mem0
     def:  Mem11 = PHI(Mem0, Mem9)
     uses: v7_13 = Mem11[ds:0x0106:word16] - Mem11[ds:0x0104:word16]
@@ -51,7 +50,6 @@ Mem17: orig: Mem0
     def:  Mem17[ds:0x0F01:byte] = 0x01
     uses: Mem19 = PHI(Mem14, Mem17)
 ds_18: orig: ds
-    def:  ds_18 = PHI(ds, ds)
 Mem19: orig: Mem0
     def:  Mem19 = PHI(Mem14, Mem17)
     uses: branch (Mem19[ds:0x0106:word16] & Mem19[ds:0x0108:word16]) == 0x0000 l0C00_002D
@@ -66,7 +64,6 @@ Mem25: orig: Mem0
     def:  Mem25[ds:0x0F02:byte] = 0x01
     uses: Mem27 = PHI(Mem19, Mem25)
 ds_26: orig: ds
-    def:  ds_26 = PHI(ds, ds)
 Mem27: orig: Mem0
     def:  Mem27 = PHI(Mem19, Mem25)
     uses: branch Mem27[ds:0x010A:word16] >=u Mem27[ds:0x010C:word16] l0C00_003D
@@ -78,22 +75,14 @@ C_31: orig: C
 Mem32: orig: Mem0
     def:  Mem32[ds:0x0F03:byte] = 0x01
 sp_33: orig: sp
-    def:  sp_33 = PHI(sp_2, sp_2)
 sp_34: orig: sp
-    def:  sp_34 = PHI(sp_2, sp_2)
 sp_35: orig: sp
-    def:  sp_35 = PHI(sp_2, sp_2)
 sp_36: orig: sp
-    def:  sp_36 = PHI(sp_2, sp_2)
 sp_37: orig: sp
 ss_38: orig: ss
-    def:  ss_38 = PHI(ss, ss)
 ss_39: orig: ss
-    def:  ss_39 = PHI(ss, ss)
 ss_40: orig: ss
-    def:  ss_40 = PHI(ss, ss)
 ss_41: orig: ss
-    def:  ss_41 = PHI(ss, ss)
 ss:ss
     def:  def ss
     uses: Mem68[ss:bp - 0x000A:byte] = 0x01
@@ -107,12 +96,10 @@ Z_46: orig: Z
 O_47: orig: O
     def:  branch fn0C00_0069(0x0003) l0C00_0049
 ds_48: orig: ds
-    def:  ds_48 = PHI(ds, ds)
 Mem49: orig: Mem0
     def:  Mem49[ds:0x0F04:byte] = 0x01
     uses: Mem51 = PHI(Mem43, Mem49)
 ds_50: orig: ds
-    def:  ds_50 = PHI(ds, ds)
 Mem51: orig: Mem0
     def:  Mem51 = PHI(Mem43, Mem49)
     uses: branch (Mem51[ds:0x010E:word16] & 0x01FF) == 0x0000 l0C00_0056
@@ -122,17 +109,11 @@ Z_54: orig: Z
 Mem55: orig: Mem0
     def:  Mem55[ds:0x0F05:byte] = 0x01
 bp_56: orig: bp
-    def:  bp_56 = PHI(bp, bp)
 bp_57: orig: bp
-    def:  bp_57 = PHI(bp, bp)
 bp_58: orig: bp
-    def:  bp_58 = PHI(bp, bp)
 bp_59: orig: bp
-    def:  bp_59 = PHI(bp, bp)
 bp_60: orig: bp
-    def:  bp_60 = PHI(bp, bp)
 bp_61: orig: bp
-    def:  bp_61 = PHI(bp, bp)
 bp:bp
     def:  def bp
     uses: branch bp < 0x0010 l0C00_005F
@@ -142,26 +123,21 @@ bp_63: orig: bp
 SCZO_64: orig: SCZO
 SO_65: orig: SO
 ss_66: orig: ss
-    def:  ss_66 = PHI(ss, ss)
 ss_67: orig: ss
-    def:  ss_67 = PHI(ss, ss)
 Mem68: orig: Mem0
     def:  Mem68[ss:bp - 0x000A:byte] = 0x01
 bp_69: orig: bp
-    def:  bp_69 = PHI(bp_63, bp_63)
 bp_70: orig: bp
 SCZO_71: orig: SCZO
 O_72: orig: O
 ds_73: orig: ds
-    def:  ds_73 = PHI(ds, ds)
 ds_74: orig: ds
-    def:  ds_74 = PHI(ds, ds)
 Mem75: orig: Mem0
     def:  Mem75[ds:0x0F07:byte] = 0x01
 wLoc02_76: orig: wLoc02
 C_84: orig: C
-S_88: orig: S
-Z_104: orig: Z
+S_87: orig: S
+Z_101: orig: Z
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 bp, selector ds)

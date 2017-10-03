@@ -71,14 +71,12 @@ SCZO_23: orig: SCZO
 bx:bx
     def:  def bx
     uses: SCZO_10 = cond(ax_8 - bx)
-          use bx
 ds:ds
     def:  def ds
     uses: si_14 = Mem0[ds:0x0300:word16]
           si_19 = Mem0[ds:0x0302:word16]
           ax_20 = ax_8 + Mem0[ds:si_19 + 0x0004:word16]
           ax_22 = ax_8 + Mem0[ds:si_15:word16]
-          use ds
 Mem0:Global
     def:  def Mem0
     uses: si_14 = Mem0[ds:0x0300:word16]
@@ -156,9 +154,7 @@ l0C00_001D:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 	use ax_8
-	use bx
 	use C_27
-	use ds
 	use O_28
 	use S_29
 	use si_30

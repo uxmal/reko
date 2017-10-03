@@ -122,7 +122,7 @@ namespace Reko.Analysis
 		{
             PreCoalesceDump(sid, def, use);
 			def.Instruction.Accept(new UsedIdentifierAdjuster(def, ssa.Identifiers, use));
-            use.Instruction.Accept(new IdentifierReplacer(ssa.Identifiers, use, sid.Identifier, defExpr));
+            use.Instruction.Accept(new IdentifierReplacer(ssa.Identifiers, use, sid.Identifier, defExpr, false));
 
 			List<SsaIdentifier> sids;
 			if (defsByStatement.TryGetValue(def, out sids))

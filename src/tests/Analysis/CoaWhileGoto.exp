@@ -7,7 +7,6 @@ si:si
           si_7 = PHI(si, si_10, si_10)
 bx_5: orig: bx
 ds_6: orig: ds
-    def:  ds_6 = PHI(ds, ds_6, ds_6)
 si_7: orig: si
     def:  si_7 = PHI(si, si_10, si_10)
     uses: ax_9 = Mem8[ds:si_7:word16]
@@ -29,7 +28,6 @@ si_10: orig: si
 SCZO_11: orig: SCZO
 Z_12: orig: Z
 di_13: orig: di
-    def:  di_13 = PHI(di, di_13, di_13)
 Mem14: orig: Mem0
     def:  Mem14[ds:di:word16] = ax_9
     uses: Mem22[ds:0x0302:word16] = Mem14[ds:0x0302:word16] + 0x0001
@@ -50,7 +48,6 @@ ax_24: orig: ax
     uses: ax_29 = PHI(ax_27, ax_24)
 ax_25: orig: ax
 bx_26: orig: bx
-    def:  bx_26 = PHI(bx_5, bx_26, bx_26)
 ax_27: orig: ax
     def:  ax_27 = si_10 - si
     uses: ax_29 = PHI(ax_27, ax_24)
@@ -59,7 +56,6 @@ ax_29: orig: ax
     def:  ax_29 = PHI(ax_27, ax_24)
     uses: Mem31[ds:0x0300:word16] = ax_29
 ds_30: orig: ds
-    def:  ds_30 = PHI(ds_6, ds_6)
 Mem31: orig: Mem0
     def:  Mem31[ds:0x0300:word16] = ax_29
 ds:ds
@@ -78,7 +74,7 @@ di:di
 bx_35: orig: bx
 C_36: orig: C
 C_37: orig: C
-di_38: orig: di
+C_38: orig: C
 O_39: orig: O
 O_40: orig: O
 O_41: orig: O
@@ -87,10 +83,8 @@ S_43: orig: S
 S_44: orig: S
 sp_46: orig: sp
 sp_47: orig: sp
-    def:  sp_47 = PHI(sp_2, sp_47, sp_47)
 Top_48: orig: Top
 Top_49: orig: Top
-    def:  Top_49 = PHI(Top_3, Top_49, Top_49)
 Z_50: orig: Z
 Z_51: orig: Z
 // fn0C00_0000

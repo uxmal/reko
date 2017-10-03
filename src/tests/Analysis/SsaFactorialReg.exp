@@ -73,7 +73,6 @@ ss:ss
     def:  def ss
     uses: Mem7[ss:sp_4:word16] = si
           si_27 = Mem7[ss:sp_25:word16]
-          use ss
 Mem7: orig: Mem0
     def:  Mem7[ss:sp_4:word16] = si
     uses: si_27 = Mem7[ss:sp_25:word16]
@@ -260,7 +259,6 @@ fn0C00_000B_exit:
 	use S_39
 	use si_27
 	use sp_28
-	use ss
 	use Top_3
 	use Z_43
 

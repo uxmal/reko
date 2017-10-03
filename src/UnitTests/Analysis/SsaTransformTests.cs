@@ -357,9 +357,7 @@ r1_9: orig: r1
     def:  r1_9 = 0x00000000
     uses: r1_19 = PHI(r1_9, r1_8)
 r63_10: orig: r63
-    def:  r63_10 = PHI(r63_3, r63_3)
 Mem11: orig: Mem0
-    def:  Mem11 = PHI(Mem5, Mem5)
 bp_12: orig: bp
     def:  bp_12 = dwLoc04_14
     uses: use bp_12
@@ -491,7 +489,6 @@ r1_9: orig: r1
 Mem10: orig: Mem0
     uses: Mem12 = PHI(Mem10, Mem8)
 r63_11: orig: r63
-    def:  r63_11 = PHI(r63_3, r63_3)
 Mem12: orig: Mem0
     def:  Mem12 = PHI(Mem10, Mem8)
 bp_13: orig: bp
@@ -700,14 +697,12 @@ Mem10: orig: Mem0
 Mem11: orig: Mem0
     uses: Mem13 = PHI(Mem11, Mem10)
 bp_12: orig: bp
-    def:  bp_12 = PHI(bp_6, bp_6)
 Mem13: orig: Mem0
     def:  Mem13 = PHI(Mem11, Mem10)
 r1_14: orig: r1
     def:  r1_14 = dwLoc0C_23
     uses: use r1_14
 r63_15: orig: r63
-    def:  r63_15 = PHI(r63_3, r63_3)
 bp_16: orig: bp
     def:  bp_16 = dwLoc04_18
     uses: use bp_16
@@ -829,15 +824,18 @@ proc1_exit:
           SZ_2 = cond(esi & esi)
 SZ_2: orig: SZ
     def:  SZ_2 = cond(esi & esi)
-    uses: CZ_4 = C_3 | SZ_2 (alias)
+    uses: Z_5 = SLICE(SZ_2, bool, 1) (alias)
 C_3: orig: C
     def:  C_3 = false
-    uses: CZ_4 = C_3 | SZ_2 (alias)
+    uses: CZ_4 = C_3 | Z_5 (alias)
 CZ_4: orig: CZ
-    def:  CZ_4 = C_3 | SZ_2 (alias)
-    uses: al_5 = Test(ULE,CZ_4)
-al_5: orig: al
-    def:  al_5 = Test(ULE,CZ_4)
+    def:  CZ_4 = C_3 | Z_5 (alias)
+    uses: al_6 = Test(ULE,CZ_4)
+Z_5: orig: Z
+    def:  Z_5 = SLICE(SZ_2, bool, 1) (alias)
+    uses: CZ_4 = C_3 | Z_5 (alias)
+al_6: orig: al
+    def:  al_6 = Test(ULE,CZ_4)
 // proc1
 // Return size: 0
 define proc1
@@ -846,9 +844,10 @@ proc1_entry:
 	// succ:  l1
 l1:
 	SZ_2 = cond(esi & esi)
+	Z_5 = SLICE(SZ_2, bool, 1) (alias)
 	C_3 = false
-	CZ_4 = C_3 | SZ_2 (alias)
-	al_5 = Test(ULE,CZ_4)
+	CZ_4 = C_3 | Z_5 (alias)
+	al_6 = Test(ULE,CZ_4)
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -884,13 +883,11 @@ r2_2: orig: r2
     def:  r2_2 = 0x00000010
     uses: r2_7 = PHI(r2, r2_2)
 r3_3: orig: r3
-    def:  r3_3 = PHI(r3, r3)
 r3:r3
     def:  def r3
     uses: call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
           call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
 r1_5: orig: r1
-    def:  r1_5 = PHI(r1, r1)
 r1_6: orig: r1
     def:  call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
     uses: use r1_6
@@ -1682,7 +1679,6 @@ eax_5: orig: eax
     uses: eax_7 = eax_5 + Mem0[ebx_2:word32]
           return eax_5
 Mem6: orig: Mem0
-    def:  Mem6 = PHI(Mem0, Mem6)
 eax_7: orig: eax
     def:  eax_7 = eax_5 + Mem0[ebx_2:word32]
     uses: eax_5 = PHI(eax_1, eax_7)
@@ -1828,9 +1824,7 @@ proc1_exit:
           r1_4 = r1_1 + Mem0[r2:word32]
           use r1_1
 r2_2: orig: r2
-    def:  r2_2 = PHI(r2, r2_2)
 Mem3: orig: Mem0
-    def:  Mem3 = PHI(Mem0, Mem3)
 r1_4: orig: r1
     def:  r1_4 = r1_1 + Mem0[r2:word32]
     uses: r1_1 = PHI(r1, r1_4)
@@ -1840,7 +1834,6 @@ r1:r1
 r2:r2
     def:  def r2
     uses: r1_4 = r1_1 + Mem0[r2:word32]
-          use r2
 Mem0:Global
     def:  def Mem0
     uses: r1_4 = r1_1 + Mem0[r2:word32]
@@ -1865,7 +1858,6 @@ m3done:
 	// succ:  proc1_exit
 proc1_exit:
 	use r1_1
-	use r2
 ======
 ";
             #endregion
@@ -2298,7 +2290,6 @@ bx_3: orig: bx
     uses: bh_8 = SLICE(bx_3, byte, 8) (alias)
           bx_6 = PHI(bx_3, bx_7)
 bh_4: orig: bh
-    def:  bh_4 = PHI(bh_8, bh_4)
 al_5: orig: al
     def:  al_5 = bh_8
     uses: return al_5

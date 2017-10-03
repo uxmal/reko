@@ -38,14 +38,41 @@ namespace Reko.Analysis
         private Identifier idOld;
         private Expression exprNew;
         private Identifier idNew;
+        private bool replaceDefinitions;
 
-        public IdentifierReplacer(SsaIdentifierCollection ssaIds, Statement use, Identifier idOld, Expression exprNew)
+        public IdentifierReplacer(SsaIdentifierCollection ssaIds, Statement use, Identifier idOld, Expression exprNew, bool replaceDefinitions)
         {
             this.ssaIds = ssaIds;
             this.use = use;
             this.idOld = idOld;
             this.exprNew = exprNew;
             this.idNew = exprNew as Identifier;
+            this.replaceDefinitions = replaceDefinitions;
+        }
+
+        public override Instruction TransformAssignment(Assignment a)
+        {
+            a.Src = a.Src.Accept(this);
+            if (replaceDefinitions)
+            {
+                a.Dst = (Identifier)a.Dst.Accept(this);
+            }
+            return a;
+        }
+
+        public override Instruction TransformPhiAssignment(PhiAssignment phi)
+        {
+            var args = phi.Src.Arguments;
+            for (int i = 0; i < args.Length; ++i)
+            {
+                var v = args[i].Accept(this);
+                args[i] = v;
+            }
+            if (replaceDefinitions)
+            {
+                phi.Dst = (Identifier)phi.Dst.Accept(this);
+            }
+            return phi;
         }
 
         public override Expression VisitIdentifier(Identifier id)

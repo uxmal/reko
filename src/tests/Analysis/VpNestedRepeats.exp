@@ -25,13 +25,11 @@ di_9: orig: di
     def:  di_9 = 0x0004
     uses: di_21 = PHI(di_9, di_21, di_22)
 ds_10: orig: ds
-    def:  ds_10 = PHI(ds, ds_10, ds_10)
 si_11: orig: si
     def:  si_11 = PHI(si, si_14, si_14)
     uses: ax_13 = Mem0[ds:si_11:word16]
           si_14 = si_11 + 0x0002
 Mem12: orig: Mem0
-    def:  Mem12 = PHI(Mem0, Mem12, Mem12)
 ax_13: orig: ax
     def:  ax_13 = Mem0[ds:si_11:word16]
     uses: dx_16 = dx_15 + ax_13
@@ -153,13 +151,11 @@ di_9: orig: di
     def:  di_9 = 0x0004
     uses: di_21 = PHI(di_9, di_21, di_22)
 ds_10: orig: ds
-    def:  ds_10 = PHI(ds, ds_10, ds_10)
 si_11: orig: si
     def:  si_11 = PHI(si, si_14, si_14)
     uses: ax_13 = Mem0[ds:si_11:word16]
           si_14 = si_11 + 0x0002
 Mem12: orig: Mem0
-    def:  Mem12 = PHI(Mem0, Mem12, Mem12)
 ax_13: orig: ax
     def:  ax_13 = Mem0[ds:si_11:word16]
     uses: dx_16 = dx_15 + ax_13

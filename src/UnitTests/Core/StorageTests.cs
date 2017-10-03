@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Core
             this.al = new RegisterStorage("al", 0, 0, PrimitiveType.Byte);
             this.ah = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte);
 
-            this.freg = new FlagRegister("eflags", 0, PrimitiveType.Word32);
+            this.freg = new FlagRegister("eflags", 70, PrimitiveType.Word32);
             this.szc = new FlagGroupStorage(freg, 0x7, "szc", PrimitiveType.Byte);
             this.sz = new FlagGroupStorage(freg, 0x6, "sz", PrimitiveType.Byte);
             this.c = new FlagGroupStorage(freg, 0x1, "c", PrimitiveType.Bool);

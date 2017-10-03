@@ -108,11 +108,7 @@ namespace Reko.Analysis
             var pc = ci.Callee as ProcedureConstant;
             if (pc != null && pc.Procedure.Signature.ParametersValid)
             {
-                var binder = new CallInstructionBinder(ci);
-                var ab = arch.CreateFrameApplicationBuilder(
-                      binder,
-                      ci.CallSite,
-                      ci.Callee);
+                var ab = new CallApplicationBuilder(arch, ci, ci.Callee);
                 evalCtx.Statement.Instruction = ab.CreateInstruction(pc.Procedure.Signature, pc.Procedure.Characteristics);
                 ssaIdTransformer.Transform(evalCtx.Statement, ci);
                 return evalCtx.Statement.Instruction;

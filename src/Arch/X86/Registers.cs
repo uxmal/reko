@@ -65,12 +65,12 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage fs;
         public static readonly RegisterStorage gs;
 
-        public static readonly RegisterStorage S;
-        public static readonly RegisterStorage C;
-        public static readonly RegisterStorage Z;
-        public static readonly RegisterStorage D;
-        public static readonly RegisterStorage O;
-        public static readonly RegisterStorage P;
+        public static readonly FlagGroupStorage S;
+        public static readonly FlagGroupStorage C;
+        public static readonly FlagGroupStorage Z;
+        public static readonly FlagGroupStorage D;
+        public static readonly FlagGroupStorage O;
+        public static readonly FlagGroupStorage P;
 
         public static readonly FlagRegister eflags;
 
@@ -171,6 +171,8 @@ namespace Reko.Arch.X86
 
         internal static readonly RegisterStorage[] Gp64BitRegisters;
 
+        internal static readonly FlagGroupStorage[] EflagsBits;
+
         static Registers()
         {
             eax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
@@ -203,13 +205,15 @@ namespace Reko.Arch.X86
             ds = SegmentRegister("ds", 27);
             fs = SegmentRegister("fs", 28);
             gs = SegmentRegister("gs", 29);
-            S = FlagRegister("S", 32);
-            C = FlagRegister("C", 33);
-            Z = FlagRegister("Z", 34);
-            D = FlagRegister("D", 35);
-            O = FlagRegister("O", 36);
-            P = FlagRegister("P", 37);
-            eflags = new FlagRegister("eflags", 0, PrimitiveType.Word32);
+            eflags = new FlagRegister("eflags", 32, PrimitiveType.Word32);
+            S = FlagRegister("S", eflags, FlagM.SF);
+            C = FlagRegister("C", eflags, FlagM.CF);
+            Z = FlagRegister("Z", eflags, FlagM.ZF);
+            D = FlagRegister("D", eflags, FlagM.DF);
+            O = FlagRegister("O", eflags, FlagM.OF);
+            P = FlagRegister("P", eflags, FlagM.PF);
+            EflagsBits = new FlagGroupStorage[] { S, C, Z, D, O, P };
+
             FPUF = new FlagRegister("FPUF", 38, PrimitiveType.Byte);
             FPST = new RegisterStorage("FPST", 39, 0, PrimitiveType.Byte); 
 
@@ -338,13 +342,13 @@ namespace Reko.Arch.X86
 				null,
 
                 // 32
-				S ,
-				C ,
-				Z ,
-				D ,
+				eflags,
+				null ,
+				null,
+				null,
 
-				O ,
-                P,
+				null,
+                null,
                 FPUF,
                 null,
 
@@ -458,9 +462,9 @@ namespace Reko.Arch.X86
             };
         }
 
-        private static  RegisterStorage FlagRegister(string name, int grf)
+        private static FlagGroupStorage FlagRegister(string name, FlagRegister freg,  FlagM grf)
         {
-            return new RegisterStorage(name, grf, 0, PrimitiveType.Bool);
+            return new FlagGroupStorage(freg, (uint)grf, name, PrimitiveType.Bool);
         }
 
         private static RegisterStorage SegmentRegister(string name, int reg)

@@ -1,8 +1,8 @@
 // Register int32 r316(Stack int32 a)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  Stack +0004:32
+// MayUse:  Stack +0004:[0..31]
 // LiveOut: eax
-// Trashed: SZO eax ecx esp Top
+// Trashed: eax
 // Preserved:
 // r316
 // Return size: 4

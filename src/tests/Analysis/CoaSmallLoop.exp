@@ -40,7 +40,6 @@ cx_18: orig: cx
     uses: branch cx_18 != 0x0000 l0C00_0004
           cx_13 = PHI(cx_11, cx_18)
 ds_19: orig: ds
-    def:  ds_19 = PHI(ds, ds_19)
 Mem20: orig: Mem0
     def:  Mem20[ds:0x0300:word16] = ax_16
 C_21: orig: C

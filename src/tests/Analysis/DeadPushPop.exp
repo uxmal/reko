@@ -15,7 +15,6 @@ si_11: orig: si
     def:  si_11 = 0x0000
     uses: si_15 = PHI(si_11, si_26)
 cx_12: orig: cx
-    def:  cx_12 = PHI(cx, cx_12)
 SCZO_13: orig: SCZO
 Z_14: orig: Z
 si_15: orig: si
@@ -26,17 +25,13 @@ ax_16: orig: ax
     def:  ax_16 = si_15
     uses: return ax_16
 ss_17: orig: ss
-    def:  ss_17 = PHI(ss, ss_17)
 sp_18: orig: sp
-    def:  sp_18 = PHI(sp_8, sp_18)
 Mem19: orig: Mem0
-    def:  Mem19 = PHI(Mem10, Mem19)
 di_20: orig: di
 sp_21: orig: sp
 si_22: orig: si
 sp_23: orig: sp
 ds_24: orig: ds
-    def:  ds_24 = PHI(ds, ds_24)
 di_25: orig: di
     def:  di_25 = PHI(di, di_28)
     uses: si_26 = si_15 + Mem10[ds:di_25:word16]
@@ -97,37 +92,33 @@ di:di
 ds:ds
     def:  def ds
     uses: ax_7 = fn0C00_0008(0x0014, di, ds)
-          Mem14[ds:si:word16] = ax_7
+          Mem13[ds:si:word16] = ax_7
           fn0C00_0008(0x0014, di, ds)
 ax_7: orig: ax
     def:  ax_7 = fn0C00_0008(0x0014, di, ds)
-    uses: Mem14[ds:si:word16] = ax_7
-ss_8: orig: ss
+    uses: Mem13[ds:si:word16] = ax_7
+S_8: orig: S
     def:  ax_7 = fn0C00_0008(0x0014, di, ds)
-S_9: orig: S
+C_9: orig: C
     def:  ax_7 = fn0C00_0008(0x0014, di, ds)
-C_10: orig: C
+Z_10: orig: Z
     def:  ax_7 = fn0C00_0008(0x0014, di, ds)
-Z_11: orig: Z
-    def:  ax_7 = fn0C00_0008(0x0014, di, ds)
-O_12: orig: O
+O_11: orig: O
     def:  ax_7 = fn0C00_0008(0x0014, di, ds)
 si:si
     def:  def si
-    uses: Mem14[ds:si:word16] = ax_7
-Mem14: orig: Mem0
-    def:  Mem14[ds:si:word16] = ax_7
-ax_15: orig: ax
+    uses: Mem13[ds:si:word16] = ax_7
+Mem13: orig: Mem0
+    def:  Mem13[ds:si:word16] = ax_7
+ax_14: orig: ax
     def:  fn0C00_0008(0x0014, di, ds)
-ss_16: orig: ss
+S_15: orig: S
     def:  fn0C00_0008(0x0014, di, ds)
-S_17: orig: S
+C_16: orig: C
     def:  fn0C00_0008(0x0014, di, ds)
-C_18: orig: C
+Z_17: orig: Z
     def:  fn0C00_0008(0x0014, di, ds)
-Z_19: orig: Z
-    def:  fn0C00_0008(0x0014, di, ds)
-O_20: orig: O
+O_18: orig: O
     def:  fn0C00_0008(0x0014, di, ds)
 // fn0C00_0000
 // Return size: 0
@@ -139,7 +130,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_7 = fn0C00_0008(0x0014, di, ds)
-	Mem14[ds:si:word16] = ax_7
+	Mem13[ds:si:word16] = ax_7
 	// succ:  l0C00_0006_thunk_fn0C00_0008
 l0C00_0006_thunk_fn0C00_0008:
 	fn0C00_0008(0x0014, di, ds)

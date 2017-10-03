@@ -124,7 +124,6 @@ ss:ss
           Mem15[ss:sp_14:word16] = ax_10
           dx_25 = Mem15[ss:bp_8 + 0x0004:word16]
           bp_33 = Mem32[ss:sp_31:word16]
-          use ss
 Mem7: orig: Mem0
     def:  Mem7[ss:sp_4:word16] = bp
     uses: ax_9 = Mem7[ss:bp_8 + 0x0004:word16]
@@ -328,7 +327,6 @@ fn0C00_000F_exit:
 	use O_40
 	use S_43
 	use sp_34
-	use ss
 	use Top_3
 	use Z_47
 

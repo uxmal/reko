@@ -16,7 +16,6 @@ ds:ds
           Mem14[ds:bx_7 + 0x0006:word16] = 0x0000
           cx_15 = Mem14[ds:si:word16]
           Mem18[ds:0x012C:word16] = cx_16
-          use ds
 bx:bx
     def:  def bx
     uses: bx_7 = Mem0[ds:bx + 0x0004:word16]
@@ -114,7 +113,6 @@ fn0C00_0000_exit:
 	use bx_7
 	use C_21
 	use cx_16
-	use ds
 	use O_23
 	use S_25
 	use sp_2

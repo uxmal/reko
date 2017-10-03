@@ -1,7 +1,5 @@
 a6_1: orig: a6
-    def:  a6_1 = PHI(a6, a6_1)
 Mem2: orig: Mem0
-    def:  Mem2 = PHI(Mem0, Mem2)
 fp0_3: orig: fp0
     def:  fp0_3 = (real80) Mem0[a6 - 0x00000010:int32]
     uses: branch (real96) fp0_3 == Mem0[a6 + 0x00000008:real96] l1

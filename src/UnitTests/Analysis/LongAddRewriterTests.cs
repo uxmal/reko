@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Analysis
             bx = frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
             cx = frame.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Word16));
             dx = frame.EnsureRegister(new RegisterStorage("dx", 2, 0, PrimitiveType.Word16));
-            flags = new FlagRegister("flags", 0, PrimitiveType.Word16);
+            flags = new FlagRegister("flags", 70, PrimitiveType.Word16);
             SCZ = frame.EnsureFlagGroup(flags, 7, "SCZ", PrimitiveType.Byte);
             CF = frame.EnsureFlagGroup(flags, arch.CarryFlagMask, "C", PrimitiveType.Bool);
         }

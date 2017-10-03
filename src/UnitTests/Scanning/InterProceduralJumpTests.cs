@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Test()
         {
-            freg = new FlagRegister("freg", 0, PrimitiveType.Word32);
+            freg = new FlagRegister("freg", 70, PrimitiveType.Word32);
             reg = new Identifier("reg", PrimitiveType.Word32, new RegisterStorage("reg", 1, 0, PrimitiveType.Word32));
             SCZO = new Identifier("SCZO", PrimitiveType.Byte, new FlagGroupStorage(freg, 0xF, "SCZO", PrimitiveType.Byte));
             new RtlTraceBuilder

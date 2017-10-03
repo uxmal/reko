@@ -54,22 +54,16 @@ bx_27: orig: bx
     def:  bx_27 = PHI(bx_24, bx_20)
     uses: Mem31[ds:0x0300:word16] = bx_27
 ds_28: orig: ds
-    def:  ds_28 = PHI(ds, ds)
 ds_29: orig: ds
-    def:  ds_29 = PHI(ds, ds_29)
 ds:ds
     def:  def ds
     uses: Mem31[ds:0x0300:word16] = bx_27
 Mem31: orig: Mem0
     def:  Mem31[ds:0x0300:word16] = bx_27
 ss_32: orig: ss
-    def:  ss_32 = PHI(ss, ss)
 ss_33: orig: ss
-    def:  ss_33 = PHI(ss, ss_33)
 sp_34: orig: sp
-    def:  sp_34 = PHI(sp_4, sp_4)
 sp_35: orig: sp
-    def:  sp_35 = PHI(sp_4, sp_35)
 bp_36: orig: bp
 sp_37: orig: sp
 wLoc02_38: orig: wLoc02
@@ -77,9 +71,7 @@ wArg04:Stack +0004
     def:  def wArg04
     uses: ax_13 = wArg04
 wLoc02_40: orig: wLoc02
-    def:  wLoc02_40 = PHI(wLoc02_38, wLoc02_38)
 wLoc02_41: orig: wLoc02
-    def:  wLoc02_41 = PHI(wLoc02_38, wLoc02_41)
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000

@@ -347,10 +347,9 @@ namespace Reko.Arch.X86
 		public override string GrfToString(uint grf)
 		{
 			StringBuilder s = new StringBuilder();
-			for (int r = Registers.S.Number; grf != 0; ++r, grf >>= 1)
-			{
-				if ((grf & 1) != 0)
-					s.Append(Registers.GetRegister(r).Name);
+            foreach (var fr in Registers.EflagsBits)
+            {
+                if ((fr.FlagGroupBits & grf) != 0) s.Append(fr.Name);
 			}
 			return s.ToString();
 		}

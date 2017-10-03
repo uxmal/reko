@@ -17,7 +17,6 @@ r1_4: orig: r1
     uses: branch r1_4 >u 0x00000005 m4_default
           switch (r1_4) { m2 m2 m3 m3 m2 m3 }
 r63_5: orig: r63
-    def:  r63_5 = PHI(r63_2, r63_2, r63_2)
 r63_6: orig: r63
     def:  r63_6 = r63_2 - 0x00000004
     uses: Mem7[r63_6:word32] = 0x00000042

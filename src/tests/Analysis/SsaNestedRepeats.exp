@@ -25,9 +25,6 @@ cx_8: orig: cx
 di_9: orig: di
     def:  di_9 = 0x0004
     uses: di_21 = PHI(di_9, di_21, di_22)
-ds_10: orig: ds
-    def:  ds_10 = PHI(ds, ds_10, ds_10)
-    uses: use ds_10
 si_11: orig: si
     def:  si_11 = PHI(si, si_14, si_14)
     uses: ax_13 = Mem0[ds:si_11:word16]
@@ -154,7 +151,6 @@ fn0C00_0000_exit:
 	use C_29
 	use cx_20
 	use di_22
-	use ds_10
 	use dx_16
 	use O_30
 	use S_31

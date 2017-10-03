@@ -1,8 +1,8 @@
 // fn0C00_0000
 // Return size: 0
-void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
+void fn0C00_0000(word16 bx, word16 si, word16 di)
 fn0C00_0000_entry:
-	word16 dx_23 = 0x0004
+	word16 dx_24 = 0x0004
 	goto l0C00_0003
 	// succ:  l0C00_0003
 l0C00_0000:
@@ -18,17 +18,17 @@ l0C00_0006:
 	branch cx_21 != 0x0000 l0C00_0006
 	// succ:  l0C00_001A l0C00_0006
 l0C00_001A:
-	dx_23 = dx_23 - 0x0001
-	branch dx_23 != 0x0000 l0C00_0003
+	dx_24 = dx_24 - 0x0001
+	branch dx_24 != 0x0000 l0C00_0003
 	// succ:  l0C00_001D l0C00_0003
 l0C00_001D:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
-void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
+void fn0C00_0000(word16 bx, word16 si, word16 di)
 {
-	word16 dx_23 = 0x0004;
+	word16 dx_24 = 0x0004;
 	do
 	{
 		word16 cx_21 = 0x0004;
@@ -40,8 +40,8 @@ void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
 			di = di + 0x0004;
 			cx_21 = cx_21 - 0x0001;
 		} while (cx_21 != 0x0000);
-		dx_23 = dx_23 - 0x0001;
-	} while (dx_23 != 0x0000);
+		dx_24 = dx_24 - 0x0001;
+	} while (dx_24 != 0x0000);
 	return;
 }
 ===========================

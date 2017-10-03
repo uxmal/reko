@@ -11,8 +11,8 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	msdos_set_memory_allocation_strategy((byte) (word16) al)
-	word16 ax_15
-	msdos_set_UMB_link_state(ax >>u 0x0008, out ax_15)
+	word16 ax_14
+	msdos_set_UMB_link_state(ax >>u 0x0008, out ax_14)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
