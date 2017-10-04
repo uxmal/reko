@@ -43,6 +43,8 @@ Top_3: orig: Top
 al:al
     def:  def al
     uses: al_19 = al - 0x30
+          al_23 = al - 0x37
+          al_27 = al - 0x57
           branch al <u 0x30 l0C00_0032
           branch al <=u 0x39 l0C00_0022
           branch al <u 0x41 l0C00_0032
@@ -50,9 +52,7 @@ al:al
           branch al <u 0x61 l0C00_0032
           branch al >u 0x66 l0C00_0032
           branch al <u 0x3A l0C00_0030
-          al_23 = al - 0x37
           branch al <u 0x47 l0C00_0030
-          al_27 = al - 0x57
           alOut = al
 SCZO_5: orig: SCZO
 C_6: orig: C

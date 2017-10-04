@@ -62,6 +62,7 @@ namespace Reko.Analysis
             this.arch = arch;
             this.flow = flow;
             this.eventListener = eventListener;
+            this.visited = new Dictionary<PhiAssignment, BitRange>();
         }
 
 
@@ -80,7 +81,6 @@ namespace Reko.Analysis
             this.ignoreUseInstructions = ignoreUse;
             foreach (var stm in ssa.Procedure.EntryBlock.Statements)
             {
-                this.visited = new Dictionary<PhiAssignment, BitRange>();
                 DefInstruction def;
                 if (!stm.Instruction.As(out def))
                     continue;

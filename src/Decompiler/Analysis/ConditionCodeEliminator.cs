@@ -140,6 +140,8 @@ namespace Reko.Analysis
         ///     grf = src
         /// or
         ///     grf = (foo) src 
+        /// or 
+        ///     grf = SLICE(src, x, y)
         /// </summary>
         /// <param name="grf"></param>
         /// <param name="stm"></param>
@@ -150,10 +152,18 @@ namespace Reko.Analysis
             if (ass == null)
                 return false;
             Expression e = ass.Src;
-            Cast cast = ass.Src as Cast;
-            if (cast != null)
-                e = cast.Expression;
-            return (e == grf);
+            Slice s;
+            Cast cast;
+            BinaryExpression bin;
+            if (e.As(out cast))
+                return grf == cast.Expression;
+            else if (e.As(out s))
+                return grf == s.Expression;
+            else if (e.As(out bin) && bin.Operator == Operator.Or)
+            {
+                return bin.Left == grf || bin.Right == grf;
+            }
+            return false;
         }
 
 		private BinaryExpression CmpExpressionToZero(Expression e)

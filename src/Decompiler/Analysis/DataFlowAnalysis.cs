@@ -304,6 +304,9 @@ namespace Reko.Analysis
                 var fuser = new UnalignedMemoryAccessFuser(ssa);
                 fuser.Transform();
 
+                var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
+                vp.Transform();
+
                 // Propagate condition codes and registers. At the end, the hope
                 // is that all statements like (x86) mem[esp_42+4] will have been
                 // converted to mem[fp - 30]. We also hope that procedure constants
@@ -311,7 +314,7 @@ namespace Reko.Analysis
                 // sites.
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
-                var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
+
                 vp.Transform();
 
                 // Now compute SSA for the stack-based variables as well. That is:

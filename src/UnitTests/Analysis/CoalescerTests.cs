@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore("scanning-development")]
+        //[Ignore("scanning-development")]
         [Category(Categories.IntegrationTests)]
         public void CoaAddSubCarries()
         {

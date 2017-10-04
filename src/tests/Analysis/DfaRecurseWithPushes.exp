@@ -30,11 +30,11 @@ fn0C00_0007_entry:
 	// succ:  l0C00_0007
 l0C00_0007:
 	fn0C00_0020(ds)
-	Mem12[ds:0x1444:word16] = Mem0[ds:0x1444:word16] + Mem0[ds:si + 0x0028:word16]
-	branch Mem12[ds:di + 0x0030:byte] == 0x00 l0C00_001F
+	Mem11[ds:0x1444:word16] = Mem0[ds:0x1444:word16] + Mem0[ds:si + 0x0028:word16]
+	branch Mem11[ds:di + 0x0030:byte] == 0x00 l0C00_001F
 	// succ:  l0C00_0019 l0C00_001F
 l0C00_0019:
-	fn0C00_0007(si, Mem12[ds:di + 0x0030:word16], ds)
+	fn0C00_0007(si, Mem11[ds:di + 0x0030:word16], ds)
 	// succ:  l0C00_001F
 l0C00_001F:
 	return
@@ -54,6 +54,6 @@ void fn0C00_0020(selector ds)
 fn0C00_0020_entry:
 	// succ:  l0C00_0020
 l0C00_0020:
-	Mem4[ds:0x4321:word32] = 0x00001234
+	Mem3[ds:0x4321:word32] = 0x00001234
 fn0C00_0020_exit:
 

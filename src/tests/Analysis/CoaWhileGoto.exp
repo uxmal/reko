@@ -74,19 +74,18 @@ di:di
 bx_35: orig: bx
 C_36: orig: C
 C_37: orig: C
-C_38: orig: C
+O_38: orig: O
 O_39: orig: O
 O_40: orig: O
-O_41: orig: O
+S_41: orig: S
 S_42: orig: S
 S_43: orig: S
-S_44: orig: S
+sp_45: orig: sp
 sp_46: orig: sp
-sp_47: orig: sp
+Top_47: orig: Top
 Top_48: orig: Top
-Top_49: orig: Top
+Z_49: orig: Z
 Z_50: orig: Z
-Z_51: orig: Z
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)

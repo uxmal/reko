@@ -485,5 +485,32 @@ done:
             p.Add(new FCmpFragment());
             RunTest(p, "Analysis/CceFCmp.txt");
         }
+
+        [Test(Description = "Handle x86-style test/jbe sequence")]
+        public void CceTestBe()
+        {
+            var SZO = m.Flags("SZO");
+            var C = m.Flags("C");
+            var CZ = m.Flags("CZ");
+            var r1 = m.Reg32("r1", 1);
+
+            m.Assign(SZO, m.Cond(m.And(r1, r1)));
+            m.Assign(C, false);
+            var block = m.Block;
+            m.BranchIf(m.Test(ConditionCode.ULE, CZ), "yay");
+            m.Label("nay");
+            m.Return(m.Word32(0));
+            m.Label("yay");
+            m.Return(m.Word32(1));
+
+            var ssa = new SsaTransform(new Program { Architecture = m.Architecture }, m.Procedure, new HashSet<Procedure> { m.Procedure }, null, new ProgramDataFlow());
+            this.ssaState = ssa.Transform();
+            var vp = new ValuePropagator(m.Architecture, ssaState, new FakeDecompilerEventListener());
+            vp.Transform();
+            Given_ConditionCodeEliminator();
+            cce.Transform();
+
+            Assert.AreEqual("branch r1 <=u 0x00000000 yay", block.Statements.Last.Instruction.ToString());
+        }
 	}
 }

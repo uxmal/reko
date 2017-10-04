@@ -927,7 +927,7 @@ namespace Reko.Analysis
                 sb.AppendFormat("Alias: {0}", SsaId.Identifier.Name);
                 if (Aliases.Count > 0)
                 {
-                    sb.AppendFormat(" = {0}", string.Join(", ", Aliases.Values.OrderBy(v => v.Identifier.Name)));
+                    sb.AppendFormat(" = {0}", string.Join(", ", Aliases.Values.Select(v => v.Identifier.Name).OrderBy(v => v)));
                 }
                 return sb.ToString();
             }
@@ -1143,7 +1143,7 @@ namespace Reko.Analysis
                 else
                 {
                     var brFrom = stgFrom.GetBitRange();
-                    if (aliasFrom.PrevState != null)
+                    if (aliasFrom.PrevState != null && aliasFrom.PrevState.SsaId.DefStatement != null)
                     {
                         sidUse = MaybeGenerateAliasStatement(aliasFrom.PrevState);
                         e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
@@ -1432,7 +1432,6 @@ namespace Reko.Analysis
                         if (generateAlias)
                         {
                             var sid = MaybeGenerateAliasStatement(a);
-                            bs.currentDef[id.Storage.Domain] = a;
                             return sid;
                         }
                         else
