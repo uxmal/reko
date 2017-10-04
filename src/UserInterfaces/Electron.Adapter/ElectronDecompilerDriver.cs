@@ -100,17 +100,12 @@ namespace Reko.Gui.Electron.Adapter
             var a = sProgramProcedure.Split(':');
             var sProgram = a[0];
             var sProcedure = a[1];
-
-
             var program = (from p in project.Programs
                            where p.Name == sProgram
                            select p).Single();
-
-			program.Architecture.TryParseAddress(sProcedure, out Address procAddr);
-
-			var proc = (from p in program.Procedures
-                        where p.Key == procAddr
-                        select p.Value).Single();
+            var proc = (from p in program.Procedures.Values
+                        where p.Name == sProcedure
+                        select p).Single();
             var html = RenderProcedureToHtml(program, proc);
             return await Task.FromResult(html);
         }
