@@ -1,3 +1,9 @@
 .treenode {
 	padding-left: 16px;
 }
+
+/** Procedures **/
+span.kw {
+	color: green;
+	font-weight: bold;
+}
