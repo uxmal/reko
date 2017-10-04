@@ -2,7 +2,6 @@ import {ipcRenderer} from 'electron';
 
 import $ = require("jquery");
 
-import Program from './lib/Program';
 import Browser from './lib/Browser';
 import TemplateLoader from './TemplateLoader';
 
@@ -19,10 +18,8 @@ function setup(){
 
 		var node = $(".reko-browser");
 
-		proj.programs.forEach((prog:any) => {
-			node.append(new Program(prog.name, prog.procedures).render());
-		});
-
+		var tpl = TemplateLoader.LoadTemplate("main");
+		$("body").append(tpl(proj));
 
 		browser.update();
 	});
@@ -30,13 +27,6 @@ function setup(){
 	$("#btn-test").click(function(e){
 		ipcRenderer.send("decompile");
 	});
-
-	//$TODO: Precompile Templates
-	var tpl = TemplateLoader.LoadTemplate("main");
-	console.log(tpl);
-	$("body").append(tpl({
-		message: "Testing Handlebars"
-	}));
 }
 
 $(document).ready(function(e){
