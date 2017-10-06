@@ -41,6 +41,8 @@ namespace Reko.Core
 
         public ProcessorState(SegmentMap segmentMap)
         {
+            if (segmentMap == null)
+                throw new ArgumentNullException("segmentMap");
             this.segmentMap = segmentMap;
             this.linearDerived = new Dictionary<RegisterStorage, Expression>();
             this.stackState = new SortedList<int, Expression>();
@@ -142,6 +144,18 @@ namespace Reko.Core
 
         public Expression GetValue(MemoryAccess access)
         {
+            var constAddr = access.EffectiveAddress as Constant;
+            if (constAddr != null)
+            {
+                if (constAddr == Constant.Invalid)
+                    return constAddr;
+                return GetMemoryValue(Architecture.MakeAddressFromConstant(constAddr), access.DataType);
+            }
+            var addr = access.EffectiveAddress as Address;
+            if (addr != null)
+            {
+                return GetMemoryValue(addr, access.DataType);
+            }
             int stackOffset;
             if (GetStackOffset(access.EffectiveAddress, out stackOffset))
             {
@@ -161,7 +175,22 @@ namespace Reko.Core
                 if (stackState.TryGetValue(stackOffset, out value))
                     return value;
             }
+            
             return Constant.Invalid;
+        }
+
+        private Expression GetMemoryValue(Address addr, DataType dt)
+        {
+            var pt = dt as PrimitiveType;
+            if (pt == null)
+                return Constant.Invalid;
+            ImageSegment seg;
+            if (!segmentMap.TryFindSegment(addr, out seg) || seg.IsWriteable)
+                return Constant.Invalid;
+            Constant c;
+            if (!this.Architecture.TryRead(seg.MemoryArea, addr, pt, out c))
+                return Constant.Invalid;
+            return c;
         }
 
         public Expression GetStackValue(int offset)

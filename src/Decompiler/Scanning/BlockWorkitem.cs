@@ -499,7 +499,20 @@ namespace Reko.Scanning
             var site = OnBeforeCall(stackReg, call.ReturnAddressSize);
             FunctionType sig;
             ProcedureCharacteristics chr = null;
-            Address addr = call.Target as Address;
+            var callTarget = GetValue(call.Target);
+            Constant c;
+            if (callTarget.As(out c))
+            {
+                if (c.IsValid)
+                {
+                    callTarget = arch.MakeAddressFromConstant(c);
+                }
+                else
+                {
+                    callTarget = call.Target;
+                }
+            }
+            Address addr = callTarget as Address;
             if (addr != null)
             {
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
@@ -529,7 +542,7 @@ namespace Reko.Scanning
                 return OnAfterCall(sig, chr);
             }
 
-            var procCallee = call.Target as ProcedureConstant;
+            var procCallee = callTarget as ProcedureConstant;
             if (procCallee != null)
             {
                 sig = procCallee.Procedure.Signature;
@@ -540,12 +553,12 @@ namespace Reko.Scanning
             sig = GetCallSignatureAtAddress(ric.Address);
             if (sig != null)
             {
-                EmitCall(call.Target, sig, chr, site);
+                EmitCall(callTarget, sig, chr, site);
                 return OnAfterCall(sig, chr);  //$TODO: make characteristics available
             }
 
             Identifier id; 
-            if (call.Target.As<Identifier>(out id))
+            if (callTarget.As<Identifier>(out id))
             {
                 var ppp = SearchBackForProcedureConstant(id);
                 if (ppp != null)
@@ -558,7 +571,7 @@ namespace Reko.Scanning
                 }
             }
 
-            var imp = ImportedProcedureName(call.Target);
+            var imp = ImportedProcedureName(callTarget);
             if (imp != null)
             {
                 sig = imp.Signature;
@@ -575,7 +588,7 @@ namespace Reko.Scanning
 
             ProcessIndirectControlTransfer(ric.Address, call);
 
-            var ic = new CallInstruction(call.Target, site);
+            var ic = new CallInstruction(callTarget, site);
             Emit(ic);
             sig = GuessProcedureSignature(ic);
             return OnAfterCall(sig, chr);

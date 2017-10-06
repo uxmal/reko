@@ -175,6 +175,11 @@ namespace Reko.Core
             return true;
         }
 
+        public bool TryReadLe(Address addr, PrimitiveType type, out Constant c)
+        {
+            return TryReadLe(addr - BaseAddress, type, out c);
+        }
+
         public bool TryReadBe(long imageOffset, PrimitiveType type, out Constant c)
         {
             c = Relocations[(uint)imageOffset];
@@ -184,6 +189,11 @@ namespace Reko.Core
                 return false;
             c = ReadBe(abImage, imageOffset, type);
             return true;
+        }
+
+        public bool TryReadBe(Address addr, PrimitiveType type, out Constant c)
+        {
+            return TryReadBe(addr - BaseAddress, type, out c);
         }
 
         public static Constant ReadLe(byte[] abImage, long imageOffset, PrimitiveType type)
