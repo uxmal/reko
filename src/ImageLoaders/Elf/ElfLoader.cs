@@ -273,7 +273,7 @@ namespace Reko.ImageLoaders.Elf
             GetPltLimits();
             var addrPreferred = ComputeBaseAddress(platform);
             Dump();
-            var segmentMap = LoadImageBytes(platform, rawImage, addrPreferred);
+            this.segmentMap = LoadImageBytes(platform, rawImage, addrPreferred);
             var program = new Program(segmentMap, platform.Architecture, platform);
             return program;
         }
@@ -758,7 +758,7 @@ namespace Reko.ImageLoaders.Elf
                         (long)ph.p_offset, mem.Bytes,
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
-            this.segmentMap = new SegmentMap(addrPreferred);
+            var segmentMap = new SegmentMap(addrPreferred);
             if (Sections.Count > 0)
             {
                 foreach (var section in Sections)

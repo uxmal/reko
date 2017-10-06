@@ -162,6 +162,11 @@ namespace Reko.Arch.SuperH
         {
             return new LeImageWriter(img, addr);
         }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
     }
 
     public class SuperHBeArchitecture : SuperHArchitecture
@@ -189,6 +194,11 @@ namespace Reko.Arch.SuperH
         public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
         {
             return new BeImageWriter(img, addr);
+        }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadBe(addr, dt, out value);
         }
     }
 }

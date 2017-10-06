@@ -184,6 +184,11 @@ namespace Reko.Arch.Mips
         {
             return Address.Ptr32(c.ToUInt32());
         }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadBe(addr, dt, out value);
+        }
     }
 
     public class MipsLe32Architecture : MipsProcessorArchitecture
@@ -216,6 +221,11 @@ namespace Reko.Arch.Mips
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
+        }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
         }
     }
 }

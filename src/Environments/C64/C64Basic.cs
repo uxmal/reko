@@ -183,6 +183,11 @@ namespace Reko.Environments.C64
             return Address.TryParse16(txtAddress, out addr);
         }
 
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
+
         public class C64BasicState : ProcessorState
         {
             private C64Basic arch;

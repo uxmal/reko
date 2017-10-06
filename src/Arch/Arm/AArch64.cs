@@ -171,5 +171,10 @@ namespace Reko.Arch.Arm
         {
             return Address.TryParse64(txtAddress, out addr);
         }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            throw new NotImplementedException("Endianness is BE or LE");
+        }
     }
 }

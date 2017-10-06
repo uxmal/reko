@@ -34,6 +34,7 @@ using System.Diagnostics;
 using System.IO;
 using System.ComponentModel.Design;
 using Reko.Core.Services;
+using System;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -746,6 +747,10 @@ testProc_exit:
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             arch.Stub(s => s.GetRegister("r1")).Return((RegisterStorage)r1.Storage);
             arch.Stub(s => s.GetRegister("r2")).Return((RegisterStorage)r2.Storage);
+            arch.Stub(s => s.MakeAddressFromConstant(null)).IgnoreArguments()
+                .Do(new Func<Constant, Address>(c => Address.Ptr32(c.ToUInt32())));
+            Constant co;
+            arch.Stub(s => s.TryRead(null, null, null, out co)).IgnoreArguments().Return(false);
             mr.ReplayAll();
 
             var wi = CreateWorkItem(addrStart);
@@ -798,5 +803,47 @@ testProc_exit:
             mr.VerifyAll();
         }
 
+        [Test(Description = "Read constants from read-only memory")]
+        public void BwiReadConstants()
+        {
+            var addrStart = Address.Ptr32(0x00100000);
+            var blockCallRet = new Block(proc, "jmpOut");
+            trace.Add(m => {
+                m.Assign(r1, 4); 
+                m.Assign(r1, m.Or(r1, 0x00100000)); 
+                m.Assign(r2, m.LoadDw(r1));
+                m.Call(r2, 0); 
+                m.Return(0, 0);
+            });
+
+            scanner.Stub(s => s.FindContainingBlock(addrStart)).IgnoreArguments().Return(block);
+            scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            arch.Stub(a => a.MakeAddressFromConstant(
+                Arg<Constant>.Matches(c => c.ToUInt32() == 0x00100004))).Return(Address.Ptr32(0x00100004));
+            arch.Stub(a => a.TryRead(
+                Arg<MemoryArea>.Is.NotNull,
+                Arg<Address>.Is.Equal(Address.Ptr32(0x00100004)),
+                Arg<PrimitiveType>.Is.Equal(PrimitiveType.Word32),
+                out Arg<Constant>.Out(Constant.Word32(0x00123400)).Dummy)).Return(true);
+            arch.Stub(a => a.MakeAddressFromConstant(
+                Arg<Constant>.Matches(c => c.ToUInt32() == 0x00123400))).Return(Address.Ptr32(0x00123400));
+            scanner.Stub(s => s.SetProcedureReturnAddressBytes(
+                Arg<Procedure>.Is.Same(proc),
+                Arg<int>.Is.Equal(0),
+                Arg<Address>.Is.Equal(addrStart)));
+            scanner.Stub(s => s.TerminateBlock(
+                Arg<Block>.Is.Same(block),
+                Arg<Address>.Is.Equal(addrStart + 4)));
+            scanner.Stub(f => f.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
+            scanner.Expect(s => s.Warn(null, null, null)).IgnoreArguments();
+            program.Procedures.Add(addrStart + 4, Procedure.Create(addrStart + 4, new Frame(PrimitiveType.Pointer32)));
+            mr.ReplayAll();
+
+            var wi = CreateWorkItem(addrStart);
+            wi.Process();
+
+            Assert.AreEqual("call fn00123400 (retsize: 0;)", block.Statements[3].Instruction.ToString());
+            mr.VerifyAll();
+        }
     }
 }

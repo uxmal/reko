@@ -170,5 +170,11 @@ namespace Reko.Arch.Arm
         {
             throw new NotImplementedException();
         }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
+
     }
 }

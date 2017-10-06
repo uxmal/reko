@@ -195,5 +195,10 @@ namespace Reko.Arch.M68k
         {
             return Address.TryParse32(txtAddress, out addr);
         }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadBe(addr, dt, out value);
+        }
     }
 }

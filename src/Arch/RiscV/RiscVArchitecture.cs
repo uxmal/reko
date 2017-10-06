@@ -194,5 +194,10 @@ namespace Reko.Arch.RiscV
             //$TODO: what if 32-bit?
             return Address.TryParse64(txtAddr, out addr);
         }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
     }
 }

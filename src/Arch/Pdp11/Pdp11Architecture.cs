@@ -277,6 +277,10 @@ namespace Reko.Arch.Pdp11
             return Address.TryParse16(txtAddress, out addr);
         }
 
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
         #endregion
     }
 }
