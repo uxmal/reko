@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Scanning
 
         private VarargsFormatScanner CreateVaScanner(Program program)
         {
-            this.state = program.Architecture.CreateProcessorState();
+            this.state = program.Architecture.CreateProcessorState(program.SegmentMap);
             var frame = program.Architecture.CreateFrame();
             return new VarargsFormatScanner(program, frame, state, sc);
         }

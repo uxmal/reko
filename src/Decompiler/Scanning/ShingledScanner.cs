@@ -365,7 +365,7 @@ namespace Reko.Scanning
             var arch = program.Architecture;
             var rw = arch.CreateRewriter(
                 program.CreateImageReader(addr), 
-                arch.CreateProcessorState(),
+                arch.CreateProcessorState(program.SegmentMap),
                 storageBinder,
                 this.host);
             return rw.GetEnumerator();

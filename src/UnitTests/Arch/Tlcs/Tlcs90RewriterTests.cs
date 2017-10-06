@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [SetUp]
         public void Setup()
         {
-            state = (Tlcs90State)arch.CreateProcessorState();
+            state = (Tlcs90State)arch.CreateProcessorState(null);
         }
 
         [Test]

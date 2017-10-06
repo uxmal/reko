@@ -36,14 +36,13 @@ namespace Reko.Arch.Vax
         private uint [] regs = new uint[32];
         private bool [] isValid = new bool [32];
 
-        public VaxProcessorState(VaxArchitecture arch)
+        public VaxProcessorState(VaxArchitecture arch, SegmentMap map) : base(map)
         {
             Debug.Assert(arch != null);
             this.arch = arch;
         }
 
-        public VaxProcessorState(VaxProcessorState that)
-            : base(that)
+        public VaxProcessorState(VaxProcessorState that) : base(that)
         {
             this.arch = that.arch;
             this.regs = (uint[])that.regs.Clone();

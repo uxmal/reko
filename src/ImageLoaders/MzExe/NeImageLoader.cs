@@ -459,7 +459,7 @@ namespace Reko.ImageLoaders.MzExe
                     var offset = rdr.ReadUInt16();
                     string name;
                     var addr = seg.Address + offset;
-                    var state = arch.CreateProcessorState();
+                    var state = arch.CreateProcessorState(this.segmentMap);
 
                     ImageSymbol ep = new ImageSymbol(addr);
                     if (names.TryGetValue(entries.Count + 1, out name))

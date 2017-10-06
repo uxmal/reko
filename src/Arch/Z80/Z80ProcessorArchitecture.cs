@@ -82,9 +82,9 @@ namespace Reko.Arch.Z80
             return new Z80InstructionComparer(norm);
         }
 
-        public override ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState(SegmentMap map)
         {
-            return new Z80ProcessorState(this);
+            return new Z80ProcessorState(this, map);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)

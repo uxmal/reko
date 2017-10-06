@@ -136,9 +136,9 @@ namespace Reko.Arch.Pdp11
             return new Pdp11InstructionComparer(norm);
         }
 
-        public override ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState(SegmentMap map)
         {
-            return new Pdp11ProcessorState(this);
+            return new Pdp11ProcessorState(this, map);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Arch.Vax
         [SetUp]
         public void Setup()
         {
-            state = (VaxProcessorState)arch.CreateProcessorState();
+            state = (VaxProcessorState)arch.CreateProcessorState(null);
         }
 
         private void BuildTest(params byte[] bytes)

@@ -116,9 +116,9 @@ namespace Reko.Arch.Avr
             throw new NotImplementedException();
         }
 
-        public override ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState(SegmentMap map)
         {
-            return new Avr8State(this);
+            return new Avr8State(this, map);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

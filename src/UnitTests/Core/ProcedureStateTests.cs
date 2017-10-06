@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Core
             arch = new FakeArchitecture();
             arch.StackRegister = sp;
 
-            sce = new FakeProcessorState(arch);
+            sce = new FakeProcessorState(arch, new SegmentMap(Address.Ptr32(0x00100000)));
 
             idSp = new Identifier(sp.Name, sp.DataType, sp);
             m = new ExpressionEmitter();
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public ProcessorState CreateProcessorState()
+            public ProcessorState CreateProcessorState(SegmentMap map)
             {
                 throw new NotImplementedException();
             }
@@ -287,7 +287,7 @@ namespace Reko.UnitTests.Core
             private Dictionary<RegisterStorage, Constant> regs = new Dictionary<RegisterStorage, Constant>();
             private SortedList<int, Constant> stack = new SortedList<int, Constant>();
 
-            public FakeProcessorState(IProcessorArchitecture arch)
+            public FakeProcessorState(IProcessorArchitecture arch, SegmentMap map) : base(map)
             {
                 this.arch = arch;
             }

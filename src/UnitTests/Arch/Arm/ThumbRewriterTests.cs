@@ -5742,7 +5742,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void Setup()
         {
             arch = new ThumbProcessorArchitecture();
-            state = new ArmProcessorState(arch);
+            state = new ArmProcessorState(arch, null);
         }
 
         //[Test]
@@ -5770,7 +5770,7 @@ namespace Reko.UnitTests.Arch.Arm
 				})
                 .ToArray();
             var image = new MemoryArea(Address.Ptr32(0x00401000), code);
-            var rw = new ThumbRewriter(arch, image.CreateLeReader(0), new ArmProcessorState(arch), arch.CreateFrame(), new FakeRewriterHost());
+            var rw = new ThumbRewriter(arch, image.CreateLeReader(0), new ArmProcessorState(arch, null), arch.CreateFrame(), new FakeRewriterHost());
             {
                 foreach (var rtc in rw)
                 {

@@ -43,7 +43,7 @@ namespace Reko.Scanning
 
         public override void Process()
         {
-            scanner.ScanProcedure(addr, name, program.Architecture.CreateProcessorState());
+            scanner.ScanProcedure(addr, name, program.Architecture.CreateProcessorState(program.SegmentMap));
         }
     }
 }

@@ -73,7 +73,7 @@ namespace Reko.ImageLoaders.OdbgScript
             this.Architecture = (IntelArchitecture)program.Architecture;
 
             var win32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
-            var state = (X86State)program.Architecture.CreateProcessorState();
+            var state = (X86State)program.Architecture.CreateProcessorState(program.SegmentMap);
             var emu = new X86Emulator((IntelArchitecture)program.Architecture, program.SegmentMap, win32);
             this.debugger = new Debugger(emu);
             this.scriptInterpreter = new OllyLang(Services);
@@ -116,7 +116,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 var sym = new ImageSymbol(OriginalEntryPoint)
                 {
-                    ProcessorState = Architecture.CreateProcessorState()
+                    ProcessorState = Architecture.CreateProcessorState(program.SegmentMap)
                 };
                 syms.Add(sym.Address, sym);
                 eps.Add(sym);

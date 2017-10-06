@@ -35,14 +35,14 @@ namespace Reko.Arch.Tlcs
         private uint[] regs;
         private bool[] valid;
 
-        public Tlcs900ProcessorState(Tlcs900Architecture arch)
+        public Tlcs900ProcessorState(Tlcs900Architecture arch, SegmentMap map) : base(map)
         {
             this.arch = arch;
             this.regs = new uint[32];
             this.valid = new bool[32];
         }
 
-        public Tlcs900ProcessorState(Tlcs900ProcessorState that)
+        public Tlcs900ProcessorState(Tlcs900ProcessorState that) : base(that)
         {
             this.arch = that.arch;
             this.regs = (uint[])that.regs.Clone();

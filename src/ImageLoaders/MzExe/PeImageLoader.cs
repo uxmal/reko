@@ -140,7 +140,7 @@ namespace Reko.ImageLoaders.MzExe
             return new ImageSymbol(addrLoad + rvaAddr)
             {
                 Name = name,
-                ProcessorState = arch.CreateProcessorState(),
+                ProcessorState = arch.CreateProcessorState(SegmentMap),
                 Type = SymbolType.Procedure,
             };
         }
@@ -218,9 +218,9 @@ namespace Reko.ImageLoaders.MzExe
 
         public override Program Load(Address addrLoad)
         {
+            SegmentMap = new SegmentMap(addrLoad);
             if (sections > 0)
             {
-                SegmentMap = new SegmentMap(addrLoad);
                 sectionList = LoadSections(addrLoad, rvaSectionTable, sections);
                 imgLoaded = LoadSectionBytes(addrLoad, sectionList);
                 AddSectionsToImageMap(addrLoad, SegmentMap);
@@ -525,7 +525,7 @@ namespace Reko.ImageLoaders.MzExe
             return new ImageSymbol(addrEp)
             {
                 Name = name,
-                ProcessorState = arch.CreateProcessorState(),
+                ProcessorState = arch.CreateProcessorState(SegmentMap),
                 Signature = ssig,
                 Type = SymbolType.Procedure
             };
@@ -1029,7 +1029,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             ImageSymbol symNew = new ImageSymbol(addr, null, new CodeType())
             {
                 Type = SymbolType.Procedure,
-                ProcessorState = arch.CreateProcessorState()
+                ProcessorState = arch.CreateProcessorState(SegmentMap)
             };
             if (!symbols.TryGetValue(addr, out symOld))
             {

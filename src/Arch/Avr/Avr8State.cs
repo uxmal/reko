@@ -31,16 +31,21 @@ namespace Reko.Arch.Avr
         private Avr8Architecture arch;
         private Address ip;
 
-        public Avr8State(Avr8Architecture arch)
+        public Avr8State(Avr8Architecture arch, SegmentMap map) : base(map)
         {
             this.arch = arch;
+        }
+
+        public Avr8State(Avr8State that) : base(that)
+        {
+            this.arch = that.arch;
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
         public override ProcessorState Clone()
         {
-            return new Avr8State(arch);
+            return new Avr8State(this);
         }
 
         public override Constant GetRegister(RegisterStorage r)

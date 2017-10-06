@@ -123,7 +123,7 @@ namespace Reko.ImageLoaders.MzExe
             var ep = new ImageSymbol(addrStart)
             {
                 Type = SymbolType.Procedure,
-                ProcessorState = arch.CreateProcessorState()
+                ProcessorState = arch.CreateProcessorState(segmentMap)
             };
             var sym = platform.FindMainProcedure(program, addrStart);
             var results = new RelocationResults(

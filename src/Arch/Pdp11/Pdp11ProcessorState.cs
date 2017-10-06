@@ -35,14 +35,14 @@ namespace Reko.Arch.Pdp11
         private ushort[] regs;
         private bool[] valid;
 
-        public Pdp11ProcessorState(Pdp11Architecture arch)
+        public Pdp11ProcessorState(Pdp11Architecture arch, SegmentMap map) : base(map)
         {
             this.arch = arch;
             this.regs = new ushort[22];
             this.valid = new bool[22];
         }
 
-        public Pdp11ProcessorState(Pdp11ProcessorState that)
+        public Pdp11ProcessorState(Pdp11ProcessorState that) : base(that)
         {
             this.arch = that.arch;
             this.regs = (ushort[])that.regs.Clone();

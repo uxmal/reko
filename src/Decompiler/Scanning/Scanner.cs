@@ -229,7 +229,7 @@ namespace Reko.Scanning
         public void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
             if (sym.ProcessorState == null)
-                sym.ProcessorState = Program.Architecture.CreateProcessorState();
+                sym.ProcessorState = Program.Architecture.CreateProcessorState(Program.SegmentMap);
             procQueue.Enqueue(PriorityEntryPoint, new ImageSymbolWorkItem(this, Program, sym, isEntryPoint));
         }
 
@@ -318,7 +318,7 @@ namespace Reko.Scanning
                         // promote the block to a new procedure.
                         procDest = EnsureProcedure(addrDest, null);
                         var blockNew = CreateCallRetThunk(addrSrc, proc, procDest);
-                        EstablishInitialState(addrDest, Program.Architecture.CreateProcessorState(), procDest);
+                        EstablishInitialState(addrDest, Program.Architecture.CreateProcessorState(Program.SegmentMap), procDest);
                         procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
                         InjectProcedureEntryInstructions(addrDest, procDest);
                         var wi = CreatePromoteWorkItem(addrDest, block, procDest);
@@ -639,7 +639,7 @@ namespace Reko.Scanning
         {
             var rdr = Program.CreateImageReader(addr);
             var arch = Program.Architecture;
-            var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(), arch.CreateFrame(), this);
+            var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(Program.SegmentMap), arch.CreateFrame(), this);
             var target = Program.Platform.GetTrampolineDestination(rw, this);
             return target;
         }

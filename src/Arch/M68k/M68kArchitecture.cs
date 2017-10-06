@@ -62,9 +62,9 @@ namespace Reko.Arch.M68k
             return new M68kInstructionComparer(norm);
         }
 
-        public override ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState(SegmentMap map)
         {
-            return new M68kState(this);
+            return new M68kState(this, map);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

@@ -80,6 +80,7 @@ namespace Reko.ImageLoaders.Elf
         protected Address m_uPltMax;
         protected IPlatform platform;
         protected byte[] rawImage;
+        protected SegmentMap segmentMap;
 
         protected ElfLoader(ElfImageLoader imgLoader, ushort machine, byte endianness)
         {
@@ -221,7 +222,7 @@ namespace Reko.ImageLoaders.Elf
                 Name = sym.Name,
                 Size = (uint)sym.Size,     //$REVIEW: is int32 a problem? Could such large objects (like arrays) exist?
                 DataType = dt,
-                ProcessorState = Architecture.CreateProcessorState()
+                ProcessorState = Architecture.CreateProcessorState(segmentMap)
             };
         }
 
@@ -385,7 +386,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 ep = new ImageSymbol(addr)
                 {
-                    ProcessorState = Architecture.CreateProcessorState()
+                    ProcessorState = Architecture.CreateProcessorState(segmentMap)
                 };
             }
             entryPoints.Add(ep);
@@ -757,7 +758,7 @@ namespace Reko.ImageLoaders.Elf
                         (long)ph.p_offset, mem.Bytes,
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
-            var segmentMap = new SegmentMap(addrPreferred);
+            this.segmentMap = new SegmentMap(addrPreferred);
             if (Sections.Count > 0)
             {
                 foreach (var section in Sections)

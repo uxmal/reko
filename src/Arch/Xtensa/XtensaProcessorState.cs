@@ -31,16 +31,22 @@ namespace Reko.Arch.Xtensa
         private XtensaArchitecture arch;
         private Address ip;
 
-        public XtensaProcessorState(XtensaArchitecture arch)
+        public XtensaProcessorState(XtensaArchitecture arch, SegmentMap map) : base(map)
         {
             this.arch = arch;
+        }
+
+        public XtensaProcessorState(XtensaProcessorState that) : base(that)
+        {
+            this.arch = that.arch;
+            this.ip = that.ip;
         }
 
         public override IProcessorArchitecture Architecture {  get { return arch; } }
 
         public override ProcessorState Clone()
         {
-            return new XtensaProcessorState(arch);
+            return new XtensaProcessorState(this);
         }
 
         public override Constant GetRegister(RegisterStorage r)

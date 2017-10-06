@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Arch.Mos6502
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
-            return new Rewriter(arch, image.CreateLeReader(0), new Mos6502ProcessorState(arch), new Frame(arch.FramePointerType), host);
+            return new Rewriter(arch, image.CreateLeReader(0), new Mos6502ProcessorState(arch, null), new Frame(arch.FramePointerType), host);
         }
 
         public override Address LoadAddress

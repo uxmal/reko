@@ -161,9 +161,9 @@ namespace Reko.Arch.X86
             return CreateDisassemblerImpl(imageReader);
 		}
 
-		public override ProcessorState CreateProcessorState()
+		public override ProcessorState CreateProcessorState(SegmentMap map)
 		{
-			return new X86State(this);
+			return new X86State(this, map);
 		}
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)

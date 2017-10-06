@@ -37,7 +37,7 @@ namespace Reko.Arch.M68k
         private Constant[] values;
         private bool[] isValid;
 
-        public M68kState(M68kArchitecture arch)
+        public M68kState(M68kArchitecture arch, SegmentMap map) : base(map)
         {
             this.arch = arch;
             this.values = new Constant[RegisterCount];

@@ -190,7 +190,6 @@ namespace Reko.CmdLine
 
                 object sLoader;
                 pArgs.TryGetValue("--loader", out sLoader);
-                var state = CreateInitialState(arch, pArgs);
                 var program = decompiler.LoadRawImage((string)pArgs["filename"], new LoadDetails
                 {
                     LoaderName = (string)sLoader,
@@ -199,6 +198,7 @@ namespace Reko.CmdLine
                     LoadAddress = (string)pArgs["--base"],
                     EntryPoint = new EntryPointElement { Address = (string)oAddrEntry }
                 });
+                var state = CreateInitialState(arch, program.SegmentMap, pArgs);
                 object oHeur;
                 if (pArgs.TryGetValue("heuristics", out oHeur))
                 {
@@ -216,9 +216,9 @@ namespace Reko.CmdLine
             }
         }
 
-        private ProcessorState CreateInitialState(IProcessorArchitecture arch, Dictionary<string, object> args)
+        private ProcessorState CreateInitialState(IProcessorArchitecture arch, SegmentMap map, Dictionary<string, object> args)
         {
-            var state = arch.CreateProcessorState();
+            var state = arch.CreateProcessorState(map);
             if (!args.ContainsKey("--reg"))
                 return state;
             var regs = (List<string>)args["--reg"];

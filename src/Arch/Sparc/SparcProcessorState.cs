@@ -40,14 +40,14 @@ namespace Reko.Arch.Sparc
         private uint flags;
         private uint validFlags;
 
-        public SparcProcessorState(SparcArchitecture arch)
+        public SparcProcessorState(SparcArchitecture arch, SegmentMap map) : base(map)
         {
             this.arch = arch;
             this.regs = new ulong[32];
             this.valid = new bool[32];
         }
 
-        public SparcProcessorState(SparcProcessorState old)
+        public SparcProcessorState(SparcProcessorState old) : base(old)
         {
             this.arch = old.arch;
             this.regs = old .regs.ToArray();

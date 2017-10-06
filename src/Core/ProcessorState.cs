@@ -35,17 +35,20 @@ namespace Reko.Core
     /// </summary>
     public abstract class ProcessorState : EvaluationContext
     {
+        private SegmentMap segmentMap;
         private Dictionary<RegisterStorage, Expression> linearDerived;
         private SortedList<int, Expression> stackState;
 
-        public ProcessorState()
+        public ProcessorState(SegmentMap segmentMap)
         {
+            this.segmentMap = segmentMap;
             this.linearDerived = new Dictionary<RegisterStorage, Expression>();
             this.stackState = new SortedList<int, Expression>();
         }
 
         public ProcessorState(ProcessorState orig)
         {
+            this.segmentMap = orig.segmentMap;
             this.linearDerived = new Dictionary<RegisterStorage, Expression>(orig.linearDerived);
             this.stackState = new SortedList<int, Expression>(orig.stackState);
             this.ErrorListener = this.ErrorListener;

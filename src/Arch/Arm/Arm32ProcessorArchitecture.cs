@@ -86,9 +86,9 @@ namespace Reko.Arch.Arm
             return new Arm32InstructionComparer(norm);
         }
 
-        public override ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState(SegmentMap map)
         {
-            return new ArmProcessorState(this);
+            return new ArmProcessorState(this, map);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)

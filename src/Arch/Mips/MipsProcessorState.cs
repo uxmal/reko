@@ -37,18 +37,25 @@ namespace Reko.Arch.Mips
         private uint[] iregs;       // integer register values.
         private bool[] valid;       // whether the regs are valid or not.
 
-        public MipsProcessorState(MipsProcessorArchitecture arch)
+        public MipsProcessorState(MipsProcessorArchitecture arch, SegmentMap map) : base(map)
         {
             this.arch = arch;
             this.iregs = new uint[32];
             this.valid = new bool[32];
         }
 
+        public MipsProcessorState(MipsProcessorState that) :base(that)
+        {
+            this.arch = that.arch;
+            this.iregs = (uint[])that.iregs.Clone();
+            this.valid = (bool[])that.valid.Clone();
+        }
+
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
         public override ProcessorState Clone()
         {
-            return new MipsProcessorState(arch);
+            return new MipsProcessorState(this);
         }
 
         public override Constant GetRegister(RegisterStorage r)

@@ -85,7 +85,7 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState(SegmentMap map)
         {
             throw new NotImplementedException();
         }

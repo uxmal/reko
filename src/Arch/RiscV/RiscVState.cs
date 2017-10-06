@@ -31,9 +31,15 @@ namespace Reko.Arch.RiscV
         private RiscVArchitecture arch;
         private Address pc;
 
-        public RiscVState(RiscVArchitecture arch)
+        public RiscVState(RiscVArchitecture arch, SegmentMap map) : base(map)
         {
             this.arch = arch;
+        }
+
+        public RiscVState(RiscVState that) : base(that)
+        {
+            this.arch = that.arch;
+            this.pc = that.pc;
         }
 
         public override IProcessorArchitecture Architecture
@@ -43,7 +49,7 @@ namespace Reko.Arch.RiscV
 
         public override ProcessorState Clone()
         {
-            return new RiscVState(arch);
+            return new RiscVState(this);
         }
 
         public override Constant GetRegister(RegisterStorage r)

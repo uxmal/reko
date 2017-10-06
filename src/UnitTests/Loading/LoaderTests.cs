@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Loading
             this.x86arch = mr.Stub<IProcessorArchitecture>();
             var env = mr.Stub<OperatingEnvironment>();
             this.msdosPlatform = mr.Stub<IPlatform>();
-            var state = mr.Stub<ProcessorState>();
+            var state = new FakeProcessorState(x86arch, null);
             var rawFile = new RawFileElementImpl
             {
                 BaseAddress = "0C00:0100",
@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Loading
                 Arg<string>.Is.Equal("0C00:0100"),
                 out Arg<Address>.Out(Address.SegPtr(0x0C00, 0x0100)).Dummy))
                 .Return(true);
-            x86arch.Stub(a => a.CreateProcessorState()).Return(state);
+            x86arch.Stub(a => a.CreateProcessorState(null)).IgnoreArguments().Return(state);
         }
 
         [Test]

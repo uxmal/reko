@@ -32,7 +32,7 @@ namespace Reko.Arch.Xtensa
 {
     public class XtensaArchitecture : ProcessorArchitecture
     {
-        public XtensaArchitecture() 
+        public XtensaArchitecture()
         {
             this.InstructionBitSize = 8;        // Instruction alignment, really.
             this.FramePointerType = PrimitiveType.Pointer32;
@@ -170,9 +170,9 @@ namespace Reko.Arch.Xtensa
             throw new NotImplementedException();
         }
 
-        public override ProcessorState CreateProcessorState()
+        public override ProcessorState CreateProcessorState(SegmentMap map)
         {
-            return new XtensaProcessorState(this);
+            return new XtensaProcessorState(this, map);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)

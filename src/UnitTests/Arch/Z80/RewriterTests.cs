@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Arch.Z80
         [SetUp]
         public void Setup()
         {
-            state = (Z80ProcessorState) arch.CreateProcessorState();
+            state = (Z80ProcessorState) arch.CreateProcessorState(null);
         }
 
         private void BuildTest(params byte[] bytes)

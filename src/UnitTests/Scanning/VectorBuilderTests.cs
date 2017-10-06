@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Services;
 using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
@@ -79,7 +80,7 @@ namespace Reko.UnitTests.Scanning
             scanner.Stub(s => s.Services).Return(sc);
             arch.Stub(s => s.CreateImageReader(this.mem, this.program.ImageMap.BaseAddress))
                 .Return(this.mem.CreateLeReader(0));
-            var state = mr.Stub<ProcessorState>();
+            var state = new FakeProcessorState(null, null);
         
             mr.ReplayAll();
 

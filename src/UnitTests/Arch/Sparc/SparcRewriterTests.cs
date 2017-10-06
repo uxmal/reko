@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Arch.Sparc
         [SetUp]
         public void Setup()
         {
-            state = (SparcProcessorState)arch.CreateProcessorState();
+            state = (SparcProcessorState)arch.CreateProcessorState(null);
             repository = new MockRepository();
             host = repository.StrictMock<IRewriterHost>();
         }

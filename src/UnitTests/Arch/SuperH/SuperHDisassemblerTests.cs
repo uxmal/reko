@@ -505,6 +505,12 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("shar\tr1", "2141");
         }
+
+        [Test]
+        public void SHDis_fcmp_eq()
+        {
+            AssertCode("fcmp/eq\tfr5,fr9", "﻿54F9");
+        }
     }
 }
 

@@ -138,8 +138,8 @@ namespace Reko.UnitTests.Scanning
         {
             arch = new X86ArchitectureFlat32();
             m = new ProcedureBuilder();
-            state = arch.CreateProcessorState();
-            expSimp = new ExpressionSimplifier(arch.CreateProcessorState(), new FakeDecompilerEventListener());
+            state = arch.CreateProcessorState(null);
+            expSimp = new ExpressionSimplifier(arch.CreateProcessorState(null), new FakeDecompilerEventListener());
             SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             host = new BackwalkerHost(arch);
         }
@@ -383,7 +383,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwInc()
         {
-            var state = arch.CreateProcessorState();
+            var state = arch.CreateProcessorState(null);
             var di = new Identifier("di", Registers.di.DataType, Registers.di);
             var bw = new Backwalker<Block, Instruction>(host, new RtlGoto(new MemoryAccess(di, di.DataType), RtlClass.Transfer),
                 new ExpressionSimplifier(state, new FakeDecompilerEventListener()));

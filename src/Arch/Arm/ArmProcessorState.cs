@@ -36,19 +36,24 @@ namespace Reko.Arch.Arm
         private uint isValid;
         private ulong[] regData;
 
-        public ArmProcessorState(IProcessorArchitecture arch)
+        public ArmProcessorState(IProcessorArchitecture arch, SegmentMap map) : base(map)
         {
             this.arch = arch;
             this.regData = new ulong[48];
+        }
+
+        public ArmProcessorState(ArmProcessorState that): base(that)
+        {
+            this.arch = that.arch;
+            this.isValid = that.isValid;
+            this.regData = (ulong[])that.regData.Clone();
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
         public override ProcessorState Clone()
         {
-            var state = new ArmProcessorState(arch);
-            state.isValid = this.isValid;
-            state.regData = (ulong[])regData.Clone();
+            var state = new ArmProcessorState(this);
             return state;
         }
 

@@ -35,7 +35,6 @@ namespace Reko.UnitTests.Arch.Tlcs
     {
         private SuperHArchitecture arch = new SuperHLeArchitecture();
         private Address baseAddr = Address.Ptr32(0x00100000);
-        private SuperHState state;
         private MemoryArea image;
 
         public override IProcessorArchitecture Architecture
@@ -45,6 +44,9 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
+            var state = (SuperHState)arch.CreateProcessorState(
+                new SegmentMap(image.BaseAddress,
+                    new ImageSegment("code", image, AccessMode.ReadExecute)));
             return new SuperHRewriter(arch, new LeImageReader(image, 0), state, binder, host);
         }
 
@@ -64,7 +66,6 @@ namespace Reko.UnitTests.Arch.Tlcs
         [SetUp]
         public void Setup()
         {
-            state = (SuperHState)arch.CreateProcessorState();
         }
 
         [Test]
@@ -231,6 +232,15 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|T = r5 == r4");
+        }
+
+        [Test]
+        public void SHRw_fcmp_eq()
+        {
+            RewriteCode("54F9");    // cmp/eq
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|T = fr9 == fr5");
         }
 
         [Test]

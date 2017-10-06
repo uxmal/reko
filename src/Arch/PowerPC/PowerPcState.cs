@@ -35,14 +35,14 @@ namespace Reko.Arch.PowerPC
         private ulong[] regs;
         private ulong[] valid;
 
-        public PowerPcState(PowerPcArchitecture arch)
+        public PowerPcState(PowerPcArchitecture arch, SegmentMap map) : base(map)
         {
             this.arch = arch;
             this.regs = new ulong[0x80];
             this.valid = new ulong[0x80];
         }
 
-        public PowerPcState(PowerPcState other)
+        public PowerPcState(PowerPcState other) : base(other)
         {
             this.arch = other.arch;
             this.regs = new ulong[other.regs.Length];

@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Mocks
 		private const int iReturnRegister = 62;
         private bool ignoreUnknownTraces;
 
-        public FakeArchitecture()
+        public FakeArchitecture() 
 		{
             this.rewriters = new RtlTraceBuilder();
             this.StackRegister = GetRegister(FakeArchitecture.iStackRegister);
@@ -265,9 +265,9 @@ namespace Reko.UnitTests.Mocks
             return new Frame(FramePointerType);
         }
 
-		public ProcessorState CreateProcessorState()
+		public ProcessorState CreateProcessorState(SegmentMap map)
 		{
-			return new FakeProcessorState(this);
+			return new FakeProcessorState(this, map);
 		}
 
 		public string GrfToString(uint grf)
@@ -376,7 +376,7 @@ namespace Reko.UnitTests.Mocks
         private Dictionary<RegisterStorage, Constant> regValues;
         private SortedList<int, Constant> stackValues;
 
-        public FakeProcessorState(IProcessorArchitecture arch)
+        public FakeProcessorState(IProcessorArchitecture arch, SegmentMap map) : base(map)
         {
             this.arch = arch;
             this.regValues = new Dictionary<RegisterStorage, Constant>();

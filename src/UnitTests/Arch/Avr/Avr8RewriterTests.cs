@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Arch.Avr
         [SetUp]
         public void Setup()
         {
-            state = (Avr8State)arch.CreateProcessorState();
+            state = (Avr8State)arch.CreateProcessorState(null);
         }
 
         [Test]

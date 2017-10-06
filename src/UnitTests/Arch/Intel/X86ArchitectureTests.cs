@@ -204,7 +204,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = new X86ArchitectureReal();
             var rdr = CreateImageReader(0x78, 0x56);
-            var state = arch.CreateProcessorState();
+            var state = arch.CreateProcessorState(null);
             state.SetRegister(Registers.cs, Constant.Word16(0x1234));
             Address addr = arch.ReadCodeAddress(2, rdr, state);
 
@@ -217,7 +217,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = new X86ArchitectureReal();
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
-            var state = arch.CreateProcessorState();
+            var state = arch.CreateProcessorState(null);
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
             Address addr = arch.ReadCodeAddress(4, rdr, state);
 
@@ -229,7 +229,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = new X86ArchitectureProtected16();
             var rdr = CreateImageReader(0x78, 0x56);
-            var state = arch.CreateProcessorState();
+            var state = arch.CreateProcessorState(null);
             state.SetRegister(Registers.cs, Constant.Word16(0x1234));
             Address addr = arch.ReadCodeAddress(2, rdr, state);
 
@@ -241,7 +241,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = new X86ArchitectureProtected16();
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
-            var state = arch.CreateProcessorState();
+            var state = arch.CreateProcessorState(null);
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
             Address addr = arch.ReadCodeAddress(4, rdr, state);
 
@@ -253,7 +253,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = new X86ArchitectureFlat32();
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
-            var state = arch.CreateProcessorState();
+            var state = arch.CreateProcessorState(null);
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
             Address addr = arch.ReadCodeAddress(4, rdr, state);
 

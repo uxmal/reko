@@ -118,6 +118,7 @@
     <Compile Include="Environments\Windows\X86_64CallingConventionTests.cs" />
     <Compile Include="Environments\Windows\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Fragments\FCmpFragment.cs" />
+    <Compile Include="Environments\SysV\ArchSpecific\SuperHCallingConventionTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmParserTests.cs" />

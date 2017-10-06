@@ -75,7 +75,7 @@ namespace Reko.Scanning
             var current = new RtlBlock(addr, string.Format("l{0:X}", addr));
             var dasm = program.Architecture.CreateRewriter(
                 program.CreateImageReader(addr),
-                program.Architecture.CreateProcessorState(),    //$TODO: use state from user.
+                program.CreateProcessorState(),    //$TODO: use state from user.
                 binder,
                 host);
             foreach (var instr in dasm.TakeWhile(i => isAddrValid(i.Address)))

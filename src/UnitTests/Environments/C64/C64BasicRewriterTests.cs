@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Environments.C64
             var image = new MemoryArea(addr, new byte[1]);
             return arch.CreateRewriter(
                 arch.CreateImageReader(image, addr),
-                arch.CreateProcessorState(),
+                arch.CreateProcessorState(null),
                 frame,
                 host);
         }

@@ -36,11 +36,19 @@ namespace Reko.Arch.Mos6502
         private bool[] valid;
         private Address ip;
 
-        public Mos6502ProcessorState(Mos6502ProcessorArchitecture arch)
+        public Mos6502ProcessorState(Mos6502ProcessorArchitecture arch, SegmentMap map) : base(map)
         {
             this.arch = arch;
             this.regs = new byte[4];
             this.valid = new bool[4];
+        }
+
+        public Mos6502ProcessorState(Mos6502ProcessorState that) : base(that)
+        {
+            this.arch = that.arch;
+            regs = (byte[])that.regs.Clone();
+            this.valid = (bool[])that.valid.Clone();
+            ip = that.ip;
         }
 
         public override IProcessorArchitecture Architecture
@@ -50,12 +58,7 @@ namespace Reko.Arch.Mos6502
 
         public override ProcessorState Clone()
         {
-            return new Mos6502ProcessorState(arch)
-            {
-                regs = (byte[])regs.Clone(),
-                valid = (bool[])valid.Clone(),
-                ip = ip
-            };
+            return new Mos6502ProcessorState(this);
         }
 
         public override Constant GetRegister(RegisterStorage r)

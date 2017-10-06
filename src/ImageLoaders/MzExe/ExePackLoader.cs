@@ -185,7 +185,7 @@ namespace Reko.ImageLoaders.MzExe
             this.cs += segCode;
             segmentMap.AddSegment(Address.SegPtr(cs, 0), cs.ToString("X4"), AccessMode.ReadWriteExecute, 0);
             this.ss += segCode;
-            var state = arch.CreateProcessorState();
+            var state = arch.CreateProcessorState(segmentMap);
             state.SetRegister(Registers.ds, Constant.Word16(addrLoad.Selector.Value));
             state.SetRegister(Registers.es, Constant.Word16(addrLoad.Selector.Value));
             state.SetRegister(Registers.cs, Constant.Word16(cs));

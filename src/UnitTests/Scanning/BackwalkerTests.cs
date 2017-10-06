@@ -139,9 +139,9 @@ namespace Reko.UnitTests.Scanning
         {
             arch = new FakeArchitecture();
             m = new ProcedureBuilder();
-            state = arch.CreateProcessorState();
+            state = arch.CreateProcessorState(null);
             listener = new FakeDecompilerEventListener();
-            expSimp = new ExpressionSimplifier(arch.CreateProcessorState(), listener);
+            expSimp = new ExpressionSimplifier(arch.CreateProcessorState(null), listener);
             host = new BackwalkerHost(arch);
         }
 

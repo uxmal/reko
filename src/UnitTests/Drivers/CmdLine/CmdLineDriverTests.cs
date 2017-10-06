@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Drivers.CmdLine
         public void CmdLine_EntryPoint()
         {
             var arch = mr.Stub<IProcessorArchitecture>();
-            var state = mr.Stub<ProcessorState>();
+            var state = new FakeProcessorState(arch, null);
             configSvc.Stub(s => s.GetArchitecture("mmix")).Return(arch);
             arch.Stub(a => a.TryParseAddress(
                 Arg<string>.Is.Equal("010000"),
@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Drivers.CmdLine
                 Arg<string>.Is.Equal("010100"),
                 out Arg<Address>.Out(Address.Ptr32(0x010100)).Dummy))
                 .Return(true); mr.ReplayAll();
-            arch.Stub(a => a.CreateProcessorState()).Return(state);
+            arch.Stub(a => a.CreateProcessorState(null)).IgnoreArguments().Return(state);
             decompiler.Stub(d => d.LoadRawImage(null, null))
                 .IgnoreArguments()
                 .Return(new Program());
