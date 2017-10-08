@@ -499,7 +499,7 @@ namespace Reko.Scanning
             var site = OnBeforeCall(stackReg, call.ReturnAddressSize);
             FunctionType sig;
             ProcedureCharacteristics chr = null;
-            var callTarget = GetValue(call.Target);
+            var callTarget = call.Target;
             Constant c;
             if (callTarget.As(out c))
             {
@@ -541,7 +541,7 @@ namespace Reko.Scanning
                 }
                 return OnAfterCall(sig, chr);
             }
-
+            callTarget = call.Target;
             var procCallee = callTarget as ProcedureConstant;
             if (procCallee != null)
             {
