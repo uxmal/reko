@@ -31,19 +31,26 @@ app.on('ready', function() {
 });
 
 
+function renderProcedure(result:any){
+	mainWindow.webContents.send("procedure", result);
+}
+
 var rekoUi:SharpAssembly = new SharpAssembly("generated/assemblies/Reko.Gui.Electron.Adapter.dll");
 var rootType:string = "Reko.Gui.Electron.Adapter.ElectronDecompilerDriver";
 var reko:any;
 
-/*
 ipcMain.on("getProcedure", (event:any, args: any) => {
 	var proc = args.program + ":" + args.address;
+	console.log("Ok, let's get " + proc);
 	reko.RenderProcedure(proc, (error:any, result:any) => {
-		if(!error)
-			renderProcedure(result);
+		if(error){
+			dialog.showErrorBox("Something blew up", error);
+			return;
+		}
+		console.log("Data received");
+		renderProcedure(result);
 	});
 });
-*/
 
 ipcMain.on("getSearchResults", (event:any, args:any) => {
 	console.log("Received");
@@ -52,7 +59,7 @@ ipcMain.on("getSearchResults", (event:any, args:any) => {
 		ipcChannel: "",
 	}, (error:any, result:object) => {
 		mainWindow.webContents.send("searchResults", result);
-	})
+	});
 });
 
 /*ipcMain.on("getTemplate", (event:Electron.IpcMessageEvent, arg:string) => {
@@ -81,10 +88,10 @@ function afterInit(){
 		/*dialog.showMessageBox(<Electron.BrowserWindow> mainWindow, {
 			message: result
 		});*/
-		return SharpAssembly.InvokeAsync(reko.RenderProcedure, "Aberaham.exe:fn00011000");
+		return SharpAssembly.InvokeAsync(reko.RenderProcedure, "Aberaham.exe:00011000");
 	}).then((result) => {
 		console.log("Sending result");
-		mainWindow.webContents.send("procedure", result);
+		renderProcedure(result);
 		return SharpAssembly.InvokeAsync(reko.RenderProjectJson, {});
 	}).then((result) => {
 		console.log("Post");

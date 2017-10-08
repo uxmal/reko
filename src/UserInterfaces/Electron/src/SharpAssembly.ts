@@ -26,7 +26,7 @@ export default class SharpAssembly {
 			func(args, function(error:any, result:any){
 				if(error)
 					return reject(error);
-				resolve(result);
+				return resolve(result);
 			});
 		});
 	}

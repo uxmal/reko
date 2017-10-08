@@ -130,13 +130,24 @@ namespace Reko.Gui.Electron.Adapter
             string sProgramProcedure = (string)input;
             var a = sProgramProcedure.Split(':');
             var sProgram = a[0];
-            var sProcedure = a[1];
-            var program = (from p in project.Programs
+            var sAddr = a[1];
+
+			// It should be impossible for the statement below to fail
+			// because it should be using the name of the program that 
+			// was passed to it when reko first returned the tree.
+			var program = (from p in project.Programs
                            where p.Name == sProgram
                            select p).Single();
-            var proc = (from p in program.Procedures.Values
-                        where p.Name == sProcedure
-                        select p).Single();
+			Address addr;
+			if (!program.Architecture.TryParseAddress(sAddr, out addr))
+			{
+				throw new ArgumentException(string.Format("Invalid address '{0}' supplied.", sAddr));
+			}
+			Procedure proc;
+			if (!program.Procedures.TryGetValue(addr, out proc)) 
+			{
+				throw new ArgumentException(string.Format("No known procedure at address {0}.", addr));
+			}
             var html = RenderProcedureToHtml(program, proc);
             return await Task.FromResult(html);
         }

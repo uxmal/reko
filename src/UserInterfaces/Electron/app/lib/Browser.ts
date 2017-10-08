@@ -12,10 +12,11 @@ export default class Browser {
 		var proc = $(this);
 		var addr = proc
 			.find("a")
-			.attr("href");
+			.data("address");
 
 		var programName = proc
 			.parent()
+			.find(".program-name")
 			.text();
 
 		ipcRenderer.send("getProcedure", {

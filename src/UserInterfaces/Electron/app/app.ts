@@ -7,10 +7,15 @@ import TemplateLoader from './TemplateLoader';
 
 var browser:Browser = new Browser();
 
+function renderProcedure(data:string){
+	$("#reko-procedure")
+	.html(data);
+}
+
 function setup(){
 	// Render a procedure
 	ipcRenderer.on("procedure", (event:any, arg:any) => {
-		$(".reko-procedures").html(arg);
+		renderProcedure(arg);
 		browser.update();
 	});
 
@@ -22,7 +27,7 @@ function setup(){
 
 		var tpl = TemplateLoader.LoadTemplate("main");
 		$("#reko-browser")
-			.find(".reko-procedures")
+			.find(".reko-procedure-list")
 			.html(tpl(proj));
 
 		browser.update();
