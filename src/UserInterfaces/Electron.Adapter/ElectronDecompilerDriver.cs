@@ -117,7 +117,6 @@ namespace Reko.Gui.Electron.Adapter
 				    new object[] {"00123508", "31 32 33 34", "12345678...."},
 			    }
 		    };
-			await Task.Delay(TimeSpan.FromSeconds(2));
 		    return searchResult;
 	    }
 

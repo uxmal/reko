@@ -21,15 +21,17 @@ function setup(){
 		var node = $(".reko-browser");
 
 		var tpl = TemplateLoader.LoadTemplate("main");
-		$("body").append(tpl(proj));
+		$("#reko-browser")
+			.find(".reko-procedures")
+			.html(tpl(proj));
 
 		browser.update();
 	});
 
 	ipcRenderer.on("searchResults", (event:any, arg:object) => {
 		var tpl = TemplateLoader.LoadTemplate("searchResults");
-		//$DEBUG: Replacing body
-		$("body").html(tpl(arg));
+		
+		$("#search-results").html(tpl(arg));
 	});
 
 	$("#btn-test").click(function(e){
@@ -37,7 +39,6 @@ function setup(){
 	});
 
 	$("#getSearchBtn").click(function(e){
-		alert("About to send");
 		ipcRenderer.send("getSearchResults", "testing");
 	});
 }

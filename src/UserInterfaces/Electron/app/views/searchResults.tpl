@@ -1,5 +1,5 @@
-<div class="table-responsive search-header {{header.cssclass}}">
-	<table>
+<div class="search-header {{header.cssclass}}">
+	<table class="table table-striped table-responsive">
 		{{#each header.columns}}
 		<th class="{{this.cssclass}}">{{this.title}}</th>
 		{{/each}}
