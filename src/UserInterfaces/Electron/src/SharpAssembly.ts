@@ -16,12 +16,17 @@ export default class SharpAssembly {
 		return clrMethod;
 	}
 
-	public static InvokeAsync(func: any, args: any) : Promise<any>{
+	/**
+	 * Invokes a C# function and returns a promise
+	 * @param func an edge C# function delegate
+	 * @param args arguments for the function call
+	 */
+	public static InvokeAsync(func: any , args: any) : Promise<any>{
 		return new Promise((resolve, reject) => {
 			func(args, function(error:any, result:any){
 				if(error)
 					return reject(error);
-				return resolve(result);
+				resolve(result);
 			});
 		});
 	}

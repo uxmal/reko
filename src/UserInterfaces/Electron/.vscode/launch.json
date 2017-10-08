@@ -5,7 +5,7 @@
 			"type": "node",
 			"request": "launch",
 			"name": "Launch Program",
-			"program": "${workspaceRoot}/generated/src/main.js",
+			"program": "${workspaceRoot}/generated/main.js",
 			"stopOnEntry": false,
 			"args": [],
 			"env": {},

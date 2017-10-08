@@ -19,7 +19,7 @@ app.on('ready', function() {
 		height: 600
 	});
 
-	mainWindow.loadURL('file://' + __dirname + '/../../app/index.html');
+	mainWindow.loadURL('file://' + __dirname + '/../app/index.html');
 
 	mainWindow.webContents.on("did-finish-load", function(){
 		afterInit();
@@ -35,16 +35,24 @@ var rekoUi:SharpAssembly = new SharpAssembly("generated/assemblies/Reko.Gui.Elec
 var rootType:string = "Reko.Gui.Electron.Adapter.ElectronDecompilerDriver";
 var reko:any;
 
-function renderProcedure(result:string){
-	mainWindow.webContents.send("procedure", result);
-}
-
+/*
 ipcMain.on("getProcedure", (event:any, args: any) => {
 	var proc = args.program + ":" + args.address;
 	reko.RenderProcedure(proc, (error:any, result:any) => {
 		if(!error)
 			renderProcedure(result);
 	});
+});
+*/
+
+ipcMain.on("getSearchResults", (event:any, args:any) => {
+	console.log("Received");
+	reko.ShowSearchResult({
+		command: "",
+		ipcChannel: "",
+	}, (error:any, result:object) => {
+		mainWindow.webContents.send("searchResults", result);
+	})
 });
 
 /*ipcMain.on("getTemplate", (event:Electron.IpcMessageEvent, arg:string) => {
@@ -76,12 +84,14 @@ function afterInit(){
 		return SharpAssembly.InvokeAsync(reko.RenderProcedure, "Aberaham.exe:fn00011000");
 	}).then((result) => {
 		console.log("Sending result");
-		renderProcedure(result);
+		mainWindow.webContents.send("procedure", result);
 		return SharpAssembly.InvokeAsync(reko.RenderProjectJson, {});
 	}).then((result) => {
+		console.log("Post");
 		mainWindow.webContents.send("project", result);
 	}).catch((error:any) => {
 		dialog.showErrorBox("Something blew up", error);
+		throw new Error("Something blew up");
 	});
 }
 
