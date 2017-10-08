@@ -184,6 +184,11 @@ namespace Reko.Core
             var pt = dt as PrimitiveType;
             if (pt == null)
                 return Constant.Invalid;
+            else if (pt.Domain == Domain.Real && pt.BitSize > 64)
+            {
+                //$TODO: we can't represent 80-, 96- or 128-bit floats quite yet.
+                return Constant.Invalid;
+            }
             ImageSegment seg;
             if (!segmentMap.TryFindSegment(addr, out seg) || seg.IsWriteable)
                 return Constant.Invalid;

@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             return arch.CreateRewriter(
                 new LeImageReader(image, 0),
-                arch.CreateProcessorState(null),
+                arch.CreateProcessorState(new SegmentMap(image.BaseAddress)),
                 frame,
                 this.host);
         }
@@ -1737,6 +1737,15 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(     // f2xm1
                 "0|L--|0C00:0000(2): 1 instructions",
                 "1|L--|rArg0 = pow(2.0, rArg0) - 1.0");
+        }
+
+        [Test]
+        public void X86rw_fpu_load()
+        {
+            Run64bitTest(0xD8, 0x0D, 0x89, 0x9F, 0x00, 0x00);
+            AssertCode(     // fmul
+              "0|L--|0000000140000000(6): 1 instructions",
+              "1|L--|rArg0 = rArg0 * Mem0[0x0000000140009F8F:real32]");
         }
     }
 }
