@@ -185,9 +185,10 @@ namespace Reko.Scanning
                     Index = host.GetSubregister(Index, 0, 8);
                     return true;
                 }
-                var cof = assSrc as ConditionOf;
+                var cof = ass.Item2 as ConditionOf;
                 if (cof != null && UsedFlagIdentifier != null)
                 {
+
                     var grfDef = (((Identifier)assDst).Storage as FlagGroupStorage).FlagGroupBits;
                     var grfUse = (UsedFlagIdentifier.Storage as FlagGroupStorage).FlagGroupBits;
                     if ((grfDef & grfUse) == 0)
