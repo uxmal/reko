@@ -1,13 +1,22 @@
+a {
+	cursor: pointer;
+	color: blue;
+}
+
 .treenode {
 	padding-left: 16px;
 }
 
 .reko-browser {
+	padding-right: 20px;
 	float: left;
 }
 
 .reko-procedure {
-	float: right;
+	display: inline-block;
+	margin-left: 20px;
+	max-height: 200px;
+	overflow-y: scroll;
 }
 
 .results-container {
@@ -30,6 +39,7 @@
 
 .reko-pane {
 	overflow-y: scroll;
+	display: initial;	
 }
 
 /** Procedures **/
