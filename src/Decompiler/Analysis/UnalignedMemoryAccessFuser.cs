@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +55,20 @@ namespace Reko.Analysis
             {
                 stm.Instruction.Accept(this);
             }
+
+            // Find all unaligned reds and writs and group them by
+            // register + innstruction.
+            var x = FindAllUnalignedStoreInstructions(ssa.Procedure.Statements);
+
+            // Find pairs of instructions that are (left/right) and
+            // whose offsets differ by 3 bytes.
+            var y = GroupUnalignedAccesses(x);
+
+            // Fuse the pairs.
+            FuseUnalignedPairs(y);
         }
+
+
 
         public override void VisitAssignment(Assignment a)
         {
@@ -62,11 +76,16 @@ namespace Reko.Analysis
             FuseUnalignedLoads(a);
         }
 
-        public override void VisitSideEffect(SideEffect side)
+        private static readonly string[] unalignedLoadsLe = new[]
         {
-            base.VisitSideEffect(side);
-            FuseUnalignedStores(side);
-        }
+            PseudoProcedure.LwR
+        };
+
+        private static readonly string[] unalignedLoadsBe = new[]
+        {
+            PseudoProcedure.LwL
+        };
+
 
         // On MIPS-LE the sequence
         //   lwl rx,K+3(ry)
@@ -76,22 +95,22 @@ namespace Reko.Analysis
         //   lwr rx,K+3(ry)
         public void FuseUnalignedLoads(Assignment assR)
         {
-            var appR = MatchIntrinsicApplication(assR.Src, PseudoProcedure.LwR);
+            var appR = MatchIntrinsicApplication(assR.Src, unalignedLoadsLe);
             if (appR == null)
                 return;
 
             var regR = assR.Dst;
             var stmR = ssa.Identifiers[regR].DefStatement;
 
-            var memR = appR.Arguments[1];
+            var memR = appR.Item2.Arguments[1];
             var offR = GetOffsetOf(memR);
 
-            var appL = appR.Arguments[0] as Application;
+            var appL = appR.Item2.Arguments[0] as Application;
             Statement stmL = null;
             Assignment assL = null;
             if (appL == null)
             {
-                var regL = (Identifier)appR.Arguments[0];
+                var regL = (Identifier)appR.Item2.Arguments[0];
                 stmL = ssa.Identifiers[regL].DefStatement;
                 if (stmL == null)
                     return;
@@ -101,10 +120,11 @@ namespace Reko.Analysis
 
                 appL = assL.Src as Application;
             }
-            appL = MatchIntrinsicApplication(appL, PseudoProcedure.LwL);
-            if (appL == null)
+            var pairL = MatchIntrinsicApplication(appL, unalignedLoadsBe);
+            if (pairL == null)
                 return;
 
+            var applL = pairL.Item2;
             var memL = appL.Arguments[1];
             var offL = GetOffsetOf(memL);
 
@@ -133,79 +153,136 @@ namespace Reko.Analysis
             ssa.AddUses(stmR);
         }
 
-
-        // On MIPS-LE the sequence
-        //   swl rx,K+3(ry)
-        //   swr rx,K(ry)
-        // is an unaligned store.
-        public Instruction FuseUnalignedStores(SideEffect se)
+        private void FuseUnalignedPairs(List<Tuple<UnalignedAccess, UnalignedAccess>> pairs)
         {
-            var appR = MatchIntrinsicApplication(se.Expression, PseudoProcedure.SwR);
-            if (appR == null)
-                return se;
-            var idR = appR.Arguments[1] as Identifier;
-            if (idR == null)
+            foreach (var pair in pairs)
             {
-                //$TODO: Reko expects this pass to have executed very soon after SSA.
-                // In particular, no constant propagation should be done before this
-                // transform. This is fixed in analysis-development branch, but is  
-                // too expensive to back-port to master. We just bail for now, and
-                // make sure this works in analysis-development branch
-                return se;
+                FuseStorePair(pair);
             }
-            var sidR = ssa.Identifiers[idR];
-            Application appL = null;
-            Statement stmL = null;
-            Statement stmR = null;
-            foreach (var use in sidR.Uses)
-            {
-                var s = use.Instruction as SideEffect;
-                if (s == null)
-                    continue;
-                var app = MatchIntrinsicApplication(s.Expression, PseudoProcedure.SwR);
-                if (app != null)
-                {
-                    appR = app;
-                    stmR = use;
-                }
-                app = MatchIntrinsicApplication(s.Expression, PseudoProcedure.SwL);
-                if (app != null)
-                {
-                    appL = app;
-                    stmL = use;
-                }
-            }
-            if (stmL == null || stmR == null)
-                return se;
+        }
 
-            var memL = appL.Arguments[0];
-            var offL = GetOffsetOf(memL);
-
-            var memR = appR.Arguments[0];
-            var offR = GetOffsetOf(memR);
-
-            Expression mem;
-            if (offR + 3 == offL)
+        private void FuseStorePair(Tuple<UnalignedAccess, UnalignedAccess> pair)
+        {
+            Statement stmL, stmR;
+            if (pair.Item1.isLeft)
             {
-                // Little endian use
-                mem = memR;
-            }
-            else if (offL + 3 == offR)
-            {
-                // Big endian use
-                mem = memL;
+                stmL = pair.Item1.stm;
+                stmR = pair.Item2.stm;
             }
             else
-                return se;
+            {
+                stmL = pair.Item2.stm;
+                stmR = pair.Item1.stm;
+            }
 
             ssa.RemoveUses(stmL);
             ssa.RemoveUses(stmR);
-            stmR.Instruction = mem is Identifier
-                ? (Instruction)new Assignment((Identifier)mem, sidR.Identifier)
-                : (Instruction)new Store(mem, sidR.Identifier);
+
+            if (pair.Item1.mem is Identifier)
+            {
+                stmR.Instruction = (Instruction)new Assignment(
+                    (Identifier)pair.Item1.mem,
+                    pair.Item1.value);
+            }
+            else
+            {
+                stmR.Instruction = new Store(
+                    pair.Item1.mem,
+                    pair.Item1.value);
+            }
             stmL.Block.Statements.Remove(stmL);
             ssa.AddUses(stmR);
-            return stmR.Instruction;
+        }
+
+        private void FuseLoadPair(Tuple<UnalignedAccess, UnalignedAccess> pair)
+        {
+            throw new NotImplementedException();
+        }
+
+        private List<Tuple<UnalignedAccess, UnalignedAccess>> GroupUnalignedAccesses(Dictionary<Identifier, List<UnalignedAccess>> x)
+        {
+            var pairs = new List<Tuple<UnalignedAccess, UnalignedAccess>>();
+            foreach (var de in x)
+            {
+                var sorted = de.Value.ToSortedList(k => k.offset);
+                foreach (var se in sorted)
+                {
+                    UnalignedAccess other;
+                    if (!sorted.TryGetValue(se.Key + 3, out other))
+                        continue;
+                    if (se.Value.isLeft == other.isLeft)
+                        continue;
+
+                    var pair = Tuple.Create(se.Value, other);
+                    pairs.Add(pair);
+                }
+            }
+            return pairs;
+        }
+
+        private readonly string[] unalignedIntrinsics =
+        {
+            PseudoProcedure.SwL,
+            PseudoProcedure.SwR,
+        };
+
+        public class UnalignedAccess
+        {
+            public Statement stm;
+            public Identifier reg;
+            public int offset;
+            public bool isLeft;
+            public Expression value;
+            public Expression mem;
+        }
+
+        private Dictionary<Identifier, List<UnalignedAccess>> FindAllUnalignedStoreInstructions(IEnumerable<Statement> stms)
+        {
+            var dict = new Dictionary<Identifier, List<UnalignedAccess>>();
+            foreach (var stm in stms)
+            {
+                var side = stm.Instruction as SideEffect;
+                if (side == null)
+                    continue;
+                var tup = MatchIntrinsicApplication(side.Expression, unalignedIntrinsics);
+                if (tup == null)
+                    continue;
+                var appName = tup.Item1;
+                var app = tup.Item2;
+                var reg = GetRegisterOf(app.Arguments[0]);
+                var offset = GetOffsetOf(app.Arguments[0]);
+                var ua = new UnalignedAccess
+                {
+                    stm = stm,
+                    reg = reg,
+                    offset = offset,
+                    isLeft = appName.EndsWith("l"),
+                    value = app.Arguments[1],
+                    mem = app.Arguments[0],
+                };
+                List<UnalignedAccess> accesses;
+                if (!dict.TryGetValue(reg, out accesses))
+                {
+                    accesses = new List<UnalignedAccess>();
+                    dict.Add(reg, accesses);
+                }
+                accesses.Add(ua);
+            }
+            return dict;
+        }
+
+
+        private Identifier GetRegisterOf(Expression e)
+        {
+            MemoryAccess mem = e as MemoryAccess;
+            if (mem != null)
+            {
+                return (Identifier)((BinaryExpression)mem.EffectiveAddress).Left;
+            }
+            else
+            {
+                return ssa.Procedure.Frame.FramePointer;
+            }
         }
 
         private int GetOffsetOf(Expression e)
@@ -231,7 +308,7 @@ namespace Reko.Analysis
             }
         }
 
-        private Application MatchIntrinsicApplication(Expression e, string name)
+        private Tuple<string, Application> MatchIntrinsicApplication(Expression e, string [] names)
         {
             var app = e as Application;
             if (app == null)
@@ -242,9 +319,9 @@ namespace Reko.Analysis
             var ppp = pc.Procedure as PseudoProcedure;
             if (ppp == null)
                 return null;
-            if (ppp.Name != name)
+            if (!names.Contains(ppp.Name))
                 return null;
-            return app;
+            return Tuple.Create(ppp.Name, app);
         }
     }
 }
