@@ -10,6 +10,11 @@
       <terminates>true</terminates>
     </characteristics>
   </entry>
+  <entry name="_exit">
+    <characteristics>
+      <terminates>true</terminates>
+    </characteristics>
+  </entry>
   <entry name="__assert_fail">
     <characteristics>
       <terminates>true</terminates>
