@@ -51,9 +51,14 @@ namespace Reko.Analysis
 
         public void Transform()
         {
+            foreach (var stm in ssa.Procedure.Statements.ToList())
+            {
+                stm.Instruction.Accept(this);
+            }
+
             // Find all unaligned reds and writs and group them by
             // register + innstruction.
-            var x = FindAllUnalignedInstructions(ssa.Procedure.Statements);
+            var x = FindAllUnalignedStoreInstructions(ssa.Procedure.Statements);
 
             // Find pairs of instructions that are (left/right) and
             // whose offsets differ by 3 bytes.
@@ -63,18 +68,96 @@ namespace Reko.Analysis
             FuseUnalignedPairs(y);
         }
 
+
+
+        public override void VisitAssignment(Assignment a)
+        {
+            base.VisitAssignment(a);
+            FuseUnalignedLoads(a);
+        }
+
+        private static readonly string[] unalignedLoadsLe = new[]
+        {
+            PseudoProcedure.LwR
+        };
+
+        private static readonly string[] unalignedLoadsBe = new[]
+        {
+            PseudoProcedure.LwL
+        };
+
+
+        // On MIPS-LE the sequence
+        //   lwl rx,K+3(ry)
+        //   lwr rx,K(ry)
+        // is an unaligned read. On MIPS-BE it instead is:
+        //   lwl rx,K(ry)
+        //   lwr rx,K+3(ry)
+        public void FuseUnalignedLoads(Assignment assR)
+        {
+            var appR = MatchIntrinsicApplication(assR.Src, unalignedLoadsLe);
+            if (appR == null)
+                return;
+
+            var regR = assR.Dst;
+            var stmR = ssa.Identifiers[regR].DefStatement;
+
+            var memR = appR.Item2.Arguments[1];
+            var offR = GetOffsetOf(memR);
+
+            var appL = appR.Item2.Arguments[0] as Application;
+            Statement stmL = null;
+            Assignment assL = null;
+            if (appL == null)
+            {
+                var regL = (Identifier)appR.Item2.Arguments[0];
+                stmL = ssa.Identifiers[regL].DefStatement;
+                if (stmL == null)
+                    return;
+                assL = stmL.Instruction as Assignment;
+                if (assL == null)
+                    return;
+
+                appL = assL.Src as Application;
+            }
+            var pairL = MatchIntrinsicApplication(appL, unalignedLoadsBe);
+            if (pairL == null)
+                return;
+
+            var applL = pairL.Item2;
+            var memL = appL.Arguments[1];
+            var offL = GetOffsetOf(memL);
+
+            Expression mem;
+            if (offR + 3 == offL)
+            {
+                // Little endian use
+                mem = memR;
+            }
+            else if (offL + 3 == offR)
+            {
+                // Big endian use
+                mem = memL;
+            }
+            else
+                return;
+
+            ssa.RemoveUses(stmL);
+            ssa.RemoveUses(stmR);
+            if (assL != null)
+            {
+                assL.Src = appL.Arguments[0];
+                ssa.AddUses(stmL);
+            }
+            assR.Src = mem;
+            ssa.AddUses(stmR);
+        }
+
         private void FuseUnalignedPairs(List<Tuple<UnalignedAccess, UnalignedAccess>> pairs)
         {
             foreach (var pair in pairs)
             {
-                if (pair.Item1.isWrite)
-                {
-                    FuseStorePair(pair);
-                }
-                else
-                {
-                    FuseLoadPair(pair);
-                }
+                FuseStorePair(pair);
             }
         }
 
@@ -94,15 +177,19 @@ namespace Reko.Analysis
 
             ssa.RemoveUses(stmL);
             ssa.RemoveUses(stmR);
-            stmR.Instruction = new Store(
-                new MemoryAccess(
-                new BinaryExpression(
-                    Operator.IAdd,
-                    PrimitiveType.Word32,
-                    pair.Item1.reg,
-                    Constant.Int32(pair.Item1.offset)),
-                PrimitiveType.Word32),
-                pair.Item1.value);
+
+            if (pair.Item1.mem is Identifier)
+            {
+                stmR.Instruction = (Instruction)new Assignment(
+                    (Identifier)pair.Item1.mem,
+                    pair.Item1.value);
+            }
+            else
+            {
+                stmR.Instruction = new Store(
+                    pair.Item1.mem,
+                    pair.Item1.value);
+            }
             stmL.Block.Statements.Remove(stmL);
             ssa.AddUses(stmR);
         }
@@ -123,8 +210,6 @@ namespace Reko.Analysis
                     UnalignedAccess other;
                     if (!sorted.TryGetValue(se.Key + 3, out other))
                         continue;
-                    if (se.Value.isWrite != other.isWrite)
-                        continue;
                     if (se.Value.isLeft == other.isLeft)
                         continue;
 
@@ -137,8 +222,6 @@ namespace Reko.Analysis
 
         private readonly string[] unalignedIntrinsics =
         {
-            PseudoProcedure.LwL,
-            PseudoProcedure.LwR,
             PseudoProcedure.SwL,
             PseudoProcedure.SwR,
         };
@@ -148,12 +231,12 @@ namespace Reko.Analysis
             public Statement stm;
             public Identifier reg;
             public int offset;
-            public bool isWrite;
             public bool isLeft;
             public Expression value;
+            public Expression mem;
         }
 
-        private Dictionary<Identifier, List<UnalignedAccess>> FindAllUnalignedInstructions(IEnumerable<Statement> stms)
+        private Dictionary<Identifier, List<UnalignedAccess>> FindAllUnalignedStoreInstructions(IEnumerable<Statement> stms)
         {
             var dict = new Dictionary<Identifier, List<UnalignedAccess>>();
             foreach (var stm in stms)
@@ -173,9 +256,9 @@ namespace Reko.Analysis
                     stm = stm,
                     reg = reg,
                     offset = offset,
-                    isWrite = appName[2] == 's',
                     isLeft = appName.EndsWith("l"),
                     value = app.Arguments[1],
+                    mem = app.Arguments[0],
                 };
                 List<UnalignedAccess> accesses;
                 if (!dict.TryGetValue(reg, out accesses))
@@ -188,148 +271,17 @@ namespace Reko.Analysis
             return dict;
         }
 
-        // On MIPS-LE the sequence
-        //   lwl rx,K+3(ry)
-        //   lwr rx,K(ry)
-        // is an unaligned read. On MIPS-BE it instead is:
-        //   lwl rx,K(ry)
-        //   lwr rx,K+3(ry)
-        //public void FuseUnalignedLoads(Assignment assR)
-        //{
-        //    var appR = MatchIntrinsicApplication(assR.Src, PseudoProcedure.LwR);
-        //    if (appR == null)
-        //        return;
-
-        //    var regR = assR.Dst;
-        //    var stmR = ssa.Identifiers[regR].DefStatement;
-
-        //    var memR = appR.Arguments[1];
-        //    var offR = GetOffsetOf(memR);
-
-        //    var appL = appR.Arguments[0] as Application;
-        //    Statement stmL = null;
-        //    Assignment assL = null;
-        //    if (appL == null)
-        //    {
-        //        var regL = (Identifier)appR.Arguments[0];
-        //        stmL = ssa.Identifiers[regL].DefStatement;
-        //        if (stmL == null)
-        //            return;
-        //        assL = stmL.Instruction as Assignment;
-        //        if (assL == null)
-        //            return;
-
-        //        appL = assL.Src as Application;
-        //    }
-        //    appL = MatchIntrinsicApplication(appL, PseudoProcedure.LwL);
-        //    if (appL == null)
-        //        return;
-
-        //    var memL = appL.Arguments[1];
-        //    var offL = GetOffsetOf(memL);
-
-        //    Expression mem;
-        //    if (offR + 3 == offL)
-        //    {
-        //        // Little endian use
-        //        mem = memR;
-        //    }
-        //    else if (offL + 3 == offR)
-        //    {
-        //        // Big endian use
-        //        mem = memL;
-        //    }
-        //    else
-        //        return;
-
-        //    ssa.RemoveUses(stmL);
-        //    ssa.RemoveUses(stmR);
-        //    if (assL != null)
-        //    {
-        //        assL.Src = appL.Arguments[0];
-        //        ssa.AddUses(stmL);
-        //    }
-        //    assR.Src = mem;
-        //    ssa.AddUses(stmR);
-        //}
-
-
-        //// On MIPS-LE the sequence
-        ////   swl rx,K+3(ry)
-        ////   swr rx,K(ry)
-        //// is an unaligned store.
-        //public Instruction FuseUnalignedStores(SideEffect se)
-        //{
-        //    var appR = MatchIntrinsicApplication(se.Expression, PseudoProcedure.SwR);
-        //    if (appR == null)
-        //        return se;
-   
-        //    var sidR = ssa.Identifiers[idR];
-        //    Application appL = null;
-        //    Statement stmL = null;
-        //    Statement stmR = null;
-        //    foreach (var use in sidR.Uses)
-        //    {
-        //        var s = use.Instruction as SideEffect;
-        //        if (s == null)
-        //            continue;
-        //        var app = MatchIntrinsicApplication(s.Expression, PseudoProcedure.SwR);
-        //        if (app != null)
-        //        {
-        //            appR = app;
-        //            stmR = use;
-        //        }
-        //        app = MatchIntrinsicApplication(s.Expression, PseudoProcedure.SwL);
-        //        if (app != null)
-        //        {
-        //            appL = app;
-        //            stmL = use;
-        //        }
-        //    }
-        //    if (stmL == null || stmR == null)
-        //        return se;
-
-        //    var memL = appL.Arguments[0];
-        //    var offL = GetOffsetOf(memL);
-
-        //    var memR = appR.Arguments[0];
-        //    var offR = GetOffsetOf(memR);
-
-        //    Expression mem;
-        //    if (offR + 3 == offL)
-        //    {
-        //        // Little endian use
-        //        mem = memR;
-        //    }
-        //    else if (offL + 3 == offR)
-        //    {
-        //        // Big endian use
-        //        mem = memL;
-        //    }
-        //    else
-        //        return se;
-
-        //    ssa.RemoveUses(stmL);
-        //    ssa.RemoveUses(stmR);
-        //    stmR.Instruction = mem is Identifier
-        //        ? (Instruction)new Assignment((Identifier)mem, sidR.Identifier)
-        //        : (Instruction)new Store(mem, sidR.Identifier);
-        //    stmL.Block.Statements.Remove(stmL);
-        //    ssa.AddUses(stmR);
-        //    return stmR.Instruction;
-        //}
-
 
         private Identifier GetRegisterOf(Expression e)
         {
             MemoryAccess mem = e as MemoryAccess;
-            if (e != null)
+            if (mem != null)
             {
                 return (Identifier)((BinaryExpression)mem.EffectiveAddress).Left;
             }
             else
             {
-                return (Identifier)e;
+                return ssa.Procedure.Frame.FramePointer;
             }
         }
 
