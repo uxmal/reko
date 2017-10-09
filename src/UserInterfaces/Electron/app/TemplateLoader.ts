@@ -1,4 +1,4 @@
-import handlebars = require("handlebars");
+import Handlebars = require("handlebars");
 import * as fs from 'fs';
 import * as path from 'path';	
 
@@ -12,7 +12,7 @@ export default class TemplateLoader {
 
 		var tplPath = path.resolve(__dirname + `/../views/${name}.tpl`);
 		var data = fs.readFileSync(tplPath).toString();
-		var tpl = handlebars.compile(data)
+		var tpl = Handlebars.compile(data)
 		TemplateLoader.Templates.set(name, tpl);
 		
 		return tpl;
