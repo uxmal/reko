@@ -400,18 +400,14 @@ SsaProcedureBuilder_exit:
             #region Expected
 @"r8:r8
     def:  def r8
-    uses: __swl(Mem7[r8 + 0x0000001B:word32], 0x00000000)
-          __swl(Mem8[r8 + 0x0000001F:word32], 0x00000000)
-          __swl(Mem9[r8 + 0x0000002B:word32], 0x00000000)
-          __swl(Mem11[r8 + 0x00000033:word32], 0x00000000)
-          r4_11 = r8 + 0x00000010
-          __swr(Mem14[r8 + 0x00000018:word32], 0x00000000)
-          __swr(Mem15[r8 + 0x0000001C:word32], 0x00000000)
-          __swr(Mem16[r8 + 0x00000028:word32], 0x00000000)
-          __swr(Mem18[r8 + 0x00000030:word32], 0x00000000)
+    uses: r4_11 = r8 + 0x00000010
           Mem12[r8 + 0x00000010:word32] = r14
           Mem13[r8 + 0x00000014:word32] = r13
+          Mem14[r8 + 0x00000018:word32] = 0x00000000
+          Mem15[r8 + 0x0000001C:word32] = 0x00000000
+          Mem16[r8 + 0x00000028:word32] = 0x00000000
           Mem17[r8 + 0x0000002C:word32] = r9
+          Mem18[r8 + 0x00000030:word32] = 0x00000000
 Mem5:Global memory
     def:  def Mem5
 r14:r14
@@ -424,13 +420,10 @@ r13:r13
     uses: Mem13[r8 + 0x00000014:word32] = r13
 Mem7:Global memory
     def:  def Mem7
-    uses: __swl(Mem7[r8 + 0x0000001B:word32], 0x00000000)
 Mem8:Global memory
     def:  def Mem8
-    uses: __swl(Mem8[r8 + 0x0000001F:word32], 0x00000000)
 Mem9:Global memory
     def:  def Mem9
-    uses: __swl(Mem9[r8 + 0x0000002B:word32], 0x00000000)
 Mem10:Global memory
     def:  def Mem10
 r9:r9
@@ -438,7 +431,6 @@ r9:r9
     uses: Mem17[r8 + 0x0000002C:word32] = r9
 Mem11:Global memory
     def:  def Mem11
-    uses: __swl(Mem11[r8 + 0x00000033:word32], 0x00000000)
 r4_11: orig: r4
     def:  r4_11 = r8 + 0x00000010
 Mem12:Global memory
@@ -447,18 +439,14 @@ Mem13:Global memory
     def:  def Mem13
 Mem14:Global memory
     def:  def Mem14
-    uses: __swr(Mem14[r8 + 0x00000018:word32], 0x00000000)
 Mem15:Global memory
     def:  def Mem15
-    uses: __swr(Mem15[r8 + 0x0000001C:word32], 0x00000000)
 Mem16:Global memory
     def:  def Mem16
-    uses: __swr(Mem16[r8 + 0x00000028:word32], 0x00000000)
 Mem17:Global memory
     def:  def Mem17
 Mem18:Global memory
     def:  def Mem18
-    uses: __swr(Mem18[r8 + 0x00000030:word32], 0x00000000)
 // SsaProcedureBuilder
 // Return size: 0
 void SsaProcedureBuilder()
@@ -483,19 +471,14 @@ SsaProcedureBuilder_entry:
 	def Mem18
 	// succ:  l1
 l1:
-	__swl(Mem7[r8 + 0x0000001B:word32], 0x00000000)
-	__swl(Mem8[r8 + 0x0000001F:word32], 0x00000000)
-	__swl(Mem9[r8 + 0x0000002B:word32], 0x00000000)
-	__swl(Mem11[r8 + 0x00000033:word32], 0x00000000)
 	r4_11 = r8 + 0x00000010
 	Mem12[r8 + 0x00000010:word32] = r14
-    MEM9[r4] = 42;
 	Mem13[r8 + 0x00000014:word32] = r13
-	__swr(Mem14[r8 + 0x00000018:word32], 0x00000000)
-	__swr(Mem15[r8 + 0x0000001C:word32], 0x00000000)
-	__swr(Mem16[r8 + 0x00000028:word32], 0x00000000)
+	Mem14[r8 + 0x00000018:word32] = 0x00000000
+	Mem15[r8 + 0x0000001C:word32] = 0x00000000
+	Mem16[r8 + 0x00000028:word32] = 0x00000000
 	Mem17[r8 + 0x0000002C:word32] = r9
-	__swr(Mem18[r8 + 0x00000030:word32], 0x00000000)
+	Mem18[r8 + 0x00000030:word32] = 0x00000000
 	return
 	// succ:  SsaProcedureBuilder_exit
 SsaProcedureBuilder_exit:
