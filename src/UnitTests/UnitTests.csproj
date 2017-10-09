@@ -104,6 +104,7 @@
     <Compile Include="Core\Analysis\ScanfFormatParserTests.cs" />
     <Compile Include="Core\DumperTests.cs" />
     <Compile Include="Core\IRFormat\IRParserTests.cs" />
+    <Compile Include="Core\Lib\Float80Tests.cs" />
     <Compile Include="Core\Output\IRFormatterTests.cs" />
     <Compile Include="Core\Output\JsonFormatterTests.cs" />
     <Compile Include="Core\Output\LlvmFormatterTests.cs" />
