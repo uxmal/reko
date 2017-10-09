@@ -291,6 +291,22 @@ SsaProcedureBuilder_exit:
             AssertStringsEqual(sExp, ssa);
         }
 
+        private void __lwl(Expression mem, Expression reg)
+        {
+            m.SideEffect(
+                m.Fn(
+                    new PseudoProcedure(PseudoProcedure.LwL, PrimitiveType.Word32, 2),
+                    mem, reg));
+        }
+
+        private void __lwr(Expression mem, Expression reg)
+        {
+            m.SideEffect(
+                m.Fn(
+                    new PseudoProcedure(PseudoProcedure.LwR, PrimitiveType.Word32, 2),
+                    mem, reg));
+        }
+
         private void __swl(Expression mem, Expression reg)
         {
             m.SideEffect(
@@ -354,7 +370,6 @@ SsaProcedureBuilder_exit:
         }
 
         [Test(Description = "Fuse a sequence of stores, as seen in a real MIPS binary")]
-        [Ignore("This will get fixed once we get the test below running.")]
         public void UfuserLittleEndianSequence()
         {
             var r8 = m.Reg32("r8");
@@ -490,7 +505,7 @@ SsaProcedureBuilder_exit:
         }
 
         [Test(Description = "Fuses a SWL/SWR pair assuming no writes are done to the words used by the 2 memory accesses")]
-        public void UfuserAggressiveLittleEndianConstant()
+        public void UfuserAggressiveLittleEndianConstantStores()
         {
             var r8 = m.Reg32("r8");
             __swl(m.LoadDw(m.IAdd(r8, 0x13)), m.Word32(0x12345678));
@@ -502,9 +517,38 @@ SsaProcedureBuilder_exit:
             var ssa = RunTest(m);
             var sExp =
             #region Expected
-                "@@@";
+@"r8:r8
+    def:  def r8
+    uses: Mem3[r8 + 0x00000010:word32] = 0x12345678
+          Mem4[r8 + 0x00000014:word32] = 0x9ABCDEF0
+Mem1:Global memory
+    def:  def Mem1
+Mem2:Global memory
+    def:  def Mem2
+Mem3:Global memory
+    def:  def Mem3
+Mem4:Global memory
+    def:  def Mem4
+// SsaProcedureBuilder
+// Return size: 0
+void SsaProcedureBuilder()
+SsaProcedureBuilder_entry:
+	def r8
+	def Mem1
+	def Mem2
+	def Mem3
+	def Mem4
+	// succ:  l1
+l1:
+	Mem3[r8 + 0x00000010:word32] = 0x12345678
+	Mem4[r8 + 0x00000014:word32] = 0x9ABCDEF0
+	return
+	// succ:  SsaProcedureBuilder_exit
+SsaProcedureBuilder_exit:
+";
             #endregion
             AssertStringsEqual(sExp, ssa);
         }
     }
+
 }
