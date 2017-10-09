@@ -184,9 +184,14 @@ namespace Reko.Core
             var pt = dt as PrimitiveType;
             if (pt == null)
                 return Constant.Invalid;
-            else if (pt.Domain == Domain.Real && pt.BitSize > 64)
+            else if (pt.Domain == Domain.Real && pt.BitSize > 80)
             {
-                //$TODO: we can't represent 80-, 96- or 128-bit floats quite yet.
+                //$TODO: we can't represent 96- or 128-bit floats quite yet.
+                return Constant.Invalid;
+            }
+            else if (pt.BitSize > 64)
+            {
+                //$TODO: we can't represent integer constants larger than 64 bits yet.
                 return Constant.Invalid;
             }
             ImageSegment seg;
