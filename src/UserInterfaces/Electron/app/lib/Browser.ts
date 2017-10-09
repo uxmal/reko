@@ -5,7 +5,9 @@ export default class Browser {
 	constructor(){}
 
 	public update(): any {
-		$(".procedure").click(this.onProcedureClick);
+		$(".procedure")
+			.off("click")
+			.click(this.onProcedureClick);
 	}
 
 	public onProcedureClick(): any {
