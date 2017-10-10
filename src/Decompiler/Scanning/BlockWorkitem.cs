@@ -499,7 +499,7 @@ namespace Reko.Scanning
             var site = OnBeforeCall(stackReg, call.ReturnAddressSize);
             FunctionType sig;
             ProcedureCharacteristics chr = null;
-            var callTarget = call.Target;
+            var callTarget = call.Target.Accept(eval);
             Constant c;
             if (callTarget.As(out c))
             {
@@ -513,7 +513,7 @@ namespace Reko.Scanning
                 }
             }
             Address addr = callTarget as Address;
-            if (addr != null)
+            if (addr != null && program.SegmentMap.IsValidAddress(addr))
             {
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
                 if (impProc != null)

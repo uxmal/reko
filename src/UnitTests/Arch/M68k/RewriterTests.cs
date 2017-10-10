@@ -51,7 +51,8 @@ namespace Reko.UnitTests.Arch.M68k
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
-            return arch.CreateRewriter(mem.CreateLeReader(0), arch.CreateProcessorState(null), arch.CreateFrame(), host);
+            var state = arch.CreateProcessorState(new SegmentMap(mem.BaseAddress));
+            return arch.CreateRewriter(mem.CreateLeReader(0), state, arch.CreateFrame(), host);
         }
 
         private void Rewrite(params ushort[] opcodes)

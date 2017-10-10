@@ -34,7 +34,6 @@ namespace Reko.UnitTests.Arch.Xtensa
     {
         private XtensaArchitecture arch = new XtensaArchitecture();
         private Address baseAddr = Address.Ptr32(0x0010000);
-        private XtensaProcessorState state;
         private MemoryArea image;
 
         public override IProcessorArchitecture Architecture
@@ -44,7 +43,7 @@ namespace Reko.UnitTests.Arch.Xtensa
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
-            var state = (XtensaProcessorState)arch.CreateProcessorState(null);
+            var state = (XtensaProcessorState)arch.CreateProcessorState(new SegmentMap(baseAddr));
             return new XtensaRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
         }
 

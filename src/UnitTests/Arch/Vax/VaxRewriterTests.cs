@@ -55,7 +55,8 @@ namespace Reko.UnitTests.Arch.Vax
         [SetUp]
         public void Setup()
         {
-            state = (VaxProcessorState)arch.CreateProcessorState(null);
+            var map = new SegmentMap(baseAddr);
+            state = (VaxProcessorState)arch.CreateProcessorState(map);
         }
 
         private void BuildTest(params byte[] bytes)
@@ -1950,9 +1951,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "2|L--|C = false",
                 "3|L--|V = false");
         }
-
-     
-     
 
         [Test]
         public void VaxRw_movab()

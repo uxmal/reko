@@ -34,7 +34,6 @@ namespace Reko.UnitTests.Arch.Avr
     {
         private Avr8Architecture arch = new Avr8Architecture();
         private Address baseAddr = Address.Ptr16(0x0100);
-        private Avr8State state;
         private MemoryArea image;
 
         public Avr8RewriterTests()
@@ -49,6 +48,7 @@ namespace Reko.UnitTests.Arch.Avr
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
+            var state = (Avr8State)arch.CreateProcessorState(new SegmentMap(image.BaseAddress));
             return new Avr8Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.FramePointerType), host);
         }
 
@@ -72,7 +72,6 @@ namespace Reko.UnitTests.Arch.Avr
         [SetUp]
         public void Setup()
         {
-            state = (Avr8State)arch.CreateProcessorState(null);
         }
 
         [Test]

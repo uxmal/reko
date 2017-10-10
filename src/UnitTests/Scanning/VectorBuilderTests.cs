@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Scanning
             scanner.Stub(s => s.Services).Return(sc);
             arch.Stub(s => s.CreateImageReader(this.mem, this.program.ImageMap.BaseAddress))
                 .Return(this.mem.CreateLeReader(0));
-            var state = new FakeProcessorState(null, null);
+            var state = new FakeProcessorState(null, program.SegmentMap);
         
             mr.ReplayAll();
 

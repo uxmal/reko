@@ -36,7 +36,6 @@ namespace Reko.UnitTests.Arch.Tlcs
     {
         private Tlcs90Architecture arch = new Tlcs90Architecture();
         private Address baseAddr = Address.Ptr16(0x0100);
-        private Tlcs90State state;
         private MemoryArea image;
 
         public override IProcessorArchitecture Architecture
@@ -46,6 +45,7 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
+            Tlcs90State state = (Tlcs90State)arch.CreateProcessorState(new SegmentMap(baseAddr));
             return new Tlcs90Rewriter(arch, new LeImageReader(image, 0), state, binder, host);
         }
 
@@ -66,7 +66,6 @@ namespace Reko.UnitTests.Arch.Tlcs
         [SetUp]
         public void Setup()
         {
-            state = (Tlcs90State)arch.CreateProcessorState(null);
         }
 
         [Test]

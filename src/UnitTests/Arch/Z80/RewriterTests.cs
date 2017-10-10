@@ -31,7 +31,6 @@ namespace Reko.UnitTests.Arch.Z80
     {
         private Z80ProcessorArchitecture arch = new Z80ProcessorArchitecture();
         private Address baseAddr = Address.Ptr16(0x0100);
-        private Z80ProcessorState state;
         private MemoryArea image;
 
         public override IProcessorArchitecture Architecture
@@ -41,6 +40,7 @@ namespace Reko.UnitTests.Arch.Z80
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
+            var state = (Z80ProcessorState)arch.CreateProcessorState(new SegmentMap(baseAddr));
             return new Z80Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
         }
 
@@ -52,7 +52,6 @@ namespace Reko.UnitTests.Arch.Z80
         [SetUp]
         public void Setup()
         {
-            state = (Z80ProcessorState) arch.CreateProcessorState(null);
         }
 
         private void BuildTest(params byte[] bytes)
