@@ -130,9 +130,8 @@ word16 g_w15FF = 0x8190;
 <anonymous> * g_a46C4[] = 
 	{
 	};
-<anonymous> g_t474C = <code>;
 word16 g_w47E0 = 0x0087;
-Eq_18506 g_a47E4[] = 
+Eq_18784 g_a47E4[] = 
 	{
 	};
 word16 g_a487E[] = 
