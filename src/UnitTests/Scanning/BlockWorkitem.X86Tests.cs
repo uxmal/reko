@@ -356,7 +356,7 @@ namespace Reko.UnitTests.Scanning
             var sw = new StringWriter();
             block.WriteStatements(sw);
             string sExp =
-                "\tax = SEQ(0x0C00, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
+                "\tax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
 
