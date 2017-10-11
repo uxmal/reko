@@ -638,30 +638,27 @@ SsaProcedureBuilder_exit:
             var ssa = RunTest(m);
             var sExp =
             #region Expected
-@"r4:r4
-    def:  def r4
-    uses: Mem5[r4:word32] = r8
-Mem2:Global memory
-    def:  def Mem2
+@"loc40:Local -0040
+    def:  def loc40
 r8:r8
     def:  def r8
-    uses: Mem5[r4:word32] = r8
-Mem3: orig: Mem0
-Mem3:Global memory
-    def:  def Mem3
-Mem5: orig: Mem0
-    def:  Mem5[r4:word32] = r8
+    uses: loc40_2 = r8
+loc40_2: orig: loc40
+    def:  loc40_2 = __swl(loc40, r8)
+loc3D:Local -003D
+    def:  def loc3D
+loc3D_4: orig: loc3D
+    def:  loc40_2 = r8
 // SsaProcedureBuilder
 // Return size: 0
 void SsaProcedureBuilder()
 SsaProcedureBuilder_entry:
-	def r4
-	def Mem2
+	def loc40
 	def r8
-	def Mem3
+	def loc3D
 	// succ:  l1
 l1:
-	Mem5[r4:word32] = r8
+	loc40_2 = r8
 SsaProcedureBuilder_exit:
 ";
             #endregion 

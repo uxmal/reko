@@ -241,10 +241,20 @@ namespace Reko.Analysis
             var dict = new Dictionary<Identifier, List<UnalignedAccess>>();
             foreach (var stm in stms)
             {
+                Expression src;
                 var store = stm.Instruction as Store;
-                if (store == null)
-                    continue;
-                var tup = MatchIntrinsicApplication(store.Src, unalignedIntrinsics);
+                if (store != null)
+                {
+                    src = store.Src;
+                }
+                else
+                {
+                    var ass = stm.Instruction as Assignment;
+                    if (ass == null)
+                        continue;
+                    src = ass.Src;
+                }
+                var tup = MatchIntrinsicApplication(src, unalignedIntrinsics);
                 if (tup == null)
                     continue;
                 var appName = tup.Item1;
