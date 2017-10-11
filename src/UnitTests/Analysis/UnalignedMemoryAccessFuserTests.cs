@@ -127,7 +127,6 @@ SsaProcedureBuilder_entry:
 	def Mem3
 	// succ:  l1
 l1:
-	r8_3 = r8
 	r8_5 = Mem3[r4 + 0x00000028:word32]
 SsaProcedureBuilder_exit:
 ";
@@ -181,7 +180,6 @@ SsaProcedureBuilder_entry:
 	def Mem3
 	// succ:  l1
 l1:
-	r8_3 = r8
 	r8_5 = Mem3[r4:word32]
 SsaProcedureBuilder_exit:
 ";
@@ -236,7 +234,6 @@ SsaProcedureBuilder_entry:
 	def Mem3
 	// succ:  l1
 l1:
-	r8_3 = r8
 	r8_5 = Mem2[r4 + 0x0000A5E4:word32]
 SsaProcedureBuilder_exit:
 ";
@@ -291,20 +288,22 @@ SsaProcedureBuilder_exit:
             AssertStringsEqual(sExp, ssa);
         }
 
-        private void __lwl(Expression mem, Expression reg)
+        private void __lwl(Identifier reg, Expression mem)
         {
-            m.SideEffect(
+            m.Assign(
+                reg,
                 m.Fn(
                     new PseudoProcedure(PseudoProcedure.LwL, PrimitiveType.Word32, 2),
-                    mem, reg));
+                    reg, mem));
         }
 
-        private void __lwr(Expression mem, Expression reg)
+        private void __lwr(Identifier reg, Expression mem)
         {
-            m.SideEffect(
+            m.Assign(
+                reg,
                 m.Fn(
                     new PseudoProcedure(PseudoProcedure.LwR, PrimitiveType.Word32, 2),
-                    mem, reg));
+                    reg, mem));
         }
 
         private void __swl(Expression mem, Expression reg)
@@ -556,6 +555,91 @@ SsaProcedureBuilder_exit:
             #endregion
             AssertStringsEqual(sExp, ssa);
         }
+
+        [Test]
+        public void Ufuser_Store_MemoryAccessWithZeroOffset()
+        {
+            var r4 = m.Reg32("r4");
+            var r8 = m.Reg32("r8");
+
+            __swl(m.LoadDw(m.IAdd(r4, 3)), r8);
+            __swr(m.LoadDw(r4), r8);
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"r4:r4
+    def:  def r4
+    uses: Mem5[r4:word32] = r8
+Mem2:Global memory
+    def:  def Mem2
+r8:r8
+    def:  def r8
+    uses: Mem5[r4:word32] = r8
+Mem3: orig: Mem0
+Mem3:Global memory
+    def:  def Mem3
+Mem5: orig: Mem0
+    def:  Mem5[r4:word32] = r8
+// SsaProcedureBuilder
+// Return size: 0
+void SsaProcedureBuilder()
+SsaProcedureBuilder_entry:
+	def r4
+	def Mem2
+	def r8
+	def Mem3
+	// succ:  l1
+l1:
+	Mem5[r4:word32] = r8
+SsaProcedureBuilder_exit:
+";
+            #endregion 
+            AssertStringsEqual(sExp, ssa);
+        }
+
+        [Test]
+        public void Ufuser_Load_MemoryAccessWithZeroOffset()
+        {
+            var r4 = m.Reg32("r4");
+            var r8 = m.Reg32("r8");
+
+            __lwl(r8, m.LoadDw(m.IAdd(r4, 3)));
+            __lwr(r8, m.LoadDw(r4));
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"r8:r8
+    def:  def r8
+    uses: r8_3 = r8
+r4:r4
+    def:  def r4
+    uses: r8_5 = Mem3[r4:word32]
+Mem2:Global memory
+    def:  def Mem2
+r8_3: orig: r8
+    def:  r8_3 = r8
+Mem3:Global memory
+    def:  def Mem3
+    uses: r8_5 = Mem3[r4:word32]
+r8_5: orig: r8
+    def:  r8_5 = Mem3[r4:word32]
+// SsaProcedureBuilder
+// Return size: 0
+void SsaProcedureBuilder()
+SsaProcedureBuilder_entry:
+	def r8
+	def r4
+	def Mem2
+	def Mem3
+	// succ:  l1
+l1:
+	r8_5 = Mem3[r4:word32]
+SsaProcedureBuilder_exit:
+";
+            #endregion 
+            AssertStringsEqual(sExp, ssa);
+        }
+
     }
 
 }

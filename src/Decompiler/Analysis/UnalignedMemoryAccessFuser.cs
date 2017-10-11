@@ -148,6 +148,10 @@ namespace Reko.Analysis
                 ssa.AddUses(stmL);
             }
             assR.Src = mem;
+            if (stmL != null)
+            {
+                stmL.Block.Statements.Remove(stmL);
+            }
             ssa.AddUses(stmR);
         }
 
@@ -282,7 +286,11 @@ namespace Reko.Analysis
             MemoryAccess mem = e as MemoryAccess;
             if (mem != null)
             {
-                return (Identifier)((BinaryExpression)mem.EffectiveAddress).Left;
+                Identifier id;
+                if (mem.EffectiveAddress.As(out id))
+                    return id;
+                else 
+                    return (Identifier)((BinaryExpression)mem.EffectiveAddress).Left;
             }
             else
             {
@@ -295,8 +303,15 @@ namespace Reko.Analysis
             var id = e as Identifier;
             if (id != null)
             {
-                var mem = id.Storage as StackStorage;
-                return mem.StackOffset;
+                if (id.Storage is RegisterStorage)
+                {
+                    return 0;
+                }
+                else
+                {
+                    var mem = id.Storage as StackStorage;
+                    return mem.StackOffset;
+                }
             }
             else
             {
