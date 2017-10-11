@@ -247,6 +247,7 @@ namespace Reko.Analysis
                 var app = tup.Item2;
                 var reg = GetRegisterOf(app.Arguments[0]);
                 var offset = GetOffsetOf(app.Arguments[0]);
+                var mem = GetModifiedMemory(stm.Instruction);
                 var ua = new UnalignedAccess
                 {
                     stm = stm,
@@ -254,7 +255,7 @@ namespace Reko.Analysis
                     offset = offset,
                     isLeft = appName == PseudoProcedure.SwL,
                     value = app.Arguments[1],
-                    mem = app.Arguments[0],
+                    mem = mem
                 };
                 List<UnalignedAccess> accesses;
                 if (!dict.TryGetValue(reg, out accesses))
@@ -267,6 +268,14 @@ namespace Reko.Analysis
             return dict;
         }
 
+        private Expression GetModifiedMemory(Instruction instruction)
+        {
+            Assignment ass = instruction as Assignment;
+            if (ass != null)
+                return ass.Dst;
+            else
+                return ((Store)instruction).Dst;
+        }
 
         private Identifier GetRegisterOf(Expression e)
         {

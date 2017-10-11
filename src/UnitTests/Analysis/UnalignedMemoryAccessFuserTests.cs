@@ -338,17 +338,17 @@ SsaProcedureBuilder_exit:
             #region Expected
 @"r4:r4
     def:  def r4
-    uses: Mem3[r4 + 0x00000028:word32] = r8
+    uses: Mem5[r4 + 0x00000028:word32] = r8
 Mem2:Global memory
     def:  def Mem2
 r8:r8
     def:  def r8
-    uses: Mem3[r4 + 0x00000028:word32] = r8
+    uses: Mem5[r4 + 0x00000028:word32] = r8
 Mem3: orig: Mem0
-    def:  Mem3[r4 + 0x00000028:word32] = r8
 Mem3:Global memory
     def:  def Mem3
 Mem5: orig: Mem0
+    def:  Mem5[r4 + 0x00000028:word32] = r8
 // SsaProcedureBuilder
 // Return size: 0
 void SsaProcedureBuilder()
@@ -359,7 +359,7 @@ SsaProcedureBuilder_entry:
 	def Mem3
 	// succ:  l1
 l1:
-	Mem3[r4 + 0x00000028:word32] = r8
+	Mem5[r4 + 0x00000028:word32] = r8
 SsaProcedureBuilder_exit:
 ";
             #endregion 
@@ -398,24 +398,24 @@ SsaProcedureBuilder_exit:
 @"r8:r8
     def:  def r8
     uses: r4_18 = r8 + 0x00000010
-          Mem12[r8 + 0x00000010:word32] = r14
-          Mem13[r8 + 0x00000014:word32] = r13
-          Mem14[r8 + 0x00000018:word32] = 0x00000000
-          Mem15[r8 + 0x0000001C:word32] = 0x00000000
-          Mem16[r8 + 0x00000028:word32] = 0x00000000
-          Mem17[r8 + 0x0000002C:word32] = r9
-          Mem18[r8 + 0x00000030:word32] = 0x00000000
+          Mem20[r8 + 0x00000010:word32] = r14
+          Mem22[r8 + 0x00000014:word32] = r13
+          Mem24[r8 + 0x00000018:word32] = 0x00000000
+          Mem26[r8 + 0x0000001C:word32] = 0x00000000
+          Mem28[r8 + 0x00000028:word32] = 0x00000000
+          Mem30[r8 + 0x0000002C:word32] = r9
+          Mem32[r8 + 0x00000030:word32] = 0x00000000
 Mem5:Global memory
     def:  def Mem5
 r14:r14
     def:  def r14
-    uses: Mem12[r8 + 0x00000010:word32] = r14
+    uses: Mem20[r8 + 0x00000010:word32] = r14
 Mem3: orig: Mem0
 Mem6:Global memory
     def:  def Mem6
 r13:r13
     def:  def r13
-    uses: Mem13[r8 + 0x00000014:word32] = r13
+    uses: Mem22[r8 + 0x00000014:word32] = r13
 Mem6: orig: Mem0
 Mem7:Global memory
     def:  def Mem7
@@ -430,7 +430,7 @@ Mem10:Global memory
     def:  def Mem10
 r9:r9
     def:  def r9
-    uses: Mem17[r8 + 0x0000002C:word32] = r9
+    uses: Mem30[r8 + 0x0000002C:word32] = r9
 Mem15: orig: Mem0
 Mem11:Global memory
     def:  def Mem11
@@ -440,31 +440,31 @@ r4_18: orig: r4
 Mem12:Global memory
     def:  def Mem12
 Mem20: orig: Mem0
-    def:  Mem12[r8 + 0x00000010:word32] = r14
+    def:  Mem20[r8 + 0x00000010:word32] = r14
 Mem13:Global memory
     def:  def Mem13
 Mem22: orig: Mem0
-    def:  Mem13[r8 + 0x00000014:word32] = r13
+    def:  Mem22[r8 + 0x00000014:word32] = r13
 Mem14:Global memory
     def:  def Mem14
 Mem24: orig: Mem0
-    def:  Mem14[r8 + 0x00000018:word32] = 0x00000000
+    def:  Mem24[r8 + 0x00000018:word32] = 0x00000000
 Mem15:Global memory
     def:  def Mem15
 Mem26: orig: Mem0
-    def:  Mem15[r8 + 0x0000001C:word32] = 0x00000000
+    def:  Mem26[r8 + 0x0000001C:word32] = 0x00000000
 Mem16:Global memory
     def:  def Mem16
 Mem28: orig: Mem0
-    def:  Mem16[r8 + 0x00000028:word32] = 0x00000000
+    def:  Mem28[r8 + 0x00000028:word32] = 0x00000000
 Mem17:Global memory
     def:  def Mem17
 Mem30: orig: Mem0
-    def:  Mem17[r8 + 0x0000002C:word32] = r9
+    def:  Mem30[r8 + 0x0000002C:word32] = r9
 Mem18:Global memory
     def:  def Mem18
 Mem32: orig: Mem0
-    def:  Mem18[r8 + 0x00000030:word32] = 0x00000000
+    def:  Mem32[r8 + 0x00000030:word32] = 0x00000000
 // SsaProcedureBuilder
 // Return size: 0
 void SsaProcedureBuilder()
@@ -490,13 +490,13 @@ SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	r4_18 = r8 + 0x00000010
-	Mem12[r8 + 0x00000010:word32] = r14
-	Mem13[r8 + 0x00000014:word32] = r13
-	Mem14[r8 + 0x00000018:word32] = 0x00000000
-	Mem15[r8 + 0x0000001C:word32] = 0x00000000
-	Mem16[r8 + 0x00000028:word32] = 0x00000000
-	Mem17[r8 + 0x0000002C:word32] = r9
-	Mem18[r8 + 0x00000030:word32] = 0x00000000
+	Mem20[r8 + 0x00000010:word32] = r14
+	Mem22[r8 + 0x00000014:word32] = r13
+	Mem24[r8 + 0x00000018:word32] = 0x00000000
+	Mem26[r8 + 0x0000001C:word32] = 0x00000000
+	Mem28[r8 + 0x00000028:word32] = 0x00000000
+	Mem30[r8 + 0x0000002C:word32] = r9
+	Mem32[r8 + 0x00000030:word32] = 0x00000000
 	return
 	// succ:  SsaProcedureBuilder_exit
 SsaProcedureBuilder_exit:
@@ -520,8 +520,8 @@ SsaProcedureBuilder_exit:
             #region Expected
 @"r8:r8
     def:  def r8
-    uses: Mem3[r8 + 0x00000010:word32] = 0x12345678
-          Mem4[r8 + 0x00000014:word32] = 0x9ABCDEF0
+    uses: Mem6[r8 + 0x00000010:word32] = 0x12345678
+          Mem8[r8 + 0x00000014:word32] = 0x9ABCDEF0
 Mem1:Global memory
     def:  def Mem1
 Mem2: orig: Mem0
@@ -531,11 +531,11 @@ Mem4: orig: Mem0
 Mem3:Global memory
     def:  def Mem3
 Mem6: orig: Mem0
-    def:  Mem3[r8 + 0x00000010:word32] = 0x12345678
+    def:  Mem6[r8 + 0x00000010:word32] = 0x12345678
 Mem4:Global memory
     def:  def Mem4
 Mem8: orig: Mem0
-    def:  Mem4[r8 + 0x00000014:word32] = 0x9ABCDEF0
+    def:  Mem8[r8 + 0x00000014:word32] = 0x9ABCDEF0
 // SsaProcedureBuilder
 // Return size: 0
 void SsaProcedureBuilder()
@@ -547,8 +547,8 @@ SsaProcedureBuilder_entry:
 	def Mem4
 	// succ:  l1
 l1:
-	Mem3[r8 + 0x00000010:word32] = 0x12345678
-	Mem4[r8 + 0x00000014:word32] = 0x9ABCDEF0
+	Mem6[r8 + 0x00000010:word32] = 0x12345678
+	Mem8[r8 + 0x00000014:word32] = 0x9ABCDEF0
 	return
 	// succ:  SsaProcedureBuilder_exit
 SsaProcedureBuilder_exit:
