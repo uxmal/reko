@@ -56,19 +56,17 @@ namespace Reko.Analysis
                 stm.Instruction.Accept(this);
             }
 
-            // Find all unaligned reds and writs and group them by
-            // register + innstruction.
-            var x = FindAllUnalignedStoreInstructions(ssa.Procedure.Statements);
+            // Find all unaligned stores and group them by
+            // register + instruction.
+            var stores = FindAllUnalignedStoreInstructions(ssa.Procedure.Statements);
 
             // Find pairs of instructions that are (left/right) and
             // whose offsets differ by 3 bytes.
-            var y = GroupUnalignedAccesses(x);
+            var pairs = GroupUnalignedStorePairs(stores);
 
             // Fuse the pairs.
-            FuseUnalignedPairs(y);
+            FuseUnalignedPairs(pairs);
         }
-
-
 
         public override void VisitAssignment(Assignment a)
         {
@@ -180,12 +178,15 @@ namespace Reko.Analysis
 
             if (pair.Item1.mem is Identifier)
             {
-                stmR.Instruction = (Instruction)new Assignment(
+                stmR.Instruction = new Assignment(
                     (Identifier)pair.Item1.mem,
                     pair.Item1.value);
             }
             else
             {
+                var memId = ((MemoryAccess)((Store)pair.Item2.stm.Instruction).Dst).MemoryId;
+                var sidMem = ssa.Identifiers[memId];
+                sidMem.DefStatement = null;
                 stmR.Instruction = new Store(
                     pair.Item1.mem,
                     pair.Item1.value);
@@ -194,15 +195,10 @@ namespace Reko.Analysis
             ssa.AddUses(stmR);
         }
 
-        private void FuseLoadPair(Tuple<UnalignedAccess, UnalignedAccess> pair)
-        {
-            throw new NotImplementedException();
-        }
-
-        private List<Tuple<UnalignedAccess, UnalignedAccess>> GroupUnalignedAccesses(Dictionary<Identifier, List<UnalignedAccess>> x)
+        private List<Tuple<UnalignedAccess, UnalignedAccess>> GroupUnalignedStorePairs(Dictionary<Identifier, List<UnalignedAccess>> unalignedStores)
         {
             var pairs = new List<Tuple<UnalignedAccess, UnalignedAccess>>();
-            foreach (var de in x)
+            foreach (var de in unalignedStores)
             {
                 var sorted = de.Value.ToSortedList(k => k.offset);
                 foreach (var se in sorted)
@@ -241,10 +237,10 @@ namespace Reko.Analysis
             var dict = new Dictionary<Identifier, List<UnalignedAccess>>();
             foreach (var stm in stms)
             {
-                var side = stm.Instruction as SideEffect;
-                if (side == null)
+                var store = stm.Instruction as Store;
+                if (store == null)
                     continue;
-                var tup = MatchIntrinsicApplication(side.Expression, unalignedIntrinsics);
+                var tup = MatchIntrinsicApplication(store.Src, unalignedIntrinsics);
                 if (tup == null)
                     continue;
                 var appName = tup.Item1;
@@ -256,7 +252,7 @@ namespace Reko.Analysis
                     stm = stm,
                     reg = reg,
                     offset = offset,
-                    isLeft = appName.EndsWith("l"),
+                    isLeft = appName == PseudoProcedure.SwL,
                     value = app.Arguments[1],
                     mem = app.Arguments[0],
                 };

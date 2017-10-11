@@ -309,7 +309,8 @@ SsaProcedureBuilder_exit:
 
         private void __swl(Expression mem, Expression reg)
         {
-            m.SideEffect(
+            m.Store(
+                ((MemoryAccess)mem).EffectiveAddress,
                 m.Fn(
                     new PseudoProcedure(PseudoProcedure.SwL, PrimitiveType.Word32, 2),
                     mem, reg));
@@ -317,7 +318,8 @@ SsaProcedureBuilder_exit:
 
         private void __swr(Expression mem, Expression reg)
         {
-            m.SideEffect(
+            m.Store(
+                ((MemoryAccess)mem).EffectiveAddress,
                 m.Fn(
                     new PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, 2),
                     mem, reg));
@@ -329,16 +331,8 @@ SsaProcedureBuilder_exit:
             var r4 = m.Reg32("r4");
             var r8 = m.Reg32("r8");
 
-            m.SideEffect(
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.SwL, PrimitiveType.Word32, 2),
-                    m.LoadDw(m.IAdd(r4, 0x2B)),
-                    r8));
-            m.SideEffect(
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, 2),
-                    m.LoadDw(m.IAdd(r4, 0x28)),
-                    r8));
+            __swl(m.LoadDw(m.IAdd(r4, 0x2B)), r8);
+            __swr(m.LoadDw(m.IAdd(r4, 0x28)), r8);
             var ssa = RunTest(m);
             var sExp =
             #region Expected
