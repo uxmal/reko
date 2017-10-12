@@ -52,6 +52,14 @@ namespace Reko.UnitTests.Mocks
             return sid.Identifier;
         }
 
+        public override Identifier Local32(string name, int offset)
+        {
+            var local = base.Local32(name, offset);
+            var sid = new SsaIdentifier(local, local, null, null, false);
+            Ssa.Identifiers.Add(local, sid);
+            return sid.Identifier;
+        }
+
         public Identifier Reg32(string name)
         {
             return Reg(name, PrimitiveType.Word32);

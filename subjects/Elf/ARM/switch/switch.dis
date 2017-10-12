@@ -28,7 +28,7 @@ _init_exit:
 
 
 
-word32 abort@@GLIBC_2.0(word32 pc)
+word32 abort(word32 pc)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  pc
@@ -60,7 +60,7 @@ fn00008314_exit:
 
 
 
-void __libc_start_main@@GLIBC_2.0(word32 pc)
+void __libc_start_main(word32 pc)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  pc
@@ -108,8 +108,8 @@ _start_entry:
 l00008334:
 	word32 ip_3 = Mem0[0x00008360:word32]
 	word32 r0_14 = Mem0[0x00008364:word32]
-	__libc_start_main@@GLIBC_2.0(pc)
-	abort@@GLIBC_2.0(pc)
+	__libc_start_main(pc)
+	abort(pc)
 	Mem21[r0_14:word16] = r8
 	branch Z l00008368
 // DataOut: ip pc r0 r4 r5 r6

@@ -29,7 +29,18 @@ namespace Reko.ImageLoaders.Elf
     public class Elf32_Rel
     {
         public uint r_offset;
-        public int r_info;
+        public uint r_info;
+
+        public static Elf32_Rel Read(EndianImageReader rdr)
+        {
+            var o = rdr.ReadUInt32();
+            var i = rdr.ReadUInt32();
+            return new Elf32_Rel
+            {
+                r_offset = o,
+                r_info = i,
+            };
+        }
     }
 
     public class Elf32_Rela

@@ -167,7 +167,7 @@ namespace Reko.Core
                 throw new ArgumentNullException("type");
             if (type is UnknownType || type is CodeType)
                 return type;
-            throw new NotImplementedException();
+            throw new NotImplementedException(string.Format("Cannot chop image map item of type {0}.", type));
         }
 
         private DataType ChopBefore(DataType type, int offset)

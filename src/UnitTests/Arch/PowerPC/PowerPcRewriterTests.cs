@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.PowerPC
     public class PowerPcRewriterTests : RewriterTestBase
     {
         private InstructionBuilder b;
-        private PowerPcArchitecture arch = new PowerPcArchitecture32();
+        private PowerPcArchitecture arch = new PowerPcBe32Architecture();
         private IEnumerable<PowerPcInstruction> ppcInstrs;
 
         public override IProcessorArchitecture Architecture { get { return arch; } }

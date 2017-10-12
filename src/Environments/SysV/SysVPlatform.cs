@@ -61,7 +61,8 @@ namespace Reko.Environments.SysV
             case "mips-be-32":
             case "mips-le-32":
                 return new MipsCallingConvention(Architecture); //$ ccName?
-            case "ppc32":
+            case "ppc-be-32":
+            case "ppc-le-32":
                 return new PowerPcCallingConvention(Architecture);
             case "sparc32":
                 return new SparcCallingConvention(Architecture);

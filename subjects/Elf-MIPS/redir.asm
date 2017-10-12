@@ -12459,14 +12459,24 @@ _fini proc
 1000085C                                     FF FF FF FF             ....
 10000860 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 ;;; Segment .got (10000870)
-10000870 00 00 00 00 80 00 00 00 10 00 00 00 00 40 00 00 .............@..
-10000880 00 41 00 00 00 00 00 00 00 00 00 00 00 40 06 00 .A...........@..
-10000890 00 40 05 F0                                     .@..           
+__register_frame_info_GOT		; 10000870
+	dd	0x00000000
+10000874             80 00 00 00 10 00 00 00 00 40 00 00     .........@..
+10000880 00 41 00 00                                     .A..           
+__register_frame_info_GOT		; 10000884
+	dd	0x00000000
+__register_frame_info_GOT		; 10000888
+	dd	0x00000000
+free_GOT		; 1000088C
+	dd	0x00400600
+strpbrk_GOT		; 10000890
+	dd	0x004005F0
 __pack_d_GOT		; 10000894
 	dd	0x00409680
 client_check_activ_GOT		; 10000898
 	dd	0x00403840
-1000089C                                     00 40 05 E0             .@..
+close_GOT		; 1000089C
+	dd	0x004005E0
 100008A0 10 00 0A AC 08 11 F2 60                         .......`       
 slist_destroy_GOT		; 100008A8
 	dd	0x004076A8
@@ -12476,13 +12486,23 @@ slist_add_GOT		; 100008B0
 	dd	0x0040720C
 request_get_host_GOT		; 100008B4
 	dd	0x00404CF0
-100008B8                         00 40 05 D0                     .@..   
+strchr_GOT		; 100008B8
+	dd	0x004005D0
 client_close_GOT		; 100008BC
 	dd	0x004036BC
-100008C0 10 00 00 14 00 40 05 C0 00 40 05 B0 00 40 05 A0 .....@...@...@..
+100008C0 10 00 00 14                                     ....           
+toupper_GOT		; 100008C4
+	dd	0x004005C0
+__uClibc_start_main_GOT		; 100008C8
+	dd	0x004005B0
+strlen_GOT		; 100008CC
+	dd	0x004005A0
 open_log_GOT		; 100008D0
 	dd	0x004066E8
-100008D4             00 40 05 90 00 40 05 80                 .@...@..   
+strspn_GOT		; 100008D4
+	dd	0x00400590
+gmtime_GOT		; 100008D8
+	dd	0x00400580
 client_destroy_GOT		; 100008DC
 	dd	0x00403794
 slist_delete_GOT		; 100008E0
@@ -12493,15 +12513,26 @@ get_version_GOT		; 100008E8
 	dd	0x00404C5C
 request_add_lines_GOT		; 100008EC
 	dd	0x004048DC
-100008F0 00 40 05 70 10 00 00 18 00 40 05 60 10 00 08 10 .@.p.....@.`....
-10000900 00 40 05 50 00 40 05 40                         .@.P.@.@       
+exit_GOT		; 100008F0
+	dd	0x00400570
+100008F4             10 00 00 18                             ....       
+__errno_location_GOT		; 100008F8
+	dd	0x00400560
+100008FC                                     10 00 08 10             ....
+strftime_GOT		; 10000900
+	dd	0x00400550
+getsockopt_GOT		; 10000904
+	dd	0x00400540
 clist_new_GOT		; 10000908
 	dd	0x00403C00
 1000090C                                     10 00 00 20             ... 
-10000910 00 40 05 30 00 00 01 C4                         .@.0....       
+strsep_GOT		; 10000910
+	dd	0x00400530
+10000914             00 00 01 C4                             ....       
 clist_add_GOT		; 10000918
 	dd	0x00403CBC
-1000091C                                     00 40 05 20             .@. 
+strcspn_GOT		; 1000091C
+	dd	0x00400520
 _fini_GOT		; 10000920
 	dd	0x00409CB0
 10000924             00 40 A8 C0                             .@..       
@@ -12509,28 +12540,37 @@ clist_close_all_GOT		; 10000928
 	dd	0x00404070
 clist_destroy_all_GOT		; 1000092C
 	dd	0x00404108
-10000930 00 40 05 10 00 40 05 00                         .@...@..       
+time_GOT		; 10000930
+	dd	0x00400510
+inet_ntoa_GOT		; 10000934
+	dd	0x00400500
 client_new_GOT		; 10000938
 	dd	0x00401B70
-1000093C                                     00 40 04 F0             .@..
+fclose_GOT		; 1000093C
+	dd	0x004004F0
 get_uri_GOT		; 10000940
 	dd	0x00404BC8
-10000944             00 40 04 E0                             .@..       
+ftell_GOT		; 10000944
+	dd	0x004004E0
 handle_stop_GOT		; 10000948
 	dd	0x004007B0
-1000094C                                     00 40 04 D0             .@..
-10000950 00 40 04 C0                                     .@..           
+fopen_GOT		; 1000094C
+	dd	0x004004D0
+gettimeofday_GOT		; 10000950
+	dd	0x004004C0
 request_save_line_GOT		; 10000954
 	dd	0x00404458
 client_copy_reply_GOT		; 10000958
 	dd	0x004031DC
 1000095C                                     00 40 A8 B0             .@..
-10000960 00 40 04 B0                                     .@..           
+fork_GOT		; 10000960
+	dd	0x004004B0
 client_parse_request_GOT		; 10000964
 	dd	0x00402244
 client_read_request_GOT		; 10000968
 	dd	0x00402E44
-1000096C                                     00 40 04 A0             .@..
+listen_GOT		; 1000096C
+	dd	0x004004A0
 slist_remove_GOT		; 10000970
 	dd	0x0040730C
 server_close_GOT		; 10000974
@@ -12539,17 +12579,24 @@ __fpcmp_parts_d_GOT		; 10000978
 	dd	0x00409A90
 request_parse_line_GOT		; 1000097C
 	dd	0x00404378
-10000980 00 40 04 90                                     .@..           
+strcasecmp_GOT		; 10000980
+	dd	0x00400490
 slist_close_all_GOT		; 10000984
 	dd	0x00407568
-10000988                         00 40 04 80 00 40 04 70         .@...@.p
+unlink_GOT		; 10000988
+	dd	0x00400480
+strncpy_GOT		; 1000098C
+	dd	0x00400470
 clist_destroy_GOT		; 10000990
 	dd	0x004041B0
-10000994             00 40 04 60                             .@.`       
+strncmp_GOT		; 10000994
+	dd	0x00400460
 get_method_GOT		; 10000998
 	dd	0x00404B34
-1000099C                                     00 40 04 50             .@.P
-100009A0 00 40 04 40                                     .@.@           
+read_GOT		; 1000099C
+	dd	0x00400450
+signal_GOT		; 100009A0
+	dd	0x00400440
 client_parse_reply_GOT		; 100009A4
 	dd	0x00403140
 properties_load_GOT		; 100009A8
@@ -12558,23 +12605,40 @@ __pack_f_GOT		; 100009AC
 	dd	0x004093E0
 client_send_request_GOT		; 100009B0
 	dd	0x00402EF8
-100009B4             08 11 F2 60 00 40 04 30 00 40 04 20     ...`.@.0.@. 
-100009C0 00 40 04 10 00 40 04 00 10 00 07 E0             .@...@......   
+100009B4             08 11 F2 60                             ...`       
+inet_addr_GOT		; 100009B8
+	dd	0x00400430
+bind_GOT		; 100009BC
+	dd	0x00400420
+strcat_GOT		; 100009C0
+	dd	0x00400410
+fprintf_GOT		; 100009C4
+	dd	0x00400400
+100009C8                         10 00 07 E0                     ....   
 slist_new_GOT		; 100009CC
 	dd	0x00407150
 client_copy_request_GOT		; 100009D0
 	dd	0x004021A0
-100009D4             00 40 03 F0 00 40 03 E0                 .@...@..   
+strrchr_GOT		; 100009D4
+	dd	0x004003F0
+rename_GOT		; 100009D8
+	dd	0x004003E0
 __unpack_f_GOT		; 100009DC
 	dd	0x00409540
 add_to_request_GOT		; 100009E0
 	dd	0x00402A60
-100009E4             00 40 03 D0                             .@..       
+accept_GOT		; 100009E4
+	dd	0x004003D0
 _init_GOT		; 100009E8
 	dd	0x004001BC
 print_log_GOT		; 100009EC
 	dd	0x00406610
-100009F0 00 40 03 C0 00 40 03 B0 00 40 03 A0             .@...@...@..   
+send_GOT		; 100009F0
+	dd	0x004003C0
+bzero_GOT		; 100009F4
+	dd	0x004003B0
+strncasecmp_GOT		; 100009F8
+	dd	0x004003A0
 request_get_content_length_GOT		; 100009FC
 	dd	0x00404FC0
 server_destroy_GOT		; 10000A00
@@ -12583,27 +12647,41 @@ slist_destroy_all_GOT		; 10000A04
 	dd	0x00407600
 server_new_GOT		; 10000A08
 	dd	0x00406BF0
-10000A0C                                     00 40 03 90             .@..
+fflush_GOT		; 10000A0C
+	dd	0x00400390
 __unpack_d_GOT		; 10000A10
 	dd	0x00409930
 clist_delete_GOT		; 10000A14
 	dd	0x00403FF8
-10000A18                         00 40 03 80 00 40 03 70         .@...@.p
+select_GOT		; 10000A18
+	dd	0x00400380
+socket_GOT		; 10000A1C
+	dd	0x00400370
 10000A20 10 00 0A A8                                     ....           
 handle_log_rotate_GOT		; 10000A24
 	dd	0x0040083C
-10000A28                         10 00 00 1C 00 40 03 60         .....@.`
-10000A30 00 40 03 50 00 40 03 40                         .@.P.@.@       
+10000A28                         10 00 00 1C                     ....   
+strtoul_GOT		; 10000A2C
+	dd	0x00400360
+vsnprintf_GOT		; 10000A30
+	dd	0x00400350
+malloc_GOT		; 10000A34
+	dd	0x00400340
 request_make_url_GOT		; 10000A38
 	dd	0x004046C4
-10000A3C                                     00 40 03 30             .@.0
+tolower_GOT		; 10000A3C
+	dd	0x00400330
 10000A40 10 00 00 24                                     ...$           
 clist_remove_GOT		; 10000A44
 	dd	0x00403DBC
-10000A48                         00 40 03 20 00 40 03 10         .@. .@..
+memcpy_GOT		; 10000A48
+	dd	0x00400320
+fgets_GOT		; 10000A4C
+	dd	0x00400310
 client_read_reply_GOT		; 10000A50
 	dd	0x0040307C
-10000A54             00 40 03 00                             .@..       
+getpid_GOT		; 10000A54
+	dd	0x00400300
 client_prepare_connect_GOT		; 10000A58
 	dd	0x00402028
 properties_parse_command_line_GOT		; 10000A5C
@@ -12613,16 +12691,26 @@ __make_fp_GOT		; 10000A64
 	dd	0x00409630
 __make_dp_GOT		; 10000A68
 	dd	0x004092D0
-10000A6C                                     00 00 00 00             ....
+__register_frame_info_GOT		; 10000A6C
+	dd	0x00000000
 log_rotate_GOT		; 10000A70
 	dd	0x00406848
-10000A74             00 40 02 F0 00 40 02 E0 00 40 02 D0     .@...@...@..
+snprintf_GOT		; 10000A74
+	dd	0x004002F0
+__xpg_basename_GOT		; 10000A78
+	dd	0x004002E0
+strerror_GOT		; 10000A7C
+	dd	0x004002D0
 request_destroy_GOT		; 10000A80
 	dd	0x00405328
 server_open_GOT		; 10000A84
 	dd	0x00406D4C
-10000A88                         00 40 02 C0 00 40 02 B0         .@...@..
-10000A90 00 40 02 A0                                     .@..           
+connect_GOT		; 10000A88
+	dd	0x004002C0
+recv_GOT		; 10000A8C
+	dd	0x004002B0
+printf_GOT		; 10000A90
+	dd	0x004002A0
 request_new_GOT		; 10000A94
 	dd	0x00404240
 client_check_reply_http_GOT		; 10000A98
@@ -12631,7 +12719,8 @@ properties_print_usage_GOT		; 10000A9C
 	dd	0x0040628C
 is_a_method_GOT		; 10000AA0
 	dd	0x00405264
-10000AA4             00 40 02 90                             .@..       
+strcpy_GOT		; 10000AA4
+	dd	0x00400290
 ;;; Segment .sbss (10000AA8)
 10000AA8                         00 00 00 00                     ....   
 10000AAC                                     00 00 00 00             ....
