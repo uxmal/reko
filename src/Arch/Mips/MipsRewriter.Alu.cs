@@ -193,7 +193,7 @@ namespace Reko.Arch.Mips
                 opSrc = opLeft;
             else
                 opSrc = m.Or(opLeft, opRight);
-            var opDst = RewriteOperand0(instr.op1);
+            var opDst = RewriteOperand(instr.op1);
             m.Assign(opDst, opSrc);
         }
 

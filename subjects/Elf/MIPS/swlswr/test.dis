@@ -1,0 +1,832 @@
+void _init(word32 ra)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ra
+// LiveOut:
+// Trashed: r2 r25 r28
+// Preserved: ra sp
+_init_entry:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32)
+
+l00000588:
+	word32 r2_11 = Mem0[0x00010AE0:word32]
+	branch r2_11 == 0x00000000 l00000588_ds_t
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00000588_ds_t:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 r25:0x00000588 r28:0x00018A80 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
+
+l000005B8:
+	branch true l000005B8_ds_t
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 r25:0x00000588 r28:0x00018A80 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
+
+l000005B8_ds_t:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 r25:0x00000588 r28:0x00018A80 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
+
+l000005B8_ds_f:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 r25:0x00000588 r28:0x00018A80 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
+
+l000005C0:
+	word32 sp_25
+	word32 r28_26
+	word32 r25_27
+	word32 ra_28
+	word32 r2_29
+	bcuiposr0 None_30
+	call Mem0[ra + 0x000104F4:word32] + 2004 (retsize: 0; depth: 32)
+		uses: dwLoc04_9,dwLoc10_7,None,r2_11,r25_23,r28_21,ra,sp_6
+		defs: None_30,r2_29,r25_27,r28_26,ra_28,sp_25
+	branch true l000005C0_ds_t
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 r25:0x00000588 r28:0x00018A80 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
+
+l000005C0_ds_t:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 r25:<invalid> r28:ra + 0x000184C0 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
+
+l000005C0_ds_f:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 r25:<invalid> r28:ra + 0x000184C0 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
+
+l000005E4:
+	word32 sp_36
+	word32 r28_37
+	word32 r25_38
+	word32 ra_39
+	word32 r2_40
+	bcuiposr0 None_41
+	call Mem0[ra_28 + 0x000104D0:word32] + 2416 (retsize: 0; depth: 32)
+		uses: dwLoc04_9,dwLoc10_7,None_30,r2_29,r25_35,r28_33,ra_28,sp_25
+		defs: None_41,r2_40,r25_38,r28_37,ra_39,sp_36
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 r25:<invalid> r28:ra + 0x000184C0 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
+
+_init_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:ra + 0x0001849C r2:<invalid> ra:ra -16(fp):0x00018A80 -4(fp):ra
+
+l00000588_ds_f:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 r25:0x00000588 r28:0x00018A80 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
+
+l000005AC:
+	word32 r25_12 = Mem0[0x00010AE0:word32]
+	word32 sp_13
+	word32 r28_14
+	word32 r25_15
+	word32 ra_16
+	word32 r2_17
+	bcuiposr0 None_18
+	call r25_12 (retsize: 0; depth: 32)
+		uses: dwLoc04_9,dwLoc10_7,r2_11,r25_12,r28_5,ra,sp_6
+		defs: None_18,r2_17,r25_15,r28_14,ra_16,sp_13
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 r25:0x00000588 r28:0x00018A80 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
+
+
+
+void __start(word32 ra, word32 dwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ra
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+__start_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+__start_entry:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32)
+
+l00000610:
+	branch true l00000610_ds_t
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32)
+
+l00000610_ds_t:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:0x00000610 r0:ra
+// LocalsOut: fp(32)
+
+l00000610_ds_f:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:0x00000610 r0:ra
+// LocalsOut: fp(32)
+
+l0000061C:
+	word32 r25_23 = Mem0[ra + 0x000104C0:word32]
+	word32 sp_24
+	word32 ra_25
+	word32 r0_26
+	word32 r28_27
+	word32 r4_28
+	word32 r5_29
+	word32 r6_30
+	word32 r1_31
+	word32 r7_32
+	word32 r8_33
+	word32 r2_34
+	word32 r25_35
+	call r25_23 (retsize: 0; depth: 40)
+		uses: dwLoc10_22,dwLoc14_21,dwLoc18_19,r0_4,r1_14,r2,r25_23,r28_7,r4_10,r5_12,r6_13,r7_17,r8_18,ra_8,sp_16
+		defs: r0_26,r1_31,r2_34,r25_35,r28_27,r4_28,r5_29,r6_30,r7_32,r8_33,ra_25,sp_24
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:0x00000610 r0:ra
+
+l00000664:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -40 r25:<invalid> r0:ra r28:ra + 0x00018464 ra:0x00000000 r4:<invalid> r5:<invalid> r6:<invalid> r1:-8 r7:<invalid> r8:<invalid> -24(fp):<invalid> -20(fp):r2 -16(fp):fp + -40
+
+
+
+void deregister_tm_clones()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r2 r25 r28 r4
+// Preserved: sp
+deregister_tm_clones_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00000670:
+	word32 r2_8 = Mem0[0x00010AA4:word32]
+	branch r2_8 == Mem0[0x00010AA8:word32] + 2692 l00000670_ds_t
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00000670_ds_t:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:0x00000670 r28:0x00018A80 r4:<invalid> r2:<invalid>
+
+l00000670_ds_f:
+	word32 r25_18 = Mem0[0x00010AE4:word32]
+// DataOut: r25
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:0x00000670 r28:0x00018A80 r4:<invalid> r2:<invalid>
+
+l00000690:
+	branch r25_18 == 0x00000000 l00000690_ds_t
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r2:<invalid>
+
+l00000690_ds_t:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r2:<invalid>
+
+l000006A0:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r2:<invalid>
+
+l00000690_ds_f:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r2:<invalid>
+
+l00000698:
+	word32 sp_19
+	word32 r28_20
+	word32 r25_21
+	word32 r4_22
+	word32 r2_23
+	word32 ra_24
+	call r25_18 (retsize: 0;)
+		uses: r2_8,r25_18,r28_5,r4_9,ra,sp_1
+		defs: r2_23,r25_21,r28_20,r4_22,ra_24,sp_19
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r2:<invalid>
+
+deregister_tm_clones_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r2:<invalid>
+
+
+
+void register_tm_clones()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r2 r25 r28 r4 r5
+// Preserved: sp
+register_tm_clones_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l000006A8:
+	word32 r5_10 = Mem0[0x00010AA4:word32] - (Mem0[0x00010AA8:word32] + 2692)
+	word32 r2_12 = r5_10 >> 0x02 >>u 0x1F
+	branch r2_12 + (r5_10 >> 0x02) >> 0x01 == 0x00000000 l000006A8_ds_t
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l000006A8_ds_t:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:0x000006A8 r28:0x00018A80 r4:<invalid> r5:<invalid> r2:<invalid>
+
+l000006A8_ds_f:
+	word32 r25_22 = Mem0[0x00010AD4:word32]
+// DataOut: r25
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:0x000006A8 r28:0x00018A80 r4:<invalid> r5:<invalid> r2:<invalid>
+
+l000006DC:
+	branch r25_22 == 0x00000000 l000006DC_ds_t
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r5:<invalid> r2:<invalid>
+
+l000006DC_ds_t:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r5:<invalid> r2:<invalid>
+
+l000006EC:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r5:<invalid> r2:<invalid>
+
+l000006DC_ds_f:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r5:<invalid> r2:<invalid>
+
+l000006E4:
+	word32 sp_23
+	word32 r28_24
+	word32 r25_25
+	word32 r4_26
+	word32 r5_27
+	word32 r2_28
+	call r25_22 (retsize: 0;)
+		uses: r2_12,r25_22,r28_5,r4_9,r5_14,sp_1
+		defs: r2_28,r25_25,r28_24,r4_26,r5_27,sp_23
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r5:<invalid> r2:<invalid>
+
+register_tm_clones_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r5:<invalid> r2:<invalid>
+
+
+
+void __do_global_dtors_aux()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r16 r17 r18 r19 r2 r25 r28 r3 r4 sp
+// Preserved: r16 r17 r18 r19 ra sp
+__do_global_dtors_aux_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32)
+
+l000006F4:
+	word32 r19_10 = Mem0[0x00010AA8:word32]
+	branch (word32) Mem0[r19_10 + 0x00000AF0:byte] != 0x00000000 l000006F4_ds_t
+// DataOut: r19
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l000006F4_ds_t:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:0x000006F4 r28:0x00018A80 r19:<invalid> r2:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l000006F4_ds_f:
+	word32 r2_43 = Mem0[0x00010AE8:word32]
+// DataOut: r19 r2
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:0x000006F4 r28:0x00018A80 r19:<invalid> r2:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l0000072C:
+	branch r2_43 == 0x00000000 l0000072C_ds_t
+// DataOut: r19
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:0x000006F4 r28:0x00018A80 r19:<invalid> r2:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l0000072C_ds_t:
+// DataOut: r19
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:0x000006F4 r28:0x00018A80 r19:<invalid> r2:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l0000072C_ds_f:
+// DataOut: r19 r2
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:0x000006F4 r28:0x00018A80 r19:<invalid> r2:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l00000734:
+	word32 r25_101 = Mem0[0x00010AE8:word32]
+	word32 sp_104
+	word32 r28_105
+	word32 r25_106
+	word32 ra_108
+	word32 r18_109
+	word32 r17_110
+	word32 r16_111
+	word32 r2_112
+	word32 r4_113
+	word32 r3_114
+	call r25_101 (retsize: 0; depth: 48)
+		uses: dwLoc04_13,dwLoc08_8,dwLoc0C_15,dwLoc10_17,dwLoc14_19,dwLoc20_11,r16,r17,r18,r19_10,r2_100,r25_101,r28_5,r3,r4_102,ra,sp_6
+		defs: r16_111,r17_110,r18_109,r19_107,r2_112,r25_106,r28_105,r3_114,r4_113,ra_108,sp_104
+// DataOut: r19
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:0x000006F4 r28:0x00018A80 r19:<invalid> r2:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l00000744:
+	word32 r17_52 = Mem0[0x00010AA8:word32]
+	word32 r2_50 = Mem0[0x00010AA8:word32]
+	word32 r2_56 = Mem0[r17_52 + 0x00000AF4:word32]
+	word32 r16_58 = (Mem0[0x00010AB0:word32] - (r2_50 + 2664) >> 0x02) + -1
+	word32 r18_54 = r2_50 + 2664
+	branch (word32) (r2_56 <u r16_58) == 0x00000000 l00000744_ds_t
+// DataOut: r16 r17 r18 r19 r2
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l00000744_ds_t:
+// DataOut: r19 r25
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> r16:<invalid> r17:<invalid> r3:<invalid> r18:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l00000744_ds_f:
+// DataOut: r16 r17 r18 r19 r2
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> r16:<invalid> r17:<invalid> r3:<invalid> r18:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l00000774:
+	word32 r2_78 = r2_56 + 1
+	Mem80[r17_52 + 0x00000AF4:word32] = r2_78
+	word32 r2_81 = r18_54 + (r2_78 << 0x02)
+	word32 r25_82 = Mem80[r2_81:word32]
+	word32 sp_83
+	word32 r28_84
+	word32 r25_85
+	word32 ra_87
+	word32 r16_90
+	word32 r2_91
+	word32 r4_92
+	word32 r3_93
+	call r25_82 (retsize: 0; depth: 48)
+		uses: dwLoc04_13,dwLoc08_8,dwLoc0C_15,dwLoc10_17,dwLoc14_19,dwLoc20_11,r16_58,r17_77,r18_76,r19_48,r2_81,r25_82,r28_45,r3_79,r4_44,ra_47,sp_49
+		defs: r16_90,r17_89,r18_88,r19_86,r2_91,r25_85,r28_84,r3_93,r4_92,ra_87,sp_83
+	r2_56 = Mem80[r17_52 + 0x00000AF4:word32]
+	branch (word32) (r2_56 <u r16_90) != 0x00000000 l00000774_ds_t
+// DataOut: r16 r17 r18 r19 r2
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> r16:<invalid> r17:<invalid> r3:<invalid> r18:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l00000774_ds_t:
+// DataOut: r16 r17 r18 r19 r2
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> r16:<invalid> r17:<invalid> r3:<invalid> r18:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l00000774_ds_f:
+// DataOut: r19
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> r16:<invalid> r17:<invalid> r3:<invalid> r18:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l000007A0:
+// DataOut: r19 r25
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> r16:<invalid> r17:<invalid> r3:<invalid> r18:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l000007A4:
+	branch true l000007A4_ds_t
+// DataOut: r19
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> r16:<invalid> r17:<invalid> r3:<invalid> r18:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l000007A4_ds_t:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> r16:<invalid> r17:<invalid> r3:<invalid> r18:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l000007AC_thunk_deregister_tm_clones:
+	deregister_tm_clones()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> r16:<invalid> r17:<invalid> r3:<invalid> r18:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l000007A4_ds_f:
+// DataOut: r19
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> r16:<invalid> r17:<invalid> r3:<invalid> r18:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l000007B0:
+	Mem73[r19_10 + 0x00000AF0:byte] = 0x01
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> r16:<invalid> r17:<invalid> r3:<invalid> r18:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+l000007B8:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> r16:<invalid> r17:<invalid> r3:<invalid> r18:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+__do_global_dtors_aux_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> ra:ra r18:<invalid> r17:<invalid> r16:<invalid> r4:<invalid> r3:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
+
+
+
+void frame_dummy()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r2 r25 r28 r4 r5
+// Preserved: sp
+frame_dummy_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l000007D4:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l000007E4_thunk_register_tm_clones:
+	register_tm_clones()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80
+
+frame_dummy_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r5:<invalid> r2:<invalid>
+
+
+
+void main(word32 dwArg00, word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r2 r25 r28 r3 r4 r5 r6
+// Preserved: r30 ra sp
+main_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32) Local -0010(32) Local -0013(0) Local -0014(32)
+
+l000007F0:
+	word32 r2_22 = Mem0[0x00010AD8:word32]
+	word32 sp_24
+	word32 r28_25
+	word32 r25_26
+	word32 ra_27
+	word32 r30_28
+	word32 r4_29
+	word32 r5_30
+	word32 r2_31
+	word32 r6_32
+	word32 r3_33
+	call r2_22 (retsize: 0; depth: 48)
+		uses: dwLoc04_8,dwLoc08_10,dwLoc20_12,r2_22,r25_23,r28_5,r30_11,r4_20,r5_19,r6_18,ra,sp_6
+		defs: r2_31,r25_26,r28_25,r3_33,r30_28,r4_29,r5_30,r6_32,ra_27,sp_24
+	word32 r2_37 = Mem0[0x00010AD0:word32]
+	word32 sp_39
+	word32 r28_40
+	word32 r25_41
+	word32 ra_42
+	word32 r30_43
+	word32 r4_44
+	word32 r5_45
+	word32 r2_46
+	word32 r6_47
+	word32 r3_48
+	call r2_37 (retsize: 0; depth: 48)
+		uses: dwLoc04_8,dwLoc08_10,dwLoc20_12,r2_37,r25_38,r28_34,r3_33,r30_28,r4_36,r5_35,r6_32,ra_27,sp_24
+		defs: r2_46,r25_41,r28_40,r3_48,r30_43,r4_44,r5_45,r6_47,ra_42,sp_39
+	Mem54[r2_46:word32] = dwLoc14
+	Mem58[r2_46 + 0x00000004:byte] = (byte) (word32) bLoc10
+	Mem61[r2_46:byte] = 0x0C
+	Mem63[r2_46 + 0x00000001:word32] = 0x00000000
+	word32 r2_51 = r2_46
+	word32 r3_53 = dwLoc14
+	word32 r2_62 = r2_46
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+main_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r30:r30 r2:0x00000000 r6:<invalid> r5:<invalid> r4:<invalid> r3:12 ra:ra -32(fp):0x00018A80 -24(fp):<invalid> -20(fp):0x42 -19(fp):<invalid> -16(fp):<invalid> -8(fp):r30 -4(fp):ra 0(fp):r4 4(fp):r5
+
+
+
+void __libc_csu_init(word32 ra)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ra
+// LiveOut:
+// Trashed: r19 r2 r20 r21 r25 r28 r4 r5 r6 sp
+// Preserved: r16 r17 r18 ra
+__libc_csu_init_entry:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32)
+
+l000008C0:
+	branch true l000008C0_ds_t
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l000008C0_ds_t:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x00018A80 r21:r6 r20:r5 r19:r4 -40(fp):0x00018A80 -28(fp):r16 -20(fp):r18 -16(fp):r19 -12(fp):r20 -8(fp):r21 -4(fp):ra
+
+l00000900_thunk__init:
+	_init(ra)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x00018A80 r21:r6 r20:r5 r19:r4 -40(fp):0x00018A80 -28(fp):r16 -24(fp):r17 -20(fp):r18 -16(fp):r19 -12(fp):r20 -8(fp):r21 -4(fp):ra
+
+l000008C0_ds_f:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x00018A80 r21:r6 r20:r5 r19:r4 -40(fp):0x00018A80 -28(fp):r16 -20(fp):r18 -16(fp):r19 -12(fp):r20 -8(fp):r21 -4(fp):ra
+
+l00000904:
+	word32 r16_45 = Mem0[0x00010ABC:word32]
+	branch Mem0[0x00010ABC:word32] - r16_45 >> 0x02 == 0x00000000 l00000904_ds_t
+// DataOut: r16 r18
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x00018A80 r21:r6 r20:r5 r19:r4 -40(fp):0x00018A80 -28(fp):r16 -24(fp):r17 -20(fp):r18 -16(fp):r19 -12(fp):r20 -8(fp):r21 -4(fp):ra
+
+l00000904_ds_t:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x00018A80 r21:r6 r20:r5 r19:r4 r16:<invalid> r18:<invalid> -40(fp):0x00018A80 -28(fp):r16 -24(fp):r17 -20(fp):r18 -16(fp):r19 -12(fp):r20 -8(fp):r21 -4(fp):ra
+
+l00000904_ds_f:
+// DataOut: r16 r17 r18
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x00018A80 r21:r6 r20:r5 r19:r4 r16:<invalid> r18:<invalid> -40(fp):0x00018A80 -28(fp):r16 -24(fp):r17 -20(fp):r18 -16(fp):r19 -12(fp):r20 -8(fp):r21 -4(fp):ra
+
+l00000920:
+	word32 r25_68 = Mem0[r16_45:word32]
+	word32 sp_73
+	word32 r28_74
+	word32 r25_75
+	word32 r21_76
+	word32 r6_77
+	word32 r20_78
+	word32 r5_79
+	word32 r19_80
+	word32 r4_81
+	word32 r18_82
+	word32 r16_83
+	word32 ra_84
+	word32 r17_85
+	call r25_68 (retsize: 0; depth: 56)
+		uses: dwLoc04_27,dwLoc08_11,dwLoc0C_15,dwLoc10_19,dwLoc14_23,dwLoc18_43,dwLoc1C_25,dwLoc28_9,r16_67,r17_69,r18_48,r19_65,r20_64,r21_63,r25_68,r28_44,r4_72,r5_71,r6_70,ra,sp_6
+		defs: r16_83,r17_85,r18_82,r19_80,r20_78,r21_76,r25_75,r28_74,r4_81,r5_79,r6_77,ra_84,sp_73
+	branch r18_82 != r17_85 l00000920_ds_t
+// DataOut: r16 r17 r18
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x00018A80 r21:r6 r20:r5 r19:r4 r16:<invalid> r18:<invalid> r17:<invalid> r6:<invalid> r5:<invalid> r4:<invalid> -40(fp):0x00018A80 -28(fp):r16 -24(fp):r17 -20(fp):r18 -16(fp):r19 -12(fp):r20 -8(fp):r21 -4(fp):ra
+
+l00000920_ds_t:
+	r16_45 = r16_83 + 4
+// DataOut: r16 r17 r18
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x00018A80 r21:r6 r20:r5 r19:r4 r16:<invalid> r18:<invalid> r17:<invalid> r6:<invalid> r5:<invalid> r4:<invalid> -40(fp):0x00018A80 -28(fp):r16 -24(fp):r17 -20(fp):r18 -16(fp):r19 -12(fp):r20 -8(fp):r21 -4(fp):ra
+
+l00000920_ds_f:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x00018A80 r21:r6 r20:r5 r19:r4 r16:<invalid> r18:<invalid> r17:<invalid> r6:<invalid> r5:<invalid> r4:<invalid> -40(fp):0x00018A80 -28(fp):r16 -24(fp):r17 -20(fp):r18 -16(fp):r19 -12(fp):r20 -8(fp):r21 -4(fp):ra
+
+l00000940:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x00018A80 r21:r6 r20:r5 r19:r4 r16:<invalid> r18:<invalid> r17:<invalid> r6:<invalid> r5:<invalid> r4:<invalid> -40(fp):0x00018A80 -28(fp):r16 -24(fp):r17 -20(fp):r18 -16(fp):r19 -12(fp):r20 -8(fp):r21 -4(fp):ra
+
+__libc_csu_init_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> r25:<invalid> r28:<invalid> r21:<invalid> r20:<invalid> r19:<invalid> r16:r16 r18:r18 r17:r17 ra:ra r6:<invalid> r5:<invalid> r4:<invalid> r2:<invalid> -40(fp):0x00018A80 -28(fp):r16 -24(fp):r17 -20(fp):r18 -16(fp):r19 -12(fp):r20 -8(fp):r21 -4(fp):ra
+
+
+
+void __libc_csu_fini()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r25
+// Preserved: sp
+__libc_csu_fini_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00000964:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+__libc_csu_fini_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:0x00000964
+
+
+
+void __do_global_ctors_aux()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: r2 r25 r28 r3
+// Preserved: r16 r17 ra sp
+__do_global_ctors_aux_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32)
+
+l00000970:
+	word32 r3_7 = Mem0[0x00010AA8:word32]
+	word32 r25_17 = Mem0[r3_7 + 0x00000A60:word32]
+	branch r25_17 == -1 l00000970_ds_t
+// DataOut: r3
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00000970_ds_t:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:-1 -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
+
+l00000970_ds_f:
+// DataOut: r3
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:-1 -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
+
+l000009A4:
+// DataOut: r16
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:-1 r17:-1 -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
+
+l000009A8:
+	word32 sp_30
+	word32 r28_31
+	word32 r25_32
+	word32 r3_33
+	word32 r2_34
+	word32 ra_35
+	word32 r17_36
+	word32 r16_37
+	call r25_17 (retsize: 0; depth: 40)
+		uses: dwLoc04_12,dwLoc08_14,dwLoc0C_16,dwLoc18_10,r16_29,r17_26,r2_9,r25_17,r28_5,r3_7,ra,sp_8
+		defs: r16_37,r17_36,r2_34,r25_32,r28_31,r3_33,ra_35,sp_30
+	branch Mem0[r16_37:word32] != -1 l000009A8_ds_t
+// DataOut: r16
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:-1 r17:-1 r16:<invalid> -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
+
+l000009A8_ds_t:
+// DataOut: r16
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:-1 r17:-1 r16:<invalid> -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
+
+l000009A8_ds_f:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:-1 r17:-1 r16:<invalid> -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
+
+l000009BC:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:-1 r17:-1 r16:<invalid> -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
+
+__do_global_ctors_aux_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r3:<invalid> r2:-1 r17:r17 ra:ra r16:r16 -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
+
+
+
+void _fini(word32 ra)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ra
+// LiveOut:
+// Trashed: r25 r28
+// Preserved: ra sp
+_fini_entry:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(32)
+
+l00000A10:
+	branch true l00000A10_ds_t
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00000A10_ds_t:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 r25:0x00000A10 r28:0x00018A80 -16(fp):0x00018A80 -4(fp):ra
+
+l00000A10_ds_f:
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 r25:0x00000A10 r28:0x00018A80 -16(fp):0x00018A80 -4(fp):ra
+
+l00000A30:
+	word32 sp_16
+	word32 r28_17
+	word32 r25_18
+	word32 ra_19
+	bcuiposr0 None_20
+	call Mem0[ra + 0x00010084:word32] + 1780 (retsize: 0; depth: 32)
+		uses: dwLoc04_9,dwLoc10_7,r25_15,r28_12,ra,sp_6
+		defs: None_20,r25_18,r28_17,ra_19,sp_16
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + -32 r25:0x00000A10 r28:0x00018A80 -16(fp):0x00018A80 -4(fp):ra
+
+_fini_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r28:ra + 0x00018050 ra:ra -16(fp):0x00018A80 -4(fp):ra
+
+
+

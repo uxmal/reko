@@ -151,6 +151,7 @@ fn092A: error: An error occurred during data flow analysis.
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
 
 === Elf\ARM\switch\switch
+=== Elf\MIPS\swlswr\test
 === Elf-MIPS\redir
 === Elf-RiscV\ipcalc\ipcalc.dcproject
 *** Elf-RiscV\ipcalc\ipcalc.dcproject
@@ -2636,6 +2637,7 @@ fn0AF6: error: An error occurred during data flow analysis.
 000028F8: warning: Expected sizes of arrays to have been determined by now
 000034E0: warning: Expected sizes of arrays to have been determined by now
 
+=== PE\MIPS\swlswr\test.exe
 === PE\x86\demo_upx\Demo.exe
 === PE\x86\import-ordinals\import-ordinals.dcproject
 === PE-x86\ExeDll\Executable.exe

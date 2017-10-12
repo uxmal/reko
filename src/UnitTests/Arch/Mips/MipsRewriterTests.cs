@@ -456,5 +456,13 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[sp + 0x00000028:word32] = __swr(Mem0[sp + 0x00000028:word32], r8)");
         }
+
+        [Test(Description = "Oddly, we see production code that writes to the r0 register. We musn't allow that assignment result in invalid code")]
+        public void MipsRw_WriteToR0()
+        {
+            AssertCode(0x03E00025,              // or r0,r0,r31
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = ra");
+        }
     }
 }
