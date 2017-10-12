@@ -83,20 +83,6 @@ namespace Reko.Core.Output
             return identifiers.Values;
         }
 
-        private class IdentifierCollector : InstructionVisitorBase
-        {
-            private SortedList<string, Identifier> identifiers;
-
-            public IdentifierCollector(SortedList<string,Identifier> ids)
-            {
-                this.identifiers = ids;
-            }
-
-            public override void VisitIdentifier(Identifier id)
-            {
-                identifiers[id.Name] = id;
-            }
-        }
 
         public void Write(Procedure proc)
         {

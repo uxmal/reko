@@ -231,6 +231,7 @@
     <Compile Include="Expressions\ExpressionVisitor.cs" />
     <Compile Include="Expressions\FieldAccess.cs" />
     <Compile Include="Expressions\Identifier.cs" />
+    <Compile Include="Code\IdentifierCollector.cs" />
     <Compile Include="Expressions\MemberPointerSelector.cs" />
     <Compile Include="Expressions\MemoryAccess.cs" />
     <Compile Include="Expressions\MkSequence.cs" />
@@ -341,6 +342,10 @@
     <Compile Include="Serialization\Code_v1.cs" />
     <Compile Include="Serialization\DataTypeSerializer.cs" />
     <Compile Include="Serialization\ISerializedTypeVisitor.cs" />
+    <Compile Include="Serialization\Json\JsonProcedureSerializer.cs" />
+    <Compile Include="Serialization\Json\JsonProjectSerializer.cs" />
+    <Compile Include="Serialization\Json\JsonWriter.cs" />
+    <Compile Include="Serialization\Json\JsonSymbols.cs" />
     <Compile Include="Serialization\MemberPointer_v1.cs" />
     <Compile Include="Serialization\MemoryMap_v1.cs" />
     <Compile Include="Serialization\ProgramOptions_v2.cs" />
