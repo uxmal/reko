@@ -39,9 +39,9 @@ pr_status("[+] Rebuilding edge for electron " + electron_version);
 run_shell(
     "node-gyp",
     __dirname + "/node_modules/edge/",
-    "clean configure build " +
+    "clean configure build --verbose " +
     `--target=${electron_version} ` + 
-    "--dist-url=https://atom.io/download/atom-shell --msvs_version=2015"
+    "--dist-url=https://atom.io/download/atom-shell"
 );
 pr_status("[+] Installing dependencies for app-render");
 run_shell("npm install", __dirname + "/app");
