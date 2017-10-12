@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BorlandMangledNamedParser.cs" />
+    <Compile Include="M68kCallingConvention.cs" />
     <Compile Include="MipsCallingConvention.cs" />
     <Compile Include="ModuleDefinitionLoader.cs" />
     <Compile Include="MsAPrintfFormatParser.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="SignatureGuesser.cs" />
     <Compile Include="Win16Platform.cs" />
     <Compile Include="Win32Emulator.cs" />
+    <Compile Include="Win32M68kPlatform.cs" />
     <Compile Include="Win32PpcPlatform.cs" />
     <Compile Include="Win32MipsPlatform.cs" />
     <Compile Include="Win32Platform.cs" />
