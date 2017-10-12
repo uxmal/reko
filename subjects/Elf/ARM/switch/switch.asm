@@ -60,15 +60,15 @@ _init proc
 00008304             04 E0 2D E5 10 E0 9F E5 0E E0 8F E0     ..-.........
 00008310 08 F0 BE E5                                     ....           
 
-;; abort@@GLIBC_2.0: 00008314
-abort@@GLIBC_2.0 proc
+;; abort: 00008314
+abort proc
 	ldr	ip,[pc,#4]                                             ; 00008320
 	add	ip,pc,ip
 	ldr	pc,[ip]
 00008320 34 85 00 00                                     4...           
 
-;; __libc_start_main@@GLIBC_2.0: 00008324
-__libc_start_main@@GLIBC_2.0 proc
+;; __libc_start_main: 00008324
+__libc_start_main proc
 	ldr	ip,[pc,#4]                                             ; 00008330
 	add	ip,pc,ip
 	ldr	pc,[ip]

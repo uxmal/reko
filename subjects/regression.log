@@ -153,6 +153,70 @@ fn092A: error: An error occurred during data flow analysis.
 === Elf\ARM\switch\switch
 === Elf\MIPS\swlswr\test
 === Elf-MIPS\redir
+*** Elf-MIPS\redir
+00400BB8: warning: Unable to resolve imported reference __xpg_basename.
+00400E38: warning: Unable to resolve imported reference bzero.
+00400E78: warning: Unable to resolve imported reference inet_addr.
+0040137C: warning: Unable to resolve imported reference select.
+00400AC4: warning: Unable to resolve imported reference getpid.
+004009BC: warning: Unable to resolve imported reference fork.
+00401C18: warning: Unable to resolve imported reference bzero.
+00401C84: warning: Unable to resolve imported reference accept.
+00401DE8: warning: Unable to resolve imported reference inet_ntoa.
+0040207C: warning: Unable to resolve imported reference getsockopt.
+004020A0: warning: Unable to resolve imported reference inet_ntoa.
+004020C4: warning: Unable to resolve imported reference inet_ntoa.
+00402120: warning: Unable to resolve imported reference snprintf.
+00402EB0: warning: Unable to resolve imported reference recv.
+00402F84: warning: Unable to resolve imported reference send.
+client_read_reply: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.SsaEvaluationContext.GetValue(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaEvaluationContext.cs:line 49
+   at Reko.Evaluation.IdConstant.Match(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\IdConstant.cs:line 55
+   at Reko.Evaluation.ExpressionSimplifier.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 462
+   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 80
+   at Reko.Evaluation.ExpressionSimplifier.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 424
+   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
+   at Reko.Analysis.ValuePropagator.VisitAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 92
+   at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 51
+   at Reko.Analysis.ValuePropagator.Transform(Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 84
+   at Reko.Analysis.ValuePropagator.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 75
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 102
+00403264: warning: Unable to resolve imported reference send.
+00403B20: warning: Unable to resolve imported reference connect.
+004047B8: warning: Unable to resolve imported reference snprintf.
+00404840: warning: Unable to resolve imported reference snprintf.
+004048B0: warning: Unable to resolve imported reference snprintf.
+00404B70: warning: Unable to resolve imported reference strsep.
+00404C04: warning: Unable to resolve imported reference strsep.
+00404C98: warning: Unable to resolve imported reference strsep.
+00405810: warning: Unable to resolve imported reference strspn.
+00405874: warning: Unable to resolve imported reference strcspn.
+00405940: warning: Unable to resolve imported reference strspn.
+00405984: warning: Unable to resolve imported reference strcspn.
+00406190: warning: Unable to resolve imported reference __register_frame_info.
+00405F8C: warning: Unable to resolve imported reference toupper.
+00405FE0: warning: Unable to resolve imported reference toupper.
+004063F0: warning: Unable to resolve imported reference __register_frame_info.
+00406458: warning: Unable to resolve imported reference tolower.
+004064B0: warning: Unable to resolve imported reference toupper.
+00406680: warning: Unable to resolve imported reference vsnprintf.
+0040692C: warning: Unable to resolve imported reference rename.
+004069C0: warning: Unable to resolve imported reference gettimeofday.
+004069E0: warning: Unable to resolve imported reference gmtime.
+00406A0C: warning: Unable to resolve imported reference strftime.
+00406B50: warning: Unable to resolve imported reference ftell.
+00406CD4: warning: Unable to resolve imported reference bzero.
+00406D0C: warning: Unable to resolve imported reference inet_addr.
+00406E58: warning: Unable to resolve imported reference bind.
+00406F18: warning: Unable to resolve imported reference listen.
+100007E0: warning: Expected sizes of arrays to have been determined by now
+1000002C: warning: Expected sizes of arrays to have been determined by now
+1000002C: warning: Expected sizes of arrays to have been determined by now
+100007E0: warning: Expected sizes of arrays to have been determined by now
+
 === Elf-RiscV\ipcalc\ipcalc.dcproject
 *** Elf-RiscV\ipcalc\ipcalc.dcproject
 fn0000000000016864: error: An error occurred during data flow analysis.
@@ -1712,6 +1776,7 @@ fn0000000000411360: warning: Structure analysis stopped making progress, quittin
 0000000000400F22: warning: Unable to resolve imported reference png_get_bit_depth.
 0000000000400F3B: warning: Unable to resolve imported reference png_get_color_type.
 00000000004012D5: warning: Unable to resolve imported reference png_error.
+0000000000400CC0: warning: Unable to resolve imported reference png_get_PLTE.
 0000000000400DAB: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000400DC0: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000400B80: warning: Unable to resolve imported reference png_get_tRNS.

@@ -12,8 +12,7 @@ _init_entry:
 // LocalsOut: fp(32)
 
 l00000588:
-	word32 r2_11 = Mem0[0x00010AE0:word32]
-	branch r2_11 == 0x00000000 l00000588_ds_t
+	branch __gmon_start__ == 0x00000000 l00000588_ds_t
 // DataOut: ra
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -47,7 +46,7 @@ l000005C0:
 	word32 r2_29
 	bcuiposr0 None_30
 	call Mem0[ra + 0x000104F4:word32] + 2004 (retsize: 0; depth: 32)
-		uses: dwLoc04_9,dwLoc10_7,None,r2_11,r25_23,r28_21,ra,sp_6
+		uses: dwLoc04_9,dwLoc10_7,None,r2_10,r25_23,r28_20,ra,sp_6
 		defs: None_30,r2_29,r25_27,r28_26,ra_28,sp_25
 	branch true l000005C0_ds_t
 // DataOut: ra
@@ -90,16 +89,15 @@ l00000588_ds_f:
 // SymbolicIn: sp:fp + -32 r25:0x00000588 r28:0x00018A80 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
 
 l000005AC:
-	word32 r25_12 = Mem0[0x00010AE0:word32]
-	word32 sp_13
-	word32 r28_14
-	word32 r25_15
-	word32 ra_16
-	word32 r2_17
-	bcuiposr0 None_18
-	call r25_12 (retsize: 0; depth: 32)
-		uses: dwLoc04_9,dwLoc10_7,r2_11,r25_12,r28_5,ra,sp_6
-		defs: None_18,r2_17,r25_15,r28_14,ra_16,sp_13
+	word32 sp_12
+	word32 r28_13
+	word32 r25_14
+	word32 ra_15
+	word32 r2_16
+	bcuiposr0 None_17
+	call __gmon_start__ (retsize: 0; depth: 32)
+		uses: dwLoc04_9,dwLoc10_7,r2_10,r25_11,r28_5,ra,sp_6
+		defs: None_17,r2_16,r25_14,r28_13,ra_15,sp_12
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -32 r25:0x00000588 r28:0x00018A80 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
@@ -197,13 +195,12 @@ l00000670_ds_t:
 // SymbolicIn: sp:fp r25:0x00000670 r28:0x00018A80 r4:<invalid> r2:<invalid>
 
 l00000670_ds_f:
-	word32 r25_18 = Mem0[0x00010AE4:word32]
 // DataOut: r25
 // DataOut (flags): 
 // SymbolicIn: sp:fp r25:0x00000670 r28:0x00018A80 r4:<invalid> r2:<invalid>
 
 l00000690:
-	branch r25_18 == 0x00000000 l00000690_ds_t
+	branch __gmon_start__ == 0x00000000 l00000690_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r2:<invalid>
@@ -231,7 +228,7 @@ l00000698:
 	word32 r4_22
 	word32 r2_23
 	word32 ra_24
-	call r25_18 (retsize: 0;)
+	call __gmon_start__ (retsize: 0;)
 		uses: r2_8,r25_18,r28_5,r4_9,ra,sp_1
 		defs: r2_23,r25_21,r28_20,r4_22,ra_24,sp_19
 	return
@@ -272,13 +269,12 @@ l000006A8_ds_t:
 // SymbolicIn: sp:fp r25:0x000006A8 r28:0x00018A80 r4:<invalid> r5:<invalid> r2:<invalid>
 
 l000006A8_ds_f:
-	word32 r25_22 = Mem0[0x00010AD4:word32]
 // DataOut: r25
 // DataOut (flags): 
 // SymbolicIn: sp:fp r25:0x000006A8 r28:0x00018A80 r4:<invalid> r5:<invalid> r2:<invalid>
 
 l000006DC:
-	branch r25_22 == 0x00000000 l000006DC_ds_t
+	branch __gmon_start__ == 0x00000000 l000006DC_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r4:<invalid> r5:<invalid> r2:<invalid>
@@ -306,7 +302,7 @@ l000006E4:
 	word32 r4_26
 	word32 r5_27
 	word32 r2_28
-	call r25_22 (retsize: 0;)
+	call __gmon_start__ (retsize: 0;)
 		uses: r2_12,r25_22,r28_5,r4_9,r5_14,sp_1
 		defs: r2_28,r25_25,r28_24,r4_26,r5_27,sp_23
 	return
@@ -347,13 +343,12 @@ l000006F4_ds_t:
 // SymbolicIn: sp:fp + -48 r25:0x000006F4 r28:0x00018A80 r19:<invalid> r2:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
 
 l000006F4_ds_f:
-	word32 r2_43 = Mem0[0x00010AE8:word32]
 // DataOut: r19 r2
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:0x000006F4 r28:0x00018A80 r19:<invalid> r2:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
 
 l0000072C:
-	branch r2_43 == 0x00000000 l0000072C_ds_t
+	branch __gmon_start__ == 0x00000000 l0000072C_ds_t
 // DataOut: r19
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:0x000006F4 r28:0x00018A80 r19:<invalid> r2:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
@@ -369,7 +364,6 @@ l0000072C_ds_f:
 // SymbolicIn: sp:fp + -48 r25:0x000006F4 r28:0x00018A80 r19:<invalid> r2:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
 
 l00000734:
-	word32 r25_101 = Mem0[0x00010AE8:word32]
 	word32 sp_104
 	word32 r28_105
 	word32 r25_106
@@ -380,7 +374,7 @@ l00000734:
 	word32 r2_112
 	word32 r4_113
 	word32 r3_114
-	call r25_101 (retsize: 0; depth: 48)
+	call __gmon_start__ (retsize: 0; depth: 48)
 		uses: dwLoc04_13,dwLoc08_8,dwLoc0C_15,dwLoc10_17,dwLoc14_19,dwLoc20_11,r16,r17,r18,r19_10,r2_100,r25_101,r28_5,r3,r4_102,ra,sp_6
 		defs: r16_111,r17_110,r18_109,r19_107,r2_112,r25_106,r28_105,r3_114,r4_113,ra_108,sp_104
 // DataOut: r19
@@ -532,41 +526,15 @@ main_entry:
 // LocalsOut: fp(32) Local -0010(32) Local -0013(0) Local -0014(32)
 
 l000007F0:
-	word32 r2_22 = Mem0[0x00010AD8:word32]
-	word32 sp_24
-	word32 r28_25
-	word32 r25_26
-	word32 ra_27
-	word32 r30_28
-	word32 r4_29
-	word32 r5_30
-	word32 r2_31
-	word32 r6_32
-	word32 r3_33
-	call r2_22 (retsize: 0; depth: 48)
-		uses: dwLoc04_8,dwLoc08_10,dwLoc20_12,r2_22,r25_23,r28_5,r30_11,r4_20,r5_19,r6_18,ra,sp_6
-		defs: r2_31,r25_26,r28_25,r3_33,r30_28,r4_29,r5_30,r6_32,ra_27,sp_24
-	word32 r2_37 = Mem0[0x00010AD0:word32]
-	word32 sp_39
-	word32 r28_40
-	word32 r25_41
-	word32 ra_42
-	word32 r30_43
-	word32 r4_44
-	word32 r5_45
-	word32 r2_46
-	word32 r6_47
-	word32 r3_48
-	call r2_37 (retsize: 0; depth: 48)
-		uses: dwLoc04_8,dwLoc08_10,dwLoc20_12,r2_37,r25_38,r28_34,r3_33,r30_28,r4_36,r5_35,r6_32,ra_27,sp_24
-		defs: r2_46,r25_41,r28_40,r3_48,r30_43,r4_44,r5_45,r6_47,ra_42,sp_39
-	Mem54[r2_46:word32] = dwLoc14
-	Mem58[r2_46 + 0x00000004:byte] = (byte) (word32) bLoc10
-	Mem61[r2_46:byte] = 0x0C
-	Mem63[r2_46 + 0x00000001:word32] = 0x00000000
-	word32 r2_51 = r2_46
-	word32 r3_53 = dwLoc14
-	word32 r2_62 = r2_46
+	memset(r4_20, r5_19, r6_18)
+	calloc(r4_35, r5_34)
+	Mem54[r2_45:word32] = dwLoc14
+	Mem58[r2_45 + 0x00000004:byte] = (byte) (word32) bLoc10
+	Mem61[r2_45:byte] = 0x0C
+	Mem63[r2_45 + 0x00000001:word32] = 0x00000000
+	word32 r2_50 = r2_45
+	word32 r3_52 = dwLoc14
+	word32 r2_62 = r2_45
 	return
 // DataOut:
 // DataOut (flags): 
