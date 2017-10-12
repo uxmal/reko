@@ -78,7 +78,7 @@ namespace Reko.Environments.AtariTOS
 
         private bool TryLoadHeader(BeImageReader rdr, out PrgHeader hdr)
         {
-            var sr = new StructureReader<PrgHeader>(@@rdr);
+            var sr = new StructureReader<PrgHeader>(rdr.CreateBinaryReader());
             hdr = sr.Read();
             return hdr.Magic == 0x601A;
         }
