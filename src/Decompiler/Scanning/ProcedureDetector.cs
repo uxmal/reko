@@ -167,11 +167,6 @@ namespace Reko.Scanning
                         string.Join(",", icfg.Successors(b)));
                 }
             }
-            //$DEBUG
-            public bool ContainsEntry(Address address)
-            {
-                return Entries.Contains(new RtlBlock(address, "test"));
-            }
         }
 
         /// <summary>

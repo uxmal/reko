@@ -419,6 +419,7 @@ Eq_750 fn063E(word16 bc, Eq_752 e, byte d, Eq_754 & bOut, Eq_755 & lOut)
 	globals->b167B = 0x00;
 	globals->t1678->u0 = 0x00;
 	globals->t167A.u0 = 0x00;
+l0657:
 	if (0x03 >= globals->t167A)
 	{
 		globals->b167C = 0x30;
@@ -1072,6 +1073,7 @@ l0A16:
 		*eOut = 0x00;
 		byte c_217;
 		*cOut = 0x20;
+l0B04:
 		if (0x07 >= globals->t1697)
 		{
 			union Eq_95 * hl_339 = (word16) globals->t168B + ((word16) DPB(globals->t1697, 0x00, 8) + 0x01);

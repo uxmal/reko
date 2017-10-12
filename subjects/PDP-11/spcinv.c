@@ -291,6 +291,7 @@ l04AE:
 					if (!fn064A(r0_105, r1, r3_101, r4, r5_100, out r0_155, out r4, out r5_100))
 					{
 						struct Eq_768 * r2_159 = null;
+l050C:
 						if (r2_159[0x06DC] - r0_155 != 0x00)
 						{
 							cu16 v43_336 = r2_159[0x06DC] - r1;
@@ -748,6 +749,7 @@ Eq_135 fn07A6(Eq_2 r4, Eq_4 * pc, ptr16 & r1Out, ptr16 & r3Out, ptr16 & r4Out, p
 		} while (r5_167 != null);
 		globals->ptr0F28 = r5_167;
 	}
+l08B2:
 	if (globals->w0F12 == 0x00)
 		return r0;
 	cui16 v38_49 = pc->w063A & globals->w0EF4;
@@ -755,6 +757,7 @@ Eq_135 fn07A6(Eq_2 r4, Eq_4 * pc, ptr16 & r1Out, ptr16 & r3Out, ptr16 & r4Out, p
 	if (v38_49 == 0x00)
 		return r0;
 	struct Eq_1775 * r2_54 = globals->w0F06;
+l08C4:
 	if (r2_54[0x0EE6] != 0x00)
 	{
 		r2_54 = r2_54 - 0x01;

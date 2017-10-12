@@ -21,11 +21,11 @@ Eq_54: (union "Eq_54" (word16 u0) (word32 u1))
 	T_54 (in r8 : Eq_54)
 	T_75 (in Mem21[r0_14 + 0x00000000:word16] : word16)
 Eq_67: (fn void (word32))
-	T_67 (in __libc_start_main@@GLIBC_2.0 : ptr32)
-	T_68 (in signature of __libc_start_main@@GLIBC_2.0 : void)
+	T_67 (in __libc_start_main : ptr32)
+	T_68 (in signature of __libc_start_main : void)
 Eq_70: (fn word32 (word32))
-	T_70 (in abort@@GLIBC_2.0 : ptr32)
-	T_71 (in signature of abort@@GLIBC_2.0 : void)
+	T_70 (in abort : ptr32)
+	T_71 (in signature of abort : void)
 Eq_120: (union "Eq_120" (byte u0) (word32 u1))
 	T_120 (in 0x00000001 : word32)
 	T_123 (in Mem47[r5_10 + 0x00000000:byte] : byte)
@@ -331,27 +331,27 @@ T_66: (in Mem0[0x00008364 + 0x00000000:word32] : word32)
   Class: Eq_62
   DataType: (ptr Eq_54)
   OrigDataType: word32
-T_67: (in __libc_start_main@@GLIBC_2.0 : ptr32)
+T_67: (in __libc_start_main : ptr32)
   Class: Eq_67
   DataType: (ptr Eq_67)
   OrigDataType: (ptr (fn T_69 (T_55)))
-T_68: (in signature of __libc_start_main@@GLIBC_2.0 : void)
+T_68: (in signature of __libc_start_main : void)
   Class: Eq_67
   DataType: (ptr Eq_67)
   OrigDataType: 
-T_69: (in __libc_start_main@@GLIBC_2.0(pc) : void)
+T_69: (in __libc_start_main(pc) : void)
   Class: Eq_69
   DataType: void
   OrigDataType: void
-T_70: (in abort@@GLIBC_2.0 : ptr32)
+T_70: (in abort : ptr32)
   Class: Eq_70
   DataType: (ptr Eq_70)
   OrigDataType: (ptr (fn T_72 (T_55)))
-T_71: (in signature of abort@@GLIBC_2.0 : void)
+T_71: (in signature of abort : void)
   Class: Eq_70
   DataType: (ptr Eq_70)
   OrigDataType: 
-T_72: (in abort@@GLIBC_2.0(pc) : word32)
+T_72: (in abort(pc) : word32)
   Class: Eq_72
   DataType: word32
   OrigDataType: word32

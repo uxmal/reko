@@ -748,7 +748,7 @@ doing future pattern matches.
                 case VirtualEdgeType.Break: stm = new AbsynBreak(); break;
                 case VirtualEdgeType.Goto:
                     stm = new AbsynGoto(vEdge.To.Block.Name);
-                    if (vEdge.To.Statements.Count > 0 && !(vEdge.To.Statements[0] is AbsynLabel))
+                    if (vEdge.To.Statements.Count == 0 || !(vEdge.To.Statements[0] is AbsynLabel))
                     {
                         vEdge.To.Statements.Insert(0, new AbsynLabel(vEdge.To.Block.Name));
                     }

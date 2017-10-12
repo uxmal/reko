@@ -82,10 +82,12 @@
     <Compile Include="MsMangledNameParser.cs" />
     <Compile Include="MsPrintfFormatParser.cs" />
     <Compile Include="MsWprintfFormatParser.cs" />
+    <Compile Include="PowerPcCallingConvention.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignatureGuesser.cs" />
     <Compile Include="Win16Platform.cs" />
     <Compile Include="Win32Emulator.cs" />
+    <Compile Include="Win32PpcPlatform.cs" />
     <Compile Include="Win32MipsPlatform.cs" />
     <Compile Include="Win32Platform.cs" />
     <Compile Include="Win32ThumbPlatform.cs" />
@@ -120,6 +122,7 @@
     <Content Include="windows32.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="windows_CE.xml" />
     <Content Include="wsock32.xml" />
     <Content Include="wininet.xml" />
     <Content Include="oleaut32.xml" />
