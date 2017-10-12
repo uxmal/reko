@@ -419,6 +419,7 @@ Eq_750 fn063E(word16 bc, Eq_752 e, byte d, Eq_754 & bOut, Eq_755 & lOut)
 	globals->b167B = 0x00;
 	globals->t1678->u0 = 0x00;
 	globals->t167A.u0 = 0x00;
+l0657:
 	if (0x03 >= globals->t167A)
 	{
 		globals->b167C = 0x30;
@@ -854,36 +855,25 @@ void fn0920(byte b, Eq_358 e, byte l, byte h)
 // 092A: void fn092A(Register cu8 a, Register byte b, Register Eq_358 e, Register byte l, Register byte h)
 void fn092A(cu8 a, byte b, Eq_358 e, byte l, byte h)
 {
-fn092A_entry:
-	def fp
-	def Z
-	def a
-	def b
-	def e
-	def l
-	def h
-	sp_1 = fp
-	d_2 = ~0x01
-	branch Z l092D_thunk_fn096E
-	goto l092D_thunk_fn0930
-l092A:
-l092A:
-	SZPC = cond(a - 0x00)
-	Z = SZPC
-	branch Test(NE,Z) l096E
-l092C_thunk_fn0930:
-	fn0930(a, b, e, d, l, h)
-	return
-l092C_thunk_fn096E:
-	fn096E(a, b, e, d, l, h)
-	return
-l092D_thunk_fn0930:
-	fn0930(a, b, e, d_2, l, h)
-	return
-l092D_thunk_fn096E:
-	fn096E(a, b, e, d_2, l, h)
-	return
-fn092A_exit:
+	ptr16 fp;
+	byte Z;
+	cu8 a;
+	byte b;
+	Eq_358 e;
+	byte l;
+	byte h;
+	sp_1 = fp;
+	d_2 = ~0x01;
+	if (Z)
+	{
+		fn096E(a, b, e, d_2, l, h);
+		return;
+	}
+	else
+	{
+		fn0930(a, b, e, d_2, l, h);
+		return;
+	}
 }
 
 // 0930: void fn0930(Register cu8 a, Register byte b, Register Eq_358 e, Register byte d, Register byte l, Register byte h)
@@ -1083,6 +1073,7 @@ l0A16:
 		*eOut = 0x00;
 		byte c_217;
 		*cOut = 0x20;
+l0B04:
 		if (0x07 >= globals->t1697)
 		{
 			union Eq_95 * hl_339 = (word16) globals->t168B + ((word16) DPB(globals->t1697, 0x00, 8) + 0x01);

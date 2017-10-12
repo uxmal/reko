@@ -157,6 +157,7 @@
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\msvcrt.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\ntoskrnl.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\windows32.xml" />
+    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\windows_CE.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\wsock32.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\windows64.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\oleaut32.xml" />

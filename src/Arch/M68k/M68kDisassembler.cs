@@ -1565,32 +1565,43 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension = dasm.read_imm_16();
 
-            var ea = dasm.get_ea_mode_str_32(dasm.instruction); 
-            var code = BIT_B(extension) ? Opcode.divs : Opcode.divu;
-            if (BIT_A(extension))
-                return new M68kInstruction
-                {
-                    code = code,
-                    dataWidth = PrimitiveType.Word32,
-                    op1 = ea,
-                    op2 = dasm.get_double_data_reg(extension, (extension >> 12) & 7),
-                };
-            else if ((extension & 7) == ((extension >> 12) & 7))
-                return new M68kInstruction
-                {
-                    code = code,
-                    dataWidth = PrimitiveType.Word32,
-                    op1 = ea,
-                    op2 = get_data_reg((int)(extension >> 12) & 7)
-                };
+            var ea = dasm.get_ea_mode_str_32(dasm.instruction);
+            Opcode code;
+            if (BIT_B(extension))
+            {
+                code = BIT_A(extension) ? Opcode.divs : Opcode.divsl;
+            }
             else
-                return new M68kInstruction
-                {
-                    code = code,
-                    dataWidth = PrimitiveType.Word32,
-                    op1 = ea,
-                    op2 = dasm.get_double_data_reg(extension, (extension >> 12) & 7),
-                };
+            {
+                code = BIT_A(extension) ? Opcode.divu : Opcode.divul;
+            }
+            var dq = (extension >> 12) & 7;
+            var dr = (extension & 7);
+            MachineOperand op2;
+            PrimitiveType dataWidth;
+            if (BIT_A(extension))
+            {
+                op2 = dasm.get_double_data_reg(dr, dq);
+                dataWidth = PrimitiveType.Int64;
+            }
+            else if (dr == dq)
+            {
+                op2 = get_data_reg((int)dq);
+                dataWidth = PrimitiveType.Int32;
+            }
+            else
+            {
+                op2 = dasm.get_double_data_reg(dr, dq);
+                dataWidth = PrimitiveType.Int32;
+            }
+
+            return new M68kInstruction
+            {
+                code = code,
+                dataWidth = dataWidth,
+                op1 = ea,
+                op2 = op2,
+            };
         }
 
         private static M68kInstruction d68000_eori_to_ccr(M68kDisassembler dasm)

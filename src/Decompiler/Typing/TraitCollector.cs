@@ -212,7 +212,7 @@ namespace Reko.Typing
 
 		public DataType VisitDefInstruction(DefInstruction def)
 		{
-			return def.Expression.Accept(this);
+			return def.Identifier.Accept(this);
 		}
 
 		public DataType VisitPhiAssignment(PhiAssignment phi)

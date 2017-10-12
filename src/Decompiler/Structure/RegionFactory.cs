@@ -80,7 +80,9 @@ namespace Reko.Structure
 
         public AbsynStatement VisitDefInstruction(DefInstruction def)
         {
-            throw new NotImplementedException();
+            //$TODO: should there be a warning? DefInstructions should have been
+            // removed before entering this code.
+            return new AbsynDeclaration(def.Identifier, null);
         }
 
         public AbsynStatement VisitGotoInstruction(GotoInstruction gotoInstruction)
@@ -90,7 +92,15 @@ namespace Reko.Structure
 
         public AbsynStatement VisitPhiAssignment(PhiAssignment phi)
         {
-            throw new NotImplementedException();
+            //$TODO: should there be a warning? Phi functions should have been
+            // removed before entering this code.
+            var args = phi.Src.Arguments;
+            var dst = phi.Dst;
+            return new AbsynAssignment(dst,
+                new Application(
+                    new Identifier("\u03D5", new UnknownType(), null),
+                    args[0].DataType,
+                    args));
         }
 
         public AbsynStatement VisitReturnInstruction(ReturnInstruction ret)

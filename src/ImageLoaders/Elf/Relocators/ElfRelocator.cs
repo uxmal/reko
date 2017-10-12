@@ -84,22 +84,66 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override void Relocate(Program program)
         {
+            DumpRel32(loader);
             DumpRela32(loader);
-            foreach (var relSection in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
+
+            foreach (var relSection in loader.Sections)
             {
-                var symbols = loader.Symbols[relSection.LinkedSection];
-                var referringSection = relSection.RelocatedSection;
-                var rdr = loader.CreateReader(relSection.FileOffset);
-                for (uint i = 0; i < relSection.EntryCount(); ++i)
+                if (relSection.Type == SectionHeaderType.SHT_REL)
                 {
-                    var rela = Elf32_Rela.Read(rdr);
-                    var sym = symbols[(int)(rela.r_info >> 8)];
-                    RelocateEntry(program, sym, referringSection, rela);
+                    var symbols = loader.Symbols[relSection.LinkedSection];
+                    var referringSection = relSection.RelocatedSection;
+                    var rdr = loader.CreateReader(relSection.FileOffset);
+                    for (uint i = 0; i < relSection.EntryCount(); ++i)
+                    {
+                        var rel = Elf32_Rel.Read(rdr);
+                        var sym = symbols[(int)(rel.r_info >> 8)];
+                        RelocateEntry(program, sym, referringSection, rel);
+                    }
+                }
+                else if (relSection.Type == SectionHeaderType.SHT_RELA)
+                {
+
+                    var symbols = loader.Symbols[relSection.LinkedSection];
+                    var referringSection = relSection.RelocatedSection;
+                    var rdr = loader.CreateReader(relSection.FileOffset);
+                    for (uint i = 0; i < relSection.EntryCount(); ++i)
+                    {
+                        var rela = Elf32_Rela.Read(rdr);
+                        var sym = symbols[(int)(rela.r_info >> 8)];
+                        RelocateEntry(program, sym, referringSection, rela);
+                    }
                 }
             }
         }
 
+        public virtual void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rel rel) { }
+
         public abstract void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela);
+
+
+        [Conditional("DEBUG")]
+        protected void DumpRel32(ElfLoader32 loader)
+        {
+            foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_REL))
+            {
+                Debug.Print("REL: offset {0:X} symbol section {1}, relocating in section {2}",
+                    section.FileOffset,
+                    section.LinkedSection.Name,
+                    section.RelocatedSection.Name);
+                var symbols = loader.Symbols[section.LinkedSection];
+                var rdr = loader.CreateReader(section.FileOffset);
+                for (uint i = 0; i < section.EntryCount(); ++i)
+                {
+                    var rel = Elf32_Rel.Read(rdr);
+                    Debug.Print("  off:{0:X8} type:{1,-16} {3,3} {2}",
+                                    rel.r_offset,
+                                    RelocationTypeToString(rel.r_info & 0xFF),
+                                    symbols[(int)(rel.r_info >> 8)].Name,
+                                    (int)(rel.r_info >> 8));
+                }
+            }
+        }
 
         [Conditional("DEBUG")]
         protected void DumpRela32(ElfLoader32 loader)

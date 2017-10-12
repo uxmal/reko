@@ -357,9 +357,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "website", "Drivers\WebSite\
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gui", "Gui\Gui.csproj", "{1CA14C64-92E8-452E-A380-637F3DBB4D28}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901} = {C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}
-	EndProjectSection
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WixInstaller", "WixInstaller\WixInstaller.wixproj", "{B1916638-EF20-4692-8C95-1C5AD6C67D30}"
 EndProject

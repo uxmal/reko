@@ -1,6 +1,8 @@
 # reko - a general purpose decompiler.
 
- [![Build Status](https://travis-ci.org/uxmal/reko.svg?branch=master)](https://travis-ci.org/uxmal/reko) [![Join the chat at https://gitter.im/uxmal/reko](https://badges.gitter.im/uxmal/reko.svg)](https://gitter.im/uxmal/reko?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+ [![Build Status](https://travis-ci.org/uxmal/reko.svg?branch=master)](https://travis-ci.org/uxmal/reko) 
+ [![Join the chat at https://gitter.im/uxmal/reko](https://badges.gitter.im/uxmal/reko.svg)](https://gitter.im/uxmal/reko?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+ [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/uxmal/reko?branch=master)](https://ci.appveyor.com/project/uxmal/reko)
 
 **Reko** (Swedish: "decent, obliging") is a C# project containing
 a decompiler for machine code binaries.  This project is freely
@@ -32,34 +34,14 @@ To build reko, start by cloning https://github.com/uxmal/reko. You
 can use an IDE or the command line to build the solution file
 `Reko-decompiler.sln`. If you are an IDE user, use Visual
 Studio 2013 or later, or MonoDevelop version 5.10 or later. If you
-wish to build using the command line, use the commands
+wish to build using the command line, use the command
 
 ```cmd
 msbuild Reko-decompiler.sln
 ```
 
-on Windows machines or
-
-```sh
-xbuild Reko-decompiler.sln
-```
-
-on machines with the Mono toolchain. All external dependencies
-needed to build are included in the `external` directory.
-
-**Note**: some users have reported difficulties with certain
-Linux distributions that don't support the 4.0 CLR framework
-(see issue #251 for details). One workaround that has been
-identified is to specify the CLR target framework explicitly
-at the xbuild command line:
-
-```sh
-xbuild /p:TargetFrameworkVersion="v4.5"  Reko-decompiler.sln
-```
-
-You may be able to work around the problem reported in issue #251
-by downloading the appropriate Mono CLR binaries from
-git://github.com/mono/reference-assemblies.git
+(provided you have ```msbuild``` installed). All external dependencies
+needed to build Reko are included in the `external` directory.
 
 **Note**: please let us know if you still are not able to compile,
 so we can help you fix the issue.

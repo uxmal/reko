@@ -31,6 +31,29 @@ namespace Reko.Environments.Windows
     /// <summary>
     /// Seralizes and deserializes MIPS signatures on Windows. 
     /// </summary>
+    /// <remarks>
+    /// According to Microsoft:
+    /// The calling function allocates space on the stack for all
+    /// arguments, even though it may pass some of the arguments in registers. 
+    /// The calling function should reserve enough space on the stack for the 
+    /// maximum argument list required by calls from the calling function.
+    /// The function must allocate space for at least four words, even if it passes
+    /// fewer parameters.
+    /// Functions should allocate space for all arguments, regardless of whether
+    ///  the function passes the arguments in registers.This provides a save area f
+    /// or the called function for saving argument registers if these registers need 
+    /// to be preserved.
+    /// The function allocates argument registers for the first argument.It 
+    /// allocates any argument registers remaining to the second argument, and so
+    ///  on until it uses all the argument registers or exhausts the argument list. 
+    /// All remaining parts of an argument and remaining arguments go on the stack.
+    /// When thinking about argument register allocation, imagine the argument list
+    /// as an unpacked structure in memory — the argument call area on the stack — 
+    /// where each argument is an appropriately aligned member of the structure.
+    /// The argument register allocation preserves that same alignment as if in 
+    /// memory. When mapping some argument lists some argument registers may not
+    /// contain anything relevant the same as padding space in memory.
+    /// </remarks>
     // https://msdn.microsoft.com/en-us/library/aa448706.aspx
     public class MipsCallingConvention : CallingConvention
     {
@@ -100,7 +123,7 @@ namespace Reko.Environments.Windows
                     {
                         ccr.StackParam(dtArg);
                     }
-                    if (regsNeeded == 2)
+                    else if (regsNeeded == 2)
                     {
                         ccr.SequenceParam(iregs[ir], iregs[ir + 1]);
                         ir += 2;

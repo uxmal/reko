@@ -307,7 +307,7 @@ namespace Reko.Arch.Z80
              C ,
             };
 
-            Registers.regsByName = All.Where(r => r != null).ToDictionary(r => r.Name);
+            Registers.regsByName = All.Where(reg => reg != null).ToDictionary(reg => reg.Name);
 
             SubRegisters = new Dictionary<
                 RegisterStorage, 

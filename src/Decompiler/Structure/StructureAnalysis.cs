@@ -274,8 +274,8 @@ namespace Reko.Structure
             if (unresolvedCycles.Count != 0)
             {
                 var cycle = unresolvedCycles.Dequeue();
-                RefineLoop(cycle.Item1, cycle.Item2);
-                return true;
+                if (RefineLoop(cycle.Item1, cycle.Item2))
+                    return true;
             }
             var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
             foreach (var n in postOrder)
@@ -476,7 +476,7 @@ all other cases, together they constitute a Switch[].
         private void VirtualizeIrregularSwitchEntries(Region n)
         {
             var vEdges = new List<VirtualEdge>();
-            foreach (var s in regionGraph.Successors(n))
+            foreach (var s in regionGraph.Successors(n).Distinct())
             {
                 foreach (var sp in regionGraph.Predecessors(s))
                 {
@@ -576,21 +576,29 @@ all other cases, together they constitute a Switch[].
         private bool ReduceIncSwitch(Region n, Region follow)
         {
             var succs = regionGraph.Successors(n).ToArray();
-            var stms = new List<AbsynStatement>();
+            var cases = new Dictionary<Region, List<int>>();
             for (int i = 0; i < succs.Length; ++i)
             {
-                stms.Add(new AbsynCase(Constant.Create(n.Expression.DataType, i)));
-                stms.AddRange(succs[i].Statements);
-                if (succs[i].Type != RegionType.Tail)
+                if (!cases.ContainsKey(succs[i]))
+                    cases.Add(succs[i], new List<int>());
+                cases[succs[i]].Add(i);
+            }
+            var stms = new List<AbsynStatement>();
+            foreach (var succ in cases.Keys)
+            {
+                foreach (int c in cases[succ])
+                    stms.Add(new AbsynCase(Constant.Create(n.Expression.DataType, c)));
+                stms.AddRange(succ.Statements);
+                if (succ.Type != RegionType.Tail)
                 {
                     stms.Add(new AbsynBreak());
                 }
-                regionGraph.RemoveEdge(n, succs[i]);
+                cases[succ].ForEach(c => regionGraph.RemoveEdge(n, succ));
                 if (follow != null)
                 {
-                    regionGraph.RemoveEdge(succs[i], follow);
+                    regionGraph.RemoveEdge(succ, follow);
                 }
-                RemoveRegion(succs[i]);
+                RemoveRegion(succ);
             }
             var sw = new AbsynSwitch(n.Expression, stms);
             n.Statements.Add(sw);
@@ -740,7 +748,7 @@ doing future pattern matches.
                 case VirtualEdgeType.Break: stm = new AbsynBreak(); break;
                 case VirtualEdgeType.Goto:
                     stm = new AbsynGoto(vEdge.To.Block.Name);
-                    if (vEdge.To.Statements.Count > 0 && !(vEdge.To.Statements[0] is AbsynLabel))
+                    if (vEdge.To.Statements.Count == 0 || !(vEdge.To.Statements[0] is AbsynLabel))
                     {
                         vEdge.To.Statements.Insert(0, new AbsynLabel(vEdge.To.Block.Name));
                     }
@@ -753,6 +761,7 @@ doing future pattern matches.
             regionGraph.RemoveEdge(vEdge.From, vEdge.To);
             if (regionGraph.Predecessors(vEdge.To).Count == 0 && vEdge.To != entry)
             {
+                //$BUGBUG: this causes losing of some code blocks
                 RemoveRegion(vEdge.To);
 
 
@@ -853,12 +862,12 @@ are added during loop refinement, which we discuss next.
             bool didReduce = false;
             var loopNodes = new LoopFinder<Region>(regionGraph, n, doms).LoopNodes;
             Region[] succs;
-            for (; ; )
+            for (;;)
             {
                 succs = regionGraph.Successors(n).ToArray();
                 if (succs.Length != 1 || !ReduceSequence(n))
                     break;
-            Probe();
+                Probe();
                 didReduce = true;
             }
             foreach (var s in succs)
@@ -888,8 +897,7 @@ are added during loop refinement, which we discuss next.
             }
             foreach (var s in succs)
             {
-                var ss = SingleSuccessor(s);
-                if (ss != null && ss == n)
+                if (SingleSuccessor(s) == n && SinglePredecessor(s) == n)
                 {
                     // While!
                     var exp = s == succs[0] 
@@ -998,6 +1006,8 @@ refinement on the loop body, which we describe below.
         {
             head = EnsureSingleEntry(head, loopNodes);
             var fl = DetermineFollowLatch(head, loopNodes);
+            if (fl == null)
+                return false;
             var follow = fl.Item1;
             var latch = fl.Item2;
             var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
@@ -1105,14 +1115,14 @@ refinement on the loop body, which we describe below.
                     .Count();
         }
 
-        private Tuple<Region,Region> DetermineFollowLatch(Region head, ISet<Region> loopNodes)
+        private Tuple<Region, Region> DetermineFollowLatch(Region head, ISet<Region> loopNodes)
         {
             var headSucc = regionGraph.Successors(head).ToArray();
             if (headSucc.Length == 2)
             {
                 // If the head is a Conditional node and one of the edges 
                 // leaves the loop, the head of that edge is the follow 
-                // node of the 
+                // node of the loop.
                 Region follow = null;
                 if (!loopNodes.Contains(headSucc[0]))
                 {
@@ -1147,7 +1157,7 @@ refinement on the loop body, which we describe below.
                     }
                 }
             }
-            throw new NotImplementedException();
+            return null;
         }
         
         /// <summary>
@@ -1253,7 +1263,7 @@ refinement on the loop body, which we describe below.
 
         /// <summary>
         /// If the algorithm does not collapse any nodes or perform any
-        /// refinement during an iteration, we must an edge in
+        /// refinement during an iteration, we must remove an edge in
         /// the graph to allow it to make progress. We call this process
         /// the last resort refinement, because it has the lowest priority,
         /// and always allows progress to be made. Last resort refine-

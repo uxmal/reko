@@ -318,116 +318,125 @@ void fn054C(Eq_666 r0, Eq_667 * r3)
 // 0670: void fn0670(Register word16 r5, Stack (ptr code) wArg00, Stack cui16 wArg02, Stack cui16 wArg04, Stack cui16 wArg06, Stack cui16 wArg08)
 void fn0670(word16 r5, code * wArg00, cui16 wArg02, cui16 wArg04, cui16 wArg06, cui16 wArg08)
 {
-fn0670_entry:
-	struct Eq_710 * r4_3 = globals->ptr5424
-	r4_3->ptr002A = wArg00
-	cui16 r0_14 = wArg02
-	cui16 r1_18 = wArg04
-	cui16 r2_22 = wArg06
-	cui16 r3_24 = wArg08
-	branch wArg08 != 0x00 l068E
-	goto l0684
-l0670:
-l0684:
-	r3_24 = wArg04
-	r0_14 = wArg06
-	r2_22 = wArg02
-	r1_18 = wArg08
-l068E:
-	word16 r0_38 = __rol(r0_14, r0_14)
-	ui16 r1_37 = r1_18 << 0x01
-	word16 r5_39 = __rol(r5, r5)
-	branch r0_38 == 0x00 l06B2
-l069C:
-	uint16 r2_91 = r2_22 << 0x01
-	branch r2_91 == 0x00 l06B2
-l06A0:
-	word16 r5_98 = (byte) (r2_91 < 0x00) + r5_39
-	wchar_t r4_100 = DPB(r0_38, 0x00, 0) + r2_91
-	branch r4_100 >= 0x00 l06AE
-l06A8:
-	branch r4_100 > 0x00 l06BE
-l06AA:
-	__syscall(0x898A)
-	goto l06B2
-l06AE:
-	branch r4_100 < 0x00 l06B8
-l06B0:
-	__syscall(0x898B)
+	struct Eq_710 * r4_3 = globals->ptr5424;
+	r4_3->ptr002A = wArg00;
+	cui16 r0_14 = wArg02;
+	cui16 r1_18 = wArg04;
+	cui16 r2_22 = wArg06;
+	cui16 r3_24 = wArg08;
+	if (wArg08 == 0x00)
+	{
+		r3_24 = wArg04;
+		r0_14 = wArg06;
+		r2_22 = wArg02;
+		r1_18 = wArg08;
+	}
+	word16 r0_38 = __rol(r0_14, r0_14);
+	ui16 r1_37 = r1_18 << 0x01;
+	word16 r5_39 = __rol(r5, r5);
+	if (r0_38 == 0x00)
+	{
 l06B2:
-	goto l0738
-l06B8:
-	r4_100 = r4_100 & 0x7F00
-	branch (r4_100 & 0x7F00) == 0x00 l06B0
-l06BE:
-	__ror(r5_98, r5_98)
-	wchar_t r4_123 = DPB(r4_100, 0x00, 0)
-	cui16 r4_126 = __ror(r4_123 + 0x7F01, r4_123 + 0x7F01)
-	Eq_765 r2_129 = __ror(r2_91, r2_91)
-	cui16 r3_130 = __swab(r3_24)
-	cui16 r2_133 = DPB(__swab(r2_129), 0x00, 0) | r3_130
-	cui16 r3_134 = DPB(r3_130, 0x00, 0)
-	int16 r2_135 = __ror(r2_133, r2_133)
-	cu16 r3_136 = __ror(r3_134, r3_134)
-	cui16 r1_137 = __swab(r1_37)
-	cu16 r0_140 = DPB(__swab(r0_38), 0x00, 0) | r1_137
-	ui16 r1_141 = DPB(r1_137, 0x00, 0)
-	int16 r4_143 = r2_135
-	cu16 r5_144 = r3_136
-l06E8:
-	r4_143 = r4_143 >> 0x01
-	r5_144 = __ror(r5_144, r5_144)
-	r1_141 = r1_141 << 0x01
-	branch r1_141 == 0x00 l06FC
-l06F0:
-	r0_140 = __rol(r0_140, r0_140)
-	branch r0_140 >= 0x00 l06E8
-l06F4:
-	r3_136 = r3_136 + r5_144
-	r2_135 = (byte) (r3_136 < 0x00) + r2_135 + r4_143
-	goto l06E8
-l06FC:
-	uint16 r0_168 = __rol(r0_140, r0_140)
-	branch r0_168 >= 0x00 l0706
+		goto l0738;
+	}
+	uint16 r2_91 = r2_22 << 0x01;
+	if (r2_91 == 0x00)
+		goto l06B2;
+	word16 r5_98 = (byte) (r2_91 < 0x00) + r5_39;
+	wchar_t r4_100 = DPB(r0_38, 0x00, 0) + r2_91;
+	if (r4_100 < 0x00)
+	{
+		if (r4_100 <= 0x00)
+		{
+			__syscall(0x898A);
+			goto l06B2;
+		}
+	}
+	else
+	{
+		if (r4_100 >= 0x00)
+			goto l06B0;
+		r4_100 = r4_100 & 0x7F00;
+		if ((r4_100 & 0x7F00) == 0x00)
+		{
+l06B0:
+			__syscall(0x898B);
+			goto l06B2;
+		}
+	}
+	__ror(r5_98, r5_98);
+	wchar_t r4_123 = DPB(r4_100, 0x00, 0);
+	cui16 r4_126 = __ror(r4_123 + 0x7F01, r4_123 + 0x7F01);
+	Eq_765 r2_129 = __ror(r2_91, r2_91);
+	cui16 r3_130 = __swab(r3_24);
+	cui16 r2_133 = DPB(__swab(r2_129), 0x00, 0) | r3_130;
+	cui16 r3_134 = DPB(r3_130, 0x00, 0);
+	int16 r2_135 = __ror(r2_133, r2_133);
+	cu16 r3_136 = __ror(r3_134, r3_134);
+	cui16 r1_137 = __swab(r1_37);
+	cu16 r0_140 = DPB(__swab(r0_38), 0x00, 0) | r1_137;
+	ui16 r1_141 = DPB(r1_137, 0x00, 0);
+	int16 r4_143 = r2_135;
+	cu16 r5_144 = r3_136;
+	while (true)
+	{
+		r4_143 = r4_143 >> 0x01;
+		r5_144 = __ror(r5_144, r5_144);
+		r1_141 = r1_141 << 0x01;
+		if (r1_141 == 0x00)
+			break;
+		r0_140 = __rol(r0_140, r0_140);
+		if (r0_140 < 0x00)
+		{
+			r3_136 = r3_136 + r5_144;
+			r2_135 = (byte) (r3_136 < 0x00) + r2_135 + r4_143;
+		}
+	}
+	uint16 r0_168 = __rol(r0_140, r0_140);
+	if (r0_168 < 0x00)
+	{
 l0700:
-	r3_136 = r3_136 + r5_144
-	r2_135 = (byte) (r3_136 < 0x00) + r2_135 + r4_143
-l0706:
-	r4_143 = r4_143 >> 0x01
-	r5_144 = __ror(r5_144, r5_144)
-	r0_168 = r0_168 << 0x01
-	branch r0_168 < 0x00 l0700
-l070E:
-	branch r0_168 != 0x00 l0706
-l0710:
-	branch r2_135 < 0x00 l0724
-l0716:
-	r3_136 = __rol(r3_136, r3_136)
-	r2_135 = __rol(r2_135, r2_135)
-	branch (r4_126 & 0x7F80) == 0x00 l06B0
+		r3_136 = r3_136 + r5_144;
+		r2_135 = (byte) (r3_136 < 0x00) + r2_135 + r4_143;
+	}
+	do
+	{
+		r4_143 = r4_143 >> 0x01;
+		r5_144 = __ror(r5_144, r5_144);
+		r0_168 = r0_168 << 0x01;
+		if (r0_168 < 0x00)
+			goto l0700;
+	} while (r0_168 != 0x00);
+	if (r2_135 < 0x00)
+	{
 l0724:
-	Eq_866 r3_200 = __rol(r3_136, r3_136)
-	__rol(r1_141, r1_141)
-	__swab(DPB(r3_200, 0x00, 0) | r2_135)
-	__swab(DPB(r2_135, 0x00, 0))
+		Eq_866 r3_200 = __rol(r3_136, r3_136);
+		__rol(r1_141, r1_141);
+		__swab(DPB(r3_200, 0x00, 0) | r2_135);
+		__swab(DPB(r2_135, 0x00, 0));
 l0738:
-	word16 sp_63
-	word16 pc_64
-	word16 r4_65
-	byte NZ_66
-	bool V_67
-	byte NZVC_68
-	word16 r0_69
-	word16 r1_70
-	word16 r2_71
-	word16 r3_72
-	bool Z_73
-	word16 r5_74
-	bool C_75
-	bool N_76
-	r4_3->ptr002A()
-	return
-fn0670_exit:
+		word16 sp_63;
+		word16 pc_64;
+		word16 r4_65;
+		byte NZ_66;
+		bool V_67;
+		byte NZVC_68;
+		word16 r0_69;
+		word16 r1_70;
+		word16 r2_71;
+		word16 r3_72;
+		bool Z_73;
+		word16 r5_74;
+		bool C_75;
+		bool N_76;
+		r4_3->ptr002A();
+		return;
+	}
+	r3_136 = __rol(r3_136, r3_136);
+	r2_135 = __rol(r2_135, r2_135);
+	if ((r4_126 & 0x7F80) != 0x00)
+		goto l0724;
+	goto l06B0;
 }
 
 // 07BA: void fn07BA(Register cu16 r0, Register uint16 r1, Register word16 r2, Register uint16 r3, Register Eq_892 r4, Register Eq_893 r5, Stack word16 wArg00, Stack word16 wArg02, Stack (ptr (ptr code)) wArg04)
@@ -554,57 +563,34 @@ word16 fn0AE2(word16 r4, ptr16 & r4Out)
 // 0AE6: Register Eq_1071 fn0AE6(Register word16 r4, Stack byte bArg00, Register out ptr16 r4Out)
 Eq_1071 fn0AE6(word16 r4, byte bArg00, ptr16 & r4Out)
 {
-fn0AE6_entry:
-	def fp
-	def r3
-	def Mem0
-	def bArg00
-	def r4Out
-	def r4
-	sp_1 = fp
-	sp_2 = fp - 0x02
-	wLoc02_4 = r3
-	r3_6 = globals->ptr5424
-	sp_7 = fp - 0x04
-	wLoc04_8 = 0x00
-	v14_10 = bArg00
-	bLoc04_11 = v14_10
-	wLoc04_12 = DPB(wLoc04_8, bLoc04_11, 0)
-	v16_13 = 0x01 - wLoc04_12
-	NZVC_14 = cond(v16_13)
-	Z_15 = NZVC_14
-	branch v16_13 == 0x00 l0AF6_thunk_fn0B02
-	goto l0AF6_thunk_fn0AF8
-l0AE6:
-l0AE6:
-	sp = sp - 0x02
-	sp->t0000 = r3
-	r3 = globals->ptr5424
-	sp = sp - 0x02
-	sp->t0000.u0 = 0x00
-	v19 = sp->t0004
-	sp->t0000 = v19
-	v20 = 0x01 - sp->t0000
-	NZVC = cond(v20)
-	Z = NZVC
-	branch Test(EQ,Z) l0B02
-	goto l0AF6_thunk_fn0AF8
-l0AF6_thunk_fn0AF8:
-	r3_21 = fn0AF8(r3_6, r4, out r4_20)
-	return r3_21
-l0AF6_thunk_fn0AF8:
-	r3 = fn0AF8(r3, r4, out r4)
-	return r3
-l0AF6_thunk_fn0B02:
-	r3_23 = fn0B02(r3_6, r4, out r4_22)
-	return r3_23
-l0AF6_thunk_fn0B02:
-	r3 = fn0B02(r3, r4, out r4)
-	return r3
-fn0AE6_exit:
-	r4_16 = PHI(r4_22, r4_20, r4, r4)
-	r3_17 = PHI(r3_23, r3_21, r3, r3)
-	use r4_16 (=> r4Out)
+	ptr16 fp;
+	Eq_1071 r3;
+	<type-error> Mem0;
+	byte bArg00;
+	ptr16 r4Out;
+	word16 r4;
+	sp_1 = fp;
+	sp_2 = fp - 0x02;
+	wLoc02_4 = r3;
+	r3_6 = globals->ptr5424;
+	sp_7 = fp - 0x04;
+	wLoc04_8 = 0x00;
+	v14_10 = bArg00;
+	bLoc04_11 = v14_10;
+	wLoc04_12 = DPB(wLoc04_8, bLoc04_11, 0);
+	v16_13 = 0x01 - wLoc04_12;
+	NZVC_14 = cond(v16_13);
+	Z_15 = NZVC_14;
+	if (v16_13 == 0x00)
+	{
+		r3_23 = fn0B02(r3_6, r4, out r4_22);
+		return r3_23;
+	}
+	else
+	{
+		r3_21 = fn0AF8(r3_6, r4, out r4_20);
+		return r3_21;
+	}
 }
 
 // 0AF8: Register Eq_1071 fn0AF8(Register Eq_1071 r3, Register word16 r4, Register out ptr16 r4Out)
@@ -1225,70 +1211,39 @@ word16 fn0FAE(Eq_1674 r2, ptr16 & r2Out, ptr16 & r3Out)
 // 0FB2: Register word16 fn0FB2(Register Eq_1674 r2, Register out ptr16 r2Out, Register out ptr16 r3Out)
 word16 fn0FB2(Eq_1674 r2, ptr16 & r2Out, ptr16 & r3Out)
 {
-fn0FB2_entry:
-	def fp
-	def r3
-	def Mem0
-	def r2Out
-	def r3Out
-	def r2
-	sp_1 = fp
-	sp_2 = fp - 0x02
-	wLoc02_4 = r3
-	r3_5 = fp - 0x02
-	r3_6 = fp + 0x0A
-	sp_7 = fp - 0x04
-	wLoc04_8 = fp + 0x0A
-	r3_10 = globals->ptr5424
-	v11_11 = wLoc04_8
-	sp_12 = fp - 0x02
-	r3_10->ptr0064 = fp + 0x0A
-	v14_14 = r3_10->w0014
-	v14_15 = v14_14 & v14_14
-	NZ_16 = cond(v14_15)
-	Z_17 = NZ_16
-	C_18 = false
-	V_19 = false
-	branch v14_15 == 0x00 l0FC8_thunk_fn0FCC
-	goto l0FC8_thunk_fn0FCA
-l0FB2:
-l0FB2:
-	sp = sp - 0x02
-	sp->ptr0000 = r3
-	r3 = sp
-	r3 = (struct Eq_2426 *) ((char *) &r3->ptr0000 + 0x0C)
-	sp = sp - 0x02
-	sp->ptr0000 = r3
-	r3 = globals->ptr5424
-	v19 = sp->ptr0000
-	sp = (struct Eq_2426 *) ((char *) &sp->ptr0000 + 0x02)
-	r3->ptr0064 = v19
-	v21 = r3->w0014
-	v21 = v21 & v21
-	NZ = cond(v21)
-	Z = NZ
-	C = false
-	V = false
-	branch Test(EQ,Z) l0FCC
-	goto l0FC8_thunk_fn0FCA
-l0FC8_thunk_fn0FCA:
-	r0_28 = fn0FCA(r2, r3_10, out r2_26, out r3_27)
-	return r0_28
-l0FC8_thunk_fn0FCA:
-	r0 = fn0FCA(r2, r3, out r2, out r3)
-	return r0
-l0FC8_thunk_fn0FCC:
-	r0_31 = fn0FCC(r2, r3_10, out r2_29, out r3_30)
-	return r0_31
-l0FC8_thunk_fn0FCC:
-	r0 = fn0FCC(r2, r3, out r2, out r3)
-	return r0
-fn0FB2_exit:
-	r2_20 = PHI(r2_29, r2_26, r2, r2)
-	r3_21 = PHI(r3_30, r3_27, r3, r3)
-	r0_22 = PHI(r0_31, r0_28, r0, r0)
-	use r2_20 (=> r2Out)
-	use r3_21 (=> r3Out)
+	ptr16 fp;
+	word16 r3;
+	<type-error> Mem0;
+	ptr16 r2Out;
+	ptr16 r3Out;
+	Eq_1674 r2;
+	sp_1 = fp;
+	sp_2 = fp - 0x02;
+	wLoc02_4 = r3;
+	r3_5 = fp - 0x02;
+	r3_6 = fp + 0x0A;
+	sp_7 = fp - 0x04;
+	wLoc04_8 = fp + 0x0A;
+	r3_10 = globals->ptr5424;
+	v11_11 = wLoc04_8;
+	sp_12 = fp - 0x02;
+	r3_10->ptr0064 = fp + 0x0A;
+	v14_14 = r3_10->w0014;
+	v14_15 = v14_14 & v14_14;
+	NZ_16 = cond(v14_15);
+	Z_17 = NZ_16;
+	C_18 = false;
+	V_19 = false;
+	if (v14_15 == 0x00)
+	{
+		r0_31 = fn0FCC(r2, r3_10, out r2_29, out r3_30);
+		return r0_31;
+	}
+	else
+	{
+		r0_28 = fn0FCA(r2, r3_10, out r2_26, out r3_27);
+		return r0_28;
+	}
 }
 
 // 0FCA: Register word16 fn0FCA(Register Eq_1674 r2, Register (ptr Eq_2426) r3, Register out ptr16 r2Out, Register out (ptr Eq_2493) r3Out)
@@ -1856,38 +1811,36 @@ void fn171E(Eq_3759 * r0, Eq_3760 * r3)
 // 172C: void fn172C(Register (ptr Eq_3759) r0, Register ui16 r2)
 void fn172C(Eq_3759 * r0, ui16 r2)
 {
-fn172C_entry:
-	Eq_3795 r3_19 = r0->t0014
-	cu16 r1_17 = 0x00
-	word16 r4_16 = 0x00
-	word16 r5_10 = 0x00
-	goto l1738
-l172C:
-l1738:
-	r3_19 = r3_19 >> 0x01
-	branch r3_19 < 0x00 l1766
-l173C:
-	branch r3_19 != 0x00 l176C
-l173E:
-	cui16 r1_37 = __swab(DPB(r1_17, 0x00, 0))
-	cui16 r4_38 = __swab(r4_16)
-	branch r4_38 == 0x00 l174C
-l174A:
-	__syscall(0x89A8)
-l174C:
-	struct Eq_3826 * r3_47 = globals->ptr5424
-	r3_47->w005E = r1_37 | r4_38
-	r3_47->t005C = r0->t0014
-	r3_47->t005C = r3_47->t005C << 0x01
-	return
-l1766:
-	r1_17 = r1_17 + r2
-	r4_16 = (byte) (r1_17 < 0x00) + r4_16 + r5_10
-l176C:
-	r2 = r2 << 0x01
-	r5_10 = __rol(r5_10, r5_10)
-	goto l1738
-fn172C_exit:
+	Eq_3795 r3_19 = r0->t0014;
+	cu16 r1_17 = 0x00;
+	word16 r4_16 = 0x00;
+	word16 r5_10 = 0x00;
+	while (true)
+	{
+		r3_19 = r3_19 >> 0x01;
+		if (r3_19 >= 0x00)
+		{
+			if (r3_19 == 0x00)
+			{
+				cui16 r1_37 = __swab(DPB(r1_17, 0x00, 0));
+				cui16 r4_38 = __swab(r4_16);
+				if (r4_38 != 0x00)
+					__syscall(0x89A8);
+				struct Eq_3826 * r3_47 = globals->ptr5424;
+				r3_47->w005E = r1_37 | r4_38;
+				r3_47->t005C = r0->t0014;
+				r3_47->t005C = r3_47->t005C << 0x01;
+				return;
+			}
+		}
+		else
+		{
+			r1_17 = r1_17 + r2;
+			r4_16 = (byte) (r1_17 < 0x00) + r4_16 + r5_10;
+		}
+		r2 = r2 << 0x01;
+		r5_10 = __rol(r5_10, r5_10);
+	}
 }
 
 // 1836: Register word16 fn1836(Register (ptr Eq_1741) r3, Register (ptr Eq_2820) r4, Register out ptr16 r2Out, Register out (ptr Eq_3066) r3Out, Register out (ptr Eq_3067) r4Out)
@@ -2310,451 +2263,449 @@ Eq_1741 * fn1D30(Eq_2820 * r0, Eq_1741 * r3, ptr16 & r4Out)
 // 1DAE: void fn1DAE(Register word16 r4, Register (ptr Eq_4633) pc)
 void fn1DAE(word16 r4, Eq_4633 * pc)
 {
-fn1DAE_entry:
-	ptr16 r4_3
-	Eq_1283 r0_4 = fn0218(r4, out r4_3)
-	*fp->ptr000E = *fp->ptr000E & ~globals->w15FF
-	**(r4_3 - 0x02) = *null & *(*(r4_3 - 0x02))
-	fn4180(r0_4, r4_3 - 0x02, &globals->w48BA)
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w5876 = 0x00
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54C8 = 0x00
-	globals->w54CA = 0x00
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54CC = 0x00
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54CE = 0x01
-	*globals->w5426 = *globals->w5426 + 0x01
-	byte * r5_45
-	Eq_1674 r2_46 = fn0818(&globals->w48BC, out r5_45)
-	*globals->w5426 = *globals->w5426 + 0x01
-	*(fp - 0x02) = 0x48A4
-	*(fp - 0x04) = 18448
-	Eq_1674 r2_58
-	word16 r3_59
-	word16 r4_60
-	byte * r5_61
-	fn0DC8(r2_46, r5_45, out r2_58, out r3_59, out r4_60, out r5_61)
-	*(fp - 0x06) = 0x5878
-	word16 r4_68
-	fn0EA8(fn0AE2(r4_60, out r4_68), wLoc02)
-	*globals->w5426 = *globals->w5426 + 0x01
-	*(fp - 0x08) = 0x48A4
-	*(fp - 0x0A) = 18451
-	word16 r2_82
-	word16 r3_83
-	word16 r4_84
-	word16 r5_85
-	Eq_1283 r0_86 = fn0DC8(r2_58, r5_61, out r2_82, out r3_83, out r4_84, out r5_85)
-	*(fp - 0x0C) = 0x489E
-	*(fp - 0x0E) = 22650
-	word16 r3_94
-	fn0B44(r0_86, r3_83, out r3_94)
-	fn0EA8(r3_94, wLoc02)
-	*globals->w5426 = 0x18
-	struct Eq_2056 * r4_101
-	Eq_1283 r0_102 = fn0A64(&globals->w48C8, out r4_101)
-	*globals->w5426 = *globals->w5426 + 0x01
-	fn2B90(r0_102, r4_101, &globals->w48BA, pc)
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54D0 = 0x13
-	ptr16 sp_122 = fp - 0x0E
-	goto l1E54
-l1DAE:
+	ptr16 r4_3;
+	Eq_1283 r0_4 = fn0218(r4, out r4_3);
+	*fp->ptr000E = *fp->ptr000E & ~globals->w15FF;
+	**(r4_3 - 0x02) = *null & *(*(r4_3 - 0x02));
+	fn4180(r0_4, r4_3 - 0x02, &globals->w48BA);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w5876 = 0x00;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54C8 = 0x00;
+	globals->w54CA = 0x00;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54CC = 0x00;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54CE = 0x01;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	byte * r5_45;
+	Eq_1674 r2_46 = fn0818(&globals->w48BC, out r5_45);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	*(fp - 0x02) = 0x48A4;
+	*(fp - 0x04) = 18448;
+	Eq_1674 r2_58;
+	word16 r3_59;
+	word16 r4_60;
+	byte * r5_61;
+	fn0DC8(r2_46, r5_45, out r2_58, out r3_59, out r4_60, out r5_61);
+	*(fp - 0x06) = 0x5878;
+	word16 r4_68;
+	fn0EA8(fn0AE2(r4_60, out r4_68), wLoc02);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	*(fp - 0x08) = 0x48A4;
+	*(fp - 0x0A) = 18451;
+	word16 r2_82;
+	word16 r3_83;
+	word16 r4_84;
+	word16 r5_85;
+	Eq_1283 r0_86 = fn0DC8(r2_58, r5_61, out r2_82, out r3_83, out r4_84, out r5_85);
+	*(fp - 0x0C) = 0x489E;
+	*(fp - 0x0E) = 22650;
+	word16 r3_94;
+	fn0B44(r0_86, r3_83, out r3_94);
+	fn0EA8(r3_94, wLoc02);
+	*globals->w5426 = 0x18;
+	struct Eq_2056 * r4_101;
+	Eq_1283 r0_102 = fn0A64(&globals->w48C8, out r4_101);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	fn2B90(r0_102, r4_101, &globals->w48BA, pc);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54D0 = 0x13;
+	ptr16 sp_122 = fp - 0x0E;
 l1E54:
-	*globals->w5426 = 0x1B
-	globals->w54D0 = globals->w54CE - 0x01
-	*globals->w5426 = *globals->w5426 + 0x01
-	branch 0x0C - globals->w54CE >= 0x00 l1E74
-l1E6A:
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54D0 = 0x12
-l1E74:
-	*globals->w5426 = 0x1E
-	globals->w54C6 = 0x32
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54D2 = 0x00
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54D4 = ~0x00
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54D6 = ~0x00
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54D8 = 0x01
-l1EA6:
-	*globals->w5426 = 0x23
-	globals->w54DA = 0x01
-	word16 * r5_181 = globals->a487E
-l1EB6:
-	*globals->w5426 = 0x24
-	ui16 r1_194 = globals->w54D6 + *r5_181
-	globals->a58C2[r1_194 * 0x02] = 0x01
-	*globals->w5426 = *globals->w5426 + 0x01
-	r5_181 = r5_181 + 0x01
-	branch 0x04 - globals->w54D8 > 0x00 l1EEA
-l1ED6:
-	*globals->w5426 = 0x27
-	globals->a5A3E[r1_194 * 0x02] = 0x0A
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->a5A66[r1_194 * 0x02] = 0x00
-l1EEA:
-	*globals->w5426 = 0x29
-	globals->w54DA = globals->w54D8 + 0x01
-	branch 0x0A - globals->w54D8 <= 0x00 l1EB6
-l1EFC:
-	globals->w54D8 = globals->w54D6 + 0x01
-	branch 0x05 - globals->w54D6 <= 0x00 l1EA6
-l1F08:
-	*globals->w5426 = *globals->w5426 + 0x01
-	fn4030(r0_102, r4_101, &globals->w48BA, pc)
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54D8 = 0x01
-	struct Eq_2056 * r4_230 = &globals->t0050
-	byte * r5_231 = globals->a5464
-l1F26:
-	*globals->w5426 = 44
-	*r5_231 = 0x3D
-	*globals->w5426 = 0x2D
-	r5_231 = r5_231 + 0x01
-	r4_230 = r4_230 - 0x01
-	branch r4_230 > null l1F26
-l1F3A:
-	*globals->w5426 = *globals->w5426 + 0x01
-	word16 r2_252
-	struct Eq_2056 * r4_253
-	word16 r5_254
-	Eq_1283 r0_255 = fn4230(r0_102, r4_230, &globals->w48D0, pc, out r2_252, out r4_253, out r5_254)
-	*globals->w5426 = *globals->w5426 + 0x01
-	word16 r2_263
-	struct Eq_2056 * r4_264
-	word16 r5_265
-	Eq_1283 r0_266 = fn4230(r0_255, r4_253, &globals->w48DA, pc, out r2_263, out r4_264, out r5_265)
-	*globals->w5426 = *globals->w5426 + 0x01
-	word16 r2_274
-	struct Eq_2056 * r4_275
-	word16 r5_276
-	Eq_1283 r0_277 = fn4230(r0_266, r4_264, &globals->w48E4, pc, out r2_274, out r4_275, out r5_276)
-	*globals->w5426 = *globals->w5426 + 0x01
-	Eq_1674 r2_285
-	word16 r4_286
-	word16 r5_287
-	fn4230(r0_277, r4_275, &globals->w48EE, pc, out r2_285, out r4_286, out r5_287)
-	*globals->w5426 = *globals->w5426 + 0x01
-	word16 * sp_293 = sp_122 - 0x02
-	*sp_293 = 0x4898
-	*(sp_293 - 0x02) = 18550
-	*(sp_293 - 0x04) = 21724
-	Eq_1283 r0_302 = fn0FA4(r2_285)
-	*(sp_293 - 0x06) = 0x5878
-	struct Eq_2056 * r4_308
-	fn0EA8(fn0AE2(r4_286, out r4_308), wLoc02)
-	*globals->w5426 = *globals->w5426 + 0x01
-	word16 r2_317
-	struct Eq_2056 * r4_318
-	word16 r5_319
-	Eq_1283 r0_320 = fn4230(r0_302, r4_308, &globals->w48F8, pc, out r2_317, out r4_318, out r5_319)
-	*globals->w5426 = *globals->w5426 + 0x01
-	word16 r2_328
-	struct Eq_2056 * r4_329
-	word16 r5_330
-	Eq_1283 r0_331 = fn4230(r0_320, r4_318, &globals->w4902, pc, out r2_328, out r4_329, out r5_330)
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54E0 = 0x02
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54E2 = 0x05
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54E4 = globals->w54CE
-	*globals->w5426 = 0x38
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w58BA = 0x04
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w58BC = ~0x00
-	*globals->w5426 = *globals->w5426 + 0x01
-	fn2EC4(r0_331, r4_329, &globals->w48BA)
-	sp_122 = sp_293 - 0x06
+	*globals->w5426 = 0x1B;
+	globals->w54D0 = globals->w54CE - 0x01;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	if (0x0C - globals->w54CE < 0x00)
+	{
+		*globals->w5426 = *globals->w5426 + 0x01;
+		globals->w54D0 = 0x12;
+	}
+	*globals->w5426 = 0x1E;
+	globals->w54C6 = 0x32;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54D2 = 0x00;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54D4 = ~0x00;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54D6 = ~0x00;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54D8 = 0x01;
+	do
+	{
+		*globals->w5426 = 0x23;
+		globals->w54DA = 0x01;
+		word16 * r5_181 = globals->a487E;
+		do
+		{
+			*globals->w5426 = 0x24;
+			ui16 r1_194 = globals->w54D6 + *r5_181;
+			globals->a58C2[r1_194 * 0x02] = 0x01;
+			*globals->w5426 = *globals->w5426 + 0x01;
+			r5_181 = r5_181 + 0x01;
+			if (0x04 - globals->w54D8 <= 0x00)
+			{
+				*globals->w5426 = 0x27;
+				globals->a5A3E[r1_194 * 0x02] = 0x0A;
+				*globals->w5426 = *globals->w5426 + 0x01;
+				globals->a5A66[r1_194 * 0x02] = 0x00;
+			}
+			*globals->w5426 = 0x29;
+			globals->w54DA = globals->w54D8 + 0x01;
+		} while (0x0A - globals->w54D8 <= 0x00);
+		globals->w54D8 = globals->w54D6 + 0x01;
+	} while (0x05 - globals->w54D6 <= 0x00);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	fn4030(r0_102, r4_101, &globals->w48BA, pc);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54D8 = 0x01;
+	struct Eq_2056 * r4_230 = &globals->t0050;
+	byte * r5_231 = globals->a5464;
+	do
+	{
+		*globals->w5426 = 44;
+		*r5_231 = 0x3D;
+		*globals->w5426 = 0x2D;
+		r5_231 = r5_231 + 0x01;
+		r4_230 = r4_230 - 0x01;
+	} while (r4_230 > null);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	word16 r2_252;
+	struct Eq_2056 * r4_253;
+	word16 r5_254;
+	Eq_1283 r0_255 = fn4230(r0_102, r4_230, &globals->w48D0, pc, out r2_252, out r4_253, out r5_254);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	word16 r2_263;
+	struct Eq_2056 * r4_264;
+	word16 r5_265;
+	Eq_1283 r0_266 = fn4230(r0_255, r4_253, &globals->w48DA, pc, out r2_263, out r4_264, out r5_265);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	word16 r2_274;
+	struct Eq_2056 * r4_275;
+	word16 r5_276;
+	Eq_1283 r0_277 = fn4230(r0_266, r4_264, &globals->w48E4, pc, out r2_274, out r4_275, out r5_276);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	Eq_1674 r2_285;
+	word16 r4_286;
+	word16 r5_287;
+	fn4230(r0_277, r4_275, &globals->w48EE, pc, out r2_285, out r4_286, out r5_287);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	word16 * sp_293 = sp_122 - 0x02;
+	*sp_293 = 0x4898;
+	*(sp_293 - 0x02) = 18550;
+	*(sp_293 - 0x04) = 21724;
+	Eq_1283 r0_302 = fn0FA4(r2_285);
+	*(sp_293 - 0x06) = 0x5878;
+	struct Eq_2056 * r4_308;
+	fn0EA8(fn0AE2(r4_286, out r4_308), wLoc02);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	word16 r2_317;
+	struct Eq_2056 * r4_318;
+	word16 r5_319;
+	Eq_1283 r0_320 = fn4230(r0_302, r4_308, &globals->w48F8, pc, out r2_317, out r4_318, out r5_319);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	word16 r2_328;
+	struct Eq_2056 * r4_329;
+	word16 r5_330;
+	Eq_1283 r0_331 = fn4230(r0_320, r4_318, &globals->w4902, pc, out r2_328, out r4_329, out r5_330);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54E0 = 0x02;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54E2 = 0x05;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54E4 = globals->w54CE;
+	*globals->w5426 = 0x38;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w58BA = 0x04;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w58BC = ~0x00;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	fn2EC4(r0_331, r4_329, &globals->w48BA);
+	sp_122 = sp_293 - 0x06;
 l1FE6:
-	*globals->w5426 = 0x3C
-	globals->w54C4 = 0x00
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54E6 = 0x50
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54E8 = 0x00
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54EA = 0x18
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54D8 = 0x01
-	struct Eq_2056 * r4_1010 = &globals->t000A
-	word16 * r5_400 = globals->a5450
-l201E:
-	*globals->w5426 = 0x41
-	*r5_400 = 0x00
-	*globals->w5426 = 66
-	r5_400 = r5_400 + 0x01
-	r4_1010 = r4_1010 - 0x01
-	branch r4_1010 > null l201E
-l2030:
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54DA = 0x01
-	globals->w54F6 = 0x02
-l2040:
-	*globals->w5426 = 0x44
-	globals->w54D8 = 0x01
-	globals->w54FC = 0x0A
-	globals->ptr54BA = 18558
-	globals->w54F4 = 0x06
-	globals->w54BC = 0x5450
-l2064:
-	*globals->w5426 = 0x45
-	branch globals->a58C2[(globals->w54D8 + *globals->ptr54BA) * 0x02] != 0x00 l207E
-	goto l22EA
-l207E:
-	*globals->w5426 = 0x47
-	globals->w54C4 = globals->w54C2 + 0x01
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54EC = globals->w54E0
-	pc->w3454 = pc->w3454 + globals->w54F2
-	*globals->w5426 = *globals->w5426 + 0x01
-	ci16 r0_665 = globals->w54E2 - globals->w54F4
-	globals->w54EE = r0_665
-	*globals->w5426 = *globals->w5426 + 0x01
-	branch globals->w54E8 - r0_665 >= 0x00 l20BA
-l20B2:
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54EA = r0_665
-l20BA:
-	*globals->w5426 = 0x4C
-	ui16 r1_681 = globals->w54D8 + *globals->ptr54BA
-	ci16 r0_683 = globals->w54EA
-	globals->a5926[r1_681 * 0x02] = r0_683
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->a598A[r1_681 * 0x02] = globals->w54EC
-	*globals->w5426 = *globals->w5426 + 0x01
-	branch globals->w54E6 - r0_683 <= 0x00 l20EE
-l20E6:
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54E8 = r0_683
-l20EE:
-	*globals->w5426 = 0x50
-	ci16 r0_701 = globals->w54EA
-	branch globals->w54E4 - r0_701 >= 0x00 l2106
-l20FE:
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54E6 = r0_701
-l2106:
-	*globals->w5426 = 0x52
-	Eq_1283 r0_1001 = globals->w54D8
-	branch *globals->w54BC - r0_1001 <= 0x00 l211E
-l2116:
-	*globals->w5426 = *globals->w5426 + 0x01
-	*globals->w54BC = (union Eq_1283 *) r0_1001
-l211E:
-	*globals->w5426 = 0x54
-	branch 0x03 - globals->w54D8 == 0x00 l2138
-l212C:
-	*globals->w5426 = *globals->w5426 + 0x01
-	fn413C(r0_1001, r4_1010, &globals->w490C)
-l2138:
-	*globals->w5426 = 0x56
-	branch false l219A
-l2144:
-	*globals->w5426 = 88
-	branch 0x02 - globals->w54D8 > 0x00 l215E
-l2152:
-	*globals->w5426 = *globals->w5426 + 0x01
-	word16 r2_960
-	word16 r5_962
-	r0_1001 = fn4230(r0_1001, r4_1010, &globals->w4910, pc, out r2_960, out r4_1010, out r5_962)
-l215E:
-	*globals->w5426 = 0x5A
-	branch 0x03 - globals->w54D8 != 0x00 l2178
-l216C:
-	*globals->w5426 = *globals->w5426 + 0x01
-	word16 r2_949
-	word16 r5_951
-	r0_1001 = fn4230(r0_1001, r4_1010, &globals->w491A, pc, out r2_949, out r4_1010, out r5_951)
-l2178:
-	*globals->w5426 = 0x5C
-	branch 0x04 - globals->w54D8 < 0x00 l2192
-l2186:
-	*globals->w5426 = *globals->w5426 + 0x01
-	word16 r2_938
-	word16 r5_940
-	r0_1001 = fn4230(r0_1001, r4_1010, &globals->w4924, pc, out r2_938, out r4_1010, out r5_940)
-l2192:
-	*globals->w5426 = 0x5E
-	goto l21E8
-l219A:
-	*globals->w5426 = 0x5F
-	branch 0x02 - globals->w54D8 > 0x00 l21B4
-l21A8:
-	*globals->w5426 = *globals->w5426 + 0x01
-	word16 r2_1020
-	word16 r5_1022
-	r0_1001 = fn4230(r0_1001, r4_1010, &globals->w492E, pc, out r2_1020, out r4_1010, out r5_1022)
-l21B4:
-	*globals->w5426 = 0x61
-	branch 0x03 - globals->w54D8 != 0x00 l21CE
-l21C2:
-	*globals->w5426 = *globals->w5426 + 0x01
-	word16 r2_1009
-	word16 r5_1011
-	r0_1001 = fn4230(r0_1001, r4_1010, &globals->w4938, pc, out r2_1009, out r4_1010, out r5_1011)
-l21CE:
-	*globals->w5426 = 99
-	branch 0x04 - globals->w54D8 < 0x00 l21E8
-l21DC:
-	*globals->w5426 = *globals->w5426 + 0x01
-	word16 r2_998
-	word16 r5_1000
-	r0_1001 = fn4230(r0_1001, r4_1010, &globals->w4942, pc, out r2_998, out r4_1010, out r5_1000)
-l21E8:
-	*globals->w5426 = 101
-	branch globals->w54C6 == 0x00 l220C
-l21F4:
-	*globals->w5426 = 0x67
-	globals->w54F0 = globals->w54EC
-	globals->w54F0 = globals->w54EE + 0x01
-	word16 r2_892
-	word16 r5_894
-	r0_1001 = fn4230(r0_1001, r4_1010, &globals->w494C, pc, out r2_892, out r4_1010, out r5_894)
-l220C:
-	*globals->w5426 = 0x68
-	fn413C(r0_1001, r4_1010, &globals->w4956)
-	*globals->w5426 = *globals->w5426 + 0x01
-	branch globals->w54D0 == 0x00 l22B4
-l2224:
-	*globals->w5426 = 0x6B
-	fn2EC4(r0_1001, r4_1010, &globals->w48BA)
-	*globals->w5426 = *globals->w5426 + 0x01
-	struct Eq_2056 * r4_809
-	Eq_1283 r0_810 = fn3220(r0_1001, r4_1010, &globals->w495A, pc, out r4_809)
-	*globals->w5426 = *globals->w5426 + 0x01
-	struct Eq_2056 * r4_818
-	Eq_1283 r0_819 = fn3B3C(r0_810, r4_809, &globals->w48BA, pc, out r4_818)
-	*globals->w5426 = *globals->w5426 + 0x01
-	fn2EC4(r0_819, r4_818, &globals->w48BA)
-	*globals->w5426 = *globals->w5426 + 0x01
-	struct Eq_2056 * r4_834
-	Eq_1283 r0_835 = fn3220(r0_819, r4_818, &globals->w495A, pc, out r4_834)
-	*globals->w5426 = *globals->w5426 + 0x01
-	struct Eq_2056 * r4_843
-	Eq_1283 r0_844 = fn3B3C(r0_835, r4_834, &globals->w48BA, pc, out r4_843)
-	*globals->w5426 = *globals->w5426 + 0x01
-	branch 0x01 - globals->w54EC == 0x00 l229A
-l227A:
-	*globals->w5426 = 115
-	fn34AC(r0_844, r4_843, &globals->w495E)
-	*globals->w5426 = *globals->w5426 + 0x01
-	r0_1001 = fn3E12(r0_844, r4_843, &globals->w48BA, pc, out r4_1010)
-	*globals->w5426 = *globals->w5426 + 0x01
-	goto l22B4
-l229A:
-	*globals->w5426 = 118
-	r0_1001 = fn395C(r0_844, r4_843, &globals->w48BA, pc, out r4_1010)
-	*globals->w5426 = *globals->w5426 + 0x01
-	fn243A(r0_1001, r4_1010, &globals->w4956, pc)
-l22B4:
-	*globals->w5426 = 0x78
-	*globals->w5426 = *globals->w5426 + 0x01
-	branch globals->w54C8 - globals->w54D2 == 0x00 l22EA
-l22C6:
-	*globals->w5426 = 0x7B
-	globals->w54F2 = 0x03
-	pc->w321A = pc->w321A - globals->w54CA
-	r4_1010 = fn2E20(r0_1001, r4_1010, &globals->w4964, pc)
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54D4 = globals->w54CA
-l22EA:
-	*globals->w5426 = 0x7D
-	pc->w31C4 = pc->w31C4 + 0x02
-	pc->w31F8 = pc->w31F8 + 0x06
-	pc->w31BA = pc->w31BA + 0x02
-	globals->w54FC = globals->w54FA - 0x01
-	branch v205 <= 0x00 l230C
-	goto l2064
-l230C:
-	pc->w31E4 = pc->w31E4 + 0x02
-	globals->w54DA = globals->w54D8 + 0x01
-	branch 0x05 - globals->w54D8 > 0x00 l2322
-	goto l2040
-l2322:
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54C8 = 0x00
-	globals->w54CA = 0x00
-	*globals->w5426 = *globals->w5426 + 0x01
-	branch 0x02 - globals->w54E8 != 0x00 l2390
-l233A:
-	*globals->w5426 = 0x81
-	globals->w54D8 = 0x01
-l2346:
-	*globals->w5426 = 0x82
-	globals->w54DA = 0x01
-	struct Eq_2056 * r4_616 = &globals->t0004
-	word16 * r5_617 = globals->a487E
-l235A:
-	*globals->w5426 = 131
-	ci16 r1_624 = globals->w54D6
-	ui16 r0_628 = r1_624 + *r5_617
-	globals->a5A3E[r0_628 * 0x02] = 0x00
-	*globals->w5426 = 0x84
-	r5_617 = r5_617 + 0x01
-	r4_616 = r4_616 - 0x01
-	branch r4_616 > null l235A
-l2378:
-	globals->w54D8 = r1_624 + 0x01
-	branch 0x05 - (r1_624 + 0x01) <= 0x00 l2346
-l2384:
-	*globals->w5426 = *globals->w5426 + 0x01
-	word16 r4_648
-	fn3E12(r0_628 << 0x01, r4_616, &globals->w48BA, pc, out r4_648)
-l2390:
-	*globals->w5426 = 0x86
-	globals->w54D2 = 0x01
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54D8 = 0x01
-	ci16 r3_518 = 0x0A
-	r4_101 = (struct Eq_2056 *) globals->a5450
-	word16 * r5_520 = globals->a5A2C
-l23B2:
-	*globals->w5426 = 0x88
-	*r5_520 = r4_101->w0000
-	*globals->w5426 = 0x89
-	r4_101 = r4_101 + 0x01
-	r5_520 = r5_520 + 0x01
-	r3_518 = r3_518 - 0x01
-	branch r3_518 > 0x00 l23B2
-l23C4:
-	*globals->w5426 = *globals->w5426 + 0x01
-	branch 0x02 - globals->w54E4 <= 0x00 l23E6
-l23D0:
-	*globals->w5426 = 0x8C
-	branch 0x49 - globals->w54E6 >= 0x00 l23E6
-l23DE:
-	*globals->w5426 = 0x8E
-	goto l2406
-l23E6:
-	*globals->w5426 = 0x8F
-	globals->w54E4 = globals->w54E2 - 0x01
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54E0 = -globals->w54DE
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54C8 = 0x4080
-	globals->w54CA = 0x00
+	*globals->w5426 = 0x3C;
+	globals->w54C4 = 0x00;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54E6 = 0x50;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54E8 = 0x00;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54EA = 0x18;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54D8 = 0x01;
+	struct Eq_2056 * r4_1010 = &globals->t000A;
+	word16 * r5_400 = globals->a5450;
+	do
+	{
+		*globals->w5426 = 0x41;
+		*r5_400 = 0x00;
+		*globals->w5426 = 66;
+		r5_400 = r5_400 + 0x01;
+		r4_1010 = r4_1010 - 0x01;
+	} while (r4_1010 > null);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54DA = 0x01;
+	globals->w54F6 = 0x02;
+	do
+	{
+		*globals->w5426 = 0x44;
+		globals->w54D8 = 0x01;
+		globals->w54FC = 0x0A;
+		globals->ptr54BA = 18558;
+		globals->w54F4 = 0x06;
+		globals->w54BC = 0x5450;
+		do
+		{
+			*globals->w5426 = 0x45;
+			if (globals->a58C2[(globals->w54D8 + *globals->ptr54BA) * 0x02] != 0x00)
+			{
+				*globals->w5426 = 0x47;
+				globals->w54C4 = globals->w54C2 + 0x01;
+				*globals->w5426 = *globals->w5426 + 0x01;
+				globals->w54EC = globals->w54E0;
+				pc->w3454 = pc->w3454 + globals->w54F2;
+				*globals->w5426 = *globals->w5426 + 0x01;
+				ci16 r0_665 = globals->w54E2 - globals->w54F4;
+				globals->w54EE = r0_665;
+				*globals->w5426 = *globals->w5426 + 0x01;
+				if (globals->w54E8 - r0_665 < 0x00)
+				{
+					*globals->w5426 = *globals->w5426 + 0x01;
+					globals->w54EA = r0_665;
+				}
+				*globals->w5426 = 0x4C;
+				ui16 r1_681 = globals->w54D8 + *globals->ptr54BA;
+				ci16 r0_683 = globals->w54EA;
+				globals->a5926[r1_681 * 0x02] = r0_683;
+				*globals->w5426 = *globals->w5426 + 0x01;
+				globals->a598A[r1_681 * 0x02] = globals->w54EC;
+				*globals->w5426 = *globals->w5426 + 0x01;
+				if (globals->w54E6 - r0_683 > 0x00)
+				{
+					*globals->w5426 = *globals->w5426 + 0x01;
+					globals->w54E8 = r0_683;
+				}
+				*globals->w5426 = 0x50;
+				ci16 r0_701 = globals->w54EA;
+				if (globals->w54E4 - r0_701 < 0x00)
+				{
+					*globals->w5426 = *globals->w5426 + 0x01;
+					globals->w54E6 = r0_701;
+				}
+				*globals->w5426 = 0x52;
+				Eq_1283 r0_1001 = globals->w54D8;
+				if (*globals->w54BC - r0_1001 > 0x00)
+				{
+					*globals->w5426 = *globals->w5426 + 0x01;
+					*globals->w54BC = (union Eq_1283 *) r0_1001;
+				}
+				*globals->w5426 = 0x54;
+				if (0x03 - globals->w54D8 != 0x00)
+				{
+					*globals->w5426 = *globals->w5426 + 0x01;
+					fn413C(r0_1001, r4_1010, &globals->w490C);
+				}
+				*globals->w5426 = 0x56;
+				if (true)
+				{
+					*globals->w5426 = 88;
+					if (0x02 - globals->w54D8 <= 0x00)
+					{
+						*globals->w5426 = *globals->w5426 + 0x01;
+						word16 r2_960;
+						word16 r5_962;
+						r0_1001 = fn4230(r0_1001, r4_1010, &globals->w4910, pc, out r2_960, out r4_1010, out r5_962);
+					}
+					*globals->w5426 = 0x5A;
+					if (0x03 - globals->w54D8 == 0x00)
+					{
+						*globals->w5426 = *globals->w5426 + 0x01;
+						word16 r2_949;
+						word16 r5_951;
+						r0_1001 = fn4230(r0_1001, r4_1010, &globals->w491A, pc, out r2_949, out r4_1010, out r5_951);
+					}
+					*globals->w5426 = 0x5C;
+					if (0x04 - globals->w54D8 >= 0x00)
+					{
+						*globals->w5426 = *globals->w5426 + 0x01;
+						word16 r2_938;
+						word16 r5_940;
+						r0_1001 = fn4230(r0_1001, r4_1010, &globals->w4924, pc, out r2_938, out r4_1010, out r5_940);
+					}
+					*globals->w5426 = 0x5E;
+				}
+				else
+				{
+					*globals->w5426 = 0x5F;
+					if (0x02 - globals->w54D8 <= 0x00)
+					{
+						*globals->w5426 = *globals->w5426 + 0x01;
+						word16 r2_1020;
+						word16 r5_1022;
+						r0_1001 = fn4230(r0_1001, r4_1010, &globals->w492E, pc, out r2_1020, out r4_1010, out r5_1022);
+					}
+					*globals->w5426 = 0x61;
+					if (0x03 - globals->w54D8 == 0x00)
+					{
+						*globals->w5426 = *globals->w5426 + 0x01;
+						word16 r2_1009;
+						word16 r5_1011;
+						r0_1001 = fn4230(r0_1001, r4_1010, &globals->w4938, pc, out r2_1009, out r4_1010, out r5_1011);
+					}
+					*globals->w5426 = 99;
+					if (0x04 - globals->w54D8 >= 0x00)
+					{
+						*globals->w5426 = *globals->w5426 + 0x01;
+						word16 r2_998;
+						word16 r5_1000;
+						r0_1001 = fn4230(r0_1001, r4_1010, &globals->w4942, pc, out r2_998, out r4_1010, out r5_1000);
+					}
+				}
+				*globals->w5426 = 101;
+				if (globals->w54C6 != 0x00)
+				{
+					*globals->w5426 = 0x67;
+					globals->w54F0 = globals->w54EC;
+					globals->w54F0 = globals->w54EE + 0x01;
+					word16 r2_892;
+					word16 r5_894;
+					r0_1001 = fn4230(r0_1001, r4_1010, &globals->w494C, pc, out r2_892, out r4_1010, out r5_894);
+				}
+				*globals->w5426 = 0x68;
+				fn413C(r0_1001, r4_1010, &globals->w4956);
+				*globals->w5426 = *globals->w5426 + 0x01;
+				if (globals->w54D0 != 0x00)
+				{
+					*globals->w5426 = 0x6B;
+					fn2EC4(r0_1001, r4_1010, &globals->w48BA);
+					*globals->w5426 = *globals->w5426 + 0x01;
+					struct Eq_2056 * r4_809;
+					Eq_1283 r0_810 = fn3220(r0_1001, r4_1010, &globals->w495A, pc, out r4_809);
+					*globals->w5426 = *globals->w5426 + 0x01;
+					struct Eq_2056 * r4_818;
+					Eq_1283 r0_819 = fn3B3C(r0_810, r4_809, &globals->w48BA, pc, out r4_818);
+					*globals->w5426 = *globals->w5426 + 0x01;
+					fn2EC4(r0_819, r4_818, &globals->w48BA);
+					*globals->w5426 = *globals->w5426 + 0x01;
+					struct Eq_2056 * r4_834;
+					Eq_1283 r0_835 = fn3220(r0_819, r4_818, &globals->w495A, pc, out r4_834);
+					*globals->w5426 = *globals->w5426 + 0x01;
+					struct Eq_2056 * r4_843;
+					Eq_1283 r0_844 = fn3B3C(r0_835, r4_834, &globals->w48BA, pc, out r4_843);
+					*globals->w5426 = *globals->w5426 + 0x01;
+					if (0x01 - globals->w54EC != 0x00)
+					{
+						*globals->w5426 = 115;
+						fn34AC(r0_844, r4_843, &globals->w495E);
+						*globals->w5426 = *globals->w5426 + 0x01;
+						r0_1001 = fn3E12(r0_844, r4_843, &globals->w48BA, pc, out r4_1010);
+						*globals->w5426 = *globals->w5426 + 0x01;
+					}
+					else
+					{
+						*globals->w5426 = 118;
+						r0_1001 = fn395C(r0_844, r4_843, &globals->w48BA, pc, out r4_1010);
+						*globals->w5426 = *globals->w5426 + 0x01;
+						fn243A(r0_1001, r4_1010, &globals->w4956, pc);
+					}
+				}
+				*globals->w5426 = 0x78;
+				*globals->w5426 = *globals->w5426 + 0x01;
+				if (globals->w54C8 - globals->w54D2 != 0x00)
+				{
+					*globals->w5426 = 0x7B;
+					globals->w54F2 = 0x03;
+					pc->w321A = pc->w321A - globals->w54CA;
+					r4_1010 = fn2E20(r0_1001, r4_1010, &globals->w4964, pc);
+					*globals->w5426 = *globals->w5426 + 0x01;
+					globals->w54D4 = globals->w54CA;
+				}
+			}
+			*globals->w5426 = 0x7D;
+			pc->w31C4 = pc->w31C4 + 0x02;
+			pc->w31F8 = pc->w31F8 + 0x06;
+			pc->w31BA = pc->w31BA + 0x02;
+			globals->w54FC = globals->w54FA - 0x01;
+		} while (v205 <= 0x00);
+		pc->w31E4 = pc->w31E4 + 0x02;
+		globals->w54DA = globals->w54D8 + 0x01;
+	} while (0x05 - globals->w54D8 > 0x00);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54C8 = 0x00;
+	globals->w54CA = 0x00;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	if (0x02 - globals->w54E8 == 0x00)
+	{
+		*globals->w5426 = 0x81;
+		globals->w54D8 = 0x01;
+		do
+		{
+			*globals->w5426 = 0x82;
+			globals->w54DA = 0x01;
+			struct Eq_2056 * r4_616 = &globals->t0004;
+			word16 * r5_617 = globals->a487E;
+			do
+			{
+				*globals->w5426 = 131;
+				ci16 r1_624 = globals->w54D6;
+				ui16 r0_628 = r1_624 + *r5_617;
+				globals->a5A3E[r0_628 * 0x02] = 0x00;
+				*globals->w5426 = 0x84;
+				r5_617 = r5_617 + 0x01;
+				r4_616 = r4_616 - 0x01;
+			} while (r4_616 > null);
+			globals->w54D8 = r1_624 + 0x01;
+		} while (0x05 - (r1_624 + 0x01) <= 0x00);
+		*globals->w5426 = *globals->w5426 + 0x01;
+		word16 r4_648;
+		fn3E12(r0_628 << 0x01, r4_616, &globals->w48BA, pc, out r4_648);
+	}
+	*globals->w5426 = 0x86;
+	globals->w54D2 = 0x01;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54D8 = 0x01;
+	ci16 r3_518 = 0x0A;
+	r4_101 = (struct Eq_2056 *) globals->a5450;
+	word16 * r5_520 = globals->a5A2C;
+	do
+	{
+		*globals->w5426 = 0x88;
+		*r5_520 = r4_101->w0000;
+		*globals->w5426 = 0x89;
+		r4_101 = r4_101 + 0x01;
+		r5_520 = r5_520 + 0x01;
+		r3_518 = r3_518 - 0x01;
+	} while (r3_518 > 0x00);
+	*globals->w5426 = *globals->w5426 + 0x01;
+	if (0x02 - globals->w54E4 > 0x00)
+	{
+		*globals->w5426 = 0x8C;
+		if (0x49 - globals->w54E6 < 0x00)
+		{
+			*globals->w5426 = 0x8E;
 l2406:
-	*globals->w5426 = 0x92
-	pc->w30D0 = pc->w30D0 + globals->w54DE
-	*globals->w5426 = *globals->w5426 + 0x01
-	globals->w54CE = -globals->w54CC
-	*globals->w5426 = *globals->w5426 + 0x01
-	r0_102 = globals->w54C2
-	branch r0_102 != 0x00 l2428
-	goto l1E54
-l2428:
-	*globals->w5426 = 0x96
-	globals->w54C6 = r0_102
-	*globals->w5426 = *globals->w5426 + 0x01
-	goto l1FE6
-fn1DAE_exit:
+			*globals->w5426 = 0x92;
+			pc->w30D0 = pc->w30D0 + globals->w54DE;
+			*globals->w5426 = *globals->w5426 + 0x01;
+			globals->w54CE = -globals->w54CC;
+			*globals->w5426 = *globals->w5426 + 0x01;
+			r0_102 = globals->w54C2;
+			if (r0_102 == 0x00)
+				goto l1E54;
+			*globals->w5426 = 0x96;
+			globals->w54C6 = r0_102;
+			*globals->w5426 = *globals->w5426 + 0x01;
+			goto l1FE6;
+		}
+	}
+	*globals->w5426 = 0x8F;
+	globals->w54E4 = globals->w54E2 - 0x01;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54E0 = -globals->w54DE;
+	*globals->w5426 = *globals->w5426 + 0x01;
+	globals->w54C8 = 0x4080;
+	globals->w54CA = 0x00;
+	goto l2406;
 }
 
 // 243A: void fn243A(Register Eq_1283 r0, Register (ptr Eq_2056) r4, Register (ptr word16) r5, Register (ptr Eq_4633) pc)

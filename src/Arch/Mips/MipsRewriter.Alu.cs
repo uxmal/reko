@@ -193,7 +193,7 @@ namespace Reko.Arch.Mips
                 opSrc = opLeft;
             else
                 opSrc = m.Or(opLeft, opRight);
-            var opDst = RewriteOperand0(instr.op1);
+            var opDst = RewriteOperand(instr.op1);
             m.Assign(opDst, opSrc);
         }
 
@@ -297,14 +297,14 @@ namespace Reko.Arch.Mips
         {
             var opDst = RewriteOperand0(instr.op2);
             var opSrc = RewriteOperand0(instr.op1);
-            m.SideEffect(host.PseudoProcedure(PseudoProcedure.SwL, PrimitiveType.Word32, opDst, opSrc));
+            m.Assign(opDst, host.PseudoProcedure(PseudoProcedure.SwL, PrimitiveType.Word32, opDst, opSrc));
         }
 
         private void RewriteSwr(MipsInstruction instr)
         {
             var opDst = RewriteOperand0(instr.op2);
             var opSrc = RewriteOperand0(instr.op1);
-            m.SideEffect(host.PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, opDst, opSrc));
+            m.Assign(opDst, host.PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, opDst, opSrc));
         }
 
         private void RewriteSxx(MipsInstruction instr, Func<Expression,Expression,Expression> op)

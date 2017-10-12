@@ -397,8 +397,11 @@ namespace Reko.Scanning
 
         /// <summary>
         /// Creates a small basic block, consisting solely of a 'call' followed by a 'return'
-        /// instruction. 
+        /// instruction.
         /// </summary>
+        /// <remarks>
+        /// This is done when encountering tail calls (i.e. jumps) from one 
+        /// procedure into another.</remarks>
         /// <param name="addrFrom"></param>
         /// <param name="procOld"></param>
         /// <param name="procNew"></param>
@@ -416,7 +419,7 @@ namespace Reko.Scanning
 
             var linFrom = addrFrom.ToLinear();
             callRetThunkBlock.Statements.Add(
-                addrFrom.ToLinear(),
+                linFrom,
                 new CallInstruction(
                     new ProcedureConstant(Program.Platform.PointerType, procNew),
                     new CallSite(
