@@ -1,5 +1,5 @@
 import * as electron from 'electron';
-import {app, dialog, BrowserWindow, ipcMain} from 'electron';
+import {app, dialog, Menu, BrowserWindow, ipcMain} from 'electron';
 
 import SharpAssembly from "./SharpAssembly";
 
@@ -76,8 +76,8 @@ function afterInit(){
 		fileName: "E:/dec/Aberaham.exe",
 		//fileName: "C:/dev/uxmal/reko/zoo/users/smxsmx/abheram/Aberaham.exe",
 		notify: function (data:any, callback:any) {
-			console.log(JSON.stringify(data));
-			//$TODO: display the message in HTML user interface.
+			//console.log(JSON.stringify(data));
+			mainWindow.webContents.send("reko-message", data);
 			callback(null, true);
 		}
 	}).then((result) => {

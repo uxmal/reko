@@ -3,6 +3,7 @@ import {ipcRenderer} from 'electron';
 import $ = require("jquery");
 
 import Browser from './lib/Browser';
+import Handlebars = require("handlebars");
 import TemplateLoader from './TemplateLoader';
 
 var browser:Browser = new Browser();
@@ -39,6 +40,12 @@ function setup(){
 		$("#search-results").html(tpl(arg));
 	});
 
+	ipcRenderer.on("reko-message", (event:any, arg:object) => {
+		var tpl = TemplateLoader.LoadTemplate("logEntry");
+
+		$("#reko-messages > tbody").append(tpl(arg));
+	});
+
 	$("#btn-test").click(function(e){
 		ipcRenderer.send("decompile");
 	});
@@ -48,6 +55,25 @@ function setup(){
 	});
 }
 
+function registerPartials(){
+	["main", "searchResults", "logPanel"].forEach(function(name){
+		console.log("Loading " + name);
+		var tpl = TemplateLoader.LoadTemplate(name);
+		Handlebars.registerPartial(name, tpl);
+	});
+}
+
+function registerHelpers(){
+	["switchCase"].forEach(function(name){
+		require(`./views/helpers/${name}`);
+	});
+}
+
+registerHelpers();
+registerPartials();
+
 $(document).ready(function(e){
+	var index = TemplateLoader.LoadTemplate("index");
+	$("body").html(index({}));
 	setup();
 });
