@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [SetUp]
         public void Setup()
         {
-            arch = new PowerPcArchitecture32();
+            arch = new PowerPcBe32Architecture();
         }
 
         private void Given_CallingConvention()

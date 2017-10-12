@@ -40714,7 +40714,7 @@ l1483_0CA9_in_fn1483_0C91:
 	byte ah_137
 	word16 di_138
 	byte cl_139
-	call fn1483_4FE0 (retsize: 2;)
+	call 1483:4FE0 (retsize: 2;)
 		uses: ah,al_90,ax_117,bl_100,bp_86,bx_101,C_102,ch_111,cl_112,cx_110,di_104,dl_82,ds,dx_81,es_3,O_17,SCZO_113,si,sp_4,ss,SZO_16,wLoc02,wLoc04,Z_57
 		defs: ah_137,al_125,ax_123,bl_136,bp_134,bx_128,C_121,ch_126,cl_139,cx_131,di_138,dl_133,ds_130,dx_122,es_119,O_127,SCZO_124,si_129,sp_118,ss_120,SZO_135,Z_132
 	Mem142[ds_130:0xF7E3:word16] = v26
@@ -40802,7 +40802,7 @@ l1483_0CA1:
 	ah = ah + Mem0[ds:bx + si:byte]
 	ax = DPB(ax, ah, 8) (alias)
 	SCZO = cond(ah)
-	call fn1483_FD4E (retsize: 2;)
+	call 1483:FD4E (retsize: 2;)
 		defs: ah,al,ax,bl,bp,bx,C,cl,cx,di,dl,ds,dx,es,SCZO,si,sp,ss,SZO
 // DataOut: ah ax bl bp bx di dl ds es si sp ss
 // DataOut (flags): 
@@ -40841,7 +40841,7 @@ l1483_0CA9:
 	v48 = Mem0[ds:di + 0x0014:word16]
 	Mem0[ds:di + 0x0014:word16] = ax
 	ax = v48
-	call fn1483_4FE0 (retsize: 2;)
+	call 1483:4FE0 (retsize: 2;)
 		defs: ah,al,ax,bl,bp,bx,C,cl,cx,di,dl,ds,dx,es,SCZO,si,sp,ss,SZO
 	v49 = Mem0[ds:0xF7E3:word16] - dx
 	Mem0[ds:0xF7E3:word16] = v49
@@ -40909,7 +40909,7 @@ l1483_0CA1:
 	ah_13 = ah + Mem11[ds:bx + si:byte]
 	ax_15 = DPB(ax, ah_13, 8) (alias)
 	SCZO_16 = cond(ah_13)
-	call fn1483_FD4E (retsize: 2; depth: 4)
+	call 1483:FD4E (retsize: 2; depth: 4)
 		uses: ah_13,ax_15,bx,di,ds,es,SCZO_16,si,sp_2,wLoc02_4
 		defs: ah_25,al_33,ax_31,bl_30,bp_28,bx_20,C_32,cl_35,cx_34,di_21,dl_26,ds_22,dx_27,es_18,SCZO_24,si_23,sp_17,ss_19,SZO_29
 // DataOut: ah ax bl bp bx di dl ds es si sp ss
@@ -40950,7 +40950,7 @@ l1483_0CA9_in_fn1483_0CA1:
 	v25_69 = Mem64[ds_22:di_60 + 0x0014:word16]
 	Mem70[ds_22:di_60 + 0x0014:word16] = ax_61
 	ax_72 = v25
-	call fn1483_4FE0 (retsize: 2; depth: 2)
+	call 1483:4FE0 (retsize: 2; depth: 2)
 		uses: ah_25,al_46,ax_72,bl_56,bp_42,bx_57,C_58,cl_67,cx_66,di_60,dl_38,ds_22,dx_37,es_18,SCZO_68,si_23,sp_17,ss_19,SZO_29,wLoc02_4
 		defs: ah_81,al_89,ax_87,bl_86,bp_84,bx_76,C_88,cl_91,cx_90,di_77,dl_82,ds_78,dx_83,es_74,SCZO_80,si_79,sp_73,ss_75,SZO_85
 	v26_92 = Mem70[ds_78:0xF7E3:word16] - dx_83
@@ -41356,7 +41356,7 @@ l1483_0D69:
 	byte cl_147
 	selector cs_148
 	selector fs_149
-	call fn1483_8A82 (retsize: 2;)
+	call 1483:8A82 (retsize: 2;)
 		uses: ah_85,al_72,ax_86,bh,bl_59,bp_95,bx_61,C_110,ch_65,cl,cs,cx_67,dh_77,di,dl,ds,dx_79,es,fs,O_103,P,S,SCZDOP,SCZO_102,si,SO_82,sp_105,ss,SZO_109,wLoc02_4,wLoc04_75,wLoc06_89,wLoc08_91,wLoc0A,Z
 		defs: ah_135,al_124,ax_121,bh_142,bl_127,bp_137,bx_128,C_131,ch_125,cl_147,cs_148,cx_141,dh_132,di_136,dl_145,ds_130,dx_140,es_138,fs_149,O_139,P_123,S_146,SCZDOP_143,SCZO_126,si_129,SO_134,sp_120,ss_122,SZO_133,Z_144
 	word16 bx_167 = bx_128 + Mem108[ds_130:(bx_128 - 0x0079) + di_136:word16] + C_131

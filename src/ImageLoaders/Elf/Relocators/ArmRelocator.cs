@@ -38,11 +38,52 @@ namespace Reko.ImageLoaders.Elf.Relocators
         public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)
         {
             throw new NotImplementedException();
+            /*
+            S (when used on its own) is the address of the symbol
+            A is the addend for the relocation.
+            P is the address of the place being relocated (derived from r_offset).
+            * Pa is the adjusted address of the place being reloc
+            ated, defined as (P & 0xFFFFFFFC). 
+            * T is 1 if the target symbol S has type STT_FUNC and the symbol addresses a Thumb instruction; it is 0 
+            otherwise.
+            * B(S) is the addressing origin of the output segment defining the symbol S. The origin is not required to be 
+            the base address of the segment. This value must always be word-aligned.
+
+            * GOT_ORG is the addressing origin of the Global Offset Table (the indirection table for imported data 
+            addresses).  This value must always be word-aligned.  See §4.6.1.8, Proxy generating relocations. 
+            * GOT(S) is the address of the GOT entry for the symbol S.
+            Table 
+            0   R_ARM_NONE      Static      Miscellaneous
+            1   R_ARM_PC24      Deprecated  ARM             ((S + A) | T) - P
+            2   R_ARM_ABS32     Static      Data            ((S + A) | T)
+            3   R_ARM_REL32     Static      Data            ((S + A) | T) – P
+            4   R_ARM_LDR_PC_G0 Static      ARM             S + A – P
+            5   R_ARM_ABS16     Static      Data            S + A
+            6   R_ARM_ABS12     Static      ARM             S + A
+            7   R_ARM_THM_ABS5  Static      Thumb16         S + A
+            8   R_ARM_ABS8      Static      Data            S + A
+            9   R_ARM_SBREL32   Static      Data            ((S + A) | T) – B(S)
+            */
+
         }
 
         public override string RelocationTypeToString(uint type)
         {
-            throw new NotImplementedException();
+            return ((Arm32Rt)type).ToString();
         }
     }
+
+    public enum Arm32Rt
+    {
+        R_ARM_NONE = 0,
+        R_ARM_PC24 = 1,
+        R_ARM_ABS32 = 2,
+        R_ARM_REL32 = 3,
+        R_ARM_LDR_PC_G0 = 4,
+        R_ARM_ABS16 = 5,
+        R_ARM_ABS12 = 6,
+        R_ARM_THM_ABS5 = 7,
+        R_ARM_ABS8 = 8,
+        R_ARM_SBREL32 = 9,
+    }                                               
 }

@@ -14,8 +14,8 @@ word32 _init(word32 lr, word32 pc, ptr32 & r10Out)
 	return __do_global_ctors_aux(dwArg00, out sp_8);
 }
 
-// 00008314: Register word32 abort@@GLIBC_2.0(Register word32 pc)
-word32 abort@@GLIBC_2.0(word32 pc)
+// 00008314: Register word32 abort(Register word32 pc)
+word32 abort(word32 pc)
 {
 	<anonymous> ** ip_5 = pc + globals->dw8320;
 	word32 sp_6;
@@ -25,8 +25,8 @@ word32 abort@@GLIBC_2.0(word32 pc)
 	return ip_8;
 }
 
-// 00008324: void __libc_start_main@@GLIBC_2.0(Register word32 pc)
-void __libc_start_main@@GLIBC_2.0(word32 pc)
+// 00008324: void __libc_start_main(Register word32 pc)
+void __libc_start_main(word32 pc)
 {
 	<anonymous> ** ip_5 = pc + globals->dw8330;
 	word32 sp_6;
@@ -41,8 +41,8 @@ void _start(word32 r4, word32 r5, word32 r6, Eq_54 r8, word32 pc, word32 dwArg00
 {
 	word32 ip_3 = globals->dw8360;
 	union Eq_54 * r0_14 = globals->ptr8364;
-	__libc_start_main@@GLIBC_2.0(pc);
-	abort@@GLIBC_2.0(pc);
+	__libc_start_main(pc);
+	abort(pc);
 	*r0_14 = (union Eq_54 *) r8;
 	if (Z)
 	{

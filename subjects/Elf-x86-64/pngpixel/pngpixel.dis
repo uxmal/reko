@@ -12,14 +12,23 @@ _init_entry:
 // LocalsOut: fp(64)
 
 l0000000000400AE8:
-	branch Mem0[0x0000000000601FF8:word64] == 0x0000000000000000 l0000000000400AFD
+	word64 rax_4 = Mem0[0x0000000000601FF8:word64]
+	branch rax_4 == 0x0000000000000000 l0000000000400AFD
 // DataOut: r15d rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64)
 
 l0000000000400AF8:
-	fn0000000000400CC0()
+	word64 rsp_15
+	byte SCZO_16
+	word64 rax_17
+	byte SZO_18
+	byte C_19
+	byte Z_20
+	call png_get_PLTE (retsize: 8; depth: 16)
+		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
+		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
 // DataOut: r15d rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
@@ -35,35 +44,6 @@ _init_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp rax:<invalid>
-
-
-
-void fn0000000000400CC0()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved: rsp
-fn0000000000400CC0_entry:
-// DataOut: r15d rbp
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-l0000000000400CC0:
-	word64 rsp_3
-	call Mem0[0x0000000000601FF8:word32] (retsize: 4; depth: 4)
-		uses: rsp_1
-		defs: rsp_3
-	return
-// DataOut: r15d rbp
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-fn0000000000400CC0_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
 
 
 

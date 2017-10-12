@@ -17916,7 +17916,7 @@ word16 fn1483_0C91(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16
 			byte ah_137;
 			word16 di_138;
 			byte cl_139;
-			fn1483_4FE0();
+			1483:4FE0();
 			Mem142[ds_130:~0x081C:word16] = v26;
 			Mem146[ds_130:bx_128 + di_138:word16] = v27;
 			word16 cx_155;
@@ -17981,7 +17981,7 @@ word16 fn1483_0CA1(byte ah, byte al, byte dl, word16 bx, word16 bp, word16 si, w
 	ah_13 = ah + Mem11[ds:bx + si:byte];
 	ax_15 = DPB(ax, ah_13, 8);
 	SCZO_16 = cond(ah_13);
-	fn1483_FD4E();
+	1483:FD4E();
 	dl_36 = dl_26 + Mem11[ds_22:bx_20 + 0x00:byte];
 	dx_37 = Mem11[ds_22:si_23 + 5950:word16] *s 0x0C62;
 	dl_38 = (byte) dx_37;
@@ -18014,7 +18014,7 @@ word16 fn1483_0CA1(byte ah, byte al, byte dl, word16 bx, word16 bp, word16 si, w
 	v25_69 = Mem64[ds_22:di_60 + 0x14:word16];
 	Mem70[ds_22:di_60 + 0x14:word16] = ax_61;
 	ax_72 = v25;
-	fn1483_4FE0();
+	1483:4FE0();
 	v26_92 = Mem70[ds_78:~0x081C:word16] - dx_83;
 	Mem94[ds_78:~0x081C:word16] = v26;
 	ax_95 = ax_87 - sp_73;
@@ -18229,7 +18229,7 @@ word16 fn1483_0D3F(byte al, byte ah, word16 cx, word16 dx, byte bl, word16 bp, w
 			byte cl_147;
 			selector cs_148;
 			selector fs_149;
-			fn1483_8A82();
+			1483:8A82();
 			word16 bx_167 = bx_128 + Mem108[ds_130:(bx_128 - 121) + di_136:word16] + C_131;
 			Mem172[ss_122:bp_137 + 0xF512 + di_136:byte] = Mem108[ss_122:bp_137 + 0xF512 + di_136:byte] + dh_132 + (bx_167 <u 0x00);
 			Mem174[ds_130:bx_167 + 0x7D:byte] = Mem172[ds_130:bx_167 + 0x7D:byte] & al_124;

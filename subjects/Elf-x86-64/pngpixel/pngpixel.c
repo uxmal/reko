@@ -7,16 +7,17 @@
 // 0000000000400AE8: void _init()
 void _init()
 {
-	if (globals->qw601FF8 != 0x00)
-		fn0000000000400CC0();
-	return;
-}
-
-// 0000000000400CC0: void fn0000000000400CC0()
-void fn0000000000400CC0()
-{
-	word64 rsp_3;
-	globals->qw601FF8();
+	word64 rax_4 = globals->qw601FF8;
+	if (rax_4 != 0x00)
+	{
+		word64 rsp_15;
+		byte SCZO_16;
+		word64 rax_17;
+		byte SZO_18;
+		byte C_19;
+		byte Z_20;
+		png_get_PLTE();
+	}
 	return;
 }
 

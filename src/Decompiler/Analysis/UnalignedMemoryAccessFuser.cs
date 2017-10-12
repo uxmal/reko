@@ -56,19 +56,17 @@ namespace Reko.Analysis
                 stm.Instruction.Accept(this);
             }
 
-            // Find all unaligned reds and writs and group them by
-            // register + innstruction.
-            var x = FindAllUnalignedStoreInstructions(ssa.Procedure.Statements);
+            // Find all unaligned stores and group them by
+            // register + instruction.
+            var stores = FindAllUnalignedStoreInstructions(ssa.Procedure.Statements);
 
             // Find pairs of instructions that are (left/right) and
             // whose offsets differ by 3 bytes.
-            var y = GroupUnalignedAccesses(x);
+            var pairs = GroupUnalignedStorePairs(stores);
 
             // Fuse the pairs.
-            FuseUnalignedPairs(y);
+            FuseUnalignedPairs(pairs);
         }
-
-
 
         public override void VisitAssignment(Assignment a)
         {
@@ -150,6 +148,10 @@ namespace Reko.Analysis
                 ssa.AddUses(stmL);
             }
             assR.Src = mem;
+            if (stmL != null)
+            {
+                stmL.Block.Statements.Remove(stmL);
+            }
             ssa.AddUses(stmR);
         }
 
@@ -180,12 +182,15 @@ namespace Reko.Analysis
 
             if (pair.Item1.mem is Identifier)
             {
-                stmR.Instruction = (Instruction)new Assignment(
+                stmR.Instruction = new Assignment(
                     (Identifier)pair.Item1.mem,
                     pair.Item1.value);
             }
             else
             {
+                var memId = ((MemoryAccess)((Store)pair.Item2.stm.Instruction).Dst).MemoryId;
+                var sidMem = ssa.Identifiers[memId];
+                sidMem.DefStatement = null;
                 stmR.Instruction = new Store(
                     pair.Item1.mem,
                     pair.Item1.value);
@@ -194,15 +199,10 @@ namespace Reko.Analysis
             ssa.AddUses(stmR);
         }
 
-        private void FuseLoadPair(Tuple<UnalignedAccess, UnalignedAccess> pair)
-        {
-            throw new NotImplementedException();
-        }
-
-        private List<Tuple<UnalignedAccess, UnalignedAccess>> GroupUnalignedAccesses(Dictionary<Identifier, List<UnalignedAccess>> x)
+        private List<Tuple<UnalignedAccess, UnalignedAccess>> GroupUnalignedStorePairs(Dictionary<Identifier, List<UnalignedAccess>> unalignedStores)
         {
             var pairs = new List<Tuple<UnalignedAccess, UnalignedAccess>>();
-            foreach (var de in x)
+            foreach (var de in unalignedStores)
             {
                 var sorted = de.Value.ToSortedList(k => k.offset);
                 foreach (var se in sorted)
@@ -241,24 +241,35 @@ namespace Reko.Analysis
             var dict = new Dictionary<Identifier, List<UnalignedAccess>>();
             foreach (var stm in stms)
             {
-                var side = stm.Instruction as SideEffect;
-                if (side == null)
-                    continue;
-                var tup = MatchIntrinsicApplication(side.Expression, unalignedIntrinsics);
+                Expression src;
+                var store = stm.Instruction as Store;
+                if (store != null)
+                {
+                    src = store.Src;
+                }
+                else
+                {
+                    var ass = stm.Instruction as Assignment;
+                    if (ass == null)
+                        continue;
+                    src = ass.Src;
+                }
+                var tup = MatchIntrinsicApplication(src, unalignedIntrinsics);
                 if (tup == null)
                     continue;
                 var appName = tup.Item1;
                 var app = tup.Item2;
                 var reg = GetRegisterOf(app.Arguments[0]);
                 var offset = GetOffsetOf(app.Arguments[0]);
+                var mem = GetModifiedMemory(stm.Instruction);
                 var ua = new UnalignedAccess
                 {
                     stm = stm,
                     reg = reg,
                     offset = offset,
-                    isLeft = appName.EndsWith("l"),
+                    isLeft = appName == PseudoProcedure.SwL,
                     value = app.Arguments[1],
-                    mem = app.Arguments[0],
+                    mem = mem
                 };
                 List<UnalignedAccess> accesses;
                 if (!dict.TryGetValue(reg, out accesses))
@@ -271,13 +282,25 @@ namespace Reko.Analysis
             return dict;
         }
 
+        private Expression GetModifiedMemory(Instruction instruction)
+        {
+            Assignment ass = instruction as Assignment;
+            if (ass != null)
+                return ass.Dst;
+            else
+                return ((Store)instruction).Dst;
+        }
 
         private Identifier GetRegisterOf(Expression e)
         {
             MemoryAccess mem = e as MemoryAccess;
             if (mem != null)
             {
-                return (Identifier)((BinaryExpression)mem.EffectiveAddress).Left;
+                Identifier id;
+                if (mem.EffectiveAddress.As(out id))
+                    return id;
+                else 
+                    return (Identifier)((BinaryExpression)mem.EffectiveAddress).Left;
             }
             else
             {
@@ -290,8 +313,15 @@ namespace Reko.Analysis
             var id = e as Identifier;
             if (id != null)
             {
-                var mem = id.Storage as StackStorage;
-                return mem.StackOffset;
+                if (id.Storage is RegisterStorage)
+                {
+                    return 0;
+                }
+                else
+                {
+                    var mem = id.Storage as StackStorage;
+                    return mem.StackOffset;
+                }
             }
             else
             {
