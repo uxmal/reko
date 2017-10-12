@@ -167,8 +167,8 @@ namespace Reko.ImageLoaders.Elf
                     throw new NotSupportedException(string.Format("The MIPS architecture does not support ELF endianness value {0}", endianness));
                 }
                 break;
-            case ElfMachine.EM_PPC: arch = "ppc32"; break;
-            case ElfMachine.EM_PPC64: arch = "ppc64"; break;
+            case ElfMachine.EM_PPC: arch = "ppc-be-32"; break;
+            case ElfMachine.EM_PPC64: arch = "ppc-be-64"; break;
             case ElfMachine.EM_ARM: arch = "arm"; break;
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             case ElfMachine.EM_AVR: arch = "avr8"; break;
