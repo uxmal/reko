@@ -1787,7 +1787,7 @@ namespace Reko.Assemblers.x86
             ProcessBinop(0x7, dst, src);
         }
 
-        public void Db(params int[] bytes)
+        public void Db(params byte[] bytes)
         {
             for (int i = 0; i < bytes.Length; ++i)
             {
@@ -1866,6 +1866,11 @@ namespace Reko.Assemblers.x86
         public void Rep()
         {
             emitter.EmitByte(0xF3);
+        }
+
+        public void Repne()
+        {
+            emitter.EmitByte(0xF2);
         }
 
         public void Lodsb()

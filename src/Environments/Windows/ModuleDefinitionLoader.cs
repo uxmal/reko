@@ -126,7 +126,10 @@ namespace Reko.Environments.Windows
 
         private ExternalProcedure ParseSignature(string entryName, TypeLibraryDeserializer loader)
         {
-            return SignatureGuesser.SignatureFromName(entryName, loader, platform);
+            var sProc = SignatureGuesser.SignatureFromName(entryName, platform);
+            if (sProc == null)
+                return null;
+            return loader.LoadExternalProcedure(sProc);
         }
 
         private bool PeekAndDiscard(TokenType type)

@@ -274,7 +274,7 @@ namespace Reko.Arch.Mos6502
 
         private void Jsr()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             var mem  = (MemoryAccess) RewriteOperand(instrCur.Operand);
             m.Call(mem.EffectiveAddress, 2);
         }

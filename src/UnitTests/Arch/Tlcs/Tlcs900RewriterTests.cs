@@ -123,9 +123,10 @@ namespace Reko.UnitTests.Arch.Tlcs
             // simply if (Test(GE,SV) goto xwa?
             RewriteCode("B0D9"); // jp\tGE,(xwa)
             AssertCode(
-                "0|T--|00010000(2): 2 instructions",
+                "0|T--|00010000(2): 3 instructions",
                 "1|L--|v4 = Mem0[xwa:word32]",
-                "2|T--|if (Test(GE,SV)) goto v4");
+                "2|T--|if (Test(LT,SV)) branch 00010002",
+                "3|T--|goto v4");
         }
 
         [Test]
@@ -451,7 +452,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("FA"); // swi
             AssertCode(
-                "0|L--|00010000(1): 3 instructions",
+                "0|T--|00010000(1): 3 instructions",
                 "1|L--|xsp = xsp - 2",
                 "2|L--|Mem0[xsp:word16] = sr",
                 "3|T--|call 00FFFF08 (4)");

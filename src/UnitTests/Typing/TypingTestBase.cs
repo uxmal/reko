@@ -18,6 +18,7 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
@@ -134,8 +135,22 @@ namespace Reko.UnitTests.Typing
 
         protected void RunTest(Program prog)
         {
-            var outputFileName = string.Format("Typing/{0}.txt", new StackTrace().GetFrame(1).GetMethod().Name);
+            var testName = GetTestNameFromCallStack(new StackTrace());
+            var outputFileName = string.Format("Typing/{0}.txt", testName);
             RunTest(prog, outputFileName);
+        }
+
+        private string GetTestNameFromCallStack(StackTrace stackTrace)
+        {
+            for (int i = 0; i < stackTrace.FrameCount; ++i)
+            {
+                var method = stackTrace.GetFrame(i).GetMethod();
+                var u = method.GetCustomAttributes(typeof(TestAttribute), true);
+                if (u != null && u.Length > 0)
+                    return method.Name;
+            }
+            throw new InvalidOperationException(
+                string.Format("Unable to determine the unit test name from the call stack. {0}.", stackTrace));
         }
 
         protected abstract void RunTest(Program prog, string outputFile);

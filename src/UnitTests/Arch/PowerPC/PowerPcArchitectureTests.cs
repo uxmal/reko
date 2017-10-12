@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCArch_GetTrampoline()
         {
-            var arch = new PowerPcArchitecture32();
+            var arch = new PowerPcBe32Architecture();
             var m = new InstructionBuilder(arch, Address.Ptr32(0x10030000));
             m.Lis(m.r11, 0x1006);
             m.Lwz(m.r11, 0x1234, m.r11);

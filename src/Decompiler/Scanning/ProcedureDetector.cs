@@ -167,11 +167,6 @@ namespace Reko.Scanning
                         string.Join(",", icfg.Successors(b)));
                 }
             }
-            //$DEBUG
-            public bool ContainsEntry(Address address)
-            {
-                return Entries.Contains(new RtlBlock(address, "test"));
-            }
         }
 
         /// <summary>
@@ -368,6 +363,11 @@ namespace Reko.Scanning
                 .Where(b => !entries.Contains(b) && sr.ICFG.Predecessors(b).Count == 0)
                 .ToHashSet();
             cluster.Blocks.ExceptWith(deadNodes);
+            if (cluster.Blocks.Count == 0 || entries.Count == 0)
+            {
+                //$TODO: investigate why this happens.
+                return new List<RtlProcedure>();
+            }
 
             // Join blocks which have a single successor / single predecessor
             // relationship.

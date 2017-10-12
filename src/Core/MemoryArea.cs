@@ -1,6 +1,6 @@
-ï»¿#region License
+#region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,13 +99,6 @@ namespace Reko.Core
 			return new LeImageWriter(this, offset);
 		}
 
-
-        [Obsolete]
-        public SegmentMap CreateImageMap()
-        {
-            return new SegmentMap(BaseAddress,
-                new ImageSegment("", this, AccessMode.ReadWriteExecute));
-        }
 
 		/// <summary>
 		/// Adds the delta to the ushort at the given offset.

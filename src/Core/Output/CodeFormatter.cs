@@ -271,7 +271,31 @@ namespace Reko.Core.Output
             StringConstant s = c as StringConstant;
             if (s != null)
             {
-                writer.Write("{0}{1}{0}", '"', s.GetValue());
+                writer.Write('"');
+                foreach (var ch in (string)s.GetValue())
+                {
+                    switch (ch)
+                    {
+                    case '\0': writer.Write("\\0"); break;
+                    case '\a': writer.Write("\\a"); break;
+                    case '\b': writer.Write("\\b"); break;
+                    case '\f': writer.Write("\\f"); break;
+                    case '\n': writer.Write("\\n"); break;
+                    case '\r': writer.Write("\\r"); break;
+                    case '\t': writer.Write("\\t"); break;
+                    case '\v': writer.Write("\\v"); break;
+                    case '\"': writer.Write("\\\""); break;
+                    case '\\': writer.Write("\\\\"); break;
+                    default:
+                        //$REVIEW: these are ASCII codes. EBCDIC?
+                        if (0 <= ch && ch < ' ' || ch >= 0x7F)
+                            writer.Write("\\x{0:X2}", (int)ch);
+                        else
+                            writer.Write(ch);
+                        break;
+                    }
+                }
+                writer.Write('"');
             }
         }
 
@@ -480,7 +504,7 @@ namespace Reko.Core.Output
                 writer.Indentation += writer.TabSize;
                 writer.Indent();
                 writer.Write("defs: ");
-                writer.Write(string.Join(",", ci.Definitions.OrderBy(d => ((Identifier)d.Expression).Name).Select(d => d.Expression)));
+                writer.Write(string.Join(",", ci.Definitions.OrderBy(d => ((Identifier)d.Identifier).Name).Select(d => d.Identifier)));
                 writer.Terminate();
                 writer.Indentation -= writer.TabSize;
             }
@@ -511,7 +535,7 @@ namespace Reko.Core.Output
 			writer.Indent();
             writer.WriteKeyword("def");
             writer.Write(" ");
-			def.Expression.Accept(this);
+			def.Identifier.Accept(this);
 			writer.Terminate();
 		}
 

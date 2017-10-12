@@ -3902,9 +3902,9 @@ l010E:
 // SymbolicIn: sp:fp r0:<invalid> r1:<invalid> r2:<invalid> r4:<invalid> 0(fp):<invalid>
 
 l011A:
-	word16 v29_71 = Mem64[r0_67:word16]
+	word16 v28_71 = Mem64[r0_67:word16]
 	word16 r0_72 = r0_67 + 0x0002
-	branch v29_71 == 0x0000 l0122
+	branch v28_71 == 0x0000 l0122
 // DataOut: pc r0 r1 r4
 // DataOut (flags): 
 // SymbolicIn: sp:0x3FFE r0:<invalid> r1:<invalid> r2:<invalid> r4:<invalid> 0(fp):<invalid>
@@ -3916,7 +3916,7 @@ l0122:
 // SymbolicIn: sp:0x3FFE r0:<invalid> r1:<invalid> r2:<invalid> r4:<invalid> 0(fp):<invalid>
 
 l011E:
-	Mem80[v29_71:word16] = Mem64[r0_72:word16]
+	Mem80[v28_71:word16] = Mem64[r0_72:word16]
 	r0_67 = r0_72 + 0x0002
 // DataOut: pc r0 r4
 // DataOut (flags): 

@@ -167,6 +167,7 @@
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
     <Compile Include="BinaryReaderExtensions.cs" />
+    <Compile Include="CallingConvention.cs" />
     <Compile Include="CharacteristicsLibrary.cs" />
     <Compile Include="CLanguage\CBasicType.cs" />
     <Compile Include="CLanguage\CConstantEvaluator.cs" />
@@ -203,6 +204,11 @@
     <Compile Include="Configuration\TypeLibraryElement.cs" />
     <Compile Include="Configuration\UiPreferencesConfiguration.cs" />
     <Compile Include="Configuration\UiStyleElement.cs" />
+    <Compile Include="Dfa\Automaton.cs" />
+    <Compile Include="Dfa\DfaBuilder.cs" />
+    <Compile Include="Dfa\PatternParser.cs" />
+    <Compile Include="Dfa\State.cs" />
+    <Compile Include="Dfa\TreeNode.cs" />
     <Compile Include="Endianness.cs" />
     <Compile Include="EndianImageReader.cs" />
     <Compile Include="EnumerableEx.cs" />

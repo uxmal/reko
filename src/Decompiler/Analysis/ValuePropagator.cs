@@ -27,6 +27,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -47,7 +48,7 @@ namespace Reko.Analysis
         private ExpressionSimplifier eval;
         private SsaEvaluationContext evalCtx;
         private SsaIdentifierTransformer ssaIdTransformer;
-        DecompilerEventListener eventListener;
+        private DecompilerEventListener eventListener;
 
         public ValuePropagator(
             IProcessorArchitecture arch,
@@ -56,10 +57,10 @@ namespace Reko.Analysis
         {
             this.arch = arch;
             this.ssa = ssa;
+            this.eventListener = eventListener;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);
             this.eval = new ExpressionSimplifier(evalCtx, eventListener);
-            this.eventListener = eventListener;
         }
 
         public bool Changed { get { return eval.Changed; } set { eval.Changed = value; } }

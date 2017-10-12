@@ -92,6 +92,7 @@ namespace Reko.Loading
         /// Relocation gives us a chance to determine the addresses of interesting items.
         /// </summary>
         /// <param name="rawBytes">Image of the executeable file.</param>
+        /// <param name="loader">.NET Class name of a custom loader (may be null)</param>
         /// <param name="addrLoad">Address into which to load the file.</param>
         public Program LoadExecutable(string filename, byte[] image, string loader, Address addrLoad)
         {

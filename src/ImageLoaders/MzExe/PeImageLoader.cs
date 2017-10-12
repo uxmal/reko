@@ -43,10 +43,12 @@ namespace Reko.ImageLoaders.MzExe
         private const ushort MACHINE_i386 = (ushort)0x014C;
         private const ushort MACHINE_x86_64 = (ushort) 0x8664u;
         private const ushort MACHINE_ARMNT = (ushort)0x01C4;
+        private const ushort MACHINE_POWERPC = 0x01F0;
         private const ushort MACHINE_R4000 = (ushort)0x0166;
         private const short ImageFileRelocationsStripped = 0x0001;
         private const short ImageFileExecutable = 0x0002;
         private const short ImageFileDll = 0x2000;
+        public const uint DID_RvaBased = 1;
 
         private IProcessorArchitecture arch;
         private IPlatform platform;
@@ -154,6 +156,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_i386: arch = "x86-protected-32"; break;
             case MACHINE_x86_64: arch = "x86-protected-64"; break;
             case MACHINE_R4000: arch = "mips-le-32"; break;
+            case MACHINE_POWERPC: arch = "ppc-le-32"; break;
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
 			}
             return cfgSvc.GetArchitecture(arch);
@@ -168,6 +171,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_i386: env = "win32"; break;
             case MACHINE_x86_64: env = "win64"; break;
             case MACHINE_R4000: env = "winMips"; break;
+            case MACHINE_POWERPC: env = "winPpc32"; break;
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
             return Services.RequireService<IConfigurationService>()
@@ -182,6 +186,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_ARMNT:
             case MACHINE_i386: 
             case MACHINE_R4000:
+            case MACHINE_POWERPC:
                 return new Pe32Loader(this);
             case MACHINE_x86_64:
                 return new Pe64Loader(this);
@@ -197,6 +202,8 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_i386: return new i386Relocator(Services, program);
             case MACHINE_R4000: return new MipsRelocator(Services, program);
             case MACHINE_x86_64: return new x86_64Relocator(Services, program);
+            case MACHINE_POWERPC: return new PowerPcRelocator(Services, program);
+
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
         }
@@ -207,7 +214,9 @@ namespace Reko.ImageLoaders.MzExe
             {
             case MACHINE_ARMNT:
             case MACHINE_i386:
-            case MACHINE_R4000: 
+            case MACHINE_R4000:
+            case MACHINE_POWERPC:
+
                 return 0x010B;
             case MACHINE_x86_64:
                 return 0x020B;
@@ -259,16 +268,29 @@ namespace Reko.ImageLoaders.MzExe
             var sectionMap = new List<Section>();
 			EndianImageReader rdr = new LeImageReader(RawImage, rvaSectionTable);
 
-            // Why are we keeping track of this? Any particular reason?
-			Section maxSection = null;
+            Section minSection = null;
 			for (int i = 0; i != sections; ++i)
 			{
 				Section section = ReadSection(rdr);
 				sectionMap.Add(section);
-				if (maxSection == null || section.VirtualAddress > maxSection.VirtualAddress)
-					maxSection = section;
+				if (minSection == null || section.VirtualAddress < minSection.VirtualAddress)
+					minSection = section;
                 Debug.Print("  Section: {0,10} {1:X8} {2:X8} {3:X8} {4:X8}", section.Name, section.OffsetRawData, section.SizeRawData, section.VirtualAddress, section.VirtualSize);
 			}
+
+            // Map the area between addrLoad and the lowest section.
+            if (minSection != null && 0 < minSection.VirtualAddress)
+            {
+                sectionMap.Insert(0, new Section
+                {
+                    Name = "(PE header)",
+                    OffsetRawData= 0,
+                    SizeRawData = minSection.OffsetRawData,
+                    VirtualAddress = 0,
+                    VirtualSize = minSection.OffsetRawData,
+                    IsHidden = true,
+                });
+            }
             return sectionMap;
 		}
 
@@ -442,7 +464,10 @@ namespace Reko.ImageLoaders.MzExe
             relocator = CreateRelocator(machine, program);
             var relocations = imgLoaded.Relocations;
 			Section relocSection;
-            if ((relocSection = sectionList.Find(section => this.rvaBaseRelocationTable >= section.VirtualAddress && this.rvaBaseRelocationTable < section.VirtualAddress + section.VirtualSize)) != null)
+            if (rvaBaseRelocationTable != 0 &&
+                (relocSection = sectionList.Find(section => 
+                    this.rvaBaseRelocationTable >= section.VirtualAddress &&
+                    this.rvaBaseRelocationTable < section.VirtualAddress + section.VirtualSize)) != null)
 			{
                 ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, addrLoad, relocations);
 			} 
@@ -529,11 +554,12 @@ namespace Reko.ImageLoaders.MzExe
                 }
                 var seg = SegmentMap.AddSegment(new ImageSegment(
                     s.Name,
-                    addrLoad + s.VirtualAddress, 
-                    imgLoaded, 
+                    addrLoad + s.VirtualAddress,
+                    imgLoaded,
                     acc)
                 {
-                    Size = s.VirtualSize
+                    Size = s.VirtualSize,
+                    IsHidden = s.IsHidden,
                 });
                 seg.IsDiscardable = s.IsDiscardable;
             }
@@ -837,12 +863,16 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
         {
             var symbols = new List<ImageSymbol>();
             var attributes = rdr.ReadLeUInt32();
-            var dllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);    // DLL name.
+            var offset = ((attributes & DID_RvaBased) != 0) ? 0 : addrLoad.ToUInt32();
+            var rvaDllName = rdr.ReadLeUInt32();
+            if (rvaDllName == 0)
+                return false;
+            var dllName = ReadUtf8String(rvaDllName - offset, 0);    // DLL name.
             if (dllName == null)
                 return false;
             var rdrModule = rdr.ReadLeInt32();
-            var rdrThunks = imgLoaded.CreateLeReader(rdr.ReadLeUInt32());
-            var rdrNames = imgLoaded.CreateLeReader(rdr.ReadLeUInt32());
+            var rdrThunks = imgLoaded.CreateLeReader(rdr.ReadLeUInt32() - offset);
+            var rdrNames = imgLoaded.CreateLeReader(rdr.ReadLeUInt32() - offset);
             for (;;)
             {
                 var addrThunk = imgLoaded.BaseAddress + rdrThunks.Offset;
@@ -850,6 +880,8 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 uint rvaThunk = rdrThunks.ReadLeUInt32();
                 if (rvaName == 0)
                     break;
+                rvaName -= offset;
+                rvaThunk -= offset;
                 var impRef =
                     innerLoader.CreateImportReference(dllName, rvaName, addrThunk);
 
@@ -863,6 +895,8 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
 		private void ReadImportDescriptors(Address addrLoad)
 		{
+            if (rvaImportTable == 0)
+                return;
 			EndianImageReader rdr = imgLoaded.CreateLeReader(rvaImportTable);
 			while (ReadImportDescriptor(rdr, addrLoad))
 			{
@@ -871,6 +905,8 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
         private void ReadDeferredLoadDescriptors(Address addrLoad)
         {
+            if (rvaDelayImportDescriptor == 0)
+                return;
             var rdr = imgLoaded.CreateLeReader(rvaDelayImportDescriptor);
             while (ReadDeferredLoadDescriptors(rdr, addrLoad))
             {
@@ -883,6 +919,11 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			sec.Name = ReadSectionName(rdr);
 			sec.VirtualSize = rdr.ReadLeUInt32();
 			sec.VirtualAddress = rdr.ReadLeUInt32();
+
+			if(sec.Name == null) {
+				sec.Name = ".reko_" + sec.VirtualAddress.ToString("x16");
+			}
+
 			sec.SizeRawData = rdr.ReadLeUInt32();
 			sec.OffsetRawData = rdr.ReadLeUInt32();
 			rdr.ReadLeUInt32();			// pointer to relocations
@@ -912,6 +953,9 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 					break;
 				}
 			}
+			if(i < 0) {
+				return null;
+			}
 			return new String(chars, 0, i);
 		}
 
@@ -928,12 +972,14 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			public uint SizeRawData;
 			public uint Flags;
 			public uint OffsetRawData;
+            public bool IsHidden;
 
-			public bool IsDiscardable
+            public bool IsDiscardable
 			{
 				get { return (Flags & SectionFlagsDiscardable) != 0; }
 			}
-		}
+
+        }
 
         public uint ReadEntryPointRva()
         {

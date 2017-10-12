@@ -1565,32 +1565,43 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension = dasm.read_imm_16();
 
-            var ea = dasm.get_ea_mode_str_32(dasm.instruction); 
-            var code = BIT_B(extension) ? Opcode.divs : Opcode.divu;
-            if (BIT_A(extension))
-                return new M68kInstruction
-                {
-                    code = code,
-                    dataWidth = PrimitiveType.Word32,
-                    op1 = ea,
-                    op2 = dasm.get_double_data_reg(extension, (extension >> 12) & 7),
-                };
-            else if ((extension & 7) == ((extension >> 12) & 7))
-                return new M68kInstruction
-                {
-                    code = code,
-                    dataWidth = PrimitiveType.Word32,
-                    op1 = ea,
-                    op2 = get_data_reg((int)(extension >> 12) & 7)
-                };
+            var ea = dasm.get_ea_mode_str_32(dasm.instruction);
+            Opcode code;
+            if (BIT_B(extension))
+            {
+                code = BIT_A(extension) ? Opcode.divs : Opcode.divsl;
+            }
             else
-                return new M68kInstruction
-                {
-                    code = code,
-                    dataWidth = PrimitiveType.Word32,
-                    op1 = ea,
-                    op2 = dasm.get_double_data_reg(extension, (extension >> 12) & 7),
-                };
+            {
+                code = BIT_A(extension) ? Opcode.divu : Opcode.divul;
+            }
+            var dq = (extension >> 12) & 7;
+            var dr = (extension & 7);
+            MachineOperand op2;
+            PrimitiveType dataWidth;
+            if (BIT_A(extension))
+            {
+                op2 = dasm.get_double_data_reg(dr, dq);
+                dataWidth = PrimitiveType.Int64;
+            }
+            else if (dr == dq)
+            {
+                op2 = get_data_reg((int)dq);
+                dataWidth = PrimitiveType.Int32;
+            }
+            else
+            {
+                op2 = dasm.get_double_data_reg(dr, dq);
+                dataWidth = PrimitiveType.Int32;
+            }
+
+            return new M68kInstruction
+            {
+                code = code,
+                dataWidth = dataWidth,
+                op1 = ea,
+                op2 = op2,
+            };
         }
 
         private static M68kInstruction d68000_eori_to_ccr(M68kDisassembler dasm)
@@ -3040,8 +3051,8 @@ namespace Reko.Arch.M68k
 	new OpRec("J", 0xff00, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_8 
 	new OpRec("J", 0xffff, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_16
 	new OpRec("J", 0xffff, 0x61ff, 0x000, Opcode.bsr),              // d68020_bsr_32
-	new OpRec("D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),         // d68000_btst_r 
-	new OpRec("Iw,E0", 0xffc0, 0x0800, 0xbfb, Opcode.btst),         // d68000_btst_s
+	new OpRec("sl:D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),      // d68000_btst_r 
+	new OpRec("sw:Iw,E0", 0xffc0, 0x0800, 0xbfb, Opcode.btst),      // d68000_btst_s
 	new OpRec(d68020_callm        , 0xffc0, 0x06c0, 0x27b),
 	new OpRec(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
 	new OpRec(d68020_cas_16       , 0xffc0, 0x0cc0, 0x3f8),

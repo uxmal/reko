@@ -1242,8 +1242,9 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x4D82);         // chk
             AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|---|if ((word16) d2 < 0x0000 || (word16) d2 > (word16) d6) __trap(0x06)");
+                "0|L--|00010000(2): 2 instructions",
+                "1|T--|if ((word16) d2 >= 0x0000 && (word16) d2 <= (word16) d6) branch 00010002",
+                "2|L--|__syscall(0x06)");
         }
 
         [Test]
@@ -1251,8 +1252,9 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x4D92);         // chk
             AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|---|if (Mem0[a2:word16] < 0x0000 || Mem0[a2:word16] > (word16) d6) __trap(0x06)");
+                "0|L--|00010000(2): 2 instructions",
+                "1|T--|if (Mem0[a2:word16] >= 0x0000 && Mem0[a2:word16] <= (word16) d6) branch 00010002",
+                "2|L--|__syscall(0x06)");
         }
 
         [Test]
@@ -1260,10 +1262,11 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x4D9A);         // chk
             AssertCode(
-                "0|L--|00010000(2): 3 instructions",
+                "0|L--|00010000(2): 4 instructions",
                 "1|L--|v3 = Mem0[a2:word16]",
                 "2|L--|a2 = a2 + 0x00000002",
-                "3|---|if (v3 < 0x0000 || v3 > (word16) d6) __trap(0x06)");
+                "3|T--|if (v3 >= 0x0000 && v3 <= (word16) d6) branch 00010002",
+                "4|L--|__syscall(0x06)");
         }
 
         [Test]
@@ -1271,8 +1274,9 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x4D02);         // chk
             AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|---|if (d2 < 0x00000000 || d2 > d6) __trap(0x06)");
+                "0|L--|00010000(2): 2 instructions",
+                "1|T--|if (d2 >= 0x00000000 && d2 <= d6) branch 00010002",
+                "2|L--|__syscall(0x06)");
         }
 
         [Test]
@@ -1310,7 +1314,47 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0x4E4E);
             AssertCode(
                 "0|T--|00010000(2): 1 instructions",
-                "1|L--|__trap(0x0E)");
+                "1|L--|__syscall(0x0E)");
+        }
+
+        [Test]
+        public void M68krw_move_to_ccr()
+        {
+            Rewrite(0x44c3);
+            AssertCode(     // move\td3,ccr
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|ccr = d3");
+        }
+
+        [Test]
+        public void M68krw_move_fr_ccr()
+        {
+            Rewrite(0x42d3);
+            AssertCode( // move\tccr,(a3)",
+                "0|L--|00010000(2): 2 instructions",
+                "1|L--|v4 = (uint16) ccr",
+                "2|L--|Mem0[a3:uint16] = v4");
+        }
+
+        [Test]
+        public void M68krw_move_pc_index()
+        {
+            Rewrite(0x4BFB, 0x0170, 0x0000, 0x3D60);    //  lea (00003D60, pc),a5
+            AssertCode(
+                "0|L--|00010000(8): 1 instructions",
+                "1|L--|a5 = 00013D60");
+        }
+
+        [Test]
+        public void M68krw_divsl()
+        {
+            Rewrite(0x4C40, 0x3801);        // divsl d0,d1,d3
+            AssertCode(
+                "0|L--|00010000(4): 4 instructions",
+                "1|L--|d1 = d3 % d0",
+                "2|L--|d3 = d3 / d0",
+                "3|L--|VZN = cond(d3)",
+                "4|L--|C = false");
         }
     }
 }

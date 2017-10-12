@@ -84,7 +84,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public CallingConvention GetCallingConvention(string ccName)
         {
             throw new NotImplementedException();
         }
@@ -94,7 +94,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public Tuple<string, DataType, SerializedType> DataTypeFromImportName(string importName)
+        public Tuple<string, SerializedType, SerializedType> DataTypeFromImportName(string importName)
         {
             throw new NotImplementedException();
         }
@@ -194,7 +194,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public ExternalProcedure SignatureFromName(string importName)
+        public ProcedureBase_v1 SignatureFromName(string importName)
         {
             throw new NotImplementedException();
         }

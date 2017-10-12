@@ -113,7 +113,7 @@ namespace Reko.Analysis
 
 		public override Instruction TransformDefInstruction(DefInstruction def)
 		{
-            var stm = stmDef.Block.Statements.Insert(iStmDef + 1, 0, new Store(Dereference(idOut, def.Expression.DataType), def.Expression));
+            var stm = stmDef.Block.Statements.Insert(iStmDef + 1, 0, new Store(Dereference(idOut, def.Identifier.DataType), def.Identifier));
             ssa.Uses.Add(stm);
             return def;
 		}

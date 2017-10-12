@@ -31,7 +31,7 @@ namespace Reko.WindowsItp
                 new CoreProgram
                 {
                     //new Decompiler.Arch.X86.X86ArchitectureFlat32();
-                    Architecture = new Reko.Arch.PowerPC.PowerPcArchitecture32(),
+                    Architecture = new Reko.Arch.PowerPC.PowerPcBe32Architecture(),
                     SegmentMap = segmentMap
                 },
                 seg);

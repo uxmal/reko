@@ -150,12 +150,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\AtariTOS\atariTOS.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Cpm\cpm_bdos_services.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Cpm\cpm_map.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Msdos\realmodeintservices.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\msvcrt.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\ntoskrnl.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\windows32.xml" />
+    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\windows_CE.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\wsock32.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\windows64.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\oleaut32.xml" />
@@ -203,6 +205,7 @@
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\OdbgScript\$(OutDir)Reko.ImageLoaders.OdbgScript.*" />
     <ImageLoaders Include="$(Projectdir)..\..\ImageLoaders\VmsExe\$(OutDir)Reko.ImageLoaders.VmsExe.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\AmigaOS\$(OutDir)Reko.Environments.AmigaOS.*" />
+    <Environments Include="$(ProjectDir)..\..\Environments\AtariTOS\$(OutDir)Reko.Environments.AtariTOS.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\C64\$(OutDir)Reko.Environments.C64.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Dreamcast\$(OutDir)Reko.Environments.Dreamcast.*" />

@@ -236,7 +236,8 @@ namespace Reko.Arch.Pdp11
                 case 'C': grf |= Registers.C.FlagGroupBits; break;
                 }
             }
-            return new FlagGroupStorage(Registers.psw, grf, name, PrimitiveType.Byte);
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            return new FlagGroupStorage(Registers.psw, grf, name, dt);
         }
 
         public override string GrfToString(uint grf)

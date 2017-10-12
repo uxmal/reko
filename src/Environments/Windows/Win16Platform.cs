@@ -65,9 +65,19 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new X86ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);
+            if (ccName == null)
+                ccName = "";
+            switch (ccName)
+            {
+            case "":
+            case "__cdecl":
+                return new X86CallingConvention(4, 2, 4, true, false);
+            case "pascal":
+                return new X86CallingConvention(4, 2, 4, false, true);
+            }
+            throw new NotSupportedException(string.Format("Calling convention '{0}' is not supported.", ccName));
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -124,15 +134,15 @@ namespace Reko.Environments.Windows
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             foreach (ITypeLibraryElement tl in envCfg.TypeLibraries)
             {
-                Metadata = new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(tl.Name))
+                var path = cfgSvc.GetInstallationRelativePath(tl.Name);
+                Metadata = new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(path))
                                 .Load(this, tl.Module, Metadata);
             }
         }
 
-        public override ExternalProcedure SignatureFromName(string fnName)
+        public override ProcedureBase_v1 SignatureFromName(string fnName)
         {
-            var tlsvc = new TypeLibraryDeserializer(this, false, Metadata);
-            var sig = SignatureGuesser.SignatureFromName(fnName, tlsvc, this);
+            var sig = SignatureGuesser.SignatureFromName(fnName, this);
             return sig;
         }
     }

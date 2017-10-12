@@ -127,6 +127,8 @@ namespace Reko.Analysis
                 var blocks = new DfsIterator<Block>(proc.ControlGraph).PreOrder().ToList();
                 foreach (var block in blocks)
                 {
+                    if (eventListener.IsCanceled())
+                        return;
                     RewriteBlock(block);
                 }
             }
@@ -179,7 +181,6 @@ namespace Reko.Analysis
                 try
                 {
                     stm.Instruction.Accept(this);
-
                 }
                 catch (Exception ex)
                 {
@@ -205,6 +206,8 @@ namespace Reko.Analysis
             var propagator = new ExpressionPropagator(program.Platform, se.Simplifier, ctx, flow);
             foreach (Statement stm in block.Statements)
             {
+                if (eventListener.IsCanceled())
+                    return;
                 try
                 {
                     Instruction instr = stm.Instruction.Accept(propagator);

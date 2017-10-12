@@ -310,11 +310,11 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x88c80003,  // lwl t0,3(a2)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __lwl(Mem0[r6 + 0x00000003:word32])");
+                "1|L--|r8 = __lwl(r8, Mem0[r6 + 0x00000003:word32])");
 
             AssertCode(0x98c80000,   // lwr t0,0(a2)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __lwr(Mem0[r6:word32])");
+                "1|L--|r8 = __lwr(r8, Mem0[r6:word32])");
         }
 
         [Test]
@@ -407,23 +407,23 @@ namespace Reko.UnitTests.Arch.Mips
         {
             // Test only the known ones, we'll have to see how this changes things later on with dynamic custom registers
             RunTest("011111 00000 00110 00000 00000 111011");   // CPU number
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r6 = __read_hardware_register(0x00)");
 
             RunTest("011111 00000 01000 00001 00000 111011");   // SYNCI step size
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r8 = __read_hardware_register(0x01)");
 
             RunTest("011111 00000 00001 00010 00000 111011");   // Cycle counter
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r1 = __read_hardware_register(0x02)");
 
             RunTest("011111 00000 00011 00011 00000 111011");   // Cycle counter resolution
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r3 = __read_hardware_register(0x03)");
 
             RunTest("011111 00000 00111 11101 00000 111011");   // OS-specific, thread local pointer on Linux
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r7 = __read_hardware_register(0x1D)");
         }
 
@@ -432,8 +432,9 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RunTest("000000 00011 01001 01010 00000 001010");    // movz
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|if (r9 == 0x00000000) r10 = r3");
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (r9 != 0x00000000) branch 00100004", 
+                "2|L--|r10 = r3");
         }
 
         [Test]
@@ -442,6 +443,26 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0xFC444444,                              // sd
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[r2 + 0x00004444:word64] = r4");
+        }
+
+        [Test]
+        public void MipsRw_swl_swr()
+        {
+            AssertCode(0xABA8002B,                // swl r8, 002B(sp)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[sp + 0x0000002B:word32] = __swl(Mem0[sp + 0x0000002B:word32], r8)");
+
+            AssertCode(0xBBA80028,                // swr r8, 0028(sp)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[sp + 0x00000028:word32] = __swr(Mem0[sp + 0x00000028:word32], r8)");
+        }
+
+        [Test(Description = "Oddly, we see production code that writes to the r0 register. We musn't allow that assignment result in invalid code")]
+        public void MipsRw_WriteToR0()
+        {
+            AssertCode(0x03E00025,              // or r0,r0,r31
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = ra");
         }
     }
 }

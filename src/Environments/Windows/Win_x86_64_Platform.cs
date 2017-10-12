@@ -96,9 +96,9 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new X86_64ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);
+            return new X86_64CallingConvention();
         }
 
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
@@ -176,12 +176,9 @@ namespace Reko.Environments.Windows
                 return null;
         }
 
-        public override ExternalProcedure SignatureFromName(string fnName)
+        public override ProcedureBase_v1 SignatureFromName(string fnName)
         {
-            return SignatureGuesser.SignatureFromName(
-                fnName,
-                new TypeLibraryDeserializer(this, true, Metadata),
-                this);
+            return SignatureGuesser.SignatureFromName(fnName, this);
         }
     }
 }

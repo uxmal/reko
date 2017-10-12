@@ -80,7 +80,7 @@ namespace Reko
             this.loader = ldr;
             this.host = services.RequireService<DecompilerHost>();
             this.services = services;
-            this.eventListener = services.GetService<DecompilerEventListener>();
+            this.eventListener = services.RequireService<DecompilerEventListener>();
         }
 
         public Project Project { get { return project; } set { project = value; ProjectChanged.Fire(this); } }
@@ -187,30 +187,31 @@ namespace Reko
         }
 
         /// <summary>
-        /// Loads (or assembles) the decompiler project. If a binary file is specified instead,
-        /// we create a simple project for the file.
+        /// Loads (or assembles) the decompiler project. If a binary file is
+        /// specified instead, we create a simple project for the file.
         /// </summary>
+        /// <param name="fileName">The filename to load.</param>
+        /// <param name="loaderName">Optional .NET class name of a custom
+        /// image loader</param>
         /// <returns>True if what was loaded was an actual project</returns>
-        /// <param name="program"></param>
-        /// <param name="cfg"></param>
-        public bool Load(string fileName, string loaderName=null)
+        public bool Load(string fileName, string loaderName = null)
         {
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
             var projectLoader = new ProjectLoader(this.services, loader, eventListener);
             projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
-            Project = projectLoader.LoadProject(fileName, image);
+            this.Project = projectLoader.LoadProject(fileName, image);
             bool isProject;
             if (Project != null)
             {
                 isProject = true;
             }
-            else 
+            else
             {
                 var program = loader.LoadExecutable(fileName, image, loaderName, null);
-                Project = CreateDefaultProject(fileName, program);
-                Project.LoadedMetadata = program.Platform.CreateMetadata();
-                program.EnvironmentMetadata = Project.LoadedMetadata;
+                this.Project = CreateDefaultProject(fileName, program);
+                this.Project.LoadedMetadata = program.Platform.CreateMetadata();
+                program.EnvironmentMetadata = this.Project.LoadedMetadata;
                 isProject = false;
             }
             BuildImageMaps();
@@ -239,11 +240,11 @@ namespace Reko
             {
                 //$TODO: should be in the config file, yeah.
                 var type = Type.GetType("Reko.ImageLoaders.OdbgScript.OllyLang,Reko.ImageLoaders.OdbgScript");
-                interpreter = (IScriptInterpreter) Activator.CreateInstance(type);
+                interpreter = (IScriptInterpreter)Activator.CreateInstance(type, services);
             }
             catch (Exception ex)
             {
-                eventListener.Error(new NullCodeLocation(""), ex, "Unable to load script interpreter {0}.");
+                eventListener.Error(new NullCodeLocation(""), ex, "Unable to load OllyLang script interpreter.");
                 return;
             }
 

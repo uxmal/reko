@@ -148,6 +148,7 @@ namespace Reko.Arch.X86
                 case Opcode.divps: RewritePackedBinop("__divps", PrimitiveType.Real32); break;
                 case Opcode.divsd: RewriteScalarBinop(m.FDiv, PrimitiveType.Real64); break;
                 case Opcode.divss: RewriteScalarBinop(m.FDiv, PrimitiveType.Real32); break;
+                case Opcode.f2xm1: RewriteF2xm1(); break;
                 case Opcode.enter: RewriteEnter(); break;
                 case Opcode.fabs: RewriteFabs(); break;
                 case Opcode.fadd: EmitCommonFpuInstruction(m.FAdd, false, false); break;
@@ -182,7 +183,9 @@ namespace Reko.Arch.X86
                 case Opcode.fld1: RewriteFldConst(1.0); break;
                 case Opcode.fldcw: RewriteFldcw(); break;
                 case Opcode.fldenv: RewriteFldenv(); break;
+                case Opcode.fldl2e: RewriteFldConst(Constant.LgE()); break;
                 case Opcode.fldl2t: RewriteFldConst(Constant.Lg10()); break;
+                case Opcode.fldlg2: RewriteFldConst(Constant.Log2()); break;
                 case Opcode.fldln2: RewriteFldConst(Constant.Ln2()); break;
                 case Opcode.fldpi: RewriteFldConst(Constant.Pi()); break;
                 case Opcode.fldz: RewriteFldConst(0.0); break;
@@ -190,6 +193,7 @@ namespace Reko.Arch.X86
                 case Opcode.fmulp: EmitCommonFpuInstruction(m.FMul, false, true); break;
                 case Opcode.fpatan: RewriteFpatan(); break;
                 case Opcode.fprem: RewriteFprem(); break;
+                case Opcode.fptan: RewriteFptan(); break;
                 case Opcode.frndint: RewriteFUnary("__rndint"); break;
                 case Opcode.frstor: RewriteFrstor(); break;
                 case Opcode.fsave: RewriteFsave(); break;
@@ -342,6 +346,7 @@ namespace Reko.Arch.X86
                 case Opcode.xadd: RewriteXadd(); break;
                 case Opcode.xchg: RewriteExchange(); break;
                 case Opcode.xgetbv: RewriteXgetbv(); break;
+                case Opcode.xsetbv: RewriteXsetbv(); break;
                 case Opcode.xlat: RewriteXlat(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
                 case Opcode.BOR_exp: RewriteFUnary("exp"); break;

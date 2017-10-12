@@ -161,7 +161,12 @@ namespace Reko.UnitTests.Environments.Windows
             var fnName = "_foo@4";
             When_Creating_Win32_Platform();
 
-            var ep = win32.SignatureFromName(fnName);
+            var sProc = win32.SignatureFromName(fnName);
+            var loader = new TypeLibraryDeserializer(
+                win32,
+                false,
+                new TypeLibrary());
+            var ep = loader.LoadExternalProcedure(sProc);
 
             var sigExp =
 @"void foo()
@@ -232,7 +237,8 @@ namespace Reko.UnitTests.Environments.Windows
             When_Creating_Win32_Platform();
 
             var type = win32.DataTypeFromImportName("??_7Scope@@6B@");
-            Assert.IsInstanceOf<UnknownType>(type.Item2);
+
+            Assert.IsNull(type.Item2);
         }
     }
 }

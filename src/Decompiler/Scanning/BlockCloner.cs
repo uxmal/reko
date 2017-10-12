@@ -306,7 +306,9 @@ namespace Reko.Scanning
 
         public Expression VisitTestCondition(TestCondition tc)
         {
-            throw new NotImplementedException();
+            return new TestCondition(
+                tc.ConditionCode,
+                tc.Expression.Accept(this));
         }
 
         public Expression VisitUnaryExpression(UnaryExpression unary)

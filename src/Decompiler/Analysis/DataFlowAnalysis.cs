@@ -80,6 +80,9 @@ namespace Reko.Analysis
                     var sst = BuildSsaTransform(proc);
                     var ssa = sst.SsaState;
 
+                    var fuser = new UnalignedMemoryAccessFuser(ssa);
+                    fuser.Transform();
+
                     var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
 
                     sst.RenameFrameAccesses = true;

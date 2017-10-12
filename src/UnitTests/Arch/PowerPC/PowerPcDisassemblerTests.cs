@@ -31,7 +31,7 @@ namespace Reko.UnitTests.Arch.PowerPC
     [TestFixture]
     public class PowerPcDisassemblerTests : DisassemblerTestBase<PowerPcInstruction>
     {
-        private PowerPcArchitecture arch = new PowerPcArchitecture32();
+        private PowerPcArchitecture arch = new PowerPcBe32Architecture();
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 

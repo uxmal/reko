@@ -29,6 +29,7 @@ using Reko.Environments.Msdos;
 using System;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -97,5 +98,32 @@ namespace Reko.UnitTests.Core.Serialization
 			Assert.AreSame(Registers.al, ssvc.SyscallInfo.RegisterValues[1].Register);
 			Assert.AreEqual(0, ssvc.SyscallInfo.RegisterValues[1].Value);
 		}
+
+        [Test]
+        public void SserStackValues()
+        {
+            var xml = new MemoryStream(
+                Encoding.Unicode.GetBytes(
+                "<?xml version=\"1.0\"?>\r\n" +
+                "<library xmlns=\"http://schemata.jklnet.org/Decompiler\">" +
+                "  <service name=\"test\">" +
+                "    <syscallinfo>" +
+                "      <vector>10</vector>" +
+                "      <stackvalue offset=\"0c\">2a</stackvalue>" +
+                "    </syscallinfo>" +
+                "  </service>" +
+                "</library>"
+                ));
+            var slib = SerializedLibrary.LoadFromStream(xml);
+            Assert.AreEqual(1, slib.Procedures.Count);
+            var ssvc = (SerializedService)slib.Procedures[0];
+            Assert.AreEqual(1, ssvc.SyscallInfo.StackValues.Length);
+
+            var svc = ssvc.Build(platform, new TypeLibrary());
+            Assert.AreEqual(0, svc.SyscallInfo.RegisterValues.Length);
+            Assert.AreEqual(1, svc.SyscallInfo.StackValues.Length);
+            Assert.AreEqual(0x0C, svc.SyscallInfo.StackValues[0].Offset);
+            Assert.AreEqual(0x2A, svc.SyscallInfo.StackValues[0].Value);
+        }
 	}
 }

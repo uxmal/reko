@@ -37,7 +37,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var co = instr.op1 as ConditionOperand;
             if (co != null)
             {
-                rtlc = RtlClass.ConditionalTransfer;
+                rtlc = RtlClass.ConditionalTransfer | RtlClass.Call;
                 m.BranchInMiddleOfInstruction(
                     GenerateTestExpression(co, true),
                     instr.Address + instr.Length,
@@ -46,7 +46,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
             else
             {
-                rtlc = RtlClass.Transfer;
+                rtlc = RtlClass.Transfer | RtlClass.Call;
                 m.Call(RewriteSrc(instr.op1), 4);
             }
         }
@@ -75,7 +75,9 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 }
                 else
                 {
-                    m.If(test, new RtlGoto(dst, RtlClass.ConditionalTransfer));
+                    m.BranchInMiddleOfInstruction(
+                        test.Invert(), instr.Address + instr.Length, RtlClass.ConditionalTransfer);
+                    m.Goto(dst);
                 }
             }
             else

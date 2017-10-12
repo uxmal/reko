@@ -78,12 +78,10 @@ namespace Reko.UnitTests.Mocks
             var arch = new X86ArchitectureFlat32();
             platform.Stub(p => p.Architecture).Return(arch);
             platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
-
-            platform.Stub(s => s.CreateProcedureSerializer(null, null)).IgnoreArguments().Do(
-                new Func<ISerializedTypeVisitor<DataType>, string, ProcedureSerializer>((tlDeser, dc) =>
-                    new X86ProcedureSerializer(arch, tlDeser, dc)
-                )
-            );
+            var ccStdcall = new X86CallingConvention(4, 4, 4, false, false);
+            var ccCdecl = new X86CallingConvention(4, 4, 4, true, false);
+            platform.Stub(p => p.GetCallingConvention(null)).Return(ccCdecl);
+            platform.Stub(p => p.GetCallingConvention("__stdcall")).Return(ccStdcall);
             platform.Stub(p => p.SaveUserOptions()).Return(null);
 
             platform.Replay();

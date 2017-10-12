@@ -49,7 +49,7 @@ namespace Reko.Arch.Arm
 
         private void RewriteBl()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             m.Call(
                 Address.Ptr32((uint)ops[0].ImmediateValue.Value),
                 0);
@@ -57,7 +57,7 @@ namespace Reko.Arch.Arm
 
         private void RewriteBlx()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             m.Call(RewriteOp(ops[0]), 0);
         }
 

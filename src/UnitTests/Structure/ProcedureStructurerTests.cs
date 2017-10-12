@@ -448,6 +448,43 @@ unstructuredexit:
         }
 
         [Test]
+        public void ProcStr_InfiniteLoop_BreakInsideOfNestedIfs()
+        {
+            m.Label("loopheader");
+
+            m.SideEffect(m.Fn("beforeCheck"));
+            m.BranchIf(m.Fn("skipCheck"), "loop");
+            m.BranchIf(m.Fn("failed"), "exit");
+            m.SideEffect(m.Fn("check"));
+
+            m.Label("loop");
+            m.SideEffect(m.Fn("afterCheck"));
+            m.Goto("loopheader");
+
+            m.Label("exit");
+            m.SideEffect(m.Fn("exit"));
+            m.Return();
+
+            var sExp =
+@"    while (true)
+    {
+        beforeCheck();
+        if (!skipCheck())
+        {
+            if (failed())
+            {
+                exit();
+                return;
+            }
+            check();
+        }
+        afterCheck();
+    }
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
         public void ProcStr_InfiniteLoop()
         {
             var r1 = m.Reg32("r1", 1);
@@ -550,6 +587,49 @@ case_2:
             RunTest(sExp, m.Procedure);
         }
 
+        [Test]
+        public void ProcStr_Switch_Fallthru_CoincidentTargets()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.Label("head");
+            m.Switch(r1, "target_2", "target_0", "target_1", "target_2");
+
+            m.Label("target_0");
+            m.Assign(r1, 0);
+            m.Goto("done");
+
+            m.Label("target_1");
+            m.Assign(r1, 1);
+            // Fallthru
+
+            m.Label("target_2");
+            m.Assign(r1, 2);
+            m.Goto("done");
+
+            m.Label("done");
+            m.Return(r1);
+
+            var sExp =
+@"    switch (r1)
+    {
+    case 0x00:
+    case 0x03:
+target_2:
+        r1 = 0x02;
+        break;
+    case 0x01:
+        r1 = 0x00;
+        break;
+    case 0x02:
+        r1 = 0x01;
+        goto target_2;
+    }
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
         [Test(Description="A do-while with a nested if-then-else")]
         public void ProcStr_DoWhile_NestedIfElse()
         {
@@ -633,6 +713,59 @@ case_2:
         baz(r1);
     } while (r1 == 0x02);
     return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void ProcStr_DoNotLoseLabels()
+        {
+            m.BranchIf(m.Fn("check"), "left");
+            m.Goto("right");
+
+            m.Label("left");
+            m.BranchIf(m.Fn("leftCheck"), "easy");
+            m.Goto("medium");
+
+            m.Label("right");
+            m.BranchIf(m.Fn("rightCheck"), "difficult");
+            m.Goto("medium");
+
+            m.Label("easy");
+            m.BranchIf(m.Fn("easyCheck"), "right");
+            m.Goto("medium");
+
+            m.Label("medium");
+            m.BranchIf(m.Fn("mediumCheck"), "easy");
+            m.Goto("difficult");
+
+            m.Label("difficult");
+            m.BranchIf(m.Fn("difficultCheck"), "left");
+            m.Goto("medium");
+
+            var sExp =
+@"    if (check())
+    {
+left:
+        if (leftCheck())
+            goto easy;
+        goto medium;
+    }
+right:
+    if (!rightCheck())
+    {
+medium:
+        if (mediumCheck())
+        {
+easy:
+            if (!easyCheck())
+                goto medium;
+            goto right;
+        }
+    }
+    if (difficultCheck())
+        goto left;
+    goto medium;
 ";
             RunTest(sExp, m.Procedure);
         }

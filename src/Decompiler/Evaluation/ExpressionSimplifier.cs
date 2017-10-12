@@ -423,6 +423,10 @@ namespace Reko.Evaluation
         {
             var src = d.Source.Accept(this);
             var bits = d.InsertedBits.Accept(this);
+            if (src == Constant.Invalid || bits == Constant.Invalid)
+            {
+                return Constant.Invalid;
+            }
             d = new DepositBits(src, bits, d.BitPosition);
             if (dpbConstantRule.Match(d))
             {

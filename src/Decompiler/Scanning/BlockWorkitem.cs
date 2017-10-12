@@ -332,11 +332,15 @@ namespace Reko.Scanning
                 else
                     proc.ControlGraph.AddEdge(branchingBlock, blockThen);
             }
-            if (!BlockHasBeenScanned(blockElse))
+            if (BlockHasBeenScanned(blockElse))
+            {
+                return false;
+            }
+            else
             {
                 blockCur = blockElse;
+                return true;
             }
-            return true;
         }
 
         /// <summary>
@@ -444,6 +448,16 @@ namespace Reko.Scanning
                 {
                     var bt = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
                     EnsureEdge(blockSource.Procedure, blockFrom, bt);
+                }
+                if (blockCur.Statements.Count == 0)
+                {
+                    //$REVIEW: we insert a statement into empty blocks to satisfy the BlockHasBeenScanned
+                    // predicate. This should be done in a better way; perhaps by keeping track
+                    // of scanned blocks in the Scanner class? 
+                    // The recursive scanning of basic blocks does need improvement;
+                    // consider using a similar technique to Shingle scanner, where reachable
+                    // statements are collected first, and basic blocks reconstructed afterwards.
+                    Emit(new GotoInstruction(addrTarget));
                 }
                 return false;
             }
@@ -1137,6 +1151,14 @@ namespace Reko.Scanning
                 if (bra == null)
                     return null;
                 return bra.Condition;
+            }
+
+            public bool IsFallthrough(Instruction instr, Block block)
+            {
+                var bra = instr as Branch;
+                if (bra == null)
+                    return false;
+                return bra.Target != block;
             }
 
             public AddressRange GetSinglePredecessorAddressRange(Address block)

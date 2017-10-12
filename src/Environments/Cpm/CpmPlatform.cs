@@ -52,7 +52,7 @@ namespace Reko.Environments.Cpm
             return new HashSet<RegisterStorage>();
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
             throw new NotImplementedException();
         }

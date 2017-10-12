@@ -169,7 +169,9 @@ namespace Reko.Analysis
 
             var liveOut = new HashSet<RegisterStorage>(flow.LiveOut);
             liveOut.ExceptWith(implicitRegs);
-			foreach (var r in liveOut.OrderBy(r => r.Number))
+
+            // Sort the names in a stable way to avoid regression tests failing.
+			foreach (var r in liveOut.OrderBy(r => r.Number).ThenBy(r => r.BitAddress))
 			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
 				{
