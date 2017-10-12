@@ -343,7 +343,7 @@ namespace Reko.ImageLoaders.Elf
                         var gotSym = new ImageSymbol(addrGot, symbol.Name + "_GOT", new Pointer(new CodeType(), 4))
                         {
                             Type = SymbolType.Data,
-                            Size = (uint) addrSym.DataType.Size,
+                            Size = (uint) Architecture.PointerType.Size,
                         };
                         symbols[addrGot] = gotSym;
                         Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
@@ -610,13 +610,15 @@ namespace Reko.ImageLoaders.Elf
 
 
         /// <summary>
-        /// Hack off the @@GLIBC_... suffix.
+        /// Hack off the @@GLIBC_... suffixes from symbols. 
+        /// They might become useful at some later stage, but for now
+        /// they just mangle the names unnecessarily.
         /// </summary>
-        protected static string RemoveGlibcSuffix(string s)
+        protected static string RemoveModuleSuffix(string s)
         {
             if (string.IsNullOrEmpty(s))
                 return s;
-            int i = s.IndexOf("@@GLIBC_");
+            int i = s.IndexOf("@@");
             if (i < 0)
                 return s;
             return s.Remove(i);
@@ -978,7 +980,7 @@ namespace Reko.ImageLoaders.Elf
                 //    sym.st_size);
                 symbols.Add(new ElfSymbol
                 {
-                    Name = RemoveGlibcSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
+                    Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
                     Type = (ElfSymbolType)(sym.st_info & 0xF),
                     SectionIndex = sym.st_shndx,
                     Value = sym.st_value,
@@ -1482,7 +1484,7 @@ namespace Reko.ImageLoaders.Elf
                 var sym = Elf32_Sym.Load(rdr);
                 Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,
-                    RemoveGlibcSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
+                    RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
                     (ElfSymbolType)(sym.st_info & 0xF),
                     sym.st_shndx,
                     GetSectionName(sym.st_shndx),
@@ -1490,7 +1492,7 @@ namespace Reko.ImageLoaders.Elf
                     sym.st_size);
                 symbols.Add(new ElfSymbol
                 {
-                    Name = RemoveGlibcSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
+                    Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
                     Type = (ElfSymbolType)(sym.st_info & 0xF),
                     SectionIndex = sym.st_shndx,
                     Value = sym.st_value,
