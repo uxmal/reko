@@ -94,6 +94,26 @@ namespace Reko.Arch.M68k
                 var addrB = (M68kAddressOperand)opB;
                 return NormalizeConstants || addrA.Address == addrB.Address;
             }
+            var idxA = opA as IndirectIndexedOperand;
+            if (idxA != null)
+            {
+                var idxB = (IndirectIndexedOperand)opB;
+                if (!NormalizeRegisters)
+                {
+                    if (!CompareRegisters(idxA.ARegister, idxB.ARegister))
+                        return false;
+                    if (!CompareRegisters(idxA.XRegister, idxB.XRegister))
+                        return false;
+                }
+                if (!NormalizeConstants)
+                {
+                    if (idxA.Imm8 != idxB.Imm8)
+                        return false;
+                    if (idxA.Scale != idxB.Scale)
+                        return false;
+                }
+                return true;
+            }
             throw new NotImplementedException(opA.GetType().FullName);
         }
 

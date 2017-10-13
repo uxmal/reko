@@ -424,7 +424,42 @@ namespace Reko.Arch.M68k
                 var b = binder.EnsureRegister(idxop.base_reg);
                 var i = binder.EnsureRegister(idxop.index_reg);
                 var s = m.Const(i.DataType, idxop.index_scale);
-                var load = m.Load(dataWidth, m.IAdd(b, m.IMul(i, s)));
+                // move.l -(r1),(r2)+
+                Expression ea = b;
+                if (i != null)
+                {
+                    if (idxop.index_scale > 1)
+                    {
+                        ea = m.IMul(i, s);
+                    }
+                    else
+                    {
+                        ea = i;
+                    }
+                }
+                if (b != null)
+                { 
+                    if (ea != null)
+                    {
+                        ea = m.IAdd(b, ea);
+                    }
+                    else
+                    {
+                        ea = b;
+                    }
+                }
+                if (idxop.Base != null)
+                {
+                    if (ea != null)
+                    {
+                        ea = m.IAdd(ea, idxop.Base);
+                    }
+                    else
+                    {
+                        ea = idxop.Base;
+                    }
+                }
+                var load = m.Load(dataWidth, ea);
                 m.Assign(load, src);
                 return src;
             }
