@@ -50,7 +50,6 @@ namespace Reko.Structure
         private DominatorGraph<Region> doms;
         private DominatorGraph<Region> postDoms;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedCycles;
-        private Queue<Tuple<Region, ISet<Region>>> unresolvedNoncycles;
         private DecompilerEventListener eventListener;
 
         public StructureAnalysis(DecompilerEventListener listener, Program program, Procedure proc)
@@ -125,7 +124,6 @@ namespace Reko.Structure
                 oldCount = regionGraph.Nodes.Count;
                 this.doms = new DominatorGraph<Region>(this.regionGraph, result.Item2);
                 this.unresolvedCycles = new Queue<Tuple<Region, ISet<Region>>>();
-                this.unresolvedNoncycles = new Queue<Tuple<Region, ISet<Region>>>();
                 var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
 
                 bool didReduce = false;
@@ -628,7 +626,6 @@ all other cases, together they constitute a Switch[].
             ISet<Region> unstructuredPreds = regionGraph.Predecessors(s).Where(p => p != n).ToHashSet();
             if (unstructuredPreds.Count == 0)
                 return false;
-            this.unresolvedNoncycles.Enqueue(Tuple.Create(n, unstructuredPreds));
             return true;
         }
 
