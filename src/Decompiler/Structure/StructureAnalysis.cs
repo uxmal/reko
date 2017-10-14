@@ -956,6 +956,9 @@ are added during loop refinement, which we discuss next.
                     return true;
                 }
             }
+            // Should be condition. Switches should not match a cyclic pattern
+            if (n.Type != RegionType.Condition)
+                return didReduce;
             foreach (var s in succs)
             {
                 if (SingleSuccessor(s) == n && SinglePredecessor(s) == n)
