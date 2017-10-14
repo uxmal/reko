@@ -758,8 +758,12 @@ doing future pattern matches.
             regionGraph.RemoveEdge(vEdge.From, vEdge.To);
             if (regionGraph.Predecessors(vEdge.To).Count == 0 && vEdge.To != entry)
             {
-                //$BUGBUG: this causes losing of some code blocks
-                RemoveRegion(vEdge.To);
+                eventListener.Error(
+                    eventListener.CreateProcedureNavigator(program, proc),
+                    string.Format(
+                        "Removing edge ({0}, {1}) caused losing of some code blocks",
+                        vEdge.From.Block.Name,
+                        vEdge.To.Block.Name));
 
 
                 Probe();
