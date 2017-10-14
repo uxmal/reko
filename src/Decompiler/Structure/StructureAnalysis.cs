@@ -50,6 +50,7 @@ namespace Reko.Structure
         private DominatorGraph<Region> doms;
         private DominatorGraph<Region> postDoms;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedCycles;
+        private Queue<Region> unresolvedSwitches;
         private DecompilerEventListener eventListener;
 
         public StructureAnalysis(DecompilerEventListener listener, Program program, Procedure proc)
@@ -124,6 +125,7 @@ namespace Reko.Structure
                 oldCount = regionGraph.Nodes.Count;
                 this.doms = new DominatorGraph<Region>(this.regionGraph, result.Item2);
                 this.unresolvedCycles = new Queue<Tuple<Region, ISet<Region>>>();
+                this.unresolvedSwitches = new Queue<Region>();
                 var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
 
                 bool didReduce = false;
@@ -275,6 +277,12 @@ namespace Reko.Structure
                 if (RefineLoop(cycle.Item1, cycle.Item2))
                     return true;
             }
+            if (unresolvedSwitches.Count != 0)
+            {
+                var switchHead = unresolvedSwitches.Dequeue();
+                RefineIncSwitch(switchHead);
+                return true;
+            }
             var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
             foreach (var n in postOrder)
             {
@@ -390,10 +398,12 @@ namespace Reko.Structure
             {
                 return ReduceIncSwitch(n, follow);
             }
-            follow = RefineIncSwitch(n);
-            Debug.Assert(follow != null);
-            ReduceIncSwitch(n, follow);
-            return true;
+
+            // It's a switch region, but we are unable to collapse it.
+            // Schedule it for refinement after the whole graph has been
+            // traversed.
+            this.unresolvedSwitches.Enqueue(n);
+            return false;
         }
 
 
@@ -452,6 +462,11 @@ all other cases, together they constitute a Switch[].
         /// edges from case nodes is chosen as the successor. After
         /// the successor has been identified, any outgoing edge from
         /// the switch that does not go to the successor is virtualized.
+        /// [Pavel Tomin's note. Virtualizing of all outgoing edges
+        /// described by Schwartz causes incorrect refinement of switch
+        /// with irregular case exits. Use loop lexical nodes definition
+        /// method to find case body. Then virtualize any edge
+        /// leaving the case body that does not go to the successor]
         /// After refinement, a switch candidate is usually collapsed
         /// to a IncSwitch[·] region. For instance, a common
         /// implementation strategy for switches is to redirect inputs
@@ -463,16 +478,31 @@ all other cases, together they constitute a Switch[].
         /// IncSwitch[·]. However, because the default node handles
         /// all other cases, together they constitute a Switch[·].
         /// </remarks>
-        private Region RefineIncSwitch(Region n)
+        private void RefineIncSwitch(Region n)
         {
-            VirtualizeIrregularSwitchEntries(n);
-            Region follow = FindIrregularSwitchFollowRegion(n);
-            VirtualizeIrregularSwitchExits(n, follow);
-            return follow;
+            if (VirtualizeIrregularSwitchEntries(n))
+                return;
+            var follow = FindIrregularSwitchFollowRegion(n);
+            var switchBody = FindSwitchBody(n, follow);
+            if (VirtualizeIrregularSwitchExits(switchBody, follow))
+                return;
+            var switchNodes = switchBody.Values.Aggregate(
+                (s, nodes) => { s.UnionWith(nodes); return s; });
+            foreach (var node in switchNodes)
+            {
+                if (CoalesceTailRegion(node, switchNodes))
+                    return;
+            }
+            foreach (var node in switchNodes)
+            {
+                if (LastResort(node))
+                    return;
+            }
         }
 
-        private void VirtualizeIrregularSwitchEntries(Region n)
+        private bool VirtualizeIrregularSwitchEntries(Region n)
         {
+            bool virtualized = false;
             var vEdges = new List<VirtualEdge>();
             foreach (var s in regionGraph.Successors(n).Distinct())
             {
@@ -484,8 +514,10 @@ all other cases, together they constitute a Switch[].
             }
             foreach (var vEdge in vEdges)
             {
+                virtualized = true;
                 VirtualizeEdge(vEdge);
             }
+            return virtualized;
         }
 
         /// <summary>
@@ -523,26 +555,54 @@ all other cases, together they constitute a Switch[].
             return best.Region;
         }
 
+        private IDictionary<Region, ISet<Region>> FindSwitchBody(
+            Region n, Region follow)
+        {
+            var caseNodesMap = new Dictionary<Region, ISet<Region>>();
+            var caseEntries = regionGraph.Successors(n).ToHashSet();
+            foreach (var c in caseEntries)
+            {
+                var caseSet = new HashSet<Region>() { c };
+                caseNodesMap[c] = GetLexicalNodes(c, follow, caseSet);
+            }
+            return caseNodesMap;
+        }
+
         /// <summary>
         /// After we have identified the successor of a switch, we remove 
-        /// all outgoing edges from the case nodes to other nodes by 
+        /// any edge leaving the case body that does not go to the successor by
         /// virtualizing them.
         /// </summary>
-        private void VirtualizeIrregularSwitchExits(Region n, Region follow)
+        private bool VirtualizeIrregularSwitchExits(
+            IDictionary<Region, ISet<Region>> switchBody, Region follow)
         {
-            var caseNodes = regionGraph.Successors(n).ToHashSet();
-            var vEdges = new List<VirtualEdge>();
-            foreach (var c in caseNodes)
+            foreach (var caseBody in switchBody.Values)
             {
-                foreach (var s in regionGraph.Successors(c).Where(cs => cs != follow))
+                if (VirtualizeIrregularCaseExits(follow, caseBody))
+                    return true;
+            }
+            return false;
+        }
+
+        private bool VirtualizeIrregularCaseExits(Region follow, ISet<Region> caseBody)
+        {
+            bool virtualized = false;
+            var vEdges = new List<VirtualEdge>();
+            foreach (var n in caseBody)
+            {
+                var leavingNodes = regionGraph.Successors(n).
+                    Where(s => !caseBody.Contains(s) && s != follow);
+                foreach (var s in leavingNodes)
                 {
-                    vEdges.Add(new VirtualEdge(c, s, VirtualEdgeType.Goto));
+                    vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Goto));
                 }
             }
             foreach (var vEdge in vEdges)
             {
+                virtualized = true;
                 VirtualizeEdge(vEdge);
             }
+            return virtualized;
         }
 
         private Region GetSwitchFollow(Region n)
