@@ -116,9 +116,8 @@ namespace Reko.UnitTests.Mocks
             branchBlock = BlockOf(label);
             TerminateBlock();
 
-            Statement stm = new Statement(0, new Branch(expr, branchBlock), b);
-            b.Statements.Add(stm);
-            return stm;
+            b.Statements.Add(LinearAddress++, new Branch(expr, branchBlock));
+            return b.Statements.Last;
         }
 
         protected virtual void BuildBody()
@@ -157,6 +156,19 @@ namespace Reko.UnitTests.Mocks
             var ci = new CallInstruction(e, new CallSite(retSizeOnstack, 0));
             ci.Uses.UnionWith(uses.Select(u => new CallBinding(u.Storage, u)));
             ci.Definitions.UnionWith(definitions.Select(d => new CallBinding(d.Storage, d)));
+            return Emit(ci);
+        }
+
+        public Statement Call(
+               string procedureName,
+               int retSizeOnStack,
+               IEnumerable<Identifier> uses,
+               IEnumerable<Identifier> definitions)
+        {
+            var ci = new CallInstruction(Constant.Invalid, new CallSite(retSizeOnStack, 0));
+            ci.Uses.UnionWith(uses.Select(u => new CallBinding(u.Storage, u)));
+            ci.Definitions.UnionWith(definitions.Select(d => new CallBinding(d.Storage, d)));
+            unresolvedProcedures.Add(new ProcedureConstantUpdater(procedureName, ci));
             return Emit(ci);
         }
 

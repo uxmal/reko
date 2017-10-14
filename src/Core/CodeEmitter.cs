@@ -24,6 +24,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
+using System.Diagnostics;
 
 namespace Reko.Core
 {
@@ -157,6 +158,12 @@ namespace Reko.Core
         {
             localStackOffset -= PrimitiveType.Word32.Size;
             return Frame.EnsureStackLocal(localStackOffset, PrimitiveType.Word32, name);
+        }
+
+        public virtual Identifier Local32(string name, int offset)
+        {
+            Debug.Assert(offset < 0);
+            return Frame.EnsureStackLocal(offset, PrimitiveType.Word32, name);
         }
 
         public Identifier Temp(DataType type, string name)

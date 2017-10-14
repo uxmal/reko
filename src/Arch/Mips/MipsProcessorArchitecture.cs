@@ -130,6 +130,12 @@ namespace Reko.Arch.Mips
             throw new NotImplementedException();
         }
 
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
+        {
+            var esp = frame.EnsureRegister(this.StackRegister);
+            return MemoryAccess.Create(esp, cbOffset, dataType);
+        }
+
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();

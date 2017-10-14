@@ -718,6 +718,59 @@ target_2:
         }
 
         [Test]
+        public void ProcStr_DoNotLoseLabels()
+        {
+            m.BranchIf(m.Fn("check"), "left");
+            m.Goto("right");
+
+            m.Label("left");
+            m.BranchIf(m.Fn("leftCheck"), "easy");
+            m.Goto("medium");
+
+            m.Label("right");
+            m.BranchIf(m.Fn("rightCheck"), "difficult");
+            m.Goto("medium");
+
+            m.Label("easy");
+            m.BranchIf(m.Fn("easyCheck"), "right");
+            m.Goto("medium");
+
+            m.Label("medium");
+            m.BranchIf(m.Fn("mediumCheck"), "easy");
+            m.Goto("difficult");
+
+            m.Label("difficult");
+            m.BranchIf(m.Fn("difficultCheck"), "left");
+            m.Goto("medium");
+
+            var sExp =
+@"    if (check())
+    {
+left:
+        if (leftCheck())
+            goto easy;
+        goto medium;
+    }
+right:
+    if (!rightCheck())
+    {
+medium:
+        if (mediumCheck())
+        {
+easy:
+            if (!easyCheck())
+                goto medium;
+            goto right;
+        }
+    }
+    if (difficultCheck())
+        goto left;
+    goto medium;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
         public void ProcStr_r00237()
         {
             //byte fn0800_0541(byte al, selector ds)
