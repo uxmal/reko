@@ -610,7 +610,7 @@ all other cases, together they constitute a Switch[].
             Region follow = null;
             foreach (var s in regionGraph.Successors(n))
             {
-                if (regionGraph.Predecessors(s).Count != 1)
+                if (regionGraph.Predecessors(s).Where(p => (p != n)).Any())
                     return null;
                 var ss = SingleSuccessor(s);
                 if (s.Type != RegionType.Tail)
