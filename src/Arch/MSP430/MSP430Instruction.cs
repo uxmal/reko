@@ -25,7 +25,7 @@ using System.Text;
 
 namespace Reko.Arch.MSP430
 {
-    public class MSP430Instruction : MachineInstruction
+    public class Msp430Instruction : MachineInstruction
     {
         public Opcode opcode;
         public PrimitiveType dataWidth;

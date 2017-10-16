@@ -29,18 +29,18 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.MSP430
 {
-    public class MSP430Disassembler : DisassemblerBase<MSP430Instruction>
+    public class Msp430Disassembler : DisassemblerBase<Msp430Instruction>
     {
         private EndianImageReader rdr;
-        private MSP430Architecture arch;
+        private Msp430Architecture arch;
 
-        public MSP430Disassembler(MSP430Architecture arch, EndianImageReader rdr)
+        public Msp430Disassembler(Msp430Architecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
         }
 
-        public override MSP430Instruction DisassembleInstruction()
+        public override Msp430Instruction DisassembleInstruction()
         {
             ushort uInstr;
             var addr = rdr.Address;
@@ -55,7 +55,7 @@ namespace Reko.Arch.MSP430
             return instr;
         }
 
-        private MSP430Instruction Decode(uint uInstr, Opcode opcode, string fmt)
+        private Msp430Instruction Decode(uint uInstr, Opcode opcode, string fmt)
         {
             PrimitiveType dataWidth = null;
             int i = 0;
@@ -113,7 +113,7 @@ namespace Reko.Arch.MSP430
                 var iReg = uInstr & 0x0F;
                 if (iReg == 2 || iReg == 3)
                 {
-                    return new MSP430Instruction { opcode = Opcode.invalid };
+                    return new Msp430Instruction { opcode = Opcode.invalid };
                 }
                 var reg = Registers.GpRegisters[iReg];
                 if (aD == 0)
@@ -127,7 +127,7 @@ namespace Reko.Arch.MSP430
                         return null;
                 }
             }
-            return new MSP430Instruction
+            return new Msp430Instruction
             {
                 opcode = opcode,
                 dataWidth = dataWidth,
@@ -150,7 +150,7 @@ namespace Reko.Arch.MSP430
 
         private abstract class OpRecBase
         {
-            public abstract MSP430Instruction Decode(MSP430Disassembler dasm, ushort uInstr);
+            public abstract Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr);
         }
 
         private class OpRec : OpRecBase
@@ -164,7 +164,7 @@ namespace Reko.Arch.MSP430
                 this.fmt = fmt;
             }
 
-            public override MSP430Instruction Decode(MSP430Disassembler dasm, ushort uInstr)
+            public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
             {
                 return dasm.Decode(uInstr, opcode, fmt);
             }
@@ -172,7 +172,7 @@ namespace Reko.Arch.MSP430
 
         private class JmpOpRec : OpRecBase
         {
-            public override MSP430Instruction Decode(MSP430Disassembler dasm, ushort uInstr)
+            public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
             {
                 return dasm.Decode(uInstr, jmps[(uInstr >> 10) & 7], "J");
             }

@@ -29,13 +29,13 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Tlcs
 {
     [TestFixture]
-    public class MSP430DisassemblerTests : DisassemblerTestBase<MSP430Instruction>
+    public class MSP430DisassemblerTests : DisassemblerTestBase<Msp430Instruction>
     {
-        private MSP430Architecture arch;
+        private Msp430Architecture arch;
 
         public MSP430DisassemblerTests()
         {
-            this.arch = new MSP430Architecture();
+            this.arch = new Msp430Architecture();
         }
 
         public override IProcessorArchitecture Architecture

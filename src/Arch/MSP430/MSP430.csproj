@@ -41,9 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MemoryOperand.cs" />
-    <Compile Include="MSP430Architecture.cs" />
-    <Compile Include="MSP430Disassembler.cs" />
-    <Compile Include="MSP430Instruction.cs" />
+    <Compile Include="Msp430Architecture.cs" />
+    <Compile Include="Msp430Disassembler.cs" />
+    <Compile Include="Msp430Instruction.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers.cs" />

@@ -31,13 +31,13 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.MSP430
 {
-    public class MSP430Architecture : ProcessorArchitecture
+    public class Msp430Architecture : ProcessorArchitecture
     {
         public readonly static PrimitiveType Word20 = PrimitiveType.CreateWord(5);  // Yep!
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new MSP430Disassembler(this, imageReader);
+            return new Msp430Disassembler(this, imageReader);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea mem, ulong off)
