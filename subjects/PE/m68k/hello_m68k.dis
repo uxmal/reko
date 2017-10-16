@@ -23,6 +23,60 @@ fn00001498_exit:
 
 
 
+void fn0000149C(word32 d0, word32 a5)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a5 d0
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0000149C_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0000149C_entry:
+// DataOut: a5 d0
+// DataOut (flags): 
+// SymbolicIn: a7:fp
+// LocalsOut: fp(32)
+
+l0000149C:
+	__syscall(0xA9A0)
+	branch DPB(dwLoc0A, 0x4270, 0) != 0x00000000 l000014BE
+// DataOut: a5 a7 d0
+// DataOut (flags): 
+// SymbolicIn: a7:fp
+// LocalsOut: fp(32)
+
+l000014BE:
+	__syscall(0xA86E)
+	__syscall(0xA8FE)
+	__syscall(0xA912)
+	__syscall(0xA930)
+	__syscall(0xA9CC)
+	__syscall(0xA97B)
+	__syscall(0xA850)
+	__syscall(0xA986)
+// DataOut: a7 d0
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000000A -10(fp):0x4270 -8(fp):0x414C5254
+
+l000014B6:
+	Mem29[0x00000AF0:word16] = 0x001A
+// DataOut: a7 d0
+// DataOut (flags): 
+// SymbolicIn: a7:fp - 0x0000000A -10(fp):0x4270 -8(fp):0x414C5254
+
+l000014E2:
+	__syscall(0xA9F4)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: a7:<invalid> -24(fp):0x00000000 -20(fp):0x4270 -18(fp):0x00000000 -14(fp):a5 + -1742 -10(fp):0x4270 -8(fp):0x414C5254
+
+
+
 void fn000014E8(word32 a5, word32 dwArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 

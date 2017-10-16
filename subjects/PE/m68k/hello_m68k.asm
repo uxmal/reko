@@ -72,12 +72,39 @@
 ;; fn00001498: 00001498
 fn00001498 proc
 	rts	
-0000149A                               00 00 9F FC 00 00           ......
-000014A0 00 04 2F 3C 41 4C 52 54 3F 3C 42 70 A9 A0 0C 97 ../<ALRT?<Bp....
-000014B0 00 00 00 00 66 08 31 FC 00 1A 0A F0 60 24 48 6D ....f.1.....`$Hm
-000014C0 F9 32 A8 6E A8 FE A9 12 A9 30 A9 CC 2F 3C 00 00 .2.n.....0../<..
-000014D0 00 00 A9 7B A8 50 3F 3C 42 70 2F 3C 00 00 00 00 ...{.P?<Bp/<....
-000014E0 A9 86 58 8F A9 F4 00 00                         ..X.....       
+0000149A                               00 00                       ..   
+
+;; fn0000149C: 0000149C
+fn0000149C proc
+	suba.l	#$00000004,a7
+	move.l	#$414C5254,-(a7)
+	move.w	#$4270,-(a7)
+	illegal	#$A9A0
+	cmpi.l	#$00000000,(a7)
+	bne	$000014BE
+
+l000014B6:
+	move.w	#$001A,$00000AF0
+	bra	$000014E2
+
+l000014BE:
+	pea	$-06CE(a5)
+	illegal	#$A86E
+	illegal	#$A8FE
+	illegal	#$A912
+	illegal	#$A930
+	illegal	#$A9CC
+	move.l	#$00000000,-(a7)
+	illegal	#$A97B
+	illegal	#$A850
+	move.w	#$4270,-(a7)
+	move.l	#$00000000,-(a7)
+	illegal	#$A986
+
+l000014E2:
+	addq.l	#$04,a7
+	illegal	#$A9F4
+	ori.b	#$E7,d0
 
 ;; fn000014E8: 000014E8
 fn000014E8 proc

@@ -424,7 +424,6 @@ namespace Reko.Arch.M68k
                 var b = binder.EnsureRegister(idxop.base_reg);
                 var i = binder.EnsureRegister(idxop.index_reg);
                 var s = m.Const(i.DataType, idxop.index_scale);
-                // move.l -(r1),(r2)+
                 Expression ea = b;
                 if (i != null)
                 {
