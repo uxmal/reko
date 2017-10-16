@@ -139,12 +139,12 @@ namespace Reko.Core.Types
 		}
 
         public static PrimitiveType CreateWord(int byteSize)
-        {
-            string name;
+		{
+			string name;
             if (byteSize == 1)
-            {
-                name = "byte";
-            }
+			{
+				name = "byte";
+			}
             else
             { 
                 name = $"word{byteSize * 8}";
