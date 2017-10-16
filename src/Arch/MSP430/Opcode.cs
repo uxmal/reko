@@ -24,6 +24,27 @@ namespace Reko.Arch.MSP430
     {
         invalid,
 
+        add,
+        addc,
+        and,
+        bic,
+        bis,
+        bit,
+        cmp,
+        dadd,
+
+        jc,
+        jge,
+        jl,
+        jmp,
+        jn,
+        jnc,
+        jnz,
+        jz,
+
+        mov,
+        sub,
+        subc,
         xor,
     }
 }

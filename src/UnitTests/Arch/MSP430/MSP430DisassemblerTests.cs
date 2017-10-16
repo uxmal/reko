@@ -59,7 +59,25 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void MSP430Dis_xor()
         {
-            AssertCode("xor\t@r4,r2", "22E4");
+            AssertCode("xor.w\t@r4,r5", "25E4");
+        }
+
+        [Test]
+        public void MSP430Dis_and_b()
+        {
+            AssertCode("and.b\t@r4,r6", "66F4");
+        }
+
+        [Test]
+        public void MSP430Dis_bis_b()
+        {
+            AssertCode("bis.w\t@r4,1234(r6)", "A6D43412");
+        }
+
+        [Test]
+        public void MSP430Dis_jmp()
+        {
+            AssertCode("jmp\t0100", "FF3F");
         }
     }
 }

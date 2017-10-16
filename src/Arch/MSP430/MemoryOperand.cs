@@ -35,8 +35,19 @@ namespace Reko.Arch.MSP430
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write('@');
-            writer.Write(Base.Name);
+            if (Offset > 0)
+            {
+                writer.Write("{0:X4}({1})", Offset, Base.Name);
+            }
+            else if (Offset < 0)
+            {
+                writer.Write("-{0:X4}({1})", -Offset, Base.Name);
+            }
+            else
+            {
+                writer.Write('@');
+                writer.Write(Base.Name);
+            }
         }
     }
 }
