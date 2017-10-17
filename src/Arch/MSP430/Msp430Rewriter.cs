@@ -67,10 +67,31 @@ namespace Reko.Arch.Msp430
                     EmitUnitTest();
                     Invalid();
                     break;
+                case Opcode.addc: RewriteAdcSbc(m.IAdd); break;
                 case Opcode.add: RewriteBinop(m.IAdd, "V-----NZC"); break;
                 case Opcode.and: RewriteBinop(m.And,  "0-----NZC"); break;
+                case Opcode.bic: RewriteBinop(Bis,    "---------"); break;
+                case Opcode.bis: RewriteBinop(m.Or,   "---------"); break;
+                case Opcode.bit: RewriteBit(); break;
+                case Opcode.call: RewriteCall(); break;
                 case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.dadd: RewriteBinop(Dadd,  "------NZC"); break;
+
+                case Opcode.jc:  RewriteBranch(ConditionCode.ULT, FlagM.CF); break;
+                case Opcode.jge: RewriteBranch(ConditionCode.GE, FlagM.VF|FlagM.NF); break;
+                case Opcode.jl:  RewriteBranch(ConditionCode.LT, FlagM.VF | FlagM.NF); break;
+                case Opcode.jmp: RewriteGoto(); break;
+                case Opcode.jn:  RewriteBranch(ConditionCode.SG, FlagM.NF); break;
+                case Opcode.jnc: RewriteBranch(ConditionCode.UGE, FlagM.CF); break;
+                case Opcode.jnz: RewriteBranch(ConditionCode.NE, FlagM.ZF); break;
+                case Opcode.jz:  RewriteBranch(ConditionCode.EQ, FlagM.ZF); break;
+
                 case Opcode.mov: RewriteBinop((a, b) => b, ""); break;
+                case Opcode.popm: RewritePopm(); break;
+                case Opcode.pushm: RewritePushm(); break;
+                case Opcode.sub: RewriteBinop(m.ISub, "V-----NZC"); break;
+                case Opcode.subc: RewriteAdcSbc(m.ISub); break;
+                case Opcode.xor: RewriteBinop(m.Xor,  "V-----NZC"); break;
                 }
                 var rtlc = new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
                 {
@@ -78,6 +99,21 @@ namespace Reko.Arch.Msp430
                 };
                 yield return rtlc;
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        private Expression Bis(Expression a, Expression b)
+        {
+            return m.And(a, m.Comp(b));
+        }
+
+        private Expression Dadd(Expression a, Expression b)
+        {
+            return host.PseudoProcedure("__dadd", a.DataType, a, b);
         }
 
         private Expression RewriteOp(MachineOperand op)
@@ -97,10 +133,17 @@ namespace Reko.Arch.Msp430
                     m.Assign(tmp, m.Load(op.Width, ea));
                     m.Assign(ea, m.IAdd(ea, m.Int16((short)op.Width.Size)));
                     return tmp;
-                } else if (mop.Offset != 0)
+                }
+                else if (mop.Offset != 0)
                 {
                     var tmp = binder.CreateTemporary(op.Width);
                     m.Assign(tmp, m.Load(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
+                    return tmp;
+                }
+                else
+                {
+                    var tmp = binder.CreateTemporary(op.Width);
+                    m.Assign(tmp, m.Load(op.Width, ea));
                     return tmp;
                 }
             }
@@ -108,6 +151,11 @@ namespace Reko.Arch.Msp430
             if (iop != null)
             {
                 return iop.Value;
+            }
+            var aop = op as AddressOperand;
+            if (aop != null)
+            {
+                return aop.Address;
             }
             throw new NotImplementedException(op.ToString());
         }
@@ -135,13 +183,18 @@ namespace Reko.Arch.Msp430
                 m.Assign(m.Load(tmp.DataType, ea.CloneExpression()), tmp);
                 return tmp;
             }
+            var aop = op as AddressOperand;
+            if (aop != null)
+            {
+                var mem = m.Load(op.Width, aop.Address);
+                m.Assign(mem, fn(mem, src));
+                return mem;
+            }
             throw new NotImplementedException(op.ToString());
         }
 
         private void EmitCc(Expression exp, string vnzc)
         {
-
-            // SZIH XVNC
             var mask = 1u << 8;
             uint grf = 0;
             foreach (var c in vnzc)
@@ -176,11 +229,56 @@ namespace Reko.Arch.Msp430
             }
         }
 
+        private void RewriteAdcSbc(Func<Expression, Expression, Expression> fn)
+        {
+            var c = binder.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.CF));
+            var src = RewriteOp(instr.op1);
+            var dst = RewriteDst(instr.op2, src, (a, b) => fn(fn(a, b), c));
+            EmitCc(dst, "V-----NZC");
+        }
+
         private void RewriteBinop(Func<Expression,Expression,Expression> fn, string vnzc)
         {
             var src = RewriteOp(instr.op1);
+            var rop = instr.op2 as RegisterOperand;
+            if (rop != null && rop.Register == Registers.pc)
+            {
+                var mop = instr.op1 as MemoryOperand;
+                if (mop != null && mop.PostIncrement && mop.Base == Registers.sp)
+                {
+                    m.Return(2, 0);
+                    return;
+                }
+            }
             var dst = RewriteDst(instr.op2, src, fn);
             EmitCc(dst, vnzc);
+        }
+
+        private void RewriteBit()
+        {
+            var left = RewriteOp(instr.op2);
+            var right = RewriteOp(instr.op1);
+            var tmp = binder.CreateTemporary(instr.op1.Width);
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF)));
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
+            var v = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.VF));
+            m.Assign(tmp, m.And(left, right));
+            m.Assign(grf, m.Cond(tmp));
+            m.Assign(c, m.Test(ConditionCode.NE, tmp));
+            m.Assign(v, Constant.Bool(false));
+        }
+
+        private void RewriteBranch(ConditionCode cc, FlagM flags)
+        {
+            rtlc = RtlClass.ConditionalTransfer;
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)flags));
+            m.Branch(m.Test(cc, grf), ((AddressOperand)instr.op1).Address, RtlClass.ConditionalTransfer);
+        }
+
+        private void RewriteCall()
+        {
+            rtlc = RtlClass.Transfer | RtlClass.Call;
+            m.Call(RewriteOp(instr.op1), 2);
         }
 
         private void RewriteCmp()
@@ -190,9 +288,48 @@ namespace Reko.Arch.Msp430
             EmitCc(m.ISub(left, right), "V-----NZC");
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        private void RewriteGoto()
         {
-            return GetEnumerator();
+            rtlc = RtlClass.Transfer;
+            m.Goto(RewriteOp(instr.op1));
+        }
+
+        private void RewritePopm()
+        {
+            int c = ((ImmediateOperand)instr.op1).Value.ToInt32();
+            int iReg = ((RegisterOperand)instr.op2).Register.Number - c + 1;
+            if (iReg < 0)
+            {
+                Invalid();
+                return;
+            }
+            var sp = binder.EnsureRegister(Registers.sp);
+            while (c > 0)
+            {
+                m.Assign(binder.EnsureRegister(Registers.GpRegisters[iReg]), m.LoadW(sp));
+                m.Assign(sp, m.IAdd(sp, m.Int32(2)));
+                ++iReg;
+                --c;
+            }
+        }
+
+        private void RewritePushm()
+        {
+            int c = ((ImmediateOperand)instr.op1).Value.ToInt32();
+            var sp = binder.EnsureRegister(Registers.sp);
+            int iReg = ((RegisterOperand)instr.op2).Register.Number;
+            if (iReg < c)
+            {
+                Invalid();
+                return;
+            }
+            while (c > 0)
+            {
+                m.Assign(sp, m.ISub(sp, m.Int32(2)));
+                m.Assign(m.LoadW(sp), binder.EnsureRegister(Registers.GpRegisters[iReg]));
+                --iReg;
+                --c;
+            }
         }
 
         private void Invalid()

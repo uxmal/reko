@@ -73,12 +73,10 @@ namespace Reko.Arch.Msp430
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
