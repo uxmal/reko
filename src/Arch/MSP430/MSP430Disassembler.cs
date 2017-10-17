@@ -68,9 +68,23 @@ namespace Reko.Arch.Msp430
                 {
                     dataWidth = (uInstr & 0x40) != 0 ? PrimitiveType.Byte : PrimitiveType.Word16;
                     ++i;
-                } else if (fmt[i] == 'a')   // a/w bit 4.
+                }
+                else if (fmt[i] == 'a')   // a/w bit 4.
                 {
                     dataWidth = (uInstr & 0x04) != 0 ? PrimitiveType.Word16 : Msp430Architecture.Word20;
+                    ++i;
+                }
+                else if (fmt[i] == 'W') // b/w/a combined from the op and the extension
+                {
+                    var w = ((this.uExtension & 0x40) >> 5) | (uInstr & 0x040) >> 6;
+                    switch (w)
+                    {
+                    case 0: return Invalid();
+                    case 1: dataWidth = Msp430Architecture.Word20; break;
+                    case 2: dataWidth = PrimitiveType.Word16;      break;
+                    case 3: dataWidth = PrimitiveType.Byte;        break;
+                    }
+                    ++i;
                 }
             }
             MachineOperand op1 = null;
@@ -125,12 +139,15 @@ namespace Reko.Arch.Msp430
                         return null;
                 }
             }
+            int rep = (uExtension & 0x0F);
             return new Msp430Instruction
             {
                 opcode = opcode,
                 dataWidth = dataWidth,
                 op1 = op1,
                 op2 = op2,
+                repeatImm = (uExtension & 0x80) != 0 ? 0 : rep + 1,
+                repeatReg = (uExtension & 0x80) != 0 ? Registers.GpRegisters[rep] : null,
             };
         }
 
@@ -304,14 +321,45 @@ namespace Reko.Arch.Msp430
                 { 0x0C, new SubOpRec(0, 0x3F, new Dictionary<int, OpRecBase> {
                     { 0x00, new OpRec(Opcode.reti, "") }
                 } ) },
-                { 0x10, extOpRec },
-                { 0x11, extOpRec },
-                { 0x12, extOpRec },
-                { 0x13, extOpRec },
-                { 0x14, extOpRec },
-                { 0x15, extOpRec },
-                { 0x16, extOpRec },
-                { 0x17, extOpRec },
+                { 0x20, extOpRec },
+                { 0x21, extOpRec },
+                { 0x22, extOpRec },
+                { 0x23, extOpRec },
+
+                { 0x24, extOpRec },
+                { 0x25, extOpRec },
+                { 0x26, extOpRec },
+                { 0x27, extOpRec },
+
+                { 0x28, extOpRec },
+                { 0x29, extOpRec },
+                { 0x2A, extOpRec },
+                { 0x2B, extOpRec },
+
+                { 0x2C, extOpRec },
+                { 0x2D, extOpRec },
+                { 0x2E, extOpRec },
+                { 0x2F, extOpRec },
+
+                { 0x30, extOpRec },
+                { 0x31, extOpRec },
+                { 0x32, extOpRec },
+                { 0x33, extOpRec },
+
+                { 0x34, extOpRec },
+                { 0x35, extOpRec },
+                { 0x36, extOpRec },
+                { 0x37, extOpRec },
+
+                { 0x38, extOpRec },
+                { 0x39, extOpRec },
+                { 0x3A, extOpRec },
+                { 0x3B, extOpRec },
+
+                { 0x3C, extOpRec },
+                { 0x3D, extOpRec },
+                { 0x3E, extOpRec },
+                { 0x3F, extOpRec },
             }),
             new JmpOpRec(),
             new JmpOpRec(),
@@ -335,7 +383,20 @@ namespace Reko.Arch.Msp430
         private static OpRecBase[] extDecoders = new OpRecBase[16]
         {
             new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new SubOpRec(6, 0x3F, new Dictionary<int, OpRecBase> {
+                { 0x00, new OpRec(Opcode.invalid, "") },
+                { 0x01, new OpRec(Opcode.invalid, "") },
+                { 0x02, new OpRec(Opcode.invalid, "") },
+                { 0x04, new OpRec(Opcode.rrax, "Ws") },
+                { 0x05, new OpRec(Opcode.rrax, "Ws") },
+                { 0x06, new OpRec(Opcode.invalid, "") },
+                { 0x08, new OpRec(Opcode.invalid, "") },
+                { 0x09, new OpRec(Opcode.invalid, "") },
+                { 0x0A, new OpRec(Opcode.invalid, "") },
+                { 0x0C, new SubOpRec(0, 0x3F, new Dictionary<int, OpRecBase> {
+                    { 0x00, new OpRec(Opcode.reti, "") }
+                } ) }
+            }),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 

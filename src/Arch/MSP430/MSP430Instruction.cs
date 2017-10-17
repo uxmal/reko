@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -45,6 +46,8 @@ namespace Reko.Arch.Msp430
         public PrimitiveType dataWidth;
         public MachineOperand op1;
         public MachineOperand op2;
+        public int repeatImm;
+        public RegisterStorage repeatReg;
 
         public override InstructionClass InstructionClass
         {
@@ -77,6 +80,19 @@ namespace Reko.Arch.Msp430
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
+            if (repeatReg != null)
+            {
+                writer.WriteOpcode("rpt");
+                writer.Write(" ");
+                writer.Write(repeatReg.Name);
+                writer.Write(" ");
+            } else if (repeatImm > 1)
+            {
+                writer.WriteOpcode("rpt");
+                writer.Write(" #");
+                writer.Write(repeatImm.ToString());
+                writer.Write(" ");
+            }
             var sb = new StringBuilder(opcode.ToString());
             if (dataWidth != null)
             {

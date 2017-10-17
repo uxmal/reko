@@ -55,6 +55,7 @@ namespace Reko.Arch.Msp430
         xor,
 
         // 430X
+        rrax,
         rrum,
     }
 }

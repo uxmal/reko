@@ -137,7 +137,14 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void MSP430Dis_rrum()
         {
-            AssertCode("rrum.w", "5C03");
+            AssertCode("rrum.w\tr12", "5C03");
+        }
+
+        [Test]
+        public void MSP430Dis_repeat_const()
+        {
+            AssertCode("rpt #14 rrax.w\tr12", "4d180c11");
+            AssertCode("rpt r13 rrax.w\tr12", "CD180c11");
         }
     }
 }
