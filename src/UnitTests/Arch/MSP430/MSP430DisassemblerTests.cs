@@ -85,5 +85,29 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("push.b\tr5", "4512");
         }
+
+        [Test]
+        public void MSP430Dis_push_w()
+        {
+            AssertCode("push.w\tr5", "0512");
+        }
+
+        [Test]
+        public void MSP430Dis_call()
+        {
+            AssertCode("call\tr8", "8812");
+        }
+
+        [Test]
+        public void MSP430Dis_symbolic()
+        {
+            AssertCode("rrc.w\t1234(pc)", "1010 3412");
+        }
+
+        [Test]
+        public void MSP430Dis_call_immediate()
+        {
+            AssertCode("call\t1234", "B012 3412");
+        }
     }
 }

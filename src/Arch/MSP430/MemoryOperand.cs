@@ -37,11 +37,27 @@ namespace Reko.Arch.MSP430
         {
             if (Offset > 0)
             {
-                writer.Write("{0:X4}({1})", Offset, Base.Name);
+                if (Base == Registers.pc && (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                {
+                    var addr = writer.Address + 4 + Offset;
+                    writer.WriteAddress(addr.ToString(), addr);
+                }
+                else
+                {
+                    writer.Write("{0:X4}({1})", Offset, Base.Name);
+                }
             }
             else if (Offset < 0)
             {
-                writer.Write("-{0:X4}({1})", -Offset, Base.Name);
+                if (Base == Registers.pc && (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                {
+                    var addr = writer.Address + 4 + Offset;
+                    writer.WriteAddress(addr.ToString(), addr);
+                }
+                else
+                {
+                    writer.Write("-{0:X4}({1})", -Offset, Base.Name);
+                }
             }
             else
             {

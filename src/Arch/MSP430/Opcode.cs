@@ -47,5 +47,11 @@ namespace Reko.Arch.MSP430
         subc,
         xor,
         push,
+        call,
+        rrc,
+        swpb,
+        rra,
+        sxt,
+        reti,
     }
 }

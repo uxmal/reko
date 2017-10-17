@@ -59,10 +59,13 @@ namespace Reko.Arch.MSP430
         {
             PrimitiveType dataWidth = null;
             int i = 0;
-            if (i < fmt.Length && fmt[i] == 'w')      // use width bit
+            if (i < fmt.Length)
             {
-                dataWidth = (uInstr & 0x40) != 0 ? PrimitiveType.Byte : PrimitiveType.Word16;
-                ++i;
+                if (fmt[i] == 'w')      // use width bit
+                {
+                    dataWidth = (uInstr & 0x40) != 0 ? PrimitiveType.Byte : PrimitiveType.Word16;
+                    ++i;
+                }
             }
             MachineOperand op1 = null;
             MachineOperand op2 = null;
@@ -138,10 +141,32 @@ namespace Reko.Arch.MSP430
                     return Indexed(reg, dataWidth);
                 case 2:
                     return new MemoryOperand(dataWidth) { Base = reg };
+                case 3:
+                    return PostInc(reg, dataWidth);
                 default:
                     throw new NotImplementedException();
                 }
             }
+        }
+
+        private MachineOperand PostInc(RegisterStorage reg, PrimitiveType dataWidth)
+        {
+            short offset;
+            if (!rdr.TryReadLeInt16(out offset))
+                return null;
+            if (reg == Registers.pc)
+            {
+                return ImmediateOperand.Word16((ushort)offset);
+            }
+            else
+            { 
+                return new MemoryOperand(dataWidth ?? PrimitiveType.Word16)
+                {
+                    Base = reg,
+                    Offset = offset
+                };
+            }
+
         }
 
         private MemoryOperand Indexed(RegisterStorage reg, PrimitiveType dataWidth)
@@ -149,7 +174,7 @@ namespace Reko.Arch.MSP430
             short offset;
             if (!rdr.TryReadLeInt16(out offset))
                 return null;
-            return new MemoryOperand(dataWidth)
+            return new MemoryOperand(dataWidth ?? PrimitiveType.Word16)
             {
                 Base = reg,
                 Offset = offset
@@ -218,7 +243,18 @@ namespace Reko.Arch.MSP430
         {
             new OpRec(Opcode.invalid, ""),
             new SubOpRec(6, 0x3F, new Dictionary<int, OpRecBase> {
-                { 0x09, new OpRec(Opcode.push, "ws") }
+                { 0x00, new OpRec(Opcode.rrc, "ws") },
+                { 0x01, new OpRec(Opcode.rrc, "ws") },
+                { 0x02, new OpRec(Opcode.swpb, "s") },
+                { 0x04, new OpRec(Opcode.rra, "ws") },
+                { 0x05, new OpRec(Opcode.rra, "ws") },
+                { 0x06, new OpRec(Opcode.sxt, "ws") },
+                { 0x08, new OpRec(Opcode.push, "ws") },
+                { 0x09, new OpRec(Opcode.push, "ws") },
+                { 0x0A, new OpRec(Opcode.call, "s") },
+                { 0x0C, new SubOpRec(0, 0x3F, new Dictionary<int, OpRecBase> {
+                    { 0x00, new OpRec(Opcode.reti, "") }
+                } ) },
             }),
             new JmpOpRec(),
             new JmpOpRec(),
