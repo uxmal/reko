@@ -1,4 +1,5 @@
 ﻿using Reko.Core;
+using System;
 using System.Linq;
 
 namespace Reko.Arch.Msp430
@@ -9,7 +10,7 @@ namespace Reko.Arch.Msp430
 
         public static RegisterStorage pc = new RegisterStorage("pc", 0, 0, Msp430Architecture.Word20);
         public static RegisterStorage sp = new RegisterStorage("sp", 1, 0, Msp430Architecture.Word20);
-        public static RegisterStorage sr = new RegisterStorage("sr", 2, 0, Msp430Architecture.Word20);
+        public static FlagRegister sr = new FlagRegister("sr", 2, Msp430Architecture.Word20);
 
         static Registers()
         {
@@ -26,5 +27,14 @@ namespace Reko.Arch.Msp430
 
                 .ToArray();
         }
+    }
+
+    [Flags]
+    public enum FlagM
+    {
+        VF = 0x100,
+        NF = 0x004,
+        ZF = 0x002,
+        CF = 0x001
     }
 }

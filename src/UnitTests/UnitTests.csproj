@@ -146,6 +146,7 @@
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />
     <Compile Include="Arch\Msp430\Msp430DisassemblerTests.cs" />
+    <Compile Include="Arch\Msp430\Msp430RewriterTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
     <Compile Include="Analysis\UnalignedMemoryAccessFuserTests.cs" />
     <Compile Include="Arch\Avr\Avr8ArchitectureTests.cs" />

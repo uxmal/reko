@@ -28,12 +28,14 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
+using Reko.Core.Lib;
 
 namespace Reko.Arch.Msp430
 {
     public class Msp430Architecture : ProcessorArchitecture
     {
         public readonly static PrimitiveType Word20 = PrimitiveType.CreateWord(5);  // Yep!
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Msp430Architecture()
         {
@@ -42,6 +44,7 @@ namespace Reko.Arch.Msp430
             this.WordWidth = PrimitiveType.Word16;
             this.PointerType = PrimitiveType.Word16;
             this.FramePointerType = PrimitiveType.Word16;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
@@ -76,7 +79,7 @@ namespace Reko.Arch.Msp430
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new Msp430InstructionComparer(norm);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -86,12 +89,12 @@ namespace Reko.Arch.Msp430
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new Msp430State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Msp430Rewriter(this, rdr, state, binder, host);
         }
 
         public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
@@ -106,7 +109,15 @@ namespace Reko.Arch.Msp430
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            FlagGroupStorage f;
+            if (flagGroups.TryGetValue(grf, out f))
+            {
+                return f;
+            }
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(Registers.sr, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override SortedList<string, int> GetOpcodeNames()
@@ -136,7 +147,12 @@ namespace Reko.Arch.Msp430
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder s = new StringBuilder();
+            if ((grf & (uint)FlagM.VF) != 0) s.Append('V');
+            if ((grf & (uint)FlagM.NF) != 0) s.Append('N');
+            if ((grf & (uint)FlagM.ZF) != 0) s.Append('Z');
+            if ((grf & (uint)FlagM.CF) != 0) s.Append('C');
+            return s.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c)
