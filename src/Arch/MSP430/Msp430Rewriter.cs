@@ -69,6 +69,8 @@ namespace Reko.Arch.Msp430
                     break;
                 case Opcode.add: RewriteBinop(m.IAdd, "V-----NZC"); break;
                 case Opcode.and: RewriteBinop(m.And,  "0-----NZC"); break;
+                case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.mov: RewriteBinop((a, b) => b, ""); break;
                 }
                 var rtlc = new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
                 {
@@ -101,6 +103,11 @@ namespace Reko.Arch.Msp430
                     m.Assign(tmp, m.Load(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
                     return tmp;
                 }
+            }
+            var iop = op as ImmediateOperand;
+            if (iop != null)
+            {
+                return iop.Value;
             }
             throw new NotImplementedException(op.ToString());
         }
@@ -174,6 +181,13 @@ namespace Reko.Arch.Msp430
             var src = RewriteOp(instr.op1);
             var dst = RewriteDst(instr.op2, src, fn);
             EmitCc(dst, vnzc);
+        }
+
+        private void RewriteCmp()
+        {
+            var right = RewriteOp(instr.op1);
+            var left = RewriteOp(instr.op2);
+            EmitCc(m.ISub(left, right), "V-----NZC");
         }
 
         IEnumerator IEnumerable.GetEnumerator()

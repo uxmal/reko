@@ -46,8 +46,8 @@ namespace Reko.UnitTests.Arch.Msp430
         {
             BuildTest(0x3C, 0x40, 0xA0, 0xEE);	// mov.w	#EEA0,r12
             AssertCode(
-                "0|L--|0100(2): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0100(4): 1 instructions",
+                "1|L--|r12 = 0xEEA0");
         }
 
 
@@ -65,8 +65,8 @@ namespace Reko.UnitTests.Arch.Msp430
         {
             BuildTest(0x3C, 0x90, 0xA0, 0xEE);	// cmp.w	#EEA0,r12
             AssertCode(
-                "0|L--|0100(2): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0100(4): 1 instructions",
+                "1|L--|VNZC = cond(r12 - 0xEEA0)");
         }
 
         [Test]
