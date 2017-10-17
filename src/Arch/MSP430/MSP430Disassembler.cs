@@ -55,65 +55,47 @@ namespace Reko.Arch.MSP430
             return instr;
         }
 
-        private Msp430Instruction Decode(uint uInstr, Opcode opcode, string fmt)
+        private Msp430Instruction Decode(ushort uInstr, Opcode opcode, string fmt)
         {
             PrimitiveType dataWidth = null;
             int i = 0;
-            if (fmt[i] == 'w')      // use width bit
+            if (i < fmt.Length && fmt[i] == 'w')      // use width bit
             {
                 dataWidth = (uInstr & 0x40) != 0 ? PrimitiveType.Byte : PrimitiveType.Word16;
                 ++i;
             }
             MachineOperand op1 = null;
             MachineOperand op2 = null;
-            if (fmt[i] == 'J')
+            if (i < fmt.Length && fmt[i] == 'J')
             {
                 int offset = (short) (uInstr << 6) >> 5;
                 op1 = AddressOperand.Create(rdr.Address + offset);
             }
-            else if (fmt[i] == 'S')
+            else if (i < fmt.Length && fmt[i] == 'S')
             {
                 var aS = (uInstr >> 4) & 0x03;
                 var iReg = (uInstr >> 8) & 0x0F;
-                if (iReg == 2)
-                {
-                    throw new NotImplementedException();
-                }
-                else if (iReg == 3)
-                {
-                    throw new NotImplementedException();
-
-                }
-                else
-                {
-                    var reg = Registers.GpRegisters[iReg];
-                    switch (aS)
-                    {
-                    case 0: op1 = new RegisterOperand(reg); break;
-                    case 1:
-                        op1 = Indexed(reg, dataWidth);
-                        if (op1 == null)
-                            return null;
-                        break;
-                    case 2:
-                        op1 = new MemoryOperand(dataWidth)
-                        {
-                            Base = reg
-                        };
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                    }
-                }
+                op1 = SourceOperand(aS, iReg, dataWidth);
+                if (op1 == null)
+                    return null;
                 ++i;
             }
-            if (fmt[i] == 'D')
+            else if (i < fmt.Length && fmt[i] == 's')
+            {
+                var aS = (uInstr >> 4) & 0x03;
+                var iReg = uInstr & 0x0F;
+                op1 = SourceOperand(aS, iReg, dataWidth);
+                if (op1 == null)
+                    return null;
+                ++i;
+            }
+            if (i < fmt.Length && fmt[i] == 'D')
             {
                 var aD = (uInstr >> 7) & 0x01;
                 var iReg = uInstr & 0x0F;
                 if (iReg == 2 || iReg == 3)
                 {
-                    return new Msp430Instruction { opcode = Opcode.invalid };
+                    return Invalid();
                 }
                 var reg = Registers.GpRegisters[iReg];
                 if (aD == 0)
@@ -136,6 +118,32 @@ namespace Reko.Arch.MSP430
             };
         }
 
+        private MachineOperand SourceOperand(int aS, int iReg, PrimitiveType dataWidth)
+        {
+            if (iReg == 2)
+            {
+                throw new NotImplementedException();
+            }
+            else if (iReg == 3)
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                var reg = Registers.GpRegisters[iReg];
+                switch (aS)
+                {
+                case 0: return new RegisterOperand(reg);
+                case 1:
+                    return Indexed(reg, dataWidth);
+                case 2:
+                    return new MemoryOperand(dataWidth) { Base = reg };
+                default:
+                    throw new NotImplementedException();
+                }
+            }
+        }
+
         private MemoryOperand Indexed(RegisterStorage reg, PrimitiveType dataWidth)
         {
             short offset;
@@ -146,6 +154,11 @@ namespace Reko.Arch.MSP430
                 Base = reg,
                 Offset = offset
             };
+        }
+
+        private Msp430Instruction Invalid()
+        {
+            return new Msp430Instruction { opcode = Opcode.invalid };
         }
 
         private abstract class OpRecBase
@@ -178,10 +191,35 @@ namespace Reko.Arch.MSP430
             }
         }
 
+        private class SubOpRec : OpRecBase
+        {
+            private Dictionary<int, OpRecBase> decoders;
+            private ushort mask;
+            private int sh;
+
+            public SubOpRec(int sh, ushort mask, Dictionary<int, OpRecBase> decoders)
+            {
+                this.sh = sh;
+                this.mask = mask;
+                this.decoders = decoders;
+            }
+
+            public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
+            {
+                OpRecBase oprec;
+                var key = (uInstr >> sh) & mask;
+                if (!decoders.TryGetValue(key, out oprec))
+                    return dasm.Invalid();
+                return oprec.Decode(dasm, uInstr);
+            }
+        }
+
         private static OpRecBase[] s_decoders = new OpRecBase[16]
         {
             new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new SubOpRec(6, 0x3F, new Dictionary<int, OpRecBase> {
+                { 0x09, new OpRec(Opcode.push, "ws") }
+            }),
             new JmpOpRec(),
             new JmpOpRec(),
 

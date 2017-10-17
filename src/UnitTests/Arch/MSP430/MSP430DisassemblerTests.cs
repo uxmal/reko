@@ -79,5 +79,11 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("jmp\t0100", "FF3F");
         }
+
+        [Test]
+        public void MSP430Dis_push_b()
+        {
+            AssertCode("push.b\tr5", "4512");
+        }
     }
 }

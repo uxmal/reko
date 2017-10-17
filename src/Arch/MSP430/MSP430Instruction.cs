@@ -42,10 +42,7 @@ namespace Reko.Arch.MSP430
 
         public override bool IsValid
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { return opcode != Opcode.invalid; }
         }
 
         public override int OpcodeAsInteger

@@ -46,5 +46,6 @@ namespace Reko.Arch.MSP430
         sub,
         subc,
         xor,
+        push,
     }
 }
