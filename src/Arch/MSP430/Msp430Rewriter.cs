@@ -67,7 +67,8 @@ namespace Reko.Arch.Msp430
                     EmitUnitTest();
                     Invalid();
                     break;
-                case Opcode.add: RewriteAdd(); break;
+                case Opcode.add: RewriteBinop(m.IAdd, "V-----NZC"); break;
+                case Opcode.and: RewriteBinop(m.And,  "0-----NZC"); break;
                 }
                 var rtlc = new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
                 {
@@ -80,18 +81,54 @@ namespace Reko.Arch.Msp430
         private Expression RewriteOp(MachineOperand op)
         {
             var rop = op as RegisterOperand;
-            if(rop != null)
+            if (rop != null)
             {
                 return binder.EnsureRegister(rop.Register);
             }
-            throw new NotImplementedException();
+            var mop = op as MemoryOperand;
+            if (mop != null)
+            {
+                Expression ea = binder.EnsureRegister(mop.Base);
+                if (mop.PostIncrement)
+                {
+                    var tmp = binder.CreateTemporary(op.Width);
+                    m.Assign(tmp, m.Load(op.Width, ea));
+                    m.Assign(ea, m.IAdd(ea, m.Int16((short)op.Width.Size)));
+                    return tmp;
+                } else if (mop.Offset != 0)
+                {
+                    var tmp = binder.CreateTemporary(op.Width);
+                    m.Assign(tmp, m.Load(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
+                    return tmp;
+                }
+            }
+            throw new NotImplementedException(op.ToString());
         }
 
         private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression,Expression,Expression> fn)
         {
-            var dst = RewriteOp(op);
-            m.Assign(dst, fn(dst, src));
-            return dst;
+            var rop = op as RegisterOperand;
+            if (rop != null)
+            {
+                var dst = binder.EnsureRegister(rop.Register);
+                m.Assign(dst, fn(dst, src));
+                return dst;
+            }
+            var mop = op as MemoryOperand;
+            if (mop != null)
+            {
+                Expression ea = binder.EnsureRegister(mop.Base);
+                if (mop.Offset != 0)
+                {
+                    ea = m.IAdd(ea, m.Int16(mop.Offset));
+                }
+                var tmp = binder.CreateTemporary(mop.Width);
+                m.Assign(tmp, m.Load(tmp.DataType, ea));
+                m.Assign(tmp, fn(tmp, src));
+                m.Assign(m.Load(tmp.DataType, ea.CloneExpression()), tmp);
+                return tmp;
+            }
+            throw new NotImplementedException(op.ToString());
         }
 
         private void EmitCc(Expression exp, string vnzc)
@@ -132,11 +169,11 @@ namespace Reko.Arch.Msp430
             }
         }
 
-        private void RewriteAdd()
+        private void RewriteBinop(Func<Expression,Expression,Expression> fn, string vnzc)
         {
             var src = RewriteOp(instr.op1);
-            var dst = RewriteDst(instr.op2, src, (a, b) => m.IAdd(a, b));
-            EmitCc(dst, "V-----NZC");
+            var dst = RewriteDst(instr.op2, src, fn);
+            EmitCc(dst, vnzc);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

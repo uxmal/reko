@@ -50,10 +50,6 @@ namespace Reko.UnitTests.Arch.Msp430
                 "1|L--|@@@");
         }
 
-        private void BuildTest(int v1, int v2, int v3, int v4)
-        {
-            throw new NotImplementedException();
-        }
 
         [Test]
         public void Msp430Rw_xor()
@@ -223,8 +219,14 @@ namespace Reko.UnitTests.Arch.Msp430
         {
             BuildTest(0xFE, 0xFF, 0xF9, 0x3F);	// and.b	@r15+,3FF9(r14)
             AssertCode(
-                "0|L--|0100(2): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0100(4): 7 instructions",
+                "1|L--|v3 = Mem0[r15:byte]",
+                "2|L--|r15 = r15 + 1",
+                "3|L--|v5 = Mem0[r14 + 16377:byte]",
+                "4|L--|v5 = v5 & v3",
+                "5|L--|Mem0[r14 + 16377:byte] = v5",
+                "6|L--|V = false",
+                "7|L--|NZC = cond(v5)");
         }
 
         [Test]
