@@ -146,5 +146,11 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("rpt #14 rrax.w\tr12", "4d180c11");
             AssertCode("rpt r13 rrax.w\tr12", "CD180c11");
         }
+
+        [Test]
+        public void MSP430Dis_popm()
+        {
+            AssertCode("popm.w\t#01,r10", "0A17");
+        }
     }
 }

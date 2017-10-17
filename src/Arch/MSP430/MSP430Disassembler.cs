@@ -64,18 +64,18 @@ namespace Reko.Arch.Msp430
             int i = 0;
             if (i < fmt.Length)
             {
-                if (fmt[i] == 'w')      // use width bit
+                switch (fmt[i++])
                 {
+                case 'w': // use width bit
                     dataWidth = (uInstr & 0x40) != 0 ? PrimitiveType.Byte : PrimitiveType.Word16;
-                    ++i;
-                }
-                else if (fmt[i] == 'a')   // a/w bit 4.
-                {
+                    break;
+                case 'a':   // a/w bit 4.
                     dataWidth = (uInstr & 0x04) != 0 ? PrimitiveType.Word16 : Msp430Architecture.Word20;
-                    ++i;
-                }
-                else if (fmt[i] == 'W') // b/w/a combined from the op and the extension
-                {
+                    break;
+                case 'x':
+                    dataWidth = (uExtension != 0) && (uExtension & 0x40) == 0 ? Msp430Architecture.Word20 : PrimitiveType.Word16;
+                    break;
+                case 'W': // b/w/a combined from the op and the extension
                     var w = ((this.uExtension & 0x40) >> 5) | (uInstr & 0x040) >> 6;
                     switch (w)
                     {
@@ -84,62 +84,81 @@ namespace Reko.Arch.Msp430
                     case 2: dataWidth = PrimitiveType.Word16;      break;
                     case 3: dataWidth = PrimitiveType.Byte;        break;
                     }
-                    ++i;
+                    break;
+                default:
+                    --i;
+                    break;
                 }
             }
             MachineOperand op1 = null;
             MachineOperand op2 = null;
-            if (i < fmt.Length && fmt[i] == 'J')
+            int aS;
+            int iReg;
+            if (i < fmt.Length)
             {
-                int offset = (short) (uInstr << 6) >> 5;
-                op1 = AddressOperand.Create(rdr.Address + offset);
-            }
-            else if (i < fmt.Length && fmt[i] == 'r')
-            {
-                op1 = SourceOperand(0, uInstr & 0x0F, dataWidth);
-                ++i;
-            }
-            else if (i < fmt.Length && fmt[i] == 'S')
-            {
-                var aS = (uInstr >> 4) & 0x03;
-                var iReg = (uInstr >> 8) & 0x0F;
-                op1 = SourceOperand(aS, iReg, dataWidth);
-                if (op1 == null)
-                    return null;
-                ++i;
-            }
-            else if (i < fmt.Length && fmt[i] == 's')
-            {
-                var aS = (uInstr >> 4) & 0x03;
-                var iReg = uInstr & 0x0F;
-                op1 = SourceOperand(aS, iReg, dataWidth);
-                if (op1 == null)
-                    return null;
-                ++i;
-            }
-            if (i < fmt.Length && fmt[i] == 'D')
-            {
-                var aD = (uInstr >> 7) & 0x01;
-                var iReg = uInstr & 0x0F;
-                if (iReg == 3)
+                switch (fmt[i++])
                 {
-                    return Invalid();
-                }
-                var reg = Registers.GpRegisters[iReg];
-                if (aD == 0)
-                {
-                    if (iReg == 2 || iReg == 3)
-                        return Invalid();
-                    op2 = new RegisterOperand(reg);
-                }
-                else
-                {
-                    op2 = Indexed(reg, dataWidth);
-                    if (op2 == null)
+                case 'J':
+                    int offset = (short)(uInstr << 6) >> 5;
+                    op1 = AddressOperand.Create(rdr.Address + offset);
+                    break;
+                case 'r':
+                    op1 = SourceOperand(0, uInstr & 0x0F, dataWidth);
+                    break;
+                case 'S':
+                    aS = (uInstr >> 4) & 0x03;
+                    iReg = (uInstr >> 8) & 0x0F;
+                    op1 = SourceOperand(aS, iReg, dataWidth);
+                    if (op1 == null)
                         return null;
+                    break;
+                case 's':
+                    aS = (uInstr >> 4) & 0x03;
+                    iReg = uInstr & 0x0F;
+                    op1 = SourceOperand(aS, iReg, dataWidth);
+                    if (op1 == null)
+                        return null;
+                    break;
+                case 'n':
+                    int n = 1 + ((uInstr >> 4) & 0x0F);
+                    op1 = ImmediateOperand.Byte((byte)n);
+                    break;
+                default:
+                    --i;
+                    break;
                 }
             }
-            int rep = (uExtension & 0x0F);
+            if (i < fmt.Length)
+            {
+                switch (fmt[i])
+                {
+                case 'D':
+                    var aD = (uInstr >> 7) & 0x01;
+                    iReg = uInstr & 0x0F;
+                    if (iReg == 3)
+                    {
+                        return Invalid();
+                    }
+                    var reg = Registers.GpRegisters[iReg];
+                    if (aD == 0)
+                    {
+                        if (iReg == 2 || iReg == 3)
+                            return Invalid();
+                        op2 = new RegisterOperand(reg);
+                    }
+                    else
+                    {
+                        op2 = Indexed(reg, dataWidth);
+                        if (op2 == null)
+                            return null;
+                    }
+                    break;
+                case 'r':
+                    op2 = SourceOperand(0, uInstr & 0x0F, dataWidth);
+                    break;
+                }
+            }
+                int rep = (uExtension & 0x0F);
             return new Msp430Instruction
             {
                 opcode = opcode,
@@ -321,6 +340,27 @@ namespace Reko.Arch.Msp430
                 { 0x0C, new SubOpRec(0, 0x3F, new Dictionary<int, OpRecBase> {
                     { 0x00, new OpRec(Opcode.reti, "") }
                 } ) },
+
+                { 0x10, new OpRec(Opcode.pushm, "xnr") },
+                { 0x11, new OpRec(Opcode.pushm, "xnr") },
+                { 0x12, new OpRec(Opcode.pushm, "xnr") },
+                { 0x13, new OpRec(Opcode.pushm, "xnr") },
+
+                { 0x14, new OpRec(Opcode.pushm, "xnr") },
+                { 0x15, new OpRec(Opcode.pushm, "xnr") },
+                { 0x16, new OpRec(Opcode.pushm, "xnr") },
+                { 0x17, new OpRec(Opcode.pushm, "xnr") },
+
+                { 0x18, new OpRec(Opcode.popm, "xnr") },
+                { 0x19, new OpRec(Opcode.popm, "xnr") },
+                { 0x1A, new OpRec(Opcode.popm, "xnr") },
+                { 0x1B, new OpRec(Opcode.popm, "xnr") },
+
+                { 0x1C, new OpRec(Opcode.popm, "xnr") },
+                { 0x1D, new OpRec(Opcode.popm, "xnr") },
+                { 0x1E, new OpRec(Opcode.popm, "xnr") },
+                { 0x1F, new OpRec(Opcode.popm, "xnr") },
+
                 { 0x20, extOpRec },
                 { 0x21, extOpRec },
                 { 0x22, extOpRec },
