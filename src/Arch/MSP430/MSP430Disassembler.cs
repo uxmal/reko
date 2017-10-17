@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -96,13 +97,15 @@ namespace Reko.Arch.MSP430
             {
                 var aD = (uInstr >> 7) & 0x01;
                 var iReg = uInstr & 0x0F;
-                if (iReg == 2 || iReg == 3)
+                if (iReg == 3)
                 {
                     return Invalid();
                 }
                 var reg = Registers.GpRegisters[iReg];
                 if (aD == 0)
                 {
+                    if (iReg == 2 || iReg == 3)
+                        return Invalid();
                     op2 = new RegisterOperand(reg);
                 }
                 else
@@ -123,29 +126,34 @@ namespace Reko.Arch.MSP430
 
         private MachineOperand SourceOperand(int aS, int iReg, PrimitiveType dataWidth)
         {
-            if (iReg == 2)
+            var reg = Registers.GpRegisters[iReg];
+            switch (aS)
             {
-                throw new NotImplementedException();
-            }
-            else if (iReg == 3)
-            {
-                throw new NotImplementedException();
-            }
-            else
-            {
-                var reg = Registers.GpRegisters[iReg];
-                switch (aS)
-                {
-                case 0: return new RegisterOperand(reg);
-                case 1:
-                    return Indexed(reg, dataWidth);
-                case 2:
+            case 0:
+                if (iReg == 3)
+                    return new ImmediateOperand(Constant.Create(dataWidth, 0));
+                else
+                    return new RegisterOperand(reg);
+            case 1:
+                if (iReg == 3)
+                    return new ImmediateOperand(Constant.Create(dataWidth, 1));
+                return Indexed(reg, dataWidth);
+            case 2:
+                if (iReg == 2)
+                    return new ImmediateOperand(Constant.Create(dataWidth, 4));
+                else if (iReg == 3)
+                    return new ImmediateOperand(Constant.Create(dataWidth, 2));
+                else
                     return new MemoryOperand(dataWidth) { Base = reg };
-                case 3:
+            case 3:
+                if (iReg == 2)
+                    return new ImmediateOperand(Constant.Create(dataWidth, 8));
+                else if (iReg == 3)
+                    return new ImmediateOperand(Constant.Create(dataWidth, -1));
+                else
                     return PostInc(reg, dataWidth);
-                default:
-                    throw new NotImplementedException();
-                }
+            default:
+                throw new NotImplementedException();
             }
         }
 
@@ -169,16 +177,23 @@ namespace Reko.Arch.MSP430
 
         }
 
-        private MemoryOperand Indexed(RegisterStorage reg, PrimitiveType dataWidth)
+        private MachineOperand Indexed(RegisterStorage reg, PrimitiveType dataWidth)
         {
             short offset;
             if (!rdr.TryReadLeInt16(out offset))
                 return null;
-            return new MemoryOperand(dataWidth ?? PrimitiveType.Word16)
+            if (reg.Number == 2)
             {
-                Base = reg,
-                Offset = offset
-            };
+                return AddressOperand.Ptr16((ushort)offset);
+            }
+            else
+            {
+                return new MemoryOperand(dataWidth ?? PrimitiveType.Word16)
+                {
+                    Base = reg,
+                    Offset = offset
+                };
+            }
         }
 
         private Msp430Instruction Invalid()

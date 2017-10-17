@@ -109,5 +109,23 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("call\t1234", "B012 3412");
         }
+
+        [Test]
+        public void MSP430Dis_sub_two_abs()
+        {
+            AssertCode("add.w\t&579C,&7778", "9252 9C57 7877");
+        }
+
+        [Test]
+        public void MSP430Dis_quick_immediates()
+        {
+            AssertCode("mov.w\t#0004,r8", "28 42");
+            AssertCode("mov.w\t#0008,r8", "38 42");
+            AssertCode("mov.w\t#0000,r8", "08 43");
+            AssertCode("mov.w\t#0001,r8", "18 43");
+            AssertCode("mov.w\t#0002,r8", "28 43");
+            AssertCode("mov.w\t#FFFF,r8", "38 43");
+            AssertCode("mov.b\t#02,r8", "68 43");
+        }
     }
 }

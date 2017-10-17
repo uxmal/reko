@@ -18,15 +18,29 @@
  */
 #endregion
 
-using System;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Reko.Arch.MSP430
 {
     public class Msp430Instruction : MachineInstruction
     {
+        private static Dictionary<Opcode, InstructionClass> classes = new Dictionary<Opcode, InstructionClass>
+        {
+            { Opcode.call, InstructionClass.Call | InstructionClass.Transfer },
+            { Opcode.jc, InstructionClass.Conditional | InstructionClass.Transfer },
+            { Opcode.jge, InstructionClass.Conditional | InstructionClass.Transfer },
+            { Opcode.jl, InstructionClass.Conditional | InstructionClass.Transfer },
+            { Opcode.jmp, InstructionClass.Transfer },
+            { Opcode.jn, InstructionClass.Conditional | InstructionClass.Transfer },
+            { Opcode.jnc, InstructionClass.Conditional | InstructionClass.Transfer },
+            { Opcode.jnz, InstructionClass.Conditional | InstructionClass.Transfer },
+            { Opcode.jz, InstructionClass.Conditional | InstructionClass.Transfer },
+        };
+
         public Opcode opcode;
         public PrimitiveType dataWidth;
         public MachineOperand op1;
@@ -36,7 +50,10 @@ namespace Reko.Arch.MSP430
         {
             get
             {
-                throw new NotImplementedException();
+                InstructionClass c;
+                if (!classes.TryGetValue(opcode, out c))
+                    return InstructionClass.Linear;
+                return c;
             }
         }
 
@@ -69,13 +86,26 @@ namespace Reko.Arch.MSP430
             if (op1 != null)
             {
                 writer.Tab();
-                op1.Write(writer, options);
+                Write(op1, writer, options);
                 if (op2 != null)
                 {
                     writer.Write(",");
-                    op2.Write(writer, options);
+                    Write(op2, writer, options);
                 }
             }
+        }
+
+        private void Write(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            if (op is AddressOperand && (InstructionClass & InstructionClass.Transfer) == 0)
+            {
+                writer.Write("&");
+            }
+            if (op is ImmediateOperand && opcode != Opcode.call)
+            {
+                writer.Write("#");
+            }
+            op.Write(writer, options);
         }
     }
 }
