@@ -18,7 +18,7 @@
  */
 #endregion
  
-namespace Reko.Arch.MSP430
+namespace Reko.Arch.Msp430
 {
     public enum Opcode
     {

@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Arch.MSP430
+namespace Reko.Arch.Msp430
 {
     public class Msp430Instruction : MachineInstruction
     {

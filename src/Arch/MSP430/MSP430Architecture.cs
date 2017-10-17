@@ -29,7 +29,7 @@ using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 
-namespace Reko.Arch.MSP430
+namespace Reko.Arch.Msp430
 {
     public class Msp430Architecture : ProcessorArchitecture
     {

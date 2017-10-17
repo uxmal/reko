@@ -23,7 +23,7 @@ using Reko.Core;
 using System;
 using Reko.Core.Types;
 
-namespace Reko.Arch.MSP430
+namespace Reko.Arch.Msp430
 {
     public class MemoryOperand : MachineOperand
     {

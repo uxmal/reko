@@ -28,7 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.MSP430
+namespace Reko.Arch.Msp430
 {
     public class Msp430Disassembler : DisassemblerBase<Msp430Instruction>
     {

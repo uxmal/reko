@@ -19,7 +19,7 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.MSP430;
+using Reko.Arch.Msp430;
 using Reko.Core;
 using System;
 using System.Collections.Generic;

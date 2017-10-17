@@ -1,7 +1,7 @@
 ﻿using Reko.Core;
 using System.Linq;
 
-namespace Reko.Arch.MSP430
+namespace Reko.Arch.Msp430
 {
     public static class Registers
     {
