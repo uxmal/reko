@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Reko.Core;
+
+namespace Reko.ImageLoaders.MzExe.Pe
+{
+	public class M68kRelocator : Relocator
+	{
+		private IServiceProvider services;
+
+		public M68kRelocator(Program program) : base(program) {
+		}
+
+		public M68kRelocator(IServiceProvider services, Program program) : base(program)
+		{
+			this.services = services;
+			this.program = program;
+		}
+
+		public override void ApplyRelocation(Address baseOfImage, uint page, EndianImageReader rdr, RelocationDictionary relocations) {
+			rdr.ReadUInt16();
+			return;
+		}
+	}
+}
