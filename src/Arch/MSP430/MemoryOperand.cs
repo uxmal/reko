@@ -63,6 +63,8 @@ namespace Reko.Arch.Msp430
             {
                 writer.Write('@');
                 writer.Write(Base.Name);
+                if (PostIncrement)
+                    writer.Write('+');
             }
         }
     }

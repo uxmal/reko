@@ -34,6 +34,7 @@ namespace Reko.Arch.Msp430
     {
         private EndianImageReader rdr;
         private Msp430Architecture arch;
+        private ushort uExtension;
 
         public Msp430Disassembler(Msp430Architecture arch, EndianImageReader rdr)
         {
@@ -47,6 +48,7 @@ namespace Reko.Arch.Msp430
             var addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out uInstr))
                 return null;
+            uExtension = 0;
             var instr = s_decoders[uInstr >> 12].Decode(this, uInstr);
             if (instr != null)
             {
@@ -66,6 +68,9 @@ namespace Reko.Arch.Msp430
                 {
                     dataWidth = (uInstr & 0x40) != 0 ? PrimitiveType.Byte : PrimitiveType.Word16;
                     ++i;
+                } else if (fmt[i] == 'a')   // a/w bit 4.
+                {
+                    dataWidth = (uInstr & 0x04) != 0 ? PrimitiveType.Word16 : Msp430Architecture.Word20;
                 }
             }
             MachineOperand op1 = null;
@@ -74,6 +79,11 @@ namespace Reko.Arch.Msp430
             {
                 int offset = (short) (uInstr << 6) >> 5;
                 op1 = AddressOperand.Create(rdr.Address + offset);
+            }
+            else if (i < fmt.Length && fmt[i] == 'r')
+            {
+                op1 = SourceOperand(0, uInstr & 0x0F, dataWidth);
+                ++i;
             }
             else if (i < fmt.Length && fmt[i] == 'S')
             {
@@ -159,11 +169,11 @@ namespace Reko.Arch.Msp430
 
         private MachineOperand PostInc(RegisterStorage reg, PrimitiveType dataWidth)
         {
-            short offset;
-            if (!rdr.TryReadLeInt16(out offset))
-                return null;
             if (reg == Registers.pc)
             {
+                short offset;
+                if (!rdr.TryReadLeInt16(out offset))
+                    return null;
                 return ImmediateOperand.Word16((ushort)offset);
             }
             else
@@ -171,7 +181,7 @@ namespace Reko.Arch.Msp430
                 return new MemoryOperand(dataWidth ?? PrimitiveType.Word16)
                 {
                     Base = reg,
-                    Offset = offset
+                    PostIncrement = true,
                 };
             }
 
@@ -254,9 +264,33 @@ namespace Reko.Arch.Msp430
             }
         }
 
+        private class ExtOpRec : OpRecBase
+        {
+            public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
+            {
+                ushort u;
+                if (!dasm.rdr.TryReadLeUInt16(out u))
+                    return dasm.Invalid();
+                dasm.uExtension = uInstr;
+                uInstr = u;
+                return extDecoders[uInstr >> 12].Decode(dasm, uInstr);
+            }
+        }
+
+        private static ExtOpRec extOpRec = new ExtOpRec();
+
+        private static SubOpRec rotations = new SubOpRec(8, 0x03, new Dictionary<int, OpRecBase>
+        {
+            { 0x03, new OpRec(Opcode.rrum, "ar") },
+        });
+
         private static OpRecBase[] s_decoders = new OpRecBase[16]
         {
-            new OpRec(Opcode.invalid, ""),
+            new SubOpRec(0x4, 0x0F, new Dictionary<int, OpRecBase>
+            {
+                { 0x04, rotations },
+                { 0x05, rotations },
+            }),
             new SubOpRec(6, 0x3F, new Dictionary<int, OpRecBase> {
                 { 0x00, new OpRec(Opcode.rrc, "ws") },
                 { 0x01, new OpRec(Opcode.rrc, "ws") },
@@ -270,6 +304,14 @@ namespace Reko.Arch.Msp430
                 { 0x0C, new SubOpRec(0, 0x3F, new Dictionary<int, OpRecBase> {
                     { 0x00, new OpRec(Opcode.reti, "") }
                 } ) },
+                { 0x10, extOpRec },
+                { 0x11, extOpRec },
+                { 0x12, extOpRec },
+                { 0x13, extOpRec },
+                { 0x14, extOpRec },
+                { 0x15, extOpRec },
+                { 0x16, extOpRec },
+                { 0x17, extOpRec },
             }),
             new JmpOpRec(),
             new JmpOpRec(),
@@ -288,6 +330,29 @@ namespace Reko.Arch.Msp430
             new OpRec(Opcode.bis, "wSD"),
             new OpRec(Opcode.xor, "wSD"),
             new OpRec(Opcode.and, "wSD"),
+        };
+
+        private static OpRecBase[] extDecoders = new OpRecBase[16]
+        {
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
         };
 
         private static Opcode[] jmps = new Opcode[8]

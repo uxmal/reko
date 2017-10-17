@@ -30,6 +30,7 @@ namespace Reko.Arch.Msp430
         bic,
         bis,
         bit,
+        call,
         cmp,
         dadd,
 
@@ -43,15 +44,17 @@ namespace Reko.Arch.Msp430
         jz,
 
         mov,
+        push,
+        rrc,
+        reti,
+        rra,
         sub,
         subc,
-        xor,
-        push,
-        call,
-        rrc,
         swpb,
-        rra,
         sxt,
-        reti,
+        xor,
+
+        // 430X
+        rrum,
     }
 }

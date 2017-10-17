@@ -35,6 +35,15 @@ namespace Reko.Arch.Msp430
     {
         public readonly static PrimitiveType Word20 = PrimitiveType.CreateWord(5);  // Yep!
 
+        public Msp430Architecture()
+        {
+            this.InstructionBitSize = 16;
+            this.StackRegister = Registers.sp;
+            this.WordWidth = PrimitiveType.Word16;
+            this.PointerType = PrimitiveType.Word16;
+            this.FramePointerType = PrimitiveType.Word16;
+        }
+
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new Msp430Disassembler(this, imageReader);
@@ -47,7 +56,7 @@ namespace Reko.Arch.Msp430
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addr);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
@@ -147,7 +156,7 @@ namespace Reko.Arch.Msp430
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse16(txtAddr, out addr);
         }
     }
 }

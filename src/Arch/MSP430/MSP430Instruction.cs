@@ -80,7 +80,11 @@ namespace Reko.Arch.Msp430
             var sb = new StringBuilder(opcode.ToString());
             if (dataWidth != null)
             {
-                sb.AppendFormat(".{0}", dataWidth.BitSize == 8 ? "b" : "w");
+                sb.AppendFormat(".{0}", dataWidth.BitSize == 8 
+                    ? "b" 
+                    : dataWidth.BitSize == 16
+                        ? "w"
+                        : "a" );
             }
             writer.WriteOpcode(sb.ToString());
             if (op1 != null)

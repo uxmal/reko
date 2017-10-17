@@ -127,5 +127,17 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("mov.w\t#FFFF,r8", "38 43");
             AssertCode("mov.b\t#02,r8", "68 43");
         }
+
+        [Test]
+        public void MSP430Dis_ret()
+        {
+            AssertCode("mov.w\t@sp+,pc", "3041");
+        }
+
+        [Test]
+        public void MSP430Dis_rrum()
+        {
+            AssertCode("rrum.w", "5C03");
+        }
     }
 }

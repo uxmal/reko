@@ -8,14 +8,16 @@ namespace Reko.Arch.Msp430
         public static RegisterStorage[] GpRegisters;
 
         public static RegisterStorage pc = new RegisterStorage("pc", 0, 0, Msp430Architecture.Word20);
+        public static RegisterStorage sp = new RegisterStorage("sp", 1, 0, Msp430Architecture.Word20);
+        public static RegisterStorage sr = new RegisterStorage("sr", 2, 0, Msp430Architecture.Word20);
 
         static Registers()
         {
             GpRegisters = new RegisterStorage[]
             {
                 pc,
-                new RegisterStorage("sp", 1, 0, Msp430Architecture.Word20),
-                new RegisterStorage("sr", 2, 0, Msp430Architecture.Word20),
+                sp,
+                sr,
                 new RegisterStorage("cg2", 3, 0, Msp430Architecture.Word20),
             }.Concat(
                 Enumerable.Range(4, 12)
