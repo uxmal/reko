@@ -39,8 +39,9 @@ namespace Reko.Core.Output
 
 		private readonly object Declared = 1;
 		private readonly object Defined = 2;
+        private int nesting;
 
-		public enum Mode { Writing, Scanning }
+        public enum Mode { Writing, Scanning }
 
 		public TypeFormatter(Formatter writer)
 		{
@@ -109,6 +110,14 @@ namespace Reko.Core.Output
 		{
 			string oldName = name;
 			name = null;
+            if (this.nesting > 90)
+            {
+                writer.Write("... ");
+                WriteName(true);
+                return writer;
+            }
+            ++this.nesting;
+
 			at.ElementType.Accept(this);
             if (mode == Mode.Writing)
             {
@@ -122,6 +131,7 @@ namespace Reko.Core.Output
                 }
                 writer.Write("]");
             }
+            --this.nesting;
             return writer;
 		}
 
