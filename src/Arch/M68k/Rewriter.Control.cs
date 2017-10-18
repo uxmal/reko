@@ -145,6 +145,7 @@ namespace Reko.Arch.M68k
             if (dasm.Current.op1 != null)
             {
                 m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, RewriteSrcOperand(dasm.Current.op1)));
+                rtlc = RtlClass.Call | RtlClass.Transfer;
             }
             else
             {

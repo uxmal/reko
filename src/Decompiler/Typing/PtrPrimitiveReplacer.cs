@@ -47,6 +47,7 @@ namespace Reko.Typing
         private HashSet<DataType> visitedTypes;
         private DecompilerEventListener eventListener;
         private int recursionGuard;
+        private int nestCount;
 
         public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store, Program program)
 		{
@@ -131,7 +132,17 @@ namespace Reko.Typing
 			return changed;
 		}
 
-		#region DataTypeTransformer methods //////////////////////////
+        #region DataTypeTransformer methods //////////////////////////
+
+        public override DataType VisitArray(ArrayType at)
+        {
+            if (nestCount > 90)
+                throw new TypeInferenceException("PprPrimitiveReplacer found a cycle in type graph.");
+            ++this.nestCount;
+            var dt = base.VisitArray(at);
+            --this.nestCount;
+            return dt;
+        }
 
         public override DataType VisitEquivalenceClass(EquivalenceClass eq)
         {

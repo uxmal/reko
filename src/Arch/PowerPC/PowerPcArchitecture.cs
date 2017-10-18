@@ -135,7 +135,7 @@ namespace Reko.Arch.PowerPC
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new PowerPcInstructionComparer(norm);
         }
 
         public override abstract IEnumerable<Address> CreatePointerScanner(

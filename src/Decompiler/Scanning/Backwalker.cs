@@ -402,7 +402,14 @@ namespace Reko.Scanning
             var bin = ea as BinaryExpression;
             if (bin == null)
                 return RegisterStorage.None;
-            id = bin.Left as Identifier;
+            var e = bin.Left;
+            while (e != null && e is Cast)
+            {
+                e = ((Cast)e).Expression;
+            }
+            if (e == null)
+                return null;
+            id = e as Identifier;
             if (id != null)
                 return RegisterOf(id);
             var scaledExpr = bin.Left as BinaryExpression;

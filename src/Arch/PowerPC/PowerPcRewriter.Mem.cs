@@ -63,6 +63,16 @@ namespace Reko.Arch.PowerPC
                 m.Load(PrimitiveType.Int16, ea)));
         }
 
+        private void RewriteLhax()
+        {
+            var op1 = RewriteOperand(instr.op1);
+            var ea = m.IAdd(
+                RewriteOperand(instr.op2, true),
+                RewriteOperand(instr.op3));
+            m.Assign(op1, m.Cast(PrimitiveType.Int32,
+                m.Load(PrimitiveType.Int16, ea)));
+        }
+
         private void RewriteLhau()
         {
             var opD = RewriteOperand(instr.op1);
