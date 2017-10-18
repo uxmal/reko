@@ -1,3 +1,5 @@
 *        text=auto
 
 *.cs     text diff=csharp
+
+subjects/* linguist-vendored

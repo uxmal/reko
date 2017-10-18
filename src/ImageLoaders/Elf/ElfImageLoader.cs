@@ -95,7 +95,6 @@ namespace Reko.ImageLoaders.Elf
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var reloc = innerLoader.Relocate(program, addrLoad);
-            innerLoader.LocateGotPointers(program, reloc.Symbols);
             return reloc;
         }
 

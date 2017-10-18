@@ -32,12 +32,12 @@ namespace Reko.Arch.PowerPC
     public class PowerPcDisassembler : DisassemblerBase<PowerPcInstruction>
     {
         private PowerPcArchitecture arch;
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private PrimitiveType defaultWordWidth;
         private PowerPcInstruction instrCur;
         private Address addr;
 
-        public PowerPcDisassembler(PowerPcArchitecture arch, ImageReader rdr, PrimitiveType defaultWordWidth)
+        public PowerPcDisassembler(PowerPcArchitecture arch, EndianImageReader rdr, PrimitiveType defaultWordWidth)
         {
             this.arch = arch;
             this.rdr = rdr;
@@ -49,7 +49,7 @@ namespace Reko.Arch.PowerPC
             if (!rdr.IsValid)
                 return null;
             this.addr = rdr.Address;
-            uint wInstr = rdr.ReadBeUInt32();
+            uint wInstr = rdr.ReadUInt32();
             try
             {
                 instrCur = oprecs[wInstr >> 26].Decode(this, wInstr);
@@ -311,15 +311,23 @@ namespace Reko.Arch.PowerPC
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                Opcode opcode = ((wInstr & (1<<4)) == 0) ? Opcode.rldicl : Opcode.rldicr;
-                wInstr &= ~1u;
-                return new PowerPcInstruction(opcode)
+                // Only supported on 64-bit arch.
+                if (dasm.defaultWordWidth.BitSize == 32)
                 {
-                    op1 = dasm.RegFromBits(wInstr >> 16),
-                    op2 = dasm.RegFromBits(wInstr >> 21),
-                    op3 = ImmediateOperand.Byte((byte)((wInstr >> 11) & 0x1F | (wInstr << 4) & 0x20)),
-                    op4 = ImmediateOperand.Byte((byte)((wInstr >> 6) & 0x1F | (wInstr & 0x20))),
-                };
+                    return new PowerPcInstruction(Opcode.illegal);
+                }
+                else
+                {
+                    Opcode opcode = ((wInstr & (1 << 4)) == 0) ? Opcode.rldicl : Opcode.rldicr;
+                    wInstr &= ~1u;
+                    return new PowerPcInstruction(opcode)
+                    {
+                        op1 = dasm.RegFromBits(wInstr >> 16),
+                        op2 = dasm.RegFromBits(wInstr >> 21),
+                        op3 = ImmediateOperand.Byte((byte)((wInstr >> 11) & 0x1F | (wInstr << 4) & 0x20)),
+                        op4 = ImmediateOperand.Byte((byte)((wInstr >> 6) & 0x1F | (wInstr & 0x20))),
+                    };
+                }
             }
         }
 

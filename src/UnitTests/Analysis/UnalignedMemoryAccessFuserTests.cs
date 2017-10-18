@@ -87,24 +87,62 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
+        private void __lwl(Identifier reg, Expression mem)
+        {
+            m.Assign(
+                reg,
+                m.Fn(
+                    new PseudoProcedure(PseudoProcedure.LwL, PrimitiveType.Word32, 2),
+                    reg, mem));
+        }
+
+        private void __lwr(Identifier reg, Expression mem)
+        {
+            m.Assign(
+                reg,
+                m.Fn(
+                    new PseudoProcedure(PseudoProcedure.LwR, PrimitiveType.Word32, 2),
+                    reg, mem));
+        }
+
+        private void __swl(Expression mem, Expression reg)
+        {
+            var app = m.Fn(
+                    new PseudoProcedure(PseudoProcedure.SwL, PrimitiveType.Word32, 2),
+                    mem, reg);
+            if (mem is Identifier)
+            {
+                m.Assign((Identifier)mem, app);
+            }
+            else
+            {
+                m.Store(((MemoryAccess)mem).EffectiveAddress, app);
+            }
+        }
+
+        private void __swr(Expression mem, Expression reg)
+        {
+            var app = m.Fn(
+                    new PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, 2),
+                    mem, reg);
+            if (mem is Identifier)
+            {
+                m.Assign((Identifier)mem, app);
+            }
+            else
+            {
+                m.Store(((MemoryAccess)mem).EffectiveAddress, app);
+            }
+        }
+
         [Test]
         public void UfuserMipsLittleEndianUnalignedWordLoad()
         {
             var r4 = m.Reg32("r4", 4);
             var r8 = m.Reg32("r8", 8);
 
-            m.Assign(
-                r8,
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.LwL, PrimitiveType.Word32, 2),
-                    r8,
-                    m.LoadDw(m.IAdd(r4, 0x2B))));
-            m.Assign(
-                r8,
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.LwR, PrimitiveType.Word32, 2),
-                    r8,
-                    m.LoadDw(m.IAdd(r4, 0x28))));
+            __lwl(r8, m.LoadDw(m.IAdd(r4, 0x2B)));
+            __lwr(r8, m.LoadDw(m.IAdd(r4, 0x28)));
             var ssa = RunTest(m);
             var sExp =
             #region Expected
@@ -130,7 +168,6 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r8_4 = r8
 	r8_5 = Mem0[r4 + 0x00000028:word32]
 ProcedureBuilder_exit:
 ";
@@ -144,18 +181,8 @@ ProcedureBuilder_exit:
             var r4 = m.Reg32("r4", 4);
             var r8 = m.Reg32("r8", 8);
 
-            m.Assign(
-                r8,
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.LwL, PrimitiveType.Word32, 2),
-                    r8,
-                    m.LoadDw(m.IAdd(r4, 0x3))));
-            m.Assign(
-                r8,
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.LwR, PrimitiveType.Word32, 2),
-                    r8,
-                    m.LoadDw(r4)));
+            __lwl(r8, m.LoadDw(m.IAdd(r4, 0x3)));
+            __lwr(r8, m.LoadDw(r4));
             var ssa = RunTest(m);
             var sExp =
             #region Expected
@@ -181,7 +208,6 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r8_4 = r8
 	r8_5 = Mem0[r4:word32]
 ProcedureBuilder_exit:
 ";
@@ -195,18 +221,8 @@ ProcedureBuilder_exit:
             var r4 = m.Reg32("r4", 4);
             var r8 = m.Reg32("r8", 8);
 
-            m.Assign(
-                r8,
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.LwL, PrimitiveType.Word32, 2),
-                    r8,
-                    m.LoadDw(m.IAdd(r4, 0xA5E4))));
-            m.Assign(
-                r8,
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.LwR, PrimitiveType.Word32, 2),
-                    r8,
-                    m.LoadDw(m.IAdd(r4, 0xA5E7))));
+            __lwl(r8, m.LoadDw(m.IAdd(r4, 0xA5E4)));
+            __lwr(r8, m.LoadDw(m.IAdd(r4, 0xA5E7)));
             var ssa = RunTest(m);
             var sExp =
             #region Expected
@@ -232,7 +248,6 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r8_4 = r8
 	r8_5 = Mem0[r4 + 0x0000A5E4:word32]
 ProcedureBuilder_exit:
 ";
@@ -284,37 +299,7 @@ ProcedureBuilder_exit:
             AssertStringsEqual(sExp, ssa);
         }
 
-        private void __lwl(Expression mem, Expression reg)
-        {
-            m.SideEffect(
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.LwL, PrimitiveType.Word32, 2),
-                    mem, reg));
-        }
 
-        private void __lwr(Expression mem, Expression reg)
-        {
-            m.SideEffect(
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.LwR, PrimitiveType.Word32, 2),
-                    mem, reg));
-        }
-
-        private void __swl(Expression mem, Expression reg)
-        {
-            m.SideEffect(
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.SwL, PrimitiveType.Word32, 2),
-                    mem, reg));
-        }
-
-        private void __swr(Expression mem, Expression reg)
-        {
-            m.SideEffect(
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, 2),
-                    mem, reg));
-        }
 
         [Test]
         public void UfuserMipsLittleEndianUnalignedWordStore()
@@ -322,27 +307,22 @@ ProcedureBuilder_exit:
             var r4 = m.Reg32("r4", 4);
             var r8 = m.Reg32("r8", 8);
 
-            m.SideEffect(
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.SwL, PrimitiveType.Word32, 2),
-                    m.LoadDw(m.IAdd(r4, 0x2B)),
-                    r8));
-            m.SideEffect(
-                m.Fn(
-                    new PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, 2),
-                    m.LoadDw(m.IAdd(r4, 0x28)),
-                    r8));
+            __swl(m.LoadDw(m.IAdd(r4, 0x2B)), r8);
+            __swr(m.LoadDw(m.IAdd(r4, 0x28)), r8);
             var ssa = RunTest(m);
             var sExp =
             #region Expected
 @"r4:r4
     def:  def r4
-    uses: Mem0[r4 + 0x00000028:word32] = r8
+    uses: Mem5[r4 + 0x00000028:word32] = r8
 Mem0:Global
     def:  def Mem0
 r8:r8
     def:  def r8
-    uses: Mem0[r4 + 0x00000028:word32] = r8
+    uses: Mem5[r4 + 0x00000028:word32] = r8
+Mem4: orig: Mem0
+Mem5: orig: Mem0
+    def:  Mem5[r4 + 0x00000028:word32] = r8
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -352,7 +332,7 @@ ProcedureBuilder_entry:
 	def r8
 	// succ:  l1
 l1:
-	Mem0[r4 + 0x00000028:word32] = r8
+	Mem5[r4 + 0x00000028:word32] = r8
 ProcedureBuilder_exit:
 ";
             #endregion 
@@ -390,88 +370,70 @@ ProcedureBuilder_exit:
             #region Expected
 @"r8:r8
     def:  def r8
-    uses: r4_11 = r8 + 0x00000010
-          Mem12[r8 + 0x00000010:word32] = r14
-          Mem13[r8 + 0x00000014:word32] = r13
-          Mem14[r8 + 0x00000018:word32] = 0x00000000
-          Mem15[r8 + 0x0000001C:word32] = 0x00000000
-          Mem16[r8 + 0x00000028:word32] = 0x00000000
-          Mem17[r8 + 0x0000002C:word32] = r9
-          Mem18[r8 + 0x00000030:word32] = 0x00000000
-Mem5:Global memory
-    def:  def Mem5
+    uses: r4_13 = r8 + 0x00000010
+          Mem14[r8 + 0x00000010:word32] = r14
+          Mem15[r8 + 0x00000014:word32] = r13
+          Mem16[r8 + 0x00000018:word32] = 0x00000000
+          Mem17[r8 + 0x0000001C:word32] = 0x00000000
+          Mem18[r8 + 0x00000028:word32] = 0x00000000
+          Mem19[r8 + 0x0000002C:word32] = r9
+          Mem20[r8 + 0x00000030:word32] = 0x00000000
+Mem0:Global
+    def:  def Mem0
 r14:r14
     def:  def r14
-    uses: Mem12[r8 + 0x00000010:word32] = r14
-Mem6:Global memory
-    def:  def Mem6
+    uses: Mem14[r8 + 0x00000010:word32] = r14
+Mem4: orig: Mem0
 r13:r13
     def:  def r13
-    uses: Mem13[r8 + 0x00000014:word32] = r13
-Mem7:Global memory
-    def:  def Mem7
-Mem8:Global memory
-    def:  def Mem8
-Mem9:Global memory
-    def:  def Mem9
-Mem10:Global memory
-    def:  def Mem10
+    uses: Mem15[r8 + 0x00000014:word32] = r13
+Mem6: orig: Mem0
+Mem7: orig: Mem0
+Mem8: orig: Mem0
+Mem9: orig: Mem0
 r9:r9
     def:  def r9
-    uses: Mem17[r8 + 0x0000002C:word32] = r9
-Mem11:Global memory
-    def:  def Mem11
-r4_11: orig: r4
-    def:  r4_11 = r8 + 0x00000010
-Mem12:Global memory
-    def:  def Mem12
-Mem13:Global memory
-    def:  def Mem13
-Mem14:Global memory
-    def:  def Mem14
-Mem15:Global memory
-    def:  def Mem15
-Mem16:Global memory
-    def:  def Mem16
-Mem17:Global memory
-    def:  def Mem17
-Mem18:Global memory
-    def:  def Mem18
-// SsaProcedureBuilder
+    uses: Mem19[r8 + 0x0000002C:word32] = r9
+Mem11: orig: Mem0
+Mem12: orig: Mem0
+r4_13: orig: r4
+    def:  r4_13 = r8 + 0x00000010
+Mem14: orig: Mem0
+    def:  Mem14[r8 + 0x00000010:word32] = r14
+Mem15: orig: Mem0
+    def:  Mem15[r8 + 0x00000014:word32] = r13
+Mem16: orig: Mem0
+    def:  Mem16[r8 + 0x00000018:word32] = 0x00000000
+Mem17: orig: Mem0
+    def:  Mem17[r8 + 0x0000001C:word32] = 0x00000000
+Mem18: orig: Mem0
+    def:  Mem18[r8 + 0x00000028:word32] = 0x00000000
+Mem19: orig: Mem0
+    def:  Mem19[r8 + 0x0000002C:word32] = r9
+Mem20: orig: Mem0
+    def:  Mem20[r8 + 0x00000030:word32] = 0x00000000
+// ProcedureBuilder
 // Return size: 0
-void SsaProcedureBuilder()
-SsaProcedureBuilder_entry:
+define ProcedureBuilder
+ProcedureBuilder_entry:
 	def r8
-	def Mem5
+	def Mem0
 	def r14
-	def Mem6
 	def r13
-	def Mem7
-	def Mem8
-	def Mem9
-	def Mem10
 	def r9
-	def Mem11
-	def Mem12
-	def Mem13
-	def Mem14
-	def Mem15
-	def Mem16
-	def Mem17
-	def Mem18
 	// succ:  l1
 l1:
-	r4_11 = r8 + 0x00000010
-	Mem12[r8 + 0x00000010:word32] = r14
-	Mem13[r8 + 0x00000014:word32] = r13
-	Mem14[r8 + 0x00000018:word32] = 0x00000000
-	Mem15[r8 + 0x0000001C:word32] = 0x00000000
-	Mem16[r8 + 0x00000028:word32] = 0x00000000
-	Mem17[r8 + 0x0000002C:word32] = r9
-	Mem18[r8 + 0x00000030:word32] = 0x00000000
+	r4_13 = r8 + 0x00000010
+	Mem14[r8 + 0x00000010:word32] = r14
+	Mem15[r8 + 0x00000014:word32] = r13
+	Mem16[r8 + 0x00000018:word32] = 0x00000000
+	Mem17[r8 + 0x0000001C:word32] = 0x00000000
+	Mem18[r8 + 0x00000028:word32] = 0x00000000
+	Mem19[r8 + 0x0000002C:word32] = r9
+	Mem20[r8 + 0x00000030:word32] = 0x00000000
 	return
-	// succ:  SsaProcedureBuilder_exit
-SsaProcedureBuilder_exit:
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
 ";
             #endregion 
             AssertStringsEqual(sExp, ssa);
@@ -492,10 +454,16 @@ SsaProcedureBuilder_exit:
             #region Expected
 @"r8:r8
     def:  def r8
-    uses: Mem0[r8 + 0x00000010:word32] = 0x12345678
-          Mem1[r8 + 0x00000014:word32] = 0x9ABCDEF0
+    uses: Mem5[r8 + 0x00000010:word32] = 0x12345678
+          Mem6[r8 + 0x00000014:word32] = 0x9ABCDEF0
 Mem0:Global
     def:  def Mem0
+Mem3: orig: Mem0
+Mem4: orig: Mem0
+Mem5: orig: Mem0
+    def:  Mem5[r8 + 0x00000010:word32] = 0x12345678
+Mem6: orig: Mem0
+    def:  Mem6[r8 + 0x00000014:word32] = 0x9ABCDEF0
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -504,12 +472,132 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	Mem0[r8 + 0x00000010:word32] = 0x12345678
-	Mem1[r8 + 0x00000014:word32] = 0x9ABCDEF0
+	Mem5[r8 + 0x00000010:word32] = 0x12345678
+	Mem6[r8 + 0x00000014:word32] = 0x9ABCDEF0
 	return
 	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:";
+ProcedureBuilder_exit:
+";
             #endregion
+            AssertStringsEqual(sExp, ssa);
+        }
+
+        [Test]
+        public void Ufuser_Store_MemoryAccessWithZeroOffset()
+        {
+            var r4 = m.Reg32("r4", 4);
+            var r8 = m.Reg32("r8", 8);
+
+            __swl(m.LoadDw(m.IAdd(r4, 3)), r8);
+            __swr(m.LoadDw(r4), r8);
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"r4:r4
+    def:  def r4
+    uses: Mem5[r4:word32] = r8
+Mem0:Global
+    def:  def Mem0
+r8:r8
+    def:  def r8
+    uses: Mem5[r4:word32] = r8
+Mem4: orig: Mem0
+Mem5: orig: Mem0
+    def:  Mem5[r4:word32] = r8
+// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def r4
+	def Mem0
+	def r8
+	// succ:  l1
+l1:
+	Mem5[r4:word32] = r8
+ProcedureBuilder_exit:
+";
+            #endregion 
+            AssertStringsEqual(sExp, ssa);
+    }
+
+        [Test]
+        public void Ufuser_Load_MemoryAccessWithZeroOffset()
+        {
+            var r4 = m.Reg32("r4", 4);
+            var r8 = m.Reg32("r8", 8);
+
+            __lwl(r8, m.LoadDw(m.IAdd(r4, 3)));
+            __lwr(r8, m.LoadDw(r4));
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"r8:r8
+    def:  def r8
+    uses: r8_4 = r8
+r4:r4
+    def:  def r4
+    uses: r8_5 = Mem0[r4:word32]
+Mem0:Global
+    def:  def Mem0
+    uses: r8_5 = Mem0[r4:word32]
+r8_4: orig: r8
+    def:  r8_4 = r8
+r8_5: orig: r8
+    def:  r8_5 = Mem0[r4:word32]
+// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def r8
+	def r4
+	def Mem0
+	// succ:  l1
+l1:
+	r8_5 = Mem0[r4:word32]
+ProcedureBuilder_exit:
+";
+            #endregion 
+            AssertStringsEqual(sExp, ssa);
+        }
+
+
+        [Test]
+        public void Ufuser_Store_Bigendian()
+        {
+            var r4 = m.Reg32("r4", 4);
+            var r8 = m.Reg32("r8", 8);
+            var loc40 = m.Local32("loc40", -0x40);
+            var loc3D = m.Local32("loc3D", -0x3D);
+
+            __swl(loc40, r8);
+            __swr(loc3D, r8);
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"loc40:Local -0040
+    def:  def loc40
+r8:r8
+    def:  def r8
+    uses: loc40_3 = r8
+loc40_3: orig: loc40
+    def:  loc40_3 = __swl(loc40, r8)
+loc3D:Local -003D
+    def:  def loc3D
+loc3D_5: orig: loc3D
+    def:  loc40_3 = r8
+// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def loc40
+	def r8
+	def loc3D
+	// succ:  l1
+l1:
+	loc40_3 = r8
+ProcedureBuilder_exit:
+";
+            #endregion 
             AssertStringsEqual(sExp, ssa);
         }
     }

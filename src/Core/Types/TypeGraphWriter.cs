@@ -35,6 +35,7 @@ namespace Reko.Core.Types
         private HashSet<DataType> visited;
         private Formatter writer;
         private bool reference;
+        private int nesting;
 
         public TypeGraphWriter(Formatter writer)
         {
@@ -43,11 +44,21 @@ namespace Reko.Core.Types
         
         public Formatter VisitArray(ArrayType at)
         {
+            
             writer.Write("(arr ");
-            at.ElementType.Accept(this);
-            if (at.Length != 0)
+            if (this.nesting < 90)
             {
-                writer.Write(" {0}", at.Length);
+                ++this.nesting;
+                at.ElementType.Accept(this);
+                if (at.Length != 0)
+                {
+                    writer.Write(" {0}", at.Length);
+                }
+                --this.nesting;
+            }
+            else
+            {
+                writer.Write("...");
             }
             writer.Write(")");
             return writer;

@@ -94,6 +94,26 @@ namespace Reko.Arch.M68k
                 var addrB = (M68kAddressOperand)opB;
                 return NormalizeConstants || addrA.Address == addrB.Address;
             }
+            var idxA = opA as IndirectIndexedOperand;
+            if (idxA != null)
+            {
+                var idxB = (IndirectIndexedOperand)opB;
+                if (!NormalizeRegisters)
+                {
+                    if (!CompareRegisters(idxA.ARegister, idxB.ARegister))
+                        return false;
+                    if (!CompareRegisters(idxA.XRegister, idxB.XRegister))
+                        return false;
+                }
+                if (!NormalizeConstants)
+                {
+                    if (idxA.Imm8 != idxB.Imm8)
+                        return false;
+                    if (idxA.Scale != idxB.Scale)
+                        return false;
+                }
+                return true;
+            }
             throw new NotImplementedException(opA.GetType().FullName);
         }
 
@@ -192,6 +212,35 @@ namespace Reko.Arch.M68k
                 if (!NormalizeRegisters)
                 {
                     h = h ^ regset.BitSet.GetHashCode();
+                }
+                return h;
+            }
+            var indexOp = op as IndexedOperand;
+            if (indexOp != null)
+            {
+                int h = 53;
+                if (!NormalizeRegisters)
+                {
+                    if (indexOp.base_reg != null)
+                    {
+                        h = h * 7 ^ GetRegisterHash(indexOp.base_reg);
+                    }
+                    if (indexOp.index_reg != null)
+                    {
+                        h = h * 11 ^ GetRegisterHash(indexOp.index_reg);
+                        h = h * 13 ^ indexOp.index_reg_width.GetHashCode();
+                    }
+                }
+                if (!NormalizeConstants)
+                {
+                    if (indexOp.Base != null)
+                    {
+                        h = h * 17 ^ indexOp.Base.GetHashCode();
+                    }
+                    if (indexOp.index_scale != 0)
+                    {
+                        h = h * 19 ^ indexOp.index_scale;
+                    }
                 }
                 return h;
             }

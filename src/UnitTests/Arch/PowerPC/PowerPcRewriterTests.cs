@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.PowerPC
     public class PowerPcRewriterTests : RewriterTestBase
     {
         private InstructionBuilder b;
-        private PowerPcArchitecture arch = new PowerPcArchitecture32();
+        private PowerPcArchitecture arch;
         private IEnumerable<PowerPcInstruction> ppcInstrs;
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
@@ -63,8 +63,19 @@ namespace Reko.UnitTests.Arch.PowerPC
                 (byte) w
             }).ToArray();
             var image = new MemoryArea(LoadAddress, bytes);
-            ppcInstrs = new PowerPcDisassembler(arch, image.CreateBeReader(LoadAddress), PrimitiveType.Word32);
+            ppcInstrs = new PowerPcDisassembler(arch, image.CreateBeReader(LoadAddress), arch.WordWidth);
             return image;
+        }
+
+        private void Given_PowerPcBe64()
+        {
+            this.arch = new PowerPcBe64Architecture();
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            this.arch = new PowerPcBe32Architecture();
         }
 
         [Test]
@@ -792,6 +803,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCrw_rldicl()
         {
+            Given_PowerPcBe64();
             AssertCode(0x790407c0,    // clrldi  r4,r8,31
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r4 = r8 & 0x00000001FFFFFFFF");
@@ -800,7 +812,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "1|L--|r4 = r8 & 0x00000000FFFFFFFF");
             AssertCode(0x78840fe2, // rldicl  r4,r4,33,63	
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r4 << 0x21 & 0x00000001");
+                "1|L--|r4 = r4 << 0x21 & 0x0000000000000001");
         }
 
         [Test]
@@ -1015,6 +1027,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_rldicl()
         {
+            Given_PowerPcBe64();
             AssertCode(0x7863e102, //"rldicl\tr3,r3,3C,04");
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = r3 >>u 0x04");
@@ -1358,6 +1371,14 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7CB0E2A6, // mfspr 0000021C,r5
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r5 = __read_spr(0x0000021C)");
+        }
+
+        [Test]
+        public void PPCRw_lhax()
+        {
+            AssertCode(0x7C84EAAE,  // lhax r4,r4,r29
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = (int32) Mem0[r4 + r29:int16]");
         }
     }
 }

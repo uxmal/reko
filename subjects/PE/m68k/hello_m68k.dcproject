@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v4">
+  <arch>m68k</arch>
+  <input>
+    <filename>hello_m68k.exe</filename>
+    <disassembly>hello_m68k.asm</disassembly>
+    <intermediate-code>hello_m68k.dis</intermediate-code>
+    <output>hello_m68k.c</output>
+    <types-file>hello_m68k.h</types-file>
+    <global-vars>hello_m68k.globals.c</global-vars>
+    <user>
+      <address>00001000</address>
+      <processor name="m68k" />
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
+      <registerValues />
+    </user>
+  </input>
+</project>

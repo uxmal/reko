@@ -716,8 +716,7 @@ namespace Reko.Arch.M68k
                 }
             case 0x38:
                 // Absolute short address
-                mode = string.Format("${0}.w", read_imm_16());
-                break;
+                return new M68kAddressOperand(Address.Ptr16(read_imm_16()));
             case 0x39:
                 // Absolute long address
                 return new M68kAddressOperand(read_imm_32());
@@ -1273,9 +1272,11 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68020_chk2_cmp2_8(M68kDisassembler dasm)
         {
-            uint extension;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            extension = dasm.read_imm_16();
+            uint extension = dasm.read_imm_16();
+            if (BIT_B(extension))       //$DEBUG
+                extension.ToString();
+
             return CreateInstruction(
                 BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
                 PrimitiveType.Byte,
@@ -1285,9 +1286,10 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68020_chk2_cmp2_16(M68kDisassembler dasm)
         {
-            uint extension;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            extension = dasm.read_imm_16();
+            uint extension = dasm.read_imm_16();
+            if (BIT_B(extension))       //$DEBUG
+                extension.ToString();
             return new M68kInstruction
             {
                 code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
@@ -1302,6 +1304,9 @@ namespace Reko.Arch.M68k
             uint extension;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension = dasm.read_imm_16();
+            if (BIT_B(extension))       //$DEBUG
+                extension.ToString();
+
             return new M68kInstruction
             {
                 code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
