@@ -356,20 +356,18 @@ r1_8: orig: r1
 r1_9: orig: r1
     def:  r1_9 = 0x00000000
     uses: r1_19 = PHI(r1_9, r1_8)
-r63_10: orig: r63
-Mem11: orig: Mem0
+wArg04:Stack +0004
+    def:  def wArg04
+    uses: SZC_7 = cond(wArg04 - 0x0003)
+dwLoc04_14: orig: dwLoc04
+    def:  dwLoc04_14 = bp
+    uses: bp_12 = dwLoc04_14
 bp_12: orig: bp
     def:  bp_12 = dwLoc04_14
     uses: use bp_12
 r63_13: orig: r63
     def:  r63_13 = fp
     uses: use r63_13
-dwLoc04_14: orig: dwLoc04
-    def:  dwLoc04_14 = bp
-    uses: bp_12 = dwLoc04_14
-wArg04:Stack +0004
-    def:  def wArg04
-    uses: SZC_7 = cond(wArg04 - 0x0003)
 C_18: orig: C
     def:  C_18 = SLICE(SZC_7, bool, 2) (alias)
     uses: use C_18
@@ -696,24 +694,22 @@ Mem10: orig: Mem0
     uses: Mem13 = PHI(Mem11, Mem10)
 Mem11: orig: Mem0
     uses: Mem13 = PHI(Mem11, Mem10)
-bp_12: orig: bp
+dwLoc0C_19: orig: dwLoc0C
+    def:  dwLoc0C_19 = 0x00000000
 Mem13: orig: Mem0
     def:  Mem13 = PHI(Mem11, Mem10)
 r1_14: orig: r1
     def:  r1_14 = dwLoc0C_23
     uses: use r1_14
-r63_15: orig: r63
+dwLoc04_18: orig: dwLoc04
+    def:  dwLoc04_18 = bp
+    uses: bp_16 = dwLoc04_18
 bp_16: orig: bp
     def:  bp_16 = dwLoc04_18
     uses: use bp_16
 r63_17: orig: r63
     def:  r63_17 = fp
     uses: use r63_17
-dwLoc04_18: orig: dwLoc04
-    def:  dwLoc04_18 = bp
-    uses: bp_16 = dwLoc04_18
-dwLoc0C_19: orig: dwLoc0C
-    def:  dwLoc0C_19 = 0x00000000
 wArg04:Stack +0004
     def:  def wArg04
     uses: CZS_8 = wArg04 - 0x0003
@@ -882,12 +878,10 @@ proc1_exit:
 r2_2: orig: r2
     def:  r2_2 = 0x00000010
     uses: r2_7 = PHI(r2, r2_2)
-r3_3: orig: r3
 r3:r3
     def:  def r3
     uses: call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
           call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
-r1_5: orig: r1
 r1_6: orig: r1
     def:  call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
     uses: use r1_6
@@ -1678,7 +1672,6 @@ eax_5: orig: eax
     def:  eax_5 = PHI(eax_1, eax_7)
     uses: eax_7 = eax_5 + Mem0[ebx_2:word32]
           return eax_5
-Mem6: orig: Mem0
 eax_7: orig: eax
     def:  eax_7 = eax_5 + Mem0[ebx_2:word32]
     uses: eax_5 = PHI(eax_1, eax_7)
@@ -1823,8 +1816,6 @@ proc1_exit:
     uses: branch r1_1 == 0x00000000 m3done
           r1_4 = r1_1 + Mem0[r2:word32]
           use r1_1
-r2_2: orig: r2
-Mem3: orig: Mem0
 r1_4: orig: r1
     def:  r1_4 = r1_1 + Mem0[r2:word32]
     uses: r1_1 = PHI(r1, r1_4)
@@ -2289,7 +2280,6 @@ bx_3: orig: bx
     def:  bx_3 = Mem0[0x00002002:word16]
     uses: bh_8 = SLICE(bx_3, byte, 8) (alias)
           bx_6 = PHI(bx_3, bx_7)
-bh_4: orig: bh
 al_5: orig: al
     def:  al_5 = bh_8
     uses: return al_5

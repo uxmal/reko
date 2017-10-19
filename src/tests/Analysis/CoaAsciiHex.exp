@@ -67,7 +67,7 @@ C_14: orig: C
 SCZO_15: orig: SCZO
 CZ_16: orig: CZ
 C_17: orig: C
-al_18: orig: al
+al_30: orig: al
 al_19: orig: al
     def:  al_19 = al - 0x30
     uses: al_32 = PHI(al_19, al_23, al_27)
@@ -85,7 +85,6 @@ al_27: orig: al
     uses: al_32 = PHI(al_19, al_23, al_27)
 SCZO_28: orig: SCZO
 C_29: orig: C
-al_30: orig: al
 al_32: orig: al
     def:  al_32 = PHI(al_19, al_23, al_27)
     uses: alOut = al_32

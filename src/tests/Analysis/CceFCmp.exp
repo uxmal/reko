@@ -1,5 +1,3 @@
-a6_1: orig: a6
-Mem2: orig: Mem0
 fp0_3: orig: fp0
     def:  fp0_3 = (real80) Mem0[a6 - 0x00000010:int32]
     uses: branch (real96) fp0_3 == Mem0[a6 + 0x00000008:real96] l1

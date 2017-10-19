@@ -25,10 +25,16 @@ cx_8: orig: cx
 di_9: orig: di
     def:  di_9 = 0x0004
     uses: di_21 = PHI(di_9, di_21, di_22)
+O_30: orig: O
+    def:  O_30 = SLICE(SZO_23, bool, 4) (alias)
+    uses: use O_30
 si_11: orig: si
     def:  si_11 = PHI(si, si_14, si_14)
     uses: ax_13 = Mem0[ds:si_11:word16]
           si_14 = si_11 + 0x0002
+C_29: orig: C
+    def:  C_29 = SLICE(SCZO_17, bool, 1) (alias)
+    uses: use C_29
 ax_13: orig: ax
     def:  ax_13 = Mem0[ds:si_11:word16]
     uses: dx_16 = dx_15 + ax_13
@@ -92,12 +98,6 @@ si:si
 Mem0:Global
     def:  def Mem0
     uses: ax_13 = Mem0[ds:si_11:word16]
-C_29: orig: C
-    def:  C_29 = SLICE(SCZO_17, bool, 1) (alias)
-    uses: use C_29
-O_30: orig: O
-    def:  O_30 = SLICE(SZO_23, bool, 4) (alias)
-    uses: use O_30
 S_31: orig: S
     def:  S_31 = SLICE(SZO_23, bool, 0) (alias)
     uses: use S_31

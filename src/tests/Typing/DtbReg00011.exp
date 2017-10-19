@@ -53,10 +53,10 @@ Eq_9: byte
 	T_9 (in bl_11 : byte)
 	T_10 (in 0xFF : byte)
 	T_22 (in (byte) (bx_36 - 0x0001) : byte)
-Eq_11: (union (ci16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
+Eq_11: (union (int16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
 	T_11 (in bx_36 : word16)
 	T_12 (in DPB(bx_35, bl_11, 0) : word16)
-	T_23 (in 0x0001 : word16)
+	T_19 (in 0x0001 : word16)
 Eq_13: byte
 	T_13 (in 0x4D : byte)
 Eq_15: (ptr (segment))
@@ -65,12 +65,10 @@ Eq_16: word16
 	T_16 (in 0x0000 : word16)
 Eq_17: word16
 	T_17 (in bx_36 + 0x0000 : word16)
-Eq_19: ui16
-	T_19 (in 0x0001 : word16)
 Eq_21: (memptr T_15 (struct (0 T_18 t0000)))
 	T_21 (in bx_36 - 0x0001 : word16)
-Eq_24: bool
-	T_24 (in bx_36 >= 0x0001 : bool)
+Eq_23: bool
+	T_23 (in bx_36 >= 0x0001 : bool)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -114,11 +112,11 @@ T_10: (in 0xFF : byte)
   OrigDataType: byte
 T_11: (in bx_36 : word16)
   Class: Eq_11
-  DataType: (union (ci16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
+  DataType: (union (int16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
   OrigDataType: (union (ci16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
 T_12: (in DPB(bx_35, bl_11, 0) : word16)
   Class: Eq_11
-  DataType: (union (ci16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
+  DataType: (union (int16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
   OrigDataType: word16
 T_13: (in 0x4D : byte)
   Class: Eq_13
@@ -145,9 +143,9 @@ T_18: (in Mem37[0x4DE1:bx_36 + 0x0000:byte] : byte)
   DataType: byte
   OrigDataType: byte
 T_19: (in 0x0001 : word16)
-  Class: Eq_19
-  DataType: ui16
-  OrigDataType: ui16
+  Class: Eq_11
+  DataType: (union (int16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
+  OrigDataType: int16
 T_20: (in bx_36 - 0x0001 : word16)
   Class: Eq_7
   DataType: (memptr T_15 (struct (0 T_18 t0000)))
@@ -160,11 +158,7 @@ T_22: (in (byte) (bx_36 - 0x0001) : byte)
   Class: Eq_9
   DataType: byte
   OrigDataType: byte
-T_23: (in 0x0001 : word16)
-  Class: Eq_11
-  DataType: (union (ci16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
-  OrigDataType: ci16
-T_24: (in bx_36 >= 0x0001 : bool)
-  Class: Eq_24
+T_23: (in bx_36 >= 0x0001 : bool)
+  Class: Eq_23
   DataType: bool
   OrigDataType: bool

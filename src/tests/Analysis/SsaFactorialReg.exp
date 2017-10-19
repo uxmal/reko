@@ -135,22 +135,22 @@ SCZO_23: orig: SCZO
           O_37 = SLICE(SCZO_23, bool, 4) (alias)
           S_40 = SLICE(SCZO_23, bool, 0) (alias)
           Z_44 = SLICE(SCZO_23, bool, 2) (alias)
+C_30: orig: C
+    def:  C_30 = PHI(C_31, C_32)
+    uses: use C_30
 sp_25: orig: sp
     def:  sp_25 = PHI(sp_15, sp_4)
     uses: si_27 = Mem7[ss:sp_25:word16]
           sp_28 = sp_25 + 0x0002
+ax_29: orig: ax
+    def:  ax_29 = PHI(ax_22, ax_11)
+    uses: use ax_29
 si_27: orig: si
     def:  si_27 = Mem7[ss:sp_25:word16]
     uses: use si_27
 sp_28: orig: sp
     def:  sp_28 = sp_25 + 0x0002
     uses: use sp_28
-ax_29: orig: ax
-    def:  ax_29 = PHI(ax_22, ax_11)
-    uses: use ax_29
-C_30: orig: C
-    def:  C_30 = PHI(C_31, C_32)
-    uses: use C_30
 C_31: orig: C
     def:  C_31 = SLICE(SCZO_23, bool, 1) (alias)
     uses: C_30 = PHI(C_31, C_32)

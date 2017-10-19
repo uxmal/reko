@@ -23,13 +23,12 @@ ax_13: orig: ax
 ax_14: orig: ax
     def:  ax_14 = PHI(ax_13, ax_8, ax_12)
     uses: Mem17[ds:0x0100:word16] = ax_14
-ds_15: orig: ds
+C_18: orig: C
 ds:ds
     def:  def ds
     uses: Mem17[ds:0x0100:word16] = ax_14
 Mem17: orig: Mem0
     def:  Mem17[ds:0x0100:word16] = ax_14
-C_18: orig: C
 C_19: orig: C
 O_20: orig: O
 O_21: orig: O

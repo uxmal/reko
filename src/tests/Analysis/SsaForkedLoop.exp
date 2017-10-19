@@ -25,6 +25,9 @@ ax_8: orig: ax
           ax_20 = ax_8 + Mem0[ds:si_19 + 0x0004:word16]
           ax_22 = ax_8 + Mem0[ds:si_15:word16]
           use ax_8
+S_29: orig: S
+    def:  S_29 = SLICE(SCZO_10, bool, 0) (alias)
+    uses: use S_29
 SCZO_10: orig: SCZO
     def:  SCZO_10 = cond(ax_8 - bx)
     uses: SO_11 = SLICE(SCZO_10, bool, 4) (alias)
@@ -35,6 +38,12 @@ SCZO_10: orig: SCZO
 SO_11: orig: SO
     def:  SO_11 = SLICE(SCZO_10, bool, 4) (alias)
     uses: branch Test(LT,SO_11) l0C00_0005
+O_28: orig: O
+    def:  O_28 = SLICE(SCZO_10, bool, 4) (alias)
+    uses: use O_28
+C_27: orig: C
+    def:  C_27 = SLICE(SCZO_10, bool, 1) (alias)
+    uses: use C_27
 si_14: orig: si
     def:  si_14 = Mem0[ds:0x0300:word16]
     uses: si_15 = si_14 | si_14
@@ -83,15 +92,6 @@ Mem0:Global
           si_19 = Mem0[ds:0x0302:word16]
           ax_20 = ax_8 + Mem0[ds:si_19 + 0x0004:word16]
           ax_22 = ax_8 + Mem0[ds:si_15:word16]
-C_27: orig: C
-    def:  C_27 = SLICE(SCZO_10, bool, 1) (alias)
-    uses: use C_27
-O_28: orig: O
-    def:  O_28 = SLICE(SCZO_10, bool, 4) (alias)
-    uses: use O_28
-S_29: orig: S
-    def:  S_29 = SLICE(SCZO_10, bool, 0) (alias)
-    uses: use S_29
 si_30: orig: si
     def:  si_30 = PHI(si, si_15, si_19)
     uses: use si_30

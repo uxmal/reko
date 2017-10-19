@@ -41,12 +41,12 @@ Z_11: orig: Z
 ax_12: orig: ax
     def:  ax_12 = 0xFFFF
     uses: ax_15 = PHI(ax_8, ax_12)
-sp_14: orig: sp
-    def:  sp_14 = bp_4
-    uses: use sp_14
 ax_15: orig: ax
     def:  ax_15 = PHI(ax_8, ax_12)
     uses: use ax_15
+sp_14: orig: sp
+    def:  sp_14 = bp_4
+    uses: use sp_14
 O_18: orig: O
     def:  O_18 = SLICE(SZO_9, bool, 4) (alias)
     uses: use O_18

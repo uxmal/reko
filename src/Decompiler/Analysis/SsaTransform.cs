@@ -48,6 +48,8 @@ namespace Reko.Analysis
     /// </remarks>
     public class SsaTransform : InstructionTransformer 
     {
+        private static TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Verbose };
+
         private IProcessorArchitecture arch;
         private Program program;
         private ProgramDataFlow programFlow;
@@ -124,6 +126,7 @@ namespace Reko.Analysis
                 blockstates[b].terminates = false;
             }
             ProcessIncompletePhis();
+            RemoveDeadSsaIdentifiers();
             return ssa;
         }
 
@@ -135,6 +138,8 @@ namespace Reko.Analysis
         {
             foreach (var sid in sidsToRemove.Where(s => s.Uses.Count == 0))
             {
+                sid.DefStatement = null;
+                sid.DefExpression = null;
                 ssa.Identifiers.Remove(sid);
             }
         }
@@ -1291,6 +1296,7 @@ namespace Reko.Analysis
                 ReplaceBy(phi, same);
 
                 // Remove all phi uses which may have become trivial now.
+                DebugEx.Print(trace.TraceVerbose, "Removing {0} and uses {1}", phi.Identifier.Name, string.Join(",", users));
                 foreach (var use in users)
                 {
                     var phiAss = use.Instruction as PhiAssignment;
@@ -1311,8 +1317,6 @@ namespace Reko.Analysis
                     alias.SsaId = outer.ssa.Identifiers[same];
                 }
                 phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
-                phi.DefStatement = null;
-                phi.DefExpression = null;
                 this.outer.sidsToRemove.Add(phi);
                 return sid;
             }

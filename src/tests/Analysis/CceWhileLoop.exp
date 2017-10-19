@@ -53,25 +53,17 @@ cx_26: orig: cx
 bx_27: orig: bx
     def:  bx_27 = PHI(bx_24, bx_20)
     uses: Mem31[ds:0x0300:word16] = bx_27
-ds_28: orig: ds
-ds_29: orig: ds
 ds:ds
     def:  def ds
     uses: Mem31[ds:0x0300:word16] = bx_27
 Mem31: orig: Mem0
     def:  Mem31[ds:0x0300:word16] = bx_27
-ss_32: orig: ss
-ss_33: orig: ss
-sp_34: orig: sp
-sp_35: orig: sp
-bp_36: orig: bp
-sp_37: orig: sp
 wLoc02_38: orig: wLoc02
 wArg04:Stack +0004
     def:  def wArg04
     uses: ax_13 = wArg04
-wLoc02_40: orig: wLoc02
-wLoc02_41: orig: wLoc02
+bp_36: orig: bp
+sp_37: orig: sp
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
