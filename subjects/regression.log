@@ -150,6 +150,335 @@ fn092A: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
 
+=== Elf\ARM\angr-685\RTOSDemo.axf
+*** Elf\ARM\angr-685\RTOSDemo.axf
+0000800D: warning: Call target address FF48A91D is invalid.
+00008019: warning: Call target address 00C89029 is invalid.
+0000801D: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
+0000801D: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
+00000059: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+00000059: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+0000016D: warning: Call target address FEC5AB25 is invalid.
+00000429: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+00000429: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+00000A21: error: Rewriting ARM opcode 'rscshi' is not supported yet.
+00000A21: error: Rewriting ARM opcode 'rscshi' is not supported yet.
+0000A00D: error: Rewriting ARM opcode 'rscsne' is not supported yet.
+0000A00D: error: Rewriting ARM opcode 'rscsne' is not supported yet.
+0000A5C9: warning: Call target address FF656279 is invalid.
+0000A5CD: warning: Call target address 010CB1D5 is invalid.
+0000A5DD: error: Rewriting ARM opcode 'ldchs' is not supported yet.
+0000A24D: error: Rewriting ARM opcode 'stmdami' is not supported yet.
+0000A24D: error: Rewriting ARM opcode 'stmdami' is not supported yet.
+0000A229: error: Rewriting ARM opcode 'rscseq' is not supported yet.
+0000A219: error: Rewriting ARM opcode 'rscshi' is not supported yet.
+0000A219: error: Rewriting ARM opcode 'rscshi' is not supported yet.
+0000A1E1: error: Rewriting ARM opcode 'strhteq' is not supported yet.
+0000A1E1: error: Rewriting ARM opcode 'strhteq' is not supported yet.
+0000A1C9: error: Rewriting ARM opcode 'strhteq' is not supported yet.
+0000A1C9: error: Rewriting ARM opcode 'strhteq' is not supported yet.
+0000A16D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
+0000A16D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
+0000A161: error: Rewriting ARM opcode 'rscsne' is not supported yet.
+0000A161: error: Rewriting ARM opcode 'rscsne' is not supported yet.
+0000A14D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
+0000A14D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
+0000A141: error: Rewriting ARM opcode 'rscsne' is not supported yet.
+0000A141: error: Rewriting ARM opcode 'rscsne' is not supported yet.
+0000A0CD: error: Rewriting ARM opcode 'strhtvc' is not supported yet.
+0000A0CD: error: Rewriting ARM opcode 'strhtvc' is not supported yet.
+0000A0A9: error: Rewriting ARM opcode 'stcllt' is not supported yet.
+0000A085: error: Rewriting ARM opcode 'ldcllo' is not supported yet.
+0000A045: warning: Call target address 001B0DF1 is invalid.
+0000A02D: error: Rewriting ARM opcode 'ldrshtvc' is not supported yet.
+0000A019: error: Rewriting ARM opcode 'rscshs' is not supported yet.
+0000A019: error: Rewriting ARM opcode 'rscshs' is not supported yet.
+00009FD5: error: Rewriting ARM opcode 'rscsne' is not supported yet.
+00009FD5: error: Rewriting ARM opcode 'rscsne' is not supported yet.
+00009F45: error: Rewriting ARM opcode 'ldrbthi' is not supported yet.
+00009F45: error: Rewriting ARM opcode 'ldrbthi' is not supported yet.
+00009F39: error: Rewriting ARM opcode 'ldrbthi' is not supported yet.
+00009F39: error: Rewriting ARM opcode 'ldrbthi' is not supported yet.
+00009F0D: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00009F0D: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00009EF1: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00009EF1: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00009ED5: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00009ED5: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00009E8D: warning: Call target address 0130C965 is invalid.
+00009E91: warning: Call target address 01A12BBD is invalid.
+00009E95: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
+00009E95: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
+00009D09: error: Rewriting ARM opcode 'ldcpl' is not supported yet.
+00009CE9: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
+00009CE1: error: Rewriting ARM opcode 'ldrshtne' is not supported yet.
+00009CE1: error: Rewriting ARM opcode 'ldrshtne' is not supported yet.
+00009CD1: warning: Call target address 0128A605 is invalid.
+00009CD5: error: Rewriting ARM opcode 'stcleq' is not supported yet.
+00009CD5: error: Rewriting ARM opcode 'stcleq' is not supported yet.
+00009CCD: error: Rewriting ARM opcode 'smlaltteq' is not supported yet.
+00009CBD: error: Rewriting ARM opcode 'ldrtlo' is not supported yet.
+00009CB1: error: Rewriting ARM opcode 'ldrtlo' is not supported yet.
+00009C95: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00009C95: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00009C69: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00009C69: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00009C41: error: Rewriting ARM opcode 'mcrrhs' is not supported yet.
+00009C41: error: Rewriting ARM opcode 'mcrrhs' is not supported yet.
+00009C25: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00009C25: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00009C0D: warning: Call target address 000EA7C1 is invalid.
+00009C11: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
+00009C11: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
+00009BF1: warning: Call target address 000EA7A5 is invalid.
+00009BF5: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
+00009BD5: warning: Call target address 000EA789 is invalid.
+00009BD9: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
+00009BD9: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
+00009BB9: warning: Call target address 000EA76D is invalid.
+00009BBD: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
+00009B9D: warning: Call target address 000EA751 is invalid.
+00009BA1: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
+00009BA1: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
+00009B81: warning: Call target address 000EA735 is invalid.
+00009B85: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
+00009B25: error: Rewriting ARM opcode 'ldrshths' is not supported yet.
+00009AF5: warning: Call target address 0120AC29 is invalid.
+00009ADD: warning: Call target address 0120AC11 is invalid.
+00009AC9: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
+00009AC9: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
+00009AA9: error: Rewriting ARM opcode 'rscseq' is not supported yet.
+00009AA9: error: Rewriting ARM opcode 'rscseq' is not supported yet.
+00009A89: error: Rewriting ARM opcode 'strhtvc' is not supported yet.
+00009A89: error: Rewriting ARM opcode 'strhtvc' is not supported yet.
+00009A41: error: Rewriting ARM opcode 'rscseq' is not supported yet.
+00009A41: error: Rewriting ARM opcode 'rscseq' is not supported yet.
+00009A35: error: Rewriting ARM opcode 'rscseq' is not supported yet.
+00009A35: error: Rewriting ARM opcode 'rscseq' is not supported yet.
+000099ED: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
+00009979: error: Rewriting ARM opcode 'strteq' is not supported yet.
+000098F5: error: Rewriting ARM opcode 'rscsne' is not supported yet.
+00009881: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+00009881: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+000097CD: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+000097CD: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+0000970D: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
+000096C9: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+000095C1: warning: Call target address 0110E1D1 is invalid.
+000095CD: error: Rewriting ARM opcode 'rscseq' is not supported yet.
+00009599: error: Rewriting ARM opcode 'mcrrne' is not supported yet.
+00009569: error: Rewriting ARM opcode 'uqsub8eq' is not supported yet.
+00009569: error: Rewriting ARM opcode 'uqsub8eq' is not supported yet.
+00009505: warning: Call target address FED15639 is invalid.
+00009519: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
+00009501: warning: Call target address FEF858C9 is invalid.
+000094FD: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
+000094FD: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
+000094F5: error: Rewriting ARM opcode 'mrc2' is not supported yet.
+000094F5: error: Rewriting ARM opcode 'mrc2' is not supported yet.
+000094CD: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+000094A9: warning: Call target address 00909891 is invalid.
+00009485: warning: Call target address 0090986D is invalid.
+000093B9: error: Rewriting ARM opcode 'ldrsbtmi' is not supported yet.
+0000931D: error: Rewriting ARM opcode 'ldrsbtmi' is not supported yet.
+00009311: error: Rewriting ARM opcode 'ldrths' is not supported yet.
+000092FD: error: Rewriting ARM opcode 'ldrbtne' is not supported yet.
+000092FD: error: Rewriting ARM opcode 'ldrbtne' is not supported yet.
+000092E5: error: Rewriting ARM opcode 'rscsne' is not supported yet.
+000091C9: error: Rewriting ARM opcode 'ldrhteq' is not supported yet.
+000091C9: error: Rewriting ARM opcode 'ldrhteq' is not supported yet.
+00009165: warning: Call target address 010CC069 is invalid.
+0000916D: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
+00009115: warning: Call target address 010CC019 is invalid.
+00009119: error: Rewriting ARM opcode 'rscseq' is not supported yet.
+00009095: error: Rewriting ARM opcode 'ldcle' is not supported yet.
+00009095: error: Rewriting ARM opcode 'ldcle' is not supported yet.
+00008F31: warning: Call target address 01B63C6D is invalid.
+00008F49: warning: Call target address FE3DCF1D is invalid.
+00008F4D: error: Rewriting ARM opcode 'strbteq' is not supported yet.
+00008EF1: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00008EF1: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00008E41: error: Rewriting ARM opcode 'smlaltthi' is not supported yet.
+00008E41: error: Rewriting ARM opcode 'smlaltthi' is not supported yet.
+00008D29: warning: Call target address FFE08C05 is invalid.
+00008D05: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
+00008D05: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
+00008CE5: error: Rewriting ARM opcode 'ldcllo' is not supported yet.
+00008CE5: error: Rewriting ARM opcode 'ldcllo' is not supported yet.
+00008C25: error: Rewriting ARM opcode 'ldclls' is not supported yet.
+00008BA9: warning: Call target address FFE088C9 is invalid.
+00008929: warning: Call target address FFE08805 is invalid.
+00008905: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
+00008905: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
+0000880D: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
+00008795: warning: Call target address FFE66B5D is invalid.
+00008799: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
+00008799: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
+00008679: warning: Call target address 0118987D is invalid.
+000085F5: error: Rewriting ARM opcode 'stcleq' is not supported yet.
+000085F5: error: Rewriting ARM opcode 'stcleq' is not supported yet.
+000085E5: error: Rewriting ARM opcode 'ldcllt' is not supported yet.
+00008569: warning: Call target address 003C8D31 is invalid.
+00008535: error: Rewriting ARM opcode 'ldrteq' is not supported yet.
+00008535: error: Rewriting ARM opcode 'ldrteq' is not supported yet.
+0000837D: warning: Call target address FFE47745 is invalid.
+00008381: warning: Call target address 01B03135 is invalid.
+00008389: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
+0000830D: warning: Call target address 01A0B9E5 is invalid.
+000082F9: error: Rewriting ARM opcode 'stclls' is not supported yet.
+000082D1: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
+000082D1: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
+0000829D: warning: Call target address 0118B979 is invalid.
+0000822D: error: Rewriting ARM opcode 'rscseq' is not supported yet.
+00008211: warning: Call target address FFC084ED is invalid.
+0000818D: warning: Call target address 002CAD55 is invalid.
+00008961: error: Rewriting ARM opcode 'ldrbtne' is not supported yet.
+00008195: warning: Call target address 00048D61 is invalid.
+00008199: warning: Call target address 00089165 is invalid.
+0000819D: warning: Call target address 000C9569 is invalid.
+000081A1: warning: Call target address 0010996D is invalid.
+000081A5: warning: Call target address 00149D71 is invalid.
+000081A9: warning: Call target address 0018A175 is invalid.
+000081AD: warning: Call target address 001CA579 is invalid.
+000081B1: warning: Call target address 0020A97D is invalid.
+000081B5: warning: Call target address 0024AD81 is invalid.
+000081B9: warning: Call target address 0028B185 is invalid.
+000081BD: warning: Call target address 0030B589 is invalid.
+00008071: error: Rewriting ARM opcode 'rscseq' is not supported yet.
+00008001: error: Rewriting ARM opcode 'cdp2' is not supported yet.
+00008001: error: Rewriting ARM opcode 'cdp2' is not supported yet.
+000019D5: error: Rewriting ARM opcode 'stcleq' is not supported yet.
+000019D5: error: Rewriting ARM opcode 'stcleq' is not supported yet.
+000018F9: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
+000018F9: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
+00001891: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00001891: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00001875: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00001875: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+000017C9: error: Rewriting ARM opcode 'stcleq' is not supported yet.
+00001795: error: Rewriting ARM opcode 'rscsgt' is not supported yet.
+00001795: error: Rewriting ARM opcode 'rscsgt' is not supported yet.
+00001735: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+0000155D: error: Rewriting ARM opcode 'stc2l' is not supported yet.
+000013B1: warning: Call target address FED1D4E5 is invalid.
+000013B9: warning: Call target address 000A1391 is invalid.
+000013C1: warning: Call target address 010A1389 is invalid.
+00001389: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00001335: error: Rewriting ARM opcode 'rscseq' is not supported yet.
+00001335: error: Rewriting ARM opcode 'rscseq' is not supported yet.
+000012F9: error: Rewriting ARM opcode 'stceq' is not supported yet.
+000012D5: warning: Call target address 01A17C09 is invalid.
+000012D9: warning: Call target address 01A179A5 is invalid.
+000012DD: warning: Call target address 00C81899 is invalid.
+000012E5: error: Rewriting ARM opcode 'ldrtgt' is not supported yet.
+0000115D: warning: Call target address FFC02E7D is invalid.
+00001165: error: Rewriting ARM opcode 'rscshi' is not supported yet.
+00001145: error: Rewriting ARM opcode 'ldrbtls' is not supported yet.
+00001145: error: Rewriting ARM opcode 'ldrbtls' is not supported yet.
+0000113D: error: Rewriting ARM opcode 'ldrtgt' is not supported yet.
+00001121: warning: Call target address 01A17655 is invalid.
+00001125: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
+00001125: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
+000010D9: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+000010D9: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+00000FE1: error: Rewriting ARM opcode 'stmdalo' is not supported yet.
+00000F95: error: Rewriting ARM opcode 'vmlseq.f32' is not supported yet.
+00000F65: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+00000E75: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+00000D6D: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
+00000D6D: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
+00000C79: error: Rewriting ARM opcode 'ldrbtvs' is not supported yet.
+00000BF1: warning: Call target address 01A19079 is invalid.
+00000B21: warning: Call target address FE3D4AF5 is invalid.
+00000B25: error: Rewriting ARM opcode 'stclne' is not supported yet.
+00000A45: error: Rewriting ARM opcode 'ldrhtvc' is not supported yet.
+00000A45: error: Rewriting ARM opcode 'ldrhtvc' is not supported yet.
+00000A3D: error: Rewriting ARM opcode 'ldrtgt' is not supported yet.
+00000A2D: error: Rewriting ARM opcode 'rscshi' is not supported yet.
+00000A2D: error: Rewriting ARM opcode 'rscshi' is not supported yet.
+00000A0D: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+00000A0D: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+000009FD: warning: Call target address 012C128D is invalid.
+00000A05: error: Rewriting ARM opcode 'ldrtgt' is not supported yet.
+00000971: error: Rewriting ARM opcode 'strteq' is not supported yet.
+00000971: error: Rewriting ARM opcode 'strteq' is not supported yet.
+000008C5: error: Rewriting ARM opcode 'ldrsht' is not supported yet.
+00000861: error: Rewriting ARM opcode 'rscshi' is not supported yet.
+00000799: error: Rewriting ARM opcode 'stclhs' is not supported yet.
+00000799: error: Rewriting ARM opcode 'stclhs' is not supported yet.
+00000701: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00000701: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00000639: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
+00000605: error: Rewriting ARM opcode 'strbteq' is not supported yet.
+00000605: error: Rewriting ARM opcode 'strbteq' is not supported yet.
+000005D5: error: Rewriting ARM opcode 'strbteq' is not supported yet.
+000005D5: error: Rewriting ARM opcode 'strbteq' is not supported yet.
+000005A5: error: Rewriting ARM opcode 'rscshi' is not supported yet.
+00000595: error: Rewriting ARM opcode 'rscshi' is not supported yet.
+00000595: error: Rewriting ARM opcode 'rscshi' is not supported yet.
+00000455: error: Rewriting ARM opcode 'rfeia' is not supported yet.
+00000455: error: Rewriting ARM opcode 'rfeia' is not supported yet.
+0000043D: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+0000043D: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+000002DD: error: Rewriting ARM opcode 'ldrteq' is not supported yet.
+00000195: error: Rewriting ARM opcode 'ldrteq' is not supported yet.
+000000F1: error: Rewriting ARM opcode 'stmdahs' is not supported yet.
+00008DA5: error: Rewriting ARM opcode 'ldrbtne' is not supported yet.
+00008DAD: error: Rewriting ARM opcode 'ldrbtne' is not supported yet.
+00008DB5: error: Rewriting ARM opcode 'ldrhtvc' is not supported yet.
+0000A314: error: Rewriting ARM opcode 'ldrbtne' is not supported yet.
+0000A31C: error: Rewriting ARM opcode 'ldmdaeq' is not supported yet.
+0000A334: error: Rewriting ARM opcode 'ldmdaeq' is not supported yet.
+0000A338: error: Rewriting ARM opcode 'ldmdaeq' is not supported yet.
+0000A33C: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+0000A344: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+0000A360: error: Rewriting ARM opcode 'qdaddhs' is not supported yet.
+0000A3B0: error: Rewriting ARM opcode 'cdplo' is not supported yet.
+0000A3C4: error: Rewriting ARM opcode 'cdplo' is not supported yet.
+0000A3CC: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+0000A3E8: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
+0000A3EC: error: Rewriting ARM opcode 'cdplo' is not supported yet.
+0000A3F0: error: Rewriting ARM opcode 'cdplo' is not supported yet.
+0000A44C: error: Rewriting ARM opcode 'ldmdami' is not supported yet.
+0000A450: error: Rewriting ARM opcode 'ldmdalo' is not supported yet.
+0000A458: error: Rewriting ARM opcode 'stmdami' is not supported yet.
+0000A470: error: Rewriting ARM opcode 'stclvc' is not supported yet.
+0000A484: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+0000A488: error: Rewriting ARM opcode 'ldmdaeq' is not supported yet.
+0000A48C: error: Rewriting ARM opcode 'ldmdalo' is not supported yet.
+0000A490: error: Rewriting ARM opcode 'stmdalo' is not supported yet.
+0000A49C: error: Rewriting ARM opcode 'ldmdaeq' is not supported yet.
+0000A4A0: error: Rewriting ARM opcode 'stmdami' is not supported yet.
+0000A4B8: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
+0000A4BC: error: Rewriting ARM opcode 'ldmdahs' is not supported yet.
+0000A4DF: error: Rewriting ARM opcode 'cdpge' is not supported yet.
+0000A4EC: error: Rewriting ARM opcode 'usateq' is not supported yet.
+0000A4F8: error: Rewriting ARM opcode 'strbteq' is not supported yet.
+0000A504: error: Rewriting ARM opcode 'strbteq' is not supported yet.
+0000A510: error: Rewriting ARM opcode 'strbteq' is not supported yet.
+0000A524: error: Rewriting ARM opcode 'ldrsbthi' is not supported yet.
+0000A534: error: Rewriting ARM opcode 'strbteq' is not supported yet.
+0000A544: error: Rewriting ARM opcode 'stcge' is not supported yet.
+: warning: Type transformer has looped 51 times, quitting prematurely.
+vTaskEndScheduler: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+xTaskNotifyWait: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+uxTaskResetEventItemValue: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+pvTaskIncrementMutexHeldCount: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+xPortStartScheduler: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+ResetISR: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+PDCWrite: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+xQueueCRSend: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+xPortRaisePrivilege: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+vStartFlashCoRoutines: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+GPIOPinTypeQEI: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+IntMasterDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+SysCtlPeripheralDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+SysCtlPeripheralSleepDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+SysCtlPeripheralDeepSleepDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+SysCtlReset: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+SysCtlADCSpeedSet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+
 === Elf\ARM\switch\switch
 === Elf\MIPS\swlswr\test
 === Elf-MIPS\redir
@@ -2702,7 +3031,432 @@ fn0AF6: error: An error occurred during data flow analysis.
 000028F8: warning: Expected sizes of arrays to have been determined by now
 000034E0: warning: Expected sizes of arrays to have been determined by now
 
+=== PE\m68k\hello_m68k.dcproject
+*** PE\m68k\hello_m68k.dcproject
+00001040: warning: Rewriting M68k opcode 'moves' is not supported yet.
+00001068: warning: Rewriting M68k opcode 'bvc' is not supported yet.
+00001084: warning: Rewriting M68k opcode 'bvc' is not supported yet.
+000010AC: warning: Rewriting M68k opcode 'nbcd' is not supported yet.
+000010D4: warning: Rewriting M68k opcode 'nbcd' is not supported yet.
+00001178: warning: Rewriting M68k opcode 'bvc' is not supported yet.
+00001184: warning: Rewriting M68k opcode 'nbcd' is not supported yet.
+0000118C: warning: Rewriting M68k opcode 'nbcd' is not supported yet.
+0000132E: warning: Rewriting M68k opcode 'moves' is not supported yet.
+00001400: warning: Rewriting M68k opcode 'bvc' is not supported yet.
+00001408: warning: Rewriting M68k opcode 'bvc' is not supported yet.
+00001A70: warning: Rewriting M68k opcode 'divul' is not supported yet.
+00001A78: warning: Rewriting M68k opcode 'divul' is not supported yet.
+00002164: warning: Rewriting M68k opcode 'fbngle' is not supported yet.
+000021D2: warning: Rewriting M68k opcode 'fbngle' is not supported yet.
+0000392C: warning: Rewriting M68k opcode 'unpk' is not supported yet.
+0000392E: warning: Rewriting M68k opcode 'sbcd' is not supported yet.
+00003D2A: warning: Rewriting M68k opcode 'svs' is not supported yet.
+00002C52: warning: No valid entries could be found in jump vector.
+000014AE: error: Error while analyzing trashed registers.
+    Constants of type uipr48 are not supported.
+       at Reko.Core.Expressions.Constant.Create(DataType dt, Int64 value) in C:\dev\uxmal\reko\master\src\Core\Expressions\Constant.cs:line 85
+   at Reko.Evaluation.ExpressionSimplifier.VisitMkSequence(MkSequence seq) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 526
+   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
+   at Reko.Evaluation.ExpressionSimplifier.VisitConditionOf(ConditionOf c) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 409
+   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
+   at Reko.Evaluation.SymbolicEvaluator.VisitAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\SymbolicEvaluator.cs:line 60
+   at Reko.Analysis.TrashedRegisterFinder.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 348
+   at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 51
+   at Reko.Analysis.TrashedRegisterFinder.ProcessBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 183
+000022F2: error: Error while analyzing trashed registers.
+    Constants of type cuipos24 are not supported.
+       at Reko.Core.Expressions.Constant.Create(DataType dt, Int64 value) in C:\dev\uxmal\reko\master\src\Core\Expressions\Constant.cs:line 85
+   at Reko.Evaluation.ExpressionSimplifier.VisitMkSequence(MkSequence seq) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 526
+   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
+   at Reko.Evaluation.SymbolicEvaluator.VisitAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\SymbolicEvaluator.cs:line 60
+   at Reko.Analysis.TrashedRegisterFinder.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 348
+   at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 51
+   at Reko.Analysis.TrashedRegisterFinder.ProcessBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 183
+000022F2: error: Error while analyzing trashed registers.
+    Constants of type cuipos24 are not supported.
+       at Reko.Core.Expressions.Constant.Create(DataType dt, Int64 value) in C:\dev\uxmal\reko\master\src\Core\Expressions\Constant.cs:line 85
+   at Reko.Evaluation.ExpressionSimplifier.VisitMkSequence(MkSequence seq) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 526
+   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
+   at Reko.Evaluation.SymbolicEvaluator.VisitAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\SymbolicEvaluator.cs:line 60
+   at Reko.Analysis.TrashedRegisterFinder.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 348
+   at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 51
+   at Reko.Analysis.TrashedRegisterFinder.ProcessBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 183
+000022F2: error: Error while analyzing trashed registers.
+    Constants of type cuipos24 are not supported.
+       at Reko.Core.Expressions.Constant.Create(DataType dt, Int64 value) in C:\dev\uxmal\reko\master\src\Core\Expressions\Constant.cs:line 85
+   at Reko.Evaluation.ExpressionSimplifier.VisitMkSequence(MkSequence seq) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 526
+   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 58
+   at Reko.Evaluation.SymbolicEvaluator.VisitAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\SymbolicEvaluator.cs:line 60
+   at Reko.Analysis.TrashedRegisterFinder.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 348
+   at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 51
+   at Reko.Analysis.TrashedRegisterFinder.ProcessBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 183
+00001F06: error: An error occurred while processing the statement branch dwArg08 - (a5 + -2624) != 0x00000000 l00001F14.
+    Pulling difference (ptr (struct (0 T_804 t0000) (4 T_772 t0004) (8 T_801 t0008) (C T_724 t000C) (F T_808 t000F) (10 T_732 t0010))) and (union (ui32 u0) (ptr32 u1))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00002810: error: An error occurred while processing the statement branch a2_111 - (a5 + -1324) != 0x00000000 l000027D4.
+    Pulling difference (ptr (struct (0 T_1942 t0000))) and ptr32
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00003368: error: An error occurred while processing the statement branch d0_21 - (a5 + -1100) <u 0x00000000 l0000335C.
+    Pulling difference ptr32 and ptr32
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+: error: Error when reconstructing types.
+    PprPrimitiveReplacer found a cycle in type graph.
+       at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 140
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitPointer(Pointer ptr) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 101
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
+   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
+   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
+   at Reko.Core.Types.DataTypeTransformer.VisitPointer(Pointer ptr) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 101
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.PtrPrimitiveReplacer.Replace(DataType dt) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 62
+   at Reko.Typing.PtrPrimitiveReplacer.ReplaceAll(DecompilerEventListener eventListener) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 92
+   at Reko.Typing.TypeTransformer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 265
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 99
+   at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 312
+
 === PE\MIPS\swlswr\test.exe
+=== PE\PPC\hello_ppc.exe
+*** PE\PPC\hello_ppc.exe
+hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
+00401FCC: error: An error occurred while processing the statement branch Test(NE,cond(r11_106 - (r7_4 + 12))) l00401F68.
+    Pulling difference (ptr (struct (0 T_2684 t0000))) and (union ((ptr (struct (4 T_242 t0004))) u1) (ptr32 u0))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitConditionOf(ConditionOf cof) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 270
+   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 426
+   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00402BCC: error: An error occurred while processing the statement branch Test(EQ,cond((Mem14[r31_49 + 4:word32] & -4) - (r3 + -8))) l00402BD8.
+    Pulling difference ui32 and (ptr word32)
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitConditionOf(ConditionOf cof) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 270
+   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 426
+   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00402FC8: error: An error occurred while processing the statement branch Test(LE,cond((Mem167[Mem167[r31_175 + 4:word32] + 4:word32] & -4) - r3)) l00402FFC.
+    Pulling difference ui32 and (ptr (struct (0 T_4315 t0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitConditionOf(ConditionOf cof) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 270
+   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 426
+   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+004032DC: error: An error occurred while processing the statement word32 r10_30 = r11_21 - r3.
+    Pulling difference (ptr (struct 0001 (0 byte b0000))) and (ptr (struct (0 T_4807 t0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 157
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+: warning: Type transformer has looped 51 times, quitting prematurely.
+
 === PE\x86\demo_upx\Demo.exe
 === PE\x86\import-ordinals\import-ordinals.dcproject
 === PE-x86\ExeDll\Executable.exe
