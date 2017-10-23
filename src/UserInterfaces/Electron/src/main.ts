@@ -19,6 +19,10 @@ app.on('ready', function() {
 		height: 600
 	});
 	
+	if (process.env.NODE_ENV !== 'production') {
+		require('vue-devtools').install();
+	}
+
 	mainWindow.webContents.debugger.attach();
 	mainWindow.loadURL('file://' + __dirname + '/../app/index.html');
 	mainWindow.webContents.on("crashed", event => {
