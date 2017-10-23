@@ -4,7 +4,20 @@ import $ = require("jquery");
 
 import Browser from './lib/Browser';
 import Handlebars = require("handlebars");
-import TemplateLoader from './TemplateLoader';
+//import TemplateLoader from './TemplateLoader';
+//import ComponentLoader from './ComponentLoader';
+
+import Vue from 'vue';
+import App from './components/app.vue';
+import Test from './components/test.vue';
+
+const Element = require("element-ui");
+Vue.use(Element);
+
+//const bootstrap_css = require("bootstrap.min.css");
+//const element_default = require("element-default.css");
+
+//const delims = ["<%", "%>"];
 
 var browser:Browser = new Browser();
 
@@ -26,7 +39,7 @@ function setup(){
 
 		var node = $(".reko-browser");
 
-		var tpl = TemplateLoader.LoadTemplate("main");
+		const tpl = require("./views/main.tpl");
 		$("#reko-browser")
 			.find(".reko-procedure-list")
 			.html(tpl(proj));
@@ -35,13 +48,13 @@ function setup(){
 	});
 
 	ipcRenderer.on("searchResults", (event:any, arg:object) => {
-		var tpl = TemplateLoader.LoadTemplate("searchResults");
+		const tpl = require("./views/searchResults.tpl");
 		
 		$("#search-results").html(tpl(arg));
 	});
 
 	ipcRenderer.on("reko-message", (event:any, arg:object) => {
-		var tpl = TemplateLoader.LoadTemplate("logEntry");
+		const tpl = require("./views/logEntry.tpl");
 
 		$("#reko-messages > tbody").append(tpl(arg));
 	});
@@ -55,25 +68,14 @@ function setup(){
 	});
 }
 
-function registerPartials(){
-	["main", "searchResults", "logPanel"].forEach(function(name){
-		console.log("Loading " + name);
-		var tpl = TemplateLoader.LoadTemplate(name);
-		Handlebars.registerPartial(name, tpl);
-	});
-}
-
-function registerHelpers(){
-	["switchCase"].forEach(function(name){
-		require(`./views/helpers/${name}`);
-	});
-}
-
-registerHelpers();
-registerPartials();
-
 $(document).ready(function(e){
-	var index = TemplateLoader.LoadTemplate("index");
-	$("body").html(index({}));
+	Vue.component("reko-app", App);
+	new Vue({
+	  el: '#app',
+	  template: "<reko-app />"
+	});
+
+	const index = require("./views/index.tpl");
+	$("body").append(index({}));
 	setup();
 });

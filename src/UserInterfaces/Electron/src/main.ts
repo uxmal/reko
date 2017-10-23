@@ -18,8 +18,12 @@ app.on('ready', function() {
 		width: 800,
 		height: 600
 	});
-
+	
+	mainWindow.webContents.debugger.attach();
 	mainWindow.loadURL('file://' + __dirname + '/../app/index.html');
+	mainWindow.webContents.on("crashed", event => {
+		console.log(event);
+	});
 
 	mainWindow.webContents.on("did-finish-load", function(){
 		afterInit();

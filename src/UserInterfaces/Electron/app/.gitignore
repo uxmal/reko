@@ -33,7 +33,6 @@ coverage
 
 # Bower dependency directory (https://bower.io/)
 bower_components
-components
 
 # node-waf configuration
 .lock-wscript
@@ -42,7 +41,18 @@ components
 build/Release
 
 # Dependency directories
+.DS_Store
 node_modules/
+npm-debug.log
+yarn-error.log
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
 jspm_packages/
 
 # Typescript v1 declaration files
@@ -66,6 +76,5 @@ typings/
 # dotenv environment variables file
 .env
 
-
-# Typescript generated files
+# Generated files
 generated
