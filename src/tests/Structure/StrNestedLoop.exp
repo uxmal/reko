@@ -1,6 +1,6 @@
 // fn0C00_0000
 // Return size: 0
-void fn0C00_0000(word16 bx, word16 si, word16 di)
+void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
 fn0C00_0000_entry:
 	word16 dx_24 = 0x0004
 	goto l0C00_0003
@@ -26,7 +26,7 @@ l0C00_001D:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
-void fn0C00_0000(word16 bx, word16 si, word16 di)
+void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
 {
 	word16 dx_24 = 0x0004;
 	do

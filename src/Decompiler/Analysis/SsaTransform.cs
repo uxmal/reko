@@ -110,11 +110,9 @@ namespace Reko.Analysis
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
                 this.block = b;
-                //Debug.Print("*** {0}:", b.Name);
                 foreach (var s in b.Statements.ToList())
                 {
                     this.stmCur = s;
-                    //Debug.Print("***  {0}", s.Instruction);
                     s.Instruction = s.Instruction.Accept(this);
                     if (blockstates[b].terminates)
                     {
@@ -1145,25 +1143,16 @@ namespace Reko.Analysis
                         e = new Cast(id.DataType, sidFrom.Identifier);
                     sidUse = aliasFrom.SsaId;
                 }
-                else
+                else if (aliasFrom.PrevState != null && aliasFrom.PrevState.SsaId.DefStatement != null)
                 {
-                    var brFrom = stgFrom.GetBitRange();
-                    if (aliasFrom.PrevState != null && aliasFrom.PrevState.SsaId.DefStatement != null)
-                    {
-                        sidUse = MaybeGenerateAliasStatement(aliasFrom.PrevState);
-                        e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
-                    }
-                    //else if (brFrom == liveBits)
-                    //{
-                    //    e = new Cast(id.DataType, aliasFrom.SsaId.Identifier);
-                    //    sidUse = aliasFrom.SsaId;
-                    //}
-                    else 
-                    {
-                        this.liveBits = this.liveBits - stgFrom.GetBitRange();
-                        sidUse = ReadVariableRecursive(blockstates[aliasFrom.SsaId.DefStatement.Block], true);
-                        e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
-                    }
+                    sidUse = MaybeGenerateAliasStatement(aliasFrom.PrevState);
+                    e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
+                }
+                else 
+                {
+                    this.liveBits = this.liveBits - stgFrom.GetBitRange();
+                    sidUse = ReadVariableRecursive(blockstates[aliasFrom.SsaId.DefStatement.Block], true);
+                    e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
                 }
                 var ass = new AliasAssignment(id, e);
                 var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);
@@ -1293,7 +1282,9 @@ namespace Reko.Analysis
                 var users = phi.Uses.Where(u => u != phi.DefStatement).ToList();
 
                 // Reroute all uses of phi to use same. Remove phi.
-                ReplaceBy(phi, same);
+                ReplaceBy(phi, sid);
+
+                sid.Uses.RemoveAll(u => u == phi.DefStatement);
 
                 // Remove all phi uses which may have become trivial now.
                 DebugEx.Print(trace.TraceVerbose, "Removing {0} and uses {1}", phi.Identifier.Name, string.Join(",", users));
@@ -1337,11 +1328,22 @@ namespace Reko.Analysis
                 return sid;
             }
 
-            private void ReplaceBy(SsaIdentifier sidOld, Identifier idNew)
+            private void ReplaceBy(SsaIdentifier sidOld, SsaIdentifier idNew)
             {
                 foreach (var use in sidOld.Uses.ToList())
                 {
-                    use.Instruction.Accept(new IdentifierReplacer(this.ssaIds, use, sidOld.Identifier, idNew, false));
+                    use.Instruction.Accept(new IdentifierReplacer(this.ssaIds, use, sidOld.Identifier, idNew.Identifier, false));
+                }
+                foreach (var bs in outer.blockstates.Values)
+                {
+                    AliasState alias;
+                    if (bs.currentDef.TryGetValue(sidOld.Identifier.Storage.Domain, out alias))
+                    {
+                        if (alias.SsaId == sidOld)
+                        {
+                            alias.SsaId = idNew;
+                        }
+                    }
                 }
             }
         }
@@ -1450,62 +1452,69 @@ namespace Reko.Analysis
             /// the using statements, we have to generate an alias assignment
             /// after the defining statement.
             /// </summary>
-            /// <param name="sidDef">The id of the defined flag group.</param>
             /// <returns></returns>
-            protected new SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasDef)
+            protected new SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasFrom)
             {
-                var sidDef = aliasDef.SsaId;
-                var b = sidDef.DefStatement.Block;
+                var sidFrom = aliasFrom.SsaId;
+                var b = sidFrom.DefStatement.Block;
                 var stgUse = id.Storage;
-                var stgDef = (FlagGroupStorage)sidDef.Identifier.Storage;
-                if (stgDef == stgUse)
+                var stgFrom = (FlagGroupStorage)sidFrom.Identifier.Storage;
+                if (stgFrom == stgUse)
                 {
                     // Exact match, no need for alias statement.
-                    aliasDef.Aliases[id] = sidDef;
-                    return sidDef;
+                    aliasFrom.Aliases[id] = sidFrom;
+                    return sidFrom;
                 }
 
                 Expression e = null;
                 SsaIdentifier sidUse;
-                SsaIdentifier sidPrev = null;
-                if (stgDef.Covers(stgUse))
+                if (stgFrom.Covers(stgUse))
                 {
                     // No merge needed, since all bits used 
                     // are defined by sidDef.
                     int offset = Bits.Log2(this.flagMask);
-                    e = new Slice(PrimitiveType.Bool, sidDef.Identifier, offset);
-                    sidUse = sidDef;
-                    var ass = new AliasAssignment(id, e);
-                    var sidAlias = InsertAfterDefinition(sidDef.DefStatement, ass);
-                    sidUse.Uses.Add(sidAlias.DefStatement);
-                    aliasDef.Aliases[id] = sidAlias;
-                    return sidAlias;
+                    e = new Slice(PrimitiveType.Bool, sidFrom.Identifier, offset);
+                    sidUse = sidFrom;
                 }
                 else
                 {
                     // Not all bits were set by the definition, find
                     // the remaining bits by masking off the 
                     // defined ones.
-                    var grf = this.flagGroup.FlagGroupBits & ~stgDef.FlagGroupBits;
+                    var grf = this.flagGroup.FlagGroupBits & ~stgFrom.FlagGroupBits;
                     if (grf == 0)
                         return null;
-                    var ass = new AliasAssignment(id, e);
-                    var sidAlias = InsertAfterDefinition(sidDef.DefStatement, ass);
 
-                    var flagGroupPrev = outer.arch.GetFlagGroup(grf);
-                    var idPrev = b.Procedure.Frame.EnsureFlagGroup(flagGroupPrev);
-                    idPrev = (Identifier)outer.NewUse(idPrev, sidAlias.DefStatement, true);
-                    sidUse = outer.ssa.Identifiers[sidDef.Identifier];
-                    sidPrev = outer.ssa.Identifiers[idPrev];
-                    sidUse.Uses.Add(sidAlias.DefStatement);
-                    ass.Src = new BinaryExpression(
+                    var oldGrf = this.flagGroup;
+                    var oldId = this.id;
+                    this.flagGroup = outer.arch.GetFlagGroup(grf);
+                    this.id = outer.ssa.Procedure.Frame.EnsureFlagGroup(this.flagGroup);
+                    if (aliasFrom.PrevState != null && aliasFrom.PrevState.SsaId.DefStatement != null)
+                    {
+                        sidUse = MaybeGenerateAliasStatement(aliasFrom.PrevState);
+                    }
+                    else
+                    {
+                        this.liveBits = this.liveBits - stgFrom.GetBitRange();
+                        sidUse = ReadVariableRecursive(blockstates[aliasFrom.SsaId.DefStatement.Block], true);
+                    }
+
+                    this.flagGroup = oldGrf;
+                    this.id = oldId;
+                    e = new BinaryExpression(
                         Operator.Or,
                         PrimitiveType.Bool,
-                        sidDef.Identifier,
-                        sidPrev.Identifier);
-                    aliasDef.Aliases[id] = sidAlias;
-                    return sidAlias;
+                        sidFrom.Identifier,
+                        sidUse.Identifier);
                 }
+
+                var ass = new AliasAssignment(id, e);
+                var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);
+                sidUse.Uses.Add(sidAlias.DefStatement);
+                if (e is BinaryExpression)
+                    sidFrom.Uses.Add(sidAlias.DefStatement);
+                aliasFrom.Aliases[id] = sidAlias;
+                return sidAlias;
             }
         }
 

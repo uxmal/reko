@@ -175,9 +175,7 @@ al_45: orig: al
           al_29 = PHI(al_45, al_31)
 ah_46: orig: ah
     def:  ah_46 = SLICE(ax_4, byte, 8) (alias)
-    uses: ah_25 = PHI(ah_46, ah_46)
-          al_31 = al_29 | ah_46
-          ah_25 = PHI(ah_46, ah_46)
+    uses: al_31 = al_29 | ah_46
           ah_26 = ah_46 & 0x0F
           ax_48 = DPB(ax, ah_46, 8) (alias)
 Z_52: orig: Z

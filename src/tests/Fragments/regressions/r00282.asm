@@ -1,7 +1,7 @@
 ﻿  ; reg00282
   ; As reported by xor2003
   ; The procedure should decompile as:
-  ; foo(byte al)
+  ; foo(word ax)
   ; but reko decompiles it as:
   ; foo(word ax, byte bl)
   ; which is incorrect.

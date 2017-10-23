@@ -25,7 +25,7 @@ fn0C00_0000_exit:
 // MayUse:  ds:[0..15] es:[0..15]
 // LiveOut:
 // Trashed: SCZO al cx di Top
-// Preserved: ds sp
+// Preserved: sp
 // fn0C00_0026
 // Return size: 0
 void fn0C00_0026(selector es, selector ds)

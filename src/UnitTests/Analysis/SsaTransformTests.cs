@@ -486,7 +486,9 @@ r1_9: orig: r1
     uses: r1_22 = PHI(r1, r1_9)
 Mem10: orig: Mem0
     uses: Mem12 = PHI(Mem10, Mem8)
-r63_11: orig: r63
+dwLoc04_15: orig: dwLoc04
+    def:  dwLoc04_15 = bp
+    uses: bp_13 = dwLoc04_15
 Mem12: orig: Mem0
     def:  Mem12 = PHI(Mem10, Mem8)
 bp_13: orig: bp
@@ -495,9 +497,6 @@ bp_13: orig: bp
 r63_14: orig: r63
     def:  r63_14 = fp
     uses: use r63_14
-dwLoc04_15: orig: dwLoc04
-    def:  dwLoc04_15 = bp
-    uses: bp_13 = dwLoc04_15
 wArg04:Stack +0004
     def:  def wArg04
     uses: SZC_7 = wArg04 - 0x0003
@@ -820,18 +819,18 @@ proc1_exit:
           SZ_2 = cond(esi & esi)
 SZ_2: orig: SZ
     def:  SZ_2 = cond(esi & esi)
-    uses: Z_5 = SLICE(SZ_2, bool, 1) (alias)
+    uses: Z_4 = SLICE(SZ_2, bool, 2) (alias)
 C_3: orig: C
     def:  C_3 = false
-    uses: CZ_4 = C_3 | Z_5 (alias)
-CZ_4: orig: CZ
-    def:  CZ_4 = C_3 | Z_5 (alias)
-    uses: al_6 = Test(ULE,CZ_4)
-Z_5: orig: Z
-    def:  Z_5 = SLICE(SZ_2, bool, 1) (alias)
-    uses: CZ_4 = C_3 | Z_5 (alias)
+    uses: CZ_5 = C_3 | Z_4 (alias)
+Z_4: orig: Z
+    def:  Z_4 = SLICE(SZ_2, bool, 2) (alias)
+    uses: CZ_5 = C_3 | Z_4 (alias)
+CZ_5: orig: CZ
+    def:  CZ_5 = C_3 | Z_4 (alias)
+    uses: al_6 = Test(ULE,CZ_5)
 al_6: orig: al
-    def:  al_6 = Test(ULE,CZ_4)
+    def:  al_6 = Test(ULE,CZ_5)
 // proc1
 // Return size: 0
 define proc1
@@ -840,10 +839,10 @@ proc1_entry:
 	// succ:  l1
 l1:
 	SZ_2 = cond(esi & esi)
-	Z_5 = SLICE(SZ_2, bool, 1) (alias)
+	Z_4 = SLICE(SZ_2, bool, 2) (alias)
 	C_3 = false
-	CZ_4 = C_3 | Z_5 (alias)
-	al_6 = Test(ULE,CZ_4)
+	CZ_5 = C_3 | Z_4 (alias)
+	al_6 = Test(ULE,CZ_5)
 	return
 	// succ:  proc1_exit
 proc1_exit:

@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -226,7 +227,7 @@ test_exit:
 
         [Test]
         [Category(Categories.FailedTests)]
-        [Ignore(Categories.FailedTests)]
+        //[Ignore(Categories.FailedTests)]
         public void Dfa2_UserDefinedStackArgs()
         {
             var arch = new X86ArchitectureFlat32();
@@ -247,12 +248,14 @@ test_exit:
                     m.Return();
                 });
             var program = pb.BuildProgram();
-            var platform = new FakePlatform(null, arch)
-            {
-                Test_DefaultCallingConvention = "__cdecl",
-            };
-            platform.Test_CreateImplicitArgumentRegisters = () =>
-                new HashSet<RegisterStorage>();
+            var platform = mr.Stub<IPlatform>();
+            platform.Stub(p => p.Architecture).Return(arch);
+            platform.Stub(p => p.CreateImplicitArgumentRegisters()).Return(
+                new HashSet<RegisterStorage>());
+            platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
+            platform.Stub(p => p.GetCallingConvention(null))
+                .Return(new X86CallingConvention(4, 4, 4, true, false));
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
             //platform.Test_CreateProcedureSerializer = (t, d) =>
             //{
             //    var typeLoader = new TypeLibraryDeserializer(platform, false, new TypeLibrary());
@@ -260,7 +263,8 @@ test_exit:
             //};
 
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            mr.ReplayAll();
+
             program.Platform = platform;
             var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
@@ -276,6 +280,7 @@ l1:
 test_exit:
 ";
             AssertProgram(sExp, pb.Program);
+            mr.VerifyAll();
         }
 
         [Test]
