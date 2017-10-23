@@ -149,7 +149,7 @@ namespace Reko.UnitTests.Gui.Windows
             public static TestMainFormInteractor Create()
             {
                 var services = new ServiceContainer();
-                services.AddService(typeof(IServiceFactory), new ServiceFactory(services));
+                services.AddService(typeof(IServiceFactory), new WindowsServiceFactory(services));
                 return new TestMainFormInteractor(services);
             }
 

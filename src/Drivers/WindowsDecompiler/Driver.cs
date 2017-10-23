@@ -37,7 +37,7 @@ namespace Reko.WindowsDecompiler
         public static void Main(string[] args)
         {
             var services = new ServiceContainer();
-            services.AddService(typeof(IServiceFactory), new ServiceFactory(services));
+            services.AddService(typeof(IServiceFactory), new WindowsServiceFactory(services));
             services.AddService(typeof(IDialogFactory), new WindowsFormsDialogFactory(services));
             services.AddService(typeof(IRegistryService), new WindowsFormsRegistryService());
             services.AddService(typeof(ISettingsService), new WindowsFormsSettingsService(services));

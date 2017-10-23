@@ -11,12 +11,10 @@ namespace Reko.Gui.Electron.Adapter
 {
     public class ElectronDiagnosticsService : IDiagnosticsService
     {
-        private TextWriter writer;
         private Func<object, Task<object>> jsNotify;
 
-        public ElectronDiagnosticsService(TextWriter textWriter, Func<object, Task<object>> jsNotify)
+        public ElectronDiagnosticsService( Func<object, Task<object>> jsNotify)
         {
-            this.writer = textWriter;
             this.jsNotify = jsNotify;
         }
 

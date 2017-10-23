@@ -54,7 +54,7 @@ namespace Reko.Gui.Electron.Adapter
 		    appConfigPath = input.appConfig;
 		    fileNamePath = input.fileName;
 
-		    this.diagService = new ElectronDiagnosticsService(Console.Out, (Func<object, Task<object>>)input.notify);
+		    this.diagService = new ElectronDiagnosticsService((Func<object, Task<object>>)input.notify);
 
 			var config = RekoConfigurationService.Load(this.appConfigPath);
 		    var listener = new ElectronEventListener(this.diagService);

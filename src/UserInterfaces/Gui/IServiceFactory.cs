@@ -41,7 +41,7 @@ namespace Reko.Gui
         IConfigurationService CreateDecompilerConfiguration();
         IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm);
         IDecompilerService CreateDecompilerService();
-        IDiagnosticsService CreateDiagnosticsService(ListView list);
+        IDiagnosticsService CreateDiagnosticsService(object listView);
         IDisassemblyViewService CreateDisassemblyViewService();
         IFileSystemService CreateFileSystemService();
         InitialPageInteractor CreateInitialPageInteractor();
@@ -56,119 +56,5 @@ namespace Reko.Gui
         ILoader CreateLoader();
         ICallGraphViewService CreateCallGraphViewService();
         IViewImportsService CreateViewImportService();
-    }
-
-    public class ServiceFactory : IServiceFactory
-    {
-        private IServiceProvider services;
-
-        public ServiceFactory(IServiceProvider services)
-        {
-            this.services = services;
-        }
-
-        public IArchiveBrowserService CreateArchiveBrowserService()
-        {
-            return new ArchiveBrowserService(services);
-        }
-
-        public IConfigurationService CreateDecompilerConfiguration()
-        {
-            return RekoConfigurationService.Load();
-        }
-
-        public IDiagnosticsService CreateDiagnosticsService(ListView list)
-        {
-            var d = new DiagnosticsInteractor();
-            d.Attach(list);
-            return d;
-        }
-
-        public IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm)
-        {
-            return new DecompilerShellUiService(form, dm, form.OpenFileDialog, form.SaveFileDialog, services);
-        }
-
-        public ILowLevelViewService CreateMemoryViewService()
-        {
-            return new LowLevelViewServiceImpl(services);
-        }
-
-        public IDisassemblyViewService CreateDisassemblyViewService()
-        {
-            return new DisassemblyViewServiceImpl(services);
-        }
-
-        public IDecompilerService CreateDecompilerService()
-        {
-            return new DecompilerService();
-        }
-
-        public ILoader CreateLoader()
-        {
-            return new Loader(services);
-        }
-
-        public DecompilerEventListener CreateDecompilerEventListener()
-        {
-            return new WindowsDecompilerEventListener(services);
-        }
-
-        public InitialPageInteractor CreateInitialPageInteractor()
-        {
-            return new InitialPageInteractorImpl(this.services);
-        }
-
-        public ILoadedPageInteractor CreateLoadedPageInteractor()
-        {
-            return new LoadedPageInteractor(services);
-        }
-
-        public ITypeLibraryLoaderService CreateTypeLibraryLoaderService()
-        {
-            return new TypeLibraryLoaderServiceImpl(services);
-        }
-
-        public IProjectBrowserService CreateProjectBrowserService(ITreeView treeView)
-        {
-            return new ProjectBrowserService(services, treeView);
-        }
-
-        public ISearchResultService CreateSearchResultService(ListView listView)
-        {
-            return new SearchResultServiceImpl(services, listView);
-        }
-
-        public IResourceEditorService CreateResourceEditorService()
-        {
-            return new ResourceEditorService(services);
-        }
-
-        public ITabControlHostService CreateTabControlHost(TabControl tabControl)
-        {
-            return new TabControlHost(services, tabControl);
-        }
-
-        public IUiPreferencesService CreateUiPreferencesService()
-        {
-            var configSvc = services.RequireService<IConfigurationService>();
-            var settingsSvc = services.RequireService<ISettingsService>();
-            return new UiPreferencesService(configSvc, settingsSvc);
-        }
-
-        public IFileSystemService CreateFileSystemService()
-        {
-            return new FileSystemServiceImpl();
-        }
-
-        public ICallGraphViewService CreateCallGraphViewService()
-        {
-            return new CallGraphViewService(services);
-        }
-
-        public IViewImportsService CreateViewImportService()
-        {
-            return new ViewImportsService(services);
-        }
     }
 }

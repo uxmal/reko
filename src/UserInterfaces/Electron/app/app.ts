@@ -4,6 +4,7 @@ import $ = require("jquery");
 
 import Browser from './lib/Browser';
 import Handlebars = require("handlebars");
+//$CLEANUP
 //import TemplateLoader from './TemplateLoader';
 //import ComponentLoader from './ComponentLoader';
 
@@ -12,8 +13,9 @@ import App from './components/app.vue';
 import Test from './components/test.vue';
 
 const Element = require("element-ui");
-Vue.use(Element);
+Vue.use(Element); //we want to use widgets from element-ui
 
+//$CLEANUP
 //const bootstrap_css = require("bootstrap.min.css");
 //const element_default = require("element-default.css");
 
@@ -75,6 +77,7 @@ $(document).ready(function(e){
 	  template: "<reko-app />"
 	});
 
+	//$CLEANUP: Remove once we complete vuejs
 	const index = require("./views/index.tpl");
 	$("body").append(index({}));
 	setup();

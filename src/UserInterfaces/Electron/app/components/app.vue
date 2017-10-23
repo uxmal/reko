@@ -13,7 +13,7 @@ import Test from './test.vue';
 
 @Component({
   components: {
-    Test: Test
+    foo: Test
   }
 })
 export default class App extends Vue {

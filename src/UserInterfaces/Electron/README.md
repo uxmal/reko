@@ -9,14 +9,5 @@ npm install -g typescript electron electron-packager node-gyp
 which installs global dependencies. Then run
 ```
 npm install
-pushd node_modules\electron-edge
-node-gyp clean
-node-gyp configure build --target=1.8.1 --dist-url=https://atom.io/download/atom-shell --msvs_version=2015
-
-node-gyp clean
-node-gyp configure build --target=1.7.8 --dist-url=https://atom.io/download/atom-shell
-
-popd
-cd app && npm install
 ```
 
