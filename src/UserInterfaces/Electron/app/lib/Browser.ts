@@ -5,17 +5,20 @@ export default class Browser {
 	constructor(){}
 
 	public update(): any {
-		$(".procedure").click(this.onProcedureClick);
+		$(".procedure")
+			.off("click")
+			.click(this.onProcedureClick);
 	}
 
 	public onProcedureClick(): any {
 		var proc = $(this);
 		var addr = proc
 			.find("a")
-			.attr("href");
+			.data("address");
 
 		var programName = proc
 			.parent()
+			.find(".program-name")
 			.text();
 
 		ipcRenderer.send("getProcedure", {

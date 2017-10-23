@@ -6,8 +6,10 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Loading;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -70,6 +72,7 @@ namespace Reko.Gui.Electron.Adapter
 				Decompile = (Func<object, Task<object>>)Decompile,
 				RenderProcedure = (Func<object, Task<object>>)RenderProcedure,
                 RenderProjectJson = (Func<object, Task<object>>)RenderProjectJson,
+				ShowSearchResult = (Func<object, Task<object>>)ShowSearchResult
 			};
 	    }
 
@@ -89,6 +92,34 @@ namespace Reko.Gui.Electron.Adapter
             return await Task.FromResult(project.Programs[0].Name);
         }
 
+	    public async Task<object> ShowSearchResult(dynamic input) {
+		    string command = (string) input.command;
+		    var searchResult = new {
+			    header = new {
+				    cssclass = "srHeader",
+				    columns = new[] {
+					    new {
+						    title = "Address",
+						    cssclass = "addrColumn"
+					    },
+					    new {
+						    title = "Bytes",
+						    cssclass = "bytecolumn"
+					    },
+					    new {
+						    title = "Text",
+						    cssclass = "textColumn"
+					    }
+				    },
+			    },
+			    data = new[] {
+				    new object[] {"00123400", "61 62 63 64", "abcd[wers..."},
+				    new object[] {"00123508", "31 32 33 34", "12345678...."},
+			    }
+		    };
+		    return searchResult;
+	    }
+
 		/// <summary>
 		/// Renders a procedure as HTML
 		/// </summary>
@@ -99,18 +130,24 @@ namespace Reko.Gui.Electron.Adapter
             string sProgramProcedure = (string)input;
             var a = sProgramProcedure.Split(':');
             var sProgram = a[0];
-            var sProcedure = a[1];
+            var sAddr = a[1];
 
-
-            var program = (from p in project.Programs
+			// It should be impossible for the statement below to fail
+			// because it should be using the name of the program that 
+			// was passed to it when reko first returned the tree.
+			var program = (from p in project.Programs
                            where p.Name == sProgram
                            select p).Single();
-
-			program.Architecture.TryParseAddress(sProcedure, out Address procAddr);
-
-			var proc = (from p in program.Procedures
-                        where p.Key == procAddr
-                        select p.Value).Single();
+			Address addr;
+			if (!program.Architecture.TryParseAddress(sAddr, out addr))
+			{
+				throw new ArgumentException(string.Format("Invalid address '{0}' supplied.", sAddr));
+			}
+			Procedure proc;
+			if (!program.Procedures.TryGetValue(addr, out proc)) 
+			{
+				throw new ArgumentException(string.Format("No known procedure at address {0}.", addr));
+			}
             var html = RenderProcedureToHtml(program, proc);
             return await Task.FromResult(html);
         }

@@ -601,6 +601,11 @@ namespace Reko.Core.Expressions
             return Constant.Word32(n);
         }
 
+        public Constant Word32(uint n)
+        {
+            return Constant.Word32(n);
+        }
+
         public Constant Word(int byteSize, long n)
         {
             return Constant.Word(byteSize, n);
