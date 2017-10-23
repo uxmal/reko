@@ -27,7 +27,7 @@ export default class App extends Vue {
 }
 </script>
 
-<style>
+<style scoped>
 @import "./style.css";
 @import "~bootstrap.min.css";
 @import "~element-default.css";
