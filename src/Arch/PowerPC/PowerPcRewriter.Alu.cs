@@ -568,18 +568,18 @@ namespace Reko.Arch.PowerPC
             uint maskEnd = 1u << (31 - me);
             uint mask = maskBegin - maskEnd;
 
-//Extract and left justify immediate 	extlwi RA, RS, n, b 	rlwinm RA, RS, b, 0, n-1             	32 > n > 0
-//Extract and right justify immediate 	extrwi RA, RS, n, b 	rlwinm RA, RS, b+n, 32-n, 31 	        32 > n > 0 & b+n =< 32
-//Insert from left immediate         	inslwi RA, RS, n, b 	rlwinm RA, RS, 32-b, b, (b+n)-1 	    b+n <=32 & 32>n > 0 & 32 > b >= 0
-//Insert from right immediate       	insrwi RA, RS, n, b 	rlwinm RA, RS, 32-(b+n), b, (b+n)-1 	b+n <= 32 & 32>n > 0
-//Rotate left immediate             	rotlwi RA, RS, n    	rlwinm RA, RS, n, 0, 31 	            32 > n >= 0
-//Rotate right immediate            	rotrwi RA, RS, n    	rlwinm RA, RS, 32-n, 0, 31 	            32 > n >= 0
-//Rotate left                       	rotlw RA, RS, b      	rlwinm RA, RS, RB, 0, 31             	None
-//Shift left immediate              	slwi RA, RS, n       	rlwinm RA, RS, n, 0, 31-n 	            32 > n >= 0
-//Shift right immediate             	srwi RA, RS, n      	rlwinm RA, RS, 32-n, n, 31 	            32 > n >= 0
-//Clear left immediate              	clrlwi RA, RS, n     	rlwinm RA, RS, 0, n, 31 	            32 > n >= 0
-//Clear right immediate             	clrrwi RA, RS, n     	rlwinm RA, RS, 0, 0, 31-n 	            32 > n >= 0
-//Clear left and shift left immediate 	clrslwi RA, RS, b, n 	rlwinm RA, RS, b-n, 31-n 	            b-n >= 0 & 32 > n >= 0 & 32 > b>= 0
+            //Extract and left justify immediate 	extlwi RA, RS, n, b 	rlwinm RA, RS, b, 0, n-1             	32 > n > 0
+            //Extract and right justify immediate 	extrwi RA, RS, n, b 	rlwinm RA, RS, b+n, 32-n, 31 	        32 > n > 0 & b+n =< 32
+            //Insert from left immediate         	inslwi RA, RS, n, b 	rlwinm RA, RS, 32-b, b, (b+n)-1 	    b+n <=32 & 32>n > 0 & 32 > b >= 0
+            //Insert from right immediate       	insrwi RA, RS, n, b 	rlwinm RA, RS, 32-(b+n), b, (b+n)-1 	b+n <= 32 & 32>n > 0
+            //Rotate left immediate             	rotlwi RA, RS, n    	rlwinm RA, RS, n, 0, 31 	            32 > n >= 0
+            //Rotate right immediate            	rotrwi RA, RS, n    	rlwinm RA, RS, 32-n, 0, 31 	            32 > n >= 0
+            //Rotate left                       	rotlw RA, RS, b      	rlwinm RA, RS, RB, 0, 31             	None
+            //Shift left immediate              	slwi RA, RS, n       	rlwinm RA, RS, n, 0, 31-n 	            32 > n >= 0
+            //Shift right immediate             	srwi RA, RS, n      	rlwinm RA, RS, 32-n, n, 31 	            32 > n >= 0
+            //Clear left immediate              	clrlwi RA, RS, n     	rlwinm RA, RS, 0, n, 31 	            32 > n >= 0
+            //Clear right immediate             	clrrwi RA, RS, n     	rlwinm RA, RS, 0, 0, 31-n 	            32 > n >= 0
+            //Clear left and shift left immediate 	clrslwi RA, RS, b, n 	rlwinm RA, RS, b-n, 31-n 	            b-n >= 0 & 32 > n >= 0 & 32 > b>= 0
             if (sh == 0)
             {
                 m.Assign(rd, m.And(rs, Constant.UInt32(mask)));
@@ -587,10 +587,10 @@ namespace Reko.Arch.PowerPC
             }
             else if (mb == 32 - sh && me == 31)
             {
-                m.Assign(rd, m.Shr(rs, (byte)(32-sh)));
+                m.Assign(rd, m.Shr(rs, (byte)(32 - sh)));
                 return;
             }
-            else if (mb == 0 && me == 31-sh)
+            else if (mb == 0 && me == 31 - sh)
             {
                 m.Assign(rd, m.Shl(rs, sh));
                 return;
@@ -630,22 +630,32 @@ namespace Reko.Arch.PowerPC
                     // [                        m.]
 
                     m.Assign(rd, m.And(
-                        m.Shr(rs, Constant.Byte((byte)(32-sh))),
+                        m.Shr(rs, Constant.Byte((byte)(32 - sh))),
                         Constant.Word32(mask)));
                     return;
                 }
             }
             else
-                throw new AddressCorrelatedException(dasm.Current.Address, "{0} not handled yet.", dasm.Current);
+            {
+                //$TODO: yeah, this one is hard...
+                m.Assign(rd,
+                    host.PseudoProcedure(
+                        "__rlwinm",
+                        PrimitiveType.Word32,
+                        rs,
+                        Constant.Byte(sh),
+                        Constant.Byte(mb),
+                        Constant.Byte(me)));
+            }
 
-//Error,10034E20,rlwinm	r9,r31,1D,1B,1D not handled yet.
-//Error,10028B50,rlwinm	r8,r8,04,18,1B not handled yet.
-//Error,1002641C,rlwinm	r4,r4,04,18,1B not handled yet.
-//Error,10026364,rlwinm	r4,r4,04,18,1B not handled yet.
-//Error,1003078C,rlwinm	r8,r8,04,1A,1B not handled yet.
-//Error,100294D4,rlwinm	r0,r0,04,18,1B not handled yet.
-//Error,100338A0,rlwinm	r4,r11,08,08,0F not handled yet.
-
+            //Error,10034E20,rlwinm	r9,r31,1D,1B,1D not handled yet.
+            //Error,10028B50,rlwinm	r8,r8,04,18,1B not handled yet.
+            //Error,1002641C,rlwinm	r4,r4,04,18,1B not handled yet.
+            //Error,10026364,rlwinm	r4,r4,04,18,1B not handled yet.
+            //Error,1003078C,rlwinm	r8,r8,04,1A,1B not handled yet.
+            //Error,100294D4,rlwinm	r0,r0,04,18,1B not handled yet.
+            //Error,100338A0,rlwinm	r4,r11,08,08,0F not handled yet.
+            //rlwinm	r12,r2,09,1D,09 
         }
 
         public void RewriteRlwnm()

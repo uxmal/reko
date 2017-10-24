@@ -31,7 +31,7 @@ namespace Reko.UnitTests.Arch.PowerPC
     [TestFixture]
     public class PowerPcDisassemblerTests : DisassemblerTestBase<PowerPcInstruction>
     {
-        private PowerPcArchitecture arch = new PowerPcBe32Architecture();
+        private PowerPcArchitecture arch;
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
@@ -60,6 +60,18 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             var instr = DisassembleBits(bits);
             Assert.AreEqual(expected, instr.ToString());
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            this.arch = new PowerPcBe32Architecture();
+
+        }
+
+        private void Given_PowerPcBe64()
+        {
+            this.arch = new PowerPcBe64Architecture();
         }
 
         [Test]
@@ -652,6 +664,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_rldicl()
         {
+            Given_PowerPcBe64();
             AssertCode(0x790407c0, "rldicl\tr4,r8,00,1F");
             AssertCode(0x790407E0, "rldicl\tr4,r8,00,3F");
             AssertCode(0x7863e102, "rldicl\tr3,r3,3C,04");

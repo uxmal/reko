@@ -75,8 +75,8 @@ namespace Reko.Arch.PowerPC
                     host.Error(
                         instr.Address, 
                         string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
-                    m.Invalid();
-                    break;
+                    goto case Opcode.illegal;
+                case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
                 case Opcode.addi: RewriteAddi(); break;
                 case Opcode.addc: RewriteAddc(); break;
                 case Opcode.addic: RewriteAddic(); break;
@@ -171,6 +171,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.lfs: RewriteLfs(); break;
                 case Opcode.lfsx: RewriteLzx(PrimitiveType.Real32); break;
                 case Opcode.lha: RewriteLha(); break;
+                case Opcode.lhax: RewriteLhax(); break;
                 case Opcode.lhau: RewriteLhau(); break;
                 case Opcode.lhaux: RewriteLhaux(); break;
                 case Opcode.lhz: RewriteLz(PrimitiveType.Word16); break;

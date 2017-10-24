@@ -1323,7 +1323,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0x44c3);
             AssertCode(     // move\td3,ccr
                 "0|L--|00010000(2): 1 instructions",
-                "1|L--|ccr = d3");
+                "1|L--|ccr = (word16) d3");
         }
 
         [Test]
@@ -1355,6 +1355,20 @@ namespace Reko.UnitTests.Arch.M68k
                 "2|L--|d3 = d3 / d0",
                 "3|L--|VZN = cond(d3)",
                 "4|L--|C = false");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_clrw_regression()
+        {
+            Rewrite(0x4270, 0xA9A0, 0x0C97);    //  clr.w (+0C97, a2)
+            AssertCode(
+                "0|L--|00010000(6): 5 instructions",
+                "1|L--|Mem0[a2 + 3223:word16] = 0x0000",
+                "2|L--|Z = true",
+                "3|L--|C = false",
+                "4|L--|N = false",
+                "5|L--|V = false");
         }
     }
 }

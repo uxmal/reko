@@ -3148,9 +3148,9 @@ l0000000000404A70:
 l0000000000404A78:
 	if (SZO_161)
 	{
-		if (al_100 != 0x00 && al_100 != 0x3A)
-			goto l0000000000404B60;
-		goto l0000000000404B4D;
+		if (al_100 == 0x00 || al_100 == 0x3A)
+			break;
+		goto l0000000000404B60;
 	}
 	if (al_100 != 0x5C)
 	{
@@ -3195,7 +3195,13 @@ l0000000000404B60:
 l0000000000404B29:
 	word32 eax_200 = (word32) Mem0[rax_106 + 0x00:byte];
 	byte al_202 = (byte) eax_200;
-	if (al_202 >u 0x78)
+	if (al_202 <=u 0x78)
+	{
+		rcx = DPB(rcx, (word32) al_202, 0);
+		rax_106 = 0x06;
+		eax_211 = 0x06;
+	}
+	else
 	{
 		r11_117 = (uint64) eax_200;
 		r11d_118 = (word32) r11_117;
@@ -3205,20 +3211,10 @@ l0000000000404B29:
 		r9_105 = r9_105 + 0x01;
 		rax_106 = 0x00;
 		eax_211 = 0x00;
-		goto l0000000000404BB0;
 	}
-	rcx = DPB(rcx, (word32) al_202, 0);
-	rax_106 = 0x06;
-	eax_211 = 0x06;
-	switch (rcx)
-	{
-	case 0x00:
-l0000000000404BB0:
-		r8_103 = r8_103 + 0x01;
-		if (eax_211 <=u 0x04)
-			goto l0000000000404A06;
-		break;
-	}
+	r8_103 = r8_103 + 0x01;
+	if (eax_211 <=u 0x04)
+		goto l0000000000404A06;
 l0000000000404A38:
 	Mem76[r15 + 0x00:word64] = r9_105;
 	Mem77[r14 + 0x00:word64] = r8_103;
@@ -13224,9 +13220,20 @@ word64 fn000000000040D8A0(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word64
 		}
 		break;
 	case 0x03:
-		if (al_101 == 0x00)
-			goto l000000000040DF5B;
-		goto l000000000040E428;
+		if (al_101 != 0x00)
+			goto l000000000040E428;
+		if (rsi != 0x00)
+		{
+			Mem1863[rdi + 0x00:byte] = 0x22;
+			rsi_1039 = 0x01;
+			rbx_1036 = 0x01;
+		}
+		else
+		{
+			rsi_1039 = 0x01;
+			rbx_1036 = 0x01;
+		}
+		break;
 	case 0x04:
 		rsi_1039 = 0x01;
 		rbx_1036 = 0x00;
@@ -14362,111 +14369,102 @@ l000000000040EDA1:
 						dil_643 = (byte) (word32) Mem0[rbx_139 + 0x00:byte];
 					}
 					word64 r8_712;
-					if (dil_643 >u 122)
-					{
-						r8_712 = rbx_139;
-						goto l000000000040F39F;
-					}
-					else
+					if (dil_643 <=u 122)
 					{
 						r8_712 = r11_1012 - 0x01;
 						dil_643 = (byte) (word32) Mem0[rbx_139 - 0x01 + 0x00:byte];
-						switch (DPB(rdx_679, (word32) dil_643, 0))
-						{
-						case 0x00:
-l000000000040F39F:
-							word64 r15_719;
-							if (dil_643 == 0x25)
-							{
-								*r15Out = r8_712;
-								rcx = 0x01;
-								cl = 0x01;
-							}
-							else
-							{
-								word64 rax_898 = r8_712 - 0x01;
-								word32 ecx_903 = 0x01;
-								do
-								{
-									*r15Out = rax_898;
-									rax_898 = rax_898 - 0x01;
-									ecx_903 = (word32) (uint64) (ecx_903 + 0x01);
-								} while (Mem0[rax_898 + 0x01:byte] != 0x25);
-								rcx = (int64) ecx_903;
-								cl = (byte) rcx;
-							}
-							word64 r8_720 = r8_712;
-							*r8Out = r8_720;
-							word64 rax_727 = 0x00;
-							byte al_729 = 0x00;
-							if (ebp_678 >= 0x00)
-							{
-								rax_727 = (uint64) ebp_678;
-								al_729 = (byte) ebp_678;
-							}
-							rax_215 = DPB(rax_727, (int16) al_729, 0);
-							rbx_139 = rax_215;
-							if (rcx >=u rax_215)
-								rbx_139 = rcx;
-							if (rbx_139 >=u r14_1029 - r13_1021)
-								goto l000000000040EE98;
-							break;
-						}
-						if (r12_1020 != 0x00)
-						{
-							if (rax_215 >u rcx)
-							{
-								Mem847[rsp_138 + 0x30:word64] = rcx;
-								Mem848[rsp_138 + 0x28:word32] = r9d;
-								Mem853[rsp_138 + 0x18:word64] = r8_712;
-								word64 rbp_849 = (int64) ebp_678 - rcx;
-								if (r11d != 0x30)
-								{
-									rax_215 = memset(r12_1020, 0x20, rbp_849);
-									r9 = (uint64) Mem853[rsp_138 + 0x28:word32];
-									*r9Out = r9;
-									r12_1020 = r12_1020 + rbp_849;
-									rcx = Mem853[rsp_138 + 0x30:word64];
-									r9d = (word32) r9;
-									r9b_629 = (byte) r9;
-									r8_720 = Mem853[rsp_138 + 0x18:word64];
-								}
-								else
-								{
-									rax_215 = memset(r12_1020, 0x30, rbp_849);
-									r9 = (uint64) Mem853[rsp_138 + 0x28:word32];
-									*r9Out = r9;
-									r12_1020 = r12_1020 + rbp_849;
-									r8_720 = Mem853[rsp_138 + 0x18:word64];
-									r9d = (word32) r9;
-									r9b_629 = (byte) r9;
-									rcx = Mem853[rsp_138 + 0x30:word64];
-								}
-							}
-							Mem804[rsp_138 + 0x28:word64] = r8_720;
-							Mem808[rsp_138 + 0x18:word64] = rcx;
-							if (r9b_629 != 0x00)
-							{
-								word32 ebp_828;
-								rax_215 = fn000000000040EC80(rax_215, rcx, r15_719, r12_1020, qwLoc04, out rsp_138, out ebp_828, out r12_1020);
-								rcx = Mem808[rsp_138 + 0x18:word64];
-								cl = (byte) rcx;
-								word64 r8_837;
-								*r8Out = Mem808[rsp_138 + 0x28:word64];
-							}
-							else
-							{
-								rax_215 = memcpy(r12_1020, r15_719, rcx);
-								rcx = Mem808[rsp_138 + 0x18:word64];
-								word64 r8_842;
-								*r8Out = Mem808[rsp_138 + 0x28:word64];
-								cl = (byte) rcx;
-							}
-							*r12Out = r12_1020 + rcx;
-						}
-						*r13Out = r13_1021 + rbx_139;
-						goto l000000000040ED74;
 					}
+					else
+						r8_712 = rbx_139;
+					word64 r15_719;
+					if (dil_643 == 0x25)
+					{
+						*r15Out = r8_712;
+						rcx = 0x01;
+						cl = 0x01;
+					}
+					else
+					{
+						word64 rax_898 = r8_712 - 0x01;
+						word32 ecx_903 = 0x01;
+						do
+						{
+							*r15Out = rax_898;
+							rax_898 = rax_898 - 0x01;
+							ecx_903 = (word32) (uint64) (ecx_903 + 0x01);
+						} while (Mem0[rax_898 + 0x01:byte] != 0x25);
+						rcx = (int64) ecx_903;
+						cl = (byte) rcx;
+					}
+					word64 r8_720 = r8_712;
+					*r8Out = r8_720;
+					word64 rax_727 = 0x00;
+					byte al_729 = 0x00;
+					if (ebp_678 >= 0x00)
+					{
+						rax_727 = (uint64) ebp_678;
+						al_729 = (byte) ebp_678;
+					}
+					rax_215 = DPB(rax_727, (int16) al_729, 0);
+					rbx_139 = rax_215;
+					if (rcx >=u rax_215)
+						rbx_139 = rcx;
+					if (rbx_139 >=u r14_1029 - r13_1021)
+						goto l000000000040EE98;
+					if (r12_1020 != 0x00)
+					{
+						if (rax_215 >u rcx)
+						{
+							Mem847[rsp_138 + 0x30:word64] = rcx;
+							Mem848[rsp_138 + 0x28:word32] = r9d;
+							Mem853[rsp_138 + 0x18:word64] = r8_712;
+							word64 rbp_849 = (int64) ebp_678 - rcx;
+							if (r11d != 0x30)
+							{
+								rax_215 = memset(r12_1020, 0x20, rbp_849);
+								r9 = (uint64) Mem853[rsp_138 + 0x28:word32];
+								*r9Out = r9;
+								r12_1020 = r12_1020 + rbp_849;
+								rcx = Mem853[rsp_138 + 0x30:word64];
+								r9d = (word32) r9;
+								r9b_629 = (byte) r9;
+								r8_720 = Mem853[rsp_138 + 0x18:word64];
+							}
+							else
+							{
+								rax_215 = memset(r12_1020, 0x30, rbp_849);
+								r9 = (uint64) Mem853[rsp_138 + 0x28:word32];
+								*r9Out = r9;
+								r12_1020 = r12_1020 + rbp_849;
+								r8_720 = Mem853[rsp_138 + 0x18:word64];
+								r9d = (word32) r9;
+								r9b_629 = (byte) r9;
+								rcx = Mem853[rsp_138 + 0x30:word64];
+							}
+						}
+						Mem804[rsp_138 + 0x28:word64] = r8_720;
+						Mem808[rsp_138 + 0x18:word64] = rcx;
+						if (r9b_629 != 0x00)
+						{
+							word32 ebp_828;
+							rax_215 = fn000000000040EC80(rax_215, rcx, r15_719, r12_1020, qwLoc04, out rsp_138, out ebp_828, out r12_1020);
+							rcx = Mem808[rsp_138 + 0x18:word64];
+							cl = (byte) rcx;
+							word64 r8_837;
+							*r8Out = Mem808[rsp_138 + 0x28:word64];
+						}
+						else
+						{
+							rax_215 = memcpy(r12_1020, r15_719, rcx);
+							rcx = Mem808[rsp_138 + 0x18:word64];
+							word64 r8_842;
+							*r8Out = Mem808[rsp_138 + 0x28:word64];
+							cl = (byte) rcx;
+						}
+						*r12Out = r12_1020 + rcx;
+					}
+					*r13Out = r13_1021 + rbx_139;
+					goto l000000000040ED74;
 				}
 			}
 			if (r14_1029 - r13_1021 <=u 0x01)
@@ -15082,9 +15080,11 @@ l0000000000410FD5:
 			switch (DPB(rdx_317, (word32) dl_320, 0))
 			{
 			case 0x00:
-				if (rbx_213 <=u rax_314)
-					goto l0000000000411210;
-				goto l0000000000411283;
+				if (rbx_213 >u rax_314)
+					goto l0000000000411283;
+				rbx_213 = rbx_213 << 0x0A;
+				edx_333 = 0x00;
+				goto l0000000000411038;
 			case 0x01:
 			case 0x02:
 			case 0x04:
@@ -15148,7 +15148,7 @@ l0000000000411028:
 					edx_333 = (word32) (uint64) (edx_333 | r8d_402);
 					esi_395 = (word32) rsi_298;
 				} while (esi_395 == 0x00);
-				break;
+				goto l0000000000411038;
 			case 0x05:
 			case 0x25:
 				rsi_298 = (int64) eax_315;
@@ -15170,22 +15170,38 @@ l0000000000411028:
 					edx_333 = (word32) (uint64) (edx_333 | r8d_402);
 					edi_463 = (word32) (uint64) (edi_463 - 0x01);
 				} while (edi_463 != 0x00);
-				break;
+				goto l0000000000411038;
 			case 0x09:
 			case 0x29:
 				rdi_529 = (int64) eax_315;
 				rsi_298 = ~0x00;
-				if (rbx_213 >u (uint64) (0xFFFFFFFFFFFFFFFF /u rdi_529))
-					goto l00000000004111B5;
-				goto l0000000000411193;
+				if (rbx_213 <=u (uint64) (0xFFFFFFFFFFFFFFFF /u rdi_529))
+					goto l0000000000411193;
+				rbx_213 = ~0x00;
+				edx_333 = 0x01;
+				goto l0000000000411038;
 			case 11:
 			case 0x2B:
 				rdi_529 = (int64) eax_315;
 				rsi_298 = ~0x00;
 				word64 rax_567 = (uint64) (0xFFFFFFFFFFFFFFFF /u rdi_529);
 				if (rbx_213 <=u rax_567)
-					goto l0000000000411186;
-				goto l00000000004112A3;
+				{
+					rbx_213 = rbx_213 *s rdi_529;
+					if (rax_567 <u rbx_213)
+						goto l00000000004112A3;
+l0000000000411193:
+					rsi_298 = ~0x00;
+					rbx_213 = rbx_213 *s rdi_529;
+					edx_333 = 0x00;
+				}
+				else
+				{
+l00000000004112A3:
+					edx_333 = 0x01;
+					rbx_213 = ~0x00;
+				}
+				break;
 			case 0x0E:
 				rsi_298 = (int64) eax_315;
 				word64 rax_594 = (uint64) (0xFFFFFFFFFFFFFFFF /u rsi_298);
@@ -15274,16 +15290,27 @@ l0000000000411028:
 				} while (esi_802 == 0x00);
 				break;
 			case 0x20:
-				if (rbx_213 <=u rax_314)
-					goto l0000000000411077;
-				goto l0000000000411283;
+				if (rbx_213 >u rax_314)
+					goto l0000000000411283;
+				rbx_213 = rbx_213 << 0x09;
+				edx_333 = 0x00;
+				break;
 			case 33:
 				edx_333 = 0x00;
 				break;
 			case 0x35:
 				if (rbx_213 >= 0x00)
-					goto l000000000041105D;
-				goto l0000000000411283;
+				{
+					rbx_213 = rbx_213 * 0x02;
+					edx_333 = 0x00;
+				}
+				else
+				{
+l0000000000411283:
+					rbx_213 = ~0x00;
+					edx_333 = 0x01;
+				}
+				break;
 			}
 l0000000000411038:
 			rbp_240 = (uint64) (ebp_238 | edx_333);
@@ -15549,9 +15576,11 @@ l00000000004114AD:
 			case 0x00:
 				word64 r8_442 = 0xFFFFFFFF;
 				*r8Out = r8_442;
-				if (rbx_1057 <=u rax_382)
-					goto l00000000004116E8;
-				goto l000000000041175B;
+				if (rbx_1057 >u rax_382)
+					goto l000000000041175B;
+				rbx_1057 = rbx_1057 << 0x0A;
+				edx_403 = 0x00;
+				goto l0000000000411510;
 			case 0x01:
 			case 0x02:
 			case 0x04:
@@ -15617,7 +15646,7 @@ l0000000000411500:
 					edx_403 = (word32) (uint64) (edx_403 | r8d_284);
 					esi_466 = (word32) rsi_366;
 				} while (esi_466 == 0x00);
-				break;
+				goto l0000000000411510;
 			case 0x05:
 			case 0x25:
 				rsi_366 = (int64) eax_383;
@@ -15641,22 +15670,38 @@ l0000000000411500:
 					edx_403 = (word32) (uint64) (edx_403 | r8d_284);
 					edi_534 = (word32) (uint64) (edi_534 - 0x01);
 				} while (edi_534 != 0x00);
-				break;
+				goto l0000000000411510;
 			case 0x09:
 			case 0x29:
 				rdi_600 = (int64) eax_383;
 				rsi_366 = ~0x00;
-				if (rbx_1057 >u (uint64) (0xFFFFFFFFFFFFFFFF /u rdi_600))
-					goto l000000000041168D;
-				goto l000000000041166B;
+				if (rbx_1057 <=u (uint64) (0xFFFFFFFFFFFFFFFF /u rdi_600))
+					goto l000000000041166B;
+				rbx_1057 = ~0x00;
+				edx_403 = 0x01;
+				goto l0000000000411510;
 			case 11:
 			case 0x2B:
 				rdi_600 = (int64) eax_383;
 				rsi_366 = ~0x00;
 				word64 rax_638 = (uint64) (0xFFFFFFFFFFFFFFFF /u rdi_600);
 				if (rbx_1057 <=u rax_638)
-					goto l000000000041165E;
-				goto l000000000041177B;
+				{
+					rbx_1057 = rbx_1057 *s rdi_600;
+					if (rax_638 <u rbx_1057)
+						goto l000000000041177B;
+l000000000041166B:
+					rsi_366 = ~0x00;
+					rbx_1057 = rbx_1057 *s rdi_600;
+					edx_403 = 0x00;
+				}
+				else
+				{
+l000000000041177B:
+					edx_403 = 0x01;
+					rbx_1057 = ~0x00;
+				}
+				break;
 			case 0x0E:
 				rsi_366 = (int64) eax_383;
 				word64 rax_665 = (uint64) (0xFFFFFFFFFFFFFFFF /u rsi_366);
@@ -15755,16 +15800,27 @@ l0000000000411500:
 			case 0x20:
 				word64 r8_930 = 0xFFFFFFFF;
 				*r8Out = r8_930;
-				if (rbx_1057 <=u rax_382)
-					goto l000000000041154F;
-				goto l000000000041175B;
+				if (rbx_1057 >u rax_382)
+					goto l000000000041175B;
+				rbx_1057 = rbx_1057 << 0x09;
+				edx_403 = 0x00;
+				break;
 			case 33:
 				edx_403 = 0x00;
 				break;
 			case 0x35:
 				if (rbx_1057 >= 0x00)
-					goto l0000000000411535;
-				goto l000000000041175B;
+				{
+					rbx_1057 = rbx_1057 * 0x02;
+					edx_403 = 0x00;
+				}
+				else
+				{
+l000000000041175B:
+					rbx_1057 = ~0x00;
+					edx_403 = 0x01;
+				}
+				break;
 			}
 l0000000000411510:
 			rbp_1009 = (uint64) (ebp_1010 | edx_403);
