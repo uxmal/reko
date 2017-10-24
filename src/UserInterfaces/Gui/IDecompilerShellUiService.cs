@@ -38,6 +38,7 @@ namespace Reko.Gui
         IWindowFrame FindDocumentWindow(string documentType, object docItem);
         ContextMenu GetContextMenu(int menuID);
         DialogResult ShowModalDialog(IDialog dlg);
+        void WithWaitCursor(Action p);
     }
 
     public enum DialogResult

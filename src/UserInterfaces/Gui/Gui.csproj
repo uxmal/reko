@@ -307,6 +307,7 @@
       <DependentUpon>JumpTableDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\JumpTableInteractor.cs" />
+    <Compile Include="Windows\Forms\MainFormInteractor.cs" />
     <Compile Include="Windows\Forms\TextEncodingDialog.cs">
       <SubType>Form</SubType>
     </Compile>

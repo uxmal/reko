@@ -194,6 +194,19 @@ namespace Reko.Gui.Windows
             return ct.Execute(cmdId);
         }
 
+        public void WithWaitCursor(Action action)
+        {
+            var cursor = Cursor.Current;
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                action();
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Arrow;
+            }
+        }
 
         /// <summary>
         /// Window frames host IWindowPanes.

@@ -23,11 +23,10 @@ using Reko.Core;
 using Reko.Core.Services;
 using Reko.Core.Configuration;
 using Reko.Gui;
-using Reko.Gui.Forms;
 using Reko.Gui.Windows;
+using Reko.Gui.Windows.Forms;
 using System;
 using System.ComponentModel.Design;
-using System.Windows.Forms;
 
 namespace Reko.WindowsDecompiler
 {

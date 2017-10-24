@@ -36,8 +36,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Windows.Forms;
-//using System.Windows.Forms;
 using System.Xml;
 
 namespace Reko.Gui.Forms
@@ -52,9 +50,10 @@ namespace Reko.Gui.Forms
         DecompilerHost,
         IStatusBarService
     {
+        protected IDecompilerShellUiService uiSvc;
+        protected DecompilerMenus dm;
         private IMainForm form;
         private IDecompilerService decompilerSvc;
-        private IDecompilerShellUiService uiSvc;
         private IDiagnosticsService diagnosticsSvc;
         private ISearchResultService srSvc;
         private IWorkerDialogService workerDlgSvc;
@@ -70,7 +69,6 @@ namespace Reko.Gui.Forms
         private IFinalPageInteractor pageFinal;
 
         private MruList mru;
-        private DecompilerMenus dm;
         private string projectFileName;
         private IServiceContainer sc;
         private IConfigurationService config;
@@ -104,7 +102,7 @@ namespace Reko.Gui.Forms
             return new DecompilerDriver(ldr, sc);
         }
 
-        public IMainForm LoadForm()
+        public virtual IMainForm LoadForm()
         {
             this.form = dlgFactory.CreateMainForm();
 
@@ -123,7 +121,6 @@ namespace Reko.Gui.Forms
 
             form.Load += this.MainForm_Loaded;
             form.Closed += this.MainForm_Closed;
-            form.ProcessCommandKey += this.MainForm_ProcessCommandKey;
 
             form.ToolBar.ItemClicked += toolBar_ItemClicked;
             form.ProjectBrowserToolbar.ItemClicked += toolBar_ItemClicked;
@@ -265,19 +262,18 @@ namespace Reko.Gui.Forms
 
         public void OpenBinaryWithPrompt()
         {
-            Cursor.Current = Cursors.WaitCursor;
             try
             {
-                if (form.ShowDialog(form.OpenFileDialog) == DialogResult.OK)
+                var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+                var fileName = uiSvc.ShowOpenFileDialog(null);
+                if (fileName != null)
                 {
-                    mru.Use(form.OpenFileDialog.FileName);
-                    OpenBinary(form.OpenFileDialog.FileName, (filename) =>
-                        pageInitial.OpenBinary(filename));
+                    mru.Use(fileName);
+                    uiSvc.WithWaitCursor(() => OpenBinary(fileName, (f) => pageInitial.OpenBinary(f)));
                 }
             }
             finally
             {
-                Cursor.Current = Cursors.Arrow;
                 form.SetStatus("");
             }
         }
@@ -1031,10 +1027,7 @@ namespace Reko.Gui.Forms
             catch { }
         }
 
-        private void MainForm_ProcessCommandKey(object sender, KeyEventArgs e)
-        {
-            dm.ProcessKey(uiSvc, e);
-        }
+   
 
         private void toolBar_ItemClicked(object sender, System.Windows.Forms.ToolStripItemClickedEventArgs e)
         {
@@ -1045,20 +1038,12 @@ namespace Reko.Gui.Forms
 
         private void UpdateToolbarState()
         {
-            var status = new CommandStatus();
-            var text = new CommandText();
-            foreach (ToolStripItem item in form.ToolBar.Items)
-            {
-                var cmd = item.Tag as MenuCommand;
-                if (cmd != null)
-                {
-                    text.Text = null;
-                    var st = QueryStatus(cmd.CommandID, status, text);
-					item.Enabled = st && (status.Status & MenuStatus.Enabled) != 0;
-                    if (!string.IsNullOrEmpty(text.Text))
-                        item.Text = text.Text;
-                }
-            }
+            this.UpdateToolbarState(form);
+        }
+
+        protected virtual void UpdateToolbarState(IMainForm form)
+        {
+
         }
 
         private void InitialPage_IsDirtyChanged(object sender, EventArgs e)
@@ -1068,7 +1053,6 @@ namespace Reko.Gui.Forms
 
         public virtual void Run()
         {
-            Application.Run((Form)LoadForm());
         }
     }
 }
