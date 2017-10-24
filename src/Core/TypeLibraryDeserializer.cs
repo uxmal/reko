@@ -279,11 +279,14 @@ namespace Reko.Core
         public DataType VisitStructure(StructType_v1 structure)
         {
             StructureType str;
-            if (!structures.TryGetValue(structure.Name, out str))
+            if (structure.Name == null || !structures.TryGetValue(structure.Name, out str))
             {
                 str = new StructureType(structure.Name, structure.ByteSize, true);
                 str.ForceStructure = structure.ForceStructure;
-                structures.Add(structure.Name, str);
+                if (structure.Name != null)
+                {
+                    structures.Add(structure.Name, str);
+                }
                 if (structure.Fields != null)
                 {
                     var fields = structure.Fields.Select(f => new StructureField(f.Offset, f.Type.Accept(this), f.Name));

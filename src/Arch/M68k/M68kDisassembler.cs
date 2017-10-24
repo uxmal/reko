@@ -717,8 +717,7 @@ namespace Reko.Arch.M68k
                 break;
             case 0x38:
                 // Absolute short address
-                mode = string.Format("${0}.w", read_imm_16());
-                break;
+                return new M68kAddressOperand(Address.Ptr16(read_imm_16()));
             case 0x39:
                 // Absolute long address
                 return new M68kAddressOperand(read_imm_32());
@@ -1274,9 +1273,11 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68020_chk2_cmp2_8(M68kDisassembler dasm)
         {
-            uint extension;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            extension = dasm.read_imm_16();
+            uint extension = dasm.read_imm_16();
+            if (BIT_B(extension))       //$DEBUG
+                extension.ToString();
+
             return CreateInstruction(
                 BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
                 PrimitiveType.Byte,
@@ -1286,9 +1287,10 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68020_chk2_cmp2_16(M68kDisassembler dasm)
         {
-            uint extension;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            extension = dasm.read_imm_16();
+            uint extension = dasm.read_imm_16();
+            if (BIT_B(extension))       //$DEBUG
+                extension.ToString();
             return new M68kInstruction
             {
                 code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
@@ -1303,6 +1305,9 @@ namespace Reko.Arch.M68k
             uint extension;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension = dasm.read_imm_16();
+            if (BIT_B(extension))       //$DEBUG
+                extension.ToString();
+
             return new M68kInstruction
             {
                 code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
@@ -3141,8 +3146,8 @@ namespace Reko.Arch.M68k
 	new OpRec("sl:E0,e6", 0xf000, 0x2000, 0xfff, Opcode.move),      // d68000_move_32  
 	new OpRec("sw:E0,A9", 0xf1c0, 0x3040, 0xfff, Opcode.movea),     // d68000_movea_16 
 	new OpRec("sl:E0,A9", 0xf1c0, 0x2040, 0xfff, Opcode.movea),     // d68000_movea_32
-	new OpRec("E0,c",   0xffc0, 0x44c0, 0xbff, Opcode.move),        // d68000_move_to_ccr
-	new OpRec("c,E0",   0xffc0, 0x42c0, 0xbf8, Opcode.move),        // d68010_move_fr_ccr
+	new OpRec("sw:E0,c",   0xffc0, 0x44c0, 0xbff, Opcode.move),     // d68000_move_to_ccr
+	new OpRec("sw:c,E0",   0xffc0, 0x42c0, 0xbf8, Opcode.move),     // d68010_move_fr_ccr
 	new OpRec(d68000_move_to_sr   , 0xffc0, 0x46c0, 0xbff),
 	new OpRec(d68000_move_fr_sr   , 0xffc0, 0x40c0, 0xbf8),
 	new OpRec(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),

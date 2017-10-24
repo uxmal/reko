@@ -78,7 +78,7 @@ namespace Reko.Environments.MacOS
 
         public override string DefaultCallingConvention
         {
-            get { throw new NotImplementedException(); }
+            get { return ""; }
         }
 
         public override Encoding DefaultTextEncoding

@@ -70,7 +70,14 @@ namespace Reko.ImageLoaders.BinHex
                     }
                 }
             }
-
+            if (hdr.FileType == "MPST")
+            {
+                this.mem = new MemoryArea(addrLoad, rsrcFork);
+                this.rsrcFork = new ResourceFork(rsrcFork, arch);
+                this.segmentMap = new SegmentMap(addrLoad,
+                    new ImageSegment("", mem, AccessMode.ReadWriteExecute));
+                return new Program(this.segmentMap, arch, platform);
+            }
             this.mem = new MemoryArea(addrLoad, dataFork);
             return new Program(
                 new SegmentMap(mem.BaseAddress,
