@@ -83,10 +83,8 @@ namespace Reko.Gui.Forms
             this.mru = new MruList(MaxMruItems);
             this.mru.Load(MruListFile);
             this.sc = services.RequireService<IServiceContainer>();
-            this.CancellationTokenSource = new CancellationTokenSource();
         }
 
-        public CancellationTokenSource CancellationTokenSource { get; private set; }
         public IServiceProvider Services { get { return sc; } }
 
         private void CreatePhaseInteractors(IServiceFactory svcFactory)
@@ -525,7 +523,7 @@ namespace Reko.Gui.Forms
 
         public void ShowAboutBox()
         {
-            using (AboutDialog dlg = new AboutDialog())
+            using (var dlg = dlgFactory.CreateAboutDialog())
             {
                 uiSvc.ShowModalDialog(dlg);
             }

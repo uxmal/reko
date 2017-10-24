@@ -27,6 +27,7 @@ namespace Reko.Gui
 {
     public interface IDialogFactory
     {
+        IDialog CreateAboutDialog();
         IAssembleFileDialog CreateAssembleFileDialog();
         IAssumedRegisterValuesDialog CreateAssumedRegisterValuesDialog(IProcessorArchitecture arch);
         IAddressPromptDialog CreateAddressPromptDialog();

@@ -488,6 +488,7 @@
     <Compile Include="Windows\WindowsFormsDialogFactory.cs" />
     <Compile Include="Windows\WindowsFormsRegistryService.cs" />
     <Compile Include="Windows\WindowsFormsSettingsService.cs" />
+    <Compile Include="Windows\WindowsProjectBrowserService.cs" />
     <Compile Include="Windows\WindowsServiceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
