@@ -40,6 +40,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Windows.Forms;
 using System.Drawing;
+using Reko.Gui.Windows;
 
 namespace Reko.UnitTests.Gui.Windows
 {
@@ -637,7 +638,7 @@ namespace Reko.UnitTests.Gui.Windows
         public void PBS_AcceptFiles()
         {
             var mockTree = new FakeTreeView();
-            var pbs = new ProjectBrowserService(sc, mockTree);
+            var pbs = new WindowsProjectBrowserService(sc, mockTree);
             var e = Given_DraggedFile();
             mr.ReplayAll();
 
@@ -651,7 +652,7 @@ namespace Reko.UnitTests.Gui.Windows
         public void PBS_RejectTextDrop()
         {
             var mockTree = new FakeTreeView();
-            var pbs = new ProjectBrowserService(sc, mockTree);
+            var pbs = new WindowsProjectBrowserService(sc, mockTree);
             var e = Given_DraggedText();
             mr.ReplayAll();
 
@@ -666,7 +667,7 @@ namespace Reko.UnitTests.Gui.Windows
         {
             string filename = null;
             var mockTree = new FakeTreeView();
-            var pbs = new ProjectBrowserService(sc, mockTree);
+            var pbs = new WindowsProjectBrowserService(sc, mockTree);
             pbs.FileDropped += (sender, ee) => { filename = ee.Filename; };
             var e = Given_DraggedFile();
             mr.ReplayAll();

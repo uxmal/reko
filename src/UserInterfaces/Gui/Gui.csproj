@@ -349,7 +349,7 @@
       <DependentUpon>AddressPromptDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\AddressPromptInteractor.cs" />
-    <Compile Include="Windows\Forms\AnalyzedPageInteractor.cs" />
+    <Compile Include="Forms\AnalyzedPageInteractor.cs" />
     <Compile Include="Windows\Forms\ArchiveBrowserDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -387,7 +387,7 @@
     <Compile Include="Windows\Forms\EnvironmentSelectorDialog.Designer.cs">
       <DependentUpon>EnvironmentSelectorDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Forms\FinalPageInteractor.cs" />
+    <Compile Include="Forms\FinalPageInteractor.cs" />
     <Compile Include="Windows\Forms\FindDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -402,8 +402,8 @@
       <DependentUpon>FindStringsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\FindStringsDialogInteractor.cs" />
-    <Compile Include="Windows\Forms\InitialPageInteractor.cs" />
-    <Compile Include="Windows\Forms\LoadedPageInteractor.cs" />
+    <Compile Include="Forms\InitialPageInteractor.cs" />
+    <Compile Include="Forms\LoadedPageInteractor.cs" />
     <Compile Include="Windows\Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -416,7 +416,7 @@
     <Compile Include="Windows\Forms\OpenAsDialog.Designer.cs">
       <DependentUpon>OpenAsDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Forms\PhasePageInteractor.cs" />
+    <Compile Include="Forms\PhasePageInteractor.cs" />
     <Compile Include="Windows\Forms\ProcedureDialog.cs">
       <SubType>Form</SubType>
     </Compile>

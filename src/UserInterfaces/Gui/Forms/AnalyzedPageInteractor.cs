@@ -27,9 +27,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.IO;
-using System.Windows.Forms;
 
-namespace Reko.Gui.Windows.Forms
+namespace Reko.Gui.Forms
 {
     public interface IAnalyzedPageInteractor : IPhasePageInteractor
     {

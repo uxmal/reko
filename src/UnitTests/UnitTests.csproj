@@ -444,7 +444,7 @@
     <Compile Include="Gui\Windows\DisassemblyViewInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\AnalyzedPageInteractorTests.cs">
+    <Compile Include="Gui\Forms\AnalyzedPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gui\Windows\Forms\DiagnosticsInteractorTests.cs">
@@ -453,19 +453,19 @@
     <Compile Include="Gui\Windows\Forms\EditProjectInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\FakePhasePageInteractors.cs">
+    <Compile Include="Gui\Forms\FakePhasePageInteractors.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\FinalPageInteractorTests.cs">
+    <Compile Include="Gui\Forms\FinalPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gui\Windows\Forms\FindDialogInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\InitialPageInteractorTests.cs">
+    <Compile Include="Gui\Forms\InitialPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\LoadedPageInteractorTests.cs">
+    <Compile Include="Gui\Forms\LoadedPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gui\Windows\Forms\MainFormInteractorTests.cs" />

@@ -21,14 +21,14 @@
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Gui;
-using Reko.Gui.Windows.Forms;
+using Reko.Gui.Forms;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.ComponentModel.Design;
 
-namespace Reko.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Forms
 {
 	[TestFixture]
 	public class FinalPageInteractorTests

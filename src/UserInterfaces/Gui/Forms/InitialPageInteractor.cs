@@ -28,10 +28,9 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Linq;
-using System.Windows.Forms;
 using System.Threading.Tasks;
 
-namespace Reko.Gui.Windows.Forms
+namespace Reko.Gui.Forms
 {
     public interface InitialPageInteractor : IPhasePageInteractor
     {

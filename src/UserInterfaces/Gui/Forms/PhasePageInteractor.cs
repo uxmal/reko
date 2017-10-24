@@ -23,9 +23,8 @@ using Reko.Gui;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
-using System.Windows.Forms;
 
-namespace Reko.Gui.Windows.Forms
+namespace Reko.Gui.Forms
 {
     public interface IPhasePageInteractor : ICommandTarget
     {

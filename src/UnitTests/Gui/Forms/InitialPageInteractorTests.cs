@@ -23,14 +23,13 @@ using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.UnitTests.Mocks;
-using Reko.Gui.Windows.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 
-namespace Reko.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Forms
 {
 	[TestFixture]
     [Category(Categories.UserInterface)]
@@ -53,7 +52,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 		public void Setup()
 		{
             mr = new MockRepository();
-            form = new MainForm();
+            form = mr.Stub<IMainForm>();
             sc = new ServiceContainer();
             loader = mr.StrictMock<ILoader>();
             dec = mr.StrictMock<IDecompiler>();

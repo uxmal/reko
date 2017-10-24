@@ -26,9 +26,8 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using System.Windows.Forms;
 
-namespace Reko.Gui.Windows.Forms
+namespace Reko.Gui.Forms
 {
     public interface IFinalPageInteractor : IPhasePageInteractor
     {

@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 
-namespace Reko.Gui.Windows.Forms
+namespace Reko.Gui.Forms
 {
     public interface ILoadedPageInteractor : IPhasePageInteractor
     {

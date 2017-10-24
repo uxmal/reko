@@ -39,7 +39,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Reko.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Forms
 {
     [TestFixture]
     public class AnalyzedPageInteractorTests

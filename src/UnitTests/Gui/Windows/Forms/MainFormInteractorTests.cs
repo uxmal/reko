@@ -40,6 +40,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Text;
+using Reko.UnitTests.Gui.Forms;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {

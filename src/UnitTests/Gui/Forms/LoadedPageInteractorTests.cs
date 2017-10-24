@@ -20,21 +20,16 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
-using Reko.Loading;
 using Reko.UnitTests.Mocks;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.ComponentModel.Design;
-using System.Windows.Forms;
 
-namespace Reko.UnitTests.Gui.Windows.Forms
+namespace Reko.UnitTests.Gui.Forms
 {
     [TestFixture]
     [Category(Categories.UserInterface)]
@@ -57,7 +52,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr = new MockRepository();
             sc = new ServiceContainer();
 
-            form = new MainForm();
+            form = mr.Stub<IMainForm>();
 
             var platform = mr.Stub<IPlatform>();
             program = new Program();
