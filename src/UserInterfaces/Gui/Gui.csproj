@@ -181,7 +181,6 @@
     <Compile Include="IDialogFactory.cs" />
     <Compile Include="IDisassemblyViewService.cs" />
     <Compile Include="IListViewItem.cs" />
-    <Compile Include="ILoadedPage.cs" />
     <Compile Include="ILowLevelViewService.cs" />
     <Compile Include="ImageSegmentService.cs" />
     <Compile Include="IMenuAdapter.cs" />
