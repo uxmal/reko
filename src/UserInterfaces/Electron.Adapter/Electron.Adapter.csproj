@@ -62,7 +62,7 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Gui\Gui.csproj">
+    <ProjectReference Include="..\..\Gui\Gui.csproj">
       <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>
       <Name>Gui</Name>
     </ProjectReference>

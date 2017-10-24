@@ -66,7 +66,7 @@
       <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\UserInterfaces\Gui\Gui.csproj">
+    <ProjectReference Include="..\..\Gui\Gui.csproj">
       <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>
       <Name>Gui</Name>
     </ProjectReference>
