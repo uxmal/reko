@@ -250,7 +250,7 @@ namespace Reko.Arch.X86
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            return Registers.GetRegister(domain, range);
+            return GetSubregisterUsingMask(domain, range.BitMask());
         }
 
         public override IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
@@ -260,11 +260,18 @@ namespace Reko.Arch.X86
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            RegisterStorage[] subregs;
             var mask = reg.BitMask & new BitRange(offset, offset + width).BitMask();
+            var subreg = GetSubregisterUsingMask(reg.Domain, mask) ?? reg;
+            return subreg;
+        }
+
+        private static RegisterStorage GetSubregisterUsingMask(StorageDomain domain, ulong mask)
+        {
+            RegisterStorage[] subregs;
             if (mask == 0)
                 return null;
-            if (Registers.SubRegisters.TryGetValue(reg.Domain, out subregs))
+            RegisterStorage reg = null;
+            if (Registers.SubRegisters.TryGetValue(domain, out subregs))
             {
                 for (int i = 0; i < subregs.Length; ++i)
                 {
@@ -276,7 +283,6 @@ namespace Reko.Arch.X86
             }
             return reg;
         }
-
 
         public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
         {

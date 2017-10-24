@@ -287,5 +287,13 @@ namespace Reko.UnitTests.Arch.Intel
                 Opcode.mov,
                 (Opcode)arch.GetOpcodeNumber("mov"));
         }
+
+        [Test]
+        public void X86Arch_GetDomain_Bitrange()
+        {
+            arch = new X86ArchitectureFlat32();
+            var reg = arch.GetRegister(Registers.rbx.Domain, new BitRange(8, 16));
+            Assert.AreEqual("bh", reg.Name);
+        }
     }
 }

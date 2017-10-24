@@ -254,7 +254,10 @@ namespace Reko.Analysis
                             {
                                 br = br | brOld;
                             }
-                            liveOutStorages[def.Storage] = br;
+                            if (!br.IsEmpty)
+                            {
+                                liveOutStorages[def.Storage] = br;
+                            }
                         }
                     }
                 }

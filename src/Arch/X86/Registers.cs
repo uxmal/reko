@@ -489,11 +489,6 @@ namespace Reko.Arch.X86
             return RegisterStorage.None;
         }
 
-        public static RegisterStorage GetRegister(StorageDomain domain, BitRange range)
-        {
-            throw new NotImplementedException();
-        }
-
         public static int Max
         {
             get { return All.Length; }
