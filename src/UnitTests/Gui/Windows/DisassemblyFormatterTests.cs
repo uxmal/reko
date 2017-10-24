@@ -20,13 +20,13 @@
 
 using Reko.Core;
 using Reko.Core.Types;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Controls;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.UserInterfaces.WindowsForms.Controls;
+using Reko.UserInterfaces.WindowsForms;
 
 namespace Reko.UnitTests.Gui
 {

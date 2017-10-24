@@ -21,15 +21,12 @@
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Configuration;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Forms;
-using Reko.Loading;
 using Reko.UnitTests.Mocks;
+using Reko.UnitTests.Gui.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -40,7 +37,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Text;
-using Reko.UnitTests.Gui.Forms;
+using Reko.UserInterfaces.WindowsForms.Forms;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
@@ -565,7 +562,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateProjectBrowserService(Arg<ITreeView>.Is.NotNull)).Return(brSvc);
             svcFactory.Stub(s => s.CreateUiPreferencesService()).Return(uiPrefs);
             svcFactory.Stub(s => s.CreateFileSystemService()).Return(fsSvc);
-            svcFactory.Stub(s => s.CreateShellUiService(Arg<IMainForm>.Is.NotNull,Arg<DecompilerMenus>.Is.NotNull)).Return(uiSvc);
+            svcFactory.Stub(s => s.CreateShellUiService(Arg<IMainForm>.Is.NotNull)).Return(uiSvc);
             svcFactory.Stub(s => s.CreateTabControlHost(Arg<TabControl>.Is.NotNull)).Return(tcHostSvc);
             svcFactory.Stub(s => s.CreateLoader()).Return(loader);
             svcFactory.Stub(s => s.CreateSearchResultService(Arg<ListView>.Is.NotNull)).Return(srSvc);

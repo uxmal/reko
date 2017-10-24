@@ -23,10 +23,9 @@ using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Forms;
 using Reko.Loading;
 using System;
+using System.ComponentModel.Design;
 
 namespace Reko.Gui
 {
@@ -37,12 +36,16 @@ namespace Reko.Gui
     {
         DecompilerEventListener CreateDecompilerEventListener();
         IArchiveBrowserService CreateArchiveBrowserService();
+        ICodeViewerService CreateCodeViewerService();
+
         IConfigurationService CreateDecompilerConfiguration();
-        IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm);
+        IDecompilerShellUiService CreateShellUiService(IMainForm form);
         IDecompilerService CreateDecompilerService();
         IDiagnosticsService CreateDiagnosticsService(object listView);
         IDisassemblyViewService CreateDisassemblyViewService();
         IFileSystemService CreateFileSystemService();
+        ImageSegmentService CreateImageSegmentService();
+
         InitialPageInteractor CreateInitialPageInteractor();
         ILoadedPageInteractor CreateLoadedPageInteractor();
         ILowLevelViewService CreateMemoryViewService();

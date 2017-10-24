@@ -75,6 +75,10 @@
       <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>
       <Name>Gui</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\UserInterfaces\WindowsForms\WindowsForms.csproj">
+      <Project>{60cc0c65-e629-4923-9112-2a46371c90af}</Project>
+      <Name>WindowsForms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AmigaOS\AmigaOS.csproj">
       <Project>{0b2dcd75-44ff-4af6-aa08-aaf4ea30c402}</Project>
       <Name>AmigaOS</Name>

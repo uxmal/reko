@@ -235,6 +235,10 @@
       <Project>{2882376F-663A-4FC8-842C-B0300A6829E8}</Project>
       <Name>OdbgScript</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UserInterfaces\WindowsForms\WindowsForms.csproj">
+      <Project>{60cc0c65-e629-4923-9112-2a46371c90af}</Project>
+      <Name>WindowsForms</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

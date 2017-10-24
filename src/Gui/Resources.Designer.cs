@@ -70,41 +70,11 @@ namespace Reko.Gui {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Back {
-            get {
-                object obj = ResourceManager.GetObject("Back", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Call graph.
         /// </summary>
         internal static string CallGraphTitle {
             get {
                 return ResourceManager.GetString("CallGraphTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon Error {
-            get {
-                object obj = ResourceManager.GetObject("Error", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Forward {
-            get {
-                object obj = ResourceManager.GetObject("Forward", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -141,33 +111,6 @@ namespace Reko.Gui {
         internal static string ScanBinaries {
             get {
                 return ResourceManager.GetString("ScanBinaries", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Segment:.
-        /// </summary>
-        internal static string Segment {
-            get {
-                return ResourceManager.GetString("Segment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} global variables.
-        /// </summary>
-        internal static string SegmentGlobalsFmt {
-            get {
-                return ResourceManager.GetString("SegmentGlobalsFmt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} [segment].
-        /// </summary>
-        internal static string SegmentViewerFmt {
-            get {
-                return ResourceManager.GetString("SegmentViewerFmt", resourceCulture);
             }
         }
     }

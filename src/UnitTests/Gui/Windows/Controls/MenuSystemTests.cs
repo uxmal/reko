@@ -19,12 +19,12 @@
 #endregion
 
 using Reko.Gui;
-using Reko.Gui.Windows.Controls;
 using NUnit.Framework;
 using System;
 using System.Collections;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
+using Reko.UserInterfaces.WindowsForms.Controls;
 
 namespace Reko.UnitTests.Gui.Windows.Controls
 {

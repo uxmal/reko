@@ -20,7 +20,6 @@
 
 using System;
 using Reko.Core;
-using Reko.Gui.Windows;
 
 namespace Reko.Gui.Design
 {

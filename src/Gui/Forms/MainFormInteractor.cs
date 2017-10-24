@@ -25,8 +25,6 @@ using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Forms;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
@@ -35,7 +33,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Xml;
 
 namespace Reko.Gui.Forms
@@ -51,7 +48,7 @@ namespace Reko.Gui.Forms
         IStatusBarService
     {
         protected IDecompilerShellUiService uiSvc;
-        protected DecompilerMenus dm;
+        protected float dm_xxx;
         private IMainForm form;
         private IDecompilerService decompilerSvc;
         private IDiagnosticsService diagnosticsSvc;
@@ -104,16 +101,8 @@ namespace Reko.Gui.Forms
         {
             this.form = dlgFactory.CreateMainForm();
 
-            dm = new DecompilerMenus(this);
-            form.Menu = dm.MainMenu;
-            dm.MainToolbar.Text = "";
-            dm.MainToolbar.ImageList = form.ImageList;
-            dm.ProjectBrowserToolbar.ImageList = form.ImageList;
-            form.AddToolbar(dm.MainToolbar);
-            form.AddProjectBrowserToolbar(dm.ProjectBrowserToolbar);
-
             var svcFactory = sc.RequireService<IServiceFactory>();
-            CreateServices(svcFactory, sc, dm);
+            CreateServices(svcFactory, sc);
             CreatePhaseInteractors(svcFactory);
             projectBrowserSvc.Clear();
 
@@ -129,7 +118,7 @@ namespace Reko.Gui.Forms
             return form;
         }
 
-        private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc, DecompilerMenus dm)
+        private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
         {
             sc.AddService<DecompilerHost>(this);
 
@@ -147,14 +136,15 @@ namespace Reko.Gui.Forms
             decompilerSvc = svcFactory.CreateDecompilerService();
             sc.AddService(typeof(IDecompilerService), decompilerSvc);
 
-            uiSvc = svcFactory.CreateShellUiService(form, dm);
+            uiSvc = svcFactory.CreateShellUiService(form);
             subWindowCommandTarget = uiSvc;
             sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
 
-            var codeViewSvc = new CodeViewerServiceImpl(sc);
+            var codeViewSvc = svcFactory.CreateCodeViewerService();
             sc.AddService<ICodeViewerService>(codeViewSvc);
-            var segmentViewSvc = new ImageSegmentServiceImpl(sc);
+
+            var segmentViewSvc = svcFactory.CreateImageSegmentService();
             sc.AddService(typeof(ImageSegmentService), segmentViewSvc);
 
             var del = svcFactory.CreateDecompilerEventListener();
@@ -646,7 +636,8 @@ namespace Reko.Gui.Forms
             if (program != null)
             {
                 var cgvSvc = sc.RequireService<ICallGraphViewService>();
-                cgvSvc.ShowCallgraph(program);
+                var title = string.Format("{0} {1}", program.Name, Resources.CallGraphTitle);
+                cgvSvc.ShowCallgraph(program, title);
             }
         }
 

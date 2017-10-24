@@ -130,6 +130,10 @@
       <Project>{0A1B3397-06E3-4C23-A667-FCCC19DC7D12}</Project>
       <Name>MzExe</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\UserInterfaces\WindowsForms\WindowsForms.csproj">
+      <Project>{60cc0c65-e629-4923-9112-2a46371c90af}</Project>
+      <Name>WindowsForms</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

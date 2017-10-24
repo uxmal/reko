@@ -20,12 +20,11 @@
 
 using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Gui;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Controls;
+using Reko.UserInterfaces.WindowsForms;
+using Reko.UserInterfaces.WindowsForms.Controls;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;

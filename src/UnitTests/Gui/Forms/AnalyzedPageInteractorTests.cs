@@ -18,26 +18,18 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
-using Reko.Core.Assemblers;
 using Reko.Core.Expressions;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui;
-using Reko.Loading;
-using Reko.UnitTests.Mocks;
 using Reko.Gui.Forms;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Forms;
-using NUnit.Framework;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace Reko.UnitTests.Gui.Forms
 {

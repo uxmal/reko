@@ -18,29 +18,28 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Controls;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using NUnit.Framework;
+using Reko.UserInterfaces.WindowsForms;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.ComponentModel;
+using System.ComponentModel.Design;
+using System.Drawing;
 using System.IO;
-using ContextMenu = System.Windows.Forms.ContextMenu;
-using DataObject = System.Windows.Forms.DataObject;
-using DragEventArgs = System.Windows.Forms.DragEventArgs;
-using DragEventHandler = System.Windows.Forms.DragEventHandler;
-using DragDropEffects = System.Windows.Forms.DragDropEffects;
+using System.Linq;
+using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
-using System.Windows.Forms;
-using System.Drawing;
-using Reko.Gui.Windows;
+using ContextMenu = System.Windows.Forms.ContextMenu;
+using DataObject = System.Windows.Forms.DataObject;
+using DragDropEffects = System.Windows.Forms.DragDropEffects;
+using DragEventArgs = System.Windows.Forms.DragEventArgs;
+using DragEventHandler = System.Windows.Forms.DragEventHandler;
 
 namespace Reko.UnitTests.Gui.Windows
 {

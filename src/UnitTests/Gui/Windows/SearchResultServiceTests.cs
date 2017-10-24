@@ -18,14 +18,11 @@
  */
 #endregion
 
-using Reko.Gui;
-using Reko.Gui.Windows;
 using NUnit.Framework;
+using Reko.Gui;
+using Reko.UserInterfaces.WindowsForms;
 using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Reko.UnitTests.Gui.Windows
@@ -150,7 +147,8 @@ namespace Reko.UnitTests.Gui.Windows
             mr.ReplayAll();
 
             CreateUI();
-            form.Show(); svc.ShowSearchResults(result);
+            form.Show();
+            svc.ShowSearchResults(result);
 
             mr.VerifyAll();
             Assert.AreEqual(ctxMenu, listSearchResults.ContextMenu);

@@ -31,35 +31,4 @@ namespace Reko.Gui
     {
         void Show(Program program, ProgramResourceInstance resource);
     }
-
-    public class ResourceEditorService : IResourceEditorService
-    {
-        private IServiceProvider services;
-
-        public ResourceEditorService(IServiceProvider services)
-        {
-            this.services = services;
-        }
-
-        public void Show(Program program, ProgramResourceInstance resource)
-        {
-            var uiSvc = services.RequireService<IDecompilerShellUiService>();
-            var rsrcToString = ResourceToString(resource);
-            var wnd = uiSvc.FindDocumentWindow("resEdit", resource);
-            if (wnd == null)
-            {
-                wnd = uiSvc.CreateDocumentWindow(
-                    "resEdit",
-                    resource,
-                    resource.Name,
-                    new ResourceEditorInteractor(program, resource));
-            }
-            wnd.Show();
-        }
-
-        private string ResourceToString(ProgramResourceInstance resource)
-        {
-            return string.Format("{0}:{1}", resource.Type, resource.Name);
-        }
-    }
 }

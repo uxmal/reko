@@ -18,20 +18,18 @@
  */
 #endregion
 
-using Reko.Loading;
-using Reko.Core;
-using Reko.Core.Services;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
 using Reko.Gui;
-using Reko.Gui.Forms;
-using Reko.Gui.Windows;
+using Reko.Loading;
+using Reko.UserInterfaces.WindowsForms;
+using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.ComponentModel.Design;
-using System.Windows.Forms;
 
 namespace Reko.Mono
 {
-	public class Driver
+    public class Driver
 	{
 		[STAThread]
 		public static void Main(string [] args)
@@ -43,7 +41,7 @@ namespace Reko.Mono
                 services.AddService(typeof(IDialogFactory), new WindowsFormsDialogFactory(services));
                 services.AddService(typeof(IRegistryService), new WindowsFormsRegistryService());
                 services.AddService(typeof(ISettingsService), new WindowsFormsSettingsService(services));
-                var interactor = new MainFormInteractor(services);
+                var interactor = new WindowsMainFormInteractor(services);
                 interactor.Run();
             }
 			else

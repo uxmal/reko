@@ -1,7 +1,7 @@
 ﻿using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Gui;
-using Reko.Gui.Windows.Controls;
+using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Windows.Forms;
 

@@ -128,6 +128,10 @@
       <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
       <Name>Gui</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\UserInterfaces\WindowsForms\WindowsForms.csproj">
+      <Project>{60cc0c65-e629-4923-9112-2a46371c90af}</Project>
+      <Name>WindowsForms</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

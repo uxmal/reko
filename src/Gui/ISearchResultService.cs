@@ -20,7 +20,6 @@
 
 using Reko.Core;
 using Reko.Gui.Controls;
-using Reko.Gui.Windows;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;

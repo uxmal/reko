@@ -18,9 +18,9 @@
  */
 #endregion
 
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Controls;
 using NUnit.Framework;
+using Reko.UserInterfaces.WindowsForms;
+using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;

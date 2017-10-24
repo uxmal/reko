@@ -20,7 +20,6 @@
 
 using Reko.Core;
 using Reko.Gui;
-using Reko.Gui.Windows;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -28,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
+using Reko.UserInterfaces.WindowsForms;
 
 namespace Reko.UnitTests.Gui.Windows
 {

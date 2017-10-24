@@ -22,9 +22,6 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Gui;
 using Reko.Gui.Forms;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Controls;
-using Reko.Gui.Windows.Forms;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -35,6 +32,8 @@ using System.ComponentModel.Design;
 using System.Text;
 using System.Windows.Forms;
 using Is = Rhino.Mocks.Constraints.Is;
+using Reko.UserInterfaces.WindowsForms;
+using Reko.UserInterfaces.WindowsForms.Controls;
 
 namespace Reko.UnitTests.Gui.Windows
 {

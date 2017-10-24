@@ -17,18 +17,16 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
+
+using NUnit.Framework;
 using Reko.Gui;
 using Reko.Gui.Forms;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Forms;
-using NUnit.Framework;
+using Reko.UserInterfaces.WindowsForms;
+using Reko.UserInterfaces.WindowsForms.Forms;
 using Rhino.Mocks;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Reko.UnitTests.Gui.Windows

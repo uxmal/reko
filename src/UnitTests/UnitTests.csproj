@@ -765,6 +765,10 @@
       <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>
       <Name>Python</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UserInterfaces\WindowsForms\WindowsForms.csproj">
+      <Project>{60CC0C65-E629-4923-9112-2A46371C90AF}</Project>
+      <Name>WindowsForms</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arch\Intel\X86StateTests.cs" />

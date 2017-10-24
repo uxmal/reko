@@ -18,13 +18,12 @@
  */
 #endregion
 
-using Reko.Gui.Windows.Forms;
+using Reko.Core;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core;
-using Reko.Core.Serialization;
 
 namespace Reko.Gui.Forms
 {
@@ -37,7 +36,7 @@ namespace Reko.Gui.Forms
             this.dlg = dlg;
         }
 
-        internal UserCallData GetUserCallData(ProcedureSerializer procSer)
+        public UserCallData GetUserCallData(ProcedureSerializer procSer)
         {
             return new UserCallData
             {

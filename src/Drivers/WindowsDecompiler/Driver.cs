@@ -18,19 +18,15 @@
  */
 #endregion
 
-using Reko.Loading;
-using Reko.Core;
-using Reko.Core.Services;
-using Reko.Core.Configuration;
 using Reko.Gui;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Forms;
+using Reko.UserInterfaces.WindowsForms;
+using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.ComponentModel.Design;
 
 namespace Reko.WindowsDecompiler
 {
-	public class Driver
+    public class Driver
 	{
         [STAThread]
         public static void Main(string[] args)

@@ -29,7 +29,6 @@ using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
-using Reko.Gui.Windows.Forms;
 using Reko.Loading;
 
 namespace Reko.Gui.Electron.Adapter
@@ -57,6 +56,11 @@ namespace Reko.Gui.Electron.Adapter
         }
 
         public ICallGraphViewService CreateCallGraphViewService()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICodeViewerService CreateCodeViewerService()
         {
             throw new NotImplementedException();
         }
@@ -89,6 +93,11 @@ namespace Reko.Gui.Electron.Adapter
         public IFileSystemService CreateFileSystemService()
         {
             return new FileSystemServiceImpl();
+        }
+
+        public ImageSegmentService CreateImageSegmentService()
+        {
+            throw new NotImplementedException();
         }
 
         public InitialPageInteractor CreateInitialPageInteractor()
@@ -126,7 +135,7 @@ namespace Reko.Gui.Electron.Adapter
             return new ElectronSearchResultService(searchResultChannel);
         }
 
-        public IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm)
+        public IDecompilerShellUiService CreateShellUiService(IMainForm form)
         {
             throw new NotImplementedException();
         }
