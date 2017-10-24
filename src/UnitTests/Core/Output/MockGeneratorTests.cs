@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void EmptyFunction()
         {
-            CompileTest(delegate(ProcedureBuilder m)
+            CompileTest(m =>
             {
                 m.Return();
             });
@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Assign()
         {
-            CompileTest(delegate(ProcedureBuilder m)
+            CompileTest(m =>
             {
                 var id = m.Local(PrimitiveType.Word32, "id");
                 m.Assign(id, 42);
@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void AddSubMul()
         {
-            CompileTest(delegate(ProcedureBuilder m)
+            CompileTest(m =>
             {
                 Identifier a = m.Local(PrimitiveType.Word32, "a");
                 Identifier b = m.Local(PrimitiveType.Word32, "b");
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void LoadStore()
         {
-            CompileTest(delegate(ProcedureBuilder m)
+            CompileTest(m =>
             {
                 m.Store(m.Word32(0x123456), m.Load(PrimitiveType.Byte, m.Word32(0x12348)));
                 m.Return();
@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Declaration()
         {
-            CompileTest(delegate(ProcedureBuilder m)
+            CompileTest(m =>
             {
                 Identifier id = m.Local16("id");
                 m.Declare(id, m.Word16(0x1234));
@@ -150,7 +150,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Application()
         {
-            CompileTest(delegate(ProcedureBuilder m)
+            CompileTest(m =>
             {
                 Identifier inp = m.Local32("inp");
                 Identifier outp = m.Local32("outp");
@@ -176,7 +176,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void SelectorSideEffect()
         {
-            CompileTest(delegate(ProcedureBuilder m)
+            CompileTest(m =>
             {
                 Identifier es = m.Local(PrimitiveType.SegmentSelector, "es");
                 m.SideEffect(m.Fn("foo", es));
@@ -197,7 +197,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void Branch()
         {
-            CompileTest(delegate(ProcedureBuilder m)
+            CompileTest(m =>
             {
                 Identifier i = m.Local(PrimitiveType.Int32, "i");
 
@@ -229,7 +229,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void ComparisonOperators()
         {
-            CompileTest(delegate(ProcedureBuilder m)
+            CompileTest(m =>
             {
                 Identifier f = m.Local(PrimitiveType.Bool, "f");
                 Identifier a = m.Local(PrimitiveType.Word32, "a");
@@ -269,7 +269,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void LogicalOperators()
         {
-            CompileTest(delegate(ProcedureBuilder m)
+            CompileTest(m =>
             {
                 Identifier f = m.Local(PrimitiveType.Bool, "f");
                 Identifier a = m.Local(PrimitiveType.Word32, "a");
@@ -294,7 +294,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void BitwiseOperators()
         {
-            CompileTest(delegate(ProcedureBuilder m)
+            CompileTest(m =>
             {
                 Identifier a = m.Local(PrimitiveType.Word32, "a");
                 Identifier b = m.Local(PrimitiveType.Word32, "b");
@@ -319,7 +319,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void SliceDpb()
         {
-            CompileTest(delegate(ProcedureBuilder m)
+            CompileTest(m =>
             {
                 Identifier a = m.Local(PrimitiveType.Word32, "a");
                 Identifier b = m.Local(PrimitiveType.Word32, "b");

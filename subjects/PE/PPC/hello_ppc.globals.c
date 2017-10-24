@@ -4,16 +4,16 @@
 
 #include "hello_ppc.h"
 
-struct Eq_227 * g_ptrFFFFFFFD;
-struct Eq_227 * g_ptrFFFFFFFE;
-struct Eq_227 * g_ptrFFFFFFFF;
-Eq_227 g_t0001;
-Eq_227 g_t0002;
-Eq_113 g_t0012;
-Eq_113 g_t00FC;
-Eq_113 g_t00FF;
+Eq_242 g_tFFFFFFFC;
+struct Eq_4101 * g_ptrFFFFFFFD;
+struct Eq_4101 * g_ptrFFFFFFFE;
+struct Eq_4101 * g_ptrFFFFFFFF;
+Eq_242 g_t0001;
+Eq_242 g_t0002;
+int32 g_dw0003;
+Eq_3281 g_t0016;
 word32 g_dw092C;
-Eq_227 g_t1000;
- **************************************************************************************************** g_ptr1008;
+ **************************************************************************************************** g_ptr1000;
+**************************************************************************************************** g_ptr1008;
 int32 g_dw1FF8;
 

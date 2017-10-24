@@ -256,7 +256,7 @@ namespace Reko.UnitTests.Scanning
         public void BwiX86_WalkX86ServiceCall()
         {
             // Checks to see if a sequence return value (es:bx) trashes the state appropriately.
-            BuildTest16(delegate (X86Assembler m)
+            BuildTest16(m =>
             {
                 m.Int(0x21);
 
@@ -274,7 +274,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_WalkBswap()
         {
-            BuildTest32(delegate (X86Assembler m)
+            BuildTest32(m =>
             {
                 m.Bswap(m.ebp);
             });
@@ -287,7 +287,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_WalkMovConst()
         {
-            BuildTest32(delegate (X86Assembler m)
+            BuildTest32(m =>
             {
                 m.Mov(m.si, 0x606);
             });
@@ -299,7 +299,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_XorWithSelf()
         {
-            BuildTest32(delegate (X86Assembler m)
+            BuildTest32(m =>
             {
                 m.Xor(m.eax, m.eax);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x00010000))).Return(block);
@@ -313,7 +313,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_SubWithSelf()
         {
-            BuildTest32(delegate (X86Assembler m)
+            BuildTest32(m =>
             {
                 m.Sub(m.eax, m.eax);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x00010000))).Return(block);
@@ -326,7 +326,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_PseudoProcsShouldNukeRecipientRegister()
         {
-            BuildTest16(delegate (X86Assembler m)
+            BuildTest16(m =>
             {
                 m.In(m.al, m.dx);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
@@ -339,7 +339,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_RewriteIndirectCall()
         {
-            BuildTest16(delegate (X86Assembler m)
+            BuildTest16(m =>
             {
                 m.Call(m.MemW(Registers.cs, Registers.bx, 4));
             });
@@ -365,7 +365,7 @@ namespace Reko.UnitTests.Scanning
         //$TODO: big-endian version of this, please.
         public void BwiX86_IndirectJumpGated()
         {
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(m =>
             {
                 m.And(m.bx, m.Const(3));
                 m.Add(m.bx, m.bx);
@@ -438,7 +438,7 @@ namespace Reko.UnitTests.Scanning
         public void BwiX86_RepMovsw()
         {
             var follow = new Block(proc, "follow"); // the code that follows the 'rep movsw'
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(m =>
             {
                 m.Rep();
                 m.Movsw();
@@ -474,7 +474,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_XorFlags()
         {
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(m =>
             {
                 m.Xor(m.esi, m.esi);
                 m.Label("x");
@@ -508,7 +508,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_IndirectCallToConstant()
         {
-            BuildTest32(delegate(X86Assembler m)
+            BuildTest32(m =>
             {
                 m.Mov(m.ebx, m.MemDw("_GetDC"));
                 m.Call(m.ebx);

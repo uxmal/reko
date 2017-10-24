@@ -1323,7 +1323,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0x44c3);
             AssertCode(     // move\td3,ccr
                 "0|L--|00010000(2): 1 instructions",
-                "1|L--|ccr = d3");
+                "1|L--|ccr = (word16) d3");
         }
 
         [Test]

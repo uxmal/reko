@@ -30,8 +30,6 @@ namespace Reko.Gui
     /// </summary>
     public interface IListViewItem
     {
-        //$REVIEW: consider exposing an IconIndex property as well to cover th 90% case and avoid the delegate below.
-
         string Text { get; set; }
         object Tag { get; set; }
 

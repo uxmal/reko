@@ -266,7 +266,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Liv_PreTestedUge()
         {
-            Prepare(delegate(ProcedureBuilder m)
+            Prepare(m =>
             {
                 Identifier i = m.Local32("i");
                 m.Label("test");
@@ -286,7 +286,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Liv_CreateDecTest()
 		{
-            Prepare(delegate(ProcedureBuilder m)
+            Prepare(m =>
             {
                 Identifier id = m.Local32("id");
                 m.Assign(id, Constant.Word32(10));

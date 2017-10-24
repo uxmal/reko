@@ -38,7 +38,7 @@ namespace Reko.Core.Expressions
         static ExpressionValueComparer()
         {
             Add(typeof(Application),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     Application a = (Application) ea, b = (Application) eb;
                     if (a.Arguments.Length != b.Arguments.Length)
@@ -52,7 +52,7 @@ namespace Reko.Core.Expressions
                     }
                     return true;
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     Application a = (Application) obj;
                     int h = GetHashCodeImpl(a.Procedure);
@@ -66,36 +66,36 @@ namespace Reko.Core.Expressions
                     return h;
                 });
             Add(typeof(BinaryExpression),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     BinaryExpression a = (BinaryExpression) ea, b = (BinaryExpression) eb;
                     if (a.Operator != b.Operator)
                         return false;
                     return (EqualsImpl(a.Left, b.Left) && EqualsImpl(a.Right, b.Right));
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     BinaryExpression b = (BinaryExpression) obj;
                     return b.Operator.GetHashCode() ^ GetHashCodeImpl(b.Left) ^ 47 * GetHashCodeImpl(b.Right);
                 });
             Add(typeof(Cast),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     Cast a = (Cast)ea, b = (Cast)eb;
                     return EqualsImpl(a.Expression, b.Expression);
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     Cast c = (Cast)obj;
                     return GetHashCodeImpl(c.Expression) * 43;
                 });
             Add(typeof(ConditionOf),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     ConditionOf a = (ConditionOf) ea, b = (ConditionOf) eb;
                     return EqualsImpl(a.Expression, b.Expression);
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     return 0x10101010 * GetHashCodeImpl(((ConditionOf) obj).Expression);
                 });
@@ -119,36 +119,36 @@ namespace Reko.Core.Expressions
                 addrHash);
 
             Add(typeof(Constant),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     Constant a = (Constant) ea, b = (Constant) eb;
                     return object.Equals(a.ToUInt64(), b.ToUInt64());
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     return ((Constant)obj).ToUInt64().GetHashCode();
                 });
 
             Add(typeof(DepositBits),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     DepositBits a = (DepositBits) ea, b = (DepositBits) eb;
                     return a.BitPosition == b.BitPosition &&
                         EqualsImpl(a.Source, b.Source) && EqualsImpl(a.InsertedBits, b.InsertedBits);
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     DepositBits dpb = (DepositBits) obj;
                     return GetHashCodeImpl(dpb.Source) * 67 ^ GetHashCodeImpl(dpb.InsertedBits) * 43 ^ dpb.BitPosition;
                 });
 
             Add(typeof(Dereference),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     Dereference a = (Dereference) ea, b = (Dereference) eb;
                     return EqualsImpl(a.Expression, b.Expression);
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     return GetHashCodeImpl(((Dereference) obj).Expression) * 129;
                 });
@@ -164,21 +164,21 @@ namespace Reko.Core.Expressions
                     return ((Identifier) x).Name.GetHashCode();
                 });
             Add(typeof(MemoryAccess),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     MemoryAccess a = (MemoryAccess) ea, b = (MemoryAccess) eb;
                     return EqualsImpl(a.MemoryId, b.MemoryId) &&
                         a.DataType == b.DataType &&
                         EqualsImpl(a.EffectiveAddress, b.EffectiveAddress);
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     MemoryAccess m = (MemoryAccess) obj;
                     return GetHashCodeImpl(m.MemoryId) ^ m.DataType.GetHashCode() ^ 47 * GetHashCodeImpl(m.EffectiveAddress);
                 });
 
             Add(typeof(MemoryIdentifier),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     return ((MemoryIdentifier)ea).Name == ((Identifier)eb).Name;
                 },
@@ -187,13 +187,13 @@ namespace Reko.Core.Expressions
                     return ((Identifier)x).Name.GetHashCode();
                 });
             Add(typeof(MkSequence),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     var a = (MkSequence)ea;
                     var b = (MkSequence)eb;
                     return EqualsImpl(a.Head, b.Tail) && EqualsImpl(a.Head, b.Tail);
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     var s = (MkSequence)obj;
                     return obj.GetType().GetHashCode() ^ 37 * GetHashCodeImpl(s.Head) ^
@@ -201,7 +201,7 @@ namespace Reko.Core.Expressions
                 });
 
             Add(typeof(PhiFunction),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     PhiFunction a = (PhiFunction) ea, b = (PhiFunction) eb;
                     if (a.Arguments.Length != b.Arguments.Length)
@@ -213,7 +213,7 @@ namespace Reko.Core.Expressions
                     }
                     return true;
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     PhiFunction phi = (PhiFunction) obj;
                     int h = phi.Arguments.Length.GetHashCode();
@@ -225,18 +225,18 @@ namespace Reko.Core.Expressions
                 });
 
             Add(typeof(ProcedureConstant),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     ProcedureConstant a = (ProcedureConstant) ea, b = (ProcedureConstant) eb;
                     return a.Procedure == b.Procedure;
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     return ((ProcedureConstant) obj).GetHashCode();
                 });
 
             Add(typeof(SegmentedAccess),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     SegmentedAccess a = (SegmentedAccess) ea, b = (SegmentedAccess) eb;
                     return
@@ -245,7 +245,7 @@ namespace Reko.Core.Expressions
                         a.DataType == b.DataType &&
                         EqualsImpl(a.EffectiveAddress, b.EffectiveAddress);
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     SegmentedAccess m = (SegmentedAccess) obj;
                     return GetHashCodeImpl(m.MemoryId) ^
@@ -255,13 +255,13 @@ namespace Reko.Core.Expressions
                 });
 
             Add(typeof(Slice),
-                delegate(Expression ea, Expression eb)
+                (ea, eb) =>
                 {
                     Slice a = (Slice) ea, b = (Slice) eb;
                     return EqualsImpl(a.Expression, b.Expression) &&
                         a.Offset == b.Offset && a.DataType == b.DataType;
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     Slice s = (Slice) obj;
                     return GetHashCodeImpl(s.Expression) ^ s.Offset * 47 ^ s.DataType.GetHashCode() * 23;
@@ -288,7 +288,7 @@ namespace Reko.Core.Expressions
                     return a.Operator == b.Operator && 
                         EqualsImpl(a.Expression, b.Expression);
                 },
-                delegate(Expression obj)
+                obj =>
                 {
                     UnaryExpression u = (UnaryExpression) obj;
                     return GetHashCodeImpl(u.Expression) ^ u.Operator.GetHashCode();

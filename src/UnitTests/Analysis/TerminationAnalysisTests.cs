@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void ProcedureTerminatesIfBlockTerminates()
         {
-            var proc = CompileProcedure("proc", delegate(ProcedureBuilder m)
+            var proc = CompileProcedure("proc", m =>
             {
                 m.Call(exit, 4);
                 m.Return();
@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void ProcedureDoesntTerminatesIfOneBranchDoesnt()
         {
-            var proc = CompileProcedure("proc", delegate(ProcedureBuilder m)
+            var proc = CompileProcedure("proc", m =>
             {
                 m.BranchIf(m.Eq(m.Local32("foo"), m.Word32(0)), "bye");
                 m.Call(exit, 4);
