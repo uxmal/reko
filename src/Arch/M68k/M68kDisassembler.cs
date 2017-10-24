@@ -60,6 +60,8 @@ namespace Reko.Arch.M68k
             if (!rdr.IsValid)
                 return null;
             var addr = rdr.Address;
+            if (addr.ToLinear() == 0x0010010A)      //$DEBUG
+                addr.ToString();
             var offset = rdr.Offset;
             try
             {
