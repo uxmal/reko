@@ -32,15 +32,15 @@ namespace Reko.Gui.Windows
         private TabControl tabCtrl;
         private IServiceProvider services;
 
-        public TabControlHost(IServiceProvider services, System.Windows.Forms.TabControl tabCtrl)
+        public TabControlHost(IServiceProvider services, TabControl tabCtrl)
         {
             this.services = services;
             this.tabCtrl = tabCtrl;
         }
 
-        public IWindowFrame Attach(IWindowPane pane, TabPage tabPage)
+        public IWindowFrame Attach(IWindowPane pane, object tabPage)
         {
-            var frame = new TabControlWindowFrame(tabCtrl, tabPage, pane, services);
+            var frame = new TabControlWindowFrame(tabCtrl, (TabPage)tabPage, pane, services);
             return frame;
         }
 

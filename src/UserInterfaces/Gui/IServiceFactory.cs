@@ -27,7 +27,6 @@ using Reko.Gui.Windows;
 using Reko.Gui.Windows.Forms;
 using Reko.Loading;
 using System;
-using System.Windows.Forms;
 
 namespace Reko.Gui
 {
@@ -48,9 +47,9 @@ namespace Reko.Gui
         ILoadedPageInteractor CreateLoadedPageInteractor();
         ILowLevelViewService CreateMemoryViewService();
         IProjectBrowserService CreateProjectBrowserService(ITreeView treeView);
-        ISearchResultService CreateSearchResultService(ListView listView);
+        ISearchResultService CreateSearchResultService(object listView);
         IResourceEditorService CreateResourceEditorService();
-        ITabControlHostService CreateTabControlHost(TabControl tabControl);
+        ITabControlHostService CreateTabControlHost(object tabControl);
         ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
         IUiPreferencesService CreateUiPreferencesService();
         ILoader CreateLoader();

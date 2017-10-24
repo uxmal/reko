@@ -114,9 +114,9 @@ namespace Reko.Gui.Windows
             return new ProjectBrowserService(services, treeView);
         }
 
-        public ISearchResultService CreateSearchResultService(ListView listView)
+        public ISearchResultService CreateSearchResultService(object listView)
         {
-            return new SearchResultServiceImpl(services, listView);
+            return new SearchResultServiceImpl(services, (ListView)listView);
         }
 
         public IResourceEditorService CreateResourceEditorService()
@@ -124,9 +124,9 @@ namespace Reko.Gui.Windows
             return new ResourceEditorService(services);
         }
 
-        public ITabControlHostService CreateTabControlHost(TabControl tabControl)
+        public ITabControlHostService CreateTabControlHost(object tabControl)
         {
-            return new TabControlHost(services, tabControl);
+            return new TabControlHost(services, (TabControl)tabControl);
         }
 
         public IUiPreferencesService CreateUiPreferencesService()

@@ -22,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Reko.Gui
 {
@@ -36,7 +35,7 @@ namespace Reko.Gui
         /// <param name="pane"></param>
         /// <param name="tabPage"></param>
         /// <returns></returns>
-        IWindowFrame Attach(IWindowPane pane, TabPage tabPage);
+        IWindowFrame Attach(IWindowPane pane, object tabPage);
 
         IWindowFrame Add(IWindowPane pane, string tabCaption);
     }
