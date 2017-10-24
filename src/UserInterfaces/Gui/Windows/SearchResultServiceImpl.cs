@@ -54,7 +54,7 @@ namespace Reko.Gui.Windows
 
         public IWindowFrame Frame { get; set; }
 
-        public Control CreateControl()
+        public object CreateControl()
         {
             return this.listView;
         }

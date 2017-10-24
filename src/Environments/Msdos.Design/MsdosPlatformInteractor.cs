@@ -49,7 +49,7 @@ namespace Reko.Environments.Msdos.Design
         /// Creates the user interface control and connects all event handlers.
         /// </summary>
         /// <returns></returns>
-        public Control CreateControl()
+        public object CreateControl()
         {
             Control = new MsdosPropertiesPanel();
 

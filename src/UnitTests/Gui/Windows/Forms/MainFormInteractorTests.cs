@@ -40,7 +40,6 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Text;
-using Reko.UnitTests.Core.Serialization;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
@@ -605,8 +604,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             form.Load += null;
             LastCall.IgnoreArguments();
             form.Closed += null;
-            LastCall.IgnoreArguments();
-            form.ProcessCommandKey += null;
             LastCall.IgnoreArguments();
             dlgFactory.Stub(d => d.CreateMainForm()).Return(form);
             tcHostSvc.Stub(t => t.Attach(Arg<IWindowPane>.Is.NotNull, Arg<TabPage>.Is.NotNull));

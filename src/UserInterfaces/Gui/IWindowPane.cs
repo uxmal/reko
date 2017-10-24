@@ -21,17 +21,26 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Reko.Gui
 {
     public interface IWindowPane
     {
+        /// <summary>
+        /// The WindowFrame that encloses this pane.
+        /// </summary>
         IWindowFrame Frame { get; set; }
 
-        Control CreateControl();
-        void SetSite(IServiceProvider sp);
+        /// <summary>
+        /// Creates the UI widget handled by this pane.
+        /// </summary>
+        /// <returns>The created widget.</returns>
+        object CreateControl();
+        void SetSite(IServiceProvider services);
 
+        /// <summary>
+        /// Destroys the UI widget created by CreateControl.
+        /// </summary>
         void Close();
     }
 }

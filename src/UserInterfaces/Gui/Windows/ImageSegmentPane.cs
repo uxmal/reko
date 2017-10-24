@@ -39,7 +39,7 @@ namespace Reko.Gui.Windows
 
         public IWindowFrame Frame { get; set; }
 
-        public Control CreateControl()
+        public object CreateControl()
         {
             this.segmentView = new ImageSegmentView();
             this.segmentView.TextView.Services = services;

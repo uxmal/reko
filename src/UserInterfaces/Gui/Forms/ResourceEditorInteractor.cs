@@ -48,7 +48,7 @@ namespace Reko.Gui.Forms
                 dlg.Dispose();
         }
 
-        public Control CreateControl()
+        public object CreateControl()
         {
             try
             {

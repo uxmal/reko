@@ -39,7 +39,7 @@ namespace Reko.Arch.M68k.Design
 
         public IWindowFrame Frame { get; set; }
 
-        public Control CreateControl()
+        public object CreateControl()
         {
             this.control = new M68kPropertiesControl();
             return control;

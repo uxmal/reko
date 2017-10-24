@@ -140,7 +140,7 @@ namespace Reko.Gui.Windows
 
         #region IWindowPane Members
 
-        public Control CreateControl()
+        public object CreateControl()
         {
             txtDisassembly = new TextBox
 			{

@@ -132,7 +132,7 @@ namespace Reko.Gui.Windows
             return (segment == null && showProcedures);
         }
 
-        public Control CreateControl()
+        public object CreateControl()
         {
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
 

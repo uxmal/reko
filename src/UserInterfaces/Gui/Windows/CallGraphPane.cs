@@ -50,7 +50,7 @@ namespace Reko.Gui.Windows
             Control = null;
         }
 
-        public Control CreateControl()
+        public object CreateControl()
         {
             this.Control = new GViewer();
             this.Control.Dock = DockStyle.Fill;

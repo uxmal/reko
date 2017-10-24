@@ -144,6 +144,11 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public void WithWaitCursor(Action action)
+        {
+            action();
+        }
+
         #region ICommandTarget Members
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
@@ -155,12 +160,6 @@ namespace Reko.UnitTests.Mocks
         {
             return false;
         }
-
-        #endregion
-
-        #region IDecompilerShellUiService Members
-
-
 
         #endregion
 

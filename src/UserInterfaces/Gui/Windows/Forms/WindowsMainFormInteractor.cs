@@ -29,9 +29,12 @@ using System.ComponentModel.Design;
 
 namespace Reko.Gui.Windows.Forms
 {
-    public class MainFormInteractor : Reko.Gui.Forms.MainFormInteractor
+    /// <summary>
+    /// MainForm interactor for Windows.Forms.
+    /// </summary>
+    public class WindowsMainFormInteractor : Reko.Gui.Forms.MainFormInteractor
     {
-        public MainFormInteractor(IServiceProvider services) : base(services)
+        public WindowsMainFormInteractor(IServiceProvider services) : base(services)
         {
         }
 

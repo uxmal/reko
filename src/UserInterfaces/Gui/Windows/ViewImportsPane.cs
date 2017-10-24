@@ -48,7 +48,7 @@ namespace Reko.Gui.Windows
             control = null;
         }
 
-        public Control CreateControl()
+        public object CreateControl()
         {
             this.control = new ViewImportsControl();
             this.comparer = new Comparer();

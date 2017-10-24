@@ -250,7 +250,7 @@ namespace Reko.Gui.Windows
             {
                 if (ctrl == null)
                 {
-                    ctrl = pane.CreateControl();
+                    ctrl = (Control) pane.CreateControl();
                     ctrl.Dock = DockStyle.Fill;
                     tabPage.Controls.Add(ctrl);
                 }

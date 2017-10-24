@@ -50,7 +50,7 @@ namespace Reko.Gui.Windows.Forms
             listView.HandleCreated += listView_HandleCreated;
         }
 
-        public Control CreateControl()
+        public object CreateControl()
         {
             return this.listView;
         }

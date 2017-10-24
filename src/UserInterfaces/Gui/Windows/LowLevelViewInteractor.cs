@@ -91,7 +91,7 @@ namespace Reko.Gui.Windows
             }
         }
 
-        public Control CreateControl()
+        public object CreateControl()
         {
             var uiService = services.RequireService<IDecompilerShellUiService>();
             this.control = new LowLevelView();

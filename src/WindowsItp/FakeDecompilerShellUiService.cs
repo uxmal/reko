@@ -100,5 +100,10 @@ namespace Reko.WindowsItp
         {
             throw new NotImplementedException();
         }
+
+        public void WithWaitCursor(Action action)
+        {
+            action();
+        }
     }
 }
