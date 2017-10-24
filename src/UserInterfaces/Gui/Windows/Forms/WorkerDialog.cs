@@ -58,5 +58,11 @@ namespace Reko.Gui.Windows.Forms
         {
             base.Invoke(action);
         }
+
+        DialogResult IWorkerDialog.DialogResult
+        {
+            get { return (DialogResult)(int)this.DialogResult; }
+            set { this.DialogResult = (System.Windows.Forms.DialogResult)(int)value; }
+        }
     }
 }

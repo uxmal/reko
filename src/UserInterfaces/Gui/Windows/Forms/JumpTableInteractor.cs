@@ -144,7 +144,7 @@ namespace Reko.Gui.Windows.Forms
 
         private void Dlg_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (dlg.DialogResult != DialogResult.OK)
+            if ((DialogResult)dlg.DialogResult != DialogResult.OK)
                 return;
             Address addr;
             if (dlg.Program.Platform.TryParseAddress(dlg.JumpTableStartAddress.Text, out addr))

@@ -20,7 +20,6 @@
 
 using Reko.Core;
 using Reko.Core.Types;
-using Reko.Gui.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;

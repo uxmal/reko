@@ -78,7 +78,7 @@ namespace Reko.Gui.Windows.Forms
             {
                 if (dlg.SelectedArchiveEntry != null)
                 {
-                    dlg.DialogResult = DialogResult.OK;
+                    dlg.DialogResult = (System.Windows.Forms.DialogResult) DialogResult.OK;
                     dlg.Close();
                 }
             }

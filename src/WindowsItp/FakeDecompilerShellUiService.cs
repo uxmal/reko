@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Windows.Forms;
 using Reko.Gui;
+using ContextMenu = System.Windows.Forms.ContextMenu;
 
 namespace Reko.WindowsItp
 {

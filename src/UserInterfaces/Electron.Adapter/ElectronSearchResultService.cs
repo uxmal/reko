@@ -6,7 +6,7 @@ namespace Reko.Gui.Electron.Adapter
 {
     public class ElectronSearchResultService : ISearchResultService
     {
-        private object searchResultChannel;
+        private dynamic searchResultChannel;
 
         public ElectronSearchResultService(object searchResultChannel)
         {

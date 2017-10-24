@@ -52,7 +52,7 @@ namespace Reko.Gui.Windows
         {
             DialogResult dlgr = DialogResult.No;
             form.Invoke(new Action(
-                () => { dlgr = MessageBox.Show(prompt, "Reko Decompiler", MessageBoxButtons.YesNo, MessageBoxIcon.Question); }));
+                () => { dlgr = (DialogResult)MessageBox.Show(prompt, "Reko Decompiler", MessageBoxButtons.YesNo, MessageBoxIcon.Question); }));
             return dlgr == DialogResult.Yes;
         }
 
@@ -77,7 +77,7 @@ namespace Reko.Gui.Windows
                 form.Invoke(new Func<Form, DialogResult>(delegate(Form dlgToShow)
                 {
                     Debug.Assert(ownthr == System.Threading.Thread.CurrentThread);
-                    return dlgToShow.ShowDialog(form);
+                    return (DialogResult)dlgToShow.ShowDialog(form);
                 }), dlg);
         }
 
@@ -90,7 +90,7 @@ namespace Reko.Gui.Windows
         {
             if (string.IsNullOrEmpty(fileName))
                 ofd.FileName = fileName;
-            if (ofd.ShowDialog(form) == DialogResult.OK)
+            if ((DialogResult)ofd.ShowDialog(form) == DialogResult.OK)
             {
                 return ofd.FileName;
             }
@@ -102,7 +102,7 @@ namespace Reko.Gui.Windows
         {
             if (string.IsNullOrEmpty(fileName))
                 sfd.FileName = fileName;
-            if (sfd.ShowDialog(form) == DialogResult.OK)
+            if ((DialogResult)sfd.ShowDialog(form) == DialogResult.OK)
             {
                 return sfd.FileName;
             }

@@ -21,7 +21,6 @@
 using Reko.Core;
 using Reko.Gui.Forms;
 using System;
-using Reko.Gui.Windows.Forms;
 using Reko.Core.Machine;
 
 namespace Reko.Gui

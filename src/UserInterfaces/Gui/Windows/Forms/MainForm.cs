@@ -146,19 +146,14 @@ namespace Reko.Gui.Windows.Forms
             get { return projectToolBar; }
         }
 
-        public DialogResult ShowDialog(Form dialog)
-        {
-            return dialog.ShowDialog(this);
-        }
-
         public DialogResult ShowDialog(CommonDialog dialog)
         {
-            return dialog.ShowDialog(this);
+            return (DialogResult)dialog.ShowDialog(this);
         }
 
         public DialogResult ShowMessageBox(string message, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
         {
-            return MessageBox.Show(this, message, caption, buttons, icon);
+            return (DialogResult)MessageBox.Show(this, message, caption, buttons, icon);
         }
 
         public void SetCurrentPage(object page)

@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Reko.Gui
 {

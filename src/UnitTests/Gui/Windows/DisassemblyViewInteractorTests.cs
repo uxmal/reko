@@ -25,7 +25,6 @@ using Reko.Gui.Forms;
 using Reko.Gui.Windows;
 using Rhino.Mocks;
 using System.ComponentModel.Design;
-using System.Windows.Forms;
 
 namespace Reko.UnitTests.Gui.Windows
 {

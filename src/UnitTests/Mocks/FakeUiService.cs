@@ -25,7 +25,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Text;
-using System.Windows.Forms;
+using Form = System.Windows.Forms.Form;
+using ContextMenu = System.Windows.Forms.ContextMenu;
 
 namespace Reko.UnitTests.Mocks
 {

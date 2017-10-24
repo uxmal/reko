@@ -192,7 +192,6 @@
     <Compile Include="ISearchResultService.cs" />
     <Compile Include="IServiceFactory.cs" />
     <Compile Include="ISettingsService.cs" />
-    <Compile Include="IStartPage.cs" />
     <Compile Include="IStatusBarService.cs" />
     <Compile Include="ITabControlHostService.cs" />
     <Compile Include="IUiPreferencesService.cs" />

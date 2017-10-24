@@ -78,7 +78,7 @@ namespace Reko.WindowsItp
             using (var dlg = new Reko.Gui.Windows.Forms.SearchDialog())
             {
                 dlg.Services = sc;
-                if (dlg.ShowDialog() == DialogResult.OK)
+                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     //string.foo();
                 }
