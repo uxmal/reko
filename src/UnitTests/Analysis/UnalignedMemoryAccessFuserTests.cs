@@ -89,6 +89,9 @@ namespace Reko.UnitTests.Analysis
 
         private void __lwl(Identifier reg, Expression mem)
         {
+            var r4 = m.Reg32("r4", 4);
+            var r8 = m.Reg32("r8", 8);
+
             m.Assign(
                 reg,
                 m.Fn(
