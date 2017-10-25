@@ -1,0 +1,68 @@
+﻿#region License
+/* 
+ * Copyright (C) 1999-2017 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using System;
+using System.Collections.Generic;
+using Reko.Core;
+using Reko.Core.Types;
+using System.Linq;
+
+namespace Reko.Environments.Windows
+{
+    public class AlphaCallingConvention : CallingConvention
+    {
+        private readonly RegisterStorage[] iRegs;
+        private readonly RegisterStorage[] fRegs;
+        private RegisterStorage iRet;
+
+        public AlphaCallingConvention(IProcessorArchitecture arch)
+        {
+            this.iRegs = new[] { "r16", "r17", "r18", "r19", "r20", "r21" }
+                .Select(r => arch.GetRegister(r))
+                .ToArray();
+            this.iRet = arch.GetRegister("r0");
+            //this.fregs = new[] { "f12", "f13", "f14", "f15" }
+            //    .Select(r => arch.GetRegister(r))
+            //    .ToArray();
+
+        }
+
+        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        {
+            if (dtRet != null)
+            {
+                ccr.RegReturn(iRet);
+            }
+            int iReg = 0;
+            foreach (var dtParam in dtParams)
+            {
+                if (iReg < iRegs.Length)
+                {
+                    ccr.RegParam(iRegs[iReg]);
+                    ++iReg;
+                }
+                else
+                {
+
+                }
+            }
+        }
+    }
+}

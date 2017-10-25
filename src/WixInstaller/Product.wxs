@@ -135,6 +135,7 @@
         <File Source="$(var.ZX81.TargetPath)" />
 
         <!-- Architectures -->
+        <File Source="$(var.Alpha.TargetPath)" />
         <File Source="$(var.Arm.TargetPath)" />
         <File Source="$(var.M68k.TargetPath)" />
         <File Source="$(var.M68k.Design.TargetPath)" />

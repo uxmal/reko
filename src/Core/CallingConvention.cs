@@ -45,6 +45,7 @@ namespace Reko.Core
         /// the stack.
         /// </summary>
         void CalleeCleanup();
+        void RegReturn(object iret);
 
         /// <summary>
         /// Indicate that the callee will only clean up the return address off

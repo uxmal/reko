@@ -47,6 +47,8 @@ namespace Reko.ImageLoaders.MzExe
         private const ushort MACHINE_POWERPC = (ushort) 0x01F0;
         private const ushort MACHINE_POWERPC_BE = (ushort) 0x0601;       // Big-endian PC: intended for PowerMac (!)
         private const ushort MACHINE_R4000 = (ushort)0x0166;
+        private const ushort MACHINE_ALPHA = (ushort)0x0184;
+
         private const short ImageFileRelocationsStripped = 0x0001;
         private const short ImageFileExecutable = 0x0002;
         private const short ImageFileDll = 0x2000;
@@ -154,6 +156,7 @@ namespace Reko.ImageLoaders.MzExe
             var cfgSvc = Services.RequireService<IConfigurationService>();
 			switch (peMachineType)
 			{
+            case MACHINE_ALPHA: arch = "alpha"; break;
             case MACHINE_ARMNT: arch = "arm-thumb"; break;
             case MACHINE_i386: arch = "x86-protected-32"; break;
             case MACHINE_x86_64: arch = "x86-protected-64"; break;
@@ -171,6 +174,7 @@ namespace Reko.ImageLoaders.MzExe
             string env;
             switch (peMachineType)
             {
+            case MACHINE_ALPHA: env = "winAlpha"; break;
             case MACHINE_ARMNT: env= "winArm"; break;
             case MACHINE_i386: env = "win32"; break;
             case MACHINE_x86_64: env = "win64"; break;
@@ -189,6 +193,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             switch (peMachineType)
             {
+            case MACHINE_ALPHA:
             case MACHINE_ARMNT:
             case MACHINE_i386:
             case MACHINE_m68k:
@@ -206,6 +211,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             switch (peMachineType)
             {
+            case MACHINE_ALPHA: return new AlphaRelocator(Services, program);
             case MACHINE_ARMNT: return new ArmRelocator(program);
             case MACHINE_i386: return new i386Relocator(Services, program);
             case MACHINE_R4000: return new MipsRelocator(Services, program);
@@ -222,6 +228,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             switch (peMachineType)
             {
+            case MACHINE_ALPHA:
             case MACHINE_ARMNT:
             case MACHINE_i386:
 			case MACHINE_m68k:
