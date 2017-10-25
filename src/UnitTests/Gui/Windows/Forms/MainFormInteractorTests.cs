@@ -562,7 +562,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateProjectBrowserService(Arg<ITreeView>.Is.NotNull)).Return(brSvc);
             svcFactory.Stub(s => s.CreateUiPreferencesService()).Return(uiPrefs);
             svcFactory.Stub(s => s.CreateFileSystemService()).Return(fsSvc);
-            svcFactory.Stub(s => s.CreateShellUiService(Arg<IMainForm>.Is.NotNull)).Return(uiSvc);
             svcFactory.Stub(s => s.CreateTabControlHost(Arg<TabControl>.Is.NotNull)).Return(tcHostSvc);
             svcFactory.Stub(s => s.CreateLoader()).Return(loader);
             svcFactory.Stub(s => s.CreateSearchResultService(Arg<ListView>.Is.NotNull)).Return(srSvc);
@@ -603,7 +602,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             LastCall.IgnoreArguments();
             form.Closed += null;
             LastCall.IgnoreArguments();
-            dlgFactory.Stub(d => d.CreateMainForm()).Return(form);
             tcHostSvc.Stub(t => t.Attach(Arg<IWindowPane>.Is.NotNull, Arg<TabPage>.Is.NotNull));
             tcHostSvc.Stub(t => t.QueryStatus(
                 Arg<CommandID>.Is.Anything,
@@ -621,7 +619,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
             interactor = new TestMainFormInteractor(program, services);
-            interactor.LoadForm();
+            interactor.Attach(form);
             form.Raise(f => f.Load += null, form, EventArgs.Empty);
         }
 
@@ -633,7 +631,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             services.AddService(typeof(IServiceFactory), svcFactory);
             Program prog = new Program();
             interactor = new TestMainFormInteractor(prog, loader, services);
-            form = interactor.LoadForm();
+            interactor.Attach(form);
         }
 
         private CommandStatus QueryStatus(int cmdId)

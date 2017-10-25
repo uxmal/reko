@@ -87,18 +87,6 @@ namespace Reko.UserInterfaces.WindowsForms
             return new FindStringsDialog();
         }
 
-        public IMainForm CreateMainForm()
-        {
-            var form = new MainForm();
-            form.Menu = dm.MainMenu;
-            dm.MainToolbar.Text = "";
-            dm.MainToolbar.ImageList = form.ImageList;
-            dm.ProjectBrowserToolbar.ImageList = form.ImageList;
-            form.AddToolbar(dm.MainToolbar);
-            form.AddProjectBrowserToolbar(dm.ProjectBrowserToolbar);
-            return form;
-        }
-
         public IOpenAsDialog CreateOpenAsDialog()
         {
             return new OpenAsDialog

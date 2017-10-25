@@ -39,7 +39,6 @@ namespace Reko.Gui
         ICodeViewerService CreateCodeViewerService();
 
         IConfigurationService CreateDecompilerConfiguration();
-        IDecompilerShellUiService CreateShellUiService(IMainForm form);
         IDecompilerService CreateDecompilerService();
         IDiagnosticsService CreateDiagnosticsService(object listView);
         IDisassemblyViewService CreateDisassemblyViewService();

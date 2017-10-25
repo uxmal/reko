@@ -135,11 +135,6 @@ namespace Reko.Gui.Electron.Adapter
             return new ElectronSearchResultService(searchResultChannel);
         }
 
-        public IDecompilerShellUiService CreateShellUiService(IMainForm form)
-        {
-            throw new NotImplementedException();
-        }
-
         public ITabControlHostService CreateTabControlHost(object tabControl)
         {
             throw new NotImplementedException();

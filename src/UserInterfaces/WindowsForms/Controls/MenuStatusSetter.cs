@@ -68,7 +68,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     cmdStatus.Status = 0;
                     if (cmdId == null)
                     {
-                        cmdStatus.Status = MenuStatus.Enabled|MenuStatus.Visible;
+                        cmdStatus.Status = MenuStatus.Enabled | MenuStatus.Visible;
                         ++visibleItemsInGroup;
                         ++totalVisible;
                     }
@@ -110,11 +110,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 menu.SetStatus(iLastSeparator, 0);
             }
             return totalVisible;
-        }
-
-        internal int SetStatus(MenuItemAdapter menuItemAdapter, ICommandTarget target)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -39,22 +39,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
         }
 
-        public override IMainForm LoadForm()
-        {
-            var form = base.LoadForm();
-            form.ProcessCommandKey += this.MainForm_ProcessCommandKey;
-            return form;
-        }
-
-        public override void Run()
-        {
-            Application.Run((Form)LoadForm());
-        }
-
-        private void MainForm_ProcessCommandKey(object sender, KeyEventArgs e)
-        {
-            dm.ProcessKey(uiSvc, e);
-        }
+        //$TODO: Wouldn't it be awesome if this moved to another class,
+        // perhaps even IMainForm?
 
         protected override void UpdateToolbarState(IMainForm form)
         {
@@ -73,6 +59,5 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 }
             }
         }
-
     }
 }

@@ -36,8 +36,9 @@ namespace Reko.WindowsDecompiler
             services.AddService(typeof(IDialogFactory), new WindowsFormsDialogFactory(services));
             services.AddService(typeof(IRegistryService), new WindowsFormsRegistryService());
             services.AddService(typeof(ISettingsService), new WindowsFormsSettingsService(services));
-            var interactor = new WindowsMainFormInteractor(services);
-            interactor.Run();
+            var mainForm = new MainForm();
+            mainForm.Attach(services);
+            System.Windows.Forms.Application.Run(mainForm);
         }
 	}
 }

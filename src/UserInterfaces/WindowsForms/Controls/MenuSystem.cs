@@ -169,42 +169,18 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 			}
 		}
 
-        public void ProcessKey(IDecompilerShellUiService uiSvc, KeyEventArgs e)
+        public bool ProcessKey(string controlType, ICommandTarget ct, Keys keyData)
         {
             Dictionary<Keys, CommandID> bindings;
-            var frame = uiSvc.ActiveFrame;
-            if (frame != null)
-            {
-                var ct = frame.Pane as ICommandTarget;
-                if (ct != null)
-                {
-                    if (bindingLists.TryGetValue(ct.GetType().FullName, out bindings))
-                    {
-                        CommandID cmdID;
-                        if (bindings.TryGetValue(e.KeyData, out cmdID))
-                        {
-                            if (ct.Execute(cmdID))
-                            {
-                                e.Handled = true;
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-            if (bindingLists.TryGetValue("", out bindings))
+            if (bindingLists.TryGetValue(controlType, out bindings))
             {
                 CommandID cmdID;
-                if (bindings.TryGetValue(e.KeyData, out cmdID))
+                if (bindings.TryGetValue(keyData, out cmdID))
                 {
-                    if (this.target.Execute(cmdID))
-                    {
-                        e.Handled = true;
-                        return;
-                    }
+                    return ct.Execute(cmdID);
                 }
             }
-            e.Handled = false;
+            return false;
         }
 	}
 }

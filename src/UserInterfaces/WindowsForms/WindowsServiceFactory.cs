@@ -71,12 +71,6 @@ namespace Reko.UserInterfaces.WindowsForms
             return new ImageSegmentServiceImpl(services);
         }
 
-        public IDecompilerShellUiService CreateShellUiService(IMainForm form)
-        {
-            var dm = new DecompilerMenus(null);
-            return new DecompilerShellUiService(form, dm, form.OpenFileDialog, form.SaveFileDialog, services);
-        }
-
         public ILowLevelViewService CreateMemoryViewService()
         {
             return new LowLevelViewServiceImpl(services);

@@ -24,6 +24,7 @@ using Reko.Gui.Forms;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -33,15 +34,59 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         Form,
         IMainForm
     {
+        private MainFormInteractor interactor;
         private ToolStrip toolBar;
         private ToolStrip projectToolBar;
         private DocumentWindowCollection docWindows;
+        private DecompilerMenus dm;
+        private DecompilerShellUiService uiSvc;
 
         public MainForm()
         {
             InitializeComponent();
             docWindows = new DocumentWindowCollection(this);
             ProjectBrowser = new TreeViewWrapper(treeBrowser);
+
+
+            this.Load += MainForm_Load;
+            this.ProcessCommandKey += this.MainForm_ProcessCommandKey;
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+            this.Menu = dm.MainMenu;
+            this.dm.MainToolbar.Text = "";
+            this.dm.MainToolbar.ImageList = this.ImageList;
+            this.dm.ProjectBrowserToolbar.ImageList = this.ImageList;
+            this.AddToolbar(dm.MainToolbar);
+            this.AddProjectBrowserToolbar(dm.ProjectBrowserToolbar);
+
+            interactor.Attach(this);
+        }
+
+        public void Attach(IServiceContainer services)
+        {
+            this.interactor = new WindowsMainFormInteractor(services);
+            this.dm = new DecompilerMenus(interactor);
+            this.uiSvc = new DecompilerShellUiService(this, dm, this.OpenFileDialog, this.SaveFileDialog, services);
+            services.AddService(typeof(IDecompilerShellUiService), this.uiSvc);
+        }
+
+        private void MainForm_ProcessCommandKey(object sender, KeyEventArgs e)
+        {
+            var frame = uiSvc.ActiveFrame;
+            if (frame != null)
+            {
+                var ct = frame.Pane as ICommandTarget;
+                if (ct != null)
+                {
+                    e.Handled = dm.ProcessKey(ct.GetType().FullName, ct, e.KeyData);
+                    if (e.Handled)
+                        return;
+                }
+            }
+            e.Handled = dm.ProcessKey("", this.interactor, e.KeyData);
         }
 
         #region IMainForm Members

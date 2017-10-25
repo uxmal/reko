@@ -48,7 +48,6 @@ namespace Reko.Gui.Forms
         IStatusBarService
     {
         protected IDecompilerShellUiService uiSvc;
-        protected float dm_xxx;
         private IMainForm form;
         private IDecompilerService decompilerSvc;
         private IDiagnosticsService diagnosticsSvc;
@@ -84,6 +83,41 @@ namespace Reko.Gui.Forms
 
         public IServiceProvider Services { get { return sc; } }
 
+        public void Attach(IMainForm mainForm)
+        {
+            this.form = mainForm;
+
+            uiSvc = sc.RequireService<IDecompilerShellUiService>();
+            subWindowCommandTarget = uiSvc;
+
+            var svcFactory = sc.RequireService<IServiceFactory>();
+            CreateServices(svcFactory, sc);
+            CreatePhaseInteractors(svcFactory);
+            projectBrowserSvc.Clear();
+
+            var uiPrefsSvc = sc.RequireService<IUiPreferencesService>();
+
+            // It's ok if we can't load settings, just proceed with defaults.
+            try
+            {
+                uiPrefsSvc.Load();
+                if (uiPrefsSvc.WindowSize != new System.Drawing.Size())
+                    form.Size = uiPrefsSvc.WindowSize;
+                form.WindowState = uiPrefsSvc.WindowState;
+            }
+            catch { };
+            SwitchInteractor(pageInitial);
+            UpdateToolbarState();
+
+            form.Closed += this.MainForm_Closed;
+
+            form.ToolBar.ItemClicked += toolBar_ItemClicked;
+            form.ProjectBrowserToolbar.ItemClicked += toolBar_ItemClicked;
+
+            //form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
+            //MainForm.InitialPage.IsDirty = false;         //$REENABLE
+        }
+
         private void CreatePhaseInteractors(IServiceFactory svcFactory)
         {
             pageInitial =  svcFactory.CreateInitialPageInteractor();
@@ -97,26 +131,7 @@ namespace Reko.Gui.Forms
             return new DecompilerDriver(ldr, sc);
         }
 
-        public virtual IMainForm LoadForm()
-        {
-            this.form = dlgFactory.CreateMainForm();
 
-            var svcFactory = sc.RequireService<IServiceFactory>();
-            CreateServices(svcFactory, sc);
-            CreatePhaseInteractors(svcFactory);
-            projectBrowserSvc.Clear();
-
-            form.Load += this.MainForm_Loaded;
-            form.Closed += this.MainForm_Closed;
-
-            form.ToolBar.ItemClicked += toolBar_ItemClicked;
-            form.ProjectBrowserToolbar.ItemClicked += toolBar_ItemClicked;
-
-            //form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
-            //MainForm.InitialPage.IsDirty = false;         //$REENABLE
-
-            return form;
-        }
 
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
         {
@@ -136,9 +151,6 @@ namespace Reko.Gui.Forms
             decompilerSvc = svcFactory.CreateDecompilerService();
             sc.AddService(typeof(IDecompilerService), decompilerSvc);
 
-            uiSvc = svcFactory.CreateShellUiService(form);
-            subWindowCommandTarget = uiSvc;
-            sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
 
             var codeViewSvc = svcFactory.CreateCodeViewerService();
@@ -984,22 +996,6 @@ namespace Reko.Gui.Forms
         private void miFileExit_Click(object sender, System.EventArgs e)
         {
             form.Close();
-        }
-
-        private void MainForm_Loaded(object sender, System.EventArgs e)
-        {
-            var uiPrefsSvc = sc.RequireService<IUiPreferencesService>();
-            // It's ok if we can't load settings, just proceed with defaults.
-            try
-            {
-                uiPrefsSvc.Load();
-                if (uiPrefsSvc.WindowSize != new System.Drawing.Size())
-                    form.Size = uiPrefsSvc.WindowSize;
-                form.WindowState = uiPrefsSvc.WindowState;
-            }
-            catch { };
-            SwitchInteractor(pageInitial);
-            UpdateToolbarState();
         }
 
         private void MainForm_Closed(object sender, System.EventArgs e)
