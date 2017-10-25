@@ -352,7 +352,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Scanner_RepeatUntilBlock()
         {
-            BuildX86RealTest(delegate(X86Assembler m)
+            BuildX86RealTest(m =>
             {
                 m.i86();
                 m.Mov(m.ax, 0);         // To ensure we end up with a split block.

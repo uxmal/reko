@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Scanx86NestedProcedures()
         {
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(m =>
             {
                 m.Mov(m.ax, 3);
                 m.Push(m.ax);
@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Scanx86RepScasw()
         {
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(m =>
             {
                 m.Rep();
                 m.Scasw();

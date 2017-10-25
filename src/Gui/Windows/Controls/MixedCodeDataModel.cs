@@ -159,7 +159,7 @@ namespace Reko.Gui.Windows.Controls
         private void CollectInstructions()
         {
             this.instructions = new Dictionary<ImageMapBlock, MachineInstruction[]>();
-            foreach (var bi in program.ImageMap.Items.Values.OfType<ImageMapBlock>())
+            foreach (var bi in program.ImageMap.Items.Values.OfType<ImageMapBlock>().ToList())
             {
                 var instrs = new List<MachineInstruction>();
                 var addrStart = bi.Address;

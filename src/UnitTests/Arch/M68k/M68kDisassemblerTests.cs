@@ -579,13 +579,13 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_move_to_ccr()
         {
-            RunTest("move\td3,ccr", 0x44c3);
+            RunTest("move.w\td3,ccr", 0x44c3);
         }
 
         [Test]
         public void M68kdis_move_fr_ccr()
         {
-            RunTest("move\tccr,(a3)", 0x42d3, 0x0000);
+            RunTest("move.w\tccr,(a3)", 0x42d3, 0x0000);
         }
 
         [Test]

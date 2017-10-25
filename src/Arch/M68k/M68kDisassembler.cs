@@ -3145,8 +3145,8 @@ namespace Reko.Arch.M68k
 	new OpRec("sl:E0,e6", 0xf000, 0x2000, 0xfff, Opcode.move),      // d68000_move_32  
 	new OpRec("sw:E0,A9", 0xf1c0, 0x3040, 0xfff, Opcode.movea),     // d68000_movea_16 
 	new OpRec("sl:E0,A9", 0xf1c0, 0x2040, 0xfff, Opcode.movea),     // d68000_movea_32
-	new OpRec("E0,c",   0xffc0, 0x44c0, 0xbff, Opcode.move),        // d68000_move_to_ccr
-	new OpRec("c,E0",   0xffc0, 0x42c0, 0xbf8, Opcode.move),        // d68010_move_fr_ccr
+	new OpRec("sw:E0,c",   0xffc0, 0x44c0, 0xbff, Opcode.move),     // d68000_move_to_ccr
+	new OpRec("sw:c,E0",   0xffc0, 0x42c0, 0xbf8, Opcode.move),     // d68010_move_fr_ccr
 	new OpRec(d68000_move_to_sr   , 0xffc0, 0x46c0, 0xbff),
 	new OpRec(d68000_move_fr_sr   , 0xffc0, 0x40c0, 0xbf8),
 	new OpRec(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),

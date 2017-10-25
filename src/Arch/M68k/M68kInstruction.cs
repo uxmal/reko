@@ -137,6 +137,7 @@ namespace Reko.Arch.M68k
                 case 8: return ".b";
                 case 16: return ".w";
                 case 32: return ".l";
+                case 64: return ".q";
                 }
             }
             throw new InvalidOperationException(string.Format("Unsupported data width {0}.", dataWidth.BitSize));

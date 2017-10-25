@@ -136,7 +136,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void SymevPushConstant()
         {
-            RunBlockTest(delegate(ProcedureBuilder m)
+            RunBlockTest(m =>
             {
                 esp = m.Frame.EnsureRegister(Registers.esp);
                 ebp = m.Frame.EnsureRegister(Registers.ebp );
@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Evaluation
         public void SymevPushPop()
         {
             Identifier eax = null;
-            RunBlockTest(delegate(ProcedureBuilder m)
+            RunBlockTest(m =>
             {
                 esp = m.Frame.EnsureRegister(Registers.esp);
                 eax = m.Frame.EnsureRegister(Registers.eax);
@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Evaluation
         public void SymevFramePointer()
         {
             Identifier eax = null;
-            RunBlockTest(delegate(ProcedureBuilder m)
+            RunBlockTest(m =>
             {
                 esp = m.Frame.EnsureRegister(Registers.esp);
                 ebp = m.Frame.EnsureRegister(Registers.ebp);
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Evaluation
         public void SymevApplWithOutParameter()
         {
             Identifier r1 = null;
-            RunBlockTest(delegate(ProcedureBuilder m)
+            RunBlockTest(m =>
             {
                 r1 = m.Register(1);
                 m.Assign(r1, 1);
@@ -207,7 +207,7 @@ namespace Reko.UnitTests.Evaluation
         public void SymevAppl()
         {
             Identifier r1 = null;
-            RunBlockTest(delegate(ProcedureBuilder m)
+            RunBlockTest(m =>
             {
                 r1 = m.Register(1);
                 m.Assign(r1, m.Fn("foo"));
@@ -221,7 +221,7 @@ namespace Reko.UnitTests.Evaluation
             Identifier ds = null;
             Identifier ax = null;
             Identifier eax = null;
-            RunBlockTest(delegate (ProcedureBuilder m)
+            RunBlockTest(m =>
             {
                 ds = m.Frame.EnsureRegister(Registers.ds);
                 ax = m.Frame.EnsureRegister(Registers.ax);
@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Evaluation
             Identifier ax = null;
             Identifier cx = null;
             Identifier ebx = null;
-            RunBlockTest(delegate(ProcedureBuilder m)
+            RunBlockTest(m =>
             {
                 ax = m.Frame.EnsureRegister(Registers.ax);
                 cx = m.Frame.EnsureRegister(Registers.cx);
@@ -260,7 +260,7 @@ namespace Reko.UnitTests.Evaluation
         public void SymevAssignToTemporary()
         {
             Identifier tmp = null;
-            RunBlockTest(delegate(ProcedureBuilder m)
+            RunBlockTest(m =>
             {
                 tmp = m.Frame.CreateTemporary(PrimitiveType.Word32);
                 m.Assign(tmp, 3);
@@ -272,7 +272,7 @@ namespace Reko.UnitTests.Evaluation
         public void SymevAssignToFlag()
         {
             Identifier flag = null;
-            RunBlockTest(delegate(ProcedureBuilder m)
+            RunBlockTest(m =>
             {
                 var flags = arch.GetFlagGroup(0x03).FlagRegister;
                 flag = m.Frame.EnsureFlagGroup(flags, 0x3, "SZ", PrimitiveType.Byte);
