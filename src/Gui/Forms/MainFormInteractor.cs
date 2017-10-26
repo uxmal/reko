@@ -96,7 +96,6 @@ namespace Reko.Gui.Forms
             projectBrowserSvc.Clear();
 
             var uiPrefsSvc = sc.RequireService<IUiPreferencesService>();
-
             // It's ok if we can't load settings, just proceed with defaults.
             try
             {

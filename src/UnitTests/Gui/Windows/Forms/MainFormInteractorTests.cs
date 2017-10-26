@@ -72,6 +72,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private IResourceEditorService resEditSvc;
         private ICallGraphViewService cgvSvc;
         private IViewImportsService vimpSvc;
+        private ICodeViewerService cvSvc;
+        private ImageSegmentService imgSegSvc;
 
         [SetUp]
 		public void Setup()
@@ -81,9 +83,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             services = new ServiceContainer();
             configSvc = mr.Stub<IConfigurationService>();
             services.AddService<IConfigurationService>(configSvc);
-		}
+            uiSvc = mr.Stub<IDecompilerShellUiService>();
+        }
 
-		[Test]
+        [Test]
 		public void Mfi_OpenBinary_SwitchToInitialPhase()
 		{
             Given_Loader();
@@ -359,6 +362,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             Given_Loader();
             Given_MainFormInteractor();
+            Expect_RestoreWindowSize();
             var srSvc = mr.StrictMock<ISearchResultService>();
             srSvc.Expect(s => s.ShowSearchResults(
                 Arg<ISearchResult>.Is.Anything));
@@ -466,6 +470,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_Loader();
             Given_MainFormInteractor();
             Given_DecompilerInstance();
+            Expect_RestoreWindowSize();
+
             loader.Expect(d => d.LoadMetadata(
                 Arg<string>.Is.Equal("foo.def"),
                 Arg<IPlatform>.Is.NotNull,
@@ -533,7 +539,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory = mr.StrictMock<IServiceFactory>();
             archSvc = mr.StrictMock<IArchiveBrowserService>();
             dlgFactory = mr.StrictMock<IDialogFactory>();
-            uiSvc = mr.StrictMock<IDecompilerShellUiService>();
             memSvc = mr.StrictMock<ILowLevelViewService>();
             disasmSvc = mr.StrictMock<IDisassemblyViewService>();
             typeLibSvc = mr.StrictMock<ITypeLibraryLoaderService>();
@@ -548,14 +553,18 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             cgvSvc = mr.StrictMock<ICallGraphViewService>();
             loader = mr.StrictMock<ILoader>();
             vimpSvc = mr.StrictMock<IViewImportsService>();
+            cvSvc = mr.StrictMock<ICodeViewerService>();
+            imgSegSvc = mr.StrictMock<ImageSegmentService>();
 
             svcFactory.Stub(s => s.CreateArchiveBrowserService()).Return(archSvc);
+            svcFactory.Stub(s => s.CreateCodeViewerService()).Return(cvSvc);
             svcFactory.Stub(s => s.CreateDecompilerConfiguration()).Return(new FakeDecompilerConfiguration());
             svcFactory.Stub(s => s.CreateDiagnosticsService(Arg<ListView>.Is.Anything)).Return(diagnosticSvc);
             svcFactory.Stub(s => s.CreateDecompilerService()).Return(dcSvc); 
             svcFactory.Stub(s => s.CreateDisassemblyViewService()).Return(disasmSvc);
             svcFactory.Stub(s => s.CreateMemoryViewService()).Return(memSvc);
             svcFactory.Stub(s => s.CreateDecompilerEventListener()).Return(new FakeDecompilerEventListener());
+            svcFactory.Stub(s => s.CreateImageSegmentService()).Return(imgSegSvc);
             svcFactory.Stub(s => s.CreateInitialPageInteractor()).Return(new FakeInitialPageInteractor());
             svcFactory.Stub(s => s.CreateLoadedPageInteractor()).Return(new FakeLoadedPageInteractor());
             svcFactory.Stub(s => s.CreateTypeLibraryLoaderService()).Return(typeLibSvc);
@@ -584,7 +593,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var projectBrowser = mr.Stub<ITreeView>();
             form.Stub(f => f.DiagnosticsList).Return(listView);
             form.Stub(f => f.ImageList).Return(imagelist);
-            form.Stub(f => f.Menu).SetPropertyAndIgnoreArgument();
             form.Stub(f => f.AddToolbar(null)).IgnoreArguments();
             form.Stub(f => f.AddProjectBrowserToolbar(null)).IgnoreArguments();
             form.Stub(f => f.Dispose());
@@ -598,8 +606,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             form.Stub(f => f.StatusStrip).Return(statusStrip);
             form.Stub(f => f.AddProjectBrowserToolbar(null)).IgnoreArguments();
             form.Stub(f => f.ProjectBrowserToolbar).Return(brToolbar);
-            form.Load += null;
-            LastCall.IgnoreArguments();
             form.Closed += null;
             LastCall.IgnoreArguments();
             tcHostSvc.Stub(t => t.Attach(Arg<IWindowPane>.Is.NotNull, Arg<TabPage>.Is.NotNull));
@@ -610,6 +616,17 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             tcHostSvc.Stub(t => t.Execute(Arg<CommandID>.Is.Anything)).Return(false);
 
             uiSvc.Stub(u => u.DocumentWindows).Return(new List<IWindowFrame>());
+
+        }
+
+        private void Expect_RestoreWindowSize()
+        {
+            var size = new Size(800, 600);
+            uiPrefs.Stub(u => u.Load());
+            uiPrefs.Stub(u => u.WindowSize).Return(size);
+            uiPrefs.Stub(u => u.WindowState).Return(FormWindowState.Normal);
+            form.Stub(f => f.Size = size);
+            form.Stub(f => f.WindowState = FormWindowState.Normal);
         }
 
         private void When_CreateMainFormInteractor()
@@ -618,9 +635,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var services = new ServiceContainer();
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
+            services.AddService<IDecompilerShellUiService>(uiSvc);
             interactor = new TestMainFormInteractor(program, services);
             interactor.Attach(form);
-            form.Raise(f => f.Load += null, form, EventArgs.Empty);
         }
 
         private void When_MainFormInteractorWithLoader()
@@ -629,6 +646,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var services = new ServiceContainer();
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
+            services.AddService(typeof(IDecompilerShellUiService), uiSvc);
             Program prog = new Program();
             interactor = new TestMainFormInteractor(prog, loader, services);
             interactor.Attach(form);
