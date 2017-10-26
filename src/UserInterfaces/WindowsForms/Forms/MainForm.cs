@@ -67,7 +67,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public void Attach(IServiceContainer services)
         {
-            this.interactor = new WindowsMainFormInteractor(services);
+            this.interactor = new MainFormInteractor(services);
             this.dm = new DecompilerMenus(interactor);
             this.uiSvc = new DecompilerShellUiService(this, dm, this.OpenFileDialog, this.SaveFileDialog, services);
             services.AddService(typeof(IDecompilerShellUiService), this.uiSvc);
@@ -201,6 +201,24 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public void SetCurrentPage(object page)
         {
             throw new NotImplementedException();
+        }
+
+        public void UpdateToolbarState()
+        {
+            var status = new CommandStatus();
+            var text = new CommandText();
+            foreach (ToolStripItem item in ToolBar.Items)
+            {
+                var cmd = item.Tag as MenuCommand;
+                if (cmd != null)
+                {
+                    text.Text = null;
+                    var st = interactor.QueryStatus(cmd.CommandID, status, text);
+                    item.Enabled = st && (status.Status & MenuStatus.Enabled) != 0;
+                    if (!string.IsNullOrEmpty(text.Text))
+                        item.Text = text.Text;
+                }
+            }
         }
 
         public StatusStrip StatusStrip

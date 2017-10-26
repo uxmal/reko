@@ -21,6 +21,7 @@
 using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Gui;
+using Reko.Gui.Forms;
 using Reko.Loading;
 using Reko.UserInterfaces.WindowsForms;
 using Reko.UserInterfaces.WindowsForms.Forms;
@@ -41,8 +42,11 @@ namespace Reko.Mono
                 services.AddService(typeof(IDialogFactory), new WindowsFormsDialogFactory(services));
                 services.AddService(typeof(IRegistryService), new WindowsFormsRegistryService());
                 services.AddService(typeof(ISettingsService), new WindowsFormsSettingsService(services));
-                var interactor = new WindowsMainFormInteractor(services);
-                interactor.Run();
+
+                var mainForm = new MainForm();
+                mainForm.Attach(services);
+                System.Windows.Forms.Application.Run(mainForm);
+
             }
 			else
 			{

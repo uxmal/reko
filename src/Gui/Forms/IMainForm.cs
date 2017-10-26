@@ -76,8 +76,7 @@ namespace Reko.Gui.Forms
 
         void SetStatus(string txt);
         void SetStatusDetails(string txt);
-
-
+        void UpdateToolbarState();
     }
 
     public enum DocumentWindowLayout

@@ -274,7 +274,6 @@
       <DependentUpon>UserPreferencesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\UserPreferencesInteractor.cs" />
-    <Compile Include="Forms\WindowsMainFormInteractor.cs" />
     <Compile Include="Forms\WorkerDialog.cs">
       <SubType>Form</SubType>
     </Compile>

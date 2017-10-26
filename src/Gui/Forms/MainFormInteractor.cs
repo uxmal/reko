@@ -106,7 +106,7 @@ namespace Reko.Gui.Forms
             }
             catch { };
             SwitchInteractor(pageInitial);
-            UpdateToolbarState();
+            form.UpdateToolbarState();
 
             form.Closed += this.MainForm_Closed;
 
@@ -737,7 +737,7 @@ namespace Reko.Gui.Forms
                 interactor.PerformWork(workerDlgSvc);
             });
             interactor.EnterPage();
-            UpdateToolbarState();
+            form.UpdateToolbarState();
         }
 
         public void UpdateWindowTitle()
@@ -849,19 +849,19 @@ namespace Reko.Gui.Forms
             var ct = GetSubCommandTarget();
             if (ct != null && ct.Execute(cmdId))
             {
-                UpdateToolbarState();
+                form.UpdateToolbarState();
                 return true;
             }
             if (currentPhase != null && currentPhase.Execute(cmdId))
             {
-                UpdateToolbarState();
+                form.UpdateToolbarState();
                 return true;
             }
             if (cmdId.Guid == CmdSets.GuidReko)
             {
                 if (ExecuteMruFile(cmdId.ID))
                 {
-                    UpdateToolbarState();
+                    form.UpdateToolbarState();
                     return false;
                 }
 
@@ -897,7 +897,7 @@ namespace Reko.Gui.Forms
 
                 case CmdIds.HelpAbout: ShowAboutBox(); retval = true; break;
                 }
-                UpdateToolbarState();
+                form.UpdateToolbarState();
                 return retval;
             }
             return false;
@@ -1020,15 +1020,6 @@ namespace Reko.Gui.Forms
             Execute(cmd.CommandID);
         }
 
-        private void UpdateToolbarState()
-        {
-            this.UpdateToolbarState(form);
-        }
-
-        protected virtual void UpdateToolbarState(IMainForm form)
-        {
-
-        }
 
         private void InitialPage_IsDirtyChanged(object sender, EventArgs e)
         {
