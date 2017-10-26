@@ -229,7 +229,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.combinedCodeView.CodeView.MouseDown += CodeView_MouseDown;
             this.combinedCodeView.CodeView.Navigate += TextView_Navigate;
 
-            this.combinedCodeView.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
+            uiSvc.SetContextMenu(this.combinedCodeView, MenuIds.CtxCodeView);
 
             this.combinedCodeView.ToolBarGoButton.Click += ToolBarGoButton_Click;
             this.combinedCodeView.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
@@ -240,7 +240,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.gViewer.PanButtonPressed = true;
             this.gViewer.ToolBarIsVisible = true;
             this.gViewer.KeyDown += GViewer_KeyDown;
-            this.gViewer.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
+            uiSvc.SetContextMenu(this.gViewer, MenuIds.CtxCodeView);
             this.gViewer.LayoutAlgorithmSettingsButtonVisible = false;
             this.gViewer.LayoutEditingEnabled = false;
             this.gViewer.EdgeInsertButtonVisible = false;
@@ -249,7 +249,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.gViewer.SaveAsMsaglEnabled = false;
             this.gViewer.UndoRedoButtonsVisible = false;
             this.gViewer.KeyDown += GViewer_KeyDown;
-            this.gViewer.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
+            uiSvc.SetContextMenu(this.gViewer, MenuIds.CtxCodeView);
             this.gViewer.MouseUp += GViewer_MouseUp;
             this.gViewer.DrawingPanel.MouseUp += GViewer_MouseUp;
             var iViewer = (IViewer)gViewer;

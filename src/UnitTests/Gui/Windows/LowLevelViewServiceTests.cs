@@ -128,8 +128,9 @@ namespace Reko.UnitTests.Gui.Windows
             uiSvc.Stub(x => x.CreateDocumentWindow("", null, "", null))
                 .IgnoreArguments()
                 .Return(mr.Stub<IWindowFrame>());
-            uiSvc.Stub(x => x.GetContextMenu(MenuIds.CtxMemoryControl)).Return(new ContextMenu());
-            uiSvc.Stub(x => x.GetContextMenu(MenuIds.CtxDisassembler)).Return(new ContextMenu());
+            uiSvc.Stub(x => x.SetContextMenu(null, MenuIds.CtxMemoryControl)).IgnoreArguments();
+            //uiSvc.Stub(x => x.SetContextMenu(null, MenuIds.CtxMemoryControl));
+            //uiSvc.Stub(x => x.GetContextMenu(MenuIds.CtxDisassembler)).Return(new ContextMenu());
 
             var service = mr.Stub<LowLevelViewServiceImpl>(sc);
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);

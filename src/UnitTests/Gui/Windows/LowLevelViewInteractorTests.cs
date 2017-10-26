@@ -60,8 +60,7 @@ namespace Reko.UnitTests.Gui.Windows
             uiSvc = mr.StrictMock<IDecompilerShellUiService>();
             uiPrefsSvc = mr.StrictMock<IUiPreferencesService>();
             dlgFactory = mr.StrictMock<IDialogFactory>();
-            uiSvc.Stub(u => u.GetContextMenu(MenuIds.CtxMemoryControl)).Return(new ContextMenu());
-            uiSvc.Stub(u => u.GetContextMenu(MenuIds.CtxDisassembler)).Return(new ContextMenu());
+            uiSvc.Stub(u => u.SetContextMenu(null, 0)).IgnoreArguments();
             uiSvc.Replay();
             uiPrefsSvc.Stub(u => u.Styles).Return(new Dictionary<string, UiStyle>());
             uiPrefsSvc.Replay();

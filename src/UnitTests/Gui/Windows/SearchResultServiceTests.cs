@@ -138,11 +138,12 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void SRS_ShowResults_ChangesContextMenu()
         {
-            var ctxMenu = new ContextMenu();
             var result = mr.DynamicMock<ISearchResult>();
             var uiSvc = mr.DynamicMock<IDecompilerShellUiService>();
             result.Expect(r => r.ContextMenuID).Return(42);
-            uiSvc.Expect(u => u.GetContextMenu(42)).Return(ctxMenu);
+            uiSvc.Expect(u => u.SetContextMenu(
+                Arg<object>.Is.NotNull,
+                Arg<int>.Is.Equal(42)));
             sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
             mr.ReplayAll();
 
@@ -151,7 +152,6 @@ namespace Reko.UnitTests.Gui.Windows
             svc.ShowSearchResults(result);
 
             mr.VerifyAll();
-            Assert.AreEqual(ctxMenu, listSearchResults.ContextMenu);
         }
     }
 }

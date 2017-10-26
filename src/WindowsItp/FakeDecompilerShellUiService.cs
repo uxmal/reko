@@ -61,11 +61,6 @@ namespace Reko.WindowsItp
             throw new NotImplementedException();
         }
 
-        public ContextMenu GetContextMenu(int menuID)
-        {
-            return new ContextMenu();
-        }
-
         public bool Prompt(string prompt)
         {
             throw new NotImplementedException();
@@ -74,6 +69,10 @@ namespace Reko.WindowsItp
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             throw new NotImplementedException();
+        }
+
+        public void SetContextMenu(object control, int menuID)
+        {
         }
 
         public void ShowError(Exception ex, string format, params object[] args)

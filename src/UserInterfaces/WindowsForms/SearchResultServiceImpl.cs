@@ -98,9 +98,8 @@ namespace Reko.UserInterfaces.WindowsForms
             var ctxMenuID = result.ContextMenuID;
             if (ctxMenuID > 0)
             {
-                listView.ContextMenu = services
-                    .RequireService<IDecompilerShellUiService>()
-                    .GetContextMenu(ctxMenuID);
+                var uiSvc = services.RequireService<IDecompilerShellUiService>();
+                uiSvc.SetContextMenu(listView, ctxMenuID);
             }
         }
 

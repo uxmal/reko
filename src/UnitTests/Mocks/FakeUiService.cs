@@ -119,9 +119,8 @@ namespace Reko.UnitTests.Mocks
 
         public IEnumerable<IWindowFrame> ToolWindows { get; set; }
 
-        public ContextMenu GetContextMenu(int menuId)
+        public void SetContextMenu(object control, int menuId)
         {
-            return new ContextMenu();
         }
 
         public IWindowFrame FindWindow(string windowType)

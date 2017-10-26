@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Gui;
+using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
@@ -75,11 +76,6 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             form.DocumentTabs.TabPages.Remove(page);
             framesByTab.Remove(page);
-        }
-
-        public virtual ContextMenu GetContextMenu(int menuId)
-        {
-            return dm.GetContextMenu(menuId);
         }
 
         public IWindowFrame FindWindow(string windowType)
@@ -193,6 +189,13 @@ namespace Reko.UserInterfaces.WindowsForms
             if (ct == null)
                 return false;
             return ct.Execute(cmdId);
+        }
+
+        public virtual void SetContextMenu(object control, int menuId)
+        {
+            var ctxMenu = dm.GetContextMenu(menuId);
+            var ctxMenuProp = control.GetType().GetProperty("ContextMenu");
+            ctxMenuProp.SetValue(control, ctxMenu);
         }
 
         public void WithWaitCursor(Action action)

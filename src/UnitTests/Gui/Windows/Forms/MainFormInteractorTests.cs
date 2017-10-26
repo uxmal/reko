@@ -606,6 +606,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             form.Stub(f => f.StatusStrip).Return(statusStrip);
             form.Stub(f => f.AddProjectBrowserToolbar(null)).IgnoreArguments();
             form.Stub(f => f.ProjectBrowserToolbar).Return(brToolbar);
+            form.Stub(f => f.UpdateToolbarState());
             form.Closed += null;
             LastCall.IgnoreArguments();
             tcHostSvc.Stub(t => t.Attach(Arg<IWindowPane>.Is.NotNull, Arg<TabPage>.Is.NotNull));

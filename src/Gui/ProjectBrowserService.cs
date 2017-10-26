@@ -73,7 +73,7 @@ namespace Reko.Gui
             var uiPrefsSvc = Services.RequireService<IUiPreferencesService>();
             uiPrefsSvc.UpdateControlStyle(UiStyles.Browser, tree);
             uiPrefsSvc.UiPreferencesChanged += delegate { uiPrefsSvc.UpdateControlStyle(UiStyles.Browser, tree); };
-            tree.ContextMenu = Services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxBrowser);
+            Services.RequireService<IDecompilerShellUiService>().SetContextMenu(tree, MenuIds.CtxBrowser);
             tree.Nodes.Clear();
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
             if (project == null)

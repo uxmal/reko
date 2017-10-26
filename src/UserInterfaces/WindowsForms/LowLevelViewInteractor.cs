@@ -102,12 +102,12 @@ namespace Reko.UserInterfaces.WindowsForms
             this.Control.ImageMapView.SelectedAddressChanged += ImageMapView_SelectedAddressChanged;
 
             this.Control.MemoryView.SelectionChanged += MemoryView_SelectionChanged;
-            this.Control.MemoryView.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
+            uiService.SetContextMenu(this.Control.MemoryView, MenuIds.CtxMemoryControl);
             this.control.MemoryView.Services = this.services;
 
             this.Control.DisassemblyView.StyleClass = UiStyles.Disassembler;
             this.Control.DisassemblyView.SelectedObjectChanged += DisassemblyView_SelectedObjectChanged;
-            this.Control.DisassemblyView.ContextMenu = uiService.GetContextMenu(MenuIds.CtxDisassembler);
+            uiService.SetContextMenu(this.Control.DisassemblyView, MenuIds.CtxDisassembler);
             this.Control.DisassemblyView.Services = this.services;
             this.Control.DisassemblyView.Navigate += DisassemblyControl_Navigate;
 
