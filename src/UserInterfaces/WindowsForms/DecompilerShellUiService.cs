@@ -39,19 +39,19 @@ namespace Reko.UserInterfaces.WindowsForms
         IDecompilerShellUiService,
         ICommandTarget
     {
-        private IMainForm form;
+        private MainForm form;
         private DecompilerMenus dm;
         private Dictionary<string, WindowFrame> framesByName;
         private Dictionary<TabPage, WindowFrame> framesByTab;
         private IServiceProvider services;
 
         public DecompilerShellUiService(
-            IMainForm form,
+            MainForm form,
             DecompilerMenus dm,
             OpenFileDialog ofd,
             SaveFileDialog sfd,
             IServiceProvider sp)
-            : base((Form)form, ofd, sfd)
+            : base(form, ofd, sfd)
         {
             this.form = form;
             this.dm = dm;

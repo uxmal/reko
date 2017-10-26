@@ -59,6 +59,11 @@ namespace Reko.UserInterfaces.WindowsForms
             set { var page = FindPage(value); if (page != null) tabCtrl.SelectedTab = page; }
         }
 
+        public bool ContainsFocus
+        {
+            get { return tabCtrl.ContainsFocus; } 
+        }
+
         private TabPage FindPage(IWindowFrame frame)
         {
             return tabCtrl.TabPages.Cast<TabPage>().Where(p => p.Tag == frame).FirstOrDefault();

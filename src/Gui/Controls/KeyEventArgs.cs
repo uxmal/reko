@@ -106,9 +106,9 @@ namespace Reko.Gui.Controls
         IMEConvert = 28,
         //     The IME nonconvert key.
         IMENonconvert = 29,
-        //     The IME accept key, replaces System.Windows.Forms.Keys.IMEAceept.
+        //     The IME accept key, replaces Keys.IMEAceept.
         IMEAccept = 30,
-        //     The IME accept key. Obsolete, use System.Windows.Forms.Keys.IMEAccept instead.
+        //     The IME accept key. Obsolete, IMEAccept instead.
         IMEAceept = 30,
         //     The IME mode change key.
         IMEModeChange = 31,

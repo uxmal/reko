@@ -18,36 +18,24 @@
  */
 #endregion
 
-using Reko.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Windows.Forms;
+using Reko.Gui;
 
-namespace Reko.Gui
+namespace Reko.UserInterfaces.WindowsForms
 {
-    public interface IProjectBrowserService : ICommandTarget
+    public class StatusBarService : IStatusBarService
     {
-        event EventHandler<FileDropEventArgs> FileDropped;
+        private StatusStrip statusStrip;
 
-        Program CurrentProgram { get; }
-        bool ContainsFocus { get; }
+        public StatusBarService(StatusStrip statusStrip)
+        {
+            this.statusStrip = statusStrip;
+        }
 
-        /// <summary>
-        /// The currently selected object in the project browser tree.
-        /// </summary>
-        object SelectedObject { get; set; }
-
-
-        /// <summary>
-        /// Loads a project into the project browser and starts listening to changes. 
-        /// Loading a null project clears the project browser.
-        /// </summary>
-        /// <param name="project"></param>
-        void Load(Project project);
-
-        void Clear();
-
-        void Reload();
+        public void SetText(string text)
+        {
+            statusStrip.Items[0].Text = text;
+        }
     }
 }

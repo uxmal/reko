@@ -128,6 +128,7 @@ namespace Reko.UnitTests.Gui.Windows
                 this.Nodes = new FakeTreeNodeCollection();
             }
 
+            public object ContextMenu { get; set; }
             public ITreeNodeCollection Nodes { get; private set; }
 
             public ITreeNode SelectedNode { get { return selectedItem; } set { selectedItem = value; AfterSelect.Fire(this); } }
@@ -135,7 +136,6 @@ namespace Reko.UnitTests.Gui.Windows
 
             public bool Focused { get; set; }
             public bool Enabled { get; set; }
-            public ContextMenu ContextMenu { get; set; }
             public bool ShowRootLines { get; set; }
             public bool ShowNodeToolTips { get; set; }
 

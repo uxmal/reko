@@ -28,6 +28,7 @@ namespace Reko.Gui
     public interface ITabControlHostService : ICommandTarget
     {
         IWindowFrame ActiveFrame { get; set; }
+        bool ContainsFocus { get; }
 
         /// <summary>
         /// Attaches a pane to an existing tab page.

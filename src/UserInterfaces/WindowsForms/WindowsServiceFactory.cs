@@ -118,9 +118,9 @@ namespace Reko.UserInterfaces.WindowsForms
             return new ProjectBrowserService(services, mainForm.ProjectBrowser);
         }
 
-        public ISearchResultService CreateSearchResultService(object listView)
+        public ISearchResultService CreateSearchResultService()
         {
-            return new SearchResultServiceImpl(services, (ListView)listView);
+            return new SearchResultServiceImpl(services, mainForm.FindResultsList);
         }
 
         public IResourceEditorService CreateResourceEditorService()
@@ -128,9 +128,14 @@ namespace Reko.UserInterfaces.WindowsForms
             return new ResourceEditorService(services);
         }
 
-        public ITabControlHostService CreateTabControlHost(object tabControl)
+        public IStatusBarService CreateStatusBarService()
         {
-            return new TabControlHost(services, (TabControl)tabControl);
+            return new StatusBarService(mainForm.StatusStrip);
+        }
+
+        public ITabControlHostService CreateTabControlHost()
+        {
+            return new TabControlHost(services, mainForm.TabControl);
         }
 
         public IUiPreferencesService CreateUiPreferencesService()

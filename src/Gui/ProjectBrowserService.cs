@@ -63,6 +63,7 @@ namespace Reko.Gui
 
         public Program CurrentProgram { get { return FindCurrentProgram(); } }
 
+        public bool ContainsFocus { get { return tree.Focused;  } }
         public void Clear()
         {
             Load(null);
@@ -274,7 +275,7 @@ namespace Reko.Gui
             return false;
         }
 
-        public bool Execute(System.ComponentModel.Design.CommandID cmdId)
+        public bool Execute(CommandID cmdId)
         {
             var des = GetSelectedDesigner();
             if (des != null)
@@ -291,6 +292,5 @@ namespace Reko.Gui
             }
             return false;
         }
-
     }
 }

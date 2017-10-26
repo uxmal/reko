@@ -303,6 +303,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SearchResultServiceImpl.cs" />
+    <Compile Include="StatusBarService.cs" />
     <Compile Include="StyleStack.cs" />
     <Compile Include="TabControlHost.cs" />
     <Compile Include="TabControlWindowFrame.cs" />

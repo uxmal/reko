@@ -57,7 +57,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             this.treeView.MouseWheel += treeView_MouseWheel;
         }
 
-        public ContextMenu ContextMenu { get { return treeView.ContextMenu; } set { treeView.ContextMenu = value; } }
+        public object ContextMenu { get { return treeView.ContextMenu; } set { treeView.ContextMenu = (ContextMenu) value; } }
         public bool Focused { get { return treeView.Focused; } } 
         public ITreeNodeCollection Nodes { get; private set; }
         public bool ShowLines { get { return treeView.ShowLines; } set { treeView.ShowLines = value; } }

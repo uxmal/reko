@@ -49,7 +49,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             docWindows = new DocumentWindowCollection(this);
             ProjectBrowser = new TreeViewWrapper(treeBrowser);
 
-
             this.Load += MainForm_Load;
             this.ProcessCommandKey += this.MainForm_ProcessCommandKey;
         }
@@ -62,6 +61,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.dm.ProjectBrowserToolbar.ImageList = this.ImageList;
             this.AddToolbar(dm.MainToolbar);
             this.AddProjectBrowserToolbar(dm.ProjectBrowserToolbar);
+
+            this.ToolBar.ItemClicked += toolBar_ItemClicked;
+            this.ProjectBrowserToolbar.ItemClicked += toolBar_ItemClicked;
 
             interactor.Attach(this);
         }
@@ -88,6 +90,13 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 }
             }
             e.Handled = dm.ProcessKey("", this.interactor, e.KeyData);
+        }
+
+        private void toolBar_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var cmd = e.ClickedItem.Tag as MenuCommand;
+            if (cmd == null) throw new NotImplementedException("Button not hooked up.");
+            interactor.Execute(cmd.CommandID);
         }
 
         #region IMainForm Members
@@ -199,11 +208,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             return (Gui.DialogResult)MessageBox.Show(this, message, caption, buttons, icon);
         }
 
-        public void SetCurrentPage(object page)
-        {
-            throw new NotImplementedException();
-        }
-
         public void UpdateToolbarState()
         {
             var status = new CommandStatus();
@@ -247,16 +251,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public void CloseAllDocumentWindows()
         {
             DocumentWindows.Clear();
-        }
-
-        Gui.DialogResult IMainForm.ShowDialog(CommonDialog dialog)
-        {
-            throw new NotImplementedException();
-        }
-
-        Gui.DialogResult IMainForm.ShowMessageBox(string messageBox, string caption, MessageBoxButtons messageBoxButtons, MessageBoxIcon messageBoxIcon)
-        {
-            throw new NotImplementedException();
         }
 
         private class DocumentWindowCollection : ICollection<IWindowFrame>

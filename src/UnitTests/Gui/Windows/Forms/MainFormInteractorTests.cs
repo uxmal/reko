@@ -71,6 +71,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private IDecompiler decompiler;
         private IResourceEditorService resEditSvc;
         private ICallGraphViewService cgvSvc;
+        private IStatusBarService sbSvc;
         private IViewImportsService vimpSvc;
         private ICodeViewerService cvSvc;
         private ImageSegmentService imgSegSvc;
@@ -94,16 +95,20 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
             brSvc.Stub(d => d.Clear());
             Given_DecompilerInstance();
+            Given_LoadPreferences();
             dcSvc.Stub(d => d.Decompiler = null);
             Given_XmlWriter();
             Given_SavePrompt(true);
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
             uiSvc.Stub(u => u.ShowSaveFileDialog("foo.dcproject")).Return("foo.dcproject");
+            sbSvc.Expect(s => s.SetText(""));
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
 			interactor.OpenBinary("floxie.exe");
+
+            mr.VerifyAll();
             Assert.AreSame(interactor.CurrentPhase, interactor.InitialPageInteractor);
             Assert.IsTrue(((FakeInitialPageInteractor)interactor.InitialPageInteractor).OpenBinaryCalled);
 		}
@@ -315,18 +320,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             status = QueryStatus(CmdIds.ActionNextPhase);
             Assert.IsNotNull(status, "MainFormInteractor should know this command.");
             Assert.AreEqual(MenuStatus.Visible|MenuStatus.Enabled, status.Status);
-        }
-
-        [Test]
-        public void Mfi_StatusBarServiceSetText()
-        {
-            Given_MainFormInteractor();
-            mr.ReplayAll();
-
-            When_CreateMainFormInteractor();
-            var sbSvc = interactor.Services.RequireService<IStatusBarService>();
-            sbSvc.SetText("Hello!");
-            Assert.AreEqual("Hello!", form.StatusStrip.Items[0].Text);
         }
 
         [Test]
@@ -559,6 +552,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             resEditSvc = mr.StrictMock<IResourceEditorService>();
             cgvSvc = mr.StrictMock<ICallGraphViewService>();
             loader = mr.StrictMock<ILoader>();
+            sbSvc = mr.Stub<IStatusBarService>();
             vimpSvc = mr.StrictMock<IViewImportsService>();
             cvSvc = mr.StrictMock<ICodeViewerService>();
             imgSegSvc = mr.StrictMock<ImageSegmentService>();
@@ -578,9 +572,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateProjectBrowserService()).Return(brSvc);
             svcFactory.Stub(s => s.CreateUiPreferencesService()).Return(uiPrefs);
             svcFactory.Stub(s => s.CreateFileSystemService()).Return(fsSvc);
-            svcFactory.Stub(s => s.CreateTabControlHost(Arg<TabControl>.Is.NotNull)).Return(tcHostSvc);
+            svcFactory.Stub(s => s.CreateStatusBarService()).Return(sbSvc);
+            svcFactory.Stub(s => s.CreateTabControlHost()).Return(tcHostSvc);
             svcFactory.Stub(s => s.CreateLoader()).Return(loader);
-            svcFactory.Stub(s => s.CreateSearchResultService(Arg<ListView>.Is.NotNull)).Return(srSvc);
+            svcFactory.Stub(s => s.CreateSearchResultService()).Return(srSvc);
             svcFactory.Stub(s => s.CreateResourceEditorService()).Return(resEditSvc);
             svcFactory.Stub(s => s.CreateCallGraphViewService()).Return(cgvSvc);
             svcFactory.Stub(s => s.CreateViewImportService()).Return(vimpSvc);
@@ -589,26 +584,11 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             brSvc.Stub(b => b.Clear());
 
             form = mr.StrictMock<IMainForm>();
-            var listView = new ListView();
-            var imagelist = new ImageList();
             var tabResults = new TabPage();
             var tabDiagnostics = new TabPage();
-            var tabControl = new TabControl { TabPages = { tabResults, tabDiagnostics } };
-            var toolStrip = new ToolStrip { };
-            var statusStrip = new StatusStrip { Items = { new ToolStripLabel() } };
-            var brToolbar = new ToolStrip();
-            var projectBrowser = mr.Stub<ITreeView>();
-            form.Stub(f => f.ImageList).Return(imagelist);
             form.Stub(f => f.Dispose());
-            form.Stub(f => f.TabControl).Return(tabControl);
             form.Stub(f => f.FindResultsPage).Return(tabResults);
             form.Stub(f => f.DiagnosticsPage).Return(tabDiagnostics);
-            form.Stub(f => f.FindResultsList).Return(listView);
-            form.Stub(f => f.ToolBar).Return(toolStrip);
-            form.Stub(f => f.ProjectBrowserToolbar).Return(toolStrip);
-            form.Stub(f => f.ProjectBrowser).Return(projectBrowser);
-            form.Stub(f => f.StatusStrip).Return(statusStrip);
-            form.Stub(f => f.ProjectBrowserToolbar).Return(brToolbar);
             form.Stub(f => f.UpdateToolbarState());
             form.Closed += null;
             LastCall.IgnoreArguments();
@@ -620,6 +600,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             tcHostSvc.Stub(t => t.Execute(Arg<CommandID>.Is.Anything)).Return(false);
 
             uiSvc.Stub(u => u.DocumentWindows).Return(new List<IWindowFrame>());
+            brSvc.Stub(u => u.ContainsFocus).Return(false);
+            tcHostSvc.Stub(u => u.ContainsFocus).Return(false);
 
         }
 

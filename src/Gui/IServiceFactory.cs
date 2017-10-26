@@ -37,7 +37,6 @@ namespace Reko.Gui
         DecompilerEventListener CreateDecompilerEventListener();
         IArchiveBrowserService CreateArchiveBrowserService();
         ICodeViewerService CreateCodeViewerService();
-
         IConfigurationService CreateDecompilerConfiguration();
         IDecompilerService CreateDecompilerService();
         IDiagnosticsService CreateDiagnosticsService();
@@ -49,13 +48,14 @@ namespace Reko.Gui
         ILoadedPageInteractor CreateLoadedPageInteractor();
         ILowLevelViewService CreateMemoryViewService();
         IProjectBrowserService CreateProjectBrowserService();
-        ISearchResultService CreateSearchResultService(object listView);
+        ISearchResultService CreateSearchResultService();
         IResourceEditorService CreateResourceEditorService();
-        ITabControlHostService CreateTabControlHost(object tabControl);
+        ITabControlHostService CreateTabControlHost();
         ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
         IUiPreferencesService CreateUiPreferencesService();
         ILoader CreateLoader();
         ICallGraphViewService CreateCallGraphViewService();
+        IStatusBarService CreateStatusBarService();
         IViewImportsService CreateViewImportService();
     }
 }

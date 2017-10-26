@@ -44,10 +44,9 @@ namespace Reko.Gui.Forms
     /// </summary>
     public class MainFormInteractor :
         ICommandTarget,
-        DecompilerHost,
-        IStatusBarService
+        DecompilerHost
     {
-        protected IDecompilerShellUiService uiSvc;
+        private IDecompilerShellUiService uiSvc;
         private IMainForm form;
         private IDecompilerService decompilerSvc;
         private IDiagnosticsService diagnosticsSvc;
@@ -110,9 +109,6 @@ namespace Reko.Gui.Forms
 
             form.Closed += this.MainForm_Closed;
 
-            form.ToolBar.ItemClicked += toolBar_ItemClicked;
-            form.ProjectBrowserToolbar.ItemClicked += toolBar_ItemClicked;
-
             //form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
             //MainForm.InitialPage.IsDirty = false;         //$REENABLE
         }
@@ -140,7 +136,8 @@ namespace Reko.Gui.Forms
             var cmdFactory = new Commands.CommandFactory(sc);
             sc.AddService<ICommandFactory>(cmdFactory);
 
-            sc.AddService(typeof(IStatusBarService), (IStatusBarService)this);
+            var sbSvc = svcFactory.CreateStatusBarService();
+            sc.AddService<IStatusBarService>(sbSvc);
 
             diagnosticsSvc = svcFactory.CreateDiagnosticsService();
             sc.AddService(typeof(IDiagnosticsService), diagnosticsSvc);
@@ -182,10 +179,10 @@ namespace Reko.Gui.Forms
             var fsSvc = svcFactory.CreateFileSystemService();
             sc.AddService<IFileSystemService>(fsSvc);
 
-            this.searchResultsTabControl = svcFactory.CreateTabControlHost(form.TabControl);
+            this.searchResultsTabControl = svcFactory.CreateTabControlHost();
             sc.AddService<ITabControlHostService>(this.searchResultsTabControl);
 
-            srSvc = svcFactory.CreateSearchResultService(form.FindResultsList);
+            srSvc = svcFactory.CreateSearchResultService();
             sc.AddService<ISearchResultService>(srSvc);
             searchResultsTabControl.Attach((IWindowPane) srSvc, form.FindResultsPage);
             searchResultsTabControl.Attach((IWindowPane) diagnosticsSvc, form.DiagnosticsPage);
@@ -245,23 +242,20 @@ namespace Reko.Gui.Forms
                 Debug.Print("Caught exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
                 uiSvc.ShowError(ex, "Couldn't open file '{0}'.", file);
             }
+            finally
+            {
+                Services.RequireService<IStatusBarService>().SetText("");
+            }
         }
 
         public void OpenBinaryWithPrompt()
         {
-            try
+            var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+            var fileName = uiSvc.ShowOpenFileDialog(null);
+            if (fileName != null)
             {
-                var uiSvc = Services.RequireService<IDecompilerShellUiService>();
-                var fileName = uiSvc.ShowOpenFileDialog(null);
-                if (fileName != null)
-                {
-                    mru.Use(fileName);
-                    uiSvc.WithWaitCursor(() => OpenBinary(fileName, (f) => pageInitial.OpenBinary(f)));
-                }
-            }
-            finally
-            {
-                form.SetStatus("");
+                mru.Use(fileName);
+                uiSvc.WithWaitCursor(() => OpenBinary(fileName, (f) => pageInitial.OpenBinary(f)));
             }
         }
 
@@ -743,9 +737,9 @@ namespace Reko.Gui.Forms
         /// <returns></returns>
         private ICommandTarget GetSubCommandTarget()
         {
-            if (form.TabControl.ContainsFocus)
+            if (searchResultsTabControl.ContainsFocus)
                 return searchResultsTabControl;
-            if (form.ProjectBrowser.Focused)
+            if (projectBrowserSvc.ContainsFocus)
                 return projectBrowserSvc;
             return subWindowCommandTarget;
         }
@@ -906,15 +900,6 @@ namespace Reko.Gui.Forms
         }
         #endregion
 
-        #region IStatusBarService Members ////////////////////////////////////
-
-        public void SetText(string text)
-        {
-            form.StatusStrip.Items[0].Text = text;
-        }
-
-        #endregion
-
         #region DecompilerHost Members //////////////////////////////////
 
         public IConfigurationService Configuration
@@ -990,21 +975,9 @@ namespace Reko.Gui.Forms
             catch { }
         }
 
-        private void toolBar_ItemClicked(object sender, System.Windows.Forms.ToolStripItemClickedEventArgs e)
-        {
-            MenuCommand cmd = e.ClickedItem.Tag as MenuCommand;
-            if (cmd == null) throw new NotImplementedException("Button not hooked up.");
-            Execute(cmd.CommandID);
-        }
-
-
         private void InitialPage_IsDirtyChanged(object sender, EventArgs e)
         {
             UpdateWindowTitle();
-        }
-
-        public virtual void Run()
-        {
         }
     }
 }

@@ -132,12 +132,17 @@ namespace Reko.Gui.Electron.Adapter
             throw new NotImplementedException();
         }
 
-        public ISearchResultService CreateSearchResultService(object listView)
+        public ISearchResultService CreateSearchResultService()
         {
             return new ElectronSearchResultService(searchResultChannel);
         }
 
-        public ITabControlHostService CreateTabControlHost(object tabControl)
+        public IStatusBarService CreateStatusBarService()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ITabControlHostService CreateTabControlHost()
         {
             throw new NotImplementedException();
         }

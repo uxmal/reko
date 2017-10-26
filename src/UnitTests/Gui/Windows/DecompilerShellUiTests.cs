@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Gui.Windows
         DecompilerShellUiService svc;
         ServiceContainer sc;
         MockRepository mr;
-        private IMainForm mainForm;
+        private MainForm mainForm;
 
         [SetUp]
         public void Setup()

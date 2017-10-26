@@ -38,39 +38,20 @@ namespace Reko.Gui.Forms
         System.Drawing.Size Size { get; set; }
         FormWindowState WindowState { get; set; }
 
-        ListView FindResultsList { get; }
         TabPage FindResultsPage { get; }
         TabPage DiagnosticsPage { get; }
-        ITreeView ProjectBrowser { get; }
-        StatusStrip StatusStrip { get; }
-        TabControl TabControl { get; }
-        ToolStrip ToolBar { get; }
-        ToolStrip ProjectBrowserToolbar { get; }
-        MainMenu Menu { get; set; }
-        TabControl DocumentTabs { get; }
 
         event EventHandler Closed;
         event EventHandler Load;
-        event KeyEventHandler ProcessCommandKey;
 
         void LayoutMdi(DocumentWindowLayout layout);
         
         void Show();
 
-        DialogResult ShowDialog(System.Windows.Forms.CommonDialog dialog);
-
         void Close();
-
-        void SetCurrentPage(object page);
-
-        ImageList ImageList { get; }
 
         object Invoke(Delegate action, params object [] args);
 
-        DialogResult ShowMessageBox(string messageBox, string caption, MessageBoxButtons messageBoxButtons, MessageBoxIcon messageBoxIcon);
-
-        void SetStatus(string txt);
-        void SetStatusDetails(string txt);
         void UpdateToolbarState();
     }
 
