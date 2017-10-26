@@ -26,6 +26,23 @@ using System.Linq;
 
 namespace Reko.Environments.Windows
 {
+    // https://blogs.msdn.microsoft.com/oldnewthing/20170807-00/?p=96766
+    /*
+    There are 32 integer registers, all 64 bits wide. Formally, they are known by the names r0 through r31, but Win32 assigns them the following mnemonics which correspond to their use in the Win32 calling convention
+Register    Mnemonic    Meaning             Preserved?  Notes
+r0          v0          value               No          On function exit, contains the return value.
+r1…r8       t0…t7       temporary           No          
+r9…r14      s0…s5       saved               Yes
+r15         fp          frame pointer       Yes         For functions with variable-sized stacks.
+r16…r21     a0…a5       argument            No          On function entry, contains function parameters.
+r22…r25     t8…t11      temporary           No
+r26         ra          return address      Not normally
+r27         t12         temporary           No
+r28         at          assembler temporary Volatile    Long jump assist.
+r29         gp          global pointer      Special     Not used by 32-bit code.
+r30         sp          stack pointer       Yes
+r31         zero        reads as zero       N/A         Writes are ignored.
+    */
     public class AlphaCallingConvention : CallingConvention
     {
         private readonly RegisterStorage[] iRegs;
@@ -46,6 +63,7 @@ namespace Reko.Environments.Windows
 
         public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
+            ccr.LowLevelDetails(8, 0);      //$BUGBUG: the '0' is incorrect, but we need a reliable spec for WinAlpha to determine exact value.
             if (dtRet != null)
             {
                 ccr.RegReturn(iRet);
@@ -60,9 +78,10 @@ namespace Reko.Environments.Windows
                 }
                 else
                 {
-
+                    ccr.StackParam(PrimitiveType.Word64);
                 }
             }
         }
     }
 }
+ 

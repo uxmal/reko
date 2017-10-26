@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Arch.Alpha;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
@@ -45,7 +46,8 @@ namespace Reko.UnitTests.Environments.Windows
         [SetUp]
         public void Setup()
         {
-            this.cc = new AlphaCallingConvention();
+            var arch = new AlphaArchitecture();
+            this.cc = new AlphaCallingConvention(arch);
             this.ccr = new CallingConventionEmitter();
         }
 
@@ -111,6 +113,7 @@ namespace Reko.UnitTests.Environments.Windows
         }
 
         [Test]
+        [Ignore("Not yet clear how Alpha deals with interleaved ints and floats")]
         public void WinAlphaCc_7_Real_Params()
         {
             cc.Generate(
@@ -131,25 +134,28 @@ namespace Reko.UnitTests.Environments.Windows
         public void WinAlphaCc_AllInts()
         {
             cc.Generate(ccr, i32, null, new List<DataType> { i32, i32, i32, i32, i32, Ptr(i32) });
-            Assert.AreEqual("Stk: 8 eax (rcx, rdx, r8, r9, Stack +0028, Stack +0030)", ccr.ToString());
+            Assert.AreEqual("Stk: 0 r0 (r16, r17, r18, r19, r20, r21)", ccr.ToString());
         }
 
         [Test]
+        [Ignore("Need reliable documentation for the WinAlpha calling convention")]
         public void WinAlphaCc_AllFloats()
         {
             cc.Generate(ccr, r32, null, new List<DataType> { r32, r64, r32, r64, r32 });
-            Assert.AreEqual("Stk: 8 xmm0 (xmm0, xmm1, xmm2, xmm3, Stack +0028)", ccr.ToString());
+            Assert.AreEqual("Stk: 0 xmm0 (xmm0, xmm1, xmm2, xmm3, Stack +0028)", ccr.ToString());
         }
 
         [Test]
+        [Ignore("Need reliable documentation for the WinAlpha calling convention")]
         public void WinAlphaCc_MixedIntsFloats()
         {
             cc.Generate(ccr, i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, r32 });
-            Assert.AreEqual("Stk: 8 eax (rcx, xmm1, r8, xmm3, Stack +0028)", ccr.ToString());
+            Assert.AreEqual("Stk: 0 eax (rcx, xmm1, r8, xmm3, Stack +0028)", ccr.ToString());
         }
 
 
         [Test(Description = "Verifies that small stack arguments are properly aligned on stack")]
+        [Ignore("Need reliable documentation for the WinAlpha calling convention")]
         public void WinAlphaCc_SmallStackArguments()
         {
             cc.Generate(ccr, i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, i8, i8, i8 });

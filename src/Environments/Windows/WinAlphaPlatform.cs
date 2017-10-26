@@ -74,7 +74,7 @@ namespace Reko.Environments.Windows
         {
             if (this.cc == null)
             {
-                this.cc = new AlphaCallingConvention();
+                this.cc = new AlphaCallingConvention(this.Architecture);
             }
             return cc;
         }

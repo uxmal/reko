@@ -69,5 +69,24 @@ namespace Reko.Arch.Alpha
         public static readonly RegisterStorage r29 = new RegisterStorage("r29", 0, 0, PrimitiveType.Word64);
         public static readonly RegisterStorage r30 = new RegisterStorage("r30", 0, 0, PrimitiveType.Word64);
         public static readonly RegisterStorage zero = new RegisterStorage("zero", 31, 0, PrimitiveType.Word64);
+
+        public static readonly Dictionary<string, RegisterStorage> AllRegisters;
+
+        public static readonly RegisterStorage[] AluRegisters;
+
+        static Registers()
+        {
+            AllRegisters = new[]
+            {
+                r0 , r1 , r2,  r3,  r4,  r5,  r6,  r7,  r8,  r9,  r10, r11, r12, r13, r14, r15,
+                r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, zero,
+            }.ToDictionary(r => r.Name);
+
+            AluRegisters = new[]
+            {
+                r0 , r1 , r2,  r3,  r4,  r5,  r6,  r7,  r8,  r9,  r10, r11, r12, r13, r14, r15,
+                r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, zero,
+            };
+        }
     }
 }

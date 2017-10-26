@@ -39,6 +39,7 @@ namespace Reko.Arch.Alpha
             this.PointerType = PrimitiveType.Pointer64;
             this.FramePointerType = PrimitiveType.Pointer64;
             this.InstructionBitSize = 32;
+            this.StackRegister = Registers.r30;     //$BUG: see #489, this is Windows-specific.
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -48,27 +49,27 @@ namespace Reko.Arch.Alpha
 
         public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, off);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addr);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addrBegin, addrEnd);
         }
 
         public override ImageWriter CreateImageWriter()
         {
-            throw new NotImplementedException();
+            return new LeImageWriter();
         }
 
         public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -88,7 +89,7 @@ namespace Reko.Arch.Alpha
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new AlphaRewriter(this, rdr, state, binder, host);
         }
 
         public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
@@ -118,7 +119,10 @@ namespace Reko.Arch.Alpha
 
         public override RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            RegisterStorage reg;
+            return Registers.AllRegisters.TryGetValue(name, out reg)
+                ? reg
+                : null;
         }
 
         public override RegisterStorage GetRegister(int i)

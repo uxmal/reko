@@ -378,11 +378,11 @@ namespace Reko.ImageLoaders.MzExe
 			uint checksum = rdr.ReadLeUInt32();
 			ushort subsystem = rdr.ReadLeUInt16();
 			ushort dllFlags = rdr.ReadLeUInt16();
-            var stackReserve = rdr.Read(arch.WordWidth);
-            var stackCommit = rdr.Read(arch.WordWidth);
-            var heapReserve = rdr.Read(arch.WordWidth);
-            var heapCommit = rdr.Read(arch.WordWidth);
-			rdr.ReadLeUInt32();			// loader flags
+            var stackReserve = innerLoader.ReadWord(rdr);
+            var stackCommit = innerLoader.ReadWord(rdr);
+            var heapReserve = innerLoader.ReadWord(rdr);
+            var heapCommit = innerLoader.ReadWord(rdr);
+            rdr.ReadLeUInt32();			// loader flags
 			uint dictionaryCount = rdr.ReadLeUInt32();
 
             if (dictionaryCount == 0) return;
@@ -760,7 +760,6 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             if (rvaILT == 0 && dllName == null)
                 return false;
 
-            var ptrSize = platform.PointerType.Size;
             EndianImageReader rdrIlt = imgLoaded.CreateLeReader(rvaILT!=0 ? rvaILT:rvaIAT);
             EndianImageReader rdrIat = imgLoaded.CreateLeReader(rvaIAT);
             while (true)
@@ -773,17 +772,17 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                     break;
                 ImageSymbols[addrIat] = new ImageSymbol(addrIat)
                 {
-                    Name = "__imp__" + iatEntry.EntryName,
+                    Name = "__imp__" + iatEntry.Item1.EntryName,
                     Type = SymbolType.Data,
-                    DataType = new Pointer(new CodeType(), ptrSize),
-                    Size = (uint) ptrSize
+                    DataType = new Pointer(new CodeType(), iatEntry.Item2),
+                    Size = (uint) iatEntry.Item2
                 };
 
                 ImageSymbols[addrIlt] = new ImageSymbol(addrIlt)
                 {
                     Type = SymbolType.Data,
-                    DataType = PrimitiveType.CreateWord(ptrSize),
-                    Size = (uint)ptrSize
+                    DataType = PrimitiveType.CreateWord(iatEntry.Item2),
+                    Size = (uint)iatEntry.Item2
                 };
             } 
             return true;
@@ -798,7 +797,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 this.outer = outer;
             }
 
-            public abstract ImportReference ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat);
+            public abstract Tuple<ImportReference,int> ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat);
 
             public abstract bool ImportedFunctionNameSpecified(ulong rvaEntry);
 
@@ -818,6 +817,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             }
 
             public abstract Address ReadPreferredImageBase(EndianImageReader rdr);
+            public abstract long ReadWord(EndianImageReader rdr);
         }
 
         private class Pe32Loader : SizeSpecificLoader
@@ -835,7 +835,12 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 return Address.Ptr32(rdr.ReadLeUInt32());
             }
 
-            public override ImportReference ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
+            public override long ReadWord(EndianImageReader rdr)
+            {
+                return rdr.ReadInt32();
+            }
+
+            public override Tuple<ImportReference,int> ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
             {
                 Address addrThunk = rdrIat.Address;
                 uint iatEntry = rdrIat.ReadLeUInt32();
@@ -846,7 +851,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 var impRef = CreateImportReference(dllName, iltEntry, addrThunk);
                 outer.importReferences.Add(addrThunk, impRef);
 
-                return impRef;
+                return Tuple.Create(impRef, 4);
             }
         }
 
@@ -864,7 +869,12 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 return Address64.Ptr64(rdr.ReadLeUInt64());
             }
 
-            public override ImportReference ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
+            public override long ReadWord(EndianImageReader rdr)
+            {
+                return rdr.ReadInt64();
+            }
+
+            public override Tuple<ImportReference,int> ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
             {
                 Address addrThunk = rdrIat.Address;
                 ulong iatEntry = rdrIat.ReadLeUInt64();
@@ -873,7 +883,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                     return null;
                 var impRef = CreateImportReference(dllName, iltEntry, addrThunk);
                 outer.importReferences.Add(addrThunk, impRef);
-                return impRef;
+                return Tuple.Create(impRef, 8);
             }
         }
 

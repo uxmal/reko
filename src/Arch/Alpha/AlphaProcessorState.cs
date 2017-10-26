@@ -62,12 +62,10 @@ namespace Reko.Arch.Alpha
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetInstructionPointer(Address addr)

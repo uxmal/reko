@@ -44,6 +44,9 @@
     <Compile Include="AlphaDisassembler.cs" />
     <Compile Include="AlphaInstruction.cs" />
     <Compile Include="AlphaProcessorState.cs" />
+    <Compile Include="AlphaRewriter.cs" />
+    <Compile Include="MemoryOperand.cs" />
+    <Compile Include="Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers.cs" />
   </ItemGroup>
