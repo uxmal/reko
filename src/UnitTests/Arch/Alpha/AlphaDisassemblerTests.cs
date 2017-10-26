@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Arch.Alpha
         }
 
         [Test]
-        public void AlphaDis_E6200004()
+        public void AlphaDis_beq()
         {
             var instr = DisassembleWord(0xE6200004);
             Assert.AreEqual("beq\tr17,0000000000100014", instr.ToString());
@@ -100,17 +100,60 @@ namespace Reko.UnitTests.Arch.Alpha
         }
 
         [Test]
-        public void AlphaDis_D340028D()
+        public void AlphaDis_bsr()
         {
             var instr = DisassembleWord(0xD340028D);
             Assert.AreEqual("bsr\tr26,0000000000100A38", instr.ToString());
         }
 
         [Test]
-        public void AlphaDis_C3E0001F()
+        public void AlphaDis_br()
         {
             var instr = DisassembleWord(0xC3E0001F);
             Assert.AreEqual("br\tzero,0000000000100080", instr.ToString());
         }
+
+        [Test]
+        public void AlphaDis_zapnot()
+        {
+            var instr = DisassembleWord(0x4A40762A);
+            Assert.AreEqual("zapnot\tr18,03,r10", instr.ToString());
+        }
+
+        [Test]
+        public void AlphaDis_1A()
+        {
+            var instr = DisassembleWord(0x6B404000);
+            Assert.AreEqual("jsr\tr26,r0", instr.ToString());
+        }
+
+        [Test]
+        public void AlphaDis_13()
+        {
+            var instr = DisassembleWord(0x4C230012);
+            Assert.AreEqual("mull\tr1,r24,r18", instr.ToString());
+        }
+
+        [Test]
+        public void AlphaDis_27()
+        {
+            var instr = DisassembleWord(0x9E1E0290);
+            Assert.AreEqual("stt\tf16,290(r30)", instr.ToString());
+        }
+
+        [Test]
+        public void AlphaDis_00()
+        {
+            var instr = DisassembleWord(0x00905A4D);
+            Assert.AreEqual("invalid", instr.ToString());
+        }
+
+        [Test]
+        public void AlphaDis_halt()
+        {
+            var instr = DisassembleWord(0x00000000);
+            Assert.AreEqual("halt", instr.ToString());
+        }
+
     }
 }

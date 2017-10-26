@@ -30,7 +30,7 @@ namespace Reko.Arch.Alpha
     public class AlphaDisassembler : DisassemblerBase<AlphaInstruction>
     {
 #if DEBUG
-        private static HashSet<uint> seen = new HashSet<uint>();
+        private static HashSet<string> seen = new HashSet<string>();
 #endif
         private AlphaArchitecture arch;
         private EndianImageReader rdr;
@@ -58,6 +58,12 @@ namespace Reko.Arch.Alpha
         {
             return new RegisterOperand(Registers.AluRegisters[n & 0x1F]);
         }
+
+        private RegisterOperand FpuRegister(uint n)
+        {
+            return new RegisterOperand(Registers.FpuRegisters[n & 0x1F]);
+        }
+
         private AlphaInstruction Invalid()
         {
             return new AlphaInstruction { Opcode = Opcode.invalid };
@@ -65,18 +71,28 @@ namespace Reko.Arch.Alpha
 
         private AlphaInstruction Nyi(uint uInstr)
         {
+            return Nyi(uInstr, string.Format("{0:X2}", uInstr >> 26));
+
+        }
+        private AlphaInstruction Nyi(uint uInstr, int functionCode)
+        {
+            return Nyi(uInstr, string.Format("{0:X2}_{1:X2}", uInstr >> 26, functionCode));
+        }
+
+        private AlphaInstruction Nyi(uint uInstr, string pattern)
+        {
 #if DEBUG
-            if (!seen.Contains(uInstr))
+            if (!seen.Contains(pattern))
             {
-                seen.Add(uInstr);
+                seen.Add(pattern);
                 Debug.Print(
 @"        [Test]
-        public void AlphaDis_{0:X8}()
+        public void AlphaDis_{1}()
         {{
             var instr = DisassembleWord(0x{0:X8});
             Assert.AreEqual(""@@@"", instr.ToString());
         }}
-", uInstr);
+", uInstr, pattern);
 #endif
             }
             return Invalid();
@@ -106,6 +122,50 @@ namespace Reko.Arch.Alpha
                         PrimitiveType.Word32,    // Dummy value
                         dasm.AluRegister(uInstr >> 16).Register,
                         (short)uInstr)
+                };
+            }
+        }
+
+        private class FMemOpRec : OpRecBase
+        {
+            private Opcode opcode;
+
+            public FMemOpRec(Opcode opcode)
+            {
+                this.opcode = opcode;
+            }
+
+            public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
+            {
+                return new AlphaInstruction
+                {
+                    Opcode = this.opcode,
+                    op1 = dasm.FpuRegister(uInstr >> 21),
+                    op2 = new MemoryOperand(
+                        PrimitiveType.Word32,    // Dummy value
+                        dasm.AluRegister(uInstr >> 16).Register,
+                        (short)uInstr)
+                };
+            }
+        }
+
+        private class JMemOpRec : OpRecBase
+        {
+            private readonly static Opcode[] opcodes = {
+                Opcode.jmp, Opcode.jsr, Opcode.ret, Opcode.jsr_coroutine
+            };
+
+            public JMemOpRec()
+            {
+            }
+
+            public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
+            {
+                return new AlphaInstruction
+                {
+                    Opcode = opcodes[(uInstr >> 14) & 0x3],
+                    op1 = dasm.AluRegister(uInstr >> 21),
+                    op2 = dasm.AluRegister(uInstr >> 16)
                 };
             }
         }
@@ -188,7 +248,26 @@ namespace Reko.Arch.Alpha
             }
         }
 
- 
+        private class FOperateOpRec : OpRecBase
+        {
+            private Dictionary<int, RegOpRec> decoders;
+
+            public FOperateOpRec(Dictionary<int, RegOpRec> decoders)
+            {
+                this.decoders = decoders;
+            }
+
+            public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
+            {
+                RegOpRec decoder;
+                var functionCode = ((int)uInstr >> 5) & 0x7FF;
+                if (!decoders.TryGetValue(functionCode, out decoder))
+                    return dasm.Nyi(uInstr, functionCode);
+                else
+                    return decoder.Decode(uInstr, dasm);
+            }
+        }
+
 
         private class FpuOpRec : OpRecBase
         {
@@ -200,9 +279,27 @@ namespace Reko.Arch.Alpha
 
         private class PalOpRec : OpRecBase
         {
+            private Dictionary<uint, Opcode> opcodes;
+
+            public PalOpRec(Dictionary<uint, Opcode> opcodes)
+            {
+                this.opcodes = opcodes;
+            }
+
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                throw new NotImplementedException();
+                Opcode opcode;
+                if (!opcodes.TryGetValue(uInstr & 0x03FFFFFF, out opcode))
+                    return dasm.Invalid();
+                return new AlphaInstruction { Opcode = opcode };
+            }
+        }
+
+        private class InvalidOpRec : OpRecBase
+        {
+            public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
+            {
+                return dasm.Invalid();
             }
         }
 
@@ -210,22 +307,24 @@ namespace Reko.Arch.Alpha
         {
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                return dasm.Nyi(uInstr);
+                return dasm.Invalid();
             }
         }
 
         private static OpRecBase[] oprecs = new OpRecBase[64]
         {
             // 00
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
+            new PalOpRec(new Dictionary<uint, Opcode>
+            {       //$REVIEW: these palcodes are OS-dependent....
+                { 0, Opcode.halt }
+            }),
+            new InvalidOpRec(),
+            new InvalidOpRec(),
+            new InvalidOpRec(),
+            new InvalidOpRec(),
+            new InvalidOpRec(),
+            new InvalidOpRec(),
+            new InvalidOpRec(),
 
             new MemOpRec(Opcode.lda),
             new MemOpRec(Opcode.ldah),
@@ -262,7 +361,7 @@ namespace Reko.Arch.Alpha
                 { 0x69, new RegOpRec(Opcode.subq_v) },
                 { 0x6D, new RegOpRec(Opcode.cmple) },
             }),
-            new OperateOpRec(new Dictionary<int, RegOpRec>
+            new OperateOpRec(new Dictionary<int, RegOpRec> // 11
             {
                 { 0x00, new RegOpRec(Opcode.and) },
                 { 0x08, new RegOpRec(Opcode.bic) },
@@ -278,33 +377,84 @@ namespace Reko.Arch.Alpha
                 { 0x66, new RegOpRec(Opcode.cmovgt) },
                 { 0x6C, new RegOpRec(Opcode.implver) },
             }),
-            new NyiOpRec(),
-            new NyiOpRec(),
+            new OperateOpRec(new Dictionary<int, RegOpRec> // 12
+            {
+                { 0x02, new RegOpRec(Opcode.mskbl) },
+                { 0x06, new RegOpRec(Opcode.extbl) },
+                { 0x0B, new RegOpRec(Opcode.insbl) },
+                { 0x12, new RegOpRec(Opcode.mskwl) },
+                { 0x16, new RegOpRec(Opcode.extwl) },
+                { 0x1B, new RegOpRec(Opcode.inswl) },
+                { 0x22, new RegOpRec(Opcode.mskll) },
+                { 0x26, new RegOpRec(Opcode.extll) },
+                { 0x2B, new RegOpRec(Opcode.insll) },
+                { 0x30, new RegOpRec(Opcode.zap) },
+                { 0x31, new RegOpRec(Opcode.zapnot) },
+                { 0x32, new RegOpRec(Opcode.mskql) },
+                { 0x34, new RegOpRec(Opcode.srl) },
+                { 0x36, new RegOpRec(Opcode.extql) },
+                { 0x39, new RegOpRec(Opcode.sll) },
+                { 0x3B, new RegOpRec(Opcode.insql) },
+                { 0x3C, new RegOpRec(Opcode.src) },
+                { 0x52, new RegOpRec(Opcode.mskwh) },
+                { 0x57, new RegOpRec(Opcode.inswh) },
+                { 0x5A, new RegOpRec(Opcode.extwh) },
+                { 0x62, new RegOpRec(Opcode.msklh) },
+                { 0x67, new RegOpRec(Opcode.inslh) },
+                { 0x6A, new RegOpRec(Opcode.extlh) },
+                { 0x72, new RegOpRec(Opcode.mskqh) },
+                { 0x77, new RegOpRec(Opcode.insqh) },
+                { 0x7A, new RegOpRec(Opcode.extqh) },
+            }),
+            new OperateOpRec(new Dictionary<int, RegOpRec>  // 13
+            {
+                { 0x00, new RegOpRec(Opcode.mull) },
+                { 0x20, new RegOpRec(Opcode.mulq) },
+                { 0x30, new RegOpRec(Opcode.umulh) },
+                { 0x40, new RegOpRec(Opcode.mull_v) },
+                { 0x60, new RegOpRec(Opcode.mulq_v) },
+            }),
+
+            new FOperateOpRec(new Dictionary<int, RegOpRec> // 14
+            {
+            }),
+            new FOperateOpRec(new Dictionary<int, RegOpRec> // 15
+            {
+            }),
+            new FOperateOpRec(new Dictionary<int, RegOpRec> // 16
+            {
+            }),
+            new FOperateOpRec(new Dictionary<int, RegOpRec> // 17
+            {
+            }),
+
+            new PalOpRec(new Dictionary<uint, Opcode> // 18
+            {
+            }),
+            new PalOpRec(new Dictionary<uint, Opcode> // 19 
+            {
+            }),
+            new JMemOpRec(),
+            new PalOpRec(new Dictionary<uint, Opcode> // 1B 
+            {
+            }),
 
             new NyiOpRec(),
             new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
+            new PalOpRec(new Dictionary<uint, Opcode>
+            {       //$REVIEW: these palcodes are OS-dependent....
+            }),
             new NyiOpRec(),
             // 20
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
+            new FMemOpRec(Opcode.ldf),
+            new FMemOpRec(Opcode.ldg),
+            new FMemOpRec(Opcode.lds),
+            new FMemOpRec(Opcode.ldt),
 
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
+            new FMemOpRec(Opcode.stf),
+            new FMemOpRec(Opcode.stg),
+            new FMemOpRec(Opcode.sts),
+            new FMemOpRec(Opcode.stt),
 
             new MemOpRec(Opcode.ldl),
             new MemOpRec(Opcode.ldq),
