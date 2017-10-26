@@ -26,6 +26,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Keys = System.Windows.Forms.Keys;
+using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {

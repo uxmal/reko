@@ -24,11 +24,11 @@ using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Gui;
+using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {
@@ -68,9 +68,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             return titleStr + " " + addrStr;
         }
 
-        void text_KeyDown(object sender, KeyEventArgs e)
+        void text_KeyDown(object sender, Gui.Controls.KeyEventArgs e)
         {
-            switch (e.KeyCode)
+            switch (e.KeyData)
             {
                 case Keys.Enter:
                 case Keys.Escape:

@@ -27,6 +27,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Windows.Forms;
+using Keys = System.Windows.Forms.Keys;
+using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {

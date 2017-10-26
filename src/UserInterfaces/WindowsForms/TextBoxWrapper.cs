@@ -32,11 +32,15 @@ namespace Reko.UserInterfaces.WindowsForms
     {
         private TextBox text;
 
+        public event EventHandler<Gui.Controls.KeyEventArgs> KeyDown;
+
         public TextBoxWrapper(TextBox text)
             : base(text)
         {
             this.text = text;
+            this.text.KeyDown += Text_KeyDown;
         }
+
 
         public string Text { get { return text.Text; } set { text.Text = value;  } }
 
@@ -49,12 +53,6 @@ namespace Reko.UserInterfaces.WindowsForms
             text.Focus();
         }
 
-        public event KeyEventHandler KeyDown
-        {
-            add { text.KeyDown += value; }
-            remove { text.KeyDown -= value; }
-        }
-
         public event EventHandler TextChanged
         {
             add { text.TextChanged += value; }
@@ -65,6 +63,18 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             add { text.LostFocus += value; }
             remove { text.LostFocus -= value; }
+        }
+
+        private void Text_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            var eh = KeyDown;
+            if (eh != null)
+            {
+                var ee = new Gui.Controls.KeyEventArgs((Gui.Controls.Keys)e.KeyData);
+                eh(sender, ee);
+                e.SuppressKeyPress = ee.SuppressKeyPress;
+                e.Handled = ee.Handled;
+            }
         }
     }
 }

@@ -123,6 +123,7 @@
     <Compile Include="Controls\INumericUpDownWrapper.cs" />
     <Compile Include="Controls\IRadioButton.cs" />
     <Compile Include="Controls\ITypeMarker.cs" />
+    <Compile Include="Controls\KeyEventArgs.cs" />
     <Compile Include="Design\ArchitectureDesigner.cs" />
     <Compile Include="Design\ImportDesigner.cs" />
     <Compile Include="Design\GlobalVariablesNodeDesigner.cs" />

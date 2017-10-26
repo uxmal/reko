@@ -554,9 +554,9 @@ namespace Reko.UserInterfaces.WindowsForms
             this.SelectedAddress = addrTo;        // ...and move to the new position.
         }
 
-        void ToolBarAddressTextbox_KeyDown(object sender, KeyEventArgs e)
+        void ToolBarAddressTextbox_KeyDown(object sender, Gui.Controls.KeyEventArgs e)
         {
-            if (e.KeyData != Keys.Return)
+            if (e.KeyData != Gui.Controls.Keys.Return)
                 return;
             e.Handled = true;
             e.SuppressKeyPress = true;

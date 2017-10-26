@@ -27,11 +27,15 @@ namespace Reko.UserInterfaces.WindowsForms
 {
     public class ToolStripTextBoxWrapper : ITextBox
     {
+        public event EventHandler<Gui.Controls.KeyEventArgs> KeyDown;
+
         private ToolStripTextBox textbox;
+
 
         public ToolStripTextBoxWrapper(ToolStripTextBox textbox)
         {
             this.textbox = textbox;
+            this.textbox.KeyDown += Textbox_KeyDown;
         }
 
         public bool Enabled { get { return textbox.Enabled; } set { textbox.Enabled = value; } }
@@ -49,12 +53,6 @@ namespace Reko.UserInterfaces.WindowsForms
             textbox.Focus();
         }
 
-        public event KeyEventHandler KeyDown
-        {
-            add { textbox.KeyDown += value; }
-            remove { textbox.KeyDown -= value; }
-        }
-
         public event EventHandler TextChanged
         {
             add { textbox.TextChanged += value; }
@@ -65,6 +63,18 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             add { textbox.LostFocus += value; }
             remove { textbox.LostFocus -= value; }
+        }
+
+        private void Textbox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            var eh = this.KeyDown;
+            if (eh != null)
+            {
+                var ee = new Gui.Controls.KeyEventArgs((Gui.Controls.Keys)e.KeyData);
+                eh(sender, ee);
+                e.SuppressKeyPress = ee.SuppressKeyPress;
+                e.Handled = ee.Handled;
+            }
         }
     }
 }

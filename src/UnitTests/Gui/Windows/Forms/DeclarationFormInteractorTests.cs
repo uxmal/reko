@@ -33,7 +33,6 @@ using Rhino.Mocks;
 using System;
 using System.ComponentModel.Design;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
@@ -367,7 +366,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 throw new NotImplementedException();
             }
 
-            public event KeyEventHandler KeyDown;
+            public event EventHandler<KeyEventArgs> KeyDown;
             public event EventHandler TextChanged;
             public event EventHandler LostFocus;
 
