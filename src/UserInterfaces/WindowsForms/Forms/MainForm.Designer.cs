@@ -70,13 +70,11 @@
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(784, 22);
             this.statusStrip.TabIndex = 2;
-            this.statusStrip.Text = "StatusStrip";
             // 
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
-            this.toolStripStatusLabel.Text = "Status";
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
             // treeBrowser
             // 

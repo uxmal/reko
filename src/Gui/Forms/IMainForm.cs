@@ -31,18 +31,18 @@ namespace Reko.Gui.Forms
 	/// </summary>
 	public interface IMainForm : IDisposable
 	{
-		/// <summary>
-		/// The text of the window's title bar.
-		/// </summary>
-		string TitleText { get; set; }
+        event EventHandler Closed;
+        event EventHandler Load;
+
+        /// <summary>
+        /// The text of the window's title bar.
+        /// </summary>
+        string TitleText { get; set; }
         System.Drawing.Size Size { get; set; }
         FormWindowState WindowState { get; set; }
 
         TabPage FindResultsPage { get; }
         TabPage DiagnosticsPage { get; }
-
-        event EventHandler Closed;
-        event EventHandler Load;
 
         void LayoutMdi(DocumentWindowLayout layout);
         
@@ -61,28 +61,4 @@ namespace Reko.Gui.Forms
         TiledHorizontal,
         TiledVertical,
     }
-
-	public delegate void MenuCommandHandler(object sender, MenuCommandArgs arg);
-	
-	public class MenuCommandArgs : EventArgs
-	{
-		private MenuCommand cmd; 
-		private bool isSupported;
-
-		public MenuCommandArgs(MenuCommand cmd)
-		{
-			this.cmd = cmd;
-		}
-
-		public bool IsSupported
-		{
-			get { return isSupported; }
-			set { isSupported = value; }
-		}
-		
-		public MenuCommand MenuCommand
-		{
-			get { return cmd; }
-		}
-	}
 }

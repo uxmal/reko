@@ -18,18 +18,16 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
-using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using Reko.Loading;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Text;
 
 namespace Reko.Gui.Electron.Adapter
 {
