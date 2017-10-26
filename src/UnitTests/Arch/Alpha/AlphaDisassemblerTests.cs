@@ -54,128 +54,63 @@ namespace Reko.UnitTests.Arch.Alpha
         public void AlphaDis_lda()
         {
             var instr = DisassembleWord(0x23DEFFD0);
-            Assert.AreEqual("lda\tr30,-48(r30)", instr.ToString());
+            Assert.AreEqual("lda\tr30,-30(r30)", instr.ToString());
         }
 
-        /*
         [Test]
-        public void AlphaDis_606012061()
+        public void AlphaDis_ldah()
         {
             var instr = DisassembleWord(0x241F029D);
-            Assert.AreEqual("@@@", instr.ToString());
+            Assert.AreEqual("ldah\tr0,29D(zero)", instr.ToString());
         }
 
         [Test]
-        public void AlphaDis_3040739328()
+        public void AlphaDis_stq()
         {
             var instr = DisassembleWord(0xB53E0000);
-            Assert.AreEqual("@@@", instr.ToString());
+            Assert.AreEqual("stq\tr9,0(r30)", instr.ToString());
         }
 
         [Test]
-        public void AlphaDis_3042836488()
-        {
-            var instr = DisassembleWord(0xB55E0008);
-            Assert.AreEqual("@@@", instr.ToString());
-        }
-
-        [Test]
-        public void AlphaDis_3044933648()
-        {
-            var instr = DisassembleWord(0xB57E0010);
-            Assert.AreEqual("@@@", instr.ToString());
-        }
-
-        [Test]
-        public void AlphaDis_3047030808()
-        {
-            var instr = DisassembleWord(0xB59E0018);
-            Assert.AreEqual("@@@", instr.ToString());
-        }
-
-        [Test]
-        public void AlphaDis_3076390944()
-        {
-            var instr = DisassembleWord(0xB75E0020);
-            Assert.AreEqual("@@@", instr.ToString());
-        }
-
-        [Test]
-        public void AlphaDis_1206912009()
-        {
-            var instr = DisassembleWord(0x47F00409);
-            Assert.AreEqual("@@@", instr.ToString());
-        }
-
-        [Test]
-        public void AlphaDis_1207043082()
-        {
-            var instr = DisassembleWord(0x47F2040A);
-            Assert.AreEqual("@@@", instr.ToString());
-        }
-
-        [Test]
-        public void AlphaDis_2684389480()
+        public void AlphaDis_ldl()
         {
             var instr = DisassembleWord(0xA0008868);
-            Assert.AreEqual("@@@", instr.ToString());
+            Assert.AreEqual("ldl\tr0,-7798(r0)", instr.ToString());
         }
 
         [Test]
-        public void AlphaDis_1207108619()
+        public void AlphaDis_br_self()
         {
-            var instr = DisassembleWord(0x47F3040B);
-            Assert.AreEqual("@@@", instr.ToString());
+            var instr = DisassembleWord(0xE63FFFFF);
+            Assert.AreEqual("beq\tr17,0000000000100000", instr.ToString());
         }
 
         [Test]
-        public void AlphaDis_3860856836()
+        public void AlphaDis_E6200004()
         {
             var instr = DisassembleWord(0xE6200004);
-            Assert.AreEqual("@@@", instr.ToString());
+            Assert.AreEqual("beq\tr17,0000000000100014", instr.ToString());
         }
 
         [Test]
-        public void AlphaDis_1205875730()
+        public void AlphaDis_bis()
         {
             var instr = DisassembleWord(0x47E03412);
-            Assert.AreEqual("@@@", instr.ToString());
+            Assert.AreEqual("bis\tzero,01,r18", instr.ToString());
         }
 
         [Test]
-        public void AlphaDis_1073754129()
-        {
-            var instr = DisassembleWord(0x40003011);
-            Assert.AreEqual("@@@", instr.ToString());
-        }
-
-        [Test]
-        public void AlphaDis_3544187533()
+        public void AlphaDis_D340028D()
         {
             var instr = DisassembleWord(0xD340028D);
-            Assert.AreEqual("@@@", instr.ToString());
+            Assert.AreEqual("bsr\tr26,0000000000100A38", instr.ToString());
         }
 
         [Test]
-        public void AlphaDis_3286237215()
+        public void AlphaDis_C3E0001F()
         {
             var instr = DisassembleWord(0xC3E0001F);
-            Assert.AreEqual("@@@", instr.ToString());
+            Assert.AreEqual("br\tzero,0000000000100080", instr.ToString());
         }
-
-        [Test]
-        public void AlphaDis_631177885()
-        {
-            var instr = DisassembleWord(0x259F029D);
-            Assert.AreEqual("@@@", instr.ToString());
-        }
-
-        [Test]
-        public void AlphaDis_1206518800()
-        {
-            var instr = DisassembleWord(0x47EA0410);
-            Assert.AreEqual("@@@", instr.ToString());
-        }
-        */
     }
 }

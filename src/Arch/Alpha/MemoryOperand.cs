@@ -42,7 +42,13 @@ namespace Reko.Arch.Alpha
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write("{0}(", Offset);
+            int offset = Offset;
+            if (offset < 0)
+            {
+                offset = -offset;
+                writer.Write('-');
+            }
+            writer.Write("{0:X}(", offset);
             writer.Write(this.Base.Name);
             writer.Write(")");
         }

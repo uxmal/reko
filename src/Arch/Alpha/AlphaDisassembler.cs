@@ -48,16 +48,19 @@ namespace Reko.Arch.Alpha
             if (!rdr.TryReadUInt32(out uInstr))
                 return null;
             var op = uInstr >> 26;
-            var instr = oprecs[op].Decode(uInstr, this);
+            var instr = Oprecs[op].Decode(uInstr, this);
             instr.Address = addr;
             instr.Length = 4;
             return instr;
         }
 
-
         private RegisterOperand AluRegister(uint n)
         {
             return new RegisterOperand(Registers.AluRegisters[n & 0x1F]);
+        }
+        private AlphaInstruction Invalid()
+        {
+            return new AlphaInstruction { Opcode = Opcode.invalid };
         }
 
         private AlphaInstruction Nyi(uint uInstr)
@@ -68,7 +71,7 @@ namespace Reko.Arch.Alpha
                 seen.Add(uInstr);
                 Debug.Print(
 @"        [Test]
-        public void AlphaDis_{0}()
+        public void AlphaDis_{0:X8}()
         {{
             var instr = DisassembleWord(0x{0:X8});
             Assert.AreEqual(""@@@"", instr.ToString());
@@ -76,7 +79,7 @@ namespace Reko.Arch.Alpha
 ", uInstr);
 #endif
             }
-            return new AlphaInstruction { Opcode = Opcode.invalid };
+            return Invalid();
         }
 
         private abstract class OpRecBase
@@ -118,27 +121,74 @@ namespace Reko.Arch.Alpha
 
         private class BranchOpRec : OpRecBase
         {
+            private Opcode opcode;
+
+            public BranchOpRec(Opcode opcode)
+            {
+                this.opcode = opcode;
+            }
+
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                throw new NotImplementedException();
+                int offset = ((int)uInstr << 11) >> 9;
+                var op1 = dasm.AluRegister(uInstr >> 21);
+                var op2 = AddressOperand.Create(dasm.rdr.Address + offset);
+                return new AlphaInstruction
+                {
+                    Opcode = this.opcode,
+                    op1 = op1,
+                    op2 = op2,
+                };
             }
         }
 
         private class RegOpRec : OpRecBase
         {
+            private Opcode opcode;
+
+            public RegOpRec(Opcode opcode)
+            {
+                this.opcode = opcode;
+            }
+
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                throw new NotImplementedException();
+                var op1 = dasm.AluRegister(uInstr >> 21);
+                var op2 = (uInstr & (1 << 12)) != 0
+                    ? ImmediateOperand.Byte((byte)(uInstr >> 13))
+                    : (MachineOperand) dasm.AluRegister(uInstr >> 13);
+                var op3 = dasm.AluRegister(uInstr);
+                return new AlphaInstruction
+                {
+                    Opcode = this.opcode,
+                    op1 = op1,
+                    op2 = op2,
+                    op3 = op3,
+                };
             }
         }
 
-        private class ImmOpRec : OpRecBase
+        private class OperateOpRec : OpRecBase
         {
+            private Dictionary<int, RegOpRec> decoders;
+
+            public OperateOpRec(Dictionary<int, RegOpRec> decoders)
+            {
+                this.decoders = decoders;
+            }
+
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                throw new NotImplementedException();
+                RegOpRec decoder;
+                var functionCode = ((int)uInstr >> 5) & 0x7F;
+                if (!decoders.TryGetValue(functionCode, out decoder))
+                    return dasm.Invalid();
+                else
+                    return decoder.Decode(uInstr, dasm);
             }
         }
+
+ 
 
         private class FpuOpRec : OpRecBase
         {
@@ -164,7 +214,7 @@ namespace Reko.Arch.Alpha
             }
         }
 
-        private static OpRecBase[] oprecs = new OpRecBase[]
+        private static OpRecBase[] oprecs = new OpRecBase[64]
         {
             // 00
             new NyiOpRec(),
@@ -187,8 +237,47 @@ namespace Reko.Arch.Alpha
             new MemOpRec(Opcode.stb),
             new MemOpRec(Opcode.stq_u),
             // 10
-            new NyiOpRec(),
-            new NyiOpRec(),
+            new OperateOpRec(new Dictionary<int, RegOpRec>
+            {
+                { 0x00, new RegOpRec(Opcode.addl) },
+                { 0x02, new RegOpRec(Opcode.s4addl) },
+                { 0x09, new RegOpRec(Opcode.subl) },
+                { 0x0B, new RegOpRec(Opcode.s4subl) },
+                { 0x0F, new RegOpRec(Opcode.cmpbge) },
+                { 0x12, new RegOpRec(Opcode.s8addl) },
+                { 0x1B, new RegOpRec(Opcode.s8subl) },
+                { 0x1D, new RegOpRec(Opcode.cmpult) },
+                { 0x20, new RegOpRec(Opcode.addq) },
+                { 0x22, new RegOpRec(Opcode.s4addq) },
+                { 0x29, new RegOpRec(Opcode.subq) },
+                { 0x2B, new RegOpRec(Opcode.s4subq) },
+                { 0x2D, new RegOpRec(Opcode.cmpeq) },
+                { 0x32, new RegOpRec(Opcode.s8addq) },
+                { 0x3B, new RegOpRec(Opcode.s8subq) },
+                { 0x3D, new RegOpRec(Opcode.cmpule) },
+                { 0x40, new RegOpRec(Opcode.addl_v) },
+                { 0x49, new RegOpRec(Opcode.subl_v) },
+                { 0x4D, new RegOpRec(Opcode.cmplt) },
+                { 0x60, new RegOpRec(Opcode.addq_v) },
+                { 0x69, new RegOpRec(Opcode.subq_v) },
+                { 0x6D, new RegOpRec(Opcode.cmple) },
+            }),
+            new OperateOpRec(new Dictionary<int, RegOpRec>
+            {
+                { 0x00, new RegOpRec(Opcode.and) },
+                { 0x08, new RegOpRec(Opcode.bic) },
+                { 0x14, new RegOpRec(Opcode.cmovlbs) },
+                { 0x16, new RegOpRec(Opcode.cmovlbc) },
+                { 0x20, new RegOpRec(Opcode.bis) },
+                { 0x24, new RegOpRec(Opcode.cmovne) },
+                { 0x26, new RegOpRec(Opcode.cmovne) },
+                { 0x28, new RegOpRec(Opcode.ornot) },
+                { 0x40, new RegOpRec(Opcode.xor) },
+                { 0x44, new RegOpRec(Opcode.cmovlt) },
+                { 0x46, new RegOpRec(Opcode.cmovge) },
+                { 0x66, new RegOpRec(Opcode.cmovgt) },
+                { 0x6C, new RegOpRec(Opcode.implver) },
+            }),
             new NyiOpRec(),
             new NyiOpRec(),
 
@@ -217,35 +306,48 @@ namespace Reko.Arch.Alpha
             new NyiOpRec(),
             new NyiOpRec(),
 
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
+            new MemOpRec(Opcode.ldl),
+            new MemOpRec(Opcode.ldq),
+            new MemOpRec(Opcode.ldl_l),
+            new MemOpRec(Opcode.ldq_l),
 
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
+            new MemOpRec(Opcode.stl),
+            new MemOpRec(Opcode.stq),
+            new MemOpRec(Opcode.stl_c),
+            new MemOpRec(Opcode.stq_c),
             // 30
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
+            new BranchOpRec(Opcode.br),
+            new BranchOpRec(Opcode.fbeq),
+            new BranchOpRec(Opcode.fblt),
+            new BranchOpRec(Opcode.fble),
 
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
+            new BranchOpRec(Opcode.bsr),
+            new BranchOpRec(Opcode.fbne),
+            new BranchOpRec(Opcode.fbge),
+            new BranchOpRec(Opcode.fbgt),
 
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
+            new BranchOpRec(Opcode.blbc),
+            new BranchOpRec(Opcode.beq),
+            new BranchOpRec(Opcode.blt),
+            new BranchOpRec(Opcode.ble),
 
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
-            new NyiOpRec(),
+            new BranchOpRec(Opcode.blbs),
+            new BranchOpRec(Opcode.bne),
+            new BranchOpRec(Opcode.bge),
+            new BranchOpRec(Opcode.bgt),
         };
+
+        private static OpRecBase[] Oprecs
+        {
+            get
+            {
+                return oprecs;
+            }
+
+            set
+            {
+                oprecs = value;
+            }
+        }
     }
 }
