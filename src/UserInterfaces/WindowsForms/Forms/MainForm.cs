@@ -56,7 +56,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
             this.Menu = dm.MainMenu;
             this.dm.MainToolbar.Text = "";
             this.dm.MainToolbar.ImageList = this.ImageList;

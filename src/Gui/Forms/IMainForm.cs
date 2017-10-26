@@ -41,10 +41,7 @@ namespace Reko.Gui.Forms
         ListView FindResultsList { get; }
         TabPage FindResultsPage { get; }
         TabPage DiagnosticsPage { get; }
-        ListView DiagnosticsList { get; }
         ITreeView ProjectBrowser { get; }
-        OpenFileDialog OpenFileDialog { get; }
-        SaveFileDialog SaveFileDialog { get; }
         StatusStrip StatusStrip { get; }
         TabControl TabControl { get; }
         ToolStrip ToolBar { get; }
@@ -56,8 +53,6 @@ namespace Reko.Gui.Forms
         event EventHandler Load;
         event KeyEventHandler ProcessCommandKey;
 
-        void AddToolbar(System.Windows.Forms.ToolStrip toolStrip);
-        void AddProjectBrowserToolbar(System.Windows.Forms.ToolStrip toolStrip);
         void LayoutMdi(DocumentWindowLayout layout);
         
         void Show();

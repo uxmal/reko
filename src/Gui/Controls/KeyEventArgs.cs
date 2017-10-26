@@ -28,16 +28,11 @@ namespace Reko.Gui.Controls
 {
     public class KeyEventArgs : EventArgs
     {
-        //
-        // Summary:
-        //     Initializes a new instance of the System.Windows.Forms.KeyEventArgs class.
-        //
-        // Parameters:
         //   keyData:
-        //     A System.Windows.Forms.Keys representing the key that was pressed, combined with
+        //     A Keys representing the key that was pressed, combined with
         //     any modifier flags that indicate which CTRL, SHIFT, and ALT keys were pressed
         //     at the same time. Possible values are obtained be applying the bitwise OR (|)
-        //     operator to constants from the System.Windows.Forms.Keys enumeration.
+        //     operator to constants from the Keys enumeration.
         public KeyEventArgs(Keys keyData)
         {
             this.KeyData = keyData;

@@ -80,8 +80,10 @@ namespace Reko.Gui.Electron.Adapter
             return new DecompilerService();
         }
 
-        public IDiagnosticsService CreateDiagnosticsService(object list)
+        public IDiagnosticsService CreateDiagnosticsService()
         {
+            //$TODO: get some "handle" to the widget that shows diagnostics.
+            object list = null;
             return new ElectronDiagnosticsService((Func<object, Task<object>>)list);
         }
 
@@ -120,7 +122,7 @@ namespace Reko.Gui.Electron.Adapter
             throw new NotImplementedException();
         }
 
-        public IProjectBrowserService CreateProjectBrowserService(ITreeView treeView)
+        public IProjectBrowserService CreateProjectBrowserService()
         {
             throw new NotImplementedException();
         }

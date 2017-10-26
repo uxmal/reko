@@ -130,8 +130,6 @@ namespace Reko.Gui.Forms
             return new DecompilerDriver(ldr, sc);
         }
 
-
-
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
         {
             sc.AddService<DecompilerHost>(this);
@@ -144,7 +142,7 @@ namespace Reko.Gui.Forms
 
             sc.AddService(typeof(IStatusBarService), (IStatusBarService)this);
 
-            diagnosticsSvc = svcFactory.CreateDiagnosticsService(form.DiagnosticsList);
+            diagnosticsSvc = svcFactory.CreateDiagnosticsService();
             sc.AddService(typeof(IDiagnosticsService), diagnosticsSvc);
 
             decompilerSvc = svcFactory.CreateDecompilerService();
@@ -175,7 +173,7 @@ namespace Reko.Gui.Forms
             var tlSvc = svcFactory.CreateTypeLibraryLoaderService();
             sc.AddService<ITypeLibraryLoaderService>(tlSvc);
 
-            this.projectBrowserSvc = svcFactory.CreateProjectBrowserService(form.ProjectBrowser);
+            this.projectBrowserSvc = svcFactory.CreateProjectBrowserService();
             sc.AddService<IProjectBrowserService>(projectBrowserSvc);
 
             var upSvc = svcFactory.CreateUiPreferencesService();
@@ -208,16 +206,6 @@ namespace Reko.Gui.Forms
                 return StreamWriter.Null;
             var fsSvc = Services.RequireService<IFileSystemService>();
             return new StreamWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
-        }
-
-        public virtual XmlWriter CreateXmlWriter(string filename)
-        {
-            if (string.IsNullOrEmpty(filename))
-                return new XmlTextWriter(StreamWriter.Null);
-            var fsSvc = Services.RequireService<IFileSystemService>();
-            var xw = new XmlTextWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
-            xw.Formatting = Formatting.Indented;
-            return xw;
         }
 
         public IPhasePageInteractor CurrentPhase
@@ -676,7 +664,7 @@ namespace Reko.Gui.Forms
                 return true;
             if (string.IsNullOrEmpty(this.ProjectFileName))
             {
-                string newName = PromptForFilename(
+                string newName = uiSvc.ShowSaveFileDialog(
                     Path.ChangeExtension(
                         decompilerSvc.Decompiler.Project.Programs[0].Filename,
                         Project_v3.FileExtension));
@@ -694,15 +682,6 @@ namespace Reko.Gui.Forms
                 saver.Save(sProject, xw);
             }
             return true;
-        }
-
-        protected virtual string PromptForFilename(string suggestedName)
-        {
-            form.SaveFileDialog.FileName = suggestedName;
-            if (DialogResult.OK != form.ShowDialog(form.SaveFileDialog))
-                return null;
-            else
-                return form.SaveFileDialog.FileName;
         }
 
         private static string SettingsDirectory
@@ -1010,8 +989,6 @@ namespace Reko.Gui.Forms
             }
             catch { }
         }
-
-   
 
         private void toolBar_ItemClicked(object sender, System.Windows.Forms.ToolStripItemClickedEventArgs e)
         {

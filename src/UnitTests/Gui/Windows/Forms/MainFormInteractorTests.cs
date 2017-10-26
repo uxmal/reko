@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private MockRepository mr;
         private MockFactory mockFactory;
         private IMainForm form;
-		private TestMainFormInteractor interactor;
+		private MainFormInteractor interactor;
         private Program program;
         private MemoryStream xmlStm;
         private IArchiveBrowserService archSvc;
@@ -99,6 +99,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_SavePrompt(true);
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
+            uiSvc.Stub(u => u.ShowSaveFileDialog("foo.dcproject")).Return("foo.dcproject");
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -125,6 +126,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dcSvc.Expect(d => d.Decompiler = null);
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
+            uiSvc.Stub(u => u.ShowSaveFileDialog("foo.dcproject")).Return("foo.dcproject");
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -149,6 +151,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
+            uiSvc.Stub(u => u.ShowSaveFileDialog("foo.dcproject")).Return("foo.dcproject");
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -185,6 +188,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             uiSvc.Stub(u => u.DocumentWindows).Return(new List<IWindowFrame>());
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
+            uiSvc.Stub(u => u.ShowSaveFileDialog("foo.dcproject")).Return("foo.dcproject");
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -233,6 +237,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_XmlWriter();
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
+            uiSvc.Expect(u => u.ShowSaveFileDialog("foo.dcproject")).Return("foo.dcproject");
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -276,8 +281,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_Loader();
             Given_DecompilerInstance();
             Given_XmlWriter();
+            Given_LoadPreferences();
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
+            uiSvc.Expect(u => u.ShowSaveFileDialog("foo.dcproject")).Return("foo.dcproject");
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -285,8 +292,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             Assert.IsTrue(string.IsNullOrEmpty(interactor.ProjectFileName), "project filename should be clear");
             interactor.Save();
-            Assert.IsTrue(interactor.Test_PromptedForSaving, "Should have prompted for saving as no file name was supplied.");
-            Assert.AreEqual("foo.dcproject", interactor.Test_Filename);
+
+            mr.VerifyAll();
         }
 
         [Test] 
@@ -505,7 +512,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dcSvc.Expect(d => d.Decompiler = Arg<IDecompiler>.Is.Anything);
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Anything, Arg<string>.Is.Null)).Return(null);
-
+            uiSvc.Stub(u => u.ShowSaveFileDialog("foo.dcproject")).Return("foo.dcproject");
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -559,7 +566,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateArchiveBrowserService()).Return(archSvc);
             svcFactory.Stub(s => s.CreateCodeViewerService()).Return(cvSvc);
             svcFactory.Stub(s => s.CreateDecompilerConfiguration()).Return(new FakeDecompilerConfiguration());
-            svcFactory.Stub(s => s.CreateDiagnosticsService(Arg<ListView>.Is.Anything)).Return(diagnosticSvc);
+            svcFactory.Stub(s => s.CreateDiagnosticsService()).Return(diagnosticSvc);
             svcFactory.Stub(s => s.CreateDecompilerService()).Return(dcSvc); 
             svcFactory.Stub(s => s.CreateDisassemblyViewService()).Return(disasmSvc);
             svcFactory.Stub(s => s.CreateMemoryViewService()).Return(memSvc);
@@ -568,7 +575,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateInitialPageInteractor()).Return(new FakeInitialPageInteractor());
             svcFactory.Stub(s => s.CreateLoadedPageInteractor()).Return(new FakeLoadedPageInteractor());
             svcFactory.Stub(s => s.CreateTypeLibraryLoaderService()).Return(typeLibSvc);
-            svcFactory.Stub(s => s.CreateProjectBrowserService(Arg<ITreeView>.Is.NotNull)).Return(brSvc);
+            svcFactory.Stub(s => s.CreateProjectBrowserService()).Return(brSvc);
             svcFactory.Stub(s => s.CreateUiPreferencesService()).Return(uiPrefs);
             svcFactory.Stub(s => s.CreateFileSystemService()).Return(fsSvc);
             svcFactory.Stub(s => s.CreateTabControlHost(Arg<TabControl>.Is.NotNull)).Return(tcHostSvc);
@@ -591,10 +598,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var statusStrip = new StatusStrip { Items = { new ToolStripLabel() } };
             var brToolbar = new ToolStrip();
             var projectBrowser = mr.Stub<ITreeView>();
-            form.Stub(f => f.DiagnosticsList).Return(listView);
             form.Stub(f => f.ImageList).Return(imagelist);
-            form.Stub(f => f.AddToolbar(null)).IgnoreArguments();
-            form.Stub(f => f.AddProjectBrowserToolbar(null)).IgnoreArguments();
             form.Stub(f => f.Dispose());
             form.Stub(f => f.TabControl).Return(tabControl);
             form.Stub(f => f.FindResultsPage).Return(tabResults);
@@ -604,7 +608,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             form.Stub(f => f.ProjectBrowserToolbar).Return(toolStrip);
             form.Stub(f => f.ProjectBrowser).Return(projectBrowser);
             form.Stub(f => f.StatusStrip).Return(statusStrip);
-            form.Stub(f => f.AddProjectBrowserToolbar(null)).IgnoreArguments();
             form.Stub(f => f.ProjectBrowserToolbar).Return(brToolbar);
             form.Stub(f => f.UpdateToolbarState());
             form.Closed += null;
@@ -637,7 +640,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
             services.AddService<IDecompilerShellUiService>(uiSvc);
-            interactor = new TestMainFormInteractor(program, services);
+            interactor = new MainFormInteractor(services);
             interactor.Attach(form);
         }
 
@@ -648,8 +651,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
             services.AddService(typeof(IDecompilerShellUiService), uiSvc);
-            Program prog = new Program();
-            interactor = new TestMainFormInteractor(prog, loader, services);
+            interactor = new MainFormInteractor(services);
             interactor.Attach(form);
         }
 
@@ -662,81 +664,4 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 return null;
         }
 	}
-
-	public class TestMainFormInteractor : MainFormInteractor
-	{
-		private DecompilerDriver decompiler;
-        private ILoader ldr;
-		private Program program;
-        private StringWriter sw;
-        private XmlTextWriter xw;
-        private MemoryStream xmlStm;
-        private string testFilename;
-        private bool promptedForSaving;
-
-		public TestMainFormInteractor(Program prog, IServiceProvider sp) : base(sp)
-		{
-            this.program = prog;
-		}
-
-        public TestMainFormInteractor(DecompilerDriver decompiler, IServiceProvider sp)
-            : base(sp)
-		{
-            this.decompiler = decompiler;
-		}
-
-        public TestMainFormInteractor(Program prog, ILoader ldr, IServiceProvider sp)
-            : base(sp)
-        {
-            this.program = prog;
-            this.ldr = ldr;
-        }
-
-        // Overrides of creation methods.
-
-        public override IDecompiler CreateDecompiler(ILoader ldr)
-		{
-            if (decompiler != null)
-                return decompiler;
-            return base.CreateDecompiler(ldr);
-		}
-
-        public override TextWriter CreateTextWriter(string filename)
-        {
-            testFilename = filename;
-            sw = new StringWriter();
-            return sw;
-        }
-
-        public override XmlWriter CreateXmlWriter(string filename)
-        {
-            testFilename = filename;
-            xmlStm = new MemoryStream();
-            xw = new XmlnsHidingWriter(xmlStm, new UTF8Encoding(false));
-            xw.Formatting = Formatting.Indented;
-            return xw;
-        }
-
-        protected override string PromptForFilename(string suggestedName)
-        {
-            promptedForSaving = true;
-            testFilename = suggestedName;
-            return suggestedName;
-        }
-
-        public string Test_SavedProjectXml
-        {
-            get { return Encoding.UTF8.GetString(xmlStm.ToArray()); }
-        }
-
-        public string Test_Filename
-        {
-            get { return testFilename; }
-        }
-
-        public bool Test_PromptedForSaving
-        {
-            get { return promptedForSaving; }
-        }
-    }
 }

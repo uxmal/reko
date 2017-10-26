@@ -38,12 +38,12 @@ namespace Reko.Mono
             var services = new ServiceContainer();
             if (args.Length == 0)
 			{
-                services.AddService(typeof(IServiceFactory), new WindowsServiceFactory(services));
+                var mainForm = new MainForm();
+                services.AddService(typeof(IServiceFactory), new WindowsServiceFactory(services, mainForm));
                 services.AddService(typeof(IDialogFactory), new WindowsFormsDialogFactory(services));
                 services.AddService(typeof(IRegistryService), new WindowsFormsRegistryService());
                 services.AddService(typeof(ISettingsService), new WindowsFormsSettingsService(services));
 
-                var mainForm = new MainForm();
                 mainForm.Attach(services);
                 System.Windows.Forms.Application.Run(mainForm);
 

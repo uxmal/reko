@@ -38,10 +38,12 @@ namespace Reko.UserInterfaces.WindowsForms
     public class WindowsServiceFactory : IServiceFactory
     {
         private IServiceProvider services;
+        private MainForm mainForm;
 
-        public WindowsServiceFactory(IServiceProvider services)
+        public WindowsServiceFactory(IServiceProvider services, MainForm mainForm)
         {
             this.services = services;
+            this.mainForm = mainForm;
         }
 
         public IArchiveBrowserService CreateArchiveBrowserService()
@@ -59,10 +61,10 @@ namespace Reko.UserInterfaces.WindowsForms
             return RekoConfigurationService.Load();
         }
 
-        public IDiagnosticsService CreateDiagnosticsService(object listView)
+        public IDiagnosticsService CreateDiagnosticsService()
         {
             var d = new DiagnosticsInteractor();
-            d.Attach((ListView)listView);
+            d.Attach(mainForm.DiagnosticsList);
             return d;
         }
 
@@ -111,9 +113,9 @@ namespace Reko.UserInterfaces.WindowsForms
             return new TypeLibraryLoaderServiceImpl(services);
         }
 
-        public IProjectBrowserService CreateProjectBrowserService(ITreeView treeView)
+        public IProjectBrowserService CreateProjectBrowserService()
         {
-            return new ProjectBrowserService(services, treeView);
+            return new ProjectBrowserService(services, mainForm.ProjectBrowser);
         }
 
         public ISearchResultService CreateSearchResultService(object listView)

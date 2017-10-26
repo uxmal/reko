@@ -99,7 +99,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public virtual string ShowSaveFileDialog(string fileName)
         {
-            if (string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrEmpty(fileName))
                 sfd.FileName = fileName;
             if ((Gui.DialogResult)sfd.ShowDialog(form) == Gui.DialogResult.OK)
             {

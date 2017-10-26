@@ -40,7 +40,7 @@ namespace Reko.Gui
 
         IConfigurationService CreateDecompilerConfiguration();
         IDecompilerService CreateDecompilerService();
-        IDiagnosticsService CreateDiagnosticsService(object listView);
+        IDiagnosticsService CreateDiagnosticsService();
         IDisassemblyViewService CreateDisassemblyViewService();
         IFileSystemService CreateFileSystemService();
         ImageSegmentService CreateImageSegmentService();
@@ -48,7 +48,7 @@ namespace Reko.Gui
         InitialPageInteractor CreateInitialPageInteractor();
         ILoadedPageInteractor CreateLoadedPageInteractor();
         ILowLevelViewService CreateMemoryViewService();
-        IProjectBrowserService CreateProjectBrowserService(ITreeView treeView);
+        IProjectBrowserService CreateProjectBrowserService();
         ISearchResultService CreateSearchResultService(object listView);
         IResourceEditorService CreateResourceEditorService();
         ITabControlHostService CreateTabControlHost(object tabControl);
