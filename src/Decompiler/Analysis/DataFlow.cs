@@ -80,6 +80,8 @@ namespace Reko.Analysis
         public void EmitFlagGroup(IProcessorArchitecture arch, string caption, uint grfFlags, TextWriter sb)
         {
             sb.Write(caption);
+            if (grfFlags == 0)
+                return;
             sb.Write(" {0}", arch.GrfToString(grfFlags));
         }
 
