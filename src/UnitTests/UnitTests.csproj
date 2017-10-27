@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
+    <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
     <Compile Include="Analysis\UnalignedMemoryAccessFuserTests.cs" />
     <Compile Include="Arch\Avr\Avr8ArchitectureTests.cs" />

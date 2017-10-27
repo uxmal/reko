@@ -52,12 +52,12 @@ namespace Reko.Arch.Alpha
 
         public override void OnAfterCall(FunctionType sigCallee)
         {
-            throw new NotImplementedException();
+            return;
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new NotImplementedException();
+            return new CallSite(0, 0);
         }
 
         public override void OnProcedureEntered()

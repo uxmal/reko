@@ -121,21 +121,21 @@ namespace Reko.UnitTests.Arch.Alpha
         }
 
         [Test]
-        public void AlphaDis_1A()
+        public void AlphaDis_jsr()
         {
             var instr = DisassembleWord(0x6B404000);
             Assert.AreEqual("jsr\tr26,r0", instr.ToString());
         }
 
         [Test]
-        public void AlphaDis_13()
+        public void AlphaDis_mull()
         {
             var instr = DisassembleWord(0x4C230012);
             Assert.AreEqual("mull\tr1,r24,r18", instr.ToString());
         }
 
         [Test]
-        public void AlphaDis_27()
+        public void AlphaDis_stt()
         {
             var instr = DisassembleWord(0x9E1E0290);
             Assert.AreEqual("stt\tf16,290(r30)", instr.ToString());

@@ -82,7 +82,7 @@ namespace Reko.Arch.Alpha
         private AlphaInstruction Nyi(uint uInstr, string pattern)
         {
 #if DEBUG
-            if (!seen.Contains(pattern))
+            if (false && !seen.Contains(pattern))
             {
                 seen.Add(pattern);
                 Debug.Print(

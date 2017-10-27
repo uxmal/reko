@@ -74,7 +74,7 @@ namespace Reko.Arch.Alpha
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -132,7 +132,7 @@ namespace Reko.Arch.Alpha
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return Registers.AllRegisters.Values.ToArray();
         }
 
         public override string GrfToString(uint grf)
@@ -142,7 +142,8 @@ namespace Reko.Arch.Alpha
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            //$TODO: this should be in Platform since pointer sizes != word sizes.
+            return Address.Ptr32((uint)c.ToInt64());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

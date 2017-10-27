@@ -45,12 +45,15 @@ namespace Reko.Environments.Windows
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            throw new NotImplementedException();
+            return new HashSet<RegisterStorage>();  //$TODO ret reguster, gp register?
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
-            throw new NotImplementedException();
+            return new[] {
+                "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8",
+                   "r16", "r17", "r18", "r9", "r20", "r21",
+                   "r22", "r23", "r24", "r25", "r26", "r27", "r28"}.Select(n => Architecture.GetRegister(n)).ToHashSet();
         }
 
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
@@ -81,7 +84,7 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }
