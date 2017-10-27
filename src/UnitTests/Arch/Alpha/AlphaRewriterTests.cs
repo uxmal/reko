@@ -831,13 +831,14 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        [Ignore("Revisit when reko knows how to portable raise overflow exceptions")]
         public void AlphaRw_addq_v()
         {
             RewriteCode("062C0540");	// addq_v	r0,r9,r6
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|r6 = r0 + r9",
+                "2|T--|if (!OV(r6)) branch 00100004",
+                "3|L--|__trap_overflow()");
         }
 
         [Test]
@@ -874,6 +875,48 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|f14 = f1 - f0");
+        }
+
+        [Test]
+        public void AlphaRw_cmpbge()
+        {
+            RewriteCode("F1510440");	// cmpbge	r0,22,r17
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r17 = __cmpbge(r0, 0x22)");
+        }
+
+        [Test]
+        public void AlphaRw_subq_v()
+        {
+            RewriteCode("2B7D0240");	// subq_v	r0,13,r11
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|r11 = r0 - 0x13",
+                "2|T--|if (!OV(r11)) branch 00100004",
+                "3|L--|__trap_overflow()");
+        }
+
+        [Test]
+        public void AlphaRw_subl_v()
+        {
+            RewriteCode("3BA90040");	// subl_v	r0,r5,r27
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|r27 = (word64) SLICE(r0 - r5, int32, 0)",
+                "2|T--|if (!OV(r27)) branch 00100004",
+                "3|L--|__trap_overflow()");
+        }
+
+        [Test]
+        public void AlphaRw_addl_v()
+        {
+            RewriteCode("04B86940");	// addl_v	r3,4D,r4
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|r4 = (word64) SLICE(r3 + 0x4D, int32, 0)",
+                "2|T--|if (!OV(r4)) branch 00100004",
+                "3|L--|__trap_overflow()");
         }
     }
 }

@@ -137,7 +137,8 @@ namespace Reko.Arch.Alpha
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            // Alpha has no traditional condition codes.
+            return "";
         }
 
         public override Address MakeAddressFromConstant(Constant c)

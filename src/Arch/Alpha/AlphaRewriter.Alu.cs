@@ -19,6 +19,8 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -50,6 +52,18 @@ namespace Reko.Arch.Alpha
             var dst = Rewrite(instr.op3);
             var e = fn(op1, op2);
             m.Assign(dst, e);
+        }
+
+        private void RewriteBinOv(Func<Expression, Expression, Expression> fn)
+        {
+            RewriteBin(fn);
+            var dst = Rewrite(instr.op3);
+            m.BranchInMiddleOfInstruction(
+                m.Not(host.PseudoProcedure("OV", PrimitiveType.Bool, dst)),
+                instr.Address + instr.Length, 
+                RtlClass.ConditionalTransfer);
+            var ch = new ProcedureCharacteristics { Terminates = true };
+            m.SideEffect(host.PseudoProcedure("__trap_overflow", ch, VoidType.Instance));
         }
 
         private void RewriteInstrinsic(string instrinic)

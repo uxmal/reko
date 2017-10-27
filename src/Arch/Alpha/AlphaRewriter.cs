@@ -74,7 +74,9 @@ namespace Reko.Arch.Alpha
                 case Opcode.addf_c: RewriteFpuOp(m.FAdd); break;
                 case Opcode.adds_c: RewriteFpuOp(m.FAdd); break;
                 case Opcode.addl: RewriteBin(addl); break;
+                case Opcode.addl_v: RewriteBinOv(addl); break;
                 case Opcode.addq: RewriteBin(addq); break;
+                case Opcode.addq_v: RewriteBinOv(addq); break;
                 case Opcode.and: RewriteBin(and); break;
                 case Opcode.beq: RewriteBranch(m.Eq0); break;
                 case Opcode.bge: RewriteBranch(m.Ge0); break;
@@ -92,6 +94,7 @@ namespace Reko.Arch.Alpha
                 case Opcode.cmovge: RewriteCmov(m.Ge0); break;
                 case Opcode.cmovlbc: RewriteCmov(lbc); break;
                 case Opcode.cmovlbs: RewriteCmov(lbs); break;
+                case Opcode.cmpbge: RewriteInstrinsic("__cmpbge"); break;
                 case Opcode.cmpeq: RewriteCmp(m.Eq); break;
                 case Opcode.cmple: RewriteCmp(m.Le); break;
                 case Opcode.cmplt: RewriteCmp(m.Lt); break;
@@ -163,7 +166,9 @@ namespace Reko.Arch.Alpha
                 case Opcode.subf_s: RewriteFpuOp(m.FSub); break;
                 case Opcode.subf_uc: RewriteFpuOp(m.FSub); break;
                 case Opcode.subl: RewriteBin(subl); break;
+                case Opcode.subl_v: RewriteBinOv(subl); break;
                 case Opcode.subq: RewriteBin(subq); break;
+                case Opcode.subq_v: RewriteBinOv(subq); break;
                 case Opcode.xor: RewriteBin(xor); break;
                 case Opcode.zap: RewriteInstrinsic("__zap"); break;
                 case Opcode.zapnot: RewriteInstrinsic("__zapnot"); break;
@@ -197,7 +202,7 @@ namespace Reko.Arch.Alpha
                 bytes.Select(b => string.Format("{0:X2}", (int)b))));
             Debug.WriteLine("\");\t// " + dasm.Current.ToString());
             Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|00100000(2): 1 instructions\",");
+            Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
             Debug.WriteLine("                \"1|L--|@@@\");");
             Debug.WriteLine("        }");
             Debug.WriteLine("");
