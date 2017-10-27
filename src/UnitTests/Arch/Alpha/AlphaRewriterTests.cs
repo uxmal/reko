@@ -639,5 +639,241 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r23 = r11 * 0x0000000000000004 - r19");
         }
+
+        [Test]
+        public void AlphaRw_stb()
+        {
+            RewriteCode("72616D3A");	// stb	r19,6172(r13)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r13 + 0x0000000000006172:byte] = (byte) r19");
+        }
+
+        [Test]
+        public void AlphaRw_ldbu()
+        {
+            RewriteCode("20432B2B");	// ldbu	r25,4320(r11)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r25 = (word64) Mem0[r11 + 0x0000000000004320:byte]");
+        }
+
+        [Test]
+        public void AlphaRw_fble()
+        {
+            RewriteCode("CDCCCCCC");	// fble	f6,028E5A40
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (f6 <= 0.0) branch 00433338");
+        }
+
+        [Test]
+        public void AlphaRw_stq_u()
+        {
+            RewriteCode("69726D3D");	// stq_u	r11,7269(r13)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__stq_u(Mem0[r13 + 0x0000000000007269:word64], r11)");
+        }
+
+        [Test]
+        public void AlphaRw_stq_c()
+        {
+            RewriteCode("000080BF");	// stq_c	r28,0(r0)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__stq_c(Mem0[r0:word64], r28)");
+        }
+
+        [Test]
+        public void AlphaRw_sts()
+        {
+            RewriteCode("9A999999");	// sts	f12,-6666(r25)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r25 - 0x0000000000006666:real32] = (real32) f12");
+        }
+
+        [Test]
+        public void AlphaRw_ldg()
+        {
+            RewriteCode("06BD3786");	// ldg	f17,-42FA(r23)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f17 = Mem0[r23 - 0x00000000000042FA:real64]");
+        }
+
+        [Test]
+        public void AlphaRw_lds()
+        {
+            RewriteCode("425F7089");	// lds	f11,5F42(r16)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f11 = (real64) Mem0[r16 + 0x0000000000005F42:real32]");
+        }
+
+        [Test]
+        public void AlphaRw_adds_c()
+        {
+            RewriteCode("00008059");	// adds_c	f12,f0,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = f12 + f0");
+        }
+
+        [Test]
+        public void AlphaRw_ornot()
+        {
+            RewriteCode("04454045");	// ornot	r10,r10,r4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = r10 | ~r2");
+        }
+
+        [Test]
+        public void AlphaRw_ornot_neg1()
+        {
+            RewriteCode("04454545");	// ornot	r10,r10,r4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = 0xFFFFFFFFFFFFFFFF");
+        }
+
+        [Test]
+        public void AlphaRw_addf_c()
+        {
+            RewriteCode("00004054");	// addf_c	f2,f0,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = f2 + f0");
+        }
+
+        [Test]
+        public void AlphaRw_stl_c()
+        {
+            RewriteCode("F2913FBA");	// stl_c	r17,-6E0E(zero)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__stl_c(Mem0[0xFFFFFFFFFFFF91F2:word32], r17)");
+        }
+
+        [Test]
+        public void AlphaRw_stt()
+        {
+            RewriteCode("6263E29F");	// stt	f31,6362(r2)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r2 + 0x0000000000006362:real64] = 0.0");
+        }
+
+        [Test]
+        public void AlphaRw_fbgt()
+        {
+            RewriteCode("C8D8D8DC");	// fbgt	f6,023EBA64
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (f6 > 0.0) branch FFF36324");
+        }
+
+        [Test]
+        public void AlphaRw_fblt()
+        {
+            RewriteCode("140D72CA");	// fblt	r19,02238BAC
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (f19 < 0.0) branch FFD83454");
+        }
+
+        [Test]
+        public void AlphaRw_stf()
+        {
+            RewriteCode("F619CE92");	// stf	f22,19F6(r14)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r14 + 0x00000000000019F6:real32] = (real32) f22");
+        }
+
+        [Test]
+        public void AlphaRw_ldl_l()
+        {
+            RewriteCode("2C6BBFA8");	// ldl_l	r5,6B2C(zero)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r5 = __ldl_l(Mem0[0x0000000000006B2C:word32])");
+        }
+
+        [Test]
+        public void AlphaRw_jsr_coroutine()
+        {
+            RewriteCode("F1E4AB69");	// jsr_coroutine	r13,r11
+            AssertCode(
+                "0|T--|00100000(4): 2 instructions",
+                "1|L--|r13 = 00100004",
+                "2|T--|goto r11");
+        }
+
+        [Test]
+        public void AlphaRw_ldt()
+        {
+            RewriteCode("8F06848D");	// ldt	f12,68F(r4)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f12 = Mem0[r4 + 0x000000000000068F:real64]");
+        }
+
+        [Test]
+        public void AlphaRw_ldq_l()
+        {
+            RewriteCode("D70ADFAC");	// ldq_l	r6,AD7(zero)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r6 = __ldq_l(Mem0[0x0000000000000AD7:word64])");
+        }
+
+        [Test]
+        [Ignore("Revisit when reko knows how to portable raise overflow exceptions")]
+        public void AlphaRw_addq_v()
+        {
+            RewriteCode("062C0540");	// addq_v	r0,r9,r6
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void AlphaRw_subf_s()
+        {
+            RewriteCode("3190CB57");	// subf_s	f30,f11,f17
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f17 = f30 - f11");
+        }
+
+        [Test]
+        public void AlphaRw_implver()
+        {
+            RewriteCode("9F4DDB47");	// implver	r30,r26,zero
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__implver(r30, r26)");
+        }
+
+        [Test]
+        public void AlphaRw_mskqh()
+        {
+            RewriteCode("4B4E984B");	// mskqh	r28,r2,r11
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r11 = __mskqh(r28, r2)");
+        }
+
+        [Test]
+        public void AlphaRw_subf_uc()
+        {
+            RewriteCode("2E202054");	// subf_uc	f1,f0,f14
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f14 = f1 - f0");
+        }
     }
 }

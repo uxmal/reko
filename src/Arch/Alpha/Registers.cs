@@ -95,20 +95,21 @@ namespace Reko.Arch.Alpha
         public static readonly RegisterStorage f18 = new RegisterStorage("f18", 18, 0, PrimitiveType.Word64);
         public static readonly RegisterStorage f19 = new RegisterStorage("f19", 19, 0, PrimitiveType.Word64);
 
-        public static readonly RegisterStorage f20 = new RegisterStorage("f20", 20, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f21 = new RegisterStorage("f21", 21, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f22 = new RegisterStorage("f22", 22, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f23 = new RegisterStorage("f23", 23, 0, PrimitiveType.Word64);
+        //$BUG: fix the register numbers!
+        public static readonly RegisterStorage f20 = new RegisterStorage("f20", 50, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f21 = new RegisterStorage("f21", 50, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f22 = new RegisterStorage("f22", 50, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f23 = new RegisterStorage("f23", 50, 0, PrimitiveType.Word64);
 
-        public static readonly RegisterStorage f24 = new RegisterStorage("f24", 24, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f25 = new RegisterStorage("f25", 25, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f26 = new RegisterStorage("f26", 26, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f27 = new RegisterStorage("f27", 27, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f24 = new RegisterStorage("f24", 56, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f25 = new RegisterStorage("f25", 57, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f26 = new RegisterStorage("f26", 58, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f27 = new RegisterStorage("f27", 59, 0, PrimitiveType.Word64);
 
-        public static readonly RegisterStorage f28 = new RegisterStorage("f28", 28, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f29 = new RegisterStorage("f29", 29, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f30 = new RegisterStorage("f30", 30, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f31 = new RegisterStorage("f31", 31, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f28 = new RegisterStorage("f28", 60, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f29 = new RegisterStorage("f29", 61, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f30 = new RegisterStorage("f30", 62, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f31 = new RegisterStorage("f31", 63, 0, PrimitiveType.Word64);
 
 
         public static readonly Dictionary<string, RegisterStorage> AllRegisters;

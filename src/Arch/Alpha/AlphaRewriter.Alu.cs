@@ -57,7 +57,38 @@ namespace Reko.Arch.Alpha
             var op1 = Rewrite(instr.op1);
             var op2 = Rewrite(instr.op2);
             var dst = Rewrite(instr.op3);
-            m.Assign(dst, host.PseudoProcedure(instrinic, dst.DataType, op1, op2));
+            if (dst.IsZero)
+            {
+                m.SideEffect(host.PseudoProcedure(instrinic, dst.DataType, op1, op2));
+            }
+            else
+            {
+                m.Assign(dst, host.PseudoProcedure(instrinic, dst.DataType, op1, op2));
+            }
+        }
+
+        private void RewriteLoadInstrinsic(string intrinsic, DataType dt)
+        {
+            var op1 = Rewrite(instr.op1);
+            var op2 = Rewrite(instr.op2);
+            op2.DataType = dt;
+            if (op1.IsZero)
+            {
+                // Discarding the result == side effect
+                m.SideEffect(host.PseudoProcedure(intrinsic, dt, op2));
+            }
+            else
+            {
+                m.Assign(op1, host.PseudoProcedure(intrinsic, dt, op2));
+            }
+        }
+
+        private void RewriteStoreInstrinsic(string intrinsic, DataType dt)
+        {
+            var op1 = Rewrite(instr.op1);
+            var op2 = Rewrite(instr.op2);
+            op2.DataType = dt;
+            m.SideEffect(host.PseudoProcedure(intrinsic, dt, op2, op1));
         }
 
         private void RewriteLd(PrimitiveType dtSrc, PrimitiveType dtDst)
@@ -173,6 +204,15 @@ namespace Reko.Arch.Alpha
                 return b;
 
             return m.IMul(a, b);
+        }
+
+        private Expression ornot(Expression a, Expression b)
+        {
+            if (a.IsZero)
+                return m.Comp(b);
+            if (b.IsZero || a == b)
+                return Constant.Create(PrimitiveType.Word64, -1);
+            return m.Or(a, m.Comp(b));
         }
 
         private Expression sll(Expression a, Expression sh)

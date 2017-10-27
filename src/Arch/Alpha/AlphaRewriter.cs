@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Linq;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using Reko.Core.Operators;
 
 namespace Reko.Arch.Alpha
 {
@@ -70,6 +71,8 @@ namespace Reko.Arch.Alpha
                 case Opcode.invalid:
                     Invalid();
                     break;
+                case Opcode.addf_c: RewriteFpuOp(m.FAdd); break;
+                case Opcode.adds_c: RewriteFpuOp(m.FAdd); break;
                 case Opcode.addl: RewriteBin(addl); break;
                 case Opcode.addq: RewriteBin(addq); break;
                 case Opcode.and: RewriteBin(and); break;
@@ -99,7 +102,15 @@ namespace Reko.Arch.Alpha
                 case Opcode.extll: RewriteInstrinsic("__extll"); break;
                 case Opcode.extqh: RewriteInstrinsic("__extqh"); break;
                 case Opcode.extwl: RewriteInstrinsic("__extwl"); break;
+                case Opcode.fbeq: RewriteFBranch(Operator.Feq); break;
+                case Opcode.fbge: RewriteFBranch(Operator.Fge); break;
+                case Opcode.fbgt: RewriteFBranch(Operator.Fgt); break;
+                case Opcode.fble: RewriteFBranch(Operator.Fle); break;
+                case Opcode.fblt: RewriteFBranch(Operator.Flt); break;
+                case Opcode.fbne: RewriteFBranch(Operator.Fne); break;
+
                 case Opcode.halt: RewriteHalt(); break;
+                case Opcode.implver: RewriteInstrinsic("__implver"); break;
                 case Opcode.insbl: RewriteInstrinsic("__insbl"); break;
                 case Opcode.inslh: RewriteInstrinsic("__inslh"); break;
                 case Opcode.insll: RewriteInstrinsic("__insll"); break;
@@ -107,16 +118,25 @@ namespace Reko.Arch.Alpha
                 case Opcode.inswl: RewriteInstrinsic("__inswl"); break;
                 case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.jsr: RewriteJmp(); break;
+                case Opcode.jsr_coroutine: RewriteJmp(); break;
                 case Opcode.lda: RewriteLda(0); break;
                 case Opcode.ldah: RewriteLda(16); break;
+                case Opcode.ldbu: RewriteLd(PrimitiveType.Byte, PrimitiveType.Word64); break;
                 case Opcode.ldf: RewriteLd(PrimitiveType.Real32, PrimitiveType.Real64); break;
+                case Opcode.ldg: RewriteLd(PrimitiveType.Real64, PrimitiveType.Real64); break;
                 case Opcode.ldl: RewriteLd(PrimitiveType.Int32, PrimitiveType.Word64); break;
+                case Opcode.ldl_l: RewriteLoadInstrinsic("__ldl_l", PrimitiveType.Word32); break;
+                case Opcode.ldq_l: RewriteLoadInstrinsic("__ldq_l", PrimitiveType.Word64); break;
                 case Opcode.ldq:
                 case Opcode.ldq_u: RewriteLd(PrimitiveType.Word64, PrimitiveType.Word64); break;
+                case Opcode.lds: RewriteLd(PrimitiveType.Real32, PrimitiveType.Real64); break;
+                case Opcode.ldt: RewriteLd(PrimitiveType.Real64, PrimitiveType.Real64); break;
                 case Opcode.ldwu: RewriteLd(PrimitiveType.UInt16, PrimitiveType.Word64); break;
                 case Opcode.mskbl: RewriteInstrinsic("__mskbl"); break;
+                case Opcode.mskqh: RewriteInstrinsic("__mskqh"); break;
                 case Opcode.mull: RewriteBin(mull); break;
                 case Opcode.mulq: RewriteBin(mulq); break;
+                case Opcode.ornot: RewriteBin(ornot); break;
                 case Opcode.ret: RewriteJmp(); break;
                 case Opcode.s4addl: RewriteBin(s4addl); break;
                 case Opcode.s4addq: RewriteBin(s4addq); break;
@@ -129,10 +149,19 @@ namespace Reko.Arch.Alpha
                 case Opcode.sll: RewriteBin(sll); break;
                 case Opcode.src: RewriteInstrinsic("__src"); break;
                 case Opcode.srl: RewriteBin(srl); break;
+                case Opcode.stb: RewriteSt(PrimitiveType.Byte); break;
+                case Opcode.stf: RewriteSt(PrimitiveType.Real32); break;
                 case Opcode.stl: RewriteSt(PrimitiveType.Word32); break;
+                case Opcode.stl_c: RewriteStoreInstrinsic("__stl_c", PrimitiveType.Word32); break;
+                case Opcode.stq_c: RewriteStoreInstrinsic("__stq_c", PrimitiveType.Word64); break;
+                case Opcode.stq_u: RewriteStoreInstrinsic("__stq_u", PrimitiveType.Word64); break;
                 case Opcode.stg: RewriteSt(PrimitiveType.Real64); break;
                 case Opcode.stw: RewriteSt(PrimitiveType.Word16); break;
+                case Opcode.sts: RewriteSt(PrimitiveType.Real32); break;
+                case Opcode.stt: RewriteSt(PrimitiveType.Real64); break;
                 case Opcode.stq: RewriteSt(PrimitiveType.Word64); break;
+                case Opcode.subf_s: RewriteFpuOp(m.FSub); break;
+                case Opcode.subf_uc: RewriteFpuOp(m.FSub); break;
                 case Opcode.subl: RewriteBin(subl); break;
                 case Opcode.subq: RewriteBin(subq); break;
                 case Opcode.xor: RewriteBin(xor); break;
@@ -192,7 +221,9 @@ namespace Reko.Arch.Alpha
             {
                 if (rop.Register.Number == 31)
                     return Constant.Word64(0);
-                else 
+                else if (rop.Register.Number == 63)
+                    return Constant.Real64(0.0);
+                else
                     return this.binder.EnsureRegister(rop.Register);
             }
             var imm = op as ImmediateOperand;

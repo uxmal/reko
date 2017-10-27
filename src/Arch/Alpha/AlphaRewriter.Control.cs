@@ -21,7 +21,9 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +70,18 @@ namespace Reko.Arch.Alpha
             var dst = Rewrite(instr.op3);
             m.BranchInMiddleOfInstruction(skip(cond).Invert(), instr.Address + instr.Length, RtlClass.ConditionalTransfer);
             m.Assign(dst, src);
+        }
+
+        private void RewriteFBranch(Operator op)
+        {
+            rtlc = RtlClass.ConditionalTransfer;
+            var src = Rewrite(instr.op1);
+            var dst = ((AddressOperand)instr.op2).Address;
+            m.Branch(
+                new BinaryExpression(
+                    op, PrimitiveType.Bool, src, Constant.Real64(0.0)),
+                dst,
+                RtlClass.ConditionalTransfer);
         }
 
         private void RewriteJmp()

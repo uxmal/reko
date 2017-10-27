@@ -45,6 +45,7 @@
     <Compile Include="AlphaInstruction.cs" />
     <Compile Include="AlphaProcessorState.cs" />
     <Compile Include="AlphaRewriter.cs" />
+    <Compile Include="AlphaRewriter.Fpu.cs" />
     <Compile Include="AlphaRewriter.System.cs" />
     <Compile Include="MemoryOperand.cs" />
     <Compile Include="Opcode.cs" />
