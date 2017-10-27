@@ -154,6 +154,11 @@ namespace Reko.Arch.Alpha
             m.Assign(dst, src);
         }
 
+        private void RewriteTrapb()
+        {
+            m.SideEffect(host.PseudoProcedure("__trap_barrier", VoidType.Instance));
+        }
+
         private Expression addl(Expression a, Expression b)
         {
             return m.Cast(
@@ -307,6 +312,14 @@ namespace Reko.Arch.Alpha
                 return a;
             else
                 return m.ISub(a, b);
+        }
+
+        private Expression umulh(Expression a, Expression b)
+        {
+            if (a.IsZero || b.IsZero)
+                return a;
+            else
+                return m.Shr(m.UMul(a, b), 64);
         }
 
         private Expression xor(Expression a, Expression b)

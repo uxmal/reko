@@ -918,5 +918,306 @@ namespace Reko.UnitTests.Arch.Mips
                 "2|T--|if (!OV(r4)) branch 00100004",
                 "3|L--|__trap_overflow()");
         }
+
+        [Test]
+        public void AlphaRw_trapb()
+        {
+            RewriteCode("0000FF63");    // trapb
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__trap_barrier()");
+        }
+
+        [Test]
+        public void AlphaRw_mskql()
+        {
+            RewriteCode("5B069B4B");	// mskql	r28,r24,r27
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r27 = __mskql(r28, r24)");
+        }
+
+        [Test]
+        public void AlphaRw_cpys_fnop()
+        {
+            RewriteCode("1F04FF5F");	// cpys	f31,f31,f31
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|nop");
+        }
+
+
+        [Test]
+        public void AlphaRw_cpys()
+        {
+            RewriteCode("1004FF5F");	// cpys	f31,f31,f16
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f16 = 0.0");
+        }
+
+        [Test]
+        public void AlphaRw_mskwl()
+        {
+            RewriteCode("48020749");	// mskwl	r8,r24,r8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r8 = __mskwl(r8, r24)");
+        }
+
+        [Test]
+        public void AlphaRw_extql()
+        {
+            RewriteCode("DC06924B");	// extql	r28,r16,r28
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r28 = __extql(r28, r16)");
+        }
+
+        [Test]
+        public void AlphaRw_mskll()
+        {
+            RewriteCode("42044448");	// mskll	r2,r0,r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = __mskll(r2, r0)");
+        }
+
+        [Test]
+        public void AlphaRw_extwh()
+        {
+            RewriteCode("460BC448");	// extwh	r6,r0,r6
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r6 = __extwh(r6, r0)");
+        }
+
+        [Test]
+        public void AlphaRw_cmovlt()
+        {
+            RewriteCode("9308E644");	// cmovlt	r7,r16,r19
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (r7 >= 0x0000000000000000) branch 00100004",
+                "2|L--|r19 = r16");
+        }
+
+        [Test]
+        public void AlphaRw_cvtqt()
+        {
+            RewriteCode("C017E05B");	// cvtqt	f31,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = 0.0");
+        }
+
+        [Test]
+        public void AlphaRw_cvtlq()
+        {
+            RewriteCode("0002E05F");	// cvtlq	f31,f0,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = 0");
+        }
+
+        [Test]
+        public void AlphaRw_umulh()
+        {
+            RewriteCode("0006014C");	// umulh	r0,r8,r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = r0 *u r8 >>u 0x40");
+        }
+
+        [Test]
+        public void AlphaRw_msklh()
+        {
+            RewriteCode("560CD74A");	// msklh	r22,r24,r22
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r22 = __msklh(r22, r24)");
+        }
+
+        [Test]
+        public void AlphaRw_insql()
+        {
+            RewriteCode("7C07604B");	// insql	r27,r0,r28
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r28 = __insql(r27, r0)");
+        }
+
+        [Test]
+        public void AlphaRw_divs()
+        {
+            RewriteCode("60101258");	// divs	f0,f18,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = f0 / f18");
+        }
+
+        [Test]
+        public void AlphaRw_adds()
+        {
+            RewriteCode("00101158");	// adds	f0,f17,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = f0 + f17");
+        }
+
+        [Test]
+        public void AlphaRw_subs()
+        {
+            RewriteCode("2010405A");	// subs	f18,f0,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = f18 - f0");
+        }
+
+        [Test]
+        public void AlphaRw_muls()
+        {
+            RewriteCode("40104059");	// muls	f10,f0,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = f10 * f0");
+        }
+
+        [Test]
+        public void AlphaRw_cmptle()
+        {
+            RewriteCode("EB140B58");	// cmptle	f0,f11,f11
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f11 = f0 <= f11 ? 2.0 : 0.0");
+        }
+
+        [Test]
+        public void AlphaRw_cvttq_c()
+        {
+            RewriteCode("E005E05B");	// cvttq_c	f31,f0,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = 0");
+        }
+
+        [Test]
+        public void AlphaRw_cmpteq()
+        {
+            RewriteCode("A0140258");	// cmpteq	f0,f2,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = f0 == f2 ? 2.0 : 0.0");
+        }
+
+        [Test]
+        public void AlphaRw_mult()
+        {
+            RewriteCode("40140158");	// mult	f0,f1,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = f0 * f1");
+        }
+
+        [Test]
+        public void AlphaRw_cvtts_zero()
+        {
+            RewriteCode("8015E05B");	// cvtts	f31,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = 0.0F");
+        }
+
+        [Test]
+        public void AlphaRw_cvtts()
+        {
+            RewriteCode("8015605B");	// cvtts	f31,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = (real32) f27");
+        }
+
+        [Test]
+        public void AlphaRw_fcmovne()
+        {
+            RewriteCode("6005415D");	// fcmovne	f10,f1,f0
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (f10 == 0.0) branch 00100004",
+                "2|L--|f0 = f1");
+        }
+
+        [Test]
+        public void AlphaRw_cvtql()
+        {
+            RewriteCode("0106EA5F");	// cvtql	f31,f10,f1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f10 = 0");
+        }
+
+        [Test]
+        public void AlphaRw_cvtqs()
+        {
+            RewriteCode("8517E55B");	// cvtqs	f31,f5,f5
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f5 = 0.0F");
+        }
+
+        [Test]
+        public void AlphaRw_addt()
+        {
+            RewriteCode("00140158");	// addt	f0,f1,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = f0 + f1");
+        }
+
+        [Test]
+        public void AlphaRw_subt()
+        {
+            RewriteCode("20140158");	// subt	f0,f1,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = f0 - f1");
+        }
+
+        [Test]
+        public void AlphaRw_cpyse()
+        {
+            RewriteCode("4004305C");	// cpyse	f1,f16,f0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = __cpyse(f1, f16)");
+        }
+
+        [Test]
+        public void AlphaRw_mult_c()
+        {
+            RewriteCode("5504545A");	// mult_c	f18,f20,f21
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f21 = f18 * f20");
+        }
+
+        [Test]
+        public void AlphaRw_fcmoveq()
+        {
+            RewriteCode("4E05D45E");	// fcmoveq	f22,f20,f14
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (f22 != 0.0) branch 00100004",
+                "2|L--|f14 = f20");
+        }
+
+        [Test]
+        public void AlphaRw_cpysn()
+        {
+            RewriteCode("3604D65E");	// cpysn	f22,f22,f22
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f22 = __cpysn(f22, f22)");
+        }
     }
 }

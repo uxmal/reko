@@ -521,5 +521,6 @@ namespace Reko.Arch.Alpha
         fabs,
         fmov,
         fneg,
+        trapb,
     }
 }

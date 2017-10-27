@@ -72,6 +72,16 @@ namespace Reko.Arch.Alpha
             m.Assign(dst, src);
         }
 
+        private void RewriteFCmov(Operator op)
+        {
+            var cond = Rewrite(instr.op1);
+            var src = Rewrite(instr.op2);
+            var dst = Rewrite(instr.op3);
+            cond = new BinaryExpression(op, PrimitiveType.Bool, cond, Constant.Real64(0.0));
+            m.BranchInMiddleOfInstruction(cond.Invert(), instr.Address + instr.Length, RtlClass.ConditionalTransfer);
+            m.Assign(dst, src);
+        }
+
         private void RewriteFBranch(Operator op)
         {
             rtlc = RtlClass.ConditionalTransfer;
