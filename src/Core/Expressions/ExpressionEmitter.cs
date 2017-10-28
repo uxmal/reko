@@ -325,6 +325,11 @@ namespace Reko.Core.Expressions
             return Le(a, Constant.Create(a.DataType, b));
         }
 
+        public BinaryExpression Le0(Expression exp)
+        {
+            return new BinaryExpression(Operator.Le, PrimitiveType.Bool, exp, Constant.Zero(exp.DataType));
+        }
+
         public BinaryExpression Lt(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Lt, PrimitiveType.Bool, a, b);

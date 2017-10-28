@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
+using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.BinHex
 {
@@ -49,8 +50,9 @@ namespace Reko.ImageLoaders.BinHex
             byte[] dataFork = LoadFork(hdr.DataForkLength, stm);
             byte[] rsrcFork = LoadFork(hdr.ResourceForkLength, stm);
 
-            var arch = new M68kArchitecture();
-            var platform = new MacOSClassic(Services, arch);
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var arch = cfgSvc.GetArchitecture("m68k");
+            var platform = cfgSvc.GetEnvironment("macOs").Load(Services, arch);
             if (hdr.FileType == "PACT")
             {
                 Cpt.CompactProArchive archive = new Cpt.CompactProArchive();

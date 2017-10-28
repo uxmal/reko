@@ -178,6 +178,7 @@
     <DecompilerMetadata Include="$(ProjectDir)..\..\..\external\reactos\coredll.def" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\..\external\wine\*.spec" />
+    <Architectures Include="$(ProjectDir)..\..\Arch\Alpha\$(OutDir)Reko.Arch.Alpha.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Avr\$(OutDir)Reko.Arch.Avr.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
