@@ -93,8 +93,8 @@ namespace Reko.Arch.Alpha
             AssertCode(""AlphaDis_{1}"", 0x{0:X8}, ""@@@"", instr.ToString());
         }}
 ", uInstr, pattern);
-#endif
             }
+#endif
             return Invalid();
         }
 
