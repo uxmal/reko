@@ -103,6 +103,7 @@ namespace Reko.Arch.Alpha
                 case Opcode.cmplt: RewriteCmp(m.Lt); break;
                 case Opcode.cmpteq: RewriteCmpt(m.Eq); break;
                 case Opcode.cmptle: RewriteCmpt(m.Le); break;
+                case Opcode.cmptlt: RewriteCmpt(m.Lt); break;
                 case Opcode.cmpule: RewriteCmp(m.Ule); break;
                 case Opcode.cmpult: RewriteCmp(m.Ult); break;
                 case Opcode.cpys: RewriteCpys("__cpys"); break;
@@ -115,6 +116,7 @@ namespace Reko.Arch.Alpha
                 case Opcode.cvttq_c: RewriteCvt(PrimitiveType.Real64, PrimitiveType.Int64); break;
                 case Opcode.cvtts: RewriteCvt(PrimitiveType.Real64, PrimitiveType.Real32); break;
                 case Opcode.divs: RewriteFpuOp(m.FDiv); break;
+                case Opcode.divt: RewriteFpuOp(m.FDiv); break;
                 case Opcode.extbl: RewriteInstrinsic("__extbl"); break;
                 case Opcode.extlh: RewriteInstrinsic("__extlh"); break;
                 case Opcode.extll: RewriteInstrinsic("__extll"); break;
@@ -129,6 +131,8 @@ namespace Reko.Arch.Alpha
                 case Opcode.fblt: RewriteFBranch(Operator.Flt); break;
                 case Opcode.fbne: RewriteFBranch(Operator.Fne); break;
                 case Opcode.fcmoveq: RewriteFCmov(Operator.Feq); break;
+                case Opcode.fcmovle: RewriteFCmov(Operator.Fle); break;
+                case Opcode.fcmovlt: RewriteFCmov(Operator.Flt); break;
                 case Opcode.fcmovne: RewriteFCmov(Operator.Fne); break;
                 case Opcode.halt: RewriteHalt(); break;
                 case Opcode.implver: RewriteInstrinsic("__implver"); break;
@@ -213,6 +217,11 @@ namespace Reko.Arch.Alpha
 
         private static HashSet<Opcode> seen = new HashSet<Opcode>();
 
+
+        /// <summary>
+        /// Emits the text of a unit test that can be pasted into the unit tests 
+        /// for this rewriter.
+        /// </summary>
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
@@ -276,7 +285,7 @@ namespace Reko.Arch.Alpha
             {
                 int offset = highWord ? (int)mop.Offset << 16 : mop.Offset;
                 Expression ea;
-                if (mop.Base.Number == 31)  // Zero register.
+                if (mop.Base.Number == ZeroRegister)
                 {
                     var dt = PrimitiveType.Create(Domain.Integer, arch.PointerType.Size);
                     ea = Constant.Create(dt, offset); //$TODO should be platform size.

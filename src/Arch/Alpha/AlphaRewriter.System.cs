@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -32,6 +33,7 @@ namespace Reko.Arch.Alpha
     {
         private void RewriteHalt()
         {
+            rtlc = RtlClass.Terminates;
             var c = new ProcedureCharacteristics
             {
                 Terminates = true,
