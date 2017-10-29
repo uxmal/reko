@@ -99,6 +99,8 @@ namespace Reko.Environments.SysV
             case "superH-le":
             case "superH-be":
                 return new SuperHCallingConvention(Architecture);
+            case "alpha":
+                return new AlphaCallingConvention(Architecture);
             default:
                 throw new NotImplementedException(string.Format("Procedure serializer for {0} not implemented yet.", Architecture.Description));
             }

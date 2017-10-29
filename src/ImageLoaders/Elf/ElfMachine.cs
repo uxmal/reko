@@ -52,7 +52,7 @@ namespace Reko.ImageLoaders.Elf
         EM_RH32 = 38,           // TRW RH-32 
         EM_RCE = 39,            // Motorola RCE 
         EM_ARM = 40,            // Advanced RISC Machines ARM 
-        EM_ALPHA = 41,          // Digital Alpha 
+        EM_ALPHA_STD = 41,      // Digital Alpha
         EM_SH = 42,             // Hitachi SH 
         EM_SPARCV9 = 43,        // SPARC Version 9 
         EM_TRICORE = 44,        // Siemens Tricore embedded processor 
@@ -210,5 +210,6 @@ namespace Reko.ImageLoaders.Elf
         EM_CSR_KALIMBA = 219,    // CSR Kalimba architecture family
         EM_AMDGPU = 224,         // AMD GPU architecture
         EM_RISCV = 243,          // RISC-V
+        EM_ALPHA = 0x9026,       // Alpha (written in the absence of an ABI) 
     }
 }
