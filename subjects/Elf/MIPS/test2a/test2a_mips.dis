@@ -1,0 +1,1044 @@
+// _init
+// Return size: 0
+void _init()
+_init_entry:
+	// succ:  l00000634
+l00000634:
+	sp = fp
+	r25 = 0x00000634
+	r28 = 0x00020000
+	r28 = r28 + -30020
+	r28 = r28 + r25
+	sp = sp + -32
+	Mem0[sp + 0x00000010:word32] = r28
+	Mem0[sp + 0x0000001C:word32] = ra
+	r2 = Mem0[r28 - 0x00007F98:word32]
+	branch r2 == 0x00000000 l00000634_ds_t
+	// succ:  l00000634_ds_f l00000634_ds_t
+l00000634_ds_f:
+	goto l00000658
+	// succ:  l00000658
+l00000634_ds_t:
+	goto l00000664
+	// succ:  l00000664
+l00000658:
+	r25 = Mem0[r28 - 0x00007F98:word32]
+	call r25 (retsize: 0;)
+l00000664:
+	branch 0x00000000 >= 0x00000000 l00000664_ds_t
+	// succ:  l00000664_ds_f l00000664_ds_t
+l00000664_ds_f:
+	goto l0000066C
+	// succ:  l0000066C
+l00000664_ds_t:
+	// succ:  l0000066C
+l0000066C:
+	r28 = 0x00020000
+	r28 = r28 + -30076
+	r28 = r28 + ra
+	r25 = Mem0[r28 - 0x00007FCC:word32]
+	r25 = r25 + 2180
+	call r25 (retsize: 0;)
+	branch 0x00000000 >= 0x00000000 l0000066C_ds_t
+	// succ:  l0000066C_ds_f l0000066C_ds_t
+l0000066C_ds_f:
+	goto l00000690
+	// succ:  l00000690
+l0000066C_ds_t:
+	// succ:  l00000690
+l00000690:
+	r28 = 0x00020000
+	r28 = r28 + -30112
+	r28 = r28 + ra
+	r25 = Mem0[r28 - 0x00007FCC:word32]
+	r25 = r25 + 3760
+	call r25 (retsize: 0;)
+	ra = Mem0[sp + 0x0000001C:word32]
+	sp = sp + 32
+	return
+	// succ:  _init_exit
+_init_exit:
+
+
+// __start
+// Return size: 0
+void __start()
+__start_entry:
+	// succ:  l000006C0
+l000006C0:
+	sp = fp
+	r25 = 0x000006C0
+	r0 = ra
+	branch 0x00000000 >= 0x00000000 l000006C0_ds_t
+	// succ:  l000006C0_ds_f l000006C0_ds_t
+l000006C0_ds_f:
+	goto l000006CC
+	// succ:  l000006CC
+l000006C0_ds_t:
+	// succ:  l000006CC
+l000006CC:
+	r28 = 0x00020000
+	r28 = r28 + -30172
+	r28 = r28 + ra
+	ra = 0x00000000
+	r4 = Mem0[r28 - 0x00007FE8:word32]
+	r5 = Mem0[sp:word32]
+	r6 = sp + 4
+	r1 = -8
+	sp = sp + r1
+	sp = sp + -32
+	r7 = Mem0[r28 - 0x00007FE4:word32]
+	r8 = Mem0[r28 - 0x00007FE0:word32]
+	Mem0[sp + 0x00000010:word32] = r8
+	Mem0[sp + 0x00000014:word32] = r2
+	Mem0[sp + 0x00000018:word32] = sp
+	r25 = Mem0[r28 - 0x00007F9C:word32]
+	call r25 (retsize: 0;)
+	// succ:  l00000714
+l00000714:
+	goto 0x00000714
+	goto l00000714
+	// succ:  l00000714
+__start_exit:
+
+
+// deregister_tm_clones
+// Return size: 0
+void deregister_tm_clones()
+deregister_tm_clones_entry:
+	// succ:  l00000720
+l00000720:
+	sp = fp
+	r25 = 0x00000720
+	r28 = 0x00020000
+	r28 = r28 + -30256
+	r28 = r28 + r25
+	r4 = Mem0[r28 - 0x00007FD8:word32]
+	r2 = Mem0[r28 - 0x00007FDC:word32]
+	r4 = r4 + 4340
+	branch r2 == r4 l00000720_ds_t
+	// succ:  l00000720_ds_f l00000720_ds_t
+l00000720_ds_f:
+	r25 = Mem0[r28 - 0x00007F8C:word32]
+	goto l00000740
+	// succ:  l00000740
+l00000720_ds_t:
+	r25 = Mem0[r28 - 0x00007F8C:word32]
+	goto l00000750
+	// succ:  l00000750
+l00000740:
+	branch r25 == 0x00000000 l00000740_ds_t
+	// succ:  l00000740_ds_f l00000740_ds_t
+l00000740_ds_f:
+	goto l00000748
+	// succ:  l00000748
+l00000740_ds_t:
+	goto l00000750
+	// succ:  l00000750
+l00000748:
+	call r25 (retsize: 0;)
+	return
+	// succ:  deregister_tm_clones_exit
+l00000750:
+	return
+	// succ:  deregister_tm_clones_exit
+deregister_tm_clones_exit:
+
+
+// register_tm_clones
+// Return size: 0
+void register_tm_clones()
+register_tm_clones_entry:
+	// succ:  l00000758
+l00000758:
+	sp = fp
+	r25 = 0x00000758
+	r28 = 0x00020000
+	r28 = r28 + -30312
+	r28 = r28 + r25
+	r4 = Mem0[r28 - 0x00007FD8:word32]
+	r5 = Mem0[r28 - 0x00007FDC:word32]
+	r4 = r4 + 4340
+	r5 = r5 - r4
+	r5 = r5 >> 0x02
+	r2 = r5 >>u 0x1F
+	r5 = r2 + r5
+	r5 = r5 >> 0x01
+	branch r5 == 0x00000000 l00000758_ds_t
+	// succ:  l00000758_ds_f l00000758_ds_t
+l00000758_ds_f:
+	r25 = Mem0[r28 - 0x00007FA0:word32]
+	goto l0000078C
+	// succ:  l0000078C
+l00000758_ds_t:
+	r25 = Mem0[r28 - 0x00007FA0:word32]
+	goto l0000079C
+	// succ:  l0000079C
+l0000078C:
+	branch r25 == 0x00000000 l0000078C_ds_t
+	// succ:  l0000078C_ds_f l0000078C_ds_t
+l0000078C_ds_f:
+	goto l00000794
+	// succ:  l00000794
+l0000078C_ds_t:
+	goto l0000079C
+	// succ:  l0000079C
+l00000794:
+	call r25 (retsize: 0;)
+	return
+	// succ:  register_tm_clones_exit
+l0000079C:
+	return
+	// succ:  register_tm_clones_exit
+register_tm_clones_exit:
+
+
+// __do_global_dtors_aux
+// Return size: 0
+void __do_global_dtors_aux()
+__do_global_dtors_aux_entry:
+	// succ:  l000007A4
+l000007A4:
+	sp = fp
+	r25 = 0x000007A4
+	r28 = 0x00020000
+	r28 = r28 + -30388
+	r28 = r28 + r25
+	sp = sp + -48
+	Mem0[sp + 0x00000028:word32] = r19
+	r19 = Mem0[r28 - 0x00007FD8:word32]
+	Mem0[sp + 0x00000010:word32] = r28
+	Mem0[sp + 0x0000002C:word32] = ra
+	Mem0[sp + 0x00000024:word32] = r18
+	Mem0[sp + 0x00000020:word32] = r17
+	Mem0[sp + 0x0000001C:word32] = r16
+	r2 = (word32) Mem0[r19 + 0x00001170:byte]
+	branch r2 != 0x00000000 l000007A4_ds_t
+	// succ:  l000007A4_ds_f l000007A4_ds_t
+l000007A4_ds_f:
+	r2 = Mem0[r28 - 0x00007F88:word32]
+	goto l000007DC
+	// succ:  l000007DC
+l000007A4_ds_t:
+	r2 = Mem0[r28 - 0x00007F88:word32]
+	goto l00000868
+	// succ:  l00000868
+l000007DC:
+	branch r2 == 0x00000000 l000007DC_ds_t
+	// succ:  l000007DC_ds_f l000007DC_ds_t
+l000007DC_ds_f:
+	r2 = Mem0[r28 - 0x00007FD4:word32]
+	goto l000007E4
+	// succ:  l000007E4
+l000007DC_ds_t:
+	r2 = Mem0[r28 - 0x00007FD4:word32]
+	goto l000007F4
+	// succ:  l000007F4
+l000007E4:
+	r25 = Mem0[r28 - 0x00007F88:word32]
+	r4 = Mem0[r2:word32]
+	call r25 (retsize: 0;)
+	r28 = Mem0[sp + 0x00000010:word32]
+	// succ:  l000007F4
+l000007F4:
+	r2 = Mem0[r28 - 0x00007FD8:word32]
+	r16 = Mem0[r28 - 0x00007FD0:word32]
+	r17 = Mem0[r28 - 0x00007FD8:word32]
+	r3 = r2 + 4284
+	r18 = r2 + 4284
+	r16 = r16 - r3
+	r2 = Mem0[r17 + 0x00001174:word32]
+	r16 = r16 >> 0x02
+	r16 = r16 + -1
+	r3 = (word32) (r2 <u r16)
+	branch r3 == 0x00000000 l000007F4_ds_t
+	// succ:  l000007F4_ds_f l000007F4_ds_t
+l000007F4_ds_f:
+	r25 = Mem0[r28 - 0x00007FCC:word32]
+	goto l00000824
+	// succ:  l00000824
+l000007F4_ds_t:
+	r25 = Mem0[r28 - 0x00007FCC:word32]
+	goto l00000854
+	// succ:  l00000854
+l00000824:
+	r2 = r2 + 1
+	r3 = r2 << 0x02
+	Mem0[r17 + 0x00001174:word32] = r2
+	r2 = r18 + r3
+	r25 = Mem0[r2:word32]
+	call r25 (retsize: 0;)
+	r2 = Mem0[r17 + 0x00001174:word32]
+	r3 = (word32) (r2 <u r16)
+	branch r3 != 0x00000000 l00000824_ds_t
+	// succ:  l00000824_ds_f l00000824_ds_t
+l00000824_ds_f:
+	r28 = Mem0[sp + 0x00000010:word32]
+	goto l00000850
+	// succ:  l00000850
+l00000824_ds_t:
+	r28 = Mem0[sp + 0x00000010:word32]
+	goto l00000824
+	// succ:  l00000824
+l00000850:
+	r25 = Mem0[r28 - 0x00007FCC:word32]
+	// succ:  l00000854
+l00000854:
+	r25 = r25 + 1824
+	branch 0x00000000 >= 0x00000000 l00000854_ds_t
+	// succ:  l00000854_ds_f l00000854_ds_t
+l00000854_ds_f:
+	goto l00000860
+	// succ:  l00000860
+l00000854_ds_t:
+	// succ:  l0000085C_thunk_deregister_tm_clones
+l0000085C_thunk_deregister_tm_clones:
+	call deregister_tm_clones (retsize: 0;)
+	return
+	// succ:  __do_global_dtors_aux_exit
+l00000860:
+	r2 = 1
+	Mem0[r19 + 0x00001170:byte] = (byte) r2
+	// succ:  l00000868
+l00000868:
+	ra = Mem0[sp + 0x0000002C:word32]
+	r19 = Mem0[sp + 0x00000028:word32]
+	r18 = Mem0[sp + 0x00000024:word32]
+	r17 = Mem0[sp + 0x00000020:word32]
+	r16 = Mem0[sp + 0x0000001C:word32]
+	sp = sp + 48
+	return
+	// succ:  __do_global_dtors_aux_exit
+__do_global_dtors_aux_exit:
+
+
+// frame_dummy
+// Return size: 0
+void frame_dummy()
+frame_dummy_entry:
+	// succ:  l00000884
+l00000884:
+	sp = fp
+	r25 = 0x00000884
+	r28 = 0x00020000
+	r28 = r28 + -30612
+	r28 = r28 + r25
+	r25 = Mem0[r28 - 0x00007FCC:word32]
+	r25 = r25 + 1880
+	// succ:  l00000894_thunk_register_tm_clones
+l00000894_thunk_register_tm_clones:
+	call register_tm_clones (retsize: 0;)
+	return
+	// succ:  frame_dummy_exit
+frame_dummy_exit:
+
+
+// getNumber
+// Return size: 0
+void getNumber()
+getNumber_entry:
+	// succ:  l000008A0
+l000008A0:
+	sp = fp
+	r25 = 0x000008A0
+	r28 = 0x00020000
+	r28 = r28 + -30640
+	r28 = r28 + r25
+	sp = sp + -8
+	Mem0[sp + 0x00000004:word32] = r30
+	r30 = sp
+	r2 = Mem0[r28 - 0x00007FD8:word32]
+	r3 = Mem0[r2 + 0x000010E0:word32]
+	r2 = Mem0[r28 - 0x00007FD8:word32]
+	r2 = Mem0[r2 + 0x000010E0:word32]
+getNumber_exit:
+
+
+// magic
+// Return size: 0
+void magic()
+magic_entry:
+	// succ:  l000008FC
+l000008FC:
+	sp = fp
+	r25 = 0x000008FC
+	r28 = 0x00020000
+	r28 = r28 + -30732
+	r28 = r28 + r25
+	sp = sp + -32
+	Mem0[sp + 0x0000001C:word32] = ra
+	Mem0[sp + 0x00000018:word32] = r30
+	r30 = sp
+	Mem0[sp + 0x00000010:word32] = r28
+	Mem0[r30 + 0x00000020:word32] = r4
+	r5 = Mem0[r30 + 0x00000020:word32]
+	r2 = Mem0[r28 - 0x00007FCC:word32]
+	r4 = r2 + 4016
+	r2 = Mem0[r28 - 0x00007F90:word32]
+	r25 = r2
+	call r25 (retsize: 0;)
+	r28 = Mem0[r30 + 0x00000010:word32]
+	r2 = Mem0[r28 - 0x00007FC8:word32]
+	r25 = r2
+	branch 0x00000000 >= 0x00000000 l000008FC_ds_t
+	goto l000008FC_ds_f
+	// succ:  l000008FC_ds_f l000008FC_ds_t
+l000008FC:
+l000008FC_ds_f:
+	goto l00000950
+	// succ:  l00000950
+l000008FC_ds_t:
+	// succ:  l0000094C_thunk_getNumber
+l0000094C_thunk_getNumber:
+	call getNumber (retsize: 0;)
+	return
+	// succ:  magic_exit
+l00000950:
+	r28 = Mem0[r30 + 0x00000010:word32]
+	r2 = -r2
+	sp = r30
+	ra = Mem0[sp + 0x0000001C:word32]
+	r30 = Mem0[sp + 0x00000018:word32]
+	sp = sp + 32
+	return
+	// succ:  magic_exit
+magic_exit:
+
+
+// numbers
+// Return size: 0
+void numbers()
+numbers_entry:
+	// succ:  l00000970
+l00000970:
+	sp = fp
+	r25 = 0x00000970
+	r28 = 0x00020000
+	r28 = r28 + -30848
+	r28 = r28 + r25
+	sp = sp + -8
+	Mem0[sp + 0x00000004:word32] = r30
+	r30 = sp
+	Mem0[r30 + 0x00000008:word32] = r4
+	r2 = Mem0[r30 + 0x00000008:word32]
+	r2 = (word32) (r2 <u 16)
+	branch r2 == 0x00000000 l00000970_ds_t
+	// succ:  l00000970_ds_f l00000970_ds_t
+l00000970_ds_f:
+	goto l0000099C
+	// succ:  l0000099C
+l00000970_ds_t:
+	goto l00000AC0
+	// succ:  l00000AC0
+l0000099C:
+	r2 = Mem0[r30 + 0x00000008:word32]
+	r3 = r2 << 0x02
+	r2 = Mem0[r28 - 0x00007FCC:word32]
+	r2 = r2 + 4160
+	r2 = r3 + r2
+	r2 = Mem0[r2:word32]
+	r2 = r2 + r28
+	call r2 (retsize: 0;)
+	return
+	// succ:  numbers_exit
+l00000AC0:
+	r2 = Mem0[r28 - 0x00007FCC:word32]
+	r2 = r2 + 4152
+	sp = r30
+	r30 = Mem0[sp + 0x00000004:word32]
+	sp = sp + 8
+	return
+	// succ:  numbers_exit
+numbers_exit:
+
+
+// switchy
+// Return size: 0
+void switchy()
+switchy_entry:
+	// succ:  l00000ADC
+l00000ADC:
+	sp = fp
+	r25 = 0x00000ADC
+	r28 = 0x00020000
+	r28 = r28 + -31212
+	r28 = r28 + r25
+	sp = sp + -40
+	Mem0[sp + 0x00000024:word32] = ra
+	Mem0[sp + 0x00000020:word32] = r30
+	r30 = sp
+	Mem0[sp + 0x00000010:word32] = r28
+	r2 = Mem0[r28 - 0x00007FC8:word32]
+	r25 = r2
+	branch 0x00000000 >= 0x00000000 l00000ADC_ds_t
+	goto l00000ADC_ds_f
+	// succ:  l00000ADC_ds_f l00000ADC_ds_t
+l00000ADC:
+l00000ADC_ds_f:
+	goto l00000B0C
+	// succ:  l00000B0C
+l00000ADC_ds_t:
+	// succ:  l00000B08_thunk_getNumber
+l00000B08_thunk_getNumber:
+	call getNumber (retsize: 0;)
+	return
+	// succ:  switchy_exit
+l00000B0C:
+	r28 = Mem0[r30 + 0x00000010:word32]
+	Mem0[r30 + 0x00000018:word32] = r2
+	r2 = Mem0[r30 + 0x00000018:word32]
+	r3 = 81
+	branch r2 == r3 l00000B0C_ds_t
+	// succ:  l00000B0C_ds_f l00000B0C_ds_t
+l00000B0C_ds_f:
+	goto l00000B24
+	// succ:  l00000B24
+l00000B0C_ds_t:
+	goto l00000C8C
+	// succ:  l00000C8C
+l00000B24:
+	r3 = (word32) (r2 < 82)
+	branch r3 == 0x00000000 l00000B24_ds_t
+	// succ:  l00000B24_ds_f l00000B24_ds_t
+l00000B24_ds_f:
+	goto l00000B30
+	// succ:  l00000B30
+l00000B24_ds_t:
+	goto l00000B78
+	// succ:  l00000B78
+l00000B30:
+	r3 = 3
+	branch r2 == r3 l00000B30_ds_t
+	// succ:  l00000B30_ds_f l00000B30_ds_t
+l00000B30_ds_f:
+	goto l00000B3C
+	// succ:  l00000B3C
+l00000B30_ds_t:
+	goto l00000C14
+	// succ:  l00000C14
+l00000B3C:
+	r3 = (word32) (r2 < 4)
+	branch r3 == 0x00000000 l00000B3C_ds_t
+	// succ:  l00000B3C_ds_f l00000B3C_ds_t
+l00000B3C_ds_f:
+	goto l00000B48
+	// succ:  l00000B48
+l00000B3C_ds_t:
+	goto l00000B58
+	// succ:  l00000B58
+l00000B48:
+	branch r2 == 0x00000000 l00000B48_ds_t
+	// succ:  l00000B48_ds_f l00000B48_ds_t
+l00000B48_ds_f:
+	goto l00000B50
+	// succ:  l00000B50
+l00000B48_ds_t:
+	goto l00000C08
+	// succ:  l00000C08
+l00000B50:
+	goto 0x00000D30
+	goto l00000D30
+	// succ:  l00000D30
+l00000B58:
+	r3 = 4
+	branch r2 == r3 l00000B58_ds_t
+	// succ:  l00000B58_ds_f l00000B58_ds_t
+l00000B58_ds_f:
+	goto l00000B64
+	// succ:  l00000B64
+l00000B58_ds_t:
+	goto l00000C3C
+	// succ:  l00000C3C
+l00000B64:
+	r3 = 5
+	branch r2 == r3 l00000B64_ds_t
+	// succ:  l00000B64_ds_f l00000B64_ds_t
+l00000B64_ds_f:
+	goto l00000B70
+	// succ:  l00000B70
+l00000B64_ds_t:
+	goto l00000C64
+	// succ:  l00000C64
+l00000B70:
+	goto 0x00000D30
+	goto l00000D30
+	// succ:  l00000D30
+l00000B78:
+	r3 = 2017
+	branch r2 == r3 l00000B78_ds_t
+	// succ:  l00000B78_ds_f l00000B78_ds_t
+l00000B78_ds_f:
+	goto l00000B84
+	// succ:  l00000B84
+l00000B78_ds_t:
+	goto l00000CE4
+	// succ:  l00000CE4
+l00000B84:
+	r3 = (word32) (r2 < 2018)
+	branch r3 == 0x00000000 l00000B84_ds_t
+	// succ:  l00000B84_ds_f l00000B84_ds_t
+l00000B84_ds_f:
+	goto l00000B90
+	// succ:  l00000B90
+l00000B84_ds_t:
+	goto l00000BB0
+	// succ:  l00000BB0
+l00000B90:
+	r3 = 1337
+	branch r2 == r3 l00000B90_ds_t
+	// succ:  l00000B90_ds_f l00000B90_ds_t
+l00000B90_ds_f:
+	goto l00000B9C
+	// succ:  l00000B9C
+l00000B90_ds_t:
+	goto l00000BE0
+	// succ:  l00000BE0
+l00000B9C:
+	r3 = 1338
+	branch r2 == r3 l00000B9C_ds_t
+	// succ:  l00000B9C_ds_f l00000B9C_ds_t
+l00000B9C_ds_f:
+	goto l00000BA8
+	// succ:  l00000BA8
+l00000B9C_ds_t:
+	goto l00000BD4
+	// succ:  l00000BD4
+l00000BA8:
+	goto 0x00000D30
+	goto l00000D30
+	// succ:  l00000D30
+l00000BB0:
+	r3 = 9012
+	branch r2 == r3 l00000BB0_ds_t
+	// succ:  l00000BB0_ds_f l00000BB0_ds_t
+l00000BB0_ds_f:
+	goto l00000BBC
+	// succ:  l00000BBC
+l00000BB0_ds_t:
+	goto l00000CBC
+	// succ:  l00000CBC
+l00000BBC:
+	r3 = 0x00010000
+	r3 = r3 | 0x0000261F
+	branch r2 == r3 l00000BBC_ds_t
+	// succ:  l00000BBC_ds_f l00000BBC_ds_t
+l00000BBC_ds_f:
+	goto l00000BCC
+	// succ:  l00000BCC
+l00000BBC_ds_t:
+	goto l00000D0C
+	// succ:  l00000D0C
+l00000BCC:
+	goto 0x00000D30
+	goto l00000D30
+	// succ:  l00000D30
+l00000BD4:
+	r2 = 1
+	goto l00000D30
+	// succ:  l00000D30
+l00000BE0:
+	r2 = Mem0[r28 - 0x00007FCC:word32]
+	r4 = r2 + 4224
+	r2 = Mem0[r28 - 0x00007F94:word32]
+	r25 = r2
+	call r25 (retsize: 0;)
+	r28 = Mem0[r30 + 0x00000010:word32]
+	r2 = 0x00000000
+	goto l00000D30
+	// succ:  l00000D30
+l00000C08:
+	r2 = 2
+	goto l00000D30
+	// succ:  l00000D30
+l00000C14:
+	r2 = Mem0[r28 - 0x00007FCC:word32]
+	r4 = r2 + 4228
+	r2 = Mem0[r28 - 0x00007F94:word32]
+	r25 = r2
+	call r25 (retsize: 0;)
+	r28 = Mem0[r30 + 0x00000010:word32]
+	r2 = -2
+	goto l00000D30
+	// succ:  l00000D30
+l00000C3C:
+	r2 = Mem0[r28 - 0x00007FCC:word32]
+	r4 = r2 + 4232
+	r2 = Mem0[r28 - 0x00007F94:word32]
+	r25 = r2
+	call r25 (retsize: 0;)
+	r28 = Mem0[r30 + 0x00000010:word32]
+	r2 = -10
+	goto l00000D30
+	// succ:  l00000D30
+l00000C64:
+	r2 = Mem0[r28 - 0x00007FCC:word32]
+	r4 = r2 + 4236
+	r2 = Mem0[r28 - 0x00007F94:word32]
+	r25 = r2
+	call r25 (retsize: 0;)
+	r28 = Mem0[r30 + 0x00000010:word32]
+	r2 = 1
+	goto l00000D30
+	// succ:  l00000D30
+l00000C8C:
+	r2 = Mem0[r30 + 0x00000018:word32]
+	r3 = r2 >>u 0x1F
+	r2 = r3 + r2
+	r2 = r2 >> 0x01
+	r4 = r2
+	r2 = Mem0[r28 - 0x00007FC4:word32]
+	r25 = r2
+	branch 0x00000000 >= 0x00000000 l00000C8C_ds_t
+	// succ:  l00000C8C_ds_f l00000C8C_ds_t
+l00000C8C_ds_f:
+	goto l00000CB0
+	// succ:  l00000CB0
+l00000C8C_ds_t:
+	// succ:  l00000CAC_thunk_magic
+l00000CAC_thunk_magic:
+	call magic (retsize: 0;)
+	return
+	// succ:  switchy_exit
+l00000CB0:
+	r28 = Mem0[r30 + 0x00000010:word32]
+	goto l00000D30
+	// succ:  l00000D30
+l00000CBC:
+	r2 = Mem0[r30 + 0x00000018:word32]
+	r2 = r2 << 0x01
+	r4 = r2
+	r2 = Mem0[r28 - 0x00007FC4:word32]
+	r25 = r2
+	branch 0x00000000 >= 0x00000000 l00000CBC_ds_t
+	// succ:  l00000CBC_ds_f l00000CBC_ds_t
+l00000CBC_ds_f:
+	goto l00000CD8
+	// succ:  l00000CD8
+l00000CBC_ds_t:
+	// succ:  l00000CD4_thunk_magic
+l00000CD4_thunk_magic:
+	call magic (retsize: 0;)
+	return
+	// succ:  switchy_exit
+l00000CD8:
+	r28 = Mem0[r30 + 0x00000010:word32]
+	goto l00000D30
+	// succ:  l00000D30
+l00000CE4:
+	r2 = Mem0[r30 + 0x00000018:word32]
+	r2 = r2 + -42
+	r4 = r2
+	r2 = Mem0[r28 - 0x00007FC4:word32]
+	r25 = r2
+	branch 0x00000000 >= 0x00000000 l00000CE4_ds_t
+	// succ:  l00000CE4_ds_f l00000CE4_ds_t
+l00000CE4_ds_f:
+	goto l00000D00
+	// succ:  l00000D00
+l00000CE4_ds_t:
+	// succ:  l00000CFC_thunk_magic
+l00000CFC_thunk_magic:
+	call magic (retsize: 0;)
+	return
+	// succ:  switchy_exit
+l00000D00:
+	r28 = Mem0[r30 + 0x00000010:word32]
+	goto l00000D30
+	// succ:  l00000D30
+l00000D0C:
+	r2 = Mem0[r30 + 0x00000018:word32]
+	r2 = r2 + 42
+	r4 = r2
+	r2 = Mem0[r28 - 0x00007FC4:word32]
+	r25 = r2
+	branch 0x00000000 >= 0x00000000 l00000D0C_ds_t
+	// succ:  l00000D0C_ds_f l00000D0C_ds_t
+l00000D0C_ds_f:
+	goto l00000D28
+	// succ:  l00000D28
+l00000D0C_ds_t:
+	// succ:  l00000D24_thunk_magic
+l00000D24_thunk_magic:
+	call magic (retsize: 0;)
+	return
+	// succ:  switchy_exit
+l00000D28:
+	r28 = Mem0[r30 + 0x00000010:word32]
+	// succ:  l00000D30
+l00000D30:
+	sp = r30
+	ra = Mem0[sp + 0x00000024:word32]
+	r30 = Mem0[sp + 0x00000020:word32]
+	sp = sp + 40
+	return
+	// succ:  switchy_exit
+switchy_exit:
+
+
+// main
+// Return size: 0
+void main()
+main_entry:
+	// succ:  l00000D48
+l00000D48:
+	sp = fp
+	r25 = 0x00000D48
+	r28 = 0x00020000
+	r28 = r28 + -31832
+	r28 = r28 + r25
+	sp = sp + -40
+	Mem0[sp + 0x00000024:word32] = ra
+	Mem0[sp + 0x00000020:word32] = r30
+	r30 = sp
+	Mem0[sp + 0x00000010:word32] = r28
+	r2 = Mem0[r28 - 0x00007FCC:word32]
+	r4 = r2 + 4240
+	r2 = Mem0[r28 - 0x00007F94:word32]
+	r25 = r2
+	call r25 (retsize: 0;)
+	r28 = Mem0[r30 + 0x00000010:word32]
+	r2 = Mem0[r28 - 0x00007FC0:word32]
+	r25 = r2
+	branch 0x00000000 >= 0x00000000 l00000D48_ds_t
+	// succ:  l00000D48_ds_f l00000D48_ds_t
+l00000D48_ds_f:
+	goto l00000D94
+	// succ:  l00000D94
+l00000D48_ds_t:
+	// succ:  l00000D90_thunk_switchy
+l00000D90_thunk_switchy:
+	call switchy (retsize: 0;)
+	return
+	// succ:  main_exit
+l00000D94:
+	r28 = Mem0[r30 + 0x00000010:word32]
+	Mem0[r30 + 0x00000018:word32] = r2
+	r3 = Mem0[r30 + 0x00000018:word32]
+	r2 = 0x80000000
+	r2 = r2 | 0x0000000F
+	r2 = r3 + r2
+	branch r2 >= 0x00000000 l00000D94_ds_t
+	// succ:  l00000D94_ds_f l00000D94_ds_t
+l00000D94_ds_f:
+	goto l00000DB4
+	// succ:  l00000DB4
+l00000D94_ds_t:
+	goto l00000DC4
+	// succ:  l00000DC4
+l00000DB4:
+	r2 = r2 + -1
+	r3 = -16
+	r2 = r2 | r3
+	r2 = r2 + 1
+	// succ:  l00000DC4
+l00000DC4:
+	r4 = r2
+	r2 = Mem0[r28 - 0x00007FBC:word32]
+	r25 = r2
+	branch 0x00000000 >= 0x00000000 l00000DC4_ds_t
+	// succ:  l00000DC4_ds_f l00000DC4_ds_t
+l00000DC4_ds_f:
+	goto l00000DD8
+	// succ:  l00000DD8
+l00000DC4_ds_t:
+	call numbers (retsize: 0;)
+	return
+	// succ:  l00000970 main_exit
+l00000DD8:
+	r28 = Mem0[r30 + 0x00000010:word32]
+	Mem0[r30 + 0x0000001C:word32] = r2
+	r2 = 0x00000000
+	sp = r30
+	ra = Mem0[sp + 0x00000024:word32]
+	r30 = Mem0[sp + 0x00000020:word32]
+	sp = sp + 40
+	return
+	// succ:  main_exit
+main_exit:
+
+
+// __libc_csu_init
+// Return size: 0
+void __libc_csu_init()
+__libc_csu_init_entry:
+	// succ:  l00000E00
+l00000E00:
+	sp = fp
+	r25 = 0x00000E00
+	r28 = 0x00020000
+	r28 = r28 + -32016
+	r28 = r28 + r25
+	sp = sp + -56
+	r25 = Mem0[r28 - 0x00007FB8:word32]
+	Mem0[sp + 0x00000010:word32] = r28
+	Mem0[sp + 0x00000030:word32] = r21
+	r21 = r6
+	Mem0[sp + 0x0000002C:word32] = r20
+	r20 = r5
+	Mem0[sp + 0x00000028:word32] = r19
+	r19 = r4
+	Mem0[sp + 0x00000024:word32] = r18
+	Mem0[sp + 0x0000001C:word32] = r16
+	Mem0[sp + 0x00000034:word32] = ra
+	branch 0x00000000 >= 0x00000000 l00000E00_ds_t
+	// succ:  l00000E00_ds_f l00000E00_ds_t
+l00000E00_ds_f:
+	Mem0[sp + 0x00000020:word32] = r17
+	goto l00000E44
+	// succ:  l00000E44
+l00000E00_ds_t:
+	Mem0[sp + 0x00000020:word32] = r17
+	// succ:  l00000E40_thunk__init
+l00000E40_thunk__init:
+	call _init (retsize: 0;)
+	return
+	// succ:  __libc_csu_init_exit
+l00000E44:
+	r28 = Mem0[sp + 0x00000010:word32]
+	r16 = Mem0[r28 - 0x00007FB4:word32]
+	r18 = Mem0[r28 - 0x00007FB4:word32]
+	r18 = r18 - r16
+	r18 = r18 >> 0x02
+	branch r18 == 0x00000000 l00000E44_ds_t
+	// succ:  l00000E44_ds_f l00000E44_ds_t
+l00000E44_ds_f:
+	r17 = 0x00000000
+	goto l00000E60
+	// succ:  l00000E60
+l00000E44_ds_t:
+	r17 = 0x00000000
+	goto l00000E80
+	// succ:  l00000E80
+l00000E60:
+	r25 = Mem0[r16:word32]
+	r17 = r17 + 1
+	r6 = r21
+	r5 = r20
+	r4 = r19
+	call r25 (retsize: 0;)
+	branch r18 != r17 l00000E60_ds_t
+	// succ:  l00000E60_ds_f l00000E60_ds_t
+l00000E60_ds_f:
+	r16 = r16 + 4
+	goto l00000E80
+	// succ:  l00000E80
+l00000E60_ds_t:
+	r16 = r16 + 4
+	goto l00000E60
+	// succ:  l00000E60
+l00000E80:
+	ra = Mem0[sp + 0x00000034:word32]
+	r21 = Mem0[sp + 0x00000030:word32]
+	r20 = Mem0[sp + 0x0000002C:word32]
+	r19 = Mem0[sp + 0x00000028:word32]
+	r18 = Mem0[sp + 0x00000024:word32]
+	r17 = Mem0[sp + 0x00000020:word32]
+	r16 = Mem0[sp + 0x0000001C:word32]
+	sp = sp + 56
+	return
+	// succ:  __libc_csu_init_exit
+__libc_csu_init_exit:
+
+
+// __libc_csu_fini
+// Return size: 0
+void __libc_csu_fini()
+__libc_csu_fini_entry:
+	// succ:  l00000EA4
+l00000EA4:
+	sp = fp
+	r25 = 0x00000EA4
+	return
+	// succ:  __libc_csu_fini_exit
+__libc_csu_fini_exit:
+
+
+// __do_global_ctors_aux
+// Return size: 0
+void __do_global_ctors_aux()
+__do_global_ctors_aux_entry:
+	// succ:  l00000EB0
+l00000EB0:
+	sp = fp
+	r25 = 0x00000EB0
+	r28 = 0x00020000
+	r28 = r28 + -32192
+	r28 = r28 + r25
+	r3 = Mem0[r28 - 0x00007FD8:word32]
+	sp = sp + -40
+	r2 = -1
+	Mem0[sp + 0x00000010:word32] = r28
+	Mem0[sp + 0x00000024:word32] = ra
+	Mem0[sp + 0x00000020:word32] = r17
+	Mem0[sp + 0x0000001C:word32] = r16
+	r25 = Mem0[r3 + 0x000010B4:word32]
+	branch r25 == r2 l00000EB0_ds_t
+	// succ:  l00000EB0_ds_f l00000EB0_ds_t
+l00000EB0_ds_f:
+	r17 = -1
+	goto l00000EE4
+	// succ:  l00000EE4
+l00000EB0_ds_t:
+	r17 = -1
+	goto l00000EFC
+	// succ:  l00000EFC
+l00000EE4:
+	r16 = r3 + 4276
+	// succ:  l00000EE8
+l00000EE8:
+	r16 = r16 + -4
+	call r25 (retsize: 0;)
+	r25 = Mem0[r16:word32]
+	branch r25 != r17 l00000EE8_ds_t
+	// succ:  l00000EE8_ds_f l00000EE8_ds_t
+l00000EE8_ds_f:
+	goto l00000EFC
+	// succ:  l00000EFC
+l00000EE8_ds_t:
+	goto l00000EE8
+	// succ:  l00000EE8
+l00000EFC:
+	ra = Mem0[sp + 0x00000024:word32]
+	r17 = Mem0[sp + 0x00000020:word32]
+	r16 = Mem0[sp + 0x0000001C:word32]
+	sp = sp + 40
+	return
+	// succ:  __do_global_ctors_aux_exit
+__do_global_ctors_aux_exit:
+
+
+// _fini
+// Return size: 0
+void _fini()
+_fini_entry:
+	// succ:  l00000F50
+l00000F50:
+	sp = fp
+	r25 = 0x00000F50
+	r28 = 0x00020000
+	r28 = r28 + -32352
+	r28 = r28 + r25
+	sp = sp + -32
+	Mem0[sp + 0x00000010:word32] = r28
+	Mem0[sp + 0x0000001C:word32] = ra
+	branch 0x00000000 >= 0x00000000 l00000F50_ds_t
+	// succ:  l00000F50_ds_f l00000F50_ds_t
+l00000F50_ds_f:
+	goto l00000F70
+	// succ:  l00000F70
+l00000F50_ds_t:
+	// succ:  l00000F70
+l00000F70:
+	r28 = 0x00020000
+	r28 = r28 + -32384
+	r28 = r28 + ra
+	r25 = Mem0[r28 - 0x00007FCC:word32]
+	r25 = r25 + 1956
+	call r25 (retsize: 0;)
+	ra = Mem0[sp + 0x0000001C:word32]
+	sp = sp + 32
+	return
+	// succ:  _fini_exit
+_fini_exit:
+
+

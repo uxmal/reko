@@ -1,0 +1,865 @@
+// _init
+// Return size: 4
+void _init()
+_init_entry:
+	// succ:  l00000398
+l00000398:
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebx
+	esp = esp - 0x00000008
+	SCZO = cond(esp)
+	call __x86.get_pc_thunk.bx (retsize: 4;)
+	ebx = ebx + 0x00001C5F
+	SCZO = cond(ebx)
+	eax = Mem0[ebx - 0x0000000C:word32]
+	SZO = cond(eax & eax)
+	C = false
+	branch Test(EQ,Z) l000003B6
+	// succ:  l000003B1 l000003B6
+l000003B1:
+	call fn00000408 (retsize: 4;)
+	// succ:  l000003B6
+l000003B6:
+	esp = esp + 0x00000008
+	SCZO = cond(esp)
+	ebx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  _init_exit
+_init_exit:
+
+
+// fn000003D0
+// Return size: 0
+void fn000003D0()
+fn000003D0_entry:
+	// succ:  l000003D0
+l000003D0:
+	esp = fp
+	call Mem0[ebx + 0x0000000C:word32] (retsize: 4;)
+	return
+	// succ:  fn000003D0_exit
+fn000003D0_exit:
+
+
+// fn000003E0
+// Return size: 0
+void fn000003E0()
+fn000003E0_entry:
+	// succ:  l000003E0
+l000003E0:
+	esp = fp
+	call Mem0[ebx + 0x00000010:word32] (retsize: 4;)
+	return
+	// succ:  fn000003E0_exit
+fn000003E0_exit:
+
+
+// fn000003F0
+// Return size: 0
+void fn000003F0()
+fn000003F0_entry:
+	// succ:  l000003F0
+l000003F0:
+	esp = fp
+	call Mem0[ebx + 0x00000014:word32] (retsize: 4;)
+	return
+	// succ:  fn000003F0_exit
+fn000003F0_exit:
+
+
+// fn00000400
+// Return size: 0
+void fn00000400()
+fn00000400_entry:
+	// succ:  l00000400
+l00000400:
+	esp = fp
+	call Mem0[ebx - 0x00000010:word32] (retsize: 4;)
+	return
+	// succ:  fn00000400_exit
+fn00000400_exit:
+
+
+// fn00000408
+// Return size: 0
+void fn00000408()
+fn00000408_entry:
+	// succ:  l00000408
+l00000408:
+	esp = fp
+	call Mem0[ebx - 0x0000000C:word32] (retsize: 4;)
+	return
+	// succ:  fn00000408_exit
+fn00000408_exit:
+
+
+// _start
+// Return size: 0
+void _start()
+_start_entry:
+	// succ:  l00000410
+l00000410:
+	esp = fp
+	ebp = ebp ^ ebp
+	SZO = cond(ebp)
+	C = false
+	esi = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	ecx = esp
+	__align(esp)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	v9 = esp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = v9
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = edx
+	call fn00000442 (retsize: 4;)
+	ebx = ebx + 0x00001BE0
+	SCZO = cond(ebx)
+	eax = ebx + 0xFFFFE8C0
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	eax = ebx + 0xFFFFE860
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ecx
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = esi
+	v13 = Mem0[ebx - 0x00000008:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = v13
+	call fn000003F0 (retsize: 4;)
+	__hlt()
+_start_exit:
+
+
+// fn00000442
+// Return size: 4
+void fn00000442()
+fn00000442_entry:
+	// succ:  l00000442
+l00000442:
+	esp = fp
+	ebx = Mem0[esp:word32]
+	return
+	// succ:  fn00000442_exit
+fn00000442_exit:
+
+
+// __x86.get_pc_thunk.bx
+// Return size: 4
+void __x86.get_pc_thunk.bx()
+__x86.get_pc_thunk.bx_entry:
+	// succ:  l00000450
+l00000450:
+	esp = fp
+	ebx = Mem0[esp:word32]
+	return
+	// succ:  __x86.get_pc_thunk.bx_exit
+__x86.get_pc_thunk.bx_exit:
+
+
+// deregister_tm_clones
+// Return size: 4
+void deregister_tm_clones()
+deregister_tm_clones_entry:
+	// succ:  l00000460
+l00000460:
+	esp = fp
+	call __x86.get_pc_thunk.dx (retsize: 4;)
+	edx = edx + 0x00001B9B
+	SCZO = cond(edx)
+	ecx = edx + 0x00000024
+	eax = edx + 0x00000024
+	SCZO = cond(eax - ecx)
+	branch Test(EQ,Z) l00000498
+	// succ:  l0000047B l00000498
+l0000047B:
+	eax = Mem0[edx - 0x00000014:word32]
+	SZO = cond(eax & eax)
+	C = false
+	branch Test(EQ,Z) l00000498
+	// succ:  l00000485 l00000498
+l00000485:
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	esp = esp - 0x00000014
+	SCZO = cond(esp)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ecx
+	call eax (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  deregister_tm_clones_exit
+l00000498:
+	return
+	// succ:  deregister_tm_clones_exit
+deregister_tm_clones_exit:
+
+
+// register_tm_clones
+// Return size: 0
+void register_tm_clones()
+register_tm_clones_entry:
+	// succ:  l000004A0
+l000004A0:
+	esp = fp
+	call __x86.get_pc_thunk.dx (retsize: 4;)
+	edx = edx + 0x00001B5B
+	SCZO = cond(edx)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ecx = edx + 0x00000024
+	eax = edx + 0x00000024
+	eax = eax - ecx
+	SCZO = cond(eax)
+	ebp = esp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebx
+	eax = eax >> 0x00000002
+	SCZO = cond(eax)
+	ebx = eax
+	esp = esp - 0x00000004
+	SCZO = cond(esp)
+	ebx = ebx >>u 0x0000001F
+	SCZO = cond(ebx)
+	eax = eax + ebx
+	SCZO = cond(eax)
+	eax = eax >> 0x00000001
+	SCZO = cond(eax)
+	branch Test(EQ,Z) l000004E2
+	// succ:  l000004CE l000004E2
+l000004CE:
+	edx = Mem0[edx - 0x00000004:word32]
+	SZO = cond(edx & edx)
+	C = false
+	branch Test(EQ,Z) l000004E2
+	// succ:  l000004D8 l000004E2
+l000004D8:
+	esp = esp - 0x00000008
+	SCZO = cond(esp)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ecx
+	call edx (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	// succ:  l000004E2
+l000004E2:
+	ebx = Mem0[ebp - 0x00000004:word32]
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  register_tm_clones_exit
+register_tm_clones_exit:
+
+
+// __do_global_dtors_aux
+// Return size: 4
+void __do_global_dtors_aux()
+__do_global_dtors_aux_entry:
+	// succ:  l000004F0
+l000004F0:
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebx
+	call __x86.get_pc_thunk.bx (retsize: 4;)
+	ebx = ebx + 0x00001B07
+	SCZO = cond(ebx)
+	esp = esp - 0x00000004
+	SCZO = cond(esp)
+	SCZO = cond(Mem0[ebx + 0x00000024:byte] - 0x00)
+	branch Test(NE,Z) l00000532
+	// succ:  l0000050B l00000532
+l0000050B:
+	eax = Mem0[ebx - 0x00000010:word32]
+	SZO = cond(eax & eax)
+	C = false
+	branch Test(EQ,Z) l00000526
+	// succ:  l00000515 l00000526
+l00000515:
+	esp = esp - 0x0000000C
+	SCZO = cond(esp)
+	v10 = Mem0[ebx + 0x0000001C:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = v10
+	call fn00000400 (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	// succ:  l00000526
+l00000526:
+	call deregister_tm_clones (retsize: 4;)
+	Mem0[ebx + 0x00000024:byte] = 0x01
+	// succ:  l00000532
+l00000532:
+	ebx = Mem0[ebp - 0x00000004:word32]
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  __do_global_dtors_aux_exit
+__do_global_dtors_aux_exit:
+
+
+// frame_dummy
+// Return size: 4
+void frame_dummy()
+frame_dummy_entry:
+	// succ:  l00000540
+l00000540:
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	// succ:  l00000543_thunk_register_tm_clones
+l00000543_thunk_register_tm_clones:
+	call register_tm_clones (retsize: 0;)
+	return
+	// succ:  frame_dummy_exit
+frame_dummy_exit:
+
+
+// __x86.get_pc_thunk.dx
+// Return size: 4
+void __x86.get_pc_thunk.dx()
+__x86.get_pc_thunk.dx_entry:
+	// succ:  l00000549
+l00000549:
+	esp = fp
+	edx = Mem0[esp:word32]
+	return
+	// succ:  __x86.get_pc_thunk.dx_exit
+__x86.get_pc_thunk.dx_exit:
+
+
+// getNumber
+// Return size: 4
+void getNumber()
+getNumber_entry:
+	// succ:  l0000054D
+l0000054D:
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	esp = esp - 0x00000010
+	SCZO = cond(esp)
+	call __x86.get_pc_thunk.ax (retsize: 4;)
+	eax = eax + 0x00001AA8
+	SCZO = cond(eax)
+	ecx = Mem0[eax + 0x00000020:word32]
+	edx = Mem0[eax + 0x00000020:word32]
+	edx = edx *s ecx
+	SCZO = cond(edx)
+	Mem0[ebp - 0x0000000C:word32] = edx
+	rLoc1 = (real64) Mem0[ebp - 0x0000000C:int32]
+	rLoc2 = Mem0[eax + 0xFFFFE9B0:real64]
+	rLoc1 = rLoc1 / rLoc2
+	Mem0[ebp - 0x00000002:word16] = __fstcw()
+	eax = (word32) Mem0[ebp - 0x00000002:word16]
+	ah = 0x0C
+	Mem0[ebp - 0x00000004:word16] = ax
+	__fldcw(Mem0[ebp - 0x00000004:word16])
+	Mem0[ebp - 0x00000008:int32] = (int32) rLoc1
+	__fldcw(Mem0[ebp - 0x00000002:word16])
+	eax = Mem0[ebp - 0x00000008:word32]
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  getNumber_exit
+getNumber_exit:
+
+
+// magic
+// Return size: 4
+void magic()
+magic_entry:
+	// succ:  l00000595
+l00000595:
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebx
+	esp = esp - 0x00000004
+	SCZO = cond(esp)
+	call __x86.get_pc_thunk.ax (retsize: 4;)
+	eax = eax + 0x00001A5F
+	SCZO = cond(eax)
+	esp = esp - 0x00000008
+	SCZO = cond(esp)
+	v7 = Mem0[ebp + 0x00000008:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = v7
+	edx = eax + 0xFFFFE8E0
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = edx
+	ebx = eax
+	call fn000003D0 (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	call getNumber (retsize: 4;)
+	eax = -eax
+	SCZO = cond(eax)
+	C = eax == 0x00000000
+	ebx = Mem0[ebp - 0x00000004:word32]
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  magic_exit
+magic_exit:
+
+
+// numbers
+// Return size: 4
+void numbers()
+numbers_entry:
+	// succ:  l000005C9
+l000005C9:
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	call __x86.get_pc_thunk.ax (retsize: 4;)
+	eax = eax + 0x00001A2F
+	SCZO = cond(eax)
+	SCZO = cond(Mem0[ebp + 0x00000008:word32] - 0x0000000F)
+	branch Test(UGT,CZ) l00000671
+	// succ:  l000005E0 l00000671
+l000005E0:
+	edx = Mem0[ebp + 0x00000008:word32]
+	edx = edx << 0x00000002
+	SCZO = cond(edx)
+	edx = Mem0[edx + 0xFFFFE954 + eax:word32]
+	edx = edx + eax
+	SCZO = cond(edx)
+	call edx (retsize: 4;)
+	return
+	// succ:  numbers_exit
+l00000671:
+	eax = eax + 0xFFFFE94C
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  numbers_exit
+numbers_exit:
+
+
+// switchy
+// Return size: 4
+void switchy()
+switchy_entry:
+	// succ:  l00000679
+l00000679:
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebx
+	esp = esp - 0x00000014
+	SCZO = cond(esp)
+	call __x86.get_pc_thunk.bx (retsize: 4;)
+	ebx = ebx + 0x0000197B
+	SCZO = cond(ebx)
+	call getNumber (retsize: 4;)
+	Mem0[ebp - 0x0000000C:word32] = eax
+	eax = Mem0[ebp - 0x0000000C:word32]
+	SCZO = cond(eax - 0x00000051)
+	branch Test(EQ,Z) l00000794
+	// succ:  l0000069F l00000794
+l0000069F:
+	SCZO = cond(eax - 0x00000051)
+	branch Test(GT,SZO) l000006D6
+	// succ:  l000006A4 l000006D6
+l000006A4:
+	SCZO = cond(eax - 0x00000003)
+	branch Test(EQ,Z) l00000746
+	// succ:  l000006AD l00000746
+l000006AD:
+	SCZO = cond(eax - 0x00000003)
+	branch Test(GT,SZO) l000006BF
+	// succ:  l000006B2 l000006BF
+l000006B2:
+	SZO = cond(eax & eax)
+	C = false
+	branch Test(EQ,Z) l0000073C
+	// succ:  l000006BA l0000073C
+l000006BA:
+	goto 0x000007E8
+	goto l000007E8
+	// succ:  l000007E8
+l000006BF:
+	SCZO = cond(eax - 0x00000004)
+	branch Test(EQ,Z) l00000762
+	// succ:  l000006C8 l00000762
+l000006C8:
+	SCZO = cond(eax - 0x00000005)
+	branch Test(EQ,Z) l0000077B
+	// succ:  l000006D1 l0000077B
+l000006D1:
+	goto 0x000007E8
+	goto l000007E8
+	// succ:  l000007E8
+l000006D6:
+	SCZO = cond(eax - 0x000007E1)
+	branch Test(EQ,Z) l000007C1
+	// succ:  l000006E1 l000007C1
+l000006E1:
+	SCZO = cond(eax - 0x000007E1)
+	branch Test(GT,SZO) l000006FB
+	// succ:  l000006E8 l000006FB
+l000006E8:
+	SCZO = cond(eax - 0x00000539)
+	branch Test(EQ,Z) l00000720
+	// succ:  l000006EF l00000720
+l000006EF:
+	SCZO = cond(eax - 0x0000053A)
+	branch Test(EQ,Z) l00000716
+	// succ:  l000006F6 l00000716
+l000006F6:
+	goto 0x000007E8
+	goto l000007E8
+	// succ:  l000007E8
+l000006FB:
+	SCZO = cond(eax - 0x00002334)
+	branch Test(EQ,Z) l000007AE
+	// succ:  l00000706 l000007AE
+l00000706:
+	SCZO = cond(eax - 0x0001261F)
+	branch Test(EQ,Z) l000007D5
+	// succ:  l00000711 l000007D5
+l00000711:
+	goto 0x000007E8
+	goto l000007E8
+	// succ:  l000007E8
+l00000716:
+	eax = 0x00000001
+	goto l000007E8
+	// succ:  l000007E8
+l00000720:
+	esp = esp - 0x0000000C
+	SCZO = cond(esp)
+	eax = ebx + 0xFFFFE994
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	call fn000003E0 (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	eax = 0x00000000
+	goto l000007E8
+	// succ:  l000007E8
+l0000073C:
+	eax = 0x00000002
+	goto l000007E8
+	// succ:  l000007E8
+l00000746:
+	esp = esp - 0x0000000C
+	SCZO = cond(esp)
+	eax = ebx + 0xFFFFE997
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	call fn000003E0 (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	eax = 0xFFFFFFFE
+	goto l000007E8
+	// succ:  l000007E8
+l00000762:
+	esp = esp - 0x0000000C
+	SCZO = cond(esp)
+	eax = ebx + 0xFFFFE99B
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	call fn000003E0 (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	eax = 0xFFFFFFF6
+	goto l000007E8
+	// succ:  l000007E8
+l0000077B:
+	esp = esp - 0x0000000C
+	SCZO = cond(esp)
+	eax = ebx + 0xFFFFE99F
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	call fn000003E0 (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	eax = 0x00000001
+	goto l000007E8
+	// succ:  l000007E8
+l00000794:
+	eax = Mem0[ebp - 0x0000000C:word32]
+	edx = eax
+	edx = edx >>u 0x0000001F
+	SCZO = cond(edx)
+	eax = eax + edx
+	SCZO = cond(eax)
+	eax = eax >> 0x00000001
+	SCZO = cond(eax)
+	esp = esp - 0x0000000C
+	SCZO = cond(esp)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	call magic (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	goto l000007E8
+	// succ:  l000007E8
+l000007AE:
+	eax = Mem0[ebp - 0x0000000C:word32]
+	eax = eax + eax
+	SCZO = cond(eax)
+	esp = esp - 0x0000000C
+	SCZO = cond(esp)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	call magic (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	goto l000007E8
+	// succ:  l000007E8
+l000007C1:
+	eax = Mem0[ebp - 0x0000000C:word32]
+	eax = eax - 0x0000002A
+	SCZO = cond(eax)
+	esp = esp - 0x0000000C
+	SCZO = cond(esp)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	call magic (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	goto l000007E8
+	// succ:  l000007E8
+l000007D5:
+	eax = Mem0[ebp - 0x0000000C:word32]
+	eax = eax + 0x0000002A
+	SCZO = cond(eax)
+	esp = esp - 0x0000000C
+	SCZO = cond(esp)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	call magic (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	// succ:  l000007E8
+l000007E8:
+	ebx = Mem0[ebp - 0x00000004:word32]
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  switchy_exit
+switchy_exit:
+
+
+// main
+// Return size: 4
+void main()
+main_entry:
+	// succ:  l000007ED
+l000007ED:
+	esp = fp
+	ecx = esp + 0x00000004
+	__align(esp)
+	v4 = Mem0[ecx - 0x00000004:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = v4
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebx
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ecx
+	esp = esp - 0x00000010
+	SCZO = cond(esp)
+	call __x86.get_pc_thunk.ax (retsize: 4;)
+	eax = eax + 0x000017FC
+	SCZO = cond(eax)
+	esp = esp - 0x0000000C
+	SCZO = cond(esp)
+	edx = eax + 0xFFFFE9A3
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = edx
+	ebx = eax
+	call fn000003E0 (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	call switchy (retsize: 4;)
+	Mem0[ebp - 0x0000000C:word32] = eax
+	eax = Mem0[ebp - 0x0000000C:word32]
+	edx_eax = (int64) eax
+	edx = edx >>u 0x0000001C
+	SCZO = cond(edx)
+	eax = eax + edx
+	SCZO = cond(eax)
+	eax = eax & 0x0000000F
+	SZO = cond(eax)
+	C = false
+	eax = eax - edx
+	SCZO = cond(eax)
+	esp = esp - 0x0000000C
+	SCZO = cond(esp)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	call numbers (retsize: 4;)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	Mem0[ebp - 0x00000010:word32] = eax
+	eax = 0x00000000
+	esp = ebp - 0x00000008
+	ecx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	ebx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	esp = ecx - 0x00000004
+	return
+	// succ:  main_exit
+main_exit:
+
+
+// __x86.get_pc_thunk.ax
+// Return size: 4
+void __x86.get_pc_thunk.ax()
+__x86.get_pc_thunk.ax_entry:
+	// succ:  l00000851
+l00000851:
+	esp = fp
+	eax = Mem0[esp:word32]
+	return
+	// succ:  __x86.get_pc_thunk.ax_exit
+__x86.get_pc_thunk.ax_exit:
+
+
+// __libc_csu_init
+// Return size: 4
+void __libc_csu_init()
+__libc_csu_init_entry:
+	// succ:  l00000860
+l00000860:
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = edi
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = esi
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebx
+	call __x86.get_pc_thunk.bx (retsize: 4;)
+	ebx = ebx + 0x00001797
+	SCZO = cond(ebx)
+	esp = esp - 0x0000000C
+	SCZO = cond(esp)
+	ebp = Mem0[esp + 0x00000020:word32]
+	esi = ebx - 0x00000108
+	call _init (retsize: 4;)
+	eax = ebx - 0x0000010C
+	esi = esi - eax
+	SCZO = cond(esi)
+	esi = esi >> 0x00000002
+	SCZO = cond(esi)
+	SZO = cond(esi & esi)
+	C = false
+	branch Test(EQ,Z) l000008B5
+	// succ:  l00000890 l000008B5
+l00000890:
+	edi = edi ^ edi
+	SZO = cond(edi)
+	C = false
+	esi = esi + 0x00000000
+	// succ:  l00000898
+l00000898:
+	esp = esp - 0x00000004
+	SCZO = cond(esp)
+	v12 = Mem0[esp + 0x0000002C:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = v12
+	v13 = Mem0[esp + 0x0000002C:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = v13
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	call Mem0[ebx - 0x0000010C + edi * 0x00000004:word32] (retsize: 4;)
+	edi = edi + 0x00000001
+	SCZO = cond(edi)
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	SCZO = cond(esi - edi)
+	branch Test(NE,Z) l00000898
+	// succ:  l000008B5 l00000898
+l000008B5:
+	esp = esp + 0x0000000C
+	SCZO = cond(esp)
+	ebx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	esi = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	edi = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  __libc_csu_init_exit
+__libc_csu_init_exit:
+
+
+// __libc_csu_fini
+// Return size: 4
+void __libc_csu_fini()
+__libc_csu_fini_entry:
+	// succ:  l000008C0
+l000008C0:
+	esp = fp
+	return
+	// succ:  __libc_csu_fini_exit
+__libc_csu_fini_exit:
+
+
+// _fini
+// Return size: 4
+void _fini()
+_fini_entry:
+	// succ:  l000008C4
+l000008C4:
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebx
+	esp = esp - 0x00000008
+	SCZO = cond(esp)
+	call __x86.get_pc_thunk.bx (retsize: 4;)
+	ebx = ebx + 0x00001733
+	SCZO = cond(ebx)
+	esp = esp + 0x00000008
+	SCZO = cond(esp)
+	ebx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  _fini_exit
+_fini_exit:
+
+
