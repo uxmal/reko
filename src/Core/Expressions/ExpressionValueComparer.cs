@@ -118,6 +118,23 @@ namespace Reko.Core.Expressions
                 addrComp,
                 addrHash);
 
+            Add(typeof(ConditionalExpression),
+                (ca, cb) =>
+                {
+                    var a = (ConditionalExpression)ca;
+                    var b = (ConditionalExpression)cb;
+                    return EqualsImpl(a.Condition, b.Condition) &&
+                           EqualsImpl(a.ThenExp, b.ThenExp) &&
+                           EqualsImpl(a.FalseExp, b.FalseExp);
+                },
+                obj =>
+                {
+                    var self = (ConditionalExpression)obj;
+                    return GetHashCodeImpl(self.Condition) ^
+                           GetHashCodeImpl(self.ThenExp) * 87 ^
+                           GetHashCodeImpl(self.FalseExp) * 33;
+                });
+
             Add(typeof(Constant),
                 (ea, eb) =>
                 {
