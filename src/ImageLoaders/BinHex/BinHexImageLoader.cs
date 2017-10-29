@@ -110,12 +110,14 @@ namespace Reko.ImageLoaders.BinHex
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var entryPoints = new List<ImageSymbol>();
+            var symbols = new SortedList<Address, ImageSymbol>();
+
             if (rsrcFork != null)
             {
                 rsrcFork.Dump();
-                rsrcFork.AddResourcesToImageMap(addrLoad, mem, segmentMap, entryPoints);
+                rsrcFork.AddResourcesToImageMap(addrLoad, mem, segmentMap, entryPoints, symbols);
             }
-            return new RelocationResults(entryPoints, new SortedList<Address, ImageSymbol>());
+            return new RelocationResults(entryPoints, symbols);
         }
 
         public BinHexHeader LoadBinHexHeader(IEnumerator<byte> stm)
