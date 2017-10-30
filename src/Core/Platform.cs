@@ -142,6 +142,16 @@ namespace Reko.Core
         ProcedureCharacteristics LookupCharacteristicsByName(string procName);
         Address MakeAddressFromConstant(Constant c);
         Address MakeAddressFromLinear(ulong uAddr);
+
+        /// <summary>
+        /// Given an indirect call, attempt to resolve it into an address.
+        /// </summary>
+        /// <param name="instr"></param>
+        /// <returns>null if the call couldn't be resolved, or an Address to
+        /// what must be a procedure if the call could be resolved.
+        /// </returns>
+        Address ResolveIndirectCall(RtlCall instr);
+
         bool TryParseAddress(string sAddress, out Address addr);
         Dictionary<string, object> SaveUserOptions();
         ProcedureBase_v1 SignatureFromName(string importName);
@@ -447,6 +457,19 @@ namespace Reko.Core
                 return new ProcedureConstant(PointerType, ep);
             else
                 return null;
+        }
+
+
+        /// <summary>
+        /// Given an indirect call, attempt to resolve it into an address.
+        /// </summary>
+        /// <param name="instr"></param>
+        /// <returns>null if the call couldn't be resolved, or an Address to
+        /// what must be a procedure if the call could be resolved.
+        /// </returns>
+        public virtual Address ResolveIndirectCall(RtlCall instr)
+        {
+            return null;
         }
 
         public virtual ProcedureCharacteristics LookupCharacteristicsByName(string procName)

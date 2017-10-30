@@ -312,7 +312,7 @@ namespace Reko.Environments.MacOS
                     var segment = segmentMap.AddSegment(new ImageSegment(
                         ResourceDescriptiveName(type, rsrc),
                         memSeg,
-                        type.Name == "CODE" ? AccessMode.ReadExecute : AccessMode.Read));
+                        AccessMode.Read));
                     if (type.Name == "CODE")
                     {
                         if (rsrc.ResourceID == 0)
@@ -362,9 +362,7 @@ namespace Reko.Environments.MacOS
                 int iSeg = (ushort)entry.Instruction;
                 var targetSeg = codeSegs[iSeg];
                 var addrDst = targetSeg.Address + entry.RoutineOffsetFromSegmentStart;
-                var name = string.Format("__jumptable_entry_{0}", i);
-                symbols.Add(addr + w.Position, new ImageSymbol(addr + w.Position, name, PrimitiveType.UInt16) { Type = SymbolType.Procedure, Size = 6 });
-                symbols.Add(addrDst, new ImageSymbol(addrDst) { Type = SymbolType.Procedure });
+                symbols[addrDst] =  new ImageSymbol(addrDst) { Type = SymbolType.Procedure };
                 w.WriteBeUInt16(0x4EF9);            // jmp (xxxxxxxxx).L
                 w.WriteBeUInt32(addrDst.ToUInt32());
                 ++i;

@@ -499,7 +499,7 @@ namespace Reko.Scanning
             var site = OnBeforeCall(stackReg, call.ReturnAddressSize);
             FunctionType sig;
             ProcedureCharacteristics chr = null;
-            Address addr = call.Target as Address;
+            Address addr = CallTargetAsAddress(call);
             if (addr != null)
             {
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
@@ -573,12 +573,22 @@ namespace Reko.Scanning
                 return !EmitSystemServiceCall(syscall);
             }
 
+
             ProcessIndirectControlTransfer(ric.Address, call);
 
             var ic = new CallInstruction(call.Target, site);
             Emit(ic);
             sig = GuessProcedureSignature(ic);
             return OnAfterCall(sig, chr);
+        }
+
+        private Address CallTargetAsAddress(RtlCall call)
+        {
+            var addr = call.Target as Address;
+            if (addr != null)
+                return addr;
+            addr = program.Platform.ResolveIndirectCall(call);
+            return addr;
         }
 
         private bool GenerateCallToOutsideProcedure(CallSite site, Address addr)

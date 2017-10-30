@@ -117,7 +117,12 @@ namespace Reko.Arch.M68k
             var src = orw.RewriteSrc(di.op1, di.Address, true);
             var mem = src as MemoryAccess;
             if (mem != null)
+            {
                 src = mem.EffectiveAddress;
+                var cSrc = src as Constant;
+                if (cSrc != null)
+                    src = Address.Ptr32(cSrc.ToUInt32());
+            }
             m.Call(src, 4);
         }
 

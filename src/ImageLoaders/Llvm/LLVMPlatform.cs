@@ -189,6 +189,11 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
+        public Address ResolveIndirectCall(RtlCall call)
+        {
+            return null;
+        }
+
         public Dictionary<string, object> SaveUserOptions()
         {
             throw new NotImplementedException();
