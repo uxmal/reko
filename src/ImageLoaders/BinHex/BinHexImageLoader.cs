@@ -66,8 +66,7 @@ namespace Reko.ImageLoaders.BinHex
                         var image = selectedFile.GetBytes();
                         this.rsrcFork = new ResourceFork(image, arch);
                         this.mem = new MemoryArea(addrLoad, image);
-                        this.segmentMap = new SegmentMap(addrLoad,
-                            new ImageSegment("", mem, AccessMode.ReadWriteExecute)); 
+                        this.segmentMap = new SegmentMap(addrLoad); 
                         return new Program(this.segmentMap, arch, platform);
                     }
                 }
@@ -76,8 +75,7 @@ namespace Reko.ImageLoaders.BinHex
             {
                 this.mem = new MemoryArea(addrLoad, rsrcFork);
                 this.rsrcFork = new ResourceFork(rsrcFork, arch);
-                this.segmentMap = new SegmentMap(addrLoad,
-                    new ImageSegment("", mem, AccessMode.ReadWriteExecute));
+                this.segmentMap = new SegmentMap(addrLoad);
                 return new Program(this.segmentMap, arch, platform);
             }
             this.mem = new MemoryArea(addrLoad, dataFork);
