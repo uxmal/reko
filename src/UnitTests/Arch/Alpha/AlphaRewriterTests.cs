@@ -100,8 +100,8 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RewriteCode("00000000");	// halt
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|__halt()");
+                "0|H--|00100000(4): 1 instructions",
+                "1|H--|__halt()");
         }
 
         [Test]

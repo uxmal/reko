@@ -38,7 +38,9 @@ namespace Reko.Arch.Alpha
             {
                 Terminates = true,
             };
-            m.SideEffect(host.PseudoProcedure("__halt", c, VoidType.Instance));
+            m.SideEffect(
+                host.PseudoProcedure("__halt", c, VoidType.Instance), 
+                RtlClass.Terminates);
         }
     }
 }
