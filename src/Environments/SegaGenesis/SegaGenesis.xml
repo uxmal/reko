@@ -14,10 +14,11 @@
 -->
 <memory xmlns="http://schemata.jklnet.org/Reko/v4">
 
+  <!-- //$TODO: Enabling this is causing a failure in the regression suite. 
   <segment name=".text" addr="0" size="400000" attr="rx" reserveOnly="true">
     <description> Cartridge Address Space</description>
   </segment>
-
+-->
   <segment name="reserved_1" addr="400000" size="400000">
     <description>Reserved - used by Sega CD (Backup RAM) and 32x</description>
   </segment>
