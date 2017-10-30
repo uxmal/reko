@@ -52,7 +52,7 @@ namespace Reko.ImageLoaders.BinHex
 
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("m68k");
-            var platform = cfgSvc.GetEnvironment("macOs").Load(Services, arch);
+            var platform = (MacOSClassic) cfgSvc.GetEnvironment("macOs").Load(Services, arch);
             if (hdr.FileType == "PACT")
             {
                 Cpt.CompactProArchive archive = new Cpt.CompactProArchive();
@@ -64,7 +64,7 @@ namespace Reko.ImageLoaders.BinHex
                     if (selectedFile != null)
                     {
                         var image = selectedFile.GetBytes();
-                        this.rsrcFork = new ResourceFork(image, arch);
+                        this.rsrcFork = new ResourceFork(platform, image);
                         this.mem = new MemoryArea(addrLoad, image);
                         this.segmentMap = new SegmentMap(addrLoad); 
                         return new Program(this.segmentMap, arch, platform);
@@ -74,7 +74,7 @@ namespace Reko.ImageLoaders.BinHex
             if (hdr.FileType == "MPST")
             {
                 this.mem = new MemoryArea(addrLoad, rsrcFork);
-                this.rsrcFork = new ResourceFork(rsrcFork, arch);
+                this.rsrcFork = new ResourceFork(platform, rsrcFork);
                 this.segmentMap = new SegmentMap(addrLoad);
                 return new Program(this.segmentMap, arch, platform);
             }

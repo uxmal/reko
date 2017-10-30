@@ -24,6 +24,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Environments.MacOS
@@ -36,6 +37,7 @@ namespace Reko.Environments.MacOS
     public class ResourceFork
     {
         private byte[]  image;
+        private MacOSClassic platform;
         private IProcessorArchitecture arch;
         private ResourceTypeCollection rsrcTypes;
 
@@ -44,11 +46,11 @@ namespace Reko.Environments.MacOS
         uint dataSize;
         uint mapSize;
 
-
-        public ResourceFork(byte[] bytes, IProcessorArchitecture arch)
+        public ResourceFork(MacOSClassic platform, byte[] bytes)
         {
             this.image = bytes;
-            this.arch = arch;
+            this.platform = platform;
+            this.arch = platform.Architecture;
 
             rsrcDataOff = MemoryArea.ReadBeUInt32(bytes, 0);
             rsrcMapOff = MemoryArea.ReadBeUInt32(bytes, 4);
@@ -65,24 +67,15 @@ namespace Reko.Environments.MacOS
 
         public class ResourceType
         {
-            private string name;
-            private ReferenceCollection references;
-
             public ResourceType(byte[] bytes, string name, uint offset, uint nameListOffset, int crsrc)
             {
-                references = new ReferenceCollection(bytes, offset, nameListOffset, crsrc);
-                this.name = name;
+                this.References = new ReferenceCollection(bytes, offset, nameListOffset, crsrc);
+                this.Name = name;
             }
 
-            public string Name
-            {
-                get { return name; }
-            }
+            public string Name { get; }
 
-            public ReferenceCollection References
-            {
-                get { return references; }
-            }
+            public ReferenceCollection References { get; }
         }
 
         public class ResourceReference
@@ -297,6 +290,8 @@ namespace Reko.Environments.MacOS
             List<ImageSymbol> entryPoints,
             SortedList<Address, ImageSymbol> symbols)
         {
+            JumpTable jt = null;
+            var codeSegs = new Dictionary<int, ImageSegment>();
             foreach (ResourceType type in ResourceTypes)
             {
                 foreach (ResourceReference rsrc in type.References)
@@ -322,15 +317,59 @@ namespace Reko.Environments.MacOS
                     {
                         if (rsrc.ResourceID == 0)
                         {
-                            ProcessJumpTable(memSeg, symbols);
+                            jt = ProcessJumpTable(memSeg, symbols);
                         }
                         else
                         {
+                            codeSegs.Add(rsrc.ResourceID, segment);
                             entryPoints.Add(new ImageSymbol(addrSegment + 4));
                         }
                     }
                 }
             }
+
+            if (jt != null)
+            {
+                // Find an address beyond all known segments.
+                var addr = segmentMap.Segments.Values.Max(s => s.Address + s.Size).Align(0x10);
+                var a5world = LoadA5World(jt, addr, codeSegs, symbols);
+                platform.A5World = a5world;
+                platform.A5Offset = jt.BelowA5Size;
+                segmentMap.AddSegment(a5world);
+            }
+        }
+
+        /// <summary>
+        /// Builds the MacOS A5World, based on the contents of the jump table in CODE#0.
+        /// </summary>
+        /// <param name="jt"></param>
+        /// <param name="addr"></param>
+        /// <param name="codeSegs"></param>
+        /// <returns></returns>
+        public ImageSegment LoadA5World(
+            JumpTable jt, 
+            Address addr, 
+            Dictionary<int, ImageSegment> codeSegs,
+            SortedList<Address, ImageSymbol> symbols)
+        {
+            var size = jt.BelowA5Size + jt.AboveA5Size;
+            var mem = new MemoryArea(addr, new byte[size]);
+            var w = new BeImageWriter(mem, jt.BelowA5Size + jt.JumpTableOffset);
+            int i = 0;
+            foreach (var entry in jt.Entries)
+            {
+                w.WriteBeUInt16(entry.RoutineOffsetFromSegmentStart);
+                int iSeg = (ushort)entry.Instruction;
+                var targetSeg = codeSegs[iSeg];
+                var addrDst = targetSeg.Address + entry.RoutineOffsetFromSegmentStart;
+                var name = string.Format("__jumptable_entry_{0}", i);
+                symbols.Add(addr + w.Position, new ImageSymbol(addr + w.Position, name, PrimitiveType.UInt16) { Type = SymbolType.Code, Size = 6 });
+                symbols.Add(addrDst, new ImageSymbol(addrDst) { Type = SymbolType.Procedure });
+                w.WriteBeUInt16(0x4EF9);            // jmp (xxxxxxxxx).L
+                w.WriteBeUInt32(addrDst.ToUInt32());
+                ++i;
+            }
+            return new ImageSegment("A5World", mem, AccessMode.ReadWriteExecute);
         }
 
         public class JumpTable
@@ -368,12 +407,10 @@ namespace Reko.Environments.MacOS
             {
                 JumpTableEntry jte = new JumpTableEntry();
                 var addr = ir.Address;
-                var name = string.Format("__jumptable_entry_{0}", j.Entries.Count);
                 jte.RoutineOffsetFromSegmentStart = ir.ReadBeUInt16();
                 jte.Instruction = ir.ReadBeUInt32();
                 jte.LoadSegTrapNumber = ir.ReadBeUInt16();
                 j.Entries.Add(jte);
-                symbols.Add(addr, new ImageSymbol(addr, name, PrimitiveType.UInt16) {  Type = SymbolType.Data, Size = 2 });
                 Debug.Print("{0}", jte);
                 size -= 8;
             }

@@ -86,6 +86,9 @@ namespace Reko.Environments.MacOS
             get { return encoding; }
         }
 
+        public ImageSegment A5World { get; internal set; }
+        public uint A5Offset { get; internal set; }
+
         public override int GetByteSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)
