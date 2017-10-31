@@ -112,6 +112,11 @@ namespace Reko.UnitTests.Scanning
             return new FunctionType(retReg, argIds.ToArray());
         }
 
+        private void Given_Segment(string segName, uint addr, int size, AccessMode mode)
+        {
+            program.SegmentMap.AddSegment(new ImageSegment(segName, new MemoryArea(Address.Ptr32(addr), new byte[size]), mode));
+        }
+
         private bool StashArg(ref ProcessorState state, ProcessorState value)
         {
             state = value;
@@ -817,6 +822,7 @@ testProc_exit:
                 m.Return(0, 0);
             });
 
+            Given_Segment(".text2", 0x00123000, 0x500, AccessMode.ReadExecute);
             scanner.Stub(s => s.FindContainingBlock(addrStart)).IgnoreArguments().Return(block);
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             arch.Stub(a => a.MakeAddressFromConstant(
@@ -836,7 +842,11 @@ testProc_exit:
                 Arg<Block>.Is.Same(block),
                 Arg<Address>.Is.Equal(addrStart + 4)));
             scanner.Stub(f => f.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
-            scanner.Expect(s => s.Warn(null, null, null)).IgnoreArguments();
+            scanner.Expect(s => s.ScanProcedure(
+                Arg<Address>.Is.Equal(Address.Ptr32(0x00123400)),
+                Arg<string>.Is.Null,
+                Arg<ProcessorState>.Is.NotNull)).
+                Return(new ExternalProcedure("fn00123400", new FunctionType()));
             program.Procedures.Add(addrStart + 4, Procedure.Create(addrStart + 4, new Frame(PrimitiveType.Pointer32)));
             mr.ReplayAll();
 

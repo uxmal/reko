@@ -242,7 +242,8 @@ namespace Reko.Scanning
         /// <returns></returns>
         public bool VisitAssignment(RtlAssignment a)
         {
-            SetValue(a.Dst, GetValue(a.Src));
+            var val = GetValue(a.Src);
+            SetValue(a.Dst, val);
             var idDst = a.Dst as Identifier;
             var inst = (idDst != null)
                 ? new Assignment(idDst, a.Src)
@@ -590,19 +591,22 @@ namespace Reko.Scanning
             {
                 if (c.IsValid)
                 {
-                    callTarget = arch.MakeAddressFromConstant(c);
+                    return arch.MakeAddressFromConstant(c);
                 }
                 else
                 {
-                    callTarget = call.Target;
+                    return null;
                 }
             }
-            var addr = call.Target as Address;
-            if (addr == null)
+            else
             {
-                addr = program.Platform.ResolveIndirectCall(call);
+                var addr = call.Target as Address;
+                if (addr == null)
+                {
+                    addr = program.Platform.ResolveIndirectCall(call);
+                }
+                return addr;
             }
-            return addr;
         }
 
         private bool GenerateCallToOutsideProcedure(CallSite site, Address addr)
