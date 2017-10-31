@@ -182,6 +182,7 @@ namespace Reko.ImageLoaders.Elf
                 // chosen by at least the NetBSD folks.
                 a.StackRegister = a.GetRegister("r15");
                 return a;
+            case ElfMachine.EM_ALPHA: arch = "alpha"; break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
@@ -681,6 +682,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_X86_64: return new x86_64Relocator(this);
             case ElfMachine.EM_PPC64: return new PpcRelocator64(this);
             case ElfMachine.EM_RISCV: return new RiscVRelocator64(this);
+            case ElfMachine.EM_ALPHA: return new AlphaRelocator(this);
             }
             return base.CreateRelocator(machine);
         }

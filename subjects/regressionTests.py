@@ -20,16 +20,42 @@ parser.add_option("-o", "--check-output", dest="check_output",
                   help="check output files", default=False)
 (options, dirs) = parser.parse_args()
 if len(dirs) == 0:
-    dirs = [ "." ]
+    dirs = ["."]
 (options, args) = parser.parse_args()
 
 reko_cmdline_dir = os.path.abspath("../src/Drivers/CmdLine")
 
 start_dir = os.getcwd()
 
-reko_cmdline = os.path.join(
-    reko_cmdline_dir, "bin", options.configuration, "decompile.exe")
+reko_cmdline = os.path.join(reko_cmdline_dir, "bin", options.configuration, "decompile.exe")
 output_extensions = [".asm", ".c", ".dis", ".h"]
+
+# Split a command line, but allow quotation marks to
+# delimit file names containing spaces.
+def cmdline_split(s):
+    a = []
+    inquotes = False
+    sub = ""
+    for c in s:
+        if c.isspace():
+            if not inquotes:
+                if len(sub):
+                    a.append(sub)
+                    sub = ""
+            else:
+                sub += c
+        elif c == '"':
+            if not inquotes:
+                inquotes = True
+            else:
+                inquotes = False
+                a.append(sub)
+                sub = ""
+        else:
+            sub += c
+    if len(sub):
+        a.append(sub)
+    return a
 
 # Remove output files
 def clear_dir(dir_name, files):
@@ -61,7 +87,7 @@ def execute_in_dir(fn, dir, fname):
     os.chdir(oldDir)
 
 def execute_reko_project(dir, pname):
-    execute_command([ reko_cmdline, pname ], pname)
+    execute_command([reko_cmdline, pname], pname)
 
 # Find all commands to execute.
 def execute_command_file(dir, scr_name):
@@ -71,7 +97,7 @@ def execute_command_file(dir, scr_name):
     if (lines is None):
         return
     for line in lines:
-        exe_and_args = line.split()
+        exe_and_args = cmdline_split(line)
         if len(exe_and_args) <= 1:
             continue
         exe_and_args[0] = reko_cmdline
@@ -84,9 +110,8 @@ def execute_command(exe_and_args, pname):
     
     if sys.platform == "linux2":
         exe_and_args.insert(0, "mono")
-    print("=== "+ rel_pname)
-    proc = subprocess.Popen(
-        exe_and_args,
+    print("=== " + rel_pname)
+    proc = subprocess.Popen(exe_and_args,
         stdout=subprocess.PIPE,
         universal_newlines=True)
     out = proc.communicate()[0]
@@ -95,8 +120,7 @@ def execute_command(exe_and_args, pname):
         print(out)
 
 def check_output_files():
-    proc = subprocess.Popen(
-        ["git", "status", "."],
+    proc = subprocess.Popen(["git", "status", "."],
         stdout=subprocess.PIPE,
         universal_newlines=True)
     out = proc.communicate()[0]

@@ -499,20 +499,7 @@ namespace Reko.Scanning
             var site = OnBeforeCall(stackReg, call.ReturnAddressSize);
             FunctionType sig;
             ProcedureCharacteristics chr = null;
-            var callTarget = call.Target.Accept(eval);
-            Constant c;
-            if (callTarget.As(out c))
-            {
-                if (c.IsValid)
-                {
-                    callTarget = arch.MakeAddressFromConstant(c);
-                }
-                else
-                {
-                    callTarget = call.Target;
-                }
-            }
-            Address addr = callTarget as Address;
+            Address addr = CallTargetAsAddress(call);
             if (addr != null && program.SegmentMap.IsValidAddress(addr))
             {
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
@@ -541,7 +528,7 @@ namespace Reko.Scanning
                 }
                 return OnAfterCall(sig, chr);
             }
-            callTarget = call.Target;
+            var callTarget = call.Target;
             var procCallee = callTarget as ProcedureConstant;
             if (procCallee != null)
             {
@@ -586,12 +573,36 @@ namespace Reko.Scanning
                 return !EmitSystemServiceCall(syscall);
             }
 
+
             ProcessIndirectControlTransfer(ric.Address, call);
 
             var ic = new CallInstruction(callTarget, site);
             Emit(ic);
             sig = GuessProcedureSignature(ic);
             return OnAfterCall(sig, chr);
+        }
+
+        private Address CallTargetAsAddress(RtlCall call)
+        {
+            var callTarget = call.Target.Accept(eval);
+            Constant c;
+            if (callTarget.As(out c))
+            {
+                if (c.IsValid)
+                {
+                    callTarget = arch.MakeAddressFromConstant(c);
+                }
+                else
+                {
+                    callTarget = call.Target;
+                }
+            }
+            var addr = call.Target as Address;
+            if (addr == null)
+            {
+                addr = program.Platform.ResolveIndirectCall(call);
+            }
+            return addr;
         }
 
         private bool GenerateCallToOutsideProcedure(CallSite site, Address addr)

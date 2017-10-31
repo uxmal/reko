@@ -20,18 +20,24 @@
 
 using Reko.Arch.M68k;
 using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Environments.MacOS
 {
 // http://developer.apple.com/legacy/mac/library/documentation/mac/MoreToolbox/MoreToolbox-99.html
 
+    /// <summary>
+    /// This class knows how to unpack a resource fork into its constituent resources.
+    /// </summary>
     public class ResourceFork
     {
         private byte[]  image;
+        private MacOSClassic platform;
         private IProcessorArchitecture arch;
         private ResourceTypeCollection rsrcTypes;
 
@@ -40,11 +46,11 @@ namespace Reko.Environments.MacOS
         uint dataSize;
         uint mapSize;
 
-
-        public ResourceFork(byte[] bytes, IProcessorArchitecture arch)
+        public ResourceFork(MacOSClassic platform, byte[] bytes)
         {
             this.image = bytes;
-            this.arch = arch;
+            this.platform = platform;
+            this.arch = platform.Architecture;
 
             rsrcDataOff = MemoryArea.ReadBeUInt32(bytes, 0);
             rsrcMapOff = MemoryArea.ReadBeUInt32(bytes, 4);
@@ -61,24 +67,15 @@ namespace Reko.Environments.MacOS
 
         public class ResourceType
         {
-            private string name;
-            private ReferenceCollection references;
-
             public ResourceType(byte[] bytes, string name, uint offset, uint nameListOffset, int crsrc)
             {
-                references = new ReferenceCollection(bytes, offset, nameListOffset, crsrc);
-                this.name = name;
+                this.References = new ReferenceCollection(bytes, offset, nameListOffset, crsrc);
+                this.Name = name;
             }
 
-            public string Name
-            {
-                get { return name; }
-            }
+            public string Name { get; }
 
-            public ReferenceCollection References
-            {
-                get { return references; }
-            }
+            public ReferenceCollection References { get; }
         }
 
         public class ResourceReference
@@ -286,31 +283,91 @@ namespace Reko.Environments.MacOS
             }
         }
 
-        public void AddResourcesToImageMap(Address addrLoad, MemoryArea mem, SegmentMap segmentMap, List<ImageSymbol> entryPoints)
+        public void AddResourcesToImageMap(
+            Address addrLoad, 
+            MemoryArea mem,
+            SegmentMap segmentMap, 
+            List<ImageSymbol> entryPoints,
+            SortedList<Address, ImageSymbol> symbols)
         {
+            JumpTable jt = null;
+            var codeSegs = new Dictionary<int, ImageSegment>();
             foreach (ResourceType type in ResourceTypes)
             {
                 foreach (ResourceReference rsrc in type.References)
                 {
-                    Address addrSegment = addrLoad + rsrc.DataOffset + rsrcDataOff;
+                    uint uSegOffset = rsrc.DataOffset + rsrcDataOff;
+                    int segmentSize = mem.ReadBeInt32(uSegOffset);
+
+                    // Skip the size longword at the beginning of the segment, and an extra 4 
+                    // if it is a code segement other than CODE#0.
+                    int bytesToSkip = 4;
+                    if (type.Name == "CODE" && rsrc.ResourceID != 0)
+                        bytesToSkip += 4;
+                    var abSegment = new byte[segmentSize];
+                    Array.Copy(mem.Bytes, uSegOffset + bytesToSkip, abSegment, 0, segmentSize);
+
+                    Address addrSegment = addrLoad + uSegOffset + bytesToSkip;    //$TODO pad to 16-byte boundary?
+                    var memSeg = new MemoryArea(addrSegment, abSegment);
                     var segment = segmentMap.AddSegment(new ImageSegment(
                         ResourceDescriptiveName(type, rsrc),
-                        addrSegment,
-                        mem,
+                        memSeg,
                         AccessMode.Read));
                     if (type.Name == "CODE")
                     {
                         if (rsrc.ResourceID == 0)
                         {
-                            ProcessJumpTable(rsrcDataOff + rsrc.DataOffset + 4);
+                            jt = ProcessJumpTable(memSeg, symbols);
                         }
                         else
                         {
+                            codeSegs.Add(rsrc.ResourceID, segment);
                             entryPoints.Add(new ImageSymbol(addrSegment + 4));
                         }
                     }
                 }
             }
+
+            if (jt != null)
+            {
+                // Find an address beyond all known segments.
+                var addr = segmentMap.Segments.Values.Max(s => s.Address + s.Size).Align(0x10);
+                var a5world = LoadA5World(jt, addr, codeSegs, symbols);
+                platform.A5World = a5world;
+                platform.A5Offset = jt.BelowA5Size;
+                segmentMap.AddSegment(a5world);
+            }
+        }
+
+        /// <summary>
+        /// Builds the MacOS A5World, based on the contents of the jump table in CODE#0.
+        /// </summary>
+        /// <param name="jt"></param>
+        /// <param name="addr"></param>
+        /// <param name="codeSegs"></param>
+        /// <returns></returns>
+        public ImageSegment LoadA5World(
+            JumpTable jt, 
+            Address addr, 
+            Dictionary<int, ImageSegment> codeSegs,
+            SortedList<Address, ImageSymbol> symbols)
+        {
+            var size = jt.BelowA5Size + jt.AboveA5Size;
+            var mem = new MemoryArea(addr, new byte[size]);
+            var w = new BeImageWriter(mem, jt.BelowA5Size + jt.JumpTableOffset);
+            int i = 0;
+            foreach (var entry in jt.Entries)
+            {
+                w.WriteBeUInt16(entry.RoutineOffsetFromSegmentStart);
+                int iSeg = (ushort)entry.Instruction;
+                var targetSeg = codeSegs[iSeg];
+                var addrDst = targetSeg.Address + entry.RoutineOffsetFromSegmentStart;
+                symbols[addrDst] =  new ImageSymbol(addrDst) { Type = SymbolType.Procedure };
+                w.WriteBeUInt16(0x4EF9);            // jmp (xxxxxxxxx).L
+                w.WriteBeUInt32(addrDst.ToUInt32());
+                ++i;
+            }
+            return new ImageSegment("A5World", mem, AccessMode.ReadWriteExecute);
         }
 
         public class JumpTable
@@ -319,6 +376,8 @@ namespace Reko.Environments.MacOS
             public uint BelowA5Size;
             public uint JumpTableSize;
             public uint JumpTableOffset;
+
+            public List<JumpTableEntry> Entries = new List<JumpTableEntry>();
         }
 
         public class JumpTableEntry
@@ -326,12 +385,17 @@ namespace Reko.Environments.MacOS
             public ushort RoutineOffsetFromSegmentStart;
             public ulong Instruction;
             public ushort LoadSegTrapNumber;
+
+            public override string ToString()
+            {
+                return string.Format("Jump table entry: {0:X4} {1:X4} {2:X2}", RoutineOffsetFromSegmentStart, Instruction, LoadSegTrapNumber);
+            }
         }
 
-        private void ProcessJumpTable(uint jtOffset)
+        private JumpTable ProcessJumpTable(MemoryArea memJt, IDictionary<Address, ImageSymbol> symbols)
         {
             var j = new JumpTable();
-            EndianImageReader ir = new BeImageReader(image, jtOffset);
+            var ir = memJt.CreateBeReader(0);
             j.AboveA5Size = ir.ReadBeUInt32();
             j.BelowA5Size = ir.ReadBeUInt32();
             j.JumpTableSize = ir.ReadBeUInt32();
@@ -340,12 +404,15 @@ namespace Reko.Environments.MacOS
             while (size > 0)
             {
                 JumpTableEntry jte = new JumpTableEntry();
+                var addr = ir.Address;
                 jte.RoutineOffsetFromSegmentStart = ir.ReadBeUInt16();
                 jte.Instruction = ir.ReadBeUInt32();
                 jte.LoadSegTrapNumber = ir.ReadBeUInt16();
-                Debug.WriteLine(string.Format("Jump table entry: {0:x2} {1:X4} {2:X2}", jte.RoutineOffsetFromSegmentStart, jte.Instruction, jte.LoadSegTrapNumber));
+                j.Entries.Add(jte);
+                Debug.Print("{0}", jte);
                 size -= 8;
             }
+            return j;
         }
 
         private string ResourceDescriptiveName(ResourceType type, ResourceReference rsrc)

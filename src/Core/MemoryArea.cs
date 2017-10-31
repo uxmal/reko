@@ -165,6 +165,11 @@ namespace Reko.Core
             return ReadBe(abImage, imageOffset, type);
         }
 
+        public bool TryReadBeUInt32(long offset, out uint uAddr)
+        {
+            return TryReadBeUInt32(Bytes, offset, out uAddr);
+        }
+
         public bool TryReadLe(long imageOffset, PrimitiveType type, out Constant c)
         {
             c = Relocations[(uint)imageOffset];
