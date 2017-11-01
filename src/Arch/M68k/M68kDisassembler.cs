@@ -57,18 +57,17 @@ namespace Reko.Arch.M68k
 
         public override M68kInstruction DisassembleInstruction()
         {
-            if (!rdr.IsValid)
-                return null;
             var addr = rdr.Address;
+            if (!rdr.TryReadBeUInt16(out instruction))
+                return null;
             var offset = rdr.Offset;
+            OpRec handler = g_instruction_table[instruction];
             try
             {
                 instr = new M68kInstruction { Address = addr };
-                instruction = rdr.ReadBeUInt16();
-                g_opcode_type = 0;
-
-                OpRec handler = g_instruction_table[instruction];
                 instr = handler.opcode_handler(this);
+                instr.Address = addr;
+                instr.Length = (int)(rdr.Address - addr);
             }
             catch
             {
@@ -80,10 +79,7 @@ namespace Reko.Arch.M68k
                 instr.Address = addr;
                 instr.Length = 2;
                 rdr.Offset = offset + 2;
-                return instr;
             }
-            instr.Address = addr;
-            instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
 
@@ -189,12 +185,6 @@ namespace Reko.Arch.M68k
         private static bool EXT_OUTER_DISPLACEMENT_LONG(uint A) { return (((A) & 3) == 3 && ((A) & 0x47) < 0x44); }
 
 
-        // Opcode flags 
-        private uint COMBINE_OPCODE_FLAGS(uint x) { return ((x) | g_opcode_type | DASMFLAG_SUPPORTED); }
-        private const uint DASMFLAG_SUPPORTED = 0;
-        private const uint DASMFLAG_STEP_OVER = 1;
-        private const uint DASMFLAG_STEP_OUT = 2;
-
         /// <summary>
         /// OpRecs provide the knowledge for how to decode a M68k instruction.
         /// </summary>
@@ -299,7 +289,6 @@ namespace Reko.Arch.M68k
         string g_dasm_str;              //string to hold disassembly: OBSOLETE
         internal ushort instruction;    // 16-bit instruction
         uint g_cpu_type = 0;
-        uint g_opcode_type;
 
         // 'Q'uick dasm.instructions contain patterns that map to integers.
         static uint[] g_3bit_qdata_table = new uint[8] 

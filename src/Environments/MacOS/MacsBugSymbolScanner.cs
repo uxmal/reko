@@ -135,7 +135,7 @@ namespace Reko.Environments.MacOS
             ushort us;
             var addrStart = rdr.Address;
             sym = null;
-            for (; ;)
+            for (;;)
             {
                 if (!rdr.TryReadBeUInt16(out us))
                     return false;
