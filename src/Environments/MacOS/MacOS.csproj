@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="MacOSClassic.cs" />
     <Compile Include="MacOsRomanEncoding.cs" />
+    <Compile Include="MacsBugSymbolScanner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceFork.cs" />
   </ItemGroup>
