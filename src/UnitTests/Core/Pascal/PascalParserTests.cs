@@ -34,8 +34,9 @@ namespace Reko.UnitTests.Core.Pascal
     [TestFixture]
     public class PascalParserTests
     {
+
         [Test]
-        public void PParser_REgress()
+        public void PParser_Regress()
         {
             var q = new Queue<Token>();
             try
@@ -44,14 +45,16 @@ namespace Reko.UnitTests.Core.Pascal
                 using (var rdr = new StreamReader(@"C:\dev\uxmal\reko\master\src\Environments\MacOS\Mac MPW Interfaces 1991 PASCAL.pas"))
                 {
                     var lexer = new PascalLexer(rdr);
-                    Token tok;
-                    do
-                    {
-                        tok = lexer.Read();
-                        q.Enqueue(tok);
-                        if (q.Count > 100)
-                            q.Dequeue();
-                    } while (tok.Type != TokenType.EOF);
+                    var parser = new PascalParser(lexer);
+                    parser.Parse();
+                    //Token tok;
+                    //do
+                    //{
+                    //    tok = lexer.Read();
+                    //    q.Enqueue(tok);
+                    //    if (q.Count > 100)
+                    //        q.Dequeue();
+                    //} while (tok.Type != TokenType.EOF);
                 }
             }
             catch (Exception ex)
@@ -60,7 +63,7 @@ namespace Reko.UnitTests.Core.Pascal
                 {
                     Debug.WriteLine(tok);
                 }
-                throw ex;
+                throw;
             }
             foreach (var tok in q)
             {

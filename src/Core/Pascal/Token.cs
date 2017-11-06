@@ -58,9 +58,11 @@ namespace Reko.Core.Pascal
         RBracket,
         RParen,
         Semi,
+        String,
 
         Array,
         Byte,
+        Case,
         Const,
         End,
         Function,
@@ -72,8 +74,8 @@ namespace Reko.Core.Pascal
         Packed,
         Procedure,
         Record,
+        Type,
         Unit,
         Var,
-        String,
     }
 }

@@ -33,8 +33,9 @@ namespace Reko.Core.Pascal
         {
             { "array",      TokenType.Array},
             { "byte",       TokenType.Byte},
-            { "const",      TokenType.Const},
-            { "end",        TokenType.End},
+            { "case",       TokenType.Case },
+            { "const",      TokenType.Const },
+            { "end",        TokenType.End },
             { "function",   TokenType.Function},
             { "interface",  TokenType.Interface},
             { "inline",     TokenType.Inline},
@@ -44,6 +45,7 @@ namespace Reko.Core.Pascal
             { "packed",     TokenType.Packed},
             { "procedure",  TokenType.Procedure},
             { "record",     TokenType.Record},
+            { "type",       TokenType.Type },
             { "unit",       TokenType.Unit},
             { "var",        TokenType.Var},
         };
