@@ -32,7 +32,6 @@ namespace Reko.Core.Pascal
         private static Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType>(StringComparer.OrdinalIgnoreCase)
         {
             { "array",      TokenType.Array},
-            { "byte",       TokenType.Byte},
             { "case",       TokenType.Case },
             { "const",      TokenType.Const },
             { "end",        TokenType.End },
@@ -45,8 +44,11 @@ namespace Reko.Core.Pascal
             { "packed",     TokenType.Packed},
             { "procedure",  TokenType.Procedure},
             { "record",     TokenType.Record},
+            { "set",        TokenType.Set },
+            { "string",     TokenType.String },
             { "type",       TokenType.Type },
             { "unit",       TokenType.Unit},
+            { "univ",       TokenType.Univ },
             { "var",        TokenType.Var},
         };
 
@@ -55,11 +57,13 @@ namespace Reko.Core.Pascal
         private int nestedComments;
         private int sign;
         private int lineNumber;
+        private State st;
 
         public PascalLexer(TextReader rdr)
         {
             this.rdr = rdr;
             this.lineNumber = 1;
+            this.st = State.Init;
         }
 
         public Token Read()
@@ -91,18 +95,19 @@ namespace Reko.Core.Pascal
             Dot,
             Minus,
             Number,
+            NumberDot,
             Cr,
             HexNumber,
             String,
             LParen,
             StarComment,
             CommentStar,
+            Real,
         }
 
         private Token Get()
         {
             var sb = new StringBuilder();
-            var st = State.Init;
             for (;;)
             {
                 int c = rdr.Peek();
@@ -240,7 +245,40 @@ namespace Reko.Core.Pascal
                         sb.Append(ch);
                         break;
                     }
+                    if (ch == '.')
+                    {
+                        rdr.Read();
+                        sb.Append(ch);
+                        st = State.NumberDot;
+                        break;
+                    }
                     return Tok(TokenType.Number, sign * Int64.Parse(sb.ToString()));
+                case State.NumberDot:
+                    if (c < 0)
+                        return Tok(TokenType.RealLiteral, sign * double.Parse(sb.ToString()));
+                    if ('0' <= ch && ch <= '9')
+                    {
+                        rdr.Read();
+                        sb.Append(ch);
+                        st = State.Real;
+                        break;
+                    }
+                    if (ch == '.')
+                    {
+                        sb.Remove(sb.Length - 1, 1);
+                        return Tok(TokenType.Number, State.Dot, Int64.Parse(sb.ToString()));
+                    }
+                    return Tok(TokenType.RealLiteral, sign * double.Parse(sb.ToString()));
+                case State.Real:
+                    if (c < 0)
+                        return Tok(TokenType.RealLiteral, sign * double.Parse(sb.ToString()));
+                    if ('0' <= ch && ch <= '9')
+                    {
+                        rdr.Read();
+                        sb.Append(ch);
+                        break;
+                    }
+                    return Tok(TokenType.RealLiteral, sign * double.Parse(sb.ToString()));
                 case State.HexNumber:
                     if (c < 0)
                         return Tok(TokenType.Number, Convert.ToInt64(sb.ToString(), 16));
@@ -253,11 +291,11 @@ namespace Reko.Core.Pascal
                     return Tok(TokenType.Number, Convert.ToInt64(sb.ToString(), 16));
                 case State.String:
                     if (c < 0)
-                        return Tok(TokenType.String, sb.ToString());
+                        return Tok(TokenType.StringLiteral, sb.ToString());
                     rdr.Read();
                     if (ch == '\'')
                     {
-                        return Tok(TokenType.String, sb.ToString());
+                        return Tok(TokenType.StringLiteral, sb.ToString());
                     }
                     else
                     {
@@ -274,7 +312,6 @@ namespace Reko.Core.Pascal
                         st = State.Comment;
                         break;
                     }
-                    rdr.Read();
                     return Tok(TokenType.LParen);
                 }
             }
@@ -282,6 +319,7 @@ namespace Reko.Core.Pascal
 
         private Token MaybeKeyword(string str)
         {
+            st = State.Init;
             TokenType tok;
             if (keywords.TryGetValue(str, out tok))
                 return new Token { Type = tok };
@@ -296,6 +334,13 @@ namespace Reko.Core.Pascal
 
         private Token Tok(TokenType type, object value = null)
         {
+            st = State.Init;
+            return new Token { Type = type, Value = value };
+        }
+
+        private Token Tok(TokenType type, State st, object value = null)
+        {
+            this.st = st;
             return new Token { Type = type, Value = value };
         }
 

@@ -57,11 +57,11 @@ namespace Reko.Core.Pascal
         Ptr,
         RBracket,
         RParen,
+        RealLiteral,
         Semi,
-        String,
+        StringLiteral,
 
         Array,
-        Byte,
         Case,
         Const,
         End,
@@ -74,8 +74,11 @@ namespace Reko.Core.Pascal
         Packed,
         Procedure,
         Record,
+        Set,
+        String,
         Type,
         Unit,
+        Univ,
         Var,
     }
 }
