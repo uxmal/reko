@@ -37,6 +37,11 @@ namespace Reko.UnitTests.Core.Pascal
             return new Token { Type = tt };
         }
 
+        private Token T(TokenType tt, object value)
+        {
+            return new Token { Type = tt, Value = value };
+        }
+
         private void RunTest(string src, params Token[] expectedTokens)
         {
             var lex = new PascalLexer(new StringReader(src));
@@ -61,6 +66,29 @@ namespace Reko.UnitTests.Core.Pascal
         {
             var src = " { this { is a { nested } } comment } CoNsT";
             RunTest(src, T(TokenType.Const));
+        }
+
+
+        [Test]
+        public void PLex_Number()
+        {
+            var src = "42";
+            RunTest(src, T(TokenType.Number, 42));
+        }
+    
+        [Test]
+        public void PLex_NegativeNumber()
+        {
+            var src = "-13";
+            RunTest(src, T(TokenType.Number, -13));
+        }
+
+
+        [Test]
+        public void PLex_AlternateComment()
+        {
+            var src = "(* -- alternative *)\r\nProcEdUrE";
+            RunTest(src, T(TokenType.Procedure));
         }
     }
 }

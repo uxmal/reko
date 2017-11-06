@@ -29,14 +29,51 @@ namespace Reko.Core.Pascal
     public class Token
     {
         public TokenType Type;
-        public string Value;
+        public object Value;
+
+        public override string ToString()
+        {
+            if (Value == null)
+                return string.Format("{0}", Type);
+            else
+                return string.Format("{0}:{1}", Type, Value);
+        }
     }
 
     public enum TokenType
     {
         EOF,
-        Id,
 
+        Colon,
+        Comma,
+        Dot,
+        DotDot,
+        Eq,
+        Id,
+        LBracket,
+        LParen,
+        Minus,
+        Number,
+        Ptr,
+        RBracket,
+        RParen,
+        Semi,
+
+        Array,
+        Byte,
         Const,
+        End,
+        Function,
+        Interface,
+        Inline,
+        Integer,
+        Longint,
+        Of,
+        Packed,
+        Procedure,
+        Record,
+        Unit,
+        Var,
+        String,
     }
 }

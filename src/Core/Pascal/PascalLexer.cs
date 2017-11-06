@@ -31,16 +31,33 @@ namespace Reko.Core.Pascal
     {
         private static Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType>(StringComparer.OrdinalIgnoreCase)
         {
-            { "const", TokenType.Const }
+            { "array",      TokenType.Array},
+            { "byte",       TokenType.Byte},
+            { "const",      TokenType.Const},
+            { "end",        TokenType.End},
+            { "function",   TokenType.Function},
+            { "interface",  TokenType.Interface},
+            { "inline",     TokenType.Inline},
+            { "integer",    TokenType.Integer},
+            { "longint",    TokenType.Longint},
+            { "of",         TokenType.Of},
+            { "packed",     TokenType.Packed},
+            { "procedure",  TokenType.Procedure},
+            { "record",     TokenType.Record},
+            { "unit",       TokenType.Unit},
+            { "var",        TokenType.Var},
         };
 
         private TextReader rdr;
         private Token token;
         private int nestedComments;
+        private int sign;
+        private int lineNumber;
 
         public PascalLexer(TextReader rdr)
         {
             this.rdr = rdr;
+            this.lineNumber = 1;
         }
 
         public Token Read()
@@ -69,6 +86,15 @@ namespace Reko.Core.Pascal
             Init,
             Comment,
             Identifier,
+            Dot,
+            Minus,
+            Number,
+            Cr,
+            HexNumber,
+            String,
+            LParen,
+            StarComment,
+            CommentStar,
         }
 
         private Token Get()
@@ -88,7 +114,23 @@ namespace Reko.Core.Pascal
                     {
                     case ' ':
                     case '\t':  rdr.Read(); break;
+                    case '\n': rdr.Read(); ++lineNumber; break;
+                    case '\f': rdr.Read(); ++lineNumber; break;
+                    case '\r': rdr.Read(); ++lineNumber; st = State.Cr; break;
                     case '{': rdr.Read(); ++nestedComments; st = State.Comment; break;
+                    case '.': rdr.Read(); st = State.Dot; break;
+                    case '(': rdr.Read(); st = State.LParen; break;
+                    case '-': rdr.Read(); st = State.Minus; break;
+                    case ':': rdr.Read(); return Tok(TokenType.Colon);
+                    case ',': rdr.Read(); return Tok(TokenType.Comma);
+                    case '=': rdr.Read(); return Tok(TokenType.Eq);
+                    case ';': rdr.Read(); return Tok(TokenType.Semi);
+                    case '[': rdr.Read(); return Tok(TokenType.LBracket);
+                    case '^': rdr.Read(); return Tok(TokenType.Ptr);
+                    case ']': rdr.Read(); return Tok(TokenType.RBracket);
+                    case ')': rdr.Read(); return Tok(TokenType.RParen);
+                    case '$': rdr.Read(); sb.Clear(); st = State.HexNumber; break;
+                    case '\'': rdr.Read(); sb.Clear(); st = State.String; break;
                     default:
                         if ('A' <= ch && ch <= 'Z' || 'a' <= ch && ch <= 'z' || ch == '_')
                         {
@@ -98,16 +140,37 @@ namespace Reko.Core.Pascal
                             st = State.Identifier;
                             break;
                         }
+                        if ('0' <= ch && ch <= '9')
+                        {
+                            rdr.Read();
+                            sb.Clear();
+                            sign = 1;
+                            sb.Append(ch);
+                            st = State.Number;
+                            break;
+                        }
                         Nyi(st, ch);
                         break;
                     }
+                    break;
+                case State.Cr:
+                    if (c < 0)
+                        return Tok(TokenType.EOF);
+                    if (ch == '\n')
+                    {
+                        rdr.Read();
+                    }
+                    st = State.Init;
                     break;
                 case State.Comment:
                     if (c < 0)
                         return Tok(TokenType.EOF);
                     switch (ch)
                     {
+                    case '\r':
+                    case '\n': rdr.Read();  ++lineNumber; break;
                     case '{': rdr.Read(); ++nestedComments; break;
+                    case '*': rdr.Read(); st = State.CommentStar; break;
                     case '}':
                         rdr.Read();
                         --nestedComments;
@@ -118,6 +181,21 @@ namespace Reko.Core.Pascal
                         rdr.Read();
                         break;
                     }
+                    break;
+                case State.CommentStar:
+                    if (c < 0)
+                        return Tok(TokenType.EOF);
+                    if (ch == ')')
+                    {
+                        rdr.Read();
+                        --nestedComments;
+                        if (nestedComments == 0)
+                            st = State.Init;
+                        else
+                            st = State.Comment;
+                    }
+                    else
+                        st = State.Comment;
                     break;
                 case State.Identifier:
                     if (c < 0)
@@ -133,6 +211,69 @@ namespace Reko.Core.Pascal
                         return MaybeKeyword(sb.ToString());
                     }
                     break;
+                case State.Dot:
+                    if (c < 0 || ch != '.')
+                        return Tok(TokenType.Dot);
+                    rdr.Read();
+                    return Tok(TokenType.DotDot);
+                case State.Minus:
+                    if (c < 0)
+                        return Tok(TokenType.Minus);
+                    if ('0' <= ch && ch <= '9')
+                    {
+                        rdr.Read();
+                        this.sign = -1;
+                        sb.Clear();
+                        sb.Append(ch);
+                        st = State.Number;
+                        break;
+                    }
+                    return Tok(TokenType.Minus);
+                case State.Number:
+                    if (c < 0)
+                        return Tok(TokenType.Number, sign * Int64.Parse(sb.ToString()));
+                    if ('0' <= ch && ch <= '9')
+                    {
+                        rdr.Read();
+                        sb.Append(ch);
+                        break;
+                    }
+                    return Tok(TokenType.Number, sign * Int64.Parse(sb.ToString()));
+                case State.HexNumber:
+                    if (c < 0)
+                        return Tok(TokenType.Number, Convert.ToInt64(sb.ToString(), 16));
+                    if (IsHexDigit(ch))
+                    {
+                        rdr.Read();
+                        sb.Append(ch);
+                        break;
+                    }
+                    return Tok(TokenType.Number, Convert.ToInt64(sb.ToString(), 16));
+                case State.String:
+                    if (c < 0)
+                        return Tok(TokenType.String, sb.ToString());
+                    rdr.Read();
+                    if (ch == '\'')
+                    {
+                        return Tok(TokenType.String, sb.ToString());
+                    }
+                    else
+                    {
+                        sb.Append(ch);
+                    }
+                    break;
+                case State.LParen:
+                    if (c < 0)
+                        return Tok(TokenType.LParen);
+                    if (ch == '*')
+                    {
+                        rdr.Read();
+                        ++nestedComments;
+                        st = State.Comment;
+                        break;
+                    }
+                    rdr.Read();
+                    return Tok(TokenType.LParen);
                 }
             }
         }
@@ -148,13 +289,25 @@ namespace Reko.Core.Pascal
 
         private void Nyi(State state, char ch)
         {
-            throw new NotImplementedException(string.Format("State {0}, ch: {1} (U+{2:X4})", state, ch, (uint)ch));
+            throw new NotImplementedException(string.Format("Line: {0}, State {1}, ch: {2} (U+{3:X4})", lineNumber, state, ch, (uint)ch));
         }
 
-
-        private Token Tok(TokenType type)
+        private Token Tok(TokenType type, object value = null)
         {
-            return new Token { Type = type };
+            return new Token { Type = type, Value = value };
+        }
+
+        private static bool IsHexDigit(char ch)
+        {
+            switch (ch)
+            {
+            case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8':  case '9':
+            case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': 
+            case 'a': case 'b': case 'c': case 'd': case 'e': case 'f': 
+                return true;
+            default:
+                return false;
+            }
         }
     }
 }
