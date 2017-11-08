@@ -18,7 +18,7 @@
  */
 #endregion
 
-using System;
+ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,61 +26,20 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.Pascal
 {
-    public class Token
+    public class SymbolTable
     {
-        public TokenType Type;
-        public object Value;
+        private IPlatform platform;
+        private Dictionary<string, Declaration> declarations;
 
-        public override string ToString()
+        public SymbolTable(IPlatform platform)
         {
-            if (Value == null)
-                return string.Format("{0}", Type);
-            else
-                return string.Format("{0}:{1}", Type, Value);
+            this.platform = platform;
+            this.declarations = new Dictionary<string, Declaration>(StringComparer.OrdinalIgnoreCase);
         }
-    }
 
-    public enum TokenType
-    {
-        EOF,
-
-        Colon,
-        Comma,
-        Dot,
-        DotDot,
-        Eq,
-        Id,
-        LBracket,
-        LParen,
-        Minus,
-        Number,
-        Ptr,
-        RBracket,
-        RParen,
-        RealLiteral,
-        Semi,
-        StringLiteral,
-
-        Array,
-        Case,
-        Const,
-        End,
-        False,
-        Function,
-        Interface,
-        Inline,
-        Integer,
-        Longint,
-        Of,
-        Packed,
-        Procedure,
-        Record,
-        Set,
-        String,
-        True,
-        Type,
-        Unit,
-        Univ,
-        Var,
+        public void Add(Declaration decl)
+        {
+            this.declarations[decl.Name] = decl;
+        }
     }
 }
