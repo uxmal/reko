@@ -64,7 +64,10 @@ namespace Reko.Environments.MacOS
 
         public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new M68kCallingConvention((M68kArchitecture)this.Architecture);
+            if (ccName == "stack_based")
+                return new StackBasedConvention((M68kArchitecture)this.Architecture);
+            else
+                return new M68kCallingConvention((M68kArchitecture)this.Architecture);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

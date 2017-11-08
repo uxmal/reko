@@ -34,6 +34,23 @@ namespace Reko.UnitTests.Core.Pascal
     [TestFixture]
     public class PascalParserTests
     {
+        private PascalParser parser;
+
+        private void Given_Parser(string src)
+        {
+            var lexer = new PascalLexer(new StringReader(src));
+            this.parser = new PascalParser(lexer);
+        }
+
+
+        [Test]
+        public void PParser_Function_WithInline()
+        {
+            var src = "my_unit; interface FuNction foo(quux : ^Integer; var bar : Integer) : boolean; INLINE $BADD,$FACE; end.";
+            Given_Parser(src);
+            var decls = parser.ParseUnit();
+            Assert.AreEqual("function foo(quux : integer^; var bar : integer) : boolean; inline $BADD, $FACE", decls[0].ToString());
+        }
 
         [Test]
         public void PParser_Regress()

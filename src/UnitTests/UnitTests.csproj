@@ -86,6 +86,8 @@
   <ItemGroup>
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
+    <Compile Include="Core\Pascal\PascalLexerTests.cs" />
+    <Compile Include="Core\Pascal\PascalParserTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
     <Compile Include="Analysis\UnalignedMemoryAccessFuserTests.cs" />
     <Compile Include="Arch\Avr\Avr8ArchitectureTests.cs" />
@@ -116,6 +118,8 @@
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\MacOS\MacOSClassicTests.cs" />
     <Compile Include="Environments\MacOS\MacsBugSymbolScannerTests.cs" />
+    <Compile Include="Environments\MacOS\MpwPascalInterfaceLoaderTests.cs" />
+    <Compile Include="Environments\MacOS\StackBasedConventionTests.cs" />
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\Arm32CallingConventionTests.cs" />
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
