@@ -357,8 +357,9 @@ namespace Reko.Core
 
         public DataType VisitEnum(SerializedEnumType enumType)
         {
-            var members = enumType.Values
-                .ToSortedList(k => (long) k.Value, v => v.Name);
+            var members = enumType.Values != null
+                ? enumType.Values.ToSortedList(k => k.Name, v => (long)v.Value)
+                : null;
             return new EnumType
             {
                 Name = enumType.Name,

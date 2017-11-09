@@ -29,22 +29,22 @@ namespace Reko.Core.Types
     {
         public EnumType()
         {
-            this.Members = new SortedList<long,string>();
+            this.Members = new SortedList<string, long>();
         }
 
         public EnumType(string name)
             : base(name)
         {
-            this.Members = new SortedList<long, string>();
+            this.Members = new SortedList<string, long>();
         }
 
         public EnumType(EnumType other) : this(other.Name)
         {
-            this.Members = new SortedList<long, string>(other.Members);
+            this.Members = new SortedList<string, long>(other.Members);
         }
 
         public override int Size { get; set; }
-        public SortedList<long, string> Members { get; set; }
+        public SortedList<string, long> Members { get; set; }
 
         public override void Accept(IDataTypeVisitor v)
         {
