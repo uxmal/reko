@@ -39,10 +39,7 @@ namespace Reko.Environments.MacOS
             : base(services, filename, bytes)
         {
             this.bytes = bytes;
-            this.ALineTraps = new Dictionary<int, List<SystemService>>();
         }
-
-        public Dictionary<int, List<SystemService>> ALineTraps { get; private set; }
 
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
@@ -66,6 +63,8 @@ namespace Reko.Environments.MacOS
             IPlatform platform,
             TypeLibrary typelib)
         {
+            var module = new ModuleDescriptor("");
+            typelib.Modules.Add("", module);
             foreach (var decl in declarations.OfType<CallableDeclaration>())
             {
                 var ft = (SerializedSignature) decl.Accept(typeImporter);
@@ -78,10 +77,10 @@ namespace Reko.Environments.MacOS
                 {
                     var svc = syscall.Build(platform, typelib);
                     List<SystemService> svcs;
-                    if (!this.ALineTraps.TryGetValue(svc.SyscallInfo.Vector, out svcs))
+                    if (!module.ServicesByVector.TryGetValue(svc.SyscallInfo.Vector, out svcs))
                     {
                         svcs = new List<SystemService>();
-                        this.ALineTraps.Add(svc.SyscallInfo.Vector, svcs);
+                        module.ServicesByVector.Add(svc.SyscallInfo.Vector, svcs);
                     }
                     svcs.Add(svc);
                 }
