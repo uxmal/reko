@@ -165,7 +165,7 @@
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\win64characteristics.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\AmigaOS\exec.funcs" />
-    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\MacOS\Mac MPW Interfaces 1991 PASCAL.pas" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\NeoGeo\NeoGeoPocket.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SegaGenesis\SegaGenesis.xml" />

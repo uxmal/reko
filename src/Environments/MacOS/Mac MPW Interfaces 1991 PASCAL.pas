@@ -22971,7 +22971,6 @@ _BitClr = $A85F;
 _Random = $A861;
 _ForeColor = $A862;
 _BackColor = $A863;
-
 _ColorBit = $A864;
 _GetPixel = $A865;
 _StuffHex = $A866;
@@ -23028,9 +23027,6 @@ _SetPenState = $A899;
 _GetPen = $A89A;
 _PenSize = $A89B;
 _PenMode = $A89C;
-
-
-
 _PenPat = $A89D;
 _PenNormal = $A89E;
 _Unimplemented = $A89F;
@@ -23087,9 +23083,6 @@ _StdRgn = $A8D1;
 _FrameRgn = $A8D2;
 _PaintRgn = $A8D3;
 _EraseRgn = $A8D4;
-
-
-
 _InverRgn = $A8D5;
 _FillRgn = $A8D6;
 _BitMapRgn = $A8D7;
@@ -23144,9 +23137,6 @@ _TESelView = $A811;
 _TEPinScroll = $A812;
 _TEAutoView = $A813;
 _Pack8 = $A816;
-
-
-
 _FixATan2 = $A818;
 _XMunger = $A819;
 _HOpenResFile = $A81A;
@@ -23203,9 +23193,6 @@ _SetWRefCon = $A918;
 _GetWTitle = $A919;
 _SetWTitle = $A91A;
 _MoveWindow = $A91B;
-
-
-
 _HiliteWindow = $A91C;
 _SizeWindow = $A91D;
 _TrackGoAway = $A91E;
@@ -23262,9 +23249,6 @@ _PinRect = $A94E;
 _DeltaPoint = $A94F;
 _CountMItems = $A950;
 _InsertResMenu = $A951;
-
-
-
 _DelMenuItem = $A952;
 _UpdtControl = $A953;
 _NewControl = $A954;
