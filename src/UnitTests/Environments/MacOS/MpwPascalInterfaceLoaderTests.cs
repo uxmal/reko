@@ -35,17 +35,6 @@ namespace Reko.UnitTests.Environments.MacOS
     public class MpwPascalInterfaceLoaderTests
     {
         [Test]
-        public void Mpwl_Regress()
-        {
-            var filename = @"C:\dev\uxmal\reko\master\src\Environments\MacOS\Mac MPW Interfaces 1991 PASCAL.pas";
-            var bytes = File.ReadAllBytes(filename);
-            var mpwl = new MpwPascalInterfaceLoader(null, filename, bytes);
-            var platform = new MacOSClassic(null, new M68kArchitecture());
-            var tlib = new TypeLibrary();
-            var tlibNew =  mpwl.Load(platform, tlib);
-        }
-
-        [Test]
         public void Mpwl_PascalService()
         {
             var bytes = Encoding.ASCII.GetBytes(

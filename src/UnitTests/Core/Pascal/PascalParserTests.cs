@@ -51,41 +51,5 @@ namespace Reko.UnitTests.Core.Pascal
             var decls = parser.ParseUnit();
             Assert.AreEqual("function foo(quux : integer^; var bar : integer) : boolean; inline $BADD, $FACE", decls[0].ToString());
         }
-
-        [Test]
-        public void PParser_Regress()
-        {
-            var q = new Queue<Token>();
-            try
-            {
-
-                using (var rdr = new StreamReader(@"C:\dev\uxmal\reko\master\src\Environments\MacOS\Mac MPW Interfaces 1991 PASCAL.pas"))
-                {
-                    var lexer = new PascalLexer(rdr);
-                    var parser = new PascalParser(lexer);
-                    parser.Parse();
-                    //Token tok;
-                    //do
-                    //{
-                    //    tok = lexer.Read();
-                    //    q.Enqueue(tok);
-                    //    if (q.Count > 100)
-                    //        q.Dequeue();
-                    //} while (tok.Type != TokenType.EOF);
-                }
-            }
-            catch (Exception ex)
-            {
-                foreach (var tok in q)
-                {
-                    Debug.WriteLine(tok);
-                }
-                throw;
-            }
-            foreach (var tok in q)
-            {
-                Debug.WriteLine(tok);
-            }
-        }
     }
 }
