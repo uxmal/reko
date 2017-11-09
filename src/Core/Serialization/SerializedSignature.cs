@@ -90,6 +90,7 @@ namespace Reko.Core.Serialization
                 sb.Append(string.Join(",", Arguments.Select(a => a.ToString())));
             }
             sb.Append(")");
+            sb.Append(")");
             return sb.ToString();
         }
     }

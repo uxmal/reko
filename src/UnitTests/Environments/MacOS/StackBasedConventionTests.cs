@@ -18,47 +18,42 @@
  */
 #endregion
 
+using NUnit.Framework;
+using Reko.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.Environments.MacOS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Core.Types
+namespace Reko.UnitTests.Environments.MacOS
 {
-    public class EnumType : DataType
+    [TestFixture]
+    public class StackBasedConventionTests
     {
-        public EnumType()
+        private M68kArchitecture arch;
+        private CallingConventionEmitter emitter;
+
+        public StackBasedConventionTests()
         {
-            this.Members = new SortedList<string, long>();
+            this.arch = new M68kArchitecture();
         }
 
-        public EnumType(string name)
-            : base(name)
+        [SetUp]
+        public void Setup()
         {
-            this.Members = new SortedList<string, long>();
+            this.emitter = new CallingConventionEmitter();
         }
 
-        public EnumType(EnumType other) : this(other.Name)
+        [Test]
+        public void Sbcc_VoidFn()
         {
-            this.Members = new SortedList<string, long>(other.Members);
-        }
-
-        public override int Size { get; set; }
-        public SortedList<string, long> Members { get; set; }
-
-        public override void Accept(IDataTypeVisitor v)
-        {
-            v.VisitEnum(this);
-        }
-
-        public override T Accept<T>(IDataTypeVisitor<T> v)
-        {
-            return v.VisitEnum(this);
-        }
-
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
-        {
-            return new EnumType(this);
+            var sbcc = new StackBasedConvention(arch);
+            sbcc.Generate(emitter, VoidType.Instance, null, new List<DataType> { PrimitiveType.Word32 });
+            Assert.AreEqual("Stk: 0 void (Stack +0004)", emitter.ToString());
         }
     }
 }

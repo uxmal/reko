@@ -72,7 +72,7 @@ namespace Reko.Environments.AtariTOS
             EnsureTypeLibraries(PlatformIdentifier);
             foreach (var module in this.Metadata.Modules.Values)
             {
-                SystemService svc;
+                List<SystemService> svc;
                 if (!module.ServicesByVector.TryGetValue(vector, out svc))
                     continue;
 

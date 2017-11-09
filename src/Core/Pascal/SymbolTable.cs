@@ -18,47 +18,28 @@
  */
 #endregion
 
-using System;
+ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Core.Types
+namespace Reko.Core.Pascal
 {
-    public class EnumType : DataType
+    public class SymbolTable
     {
-        public EnumType()
+        private IPlatform platform;
+        private Dictionary<string, Declaration> declarations;
+
+        public SymbolTable(IPlatform platform)
         {
-            this.Members = new SortedList<string, long>();
+            this.platform = platform;
+            this.declarations = new Dictionary<string, Declaration>(StringComparer.OrdinalIgnoreCase);
         }
 
-        public EnumType(string name)
-            : base(name)
+        public void Add(Declaration decl)
         {
-            this.Members = new SortedList<string, long>();
-        }
-
-        public EnumType(EnumType other) : this(other.Name)
-        {
-            this.Members = new SortedList<string, long>(other.Members);
-        }
-
-        public override int Size { get; set; }
-        public SortedList<string, long> Members { get; set; }
-
-        public override void Accept(IDataTypeVisitor v)
-        {
-            v.VisitEnum(this);
-        }
-
-        public override T Accept<T>(IDataTypeVisitor<T> v)
-        {
-            return v.VisitEnum(this);
-        }
-
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
-        {
-            return new EnumType(this);
+            this.declarations[decl.Name] = decl;
         }
     }
 }

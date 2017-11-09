@@ -85,9 +85,9 @@ namespace Reko.UnitTests.Environments.Windows
 
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
-            Assert.AreEqual(1, mod.ServicesByVector.Count);
+            Assert.AreEqual(1, mod.ServicesByOrdinal.Count);
             Assert.AreEqual(0, mod.ServicesByName.Count);
-            var svc = mod.ServicesByVector[624];
+            var svc = mod.ServicesByOrdinal[624];
             Assert.AreEqual("SetFastQueue", svc.Name);
             Assert.AreEqual(
                 "void SetFastQueue(Stack word32 dwArg08, Stack word32 dwArg04)" + nl + "// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
@@ -105,16 +105,16 @@ namespace Reko.UnitTests.Environments.Windows
 
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
-            Assert.AreEqual(3, mod.ServicesByVector.Count);
+            Assert.AreEqual(3, mod.ServicesByOrdinal.Count);
             Assert.AreEqual(
                 "void ExitKernel()" + nl + "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
-                mod.ServicesByVector[2].Signature.ToString("ExitKernel", FunctionType.EmitFlags.AllDetails));
+                mod.ServicesByOrdinal[2].Signature.ToString("ExitKernel", FunctionType.EmitFlags.AllDetails));
             Assert.AreEqual(
                 "void GetVersion()" + nl + "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
-                mod.ServicesByVector[3].Signature.ToString("GetVersion", FunctionType.EmitFlags.AllDetails));
+                mod.ServicesByOrdinal[3].Signature.ToString("GetVersion", FunctionType.EmitFlags.AllDetails));
             Assert.AreEqual(
                 "void LocalInit(Stack word16 wArg08, Stack word16 wArg06, Stack word16 wArg04)" + nl + "// stackDelta: 10; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
-                mod.ServicesByVector[4].Signature.ToString("LocalInit", FunctionType.EmitFlags.AllDetails));
+                mod.ServicesByOrdinal[4].Signature.ToString("LocalInit", FunctionType.EmitFlags.AllDetails));
         }
 
         [Test]
@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Environments.Windows
             var mod = lib.Modules["FOO.DLL"];
             Assert.AreEqual(
                 "void WSAStartup(Stack word32 dwArg04, Stack ptr32 ptrArg08)",
-                mod.ServicesByVector[115].Signature.ToString("WSAStartup", FunctionType.EmitFlags.ArgumentKind));
+                mod.ServicesByOrdinal[115].Signature.ToString("WSAStartup", FunctionType.EmitFlags.ArgumentKind));
         }
 
         [Test]
@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Environments.Windows
 
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
-            var _DebugOutput = mod.ServicesByVector[328];
+            var _DebugOutput = mod.ServicesByOrdinal[328];
             Assert.AreEqual(
                 "void _DebugOutput(Stack word16 wArg04, Stack (ptr char) ptrArg06, Stack <unknown> ...)" + nl +
                 "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl,

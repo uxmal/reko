@@ -121,6 +121,17 @@ namespace Reko.Core
         /// an ImageSymbol corresponding to the "real" user main procedure.</returns>
         ImageSymbol FindMainProcedure(Program program, Address addrStart);
 
+        /// <summary>
+        /// Given a vector and the current processor state, finds a system
+        /// service.
+        /// </summary>
+        /// <remarks>
+        /// This method is used to resolve system calls or traps where 
+        /// the actual service are selected by registers or stack values.
+        /// </remarks>
+        /// <param name="vector"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
         DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr);

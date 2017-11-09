@@ -36,7 +36,8 @@ namespace Reko.Core
         {
             this.ModuleName = name;
             this.ServicesByName = new Dictionary<string, SystemService>();
-            this.ServicesByVector = new Dictionary<int, SystemService>();
+            this.ServicesByOrdinal = new Dictionary<int, SystemService>();
+            this.ServicesByVector = new Dictionary<int, List<SystemService>>();
             this.GlobalsByName = new Dictionary<string, ImageSymbol>();
             this.GlobalsByOrdinal = new Dictionary<int, ImageSymbol>();
         }
@@ -45,14 +46,18 @@ namespace Reko.Core
         {
             this.ModuleName = other.ModuleName;
             this.ServicesByName = new Dictionary<string, SystemService>(other.ServicesByName);
-            this.ServicesByVector = new Dictionary<int, SystemService>(other.ServicesByVector);
+            this.ServicesByOrdinal = new Dictionary<int, SystemService>(other.ServicesByOrdinal);
+            this.ServicesByVector = other.ServicesByVector.ToDictionary(
+                de => de.Key,
+                de => de.Value.ToList());
             this.GlobalsByName = new Dictionary<string, ImageSymbol>();
             this.GlobalsByOrdinal = new Dictionary<int, ImageSymbol>();
         }
 
         public string ModuleName { get; private set; }
         public IDictionary<string, SystemService> ServicesByName { get; private set; }
-        public IDictionary<int, SystemService> ServicesByVector { get; private set; }
+        public IDictionary<int, SystemService> ServicesByOrdinal { get; private set; }
+        public IDictionary<int, List<SystemService>> ServicesByVector { get; private set; }
         public IDictionary<string, ImageSymbol> GlobalsByName { get; private set; }
         public IDictionary<int, ImageSymbol> GlobalsByOrdinal { get; private set; }
 

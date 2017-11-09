@@ -135,7 +135,7 @@ namespace Reko.Core
 
                 if (sp.Ordinal != Procedure_v1.NoOrdinal)
                 {
-                    mod.ServicesByVector[sp.Ordinal] = svc;
+                    mod.ServicesByOrdinal[sp.Ordinal] = svc;
                 }
             }
             catch (Exception ex)
@@ -162,7 +162,7 @@ namespace Reko.Core
         public void LoadService(int ordinal, SystemService svc)
         {
             var mod = EnsureModule(svc.ModuleName, this.library);
-            mod.ServicesByVector.Add(ordinal, svc);
+            mod.ServicesByOrdinal.Add(ordinal, svc);
         }
 
         private void LoadTypes(SerializedLibrary serializedLibrary)
@@ -266,6 +266,8 @@ namespace Reko.Core
             var dt = str.CharType.Accept(this);
             if (str.Termination ==  StringType_v2.ZeroTermination)
                 return StringType.NullTerminated(dt);
+            if (str.Termination == StringType_v2.MsbTermination)
+                return StringType.LengthPrefixedStringType((PrimitiveType)dt, PrimitiveType.Byte);
             throw new NotImplementedException();
         }
 
@@ -355,7 +357,15 @@ namespace Reko.Core
 
         public DataType VisitEnum(SerializedEnumType enumType)
         {
-            return PrimitiveType.Word32;
+            var members = enumType.Values != null
+                ? enumType.Values.ToSortedList(k => k.Name, v => (long)v.Value)
+                : null;
+            return new EnumType
+            {
+                Name = enumType.Name,
+                Size = enumType.Size,
+                Members = members
+            };
         }
 
         public DataType VisitTemplate(SerializedTemplate sTemplate)
