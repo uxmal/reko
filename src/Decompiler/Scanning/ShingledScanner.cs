@@ -667,6 +667,7 @@ namespace Reko.Scanning
         public void Dump(string caption)
         {
             return;     // This is horribly verbose, so only use it when debugging unit tests.
+#if VERBOSE
             Debug.Print("== {0} =====================", caption);
             Debug.Print("{0} nodes", G.Nodes.Count);
             foreach (var block in G.Nodes.OrderBy(n => n))
@@ -691,6 +692,7 @@ namespace Reko.Scanning
                 Debug.Print("  // succ: {0}", string.Join(" ", G.Predecessors(block)
                     .OrderBy(n => n)));
             }
+#endif
         }
     }
 }
