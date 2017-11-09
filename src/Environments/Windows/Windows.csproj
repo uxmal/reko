@@ -75,6 +75,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlphaCallingConvention.cs" />
     <Compile Include="BorlandMangledNamedParser.cs" />
     <Compile Include="M68kCallingConvention.cs" />
     <Compile Include="MipsCallingConvention.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Win32MipsPlatform.cs" />
     <Compile Include="Win32Platform.cs" />
     <Compile Include="Win32ThumbPlatform.cs" />
+    <Compile Include="WinAlphaPlatform.cs" />
     <Compile Include="WineSpecFileLoader.cs" />
     <Compile Include="Win_x86_64_Platform.cs" />
     <Compile Include="X86StartFinder.cs" />

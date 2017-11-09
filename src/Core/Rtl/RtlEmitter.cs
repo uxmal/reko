@@ -164,10 +164,10 @@ namespace Reko.Core.Rtl
             return this;
         }
 
-        public RtlEmitter SideEffect(Expression sideEffect)
+        public RtlEmitter SideEffect(Expression sideEffect, RtlClass rtlc = RtlClass.Linear)
         {
             var se = new RtlSideEffect(sideEffect);
-            se.Class = RtlClass.Linear;
+            se.Class = rtlc;
             Instructions.Add(se);
             return this;
         }

@@ -37,7 +37,6 @@ namespace Reko.UnitTests.Environments.Windows
     {
         private X86ArchitectureFlat64 arch;
         private Frame frame;
-        private CallingConvention cc;
 
         [SetUp]
         public void Setup()

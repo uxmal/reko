@@ -274,6 +274,11 @@
     <Compile Include="Output\JsonWriter.cs" />
     <Compile Include="Output\LlvmFormatter.cs" />
     <Compile Include="Output\CTypeReferenceFormatter.cs" />
+    <Compile Include="Pascal\PascalLexer.cs" />
+    <Compile Include="Pascal\PascalParser.cs" />
+    <Compile Include="Pascal\PascalSyntax.cs" />
+    <Compile Include="Pascal\SymbolTable.cs" />
+    <Compile Include="Pascal\Token.cs" />
     <Compile Include="Rational.cs" />
     <Compile Include="Rtl\RtlIf.cs" />
     <Compile Include="SegmentMap.cs" />

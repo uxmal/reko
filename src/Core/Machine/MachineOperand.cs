@@ -79,7 +79,7 @@ namespace Reko.Core.Machine
             else if (pt.Domain == Domain.Real)
             {
                 var str = c.ToReal64().ToString("G", CultureInfo.InvariantCulture);
-                if (str.IndexOfAny (floatSpecials) < 0)
+                if (str.IndexOfAny(floatSpecials) < 0)
                 {
                     str = str + ".0";
                 }
@@ -184,8 +184,6 @@ namespace Reko.Core.Machine
         {
             return new ImmediateOperand(Constant.Int16(value));
         }
-
- 
 
         public static MachineOperand Word16(ushort value)
         {

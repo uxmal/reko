@@ -1,0 +1,737 @@
+void _init(word64 r0, word64 r8, word64 r24, word64 r26, word64 r27)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0 r24 r26 r27 r8
+// LiveOut:
+// Trashed: r1 r16 r17 r26 r27 r29 r30
+// Preserved:
+_init_entry:
+// DataOut: r0 r24 r26 r27 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: fp(64)
+
+l00000001200003B0:
+	branch 0x0000000000000000 == 0x0000000000000000 l00000001200003D4
+// DataOut: r0 r24 r26 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+
+l00000001200003C8_thunk_fn00000001200003D4:
+	word64 r29_19
+	word64 r30_20
+	fn00000001200003D4(r0, r8, r24, r26, out r29_19, out r30_20)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x10 r29:r27 + 0x0000000000019C60 r27:0x0000000000000000 -16(fp):r26 -8(fp):0x0000000000019C60
+
+l00000001200003C8_thunk_fn00000001200003CC:
+	word64 r29_16
+	word64 r30_17
+	fn00000001200003CC(r0, r8, r24, r26, out r29_16, out r30_17)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x10 r29:r27 + 0x0000000000019C60 r27:0x0000000000000000 -16(fp):r26 -8(fp):0x0000000000019C60
+
+_init_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:<invalid> r29:<invalid> r27:<invalid> r26:<invalid> r1:<invalid> r16:<invalid> r17:<invalid> -16(fp):r26 -8(fp):0x0000000000019C60
+
+
+
+word64 fn00000001200003B8(word64 r0, word64 r8, word64 r24, word64 r26, ptr64 & r29Out, ptr64 & r30Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0 r24 r26 r8
+// LiveOut: r26 r29 r30
+// Trashed: r1 r16 r17 r26 r27 r29 r30
+// Preserved:
+fn00000001200003B8_entry:
+// DataOut: r0 r10 r24 r26 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: fp(64)
+
+l00000001200003B8:
+	branch 0x0000000000000000 == 0x0000000000000000 l00000001200003C8_thunk_fn00000001200003D4
+// DataOut: r0 r10 r24 r26 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+
+l00000001200003C8_thunk_fn00000001200003D4:
+	word64 r29_19
+	word64 r30_20
+	return fn00000001200003D4(r0, r8, r24, r26, out r29_19, out r30_20)
+// DataOut: r10 r24 r26 r29 r30 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x10 r27:0x0000000000000000 -16(fp):r26 -8(fp):r29
+
+l00000001200003C8_thunk_fn00000001200003CC:
+	word64 r29_16
+	word64 r30_17
+	return fn00000001200003CC(r0, r8, r24, r26, out r29_16, out r30_17)
+// DataOut: r10 r24 r26 r29 r30 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x10 r27:0x0000000000000000 -16(fp):r26 -8(fp):r29
+
+fn00000001200003B8_exit:
+// DataOut: r26 r29 r30
+// DataOut (flags): 
+// SymbolicIn: r30:<invalid> r27:<invalid> r29:<invalid> r26:<invalid> r1:<invalid> r16:<invalid> r17:<invalid> -16(fp):r26 -8(fp):r29
+
+
+
+word64 fn00000001200003CC(word64 r0, word64 r8, word64 r24, word64 r26, ptr64 & r29Out, ptr64 & r30Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0 r24 r26 r8
+// LiveOut: r26 r29 r30
+// Trashed: r1 r16 r17 r26 r27 r29 r30
+// Preserved:
+fn00000001200003CC_entry:
+// DataOut: r0 r10 r24 r26 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: v3(64)
+
+l00000001200003CC:
+	word64 r30_3
+	word64 r27_4
+	word64 r29_5
+	word64 r0_6
+	word64 r8_7
+	word64 r24_8
+	word64 r26_9
+	call r27 (retsize: 0;)
+		uses: r27,r30_1
+		defs: r0_6,r24_8,r26_9,r27_4,r29_5,r30_3,r8_7
+// DataOut: r0 r10 r24 r26 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+
+l00000001200003D0_thunk_fn00000001200003D4:
+	word64 r29_12
+	word64 r30_13
+	return fn00000001200003D4(r0_6, r8_7, r24_8, r26_9, out r29_12, out r30_13)
+// DataOut: r10 r24 r26 r29 r30 r8
+// DataOut (flags): 
+// SymbolicIn: r30:v3 r29:<invalid>
+
+fn00000001200003CC_exit:
+// DataOut: r26 r29 r30
+// DataOut (flags): 
+// SymbolicIn: r30:<invalid> r29:<invalid> r26:<invalid> r27:<invalid> r1:<invalid> r16:<invalid> r17:<invalid>
+
+
+
+word64 fn00000001200003D4(word64 r0, word64 r8, word64 r24, word64 r26, ptr64 & r29Out, ptr64 & r30Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0 r24 r26 r8
+// LiveOut: r26 r29 r30
+// Trashed: r1 r16 r17 r26 r27 r29 r30
+// Preserved:
+fn00000001200003D4_entry:
+// DataOut: r0 r10 r24 r26 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: v3(64)
+
+l00000001200003D4:
+	r30 = v3
+	0x0000000000000000 = Mem0[r30:word64]
+	r29 = 0x00000001200003DC
+// DataOut: r0 r10 r24 r26 r29 r30 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+
+l00000001200003DC:
+	r29 = r29 + 0x0000000000020000
+	r29 = r29 - 0x00000000000063CC
+	0x0000000000000000 = Mem0[r30:word64]
+	0x0000000000000000 = Mem0[r30:word64]
+	r16 = fn0000000120000638(r0, r8, r26, r29, qwArg00)
+	r29 = 0x00000001200003F4
+// DataOut: r10 r16 r24 r26 r29 r30 r8
+// DataOut (flags): 
+// SymbolicIn: r30:v3 r29:00000001200003DC
+
+l00000001200003F4:
+	r29 = r29 + 0x0000000000020000
+	r29 = r29 - 0x00000000000063E4
+	0x0000000000000000 = Mem0[r30:word64]
+	0x0000000000000000 = Mem0[r30:word64]
+	fn0000000120000778(r16, r24, r26, r29)
+	r26 = Mem0[r30:word64]
+	r29 = Mem0[r30 + 0x0000000000000008:word64]
+	r30 = r30 + 0x10
+	return r26
+// DataOut: r10 r24 r26 r29 r30 r8
+// DataOut (flags): 
+// SymbolicIn: r30:v3 r29:00000001200003F4 r16:<invalid> r17:<invalid> r1:<invalid> r27:0x0000000000000000
+
+fn00000001200003D4_exit:
+	use r29 (=> r29Out)
+	use r30 (=> r30Out)
+// DataOut: r26 r29 r30
+// DataOut (flags): 
+// SymbolicIn: r30:v3 + 0x10 r29:<invalid> r26:<invalid> r27:<invalid> r1:<invalid> r16:<invalid> r17:<invalid>
+
+
+
+void __start(int32 dwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Stack args: Stack +0000(64)
+// Terminates process
+__start_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+__start_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: fp(64) Stack +0000(64)
+
+l0000000120000450:
+// DataOut: r29
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: fp(64) Stack +0000(64)
+
+l0000000120000454:
+	word64 r27_17 = Mem0[0x000000012002E888:word64]
+	word64 r30_18
+	word64 r29_19
+	word64 r15_20
+	word64 r16_21
+	word64 r17_22
+	word64 r18_23
+	word64 r19_24
+	word64 r20_25
+	word64 r0_26
+	word64 r21_27
+	word64 r27_28
+	call r27_17 (retsize: 0; depth: 16)
+		uses: qwLoc10_16,r0,r15_6,r16_8,r17_10,r18_11,r19_12,r20_13,r21_15,r27_17,r29_4,r30_5
+		defs: r0_26,r15_20,r16_21,r17_22,r18_23,r19_24,r20_25,r21_27,r27_28,r29_19,r30_18
+	__halt()
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp r29:0000000120000454
+
+
+
+word64 fn0000000120000498(word64 r0, word64 r26, word64 r29)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0 r26 r29
+// LiveOut: r16
+// Trashed: r1 r16 r27 r29
+// Preserved: r26 r30
+fn0000000120000498_entry:
+// DataOut: r0 r11 r26 r29
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: fp(64)
+
+l0000000120000498:
+	word64 r16_16 = r29 - 0x0000000000008010
+	word64 r1_11 = (word64) (r29 - 0x0000000000008010 == r0)
+	branch r1_11 != 0x0000000000000000 l00000001200004CC
+// DataOut: r0 r11 r16 r26
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+
+l00000001200004B8:
+	branch 0x0000000000000000 == 0x0000000000000000 l00000001200004CC
+// DataOut: r0 r11 r16 r26
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000010 r16:r29 - 0x0000000000008010 r1:<invalid> -16(fp):r26
+
+l00000001200004C0:
+	word64 r30_21
+	word64 r29_22
+	word64 r26_24
+	word64 r1_25
+	word64 r0_26
+	word64 r27_27
+	call 0x0000000000000000 (retsize: 0; depth: 16)
+		uses: qwLoc10_7,r0,r1_11,r16_5,r26,r27_20,r29,r30_2
+		defs: r0_26,r1_25,r16_23,r26_24,r27_27,r29_22,r30_21
+// DataOut: r0 r11 r16
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000010 r16:r29 - 0x0000000000008010 r1:<invalid> r27:0x0000000000000000 -16(fp):r26
+
+l00000001200004CC:
+	return r16_16
+// DataOut: r0 r11 r16
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000010 r16:r29 - 0x0000000000008010 r1:<invalid> r27:0x0000000000000000 r29:r26 + 0x0000000000019B4C -16(fp):r26
+
+fn0000000120000498_exit:
+// DataOut: r16
+// DataOut (flags): 
+// SymbolicIn: r30:fp r16:r29 - 0x0000000000008010 r1:<invalid> r27:0x0000000000000000 r26:r26 r29:r26 + 0x0000000000019B4C -16(fp):r26
+
+
+
+void fn0000000120000548(word64 r0, word64 r8, word64 r26, word64 r29)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0 r26 r29 r8
+// LiveOut:
+// Trashed: r1 r16 r2 r27 r29
+// Preserved: r10 r11 r12 r13 r26 r30 r9
+fn0000000120000548_entry:
+// DataOut: r0 r26 r29 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: fp(64)
+
+l0000000120000548:
+	r30 = fp
+	r30 = fp - 0x0000000000000030
+	qwLoc18 = r11
+	r11 = r29
+	qwLoc10 = r12
+	r12 = r11 - 0x0000000000007FC8
+	r1 = Mem0[r11 - 0x0000000000007FC8:word64]
+	qwLoc30 = r26
+	qwLoc28 = r9
+	r1 = __extbl(r1, r0)
+	qwLoc20 = r10
+	qwLoc08 = r13
+	branch r1 != 0x0000000000000000 l0000000120000604
+// DataOut: r0 r11 r26 r29 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: Local -0030(64)
+
+l0000000120000578:
+	r9 = r29 - 0x0000000000010000
+	r1 = r29 - 0x0000000000010000
+	r13 = r29
+	r9 = r9 + 0x0000000000007E78
+	r9 = r9 - r8
+	r1 = Mem0[r13 - 0x0000000000007FC0:word64]
+	r9 = __src(r9, 0x03)
+	r10 = r29 - 0x0000000000010000
+	r9 = r9 - 0x0000000000000001
+	r2 = (word64) (r1 <u r8)
+	r10 = r10 + 0x0000000000007E70
+	branch r2 == 0x0000000000000000 l00000001200005DC
+// DataOut: r0 r1 r10 r11 r13 r26 r29 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000030 r11:r29 r12:r29 - 0x0000000000007FC8 r1:<invalid> -48(fp):r26 -40(fp):r9 -32(fp):r10 -24(fp):r11 -16(fp):r12 -8(fp):r13
+// LocalsOut: Local -0030(64)
+
+l00000001200005AC:
+	0x0000000000000000 = qwLoc30
+// DataOut: r0 r1 r10 r11 r13 r26 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000030 r11:r29 r12:r29 - 0x0000000000007FC8 r1:<invalid> r9:<invalid> r13:r29 r10:r29 - 0x0000000000008190 r2:<invalid> -48(fp):r26 -40(fp):r9 -32(fp):r10 -24(fp):r11 -16(fp):r12 -8(fp):r13
+// LocalsOut: Local -0030(64)
+
+l00000001200005B0:
+	r1 = r1 + 0x0000000000000001
+	Mem0[r13 - 0x0000000000007FC0:word64] = r1
+	r1 = r10 + r8
+	r27 = Mem0[r1:word64]
+	call r27 (retsize: 0; depth: 48)
+	r29 = r26 + 0x0000000000020000
+	r29 = r29 - 0x00000000000065B8
+	r1 = Mem0[r13 - 0x0000000000007FC0:word64]
+	r2 = (word64) (r1 <u r8)
+	branch r2 != 0x0000000000000000 l00000001200005B0
+// DataOut: r0 r1 r10 r11 r13 r26 r29 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000030 r11:r29 r12:r29 - 0x0000000000007FC8 r1:<invalid> r9:<invalid> r13:r29 r10:r29 - 0x0000000000008190 r2:<invalid> r27:<invalid> r29:r26 + 0x0000000000019A48 -48(fp):r26 -40(fp):r9 -32(fp):r10 -24(fp):r11 -16(fp):r12 -8(fp):r13
+// LocalsOut: Local -0030(64)
+
+l00000001200005DC:
+	0x0000000000000000 = qwLoc30
+	r16 = fn0000000120000498(r0, r26, r29)
+	0x0000000000000000 = qwLoc30
+	0x0000000000000000 = qwLoc30
+	r1 = 0x0000000000000001
+	r2 = Mem0[r11 - 0x0000000000007FC8:word64]
+	r1 = __insbl(0x0000000000000001, r0)
+	r2 = __mskbl(r2, r0)
+	r1 = r1 | r16
+	__stq_u(Mem0[r11 - 0x0000000000007FC8:word64], r1)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000030 r11:r29 r12:r29 - 0x0000000000007FC8 r1:<invalid> r9:<invalid> r13:r29 r10:r29 - 0x0000000000008190 r2:<invalid> r27:<invalid> r29:r26 + 0x0000000000019A48 -48(fp):r26 -40(fp):r9 -32(fp):r10 -24(fp):r11 -16(fp):r12 -8(fp):r13
+
+l0000000120000604:
+	r26 = qwLoc30
+	r9 = qwLoc28
+	r10 = qwLoc20
+	r11 = qwLoc18
+	r12 = qwLoc10
+	r13 = qwLoc08
+	r30 = fp
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000030 r11:r29 r12:r29 - 0x0000000000007FC8 r1:<invalid> r9:<invalid> r13:r29 r10:r29 - 0x0000000000008190 r2:<invalid> r16:<invalid> r27:0x0000000000000000 r29:<invalid> -48(fp):r26 -40(fp):r9 -32(fp):r10 -24(fp):r11 -16(fp):r12 -8(fp):r13
+
+fn0000000120000548_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp r11:r11 r12:r12 r1:<invalid> r26:r26 r9:r9 r10:r10 r13:r13 r2:<invalid> r16:<invalid> r27:0x0000000000000000 r29:<invalid> -48(fp):r26 -40(fp):r9 -32(fp):r10 -24(fp):r11 -16(fp):r12 -8(fp):r13
+
+
+
+word64 fn0000000120000638(word64 r0, word64 r8, word64 r26, word64 r29, word64 qwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0 r26 r29 r8
+// LiveOut: r16
+// Trashed: r1 r16 r17 r27 r29
+// Preserved: r26 r30
+// Stack args: Stack +0000(64)
+fn0000000120000638_entry:
+// DataOut: r0 r10 r24 r26 r29 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: fp(64) Stack +0000(64)
+
+l0000000120000638:
+	r30 = fp
+	0x0000000000000000 = qwArg00
+// DataOut: r0 r10 r24 r26 r29 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: fp(64)
+
+l00000001200004E8:
+	r16 = r29 - 0x0000000000010000
+	r16 = r16 + 0x0000000000007FF0
+	r17 = r29 - 0x0000000000010000
+	r17 = r17 + 0x0000000000007FF0
+	r17 = r17 - r0
+	r17 = __src(r17, 0x03)
+	r30 = fp - 0x0000000000000010
+	r1 = r17 >>u 0x3F
+	qwLoc10 = r26
+	r17 = r1 + r8
+	r17 = __src(r17, 0x01)
+	branch r17 == 0x0000000000000000 l000000012000052C
+// DataOut: r10 r16 r24 r26 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+
+l0000000120000518:
+	r27 = 0x0000000000000000
+	branch 0x0000000000000000 == 0x0000000000000000 l000000012000052C
+// DataOut: r10 r16 r24 r26 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000010 r16:r29 - 0x0000000000008010 r17:<invalid> r1:<invalid> -16(fp):r26
+
+l0000000120000520:
+	call 0x0000000000000000 (retsize: 0; depth: 16)
+		defs: r0,r1,r16,r17,r26,r27,r29,r30,r8
+	r29 = r26 + 0x0000000000020000
+	r29 = r29 - 0x0000000000006514
+// DataOut: r10 r16 r24 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000010 r16:r29 - 0x0000000000008010 r17:<invalid> r1:<invalid> r27:0x0000000000000000 -16(fp):r26
+
+l000000012000052C:
+	r26 = qwLoc10
+	r30 = fp
+	return r16
+// DataOut: r10 r16 r24 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000010 r16:r29 - 0x0000000000008010 r17:<invalid> r1:<invalid> r27:0x0000000000000000 r29:r26 + 0x0000000000019AEC -16(fp):r26
+
+fn0000000120000638_exit:
+// DataOut: r16
+// DataOut (flags): 
+// SymbolicIn: r30:fp r16:r29 - 0x0000000000008010 r17:<invalid> r1:<invalid> r27:0x0000000000000000 r26:r26 r29:r26 + 0x0000000000019AEC -16(fp):r26
+
+
+
+void main(word64 r24, word64 r26, word64 r27)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r24 r26 r27
+// LiveOut:
+// Trashed: r0 r1 r15 r16 r26 r27 r29 r30
+// Preserved:
+main_entry:
+// DataOut: r24 r26 r27
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: fp(64)
+
+l0000000120000650:
+	word64 r27_15 = Mem0[r27 + 0x00000000000119C8:word64]
+	word64 r30_16
+	word64 r27_17
+	word64 r29_18
+	word64 r26_19
+	word64 r15_20
+	word64 r16_21
+	word64 r1_22
+	word64 r24_23
+	word64 r8_24
+	word64 r0_25
+	call r27_15 (retsize: 0; depth: 16)
+		uses: qwLoc08_9,qwLoc10_7,r1_12,r15_11,r16_13,r26,r27_15,r29_4,r30_5
+		defs: r0_25,r1_22,r15_20,r16_21,r24_23,r26_19,r27_17,r29_18,r30_16,r8_24
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+
+main_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:r24 + 0x0000000000000010 r29:r26 + 0x0000000000019998 r15:<invalid> r1:r24 r16:r27 + 0x00000000000001D0 r27:<invalid> r0:r8 r26:<invalid> -16(fp):r26 -8(fp):r15
+
+
+
+void __libc_csu_init(word64 r0, word64 r8, word64 r24, word64 r26, word64 r27)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0 r24 r26 r27 r8
+// LiveOut:
+// Trashed: r1 r10 r11 r12 r13 r14 r16 r17 r18 r26 r27 r29 r30 r9
+// Preserved: r10 r11 r12 r13 r14 r26 r30 r9
+__libc_csu_init_entry:
+// DataOut: r0 r24 r26 r27 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: fp(64) Local -0040(64)
+
+l00000001200006A0:
+	r30 = fp
+	r29 = r27 + 0x0000000000020000
+	r29 = r29 - 0x0000000000006690
+	r30 = fp - 0x0000000000000040
+	0x0000000000000000 = qwLoc40
+	qwLoc38 = r9
+	qwLoc30 = r10
+	r10 = r24
+	qwLoc28 = r11
+	r11 = r16
+	qwLoc20 = r12
+	r12 = r8
+	qwLoc18 = r13
+	r13 = r0
+	qwLoc10 = r14
+	qwLoc40 = r26
+	r26 = fn00000001200003B8(r0, r8, r24, r26, out r29, out r30)
+	0x0000000000000000 = Mem0[r30:word64]
+	0x0000000000000000 = Mem0[r30:word64]
+	r9 = r29 - 0x0000000000010000
+	r14 = r29 - 0x0000000000010000
+	r9 = r9 + 0x0000000000007E60
+	r14 = r14 + 0x0000000000007E60
+	r14 = r14 - r8
+	r14 = __src(r14, 0x03)
+	branch r14 == 0x0000000000000000 l000000012000073C
+// DataOut: r10 r14 r24 r26 r30 r8 r9
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+
+l0000000120000704:
+	0x0000000000000000 = Mem0[r30:word64]
+	0x0000000000000000 = r24
+	0x0000000000000000 = Mem0[r30:word64]
+// DataOut: r10 r14 r26 r30 r8 r9
+// DataOut (flags): 
+// SymbolicIn: r30:<invalid> r29:<invalid> r10:r24 r11:r16 r12:r8 r13:r0 r9:<invalid> r14:<invalid> r27:<invalid> r26:<invalid> r1:<invalid> r16:<invalid> r17:<invalid> -64(fp):r26 -56(fp):r9 -48(fp):r10 -40(fp):r11 -32(fp):r12 -24(fp):r13 -16(fp):r14
+
+l0000000120000710:
+	r18 = r24
+	r27 = Mem0[r9:word64]
+	r17 = r0
+	r16 = r8
+	r10 = r10 + 0x0000000000000001
+	call r27 (retsize: 0;)
+		defs: r0,r1,r10,r11,r12,r13,r14,r16,r17,r18,r24,r26,r27,r29,r30,r8,r9
+	r29 = r26 + 0x0000000000020000
+	r29 = r29 - 0x0000000000006718
+	r1 = (word64) (r14 == r16)
+	r9 = r9 + 0x0000000000000008
+	branch r1 == 0x0000000000000000 l0000000120000710
+// DataOut: r10 r14 r26 r30 r8 r9
+// DataOut (flags): 
+// SymbolicIn: r30:<invalid> r29:<invalid> r10:<invalid> r11:r16 r12:r8 r13:r0 r9:<invalid> r14:<invalid> r18:r24 r27:<invalid> r17:<invalid> r16:<invalid> r1:<invalid> r26:<invalid> -64(fp):r26 -56(fp):r9 -48(fp):r10 -40(fp):r11 -32(fp):r12 -24(fp):r13 -16(fp):r14
+
+l000000012000073C:
+	r26 = Mem0[r30:word64]
+	r9 = Mem0[r30 + 0x0000000000000008:word64]
+	r10 = Mem0[r30 + 0x0000000000000010:word64]
+	r11 = Mem0[r30 + 0x0000000000000018:word64]
+	r12 = Mem0[r30 + 0x0000000000000020:word64]
+	r13 = Mem0[r30 + 0x0000000000000028:word64]
+	r14 = Mem0[r30 + 0x0000000000000030:word64]
+	r30 = r30 + 0x0000000000000040
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:<invalid> r29:<invalid> r10:<invalid> r11:r16 r12:r8 r13:r0 r9:<invalid> r14:<invalid> r18:r24 r27:<invalid> r17:<invalid> r16:<invalid> r1:<invalid> r26:<invalid> -64(fp):r26 -56(fp):r9 -48(fp):r10 -40(fp):r11 -32(fp):r12 -24(fp):r13 -16(fp):r14
+
+__libc_csu_init_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:<invalid> r29:<invalid> r10:<invalid> r11:<invalid> r12:<invalid> r13:<invalid> r9:<invalid> r14:<invalid> r26:<invalid> r18:r24 r27:<invalid> r17:<invalid> r16:<invalid> r1:<invalid> -64(fp):r26 -56(fp):r9 -48(fp):r10 -40(fp):r11 -32(fp):r12 -24(fp):r13 -16(fp):r14
+
+
+
+void __libc_csu_fini()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: r30
+__libc_csu_fini_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+
+l0000000120000760:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+
+__libc_csu_fini_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+
+
+
+void fn0000000120000778(word64 r16, word64 r24, word64 r26, word64 r29)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r16 r24 r26 r29
+// LiveOut:
+// Trashed: r1 r27 r29
+// Preserved: r10 r26 r30 r9
+fn0000000120000778_entry:
+// DataOut: r16 r24 r26 r29 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: fp(64)
+
+l0000000120000778:
+	r30 = fp
+	r30 = fp - 0x0000000000000020
+	qwLoc18 = r9
+	r9 = r29 - 0x0000000000010000
+	r9 = r9 + 0x0000000000007E68
+	qwLoc10 = r10
+	r10 = 0xFFFFFFFFFFFFFFFF
+	qwLoc20 = r26
+	r27 = Mem0[r9 - 0x0000000000000008:word64]
+	r1 = (word64) (r27 == r16)
+	branch r1 != 0x0000000000000000 l00000001200007CC
+// DataOut: r16 r24 r26 r8 r9
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: Local -0020(64)
+
+l00000001200007A0:
+	r9 = r9 - 0x0000000000000008
+	0x0000000000000000 = qwLoc20
+	0x0000000000000000 = r24
+	0x0000000000000000 = qwLoc20
+// DataOut: r16 r24 r26 r8 r9
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000020 r9:r29 - 0x0000000000008198 r10:0xFFFFFFFFFFFFFFFF r27:<invalid> r1:<invalid> -32(fp):r26 -24(fp):r9 -16(fp):r10
+
+l00000001200007B0:
+	r9 = r9 - 0x0000000000000008
+	call r27 (retsize: 0; depth: 32)
+		defs: r1,r10,r16,r24,r26,r27,r29,r30,r9
+	r29 = r26 + 0x0000000000020000
+	r29 = r29 - 0x00000000000067A8
+	r27 = Mem0[r9:word64]
+	r1 = (word64) (r27 == r16)
+	branch r1 == 0x0000000000000000 l00000001200007B0
+// DataOut: r16 r24 r26 r8 r9
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000020 r9:<invalid> r10:0xFFFFFFFFFFFFFFFF r27:<invalid> r1:<invalid> r29:r26 + 0x0000000000019858 -32(fp):r26 -24(fp):r9 -16(fp):r10
+
+l00000001200007CC:
+	r26 = qwLoc20
+	r9 = qwLoc18
+	r10 = qwLoc10
+	r30 = fp
+	return
+// DataOut: r24 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x0000000000000020 r9:<invalid> r10:0xFFFFFFFFFFFFFFFF r27:<invalid> r1:<invalid> r29:r26 + 0x0000000000019858 -32(fp):r26 -24(fp):r9 -16(fp):r10
+
+fn0000000120000778_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp r9:r9 r10:r10 r27:<invalid> r1:<invalid> r26:r26 r29:r26 + 0x0000000000019858 -32(fp):r26 -24(fp):r9 -16(fp):r10
+
+
+
+void _fini(word64 r0, word64 r8, word64 r26, word64 r27)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r0 r26 r27 r8
+// LiveOut:
+// Trashed: r1 r16 r2 r27 r29
+// Preserved: r26 r30
+_fini_entry:
+// DataOut: r0 r26 r27 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: fp(64)
+
+l00000001200007E0:
+	r30 = fp
+	r29 = r27 + 0x0000000000020000
+	r29 = r29 - 0x00000000000067D0
+	r30 = fp - 0x10
+	qwLoc10 = r26
+	qwLoc08 = r29
+	0x0000000000000000 = qwLoc10
+	r29 = 0x00000001200007FC
+// DataOut: r0 r26 r29 r8
+// DataOut (flags): 
+// SymbolicIn: r30:fp
+// LocalsOut: Local -0010(64)
+
+l00000001200007FC:
+	r29 = r29 + 0x0000000000020000
+	r29 = r29 - 0x00000000000067EC
+	0x0000000000000000 = qwLoc10
+	0x0000000000000000 = qwLoc10
+	fn0000000120000548(r0, r8, r26, r29)
+	r26 = qwLoc10
+	r29 = qwLoc08
+	r30 = fp
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp - 0x10 r29:00000001200007FC -16(fp):r26 -8(fp):r27 + 0x0000000000019830
+
+_fini_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: r30:fp r29:r27 + 0x0000000000019830 r26:r26 r1:<invalid> r2:<invalid> r16:<invalid> r27:0x0000000000000000 -16(fp):r26 -8(fp):r27 + 0x0000000000019830
+
+
+

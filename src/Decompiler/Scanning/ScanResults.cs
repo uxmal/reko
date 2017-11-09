@@ -124,6 +124,7 @@ namespace Reko.Scanning
             BreakOnWatchedAddress(ICFG.Nodes.Select(n => n.Address));
 
             return;     // This is horribly verbose, so only use it when debugging unit tests.
+#if VERBOSE
             Debug.Print("== {0} =====================", caption);
             Debug.Print("{0} nodes", ICFG.Nodes.Count);
             foreach (var block in ICFG.Nodes.OrderBy(n => n.Address))
@@ -158,6 +159,7 @@ namespace Reko.Scanning
                     .OrderBy(n => n.Address)
                     .Select(n => n.Address)));
             }
+#endif
         }
 
         public class instr

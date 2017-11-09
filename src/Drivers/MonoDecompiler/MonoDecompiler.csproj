@@ -165,7 +165,7 @@
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\win64characteristics.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\AmigaOS\exec.funcs" />
-    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\MacOS\Mac MPW Interfaces 1991 PASCAL.pas" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\NeoGeo\NeoGeoPocket.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SegaGenesis\SegaGenesis.xml" />
@@ -178,6 +178,7 @@
     <DecompilerMetadata Include="$(ProjectDir)..\..\..\external\reactos\coredll.def" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\..\external\wine\*.spec" />
+    <Architectures Include="$(ProjectDir)..\..\Arch\Alpha\$(OutDir)Reko.Arch.Alpha.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Avr\$(OutDir)Reko.Arch.Avr.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />

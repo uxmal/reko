@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Core.CLanguage
                     }
                 });
             Assert.AreEqual("fn", nt.Name);
-            Assert.AreEqual("ptr(fn(arg(prim(SignedInt,4)),(arg(ch,prim(Character,1))))", nt.DataType.ToString());
+            Assert.AreEqual("ptr(fn(arg(prim(SignedInt,4)),(arg(ch,prim(Character,1)))))", nt.DataType.ToString());
         }
 
         [Test]
@@ -144,7 +144,7 @@ namespace Reko.UnitTests.Core.CLanguage
                     }
                 });
             Assert.AreEqual(
-                "fn(__stdcall,arg(ptr(prim(Character,1))),()",
+                "fn(__stdcall,arg(ptr(prim(Character,1))),())",
                 nt.DataType.ToString());
         }
 
@@ -232,7 +232,7 @@ namespace Reko.UnitTests.Core.CLanguage
                     }
                 });
             Assert.AreEqual(
-                "fn(__thiscall,arg(ptr(prim(Character,1))),()",
+                "fn(__thiscall,arg(ptr(prim(Character,1))),())",
                 nt.DataType.ToString());
         }
     }

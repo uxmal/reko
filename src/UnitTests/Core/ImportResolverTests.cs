@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Core
 
             var module = new ModuleDescriptor("foo")
             {
-                ServicesByVector =
+                ServicesByOrdinal =
                 {
                     {
                          9,

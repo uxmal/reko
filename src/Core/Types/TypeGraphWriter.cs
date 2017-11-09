@@ -101,7 +101,22 @@ namespace Reko.Core.Types
 
         public Formatter VisitEnum(EnumType e)
         {
-            throw new NotImplementedException();
+            writer.Write("(enum");
+            if (!string.IsNullOrEmpty(e.Name))
+            {
+                writer.Write(" {0},", e.Name);
+            }
+            writer.Write("(");
+            var sep = "";
+            foreach (var item in e.Members)
+            {
+                writer.Write(sep);
+                sep = ",";
+                writer.Write("({0},{1})");
+            }
+            writer.Write(")");
+            writer.Write(")");
+            return writer;
         }
 
         public Formatter VisitEquivalenceClass(EquivalenceClass eq)
