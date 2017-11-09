@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Environments.MacOS
         {
             var sbcc = new StackBasedConvention(arch);
             sbcc.Generate(emitter, VoidType.Instance, null, new List<DataType> { PrimitiveType.Word32 });
-            Assert.AreEqual("@@@", emitter.ToString());
+            Assert.AreEqual("Stk: 0 void (Stack +0004)", emitter.ToString());
         }
     }
 }
