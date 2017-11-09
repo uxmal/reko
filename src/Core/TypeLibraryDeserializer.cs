@@ -135,7 +135,7 @@ namespace Reko.Core
 
                 if (sp.Ordinal != Procedure_v1.NoOrdinal)
                 {
-                    mod.ServicesByVector[sp.Ordinal] = svc;
+                    mod.ServicesByOrdinal[sp.Ordinal] = svc;
                 }
             }
             catch (Exception ex)
@@ -162,7 +162,7 @@ namespace Reko.Core
         public void LoadService(int ordinal, SystemService svc)
         {
             var mod = EnsureModule(svc.ModuleName, this.library);
-            mod.ServicesByVector.Add(ordinal, svc);
+            mod.ServicesByOrdinal.Add(ordinal, svc);
         }
 
         private void LoadTypes(SerializedLibrary serializedLibrary)
