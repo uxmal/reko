@@ -120,6 +120,7 @@
     <Compile Include="Environments\MacOS\MacsBugSymbolScannerTests.cs" />
     <Compile Include="Environments\MacOS\MpwPascalInterfaceLoaderTests.cs" />
     <Compile Include="Environments\MacOS\StackBasedConventionTests.cs" />
+    <Compile Include="Environments\MacOS\InlineCodeInterpreterTests.cs" />
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\Arm32CallingConventionTests.cs" />
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />

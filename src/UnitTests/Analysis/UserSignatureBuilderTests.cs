@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Analysis
             var sProc = usb.ParseFunctionDeclaration("int foo(char *)");
 
             Assert.AreEqual(
-                "fn(arg(prim(SignedInt,4)),(arg(ptr(prim(Character,1))))",
+                "fn(arg(prim(SignedInt,4)),(arg(ptr(prim(Character,1)))))",
                 sProc.Signature.ToString());
         }
 
@@ -148,7 +148,7 @@ namespace Reko.UnitTests.Analysis
             var sProc = usb.ParseFunctionDeclaration("BYTE foo(BYTE a, BYTE b)");
 
             Assert.AreEqual(
-                "fn(arg(BYTE),(arg(a,BYTE),arg(b,BYTE))",
+                "fn(arg(BYTE),(arg(a,BYTE),arg(b,BYTE)))",
                 sProc.Signature.ToString());
         }
 
@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Analysis
             var sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, BYTE b)");
 
             Assert.AreEqual(
-                "fn(arg(BYTE),(arg(a,USRDEF1),arg(b,BYTE))",
+                "fn(arg(BYTE),(arg(a,USRDEF1),arg(b,BYTE)))",
                 sProc.Signature.ToString());
 
             //should not accept undefined type USRDEF2
@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Analysis
             sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, USRDEF2 b)");
 
             Assert.AreEqual(
-                "fn(arg(BYTE),(arg(a,USRDEF1),arg(b,USRDEF2))",
+                "fn(arg(BYTE),(arg(a,USRDEF1),arg(b,USRDEF2)))",
                 sProc.Signature.ToString());
         }
 

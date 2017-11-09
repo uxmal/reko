@@ -44,7 +44,7 @@ namespace Reko.Core.Types
         }
 
         public override int Size { get; set; }
-        public SortedList<long, string> Members { get; private set; }
+        public SortedList<long, string> Members { get; set; }
 
         public override void Accept(IDataTypeVisitor v)
         {

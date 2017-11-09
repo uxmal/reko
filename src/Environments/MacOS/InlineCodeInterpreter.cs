@@ -74,11 +74,18 @@ namespace Reko.Environments.MacOS
                     regValues.Add(regValue);
                 }
             }
+            var syscallinfo = regValues.Count > 0
+                ? new SyscallInfo_v1
+                {
+                    RegisterValues = regValues.ToArray()
+                }
+                : null;
             return new SerializedService
             {
                 Ordinal = vector,
                 Name = name,
                 Signature = ssig,
+                SyscallInfo = syscallinfo
             };
         }
 

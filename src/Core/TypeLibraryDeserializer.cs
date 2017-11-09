@@ -266,6 +266,8 @@ namespace Reko.Core
             var dt = str.CharType.Accept(this);
             if (str.Termination ==  StringType_v2.ZeroTermination)
                 return StringType.NullTerminated(dt);
+            if (str.Termination == StringType_v2.MsbTermination)
+                return StringType.LengthPrefixedStringType((PrimitiveType)dt, PrimitiveType.Byte);
             throw new NotImplementedException();
         }
 
@@ -355,7 +357,14 @@ namespace Reko.Core
 
         public DataType VisitEnum(SerializedEnumType enumType)
         {
-            return PrimitiveType.Word32;
+            var members = enumType.Values
+                .ToSortedList(k => (long) k.Value, v => v.Name);
+            return new EnumType
+            {
+                Name = enumType.Name,
+                Size = enumType.Size,
+                Members = members
+            };
         }
 
         public DataType VisitTemplate(SerializedTemplate sTemplate)

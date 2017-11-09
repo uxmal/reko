@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Pascal;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,12 +52,41 @@ namespace Reko.Environments.MacOS
             var symbolTable = new SymbolTable(platform);
             var declarations = parser.Parse();
             var tldser = new TypeLibraryDeserializer(platform, true, dstLib);
-            foreach (var decl in declarations)
-            {
-                symbolTable.Add(decl);
-            }
-            EvaluateConstants(declarations);
+            var constants = EvaluateConstants(declarations);
+            var typeImporter = new TypeImporter(tldser, constants, dstLib);
+            LoadTypes(declarations, typeImporter);
+            LoadServices(declarations, typeImporter, constants, tldser);
             return dstLib;
+        }
+
+        private void LoadServices(
+            List<Declaration> declarations, 
+            TypeImporter typeImporter,
+            IDictionary<string, Constant> constants,
+            TypeLibraryDeserializer tldser)
+        {
+            foreach (var decl in declarations.OfType<CallableDeclaration>())
+            {
+                var ft = (SerializedSignature) decl.Accept(typeImporter);
+                var inline = decl.Body as InlineMachineCode;
+                if (inline == null)
+                    continue;
+                var ici = new InlineCodeInterpreter(constants);
+                var syscall =  ici.BuildSystemCallFromMachineCode(decl.Name, ft, inline.Opcodes);
+                if (syscall != null)
+                {
+                    tldser.LoadService(syscall);
+                }
+            }
+        }
+
+        private void LoadTypes(List<Declaration> declarations, TypeImporter typeImporter)
+        {
+            var decls = new Dictionary<string, PascalType>(StringComparer.OrdinalIgnoreCase);
+            foreach (var typedef in declarations.OfType<TypeDeclaration>())
+            {
+                typedef.Accept(typeImporter);
+            }
         }
 
         private Dictionary<string,Constant> EvaluateConstants(IEnumerable<Declaration> decls)

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using Reko.Core.Pascal;
 using Reko.Core.Types;
 using System;
@@ -47,6 +48,16 @@ namespace Reko.Environments.MacOS
 
         public Constant VisitBinExp(BinExp binExp)
         {
+            var cLeft = binExp.Left.Accept(this);
+            if (!cLeft.IsValid)
+                return cLeft;
+            var cRight = binExp.Right.Accept(this);
+            if (!cRight.IsValid)
+                return cRight;
+            if (binExp.Op == TokenType.Minus)
+            {
+                return Operator.ISub.ApplyConstants(cLeft, cRight);
+            }
             throw new NotImplementedException();
         }
 
@@ -105,7 +116,7 @@ namespace Reko.Environments.MacOS
 
         public Constant VisitNumericLiteral(NumericLiteral number)
         {
-            return Constant.Create(PrimitiveType.Int64, number.n);
+            return Constant.Create(PrimitiveType.Int64, number.Value);
         }
 
         public Constant VisitPointerType(Core.Pascal.Pointer pointer)
@@ -160,6 +171,13 @@ namespace Reko.Environments.MacOS
 
         public Constant VisitUnaryExp(UnaryExp unaryExp)
         {
+            var c = unaryExp.exp.Accept(this);
+            if (!c.IsValid)
+                return c;
+            if (unaryExp.op == TokenType.Minus)
+            {
+                return Operator.Neg.ApplyConstant(c);
+            }
             throw new NotImplementedException();
         }
     }

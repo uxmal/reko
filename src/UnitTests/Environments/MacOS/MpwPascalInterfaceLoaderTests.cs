@@ -43,7 +43,34 @@ namespace Reko.UnitTests.Environments.MacOS
             var platform = new MacOSClassic(null, new M68kArchitecture());
             var tlib = new TypeLibrary();
             var tlibNew =  mpwl.Load(platform, tlib);
-            
+        }
+
+        [Test]
+        public void Mpwl_PascalService()
+        {
+            var bytes = Encoding.ASCII.GetBytes(
+@"UNIT test; INTERFACE 
+TYPE
+Point = RECORD
+    x: INTEGER;
+    y: INTEGER;
+END;
+EventRecord = RECORD
+    what: INTEGER;
+    message: LONGINT;
+    when: LONGINT;
+    where: Point;
+    modifiers: INTEGER;
+END; 
+FUNCTION GetNextEvent(eventMask: INTEGER;VAR theEvent: EventRecord): BOOLEAN; INLINE $A970;
+END.");
+            var mpwl = new MpwPascalInterfaceLoader(null, "foo.pas", bytes);
+            var platform = new MacOSClassic(null, new M68kArchitecture());
+            var tlib = new TypeLibrary();
+            var tlibNew = mpwl.Load(platform, tlib);
+
+            var svc = tlibNew.Modules.Values.First().ServicesByVector[0xA970];
+            Assert.AreEqual("Register BOOLEAN GetNextEvent(Stack int16 eventMask, Stack (ref EventRecord) theEvent)", svc.Signature.ToString(svc.Name));
         }
     }
 }

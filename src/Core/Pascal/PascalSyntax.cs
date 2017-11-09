@@ -153,18 +153,23 @@ namespace Reko.Core.Pascal
 
     public class NumericLiteral : Exp
     {
-        public long n;
+        public long Value;
 
-        public NumericLiteral(long n) { this.n = n; }
+        public NumericLiteral(long n) { this.Value = n; }
 
         public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
         {
             return visitor.VisitNumericLiteral(this);
         }
 
+        public Exp ToList()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Write(TextWriter writer)
         {
-            writer.Write(n);
+            writer.Write(Value);
         }
 
     }
@@ -220,15 +225,15 @@ namespace Reko.Core.Pascal
 
     public class BinExp : Exp
     {
-        private TokenType op;
-        private Exp term1;
-        private Exp right;
+        public TokenType Op;
+        public Exp Left;
+        public Exp Right;
 
         public BinExp(TokenType op, Exp left, Exp right)
         {
-            this.op = op;
-            this.term1 = left;
-            this.right = right;
+            this.Op = op;
+            this.Left = left;
+            this.Right = right;
         }
 
         public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
@@ -239,13 +244,13 @@ namespace Reko.Core.Pascal
         public override void Write(TextWriter writer)
         {
             writer.Write("(");
-            term1.Write(writer);
-            switch (op)
+            Left.Write(writer);
+            switch (Op)
             {
             case TokenType.Minus: writer.Write(" - "); break;
-            default: writer.Write(op.ToString()); break;
+            default: writer.Write(Op.ToString()); break;
             }
-            right.Write(writer);
+            Right.Write(writer);
             writer.Write(")");
         }
     }
@@ -478,7 +483,10 @@ namespace Reko.Core.Pascal
             }
             PascalSyntax.WriteList(writer, ", ", decl.ParameterNames, (w, s) => w.Write(s));
             writer.Write(" : ");
-            decl.Type.Write(writer);
+            if (decl.Type == null)
+                writer.Write("(NULL)");
+            else 
+                decl.Type.Write(writer);
         }
     }
 
@@ -552,7 +560,7 @@ namespace Reko.Core.Pascal
             var i = opcode as NumericLiteral;
             if (i != null)
             {
-                w.Write("${0:X4}", i.n);
+                w.Write("${0:X4}", i.Value);
             }
             else
             {
