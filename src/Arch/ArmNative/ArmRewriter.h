@@ -148,5 +148,7 @@ private:
 #if _DEBUG || DEBUG
 	void EmitUnitTest();
 	static int opcode_seen[];
+#else 
+	void EmitUnitTest() {}
 #endif
 };
