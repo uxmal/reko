@@ -69,7 +69,7 @@ END.");
             var tlib = new TypeLibrary();
             var tlibNew = mpwl.Load(platform, tlib);
 
-            var svc = tlibNew.Modules.Values.First().ServicesByVector[0xA970];
+            var svc = mpwl.ALineTraps[0xA970].First(s => s.SyscallInfo.Matches(0xA970, null));
             Assert.AreEqual("Register BOOLEAN GetNextEvent(Stack int16 eventMask, Stack (ref EventRecord) theEvent)", svc.Signature.ToString(svc.Name));
         }
     }

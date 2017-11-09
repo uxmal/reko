@@ -39,10 +39,10 @@ namespace Reko.Environments.MacOS
             : base(services, filename, bytes)
         {
             this.bytes = bytes;
-            this.SystemServices = new Dictionary<int, SystemService>();
+            this.ALineTraps = new Dictionary<int, List<SystemService>>();
         }
 
-        public Dictionary<int, SystemService> SystemServices { get; private set; }
+        public Dictionary<int, List<SystemService>> ALineTraps { get; private set; }
 
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
@@ -55,7 +55,7 @@ namespace Reko.Environments.MacOS
             var constants = EvaluateConstants(declarations);
             var typeImporter = new TypeImporter(tldser, constants, dstLib);
             LoadTypes(declarations, typeImporter);
-            LoadServices(declarations, typeImporter, constants, tldser);
+            LoadServices(declarations, typeImporter, constants, platform, dstLib);
             return dstLib;
         }
 
@@ -63,7 +63,8 @@ namespace Reko.Environments.MacOS
             List<Declaration> declarations, 
             TypeImporter typeImporter,
             IDictionary<string, Constant> constants,
-            TypeLibraryDeserializer tldser)
+            IPlatform platform,
+            TypeLibrary typelib)
         {
             foreach (var decl in declarations.OfType<CallableDeclaration>())
             {
@@ -75,7 +76,14 @@ namespace Reko.Environments.MacOS
                 var syscall =  ici.BuildSystemCallFromMachineCode(decl.Name, ft, inline.Opcodes);
                 if (syscall != null)
                 {
-                    tldser.LoadService(syscall);
+                    var svc = syscall.Build(platform, typelib);
+                    List<SystemService> svcs;
+                    if (!this.ALineTraps.TryGetValue(svc.SyscallInfo.Vector, out svcs))
+                    {
+                        svcs = new List<SystemService>();
+                        this.ALineTraps.Add(svc.SyscallInfo.Vector, svcs);
+                    }
+                    svcs.Add(svc);
                 }
             }
         }
