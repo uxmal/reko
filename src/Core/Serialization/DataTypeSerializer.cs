@@ -50,7 +50,16 @@ namespace Reko.Core.Serialization
 
         public SerializedType VisitEnum(EnumType e)
         {
-            throw new NotImplementedException();
+            var members = e.Members != null
+                ? e.Members.Select(
+                    m => new SerializedEnumValue { Name = m.Key, Value = (int)m.Value })
+                    .ToArray()
+                : null;
+            return new SerializedEnumType
+            {
+                Name = e.Name,
+                Values = members,
+            };
         }
 
         public SerializedType VisitEquivalenceClass(EquivalenceClass eq)
