@@ -5156,15 +5156,15 @@ T_691: (in V_69 : byte)
   Class: Eq_691
   DataType: byte
   OrigDataType: byte
-T_692: (in d1_71 : word32)
+T_692: (in a1_71 : word32)
   Class: Eq_692
   DataType: word32
   OrigDataType: word32
-T_693: (in a1_72 : word32)
+T_693: (in a5_72 : word32)
   Class: Eq_693
   DataType: word32
   OrigDataType: word32
-T_694: (in a5_73 : word32)
+T_694: (in d1_73 : word32)
   Class: Eq_694
   DataType: word32
   OrigDataType: word32

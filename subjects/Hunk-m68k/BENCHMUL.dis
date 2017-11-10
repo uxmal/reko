@@ -842,12 +842,12 @@ l0000136A:
 	byte ZN_69
 	byte C_70
 	byte V_71
-	word32 d1_74
-	word32 a1_75
-	word32 a5_76
+	word32 a1_74
+	word32 a5_75
+	word32 d1_76
 	call Mem0[a3_23:word32] (retsize: 4; depth: 12)
 		uses: a1,a2_57,a3_56,a5,a6,a7_5,C_52,CVZN_10,d0_9,d1,d7,dwLoc04_4,dwLoc08_7,dwLoc0C,dwLoc10,V_53,Z_51,ZN_50
-		defs: a1_75,a2_65,a3_64,a5_76,a6_73,a7_63,C_70,CVZN_67,d0_66,d1_74,d7_72,V_71,Z_68,ZN_69
+		defs: a1_74,a2_65,a3_64,a5_75,a6_73,a7_63,C_70,CVZN_67,d0_66,d1_76,d7_72,V_71,Z_68,ZN_69
 	branch Mem0[a3_23:word32] != 0x00000000 l0000136A
 // DataOut: a3 a6 d7
 // DataOut (flags): 

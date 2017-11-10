@@ -361,9 +361,9 @@ void fn00001354(int32 d7, Eq_26 * a3, Eq_108 a6, int32 dwArg04, Eq_68 * dwArg08)
 			byte ZN_69;
 			byte C_70;
 			byte V_71;
-			word32 d1_74;
-			word32 a1_75;
-			word32 a5_76;
+			word32 a1_74;
+			word32 a5_75;
+			word32 d1_76;
 			(*a3_23)();
 		} while (*a3_23 != null);
 	}
