@@ -140,7 +140,6 @@ namespace Reko.Core
         /// <returns></returns>
         RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs);
 
-        RegisterStorage GetPart(RegisterStorage reg, DataType width);
         RegisterStorage[] GetRegisters();                   // Returns all registers of this architecture.
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
@@ -251,11 +250,6 @@ namespace Reko.Core
         public virtual RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
             return (offset == 0 && reg.BitSize == (ulong)width) ? reg : null;
-        }
-
-        public virtual RegisterStorage GetPart(RegisterStorage reg, DataType dt)
-        {
-            return GetSubregister(reg, 0, dt.BitSize);
         }
 
         public virtual RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs) { return (regs.Contains(reg)) ? reg : null; }
