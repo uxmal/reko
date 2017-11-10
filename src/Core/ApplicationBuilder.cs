@@ -122,11 +122,11 @@ namespace Reko.Core
         /// <returns></returns>
         public Instruction CreateInstruction()
         {
+            var actuals = BindArguments(frame, sigCallee);
             var idOut = BindReturnValue();
             var dtOut = sigCallee.HasVoidReturn
                 ? VoidType.Instance
                 : sigCallee.ReturnValue.DataType;
-            var actuals = BindArguments(frame, sigCallee);
             Expression appl = new Application(
                 callee,
                 dtOut,

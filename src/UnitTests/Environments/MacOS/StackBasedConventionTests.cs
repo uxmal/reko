@@ -53,7 +53,39 @@ namespace Reko.UnitTests.Environments.MacOS
         {
             var sbcc = new StackBasedConvention(arch);
             sbcc.Generate(emitter, VoidType.Instance, null, new List<DataType> { PrimitiveType.Word32 });
-            Assert.AreEqual("Stk: 0 void (Stack +0004)", emitter.ToString());
+            Assert.AreEqual("Stk: 8 void (Stack +0004)", emitter.ToString());
+        }
+
+        [Test]
+        public void Sbcc_FnReturningValueOnStack()
+        {
+            var sbcc = new StackBasedConvention(arch);
+            sbcc.Generate(emitter, PrimitiveType.Int16, null, new List<DataType> { });
+            Assert.AreEqual("Stk: 4 Stack +0004 ()", emitter.ToString());
+        }
+
+        [Test]
+        public void Sbcc_FnTwoArgs()
+        {
+            var sbcc = new StackBasedConvention(arch);
+            sbcc.Generate(emitter, VoidType.Instance, null, new List<DataType> { PrimitiveType.Word32, PrimitiveType.Int16 });
+            Assert.AreEqual("Stk: 10 void (Stack +0006, Stack +0004)", emitter.ToString());
+        }
+
+        [Test]
+        public void Sbcc_FnTwoArgs_ReturningWord16()
+        {
+            var sbcc = new StackBasedConvention(arch);
+            sbcc.Generate(emitter, PrimitiveType.Word16, null, new List<DataType> { PrimitiveType.Word32, PrimitiveType.Int16 });
+            Assert.AreEqual("Stk: 10 Stack +000A (Stack +0006, Stack +0004)", emitter.ToString());
+        }
+
+        [Test]
+        public void Sbcc_FnTwoArgs_ReturningWord32()
+        {
+            var sbcc = new StackBasedConvention(arch);
+            sbcc.Generate(emitter, PrimitiveType.Word32, null, new List<DataType> { PrimitiveType.Word32, PrimitiveType.Int16 });
+            Assert.AreEqual("Stk: 10 Stack +000A (Stack +0006, Stack +0004)", emitter.ToString());
         }
     }
 }
