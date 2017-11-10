@@ -115,6 +115,9 @@ namespace Reko.Analysis
         {
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures(eventListener);
+
+            IntraBlockDeadRegisters.Apply(program, eventListener);
+
             var ssts = RewriteProceduresToSsa();
 
             // Discover ssaId's that are live out at each call site.

@@ -10,14 +10,14 @@ void fn0C00_0000(word32 eax, word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem11[ds:0x0300:word32] = 0x00000000 - (-eax == 0x00000000)
-	Mem13[ds:0x0202:word16] = -Mem11[ds:0x0202:word16]
-	word16 v8_16 = -Mem13[ds:0x0200:word16]
-	Mem17[ds:0x0200:word16] = v8_16
-	Mem23[ds:0x0308:word32] = 0x00000000 - (v8_16 == 0x0000)
-	Mem26[ds:0x0304:word16] = ~bx
-	Mem28[ds:0x0204:word16] = ~Mem26[ds:0x0204:word16]
-	Mem35[ds:0x0306:word16] = 0x03E8 - Mem28[ds:0x0304:word16]
+	Mem9[ds:0x0300:word32] = 0x00000000 - (-eax == 0x00000000)
+	Mem11[ds:0x0202:word16] = -Mem9[ds:0x0202:word16]
+	word16 v8_12 = -Mem11[ds:0x0200:word16]
+	Mem13[ds:0x0200:word16] = v8_12
+	Mem17[ds:0x0308:word32] = 0x00000000 - (v8_12 == 0x0000)
+	Mem20[ds:0x0304:word16] = ~bx
+	Mem22[ds:0x0204:word16] = ~Mem20[ds:0x0204:word16]
+	Mem28[ds:0x0306:word16] = 0x03E8 - Mem22[ds:0x0304:word16]
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

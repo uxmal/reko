@@ -10,14 +10,14 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 dx_9 = Mem0[ds:Mem0[ds:0x9CFD:word16] * 0x0002 + 0x99F8:word16]
-	Mem10[ds:0x9CFF:word16] = dx_9
-	word16 ax_22
-	msdos_read_file(Mem10[ds:0x99D0:word16], 0x0180, SEQ(0x6041, dx_9), out ax_22)
-	msdos_close_file(Mem17[ds:0x99D0:word16])
-	Mem33[ds:0xC36A:word16] = Mem17[ds:Mem17[ds:0x9CFD:word16] * 0x0002 + 0x542E:word16]
-	Mem41[ds:0x0100:word16] = ds
-	Mem43[ds:0x0102:word16] = 0x6041
+	word16 dx_8 = Mem0[ds:Mem0[ds:0x9CFD:word16] * 0x0002 + 0x99F8:word16]
+	Mem9[ds:0x9CFF:word16] = dx_8
+	word16 ax_20
+	msdos_read_file(Mem9[ds:0x99D0:word16], 0x0180, SEQ(0x6041, dx_8), out ax_20)
+	msdos_close_file(Mem16[ds:0x99D0:word16])
+	Mem31[ds:0xC36A:word16] = Mem16[ds:Mem16[ds:0x9CFD:word16] * 0x0002 + 0x542E:word16]
+	Mem39[ds:0x0100:word16] = ds
+	Mem41[ds:0x0102:word16] = 0x6041
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

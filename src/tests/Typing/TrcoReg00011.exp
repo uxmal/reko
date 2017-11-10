@@ -15,17 +15,17 @@ void fn0C00_0004()
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	byte al_29 = 0xE1
-	word16 bx_35 = 0x0FFF
-	byte bl_11 = 0xFF
+	byte al_20 = 0xE1
+	word16 bx_25 = 0x0FFF
+	byte bl_10 = 0xFF
 	// succ:  l0C00_000C
 l0C00_000C:
-	word16 bx_36 = DPB(bx_35, bl_11, 0)
-	al_29 = al_29 | 0x4D
-	Mem37[0x4DE1:bx_36 + 0x0000:byte] = al_29
-	bx_35 = bx_36 - 0x0001
-	bl_11 = (byte) (bx_36 - 0x0001) (alias)
-	branch bx_36 >= 0x0001 l0C00_000C
+	word16 bx_26 = DPB(bx_25, bl_10, 0)
+	al_20 = al_20 | 0x4D
+	Mem27[0x4DE1:bx_26 + 0x0000:byte] = al_20
+	bx_25 = bx_26 - 0x0001
+	bl_10 = (byte) (bx_26 - 0x0001) (alias)
+	branch bx_26 >= 0x0001 l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:
 	return
@@ -39,7 +39,7 @@ T_2 (in fn0C00_0004 : ptr32)
 	trait_func( -> T_4)
 T_4 (in fn0C00_0004() : void)
 	trait_primitive(void)
-T_5 (in al_29 : byte)
+T_5 (in al_20 : byte)
 	trait_primitive(byte)
 	trait_equal(T_6)
 	trait_primitive(byte)
@@ -49,7 +49,7 @@ T_5 (in al_29 : byte)
 	trait_primitive(byte)
 T_6 (in 0xE1 : byte)
 	trait_primitive(byte)
-T_7 (in bx_35 : word16)
+T_7 (in bx_25 : word16)
 	trait_primitive(word16)
 	trait_equal(T_8)
 	trait_primitive(word16)
@@ -58,7 +58,7 @@ T_7 (in bx_35 : word16)
 	trait_equal(T_20)
 T_8 (in 0x0FFF : word16)
 	trait_primitive(word16)
-T_9 (in bl_11 : byte)
+T_9 (in bl_10 : byte)
 	trait_primitive(byte)
 	trait_equal(T_10)
 	trait_primitive(byte)
@@ -67,7 +67,7 @@ T_9 (in bl_11 : byte)
 	trait_equal(T_22)
 T_10 (in 0xFF : byte)
 	trait_primitive(byte)
-T_11 (in bx_36 : word16)
+T_11 (in bx_26 : word16)
 	trait_primitive(word16)
 	trait_equal(T_12)
 	trait_primitive(word16)
@@ -77,19 +77,19 @@ T_11 (in bx_36 : word16)
 	trait_primitive(word16)
 	trait_equal(T_19)
 	trait_primitive(int16)
-T_12 (in DPB(bx_35, bl_11, 0) : word16)
+T_12 (in DPB(bx_25, bl_10, 0) : word16)
 	trait_primitive(word16)
 T_13 (in 0x4D : byte)
 	trait_primitive(byte)
-T_14 (in al_29 | 0x4D : byte)
+T_14 (in al_20 | 0x4D : byte)
 	trait_primitive(byte)
 T_15 (in 0x4DE1 : selector)
 	trait_primitive(selector)
 T_16 (in 0x0000 : word16)
 	trait_primitive(word16)
-T_17 (in bx_36 + 0x0000 : word16)
+T_17 (in bx_26 + 0x0000 : word16)
 	trait_primitive(word16)
-T_18 (in Mem37[0x4DE1:bx_36 + 0x0000:byte] : byte)
+T_18 (in Mem27[0x4DE1:bx_26 + 0x0000:byte] : byte)
 	trait_primitive(byte)
 	trait_equal(T_5)
 T_19 (in 0x0001 : word16)
@@ -97,11 +97,11 @@ T_19 (in 0x0001 : word16)
 	trait_primitive(word16)
 	trait_primitive(word16)
 	trait_primitive(int16)
-T_20 (in bx_36 - 0x0001 : word16)
+T_20 (in bx_26 - 0x0001 : word16)
 	trait_primitive(word16)
-T_21 (in bx_36 - 0x0001 : word16)
+T_21 (in bx_26 - 0x0001 : word16)
 	trait_primitive(word16)
-T_22 (in (byte) (bx_36 - 0x0001) : byte)
+T_22 (in (byte) (bx_26 - 0x0001) : byte)
 	trait_primitive(byte)
-T_23 (in bx_36 >= 0x0001 : bool)
+T_23 (in bx_26 >= 0x0001 : bool)
 	trait_primitive(bool)

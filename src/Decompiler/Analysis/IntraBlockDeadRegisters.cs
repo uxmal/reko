@@ -292,7 +292,7 @@ namespace Reko.Analysis
 
         public bool VisitDeclaration(Declaration decl)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool VisitDefInstruction(DefInstruction def)

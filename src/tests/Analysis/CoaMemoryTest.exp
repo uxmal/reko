@@ -4,36 +4,35 @@ Top_3: orig: Top
 ds:ds
     def:  def ds
     uses: ax_7 = Mem0[ds:bx + 0x0004:word16]
-          Mem10[ds:bx + 0x0006:word16] = ax_7 *s ax_7
-          Mem13[ds:si + 0x04D4:word16] = si + 0x0002
+          Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
+          Mem12[ds:si + 0x04D4:word16] = si + 0x0002
 bx:bx
     def:  def bx
     uses: ax_7 = Mem0[ds:bx + 0x0004:word16]
-          Mem10[ds:bx + 0x0006:word16] = ax_7 *s ax_7
+          Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
 Mem0:Global
     def:  def Mem0
     uses: ax_7 = Mem0[ds:bx + 0x0004:word16]
 ax_7: orig: ax
     def:  ax_7 = Mem0[ds:bx + 0x0004:word16]
-    uses: Mem10[ds:bx + 0x0006:word16] = ax_7 *s ax_7
-          Mem10[ds:bx + 0x0006:word16] = ax_7 *s ax_7
+    uses: Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
+          Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
 ax_8: orig: ax
-SCZO_9: orig: SCZO
-Mem10: orig: Mem0
-    def:  Mem10[ds:bx + 0x0006:word16] = ax_7 *s ax_7
+Mem9: orig: Mem0
+    def:  Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
 si:si
     def:  def si
-    uses: Mem13[ds:si + 0x04D4:word16] = si + 0x0002
-          Mem13[ds:si + 0x04D4:word16] = si + 0x0002
-bx_12: orig: bx
-Mem13: orig: Mem0
-    def:  Mem13[ds:si + 0x04D4:word16] = si + 0x0002
-ax_14: orig: ax
-SZO_15: orig: SZO
-C_16: orig: C
-O_17: orig: O
-S_18: orig: S
-Z_19: orig: Z
+    uses: Mem12[ds:si + 0x04D4:word16] = si + 0x0002
+          Mem12[ds:si + 0x04D4:word16] = si + 0x0002
+bx_11: orig: bx
+Mem12: orig: Mem0
+    def:  Mem12[ds:si + 0x04D4:word16] = si + 0x0002
+ax_13: orig: ax
+SZO_14: orig: SZO
+C_15: orig: C
+O_16: orig: O
+S_17: orig: S
+Z_18: orig: Z
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 bx, word16 si, selector ds)
@@ -45,8 +44,8 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_7 = Mem0[ds:bx + 0x0004:word16]
-	Mem10[ds:bx + 0x0006:word16] = ax_7 *s ax_7
-	Mem13[ds:si + 0x04D4:word16] = si + 0x0002
+	Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
+	Mem12[ds:si + 0x04D4:word16] = si + 0x0002
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

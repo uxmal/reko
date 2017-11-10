@@ -8,13 +8,13 @@ Mem7: orig: Mem0
 sp_8: orig: sp
 di:di
     def:  def di
-    uses: di_25 = PHI(di, di_28)
+    uses: di_25 = PHI(di, di_27)
 Mem10: orig: Mem0
     uses: si_26 = si_15 + Mem10[ds:di_25:word16]
 si_11: orig: si
     def:  si_11 = 0x0000
     uses: si_15 = PHI(si_11, si_26)
-S_38: orig: S
+S_37: orig: S
 SCZO_13: orig: SCZO
 Z_14: orig: Z
 si_15: orig: si
@@ -24,26 +24,25 @@ si_15: orig: si
 ax_16: orig: ax
     def:  ax_16 = si_15
     uses: return ax_16
-C_36: orig: C
-O_37: orig: O
-wLoc04_33: orig: wLoc04
+C_35: orig: C
+O_36: orig: O
+wLoc04_32: orig: wLoc04
 di_20: orig: di
 sp_21: orig: sp
 si_22: orig: si
 sp_23: orig: sp
-wLoc02_32: orig: wLoc02
+wLoc02_31: orig: wLoc02
 di_25: orig: di
-    def:  di_25 = PHI(di, di_28)
+    def:  di_25 = PHI(di, di_27)
     uses: si_26 = si_15 + Mem10[ds:di_25:word16]
-          di_28 = di_25 + 0x0002
+          di_27 = di_25 + 0x0002
 si_26: orig: si
     def:  si_26 = si_15 + Mem10[ds:di_25:word16]
     uses: si_15 = PHI(si_11, si_26)
-SCZO_27: orig: SCZO
-di_28: orig: di
-    def:  di_28 = di_25 + 0x0002
-    uses: di_25 = PHI(di, di_28)
-SCZO_29: orig: SCZO
+di_27: orig: di
+    def:  di_27 = di_25 + 0x0002
+    uses: di_25 = PHI(di, di_27)
+SCZO_28: orig: SCZO
 cx:cx
     def:  def cx
     uses: branch cx == 0x0000 l0C00_001A
@@ -62,13 +61,13 @@ l0C00_0008:
 	si_11 = 0x0000
 	// succ:  l0C00_000D
 l0C00_000D:
-	di_25 = PHI(di, di_28)
+	di_25 = PHI(di, di_27)
 	si_15 = PHI(si_11, si_26)
 	branch cx == 0x0000 l0C00_001A
 	// succ:  l0C00_0012 l0C00_001A
 l0C00_0012:
 	si_26 = si_15 + Mem10[ds:di_25:word16]
-	di_28 = di_25 + 0x0002
+	di_27 = di_25 + 0x0002
 	goto l0C00_000D
 	// succ:  l0C00_000D
 l0C00_001A:
