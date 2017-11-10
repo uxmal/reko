@@ -181,6 +181,7 @@ namespace Reko.Core
             this.FlagGroupBits = grfMask;
             this.Name = name;
             this.DataType = dataType;
+            this.BitSize = (uint)dataType.BitSize;
         }
 
         public FlagRegister FlagRegister { get; private set; }

@@ -104,9 +104,10 @@ namespace Reko.Analysis
             this.procFlow = flow[ssa.Procedure];
             this.ssa = ssa;
             this.ignoreUseInstructions = false;
-            if ((sid.Identifier.Storage is RegisterStorage ||
+            if (sid.Identifier.Storage is RegisterStorage ||
                  sid.Identifier.Storage is StackArgumentStorage ||
-                 sid.Identifier.Storage is FpuStackStorage))
+                 sid.Identifier.Storage is FpuStackStorage ||
+                 sid.Identifier.Storage is FlagGroupStorage)
             {
                 var n = Classify(sid);
                 return n;
