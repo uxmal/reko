@@ -389,7 +389,7 @@ namespace Reko.Arch.X86
 
         private void RewriteEnter()
         {
-            var bp = orw.AluRegister(arch.GetPart(Registers.ebp, instrCur.dataWidth));
+            var bp = orw.AluRegister(arch.GetSubregister(Registers.ebp, 0, instrCur.dataWidth.BitSize));
             RewritePush(instrCur.dataWidth, bp);
             var sp = StackPointer();
             m.Assign(bp, sp);
@@ -563,7 +563,7 @@ namespace Reko.Arch.X86
         private void RewriteLeave()
         {
             var sp = orw.AluRegister(arch.StackRegister);
-            var bp = orw.AluRegister(arch.GetPart(Registers.rbp, arch.StackRegister.DataType));
+            var bp = orw.AluRegister(arch.GetSubregister(Registers.rbp, 0, arch.StackRegister.DataType.BitSize));
             m.Assign(sp, bp);
             m.Assign(bp, orw.StackAccess(sp, bp.DataType));
             m.Assign(sp, m.IAdd(sp, bp.DataType.Size));
