@@ -35,11 +35,11 @@ namespace Reko.Environments.MacOS
     /// the return value before pushing any parameters. The caller then passes
     /// parameters from left to right.
     /// </remarks>
-    public class StackBasedConvention : CallingConvention
+    public class PascalCallingConvention : CallingConvention
     {
         private M68kArchitecture arch;
 
-        public StackBasedConvention(M68kArchitecture arch)
+        public PascalCallingConvention(M68kArchitecture arch)
         {
             this.arch = arch;
         }
