@@ -57,18 +57,17 @@ namespace Reko.Arch.M68k
 
         public override M68kInstruction DisassembleInstruction()
         {
-            if (!rdr.IsValid)
-                return null;
             var addr = rdr.Address;
+            if (!rdr.TryReadBeUInt16(out instruction))
+                return null;
             var offset = rdr.Offset;
+            OpRec handler = g_instruction_table[instruction];
             try
             {
                 instr = new M68kInstruction { Address = addr };
-                instruction = rdr.ReadBeUInt16();
-                g_opcode_type = 0;
-
-                OpRec handler = g_instruction_table[instruction];
                 instr = handler.opcode_handler(this);
+                instr.Address = addr;
+                instr.Length = (int)(rdr.Address - addr);
             }
             catch
             {
@@ -80,10 +79,7 @@ namespace Reko.Arch.M68k
                 instr.Address = addr;
                 instr.Length = 2;
                 rdr.Offset = offset + 2;
-                return instr;
             }
-            instr.Address = addr;
-            instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
 
@@ -189,12 +185,6 @@ namespace Reko.Arch.M68k
         private static bool EXT_OUTER_DISPLACEMENT_LONG(uint A) { return (((A) & 3) == 3 && ((A) & 0x47) < 0x44); }
 
 
-        // Opcode flags 
-        private uint COMBINE_OPCODE_FLAGS(uint x) { return ((x) | g_opcode_type | DASMFLAG_SUPPORTED); }
-        private const uint DASMFLAG_SUPPORTED = 0;
-        private const uint DASMFLAG_STEP_OVER = 1;
-        private const uint DASMFLAG_STEP_OUT = 2;
-
         /// <summary>
         /// OpRecs provide the knowledge for how to decode a M68k instruction.
         /// </summary>
@@ -299,7 +289,6 @@ namespace Reko.Arch.M68k
         string g_dasm_str;              //string to hold disassembly: OBSOLETE
         internal ushort instruction;    // 16-bit instruction
         uint g_cpu_type = 0;
-        uint g_opcode_type;
 
         // 'Q'uick dasm.instructions contain patterns that map to integers.
         static uint[] g_3bit_qdata_table = new uint[8] 
@@ -514,7 +503,6 @@ namespace Reko.Arch.M68k
             uint extension;
             bool preindex;
             bool postindex;
-            bool comma = false;
             uint temp_value;
 
             /* Switch buffers so we don't clobber on a double-call to this function */
@@ -649,52 +637,6 @@ namespace Reko.Arch.M68k
                         preindex,
                         postindex);
                     return op;
-                    //mode = "(";
-                    //if (preindex || postindex)
-                    //    mode += "[";
-                    //if (@base != 0)
-                    //{
-                    //    if (EXT_BASE_DISPLACEMENT_LONG(extension))
-                    //    {
-                    //        mode += make_signed_hex_str_32(@base);
-                    //    }
-                    //    else
-                    //    {
-                    //        mode += make_signed_hex_str_16(@base);
-                    //    }
-                    //    comma = true;
-                    //}
-                    //if (base_reg != "")
-                    //{
-                    //    if (comma)
-                    //        mode += ",";
-                    //    mode += base_reg;
-                    //    comma = true;
-                    //}
-                    //if (postindex)
-                    //{
-                    //    mode += "]";
-                    //    comma = true;
-                    //}
-                    //if (index_reg != "")
-                    //{
-                    //    if (comma)
-                    //        mode += ",";
-                    //    mode += index_reg;
-                    //    comma = true;
-                    //}
-                    //if (preindex)
-                    //{
-                    //    mode += "]";
-                    //    comma = true;
-                    //}
-                    //if (outer != 0)
-                    //{
-                    //    if (comma)
-                    //        mode += ",";
-                    //    mode += make_signed_hex_str_16(outer);
-                    //}
-                    //mode += ")";
                 }
                 else
                 {
@@ -708,11 +650,6 @@ namespace Reko.Arch.M68k
                     return new IndexedOperand(dataWidth, null, null, regBase, regIndex,
                         EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
                         1 << EXT_INDEX_SCALE(extension), false, false);
-                    //else
-                    //    mode = string.Format("({0},A{1},{2}{3}.{4}", make_signed_hex_str_8(extension), instruction & 7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
-                    //if (EXT_INDEX_SCALE(extension) != 0)
-                    //    mode += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
-                    //mode += ")";
                 }
             case 0x38:
                 // Absolute short address
@@ -771,9 +708,6 @@ namespace Reko.Arch.M68k
                         index_reg = EXT_INDEX_AR(extension)
                             ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
                             : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension));
-                        //    'A' : 'D', , EXT_INDEX_LONG(extension) ? 'l' : 'w');
-                        //if (EXT_INDEX_SCALE(extension) != 0)
-                        //    index_reg += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
                     }
                     else
                         index_reg =null;
@@ -785,46 +719,6 @@ namespace Reko.Arch.M68k
                         1 << EXT_INDEX_SCALE(extension),
                         preindex,
                         postindex);
-                    //mode = "(";
-                    //if (preindex || postindex)
-                    //    mode += "[";
-                    //if (@base != 0)
-                    //{
-                    //    mode += make_signed_hex_str_16(@base);
-                    //    comma = true;
-                    //}
-                    //if (base_reg != "")
-                    //{
-                    //    if (comma)
-                    //        mode += ",";
-                    //    mode += base_reg;
-                    //    comma = true;
-                    //}
-                    //if (postindex)
-                    //{
-                    //    mode += "]";
-                    //    comma = true;
-                    //}
-                    //if (index_reg != "")
-                    //{
-                    //    if (comma)
-                    //        mode += ",";
-                    //    mode += index_reg;
-                    //    comma = true;
-                    //}
-                    //if (preindex)
-                    //{
-                    //    mode += "]";
-                    //    comma = true;
-                    //}
-                    //if (outer != 0)
-                    //{
-                    //    if (comma)
-                    //        mode += ",";
-                    //    mode += make_signed_hex_str_16(outer);
-                    //}
-                    //mode += ")";
-                    break;
                 }
 
                 if (EXT_8BIT_DISPLACEMENT(extension) == 0)
@@ -839,7 +733,6 @@ namespace Reko.Arch.M68k
                 // Immediate 
                 return get_imm_str_u(dataWidth);
             }
-            //throw new /*NotImplementedException*/(string.Format("Effective address {0:X2} encoding not supported.", instruction & 0x3F));
             this.instr.code = Opcode.illegal;
             return null;
         }

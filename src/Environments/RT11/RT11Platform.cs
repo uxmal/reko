@@ -71,7 +71,7 @@ namespace Reko.Environments.RT11
         {
             base.EnsureTypeLibraries(PlatformIdentifier);
             int uVec = vector & 0xFFFF;
-            foreach (var svc in this.Metadata.Modules.Values.SelectMany(m => m.ServicesByVector.Values))
+            foreach (var svc in this.Metadata.Modules.Values.SelectMany(m => m.ServicesByOrdinal.Values))
             {
                 if (svc.SyscallInfo.Matches(uVec, state))
                 {

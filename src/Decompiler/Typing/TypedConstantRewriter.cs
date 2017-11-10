@@ -181,9 +181,9 @@ namespace Reko.Typing
 
         public Expression VisitEnum(EnumType e)
         {
-            string name;
-            if (e.Members.TryGetValue(c.ToInt64(), out name))
-                return new Identifier(name, e, RegisterStorage.None);
+            var item = e.Members.FirstOrDefault(de => de.Value == c.ToInt64());
+            if (item.Key != null)
+                return new Identifier(item.Key, e, RegisterStorage.None);
             return new Cast(e, c);
         }
 

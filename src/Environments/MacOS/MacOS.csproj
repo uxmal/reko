@@ -71,10 +71,16 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConstantEvaluator.cs" />
+    <Compile Include="InlineCodeInterpreter.cs" />
     <Compile Include="MacOSClassic.cs" />
     <Compile Include="MacOsRomanEncoding.cs" />
+    <Compile Include="MacsBugSymbolScanner.cs" />
+    <Compile Include="MpwPascalInterfaceLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceFork.cs" />
+    <Compile Include="StackBasedConvention.cs" />
+    <Compile Include="TypeImporter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\M68k\M68k.csproj">
@@ -107,6 +113,9 @@
     <Content Include="macos_classic.xml">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Mac MPW Interfaces 1991 PASCAL.pas" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

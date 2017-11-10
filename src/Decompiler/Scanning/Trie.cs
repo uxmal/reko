@@ -125,5 +125,5 @@ namespace Reko.Scanning
             }
 #endif
         }
-	}
+    }
 }

@@ -128,5 +128,37 @@ namespace Reko.UnitTests.Core
             var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("callee(0x00000000)", instr.ToString());//$BUG: obviously wrong
         }
-	}
+
+        [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
+        public void AppBld_BindStackReturnValue()
+        {
+            var caller = new Procedure("caller", new Frame(PrimitiveType.Pointer32));
+            var rand = new Procedure("rand", new Frame(PrimitiveType.Pointer32));
+            var ab = arch.CreateFrameApplicationBuilder(
+                caller.Frame,
+                new CallSite(4, 0),
+                new ProcedureConstant(PrimitiveType.Pointer32, rand));
+
+            var sig = FunctionType.Func(new Identifier("", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32)));
+            var instr = ab.CreateInstruction(sig, null);
+            Assert.AreEqual("Mem0[esp:int32] = rand()", instr.ToString());
+        }
+
+        [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
+        public void AppBld_BindStackReturnValue_WithArgs()
+        {
+            var caller = new Procedure("caller", new Frame(PrimitiveType.Pointer32));
+            var fputs = new Procedure("fputs", new Frame(PrimitiveType.Pointer32));
+            var ab = arch.CreateFrameApplicationBuilder(
+                caller.Frame,
+                new CallSite(4, 0),
+                new ProcedureConstant(PrimitiveType.Pointer32, fputs));
+            var sig = FunctionType.Func(
+                    new Identifier("", PrimitiveType.Int32, new StackArgumentStorage(12, PrimitiveType.Int32)),
+                    new Identifier("str", PrimitiveType.Pointer32, new StackArgumentStorage(8, PrimitiveType.Int32)),
+                    new Identifier("stm", PrimitiveType.Pointer32, new StackArgumentStorage(4, PrimitiveType.Int32)));
+            var instr = ab.CreateInstruction(sig, null);
+            Assert.AreEqual("Mem0[esp + 8:int32] = fputs(Mem0[esp + 4:int32], Mem0[esp:int32])", instr.ToString());
+        }
+    }
 }

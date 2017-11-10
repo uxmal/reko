@@ -487,7 +487,7 @@ namespace Reko.Scanning
             var site = OnBeforeCall(stackReg, call.ReturnAddressSize);
             FunctionType sig;
             ProcedureCharacteristics chr = null;
-            Address addr = call.Target as Address;
+            Address addr = CallTargetAsAddress(call);
             if (addr != null)
             {
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
@@ -561,12 +561,22 @@ namespace Reko.Scanning
                 return !EmitSystemServiceCall(syscall);
             }
 
+
             ProcessIndirectControlTransfer(ric.Address, call);
 
             var ic = new CallInstruction(call.Target, site);
             Emit(ic);
             sig = GuessProcedureSignature(ic);
             return OnAfterCall(sig, chr);
+        }
+
+        private Address CallTargetAsAddress(RtlCall call)
+        {
+            var addr = call.Target as Address;
+            if (addr != null)
+                return addr;
+            addr = program.Platform.ResolveIndirectCall(call);
+            return addr;
         }
 
         private bool GenerateCallToOutsideProcedure(CallSite site, Address addr)
@@ -640,20 +650,17 @@ namespace Reko.Scanning
                 return false;
             }
 
-            if (sigCallee != null)
+            if (sigCallee != null && sigCallee.StackDelta != 0)
             {
-                if (sigCallee.StackDelta != 0)
-                {
-                    Expression newVal = new BinaryExpression(
-                            Operator.IAdd,
-                            stackReg.DataType,
-                            stackReg,
-                            Constant.Create(
-                                PrimitiveType.CreateWord(stackReg.DataType.Size),
-                                sigCallee.StackDelta));
-                    newVal = newVal.Accept(eval);
-                    SetValue(stackReg, newVal);
-                }
+                Expression newVal = new BinaryExpression(
+                    Operator.IAdd,
+                    stackReg.DataType,
+                    stackReg,
+                    Constant.Create(
+                        PrimitiveType.CreateWord(stackReg.DataType.Size),
+                        sigCallee.StackDelta));
+                newVal = newVal.Accept(eval);
+                SetValue(stackReg, newVal);
             }
             state.OnAfterCall(sigCallee);
 

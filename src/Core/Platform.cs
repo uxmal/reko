@@ -121,6 +121,17 @@ namespace Reko.Core
         /// an ImageSymbol corresponding to the "real" user main procedure.</returns>
         ImageSymbol FindMainProcedure(Program program, Address addrStart);
 
+        /// <summary>
+        /// Given a vector and the current processor state, finds a system
+        /// service.
+        /// </summary>
+        /// <remarks>
+        /// This method is used to resolve system calls or traps where 
+        /// the actual service are selected by registers or stack values.
+        /// </remarks>
+        /// <param name="vector"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
         DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr);
@@ -142,6 +153,16 @@ namespace Reko.Core
         ProcedureCharacteristics LookupCharacteristicsByName(string procName);
         Address MakeAddressFromConstant(Constant c);
         Address MakeAddressFromLinear(ulong uAddr);
+
+        /// <summary>
+        /// Given an indirect call, attempt to resolve it into an address.
+        /// </summary>
+        /// <param name="instr"></param>
+        /// <returns>null if the call couldn't be resolved, or an Address to
+        /// what must be a procedure if the call could be resolved.
+        /// </returns>
+        Address ResolveIndirectCall(RtlCall instr);
+
         bool TryParseAddress(string sAddress, out Address addr);
         Dictionary<string, object> SaveUserOptions();
         ProcedureBase_v1 SignatureFromName(string importName);
@@ -447,6 +468,19 @@ namespace Reko.Core
                 return new ProcedureConstant(PointerType, ep);
             else
                 return null;
+        }
+
+
+        /// <summary>
+        /// Given an indirect call, attempt to resolve it into an address.
+        /// </summary>
+        /// <param name="instr"></param>
+        /// <returns>null if the call couldn't be resolved, or an Address to
+        /// what must be a procedure if the call could be resolved.
+        /// </returns>
+        public virtual Address ResolveIndirectCall(RtlCall instr)
+        {
+            return null;
         }
 
         public virtual ProcedureCharacteristics LookupCharacteristicsByName(string procName)

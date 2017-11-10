@@ -1949,7 +1949,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 FreeBpMem();
             }
-            else if(!softbp_t || tmpSizet > alloc_bp)
+            else if (!softbp_t || tmpSizet > alloc_bp)
             {
                 try
                 {

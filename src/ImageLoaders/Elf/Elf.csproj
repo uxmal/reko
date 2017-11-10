@@ -87,6 +87,7 @@
     <Compile Include="ProgramHeaderType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelaSegmentRenderer.cs" />
+    <Compile Include="Relocators\AlphaRelocator.cs" />
     <Compile Include="Relocators\ArmRelocator.cs" />
     <Compile Include="Relocators\AvrRelocator.cs" />
     <Compile Include="Relocators\ElfRelocator.cs" />

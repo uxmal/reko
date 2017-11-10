@@ -94,7 +94,6 @@ namespace Reko.Core
                 }
                 return ep;
             }
-
             return null;
         }
 
@@ -141,13 +140,12 @@ namespace Reko.Core
                     continue;
 
                 SystemService svc;
-                if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
+                if (mod.ServicesByOrdinal.TryGetValue(ordinal, out svc))
                 {
                     EnsureSignature(program, svc);
                     return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                 }
             }
-
             return platform.LookupProcedureByOrdinal(moduleName, ordinal);
         }
 
@@ -213,7 +211,7 @@ namespace Reko.Core
                     continue;
 
                 SystemService svc;
-                if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
+                if (mod.ServicesByOrdinal.TryGetValue(ordinal, out svc))
                 {
                     EnsureSignature(program, svc);
                     var ep = new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);

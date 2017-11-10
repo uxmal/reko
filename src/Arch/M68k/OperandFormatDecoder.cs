@@ -180,6 +180,11 @@ namespace Reko.Arch.M68k
 		{
             if (type.Size == 1)
             {
+                if (!rdr.IsValidOffset(rdr.Offset + 1))
+                {
+                    op = null;
+                    return false;
+                }
                 rdr.Offset += 1;    // skip a byte so we get the appropriate lsb byte and align the word stream.
             }
             Constant imm;

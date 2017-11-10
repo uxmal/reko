@@ -101,17 +101,11 @@ namespace Reko.Core
             return Emit(new SideEffect(side));
         }
 
-        public Statement Store32(Expression ea, int n)
-        {
-            return Store(ea, Word32(n));
-        }
-
         public Statement Store(Expression ea, Expression src)
         {
             Store s = new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, src.DataType), src);
             return Emit(s);
         }
-
 
         public Statement Store(MemoryIdentifier mid, Expression ea, Expression src)
         {

@@ -48,7 +48,7 @@ namespace Reko.Arch.Alpha
             if (!rdr.TryReadUInt32(out uInstr))
                 return null;
             var op = uInstr >> 26;
-            var instr = Oprecs[op].Decode(uInstr, this);
+            var instr = decoders[op].Decode(uInstr, this);
             instr.Address = addr;
             instr.Length = 4;
             return instr;
@@ -79,9 +79,13 @@ namespace Reko.Arch.Alpha
             return Nyi(uInstr, string.Format("{0:X2}_{1:X2}", uInstr >> 26, functionCode));
         }
 
+        // The correct decoder for this instruction has _n_ot _y_et been
+        // _i_mplemented, so fall back on generating an Invalid instruction.
         private AlphaInstruction Nyi(uint uInstr, string pattern)
         {
 #if DEBUG
+            // Emit the text of a unit test that can be pasted into the unit tests 
+            // for this disassembler.
             if (false && !seen.Contains(pattern))
             {
                 seen.Add(pattern);
@@ -93,17 +97,17 @@ namespace Reko.Arch.Alpha
             AssertCode(""AlphaDis_{1}"", 0x{0:X8}, ""@@@"", instr.ToString());
         }}
 ", uInstr, pattern);
-#endif
             }
+#endif
             return Invalid();
         }
 
-        private abstract class OpRecBase
+        private abstract class Decoder
         {
             public abstract AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm);
         }
 
-        private class MemOpRec : OpRecBase
+        private class MemOpRec : Decoder
         {
             private Opcode opcode;
 
@@ -126,7 +130,7 @@ namespace Reko.Arch.Alpha
             }
         }
 
-        private class FMemOpRec : OpRecBase
+        private class FMemOpRec : Decoder
         {
             private Opcode opcode;
 
@@ -149,7 +153,7 @@ namespace Reko.Arch.Alpha
             }
         }
 
-        private class JMemOpRec : OpRecBase
+        private class JMemOpRec : Decoder
         {
             private readonly static Opcode[] opcodes = {
                 Opcode.jmp, Opcode.jsr, Opcode.ret, Opcode.jsr_coroutine
@@ -171,7 +175,7 @@ namespace Reko.Arch.Alpha
         }
 
 
-        private class MemFnOpRec : OpRecBase
+        private class MemFnOpRec : Decoder
         {
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
@@ -179,7 +183,7 @@ namespace Reko.Arch.Alpha
             }
         }
 
-        private class BranchOpRec : OpRecBase
+        private class BranchOpRec : Decoder
         {
             private Opcode opcode;
 
@@ -202,7 +206,7 @@ namespace Reko.Arch.Alpha
             }
         }
 
-        private class FBranchOpRec : OpRecBase
+        private class FBranchOpRec : Decoder
         {
             private Opcode opcode;
 
@@ -227,7 +231,7 @@ namespace Reko.Arch.Alpha
 
 
 
-        private class RegOpRec : OpRecBase
+        private class RegOpRec : Decoder
         {
             private Opcode opcode;
 
@@ -253,7 +257,7 @@ namespace Reko.Arch.Alpha
             }
         }
 
-        private class OperateOpRec : OpRecBase
+        private class OperateOpRec : Decoder
         {
             private Dictionary<int, RegOpRec> decoders;
 
@@ -273,18 +277,18 @@ namespace Reko.Arch.Alpha
             }
         }
 
-        private class FOperateOpRec : OpRecBase
+        private class FOperateOpRec : Decoder
         {
-            private Dictionary<int, OpRecBase> decoders;
+            private Dictionary<int, Decoder> decoders;
 
-            public FOperateOpRec(Dictionary<int, OpRecBase> decoders)
+            public FOperateOpRec(Dictionary<int, Decoder> decoders)
             {
                 this.decoders = decoders;
             }
 
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                OpRecBase decoder;
+                Decoder decoder;
                 var functionCode = ((int)uInstr >> 5) & 0x7FF;
                 if (!decoders.TryGetValue(functionCode, out decoder))
                     return dasm.Nyi(uInstr, functionCode);
@@ -293,7 +297,7 @@ namespace Reko.Arch.Alpha
             }
         }
 
-        private class FRegOpRec : OpRecBase
+        private class FRegOpRec : Decoder
         {
             private Opcode opcode;
             public FRegOpRec(Opcode opcode)
@@ -316,7 +320,7 @@ namespace Reko.Arch.Alpha
             }
         }
 
-        private class PalOpRec : OpRecBase
+        private class PalOpRec : Decoder
         {
             private Dictionary<uint, Opcode> opcodes;
 
@@ -334,7 +338,7 @@ namespace Reko.Arch.Alpha
             }
         }
 
-        private class CvtOpRec : OpRecBase
+        private class CvtOpRec : Decoder
         {
             private Opcode opcode;
             public CvtOpRec(Opcode opcode)
@@ -355,7 +359,7 @@ namespace Reko.Arch.Alpha
             }
         }
 
-        private class InvalidOpRec : OpRecBase
+        private class InvalidOpRec : Decoder
         {
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
@@ -363,7 +367,7 @@ namespace Reko.Arch.Alpha
             }
         }
 
-        private class NyiOpRec : OpRecBase
+        private class NyiOpRec : Decoder
         {
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
@@ -371,7 +375,7 @@ namespace Reko.Arch.Alpha
             }
         }
 
-        private static OpRecBase[] oprecs = new OpRecBase[64]
+        private static Decoder[] decoders = new Decoder[64]
         {
             // 00
             new PalOpRec(new Dictionary<uint, Opcode>
@@ -475,7 +479,7 @@ namespace Reko.Arch.Alpha
                 { 0x60, new RegOpRec(Opcode.mulq_v) },
             }),
 
-            new FOperateOpRec(new Dictionary<int, OpRecBase> // 14
+            new FOperateOpRec(new Dictionary<int, Decoder> // 14
             {
                 { 0x004, new FRegOpRec(Opcode.itofs) },
                 { 0x00A, new FRegOpRec(Opcode.sqrtf_c) },
@@ -530,7 +534,7 @@ namespace Reko.Arch.Alpha
                 { 0x7EB, new FRegOpRec(Opcode.sqrtt_suid) },
 
             }),
-            new FOperateOpRec(new Dictionary<int, OpRecBase> // 15
+            new FOperateOpRec(new Dictionary<int, Decoder> // 15
             {
                 { 0x000, new FRegOpRec(Opcode.addf_c) },
                 { 0x001, new FRegOpRec(Opcode.subf_c) },
@@ -644,7 +648,7 @@ namespace Reko.Arch.Alpha
                 { 0x5AF, new CvtOpRec(Opcode.cvtgq_sv) },
 
             }),
-            new FOperateOpRec(new Dictionary<int, OpRecBase> // 16
+            new FOperateOpRec(new Dictionary<int, Decoder> // 16
             {
                 { 0x000, new FRegOpRec(Opcode.adds_c) },
                 { 0x001, new FRegOpRec(Opcode.subs_c) },
@@ -839,7 +843,7 @@ namespace Reko.Arch.Alpha
                 { 0x7FC, new CvtOpRec(Opcode.cvtqs_suid) },
                 { 0x7FE, new CvtOpRec(Opcode.cvtqt_suid) },
             }),
-            new FOperateOpRec(new Dictionary<int, OpRecBase>
+            new FOperateOpRec(new Dictionary<int, Decoder>
             {
                   { 0x010, new CvtOpRec(Opcode.cvtlq) },
                   //{ 0x020, new FRegOpRec(Opcode.fnop) },	_* pseudo */
@@ -922,18 +926,5 @@ namespace Reko.Arch.Alpha
             new BranchOpRec(Opcode.bge),
             new BranchOpRec(Opcode.bgt),
         };
-
-        private static OpRecBase[] Oprecs
-        {
-            get
-            {
-                return oprecs;
-            }
-
-            set
-            {
-                oprecs = value;
-            }
-        }
     }
 }

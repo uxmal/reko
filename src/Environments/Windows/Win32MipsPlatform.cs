@@ -179,7 +179,7 @@ namespace Reko.Environments.Windows
             if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
                 return null;
             SystemService svc;
-            if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
+            if (mod.ServicesByOrdinal.TryGetValue(ordinal, out svc))
             {
                 return new ExternalProcedure(svc.Name, svc.Signature);
             }

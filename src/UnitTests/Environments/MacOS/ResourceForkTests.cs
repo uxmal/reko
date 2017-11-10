@@ -24,6 +24,8 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using Reko.Arch.M68k;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.MacOS
 {
@@ -33,6 +35,9 @@ namespace Reko.UnitTests.Environments.MacOS
         [Test]
         public void ReadHeader()
         {
+            var arch = new M68kArchitecture();
+            var macOS = new MacOSClassic(new ServiceContainer(), arch);
+
             MemoryStream stm = new MemoryStream();
             WriteBeUint32(stm, 0x00000010);
             WriteBeUint32(stm, 0x00000020);
@@ -64,7 +69,7 @@ namespace Reko.UnitTests.Environments.MacOS
             stm.WriteByte(4);
             WriteAsciiString(stm, "Test");
 
-            ResourceFork rsrc = new ResourceFork(stm.GetBuffer(), new UnitTests.Mocks.FakeArchitecture());
+            ResourceFork rsrc = new ResourceFork(macOS, stm.GetBuffer());
             Assert.AreEqual(1, rsrc.ResourceTypes.Count);
             IEnumerator<ResourceFork.ResourceType> ert = rsrc.ResourceTypes.GetEnumerator();
             Assert.IsTrue(ert.MoveNext());

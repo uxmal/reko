@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Analysis
             Given_FakeWin32Platform(mr);
             this.platform.Stub(p => p.ResolveImportByName(null, null)).IgnoreArguments().Return(null);
             this.platform.Stub(p => p.DataTypeFromImportName(null)).IgnoreArguments().Return(null);
-
+            this.platform.Stub(p => p.ResolveIndirectCall(null)).IgnoreArguments().Return(null);
             mr.ReplayAll();
 
 			RunFileTest_x86_32("Fragments/import32/GlobalHandle.asm", "Analysis/WebGlobalHandle.txt");

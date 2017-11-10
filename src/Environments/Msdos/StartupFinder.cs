@@ -83,7 +83,7 @@ namespace Reko.Environments.Msdos
             ImageSegment segment;
             program.SegmentMap.TryFindSegment(start, out segment);
             var image = segment.MemoryArea;
-            var startOff = (uint)(start - image.BaseAddress);   /* Offset into the Image of the initial CS:IP */
+            var startOff = (uint)(start - image.BaseAddress);   // Offset into the Image of the initial CS:IP
 
             // Check the Turbo Pascal signatures first, since they involve only the
             // first 3 bytes, and false positives may be found with the others later

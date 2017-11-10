@@ -211,6 +211,7 @@ namespace Reko.UnitTests.Analysis
             Given_FakeWin32Platform(mr);
             this.platform.Stub(p => p.ResolveImportByName(null, null)).IgnoreArguments().Return(null);
             this.platform.Stub(p => p.DataTypeFromImportName(null)).IgnoreArguments().Return(null);
+            this.platform.Stub(p => p.ResolveIndirectCall(null)).IgnoreArguments().Return(null);
             mr.ReplayAll();
 			RunFileTest_x86_32("Fragments/import32/GlobalHandle.asm", "Analysis/VpGlobalHandle.txt");
 		}
@@ -260,7 +261,7 @@ namespace Reko.UnitTests.Analysis
                 var r = m.Reg32("r0", 0);
                 var zf = m.Flags("Z");
                 m.Label("l0000");
-                m.Store32(r, 0);
+                m.Store(r, m.Word32(0));
                 m.Assign(r, m.ISub(r, 4));
                 m.Assign(zf, m.Cond(r));
                 m.BranchIf(m.Test(ConditionCode.NE, zf), "l0000");
@@ -269,7 +270,7 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(r, 42);
 
                 m.Label("l0002");
-                m.Store32(r, 12);
+                m.Store(r, m.Word32(12));
                 m.Assign(r, m.ISub(r, 4));
                 m.BranchIf(m.Eq0(r), "l0002");
 
@@ -927,7 +928,7 @@ ProcedureBuilder_exit:
             m.Assign(sp, m.Frame.FramePointer);
             m.Assign(r1, pc);
             m.Assign(sp, m.ISub(sp, 4));
-            m.Store32(sp, 3);
+            m.Store(sp, m.Word32(3));
             m.Assign(sp, m.ISub(sp, 4));
             m.Store(sp, m.LoadW(m.Word32(0x1231230)));
             m.Call(r1, 4);
