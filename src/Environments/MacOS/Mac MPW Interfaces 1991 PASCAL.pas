@@ -11042,12 +11042,14 @@ INLINE $2EB8,$02AA;
 FUNCTION ApplicationZone: THz;
 INLINE $2EB8,$02AA;
 FUNCTION NewHandle(byteCount: Size): Handle;
+  	INLINE $201F, $A122, $2E88;		{added by @uxmal; needs verification}
 FUNCTION NewHandleSys(byteCount: Size): Handle;
 FUNCTION NewHandleClear(byteCount: Size): Handle;
 FUNCTION NewHandleSysClear(byteCount: Size): Handle;
 FUNCTION HandleZone(h: Handle): THz;
 FUNCTION RecoverHandle(p: Ptr): Handle;
 FUNCTION NewPtr(byteCount: Size): Ptr;
+  	INLINE $201F, $A11E, $3E80;		{added by @uxmal; needs verification}
 FUNCTION NewPtrSys(byteCount: Size): Ptr;
 FUNCTION NewPtrClear(byteCount: Size): Ptr;
 FUNCTION NewPtrSysClear(byteCount: Size): Ptr;
@@ -11057,6 +11059,7 @@ INLINE $2EB8,$0328;
 FUNCTION TopMem: Ptr;
 INLINE $2EB8,$0108;
 FUNCTION MaxBlock: LONGINT;
+  	INLINE $A061, $3E80;			{added by @uxmal; needs verification}
 FUNCTION MaxBlockSys: LONGINT;
 FUNCTION StackSpace: LONGINT;
 FUNCTION NewEmptyHandle: Handle;
@@ -11100,17 +11103,17 @@ INLINE $3F3C,$0016,$A88F;
 
 { Temporary Memory routines as they were known before System 7.0. }
 FUNCTION MFMaxMem(VAR grow: Size): Size;
-INLINE $3F3C,$0015,$A88F;
+	INLINE $3F3C,$0015,$A88F;
 FUNCTION MFFreeMem: LONGINT;
-INLINE $3F3C,$0018,$A88F;
+	INLINE $3F3C,$0018,$A88F;
 FUNCTION MFTempNewHandle(logicalSize: Size;VAR resultCode: OSErr): Handle;
-INLINE $3F3C,$001D,$A88F;
+	INLINE $3F3C,$001D,$A88F;
 PROCEDURE MFTempHLock(h: Handle;VAR resultCode: OSErr);
-INLINE $3F3C,$001E,$A88F;
+	INLINE $3F3C,$001E,$A88F;
 PROCEDURE MFTempHUnlock(h: Handle;VAR resultCode: OSErr);
-INLINE $3F3C,$001F,$A88F;
+	INLINE $3F3C,$001F,$A88F;
 PROCEDURE MFTempDisposHandle(h: Handle;VAR resultCode: OSErr);
-INLINE $3F3C,$0020,$A88F;
+	INLINE $3F3C,$0020,$A88F;
 FUNCTION MFTopMem: Ptr;
 INLINE $3F3C,$0016,$A88F;
 PROCEDURE InitApplZone;
@@ -11139,6 +11142,7 @@ INLINE $201F,$A040;
 PROCEDURE ReserveMemSys(cbNeeded: Size);
 INLINE $201F,$A440;
 FUNCTION MaxMem(VAR grow: Size): Size;
+  	INLINE $A11D, $3E80, $2E88;  {out arg}	{added by @uxmal; needs verification}
 FUNCTION MaxMemSys(VAR grow: Size): Size;
 PROCEDURE SetGrowZone(growZone: ProcPtr);
 INLINE $205F,$A04B;
@@ -11151,12 +11155,16 @@ INLINE $205F,$A01F;
 PROCEDURE DisposePtr(p: Ptr);
 INLINE $205F,$A01F;
 FUNCTION GetPtrSize(p: Ptr): Size;
+  	INLINE $205F, $A021, $3E80;				{ added by @uxmal; needs verification}
 PROCEDURE SetPtrSize(p: Ptr;newSize: Size);
+	INLINE $205F, $201F, $A020;				{ added by @uxmal; needs verification}
 PROCEDURE DisposHandle(h: Handle);
 INLINE $205F,$A023;
 PROCEDURE DisposeHandle(h: Handle);
 INLINE $205F,$A023;
 FUNCTION GetHandleSize(h: Handle): Size;
+  	INLINE $205F, $A025, $3E80;				{ added by @uxmal; needs verification}
+	
 PROCEDURE SetHandleSize(h: Handle;newSize: Size);
 PROCEDURE EmptyHandle(h: Handle);
 INLINE $205F,$A02B;
@@ -11169,6 +11177,18 @@ INLINE $205F,$A068;
 PROCEDURE MoreMasters;
 INLINE $A036;
 PROCEDURE BlockMove(srcPtr: UNIV Ptr;destPtr: UNIV Ptr;byteCount: Size);
+  	INLINE $205F, $225F, $201F, $A02E;		{ added by @uxmal; needs verification}
+
+{ All CmpString... functions added by @uxmal; need verification}
+FUNCTION CmpString(aStr,bStr: Str255; sizeSize : LONGINT) : BOOLEAN;
+  	INLINE $205F, $225F, $201F, $A03C, $3E80;
+FUNCTION CmpStringMarks(aStr,bStr: Str255; sizeSize : LONGINT) : BOOLEAN;
+  	INLINE $205F, $225F, $201F, $A23C, $3E80;
+FUNCTION CmpStringCase(aStr,bStr: Str255; sizeSize : LONGINT) : BOOLEAN;
+  	INLINE $205F, $225F, $201F, $A43C, $3E80;
+FUNCTION CmpStringMarksCase(aStr,bStr: Str255; sizeSize : LONGINT) : BOOLEAN;
+  	INLINE $205F, $225F, $201F, $A63C, $3E80;
+	
 FUNCTION MemError: OSErr;
 INLINE $3EB8,$0220;
 PROCEDURE PurgeSpace(VAR total: LONGINT;VAR contig: LONGINT);
@@ -12437,16 +12457,20 @@ PROCEDURE SetTime(d: DateTimeRec);
 PROCEDURE GetTime(VAR d: DateTimeRec);
 PROCEDURE Date2Secs(d: DateTimeRec;VAR secs: LONGINT);
 PROCEDURE Secs2Date(secs: LONGINT;VAR d: DateTimeRec);
+  	INLINE $201F, $225F, $A9C6;			{added by @uxmal; needs verification}
 PROCEDURE Delay(numTicks: LONGINT;VAR finalTicks: LONGINT);
 FUNCTION GetTrapAddress(trapNum: INTEGER): LONGINT;
+  	INLINE $201F, $A146, $2E88;			{added by @uxmal; needs verification}
 PROCEDURE SetTrapAddress(trapAddr: LONGINT;trapNum: INTEGER);
 FUNCTION NGetTrapAddress(trapNum: INTEGER;tTyp: TrapType): LONGINT;
 PROCEDURE NSetTrapAddress(trapAddr: LONGINT;trapNum: INTEGER;tTyp: TrapType);
 FUNCTION GetOSTrapAddress(trapNum: INTEGER): LONGINT;
+  	INLINE $201F, $A346, $2E88;			{added by @uxmal; needs verification}
 PROCEDURE SetOSTrapAddress(trapAddr: LONGINT;trapNum: INTEGER);
 FUNCTION GetToolTrapAddress(trapNum: INTEGER): LONGINT;
 PROCEDURE SetToolTrapAddress(trapAddr: LONGINT;trapNum: INTEGER);
 FUNCTION GetToolboxTrapAddress(trapNum: INTEGER): LONGINT;
+  	INLINE $201F, $A746, $2E88;			{added by @uxmal; needs verification}
 PROCEDURE SetToolboxTrapAddress(trapAddr: LONGINT;trapNum: INTEGER);
 FUNCTION WriteParam: OSErr;
 FUNCTION EqualString(str1: Str255;str2: Str255;caseSens: BOOLEAN;diacSens: BOOLEAN): BOOLEAN;
