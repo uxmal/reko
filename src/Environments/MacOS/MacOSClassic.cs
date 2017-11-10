@@ -64,7 +64,7 @@ namespace Reko.Environments.MacOS
 
         public override CallingConvention GetCallingConvention(string ccName)
         {
-            if (ccName == "stack_based")
+            if (ccName == "pascal")
                 return new StackBasedConvention((M68kArchitecture)this.Architecture);
             else
                 return new M68kCallingConvention((M68kArchitecture)this.Architecture);
