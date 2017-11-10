@@ -126,7 +126,7 @@
     <Compile Include="Environments\MacOS\MacOSClassicTests.cs" />
     <Compile Include="Environments\MacOS\MacsBugSymbolScannerTests.cs" />
     <Compile Include="Environments\MacOS\MpwPascalInterfaceLoaderTests.cs" />
-    <Compile Include="Environments\MacOS\StackBasedConventionTests.cs" />
+    <Compile Include="Environments\MacOS\PascalCallingConventionTests.cs" />
     <Compile Include="Environments\MacOS\InlineCodeInterpreterTests.cs" />
     <Compile Include="Core\Expressions\ExpressionTreeTests.cs" />
     <Compile Include="Core\Lib\IntervalTreeTests.cs" />
