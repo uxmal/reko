@@ -97,11 +97,11 @@ namespace Reko.Core
             return actuals;
         }
 
-        public Identifier BindReturnValue()
+        public Expression BindReturnValue()
         {
             if (sigCallee.HasVoidReturn)
                 return null;
-            return (Identifier) Bind(sigCallee.ReturnValue);
+            return Bind(sigCallee.ReturnValue);
         }
 
 		public Expression Bind(Identifier id)
@@ -122,28 +122,36 @@ namespace Reko.Core
         /// <returns></returns>
         public Instruction CreateInstruction()
         {
-            var idOut = BindReturnValue();
+            var actuals = BindArguments(frame, sigCallee);
+            var expOut = BindReturnValue();
             var dtOut = sigCallee.HasVoidReturn
                 ? VoidType.Instance
                 : sigCallee.ReturnValue.DataType;
-            var actuals = BindArguments(frame, sigCallee);
             Expression appl = new Application(
                 callee,
                 dtOut,
                 actuals.ToArray());
 
-			if (idOut == null)
-			{
+            if (expOut == null)
+            {
                 return new SideEffect(appl);
-			}
-			else
-			{
-                if (idOut.DataType.Size > sigCallee.ReturnValue.DataType.Size)
+            }
+            else
+            {
+                var idOut = expOut as Identifier;
+                if (idOut != null)
                 {
-                    appl = new DepositBits(idOut, appl, 0);
+                    if (idOut.DataType.Size > sigCallee.ReturnValue.DataType.Size)
+                    {
+                        appl = new DepositBits(idOut, appl, 0);
+                    }
+                    return new Assignment(idOut, appl);
                 }
-                return new Assignment(idOut, appl);
-			}
+                else
+                {
+                    return new Store(expOut, appl);
+                }
+            }
         }
 
         #region StorageVisitor<Expression> Members

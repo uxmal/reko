@@ -8,10 +8,10 @@
 // SCZO:Flags
 // ax:ax
 // dx:dx
-// C:Flags
 // ds:ds
 // ds_dx:Sequence ds:dx
 // al:al
+// C:Flags
 // bx:bx
 // cx:cx
 // SZO:Flags

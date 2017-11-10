@@ -181,8 +181,8 @@ namespace Reko.UnitTests.Core
             var lib = tlLDr.Load(slib);
 
             mr.VerifyAll();
-            Assert.AreEqual(1, lib.Modules[""].ServicesByVector.Count);
-            Assert.IsNotNull(lib.Modules[""].ServicesByVector[2]);
+            Assert.AreEqual(1, lib.Modules[""].ServicesByOrdinal.Count);
+            Assert.IsNotNull(lib.Modules[""].ServicesByOrdinal[2]);
         }
 
         [Test(Description = "Resolve a typedef declaration of a structure")]

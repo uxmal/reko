@@ -709,7 +709,7 @@ l8000063C:
 	call a0_12 (retsize: 4; depth: 12)
 		uses: a0_12,a2_13,a6_5,a7_7,CVZN_16,d0_14,dwLoc04_4,dwLoc08_10,Z_17
 		defs: a0_30,a2_28,a6_27,a7_26,CVZN_29,d0_31,Z_32
-	branch -1 - Mem0[a2_28 - 0x00000004:word32] != 0x00000000 l8000063C
+	branch -1 - Mem0[a2_28 - 4:word32] != 0x00000000 l8000063C
 // DataOut: a2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000008 a6:fp - 0x00000004 a0:<invalid> a2:<invalid> d0:-1 -8(fp):a2 -4(fp):a6

@@ -375,6 +375,11 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             {
                 LostFocus.Fire(this);
             }
+
+            public void FireKeyDown(KeyEventArgs e)
+            {
+                KeyDown(this, e);
+            }
         }
     }
 }

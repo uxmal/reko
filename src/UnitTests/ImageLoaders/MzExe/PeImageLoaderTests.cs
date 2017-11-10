@@ -527,7 +527,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             var ep = peldr.CreateMainEntryPoint(true, Address.Ptr32(0x10000000), this.win32);
 
             Assert.AreEqual("DllMain", ep.Name);
-            Assert.AreEqual("fn(stdapi,arg(BOOL),(arg(hModule,HANDLE),arg(dwReason,DWORD),arg(lpReserved,LPVOID))", ep.Signature.ToString());
+            Assert.AreEqual("fn(stdapi,arg(BOOL),(arg(hModule,HANDLE),arg(dwReason,DWORD),arg(lpReserved,LPVOID)))", ep.Signature.ToString());
         }
 
         [Test]
@@ -541,7 +541,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             var ep = peldr.CreateMainEntryPoint(false, Address.Ptr32(0x10000000), this.win32);
 
             Assert.AreEqual("Win32CrtStartup", ep.Name);
-            Assert.AreEqual("fn(__cdecl,arg(DWORD),()", ep.Signature.ToString());
+            Assert.AreEqual("fn(__cdecl,arg(DWORD),())", ep.Signature.ToString());
         }
 
         [Test]

@@ -114,7 +114,7 @@ namespace Reko.Environments.Windows
             foreach (var tl in Metadata.Modules.Values.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
             {
                 SystemService svc;
-                if (tl.ServicesByVector.TryGetValue(ordinal, out svc))
+                if (tl.ServicesByOrdinal.TryGetValue(ordinal, out svc))
                 {
                     return new ExternalProcedure(svc.Name, svc.Signature);
                 }

@@ -322,12 +322,18 @@ namespace Reko.Environments.MacOS
                         else
                         {
                             codeSegs.Add(rsrc.ResourceID, segment);
-                            entryPoints.Add(new ImageSymbol(addrSegment + 4));
+                            var macsBug = new MacsBugSymbolScanner(segment.MemoryArea);
+                            var mbSymbols = macsBug.ScanForSymbols();
+                            foreach (var symbol in mbSymbols)
+                            {
+                                symbols[symbol.Address] = symbol;
+                            }
                         }
                     }
                 }
             }
 
+            // We have found a jump table, so we allocate an A5World.
             if (jt != null)
             {
                 // Find an address beyond all known segments.
@@ -362,7 +368,10 @@ namespace Reko.Environments.MacOS
                 int iSeg = (ushort)entry.Instruction;
                 var targetSeg = codeSegs[iSeg];
                 var addrDst = targetSeg.Address + entry.RoutineOffsetFromSegmentStart;
-                symbols[addrDst] =  new ImageSymbol(addrDst) { Type = SymbolType.Procedure };
+                if (!symbols.ContainsKey(addrDst))
+                {
+                    symbols.Add(addrDst, new ImageSymbol(addrDst) { Type = SymbolType.Procedure });
+                }
                 w.WriteBeUInt16(0x4EF9);            // jmp (xxxxxxxxx).L
                 w.WriteBeUInt32(addrDst.ToUInt32());
                 ++i;
