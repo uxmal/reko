@@ -314,7 +314,7 @@ namespace Reko.Analysis
             }
             else
             {
-                return outArgument.Accept(this);
+                return outArgument.Expression.Accept(this);
             }
         }
 

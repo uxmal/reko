@@ -90,7 +90,7 @@ namespace Reko.Core
 
         public Expression VisitFlagRegister(FlagRegister freg)
         {
-            throw new NotSupportedException();
+            return binder.EnsureRegister(freg);
         }
 
         public virtual Expression VisitFpuStackStorage(FpuStackStorage fpu)
