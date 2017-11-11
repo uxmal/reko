@@ -96,23 +96,23 @@ namespace Reko.UnitTests.Analysis
             dfa = new DataFlowAnalysis(program, importResolver, eventListener);
             var ssts = dfa.RewriteProceduresToSsa();
 
+            // Discover ssaId's that are live out at each call site.
+            // Delete all others.
+            var uvr = new UnusedOutValuesRemover(program, ssts, dfa.ProgramDataFlow, eventListener);
+            uvr.Transform();
+
             foreach (var p in program.Procedures.Values)
             {
                 p.Dump(true);
                 Debug.Print("====");
             }
 
-            // Discover ssaId's that are live out at each call site.
-            // Delete all others.
-            var uvr = new UnusedOutValuesRemover(program, ssts, dfa.ProgramDataFlow, eventListener);
-            uvr.Transform();
-
             // At this point, the exit blocks contain only live out registers.
             // We can create signatures from that.
             CallRewriter.Rewrite(program.Platform, ssts, dfa.ProgramDataFlow, eventListener);
             foreach (var proc in program.Procedures.Values)
             {
-                ProcedureFlow flow = dfa.ProgramDataFlow[proc];
+                var flow = dfa.ProgramDataFlow[proc];
                 proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind, new TextFormatter(writer));
                 writer.WriteLine();
                 flow.Emit(program.Architecture, writer);
@@ -154,7 +154,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+       // [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwEvenOdd()
         {

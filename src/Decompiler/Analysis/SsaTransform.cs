@@ -229,6 +229,14 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Given a sequence of identifiers, returns a new sequence where
+        /// identifiers that overlap in memory are fused.
+        /// </summary>
+        /// <remarks>
+        /// For instance, if the input sequence contains identifiers whose
+        /// storages are [bx], [bh], and [rbx], the output sequence contains
+        /// only [rbx].</remarks>
         public static IEnumerable<Identifier> ResolveOverlaps(IEnumerable<Identifier> ids)
         {
             var registerBag = new Dictionary<StorageDomain, HashSet<Identifier>>();
@@ -260,11 +268,14 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Collects all the processor flags as a summary.
+        /// Given a sequence of identifiers, collects all the processor flags as a summary.
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        public IEnumerable<Identifier> CollectFlags(IEnumerable<Identifier> ids)
+        public IEnumerable<Identifier> CollectFlagGroups(
+            IEnumerable<Identifier> ids, 
+            IStorageBinder binder,
+            IProcessorArchitecture arch)
         {
             uint grfTotal = 0;
             foreach (var id in ids)
@@ -281,8 +292,8 @@ namespace Reko.Analysis
             }
             if (grfTotal != 0)
             {
-                yield return ssa.Procedure.Frame.EnsureFlagGroup(
-                     arch.GetFlagGroup(grfTotal));
+                var grfNew = arch.GetFlagGroup(grfTotal);
+                yield return binder.EnsureFlagGroup(grfNew);
             }
         }
 
@@ -528,7 +539,9 @@ namespace Reko.Analysis
             var trashedRegisters = program.Platform.CreateTrashedRegisters();
 
             // Hell node implementation - use and define all variables.
-            foreach (Identifier id in CollectFlags(ssa.Procedure.Frame.Identifiers))
+            var frame = ssa.Procedure.Frame;
+            var ids = CollectFlagGroups(frame.Identifiers, frame, arch);
+            foreach (Identifier id in ResolveOverlaps(ids))
             {
                 if (!existingUses.Contains(id.Storage) &&
                     (IsTrashed(trashedRegisters, id.Storage)

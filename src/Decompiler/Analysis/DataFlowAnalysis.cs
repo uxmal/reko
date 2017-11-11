@@ -172,7 +172,7 @@ namespace Reko.Analysis
                 var ssa = sst.SsaState;
                 RemovePreservedUseInstructions(ssa);
                 DeadCode.Eliminate(ssa);
-                uid.ComputeBitsUsed(ssa, false);
+                uid.ComputeLiveIn(ssa, false);
                 RemoveDeadArgumentsFromCalls(ssa.Procedure, ssts);
             }
         }

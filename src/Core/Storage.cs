@@ -184,6 +184,9 @@ namespace Reko.Core
             this.BitSize = (uint)dataType.BitSize;
         }
 
+        /// <summary>
+        /// The register in which bits of the flag group are located.
+        /// </summary>
         public FlagRegister FlagRegister { get; private set; }
         public uint FlagGroupBits { get; private set; }
         public DataType DataType { get; private set; }

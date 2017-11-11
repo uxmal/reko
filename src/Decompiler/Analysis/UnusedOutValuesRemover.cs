@@ -84,19 +84,7 @@ namespace Reko.Analysis
                 var liveOut = CollectLiveOutStorages(proc);
                 var flow = this.dataFlow[proc];
                 flow.LiveOut = SummarizeStorageBitranges(flow.LiveOut.Concat(liveOut));
-                /*
-                flow.LiveOut = flow.LiveOut.Concat(liveOut)
-                    .Where(de => de.Key is RegisterStorage)
-                    .Select(de => new KeyValuePair<RegisterStorage, BitRange>((RegisterStorage)de.Key, de.Value))
-                    .GroupBy(
-                        de => de.Key.Domain,
-                        (g, items) => items
-                            .OrderByDescending(i => i.Value.Extent)
-                            .Select(i => new KeyValuePair<RegisterStorage, BitRange>(
-                                program.Architecture.GetSubregister(i.Key, i.Value.Lsb, i.Value.Extent),
-                                i.Value))
-                            .First())
-                    .ToDictionary(k => (Storage)k.Key, v => v.Value);*/
+
                 flow.grfLiveOut |= liveOut.Keys
                     .OfType<FlagGroupStorage>()
                     .Select(stg => stg.FlagGroupBits)

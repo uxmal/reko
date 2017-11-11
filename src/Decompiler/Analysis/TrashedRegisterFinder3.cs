@@ -70,6 +70,21 @@ namespace Reko.Analysis
             this.ssas = sccGroup.ToDictionary(s => s.SsaState.Procedure, s => s.SsaState);
         }
 
+        /// <summary>
+        /// Computes the trashed registers for all the procedures in the 
+        /// SCC group.
+        /// </summary>
+        /// <remarks>
+        /// To deal with recursive functions -- including deeply nested
+        /// mutually recursive functions, we first compute what registers
+        /// are trashed when recursion is disregarded. If there are no
+        /// recursive calls, we are done and leave early. 
+        /// If there are recursive calls, we make one unwarranted but
+        /// highly likely assumption: for each involved procedure, 
+        /// the stack pointer will have the  same value in the exit block 
+        /// after traversing both non-recursive and recursive paths
+        /// of the program.
+        /// </remarks>
         public void Compute()
         {
             CreateState();
@@ -121,6 +136,8 @@ namespace Reko.Analysis
                 var p = flow[de.Key];
                 if (de.Value.HasValue && de.Value.Value == 0)
                 {
+                    //$TODO: x86 RET-N instructions unbalance the stack
+                    // register.
                     p.Trashed.Remove(arch.StackRegister);
                     p.Preserved.Add(arch.StackRegister);
                 }

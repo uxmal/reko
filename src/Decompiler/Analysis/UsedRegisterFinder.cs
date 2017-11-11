@@ -74,7 +74,7 @@ namespace Reko.Analysis
         /// Assmumes that any live-in parameters are located in the
         /// entry block of the procedure.</remarks>
         /// <param name="ssaState"></param>
-        public ProcedureFlow ComputeBitsUsed(SsaState ssaState, bool ignoreUse)
+        public ProcedureFlow ComputeLiveIn(SsaState ssaState, bool ignoreUse)
         {
             this.procFlow = flow[ssaState.Procedure];
             this.ssa = ssaState;
@@ -88,6 +88,8 @@ namespace Reko.Analysis
                 if ((sid.Identifier.Storage is RegisterStorage ||
                      sid.Identifier.Storage is StackArgumentStorage ||
                      sid.Identifier.Storage is FpuStackStorage))
+                     //$REVIEW: flag groups could theoretically be live in
+                     // although it's uncommon.
                 {
                     var n = Classify(sid);
                     if (!n.IsEmpty)
@@ -103,7 +105,7 @@ namespace Reko.Analysis
         {
             this.procFlow = flow[ssa.Procedure];
             this.ssa = ssa;
-            this.ignoreUseInstructions = false;
+            this.ignoreUseInstructions = true;
             if (sid.Identifier.Storage is RegisterStorage ||
                  sid.Identifier.Storage is StackArgumentStorage ||
                  sid.Identifier.Storage is FpuStackStorage ||
