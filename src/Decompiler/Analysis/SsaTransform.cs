@@ -1176,13 +1176,6 @@ namespace Reko.Analysis
                 return sidAlias;
             }
 
-            private BitRange GetBitRange(Storage stg)
-            {
-                var reg = (RegisterStorage)stg;
-                return new BitRange(
-                    (int)reg.BitAddress, 
-                    (int)(reg.BitAddress + reg.BitSize));
-            }
 
             /// <summary>
             /// Inserts the statement <paramref name="ass"/> after the statement

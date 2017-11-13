@@ -157,7 +157,7 @@ namespace Reko.Analysis
                 procFlow.Constants.Clear();
 
                 procCtx.Add(proc, procFlow);
-                var idState = new Dictionary<Identifier, Expression>();
+                var idState = new Dictionary<Identifier, Tuple<Expression,BitRange>>();
                 var fp = sst.SsaState.Identifiers[proc.Frame.FramePointer].Identifier;
                 var block = proc.EntryBlock;
                 blockCtx.Add(block, new Context(sst.SsaState, fp, idState, procFlow));
@@ -261,7 +261,21 @@ namespace Reko.Analysis
             var value = ass.Src.Accept(eval);
             DebugEx.Print(trace.TraceVerbose, "{0} = [{1}]", ass.Dst, value);
 
-            ctx.SetValue(ass.Dst, value);
+            DepositBits dpb;
+            Identifier idDpb;
+            if (ass.Src.As(out dpb) && dpb.Source.As(out idDpb) &&
+                ass.Dst.Storage == idDpb.Storage)
+            {
+                var oldRange = ctx.GetBitRange(idDpb);
+                var newRange = new BitRange(
+                    Math.Min(oldRange.Lsb, dpb.BitPosition),
+                    Math.Max(oldRange.Msb, dpb.BitPosition + dpb.InsertedBits.DataType.BitSize));
+                ctx.SetValue(ass.Dst, value, newRange);
+            }
+            else
+            {
+                ctx.SetValue(ass.Dst, value);
+            }
             return true;
         }
 
@@ -334,7 +348,7 @@ namespace Reko.Analysis
         public bool VisitDefInstruction(DefInstruction def)
         {
             var id = def.Identifier;
-            ctx.SetValue(id, id);
+            ctx.SetValue(id, id, BitRange.Empty);
             return true;
         }
 
@@ -416,19 +430,21 @@ namespace Reko.Analysis
             if (id.Storage is RegisterStorage)
             {
                 var value = ctx.GetValue(id);
+                var range = ctx.GetBitRange(id);
+                var stg = arch.GetRegister(id.Storage.Domain, range) ?? id.Storage;
                 if (value == Constant.Invalid)
                 {
-                    ctx.ProcFlow.Trashed.Add(id.Storage);
-                    ctx.ProcFlow.Preserved.Remove(id.Storage);
-                    ctx.ProcFlow.Constants.Remove(id.Storage);
+                    ctx.ProcFlow.Trashed.Add(stg);
+                    ctx.ProcFlow.Preserved.Remove(stg);
+                    ctx.ProcFlow.Constants.Remove(stg);
                     return true;
                 }
                 var c = value as Constant;
                 if (c != null)
                 {
-                    ctx.ProcFlow.Constants[id.Storage] = c;
-                    ctx.ProcFlow.Preserved.Remove(id.Storage);
-                    ctx.ProcFlow.Trashed.Add(id.Storage);
+                    ctx.ProcFlow.Constants[stg] = c;
+                    ctx.ProcFlow.Preserved.Remove(stg);
+                    ctx.ProcFlow.Trashed.Add(stg);
                     return true;
                 }
                 var idV = value as Identifier;
@@ -447,12 +463,12 @@ namespace Reko.Analysis
                         if (sid.OriginalIdentifier == idV &&
                             sid.OriginalIdentifier != id)
                         {
-                            ctx.ProcFlow.Preserved.Add(id.Storage);
+                            ctx.ProcFlow.Preserved.Add(stg);
                         }
                         return true;
                     }
                 }
-                ctx.ProcFlow.Trashed.Add(id.Storage);
+                ctx.ProcFlow.Trashed.Add(stg);
             }
             else if (id.Storage is FlagGroupStorage)
             {
@@ -506,7 +522,7 @@ namespace Reko.Analysis
         public class Context : EvaluationContext
         {
             public readonly Identifier FramePointer;
-            public readonly Dictionary<Identifier, Expression> IdState;
+            public readonly Dictionary<Identifier, Tuple<Expression, BitRange>> IdState;
             public readonly ProcedureFlow ProcFlow;
             public readonly Dictionary<int, Expression> StackState;
             public bool IsDirty;
@@ -516,7 +532,7 @@ namespace Reko.Analysis
             public Context(
                 SsaState ssa,
                 Identifier fp,
-                Dictionary<Identifier, Expression> idState,
+                Dictionary<Identifier, Tuple<Expression, BitRange>> idState,
                 ProcedureFlow procFlow)
                 : this(
                       ssa,
@@ -531,7 +547,7 @@ namespace Reko.Analysis
             private Context(
                 SsaState ssa,
                 Identifier fp,
-                Dictionary<Identifier, Expression> idState,
+                Dictionary<Identifier, Tuple<Expression, BitRange>> idState,
                 ProcedureFlow procFlow,
                 Dictionary<int, Expression> stack,
                 ExpressionValueComparer cmp)
@@ -617,12 +633,22 @@ namespace Reko.Analysis
 
             public Expression GetValue(Identifier id)
             {
-                Expression value;
+                Tuple<Expression,BitRange> value;
                 if (!IdState.TryGetValue(id, out value))
                     return null;
                 else
-                    return value;
+                    return value.Item1;
             }
+
+            public BitRange GetBitRange(Identifier id)
+            {
+                Tuple<Expression, BitRange> value;
+                if (!IdState.TryGetValue(id, out value))
+                    return BitRange.Empty;
+                else
+                    return value.Item2;
+            }
+
 
             public bool IsUsedInPhi(Identifier id)
             {
@@ -656,16 +682,21 @@ namespace Reko.Analysis
 
             public void SetValue(Identifier id, Expression value)
             {
-                Expression oldValue;
+                SetValue(id, value, id.Storage.GetBitRange());
+            }
+
+            public void SetValue(Identifier id, Expression value, BitRange range)
+            { 
+                Tuple<Expression,BitRange> oldValue;
                 if (!IdState.TryGetValue(id, out oldValue))
                 {
                     IsDirty = true;
-                    IdState.Add(id, value);
+                    IdState.Add(id, Tuple.Create(value, range));
                 }
-                else if (!cmp.Equals(oldValue, value))
+                else if (!cmp.Equals(oldValue.Item1, value))
                 {
                     IsDirty = true;
-                    IdState[id] = value;
+                    IdState[id] = Tuple.Create(value, range);
                 }
             }
 

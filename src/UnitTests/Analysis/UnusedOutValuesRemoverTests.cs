@@ -132,9 +132,10 @@ foo_exit:
         [Test(Description = "")]
         public void Uvr_Forks()
         {
-            var pb = new ProgramBuilder();
-            var _r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
-            var _r2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word32);
+            var arch = new FakeArchitecture();
+            var pb = new ProgramBuilder(arch);
+            var _r1 = arch.GetRegister("r1");
+            var _r2 = arch.GetRegister("r2");
 
             pb.Add("main", m =>
             {
@@ -195,9 +196,10 @@ foo_exit:
         [Test(Description = "Respect any provided procedure signature")]
         public void Uvr_Signature()
         {
-            var pb = new ProgramBuilder();
-            var _r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
-            var _r2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word32);
+            var arch = new FakeArchitecture();
+            var pb = new ProgramBuilder(arch);
+            var _r1 = arch.GetRegister("r1");
+            var _r2 = arch.GetRegister("r2");
 
             pb.Add("main", m =>
             {

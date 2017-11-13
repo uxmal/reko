@@ -43,6 +43,7 @@ namespace Reko.UnitTests.Analysis
     {
         private MockRepository mr;
         private IPlatform platform;
+        private IProcessorArchitecture arch;
         private ProgramBuilder builder;
         private Program program;
         private IImportResolver importResolver;
@@ -55,7 +56,8 @@ namespace Reko.UnitTests.Analysis
         {
             this.mr = new MockRepository();
             this.platform = mr.Stub<IPlatform>();
-            this.builder = new ProgramBuilder();
+            this.arch = new FakeArchitecture();
+            this.builder = new ProgramBuilder(arch);
             this.importResolver = mr.Stub<IImportResolver>();
             this.sbExpected = new StringBuilder();
             this.fnExit = new ExternalProcedure(
@@ -160,19 +162,25 @@ namespace Reko.UnitTests.Analysis
             platform.Stub(p => p.CreateTrashedRegisters()).Return(regs.ToHashSet());
         }
 
+        private void Given_Architecture(IProcessorArchitecture arch)
+        {
+            this.arch = arch;
+            this.builder = new ProgramBuilder(arch);
+        }
+
         [Test]
         public void Trf3_assign()
         {
             builder.Add("main", m =>
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
-                var a = m.Reg32("a", 1);
+                var r1 = m.Reg32("r1", 1);
                 m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(a, 0);
+                m.Assign(r1, 0);
                 m.Return();
             });
 
-            Expect("main", "Preserved: r63", "Trashed: a", "Constants: a:0x00000000");
+            Expect("main", "Preserved: r63", "Trashed: r1", "Constants: r1:0x00000000");
             RunTest();
         }
 
@@ -220,11 +228,12 @@ namespace Reko.UnitTests.Analysis
         [Test(Description = "Tests that constants are discovered")]
         public void TrfConstants()
         {
-            Expect("TrfConstants", "Preserved: r63", "Trashed: ds", "Constants: ds:0x0C00");
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureReal());
+            Expect("TrfConstants", "Preserved: sp", "Trashed: ds", "Constants: ds:0x0C00");
             builder.Add("TrfConstants", m =>
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
-                var ds = m.Reg16("ds", 10);
+                var ds = m.Frame.EnsureRegister(m.Architecture.GetRegister("ds"));
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 2));
                 m.Store(sp, m.Word16(0x0C00));
@@ -238,12 +247,13 @@ namespace Reko.UnitTests.Analysis
         [Test(Description = "Constant in one branch, not constant in the other")]
         public void TrfConstNonConst()
         {
-            Expect("TrfConstNonConst", "Preserved: r63", "Trashed: cx", "");
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32());
+            Expect("TrfConstNonConst", "Preserved: esp", "Trashed: cx", "");
             builder.Add("TrfConstNonConst", m =>
             {
-                var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
-                var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 1, 0, PrimitiveType.Byte));
-                var cx = m.Frame.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Word16));
+                var ax = m.Frame.EnsureRegister(arch.GetRegister("ax"));
+                var cl = m.Frame.EnsureRegister(arch.GetRegister("cl"));
+                var cx = m.Frame.EnsureRegister(arch.GetRegister("cx"));
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
 
                 m.Assign(sp, m.Frame.FramePointer);
@@ -565,15 +575,16 @@ Constants: cl:0x00
         [Test]
         public void TrfRecursive_duplicate_tails()
         {
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32());
             Given_PlatformTrashedRegisters();
             Expect(
                 "recursive",
-                "Preserved: ebp,r63",
+                "Preserved: ebp,esp",
                 "Trashed: ",
                 "");
             builder.Add("recursive", m =>
             {
-                var ebp = m.Frame.EnsureRegister(new RegisterStorage("ebp", 4, 0, PrimitiveType.Word32));
+                var ebp = m.Frame.EnsureRegister(arch.GetRegister("ebp"));
                 var esp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(esp, m.Frame.FramePointer);
                 m.Assign(esp, m.ISub(esp, 4));
@@ -602,16 +613,17 @@ Constants: cl:0x00
         [Test]
         public void TrfFibonacci()
         {
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32());
             Given_PlatformTrashedRegisters();
             Expect(
                 "recursive",
-                "Preserved: ebp,r63",
+                "Preserved: ebp,esp",
                 "Trashed: eax",
                 "");
             builder.Add("recursive", m =>
             {
-                var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
-                var ebp = m.Frame.EnsureRegister(new RegisterStorage("ebp", 4, 0, PrimitiveType.Word32));
+                var eax = m.Frame.EnsureRegister(arch.GetRegister("eax"));
+                var ebp = m.Frame.EnsureRegister(arch.GetRegister("ebp"));
                 var esp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(esp, m.Frame.FramePointer);
                 m.Assign(esp, m.ISub(esp, 4));
@@ -689,7 +701,7 @@ Constants: cl:0x00
         [Category(Categories.UnitTests)]
         public void TrfSaveRegistersOnStack()
         {
-            Expect("main", "Preserved: ebp,r63", "Trashed: eax", "");
+            Expect("main", "Preserved: r5,r63", "Trashed: r0", "");
             builder.Add("main", m =>
             {
                 var eax = m.Reg32("eax", 0);
@@ -711,12 +723,13 @@ Constants: cl:0x00
         [Category(Categories.UnitTests)]
         public void TrfSaveRegistersOnStack_TwoExits()
         {
-            Expect("main", "Preserved: ebp,r63", "Trashed: eax", "");
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32());
+            Expect("main", "Preserved: ebp,esp", "Trashed: eax", "");
             builder.Add("main", m =>
             {
-                var eax = m.Reg32("eax", 0);
+                var eax = m.Frame.EnsureRegister(arch.GetRegister("eax"));
                 var esp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
-                var ebp = m.Reg32("ebp", 5);
+                var ebp = m.Frame.EnsureRegister(arch.GetRegister("ebp"));
                 m.Assign(esp, m.Frame.FramePointer);
                 m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, ebp);
@@ -769,8 +782,8 @@ Constants: cl:0x00
         [Category(Categories.UnitTests)]
         public void TrfCtx_MergeState_Stack()
         {
-            var state = new Dictionary<Identifier, Expression>();
-            var stateOther = new Dictionary<Identifier, Expression>();
+            var state = new Dictionary<Identifier, Tuple<Expression, BitRange>>();
+            var stateOther = new Dictionary<Identifier, Tuple<Expression, BitRange>>();
             var procFlow = new ProcedureFlow(null);
             var ctx = new TrashedRegisterFinder3.Context(
                 null, null, state, procFlow);
@@ -820,6 +833,44 @@ Constants: cl:0x00
                 m.SideEffect(m.Fn(fn, r1));
 
                 m.Label("m2notzero");
+                m.Return();
+            });
+            RunTest();
+        }
+
+        [Test(Description = "Part of handling x86 and Z80 sub-registers.")]
+        public void TrfDpb()
+        {
+            var arch = new Reko.Arch.X86.X86ArchitectureFlat32();
+            Given_Architecture(arch);
+            Expect("main", "Preserved: esp", "Trashed: cl", "");
+            builder.Add("main", m =>
+            {
+                var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                var ecx = m.Frame.EnsureRegister(arch.GetRegister("ecx"));
+                var cl = m.Frame.EnsureRegister(arch.GetRegister("cl"));
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Assign(cl, m.LoadB(m.Word32(0x00123400)));
+                m.Assign(ecx, m.Dpb(ecx, cl, 0));
+                m.Return();
+            });
+            RunTest();
+        }
+
+        [Test]
+        public void TrfWideThenNarrow()
+        {
+            var arch = new Reko.Arch.X86.X86ArchitectureFlat32();
+            Given_Architecture(arch);
+            Expect("main", "Preserved: esp", "Trashed: ecx", "");
+            builder.Add("main", m =>
+            {
+                var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                var ecx = m.Frame.EnsureRegister(arch.GetRegister("ecx"));
+                var cl = m.Frame.EnsureRegister(arch.GetRegister("cl"));
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Assign(ecx, m.LoadDw(m.Word32(0x00123480)));
+                m.Assign(cl, m.LoadB(m.Word32(0x00123400)));
                 m.Return();
             });
             RunTest();

@@ -364,10 +364,11 @@ namespace Reko.Analysis
             // inject out variable assignments as Stores.
 
             var reachingBlocks = ssa.PredecessorPhiIdentifiers(ssa.Procedure.ExitBlock);
+            var sig = ssa.Procedure.Signature;
             foreach (var reachingBlock in reachingBlocks)
             {
                 var block = reachingBlock.Key;
-                var idRet = ssa.Procedure.Signature.ReturnValue;
+                var idRet = sig.ReturnValue;
                 if (idRet != null && !(idRet.DataType is VoidType))
                 {
                     var idStg = reachingBlock.Value
@@ -379,14 +380,13 @@ namespace Reko.Analysis
                 }
                 int insertPos = block.Statements.FindIndex(s => s.Instruction is ReturnInstruction);
                 Debug.Assert(insertPos >= 0);
-                foreach (var parameter in ssa.Procedure.Signature.Parameters
-                                             .Where(p => p.Storage is OutArgumentStorage))
+                foreach (var p in sig.Parameters.Where(p => p.Storage is OutArgumentStorage))
                 {
-                    var outStg = (OutArgumentStorage)parameter.Storage;
+                    var outStg = (OutArgumentStorage)p.Storage;
                     var idStg = reachingBlock.Value
                         .Where(cb => cb.Storage == outStg.OriginalIdentifier.Storage).First();
                     var sid = ssa.Identifiers[(Identifier)idStg.Expression];
-                    InsertOutArgumentAssignment(parameter, sid, block, insertPos);
+                    InsertOutArgumentAssignment(p, sid, block, insertPos);
                     ++insertPos;
                 }
             }
