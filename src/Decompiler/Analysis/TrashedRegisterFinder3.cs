@@ -101,9 +101,22 @@ namespace Reko.Analysis
                 return;
             }
 
-            var savedSps = CollectStackPointers(flow);
+            var savedSps = CollectStackPointers(flow, arch.StackRegister);
+            //$REVIEW: Ew. This hardwires a dependency on x87 in common code.
+            // We need a general mechanism for dealing with "stack pointers"
+            // that abstracts over platform integer stack pointers and the
+            // x87 FPU stack pointer.
+            RegisterStorage top;
+            var savedTops = new Dictionary<Procedure, int?>();
+            if (arch.TryGetRegister("Top", out top))
+            {
+                savedTops = CollectStackPointers(flow, arch.GetRegister("Top"));
+            }
+
             CreateState();
+
             ApplyStackPointers(savedSps, flow);
+            ApplyStackPointers(savedTops, flow);
 
             this.propagateToCallers = true;
             while (worklist.GetWorkItem(out block))
@@ -112,15 +125,17 @@ namespace Reko.Analysis
             }
         }
 
-        private Dictionary<Procedure, int?> CollectStackPointers(ProgramDataFlow flow)
+        private Dictionary<Procedure, int?> CollectStackPointers(ProgramDataFlow flow, Storage stackRegister)
         {
+            if (stackRegister == null)
+                return new Dictionary<Procedure, int?>();
             return flow.ProcedureFlows.ToDictionary(
                 de => de.Key,
                 de =>
                 {
-                    if (de.Value.Trashed.Contains(arch.StackRegister))
+                    if (de.Value.Trashed.Contains(stackRegister))
                         return (int?)null;
-                    if (de.Value.Preserved.Contains(arch.StackRegister))
+                    if (de.Value.Preserved.Contains(stackRegister))
                         return 0;
                     //$TODO: x86 RET N instructions.
                     return 0;
@@ -221,13 +236,22 @@ namespace Reko.Analysis
             var callingBlocks = callGraph
                 .CallerStatements(block.Procedure)
                 .Cast<Statement>()
-                .Select(s => s.Block);
+                .Select(s => s.Block)
+                .Where(b => ssas.ContainsKey(b.Procedure));
             foreach (var caller in callingBlocks)
             {
                 Context succCtx;
                 if (!blockCtx.TryGetValue(caller, out succCtx))
                 {
-                    blockCtx.Add(caller, ctx.Clone());
+                    var ssa = ssas[caller.Procedure];
+                    var fp = ssa.Identifiers[caller.Procedure.Frame.FramePointer].Identifier;
+                    var idState = blockCtx[caller.Procedure.EntryBlock].IdState;
+                    var clone = new Context(
+                        ssa,
+                        fp,
+                        idState,
+                        procCtx[caller.Procedure]);
+                    blockCtx.Add(caller, clone);
                 }
                 else
                 {
@@ -523,8 +547,8 @@ namespace Reko.Analysis
         {
             public readonly Identifier FramePointer;
             public readonly Dictionary<Identifier, Tuple<Expression, BitRange>> IdState;
-            public readonly ProcedureFlow ProcFlow;
             public readonly Dictionary<int, Expression> StackState;
+            public ProcedureFlow ProcFlow;
             public bool IsDirty;
             private SsaState ssa;
             private readonly ExpressionValueComparer cmp;

@@ -68,11 +68,15 @@ namespace Reko.Core
 			graphStms.AddNode(proc);
 		}
 
+
 		public IEnumerable<object> Callees(Statement stm)
 		{
             return graphStms.Successors(stm);
 		}
 
+        /// <summary>
+        /// Returns all the procedures that the given procedure calls.
+        /// </summary>
 		public IEnumerable<Procedure> Callees(Procedure proc)
 		{
 			return graphProcs.Successors(proc);
@@ -83,6 +87,9 @@ namespace Reko.Core
 			return graphProcs.Predecessors(proc);
 		}
 
+        /// <summary>
+        /// Given a procedure, find all the statements that call it,
+        /// </summary>
         public IEnumerable<Statement> CallerStatements(Procedure proc)
 		{
             return graphStms.Predecessors(proc).OfType<Statement>();
@@ -90,7 +97,7 @@ namespace Reko.Core
 
 		public void Write(TextWriter wri)
 		{
-            var sl = graphProcs.Nodes.OrderBy(n => n, new ProcedureComparer());
+            var sl = graphProcs.Nodes.OrderBy(n => n.Name);
 			foreach (Procedure proc in sl)
 			{
 				wri.WriteLine("Procedure {0} calls:", proc.Name);
@@ -100,7 +107,7 @@ namespace Reko.Core
 				}
 			}
 
-            var st = graphStms.Nodes.OfType<Statement>().OrderBy(n => n, new StmComparer());
+            var st = graphStms.Nodes.OfType<Statement>().OrderBy(n => n.LinearAddress);
             foreach (var stm in st)
             {
                 wri.WriteLine("Statement {0:X8} {1} calls:", stm.LinearAddress, stm.Instruction);
@@ -110,25 +117,5 @@ namespace Reko.Core
                 }
             }
 		}
-
-		private class ProcedureComparer : IComparer<Procedure>
-		{
-			#region IComparer Members
-
-			public int Compare(Procedure x, Procedure y)
-			{
-				return string.Compare(x.Name, y.Name);
-			}
-
-			#endregion
-		}
-
-        private class StmComparer : IComparer<Statement>
-        {
-            public int Compare(Statement a, Statement b)
-            {
-                return a.LinearAddress.CompareTo(b.LinearAddress);
-            }
-        }
 	}
 }

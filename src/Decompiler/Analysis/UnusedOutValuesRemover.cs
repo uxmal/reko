@@ -25,7 +25,9 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Reko.Analysis
 {
@@ -62,6 +64,8 @@ namespace Reko.Analysis
 
         public void Transform()
         {
+            CollectLiveOutStorages();
+            DumpLiveOut();
             bool change;
             do
             {
@@ -89,6 +93,33 @@ namespace Reko.Analysis
                     .OfType<FlagGroupStorage>()
                     .Select(stg => stg.FlagGroupBits)
                     .Aggregate(0u, (grf, total) => total |= grf);
+            }
+        }
+
+        private void CollectLiveOutStorages()
+        {
+            var wl = new WorkList<SsaState>(ssts.Select(s => s.SsaState));
+            SsaState ssa;
+            while (wl.GetWorkItem(out ssa))
+            {
+                var liveOut = CollectLiveOutStorages(ssa.Procedure);
+                var changed = MergeLiveOut(dataFlow.ProcedureFlows[ssa.Procedure], liveOut);
+                if (changed)
+                {
+                    wl.AddRange(program.CallGraph.Callees(ssa.Procedure).Select(p => procToSsa[p]));
+                }
+            }
+        }
+
+        [Conditional("DEBUG")]
+        public void DumpLiveOut()
+        {
+            foreach (var flow in this.dataFlow.ProcedureFlows.OrderBy(de => de.Key.Name))
+            {
+                Debug.Print("== {0} ========", flow.Key.Name);
+                var sw = new StringWriter();
+                DataFlow.EmitRegisterValues("liveOut: ", flow.Value.LiveOut, sw);
+                Debug.Print(sw.ToString());
             }
         }
 
@@ -236,7 +267,7 @@ namespace Reko.Analysis
                         var sid = ssaCaller.Identifiers[id];
                         if (sid.Uses.Count > 0)
                         {
-                            var br = urf.Classify(ssaCaller, sid, false);
+                            var br = urf.Classify(ssaCaller, sid, true);
                             BitRange brOld;
                             if (liveOutStorages.TryGetValue(def.Storage, out brOld))
                             {
@@ -251,6 +282,31 @@ namespace Reko.Analysis
                 }
             }
             return liveOutStorages;
+        }
+
+        private bool MergeLiveOut(ProcedureFlow flow, Dictionary<Storage, BitRange> newLiveOut)
+        {
+            bool change = false;
+            foreach (var de in newLiveOut)
+            {
+                BitRange oldRange;
+                if (flow.LiveOut.TryGetValue(de.Key, out oldRange))
+                {
+                    var range = oldRange | de.Value;
+                    if (range != oldRange)
+                    {
+                        flow.LiveOut[de.Key] = range;
+                        change = true;
+                    }
+                }
+                else
+                {
+                    var range = de.Value;
+                    flow.LiveOut[de.Key] = range;
+                    change = true;
+                }
+            }
+            return change;
         }
 
         private bool RemoveDeadUses(SsaState ssa, CallInstruction ci, HashSet<Storage> deadStgs)
