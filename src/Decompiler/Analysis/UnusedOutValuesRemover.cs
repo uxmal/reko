@@ -36,7 +36,7 @@ namespace Reko.Analysis
     /// </summary>
     public class UnusedOutValuesRemover
     {
-        public static TraceSwitch trace = new TraceSwitch(typeof(UnusedOutValuesRemover).Name, "Trace removal of ununsed out values");
+        public static TraceSwitch trace = new TraceSwitch(typeof(UnusedOutValuesRemover).Name, "Trace removal of unused out values");
 
         private List<SsaTransform> ssts;
         private WorkList<SsaState> wl;
@@ -236,13 +236,13 @@ namespace Reko.Analysis
                         var sid = ssaCaller.Identifiers[id];
                         if (sid.Uses.Count > 0)
                         {
-                            var br = urf.Classify(ssaCaller, sid);
+                            var br = urf.Classify(ssaCaller, sid, false);
                             BitRange brOld;
                             if (liveOutStorages.TryGetValue(def.Storage, out brOld))
                             {
                                 br = br | brOld;
                             }
-                            if (!br.IsEmpty)
+                            else
                             {
                                 liveOutStorages[def.Storage] = br;
                             }

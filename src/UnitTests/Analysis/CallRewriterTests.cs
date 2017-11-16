@@ -581,8 +581,8 @@ FpuMultiplyAdd_exit:
             var pb = new ProgramBuilder();
             pb.Add("main", m =>
             {
-                var r1 = m.Reg32("r1", 1);
-                var r2 = m.Reg32("r2", 2);
+                var r1 = m.Reg32("r1");
+                var r2 = m.Reg32("r2");
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("fnOutParam", 0);
                 m.Store(m.Word32(0x00123400), r1);
@@ -591,8 +591,8 @@ FpuMultiplyAdd_exit:
             });
             pb.Add("fnOutParam", m =>
             {
-                var r1 = m.Reg32("r1", 1);
-                var r2 = m.Reg32("r2", 2);
+                var r1 = m.Reg32("r1");
+                var r2 = m.Reg32("r2");
 
                 m.Label("m0");
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
@@ -623,8 +623,6 @@ FpuMultiplyAdd_exit:
 // r1:r1
 // r2:r2
 // r63:r63
-// r1:r1
-// r2:r2
 // return address size: 0
 void main(word32 r1, word32 r2)
 main_entry:
@@ -633,10 +631,8 @@ main_entry:
 	// succ:  l1
 l1:
 	r1_5 = fnOutParam(r1, r2, out r2_6)
-	r1_7 = (word32) r1_5 (alias)
-	r2_9 = (word32) r2_6 (alias)
-	Mem8[0x00123400:word32] = r1_7
-	Mem10[0x00123404:word32] = r2_9
+	Mem7[0x00123400:word32] = r1_5
+	Mem8[0x00123404:word32] = r2_6
 	return
 	// succ:  main_exit
 main_exit:

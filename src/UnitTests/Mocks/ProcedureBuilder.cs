@@ -359,6 +359,11 @@ namespace Reko.UnitTests.Mocks
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word32));
         }
 
+        public Identifier Reg32(string name)
+        {
+            return Frame.EnsureRegister(Architecture.GetRegister(name));
+        }
+
         public Identifier Reg16(string name, int number)
         {
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word16));

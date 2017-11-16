@@ -91,7 +91,7 @@ namespace Reko.Analysis
                      //$REVIEW: flag groups could theoretically be live in
                      // although it's uncommon.
                 {
-                    var n = Classify(sid);
+                    var n = Classify(ssa, sid, ignoreUse);
                     if (!n.IsEmpty)
                     {
                         procFlow.BitsUsed[sid.Identifier.Storage] = n;
@@ -101,11 +101,14 @@ namespace Reko.Analysis
             return procFlow;
         }
 
-        public BitRange Classify(SsaState ssa, SsaIdentifier sid)
+        public BitRange Classify(
+            SsaState ssa, 
+            SsaIdentifier sid,
+            bool ignoreUseInstructions)
         {
             this.procFlow = flow[ssa.Procedure];
             this.ssa = ssa;
-            this.ignoreUseInstructions = true;
+            this.ignoreUseInstructions = ignoreUseInstructions;
             if (sid.Identifier.Storage is RegisterStorage ||
                  sid.Identifier.Storage is StackArgumentStorage ||
                  sid.Identifier.Storage is FpuStackStorage ||
@@ -220,8 +223,6 @@ namespace Reko.Analysis
                 return BitRange.Empty;
             return use.Expression.Accept(this);
         }
-
-
 
         public BitRange VisitAddress(Address addr)
         {

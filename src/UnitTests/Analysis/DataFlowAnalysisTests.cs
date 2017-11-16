@@ -54,13 +54,13 @@ namespace Reko.UnitTests.Analysis
         protected override void RunTest(Program program, TextWriter writer)
 		{
             SetCSignatures(program);
-            IImportResolver importResolver = mr.Stub<IImportResolver>();
+            var importResolver = mr.Stub<IImportResolver>();
             mr.ReplayAll();
 			dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
+				var flow = dfa.ProgramDataFlow[proc];
 				writer.Write("// ");
                 var sig = flow.Signature ?? proc.Signature;
                 sig.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind | FunctionType.EmitFlags.LowLevelInfo, writer);
