@@ -107,7 +107,7 @@ namespace Reko.Arch.X86
                 instrCur.op1.Width,
                 SrcOp(instrCur.op1),
                 SrcOp(instrCur.op2),
-                CopyFlags.ForceBreak|CopyFlags.EmitCc);
+                CopyFlags.EmitCc);
         }
 
         public void RewriteAdcSbb(Func<Expression,Expression,Expression> opr)
@@ -122,7 +122,7 @@ namespace Reko.Arch.X86
                         SrcOp(instrCur.op1),
                         SrcOp(instrCur.op2)),
                     c),
-                CopyFlags.ForceBreak|CopyFlags.EmitCc);
+                CopyFlags.EmitCc);
         }
 
         private void RewriteArpl()
@@ -193,7 +193,7 @@ namespace Reko.Arch.X86
 
         public void RewriteBinOp(BinaryOperator opr)
         {
-            EmitBinOp(opr, instrCur.op1, instrCur.dataWidth, SrcOp(instrCur.op1), SrcOp(instrCur.op2), CopyFlags.ForceBreak|CopyFlags.EmitCc);
+            EmitBinOp(opr, instrCur.op1, instrCur.dataWidth, SrcOp(instrCur.op1), SrcOp(instrCur.op2), CopyFlags.EmitCc);
         }
 
         private void RewriteBsr()
@@ -424,7 +424,7 @@ namespace Reko.Arch.X86
                 instrCur.op1.Width,
                 SrcOp(instrCur.op1),
                 m.Const(instrCur.op1.Width, amount),
-                CopyFlags.ForceBreak|CopyFlags.EmitCc);
+                CopyFlags.EmitCc);
         }
 
         private void RewriteLock()
@@ -452,7 +452,7 @@ namespace Reko.Arch.X86
                 instrCur.op1.Width,
                 SrcOp(instrCur.op1),
                 SrcOp(instrCur.op2),
-                CopyFlags.ForceBreak);
+                0);
             EmitCcInstr(SrcOp(instrCur.op1), (X86Instruction.DefCc(instrCur.code) & ~FlagM.CF));
             m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
@@ -500,11 +500,11 @@ namespace Reko.Arch.X86
                 return;
             case 2:
                 EmitBinOp(op, instrCur.op1, instrCur.op1.Width.MaskDomain(resultDomain), SrcOp(instrCur.op1), SrcOp(instrCur.op2), 
-                    CopyFlags.ForceBreak|CopyFlags.EmitCc);
+                    CopyFlags.EmitCc);
                 return;
             case 3:
                 EmitBinOp(op, instrCur.op1, instrCur.op1.Width.MaskDomain(resultDomain), SrcOp(instrCur.op2), SrcOp(instrCur.op3),
-                    CopyFlags.ForceBreak | CopyFlags.EmitCc);
+                    CopyFlags.EmitCc);
                 return;
             default:
                 throw new ArgumentException("Invalid number of operands");
@@ -715,12 +715,12 @@ namespace Reko.Arch.X86
 
         private void RewriteNeg()
         {
-            RewriteUnaryOperator(m.Neg, instrCur.op1, instrCur.op1, CopyFlags.ForceBreak|CopyFlags.EmitCc|CopyFlags.SetCfIf0);
+            RewriteUnaryOperator(m.Neg, instrCur.op1, instrCur.op1, CopyFlags.EmitCc|CopyFlags.SetCfIf0);
         }
 
         private void RewriteNot()
         {
-            RewriteUnaryOperator(m.Comp, instrCur.op1, instrCur.op1, CopyFlags.ForceBreak);
+            RewriteUnaryOperator(m.Comp, instrCur.op1, instrCur.op1, 0);
         }
 
         private void RewriteOut()
