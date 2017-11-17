@@ -61,6 +61,9 @@ namespace Reko.Core.Lib
 
         public string ToString(string format, IFormatProvider formatProvider)
         {
+            //$TODO: to maintain precision will require an implementation
+            // of a floating point string rendering algorithm. 
+            // https://github.com/kring/grisu.net is one possibility.
             var d = ToDouble(formatProvider);
             return d.ToString(format, formatProvider);
         }
@@ -95,7 +98,7 @@ namespace Reko.Core.Lib
                     return isNegative ? -0.0 : 0.0;
                 if (ee > 1023)   // overflow
                     return isNegative ? double.NegativeInfinity : double.PositiveInfinity;
-                //$TODO: denormals?
+                // There are no denormals in the 80-bit representation.
                 var sig = (significand >> 11) & 0x000FFFFFFFFFFFFFL;
                 var exp = (ulong)(ee + 1023) << 52;
                 var sign = isNegative ? 0x8000000000000000L : 0;
