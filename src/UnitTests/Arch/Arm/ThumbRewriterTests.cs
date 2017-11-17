@@ -6198,5 +6198,19 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|goto Mem0[ip:word32]");
         }
+
+        [Test]
+        public void ThumbRw_it_mi()
+        {
+            BuildTest(
+                0xBF48,    // it    mi
+                0x4632);   // mov   r2,r6
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|nop",        // placeholder.
+                "2|L--|00100002(2): 2 instructions",
+                "3|T--|if (Test(GE,N)) branch 00100004",
+                "4|L--|r2 = r6");
+        }
     }
 }

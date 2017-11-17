@@ -58,12 +58,12 @@ namespace Reko.Arch.Arm
         public override bool IsValid
         {
             get { return this.InstructionClass != InstructionClass.Invalid; }
-        }
+                }
 
         public override int OpcodeAsInteger
-        {
+                {
             get { return info.Opcode; }
-        }
+                }
 
         public override MachineOperand GetOperand(int i)
         {
@@ -73,6 +73,6 @@ namespace Reko.Arch.Arm
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             nInstr.Render(writer, options);
+            }
         }
-    }
 }
