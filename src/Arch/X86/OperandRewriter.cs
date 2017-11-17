@@ -79,7 +79,7 @@ namespace Reko.Arch.X86
 
         public Identifier AluRegister(RegisterStorage reg, PrimitiveType vt)
         {
-            return frame.EnsureRegister(arch.GetPart(reg, vt));
+            return frame.EnsureRegister(arch.GetSubregister(reg, 0, vt.BitSize));
         }
 
         public Constant CreateConstant(ImmediateOperand imm, PrimitiveType dataWidth)

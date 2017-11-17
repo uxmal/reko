@@ -269,11 +269,6 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public RegisterStorage GetPart(RegisterStorage reg, DataType width)
-            {
-                throw new NotImplementedException();
-            }
-
             public IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
             {
                 throw new NotImplementedException();

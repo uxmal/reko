@@ -36,6 +36,7 @@ namespace Reko.Environments.Windows
         public WinAlphaPlatform(IServiceProvider services, IProcessorArchitecture arch) 
             : base(services, arch, "winAlpha")
         {
+            arch.StackRegister = arch.GetRegister("r30");
         }
 
         public override string DefaultCallingConvention
