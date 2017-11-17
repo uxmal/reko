@@ -23,6 +23,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -80,6 +81,13 @@ namespace Reko.Environments.Windows
         private void Error(string format, params object[] args)
         {
             throw new FormatException(string.Format(format, args));
+        }
+
+        [Conditional("DEBUG")]
+        private void Dump(int i)
+        {
+            Debug.WriteLine(str);
+            Debug.Print("{0}^", new string(' ', i));
         }
 
         private void Expect(char ch)
@@ -177,7 +185,7 @@ namespace Reko.Environments.Windows
                 break;  // Integer value.
             case '2': throw new NotSupportedException();    // real value
             case 'D': throw new NotSupportedException();    // Anonymous
-            default: Error("Unknown template argument {0}.", str[i - 1]); break;
+            default: Dump(i); Error("Unknown template argument {0}.", str[i - 1]); break;
             }
         }
 
