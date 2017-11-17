@@ -398,13 +398,9 @@ namespace Reko.Arch.X86
         ///		tmp := [memaddr] op reg;
         ///		store([memaddr], tmp);
         /// </code>
-        /// This makes it easier for the subsequent phases of the 
+        /// This makes analysis easier for the subsequent phases of the 
         /// decompiler.
         /// </remarks>
-        /// <returns>
-        /// Returns the destination of the copy. If the original destination
-        /// was a memory address, this will return the `tmp`.
-        /// </returns>
         public void EmitCopy(MachineOperand opDst, Expression src, CopyFlags flags)
         {
             Expression dst = SrcOp(opDst);
