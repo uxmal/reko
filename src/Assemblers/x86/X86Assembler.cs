@@ -426,7 +426,7 @@ namespace Reko.Assemblers.x86
                 }
                 else
                 {
-                    EmitOpcode(opcode, regOpPort.Width);
+                    emitter.EmitByte(opcode);
                     emitter.EmitByte(immOp.Value.ToInt32());
                 }
             }
