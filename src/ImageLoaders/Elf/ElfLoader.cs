@@ -34,28 +34,33 @@ namespace Reko.ImageLoaders.Elf
 {
     public abstract class ElfLoader
     {
-        public const int ELFOSABI_NONE = 0x00;  // No specific ABI specified.
-        public const int ELFOSABI_HPUX = 1;     // Hewlett-Packard HP-UX 
-        public const int ELFOSABI_NETBSD = 2;   // NetBSD 
-        public const int ELFOSABI_GNU = 3;      // GNU 
-        public const int ELFOSABI_LINUX = 3;    // Linux  historical - alias for ELFOSABI_GNU 
-        public const int ELFOSABI_SOLARIS = 6;  // Sun Solaris 
-        public const int ELFOSABI_AIX = 7;      // AIX 
-        public const int ELFOSABI_IRIX = 8;     // IRIX 
-        public const int ELFOSABI_FREEBSD = 9;  // FreeBSD 
-        public const int ELFOSABI_TRU64 = 10;   // Compaq TRU64 UNIX 
-        public const int ELFOSABI_MODESTO = 11; // Novell Modesto 
-        public const int ELFOSABI_OPENBSD = 12; // Open BSD 
-        public const int ELFOSABI_OPENVMS = 13; // Open VMS 
-        public const int ELFOSABI_NSK = 14;     // Hewlett-Packard Non-Stop Kernel 
-        public const int ELFOSABI_AROS = 15;    // Amiga Research OS 
-        public const int ELFOSABI_FENIXOS = 16; // The FenixOS highly scalable multi-core OS 
-        
+        public const int ELFOSABI_NONE = 0x00;      // No specific ABI specified.
+        public const int ELFOSABI_HPUX = 1;         // Hewlett-Packard HP-UX 
+        public const int ELFOSABI_NETBSD = 2;       // NetBSD 
+        public const int ELFOSABI_GNU = 3;          // GNU 
+        public const int ELFOSABI_LINUX = 3;        // Linux  historical - alias for ELFOSABI_GNU 
+        public const int ELFOSABI_SOLARIS = 6;      // Sun Solaris 
+        public const int ELFOSABI_AIX = 7;          // AIX 
+        public const int ELFOSABI_IRIX = 8;         // IRIX 
+        public const int ELFOSABI_FREEBSD = 9;      // FreeBSD 
+        public const int ELFOSABI_TRU64 = 10;       // Compaq TRU64 UNIX 
+        public const int ELFOSABI_MODESTO = 11;     // Novell Modesto 
+        public const int ELFOSABI_OPENBSD = 12;     // Open BSD 
+        public const int ELFOSABI_OPENVMS = 13;     // Open VMS 
+        public const int ELFOSABI_NSK = 14;         // Hewlett-Packard Non-Stop Kernel 
+        public const int ELFOSABI_AROS = 15;        // Amiga Research OS 
+        public const int ELFOSABI_FENIXOS = 16;     // The FenixOS highly scalable multi-core OS 
+        public const int ELFOSABI_CLOUDABI = 17;    // Nuxi CloudABI
+        public const int ELFOSABI_OPENVOS = 18;     // Stratus Technologies OpenVOS
+
+        // Architecture-specific ABI's
+        public const int ELFOSABI_ARM = 0x61;
+        public const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
+
+        // Endianness
         public const byte ELFDATA2LSB = 1;
         public const byte ELFDATA2MSB = 2;
 
-        public const int ELFOSABI_ARM = 0x61;
-        public const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
         public const uint SHF_WRITE = 0x1;
         public const uint SHF_ALLOC = 0x2;
         public const uint SHF_EXECINSTR = 0x4;
@@ -146,6 +151,7 @@ namespace Reko.ImageLoaders.Elf
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             string arch;
+            string stackRegName = null;
             switch ((ElfMachine)machineType)
             {
             case ElfMachine.EM_NONE: return null; // No machine
@@ -174,18 +180,27 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_AVR: arch = "avr8"; break;
             case ElfMachine.EM_RISCV: arch = "risc-v"; break;
             case ElfMachine.EM_SH:
-                arch = endianness== ELFDATA2LSB ? "superH-le" : "superH-be";
-                var a = cfgSvc.GetArchitecture(arch);
+                arch = endianness == ELFDATA2LSB ? "superH-le" : "superH-be";
                 // SuperH stack pointer is not defined by the architecture,
                 // but by the application itself. It appears r15 has been
                 // chosen by at least the NetBSD folks.
-                a.StackRegister = a.GetRegister("r15");
-                return a;
-            case ElfMachine.EM_ALPHA: arch = "alpha"; break;
+                stackRegName = "r15";
+                break;
+            case ElfMachine.EM_ALPHA:
+                arch = "alpha";
+                // Alpha has no architecture-defined stack pointer. 
+                // Alpha-Linux uses r30.
+                stackRegName = "r30";
+                break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
-            return cfgSvc.GetArchitecture(arch);
+            var a = cfgSvc.GetArchitecture(arch);
+            if (stackRegName != null)
+            {
+                a.StackRegister = a.GetRegister(stackRegName);
+            }
+            return a;
         }
 
         private static Dictionary<ElfSymbolType, SymbolType> mpSymbolType = new Dictionary<ElfSymbolType, SymbolType>

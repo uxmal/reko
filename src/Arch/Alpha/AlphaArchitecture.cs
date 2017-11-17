@@ -39,7 +39,6 @@ namespace Reko.Arch.Alpha
             this.PointerType = PrimitiveType.Pointer64;
             this.FramePointerType = PrimitiveType.Pointer64;
             this.InstructionBitSize = 32;
-            this.StackRegister = Registers.r30;     //$BUG: see #489, this is Windows-specific.
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
