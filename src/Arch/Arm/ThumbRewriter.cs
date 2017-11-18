@@ -67,7 +67,15 @@ namespace Reko.Arch.Arm
             get
             {
                 if (itState != null && itState[itPos] == 'e')
+                {
+                    if (itStateCondition == ArmCodeCondition.AL)
+                    {
+                        // This is invalid according to the ARM spec.
+                        ClearItState();
+                        return ArmCodeCondition.Invalid;
+                    }
                     return Invert(this.itStateCondition);
+                }
                 else
                     return this.itStateCondition;
             }
@@ -186,13 +194,12 @@ namespace Reko.Arch.Arm
                 {
                     if (++itPos >= itState.Length)
                     {
-                        itState = null;
-                        itPos = 0;
-                        itStateCondition = ArmCodeCondition.AL;
+                        ClearItState();
                     }
                 }
             }
         }
+
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -224,6 +231,13 @@ namespace Reko.Arch.Arm
             Debug.WriteLine("                \"1|L--|@@@\");");
             Debug.WriteLine("        }");
             Debug.WriteLine("");
+        }
+
+        private void ClearItState()
+        {
+            itState = null;
+            itPos = 0;
+            itStateCondition = ArmCodeCondition.AL;
         }
 
         private void Invalid()
@@ -305,7 +319,38 @@ namespace Reko.Arch.Arm
         }
                 if (this.hBytes != null && this.hBytes.IsAllocated)
         {
-                    this.hBytes.Free();
+            switch (cond)
+            {
+            default:
+                throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
+            case ArmCodeCondition.HS:
+                return new TestCondition(ConditionCode.UGE, FlagGroup(FlagM.CF, "C", PrimitiveType.Byte));
+            case ArmCodeCondition.LO:
+                return new TestCondition(ConditionCode.ULT, FlagGroup(FlagM.CF, "C", PrimitiveType.Byte));
+            case ArmCodeCondition.EQ:
+                return new TestCondition(ConditionCode.EQ, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Byte));
+            case ArmCodeCondition.GE:
+                return new TestCondition(ConditionCode.GE, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Byte));
+            case ArmCodeCondition.GT:
+                return new TestCondition(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Byte));
+            case ArmCodeCondition.HI:
+                return new TestCondition(ConditionCode.UGT, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Byte));
+            case ArmCodeCondition.LE:
+                return new TestCondition(ConditionCode.LE, FlagGroup(FlagM.ZF | FlagM.CF | FlagM.VF, "NZV", PrimitiveType.Byte));
+            case ArmCodeCondition.LS:
+                return new TestCondition(ConditionCode.ULE, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Byte));
+            case ArmCodeCondition.LT:
+                return new TestCondition(ConditionCode.LT, FlagGroup(FlagM.NF | FlagM.VF, "NV", PrimitiveType.Byte));
+            case ArmCodeCondition.MI:
+                return new TestCondition(ConditionCode.LT, FlagGroup(FlagM.NF, "N", PrimitiveType.Byte));
+            case ArmCodeCondition.PL:
+                return new TestCondition(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF, "NZ", PrimitiveType.Byte));
+            case ArmCodeCondition.NE:
+                return new TestCondition(ConditionCode.NE, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Byte));
+            case ArmCodeCondition.VC:
+                return new TestCondition(ConditionCode.NO, FlagGroup(FlagM.VF, "V", PrimitiveType.Byte));
+            case ArmCodeCondition.VS:
+                return new TestCondition(ConditionCode.OV, FlagGroup(FlagM.VF, "V", PrimitiveType.Byte));
             }
         }
 
@@ -321,7 +366,11 @@ namespace Reko.Arch.Arm
 
             public void Reset()
         {
-            if (cond == ArmCodeCondition.AL)
+            if (cond == ArmCodeCondition.Invalid)
+            {
+                Invalid();
+            }
+            else if (cond == ArmCodeCondition.AL)
             {
                 m.Emit(instr);
             }

@@ -5934,7 +5934,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbRw_lsls()
         {
-            BuildTest(0x0040);  // lsls        r0,r0,#1
+            BuildTest(0x0040);  // lsls        r0,#1
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
                 "1|L--|r0 = r0 << 0x00000001",

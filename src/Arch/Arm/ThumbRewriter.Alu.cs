@@ -53,8 +53,8 @@ namespace Reko.Arch.Arm
         private void RewriteBic()
         {
             var dst = RewriteOp(ops[0]);
-            var src1 = RewriteOp(ops[1]);
-            var src2 = RewriteOp(ops[2]);
+            var src1 = ops.Length == 2 ? dst : RewriteOp(ops[1]);
+            var src2 = ops.Length == 2 ? RewriteOp(ops[1]) : RewriteOp(ops[2]);
             m.Assign(dst, m.And(src1, m.Comp(src2)));
         }
 
@@ -139,8 +139,8 @@ namespace Reko.Arch.Arm
         private void RewriteShift(Func<Expression,Expression, Expression> ctor)
         {
             var dst = RewriteOp(ops[0]);
-            var src1 = RewriteOp(ops[1]);
-            var src2 = RewriteOp(ops[2]);
+            var src1 = ops.Length == 2 ? dst : RewriteOp(ops[1]);
+            var src2 = ops.Length == 2 ? RewriteOp(ops[1]) : RewriteOp(ops[2]);
             m.Assign(dst, ctor(src1, src2));
             if (instr.ArchitectureDetail.UpdateFlags)
             {
