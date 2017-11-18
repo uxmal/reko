@@ -484,6 +484,14 @@ namespace Reko.Core
         }
     }
 
+    /// <summary>
+    /// Implements an Intel 80286+ protected segmented address.
+    /// </summary>
+    /// <remarks>
+    /// Starting with the 80386, the offset could be 32-bit. It's possible 
+    /// we may need a separate ProtectedSegmentedAddress48 class for such
+    /// "long" segmented addresses. See discussion in #498.
+    /// </remarks>
     public class ProtectedSegmentedAddress : Address
     {
         private ushort uSegment;
@@ -503,18 +511,15 @@ namespace Reko.Core
         public override Address Add(long offset)
         {
             ushort sel = this.uSegment;
-            uint newOff = (uint)(uOffset + offset);
-            if (newOff > 0xFFFF)
-            {
-                sel += 0x1000;
-                newOff &= 0xFFFF;
-            }
-            return new ProtectedSegmentedAddress(sel, (ushort)newOff);
+            // As per discussion in #498, we allow the offset to overflow
+            // quietly.
+            ushort newOff = (ushort)(uOffset + offset);
+            return new ProtectedSegmentedAddress(sel, newOff);
         }
 
         public override Address Align(int alignment)
         {
-            return new RealSegmentedAddress(uSegment, ((ushort)(alignment * ((uOffset + alignment - 1) / alignment))));
+            return new ProtectedSegmentedAddress(uSegment, ((ushort)(alignment * ((uOffset + alignment - 1) / alignment))));
         }
 
         public override Expression CloneExpression()
