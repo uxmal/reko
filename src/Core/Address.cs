@@ -494,23 +494,23 @@ namespace Reko.Core
     /// </remarks>
     public class ProtectedSegmentedAddress : Address
     {
-        private ushort uSegment;
+        private ushort uSelector;
         private ushort uOffset;
 
         public ProtectedSegmentedAddress(ushort segment, ushort offset)
             : base(PrimitiveType.SegPtr32)
         {
-            this.uSegment = segment;
+            this.uSelector = segment;
             this.uOffset = offset;
         }
 
-        public override bool IsNull { get { return uSegment == 0 && uOffset == 0; } }
+        public override bool IsNull { get { return uSelector == 0 && uOffset == 0; } }
         public override ulong Offset { get { return uOffset; } }
-        public override ushort? Selector { get { return uSegment; } }
+        public override ushort? Selector { get { return uSelector; } }
 
         public override Address Add(long offset)
         {
-            ushort sel = this.uSegment;
+            ushort sel = this.uSelector;
             // As per discussion in #498, we allow the offset to overflow
             // quietly.
             ushort newOff = (ushort)(uOffset + offset);
@@ -519,22 +519,22 @@ namespace Reko.Core
 
         public override Address Align(int alignment)
         {
-            return new ProtectedSegmentedAddress(uSegment, ((ushort)(alignment * ((uOffset + alignment - 1) / alignment))));
+            return new ProtectedSegmentedAddress(uSelector, ((ushort)(alignment * ((uOffset + alignment - 1) / alignment))));
         }
 
         public override Expression CloneExpression()
         {
-            return new ProtectedSegmentedAddress(uSegment, uOffset);
+            return new ProtectedSegmentedAddress(uSelector, uOffset);
         }
 
         public override string GenerateName(string prefix, string suffix)
         {
-            return string.Format("{0}{1:X4}_{2:X4}{3}", prefix, uSegment, uOffset, suffix);
+            return string.Format("{0}{1:X4}_{2:X4}{3}", prefix, uSelector, uOffset, suffix);
         }
 
         public override Address NewOffset(ulong offset)
         {
-            return new ProtectedSegmentedAddress(uSegment, (ushort)offset);
+            return new ProtectedSegmentedAddress(uSelector, (ushort)offset);
         }
 
         public override Constant ToConstant()
@@ -549,17 +549,17 @@ namespace Reko.Core
 
         public override uint ToUInt32()
         {
-            return (((uint)(uSegment & ~7)) << 9) + uOffset;
+            return (((uint)(uSelector & ~7)) << 9) + uOffset;
         }
 
         public override ulong ToLinear()
         {
-            return (((ulong)(uSegment & ~7)) << 9) + uOffset;
+            return (((ulong)(uSelector & ~7)) << 9) + uOffset;
         }
 
         public override string ToString()
         {
-            return string.Format("{0:X4}:{1:X4}", uSegment, uOffset);
+            return string.Format("{0:X4}:{1:X4}", uSelector, uOffset);
         }
     }
 
