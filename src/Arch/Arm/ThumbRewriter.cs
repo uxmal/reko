@@ -47,7 +47,8 @@ namespace Reko.Arch.Arm
         private ArmInstructionOperand[] ops;
         private RtlClass rtlc;
         private RtlEmitter m;
-        private int itState;
+        private string itState;     // contains the state needed to rewrite "IT" instructions.
+        private int itPos;          // position within the itState above.
         private ArmCodeCondition itStateCondition;
 
         public ThumbRewriterNew(Dictionary<int, RegisterStorage> regs, INativeArchitecture nArch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -57,6 +58,46 @@ namespace Reko.Arch.Arm
             this.rdr = rdr;
             this.binder = binder;
             this.host = host;
+            this.itState = null;
+            this.itStateCondition = ArmCodeCondition.AL;
+        }
+
+        public ArmCodeCondition CurrentItStateCondition
+        {
+            get
+            {
+                if (itState != null && itState[itPos] == 'e')
+                    return Invert(this.itStateCondition);
+                else
+                    return this.itStateCondition;
+            }
+        }
+
+        private ArmCodeCondition Invert(ArmCodeCondition cond)
+        {
+            switch (cond)
+            {
+            case ArmCodeCondition.HS: return ArmCodeCondition.LO;
+            case ArmCodeCondition.LO: return ArmCodeCondition.HS;
+            case ArmCodeCondition.EQ: return ArmCodeCondition.NE;
+            case ArmCodeCondition.GE: return ArmCodeCondition.LT;
+            case ArmCodeCondition.GT: return ArmCodeCondition.LE;
+            case ArmCodeCondition.HI: return ArmCodeCondition.LS;
+            case ArmCodeCondition.LE: return ArmCodeCondition.GT;
+            case ArmCodeCondition.LS: return ArmCodeCondition.HI;
+            case ArmCodeCondition.LT: return ArmCodeCondition.GE;
+            case ArmCodeCondition.MI: return ArmCodeCondition.PL;
+            case ArmCodeCondition.PL: return ArmCodeCondition.MI;
+            case ArmCodeCondition.NE: return ArmCodeCondition.EQ;
+            case ArmCodeCondition.VC: return ArmCodeCondition.VS;
+            case ArmCodeCondition.VS: return ArmCodeCondition.VC;
+            }
+            throw new NotImplementedException(string.Format("Don't know how to invert {0}.", cond));
+        }
+
+        private IEnumerator<Arm32Instruction> CreateInstructionStream(EndianImageReader rdr)
+        {
+            return new ThumbDisassembler(rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -108,8 +149,8 @@ namespace Reko.Arch.Arm
                 case ArmInstruction.EOR: RewriteEor(); break;
                 case ArmInstruction.IT: RewriteIt(); break;
                 case ArmInstruction.LDR: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Word32); break;
-                case ArmInstruction.LDRB: RewriteLdr(PrimitiveType.UInt32,PrimitiveType.Byte); break;
-                case ArmInstruction.LDRSB: RewriteLdr(PrimitiveType.Int32,PrimitiveType.SByte); break;
+                case ArmInstruction.LDRB: RewriteLdr(PrimitiveType.UInt32, PrimitiveType.Byte); break;
+                case ArmInstruction.LDRSB: RewriteLdr(PrimitiveType.Int32, PrimitiveType.SByte); break;
                 case ArmInstruction.LDREX: RewriteLdrex(); break;
                 case ArmInstruction.LDRH: RewriteLdr(PrimitiveType.UInt32, PrimitiveType.Word16); break;
                 case ArmInstruction.LSL: RewriteShift(m.Shl); break;
@@ -141,10 +182,14 @@ namespace Reko.Arch.Arm
                 {
                     Class = rtlc
                 };
-                itState = (itState << 1) & 0x1F;
-                if (itState == 0)
+                if (itState != null)
                 {
-                    itStateCondition = ArmCodeCondition.AL;
+                    if (++itPos >= itState.Length)
+                    {
+                        itState = null;
+                        itPos = 0;
+                        itStateCondition = ArmCodeCondition.AL;
+                    }
                 }
             }
         }
@@ -276,7 +321,17 @@ namespace Reko.Arch.Arm
 
             public void Reset()
         {
-                throw new NotSupportedException();
+            if (cond == ArmCodeCondition.AL)
+            {
+                m.Emit(instr);
+            }
+            else
+            {
+                m.BranchInMiddleOfInstruction(
+                    TestCond(cond).Invert(),
+                    Address.Ptr32((uint)(this.instr.Address + this.instr.Bytes.Length)),
+                    RtlClass.ConditionalTransfer);
+                m.Emit(instr);
             }
         }
 
@@ -289,16 +344,16 @@ namespace Reko.Arch.Arm
                 instr = new RtlGoto(src, RtlClass.Transfer);
             }
         static ThumbRewriterNew()
-        {
+            {
             IID_INativeRewriter = typeof(INativeRewriter).GUID;
             IID_INativeRewriterHost = typeof(INativeRewriterHost).GUID;
             IID_INativeTypeFactory = typeof(INativeTypeFactory).GUID;
             IID_IRtlEmitter = typeof(INativeRtlEmitter).GUID;
-        }
+            }
 
         private static Guid IID_INativeRewriter;
         private static Guid IID_INativeRewriterHost;
         private static Guid IID_IRtlEmitter;
         private static Guid IID_INativeTypeFactory;
-            }
+        }
 }

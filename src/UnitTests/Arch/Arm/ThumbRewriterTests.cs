@@ -6092,21 +6092,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbRw_it()
-        {
-            BuildTest(
-                0xBF38,     //it          cc
-                0x4632,     // movcc       r2,r6
-                0x4632);   // mov       r2,r6
-            AssertCode(
-                "0|L--|00100002(2): 2 instructions",
-                "1|T--|if (Test(UGE,C)) branch 00100004",
-                "2|L--|r2 = r6",
-                "3|L--|00100004(2): 1 instructions",
-                "4|L--|r2 = r6");
-        }
-
-        [Test]
         public void ThumbRw_subw()
         {
             BuildTest(0xF6AD, 0x6D48);  // sub         sp,sp,#0xE48
@@ -6211,6 +6196,42 @@ namespace Reko.UnitTests.Arch.Arm
                 "2|L--|00100002(2): 2 instructions",
                 "3|T--|if (Test(GE,N)) branch 00100004",
                 "4|L--|r2 = r6");
+        }
+
+        [Test]
+        public void ThumbRw_itt_mi()
+        {
+            BuildTest(
+                0xBF44,     // itt  mi
+                0x4632,     // mov  r2,r6
+                0x4633);    // mov  r3,r6
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|nop",
+                "2|L--|00100002(2): 2 instructions",
+                "3|T--|if (Test(GE,N)) branch 00100004",
+                "4|L--|r2 = r6",
+                "5|L--|00100004(2): 2 instructions",
+                "6|T--|if (Test(GE,N)) branch 00100006",
+                "7|L--|r3 = r6");
+        }
+
+        [Test]
+        public void ThumbRw_ite_eq()
+        {
+            BuildTest(
+                0xBF0C,     // ite  eq
+                0x4632,     // mov  r2,r6
+                0x4633);    // mov  r3,r6
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|nop",
+                "2|L--|00100002(2): 2 instructions",
+                "3|T--|if (Test(NE,Z)) branch 00100004",
+                "4|L--|r2 = r6",
+                "5|L--|00100004(2): 2 instructions",
+                "6|T--|if (Test(EQ,Z)) branch 00100006",
+                "7|L--|r3 = r6");
         }
     }
 }

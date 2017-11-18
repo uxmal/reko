@@ -77,8 +77,10 @@ namespace Reko.Arch.Arm
 
         private void RewriteIt()
         {
-            // Set up the ITSTATE for the coming instructions.
-            this.itState = instr.Bytes[0] & 0xF;
+            // Disassembler has already discovered the 'e' or 't' pattern, so all we need to do
+            // is to hang on to the mnemonic and peel off one letter at a time.
+            this.itState = instr.Mnemonic;
+            this.itPos = 0; // position before the first 'e'/'t' "opcode".
             this.itStateCondition = instr.ArchitectureDetail.CodeCondition;
             // Emit a placeholder NOP at the address of the IT instruction.
             m.Nop();
