@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Assemblers.x86
         }
 
         [Test]
-        public void MovRegReg()
+        public void X86Asm_MovRegReg()
         {
             m.Mov(Reg(Registers.ax), Reg(Registers.bx));
             AssertEqualBytes("8BC3", GetBytes(m));
@@ -59,14 +59,14 @@ namespace Reko.UnitTests.Assemblers.x86
         }
 
         [Test]
-        public void MovRegConst()
+        public void X86Asm_MovRegConst()
         {
             m.Mov(Reg(Registers.ax), 0x300);
             AssertEqualBytes("B80003", GetBytes(m));
         }
 
         [Test]
-        public void MovMemReg()
+        public void X86Asm_MovMemReg()
         {
             m.Mov(m.BytePtr(0x0300), 0x12);
             AssertEqualBytes("C606000312", GetBytes(m));
