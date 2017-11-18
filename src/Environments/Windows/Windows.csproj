@@ -30,8 +30,6 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,15 +62,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\external\NUnit-2.6.3\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\..\external\NUnit-2.6.3\nunit.framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlphaCallingConvention.cs" />
@@ -133,7 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Arm\Arm.csproj">
-      <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
+      <Project>{32F09304-51BE-4797-A86A-C0BEFED2422B}</Project>
       <Name>Arm</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\PowerPC\PowerPC.csproj">
@@ -149,12 +146,13 @@
       <Name>Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj">
-      <Project>{fdaf4ca9-085c-473e-bcb5-0d2a4354a949}</Project>
+      <Project>{FDAF4CA9-085C-473E-BCB5-0D2A4354A949}</Project>
       <Name>Libc</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\tools\c2xml\c2xml.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    <ProjectReference Include="..\..\tools\c2xml\C2Xml.csproj">
       <Project>{500C7C4B-5B7A-40E0-BEED-75DDF1BA78D5}</Project>
+      <Name>C2Xml</Name>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

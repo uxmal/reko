@@ -28,8 +28,6 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -143,9 +141,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
@@ -176,30 +171,7 @@
     <PostBuildEvent />
   </PropertyGroup>
   <ItemGroup>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\AtariTOS\atariTOS.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_bdos_services.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_map.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\realmodeintservices.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\msvcrt.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\ntoskrnl.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows32.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wsock32.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows64.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\oleaut32.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win32characteristics.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win64characteristics.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\Mac MPW Interfaces 1991 PASCAL.pas" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\NeoGeo\NeoGeoPocket.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\Xlib.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\sysvcharacteristics.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Trs80\Trs80Rom.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)..\external\reactos\coredll.def" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
@@ -254,7 +226,6 @@
     <Libraries Include="$(SolutionDir)Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
     <Libraries Include="$(SolutionDir)Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
-    <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
@@ -275,11 +246,6 @@
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
-    <MonoDevelop>
-      <Properties VerifyCodeBehindFields="True" VerifyCodeBehindEvents="True">
-        <XspParameters Port="8080" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
-      </Properties>
-    </MonoDevelop>
   </ProjectExtensions>
   <Target Name="BeforeBuild">
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
