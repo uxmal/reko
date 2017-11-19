@@ -108,6 +108,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="dt"></param>
         void StackParam(DataType dt);
+        void StackReturn(DataType dtRet);
     }
 
     public class CallingConventionEmitter : ICallingConventionEmitter
@@ -189,6 +190,13 @@ namespace Reko.Core
             var stg = new StackArgumentStorage(stackOffset, dt);
             stackOffset += Align(dt.Size, stackAlignment);
             Parameters.Add(stg);
+        }
+
+        public void StackReturn(DataType dt)
+        {
+            var stg = new StackArgumentStorage(stackOffset, dt);
+            stackOffset += Align(dt.Size, stackAlignment);
+            this.Return = stg;
         }
 
         public void FpuReturn(int depth, DataType dt)

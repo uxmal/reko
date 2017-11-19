@@ -26,21 +26,36 @@ using Reko.Core.Types;
 
 namespace Reko.Environments.MacOS
 {
-    public class StackBasedConvention : CallingConvention
+    /// <summary>
+    /// Implements the "pascal" calling convention for MacOS according to 
+    /// "MacOS RT Architectures", ch 11. section "Pascal Calling Conventions".
+    /// </summary>
+    /// <remarks>
+    /// When following Pascal calling conventions, the caller passes space for
+    /// the return value before pushing any parameters. The caller then passes
+    /// parameters from left to right.
+    /// </remarks>
+    public class PascalCallingConvention : CallingConvention
     {
         private M68kArchitecture arch;
 
-        public StackBasedConvention(M68kArchitecture arch)
+        public PascalCallingConvention(M68kArchitecture arch)
         {
             this.arch = arch;
         }
 
         public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            ccr.LowLevelDetails(4, 4);
-            foreach (var param in dtParams)
+            ccr.LowLevelDetails(2, 4);
+            for (int i = dtParams.Count - 1; i >= 0; --i)
             {
-                ccr.StackParam(param);
+                ccr.StackParam(dtParams[i]);
+            }
+            ccr.ReverseParameters();
+            ccr.CalleeCleanup();
+            if (dtRet != null && !(dtRet is VoidType))
+            {
+                ccr.StackReturn(dtRet);
             }
         }
     }

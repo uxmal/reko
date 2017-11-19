@@ -131,7 +131,7 @@ fn00100000_entry:
 	// succ:  l00100000
 l00100000:
 	a7 = fp
-	a7 = a7 - 0x00000004
+	a7 = a7 - 4
 	v4 = d0
 	Mem0[a7:word32] = v4
 	CVZN = cond(v4)
@@ -141,7 +141,7 @@ l00100000:
 	N = false
 	V = false
 	v10 = Mem0[a7:word32]
-	a7 = a7 + 0x00000004
+	a7 = a7 + 4
 	d0 = v10
 	CVZN = cond(d0)
 	return
@@ -195,7 +195,7 @@ l00001020:
 	// succ:  l00001030
 l00001030:
 	Mem0[a0:word32] = 0x00000000
-	a0 = a0 + 0x00000004
+	a0 = a0 + 4
 	Z = true
 	C = false
 	N = false

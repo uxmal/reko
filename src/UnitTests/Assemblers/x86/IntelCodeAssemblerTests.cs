@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Assemblers.x86
         }
 
         [Test]
-        public void SegmentDirective()
+        public void X86Asm_SegmentDirective()
         {
             m.Segment("CODE");
             m.Db(1, 2, 3, 4);
@@ -84,6 +84,25 @@ namespace Reko.UnitTests.Assemblers.x86
 
             var bytes = GetBytes(m);
             Assert.AreEqual(0x10 + 4, bytes.Length);        // len(CODE) + alignment padding + len(DATA)
+        }
+
+        [Test]
+        public void X86Asm_issue_496()
+        {
+            m.Out(m.Imm(0xFF), m.al);
+            m.Out(m.Imm(0xFC), m.ax);
+
+            AssertEqualBytes("E6FFE7FC", GetBytes(m));
+        }
+
+
+        [Test]
+        public void X86Asm_out_dx()
+        {
+            m.Out(m.dx, m.al);
+            m.Out(m.dx, m.ax);
+
+            AssertEqualBytes("EEEF", GetBytes(m));
         }
     }
 }

@@ -663,20 +663,17 @@ namespace Reko.Scanning
                 return false;
             }
 
-            if (sigCallee != null)
+            if (sigCallee != null && sigCallee.StackDelta != 0)
             {
-                if (sigCallee.StackDelta != 0)
-                {
-                    Expression newVal = new BinaryExpression(
-                            Operator.IAdd,
-                            stackReg.DataType,
-                            stackReg,
-                            Constant.Create(
-                                PrimitiveType.CreateWord(stackReg.DataType.Size),
-                                sigCallee.StackDelta));
-                    newVal = newVal.Accept(eval);
-                    SetValue(stackReg, newVal);
-                }
+                Expression newVal = new BinaryExpression(
+                    Operator.IAdd,
+                    stackReg.DataType,
+                    stackReg,
+                    Constant.Create(
+                        PrimitiveType.CreateWord(stackReg.DataType.Size),
+                        sigCallee.StackDelta));
+                newVal = newVal.Accept(eval);
+                SetValue(stackReg, newVal);
             }
             state.OnAfterCall(sigCallee);
 

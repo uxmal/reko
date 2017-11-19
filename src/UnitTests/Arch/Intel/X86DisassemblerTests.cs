@@ -892,6 +892,13 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("cvtsi2ss\txmm0,rax", 0xF3, 0x48, 0x0F, 0x2A, 0xC0);
         }
+
+        [Test]
+        public void X86dis_out_dx()
+        {
+            AssertCode16("out\tdx,al", 0xEE);
+            AssertCode16("out\tdx,ax", 0xEF);
+        }
     }
 }
 

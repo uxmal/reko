@@ -190,7 +190,7 @@ l0000117E:
 						a0_132 = a0_241 + 0x01 - *a0_241;
 l00001202:
 						*(word32 *) 0x14BC = a0_132;
-						*(ptr32 *) 0x14C0 = fp - 0x10;
+						*(ptr32 *) 0x14C0 = fp - 0x0010;
 						fn00001354(dwLoc10, dwLoc0C_127);
 						fn0000127C(0x00);
 						return;
@@ -379,7 +379,7 @@ void fn00001390(ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C)
 // 00001468: void fn00001468()
 void fn00001468()
 {
-	fn00001390(fp + ~0xEF, fp + ~0x9F, fp + -0x0050);
+	fn00001390(fp + -0x00F0, fp + -0x00A0, fp + -0x0050);
 	return;
 }
 

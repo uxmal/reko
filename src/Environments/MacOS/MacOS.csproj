@@ -77,7 +77,7 @@
     <Compile Include="MpwPascalInterfaceLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceFork.cs" />
-    <Compile Include="StackBasedConvention.cs" />
+    <Compile Include="PascalCallingConvention.cs" />
     <Compile Include="TypeImporter.cs" />
   </ItemGroup>
   <ItemGroup>
