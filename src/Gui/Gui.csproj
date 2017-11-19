@@ -38,8 +38,6 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <UseMSBuildEngine>True</UseMSBuildEngine>
     <TargetFrameworkProfile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -512,9 +510,10 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
-   <ProjectReference Include="..\tools\xslt\xslt.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    <ProjectReference Include="..\tools\xslt\xslt.csproj">
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
       <Project>{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}</Project>
+      <Name>xslt</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

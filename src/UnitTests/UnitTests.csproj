@@ -31,8 +31,6 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
     <UseMSBuildEngine>True</UseMSBuildEngine>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -622,7 +620,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arch\Alpha\Alpha.csproj">
-      <Project>{c4c56725-bfd0-405a-802c-2c66fcd0ef06}</Project>
+      <Project>{C4C56725-BFD0-405A-802C-2C66FCD0EF06}</Project>
       <Name>Alpha</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Arm\Arm.csproj">
@@ -666,7 +664,7 @@
       <Name>Sparc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\SuperH\SuperH.csproj">
-      <Project>{fc3aa408-b2b1-4b40-b29d-9ebb46aa8b33}</Project>
+      <Project>{FC3AA408-B2B1-4B40-B29D-9EBB46AA8B33}</Project>
       <Name>SuperH</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Tlcs\Tlcs.csproj">
@@ -674,7 +672,7 @@
       <Name>Tlcs</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Vax\Vax.csproj">
-      <Project>{82777964-b370-431a-ac97-733c594c02b5}</Project>
+      <Project>{82777964-B370-431A-AC97-733C594C02B5}</Project>
       <Name>Vax</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\X86\X86.csproj">
@@ -682,7 +680,7 @@
       <Name>X86</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Xtensa\Xtensa.csproj">
-      <Project>{bc7d4ad1-795f-4aec-823c-813e65c5557a}</Project>
+      <Project>{BC7D4AD1-795F-4AEC-823C-813E65C5557A}</Project>
       <Name>Xtensa</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Z80\Z80.csproj">
@@ -690,7 +688,7 @@
       <Name>Z80</Name>
     </ProjectReference>
     <ProjectReference Include="..\Assemblers\M68k\M68kAssembler.csproj">
-      <Project>{fd6ad906-bed1-4ac1-a7c5-0a04cca2d7dc}</Project>
+      <Project>{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC}</Project>
       <Name>M68kAssembler</Name>
     </ProjectReference>
     <ProjectReference Include="..\Assemblers\Pdp11\Pdp11Assembler.csproj">
@@ -734,7 +732,7 @@
       <Name>RT11</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\SegaGenesis\SegaGenesis.csproj">
-      <Project>{46d47ac5-dec2-44e6-942a-f1d9b77bb514}</Project>
+      <Project>{46D47AC5-DEC2-44E6-942A-F1D9B77BB514}</Project>
       <Name>SegaGenesis</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\SysV\SysV.csproj">
@@ -766,7 +764,7 @@
       <Name>IntelHex</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\Llvm\LLVM.csproj">
-      <Project>{9292f9e7-2ce7-470d-b5f0-72d775720bc0}</Project>
+      <Project>{9292F9E7-2CE7-470D-B5F0-72D775720BC0}</Project>
       <Name>LLVM</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\MachO\MachO.csproj">
@@ -778,11 +776,11 @@
       <Name>MzExe</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Libc\Libc.csproj">
-      <Project>{fdaf4ca9-085c-473e-bcb5-0d2a4354a949}</Project>
+      <Project>{FDAF4CA9-085C-473E-BCB5-0D2A4354A949}</Project>
       <Name>Libc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Python\Python.csproj">
-      <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>
+      <Project>{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96}</Project>
       <Name>Python</Name>
     </ProjectReference>
     <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj">
@@ -835,13 +833,18 @@
   <ItemGroup>
     <Compile Include="Core\Lib\Bits.Tests.cs" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
+	<ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.dll" />
+	<ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.pdb" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(OS)' == 'Unix'">
+	<ExternalAssemblies Include="$(SolutionDir)Arch\ArmNative\bin\$(Configuration)\libArmNative.so" />
+  </ItemGroup>
   <ItemGroup>
+    <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone\X86\capstone.dll" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
-    <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone\X86\capstone.dll " />
-    <ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.dll" />
-    <ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.pdb" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />

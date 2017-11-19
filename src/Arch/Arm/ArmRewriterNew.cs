@@ -87,7 +87,10 @@ namespace Reko.Arch.Arm
                 this.iRtlEmitter = GetCOMInterface(rtlEmitter, IID_IRtlEmitter);
                 this.iNtf = GetCOMInterface(ntf, IID_INativeTypeFactory);
                 this.iHost = GetCOMInterface(host, IID_INativeRewriterHost);
-                this.native = CreateNativeRewriter(hBytes.AddrOfPinnedObject(), bytes.Length, (int)outer.rdr.Offset, addr, iRtlEmitter, iNtf, iHost);
+
+				IntPtr unk = CreateNativeRewriter(hBytes.AddrOfPinnedObject(), bytes.Length, (int)outer.rdr.Offset, addr, iRtlEmitter, iNtf, iHost);
+				this.native = (INativeRewriter)Marshal.GetObjectForIUnknown(unk);
+				Marshal.Release(unk);
             }
 
             public RtlInstructionCluster Current { get; private set; }
@@ -146,16 +149,19 @@ namespace Reko.Arch.Arm
 
         static ArmRewriterNew()
         {
+			IID_INativeRewriter = typeof(INativeRewriter).GUID;
             IID_INativeRewriterHost = typeof(INativeRewriterHost).GUID;
             IID_INativeTypeFactory = typeof(INativeTypeFactory).GUID;
             IID_IRtlEmitter = typeof(INativeRtlEmitter).GUID;
         }
 
+		private static Guid IID_INativeRewriter;
         private static Guid IID_INativeRewriterHost;
         private static Guid IID_IRtlEmitter;
         private static Guid IID_INativeTypeFactory;
 
-        [DllImport("ArmNative.dll",CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateNativeRewriter")]
-        public static extern INativeRewriter CreateNativeRewriter(IntPtr rawbytes, int length, int offset, ulong address, IntPtr rtlEmitter, IntPtr typeFactory, IntPtr host);
+        [DllImport("ArmNative",CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateNativeRewriter")]
+		//[return: MarshalAs(UnmanagedType.IUnknown)]
+        public static extern IntPtr CreateNativeRewriter(IntPtr rawbytes, int length, int offset, ulong address, IntPtr rtlEmitter, IntPtr typeFactory, IntPtr host);
     }
 }

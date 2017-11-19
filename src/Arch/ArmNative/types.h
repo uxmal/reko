@@ -59,8 +59,8 @@ typedef char* LPWSTR;
 
 struct IUnknown {
      virtual HRESULT QueryInterface(REFIID, void ** out) = 0;
-     virtual ULONG AddRef();
-     virtual ULONG Release();
+     virtual ULONG AddRef() = 0;
+     virtual ULONG Release() = 0;
 };
 
 extern IID IID_IUnknown;

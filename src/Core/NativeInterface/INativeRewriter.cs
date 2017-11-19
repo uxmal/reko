@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
+	[ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("12506D0F-1C67-4828-9601-96F8ED4D162D")]
     public interface INativeRewriter
@@ -35,6 +36,7 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] int GetCount();  //$DEBUG: used to track object leaks.
     }
 
+	[ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("56E6600F-619E-441F-A2C3-A37F07BA0DA0")]
     [ComVisible(true)]

@@ -35,14 +35,18 @@ static const IID IID_INativeRewriter =
 
 void Dump(const char * fmt, ...)
 {
-#if _WINDOWS
-	char buf[300];
 	va_list args;
 	va_start(args, fmt);
+#if _WINDOWS
+	char buf[300];
 	vsnprintf(buf, _countof(buf), fmt, args);
 	::strcat_s(buf, "\r\n");
 	::OutputDebugStringA(buf);
+#else
+	vfprintf(stderr, fmt, args);
+	fputs("\n", stderr);
 #endif
+	va_end(args);
 }
 
 STDMETHODIMP ArmRewriter::QueryInterface(REFIID riid, void ** ppvOut)
@@ -843,6 +847,8 @@ HExpr ArmRewriter::TestCond(arm_cc cond)
 		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF, "NZ", BaseType::Byte));
 	case ARM_CC_NE:
 		return m.Test(ConditionCode::NE, FlagGroup(FlagM::ZF, "Z", BaseType::Byte));
+	case ARM_CC_VC:
+		return m.Test(ConditionCode::NO, FlagGroup(FlagM::VF, "V", BaseType::Byte));
 	case ARM_CC_VS:
 		return m.Test(ConditionCode::OV, FlagGroup(FlagM::VF, "V", BaseType::Byte));
 	}
@@ -880,7 +886,7 @@ void ArmRewriter::RewriteSwp(BaseType type)
 	m.Assign(dst, m.Fn(intrinsic));
 }
 
-#if _DEBUG
+#if _DEBUG && !MONODEVELOP
 void ArmRewriter::EmitUnitTest()
 {
 	if (opcode_seen[instr->id])
@@ -907,6 +913,11 @@ void ArmRewriter::EmitUnitTest()
 }
 
 int ArmRewriter::opcode_seen[ARM_INS_ENDING];
+#else
+void ArmRewriter::EmitUnitTest()
+{
+	//TODO
+}
 #endif
 
 

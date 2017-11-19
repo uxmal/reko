@@ -41,6 +41,7 @@ namespace Reko.Arch.Arm
 
         public Arm32ProcessorArchitecture()
         {
+           
             InstructionBitSize = 32;
             FramePointerType = PrimitiveType.Pointer32;
             PointerType = PrimitiveType.Pointer32;

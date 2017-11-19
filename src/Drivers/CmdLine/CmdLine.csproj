@@ -12,8 +12,6 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -74,12 +72,14 @@
       <Name>Decompiler</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Environments\SysV\SysV.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <Project>{500C7C4B-5B7A-40E0-BEED-75DDF1BA78D5}</Project>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+      <Project>{5307665E-072F-4398-872D-6550BE6FC1EB}</Project>
+      <Name>SysV</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
       <Project>{5B6DA2CA-5CA1-4A84-8084-9D6780F64BCF}</Project>
+      <Name>Dol</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -105,7 +105,6 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\Mac MPW Interfaces 1991 PASCAL.pas" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\NeoGeo\NeoGeoPocket.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\lp32.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
@@ -114,6 +113,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\sysvcharacteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Trs80\Trs80Rom.xml" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\reactos\coredll.def" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
@@ -121,6 +121,13 @@
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.-->
   <Target Name="AfterBuild">
+    <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
+      <Architectures Include="$(SolutionDir)$(Configuration)\ArmNative.dll" />
+      <Architectures Include="$(SolutionDir)$(Configuration)\ArmNative.pdb" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(OS)' == 'Unix'">
+      <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\$(Configuration)\libArmNative.so" />
+    </ItemGroup>
     <ItemGroup>
       <Architectures Include="$(SolutionDir)Arch\Alpha\$(OutDir)Reko.Arch.Alpha.*" />
       <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
@@ -165,12 +172,17 @@
       <Environments Include="$(SolutionDir)Environments\Wii\$(OutDir)Reko.Environments.Wii.*" />
       <Environments Include="$(SolutionDir)Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
       <Environments Include="$(SolutionDir)Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
-    <SymbolSources Include="$(SolutionDir)Sources\LGSymLoader\$(OutDir)Reko.Symbols.LGSymLoader.*" />
+      <SymbolSources Include="$(SolutionDir)Sources\LGSymLoader\$(OutDir)Reko.Symbols.LGSymLoader.*" />
       <Libraries Include="$(SolutionDir)Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
       <Libraries Include="$(SolutionDir)Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
-      <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
-      <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
       <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
+      <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
+      <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(OS)' == 'Unix'">
+      <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
     </ItemGroup>
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />

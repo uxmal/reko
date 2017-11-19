@@ -154,152 +154,77 @@ fn092A: error: An error occurred during data flow analysis.
 *** Elf\ARM\angr-685\RTOSDemo.axf
 0000800D: warning: Call target address FF48A91D is invalid.
 00008019: warning: Call target address 00C89029 is invalid.
-0000801D: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
-0000801D: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
-00000059: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
-00000059: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+00008021: warning: Call target address 010ACC97 is invalid.
+00008025: warning: Call target address FFC08371 is invalid.
+00008031: error: Rewriting ARM opcode 'cdp2' is not supported yet.
 0000016D: warning: Call target address FEC5AB25 is invalid.
-00000429: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
-00000429: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
-00000A21: error: Rewriting ARM opcode 'rscshi' is not supported yet.
-00000A21: error: Rewriting ARM opcode 'rscshi' is not supported yet.
-0000A00D: error: Rewriting ARM opcode 'rscsne' is not supported yet.
-0000A00D: error: Rewriting ARM opcode 'rscsne' is not supported yet.
+00000431: error: Rewriting ARM opcode 'ldcllt' is not supported yet.
+00000455: error: Rewriting ARM opcode 'rfeia' is not supported yet.
 0000A5C9: warning: Call target address FF656279 is invalid.
 0000A5CD: warning: Call target address 010CB1D5 is invalid.
 0000A5DD: error: Rewriting ARM opcode 'ldchs' is not supported yet.
-0000A24D: error: Rewriting ARM opcode 'stmdami' is not supported yet.
-0000A24D: error: Rewriting ARM opcode 'stmdami' is not supported yet.
-0000A229: error: Rewriting ARM opcode 'rscseq' is not supported yet.
-0000A219: error: Rewriting ARM opcode 'rscshi' is not supported yet.
-0000A219: error: Rewriting ARM opcode 'rscshi' is not supported yet.
-0000A1E1: error: Rewriting ARM opcode 'strhteq' is not supported yet.
-0000A1E1: error: Rewriting ARM opcode 'strhteq' is not supported yet.
-0000A1C9: error: Rewriting ARM opcode 'strhteq' is not supported yet.
-0000A1C9: error: Rewriting ARM opcode 'strhteq' is not supported yet.
+0000A5F5: error: Rewriting ARM opcode 'ldcls' is not supported yet.
+0000A631: error: Rewriting ARM opcode 'mrrc' is not supported yet.
+0000A259: warning: Call target address 018E3801 is invalid.
+0000A269: error: Rewriting ARM opcode 'ldclvs' is not supported yet.
 0000A16D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
 0000A16D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
-0000A161: error: Rewriting ARM opcode 'rscsne' is not supported yet.
-0000A161: error: Rewriting ARM opcode 'rscsne' is not supported yet.
 0000A14D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
 0000A14D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
-0000A141: error: Rewriting ARM opcode 'rscsne' is not supported yet.
-0000A141: error: Rewriting ARM opcode 'rscsne' is not supported yet.
-0000A0CD: error: Rewriting ARM opcode 'strhtvc' is not supported yet.
-0000A0CD: error: Rewriting ARM opcode 'strhtvc' is not supported yet.
-0000A0A9: error: Rewriting ARM opcode 'stcllt' is not supported yet.
 0000A085: error: Rewriting ARM opcode 'ldcllo' is not supported yet.
 0000A045: warning: Call target address 001B0DF1 is invalid.
-0000A02D: error: Rewriting ARM opcode 'ldrshtvc' is not supported yet.
-0000A019: error: Rewriting ARM opcode 'rscshs' is not supported yet.
-0000A019: error: Rewriting ARM opcode 'rscshs' is not supported yet.
-00009FD5: error: Rewriting ARM opcode 'rscsne' is not supported yet.
-00009FD5: error: Rewriting ARM opcode 'rscsne' is not supported yet.
-00009F45: error: Rewriting ARM opcode 'ldrbthi' is not supported yet.
-00009F45: error: Rewriting ARM opcode 'ldrbthi' is not supported yet.
-00009F39: error: Rewriting ARM opcode 'ldrbthi' is not supported yet.
-00009F39: error: Rewriting ARM opcode 'ldrbthi' is not supported yet.
-00009F0D: error: Rewriting ARM opcode 'stmdane' is not supported yet.
-00009F0D: error: Rewriting ARM opcode 'stmdane' is not supported yet.
-00009EF1: error: Rewriting ARM opcode 'stmdane' is not supported yet.
-00009EF1: error: Rewriting ARM opcode 'stmdane' is not supported yet.
-00009ED5: error: Rewriting ARM opcode 'stmdane' is not supported yet.
-00009ED5: error: Rewriting ARM opcode 'stmdane' is not supported yet.
 00009E8D: warning: Call target address 0130C965 is invalid.
 00009E91: warning: Call target address 01A12BBD is invalid.
-00009E95: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
-00009E95: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
+00009EA5: warning: Call target address 010CAC39 is invalid.
 00009D09: error: Rewriting ARM opcode 'ldcpl' is not supported yet.
-00009CE9: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
-00009CE1: error: Rewriting ARM opcode 'ldrshtne' is not supported yet.
-00009CE1: error: Rewriting ARM opcode 'ldrshtne' is not supported yet.
 00009CD1: warning: Call target address 0128A605 is invalid.
-00009CD5: error: Rewriting ARM opcode 'stcleq' is not supported yet.
-00009CD5: error: Rewriting ARM opcode 'stcleq' is not supported yet.
-00009CCD: error: Rewriting ARM opcode 'smlaltteq' is not supported yet.
-00009CBD: error: Rewriting ARM opcode 'ldrtlo' is not supported yet.
-00009CB1: error: Rewriting ARM opcode 'ldrtlo' is not supported yet.
-00009C95: error: Rewriting ARM opcode 'stmdane' is not supported yet.
-00009C95: error: Rewriting ARM opcode 'stmdane' is not supported yet.
-00009C69: error: Rewriting ARM opcode 'stmdane' is not supported yet.
-00009C69: error: Rewriting ARM opcode 'stmdane' is not supported yet.
 00009C41: error: Rewriting ARM opcode 'mcrrhs' is not supported yet.
 00009C41: error: Rewriting ARM opcode 'mcrrhs' is not supported yet.
-00009C25: error: Rewriting ARM opcode 'stmdane' is not supported yet.
-00009C25: error: Rewriting ARM opcode 'stmdane' is not supported yet.
+00009C45: error: Rewriting ARM opcode 'ldclpl' is not supported yet.
 00009C0D: warning: Call target address 000EA7C1 is invalid.
-00009C11: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
-00009C11: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
 00009BF1: warning: Call target address 000EA7A5 is invalid.
-00009BF5: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
 00009BD5: warning: Call target address 000EA789 is invalid.
-00009BD9: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
-00009BD9: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
 00009BB9: warning: Call target address 000EA76D is invalid.
-00009BBD: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
 00009B9D: warning: Call target address 000EA751 is invalid.
-00009BA1: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
-00009BA1: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
 00009B81: warning: Call target address 000EA735 is invalid.
-00009B85: error: Rewriting ARM opcode 'rscsvc' is not supported yet.
-00009B25: error: Rewriting ARM opcode 'ldrshths' is not supported yet.
+00009B29: warning: Call target address 01025EF1 is invalid.
 00009AF5: warning: Call target address 0120AC29 is invalid.
 00009ADD: warning: Call target address 0120AC11 is invalid.
-00009AC9: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
-00009AC9: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
-00009AA9: error: Rewriting ARM opcode 'rscseq' is not supported yet.
-00009AA9: error: Rewriting ARM opcode 'rscseq' is not supported yet.
-00009A89: error: Rewriting ARM opcode 'strhtvc' is not supported yet.
-00009A89: error: Rewriting ARM opcode 'strhtvc' is not supported yet.
-00009A41: error: Rewriting ARM opcode 'rscseq' is not supported yet.
-00009A41: error: Rewriting ARM opcode 'rscseq' is not supported yet.
-00009A35: error: Rewriting ARM opcode 'rscseq' is not supported yet.
-00009A35: error: Rewriting ARM opcode 'rscseq' is not supported yet.
-000099ED: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
-00009979: error: Rewriting ARM opcode 'strteq' is not supported yet.
-000098F5: error: Rewriting ARM opcode 'rscsne' is not supported yet.
-00009881: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
-00009881: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+000099F5: warning: Call target address FFC09C73 is invalid.
+00009901: error: Rewriting ARM opcode 'ldcleq' is not supported yet.
+00009891: error: Rewriting ARM opcode 'ssub8ne' is not supported yet.
 000097CD: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 000097CD: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-0000970D: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
 000096C9: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 000095C1: warning: Call target address 0110E1D1 is invalid.
-000095CD: error: Rewriting ARM opcode 'rscseq' is not supported yet.
 00009599: error: Rewriting ARM opcode 'mcrrne' is not supported yet.
 00009569: error: Rewriting ARM opcode 'uqsub8eq' is not supported yet.
 00009569: error: Rewriting ARM opcode 'uqsub8eq' is not supported yet.
+00009579: warning: Call target address 00ECA961 is invalid.
 00009505: warning: Call target address FED15639 is invalid.
-00009519: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
 00009501: warning: Call target address FEF858C9 is invalid.
-000094FD: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
-000094FD: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
 000094F5: error: Rewriting ARM opcode 'mrc2' is not supported yet.
 000094F5: error: Rewriting ARM opcode 'mrc2' is not supported yet.
-000094CD: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
 000094A9: warning: Call target address 00909891 is invalid.
 00009485: warning: Call target address 0090986D is invalid.
-000093B9: error: Rewriting ARM opcode 'ldrsbtmi' is not supported yet.
-0000931D: error: Rewriting ARM opcode 'ldrsbtmi' is not supported yet.
-00009311: error: Rewriting ARM opcode 'ldrths' is not supported yet.
-000092FD: error: Rewriting ARM opcode 'ldrbtne' is not supported yet.
-000092FD: error: Rewriting ARM opcode 'ldrbtne' is not supported yet.
-000092E5: error: Rewriting ARM opcode 'rscsne' is not supported yet.
-000091C9: error: Rewriting ARM opcode 'ldrhteq' is not supported yet.
-000091C9: error: Rewriting ARM opcode 'ldrhteq' is not supported yet.
+000091D1: error: Rewriting ARM opcode 'ldceq' is not supported yet.
+000091E5: error: Rewriting ARM opcode 'mcrrhi' is not supported yet.
+000091F5: error: Rewriting ARM opcode 'ldceq' is not supported yet.
+00009209: warning: Call target address 010CBD0D is invalid.
+00009211: error: Rewriting ARM opcode 'ldcleq' is not supported yet.
 00009165: warning: Call target address 010CC069 is invalid.
-0000916D: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
+00009175: warning: Call target address FEFCE1B9 is invalid.
 00009115: warning: Call target address 010CC019 is invalid.
-00009119: error: Rewriting ARM opcode 'rscseq' is not supported yet.
 00009095: error: Rewriting ARM opcode 'ldcle' is not supported yet.
 00009095: error: Rewriting ARM opcode 'ldcle' is not supported yet.
+000090A1: error: Rewriting ARM opcode 'ldclmi' is not supported yet.
 00008F31: warning: Call target address 01B63C6D is invalid.
 00008F49: warning: Call target address FE3DCF1D is invalid.
-00008F4D: error: Rewriting ARM opcode 'strbteq' is not supported yet.
 00008EF1: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 00008EF1: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-00008E41: error: Rewriting ARM opcode 'smlaltthi' is not supported yet.
-00008E41: error: Rewriting ARM opcode 'smlaltthi' is not supported yet.
+00008F11: warning: Call target address FFE08BDF is invalid.
+00008F21: error: Rewriting ARM opcode 'vcvt.u32.f32' is not supported yet.
+00008E45: error: Rewriting ARM opcode 'stceq' is not supported yet.
 00008D29: warning: Call target address FFE08C05 is invalid.
 00008D05: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
 00008D05: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
@@ -310,29 +235,20 @@ fn092A: error: An error occurred during data flow analysis.
 00008929: warning: Call target address FFE08805 is invalid.
 00008905: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
 00008905: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
-0000880D: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
+00008811: warning: Call target address 011ACD31 is invalid.
+00008815: warning: Call target address FE7CB135 is invalid.
 00008795: warning: Call target address FFE66B5D is invalid.
-00008799: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
-00008799: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
 00008679: warning: Call target address 0118987D is invalid.
-000085F5: error: Rewriting ARM opcode 'stcleq' is not supported yet.
-000085F5: error: Rewriting ARM opcode 'stcleq' is not supported yet.
+000085FD: error: Rewriting ARM opcode 'stceq' is not supported yet.
 000085E5: error: Rewriting ARM opcode 'ldcllt' is not supported yet.
 00008569: warning: Call target address 003C8D31 is invalid.
-00008535: error: Rewriting ARM opcode 'ldrteq' is not supported yet.
-00008535: error: Rewriting ARM opcode 'ldrteq' is not supported yet.
+00008539: error: Rewriting ARM opcode 'ldclne' is not supported yet.
 0000837D: warning: Call target address FFE47745 is invalid.
 00008381: warning: Call target address 01B03135 is invalid.
-00008389: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
 0000830D: warning: Call target address 01A0B9E5 is invalid.
-000082F9: error: Rewriting ARM opcode 'stclls' is not supported yet.
-000082D1: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
-000082D1: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
 0000829D: warning: Call target address 0118B979 is invalid.
-0000822D: error: Rewriting ARM opcode 'rscseq' is not supported yet.
 00008211: warning: Call target address FFC084ED is invalid.
 0000818D: warning: Call target address 002CAD55 is invalid.
-00008961: error: Rewriting ARM opcode 'ldrbtne' is not supported yet.
 00008195: warning: Call target address 00048D61 is invalid.
 00008199: warning: Call target address 00089165 is invalid.
 0000819D: warning: Call target address 000C9569 is invalid.
@@ -344,163 +260,62 @@ fn092A: error: An error occurred during data flow analysis.
 000081B5: warning: Call target address 0024AD81 is invalid.
 000081B9: warning: Call target address 0028B185 is invalid.
 000081BD: warning: Call target address 0030B589 is invalid.
-00008071: error: Rewriting ARM opcode 'rscseq' is not supported yet.
 00008001: error: Rewriting ARM opcode 'cdp2' is not supported yet.
 00008001: error: Rewriting ARM opcode 'cdp2' is not supported yet.
-000019D5: error: Rewriting ARM opcode 'stcleq' is not supported yet.
-000019D5: error: Rewriting ARM opcode 'stcleq' is not supported yet.
-000018F9: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
-000018F9: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
+000019D9: error: Rewriting ARM opcode 'ldclgt' is not supported yet.
 00001891: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 00001891: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+0000189D: error: Rewriting ARM opcode 'ldcleq' is not supported yet.
+000018A9: error: Rewriting ARM opcode 'stceq' is not supported yet.
 00001875: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 00001875: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-000017C9: error: Rewriting ARM opcode 'stcleq' is not supported yet.
-00001795: error: Rewriting ARM opcode 'rscsgt' is not supported yet.
-00001795: error: Rewriting ARM opcode 'rscsgt' is not supported yet.
-00001735: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
+00001879: error: Rewriting ARM opcode 'ldclvc' is not supported yet.
+0000188D: error: Rewriting ARM opcode 'rfeia' is not supported yet.
 0000155D: error: Rewriting ARM opcode 'stc2l' is not supported yet.
 000013B1: warning: Call target address FED1D4E5 is invalid.
 000013B9: warning: Call target address 000A1391 is invalid.
 000013C1: warning: Call target address 010A1389 is invalid.
-00001389: error: Rewriting ARM opcode 'stmdane' is not supported yet.
-00001335: error: Rewriting ARM opcode 'rscseq' is not supported yet.
-00001335: error: Rewriting ARM opcode 'rscseq' is not supported yet.
 000012F9: error: Rewriting ARM opcode 'stceq' is not supported yet.
 000012D5: warning: Call target address 01A17C09 is invalid.
 000012D9: warning: Call target address 01A179A5 is invalid.
 000012DD: warning: Call target address 00C81899 is invalid.
-000012E5: error: Rewriting ARM opcode 'ldrtgt' is not supported yet.
 0000115D: warning: Call target address FFC02E7D is invalid.
-00001165: error: Rewriting ARM opcode 'rscshi' is not supported yet.
-00001145: error: Rewriting ARM opcode 'ldrbtls' is not supported yet.
-00001145: error: Rewriting ARM opcode 'ldrbtls' is not supported yet.
-0000113D: error: Rewriting ARM opcode 'ldrtgt' is not supported yet.
 00001121: warning: Call target address 01A17655 is invalid.
-00001125: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
-00001125: error: Rewriting ARM opcode 'stmdahi' is not supported yet.
 000010D9: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
 000010D9: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
-00000FE1: error: Rewriting ARM opcode 'stmdalo' is not supported yet.
-00000F95: error: Rewriting ARM opcode 'vmlseq.f32' is not supported yet.
 00000F65: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
 00000E75: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+00000E89: warning: Call target address 00AC1031 is invalid.
+00000EA1: error: Rewriting ARM opcode 'ldclmi' is not supported yet.
 00000D6D: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
 00000D6D: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
-00000C79: error: Rewriting ARM opcode 'ldrbtvs' is not supported yet.
+00000D71: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
 00000BF1: warning: Call target address 01A19079 is invalid.
 00000B21: warning: Call target address FE3D4AF5 is invalid.
-00000B25: error: Rewriting ARM opcode 'stclne' is not supported yet.
-00000A45: error: Rewriting ARM opcode 'ldrhtvc' is not supported yet.
-00000A45: error: Rewriting ARM opcode 'ldrhtvc' is not supported yet.
-00000A3D: error: Rewriting ARM opcode 'ldrtgt' is not supported yet.
-00000A2D: error: Rewriting ARM opcode 'rscshi' is not supported yet.
-00000A2D: error: Rewriting ARM opcode 'rscshi' is not supported yet.
 00000A0D: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
 00000A0D: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
 000009FD: warning: Call target address 012C128D is invalid.
-00000A05: error: Rewriting ARM opcode 'ldrtgt' is not supported yet.
-00000971: error: Rewriting ARM opcode 'strteq' is not supported yet.
-00000971: error: Rewriting ARM opcode 'strteq' is not supported yet.
-000008C5: error: Rewriting ARM opcode 'ldrsht' is not supported yet.
-00000861: error: Rewriting ARM opcode 'rscshi' is not supported yet.
-00000799: error: Rewriting ARM opcode 'stclhs' is not supported yet.
-00000799: error: Rewriting ARM opcode 'stclhs' is not supported yet.
+000008CD: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
 00000701: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 00000701: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-00000639: error: Rewriting ARM opcode 'ldrshteq' is not supported yet.
-00000605: error: Rewriting ARM opcode 'strbteq' is not supported yet.
-00000605: error: Rewriting ARM opcode 'strbteq' is not supported yet.
-000005D5: error: Rewriting ARM opcode 'strbteq' is not supported yet.
-000005D5: error: Rewriting ARM opcode 'strbteq' is not supported yet.
-000005A5: error: Rewriting ARM opcode 'rscshi' is not supported yet.
-00000595: error: Rewriting ARM opcode 'rscshi' is not supported yet.
-00000595: error: Rewriting ARM opcode 'rscshi' is not supported yet.
+00000619: warning: Call target address 0183930D is invalid.
+00000621: warning: Call target address 0118891D is invalid.
 00000455: error: Rewriting ARM opcode 'rfeia' is not supported yet.
-00000455: error: Rewriting ARM opcode 'rfeia' is not supported yet.
-0000043D: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
-0000043D: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
-000002DD: error: Rewriting ARM opcode 'ldrteq' is not supported yet.
-00000195: error: Rewriting ARM opcode 'ldrteq' is not supported yet.
-000000F1: error: Rewriting ARM opcode 'stmdahs' is not supported yet.
-00008DA5: error: Rewriting ARM opcode 'ldrbtne' is not supported yet.
-00008DAD: error: Rewriting ARM opcode 'ldrbtne' is not supported yet.
-00008DB5: error: Rewriting ARM opcode 'ldrhtvc' is not supported yet.
-0000A314: error: Rewriting ARM opcode 'ldrbtne' is not supported yet.
-0000A31C: error: Rewriting ARM opcode 'ldmdaeq' is not supported yet.
-0000A334: error: Rewriting ARM opcode 'ldmdaeq' is not supported yet.
-0000A338: error: Rewriting ARM opcode 'ldmdaeq' is not supported yet.
-0000A33C: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
-0000A344: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
-0000A360: error: Rewriting ARM opcode 'qdaddhs' is not supported yet.
-0000A3B0: error: Rewriting ARM opcode 'cdplo' is not supported yet.
-0000A3C4: error: Rewriting ARM opcode 'cdplo' is not supported yet.
-0000A3CC: error: Rewriting ARM opcode 'stmdaeq' is not supported yet.
-0000A3E8: error: Rewriting ARM opcode 'ldrbteq' is not supported yet.
-0000A3EC: error: Rewriting ARM opcode 'cdplo' is not supported yet.
-0000A3F0: error: Rewriting ARM opcode 'cdplo' is not supported yet.
-0000A44C: error: Rewriting ARM opcode 'ldmdami' is not supported yet.
-0000A450: error: Rewriting ARM opcode 'ldmdalo' is not supported yet.
-0000A458: error: Rewriting ARM opcode 'stmdami' is not supported yet.
-0000A470: error: Rewriting ARM opcode 'stclvc' is not supported yet.
-0000A484: error: Rewriting ARM opcode 'stmdane' is not supported yet.
-0000A488: error: Rewriting ARM opcode 'ldmdaeq' is not supported yet.
-0000A48C: error: Rewriting ARM opcode 'ldmdalo' is not supported yet.
-0000A490: error: Rewriting ARM opcode 'stmdalo' is not supported yet.
-0000A49C: error: Rewriting ARM opcode 'ldmdaeq' is not supported yet.
-0000A4A0: error: Rewriting ARM opcode 'stmdami' is not supported yet.
-0000A4B8: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
-0000A4BC: error: Rewriting ARM opcode 'ldmdahs' is not supported yet.
-0000A4DF: error: Rewriting ARM opcode 'cdpge' is not supported yet.
-0000A4EC: error: Rewriting ARM opcode 'usateq' is not supported yet.
-0000A4F8: error: Rewriting ARM opcode 'strbteq' is not supported yet.
-0000A504: error: Rewriting ARM opcode 'strbteq' is not supported yet.
-0000A510: error: Rewriting ARM opcode 'strbteq' is not supported yet.
-0000A524: error: Rewriting ARM opcode 'ldrsbthi' is not supported yet.
-0000A534: error: Rewriting ARM opcode 'strbteq' is not supported yet.
-0000A544: error: Rewriting ARM opcode 'stcge' is not supported yet.
-: warning: Type transformer has looped 51 times, quitting prematurely.
-vTaskEndScheduler: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xTaskNotifyWait: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-uxTaskResetEventItemValue: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-pvTaskIncrementMutexHeldCount: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xPortStartScheduler: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-ResetISR: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-PDCWrite: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xQueueCRSend: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xPortRaisePrivilege: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-vStartFlashCoRoutines: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-GPIOPinTypeQEI: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-IntMasterDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlPeripheralDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlPeripheralSleepDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlPeripheralDeepSleepDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlReset: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlADCSpeedSet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+00000109: warning: Call target address FFC02AB1 is invalid.
+00000111: warning: Call target address 01A18AC9 is invalid.
+00000129: warning: Call target address FFC02AD1 is invalid.
+error: An error occurred during decompilation. System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Reko.Scanning.ShingledScanner.DestinationAddress(RtlInstructionCluster i) in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 615
+   at Reko.Scanning.ShingledScanner.ScanRange(MemoryArea mem, Address addrStart, Address addrEnd, UInt64 workToDo) in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 223
+   at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 162
+   at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 115
+   at Reko.Scanning.Scanner.ShingleScanProcedures() in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1040
+   at Reko.Scanning.Scanner.ScanImage() in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 953
+   at Reko.DecompilerDriver.ScanProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 421
+   at Reko.DecompilerDriver.ScanPrograms() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 409
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in C:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 162
 
 === Elf\ARM\switch\switch
-*** Elf\ARM\switch\switch
-00008334: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-000082F0: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-0000836C: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-0000842C: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-000086B0: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-0000874C: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-00008744: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-0000870C: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-00008654: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-00008638: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-00008588: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-0000855C: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-000084D4: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-00008470: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-00008434: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-00008404: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-000083FC: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-0000839C: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-00008334: error: Unable to load DLL 'ArmNative.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
-
 === Elf\MIPS\swlswr\test
 === Elf-MIPS\redir
 *** Elf-MIPS\redir
