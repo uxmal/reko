@@ -231,8 +231,13 @@
     <Environments Include="$(SolutionDir)Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
     <Libraries Include="$(SolutionDir)Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
     <Libraries Include="$(SolutionDir)Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
+  	<ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
+  	<ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(OS)' == 'Unix'">
+	<ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />

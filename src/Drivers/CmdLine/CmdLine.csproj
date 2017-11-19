@@ -14,7 +14,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -121,6 +121,13 @@
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.-->
   <Target Name="AfterBuild">
+    <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
+      <Architectures Include="$(SolutionDir)$(Configuration)\ArmNative.dll" />
+      <Architectures Include="$(SolutionDir)$(Configuration)\ArmNative.pdb" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(OS)' == 'Unix'">
+      <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\$(Configuration)\libArmNative.so" />
+    </ItemGroup>
     <ItemGroup>
       <Architectures Include="$(SolutionDir)Arch\Alpha\$(OutDir)Reko.Arch.Alpha.*" />
       <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
@@ -167,9 +174,14 @@
       <Environments Include="$(SolutionDir)Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
       <Libraries Include="$(SolutionDir)Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
       <Libraries Include="$(SolutionDir)Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
-      <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
-      <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
       <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
+      <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
+      <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(OS)' == 'Unix'">
+      <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
     </ItemGroup>
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
