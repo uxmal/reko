@@ -570,7 +570,6 @@
     <Compile Include="Structure\MockWhileBreak.cs" />
     <Compile Include="Structure\SimpleStructureTests.cs" />
     <Compile Include="Structure\StructureTestBase.cs" />
-    <Compile Include="Symbols\LGSymLoader\LGSymSourceTests.cs" />
     <Compile Include="TestCode\Factorial.cs" />
     <Compile Include="TestCode\ManyIncrements.cs" />
     <Compile Include="TestSerializedTypeRenderer.cs" />
@@ -783,10 +782,6 @@
       <Project>{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96}</Project>
       <Name>Python</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj">
-      <Project>{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}</Project>
-      <Name>LGSymLoader</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arch\Intel\X86StateTests.cs" />
@@ -834,13 +829,9 @@
     <Compile Include="Core\Lib\Bits.Tests.cs" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
-	<ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.dll" />
-	<ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.pdb" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(OS)' == 'Unix'">
-	<ExternalAssemblies Include="$(SolutionDir)Arch\ArmNative\bin\$(Configuration)\libArmNative.so" />
-  </ItemGroup>
-  <ItemGroup>
+    <ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.dll" />
+    <ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.pdb" />
+    <ExternalAssemblies Include="$(SolutionDir)Arch\ArmNative\bin\$(Configuration)\libArmNative.so" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone\X86\capstone.dll" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />

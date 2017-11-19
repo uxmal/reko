@@ -55,7 +55,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -71,7 +71,7 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
@@ -144,12 +144,25 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
-    <Architectures Include="$(SolutionDir)$(Configuration)\ArmNative.dll" />
-    <Architectures Include="$(SolutionDir)$(Configuration)\ArmNative.pdb" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(OS)' == 'Unix'">
-    <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\$(Configuration)\libArmNative.so" />
+  <ItemGroup>
+    <Architectures Include="$(SolutionDir)Arch\Alpha\$(OutDir)Reko.Arch.Alpha.*" />
+    <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
+    <Architectures Include="$(SolutionDir)Arch\Avr\$(OutDir)Reko.Arch.Avr.*" />
+    <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
+    <Architectures Include="$(SolutionDir)Arch\M68k.Design\$(OutDir)Reko.Arch.M68k.Design.*" />
+    <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
+    <Architectures Include="$(SolutionDir)Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
+    <Architectures Include="$(SolutionDir)Arch\Pdp11\$(OutDir)Reko.Arch.Pdp11.*" />
+    <Architectures Include="$(SolutionDir)Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
+    <Architectures Include="$(SolutionDir)Arch\RiscV\$(OutDir)Reko.Arch.RiscV.*" />
+    <Architectures Include="$(SolutionDir)Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
+    <Architectures Include="$(SolutionDir)Arch\SuperH\$(OutDir)Reko.Arch.SuperH.*" />
+    <Architectures Include="$(SolutionDir)Arch\Tlcs\$(OutDir)Reko.Arch.Tlcs.*" />
+    <Architectures Include="$(SolutionDir)Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
+    <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.*" />
+    <Architectures Include="$(SolutionDir)Arch\X86.Design\$(OutDir)Reko.Arch.X86.Design.*" />
+    <Architectures Include="$(SolutionDir)Arch\Xtensa\$(OutDir)Reko.Arch.Xtensa.*" />
+    <Architectures Include="$(SolutionDir)Arch\Z80\$(OutDir)Reko.Arch.Z80.*" />
   </ItemGroup>
   <ItemGroup>
     <DecompilerMetadata Include="$(SolutionDir)Environments\AtariTOS\atariTOS.xml" />
@@ -180,24 +193,6 @@
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
-    <Architectures Include="$(SolutionDir)Arch\Alpha\$(OutDir)Reko.Arch.Alpha.*" />
-    <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
-    <Architectures Include="$(SolutionDir)Arch\Avr\$(OutDir)Reko.Arch.Avr.*" />
-    <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
-    <Architectures Include="$(SolutionDir)Arch\M68k.Design\$(OutDir)Reko.Arch.M68k.Design.*" />
-    <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
-    <Architectures Include="$(SolutionDir)Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
-    <Architectures Include="$(SolutionDir)Arch\Pdp11\$(OutDir)Reko.Arch.Pdp11.*" />
-    <Architectures Include="$(SolutionDir)Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
-    <Architectures Include="$(SolutionDir)Arch\RiscV\$(OutDir)Reko.Arch.RiscV.*" />
-    <Architectures Include="$(SolutionDir)Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
-    <Architectures Include="$(SolutionDir)Arch\SuperH\$(OutDir)Reko.Arch.SuperH.*" />
-    <Architectures Include="$(SolutionDir)Arch\Tlcs\$(OutDir)Reko.Arch.Tlcs.*" />
-    <Architectures Include="$(SolutionDir)Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
-    <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.*" />
-    <Architectures Include="$(SolutionDir)Arch\X86.Design\$(OutDir)Reko.Arch.X86.Design.*" />
-    <Architectures Include="$(SolutionDir)Arch\Xtensa\$(OutDir)Reko.Arch.Xtensa.*" />
-    <Architectures Include="$(SolutionDir)Arch\Z80\$(OutDir)Reko.Arch.Z80.*" />
     <Assemblers Include="$(SolutionDir)Assemblers\Pdp11\$(OutDir)Reko.Assemblers.Pdp11.*" />
     <Assemblers Include="$(SolutionDir)Assemblers\x86\$(OutDir)Reko.Assemblers.x86.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\$(OutDir)Reko.ImageLoaders.MzExe.*" />
@@ -232,12 +227,14 @@
     <SymbolSources Include="$(SolutionDir)Sources\LGSymLoader\$(OutDir)Reko.Symbols.LGSymLoader.*" />
     <Libraries Include="$(SolutionDir)Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
     <Libraries Include="$(SolutionDir)Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
+    <ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.dll" />
+    <ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.pdb" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
+    <ExternalAssemblies Include="$(SolutionDir)Arch\ArmNative\bin\$(Configuration)\libArmNative.so" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
   </ItemGroup>
   <Target Name="BeforeBuild">

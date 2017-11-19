@@ -30,9 +30,14 @@
     <OutputName>ArmNative</OutputName>
     <CompileTarget>SharedLibrary</CompileTarget>
     <OptimizationLevel>3</OptimizationLevel>
-    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
     <SourceDirectory>.</SourceDirectory>
     <ExtraCompilerArguments>-std=c++11</ExtraCompilerArguments>
+    <Libs>
+      <Libs>
+        <Lib>/usr/lib/libcapstone.so</Lib>
+      </Libs>
+    </Libs>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ArmNative.cpp" />

@@ -913,11 +913,6 @@ void ArmRewriter::EmitUnitTest()
 }
 
 int ArmRewriter::opcode_seen[ARM_INS_ENDING];
-#else
-void ArmRewriter::EmitUnitTest()
-{
-	//TODO
-}
 #endif
 
 
