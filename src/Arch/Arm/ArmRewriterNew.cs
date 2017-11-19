@@ -160,7 +160,7 @@ namespace Reko.Arch.Arm
         private static Guid IID_IRtlEmitter;
         private static Guid IID_INativeTypeFactory;
 
-        [DllImport("libArmNative2.so",CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateNativeRewriter")]
+        [DllImport("ArmNative",CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateNativeRewriter")]
 		[return: MarshalAs(UnmanagedType.IUnknown)]
         public static extern IntPtr CreateNativeRewriter(IntPtr rawbytes, int length, int offset, ulong address, IntPtr rtlEmitter, IntPtr typeFactory, IntPtr host);
     }

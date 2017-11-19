@@ -825,11 +825,14 @@
   <ItemGroup>
     <Compile Include="Core\Lib\Bits.Tests.cs" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
+	<ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.dll" />
+	<ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.pdb" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(OS)' == 'Unix'">
+	<ExternalAssemblies Include="$(SolutionDir)Arch\ArmNative\bin\$(Configuration)\libArmNative.so" />
+  </ItemGroup>
   <ItemGroup>
-    <!--- TEMP
-    <ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.dll" />
-    <ExternalAssemblies Include="$(SolutionDir)$(Configuration)\ArmNative.pdb" />
-    -->
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone\X86\capstone.dll" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />

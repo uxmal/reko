@@ -3,7 +3,7 @@
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <ProjectGuid>{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration ccition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ApplicationIcon>App.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
@@ -144,11 +144,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <!-- TEMP
-    <Architectures Include="$(SolutionDir)$(Configuration)\ArmNative.dll" />
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
+	<Architectures Include="$(SolutionDir)$(Configuration)\ArmNative.dll" />
     <Architectures Include="$(SolutionDir)$(Configuration)\ArmNative.pdb" />
-    -->
+  </ItemGroup>
+  <ItemGroup Condition=" '$(OS)' == 'Unix'">
+	<Architectures Include="$(SolutionDir)Arch\ArmNative\bin\$(Configuration)\libArmNative.so" />
+  </ItemGroup>
+  <ItemGroup>
     <DecompilerMetadata Include="$(SolutionDir)Environments\AtariTOS\atariTOS.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_map.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\realmodeintservices.xml" />
