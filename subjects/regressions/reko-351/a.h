@@ -1261,11 +1261,11 @@ T_304: (in -1 : int32)
   Class: Eq_304
   DataType: int32
   OrigDataType: int32
-T_305: (in 0x00000004 : word32)
+T_305: (in 4 : int32)
   Class: Eq_305
-  DataType: ui32
-  OrigDataType: ui32
-T_306: (in a2_28 - 0x00000004 : word32)
+  DataType: int32
+  OrigDataType: int32
+T_306: (in a2_28 - 4 : word32)
   Class: Eq_306
   DataType: (ptr int32)
   OrigDataType: (ptr (struct (0 T_309 t0000)))
@@ -1273,15 +1273,15 @@ T_307: (in 0x00000000 : word32)
   Class: Eq_307
   DataType: word32
   OrigDataType: word32
-T_308: (in a2_28 - 0x00000004 + 0x00000000 : word32)
+T_308: (in a2_28 - 4 + 0x00000000 : word32)
   Class: Eq_308
   DataType: word32
   OrigDataType: word32
-T_309: (in Mem0[a2_28 - 0x00000004 + 0x00000000:word32] : word32)
+T_309: (in Mem0[a2_28 - 4 + 0x00000000:word32] : word32)
   Class: Eq_309
   DataType: int32
   OrigDataType: int32
-T_310: (in -1 - *(a2_28 - 0x00000004) : word32)
+T_310: (in -1 - *(a2_28 - 4) : word32)
   Class: Eq_310
   DataType: int32
   OrigDataType: int32
@@ -1289,7 +1289,7 @@ T_311: (in 0x00000000 : word32)
   Class: Eq_310
   DataType: int32
   OrigDataType: word32
-T_312: (in -1 - *(a2_28 - 0x00000004) != 0x00000000 : bool)
+T_312: (in -1 - *(a2_28 - 4) != 0x00000000 : bool)
   Class: Eq_312
   DataType: bool
   OrigDataType: bool

@@ -224,10 +224,11 @@ namespace Reko.Arch.M68k
 
         private void RewriteAddSubq(Func<Expression,Expression,Expression> opGen)
         {
-            var opSrc = orw.RewriteSrc(di.op1, di.Address);
+            var opSrc = (Constant) orw.RewriteSrc(di.op1, di.Address);
             var regDst = di.op2 as RegisterOperand;
             if (regDst != null && regDst.Register is AddressRegister)
             {
+                opSrc = Constant.Int32(opSrc.ToInt32());
                 var opDst = binder.EnsureRegister(regDst.Register);
                 m.Assign(opDst, opGen(opSrc, opDst));
             }
@@ -423,7 +424,7 @@ namespace Reko.Arch.M68k
                     this.m.Assign(t, opSrc);
                     opSrc = t;
                 }
-                this.m.Assign(reg, this.m.ISub(reg, this.di.dataWidth.Size));
+                this.m.Assign(reg, this.m.ISub(reg, this.m.Int32(this.di.dataWidth.Size)));
                 var op = this.m.Load(this.di.dataWidth, reg);
                 m(opSrc, op);
                 return op;
@@ -439,7 +440,7 @@ namespace Reko.Arch.M68k
                     opSrc = t;
                 }
                 m(opSrc, this.m.Load(this.di.dataWidth, reg));
-                this.m.Assign(reg, this.m.IAdd(reg, this.di.dataWidth.Size));
+                this.m.Assign(reg, this.m.IAdd(reg, this.m.Int32(this.di.dataWidth.Size)));
                 return t;
             }
             return orw.RewriteSrc(mop, di.Address);
@@ -596,7 +597,7 @@ namespace Reko.Arch.M68k
                 foreach (var reg in RegisterMaskIncreasing(dstRegs.Width.Domain, dstRegs.BitSet, regGenerator))
                 {
                     m.Assign(reg, m.Load(di.dataWidth, srcReg));
-                    m.Assign(srcReg, m.IAdd(srcReg, di.dataWidth.Size));
+                    m.Assign(srcReg, m.IAdd(srcReg, m.Int32(di.dataWidth.Size)));
                 }
                 return;
             }
@@ -609,7 +610,7 @@ namespace Reko.Arch.M68k
                     var dstReg = binder.EnsureRegister(preDec.Register);
                     foreach (var reg in RegisterMaskDecreasing(dstRegs.Width.Domain, dstRegs.BitSet, regGenerator))
                     {
-                        m.Assign(dstReg, m.ISub(dstReg, di.dataWidth.Size));
+                        m.Assign(dstReg, m.ISub(dstReg, m.Int32(di.dataWidth.Size)));
                         m.Assign(m.Load(di.dataWidth, dstReg), reg);
                     }
                 }

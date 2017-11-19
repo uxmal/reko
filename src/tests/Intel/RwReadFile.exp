@@ -63,13 +63,13 @@ fn0C00_001F_exit:
 // fp:fp
 // sp:sp
 // ah:ah
-// C:Flags
 // bx:bx
 // cx:cx
 // ds:ds
 // dx:dx
 // ds_dx:Sequence ds:dx
 // ax:ax
+// C:Flags
 // return address size: 2
 void fn0C00_0023()
 fn0C00_0023_entry:

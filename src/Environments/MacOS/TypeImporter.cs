@@ -68,12 +68,13 @@ namespace Reko.Environments.MacOS
                 var lo = dim.Low.Accept(ceval);
                 if (dim.High != null)
                 {
+                    // Range a..b size is (b-a)+1
                     var hi = dim.High.Accept(ceval);
                     dt = new ArrayType_v1
                     {
                         ElementType = dt,
                         Length =
-                        (int)(hi.ToInt64() - lo.ToInt64())
+                            (int)(hi.ToInt64() - lo.ToInt64()) + 1
                     };
                 }
                 else

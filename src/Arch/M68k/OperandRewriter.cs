@@ -99,7 +99,7 @@ namespace Reko.Arch.M68k
             if (pre != null)
             {
                 var ea = binder.EnsureRegister(pre.Register);
-                m.Assign(ea, m.ISub(ea, DataWidth.Size));
+                m.Assign(ea, m.ISub(ea, m.Int32(DataWidth.Size)));
                 return m.Load(DataWidth, ea);
             }
             var post = operand as PostIncrementMemoryOperand;
@@ -108,7 +108,7 @@ namespace Reko.Arch.M68k
                 var r = binder.EnsureRegister(post.Register);
                 var tmp = binder.CreateTemporary(DataWidth);
                 m.Assign(tmp, m.Load(DataWidth, r));
-                m.Assign(r, m.IAdd(r, DataWidth.Size));
+                m.Assign(r, m.IAdd(r, m.Int32(DataWidth.Size)));
                 return tmp;
             }
             var indidx = operand as IndirectIndexedOperand;
@@ -255,7 +255,7 @@ namespace Reko.Arch.M68k
                 var tmp = binder.CreateTemporary(dataWidth);
                 m.Assign(tmp, opGen(src, m.Load(post.Width, r))); 
                 m.Assign(m.Load(dataWidth, r), tmp);
-                m.Assign(r, m.IAdd(r, dataWidth.Size));
+                m.Assign(r, m.IAdd(r, m.Int32(dataWidth.Size)));
                 return tmp;
             }
             var pre = operand as PredecrementMemoryOperand;
@@ -263,7 +263,7 @@ namespace Reko.Arch.M68k
             {
                 var r = binder.EnsureRegister(pre.Register);
                 src = Spill(src, r);
-                m.Assign(r, m.ISub(r, dataWidth.Size));
+                m.Assign(r, m.ISub(r, m.Int32(dataWidth.Size)));
                 var load = m.Load(dataWidth, r);
                 var tmp = binder.CreateTemporary(dataWidth);
                 m.Assign(tmp, opGen(src, load));
@@ -355,14 +355,14 @@ namespace Reko.Arch.M68k
                 var tmp = binder.CreateTemporary(dataWidth);
                 m.Assign(tmp, opGen(m.Load(dataWidth, r)));
                 m.Assign(m.Load(dataWidth, r), tmp);
-                m.Assign(r, m.IAdd(r, dataWidth.Size));
+                m.Assign(r, m.IAdd(r, m.Int32(dataWidth.Size)));
                 return tmp;
             }
             var pre = operand as PredecrementMemoryOperand;
             if (pre != null)
             {
                 var r = binder.EnsureRegister(pre.Register);
-                m.Assign(r, m.ISub(r, dataWidth.Size));
+                m.Assign(r, m.ISub(r, m.Int32(dataWidth.Size)));
                 var tmp = binder.CreateTemporary(dataWidth);
                 m.Assign(tmp, opGen(m.Load(dataWidth, r)));
                 m.Assign(m.Load(dataWidth, r), tmp);
@@ -405,14 +405,14 @@ namespace Reko.Arch.M68k
                 var rExp = Spill(src, r);
                 var load = m.Load(dataWidth, r);
                 m.Assign(load, rExp);
-                m.Assign(r, m.IAdd(r, dataWidth.Size));
+                m.Assign(r, m.IAdd(r, m.Int32(dataWidth.Size)));
                 return src;
             }
             var pre = opDst as PredecrementMemoryOperand;
             if (pre != null)
             {
                 var r = binder.EnsureRegister(pre.Register);
-                m.Assign(r, m.ISub(r, dataWidth.Size));
+                m.Assign(r, m.ISub(r, m.Int32(dataWidth.Size)));
                 var rExp = Spill(src, r);
                 var load = m.Load(dataWidth, rExp);
                 m.Assign(load, src);

@@ -33,6 +33,7 @@ namespace Reko.Core.Pascal
         {
             { "array",      TokenType.Array},
             { "case",       TokenType.Case },
+            { "char",       TokenType.Char },
             { "const",      TokenType.Const },
             { "end",        TokenType.End },
             { "false",      TokenType.False },

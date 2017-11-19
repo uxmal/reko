@@ -63,6 +63,7 @@ namespace Reko.Core.Pascal
 
         Array,
         Case,
+        Char,
         Const,
         End,
         False,

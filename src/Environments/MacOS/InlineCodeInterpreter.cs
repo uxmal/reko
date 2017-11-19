@@ -31,6 +31,10 @@ using System.Threading.Tasks;
 
 namespace Reko.Environments.MacOS
 {
+    /// <summary>
+    /// Interprets the INLINE bytes in the MPW Pascal file to deduce the 
+    /// calling convention used when invoking a MacOS/Toolbox A-line trap.
+    /// </summary>
     public class InlineCodeInterpreter
     {
         private IDictionary<string, Constant> constants;

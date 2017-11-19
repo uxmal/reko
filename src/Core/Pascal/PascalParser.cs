@@ -259,6 +259,9 @@ namespace Reko.Core.Pascal
         {
             switch (lexer.Peek().Type)
             {
+            case TokenType.Char:
+                lexer.Read();
+                return new Primitive { Type = Serialization.PrimitiveType_v1.Char8() };
             case TokenType.Integer:
                 lexer.Read();
                 return new Primitive { Type = Serialization.PrimitiveType_v1.Int16() };

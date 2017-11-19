@@ -34,6 +34,16 @@ namespace Reko.UnitTests.Environments.MacOS
     [TestFixture]
     public class MpwPascalInterfaceLoaderTests
     {
+        private MacOSClassic platform;
+        private TypeLibrary tlib;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.platform = new MacOSClassic(null, new M68kArchitecture());
+            this.tlib = new TypeLibrary();
+        }
+
         [Test]
         public void Mpwl_PascalService()
         {
@@ -54,12 +64,27 @@ END;
 FUNCTION GetNextEvent(eventMask: INTEGER;VAR theEvent: EventRecord): BOOLEAN; INLINE $A970;
 END.");
             var mpwl = new MpwPascalInterfaceLoader(null, "foo.pas", bytes);
-            var platform = new MacOSClassic(null, new M68kArchitecture());
-            var tlib = new TypeLibrary();
             var tlibNew = mpwl.Load(platform, tlib);
 
             var svc = tlibNew.Modules.Values.First().ServicesByVector[0xA970].First(s => s.SyscallInfo.Matches(0xA970, null));
-            Assert.AreEqual("Register BOOLEAN GetNextEvent(Stack int16 eventMask, Stack (ref EventRecord) theEvent)", svc.Signature.ToString(svc.Name));
+            Assert.AreEqual("Stack BOOLEAN GetNextEvent(Stack int16 eventMask, Stack (ref EventRecord) theEvent)", svc.Signature.ToString(svc.Name));
+        }
+
+        [Test]
+        public void Mpwl_GetResource()
+        {
+            var image = Encoding.ASCII.GetBytes(
+@"UNIT test; INTERFACE
+TYPE ResType = PACKED ARRAY[1..4] OF CHAR;
+FUNCTION GetResource(theType: ResType;theID: INTEGER): Handle;
+    INLINE $A9A0;
+END.");
+            var mpwl = new MpwPascalInterfaceLoader(null, "foo.pas", image);
+            var tlibNew = mpwl.Load(platform, tlib);
+
+            var svc = tlibNew.Modules.Values.First().ServicesByVector[0xA9A0].First(s => s.SyscallInfo.Matches(0xA9A0, null));
+            Assert.AreEqual("Stack Handle GetResource(Stack ResType theType, Stack int16 theID)", svc.Signature.ToString(svc.Name));
+            Assert.AreEqual(4, svc.Signature.Parameters[0].DataType.Size);
         }
     }
 }
