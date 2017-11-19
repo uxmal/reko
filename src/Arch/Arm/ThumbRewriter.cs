@@ -37,6 +37,7 @@ namespace Reko.Arch.Arm
     {
         private static HashSet<ArmInstruction> seen = new HashSet<ArmInstruction>();
 
+        private ThumbProcessorArchitecture arch;
         private IEnumerator<Arm32Instruction> instrs;
         private Dictionary<int, RegisterStorage> regs;
         private INativeArchitecture nArch;
@@ -140,12 +141,15 @@ namespace Reko.Arch.Arm
                 case ArmInstruction.Invalid:
                     Invalid();
                     break;
+                case ArmInstruction.ADC: RewriteAdcSbc(m.IAdd); break;
                 case ArmInstruction.ADD: RewriteBinop((a, b) => m.IAdd(a, b)); break;
                 case ArmInstruction.ADDW: RewriteAddw(); break;
                 case ArmInstruction.ADR: RewriteAdr(); break;
                 case ArmInstruction.AND: RewriteAnd(); break;
                 case ArmInstruction.ASR: RewriteShift(m.Sar); break;
                 case ArmInstruction.B: RewriteB(); break;
+                case ArmInstruction.BFC: RewriteBfc(); break;
+                case ArmInstruction.BFI: RewriteBfi(); break;
                 case ArmInstruction.BIC: RewriteBic(); break;
                 case ArmInstruction.BL: RewriteBl(); break;
                 case ArmInstruction.BLX: RewriteBlx(); break;
@@ -168,6 +172,7 @@ namespace Reko.Arch.Arm
                 case ArmInstruction.MOVW: RewriteMovw(); break;
                 case ArmInstruction.MRC: RewriteMrc(); break;
                 case ArmInstruction.MVN: RewriteMvn(); break;
+                case ArmInstruction.NOP: RewriteNop(); break;
                 case ArmInstruction.POP: RewritePop(); break;
                 case ArmInstruction.PUSH: RewritePush(); break;
                 case ArmInstruction.RSB: RewriteRsb(); break;

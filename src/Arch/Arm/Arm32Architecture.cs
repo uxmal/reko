@@ -89,7 +89,7 @@ namespace Reko.Arch.Arm
                     var reg = new RegisterStorage(n, i, a, PrimitiveType.CreateWord(b / 8));
                     regsByName.Add(reg.Name, reg);
                     regsByNumber.Add(reg.Number, reg);
-                }
+        }
                 aRegs += cb;
                 --cRegs;
             }
@@ -112,7 +112,7 @@ namespace Reko.Arch.Arm
                         yield break;
                     else 
                         yield return new Arm32Instruction(nInstr);
-                }
+        }
             }
             finally
             {
@@ -169,7 +169,7 @@ namespace Reko.Arch.Arm
                 throw new NotImplementedException(string.Format("Haven't implemented support for scanning for {0} yet.", flags));
             while (rdr.IsValid)
             {
-                uint linAddrCall = rdr.Address.ToUInt32();
+                uint linAddrCall =  rdr.Address.ToUInt32();
                 var opcode = rdr.ReadLeUInt32();
                 if ((opcode & 0x0F000000) == 0x0B000000)         // BL
                 {
@@ -207,7 +207,7 @@ namespace Reko.Arch.Arm
         {
             RegisterStorage reg;
             if (regsByName.TryGetValue(name, out reg))
-                return reg;
+            return reg;
             else
                 return null;
         }

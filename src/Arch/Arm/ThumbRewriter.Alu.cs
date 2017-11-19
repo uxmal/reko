@@ -21,6 +21,7 @@
 using Gee.External.Capstone.Arm;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -32,6 +33,26 @@ namespace Reko.Arch.Arm
 {
     public partial class ThumbRewriter
     {
+        public void RewriteAdcSbc(Func<Expression, Expression, Expression> opr)
+        {
+            var opDst = RewriteOp(ops[0]);
+            var opSrc1 = ops.Length == 2 ? opDst : this.RewriteOp(ops[1]);
+            var opSrc2 = ops.Length == 2 ? this.RewriteOp(ops[1]) :  this.RewriteOp(ops[2]);
+            // We do not take the trouble of widening the CF to the word size
+            // to simplify code analysis in later stages. 
+            var c = frame.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
+            m.Assign(
+                opDst,
+                opr(
+                    opr(opSrc1, opSrc2),
+                    c));
+            if (instr.ArchitectureDetail.UpdateFlags)
+            {
+                m.Assign(FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF | FlagM.ZF, "NZCV", PrimitiveType.Byte),
+                    m.Cond(opDst));
+            }
+        }
+
         private void RewriteAdr()
         {
             var dst = RewriteOp(ops[0]);
@@ -49,7 +70,27 @@ namespace Reko.Arch.Arm
                     m.Cond(dst));
         }
 
-    
+        private void RewriteBfc()
+        {
+            // ConditionalSkip();
+            var opDst = this.RewriteOp(ops[0]);
+            var lsb = ops[1].ImmediateValue.Value;
+            var bitsize = ops[2].ImmediateValue.Value;
+            m.Assign(opDst, m.And(opDst, (uint)~Bits.Mask(lsb, bitsize)));
+        }
+
+        private void RewriteBfi()
+        {
+            // ConditionalSkip();
+            var opDst = this.RewriteOp(ops[0]);
+            var opSrc = this.RewriteOp(ops[1]);
+            var tmp = frame.CreateTemporary(opDst.DataType);
+            var lsb = ops[2].ImmediateValue.Value;
+            var bitsize = ops[3].ImmediateValue.Value;
+            m.Assign(tmp, m.Slice(opSrc, 0, bitsize));
+            m.Assign(opDst, m.Dpb(opDst, tmp, lsb));
+        }
+
         private void RewriteBic()
         {
             var dst = RewriteOp(ops[0]);
@@ -183,6 +224,11 @@ namespace Reko.Arch.Arm
         {
             var dst = RewriteOp(ops[0]);
             m.Assign(dst, m.Comp(RewriteOp(ops[1], PrimitiveType.UInt32)));
+        }
+
+        private void RewriteNop()
+        {
+            Predicate(CurrentItStateCondition, new RtlNop());
         }
 
         private void RewritePop()
