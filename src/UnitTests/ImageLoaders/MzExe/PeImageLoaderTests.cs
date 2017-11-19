@@ -126,28 +126,28 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer.Position = RvaDelayImportDescriptor;
             foreach (var entry in delayLoadDirectory)
             {
-                int offset = ((entry.Attributes & PeImageLoader.DID_RvaBased) != 0)
+                uint offset = ((entry.Attributes & PeImageLoader.DID_RvaBased) != 0)
                     ? 0
-                    : (int)addrLoad.ToUInt32();
+                    : (uint)addrLoad.ToUInt32();
 
-                entry.rvaName = writer.Position + offset;
+                entry.rvaName = (int) (writer.Position + offset);
                 writer.WriteString(entry.Name, Encoding.UTF8).WriteByte(0);
                 entry.arvaImportNames = new List<int>();
                 foreach (var impName in entry.ImportNames)
                 {
-                    entry.arvaImportNames.Add(writer.Position + offset);
+                    entry.arvaImportNames.Add((int)(writer.Position + offset));
                     writer.WriteLeInt16(0);
                     writer.WriteString(impName, Encoding.UTF8).WriteByte(0);
                 }
                 Align();
-                entry.rvaImportNames = writer.Position + offset;
+                entry.rvaImportNames = (int)(writer.Position + offset);
                 foreach (var rva in entry.arvaImportNames)
                 {
                     writer.WriteLeUInt32((uint)rva);
                 }
                 writer.WriteLeUInt32(0);
 
-                entry.rvaImportAddressTable = writer.Position + offset;
+                entry.rvaImportAddressTable = (int)(writer.Position + offset);
                 foreach (var rva in entry.arvaImportNames)
                 {
                     writer.WriteLeUInt32(0xCCCCCCCC);

@@ -54,10 +54,10 @@ namespace Reko.Core
             this.MemoryArea = mem;
         }
 
-        public ImageWriter(MemoryArea mem, long offset)
+        public ImageWriter(MemoryArea mem, ulong offset)
         {
             this.Bytes = mem.Bytes;
-            this.Position = (int)offset;
+            this.Position = offset;
             this.MemoryArea = mem;
         }
 
@@ -248,7 +248,7 @@ namespace Reko.Core
         {
         }
 
-        public BeImageWriter(byte[] image, uint offset)
+        public BeImageWriter(byte[] image, ulong offset)
             : base(image, offset)
         {
         }
@@ -258,8 +258,13 @@ namespace Reko.Core
         {
         }
 
+        public BeImageWriter(MemoryArea mem, ulong offset)
+          : base(mem, offset)
+        {
+        }
+
         public BeImageWriter(MemoryArea mem, long offset)
-            : base(mem, offset)
+            : base(mem, (ulong)offset)
         {
         }
 
@@ -286,7 +291,7 @@ namespace Reko.Core
         {
         }
 
-        public LeImageWriter(byte[] image, uint offset)
+        public LeImageWriter(byte[] image, ulong offset)
             : base(image, offset)
         {
         }
@@ -296,8 +301,13 @@ namespace Reko.Core
         {
         }
 
-        public LeImageWriter(MemoryArea mem, long offset)
+        public LeImageWriter(MemoryArea mem, ulong offset)
             : base(mem, offset)
+        {
+        }
+
+        public LeImageWriter(MemoryArea mem, long offset)
+            : base(mem, (ulong)offset)
         {
         }
 

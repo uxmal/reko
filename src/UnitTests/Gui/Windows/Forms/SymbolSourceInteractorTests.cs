@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
+using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Forms;
 using Rhino.Mocks;
@@ -43,6 +44,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private ServiceContainer sc;
         private ISymbolLoadingService symLdrSvc;
         private IConfigurationService cfgSvc;
+        private IFileSystemService fsSvc;
+        private IDecompilerUIService uiSvc;
 
         [SetUp]
         public void Setup()
@@ -50,10 +53,14 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr = new MockRepository();
             sc = new ServiceContainer();
             symLdrSvc = mr.StrictMock<ISymbolLoadingService>();
+            fsSvc = mr.Stub<IFileSystemService>();
             cfgSvc = mr.Stub<IConfigurationService>();
+            uiSvc = mr.Stub<IDecompilerShellUiService>();
             cfgSvc.Stub(c => c.GetSymbolSources()).Return(new List<SymbolSource>());
 
             sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<IFileSystemService>(fsSvc);
+            sc.AddService<IDecompilerShellUiService>(uiSvc);
         }
 
         [TearDown]

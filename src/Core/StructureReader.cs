@@ -132,12 +132,13 @@ namespace Reko.Core
 			return rawData;
 		}
 
-		private T BytesToStruct<T>(BinaryReader reader) {
+		private T BytesToStruct(BinaryReader reader) {
 			byte[] bytes = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
 			return this.BytesToStruct(bytes);
 		}
 
-		private T BytesToStruct(byte[] rawData) {
+		private T BytesToStruct(byte[] rawData)
+        {
 			T result = default(T);
 
 			RespectEndianness(typeof(T), rawData);
