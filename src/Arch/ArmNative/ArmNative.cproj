@@ -30,7 +30,7 @@
     <OutputName>ArmNative</OutputName>
     <CompileTarget>SharedLibrary</CompileTarget>
     <OptimizationLevel>3</OptimizationLevel>
-    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
     <SourceDirectory>.</SourceDirectory>
     <ExtraCompilerArguments>-std=c++11</ExtraCompilerArguments>
     <Libs>
