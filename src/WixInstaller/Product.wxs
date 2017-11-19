@@ -153,6 +153,9 @@
         <File Source="$(var.Xtensa.TargetPath)" />
         <File Source="$(var.Z80.TargetPath)" />
 
+        <!-- Symbol sources -->
+        <File Source="$(var.LGSymLoader.TargetPath)" />
+        
         <!-- Libraries -->
         <File Source="$(var.Libc.TargetPath)" />
         <File Source="$(var.Python.TargetPath)" />

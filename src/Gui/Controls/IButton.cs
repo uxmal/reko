@@ -31,6 +31,7 @@ namespace Reko.Gui.Controls
 
         bool Enabled { get; set; }
 
+        void Focus();
         void PerformClick();
     }
 }

@@ -266,6 +266,7 @@
     <Compile Include="Loading\ImageSignature.cs" />
     <Compile Include="Loading\NullImageLoader.cs" />
     <Compile Include="Loading\SignatureLoader.cs" />
+    <Compile Include="Loading\SymbolLoadingService.cs" />
     <Compile Include="Loading\UnpackerSignatureLoader.cs" />
     <Compile Include="Loading\UnpackingService.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

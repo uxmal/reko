@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,6 +75,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private IResourceEditorService resEditSvc;
         private ICallGraphViewService cgvSvc;
         private IViewImportsService vimpSvc;
+        private ISymbolLoadingService symLdrSvc;
 
         [SetUp]
 		public void Setup()
@@ -551,6 +552,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             cgvSvc = mr.StrictMock<ICallGraphViewService>();
             loader = mr.StrictMock<ILoader>();
             vimpSvc = mr.StrictMock<IViewImportsService>();
+            symLdrSvc = mr.StrictMock<ISymbolLoadingService>();
 
             svcFactory.Stub(s => s.CreateArchiveBrowserService()).Return(archSvc);
             svcFactory.Stub(s => s.CreateDecompilerConfiguration()).Return(new FakeDecompilerConfiguration());
@@ -572,6 +574,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateResourceEditorService()).Return(resEditSvc);
             svcFactory.Stub(s => s.CreateCallGraphViewService()).Return(cgvSvc);
             svcFactory.Stub(s => s.CreateViewImportService()).Return(vimpSvc);
+            svcFactory.Stub(s => s.CreateSymbolLoadingService()).Return(symLdrSvc);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
             brSvc.Stub(b => b.Clear());

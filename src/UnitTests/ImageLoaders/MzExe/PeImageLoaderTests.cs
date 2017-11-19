@@ -126,28 +126,28 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer.Position = RvaDelayImportDescriptor;
             foreach (var entry in delayLoadDirectory)
             {
-                int offset = ((entry.Attributes & PeImageLoader.DID_RvaBased) != 0)
+                uint offset = ((entry.Attributes & PeImageLoader.DID_RvaBased) != 0)
                     ? 0
-                    : (int)addrLoad.ToUInt32();
+                    : (uint)addrLoad.ToUInt32();
 
-                entry.rvaName = writer.Position + offset;
+                entry.rvaName = (int) (writer.Position + offset);
                 writer.WriteString(entry.Name, Encoding.UTF8).WriteByte(0);
                 entry.arvaImportNames = new List<int>();
                 foreach (var impName in entry.ImportNames)
                 {
-                    entry.arvaImportNames.Add(writer.Position + offset);
+                    entry.arvaImportNames.Add((int)(writer.Position + offset));
                     writer.WriteLeInt16(0);
                     writer.WriteString(impName, Encoding.UTF8).WriteByte(0);
                 }
                 Align();
-                entry.rvaImportNames = writer.Position + offset;
+                entry.rvaImportNames = (int)(writer.Position + offset);
                 foreach (var rva in entry.arvaImportNames)
                 {
                     writer.WriteLeUInt32((uint)rva);
                 }
                 writer.WriteLeUInt32(0);
 
-                entry.rvaImportAddressTable = writer.Position + offset;
+                entry.rvaImportAddressTable = (int)(writer.Position + offset);
                 foreach (var rva in entry.arvaImportNames)
                 {
                     writer.WriteLeUInt32(0xCCCCCCCC);
@@ -168,9 +168,9 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             }
             writer.WriteLeUInt32(0);
             writer.WriteLeUInt32(0);
-            writer.Position = rvaDirectories + 13 * 8;
-            writer.WriteLeInt32(rvaDld);
-            writer.Position = rvaDirectories - 4;
+            writer.Position = (ulong)rvaDirectories + 13 * 8;
+            writer.WriteLeInt32((int)rvaDld);
+            writer.Position = (ulong)rvaDirectories - 4;
             writer.WriteLeInt32(14);
         }
 
@@ -237,8 +237,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer.WriteLeUInt32(0);        // loader flags
             writer.WriteLeUInt32(2);        // number of data directory entries
 
-            rvaDirectories = writer.Position;
-            writer.Position = rvaDirectories + 2 * 12;
+            rvaDirectories = (int)writer.Position;
+            writer.Position = (ulong)rvaDirectories + 2 * 12;
             var optHdrSize = writer.Position - rvaOptHdr;
             var rvaSections = writer.Position;
             writer.Position = rvaOptionalHeaderSize;
@@ -289,11 +289,11 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer.WriteLeUInt32(0);        // loader flags
             writer.WriteLeUInt32(2);        // number of data directory entries
 
-            rvaDirectories = writer.Position;
-            var optHdrSize = rvaDirectories - rvaOptHdr;
+            rvaDirectories = (int)writer.Position;
+            var optHdrSize = (ulong)rvaDirectories - rvaOptHdr;
             writer.Position = rvaOptionalHeaderSize;
             writer.WriteLeInt16((short)optHdrSize);
-            writer.Position = rvaDirectories;
+            writer.Position = (ulong)rvaDirectories;
 
             writer.WriteLeUInt32(0);        // Export table rva
             writer.WriteLeUInt32(0);        // Export table size
@@ -319,9 +319,9 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer.WriteLeInt32(rvaIlt);
             writer.WriteLeInt32(0);     // (ignored) datestamp
             writer.WriteLeInt32(0);     // forwarder chain
-            writer.WriteLeInt32(rvaDllName);
+            writer.WriteLeInt32((int)rvaDllName);
             writer.WriteLeInt32(rvaIat);
-            return rvaId;
+            return (int)rvaId;
         }
 
         private int Given_Ilt32(params object [] import)
@@ -335,7 +335,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 var s = imp as string;
                 if (s != null)
                 {
-                    writer.WriteLeInt32(strWriter.Position);
+                    writer.WriteLeInt32((int)strWriter.Position);
                     strWriter.WriteLeInt16(0);
                     strWriter.WriteString(s, Encoding.UTF8);
                     strWriter.WriteByte(0);
@@ -354,7 +354,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             }
             writer.WriteLeInt32(0);
             writer.Position = strWriter.Position;
-            return rvaTable;
+            return (int)rvaTable;
         }
 
         private int Given_Ilt64(params object[] import)
@@ -368,7 +368,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 var s = imp as string;
                 if (s != null)
                 {
-                    writer.WriteLeInt64(strWriter.Position);
+                    writer.WriteLeInt64((int)strWriter.Position);
                     strWriter.WriteLeInt16(0);
                     strWriter.WriteString(s, Encoding.UTF8);
                     strWriter.WriteByte(0);
@@ -380,7 +380,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             }
             writer.WriteLeInt32(0);
             writer.Position = strWriter.Position;
-            return rvaTable;
+            return (int)rvaTable;
         }
 
         [Test]

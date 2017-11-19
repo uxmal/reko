@@ -46,7 +46,7 @@ namespace Reko.Arch.Mos6502
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new Disassembler(imageReader.Clone());
+            return new Disassembler((LeImageReader)imageReader);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)

@@ -32,11 +32,13 @@
         <PropertyValue name="ClosedFileDiagnostics">-1</PropertyValue>
         <PropertyValue name="DisplayLineSeparators">0</PropertyValue>
         <PropertyValue name="EnableHighlightRelatedKeywords">1</PropertyValue>
+        <PropertyValue name="EnterKeyBehavior">0</PropertyValue>
         <PropertyValue name="ExtractMethod_AllowMovingDeclaration">0</PropertyValue>
         <PropertyValue name="ExtractMethod_DoNotPutOutOrRefOnStruct">1</PropertyValue>
         <PropertyValue name="Formatting_TriggerOnBlockCompletion">1</PropertyValue>
         <PropertyValue name="Formatting_TriggerOnPaste">1</PropertyValue>
         <PropertyValue name="Formatting_TriggerOnStatementCompletion">1</PropertyValue>
+        <PropertyValue name="HighlightMatchingPortionsOfCompletionListItems">1</PropertyValue>
         <PropertyValue name="Indent_BlockContents">1</PropertyValue>
         <PropertyValue name="Indent_Braces">0</PropertyValue>
         <PropertyValue name="Indent_CaseContents">1</PropertyValue>
@@ -59,6 +61,8 @@
         <PropertyValue name="NewLines_ObjectInitializer_EachMember">1</PropertyValue>
         <PropertyValue name="NewLines_QueryExpression_EachClause">1</PropertyValue>
         <PropertyValue name="RenameTrackingPreview">1</PropertyValue>
+        <PropertyValue name="ShowCompletionItemFilters">1</PropertyValue>
+        <PropertyValue name="SnippetsBehavior">2</PropertyValue>
         <PropertyValue name="SortUsings_PlaceSystemFirst">0</PropertyValue>
         <PropertyValue name="Space_AfterBasesColon">1</PropertyValue>
         <PropertyValue name="Space_AfterCast">0</PropertyValue>
@@ -83,9 +87,248 @@
         <PropertyValue name="Space_WithinMethodDeclarationParentheses">0</PropertyValue>
         <PropertyValue name="Space_WithinOtherParentheses">0</PropertyValue>
         <PropertyValue name="Space_WithinSquares">0</PropertyValue>
+        <PropertyValue name="Style_NamingPreferences">&lt;NamingPreferencesInfo SerializationVersion="4"&gt;
+  &lt;SymbolSpecifications&gt;
+    &lt;SymbolSpecification ID="5c545a62-b14d-460a-88d8-e936c0a39316" Name="Class"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;TypeKind&gt;Class&lt;/TypeKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Protected&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;ProtectedOrInternal&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList /&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="23d856b4-5089-4405-83ce-749aada99153" Name="Interface"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;TypeKind&gt;Interface&lt;/TypeKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Protected&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;ProtectedOrInternal&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList /&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="d1796e78-ff66-463f-8576-eb46416060c0" Name="Struct"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;TypeKind&gt;Struct&lt;/TypeKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Protected&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;ProtectedOrInternal&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList /&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="d8af8dc6-1ade-441d-9947-8946922e198a" Name="Enum"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;TypeKind&gt;Enum&lt;/TypeKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Protected&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;ProtectedOrInternal&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList /&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="408a3347-b908-4b54-a954-1355e64c1de3" Name="Delegate"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;TypeKind&gt;Delegate&lt;/TypeKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Protected&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;ProtectedOrInternal&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList /&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="830657f6-e7e5-4830-b328-f109d3b6c165" Name="Event"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;SymbolKind&gt;Event&lt;/SymbolKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Protected&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;ProtectedOrInternal&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList /&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="390caed4-f0a9-42bb-adbb-b44c4a302a22" Name="Method"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;SymbolKind&gt;Method&lt;/SymbolKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList /&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="af410767-f189-47c6-b140-aeccf1ff242e" Name="Private Method"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;SymbolKind&gt;Method&lt;/SymbolKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList /&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="8076757e-6a4a-47f1-9b4b-ae8a3284e987" Name="Abstract Method"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;SymbolKind&gt;Method&lt;/SymbolKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Protected&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;ProtectedOrInternal&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList&gt;
+        &lt;ModifierKind&gt;IsAbstract&lt;/ModifierKind&gt;
+      &lt;/RequiredModifierList&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="16133061-a8e7-4392-92c3-1d93cd54c218" Name="Static Method"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;SymbolKind&gt;Method&lt;/SymbolKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Protected&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;ProtectedOrInternal&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList&gt;
+        &lt;ModifierKind&gt;IsStatic&lt;/ModifierKind&gt;
+      &lt;/RequiredModifierList&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="da6a2919-5aa6-4ad1-a24d-576776ed3974" Name="Property"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;SymbolKind&gt;Property&lt;/SymbolKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Protected&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;ProtectedOrInternal&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList /&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="b24a91ce-3501-4799-b6df-baf044156c83" Name="Public or Protected Field"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;SymbolKind&gt;Field&lt;/SymbolKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Protected&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList /&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="70af42cb-1741-4027-969c-9edc4877d965" Name="Static Field"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;SymbolKind&gt;Field&lt;/SymbolKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Protected&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;ProtectedOrInternal&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList&gt;
+        &lt;ModifierKind&gt;IsStatic&lt;/ModifierKind&gt;
+      &lt;/RequiredModifierList&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="10790aa6-0a0b-432d-a52d-d252ca92302b" Name="Private or Internal Field"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;SymbolKind&gt;Field&lt;/SymbolKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList /&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="ac995be4-88de-4771-9dcc-a456a7c02d89" Name="Private or Internal Static Field"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;SymbolKind&gt;Field&lt;/SymbolKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList&gt;
+        &lt;ModifierKind&gt;IsStatic&lt;/ModifierKind&gt;
+      &lt;/RequiredModifierList&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="2c07f5bf-bc81-4c2b-82b4-ae9b3ffd0ba4" Name="Types"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;TypeKind&gt;Class&lt;/TypeKind&gt;
+        &lt;TypeKind&gt;Struct&lt;/TypeKind&gt;
+        &lt;TypeKind&gt;Interface&lt;/TypeKind&gt;
+        &lt;TypeKind&gt;Enum&lt;/TypeKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Protected&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;ProtectedOrInternal&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList /&gt;
+    &lt;/SymbolSpecification&gt;
+    &lt;SymbolSpecification ID="5f3ddba1-279f-486c-801e-5c097c36dd85" Name="Non-Field Members"&gt;
+      &lt;ApplicableSymbolKindList&gt;
+        &lt;SymbolKind&gt;Property&lt;/SymbolKind&gt;
+        &lt;SymbolKind&gt;Method&lt;/SymbolKind&gt;
+        &lt;SymbolKind&gt;Event&lt;/SymbolKind&gt;
+      &lt;/ApplicableSymbolKindList&gt;
+      &lt;ApplicableAccessibilityList&gt;
+        &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Internal&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;Protected&lt;/AccessibilityKind&gt;
+        &lt;AccessibilityKind&gt;ProtectedOrInternal&lt;/AccessibilityKind&gt;
+      &lt;/ApplicableAccessibilityList&gt;
+      &lt;RequiredModifierList /&gt;
+    &lt;/SymbolSpecification&gt;
+  &lt;/SymbolSpecifications&gt;
+  &lt;NamingStyles&gt;
+    &lt;NamingStyle ID="87e7c501-9948-4b53-b1eb-a6cbe918feee" Name="Pascal Case" Prefix="" Suffix="" WordSeparator="" CapitalizationScheme="PascalCase" /&gt;
+    &lt;NamingStyle ID="1ecc5eb6-b5fc-49a5-a9f1-a980f3e48c92" Name="Begins with I" Prefix="I" Suffix="" WordSeparator="" CapitalizationScheme="PascalCase" /&gt;
+  &lt;/NamingStyles&gt;
+  &lt;NamingRules&gt;
+    &lt;SerializableNamingRule SymbolSpecificationID="23d856b4-5089-4405-83ce-749aada99153" NamingStyleID="1ecc5eb6-b5fc-49a5-a9f1-a980f3e48c92" EnforcementLevel="Info" /&gt;
+    &lt;SerializableNamingRule SymbolSpecificationID="2c07f5bf-bc81-4c2b-82b4-ae9b3ffd0ba4" NamingStyleID="87e7c501-9948-4b53-b1eb-a6cbe918feee" EnforcementLevel="Info" /&gt;
+    &lt;SerializableNamingRule SymbolSpecificationID="5f3ddba1-279f-486c-801e-5c097c36dd85" NamingStyleID="87e7c501-9948-4b53-b1eb-a6cbe918feee" EnforcementLevel="Info" /&gt;
+  &lt;/NamingRules&gt;
+&lt;/NamingPreferencesInfo&gt;</PropertyValue>
         <PropertyValue name="Style_PreferIntrinsicPredefinedTypeKeywordInDeclaration">1</PropertyValue>
+        <PropertyValue name="Style_PreferIntrinsicPredefinedTypeKeywordInDeclaration_CodeStyle">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
         <PropertyValue name="Style_PreferIntrinsicPredefinedTypeKeywordInMemberAccess">1</PropertyValue>
+        <PropertyValue name="Style_PreferIntrinsicPredefinedTypeKeywordInMemberAccess_CodeStyle">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_QualifyEventAccess">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_QualifyFieldAccess">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
         <PropertyValue name="Style_QualifyMemberAccessWithThisOrMe">1</PropertyValue>
+        <PropertyValue name="Style_QualifyMethodAccess">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_QualifyPropertyAccess">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_UseImplicitTypeForIntrinsicTypes">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_UseImplicitTypeWhereApparent">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_UseImplicitTypeWherePossible">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
         <PropertyValue name="Style_UseVarWhenDeclaringLocals">1</PropertyValue>
         <PropertyValue name="WarnOnBuildErrors">0</PropertyValue>
         <PropertyValue name="Wrapping_IgnoreSpacesAroundBinaryOperators">0</PropertyValue>
@@ -121,15 +364,19 @@
         <PropertyValue name="AutoFormatOnPaste2">1</PropertyValue>
         <PropertyValue name="AutoFormatOnSemicolon">true</PropertyValue>
         <PropertyValue name="AutoIndentOnTab">false</PropertyValue>
+        <PropertyValue name="AutoPchCacheQuota">5120</PropertyValue>
         <PropertyValue name="ColorizeInactiveBlocksDifferently">true</PropertyValue>
+        <PropertyValue name="DisableAutoPch">false</PropertyValue>
         <PropertyValue name="DisableBrowsingUpToDateCheck">true</PropertyValue>
         <PropertyValue name="DisableCreateDeclDefnScan">false</PropertyValue>
         <PropertyValue name="DisableErrorReporting">false</PropertyValue>
+        <PropertyValue name="DisableHLSLIntelliSense">true</PropertyValue>
         <PropertyValue name="DisableIntelliSenseErrorsInErrorList">false</PropertyValue>
         <PropertyValue name="EnableChangeSignature">false</PropertyValue>
         <PropertyValue name="EnableExpandPrecedence">false</PropertyValue>
         <PropertyValue name="EnableExpandScopes">false</PropertyValue>
         <PropertyValue name="EnableExtractFunction">false</PropertyValue>
+        <PropertyValue name="EnableProjectCaching">true</PropertyValue>
         <PropertyValue name="EnableSQLiteStoreEngine">true</PropertyValue>
         <PropertyValue name="EnableSingleFileISense">true</PropertyValue>
         <PropertyValue name="EnableSingleFileISenseSquiggles">false</PropertyValue>
@@ -148,7 +395,9 @@
         <PropertyValue name="IndentPreprocessor">2</PropertyValue>
         <PropertyValue name="IndentationReference">2</PropertyValue>
         <PropertyValue name="MemberListDotToArrow">false</PropertyValue>
+        <PropertyValue name="MemberListDotToArrow_1">true</PropertyValue>
         <PropertyValue name="MemberListFilterHeuristic">false</PropertyValue>
+        <PropertyValue name="MemberListFilterPredictive">false</PropertyValue>
         <PropertyValue name="NewlineControlBlockBrace">0</PropertyValue>
         <PropertyValue name="NewlineEmptyFunctionCloseBrace">true</PropertyValue>
         <PropertyValue name="NewlineEmptyTypeCloseBrace">true</PropertyValue>
@@ -166,6 +415,12 @@
         <PropertyValue name="PreserveInitListSpace">true</PropertyValue>
         <PropertyValue name="PreserveParameterIndentation">false</PropertyValue>
         <PropertyValue name="RefactorScope">2</PropertyValue>
+        <PropertyValue name="ReferencesHideDisconfirmedResults">true</PropertyValue>
+        <PropertyValue name="ReferencesHideFailedResults">false</PropertyValue>
+        <PropertyValue name="ReferencesHideInCommentResults">true</PropertyValue>
+        <PropertyValue name="ReferencesHideInStringResults">true</PropertyValue>
+        <PropertyValue name="ReferencesHidePPIf0Results">true</PropertyValue>
+        <PropertyValue name="ReferencesHideUnconfirmedResults">true</PropertyValue>
         <PropertyValue name="RemoveSpaceBeforeSemicolon">true</PropertyValue>
         <PropertyValue name="RenameRenameComments">false</PropertyValue>
         <PropertyValue name="RenameRenameInactive">false</PropertyValue>
@@ -210,6 +465,7 @@
       </ToolsOptionsSubCategory>
       <ToolsOptionsSubCategory name="TypeScript Specific">
         <PropertyValue name="AutomaticallyCompileTypeScriptFilesWhenSavedWhenNoSolution">false</PropertyValue>
+        <PropertyValue name="CompletionChars">{}[]().,:;+-*/%&amp;|^!~=&lt;&gt;? </PropertyValue>
         <PropertyValue name="ES3ForFilesThatAreNotPartOfAProject">false</PropertyValue>
         <PropertyValue name="ES5ForFilesThatAreNotPartOfAProject">true</PropertyValue>
         <PropertyValue name="ES6ForFilesThatAreNotPartOfAProject">false</PropertyValue>
@@ -223,9 +479,12 @@
         <PropertyValue name="InsertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis">false</PropertyValue>
         <PropertyValue name="InsertSpaceAfterSemicolonInForStatements">true</PropertyValue>
         <PropertyValue name="InsertSpaceBeforeAndAfterBinaryOperators">true</PropertyValue>
+        <PropertyValue name="OnlyUseTabOrEnterToCommit">true</PropertyValue>
         <PropertyValue name="PlaceOpenBraceOnNewLineForControlBlocks">false</PropertyValue>
         <PropertyValue name="PlaceOpenBraceOnNewLineForFunctions">false</PropertyValue>
         <PropertyValue name="ShowGruntGulpDialogForAspNet">true</PropertyValue>
+        <PropertyValue name="ShowJSErrorsAsWarnings">true</PropertyValue>
+        <PropertyValue name="ShowJSSyntaxErrors">true</PropertyValue>
         <PropertyValue name="ShowVirtualProjectsInSolutionExplorerWhenNoSolution">true</PropertyValue>
         <PropertyValue name="ShowVirtualProjectsInSolutionExplorerWhenSolutionOpen">false</PropertyValue>
         <PropertyValue name="UseAMDCodeGenerationForModulesThatAreNotPartOfAProject">false</PropertyValue>
@@ -234,13 +493,17 @@
         <PropertyValue name="UseJsxPreserveForFilesThatAreNotPartOfAProject">false</PropertyValue>
         <PropertyValue name="UseJsxReactForFilesThatAreNotPartOfAProject">false</PropertyValue>
         <PropertyValue name="UseSystemCodeGenerationForModulesThatAreNotPartOfAProject">false</PropertyValue>
+        <PropertyValue name="UseTypeScriptLanguageServiceForJavaScript">true</PropertyValue>
         <PropertyValue name="UseUMDCodeGenerationForModulesThatAreNotPartOfAProject">false</PropertyValue>
       </ToolsOptionsSubCategory>
       <ToolsOptionsSubCategory name="HTMLX Specific">
+        <PropertyValue name="EnableTagHelperTooltips">true</PropertyValue>
         <PropertyValue name="EnableTagNavigator">false</PropertyValue>
+        <PropertyValue name="EnableTooltips">true</PropertyValue>
         <PropertyValue name="EnableValidation">true</PropertyValue>
         <PropertyValue name="ErrorsAsWarnings">true</PropertyValue>
         <PropertyValue name="FormatOnPaste">true</PropertyValue>
+        <PropertyValue name="IdentifyHelpfulExtensions">true</PropertyValue>
         <PropertyValue name="InsertAttributeValueQuotes">true</PropertyValue>
         <PropertyValue name="InsertClosingTag">true</PropertyValue>
         <PropertyValue name="XHtmlCodingStyle">true</PropertyValue>

@@ -132,7 +132,10 @@
     <Compile Include="Environments\Windows\X86_64CallingConventionTests.cs" />
     <Compile Include="Environments\Windows\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Fragments\FCmpFragment.cs" />
+    <Compile Include="Gui\Design\ProgramDesignerTests.cs" />
+    <Compile Include="Gui\Windows\Forms\SymbolSourceInteractorTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
+    <Compile Include="Loading\SymbolLoadingServiceTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmParserTests.cs" />
     <Compile Include="ImageLoaders\Llvm\ProgramBuilderTests.cs" />
@@ -569,6 +572,7 @@
     <Compile Include="Structure\MockWhileBreak.cs" />
     <Compile Include="Structure\SimpleStructureTests.cs" />
     <Compile Include="Structure\StructureTestBase.cs" />
+    <Compile Include="Symbols\LGSymLoader\LGSymSourceTests.cs" />
     <Compile Include="TestCode\Factorial.cs" />
     <Compile Include="TestCode\ManyIncrements.cs" />
     <Compile Include="TestSerializedTypeRenderer.cs" />
@@ -780,6 +784,10 @@
     <ProjectReference Include="..\Libraries\Python\Python.csproj">
       <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>
       <Name>Python</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj">
+      <Project>{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}</Project>
+      <Name>LGSymLoader</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
