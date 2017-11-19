@@ -56,6 +56,7 @@ namespace Reko.Gui
         ILoader CreateLoader();
         ICallGraphViewService CreateCallGraphViewService();
         IViewImportsService CreateViewImportService();
+        ISymbolLoadingService CreateSymbolLoadingService();
     }
 
     public class ServiceFactory : IServiceFactory
@@ -169,6 +170,11 @@ namespace Reko.Gui
         public IViewImportsService CreateViewImportService()
         {
             return new ViewImportsService(services);
+        }
+
+        public ISymbolLoadingService CreateSymbolLoadingService()
+        {
+            return new SymbolLoadingService(services);
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
             {
                 dispatcher[o.GetType()](o, w);
             }
-            var bytes = w.Bytes.Take(w.Position).ToArray();
+            var bytes = w.Bytes.Take((int)w.Position).ToArray();
             return bytes;
         }
 

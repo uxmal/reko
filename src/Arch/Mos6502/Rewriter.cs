@@ -47,7 +47,7 @@ namespace Reko.Arch.Mos6502
             this.state = state;
             this.frame = frame;
             this.host = host;
-            this.instrs = new Disassembler(rdr.CreateLeReader());
+            this.instrs = new Disassembler(rdr);
         }
 
         private AddressCorrelatedException NYI()

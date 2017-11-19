@@ -108,7 +108,7 @@ namespace Reko.ImageLoaders.Dol
 		public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform) {
 			BeImageReader rdr = new BeImageReader(this.RawImage, 0);
 			try {
-				this.hdr = new DolHeader(new StructureReader<DolStructure>(rdr).Read());
+				this.hdr = new DolHeader(new StructureReader<DolStructure>(rdr.CreateBinaryReader()).Read());
 			} catch (Exception ex) {
 				throw new BadImageFormatException("Invalid DOL header. " + ex.Message);
 			}

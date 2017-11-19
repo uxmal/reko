@@ -203,6 +203,9 @@ namespace Reko.Gui.Forms
 
             var viewImpSvc = svcFactory.CreateViewImportService();
             sc.AddService<IViewImportsService>(viewImpSvc);
+
+            var symLdrSvc = svcFactory.CreateSymbolLoadingService();
+            sc.AddService<ISymbolLoadingService>(symLdrSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)

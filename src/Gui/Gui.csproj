@@ -119,6 +119,7 @@
     <Compile Include="Controls\IControl.cs" />
     <Compile Include="Controls\ILabel.cs" />
     <Compile Include="Controls\IListBox.cs" />
+    <Compile Include="Controls\IListView.cs" />
     <Compile Include="Controls\INumericUpDownWrapper.cs" />
     <Compile Include="Controls\IRadioButton.cs" />
     <Compile Include="Controls\ITypeMarker.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Forms\IJumpTableDialog.cs" />
     <Compile Include="Forms\IProcedureDialog.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
+    <Compile Include="Forms\ISymbolSourceDialog.cs" />
     <Compile Include="Forms\ResourceEditorInteractor.cs" />
     <Compile Include="ICallGraphViewService.cs" />
     <Compile Include="ICommandFactory.cs" />
@@ -308,6 +310,13 @@
       <DependentUpon>JumpTableDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\JumpTableInteractor.cs" />
+    <Compile Include="Windows\Forms\SymbolSourceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\SymbolSourceDialog.Designer.cs">
+      <DependentUpon>SymbolSourceDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Forms\SymbolSourceInteractor.cs" />
     <Compile Include="Windows\Forms\TextEncodingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -317,6 +326,7 @@
     <Compile Include="Forms\TextEncodingInteractor.cs" />
     <Compile Include="Windows\LabelWrapper.cs" />
     <Compile Include="Windows\ListboxWrapper.cs" />
+    <Compile Include="Windows\ListViewWrapper.cs" />
     <Compile Include="Windows\NumericUpDownWrapper.cs" />
     <Compile Include="Windows\PreviewInteractor.cs" />
     <Compile Include="Windows\ProgressbarWrapper.cs" />
@@ -648,6 +658,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\SearchDialog.resx">
       <DependentUpon>SearchDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\SymbolSourceDialog.resx">
+      <DependentUpon>SymbolSourceDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\TextEncodingDialog.resx">
       <DependentUpon>TextEncodingDialog.cs</DependentUpon>

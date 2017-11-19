@@ -251,6 +251,7 @@
     <Environments Include="$(SolutionDir)Environments\Wii\$(OutDir)Reko.Environments.Wii.*" />
     <Environments Include="$(SolutionDir)Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
     <Environments Include="$(SolutionDir)Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
+    <SymbolSources Include="$(SolutionDir)Sources\LGSymLoader\$(OutDir)Reko.Symbols.LGSymLoader.*" />
     <Libraries Include="$(SolutionDir)Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
     <Libraries Include="$(SolutionDir)Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />

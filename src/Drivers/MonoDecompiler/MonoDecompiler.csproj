@@ -223,6 +223,7 @@
     <Environments Include="$(ProjectDir)..\..\Environments\Wii\$(OutDir)Reko.Environments.Wii.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
+    <SymbolSources Include="$(ProjectDir)..\..\Sources\LGSymLoader\$(OutDir)Reko.Symbols.LGSymLoader.*" />
     <Libraries Include="$(ProjectDir)..\..\Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
     <Libraries Include="$(ProjectDir)..\..\Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
     <ConfigurationFiles Include="$(ProjectDir)..\..\Drivers\reko.config" />

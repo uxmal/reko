@@ -26,6 +26,7 @@ using System.Text;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Reko.Core.Types;
+using System.IO;
 
 namespace Reko.Core
 {
@@ -47,10 +48,10 @@ namespace Reko.Core
 	public class StructureReader<T> where T : struct
     {
         private T structure;
-		private ImageReader reader;
+		private BinaryReader reader;
 		private Endianness defaultEndianess = Endianness.LittleEndian;
 
-        public StructureReader(ImageReader reader)
+        public StructureReader(BinaryReader reader)
         {
 			this.reader = reader;
 			if (typeof(T).IsDefined(typeof(EndianAttribute), false)) {
@@ -131,7 +132,7 @@ namespace Reko.Core
 			return rawData;
 		}
 
-		private T BytesToStruct(ImageReader reader) {
+		private T BytesToStruct<T>(BinaryReader reader) {
 			byte[] bytes = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
 			return this.BytesToStruct(bytes);
 		}
