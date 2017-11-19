@@ -35,14 +35,18 @@ static const IID IID_INativeRewriter =
 
 void Dump(const char * fmt, ...)
 {
-#if _WINDOWS
-	char buf[300];
 	va_list args;
 	va_start(args, fmt);
+#if _WINDOWS
+	char buf[300];
 	vsnprintf(buf, _countof(buf), fmt, args);
 	::strcat_s(buf, "\r\n");
 	::OutputDebugStringA(buf);
+#else
+	vfprintf(stderr, fmt, args);
+	fputs("\n", stderr);
 #endif
+	va_end(args);
 }
 
 STDMETHODIMP ArmRewriter::QueryInterface(REFIID riid, void ** ppvOut)
