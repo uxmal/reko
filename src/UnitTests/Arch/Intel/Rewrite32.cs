@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Arch.Intel
             };
             configSvc.Stub(c => c.GetEnvironment("win32")).Return(win32env);
             configSvc.Stub(c => c.GetInstallationRelativePath(null)).IgnoreArguments()
-                .Do(new Func<string[], string>(s => string.Join("/", s)));
+                .Do(new Func<string[], string>(s => RekoConfigurationService.MakeInstallationRelativePath(s)));
             services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
             services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(configSvc);
             services.Stub(s => s.GetService(typeof(DecompilerEventListener))).Return(eventListener);
