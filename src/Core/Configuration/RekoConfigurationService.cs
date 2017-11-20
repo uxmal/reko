@@ -350,8 +350,10 @@ namespace Reko.Core.Configuration
             var filename = Path.Combine(pathComponents);
             if (!Path.IsPathRooted(filename))
             {
+                string assemblyUri = typeof(RekoConfigurationService).Assembly.CodeBase;
+                string assemblyPath = new Uri(assemblyUri).LocalPath;
                 return Path.Combine(
-                    Path.GetDirectoryName(typeof(RekoConfigurationService).Assembly.Location),
+                    Path.GetDirectoryName(assemblyPath),
                     filename);
             }
             return filename;
