@@ -79,8 +79,14 @@ namespace Reko.Environments.AtariTOS
         private bool TryLoadHeader(BeImageReader rdr, out PrgHeader hdr)
         {
             var sr = new StructureReader<PrgHeader>(rdr);
-            hdr = sr.Read();
-            return hdr.Magic == 0x601A;
+            var h = sr.Read();
+            if (!h.HasValue || h.Value.Magic != 0x601A)
+            {
+                hdr = default(PrgHeader);
+                return false;
+            }
+            hdr = h.Value;
+            return true;
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)

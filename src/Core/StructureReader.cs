@@ -59,9 +59,13 @@ namespace Reko.Core
 			}
         }
 
-        public T Read()
+        public T? Read()
         {
-			return this.BytesToStruct(this.reader);
+            var cbToRead = Marshal.SizeOf(typeof(T));
+            byte[] bytes = reader.ReadBytes(cbToRead);
+            if (bytes.Length < cbToRead)
+                return null;
+            return this.BytesToStruct(bytes);
         }
 
         private int GetAlignment(FieldInfo f)
