@@ -109,6 +109,11 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
 
         private void Given_FnType(ushort iName, ushort iTypeReturn)
         {
+            writer.WriteByte(0x23); // TID_FUNCTION
+            writer.WriteBeUInt16(iName);
+            writer.WriteBeUInt16(0);
+            writer.WriteByte(0);    // C near fn.
+            writer.WriteBeUInt16(iTypeReturn);
         }
 
         private void Given_Names(params string[] names)
@@ -173,9 +178,9 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
         public void BorSymLdr_FunctionSymbols()
         {
             Given_MzExeProgram(0x0430);
-            Given_DebugHeader(2, 0);
-            Given_FnSymbol(1, 1, 0x0101);
-            Given_FnSymbol(2, 2, 0x014F);
+            Given_DebugHeader(2, 2);
+            Given_FnSymbol(1, 0x0000, 0x0101, 1);
+            Given_FnSymbol(2, 0x0000, 0x014F, 2);
             Given_FnType(0x0000, 0x0000);
             Given_FnType(0x0000, 0x0000);
             Given_Names("fn1", "Function2");

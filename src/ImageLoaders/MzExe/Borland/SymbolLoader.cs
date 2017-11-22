@@ -544,7 +544,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 byte type_id;
                 ushort type_name;
                 ushort type_size;
-                // The type records are either 8 or 16 bytes ong
+                // The type records are either 8 or 16 bytes long
                 if (!rdr.TryReadByte(out type_id) ||
                     !rdr.TryReadLeUInt16(out type_name) ||
                     !rdr.TryReadLeUInt16(out type_size))
