@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Core
 		}
 
 		[Test]
-        [Ignore()]
+        [Ignore("")]
 		public void FrBindStackParameters()
 		{
 			var f = new Frame(PrimitiveType.Word16);

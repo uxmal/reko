@@ -76,11 +76,12 @@ namespace Reko.UnitTests.Arch.Intel
 			Assert.AreSame(Registers.di, arch.GetRegister("di"));
 		}
 
-		[ExpectedException(typeof (ArgumentException))]
+//		[ExpectedException(typeof (ArgumentException))]
 		[Test]
 		public void IaFailGetRegisterFromString()
 		{
-			arch.GetRegister("invalidregistername");
+//			arch.GetRegister("invalidregistername");
+            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
 		}
 
 		[Test]
@@ -183,11 +184,12 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		[ExpectedException(typeof (ArgumentException))]
+//		[ExpectedException(typeof (ArgumentException))]
 		public void IaGetInvalidRegisterFromName()
 		{
-			Assert.IsNull(arch.GetRegister("NonExistingRegisterName"));
-		}
+//            Assert.IsNull(arch.GetRegister("NonExistingRegisterName"));
+            Assert.Throws<ArgumentException>(() => arch.GetRegister("NonExistingRegisterName"));
+        }
 
         private EndianImageReader CreateImageReader(params byte[] bytes)
         {
