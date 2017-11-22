@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Borland\BorlandType.cs" />
     <Compile Include="Borland\SymbolLoader.cs" />
     <Compile Include="ExeImageLoader.cs" />
     <Compile Include="ExePackLoader.cs" />

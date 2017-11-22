@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,7 +41,8 @@ namespace Reko.ImageLoaders.MzExe.Borland
         private Address addrLoad;
         private Dictionary<Address, ImageSymbol> imgSymbols;
         private symbol_record[] symbols;
-        private string[] type_names;
+        private Dictionary<ushort, BorlandType> types;
+        private Dictionary<ImageSymbol, ushort> symbolTypes;
 
         public SymbolLoader(ExeImageLoader exeLoader, byte[] rawImage, Address addrLoad)
         {
@@ -48,6 +50,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
             this.rawImage = rawImage;
             this.addrLoad = addrLoad;
             this.imgSymbols = new Dictionary<Address, ImageSymbol>();
+            this.symbolTypes = new Dictionary<ImageSymbol, ushort>();
         }
 
         public bool LoadDebugHeader()
@@ -493,53 +496,49 @@ private const byte TID_HANDLEPTR = 0x30;    //  Handle-based pointer NOT USED
 private const byte TID_MEMBERPTR = 0x33;    //  Member pointer       
 private const byte TID_NEWMEMPTR = 0x38;     //  New style member pointer 
 
-  //             TID_MEMBERPTR
+        //             TID_MEMBERPTR
 
-  //               Field                Size Offset
+        //               Field                Size Offset
 
-  //      __________
+        //      __________
 
-  //               type index             4          8
-  //               base class index       2         12
-		//____________
+        //               type index             4          8
+        //               base class index       2         12
+        //____________
 
-  //             TID_NEWMEMBERPTR
+        //             TID_NEWMEMBERPTR
 
-  //  _________________________________
+        //  _________________________________
 
-  //               Field                Size Offset
+        //               Field                Size Offset
 
-  //      __________
+        //      __________
 
-  //               member ptr flags       1          7
-  //               pointer to type index  4          8
-  //               base class index       2         11
-		//____________
+        //               member ptr flags       1          7
+        //               pointer to type index  4          8
+        //               base class index       2         11
+        //____________
 
-  //             TID_HANDLEPTR
+        //             TID_HANDLEPTR
 
-  //  ____________________________________
+        //  ____________________________________
 
-  //               Field                Size Offset
+        //               Field                Size Offset
 
-  //      __________
+        //      __________
 
-  //               extra info byte        1          7
-  //               handle string index    4          8
-  //               type index             4         12
+        //               extra info byte        1          7
+        //               handle string index    4          8
+        //               type index             4         12
 
-  //      ____________
+        //      ____________
 
 
-  //            Near and far______________________________
-  //             references
-  //                      (24 bytes)
+        //            Near and far references (24 bytes)
 
   //      Field Size      Offset
-  //__________
   //               type index             4          8
   //               class index            4         12
-		//____________
 
 private const byte TID_NREF = 0x34;        //  Near reference pointer
 private const byte TID_FREF = 0x35;        //  Far reference pointer
@@ -550,14 +549,11 @@ private const byte TID_LONGBOOL = 0x37;       //  Pascal long boolean
 private const byte TID_GLOBALHANDLE = 0x3E;   //  Windows global handle 
 private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle  
 
-
-
-
-
         private void LoadTypeTable(LeImageReader rdr, string[] names)
         {
             Debug.Print($"Type table (offset: {rdr.Offset:X8}); {header.types_count:X4} entries");
-            for (int iType = 0; iType < header.types_count; ++iType)
+            this.types = new Dictionary<ushort, BorlandType>();
+            for (int i = 0; i < header.types_count; ++i)
             {
                 byte type_id;
                 ushort type_name;
@@ -569,10 +565,12 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 {
                     break;
                 }
+                int iType = i + 1;
                 Debug.Print($"  Type {names[type_name]} - {iType:X4}");
                 Debug.Print($"    type id: {type_id:X2}");
                 Debug.Print($"    size:    {type_size:X4}");
 
+                BorlandType bt = null;
                 switch (type_id)
                 {
                 case 0x00:
@@ -581,61 +579,30 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                         var b2 = rdr.ReadByte();
                         var w = rdr.ReadLeUInt16();
                         Debug.Print($"    {b2:X2} {w:X4}");
+                        bt = new SimpleType { DataType = new VoidType_v1() };
                         break;
                     }
-                case TID_SCHAR:
-                case TID_SINT:
-                case TID_SLONG:
-                case TID_SQUAD:
-                case TID_UCHAR:
-                case TID_UINT:
-                case TID_ULONG:
-                case TID_UQUAD:
-                case TID_PCHAR:
-                    {
-                        var b2 = rdr.ReadByte();
-                        var w = rdr.ReadLeUInt16();
-                        var w0 = rdr.ReadLeUInt32();
-                        var w1 = rdr.ReadLeUInt32();
-                        Debug.Print($"    {b2:X2} {w:X4} [{w0:X8} {w1:X8}]");
-                        ++iType;
-                        break;
-                    }
-                case TID_FLOAT:
-                case TID_TPREAL:
-                case TID_DOUBLE:
-                case TID_LDOUBLE:
-                case TID_BCD4:
-                case TID_BOOL:
-                case TID_TBYTE:
-                case TID_PWORD:
-                    {
-                        var b2 = rdr.ReadByte();
-                        var w = rdr.ReadLeUInt16();
-                        Debug.Print($"    {b2:X2} {w:X4}");
-                        break;
-                    }
-                case TID_NEAR:
-                    {
-                        var b2 = rdr.ReadByte();
-                        var w = rdr.ReadLeUInt16();
-                        Debug.Print($"    near ptr: {w:X4}");
-                        break;
-                    }
-                case TID_FAR:
-                    {
-                        var b2 = rdr.ReadByte();
-                        var w = rdr.ReadLeUInt16();
-                        Debug.Print($"    far ptr: {w:X4}");
-                        break;
-                    }
-                case TID_CARRAY:
-                    {
-                        var b2 = rdr.ReadByte();
-                        var w = rdr.ReadLeUInt16();
-                        Debug.Print($"    C array[]: {w:X4}");
-                        break;
-                    }
+                case TID_SCHAR: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.SChar8()); break;
+                case TID_SINT: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.Int16()); break;
+                case TID_SLONG: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.Int32()); break;
+                case TID_SQUAD: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.Int64()); break;
+                case TID_UCHAR: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.UChar8()); break;
+                case TID_UINT: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.UInt16()); break;
+                case TID_ULONG: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.UInt32()); break;
+                case TID_UQUAD: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.UInt64()); break;
+                case TID_PCHAR: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.Char8()); break;
+
+                case TID_FLOAT: bt = ClassifyType(rdr, PrimitiveType_v1.Real32()); break;
+                //case TID_TPREAL: ClassifyPrimitiveType(rdr, PrimitiveType_v1.TPREAL()); break;
+                case TID_DOUBLE: bt = ClassifyType(rdr, PrimitiveType_v1.Real64()); break;
+                case TID_LDOUBLE: bt = ClassifyType(rdr, new PrimitiveType_v1 { Domain = Core.Types.Domain.Real, ByteSize = 10 }); break;
+                //case TID_BCD4: ClassifyPrimitiveType(rdr, PrimitiveType_v1.BCD4()); break;
+                case TID_BOOL: bt = ClassifyType(rdr, PrimitiveType_v1.Bool()); break;
+                case TID_TBYTE: bt = ClassifyType(rdr, new PrimitiveType_v1 { Domain = Core.Types.Domain.Any, ByteSize = 10 }); break;
+                case TID_PWORD: bt = ClassifyType(rdr, new PrimitiveType_v1 { Domain = Core.Types.Domain.Any, ByteSize = 6 }); break;
+                case TID_NEAR: bt = ClassifyComplex(rdr, t => PointerType_v1.Create(t, 2), "near *"); break;
+                case TID_FAR: bt = ClassifyComplex(rdr, t => PointerType_v1.Create(t, 4), "far *"); break;
+                case TID_CARRAY: bt = ClassifyComplex(rdr, t => new ArrayType_v1 { ElementType = t, Length = 1 /*//$TODO: unknown length */}, "C Array[]"); break;
                 case TID_FUNCTION:
                     {
                         var b2 = rdr.ReadByte();
@@ -643,6 +610,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                         var lang = ClassifyFuncProgrammingLanguage(b2 & 0x7F);
                         var varargs = (b2 & 0x80) != 0 ? " varargs" : "";
                         Debug.Print($"    function/procedure: returns {w:X4} ({lang}{varargs})");
+                        bt = new Callable { };
                         break;
                     }
                 case TID_LABEL:
@@ -650,6 +618,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                         var b2 = rdr.ReadByte();
                         var w = rdr.ReadLeUInt16();
                         Debug.Print($"    goto: {b2:X2} {w:X4}");
+                        bt = new SimpleType { DataType = new VoidType_v1() };
                         break;
                     }
                 case TID_STRUCT:
@@ -657,6 +626,10 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                         var b2 = rdr.ReadByte();
                         var w = rdr.ReadLeUInt16();
                         Debug.Print($"    struct: {b2:X2} {w:X4}");
+                        bt = new StructUnionType
+                        {
+                            iMembers = w,
+                        };
                         break;
                     }
                 case TID_UNION:
@@ -664,10 +637,46 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                         var b2 = rdr.ReadByte();
                         var w = rdr.ReadLeUInt16();
                         Debug.Print($"    union: {b2:X2} {w:X4}");
+                        bt = new StructUnionType
+                        {
+                            iMembers = w,
+                        };
                         break;
                     }
                 }
+                bt.name = names[type_name];
+                types[(ushort)iType] = bt;
             }
+        }
+
+        private BorlandType ClassifyRangeType(LeImageReader rdr, SerializedType pt)
+        {
+            var b2 = rdr.ReadByte();
+            var w = rdr.ReadLeUInt16();
+            var w0 = rdr.ReadLeUInt32();
+            var w1 = rdr.ReadLeUInt32();
+            Debug.Print($"    {b2:X2} {w:X4} [{w0:X8} {w1:X8}] {pt}");
+            return new SimpleType { DataType = pt };
+        }
+
+        private BorlandType ClassifyType(LeImageReader rdr, SerializedType dt)
+        {
+            var b2 = rdr.ReadByte();
+            var w = rdr.ReadLeUInt16();
+            Debug.Print($"    {b2:X2} {w:X4} {dt}");
+            return new SimpleType { DataType = dt };
+        }
+
+        private BorlandType ClassifyComplex(LeImageReader rdr, Func<SerializedType,SerializedType> ctor, string msg)
+        {
+            var b2 = rdr.ReadByte();
+            var w = rdr.ReadLeUInt16();
+            Debug.Print($"    {msg}: {w:X4}");
+            return new ComplexType
+            {
+                ConstructType = ctor,
+                SubType = w,
+            };
         }
 
         private void LoadMemberTable(LeImageReader rdr, string[] names)
@@ -742,6 +751,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                         Name = name,
                     };
                     this.imgSymbols[imgSymbol.Address] = imgSymbol;
+                    this.symbolTypes[imgSymbol] = sym.symbol_type;
                 }
                 return "Static";
             case 0x01:
@@ -806,8 +816,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
             switch(b & 7)
             {
             case 0:
-            default:
-                return "Unknown";
+            default: return "Unknown";
             case 1: return "C";
             case 2: return "Pascal";
             case 3: return "Basic";
@@ -818,6 +827,19 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
 
         public IDictionary<Address,ImageSymbol> LoadSymbols()
         {
+            foreach (var imgSym in imgSymbols.Values)
+            {
+                var iType = this.symbolTypes[imgSym];
+                Debug.Print($"Image symbol {imgSym.Name} type {iType:X4}");
+                if (iType == 0)
+                    continue;
+                var type = this.types[iType];
+                var callable = type as Callable;
+                if (callable != null)
+                {
+                    imgSym.Type = SymbolType.Procedure;
+                }
+            }
             return imgSymbols;
         }
 
