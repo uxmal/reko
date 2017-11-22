@@ -134,8 +134,27 @@ namespace Reko.ImageLoaders.MzExe
                 results.Symbols[sym.Address] = sym;
                 ep.NoDecompile = true;
             }
+
+            LoadDebugSymbols(results.Symbols);
             return results;
 		}
+
+        private void LoadDebugSymbols(SortedList<Address, ImageSymbol> symbols)
+        {
+            //$REVIEW: this is hardwired. some kind of generic "sniffing" mechanism needs to be implemented.
+            // We don't want to load every registered symbol provider, though. Perhaps
+            // load symbols in a separate AppDomain, marshal all the symbols across,
+            // then discard the appdomain?
+            var borsymLdr = new Borland.SymbolLoader(exe, RawImage);
+            if (borsymLdr.LoadDebugHeader())
+            {
+                var syms = borsymLdr.LoadSymbols();
+                foreach (var sym in syms)
+                {
+                    symbols[sym.Key] = sym.Value;
+                }
+            }
+        }
 
         [Conditional("DEBUG")]
         public void DumpSegments(SegmentMap segmentMap)

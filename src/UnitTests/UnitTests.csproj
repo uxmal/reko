@@ -134,6 +134,7 @@
     <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmParserTests.cs" />
     <Compile Include="ImageLoaders\Llvm\ProgramBuilderTests.cs" />
+    <Compile Include="ImageLoaders\MzExe\Borland\SymbolLoaderTests.cs" />
     <Compile Include="Mocks\FakeTypeDeserializer.cs" />
     <Compile Include="Core\Analysis\PyBuildValueFormatParserTests.cs" />
     <Compile Include="Mocks\SsaProcedureBuilder.cs" />
