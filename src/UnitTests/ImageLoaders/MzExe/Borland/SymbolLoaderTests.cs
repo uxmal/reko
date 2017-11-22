@@ -98,6 +98,18 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
             writer.WriteByte(0);        // static symbol
         }
 
+        private void Given_FnSymbol(short iName, ushort seg, ushort offset, ushort iType)
+        {
+            writer.WriteLeInt16(iName);
+            writer.WriteLeUInt16(iType);  // Typed.
+            writer.WriteLeUInt16(offset);
+            writer.WriteLeUInt16(seg);
+            writer.WriteByte(0);        // static symbol
+        }
+
+        private void Given_FnType(ushort iName, ushort iTypeReturn)
+        {
+        }
 
         private void Given_Names(params string[] names)
         {
@@ -140,12 +152,32 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
         }
 
         [Test]
-        public void BorSymLdr_FunctionSymbols()
+        public void BorSymLdr_GenericSymbols()
         {
             Given_MzExeProgram(0x0430);
             Given_DebugHeader(2, 0);
             Given_GenericSymbol(1, 0, 0x0101);
             Given_GenericSymbol(2, 0, 0x014F);
+            Given_Names("fn1", "Function2");
+            Given_ExeLoader();
+
+            var borsymldr = new SymbolLoader(exeLoader, writer.ToArray(), Address.SegPtr(0x800, 0));
+            Assert.IsTrue(borsymldr.LoadDebugHeader());
+            var syms = borsymldr.LoadSymbols().Values.OrderBy(s => s.Address).ToArray();
+            Assert.AreEqual(2, syms.Length);
+            Assert.AreEqual("fn1", syms[0].Name);
+            Assert.AreEqual("Function2", syms[1].Name);
+        }
+
+        [Test]
+        public void BorSymLdr_FunctionSymbols()
+        {
+            Given_MzExeProgram(0x0430);
+            Given_DebugHeader(2, 0);
+            Given_FnSymbol(1, 1, 0x0101);
+            Given_FnSymbol(2, 2, 0x014F);
+            Given_FnType(0x0000, 0x0000);
+            Given_FnType(0x0000, 0x0000);
             Given_Names("fn1", "Function2");
             Given_ExeLoader();
 
