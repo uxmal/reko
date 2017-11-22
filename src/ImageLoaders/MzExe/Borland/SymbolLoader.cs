@@ -32,7 +32,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
 {
     public class SymbolLoader
     {
-        const ushort MagicNumber = 0x52FB;
+        public const ushort MagicNumber = 0x52FB;
 
         private ExeImageLoader exeLoader;
         private byte[] rawImage;
@@ -69,7 +69,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
                 return false;
             }
             this.header = header.Value;
-            this.name_pool_offset = -1;
+            this.name_pool_offset = rawImage.Length - this.header.names;
             if (this.header.extension_size == 0x20)
             {
                 var ext = new StructureReader<header_extension_20>(rdr);
@@ -79,19 +79,13 @@ namespace Reko.ImageLoaders.MzExe.Borland
                     //$TODO: warn
                     return false;
                 }
-                name_pool_offset = (int)extHdr.Value.name_pool_offset;
+                name_pool_offset = rdr.Offset + (int)extHdr.Value.name_pool_offset;
             }
-            else if (this.header.extension_size == 0)
+            else if (this.header.extension_size != 0)
             {
-                // Haven't seen one of these.
+                //$TODO: warning.
                 return false;
             }
-            else
-            {
-                //$TODO: warn and quit.
-                return false;
-            }
-            name_pool_offset += rdr.Offset;
             var idx = CreateNameIndex(name_pool_offset);
             LoadSymbolTable(rdr, idx);
             LoadModuleTable(rdr, idx);
@@ -102,7 +96,6 @@ namespace Reko.ImageLoaders.MzExe.Borland
             LoadCorrelationTable(rdr, idx);
             LoadTypeTable(rdr, idx);
             LoadMemberTable(rdr, idx);
-            //Members Table
             //Class Table
             //Parent Table
             //Scope Class Table
@@ -252,52 +245,43 @@ namespace Reko.ImageLoaders.MzExe.Borland
         }
 
 
-private const byte TID_VOID = 0x00;        //  Unknown or no type   
-private const byte TID_LSTR = 0x01;        //  Basic Literal string 
-private const byte TID_DSTR = 0x02;        //  Basic Dynamic string 
-private const byte TID_PSTR = 0x03;        //  Pascal style string  
+        private const byte TID_VOID = 0x00;        //  Unknown or no type   
 
+        private const byte TID_LSTR = 0x01;        //  Basic Literal string 
+        private const byte TID_DSTR = 0x02;        //  Basic Dynamic string 
+        private const byte TID_PSTR = 0x03;        //  Pascal style string  
 
-//                  max_size       1              7
+        //                  max_size       1              7
 
-private const byte TID_SCHAR = 0x04;        //  1 byte signed range   
-private const byte TID_SINT = 0x05;         //  2 byte signed range   
-private const byte TID_SLONG = 0x06;        //  4 byte signed range   
-private const byte TID_SQUAD = 0x07;        //  8 byte signed int     
+        private const byte TID_SCHAR = 0x04;        //  1 byte signed range   
+        private const byte TID_SINT = 0x05;         //  2 byte signed range   
+        private const byte TID_SLONG = 0x06;        //  4 byte signed range   
+        private const byte TID_SQUAD = 0x07;        //  8 byte signed int     
 
-private const byte TID_UCHAR = 0x08;        //  1 byte unsigned range 
-private const byte TID_UINT = 0x09;         //  2 byte unsigned range 
-private const byte TID_ULONG = 0x0A;        //  4 byte unsigned range 
-private const byte TID_UQUAD = 0x0B;        //  8 byte unsigned int   
+        private const byte TID_UCHAR = 0x08;        //  1 byte unsigned range 
+        private const byte TID_UINT = 0x09;         //  2 byte unsigned range 
+        private const byte TID_ULONG = 0x0A;        //  4 byte unsigned range 
+        private const byte TID_UQUAD = 0x0B;        //  8 byte unsigned int   
 
-private const byte TID_PCHAR = 0x0C;        //  Pascal character type 
+        private const byte TID_PCHAR = 0x0C;        //  Pascal character type 
 
-             //Ranges(24 bytes)
-             //    Field Size          Offset
-
+             //Ranges
              //    parent type    2              8
              //    lower bound    4             12
              //    upper bound    4             16
 
 
-private const byte TID_FLOAT = 0x0D;        //  IEEE 32-bit real     
-private const byte TID_TPREAL = 0x0E;        //  Turbo Pascal 6-byte real 
-private const byte TID_DOUBLE = 0x0F;        //  IEEE 64-bit real     
-private const byte TID_LDOUBLE = 0x10;        //  IEEE 80-bit real     
-private const byte TID_BCD4 = 0x11;        //  4 byte BCD           
-private const byte TID_BCD8 = 0x12;        //  8 byte BCD           
-private const byte TID_BCD10 = 0x13;        //  10 byte BCD          
+        private const byte TID_FLOAT = 0x0D;        //  IEEE 32-bit real     
+        private const byte TID_TPREAL = 0x0E;        //  Turbo Pascal 6-byte real 
+        private const byte TID_DOUBLE = 0x0F;        //  IEEE 64-bit real     
+        private const byte TID_LDOUBLE = 0x10;        //  IEEE 80-bit real     
+        private const byte TID_BCD4 = 0x11;        //  4 byte BCD           
+        private const byte TID_BCD8 = 0x12;        //  8 byte BCD           
+        private const byte TID_BCD10 = 0x13;       //  10 byte BCD          
 
 
        // BCD COBOL
-       //                 (12 bytes)
-
-       //  Field Size          Offset
-       //___________
-
        //          decimal point     1              5
-
-       // _____________
 
 private const byte TID_BCDCOB = 0x14;        //  COBOL BCD            
 
@@ -830,7 +814,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
             foreach (var imgSym in imgSymbols.Values)
             {
                 var iType = this.symbolTypes[imgSym];
-                Debug.Print($"Image symbol {imgSym.Name} type {iType:X4}");
+                Debug.Print($"Image symbol {imgSym.Address} {imgSym.Name} type {iType:X4}");
                 if (iType == 0)
                     continue;
                 var type = this.types[iType];
@@ -850,7 +834,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
             public ushort magic_number;    //  To be sure who we are 
             public ushort version_id;      //  In case we change things 
             public uint names;             //  Names pool size in bytes 
-            public ushort  names_count;       //  Number of names in pool 
+            public ushort names_count;       //  Number of names in pool 
             public ushort types_count;       //  Number of type entries 
             public ushort members_count;     //  Structure members table 
             public ushort symbols_count;     //  Number of symbols 

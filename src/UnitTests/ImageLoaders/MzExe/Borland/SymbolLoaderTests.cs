@@ -35,12 +35,14 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
     {
         private LeImageWriter writer;
         private ExeImageLoader exeLoader;
+        private int offNames;
 
         [SetUp]
         public void Setup()
         {
             this.writer = null;
             this.exeLoader = null;
+            this.offNames = -1;
         }
 
         private void Given_MzExeProgram(uint size)
@@ -57,6 +59,56 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
             writer.WriteLeUInt16((ushort)cbLastPage);
             writer.WriteLeUInt16((ushort)cPages);
             writer.Position = pos;
+        }
+
+        public void Given_DebugHeader(short nSymbols, short nTypes)
+        {
+            writer.WriteLeUInt16(SymbolLoader.MagicNumber);  // magic_number
+            writer.WriteLeUInt16(0);  // version_id
+            // Remember this position so we can backpatch later.
+            this.offNames = writer.Position;
+            writer.WriteLeUInt32(0);  // names
+            writer.WriteLeUInt16(0);  // names_count
+            writer.WriteLeInt16(nTypes);  // types_count
+            writer.WriteLeUInt16(0);  // members_count
+            writer.WriteLeInt16(nSymbols);  // symbols_count
+            writer.WriteLeUInt16(0);  // globals_count
+            writer.WriteLeUInt16(0);  // modules_count
+            writer.WriteLeUInt16(0);  // locals_count
+            writer.WriteLeUInt16(0);  // scopes_count
+            writer.WriteLeUInt16(0);  // lines_count
+            writer.WriteLeUInt16(0);  // source_count
+            writer.WriteLeUInt16(0);  // segment_count
+            writer.WriteLeUInt16(0);  // correlation_count
+            writer.WriteUInt32(0);  // image_size
+            writer.WriteUInt32(0);  // /*void far * */debugger_hook
+            writer.WriteByte(0);  // program_flags
+            writer.WriteLeUInt16(0);  // stringsegoffset
+            writer.WriteLeUInt16(0);  // data_count
+            writer.WriteByte(0);  // filler
+            writer.WriteLeUInt16(0x00);  // extension_size
+        }
+
+        private void Given_GenericSymbol(short iName, ushort seg, ushort offset)
+        {
+            writer.WriteLeInt16(iName);
+            writer.WriteLeInt16(0x00);  // Untyped.
+            writer.WriteLeUInt16(offset);
+            writer.WriteLeUInt16(seg);
+            writer.WriteByte(0);        // static symbol
+        }
+
+
+        private void Given_Names(params string[] names)
+        {
+            var iNamesBegin = writer.Position;
+            foreach (var name in names)
+            {
+                writer.WriteString(name, Encoding.ASCII);
+                writer.WriteByte(0);
+            }
+            var iNamesEnd = writer.Position;
+            writer.WriteLeUInt32((uint)this.offNames, (uint)(iNamesEnd - iNamesBegin));
         }
 
         private void Given_ExeLoader()
@@ -80,11 +132,29 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
         public void BorSymLdr_HasHeader()
         {
             Given_MzExeProgram(0x0430);
-
+            Given_DebugHeader(0, 0);
             Given_ExeLoader();
 
             var borsymldr = new SymbolLoader(exeLoader, writer.ToArray(), Address.SegPtr(0x800, 0));
-            Assert.IsFalse(borsymldr.LoadDebugHeader());
+            Assert.IsTrue(borsymldr.LoadDebugHeader());
+        }
+
+        [Test]
+        public void BorSymLdr_FunctionSymbols()
+        {
+            Given_MzExeProgram(0x0430);
+            Given_DebugHeader(2, 0);
+            Given_GenericSymbol(1, 0, 0x0101);
+            Given_GenericSymbol(2, 0, 0x014F);
+            Given_Names("fn1", "Function2");
+            Given_ExeLoader();
+
+            var borsymldr = new SymbolLoader(exeLoader, writer.ToArray(), Address.SegPtr(0x800, 0));
+            Assert.IsTrue(borsymldr.LoadDebugHeader());
+            var syms = borsymldr.LoadSymbols().Values.OrderBy(s => s.Address).ToArray();
+            Assert.AreEqual(2, syms.Length);
+            Assert.AreEqual("fn1", syms[0].Name);
+            Assert.AreEqual("Function2", syms[1].Name);
         }
     }
 }
