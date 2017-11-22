@@ -72,7 +72,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
 
             Given_ExeLoader();
 
-            var borsymldr = new SymbolLoader(exeLoader, writer.ToArray());
+            var borsymldr = new SymbolLoader(exeLoader, writer.ToArray(), Address.SegPtr(0x800, 0));
             Assert.IsFalse(borsymldr.LoadDebugHeader());
         }
 
@@ -83,9 +83,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
 
             Given_ExeLoader();
 
-            var borsymldr = new SymbolLoader(exeLoader, writer.ToArray());
+            var borsymldr = new SymbolLoader(exeLoader, writer.ToArray(), Address.SegPtr(0x800, 0));
             Assert.IsFalse(borsymldr.LoadDebugHeader());
-
         }
     }
 }

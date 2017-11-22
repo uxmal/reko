@@ -39,6 +39,8 @@ namespace Reko.ImageLoaders.MzExe.Borland
         private long name_pool_offset;
         private Address addrLoad;
         private Dictionary<Address, ImageSymbol> imgSymbols;
+        private symbol_record[] symbols;
+        private string[] type_names;
 
         public SymbolLoader(ExeImageLoader exeLoader, byte[] rawImage, Address addrLoad)
         {
@@ -89,27 +91,622 @@ namespace Reko.ImageLoaders.MzExe.Borland
             name_pool_offset += rdr.Offset;
             var idx = CreateNameIndex(name_pool_offset);
             LoadSymbolTable(rdr, idx);
-               //Module Table
-               //Source File Table
-               //Scopes Table
-               //Line Number Table
-               //Segments Table
-               //Correlation Table
-               //Type Table
-               //Members Table
-               //Class Table
-               //Parent Table
-               //Scope Class Table
-               //Module Class Table
-               //Coverage Map Table
-               //Coverage Offsets Table
-               //Browser Definitions Table
-               //Optimized Symbols Table
-               //Module Optimization Flags Table
-               //Reference Information Table
-               //Names Table
+            LoadModuleTable(rdr, idx);
+            LoadSourceFileTable(rdr, idx);
+            LoadScopesTable(rdr, idx);
+            LoadLineNumberTable(rdr, idx);
+            LoadSegmentTable(rdr, idx);
+            LoadCorrelationTable(rdr, idx);
+            LoadTypeTable(rdr, idx);
+            LoadMemberTable(rdr, idx);
+            //Members Table
+            //Class Table
+            //Parent Table
+            //Scope Class Table
+            //Module Class Table
+            //Coverage Map Table
+            //Coverage Offsets Table
+            //Browser Definitions Table
+            //Optimized Symbols Table
+            //Module Optimization Flags Table
+            //Reference Information Table
+            //Names Table
 
             return true;
+        }
+
+        private void LoadSymbolTable(ImageReader rdr, string[] names)
+        {
+            var srdr = new StructureReader<symbol_record>(rdr);
+            int nSym = 0;
+            this.symbols = new symbol_record[header.symbols_count];
+            while (nSym < header.symbols_count)
+            {
+                var hsym = srdr.Read();
+                if (!hsym.HasValue)
+                    break;
+                this.symbols[nSym] = hsym.Value;
+                var sym = hsym.Value;
+                var symClass = ClassifySymbol(sym.flags, names[sym.symbol_name], ref sym);
+                Debug.Print($"  Symbol:  {names[sym.symbol_name]} ({nSym})");
+                Debug.Print($"    Type:  {sym.symbol_type:X4}");
+                Debug.Print($"    Addr:  {sym.symbol_segment:X4}:{sym.symbol_offset:X4}");
+                Debug.Print($"    Flags: {symClass}");
+                ++nSym;
+            }
+        }
+
+        private void LoadModuleTable(LeImageReader rdr, string[] names)
+        {
+            var srdr = new StructureReader<module_header>(rdr);
+            int nMod = 0;
+            while (nMod < header.modules_count)
+            {
+                var hmod = srdr.Read();
+                if (!hmod.HasValue)
+                    break;
+                var mod = hmod.Value;
+                Debug.Print($"  Module:         {names[mod.module_name]}");
+                Debug.Print($"    Language:     {ClassifyProgrammingLanguage(mod.language)}");
+                Debug.Print($"    Flags:        {mod.flags:X2}");
+                Debug.Print($"    Symbols:      [{mod.symbols_index} - {mod.symbols_index + mod.symbols_count})");
+                Debug.Print($"    SrcFiles:     [{mod.source_files_index} - {mod.symbols_index + mod.source_files_count})");
+                Debug.Print($"    Correlations: [{mod.correlation_index} - {mod.symbols_index + mod.correlation_count})");
+                ++nMod;
+            }
+        }
+
+
+        private void LoadSourceFileTable(LeImageReader rdr, string[] names)
+        {
+            int nSrc = 0;
+            while (nSrc < header.source_count)
+            {
+                ushort iFileName;
+                uint timestamp;
+                if (!rdr.TryReadLeUInt16(out iFileName) ||
+                    !rdr.TryReadLeUInt32(out timestamp))
+                    break;
+                Debug.Print($"  Source file:  {names[iFileName]}");
+                ++nSrc;
+            }
+        }
+
+        private void LoadScopesTable(LeImageReader rdr, string[] names)
+        {
+            var srdr = new StructureReader<scope_record>(rdr);
+            int nScopes = 0;
+            while (nScopes < header.scopes_count)
+            {
+                var hscope = srdr.Read();
+                if (hscope == null)
+                    break;
+                var scope = hscope.Value;
+                Debug.Print($"  Scope:");
+                Debug.Print($"    autos_index:     {scope.autos_index}");
+                Debug.Print($"    autos_count:     {scope.autos_count}");
+                Debug.Print($"    parent_scope:    {scope.parent_scope}");
+                Debug.Print($"    function_symbol: {scope.function_symbol}");
+                Debug.Print($"    scope_offset:    {scope.scope_offset}");
+                Debug.Print($"    scope_length:    {scope.scope_length}");
+                ++nScopes;
+            }
+        }
+
+        private void LoadLineNumberTable(LeImageReader rdr, string[] idx)
+        {
+            var srdr = new StructureReader<line_number>(rdr);
+            for (int nLineNos = 0; nLineNos < header.lines_count; ++nLineNos)
+            {
+                var hline = srdr.Read();
+                if (hline == null)
+                    break;
+                var line = hline.Value;
+                Debug.Print($"    line_number_value:  {line.line_number_value}");
+                Debug.Print($"    line_number_offset: {line.line_number_offset}");
+            }
+        }
+
+        private void LoadSegmentTable(LeImageReader rdr, string[] idx)
+        {
+            var srdr = new StructureReader<segment_record>(rdr);
+            int nSegs = 0;
+            while (nSegs < header.segment_count)
+            {
+                var hseg = srdr.Read();
+                if (hseg == null)
+                    break;
+                var seg = hseg.Value;
+
+                Debug.Print("  Segment");
+                Debug.Print($"    mod_index: {seg.mod_index}");
+                Debug.Print($"    code_segment: {seg.code_segment:X4}");
+                Debug.Print($"    code_offset: {seg.code_offset:X4}");
+                Debug.Print($"    code_length: {seg.code_length:X4}");
+                Debug.Print($"    scopes_index: {seg.scopes_index}");
+                Debug.Print($"    scopes_count: {seg.scopes_count}");
+                Debug.Print($"    correlation_index: {seg.correlation_index}");
+                Debug.Print($"    correlation_count: {seg.correlation_count}");
+                ++nSegs;
+            }
+        }
+
+        private void LoadCorrelationTable(LeImageReader rdr, string[] idx)
+        {
+            var srdr = new StructureReader<correlation_record>(rdr);
+            for (int iCorr = 0; iCorr < header.correlation_count; ++iCorr)
+            {
+                var hcorr = srdr.Read();
+                if (hcorr == null)
+                    break;
+                var corr = hcorr.Value;
+                Debug.Print("  Correlation");
+                Debug.Print($"    segment_index: {corr.segment_index}");
+                Debug.Print($"    file_index: {corr.file_index}");
+                Debug.Print($"    lines_index: {corr.lines_index}");
+                Debug.Print($"    lines_count: {corr.lines_count}");
+            }
+        }
+
+
+private const byte TID_VOID = 0x00;        //  Unknown or no type   
+private const byte TID_LSTR = 0x01;        //  Basic Literal string 
+private const byte TID_DSTR = 0x02;        //  Basic Dynamic string 
+private const byte TID_PSTR = 0x03;        //  Pascal style string  
+
+
+//                  max_size       1              7
+
+private const byte TID_SCHAR = 0x04;        //  1 byte signed range   
+private const byte TID_SINT = 0x05;         //  2 byte signed range   
+private const byte TID_SLONG = 0x06;        //  4 byte signed range   
+private const byte TID_SQUAD = 0x07;        //  8 byte signed int     
+
+private const byte TID_UCHAR = 0x08;        //  1 byte unsigned range 
+private const byte TID_UINT = 0x09;         //  2 byte unsigned range 
+private const byte TID_ULONG = 0x0A;        //  4 byte unsigned range 
+private const byte TID_UQUAD = 0x0B;        //  8 byte unsigned int   
+
+private const byte TID_PCHAR = 0x0C;        //  Pascal character type 
+
+             //Ranges(24 bytes)
+             //    Field Size          Offset
+
+             //    parent type    2              8
+             //    lower bound    4             12
+             //    upper bound    4             16
+
+
+private const byte TID_FLOAT = 0x0D;        //  IEEE 32-bit real     
+private const byte TID_TPREAL = 0x0E;        //  Turbo Pascal 6-byte real 
+private const byte TID_DOUBLE = 0x0F;        //  IEEE 64-bit real     
+private const byte TID_LDOUBLE = 0x10;        //  IEEE 80-bit real     
+private const byte TID_BCD4 = 0x11;        //  4 byte BCD           
+private const byte TID_BCD8 = 0x12;        //  8 byte BCD           
+private const byte TID_BCD10 = 0x13;        //  10 byte BCD          
+
+
+       // BCD COBOL
+       //                 (12 bytes)
+
+       //  Field Size          Offset
+       //___________
+
+       //          decimal point     1              5
+
+       // _____________
+
+private const byte TID_BCDCOB = 0x14;        //  COBOL BCD            
+
+
+        // Pointers(12 bytes)
+        //         Field Size          Offset
+
+        //         extra info        1              7
+        //         pointed-to type   4              8
+
+
+private const byte TID_NEAR = 0x15;        //  Near pointer         
+private const byte TID_FAR = 0x16;        //  Far pointer          
+private const byte TID_SEG = 0x17;        //  Segment pointer      
+private const byte TID_NEAR386 = 0x18;        //  386 32-bit offset ptr
+private const byte TID_FAR386 = 0x19;        //  386 48-bit far ptr   
+
+        //C arrays(12 bytes)
+        //         Field Size          Offset
+
+        //         element type      4              8
+
+private const byte TID_CARRAY = 0x1A;        //  C array - 0 based    
+
+       //          Very large arrays
+       //                 (12 bytes)
+
+       //  Field Size          Offset
+       //          object size       2              7
+       //          element type      4              9
+
+private const byte TID_VLARRAY = 0x1B;        //  Very Large 0 based array 
+
+
+        //                   Pascal arrays
+      //                      (24 bytes)
+      //               Field Size          Offset
+      //               element type      4              8
+      //               dimension type    4             12
+
+private const byte TID_PARRAY = 0x1C;        //  Pascal array         
+
+  //              Structs and unions______________________________
+  //                      (12 bytes)
+  //               Field Size          Offset
+  //___________
+  //               members index     4              8
+
+private const byte TID_ADESC = 0x1D;        //  Basic array descriptor 
+private const byte TID_STRUCT = 0x1E;        //  Structure            
+private const byte TID_UNION = 0x1F;        //  Union 
+
+
+      //          Very large structs
+      //                  and unions
+      //                  (24 bytes)
+
+      //  Field Size          Offset
+      //           object size       2              7
+      //           members index     4              9
+
+
+private const byte TID_VLSTRUCT = 0x20;        //  Very Large Structure 
+private const byte TID_VLUNION = 0x21;        //  Very Large Union     
+
+                 // Enums(24 bytes)
+                 //Field Size      Offset
+                 //lower bound           2          12
+                 //upper bound           2          14
+                 //members index         4          16
+
+
+private const byte TID_ENUM = 0x22;        //  Enumerated range     
+
+
+//                Functions
+//                        (12 bytes)
+//                 Field Size      Offset
+//                 language              0:7       7:0
+//                 accepts var.args.    0:1       7:7
+//                 return type           4         8
+//               *) These should be read as byte:bit
+
+private const byte TID_FUNCTION = 0x23;        //  Function or procedure
+
+
+  //               Labels (12 bytes)
+
+  //               Field               Size Offset
+
+  //               near/far              1          7
+
+private const byte TID_LABEL = 0x24;            //  Goto label           
+
+
+                //Sets(12 bytes)
+
+                //Field               Size Offset
+
+                // parent type           4          8
+
+private const byte TID_SET = 0x25;        //  Pascal set 
+
+
+                //Binary files
+                //        (12 bytes)
+                // Field Size      Offset
+                // element type          4          8
+
+
+private const byte TID_TFILE = 0x26;        //  Pascal text file     
+private const byte TID_BFILE = 0x27;        //  Pascal binary file   
+
+
+               //Function prototypes
+               //         (24 bytes)
+               //  Field Size      Offset
+               //  language              0:7       7:0
+               //                                     *
+               //  accepts var.args.    0:1       7:7
+               //  return type           4         8
+               //  parameter start       2         12
+               // *) These should be read as byte:bit
+
+private const byte TID_BOOL = 0x28;        //  Pascal boolean         
+private const byte TID_PENUM = 0x29;        //  Pascal enum            
+private const byte TID_PWORD = 0x2A;        //  pword (6 byte 386 ptr) 
+private const byte TID_TBYTE = 0x2B;        //  tbyte 
+private const byte TID_FUNCPROTOTYPE = 0x2C; // Function with full parameter information.
+
+               //The language field is as follows:
+
+               //  Value     Description
+
+               //  0x0       Near C function
+               //  0x1       Near Pascal function
+               //  0x2       Unused
+               //  0x3       Unused
+               //  0x4       Far C function
+               //  0x5       Far Pascal function
+               //  0x6       Unused
+               //  0x7       Interrupt function
+
+
+
+//                 Special functions_
+//                        (24 bytes)
+//                 Field Size      Offset
+//                 language               1          7
+//                 return type            4          8
+//                 class type             4         12
+//                 virtual offset         2         16
+//                 symbol index           4         18
+//                 info bits              1         22
+
+
+    //           class type is type index of class. virtual offset
+    //           is offset into the virtual table.symbol index is
+    //           the symbol index of this method.info bits are
+    //          described in the following table.
+
+    //            Value Description
+    //             0x01  member function
+
+    //             0x02  duplicate function
+
+    //             0x04  operator function
+
+    //             0x08  internal linkage
+
+    //             0x10  Pascal function passing 'this' as last
+    //           parameter
+
+
+                 //  Special function for methods and duplicate functions. 
+private const byte TID_SPECIALFUNC = 0x2D;
+
+
+                //Classes(12 bytes)
+
+                //Field                Size Offset
+
+                // class index            4          8
+
+private const byte TID_CLASS = 0x2E;       //  Class 
+
+
+//               Member pointers(24
+//                            bytes)
+//                 Field Size      Offset
+//                 type index             4          8
+//                 class index            2         11
+
+                 /* TID's 2F , 31-32 unused */
+private const byte TID_HANDLEPTR = 0x30;    //  Handle-based pointer NOT USED
+private const byte TID_MEMBERPTR = 0x33;    //  Member pointer       
+private const byte TID_NEWMEMPTR = 0x38;     //  New style member pointer 
+
+  //             TID_MEMBERPTR
+
+  //               Field                Size Offset
+
+  //      __________
+
+  //               type index             4          8
+  //               base class index       2         12
+		//____________
+
+  //             TID_NEWMEMBERPTR
+
+  //  _________________________________
+
+  //               Field                Size Offset
+
+  //      __________
+
+  //               member ptr flags       1          7
+  //               pointer to type index  4          8
+  //               base class index       2         11
+		//____________
+
+  //             TID_HANDLEPTR
+
+  //  ____________________________________
+
+  //               Field                Size Offset
+
+  //      __________
+
+  //               extra info byte        1          7
+  //               handle string index    4          8
+  //               type index             4         12
+
+  //      ____________
+
+
+  //            Near and far______________________________
+  //             references
+  //                      (24 bytes)
+
+  //      Field Size      Offset
+  //__________
+  //               type index             4          8
+  //               class index            4         12
+		//____________
+
+private const byte TID_NREF = 0x34;        //  Near reference pointer
+private const byte TID_FREF = 0x35;        //  Far reference pointer
+
+
+private const byte TID_WORDBOOL = 0x36;       //  Pascal word boolean   
+private const byte TID_LONGBOOL = 0x37;       //  Pascal long boolean   
+private const byte TID_GLOBALHANDLE = 0x3E;   //  Windows global handle 
+private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle  
+
+
+
+
+
+        private void LoadTypeTable(LeImageReader rdr, string[] names)
+        {
+            Debug.Print($"Type table (offset: {rdr.Offset:X8}); {header.types_count:X4} entries");
+            for (int iType = 0; iType < header.types_count; ++iType)
+            {
+                byte type_id;
+                ushort type_name;
+                ushort type_size;
+                // The type records are either 8 or 16 bytes ong
+                if (!rdr.TryReadByte(out type_id) ||
+                    !rdr.TryReadLeUInt16(out type_name) ||
+                    !rdr.TryReadLeUInt16(out type_size))
+                {
+                    break;
+                }
+                Debug.Print($"  Type {names[type_name]} - {iType:X4}");
+                Debug.Print($"    type id: {type_id:X2}");
+                Debug.Print($"    size:    {type_size:X4}");
+
+                switch (type_id)
+                {
+                case 0x00:
+                default:
+                    {
+                        var b2 = rdr.ReadByte();
+                        var w = rdr.ReadLeUInt16();
+                        Debug.Print($"    {b2:X2} {w:X4}");
+                        break;
+                    }
+                case TID_SCHAR:
+                case TID_SINT:
+                case TID_SLONG:
+                case TID_SQUAD:
+                case TID_UCHAR:
+                case TID_UINT:
+                case TID_ULONG:
+                case TID_UQUAD:
+                case TID_PCHAR:
+                    {
+                        var b2 = rdr.ReadByte();
+                        var w = rdr.ReadLeUInt16();
+                        var w0 = rdr.ReadLeUInt32();
+                        var w1 = rdr.ReadLeUInt32();
+                        Debug.Print($"    {b2:X2} {w:X4} [{w0:X8} {w1:X8}]");
+                        ++iType;
+                        break;
+                    }
+                case TID_FLOAT:
+                case TID_TPREAL:
+                case TID_DOUBLE:
+                case TID_LDOUBLE:
+                case TID_BCD4:
+                case TID_BOOL:
+                case TID_TBYTE:
+                case TID_PWORD:
+                    {
+                        var b2 = rdr.ReadByte();
+                        var w = rdr.ReadLeUInt16();
+                        Debug.Print($"    {b2:X2} {w:X4}");
+                        break;
+                    }
+                case TID_NEAR:
+                    {
+                        var b2 = rdr.ReadByte();
+                        var w = rdr.ReadLeUInt16();
+                        Debug.Print($"    near ptr: {w:X4}");
+                        break;
+                    }
+                case TID_FAR:
+                    {
+                        var b2 = rdr.ReadByte();
+                        var w = rdr.ReadLeUInt16();
+                        Debug.Print($"    far ptr: {w:X4}");
+                        break;
+                    }
+                case TID_CARRAY:
+                    {
+                        var b2 = rdr.ReadByte();
+                        var w = rdr.ReadLeUInt16();
+                        Debug.Print($"    C array[]: {w:X4}");
+                        break;
+                    }
+                case TID_FUNCTION:
+                    {
+                        var b2 = rdr.ReadByte();
+                        var w = rdr.ReadLeUInt16();
+                        var lang = ClassifyFuncProgrammingLanguage(b2 & 0x7F);
+                        var varargs = (b2 & 0x80) != 0 ? " varargs" : "";
+                        Debug.Print($"    function/procedure: returns {w:X4} ({lang}{varargs})");
+                        break;
+                    }
+                case TID_LABEL:
+                    {
+                        var b2 = rdr.ReadByte();
+                        var w = rdr.ReadLeUInt16();
+                        Debug.Print($"    goto: {b2:X2} {w:X4}");
+                        break;
+                    }
+                case TID_STRUCT:
+                    {
+                        var b2 = rdr.ReadByte();
+                        var w = rdr.ReadLeUInt16();
+                        Debug.Print($"    struct: {b2:X2} {w:X4}");
+                        break;
+                    }
+                case TID_UNION:
+                    {
+                        var b2 = rdr.ReadByte();
+                        var w = rdr.ReadLeUInt16();
+                        Debug.Print($"    union: {b2:X2} {w:X4}");
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void LoadMemberTable(LeImageReader rdr, string[] names)
+        {
+            Debug.Print($"Member table (offset: {rdr.Offset:X8}); {header.members_count:X4} entries");
+            for (int i = 0; i < header.members_count; ++i)
+            {
+                byte b;
+                ushort w1;
+                ushort w2;
+                if (!rdr.TryReadByte(out b) ||
+                    !rdr.TryReadUInt16(out w1) ||
+                    !rdr.TryReadUInt16(out w2))
+                {
+                    break;
+                }
+                if ((b & 0x40) == 0x40)
+                {
+                    Debug.Print($"  {i+1:X4}: {b:X2} {w1:X4}");
+                }
+                else
+                {
+                    var name = w1 < names.Length ? names[w1] : w1.ToString("X4");
+                    Debug.Print($"  {i+1:X4}: {b:X2} {name} {w2:X4}");
+                }
+            }
+        }
+
+        private string ClassifyFuncProgrammingLanguage(int n)
+        {
+            switch (n)
+            {
+            case 0x0: return "__near __cdecl";
+            case 0x1: return "__near __pascal";
+            case 0x04: return "__far __cdecl";
+            case 0x05: return "__far __pascal";
+            case 0x07: return "__interrupt";
+            }
+            throw new ArgumentOutOfRangeException("n");
         }
 
         private string[] CreateNameIndex(long name_pool_offset)
@@ -130,24 +727,6 @@ namespace Reko.ImageLoaders.MzExe.Borland
             return index.ToArray();
         }
 
-        private void LoadSymbolTable(ImageReader rdr, string [] names)
-        {
-            var srdr = new StructureReader<symbol_record>(rdr);
-            int nSym = 0;
-            while (nSym < header.symbols_count)
-            {
-                var hsym = srdr.Read();
-                if (!hsym.HasValue)
-                    break;
-                var sym = hsym.Value;
-                var symClass = ClassifySymbol(sym.flags, names[sym.symbol_name], ref sym);
-                Debug.Print($"  Symbol:  {names[sym.symbol_name]} ({nSym})");
-                Debug.Print($"    Type:  {sym.symbol_type:X4}");
-                Debug.Print($"    Addr:  {sym.symbol_segment:X4}:{sym.symbol_offset:X4}");
-                Debug.Print($"    Flags: {symClass}");
-                ++nSym;
-            }
-        }
 
         private string ClassifySymbol(byte flags, string name, ref symbol_record sym)
         {
@@ -220,6 +799,21 @@ namespace Reko.ImageLoaders.MzExe.Borland
                 //$define SC_TAG      0x7
             }
             throw new InvalidOperationException();
+        }
+
+        private string ClassifyProgrammingLanguage(byte b)
+        {
+            switch(b & 7)
+            {
+            case 0:
+            default:
+                return "Unknown";
+            case 1: return "C";
+            case 2: return "Pascal";
+            case 3: return "Basic";
+            case 4: return "Assembly language";
+            case 5: return "C++";
+            }
         }
 
         public IDictionary<Address,ImageSymbol> LoadSymbols()
@@ -300,6 +894,107 @@ namespace Reko.ImageLoaders.MzExe.Borland
             //ushort has_valid_BP : 1;
             //ushort return_address_word_offset : 3;
         }
+        /*
+       The symbol table consists of a series of symbol
+       definitions, sorted into ascending address order,
+       with constant symbols (symbol_class == 5) at the
+       end of each section (global or module local).
+
+       Note also that globals are all static, absolute,
+       or typedefs.
+
+       No register globals are generated by Borland compilers at this time.
+
+       symbol_name is the index of the symbol name.
+
+       symbol_type is the index of the symbol type.
+
+       symbol_offset is interpreted according to the
+       symbol_class field.
+
+       symbol_segment is the segment part of the symbol
+       address for static symbols.
+
+       For new .EXE files, the top two bits of
+       symbol_segment are used to provide information
+       about symbols in DLLs as follows: If
+       SR_SS_DllEntry bit is non-zero, then
+       SR_SS_OrdinalFlag determines whether or not the
+       SR_SS_Ordinal field of symbol_segment is an
+       ordinal value or not.
+
+       For DLLs, symbol_offset is the name index of the
+       module and symbol_name is name index of the DLL's
+       entry point.
+
+       symbol_class is one of the following:
+       _________________________________________________
+
+         Value    Symbol class
+
+         0x0      Static, offset and segment give the
+                  address.
+
+         0x1      Absolute symbol. The segment and
+                  offset is the absolute address of the
+                  symbol.
+
+         0x2      Auto, offset is treated as signed,
+                  relative to BP.
+
+         0x3      Pascal var parameter. The offset is BP
+                  relative and is the location of the
+                  far pointer to the parameter.
+
+         0x4      Register. Offset is a register ID as
+                  follows:
+
+             0x00  AX       0x0A  DL      0x14  FS      0x20  ST(0)
+             0x01  CX       0x0B  BL      0x15  GS      0x21  ST(1)
+             0x02  DX       0x0C  AH      0x18  EAX     0x22  ST(2)
+             0x03  BX       0x0D  CH      0x19  ECX     0x23  ST(3)
+             0x04  SP       0x0E  DH      0x1A  EDX     0x24  ST(4)
+             0x05  BP       0x0F  BH      0x1B  EBX     0x25  ST(5)
+             0x06  SI       0x10  ES      0x1C  ESP     0x26  ST(6)
+             0x07  DI       0x11  CS      0x1D  EBP     0x27  ST(7)
+             0x08  AL       0x12  SS      0x1E  ESI
+             0x09  CL       0x13  DS      0x1F  EDI
+
+         0x5      Constant. Up to 4-byte constant stored
+                  in offset/segment.
+
+         0x6      Typedef. The offset field is ignored.
+
+         0x7      Structure/Union/Enum Tag. The offset
+                  is a type index.
+    ______________________
+
+$define SC_STATIC   0x0
+$define SC_ABSOLUTE 0x1
+$define SC_AUTO     0x2
+$define SC_PASVAR   0x3
+$define SC_REGISTER 0x4
+
+$define SC_CONST    0x5
+$define SC_TYPEDEF  0x6
+$define SC_TAG      0x7
+
+$define SR_SS_DllEntry     0x8000  //  symbol is a dll entry   
+$define SR_SS_OrdinalFlag  0x4000  //  segment is ordinal value 
+$define SR_SS_Ordinal      0x3fff  //  mask to obtain ordinal value 
+
+
+       The has_valid_BP field is defined for functions
+       only. If the bit is zero, the function does not
+       set up a BP stack frame, if the value is one then
+       a valid BP is set up.
+
+       The return_address_word_offset field contains the
+       offset in words from BP where the return address
+       can be found if the has_valid_BP field is not
+       zero. The size of the return address is
+       determined from the function type.
+ */
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         [Endian(Endianness.LittleEndian)]
@@ -326,107 +1021,176 @@ namespace Reko.ImageLoaders.MzExe.Borland
             public uint time_stamp;
         }
 
+        [StructLayout(LayoutKind.Sequential, Pack = 2)]
+        [Endian(Endianness.LittleEndian)]
+        struct line_number
+        {
+            public ushort line_number_value;
+            public ushort line_number_offset;
+        }
+
         /*
-               The symbol table consists of a series of symbol
-               definitions, sorted into ascending address order,
-               with constant symbols (symbol_class == 5) at the
-               end of each section (global or module local).
+        line_number_value is the module line number.
 
-               Note also that globals are all static, absolute,
-               or typedefs.
-
-               No register globals are generated by Borland compilers at this time.
-
-               symbol_name is the index of the symbol name.
-
-               symbol_type is the index of the symbol type.
-
-               symbol_offset is interpreted according to the
-               symbol_class field.
-
-               symbol_segment is the segment part of the symbol
-               address for static symbols.
-                
-               For new .EXE files, the top two bits of
-               symbol_segment are used to provide information
-               about symbols in DLLs as follows: If
-               SR_SS_DllEntry bit is non-zero, then
-               SR_SS_OrdinalFlag determines whether or not the
-               SR_SS_Ordinal field of symbol_segment is an
-               ordinal value or not.
-
-               For DLLs, symbol_offset is the name index of the
-               module and symbol_name is name index of the DLL's
-               entry point.
-
-               symbol_class is one of the following:
-               _________________________________________________
-
-                 Value    Symbol class
-
-                 0x0      Static, offset and segment give the
-                          address.
-
-                 0x1      Absolute symbol. The segment and
-                          offset is the absolute address of the
-                          symbol.
-
-                 0x2      Auto, offset is treated as signed,
-                          relative to BP.
-
-                 0x3      Pascal var parameter. The offset is BP
-                          relative and is the location of the
-                          far pointer to the parameter.
-
-                 0x4      Register. Offset is a register ID as
-                          follows:
-
-                     0x00  AX       0x0A  DL      0x14  FS      0x20  ST(0)
-                     0x01  CX       0x0B  BL      0x15  GS      0x21  ST(1)
-                     0x02  DX       0x0C  AH      0x18  EAX     0x22  ST(2)
-                     0x03  BX       0x0D  CH      0x19  ECX     0x23  ST(3)
-                     0x04  SP       0x0E  DH      0x1A  EDX     0x24  ST(4)
-                     0x05  BP       0x0F  BH      0x1B  EBX     0x25  ST(5)
-                     0x06  SI       0x10  ES      0x1C  ESP     0x26  ST(6)
-                     0x07  DI       0x11  CS      0x1D  EBP     0x27  ST(7)
-                     0x08  AL       0x12  SS      0x1E  ESI
-                     0x09  CL       0x13  DS      0x1F  EDI
-
-                 0x5      Constant. Up to 4-byte constant stored
-                          in offset/segment.
-
-                 0x6      Typedef. The offset field is ignored.
-
-                 0x7      Structure/Union/Enum Tag. The offset
-                          is a type index.
-			______________________
-
-$define SC_STATIC   0x0
-$define SC_ABSOLUTE 0x1
-$define SC_AUTO     0x2
-$define SC_PASVAR   0x3
-$define SC_REGISTER 0x4
-
-$define SC_CONST    0x5
-$define SC_TYPEDEF  0x6
-$define SC_TAG      0x7
-
-$define SR_SS_DllEntry     0x8000  //  symbol is a dll entry   
-$define SR_SS_OrdinalFlag  0x4000  //  segment is ordinal value 
-$define SR_SS_Ordinal      0x3fff  //  mask to obtain ordinal value 
+        line_number_offset is the offset of the line
+        number relative to the segment value stored in
+        the segment record referred to in the active
+        correlation record.
 
 
-               The has_valid_BP field is defined for functions
-               only. If the bit is zero, the function does not
-               set up a BP stack frame, if the value is one then
-               a valid BP is set up.
+        Only unique offsets have line numbers stored.
+        When a statement spans several lines, there can
+        be two line records with the same offset, but
+        different line numbers.
+        */
 
-               The return_address_word_offset field contains the
-               offset in words from BP where the return address
-               can be found if the has_valid_BP field is not
-               zero. The size of the return address is
-               determined from the function type.
-         */
+        [StructLayout(LayoutKind.Sequential, Pack = 2)]
+        [Endian(Endianness.LittleEndian)]
+        struct scope_record
+        {
+            public ushort autos_index;
+            public ushort autos_count;
+            public ushort parent_scope;
+            public ushort function_symbol;
+            public ushort scope_offset;
+            public ushort scope_length;
+        }
+
+        /*
+        autos_index and autos_count define the symbol
+               table area containing this scope's symbols. The
+               auto_start is the index into the symbols table of
+               the first variable local to the scope.
+
+               parent_scope is the index of the scope within the
+               current module of the immediate enclosing scope.
+
+               scope_offset and scope_length defines the ranges
+               of code addresses the scope is valid for. The
+               segment is that stored in the segment record
+               referred to in the active correlation record.
+
+               To handle nested units in pascal, there is a set
+               of scopes at the beginning of the scopes table
+               with a function_symbol of 0xffff. There is a
+               one-to-one correspondence between these and the
+               module (unit) records. These are the "unit
+               scopes." The symbols that the record points to
+               are the interfaced symbols of the unit.
+
+               The "uses scope" record has a function_parent of
+               0xfffe to establish the correct linking between
+               the unit scope records. It does not contain
+               information about the scope's symbols. Instead,
+               autos_index is an index to the unit scope record
+               that refers to the interfaced symbols. To look up
+               a name, the scopes are traced using the
+               scope_parent records, but the symbols are
+               accessed by referring to the corresponding unit
+               scope record.
+
+*/
+
+
+        /*
+               line_number_value is the module line number.
+
+               line_number_offset is the offset of the line
+               number relative to the segment value stored in
+               the segment record referred to in the active
+               correlation record.
+
+               Only unique offsets have line numbers stored.
+               When a statement spans several lines, there can
+               be two line records with the same offset, but
+               different line numbers.
+
+               The line number records are address sorted; they
+               are not necessarily line-number ordered.
+               */
+
+
+        [StructLayout(LayoutKind.Sequential, Pack = 2)]
+        [Endian(Endianness.LittleEndian)]
+        struct segment_record
+        {
+           public ushort mod_index;
+           public ushort code_segment;
+           public ushort code_offset;
+           public ushort code_length;
+           public ushort scopes_index;
+           public ushort scopes_count;
+           public ushort correlation_index;
+           public ushort correlation_count;
+        }
+        /*
+               A segment record gives a code segment, offset,
+               and length, and relates it to a particular
+               module.It also gives an index into the scopes
+               table for the scopes defined in the segment. The
+               correlation table index and count allow the
+               segment to be related to one or more source files
+               and possibly to non-continuous groups of lines
+               inside the files.
+
+               The segment records are address-ordered by
+               segment and then by offset within the segment.
+
+               mod_index is the index of the module record for
+               the corresponding module.
+
+               code_segment is the base address of the segment
+               in the image.
+
+               code_offset is the offset from the base address
+               of the segment in the image.
+
+               code_length is the length of the segment.
+
+               scopes_index is the index of the scope record of
+               the starting scope for this segment.
+
+               scopes_count is the count of scopes for this
+               segment.
+
+               correlation_index is the index of the correlation
+               record for the starting correlation for this
+               segment.
+
+               correlation_count is the number of correlation
+               records for this segment.
+
+*/
+
+
+        [StructLayout(LayoutKind.Sequential, Pack = 2)]
+        [Endian(Endianness.LittleEndian)]
+        struct correlation_record
+        {
+           public ushort segment_index;
+           public ushort file_index;
+           public ushort lines_index;
+           public ushort lines_count;
+        }
+/*
+        Correlations link a range of line numbers in a
+        file to a particular segment record.
+
+    segment_index is the index of the segment record
+               for this correlation.
+
+               file_index is the index of the source file record
+               for this correlation.
+
+               lines_index is the index of the first line number
+               record for this correlation.
+
+               lines_count is the number of line number records
+               for this correlation.
+
+
+
+*/
 #if DOCS
                TLINK's debugging output is written at the end of
                the load image in the .EXE file. An image that
@@ -685,153 +1449,17 @@ $define MM_LARGE386     0x9
                has changed since the time of the link.
 
 
-               Line numbers
-
-                 struct  line_number
-                 {
-                   ushort  line_number_value;
-                   ushort  line_number_offset;
-                 };
-
-               line_number_value is the module line number.
-
-               line_number_offset is the offset of the line
-               number relative to the segment value stored in
-               the segment record referred to in the active
-               correlation record.
-
-               Only unique offsets have line numbers stored.
-               When a statement spans several lines, there can
-               be two line records with the same offset, but
-               different line numbers.
-
-               The line number records are address sorted; they
-               are not necessarily line-number ordered.
-
 
                Scopes
-
-                 struct  scope
-                 {
-                   uint   autos_index;
-                   ushort  autos_count;
-                   ushort  parent_scope;
-                   uint   function_symbol;
-                   ushort  scope_offset;
-                   ushort  scope_length;
-                 };
-
-               autos_index and autos_count define the symbol
-               table area containing this scope's symbols. The
-               auto_start is the index into the symbols table of
-               the first variable local to the scope.
-
-               parent_scope is the index of the scope within the
-               current module of the immediate enclosing scope.
-
-               scope_offset and scope_length defines the ranges
-               of code addresses the scope is valid for. The
-               segment is that stored in the segment record
-               referred to in the active correlation record.
-
-               To handle nested units in pascal, there is a set
-               of scopes at the beginning of the scopes table
-               with a function_symbol of 0xffff. There is a
-               one-to-one correspondence between these and the
-               module (unit) records. These are the "unit
-               scopes." The symbols that the record points to
-               are the interfaced symbols of the unit.
-
-               The "uses scope" record has a function_parent of
-               0xfffe to establish the correct linking between
-               the unit scope records. It does not contain
-               information about the scope's symbols. Instead,
-               autos_index is an index to the unit scope record
-               that refers to the interfaced symbols. To look up
-               a name, the scopes are traced using the
-               scope_parent records, but the symbols are
-               accessed by referring to the corresponding unit
-               scope record.
 
 
                Segments
 
-                 typedef struct /* segment info */
-                 {
-                   ushort  mod_index;
-                   ushort  code_segment;
-                   ushort  code_offset;
-                   ushort  code_length;
-                   ushort  scopes_index;
-                   ushort  scopes_count;
-                   ushort  correlation_index;
-                   ushort  correlation_count;
-                 } segrec;
-
-               A segment record gives a code segment, offset,
-               and length, and relates it to a particular
-               module. It also gives an index into the scopes
-               table for the scopes defined in the segment. The
-               correlation table index and count allow the
-               segment to be related to one or more source files
-               and possibly to non-continuous groups of lines
-               inside the files.
-
-               The segment records are address-ordered by
-               segment and then by offset within the segment.
-
-               mod_index is the index of the module record for
-               the corresponding module.
-
-               code_segment is the base address of the segment
-               in the image.
-
-               code_offset is the offset from the base address
-               of the segment in the image.
-
-               code_length is the length of the segment.
-
-               scopes_index is the index of the scope record of
-               the starting scope for this segment.
-
-               scopes_count is the count of scopes for this
-               segment.
-
-               correlation_index is the index of the correlation
-               record for the starting correlation for this
-               segment.
-
-               correlation_count is the number of correlation
-               records for this segment.
-
 
                Segment/source file correlations
 
-               These records link a range of line numbers in a
-               file to a particular segment record.
-
-                 typedef struct
-                 {
-                   ushort segment_index;
-                   ushort file_index;
-                   uint  lines_index;
-                   ushort lines_count;
-                 } correlation;
-
-               segment_index is the index of the segment record
-               for this correlation.
-
-               file_index is the index of the source file record
-               for this correlation.
-
-               lines_index is the index of the first line number
-               record for this correlation.
-
-               lines_count is the number of line number records
-               for this correlation.
-
-
                Types
+
 
                The type table consists of a set of 12-byte
                entries. Each type contains one or (for a few
@@ -866,347 +1494,6 @@ $define MM_LARGE386     0x9
 
                type_size is the size in bytes of the object.
                This field is present in all type records.
-
-               type_id values are
-
-$define TID_VOID        0x00        //  Unknown or no type   
-$define TID_LSTR        0x01        //  Basic Literal string 
-$define TID_DSTR        0x02        //  Basic Dynamic string 
-$define TID_PSTR        0x03        //  Pascal style string  
-
-               _________________________________________________
-                
-	       Pascal strings
-                        (12 bytes)
-			
-		 Field		Size	      Offset
-			______________
-
-                 max_size       1              7
-		________________
-
-$define TID_SCHAR       0x04        //  1 byte signed range   
-$define TID_SINT        0x05        //  2 byte signed range   
-$define TID_SLONG       0x06        //  4 byte signed range   
-$define TID_SQUAD       0x07        //  8 byte signed int     
-
-$define TID_UCHAR       0x08        //  1 byte unsigned range 
-$define TID_UINT        0x09        //  2 byte unsigned range 
-$define TID_ULONG       0x0A        //  4 byte unsigned range 
-$define TID_UQUAD       0x0B        //  8 byte unsigned int   
-
-$define TID_PCHAR       0x0C        //  Pascal character type 
-               _________________________________________________
-               
-	         Ranges (24 bytes)
-                 Field        Size          Offset
-			______________
-
-                 parent type    2              8
-                 lower bound    4             12
-                 upper bound    4             16
-		________________
-
-$define TID_FLOAT       0x0D        //  IEEE 32-bit real     
-$define TID_TPREAL      0x0E        //  Turbo Pascal 6-byte real 
-$define TID_DOUBLE      0x0F        //  IEEE 64-bit real     
-$define TID_LDOUBLE     0x10        //  IEEE 80-bit real     
-$define TID_BCD4        0x11        //  4 byte BCD           
-$define TID_BCD8        0x12        //  8 byte BCD           
-$define TID_BCD10       0x13        //  10 byte BCD          
-
-               _________________________________________________
-                
-		BCD COBOL
-                        (12 bytes)
-		 Field		Size          Offset
-			___________
-
-                 decimal point     1              5
-		_____________
-
-$define TID_BCDCOB      0x14        //  COBOL BCD            
-
-               _________________________________________________
-               
-	
-		Pointers (12 bytes)
-                 Field           Size          Offset
-			___________
-
-                 extra info        1              7
-                 pointed-to type   4              8
-		_____________
-
-$define TID_NEAR        0x15        //  Near pointer         
-$define TID_FAR         0x16        //  Far pointer          
-$define TID_SEG         0x17        //  Segment pointer      
-$define TID_NEAR386     0x18        //  386 32-bit offset ptr
-$define TID_FAR386      0x19        //  386 48-bit far ptr   
-
-               _________________________________________________
-               
-	
-		C arrays (12 bytes)
-                 Field           Size          Offset
-			___________
-
-                 element type      4              8
-		_____________
-
-$define TID_CARRAY      0x1A        //  C array - 0 based    
-
-               _________________________________________________
-                 Very large arrays
-                        (12 bytes)
-		 Field		Size          Offset
-			___________
-                 object size       2              7
-                 element type      4              9
-		_____________
-
-$define TID_VLARRAY     0x1B        //  Very Large 0 based array 
-
-
-                     Pascal arrays______________________________
-                        (24 bytes)
-                 Field           Size          Offset
-			___________
-                 element type      4              8
-                 dimension type    4             12
-		_____________
-
-$define TID_PARRAY      0x1C        //  Pascal array         
-
-                Structs and unions______________________________
-                        (12 bytes)
-                 Field           Size          Offset
-			___________
-                 members index     4              8
-		_____________
-
-$define TID_ADESC       0x1D        //  Basic array descriptor 
-$define TID_STRUCT      0x1E        //  Structure            
-$define TID_UNION       0x1F        //  Union 
-
-
-                Very large structs______________________________
-                        and unions
-                        (24 bytes)
-		Field		Size          Offset
-			___________
-                 object size       2              7
-                 members index     4              9
-		_____________
-
-$define TID_VLSTRUCT    0x20        //  Very Large Structure 
-$define TID_VLUNION     0x21        //  Very Large Union     
-
-               _________________________________________________
-                  Enums (24 bytes)
-                 Field               Size      Offset
-			___________
-                 lower bound           2          12
-                 upper bound           2          14
-                 members index         4          16
-		____________
-
-$define TID_ENUM        0x22        //  Enumerated range     
-
-
-                Functions______________________________
-                        (12 bytes)
-                 Field               Size      Offset
-			___________
-                 language              0:7       7:0
-                                                    *
-                 accepts var. args.    0:1       7:7
-                 return type           4         8
-               *
-                These should be read as byte:bit
-		________________
-
-$define TID_FUNCTION    0x23        //  Function or procedure
-
-
-                 Labels (12 bytes)______________________________
-
-                 Field               Size      Offset
-		___________
-                 near/far              1          7
-		_____________
-
-$define TID_LABEL   0x24            //  Goto label           
-
-
-                Sets (12 bytes)______________________________
-
-                 Field               Size      Offset
-		___________
-                 parent type           4          8
-		_____________
-
-$define TID_SET     0x25        //  Pascal set 
-
-
-                Binary files______________________________
-                        (12 bytes)
-                 Field               Size      Offset
-			___________
-                 element type          4          8
-		_____________
-
-$define TID_TFILE       0x26        //  Pascal text file     
-$define TID_BFILE       0x27        //  Pascal binary file   
-
-
-               Function prototypes______________________________
-                        (24 bytes)
-                 Field               Size      Offset
-			___________
-                 language              0:7       7:0
-                                                    *
-                 accepts var. args.    0:1       7:7
-                 return type           4         8
-                 parameter start       2         12
-               *
-                These should be read as byte:bit
-		________________
-
-$define TID_BOOL        0x28        //  Pascal boolean         
-$define TID_PENUM       0x29        //  Pascal enum            
-$define TID_PWORD       0x2A        //  pword (6 byte 386 ptr) 
-$define TID_TBYTE       0x2B        //  tbyte 
-$define TID_FUNCPROTOTYPE 0x2C /* Function with
-                 full parameter
-                                                    information.
-                 */
-
-               The language field is as follows:
-               _________________________________________________
-
-                 Value     Description
-		__________________________
-
-                 0x0       Near C function
-                 0x1       Near Pascal function
-                 0x2       Unused
-                 0x3       Unused
-                 0x4       Far C function
-                 0x5       Far Pascal function
-                 0x6       Unused
-                 0x7       Interrupt function
-		___________________
-
-
-                 Special functions______________________________
-                        (24 bytes)
-                 Field                Size      Offset
-			__________
-                 language               1          7
-                 return type            4          8
-                 class type             4         12
-                 virtual offset         2         16
-                 symbol index           4         18
-                 info bits              1         22
-		____________
-
-               class type is type index of class. virtual offset
-               is offset into the virtual table. symbol index is
-               the symbol index of this method. info bits are
-               described in the following table.
-               _________________________________________________
-
-                 Value Description
-		______________________________
-                 0x01  member function
-
-                 0x02  duplicate function
-
-                 0x04  operator function
-
-                 0x08  internal linkage
-
-                 0x10  Pascal function passing 'this' as last
-               parameter
-	________________________________________
-
-                 //  Special function for methods and duplicate functions. 
-$define TID_SPECIALFUNC   0x2D
-
-
-                Classes (12 bytes)______________________________
-
-                 Field                Size      Offset
-		__________
-                 class index            4          8
-		____________
-
-$define TID_CLASS        0x2E       //  Class 
-
-
-               Member pointers (24______________________________
-                            bytes)
-                 Field                Size      Offset
-			__________
-                 type index             4          8
-                 class index            2         11
-		____________
-
-                 /* TID's 2F , 31-32 unused */
-$define TID_HANDLEPTR   0x30    //  Handle-based pointer NOT USED
-$define TID_MEMBERPTR   0x33    //  Member pointer       
-$define TID_NEWMEMPTR   0x38     //  New style member pointer 
-
-               TID_MEMBERPTR____________________________________
-
-                 Field                Size      Offset
-		__________
-
-                 type index             4          8
-                 base class index       2         12
-		____________
-
-               TID_NEWMEMBERPTR
-	_________________________________
-
-                 Field                Size      Offset
-		__________
-
-                 member ptr flags       1          7
-                 pointer to type index  4          8
-                 base class index       2         11
-		____________
-
-               TID_HANDLEPTR
-	____________________________________
-
-                 Field                Size      Offset
-		__________
-
-                 extra info byte        1          7
-                 handle string index    4          8
-                 type index             4         12
-		____________
-
-
-              Near and far______________________________
-               references
-                        (24 bytes)
-		Field			Size      Offset
-			__________
-                 type index             4          8
-                 class index            4         12
-		____________
-
-$define TID_NREF        0x34        //  Near reference pointer
-$define TID_FREF        0x35        //  Far reference pointer
-
-
-$define TID_WORDBOOL     0x36       //  Pascal word boolean   
-$define TID_LONGBOOL     0x37       //  Pascal long boolean   
-$define TID_GLOBALHANDLE 0x3E       //  Windows global handle 
-$define TID_LOCALHANDLE  0x3F       //  Windows local handle  
 
                  /* These can be used to cast a type_rec pointer
                  to the appropriate
@@ -1457,9 +1744,9 @@ $define _t_memberptr(x) (((struct type_rec
                store their list of name/value pairs here.
 
                Structure and union members
-		struct struct_offset_rec
-		{
-		   unsigned    filler      : 6;
+		        struct struct_offset_rec
+		        {
+		           unsigned    filler      : 6;
                    unsigned    offset_rec  : 1;
                    unsigned    filler2     : 1;
                    uint   new_offset;
