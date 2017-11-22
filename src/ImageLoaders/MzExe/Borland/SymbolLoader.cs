@@ -37,11 +37,15 @@ namespace Reko.ImageLoaders.MzExe.Borland
         private byte[] rawImage;
         private debug_header_16 header;
         private long name_pool_offset;
+        private Address addrLoad;
+        private Dictionary<Address, ImageSymbol> imgSymbols;
 
-        public SymbolLoader(ExeImageLoader exeLoader, byte[] rawImage)
+        public SymbolLoader(ExeImageLoader exeLoader, byte[] rawImage, Address addrLoad)
         {
             this.exeLoader = exeLoader;
             this.rawImage = rawImage;
+            this.addrLoad = addrLoad;
+            this.imgSymbols = new Dictionary<Address, ImageSymbol>();
         }
 
         public bool LoadDebugHeader()
@@ -83,7 +87,8 @@ namespace Reko.ImageLoaders.MzExe.Borland
                 return false;
             }
             name_pool_offset += rdr.Offset;
-            LoadSymbolTable(rdr);
+            var idx = CreateNameIndex(name_pool_offset);
+            LoadSymbolTable(rdr, idx);
                //Module Table
                //Source File Table
                //Scopes Table
@@ -107,37 +112,119 @@ namespace Reko.ImageLoaders.MzExe.Borland
             return true;
         }
 
-        private void LoadSymbolTable(ImageReader rdr)
+        private string[] CreateNameIndex(long name_pool_offset)
+        {
+            var index = new List<string> { "" };    // index 0 = empty string.
+            var iStart = (int) name_pool_offset;
+            while (iStart < rawImage.Length)
+            {
+                var iEnd = iStart;
+                while (iEnd < rawImage.Length && rawImage[iEnd] != 0)
+                {
+                    ++iEnd;
+                }
+                var s = Encoding.ASCII.GetString(rawImage, iStart, iEnd - iStart);
+                index.Add(s);
+                iStart = iEnd + 1;
+            }
+            return index.ToArray();
+        }
+
+        private void LoadSymbolTable(ImageReader rdr, string [] names)
         {
             var srdr = new StructureReader<symbol_record>(rdr);
-            for (;;)
+            int nSym = 0;
+            while (nSym < header.symbols_count)
             {
-                var sym = srdr.Read();
-                if (!sym.HasValue)
+                var hsym = srdr.Read();
+                if (!hsym.HasValue)
                     break;
-                Debug.Print($"  Symbol:  {ReadName(sym.Value.symbol_name)} ({sym.Value.symbol_name:X4})");
-                Debug.Print($"    Type:  {sym.Value.symbol_type:X4}");
-                Debug.Print($"    Addr:  {sym.Value.symbol_segment:X4}:{sym.Value.symbol_offset:X4}");
-                Debug.Print($"    Types: {sym.Value.flags:X2}");
+                var sym = hsym.Value;
+                var symClass = ClassifySymbol(sym.flags, names[sym.symbol_name], ref sym);
+                Debug.Print($"  Symbol:  {names[sym.symbol_name]} ({nSym})");
+                Debug.Print($"    Type:  {sym.symbol_type:X4}");
+                Debug.Print($"    Addr:  {sym.symbol_segment:X4}:{sym.symbol_offset:X4}");
+                Debug.Print($"    Flags: {symClass}");
+                ++nSym;
             }
         }
 
-        private string ReadName(int offset)
+        private string ClassifySymbol(byte flags, string name, ref symbol_record sym)
         {
-            int iStart = (int)(name_pool_offset + offset);
-            int iEnd = iStart;
-            while (iEnd < rawImage.Length && rawImage[iEnd] != 0)
+            switch (flags & 0x07)
             {
-                ++iEnd;
+            case 0x00:
+                // Static, offset and segment give the address.
+                sym.symbol_segment += addrLoad.Selector.Value;
+                if (!name.Contains('@'))
+                {
+                    var imgSymbol = new ImageSymbol(Address.SegPtr(sym.symbol_segment, sym.symbol_offset))
+                    {
+                        Name = name,
+                    };
+                    this.imgSymbols[imgSymbol.Address] = imgSymbol;
+                }
+                return "Static";
+            case 0x01:
+                // Absolute symbol. The segment and offset is the absolute
+                // address of the symbol.
+                return "Absolute";
+            case 0x02:
+                // Auto, offset is treated as signed, relative to BP.
+                return "Auto";
+            case 0x03:
+                // Pascal var parameter. The offset is BP relative and is the
+                // location of the far pointer to the parameter.
+                return "PasVar";
+            case 0x04:
+                // Register. Offset is a register ID as follows:
+                /*
+                     0x00  AX       0x0A  DL      0x14  FS      0x20  ST(0)
+
+                     0x01  CX       0x0B  BL      0x15  GS      0x21  ST(1)
+
+                     0x02  DX       0x0C  AH      0x18  EA      0x22  ST(2)X
+
+                     0x03  BX       0x0D  CH      0x19  EC      0x23  ST(3)X
+
+                     0x04  SP       0x0E  DH      0x1A  ED      0x24  ST(4)X
+
+                     0x05  BP       0x0F  BH      0x1B  EB      0x25  ST(5)X
+
+                     0x06  SI       0x10  ES      0x1C  ES      0x26  ST(6)P
+
+                     0x07  DI       0x11  CS      0x1D  EB      0x27  ST(7)P
+
+                     0x08  AL       0x12  SS      0x1E  ESI
+
+                     0x09  CL       0x13  DS      0x1F  EDI
+                     */
+                return "Register";
+            case 0x05:
+                // Constant.Up to 4 - byte constant stored in offset / segment.
+                return "Const";
+            case 0x06:
+                // Typedef. The offset field is ignored.
+                return "Typedef";
+            case 0x7:
+                // Structure / Union / Enum Tag.The offset is a type index.
+                return "TypeTag";
+                //$define SC_STATIC   0x0
+                //$define SC_ABSOLUTE 0x1
+                //$define SC_AUTO     0x2
+                //$define SC_PASVAR   0x3
+                //$define SC_REGISTER 0x4
+
+                //$define SC_CONST    0x5
+                //$define SC_TYPEDEF  0x6
+                //$define SC_TAG      0x7
             }
-            if (iStart == iEnd)
-                return "";
-            return Encoding.ASCII.GetString(rawImage, iStart, iEnd - iStart);
+            throw new InvalidOperationException();
         }
 
         public IDictionary<Address,ImageSymbol> LoadSymbols()
         {
-            return new SortedList<Address, ImageSymbol>();
+            return imgSymbols;
         }
 
 
