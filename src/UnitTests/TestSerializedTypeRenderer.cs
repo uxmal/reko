@@ -59,6 +59,9 @@ namespace Reko.UnitTests
             case Domain.None:
                 sb.Append("void");
                 break;
+            case Domain.Boolean:
+                sb.Append("bool");
+                break;
             case Domain.SignedInt:
                 switch (primitive.ByteSize)
                 {
