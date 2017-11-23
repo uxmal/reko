@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void SparcRw_taddcc()
         {
             BuildTest(0x8B006001);
@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void SparcRw_mulscc()
         {
             host.Stub(h => h.PseudoProcedure(

@@ -38,6 +38,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
         private string sExp;
         private readonly string nl = Environment.NewLine;
 
+        [SetUp]
         public void Setup()
         {
             this.llir = null;
