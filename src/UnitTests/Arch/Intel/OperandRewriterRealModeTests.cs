@@ -39,7 +39,8 @@ namespace Reko.UnitTests.Arch.Intel
 		private Procedure proc;
         private X86Instruction instr;
 
-		[TestFixtureSetUp]
+//		[OneTimeSetup]
+        [TestFixtureSetUp]
 		public void Setup()
 		{
 			arch = new X86ArchitectureReal();

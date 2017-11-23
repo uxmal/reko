@@ -33,6 +33,7 @@ namespace Reko.UnitTests.Arch.Intel
 	{
 		private DeadConditionFlagsFinder dcff;
 
+//		[OneTimeSetup]
 		[TestFixtureSetUp]
 		public void Setup()
 		{

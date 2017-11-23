@@ -45,7 +45,8 @@ namespace Reko.UnitTests.Arch.Intel
 		{
 		}
 
-		[TestFixtureSetUp]
+//		[OneTimeSetup]
+        [TestFixtureSetUp]
 		public void GlobalSetup()
 		{
 			arch = new X86ArchitectureFlat32();

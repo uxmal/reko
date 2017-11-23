@@ -370,7 +370,7 @@ namespace Reko.UnitTests.Environments.SysV
         }
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void Gmnp_Regression4()
         {
             RunTest(
@@ -382,7 +382,7 @@ namespace Reko.UnitTests.Environments.SysV
         }
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void Gmnp_Substitutions()
         {
             RunTest(
