@@ -12292,31 +12292,7 @@ byte fn0800_8F7F(byte al, selector ds, segptr32 ptrArg02)
 // 0800:8F97: void fn0800_8F97(Register word16 ax, Register word16 dx, Register word16 bx, Register word16 di, Register selector ds)
 void fn0800_8F97(word16 ax, word16 dx, word16 bx, word16 di, selector ds)
 {
-	mp16 fp;
-	word16 bp;
-	word16 si;
-	word16 di;
-	selector es;
-	word16 ax;
-	word16 dx;
-	word16 bx;
-	selector ds;
-	sp_1 = fp;
-	sp_2 = fp - 0x02;
-	wLoc02_4 = bp;
-	bp_5 = fp - 0x02;
-	sp_6 = fp - 44;
-	SCZO_7 = cond(fp - 44);
-	sp_8 = fp - 0x2E;
-	wLoc2E_10 = si;
-	sp_11 = fp - 0x30;
-	wLoc30_13 = di;
-	wLoc06_14 = 0x00;
-	wLoc08_15 = 0x00;
-	sp_16 = fp - 0x32;
-	wLoc32_18 = es;
-	D_19 = false;
-	fn0800_9107(ax, dx, bx, bp_5, di, ds);
+	fn0800_9107(ax, dx, bx, fp - 0x02, di, ds);
 	return;
 }
 
@@ -13024,17 +13000,25 @@ word16 fn0800_93A6(word16 bp, ptr16 & bpOut)
 // 0800:93BE: Register word16 fn0800_93BE(Register word16 bp, Stack selector psegArg00, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 bpOut)
 word16 fn0800_93BE(word16 bp, selector psegArg00, word16 wArg02, word16 wArg04, ptr16 & bpOut)
 {
-	sp = fp;
-	es = psegArg00;
-	sp = fp + 0x02;
-	ax = Mem0[ss:bp - 0x04 + 0x00:word16];
-	di = wArg02;
-	sp = fp + 0x04;
-	si = wArg04;
-	sp = bp;
-	bp = Mem0[ss:sp + 0x00:word16];
-	sp = sp + 0x02;
-	return ax;
+	mp16 fp;
+	selector psegArg00;
+	selector ss;
+	word16 bp;
+	<type-error> Mem0;
+	word16 wArg02;
+	word16 wArg04;
+	ptr16 bpOut;
+	sp_1 = fp;
+	es_3 = psegArg00;
+	sp_4 = fp + 0x02;
+	ax_8 = Mem0[ss:bp - 0x04 + 0x00:word16];
+	di_10 = wArg02;
+	sp_11 = fp + 0x04;
+	si_13 = wArg04;
+	sp_14 = bp;
+	bp_15 = Mem0[ss:sp_14 + 0x00:word16];
+	sp_16 = sp_14 + 0x02;
+	return ax_8;
 }
 
 // 0800:93C5: Register word16 fn0800_93C5(Register word16 ax, Register word16 bp, Register selector ds, Register out ptr16 bpOut)
