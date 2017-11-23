@@ -33,6 +33,9 @@ namespace Reko.UnitTests.Arch.Intel
 	{
 		private DeadConditionFlagsFinder dcff;
 
+        // Once the project has been ported to use NUnit 3.0, remove this comment and uncomment the line containing "[OneTimeSetup]" and remove the line containing "[TestFixtureSetUp]".
+        // 
+        // [OneTimeSetUp]
 		[TestFixtureSetUp]
 		public void Setup()
 		{

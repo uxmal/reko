@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore()]
+        [Ignore("")]
         public void Dfa2_Simple()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
@@ -88,7 +88,7 @@ test_exit:
         }
 
         [Test]
-        [Ignore()]
+        [Ignore("")]
         public void Dfa2_StackArgs()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
@@ -177,7 +177,7 @@ test_exit:
         }
 
         [Test]
-        [Ignore()]
+        [Ignore("")]
         public void Dfa2_FactorialReg()
         {
             var program = Factorial.BuildSample();

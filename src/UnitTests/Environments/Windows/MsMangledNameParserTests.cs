@@ -247,7 +247,7 @@ namespace Reko.UnitTests.Environments.Windows
         }
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void PMNP_regression7()
         {
             RunTest(
