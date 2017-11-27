@@ -86,6 +86,9 @@
   <ItemGroup>
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
+    <Compile Include="Arch\Microchip\BitsFieldsTest.cs" />
+    <Compile Include="Arch\Microchip\ConvUtilsTests.cs" />
+    <Compile Include="Arch\Microchip\CrownkingTests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
@@ -720,6 +723,10 @@
       <Project>{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}</Project>
       <Name>MacOS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\Microchip\Microchip.Crowning\Microchip.Crownking.csproj">
+      <Project>{9b13fbce-ec34-495b-b464-c80ff86e61e0}</Project>
+      <Name>Microchip.Crownking</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\Msdos\Msdos.csproj">
       <Project>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</Project>
       <Name>Msdos</Name>
@@ -775,6 +782,10 @@
     <ProjectReference Include="..\Libraries\Libc\Libc.csproj">
       <Project>{fdaf4ca9-085c-473e-bcb5-0d2a4354a949}</Project>
       <Name>Libc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
+      <Project>{45e095e9-d7c2-40aa-913b-ab77582afbb4}</Project>
+      <Name>Microchip.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Python\Python.csproj">
       <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>

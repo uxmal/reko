@@ -152,9 +152,10 @@
       <Project>{fdaf4ca9-085c-473e-bcb5-0d2a4354a949}</Project>
       <Name>Libc</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\tools\c2xml\c2xml.csproj">
+    <ProjectReference Include="..\..\tools\c2xml\C2Xml.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Project>{500C7C4B-5B7A-40E0-BEED-75DDF1BA78D5}</Project>
+      <Name>C2Xml</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

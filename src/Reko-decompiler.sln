@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DEF8CEB8-51B6-4D65-8F5B-35C5931E30E7}"
 	ProjectSection(SolutionItems) = preProject
@@ -413,6 +413,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtariTOS", "Environments\AtariTOS\AtariTOS.csproj", "{73E8B629-F836-4CA6-B003-DAE0809B8A7A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha", "Arch\Alpha\Alpha.csproj", "{C4C56725-BFD0-405A-802C-2C66FCD0EF06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microchip", "Arch\Microchip\Microchip.csproj", "{A959C1A2-A622-4600-81AD-29E08545B2F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microchip.Crownking", "Environments\Microchip\Microchip.Crowning\Microchip.Crownking.csproj", "{9B13FBCE-EC34-495B-B464-C80FF86E61E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microchip.Utils", "Libraries\Microchip\Utils\Microchip.Utils.csproj", "{45E095E9-D7C2-40AA-913B-AB77582AFBB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2298,6 +2304,96 @@ Global
 		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.TravisRelease|Win32.Build.0 = Release|Any CPU
 		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.TravisRelease|x86.ActiveCfg = Release|Any CPU
 		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Debug|.NET.Build.0 = Debug|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Debug|Win32.Build.0 = Debug|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Debug|x86.Build.0 = Debug|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Release|.NET.ActiveCfg = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Release|.NET.Build.0 = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Release|Win32.ActiveCfg = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Release|Win32.Build.0 = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Release|x86.ActiveCfg = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.Release|x86.Build.0 = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.TravisRelease|.NET.ActiveCfg = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.TravisRelease|.NET.Build.0 = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.TravisRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.TravisRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.TravisRelease|Win32.ActiveCfg = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.TravisRelease|Win32.Build.0 = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.TravisRelease|x86.ActiveCfg = Release|Any CPU
+		{A959C1A2-A622-4600-81AD-29E08545B2F7}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Debug|.NET.Build.0 = Debug|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Debug|Win32.Build.0 = Debug|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Debug|x86.Build.0 = Debug|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Release|.NET.ActiveCfg = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Release|.NET.Build.0 = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Release|Win32.Build.0 = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Release|x86.ActiveCfg = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.Release|x86.Build.0 = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.TravisRelease|.NET.ActiveCfg = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.TravisRelease|.NET.Build.0 = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.TravisRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.TravisRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.TravisRelease|Win32.ActiveCfg = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.TravisRelease|Win32.Build.0 = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.TravisRelease|x86.ActiveCfg = Release|Any CPU
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Debug|.NET.Build.0 = Debug|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Debug|Win32.Build.0 = Debug|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Debug|x86.Build.0 = Debug|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Release|.NET.ActiveCfg = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Release|.NET.Build.0 = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Release|Win32.ActiveCfg = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Release|Win32.Build.0 = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Release|x86.ActiveCfg = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.Release|x86.Build.0 = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.TravisRelease|.NET.ActiveCfg = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.TravisRelease|.NET.Build.0 = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.TravisRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.TravisRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.TravisRelease|Win32.ActiveCfg = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.TravisRelease|Win32.Build.0 = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.TravisRelease|x86.ActiveCfg = Release|Any CPU
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.TravisRelease|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2371,6 +2467,12 @@ Global
 		{1E57924E-B623-4894-8E3A-87E3E99E2303} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 		{73E8B629-F836-4CA6-B003-DAE0809B8A7A} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 		{C4C56725-BFD0-405A-802C-2C66FCD0EF06} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
+		{A959C1A2-A622-4600-81AD-29E08545B2F7} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
+		{9B13FBCE-EC34-495B-B464-C80FF86E61E0} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
+		{45E095E9-D7C2-40AA-913B-AB77582AFBB4} = {D35CD07C-C6BE-467D-B50D-EE9EDCC74D4E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8B012B36-B0A2-4412-A22A-023C9B7C2EDD}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Drivers\MonoDecompiler\MonoDecompiler.csproj
