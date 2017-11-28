@@ -117,7 +117,7 @@ namespace Reko.Gui
         IDictionary<string, UiStyle> Styles { get; }
 
         Size WindowSize { get; set; }
-        FormWindowState WindowState { get; set; }
+        Forms.FormWindowState WindowState { get; set; }
 
         void Load();
         void Save();
@@ -229,7 +229,7 @@ namespace Reko.Gui
         public Size WindowSize { get; set; }
 
         [Browsable(false)]
-        public FormWindowState WindowState { get; set; }
+        public Forms.FormWindowState WindowState { get; set; }
 
         public void Load()
         {
@@ -279,7 +279,7 @@ namespace Reko.Gui
             SetStyle(UiStyles.List);
 
             this.WindowSize = ConvertFrom<Size>(sizeCvt, (string)settingsSvc.Get("WindowSize", null));
-            this.WindowState = ConvertFrom<FormWindowState>(fwsCvt, (string) settingsSvc.Get("WindowState", "Normal"));
+            this.WindowState = ConvertFrom<Forms.FormWindowState>(fwsCvt, (string) settingsSvc.Get("WindowState", "Normal"));
 
             UiPreferencesChanged.Fire(this);
         }

@@ -179,13 +179,11 @@ namespace Reko.Gui.Forms
             var fsSvc = svcFactory.CreateFileSystemService();
             sc.AddService<IFileSystemService>(fsSvc);
 
-            this.searchResultsTabControl = svcFactory.CreateTabControlHost();
-            sc.AddService<ITabControlHostService>(this.searchResultsTabControl);
-
             srSvc = svcFactory.CreateSearchResultService();
             sc.AddService<ISearchResultService>(srSvc);
-            searchResultsTabControl.Attach((IWindowPane) srSvc, form.FindResultsPage);
-            searchResultsTabControl.Attach((IWindowPane) diagnosticsSvc, form.DiagnosticsPage);
+
+            this.searchResultsTabControl = svcFactory.CreateTabControlHost();
+            sc.AddService<ITabControlHostService>(this.searchResultsTabControl);
 
             var resEditService = svcFactory.CreateResourceEditorService();
             sc.AddService<IResourceEditorService>(resEditService);

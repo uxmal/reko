@@ -161,6 +161,12 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             get { return listDiagnostics; }
         }
 
+        public new Gui.Forms.FormWindowState WindowState
+        {
+            get { return (Gui.Forms.FormWindowState)base.WindowState;  }
+            set { base.WindowState = (System.Windows.Forms.FormWindowState) value;  }
+        }
+
         public ITreeView ProjectBrowser { get; set; }
 
         public OpenFileDialog OpenFileDialog

@@ -135,7 +135,13 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public ITabControlHostService CreateTabControlHost()
         {
-            return new TabControlHost(services, mainForm.TabControl);
+            var srSvc = services.RequireService<ISearchResultService>();
+            var diagnosticsSvc = services.RequireService<IDiagnosticsService>();
+            var tchSvc = new TabControlHost(services, mainForm.TabControl);
+            tchSvc.Attach((IWindowPane)srSvc, mainForm.FindResultsPage);
+            tchSvc.Attach((IWindowPane)diagnosticsSvc, mainForm.DiagnosticsPage);
+
+            return tchSvc;
         }
 
         public IUiPreferencesService CreateUiPreferencesService()

@@ -34,7 +34,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
 using System.Xml;
 using System.Text;
 using Reko.UserInterfaces.WindowsForms.Forms;
@@ -516,7 +515,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
-        private class TestForm : Form, IWindowFrame
+        private class TestForm : System.Windows.Forms.Form, IWindowFrame
         {
             public IWindowPane Pane { get; private set; }
             public string Title { get { return Text; } set { Text = value; } }
@@ -584,15 +583,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             brSvc.Stub(b => b.Clear());
 
             form = mr.StrictMock<IMainForm>();
-            var tabResults = new TabPage();
-            var tabDiagnostics = new TabPage();
             form.Stub(f => f.Dispose());
-            form.Stub(f => f.FindResultsPage).Return(tabResults);
-            form.Stub(f => f.DiagnosticsPage).Return(tabDiagnostics);
             form.Stub(f => f.UpdateToolbarState());
             form.Closed += null;
             LastCall.IgnoreArguments();
-            tcHostSvc.Stub(t => t.Attach(Arg<IWindowPane>.Is.NotNull, Arg<TabPage>.Is.NotNull));
             tcHostSvc.Stub(t => t.QueryStatus(
                 Arg<CommandID>.Is.Anything,
                 Arg<CommandStatus>.Is.Anything,
@@ -602,7 +596,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             uiSvc.Stub(u => u.DocumentWindows).Return(new List<IWindowFrame>());
             brSvc.Stub(u => u.ContainsFocus).Return(false);
             tcHostSvc.Stub(u => u.ContainsFocus).Return(false);
-
         }
 
         private void Expect_RestoreWindowSize()

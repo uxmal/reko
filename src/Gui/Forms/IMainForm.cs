@@ -22,7 +22,6 @@ using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Windows.Forms;
 
 namespace Reko.Gui.Forms
 {
@@ -40,9 +39,6 @@ namespace Reko.Gui.Forms
         string TitleText { get; set; }
         System.Drawing.Size Size { get; set; }
         FormWindowState WindowState { get; set; }
-
-        TabPage FindResultsPage { get; }
-        TabPage DiagnosticsPage { get; }
 
         void LayoutMdi(DocumentWindowLayout layout);
         

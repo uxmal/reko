@@ -131,6 +131,7 @@
     <Compile Include="Design\ProgramResourceGroupDesigner.cs" />
     <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
     <Compile Include="Forms\CallSiteInteractor.cs" />
+    <Compile Include="Forms\FormWindowState.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
     <Compile Include="Forms\IDeclarationForm.cs" />
     <Compile Include="Forms\IJumpTableDialog.cs" />
