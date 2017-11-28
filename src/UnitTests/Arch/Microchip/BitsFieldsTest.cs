@@ -31,7 +31,7 @@ namespace Microchip.Utils
             res = ((uint)0x7FFF).SignExtend(18);
             Assert.AreEqual(0x7FFF, res, "Result differs ' 32767 / 17-bit");
             res = ((uint)0xFFFFFFFF).SignExtend(16);
-            Assert.AreEqual(-1, res, "Result differs ' 65535 / 16-bit");
+            Assert.AreEqual(-65537, res, "Result differs ' 65535 / 16-bit");
         }
 
         [Test]
@@ -187,6 +187,13 @@ namespace Microchip.Utils
         [Test]
         public void Bits_Rotate()
         {
+            Assert.AreEqual(0, 0.Signum());
+            Assert.AreEqual(1, 236570.Signum());
+            Assert.AreEqual(-1, -75632.Signum());
+            Assert.AreEqual(0, 0L.Signum());
+            Assert.AreEqual(1, 2365708835L.Signum());
+            Assert.AreEqual(-1, -7563200452L.Signum());
+
             Assert.AreEqual(0x22, (uint)0x011.RotateLeft(1));
             Assert.AreEqual(0x11, (uint)0x022.RotateRight(1));
             Assert.AreEqual(0x22, (int)0x011.RotateLeft(1));
@@ -199,20 +206,14 @@ namespace Microchip.Utils
 
             Assert.AreEqual(0x88000000, (uint)0x011.Reverse());
             Assert.AreEqual(0xE6A2C480, (uint)0x01234567.Reverse());
-            Assert.AreEqual(-38177487, 0x13579BDF.Reverse());
-            Assert.AreEqual(0x02468ACE, -324508640.Reverse());
+            Assert.AreEqual(-69604664, 0x13579BDF.Reverse());
+            Assert.AreEqual(-131721928, -324508640.Reverse());
 
-            Assert.AreEqual(0x88000000, (ulong)0x011.Reverse());
-            Assert.AreEqual(0xE6A2C480, (ulong)0x01234567.Reverse());
-            Assert.AreEqual(0xFEDCBA987654321L, 0x123456789ABCDEF0L.Reverse());
-            Assert.AreEqual(0x123456789ABCDEFL, -81985529216486896L.Reverse());
+            Assert.AreEqual(0x8800000000000000UL, 0x011UL.Reverse());
+            Assert.AreEqual(0xE6A2C48000000000UL, 0x01234567UL.Reverse());
+            Assert.AreEqual(0x0F7B3D591E6A2C48L, 0x123456789ABCDEF0L.Reverse());
+            Assert.AreEqual(-1131482754016527488, -81985529216486896L.Reverse());
 
-            Assert.AreEqual(0, 0.Signum());
-            Assert.AreEqual(1, 236570.Signum());
-            Assert.AreEqual(-1, -75632.Signum());
-            Assert.AreEqual(0, 0L.Signum());
-            Assert.AreEqual(1, 2365708835L.Signum());
-            Assert.AreEqual(-1, -7563200452L.Signum());
         }
 
         [Test]

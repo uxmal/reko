@@ -878,7 +878,8 @@ namespace Microchip.Utils
             {
                 ulong msw = Reverse((uint)((ul >> 32) & 0xFFFFFFFF));
                 ulong lsw = Reverse((uint)(ul & 0xFFFFFFFF));
-                return (lsw << 32) | msw;
+                ulong res = lsw << 32;
+                return res | msw;
             }
         }
 
