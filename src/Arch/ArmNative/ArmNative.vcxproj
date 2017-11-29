@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ArmArchitecture.h" />
     <ClInclude Include="ArmRewriter.h" />
     <ClInclude Include="reko.h" />
     <ClInclude Include="stdafx.h" />
@@ -152,6 +153,7 @@
     <ClInclude Include="types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ArmArchitecture.cpp" />
     <ClCompile Include="ArmRewriter.System.cpp" />
     <ClCompile Include="ArmNative.cpp" />
     <ClCompile Include="ArmRewriter.Alu.cpp" />
