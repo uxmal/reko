@@ -5,6 +5,7 @@
 #include "types.h"
 #include "reko.h"
 #include "ArmRewriter.h"
+#include "ArmArchitecture.h"
 
 extern "C" {
 	
@@ -19,5 +20,11 @@ extern "C" {
 			INativeRewriterHost * host)
 	{
 		return new ArmRewriter(rawBytes + offset, length - offset, address, m, typeFactory, host);
+	}
+
+	DLLEXPORT INativeArchitecture *
+		CreateNativeArchitecture(const char * archName)
+	{
+		return new ArmArchitecture();
 	}
 }
