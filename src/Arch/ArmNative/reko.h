@@ -172,6 +172,17 @@ public:
 	virtual HExpr STDAPICALLTYPE EnsurePseudoProcedure(const char *name, BaseType retType, int arity) = 0;
 
 	// Type factory methods.
+};
 
+struct NativeRegister
+{
+	char * Name;
+	int32_t Number;
+	int32_t BitSize;
+};
 
+class INativeArchitecture : public IUnknown
+{
+public:
+	virtual void STDAPICALLTYPE GetAllRegisters(int * pcRegs, const NativeRegister ** ppRegs) = 0;
 };
