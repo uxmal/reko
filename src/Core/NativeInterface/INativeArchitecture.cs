@@ -18,24 +18,28 @@
  */
 #endregion
 
-using Reko.Arch.Arm;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Arch.Arm
+namespace Reko.Core.NativeInterface
 {
-    [TestFixture]
-    public class ArmArchitectureTests
+    [StructLayout(LayoutKind.Sequential)]
+    public struct NativeRegister
     {
-        private Arm32ArchitectureNew arch;
+        public string Name;
+        public int Number;
+        public int BitSize;
+    }
 
-        [Test]
-        public void ArmArch_GetPltEntry()
-        {
-            this.arch = new Arm32ArchitectureNew();
-        }
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("09FFCC1F-60C8-4058-92C2-C90DAF115250")]
+    [ComVisible(true)]
+    public interface INativeArchitecture
+    {
+        [PreserveSig] void GetAllRegisters(out int n, out IntPtr aregs);
     }
 }

@@ -265,9 +265,12 @@
     <Compile Include="Lib\WildPatternMatcher.cs" />
     <Compile Include="NativeInterface\CustomAnsiStringMarshaler.cs" />
     <Compile Include="NativeInterface\ILibraryLoader.cs" />
+    <Compile Include="NativeInterface\INativeArchitecture.cs" />
+    <Compile Include="NativeInterface\INativeInstructionWriter.cs" />
     <Compile Include="NativeInterface\Interfaces\INativeSymbolSource.cs" />
     <Compile Include="NativeInterface\Interfaces\NativeProcessorArchitectureProvider.cs" />
     <Compile Include="NativeInterface\Interfaces\NativeSymbolSourceProvider.cs" />
+    <Compile Include="NativeInterface\NativeMachineInstruction.cs" />
     <Compile Include="NativeInterface\NativeProcessorArchitecture.cs" />
     <Compile Include="NativeInterface\NativeSymbolSource.cs" />
     <Compile Include="NativeInterface\PosixLibraryLoader.cs" />

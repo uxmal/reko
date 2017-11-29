@@ -18,24 +18,15 @@
  */
 #endregion
 
-using Reko.Arch.Arm;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Arch.Arm
+namespace Reko.Core.NativeInterface
 {
-    [TestFixture]
-    public class ArmArchitectureTests
+    public interface INativeInstructionWriter
     {
-        private Arm32ArchitectureNew arch;
-
-        [Test]
-        public void ArmArch_GetPltEntry()
-        {
-            this.arch = new Arm32ArchitectureNew();
-        }
     }
 }

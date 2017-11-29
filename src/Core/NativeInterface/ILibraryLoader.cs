@@ -11,5 +11,5 @@ namespace Reko.Core.NativeInterface
 		IntPtr LoadLibrary(string libPath);
 		int Unload(IntPtr handle);
 		IntPtr GetSymbol(IntPtr handle, string symName);
-	}
+    }
 }
