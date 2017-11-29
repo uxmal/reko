@@ -359,6 +359,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Python", "Libraries\Python\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Symbols", "Symbols", "{EF16C5BE-595C-4A9F-9CA6-028D993661E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LGSymLoader", "Symbols\LGSymLoader\LGSymLoader.csproj", "{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -2662,6 +2664,42 @@ Global
 		{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96}.TravisRelease|x64.Build.0 = TravisRelease|Any CPU
 		{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96}.TravisRelease|x86.ActiveCfg = Release|Any CPU
 		{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Debug|.NET.Build.0 = Debug|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Debug|Win32.Build.0 = Debug|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Debug|x64.Build.0 = Debug|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Debug|x86.Build.0 = Debug|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Release|.NET.ActiveCfg = Release|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Release|.NET.Build.0 = Release|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Release|Win32.Build.0 = Release|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Release|x64.ActiveCfg = Release|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Release|x64.Build.0 = Release|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Release|x86.ActiveCfg = Release|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.Release|x86.Build.0 = Release|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|.NET.ActiveCfg = TravisRelease|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|.NET.Build.0 = TravisRelease|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|Any CPU.ActiveCfg = TravisRelease|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|Any CPU.Build.0 = TravisRelease|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|Mixed Platforms.ActiveCfg = TravisRelease|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|Mixed Platforms.Build.0 = TravisRelease|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|Win32.ActiveCfg = TravisRelease|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|Win32.Build.0 = TravisRelease|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|x64.ActiveCfg = TravisRelease|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|x64.Build.0 = TravisRelease|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|x86.ActiveCfg = TravisRelease|Any CPU
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|x86.Build.0 = TravisRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2735,6 +2773,7 @@ Global
 		{0D35C524-CA16-4C68-80CD-538897144B47} = {583D1273-7630-480B-9020-D16B3A15D15D}
 		{FDAF4CA9-085C-473E-BCB5-0D2A4354A949} = {D35CD07C-C6BE-467D-B50D-EE9EDCC74D4E}
 		{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96} = {D35CD07C-C6BE-467D-B50D-EE9EDCC74D4E}
+		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1} = {EF16C5BE-595C-4A9F-9CA6-028D993661E7}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Drivers\WindowsDecompiler\WindowsDecompiler.csproj
