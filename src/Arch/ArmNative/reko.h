@@ -1,4 +1,22 @@
 #pragma once
+/*
+* Copyright (C) 1999-2017 John Källén.
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2, or (at your option)
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; see the file COPYING.  If not, write to
+* the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+*/
+
 
 // Most of these definitions should be generated from the C# side.
 
@@ -170,8 +188,36 @@ public:
 
 	virtual void STDAPICALLTYPE Error(uint64_t uAddress, const char * error) = 0;
 	virtual HExpr STDAPICALLTYPE EnsurePseudoProcedure(const char *name, BaseType retType, int arity) = 0;
+};
 
-	// Type factory methods.
+
+class INativeInstructionWriter : public IUnknown
+{
+public:
+	virtual void STDAPICALLTYPE AddAnnotation(const char * a) = 0;
+	virtual void STDAPICALLTYPE WriteOpcode(const char * opcode) = 0;
+	virtual void STDAPICALLTYPE WriteAddress(const char * formattedAddress, uint64_t uAddr) = 0;
+	virtual void STDAPICALLTYPE Tab() = 0;
+	virtual void STDAPICALLTYPE Write(char c) = 0;
+	virtual void STDAPICALLTYPE Write(uint32_t n) = 0;
+	virtual void STDAPICALLTYPE Write(const char * s) = 0;
+};
+
+//    static const GUID <<name>> = 
+//{ 0x10475e6b, 0xd167, 0x4db3, { 0xb2, 0x11, 0x61, 0xf, 0x60, 0x73, 0xa3, 0x13 } };
+
+enum class MachineInstructionWriterOptions
+{
+	None = 0,
+	ExplicitOperandSize = 1,
+	ResolvePcRelativeAddress = 2,
+};
+
+class INativeDisassembler : public IUnknown
+{
+	virtual void * STDAPICALLTYPE NextInstruction() = 0;
+	virtual void STDAPICALLTYPE Render(void * instr, INativeInstructionWriter * writer, MachineInstructionWriterOptions options) = 0;
+	virtual void STDAPICALLTYPE DestroyInstruction(void * instr) = 0;
 };
 
 struct NativeRegister
@@ -185,4 +231,5 @@ class INativeArchitecture : public IUnknown
 {
 public:
 	virtual void STDAPICALLTYPE GetAllRegisters(int * pcRegs, const NativeRegister ** ppRegs) = 0;
+	virtual INativeDisassembler * STDAPICALLTYPE CreateDisassembler(const uint8_t * bytes, int length, int offset, uint64_t uAddr) = 0;
 };

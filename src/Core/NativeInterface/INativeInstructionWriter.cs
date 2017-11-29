@@ -21,12 +21,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("62AB8B0D-8181-4F6A-8896-4833D695265A")]
+    [ComVisible(true)]
     public interface INativeInstructionWriter
     {
+        [PreserveSig] void AddAnnotation(string a);
+        [PreserveSig] void WriteOpcode(string opcode);
+        [PreserveSig] void WriteAddress(string formattedAddress, ulong uAddr);
+        [PreserveSig] void Tab();
+        [PreserveSig] void Write(char c);
+        [PreserveSig] void Write(uint n);
+        [PreserveSig] void Write(string s);
     }
 }

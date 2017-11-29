@@ -1,6 +1,25 @@
+/*
+* Copyright (C) 1999-2017 John Källén.
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2, or (at your option)
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; see the file COPYING.  If not, write to
+* the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+*/
+
 #include "stdafx.h"
 #include "reko.h"
 
+#include "ComBase.h"
 #include "ArmRewriter.h"
 
 void Dump(const char * fmt, ...);
@@ -33,21 +52,6 @@ ArmRewriter::ArmRewriter(
 static const IID IID_INativeRewriter =
 { 0x12506d0f, 0x1c67, 0x4828,{ 0x96, 0x1, 0x96, 0xf8, 0xed, 0x4d, 0x16, 0x2d } };
 
-void Dump(const char * fmt, ...)
-{
-	va_list args;
-	va_start(args, fmt);
-#if _WINDOWS
-	char buf[300];
-	vsnprintf(buf, _countof(buf), fmt, args);
-	::strcat_s(buf, "\r\n");
-	::OutputDebugStringA(buf);
-#else
-	vfprintf(stderr, fmt, args);
-	fputs("\n", stderr);
-#endif
-	va_end(args);
-}
 
 STDMETHODIMP ArmRewriter::QueryInterface(REFIID riid, void ** ppvOut)
 {
@@ -56,27 +60,10 @@ STDMETHODIMP ArmRewriter::QueryInterface(REFIID riid, void ** ppvOut)
 	if (riid == IID_IUnknown || riid == IID_INativeRewriter)
 	{
 		AddRef();
-		*ppvOut = this;
+		*ppvOut = static_cast<INativeRewriter *>(this);
 		return S_OK;
 	}
 	return E_NOINTERFACE;
-}
-
-ULONG STDMETHODCALLTYPE ArmRewriter::AddRef()
-{
-	Dump("AddRef: %08x %d", this, cRef +1);
-	return ++this->cRef;
-}
-
-ULONG STDMETHODCALLTYPE ArmRewriter::Release()
-{
-	Dump("Release: %08x %d", this, cRef - 1);
-	if (--this->cRef > 0)
-		return this->cRef;
-	Dump("Release: %08x destroyed", this);
-	--s_count;
-	delete this;
-	return 0;
 }
 
 STDMETHODIMP ArmRewriter::Next()

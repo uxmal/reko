@@ -86,6 +86,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;ARMNATIVE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AssemblerOutput>AssemblyCode</AssemblerOutput>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -146,19 +147,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ArmArchitecture.h" />
+    <ClInclude Include="Arm32Disassembler.h" />
     <ClInclude Include="ArmRewriter.h" />
+    <ClInclude Include="ComBase.h" />
+    <ClInclude Include="functions.h" />
     <ClInclude Include="reko.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Arm32Disassembler.cpp" />
     <ClCompile Include="ArmArchitecture.cpp" />
     <ClCompile Include="ArmRewriter.System.cpp" />
     <ClCompile Include="ArmNative.cpp" />
     <ClCompile Include="ArmRewriter.Alu.cpp" />
     <ClCompile Include="ArmRewriter.cpp" />
     <ClCompile Include="ArmRewriter.Vector.cpp" />
+    <ClCompile Include="ComBase.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -173,6 +179,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="functions.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

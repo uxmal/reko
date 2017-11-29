@@ -1,49 +1,64 @@
+/*
+* Copyright (C) 1999-2017 John Källén.
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2, or (at your option)
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; see the file COPYING.  If not, write to
+* the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+*/
+
 #include "stdafx.h"
 #include "reko.h"
 
+#include "ComBase.h"
+#include "Arm32Disassembler.h"
 #include "ArmArchitecture.h"
-
-void Dump(const char * fmt ...);
+#include "functions.h"
 
 // 09FFCC1F-60C8-4058-92C2-C90DAF115250
 static const IID IID_INativeArchitecture =
 { 0x09FFCC1F, 0x60C8, 0x4058,{ 0x92, 0xC2, 0xc9, 0x0D, 0xAF, 0x11, 0x52, 0x50 } };
 
-HRESULT ArmArchitecture::QueryInterface(REFIID riid, void ** ppvOut)
+ArmArchitecture::ArmArchitecture()
 {
-	Dump("QI: %08x %d", this, cRef);
-	*ppvOut = nullptr;
-	if (riid == IID_IUnknown || riid == IID_INativeArchitecture)
+	AddRef();
+}
+
+STDMETHODIMP ArmArchitecture::QueryInterface(REFIID riid, void ** ppvObject)
+{
+	if (riid == IID_INativeArchitecture || riid == IID_IUnknown)
 	{
 		AddRef();
-		*ppvOut = this;
+		*ppvObject = static_cast<INativeArchitecture *>(this);
 		return S_OK;
 	}
+	*ppvObject = nullptr;
 	return E_NOINTERFACE;
 }
 
-ULONG ArmArchitecture::AddRef(void)
-{
-	Dump("AddRef: %08x %d", this, cRef + 1);
-	return ++this->cRef;
-}
 
-ULONG ArmArchitecture::Release(void)
-{
-	Dump("Release: %08x %d", this, cRef - 1);
-	if (--this->cRef > 0)
-		return this->cRef;
-	Dump("Release: %08x destroyed", this);
-	//--s_count;
-	delete this;
-	return 0;
-}
-
-void ArmArchitecture::GetAllRegisters(int * pcRegs, const NativeRegister ** ppRegs)
+void STDMETHODCALLTYPE ArmArchitecture::GetAllRegisters(int * pcRegs, const NativeRegister ** ppRegs)
 {
 	*pcRegs = ARM_REG_ENDING;
 	*ppRegs = &aRegs[0];
 }
+
+INativeDisassembler * STDMETHODCALLTYPE ArmArchitecture::CreateDisassembler(
+	const uint8_t * bytes, int length, int offset, uint64_t uAddr)
+{
+	return new Arm32Disassembler(bytes, length, offset, uAddr);
+}
+
+
 
 const NativeRegister ArmArchitecture::aRegs[] = {
 	{ nullptr,		 ARM_REG_INVALID,    0, },

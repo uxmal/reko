@@ -16,36 +16,29 @@
 * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// ArmNative.cpp : Defines the exported functions for the DLL application.
-//
-
 #include "stdafx.h"
-#include "types.h"
-#include "reko.h"
 
-#include "functions.h"
 #include "ComBase.h"
-#include "ArmRewriter.h"
-#include "ArmArchitecture.h"
+#include "functions.h"
 
-extern "C" {
-	
-	DLLEXPORT INativeRewriter *
-		CreateNativeRewriter(
-			const uint8_t * rawBytes,
-			uint32_t length,	
-			uint32_t offset, 
-			uint64_t address, 
-			INativeRtlEmitter * m,
-			INativeTypeFactory * typeFactory,
-			INativeRewriterHost * host)
-	{
-		return new ArmRewriter(rawBytes + offset, length - offset, address, m, typeFactory, host);
-	}
+ComBase::~ComBase()
+{
+}
 
-	DLLEXPORT INativeArchitecture *
-		CreateNativeArchitecture(const char * archName)
-	{
-		return new ArmArchitecture();
-	}
+ULONG STDMETHODCALLTYPE ComBase::AddRef()
+{
+	Dump("AddRef: %08x %d", this, cRef + 1);
+	return ++this->cRef;
+}
+
+
+ULONG STDMETHODCALLTYPE ComBase::Release()
+{
+	Dump("Release: %08x %d", this, cRef - 1);
+	if (--this->cRef > 0)
+		return this->cRef;
+	Dump("Release: %08x destroyed", this);
+	//--s_count;
+	delete this;
+	return 0;
 }

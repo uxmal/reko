@@ -36,13 +36,13 @@ namespace Reko.Arch.Arm
     public class ArmRewriterNew : IEnumerable<RtlInstructionCluster>
     {
         private EndianImageReader rdr;
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private IRewriterHost host;
 
-        public ArmRewriterNew(Arm32ProcessorArchitecture arch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public ArmRewriterNew(Arm32ArchitectureNew arch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.rdr = rdr;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
         }
 
@@ -82,7 +82,7 @@ namespace Reko.Arch.Arm
                 this.m = new RtlEmitter(new List<RtlInstruction>());
                 this.ntf = new NativeTypeFactory();
                 this.rtlEmitter = new NativeRtlEmitter(m, ntf, outer.host);
-                this.host = new ArmNativeRewriterHost(outer.frame, outer.host, this.ntf, rtlEmitter);
+                this.host = new ArmNativeRewriterHost(outer.binder, outer.host, this.ntf, rtlEmitter);
 
                 this.iRtlEmitter = GetCOMInterface(rtlEmitter, IID_IRtlEmitter);
                 this.iNtf = GetCOMInterface(ntf, IID_INativeTypeFactory);

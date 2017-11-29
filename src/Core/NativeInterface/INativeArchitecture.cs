@@ -41,5 +41,7 @@ namespace Reko.Core.NativeInterface
     public interface INativeArchitecture
     {
         [PreserveSig] void GetAllRegisters(out int n, out IntPtr aregs);
+
+        [PreserveSig] INativeDisassembler CreateDisassembler(IntPtr bytes, int length, int offset, ulong uAddr);
     }
 }

@@ -16,36 +16,8 @@
 * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// ArmNative.cpp : Defines the exported functions for the DLL application.
-//
-
-#include "stdafx.h"
-#include "types.h"
-#include "reko.h"
-
-#include "functions.h"
-#include "ComBase.h"
-#include "ArmRewriter.h"
-#include "ArmArchitecture.h"
-
-extern "C" {
-	
-	DLLEXPORT INativeRewriter *
-		CreateNativeRewriter(
-			const uint8_t * rawBytes,
-			uint32_t length,	
-			uint32_t offset, 
-			uint64_t address, 
-			INativeRtlEmitter * m,
-			INativeTypeFactory * typeFactory,
-			INativeRewriterHost * host)
-	{
-		return new ArmRewriter(rawBytes + offset, length - offset, address, m, typeFactory, host);
-	}
-
-	DLLEXPORT INativeArchitecture *
-		CreateNativeArchitecture(const char * archName)
-	{
-		return new ArmArchitecture();
-	}
-}
+#if DEBUG || _DEBUG
+void Dump(const char * fmt ...);
+#else
+inline void Dump(const char * fmt ...) {}
+#endif

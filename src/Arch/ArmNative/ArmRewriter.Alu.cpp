@@ -19,6 +19,7 @@
 #include "stdafx.h"
 #include "reko.h"
 
+#include "ComBase.h"
 #include "ArmRewriter.h"
 
 void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr, bool reverse)

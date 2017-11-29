@@ -16,36 +16,26 @@
 * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// ArmNative.cpp : Defines the exported functions for the DLL application.
-//
-
 #include "stdafx.h"
-#include "types.h"
-#include "reko.h"
 
-#include "functions.h"
-#include "ComBase.h"
-#include "ArmRewriter.h"
-#include "ArmArchitecture.h"
+// Stand-alone functions.
 
-extern "C" {
-	
-	DLLEXPORT INativeRewriter *
-		CreateNativeRewriter(
-			const uint8_t * rawBytes,
-			uint32_t length,	
-			uint32_t offset, 
-			uint64_t address, 
-			INativeRtlEmitter * m,
-			INativeTypeFactory * typeFactory,
-			INativeRewriterHost * host)
-	{
-		return new ArmRewriter(rawBytes + offset, length - offset, address, m, typeFactory, host);
-	}
-
-	DLLEXPORT INativeArchitecture *
-		CreateNativeArchitecture(const char * archName)
-	{
-		return new ArmArchitecture();
-	}
+#if _DEBUG || DEBUG
+void Dump(const char * fmt, ...)
+{
+	va_list args;
+	va_start(args, fmt);
+#if _WINDOWS
+	char buf[300];
+	vsnprintf(buf, _countof(buf), fmt, args);
+	::strcat_s(buf, "\r\n");
+	::OutputDebugStringA(buf);
+// Use MessageBox for Release mode debugging.
+//	::MessageBoxA(nullptr, buf, "Dump", MB_OK);
+#else
+	vfprintf(stderr, fmt, args);
+	fputs("\n", stderr);
+#endif
+	va_end(args);
 }
+#endif

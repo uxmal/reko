@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -33,9 +34,14 @@ namespace Reko.UnitTests.Arch.Arm
         private Arm32ArchitectureNew arch;
 
         [Test]
-        public void ArmArch_GetPltEntry()
+        public void ArmArch_CreateRewriter()
         {
             this.arch = new Arm32ArchitectureNew();
+            var mem = new MemoryArea(Address.Ptr32(0x00123400), new byte[] { 0xE3, 0xE3, 0xE3, 0xE3 });
+            var rdr = mem.CreateLeReader(0);
+            var rw = arch.CreateRewriter(rdr, new ArmProcessorState(arch), new StorageBinder(), null);
+            var rtlc = rw.First();
+            rtlc.ToString();
         }
     }
 }

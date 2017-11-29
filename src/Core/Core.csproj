@@ -266,6 +266,7 @@
     <Compile Include="NativeInterface\CustomAnsiStringMarshaler.cs" />
     <Compile Include="NativeInterface\ILibraryLoader.cs" />
     <Compile Include="NativeInterface\INativeArchitecture.cs" />
+    <Compile Include="NativeInterface\INativeDisassembler.cs" />
     <Compile Include="NativeInterface\INativeInstructionWriter.cs" />
     <Compile Include="NativeInterface\Interfaces\INativeSymbolSource.cs" />
     <Compile Include="NativeInterface\Interfaces\NativeProcessorArchitectureProvider.cs" />
