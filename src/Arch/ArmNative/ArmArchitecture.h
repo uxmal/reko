@@ -28,8 +28,16 @@ public:
 	virtual STDMETHODIMP_(ULONG) Release(void) override
 	{ return ComBase::Release(); }
 
-	virtual STDMETHODIMP_(void) GetAllRegisters(int * pcRegs, const NativeRegister * * ppRegs) override;
-	virtual STDMETHODIMP_(INativeDisassembler *) CreateDisassembler(const uint8_t * bytes, int length, int offset, uint64_t uAddr);
+    STDMETHODIMP_(void) GetAllRegisters(int * pcRegs, const NativeRegister * * ppRegs) override;
+	STDMETHODIMP_(INativeDisassembler *) CreateDisassembler(const uint8_t * bytes, int length, int offset, uint64_t uAddr) override;
+	STDMETHODIMP_(INativeRewriter *) CreateRewriter(
+		const uint8_t * rawBytes,
+		uint32_t length,
+		uint32_t offset,
+		uint64_t address,
+		INativeRtlEmitter * m,
+		INativeTypeFactory * typeFactory,
+		INativeRewriterHost * host) override;
 public:
 	static const NativeRegister aRegs[];
 

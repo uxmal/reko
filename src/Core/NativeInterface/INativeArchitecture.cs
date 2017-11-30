@@ -40,8 +40,20 @@ namespace Reko.Core.NativeInterface
     [ComVisible(true)]
     public interface INativeArchitecture
     {
-        [PreserveSig] void GetAllRegisters(out int n, out IntPtr aregs);
+        [PreserveSig]
+        void GetAllRegisters(out int n, out IntPtr aregs);
 
-        [PreserveSig] INativeDisassembler CreateDisassembler(IntPtr bytes, int length, int offset, ulong uAddr);
+        [PreserveSig]
+        INativeDisassembler CreateDisassembler(IntPtr bytes, int length, int offset, ulong uAddr);
+
+        [PreserveSig]
+        INativeRewriter CreateRewriter(
+            IntPtr rawBytes,
+            int length,
+		    int offset,
+            ulong uAddress,
+		    INativeRtlEmitter m,
+            INativeTypeFactory typeFactory,
+		    INativeRewriterHost host);
     }
 }

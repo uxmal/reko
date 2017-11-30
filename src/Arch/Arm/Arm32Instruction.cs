@@ -21,10 +21,12 @@
 using Gee.External.Capstone.Arm;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.NativeInterface;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using CapstoneArmInstruction = Gee.External.Capstone.Instruction<Gee.External.Capstone.Arm.ArmInstruction, Gee.External.Capstone.Arm.ArmRegister, Gee.External.Capstone.Arm.ArmInstructionGroup, Gee.External.Capstone.Arm.ArmInstructionDetail>;
 using Opcode = Gee.External.Capstone.Arm.ArmInstruction;
 
@@ -420,6 +422,49 @@ namespace Reko.Arch.Arm
                 { Opcode.TRAP,  InstructionClass.Transfer },
                 { Opcode.YIELD, InstructionClass.Transfer },
             };
+        }
+    }
+
+    public class Arm32InstructionNew : MachineInstruction
+    {
+        private INativeInstruction nInstr;
+        private NativeInstructionInfo info;
+
+        public Arm32InstructionNew(INativeInstruction nInstr)
+        {
+            this.nInstr = nInstr;
+            nInstr.GetInfo(out info);
+        }
+
+        ~Arm32InstructionNew()
+        {
+            Marshal.ReleaseComObject(nInstr);
+            nInstr = null;
+        }
+
+        public override InstructionClass InstructionClass 
+        {
+            get { return (InstructionClass)info.InstructionClass; }
+        }
+
+        public override bool IsValid
+        {
+            get { return this.InstructionClass != InstructionClass.Invalid; }
+        }
+
+        public override int OpcodeAsInteger
+        {
+            get { return info.Opcode; }
+        }
+
+        public override MachineOperand GetOperand(int i)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            throw new NotImplementedException();
         }
     }
 }

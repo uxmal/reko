@@ -20,6 +20,7 @@
 #include "reko.h"
 
 #include "ComBase.h"
+#include "ArmRewriter.h"
 #include "Arm32Disassembler.h"
 #include "ArmArchitecture.h"
 #include "functions.h"
@@ -58,7 +59,17 @@ INativeDisassembler * STDMETHODCALLTYPE ArmArchitecture::CreateDisassembler(
 	return new Arm32Disassembler(bytes, length, offset, uAddr);
 }
 
-
+INativeRewriter * STDAPICALLTYPE ArmArchitecture::CreateRewriter(
+	const uint8_t * rawBytes,
+	uint32_t length,
+	uint32_t offset,
+	uint64_t address,
+	INativeRtlEmitter * m,
+	INativeTypeFactory * typeFactory,
+	INativeRewriterHost * host)
+{
+	return new ArmRewriter(rawBytes, length-offset, address, m, typeFactory, host);
+}
 
 const NativeRegister ArmArchitecture::aRegs[] = {
 	{ nullptr,		 ARM_REG_INVALID,    0, },

@@ -213,11 +213,35 @@ enum class MachineInstructionWriterOptions
 	ResolvePcRelativeAddress = 2,
 };
 
+enum class InstructionClass
+{
+	None,
+	Linear = 1,
+	Transfer = 2,
+	Conditional = 4,
+	Delay = 8,
+	Annul = 16,
+	Invalid = 32,
+	Call = 64,
+};
+
+struct NativeInstructionInfo
+{
+	uint64_t LinearAddress;
+	uint32_t Length;
+	uint32_t InstructionClass;
+	uint32_t Opcode;
+};
+
+class INativeInstruction : public IUnknown
+{
+	virtual void STDAPICALLTYPE GetInfo(NativeInstructionInfo * info) = 0;
+	virtual void STDAPICALLTYPE Render(INativeInstructionWriter * writer, MachineInstructionWriterOptions options) = 0;
+};
+
 class INativeDisassembler : public IUnknown
 {
-	virtual void * STDAPICALLTYPE NextInstruction() = 0;
-	virtual void STDAPICALLTYPE Render(void * instr, INativeInstructionWriter * writer, MachineInstructionWriterOptions options) = 0;
-	virtual void STDAPICALLTYPE DestroyInstruction(void * instr) = 0;
+	virtual INativeInstruction * STDAPICALLTYPE NextInstruction() = 0;
 };
 
 struct NativeRegister
@@ -232,4 +256,12 @@ class INativeArchitecture : public IUnknown
 public:
 	virtual void STDAPICALLTYPE GetAllRegisters(int * pcRegs, const NativeRegister ** ppRegs) = 0;
 	virtual INativeDisassembler * STDAPICALLTYPE CreateDisassembler(const uint8_t * bytes, int length, int offset, uint64_t uAddr) = 0;
+	virtual INativeRewriter * STDAPICALLTYPE CreateRewriter(
+		const uint8_t * rawBytes,
+		uint32_t length,
+		uint32_t offset,
+		uint64_t address,
+		INativeRtlEmitter * m,
+		INativeTypeFactory * typeFactory,
+		INativeRewriterHost * host) = 0;
 };

@@ -27,14 +27,14 @@ ComBase::~ComBase()
 
 ULONG STDMETHODCALLTYPE ComBase::AddRef()
 {
-	Dump("AddRef: %08x %d", this, cRef + 1);
+	//Dump("AddRef: %08x %d", this, cRef + 1);
 	return ++this->cRef;
 }
 
 
 ULONG STDMETHODCALLTYPE ComBase::Release()
 {
-	Dump("Release: %08x %d", this, cRef - 1);
+	//Dump("Release: %08x %d", this, cRef - 1);
 	if (--this->cRef > 0)
 		return this->cRef;
 	Dump("Release: %08x destroyed", this);

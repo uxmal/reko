@@ -71,7 +71,6 @@ namespace Reko.Arch.Arm
             private IntPtr iRtlEmitter;
             private IntPtr iNtf;
             private IntPtr iHost;
-            private long offset;
 
             public Enumerator(ArmRewriterNew outer)
             {

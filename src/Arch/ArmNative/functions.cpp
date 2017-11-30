@@ -26,12 +26,12 @@ void Dump(const char * fmt, ...)
 	va_list args;
 	va_start(args, fmt);
 #if _WINDOWS
-	char buf[300];
+	char buf[512];
 	vsnprintf(buf, _countof(buf), fmt, args);
 	::strcat_s(buf, "\r\n");
 	::OutputDebugStringA(buf);
 // Use MessageBox for Release mode debugging.
-//	::MessageBoxA(nullptr, buf, "Dump", MB_OK);
+	::MessageBoxA(nullptr, buf, "Dump", MB_OK);
 #else
 	vfprintf(stderr, fmt, args);
 	fputs("\n", stderr);

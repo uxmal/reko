@@ -18,16 +18,31 @@
  */
 #endregion
 
+using Reko.Core.Machine;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
     [ComVisible(true)]
-    [Guid("10475E6B-D167-4DB3-B211-610F6073A313")]
+    [Guid("2CAF9227-76D6-4DED-BC74-B95801E1524E")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface INativeDisassembler
+    public interface INativeInstruction
     {
-        [PreserveSig] INativeInstruction NextInstruction();
+        [PreserveSig] void GetInfo(out NativeInstructionInfo info);
+        [PreserveSig] void Render(INativeInstructionWriter writer, MachineInstructionWriterOptions options);
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct NativeInstructionInfo
+    {
+        public ulong LinearAddress;
+        public uint Length;
+        public uint InstructionClass;
+        public int Opcode;
     }
 }

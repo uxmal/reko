@@ -26,24 +26,8 @@ public:
 	STDMETHODIMP_(ULONG) AddRef() override { return  ComBase::AddRef(); }
 	STDMETHODIMP_(ULONG) Release() override { return ComBase::Release(); }
 
-	void * STDAPICALLTYPE NextInstruction() override;
-	void STDAPICALLTYPE Render(void * instr, INativeInstructionWriter * writer, MachineInstructionWriterOptions options) override;
-	void STDAPICALLTYPE DestroyInstruction(void * instr) override;
+	INativeInstruction * STDAPICALLTYPE NextInstruction() override;
 private:
-	bool WriteRegisterSetInstruction(const cs_insn & instr, INativeInstructionWriter & writer);
-	void Write(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer, MachineInstructionWriterOptions options);
-	void WriteShift(const cs_arm_op & op, INativeInstructionWriter & writer);
-	void WriteMemoryOperand(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer);
-	static bool IsLastOperand(const cs_insn & instr, const cs_arm_op * op)
-	{
-		auto ops = &instr.detail->arm.operands[0];
-		return op == ops + (instr.detail->arm.op_count - 1);
-	}
-
-	void WriteImmShift(const char * op, int value, INativeInstructionWriter & writer);
-	void WriteRegShift(const char * op, int value, INativeInstructionWriter &writer);
-	static void WriteImmediateValue(int imm8, INativeInstructionWriter & writer);
-
 	csh hcapstone;
 	const uint8_t * bytes;
 	size_t length;

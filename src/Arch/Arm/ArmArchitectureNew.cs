@@ -31,6 +31,7 @@ using Reko.Core.Types;
 using System.Runtime.InteropServices;
 using Reko.Core.NativeInterface;
 using System.Diagnostics;
+using System.Collections;
 
 namespace Reko.Arch.Arm
 {
@@ -44,7 +45,6 @@ namespace Reko.Arch.Arm
         {
             var unk = CreateNativeArchitecture();
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
-            Marshal.Release(unk);
 
             GetRegistersFromNative();
         }
@@ -79,9 +79,36 @@ namespace Reko.Arch.Arm
             this.regsByNumber = regsByNumber.ToArray();
         }
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            throw new NotImplementedException();
+            var bytes = rdr.Bytes;
+            ulong uAddr = rdr.Address.ToLinear();
+            var hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+            INativeDisassembler ndasm = null;
+
+            try
+            {
+                ndasm = native.CreateDisassembler(hBytes.AddrOfPinnedObject(), bytes.Length, (int)rdr.Offset, uAddr);
+                for (;;)
+                {
+                    INativeInstruction nInstr = ndasm.NextInstruction();
+                    if (nInstr == null)
+                        yield break;
+                    else 
+                        yield return new Arm32InstructionNew(nInstr);
+                }
+            }
+            finally
+            {
+                if (ndasm != null)
+                {
+                    ndasm = null;
+                }
+                if (hBytes != null && hBytes.IsAllocated)
+                {
+                     hBytes.Free();
+                }
+            }
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
