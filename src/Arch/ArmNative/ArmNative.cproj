@@ -40,16 +40,24 @@
     </Libs>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Arm32Disassembler.cpp" />
+    <Compile Include="ArmArchitecture.cpp" />
+    <Compile Include="ArmRewriter.System.cpp" />
     <Compile Include="ArmNative.cpp" />
     <Compile Include="ArmRewriter.Alu.cpp" />
-    <Compile Include="ArmRewriter.System.cpp" />
-    <Compile Include="ArmRewriter.Vector.cpp" />
     <Compile Include="ArmRewriter.cpp" />
-    <Compile Include="dllmain.cpp" />
+    <Compile Include="ArmRewriter.Vector.cpp" />
+    <Compile Include="ComBase.cpp" />
+    <Compile Include="dllmain.cpp">
     <Compile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ArmArchitecture.h" />
+    <None Include="Arm32Disassembler.h" />
     <None Include="ArmRewriter.h" />
+    <None Include="ComBase.h" />
+    <None Include="functions.h" />
+    <None Include="NativeInstruction.h" />
     <None Include="reko.h" />
     <None Include="stdafx.h" />
     <None Include="types.h" />
