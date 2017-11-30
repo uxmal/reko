@@ -549,6 +549,7 @@ namespace Reko.Core
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.WChar_t: return 2;
             case CBasicType.Short: return 2;

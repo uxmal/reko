@@ -313,6 +313,13 @@ namespace Reko.Core.CLanguage
                 domain = Domain.UnsignedInt;
                 basicType = CBasicType.Int;
                 return CreatePrimitive();
+            case CTokenType.Bool:
+            case CTokenType._Bool:
+                if (domain != Domain.None)
+                    throw new FormatException(string.Format("An '{0}' boolean doesn't make sense.", domain));
+                domain = Domain.Boolean;
+                basicType = CBasicType.Bool;
+                return CreatePrimitive();
             case CTokenType.Char:
                 if (domain == Domain.None)
                     domain = Domain.Character;

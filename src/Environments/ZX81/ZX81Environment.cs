@@ -74,6 +74,7 @@ namespace Reko.Environments.ZX81
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.Short: return 2;
             case CBasicType.Int: return 2;

@@ -66,6 +66,7 @@ namespace Reko.Environments.Cpm
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.Short: return 2;
             case CBasicType.Int: return 2;
