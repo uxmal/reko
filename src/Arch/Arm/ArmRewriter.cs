@@ -39,7 +39,7 @@ namespace Reko.Arch.Arm
         private IStorageBinder binder;
         private IRewriterHost host;
 
-        public ArmRewriterNew(Arm32ArchitectureNew arch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public ArmRewriterNew(Arm32Architecture arch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.rdr = rdr;
             this.binder = binder;

@@ -31,12 +31,12 @@ namespace Reko.UnitTests.Arch.Arm
     [TestFixture]
     public class ArmArchitectureTests
     {
-        private Arm32ArchitectureNew arch;
+        private Arm32Architecture arch;
 
         [Test]
         public void ArmArch_CreateDisassembler()
         {
-            this.arch = new Arm32ArchitectureNew();
+            this.arch = new Arm32Architecture();
             var mem = new MemoryArea(Address.Ptr32(0x00123400), new byte[] { 0x03, 0x10, 0x12, 0xE0 });
 
             var rdr = mem.CreateLeReader(0);
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmArch_CreateRewriter()
         {
-            this.arch = new Arm32ArchitectureNew();
+            this.arch = new Arm32Architecture();
             var mem = new MemoryArea(Address.Ptr32(0x00123400), new byte[] { 0x03, 0x10, 0x12, 0xE0 });
 
             var rdr = mem.CreateLeReader(0);

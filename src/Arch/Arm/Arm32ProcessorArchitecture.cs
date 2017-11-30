@@ -55,7 +55,7 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new Arm32Disassembler(this, imageReader);
+            return new Arm32DisassemblerOld(this, imageReader);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)

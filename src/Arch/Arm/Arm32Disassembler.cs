@@ -27,12 +27,12 @@ using System.Collections.Generic;
 namespace Reko.Arch.Arm
 {
     [Obsolete("", true)]
-    public class Arm32Disassembler : DisassemblerBase<Arm32InstructionOld> 
+    public class Arm32DisassemblerOld : DisassemblerBase<Arm32InstructionOld> 
     {
         private IEnumerator<Instruction<Gee.External.Capstone.Arm.ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> stream;
         private static int disposes;
 
-        public Arm32Disassembler(Arm32ProcessorArchitecture arch, EndianImageReader rdr) {
+        public Arm32DisassemblerOld(Arm32ProcessorArchitecture arch, EndianImageReader rdr) {
             var dasm = CapstoneDisassembler.CreateArmDisassembler(
                 DisassembleMode.Arm32 | DisassembleMode.LittleEndian);
             dasm.EnableDetails = true;

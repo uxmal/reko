@@ -35,14 +35,22 @@ using System.Collections;
 
 namespace Reko.Arch.Arm
 {
-    public class Arm32ArchitectureNew : ProcessorArchitecture
+    public class Arm32Architecture : ProcessorArchitecture
     {
         private INativeArchitecture native;
         private Dictionary<string, RegisterStorage> regsByName;
         private RegisterStorage[] regsByNumber;
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Arm32ArchitectureNew()
+        public Arm32Architecture()
         {
+            InstructionBitSize = 32;
+            FramePointerType = PrimitiveType.Pointer32;
+            PointerType = PrimitiveType.Pointer32;
+            WordWidth = PrimitiveType.Word32;
+            StackRegister = A32Registers.sp;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+
             var unk = CreateNativeArchitecture();
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
 
@@ -112,32 +120,32 @@ namespace Reko.Arch.Arm
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addr);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addrBegin, addrEnd);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, off);
         }
 
         public override ImageWriter CreateImageWriter()
         {
-            throw new NotImplementedException();
+            return new LeImageWriter();
         }
 
         public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override ProcessorState CreateProcessorState()

@@ -311,7 +311,6 @@ namespace Reko.UnitTests.Arch.Arm
             Assert.AreEqual("ldm\tfp!,{r1,r3}", instr.ToString());
         }
 
-
         [Test]
         public void ArmDasm_blx()
         {
