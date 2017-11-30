@@ -94,7 +94,7 @@ void STDAPICALLTYPE NativeInstruction::Render(INativeInstructionWriter * w, Mach
 
 bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INativeInstructionWriter & writer)
 {
-	auto ops = &instr.detail->arm.operands[0];
+	auto iStart = 0;
 	switch (instr.id)
 	{
 	case ARM_INS_POP:
@@ -103,10 +103,10 @@ bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INati
 	case ARM_INS_LDM:
 	case ARM_INS_STM:
 	case ARM_INS_STMDB:
-		Write(instr, ops[0], writer, MachineInstructionWriterOptions::None);
+		Write(instr, instr.detail->arm.operands[0], writer, MachineInstructionWriterOptions::None);
 		if (instr.detail->arm.writeback)
 			writer.WriteString("!");
-		ops = ops + 1;
+		iStart = 1;
 		writer.WriteString(",");
 		break;
 	default:
@@ -117,17 +117,20 @@ bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INati
 	auto sep = "";
 	auto regPrev = ARM_REG_INVALID;
 	auto reg = ARM_REG_INVALID;
-	auto opLast = ops + instr.detail->arm.op_count;
-	for (auto op = ops; op != opLast; ++op)
+	for (int i = iStart; i < instr.detail->arm.op_count; ++i)
 	{
-		reg = static_cast<arm_reg>(op->reg);
+		reg = static_cast<arm_reg>(instr.detail->arm.operands[i].reg);
 		if (regPrev == ARM_REG_INVALID)
 		{
 			writer.WriteString(sep);
 			writer.WriteString(ArmArchitecture::aRegs[reg].Name);
 			sep = ",";
 		}
-		else if (static_cast<int>(regPrev) + 1 < static_cast<int>(reg))
+		else if (static_cast<int>(regPrev) + 1 == static_cast<int>(reg))
+		{
+			sep = "-";
+		}
+		else
 		{
 			if (sep == "-")
 			{
@@ -139,15 +142,11 @@ bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INati
 			writer.WriteString(ArmArchitecture::aRegs[reg].Name);
 			sep = ",";
 		}
-		else
-		{
-			sep = "-";
-		}
 		regPrev = reg;
 	}
-	if (sep == "-")
+	if (sep[0] == '-')
 	{
-		writer.WriteString("-");
+		writer.WriteChar('-');
 		writer.WriteString(ArmArchitecture::aRegs[reg].Name);
 	}
 	writer.WriteString("}");
@@ -221,8 +220,10 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 		WriteMemoryOperand(insn, op, writer);
 		break;
 	case ARM_OP_SETEND:
-		writer.WriteString("$$ SETEND NOT IMPLEMENTED YET");
-		//writer.WriteString(op.setend.ToString().ToLowerInvariant());
+		if (this->instr->detail->arm.operands[0].setend == ARM_SETEND_BE)
+			writer.WriteString("be");
+		else 
+			writer.WriteString("le");
 		break;
 	case ARM_OP_FP:
 		snprintf(risky, sizeof(risky), "#%lf", op.fp);

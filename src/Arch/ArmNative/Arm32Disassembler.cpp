@@ -93,5 +93,6 @@ InstructionClass Arm32Disassembler::InstructionClassFromId(unsigned int armInstr
 	case ARM_INS_TRAP: return InstructionClass::Transfer;
 	case ARM_INS_YIELD: return InstructionClass::Transfer;
 	}
+	return InstructionClass::Linear;
 }
 

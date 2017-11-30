@@ -32,6 +32,8 @@ using System.Runtime.InteropServices;
 using Reko.Core.NativeInterface;
 using System.Diagnostics;
 using System.Collections;
+using Reko.Core.Lib;
+using Reko.Core.Operators;
 
 namespace Reko.Arch.Arm
 {
@@ -48,13 +50,13 @@ namespace Reko.Arch.Arm
             FramePointerType = PrimitiveType.Pointer32;
             PointerType = PrimitiveType.Pointer32;
             WordWidth = PrimitiveType.Word32;
-            StackRegister = A32Registers.sp;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
 
             var unk = CreateNativeArchitecture();
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
 
             GetRegistersFromNative();
+            StackRegister = regsByName["sp"];
         }
 
         private void GetRegistersFromNative()
@@ -150,12 +152,26 @@ namespace Reko.Arch.Arm
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new ArmProcessorState(this);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            throw new NotImplementedException();
+            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
+            if (flags != PointerScannerFlags.Calls)
+                throw new NotImplementedException(string.Format("Haven't implemented support for scanning for {0} yet.", flags));
+            while (rdr.IsValid)
+            {
+                uint linAddrCall = rdr.Address.ToUInt32();
+                var opcode = rdr.ReadLeUInt32();
+                if ((opcode & 0x0F000000) == 0x0B000000)         // BL
+                {
+                    int offset = ((int)opcode << 8) >> 6;
+                    uint target = (uint)(linAddrCall + 8 + offset);
+                    if (knownLinAddresses.Contains(target))
+                        yield return Address.Ptr32(linAddrCall);
+                }
+            }
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -165,7 +181,10 @@ namespace Reko.Arch.Arm
 
         public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
-            throw new NotImplementedException();
+            return new MemoryAccess(new BinaryExpression(
+                                    Operator.IAdd, FramePointerType,
+                                    frame.EnsureRegister(StackRegister), Constant.Word32(cbOffset)),
+                                    dataType);
         }
 
         public override RegisterStorage GetRegister(int i)
@@ -187,17 +206,20 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            // First element is "Invalid".
+            return regsByNumber.Skip(1).ToArray();
         }
 
         public override int? GetOpcodeNumber(string name)
         {
-            throw new NotImplementedException();
+            //$TOD: write a dictionary mapping ARM instructions to ARM_INS_xxx.
+            return null; 
         }
 
         public override SortedList<string, int> GetOpcodeNames()
         {
-            throw new NotImplementedException();
+            //$TOD: write a dictionary mapping ARM instructions to ARM_INS_xxx.
+            return new SortedList<string, int>();
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
@@ -207,7 +229,17 @@ namespace Reko.Arch.Arm
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            FlagGroupStorage f;
+            if (flagGroups.TryGetValue(grf, out f))
+            {
+                return f;
+            }
+
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var flagregister = (FlagRegister)this.regsByName["cpsr"];
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -217,12 +249,17 @@ namespace Reko.Arch.Arm
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder s = new StringBuilder();
+            if ((grf & (uint)FlagM.NF) != 0) s.Append('N');
+            if ((grf & (uint)FlagM.ZF) != 0) s.Append('Z');
+            if ((grf & (uint)FlagM.CF) != 0) s.Append('C');
+            if ((grf & (uint)FlagM.VF) != 0) s.Append('V');
+            return s.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
@@ -230,9 +267,9 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddress, out addr);
         }
 
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]
