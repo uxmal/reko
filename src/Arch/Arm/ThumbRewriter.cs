@@ -34,7 +34,7 @@ namespace Reko.Arch.Arm
 {
     public partial class ThumbRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IEnumerator<Arm32Instruction> instrs;
+        private IEnumerator<Arm32InstructionOld> instrs;
         private IStorageBinder frame;
         private IRewriterHost host;
         private Instruction<ArmInstruction,ArmRegister,ArmInstructionGroup,ArmInstructionDetail> instr;
@@ -54,7 +54,7 @@ namespace Reko.Arch.Arm
             this.itStateCondition = ArmCodeCondition.AL;
         }
 
-        private IEnumerator<Arm32Instruction> CreateInstructionStream(EndianImageReader rdr)
+        private IEnumerator<Arm32InstructionOld> CreateInstructionStream(EndianImageReader rdr)
         {
             return new ThumbDisassembler(rdr).GetEnumerator();
         }

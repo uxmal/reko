@@ -94,7 +94,7 @@ namespace Reko.Arch.Arm
                     if (nInstr == null)
                         yield break;
                     else 
-                        yield return new Arm32InstructionNew(nInstr);
+                        yield return new Arm32Instruction(nInstr);
                 }
             }
             finally

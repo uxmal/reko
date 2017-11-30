@@ -32,7 +32,8 @@ using Opcode = Gee.External.Capstone.Arm.ArmInstruction;
 
 namespace Reko.Arch.Arm
 {
-    public class Arm32Instruction : MachineInstruction 
+    [Obsolete("Replace with Arm32Instruction", false)]
+    public class Arm32InstructionOld : MachineInstruction 
     {
         private static Dictionary<ArmInstruction, InstructionClass> classOf;
 
@@ -40,7 +41,7 @@ namespace Reko.Arch.Arm
         // Callers need to be aware of this.
         internal CapstoneArmInstruction instruction;
         
-        public Arm32Instruction(CapstoneArmInstruction instruction)
+        public Arm32InstructionOld(CapstoneArmInstruction instruction)
         {
             if (instruction == null)
                 throw new ArgumentNullException("instruction");
@@ -49,7 +50,7 @@ namespace Reko.Arch.Arm
             this.Length = instruction.Bytes.Length;
         }
 
-        private Arm32Instruction(Address addr)
+        private Arm32InstructionOld(Address addr)
         {
             this.instruction = null;
             this.Address = addr;
@@ -399,12 +400,12 @@ namespace Reko.Arch.Arm
             }
         }
 
-        internal static Arm32Instruction CreateInvalid(Address addr)
+        internal static Arm32InstructionOld CreateInvalid(Address addr)
         {
-            return new Arm32Instruction(addr);
+            return new Arm32InstructionOld(addr);
         }
 
-        static Arm32Instruction()
+        static Arm32InstructionOld()
         {
             classOf = new Dictionary<Opcode, InstructionClass>
             {
@@ -425,18 +426,18 @@ namespace Reko.Arch.Arm
         }
     }
 
-    public class Arm32InstructionNew : MachineInstruction
+    public class Arm32Instruction : MachineInstruction
     {
         private INativeInstruction nInstr;
         private NativeInstructionInfo info;
 
-        public Arm32InstructionNew(INativeInstruction nInstr)
+        public Arm32Instruction(INativeInstruction nInstr)
         {
             this.nInstr = nInstr;
             nInstr.GetInfo(out info);
         }
 
-        ~Arm32InstructionNew()
+        ~Arm32Instruction()
         {
             Marshal.ReleaseComObject(nInstr);
             nInstr = null;

@@ -32,10 +32,10 @@ namespace Reko.UnitTests.Arch.Arm
 {
     public abstract class ArmTestBase
     {
-        protected static Arm32Instruction Disassemble(byte[] bytes)
+        protected static MachineInstruction Disassemble(byte[] bytes)
         {
             var image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
-            var dasm = new Arm32Disassembler(new Arm32ProcessorArchitecture(), image.CreateLeReader(0));
+            var dasm = new Arm32Architecture().CreateDisassembler(image.CreateLeReader(0));
             return dasm.First();
         }
 
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Arch.Arm
     {
         protected override IProcessorArchitecture CreateArchitecture()
         {
-            return new Arm32ProcessorArchitecture();
+            return new Arm32Architecture();
         }
 
         [Test]

@@ -1,4 +1,4 @@
- #region License
+#region License
 /* 
  * Copyright (C) 1999-2017 John Källén.
  *
@@ -21,11 +21,13 @@
 using Gee.External.Capstone;
 using Gee.External.Capstone.Arm;
 using Reko.Core;
+using System;
 using System.Collections.Generic;
 
 namespace Reko.Arch.Arm
 {
-    public class Arm32Disassembler : DisassemblerBase<Arm32Instruction> 
+    [Obsolete("", true)]
+    public class Arm32Disassembler : DisassemblerBase<Arm32InstructionOld> 
     {
         private IEnumerator<Instruction<Gee.External.Capstone.Arm.ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> stream;
         private static int disposes;
@@ -49,10 +51,10 @@ namespace Reko.Arch.Arm
             base.Dispose(disposing);
         }
 
-        public override Arm32Instruction DisassembleInstruction() {
+        public override Arm32InstructionOld DisassembleInstruction() {
             if (stream.MoveNext())
             {
-                return new Arm32Instruction(stream.Current);
+                return new Arm32InstructionOld(stream.Current);
             }
             else
                 return null;

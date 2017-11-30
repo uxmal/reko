@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public class ThumbDisassembler : DisassemblerBase<Arm32Instruction>
+    public class ThumbDisassembler : DisassemblerBase<Arm32InstructionOld>
     {
         private EndianImageReader rdr;
         private IEnumerator<Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> stream;
@@ -48,7 +48,7 @@ namespace Reko.Arch.Arm
                 .GetEnumerator();
         }
 
-        public override Arm32Instruction DisassembleInstruction()
+        public override Arm32InstructionOld DisassembleInstruction()
         {
             // Check to see if we've hit the end of the address space, and return
             // null if we are. We have to do this because the underlying Capstone
@@ -63,13 +63,13 @@ namespace Reko.Arch.Arm
                 // Capstone doesn't actually use the imageReader, but apparently
                 // reko components peek at the reader, so we have to simulate motion.
                 rdr.Offset += stream.Current.Bytes.Length;
-                return new Arm32Instruction(stream.Current);
+                return new Arm32InstructionOld(stream.Current);
             }
             else
             {
                 // We got an invalid instruction. Create a placeholder and then
                 // advance one opcode (which is 2 bytes for Thumb).
-                var instr = Arm32Instruction.CreateInvalid(rdr.Address);
+                var instr = Arm32InstructionOld.CreateInvalid(rdr.Address);
                 rdr.Offset += 2;
                 this.stream.Dispose();
 

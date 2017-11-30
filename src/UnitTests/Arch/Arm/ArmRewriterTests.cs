@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Arm
     [Category(Categories.Capstone)]
     public class ArmRewriterTests : RewriterTestBase
     {
-        private Arm32ProcessorArchitecture arch = new Arm32ProcessorArchitecture();
+        private Arm32Architecture arch = new Arm32ProcessorArchitecture();
         private MemoryArea image;
         private Address baseAddress = Address.Ptr32(0x00100000);
 

@@ -72,3 +72,26 @@ INativeInstruction * Arm32Disassembler::NextInstruction()
 	}
 }
 
+inline InstructionClass operator | (InstructionClass a, InstructionClass b) {
+	return static_cast<InstructionClass>(static_cast<int>(a) | static_cast<int>(b));
+}
+
+InstructionClass Arm32Disassembler::InstructionClassFromId(unsigned int armInstrID)
+{
+	switch (armInstrID)
+	{
+	case ARM_INS_INVALID: return InstructionClass::Invalid;
+	case ARM_INS_BKPT: return InstructionClass::Transfer;
+	case ARM_INS_BL: return InstructionClass::Transfer | InstructionClass::Call;
+	case ARM_INS_BLX: return InstructionClass::Transfer | InstructionClass::Call;
+	case ARM_INS_BX: return InstructionClass::Transfer;
+	case ARM_INS_BXJ: return InstructionClass::Transfer;
+	case ARM_INS_B: return InstructionClass::Transfer;
+	case ARM_INS_HLT: return InstructionClass::Transfer;
+	case ARM_INS_SVC: return InstructionClass::Transfer;
+	case ARM_INS_TEQ: return InstructionClass::Transfer;
+	case ARM_INS_TRAP: return InstructionClass::Transfer;
+	case ARM_INS_YIELD: return InstructionClass::Transfer;
+	}
+}
+

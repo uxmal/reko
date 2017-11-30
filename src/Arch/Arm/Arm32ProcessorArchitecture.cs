@@ -35,6 +35,7 @@ using Opcode = Gee.External.Capstone.Arm.ArmInstruction;
 
 namespace Reko.Arch.Arm
 {
+    [Obsolete("", true)]
     public class Arm32ProcessorArchitecture : ProcessorArchitecture
     {
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
