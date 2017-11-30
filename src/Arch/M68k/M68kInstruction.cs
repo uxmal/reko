@@ -71,7 +71,7 @@ namespace Reko.Arch.M68k
                 var svc = writer.Platform.FindService((int)imm.Constant.ToUInt32(), null);
                 if (svc != null)
                 {
-                    writer.Write(svc.Name);
+                    writer.WriteString(svc.Name);
                     return;
                 }
             }
@@ -89,7 +89,7 @@ namespace Reko.Arch.M68k
                 WriteOperand(op1, writer, options);
                 if (op2 != null)
                 {
-                    writer.Write(',');
+                    writer.WriteChar(',');
                     WriteOperand(op2, writer, options);
                 }
             }

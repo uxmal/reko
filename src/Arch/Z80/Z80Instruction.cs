@@ -71,7 +71,7 @@ namespace Reko.Arch.Z80
             {
                 writer.WriteOpcode("ex");
                 writer.Tab();
-                writer.Write("af,af'");
+                writer.WriteString("af,af'");
                 return;
             }
             writer.WriteOpcode(Code.ToString());
@@ -81,7 +81,7 @@ namespace Reko.Arch.Z80
                 Op1.Write(writer, options);
                 if (Op2 != null)
                 {
-                    writer.Write(",");
+                    writer.WriteString(",");
                     Op2.Write(writer, options);
                 }
             }

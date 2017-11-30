@@ -74,11 +74,11 @@ namespace Reko.Arch.Vax
             foreach (var op in Operands)
             {
                 if (sep)
-                    writer.Write(',');
+                    writer.WriteChar(',');
                 sep = true;
                 if (op is ImmediateOperand)
                 {
-                    writer.Write('#');
+                    writer.WriteChar('#');
                     op.Write(writer, options);
                 }
                 else if (op is MemoryOperand && ((MemoryOperand)op).Base == Registers.pc)

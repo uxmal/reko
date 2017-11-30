@@ -41,7 +41,7 @@ ArmRewriter::ArmRewriter(
 	cRef(1),
 	instr(nullptr)
 {
-	Dump(".ctor: %08x", this);
+	//Dump(".ctor: %08x", this);
 	auto ec = cs_open(CS_ARCH_ARM, CS_MODE_ARM, &hcapstone); 
 	ec = cs_option(hcapstone, CS_OPT_DETAIL, CS_OPT_ON);
 	this->instr = cs_malloc(hcapstone);
@@ -55,7 +55,7 @@ static const IID IID_INativeRewriter =
 
 STDMETHODIMP ArmRewriter::QueryInterface(REFIID riid, void ** ppvOut)
 {
-	Dump("QI: %08x %d", this, cRef);
+	//Dump("QI: %08x %d", this, cRef);
 	*ppvOut = nullptr;
 	if (riid == IID_IUnknown || riid == IID_INativeRewriter)
 	{

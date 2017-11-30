@@ -55,7 +55,7 @@ namespace Reko.Arch.Mips
                 fmt = "-{0:X4}({1})";
                 offset = -Offset;
             }
-            writer.Write(string.Format(fmt, offset, Base));
+            writer.WriteString(string.Format(fmt, offset, Base));
         }
     }
 }

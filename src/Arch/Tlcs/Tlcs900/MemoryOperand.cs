@@ -104,18 +104,18 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write('(');
+            writer.WriteChar('(');
             if (Base != null)
             {
                 if (Increment < 0)
                 {
-                    writer.Write("{0}:-", -Increment);
+                    writer.WriteFormat("{0}:-", -Increment);
                 }
-                writer.Write(Base.Name);
+                writer.WriteString(Base.Name);
                 if (Index != null)
                 {
-                    writer.Write('+');
-                    writer.Write(Index.Name);
+                    writer.WriteChar('+');
+                    writer.WriteString(Index.Name);
                 }
                 else if (Offset != null)
                 {
@@ -123,20 +123,20 @@ namespace Reko.Arch.Tlcs.Tlcs900
                     int absOff;
                     if (off < 0)
                     {
-                        writer.Write('-');
+                        writer.WriteChar('-');
                         absOff = -off;
                     }
                     else
                     {
-                        writer.Write('+');
+                        writer.WriteChar('+');
                         absOff = off;
                     }
-                    writer.Write("0x");
-                    writer.Write(OffsetFormat(off), absOff);
+                    writer.WriteString("0x");
+                    writer.WriteFormat(OffsetFormat(off), absOff);
                 }
                 if (Increment > 0)
                 {
-                    writer.Write("+:{0}", Increment);
+                    writer.WriteFormat("+:{0}", Increment);
                 }
             }
             else
@@ -144,7 +144,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 var addr = Address.Ptr32(Offset.ToUInt32());
                 writer.WriteAddress(addr.ToString(), addr);
             }
-            writer.Write(')');
+            writer.WriteChar(')');
         }
 
         private string OffsetFormat(int off)

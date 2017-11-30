@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Arm
         private Arm32ArchitectureNew arch;
 
         [Test]
-        public void ArmArch_CreateRewriter()
+        public void ArmArch_CreateDisassembler()
         {
             this.arch = new Arm32ArchitectureNew();
             var mem = new MemoryArea(Address.Ptr32(0x00123400), new byte[] { 0x03, 0x10, 0x12, 0xE0 });
@@ -42,11 +42,19 @@ namespace Reko.UnitTests.Arch.Arm
             var rdr = mem.CreateLeReader(0);
             var dasm = arch.CreateDisassembler(rdr);
             var str = dasm.First().ToString();
-            Assert.AreEqual("@@@", str);
-            rdr = mem.CreateLeReader(0);
+            Assert.AreEqual("ands\tr1,r2,r3", str);
+        }
+
+        [Test]
+        public void ArmArch_CreateRewriter()
+        {
+            this.arch = new Arm32ArchitectureNew();
+            var mem = new MemoryArea(Address.Ptr32(0x00123400), new byte[] { 0x03, 0x10, 0x12, 0xE0 });
+
+            var rdr = mem.CreateLeReader(0);
             var rw = arch.CreateRewriter(rdr, new ArmProcessorState(arch), new StorageBinder(), null);
-            var rtlc = rw.First();
-            rtlc.ToString();
+            var rtl = rw.First().Instructions[0];
+            Assert.AreEqual("r1 = r2 & r3", rtl.ToString());
         }
     }
 }

@@ -46,11 +46,11 @@ namespace Reko.Arch.Alpha
             if (offset < 0)
             {
                 offset = -offset;
-                writer.Write('-');
+                writer.WriteChar('-');
             }
-            writer.Write("{0:X}(", offset);
-            writer.Write(this.Base.Name);
-            writer.Write(")");
+            writer.WriteFormat("{0:X}(", offset);
+            writer.WriteString(this.Base.Name);
+            writer.WriteString(")");
         }
     }
 }

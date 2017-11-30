@@ -31,7 +31,7 @@ void Dump(const char * fmt, ...)
 	::strcat_s(buf, "\r\n");
 	::OutputDebugStringA(buf);
 // Use MessageBox for Release mode debugging.
-	::MessageBoxA(nullptr, buf, "Dump", MB_OK);
+//	::MessageBoxA(nullptr, buf, "Dump", MB_OK);
 #else
 	vfprintf(stderr, fmt, args);
 	fputs("\n", stderr);

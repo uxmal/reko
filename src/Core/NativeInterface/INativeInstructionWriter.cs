@@ -32,12 +32,17 @@ namespace Reko.Core.NativeInterface
     [ComVisible(true)]
     public interface INativeInstructionWriter
     {
-        [PreserveSig] void AddAnnotation(string a);
-        [PreserveSig] void WriteOpcode(string opcode);
-        [PreserveSig] void WriteAddress(string formattedAddress, ulong uAddr);
+        /// <summary>
+        /// Annotations are displayed as comments at the end of the line.
+        /// </summary>
+        /// <param name="a"></param>
+        [PreserveSig] void AddAnnotation([MarshalAs(UnmanagedType.LPStr)] string a);
+
+        [PreserveSig] void WriteOpcode([MarshalAs(UnmanagedType.LPStr)]string opcode);
+        [PreserveSig] void WriteAddress([MarshalAs(UnmanagedType.LPStr)]string formattedAddress, ulong uAddr);
         [PreserveSig] void Tab();
-        [PreserveSig] void Write(char c);
-        [PreserveSig] void Write(uint n);
-        [PreserveSig] void Write(string s);
+        [PreserveSig] void WriteString([MarshalAs(UnmanagedType.LPStr)] string s);
+        [PreserveSig] void WriteChar(char c);
+        [PreserveSig] void WriteUInt32(uint n);
     }
 }

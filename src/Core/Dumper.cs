@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Machine;
+using Reko.Core.NativeInterface;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
@@ -250,16 +251,16 @@ namespace Reko.Core
         {
             Address addrBegin = instr.Address;
             if (ShowAddresses)
-                writer.Write("{0} ", addrBegin);
+                writer.WriteFormat("{0} ", addrBegin);
             if (ShowCodeBytes)
             {
                 WriteByteRange(mem, instr.Address, instr.Address + instr.Length, writer);
                 if (instr.Length * 3 < 16)
                 {
-                    writer.Write(new string(' ', 16 - (instr.Length * 3)));
+                    writer.WriteString(new string(' ', 16 - (instr.Length * 3)));
                 }
             }
-            writer.Write("\t");
+            writer.WriteString("\t");
             writer.Address = addrBegin;
             writer.Address = instr.Address;
             instr.Render(writer, MachineInstructionWriterOptions.None);
@@ -301,7 +302,7 @@ namespace Reko.Core
 			EndianImageReader rdr = arch.CreateImageReader(image, begin);
 			while (rdr.Address < addrEnd)
 			{
-				writer.Write(string.Format("{0:X2} ", rdr.ReadByte()));
+				writer.WriteString(string.Format("{0:X2} ", rdr.ReadByte()));
 			}
 		}
 
@@ -326,30 +327,35 @@ namespace Reko.Core
                 formatter.Write("\t");
             }
 
-            public void Write(string s)
+            public void WriteString(string s)
             {
                 chars += (s ?? "").Length;
                 formatter.Write(s);
             }
 
-            public void Write(uint n)
+            public void WriteUInt32(uint n)
             {
                 var nn = n.ToString();
                 chars += nn.Length;
                 formatter.Write(nn);
             }
 
-            public void Write(char c)
+            public void WriteChar(char c)
             {
                 ++chars;
                 formatter.Write(c);
             }
 
-            public void Write(string fmt, params object[] parms)
+            public void WriteFormat(string fmt, params object[] parms)
             {
                 var s = string.Format(fmt, parms);
                 chars += s.Length;
                 formatter.Write(s);
+            }
+
+            public void WriteAddress(string formattedAddres, ulong uAddr)
+            {
+                WriteAddress(formattedAddres, Address.Ptr64(uAddr));
             }
 
             public void WriteAddress(string formattedAddress, Address addr)
@@ -374,8 +380,8 @@ namespace Reko.Core
                         formatter.WriteSpaces(pad);
                         chars += pad;
                     }
-                    Write("; ");
-                    Write(string.Join(", ", annotations));
+                    WriteString("; ");
+                    WriteString(string.Join(", ", annotations));
                     annotations.Clear();
                 }
                 chars = 0;

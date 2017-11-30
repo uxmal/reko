@@ -198,9 +198,9 @@ public:
 	virtual void STDAPICALLTYPE WriteOpcode(const char * opcode) = 0;
 	virtual void STDAPICALLTYPE WriteAddress(const char * formattedAddress, uint64_t uAddr) = 0;
 	virtual void STDAPICALLTYPE Tab() = 0;
-	virtual void STDAPICALLTYPE Write(char c) = 0;
-	virtual void STDAPICALLTYPE Write(uint32_t n) = 0;
-	virtual void STDAPICALLTYPE Write(const char * s) = 0;
+	virtual void STDAPICALLTYPE WriteString(const char * s) = 0;
+	virtual void STDAPICALLTYPE WriteChar(char c) = 0;
+	virtual void STDAPICALLTYPE WriteUInt32(uint32_t n) = 0;
 };
 
 //    static const GUID <<name>> = 

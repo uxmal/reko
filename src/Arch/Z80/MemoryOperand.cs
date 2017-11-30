@@ -71,18 +71,18 @@ namespace Reko.Arch.Z80
                     {
                         fmt = "({0})";
                     }
-                    writer.Write(string.Format(fmt, Base, offset));
+                    writer.WriteString(string.Format(fmt, Base, offset));
                 }
                 else
                 {
-                    writer.Write(string.Format("({0})", Base));
+                    writer.WriteString(string.Format("({0})", Base));
                 }
             }
             else
             {
-                writer.Write("(");
+                writer.WriteString("(");
                 writer.WriteAddress(string.Format("{0:X4}", Offset.ToUInt16()), Address.Ptr16(Offset.ToUInt16()));
-                writer.Write(")");
+                writer.WriteString(")");
             }
         }
     }

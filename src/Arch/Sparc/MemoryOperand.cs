@@ -42,13 +42,13 @@ namespace Reko.Arch.Sparc
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write("[%{0}", Base.Name);
+            writer.WriteFormat("[%{0}", Base.Name);
             if (!Offset.IsNegative)
             {
-                writer.Write("+");
+                writer.WriteString("+");
             }
-            writer.Write(Offset.ToString());
-            writer.Write("]");
+            writer.WriteString(Offset.ToString());
+            writer.WriteString("]");
         }
     }
 
@@ -65,7 +65,7 @@ namespace Reko.Arch.Sparc
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write("[%{0}+%{1}]", Base, Index);
+            writer.WriteFormat("[%{0}+%{1}]", Base, Index);
         }
     }
 }

@@ -63,7 +63,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             op1.Write(writer, options);
             if (op2 == null)
                 return;
-            writer.Write(",");
+            writer.WriteString(",");
             op2.Write(writer, options);
         }
     }

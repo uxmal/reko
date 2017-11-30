@@ -52,11 +52,11 @@ namespace Reko.Arch.Avr
             if (operands.Length > 0)
             {
                 writer.Tab();
-                writer.Write(operands[0].ToString());
+                writer.WriteString(operands[0].ToString());
                 if (operands.Length > 1)
                 {
-                    writer.Write(",");
-                    writer.Write(operands[1].ToString());
+                    writer.WriteString(",");
+                    writer.WriteString(operands[1].ToString());
                 }
             }
         }

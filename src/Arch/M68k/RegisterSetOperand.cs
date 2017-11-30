@@ -91,10 +91,10 @@ namespace Reko.Arch.M68k
                         ++i;
                         ++run_length;
                     }
-                    writer.Write(sep);
-                    writer.Write(GetRegister(first).ToString());
+                    writer.WriteString(sep);
+                    writer.WriteString(GetRegister(first).ToString());
                     if (run_length > 0)
-                        writer.Write("-{0}", GetRegister(first + run_length));
+                        writer.WriteFormat("-{0}", GetRegister(first + run_length));
                     sep = "/";
                 }
             }

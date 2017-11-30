@@ -80,13 +80,13 @@ namespace Reko.Arch.M68k
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write("#");
+            writer.WriteString("#");
             var pt = Constant.DataType as PrimitiveType;
             if (pt == null || pt.Domain != Domain.Real)
             {
-                writer.Write("$");
+                writer.WriteString("$");
             }
-            writer.Write(MachineOperand.FormatValue(Constant));
+            writer.WriteString(MachineOperand.FormatValue(Constant));
         }
     }
 
@@ -108,7 +108,7 @@ namespace Reko.Arch.M68k
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write("{0},{1}", Register1.Name, Register2.Name);
+            writer.WriteFormat("{0},{1}", Register1.Name, Register2.Name);
         }
     }
 
@@ -159,14 +159,14 @@ namespace Reko.Arch.M68k
         {
             if (Offset != null)
             {
-                writer.Write('$');
-                writer.Write(Offset.IsNegative
+                writer.WriteChar('$');
+                writer.WriteString(Offset.IsNegative
                     ? MachineOperand.FormatSignedValue(Offset)
                     : MachineOperand.FormatUnsignedValue(Offset));
             }
-            writer.Write("(");
-            writer.Write(Base.Name);
-            writer.Write(")");
+            writer.WriteString("(");
+            writer.WriteString(Base.Name);
+            writer.WriteString(")");
         }
     }
 
@@ -187,9 +187,9 @@ namespace Reko.Arch.M68k
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write("-(");
-            writer.Write(Register.Name);
-            writer.Write(")");
+            writer.WriteString("-(");
+            writer.WriteString(Register.Name);
+            writer.WriteString(")");
         }
     }
 
@@ -210,9 +210,9 @@ namespace Reko.Arch.M68k
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write("(");
-            writer.Write(Register.Name);
-            writer.Write(")+");
+            writer.WriteString("(");
+            writer.WriteString(Register.Name);
+            writer.WriteString(")+");
         }
     }
 
@@ -241,21 +241,21 @@ namespace Reko.Arch.M68k
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write("(");
+            writer.WriteString("(");
             if (Imm8 < 0)
             {
-                writer.Write("-{0:X2},", -Imm8);
+                writer.WriteFormat("-{0:X2},", -Imm8);
             }
             else if (Imm8 > 0)
             {
-                writer.Write("{0:X2},", Imm8);
+                writer.WriteFormat("{0:X2},", Imm8);
             }
-            writer.Write(ARegister.Name);
-            writer.Write(",");
-            writer.Write(XRegister.Name);
+            writer.WriteString(ARegister.Name);
+            writer.WriteString(",");
+            writer.WriteString(XRegister.Name);
             if (Scale > 1)
-                writer.Write("*{0}", Scale);
-            writer.Write(")");
+                writer.WriteFormat("*{0}", Scale);
+            writer.WriteString(")");
         }
     }
 }

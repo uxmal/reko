@@ -60,7 +60,7 @@ namespace Reko.Arch.Arm
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write('{');
+            writer.WriteChar('{');
             {
                 uint w = instr & 0xFFFF;
                 int i = 0;
@@ -73,18 +73,18 @@ namespace Reko.Arch.Arm
                         ;
                     --j;
                     // registers [i..j] 
-                    writer.Write(A32Registers.GpRegs[i].Name);
+                    writer.WriteString(A32Registers.GpRegs[i].Name);
                     if (j - i != 0)
                     {
-                        writer.Write((j - i > 1) ? '-' : ',');
-                        writer.Write(A32Registers.GpRegs[j].Name);
+                        writer.WriteChar((j - i > 1) ? '-' : ',');
+                        writer.WriteString(A32Registers.GpRegs[j].Name);
                     }
                     i = j; w = (w >> (j + 1)) << (j + 1);
-                    if (w != 0) writer.Write(',');
+                    if (w != 0) writer.WriteChar(',');
                 }
             }
-            writer.Write('}');
-            if ((instr & (1 << 22)) != 0) writer.Write('^');
+            writer.WriteChar('}');
+            if ((instr & (1 << 22)) != 0) writer.WriteChar('^');
         }
     }
 }

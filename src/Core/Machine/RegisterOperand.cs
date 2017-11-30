@@ -46,7 +46,7 @@ namespace Reko.Core.Machine
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write(reg.ToString());
+            writer.WriteString(reg.Name);
         }
     }
 }

@@ -41,23 +41,23 @@ namespace Reko.Arch.Vax
         {
             if (Offset != null)
             {
-                writer.Write(FormatSignedValue(Offset));
+                writer.WriteString(FormatSignedValue(Offset));
             }
             if (AutoDecrement)
             {
-                writer.Write("-");
+                writer.WriteString("-");
             }
             if (Base != null)
             {
-                writer.Write("({0})", Base.Name);
+                writer.WriteFormat("({0})", Base.Name);
             }
             if (AutoIncrement)
             {
-                writer.Write("+");
+                writer.WriteString("+");
             }
             if (Index != null)
             {
-                writer.Write("[{0}]", Index.Name);
+                writer.WriteFormat("[{0}]", Index.Name);
             }
         }
     }

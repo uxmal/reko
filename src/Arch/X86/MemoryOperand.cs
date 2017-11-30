@@ -101,18 +101,18 @@ namespace Reko.Arch.X86
                     s = "ymmword ptr ";
                 else
 					throw new ArgumentOutOfRangeException();
-				writer.Write(s);
+				writer.WriteString(s);
 			}
 
             if (SegOverride != RegisterStorage.None)
 			{
-				writer.Write(SegOverride.ToString());
-				writer.Write(":");
+				writer.WriteString(SegOverride.ToString());
+				writer.WriteString(":");
 			}
-			writer.Write("[");
+			writer.WriteString("[");
 			if (Base != RegisterStorage.None)
 			{
-				writer.Write(Base.ToString());
+				writer.WriteString(Base.ToString());
 			}
 			else
 			{
@@ -122,19 +122,19 @@ namespace Reko.Arch.X86
 
 			if (Index != RegisterStorage.None)
 			{
-				writer.Write("+");
-				writer.Write(Index.ToString());
+				writer.WriteString("+");
+				writer.WriteString(Index.ToString());
 				if (Scale > 1)
 				{
-					writer.Write("*");
-					writer.Write(Scale);
+					writer.WriteString("*");
+					writer.WriteUInt32(Scale);
 				}
 			}
 			if (Base != RegisterStorage.None && Offset != null && Offset.IsValid)
 			{
 				if (Offset.DataType == PrimitiveType.Byte || Offset.DataType == PrimitiveType.SByte)
 				{
-					writer.Write(FormatSignedValue(Offset));
+					writer.WriteString(FormatSignedValue(Offset));
 				}
 				else
 				{
@@ -144,17 +144,17 @@ namespace Reko.Arch.X86
                     {
                         // Special case for negative 32-bit offsets whose 
                         // absolute value < 0x10000 (GitHub issue #252)
-                        writer.Write("-");
-                        writer.Write("{0:X8}", absOff);
+                        writer.WriteString("-");
+                        writer.WriteFormat("{0:X8}", absOff);
                     }
                     else
                     {
-                        writer.Write("+");
-                        writer.Write(FormatUnsignedValue(Offset));
+                        writer.WriteString("+");
+                        writer.WriteString(FormatUnsignedValue(Offset));
                     }
 				}
 			}
-			writer.Write("]");
+			writer.WriteString("]");
 		}
 
 		/// <summary>

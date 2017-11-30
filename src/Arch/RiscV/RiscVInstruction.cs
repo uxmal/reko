@@ -105,15 +105,15 @@ namespace Reko.Arch.RiscV
             WriteOp(op1, writer);
             if (op2 == null)
                 return;
-            writer.Write(',');
+            writer.WriteChar(',');
             WriteOp(op2, writer);
             if (op3 == null)
                 return;
-            writer.Write(',');
+            writer.WriteChar(',');
             WriteOp(op3, writer);
             if (op4 == null)
                 return;
-            writer.Write(',');
+            writer.WriteChar(',');
             WriteOp(op4, writer);
         }
 
@@ -122,13 +122,13 @@ namespace Reko.Arch.RiscV
             var rop = op as RegisterOperand;
             if (rop != null)
             {
-                writer.Write(rop.Register.Name);
+                writer.WriteString(rop.Register.Name);
                 return;
             }
             var immop = op as ImmediateOperand;
             if (immop != null)
             {
-                writer.Write(immop.Value.ToString());
+                writer.WriteString(immop.Value.ToString());
                 return;
             }
             var addrop = op as AddressOperand;

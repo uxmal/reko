@@ -55,25 +55,25 @@ namespace Reko.Environments.Trs80.Basic
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write("{0} ", Address.ToLinear());
+            writer.WriteFormat("{0} ", Address.ToLinear());
             bool inString = false;
             for (int i = 0; i < Line.Length; ++i)
             {
                 int b = Line[i];
                 if (inString)
                 {
-                    writer.Write(Encoding.UTF8.GetString(Line, i, 1));
+                    writer.WriteString(Encoding.UTF8.GetString(Line, i, 1));
                     inString = (b != 0x22);
                 }
                 else
                 {
                     if (TokenMin <= b && b < TokenMax)
                     {
-                        writer.Write(TokenStrs[b - TokenMin]);
+                        writer.WriteString(TokenStrs[b - TokenMin]);
                     }
                     else
                     {
-                        writer.Write(Encoding.UTF8.GetString(Line, i, 1));
+                        writer.WriteString(Encoding.UTF8.GetString(Line, i, 1));
                     }
                     inString = (b == 0x22);
                 }

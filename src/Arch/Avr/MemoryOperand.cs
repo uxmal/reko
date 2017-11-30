@@ -41,15 +41,15 @@ namespace Reko.Arch.Avr
         {
             if (PreDecrement)
             {
-                writer.Write('-');
+                writer.WriteChar('-');
             }
-            writer.Write(Base.Name);
+            writer.WriteString(Base.Name);
             if (PostIncrement)
             {
-                writer.Write('+');
+                writer.WriteChar('+');
             } else if (Displacement !=0)
             {
-                writer.Write("+{0:X2}", Displacement);
+                writer.WriteFormat("+{0:X2}", Displacement);
             }
         }
     }

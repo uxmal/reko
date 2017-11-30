@@ -82,15 +82,15 @@ namespace Reko.Arch.Arm
             Write(ops[0], writer);
             if (ops.Length < 2)
                 return;
-            writer.Write(",");
+            writer.WriteString(",");
             Write(ops[1], writer);
             if (ops.Length < 3)
                 return;
-            writer.Write(",");
+            writer.WriteString(",");
             Write(ops[2], writer);
             if (ops.Length < 4)
                 return;
-            writer.Write(",");
+            writer.WriteString(",");
             Write(ops[3], writer);
         }
 
@@ -99,12 +99,12 @@ namespace Reko.Arch.Arm
             switch (op.Type)
             {
             case Arm64InstructionOperandType.Register:
-                writer.Write(A64Registers.RegisterByCapstoneID[op.RegisterValue.Value].Name);
+                writer.WriteString(A64Registers.RegisterByCapstoneID[op.RegisterValue.Value].Name);
                 return;
             case Arm64InstructionOperandType.Immediate:
                 if (IsJump())
                 {
-                    writer.Write("${0:X16}", op.ImmediateValue.Value);
+                    writer.WriteFormat("${0:X16}", op.ImmediateValue.Value);
                 }
                 else
                 {
@@ -146,13 +146,13 @@ namespace Reko.Arch.Arm
 
         private static void WriteImmediateValue(long imm, MachineInstructionWriter writer)
         {
-            writer.Write("#");
+            writer.WriteString("#");
             if (imm > 256 && ((imm & (imm - 1)) == 0))
             {
                 /* only one bit set, and that later than bit 8.
                  * Represent as 1<<... .
                  */
-                writer.Write("1<<");
+                writer.WriteString("1<<");
                 uint n = 0;
                 while ((imm & 0xF) == 0)
                 {
@@ -160,21 +160,21 @@ namespace Reko.Arch.Arm
                 }
                 // Now imm8 is 1, 2, 4 or 8. 
                 n += (uint)((0x30002010 >> (int)(4 * (imm - 1))) & 15);
-                writer.Write(n);
+                writer.WriteUInt32(n);
             }
             else
             {
                 if (imm < 0 && imm > -100)
                 {
-                    writer.Write('-'); imm = -imm;
+                    writer.WriteChar('-'); imm = -imm;
                 }
-                writer.Write("&{0:X}", imm);
+                writer.WriteFormat("&{0:X}", imm);
             }
         }
 
         private void WriteImmShift(string op, int value, MachineInstructionWriter writer)
         {
-            writer.Write(",");
+            writer.WriteString(",");
             writer.WriteOpcode(op);
             WriteImmediateValue(value, writer);
         }

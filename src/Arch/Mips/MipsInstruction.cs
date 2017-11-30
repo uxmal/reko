@@ -76,11 +76,11 @@ namespace Reko.Arch.Mips
                 op1.Write(writer, options);
                 if (op2 != null)
                 {
-                    writer.Write(',');
+                    writer.WriteChar(',');
                     op2.Write(writer, options);
                     if (op3 != null)
                     {
-                        writer.Write(',');
+                        writer.WriteChar(',');
                         op3.Write(writer, options);
                     }
                 }

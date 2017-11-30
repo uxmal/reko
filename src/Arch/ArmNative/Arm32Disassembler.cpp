@@ -31,7 +31,6 @@ Arm32Disassembler::Arm32Disassembler(const uint8_t * bytes, size_t length, int o
 {
 	auto ec = cs_open(CS_ARCH_ARM, CS_MODE_ARM, &hcapstone);
 	ec = cs_option(this->hcapstone, CS_OPT_DETAIL, CS_OPT_ON);
-	Dump("Created Arm32Disassembler");
 }
 
 static const IID IID_INativeDisassembler = 

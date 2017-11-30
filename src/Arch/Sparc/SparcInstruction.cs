@@ -86,11 +86,11 @@ namespace Reko.Arch.Sparc
                 Write(Op1, writer, options);
                 if (Op2 != null)
                 {
-                    writer.Write(',');
+                    writer.WriteChar(',');
                     Write(Op2, writer, options);
                     if (Op3 != null)
                     {
-                        writer.Write(',');
+                        writer.WriteChar(',');
                         Write(Op3, writer, options);
                     }
                 }
@@ -102,13 +102,13 @@ namespace Reko.Arch.Sparc
             var reg = op as RegisterOperand;
             if (reg != null)
             {
-                writer.Write("%{0}", reg.Register.Name);
+                writer.WriteFormat("%{0}", reg.Register.Name);
                 return;
             }
             var imm = op as ImmediateOperand;
             if (imm != null)
             {
-                writer.Write(imm.Value.ToString());
+                writer.WriteString(imm.Value.ToString());
                 return;
             }
             var mem = op as MemoryOperand;
@@ -123,7 +123,7 @@ namespace Reko.Arch.Sparc
                 idx.Write(writer, options);
                 return;
             }
-            writer.Write(op.ToString());
+            writer.WriteString(op.ToString());
         }
 
         [Flags]

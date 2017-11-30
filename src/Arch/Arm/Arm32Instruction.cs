@@ -105,7 +105,7 @@ namespace Reko.Arch.Arm
         {
             if (instruction == null)
             {
-                writer.Write("Invalid");
+                writer.WriteString("Invalid");
                 return;
             }
             writer.WriteOpcode(instruction.Mnemonic);
@@ -118,15 +118,15 @@ namespace Reko.Arch.Arm
             Write(ops[0], writer, options);
             if (ops.Length < 2)
                 return;
-            writer.Write(",");
+            writer.WriteString(",");
             Write(ops[1], writer, options);
             if (ops.Length < 3)
                 return;
-            writer.Write(",");
+            writer.WriteString(",");
             Write(ops[2], writer, options);
             if (ops.Length < 4)
                 return;
-            writer.Write(",");
+            writer.WriteString(",");
             Write(ops[3], writer, options);
         }
 
@@ -144,15 +144,15 @@ namespace Reko.Arch.Arm
             case Opcode.STMDB:
                 Write(ops.First(), writer, MachineInstructionWriterOptions.None);
                 if (instruction.ArchitectureDetail.WriteBack)
-                    writer.Write("!");
+                    writer.WriteString("!");
                 ops = ops.Skip(1);
-                writer.Write(",");
+                writer.WriteString(",");
                 break;
             default:
                 return false;
             }
 
-            writer.Write("{");
+            writer.WriteChar('{');
             var sep = "";
             RegisterStorage regPrev = null;
             RegisterStorage reg = null;
@@ -161,20 +161,20 @@ namespace Reko.Arch.Arm
                 reg = A32Registers.RegisterByCapstoneID[op.RegisterValue.Value];
                 if (regPrev == null)
                 {
-                    writer.Write(sep);
-                    writer.Write(reg.Name);
+                    writer.WriteString(sep);
+                    writer.WriteString(reg.Name);
                     sep = ",";
                 }
                 else if (regPrev.Number + 1 < reg.Number)
                 {
                     if (sep == "-")
                     {
-                        writer.Write(sep);
-                        writer.Write(regPrev.Name);
+                        writer.WriteString(sep);
+                        writer.WriteString(regPrev.Name);
                         sep = ",";
                     }
-                    writer.Write(sep);
-                    writer.Write(reg.Name);
+                    writer.WriteString(sep);
+                    writer.WriteString(reg.Name);
                     sep = ",";
                 }
                 else
@@ -185,10 +185,10 @@ namespace Reko.Arch.Arm
             }
             if (sep == "-")
             {
-                writer.Write("-");
-                writer.Write(reg.Name);
+                writer.WriteString("-");
+                writer.WriteString(reg.Name);
             }
-            writer.Write("}");
+            writer.WriteChar('}');
             return true;
         }
 
@@ -203,29 +203,29 @@ namespace Reko.Arch.Arm
                     instruction.Id == Opcode.BL ||
                     instruction.Id == Opcode.BLX)
                 {
-                    writer.Write("$");
+                    writer.WriteString("$");
                     writer.WriteAddress(
                         string.Format("{0:X8}", op.ImmediateValue.Value),
                         Address.Ptr32((uint)op.ImmediateValue.Value));
                     break;
                 }
-                writer.Write("#");
+                writer.WriteString("#");
                 WriteImmediateValue(op.ImmediateValue.Value, writer);
                 break;
             case ArmInstructionOperandType.CImmediate:
-                writer.Write("c{0}", op.ImmediateValue);
+                writer.WriteFormat("c{0}", op.ImmediateValue);
                 break;
             case ArmInstructionOperandType.PImmediate:
-                writer.Write("p{0}", op.ImmediateValue);
+                writer.WriteFormat("p{0}", op.ImmediateValue);
                 break;
             case ArmInstructionOperandType.Register:
                 if (op.IsSubtracted)
-                    writer.Write('-');
-                writer.Write(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value].Name);
+                    writer.WriteChar('-');
+                writer.WriteString(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value].Name);
                 WriteShift(op, writer);
                 break;
             case ArmInstructionOperandType.SysRegister:
-                writer.Write(A32Registers.SysRegisterByCapstoneID[op.SysRegisterValue.Value].Name);
+                writer.WriteString(A32Registers.SysRegisterByCapstoneID[op.SysRegisterValue.Value].Name);
                 break;
             case ArmInstructionOperandType.Memory:
                 if (op.MemoryValue.BaseRegister == ArmRegister.PC)
@@ -235,9 +235,9 @@ namespace Reko.Arch.Arm
                     if (op.MemoryValue.IndexRegister == ArmRegister.Invalid &&
                         (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                     {
-                        writer.Write('[');
+                        writer.WriteChar('[');
                         writer.WriteAddress(addr.ToString(), addr);
-                        writer.Write(']');
+                        writer.WriteChar(']');
                         var sr = new StringRenderer();
                         WriteMemoryOperand(op, sr);
                         writer.AddAnnotation(sr.ToString());
@@ -252,13 +252,13 @@ namespace Reko.Arch.Arm
                 WriteMemoryOperand(op, writer);
                 break;
             case ArmInstructionOperandType.SetEnd:
-                writer.Write(op.SetEndValue.ToString().ToLowerInvariant());
+                writer.WriteString(op.SetEndValue.ToString().ToLowerInvariant());
                 break;
             case ArmInstructionOperandType.FloatingPoint:
                 var f = op.FloatingPointValue.Value.ToString("g", CultureInfo.InvariantCulture);
                 if (f.IndexOfAny(nosuffixRequired) < 0)
                     f += ".0";
-                writer.Write("#{0}", f);
+                writer.WriteFormat("#{0}", f);
                 break;
             default:
                 throw new NotImplementedException(string.Format(
@@ -277,7 +277,7 @@ namespace Reko.Arch.Arm
             case ArmShifterType.LSL: WriteImmShift("lsl", op.Shifter.Value, writer); break;
             case ArmShifterType.LSR: WriteImmShift("lsr", op.Shifter.Value, writer); break;
             case ArmShifterType.ROR: WriteImmShift("ror", op.Shifter.Value, writer); break;
-            case ArmShifterType.RRX: writer.Write(",rrx"); break;
+            case ArmShifterType.RRX: writer.WriteString(",rrx"); break;
             case ArmShifterType.ASR_REG: WriteRegShift("asr", op.Shifter.Value, writer); break;
             case ArmShifterType.LSL_REG: WriteRegShift("lsl", op.Shifter.Value, writer); break;
             case ArmShifterType.LSR_REG: WriteRegShift("lsr", op.Shifter.Value, writer); break;
@@ -289,32 +289,32 @@ namespace Reko.Arch.Arm
 
         private void WriteMemoryOperand(ArmInstructionOperand op, MachineInstructionWriter writer)
         {
-            writer.Write('[');
-            writer.Write(A32Registers.RegisterByCapstoneID[op.MemoryValue.BaseRegister].Name);
+            writer.WriteChar('[');
+            writer.WriteString(A32Registers.RegisterByCapstoneID[op.MemoryValue.BaseRegister].Name);
             int displacement = op.MemoryValue.Displacement;
             if (displacement != 0)
             {
                 if (true) // preincInternal.ArchitectureDetail)
                 {
-                    writer.Write(",");
+                    writer.WriteString(",");
                     if (displacement < 0)
                     {
                         displacement = -displacement;
-                        writer.Write("-");
+                        writer.WriteString("-");
                     }
-                    writer.Write("#");
+                    writer.WriteString("#");
                     WriteImmediateValue(displacement, writer);
-                    writer.Write("]");
+                    writer.WriteString("]");
                     if (instruction.ArchitectureDetail.WriteBack)
-                        writer.Write("!");
+                        writer.WriteString("!");
                 }
                 else
                 {
-                    writer.Write("],");
+                    writer.WriteString("],");
                     if (displacement < 0)
                     {
                         displacement = -displacement;
-                        writer.Write("-");
+                        writer.WriteString("-");
                     }
                     WriteImmediateValue(displacement, writer);
                 }
@@ -323,19 +323,19 @@ namespace Reko.Arch.Arm
             {
                 if (op.MemoryValue.IndexRegister != ArmRegister.Invalid)
                 {
-                    writer.Write(",");
+                    writer.WriteString(",");
                     // NOTE: capstone.NET seems to reverse the sense of this scale parameter.
                     if (op.IsSubtracted)
-                        writer.Write("-");
-                    writer.Write(A32Registers.RegisterByCapstoneID[op.MemoryValue.IndexRegister].Name);
+                        writer.WriteString("-");
+                    writer.WriteString(A32Registers.RegisterByCapstoneID[op.MemoryValue.IndexRegister].Name);
                 }
                 if (op.Shifter.Type != ArmShifterType.Invalid)
                 {
                     WriteShift(op, writer);
                 }
-                writer.Write(']');
+                writer.WriteChar(']');
                 if (instruction.ArchitectureDetail.WriteBack && IsLastOperand(op))
-                    writer.Write("!");
+                    writer.WriteString("!");
             
             }
         }
@@ -353,18 +353,18 @@ namespace Reko.Arch.Arm
 
         private void WriteImmShift(string op, int value, MachineInstructionWriter writer)
         {
-            writer.Write(",");
+            writer.WriteString(",");
             writer.WriteOpcode(op);
-            writer.Write(" #");
+            writer.WriteString(" #");
             WriteImmediateValue(value, writer);
         }
 
         private void WriteRegShift(string op, int value, MachineInstructionWriter writer)
         {
-            writer.Write(",");
+            writer.WriteString(",");
             writer.WriteOpcode(op);
-            writer.Write(' ');
-            writer.Write(A32Registers.RegisterByCapstoneID[(ArmRegister)value].Name);
+            writer.WriteChar(' ');
+            writer.WriteString(A32Registers.RegisterByCapstoneID[(ArmRegister)value].Name);
         }
 
         private static void WriteImmediateValue(int imm8, MachineInstructionWriter writer)
@@ -374,7 +374,7 @@ namespace Reko.Arch.Arm
                 /* only one bit set, and that later than bit 8.
                  * Represent as 1<<... .
                  */
-                writer.Write("1<<");
+                writer.WriteString("1<<");
                 {
                     uint n = 0;
                     while ((imm8 & 15) == 0)
@@ -383,7 +383,7 @@ namespace Reko.Arch.Arm
                     }
                     // Now imm8 is 1, 2, 4 or 8. 
                     n += (uint)((0x30002010 >> (int)(4 * (imm8 - 1))) & 15);
-                    writer.Write(n);
+                    writer.WriteUInt32(n);
                 }
             }
             else
@@ -395,7 +395,7 @@ namespace Reko.Arch.Arm
                     imm8 = -imm8;
                     sign = "-";
                 }
-                writer.Write(fmt, sign, imm8);
+                writer.WriteFormat(fmt, sign, imm8);
             }
         }
 
@@ -464,7 +464,7 @@ namespace Reko.Arch.Arm
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            throw new NotImplementedException();
+            nInstr.Render(writer, options);
         }
     }
 }
