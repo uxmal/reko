@@ -18,6 +18,9 @@ parser.add_option("-c", "--configuration", dest="configuration",
 parser.add_option("-o", "--check-output", dest="check_output",
                   action="store_true",
                   help="check output files", default=False)
+parser.add_option("-p", "--platform", dest="platform",
+                  help="define platform (x86, x64)",
+                  default="x64")                  
 (options, dirs) = parser.parse_args()
 if len(dirs) == 0:
     dirs = ["."]
@@ -27,7 +30,8 @@ reko_cmdline_dir = os.path.abspath("../src/Drivers/CmdLine")
 
 start_dir = os.getcwd()
 
-reko_cmdline = os.path.join(reko_cmdline_dir, "bin", options.configuration, "decompile.exe")
+reko_cmdline = os.path.join(reko_cmdline_dir, "bin", options.platform, options.configuration, "decompile.exe")
+print (reko_cmdline)
 output_extensions = [".asm", ".c", ".dis", ".h"]
 
 # Split a command line, but allow quotation marks to
